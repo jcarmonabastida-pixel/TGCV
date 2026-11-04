@@ -451,3 +451,59 @@ Continuar con **Bloque 2 — población, elegibilidad y D1/D2**, reutilizando:
 - reconciliación C10-D1/S4-R.
 
 La operación siguiente debe cerrar la legitimidad del comparador para la pregunta primaria, la relación entre P*_τ2 y P*_F, la regla de elegibilidad pre-Z, el contrato F* y la cobertura de alternativas. La decisión D1/D2 seguirá requiriendo aprobación expresa. No iniciar dimensionamiento ni ejecución.
+
+
+# VIII. Ejecución del plan — Bloque 2 (2026-11-04)
+
+## 30. Artefacto de reconciliación generado
+
+Nuevo documento:
+`00_GOVERNANCE/SIP/C10_S_POPULATION_ELIGIBILITY_AND_COMPARATOR_RECONCILIATION_DRAFT_001.md`
+
+Se incorporó:
+- distinción formal P*_τ2 frente a P*_F y relación de subconjunto;
+- regla de elegibilidad pre-Z y tratamiento de estados indeterminados;
+- crosswalk C_dep,0 / A_f,0* / A_f,1* / D_f*;
+- contrato pendiente de F* y Sub(π,F*,G,H,C0);
+- cobertura de rutas alternativas y niveles E1–E4;
+- precedencia D1 histórico condicionado frente a D2 mecanístico provisional;
+- unidad/interferencia y criterios de cierre.
+
+## 31. Hallazgo de consistencia adicional
+
+Se detectó una sobrecarga de notación que puede inducir error causal:
+- el maestro §48.2 usa D_f,0 como disponibilidad basal de dependencia;
+- DGP §26 y decisiones posteriores usan D_f* como transición de apertura basal→post;
+- C_dep,0 ya representa la dependencia técnica basal.
+
+Se propone reservar C_dep,0 para dependencia técnica basal y D_f*=I(A_f,0*=0 ∧ A_f,1*=1) para apertura focal. No se reescribe el histórico; se requiere búsqueda global y nota de supersesión al armonizar el maestro. La primera etapa de C_dep, A_f,1* y D_f* debe reportarse separadamente.
+
+## 32. Propagación documental
+
+Se actualizó:
+- maestro C10-S: §70;
+- contrato DGP: §29;
+- Decision Log: DEC-C10-031;
+- matriz de cierre: §9, POP-01…07;
+- registro de pruebas: §32, POP-11…18, FSTAR-01…06 y CMP-15…18.
+
+Los contratos nuevos son documentales; no se han generado fixtures ni ejecutado pruebas.
+
+## 33. Resultado del Bloque 2
+
+**Avance logrado:** se reconciliaron los objetivos poblacionales y se hizo explícita la diferencia entre apertura de τ2 y apertura funcional exclusiva. Se identificó y registró la sobrecarga D_f,0. Se preservó la precedencia histórica de D1 y la recomendación provisional posterior de D2 sin forzar una selección.
+
+**Pendientes bloqueantes:**
+1. fichas operacionales y umbrales para cada condición constitutiva;
+2. F* con S0, objetivo, criterio de aceptación, entradas/salidas, restricciones, tolerancias, H/G/C0 y recursos;
+3. universo y cobertura de rutas alternativas, adjudicación y fiabilidad;
+4. decisión explícita D1/D2;
+5. verificación de C_dep,0 y A_f,0* por protocolos independientes;
+6. auditoría de UE/UA, frontera y no interferencia;
+7. revisión global de notación y aprobación científica.
+
+**Estado del Bloque 2:** AVANCE DOCUMENTAL PARCIAL / NO CERRADO. OPEN-C10-001/003/005/007 continúan abiertas. No se declara elegibilidad operacionalizada ni F* validada.
+
+## 34. Próxima operación
+
+Continuar con **Bloque 3 — accesibilidad, alternativas y ΔT_acc**, reutilizando el contrato técnico de §§67–70 y DGP §§26–29. La operación deberá formalizar la matriz de predicados ID/REL/COND/AUTH/RES/DEP/BLOCK, estados 1/0/?, snapshots, versiones, cobertura, relación entre C_dep/A_f*/D_f*/ΔT_acc y errores de medición, sin volver a calibrar s=.80 como si fuera dato empírico.
