@@ -304,3 +304,14 @@ Se registra **DEC-C10-031** como propuesta, no decisión aceptada:
 | DEC-C10-031 | P*_τ2/P*_F, F*, D_f,0 y D1/D2 | PROPUESTA | P*_τ2 requiere elegibilidad constitutiva pre-Z, C_dep,0=0 y A_f,0*=0; P*_F añade F_alt,0=0 respaldado. F* se define ex ante sin O/V y con S0, objetivo, restricciones, tolerancias, H/G/C0 y evidencia. En notación nueva, C_dep,0 es dependencia basal y D_f* es transición I(A_f,0*=0∧A_f,1*=1); no usar D_f,0 para disponibilidad basal. D1 histórico principal condicionado y D2 mecanístico provisional se conservan como recomendaciones en conflicto de precedencia; selección primaria abierta. | Fichas y umbrales constitutivos; universo/cobertura de alternativas; operacionalización F*; revisión de notación global; evidencia externa D1 o justificación del objetivo D2; población/unidad/interferencia; revisión independiente. |
 
 DEC-C10-031 no acepta la población, no cierra OPEN-C10-001/003/005/007, no selecciona D1/D2 y no autoriza freeze, implementación, simulación o ejecución.
+
+
+## 26. Propuesta de separación de ΔT_acc estructural y ΔE_T epistémico (2026-11-04)
+
+Se registra **DEC-C10-032** como propuesta, no decisión aceptada:
+
+| ID | Objeto | Estado | Formulación | Dependencias |
+|---|---|---|---|---|
+| DEC-C10-032 | Snapshots, ΔT_acc y validez de evidencia | PROPUESTA | Definir S_T*=(U*,R*,C*,X*) como snapshot estructural; E_T como paquete de evidencia/cobertura/validez epistémica; ΔT_acc*=Diff(S_T*(t0),S_T*(t1))=(ΔU*,ΔR*,ΔC*,ΔX*); ΔE_T registra cambios epistémicos. ΔValidity_e se retira de la tupla causal; validez estructural real permanece en C*/R*. Correspondencia ID/versiones/frontera/G es requisito previo al diff. | Aprobación formal; propagación global; catálogo/IDs/G/frontera; mapping por versión; verdad oculta/observación; fixtures/oráculos; validación de error diferencial; revisión independiente. |
+
+DEC-C10-032 propone superseder, no borrar, la formulación de §63.7. No cierra AUD-001/004/005/007, XAUD-003/004/006 ni XSYNC-138-03/06; no autoriza freeze, implementación, simulación o ejecución.
