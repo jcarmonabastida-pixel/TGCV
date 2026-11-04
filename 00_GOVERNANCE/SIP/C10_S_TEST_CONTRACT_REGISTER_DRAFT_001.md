@@ -672,3 +672,26 @@ Estos son contratos especificados documentalmente; no se han generado fixtures n
 | CMP-18 | D1/D2 con diferentes first stages/compliers | Reporte y dictamen separados | Agrupar o transportar LATE |
 
 Estos contratos son especificaciones documentales; no se han generado fixtures ni ejecutado pruebas. Para cerrar AUD-003 deben añadirse entradas, salidas, verdad oculta, versiones, tolerancias, oráculos y revisión independiente.
+
+
+## 33. Contratos del Bloque 3 — snapshots estructurales, ΔT_acc y evidencia
+
+| ID | Fixture/verdad DGP | Aserción del analizador | Fallo que debe detectar |
+|---|---|---|---|
+| SNAP-01 | Cobertura aumenta; sistema inalterado | ΔE_T≠0 y ΔT_acc*=0 | Fechar como creación una ruta preexistente |
+| SNAP-02 | Fuente desaparece; sistema inalterado | ΔE_T≠0; truth ΔT_acc*=0; observación puede ser ? | Inferir pérdida de acceso por pérdida documental |
+| SNAP-03 | Se añade relación necesaria para τ2 | ΔR* registra alta y A_f* se recalcula | No registrar cambio relacional |
+| SNAP-04 | Se elimina dependencia necesaria | ΔR*/ΔC* registra baja; A_f* puede pasar 1→0 | Mantener accesibilidad sin ruta |
+| SNAP-05 | Cambia hash, semántica/ID estable | Conserva ID si corresponde y audita integridad/compatibilidad | Crear nueva identidad por hash solamente |
+| SNAP-06 | Cambia semántica de transformación | Registra baja/alta de identidad | Tratar cambio semántico como versión menor |
+| SNAP-07 | Mapping entre versiones incierto | Match=?; diff indeterminado | Forzar equivalencia |
+| SNAP-08 | Cambios no focales sin cambio de τ2 | ΔT_acc*≠0; D_f*=0 | Colapsar diff completo a indicador focal |
+| SNAP-09 | Apertura de τ2 sin otros cambios | D_f*=1; diff contiene cambio focal | No detectar apertura |
+| SNAP-10 | Cambia Outcome/Value, estructura constante | ΔT_acc*=0 por ese hecho | Definir acceso mediante valoración |
+| SNAP-11 | Truth cambia, evidencia no detecta cambio | Analizador produce ?/error; truth no se filtra | Filtrar variable generadora |
+| SNAP-12 | Evidencia post descubre ruta basal | Adjudica baseline; no fecha alta en t1 sin evidencia temporal | Confundir descubrimiento con creación |
+| SNAP-13 | Frontera/G no comparable | Rechaza diff o exige mapping M explícito | Comparar snapshots incompatibles |
+| SNAP-14 | B cambia autorización/recursos | ΔC* refleja cambio y se declara vía colateral | Ocultar cointervención |
+| SNAP-15 | App_f cambia, accesibilidad estable | ΔT_acc*=0 si no cambió espacio accesible | Confundir aplicabilidad con accesibilidad |
+
+Estos contratos son especificaciones documentales. No se han creado fixtures ejecutables ni se han ejecutado pruebas. El cierre requiere entradas/salidas, truth oculta, mapping versionado, oráculos, tolerancias, cegamiento y revisión independiente.
