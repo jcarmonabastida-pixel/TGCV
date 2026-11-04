@@ -7105,3 +7105,39 @@ La tabla de sensibilidad cambia s y por tanto los estados esperados de C_dep. No
 Quedan construidos cuatro fixtures explícitos y una propagación analítica de la cuadrícula s hacia FS_Cdep para D1 y D2. Se identifica una dependencia que debe conservarse: el .20 de control D1 es consecuencia de q0=.25 y s=.80, no un parámetro independiente si s está en sensibilidad.
 
 No se selecciona fixture confirmatorio, no se justifica empíricamente ninguna tabla, no se infiere accesibilidad desde C_dep sin condiciones y no se elige D1/D2 como primario. Las familias mixtas más generales, las marginales fijas, la heterogeneidad y la calibración observacional siguen abiertas. No hay freeze, implementación, simulación ni ejecución.
+
+
+---
+
+## 70. Reconciliación de población, elegibilidad, F* y comparadores (2026-11-04)
+
+**Estado:** propuesta documental; no aprobada, no congelada. Complementa §§46–51 y 66–69. Artefacto desarrollado: `C10_S_POPULATION_ELIGIBILITY_AND_COMPARATOR_RECONCILIATION_DRAFT_001.md`.
+
+### 70.1 Dos objetivos y dos poblaciones
+
+- `P*_{τ2}`: unidades con condiciones constitutivas basales cumplidas, `C_dep,0=0` y accesibilidad basal de τ2 respaldadamente nula (`A_f,0*=0`), todo determinado antes de Z.
+- `P*_F ⊆ P*_{τ2}`: añade ausencia respaldada de ruta funcional substituible (`F_alt,0=0`) en universo, granularidad, contexto y horizonte declarados.
+- Las alternativas basales no excluyen automáticamente de P*_{τ2}; son modificadores potenciales y limitan la interpretación de apertura funcional exclusiva.
+- La regla de Value no define F* ni substituibilidad.
+
+### 70.2 Corrección de sobrecarga notacional
+
+Se identifica que §48.2 usa `D_f,0` para disponibilidad basal de dependencia, mientras el DGP posterior utiliza `D_f*` para apertura basal→post. En especificaciones nuevas:
+- `C_dep,0`: disponibilidad de dependencia técnica focal basal;
+- `A_f,0*` y `A_f,1*`: accesibilidad verdadera basal y post;
+- `D_f*=I(A_f,0*=0 ∧ A_f,1*=1)`: transición de apertura focal.
+No usar `D_f,0` para disponibilidad basal; preservar el histórico con nota de supersesión, sin reescritura silenciosa. Calcular las primeras etapas de C_dep, A_f,1* y D_f* por separado.
+
+### 70.3 F* y alternativas
+
+F* continúa parcialmente definido como función técnica de reconfigurar el sistema diagnosticado hacia una configuración objetivo bajo restricciones de seguridad, integridad y compatibilidad. Faltan S0, objetivo/criterio de aceptación, entradas/salidas, tolerancias, recursos, H, G, C0 y umbrales. Cada ruta debe recibir juicios separados de accesibilidad, aplicabilidad y substituibilidad. F_alt,0=0 requiere cobertura documentada; “no encontrado” sin cobertura es indeterminado. E1–E4 delimitan fuerza de evidencia, no garantizan ausencia universal.
+
+### 70.4 D1/D2
+
+D1: provisión ordinaria de baja frecuencia en control frente a provisión programada; W_attempt .25/1, C_dep final .20/.80, FS_Cdep .60 bajo factorización candidata. D2: ausencia de intento focal frente a provisión programada; 0/1, C_dep final 0/.80, FS_Cdep .80. El .80 es candidato de éxito conjunto condicional, no dato empírico. El .20 de D1 es postasignación, no basal; ambos escenarios pueden tener C_dep,0=0.
+
+La fuente 165–168 recomienda D1 principal condicionado; DEC-C10-026 y DGP §25 recomiendan D2 provisionalmente como contraste mecanístico mientras no se justifique D1. Ninguna recomendación está aceptada. La selección primaria sigue ABIERTA. ITT y Wald/LATE se mantienen específicos por escenario.
+
+### 70.5 Estado
+
+Propuesta de reconciliación documentada. No cierra OPEN-C10-001/003/005/007, AUD-001/004/005/011, ni los contratos CMP/POP. No selecciona D1/D2, no fija F*, no congela y no autoriza implementación, simulación o ejecución.
