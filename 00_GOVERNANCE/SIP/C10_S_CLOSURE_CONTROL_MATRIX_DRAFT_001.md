@@ -583,3 +583,19 @@ No se cierra calibración empírica ni selección primaria.
 | REACH-10 | Identificación/cobertura | ? ante catálogo o mapping incompleto | ABIERTO | Validación independiente de cobertura/error |
 
 **Dictamen:** propuesta documental incorporada; AUD-005 y AUD-007 permanecen abiertos. No declarar cierre ni cobertura validada.
+
+
+## 13. Seguimiento del Bloque 3 — inventario finito del DGP y cobertura Reach
+
+| ID | Punto | Propuesta/hallazgo | Estado | Criterio de cierre |
+|---|---|---|---|---|
+| INV-01 | Estados S0/S1/S2/SF | Alfabeto abstracto de fixture | PROPUESTA | Definición operacional de estado inicial y F*/objetivo |
+| INV-02 | Catálogo F1/F2/A1/A2 | Dos rutas de dos pasos, focal y alternativa | PROPUESTA | TID/SID/RID, contratos, mapping y catálogo cerrado |
+| INV-03 | Escenarios R0–R3 | Exclusividad, alternativa basal, alternativa afectada y fallo | PROPUESTA | Correspondencia aprobada con población, política y estimando |
+| INV-04 | G y H | G atómica; H=3 pasos; ciclos base prohibidos | PENDIENTE DE RATIFICACIÓN | Duraciones, ventanas, sensibilidad H, ciclos y terminación |
+| INV-05 | Recursos/condiciones | Reserva por instancia; C_auth basal; bloqueos tipados | PARCIAL | Frontera, inventario, dependencia externa y concurrencia |
+| INV-06 | Alternativas/exhaustividad | Ocho dimensiones de cobertura | ABIERTO | Evidencia de cobertura completa y adjudicación independiente |
+| INV-07 | Truth/observed | Truth oculta; observación 1/0/? | PROPUESTA | Esquema, fuentes, cegamiento y validación de error |
+| INV-08 | Implicación Reach | Abrir F1 no basta; A1→A2 puede mantener Reach(SF) | HALLAZGO LÓGICO DEL FIXTURE | Oráculos y revisión independiente |
+
+**Dictamen:** se dispone de un inventario abstracto finito candidato, no de un catálogo confirmatorio. AUD-005 y AUD-007 siguen abiertos; no declarar exhaustividad ni Reach=0 para el DGP hasta validar universo y cobertura.
