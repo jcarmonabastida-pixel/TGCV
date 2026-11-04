@@ -293,3 +293,14 @@ Se registra **DEC-C10-030** como propuesta, no decisión aceptada:
 | DEC-C10-030 | Arquitectura causal C10-D1/S4-R, régimen q, intervención B y C_auth | PROPUESTA | Preservar θ_A(q) como pregunta científica C10-D1; distinguir TE_Z/ITT_Z de efecto de política ψ_B y LATE_f local. q_X* es candidato como distribución basal común; q_L* solo si se requiere régimen secuencial explícito. Se recomienda para revisión una intervención material de provisión técnica B con C_auth basal, elegible e invariante; si B cambia autorización u otras vías hacia O/V, reportar efecto de paquete salvo identificación adicional. La selección D1/D2 permanece abierta. | Aprobación de jerarquía de estimandos; q_X*/soporte; población, horizonte y Value; definición final B/g0/g1; resolución C_auth; comparador; unidad/interferencia; vías directas; revisión independiente. |
 
 DEC-C10-030 documenta una reconciliación candidata y no acepta ni congela la Candidata A. No cierra OPEN-C10-001/002/005/006, AUD-001/002/011, XAUD-001/002/003/004/006 ni XSYNC-138. No autoriza implementación, simulación o ejecución.
+
+
+## 25. Propuesta de reconciliación de población, F* y notación basal (2026-11-04)
+
+Se registra **DEC-C10-031** como propuesta, no decisión aceptada:
+
+| ID | Objeto | Estado | Formulación | Dependencias |
+|---|---|---|---|---|
+| DEC-C10-031 | P*_τ2/P*_F, F*, D_f,0 y D1/D2 | PROPUESTA | P*_τ2 requiere elegibilidad constitutiva pre-Z, C_dep,0=0 y A_f,0*=0; P*_F añade F_alt,0=0 respaldado. F* se define ex ante sin O/V y con S0, objetivo, restricciones, tolerancias, H/G/C0 y evidencia. En notación nueva, C_dep,0 es dependencia basal y D_f* es transición I(A_f,0*=0∧A_f,1*=1); no usar D_f,0 para disponibilidad basal. D1 histórico principal condicionado y D2 mecanístico provisional se conservan como recomendaciones en conflicto de precedencia; selección primaria abierta. | Fichas y umbrales constitutivos; universo/cobertura de alternativas; operacionalización F*; revisión de notación global; evidencia externa D1 o justificación del objetivo D2; población/unidad/interferencia; revisión independiente. |
+
+DEC-C10-031 no acepta la población, no cierra OPEN-C10-001/003/005/007, no selecciona D1/D2 y no autoriza freeze, implementación, simulación o ejecución.
