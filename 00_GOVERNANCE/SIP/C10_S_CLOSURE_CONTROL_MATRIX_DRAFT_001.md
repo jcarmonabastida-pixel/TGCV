@@ -502,3 +502,18 @@ La recomendación no cambia retrospectivamente los datos ni parámetros históri
 | FIX-10 | Estado confirmatorio | Ningún fixture elegido sin revisión/decisión |
 
 No se cierra calibración empírica ni selección primaria.
+
+
+## 8. Seguimiento del Bloque 1 — arquitectura causal y estimandos (2026-11-04)
+
+| ID | Punto | Evidencia incorporada | Estado | Criterio de cierre |
+|---|---|---|---|---|
+| CA-01 | Jerarquía C10-D1 / S4-R | Nuevo artefacto `C10_S_CAUSAL_ARCHITECTURE_RECONCILIATION_DRAFT_001.md`; DEC-C10-030 | PROPUESTA / ABIERTO | Aprobación expresa de θ_A(q), TE_Z/ITT_Z, ψ_B y LATE_f, con población/horizonte/Value. |
+| CA-02 | q_X* / q_L* | Cotejo C10-D1 §§17, 25–26 y C10-S §44; DEC-C10-015 | PROPUESTA / ABIERTO | Variables basales, soporte, pesos y regla dinámica si q_L* fuera necesaria. |
+| CA-03 | Intervención B y C_auth | Contraste de propuesta AUD-001/002 con DEC-C10-022/024 y DGP §§25–26 | CONTRADICCIÓN IDENTIFICADA / RESOLUCIÓN PROPUESTA | Decidir C_auth basal-invariante vs intervención conjunta; especificar si canal técnico cambia permisos. |
+| CA-04 | D1/D2 | Fuente 165–183, DEC-C10-026, DGP §25, contratos CMP | NO RESUELTO | Justificar comparador para pregunta primaria y aceptar una jerarquía confirmatoria. |
+| CA-05 | Vías directas/colaterales | C10-D1 §§26, 30; POL-01/02; XAUD-002 | ABIERTO | Aislamiento por diseño y escenarios adversariales con salida efecto paquete/no identificación. |
+| CA-06 | Unidad/interferencia | DEC-C10-016/021; UNIT/BND contracts | PROPUESTA / ABIERTO | Frontera, recursos compartidos, asignación y mapa de exposición aprobados. |
+| CA-07 | Value/horizonte/población | OPEN-C10-003/004; fuente 179–183 | ABIERTO | Regla Value, beneficiario, dimensiones, horizonte y población preespecificados. |
+
+**Resultado del bloque:** arquitectura causal reconciliada a nivel de distinciones y propuesta candidata; no existe todavía contrato causal aprobado ni estimando final cerrado. No marcar AUD-001/002 o XAUD-001/002 como resueltos.
