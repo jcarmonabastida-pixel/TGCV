@@ -352,3 +352,19 @@ La matriz no aprueba la ecuación depurada ni cierra constructos. La modalidad A
 | OPEN-C10-004 | ABIERTA | Operacionalizar frontera, recursos, evidencia, cobertura y validación |
 
 La distinción T_cap/T_acc(i) es auxiliar y no cambia el Core. No se aprueba todavía la ecuación de §59 ni se declara identificada la contribución causal.
+
+
+## 22. Frontera, unidad e intervención — cierre parcial
+
+| Elemento | Estado | Condición pendiente |
+|---|---|---|
+| UE=UA=instancia completa | PROPUESTA; NO APROBADA | Auditar mecanismo material de B y confirmar independencia entre instancias |
+| UO longitudinal | PROPUESTA COHERENTE | Confirmar T0–T9 y no contar snapshots como unidades independientes |
+| B_sys | PROPUESTA | Inventario de componentes/dependencias externas y recursos |
+| T_cap/T_acc | DISTINCIÓN CONSERVADA | Coincidencia solo condicional si no hay subunidades diferenciadas |
+| Z→B | PROPUESTA | Definir actor, acción, destinatario, versión y recepción |
+| q_X* | PROPUESTA | Compatibilidad con intervención y soporte por historia |
+| P*_τ2/P*_F | RECONCILIACIÓN PROPUESTA | Criterios basales y clasificación sin variables postratamiento |
+| Interferencia | ESCENARIO PRIMARIO AISLADO + ADVERSARIAL | Verificar no compartir recursos/canales; modelar clúster/exposición en adversarial |
+
+**OPEN-C10-005 permanece ABIERTA.** XAUD-001/002 y AUD-010/011 siguen abiertos. Este bloque no demuestra identificación causal ni autoriza freeze/ejecución.
