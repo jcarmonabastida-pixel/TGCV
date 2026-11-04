@@ -6182,3 +6182,86 @@ Si el outcome se mide a nivel de sistema, debe fijarse una función de agregaci�
 Se requiere decidir para el experimento: frontera B_sys; unidad de asignación y unidad de análisis; si la unidad está dentro de la frontera o es una entidad relacionada; inventario de recursos compartidos y asignados; rivalidad/concurrencia; reglas de reserva y prioridad; dependencias externas; nivel al que se manipula Z/B; nivel de medición de Outcome/Value; estructura de interferencia; y regla de agregación si procede.
 
 **Dictamen:** la accesibilidad se conceptualiza provisionalmente como propiedad relacional del sistema-en-relación-con-una-unidad, bajo frontera y contexto definidos. T_cap es un auxiliar de descomposición, no reemplaza T_acc ni altera el Core. La propuesta no cierra AUD-010/011, XAUD-001…004 ni OPEN-C10-004. No hay freeze, implementación, simulación ni ejecución.
+
+
+---
+
+# 61. Contrato de unidad y frontera para el DGP primario C10-S
+
+**Estado:** propuesta de resolución de diseño; no aprobada ni congelada. No autoriza implementación, simulación ni ejecución.  
+**Dependencias:** §§56, 59–60; DGP §§2, 14–15, 19; OPEN-C10-005; AUD-010/011; XAUD-001…004.  
+**Objetivo:** elegir una configuración primaria parsimoniosa y falsable para que frontera, unidad, intervención y población sean coherentes.
+
+## 61.1. Regla de diseño propuesta
+
+Para el DGP sintético primario aislado se propone definir cada unidad experimental como **una instancia completa e independiente del sistema generativo**, incluyendo dentro de su frontera todos los componentes técnicos, interfaces, autorizaciones, recursos y dependencias que sean necesarios para evaluar la transformación focal τ2.
+
+En esta configuración:
+
+- UE = UA = unidad de análisis causal i.
+- UO = la misma instancia observada repetidamente en T0–T9.
+- Cada instancia recibe una sola asignación Z_i y una versión de política B_i durante el horizonte.
+- No se aleatorizan por separado transformaciones, trayectorias, eventos, mediciones o resultados.
+- Las observaciones longitudinales no incrementan el número de unidades independientes.
+
+Esta es una **decisión candidata para el DGP aislado**, no una regla universal sobre sistemas TGCV ni una afirmación de que toda unidad real sea independiente.
+
+## 61.2. Frontera operativa B_sys
+
+La frontera de cada instancia incluye, cuando resulten pertinentes para τ2:
+
+1. arquitectura y configuración del sistema;
+2. módulo/dependencia focal y sus versiones;
+3. interfaces y canales de invocación;
+4. permisos y autorización basal;
+5. recursos propios o asignados a la instancia;
+6. capacidad disponible durante el horizonte;
+7. información técnica integrada necesaria para realizar la transformación;
+8. mecanismos internos de provisión, integridad, compatibilidad y operación.
+
+Toda dependencia externa necesaria debe quedar en uno de dos estados: incorporada explícitamente a B_sys como componente/servicio gestionado, o declarada como dependencia externa con proveedor, versión, disponibilidad, contrato y posible interferencia. Una dependencia no inventariada impide clasificar la instancia como completamente evaluable; no se asume silenciosamente que está satisfecha.
+
+## 61.3. Relación con T_cap y T_acc
+
+Al tomar la instancia completa como unidad y contener dentro de su frontera los recursos y condiciones pertinentes, la distinción T_cap/T_acc puede colapsar operacionalmente en el escenario primario aislado, siempre que no haya asignaciones internas diferenciadas ni recursos compartidos entre subunidades.
+
+En ese caso se registra T_acc(i,t) para la instancia. T_cap(sys,t) puede coincidir con T_acc(i,t) por construcción, pero no se elimina la distinción conceptual del capítulo 60 ni se generaliza esa igualdad a otros diseños.
+
+Si se introducen usuarios, equipos o subsistemas con diferentes permisos, interfaces o asignaciones, la unidad vuelve a ser multinivel y T_cap/T_acc(i) deben medirse por separado. No se permite cambiar de nivel después de observar Outcome o Value.
+
+## 61.4. Unidad de intervención y papel de Z/B
+
+La asignación Z_i se realiza a nivel de instancia completa. B_i es la política de provisión técnica asignada a esa instancia; se registran por separado política asignada, ofrecida, recibida, intento, éxito técnico y estado final verificado.
+
+Para el contraste aislado propuesto, B debe actuar sobre la provisión técnica focal necesaria para modificar C_dep y, por esa vía, A_f*. No debe cambiar simultáneamente autorización basal, reglas de asignación de recursos, capacidad compartida, información/conocimiento del agente, incentivos, prioridad, coste, latencia, calidad o seguridad de ejecución. Si alguna de estas condiciones cambia, se registra como vía colateral y el contraste pasa a interpretarse como efecto de paquete, salvo diseño factorial u otra estrategia de identificación previamente especificada.
+
+Z no es la intervención material ni una medida de accesibilidad: asigna la política B. W_attempt, S_install, C_dep, A_f*, A_f_obs y D_f siguen siendo variables distintas.
+
+## 61.5. Papel de q_X* y poblaciones
+
+q_X* se interpreta como distribución objetivo de historias basales y condiciones constitutivas dentro de la población elegible; no como una intervención que modifica recursos, autorización u otras condiciones. Para evitar incompatibilidad, las condiciones constitutivas necesarias se fijan y verifican antes de Z. La política B no puede manipular una condición que simultáneamente se haya fijado como invariante basal en q_X*.
+
+P*_τ2 contiene instancias con condiciones constitutivas basales confirmadas, D_f,0=0 y A_f,0*=0, conforme al contrato de §§50–57. P*_F sigue siendo el subconjunto con ausencia respaldada de rutas alternativas funcionalmente substituibles. La unidad, frontera y elegibilidad se fijan antes de determinar q_X* y aleatorizar.
+
+La factibilidad de ambas políticas B_g0/B_g1 debe evaluarse para cada historia basal con masa positiva bajo q_X*. La falta de factibilidad exige restricción ex ante con nuevo estimando o dictamen de no identificación; no se corrige condicionando por cumplimiento postratamiento.
+
+## 61.6. Interferencia y escenario primario
+
+El DGP primario aislado se construye sin recursos, agentes, información, estado, políticas adaptativas ni canales de transmisión compartidos entre instancias. La no interferencia es, por tanto, una propiedad del generador que debe verificarse, no una presunción verbal.
+
+Se conserva un escenario adversarial separado para recursos compartidos, spillovers informacionales, actores comunes o decisiones coordinadas. En ese escenario se debe definir el clúster, la UA clúster o un mapa de exposición G_i(Z_-i), y reformular estimandos, positividad, N efectivo e inferencia. No se mezcla el escenario adversarial con el primario aislado ni se lo usa para afirmar que el ITT individual es válido.
+
+## 61.7. Condiciones para aceptar esta configuración
+
+La propuesta solo podrá aceptarse cuando una revisión del DGP y de los contratos demuestre:
+
+- frontera cerrada y dependencias inventariadas;
+- UE=UA=i y UO longitudinal correctamente implementadas en la especificación;
+- ausencia de recursos/canales compartidos entre instancias en el escenario primario;
+- acción material de B descrita y diferenciada de Z/W/C_dep/A_f;
+- invariancia de vías colaterales o reclasificación explícita como paquete;
+- q_X* compatible con la intervención y soporte de ambas políticas;
+- poblaciones P*_τ2 y P*_F clasificadas exclusivamente con información basal;
+- escenario adversarial de interferencia separado y con regla de no identificación cuando corresponda.
+
+**Dictamen:** se propone UE=UA=instancia sintética completa e independiente para el DGP primario aislado; la frontera contiene los componentes y recursos necesarios; Z asigna B, que manipula la provisión técnica focal. La propuesta no cierra OPEN-C10-005, AUD-010/011 ni XAUD-001/002. No modifica el Core, los estimandos de C10-D1 ni autoriza ejecución.
