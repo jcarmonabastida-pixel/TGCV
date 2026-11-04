@@ -547,3 +547,21 @@ No se cierra calibración empírica ni selección primaria.
 | SNAP-07 | Reach/Value | Relación con Reach_possible, S5-F/S5-C y Value | ABIERTO | Reconciliación de estimandos, no circularidad y composición. |
 
 **Resultado del subbloque:** inconsistencia detectada y propuesta de resolución persistida; no declarar AUD-004 cerrado. Las pruebas SNAP-01…15 son contratos documentales, no ejecutados.
+
+
+## 11. Seguimiento del Bloque 3 — identidad, versionado y matching (2026-11-04)
+
+| ID | Punto | Hallazgo/propuesta | Estado | Criterio de cierre |
+|---|---|---|---|---|
+| ID-01 | Identidad semántica vs versión técnica | TID/SID/RID/EID separados | PROPUESTA | Taxonomía mínima acordada con catálogo/Core |
+| ID-02 | Continuidad de identidad | Firma semántica y tolerancias por clase | ABIERTO | Contratos, umbrales y adjudicación aprobados |
+| ID-03 | IDs y provenance | IDs opacos persistentes; hash no define identidad | PROPUESTA | Esquema serializable, reglas alta/retirada/alias |
+| ID-04 | Matching entre snapshots | Exact ID, alias, versión, candidato, adjudicación | ABIERTO | Regla reproducible, cegamiento y evaluación de error |
+| ID-05 | Split/merge | Mapping 1:N/N:1 no equivale a 1:1 | ABIERTO | Reglas composicionales y mapping validado |
+| ID-06 | Granularidad/frontera | Diff requiere G/b/catálogo compatibles | PARCIAL | Fijar G/frontera por DGP y fixtures de no comparabilidad |
+| ID-07 | Eventos diff | ADD/REMOVE/MODIFY/VERSION/SPLIT/MERGE/REWIRE/STATE/UNKNOWN | PROPUESTA | Oráculos y reglas de evento por U/R/C/X |
+| ID-08 | Identidad focal τ2 | Matching requisito de D_f* | PROPUESTA | Congelar identidad/versión focal ex ante y probar cambios |
+| ID-09 | Error de matching | Falsos matches, misses, unresolved y diferencial | ABIERTO | Validación independiente y sensibilidad |
+| ID-10 | Efectos sobre estimandos | No confundir continuidad semántica con equivalencia causal | ABIERTO | Crosswalk con IV, q, Reach, Value y C10-D1 |
+
+**Dictamen:** contrato redactado, pero no operacionalizado para el DGP. No cerrar AUD-004 ni XSYNC-138-03/06. Los contratos ID-01…15 son documentales, no pruebas ejecutadas.
