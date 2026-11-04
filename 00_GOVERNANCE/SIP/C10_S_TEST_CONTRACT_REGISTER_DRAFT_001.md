@@ -786,3 +786,29 @@ Estos contratos son documentales. No se han creado fixtures ejecutables ni se ha
 | TEMP-09 | R0/S4R-A sin cobertura funcional completa | Alternativa=?; no clasificar como exclusiva |
 
 Contratos documentales; no ejecutados.
+
+
+## 38. Contratos de predicados por paso y rama
+
+| ID | Caso | Aserción requerida |
+|---|---|---|
+| PM-01 | F1 accesible, F2 inaccesible | Ruta focal=0 |
+| PM-02 | F1=1, APP(F2,S2)=? | Ruta=? salvo otro necesario=0 |
+| PM-03 | REL(F1,F2)=0 | Ruta focal=0 |
+| PM-04 | APP(F2,S2)=0 | Ruta focal=0 |
+| PM-05 | Truth estructural=1, cobertura epistémica incompleta | Truth no cambia; Reach_obs puede ser ? |
+| PM-06 | Ruta A confirmada, F desconocida | Reach=1 por A confirmada |
+| PM-07 | Alternativa no hallada, cobertura incompleta | Alternativa=? |
+| PM-08 | Mejora de cobertura descubre ruta preexistente | ΔE_T, no ADD estructural |
+| PM-09 | Recursos compartidos no modelados | No asumir no interferencia |
+| PM-10 | Ramas F/A contrafactuales | No sumar consumos simultáneos |
+| PM-11 | Autorización caduca | Aplicar regla explícita o ? |
+| PM-12 | Condición state-dependent | Reevaluar por estado de entrada |
+| PM-13 | T_acc cambia sin regla | No inventar transición |
+| PM-14 | B modifica alternativa en R2 | Registrar vía colateral |
+| PM-15 | Intento con dependencia fallida | No inferir accesibilidad |
+| PM-16 | Sin política de reserva | RES=? |
+| PM-17 | Outcome/Value filtra adjudicación | No usarlos para Reach |
+| PM-18 | Enumeración truncada | No declarar cobertura semántica exhaustiva |
+
+Contratos documentales; no ejecutados.
