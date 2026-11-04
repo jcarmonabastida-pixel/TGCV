@@ -226,3 +226,12 @@ La jerarquía candidata es: `theta_A(q)` pregunta general C10-D1; `ITT_Z` estima
 La fuente 165–183 recomienda D1 como principal condicionado (p0=.20, p1=.80 postasignación, C_dep,base=0) y D2 como contraste (p0=0, p1=.80). Esta propuesta sustituye, para la especificación candidata, la recomendación anterior de usar exclusivamente p0=0 como DGP limpio y relegar p0>0 a contaminación. La formulación anterior se conserva como antecedente histórico, no se elimina.
 
 Poblaciones, q*/g, mecanismo de provisión, exclusión, unidad/interferencia, F*, Value, parámetros estadísticos, fixtures y revisión independiente siguen pendientes. No se acepta automáticamente ninguna DEC ni se cierra AUD/XAUD/XSYNC.
+
+
+## 13. Política B: mecanismo candidato recuperado y calibración
+
+La fuente integrada §52.2 recupera los siguientes valores de intento/provisión: D1 (w_0=.25,w_1=1); D2 (w_0=0,w_1=1). Las probabilidades finales de acceso son respectivamente .20/.80 y 0/.80.
+
+Una factorización candidata que satisface ambas tablas es (P(C_{dep}=1\mid W_{attempt}=1)=.80), común a los brazos, con (C_{dep}=0) cuando no hay intento. Así, (P(C_{dep}=1\mid Z=z)=P(W_{attempt}=1\mid Z=z)\times.80). Este cálculo supone que el éxito conjunto verificado condicional al intento es .80; no implica independencia de los componentes técnicos. El valor .80 es derivado para reconciliar intento y estado final, no un parámetro textual recuperado ni una observación.
+
+La propuesta de política B, sus cuatro versiones D1/D2, invariantes, registros de asignación/recepción/cumplimiento y decisiones pendientes se desarrolla en el capítulo 54 del documento maestro. OPEN-C10-001 continúa abierta hasta decisión científica sobre el comparador D1 y aprobación de actor, recepción, versiones y verificación.
