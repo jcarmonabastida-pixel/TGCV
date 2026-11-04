@@ -263,3 +263,21 @@ D1 es el escenario principal **condicionado**: (C_{dep,base}=0), (P(C_{dep,post}
 (W_{attempt}), (S_{install}), componentes técnicos y (C_{dep,post}) permanecen separados. La distribución conjunta de intento y éxito debe calibrarse a las probabilidades finales verificadas; no se presume independencia. (A_{f,post}^*) solo tiene la misma probabilidad que (C_{dep,post}) si todas las demás condiciones focales están satisfechas. (D_f=I(A_{f,base}^*=0\land A_{f,post}^*=1)) es la apertura basal→post y primera etapa focal.
 
 (q^*) se define sobre condiciones/historias comunes no manipuladas por (g); (g_0/g_1) implementan provisión focal. (C_c) delimita factibilidad. El soporte de ambas políticas se verifica por estrato/historia. Esta armonización es propuesta documental, no aceptación ni autorización de ejecución.
+
+
+## 13. Propuesta operativa de B y calibración D1/D2
+
+La especificación de §30.2 y la tabla recuperada en el capítulo 52 del maestro separan probabilidad de intento y estado final. Se propone la siguiente factorización candidata:
+
+| Escenario | P(W_attempt=1 dado Z=0) | P(W_attempt=1 dado Z=1) | P(C_dep=1 dado Z=0) | P(C_dep=1 dado Z=1) |
+|---|---:|---:|---:|---:|
+| D1 | .25 | 1.00 | .20 | .80 |
+| D2 | 0 | 1.00 | 0 | .80 |
+
+En ambos escenarios, (P(C_{dep}=1\mid W_{attempt}=1)=.80). Este .80 es una factorización algebraicamente coherente para obtener los estados finales recuperados, no un parámetro literal de la fuente ni un resultado empírico. (C_{dep}) sigue siendo la conjunción de instalación, integridad, compatibilidad y operatividad. No se presupone independencia de esos componentes; se especifica su probabilidad conjunta de éxito.
+
+La política B es la regla de provisión del mismo módulo, procedimiento, recursos y verificación; la diferencia focal es la probabilidad de iniciar el intento. B_g0 en D1 representa provisión ordinaria de baja frecuencia, no ausencia. B_g0 en D2 representa ausencia de provisión focal. B_g1 es provisión programada a todas las unidades elegibles. El actor que inicia el intento, la recepción, las reglas de elegibilidad técnica, el versionado, crossover y los códigos de fallo siguen pendientes.
+
+La asignación Z, B asignada/ofrecida/recibida, W_attempt, éxito técnico, componentes verificados, C_dep, A_f*, A_f,obs y D_f se registran por separado. El ITT conserva Z. No se infiere accesibilidad desde asignación ni desde intento.
+
+Esta propuesta concreta OPEN-C10-001, pero no la cierra ni autoriza implementación. La aceptación requiere justificación de D1 como comparador, definición de versiones/actor/recepción, protocolo de verificación y revisión de vías colaterales.
