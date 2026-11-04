@@ -286,3 +286,34 @@ Los gates requieren evidencia, no volumen documental. Aprobar el diseño no auto
 
 No dimensionar definitivamente antes de cerrar DGP/estimandos. No implementar antes de cerrar truth/observación y medición. No ejecutar fixtures o simulaciones sin autorización.
 
+
+
+## 19. Decisiones pendientes
+
+| ID | Decisión | Estado |
+|---|---|---|
+| DEC-PLAN-01 | Estimando primario y jerarquía TE/ITT/θ_A(q)/LATE_f | ABIERTO |
+| DEC-PLAN-02 | Intervención B/Z, q, g0/g1 y C_auth | ABIERTO |
+| DEC-PLAN-03 | Comparador primario D1/D2 y escenario secundario | ABIERTO |
+| DEC-PLAN-04 | Población P*_τ2/P*_F y unidad | PARCIAL |
+| DEC-PLAN-05 | F*, H/G/C0, alternativas y cobertura | ABIERTO |
+| DEC-PLAN-06 | Distribución conjunta de 16 patrones | ABIERTO |
+| DEC-PLAN-07 | s y calibración | ABIERTO |
+| DEC-PLAN-08 | Rutas alternativas y múltiples intentos | ABIERTO |
+| DEC-PLAN-09 | Regla Value, beneficiario y horizonte | ABIERTO |
+| DEC-PLAN-10 | δ/ε | ABIERTO |
+| DEC-PLAN-11 | N/réplicas/precisión | PROVISIONAL |
+| DEC-PLAN-12 | Rama base PR #116 e integración | ABIERTO |
+| DEC-PLAN-13 | Revisión independiente | PENDIENTE |
+| DEC-PLAN-14 | Autorización de implementación/ejecución | NO AUTORIZADA |
+
+## 20. Contrato de trazabilidad requerido
+
+Cada estimando debe enlazar con población, intervención, política/régimen, outcome, horizonte y supuestos. Cada variable debe enlazar con ecuación generadora, rol causal, tiempo, distribución, regla de observación y prueba. Cada resultado debe enlazar con fuente, hash/commit, evaluador, fecha y dictamen. La matriz completa aún debe construirse desde el diccionario DGP.
+
+## 21. Criterios para operacionalizar
+
+Para autorizar implementación: G1–G4 aprobados; P0 cerrados; decisiones primarias aceptadas; separación truth/observación; escenarios adversariales; validez/fiabilidad especificadas; plan estadístico justificado; C10-D1/S4-R reconciliados; revisión independiente documentada; autorización explícita de implementación.
+
+Para autorizar ejecución, además: G5 aprobado; código, datos sintéticos, configuración y entorno identificados por versión/hash; preflight íntegro; pruebas críticas y replay superados; auditoría técnica/científica; autorización expresa de ejecución separada.
+
