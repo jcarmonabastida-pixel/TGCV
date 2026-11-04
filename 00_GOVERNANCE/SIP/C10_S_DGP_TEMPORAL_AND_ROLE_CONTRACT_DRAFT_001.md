@@ -567,3 +567,19 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
 8. Registrar eventos ADD/REMOVE/MODIFY_STRUCTURAL/VERSION_CHANGE/SPLIT/MERGE/REWIRE/STATE_CHANGE/UNKNOWN/OUT_OF_SCOPE.
 9. Si la identidad focal τ2 no corresponde entre t0 y t1, D_f* no es una transición de la misma transformación y no se calcula como tal.
 10. No cierra AUD-004 ni XSYNC-138-03/06; faltan catálogo, esquema, tolerancias, reglas por clase, fixtures, oráculos y revisión independiente.
+
+
+## 32. Reach_H, trayectorias y propagación 1/0/? (crosswalk C10-S §73)
+
+**Estado:** propuesta; contrato detallado en C10_S_REACHABILITY_AND_TRAJECTORY_PROPAGATION_CONTRACT_DRAFT_001.md.
+
+1. Reach_H* es alcanzabilidad estructural verdadera; Reach_H,obs es clasificación observada. No usar Reach_possible sin declarar truth/obs.
+2. Una ruta exige T_acc*, App* desde estado intermedio, relaciones de composición, recursos/autorización/condiciones, temporalidad y snapshots/versiones compatibles.
+3. App* condiciona recorrido desde un estado, pero no redefine accesibilidad T_acc*.
+4. Conjunción por ruta: 1 si todos los necesarios 1; 0 si alguno necesario 0; ? si no hay 0 y alguno ?.
+5. Disyunción de rutas: una ruta confirmada basta para Reach=1; Reach=0 exige cobertura exhaustiva y todas las rutas refutadas; en otro caso ?.
+6. Truncamiento, catálogo incompleto, cobertura basal insuficiente o mapping no resuelto no permiten Reach=0.
+7. H, G, ciclos, duraciones, recursos, concurrencia y terminación se fijan ex ante.
+8. Selección, ejecución, Outcome y Value son downstream; no definen Reach.
+9. No confundir ΔT_acc≠0 con ΔReach_H≠0.
+10. AUD-005/007 permanecen abiertos hasta catálogo DGP, fixtures/oráculos, evaluación de cobertura/error y revisión independiente.
