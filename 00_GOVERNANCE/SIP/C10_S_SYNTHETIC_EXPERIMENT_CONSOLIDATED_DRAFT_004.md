@@ -5979,3 +5979,87 @@ Falla del contrato si: se copia Z o B a A_f; se copia C_dep directamente a A_f s
 Permanecen abiertos: clasificación causal/ontológica de cada condición del DGP; definición completa de identidad y versión de τ2; ficha técnica de C_dep y de cada predicado adicional; definición y medición de App_f; estándares de evidencia E1–E4; reglas de adjudicación y concordancia; diseño/tamaño de validación; error diferencial por brazo/versión; cobertura del universo sintético; catálogo y relaciones completos; reglas de correspondencia entre snapshots; umbrales/tolerancias; y revisión independiente.
 
 **Dictamen:** el contrato separa las capas y fija invariantes de medición suficientes para evitar sustituciones conceptuales, pero todavía no cierra la operacionalización empírica ni la validez de constructo. AUD-004, XAUD-003/004 y OPEN-C10-004 continúan abiertas. No hay freeze, implementación, simulación ni ejecución.
+
+
+---
+
+# 59. Matriz de clasificación causal y operacional de condiciones de τ2
+
+**Estado:** propuesta de clasificación para auditoría; no aprobada, no congelada, no implementada ni ejecutada.  
+**Dependencias:** §§30.1–30.4, 31.3–31.8, 53, 58; contrato DGP §§2–8 y 17; XAUD-003/004; AUD-011.  
+**Objetivo:** sustituir el término residual C_other y clasificar cada condición por función causal y momento, sin inferir su papel por el nombre.
+
+## 59.1. Regla de clasificación
+
+Una condición pertenece a la accesibilidad focal si, en el nivel de análisis declarado, su ausencia impide que τ2 esté disponible/realizable para la unidad bajo el sistema, configuración, recursos y política vigentes, con independencia de que la transformación sea aplicable desde el estado actual o finalmente ejecutada.
+
+Una condición pertenece a la aplicabilidad si determina si τ2 puede ejecutarse desde un estado S0 concreto una vez que τ2 está disponible. Una condición de ejecución/calidad determina cómo se realiza o qué resultado produce después de iniciar una trayectoria válida. Una condición de provisión describe el proceso por el que se intenta modificar el sistema; no es por sí misma el estado de accesibilidad resultante.
+
+La clasificación es relacional y dependiente del nivel: una misma variable nominal puede tener componentes distintos. Debe especificarse unidad, objeto, horizonte, versión, momento y contrafactual. No se permite usar una etiqueta única para ocultar esta heterogeneidad.
+
+## 59.2. Matriz candidata
+
+| Predicado/variable | Clasificación candidata | Regla operacional de inclusión/exclusión | Papel en S4-R aislado |
+|---|---|---|---|
+| C_install | Componente de dependencia/provisión técnica; constitutivo de C_dep una vez verificado | Instalación presente en la unidad/objeto/versión focal. Intento o registro de instalación no bastan | Parte de C_dep; puede variar por política |
+| C_integrity | Componente técnico constitutivo de C_dep | Integridad del componente y artefactos verificada frente a criterio/versionado declarado | Parte de C_dep; puede variar por política |
+| C_compat | Componente técnico constitutivo de C_dep | Compatibilidad con versión, interfaces y objeto designado; incompatibilidad impide realizabilidad focal | Parte de C_dep; puede variar por política |
+| C_oper | Componente técnico constitutivo de C_dep | Prueba operativa mínima de disponibilidad del mecanismo; no mide éxito/calidad de una ejecución de τ2 | Parte de C_dep; puede variar por política |
+| C_auth_base | Condición constitutiva basal de acceso/autorización | Permiso vigente para que la unidad pueda invocar τ2. No equivale a conocimiento ni a selección | Fijada y satisfecha antes de Z; no manipulada por B_g |
+| C_resource | Condición de acceso si denota disponibilidad asignada y persistente de recursos necesarios para poner τ2 a disposición; condición de aplicabilidad/ejecución si denota insumo consumido por una instancia concreta | Descomponer stock/disponibilidad ex ante de recurso de la demanda/consumo requerido por ejecución. Registrar quién controla, cuándo y para qué unidad | Disponibilidad basal suficiente, constante y satisfecha. Consumo/calidad de ejecución se mide aparte |
+| C_capacity | Condición de acceso si denota capacidad instalada/slots disponibles para ofrecer τ2; aplicabilidad si denota margen operativo requerido por S0 o carga concurrente concreta | Separar capacidad instalada de disponibilidad efectiva por unidad/tiempo y de precondiciones del estado | Capacidad basal fijada y suficiente; saturación/colas no deben cambiar diferencialmente por B_g |
+| C_info | Condición de acceso solo si denota información técnica incorporada al sistema que hace posible invocar/realizar τ2; conocimiento, aviso, formación o conciencia del agente son mecanismos de conocimiento/consideración posteriores | Separar especificación/configuración técnica del conocimiento del usuario/agente y de mensajes/formación inducidos por la política | Especificación técnica fija; información/conocimiento del agente y comunicaciones invariantes, medidos aparte |
+| C_domain | Condición constitutiva de acceso si denota que τ2 está definida y soportada para el dominio/tipo de objeto; aplicabilidad si denota que el estado S0 satisface precondiciones particulares | Separar compatibilidad del tipo de sistema/objeto del estado concreto sobre el que se aplicará τ2 | Dominio objetivo fijado; precondiciones de S0 se evalúan como App_f |
+| C_other | No admisible como predicado residual | Descomponer en predicados nombrados, verificables, temporales y asignados a una sola función causal primaria; cualquier interacción se documenta explícitamente | Prohibido en fórmula final sin inventario, definición y pruebas |
+| Estado S0 / precondiciones de τ1 | Aplicabilidad | Determina si τ2 puede seguir válidamente a la trayectoria/estado actual; no elimina la disponibilidad estructural de τ2 | App_f, no A_f* |
+| Conocimiento/consideración K | Mediador o evento posterior de conocimiento/consideración | Requiere que el agente conozca o considere τ2; no constituye accesibilidad estructural salvo que el diseño defina explícitamente acceso informacional como parte del constructo y lo justifique | Medir después de snapshot A_f/T_acc; no incluir en A_f* en el DGP focal actual |
+| Selección/inicio/ejecución/fin | Eventos posteriores distintos | Seleccionar, iniciar o ejecutar no prueba por sí solo accesibilidad; ejecución requiere aplicabilidad y trayectoria válida | No incluir en A_f*; conservar como eventos fechados |
+
+Esta tabla no declara que la clasificación nominal sea universal. En especial, C_resource, C_capacity y C_info requieren descomposición semántica antes de asignarles un único indicador.
+
+## 59.3. Ecuación candidata depurada
+
+La fórmula de §30.1 contiene siete condiciones, pero C_other no está definido y varias condiciones pueden mezclar acceso con aplicabilidad. Se propone reemplazar su interpretación —no borrar la formulación histórica— por:
+
+A_f*(i,t;τ2) = I[ID_τ2 y versión válidos ∧ C_dep*(i,t)=1 ∧ C_auth_base(i,t)=1 ∧ R_access*(i,t)=1 ∧ D_support*(i,t)=1],
+
+donde:
+
+- R_access* contiene únicamente disponibilidad ex ante de recursos necesarios para poner τ2 a disposición, no consumo o suficiencia de recursos de una ejecución concreta;
+- D_support* representa compatibilidad del dominio/tipo de objeto con la definición de τ2, no precondiciones particulares del estado S0;
+- capacidad instalada, información técnica y demás predicados solo entran en R_access*/D_support* si su definición satisface el criterio de §59.1 y no duplican C_dep;
+- cada predicado debe tener definición, fuente, versión, ámbito, ventana temporal, estado verdadero y clasificación observada.
+
+La ecuación es una propuesta para el DGP S4-R, no una definición universal de accesibilidad TGCV. Si R_access* o D_support* no añaden condiciones distintas y justificadas, se eliminan en vez de mantener factores redundantes. C_other queda retirado como comodín en la especificación futura, sujeto a auditoría de sus usos históricos.
+
+La aplicabilidad se define aparte:
+
+App_f*(i,t) = I[Pre_τ2(S0_i,t, historia_i,t)=1].
+
+No se presupone que App_f* sea consecuencia de A_f*. La ejecución válida requiere además trayectoria habilitada, selección/inicio según régimen y cumplimiento de las reglas de ejecución; no se incorpora a ninguna de las dos definiciones.
+
+## 59.4. Consecuencia para la intervención y los estimandos
+
+En la modalidad preferida A de §16.4 y S4-R aislado, la política B_g modifica solo el proceso técnico que puede cambiar C_dep. C_auth_base, recursos, capacidad, información, dominio, interfaz, incentivos, conocimiento y calidad condicional de ejecución permanecen invariantes y satisfechos en la población primaria, salvo que se abra un escenario adversarial específico.
+
+Si Z/B modifica C_auth, recursos, capacidad, mensajes/conocimiento, prioridades, trato, coste, latencia, seguridad o calidad de ejecución, la intervención deja de ser la manipulación técnica aislada descrita. El ITT sigue siendo efecto de la política/paquete. La atribución a A_f* requiere factorialización, control experimental independiente o supuestos identificadores defendibles; no se obtiene por ajustar estadísticamente variables postratamiento.
+
+Las condiciones constitutivas basales delimitan factibilidad y elegibilidad; no se intervienen simultáneamente mediante q* y g. La condición manipulada por g queda fuera del régimen común q*. Cualquier unidad sin soporte para las políticas comparadas se excluye ex ante con regla explícita o se declara fuera del dominio de identificación.
+
+## 59.5. Invariantes y pruebas de clasificación
+
+- Accesible y no aplicable: A_f*=1, App_f*=0 es un estado permitido.
+- Aplicable pero inaccesible: App_f*=1 no convierte A_f* en 1; la ejecución válida no puede proceder.
+- Instalado pero incompatible: C_install=1 y C_compat=0 implican C_dep=0.
+- Autorización ausente: si C_auth es constitutiva y no satisfecha, A_f*=0 aunque C_dep=1.
+- Recurso basal suficiente vs recurso consumido: no colapsar disponibilidad ex ante y uso durante ejecución.
+- Capacidad instalada vs saturación puntual: no colapsar stock de capacidad con disponibilidad bajo carga concreta.
+- Información técnica vs conocimiento del agente: el segundo no se usa para redefinir A_f* en el DGP actual.
+- Dominio compatible vs precondición de S0: C_domain puede ser 1 mientras App_f*=0.
+- C_other no puede quedar sin definición ni recibir variables heterogéneas para cerrar artificialmente la conjunción.
+
+## 59.6. Pendientes que impiden el cierre
+
+Siguen abiertos: inventario exacto de componentes de C_resource, C_capacity y C_info; definición y fuente de C_auth_base; semántica de C_domain; inventario que sustituye C_other; si capacidad/recursos forman parte de la definición del sistema o de la unidad de análisis; ventanas de vigencia y reglas de actualización; interacción entre condiciones; evidencia y adjudicación; y reconciliación de toda fórmula histórica que use C_auth como condición basal frente a las modalidades de intervención sobre autorización.
+
+**Dictamen:** se dispone de una matriz de clasificación provisional y una ecuación depurada candidata para S4-R. No se cierra AUD-011, XAUD-003/004, AUD-001/002 ni OPEN-C10-004. DEC-C10-019 queda como propuesta. No hay freeze, implementación, simulación ni ejecución.
