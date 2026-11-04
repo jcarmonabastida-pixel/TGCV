@@ -453,3 +453,35 @@ Estado: contratos documentales; no implementados ni ejecutados.
 | BACT-18 | Revisión independiente | Compatibilidad con C10-D1/S4-R y auditoría de invariantes revisadas antes de freeze |
 
 Estado: contratos documentales, no implementados ni ejecutados.
+
+
+## 24. Contratos de medición focal y ΔT_acc
+
+| ID | Prueba | Criterio de aceptación propuesto |
+|---|---|---|
+| MEAS-01 | C_dep no suficiente | C_dep*=1 con AUTH/RES/REL/COND/BLOCK fallido no produce A_f*=1 |
+| MEAS-02 | Ruta alternativa de acceso | C_dep*=0 no fuerza A_f*=0 si otra ruta válida invoca la misma τ2 |
+| MEAS-03 | Predicado focal | A_f* requiere identidad, relaciones, condiciones, autorización, recursos, dependencias, no bloqueo y validez |
+| MEAS-04 | Acceso vs aplicabilidad | A_f*=1 y App_f=0 es representable |
+| MEAS-05 | Acceso vs ejecución | No ejecución no implica A_f*=0; ejecución no sustituye medición |
+| MEAS-06 | Canal de verdad | Analizador no recibe A_f*, C_dep*, D_f*, T_acc* ni ΔT_acc* |
+| MEAS-07 | Cegamiento | Clasificación ciega a Z/B, selección, ejecución, Outcome y Value |
+| MEAS-08 | Tres estados | A_f,obs conserva 1/0/?; indeterminado no es ausencia |
+| MEAS-09 | Apertura focal | D_f*=1 si y solo si A_f,base*=0 y A_f,post*=1 |
+| MEAS-10 | Elegibilidad basal | Baseline indeterminado no se clasifica como elegible confirmada |
+| MEAS-11 | Primera etapa | ITT_Df* separado de ITT_Df,obs y de tasa C_dep* |
+| MEAS-12 | Validación | Sensibilidad/especificidad puntual solo con validación adecuada; de otro modo límites/sensibilidad |
+| MEAS-13 | Error diferencial | Detecta Se/Sp por Z, versión y tiempo; propaga incertidumbre |
+| MEAS-14 | Snapshot | U/R/C/Validity/State versionados y trazables |
+| MEAS-15 | Compatibilidad | Snapshots no comparables producen indeterminado o correspondencia explícita |
+| MEAS-16 | Diff estructurado | ΔU/ΔR/ΔC/ΔValidity/ΔState no se reduce a D_f* |
+| MEAS-17 | Proyección focal | h_f(ΔT_acc*)=D_f* solo bajo contrato focal y snapshots compatibles |
+| MEAS-18 | No circularidad | Outcome/Value/selección/ejecución no definen accesibilidad |
+| MEAS-19 | Alternativas | Substituibilidad F* no equivale a accesibilidad de τ2 |
+| MEAS-20 | Vías colaterales | Cambio de AUTH/RES/capacidad/conocimiento/alternativas activa paquete/efecto conjunto |
+| MEAS-21 | Dependencias externas | Dependencias no inventariadas impiden PASS de validez/cobertura |
+| MEAS-22 | Verdad vs observado | Error del analizador se evalúa contra canal de verdad aislado, sin filtración |
+| MEAS-23 | Estados indeterminados | Conflicto/cobertura insuficiente se propaga como ? |
+| MEAS-24 | Evidencia temporal | Cada predicado y cambio conserva timestamp, ventana y procedencia |
+
+Estado: contratos documentales; no implementados ni ejecutados.
