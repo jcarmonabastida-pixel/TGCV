@@ -513,3 +513,25 @@ Estado: contratos documentales; no implementados ni ejecutados.
 | TEMP-20 | Autorización alternativa | C_auth no se mezcla con provisión primaria sin decisión explícita |
 
 Estado: contratos documentales; no implementados ni ejecutados.
+
+
+## 26. Contratos de política B y calibración D1/D2
+
+| ID | Prueba | Criterio de aceptación propuesto |
+|---|---|---|
+| BPOL-01 | Separación de escenarios | D1 y D2 están identificados como contrastes distintos, no mezclados |
+| BPOL-02 | Intento vs estado final | W_attempt no se confunde con C_dep verificado |
+| BPOL-03 | D1 control | P(W_attempt=1|Z=0)=.25 y P(C_dep=1|Z=0)=.20 bajo factorización candidata |
+| BPOL-04 | D1 tratamiento | P(W_attempt=1|Z=1)=1 y P(C_dep=1|Z=1)=.80 |
+| BPOL-05 | D2 control | P(W_attempt=1|Z=0)=0 y P(C_dep=1|Z=0)=0 |
+| BPOL-06 | D2 tratamiento | P(W_attempt=1|Z=1)=1 y P(C_dep=1|Z=1)=.80 |
+| BPOL-07 | Éxito condicional | .80 identificado como propuesta algebraica condicional, no dato empírico |
+| BPOL-08 | Componentes conjuntos | No se presume independencia entre instalación, integridad, compatibilidad y operatividad |
+| BPOL-09 | Primera etapa focal | C_dep no sustituye a A_f*/D_f*; accesibilidad se deriva de todos los predicados |
+| BPOL-10 | Control D1 legítimo | La justificación del comparador ordinario se documenta antes de aprobar D1 |
+| BPOL-11 | Semántica §21/§62 | B0 sin provisión se limita al escenario D2 |
+| BPOL-12 | Integridad ITT | Z conserva asignación; crossover, fallo e intento no redefinen el brazo |
+| BPOL-13 | Vías colaterales | Se detectan cambios no focales y efecto de paquete |
+| BPOL-14 | No ejecución anticipada | Sin aprobación explícita no hay freeze, implementación ni simulación |
+
+Estado: contratos documentales; no implementados ni ejecutados.
