@@ -551,3 +551,19 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
 7. Truth permanece oculta al analizador; observación T_acc,obs/ΔT_acc,obs conserva 1/0/? y se valida después.
 8. Esta regla propone superseder la formulación de §63.7 que incluía ΔValidity en la tupla causal; no borra el texto histórico.
 9. No cierra AUD-001/004/005/007, XAUD-003/004/006 ni XSYNC-138-03/06. No autoriza freeze ni ejecución.
+
+
+## 31. Identidad, versión y matching de snapshots
+
+**Estado:** propuesta; crosswalk del maestro §72 y de `C10_S_IDENTITY_VERSION_AND_SNAPSHOT_MATCHING_CONTRACT_DRAFT_001.md`.
+
+1. Separar TID (identidad semántica), SID (especificación), RID (realización técnica) y EID (evento/instancia).
+2. Mantener IDs persistentes y opacos; versión, hash, estado, fecha y brazo son atributos/provenance, no identidad.
+3. Evaluar continuidad mediante firma semántica pre/post, operación nuclear, invariantes, restricciones y semántica de fallo.
+4. Un cambio de RID/SID no implica TID nueva; cambio material del contrato puede requerir nueva TID; mapping no resoluble produce ?.
+5. Matching por ID exacto, alias documentado, mapping de versión, candidato semántico y adjudicación ciega; sin auto-fusión fuzzy.
+6. Split/merge requiere mapping explícito, composición y granularidad G común; no equivalencia automática.
+7. Diff exige frontera, unidad/contexto, catálogo, G y mapping compatibles. Sin ello, diff parcial o DIFF_NOT_COMPARABLE.
+8. Registrar eventos ADD/REMOVE/MODIFY_STRUCTURAL/VERSION_CHANGE/SPLIT/MERGE/REWIRE/STATE_CHANGE/UNKNOWN/OUT_OF_SCOPE.
+9. Si la identidad focal τ2 no corresponde entre t0 y t1, D_f* no es una transición de la misma transformación y no se calcula como tal.
+10. No cierra AUD-004 ni XSYNC-138-03/06; faltan catálogo, esquema, tolerancias, reglas por clase, fixtures, oráculos y revisión independiente.
