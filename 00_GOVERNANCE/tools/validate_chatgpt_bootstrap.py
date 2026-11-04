@@ -18,6 +18,7 @@ STATUS = ROOT / "STATUS.md"
 RMA_POINTER = ROOT / "00_GOVERNANCE" / "rma" / "TGCV_RMA_current.md"
 MATRIX_POINTER = ROOT / "00_GOVERNANCE" / "EVIDENCE_TO_CLAIM_MATRIX_CURRENT_POINTER.md"
 TRACE = ROOT / "00_GOVERNANCE" / "rma" / "TGCV_RMA_traceability_current.csv"
+CURRENT_STATE_VALIDATOR = ROOT / "00_GOVERNANCE" / "tools" / "validate_current_state.py"
 
 EXPECTED_BOOTSTRAP_SCHEMA = "TGCV-CHATGPT-BOOTSTRAP-1"
 
@@ -43,6 +44,7 @@ def main() -> int:
         rma_pointer = read(RMA_POINTER)
         matrix_pointer = read(MATRIX_POINTER)
         read(TRACE)
+        read(CURRENT_STATE_VALIDATOR)
     except Exception as exc:
         print("TGCV CHATGPT BOOTSTRAP VALIDATOR")
         print("RESULT=BLOCKED")
@@ -51,6 +53,14 @@ def main() -> int:
 
     if EXPECTED_BOOTSTRAP_SCHEMA not in bootstrap:
         errors.append("BOOTSTRAP_SCHEMA_INVALID")
+
+    # IGRT has not been established as a canonical TGCV artifact. The bootstrap
+    # must explicitly treat it as non-required rather than blocking on a missing
+    # pointer or inventing a status. Future adoption requires a governance decision.
+    if "NOT_ESTABLISHED / NOT_REQUIRED_BY_CURRENT_CANONICAL_SCHEMA" not in bootstrap:
+        errors.append("IGRT_STATUS_NOT_EXPLICITLY_NON_REQUIRED")
+    if re.search(r"→\\s*IGRT status", bootstrap):
+        errors.append("BOOTSTRAP_STILL_REQUIRES_IGRT_STATUS")
 
     versions = canonical.get("current_versions", {})
     rma_v = versions.get("rma")
@@ -89,14 +99,19 @@ def main() -> int:
     expected_paths = {
         "rma": "00_GOVERNANCE/rma/TGCV_RMA_current.md",
         "claim_matrix": "00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md",
+        "claim_matrix_pointer": "00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT_POINTER.md",
         "rma_traceability": "00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv",
+        "governance_operating_principles": "00_GOVERNANCE/GOVERNANCE_OPERATING_PRINCIPLES_v0.1.md",
         "status": "STATUS.md",
+        "changelog": "CHANGELOG.md",
+        "scientific_registry": "02_EXTERNAL_SCIENCE/SCIENTIFIC_ASSET_REGISTRY_v0.1.md",
+        "validator": "00_GOVERNANCE/tools/validate_current_state.py",
     }
     for key, expected in expected_paths.items():
         if pointers.get(key) != expected:
             errors.append(f"CANONICAL_POINTER_INVALID:{key}")
 
-    for path in (RMA_POINTER, TRACE, STATUS, BOOTSTRAP):
+    for path in (RMA_POINTER, MATRIX_POINTER, TRACE, STATUS, BOOTSTRAP, CURRENT_STATE_VALIDATOR):
         if not path.exists():
             errors.append("MISSING_FILE:" + path.relative_to(ROOT).as_posix())
 
