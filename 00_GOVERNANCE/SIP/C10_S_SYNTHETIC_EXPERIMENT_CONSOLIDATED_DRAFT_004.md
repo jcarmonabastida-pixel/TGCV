@@ -6265,3 +6265,132 @@ La propuesta solo podrá aceptarse cuando una revisión del DGP y de los contrat
 - escenario adversarial de interferencia separado y con regla de no identificación cuando corresponda.
 
 **Dictamen:** se propone UE=UA=instancia sintética completa e independiente para el DGP primario aislado; la frontera contiene los componentes y recursos necesarios; Z asigna B, que manipula la provisión técnica focal. La propuesta no cierra OPEN-C10-005, AUD-010/011 ni XAUD-001/002. No modifica el Core, los estimandos de C10-D1 ni autoriza ejecución.
+
+
+---
+
+# 62. Contrato de intervención material B: provisión técnica focal de τ2
+
+**Estado:** especificación candidata del tratamiento para el DGP sintético; no aprobada, no congelada, no implementada ni ejecutada.  
+**Dependencias:** §§17–20, 56, 59–61; DGP §§14–20; C10-D1/S4-R; XSYNC-138-01/04; XAUD-001/002; OPEN-C10-005.  
+**Pregunta:** ¿qué acción concreta asigna Z y por qué mecanismo se espera que cambie la accesibilidad focal?
+
+## 62.1. Decisión de diseño propuesta
+
+Para el DGP primario aislado se propone que B sea una **política protocolizada de provisión técnica de la dependencia focal τ2** a una instancia sintética completa. La acción material no es “hacer accesible” como etiqueta, ni asignar Z, ni ordenar una ejecución de τ2. Consiste en desplegar/configurar la dependencia técnica identificada, habilitar su interfaz de invocación dentro de la frontera y verificar su integridad, compatibilidad y disponibilidad operativa.
+
+Esta definición concreta la clase de acción, pero no inventa un producto, módulo, tecnología real, duración, coste o umbral numérico. La identidad/versiones y los parámetros del artefacto sintético deberán quedar fijados en la ficha del DGP antes de cualquier implementación.
+
+## 62.2. Contraste de políticas
+
+| Elemento | B0 — control | B1 — provisión focal |
+|---|---|---|
+| Acción | Mantener la configuración basal; no desplegar ni habilitar la dependencia focal durante H | Aplicar el protocolo versionado de despliegue/configuración de la dependencia τ2 |
+| Interfaz | Mantener interfaz basal | Habilitar el canal técnico específico de invocación de τ2 |
+| Verificación | Verificar el estado basal con el mismo esquema de medición | Verificar instalación, integridad, compatibilidad y operación |
+| τ2 | Permanece no provista/no accesible basalmente si se cumplen criterios de elegibilidad | Puede quedar técnicamente disponible si todos los predicados focales se satisfacen |
+| Ejecución de τ2 | No se ordena | Tampoco se ordena como parte de B1 |
+| Momento | Procedimiento de control en la ventana asignada; sin provisión focal hasta terminar H | Una intervención protocolizada dentro de la ventana asignada, con tiempos registrados |
+
+B0 no debe retirar una capacidad basal existente ni empeorar deliberadamente la condición de control. B1 no garantiza éxito: una provisión fallida o parcial es non-compliance/fracaso de provisión, no motivo para reclasificar la asignación. El ITT conserva Z como asignación original.
+
+## 62.3. Actor, destinatario, objeto y versión
+
+Cada instancia recibe un registro de intervención con, como mínimo:
+
+- actor/rol ejecutor del protocolo (agente de provisión sintético);
+- destinatario (ID de instancia i);
+- objeto focal (ID canónico de τ2 y dependencia técnica asociada);
+- versión de protocolo B, artefacto, configuración e interfaz;
+- fecha/orden de asignación, inicio, pasos, finalización y verificación;
+- estado de cada paso: no iniciado, intentado, completado, fallido o indeterminado;
+- desviaciones, reintentos, rollback y contaminación entre brazos;
+- evidencia técnica independiente, snapshot pre y post y hash de configuración.
+
+El actor es un rol del DGP, no una persona ni proveedor real. El protocolo no se adapta a Outcome, Value, trayectoria, selección ni respuesta observada.
+
+## 62.4. Cadena causal y estados que no deben confundirse
+
+La secuencia de referencia queda:
+
+Z_i → política B_i asignada → provisión recibida/intentada → estado técnico de dependencia → C_dep* → A_f* → D_f* → trayectoria/Outcome/Value.
+
+Se conservan separadas estas variables:
+
+- Z_i: asignación aleatoria.
+- B_i: política asignada (B0/B1).
+- B_received: protocolo efectivamente recibido.
+- W_attempt: intento de provisión.
+- S_install: estado de instalación/configuración.
+- C_dep*: verdad del contrato técnico compuesto.
+- A_f*: verdad de accesibilidad focal.
+- A_f_obs: medición observada de accesibilidad.
+- D_f*: transición basal-post de inaccesible a accesible.
+- App_f: aplicabilidad desde S0.
+- Exec_f: ejecución efectiva de τ2.
+
+B1 puede asignarse y no recibirse; recibirse y no completarse; completarse parcialmente; o completarse sin satisfacer todos los predicados de acceso. Ninguna de estas situaciones se reetiqueta como cambio de Z.
+
+## 62.5. Contenido técnico de C_dep*
+
+Para la dependencia focal, se mantiene la composición candidata:
+
+C_dep* = C_install* ∧ C_integrity* ∧ C_compat* ∧ C_oper*.
+
+- C_install*: componente/versión focal desplegado y registrado dentro de B_sys.
+- C_integrity*: artefacto/configuración corresponde a la identidad y hash autorizados, sin alteración no permitida.
+- C_compat*: interfaces, dependencias y contrato de τ2 son compatibles con la instancia y versión objetivo.
+- C_oper*: canal de invocación está disponible y responde conforme al contrato técnico en la ventana definida, sin exigir que se ejecute τ2 sobre un caso funcional.
+
+Cada componente requiere evidencia, tiempo y regla de adjudicación propios. La simple declaración de instalación, el intento, un test de salud superficial o la ejecución exitosa de τ2 no sustituyen el conjunto de verificaciones. Umbrales, fixtures y estándares de evidencia siguen abiertos.
+
+## 62.6. Aislamiento de vías colaterales
+
+Para interpretar B1 como provisión focal y no como paquete, el DGP debe mantener invariantes, entre otras, las siguientes dimensiones:
+
+- autorización basal no focal y reglas de permisos;
+- recursos no focales, presupuesto, capacidad compartida y prioridades;
+- información/conocimiento/formación del agente o unidad;
+- incentivos, selección, instrucciones de uso y atención diferencial;
+- coste, latencia, calidad, seguridad y fiabilidad de rutas no focales;
+- estado inicial, demanda, composición de la unidad y condiciones constitutivas;
+- medición, adjudicación y observación de Outcome/Value.
+
+Si el despliegue cambia necesariamente una de estas dimensiones, se documenta el cambio y el tratamiento se denomina **paquete de provisión**, no manipulación aislada de accesibilidad. El ITT de Z sigue siendo interpretable como efecto de asignar ese paquete, sujeto a aleatorización, consistencia y no interferencia; no identifica por sí mismo el efecto mediado por A_f*.
+
+No se puede imponer por definición que no existan efectos directos B→Outcome/Value. Deben representarse en el DGP adversarial y tratarse como amenaza a exclusión/atribución.
+
+## 62.7. Fracaso, desviación y contaminación
+
+- B1 asignado pero no iniciado: incumplimiento de provisión; conservar en B1 por ITT.
+- Intentado pero fallido: registrar el componente fallido; no inferir C_dep*=1.
+- Parcial: evaluar cada componente; C_dep* solo vale 1 si se cumplen todos los predicados necesarios.
+- B0 contaminado con provisión focal: registrar cruce; mantener asignación original y evaluar consistencia/contaminación.
+- Rollback: registrar estado temporal y snapshot; no borrar que existió provisión.
+- Evidencia indeterminada: C_dep_obs y A_f_obs conservan “?”; no recodificar como 0.
+- Desviación del protocolo: versión y motivo; no redefinir B retrospectivamente.
+
+## 62.8. Qué identifica y qué no identifica esta intervención
+
+Con asignación aleatoria válida y ausencia de interferencia, el contraste primario identifica el ITT de asignar B1 frente a B0 en la población preespecificada. El primer estadio sobre D_f* mide si la política abre efectivamente τ2.
+
+No basta con observar un ITT sobre Outcome/Value y una primera etapa positiva para afirmar mediación causal o efecto causal específico de accesibilidad. Esa atribución requiere los supuestos y análisis de mediación/IV ya abiertos en C10-D1/S4-R, incluida exclusión, versiones, monotonicidad, relevancia y ausencia de vías alternativas.
+
+El estimando de política no debe rebautizarse como efecto de A_f*. Si B modifica otras condiciones, la conclusión se limita al paquete asignado.
+
+## 62.9. Condiciones de aceptación antes de congelar B
+
+La ficha de intervención debe completar y auditar, antes de congelar el DGP:
+
+1. identidad canónica y versión sintética de τ2/dependencia;
+2. artefacto y configuración exactos de B1 y estado basal exacto de B0;
+3. actor/rol, destinatario, pasos y ventana temporal;
+4. evidencia y criterio técnico para cada componente C_dep*;
+5. prueba de que B0 no retira capacidad basal ni recibe contaminación focal;
+6. inventario de variables invariantes y vías colaterales plausibles;
+7. reglas para fallo, parcialidad, rollback, desviación y datos indeterminados;
+8. correspondencia de B con q_X*, P*_τ2, P*_F y la unidad del §61;
+9. escenario adversarial con vía directa B→Outcome/Value o B→alternativa funcional;
+10. revisión independiente de la especificación y de su compatibilidad con C10-D1/S4-R.
+
+**Dictamen:** B se concreta provisionalmente como política protocolizada de provisión técnica focal de τ2, comparada con mantenimiento de configuración basal. Es una especificación de tratamiento para el DGP sintético, no una intervención física ya implementada ni evidencia de que la accesibilidad haya cambiado. OPEN-C10-005, XAUD-001/002, AUD-001/002/011 y los supuestos de atribución permanecen abiertos. No hay freeze, implementación, simulación ni ejecución.
