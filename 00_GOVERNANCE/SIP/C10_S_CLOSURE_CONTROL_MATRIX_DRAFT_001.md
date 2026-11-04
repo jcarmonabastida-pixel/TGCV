@@ -368,3 +368,18 @@ La distinción T_cap/T_acc(i) es auxiliar y no cambia el Core. No se aprueba tod
 | Interferencia | ESCENARIO PRIMARIO AISLADO + ADVERSARIAL | Verificar no compartir recursos/canales; modelar clúster/exposición en adversarial |
 
 **OPEN-C10-005 permanece ABIERTA.** XAUD-001/002 y AUD-010/011 siguen abiertos. Este bloque no demuestra identificación causal ni autoriza freeze/ejecución.
+
+
+## 23. Intervención material B — cierre parcial
+
+| Elemento | Estado | Pendiente |
+|---|---|---|
+| B0/B1 | ESPECIFICACIÓN CANDIDATA | Identidad/versiones y parámetros concretos del artefacto sintético |
+| Actor/destinatario | ROL SINTÉTICO PROPUESTO | Definir protocolo ejecutable solo tras autorización |
+| C_dep* | CONJUNTO DE CUATRO COMPONENTES | Evidencias, fixtures, umbrales y adjudicación |
+| B→A_f* | MECANISMO PROPUESTO | Validar que todos los predicados focal se satisfacen y no hay vía directa |
+| Vías colaterales | INVARIANTES ENUMERADAS | Auditoría adversarial; si cambian, reclasificar paquete |
+| Fallo/contaminación | REGLAS DOCUMENTALES | Definir tasas/escenarios del DGP sin inventar valores |
+| ITT | ASIGNACIÓN DE POLÍTICA | No confundir con efecto mediado/efecto de A_f* |
+
+OPEN-C10-005 y XAUD-001/002 permanecen ABIERTOS. La especificación no es un tratamiento congelado ni una prueba de exclusión.
