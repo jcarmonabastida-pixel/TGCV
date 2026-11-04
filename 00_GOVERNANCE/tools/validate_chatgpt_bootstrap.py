@@ -59,7 +59,7 @@ def main() -> int:
     # pointer or inventing a status. Future adoption requires a governance decision.
     if "NOT_ESTABLISHED / NOT_REQUIRED_BY_CURRENT_CANONICAL_SCHEMA" not in bootstrap:
         errors.append("IGRT_STATUS_NOT_EXPLICITLY_NON_REQUIRED")
-    if re.search(r"→\\s*IGRT status", bootstrap):
+    if re.search(r"→\s*IGRT status", bootstrap):
         errors.append("BOOTSTRAP_STILL_REQUIRES_IGRT_STATUS")
 
     versions = canonical.get("current_versions", {})
@@ -110,6 +110,8 @@ def main() -> int:
     for key, expected in expected_paths.items():
         if pointers.get(key) != expected:
             errors.append(f"CANONICAL_POINTER_INVALID:{key}")
+        if not (ROOT / expected).is_file():
+            errors.append(f"CANONICAL_POINTER_TARGET_MISSING:{key}")
 
     for path in (RMA_POINTER, MATRIX_POINTER, TRACE, STATUS, BOOTSTRAP, CURRENT_STATE_VALIDATOR):
         if not path.exists():
