@@ -383,3 +383,19 @@ La distinción T_cap/T_acc(i) es auxiliar y no cambia el Core. No se aprueba tod
 | ITT | ASIGNACIÓN DE POLÍTICA | No confundir con efecto mediado/efecto de A_f* |
 
 OPEN-C10-005 y XAUD-001/002 permanecen ABIERTOS. La especificación no es un tratamiento congelado ni una prueba de exclusión.
+
+
+## 24. Medición focal y ΔT_acc — cierre parcial
+
+| Elemento | Estado | Pendiente |
+|---|---|---|
+| C_dep* | MECANISMO TÉCNICO | No es suficiente para declarar accesibilidad |
+| A_f* | PREDICADO ESTRUCTURAL PROPUESTO | Fijar predicados por clase, fuentes y adjudicación |
+| A_f,obs | MEDICIÓN SEPARADA | Validación, error diferencial, límites y sensibilidad |
+| D_f* | TRANSICIÓN BASAL-POST | Baseline confirmado y ventanas temporales |
+| ΔT_acc* | OBJETO ESTRUCTURADO | Catálogo, G, frontera, versionado y comparabilidad |
+| h_f | PROYECCIÓN FOCAL | No confundir con el diff completo |
+| App/Know/Select/Exec | SEPARADOS | Verificar en DGP y diccionario longitudinal |
+| Verdad vs analizador | CANALES SEPARADOS | Pruebas de no filtración y validación |
+
+**XSYNC-138-03 y AUD-001 permanecen abiertos formalmente.** AUD-004/005/007 y OPEN-C10-005 no quedan cerrados. Es una reconciliación de diseño propuesta, no evidencia de medición válida ni autorización de ejecución.
