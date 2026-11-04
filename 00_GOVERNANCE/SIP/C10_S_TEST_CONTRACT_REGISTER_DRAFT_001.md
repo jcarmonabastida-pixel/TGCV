@@ -746,3 +746,26 @@ Contratos documentales. No hay fixtures ejecutables, oráculos implementados ni 
 | REACH-20 | ΔT_acc fuera de rutas a s | Reach(s) puede no cambiar | Igualar espacio y alcanzabilidad |
 
 Contratos documentales; sin fixtures implementados ni pruebas ejecutadas.
+
+
+## 36. Contratos documentales del inventario finito y cobertura
+
+| ID | Fixture / verdad DGP | Aserción exigida | Fallo que debe detectar |
+|---|---|---|---|
+| INV-01 | F1 abierta; F2 accesible/aplicable/componible | Reach(SF)=1 solo si se cumple toda la secuencia | Inferir Reach por apertura focal |
+| INV-02 | F1 abierta; F2=0 | Ruta focal bloqueada; Reach depende de alternativas | Omitir continuación |
+| INV-03 | F1=0; A1→A2=1 | Reach(SF)=1; apertura funcional no exclusiva | Confundir τ2 y función |
+| INV-04 | F1→F2=1; A1→A2=? | Reach=1, alternativa sigue indeterminada | Exigir conocer todas las rutas para afirmar existencia |
+| INV-05 | No hay ruta confirmada; catálogo alternativo incompleto | Reach=? | Declarar Reach=0 por ausencia de hallazgo |
+| INV-06 | Universo, ocho coberturas completos; todas rutas=0 | Reach=0 | No reconocer refutación exhaustiva |
+| INV-07 | B altera A1/A2 en R2 | Etiquetar vía colateral/efecto paquete; no asumir exclusión | Interpretación como IV focal exclusiva |
+| INV-08 | B intenta provisión; F1 no se abre en R3 | D_f*=0; conservar ITT de asignación | Imputar accesibilidad desde Z/W_attempt |
+| INV-09 | H=3 búsqueda termina por límite computacional antes de cubrir H | Reach=? / truncado | Truncamiento como imposibilidad |
+| INV-10 | A1→A2 consume recurso compartido no duplicable con otra ruta | No declarar simultaneidad incompatible | Doble asignación de recurso |
+| INV-11 | Snapshot cambia dentro de H | Evaluar por tramos con snapshots inmutables | Sobrescritura temporal |
+| INV-12 | F* se evalúa sin O/V y con adjudicación ciega | GOAL_F independiente de Outcome/Value | Circularidad |
+| INV-13 | R0 sin A1/A2, cobertura funcional incompleta | Alternativa=?; no pertenencia confirmada a P*_F | Ausencia inferida por no encontrar |
+| INV-14 | Identidad/mapping de τ2=? | D_f* no comparable/indeterminado | Apertura focal espuria |
+| INV-15 | Cambia solo evidencia de una ruta basal | ΔE_T, no ADD estructural | Descubrimiento como transformación nueva |
+
+Estos contratos son documentales. No se han creado fixtures ejecutables ni se han ejecutado pruebas. Requieren oráculos, entradas/salidas, cobertura, truth oculta y revisión independiente.
