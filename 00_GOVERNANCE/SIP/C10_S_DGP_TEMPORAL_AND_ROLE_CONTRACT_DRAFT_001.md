@@ -292,3 +292,16 @@ El orden es: fijar dominio/unidad/versión; medir X, H0 y Cc; verificar elegibil
 En cada historia basal con masa positiva bajo qX deben ser implementables ambas políticas B_g0/B_g1 y existir probabilidad positiva de asignación a ambos brazos. Esto no implica que cada unidad pueda alcanzar ambos estados de D_f ni que cumpla la provisión. Si una política no es factible, se restringe la población antes de Z con justificación y nuevo estimando, o se declara no identificación; no hay extrapolación silenciosa.
 
 El DGP primario excluye L_m post-asignación como confusor común, según §44.4. Si es indispensable, requiere q_L* secuencial con historia, momento, regla implementable, soporte e identificación longitudinal; no se sustituye por ajuste marginal. La distribución concreta P*, estratos, pesos, unidad/interferencia, inventario y umbrales completos de Cc y ventanas permanecen abiertos. Propuesta documental; no freeze ni ejecución.
+
+
+## 15. Unidad experimental, asignación e interferencia
+
+La UE es la instancia sintética completa cuyo estado transformacional, trayectorias, Outcome y Value se generan. La UA es la entidad aleatorizada a B. La UO son las mediciones longitudinales T0–T9; observaciones repetidas no son unidades independientes.
+
+**Configuración primaria candidata:** UE=UA=una instancia sintética independiente, una asignación Z y una versión B durante el horizonte. Solo es admisible si no comparte recursos, agentes, información, infraestructura, estado ni canales de transmisión con otras instancias.
+
+Si hay recursos/actores compartidos, definir clúster. Se permite asignación individual dentro de clúster solo con ausencia de spillover justificada o exposición modelada; alternativamente asignar por clúster y ajustar estimando e inferencia a la UA clúster. El N efectivo depende de clústeres, no del número bruto de UE.
+
+Bajo no interferencia, potenciales V_i(z_i), D_f,i(z_i). Si hay interferencia, fijar mapa de exposición G_i(Z_-i) antes de generar resultados y usar potenciales V_i(z_i,g_i), D_f,i(z_i,g_i). Si el mapa es incompleto/desconocido, no interpretar el ITT individual ni Wald individual como efecto causal focal. Distinguir correlación basal por clúster de spillover causado por tratamiento.
+
+Registrar UE, UA, UO, clúster, marco/estratos de aleatorización, probabilidades, versión B, algoritmo/semilla/hash, relaciones de recursos y exposición. La positividad se evalúa en la unidad realmente aleatorizada. El LATE individual requiere no interferencia; con interferencia hace falta estimando IV de exposición/clúster y supuestos adicionales. OPEN-C10-005 sigue abierta hasta auditar recursos compartidos y aprobar unidad.
