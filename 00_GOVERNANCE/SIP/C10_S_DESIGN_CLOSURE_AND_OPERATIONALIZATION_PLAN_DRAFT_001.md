@@ -126,3 +126,69 @@ PR #117 propone corregir 00_GOVERNANCE/README.md; en el corte estaba abierto y D
 
 §69: fixtures de choque común, fallos simples, bottleneck y fallos emparejados. FS_D1=.75s y FS_D2=s bajo una oportunidad y supuestos explícitos. No son simulaciones.
 
+
+
+# III. Plan de trabajo: bloques 1–4
+
+## 9. Bloque 1 — Arquitectura causal y estimandos (P0)
+
+**Objetivo:** fijar qué efecto se estima y qué intervención lo identifica.
+
+Distinguir TE (efecto total), ITT_Z (efecto de asignar una política), θ_A(q) (contribución atribuible a accesibilidad bajo régimen común q, solo si se define e identifica) y LATE_f/Wald (efecto local bajo supuestos instrumentales; no intercambiable con ITT ni necesariamente comparable entre D1/D2).
+
+Tareas:
+1. Resolver XAUD-001: relación q, g0/g1 y C_auth.
+2. Resolver XAUD-002: intervención que induce accesibilidad sin ordenar ejecución ni ocultar vías colaterales.
+3. Separar Z, política B, intento W_attempt, recepción/cumplimiento, C_dep, A_f*, A_f,obs y D_f*.
+4. Clasificar condiciones por tiempo causal: basal, constitutiva, mediadora, postratamiento u observacional.
+5. Definir consistencia, versiones, soporte, interferencia, población y horizonte por estimando.
+6. Alinear con C10-D1 sin sustituir la pregunta por el ITT S4-R.
+
+**Entregable:** contrato causal integrado, DAG temporal y diccionario.  
+**Cierre:** cada estimando tiene población, política, régimen, outcome, horizonte, supuestos y límites; ningún efecto de paquete se atribuye indebidamente a A.
+
+## 10. Bloque 2 — Población, elegibilidad y D1/D2 (P0)
+
+Tareas:
+1. Definir P*_τ2 y P*_F, elegibilidad basal y relación de subconjunto.
+2. Cerrar F*, H, G, C0, universo/cobertura de alternativas y adjudicación.
+3. Distinguir alternativa ausente respaldada (0), presente (1) e indeterminada (?); “no encontrado” no significa ausencia.
+4. Especificar D1/D2: intento, recepción, éxito, reintentos, recursos, versiones y vías colaterales.
+5. Resolver precedencia D2 conversacional vs D1 histórico condicionado.
+6. Aclarar p0=.20 frente a C_dep,base=0 mediante variable/tiempo, no intuición.
+7. Definir unidad experimental, asignación, análisis, resultado e interferencia.
+
+**Entregable:** contrato de población, elegibilidad, comparadores y versiones.  
+**Cierre:** población y contrafactual de cada brazo inequívocos.
+
+## 11. Bloque 3 — Accesibilidad, alternativas y ΔT_acc (P0)
+
+Cadena a preservar, sin implicación automática:
+C_install/C_integrity/C_compat/C_oper → C_dep → A_f* → D_f* → ΔT_acc*.
+
+Tareas:
+1. Predicados de identidad/versiones, relaciones/canales, precondiciones, autorización, recursos, dependencias, bloqueos y evidencia.
+2. Separar capacidad del sistema T_cap y accesibilidad sistema-unidad T_acc.
+3. Inventariar rutas técnicas/funcionales alternativas y cobertura para declarar ausencia.
+4. Formalizar snapshots, altas/bajas, cambios relacionales, condiciones, validez y contexto.
+5. Separar A_f*, A_f,obs, aplicabilidad, conocimiento, consideración, selección, inicio y ejecución.
+6. Definir fallos, indeterminación, verificación desconocida y ausencia de evidencia.
+7. Especificar errores de clasificación y diferencialidad por brazo.
+
+**Entregable:** contrato de medición transformacional y matriz predicado-evidencia.  
+**Cierre:** evaluador independiente clasifica sin consultar Outcome/Value y puede abstenerse con ?.
+
+## 12. Bloque 4 — DGP integrado y ecuaciones (P0)
+
+Tareas:
+1. Completar DGP basal, intervención, accesibilidad, alternativas, Reach, trayectorias, conocimiento, selección, ejecución, Outcome y Value.
+2. Completar S5-F y separar truth estructural de identificabilidad observacional en S5-C.
+3. Integrar S4-O/S4-R con estimandos y mecanismos.
+4. Especificar interacciones, vías directas/colaterales, versiones y cambios de condiciones.
+5. Modelar intentos múltiples y dependencia secuencial; no usar independencia ni 1−(1−s)^n sin contrato.
+6. Completar distribuciones con marginales fijas, dependencia variable, heterogeneidad y alternativas.
+7. Impedir que el analizador reciba truth o parámetros generadores.
+
+**Entregable:** DGP integrado y contrato de generación/reporte.  
+**Cierre:** toda variable tiene regla generadora, rol causal, tiempo, distribución y observación.
+
