@@ -215,3 +215,14 @@ No se declara cerrado AUD-001/002, XAUD-001/002, S4-R ni XSYNC por la creación 
 No se han cambiado los estimandos de C10-D1 ni se ha promovido una propuesta a decisión aceptada. No se ha ejecutado código, simulación, estimación o experimento. No se autoriza implementación, preregistro, selección de caso real, adquisición/procesamiento de datos ni cambio de Core, RMA, Evidence→Claim Matrix, STATUS o claims.
 
 El resultado útil de esta revisión es haber separado la pregunta científica C10, el ITT del diseño S4-R y el efecto local focal, y haber identificado una forma explícita de resolver la ambigüedad `p0=.20` / `C_dep,base=0` sin ocultar contaminación ni cambiar retrospectivamente el DGP.
+
+
+## 12. Resultado de auditoría integral: precedencia y propuesta armonizada
+
+La auditoría integral se registra en `C10_S_INTEGRATED_RECONCILIATION_AUDIT_DRAFT_001.md` y el punto de integración se incorpora en el capítulo 53 del documento maestro.
+
+La jerarquía candidata es: `theta_A(q)` pregunta general C10-D1; `ITT_Z` estimando primario de asignación S4-R; `LATE_f` atribución local secundaria condicionada a IV; `theta_Af(q*)` contraste poblacional focal solo bajo aislamiento y régimen común; `psi_policy` efecto de paquete cuando existen vías colaterales. S4-R no identifica por sí solo el efecto general de todo `Delta T_acc`.
+
+La fuente 165–183 recomienda D1 como principal condicionado (p0=.20, p1=.80 postasignación, C_dep,base=0) y D2 como contraste (p0=0, p1=.80). Esta propuesta sustituye, para la especificación candidata, la recomendación anterior de usar exclusivamente p0=0 como DGP limpio y relegar p0>0 a contaminación. La formulación anterior se conserva como antecedente histórico, no se elimina.
+
+Poblaciones, q*/g, mecanismo de provisión, exclusión, unidad/interferencia, F*, Value, parámetros estadísticos, fixtures y revisión independiente siguen pendientes. No se acepta automáticamente ninguna DEC ni se cierra AUD/XAUD/XSYNC.
