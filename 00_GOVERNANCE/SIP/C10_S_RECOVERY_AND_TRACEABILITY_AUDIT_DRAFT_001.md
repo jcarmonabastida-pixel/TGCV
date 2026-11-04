@@ -205,3 +205,12 @@ Se ha creado `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md` en PR #116. El registro
 El registro aclara la interpretación temporal del DGP principal: `p0=.20` y `p1=.80` son probabilidades finales post-asignación objetivo de B_g0/B_g1; `C_dep,base=0` es basal. Se exige distinguir intento, éxito de instalación y estado final verificado. Si las probabilidades se refieren solo a intentos, la verdad analítica debe recalcularse.
 
 Este artefacto es una especificación documental. No contiene implementación ni evidencia de ejecución. Las tolerancias, N, réplicas, δ/ε, fixtures exactos y códigos finales de fallo siguen pendientes de justificación y revisión independiente.
+
+
+## 15. Búsqueda ampliada de fuentes 165–183 y estado del PR (2026-11-04)
+
+La búsqueda de fuentes se amplió a las ramas disponibles del repositorio, PR abiertos/cerrados localizados por C10, y búsquedas de commits con referencias distintivas `P182`, `P183`, `C10-S 165/183` y términos asociados. No aparecieron artefactos originales adicionales de las secciones conversacionales 165–183 ni contratos originales P182/P183. Esta búsqueda no cubre exportaciones privadas de ChatGPT, archivos locales no subidos ni fuentes externas al repositorio.
+
+El texto XSYNC sí quedó localizado y documentado en la sección 12 y en el tracker específico; no debe seguir figurando como laguna de recuperación. La laguna 165–183 permanece separada y abierta.
+
+Verificación final de este corte: PR #116 abierto y Draft, diez archivos modificados, 68 commits; sin comentarios, reviews ni hilos de revisión registrados. Head observado en la consulta: `d444825916d3a34e0c518db3542017cb1258bfd8`. Estos datos son una instantánea y deben consultarse en la ficha del PR para cualquier corte posterior.
