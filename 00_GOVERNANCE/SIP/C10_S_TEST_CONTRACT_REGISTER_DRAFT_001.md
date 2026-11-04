@@ -557,3 +557,31 @@ Estado: contratos documentales; no implementados ni ejecutados.
 | CMP-14 | No ejecución anticipada | Sin aceptación y gates no hay freeze, implementación, simulación ni ejecución |
 
 Estado: contratos documentales; no implementados ni ejecutados.
+
+
+## 28. Contratos de primera etapa técnica y accesibilidad
+
+| ID | Prueba | Criterio de aceptación propuesto |
+|---|---|---|
+| ACC-01 | Conjunción C_dep | C_dep=1 solo si C_install, C_integrity, C_compat y C_oper son todos 1 |
+| ACC-02 | Fallo parcial | Cualquier componente respaldado como 0 produce C_dep,obs=0; no se compensa por otros componentes |
+| ACC-03 | Indeterminación técnica | Sin fallo respaldado y con uno o más componentes desconocidos, C_dep,obs=? |
+| ACC-04 | Intento separado | W_attempt=0 no se codifica como fallo de componente ni como éxito |
+| ACC-05 | Operación ≠ ejecución | C_oper=1 no requiere ni implica selección/ejecución de τ2 |
+| ACC-06 | Sin independencia implícita | El DGP no multiplica marginales ni presume independencia de los cuatro componentes |
+| ACC-07 | Significado de .80 | .80 se interpreta como probabilidad conjunta condicional de C_dep tras intento elegible |
+| ACC-08 | Sensibilidad de .80 | Escenarios alternativos de s y dependencia se preespecifican antes de freeze |
+| ACC-09 | Accesibilidad completa | A_f* deriva de ID/REL/COND/AUTH/RES/DEP/¬BLOCK |
+| ACC-10 | VALID epistémico | VALID/cobertura no altera truth estructural; afecta clasificación observada |
+| ACC-11 | Ruta única | C_dep=DEP_f solo en fixture de ruta única inventariada |
+| ACC-12 | Ruta alternativa | C_dep=0 con otra ruta válida no fuerza A_f*=0 |
+| ACC-13 | Aplicabilidad separada | A_f*=1 y App_f=0 sigue siendo representable |
+| ACC-14 | Primera etapa por variable | FS_Cdep, FS_Af y FS_Df se informan separadamente por D1/D2 |
+| ACC-15 | Equivalencia condicional | .60/.80 solo se transfieren a A_f/D_f si elegibilidad basal y demás predicados están satisfechos e invariantes |
+| ACC-16 | Snapshot incompatible | No se deriva D_f de snapshots/versiones no comparables |
+| ACC-17 | No filtración | Truth de componentes, C_dep*, A_f* y D_f* permanece oculta al analizador |
+| ACC-18 | Error diferencial | Se evalúa error por componente, brazo, escenario y tiempo; si no identificado, límites/sensibilidad |
+| ACC-19 | Fallo/rollback/crossover | Se conserva evento, asignación Z y versión recibida sin reclasificar ITT |
+| ACC-20 | No circularidad | Outcome/Value/selección/ejecución no definen A_f* ni predicados técnicos |
+
+Estado: contratos propuestos; fixtures no implementados ni ejecutados.
