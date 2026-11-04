@@ -11,11 +11,12 @@ When a new ChatGPT session starts with **`Carga TGCV`**:
 1. Read this file from `main`.
 2. Resolve and read `00_GOVERNANCE/CANONICAL_STATE.json`.
 3. Resolve and read `STATUS.md`.
-4. Resolve the current RMA, Evidence→Claim Matrix, RMA traceability and IGRT status through the canonical pointers.
-5. Run or otherwise apply the read-only bootstrap consistency validator `00_GOVERNANCE/tools/validate_chatgpt_bootstrap.py` when local execution is available.
-6. Check that the declared versions and pointers are mutually consistent.
-7. If they are consistent, report the current state and continue from **Next operation** without reconstructing historical context.
-8. If they are inconsistent, report `BOOTSTRAP_BLOCKED_CANONICAL_INCONSISTENCY`, identify the exact conflicting artifacts/versions, and do not silently choose one.
+4. Resolve the current RMA, Evidence→Claim Matrix, RMA traceability and governance operating principles through the pointers in `CANONICAL_STATE.json`; also resolve `STATUS.md`, the scientific asset registry and the canonical validators.
+5. Run or otherwise apply the read-only validators `00_GOVERNANCE/tools/validate_current_state.py` and `00_GOVERNANCE/tools/validate_chatgpt_bootstrap.py` when local execution is available.
+6. Check that the declared versions, stable aliases, versioned artifacts and pointers are mutually consistent.
+7. IGRT (Integrated Governance Readiness Tracker) is **not an established canonical TGCV artifact or required governance layer**. No IGRT pointer, status file or validation gate is expected. Its absence is not a bootstrap failure. If IGRT is proposed in the future, it must first be established through an explicit governance decision and added to the canonical schema and validators; do not infer or fabricate an IGRT state.
+8. If the actual canonical pointers and versions are consistent, report the current state and continue from **Next operation** without reconstructing historical context.
+9. If they are inconsistent, report `BOOTSTRAP_BLOCKED_CANONICAL_INCONSISTENCY`, identify the exact conflicting artifacts/versions, and do not silently choose one.
 
 ## Canonical repository
 
@@ -25,7 +26,7 @@ When a new ChatGPT session starts with **`Carga TGCV`**:
 
 ## Authoritative state graph
 
-`CANONICAL_STATE.json → STATUS.md → current RMA → current Evidence→Claim Matrix → RMA traceability → IGRT status → validator`
+`CANONICAL_STATE.json → STATUS.md → current RMA pointer/master → current Evidence→Claim Matrix pointer/artifact → RMA traceability → current-state validator → bootstrap validator`
 
 This bootstrap is an index and session-entry protocol. It does **not** replace any authoritative governance artifact and must not be treated as an independent scientific source of truth.
 
@@ -50,6 +51,7 @@ The bootstrap must obtain the live values below from the authoritative artifacts
 
 This file is intentionally small. It should remain stable and operational. Dynamic state should be generated or verified from the authoritative artifacts rather than manually duplicated here.
 
-**Bootstrap validator:** `00_GOVERNANCE/tools/validate_chatgpt_bootstrap.py` (read-only; fails closed; does not modify governance).
+**Validators:** `00_GOVERNANCE/tools/validate_current_state.py` and `00_GOVERNANCE/tools/validate_chatgpt_bootstrap.py` (read-only; do not modify governance).  
+**IGRT status:** `NOT_ESTABLISHED / NOT_REQUIRED_BY_CURRENT_CANONICAL_SCHEMA`.
 
 **Bootstrap command:** `Carga TGCV`
