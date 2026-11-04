@@ -772,3 +772,16 @@ La propuesta ilustra F1=conversión mediante adaptador focal; F2=aplicación y v
 La recomendación no es selección ni aprobación. Pendiente decisión de microdominio, definición de propiedades/tolerancias F*, identidades/versiones, independencia de la ruta alternativa, recursos, permisos, ventanas, fallos, cobertura, E1–E4, D1/D2 y revisión independiente. No se cierran AUD-004/005/007/010/011 ni OPEN-C10-001/003/005/007. No hay datos, implementación, fixtures ejecutables, simulación ni ejecución.
 
 Siguiente bloque: someter la Opción A a una auditoría de consistencia contra las ecuaciones causales/estimandos, la definición de A_f*, el comparador D1/D2 y los escenarios R0–R3; identificar si el adaptador focal realmente constituye una intervención sobre la accesibilidad o si introduce vías adicionales. Solo después recomendar aceptación o reformulación.
+
+
+# XVII. Ejecución del plan — auditoría causal de Opción A (2026-11-05)
+
+Se creó C10_S_MICRODOMAIN_CAUSAL_COMPATIBILITY_AUDIT_DRAFT_001.md y se propagó a maestro §79, reconciliación causal §10, contrato DGP §38, DEC-C10-040, matriz de cierre §18 y registro de pruebas §41.
+
+Dictamen: migración de configuración software es potencialmente compatible, pero la propuesta actual no demuestra una intervención autónoma sobre accesibilidad ni identifica θ_A(q). Z/B puede identificar el ITT de la política de provisión, no el efecto mediado por A_f*. Se corrige la mezcla de F1: B provisiona/habilita adaptador; F1 es la conversión ejecutada con él disponible; C_dep y A_f* son variables diferentes; F2 aplica/valida en destino. Deben separarse App, ejecución y F*.
+
+Se identifican vías colaterales potenciales por permisos, recursos, estado/configuración, seguridad, coste, latencia, información, dependencias/librerías compartidas y afectación de A1/A2. Se requiere manifiesto de cambios y grafo de dependencias. A1/A2 deben permanecer no afectadas por B en R0/R1; si B las modifica, R2 es vía colateral/efecto de paquete. F* se armonizará con la definición histórica de la reconciliación poblacional, sin duplicarla. D1/D2 sigue abierto.
+
+Se mantienen seis gates MD-C1…MD-C6 y los contratos MDC-01…10 como especificaciones no ejecutadas. Opción A sigue recomendación condicionada, NO seleccionada ni aprobada. AUD-001/002, AUD-004/005/007/010/011, OPEN-C10-001/003/005/007 y CA-01…07 permanecen abiertos. No se generan datos, no se implementa, simula ni ejecuta.
+
+Siguiente bloque: concretar el manifiesto de provisión B y el grafo de dependencias compartidas del microdominio; empezar por el catálogo de cambios que introduce la instalación del adaptador y la auditoría de no afectación de A1/A2. No asignar todavía probabilidades ni decidir D1/D2.
