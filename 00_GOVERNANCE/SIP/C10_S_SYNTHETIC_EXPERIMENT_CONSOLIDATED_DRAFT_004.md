@@ -4,7 +4,7 @@
 **Estado:** DRAFT / PROPUESTA METODOLÓGICA — NO APROBADA / NO IMPLEMENTADA / NO EJECUTADA  
 **Ámbito:** C10 — contribución causal de los cambios en transformaciones accesibles a Value  
 **Relación:** Documento complementario a `C10_D1_CAUSAL_ACCESSIBILITY_VALUE_PROTOCOL_DRAFT_001.md`  
-**Naturaleza:** consolidación normalizada de las decisiones, especificaciones, escenarios, contratos, pruebas y auditorías desarrollados conversacionalmente en C10-S hasta la sección 129. No es una transcripción literal.  
+**Naturaleza:** consolidación normalizada de las decisiones, especificaciones, escenarios, contratos, pruebas y auditorías desarrollados conversacionalmente en C10-S hasta la sección 164. No es una transcripción literal.  
 **Efecto sobre el estado científico:** ninguno. No modifica TGCV Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres experimentales.  
 **Restricciones:** no autoriza implementación, ejecución, simulación, selección definitiva de caso real, adquisición/procesamiento de datos, preregistro ni contacto con autores o instituciones.
 
