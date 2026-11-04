@@ -6792,135 +6792,115 @@ La asignación Z identifica el efecto de la política asignada bajo aleatorizaci
 
 ---
 
+
+---
+
 # 67. Calibración de la primera etapa técnica y derivación estructural de accesibilidad focal
 
 **Estado:** propuesta de diseño y reconciliación matemática; NO aprobada, NO congelada.  
-**Dependencias:** §§58–66; DGP §§17–25; AUD-001/004/005/007/010/011; XAUD-003/004/006; OPEN-C10-001/007/008.  
-**Objeto:** impedir que el éxito de provisión técnica se interprete automáticamente como apertura de τ2.
+**Dependencias:** §§58–66; DGP §§17–25; AUD-001/004/005/007/010/011; XAUD-003/004/006; OPEN-C10-001/007/008.
 
 ## 67.1. Cuatro componentes técnicos y definición de C_dep
 
-Para cada intento focal (j) de provisión se registran cuatro predicados verdaderos del DGP, binarios y versionados:
+Para cada intento focal se registran cuatro predicados verdaderos del DGP, binarios y versionados:
 
-- (C_{install,j}^*): el artefacto/dependencia correspondiente a la identidad y versión autorizadas de τ2 quedó efectivamente instalado en la unidad y frontera declaradas.
-- (C_{integrity,j}^*): el artefacto instalado coincide íntegramente con el artefacto/configuración autorizados; identidad, hash y configuración son verificables. Una instalación declarada sin correspondencia verificable no satisface este predicado.
-- (C_{compat,j}^*): la dependencia, sus interfaces y sus versiones satisfacen el contrato de compatibilidad con el sistema, dominio y dependencias declarados.
-- (C_{oper,j}^*): el canal técnico requerido está disponible y puede invocar la dependencia bajo el contrato de operación definido, sin exigir que τ2 sea seleccionada ni ejecutada.
+- `C_install*`: instalación efectiva del artefacto/dependencia correspondiente a la identidad y versión autorizadas de τ2.
+- `C_integrity*`: integridad verificada del artefacto y configuración; identidad, hash y configuración corresponden a lo autorizado.
+- `C_compat*`: compatibilidad de interfaces, dependencias y versiones con el contrato del sistema y dominio.
+- `C_oper*`: disponibilidad operativa del canal técnico requerido para invocar la dependencia, sin exigir que τ2 sea seleccionada ni ejecutada.
 
 La dependencia técnica focal queda verificada si y solo si:
 
-[
-C_{dep,j}^*=C_{install,j}^* land C_{integrity,j}^* land C_{compat,j}^* land C_{oper,j}^*.
-]
+`C_dep* = C_install* AND C_integrity* AND C_compat* AND C_oper*`.
 
-Los cuatro predicados son conjuntamente necesarios para esta ruta técnica. No se presupone independencia estadística, ni igualdad de tasas marginales, ni que un fallo en uno permita inferir el estado de los demás. La verdad del DGP conserva 0/1; la observación de cada componente conserva 1/0/?.
+Los cuatro predicados son conjuntamente necesarios para esta ruta técnica. No se presupone independencia estadística, igualdad de tasas marginales ni que el estado de un componente determine los demás.
 
-Regla de clasificación observada de la conjunción:
-- **1:** los cuatro componentes están respaldados como 1;
-- **0:** al menos uno está respaldado como 0;
-- **?:** no hay componente respaldado como 0, pero al menos uno es desconocido, no observado o contradictorio.
+La verdad del DGP conserva estados 0/1. La observación de cada componente conserva 1/0/?:
+- `C_dep,obs=1`: los cuatro componentes están respaldados como 1.
+- `C_dep,obs=0`: al menos uno está respaldado como 0.
+- `C_dep,obs=?`: no hay componente respaldado como 0, pero al menos uno es desconocido, no observado o contradictorio.
 
-Una conjunción no se clasifica como 1 por promedio, mayoría, éxito parcial, intento, instalación declarada o ausencia de registro de fallo. Un componente desconocido no se recodifica como fallo verdadero.
+No se clasifica la conjunción como 1 por promedio, mayoría, éxito parcial, intento, instalación declarada o ausencia de registro de fallo. Un componente desconocido no se recodifica como fallo verdadero.
 
 ## 67.2. Éxito condicional 0,80: significado y límite
 
 La cifra candidata se define como:
 
-[
-s=P(C_{dep}^*=1mid W_{attempt}=1,;E=1,;D=d,;mathcal{H}),
-]
+`s = P(C_dep*=1 | W_attempt=1, E=1, D=d, H)`,
 
-donde (E=1) identifica la población/historias elegibles y (mathcal{H}) fija el contexto, versión, protocolo, actor, recursos por intento y ventana de verificación. La hipótesis de factorización actual propone (s=0.80).
+donde E identifica población/historias elegibles y H fija contexto, versión, protocolo, actor, recursos por intento y ventana de verificación.
 
-Este 0,80 significa **probabilidad conjunta de que los cuatro componentes técnicos resulten satisfechos tras un intento elegible**. No significa que cada componente tenga probabilidad 0,80, ni que la probabilidad conjunta sea el producto de cuatro probabilidades marginales. Sin una distribución conjunta especificada, no pueden derivarse las tasas marginales ni las dependencias entre componentes.
+El 0,80 significa **probabilidad conjunta de que los cuatro componentes técnicos resulten satisfechos tras un intento elegible**. No significa que cada componente tenga probabilidad 0,80 ni que la probabilidad conjunta sea el producto de cuatro probabilidades marginales.
 
-La cifra se eligió hasta ahora para reproducir algebraicamente los estados finales documentados (.20/.80 en D1 y 0/.80 en D2). No procede de una medición empírica, fuente externa, fiabilidad de ingeniería ni calibración de datos. Por tanto:
+La cifra se eligió hasta ahora para reproducir algebraicamente los estados finales documentados (.20/.80 en D1 y 0/.80 en D2). No procede de medición empírica, fuente externa, fiabilidad de ingeniería ni calibración de datos. Por tanto:
 - se conserva como **parámetro sintético candidato**, no como tasa validada;
-- no puede presentarse como evidencia de que el procedimiento real alcanza 80 %;
-- para un DGP reproducible debe especificarse una tabla/distribución conjunta de los cuatro componentes o un mecanismo generador equivalente, con sus dependencias;
-- para una calibración empírica futura se necesitarían intentos elegibles observados, denominador definido, ventana de verificación, protocolo/versiones comparables y adjudicación independiente de cada componente.
+- no puede presentarse como evidencia de que un procedimiento real alcanza 80 %;
+- un DGP reproducible debe especificar una distribución conjunta de los cuatro componentes o un mecanismo generador equivalente, con sus dependencias;
+- una calibración empírica futura necesitaría intentos elegibles observados, denominador definido, ventana de verificación, protocolos/versiones comparables y adjudicación independiente de cada componente.
 
-No se impone 0,80 a cada componente ni se ajusta retrospectivamente para producir el efecto deseado. La sensibilidad debe explorar valores alternativos de (s) y estructuras de dependencia antes de cualquier congelación.
+No se impone 0,80 a cada componente ni se ajusta retrospectivamente para producir el efecto deseado. La sensibilidad debe explorar valores alternativos de s y estructuras de dependencia antes de cualquier congelación.
 
 ## 67.3. De C_dep a accesibilidad: predicados estructurales completos
 
-La accesibilidad focal verdadera no se define por (C_{dep}^*) aisladamente. Para la transformación τ2 y la unidad/historia/tiempo especificados, se propone:
+La accesibilidad focal verdadera no se define por C_dep aisladamente. Para τ2 y la unidad/historia/tiempo especificados se propone:
 
-[
-A_f^*=I(ID_f^*land REL_f^*land COND_f^*land AUTH_f^*
-land RES_f^*land DEP_f^*land 
-eg BLOCK_f^*).
-]
+`A_f* = I(ID_f* AND REL_f* AND COND_f* AND AUTH_f* AND RES_f* AND DEP_f* AND NOT BLOCK_f*)`.
 
 Donde:
-- (ID_f^*): identidad, tipo y versión de τ2 están determinados y corresponden al objeto del contrato.
-- (REL_f^*): existen las relaciones, interfaces y dependencias requeridas para invocar/componer τ2.
-- (COND_f^*): se satisfacen las condiciones constitutivas de realizabilidad de τ2, sin incorporar por defecto las precondiciones del estado actual (S_0).
-- (AUTH_f^*): existe autorización válida para la unidad, actor, objeto y ventana definidos.
-- (RES_f^*): recursos necesarios están disponibles/asignados ex ante en el nivel pertinente; el consumo posterior de ejecución no se usa para definir acceso.
-- (DEP_f^*): existe al menos una ruta técnica/dependencia completa y válida que soporta τ2.
-- (BLOCK_f^*): no existe un bloqueo efectivo que impida la invocación bajo el contrato.
+- `ID_f*`: identidad, tipo y versión de τ2 están determinados y corresponden al objeto del contrato.
+- `REL_f*`: existen las relaciones, interfaces y dependencias requeridas para invocar/componer τ2.
+- `COND_f*`: se satisfacen las condiciones constitutivas de realizabilidad de τ2, sin incorporar por defecto las precondiciones del estado actual S0.
+- `AUTH_f*`: existe autorización válida para la unidad, actor, objeto y ventana definidos.
+- `RES_f*`: los recursos necesarios están disponibles/asignados ex ante en el nivel pertinente; el consumo posterior de ejecución no define acceso.
+- `DEP_f*`: existe al menos una ruta técnica/dependencia completa y válida que soporta τ2.
+- `BLOCK_f*`: existe un bloqueo efectivo que impide la invocación bajo el contrato.
 
-**Distinción de ruta:** en el DGP primario aislado se postula una única ruta focal inventariada, por lo que (DEP_f^*=C_{dep}^*). En el contrato general, (DEP_f^*) representa la existencia de al menos una ruta válida entre las rutas admisibles. Por ello (C_{dep}^*=0) no implica universalmente (A_f^*=0): podría existir otra ruta válida que invoque la misma τ2. Esta posibilidad se mantiene como control adversarial MEAS-02 y debe quedar excluida por inventario/cobertura, no por suposición verbal, si se quiere interpretar D2 como ausencia de provisión focal.
+**Distinción de ruta:** en el DGP primario aislado se postula una única ruta focal inventariada, por lo que `DEP_f*=C_dep*`. En el contrato general, `DEP_f*` representa la existencia de al menos una ruta válida entre las rutas admisibles. Por ello, `C_dep*=0` no implica universalmente `A_f*=0`: podría existir otra ruta válida que invoque la misma τ2. Esta posibilidad se mantiene como control adversarial MEAS-02 y debe quedar excluida por inventario/cobertura, no por suposición verbal, si se quiere interpretar D2 como ausencia de provisión focal.
 
-(VALID_f), cobertura y calidad de evidencia **no forman parte de la verdad estructural causal** de (A_f^*). Son requisitos epistémicos para clasificar (A_{f,obs}). Así se evita que falta de evidencia cambie retroactivamente el estado verdadero del sistema.
+`VALID_f`, cobertura y calidad de evidencia **no forman parte de la verdad estructural causal** de `A_f*`. Son requisitos epistémicos para clasificar `A_f,obs`. Así se evita que falta de evidencia cambie retroactivamente el estado verdadero del sistema.
 
-Tampoco se incorpora (App_f): la accesibilidad no implica que las precondiciones del estado (S_0) permitan aplicar τ2 en ese momento. (App_f), conocimiento, consideración, selección, inicio y ejecución siguen siendo estados separados.
+Tampoco se incorpora `App_f`: accesibilidad no implica que las precondiciones del estado S0 permitan aplicar τ2 en ese momento. Aplicabilidad, conocimiento, consideración, selección, inicio y ejecución siguen siendo estados separados.
 
-## 67.4. Primera etapa de C_dep y primera etapa de A_f/D_f
+## 67.4. Primeras etapas de C_dep, A_f y D_f
 
-Para cada escenario (din{D1,D2}), reportar separadamente:
+Para cada escenario d en {D1,D2}, reportar separadamente:
 
-[
-FS_{Cdep,d}=P(C_{dep,post}^*=1mid Z=1,d,E)
--P(C_{dep,post}^*=1mid Z=0,d,E)
-]
+- `FS_Cdep,d = P(C_dep,post*=1 | Z=1,d,E) - P(C_dep,post*=1 | Z=0,d,E)`.
+- `FS_Af,d = P(A_f,post*=1 | Z=1,d,E) - P(A_f,post*=1 | Z=0,d,E)`.
+- `FS_Df,d = P(D_f*=1 | Z=1,d,E) - P(D_f*=1 | Z=0,d,E)`.
 
-[
-FS_{Af,d}=P(A_{f,post}^*=1mid Z=1,d,E)
--P(A_{f,post}^*=1mid Z=0,d,E)
-]
+Conservar además la diferencia entre brazos en cada componente técnico y en el cambio estructurado completo ΔT_acc; no reducir ΔT_acc a un indicador binario.
 
-[
-FS_{Df,d}=P(D_f^*=1mid Z=1,d,E)
--P(D_f^*=1mid Z=0,d,E)
-]
+Si la población elegible tiene `A_f,base*=0`, la ruta técnica focal es única y completa, y todos los predicados no técnicos de accesibilidad permanecen satisfechos e invariantes, entonces `A_f,post*=C_dep,post*` y `D_f*=C_dep,post*`. **Solo bajo esas estipulaciones** las primeras etapas coinciden:
+- D1: `FS_Cdep=FS_Af=FS_Df=.80-.20=.60`.
+- D2: `FS_Cdep=FS_Af=FS_Df=.80-0=.80`.
 
-y conservar además la diferencia entre brazos en cada componente técnico y en (Delta T_{acc}^*), sin reducir este último a un indicador binario.
+Si los predicados no técnicos varían, hay rutas alternativas, bloqueos, snapshots incompatibles o elegibilidad basal incierta, no se transfieren esas cifras a A_f* o D_f*. En general, para la ruta única:
 
-Si la población elegible tiene (A_{f,base}^*=0), la ruta técnica focal es única y completa, y todos los predicados no técnicos de accesibilidad permanecen satisfechos e invariantes, entonces (A_{f,post}^*=C_{dep,post}^*) y (D_f^*=C_{dep,post}^*). **Solo bajo esas estipulaciones** las primeras etapas coinciden:
-- D1: (FS_{Cdep}=FS_{Af}=FS_{Df}=0.80-0.20=0.60).
-- D2: (FS_{Cdep}=FS_{Af}=FS_{Df}=0.80-0=0.80).
+`P(A_f,post*=1 | Z=z,d,E) = P(C_dep,post*=1 AND G_f*=1 | Z=z,d,E)`,
 
-Si los predicados no técnicos varían, hay rutas alternativas, bloqueos, incompatibilidad de snapshots o elegibilidad basal incierta, no se transfieren esas cifras a (A_f^*) o (D_f^*). En general:
+donde G_f* es la conjunción de los demás predicados estructurales y ausencia de bloqueo. La probabilidad conjunta debe calcularse; no puede reemplazarse por el producto de marginales sin una hipótesis de independencia justificada.
 
-[
-P(A_{f,post}^*=1mid Z=z,d,E)
-=P(C_{dep,post}^*=1,;G_f^*=1mid Z=z,d,E)
-]
-
-solo en el caso de ruta única, donde (G_f^*) es la conjunción de los demás predicados estructurales y ausencia de bloqueo. La probabilidad conjunta debe calcularse; no puede reemplazarse por el producto de marginales sin una hipótesis de independencia justificada.
-
-(D_f^*=I(A_{f,base}^*=0land A_{f,post}^*=1)). Por tanto, la primera etapa de (A_{f,post}^*) y la de (D_f^*) solo coinciden en la población con inaccesibilidad basal verdadera confirmada. Si se mezclan unidades con accesibilidad basal, se informan ambas sin intercambiarlas.
+`D_f*=I(A_f,base*=0 AND A_f,post*=1)`. Por tanto, la primera etapa de A_f,post* y la de D_f* solo coinciden en la población con inaccesibilidad basal verdadera confirmada. Si se mezclan unidades con accesibilidad basal, se informan ambas sin intercambiarlas.
 
 ## 67.5. Fallos, parcialidad, indeterminación y verificación desconocida
 
 | Situación | Estado técnico verdadero | Clasificación observada | Consecuencia analítica |
 |---|---|---|---|
-| Intento no iniciado | (W=0) | intento no realizado, no fallo de componente | Mantener Z; C_dep no se presume 1 |
+| Intento no iniciado | W=0 | intento no realizado, no fallo de componente | Mantener Z; C_dep no se presume 1 |
 | Intento iniciado y un componente falla | C_dep*=0 | 0 si el fallo está respaldado | No hay éxito de la ruta técnica focal |
-| Uno o más componentes desconocidos, ninguno fallido | Truth del DGP oculta; observación incompleta | C_dep,obs=? | No recodificar como 0 ni 1; sensibilidad/límites |
+| Uno o más componentes desconocidos, ninguno fallido | Truth DGP oculta; observación incompleta | C_dep,obs=? | No recodificar como 0 ni 1; sensibilidad/límites |
 | Cuatro componentes respaldados | C_dep*=1 | C_dep,obs=1 | Solo acredita dependencia técnica |
 | C_dep*=1 pero AUTH/RES/REL/COND/BLOCK no satisfacen acceso | A_f*=0 | A_f,obs=0 si hay evidencia suficiente; si no, ? | No declarar apertura de τ2 |
 | C_dep*=0 y existe otra ruta válida | DEP_f*=1 puede mantenerse | Depende de cobertura de rutas | A_f* puede ser 1; no inferir inaccesibilidad desde C_dep |
-| Snapshot/versiones no comparables | ΔT_acc* no adjudicable bajo diff actual | ? o correspondencia versionada | No calcular D_f por comparación forzada |
+| Snapshots/versiones no comparables | ΔT_acc* no adjudicable bajo diff actual | ? o correspondencia versionada | No calcular D_f por comparación forzada |
 | Evidencia insuficiente o contradictoria | Truth permanece separada | A_f,obs=? | INDETERMINATE; no elegibilidad confirmada |
 
 Los fallos, reintentos, rollback, crossover y tiempos se conservan como eventos. La asignación Z no cambia por cumplimiento. El ITT se calcula por asignación; el análisis de accesibilidad verdadera y el de accesibilidad observada se mantienen separados.
 
 ## 67.6. Contrato de observación y protección contra filtración
 
-El generador conserva los valores verdaderos de cada componente, (C_{dep}^*), (A_f^*), (D_f^*), rutas, bloqueos y (Delta T_{acc}^*). El analizador recibe evidencia observable, snapshots y estados 1/0/?; no recibe truth ni parámetros generadores. El evaluador independiente compara la salida congelada del analizador con truth después del análisis.
+El generador conserva los valores verdaderos de cada componente, C_dep*, A_f*, D_f*, rutas, bloqueos y ΔT_acc*. El analizador recibe evidencia observable, snapshots y estados 1/0/?; no recibe truth ni parámetros generadores. El evaluador independiente compara la salida congelada del analizador con truth después del análisis.
 
 La cobertura/validez se evalúa por predicado, ruta, unidad, tiempo y versión. Una ausencia de evidencia se distingue de evidencia de ausencia. Los errores de clasificación deben estimarse o acotarse por brazo, componente y escenario; si la validación no identifica sensibilidad/especificidad, se reportan límites/sensibilidad y no una corrección puntual ficticia.
 
