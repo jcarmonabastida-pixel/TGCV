@@ -253,3 +253,12 @@ La propuesta primaria es UE=UA=instancia sintética independiente; UO son medici
 Sin interferencia, potenciales individuales V_i(z_i), D_f,i(z_i). Con interferencia, definir antes de generar resultados el mapa G_i(Z_-i) y potenciales V_i(z_i,g_i), D_f,i(z_i,g_i). Si no se puede especificar/observar la exposición, ITT individual y Wald individual no reciben interpretación causal focal. Correlación basal dentro de clúster no equivale por sí sola a interferencia.
 
 La aleatorización, probabilidades y positividad se documentan en la unidad asignada. LATE individual requiere no interferencia; un diseño con spillovers exige estimando de exposición/clúster explícito. OPEN-C10-005 permanece ABIERTA.
+
+
+## 16. F*, P*_τ2 y P*_F: reconciliación operativa
+
+Se armoniza con el maestro §57 y la auditoría de §50.7: P*_τ2 incluye unidades basalmente elegibles con D_f,0=0 y A_f,0*=0; la presencia o indeterminación de alternativas no las excluye automáticamente. P*_F es subconjunto con ausencia respaldada de rutas substituibles para F* dentro del universo/G/H/C0 declarado. La regla de §48.6 que parecía exigir F_alt,0=0 a toda la población se restringe interpretativamente a P*_F; la formulación histórica se conserva y no se borra.
+
+F* se especifica ex ante con objetivo técnico observable, entrada/S0, salida, restricciones, tolerancias, H, G, C0 y evidencia/adjudicación independiente de O/V. Para cada ruta se distinguen accesibilidad, aplicabilidad y substituibilidad; identidad no equivale a función. F_alt,0 admite 0/1/indeterminado y ausencia exige cobertura suficiente. Si B altera alternativas, exclusión IV focal se compromete y se conserva ITT del paquete; si alternativa basal permanece estable, su existencia puede producir heterogeneidad sin violar automáticamente exclusión.
+
+La definición cuantitativa de F*, universo, umbrales, cobertura, error de clasificación, sensibilidad, q_X,F*, pesos y estimando confirmatorio P*_F siguen abiertos. DEC-C10-017 es propuesta.
