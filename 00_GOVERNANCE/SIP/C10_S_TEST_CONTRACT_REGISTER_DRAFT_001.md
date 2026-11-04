@@ -236,3 +236,17 @@ Las fichas siguientes se transcriben de las tablas de aceptación de la fuente c
 | P183-13 | Trazabilidad | Se conservan reglas, versiones y decisiones |
 
 La fuente especifica que las pruebas son propuestas, no ejecutadas. La sección 183 exige dictámenes separados para ITT sobre O, ITT por dimensión de V, efecto mediado por A, LATE sobre V, efecto residual e índice agregado si se utiliza; no debe emitirse un único dictamen global que oculte diferencias de identificación.
+
+
+## 14. Contrato candidato D1/D2 y primera etapa focal
+
+| Elemento | D1 principal condicionado | D2 contraste |
+|---|---:|---:|
+| C_dep,base | 0 | 0 |
+| P(C_dep,post=1 dado Z=0) | .20 | 0 |
+| P(C_dep,post=1 dado Z=1) | .80 | .80 |
+| Primera etapa objetivo | .60 | .80 |
+
+Aserciones: (1) población P*_tau2 basal con A_f,base*=0; (2) intento, éxito, verificación, A_f,post* y D_f se almacenan por separado; (3) p_z corresponde al estado final verificado, no al intento; (4) A_f,post* coincide probabilísticamente con C_dep,post solo si el resto de condiciones focales está satisfecho; (5) el generador no asigna directamente A desde Z; (6) D1 exige justificar provisión ordinaria en control; (7) .20/.80 son objetivos del DGP, no resultados.
+
+Estado: contrato candidato definido documentalmente; fixtures, oráculos, tolerancias y pruebas no implementados ni ejecutados.
