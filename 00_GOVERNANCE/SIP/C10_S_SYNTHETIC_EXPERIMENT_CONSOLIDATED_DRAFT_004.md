@@ -6609,3 +6609,93 @@ El orden temporal es un contrato de medición, no prueba de identificación caus
 ## 64.6. Dictamen
 
 La clasificación temporal-causal queda organizada como propuesta coherente con §§59, 62 y 63. No se considera cerrada AUD-011 ni XAUD-003/004/006. La semántica de B y la alternativa histórica de autorización siguen sin reconciliar. OPEN-C10-004/005 permanecen abiertos. No hay freeze, implementación, simulación ni ejecución.
+
+
+---
+
+# 65. Reconciliación semántica y generativa de la política B: D1 principal condicionado y D2 contraste
+
+**Estado:** propuesta de reconciliación documental basada en §§53.4–53.5 y 54.1–54.7; no aprobada ni congelada. No autoriza implementación, simulación o ejecución.  
+**Dependencias:** §§21, 23, 30–31, 53–54, 62–64; DGP §§3.1–3.2, 21–24; DEC-C10-022/024; OPEN-C10-001/005.
+
+## 65.1. Hallazgo y regla de precedencia
+
+La auditoría confirma que la aparente contradicción no debe resolverse eligiendo entre «política estocástica» y «brazo determinista con incumplimiento» como si fueran las únicas opciones. El diseño ya contiene dos escenarios distintos:
+
+- **D1:** comparador ordinario con provisión focal de baja frecuencia frente a provisión programada; escenario principal condicionado.
+- **D2:** control sin provisión focal frente a provisión programada; contraste de diseño.
+
+La precedencia operativa candidata es: §53.4 fija el estatus de D1/D2; §54 concreta la factorización de intentos y éxito; §62 y DGP §21 describen la variante sin provisión en control y deben leerse como D2, no como definición universal de B0/B1. DGP §3.1 debe leerse como objetivo de estado técnico final verificado C_dep, no como probabilidad de intento.
+
+Se conserva el texto histórico; esta sección aclara su alcance y no lo borra.
+
+## 65.2. Parámetros separados por nivel
+
+| Cantidad | D1 principal condicionado | D2 contraste | Interpretación |
+|---|---:|---:|---|
+| C_dep,base | 0 | 0 | Ausencia basal pre-Z |
+| P(W_attempt=1 | Z=0) | .25 | 0 | Probabilidad de intento bajo control |
+| P(W_attempt=1 | Z=1) | 1.00 | 1.00 | Intento programado bajo tratamiento |
+| P(S_success=1 | W_attempt=1) | .80 | .80 | Éxito técnico conjunto condicional propuesto |
+| P(C_dep,post=1 | Z=0) | .20 | 0 | Estado final técnico verificado |
+| P(C_dep,post=1 | Z=1) | .80 | .80 | Estado final técnico verificado |
+| Primera etapa de C_dep | .60 | .80 | Diferencia entre probabilidades finales |
+
+En la factorización candidata, y si no hay intentos sin registro ni estados finales por otras rutas:
+
+[
+P(C_{dep}=1mid Z=z,D)=P(W_{attempt}=1mid Z=z,D)	imes P(S_{success}=1mid W_{attempt}=1,D)
+]
+
+No se presupone independencia entre componentes de C_dep. El .80 de éxito condicional es una propuesta algebraica de §54, no un parámetro recuperado literalmente ni un dato empírico; requiere aceptación y especificación técnica.
+
+## 65.3. Definición de las versiones de política
+
+- **D1, control ordinario:** el mismo procedimiento/módulo focal se intenta con probabilidad .25; el éxito conjunto condicional candidato es .80.
+- **D1, tratamiento:** el mismo procedimiento se programa para todas las unidades elegibles (intento objetivo 1.00); el éxito conjunto condicional candidato es .80.
+- **D2, control sin provisión:** no se inicia el intento focal (0); no se retira ninguna capacidad basal.
+- **D2, tratamiento:** provisión programada para todas las unidades elegibles (intento objetivo 1.00); éxito conjunto condicional candidato .80.
+
+Dentro de cada escenario, el módulo, versión, protocolo, recursos por intento, actor/automatización, verificación, soporte y condiciones no focales deben ser comunes. La diferencia asignada es la frecuencia del intento focal. Z asigna la política; W_attempt, S_success, C_dep, A_f* y D_f* son resultados/estados posteriores distintos.
+
+## 65.4. Condición para mantener D1 como primario
+
+D1 permanece como **principal condicionado**, no como elección irrevocable. Antes de aprobarlo se debe justificar que la provisión ordinaria de control (25% de intentos; 20% de estados técnicos finales bajo la factorización propuesta) es parte del comparador científicamente legítimo y no contaminación, co-intervención o política externa al contraste pretendido.
+
+Si esa justificación falla, D2 puede pasar a ser el escenario primario mediante decisión explícita; no se cambia silenciosamente el estimando ni se reetiqueta D1.
+
+D2 conserva utilidad como contraste más limpio de ausencia frente a provisión, pero su primera etapa y población de contraste son distintas.
+
+## 65.5. Qué se identifica y qué no
+
+Las probabilidades .20/.80 se refieren primero a C_dep, estado técnico verificado. No se transfieren automáticamente a A_f* ni D_f*. Para que la primera etapa focal sea .60 en D1 o .80 en D2, las demás condiciones de accesibilidad deben estar satisfechas en la población de apertura y la definición estructural de §63 debe confirmarlo. En caso contrario, se calcula:
+
+[
+P(A_{f,post}^*=1mid Z=z,D)
+quad	ext{y}quad
+ITT_{D_f^*}
+]
+
+desde todos los predicados, sin sustituirlos por C_dep.
+
+El ITT por Z estima el efecto de asignación a la política concreta. LATE_f/Wald requiere por separado relevancia, independencia, exclusión, monotonicidad, consistencia/versiones, no interferencia y medición válida. Si D1 produce vías no focales, su ITT es efecto de política/paquete; no se atribuye automáticamente a accesibilidad.
+
+## 65.6. Reconciliación de textos previos
+
+1. DGP §3.1: p0=.20 y p1=.80 son objetivos de probabilidad final verificada C_dep, no probabilidades de intento.
+2. DGP §3.2: ω_z/s_z deben parametrizarse para reproducir la tabla D1/D2; no se asignan automáticamente .20/.80 a W_attempt.
+3. DGP §21 y maestro §62: la descripción «B0 sin provisión / B1 provisión programada» corresponde a D2.
+4. Maestro §54 y DGP §24 (esta sección) detallan la factorización D1/D2; no sustituyen los estados separados de asignación, oferta, recepción, intento, éxito y verificación.
+5. Maestro §64.5 y DGP §23 registraron correctamente la discrepancia en ese momento. Esta sección resuelve la ambigüedad semántica principal, pero no aprueba el comparador D1 ni el .80 condicional.
+
+## 65.7. Pendientes que siguen abiertos
+
+- Justificación científica del control ordinario D1 y decisión de mantener D1 como primario.
+- Identidad/hash del módulo, actor/automatización, disparador de intento y evidencia de recepción.
+- Especificación conjunta de C_install/C_integrity/C_compat/C_oper y validación del .80 condicional.
+- Crossover, contaminación, rollback, intentos parciales, fallos e indeterminación.
+- Calibración de A_f* desde todos sus predicados y cálculo de la primera etapa verdadera.
+- Revisión independiente de exclusión y compatibilidad con C10-D1/S4-R.
+- Aprobación expresa de OPEN-C10-001/005 antes de freeze o ejecución.
+
+**Dictamen:** la semántica D1/D2 y la distinción intento/éxito/estado final quedan reconciliadas documentalmente como propuesta. No se acepta todavía D1 como comparador definitivo, no se cierra OPEN-C10-001/005 y no se autoriza implementación, simulación ni ejecución.
