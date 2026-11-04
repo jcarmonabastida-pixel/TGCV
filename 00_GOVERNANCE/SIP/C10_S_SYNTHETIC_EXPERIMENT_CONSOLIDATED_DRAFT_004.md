@@ -7269,3 +7269,20 @@ Se registran REACH-01…20 para rutas confirmadas/indeterminadas, cobertura inco
 ### 73.7. Dictamen
 
 Se resuelve documentalmente la regla de propagación, pero no se cierra AUD-005 ni AUD-007. Faltan catálogo/estados/objetivos, G/H, reglas por clase, ciclos, recursos, snapshots dinámicos, cobertura, oráculos, validación de error y revisión independiente. No hay freeze, implementación, simulación ni ejecución.
+
+
+---
+
+# 74. Inventario finito candidato del DGP y mapa de cobertura Reach (2026-11-04)
+
+**Estado:** propuesta de fixture conceptual; no aprobada ni congelada. Artefacto: C10_S_FINITE_DGP_INVENTORY_AND_REACH_COVERAGE_DRAFT_001.md.
+
+Se propone un universo abstracto mínimo con estados S0 (inicial), S1 (intermedio alternativo), S2 (intermedio focal) y SF (objetivo funcional formal). El catálogo local contiene F1=τ2 focal (S0→S2), F2 (S2→SF), A1 (S0→S1) y A2 (S1→SF); relaciones permitidas F1→F2 y A1→A2. Estos aliases no son TID canónicas aprobadas.
+
+Se distinguen escenarios R0 focal exclusivo, R1 alternativa basal estable, R2 alternativa afectada por B y R3 fallo de provisión. R0 puede representar P*_F solo si F* y la cobertura de alternativas se validan; R1/R2 pertenecen como máximo a P*_τ2 según elegibilidad. R2 introduce vía colateral y no sostiene automáticamente exclusión instrumental.
+
+Se propone G atómica, H=3 pasos y ciclos prohibidos en el fixture base. Son candidatos que requieren ratificación; el historial menciona H=3, pero no cierra duración, ventanas ni sensibilidad. Se especifica matriz ruta×predicados×tiempo×evidencia×cobertura y ocho dimensiones de exhaustividad: catálogo, relaciones, condiciones, alternativas, recursos, tiempo, identidad/versiones y observación.
+
+Hallazgo de coherencia: abrir F1 no basta para alcanzar SF; F2 también debe ser accesible, aplicable y componible. Si A1→A2 permanece disponible, Reach(SF) puede ser 1 antes y después de abrir F1. Por tanto D_f* no equivale a apertura funcional exclusiva ni a cambio de Reach.
+
+No se cierran AUD-005/007, G/H, F*, catálogo, comparador D1/D2, recursos, cobertura ni oráculos. No hay fixtures ejecutables, implementación, simulación o ejecución.
