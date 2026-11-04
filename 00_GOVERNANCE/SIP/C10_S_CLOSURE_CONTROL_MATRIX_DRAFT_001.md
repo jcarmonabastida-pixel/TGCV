@@ -599,3 +599,17 @@ No se cierra calibración empírica ni selección primaria.
 | INV-08 | Implicación Reach | Abrir F1 no basta; A1→A2 puede mantener Reach(SF) | HALLAZGO LÓGICO DEL FIXTURE | Oráculos y revisión independiente |
 
 **Dictamen:** se dispone de un inventario abstracto finito candidato, no de un catálogo confirmatorio. AUD-005 y AUD-007 siguen abiertos; no declarar exhaustividad ni Reach=0 para el DGP hasta validar universo y cobertura.
+
+
+## 14. Seguimiento — integración temporal y escenarios S4-R
+
+| ID | Punto | Estado | Criterio de cierre |
+|---|---|---|---|
+| TEMP-01 | H frente a t0–t9 | Propuesta: índices separados | Ratificar profundidad vs horizonte temporal |
+| TEMP-02 | Reach en t4 sobre snapshot t3 | Propuesta | Contrato de filtración temporal y snapshots |
+| TEMP-03 | App por estado hipotético | Abierto | Predicados por transformación/estado y oráculos |
+| TEMP-04 | Dinámica por rama | Abierto | Regla de transición, snapshots y recursos temporales |
+| TEMP-05 | R0–R3 ↔ S4R-A…D | Correspondencia propuesta | Revisión contra escenarios/estimandos originales |
+| TEMP-06 | Duración/ventanas/caducidad | Abierto | Unidades, origen, restricciones y sensibilidad |
+
+No se cierra AUD-005/007 ni se declara H confirmado.
