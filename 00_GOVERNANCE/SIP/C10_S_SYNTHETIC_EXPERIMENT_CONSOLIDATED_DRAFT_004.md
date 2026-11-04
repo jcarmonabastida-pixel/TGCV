@@ -6311,9 +6311,7 @@ El actor es un rol del DGP, no una persona ni proveedor real. El protocolo no se
 
 ## 62.4. Cadena causal y estados que no deben confundirse
 
-La secuencia de referencia queda:
-
-Z_i → política B_i asignada → provisión recibida/intentada → estado técnico de dependencia → C_dep* → A_f* → D_f* → trayectoria/Outcome/Value.
+La secuencia de implementación queda: Z_i → política B_i asignada → provisión recibida/intentada → estado técnico de dependencia C_dep*. C_dep* es evidencia de mecanismo/provisión, no definición suficiente de accesibilidad. A_f* se determina mediante el contrato estructural independiente de snapshots y predicados de accesibilidad del capítulo 63; después se deriva D_f* comparando baseline y post. La secuencia no autoriza inferir A_f* directamente desde C_dep*.
 
 Se conservan separadas estas variables:
 
@@ -6342,7 +6340,7 @@ C_dep* = C_install* ∧ C_integrity* ∧ C_compat* ∧ C_oper*.
 - C_compat*: interfaces, dependencias y contrato de τ2 son compatibles con la instancia y versión objetivo.
 - C_oper*: canal de invocación está disponible y responde conforme al contrato técnico en la ventana definida, sin exigir que se ejecute τ2 sobre un caso funcional.
 
-Cada componente requiere evidencia, tiempo y regla de adjudicación propios. La simple declaración de instalación, el intento, un test de salud superficial o la ejecución exitosa de τ2 no sustituyen el conjunto de verificaciones. Umbrales, fixtures y estándares de evidencia siguen abiertos.
+Cada componente requiere evidencia, tiempo y regla de adjudicación propios. **C_dep*=1 no implica por sí solo A_f*=1**: aún deben verificarse identidad transformacional, relaciones y dependencias activas, precondiciones/contexto, recursos y autorización aplicables, ausencia de bloqueos y validez/cobertura del snapshot. La accesibilidad se deriva del estado estructural completo, no del éxito de instalación aislado. La simple declaración de instalación, el intento, un test de salud superficial o la ejecución exitosa de τ2 no sustituyen el conjunto de verificaciones. Umbrales, fixtures y estándares de evidencia siguen abiertos.
 
 ## 62.6. Aislamiento de vías colaterales
 
@@ -6394,3 +6392,134 @@ La ficha de intervención debe completar y auditar, antes de congelar el DGP:
 10. revisión independiente de la especificación y de su compatibilidad con C10-D1/S4-R.
 
 **Dictamen:** B se concreta provisionalmente como política protocolizada de provisión técnica focal de τ2, comparada con mantenimiento de configuración basal. Es una especificación de tratamiento para el DGP sintético, no una intervención física ya implementada ni evidencia de que la accesibilidad haya cambiado. OPEN-C10-005, XAUD-001/002, AUD-001/002/011 y los supuestos de atribución permanecen abiertos. No hay freeze, implementación, simulación ni ejecución.
+
+
+---
+
+# 63. Contrato de medición de accesibilidad focal y cambio estructurado ΔT_acc
+
+**Estado:** propuesta de especificación de medición y reconciliación; no aprobada ni congelada. No autoriza implementación, simulación o ejecución.  
+**Dependencias:** §§26.2, 43.3–43.4, 58.5–58.6, 60–62; C10-D1 §27; XSYNC-138-03; AUD-001/004/005/007; OPEN-C10-005.  
+**Objetivo:** impedir que el éxito técnico de B1, la aplicabilidad, la ejecución o una medición observada se confundan con la accesibilidad verdadera o con el cambio transformacional completo.
+
+## 63.1. Distinciones normativas
+
+Se mantienen cinco objetos diferentes:
+
+1. **C_dep***: estado verdadero de los componentes técnicos de provisión de la dependencia focal. Es evidencia de mecanismo, no constructo completo de accesibilidad.
+2. **A_f***: estado verdadero de accesibilidad de la transformación focal τ2, derivado de la representación estructural completa y de las condiciones de realizabilidad.
+3. **A_f,obs**: clasificación observada/estimada por el analizador a partir de evidencia disponible; puede contener error o indeterminación.
+4. **D_f***: apertura focal basal-post, definida por transición verdadera de inaccesible a accesible.
+5. **ΔT_acc***: diferencia estructurada entre snapshots completos de accesibilidad; no se reduce a A_f* ni D_f*.
+
+La notación estrella indica verdad del DGP/evaluador en el experimento sintético, no una variable que el analizador pueda observar directamente. En un estudio empírico, la verdad puede no ser identificable y debe informarse como tal.
+
+## 63.2. Predicado estructural de accesibilidad focal
+
+Para unidad i, transformación canónica τ2 y snapshot t, se propone:
+
+A_f^*(i,t)=1 si y solo si todos los predicados siguientes están respaldados en el snapshot y bajo la frontera, granularidad, horizonte y reglas versionadas:
+
+- **ID**: identidad canónica y versión de τ2 inequívocas y compatibles con el catálogo.
+- **REL**: relaciones, dependencias y canales requeridos para invocar τ2 existen, están activos y conectan los componentes pertinentes.
+- **COND**: condiciones/precondiciones de realizabilidad aplicables se satisfacen en el estado/contexto t.
+- **AUTH**: autorización/credenciales pertinentes están vigentes y permiten el acceso focal.
+- **RES**: recursos requeridos están disponibles o asignados a i en la ventana definida, sin asumir disponibilidad desde capacidad nominal.
+- **DEP**: dependencias necesarias, incluidas externas, están dentro de la frontera o inventariadas y verificadas.
+- **BLOCK**: no existe bloqueo, incompatibilidad o restricción activa que impida el acceso focal.
+- **VALID**: evidencia, cobertura, temporalidad, identidad y versión del snapshot son suficientes para emitir un juicio.
+
+A_f^*=0 solo cuando al menos un predicado necesario está respaldadamente incumplido y la cobertura permite descartar que otra ruta de invocación válida satisfaga la definición focal adoptada. Si no puede decidirse por falta de cobertura, conflicto de fuentes o granularidad incompatible, el estado verdadero se conserva como indeterminado en el DGP de referencia; el analizador reporta A_f,obs=?.
+
+La definición es focal a τ2 y al contrato de acceso/invocación. No exige que exista una demanda concreta, que τ2 sea aplicable al estado S0, que alguien la conozca, seleccione o ejecute, ni que produzca Outcome/Value favorable.
+
+## 63.3. Relación entre C_dep* y A_f*
+
+C_dep* = C_install* ∧ C_integrity* ∧ C_compat* ∧ C_oper* sigue siendo el contrato de provisión técnica introducido en §62.
+
+- C_dep*=0 implica que el mecanismo de provisión focal no ha satisfecho su contrato; no basta por sí solo para clasificar A_f*=0 si existe otra ruta válida de acceso a la misma τ2 dentro de la frontera.
+- C_dep*=1 no implica A_f*=1: pueden fallar AUTH, RES, REL, COND, DEP, BLOCK o VALID.
+- A_f*=1 puede existir sin que B1 haya sido recibido si otra provisión basal/alternativa hace τ2 accesible; esas unidades se tratan según elegibilidad basal y no se convierten retrospectivamente en aperturas.
+- La atribución de un cambio A_f* a B requiere comparar potenciales bajo B0/B1 y separar vías alternativas; no se deduce de la coincidencia temporal.
+
+Así se resuelve la posible lectura excesiva de la cadena de §62: C_dep* es un mediador técnico/proxy de mecanismo, nunca un sustituto definitorio de A_f*.
+
+## 63.4. Aplicabilidad, ejecución y estados de acceso
+
+Se mantienen separadas:
+
+- **A_f***: τ2 está disponible y realizable como transformación accesible bajo el contrato focal.
+- **App_f**: τ2 es aplicable al estado inicial S0 y a la demanda/objetivo concreto.
+- **Know_f / Consider_f**: el agente conoce o considera τ2.
+- **Select_f**: τ2 es seleccionada.
+- **Exec_f**: τ2 se inicia o ejecuta.
+- **Outcome/Value**: consecuencias observadas y valoración contextual.
+
+Por tanto, son estados coherentes A_f*=1 con App_f=0, con Know_f=0, con Select_f=0 o con Exec_f=0. La no ejecución no prueba inaccesibilidad. Una ejecución observada no se usa para reconstruir retrospectivamente A_f*.
+
+## 63.5. Medición observada y validación
+
+El analizador recibe evidencia y snapshots; no recibe los campos de verdad del generador (A_f*, C_dep*, D_f*, T_acc* ni ΔT_acc*). Debe producir A_f,obs∈{1,0,?}, con:
+
+- regla de clasificación versionada y ciega a Z/B, selección, ejecución, Outcome y Value;
+- fuentes, timestamps, cobertura, identidad/versión, procedencia y hashes;
+- matriz de desacuerdos y adjudicación independiente;
+- sensibilidad/especificidad por brazo/versión/tiempo solo cuando una submuestra de validación con selección conocida permita estimarlas;
+- si la validación es imperfecta, probabilidades desconocidas o no representativa, límites/análisis de sensibilidad, no estimaciones puntuales ficticias;
+- propagación de incertidumbre de referencia y del propio analizador.
+
+El evaluador conserva la verdad del DGP en un canal separado para calcular error de medición y sesgo. Nunca se filtra al analizador durante la clasificación.
+
+## 63.6. Apertura focal D_f* y primera etapa
+
+Se conserva la definición:
+
+D_f^*(i)=I(A_{f,base}^*(i)=0 ∧ A_{f,post}^*(i)=1).
+
+La elegibilidad primaria requiere A_f,base*=0 respaldado antes de Z. Si el estado basal es indeterminado, la unidad no se reclasifica como elegible confirmada; se informa en una categoría de incertidumbre conforme al protocolo de selección. Si A_f,base*=1, no existe apertura basal-post, aunque pueda existir accesibilidad focal.
+
+Reportar separadamente:
+
+- ITT_Df* = E[D_f*|Z=1]−E[D_f*|Z=0], calculable por el evaluador en simulación con verdad conocida;
+- ITT_Df,obs, el contraste sobre la medición observada, con incertidumbre y corrección/límites según validación;
+- tasa de C_dep*, para evaluar mecanismo de provisión;
+- matriz de clasificación basal/post y errores diferenciales.
+
+No sustituir ITT_Df* por ITT_Df,obs sin declarar el error. Una primera etapa sobre C_dep* no es primera etapa de accesibilidad.
+
+## 63.7. ΔT_acc*: snapshots y diferencia estructurada
+
+Para cada unidad i y tiempo t, el snapshot contiene al menos:
+
+- U_acc: identidades canónicas/versiones de transformaciones y estado accesible/inaccesible/indeterminado;
+- R_acc: relaciones tipadas/dirigidas, extremos, condiciones, estado y evidencia;
+- C_acc: condiciones/configuraciones de realizabilidad, ámbito, temporalidad y procedencia;
+- Validity: identidad, versión, evidencia, cobertura y estado epistémico;
+- State/context: estado e historia necesarios para interpretar realizabilidad, sin usar Outcome/Value como criterio.
+
+La diferencia basal-post se registra como:
+
+ΔT_acc^*(i)=(ΔU, ΔR, ΔC, ΔValidity, ΔState).
+
+Cada componente identifica altas, bajas, cambios de versión/definición, relaciones añadidas/retiradas/reconfiguradas, condiciones/configuraciones modificadas, cambios de validez/cobertura y variaciones relevantes del estado/contexto. Cada evento conserva objeto antes/después, momento, fuente, regla de comparación y evidencia.
+
+Los snapshots solo se comparan si coinciden o se transforman explícitamente a una identidad/versionado, frontera, granularidad G, catálogo y reglas compatibles. De lo contrario, la diferencia es indeterminada o requiere una correspondencia versionada; no se fuerza un diff.
+
+La proyección focal h_f(ΔT_acc*)=D_f* se permite únicamente bajo el contrato focal y snapshots comparables. No conserva cambios no focales. En consecuencia:
+
+- D_f*=1 no implica ΔReach>0, selección, ejecución ni Value positivo.
+- ΔT_acc*≠0 no implica D_f*=1.
+- D_f*=0 no implica ΔT_acc*=0.
+- La ausencia de cambio focal no autoriza a descartar cambios relacionales/configuracionales no focales.
+
+## 63.8. Auditoría de atribución y vías alternativas
+
+Para cada unidad se registran por separado los cambios en autorización, recursos, capacidad, información/conocimiento, dominio/precondiciones, dependencias, alternativas y bloqueos. Si B cambia una de estas vías además de la provisión focal, el tratamiento se reevalúa como paquete o efecto conjunto.
+
+Una alternativa funcional puede mantener F* realizable sin τ2; esto no hace τ2 accesible ni inaccesible por sí solo. La accesibilidad de τ2 y la substituibilidad funcional de F* se adjudican como constructos separados. La ruta alternativa debe registrarse en el snapshot y en el universo/granularidad/horizonte declarados.
+
+## 63.9. Criterios de aceptación y límites
+
+Antes de congelar medición deben resolverse: definición exacta del contrato de invocación de τ2; predicados constitutivos por clase de transformación; frontera y cobertura; regla de ausencia respaldada frente a indeterminación; granularidad/catálogo/versionado; ventanas temporales; fuentes y estándares E1–E4; adjudicación; selección de validación; error diferencial; reglas para dependencias externas y alternativas; fixtures y pruebas adversariales.
+
+**Dictamen:** se propone que A_f* sea un juicio estructural focal derivado de snapshots completos y predicados de realizabilidad; C_dep* es evidencia del mecanismo de provisión, no proxy suficiente. ΔT_acc* permanece estructurado y más amplio que D_f*. Esta especificación armoniza §§26.2, 43.3 y 58.6 sin cerrar XSYNC-138-03 ni AUD-001/004/005/007. OPEN-C10-005 y las decisiones de umbral/adjudicación permanecen abiertas. No hay freeze, implementación, simulación ni ejecución.
