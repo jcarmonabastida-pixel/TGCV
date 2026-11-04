@@ -250,3 +250,25 @@ La fuente especifica que las pruebas son propuestas, no ejecutadas. La sección 
 Aserciones: (1) población P*_tau2 basal con A_f,base*=0; (2) intento, éxito, verificación, A_f,post* y D_f se almacenan por separado; (3) p_z corresponde al estado final verificado, no al intento; (4) A_f,post* coincide probabilísticamente con C_dep,post solo si el resto de condiciones focales está satisfecho; (5) el generador no asigna directamente A desde Z; (6) D1 exige justificar provisión ordinaria en control; (7) .20/.80 son objetivos del DGP, no resultados.
 
 Estado: contrato candidato definido documentalmente; fixtures, oráculos, tolerancias y pruebas no implementados ni ejecutados.
+
+
+## 15. Pruebas de aceptación documental de B y calibración D1/D2
+
+| ID | Prueba | Criterio de aceptación propuesto |
+|---|---|---|
+| B-01 | Asignación | Z y versión B asignada se registran antes de cualquier intento |
+| B-02 | Oferta/recepción | B asignada, ofrecida y recibida son campos distintos |
+| B-03 | Intento | W_attempt coincide con la regla D1/D2 (.25/1 o 0/1) en el DGP |
+| B-04 | Éxito conjunto | P(C_dep=1 dado W_attempt=1)=.80 en la factorización candidata |
+| B-05 | Componentes | Instalación, integridad, compatibilidad y operatividad se conservan por separado |
+| B-06 | Calibración final | C_dep final reproduce .20/.80 en D1 y 0/.80 en D2 |
+| B-07 | Baseline | C_dep,base=0 y A_f,base*=0 antes de Z en la población de apertura |
+| B-08 | No filtración | Analizador no recibe latentes ni parámetros generadores |
+| B-09 | Crossover | Provisión fuera de la versión asignada se identifica como crossover, no se reclasifica el brazo |
+| B-10 | Vías colaterales | DGP aislado mantiene invariantes; adversarial introduce y detecta vías |
+| B-11 | Accesibilidad | A_f* se deriva de C_dep y demás predicados; no se copia de Z/W |
+| B-12 | Primera etapa | Diferencia de C_dep y de D_f se reporta por separado; no se asumen idénticas |
+| B-13 | D2 | Control sin intento focal; no se confunde D2 con D1 |
+| B-14 | Versionado | Módulo, protocolo, umbrales, actor y fecha quedan identificados |
+
+**Estado:** contrato de pruebas propuesto; no implementado ni ejecutado. La prueba B-04 valida la factorización propuesta, no prueba que sea la única o científicamente correcta.
