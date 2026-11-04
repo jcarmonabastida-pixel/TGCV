@@ -259,3 +259,12 @@ La sección 184 es solo una propuesta de siguiente paso y queda fuera de la fuen
 El registro de pruebas `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md` incorpora ahora las tablas completas recuperadas P182-01…12 y P183-01…13, con sus criterios de aceptación textuales. Esto sustituye la descripción anterior de “solo IDs y resumen” en cuanto a la disponibilidad documental de esas fichas.
 
 El cambio es documental: los criterios todavía deben convertirse en fixtures, entradas/salidas, tolerancias, códigos de fallo y evidencia reproducible. Todas las pruebas siguen propuestas y no ejecutadas. La sección 183 requiere además dictámenes separados para ITT-O, ITT por dimensión de V, mediación por A, LATE-V, efecto residual e índice agregado si existe.
+
+
+## 14. Corrección de precedencia tras auditoría integral (2026-11-04)
+
+La recomendación de §6.2 S4R-08 (DGP limpio p0=0, p1=.80, relegando p0>0 a contaminación) queda sustituida para la especificación candidata, no borrada: D1 principal condicionado tiene C_dep,base=0, p0=.20 y p1=.80 postasignación, primera etapa .60; D2 contraste tiene p0=0 y p1=.80, primera etapa .80. D1 no es contaminación si la provisión ordinaria en control es parte del comparador preespecificado. Si no, no se acepta como principal.
+
+G0: la fuente 165–183 fue recibida y examinada; persistencia íntegra del DOCX y transcripción literal completa siguen pendientes. P182-01…12 y P183-01…13: criterios recuperados e incorporados al registro; definidos documentalmente, no implementados ni ejecutados. XSYNC-138-01…10: contenido localizado en el documento maestro histórico; revisión independiente y resolución formal pendientes. El capítulo 53 y la auditoría integral armonizan la especificación candidata, pero no cierran automáticamente AUD/XAUD ni G1–G7.
+
+Estado: especificación candidata armonizada; decisiones científicas no aprobadas; contratos incompletos; revisión independiente no realizada; no freeze, implementación ni ejecución.
