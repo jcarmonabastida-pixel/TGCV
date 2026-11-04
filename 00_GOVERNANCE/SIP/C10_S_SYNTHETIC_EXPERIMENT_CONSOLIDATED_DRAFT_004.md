@@ -4,7 +4,7 @@
 **Estado:** DRAFT / PROPUESTA METODOLÓGICA — NO APROBADA / NO IMPLEMENTADA / NO EJECUTADA  
 **Ámbito:** C10 — contribución causal de los cambios en transformaciones accesibles a Value  
 **Relación:** Documento complementario a `C10_D1_CAUSAL_ACCESSIBILITY_VALUE_PROTOCOL_DRAFT_001.md`  
-**Naturaleza:** consolidación normalizada de las decisiones, especificaciones, escenarios, contratos, pruebas y auditorías desarrollados conversacionalmente en C10-S hasta la sección 164. No es una transcripción literal.  
+**Naturaleza:** consolidación normalizada del desarrollo C10-S hasta la sección 164, con recuperación e integración documental de las secciones conversacionales 165–183 en §§52–53. No es una transcripción literal íntegra de las conversaciones ni de la fuente DOCX.  
 **Efecto sobre el estado científico:** ninguno. No modifica TGCV Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres experimentales.  
 **Restricciones:** no autoriza implementación, ejecución, simulación, selección definitiva de caso real, adquisición/procesamiento de datos, preregistro ni contacto con autores o instituciones.
 
@@ -2000,6 +2000,8 @@ Z_g → B_g → W_g → C_dep → A_f* → ΔT_acc.
 - A_f_obs es la medición que recibe el analizador; puede coincidir con A_f* en el escenario de medición perfecta o tener error en S6-N/S6-V.
 
 Las probabilidades .20/.80 son parámetros del generador. Antes de congelar S4-R se debe comprobar que la política las induce efectivamente y que el mecanismo de verificación no introduce clasificación diferencial.
+
+**Nota de precedencia incorporada en la auditoría integral:** la parametrización preliminar `W_g ~ Bernoulli(p_g)` no debe leerse como cadena generativa final. `p_g` se refiere al estado final verificado, no al intento; la cadena separada `W_attempt → S_install → C_dep` de §31.4 y el D1/D2 del capítulo 53 gobiernan la especificación candidata.
 
 ### 30.3. Qué se mantiene constante
 
