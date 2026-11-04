@@ -6699,3 +6699,92 @@ El ITT por Z estima el efecto de asignación a la política concreta. LATE_f/Wal
 - Aprobación expresa de OPEN-C10-001/005 antes de freeze o ejecución.
 
 **Dictamen:** la semántica D1/D2 y la distinción intento/éxito/estado final quedan reconciliadas documentalmente como propuesta. No se acepta todavía D1 como comparador definitivo, no se cierra OPEN-C10-001/005 y no se autoriza implementación, simulación ni ejecución.
+
+
+---
+
+# 66. Adjudicación del comparador D1/D2: objetivo del contraste y regla de selección
+
+**Estado:** auditoría de diseño y recomendación condicionada; no constituye decisión aprobada ni freeze.  
+**Base:** §§52.2–52.4, 53.4–53.9, 54.1–54.7 y 65; DGP §§3.1–3.4, 21–25; S4-R §§17–18.  
+**Pregunta:** qué comparador responde al objetivo científico del experimento sintético C10-S sin confundir efecto de política con efecto atribuible a accesibilidad.
+
+## 66.1. Hallazgo de la auditoría
+
+La recuperación histórica recomienda D1 como principal solo si se justifica que la provisión focal de baja frecuencia en control forma parte del régimen ordinario relevante. La documentación disponible conserva los valores D1 (.25 intentos; .20 estado técnico final) y D2 (0 intentos; 0 estado técnico final), pero no aporta todavía una fuente externa, institucional o empírica que establezca que .25/.20 representa un régimen ordinario objetivo para la población del experimento.
+
+Por tanto, la condición que permitiría elevar D1 a comparador principal no está satisfecha en el expediente actual. La recomendación histórica se conserva como condicional, no como una selección vigente.
+
+## 66.2. Dos objetivos científicos diferentes
+
+| Objetivo del contraste | D1 | D2 |
+|---|---|---|
+| Efecto incremental frente a una política ordinaria de provisión | Adecuado si el régimen ordinario está justificado ex ante | No representa ese contraste |
+| Efecto de introducir provisión focal frente a no iniciarla | Contraste atenuado por provisión basal post-Z | Contraste directo entre provisión programada y ausencia de intento focal |
+| Primera etapa objetivo de C_dep | .60 | .80 |
+| Interpretación | Cambio de intensidad de una política existente | Apertura de provisión focal frente a no provisión focal |
+| Requisito decisivo | Justificar la política ordinaria de control | Justificar que ausencia de provisión es el comparador pertinente |
+
+La diferencia no es simplemente potencia estadística. D1 y D2 definen políticas, contrastes y poblaciones de cumplidores potencialmente distintos.
+
+## 66.3. Recomendación para el experimento sintético mecanístico
+
+Mientras no exista una justificación verificable del régimen ordinario D1, recomiendo:
+
+1. Mantener **D2 como candidato preferente a contraste primario** para el experimento sintético cuyo objetivo es aislar la apertura de la provisión focal frente a ausencia de intento.
+2. Mantener **D1 como escenario secundario de política incremental**, útil para evaluar qué ocurre cuando la provisión focal ya existe con baja frecuencia en el control.
+3. No denominar «contaminación» a la provisión de control D1 cuando forma parte de la política B_g0^D1 asignada y preespecificada. La contaminación/crossover se reserva para recepción de componentes o versiones fuera de la política asignada.
+4. No combinar ni promediar los ITT de D1 y D2 como si fueran el mismo estimando.
+5. No asumir que los Wald/LATE de ambos escenarios representan el mismo estrato de cumplidores: cada contraste induce una primera etapa y una población de cumplidores potencialmente distintas.
+
+Esta recomendación es una regla de diseño provisional. D2 no queda seleccionado ni aprobado por esta sección.
+
+## 66.4. Gates para aceptar D1 como primario
+
+D1 solo podrá pasar a primario si, antes de congelar el DGP, se documenta:
+
+- el régimen ordinario concreto que representa la provisión de control;
+- la fuente y justificación de la frecuencia de intento .25 y del estado final .20, sin derivarlas circularmente de Outcome o Value;
+- la población, periodo y contexto a los que esa política ordinaria es transportable;
+- la equivalencia de módulo, versión, protocolo, actor, recursos por intento y verificación entre brazos;
+- que la diferencia asignada se limita a la frecuencia de intento y que cualquier vía colateral queda identificada como efecto de paquete;
+- la definición de crossover y la evidencia que distinguirá provisión ordinaria asignada de recepción fuera de política.
+
+Si esos gates no se satisfacen, D1 permanece escenario secundario y no puede llamarse comparador ordinario validado.
+
+## 66.5. Gates para aceptar D2 como primario
+
+D2 podrá pasar a primario si se confirma ex ante que:
+
+- el estimando de interés es provisión focal programada frente a ausencia de intento focal bajo control;
+- C_dep,base=0 y A_f,base*=0 están verificados antes de Z en la población de apertura;
+- no existe provisión focal de fondo omitida ni ruta técnica equivalente que haga falso el control «sin provisión»;
+- las condiciones no focales, recursos y reglas de ejecución permanecen comunes;
+- no hay interferencia o spillover no modelado;
+- se preservan por separado intento, éxito técnico, C_dep, A_f*, D_f*, aplicabilidad y ejecución.
+
+Si el control no puede sostener ausencia de provisión, D2 no es el contraste implementado y deberá declararse desviación o crossover, no recodificarse retrospectivamente.
+
+## 66.6. Estimandos y límites de interpretación
+
+Definir, para cada escenario d en {D1,D2}, el ITT de política:
+
+[
+ITT_d = E[Vmid Z=1,D=d]-E[Vmid Z=0,D=d]
+]
+
+y análogamente para Outcome y cada dimensión de Value preespecificada. El ITT_D1 responde al cambio entre provisión ordinaria y programada; el ITT_D2 responde a provisión programada frente a ausencia de intento focal.
+
+La primera etapa se estima separadamente para C_dep, A_f,post*, D_f y el ΔT_acc completo. No sustituir una por otra. Los Wald/LATE se estiman por escenario y solo bajo sus supuestos; no se transportan ni agrupan automáticamente entre D1 y D2.
+
+La asignación Z identifica el efecto de la política asignada bajo aleatorización y consistencia, pero no prueba por sí sola que el efecto opere exclusivamente a través de accesibilidad. Una vía colateral mantiene la interpretación como efecto de paquete y bloquea la atribución focal que requiera exclusión.
+
+## 66.7. Estado resultante
+
+- Semántica D1/D2: reconciliada documentalmente.
+- Legitimidad empírica del régimen ordinario D1: no acreditada en el expediente actual.
+- Recomendación provisional: D2 preferente para el contraste mecanístico; D1 como escenario incremental secundario.
+- Selección del escenario primario: ABIERTA, pendiente de aceptación científica explícita.
+- .80 de éxito condicional: sigue siendo hipótesis de factorización, no parámetro validado.
+- OPEN-C10-001/005: permanecen ABIERTAS.
+- No freeze, implementación, simulación ni ejecución.
