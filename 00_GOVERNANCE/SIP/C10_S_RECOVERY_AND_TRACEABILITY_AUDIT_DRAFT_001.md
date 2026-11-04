@@ -176,3 +176,14 @@ La lectura íntegra de C10-D1 §§5, 17, 24–26 y 30–34 y de C10-S §§43 y 5
 La matriz maestra se actualizó para reflejar esta reconciliación sin marcar como cerrados AUD/XAUD/S4-R. PR #116 se verificó con ocho archivos modificados y permanecía abierto en estado Draft. El número de commits y SHA head son dinámicos y se consultan en el propio PR.
 
 **Dictamen de esta etapa:** la jerarquía de estimandos queda reconciliada como propuesta documental coherente, no aprobada. La contradicción `p0=.20` / `C_dep,base=0` queda convertida en dos alternativas de DGP explícitas, pendientes de decisión. No se ha ejecutado simulación ni experimento.
+
+
+## 12. Corrección de la recuperación XSYNC y búsqueda ampliada (2026-11-04)
+
+Se corrige expresamente la afirmación de la sección 10 según la cual no se había recuperado el texto íntegro XSYNC. La búsqueda de contexto dentro del documento canónico C10-S consolidado identificó el texto de los diez hallazgos en §25.2, así como las respuestas/estados en §§25.3–25.4, 26.6–26.10, 27.6–27.8 y 28.8–28.9.
+
+Se ha creado `C10_S_XSYNC_138_CLOSURE_TRACKER_DRAFT_001.md`, que registra los diez hallazgos, severidad, respuesta ya incorporada, pendiente de cierre y criterio de aceptación. Dictamen corregido: **texto XSYNC-138-01…10 recuperado en GitHub; cierre formal no alcanzado; pruebas no ejecutadas**.
+
+También se revisó el conjunto de ramas disponible en el repositorio. Las ramas de investigación C10 visibles son `research/c10-d1-protocol-draft` y `research/c10-s-consolidation-draft`; no se identificó una rama adicional de C10-S que contuviera secciones conversacionales 165–183. El documento C10-S consolidado inspeccionado llega a la sección conversacional 164. La búsqueda de XSYNC no debe confundirse con recuperación de 165–183: son lagunas documentales distintas.
+
+La corrección no altera los límites históricos: las secciones 165–183 siguen sin fuente íntegra identificada en las ramas y PR consultados. No se ha inferido su contenido ni se han reconstruido como texto original.
