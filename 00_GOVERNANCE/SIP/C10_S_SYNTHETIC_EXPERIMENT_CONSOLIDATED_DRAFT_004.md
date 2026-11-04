@@ -7012,3 +7012,96 @@ El analizador no recibe (p_{abcd}), s, truth de componentes ni estado verdadero 
 Queda demostrado que s=.80 no identifica la distribución de fallos parciales. El DGP necesita una tabla conjunta de 16 patrones o un generador equivalente explícito. Las familias y la cuadrícula de sensibilidad son propuestas para diseñar pruebas, no decisiones confirmatorias.
 
 No se selecciona una distribución, no se fija s, no se aprueba independencia ni una estructura de dependencia, no se selecciona D1/D2 como primario y no se valida empíricamente el mecanismo. Siguen abiertas la calibración con datos, la heterogeneidad, el protocolo de intentos, la observación de fallos, las rutas alternativas y la revisión independiente. No hay freeze, implementación, simulación ni ejecución.
+
+
+---
+
+# 69. Fixtures conjuntos explícitos y propagación de sensibilidad a las primeras etapas
+
+**Estado:** propuesta matemática de fixtures del DGP; no aprobada ni congelada.  
+**Dependencias:** §§67–68; DGP §§26–27; DEC-C10-028.  
+**Propósito:** pasar de familias cualitativas a tablas de probabilidad válidas y comprobar cómo la variación de s afecta a las primeras etapas bajo políticas de intento distintas.
+
+## 69.1. Cuatro fixtures explícitos con s=.80
+
+Orden de bits: C_install, C_integrity, C_compat, C_oper. Cada fila es uno de los 16 patrones; las probabilidades omitidas en una presentación abreviada serían cero, pero aquí se muestran todos para evitar ambigüedad.
+
+| Patrón | Choque común | Fallo simple disperso | Bottleneck instalación | Fallo emparejado |
+|---|---:|---:|---:|---:|
+| 0000 | .20 | .00 | .00 | .00 |
+| 0001 | .00 | .00 | .00 | .00 |
+| 0010 | .00 | .00 | .00 | .00 |
+| 0011 | .00 | .00 | .00 | .10 |
+| 0100 | .00 | .00 | .00 | .00 |
+| 0101 | .00 | .00 | .00 | .00 |
+| 0110 | .00 | .00 | .00 | .00 |
+| 0111 | .00 | .05 | .20 | .00 |
+| 1000 | .00 | .00 | .00 | .00 |
+| 1001 | .00 | .00 | .00 | .00 |
+| 1010 | .00 | .00 | .00 | .00 |
+| 1011 | .00 | .05 | .00 | .00 |
+| 1100 | .00 | .00 | .00 | .10 |
+| 1101 | .00 | .05 | .00 | .00 |
+| 1110 | .00 | .05 | .00 | .00 |
+| 1111 | .80 | .80 | .80 | .80 |
+| **Suma** | **1.00** | **1.00** | **1.00** | **1.00** |
+
+Los cuatro fixtures comparten s=.80, pero sus marginales son diferentes:
+
+| Fixture | m_install | m_integrity | m_compat | m_oper |
+|---|---:|---:|---:|---:|
+| Choque común | .80 | .80 | .80 | .80 |
+| Fallo simple disperso | .95 | .95 | .95 | .95 |
+| Bottleneck instalación | .80 | 1.00 | 1.00 | 1.00 |
+| Fallo emparejado | .90 | .90 | .90 | .90 |
+
+En el fixture de fallo emparejado, 0011 concentra el fallo de instalación e integridad; 1100 concentra el fallo de compatibilidad y operación. Es un fixture de estructura, no una hipótesis sobre mecanismos reales.
+
+## 69.2. Generalización a la cuadrícula s
+
+Para cada fixture se conserva la estructura relativa de la masa residual y se sustituye la celda 1111 por s y la masa de fallo total por (1−s):
+
+- Choque común: p1111=s; p0000=1−s.
+- Fallo simple disperso: p1111=s; p0111=p1011=p1101=p1110=(1−s)/4.
+- Bottleneck instalación: p1111=s; p0111=1−s.
+- Fallo emparejado: p1111=s; p0011=p1100=(1−s)/2.
+
+Las restantes celdas son cero en estos fixtures concretos. Para s∈{.60,.70,.80,.90}, cada tabla suma uno y respeta no negatividad. Esta construcción varía deliberadamente los marginales junto con s; no aísla una variación de s manteniendo fijas las marginales. Una sensibilidad con marginales fijas exige otra familia de tablas y solo es posible para valores de s dentro de los límites de Fréchet.
+
+## 69.3. Propagación a C_dep bajo las políticas de intento D1/D2
+
+Se fija únicamente para este cálculo ilustrativo:
+- una oportunidad de intento por unidad;
+- tasa de intento D1: q0=.25 en control y q1=1 en tratamiento;
+- tasa de intento D2: q0=0 en control y q1=1 en tratamiento;
+- éxito condicional por intento s, igual entre brazos dentro de cada escenario;
+- ausencia basal de C_dep, sin rutas alternativas, reintentos, interferencia ni cambios de otros predicados.
+
+Entonces:
+- D1: P(C_dep,post*=1|Z=0)=.25s; P(C_dep,post*=1|Z=1)=s; FS_Cdep,D1=.75s.
+- D2: P(C_dep,post*=1|Z=0)=0; P(C_dep,post*=1|Z=1)=s; FS_Cdep,D2=s.
+
+| s | D1 control (.25s) | D1 tratamiento (s) | FS D1 (.75s) | D2 control | D2 tratamiento (s) | FS D2 |
+|---:|---:|---:|---:|---:|---:|---:|
+| .60 | .15 | .60 | .45 | .00 | .60 | .60 |
+| .70 | .175 | .70 | .525 | .00 | .70 | .70 |
+| .80 | .20 | .80 | .60 | .00 | .80 | .80 |
+| .90 | .225 | .90 | .675 | .00 | .90 | .90 |
+
+Esto precisa la relación entre el parámetro candidato y los estados finales anteriores: D1 control=.20 solo cuando q0=.25 y s=.80. Si s cambia, el estado de control cambia proporcionalmente; no debe mantenerse .20 fijo mientras se varía s salvo que se esté modificando otro mecanismo. D2 control permanece cero bajo la política de no intento focal y las estipulaciones indicadas.
+
+## 69.4. Alcance y límites de la propagación
+
+Las fórmulas anteriores generan primeras etapas de C_dep, no automáticamente de A_f* ni D_f*. La igualdad requiere las condiciones de §67.4: inaccesibilidad basal confirmada, ruta única, predicados no técnicos satisfechos/invariantes y medición sin error diferencial relevante.
+
+Si la probabilidad de intento depende del brazo y el éxito condicional también depende del brazo, la fórmula general es:
+`P(C_dep,post*=1|Z=z,D=d,E)=q_{zd}s_{zd}`
+bajo una oportunidad y ausencia basal de dependencia. Si hay múltiples intentos, la probabilidad de al menos un éxito requiere modelar el proceso secuencial y la dependencia entre intentos; no es automáticamente (1-(1-s)^n).
+
+La tabla de sensibilidad cambia s y por tanto los estados esperados de C_dep. No simula muestras, no evalúa potencia, no elige tamaño muestral ni estima incertidumbre de muestreo.
+
+## 69.5. Dictamen
+
+Quedan construidos cuatro fixtures explícitos y una propagación analítica de la cuadrícula s hacia FS_Cdep para D1 y D2. Se identifica una dependencia que debe conservarse: el .20 de control D1 es consecuencia de q0=.25 y s=.80, no un parámetro independiente si s está en sensibilidad.
+
+No se selecciona fixture confirmatorio, no se justifica empíricamente ninguna tabla, no se infiere accesibilidad desde C_dep sin condiciones y no se elige D1/D2 como primario. Las familias mixtas más generales, las marginales fijas, la heterogeneidad y la calibración observacional siguen abiertas. No hay freeze, implementación, simulación ni ejecución.
