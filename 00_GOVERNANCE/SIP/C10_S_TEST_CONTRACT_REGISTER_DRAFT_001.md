@@ -628,3 +628,21 @@ Estado: contratos propuestos; fixtures no implementados ni ejecutados.
 | FIX-12 | Sin simulación | Fixtures analíticos no se presentan como resultados de réplicas |
 
 Estado: contratos documentales propuestos; no implementados ni ejecutados.
+
+
+## 31. Contratos del Bloque 1 — régimen q, intervención B y atribución causal
+
+| ID | Fixture/verdad DGP | Aserción del analizador | Fallo que debe detectar |
+|---|---|---|---|
+| CAUS-01 | Z aleatoriza B; B cambia A_f* y no altera otras vías | Informa ITT_Z/ψ_B; solo etiqueta θ_Af(q*) si el contrato de aislamiento, q y versiones está satisfecho | Etiqueta cualquier ITT como efecto puro de accesibilidad |
+| CAUS-02 | B altera C_auth además de provisión técnica | Informa efecto de paquete/conjunto o no identificación focal | Oculta C_auth dentro de A_f* y atribuye el paquete a accesibilidad |
+| CAUS-03 | q_X* común con soporte insuficiente en un estrato para g1 o g0 | Marca θ_A(q) no identificable/no evaluable en ese soporte o restringe población con nuevo estimando explícito | Extrapola fuera del soporte o elimina unidades postratamiento |
+| CAUS-04 | q_L* post-Z es mediador inducido por B | Conserva el efecto ITT total y no ajusta mecánicamente por el mediador | Condiciona por mediador y lo presenta como efecto directo |
+| CAUS-05 | B modifica costes, calidad, seguridad, latencia, información o alternativas | Conserva ITT de política; retira atribución focal salvo estrategia válida | Presenta Wald/ITT como θ_A pese a vía directa |
+| CAUS-06 | C_auth=0 basal y B no la modifica | Clasifica unidad fuera de la población focal elegible, según contrato aprobado | Atribuye a B una apertura imposible por condición constitutiva |
+| CAUS-07 | C_auth=0 basal y B sí la modifica | Clasifica intervención como conjunta/autorización+provisión | La llama intervención pura de provisión técnica |
+| CAUS-08 | D1 y D2 inducen first stages/compliers distintos | Reporta ITT, FS y LATE por escenario | Agrupa o transporta automáticamente Wald/LATE entre escenarios |
+| CAUS-09 | Exclusión falla con verdad DGP conocida | Reporta ITT de política y no identifica LATE_f puro | No detecta vía directa |
+| CAUS-10 | A_f* cambia sin que se ejecute τ2 | Reconoce apertura de accesibilidad sin ejecución | Define accesibilidad por ejecución observada |
+
+Estos son contratos especificados documentalmente; no se han generado fixtures ni ejecutado pruebas. Requieren verdad oculta, versiones, entradas/salidas, tolerancias y revisión para cerrar AUD-003.
