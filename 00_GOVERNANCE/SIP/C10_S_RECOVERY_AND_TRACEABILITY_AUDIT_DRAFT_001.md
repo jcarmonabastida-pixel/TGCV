@@ -214,3 +214,10 @@ La búsqueda de fuentes se amplió a las ramas disponibles del repositorio, PR a
 El texto XSYNC sí quedó localizado y documentado en la sección 12 y en el tracker específico; no debe seguir figurando como laguna de recuperación. La laguna 165–183 permanece separada y abierta.
 
 Verificación final de este corte: PR #116 abierto y Draft, diez archivos modificados, 68 commits; sin comentarios, reviews ni hilos de revisión registrados. Head observado en la consulta: `d444825916d3a34e0c518db3542017cb1258bfd8`. Estos datos son una instantánea y deben consultarse en la ficha del PR para cualquier corte posterior.
+
+
+## 16. Ampliación de contratos de atribución y cobertura XSYNC (2026-11-04)
+
+El registro `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md` se amplió con POL-01…10 para convertir en pruebas discriminantes las condiciones de atribución del ITT_Z a `θ_Af(q*)`, la detección de vías directas/paquete, factibilidad y soporte, separación de q/Value, el estado no formalizado de `θ_A^dyn`, la separación de dictámenes C10-S/C10-D1, la regla δ/ε y los límites de cobertura del enumerador.
+
+Se actualizó la matriz maestra para mapear estos contratos a los hallazgos XSYNC. El mapeo no implica cierre: los tests siguen sin fixtures ejecutables, implementación, tolerancias aprobadas o ejecución.
