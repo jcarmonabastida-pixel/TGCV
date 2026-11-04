@@ -136,3 +136,31 @@ La búsqueda realizada no ha localizado una fuente canónica íntegra para las s
 Está recuperada y verificada la cadena canónica C10-D1 (PR #115) → C10-S (PR #116) hasta la sección conversacional 164, junto con sus auditorías y límites. No se ha recuperado íntegramente el material conversacional 165–183. La documentación disponible permite continuar la reconciliación sin reiniciar el trabajo, pero no permite certificar que el protocolo completo posterior a la sección 164 esté persistido ni congelar el diseño.
 
 Este informe es un registro documental de recuperación. No constituye aceptación científica, auditoría independiente, freeze, preregistro, implementación ni ejecución.
+
+
+## 10. Ampliación de la recuperación y matriz maestra de cierre (2026-11-04)
+
+Se ha realizado una nueva revisión de PR #115 y PR #116, de los cinco archivos incluidos en PR #116, del historial de comentarios, revisiones e hilos del PR #116 (sin registros), y búsquedas en el repositorio para referencias de las pruebas P182/P183 y material C10-S posterior a la sección 164. No se ha localizado una fuente primaria íntegra adicional para 165–183 ni el texto íntegro de XSYNC-138-01…10.
+
+Se ha creado el artefacto de control:
+
+- `00_GOVERNANCE/SIP/C10_S_CLOSURE_CONTROL_MATRIX_DRAFT_001.md`
+- Commit de creación: `15e5dfe577909705eec067bb8b182def64e1a96c`
+- Rama: `research/c10-s-consolidation-draft`
+- PR: #116.
+
+La matriz reúne:
+1. inventario de fuentes y cobertura;
+2. estado de recuperación 165–183;
+3. reconciliación C10-D1 ↔ C10-S;
+4. registro AUD-001…012 y XAUD-001…007;
+5. decisiones y contradicciones abiertas de S4-R;
+6. inventario de contratos EQ/EX/TG/SR/CV/V, INT, S4R y P182/P183;
+7. límites de recuperación XSYNC;
+8. gates G0–G7 y secuencia de cierre.
+
+La matriz no transforma resúmenes en fuentes originales ni cierra hallazgos por inferencia. El estado global permanece **CIERRE DOCUMENTAL NO ALCANZADO**. En particular, la contradicción entre p0=.20 y C_dep,0=0, la coherencia q/g, la distinción ITT frente a efecto específico de accesibilidad, los contratos de pruebas y la revisión independiente siguen abiertos.
+
+La nueva búsqueda no permite afirmar que las fuentes 165–183 no existan fuera de GitHub; únicamente que no se han recuperado desde las fuentes consultadas. Para cerrar la recuperación literal se necesita la exportación original de las conversaciones o los artefactos fuente que contengan esas secciones y los hallazgos XSYNC.
+
+No se ha ejecutado código, simulación ni experimento. No se ha autorizado implementación, selección de caso real, adquisición/procesamiento de datos o preregistro. No se han modificado Core, RMA, Evidence→Claim Matrix, STATUS ni claims.
