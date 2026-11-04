@@ -417,3 +417,23 @@ La ecuación candidata depurada se documenta en el capítulo 59 del maestro. No 
 10. Alternativas funcionales F* y accesibilidad de τ2 se clasifican separadamente.
 11. Si B modifica AUTH/RES/capacidad/conocimiento/rutas alternativas u otras vías, reclasificar como paquete o efecto conjunto.
 12. No fijar umbrales, fixtures, cobertura ni error de medición sin protocolo ex ante. No freeze/ejecución.
+
+
+## 23. Reconciliación temporal-causal de condiciones y roles
+
+**Estado:** propuesta, no aprobada ni congelada. Complementa §§2–4 y 17–22.
+
+1. Clasificar por componente, unidad, objeto, nivel, tiempo, versión y rol causal. Una condición puede ser constitutiva de A_f* y ser basal en t−1 o mediadora si cambia después de Z.
+2. t−1 sella población, frontera, versión τ2, q_X*, alternativas, condiciones basales, elegibilidad, A_f,base* y T_acc,base*. Nunca reconstruirlos desde post-Z.
+3. t0 asigna Z; t1 registra B asignada/recibida, intento y versión; t2 verifica provisión y registra separadamente C_dep, C_auth, recursos, capacidad, información y co-intervenciones; t3 mide A_f,post*/A_f,obs, T_acc y App_f antes de conocimiento, selección, inicio y ejecución.
+4. t4 Reach/Π_H; t5 conocimiento/consideración; t6 selección/inicio; t7 ejecución; t8 Outcome; t9 Value. Cambios posteriores crean snapshots nuevos e inmutables.
+5. C_dep puede ser afectado por B; C_auth, recursos, capacidad no focal, información técnica no focal y dominio se mantienen basales/invariantes en el primario. Si cambian, registrar mediación/co-intervención y revisar interpretación como paquete.
+6. Recursos: separar stock, disponibilidad/asignación, demanda y consumo. Capacidad: instalada, slots, disponibilidad temporal y carga. Información: configuración técnica frente a mensajes/formación/conocimiento. Dominio: tipo de objeto frente a precondiciones S0.
+7. Precondiciones S0 pertenecen a App_f, no A_f*. K/consideración/selección/ejecución son downstream.
+8. VALID/cobertura pertenece al proceso epistémico; si B cambia observabilidad, modelar missingness/error diferencial.
+9. No ajustar ITT por mediadores post-Z. Confusores temporales afectados por tratamiento requieren método/estimando longitudinal explícito.
+10. **Pendiente B:** §62 describe B0/B1 como ausencia frente a provisión, mientras §3.1 conserva políticas probabilísticas con p0=.20 y p1=.80. Decidir entre políticas estocásticas de distinta intensidad o brazos deterministas con incumplimiento estocástico; alinear asignación, recepción, intento, éxito, C_dep y estimandos.
+11. La intervención histórica sobre C_auth es alternativa distinta; no mezclarla con provisión focal primaria mientras C_auth sea basal/invariante.
+12. No modificar .20/.80 ni asumir equivalencia entre contratos sin decisión explícita.
+
+No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación material de B. No freeze/ejecución.
