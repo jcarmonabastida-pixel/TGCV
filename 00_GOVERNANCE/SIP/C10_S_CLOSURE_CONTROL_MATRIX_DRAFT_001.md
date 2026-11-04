@@ -431,3 +431,20 @@ OPEN-C10-005 y XAUD-001/002 permanecen ABIERTOS. La especificación no es un tra
 | OPEN-C10-001/005 | ABIERTAS | Aprobación, materialización y revisión independiente |
 
 La ambigüedad semántica entre «política probabilística» y «brazo determinista» queda aclarada: las políticas regulan la probabilidad de intento y el éxito técnico es posterior; los valores .20/.80 son probabilidades de estado final C_dep. No queda aprobado el comparador ni la tasa de éxito condicional.
+
+
+## 27. Selección D1/D2 — estado de legitimidad y cierre
+
+| Elemento | Estado | Evidencia/pendiente |
+|---|---|---|
+| D1 como contraste incremental | DEFINIDO | Provisión programada frente a provisión ordinaria |
+| Justificación del régimen ordinario D1 | NO ACREDITADA | Fuente, frecuencia .25/.20, población y contexto |
+| D2 como contraste mecanístico | DEFINIDO | Provisión programada frente a ausencia de intento focal |
+| D2 como candidato preferente provisional | RECOMENDADO, NO APROBADO | Depende de objetivo explícito y ausencia de provisión de fondo |
+| ITT_D1 / ITT_D2 | DISTINTOS | No agrupar ni promediar |
+| Primera etapa | PENDIENTE POR VARIABLE Y ESCENARIO | C_dep, A_f,post*, D_f, ΔT_acc |
+| LATE/Wald | PENDIENTE POR ESCENARIO | No asumir mismos cumplidores ni exclusión |
+| Selección primaria | ABIERTA | Aceptación científica explícita |
+| OPEN-C10-001/005 | ABIERTAS | Política, mecanismo, calibración y revisión independiente |
+
+La recomendación no cambia retrospectivamente los datos ni parámetros históricos. D1 no se descarta; se retira únicamente su presunción de primario mientras falte justificación del régimen ordinario.
