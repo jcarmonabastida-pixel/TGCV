@@ -368,3 +368,18 @@ La ecuación candidata depurada se documenta en el capítulo 59 del maestro. No 
 7. ΔT_acc(i) y ΔT_cap se registran separadamente. Cambio de capacidad no garantiza acceso de cada unidad; cambio de asignación puede modificar T_acc sin cambiar T_cap.
 8. No agregar por unión ni promedio sin estimando/regla explícitos. Outcome/Value de sistema requieren regla de agregación independiente.
 9. Pendientes: frontera, unidad, recursos, rivalidad, proveedores externos, nivel de Z/B y Outcome/Value, interferencia y agregación. No cierra AUD-010/011, XAUD-001…004 ni OPEN-C10-004.
+
+
+## 20. Contrato candidato de frontera, unidad e intervención primaria
+
+**Estado:** propuesta de armonización de §§14–15 y 19; no aprobada.
+
+1. **Unidad:** para el DGP primario aislado, UE=UA=unidad causal i=instancia sintética completa e independiente; UO son snapshots T0–T9 de esa misma instancia.
+2. **Frontera:** B_sys contiene arquitectura, dependencia τ2, interfaces, autorización basal, recursos/capacidad pertinentes e información técnica integrada. Toda dependencia externa se incorpora explícitamente o se declara con proveedor, versión, disponibilidad y contrato.
+3. **Niveles:** T_cap y T_acc pueden coincidir operacionalmente solo si la instancia completa es la unidad y no hay subunidades con acceso diferenciado. La igualdad no se generaliza; si aparecen subunidades, se reabre el diseño multinivel.
+4. **Intervención:** Z_i asigna B_i; B es la política material de provisión técnica focal. W_attempt, instalación, C_dep, A_f*, A_f_obs y D_f son variables separadas.
+5. **Aislamiento:** B no cambia autorización basal, recursos compartidos, capacidad, conocimiento, incentivos, prioridad, coste, latencia ni calidad/seguridad de ejecución. Si cambia, se declara efecto de paquete salvo diseño adicional.
+6. **q_X*:** distribución objetivo de historias basales; condiciones constitutivas se verifican antes de Z. Ambas políticas deben ser factibles y tener soporte en cada historia con masa positiva; si no, restringir ex ante o declarar no identificación.
+7. **Poblaciones:** P*_τ2 y P*_F se determinan con datos basales pre-Z; P*_F es subconjunto funcional exclusivo.
+8. **Interferencia:** el generador primario no comparte recursos, agentes, información, estado ni canales entre instancias. Escenarios con spillover se mantienen adversariales y requieren clúster/mapa de exposición y estimando compatible.
+9. No se acepta la configuración hasta verificar frontera, mecanismo material de B, q_X*, no interferencia, poblaciones y vías colaterales. OPEN-C10-005 y XAUD-001/002 permanecen abiertos.
