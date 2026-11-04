@@ -509,3 +509,17 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
 7. Por escenario/réplica se reportan semilla, versión generador, tabla 16 celdas, denominadores de intentos/no intentos, marginales, patrones parciales, asociaciones, reintentos, rollback, versiones y heterogeneidad. Truth permanece oculta al analizador.
 8. D1 y D2 se calibran y reportan por separado. Cambios en s no pueden alterar implícitamente tasa de intento, recursos, autorización o vías colaterales; cualquier cambio debe declararse como parte del mecanismo.
 9. No se selecciona tabla ni distribución confirmatoria, no se valida s, no se aprueba independencia y no se autoriza freeze, implementación, simulación o ejecución.
+
+
+## 28. Fixtures conjuntos y propagación analítica a las primeras etapas
+
+**Estado:** propuesta matemática no aprobada; complementa §§26–27 y maestro §69.
+
+1. Orden binario: C_install, C_integrity, C_compat, C_oper. Se especifican cuatro tablas completas de 16 patrones para s=.80: choque común (p1111=.80, p0000=.20); fallos simples dispersos (p1111=.80 y .05 en cada patrón de fallo simple 0111,1011,1101,1110); bottleneck instalación (p1111=.80, p0111=.20); fallos emparejados (p1111=.80, p0011=.10, p1100=.10). Celdas restantes cero.
+2. Marginales respectivas: choque común (.80,.80,.80,.80); fallos simples (.95,.95,.95,.95); bottleneck (.80,1,1,1); emparejados (.90,.90,.90,.90). Igual s no implica iguales marginales.
+3. Para generalizar a s, conservar el patrón de masa residual y sustituir p1111=s, masa de fallo=1−s. Es una familia que permite variar marginales; no mantiene marginales fijas.
+4. Con una oportunidad, sin dependencia basal ni rutas alternativas, D1 q0=.25/q1=1 y D2 q0=0/q1=1, y éxito condicional s común a brazos: D1 control=.25s, tratamiento=s, FS=.75s; D2 control=0, tratamiento=s, FS=s.
+5. Para s=.60/.70/.80/.90, D1 control=.15/.175/.20/.225; FS=.45/.525/.60/.675. D2 control=0; FS=.60/.70/.80/.90.
+6. Por tanto, el .20 de control D1 es consecuencia de q0=.25 y s=.80. No debe mantenerse constante al variar s salvo que se modifique otro mecanismo.
+7. Estas son expectativas analíticas de C_dep, no de A_f*/D_f* salvo inaccesibilidad basal, ruta única, predicados no técnicos invariantes y condiciones de medición de §67. Múltiples intentos requieren modelo secuencial; no aplicar automáticamente 1−(1−s)^n.
+8. No se selecciona fixture, no se estima potencia/tamaño muestral, no se ejecuta simulación y no se aprueba distribución confirmatoria.
