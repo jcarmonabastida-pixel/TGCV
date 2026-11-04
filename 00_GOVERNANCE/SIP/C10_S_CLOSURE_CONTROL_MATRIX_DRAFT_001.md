@@ -448,3 +448,21 @@ La ambigüedad semántica entre «política probabilística» y «brazo determin
 | OPEN-C10-001/005 | ABIERTAS | Política, mecanismo, calibración y revisión independiente |
 
 La recomendación no cambia retrospectivamente los datos ni parámetros históricos. D1 no se descarta; se retira únicamente su presunción de primario mientras falte justificación del régimen ordinario.
+
+
+## 28. Primera etapa técnica y derivación de accesibilidad — reconciliación documental
+
+| Elemento | Estado | Pendiente |
+|---|---|---|
+| C_install/C_integrity/C_compat/C_oper | DEFINICIÓN CONJUNTA PROPUESTA | Evidencia, versiones, protocolo, ventana y adjudicación por componente |
+| C_dep* | CONJUNCIÓN DE CUATRO PREDICADOS | Distribución conjunta; no asumir independencia |
+| s=.80 | PROBABILIDAD CONJUNTA CONDICIONAL CANDIDATA | No empírica; sensibilidad y justificación |
+| A_f* | PREDICADO ESTRUCTURAL ID/REL/COND/AUTH/RES/DEP/¬BLOCK | Clasificación operativa, fuentes, cobertura y reglas por clase |
+| VALID/cobertura | PROCESO EPISTÉMICO | No introducir en truth estructural; validar observación |
+| Ruta única | ESTIPULACIÓN DEL DGP AISLADO | Inventario de rutas alternativas y prueba de cobertura |
+| C_dep→A_f | EQUIVALENCIA CONDICIONAL | Solo si DEP=C_dep y demás predicados se satisfacen |
+| FS_Cdep / FS_Af / FS_Df | ESTIMANDOS DISTINTOS | Calcular por D1/D2 y no transferir primeras etapas |
+| .60 D1 / .80 D2 | PRIMERA ETAPA DE C_dep CANDIDATA | Coincide con A_f/D_f solo bajo condiciones explícitas |
+| Fallo/indeterminado | REGLA 1/0/? PROPUESTA | Fixtures y validación de error diferencial |
+
+**Dictamen:** avance documental sustantivo; no validación empírica ni cierre de OPEN-C10-001/007/008. No freeze, implementación, simulación ni ejecución.
