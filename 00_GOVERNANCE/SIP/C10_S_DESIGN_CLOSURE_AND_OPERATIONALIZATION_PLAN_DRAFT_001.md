@@ -317,3 +317,65 @@ Para autorizar implementación: G1–G4 aprobados; P0 cerrados; decisiones prima
 
 Para autorizar ejecución, además: G5 aprobado; código, datos sintéticos, configuración y entorno identificados por versión/hash; preflight íntegro; pruebas críticas y replay superados; auditoría técnica/científica; autorización expresa de ejecución separada.
 
+
+
+# VI. Mantenimiento y próxima operación
+
+## 22. Reglas de mantenimiento
+
+1. Actualizar este plan tras cada bloque sustantivo.
+2. Registrar cada decisión en Decision Log como PROPUESTA/ACEPTADA/RECHAZADA/SUSTITUIDA.
+3. No usar el maestro como sustituto de Decision Log, matriz o test register.
+4. Cada hallazgo tendrá ID, severidad, evidencia, artefactos, criterio de cierre y estado.
+5. Preservar formulaciones históricas y documentar precedencia/supersesión.
+6. No marcar pruebas PASS sin ejecución identificada.
+7. No presentar derivaciones como simulación ni parámetros candidatos como calibración.
+8. No propagar resultados a Core/RMA/Matrix/STATUS sin decisión independiente.
+9. Trabajar en rama/PR Draft conforme a gobernanza.
+10. Revisar PR #116 y PR #117 antes de integrar.
+
+## 23. Próxima operación recomendada
+
+La siguiente operación debe cerrar la precedencia causal y de comparadores, no ampliar otra vez la sensibilidad técnica de s:
+
+1. Cotejar fuente 165–183 con Decision Log, maestro §66, reconciliación C10-D1/S4-R y matrices.
+2. Resolver D1 histórico principal condicionado frente a D2 conversacional preferente; registrar decisión, no inferirla.
+3. Resolver q/g/C_auth e intervención autónoma (AUD-001/002; XAUD-001/002).
+4. Fijar estimandos y población por escenario sin convertir ITT de paquete en efecto de accesibilidad.
+5. Actualizar coordinadamente maestro, DGP, Decision Log, matriz y test register.
+6. Someter el contrato a revisión causal independiente.
+
+No comenzar dimensionamiento definitivo, implementación, simulación o ejecución antes de resolver esas dependencias.
+
+## 24. Dictamen de auditoría (2026-11-04)
+
+C10-S dispone de arquitectura conceptual y documentación sustancial, incluidos §§66–69, pero **no está listo para freeze ni operacionalización**.
+
+- **P0:** intervención/estimandos; población/comparadores; accesibilidad/alternativas; DGP integrado y separación truth/observación.
+- **P1:** validez de constructo; identificación/falsación; contratos ejecutables; revisión independiente.
+- **P2:** dimensionamiento, precisión, potencia, δ/ε y paquete reproducible.
+- **Gobernanza:** PR #116 Draft, sin reviews, con rama base C10-D1 que requiere justificación. Contradicción IGRT en main pendiente de integración/verificación PR #117.
+
+No se declara G1–G5 superado. No se declara cierre científico. No se autoriza implementación, simulación ni ejecución.
+
+## Anexo — Referencias de trabajo
+
+Rutas del repositorio jcarmonabastida-pixel/TGCV:
+- Maestro: `00_GOVERNANCE/SIP/C10_S_SYNTHETIC_EXPERIMENT_CONSOLIDATED_DRAFT_004.md`
+- DGP: `00_GOVERNANCE/SIP/C10_S_DGP_TEMPORAL_AND_ROLE_CONTRACT_DRAFT_001.md`
+- Decision Log: `00_GOVERNANCE/SIP/C10_S_DECISION_LOG_DRAFT_001.md`
+- Matriz: `00_GOVERNANCE/SIP/C10_S_CLOSURE_CONTROL_MATRIX_DRAFT_001.md`
+- Tests: `00_GOVERNANCE/SIP/C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md`
+- Auditoría cruzada: `00_GOVERNANCE/SIP/C10_S_AUD001_AUD002_CROSS_AUDIT_DRAFT_001.md`
+- Resolución AUD-001/002: `00_GOVERNANCE/SIP/C10_S_AUD001_AUD002_RESOLUTION_DRAFT_001.md`
+- Reconciliación: `00_GOVERNANCE/SIP/C10_S_C10D1_S4R_ESTIMAND_RECONCILIATION_DRAFT_001.md`
+- Auditoría de consistencia: `00_GOVERNANCE/SIP/C10_S_INTEGRATED_CONSISTENCY_AUDIT_DRAFT_001.md`
+- Auditoría de reconciliación: `00_GOVERNANCE/SIP/C10_S_INTEGRATED_RECONCILIATION_AUDIT_DRAFT_001.md`
+- Recuperación: `00_GOVERNANCE/SIP/C10_S_RECOVERY_AND_TRACEABILITY_AUDIT_DRAFT_001.md`
+- Registro 165–183: `00_GOVERNANCE/SIP/C10_S_RECOVERY_165_183_SOURCE_REGISTER_DRAFT_001.md`
+- XSYNC: `00_GOVERNANCE/SIP/C10_S_XSYNC_138_CLOSURE_TRACKER_DRAFT_001.md`
+- C10-D1: `00_GOVERNANCE/SIP/C10_D1_CAUSAL_ACCESSIBILITY_VALUE_PROTOCOL_DRAFT_001.md`
+- PR #116: `research/c10-s-consolidation-draft` → `research/c10-d1-protocol-draft`.
+- PR #117: `governance/igrt-bootstrap-reconciliation-draft` → `main`.
+
+**Advertencia:** este plan es una instantánea documental. Repetir auditoría antes de integrar o ejecutar si cambian ramas, commits o artefactos.
