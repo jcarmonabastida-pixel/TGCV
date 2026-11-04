@@ -272,3 +272,21 @@ Estado: contrato candidato definido documentalmente; fixtures, oráculos, tolera
 | B-14 | Versionado | Módulo, protocolo, umbrales, actor y fecha quedan identificados |
 
 **Estado:** contrato de pruebas propuesto; no implementado ni ejecutado. La prueba B-04 valida la factorización propuesta, no prueba que sea la única o científicamente correcta.
+
+
+## 16. Pruebas de aceptación documental de q_X* y soporte
+
+| ID | Prueba | Criterio propuesto |
+|---|---|---|
+| QX-01 | Temporalidad | X, H0, Cc, E, C_dep,0 y A_f,0* quedan medidos antes de Z |
+| QX-02 | Población | qX condiciona solo por criterios basales preespecificados |
+| QX-03 | Cuatro estados | Cumplida/incumplida/indeterminada/no aplicable no se colapsan |
+| QX-04 | Separación | Cc constitutiva no se confunde con C_dep focal |
+| QX-05 | Factibilidad | B_g0 y B_g1 son implementables por cada historia con masa positiva |
+| QX-06 | Asignación | Probabilidad de ambos brazos positiva por estrato/historia objetivo |
+| QX-07 | No extrapolación | Historias sin factibilidad se restringen ex ante o se declaran no identificadas |
+| QX-08 | No postratamiento | No se filtra población usando cumplimiento, A_post, selección, ejecución, O o V |
+| QX-09 | qL | Si L_m post-Z es indispensable, existe regla secuencial, historia, momento, soporte e identificación |
+| QX-10 | Estimando | ITT_Z, psi_B, theta_Af, LATE_f y theta_A no se intercambian |
+
+Estado: contrato documental candidato; no calculado, implementado ni ejecutado. No se declara positividad empírica sin datos o DGP cuantificado.
