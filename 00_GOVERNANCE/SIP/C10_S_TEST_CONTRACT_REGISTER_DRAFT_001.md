@@ -828,3 +828,21 @@ Contratos documentales; no ejecutados.
 | TC-08 | F2/A1/A2 reciben semántica no aprobada | Rechazar como cambio de diseño no trazado |
 
 Contratos documentales; no ejecutados.
+
+
+## 40. Contratos de discriminación del microdominio
+
+| ID | Caso | Aserción requerida |
+|---|---|---|
+| MD-01 | B provisiona adaptador focal | No ejecuta conversión ni aplica configuración |
+| MD-02 | F1 convierte, F2 aplica/valida | Funciones y estados distintos, contratos de salida/entrada compatibles |
+| MD-03 | A1 exporta, A2 importa por canal nativo | Mecanismo alternativo no reutiliza el adaptador focal |
+| MD-04 | F1 disponible, precondición de S0 no satisfecha | ACC(F1)=1 no implica APP(F1,S0)=1 |
+| MD-05 | F1/F2 disponibles, F2 no compatible con destino | Reach focal no se declara 1 |
+| MD-06 | A1/A2 satisfacen F* | Ruta alternativa puede mantener Reach(SF)=1 antes/después de B |
+| MD-07 | B afecta exportador/importador baseline | Clasificar R2/vía colateral; revisar exclusión |
+| MD-08 | Formato o versión cambia semántica | Nuevo SID/TID o mapping explícito; no inferir continuidad por nombre |
+| MD-09 | Conversión válida sintácticamente pero pierde propiedad F* | F* no se considera satisfecha |
+| MD-10 | F* evaluada con Outcome/Value posterior | Rechazar circularidad/filtración |
+
+Contratos de diseño; no ejecutados.
