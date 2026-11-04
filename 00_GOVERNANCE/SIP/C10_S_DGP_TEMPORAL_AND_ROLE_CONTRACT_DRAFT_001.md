@@ -624,3 +624,12 @@ No se permite atribuir semánticas técnicas inventadas a F2/A1/A2. Antes de com
 La comparación C10_S_SYNTHETIC_MICRODOMAIN_OPTIONS_AND_SELECTION_RECOMMENDATION_DRAFT_001.md propone Opción A (migración de configuración entre entornos software) frente a integración de datos y flujo organizativo. Recomendación no aprobada: F1/τ2 convertiría configuración fuente con adaptador focal provisionado por B; F2 aplicaría y validaría en destino; A1 exportaría a formato neutral preexistente; A2 importaría/aplicaría mediante mecanismo nativo y validaría bajo el mismo F*. F* sería conformidad técnica de esquema, integridad y compatibilidad.
 
 Las fichas son ilustrativas; no hay formatos, IDs, tolerancias, recursos ni predicados truth fijados. B no ejecuta F1/F2; la ruta alternativa debe ser mecanísticamente independiente en R0/R1; R2 representa afectación colateral. La selección del microdominio sigue pendiente de decisión explícita.
+
+
+## 38. Auditoría de roles causales del microdominio Opción A
+
+Se incorpora la distinción operativa: B=provisión/configuración del adaptador; C_dep=estado técnico de dependencia; A_f*=accesibilidad focal de τ2; F1=conversión ejecutada con adaptador disponible; App(F1,S0)=aplicabilidad a la configuración concreta; F2=aplicación/validación en destino; F*=criterio funcional común de la ruta completa. La expresión previa “F1 habilita y utiliza adaptador” es ambigua y no debe persistir en la especificación final: habilitar corresponde a B, convertir a F1/ejecución.
+
+La política B no debe alterar C_auth, F*, dataset/oráculo, configuración fuente/destino, A1/A2, costes, latencia, seguridad, información o recursos pertinentes en el escenario focal aislado, salvo que se declaren y modelen como vías adicionales. La primera etapa debe evaluarse por separado para C_dep, A_f,1*, D_f*, ΔT_acc y Reach. Un cambio en C_dep no implica automáticamente cambio en los demás.
+
+A1/A2 requieren mecanismo y dependencias propios; el oráculo F* común puede ser compartido como medición, no como mecanismo generador. R2 representa afectación de alternativa por B y compromete exclusión focal. Contrato propuesto, no aprobado.
