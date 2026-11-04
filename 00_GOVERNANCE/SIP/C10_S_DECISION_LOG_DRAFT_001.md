@@ -355,3 +355,10 @@ DEC-C10-035 es una topología de fixture para revisión. No canoniza TID, no sel
 Se registra DEC-C10-036 como propuesta, no decisión aceptada: distinguir reloj del estudio t0–t9, profundidad de ruta k=0…H y tiempo/ventanas de factibilidad. H=3 se interpreta provisionalmente como profundidad máxima candidata, no duración temporal. Reach se calcula en t4 sobre snapshot t3, antes de K/Sel/Exec; dinámica por rama requiere snapshots inmutables y reglas explícitas. Crosswalk R0/R1/R2/R3 ↔ S4R-A/B/C/D. Dependencias: ratificación de H, duración/ventanas, actualización de estados hipotéticos, recursos, F*, cobertura, D1/D2 y oráculos.
 
 DEC-C10-036 no cierra AUD-005/007, no selecciona parámetros ni autoriza freeze, implementación, simulación o ejecución.
+
+
+## 31. Matriz operacional de predicados (2026-11-05)
+
+Se registra DEC-C10-037 como propuesta de operacionalización: evaluar por paso y rama ID, ACC, APP, REL, COND, AUTH, RES, DEP, BLOCK, WIN y COV; fijar T_acc/snapshot estructural en t3 para fixture base; evaluar APP por estado hipotético de entrada; y no permitir cambios intrarrama sin regla DGP versionada y snapshot inmutable. Las ramas focal y alternativa se consideran potenciales contrafactuales separadas, no consumos simultáneos. Se incorpora taxonomía I/S/T/R/D/E y contratos PM-01…18.
+
+No se asignan valores por escenario ni se ratifican F*, G/H, recursos, ventanas, D1/D2 o cobertura. DEC-C10-037 no cierra AUD-004/005/007/010/011 ni autoriza implementación, simulación o ejecución.
