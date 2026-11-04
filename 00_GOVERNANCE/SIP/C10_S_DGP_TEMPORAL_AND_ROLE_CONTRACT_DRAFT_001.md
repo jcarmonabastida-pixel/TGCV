@@ -48,24 +48,24 @@ Estos valores se conservan como parámetros ilustrativos de §30.2, sujetos a ca
 
 ### 3.2 Intento, éxito y estado final
 
-[
+\\[
 W_{attempt,i} \sim Bernoulli(\omega_{Z_i})
-]
+\\]
 
 [
 S_{install,i} \sim Bernoulli(s_{Z_i}(W_{attempt,i},X_i,H_{i0}))
-]
+\\]
 
 [
 C_{dep,i1}=C_{install,i1}\land C_{integrity,i1}\land C_{compat,i1}\land C_{oper,i1}
-]
+\\]
 
 `ω_z` es probabilidad de intento; `s_z` modela éxito condicional. La probabilidad final de C_dep no se iguala a ω_z salvo que el procedimiento haga idénticos intento y éxito. Para preservar la verdad analítica de §30.5, el generador debe calibrar:
 
 [
 P(C_{dep,i1}=1\mid Z=0,P^*_{\tau2})=.20,\quad
 P(C_{dep,i1}=1\mid Z=1,P^*_{\tau2})=.80
-]
+\\]
 
 Si las condiciones restantes están satisfechas, estas probabilidades pueden coincidir con las probabilidades finales de accesibilidad focal. Si no, calcular `P(A_f,post*=1|Z=z)` desde todas las condiciones, no desde C_dep solamente.
 
@@ -73,15 +73,15 @@ Si las condiciones restantes están satisfechas, estas probabilidades pueden coi
 
 [
 A_{f,i0}^*=I(\text{todas las condiciones focales basales satisfechas})
-]
+\\]
 
 [
 A_{f,i1}^*=I(C_{dep,i1}=1\land C_{auth,base}=1\land C_{resource}=1\land C_{capacity}=1\land C_{info}=1\land C_{domain}=1\land C_{other}=1)
-]
+\\]
 
 [
 D_{f,i}=I(A_{f,i0}^*=0\land A_{f,i1}^*=1)
-]
+\\]
 
 La población de apertura requiere `A_f,i0*=0` preasignación. `D_f` es la apertura basal→post; `A_f,post*` es el estado focal posterior. No intercambiar ambos cuando existan unidades con acceso basal.
 
@@ -90,11 +90,11 @@ El cambio completo del espacio se conserva como:
 [
 \Delta T_{acc,i}=T_{acc,i1}\ominus T_{acc,i0}
 =(\Delta U_i,\Delta R_i,\Delta C_i,\Delta Validity_i,\Delta State_i)
-]
+\\]
 
 [
 A_{f,i}=h_f(\Delta T_{acc,i})
-]
+\\]
 
 `h_f` es una proyección focal definida para τ2. No es una identidad entre A_f y ΔT_acc. La representación conserva altas, pérdidas, reconfiguraciones, relaciones, configuraciones, equivalencias, versiones e indeterminación.
 
@@ -113,7 +113,7 @@ La distribución ilustrativa `P(L_m=1|X,H0)=.5` no sustituye la especificación 
 
 [
 Z\rightarrow B\rightarrow W_{attempt}\rightarrow S_{install}\rightarrow C_{dep}\rightarrow A_f^*\rightarrow \Delta T_{acc}\rightarrow Reach_H\rightarrow \Pi_H^{cand}\rightarrow K/Consider\rightarrow Sel\rightarrow Start\rightarrow Exec\rightarrow O\rightarrow V
-]
+\\]
 
 Esta cadena es un orden generativo de trabajo. No implica que todas las relaciones sean mediación exclusiva ni que no existan vías alternativas B→Value. Esas vías deben figurar en el DGP adversarial y en el contrato de exclusión.
 
@@ -136,7 +136,7 @@ La ausencia de evento y la ausencia de observación se codifican por separado.
 
 [
 ITT_Z=E[V\mid Z=1]-E[V\mid Z=0]
-]
+\\]
 
 Bajo aleatorización y supuestos de diseño, estima el efecto de asignar las políticas de provisión. No se restringe a quienes cumplen, abren τ2, seleccionan o ejecutan.
 
@@ -144,7 +144,7 @@ Bajo aleatorización y supuestos de diseño, estima el efecto de asignar las pol
 
 [
 \theta_{Af}(q^*)=E[V^{q^*,g_1}]-E[V^{q^*,g_0}]
-]
+\\]
 
 El ITT_Z puede interpretarse como este contraste solo si:
 1. Z asigna efectivamente g1/g0 o las versiones B que las implementan;
@@ -160,7 +160,7 @@ Si falla una condición, el resultado es efecto de política/paquete ψ_policy, 
 
 [
 LATE_f=\frac{ITT_Z}{ITT_{D_f}}
-]
+\\]
 
 Solo se interpreta bajo relevancia, independencia, exclusión, monotonicidad, consistencia/versiones, ausencia de interferencia y medición adecuada. Es local a compliers y no es ATE ni θ_Af poblacional. Si la primera etapa es nula, no calcular Wald; si es débil, usar inferencia robusta o declarar INDETERMINATE.
 
@@ -193,7 +193,7 @@ Definir un indicador de observación por bloque:
 
 [
 R_Z,R_B,R_C,R_A,R_T,R_{Reach},R_{K},R_{Sel},R_{Exec},R_O,R_V,R_{val}
-]
+\\]
 
 Cada ausencia registra motivo, momento, fuente, recuperabilidad y relación temporal con Z, A_f, selección, ejecución y Outcome. No se convierte automáticamente en cero, inaccesibilidad, no ejecución ni Value nulo.
 
