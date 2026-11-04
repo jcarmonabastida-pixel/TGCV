@@ -617,3 +617,10 @@ Se introduce taxonomía I/S/T/R/D/E para invariancia, dependencia de estado, tem
 La auditoría histórica C10_S_TRANSFORMATION_CARDS_HISTORICAL_RECONCILIATION_DRAFT_001.md reutiliza §§47–51 y 57–69. F1 es τ2 focal parcialmente especificada por B/§§62–63/67; su provisión técnica no equivale a aplicabilidad, ejecución ni éxito. F2 (S2→SF), A1 (S0→S1) y A2 (S1→SF) permanecen aliases topológicos sin función, precondiciones, recursos, permisos, ventanas o evidencia propios. SF es marcador formal y no define F* por sí mismo.
 
 No se permite atribuir semánticas técnicas inventadas a F2/A1/A2. Antes de completar el DGP se requiere seleccionar explícitamente un microdominio sintético neutral y definir F* común, mecanismo focal, continuación y ruta alternativa. No se asignan valores generadores. Propuesta documental, no aprobada ni ejecutable.
+
+
+## 37. Microdominio candidato para dar semántica a las transformaciones
+
+La comparación C10_S_SYNTHETIC_MICRODOMAIN_OPTIONS_AND_SELECTION_RECOMMENDATION_DRAFT_001.md propone Opción A (migración de configuración entre entornos software) frente a integración de datos y flujo organizativo. Recomendación no aprobada: F1/τ2 convertiría configuración fuente con adaptador focal provisionado por B; F2 aplicaría y validaría en destino; A1 exportaría a formato neutral preexistente; A2 importaría/aplicaría mediante mecanismo nativo y validaría bajo el mismo F*. F* sería conformidad técnica de esquema, integridad y compatibilidad.
+
+Las fichas son ilustrativas; no hay formatos, IDs, tolerancias, recursos ni predicados truth fijados. B no ejecuta F1/F2; la ruta alternativa debe ser mecanísticamente independiente en R0/R1; R2 representa afectación colateral. La selección del microdominio sigue pendiente de decisión explícita.
