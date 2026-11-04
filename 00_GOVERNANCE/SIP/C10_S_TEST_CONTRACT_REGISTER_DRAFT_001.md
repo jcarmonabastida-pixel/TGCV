@@ -535,3 +535,25 @@ Estado: contratos documentales; no implementados ni ejecutados.
 | BPOL-14 | No ejecución anticipada | Sin aprobación explícita no hay freeze, implementación ni simulación |
 
 Estado: contratos documentales; no implementados ni ejecutados.
+
+
+## 27. Contratos de selección y legitimidad del comparador D1/D2
+
+| ID | Prueba | Criterio de aceptación propuesto |
+|---|---|---|
+| CMP-01 | Correspondencia objetivo-D1 | D1 se interpreta como provisión programada frente a régimen ordinario incremental |
+| CMP-02 | Evidencia del régimen D1 | .25/.20 están respaldados por fuente independiente y población/contexto definidos |
+| CMP-03 | No contaminación semántica D1 | Provisión prevista en B_g0^D1 no se etiqueta como crossover |
+| CMP-04 | Correspondencia objetivo-D2 | D2 se interpreta como provisión programada frente a ausencia de intento focal |
+| CMP-05 | Ausencia basal D2 | C_dep,base=0 y A_f,base*=0 se verifican antes de Z |
+| CMP-06 | Ausencia de fondo D2 | No existe provisión focal no registrada ni ruta equivalente omitida |
+| CMP-07 | Estimandos separados | ITT_D1 e ITT_D2 no se agrupan ni se presentan como el mismo contraste |
+| CMP-08 | Primera etapa por variable | C_dep, A_f,post*, D_f y ΔT_acc se calculan separadamente por escenario |
+| CMP-09 | LATE por escenario | No se asume identidad/transportabilidad de estratos de cumplidores |
+| CMP-10 | Invariantes de política | Módulo, hash, protocolo, actor, recursos por intento y verificación son comparables según escenario |
+| CMP-11 | Crossover | Recepción fuera de política/version se distingue de provisión ordinaria asignada |
+| CMP-12 | Efecto de paquete | Vías colaterales impiden atribución exclusiva a accesibilidad |
+| CMP-13 | Selección primaria | D1 requiere justificación de régimen ordinario; D2 requiere justificación del objetivo ausencia-vs-provisión |
+| CMP-14 | No ejecución anticipada | Sin aceptación y gates no hay freeze, implementación, simulación ni ejecución |
+
+Estado: contratos documentales; no implementados ni ejecutados.
