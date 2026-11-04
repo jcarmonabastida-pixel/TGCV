@@ -536,3 +536,18 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
 5. F* se mantiene como función/capacidad funcional focal y requiere objetivo, S0, criterios de aceptación, restricciones, tolerancias, H/G/C0, recursos y evidencia E1–E4. No derivar F* de Outcome o Value.
 6. D1 y D2 son comparadores distintos. D1 requiere evidencia independiente para el régimen ordinario .25/.20; D2 requiere objetivo explícito ausencia-vs-provisión y ausencia de provisión focal de fondo. No combinar ITT ni LATE.
 7. La propuesta no fija el comparador primario, no valida .80, no cierra OPEN-C10-001/003/005/007 y no autoriza implementación, simulación o ejecución.
+
+
+## 30. Separación de snapshot estructural y paquete de evidencia
+
+**Estado:** propuesta; crosswalk del maestro §71 y de C10_S_TRANSFORMATIONAL_SNAPSHOT_AND_DELTA_RECONCILIATION_DRAFT_001.md.
+
+1. Truth estructural: S_T*(i,b,c,t)=(U_t*,R_t*,C_t*,X_t*).
+2. Evidencia/observación: E_T=(Sources,Coverage,Validity_e,Provenance,Version,Timestamp,Adjudication).
+3. ΔT_acc*=Diff_{G,M}(S_T*(t0),S_T*(t1))=(ΔU*,ΔR*,ΔC*,ΔX*).
+4. ΔE_T registra cambios de fuentes, cobertura, validez epistémica, procedencia, versiones de evidencia y adjudicación.
+5. ΔValidity_e no es componente de la verdad causal de ΔT_acc*. La validez semántica/operativa estructural pertenece a C*/R*.
+6. No calcular diff sin identidad, frontera, granularidad, catálogo y mapping de versiones compatibles; mapping incierto produce ?.
+7. Truth permanece oculta al analizador; observación T_acc,obs/ΔT_acc,obs conserva 1/0/? y se valida después.
+8. Esta regla propone superseder la formulación de §63.7 que incluía ΔValidity en la tupla causal; no borra el texto histórico.
+9. No cierra AUD-001/004/005/007, XAUD-003/004/006 ni XSYNC-138-03/06. No autoriza freeze ni ejecución.
