@@ -5449,3 +5449,119 @@ La armonización no cierra: definición física/versionado de B; aceptación de 
 ## 53.10. Criterio de interpretación
 
 La persistencia de este capítulo significa **especificación candidata reconciliada documentalmente**, no decisión aceptada, test PASS, implementación, ejecución, evidencia causal ni freeze. El estado de cada bloque debe mantenerse según la matriz de cierre y el Decision Log.
+
+
+
+---
+
+# 54. Diseño candidato de la política técnica B y calibración D1/D2
+
+**Estado:** propuesta de operacionalización; OPEN-C10-001 no se declara cerrado.  
+**Fuente de partida:** documento maestro §§30.2, 31.4, 52.2; contrato DGP §§3.1–3.2; recuperación de secciones 166–168.  
+**Objetivo:** concretar la política B lo suficiente para que sus versiones y probabilidades puedan someterse a revisión, sin confundir asignación, intento, instalación ni accesibilidad.
+
+## 54.1. Unidad técnica y acción de la política
+
+La intervención focal candidata es la provisión/activación de un módulo de dependencia software en un sandbox sintético. El módulo habilita técnicamente la operación focal de reconfiguración τ₂ sobre un objeto de sistema predefinido. No ejecuta τ₂, no la selecciona y no determina su resultado.
+
+La acción asignada es una política de provisión que determina la probabilidad de que el procedimiento técnico de activación sea iniciado. El procedimiento, módulo, versión, instrucciones, recursos, verificación y soporte técnico son comunes entre brazos. La diferencia focal entre versiones es la frecuencia/probabilidad de intento de provisión.
+
+## 54.2. Versiones candidatas de B
+
+| Versión | Escenario | Política de provisión | Probabilidad de intento |
+|---|---|---|---:|
+| B_g0^D1 | D1 control ordinario | Provisión ordinaria de baja frecuencia del mismo módulo | 0,25 |
+| B_g1^D1 | D1 tratamiento | Provisión programada del mismo módulo a todas las unidades elegibles | 1,00 |
+| B_g0^D2 | D2 control sin provisión | No se inicia provisión focal | 0 |
+| B_g1^D2 | D2 tratamiento | Provisión programada del mismo módulo a todas las unidades elegibles | 1,00 |
+
+Los valores 0,25/1,00 y 0/1,00 proceden de la tabla recuperada para D1/D2 en §52.2. No son tasas observadas ni una decisión aceptada. Debe precisarse quién/qué dispara el intento, la regla de elegibilidad técnica y el registro de recepción.
+
+## 54.3. Mecanismo de intento a estado técnico verificado
+
+Sea (W_i) el intento de provisión y (S_i) el éxito técnico conjunto de instalación/verificación condicionado a que se haya intentado:
+
+[
+P(W_i=1mid Z_i=z,D1)=
+egin{cases}
+0.25 & z=0\
+1.00 & z=1
+end{cases}
+qquad
+P(W_i=1mid Z_i=z,D2)=
+egin{cases}
+0 & z=0\
+1.00 & z=1
+end{cases}
+]
+
+[
+P(S_i=1mid W_i=1,Z_i=z,D)=0.80
+]
+
+El 0,80 es la calibración algebraicamente necesaria para reconciliar las probabilidades de intento recuperadas con los estados finales objetivo .20/.80 en D1 y 0/.80 en D2. No es un parámetro original recuperado de forma literal ni un dato empírico: es una propuesta de factorización que deberá aceptarse o reemplazarse.
+
+La condición técnica sigue siendo:
+
+[
+C_{dep,i1}=C_{install,i1}land C_{integrity,i1}
+land C_{compat,i1}land C_{oper,i1}
+]
+
+El contrato debe definir la distribución conjunta de esos componentes de modo que:
+
+[
+P(C_{dep,i1}=1mid W_i=1,D)=0.80
+]
+
+No se presupone independencia entre instalación, integridad, compatibilidad y operatividad. Tampoco se permite que un fallo de verificación se convierta en éxito por imputación.
+
+Bajo esta factorización:
+
+| Escenario | (P(W=1mid Z=0)) | (P(W=1mid Z=1)) | (P(C_{dep}=1mid Z=0)) | (P(C_{dep}=1mid Z=1)) |
+|---|---:|---:|---:|---:|
+| D1 | .25 | 1.00 | .20 | .80 |
+| D2 | 0 | 1.00 | 0 | .80 |
+
+La primera etapa de (C_{dep}) es .60 en D1 y .80 en D2. Para que también sea la primera etapa de accesibilidad focal (D_f), todas las demás condiciones de τ₂ deben estar satisfechas en la población de apertura, o se debe calcular (A_f^*) desde todos sus predicados y reportar la diferencia real.
+
+## 54.4. Separación de política, asignación, recepción y cumplimiento
+
+Registrar por unidad y versión:
+
+- (Z): brazo asignado aleatoriamente.
+- (B_{assigned}): versión de política asignada.
+- (B_{offered}): política efectivamente ofrecida.
+- (B_{received}): provisión recibida/activada.
+- (W): intento técnico, con actor/sistema, instante y motivo.
+- (S): éxito de instalación y verificación.
+- (C_{install},C_{integrity},C_{compat},C_{oper}): resultados separados y evidencia.
+- (C_{dep}): conjunción técnica final.
+- (A_f^*): accesibilidad verdadera derivada de C_dep y demás condiciones.
+- (A_{f,obs}): medición disponible al analizador.
+- (D_f): apertura basal→post.
+
+Una asignación a B_g1 no garantiza que el intento o instalación hayan tenido éxito. Un fallo de intento, un fallo técnico, un crossover y una versión incorrecta son estados diferentes. El ITT conserva la asignación original. La recepción/fidelidad no sustituye Z ni permite redefinir retrospectivamente el brazo.
+
+## 54.5. Invariantes del DGP aislado
+
+Entre versiones deben permanecer idénticos: módulo y hash/versionado; protocolo técnico; criterios de elegibilidad; recursos por intento; soporte; instrumentos y umbrales de verificación; personal/actor o automatización; hardware/software no focal; información, formación, expectativas e incentivos; costes y latencias no inherentes; calidad, seguridad y riesgo; reglas de selección y ejecución; horizonte y regla de Value.
+
+La única diferencia intencionada es la política de frecuencia de intento. Si la provisión ordinaria D1 produce vías adicionales o cambia otros recursos/expectativas, se registra como paquete y no se atribuye el ITT exclusivamente a accesibilidad. D2 es un contraste de diseño distinto, no una corrección silenciosa de D1.
+
+## 54.6. Reglas de aceptación documental propuestas
+
+1. Las probabilidades de intento son las de la tabla D1/D2; las probabilidades finales verificadas son .20/.80 o 0/.80.
+2. El éxito técnico conjunto condicional a intento es .80 en la factorización candidata, con componentes separados y sin independencia supuesta.
+3. (C_{dep,base}=0) y (A_{f,base}^*=0) se fijan antes de Z en la población de apertura.
+4. Ningún registro confunde W, S, C_dep, A_f*, D_f, aplicabilidad o ejecución.
+5. La verdad del DGP se calcula desde la cadena generativa, no desde una asignación directa de A_f*.
+6. Crossover, no intento, fallo técnico, verificación desconocida y versión incorrecta tienen códigos distintos.
+7. Se comprueba que las versiones no alteran vías no focales en el DGP aislado; el escenario adversarial las modifica deliberadamente.
+8. La población, soporte y condiciones comunes permiten ambas políticas donde el contraste lo requiere.
+
+## 54.7. Decisión que queda por tomar
+
+La propuesta concreta el mecanismo B y muestra una factorización coherente con la fuente recuperada. No resuelve aún: (i) si la política D1 representa realmente el comparador científico deseado; (ii) quién/qué ejecuta el intento; (iii) qué constituye la recepción de B; (iv) qué componentes y tolerancias definen el éxito técnico; (v) cómo se codifica crossover; (vi) si se acepta .80 como tasa conjunta de éxito condicional; (vii) si el estimando focal es sobre C_dep o sobre D_f; y (viii) revisión independiente de exclusión y versiones.
+
+**Dictamen:** B queda especificada como propuesta operativa candidata, no como decisión aceptada. OPEN-C10-001 continúa ABIERTA hasta aprobación explícita de la política, sus versiones y su comparador. No hay implementación, simulación ni ejecución.
