@@ -769,3 +769,20 @@ Contratos documentales; sin fixtures implementados ni pruebas ejecutadas.
 | INV-15 | Cambia solo evidencia de una ruta basal | ΔE_T, no ADD estructural | Descubrimiento como transformación nueva |
 
 Estos contratos son documentales. No se han creado fixtures ejecutables ni se han ejecutado pruebas. Requieren oráculos, entradas/salidas, cobertura, truth oculta y revisión independiente.
+
+
+## 37. Contratos documentales de integración temporal
+
+| ID | Caso | Aserción exigida |
+|---|---|---|
+| TEMP-01 | H=3, ruta de 2 transformaciones | No añadir paso ficticio; longitud y duración separadas |
+| TEMP-02 | Reach calculado en t4 | No usar selección/ejecución/Outcome/Value |
+| TEMP-03 | Paso τ_k accesible pero App(τ_k,s)=0 | Ruta no admisible |
+| TEMP-04 | Todos los pasos accesibles, relación=0 | Ruta no admisible |
+| TEMP-05 | Snapshot de rama cambia | Nuevo snapshot hipotético inmutable; no sobrescribir t3 |
+| TEMP-06 | Sin regla de actualización dinámica | No inventar cambios de estado |
+| TEMP-07 | R2/S4R-C, B cambia alternativa | Marcar vía colateral y no asumir exclusión |
+| TEMP-08 | R3/S4R-D, intento fallido | Z/intento no implica C_dep/A_f/D_f |
+| TEMP-09 | R0/S4R-A sin cobertura funcional completa | Alternativa=?; no clasificar como exclusiva |
+
+Contratos documentales; no ejecutados.
