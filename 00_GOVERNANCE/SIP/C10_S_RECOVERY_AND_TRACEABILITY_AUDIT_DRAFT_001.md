@@ -196,3 +196,12 @@ La revisión de C10-S §§30.2, 30.4–30.5, 31.4 y 32.4–32.5 corrige una inte
 La ambigüedad que permanece es otra: el contrato debe distinguir intento (`W_attempt`), éxito de instalación (`S_install`), estado verificado (`C_dep,post`) y accesibilidad basal/post (`A_f,base*`, `A_f,post*`). Los valores .20/.80 deben corresponder a probabilidades finales verificadas para mantener la verdad analítica ilustrativa; si son probabilidades de intento, la verdad debe recalcularse. La reconciliación y el decision log se actualizaron para mantener p0=.20/p1=.80 en el DGP aislado principal y reservar la contaminación/vías colaterales para escenarios adversariales separados.
 
 Esta corrección preserva la intención del contrato §30; no se introduce p0=0 como reemplazo del diseño principal. El valor p0=0 solo podría representar un diseño alternativo de no provisión y requeriría especificación independiente.
+
+
+## 14. Normalización de contratos de prueba (2026-11-04)
+
+Se ha creado `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md` en PR #116. El registro normaliza los contratos conocidos de S4R-01…18, MEAS-01…14, MISS-01…15, VER-01…06, TRJ-01…07, INT-01…02 y GEN-01…12, con fixtures/perturbaciones, truth oculta, resultados esperados, aserciones y condiciones de fallo.
+
+El registro aclara la interpretación temporal del DGP principal: `p0=.20` y `p1=.80` son probabilidades finales post-asignación objetivo de B_g0/B_g1; `C_dep,base=0` es basal. Se exige distinguir intento, éxito de instalación y estado final verificado. Si las probabilidades se refieren solo a intentos, la verdad analítica debe recalcularse.
+
+Este artefacto es una especificación documental. No contiene implementación ni evidencia de ejecución. Las tolerancias, N, réplicas, δ/ε, fixtures exactos y códigos finales de fallo siguen pendientes de justificación y revisión independiente.
