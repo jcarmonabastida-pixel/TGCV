@@ -305,3 +305,12 @@ Si hay recursos/actores compartidos, definir clúster. Se permite asignación in
 Bajo no interferencia, potenciales V_i(z_i), D_f,i(z_i). Si hay interferencia, fijar mapa de exposición G_i(Z_-i) antes de generar resultados y usar potenciales V_i(z_i,g_i), D_f,i(z_i,g_i). Si el mapa es incompleto/desconocido, no interpretar el ITT individual ni Wald individual como efecto causal focal. Distinguir correlación basal por clúster de spillover causado por tratamiento.
 
 Registrar UE, UA, UO, clúster, marco/estratos de aleatorización, probabilidades, versión B, algoritmo/semilla/hash, relaciones de recursos y exposición. La positividad se evalúa en la unidad realmente aleatorizada. El LATE individual requiere no interferencia; con interferencia hace falta estimando IV de exposición/clúster y supuestos adicionales. OPEN-C10-005 sigue abierta hasta auditar recursos compartidos y aprobar unidad.
+
+
+## 16. F*, alternativas y poblaciones: contrato candidato armonizado
+
+La definición candidata de F* debe fijar, antes de Z y sin Outcome/Value: objetivo funcional observable, entrada/S0, salida técnica, restricciones, tolerancias, horizonte H, granularidad G, contexto C0, evidencia y adjudicación. No se inventan umbrales numéricos. Para cada ruta π se juzgan por separado accesibilidad, aplicabilidad desde S0, substituibilidad Sub(π,F*,G,H,C0), identidad/versión, recursos, coste, latencia, calidad, seguridad y fiabilidad. Substituibilidad no implica identidad ni equivalencia causal.
+
+F_alt,0 conserva tres estados: respaldado ausente (cobertura suficiente y ninguna ruta substituible), respaldado presente (al menos una) e indeterminado (cobertura/evidencia insuficiente o desacuerdo pendiente). La búsqueda fija universo, catálogo, composición, reglas, recursos, horizonte y criterio antes de evaluar; registra rutas rechazadas/indeterminadas y límites. La evaluación es ciega a Z/B/selección/ejecución/O/V.
+
+Se reconcilian dos poblaciones: P*_τ2 estudia apertura de identidad focal y no excluye automáticamente alternativas; P*_F es el subconjunto sin alternativa substituible respaldada y estudia apertura funcional exclusiva. El ITT primario propuesto permanece en P*_τ2; P*_F es subobjetivo/heterogeneidad. Una alternativa basal estable no viola automáticamente exclusión; si B la modifica o activa, la vía adicional compromete LATE focal y el resultado se interpreta como paquete salvo identificación adicional. La definición, cobertura, umbrales, horizonte, pesos y sensibilidad permanecen abiertos.
