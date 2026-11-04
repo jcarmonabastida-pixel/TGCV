@@ -462,3 +462,19 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
 10. Esta sección aclara la ambigüedad registrada en §23.10; no altera silenciosamente el texto histórico ni declara aprobadas las políticas.
 11. Permanecen abiertos: actor/disparador, recepción, hash/versión, evidencia, distribución conjunta de componentes, crossover/contaminación, calibración de A_f*, exclusión y aprobación del comparador.
 12. No freeze, implementación, simulación ni ejecución.
+
+
+## 25. Regla de selección del comparador D1/D2
+
+**Estado:** recomendación de diseño condicionada; no decisión aceptada.
+
+1. D1 responde al efecto incremental de provisión programada frente a provisión ordinaria de baja frecuencia. Solo es un comparador ordinario legítimo si la frecuencia de intento .25 y el estado final .20 están justificados para la población/contexto objetivo mediante fuente independiente y especificación ex ante.
+2. El expediente actual no contiene todavía esa justificación. La recomendación histórica D1-principal-condicionado no equivale a selección aprobada.
+3. D2 responde a provisión programada frente a ausencia de intento focal. Para el objetivo mecanístico sintético de apertura focal, D2 es el candidato preferente provisional mientras no se acredite el régimen ordinario D1.
+4. D1 se conserva como escenario secundario de política incremental; no se llama contaminación a la provisión ordinaria que forma parte de B_g0^D1. Crossover significa recepción fuera de la política/version asignada.
+5. Los ITT_D1 e ITT_D2 son estimandos distintos; no se agrupan ni promedian como si compartieran el mismo comparador.
+6. Las primeras etapas de C_dep, A_f,post*, D_f y ΔT_acc se estiman por separado y para cada escenario. Los Wald/LATE no se consideran automáticamente transportables entre D1 y D2.
+7. D2 exige verificar C_dep,base=0, A_f,base*=0, ausencia de provisión focal de fondo, condiciones no focales comunes e interferencia controlada.
+8. D1 exige documentar régimen ordinario, fuente de .25/.20, población/periodo/contexto, equivalencia de módulo/protocolo/recursos y vías colaterales.
+9. Esta regla no selecciona formalmente D2 ni aprueba el .80 condicional. La selección primaria requiere decisión explícita después de completar los gates.
+10. No freeze, implementación, simulación ni ejecución.
