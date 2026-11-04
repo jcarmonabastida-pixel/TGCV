@@ -610,3 +610,10 @@ Crosswalk propuesto: R0↔S4R-A; R1↔S4R-B; R2↔S4R-C; R3↔S4R-D. R0 requiere
 La matriz C10_S_PATH_PREDICATE_TEMPORAL_EVIDENCE_MATRIX_DRAFT_001.md operacionaliza ID, ACC, APP, REL, COND, AUTH, RES, DEP, BLOCK, WIN y COV. En el fixture base, T_acc y las condiciones estructurales de snapshot se fijan en t3; APP se reevalúa desde el estado hipotético de entrada de cada paso; REL se comprueba por arista; RES/AUTH/WIN/BLOCK solo varían dentro de rama si una regla explícita lo permite. Las ramas F1→F2 y A1→A2 se evalúan por separado como alternativas potenciales, no como ejecuciones concurrentes.
 
 Se introduce taxonomía I/S/T/R/D/E para invariancia, dependencia de estado, temporalidad, recursos, dinámica explícita y evidencia epistémica. La ausencia de regla de transición impide inventar cambios; se conserva snapshot o se propaga ?. Los valores por escenario, F*, recursos, ventanas, dinámica y cobertura siguen abiertos. Documento propuesto, no aprobado ni ejecutado.
+
+
+## 36. Reconciliación semántica de transformaciones del fixture
+
+La auditoría histórica C10_S_TRANSFORMATION_CARDS_HISTORICAL_RECONCILIATION_DRAFT_001.md reutiliza §§47–51 y 57–69. F1 es τ2 focal parcialmente especificada por B/§§62–63/67; su provisión técnica no equivale a aplicabilidad, ejecución ni éxito. F2 (S2→SF), A1 (S0→S1) y A2 (S1→SF) permanecen aliases topológicos sin función, precondiciones, recursos, permisos, ventanas o evidencia propios. SF es marcador formal y no define F* por sí mismo.
+
+No se permite atribuir semánticas técnicas inventadas a F2/A1/A2. Antes de completar el DGP se requiere seleccionar explícitamente un microdominio sintético neutral y definir F* común, mecanismo focal, continuación y ruta alternativa. No se asignan valores generadores. Propuesta documental, no aprobada ni ejecutable.
