@@ -7286,3 +7286,12 @@ Se propone G atómica, H=3 pasos y ciclos prohibidos en el fixture base. Son can
 Hallazgo de coherencia: abrir F1 no basta para alcanzar SF; F2 también debe ser accesible, aplicable y componible. Si A1→A2 permanece disponible, Reach(SF) puede ser 1 antes y después de abrir F1. Por tanto D_f* no equivale a apertura funcional exclusiva ni a cambio de Reach.
 
 No se cierran AUD-005/007, G/H, F*, catálogo, comparador D1/D2, recursos, cobertura ni oráculos. No hay fixtures ejecutables, implementación, simulación o ejecución.
+
+
+# 75. Reconciliación temporal de H y escenarios S4-R (2026-11-04)
+
+Se propone distinguir reloj de estudio t0–t9, profundidad de trayectoria k=0…H y tiempo/ventanas internas de factibilidad. H=3 se conserva solo como profundidad máxima candidata, no como duración de tres unidades temporales. Reach_H se calcula en t4 sobre snapshot t3; no se construye a partir de ejecución observada. App se evalúa por estado hipotético de entrada; recursos, relaciones, autorización, ventanas y bloqueos por prefijo. Las ramas dinámicas requieren snapshots hipotéticos inmutables y reglas de transición explícitas.
+
+Se propone R0↔S4R-A, R1↔S4R-B, R2↔S4R-C y R3↔S4R-D. R0 solo acredita ausencia alternativa con cobertura exhaustiva; R2 introduce vía colateral; R3 conserva ITT y no imputa accesibilidad por Z/intento. El artefacto de auditoría C10_S_TEMPORAL_HORIZON_AND_S4R_INTEGRATION_AUDIT_DRAFT_001.md documenta la reconciliación.
+
+No se ratifican H, duración, ventanas, F*, recursos, D1/D2 ni cobertura. AUD-005/007 permanecen abiertos. No hay ejecución ni simulación.
