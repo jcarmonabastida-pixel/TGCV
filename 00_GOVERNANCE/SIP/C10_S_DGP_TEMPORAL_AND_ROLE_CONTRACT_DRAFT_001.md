@@ -281,3 +281,14 @@ La política B es la regla de provisión del mismo módulo, procedimiento, recur
 La asignación Z, B asignada/ofrecida/recibida, W_attempt, éxito técnico, componentes verificados, C_dep, A_f*, A_f,obs y D_f se registran por separado. El ITT conserva Z. No se infiere accesibilidad desde asignación ni desde intento.
 
 Esta propuesta concreta OPEN-C10-001, pero no la cierra ni autoriza implementación. La aceptación requiere justificación de D1 como comparador, definición de versiones/actor/recepción, protocolo de verificación y revisión de vías colaterales.
+
+
+## 14. q_X*, población y soporte por historia: contrato candidato
+
+Para el DGP primario S4-R se propone (q_X^*=P^*(X,H_0,C_c\mid E=1,C_{dep,0}=0,A_{f,0}^*=0)). Es la distribución objetivo basal sobre la población preasignación, no una intervención que fuerce covariables. (C_c) recoge autorización basal no focal, recursos, capacidad, información, dominio y otras precondiciones esenciales; cada condición conserva ficha versionada y cuatro estados. (C_{dep,0}=0) es la ausencia basal de la dependencia focal, no una condición constitutiva.
+
+El orden es: fijar dominio/unidad/versión; medir X, H0 y Cc; verificar elegibilidad y ausencia/accesibilidad focal basal; cerrar población y qX; aleatorizar Z; aplicar B; medir provisión, intento, éxito, C_dep, A_f*, D_f, trayectorias, O y V. No se selecciona por variables posteriores a Z.
+
+En cada historia basal con masa positiva bajo qX deben ser implementables ambas políticas B_g0/B_g1 y existir probabilidad positiva de asignación a ambos brazos. Esto no implica que cada unidad pueda alcanzar ambos estados de D_f ni que cumpla la provisión. Si una política no es factible, se restringe la población antes de Z con justificación y nuevo estimando, o se declara no identificación; no hay extrapolación silenciosa.
+
+El DGP primario excluye L_m post-asignación como confusor común, según §44.4. Si es indispensable, requiere q_L* secuencial con historia, momento, regla implementable, soporte e identificación longitudinal; no se sustituye por ajuste marginal. La distribución concreta P*, estratos, pesos, unidad/interferencia, inventario y umbrales completos de Cc y ventanas permanecen abiertos. Propuesta documental; no freeze ni ejecución.
