@@ -695,3 +695,26 @@ Estos contratos son especificaciones documentales; no se han generado fixtures n
 | SNAP-15 | App_f cambia, accesibilidad estable | ΔT_acc*=0 si no cambió espacio accesible | Confundir aplicabilidad con accesibilidad |
 
 Estos contratos son especificaciones documentales. No se han creado fixtures ejecutables ni se han ejecutado pruebas. El cierre requiere entradas/salidas, truth oculta, mapping versionado, oráculos, tolerancias, cegamiento y revisión independiente.
+
+
+## 34. Contratos del Bloque 3 — identidad, versiones y matching
+
+| ID | Fixture/verdad DGP | Aserción exigida | Fallo que debe detectar |
+|---|---|---|---|
+| ID-01 | TID igual; hash/commit cambia | TID se conserva provisionalmente; nueva provenance/versión | Nueva identidad por hash |
+| ID-02 | Mismo nombre; operación nuclear distinta | TID distinta o unresolved | Match por nombre |
+| ID-03 | IDs distintos; contrato equivalente | Candidato requiere adjudicación, no fusión automática | Auto-merge por similitud |
+| ID-04 | Cambia precondición esencial | Nueva TID o unresolved según contrato | Continuidad sin evaluación |
+| ID-05 | Plataforma cambia; contrato estable | RID/SID cambia; TID puede continuar | Confundir implementación con semántica |
+| ID-06 | Macrotransformación se divide | SPLIT con mapping y G explícitos | Equivalencia 1:1 ficticia |
+| ID-07 | Transformaciones se fusionan | MERGE; preservar identidades históricas | Fusionar IDs retroactivamente |
+| ID-08 | Cobertura basal incompleta | UNKNOWN; no ADD ni NO_MATCH | Ausencia inferida por falta de registro |
+| ID-09 | Frontera cambia | DIFF_NOT_COMPARABLE o mapping validado | Comparar fronteras distintas |
+| ID-10 | Granularidad cambia | Mapping explícito a G común | Conteos no comparables |
+| ID-11 | Recurso/condición cambia, TID estable | MODIFY_STRUCTURAL y reevaluar A_f* | Nueva TID automática |
+| ID-12 | Solo cambia E_T | ΔE_T, sin evento estructural | Cambio epistémico como ADD/REMOVE |
+| ID-13 | τ2 no corresponde entre tiempos | D_f* no calculable como misma identidad | Apertura falsa de focal |
+| ID-14 | Mapping 1:N no validado | MATCH_UNRESOLVED | Sumar/colapsar sin contrato |
+| ID-15 | Riesgo/calidad cambian, propósito estable | TID puede continuar; no inferir equivalencia causal | Confundir semántica y equivalencia de política/valor |
+
+Contratos documentales. No hay fixtures ejecutables, oráculos implementados ni pruebas ejecutadas.
