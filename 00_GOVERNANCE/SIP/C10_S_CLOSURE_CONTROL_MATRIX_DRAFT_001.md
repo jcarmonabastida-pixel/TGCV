@@ -298,3 +298,12 @@ No se cierra DEC-C10-012 ni se declara freeze.
 **Propuesta:** UE=UA=instancia sintética independiente; UO son snapshots repetidos. La independencia requiere ausencia de recursos, agentes, información, infraestructura y canales compartidos. Si hay agrupación, definir clúster y asignar por clúster o modelar exposición; inferencia y N efectivo respetan la UA real. Con spillover no modelado, no interpretar ITT/Wald individual convencional como efecto causal focal.
 
 **OPEN-C10-005 permanece ABIERTA:** faltan inventario del entorno, mapa de recursos/agentes/red, decisión sobre asignación individual o por clúster, esquema de aleatorización y probabilidades. UE=UA no se presenta como hecho ni como decisión aprobada.
+
+
+## 18. F*, equivalencia funcional y poblaciones
+
+**Reconciliación candidata:** P*_τ2 estudia apertura de identidad transformacional y no excluye automáticamente alternativas funcionales; P*_F es subconjunto sin rutas alternativas substituibles respaldadas en universo/G/H/C0 especificados. La regla histórica §48.6 se interpreta para P*_F conforme a §50.7; no se elimina el texto original.
+
+F* debe fijarse antes de Z con objetivo técnico, entrada/salida, restricciones, tolerancias, horizonte, granularidad, contexto y estándar de evidencia independientes de Outcome/Value. Cada ruta conserva juicios separados de accesibilidad, aplicabilidad y substituibilidad; identidad ≠ equivalencia funcional. F_alt,0=0/1/?; “no encontrado” no es ausencia sin cobertura suficiente. Alternativa basal estable no viola automáticamente exclusión; si B la altera/activa, se compromete LATE focal y queda ITT de paquete.
+
+**OPEN-C10-003 sigue ABIERTA:** F*, umbrales, H/G/C0, universo/cobertura, recursos, E1–E4 por tipo, adjudicación, sensibilidad/error de clasificación y q_X,F*/pesos no están fijados. OPEN-C10-006 también permanece abierta.
