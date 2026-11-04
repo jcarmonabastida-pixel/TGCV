@@ -633,3 +633,10 @@ Se incorpora la distinción operativa: B=provisión/configuración del adaptador
 La política B no debe alterar C_auth, F*, dataset/oráculo, configuración fuente/destino, A1/A2, costes, latencia, seguridad, información o recursos pertinentes en el escenario focal aislado, salvo que se declaren y modelen como vías adicionales. La primera etapa debe evaluarse por separado para C_dep, A_f,1*, D_f*, ΔT_acc y Reach. Un cambio en C_dep no implica automáticamente cambio en los demás.
 
 A1/A2 requieren mecanismo y dependencias propios; el oráculo F* común puede ser compartido como medición, no como mecanismo generador. R2 representa afectación de alternativa por B y compromete exclusión focal. Contrato propuesto, no aprobado.
+
+
+## 39. Manifiesto de provisión y grafo de dependencias
+
+El contrato C10_S_ADAPTER_PROVISION_MANIFEST_AND_DEPENDENCY_GRAPH_DRAFT_001.md establece B como provisión/configuración aislada del adaptador, sin ejecutar F1/F2/A1/A2 ni modificar F*, oráculo, datos funcionales, C_auth basal o ruta alternativa. Se requiere separar C_dep (estado técnico) de A_f* (accesibilidad completa), y no inferir una primera etapa focal desde la primera etapa de C_dep.
+
+La arquitectura candidata ARCH-B1 es sidecar/runtime aislado, aditivo, versionado, con permisos mínimos y cuotas; es recomendación para evaluación, no decisión ni implementación. B-M01…15 permanecen no inventariados hasta identificar componentes reales. Snapshots preB/postB/rollback y pruebas de comportamiento A1/A2 pre/post son requisitos de evidencia. Los nodos/aristas desconocidos propagan cobertura incompleta; la ausencia de un nodo no se deduce de que no aparezca en un inventario parcial.
