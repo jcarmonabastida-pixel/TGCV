@@ -629,3 +629,18 @@ No se cierra AUD-005/007 ni se declara H confirmado.
 | PMX-08 | truth vs observed | Regla establecida documentalmente | Oráculo independiente y validación |
 
 La matriz no asigna valores por escenario ni cierra AUD-004/005/007/010/011.
+
+
+## 16. Seguimiento — fichas transformacionales
+
+| ID | Punto | Estado | Criterio de cierre |
+|---|---|---|---|
+| TC-01 | F1 / τ2 | Parcialmente definido por §§62–63/67 | Ficha semántica/versionada y criterios técnicos completos |
+| TC-02 | F2 | Solo transición topológica S2→SF | Función, entrada/salida verificables, precondiciones y recursos |
+| TC-03 | A1 | Solo transición topológica S0→S1 | Mecanismo alternativo y precondiciones |
+| TC-04 | A2 | Solo transición topológica S1→SF | Mecanismo de cierre y precondiciones |
+| TC-05 | F* / SF | SF formal; F* operacional abierto | Objetivo observable, restricciones y tolerancias independientes de O/V |
+| TC-06 | R0–R3 | Escenarios estructurales candidatos | Validar alternativas y substituibilidad con cobertura |
+| TC-07 | Microdominio | No seleccionado | Propuesta neutral explícita y revisión/decisión |
+
+La auditoría histórica de fichas no cierra las fichas sustantivas.
