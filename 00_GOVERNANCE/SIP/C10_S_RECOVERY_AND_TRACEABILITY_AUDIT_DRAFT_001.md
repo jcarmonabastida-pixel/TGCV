@@ -187,3 +187,12 @@ Se ha creado `C10_S_XSYNC_138_CLOSURE_TRACKER_DRAFT_001.md`, que registra los di
 También se revisó el conjunto de ramas disponible en el repositorio. Las ramas de investigación C10 visibles son `research/c10-d1-protocol-draft` y `research/c10-s-consolidation-draft`; no se identificó una rama adicional de C10-S que contuviera secciones conversacionales 165–183. El documento C10-S consolidado inspeccionado llega a la sección conversacional 164. La búsqueda de XSYNC no debe confundirse con recuperación de 165–183: son lagunas documentales distintas.
 
 La corrección no altera los límites históricos: las secciones 165–183 siguen sin fuente íntegra identificada en las ramas y PR consultados. No se ha inferido su contenido ni se han reconstruido como texto original.
+
+
+## 13. Precisión adicional sobre p0 y estado basal (2026-11-04)
+
+La revisión de C10-S §§30.2, 30.4–30.5, 31.4 y 32.4–32.5 corrige una interpretación demasiado fuerte de la primera propuesta de reconciliación. El documento fuente define `B_g0` como política técnica de provisión con probabilidad objetivo `p0=.20` y `B_g1` con `p1=.80`. Por tanto, `p0=.20` no contradice por sí mismo `C_dep,base=0`: puede ser la probabilidad de instalación/accesibilidad después de la asignación bajo la política de control de menor intensidad, mientras el estado basal antes de Z es cero.
+
+La ambigüedad que permanece es otra: el contrato debe distinguir intento (`W_attempt`), éxito de instalación (`S_install`), estado verificado (`C_dep,post`) y accesibilidad basal/post (`A_f,base*`, `A_f,post*`). Los valores .20/.80 deben corresponder a probabilidades finales verificadas para mantener la verdad analítica ilustrativa; si son probabilidades de intento, la verdad debe recalcularse. La reconciliación y el decision log se actualizaron para mantener p0=.20/p1=.80 en el DGP aislado principal y reservar la contaminación/vías colaterales para escenarios adversariales separados.
+
+Esta corrección preserva la intención del contrato §30; no se introduce p0=0 como reemplazo del diseño principal. El valor p0=0 solo podría representar un diseño alternativo de no provisión y requeriría especificación independiente.
