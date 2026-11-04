@@ -750,3 +750,14 @@ La matriz separa accesibilidad, aplicabilidad, composición, condiciones, autori
 Pendiente: completar fichas sustantivas por transformación, fijar qué predicados son state-dependent/temporales, recursos/demanda/reserva, autorización y ventanas, F*, cobertura de alternativas, E1–E4 y oráculos. No se cierran AUD-004/005/007/010/011 ni OPEN-C10-001/003/005/007. No se han generado datos, implementado fixtures, simulado ni ejecutado el experimento.
 
 Siguiente bloque: construir fichas sustantivas de predicados para F1, F2, A1 y A2 y resolver, sin asignar todavía valores truth, el significado operacional de cada precondición, condición, recurso, autorización, dependencia, bloqueo y ventana.
+
+
+# XV. Ejecución del plan — reconciliación de fichas transformacionales (2026-11-05)
+
+Se recuperaron las especificaciones históricas §§47–51 y 57–69 antes de crear nuevas fichas. Se creó C10_S_TRANSFORMATION_CARDS_HISTORICAL_RECONCILIATION_DRAFT_001.md y se propagó a maestro §77, contrato DGP §36, DEC-C10-038, matriz de cierre §16 y registro de pruebas §39.
+
+Resultado: F1/τ2 está parcialmente especificada por los contratos de provisión y accesibilidad; F2/A1/A2 solo están definidas topológicamente. SF es un marcador formal, no una definición operacional de F*. No se deben inventar semánticas, umbrales o recursos para llenar el hueco. El trabajo previo sobre F*, accesibilidad, C_dep, evidencia y condiciones se reutiliza, no se duplica.
+
+Pendiente: formular y comparar una propuesta explícita de microdominio sintético neutral, con F* observable y no circular, una transformación focal τ2, su continuación F2 y una ruta alternativa A1→A2 genuina. La selección requiere decisión explícita antes de completar las fichas y asignar parámetros del DGP. AUD-004/005/007/010/011 y OPEN-C10-001/003/005/007 permanecen abiertos. No se han generado datos, implementado fixtures, simulado ni ejecutado el experimento.
+
+Siguiente bloque: preparar alternativas de microdominio que satisfagan los contratos ya definidos, compararlas contra C10-S (mecanismo focal, ruta alternativa, F*, predicados, evidencia, recursos, riesgos de exclusión y observabilidad) y recomendar una sin tratarla como aprobada.
