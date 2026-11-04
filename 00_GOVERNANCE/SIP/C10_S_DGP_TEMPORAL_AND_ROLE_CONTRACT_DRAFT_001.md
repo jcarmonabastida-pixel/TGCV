@@ -494,3 +494,18 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
 8. **Fallos e indeterminación:** intento no iniciado no es fallo técnico; un componente falso basta para C_dep=0; componente desconocido sin fallo conocido produce C_dep,obs=?; fallo parcial/rollback/crossover se registra como evento; evidencia insuficiente no se convierte en inaccesibilidad. La verdad del generador permanece oculta al analizador.
 9. **Medición:** A_f,obs y C_dep,obs conservan 1/0/?; validación ciega y error diferencial por brazo/componente/escenario se tratan separadamente. Si sensibilidad/especificidad no están identificadas, usar límites/sensibilidad, no corrección puntual ficticia.
 10. Esta sección no valida .80, no fija distribución conjunta, no cierra OPEN-C10-001/007/008 ni AUD/XSYNC asociados, y no autoriza freeze, implementación, simulación o ejecución.
+
+
+## 27. Distribución conjunta de los cuatro componentes técnicos
+
+**Estado:** propuesta del DGP, no aprobada ni congelada; complementa §26 y maestro §68.
+
+1. Orden fijo: C_install, C_integrity, C_compat, C_oper. Para cada intento elegible se define una distribución conjunta de 16 patrones (p_{abcd}=P(C=(a,b,c,d)mid W_attempt=1,E,D,H)), no negativa y con suma uno. (s=p_{1111}).
+2. s=.80 fija solo la celda de éxito total. No identifica marginales, fallos parciales, asociaciones ni las otras 15 celdas.
+3. Dos distribuciones con el mismo s pueden tener perfiles de fallo distintos. Ejemplo ilustrativo: (A) p1111=.80 y p0000=.20; (B) p1111=.80 y .05 en cada patrón con exactamente un componente fallido. La segunda tiene marginales .95 por componente; la primera presenta choque común. No son intercambiables.
+4. Con marginales m_i, los límites de Fréchet son max(0,Σm_i−3) ≤ s ≤ min(m_i). Bajo independencia, s=∏m_i; no asumirlo. Cuatro marginales .80 bajo independencia producen .4096, no .80.
+5. Sensibilidad propuesta: familias de choque común, fallos parciales dispersos, bottleneck por componente, dependencia mixta, heterogeneidad basal y deriva de versión/tiempo. Cada familia requiere tabla completa o mecanismo que reconstruya las 16 celdas.
+6. Malla exploratoria inicial s∈{.60,.70,.80,.90}; no es elección confirmatoria ni dato empírico. No confundir s (éxito condicional por intento) con FS (diferencia entre brazos).
+7. Por escenario/réplica se reportan semilla, versión generador, tabla 16 celdas, denominadores de intentos/no intentos, marginales, patrones parciales, asociaciones, reintentos, rollback, versiones y heterogeneidad. Truth permanece oculta al analizador.
+8. D1 y D2 se calibran y reportan por separado. Cambios en s no pueden alterar implícitamente tasa de intento, recursos, autorización o vías colaterales; cualquier cambio debe declararse como parte del mecanismo.
+9. No se selecciona tabla ni distribución confirmatoria, no se valida s, no se aprueba independencia y no se autoriza freeze, implementación, simulación o ejecución.
