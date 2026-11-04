@@ -312,3 +312,29 @@ Estado: contrato documental candidato; no calculado, implementado ni ejecutado. 
 | UNIT-14 | Cambio de unidad | Si cambia UE/UA, exige recalcular población, estimando, qX, soporte, N y protocolo |
 
 Estado: contratos propuestos, no implementados ni ejecutados.
+
+
+## 18. Pruebas F* y clasificación de rutas alternativas
+
+| ID | Prueba | Criterio de aceptación |
+|---|---|---|
+| FSTAR-01 | Independencia de F* | F* se define sin Outcome/Value y antes de Z |
+| FSTAR-02 | Ficha completa | Objetivo, entrada/S0, salida, restricciones, tolerancias, H, G, C0 y evidencia |
+| FSTAR-03 | Identidad vs función | Ruta distinta de τ2 puede cumplir F* sin fusionar identidades |
+| FSTAR-04 | Accesibilidad vs aplicabilidad | No inferir una de otra |
+| FSTAR-05 | Substituibilidad | Cumple F* con recursos/precondiciones y dentro de H |
+| FSTAR-06 | Composición | Detecta rutas compuestas y distribuidas del universo declarado |
+| FSTAR-07 | Recursos | Rechaza ruta que requiere recursos no disponibles; conserva límite contextual |
+| FSTAR-08 | Tres estados | F_alt,0=0/1/? sin convertir indeterminado en ausente |
+| FSTAR-09 | Cobertura | “No encontrado” sin cobertura suficiente devuelve indeterminado |
+| FSTAR-10 | Cegamiento | Clasificación ciega a Z, B, selección, ejecución, O y V |
+| FSTAR-11 | Poblaciones | Alternativa presente: permanece en P*_τ2 y sale de P*_F |
+| FSTAR-12 | Alternativa indeterminada | Puede permanecer en P*_τ2; P*_F no confirmada |
+| FSTAR-13 | Efecto B en alternativa | Detecta vía B→alternativa y rechaza LATE focal bajo exclusión vulnerada |
+| FSTAR-14 | Activación post-Z | Clasifica mecanismo postratamiento; prohíbe ajuste ingenuo |
+| FSTAR-15 | Sensibilidad | Reporta sensibilidad a error de clasificación, cobertura, G/H/tolerancias |
+| FSTAR-16 | Reporte poblacional | Separa P*_τ2, P*_F, diferencia, indeterminados y excluidos |
+| FSTAR-17 | q y pesos | Exige distribución objetivo/soporte/pesos propios si se estima efecto en P*_F |
+| FSTAR-18 | Límite de exclusividad | PASS solo dentro de universo, granularidad, contexto y horizonte auditados |
+
+Estado: pruebas contractuales documentales; no implementadas ni ejecutadas.
