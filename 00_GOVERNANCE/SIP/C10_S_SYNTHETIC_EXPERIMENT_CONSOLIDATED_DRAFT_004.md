@@ -7302,3 +7302,12 @@ No se ratifican H, duración, ventanas, F*, recursos, D1/D2 ni cobertura. AUD-00
 Se crea C10_S_PATH_PREDICATE_TEMPORAL_EVIDENCE_MATRIX_DRAFT_001.md. La matriz separa ID, ACC, APP, REL, COND, AUTH, RES, DEP, BLOCK, WIN y COV; distingue verdad DGP de clasificación observada; y especifica evaluación por paso F1(S0→S2), F2(S2→SF), A1(S0→S1), A2(S1→SF). ACC/T_acc queda fijada en snapshot t3 en el fixture base; APP se evalúa desde el estado hipotético de entrada; REL por arista; recursos/ventanas/autorizaciones solo cambian intrarrama con reglas explícitas. Las ramas F y A son alternativas contrafactuales, no ejecuciones concurrentes.
 
 Se proponen clases I (invariante), S (state-dependent), T (temporal), R (recurso-dependiente), D (dinámica explícita) y E (epistémica). Por defecto no se inventan transiciones: sin regla DGP, se mantiene snapshot t3 o se clasifica indeterminado. Se añaden contratos documentales PM-01…18. No se asignan valores por escenario ni se cierran AUD-004/005/007/010/011 u OPEN-C10-001/003/005/007. No hay implementación, fixtures ejecutables, simulación ni ejecución.
+
+
+# 77. Reconciliación histórica de fichas F1/F2/A1/A2 (2026-11-05)
+
+Se crea C10_S_TRANSFORMATION_CARDS_HISTORICAL_RECONCILIATION_DRAFT_001.md tras recuperar §§47–51 y 57–69. Se evita duplicar las fichas ya existentes de F*, elegibilidad, accesibilidad, C_dep, evidencia E1–E4 y condiciones temporales. Hallazgo: F1 está parcialmente especificada como τ2 focal por §§62–63 y 67; F2, A1 y A2 solo tienen posición topológica y transición abstracta en §74, sin semántica transformacional propia, precondiciones, recursos o evidencia específicos. SF es objetivo formal, no definición operacional de F*.
+
+Se documentan cuatro fichas controladas que separan lo conocido de lo abierto. No se inventan operaciones técnicas ni se asignan valores truth por escenario. R0–R3 tampoco permiten afirmar substituibilidad hasta que la ruta A1→A2 se evalúe contra F* común. El hueco requiere elegir y documentar un microdominio sintético concreto o una descripción técnica neutral concreta antes de fijar DGP.
+
+Las fichas sustantivas no están cerradas. AUD-004/005/007/010/011 y OPEN-C10-001/003/005/007 permanecen abiertos. No hay aprobación, freeze, implementación, datos, simulación ni ejecución.
