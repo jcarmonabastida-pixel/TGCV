@@ -268,3 +268,17 @@ Se registra DEC-C10-028 como propuesta, no decisión aceptada:
 | DEC-C10-028 | Distribución de cuatro componentes | PROPUESTA | Definir tabla de 16 patrones (p_{abcd}), con s=p1111. s=.80 no identifica marginales ni fallos parciales. Incluir sensibilidad de dependencia (choque común, fallos parciales, bottleneck, mixta), heterogeneidad y deriva de versiones. Malla exploratoria s={.60,.70,.80,.90}, sin privilegiar .80. | Protocolo/denominador de intentos, marginales y fallos parciales, dependencia, heterogeneidad, versiones, revisión independiente |
 
 DEC-C10-028 demuestra la insuficiencia de s para determinar el mecanismo completo; no selecciona una distribución, no valida parámetros, no aprueba D1/D2 como primario ni autoriza ejecución.
+
+
+## 23. Propuesta de fixtures y propagación de s (2026-11-04)
+
+Se registra DEC-C10-029 como propuesta, no decisión aceptada:
+
+- Cuatro fixtures con s=.80: choque común, fallos simples dispersos, bottleneck instalación y fallos emparejados.
+- Se conservan las 16 celdas por tabla; los cuatro fixtures comparten s pero producen marginales y patrones de fallo diferentes.
+- Para la malla s=.60/.70/.80/.90 se escala la masa residual 1−s según cada estructura; esta familia cambia marginales y no mantiene marginales fijas.
+- Bajo una oportunidad de intento y las políticas candidatas D1 q0=.25/q1=1 y D2 q0=0/q1=1, con éxito condicional común s: FS_Cdep,D1=.75s y FS_Cdep,D2=s.
+- El estado D1 control=.20 se deriva de .25×.80; no debe tratarse como constante independiente al variar s.
+- Las igualdades con FS_Af/FS_Df siguen condicionadas a §67.4.
+
+DEC-C10-029 no selecciona distribución confirmatoria, escenario primario ni s, y no autoriza freeze/implementación/simulación/ejecución.
