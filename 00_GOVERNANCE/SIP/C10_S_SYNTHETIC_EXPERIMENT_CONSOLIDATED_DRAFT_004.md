@@ -5845,3 +5845,137 @@ FSTAR-01…FSTAR-18 comprueban independencia de F* respecto de O/V; fijación pr
 No se fijan valores numéricos de F*, tolerancias, H, G, universo sintético cerrado, cobertura, recursos permitidos, estándar E1–E4 por clase, regla de adjudicación, tasas de error, distribución q_X,F*, pesos ni protocolo confirmatorio de heterogeneidad. Requieren decisión explícita y revisión independiente.
 
 **Dictamen:** la reconciliación de §§48–50 es conceptualmente coherente si P*_tau2 y P*_F permanecen separadas y la exclusividad se limita a P*_F. El contrato ofrece una estructura operacional, pero no cierra la definición empírica de F*, la cobertura del universo ni la exclusión IV. DEC-C10-017 queda como propuesta. No hay freeze, implementación, simulación ni ejecución.
+
+
+---
+
+# 58. Contrato integrado de medición de A_f*, C_dep y ΔT_acc
+
+**Estado:** propuesta operacional de medición y validación; no aprobada, no congelada, no implementada y no ejecutada.  
+**Dependencias:** §§30, 38–43, 47–51, 53–57; contrato DGP §§2–8 y 16; resolución AUD-001/002 §§2–4; contratos ACC-01…12, EVID-01…15 y MEAS-01…14.  
+**Propósito:** evitar que asignación, provisión, estado técnico, accesibilidad focal, aplicabilidad, medición observada y cambio completo del espacio transformacional se traten como una misma variable.
+
+## 58.1. Objetos que deben permanecer separados
+
+| Objeto | Significado | No equivale a |
+|---|---|---|
+| Z | Asignación aleatoria | Oferta, recepción, intento o acceso |
+| B_assigned / offered / received | Política/versiones asignadas, ofrecidas y recibidas | Cumplimiento o éxito |
+| W_attempt | Intento de provisión/instalación | Instalación verificada |
+| S_install | Resultado del proceso de instalación | Dependencia técnica completa |
+| C_dep | Conjunción de componentes técnicos de la dependencia focal | Accesibilidad completa de τ2 |
+| A_f* | Verdad generadora sobre accesibilidad de la identidad focal τ2 | Z, C_dep por sí solo, aplicabilidad o ejecución |
+| A_f_obs | Clasificación observada de accesibilidad, con incertidumbre | Verdad generadora infalible |
+| App_f | Aplicabilidad de τ2 desde el estado inicial S0 y sus precondiciones | Accesibilidad estructural |
+| T_acc | Snapshot del espacio completo de transformaciones accesibles | Catálogo de referencia o conjunto de ejecuciones |
+| ΔT_acc | Diferencia estructurada entre snapshots comparables | A_f* ni una puntuación escalar |
+| D_f | Apertura basal→post de τ2 en unidades inicialmente inaccesibles | A_f,post* ni ITT de Z |
+
+La clasificación de cada condición concreta como constitutiva de accesibilidad, aplicabilidad desde S0, provisión técnica, contexto o mecanismo postratamiento sigue requiriendo justificación. No se resuelve por el nombre de la variable.
+
+## 58.2. Verdad generadora y clasificación observada
+
+Para el DGP, A_f*(i,t) ∈ {0,1} es el estado verdadero oculto de accesibilidad de τ2 en la unidad y snapshot especificados. El analizador no recibe este campo. Recibe A_f_obs(i,t) ∈ {1,0,?} y la evidencia observable permitida:
+
+- 1: accesibilidad respaldada por evidencia suficiente dentro del ámbito definido;
+- 0: inaccesibilidad respaldada por evidencia suficiente y condiciones de evaluación cubiertas;
+- ?: evidencia ausente, contradictoria, incompleta o insuficiente.
+
+? no se imputa a cero ni a uno. La verdad binaria del DGP permite evaluar el error del clasificador después de congelar la salida del analizador; no autoriza a filtrar la verdad al analizador.
+
+La elegibilidad verdadera de P*_τ2 se conserva en el generador. La elegibilidad observada pre-Z se registra separadamente. Si la clasificación basal observada es indeterminada o discordante, no se incorpora silenciosamente como inaccesible confirmada: se informa como indeterminada y se evalúa el impacto de la selección/misclasificación sobre el estimando. Cualquier análisis restringido a elegibilidad observada confirmada debe etiquetarse como tal y no presentarse automáticamente como el estimando sobre P*_τ2 verdadero.
+
+## 58.3. Contrato de C_dep
+
+Se conserva la conjunción técnica candidata:
+
+C_dep* = C_install* ∧ C_integrity* ∧ C_compat* ∧ C_oper*.
+
+Cada componente debe tener definición operacional, identidad/versión, criterio de verificación, fuente, instante, responsable, resultado y evidencia. Los cuatro componentes no se presumen independientes. C_dep* es la verdad técnica del DGP; el analizador recibe los resultados/evidencias verificables y sus estados observados, no una etiqueta derivada sin trazabilidad.
+
+Para cada componente se distinguen: satisfecho, incumplido e indeterminado en la capa observacional; no aplicable solo cuando una regla de dominio pre-Z lo justifique. Un fallo de verificación no se convierte en éxito por imputación. La tasa final P(C_dep*=1|Z=z) no se iguala a la probabilidad de intento P(W_attempt=1|Z=z).
+
+C_dep no basta por sí solo para establecer A_f*. La relación entre dependencia técnica y accesibilidad debe especificar los demás predicados necesarios, y demostrar que son condiciones de acceso y no condiciones de aplicabilidad, ejecución o resultado.
+
+## 58.4. Definición generadora de A_f* y App_f*
+
+La propuesta de definición para cada snapshot es:
+
+A_f*(i,t) = I[ID_τ2 válido en versión declarada ∧ C_dep*(i,t)=1 ∧ todos los predicados adicionales de acceso focal preespecificados satisfechos].
+
+El inventario de predicados adicionales debe ser explícito y clasificado antes de construir los fixtures. No se presume que C_auth, recursos, capacidad, información, compatibilidad de dominio u otros campos pertenezcan todos a la misma clase: cada uno debe clasificarse como condición de acceso, precondición de aplicabilidad, condición constitutiva, mecanismo de provisión o variable postratamiento. La fórmula solo podrá cerrarse cuando esta clasificación esté aprobada.
+
+App_f*(i,t) = I[las precondiciones de τ2 para el estado S0_i,t se satisfacen] se evalúa por separado. Es posible que A_f*=1 y App_f*=0: la transformación está accesible en el sistema, pero no es aplicable desde el estado actual. También es posible que la evidencia para uno de los juicios sea indeterminada mientras el otro está respaldado.
+
+La ejecución observada no define retrospectivamente A_f* ni App_f*. Una transformación no ejecutada puede estar accesible; una ejecución observada puede ser evidencia auxiliar, pero no sustituye el protocolo independiente de medición ni permite inferir accesibilidad desde una muestra seleccionada de ejecutores.
+
+## 58.5. Apertura focal D_f y primera etapa
+
+Para la verdad del DGP:
+
+D_f* = I(A_f*,base=0 ∧ A_f*,post=1).
+
+D_f* se distingue del estado posterior A_f*,post. Para el analizador se construye D_f_obs únicamente con las clasificaciones observadas basales y post, preservando estados indeterminados y error de clasificación. La primera etapa causal primaria de referencia se calcula con la verdad del DGP por el evaluador; el analizador estima/reportará la primera etapa observada. La comparación entre ambas cuantifica sesgo de medición.
+
+No se sustituye ITT_Df* por ITT_Df_obs sin advertirlo. Si hay error, se reportan sensibilidad/especificidad y su incertidumbre cuando la validación lo permita, o límites/análisis de sensibilidad cuando no. La corrección requiere una submuestra de validación con selección conocida; una referencia imperfecta no se denomina gold standard y debe aportar su propia incertidumbre.
+
+## 58.6. Contrato de T_acc y ΔT_acc
+
+Cada snapshot T_acc(i,t) debe incluir, al menos:
+
+1. U_acc: identidades canónicas de transformaciones y versiones accesibles, con estados respaldados/indeterminados.
+2. R_acc: relaciones tipadas, dirigidas cuando corresponda, con origen/destino, versión, condiciones, estado activo/inactivo/indeterminado y evidencia.
+3. C_acc: condiciones/configuraciones relevantes para realizabilidad y composición, con valor/estado, ámbito, temporalidad y procedencia.
+4. Validity: validez de identidad, versión, evidencia y cobertura del snapshot.
+5. State: estado del sistema e historia necesarios para interpretar el snapshot, sin incorporar Outcome o Value como criterio de accesibilidad.
+
+La comparación exige snapshots con unidad, dominio, horizonte de observación, granularidad, catálogo de referencia y reglas de identidad/versionado compatibles. Si no son comparables, ΔT_acc es indeterminado o requiere una transformación explícita de correspondencia; no se fuerza una diferencia por nombres parecidos.
+
+Se conserva la descomposición:
+
+- ΔU = (altas, bajas, cambios de versión/definición);
+- ΔR = (relaciones añadidas, retiradas, reconfiguradas);
+- ΔC = (condiciones/configuraciones añadidas, retiradas o modificadas);
+- ΔValidity = (cambios de validez, evidencia, cobertura o estado epistémico);
+- ΔState = (cambios relevantes del estado/contexto entre snapshots).
+
+Cada evento de diferencia mantiene referencia al objeto antes/después, tipo de cambio, momento, fuente, regla de comparación y evidencia. Cambio de versión no implica automáticamente nueva identidad; cambio de condición o relación no implica automáticamente nueva transformación. Las indeterminaciones se propagan y no se convierten en altas/bajas ciertas.
+
+ΔT_acc = (ΔU, ΔR, ΔC, ΔValidity, ΔState) es un objeto estructurado multidimensional, no una magnitud escalar ni una suma ponderada. A_f* es una proyección focal de τ2 dentro de este objeto, no su definición completa. Reach y trayectorias candidatas se derivan posteriormente conforme a reglas separadas; no forman parte del snapshot ni se infieren de ejecuciones.
+
+## 58.7. Protocolo de medición y cegamiento
+
+- Baseline: cerrar y sellar snapshots, identidad/versionado, condiciones, C_dep, A_f_obs, App_f, T_acc y cobertura antes de Z.
+- Postprovisión: verificar instalación/componentes técnicos y C_dep después de la provisión, con instante y evidencia.
+- Postaccesibilidad: capturar A_f_obs y T_acc después de verificación y antes de conocimiento/consideración, selección, inicio o ejecución.
+- Fuentes: usar registros de autorización, configuración, inventario de recursos, pruebas de compatibilidad/operatividad y evidencia técnica reproducible. La mera documentación declarativa o la ausencia de ejecución no basta.
+- Evaluación: dos evaluaciones independientes cuando el protocolo lo requiera; conservar desacuerdos y adjudicación trazable. El cegamiento cubre Z/B cuando sea factible y siempre selección, ejecución, Outcome y Value.
+- Validación: una submuestra de referencia con mecanismo de selección conocido permite estimar error de clasificación. Si la referencia es imperfecta, modelar su error; si la selección de validación es desconocida o diferencial no corregible, declarar límites/no identificación.
+- Cobertura: reportar universo, catálogo, reglas, componentes observados, fuentes ausentes, rutas no evaluables y alcance de la afirmación.
+
+No se fijan aún estándares E1–E4 por clase, número de evaluadores, umbrales de concordancia, tamaño de validación, sensibilidad/especificidad mínimas ni tolerancias. Requieren decisión y justificación; no se inventan.
+
+## 58.8. Roles y permisos de datos
+
+| Campo | Generador | Analizador | Evaluador independiente |
+|---|---|---|---|
+| A_f*, C_dep*, D_f*, T_acc*, ΔT_acc* verdaderos | Sí | No | Sí, después de congelar salida |
+| Asignación, B, intento y eventos técnicos observables | Sí | Sí | Sí |
+| Evidencia y clasificación A_f_obs, App_f_obs, T_acc_obs | Sí | Sí | Sí |
+| Parámetros de error, estados potenciales y truth del DGP | Sí | No | Sí |
+| Selección, ejecución, Outcome y Value observados | Sí | Sí | Sí |
+| Truth de vías alternativas y omisiones deliberadas | Sí | No | Sí |
+
+El evaluador independiente compara el resultado ya congelado del analizador con la verdad oculta; no puede corregirlo ni revelar parámetros antes del análisis.
+
+## 58.9. Salidas mínimas y criterios de fallo
+
+El informe debe mostrar por separado: verdad DGP y clasificación observada; C_dep por componente; A_f_obs y App_f_obs; D_f* y D_f_obs; snapshots y cobertura de T_acc; cada componente de ΔT_acc; indeterminados; error de medición y sensibilidad; población verdadera y población observada elegible; y cualquier cambio no explicado por la política focal.
+
+Falla del contrato si: se copia Z o B a A_f; se copia C_dep directamente a A_f sin predicados restantes; se deduce accesibilidad de ejecución; se colapsa App_f en A_f; se usa Outcome/Value para definir o validar A_f; se omiten versiones/relaciones/condiciones del ΔT_acc; se mezclan cambios ciertos e indeterminados; se compara snapshots no equivalentes; o el analizador accede a truth oculta.
+
+## 58.10. Pendientes explícitos
+
+Permanecen abiertos: clasificación causal/ontológica de cada condición del DGP; definición completa de identidad y versión de τ2; ficha técnica de C_dep y de cada predicado adicional; definición y medición de App_f; estándares de evidencia E1–E4; reglas de adjudicación y concordancia; diseño/tamaño de validación; error diferencial por brazo/versión; cobertura del universo sintético; catálogo y relaciones completos; reglas de correspondencia entre snapshots; umbrales/tolerancias; y revisión independiente.
+
+**Dictamen:** el contrato separa las capas y fija invariantes de medición suficientes para evitar sustituciones conceptuales, pero todavía no cierra la operacionalización empírica ni la validez de constructo. AUD-004, XAUD-003/004 y OPEN-C10-004 continúan abiertas. No hay freeze, implementación, simulación ni ejecución.
