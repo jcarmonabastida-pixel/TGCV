@@ -282,3 +282,12 @@ La recuperación de §52.2 del documento maestro permite concretar la estructura
 Una tasa conjunta de éxito técnico de .80 condicionada al intento reconcilia los valores. Es una factorización derivada, no un parámetro original recuperado. Los componentes técnicos permanecen separados y no se presume independencia.
 
 **Estado de OPEN-C10-001:** parcialmente operacionalizada documentalmente; sigue ABIERTA por falta de decisión sobre comparador D1, actor, recepción, versiones, protocolo de verificación, crossover, factibilidad y vías colaterales. No se declara cerrada.
+
+
+## 16. Cierre parcial de q_X*: especificación y límites
+
+**Especificado documentalmente:** q_X* como distribución basal (P^*(X,H_0,C_c\mid E=1,C_{dep,0}=0,A_{f,0}^*=0)); elegibilidad preasignación; separación entre C_c y C_dep; cuatro estados de condiciones constitutivas; soporte por historia para ambas políticas; reglas de restricción ex ante/no identificación; q_L* solo para variables postasignación indispensables bajo intervención secuencial.
+
+**OPEN-C10-002 sigue ABIERTA:** faltan distribución concreta P*, composición y categorías de X/H0, inventario/umbrales C_c, unidad y posible interferencia, probabilidades de asignación, estratos/pesos, ventanas, rutas equivalentes y Value. No hay datos para calcular soporte numérico ni para afirmar positividad empírica.
+
+No se cierra DEC-C10-012 ni se declara freeze.
