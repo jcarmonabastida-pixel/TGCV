@@ -3,7 +3,7 @@
 **ID:** C10-S-PLAN-001 · **Versión:** Draft 001 · **Fecha:** 2026-11-04
 **Estado:** DRAFT / NO APROBADO / NO CONGELADO.
 
-Este documento consolida el diagnóstico, los artefactos y el plan de cierre de C10-S. La auditoría y el plan detallado se incorporarán en actualizaciones sucesivas de este mismo archivo.
+Este documento consolida el diagnóstico, los artefactos y el plan de cierre de C10-S. Se actualiza incrementalmente con cada bloque de trabajo y sus auditorías.
 
 
 # I. Auditoría documental (corte 2026-11-04)
@@ -21,10 +21,10 @@ La auditoría fue documental y de metadatos. No se ejecutaron validadores, códi
 | Estado | OPEN / Draft |
 | Mergeable informado | Sí |
 | Head | research/c10-s-consolidation-draft |
-| HEAD | d007a877b25caec72643b2efbaca0f7cf8eb7ea5 |
+| HEAD (corte inicial de auditoría) | d007a877b25caec72643b2efbaca0f7cf8eb7ea5 |
 | Base | research/c10-d1-protocol-draft |
-| Commits | 184 |
-| Archivos | 13 |
+| Commits (corte inicial) | 184 |
+| Archivos (corte inicial) | 13 |
 | Adiciones/eliminaciones | 10.639 / 0 |
 | Reviews / threads / comentarios | 0 / 0 / 0 |
 
@@ -381,3 +381,73 @@ Rutas del repositorio jcarmonabastida-pixel/TGCV:
 - PR #117: `governance/igrt-bootstrap-reconciliation-draft` → `main`.
 
 **Advertencia:** este plan es una instantánea documental. Repetir auditoría antes de integrar o ejecutar si cambian ramas, commits o artefactos.
+
+
+# VII. Ejecución del plan — Fase 0 y Bloque 1 (2026-11-04)
+
+## 25. Carga canónica y reconstrucción histórica
+
+Se ha leído directamente desde GitHub `main`:
+- `README.md` (blob `962ab503bf835b6e1a4f45c80a396f3eb2fe4c6c`);
+- `00_GOVERNANCE/README.md` (blob `f4871301c70e98a0b1b91d2253d0e937768c75d8`);
+- `HISTORICAL_RECONSTRUCTION_BEFORE_NEW_WORK_RULE_v0.1.md` (blob `c01b0cc3b2a7d6bcf56893a0665f09fd2c8ddba4`);
+- `TECHNICAL_EXECUTION_WORKFLOW_v0.1.md` (blob `66810b5aad08be4667480b13382c019577f93790`).
+
+Se han recuperado y cotejado C10-D1, C10-S §§43–51 y §§66–69, DGP §§1–28, Decision Log DEC-C10-015…029, la reconciliación C10-D1/S4-R, AUD-001/002, XAUD-001…007, la matriz y el registro de pruebas. Se ha respetado la regla de reutilizar trabajo compatible y no sustituir semántica histórica silenciosamente.
+
+**Resultado Fase 0:** reconstrucción documental suficiente para continuar el Bloque 1; no se encontró un freeze o aceptación científica que cierre estos puntos. La contradicción/ambigüedad de intervención ya estaba reconocida en DEC-C10-024 y XAUD-001/002; no es un hallazgo nuevo.
+
+## 26. Artefacto generado en Bloque 1
+
+Nuevo documento:
+`00_GOVERNANCE/SIP/C10_S_CAUSAL_ARCHITECTURE_RECONCILIATION_DRAFT_001.md`
+
+Contiene:
+- jerarquía de estimandos C10-D1 / S4-R;
+- distinción TE_Z, ITT_Z, ψ_B, θ_A(q), θ_Af(q*) y LATE_f;
+- interpretación de q_X* y q_L*;
+- contraste entre intervención histórica sobre C_auth y provisión técnica B;
+- candidata de intervención con C_auth basal e invariante;
+- DAG temporal y diccionario de roles;
+- criterios de cierre y discrepancias abiertas.
+
+Se registró DEC-C10-030 como propuesta en el Decision Log, se añadieron CA-01…CA-07 a la matriz de cierre y CAUS-01…CAUS-10 al registro de contratos.
+
+## 27. Resultado técnico-científico del Bloque 1
+
+**Avance logrado:** las distinciones y la arquitectura candidata están reconciliadas documentalmente. No se han cerrado las decisiones de diseño.
+
+Hallazgos críticos:
+1. C10-D1 mantiene `θ_A(q)` como pregunta científica general; ITT de S4-R es efecto de política asignada, no sustituto.
+2. `q_X*` es una distribución basal común candidata; `q_L*` solo se requiere si variables post-Z indispensables se gobiernan mediante régimen secuencial explícito. No ajustar mecánicamente por mediadores.
+3. Hay dos propuestas históricas diferentes: intervenir `C_auth` (resolución AUD-001/002) y provisión técnica B (DEC-C10-022/DGP). DEC-C10-024 ya advierte la discrepancia.
+4. Se recomienda para revisión una política B de provisión técnica con `C_auth` basal, elegible e invariante. Si B cambia autorización, recursos, información, costes, calidad, seguridad o alternativas, el ITT es efecto de paquete salvo identificación adicional.
+5. D1/D2 permanece abierto: fuente 165–183 favorece D1 condicionado; DGP §25 y DEC-C10-026 favorecen D2 provisionalmente para el objetivo mecanístico. No se elige ninguno.
+6. La unidad/interferencia, población, soporte, Value, horizonte y exclusión no están cerrados.
+
+**Estado del Bloque 1:** AVANCE DOCUMENTAL / DECISIONES CIENTÍFICAS ABIERTAS. No declarar AUD-001/002 ni XAUD-001/002 cerrados. El entregable causal integrado existe como Draft, no como contrato aceptado.
+
+## 28. Actualización de estado PR #116
+
+Verificación posterior a las escrituras:
+- PR #116: OPEN / Draft; no merged.
+- Base: `research/c10-d1-protocol-draft`.
+- Head: `research/c10-s-consolidation-draft`.
+- HEAD: `7332694f3f54fd8f6ebb980aafb9a9e1192fe9f9`.
+- Commits: 198.
+- Archivos modificados: 15.
+- Mergeable: true (metadato GitHub; no aprobación científica).
+- Reviews/comentarios: ninguno observado en la consulta anterior al corte.
+
+El PR contiene ahora el plan de cierre y el documento causal de Bloque 1, además de los artefactos anteriores. La descripción del PR no se ha reescrito en esta operación; su resumen de alcance puede necesitar actualización antes de revisión externa.
+
+## 29. Próximo paso del plan
+
+Continuar con **Bloque 2 — población, elegibilidad y D1/D2**, reutilizando:
+- maestro §§46–51 y §§66;
+- registro histórico 165–183;
+- DEC-C10-017, DEC-C10-026 y DEC-C10-030;
+- contratos CMP-01…14, F* y elegibilidad;
+- reconciliación C10-D1/S4-R.
+
+La operación siguiente debe cerrar la legitimidad del comparador para la pregunta primaria, la relación entre P*_τ2 y P*_F, la regla de elegibilidad pre-Z, el contrato F* y la cobertura de alternativas. La decisión D1/D2 seguirá requiriendo aprobación expresa. No iniciar dimensionamiento ni ejecución.
