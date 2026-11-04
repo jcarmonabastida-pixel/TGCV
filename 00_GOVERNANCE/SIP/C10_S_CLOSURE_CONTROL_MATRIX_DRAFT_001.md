@@ -517,3 +517,18 @@ No se cierra calibración empírica ni selección primaria.
 | CA-07 | Value/horizonte/población | OPEN-C10-003/004; fuente 179–183 | ABIERTO | Regla Value, beneficiario, dimensiones, horizonte y población preespecificados. |
 
 **Resultado del bloque:** arquitectura causal reconciliada a nivel de distinciones y propuesta candidata; no existe todavía contrato causal aprobado ni estimando final cerrado. No marcar AUD-001/002 o XAUD-001/002 como resueltos.
+
+
+## 9. Seguimiento del Bloque 2 — población, F* y comparadores (2026-11-04)
+
+| ID | Punto | Evidencia incorporada | Estado | Criterio de cierre |
+|---|---|---|---|---|
+| POP-01 | P*_τ2 | Maestro §§46/50/51/70 y nuevo artefacto de reconciliación | PROPUESTA / ABIERTO | Aprobación de regla pre-Z y definición observable de condiciones constitutivas. |
+| POP-02 | P*_F | Maestro §§48–50/70; F_alt,0 y cobertura | PROPUESTA / ABIERTO | F* y universo/cobertura de rutas; ausencia respaldada y adjudicación. |
+| POP-03 | Elegibilidad indeterminada | Maestro §47 y contrato nuevo | PARCIAL | Umbrales, instrumentos, adjudicación y sensibilidad de error conjunto. |
+| POP-04 | D_f,0 vs C_dep,0 | Nuevo crosswalk de notación, maestro §70 y DGP §29 | CORRECCIÓN PROPUESTA | Búsqueda global, supersesión explícita y aprobación. |
+| POP-05 | F* | Definición funcional recuperada en §48 | INCOMPLETA | S0/objetivo, aceptación, tolerancias, H/G/C0, recursos y validación. |
+| POP-06 | D1/D2 | Fuente 165–168, DEC-C10-026, DGP §25, maestro §70 | PRECEDENCIA NO RESUELTA | Justificar comparador para pregunta primaria y aceptar decisión. |
+| POP-07 | Unidad/interferencia | Maestro §45; DEC-C10-016/021 | CANDIDATA | Auditoría de frontera y recursos; aprobar UE/UA/exposición. |
+
+**Resultado del Bloque 2:** se han reconciliado conceptualmente P*_τ2 y P*_F y se ha detectado una sobrecarga de notación basal. F* sigue incompleto y D1/D2 no se ha seleccionado. No cerrar OPEN-C10-001/003/005/007 ni afirmar elegibilidad operacionalizada.
