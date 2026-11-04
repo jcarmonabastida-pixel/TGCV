@@ -262,3 +262,24 @@ Se armoniza con el maestro §57 y la auditoría de §50.7: P*_τ2 incluye unidad
 F* se especifica ex ante con objetivo técnico observable, entrada/S0, salida, restricciones, tolerancias, H, G, C0 y evidencia/adjudicación independiente de O/V. Para cada ruta se distinguen accesibilidad, aplicabilidad y substituibilidad; identidad no equivale a función. F_alt,0 admite 0/1/indeterminado y ausencia exige cobertura suficiente. Si B altera alternativas, exclusión IV focal se compromete y se conserva ITT del paquete; si alternativa basal permanece estable, su existencia puede producir heterogeneidad sin violar automáticamente exclusión.
 
 La definición cuantitativa de F*, universo, umbrales, cobertura, error de clasificación, sensibilidad, q_X,F*, pesos y estimando confirmatorio P*_F siguen abiertos. DEC-C10-017 es propuesta.
+
+
+## 17. Reconciliación de D1/D2 y del contrato material B
+
+La distinción se interpreta de acuerdo con el maestro §§53.4–54 y 65:
+
+| Elemento | D1 principal condicionado | D2 contraste |
+|---|---:|---:|
+| C_dep,base | 0 | 0 |
+| P(W_attempt=1 | Z=0) | .25 | 0 |
+| P(W_attempt=1 | Z=1) | 1.00 | 1.00 |
+| P(S_success=1 | W_attempt=1) | .80 | .80 |
+| P(C_dep,post=1 | Z=0) | .20 | 0 |
+| P(C_dep,post=1 | Z=1) | .80 | .80 |
+| Primera etapa C_dep | .60 | .80 |
+
+El .80 de éxito condicional es una factorización propuesta, no evidencia empírica ni parámetro original literal. La tabla no implica que la primera etapa de C_dep sea la de A_f*/D_f*: esta se calcula desde todos los predicados estructurales.
+
+D1 conserva estatus de principal condicionado a justificar el comparador ordinario. D2 es la alternativa de control sin provisión; no se sustituye uno por otro sin decisión explícita. La definición de §21 como B0 sin provisión/B1 provisión se restringe a D2. Los parámetros .20/.80 de DGP §3.1 se interpretan como estados finales C_dep, no intentos.
+
+Esta reconciliación es propuesta, no decisión aceptada. OPEN-C10-001/005 siguen abiertos; no freeze ni ejecución.
