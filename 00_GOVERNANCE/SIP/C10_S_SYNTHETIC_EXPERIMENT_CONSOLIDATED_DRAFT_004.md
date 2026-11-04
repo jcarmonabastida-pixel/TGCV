@@ -5565,3 +5565,83 @@ La única diferencia intencionada es la política de frecuencia de intento. Si l
 La propuesta concreta el mecanismo B y muestra una factorización coherente con la fuente recuperada. No resuelve aún: (i) si la política D1 representa realmente el comparador científico deseado; (ii) quién/qué ejecuta el intento; (iii) qué constituye la recepción de B; (iv) qué componentes y tolerancias definen el éxito técnico; (v) cómo se codifica crossover; (vi) si se acepta .80 como tasa conjunta de éxito condicional; (vii) si el estimando focal es sobre C_dep o sobre D_f; y (viii) revisión independiente de exclusión y versiones.
 
 **Dictamen:** B queda especificada como propuesta operativa candidata, no como decisión aceptada. OPEN-C10-001 continúa ABIERTA hasta aprobación explícita de la política, sus versiones y su comparador. No hay implementación, simulación ni ejecución.
+
+
+---
+
+# 55. Especificación candidata de q_X*, población objetivo y soporte por historia
+
+**Estado:** operacionalización documental candidata; DEC-C10-012 y OPEN-C10-002 continúan abiertas.  
+**Base fuente:** §44 (q_X*/q_L*), §§46–47 (población y elegibilidad basal), §53.6 y contrato DGP §3.4.  
+**Alcance:** S4-R primario sintético. No modifica C10-D1 general, no redefine TGCV Core y no constituye aprobación ni ejecución.
+
+## 55.1. Elección del régimen común para el DGP primario
+
+Se adopta como propuesta de especificación primaria (q_X^*), no (q_L^*):
+
+[
+q_X^* = P^*(X,H_0,C_c mid E=1, C_{dep,0}=0, A_{f,0}^*=0)
+]
+
+(X) recoge características basales; (H_0), la historia completa relevante anterior a la asignación; (C_c), las condiciones constitutivas basales. (E=1) exige que todas las condiciones requeridas estén confirmadas como cumplidas. La ausencia basal de la dependencia focal y la inaccesibilidad basal de τ₂ se evalúan antes de Z mediante protocolo independiente y ciego.
+
+(q_X^*) es una distribución objetivo sobre la población primaria preespecificada, no una intervención que fuerce valores de covariables. La distribución concreta, sus estratos, pesos y tamaño de soporte no están todavía fijados; no se asignan valores numéricos por conveniencia.
+
+## 55.2. Condiciones que pertenecen a (C_c)
+
+Las condiciones constitutivas son precondiciones de realizabilidad y elegibilidad, no componentes que la política B pueda manipular en el DGP primario. La matriz mínima candidata conserva:
+
+- autorización basal no focal ((C_{auth,base}));
+- recursos y disponibilidad ((C_{resource}));
+- capacidad técnica/operativa ((C_{capacity}));
+- información necesaria ((C_{info}));
+- compatibilidad de dominio ((C_{domain}));
+- otras precondiciones esenciales, identificadas y justificadas antes de Z ((C_{other})).
+
+Cada (C_j) tiene ficha versionada según §47: definición, umbral, evidencia, procedimiento, tiempo basal, evaluador ciego, estado, calidad y trazabilidad. Los cuatro estados —cumplida, incumplida, indeterminada y no aplicable— se preservan. Solo las unidades con todas las condiciones requeridas cumplidas integran la población primaria confirmada. Indeterminada no equivale a incumplida ni a cumplida; no aplicable requiere regla de dominio previa.
+
+(C_{dep,0}=0) no se incorpora a (C_c): es la ausencia basal de la dependencia focal que B pretende proveer. (A_{f,0}^*=0) es la comprobación independiente del cierre basal de la transformación focal. Esta separación evita definir elegibilidad usando el propio resultado postratamiento.
+
+## 55.3. Historia y orden temporal
+
+El contrato temporal mínimo es:
+
+1. fijar dominio, unidad y versión del sistema;
+2. observar (X,H_0,C_c) y documentar evidencia de elegibilidad;
+3. verificar (C_{dep,0}=0) y (A_{f,0}^*=0), incluyendo búsqueda de rutas equivalentes;
+4. cerrar la población objetivo y (q_X^*);
+5. aleatorizar (Z) y registrar (B_{assigned});
+6. aplicar la política asignada, registrando oferta/recepción, intento, instalación y verificación;
+7. medir (C_{dep,post}), (A_{f,post}^*), (D_f), trayectorias, Outcome y Value en sus ventanas predefinidas.
+
+Ninguna unidad se añade o elimina de (P^*_{	au2}) por variables observadas después de Z. Las reevaluaciones de baseline deben preceder a la asignación y conservar la trazabilidad.
+
+## 55.4. Factibilidad y soporte por historia
+
+Sea (mathcal H^*) el soporte de historias basales con masa positiva bajo (q_X^*). Para cada estrato/historia (hinmathcal H^*) se requiere:
+
+- ambas políticas (B_{g0}) y (B_{g1}) tienen versiones definidas y son física/técnicamente implementables;
+- el procedimiento no viola ninguna condición constitutiva ni exige cambiarla;
+- la probabilidad de asignación a cada brazo es positiva en el diseño;
+- la oferta/recepción y los fallos se registran sin redefinir retrospectivamente el brazo;
+- la elegibilidad del estrato se determina antes de Z.
+
+La factibilidad de ambas políticas no significa que cada unidad pueda alcanzar ambos estados de (D_f), ni garantiza cumplimiento. Esa diferencia determina quién puede ser complier y se conserva para la interpretación IV. No se excluyen estratos porque después se observe que no cumplen o no abren τ₂.
+
+Si una política no es factible en una historia, hay solo dos salidas admisibles: (a) redefinir antes de Z la población objetivo y el estimando, justificando el alcance de la restricción; o (b) mantener la población y declarar que el contraste de políticas no está identificado para ese soporte. No se extrapola silenciosamente ni se reemplaza una política por otra.
+
+## 55.5. Lugar de las variables post-asignación (L_m)
+
+El DGP primario aislado no incorpora (L_m) post-asignación como confusor común de accesibilidad y Value, de acuerdo con §44.4. Esto es una estipulación del experimento sintético, no una afirmación sobre sistemas reales.
+
+Si una variable post-asignación es indispensable y afecta tanto accesibilidad como Value, no puede incorporarse a (q_X^*) como si fuera basal ni resolverse mediante ajuste marginal. Debe definirse un régimen secuencial (q_L^*), con momento de intervención, historia condicionante, mecanismo implementable común, soporte por historia y estrategia de identificación longitudinal. Si no se puede definir ese régimen, el escenario correspondiente se clasifica como adversarial/no identificado para el contraste focal, no como DGP primario aislado.
+
+## 55.6. Estimandos y alcance
+
+Bajo (q_X^*), (ITT_Z) es el contraste primario de asignación en (P^*_{	au2}). (psi_B(q_X^*)) es el contraste estandarizado entre versiones implementables de las políticas. Solo si la asignación implementa las políticas previstas, hay consistencia de versiones y no existen vías diferenciales ajenas a accesibilidad podrá interpretarse el contraste como (	heta_{Af}(q_X^*)). Con incumplimiento, el ITT sigue referido a asignación; (LATE_f) requiere sus supuestos IV y se limita a compliers. Ninguno de estos objetos identifica automáticamente (	heta_A(q)) general de C10-D1.
+
+## 55.7. Elementos todavía no fijados
+
+No se inventan ni se cierran: distribución empírica/paramétrica (P^*); variables y categorías completas de (X,H_0); inventario definitivo y umbrales de (C_c); unidad de asignación e interferencia; probabilidades de asignación; tamaño y pesos de estratos; evaluación de rutas equivalentes; ventanas temporales; protocolo de Value; reglas para indeterminación persistente; y necesidad de (q_L^*) en cada escenario adversarial.
+
+**Dictamen:** (q_X^*) queda especificado como referente común basal condicionado a elegibilidad constitutiva, dependencia focal ausente e inaccesibilidad basal. El soporte se define por historia y factibilidad de ambas políticas, sin condicionar por resultados postratamiento. Es una propuesta operacional coherente con §§44, 46 y 47; no cierra DEC-C10-012 ni autoriza ejecución.
