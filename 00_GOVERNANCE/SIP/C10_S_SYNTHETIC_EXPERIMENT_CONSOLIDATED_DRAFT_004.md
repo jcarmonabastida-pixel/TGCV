@@ -7231,3 +7231,41 @@ Se registran ID-01…15 para hash, nombre, precondiciones, plataforma, split/mer
 ### 72.7. Dictamen
 
 La propuesta completa el contrato documental de matching, pero no fija aún catálogo, serialización, clases de transformación, tolerancias, G/frontera del DGP, algoritmo confirmatorio ni oráculos. No cierra AUD-004 ni XSYNC-138-03/06. No hay freeze, implementación, simulación ni ejecución.
+
+
+---
+
+# 73. Alcanzabilidad y propagación de indeterminación en trayectorias (2026-11-04)
+
+**Estado:** propuesta metodológica; no aprobada ni congelada. Artefacto: C10_S_REACHABILITY_AND_TRAJECTORY_PROPAGATION_CONTRACT_DRAFT_001.md.
+
+### 73.1. Distinción de objetos
+
+Se mantienen T_acc*, aplicabilidad App*, relaciones de composición, Reach_H*, Π_H^cand,obs, Π_H^sel y Π_H^exec. Reach_H* pregunta si existe secuencia estructuralmente admisible que alcanza un estado dentro de H; no exige selección ni ejecución. Se recomienda reservar Reach_H* para verdad del DGP y Reach_H,obs para clasificación observada; Reach_possible no debe usarse sin sufijo truth/obs.
+
+### 73.2. Admisibilidad de una ruta
+
+Una trayectoria requiere identidad/versiones comparables, accesibilidad de cada transformación, aplicabilidad desde el estado intermedio correspondiente, relaciones de composición válidas, recursos/autorización/condiciones sin bloqueos, secuencia temporal factible y frontera/G compatibles. App* es necesaria para recorrer una ruta desde un estado dado, pero no redefine T_acc*.
+
+### 73.3. Lógica de propagación
+
+Se propone lógica trivalente 1/0/?:
+- conjunción por ruta: 1 si todos los predicados necesarios son 1; 0 si alguno necesario es 0; ? si no hay 0 y al menos uno es ?;
+- disyunción entre rutas: Reach=1 si existe una ruta confirmada; Reach=0 solo si el universo/rutas están exhaustivamente cubiertos y todas refutadas; en otro caso Reach=?.
+- una búsqueda truncada, catálogo incompleto o mapping no resuelto no permiten concluir Reach=0.
+
+### 73.4. Límites lógicos
+
+Se introducen Reach_H^- (estados con ruta confirmada) y Reach_H^+ (estados con ruta confirmada o no refutada). Su diferencia contiene alcanzabilidad posible pero no confirmada. No son intervalos probabilísticos.
+
+### 73.5. Horizonte, snapshots y no filtración
+
+H, G, ciclos, duraciones, recursos, concurrencia, ventanas y criterio de terminación deben fijarse ex ante. Los cambios dentro de H generan snapshots nuevos e inmutables. No usar selección, ejecución, Outcome o Value para definir Reach. Descubrir después una ruta preexistente actualiza E_T, no fecha su creación.
+
+### 73.6. Contratos
+
+Se registran REACH-01…20 para rutas confirmadas/indeterminadas, cobertura incompleta, no alcanzabilidad exhaustiva, no aplicabilidad, no selección/no ejecución, truncamiento, descubrimiento basal, identidad/versionado, ciclos, recursos y no circularidad. Son contratos documentales, no fixtures ejecutables.
+
+### 73.7. Dictamen
+
+Se resuelve documentalmente la regla de propagación, pero no se cierra AUD-005 ni AUD-007. Faltan catálogo/estados/objetivos, G/H, reglas por clase, ciclos, recursos, snapshots dinámicos, cobertura, oráculos, validación de error y revisión independiente. No hay freeze, implementación, simulación ni ejecución.
