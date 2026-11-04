@@ -91,7 +91,7 @@ Se ha añadido el documento `C10_S_C10D1_S4R_ESTIMAND_RECONCILIATION_DRAFT_001.m
 - `ITT_Z` es el objetivo primario del diseño aleatorizado S4-R, no sustituto de `θ_A(q)`.
 - `LATE_f` es una estimación local focal de apertura de `τ2`, solo bajo supuestos IV; no equivale a ATE, `θ_A(q)` poblacional ni efecto de todo `ΔT_acc`.
 - `P*_τ2` y `P*_F` deben definirse preasignación; `A_f,base*=0` es condición de elegibilidad para estimar apertura basal→post.
-- Se separan DGP limpio (sin acceso en control, `p0=0`) y DGP adversarial de contaminación (`p0>0` con mecanismo explícito), preservando `C_dep,base=0`.
+- Se conserva el DGP aislado principal con `p0=.20` y `p1=.80` como probabilidades post-asignación bajo B_g0/B_g1, y se distingue del estado basal `C_dep,base=0`. Se exige separar intento, éxito y estado verificado; el escenario adversarial añade contaminación/vías colaterales explícitas.
 
 Estas son propuestas de armonización, no decisiones científicas aceptadas. La referencia completa, las fórmulas y reglas de salida están en el documento enlazado; no cerrar AUD/XAUD ni S4-R hasta revisión y decisión explícita.
 
