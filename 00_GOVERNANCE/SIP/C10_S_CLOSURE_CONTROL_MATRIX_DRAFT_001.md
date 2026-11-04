@@ -60,12 +60,12 @@ Este resultado no demuestra que el material no exista en exportaciones de conver
 | ID | Punto de reconciliación | C10-D1 (rector causal) | C10-S (sintético) | Estado / criterio de cierre |
 |---|---|---|---|---|
 | REC-CAUS-01 | Pregunta y alcance | Atribución específica de cambios de T_acc/ΔT_acc a Value, separada del efecto de intervención | Prueba sintética de arquitectura y recuperación de escenarios conocidos | COHERENTE EN PROPÓSITO; mantener límite: C10-S no prueba causalidad real |
-| REC-CAUS-02 | TE / ITT | Efecto total de asignación/intervención; no atribuye por sí mismo a accesibilidad | ITT de política aleatorizada propuesto como objetivo primario de diseño S4-R | REQUIERE ARMONIZACIÓN: definir si ITT es objetivo primario de desempeño del diseño sintético o estimando primario de la pregunta C10 |
-| REC-CAUS-03 | Efecto específico de accesibilidad | θ_A(q): políticas G1/G0 factibles sobre accesibilidad bajo régimen común q; no efecto indirecto natural ni fracción de TE | θ_Af(q) propuesto sobre acceso focal a τ2; política de autorización como mecanismo | ABIERTO: no equiparar θ_Af con θ_A sobre ΔT_acc completo; definir objeto causal y alcance |
+| REC-CAUS-02 | TE / ITT | `TE`/`ITT` de Z no atribuye por sí mismo a accesibilidad; C10-D1 §§25.5–25.6 y 26.2 lo separan de `θ_A(q)` | S4-R §51 propone ITT_Z como objetivo primario del diseño de provisión | RECONCILIACIÓN PROPUESTA en `C10_S_C10D1_S4R_ESTIMAND_RECONCILIATION_DRAFT_001.md`: ITT_Z primario del diseño S4-R, no sustituto de la pregunta científica C10. Pendiente de revisión/aprobación.
+| REC-CAUS-03 | Efecto específico de accesibilidad | `θ_A(q)` entre políticas factibles bajo régimen común; C10-D1 §§17.7, 25.3 y 30.1–30.3 | S4-R focaliza apertura de `τ2`; `LATE_f` local condicionado a IV; `θ_Af(q*)` poblacional permanece distinto y abierto (§43.4) | RECONCILIACIÓN PROPUESTA: `LATE_f` no equivale a `θ_A(q)` poblacional ni a efecto de todo `ΔT_acc`; S4-R no afirma identificar el estimando general. Ver documento de reconciliación.
 | REC-CAUS-04 | Intervención | Intervenir componentes implementables; no asignar abstractamente T_acc; políticas factibles y versiones | Z_A → C_auth → A_f* propuesto | ABIERTO: resolver q frente a g y si la política cambia solo autorización o también otras vías |
 | REC-CAUS-05 | Variables y constructos | C_c constitutivas, L temporales, A/ΔT_acc, mecanismos, O, V separados | A_f*, A_f_obs, T_acc=(U,R,C), ΔT_acc, Reach, Π_H, selección, ejecución, O, V | PROPUESTA ÚTIL, NO ACEPTADA: consolidar diccionario único y temporal |
 | REC-CAUS-06 | Población | Población, contexto, horizonte y régimen fijados antes de outcomes | P*_τ2 y P*_F; q_X* y q_L* en diseño S4-R | ABIERTO: definir población objetivo, inclusión, función F*, horizonte y cuándo P*_F es solo heterogeneidad |
-| REC-CAUS-07 | Identificación | Soporte, consistencia, confusión postratamiento, interferencia, versiones, mediación/IV según diseño | S4-R: IV/LATE secundario y condicionado a supuestos | ABIERTO: el ITT no demuestra θ_A; Wald/LATE no es ATE ni efecto universal de ΔT_acc |
+| REC-CAUS-07 | Identificación | C10-D1 exige política implementable, soporte, versiones, temporalidad y separación de vías alternativas; aleatorización de B solo identifica ITT de B salvo identificación adicional | S4-R: `ITT_Z` y primera etapa; Wald solo como `LATE_f` local si IV defendible | RECONCILIACIÓN PROPUESTA: reglas de salida para exclusión, monotonicidad, primera etapa débil/nula, medición, interferencia y pérdidas; no inferir exclusión de los datos observados.
 | REC-CAUS-08 | Outcome y Value | Medición separada; Value con regla independiente | O y V derivados tras ejecución; V_real separado de V_potential | PENDIENTE DE CONTRATO: regla, beneficiario, horizonte, costes/beneficios, incertidumbre y tests de no circularidad |
 | REC-CAUS-09 | Temporalidad y datos incompletos | Snapshots longitudinales, medición, pérdidas, censura y selección | Secciones 130–164 contienen tratamientos parciales; 182/183 resumidas pero no verificadas | ABIERTO: recuperar 182/183 y construir matriz variable×momento×rol |
 | REC-CAUS-10 | Conclusiones permitidas | Atribución identificada, evidencia adversa delimitada o identificación insuficiente | C10-S puede probar discriminación sintética y recuperación del DGP | COHERENTE: nunca traducir PASS sintético en prueba de hipótesis real |
@@ -77,6 +77,19 @@ Este resultado no demuestra que el material no exista en exportaciones de conver
 3. Una decisión sintética no puede redefinir el estimando causal de C10-D1 por conveniencia de implementación.
 4. Si una decisión de C10-S exige cambiar el estimando o el alcance de C10-D1, debe abrirse una decisión explícita y trazable; no se resuelve por armonización editorial.
 5. ITT, θ_A(q), θ_Af(q), θ_{L,A}, IV/LATE y cualquier residual son objetos distintos. No se intercambian etiquetas ni interpretaciones.
+6. La propuesta de jerarquía dual (pregunta científica C10 vs. objetivo primario del diseño S4-R) queda documentada en `C10_S_C10D1_S4R_ESTIMAND_RECONCILIATION_DRAFT_001.md`; no se considera aprobada hasta revisión explícita.
+
+
+### 4.2 Reconciliación de estimandos (propuesta incorporada, no aprobada)
+
+Se ha añadido el documento `C10_S_C10D1_S4R_ESTIMAND_RECONCILIATION_DRAFT_001.md` a PR #116. Este documento contrasta C10-D1 §§17, 25–26 y 30–34 con C10-S §§43 y 51 y propone:
+- `θ_A(q)` permanece como pregunta científica C10-D1.
+- `ITT_Z` es el objetivo primario del diseño aleatorizado S4-R, no sustituto de `θ_A(q)`.
+- `LATE_f` es una estimación local focal de apertura de `τ2`, solo bajo supuestos IV; no equivale a ATE, `θ_A(q)` poblacional ni efecto de todo `ΔT_acc`.
+- `P*_τ2` y `P*_F` deben definirse preasignación; `A_f,base*=0` es condición de elegibilidad para estimar apertura basal→post.
+- Se separan DGP limpio (sin acceso en control, `p0=0`) y DGP adversarial de contaminación (`p0>0` con mecanismo explícito), preservando `C_dep,base=0`.
+
+Estas son propuestas de armonización, no decisiones científicas aceptadas. La referencia completa, las fórmulas y reglas de salida están en el documento enlazado; no cerrar AUD/XAUD ni S4-R hasta revisión y decisión explícita.
 
 ## 5. Registro maestro de auditorías y bloqueos
 
@@ -115,20 +128,20 @@ Este resultado no demuestra que el material no exista en exportaciones de conver
 
 | ID | Elemento | Estado | Decisión/aceptación necesaria |
 |---|---|---|---|
-| S4R-01 | Objetivo primario ITT en P*_τ2 | PROPUESTO | Confirmar si es objetivo primario del experimento sintético o si θ_A(q) debe ser primario para la pregunta de atribución; alinear con C10-D1 |
+| S4R-01 | Jerarquía ITT / pregunta C10 | RECONCILIACIÓN PROPUESTA | Mantener `θ_A(q)` como pregunta científica C10-D1; `ITT_Z` primario del diseño aleatorizado S4-R; `LATE_f` como atribución focal local condicionada a IV. Requiere revisión/aprobación.
 | S4R-02 | IV/LATE focal | CONDICIONAL | Relevancia, independencia, exclusión, monotonicidad, consistencia/versiones, no interferencia y medición; si falla, no calcular/interpretar Wald |
 | S4R-03 | P*_F | PROPUESTO | Mantener como subpoblación funcional exclusiva/heterogeneidad salvo decisión justificada distinta; no filtro automático de P*_τ2 |
 | S4R-04 | S4R-A | PROPUESTO | Sin alternativa basal; documentar universo cerrado y límites de exclusividad |
 | S4R-05 | S4R-B | PROPUESTO | Alternativa basal no afectada; medir invariancia funcional, no solo identidad de catálogo |
 | S4R-06 | S4R-C | PROPUESTO | Provisión modifica alternativa; tratar como paquete/violación de exclusión IV focal salvo diseño alternativo que identifique componentes |
 | S4R-07 | S4R-D | PROPUESTO | No cumplimiento/fallo de provisión; mantener Z, C_auth, A_f*, A_f_obs separados |
-| S4R-08 | p0=.20 frente a C_dep,0=0 | ABIERTO / CONTRADICCIÓN DGP | Explicar vía basal/contaminación/provisión o corregir uno de los valores; no conservar ambos sin mecanismo |
+| S4R-08 | p0=.20 frente a C_dep,base=0 | RECONCILIACIÓN PROPUESTA | Separar elegibilidad basal de probabilidad post-asignación. DGP limpio recomendado: p0=0, p1 ilustrativo=.80; DGP adversarial separado con p0>0 generado por provisión/contaminación explícita. Pendiente de aceptación.
 | S4R-09 | Política B y versiones | ABIERTO | Definir acción física, intensidad, elegibilidad, cumplimiento, contaminación, control y versiones |
 | S4R-10 | q_X* y q_L* | ABIERTO | Definir población/distribución objetivo y cuándo usar régimen común basal frente a política longitudinal secuencial |
 | S4R-11 | F*, horizonte y Value | ABIERTO | Operacionalizar función focal, horizonte, regla de Value y costes/efectos colaterales |
 | S4R-12 | Alternativas funcionales | ABIERTO | Medir identidades/versiones, accesibilidad, precondiciones, recursos, coste, latencia, calidad y seguridad |
 | S4R-13 | Primera etapa nula/débil | ABIERTO | Regla explícita: no Wald con primera etapa nula; inferencia robusta y lenguaje de conclusión para primera etapa débil |
-| S4R-14 | Población y elegibilidad | ABIERTO | Definir criterios y temporalidad sin seleccionar postasignación de forma sesgada |
+| S4R-14 | Población y elegibilidad | PROPUESTA PARCIAL | `P*_τ2` elegible antes de Z y con `A_f,base*=0` para apertura; `P*_F` subgrupo basal sin alternativa funcional substituible. F*, validación, indeterminados y regla de inclusión siguen abiertos.
 | S4R-15 | No interferencia/unidades | PROPUESTO | UE=UA y ausencia de interferencia son estipulaciones sintéticas, no hechos generales; definir spillovers/recursos compartidos |
 | S4R-16 | Heterogeneidad y efectos colaterales | ABIERTO | Definir análisis preespecificados; no reinterpretar exclusión después de ver resultados |
 | S4R-17 | Tamaño y réplicas | PROVISIONAL | N=2000 total por réplica, 1:1 y 1000 réplicas son valores ilustrativos no justificados |
