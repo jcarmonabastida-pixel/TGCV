@@ -268,3 +268,17 @@ La recomendación de §6.2 S4R-08 (DGP limpio p0=0, p1=.80, relegando p0>0 a con
 G0: la fuente 165–183 fue recibida y examinada; persistencia íntegra del DOCX y transcripción literal completa siguen pendientes. P182-01…12 y P183-01…13: criterios recuperados e incorporados al registro; definidos documentalmente, no implementados ni ejecutados. XSYNC-138-01…10: contenido localizado en el documento maestro histórico; revisión independiente y resolución formal pendientes. El capítulo 53 y la auditoría integral armonizan la especificación candidata, pero no cierran automáticamente AUD/XAUD ni G1–G7.
 
 Estado: especificación candidata armonizada; decisiones científicas no aprobadas; contratos incompletos; revisión independiente no realizada; no freeze, implementación ni ejecución.
+
+
+## 15. Cierre parcial de diseño de B: propuesta operacional candidata
+
+La recuperación de §52.2 del documento maestro permite concretar la estructura probabilística de B sin inventar una política de ausencia total para D1:
+
+| Escenario | Intento control | Intento tratamiento | C_dep final control | C_dep final tratamiento |
+|---|---:|---:|---:|---:|
+| D1 | .25 | 1.00 | .20 | .80 |
+| D2 | 0 | 1.00 | 0 | .80 |
+
+Una tasa conjunta de éxito técnico de .80 condicionada al intento reconcilia los valores. Es una factorización derivada, no un parámetro original recuperado. Los componentes técnicos permanecen separados y no se presume independencia.
+
+**Estado de OPEN-C10-001:** parcialmente operacionalizada documentalmente; sigue ABIERTA por falta de decisión sobre comparador D1, actor, recepción, versiones, protocolo de verificación, crossover, factibilidad y vías colaterales. No se declara cerrada.
