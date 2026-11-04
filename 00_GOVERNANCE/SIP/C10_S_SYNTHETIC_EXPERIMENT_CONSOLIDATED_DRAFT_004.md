@@ -6523,3 +6523,89 @@ Una alternativa funcional puede mantener F* realizable sin τ2; esto no hace τ2
 Antes de congelar medición deben resolverse: definición exacta del contrato de invocación de τ2; predicados constitutivos por clase de transformación; frontera y cobertura; regla de ausencia respaldada frente a indeterminación; granularidad/catálogo/versionado; ventanas temporales; fuentes y estándares E1–E4; adjudicación; selección de validación; error diferencial; reglas para dependencias externas y alternativas; fixtures y pruebas adversariales.
 
 **Dictamen:** se propone que A_f* sea un juicio estructural focal derivado de snapshots completos y predicados de realizabilidad; C_dep* es evidencia del mecanismo de provisión, no proxy suficiente. ΔT_acc* permanece estructurado y más amplio que D_f*. Esta especificación armoniza §§26.2, 43.3 y 58.6 sin cerrar XSYNC-138-03 ni AUD-001/004/005/007. OPEN-C10-005 y las decisiones de umbral/adjudicación permanecen abiertas. No hay freeze, implementación, simulación ni ejecución.
+
+
+---
+
+# 64. Clasificación temporal y causal de las condiciones de accesibilidad
+
+**Estado:** propuesta de reconciliación; no aprobada ni congelada. No autoriza implementación, simulación o ejecución.  
+**Dependencias:** §§30–31, 43, 53, 58–63; DGP §§2–22; AUD-010/011; XAUD-003/004/006; OPEN-C10-004/005.
+
+## 64.1. Regla de clasificación
+
+No se clasifica una variable nominal completa si agrupa componentes distintos. Cada registro debe identificar: constructo/componente, unidad, objeto τ2, nivel, tiempo, versión, estado, rol causal, fuente y política que puede modificarlo.
+
+Hay que responder por separado:
+1. ¿Es constitutiva de la accesibilidad focal?
+2. ¿Cuándo se mide: antes de Z, después de Z o tras eventos posteriores?
+3. ¿Qué rol causal desempeña en ese momento: basal, tratamiento recibido, mediador, co-intervención, confusor temporal, resultado o proceso de medición?
+4. ¿Se utiliza para elegibilidad, definir A_f*, medir A_f,obs, explicar cumplimiento o estimar un efecto?
+
+Una condición puede ser constitutiva de A_f* en sentido definicional y, a la vez, basal antes de Z o mediadora si cambia después de Z. El papel causal se indexa temporalmente.
+
+## 64.2. Matriz temporal-causal candidata
+
+| Componente | Antes de Z (t−1) | Después de Z (t1–t3) | Papel y cautela |
+|---|---|---|---|
+| Identidad/versión de τ2, dominio y frontera | Fijar identidad, tipo de objeto y frontera | Cambio exige nuevo snapshot y versionado | Un cambio inducido por B puede cambiar el objeto tratado; no mezclar versiones |
+| C_install, C_integrity, C_compat, C_oper | Estado basal de provisión y elegibilidad | Estado post de provisión | Constitutivos de C_dep; C_dep post es mecanismo/mediador, no sustituto de A_f* |
+| C_auth | C_auth,0 respaldada y satisfecha en población primaria | Medir C_auth,1; si B la cambia, es mediador/co-intervención | Constitutiva de acceso; en la provisión técnica focal debe permanecer invariante |
+| Recursos | Separar stock, disponibilidad/asignación por unidad, demanda y consumo | Registrar disponibilidad/asignación post y consumo aparte | Disponibilidad puede ser constitutiva; consumo de ejecución no define acceso |
+| Capacidad | Separar capacidad instalada, slots, disponibilidad temporal y carga | Registrar cada dimensión por tiempo | Capacidad instalada puede ser constitutiva; margen requerido por S0 es aplicabilidad; saturación puede generar interferencia |
+| Información técnica | Configuración técnica integrada basal | Cambios de configuración inducidos por B | Puede ser constitutiva si habilita invocación; no confundir con formación o conocimiento del agente |
+| Conocimiento, avisos, formación | Baseline descriptivo, nunca requisito de A_f* | Puede ser afectado por Z/B | Mediador de conocimiento/consideración, no covariable basal |
+| Dominio/objeto | Compatibilidad del tipo de objeto fijada antes de Z | Cambio de objeto requiere nuevo contrato | Constitutiva si τ2 soporta el tipo; distinta de precondiciones de S0 |
+| Precondiciones S0/demanda | Baseline de aplicabilidad | Reevaluar antes de cada transformación y rama | App_f, no A_f* |
+| Relaciones, dependencias y bloqueos | Snapshot basal completo | Snapshot post-provisión y posteriores por evento | Parte de A_f*/T_acc; registrar cambios focales y no focales |
+| Alternativas F* | Clasificar antes de Z en universo, granularidad y horizonte fijados | Registrar si B las activa o modifica | Substituibilidad funcional separada de acceso a τ2 |
+| Selección, inicio y ejecución | No usar para elegibilidad | Eventos downstream | No constituyen accesibilidad; cambios posteriores generan snapshots nuevos |
+| Outcome y Value | Regla, beneficiario y horizonte fijados ex ante | Medición posterior | Nunca definen A_f* ni sus predicados |
+| Evidencia, cobertura y medición | Protocolo, fuentes, cegamiento fijados | Evidencia por tiempo; cambios de cobertura registrados | VALID es requisito epistémico del juicio, no condición causal del sistema; error diferencial puede sesgar A_f,obs |
+
+## 64.3. Contrato temporal
+
+Se conserva el reloj DGP:
+- **t−1:** sellar frontera, versión τ2, población, q_X*, P*_τ2/P*_F, alternativas, condiciones basales, A_f,base*, T_acc,base*, reglas de medición y elegibilidad.
+- **t0:** asignar Z y registrar probabilidad.
+- **t1:** registrar B asignada/recibida, versión, actor, intento y desviaciones.
+- **t2:** verificar instalación, integridad, compatibilidad y operación; registrar aparte C_auth, recursos, capacidad, información y co-intervenciones.
+- **t3:** generar snapshot post; calcular A_f,post* en canal de verdad y A_f,obs en canal independiente; evaluar App_f por separado, antes de conocimiento, selección, inicio y ejecución.
+- **t4:** derivar Reach_H y trayectorias candidatas desde T_acc y reglas de composición.
+- **t5:** medir conocimiento y consideración.
+- **t6:** medir selección e inicio.
+- **t7:** registrar ejecución parcial/completa, interrupción, fallo y razón.
+- **t8:** medir Outcome.
+- **t9:** evaluar Value bajo regla independiente.
+- **t+1…:** eventos que cambien el sistema crean snapshots nuevos e inmutables; nunca sobrescribir t3.
+
+El orden temporal es un contrato de medición, no prueba de identificación causal. Registrar timestamps/eventos reales cuando varias condiciones cambien dentro de una ventana.
+
+## 64.4. Elegibilidad y no ajuste postratamiento
+
+1. P*_τ2 requiere A_f,base*=0 respaldada antes de Z y soporte/factibilidad de ambas políticas.
+2. Baseline indeterminado no se convierte en 0 ni en elegibilidad confirmada.
+3. Una condición constitutiva que cambia después de Z pasa a ser mediador/co-intervención potencial; no covariable basal.
+4. No ajustar el ITT por C_dep, C_auth, recursos, capacidad, información, A_f, D_f, conocimiento, Reach, selección o ejecución medidos después de Z para reclamar un efecto directo.
+5. Ese ajuste puede bloquear mediación o abrir sesgo por collider/confusión inducida por tratamiento.
+6. Si existen confusores temporales afectados por tratamiento que influyen en mediador y resultado, la descomposición exige estimandos y métodos longitudinales explícitos; una regresión convencional no basta.
+7. Si B cambia condiciones adicionales, conservar el ITT como efecto de política/paquete y separar atribución mediante factorialización, intervención adicional o identificación defendible.
+8. VALID/cobertura pertenece al proceso de medición. Si B afecta la observabilidad, modelar missingness/error diferencial.
+
+## 64.5. Reconciliación de §§59, 62 y 63
+
+§59 aporta la matriz de clasificación; §63 define el juicio estructural de A_f*; §62 define B como provisión técnica focal. Para el escenario primario candidato:
+- C_dep puede cambiar por B.
+- C_auth, recursos, capacidad no focal, información no focal y dominio deben estar fijados/satisfechos antes de Z y mantenerse invariantes, salvo decisión explícita.
+- Si cambian post-Z, registrar el cambio como mediador/co-intervención; no ocultarlo dentro de C_dep ni ajustar automáticamente por él.
+- A_f,post* se deriva de los predicados del §63, no de la fórmula histórica con C_other.
+- App_f y precondiciones S0 quedan fuera de la definición de accesibilidad.
+- VALID determina si puede emitirse un juicio; no es una condición causal del sistema.
+
+**Inconsistencia B aún abierta:** §62 describe B0 como ausencia de provisión y B1 como aplicación del protocolo; DGP §3.1 conserva B_g0/B_g1 como políticas probabilísticas con probabilidades objetivo ilustrativas .20/.80, y §3.2 separa intento de éxito. No asumir que son equivalentes. Antes de congelar B hay que decidir si son políticas estocásticas de distinta intensidad o brazos deterministas con incumplimiento estocástico, y alinear asignación, recepción, intento, éxito, C_dep, q_X* y estimandos. No recalibrar .20/.80 por intuición.
+
+**Inconsistencia de autorización:** la propuesta histórica de resolución AUD-001/002 contiene una modalidad de intervención sobre C_auth; el escenario actual trata C_auth como basal/invariante y manipula provisión técnica. Son diseños distintos. La modalidad de autorización se conserva como alternativa histórica/adversarial y no se mezcla con el primario sin decisión explícita.
+
+## 64.6. Dictamen
+
+La clasificación temporal-causal queda organizada como propuesta coherente con §§59, 62 y 63. No se considera cerrada AUD-011 ni XAUD-003/004/006. La semántica de B y la alternativa histórica de autorización siguen sin reconciliar. OPEN-C10-004/005 permanecen abiertos. No hay freeze, implementación, simulación ni ejecución.
