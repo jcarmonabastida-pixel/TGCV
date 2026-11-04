@@ -235,3 +235,14 @@ Se registra DEC-C10-025 como propuesta, no decisión aceptada:
 | DEC-C10-025 | Semántica de B, distinción D1/D2 y factorización de provisión | PROPUESTA | D1 es control ordinario de baja frecuencia frente a provisión programada; D2 es control sin provisión frente a provisión programada. W_attempt: D1 .25/1; D2 0/1. S_success condicional .80 es propuesta algebraica. C_dep final: D1 .20/.80; D2 0/.80. D1 principal solo si se justifica el comparador; C_dep no sustituye A_f*/D_f*. | Maestro §§53–54, 62–65; DGP §§3.1–3.2, 21–24; S4-R §§16–17; OPEN-C10-001/005 |
 
 DEC-C10-025 aclara la semántica documental, pero no aprueba D1, D2 ni el .80 condicional, no cierra OPEN-C10-001/005 y no autoriza freeze, implementación, simulación o ejecución.
+
+
+## 20. Propuesta de adjudicación del comparador D1/D2 (2026-11-04)
+
+Se registra DEC-C10-026 como recomendación de diseño, no decisión aceptada:
+
+| ID | Objeto | Estado | Formulación | Dependencias |
+|---|---|---|---|---|
+| DEC-C10-026 | Legitimidad del comparador y selección primaria D1/D2 | PROPUESTA | El expediente no acredita que .25 intentos/.20 estado final representen el régimen ordinario de la población objetivo. D1 se conserva como contraste incremental secundario hasta justificarlo. D2 se recomienda provisionalmente como candidato preferente para el objetivo mecanístico sintético de provisión focal frente a ausencia de intento. ITT y LATE se mantienen específicos por escenario; no se agrupan. La selección primaria sigue abierta. | Maestro §§52–54, 65–66; DGP §§24–25; S4-R §§17–18; OPEN-C10-001/005 |
+
+DEC-C10-026 no aprueba D2 ni D1, no valida .80, no cierra OPEN-C10-001/005 y no autoriza freeze, implementación, simulación o ejecución.
