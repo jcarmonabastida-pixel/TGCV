@@ -338,3 +338,32 @@ Estado: contratos propuestos, no implementados ni ejecutados.
 | FSTAR-18 | Límite de exclusividad | PASS solo dentro de universo, granularidad, contexto y horizonte auditados |
 
 Estado: pruebas contractuales documentales; no implementadas ni ejecutadas.
+
+
+## 19. Contratos de medición focal y cambio transformacional
+
+| ID | Prueba | Criterio de aceptación propuesto |
+|---|---|---|
+| AFT-01 | Truth no filtrada | Analizador no recibe A_f*, C_dep*, D_f*, T_acc* ni ΔT_acc* |
+| AFT-02 | Asignación separada | Cambiar Z sin cambiar condiciones verificadas no cambia automáticamente A_f* |
+| AFT-03 | C_dep compuesto | C_dep se deriva de componentes verificados; intento no equivale a éxito |
+| AFT-04 | Predicados adicionales | C_dep=1 no basta si falta otro predicado de acceso requerido |
+| AFT-05 | Aplicabilidad separada | A_f=1 y App_f=0 es representable sin contradicción |
+| AFT-06 | Ejecución no definitoria | No ejecutar τ2 no implica A_f=0; ejecutar no reemplaza medición independiente |
+| AFT-07 | Tres estados observados | A_f_obs=1/0/?; indeterminado nunca se recodifica como 0 |
+| AFT-08 | Elegibilidad basal | P*_τ2 verdadera y elegibilidad observada se reportan separadas; no se equiparan con error |
+| AFT-09 | D_f basal→post | D_f* requiere A_f*,base=0 y A_f*,post=1; no se confunde con A_f*,post |
+| AFT-10 | Primera etapa medida | Reporta ITT_Df* y ITT_Df_obs por separado cuando existe error |
+| AFT-11 | Error diferencial | Detecta Se/Sp distintos por Z, versión o tiempo; no aplica corrección ingenua |
+| AFT-12 | Validación sesgada | Validación no aleatoria sin probabilidades conocidas no identifica Se/Sp puntuales |
+| AFT-13 | Referencia imperfecta | Propaga error de referencia; no etiqueta gold standard sin fundamento |
+| DTA-01 | Identidad/versionado | Distingue identidad canónica, versión y cambio de definición |
+| DTA-02 | Relaciones | Detecta relaciones añadidas, retiradas y reconfiguradas sin crear identidades ficticias |
+| DTA-03 | Condiciones | Registra cambio de valor/estado de condición sin declararlo transformación nueva |
+| DTA-04 | Validez/cobertura | Cambios de evidencia, validez y cobertura quedan explícitos |
+| DTA-05 | Snapshots comparables | Incompatibilidad de catálogo/granularidad/reglas devuelve indeterminado o exige correspondencia |
+| DTA-06 | Diferencia estructurada | ΔT_acc conserva ΔU, ΔR, ΔC, ΔValidity y ΔState; no se reduce a escalar |
+| DTA-07 | Indeterminación | No transforma elementos indeterminados en altas/bajas ciertas |
+| DTA-08 | No circularidad | Outcome, Value, selección y ejecución no definen T_acc ni ΔT_acc |
+
+Estado: contratos de aceptación documentales; no implementados ni ejecutados. Las tolerancias y fixtures se fijarán antes de cualquier implementación.
