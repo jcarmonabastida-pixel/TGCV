@@ -315,3 +315,14 @@ Se registra **DEC-C10-032** como propuesta, no decisión aceptada:
 | DEC-C10-032 | Snapshots, ΔT_acc y validez de evidencia | PROPUESTA | Definir S_T*=(U*,R*,C*,X*) como snapshot estructural; E_T como paquete de evidencia/cobertura/validez epistémica; ΔT_acc*=Diff(S_T*(t0),S_T*(t1))=(ΔU*,ΔR*,ΔC*,ΔX*); ΔE_T registra cambios epistémicos. ΔValidity_e se retira de la tupla causal; validez estructural real permanece en C*/R*. Correspondencia ID/versiones/frontera/G es requisito previo al diff. | Aprobación formal; propagación global; catálogo/IDs/G/frontera; mapping por versión; verdad oculta/observación; fixtures/oráculos; validación de error diferencial; revisión independiente. |
 
 DEC-C10-032 propone superseder, no borrar, la formulación de §63.7. No cierra AUD-001/004/005/007, XAUD-003/004/006 ni XSYNC-138-03/06; no autoriza freeze, implementación, simulación o ejecución.
+
+
+## 27. Propuesta de contrato de identidad y matching de snapshots (2026-11-04)
+
+Se registra **DEC-C10-033** como propuesta, no decisión aceptada:
+
+| ID | Objeto | Estado | Formulación | Dependencias |
+|---|---|---|---|---|
+| DEC-C10-033 | Identidad semántica, versiones y matching | PROPUESTA | Separar TID/SID/RID/EID; IDs opacos persistentes; continuidad por firma contractual; split/merge explícito; matching jerárquico sin auto-merge fuzzy; diff solo con frontera/G/catálogo/mapping compatibles; D_f* requiere correspondencia de τ2. | Taxonomía mínima aprobada; catálogo y serialización; firma/tolerancias por clase; G/frontera DGP; fixtures/oráculos ID-01…15; revisión independiente. |
+
+No cierra AUD-004 ni XSYNC-138-03/06. No autoriza freeze, implementación, simulación o ejecución.
