@@ -484,3 +484,21 @@ La recomendación no cambia retrospectivamente los datos ni parámetros históri
 | Truth vs observación | SEPARACIÓN EXIGIDA | Pruebas de no filtración |
 
 **Dictamen:** el éxito condicional no especifica el patrón de fallos. No cerrar calibración ni selección confirmatoria.
+
+
+## 30. Fixtures y sensibilidad de primeras etapas
+
+| Control | Estado propuesto | Criterio de cierre |
+|---|---|---|
+| FIX-01 | Cuatro tablas 16-celdas para s=.80 | Sumas=1, celdas no negativas, marginales verificadas |
+| FIX-02 | Cuatro patrones de fallo diferenciados | Igual s no produce equivalencia artificial |
+| FIX-03 | Escalado s-grid | p1111=s y masa residual=1−s |
+| FIX-04 | D1 q0=.25, q1=1 | P0=.25s, P1=s, FS=.75s |
+| FIX-05 | D2 q0=0, q1=1 | P0=0, P1=s, FS=s |
+| FIX-06 | Consistencia de D1 control | .20 solo en s=.80 bajo q0=.25 |
+| FIX-07 | A_f/D_f transfer | No transferir FS_Cdep sin supuestos §67.4 |
+| FIX-08 | Intentos múltiples | Modelo secuencial explícito, no independencia automática |
+| FIX-09 | Marginales fijas | Familia distinta y compatible con Fréchet |
+| FIX-10 | Estado confirmatorio | Ningún fixture elegido sin revisión/decisión |
+
+No se cierra calibración empírica ni selección primaria.
