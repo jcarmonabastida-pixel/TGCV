@@ -785,3 +785,12 @@ Se identifican vías colaterales potenciales por permisos, recursos, estado/conf
 Se mantienen seis gates MD-C1…MD-C6 y los contratos MDC-01…10 como especificaciones no ejecutadas. Opción A sigue recomendación condicionada, NO seleccionada ni aprobada. AUD-001/002, AUD-004/005/007/010/011, OPEN-C10-001/003/005/007 y CA-01…07 permanecen abiertos. No se generan datos, no se implementa, simula ni ejecuta.
 
 Siguiente bloque: concretar el manifiesto de provisión B y el grafo de dependencias compartidas del microdominio; empezar por el catálogo de cambios que introduce la instalación del adaptador y la auditoría de no afectación de A1/A2. No asignar todavía probabilidades ni decidir D1/D2.
+
+
+# XVIII. Ejecución del plan — manifiesto de provisión B y dependencias (2026-11-05)
+
+Se crea C10_S_ADAPTER_PROVISION_MANIFEST_AND_DEPENDENCY_GRAPH_DRAFT_001.md y se propaga al maestro §80, contrato DGP §39, DEC-C10-041, matriz de cierre §19 y registro de pruebas §42.
+
+Se define el límite normativo de B: provisionar/configurar el adaptador, verificar el paquete y habilitar un canal restringido, sin ejecutar transformaciones ni modificar F*, oráculo, fuente/destino, permisos funcionales o A1/A2. Se compara ARCH-B1 (sidecar aislado), ARCH-B2 (host compartido) y ARCH-B3 (servicio externo); ARCH-B1 se recomienda para evaluación, no está aprobada ni instalada. El catálogo B-M01…15 sigue NO INVENTARIADO y se establecen snapshots, grafo de dependencias, recursos, permisos, rollback y pruebas de no-afectación.
+
+MD-C1/MD-C4 y MD-B01…08 permanecen abiertos. No se ha demostrado no-afectación de la ruta alternativa ni primera etapa sobre A_f*. No se han elegido D1/D2 ni parámetros, ni se han generado datos o ejecutado pruebas. Siguiente bloque: construir matriz de cobertura de nodos/aristas/predicados y estados 1/0/? para delimitar el universo de rutas y propagar indeterminación a Reach/F_alt.
