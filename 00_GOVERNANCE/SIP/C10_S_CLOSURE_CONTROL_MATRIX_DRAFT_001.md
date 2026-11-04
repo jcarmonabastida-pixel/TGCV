@@ -532,3 +532,18 @@ No se cierra calibración empírica ni selección primaria.
 | POP-07 | Unidad/interferencia | Maestro §45; DEC-C10-016/021 | CANDIDATA | Auditoría de frontera y recursos; aprobar UE/UA/exposición. |
 
 **Resultado del Bloque 2:** se han reconciliado conceptualmente P*_τ2 y P*_F y se ha detectado una sobrecarga de notación basal. F* sigue incompleto y D1/D2 no se ha seleccionado. No cerrar OPEN-C10-001/003/005/007 ni afirmar elegibilidad operacionalizada.
+
+
+## 10. Seguimiento del Bloque 3 — snapshots, ΔT_acc y evidencia (2026-11-04)
+
+| ID | Punto | Hallazgo/propuesta | Estado | Criterio de cierre |
+|---|---|---|---|---|
+| SNAP-01 | ΔValidity mezclada en ΔT_acc* | §63.7 frente a §§64/67: evidencia/cobertura es epistémica | CONTRADICCIÓN DOCUMENTAL IDENTIFICADA; RESOLUCIÓN PROPUESTA | Aprobación de ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*) y ΔE_T separado; propagación global. |
+| SNAP-02 | Snapshot estructural | S_T*=(U*,R*,C*,X*) | PROPUESTA | Definición de cada campo, frontera, unidad, tiempo y truth/observed. |
+| SNAP-03 | Identidad y versiones | Mapping M previo a diff | ABIERTO | Catálogo, IDs canónicos, equivalencia/versionado y reglas de alta/baja. |
+| SNAP-04 | Comparabilidad | Diff requiere G/frontera/catálogo compatibles | ABIERTO | Contrato y oráculo para comparabilidad y Match=?. |
+| SNAP-05 | ΔT_acc y cambio focal | D_f* es proyección h_f, no sustituto de ΔT_acc | PROPUESTA | Pruebas metamórficas focal/no focal y revisión matemática. |
+| SNAP-06 | Observación/filtración | Analizador ve E_T, no truth; devuelve 1/0/? | PARCIAL | Fixtures, error diferencial, cegamiento y auditoría independiente. |
+| SNAP-07 | Reach/Value | Relación con Reach_possible, S5-F/S5-C y Value | ABIERTO | Reconciliación de estimandos, no circularidad y composición. |
+
+**Resultado del subbloque:** inconsistencia detectada y propuesta de resolución persistida; no declarar AUD-004 cerrado. Las pruebas SNAP-01…15 son contratos documentales, no ejecutados.
