@@ -6909,3 +6909,106 @@ La cobertura/validez se evalúa por predicado, ruta, unidad, tiempo y versión. 
 Queda formalizada la lógica de la conjunción técnica y su relación no suficiente con accesibilidad. No queda validado el 0,80, ni la distribución conjunta de componentes, ni la exclusividad de la ruta focal en un sistema real. D2 sigue siendo candidato preferente recomendado, no escenario primario seleccionado. D1 conserva su papel incremental secundario hasta justificar el régimen ordinario.
 
 Permanecen abiertos: protocolo/actor/versiones de intento; distribución conjunta y sensibilidad de los cuatro componentes; inventario de rutas alternativas y cobertura; adjudicación E1–E4; clasificación de predicados por tipo de τ2; error diferencial; snapshots comparables; q_X*/soporte; política B y escenario primario; Value y exclusión. No se cierra OPEN-C10-001/007/008, AUD-001/004/005/007/010/011 ni XSYNC-138-03/04/06. No hay freeze, implementación, simulación, ejecución ni autorización empírica.
+
+
+---
+
+# 68. Distribución conjunta de componentes técnicos y sensibilidad del éxito condicional
+
+**Estado:** propuesta de especificación probabilística del DGP; no aprobada ni congelada.  
+**Dependencias:** §67; DGP §26; DEC-C10-027; ACC-01…20.  
+**Pregunta:** ¿qué estructura probabilística completa genera los estados de los cuatro componentes, y qué puede inferirse del parámetro conjunto s?
+
+## 68.1. Objeto probabilístico completo
+
+Orden fijo de componentes: (C=(C_{install},C_{integrity},C_{compat},C_{oper})). Para cada intento elegible, el DGP debe definir un vector binario conjunto y sus 16 patrones posibles:
+
+[
+p_{abcd}=P(C_{install}=a,C_{integrity}=b,C_{compat}=c,C_{oper}=dmid W_{attempt}=1,E,D,H),
+quad a,b,c,din{0,1}.
+]
+
+Restricciones:
+- (p_{abcd}geq0) para los 16 patrones;
+- (sum_{a,b,c,d}p_{abcd}=1);
+- (s=p_{1111});
+- la distribución es específica del régimen D, protocolo, versión, actor, recursos y ventana H, salvo que se imponga y justifique invariancia;
+- los cuatro componentes se generan una sola vez por intento, con trazabilidad de reintentos y dependencia temporal explícita si hay más de uno.
+
+El parámetro s fija una sola celda de la distribución. No identifica las otras 15 celdas, las cuatro tasas marginales, las dependencias por pares ni el patrón de fallos parciales. Por tanto, s=.80 no constituye por sí solo un DGP completo.
+
+## 68.2. Demostración de no identificación de fallos parciales
+
+Dos distribuciones ilustrativas pueden compartir (s=.80) y producir diagnósticos radicalmente distintos:
+
+| Patrón | Distribución A | Distribución B |
+|---|---:|---:|
+| 1111 (todos correctos) | .80 | .80 |
+| 0111 (falla instalación) | 0 | .05 |
+| 1011 (falla integridad) | 0 | .05 |
+| 1101 (falla compatibilidad) | 0 | .05 |
+| 1110 (falla operación) | 0 | .05 |
+| 0000 (todos fallan) | .20 | 0 |
+| Otros 10 patrones | 0 | 0 |
+
+Ambas tienen la misma probabilidad conjunta de éxito técnico. Sin embargo, A representa un choque común que hace que todos los componentes funcionen o fallen conjuntamente; B representa cuatro fallos parciales mutuamente excluyentes, con cada componente marginalmente correcto en .95. No son equivalentes en diagnóstico, reparación, observabilidad ni transportabilidad.
+
+Esto demuestra que fijar s no permite inferir qué componente causa el fracaso ni la frecuencia de fallos parciales. Los patrones de fallo deben ser generados y reportados, no ocultados bajo un único indicador C_dep.
+
+## 68.3. Límites marginales y dependencia
+
+Si se conocen o se proponen marginales (m_i=P(C_i=1mid W=1,E,D,H)), la probabilidad conjunta satisface los límites de Fréchet:
+
+[
+max(0,sum_{i=1}^{4}m_i-3)leq sleqmin_i m_i.
+]
+
+Por ejemplo, (m_i=.95) para los cuatro componentes permite (s=.80) en el límite inferior; la distribución B de §68.2 es compatible. En cambio, si cada marginal fuese .80, s=.80 también sería un extremo superior y exigiría una estructura de dependencia muy fuerte. Bajo independencia con cuatro marginales .80, (s=.80^4=.4096), no .80.
+
+Estos ejemplos son demostraciones matemáticas, no parámetros seleccionados para el DGP. No se debe imponer independencia, ni deducir marginales desde s, ni usar Fréchet como si identificara la distribución.
+
+## 68.4. Familias de sensibilidad que debe cubrir el diseño
+
+Antes de elegir una distribución confirmatoria, el protocolo de sensibilidad debe incluir, como mínimo:
+
+1. **Choque común / dependencia positiva extrema:** los componentes tienden a tener el mismo estado; permite separar fallos sistémicos de fallos aislados.
+2. **Fallos parciales dispersos:** masa en patrones con uno o dos componentes fallidos; evalúa capacidad de diagnóstico y medición.
+3. **Bottleneck:** un componente concentra la mayor parte de fallos, variando cuál es el limitante.
+4. **Dependencia mixta:** coocurrencia de algunos fallos y fallos idiosincráticos; especificar mediante tabla 16-celdas o modelo generador identificable.
+5. **Heterogeneidad entre intentos/unidades:** probabilidades distintas por estrato basal o clase de unidad, sin condicionar en variables post-asignación que formen parte del efecto.
+6. **Deriva temporal/versiones:** cambios en la distribución conjunta entre versiones o periodos; no agrupar versiones no equivalentes sin modelo explícito.
+
+Para cada familia se debe fijar la tabla de 16 celdas, o parámetros suficientes para reconstruirla, antes de generar resultados. Deben informarse s, cuatro marginales, fallos parciales por patrón, asociaciones y probabilidad de cero/dos/tres componentes fallidos. No basta reportar C_dep.
+
+## 68.5. Sensibilidad del valor s y separación de regímenes
+
+La cuadrícula (sin{.60,.70,.80,.90}) se propone únicamente como malla exploratoria inicial. Debe ampliarse o reemplazarse según la pregunta científica y no convierte .80 en valor central validado.
+
+Para cada s y familia conjunta:
+- recalcular la distribución de patrones respetando no negatividad y suma uno;
+- conservar constantes solo los parámetros que el diseño declare invariantes;
+- volver a calcular (FS_{Cdep}), (FS_{Af}), (FS_{Df}) y los cambios por componente para D1 y D2 por separado;
+- registrar si el cambio de s afecta solo éxito tras intento o también la probabilidad/intensidad de intento, recursos, autorización, rutas alternativas o vías colaterales;
+- no comparar Wald/LATE entre distribuciones como si conservaran la misma población de cumplidores.
+
+La malla .60/.70/.80/.90 no debe confundirse con la primera etapa .60/.80 previamente derivada para D1/D2. Una es sensibilidad del éxito condicional por intento; la otra es una diferencia entre brazos en una variable post bajo supuestos concretos.
+
+## 68.6. Contrato de generación y reporte
+
+Cada ejecución futura autorizada tendría que registrar, por escenario y réplica:
+- semilla y versión del generador;
+- vector de parámetros y tabla completa (p_{abcd});
+- denominador de intentos elegibles y no intentos;
+- conteo de los 16 patrones y tasa de C_dep;
+- marginales y asociaciones de componentes;
+- reintentos, orden, tiempo, rollback y versión;
+- heterogeneidad por estrato preespecificado;
+- truth separada de evidencia observada para evitar filtración.
+
+El analizador no recibe (p_{abcd}), s, truth de componentes ni estado verdadero C_dep/A_f/D_f. El evaluador independiente los utiliza después de cerrar la salida del analizador.
+
+## 68.7. Dictamen y decisiones no tomadas
+
+Queda demostrado que s=.80 no identifica la distribución de fallos parciales. El DGP necesita una tabla conjunta de 16 patrones o un generador equivalente explícito. Las familias y la cuadrícula de sensibilidad son propuestas para diseñar pruebas, no decisiones confirmatorias.
+
+No se selecciona una distribución, no se fija s, no se aprueba independencia ni una estructura de dependencia, no se selecciona D1/D2 como primario y no se valida empíricamente el mecanismo. Siguen abiertas la calibración con datos, la heterogeneidad, el protocolo de intentos, la observación de fallos, las rutas alternativas y la revisión independiente. No hay freeze, implementación, simulación ni ejecución.
