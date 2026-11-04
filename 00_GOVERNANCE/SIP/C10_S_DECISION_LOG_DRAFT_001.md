@@ -376,3 +376,10 @@ DEC-C10-038 no aprueba el microdominio, no completa las fichas sustantivas, no c
 Se registra DEC-C10-039 como recomendación, no decisión aceptada. Se comparan tres opciones: migración de configuración software, integración de datos y flujo organizativo. Se recomienda Opción A para revisión: F1 conversión mediante adaptador focal provisionado por B; F2 aplicación y validación en destino; A1 exportación a formato neutral baseline; A2 importación/aplicación por mecanismo nativo; F* conformidad técnica de esquema/integridad/compatibilidad. Ventajas: separación provisión/ejecución, precondiciones diferenciables, alternativa genuina, control de recursos/ventanas e interferencia menor.
 
 La selección sigue abierta. Deben aprobarse F*, propiedades de preservación, independencia A1/A2, identidades/versiones, recursos, autorizaciones, ventanas, R0–R3 y evidencia. DEC-C10-039 no selecciona D1/D2, no fija parámetros ni autoriza freeze/implementación/simulación/ejecución.
+
+
+## 34. Auditoría causal de Opción A — DEC-C10-040 (recomendación condicionada)
+
+DEC-C10-040 registra que Opción A es potencialmente compatible pero no demuestra intervención autónoma sobre A_f* ni identifica θ_A(q). Se requiere separar B/provisión, C_dep, A_f*, F1 como conversión ejecutada, App, F2, F* y ejecución. Se rechaza la formulación ambigua de F1 como “habilitar y utilizar” adaptador: habilitar pertenece a B; convertir pertenece a F1.
+
+La política B puede abrir vías colaterales por permisos, recursos, estado/configuración, seguridad, coste, latencia, información, librerías o dependencias compartidas. Se requiere manifiesto de cambios y grafo de dependencias. A1/A2 deben ser no afectadas por B en R0/R1; si son afectadas, R2/vía colateral y efecto de paquete. D1/D2 permanece abierto. Se mantiene Opción A como recomendación condicionada, no seleccionada ni aprobada. DEC-C10-040 no autoriza freeze, implementación, simulación ni ejecución.
