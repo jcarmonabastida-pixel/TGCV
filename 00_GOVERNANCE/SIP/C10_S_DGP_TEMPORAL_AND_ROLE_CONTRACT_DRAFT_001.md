@@ -603,3 +603,10 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
 La auditoría C10_S_TEMPORAL_HORIZON_AND_S4R_INTEGRATION_AUDIT_DRAFT_001.md propone separar (i) reloj del estudio t0–t9, (ii) profundidad de ruta k=0…H y (iii) tiempo/ventanas internas de factibilidad. H=3 queda como profundidad máxima candidata, no como tres unidades temporales. Reach_H se calcula en t4 sobre snapshot postintervención t3, antes de conocimiento/selección/ejecución. App se evalúa desde el estado hipotético de entrada de cada paso; relación, recursos, autorización, ventanas y bloqueos se evalúan por prefijo. Si hay dinámica se requieren snapshots hipotéticos de rama inmutables; sin regla de actualización no se inventa dinámica.
 
 Crosswalk propuesto: R0↔S4R-A; R1↔S4R-B; R2↔S4R-C; R3↔S4R-D. R0 requiere cobertura exhaustiva para declarar ausencia funcional. R2 introduce vía colateral; R3 no permite inferir accesibilidad desde asignación/intento. Propuesta no aprobada; no cierra AUD-005/007 ni selecciona D1/D2.
+
+
+## 35. Matriz de predicados por paso y rama
+
+La matriz C10_S_PATH_PREDICATE_TEMPORAL_EVIDENCE_MATRIX_DRAFT_001.md operacionaliza ID, ACC, APP, REL, COND, AUTH, RES, DEP, BLOCK, WIN y COV. En el fixture base, T_acc y las condiciones estructurales de snapshot se fijan en t3; APP se reevalúa desde el estado hipotético de entrada de cada paso; REL se comprueba por arista; RES/AUTH/WIN/BLOCK solo varían dentro de rama si una regla explícita lo permite. Las ramas F1→F2 y A1→A2 se evalúan por separado como alternativas potenciales, no como ejecuciones concurrentes.
+
+Se introduce taxonomía I/S/T/R/D/E para invariancia, dependencia de estado, temporalidad, recursos, dinámica explícita y evidencia epistémica. La ausencia de regla de transición impide inventar cambios; se conserva snapshot o se propaga ?. Los valores por escenario, F*, recursos, ventanas, dinámica y cobertura siguen abiertos. Documento propuesto, no aprobado ni ejecutado.
