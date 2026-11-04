@@ -323,3 +323,18 @@ F* debe fijarse antes de Z con objetivo técnico, entrada/salida, restricciones,
 | OPEN-C10-004 medición de accesibilidad/ΔT_acc | ABIERTA | Operacionalización técnica, umbrales, fuentes, cobertura y sensibilidad |
 
 No se declara validez de constructo, aceptación científica, freeze ni autorización de implementación o ejecución.
+
+
+## 20. Matriz de clasificación de condiciones — cierre parcial
+
+**Resultado documental:** se incorpora una clasificación provisional de C_install, C_integrity, C_compat, C_oper, C_auth_base, C_resource, C_capacity, C_info, C_domain, C_other, S0 y eventos K/selección/ejecución. Se propone retirar C_other como comodín y separar acceso, aplicabilidad, provisión, conocimiento y ejecución.
+
+| Hallazgo | Estado | Criterio pendiente |
+|---|---|---|
+| AUD-011 C_c vs L / rol causal | PROPUESTA PARCIAL; ABIERTO | Descomponer variables mixtas, validar tiempos, unidad, papel causal y evidencia |
+| XAUD-003 Acc/App/Exec | PROPUESTA PARCIAL; ABIERTO | Aprobar semántica, completar estados y pruebas de transición |
+| XAUD-004 Z/B/W/C_dep/A_f | PROPUESTA PARCIAL; ABIERTO | Resolver clasificación, escenarios de autorización y errores de medición |
+| AUD-001/002 y XAUD-001/002 | ABIERTOS | Coherencia final de q/g y manipulación causal físicamente realizable |
+| OPEN-C10-004 | ABIERTA | Definición empírica, estándares, cobertura, umbrales y validación |
+
+La matriz no aprueba la ecuación depurada ni cierra constructos. La modalidad A continúa siendo la candidata preferida; cualquier manipulación de autorización, recursos, capacidad, información o conocimiento exige identificar vías adicionales o declarar efecto de paquete.
