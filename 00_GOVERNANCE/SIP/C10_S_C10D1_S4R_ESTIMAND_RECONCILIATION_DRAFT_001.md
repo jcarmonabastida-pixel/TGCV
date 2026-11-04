@@ -95,34 +95,34 @@ Un resultado PASS en ambas preguntas solo valida la discriminación del protocol
 
 Para evaluar directamente `θ_A(q)` en el sentido de C10-D1, se necesitaría un diseño sintético adicional con políticas `g_1/g_0` implementables sobre accesibilidad bajo un régimen común factible, soporte de las políticas, versiones y vías alternativas separadas. S4-R no debe afirmar que ya lo identifica.
 
-## 5. Resolución propuesta de la contradicción p0=.20 / C_dep,0=0
+## 5. Resolución propuesta de la ambigüedad temporal p0=.20 / C_dep,base=0
 
-La contradicción aparece si `p0=.20` se interpreta como accesibilidad basal o como acceso post-asignación sin mecanismo de provisión en control, mientras se exige `C_dep,base=0` y ausencia de otra vía.
+La revisión de C10-S §§30.2, 30.4–30.5, 31.4 y 32.4–32.5 precisa una distinción importante: **no existe contradicción matemática necesaria** entre `C_dep,base=0` y `p0=.20` si `p0` representa la probabilidad post-asignación de instalación/accesibilidad inducida por la política de provisión de control `B_g0`. El contrato §30.2 define expresamente dos políticas técnicas: `B_g0` con probabilidad objetivo .20 y `B_g1` con .80. Ambas son políticas de provisión, no una comparación entre provisión y ausencia total de provisión.
 
-Para eliminar la ambigüedad, se propone fijar esta notación temporal:
+El problema real es de precisión temporal y de mecanismo:
+- `C_dep,base=0`: estado técnico basal antes de asignar Z.
+- `W_attempt`: intento de instalación posterior a la asignación.
+- `S_install`: éxito del procedimiento de instalación.
+- `C_dep,post`: estado final verificado de la dependencia.
+- `A_f,base*` y `A_f,post*`: accesibilidad focal antes y después.
+- `p_z`: probabilidad final post-asignación inducida por la política `B_gz`, no probabilidad basal ni necesariamente probabilidad de intento.
 
-- `C_dep,base=0`: condición de elegibilidad basal, medida antes de asignar `Z`.
-- `p_z=P(A_f,post*=1\mid Z=z, P*_τ2)`: probabilidad post-asignación de apertura focal bajo el brazo z.
-- `p0` no representa accesibilidad basal. Es la probabilidad post-asignación en control y requiere un mecanismo causal explícito.
-- `p1` es la probabilidad post-asignación en el brazo de provisión.
+**DGP-S4R aislado (propuesta principal):**
+- Mantener `p0=.20` y `p1=.80` como probabilidades finales objetivo verificadas en la población elegible, bajo `B_g0` y `B_g1`.
+- `C_dep,base=0` y `A_f,base*=0` se verifican antes de Z para la población de apertura.
+- Ambas ramas reciben una política técnica definida; `B_g0` es la provisión de menor intensidad/probabilidad, no ausencia de provisión.
+- El generador separa `W_attempt`, `S_install` y `C_dep,post`; calibra el mecanismo para que las probabilidades finales, no solo los intentos, sean .20/.80.
+- La regla de accesibilidad se aplica después de verificar `C_dep,post` y todas las demás condiciones necesarias.
+- Se conserva el escenario aislado solo si las dos políticas difieren exclusivamente en la probabilidad de apertura focal y no inducen vías directas diferenciales hacia Value.
 
-Se deben conservar dos variantes de DGP, no mezclar sus interpretaciones:
+**DGP adversarial de contaminación/efectos colaterales:**
+- Añade una ruta de cruce/contaminación, una vía alternativa o un efecto lateral (coste, demora, calidad, seguridad, información, etc.) explícitamente modelado.
+- El analizador debe conservar ITT de asignación al paquete y rechazar LATE focal cuando la exclusión o consistencia se vulneren.
+- No se debe confundir la probabilidad basal con la tasa de apertura en control bajo la política `B_g0`.
 
-**DGP-S4R-CLEAN (principal recomendado para identificar el mecanismo focal):**
-- `C_dep,base=0` para toda unidad elegible.
-- Control sin provisión efectiva ni contaminación que abra `τ2`; por tanto `p0=0`.
-- Provisión asignada con cumplimiento imperfecto; por ejemplo `p1=0.80`, si se mantiene como valor ilustrativo.
-- La variable latente común `U~Uniforme(0,1)` puede generar `A_f,post*(z)=I(U≤p_z)`, con `p0=0`, `p1=0.80`, y monotonicidad por construcción.
-- Este DGP identifica la primera etapa focal en el escenario idealizado; exclusión debe seguir siendo un supuesto/propiedad del generador auditada por escenarios adversariales, no deducida del ITT.
+Una variante con `p0=0` puede definirse como un diseño distinto de provisión frente a no provisión, pero **no sustituye el DGP principal descrito en §30** ni debe introducirse como corrección automática. Requeriría una versión de control distinta y una nueva verdad analítica.
 
-**DGP-S4R-CONTAMINATION (adversarial separado):**
-- Mantiene `C_dep,base=0`.
-- Introduce una ruta post-asignación explícita de provisión estándar, contaminación o cruce de brazo en control, con `p0>0` documentado.
-- Si se usa `p0=0.20`, debe generarse a través de esa ruta y medirse su versión; no asignar directamente `A_f*`.
-- Mantener `p1>p0` para una primera etapa positiva, si el escenario lo requiere.
-- El análisis conserva el ITT de asignación y examina la validez del IV bajo versiones/contaminación; no ocultar el cruce en un parámetro.
-
-Si se desea mantener `p0=.20` en el DGP principal, primero debe especificarse y justificarse la provisión del brazo control. En ausencia de esa decisión, no se conservará .20 como valor primario. El valor no es evidencia ni resultado: es un parámetro del DGP aún pendiente de preespecificación.
+La verdad ilustrativa `θ_A(q*)=3.6` solo se mantiene si .20/.80 son probabilidades finales de accesibilidad focal, todas las demás condiciones permanecen satisfechas, el efecto de accesibilidad sobre los mecanismos y Value es el especificado y no existen vías directas diferenciales. Si esos valores son probabilidades de intento o de instalación antes de fallos, la verdad debe recalcularse desde el DGP completo.
 
 ## 6. Poblaciones y apertura focal
 
@@ -161,7 +161,7 @@ La exclusión no es verificable de forma concluyente solo con los datos observad
 | REC-EST-02 | Mantener ITT_Z como objetivo primario del diseño aleatorizado S4-R | Es el efecto identificado directamente por asignación | Propuesta |
 | REC-EST-03 | Mantener LATE_f como objetivo secundario de atribución local, condicionado a IV | Evita convertir ITT en efecto de accesibilidad | Propuesta |
 | REC-EST-04 | Declarar explícitamente que S4-R no identifica el `θ_A(q)` general ni el efecto de todo `ΔT_acc` | Alcance del tratamiento focal `τ2` | Propuesta |
-| REC-EST-05 | Separar DGP-CLEAN (`p0=0`) de DGP-CONTAMINATION (`p0>0)) | Elimina contradicción temporal y hace observable el mecanismo de contaminación | Propuesta |
+| REC-EST-05 | Separar DGP aislado principal (`p0=.20`, `p1=.80` finales) de DGP-CONTAMINATION (`p0>0)) | Elimina contradicción temporal y hace observable el mecanismo de contaminación | Propuesta |
 | REC-EST-06 | Definir `P*_τ2` con elegibilidad basal preasignación y `A_f,base*=0` para el contraste de apertura | Hace coherentes D_f y A_f,post* | Propuesta |
 | REC-EST-07 | Mantener `P*_F` como subpoblación funcional basal, no como filtro automático de `P*_τ2` | Distingue apertura focal y exclusividad funcional | Propuesta |
 | REC-EST-08 | Exigir contrato independiente de `F*`, Value y horizonte | Evita circularidad y clasificación retrospectiva | Abierta |
