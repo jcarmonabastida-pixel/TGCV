@@ -5739,124 +5739,109 @@ La unidad, el clúster, la exposición y las probabilidades de asignación se fi
 
 ---
 
+
+
+---
+
 # 57. F*, equivalencia funcional y rutas alternativas: contrato armonizado
 
 **Estado:** operacionalización candidata y reconciliación interpretativa de §§48–50; DEC-C10-017 y OPEN-C10-003 permanecen ABIERTAS.  
-**Fuentes internas:** §§48.3–48.8, 49.11, 50.1–50.9, 51.1–51.5; contrato DGP §14; matriz S4R-02…06, S4R-11…15; INT-01…12; ACC-01…12 y EVID-01…15.  
-**Propósito:** fijar qué se compara al clasificar una ruta alternativa y preservar la distinción entre identidad de τ2, accesibilidad, aplicabilidad y substituibilidad funcional.
+**Fuentes internas:** §§48.3–48.8, 49.11, 50.1–50.9, 51.1–51.5; contrato DGP §14; matriz S4R-02…06, S4R-11…15; INT-01…12; ACC-01…12 y EVID-01…15.
 
-## 57.1. Reconciliación de alcance: dos objetivos, dos poblaciones
+## 57.1. Dos objetivos y dos poblaciones
 
-Se conserva la distinción ya formulada en §50:
+- **P*_tau2:** unidades constitutivamente elegibles, con D_f,0=0 y A_f,0*=0 respaldados antes de Z. Estudia la apertura de la identidad transformacional focal tau2.
+- **P*_F:** subconjunto de P*_tau2 en el que la ausencia de rutas alternativas funcionalmente substituibles para F* está respaldada dentro del universo, granularidad, condiciones y horizonte declarados. Estudia la apertura funcional exclusiva.
 
-- (P^*_{\tau2}): unidades constitutivamente elegibles, con (D_{f,0}=0) y (A_{f,0}^*=0) respaldados antes de Z. Estudia la apertura de la identidad transformacional focal (	au2).
-- (P^*_F\subseteq P^*_{\tau2}): subconjunto en el que la ausencia de rutas alternativas funcionalmente substituibles para (F^*) está respaldada en el universo, granularidad, condiciones y horizonte declarados. Estudia la apertura funcional exclusiva.
+**Reconciliación de §48.6:** su frase que incluía F_alt,0=0 como requisito general de la población primaria se interpreta, a la luz de §50.7 y §51.1, como requisito de P*_F, no como filtro automático de P*_tau2. Se conserva la formulación histórica y su trazabilidad; esta sección explicita la interpretación armonizada candidata, pendiente de revisión y aceptación.
 
-**Regla de reconciliación:** la frase de §48.6 que incluía (F_{alt,0}=0) como requisito general de la población primaria se interpreta, a la luz de §50.7 y §51.1, como requisito de (P^*_F), no como filtro automático de (P^*_{\tau2}). Se preserva la formulación histórica y su trazabilidad; esta sección explicita cuál es la interpretación armonizada candidata. No se cambia retrospectivamente la fuente ni se declara aceptada la corrección hasta revisión.
+El objetivo primario propuesto de S4-R sigue siendo el ITT de la política en P*_tau2. P*_F es subobjetivo funcional/heterogeneidad, no población primaria por defecto.
 
-La propuesta de objetivo primario de S4-R sigue siendo ITT de la política en (P^*_{\tau2}). (P^*_F) es subobjetivo funcional/heterogeneidad, no población primaria por defecto. Esta jerarquía sigue siendo propuesta.
+## 57.2. Ficha operacional de F*
 
-## 57.2. Definición operacional de la función focal (F^*)
+F* es una especificación técnica de capacidad/función evaluable sin Outcome ni Value. Antes de clasificar unidades debe fijar:
 
-(F^*) es una especificación técnica de capacidad/función que debe poder evaluarse sin Outcome ni Value. Antes de clasificar cualquier unidad, su ficha debe congelar:
+1. Objetivo funcional observable y criterio técnico de éxito.
+2. Entrada, estado inicial S0, información y precondiciones.
+3. Salida/efecto técnico y propiedades verificables; no basta una etiqueta o estado final nominal.
+4. Restricciones constitutivas: seguridad, integridad, compatibilidad, permisos y recursos.
+5. Tolerancias admisibles de calidad, precisión, fiabilidad, capacidad y degradación. No se inventan umbrales numéricos.
+6. Horizonte H: tiempo/pasos máximos y ventanas.
+7. Granularidad G: nivel de identidad de transformaciones, composiciones, operaciones y rutas.
+8. Contexto C0: condiciones basales y recursos disponibles.
+9. Evidencia, estándar E1–E4 aplicable, evaluadores, cegamiento, desacuerdos y reproducibilidad.
 
-1. **Objetivo funcional:** qué operación/capacidad observable debe realizarse y qué criterio de éxito técnico la satisface.
-2. **Entrada y estado inicial:** condiciones de entrada, estado (S_0), información disponible y precondiciones.
-3. **Salida/efecto técnico:** estado o configuración resultante y propiedades verificables; no basta con compartir una etiqueta o estado final nominal.
-4. **Restricciones constitutivas:** seguridad, integridad, compatibilidad de dominio, permisos, recursos y otras restricciones no negociables.
-5. **Tolerancias:** umbrales admisibles de calidad, precisión, fiabilidad, capacidad y degradación. Ningún umbral numérico se inventa en esta revisión.
-6. **Horizonte (H):** tiempo/pasos máximos y ventanas dentro de las que la función debe ser realizable.
-7. **Granularidad (G):** nivel al que se identifican transformaciones, composiciones, operaciones y rutas.
-8. **Contexto (C_0):** condiciones basales y recursos disponibles para la comparación.
-9. **Evidencia y adjudicación:** pruebas permitidas, estándar E1–E4 aplicable, evaluadores, cegamiento, desacuerdos y reproducibilidad.
+La ficha debe contener ejemplos positivos, negativos y fronterizos. No puede ajustarse después de conocer Z, B, selección, ejecución, Outcome o Value.
 
-La ficha debe incluir ejemplos positivos, negativos y fronterizos y demostrar que el criterio no depende de la ejecución observada ni del valor obtenido. La definición no puede ajustarse después de conocer Z, B, selección, ejecución, Outcome o Value.
+## 57.3. Substituibilidad no equivale a identidad ni a equivalencia causal
 
-## 57.3. Substituibilidad funcional no equivale a identidad ni a equivalencia causal
+Se conserva la relación propuesta: Sub(pi, F*, G, H, C0).
 
-Se conserva la relación propuesta:
+Una ruta pi es funcionalmente substituible si, desde el contexto basal especificado, satisface F*, sus restricciones y tolerancias dentro de H, con recursos y precondiciones disponibles y evidencia suficiente de mecanismo realizable.
 
-[
-Sub(pi,F^*,G,H,C_0)
-]
+Esto no significa que pi sea tau2, ni que ambas tengan igual coste, latencia, calidad, riesgo, fiabilidad o efectos sobre Value. Tampoco implica equivalencia causal, simetría o transitividad. Identidad transformacional y equivalencia funcional se registran separadamente.
 
-Una ruta (pi) es funcionalmente substituible si, desde el contexto basal especificado, satisface (F^*), sus restricciones y tolerancias dentro de (H), con recursos y precondiciones disponibles y evidencia suficiente de mecanismo realizable.
+Una posibilidad lógica, promesa o documentación no acredita realizabilidad. Tampoco la acredita una ruta que requiera recursos no disponibles. Se incluyen composiciones y mecanismos distribuidos cuando pertenezcan al universo declarado.
 
-Esto no significa que (pi=	au2), ni que ambas tengan igual coste, latencia, calidad, riesgo, fiabilidad o efectos sobre Value. Tampoco implica equivalencia causal, simetría o transitividad. La identidad transformacional y la equivalencia funcional se registran en campos separados.
+## 57.4. Juicios separados y estados de evidencia
 
-La ruta debe ser factible desde el estado y condiciones pertinentes; una posibilidad lógica, una promesa, documentación, o una ruta que requiera recursos no disponibles no acredita substituibilidad. La ruta puede ser una composición o mecanismo distribuido, no solo un elemento del catálogo.
+Para cada ruta candidata se registran por separado:
 
-## 57.4. Juicios separados por ruta y estados de evidencia
+- Acc(pi): accesibilidad de sus transformaciones constituyentes.
+- App(pi,S0): aplicabilidad desde el estado y precondiciones basales.
+- Sub(pi,F*,G,H,C0): cumplimiento funcional dentro del horizonte y restricciones.
+- Identidad, versión, composición y mecanismo.
+- Recursos, coste, latencia, calidad, seguridad y fiabilidad.
+- Nivel de evidencia E1–E4, cobertura y evaluador.
 
-Para cada ruta candidata (pi), registrar por separado:
+F_alt,0 conserva tres estados:
 
-- (Acc(pi)): accesibilidad de las transformaciones constituyentes en el sistema basal;
-- (App(pi,S_0)): aplicabilidad desde el estado y precondiciones basales;
-- (Sub(pi,F^*,G,H,C_0)): cumplimiento funcional dentro de horizonte/restricciones;
-- identidad, versión, composición y mecanismo;
-- recursos, coste, latencia, calidad, seguridad y fiabilidad;
-- nivel de evidencia E1–E4, cobertura y evaluador.
-
-El juicio (F_{alt,0}) tendrá tres estados, no una dicotomía forzada:
-
-- **Respaldado ausente (0):** búsqueda con cobertura suficiente del universo declarado y ninguna ruta substituible.
+- **Respaldado ausente (0):** cobertura suficiente del universo declarado y ninguna ruta substituible.
 - **Respaldado presente (1):** al menos una ruta alternativa satisface el criterio con evidencia suficiente.
-- **Indeterminado (?):** universo/cobertura incompletos, precondiciones o recursos no resueltos, evidencia insuficiente, discrepancia no adjudicada o ruta candidata pendiente.
+- **Indeterminado (?):** cobertura/evidencia insuficiente, recursos o precondiciones no resueltos, discrepancia no adjudicada o ruta candidata pendiente.
 
-“No encontrado” no equivale a ausencia respaldada. Una ruta no aplicable, fuera de horizonte o carente de recursos se rechaza solo dentro de las condiciones y límites auditados, sin inferir imposibilidad universal.
+“No encontrado” no equivale a ausencia respaldada. Una ruta no aplicable, fuera de horizonte o carente de recursos se rechaza solo dentro de las condiciones auditadas; no se infiere imposibilidad universal.
 
 ## 57.5. Universo de búsqueda y procedimiento reproducible
 
-Antes de clasificar (F_{alt,0}) se deben fijar y versionar: catálogo y versiones; reglas de identidad; granularidad; reglas de composición; universo de mecanismos internos/externos permitido; estado (S_0); condiciones (C_0); recursos; horizonte (H); función (F^*); restricciones y tolerancias.
+Antes de clasificar F_alt,0 se versionan catálogo y versiones, reglas de identidad, granularidad, composiciones, universo de mecanismos permitido, S0, C0, recursos, H, F*, restricciones y tolerancias.
 
-El procedimiento debe:
-1. enumerar rutas simples y composiciones permitidas;
-2. verificar precondiciones y recursos a lo largo de cada rama;
-3. evaluar accesibilidad y aplicabilidad sin inferirlas de ejecución;
-4. someter candidatas a criterio funcional independiente;
-5. conservar rutas rechazadas e indeterminadas y la razón;
-6. medir cobertura del universo y límites de búsqueda;
-7. versionar inputs, reglas, evaluadores, evidencia y resultados;
-8. repetir/adjudicar según protocolo ciego a Z, B, selección, ejecución, Outcome y Value.
+El procedimiento enumera rutas simples y compuestas; verifica precondiciones y recursos a lo largo de cada rama; evalúa accesibilidad y aplicabilidad sin inferirlas de ejecución; aplica el criterio funcional independiente; conserva rutas rechazadas e indeterminadas con sus razones; mide cobertura y límites; y versiona inputs, reglas, evaluadores, evidencia y resultados. La evaluación es ciega a Z, B, selección, ejecución, Outcome y Value.
 
-La exclusividad solo puede recibir PASS dentro del universo, granularidad, contexto y horizonte declarados, con cobertura suficiente y sin rutas indeterminadas relevantes. No prueba ausencia universal fuera de ese ámbito.
+La exclusividad solo recibe PASS dentro del universo, granularidad, contexto y horizonte declarados, con cobertura suficiente y sin rutas indeterminadas relevantes. No prueba ausencia universal fuera de ese ámbito.
 
 ## 57.6. Poblaciones, régimen común y estimandos
 
-La clasificación (F_{alt,0}) no redefine por sí misma la elegibilidad de (P^*_{\tau2}). En consecuencia:
+F_alt,0 no redefine por sí mismo la elegibilidad de P*_tau2:
 
-- (P^*_{\tau2}) conserva la definición basal del §50.2 y el régimen común candidato (q_X^*) del §55.
-- (P^*_F) se informa como subconjunto separado, con su procedimiento de clasificación y su incertidumbre.
-- Si se estima un efecto estandarizado específicamente en (P^*_F), se debe especificar su distribución objetivo/restricción de (q_X^*) (o un (q_{X,F}^*) explícito), población de referencia, pesos y soporte. No se reutilizan automáticamente los pesos de (P^*_{\tau2}).
-- Las unidades con (F_{alt,0}=1) permanecen en (P^*_{\tau2}) si cumplen el resto de criterios; las unidades con (F_{alt,0}=?) también pueden permanecer en (P^*_{\tau2}), pero no se confirma su pertenencia a (P^*_F).
-- (P^*_F) no se generaliza a (P^*_{\tau2}) sin supuestos de transporte/heterogeneidad defendibles.
+- P*_tau2 conserva la definición basal de §50.2 y el régimen común candidato q_X* de §55.
+- P*_F se informa como subconjunto separado, con su procedimiento de clasificación e incertidumbre.
+- Si se estima un efecto estandarizado en P*_F, debe especificarse su distribución objetivo/restricción de q_X* (o un q_X,F* explícito), población de referencia, pesos y soporte. No se reutilizan automáticamente los pesos de P*_tau2.
+- Las unidades con F_alt,0=1 permanecen en P*_tau2 si cumplen los demás criterios; las unidades con F_alt,0=? también pueden permanecer en P*_tau2, pero no se confirma su pertenencia a P*_F.
+- P*_F no se generaliza a P*_tau2 sin supuestos de transporte/heterogeneidad defendibles.
 
-La presencia de una alternativa basal puede modificar selección, ejecución, Reach, trayectorias y heterogeneidad sin invalidar automáticamente el efecto de abrir (	au2).
+Una alternativa basal puede modificar selección, ejecución, Reach, trayectorias y heterogeneidad sin invalidar automáticamente el efecto de abrir tau2.
 
-## 57.7. Implicaciones para la exclusión IV y las vías de B
+## 57.7. Exclusión IV y vías de B
 
-La alternativa basal estable y no afectada por Z/B puede ser un modificador del efecto; su mera existencia no demuestra violación de exclusión.
+Una alternativa basal estable y no afectada por Z/B puede ser modificadora del efecto; su mera existencia no demuestra violación de exclusión.
 
-Si B modifica disponibilidad, coste, calidad, seguridad, latencia o activación de una ruta alternativa, aparece una vía adicional que compromete la interpretación del instrumento como apertura exclusiva de (A_f^*). Si la alternativa emerge después de Z, se registra como mecanismo postasignación y no se ajusta ingenuamente.
+Si B modifica disponibilidad, coste, calidad, seguridad, latencia o activación de una ruta alternativa, aparece una vía adicional que compromete la interpretación del instrumento como apertura exclusiva de A_f*. Si la alternativa emerge después de Z, se registra como mecanismo postasignación y no se ajusta ingenuamente.
 
-En esos casos:
-- se conserva el ITT de asignación como efecto de política/paquete, con sus límites de observación de Value;
-- no se etiqueta el Wald como (LATE_f) focal bajo exclusión vulnerada;
-- se requiere separación factorial, intervención adicional o estimando de paquete/exposición si se pretende atribución de componentes;
-- un control negativo no demuestra exclusión.
+En esos casos se conserva ITT_Z como efecto de política/paquete; no se etiqueta el Wald como LATE_f focal bajo exclusión vulnerada. Se requiere separación factorial, intervención adicional o estimando de paquete/exposición para atribuir componentes. Un control negativo no demuestra exclusión.
 
-## 57.8. Errores de clasificación, sensibilidad y reporte
+## 57.8. Error de clasificación, sensibilidad y reporte
 
-La clasificación de (F_{alt,0}) debe ser pre-Z, independiente y ciega. Se conservan las categorías indeterminadas y su flujo; no se recodifican como ausentes. Se deben preespecificar análisis de sensibilidad a falsos positivos/negativos, cobertura incompleta, desacuerdo entre evaluadores y cambios razonables de granularidad/horizonte/tolerancias.
+La clasificación de F_alt,0 debe ser pre-Z, independiente y ciega. Se conservan los indeterminados; no se recodifican como ausentes. Se preespecifican análisis de sensibilidad a falsos positivos/negativos, cobertura incompleta, desacuerdo entre evaluadores y cambios razonables de granularidad, horizonte y tolerancias.
 
-El informe debe presentar por separado: número y proporción en (P^*_{\tau2}), (P^*_F), (P^*_{\tau2}\setminus P^*_F), casos indeterminados y excluidos; cobertura del universo; evidencia por ruta; y resultados/estimandos por población. No combinar ambas poblaciones bajo una sola etiqueta de exclusividad.
+El informe presenta por separado P*_tau2, P*_F, P*_tau2\P*_F, indeterminados y excluidos; cobertura del universo; evidencia por ruta; y estimandos por población. No se combinan ambas poblaciones bajo una sola etiqueta de exclusividad.
 
-## 57.9. Pruebas de aceptación derivadas
+## 57.9. Pruebas de aceptación
 
-Las pruebas FSTAR-01…FSTAR-18 del registro deben comprobar: independencia de F* respecto de O/V; fijación previa de G/H/C0; separación identidad/accesibilidad/aplicabilidad/substituibilidad; rutas compuestas; recursos y precondiciones; estados 0/1/?; cobertura incompleta; cegamiento; P_tau2 frente a P_F; pesos/soporte específicos; efectos de B sobre alternativas; activación post-Z; errores de clasificación y sensibilidad; y límites de generalización.
+FSTAR-01…FSTAR-18 comprueban independencia de F* respecto de O/V; fijación previa de G/H/C0; separación identidad/accesibilidad/aplicabilidad/substituibilidad; rutas compuestas; recursos y precondiciones; estados 0/1/?; cobertura incompleta; cegamiento; P*_tau2 frente a P*_F; pesos/soporte específicos; efectos de B sobre alternativas; activación post-Z; errores de clasificación y sensibilidad; y límites de generalización.
 
-## 57.10. Decisiones que permanecen abiertas
+## 57.10. Decisiones abiertas
 
-No se fijan aquí valores numéricos de F*, tolerancias, H, G, universo sintético cerrado, cobertura, recursos permitidos, estándar E1–E4 por clase, regla de adjudicación, tasas de error, distribución (q_{X,F}^*), pesos, ni protocolo confirmatorio de heterogeneidad. Requieren evidencia/decisión explícita y revisión independiente.
+No se fijan valores numéricos de F*, tolerancias, H, G, universo sintético cerrado, cobertura, recursos permitidos, estándar E1–E4 por clase, regla de adjudicación, tasas de error, distribución q_X,F*, pesos ni protocolo confirmatorio de heterogeneidad. Requieren decisión explícita y revisión independiente.
 
-**Dictamen:** la reconciliación de §§48–50 es conceptualmente coherente si (P^*_{\tau2}) y (P^*_F) permanecen separadas y la exclusividad se limita a (P^*_F). El contrato anterior ofrece una estructura operacional, pero no cierra la definición empírica de F*, ni la cobertura del universo, ni la exclusión IV. DEC-C10-017 queda como propuesta. No hay freeze, implementación, simulación ni ejecución.
+**Dictamen:** la reconciliación de §§48–50 es conceptualmente coherente si P*_tau2 y P*_F permanecen separadas y la exclusividad se limita a P*_F. El contrato ofrece una estructura operacional, pero no cierra la definición empírica de F*, la cobertura del universo ni la exclusión IV. DEC-C10-017 queda como propuesta. No hay freeze, implementación, simulación ni ejecución.
