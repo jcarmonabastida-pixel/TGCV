@@ -314,3 +314,21 @@ La definición candidata de F* debe fijar, antes de Z y sin Outcome/Value: objet
 F_alt,0 conserva tres estados: respaldado ausente (cobertura suficiente y ninguna ruta substituible), respaldado presente (al menos una) e indeterminado (cobertura/evidencia insuficiente o desacuerdo pendiente). La búsqueda fija universo, catálogo, composición, reglas, recursos, horizonte y criterio antes de evaluar; registra rutas rechazadas/indeterminadas y límites. La evaluación es ciega a Z/B/selección/ejecución/O/V.
 
 Se reconcilian dos poblaciones: P*_τ2 estudia apertura de identidad focal y no excluye automáticamente alternativas; P*_F es el subconjunto sin alternativa substituible respaldada y estudia apertura funcional exclusiva. El ITT primario propuesto permanece en P*_τ2; P*_F es subobjetivo/heterogeneidad. Una alternativa basal estable no viola automáticamente exclusión; si B la modifica o activa, la vía adicional compromete LATE focal y el resultado se interpreta como paquete salvo identificación adicional. La definición, cobertura, umbrales, horizonte, pesos y sensibilidad permanecen abiertos.
+
+
+## 17. Contrato de medición y separación truth/observed para A_f*, C_dep y ΔT_acc
+
+**Estado:** propuesta documental; no aprobada ni implementada. Complementa §§2–8 y 16, sin reemplazar las definiciones históricas.
+
+1. **Truth vs observación.** El generador conserva A_f*, C_dep*, D_f*, T_acc* y ΔT_acc* verdaderos. El analizador solo recibe evidencias, snapshots y clasificaciones observadas (A_f_obs, App_f_obs, T_acc_obs) con estados 1/0/?. El evaluador independiente accede a truth solo después de congelar la salida del analizador.
+2. **C_dep.** C_dep*=C_install*∧C_integrity*∧C_compat*∧C_oper*. Cada componente se verifica y versiona por separado; no se presume independencia ni se equipara intento con éxito. Indeterminado no es fallo ni éxito.
+3. **A_f*.** A_f*=1 solo si la identidad/version de τ2 es válida y C_dep y todos los predicados de acceso focal previamente clasificados están satisfechos. No se incorpora automáticamente App_f ni ejecución. La clasificación de cada condición como acceso, aplicabilidad, constitutiva, provisión o postratamiento permanece abierta hasta justificación explícita.
+4. **App_f.** Se evalúa desde S0 y sus precondiciones, separada de A_f. Puede ser 0 cuando A_f=1. No inferir accesibilidad de la aplicabilidad ni viceversa.
+5. **Apertura.** D_f*=I(A_f*,base=0∧A_f*,post=1). D_f_obs conserva los estados observados e indeterminados; no se sustituye la primera etapa verdadera por la observada. El error de clasificación se evalúa con validación conocida o sensibilidad/límites.
+6. **ΔT_acc.** Cada snapshot conserva U_acc (identidad+versión), R_acc (relaciones tipadas), C_acc (condiciones/configuraciones), Validity y State. La diferencia registra altas/bajas/cambios de versión, relaciones añadidas/retiradas/reconfiguradas, condiciones modificadas, validez/cobertura y cambios de estado. Se requieren snapshots comparables; los indeterminados se propagan. ΔT_acc es estructurado, no escalar; A_f es solo proyección focal.
+7. **Temporalidad.** Baseline y elegibilidad se sellan antes de Z. El snapshot post se toma tras verificación y antes de conocimiento, selección, inicio o ejecución. Cambios posteriores generan nuevos snapshots inmutables.
+8. **Cegamiento/validación.** Clasificación independiente de Z/B cuando sea factible y ciega a selección, ejecución, Outcome y Value. La submuestra de validación debe tener selección conocida; una referencia imperfecta aporta incertidumbre propia.
+9. **Población observada.** La elegibilidad verdadera del DGP y la clasificación basal observada se reportan por separado. Los indeterminados no se convierten en inaccesibles confirmados. Un estimando restringido a casos observados confirmados se etiqueta como tal; no se equipara automáticamente a P*_τ2.
+10. **Pendientes.** Clasificación de predicados, definición/versionado de τ2, estándares E1–E4, adjudicación, concordancia, tamaño de validación, error diferencial, cobertura y reglas de correspondencia de snapshots siguen abiertos. AUD-004, XAUD-003/004 y OPEN-C10-004 no se cierran.
+
+Este contrato no fija umbrales ni tolerancias, no declara validez de constructo, no autoriza freeze, código, simulación ni ejecución.
