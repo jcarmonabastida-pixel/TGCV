@@ -565,3 +565,21 @@ No se cierra calibración empírica ni selección primaria.
 | ID-10 | Efectos sobre estimandos | No confundir continuidad semántica con equivalencia causal | ABIERTO | Crosswalk con IV, q, Reach, Value y C10-D1 |
 
 **Dictamen:** contrato redactado, pero no operacionalizado para el DGP. No cerrar AUD-004 ni XSYNC-138-03/06. Los contratos ID-01…15 son documentales, no pruebas ejecutadas.
+
+
+## 12. Seguimiento del Bloque 3 — Reach y trayectorias (2026-11-04)
+
+| ID | Punto | Propuesta | Estado | Criterio de cierre |
+|---|---|---|---|---|
+| REACH-01 | Definición truth/obs | Separar Reach_H* y Reach_H,obs | PROPUESTA | Diccionario global armonizado |
+| REACH-02 | Composición por ruta | T_acc*, App*, relaciones, recursos, temporalidad | PROPUESTA | Reglas por clase de transformación |
+| REACH-03 | Lógica trivalente | Conjunción 1/0/? por ruta | PROPUESTA | Oráculos y pruebas |
+| REACH-04 | Rutas alternativas | Disyunción; una ruta confirmada basta | PROPUESTA | Cobertura de alternativas validada |
+| REACH-05 | No alcanzabilidad | Exige universo/cobertura exhaustivos | ABIERTO | Prueba de exhaustividad y límites |
+| REACH-06 | Truncamiento | Nunca equivale a Reach=0 | PROPUESTA | Fixtures de límite computacional |
+| REACH-07 | Horizonte y ciclos | H/G/temporalidad/terminación ex ante | ABIERTO | Parámetros DGP y regla de ciclos |
+| REACH-08 | Snapshot dinámico | Actualizaciones inmutables dentro de H | ABIERTO | Contrato de eventos y reloj |
+| REACH-09 | No filtración | Selección/ejecución/O/Value downstream | PROPUESTA | Auditoría global y pruebas adversariales |
+| REACH-10 | Identificación/cobertura | ? ante catálogo o mapping incompleto | ABIERTO | Validación independiente de cobertura/error |
+
+**Dictamen:** propuesta documental incorporada; AUD-005 y AUD-007 permanecen abiertos. No declarar cierre ni cobertura validada.
