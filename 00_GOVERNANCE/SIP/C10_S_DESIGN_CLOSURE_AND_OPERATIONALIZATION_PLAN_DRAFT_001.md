@@ -87,3 +87,42 @@ En main, CHATGPT_BOOTSTRAP.md declara IGRT no establecido/no requerido y que no 
 
 PR #117 propone corregir 00_GOVERNANCE/README.md; en el corte estaba abierto y Draft, de governance/igrt-bootstrap-reconciliation-draft a main. La contradicción no debe declararse resuelta en main hasta integrar y verificar PR #117. Es un hallazgo de continuidad operativa, no científico.
 
+
+
+# II. Inventario de artefactos y resultados
+
+## 7. Los 13 artefactos existentes en PR #116
+
+| Artefacto | Función | Estado |
+|---|---|---|
+| Maestro C10-S draft 004 | Arquitectura y desarrollo §§66–69 | Draft; requiere decisiones/reconciliación |
+| Contrato DGP temporal/roles | Variables, tiempos y reglas; §§26–28 | Parcial; DGP no completo |
+| Decision Log | Decisiones propuestas y precedencia | No asumir aceptación |
+| Matriz de cierre | Pendientes y criterios | Parcial |
+| Registro de pruebas | Contratos ACC/JNT/FIX y previos | Documental; no ejecutado |
+| Auditoría cruzada AUD-001/002 | XAUD-001…007 | AUD-001/002 abiertos |
+| Resolución AUD-001/002 | Propuesta de resolución | Pendiente de revisión/armonización |
+| Reconciliación C10-D1/S4-R | Estimandos y escenarios | Propuesta; primario abierto |
+| Auditoría integrada de consistencia | AUD-001…012 | Hallazgos abiertos |
+| Auditoría integrada de reconciliación | Reconciliación transversal | Arquitectura candidata; no aprobada |
+| Auditoría recuperación 165–183 | Recuperación y trazabilidad | Parcial/verificada según alcance |
+| Registro fuente 165–183 | Secciones y procedencia | Fuente recuperada; reconciliación en curso |
+| Tracker XSYNC-138 | XSYNC-01…10 | Texto recuperado; cierre pendiente |
+
+## 8. Bloques incorporados durante el desarrollo
+
+| Bloque | Contenido | Propagación |
+|---|---|---|
+| §66 | Papel comparativo D1/D2 | DGP §25; reconciliación §18; CMP-01…14; matriz §27; DEC-C10-026 |
+| §67 | Predicados técnicos y derivación A_f* | DGP §26; DEC-C10-027; matriz §28; ACC-01…20 |
+| §68 | Distribución conjunta de 16 patrones y Fréchet | DGP §27; DEC-C10-028; matriz §29; JNT-01…15 |
+| §69 | Cuatro fixtures y propagación analítica | DGP §28; DEC-C10-029; matriz §30; FIX-01…12 |
+
+§66: D1/D2 son regímenes diferentes. D2 fue candidato mecanístico; D1 incremental si el control ordinario se justifica. La fuente histórica recuperada favorece D1 condicionado como principal y D2 como contraste. Selección abierta.
+
+§67: dependencia técnica no equivale automáticamente a accesibilidad. s=.80 es candidato ilustrativo, no dato observado.
+
+§68: s=p1111 no identifica las otras 15 celdas, marginales ni dependencia. Familias y malla .60/.70/.80/.90 son exploratorias.
+
+§69: fixtures de choque común, fallos simples, bottleneck y fallos emparejados. FS_D1=.75s y FS_D2=s bajo una oportunidad y supuestos explícitos. No son simulaciones.
+
