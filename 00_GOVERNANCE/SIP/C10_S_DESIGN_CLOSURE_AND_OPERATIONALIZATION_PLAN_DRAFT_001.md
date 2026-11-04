@@ -697,3 +697,34 @@ El siguiente bloque no debe añadir más definiciones abstractas. Debe convertir
 7. alinear inventario con REACH-01…20, SNAP-01…15 e ID-01…15.
 
 La operación será documental y de especificación. No ejecutar generador ni simulación sin autorización expresa.
+
+
+# XII. Ejecución del plan — Bloque 3, inventario finito del DGP y cobertura Reach (2026-11-04)
+
+## 53. Reconstrucción y artefacto
+
+Se revisaron README.md y 00_GOVERNANCE/README.md en main, el maestro C10-S, el contrato DGP temporal/roles, el contrato Reach, el registro de pruebas, la matriz de cierre, el Decision Log y los metadatos/diff del PR #116.
+
+Se creó C10_S_FINITE_DGP_INVENTORY_AND_REACH_COVERAGE_DRAFT_001.md. El documento define una topología abstracta candidata con estados S0/S1/S2/SF; transformaciones F1/F2/A1/A2; rutas F1→F2 y A1→A2; escenarios R0–R3; G atómica y H=3 candidato; recursos, condiciones, bloqueos y ocho dimensiones de cobertura.
+
+## 54. Hallazgos de auditoría
+
+1. El contrato temporal DGP ya separa t0–t9 y la verdad generadora de las observaciones; el inventario no debe redefinir ese reloj.
+2. El historial del PR menciona G0/G1, H=3 y ramas dinámicas, pero esos elementos no bastan para aprobar el catálogo ni resolver la selección D1/D2.
+3. Abrir τ2/F1 no garantiza alcanzar SF: la continuación F2 debe ser accesible, aplicable y componible.
+4. Una ruta alternativa A1→A2 puede mantener Reach(SF)=1 antes y después de abrir F1; por tanto D_f* no es equivalente a apertura funcional exclusiva ni a cambio de Reach.
+5. Si B afecta A1/A2 (R2), aparece una vía colateral; no se interpreta automáticamente como instrumento focal exclusivo.
+6. Intento sin éxito (R3) conserva la asignación y no autoriza imputar C_dep/A_f*/D_f*.
+7. La ausencia de alternativa exige cobertura exhaustiva del universo funcional, no una búsqueda sin hallazgos.
+
+## 55. Estado de cierre
+
+**Avance:** inventario finito conceptual candidato y matriz ruta×predicados×tiempo×evidencia×cobertura documentados.
+
+**Pendiente:** ratificar frontera, G, H, duración, F*, identidad focal, catálogo, relaciones, recursos, condiciones, alternativas, D1/D2, cobertura y oráculos. AUD-005/007 siguen abiertos; INV-01…08 no están cerrados.
+
+No hay fixtures ejecutables, implementación, generación de datos, simulación, ejecución, freeze ni autorización.
+
+## 56. Próxima operación
+
+Auditar la consistencia del inventario contra el DGP completo y la reconciliación causal: resolver el encaje de H=3 con t0–t9; concretar si las rutas representan accesibilidad o composición de ejecución potencial; definir qué predicados se evalúan en cada instante; comprobar las cuatro variantes R0–R3 frente a S4R-A…D; y cerrar el esquema de evidencia/cobertura antes de añadir más topología.
