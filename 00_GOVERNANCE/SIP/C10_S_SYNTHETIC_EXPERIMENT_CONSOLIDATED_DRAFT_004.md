@@ -7311,3 +7311,12 @@ Se crea C10_S_TRANSFORMATION_CARDS_HISTORICAL_RECONCILIATION_DRAFT_001.md tras r
 Se documentan cuatro fichas controladas que separan lo conocido de lo abierto. No se inventan operaciones técnicas ni se asignan valores truth por escenario. R0–R3 tampoco permiten afirmar substituibilidad hasta que la ruta A1→A2 se evalúe contra F* común. El hueco requiere elegir y documentar un microdominio sintético concreto o una descripción técnica neutral concreta antes de fijar DGP.
 
 Las fichas sustantivas no están cerradas. AUD-004/005/007/010/011 y OPEN-C10-001/003/005/007 permanecen abiertos. No hay aprobación, freeze, implementación, datos, simulación ni ejecución.
+
+
+# 78. Comparación de microdominios sintéticos y recomendación (2026-11-05)
+
+Se crea C10_S_SYNTHETIC_MICRODOMAIN_OPTIONS_AND_SELECTION_RECOMMENDATION_DRAFT_001.md para resolver el hueco semántico de §77 sin inventar silenciosamente definiciones. Se comparan: A) migración de configuración entre entornos software; B) integración de datos; C) reconfiguración de flujo de trabajo organizativo. La Opción A se recomienda como candidata por permitir F* técnico verificable, separación entre provisión B y ejecución, ruta focal F1/F2, alternativa A1/A2, recursos/permisos/ventanas controlables y menor riesgo de interferencia.
+
+Bajo Opción A se propone F1 convertir configuración fuente mediante adaptador focal; F2 aplicar y validar en destino; A1 exportar mediante formato neutral preexistente; A2 importar/aplicar y validar por mecanismo nativo. F* sería conformidad con propiedades preespecificadas de esquema, integridad y compatibilidad. Son fichas ilustrativas, no seleccionadas: formatos, tolerancias, IDs, recursos y reglas permanecen abiertos.
+
+B debe provisionar el adaptador, no ejecutar conversión ni aplicación. A1/A2 deben permanecer mecanísticamente independientes en R0/R1; R2 conserva el caso de vía colateral. No se aprueba microdominio ni se fijan parámetros DGP. No se cierran AUD-004/005/007/010/011 ni OPEN-C10-001/003/005/007. Sin datos, fixtures ejecutables, simulación ni ejecución.
