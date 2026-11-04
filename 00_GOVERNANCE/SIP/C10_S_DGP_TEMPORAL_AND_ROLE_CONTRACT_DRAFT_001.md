@@ -252,3 +252,14 @@ El ITT permanece definido en la población asignada. Casos completos, población
 **Contrato integrado propuesto, no aprobado.** Reduce la fragmentación documental y hace explícitas las dependencias causales, transformacionales, temporales y de información. No cierra AUD-002, AUD-010/011 ni XAUD-003…006 hasta que todas las definiciones se armonicen y las pruebas se conviertan en fixtures verificables.
 
 No se ha implementado ni ejecutado. No se ha simulado, estimado ni analizado dato empírico. No se modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS o claims.
+
+
+## 12. Armonización con auditoría integral (2026-11-04)
+
+La especificación candidata común está definida en el capítulo 53 del documento maestro y en `C10_S_INTEGRATED_RECONCILIATION_AUDIT_DRAFT_001.md`.
+
+D1 es el escenario principal **condicionado**: (C_{dep,base}=0), (P(C_{dep,post}=1|Z=0)=.20), (P(C_{dep,post}=1|Z=1)=.80), primera etapa objetivo .60. D2 es el contraste: (C_{dep,base}=0), probabilidades finales 0/.80, primera etapa .80. En D1, .20 es provisión/estado final postasignación bajo el control ordinario; no es acceso basal. D1 solo será principal si se justifica el control como comparador legítimo.
+
+(W_{attempt}), (S_{install}), componentes técnicos y (C_{dep,post}) permanecen separados. La distribución conjunta de intento y éxito debe calibrarse a las probabilidades finales verificadas; no se presume independencia. (A_{f,post}^*) solo tiene la misma probabilidad que (C_{dep,post}) si todas las demás condiciones focales están satisfechas. (D_f=I(A_{f,base}^*=0\land A_{f,post}^*=1)) es la apertura basal→post y primera etapa focal.
+
+(q^*) se define sobre condiciones/historias comunes no manipuladas por (g); (g_0/g_1) implementan provisión focal. (C_c) delimita factibilidad. El soporte de ambas políticas se verifica por estrato/historia. Esta armonización es propuesta documental, no aceptación ni autorización de ejecución.
