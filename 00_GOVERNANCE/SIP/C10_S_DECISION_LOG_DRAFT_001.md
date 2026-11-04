@@ -257,3 +257,14 @@ Se registra DEC-C10-027 como propuesta, no decisión aceptada:
 | DEC-C10-027 | Conjunción técnica, éxito condicional y derivación de accesibilidad | PROPUESTA | C_dep*=C_install*∧C_integrity*∧C_compat*∧C_oper*. El .80 es probabilidad conjunta condicional de éxito de esa ruta tras intento elegible, no tasa marginal por componente ni dato empírico. A_f* requiere ID/REL/COND/AUTH/RES/DEP/¬BLOCK; VALID es epistémico y App_f separado. C_dep equivale a DEP_f solo bajo ruta única estipulada. Las primeras etapas C_dep/A_f/D_f se calculan separadamente; .60 (D1) y .80 (D2) solo coinciden bajo elegibilidad basal y predicados restantes satisfechos e invariantes. | Distribución conjunta de componentes, sensibilidad de .80, protocolo/actor/versiones, rutas alternativas/cobertura, evidencia/adjudicación, errores diferenciales, q_X*/soporte y revisión independiente |
 
 DEC-C10-027 formaliza una propuesta de medición y mecanismo, no valida la tasa .80 ni selecciona D2. No cierra OPEN-C10-001/007/008, AUD-001/004/005/007/010/011 ni XSYNC-138-03/04/06. No autoriza freeze, implementación, simulación o ejecución.
+
+
+## 22. Propuesta de distribución conjunta y sensibilidad (2026-11-04)
+
+Se registra DEC-C10-028 como propuesta, no decisión aceptada:
+
+| ID | Objeto | Estado | Formulación | Dependencias |
+|---|---|---|---|---|
+| DEC-C10-028 | Distribución de cuatro componentes | PROPUESTA | Definir tabla de 16 patrones (p_{abcd}), con s=p1111. s=.80 no identifica marginales ni fallos parciales. Incluir sensibilidad de dependencia (choque común, fallos parciales, bottleneck, mixta), heterogeneidad y deriva de versiones. Malla exploratoria s={.60,.70,.80,.90}, sin privilegiar .80. | Protocolo/denominador de intentos, marginales y fallos parciales, dependencia, heterogeneidad, versiones, revisión independiente |
+
+DEC-C10-028 demuestra la insuficiencia de s para determinar el mecanismo completo; no selecciona una distribución, no valida parámetros, no aprueba D1/D2 como primario ni autoriza ejecución.
