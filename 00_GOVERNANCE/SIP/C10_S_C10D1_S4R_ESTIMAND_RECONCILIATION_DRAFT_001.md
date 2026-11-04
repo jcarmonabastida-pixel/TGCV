@@ -235,3 +235,12 @@ La fuente integrada §52.2 recupera los siguientes valores de intento/provisión
 Una factorización candidata que satisface ambas tablas es (P(C_{dep}=1\mid W_{attempt}=1)=.80), común a los brazos, con (C_{dep}=0) cuando no hay intento. Así, (P(C_{dep}=1\mid Z=z)=P(W_{attempt}=1\mid Z=z)\times.80). Este cálculo supone que el éxito conjunto verificado condicional al intento es .80; no implica independencia de los componentes técnicos. El valor .80 es derivado para reconciliar intento y estado final, no un parámetro textual recuperado ni una observación.
 
 La propuesta de política B, sus cuatro versiones D1/D2, invariantes, registros de asignación/recepción/cumplimiento y decisiones pendientes se desarrolla en el capítulo 54 del documento maestro. OPEN-C10-001 continúa abierta hasta decisión científica sobre el comparador D1 y aprobación de actor, recepción, versiones y verificación.
+
+
+## 14. q_X* y soporte: operacionalización candidata
+
+La propuesta armonizada con el maestro §55 es (q_X^*=P^*(X,H_0,C_c\mid E=1,C_{dep,0}=0,A_{f,0}^*=0)). Es una distribución objetivo basal, no un régimen que manipula covariables. (C_c) define elegibilidad constitutiva; (C_{dep,0}=0) y (A_{f,0}^*=0) definen cierre basal de la transformación focal. La evaluación se completa antes de Z y no utiliza cumplimiento, selección, ejecución, O o V.
+
+El soporte exige que ambas políticas B_g0/B_g1 sean implementables en cada historia con masa positiva bajo qX y que el diseño asigne probabilidad positiva a ambos brazos. No exige que cada unidad pueda alcanzar ambos valores de D_f; esa es una cuestión de cumplimiento/compliers. Si una política no es factible, se restringe ex ante la población y se redefine el estimando, o se declara no identificación.
+
+El S4-R primario utiliza qX*. qL* solo se requiere si una variable post-asignación L_m es indispensable y se interviene mediante una regla secuencial común. Ajustar marginalmente por L_m no lo sustituye. La distribución P*, composición completa de X/H0/Cc, unidad/interferencia, estratos, pesos y Value siguen abiertos; DEC-C10-012 permanece propuesta.
