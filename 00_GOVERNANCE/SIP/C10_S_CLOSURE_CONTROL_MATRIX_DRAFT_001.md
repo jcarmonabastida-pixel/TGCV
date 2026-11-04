@@ -34,11 +34,14 @@ La numeración de las secciones conversacionales no constituye por sí sola una 
 | SRC-05 | Auditoría cruzada | `C10_S_AUD001_AUD002_CROSS_AUDIT_DRAFT_001.md`, blob `ce53c902fb39820e976eed5cb2a87e5eacace31c` | XAUD-001…007 | Hallazgos abiertos |
 | SRC-06 | Informe de recuperación | `C10_S_RECOVERY_AND_TRACEABILITY_AUDIT_DRAFT_001.md`, blob `2f77832076773c67711f55a3c0d6680b69c2c6d9` | Reconstrucción de fuentes y límites hasta sección 183 | Recuperación parcial |
 | SRC-07 | PR #115 | `research/c10-d1-protocol-draft` → PR #115 | 23 commits; 1 archivo; abierto Draft | Sin comentarios/revisiones |
-| SRC-08 | PR #116 | `research/c10-s-consolidation-draft` → PR #116 | seis archivos; el número de commits es dinámico y debe consultarse directamente en PR #116; abierto Draft | Sin comentarios/revisiones |
+| SRC-08 | PR #116 | `research/c10-s-consolidation-draft` → PR #116 | Ocho archivos modificados; el número de commits es dinámico; abierto Draft | Sin comentarios/revisiones registradas |
+
+| SRC-09 | Reconciliación C10-D1 ↔ S4-R | `C10_S_C10D1_S4R_ESTIMAND_RECONCILIATION_DRAFT_001.md`, PR #116 | Jerarquía `θ_A(q)` / ITT_Z / LATE_f; propuesta para `p0` y poblaciones | Propuesta, no aprobada |
+| SRC-10 | Decision log C10 | `C10_S_DECISION_LOG_DRAFT_001.md`, PR #116 | DEC-C10-001…010, decisiones abiertas y alternativas no admisibles | Registro inicial, no aprobado |
 
 ### 2.1 Resultado de la búsqueda de fuentes posteriores a 164
 
-Se revisaron las fuentes canónicas de C10-D1 y C10-S en sus ramas, el PR #116 y sus cinco archivos, el historial de comentarios/revisiones/hilos del PR (cero registros), y búsquedas de código en el repositorio para referencias distintivas de las secciones posteriores (incluidos P182-01 y P183-01). No se encontró en el repositorio una fuente íntegra adicional de las secciones conversacionales 165–183.
+Se revisaron las fuentes canónicas de C10-D1 y C10-S en sus ramas, el PR #116 y sus archivos (ocho en el corte de esta actualización), el historial de comentarios/revisiones/hilos del PR (cero registros), y búsquedas de código en el repositorio para referencias distintivas de las secciones posteriores (incluidos P182-01 y P183-01). No se encontró en el repositorio una fuente íntegra adicional de las secciones conversacionales 165–183.
 
 Este resultado no demuestra que el material no exista en exportaciones de conversación, archivos locales u otras fuentes no conectadas. Significa que no se ha podido recuperar desde los artefactos GitHub consultados ni certificar su literalidad. Se necesita una exportación o fuente original adicional para cerrar esa brecha histórica.
 
