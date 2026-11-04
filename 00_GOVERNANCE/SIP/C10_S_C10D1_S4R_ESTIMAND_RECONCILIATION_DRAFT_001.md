@@ -244,3 +244,12 @@ La propuesta armonizada con el maestro §55 es (q_X^*=P^*(X,H_0,C_c\mid E=1,C_{d
 El soporte exige que ambas políticas B_g0/B_g1 sean implementables en cada historia con masa positiva bajo qX y que el diseño asigne probabilidad positiva a ambos brazos. No exige que cada unidad pueda alcanzar ambos valores de D_f; esa es una cuestión de cumplimiento/compliers. Si una política no es factible, se restringe ex ante la población y se redefine el estimando, o se declara no identificación.
 
 El S4-R primario utiliza qX*. qL* solo se requiere si una variable post-asignación L_m es indispensable y se interviene mediante una regla secuencial común. Ajustar marginalmente por L_m no lo sustituye. La distribución P*, composición completa de X/H0/Cc, unidad/interferencia, estratos, pesos y Value siguen abiertos; DEC-C10-012 permanece propuesta.
+
+
+## 15. Unidad e interferencia: armonización con el maestro §56
+
+La propuesta primaria es UE=UA=instancia sintética independiente; UO son mediciones repetidas T0–T9. No es un hecho verificado: requiere inventario que descarte recursos, agentes, información, infraestructura y canales compartidos. Si varias UE comparten esos elementos, definir clúster y elegir asignación individual con exposición modelada o asignación por clúster. El N efectivo e inferencia respetan la UA real.
+
+Sin interferencia, potenciales individuales V_i(z_i), D_f,i(z_i). Con interferencia, definir antes de generar resultados el mapa G_i(Z_-i) y potenciales V_i(z_i,g_i), D_f,i(z_i,g_i). Si no se puede especificar/observar la exposición, ITT individual y Wald individual no reciben interpretación causal focal. Correlación basal dentro de clúster no equivale por sí sola a interferencia.
+
+La aleatorización, probabilidades y positividad se documentan en la unidad asignada. LATE individual requiere no interferencia; un diseño con spillovers exige estimando de exposición/clúster explícito. OPEN-C10-005 permanece ABIERTA.
