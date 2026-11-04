@@ -728,3 +728,14 @@ No hay fixtures ejecutables, implementación, generación de datos, simulación,
 ## 56. Próxima operación
 
 Auditar la consistencia del inventario contra el DGP completo y la reconciliación causal: resolver el encaje de H=3 con t0–t9; concretar si las rutas representan accesibilidad o composición de ejecución potencial; definir qué predicados se evalúan en cada instante; comprobar las cuatro variantes R0–R3 frente a S4R-A…D; y cerrar el esquema de evidencia/cobertura antes de añadir más topología.
+
+
+# XIII. Ejecución del plan — integración temporal y S4-R (2026-11-04)
+
+Se auditó el inventario finito contra el contrato DGP t0–t9, el contrato Reach_H y la reconciliación causal. Se creó C10_S_TEMPORAL_HORIZON_AND_S4R_INTEGRATION_AUDIT_DRAFT_001.md y se propagó como §75, contrato DGP §34, DEC-C10-036, matriz §14 y registro de pruebas §37.
+
+Hallazgo: la descripción previa de H=3 como tres pasos/unidades de tiempo era ambigua frente a Reach evaluado en t4. Se propone separar reloj de estudio, profundidad de trayectoria y tiempo/ventanas de factibilidad; H=3 queda como profundidad candidata, no duración temporal confirmada. Reach se calcula en t4 sobre snapshot t3; las rutas son potenciales y no ejecuciones. R0–R3 se corresponden provisionalmente con S4R-A…D.
+
+Pendiente: ratificar H; duración y ventanas; predicados App por estado; snapshots dinámicos por rama; recursos/caducidades; F*; cobertura funcional; D1/D2 y oráculos. AUD-005/007 siguen abiertos. No se han creado fixtures ejecutables, simulado ni ejecutado el experimento.
+
+Siguiente bloque: especificar la tabla por paso y por rama de predicados de accesibilidad, aplicabilidad, composición, autorización, recursos, ventana y bloqueo, con tiempos y evidencia requerida; resolver explícitamente qué condiciones permanecen constantes bajo el snapshot t3 y cuáles pueden variar en la trayectoria hipotética.
