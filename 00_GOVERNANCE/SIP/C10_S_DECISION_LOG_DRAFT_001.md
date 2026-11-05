@@ -638,3 +638,8 @@ El overlay propone campos semánticos P0/P1 y relaciones P2, crosswalk a los die
 7. Esta decisión es conceptual/documental. Enums, FK compuesta, exclusividad/cardinalidad y restricciones físicas quedan pendientes del gate técnico autorizado.
 
 **Estado:** DEC-C10-060 ACCEPTED. No se crean instancias, inventario real, truth, fixtures ni evidencia. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## Registro complementario — reconciliación de plantilla U_G (2026-11-05)
+
+Tras DEC-C10-060, se actualiza el encabezado SNAPSHOT para declarar la FK compuesta `(unit_object_record_id, unit_id) → NODE.(object_record_id, node_id)`. Se aclara que los NA de las filas ilustrativas NODE/SNAPSHOT son marcadores de plantilla y no observaciones reales. Estas son reconciliaciones documentales de DEC-C10-059, no nuevas decisiones sustantivas ni validaciones físicas.
