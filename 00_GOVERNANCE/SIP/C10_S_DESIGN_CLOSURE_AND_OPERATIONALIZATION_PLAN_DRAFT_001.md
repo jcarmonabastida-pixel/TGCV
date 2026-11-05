@@ -941,3 +941,20 @@ Se completa la primera pasada documental control-a-control y se registra el expe
 ## Siguiente operación
 
 Resolver documentalmente UG-SR-A01 en plantilla, protocolo y Test Contract Register; después completar la reconciliación de contratos U_G y continuar con DGP/arquitectura causal. La resolución documental no autoriza inspección técnica, implementación, generación, simulación ni experimento.
+
+
+# XXXI. Reconciliación ampliada UG-SR-A01 — propuesta documental (2026-11-05)
+
+La revisión directa de protocolo y plantilla amplió el hallazgo: además de protocolo §10 y §16, la discrepancia alcanza protocolo §13 y plantilla §§11/12.8. Se han registrado propuestas coordinadas en:
+- plantilla U_G §12.11;
+- protocolo de evidencia §17;
+- Test Contract Register §53;
+- autoauditoría SR-01…20 (actualización del hallazgo).
+
+**Regla propuesta, no aprobada:** `evidence_ref` opcional 0..1; CLAIM_EVIDENCE_LINK relación canónica 0..n; vínculo obligatorio para estados 1/0; estado ? sin vínculo solo con razón de indeterminación, MISSING y limitaciones documentadas; NA con justificación. Los casos T06…T12 amplían T01…T05.
+
+**Estado:** UG-SR-A01 sigue abierto hasta aceptación explícita. SR-03 continúa CONDITIONAL. La propuesta no cierra FCM, no valida parser/FK, no acredita inventario/cobertura y no autoriza pruebas técnicas, simulación o experimento.
+
+## Siguiente paso
+
+Solicitar/registrar decisión explícita sobre la regla propuesta; después, si se acepta, hacer una reconciliación final de referencias cruzadas y mantener pendiente la validación técnica. Si no se acepta, documentar la alternativa sin borrar trazabilidad de la contradicción.
