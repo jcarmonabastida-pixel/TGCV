@@ -7657,3 +7657,10 @@ El overlay no crea nodos/instancias, truth, fixtures ni evidencia. La matriz tri
 La revisión del overlay contra DEC-C10-055, reconciliación SM/FP, mapping C_src→C_dst/M, FP-03, F*, U_G y frontera/granularidad confirma la arquitectura de alto nivel, pero requiere seis precisiones antes de schema: FP-07 como verificación post-aplicación de FP-01…05; FP-08 como validez probatoria separada; predicados primarios/secundarios por propiedad; retiro de CONTAINS_FIELD no catalogada; mapeo de atributos overlay a columnas existentes; y separación C_dst^decl/C_dst^applied/E_dst/M. La auditoría está en `C10_S_IAM_FP_EDGE_CROSSWALK_AUDIT_DRAFT_001.md`.
 
 No se reabre DEC-C10-055 ni se crean nuevas relaciones EDGE. No se añaden columnas ni se instancian registros. Estado: PASS_DOCUMENTAL de arquitectura general; CORRECTION_REQUIRED en crosswalk; schema/field mapping OPEN; integridad técnica NOT_ASSESSED.
+
+
+# 113. DEC-C10-061 — referencias tipadas y procedencia canónica U_G (2026-11-05)
+
+El usuario acepta la arquitectura de referencias tipadas y procedencia canónica. Se actualiza la plantilla U_G y sus documentos vinculados. CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER utilizan seis FKs tipadas (NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_SCOPE), exactamente una no nula y coherente con el enum. `object_record_id` es UNIQUE dentro de cada tabla de objetos; `coverage_scope_id` es PK/UNIQUE. `source_provenance` queda normalizada en EVIDENCE_REGISTER; `evidence_ref` permanece opcional 0..1 y CLAIM_EVIDENCE_LINK 0..n.
+
+UG-SCH-04/05/06 quedan aceptados documentalmente por DEC-C10-061; constraints, parser y pruebas negativas no están ejecutados. UG-SCH-07 (unicidad/versionado/supersedes y ámbito de identidad) continúa OPEN en la auditoría global. El esquema U_G no está cerrado ni congelado. No se altera TGCV Core, RMA, Evidence→Claim Matrix, claims ni autorizaciones. `scientific_execution=false`; `execution_authorized=false`.
