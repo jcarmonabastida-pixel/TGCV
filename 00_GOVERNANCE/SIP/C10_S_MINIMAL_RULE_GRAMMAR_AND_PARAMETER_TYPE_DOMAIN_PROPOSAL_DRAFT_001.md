@@ -87,3 +87,8 @@ No se crean fixtures ni se asigna frecuencia/truth a estos casos.
 La propuesta ofrece un núcleo pequeño, finito y sin ejecución arbitraria. Todavía no constituye una gramática cerrada ni un dominio operacional: los límites concretos, la semántica de UNKNOWN y el contrato de conversión siguen abiertos.
 
 **Estado:** BASE PARTITION APPROVED (DEC-C10-053); TYPE SET PROPOSED; RULE GRAMMAR PROPOSED; FINITE DOMAIN PARAMETERS OPEN; UNKNOWN POLICY OPEN; ORACLE NOT VALIDATED; NO TECHNICAL VALIDATION; NO INDEPENDENT REVIEW; NO EMPIRICAL EVIDENCE; NO EXECUTION AUTHORIZATION.
+
+
+## 9. Reconciliación decisional posterior — DEC-C10-054
+
+La propuesta de gramática se interpreta ahora junto con el perfil estructural aprobado por DEC-C10-054: AST acíclico declarativo; profundidad máxima 4; 16 átomos por regla; 16 reglas por paquete; efectos del núcleo REQUIRE/FORBID; SELECT_ENUM_VALUE fuera del núcleo; dominios finitos por clave; UNKNOWN no se convierte silenciosamente en TRUE/FALSE. Los dominios numéricos/catálogos concretos por clave, reglas de conflicto, mapping y oráculo permanecen abiertos. La aprobación del perfil no equivale a implementación o validación de esta gramática.
