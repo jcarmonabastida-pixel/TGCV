@@ -285,3 +285,18 @@ No modificar todavía la plantilla para añadir columnas/relaciones en este punt
 La revisión ha cubierto la matriz de diez tablas, claves declaradas, referencias tipadas, versionado, snapshots, contratos de identidad, frontera/granularidad, cobertura y crosswalk IAM/FP. UG-SCH-09 se corrigió documentalmente. UG-SCH-10 es un hallazgo nuevo y bloquea el cierre integral del esquema.
 
 El dictamen global permanece **CORRECTION_REQUIRED / SCHEMA_NOT_CLOSED**. No se ha ejecutado ningún validador ni se han creado instancias, fixtures, truth, simulaciones o experimentos.
+
+
+### 14.7. Comparación de alternativas UG-SCH-10
+
+Se crea `C10_S_UG_SNAPSHOT_MEMBERSHIP_AND_VERSIONED_GRAPH_REFERENCES_OPTIONS_DRAFT_001.md`, sin alterar la plantilla ni las decisiones aceptadas.
+
+Se comparan:
+- **A — snapshot_id directo en cada registro de grafo**, con referencias exactas EDGE→NODE y PREDICATE→ROUTE y una relación normalizada ROUTE_STEP para secuenciar NODE/EDGE. Implica un nuevo registro observacional por objeto y snapshot; object_version debe interpretarse como versión del registro observacional, no como cambio material del objeto. Requiere resolver la dependencia circular SNAPSHOT↔NODE raíz.
+- **B — SNAPSHOT_MEMBER normalizado**, que permite reutilizar registros inmutables entre snapshots, pero requiere además bindings de extremos y ROUTE_STEP, con mayor complejidad de FKs tipadas y coherencia de mismo-snapshot.
+- **C — manifiesto serializado**, rechazado como fuente canónica por no proporcionar FKs ordinarias para cada elemento.
+- **D — inferencia temporal/coverage/última versión**, rechazada por ambigua e incompatible con el pinning exacto.
+
+Recomendación provisional: Opción A, condicionada a aceptar semántica observacional de object_version, resolver la circularidad de la FK raíz y definir ROUTE_STEP. Opción B queda abierta si reutilizar la misma fila en múltiples snapshots es requisito esencial. No se ha elegido ni aceptado ninguna opción.
+
+UG-SCH-10 permanece OPEN / DESIGN_RECONCILIATION_REQUIRED. No modificar encabezados ni cardinalidades antes de aceptación expresa. No se ejecutan validadores, parser, constraints, fixtures, simulaciones ni experimentos.
