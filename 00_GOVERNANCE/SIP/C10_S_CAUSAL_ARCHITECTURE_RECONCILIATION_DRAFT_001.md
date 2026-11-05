@@ -218,3 +218,11 @@ Los ITT, primeras etapas y LATE/Wald se mantienen específicos por escenario. La
 El registro autónomo es `DEC-C10-066_D2_PRIMARY_CANDIDATE_ACCEPTANCE.md`. Parámetros, incluido (s=0.80), DGP, políticas materiales, (q_X^*), poblaciones, Value, horizonte y ejecución permanecen abiertos/no aprobados.
 
 **Autorización:** `scientific_execution=false`; `execution_authorized=false`.
+
+## 12. Supersesión de precedencia por DEC-C10-066 (2026-11-06)
+
+La decisión aceptada DEC-C10-066 supersede la cláusula de §5 que reservaba la selección primaria D1/D2 y cualquier formulación anterior de este documento que mantuviera abierta esa precedencia: **D2 es el escenario primario candidato; D1 es el escenario secundario**. Las recomendaciones anteriores se conservan como historial, no como estado operativo vigente.
+
+Esta decisión no cierra la arquitectura causal: no equipara B_g0/B_g1 con g0/g1, no identifica θ_A(q), θ_Af(q*) ni el efecto mediado, y no valida exclusión, población, soporte, parámetros o vías colaterales. La legitimidad del comparador D2 sigue requiriendo ausencia basal y ausencia de provisión focal de fondo verificadas. D1 conserva su uso secundario condicionado a justificar el régimen ordinario.
+
+No se autoriza freeze, implementación, simulación ni ejecución.
