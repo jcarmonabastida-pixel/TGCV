@@ -750,3 +750,10 @@ Esta partición no modifica la estructura conceptual de seis elementos seleccion
 Se estructuran tres contratos: C_src (contenido y semántica de origen), C_dst (representación y restricciones de destino) y M (mapping versionado para evaluación, no capa operativa persistida adicional). Se enumeran predicados BASE-CMP/PAR/REF/RULE/MAP-COVERAGE/APPLIED-STATE como candidatos, sin truth ni valores.
 
 **Estado:** propuesta no aprobada; gramática de reglas, dominios, cardinalidad, ausencia/null/default, mappings, alcance de POL, oráculo y obligatoriedad siguen abiertos. No se asigna truth ni se autoriza generación/ejecución.
+
+
+## 20. Partición aprobada del DGP base — DEC-C10-053
+
+La partición descrita en §19 queda aprobada por decisión explícita del usuario: componentes, parámetros tipados, referencias y reglas/restricciones de gramática mínima son constitutivos del DGP base; POL queda como módulo/escenario condicional secundario; metadatos contractuales son soporte obligatorio de identidad, versionado y procedencia, con extensiones desconocidas condicionales.
+
+La estructura conceptual de seis elementos de DEC-C10-052 permanece intacta. POL no se elimina del objeto; el escenario base declarará ex ante si no contiene políticas migrables. Esta decisión no fija todavía gramática, dominios, cardinalidad, mappings, tolerancias, oráculo ni truth.
