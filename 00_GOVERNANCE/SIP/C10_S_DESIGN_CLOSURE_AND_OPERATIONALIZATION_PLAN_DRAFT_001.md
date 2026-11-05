@@ -1132,3 +1132,14 @@ Se registra DEC-C10-056 y se crea `C10_S_ABSTRACT_CONFIGURATION_INSTANCE_CONTRAC
 **Estado:** cardinalidad aprobada; contrato abstracto Draft 001 no aprobado/congelado/implementado. Pendiente especializar frontera/unidad de servicio, clases CMP, claves PAR, tipos de REF, reglas RUL, mapping, cobertura REF=0 y oráculo. Sin IAM instanciado, truth, fixtures, validación técnica, revisión independiente, evidencia empírica ni ejecución.
 
 **Siguiente paso:** definir la frontera de la unidad de configuración del servicio software y el criterio de inclusión/exclusión de componentes/dependencias, sin asignar todavía valores concretos.
+
+
+# XLIX. Perfil de frontera del servicio software P0/P1/P2 (2026-11-05)
+
+Se completa el paso de diseño documental de una primera propuesta de frontera para el objeto de Opción A. El documento `C10_S_SOFTWARE_SERVICE_CONFIGURATION_BOUNDARY_PROFILE_PROPOSAL_DRAFT_001.md` separa: P0 paquete declarativo migrable C; P1 envolvente técnica E_src/E_dst; P2 sistema causal de la unidad, que integra P0/P1, B, alternativas, dependencias compartidas, medición, ejecución y Outcomes/Value pertinentes.
+
+La propuesta define criterios de inclusión/exclusión y casos límite (endpoints, secretos, políticas, permisos efectivos, runtime, datos persistentes, esquemas, mapping, sidecar, A1/A2 y oráculo). No sustituye el contrato genérico de frontera ni U_G §81–82; los especializa para decisión.
+
+**Estado:** propuesta no aceptada ni congelada. Pendiente decisión P0/P1/P2 y concreción de servicio lógico, deployment manifests/variables, secretos, datos persistentes, servicios externos opacos, snapshots y unidad experimental. No hay inventario real, IAM instanciado, truth, fixtures, validación, instalación, simulación ni ejecución.
+
+**Siguiente paso tras aceptación:** convertir la arquitectura de frontera en un contrato de clasificación por elemento y preparar el formulario de inventario para el dominio, manteniendo los registros técnicos en ?/NONE hasta disponer de evidencia autorizada.
