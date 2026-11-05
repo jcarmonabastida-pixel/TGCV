@@ -65,7 +65,7 @@ La cuenta correcta es **8 PASS_STATIC + 10 CONDITIONAL + 2 NOT_ASSESSED = 20**. 
 
 ## 5. Hallazgo transversal y acciones
 
-**UG-SR-A01 — Ambigüedad de obligatoriedad de evidencia.** La revisión ampliada detecta además que el protocolo §13 inicia la cadena normativa en `object_record.evidence_ref` y la plantilla §11 exige que cada `evidence_ref` resuelva, pese a que §12.9/§12.8.1 y protocolo §16 declaran opcional el campo y canónica la relación CLAIM_EVIDENCE_LINK. La discrepancia afecta §§10, 13, 14, 16 del protocolo y §§11, 12.8–12.9 de la plantilla. Se ha redactado una propuesta de reconciliación: `evidence_ref` opcional de navegación; CLAIM_EVIDENCE_LINK 0..n como relación normativa; vínculo obligatorio para estados 1/0; para ? sin vínculo, unknown_reason + MISSING + límites de búsqueda/cobertura; NA con justificación. La propuesta aún no está aceptada ni congelada.
+**UG-SR-A01 — Ambigüedad de obligatoriedad de evidencia.** La revisión ampliada detecta además que el protocolo §13 inicia la cadena normativa en `object_record.evidence_ref` y la plantilla §11 exige que cada `evidence_ref` resuelva, pese a que §12.9/§12.8.1 y protocolo §16 declaran opcional el campo y canónica la relación CLAIM_EVIDENCE_LINK. La discrepancia afecta §§10, 13, 14, 16 del protocolo y §§11, 12.8–12.9 de la plantilla. Se ha redactado una propuesta de reconciliación: `evidence_ref` opcional de navegación; CLAIM_EVIDENCE_LINK 0..n como relación normativa; vínculo obligatorio para estados 1/0; para ? sin vínculo, unknown_reason + MISSING + límites de búsqueda/cobertura; NA con justificación. La regla ha sido aceptada documentalmente por decisión explícita del usuario el 2026-11-05; no está congelada ni validada técnicamente.
 
 Acciones:
 1. Resolver la regla propuesta para 1/0/?/NA y aprobarla explícitamente.
@@ -98,4 +98,9 @@ Resolver UG-SR-A01 de forma documental en plantilla/protocolo/test register, sin
 
 ### Actualización de auditoría — alcance ampliado UG-SR-A01
 
-La propuesta de reconciliación está registrada en la plantilla §12.11, protocolo §17 y Test Contract Register §53. Se amplió el hallazgo al detectar las referencias incompatibles del protocolo §13 y plantilla §11/§12.8. No se cambia el dictamen SR-03: CONDITIONAL. La propuesta requiere aceptación explícita y validación técnica posterior. No se modifica la suma de dictámenes ni se declara cierre.
+La propuesta de reconciliación está registrada en la plantilla §12.11, protocolo §17 y Test Contract Register §53. Se amplió el hallazgo al detectar las referencias incompatibles del protocolo §13 y plantilla §11/§12.8. No se cambia el dictamen SR-03: CONDITIONAL. La aceptación documental resuelve la contradicción textual; la validación técnica posterior sigue pendiente. No se modifica la suma de dictámenes ni se declara cierre.
+
+
+### Dictamen actualizado UG-SR-A01 — 2026-11-05
+
+**RESUELTO_DOCUMENTALMENTE / TECHNICAL_VALIDATION_PENDING.** El usuario aceptó explícitamente la regla: `evidence_ref` opcional 0..1 de navegación; CLAIM_EVIDENCE_LINK relación canónica 0..n; vínculo válido obligatorio para observed_state 1/0; estado ? sin vínculo solo con unknown_reason, MISSING y límites de búsqueda/cobertura; NA con justificación. Se armonizaron las referencias en plantilla §11/§12.11, protocolo §§10/13/17 y Test Contract Register §§52–53. SR-03 continúa CONDITIONAL porque no se han validado instancias, cardinalidad, FK ni parser. No hay freeze ni revisión independiente.
