@@ -1152,3 +1152,12 @@ Se acepta la arquitectura P0/P1/P2 y la regla de clasificación semántica (DEC-
 Se crea `C10_S_LOGICAL_SERVICE_UNIT_AND_BOUNDARY_CLASSIFICATION_PROPOSAL_DRAFT_001.md`, con definición candidata de servicio lógico, criterios de inclusión, clasificación campo a campo de deployment manifests y variables, tratamiento de secretos/datos persistentes/migraciones de esquema, servicios opacos, mapping, sidecar B y oráculo. Sigue pendiente de decisión y de reconciliación con unidad de aleatorización/interferencia.
 
 **Siguiente paso:** revisar la definición de servicio lógico y resolver los casos de frontera para aprobar la unidad candidata antes de construir el IAM de inventario.
+
+
+# LI. DEC-C10-058 — aceptación de unidad lógica y clasificación semántica (2026-11-05)
+
+Se registra DEC-C10-058 como aceptación de la unidad de migración (instancia lógica de servicio software) y de las reglas de clasificación P0/P1/P2 del documento `C10_S_LOGICAL_SERVICE_UNIT_AND_BOUNDARY_CLASSIFICATION_PROPOSAL_DRAFT_001.md`.
+
+Quedan resueltos a nivel conceptual: manifests y variables por campo/clave; secretos solo como referencia en P0 y material real fuera; datos persistentes fuera de P0 por defecto; migraciones de esquema separadas de F* base; servicios externos opacos retenidos en P2 con incertidumbre; unidad de migración lógica no equiparada a unidad de aleatorización.
+
+**Siguiente bloque:** construir el contrato de inventario abstracto IAM a partir de la taxonomía U_G ya existente, reutilizando su estructura y evitando duplicar NODE/EDGE/ROUTE/PREDICATE/EVIDENCE/COVERAGE. Antes, realizar reconciliación histórica con IAM/plantilla y contratos existentes. No instanciar datos reales ni generar truth/fixtures.
