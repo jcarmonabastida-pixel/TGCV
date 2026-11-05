@@ -1161,3 +1161,18 @@ Se registra DEC-C10-058 como aceptación de la unidad de migración (instancia l
 Quedan resueltos a nivel conceptual: manifests y variables por campo/clave; secretos solo como referencia en P0 y material real fuera; datos persistentes fuera de P0 por defecto; migraciones de esquema separadas de F* base; servicios externos opacos retenidos en P2 con incertidumbre; unidad de migración lógica no equiparada a unidad de aleatorización.
 
 **Siguiente bloque:** construir el contrato de inventario abstracto IAM a partir de la taxonomía U_G ya existente, reutilizando su estructura y evitando duplicar NODE/EDGE/ROUTE/PREDICATE/EVIDENCE/COVERAGE. Antes, realizar reconciliación histórica con IAM/plantilla y contratos existentes. No instanciar datos reales ni generar truth/fixtures.
+
+
+# LI. DEC-C10-058 — aceptación de unidad lógica y clasificación semántica (2026-11-05)
+
+Se registra DEC-C10-058 como aceptación de la unidad de migración (instancia lógica de servicio software) y de las reglas de clasificación P0/P1/P2 del documento `C10_S_LOGICAL_SERVICE_UNIT_AND_BOUNDARY_CLASSIFICATION_PROPOSAL_DRAFT_001.md`.
+
+Quedan resueltos a nivel conceptual: manifests y variables por campo/clave; secretos solo como referencia en P0 y material real fuera; datos persistentes fuera de P0 por defecto; migraciones de esquema separadas de F* base; servicios externos opacos retenidos en P2 con incertidumbre; unidad de migración lógica no equiparada a unidad de aleatorización.
+
+# LII. Reconstrucción histórica y overlay IAM (2026-11-05)
+
+Tras DEC-C10-058 se realizó reconstrucción histórica obligatoria de la plantilla U_G, protocolo de evidencia/adjudicación, matriz de cobertura trivalente, contrato de frontera/granularidad, manifiesto B y contratos de identidad/snapshots. El trabajo previo es reutilizable y cubre los diez registros canónicos U_G.
+
+No se recrea una plantilla ni se amplía el inventario por duplicado. Se crea `C10_S_IAM_SERVICE_BOUNDARY_OVERLAY_AND_CROSSWALK_DRAFT_001.md` como overlay específico del servicio lógico. Define clasificación P0/P1, pertenencia/relaciones P2, crosswalk con registros U_G y mapping funcional provisional FP-01…08.
+
+**Pendiente:** revisar/aceptar el overlay; reconciliar FP-01…08 con contratos canónicos; validar los tipos EDGE frente al catálogo existente; fijar campos/cardinalidades/FK; después actualizar la plantilla existente solo si la brecha concreta lo exige. Sin instanciación ni ejecución.
