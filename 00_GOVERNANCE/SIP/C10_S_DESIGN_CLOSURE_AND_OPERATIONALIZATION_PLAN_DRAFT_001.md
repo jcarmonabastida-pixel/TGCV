@@ -884,3 +884,45 @@ Se prepara C10_S_UG_SCHEMA_INDEPENDENT_REVIEW_CHECKLIST_DRAFT_001.md con control
 La revisión cruzada de la plantilla detecta contradicción entre §12.7 y §§12.9/14 sobre cardinalidad de evidence_ref y una descripción histórica ambigua de FCM-12. Se corrige: evidence_ref es 0..1 referencia de navegación opcional; CLAIM_EVIDENCE_LINK conserva la relación completa 0..n. Se distingue evaluator_record_id singular por fila E1/E2 de evaluator_record_ids plural como referencia resumida en objetos. El protocolo incorpora §16.
 
 **Resultado:** FCM-20 registrado y tratado documentalmente; FCM-12 armonizado. Esquema sigue Draft; revisión independiente y validación ejecutable pendientes. No hay inventario ni cobertura real.
+
+
+# XXIX. Reconciliación de las dos líneas de trabajo y reanudación del cierre (2026-11-05)
+
+Se crea `C10_S_TWO_WORKSTREAMS_SCIENTIFIC_CORE_AND_COMMUNITY_SEED_WEB_DRAFT_001.md` (C10-S-WORKSTREAMS-001), que registra la orientación planteada desde la condición de investigador único hasta la apertura pública *as is* de TGCV y la posible evolución comunitaria mediante una web germen y un playground interactivo.
+
+## 1. Dos líneas complementarias
+
+**Línea A — científica troncal:** C10-S conserva prioridad inmediata. Su finalidad es cerrar el diseño causal sintético y evaluar si la contribución atribuible a cambios de accesibilidad puede identificarse separadamente del efecto total de la intervención y de las vías residuales. Se mantiene como microdominio previsto la migración de configuración entre dos entornos software, sin considerarlo todavía aprobado u operacionalizado.
+
+**Línea B — web germen y playground TGCV:** línea posterior y dependiente de los contratos científicos. La web presentará TGCV *as is*, no como producto terminado ni teoría validada; expondrá arquitectura, hipótesis, estado de desarrollo, evidencias, límites, cuestiones abiertas y agenda. Permitirá a la comunidad examinar, cuestionar, replicar y proponer desarrollos. El playground podrá visualizar escenarios modelados y recorrer la cadena TGCV, pero derivará de los mismos contratos, variables y reglas; no creará un modelo paralelo ni constituirá evidencia causal por sí mismo.
+
+## 2. Revisión y gobernanza adaptadas a investigador único
+
+La ausencia actual de revisores externos no bloquea la consolidación documental. Se adopta como orientación una autoauditoría estructurada asistida, declarada `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`. Para U_G, cada control deberá registrar PASS_STATIC, CONDITIONAL, FAIL o NOT_ASSESSED, fundamento, versión, alcance y acción pendiente. No se darán por superados controles que requieran parser, constraints, motor, pruebas de seguridad, inspección técnica o validación empírica. La autoauditoría no equivale a revisión independiente ni eleva el estado científico.
+
+La revisión externa futura se organiza en dos momentos:
+1. **Preparación previa a la apertura:** claridad intelectual, coherencia, trazabilidad, separación de estados de evidencia, falsabilidad, criticabilidad, honestidad sobre limitaciones, reproducibilidad posible y seguridad/privacidad/licencias.
+2. **Después de la apertura:** crítica científica, replicación, discusión de supuestos, propuestas de experimentos/extensiones, contribuciones técnicas y evolución gobernada con procedencia, autoría, versiones, desacuerdos y decisiones preservados.
+
+La revisión previa no será una certificación académica global ni un requisito para seguir diseñando C10-S. Su alcance se ajustará a los materiales y afirmaciones que se hagan públicos. La apertura *as is* no elimina la obligación de comunicar con rigor el estado real de cada afirmación.
+
+## 3. Playground: límites de alcance
+
+Se registran como capacidades candidatas la visualización de dos entornos/configuraciones, estados, componentes, dependencias, restricciones, snapshots, transformaciones accesibles, rutas alternativas, Reach, trayectorias, selección/ejecución, escenarios de intervención/contrafactuales y valoración contextual de Outcome/Value. Debe mantener las distinciones entre estado de sistema y espacio transformacional; accesibilidad, aplicabilidad, Reach, selección y ejecución; estados 1/0/?; y Outcome frente a Value. La lista no es especificación funcional aprobada. No se inicia ahora diseño visual detallado ni implementación.
+
+## 4. Reanudación del plan científico: siguiente operación
+
+Se mantiene el orden de cierre C10-S y se retoma desde la auditoría interna de U_G, sin convertir SR-01…20 en revisión independiente ficticia:
+
+1. Ejecutar documentalmente la autoauditoría control-a-control SR-01…20 contra la plantilla, protocolo de evidencia, contrato de frontera/granularidad, matriz U_G, snapshots, identidad, Reach y contrato DGP.
+2. Para cada control, registrar PASS_STATIC, CONDITIONAL, FAIL o NOT_ASSESSED. PASS_STATIC solo acredita comprobación documental/estática; no sustituye validación ejecutable.
+3. Separar expresamente los controles que requieren revisión de modelo de datos, parser/constraints, seguridad, permisos, cegamiento o validación externa. Mantenerlos abiertos/no evaluados hasta disponer del mecanismo y autorización correspondiente.
+4. Reconciliar hallazgos con maestro C10-S, DGP, Decision Log, matriz de cierre, registro de pruebas y este plan, preservando referencias y estados.
+5. Tras la auditoría U_G, retomar DGP y arquitectura causal: intervención autónoma sobre accesibilidad, políticas/regímenes, estimandos, vías directas/colaterales y separación de ITT/TE/contribución atribuible.
+6. Continuar con validez de constructo/medición, identificación y falsación, sensibilidad y dimensionamiento estadístico.
+
+## 5. Estado y límites
+
+La orientación de dos líneas queda registrada en Draft. No cambia TGCV Core, RMA, Evidence→Claim Matrix, STATUS, claims, autorizaciones ni decisiones experimentales. No autoriza implementación web, playground, inspección de sistemas, generación de datos, simulación o ejecución del experimento. C10-S sigue sin aprobar, congelar ni ejecutar. La web germen no está implementada y la comunidad todavía no está constituida.
+
+**Siguiente operación de trabajo:** comenzar la autoauditoría documental SR-01…20 de U_G, dejando para cada control evidencia, dictamen provisional y brecha restante; no pasar todavía a implementación ni al playground.
