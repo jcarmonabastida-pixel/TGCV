@@ -506,3 +506,16 @@ La decisión no modifica la estructura conceptual de seis elementos de DEC-C10-0
 **No implica:** gramática implementada; parser validado; contrato fuente/destino cerrado; FP-01/02/03 cerrados; truth, fixtures o datos generados; revisión independiente; evidencia empírica; ejecución autorizada; freeze del DGP o cambio de main. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
 
 **Siguiente trabajo:** construir el contrato abstracto de parámetros por clave y la matriz de correspondencias C_src→C_dst/M, vinculando cada predicado con FP-01 (estructura/tipos), FP-02 (integridad relacional) y FP-03 (preservación semántica), con regla de predicado primario para evitar doble conteo.
+
+
+## DEC-C10-055 — aceptación de reconciliación SM/FP (2026-11-05)
+
+**Decisión explícita del usuario:** se acepta la propuesta de reconciliación de SM-01…SM-10, catálogo atómico CMP/PAR/REF/RUL/POL/MET y familias FP-01…FP-08 contenida en `C10_S_SM_ATOMIC_PROPERTY_FP_RECONCILIATION_DRAFT_001.md`.
+
+**Alcance aceptado:** separar estructura formal FP-01, integridad relacional FP-02, preservación semántica FP-03, compatibilidad FP-04, seguridad FP-05, aplicación FP-06, verificación post-aplicación FP-07 y procedencia/reproducibilidad FP-08; descomponer predicados compuestos; fijar un predicado primario y evitar doble conteo; preservar la distinción entre paquete declarado, estado aplicado y entorno; mantener POL condicional y no inferir seguridad por preservación de política.
+
+**Límite:** la aceptación valida la arquitectura de reconciliación, no convierte todos los predicados candidatos en confirmatorios ni resuelve obligatoriedad/NA por instancia. Se mantienen las decisiones DEC-C10-052/053/054 y sus alcances.
+
+**Siguiente operación:** elaborar la matriz ex ante de obligatoriedad y aplicabilidad por propiedad, con IAM previo a Z/B, condiciones verificables para NA, cardinalidades explícitas, separación F* funcional/gates técnicos/FP-08 probatorio y controles contra decisiones post hoc.
+
+No implica implementación, validación, truth, fixtures, revisión independiente, evidencia empírica, freeze ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
