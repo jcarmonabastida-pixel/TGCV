@@ -94,11 +94,9 @@ Los registros de vínculo, evaluación y adjudicación utilizan `object_type + o
 
 ### UG-SCH-07 — alcance de unicidad de object_record_id y supersedes_record_id
 
-**Severidad:** MEDIA · **Estado:** OPEN.
+**Severidad:** MEDIA · **Estado:** PROPOSAL_CREATED; acceptance pending.
 
-El esquema declara object_record_id “único”, pero la matriz de claves usa pares `object_record_id + semantic_id` y el diccionario habla de unicidad por tabla. No queda totalmente explícito si object_record_id es global al inventario o único dentro de cada tabla. Tampoco se fija de forma suficiente si supersedes_record_id solo puede apuntar a una fila anterior de la misma tabla y del mismo objeto semántico.
-
-**Corrección requerida:** fijar el ámbito de unicidad y las restricciones de supersedes: mismo tipo de objeto, misma identidad semántica, versión estrictamente anterior, sin ciclos y con trazabilidad de sustitución. Mantener la FK compuesta SNAPSHOT→NODE conforme a DEC-C10-059.
+Se crea `C10_S_UG_RECORD_ID_VERSION_AND_SUPERSESSION_CONTRACT_PROPOSAL_DRAFT_001.md`. Propone `object_record_id` UNIQUE por tabla (no global); `object_version` entero positivo y secuencial por identidad semántica; `supersedes_record_id` autorreferente a la misma tabla, misma identidad y versión inmediatamente anterior; cadena lineal, sin bifurcaciones/ciclos ni reescritura histórica. Distingue record-time de tiempo de observación y mantiene SNAPSHOT→NODE fijado a la versión exacta. No se modifica aún la plantilla: requiere aceptación del usuario y posterior reconciliación estática.
 
 ### UG-SCH-08 — estados de SNAPSHOT y boundary_class
 
@@ -130,7 +128,7 @@ La fila de esquema de SNAPSHOT usa `observed_state=NA`, mientras que el contrato
 | semantic_role / nodo raíz | ACCEPTED_DOCUMENTALLY (DEC-C10-060); physical validation pending |
 | Procedencia y CLAIM_EVIDENCE_LINK | ACCEPTED_DOCUMENTALLY (DEC-C10-061); physical validation pending |
 | FK polimórficas | ACCEPTED_DOCUMENTALLY (DEC-C10-061); physical validation pending |
-| Unicidad/versionado/supersedes | OPEN |
+| Unicidad/versionado/supersedes | PROPOSAL_CREATED; acceptance pending |
 | Parser, tipos, dominios y constraints | NOT_ASSESSED |
 | Seguridad, custodia y permisos | NOT_ASSESSED |
 | Inventario real, evidencia y cobertura | NONE / NOT_STARTED |
@@ -182,3 +180,8 @@ UG-SCH-04, UG-SCH-05 y UG-SCH-06 quedan ACCEPTED_DOCUMENTALLY por decisión expl
 ## 12. Corrección de consistencia post-aceptación — 2026-11-05
 
 La segunda pasada detectó y corrigió dos residuos editoriales: (1) §10.5 aún mencionaba source_provenance como columna de objeto, aunque DEC-C10-061 la normaliza en EVIDENCE_REGISTER; (2) la lista §12.8 conservaba una secuencia literal `\\n` que había concatenado las reglas SNAPSHOT/boundary_class. Se separaron las reglas y se renumeraron. También se igualaron las anchuras de las filas ilustrativas de CLAIM_EVIDENCE_LINK (15 columnas), EVALUATOR_ASSESSMENT (18) y ADJUDICATION_REGISTER (17). Esta es una comprobación estática de Markdown, no validación física.
+
+
+## 12. Propuesta UG-SCH-07 — 2026-11-05
+
+Se creó `C10_S_UG_RECORD_ID_VERSION_AND_SUPERSESSION_CONTRACT_PROPOSAL_DRAFT_001.md`. La propuesta distingue identidad semántica, identidad de registro y versión de registro; define unicidad por tabla, versión positiva secuencial y supersession inmediato dentro de la misma tabla/identidad. No hay aceptación, freeze ni validación física. UG-SCH-07 sigue abierto; el esquema global continúa SCHEMA_NOT_CLOSED.
