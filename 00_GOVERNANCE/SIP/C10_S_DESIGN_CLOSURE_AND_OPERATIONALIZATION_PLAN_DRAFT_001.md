@@ -1320,3 +1320,23 @@ Este control solo comprueba forma Markdown/columnas; no valida tipos, obligatori
 Se actualiza la matriz de claves de U_G §12.10 para incorporar ROUTE_STEP como relación normalizada adicional, sin asignarle object_version ni supersedes_record_id. Se aclara su FK a ROUTE, FKs tipadas de mismo snapshot a NODE/EDGE, exclusividad de destino y validación cross-row de continuidad. Se distingue ROUTE_STEP de las diez tablas/registros normalizados previos y de las cinco tablas de objetos versionados.
 
 Queda pendiente una revisión integral de consistencia entre encabezados §§2–6, esquema normalizado §§12.7–12.10, tabla ROUTE_STEP, field-to-column IAM/FP y contratos de integridad. La actualización no implica cierre de UG-SCH-10.
+
+
+# LXX. Auditoría integral Opción A — hallazgos OAS-01…07 (2026-11-05)
+
+Se crea `C10_S_UG_OPTION_A_RECONCILIATION_AUDIT_DRAFT_001.md`. El control formal de la plantilla detecta 19 tablas Markdown sin discrepancia de número de columnas ni encabezados duplicados; dictamen limitado PASS_FORMAT_ONLY.
+
+La auditoría identifica:
+- OAS-01 CRITICAL: §§12.7–12.10 conservaban contratos heredados no reconciliados con §§13–14.
+- OAS-02 CRITICAL: SNAPSHOT también está versionado por DEC-C10-062, pero los registros hijos solo llevan snapshot_id semántico; no queda fijada una versión exacta de SNAPSHOT.
+- OAS-03 HIGH: claves candidatas compuestas incompletas en la matriz.
+- OAS-04 HIGH: ROUTE aún persistía ordered_node_edge_sequence pese a ROUTE_STEP canónico.
+- OAS-05 HIGH: crosswalk IAM/FP propagado en prosa pero no en tabla campo→columna→FK.
+- OAS-06 MEDIUM: checklist/autoauditoría describían alcance previo a Opción A.
+- OAS-07: PR #116 está Draft y su base es research/c10-d1-protocol-draft, no main.
+
+Se aplican correcciones documentales parciales: se retira ordered_node_edge_sequence del encabezado físico ROUTE; se añade §15 como contrato normalizado reconciliado para Opción A, con claves candidatas y FKs interobjeto; se amplía el field-to-column crosswalk; se actualizan el contrato de resolución, checklist y autoauditoría para reflejar el estado posterior a DEC-C10-064. No se altera el diseño del pinning exacto de SNAPSHOT porque exige decisión expresa.
+
+**Dictamen:** UG-SCH-10 permanece OPEN / NOT CLOSED. OAS-02 BLOCKS PHYSICAL DESIGN. No schema freeze, revisión independiente, validadores, parser, DDL, fixtures ni experimento. `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente paso obligatorio:** decisión explícita sobre pinning exacto de SNAPSHOT. Recomendación: añadir `snapshot_object_record_id` a NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP y FK compuesta (snapshot_id, snapshot_object_record_id) → SNAPSHOT(snapshot_id, object_record_id), manteniendo identidad semántica y versión observacional. Después se integrarán las claves compuestas y se repetirá la auditoría estática.
