@@ -137,3 +137,14 @@ Se recomienda aceptar este contrato con:
 ## 12. Addendum DEC-C10-064 — significado observacional de object_version
 
 Bajo Opción A, object_version sigue siendo entero positivo, secuencial y lineal por identidad semántica, pero representa la revisión del registro observacional. Cada nueva aparición de una entidad semántica en un snapshot nuevo genera nuevo object_record_id y siguiente versión aunque la estructura observada sea idéntica. supersedes_record_id sigue apuntando al predecesor inmediato. Una versión nueva no prueba cambio material, cambio de accesibilidad ni cambio de evidencia. El diff debe comparar atributos/relaciones sustantivos entre snapshots comparables, excluyendo IDs opacos, record IDs, timestamps y números de versión como señales de cambio.
+
+
+## 13. Addendum DEC-C10-065 — snapshot exacto y referencias de raíz
+
+La revisión exacta de SNAPSHOT se identifica por `(snapshot_id, object_record_id)`. NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP fijan esa revisión mediante `(snapshot_id, snapshot_object_record_id)`. Las referencias interobjeto incorporan ambos componentes en las claves/FKs de origen y destino.
+
+Para SNAPSHOT→NODE raíz, la FK compuesta vigente es:
+`SNAPSHOT(snapshot_id, object_record_id, unit_object_record_id, unit_id) → NODE(snapshot_id, snapshot_object_record_id, object_record_id, node_id)`.
+El object_record_id de SNAPSHOT ocupa el componente snapshot_object_record_id de NODE. Se mantiene semantic_role=LOGICAL_SERVICE_UNIT y la resolución de circularidad diferible/transaccional.
+
+Este addendum completa la formulación previa de DEC-C10-062 sobre versión exacta del nodo raíz; no cambia el ámbito de object_record_id, la semántica observacional de object_version ni las reglas de supersession. La compatibilidad física sigue pendiente.
