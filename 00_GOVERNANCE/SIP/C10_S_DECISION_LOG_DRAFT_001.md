@@ -475,3 +475,15 @@ DEC-C10-050 es reconciliación documental, no aprobación/freeze del esquema ni 
 **No implica:** contratos fuente/destino cerrados; propiedades atómicas obligatorias; mappings o tolerancias aprobados; semántica concreta de F1/F2/A1/A2; TID/SID/RID; oráculo validado; implementación; inventario real; validación técnica; revisión independiente; evidencia empírica; freeze o autorización de ejecución. `scientific_execution=false`; `execution_authorized=false`.
 
 **Siguiente trabajo:** especializar SM-01…SM-10, determinar obligatoriedad/aplicabilidad, definir invariantes y mappings atómicos y reconciliar las fichas de transformación con el historial.
+
+
+## 47. Aprobación de la partición del DGP base — DEC-C10-053 (2026-11-05)
+
+**Decisión explícita:** se aprueba el alcance mínimo propuesto para el DGP base:
+- constitutivos: componentes, parámetros tipados, referencias y reglas/restricciones con gramática mínima;
+- políticas asociadas (POL): módulo/escenario condicional secundario, fuera del núcleo confirmatorio mínimo;
+- metadatos contractuales: soporte obligatorio para identidad, versionado y procedencia; extensiones desconocidas condicionales.
+
+La decisión no modifica la estructura conceptual de seis elementos de DEC-C10-052: POL sigue perteneciendo al objeto conceptual, aunque no sea constitutivo del escenario base. La ausencia de políticas migrables deberá declararse ex ante, nunca inferirse después de observar resultados.
+
+**No cierra:** gramática, dominios de tipos/parámetros, cardinalidad/direccionalidad, semántica ausencia/null/default, mappings, tolerancias, oráculo ni DGP completo. No hay truth, fixtures, validación técnica, revisión independiente, evidencia empírica ni autorización de ejecución.
