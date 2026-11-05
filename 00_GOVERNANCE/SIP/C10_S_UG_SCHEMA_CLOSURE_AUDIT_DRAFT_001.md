@@ -356,3 +356,10 @@ Se retiró ordered_node_edge_sequence del encabezado físico ROUTE; §15 de la p
 Se detectó que la plantilla mantenía dos descripciones heredadas incompatibles con DEC-C10-065, a pesar de que §15.2/§15.3 ya estaban corregidas: §4.1 mencionaba FKs ROUTE_STEP solo «con snapshot_id», y §6 describía la FK raíz SNAPSHOT→NODE sin el componente que fija la revisión SNAPSHOT exacta. Se corrigen ambas vistas. La formulación vigente de la FK raíz es `SNAPSHOT(snapshot_id,object_record_id,unit_object_record_id,unit_id) → NODE(snapshot_id,snapshot_object_record_id,object_record_id,node_id)`; la de ROUTE_STEP exige el par exacto `snapshot_id + snapshot_object_record_id` para SNAPSHOT, ROUTE, NODE y EDGE.
 
 La corrección se propaga mediante addenda a los contratos especializados de FK de unidad lógica, semantic_role/nodo raíz e identidad/versionado. El control de forma no se interpreta como validación de constraints. OAS-10 queda RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING. UG-SCH-10 permanece OPEN; no schema freeze, no revisión independiente y no validación técnica.
+
+
+### OAS-11 — Matriz física explícita para referencias tipadas y procedencia (2026-11-05)
+
+Se amplía U_G §15.4 para enumerar columnas, destinos, cardinalidades y reglas de exclusividad de CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER, así como PK/UNIQUE de EVIDENCE_REGISTER/COVERAGE_REGISTER, FKs E1/E2, soporte evidence_id, navegación evidence_ref y la regla UG-SR-A01. El crosswalk IAM/FP añade §9.4.
+
+Esta ampliación consolida DEC-C10-061 y UG-SR-A01; no crea nuevas decisiones ni modifica el contrato de Opción A. La integridad física, CHECK/FK, cardinalidades, seguridad/custodia y reconstrucción de evidencia siguen pendientes. OAS-11 queda RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING.
