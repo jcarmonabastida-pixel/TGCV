@@ -315,3 +315,12 @@ La propuesta `C10_S_UG_OPTION_A_STRUCTURAL_RESOLUTION_DRAFT_001.md` resuelve doc
 **Dictamen UG-SCH-10:** arquitectura seleccionada; resolución de detalle propuesta y pendiente de aceptación. La condición de circularidad queda resuelta lógicamente, pero el gate físico exige comprobar soporte de FKs diferibles en el motor elegido. Si no existe soporte equivalente, implementación BLOCKED y nueva decisión arquitectónica obligatoria.
 
 La plantilla U_G no se ha modificado. No hay validación física, parser, constraints, fixtures, inventario, truth, revisión independiente ni ejecución. El esquema global continúa SCHEMA_NOT_CLOSED.
+
+
+### 14.9. DEC-C10-064 — detalle Opción A aprobado y plantilla aplicada
+
+El usuario aprueba la resolución de detalle y queda registrada en `DEC-C10-064_OPTION_A_STRUCTURAL_RESOLUTION_ACCEPTANCE.md`. La plantilla U_G §13 incorpora snapshot_id y referencias exactas por mismo snapshot, FK raíz compuesta/diferible, ROUTE_STEP y contrato de diff observación/estructura/evidencia/accesibilidad.
+
+**Estado de auditoría:** DESIGN_CONTRACT_ACCEPTED; TEMPLATE_ADDENDUM_APPLIED; HEADER_RECONCILIATION_PENDING; TECHNICAL_VALIDATION_NOT_RUN. La plantilla todavía contiene encabezados abreviados heredados en §§2–6 y formulaciones históricas incompatibles; §13 es normativa, pero no se declara aún reconciliación física completa. Es obligatorio alinear los encabezados y matrices para eliminar duplicidad/ambigüedad, verificar cada fila de esquema y actualizar crosswalk IAM/FP antes de cerrar UG-SCH-10.
+
+La compatibilidad de FKs diferibles con el motor elegido y la integridad cross-row de ROUTE_STEP son gates técnicos. No se han ejecutado parser, constraints, fixtures ni experimentos. Esquema global SCHEMA_NOT_CLOSED.
