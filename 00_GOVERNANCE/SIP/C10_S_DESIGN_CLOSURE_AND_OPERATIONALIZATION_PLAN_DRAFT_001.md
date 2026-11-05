@@ -958,3 +958,10 @@ La revisión directa de protocolo y plantilla amplió el hallazgo: además de pr
 ## Siguiente paso
 
 Solicitar/registrar decisión explícita sobre la regla propuesta; después, si se acepta, hacer una reconciliación final de referencias cruzadas y mantener pendiente la validación técnica. Si no se acepta, documentar la alternativa sin borrar trazabilidad de la contradicción.
+
+
+# XXXII. Aceptación de UG-SR-A01 y siguiente bloque (2026-11-05)
+
+El usuario acepta explícitamente la regla de evidencia y cardinalidad. Se armonizan plantilla §11/§12.11, protocolo §§10/13/17, Test Contract Register §§52–53, autoauditoría y maestro (§93). UG-SR-A01 queda **resuelto documentalmente**; SR-03 permanece CONDITIONAL por validación técnica pendiente. No se han ejecutado parser, FK, constraints ni pruebas, y no hay freeze ni revisión independiente.
+
+**Siguiente paso del plan:** iniciar reconciliación de los contratos de objeto y el catálogo U_G para F1/F2/A1/A2 y F*. Primero recuperar sus definiciones canónicas, requisitos funcionales, precondiciones, entradas/salidas, restricciones, horizonte, granularidad, contexto y reglas de identidad/versionado ya presentes en el maestro y contratos; contrastarlas con los campos de NODE/EDGE/ROUTE/PREDICATE y el inventario U_G. No inventariar componentes técnicos ni asignar estados 0/1/? sin evidencia. Mantener la distinción entre catálogo de inspección y sistema real. No ejecutar inspección, implementación, simulación ni experimento.
