@@ -171,3 +171,20 @@ Mantener ? y detener la inferencia si: fuente primaria inaccesible; integridad f
 Protocolo candidato, no aprobación. Requieren revisión antes de freeze: correspondencia exacta entre campos y columnas de la plantilla; denominadores y criterios COMPLETE por dimensión en el microdominio seleccionado; evidencia específica por operación/servicio y límites de acceso/seguridad; número de evaluadores y adjudicación; tolerancias/fiabilidad del oráculo/error; plan de cegamiento y ruptura; delimitación del universo, horizonte y versiones.
 
 No se han consultado fuentes técnicas de sistema real ni generado inventario. Cobertura efectiva NONE; A_f*, F_alt,0 y Reach_H siguen ?. No se cierran MD-C1…6, GC-01…12, UGI-01…07, UGC-01…06, AUD-005/007/010/011 ni OPEN-C10-001/003/005/007. No se aprueba microdominio, D1/D2, DGP ni freeze; no se autoriza implementación, simulación o ejecución.
+
+
+## 13. Reconciliación con el esquema físico de captura
+
+La auditoría campo-a-campo detectó que las reglas de este protocolo no tenían representación suficiente en las tablas abreviadas iniciales de la plantilla. La plantilla se amplía en §§12–13 con EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER con denominadores, EVALUATOR_ASSESSMENT, ADJUDICATION_REGISTER, esquema común de objetos y reglas de integridad referencial.
+
+La cadena normativa es:
+`object_record.evidence_ref → CLAIM_EVIDENCE_LINK.claim_evidence_id → EVIDENCE_REGISTER.evidence_id`.
+Los identificadores de evidencia y de afirmación no se confunden. Cada evidencia respalda una afirmación específica, con alcance compatible.
+
+Se elimina la columna truth_dgp de la tabla de predicados analítica. La truth DGP queda segregada en el entorno del generador/evaluador autorizado, fuera de los artefactos accesibles al analizador. Esta separación es una condición de arquitectura y seguridad de información, no una mera etiqueta de columna.
+
+La cobertura se normaliza con denominador, definición/versionado del universo, fuentes esperadas/examinadas/válidas, unidades cubiertas/excluidas/opacas, regla de finalización y excepciones. E1 y E2 conservan evaluaciones independientes; el tercer adjudicador registra su decisión y la posición minoritaria. El estado ? se conserva cuando el desacuerdo o la evidencia insuficiente no se resuelven.
+
+La ruta utiliza parent_route_class con las cinco clases U_G y route_subtype separado. Los campos comunes de objetos, versiones, alcance, evidence_status, observed_state, adjudicación y supersession quedan definidos en la plantilla.
+
+**Resultado de auditoría:** brechas FCM-01…09 identificadas y tratadas documentalmente. El esquema normalizado todavía no está validado por un parser, tipos/constraints ejecutables ni revisión independiente. No se ha aplicado a fuentes reales. No implica inventario ni cobertura; estados técnicos siguen ? y cobertura NONE. No se autoriza ejecución.
