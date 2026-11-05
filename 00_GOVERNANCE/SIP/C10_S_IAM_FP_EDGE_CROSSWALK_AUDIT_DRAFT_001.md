@@ -125,3 +125,8 @@ P2 es una frontera analítica transversal, no una clase mutuamente excluyente ni
 La auditoría es `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`. No valida la verdad del inventario ni la viabilidad de un sistema real.
 
 **Restricción de ejecución:** `scientific_execution=false`; `execution_authorized=false`. No se crearon nodos, aristas, truth, fixtures ni datos sintéticos.
+
+
+## 8. Addendum DEC-C10-064 — referencias versionadas bajo Opción A
+
+La aprobación de Opción A exige que el crosswalk de aristas distinga el ID padre E01–E23, la identidad atómica y las referencias a registros NODE concretos. EDGE.source_node_record_id/target_node_record_id fijan los extremos exactos dentro del mismo snapshot; source_node_id/target_node_id permanecen como IDs semánticos para trazabilidad. E07 continúa siendo regla lógica, no EDGE. E22 no autoriza inventar destinos. La nueva FK no convierte ninguna arista candidata en observada. IAM/FP debe reconciliar sus claves compuestas y snapshot_id antes del cierre.
