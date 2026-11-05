@@ -1265,3 +1265,12 @@ Se crea `C10_S_UG_RECORD_ID_VERSION_AND_SUPERSESSION_CONTRACT_PROPOSAL_DRAFT_001
 # LXIII. Aplicación de DEC-C10-062 — cierre documental UG-SCH-07 (2026-11-05)
 
 El usuario acepta el contrato de identidad de registro, versionado y supersession. Se registra DEC-C10-062 y se incorpora §12.12 a la plantilla U_G. `object_record_id` es UNIQUE por tabla; `object_version` INT positivo y contiguo por identidad semántica; `supersedes_record_id` referencia al predecesor inmediato de la misma tabla/identidad; cadena lineal sin bifurcaciones/ciclos/huérfanos, historial inmutable. `created_at` es record-time; SNAPSHOT fija la versión exacta de NODE raíz. UG-SCH-07 queda ACCEPTED_DOCUMENTALLY, no validado físicamente. El esquema global sigue SCHEMA_NOT_CLOSED; quedan revisión integral de diez tablas y gate técnico autorizado. No se ejecutan parser, constraints, fixtures, simulaciones ni experimentos.
+
+
+# LXIV. Segunda pasada U_G: reconciliación de matriz y nuevo hallazgo UG-SCH-10 (2026-11-05)
+
+Se revisó de nuevo la plantilla U_G frente a DEC-C10-059…062, los contratos de identidad/snapshot, frontera/granularidad, cobertura y crosswalk IAM/FP. Se corrigió §12.10 para enumerar los diez registros operativos y distinguir PK lógica, claves candidatas UNIQUE, FKs tipadas y cardinalidades. Se armonizaron §12.7 y §12.9 con DEC-C10-062. Recuento estático actual de encabezado/separador/fila de esquema: NODE 30; EDGE 31; ROUTE 29; PREDICATE 24; SNAPSHOT 26; EVIDENCE_REGISTER 18; CLAIM_EVIDENCE_LINK 15; COVERAGE_REGISTER 15; EVALUATOR_ASSESSMENT 18; ADJUDICATION_REGISTER 17. Sin nombres de columna duplicados en los diez encabezados. Esto no es validación física.
+
+La revisión identifica UG-SCH-10 (OPEN / DESIGN_RECONCILIATION_REQUIRED): falta un vínculo relacional explícito de NODE/EDGE/ROUTE/PREDICATE a snapshot_id y pinning inequívoco de EDGE→NODE, ROUTE→NODE/EDGE y PREDICATE→ROUTE a object_record_id/versiones concretas. Timestamp y coverage_scope_id no bastan para demostrar esa pertenencia. Antes de alterar columnas o cardinalidades, se debe comparar alternativas de pertenencia y referencias versionadas, preservando snapshots inmutables e identidad semántica. No se ha elegido solución ni añadido tabla/campo.
+
+La auditoría mantiene SCHEMA_NOT_CLOSED. No se ejecutaron validadores, parser, constraints, fixtures, simulaciones ni experimentos; `scientific_execution=false`; `execution_authorized=false`.
