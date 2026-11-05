@@ -803,3 +803,16 @@ Se crea C10_S_GRAPH_COVERAGE_AND_TRIVALENT_EVIDENCE_MATRIX_DRAFT_001.md y se pro
 El catálogo U_G contiene 23 roles de nodos, 23 aristas, 14 predicados y cinco clases de ruta. Es un universo candidato de inspección, no inventario técnico real ni exhaustivo. La cobertura efectiva es NONE porque no hay manifiesto real, SBOM, runtime, snapshots ni grafo transitivo. Se formalizan reglas trivalentes: Reach=0 exige cobertura exhaustiva; F_alt,0=0 exige descarte de todas las rutas funcionalmente substituibles del universo definido; unknowns y Runknown mantienen ?. Estado actual: Reach_H=?, F_alt,0=?, A_f*=?; R0/R1 no clasificables; R2 posible pero no observado.
 
 GC-01…12 y GC-01…08 quedan como contratos/controles documentales, no ejecutados. MD-C1/2/4, AUD-005/007 siguen abiertos. Siguiente bloque: contrato de frontera y granularidad de U_G (componentes, dependencias, ruta funcionalmente substituible, servicio externo, versión y recursos compartidos), seguido de protocolo de inventario y evidencia. No se genera DGP técnico final ni se ejecuta.
+
+
+# XX. Ejecución del plan — contrato de frontera y granularidad de U_G (2026-11-05)
+
+Se recuperaron desde GitHub main la operativa 00_GOVERNANCE/README.md, el bootstrap y la regla de reconstrucción histórica; y desde la rama C10-S los contratos de frontera, cobertura, inventario finito, DGP, matriz de cierre y documentos maestros. Se confirmó que el contrato de frontera y granularidad ya existía como Draft 001, pero sus integraciones de destino no estaban incorporadas físicamente.
+
+Se integra el contrato en C10-S §82 y en el DGP §41. Se corrige la numeración de la nota anterior: el DGP ya contiene §§1–40, por lo que no corresponde escribir una nueva §9; el plan ya contiene bloques I–XIX, por lo que el siguiente es XX, no IX. La integración previa en la nota era una intención pendiente, no evidencia de que estuviera escrita.
+
+El contrato fija criterios de separación/agregación de nodos, dependencias directas/transitivas/compartidas/críticas, substituibilidad respecto de F*, servicios externos/opacos, niveles de recursos, cambios materiales de versión, límites y dimensiones de cobertura y protocolo de inventario con adjudicación independiente.
+
+**Resultado:** contrato documental integrado; inventario técnico real NO DISPONIBLE. U_G continúa como catálogo candidato. Cobertura efectiva NONE donde no hay evidencia; A_f*, F_alt,0 y Reach_H permanecen ?. No se cierra MD-C1…6, AUD-005/007/010/011 ni OPEN-C10-001/003/005/007. No se selecciona Opción A, D1/D2, G/H ni parámetros. No hay implementación, simulación, ejecución ni freeze.
+
+**Siguiente operación:** crear y reconciliar la plantilla de inventario U_G (nodos, aristas, rutas y predicados), con procedencia, fuente, versión, evidencia, cobertura, evaluador, cegamiento y estado 1/0/?. La plantilla no se rellenará con componentes o valores técnicos no observados.
