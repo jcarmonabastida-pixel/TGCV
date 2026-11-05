@@ -1418,41 +1418,49 @@ Hallazgos documentales OAS-10 y OAS-11 se corrigen en las vistas físicas U_G §
 **Siguiente gate operativo:** continuar la autoauditoría asistida y no independiente sobre la versión reconciliada de U_G, cerrar discrepancias documentales residuales y retomar DGP/arquitectura causal, validez de constructo, identificación, sensibilidad y dimensionamiento estadístico. R1/R2 son perfiles para revisión externa futura; no se designan ahora ni bloquean el trabajo documental. La validación ejecutable y cualquier freeze de artefactos técnicos que la requieran se tratarán en su gate propio y con autorización separada. No declarar PASS SR-01…20 por autoauditoría. Sin DDL, parser, fixtures, simulación ni ejecución científica.
 
 
-# LXXVIII. Reafirmación del protocolo de investigador único y corrección del gate inmediato (2026-11-05)
+# LXXVIII. Protocolo científico de investigador único y continuidad de C10-S (2026-11-05)
 
-Este addendum aplica la orientación ya registrada en §XXIX y en `C10_S_TWO_WORKSTREAMS_SCIENTIFIC_CORE_AND_COMMUNITY_SEED_WEB_DRAFT_001.md`. Prevalece sobre cualquier formulación posterior de este plan que sitúe la designación de R1/R2 como siguiente paso obligatorio.
+Este addendum delimita el trabajo exclusivamente a la línea científica C10-S. No incorpora líneas de producto, publicación, web ni playground a la secuencia ni a los criterios de cierre del experimento.
 
-## 1. Protocolo vigente en la fase de investigador único
+## 1. Modalidad de trabajo y evidencia
 
-- La modalidad actual es `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`: auditoría interna estructurada, crítica, trazable y limitada por evidencia.
-- Cada control se clasifica `PASS_STATIC`, `CONDITIONAL`, `FAIL` o `NOT_ASSESSED`, con artefacto/versión, fundamento, alcance, limitación y acción pendiente.
-- La asistencia de ChatGPT no se denomina ni presenta como revisión independiente, peer review o validación externa.
-- Los controles que exijan parser, constraints, motor, inspección técnica, permisos/seguridad, cegamiento o evidencia empírica permanecen abiertos/no evaluados hasta disponer del mecanismo, entorno y autorización adecuados.
-- R1 (modelo de datos/ingeniería) y R2 (metodología/causalidad) son perfiles de revisión externa futura, no revisores designados ni gate para continuar el trabajo actual.
-- La revisión externa se difiere hasta que aporte valor real: antes de congelar artefactos técnicos que la requieran y/o antes de publicar claims de reproducibilidad o validación. La apertura pública *as is* no se presenta como certificación científica ni requiere una revisión por pares global previa.
+- La modalidad actual es `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`: autoauditoría estructurada, crítica, trazable y limitada por evidencia.
+- Cada control recibe `PASS_STATIC`, `CONDITIONAL`, `FAIL` o `NOT_ASSESSED`, con artefacto/versión/hash, fundamento, alcance, limitación y acción pendiente.
+- La asistencia de ChatGPT no se denomina revisión independiente ni validación externa.
+- Ningún control que requiera ejecución, motor, constraints, medición empírica o evidencia no disponible se declara superado por inspección documental.
+- La continuidad del diseño y la preparación de una prueba falsable no dependen de revisores externos. La reproducibilidad se construirá mediante especificación completa, separación de roles/datos, truth oculta, código/versiones, semillas, manifiestos, resultados brutos, auditoría y replay cuando se autoricen.
 
-## 2. Dos líneas de trabajo y web germen
+## 2. Objetivo científico
 
-**Línea A — C10-S científico:** mantiene prioridad de trabajo inmediata para cerrar diseño causal, DGP, medición, identificación, falsación, sensibilidad y estadística. No se debe fingir cierre por ausencia de revisores ni bloquear la consolidación documental por no disponer de ellos.
+Diseñar C10-S para evaluar si un procedimiento causal puede distinguir correctamente, en un DGP cuyo mecanismo verdadero es conocido, entre:
+1. contribución causal de accesibilidad a Value;
+2. efecto total de asignación a una política o paquete;
+3. vías alternativas y efectos conjuntos;
+4. efecto nulo, adverso o heterogéneo;
+5. falta de identificación o información insuficiente.
 
-**Línea B — web germen TGCV:** objetivo de publicación honesta del estado real *as is*, con arquitectura conceptual, hipótesis, decisiones, materiales, evidencia disponible, incertidumbres, límites, preguntas abiertas y agenda comunitaria. La web puede abrirse antes del cierre científico completo si cada material y claim se etiqueta con su estado y alcance probatorio. La apertura no requiere que el playground esté terminado. El playground es posterior y deriva de los contratos científicos; no crea un modelo paralelo ni evidencia causal.
+C10-S es una prueba metodológica/sintética: un resultado correcto demuestra capacidad de recuperación y discriminación dentro de los DGP y condiciones especificados. Por sí solo no demuestra causalidad empírica en sistemas reales ni una regularidad general TGCV. La hipótesis empírica requerirá después evidencia de un sistema observado con intervención/contrafactual defendible y mediciones independientes.
 
-La web germen no equivale a freeze de C10-S. Antes de publicar se realizará una revisión de preparación/transparencia proporcionada a lo que efectivamente se exponga: accesibilidad intelectual, coherencia, trazabilidad, estados, falsabilidad, criticabilidad, honestidad probatoria, reproducibilidad posible, seguridad, privacidad, licencias y atribución. Después de abrir, crítica, replicación y contribuciones comunitarias se incorporarán mediante gobernanza versionada, preservando procedencia, autoría, revisión, desacuerdos y decisiones.
+## 3. Secuencia científica inmediata
 
-## 3. Secuencia inmediata corregida
+1. Resolver la intervención autónoma sobre accesibilidad, el régimen común `q`, las políticas factibles `g0/g1` y el papel de `C_auth`; mantener separado el efecto de política `ITT/TE` de `θ_A(q)`.
+2. Cerrar la jerarquía de estimandos y el alcance del microdominio focal S4-R, sin presentar `LATE_f` como efecto poblacional ni `τ2` como todo `ΔT_acc`.
+3. Resolver población/unidad, elegibilidad basal, comparador D1/D2, F*, alternativas funcionales, versiones, soporte y no interferencia.
+4. Completar el DGP extremo a extremo: verdad estructural, generación de observaciones, mecanismos, rutas alternativas, selección, ejecución, Outcome y Value.
+5. Cerrar validez de constructo, fuentes/indicadores, error de clasificación, indeterminación, cegamiento y separación de mediciones.
+6. Cerrar identificación, falsadores y sensibilidad: exclusión, confusión postratamiento, positividad, primeras etapas débiles, versiones, interferencia, missingness, heterogeneidad y vías alternativas.
+7. Dimensionar estadísticamente antes de ejecutar: N, réplicas, potencia/precisión, cobertura, error Monte Carlo, `δ/ε` y reglas de decisión.
+8. Completar contratos de pruebas, analizador ciego, evaluador de truth, auditoría y replay. La implementación y ejecución requieren su autorización específica.
 
-1. Completar la reconciliación documental U_G ya iniciada y recalificar solo lo que la evidencia estática permita; la pasada de 19 tablas es `PASS_FORMAT_ONLY`, no PASS de esquema.
-2. Actualizar la autoauditoría SR-01…20 contra el commit reconciliado, conservando `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`; no trasladar sin más el conteo histórico anterior a Opción A.
-3. Continuar la resolución de DGP e intervención autónoma sobre accesibilidad, jerarquía de estimandos, vías alternativas y condiciones de identificación.
-4. Cerrar medición/validez de constructo, error, cegamiento, falsadores y análisis de sensibilidad.
-5. Completar el plan estadístico: justificación de N, número de réplicas, potencia/precisión, error Monte Carlo, primeras etapas débiles, heterogeneidad, missingness, interferencia y criterios `δ/ε`. `N=2.000` y `1.000` réplicas siguen siendo candidatos provisionales, no parámetros aprobados ni cálculo de potencia. La evidencia de potencia de NEXT4 en otra línea no sustituye este dimensionamiento específico de C10-S.
-6. En paralelo, preparar el paquete de publicación *as is* y la gobernanza de participación; no iniciar implementación del playground hasta decidir su alcance y dependencia contractual.
+## 4. Regla de conclusión
 
-## 4. Gates separados
+El experimento debe poder producir, sin forzar un resultado:
+- atribución causal identificada dentro del ámbito sintético delimitado;
+- efecto de política/paquete sin atribución específica;
+- evidencia de ausencia de contribución o efecto adverso en el DGP definido;
+- no identificación;
+- resultado indeterminado por potencia, precisión, medición o soporte insuficientes.
 
-- **Gate de continuidad documental/científica:** autoauditoría asistida y resolución trazable; no exige revisores externos.
-- **Gate de validación técnica/freeze:** constraints, parser, motor, seguridad, cegamiento y revisión externa cuando el artefacto/claim lo requiera; autorización separada.
-- **Gate de apertura web germen:** preparación de transparencia, coherencia, trazabilidad, límites, privacidad/licencias y seguridad proporcionada al contenido; no exige cierre de C10-S ni certificación global.
-- **Gate de evolución comunitaria/playground:** gobernanza de contribuciones y especificación funcional derivada de contratos; posterior a la apertura germen.
+No convertir significación estadística en atribución causal. No convertir ausencia de significación en equivalencia o refutación. No redefinir DGP, estimandos, `δ`, `ε` ni criterios después de observar resultados.
 
-**Estado:** este addendum corrige la secuencia operativa; no cambia decisiones científicas, estimandos, DGP, estado de C10-S, TGCV Core, RMA, Evidence→Claim Matrix, STATUS ni autorizaciones. C10-S sigue Draft, no congelado ni ejecutado; web/playground no están implementados.
+**Estado:** C10-S sigue Draft/no congelado/no ejecutado. Este addendum no aprueba estimandos, población, D1/D2, DGP, parámetros estadísticos ni autoriza implementación o ejecución.
