@@ -996,3 +996,16 @@ Se crea `C10_S_FSTAR_OPERATIONAL_PROPERTY_AND_ADJUDICATION_MATRIX_DRAFT_001.md`,
 **Reconciliación de texto histórico:** el bloque XXXIII de este plan y el maestro §94 conservan la formulación previa a DEC-C10-051 («Opción A no seleccionada/no aprobada»). Se preservan como registro del estado en el momento de su redacción; para el estado vigente prevalecen el bloque XXXIV, el maestro §95 y DEC-C10-051. No hay contradicción decisional vigente: Opción A está seleccionada para diseño, no autorizada para ejecución.
 
 **Siguiente paso:** cerrar el catálogo de propiedades atómicas y las reglas de mapping/preservación, empezando por FP-03 (semántica) y FP-01/FP-02 (estructura e integridad), y definir los criterios de seguridad FP-05. Después concretar los contratos de F1/F2/A1/A2 y el oráculo. No generar truth del DGP ni ejecutar.
+
+
+# XXXVI. Desarrollo de FP-03 — preservación semántica (2026-11-05)
+
+Se crea `C10_S_FP03_SEMANTIC_PRESERVATION_CONTRACT_DRAFT_001.md`, complementario a la matriz F*. La propuesta define diez dimensiones semánticas de inspección (SM-01…SM-10), tipos de correspondencia, diferencias representacionales frente a pérdidas, regla de adjudicación y requisitos de evidencia.
+
+**Criterio:** preservar significado funcional declarado, no bytes/nombres/hashes; comparar origen y estado realmente aplicado en destino bajo contrato, C0, G y H preespecificados. El criterio es acotado al dominio, no equivalencia universal. No se crea una capa semántica persistida paralela.
+
+**Cautela de alcance:** DEC-C10-051 selecciona el microdominio y adopta F* de trabajo, pero no aprueba por inferencia los mecanismos técnicos específicos de F1/F2/A1/A2. Sus fichas actuales conservan carácter de roles candidatos hasta reconciliación y decisión explícita.
+
+**No cerrado:** dominio de configuración, invariantes atómicas, obligatoriedad de SM, mapping, excepciones, envolvente de observación, tolerancias, oráculo y fiabilidad. No hay ejecución ni evidencia empírica.
+
+**Siguiente paso:** fijar el objeto/configuración y el dominio funcional mínimo del microdominio, para poder convertir SM-01…SM-10 en predicados atómicos sin inventar semánticas. A continuación, seleccionar qué propiedades son obligatorias y cerrar mappings/oráculo; después reconciliar contratos concretos F1/F2/A1/A2.
