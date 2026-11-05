@@ -154,3 +154,24 @@ DEC-C10-065 resuelve OAS-02 a nivel documental. El crosswalk físico aún debe v
 **Claves destino exigidas:** las claves candidatas UNIQUE indicadas en U_G §15.2 deben existir en el mismo orden de columnas que las FKs anteriores. La tabla no declara implementadas esas constraints. ROUTE_STEP conserva PK/UNIQUE por ruta y posición, además de la FK de snapshot exacto.
 
 **Estado:** reconciliación documental de columnas y orden de referencias; motor, DDL, constraints, circularidad diferible, CHECKs, continuidad cross-row, inmutabilidad y pruebas negativas siguen pendientes. No hay schema freeze ni autorización de ejecución.
+
+
+## 9.4. Reconciliación de referencias tipadas, evidencia y adjudicación — DEC-C10-061
+
+| Tabla origen | Columnas/FK | Destino | Regla |
+|---|---|---|---|
+| CLAIM_EVIDENCE_LINK | target_node_record_id | NODE.object_record_id | FK nullable; exclusiva con las otras cinco |
+| CLAIM_EVIDENCE_LINK | target_edge_record_id | EDGE.object_record_id | FK nullable; exclusiva con las otras cinco |
+| CLAIM_EVIDENCE_LINK | target_route_record_id | ROUTE.object_record_id | FK nullable; exclusiva con las otras cinco |
+| CLAIM_EVIDENCE_LINK | target_predicate_record_id | PREDICATE.object_record_id | FK nullable; exclusiva con las otras cinco |
+| CLAIM_EVIDENCE_LINK | target_snapshot_record_id | SNAPSHOT.object_record_id | FK nullable; exclusiva con las otras cinco |
+| CLAIM_EVIDENCE_LINK | target_coverage_scope_id | COVERAGE_REGISTER.coverage_scope_id | FK nullable; exclusiva con las otras cinco |
+| CLAIM_EVIDENCE_LINK | evidence_id | EVIDENCE_REGISTER.evidence_id | FK obligatoria |
+| CLAIM_EVIDENCE_LINK | evaluator_record_id / adjudication_id | EVALUATOR_ASSESSMENT.evaluator_record_id / ADJUDICATION_REGISTER.adjudication_id | FKs opcionales |
+| EVALUATOR_ASSESSMENT | seis columnas target_* | NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_REGISTER | Exactamente una FK poblada y coherente con object_type |
+| ADJUDICATION_REGISTER | seis columnas target_* | NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_REGISTER | Exactamente una FK poblada y coherente con object_type |
+| ADJUDICATION_REGISTER | evaluator_record_E1 / evaluator_record_E2 | EVALUATOR_ASSESSMENT.evaluator_record_id | Dos FKs obligatorias a las evaluaciones originales |
+
+**Integridad complementaria:** `claim_evidence_id`, `evidence_id`, `evaluator_record_id`, `adjudication_id` y `coverage_scope_id` deben ser PK/UNIQUE en sus tablas. Las FKs tipadas no se mezclan con las FKs de pertenencia a SNAPSHOT ni sustituyen el par `snapshot_id + snapshot_object_record_id` de las relaciones de grafo. `source_provenance` reside en EVIDENCE_REGISTER; `evidence_ref` es solo navegación 0..1; CLAIM_EVIDENCE_LINK mantiene la relación 0..n.
+
+**Estado:** mapping documental consolidado; CHECK/FK, cardinalidad efectiva, integridad de instancia, custodia y consultas de reconstrucción pendientes de validación técnica autorizada.
