@@ -7467,3 +7467,14 @@ Se crea C10_S_UG_SCHEMA_INDEPENDENT_REVIEW_CHECKLIST_DRAFT_001.md con 20 control
 La auditoría de consistencia cruzada detecta que §12.7 permitía interpretar evidence_ref como uno o varios claim_evidence_id, mientras §§12.9 y 14 lo definían como referencia primaria opcional y CLAIM_EVIDENCE_LINK como relación 0..n canónica. Se armoniza: evidence_ref es cero o un vínculo de navegación opcional; el conjunto completo 0..n reside exclusivamente en CLAIM_EVIDENCE_LINK. Se corrige además la descripción histórica FCM-12: evaluator_record_id singular es la clave de cada evaluación E1/E2; evaluator_record_ids plural es solo una referencia resumida opcional en objetos.
 
 Se registra FCM-20 y se actualiza el protocolo de procedencia §16. La corrección es documental; no valida cardinalidades reales ni FKs ejecutables. FCM-01…20 están tratados documentalmente, pendientes de revisión independiente y validación autorizada. No se crea inventario ni se modifica truth DGP.
+
+
+# 91. Autoauditoría documental asistida SR-01…20 de U_G (2026-11-05)
+
+Se registra `C10_S_UG_SR01_20_AUTHOR_SELF_AUDIT_DRAFT_001.md`, realizada como `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT` sobre la versión documental de U_G disponible en el head de PR #116.
+
+**Resultado:** 8 PASS_STATIC, 10 CONDITIONAL, 2 NOT_ASSESSED, 0 FAIL. PASS_STATIC acredita únicamente presencia/coherencia documental; no equivale a validación técnica, revisión independiente, freeze ni cierre científico. SR-19 (seguridad/custodia) y SR-20 (aptitud operativa) no son evaluables sin arquitectura/instancias y pruebas. SR-02…05, 09, 11…14 y 18 quedan condicionados a instancias, cobertura, aclaraciones o validación.
+
+**Hallazgo UG-SR-A01:** el protocolo §10 dice “ningún estado sin evidence_ref”, mientras §16 y plantilla §12.9 establecen `evidence_ref` como 0..1 opcional y CLAIM_EVIDENCE_LINK como relación 0..n canónica. Debe aclararse si cada estado exige vínculo de evidencia en CLAIM_EVIDENCE_LINK, sin exigir que el atajo `evidence_ref` esté poblado. SR-03 permanece CONDITIONAL.
+
+No se ejecutaron validadores, parser, constraints, fixtures, pruebas de seguridad/cegamiento, inspección técnica, simulación ni experimento. No hay inventario ni cobertura real; A_f*, F_alt,0 y Reach_H permanecen indeterminados. No se cierra FCM-01…20 ni XSYNC-138-01…10, no se congela U_G y no cambia Core/RMA/Matrix/claims/autorización.
