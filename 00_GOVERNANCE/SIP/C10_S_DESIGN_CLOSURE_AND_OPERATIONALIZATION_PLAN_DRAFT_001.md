@@ -816,3 +816,12 @@ El contrato fija criterios de separación/agregación de nodos, dependencias dir
 **Resultado:** contrato documental integrado; inventario técnico real NO DISPONIBLE. U_G continúa como catálogo candidato. Cobertura efectiva NONE donde no hay evidencia; A_f*, F_alt,0 y Reach_H permanecen ?. No se cierra MD-C1…6, AUD-005/007/010/011 ni OPEN-C10-001/003/005/007. No se selecciona Opción A, D1/D2, G/H ni parámetros. No hay implementación, simulación, ejecución ni freeze.
 
 **Siguiente operación:** crear y reconciliar la plantilla de inventario U_G (nodos, aristas, rutas y predicados), con procedencia, fuente, versión, evidencia, cobertura, evaluador, cegamiento y estado 1/0/?. La plantilla no se rellenará con componentes o valores técnicos no observados.
+
+
+# XXI. Ejecución del plan — plantilla de inventario U_G (2026-11-05)
+
+Se crea C10_S_UG_INVENTORY_REGISTER_TEMPLATE_DRAFT_001.md y se incorpora su crosswalk al maestro §83 y al DGP §42. La plantilla contiene registros separados para nodos, dependencias/aristas, rutas funcionalmente substituibles, predicados por paso/tiempo, snapshots/fuentes y cobertura por dimensión. Incluye procedencia, identidad/versionado, estado observado 1/0/?, cobertura, evaluador/cegamiento, adjudicación y motivos de indeterminación.
+
+**Auditoría:** plantilla estructural completa como esquema documental; no contiene inventario técnico real. Las filas de ejemplo no son entidades observadas. No se asignan truth, versiones, recursos, dependencias ni rutas. La truth del DGP permanece restringida al generador/evaluador independiente. Cobertura NONE; A_f*, F_alt,0 y Reach_H siguen ?. La plantilla no demuestra independencia A1/A2 respecto de B ni permite cerrar MD-C1…6, AUD-005/007/010/011 u OPEN-C10-001/003/005/007.
+
+**Siguiente operación:** reconciliar el esquema de la plantilla con los 23 roles de nodo, 23 aristas, 14 predicados y cinco clases de ruta de U_G (§81), verificando correspondencia y campos faltantes sin rellenar estados técnicos. Después, definir el protocolo documental de fuentes y adjudicación por dimensión. No se autoriza inspección de sistemas reales, implementación, generación de datos, simulación ni experimento.
