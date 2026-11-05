@@ -701,3 +701,14 @@ El usuario aceptó Opción A como arquitectura de referencia para pertenencia de
 El usuario aprobó documentalmente el contrato de versionado observacional, SNAPSHOT↔NODE raíz con integridad referencial diferible/transacción atómica, referencias exactas EDGE→NODE y PREDICATE→ROUTE, ROUTE_STEP normalizado y separación de cambios de observación, estructura, evidencia y accesibilidad. El registro autónomo es DEC-C10-064_OPTION_A_STRUCTURAL_RESOLUTION_ACCEPTANCE.md. Su alcance y condiciones técnicas permanecen como constan en ese registro y en el maestro §119.
 
 DEC-C10-065 completa el pinning exacto de revisión SNAPSHOT y permanece en su registro autónomo. Esta reconciliación solo cierra la laguna de indexación del Decision Log; UG-SCH-10 sigue OPEN y no hay schema freeze, validación física ni ejecución científica.
+
+
+## 47. DEC-C10-066 — aceptación de D2 como escenario primario candidato (2026-11-06)
+
+Se acepta D2 como escenario primario candidato de C10-S para el contraste mecanístico de provisión técnica focal frente a ausencia de intento focal en control. D1 se conserva como escenario secundario para el contraste incremental frente a provisión ordinaria de baja frecuencia.
+
+El registro autónomo es `DEC-C10-066_D2_PRIMARY_CANDIDATE_ACCEPTANCE.md`. Esta decisión resuelve la selección primaria candidata que DEC-C10-026, DEC-C10-031 y la reconciliación causal mantenían abierta. Las recomendaciones históricas de D1 como principal condicionado quedan supersedidas únicamente para esta selección; D1 no se elimina ni se reescribe su historial.
+
+La decisión no valida (s=0.80), parámetros ni DGP; no cierra (B_{g0}/B_{g1}), (g_0/g_1), estimandos, (q_X^*), poblaciones, Value, horizonte ni identificación; tampoco autoriza freeze, implementación, simulación o ejecución científica. ITT, primeras etapas y LATE/Wald de D1 y D2 permanecen específicos por comparador y no se agrupan ni transportan automáticamente.
+
+**Autorización:** `scientific_execution=false`; `execution_authorized=false`.
