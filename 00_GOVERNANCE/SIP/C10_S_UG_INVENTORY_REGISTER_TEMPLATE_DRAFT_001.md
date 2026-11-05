@@ -79,7 +79,7 @@ Reglas obligatorias:
 
 ## 9. Estado inicial de la plantilla
 
-La plantilla se entrega vacía de observaciones reales. Todos los registros de ejemplo son filas de esquema, no nodos, aristas o rutas existentes. Cobertura NONE; A_f*=?, F_alt,0=?, Reach_H=?. No hay evidencia de instalación, runtime, SBOM, snapshots, grafo de dependencias, no-afectación A1/A2 ni independencia de B. Los valores NA en las filas ilustrativas de NODE.boundary_class y SNAPSHOT.observed_state son exclusivamente marcadores de plantilla; no se interpretan como valores de registros reales. En filas reales, NA exige justificación según los contratos aplicables. No se ha ejecutado auditoría técnica, simulación ni experimento.
+La plantilla se entrega vacía de observaciones reales. Todos los registros de ejemplo son filas de esquema, no nodos, aristas o rutas existentes. Cobertura NONE; A_f*=?, F_alt,0=?, Reach_H=?. No hay evidencia de instalación, runtime, SBOM, snapshots, grafo de dependencias, no-afectación A1/A2 ni independencia de B. Los valores NA en las filas ilustrativas de NODE.boundary_class y SNAPSHOT.observed_state son exclusivamente marcadores de plantilla; no se interpretan como valores de registros reales. En filas reales, NA exige justificación según los contratos aplicables. Los NA de las filas ilustrativas NODE/SNAPSHOT son marcadores de plantilla, no valores de registros reales. En filas reales, NA exige justificación. No se ha ejecutado auditoría técnica, simulación ni experimento.
 
 
 ## 10. Crosswalk explícito con U_G §81 (reconciliación Draft 001)
