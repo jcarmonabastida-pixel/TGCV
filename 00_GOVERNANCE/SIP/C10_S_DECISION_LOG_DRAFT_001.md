@@ -546,3 +546,18 @@ Se crea `C10_S_SOFTWARE_SERVICE_CONFIGURATION_BOUNDARY_PROFILE_PROPOSAL_DRAFT_00
 La propuesta distingue declaración REF de disponibilidad real del recurso, POL de permisos efectivos, C_dst_decl de C_dst_applied y mapping M del contenido fuente. Incluye reglas para secretos, endpoints, deployment manifests, datos persistentes, sidecar B, alternativas A1/A2 y oráculo. La unidad experimental permanece candidata y no se redefine.
 
 **Estado:** propuesta documental no aceptada ni congelada; no se crea DEC-C10-057 hasta decisión explícita. Sin inventario real, snapshots, IAM instanciado, truth, fixtures, validación, instalación ni ejecución.
+
+
+## DEC-C10-057 — arquitectura de frontera P0/P1/P2 (2026-11-05)
+
+**Decisión explícita del usuario:** acepta la arquitectura de tres perímetros y la regla de clasificación semántica, no basada en formato/ubicación.
+
+- **P0:** paquete declarativo de configuración migrable del servicio (CMP/PAR/REF/RUL/POL?/MET).
+- **P1:** envolvente técnica/estado de los entornos fuente y destino (runtime, software, recursos, permisos efectivos, servicios, estado y aplicación).
+- **P2:** frontera analítica causal que integra los elementos P0/P1 pertinentes y además B, alternativas, dependencias compartidas, agentes, medición, ejecución y resultados.
+
+P0/P1 son clases de objeto/contexto; P2 es una frontera analítica transversal, no una tercera clase mutuamente excluyente. Se distinguen declaración de referencia y disponibilidad real, POL declarada y permisos efectivos, configuración declarada y aplicada, y mapping M del paquete fuente.
+
+La aceptación valida la arquitectura y la regla general, no clasifica automáticamente cada deployment manifest, variable, secreto, dato persistente o servicio externo. Esas aplicaciones requieren el contrato de clasificación por elemento y registro IAM ex ante.
+
+**Estado:** DEC-C10-057 ACCEPTED; perfil de frontera aceptado a nivel arquitectónico, no inventariado ni congelado como schema. Sin truth, fixtures, validación, acceso a sistemas, instalación ni ejecución; scientific_execution=false; execution_authorized=false.
