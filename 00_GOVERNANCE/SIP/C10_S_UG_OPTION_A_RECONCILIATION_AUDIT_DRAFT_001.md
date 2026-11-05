@@ -109,3 +109,10 @@ PR #116 está abierto y Draft, pero su base es `research/c10-d1-protocol-draft`,
 8. Solo tras cierre documental y autorización separada, fijar motor/formato y ejecutar gate técnico no destructivo con pruebas positivas/negativas y rollback.
 
 No se autoriza inventario real, selección de microdominio, generación de truth, simulación o experimento por esta auditoría.
+
+
+## 6. Bootstrap y trazabilidad de la operación
+
+La lectura de `main` confirma la cadena canónica vigente: RMA v3.37 y Evidence→Claim Matrix v1.47. El puntero RMA resuelve a `TGCV_RMA_v3.37.md`; el alias `EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` y el artefacto versionado v1.47 presentan el mismo blob SHA. La traceability CSV declara RMA-v3.37 y CLAIM-MATRIX-v1.47 como CURRENT. STATUS mantiene C10 value linkage OPEN y no autoriza ejecución científica.
+
+Los validadores locales read-only del bootstrap no se ejecutaron: esta sesión no dispone de checkout local montado. No se infiere PASS de validación local. Todas las modificaciones de este trabajo se realizaron exclusivamente en `research/c10-s-consolidation-draft`; `main` no fue modificado.
