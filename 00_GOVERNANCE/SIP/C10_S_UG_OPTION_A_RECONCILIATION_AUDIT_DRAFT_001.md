@@ -184,6 +184,7 @@ La plantilla contiene 19 tablas Markdown. Los encabezados, separadores y filas p
 - OAS-08: RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING — FKs ROUTE_STEP corregidas; el motor debe verificar su implementación.
 - OAS-09: RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING — unicidad semántica condicionada a la revisión exacta.
 - OAS-10: RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING — vistas físicas §4.1 y §6 alineadas con DEC-C10-065.
+- OAS-11: RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING — matriz tipada §15.4/§9.4 explicitada.
 
 **Dictamen global:** UG-SCH-10 OPEN; SCHEMA_NOT_CLOSED; revisión independiente R1/R2 NOT STARTED; validación técnica NOT RUN; no DDL/parser/fixtures; `scientific_execution=false`; `execution_authorized=false`.
 
@@ -208,3 +209,13 @@ El control de la plantilla mostraba que §15.2 y §15.3 estaban actualizadas, pe
 **Corrección documental aplicada:** §4.1 exige ahora el par exacto `(snapshot_id,snapshot_object_record_id)` en pertenencia y referencias a ROUTE/NODE/EDGE. §6 expresa la FK raíz completa `SNAPSHOT(snapshot_id,object_record_id,unit_object_record_id,unit_id) → NODE(snapshot_id,snapshot_object_record_id,object_record_id,node_id)`. Se propagan addenda DEC-C10-065 a los contratos especializados de unidad lógica, semantic_role y versionado para que sus formulaciones históricas no compitan con el contrato vigente.
 
 **Disposición:** OAS-10 RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING. La circularidad SNAPSHOT↔NODE, constraints diferibles, unicidad y FKs siguen sin validación física.
+
+
+### OAS-11 — El contrato consolidado §15.4 no enumeraba el mapping tipado completo
+**Severidad:** MEDIUM / DOCUMENTARY COMPLETENESS.
+
+DEC-C10-061 y los contratos de procedencia/adjudicación ya definían las seis FKs tipadas, la exclusividad por enum, las referencias a EVIDENCE_REGISTER, COVERAGE_REGISTER y las evaluaciones E1/E2. Sin embargo, U_G §15.4 resumía esas reglas sin enumerar las columnas/destinos ni las FKs auxiliares, dejando la matriz normativa consolidada incompleta para cotejo directo.
+
+**Corrección documental aplicada:** §15.4 enumera las columnas y reglas de CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT, ADJUDICATION_REGISTER, EVIDENCE_REGISTER y COVERAGE_REGISTER; crosswalk IAM/FP §9.4 añade el mapping origen→destino. No se alteran DEC-C10-061 ni UG-SR-A01.
+
+**Disposición:** OAS-11 RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING.
