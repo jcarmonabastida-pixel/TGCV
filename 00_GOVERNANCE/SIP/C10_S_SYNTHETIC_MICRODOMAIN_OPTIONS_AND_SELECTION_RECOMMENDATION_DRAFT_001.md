@@ -177,3 +177,14 @@ No se asignan umbrales numéricos hasta justificar qué error o pérdida es admi
 La Opción A es la recomendación más parsimoniosa para operacionalizar C10-S sin introducir dependencias humanas ni confundir la intervención con la ejecución. Las Opciones B y C se conservan como alternativas documentadas.
 
 **Estado final:** microdominio recomendado, NO seleccionado ni aprobado. F1/F2/A1/A2 continúan como fichas ilustrativas hasta decisión explícita. No se cierran AUD-004/005/007/010/011 ni OPEN-C10-001/003/005/007. No se generan datos, no se implementa ni ejecuta el experimento.
+
+
+## 13. Decisión de selección — Opción A (2026-11-05)
+
+**DEC-C10-051 — Opción A seleccionada como microdominio de trabajo de C10-S.** Por decisión explícita del usuario, se selecciona la migración de configuración entre dos entornos software como microdominio de diseño y operacionalización del experimento sintético C10-S. Las Opciones B y C permanecen como alternativas históricas, no como líneas activas del diseño primario.
+
+La selección no implica que el experimento esté aprobado para ejecución, que exista un entorno técnico real inventariado, ni que estén fijados formatos, versiones, mappings, recursos, ventanas, umbrales o parámetros del DGP. Tampoco decide D1/D2, R0–R3 ni los supuestos de identificación.
+
+La definición candidata de F* se adopta como **contrato funcional de trabajo** para desarrollar las fichas y el DGP: la ruta completa debe producir y aplicar en el entorno destino una configuración que satisfaga las propiedades obligatorias preespecificadas de esquema, integridad, compatibilidad, preservación funcional y seguridad. El catálogo exacto de propiedades, mappings, tolerancias, casos frontera y oráculo permanece abierto y deberá cerrarse antes de fijar el DGP confirmatorio.
+
+**Estado:** microdominio seleccionado para diseño; F* adoptado como contrato de trabajo candidato. No equivale a cierre de OPEN-C10-003, aprobación final del experimento, freeze, validación técnica, revisión independiente ni autorización de ejecución.
