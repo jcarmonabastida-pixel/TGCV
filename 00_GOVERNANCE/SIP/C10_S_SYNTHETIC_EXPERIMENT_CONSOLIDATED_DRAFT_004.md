@@ -7460,3 +7460,10 @@ Se ejecuta comprobación estática de tablas: en NODE, EDGE, ROUTE, PREDICATE, S
 Se crea C10_S_UG_SCHEMA_INDEPENDENT_REVIEW_CHECKLIST_DRAFT_001.md con 20 controles SR-01…20, perfil propuesto de revisión de modelo de datos y metodología causal, criterios de independencia/cegamiento, procedimiento, dictámenes y evidencia exigible. El paquete distingue revisión documental de validación ejecutable y de autorización científica.
 
 **Estado:** preparado, no iniciado; no hay revisores designados ni dictamen independiente. La comprobación estática de autoría no se presenta como revisión independiente. XSYNC-138-01 y FCM-01…19 permanecen abiertos hasta revisión y validación pertinentes. No hay inventario ni cobertura técnica; sin autorización de ejecución.
+
+
+# 90. Cuarta pasada de reconciliación semántica U_G — FCM-20 (2026-11-05)
+
+La auditoría de consistencia cruzada detecta que §12.7 permitía interpretar evidence_ref como uno o varios claim_evidence_id, mientras §§12.9 y 14 lo definían como referencia primaria opcional y CLAIM_EVIDENCE_LINK como relación 0..n canónica. Se armoniza: evidence_ref es cero o un vínculo de navegación opcional; el conjunto completo 0..n reside exclusivamente en CLAIM_EVIDENCE_LINK. Se corrige además la descripción histórica FCM-12: evaluator_record_id singular es la clave de cada evaluación E1/E2; evaluator_record_ids plural es solo una referencia resumida opcional en objetos.
+
+Se registra FCM-20 y se actualiza el protocolo de procedencia §16. La corrección es documental; no valida cardinalidades reales ni FKs ejecutables. FCM-01…20 están tratados documentalmente, pendientes de revisión independiente y validación autorizada. No se crea inventario ni se modifica truth DGP.
