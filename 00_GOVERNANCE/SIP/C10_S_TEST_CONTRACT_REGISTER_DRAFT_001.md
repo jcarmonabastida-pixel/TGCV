@@ -981,3 +981,14 @@ Contratos documentales de revisión. No son validadores implementados ni pruebas
 | FCM-16 | claim_target_id no resuelve a object_record_id | Rechazar referencia huérfana |
 
 Contratos documentales, no validador implementado ni pruebas ejecutadas.
+
+
+## 49. Contratos de revisión de referencias relacionales — FCM-17…19
+
+| ID | Caso | Resultado esperado |
+|---|---|---|
+| FCM-17 | Dos evaluadores almacenados en un único registro | Rechazar; una fila y PK evaluator_record_id por evaluación |
+| FCM-18 | Evidencia revisada sin vínculo a evaluador/adjudicación | Rechazar o marcar incompleto; exigir CLAIM_EVIDENCE_LINK |
+| FCM-19 | Evaluación/adjudicación apunta a ID semántico no versionado | Rechazar; exigir object_record_id existente |
+
+Contratos documentales; no implementados ni ejecutados.
