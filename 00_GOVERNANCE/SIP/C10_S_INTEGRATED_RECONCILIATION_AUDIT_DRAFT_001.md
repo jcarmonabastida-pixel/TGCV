@@ -158,3 +158,10 @@ El generador puede parametrizar intentos y éxitos con `ω_z` y `s_z(·)`, pero 
 Esta auditoría resuelve las contradicciones editoriales y de precedencia identificables y ofrece una especificación candidata integrada. No resuelve por decreto las decisiones científicas pendientes. El diseño sigue **DRAFT / NO APROBADO / NO IMPLEMENTADO / NO EJECUTADO**. No se ha ejecutado simulación, código, estimación ni experimento. No se modifican main, TGCV Core, RMA, Evidence→Claim Matrix, STATUS, claims ni C09. La ejecución requiere autorización expresa separada.
 
 **Dictamen:** arquitectura candidata reconciliada documentalmente; operacionalización, decisión científica, contratos completos y revisión independiente pendientes.
+
+
+## 11. Reconciliación de precedencia del protocolo autocontenido (2026-11-05)
+
+Las referencias de §§3.8, 5 y 7 a revisión independiente externa como condición para aceptar o cerrar el diseño quedan supersedidas para la continuidad científica actual. Prevalecen el maestro C10-S §130, Closure Control Matrix §12 y Test Contract Register §§54–55: AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT; R1/R2 no son condición de avance ni de ejecución sintética autorizada.
+
+El evaluador independiente de la arquitectura es un rol computacional separado del analizador, con acceso a truth solo tras congelar su salida. No se afirma revisión humana independiente. La arquitectura causal y las decisiones abiertas de esta auditoría no cambian por este addendum.
