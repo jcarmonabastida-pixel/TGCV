@@ -97,3 +97,8 @@ La propuesta no introduce una tabla adicional ni una capa semántica persistida.
 ## 9. Aceptación y aplicación — DEC-C10-061 (2026-11-05)
 
 El usuario acepta la arquitectura de referencias tipadas y la procedencia canónica. La plantilla U_G de la rama C10-S se actualiza en §§10.6, 11, 12.2, 12.4, 12.5, 12.8, 12.9 y 14.2. La aceptación no declara constraints físicas implementadas ni esquema cerrado.
+
+
+## 10. Addendum DEC-C10-064 — coexistencia con referencias de snapshot
+
+Las FKs tipadas de CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER permanecen separadas de las FKs interobjeto de Opción A. DEC-C10-064 añade claves candidatas compuestas para fijar mismo snapshot en NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT, pero no cambia la regla de exactamente una FK destino tipada ni el ámbito de unicidad de object_record_id por tabla. La matriz física deberá integrar ambos grupos de restricciones sin colisión.
