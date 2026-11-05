@@ -643,3 +643,18 @@ El overlay propone campos semánticos P0/P1 y relaciones P2, crosswalk a los die
 ## Registro complementario — reconciliación de plantilla U_G (2026-11-05)
 
 Tras DEC-C10-060, se actualiza el encabezado SNAPSHOT para declarar la FK compuesta `(unit_object_record_id, unit_id) → NODE.(object_record_id, node_id)`. Se aclara que los NA de las filas ilustrativas NODE/SNAPSHOT son marcadores de plantilla y no observaciones reales. Estas son reconciliaciones documentales de DEC-C10-059, no nuevas decisiones sustantivas ni validaciones físicas.
+
+
+## DEC-C10-061 — referencias tipadas e integridad referencial U_G (2026-11-05)
+
+**Decisión explícita del usuario:** acepta la propuesta de contrato `C10_S_UG_TYPED_TARGET_REFERENTIAL_INTEGRITY_CONTRACT_PROPOSAL_DRAFT_001.md`.
+
+1. CLAIM_EVIDENCE_LINK utiliza seis referencias FK tipadas: NODE, EDGE, ROUTE, PREDICATE, SNAPSHOT y COVERAGE_SCOPE. Exactamente una debe estar poblada y debe coincidir con `claim_target_type`.
+2. EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER utilizan el mismo patrón con `object_type`; E1/E2 mantienen FKs directas a EVALUATOR_ASSESSMENT.
+3. `object_record_id` es UNIQUE dentro de cada una de NODE, EDGE, ROUTE, PREDICATE y SNAPSHOT, como clave candidata de las FKs tipadas, preservando claves semánticas compuestas y versionado.
+4. `COVERAGE_REGISTER.coverage_scope_id` es PK/UNIQUE.
+5. `source_provenance` se normaliza en EVIDENCE_REGISTER y no se duplica como campo común en NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT.
+6. `evidence_ref` continúa siendo navegación opcional 0..1; CLAIM_EVIDENCE_LINK conserva cardinalidad 0..n.
+7. Las FKs, CHECK de exclusividad/tipo, dominios y reglas de unicidad son requisitos de diseño; su implementación y validación física quedan pendientes del gate técnico autorizado.
+
+**Estado:** DEC-C10-061 ACCEPTED DOCUMENTALLY. No hay freeze, parser, constraints, fixtures, inventario real, truth, simulación ni experimento. `scientific_execution=false`; `execution_authorized=false`.
