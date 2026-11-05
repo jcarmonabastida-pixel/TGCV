@@ -158,7 +158,7 @@ El hallazgo OAS-01 queda mitigado por §15 como contrato de prevalencia, pero la
 
 Aunque §§15.1–15.2 y DEC-C10-065 exigen que ROUTE_STEP comparta el par `snapshot_id + snapshot_object_record_id` con ROUTE/NODE/EDGE, las tres FKs enumeradas en §15.3 usaban solo `snapshot_id` más el record ID del objeto. Esa forma permitía una referencia cruzada a una revisión de objeto asociada a otra revisión del mismo snapshot semántico y contradecía el requisito de pinning exacto.
 
-**Corrección documental aplicada:** las FKs de §15.3 se han ampliado para incluir `snapshot_object_record_id` en ambos lados y mantener el mismo orden de columnas que las claves candidatas de §15.2. También se ha propagado el campo a la formulación resumida de §13.5 y §14. No se ha modificado DEC-C10-065.
+**Corrección documental aplicada:** las FKs de §15.3 se han ampliado para incluir `snapshot_object_record_id` en ambos lados y mantener el mismo orden de columnas que las claves candidatas de §15.2. Se ha actualizado coherentemente el contrato §13.1–§13.5: NODE/EDGE/ROUTE/PREDICATE fijan la revisión exacta; EDGE y PREDICATE conservan sus referencias exactas; ROUTE_STEP incorpora el pinning completo. §13.4 expresa la FK raíz SNAPSHOT→NODE con el mismo orden de columnas que §15.2. §14 queda alineada con los cinco registros dependientes. No se ha modificado DEC-C10-065.
 
 ### Reconciliación de §§12.7–12.10
 - §12.7 incorpora una nota de precedencia que dirige a §§15.1–15.3 para el pinning Opción A + DEC-C10-065.
