@@ -254,11 +254,11 @@ El ITT permanece definido en la población asignada. Casos completos, población
 No se ha implementado ni ejecutado. No se ha simulado, estimado ni analizado dato empírico. No se modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS o claims.
 
 
-## 12. Armonización con auditoría integral (2026-11-04)
+## 12. Armonización con auditoría integral (2026-11-04) — antecedente supersedido en precedencia
 
 La especificación candidata común está definida en el capítulo 53 del documento maestro y en `C10_S_INTEGRATED_RECONCILIATION_AUDIT_DRAFT_001.md`.
 
-D1 es el escenario principal **condicionado**: (C_{dep,base}=0), (P(C_{dep,post}=1|Z=0)=.20), (P(C_{dep,post}=1|Z=1)=.80), primera etapa objetivo .60. D2 es el contraste: (C_{dep,base}=0), probabilidades finales 0/.80, primera etapa .80. En D1, .20 es provisión/estado final postasignación bajo el control ordinario; no es acceso basal. D1 solo será principal si se justifica el control como comparador legítimo.
+**La precedencia de este párrafo es histórica y queda supersedida por DEC-C10-066 (2026-11-06): D2 es el escenario primario candidato y D1 el secundario.** Se conserva aquí la formulación anterior para trazabilidad: D1 principal condicionado y D2 contraste. Los valores C_dep de .20/.80 (D1) y 0/.80 (D2), así como las primeras etapas .60/.80, siguen siendo objetivos candidatos del DGP, no parámetros validados. La justificación del régimen ordinario D1 pasa a ser una condición para interpretar D1 como comparador secundario, no para seleccionar el primario.
 
 (W_{attempt}), (S_{install}), componentes técnicos y (C_{dep,post}) permanecen separados. La distribución conjunta de intento y éxito debe calibrarse a las probabilidades finales verificadas; no se presume independencia. (A_{f,post}^*) solo tiene la misma probabilidad que (C_{dep,post}) si todas las demás condiciones focales están satisfechas. (D_f=I(A_{f,base}^*=0\land A_{f,post}^*=1)) es la apertura basal→post y primera etapa focal.
 
@@ -444,8 +444,8 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
 **Estado:** propuesta documental; complementa y aclara §§3.1–3.2 y 21–23, sin aprobación ni freeze.
 
 1. La discrepancia aparente se resuelve distinguiendo dos escenarios candidatos ya definidos en maestro §§53.4–54:
-   - D1: control ordinario con provisión de baja frecuencia frente a provisión programada; principal condicionado.
-   - D2: control sin provisión frente a provisión programada; contraste.
+   - D1: control ordinario con provisión de baja frecuencia frente a provisión programada; escenario secundario.
+   - D2: control sin provisión frente a provisión programada; escenario primario candidato por DEC-C10-066.
 2. Los parámetros p0=.20 y p1=.80 de §3.1 representan probabilidades objetivo del estado técnico final verificado C_dep, no probabilidades de intento W_attempt.
 3. Factorización candidata de §54:
    | Parámetro | D1 Z=0 | D1 Z=1 | D2 Z=0 | D2 Z=1 |
@@ -458,7 +458,7 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
 6. En D1, B_g0 es la política ordinaria de baja frecuencia; B_g1 programa el mismo procedimiento para todas las unidades elegibles. En D2, B_g0 no inicia provisión; B_g1 la programa para todas.
 7. Z asigna política; B_assigned/offered/received, W_attempt, S_success, componentes técnicos, C_dep, A_f*, D_f*, App_f y Exec_f permanecen separados.
 8. La primera etapa .60 (D1) o .80 (D2) es primero una diferencia en C_dep. Solo equivale a primera etapa de accesibilidad/apertura si los demás predicados estructurales de A_f* y la elegibilidad basal lo permiten.
-9. D1 sigue siendo principal condicionado a justificar la provisión ordinaria de control como comparador legítimo. Si no se justifica, D2 solo puede sustituirlo mediante decisión explícita y reevaluación de población/estimandos.
+9. **Supersedido por DEC-C10-066:** D2 ya es el escenario primario candidato y D1 el secundario. La legitimidad de D2 sigue condicionada a verificar ausencia basal y ausencia de provisión focal de fondo; la legitimidad de D1 requiere justificar el régimen ordinario. Esta precedencia no cierra población, soporte, estimandos, parámetros ni identificación.
 10. Esta sección aclara la ambigüedad registrada en §23.10; no altera silenciosamente el texto histórico ni declara aprobadas las políticas.
 11. Permanecen abiertos: actor/disparador, recepción, hash/versión, evidencia, distribución conjunta de componentes, crossover/contaminación, calibración de A_f*, exclusión y aprobación del comparador.
 12. No freeze, implementación, simulación ni ejecución.
@@ -466,7 +466,7 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
 
 ## 25. Regla de selección del comparador D1/D2
 
-**Estado:** recomendación de diseño condicionada; no decisión aceptada.
+**Estado histórico de la regla:** recomendación de diseño condicionada, supersedida en cuanto a precedencia por DEC-C10-066. Las condiciones de legitimidad de cada comparador siguen vigentes.
 
 1. D1 responde al efecto incremental de provisión programada frente a provisión ordinaria de baja frecuencia. Solo es un comparador ordinario legítimo si la frecuencia de intento .25 y el estado final .20 están justificados para la población/contexto objetivo mediante fuente independiente y especificación ex ante.
 2. El expediente actual no contiene todavía esa justificación. La recomendación histórica D1-principal-condicionado no equivale a selección aprobada.
@@ -476,7 +476,7 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
 6. Las primeras etapas de C_dep, A_f,post*, D_f y ΔT_acc se estiman por separado y para cada escenario. Los Wald/LATE no se consideran automáticamente transportables entre D1 y D2.
 7. D2 exige verificar C_dep,base=0, A_f,base*=0, ausencia de provisión focal de fondo, condiciones no focales comunes e interferencia controlada.
 8. D1 exige documentar régimen ordinario, fuente de .25/.20, población/periodo/contexto, equivalencia de módulo/protocolo/recursos y vías colaterales.
-9. Esta regla no selecciona formalmente D2 ni aprueba el .80 condicional. La selección primaria requiere decisión explícita después de completar los gates.
+9. DEC-C10-066 ya selecciona D2 como escenario primario candidato y D1 como secundario. Esta regla conserva únicamente las condiciones de legitimidad de cada comparador; no aprueba el .80 condicional ni cierra los gates restantes.
 10. No freeze, implementación, simulación ni ejecución.
 
 
