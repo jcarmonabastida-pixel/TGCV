@@ -688,3 +688,12 @@ C10_S_UG_EVIDENCE_PROVENANCE_AND_ADJUDICATION_PROTOCOL_DRAFT_001.md define S1–
 Para el DGP, el protocolo exige separar truth_dgp_restricted de observed_state; la truth queda en generador/evaluador independiente y no se expone al analizador. Los evaluadores de inventario se mantienen cegados a Outcome/Value y, cuando sea viable, a Z/B. Una discrepancia no resuelta mantiene ?. Las reglas de evidencia no cambian el reloj t0–t9 ni convierten C_dep en A_f*.
 
 Protocolo documental no aplicado; no añade observaciones, parámetros ni truth. Cobertura NONE; A_f*, F_alt,0 y Reach_H siguen ?.
+
+
+## 45. Esquema de captura normalizado y segregación de truth DGP
+
+La plantilla U_G §§12–13 establece registros separados EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER con denominadores, EVALUATOR_ASSESSMENT por evaluador y ADJUDICATION_REGISTER. Cada clasificación se enlaza a evidencia por cadena de IDs, con alcance, versión y tiempo compatibles.
+
+La truth del DGP se elimina de la tabla de predicados analítica y queda segregada en el entorno del generador/evaluador autorizado, fuera del acceso del analizador. El esquema no altera roles causales ni reloj t0–t9. Se preservan observed_state, evidence_status y coverage_status como dimensiones distintas.
+
+Especificación documental, no implementación ni prueba de seguridad. No hay truth poblada ni evidencia real; cobertura NONE y estados técnicos ?.
