@@ -1018,3 +1018,12 @@ Se crea `C10_S_CONFIGURATION_OBJECT_SCOPE_AND_MINIMUM_CONTRACT_PROPOSAL_DRAFT_00
 **Estado:** propuesta pendiente de decisión explícita; no modifica DEC-C10-051 ni fija un sistema/producto/formato. No se aprueban todavía los mecanismos concretos F1/F2/A1/A2. No hay validación técnica ni evidencia.
 
 **Siguiente paso:** decisión del usuario sobre la clase del objeto y, si acepta la candidata A, sobre el contenido lógico mínimo y las propiedades obligatorias. Tras esa decisión se especializarán SM-01…SM-10, se definirán mappings y predicados atómicos, y se reconciliarán las fichas de transformaciones con el historial sin inventar mecanismos.
+
+
+# XXXVIII. DEC-C10-052 — selección del objeto de configuración (2026-11-05)
+
+El usuario confirma adoptar la clase A, **paquete de configuración de un servicio software**, como objeto concreto de trabajo dentro de Opción A. Se adoptan como estructura conceptual inicial los seis elementos: componente; parámetros tipados; referencias; reglas/restricciones; políticas asociadas; metadatos contractuales.
+
+La decisión se registra en `C10_S_CONFIGURATION_OBJECT_SCOPE_AND_MINIMUM_CONTRACT_PROPOSAL_DRAFT_001.md` y en el decision log §46. La propuesta pasa a ser objeto seleccionado para diseño documental, pero no se convierte en esquema final ni en contrato confirmatorio congelado.
+
+**Siguiente bloque:** especializar SM-01…SM-10 para este objeto; decidir propiedades obligatorias/condicionales/NA; definir invariantes semánticas y estructurales atómicas, mappings y diferencias permitidas; mantener recursos, permisos efectivos, dependencias instaladas y estado de los entornos fuera del objeto migrado; reconciliar después F1/F2/A1/A2 con evidencia histórica. No asignar truth DGP ni ejecutar.
