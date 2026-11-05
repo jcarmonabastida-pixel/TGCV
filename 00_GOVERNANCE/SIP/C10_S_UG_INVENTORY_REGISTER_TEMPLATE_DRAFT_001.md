@@ -33,13 +33,13 @@ Reglas obligatorias:
 
 | route_id | parent_route_class (Rτ2/RA12/Rshared/Rexternal/Runknown) | route_subtype (native/manual/fallback/recovery/other) | ordered_node_edge_sequence | entry_state | target/F* | G | H/window | C0/constraints | version_set | shared_dependencies | affected_by_B | functional_substitutability (1/0/?) | evidence_ref(s) | coverage_scope_id | evaluator_record_id | unresolved_alternatives | notes |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | Runknown | unknown | — | — | — | — | — | — | — | ? | ? | — | NONE | — | Runknown | Fila de esquema; no representa ruta real |
+| — | Runknown | unknown | — | — | — | — | — | — | — | — | ? | ? | — | — | — | Runknown | Fila de esquema; no representa ruta real |
 
 ## 5. Registro de predicados por ruta/paso/tiempo
 
 | predicate_id | route_id | step | time/snapshot | predicate_type (ID/REL/COND/AUTH/RES/DEP/BLOCK/APP/ALT/ORACLE/EXT) | observed_state (1/0/?) | evidence_ref(s) | coverage_scope_id | source/version/hash | adjudication_rule/tolerance | evaluator_record_id | reason_for_unknown | impact_on_A_f/App/Reach/F_alt/IV | timestamp |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | — | — | — | — | ? | — | NONE | — | — | — | No existe evidencia aportada | Mantener indeterminación | — |
+| — | — | — | — | — | ? | — | — | — | — | — | No existe evidencia aportada | Mantener indeterminación | — |
 
 **La truth del DGP no forma parte de esta tabla ni de ningún artefacto visible al analizador.** Se almacena únicamente en un registro separado, segregado y con control de acceso del generador/evaluador autorizado. Esta plantilla contiene solo observed_state y evidence_ref.
 
