@@ -1027,3 +1027,14 @@ El usuario confirma adoptar la clase A, **paquete de configuración de un servic
 La decisión se registra en `C10_S_CONFIGURATION_OBJECT_SCOPE_AND_MINIMUM_CONTRACT_PROPOSAL_DRAFT_001.md` y en el decision log §46. La propuesta pasa a ser objeto seleccionado para diseño documental, pero no se convierte en esquema final ni en contrato confirmatorio congelado.
 
 **Siguiente bloque:** especializar SM-01…SM-10 para este objeto; decidir propiedades obligatorias/condicionales/NA; definir invariantes semánticas y estructurales atómicas, mappings y diferencias permitidas; mantener recursos, permisos efectivos, dependencias instaladas y estado de los entornos fuera del objeto migrado; reconciliar después F1/F2/A1/A2 con evidencia histórica. No asignar truth DGP ni ejecutar.
+
+
+# XXXIX. Primera atomización del objeto de configuración (2026-11-05)
+
+Se crea `C10_S_CONFIGURATION_OBJECT_ATOMIC_PROPERTY_CATALOG_DRAFT_001.md`, con propiedades candidatas para los seis elementos seleccionados por DEC-C10-052 y trazabilidad a SM-01…SM-10 y FP-01…FP-08.
+
+**Resultado:** primera descomposición de CMP/PAR/REF/RUL/POL/MET; diferenciación de propiedades centrales y condicionales; regla trivalente y límites de no duplicación entre familias FP.
+
+**No cerrado:** dominio abstracto concreto, contratos fuente/destino, taxonomías, semántica de parámetros/reglas, inclusión de políticas, obligatoriedad y NA por propiedad, mappings, tolerancias, cobertura y oráculo. No hay ejecución ni validación.
+
+**Siguiente paso:** decidir el alcance mínimo del DGP base (qué dimensiones SM son constitutivas del paquete y cuáles quedan condicionales/adversariales) y definir un contrato abstracto fuente/destino que permita fijar predicados atómicos y mappings sin elegir tecnología real. Mantener la política de seguridad FP-05 diferenciada de la preservación FP-03.
