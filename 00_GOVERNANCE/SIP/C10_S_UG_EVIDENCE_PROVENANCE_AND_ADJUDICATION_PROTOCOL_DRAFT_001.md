@@ -178,7 +178,7 @@ No se han consultado fuentes técnicas de sistema real ni generado inventario. C
 La auditoría campo-a-campo detectó que las reglas de este protocolo no tenían representación suficiente en las tablas abreviadas iniciales de la plantilla. La plantilla se amplía en §§12–13 con EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER con denominadores, EVALUATOR_ASSESSMENT, ADJUDICATION_REGISTER, esquema común de objetos y reglas de integridad referencial.
 
 La cadena normativa de soporte es:
-`object_record_id / claim_target_id → CLAIM_EVIDENCE_LINK → EVIDENCE_REGISTER.evidence_id`.
+`typed target FK (NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_SCOPE) → CLAIM_EVIDENCE_LINK → EVIDENCE_REGISTER.evidence_id`.
 `object_record.evidence_ref` es únicamente un atajo de navegación opcional hacia un `claim_evidence_id`; su ausencia no elimina los vínculos normalizados. Los identificadores de evidencia y de afirmación no se confunden. Cada evidencia respalda una afirmación específica, con alcance compatible.
 
 Se elimina la columna truth_dgp de la tabla de predicados analítica. La truth DGP queda segregada en el entorno del generador/evaluador autorizado, fuera de los artefactos accesibles al analizador. Esta separación es una condición de arquitectura y seguridad de información, no una mera etiqueta de columna.
@@ -192,7 +192,7 @@ La ruta utiliza parent_route_class con las cinco clases U_G y route_subtype sepa
 
 ## 14. Reconciliación de tipos, cardinalidad e integridad de captura
 
-La plantilla §§12.9–12.10 concreta tipos y dominios candidatos, cardinalidad de relaciones, claves lógicas y obligatoriedad por tabla. CLAIM_EVIDENCE_LINK es la relación 1:N canónica entre object_record_id/claim_target_id y evidence_id; las referencias de navegación de las tablas no sustituyen ese conjunto. COVERAGE_REGISTER es el registro normativo; la tabla de §7 es solo vista resumen. E1/E2 se guardan en filas independientes; evaluator_record_ids no serializa múltiples evaluadores en una celda.
+La plantilla §§12.9–12.10 concreta tipos y dominios candidatos, cardinalidad de relaciones, claves lógicas y obligatoriedad por tabla. CLAIM_EVIDENCE_LINK es la relación 1:N canónica entre destinos identificados por FK tipada (incluido COVERAGE_SCOPE) y evidence_id; las referencias de navegación de las tablas no sustituyen ese conjunto. COVERAGE_REGISTER es el registro normativo; la tabla de §7 es solo vista resumen. E1/E2 se guardan en filas independientes; evaluator_record_ids no serializa múltiples evaluadores en una celda.
 
 Los estados se mantienen ortogonales: observed_state {1,0,?,NA}; evidence_status {AVAILABLE,MISSING,CONFLICTING}; coverage_status {NONE,PARTIAL,COMPLETE}; review_adjudication_status usa el dominio definido en plantilla. Tiempos ISO 8601 con offset, hashes con algoritmo explícito y conteos enteros no negativos. COMPLETE exige denominador trazable.
 
@@ -201,14 +201,14 @@ Esta reconciliación es documental. No hay parser, constraints, base de datos ni
 
 ## 15. Referencias normalizadas por evaluador y adjudicación
 
-La plantilla separa la clave `evaluator_record_id` (una fila por E1/E2) de la vista `evaluator_record_ids` en los objetos. `CLAIM_EVIDENCE_LINK` puede asociar cada vínculo a un `evaluator_record_id` o `adjudication_id`, de forma que la evidencia efectivamente revisada por cada rol se reconstruye por relaciones y no por listas serializadas. `EVALUATOR_ASSESSMENT` y `ADJUDICATION_REGISTER` apuntan a `object_record_id`; la adjudicación referencia las dos evaluaciones originales y conserva la posición minoritaria.
+La plantilla separa la clave `evaluator_record_id` (una fila por E1/E2) de la vista `evaluator_record_ids` en los objetos. `CLAIM_EVIDENCE_LINK` puede asociar cada vínculo a un `evaluator_record_id` o `adjudication_id`, de forma que la evidencia efectivamente revisada por cada rol se reconstruye por relaciones y no por listas serializadas. `EVALUATOR_ASSESSMENT` y `ADJUDICATION_REGISTER` utilizan seis FKs tipadas exclusivas (NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_SCOPE); la adjudicación referencia las dos evaluaciones originales y conserva la posición minoritaria.
 
 La comprobación estática de encabezados/separadores/filas de esquema muestra alineación de columnas en las diez tablas revisadas. No acredita integridad referencial de instancias, unicidad, dominios ni comportamiento de parser. Sigue siendo necesaria revisión independiente y validación ejecutable autorizada.
 
 
 ## 16. Cardinalidad de referencia de navegación — FCM-20
 
-Se confirma que `evidence_ref` en NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT es cero o un vínculo de navegación opcional. No representa la relación completa de evidencias. Todas las relaciones 0..n entre objetos/afirmaciones y evidencias, incluidas las revisadas por E1/E2/adjudicador, se conservan en CLAIM_EVIDENCE_LINK. El registro completo se recupera por object_record_id/claim_target_id y, cuando proceda, evaluator_record_id/adjudication_id. La corrección armoniza la plantilla §§12.7/12.9 y el protocolo §§13–15.
+Se confirma que `evidence_ref` en NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT es cero o un vínculo de navegación opcional. No representa la relación completa de evidencias. Todas las relaciones 0..n entre objetos/afirmaciones y evidencias, incluidas las revisadas por E1/E2/adjudicador, se conservan en CLAIM_EVIDENCE_LINK. El registro completo se recupera por la FK destino tipada y, cuando proceda, evaluator_record_id/adjudication_id. La corrección armoniza la plantilla §§12.7/12.9 y el protocolo §§13–15.
 
 FCM-20 es corrección documental; no valida cardinalidad de instancias ni FK en motor.
 
@@ -224,3 +224,10 @@ La frase histórica de §10 «ningún estado sin evidence_ref» se considera imp
 5. CLAIM_EVIDENCE_LINK mantiene la relación canónica 0..n; EVIDENCE_REGISTER conserva las fuentes/artefactos y sus versiones.
 
 Esta reconciliación resuelve documentalmente la contradicción entre §§10, 13, 14, 16 y la plantilla §§11, 12.8–12.9. **Aceptada documentalmente por decisión explícita del usuario (2026-11-05).** SR-03 permanece CONDITIONAL hasta validación técnica de instancias, cardinalidad y FK; esta aceptación no implica freeze ni revisión independiente.
+
+
+## 18. Referencias tipadas y procedencia canónica — DEC-C10-061
+
+El usuario acepta la arquitectura de referencias tipadas. CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER admiten seis destinos tipados (NODE, EDGE, ROUTE, PREDICATE, SNAPSHOT y COVERAGE_SCOPE); exactamente una FK debe estar poblada y concordar con el enum de tipo. `object_record_id` es UNIQUE dentro de cada tabla de objetos; `coverage_scope_id` es PK/UNIQUE. `source_provenance` se conserva canónicamente en EVIDENCE_REGISTER y no se duplica en tablas de objetos.
+
+La plantilla U_G refleja esta decisión. La especificación de CHECK/FK es documental: no hay parser, motor relacional, constraints ni pruebas negativas ejecutadas. DEC-C10-061 no implica freeze, inventario real ni ejecución científica.
