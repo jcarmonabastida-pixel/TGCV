@@ -1345,3 +1345,12 @@ Se aplican correcciones documentales parciales: se retira ordered_node_edge_sequ
 ## Bootstrap canónico verificado para la auditoría OAS (2026-11-05)
 
 Se confirma desde `main`: RMA v3.37; Evidence→Claim Matrix v1.47; alias de matriz idéntico al artefacto versionado por SHA; traceability CSV consistente; C10 downstream value linkage OPEN. No se ejecutaron validadores locales porque no hay checkout local disponible en esta sesión. El trabajo documental permanece en la rama PR #116; su base efectiva es `research/c10-d1-protocol-draft`, no `main`.
+
+
+# LXXI. DEC-C10-065 — pinning exacto de SNAPSHOT aprobado (2026-11-05)
+
+El usuario aprueba añadir `snapshot_object_record_id` obligatorio a NODE, EDGE, ROUTE, PREDICATE y ROUTE_STEP. Se crea `DEC-C10-065_SNAPSHOT_EXACT_VERSION_PINNING.md`. La FK compuesta `(snapshot_id,snapshot_object_record_id) → SNAPSHOT(snapshot_id,object_record_id)` fija la revisión física exacta y resuelve OAS-02 documentalmente, manteniendo SNAPSHOT versionado según DEC-C10-062.
+
+La plantilla U_G incorpora el campo en los cinco registros y ajusta filas ilustrativas/separadores. El crosswalk IAM recibe tabla explícita de pinning exacto. La auditoría OAS se actualiza: OAS-02 RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING.
+
+Pendiente: reconciliación completa de todas las claves candidatas/FKs, referencias entre NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP y raíz SNAPSHOT→NODE, tablas normalizadas, crosswalks y contratos. Motor no seleccionado; no DDL, parser, validadores, fixtures ni pruebas. UG-SCH-10 OPEN; sin revisión independiente ni ejecución científica.
