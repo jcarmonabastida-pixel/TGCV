@@ -7340,3 +7340,10 @@ Se crea C10_S_ADAPTER_PROVISION_MANIFEST_AND_DEPENDENCY_GRAPH_DRAFT_001.md para 
 B puede obtener/verificar/instalar el paquete, habilitar canal restringido y registrar C_dep; no puede ejecutar F1/F2/A1/A2, modificar F*, oráculo, datos fuente/destino, permisos funcionales ni ruta alternativa. Se distinguen dependencias focales, alternativas, comunes de medición, infraestructura compartida, críticas compartidas y externas. Se especifican snapshots preB/postB/rollback, catálogo de cambios, grafo nodo-arista, criterios de no-afectación A1/A2 y contratos PROV-01…12.
 
 MD-C1 y MD-C4 permanecen abiertos: no se ha demostrado que B sea aislada, que A1/A2 sean independientes ni que B modifique A_f*. El siguiente bloque es una matriz de cobertura del grafo con evidencia 1/0/? y propagación de Reach/F_alt. No se implementa ni instala nada.
+
+
+# 81. Matriz de cobertura del grafo y evidencia trivalente (2026-11-05)
+
+Se crea C10_S_GRAPH_COVERAGE_AND_TRIVALENT_EVIDENCE_MATRIX_DRAFT_001.md. El universo U_G contiene 23 roles de nodos y 23 aristas candidatas; se identifican 14 predicados de accesibilidad/ruta y cinco clases de ruta (focal, alternativa, compartida, externa y desconocida). Este catálogo es un universo candidato de inspección, no un inventario técnico real ni exhaustivo. Todos los estados técnicos siguen ? y cobertura NONE por falta de manifiesto, SBOM, runtime, snapshots y grafo transitivo.
+
+Se separan status estructural, coverage, evidence_status e intención contractual. Ruta=0 exige predicado necesario refutado con evidencia y cobertura; Reach=0 exige descarte de todas las rutas con cobertura exhaustiva; F_alt,0=0 exige descartar todas las rutas funcionalmente substituibles dentro del universo delimitado. Runknown se conserva para evitar inferencia de exhaustividad. Resultado actual: Reach_H=?, F_alt,0=?, A_f*=?; R0/R1 no clasificables y R2 posible pero no observado. MD-C1/2/4 y AUD-005/007 permanecen abiertos. No se ejecuta ni simula.
