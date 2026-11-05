@@ -7744,3 +7744,12 @@ La plantilla U_G actualiza los cinco encabezados y filas de esquema; el crosswal
 # 124. Claves candidatas y FKs compuestas — DEC-C10-065 (2026-11-05)
 
 U_G §15.2/§15.6 ahora especifica claves candidatas y FKs compuestas en orden explícito para el pinning de SNAPSHOT, EDGE→NODE, PREDICATE→ROUTE, ROUTE_STEP→ROUTE/NODE/EDGE y SNAPSHOT→NODE raíz. OAS-02 queda RESOLVED_DOCUMENTARILY; OAS-03 SPECIFIED_DOCUMENTARILY / COMPLETENESS_AND_ENGINE_VALIDATION_PENDING. La coherencia integral de tablas normalizadas/crosswalks, circularidad raíz y compatibilidad de motor siguen pendientes. UG-SCH-10 OPEN; sin validación técnica ni ejecución científica.
+
+
+## 125. Reconciliación U_G de pinning exacto — consistencia ROUTE_STEP (2026-11-05)
+
+La auditoría OAS posterior a DEC-C10-065 detectó que las FKs ROUTE_STEP→ROUTE/NODE/EDGE de U_G §15.3 omitían `snapshot_object_record_id`, pese a que las secciones normativas de pinning exigían que todas las referencias compartieran la misma revisión exacta de SNAPSHOT. Se corrige §15.3 para incluir `snapshot_id` y `snapshot_object_record_id` en ambos lados de cada FK y se actualizan las formulaciones resumidas §§13.5 y 14.
+
+Se marca §12.10 como matriz histórica de baseline para las referencias de snapshot, con §15.2 como matriz física normativa vigente; §§12.7 y 12.8.12 explicitan la precedencia y la pertenencia exacta. El crosswalk IAM/FP §9.3 registra las doce relaciones de origen/destino con orden de columnas explícito.
+
+El control de las 19 tablas Markdown mantiene PASS_FORMAT_ONLY; recuentos físicos actualizados: NODE 32, EDGE 35, ROUTE 30, ROUTE_STEP 8, PREDICATE 27, SNAPSHOT 26, EVIDENCE_REGISTER 18, CLAIM_EVIDENCE_LINK 15, COVERAGE_REGISTER 15, EVALUATOR_ASSESSMENT 18 y ADJUDICATION_REGISTER 17. No hay validación física, revisión independiente ni schema freeze. UG-SCH-10 permanece OPEN. No cambia TGCV Core, C10 claim status, RMA, Evidence→Claim Matrix ni STATUS. No se autoriza implementación o ejecución científica.
