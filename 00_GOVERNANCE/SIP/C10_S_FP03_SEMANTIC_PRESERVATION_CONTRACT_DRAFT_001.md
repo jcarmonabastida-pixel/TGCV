@@ -162,3 +162,10 @@ Estos casos son especificaciones de falsación, no fixtures ejecutados ni result
 FP-03 queda desarrollado a nivel de dimensiones semánticas, clases de mapping, variaciones, regla de adjudicación y requisitos de evidencia. No queda operacionalmente cerrado: faltan dominio concreto, predicados atómicos, mappings, invariantes, envolvente de observación, excepciones, tolerancias y oráculo validado.
 
 **Estado:** DEFINED AT SEMANTIC-DIMENSION/LOGIC LEVEL; ATOMIC CONTRACT OPEN; MAPPING NOT SPECIFIED; ORACLE NOT VALIDATED; NO EMPIRICAL EVIDENCE; NO EXECUTION AUTHORIZATION.
+
+
+## 13. Delimitación del objeto de configuración — propuesta pendiente
+
+La propuesta `C10_S_CONFIGURATION_OBJECT_SCOPE_AND_MINIMUM_CONTRACT_PROPOSAL_DRAFT_001.md` compara tres clases de objeto y recomienda un paquete de configuración de servicio software con componentes, parámetros tipados, referencias, reglas/restricciones, políticas asociadas y metadatos contractuales. Es una propuesta para decisión, no una selección aprobada.
+
+Si se acepta, permitirá convertir SM-01…SM-10 en predicados atómicos y separar el contenido migrado de recursos, permisos efectivos, ventanas y estado del entorno. No se crea una capa semántica persistida adicional.
