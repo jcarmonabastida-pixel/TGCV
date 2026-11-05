@@ -1041,10 +1041,10 @@ Estos contratos documentan la regla UG-SR-A01 aceptada documentalmente el 2026-1
 Los resultados son contratos documentales aceptados para UG-SR-A01; no están implementados ni ejecutados. La validación de cardinalidad, FK y comportamiento sigue pendiente.
 
 
-## 54. Aplicación del protocolo de investigador único y separación de gates
+## 54. Protocolo científico autocontenido y auditable C10-S
 
-La ausencia actual de revisores externos no bloquea la autoauditoría ni la continuación del diseño C10-S. Los dictámenes asistidos deben conservar `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT` y la escala estática/condicional/no evaluada. La exigencia de revisor identificado de §50 aplica solo cuando se active una revisión externa; R1/R2 se difieren, no se designan ahora.
+La ausencia de revisores externos no bloquea la continuidad del diseño C10-S. Los dictámenes asistidos conservan AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT y la escala PASS_STATIC/CONDITIONAL/FAIL/NOT_ASSESSED. Un revisor identificado solo será exigible si se decide activar una revisión externa; no es requisito para especificar, preanalizar o preparar un experimento falsable.
 
-La apertura de la web germen TGCV *as is* tiene un gate propio de transparencia, trazabilidad, estados, falsabilidad, límites, seguridad, privacidad, licencias y atribución. No exige C10-S cerrado ni schema freeze, siempre que no se presenten diseños como resultados ni demos como validación. El playground puede desarrollarse posteriormente sobre los mismos contratos.
+La suficiencia interna exige que el experimento pueda reconstruirse desde artefactos y registros: DGP y truth versionados; analizador sin acceso a truth; evaluador separado; estimandos y criterios preespecificados; semillas y versiones; salidas brutas; auditoría de integridad; y replay cuando esté autorizado.
 
-El dimensionamiento estadístico C10-S permanece pendiente: N y réplicas son candidatos hasta justificar potencia/precisión, error Monte Carlo y criterios δ/ε. Ningún resultado NEXT4 de otra línea sustituye este cálculo.
+La simulación puede probar si el método recupera la verdad causal estipulada y detecta no-identificación dentro del DGP. No constituye por sí sola demostración empírica de la hipótesis general C10 en sistemas reales.
