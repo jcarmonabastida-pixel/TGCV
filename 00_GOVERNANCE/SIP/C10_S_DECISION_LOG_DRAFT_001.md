@@ -453,3 +453,14 @@ DEC-C10-049 es registro de preparación documental; no autoriza parser, validaci
 Se decide como convención documental candidata: evidence_ref en objetos admite cero o un vínculo de navegación opcional; CLAIM_EVIDENCE_LINK conserva la relación completa 0..n, también por evaluador/adjudicador. EVALUATOR_ASSESSMENT conserva evaluator_record_id singular por fila; evaluator_record_ids plural en objetos es solo una vista/resumen opcional. Se corrige FCM-12 y se registra FCM-20.
 
 DEC-C10-050 es reconciliación documental, no aprobación/freeze del esquema ni validación ejecutable.
+
+
+## 45. Selección del microdominio y contrato funcional de trabajo — DEC-C10-051 (2026-11-05)
+
+**Decisión:** se selecciona Opción A, migración de configuración entre dos entornos software, como microdominio de diseño y operacionalización de C10-S. Se adopta F* como contrato funcional de trabajo candidato: la ruta completa produce y aplica en el destino una configuración conforme a propiedades obligatorias preespecificadas de esquema, integridad, compatibilidad, preservación funcional y seguridad.
+
+**Alcance:** esta decisión resuelve la selección entre opciones de microdominio para el diseño documental. Opción B/C quedan como alternativas históricas. La adopción de F* no cierra todavía su lista de propiedades, mappings, tolerancias, casos frontera ni oráculo.
+
+**No implica:** aprobación de ejecución; selección de D1/D2; cierre de R0–R3; identificación causal; inventario real de componentes; parámetros de versiones/recursos/ventanas; validación técnica; revisión independiente; freeze o cambio de main.
+
+**Siguiente trabajo:** cerrar el contrato operacional F*, fichas F1/F2/A1/A2, mappings, condiciones y oráculo; después completar DGP y análisis de identificación.
