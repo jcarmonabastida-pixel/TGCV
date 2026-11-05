@@ -1094,3 +1094,14 @@ Se crea `C10_S_ABSTRACT_PARAMETER_AND_SOURCE_DESTINATION_MAPPING_MATRIX_DRAFT_00
 **Estado:** propuesta documental; no fija claves, valores, dominios concretos, obligatoriedad/NA final ni mappings reales. Los predicados son candidatos sujetos a reconciliación con SM-01…SM-10 y el catálogo atómico. No hay truth, fixtures, validación, revisión independiente, evidencia empírica ni ejecución.
 
 **Siguiente paso:** reconciliar matriz con SM-01…SM-10 y catálogo CMP/PAR/REF/RUL/POL/MET; producir tabla de correspondencia predicado→FP primario/secundario, identificar duplicidades y decidir obligatoriedad/NA ex ante. Después, especializar contratos F1/F2/A1/A2 y el oráculo F*. No elegir aún valores ni ejecutar.
+
+
+# XLVI. Reconciliación SM-01…SM-10 y familias FP (2026-11-05)
+
+Se crea `C10_S_SM_ATOMIC_PROPERTY_FP_RECONCILIATION_DRAFT_001.md`. La revisión detecta solapamientos entre la primera matriz C_src→C_dst/M y el catálogo atómico: propiedades compuestas se desdoblan entre validez formal FP-01, integridad FP-02 y preservación semántica FP-03. Se fijan además las fronteras FP-04 compatibilidad, FP-05 seguridad, FP-06 aplicación, FP-07 observación post-aplicación y FP-08 procedencia.
+
+Hallazgos clave: CMP-01/02 y PAR-01 son semánticos FP-03; PAR-02 se divide entre esquema FP-01 y significado FP-03; REF-01/02 semánticos FP-03, REF-04 integridad FP-02; reglas RUL son semánticas FP-03 y validez AST FP-01; POL es condicional FP-03 y seguridad efectiva FP-05; MET-01 FP-01/04, MET-02/04 FP-08 y MET-03 condicional FP-03. C_dst^applied se evalúa mediante FP-06/07 sin crear doble conteo semántico.
+
+**Estado:** reconciliación propuesta, no confirmatoria ni aprobada. Obligatoriedad/NA por instancia, cardinalidades, dominios, mapping, F1/F2/A1/A2 y oráculo siguen abiertos. Sin validación técnica, revisión independiente, evidencia empírica ni ejecución.
+
+**Siguiente paso:** revisar la asignación de predicados primarios/secundarios y cerrar obligatoriedad/NA ex ante en el contrato abstracto antes de especializar F1/F2/A1/A2.
