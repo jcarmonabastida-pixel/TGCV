@@ -1,0 +1,167 @@
+# C10-S — Matriz operacional de propiedades y adjudicación de F*
+
+**ID:** C10-S-FSTAR-OP-001 · **Versión:** Draft 001 · **Fecha:** 2026-11-05  
+**Estado:** diseño documental derivado de DEC-C10-051; NO congelado, NO implementado, NO validado, NO ejecutado.  
+**Microdominio:** migración de configuración entre dos entornos software (Opción A, seleccionada).  
+**Contrato relacionado:** `C10_S_OPTION_A_FSTAR_AND_TRANSFORMATION_CARDS_PROPOSAL_DRAFT_001.md`.
+
+## 1. Propósito
+
+Convertir F* de una definición funcional de trabajo en una estructura de evaluación observable, no circular y adjudicable. Esta matriz no elige productos, formatos, herramientas, umbrales ni componentes técnicos. Define qué clases de propiedad deben especificarse y cómo se decide conformidad una vez fijadas.
+
+F* se evalúa sobre la **ruta completa** desde la configuración fuente admisible hasta la configuración aplicada y verificada en el destino. F1, F2, A1 y A2 se evalúan también por separado como transformaciones; su éxito local no equivale por sí solo a cumplir F*.
+
+## 2. Unidad de evaluación y contrato de entrada
+
+Una instancia de evaluación F* debe quedar identificada por:
+- configuración fuente y snapshot/versionado de origen;
+- contrato/esquema fuente aplicable;
+- identidad y snapshot basal del entorno destino;
+- contrato/esquema objetivo y versión destino;
+- mapping declarado entre origen, representación intermedia y destino;
+- contexto basal C0;
+- granularidad G de objetos, propiedades y relaciones evaluadas;
+- horizonte H para completar aplicación y verificación;
+- conjunto de propiedades obligatorias, condicionales y no aplicables fijado ex ante;
+- identidad/versionado del procedimiento de evaluación y de sus oráculos.
+
+C0, G, H y las versiones concretas siguen OPEN. No deben inferirse después de observar el resultado ni adaptarse por brazo Z/B.
+
+## 3. Matriz de familias de propiedades
+
+Las familias siguientes constituyen el catálogo mínimo de inspección. Cada propiedad atómica debe transformarse en un predicado verificable con dominio, tolerancia si procede, fuente de evidencia, regla de fallo y responsable de adjudicación.
+
+| ID | Familia | Propiedad observable requerida | Regla candidata de conformidad | Riesgo si se omite |
+|---|---|---|---|---|
+| FP-01 | Esquema y tipos | Campos/objetos obligatorios, tipos, cardinalidades, restricciones y versión contractual | Todo requisito obligatorio del contrato objetivo se satisface; ningún requisito prohibido se introduce | Parseo sintáctico confundido con conformidad |
+| FP-02 | Integridad estructural | Referencias, relaciones, claves, unicidad, dependencias internas y consistencia entre objetos | No hay referencias rotas, duplicidades prohibidas ni invariantes estructurales violadas | Configuración aparentemente válida pero incoherente |
+| FP-03 | Preservación semántica | Correspondencia de significado entre propiedades fuente y destino según mapping explícito | Todas las invariantes funcionales declaradas se preservan dentro de tolerancias predefinidas | Igualdad de nombres/hash confundida con equivalencia |
+| FP-04 | Compatibilidad destino | Admisibilidad respecto de capacidades, versión, restricciones e interfaces del destino | El destino acepta la configuración conforme al contrato y sin incompatibilidad bloqueante | Artefacto convertible pero no utilizable |
+| FP-05 | Seguridad y control | Permisos, secretos, exposición, restricciones de acceso y políticas obligatorias | Ninguna violación de seguridad; controles obligatorios preservados o reforzados según política | Migración técnicamente exitosa pero insegura |
+| FP-06 | Aplicación efectiva | Estado destino posterior a la aplicación, no solo artefacto preparado | La configuración objetivo queda efectivamente aplicada dentro de H | Confundir exportación/conversión con migración completa |
+| FP-07 | Verificación post-aplicación | Comprobación del estado resultante frente al contrato y las invariantes | Evidencia posterior confirma FP-01…FP-05 en el estado realmente aplicado | Validar solo el artefacto previo |
+| FP-08 | Procedencia y reproducibilidad | Identidad de entradas, mappings, versiones, transformaciones, oráculo y salida | Cadena de procedencia completa y repetible conforme al protocolo que se cierre | Resultado no auditable o no atribuible |
+
+**Distinción:** FP-01…FP-07 son propiedades funcionales/técnicas de conformidad. FP-08 es una condición de validez probatoria y reproducibilidad de la evaluación; se reporta separadamente y no debe ocultar un fallo funcional. Puede ser requisito de aceptación del paquete experimental sin convertirse en propiedad semántica de la configuración.
+
+## 4. Obligatorio, condicional y NA
+
+- **Obligatoria:** propiedad necesaria para que la instancia satisfaga F*. Su incumplimiento implica no conformidad.
+- **Condicional:** propiedad aplicable solo cuando se cumple una condición de alcance declarada ex ante. La condición y su fuente deben registrarse; no se decide después de ver el resultado.
+- **No aplicable (NA):** solo cuando la propiedad no pertenece al dominio de esa instancia según regla preespecificada y justificación verificable. NA no equivale a dato ausente.
+- **Desconocida (?):** la propiedad sí es pertinente, pero la evidencia no permite decidirla. No se transforma en NA ni en PASS.
+
+El catálogo definitivo debe especificar por propiedad: obligatoriedad, condición de aplicabilidad, dominio, unidad/granularidad, regla de aceptación, tolerancia, excepción permitida, evidencia requerida y regla de adjudicación. Ninguno de esos valores se fija por intuición en esta versión.
+
+## 5. Regla de adjudicación no compensatoria
+
+Para una instancia (j), sea (M_j) el conjunto de propiedades obligatorias aplicables, excluyendo solo NA legítimos. Cada propiedad toma estado trivalente 1/0/? con la siguiente interpretación:
+
+- **1:** evidencia suficiente confirma que satisface el criterio preespecificado.
+- **0:** evidencia suficiente confirma una violación.
+- **?:** evidencia insuficiente, contradictoria o no concluyente.
+
+Regla candidata para la conformidad funcional:
+- (F^*_j=1) si todas las propiedades de (M_j) son 1.
+- (F^*_j=0) si al menos una propiedad obligatoria de (M_j) es 0.
+- (F^*_j=?) en los demás casos (ninguna violación confirmada, pero al menos una propiedad obligatoria desconocida).
+
+No se permite compensación por suma, promedio o puntuación: un buen resultado de esquema no compensa una violación de seguridad o de preservación semántica. Un fallo bloqueante confirmado basta para F*=0. La regla no autoriza umbrales ad hoc; los umbrales cuantitativos que resulten necesarios deben preespecificarse por propiedad.
+
+Si (M_j) queda vacío por NA, la instancia no se considera automáticamente conforme: se marca como **NO EVALUABLE / SCOPE ERROR** y requiere revisar la definición de dominio del contrato.
+
+## 6. Aplicación por etapas y transformaciones
+
+| Elemento | Evaluación local | Lo que NO permite concluir |
+|---|---|---|
+| F1 / τ2 | Conversión y conformidad del artefacto intermedio S2 con su contrato | No prueba aplicación, compatibilidad final ni F*=1 |
+| F2 | Aplicación del artefacto y verificación en destino | No prueba por sí sola equivalencia de la ruta alternativa |
+| A1 | Exportación y completitud del artefacto neutral S1 | No prueba que A2 pueda importarlo ni que la ruta satisfaga F* |
+| A2 | Importación/aplicación y verificación en destino | No prueba substituibilidad sin mismo F*, entradas y C0 |
+| Ruta F1→F2 | F* completo sobre estado final | No atribuye causalidad a accesibilidad |
+| Ruta A1→A2 | El mismo F* completo, con igual universo de entrada y contexto comparable | No es control funcional válido si solo alcanza SF nominal |
+
+Una transformación intermedia puede tener PASS local y la ruta completa fallar F*. También puede darse un fallo técnico en una transformación con estado de evidencia ? si no se ha podido observar su condición real. Aplicabilidad, accesibilidad, selección, ejecución, resultado y conformidad siguen siendo variables distintas.
+
+## 7. Oráculo de conformidad: arquitectura lógica requerida
+
+Se requiere un procedimiento de evaluación independiente de la intervención y de los resultados downstream. Como mínimo, debe cubrir:
+1. validación contractual de esquema y tipos;
+2. comprobación de integridad estructural;
+3. evaluación del mapping y de invariantes semánticas;
+4. comprobación de compatibilidad del destino;
+5. evaluación de políticas de seguridad;
+6. verificación del estado efectivamente aplicado;
+7. captura de procedencia, versiones, resultados y limitaciones.
+
+Requisitos del oráculo:
+- ciego a Z y B en la medida necesaria para impedir adjudicación diferencial;
+- no usa Outcome ni Value para decidir F*;
+- separado del mecanismo que genera/aplica la configuración, para evitar auto-certificación;
+- versionado e inmutable durante una comparación;
+- reglas deterministas cuando la propiedad lo permita; reglas de adjudicación explícitas cuando requiera juicio;
+- conserva salidas brutas, errores, excepciones y evidencia contradictoria;
+- somete sus falsos positivos/negativos y fiabilidad a evaluación independiente antes de usarlo como medida confirmatoria.
+
+No se ha seleccionado ni implementado ningún validador concreto. La independencia efectiva del oráculo sigue sin demostrarse.
+
+## 8. Equivalencia funcional y substituibilidad de rutas
+
+A1→A2 será alternativa funcional substituible a F1→F2 únicamente si:
+- opera sobre la misma clase de configuraciones fuente admisibles;
+- se evalúa contra el mismo contrato F*, propiedades, mappings/tolerancias de salida y oráculo;
+- utiliza C0, G y H comparables fijados ex ante;
+- produce un estado destino aplicado que satisface F*;
+- no omite propiedades por ser incómodas para una ruta;
+- las condiciones de seguridad y restricciones obligatorias son equivalentes.
+
+La equivalencia funcional no implica igualdad de mecanismo, coste, latencia, fiabilidad, riesgo o consumo de recursos. Estas dimensiones deben registrarse separadamente si forman parte de Outcomes o de vías causales de B. La mera presencia de A1/A2, un artefacto neutral o un marcador SF no demuestra substituibilidad.
+
+## 9. Evidencia y adjudicación
+
+Cada predicado atómico debe vincularse a evidencia con:
+- ID y procedencia de la fuente;
+- instante/snapshot y ámbito cubierto;
+- método de obtención y versión;
+- integridad/autenticidad;
+- limitaciones, datos ausentes y cobertura;
+- regla aplicada y resultado 1/0/?/NA;
+- evaluador, cegamiento y posibles conflictos;
+- adjudicación y desacuerdo preservado.
+
+La ausencia de observación no equivale a 0. La ausencia de hallazgo no prueba cobertura exhaustiva. Un 0 requiere evidencia positiva de violación o cobertura negativa suficiente según el predicado; un 1 requiere cobertura suficiente de todos los requisitos aplicables. Los casos ambiguos permanecen ?.
+
+## 10. Decisiones abiertas antes de cerrar F*
+
+1. Inventario de clases de configuración y delimitación del dominio de entrada.
+2. Catálogo atómico de invariantes funcionales que deben preservarse.
+3. Contratos de origen, intercambio y destino, con versiones.
+4. Reglas de mapping, transformaciones permitidas, pérdida admisible y excepciones.
+5. Lista de requisitos de seguridad y tratamiento de secretos/permisos.
+6. Definición de H, G, C0 y límites de recursos/ventanas.
+7. Clasificación de propiedades obligatorias/condicionales y reglas NA.
+8. Umbrales/tolerancias específicos y justificación de cada uno.
+9. Oráculo independiente, versionado, cegamiento y evaluación de error.
+10. Cobertura del universo de rutas y alternativas funcionales.
+11. Identidad TID/SID/RID para F1/F2/A1/A2.
+12. Procedimiento de adjudicación de desacuerdos y control de cambios.
+
+## 11. Relación con el DGP y la inferencia causal
+
+Esta matriz define el criterio funcional contra el que se clasifican resultados de las rutas. No define la intervención B, no convierte C_dep en accesibilidad, no define A_f*, no determina Reach, y no establece exclusión IV. El DGP debe mantener separados:
+- verdad generadora de cada propiedad;
+- observación/clasificación del analizador;
+- accesibilidad de cada transformación;
+- aplicabilidad desde el estado de entrada;
+- selección e inicio;
+- ejecución;
+- Outcome;
+- Value.
+
+Un F*=1 no implica Outcome favorable ni Value positivo. Un cambio en F* no demuestra por sí mismo que ΔT_acc haya causado el cambio. La atribución causal sigue dependiendo de los estimandos y supuestos C10-S separados.
+
+## 12. Dictamen
+
+La matriz establece una arquitectura operacional de propiedades y una regla candidata de adjudicación no compensatoria, suficientemente explícita para orientar el cierre posterior de contratos y oráculos. No es aún una definición confirmatoria completa porque los predicados atómicos, mappings, tolerancias, H/G/C0 y evidencia no están fijados.
+
+**Estado:** DEFINED AT FAMILY/LOGIC LEVEL; ATOMIC OPERATIONALIZATION OPEN; ORACLE NOT IMPLEMENTED/NOT VALIDATED; NO EMPIRICAL EVIDENCE; NO EXECUTION AUTHORIZATION.
