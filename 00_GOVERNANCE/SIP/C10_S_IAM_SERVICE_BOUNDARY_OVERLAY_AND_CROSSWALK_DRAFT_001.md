@@ -155,3 +155,12 @@ La revisión contra DEC-C10-055 y los contratos FP/U_G identificó precisiones o
 - Se explicitan C_src, C_dst^decl, C_dst^applied, E_dst y M. No se añade APPLIED-STATE-SEMANTICS como nuevo predicado que duplique FP-03.
 
 **Estado:** corrección documental pendiente de aceptación; no se modifican DEC-C10-055 ni los contratos U_G. Véase auditoría IAM FP/EDGE.
+
+
+## 12. Crosswalk de atributos IAM a columnas U_G
+
+El detalle de correspondencia se desarrolla en `C10_S_IAM_FIELD_TO_COLUMN_CROSSWALK_PROPOSAL_DRAFT_001.md`. La plantilla U_G §12.7 ya define columnas comunes y extensiones por registro; los atributos overlay no se convierten automáticamente en nuevas columnas.
+
+Conclusión provisional: logical_service_id se representa mediante NODE raíz y SNAPSHOT.unit_id; object_scope se mapea a semantic_role/vocabulario tipado; rationale a notes/unknowns; sensibilidad a confidentiality/access_ref del expediente de evidencia; parent/child mediante parent_catalog_id sin EDGE de contención. P2 sigue siendo perímetro transversal, no clase.
+
+La única extensión candidata que parece justificar campo propio es NODE.boundary_class ∈ {P0_CONFIG, P1_ENVIRONMENT, DUAL_P0_P1}. No se añade a la plantilla hasta aceptación explícita y cierre de FK con unit_id/node_id.
