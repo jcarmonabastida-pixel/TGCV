@@ -870,3 +870,10 @@ La segunda pasada detecta FCM-10…16 y corrige físicamente los encabezados de 
 Se corrigen FCM-17…19: clave primaria singular de evaluación; eliminación de listas de evidencias en evaluaciones/adjudicaciones; y destino de object_id fijado como object_record_id. CLAIM_EVIDENCE_LINK permite asociar evidencias con evaluación/adjudicación concreta. Se comprueba estáticamente la alineación de columnas en diez tablas, sin errores de conteo.
 
 **Resultado:** FCM-01…19 tratados documentalmente. La comprobación no ejecuta parser, constraints ni validadores y no prueba integridad referencial real. Esquema Draft, pendiente revisión independiente y validación técnica autorizada. Sin inventario ni cobertura real.
+
+
+# XXVII. Ejecución del plan — preparación de revisión independiente del esquema U_G (2026-11-05)
+
+Se prepara C10_S_UG_SCHEMA_INDEPENDENT_REVIEW_CHECKLIST_DRAFT_001.md con controles SR-01…20, perfiles R1 (modelo de datos/ingeniería) y R2 (metodología/causalidad), reglas de independencia/cegamiento, procedimiento y dictámenes.
+
+**Resultado:** paquete preparado, revisión NO INICIADA. No se han designado revisores ni ejecutado validadores. Los controles SR y FCM-01…19 no se cierran por preparación documental. El freeze del esquema, selección definitiva del microdominio e inventario permanecen posteriores a revisión independiente y validación ejecutable. No cambia la autorización científica.
