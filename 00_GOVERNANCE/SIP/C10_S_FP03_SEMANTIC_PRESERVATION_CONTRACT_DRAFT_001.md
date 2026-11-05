@@ -169,3 +169,12 @@ FP-03 queda desarrollado a nivel de dimensiones semánticas, clases de mapping, 
 La propuesta `C10_S_CONFIGURATION_OBJECT_SCOPE_AND_MINIMUM_CONTRACT_PROPOSAL_DRAFT_001.md` compara tres clases de objeto y recomienda un paquete de configuración de servicio software con componentes, parámetros tipados, referencias, reglas/restricciones, políticas asociadas y metadatos contractuales. Es una propuesta para decisión, no una selección aprobada.
 
 Si se acepta, permitirá convertir SM-01…SM-10 en predicados atómicos y separar el contenido migrado de recursos, permisos efectivos, ventanas y estado del entorno. No se crea una capa semántica persistida adicional.
+
+
+## 14. Objeto seleccionado tras DEC-C10-052
+
+La clase de objeto deja de ser una alternativa pendiente: se selecciona un **paquete de configuración de un servicio software**. Su estructura conceptual inicial comprende componente, parámetros tipados, referencias, reglas/restricciones, políticas asociadas y metadatos contractuales. La selección está registrada en DEC-C10-052 y desarrollada en `C10_S_CONFIGURATION_OBJECT_SCOPE_AND_MINIMUM_CONTRACT_PROPOSAL_DRAFT_001.md`.
+
+SM-01…SM-10 deberán especializarse sobre estos elementos, sin asumir que todas las dimensiones aplican u obligan en cada instancia. La obligatoriedad se fijará ex ante en el contrato del dominio. Recursos/capacidad, permisos efectivos, dependencias instaladas y estado del entorno permanecen como condiciones del entorno, no como contenido del paquete.
+
+**Estado:** objeto seleccionado para diseño; predicados atómicos, obligatoriedad, mappings, contratos fuente/destino y oráculo siguen abiertos. No hay validación técnica, revisión independiente, evidencia empírica ni ejecución.
