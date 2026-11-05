@@ -204,3 +204,10 @@ Esta reconciliación es documental. No hay parser, constraints, base de datos ni
 La plantilla separa la clave `evaluator_record_id` (una fila por E1/E2) de la vista `evaluator_record_ids` en los objetos. `CLAIM_EVIDENCE_LINK` puede asociar cada vínculo a un `evaluator_record_id` o `adjudication_id`, de forma que la evidencia efectivamente revisada por cada rol se reconstruye por relaciones y no por listas serializadas. `EVALUATOR_ASSESSMENT` y `ADJUDICATION_REGISTER` apuntan a `object_record_id`; la adjudicación referencia las dos evaluaciones originales y conserva la posición minoritaria.
 
 La comprobación estática de encabezados/separadores/filas de esquema muestra alineación de columnas en las diez tablas revisadas. No acredita integridad referencial de instancias, unicidad, dominios ni comportamiento de parser. Sigue siendo necesaria revisión independiente y validación ejecutable autorizada.
+
+
+## 16. Cardinalidad de referencia de navegación — FCM-20
+
+Se confirma que `evidence_ref` en NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT es cero o un vínculo de navegación opcional. No representa la relación completa de evidencias. Todas las relaciones 0..n entre objetos/afirmaciones y evidencias, incluidas las revisadas por E1/E2/adjudicador, se conservan en CLAIM_EVIDENCE_LINK. El registro completo se recupera por object_record_id/claim_target_id y, cuando proceda, evaluator_record_id/adjudication_id. La corrección armoniza la plantilla §§12.7/12.9 y el protocolo §§13–15.
+
+FCM-20 es corrección documental; no valida cardinalidad de instancias ni FK en motor.
