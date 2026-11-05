@@ -116,3 +116,20 @@ No se autoriza inventario real, selección de microdominio, generación de truth
 La lectura de `main` confirma la cadena canónica vigente: RMA v3.37 y Evidence→Claim Matrix v1.47. El puntero RMA resuelve a `TGCV_RMA_v3.37.md`; el alias `EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` y el artefacto versionado v1.47 presentan el mismo blob SHA. La traceability CSV declara RMA-v3.37 y CLAIM-MATRIX-v1.47 como CURRENT. STATUS mantiene C10 value linkage OPEN y no autoriza ejecución científica.
 
 Los validadores locales read-only del bootstrap no se ejecutaron: esta sesión no dispone de checkout local montado. No se infiere PASS de validación local. Todas las modificaciones de este trabajo se realizaron exclusivamente en `research/c10-s-consolidation-draft`; `main` no fue modificado.
+
+
+## 7. Resolución de OAS-02 — DEC-C10-065 (2026-11-05)
+
+El usuario aprueba DEC-C10-065: NODE, EDGE, ROUTE, PREDICATE y ROUTE_STEP incorporan `snapshot_object_record_id` obligatorio junto a `snapshot_id`. Se fija la revisión exacta mediante FK compuesta a SNAPSHOT(`snapshot_id`, `object_record_id`). OAS-02 pasa a **RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING**.
+
+La plantilla incorpora el campo en los cinco encabezados y sus filas ilustrativas. Se corrigen los recuentos de columnas del separador y fila de esquema para esos cinco registros. La matriz §15 explicita la FK compuesta. No se modifica el contrato de versionado ni se elimina el versionado de SNAPSHOT.
+
+Persisten condiciones de reconciliación:
+- actualizar todas las claves candidatas y FKs compuestas con orden exacto de columnas;
+- garantizar que NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP referencian el mismo par snapshot_id + snapshot_object_record_id en todos los enlaces;
+- completar SNAPSHOT→NODE raíz y la circularidad diferible/transaccional;
+- actualizar todas las tablas normalizadas, crosswalks IAM/FP y contratos de integridad;
+- seleccionar motor y probar FKs diferibles, constraints cross-row e inmutabilidad;
+- revisión independiente R1/R2.
+
+El dictamen general no cambia: UG-SCH-10 OPEN; esquema no congelado; revisión independiente NOT STARTED; validación técnica NOT RUN; sin ejecución científica.
