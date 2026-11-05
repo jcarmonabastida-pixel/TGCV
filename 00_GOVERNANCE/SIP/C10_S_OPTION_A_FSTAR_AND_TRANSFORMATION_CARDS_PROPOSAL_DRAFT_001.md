@@ -153,3 +153,10 @@ Esta propuesta hace explícita la interpretación funcional adoptada como base d
 ## 9. Registro de decisión DEC-C10-051
 
 El 2026-11-05 el usuario selecciona Opción A —migración de configuración entre dos entornos software— como microdominio de diseño C10-S y adopta F* como contrato funcional de trabajo candidato. La selección habilita completar fichas y DGP documental; no autoriza ejecución ni cierra los parámetros, propiedades, mappings, tolerancias, oráculo, D1/D2 o identificación causal.
+
+
+## 10. Matriz operacional de propiedades y adjudicación
+
+La matriz complementaria `C10_S_FSTAR_OPERATIONAL_PROPERTY_AND_ADJUDICATION_MATRIX_DRAFT_001.md` desarrolla las familias FP-01…FP-08, la regla trivalente no compensatoria de conformidad, las evaluaciones por etapa, los requisitos del oráculo y las condiciones de substituibilidad. Debe leerse conjuntamente con estas fichas.
+
+La matriz no fija todavía predicados atómicos, mappings, tolerancias, H/G/C0, catálogo de entrada, contratos de formato/versiones ni oráculo concreto. Por tanto, F* permanece definido a nivel de familias/arquitectura lógica, no cerrado operacionalmente.
