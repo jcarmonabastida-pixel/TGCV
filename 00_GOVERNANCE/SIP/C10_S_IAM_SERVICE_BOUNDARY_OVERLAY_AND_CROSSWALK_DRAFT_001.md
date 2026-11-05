@@ -142,3 +142,16 @@ La tabla define familias abstractas, no presencia real. Todas las instancias con
 Se reutiliza la plantilla U_G existente y se propone un overlay semántico específico para la unidad de servicio aceptada. No se justifica recrear el inventario ni ampliar U_G sin necesidad. La propuesta conserva la separación P0/P1/P2 y añade el crosswalk funcional necesario para preparar IAM.
 
 **Estado:** DRAFT. No aceptado ni congelado; no instanciado, no validado, no ejecutado. Sin inventario observado, truth, fixtures, datos sintéticos ni evidencia empírica. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 11. Reconciliación documental FP/EDGE — auditoría IAM-A01…A06
+
+La revisión contra DEC-C10-055 y los contratos FP/U_G identificó precisiones obligatorias antes de schema:
+- FP-07 es verificación post-aplicación de FP-01…FP-05 sobre C_dst^applied; FP-06 acredita aplicación efectiva.
+- FP-08 es procedencia/reproducibilidad probatoria, reportada separadamente de la conformidad funcional.
+- El mapping primario/secundario por propiedad atómica se rige por la tabla detallada en `C10_S_IAM_FP_EDGE_CROSSWALK_AUDIT_DRAFT_001.md`; no se simplifica a una familia única para propiedades compuestas.
+- Se retira la sugerencia de relación `CONTAINS_FIELD`: no está en el catálogo EDGE. La descomposición se representa mediante NODE a granularidad adecuada y parent_catalog_id/metadatos cuando corresponda, sin inventar aristas.
+- Los atributos overlay boundary_class/logical_service_id/object_scope/semantic_inclusion_rationale/sensitivity_class son candidatos, no columnas aprobadas. Requieren field-to-column mapping antes de cambiar la plantilla.
+- Se explicitan C_src, C_dst^decl, C_dst^applied, E_dst y M. No se añade APPLIED-STATE-SEMANTICS como nuevo predicado que duplique FP-03.
+
+**Estado:** corrección documental pendiente de aceptación; no se modifican DEC-C10-055 ni los contratos U_G. Véase auditoría IAM FP/EDGE.
