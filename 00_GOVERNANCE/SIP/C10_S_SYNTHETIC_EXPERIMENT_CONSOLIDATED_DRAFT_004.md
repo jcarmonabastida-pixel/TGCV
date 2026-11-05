@@ -7630,3 +7630,10 @@ El usuario acepta la arquitectura P0/P1/P2 y la clasificación semántica. P0: p
 Se registra DEC-C10-057 y se actualiza el perfil de frontera. Se crea `C10_S_LOGICAL_SERVICE_UNIT_AND_BOUNDARY_CLASSIFICATION_PROPOSAL_DRAFT_001.md`, que propone delimitar una instancia lógica de servicio y clasificar por semántica manifests, variables, secretos, datos persistentes, servicios externos y mapping. El nuevo perfil es propuesta pendiente, no decisión aprobada.
 
 **Estado:** arquitectura aceptada; clasificación elemento a elemento, unidad lógica definitiva, IAM, inventario y diseño de interferencia pendientes. Sin ejecución científica.
+
+
+# 110. DEC-C10-058 — unidad lógica de servicio y clasificación P0/P1 (2026-11-05)
+
+Se acepta la definición de unidad de migración como una instancia lógica de servicio software identificada por contrato funcional y contrato de configuración versionado, sin equipararla a microservicio/proceso/binario/unidad de despliegue. Se aceptan las reglas semánticas de P0 (configuración declarativa), P1 (realización técnica/estado del entorno) y P2 (frontera causal transversal), incluida la clasificación campo a campo de manifests/variables, separación referencia/secretos, tratamiento por defecto de datos persistentes fuera de P0, migraciones de esquema fuera de F* base y registro de servicios externos opacos como dependencias con incertidumbre explícita.
+
+La unidad de aleatorización/analítica no queda decidida: depende de la evaluación de entornos/recursos compartidos e interferencia. La aceptación no implica inventario real ni schema ejecutable.
