@@ -187,3 +187,8 @@ La arquitectura de familias FP queda aceptada por DEC-C10-055, pero la selecció
 ## 18. Frontera F* / FP-08 precisada
 
 F* es capacidad funcional de ruta completa (producción y aplicación en destino) y puede requerir FP-01…FP-07 en dimensiones separadas, incluida compatibilidad FP-04, seguridad efectiva FP-05, aplicación FP-06 y verificación FP-07. FP-08 es gate probatorio independiente, no atributo funcional ni compensación. La exclusión de POL en el núcleo mínimo no elimina los requisitos de seguridad F*; estos se declaran independientemente del módulo POL. Véase la precisión en la matriz IAM.
+
+
+## 19. DEC-C10-056 — cardinalidad del objeto F*
+
+La instancia funcional de F* se restringe al DGP base con CMP≥1, PAR≥1, RUL≥1; REF puede ser cero únicamente con IAM ex ante y cobertura exhaustiva; POL ausente por diseño en el núcleo mínimo; MET obligatorio. Esta cardinalidad delimita la unidad/objeto candidato y no reemplaza los gates FP-01…FP-07 ni el gate probatorio FP-08. El contrato abstracto es `C10_S_ABSTRACT_CONFIGURATION_INSTANCE_CONTRACT_DRAFT_001.md`.
