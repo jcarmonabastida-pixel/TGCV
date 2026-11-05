@@ -7713,3 +7713,8 @@ No se han ejecutado validadores, parser, constraints, fixtures, truth, simulacio
 El usuario aprueba la resolución de detalle. DEC-C10-064 queda registrada en artefacto propio. La plantilla U_G §13 incorpora el contrato: versionado observacional; SNAPSHOT↔NODE raíz mediante FK compuesta diferible/transacción atómica; EDGE→NODE y PREDICATE→ROUTE con pinning exacto de mismo snapshot; ROUTE_STEP normalizado; y separación de cambio de captura, estructura, evidencia y accesibilidad.
 
 La aplicación documental no cierra todavía UG-SCH-10: §§2–6 conservan encabezados abreviados heredados que deben reconciliarse físicamente con §13 y §12. La auditoría de encabezados/columnas, claves, crosswalk IAM/FP y contratos queda como siguiente paso. El motor relacional no está fijado; sin soporte demostrado de FKs diferibles, el gate físico permanece bloqueado. No se han ejecutado validadores, parser, constraints, fixtures, truth, simulaciones ni experimentos. `scientific_execution=false`; `execution_authorized=false`.
+
+
+# 120. Reconciliación inicial de encabezados U_G y ROUTE_STEP (2026-11-05)
+
+La plantilla U_G actualiza los encabezados de NODE/EDGE/ROUTE/PREDICATE con snapshot_id y referencias exactas; la FK raíz SNAPSHOT incorpora snapshot_id y se añade ROUTE_STEP como registro normalizado. El control mecánico confirma consistencia de columnas en las 19 tablas Markdown de la plantilla. Esto es únicamente un control de forma; no valida semántica, tipos, constraints, motor, parser o integridad. UG-SCH-10 permanece OPEN y el esquema global SCHEMA_NOT_CLOSED.
