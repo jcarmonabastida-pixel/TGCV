@@ -65,12 +65,13 @@ La cuenta correcta es **8 PASS_STATIC + 10 CONDITIONAL + 2 NOT_ASSESSED = 20**. 
 
 ## 5. Hallazgo transversal y acciones
 
-**UG-SR-A01 — Ambigüedad de obligatoriedad de evidencia.** Protocolo §10 exige “ningún estado sin evidence_ref”; protocolo §16 y plantilla §12.9 establecen que `evidence_ref` es opcional y que la relación completa vive en CLAIM_EVIDENCE_LINK. No se concluye que el modelo sea inválido, porque puede tratarse de una abreviatura imprecisa; sí requiere aclaración explícita y propagación a plantilla, protocolo y test register antes de freeze.
+**UG-SR-A01 — Ambigüedad de obligatoriedad de evidencia.** La revisión ampliada detecta además que el protocolo §13 inicia la cadena normativa en `object_record.evidence_ref` y la plantilla §11 exige que cada `evidence_ref` resuelva, pese a que §12.9/§12.8.1 y protocolo §16 declaran opcional el campo y canónica la relación CLAIM_EVIDENCE_LINK. La discrepancia afecta §§10, 13, 14, 16 del protocolo y §§11, 12.8–12.9 de la plantilla. Se ha redactado una propuesta de reconciliación: `evidence_ref` opcional de navegación; CLAIM_EVIDENCE_LINK 0..n como relación normativa; vínculo obligatorio para estados 1/0; para ? sin vínculo, unknown_reason + MISSING + límites de búsqueda/cobertura; NA con justificación. La propuesta aún no está aceptada ni congelada.
 
 Acciones:
-1. Aclarar si todo estado observado exige al menos un vínculo CLAIM_EVIDENCE_LINK, y que `evidence_ref` solo es un atajo opcional.
-2. Añadir casos de prueba para estado sin vínculo, estado con vínculo pero sin evidence_ref, y vínculo huérfano.
-3. Mantener SR-03 CONDITIONAL hasta reconciliar y validar.
+1. Resolver la regla propuesta para 1/0/?/NA y aprobarla explícitamente.
+2. Armonizar la cadena normativa del protocolo y la regla por fila de la plantilla con la cardinalidad opcional de `evidence_ref`.
+3. Incorporar los casos T01…T12 al contrato de pruebas y, tras autorización, validarlos con instancias/parser/FK.
+4. Mantener SR-03 CONDITIONAL hasta aceptación documental y validación técnica.
 
 ## 6. Dependencias para cierre
 
@@ -93,3 +94,8 @@ No cambia TGCV Core, RMA, Evidence→Claim Matrix, STATUS, claims, autorizacione
 ## 8. Próxima operación
 
 Resolver UG-SR-A01 de forma documental en plantilla/protocolo/test register, sin alterar la semántica 0..1 opcional de `evidence_ref` ni la relación 0..n de CLAIM_EVIDENCE_LINK. Después, revisar el resto de contratos U_G y reanudar el cierre DGP/arquitectura causal según el plan integral.
+
+
+### Actualización de auditoría — alcance ampliado UG-SR-A01
+
+La propuesta de reconciliación está registrada en la plantilla §12.11, protocolo §17 y Test Contract Register §53. Se amplió el hallazgo al detectar las referencias incompatibles del protocolo §13 y plantilla §11/§12.8. No se cambia el dictamen SR-03: CONDITIONAL. La propuesta requiere aceptación explícita y validación técnica posterior. No se modifica la suma de dictámenes ni se declara cierre.
