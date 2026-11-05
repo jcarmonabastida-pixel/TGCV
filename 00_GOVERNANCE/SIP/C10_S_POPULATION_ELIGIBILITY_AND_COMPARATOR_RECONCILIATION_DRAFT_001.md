@@ -210,3 +210,11 @@ El bloque requiere:
 9. revisión causal/transformacional independiente.
 
 Hasta satisfacer estos criterios, el bloque es avance documental y no cierra OPEN-C10-001/003/005/007 ni autoriza freeze o ejecución.
+
+## 7. Supersesión de precedencia por DEC-C10-066 (2026-11-06)
+
+La reserva de selección primaria D1/D2 incluida en el encabezado y en las formulaciones históricas de este documento queda supersedida por DEC-C10-066: **D2 es el escenario primario candidato y D1 el escenario secundario**. No se reabre la elección del comparador primario.
+
+Los requisitos de población y legitimidad no quedan cerrados por esa elección. D2 exige verificar C_dep,0=0, A_f,0*=0 y ausencia real de provisión focal de fondo/rutas equivalentes. La población P*_τ2 y el subobjetivo P*_F conservan sus definiciones y límites; soporte y factibilidad deben justificarse. D1 solo se conserva como contraste incremental secundario y requiere justificar el régimen ordinario .25/.20 con fuente independiente. Los estimandos y primeras etapas no se agrupan ni se transportan automáticamente.
+
+No se autoriza freeze, implementación, simulación ni ejecución.
