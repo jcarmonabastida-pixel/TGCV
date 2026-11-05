@@ -828,3 +828,18 @@ La continuidad del trabajo científico se realiza mediante AUTHOR_SELF_REVIEW / 
 La preparación del experimento exige autocontención y auditabilidad: contrato causal y estimandos, DGP/truth versionados y ocultos al analizador, roles separados, reglas ex ante, pruebas negativas/adversariales, medición independiente, manifiestos, resultados brutos, auditoría de integridad y replay sujeto a autorización.
 
 La revisión externa no es gate para continuar ni para concluir una prueba sintética correctamente ejecutada. El alcance de las conclusiones se limita al DGP, parámetros, población, horizonte, políticas y regla de Value definidos. Ninguna conclusión sintética se presenta como causalidad empírica general.
+
+
+## 29. Reconciliación del plan Draft 004 y gate científico autocontenido (2026-11-05)
+
+El plan operativo vigente pasa a ser C10_S_DESIGN_CLOSURE_AND_OPERATIONALIZATION_PLAN_DRAFT_004.md. Este addendum armoniza el estado de control sin reescribir matrices históricas.
+
+1. La cobertura 130–183 se considera integrada en el maestro §§16–52 y los contratos auxiliares. No se abre recuperación histórica adicional.
+2. La arquitectura de accesibilidad debe leerse con §§59–64 (condiciones y fórmula focal candidata), §60 (T_cap/T_acc relacional), §71 (S_T*/E_T y ΔT/ΔE), §§73–76 (Reach, temporalidad y predicados), §§77–81 (fichas, microdominio, B y cobertura), y §§82–130 (U_G y DEC).
+3. La parte estadística comprende la fuente 165–183 y las familias P177/P178/P179/P182/P183. El cierre cuantitativo incluye potencia/precisión separadas, búsqueda de N, R según error Monte Carlo, heterogeneidad/compliers, sensibilidad δ/γ, medición y ausencia/censura.
+4. Los valores N=2.000 y R=1.000 no son parámetros confirmatorios aceptados.
+5. La mención histórica a revisión externa en G6 (§9) no es gate de continuidad ni de ejecución sintética. Prevalece §12: AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT; no se exige R1/R2. La revisión externa solo se activaría por decisión expresa para un alcance distinto, no como condición de progreso actual.
+6. Los roles generador, analizador y evaluador deben estar separados por arquitectura de datos/permisos/proceso; ello no se denomina revisión humana independiente.
+7. La implementación técnica, simulación y ejecución científica siguen sujetas a autorización separada.
+
+**Estado:** reconciliación documental del control. No se cierran gates científicos ni se declara ejecución, validación técnica o revisión independiente.
