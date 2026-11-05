@@ -172,3 +172,8 @@ La matriz establece una arquitectura operacional de propiedades y una regla cand
 La operacionalización específica de preservación semántica se desarrolla en `C10_S_FP03_SEMANTIC_PRESERVATION_CONTRACT_DRAFT_001.md`. Este documento define dimensiones SM-01…SM-10, mappings 1:1/1:N/N:1/N:M, clases de variación, adjudicación trivalente y requisitos de evidencia.
 
 La ampliación no cierra FP-03: el dominio de configuración, invariantes atómicas, mappings, envolvente de observación, excepciones, tolerancias y oráculo siguen abiertos. Las dimensiones son un catálogo de inspección, no la afirmación de que todas estén presentes o sean obligatorias en cada instancia.
+
+
+## 14. Reconciliación con el catálogo atómico
+
+La correspondencia de F* con CMP/PAR/REF/RUL/POL/MET y FP-01…FP-08 se desarrolla en `C10_S_SM_ATOMIC_PROPERTY_FP_RECONCILIATION_DRAFT_001.md`. Los predicados estructurales y semánticos se separan; FP-06/07 no duplican FP-03, y POL preservada no implica seguridad FP-05. La reconciliación sigue siendo propuesta y no cierra obligatoriedad, NA ni oráculo.
