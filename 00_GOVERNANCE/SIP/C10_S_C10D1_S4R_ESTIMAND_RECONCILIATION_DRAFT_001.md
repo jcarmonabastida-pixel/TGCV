@@ -298,3 +298,11 @@ La sección 17 reconcilia la semántica de los escenarios, pero no selecciona el
 - La asignación identifica el ITT de la política, no demuestra por sí sola exclusión ni atribución causal exclusiva a accesibilidad.
 
 Estado: recomendación provisional, no decisión aprobada. La selección primaria sigue ABIERTA; OPEN-C10-001/005 continúan abiertas.
+
+## 8. Supersesión de precedencia del comparador — DEC-C10-066 (2026-11-06)
+
+La recomendación histórica de §3.3 y las referencias anteriores a D1 como principal condicionado/D2 como contraste quedan **supersedidas exclusivamente en la precedencia del escenario primario candidato**. La decisión aceptada DEC-C10-066 establece D2 como escenario primario candidato de C10-S y D1 como escenario secundario. Se conserva la descripción histórica y la diferencia entre sus políticas; no se reescribe la fuente recuperada ni se mezclan sus estimandos.
+
+La decisión no modifica la jerarquía causal de este documento: θ_A(q) sigue siendo la pregunta científica general C10-D1; ITT_Z es el efecto de asignación de la política D2 en el diseño S4-R; LATE_f es local y condicionado a IV; θ_Af(q*) requiere identificación adicional. La legitimidad de D2, el soporte, las vías colaterales, los parámetros y la identificación permanecen abiertos. D1 requiere justificación del régimen ordinario para interpretar su contraste secundario.
+
+No se autoriza freeze, implementación, simulación ni ejecución.
