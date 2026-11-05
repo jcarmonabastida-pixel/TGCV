@@ -7,7 +7,7 @@
 
 ## 1. Propósito
 
-Preparar una revisión externa e independiente del esquema normalizado U_G tras las auditorías documentales FCM-01…19. Este paquete define qué debe revisar el revisor, qué artefactos gobiernan cada criterio, qué evidencia debe aportar y cómo emitir un dictamen sin confundir revisión documental, validación ejecutable, seguridad, inventario real o cierre científico.
+Preparar una revisión externa e independiente del esquema normalizado U_G tras las auditorías documentales FCM-01…20. Este paquete define qué debe revisar el revisor, qué artefactos gobiernan cada criterio, qué evidencia debe aportar y cómo emitir un dictamen sin confundir revisión documental, validación ejecutable, seguridad, inventario real o cierre científico.
 
 Este documento no constituye una revisión independiente ni sustituye una validación con parser/constraints. Su creación no autoriza implementar el esquema, inspeccionar sistemas, poblar truth DGP, generar datos, simular ni ejecutar C10-S.
 
@@ -73,7 +73,7 @@ Se ha realizado una comprobación estática limitada del Markdown remoto:
 - Encabezado, separador y fila de esquema tienen el mismo número de columnas en las diez tablas.
 - Las cinco tablas de objetos contienen los campos comunes exigidos.
 - La tabla analítica de predicados no contiene campo truth_dgp.
-- Se corrigieron FCM-01…19 en la documentación.
+- Se corrigieron FCM-01…20 en la documentación.
 
 Esta comprobación no valida FK, unicidad, tipos, dominios, cardinalidades reales, parser, seguridad, permisos, cegamiento, ni compatibilidad con un motor de datos. No es independiente y no debe puntuarse como revisión SR-01…20.
 
@@ -107,6 +107,6 @@ Esta comprobación no valida FK, unicidad, tipos, dominios, cardinalidades reale
 
 **Estado actual:** paquete preparado; revisión independiente NO INICIADA. No se han designado revisores. No se han ejecutado validadores ni tests de esquema. No existe instancia poblada, inventario real ni cobertura técnica. A_f*, F_alt,0 y Reach_H siguen indeterminados.
 
-La revisión independiente y validación ejecutable son gates previos a declarar el esquema congelado. La selección del microdominio y el inventario se mantienen posteriores a esos gates. XSYNC-138-01 y FCM-01…19 no se declaran cerrados por la mera creación de este paquete.
+La revisión independiente y validación ejecutable son gates previos a declarar el esquema congelado. La selección del microdominio y el inventario se mantienen posteriores a esos gates. XSYNC-138-01 y FCM-01…20 no se declaran cerrados por la mera creación de este paquete.
 
 No modifica main, RMA, Evidence→Claim Matrix, STATUS, TGCV Core, ni claim-level statuses. No cambia la autorización científica.
