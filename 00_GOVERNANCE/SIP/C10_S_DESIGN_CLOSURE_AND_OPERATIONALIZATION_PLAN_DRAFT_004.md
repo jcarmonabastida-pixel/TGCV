@@ -29,7 +29,7 @@ La continuidad no depende de revisores externos. Las auditorías propias se iden
 | 164 | §51 |
 | 165–183 | síntesis en §52 y desarrollo en contratos especializados |
 
-No procede recuperar ni reconstruir otra vez §§130–163. El contenido 164–183 no se reduce a §52: su desarrollo estadístico, de medición, heterogeneidad y ausencia se conserva también en el registro auxiliar y en los contratos especializados, incluidos P177, P182 y P183. La fuente Notes_261104_163033.docx se conserva como fuente de trazabilidad del intervalo 165–183; el registro auxiliar no es transcripción literal completa.
+No procede recuperar ni reconstruir otra vez §§130–163. El contenido 164–183 no se reduce a §52: su desarrollo estadístico, de medición, heterogeneidad y ausencia se conserva también en el registro auxiliar y en los contratos especializados, incluidos P177, P182 y P183. La fuente Notes_261104_163033.docx comienza en la sección 164 y cubre 164–183; el registro auxiliar C10_S_RECOVERY_165_183_SOURCE_REGISTER_DRAFT_001.md organiza específicamente el tramo 165–183 y no es transcripción literal completa.
 
 ### 2.2 Precedencia
 
