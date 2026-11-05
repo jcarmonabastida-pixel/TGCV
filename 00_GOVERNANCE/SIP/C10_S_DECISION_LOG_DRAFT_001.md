@@ -519,3 +519,21 @@ La decisión no modifica la estructura conceptual de seis elementos de DEC-C10-0
 **Siguiente operación:** elaborar la matriz ex ante de obligatoriedad y aplicabilidad por propiedad, con IAM previo a Z/B, condiciones verificables para NA, cardinalidades explícitas, separación F* funcional/gates técnicos/FP-08 probatorio y controles contra decisiones post hoc.
 
 No implica implementación, validación, truth, fixtures, revisión independiente, evidencia empírica, freeze ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## DEC-C10-056 — cardinalidad de clases del DGP base (2026-11-05)
+
+**Decisión explícita del usuario:** acepta la política de cardinalidad propuesta para el paquete de configuración del microdominio Opción A.
+
+- CMP ≥ 1: al menos un componente; CMP=0 es SCOPE_ERROR.
+- PAR ≥ 1: al menos un parámetro; PAR=0 es SCOPE_ERROR.
+- REF ≥ 0: puede estar vacío solo si IAM lo declara ex ante y la cobertura del inventario es exhaustiva; incertidumbre de cobertura se mantiene como ?.
+- RUL ≥ 1: al menos una regla/restricción; RUL=0 es SCOPE_ERROR en el DGP base confirmatorio.
+- POL ≥ 0: ausente por diseño en el núcleo confirmatorio mínimo; si se incorpora, debe declararse como módulo condicional antes de Z/B.
+- MET obligatorio: identidad, versionado, procedencia y trazabilidad/IAM.
+
+**Alcance:** fija cardinalidades de clase, no máximos, clases concretas, claves/valores, reglas sustantivas, topología del servicio ni mapping final. Un cambio del contrato de unidad para permitir CMP/PAR/RUL vacíos requeriría rediseño y aprobación antes de generar/asignar instancias; no puede decidirse post hoc.
+
+**Artefacto derivado:** `C10_S_ABSTRACT_CONFIGURATION_INSTANCE_CONTRACT_DRAFT_001.md`, propuesta documental que formaliza estructura e invariantes sin constituir schema ejecutable.
+
+No implica implementación, truth, fixtures, validación técnica, revisión independiente, evidencia empírica, freeze ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
