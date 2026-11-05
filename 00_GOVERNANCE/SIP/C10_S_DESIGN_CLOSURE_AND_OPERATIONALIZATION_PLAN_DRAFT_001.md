@@ -1405,3 +1405,14 @@ Se añaden addenda DEC-C10-065 a los contratos especializados de unidad lógica,
 Se amplía U_G §15.4 con el mapping explícito de las seis FKs tipadas en CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER; sus destinos; la exclusividad por enum; PK/UNIQUE de registros; FKs de evidencia, evaluadores y adjudicación; normalización de source_provenance en EVIDENCE_REGISTER; cobertura por COVERAGE_REGISTER; y separación de evidence_ref opcional frente a CLAIM_EVIDENCE_LINK 0..n. El crosswalk IAM/FP incorpora §9.4.
 
 OAS-11 queda resuelto documentalmente. No se modifica DEC-C10-061 ni UG-SR-A01; no se implementan constraints ni se valida la seguridad/custodia. Revisión independiente y validación técnica siguen pendientes.
+
+
+# LXXVII. Cierre del pase de reconciliación documental U_G (2026-11-05)
+
+Se completa el cotejo de las claves y referencias del contrato normalizado con DEC-C10-059…065 y los contratos especializados de unidad lógica, semantic_role/nodo raíz, referencias tipadas, procedencia, identidad/versionado y adjudicación.
+
+Hallazgos documentales OAS-10 y OAS-11 se corrigen en las vistas físicas U_G §§4.1/6 y en el contrato consolidado §15.4, respectivamente. El crosswalk IAM/FP §§9.3–9.4 contiene tanto las doce relaciones de pinning exacto como el mapping de referencias tipadas/evidencia/adjudicación. Los contratos especializados reciben addenda DEC-C10-065. Checklist y autoauditoría se actualizan sin recalificar indebidamente los controles SR.
+
+**Estado del pase:** reconciliación documental del alcance examinado completada; control estático Markdown PASS_FORMAT_ONLY. OAS-01/02/04/06/08/09/10/11 quedan resueltos documentalmente; OAS-03 sigue especificado y pendiente de revisión independiente/validación de motor; OAS-05 especificado y pendiente de revisión independiente; OAS-07 se mantiene como nota de gobernanza por la base no-main de PR #116. UG-SCH-10 permanece OPEN hasta R1/R2 y gates técnicos; SCHEMA_NOT_CLOSED.
+
+**Siguiente gate:** preparar la revisión independiente R1 (modelo de datos/ingeniería) y R2 (metodología/causalidad), fijando en su inicio los hashes de los artefactos y el commit exacto de la rama. No declarar PASS SR-01…20 por autoauditoría. La validación ejecutable requerirá autorización separada. Sin DDL, parser, fixtures, simulación ni ejecución científica.
