@@ -863,3 +863,10 @@ Se corrige documentalmente en la plantilla §§12–13 y protocolo §13 mediante
 La segunda pasada detecta FCM-10…16 y corrige físicamente los encabezados de NODE, EDGE, ROUTE, PREDICATE y SNAPSHOT; establece diccionario de tipos/dominios, obligatoriedad por tabla, cardinalidades, integridad referencial y semántica de NA. CLAIM_EVIDENCE_LINK se define como relación 1:N; COVERAGE_REGISTER como fuente normativa; §7 queda como vista resumen; evaluadores E1/E2 como filas separadas.
 
 **Resultado:** FCM-01…16 tratados documentalmente. La consistencia estática de los artefactos ha sido revisada, pero no se ha ejecutado parser, validador, constraint check, prueba de seguridad o prueba de cegamiento. No se declara esquema validado/cerrado. Revisión independiente y validación ejecutable pendientes. No hay inventario técnico ni cobertura real; no se modifica la autorización.
+
+
+# XXVI. Ejecución del plan — tercera pasada de normalización relacional U_G (2026-11-05)
+
+Se corrigen FCM-17…19: clave primaria singular de evaluación; eliminación de listas de evidencias en evaluaciones/adjudicaciones; y destino de object_id fijado como object_record_id. CLAIM_EVIDENCE_LINK permite asociar evidencias con evaluación/adjudicación concreta. Se comprueba estáticamente la alineación de columnas en diez tablas, sin errores de conteo.
+
+**Resultado:** FCM-01…19 tratados documentalmente. La comprobación no ejecuta parser, constraints ni validadores y no prueba integridad referencial real. Esquema Draft, pendiente revisión independiente y validación técnica autorizada. Sin inventario ni cobertura real.
