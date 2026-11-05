@@ -153,3 +153,8 @@ Se ha producido una primera atomización candidata del objeto seleccionado, con 
 ## 9. Reconciliación con FP-01…FP-08
 
 La asignación de familia primaria/secundaria y la separación de predicados compuestos se desarrolla en `C10_S_SM_ATOMIC_PROPERTY_FP_RECONCILIATION_DRAFT_001.md`. El catálogo original se conserva como catálogo candidato; la reconciliación no eleva propiedades a obligatorias. En especial, CMP-03/REF-03 separan cardinalidad/integridad de impacto semántico; PAR-02/PAR-06 separan validez formal y significado; REF-04 queda en FP-02; POL-05 queda en FP-05; MET-02/04 quedan en FP-08.
+
+
+## 10. Estado decisional y matriz de aplicabilidad
+
+La reconciliación de familias fue aceptada mediante DEC-C10-055. La obligatoriedad y aplicabilidad concreta por propiedad no se infiere de esta aceptación; se desarrolla separadamente en `C10_S_PROPERTY_APPLICABILITY_AND_OBLIGATORINESS_MATRIX_DRAFT_001.md`. CMP/PAR/REF/RUL siguen siendo elementos constitutivos del DGP base según DEC-C10-053; la cardinalidad de instancias por clase, los predicados condicionales y NA deben declararse ex ante en IAM. POL permanece fuera del núcleo confirmatorio mínimo. MET-01/MET-02 obligatorios para trazabilidad.
