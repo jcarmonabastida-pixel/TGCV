@@ -1,3 +1,7 @@
+> **SUPERSEDIDA (2026-11-05).** La auditoría MRA-002 corrigió la falsa laguna histórica, pero no cubrió suficientemente la no-regresión de las formulaciones vigentes §§53–130 ni los contratos estadísticos 165–183. La auditoría vigente es C10_S_MASTER_RECONCILIATION_AUDIT_DRAFT_003.md y el plan vigente es Draft 004.
+
+---
+
 # C10-S — Auditoría de alineación del plan con el maestro vigente
 **ID:** C10-S-MRA-002 · **Versión:** Draft 001 · **Fecha:** 2026-11-05  
 **Estado:** AUDITORÍA DOCUMENTAL ASISTIDA / NO INDEPENDIENTE  
