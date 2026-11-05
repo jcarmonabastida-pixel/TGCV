@@ -207,7 +207,7 @@ No se declara cerrado ningún hallazgo. La recuperación del texto no equivale a
 | G3 — Identificación | ITT, θ_A(q), IV/LATE, q/g, vías alternativas | Cada afirmación ligada a estimando y supuestos defendibles |
 | G4 — Contratos | AUD-003…008, INT, S4R, P182/P183 | Fichas completas con PASS/FAIL/INDETERMINATE determinables |
 | G5 — Reproducibilidad cuantitativa | AUD-009…012 y trazabilidad | Parámetros justificados, precisión, hashes, roles y decisiones versionados |
-| G6 — Revisión independiente | XSYNC y auditoría cruzada | Hallazgos resueltos o límites aceptados explícitamente |
+| G6 — Revisión externa/freeze técnico | XSYNC, auditoría cruzada y controles que requieran independencia | Se activa cuando se prepare freeze técnico o claims de reproducibilidad/validación; no bloquea autoauditoría ni apertura web as is |
 | G7 — Freeze documental | Todos los gates anteriores | Aprobación explícita, versión congelada y manifiesto de artefactos |
 
 Orden operativo recomendado:
@@ -219,8 +219,9 @@ Orden operativo recomendado:
 5. Cerrar XAUD-003…006 y el DGP temporal, snapshots, aplicabilidad y ejecución.
 6. Resolver AUD-004…008 y convertir INT/S4R en contratos completos.
 7. Recuperar y cerrar P182/P183, AUD-009…012 y XSYNC.
-8. Realizar auditoría independiente; corregir notación y documentación.
-9. Decidir freeze documental. Solo después, si se solicita expresamente, tramitar autorización separada de implementación/ejecución.
+8. Continuar auditoría interna asistida y corregir notación/documentación; declarar siempre AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT. No exigir R1/R2 para continuar.
+9. Preparar revisión externa cuando se plantee freeze técnico o publicación de claims de reproducibilidad/validación. La web germen as is sigue un gate independiente de transparencia y puede abrir antes del cierre científico, con límites y estados explícitos.
+10. Decidir freeze documental/técnico solo para el alcance que realmente lo requiera. Cualquier implementación/ejecución requiere autorización separada.
 
 ## 10. Criterios de decisión científica y límites
 
@@ -818,3 +819,12 @@ Paquete preparado, revisión no iniciada, sin revisores designados. FCM-01…19 
 | FCM-12 describía de forma ambigua la PK de evaluación | evaluator_record_id singular por fila E1/E2; evaluator_record_ids plural solo en objetos | Armonizado |
 
 Pendiente revisión independiente SR-01…20 y validación ejecutable. FCM-01…20 no se declaran técnicamente cerrados.
+
+
+## 12. Separación de revisión externa y apertura comunitaria *as is* (2026-11-05)
+
+La matriz G6 se interpreta como gate de revisión externa asociado al freeze técnico y a claims de reproducibilidad/validación, no como condición para continuar la autoauditoría asistida ni para publicar una web germen honesta. En la fase actual, el trabajo interno se realiza bajo `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`; no se designan R1/R2 ni se simula independencia.
+
+La apertura web tiene un gate propio de preparación: claridad, coherencia, trazabilidad, estados de evidencia, falsabilidad, criticabilidad, límites, privacidad, seguridad, licencias y atribución. Puede presentar TGCV *as is* sin declarar cierre científico. El playground queda como desarrollo posterior, derivado de los contratos. La comunidad podrá aportar crítica, replicación y propuestas mediante gobernanza versionada.
+
+La matriz G7 de freeze no se convierte en requisito para la apertura web. Ninguna apertura o contribución comunitaria cambia automáticamente el estado científico, Core, claims o autorización de ejecución.
