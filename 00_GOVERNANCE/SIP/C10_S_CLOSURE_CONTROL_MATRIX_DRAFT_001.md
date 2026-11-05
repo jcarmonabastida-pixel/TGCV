@@ -689,3 +689,19 @@ La auditoría concluye compatibilidad potencial, no identificación ni aprobaci�
 | MD-B08 | Cobertura de universo | Abierto | Catálogo finito y cobertura; unknowns propagan Reach/F_alt=? |
 
 El documento de manifiesto contiene PROV-01…12, contratos documentales no ejecutados.
+
+
+## 20. Seguimiento — matriz de cobertura y estados trivalentes
+
+| ID | Punto | Estado | Criterio de cierre |
+|---|---|---|---|
+| GC-01 | Inventario de nodos U_G | Parcial / no verificado | Inventario real con ID, rol, versión, hash, consumidor y evidencia |
+| GC-02 | Grafo de aristas | NONE | Relaciones transitivas, dirección, ventana, cobertura y evidencia |
+| GC-03 | Predicados A_f* | ? | ID/REL/COND/AUTH/RES/DEP/BLOCK evaluados independientemente |
+| GC-04 | Ruta focal Rτ2 | ? | Secuencia completa e identidad/temporalidad verificadas |
+| GC-05 | Alternativa RA12 | ? | Catálogo, contrato, dependencias y conformidad F* verificados |
+| GC-06 | Universo de rutas | No exhaustivo | Frontera, granularidad, H y cobertura de Runknown justificados |
+| GC-07 | Reach_H / F_alt,0 | ? | Reglas trivalentes con cobertura exhaustiva para declarar 0 |
+| GC-08 | Evidencia y cegamiento | NONE | Proveniencia, hash, método, observer, cobertura y error registrados |
+
+La matriz C10_S_GRAPH_COVERAGE_AND_TRIVALENT_EVIDENCE_MATRIX_DRAFT_001.md contiene 23 nodos, 23 aristas, 14 predicados y cinco rutas candidatas.
