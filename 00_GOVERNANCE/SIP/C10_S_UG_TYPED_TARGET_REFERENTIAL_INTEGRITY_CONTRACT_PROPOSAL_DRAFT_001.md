@@ -102,3 +102,10 @@ El usuario acepta la arquitectura de referencias tipadas y la procedencia canón
 ## 10. Addendum DEC-C10-064 — coexistencia con referencias de snapshot
 
 Las FKs tipadas de CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER permanecen separadas de las FKs interobjeto de Opción A. DEC-C10-064 añade claves candidatas compuestas para fijar mismo snapshot en NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT, pero no cambia la regla de exactamente una FK destino tipada ni el ámbito de unicidad de object_record_id por tabla. La matriz física deberá integrar ambos grupos de restricciones sin colisión.
+
+
+## 11. Addendum DEC-C10-065 — independencia de las FKs tipadas frente al pinning de SNAPSHOT
+
+DEC-C10-065 añade el pinning exacto `snapshot_id + snapshot_object_record_id` a las relaciones de pertenencia e interobjeto del grafo y completa la FK SNAPSHOT→NODE raíz. Esta ampliación no altera las seis FKs tipadas de CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER: sus destinos siguen siendo object_record_id UNIQUE por tabla o coverage_scope_id PK/UNIQUE, con exclusividad y concordancia de enum. Las FKs tipadas no sustituyen ni heredan implícitamente el snapshot pinning; el objeto de destino queda identificado por su registro exacto y la evidencia/claim se vincula a ese registro.
+
+U_G §15.4 y crosswalk IAM/FP §9.4 consolidan las columnas y destinos. No se modifica DEC-C10-061. CHECK/FK, integridad de instancia y cardinalidad siguen pendientes de validación técnica.
