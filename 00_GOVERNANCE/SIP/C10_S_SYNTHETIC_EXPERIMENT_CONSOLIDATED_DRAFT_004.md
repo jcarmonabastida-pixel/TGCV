@@ -7589,3 +7589,10 @@ No implica implementación, parser, validación, truth, fixtures, revisión inde
 Se crea `C10_S_ABSTRACT_PARAMETER_AND_SOURCE_DESTINATION_MAPPING_MATRIX_DRAFT_001.md` como desarrollo documental posterior a DEC-C10-054. Define campos contractuales por clave de parámetro, correspondencias C_src→C_dst/M para CMP/PAR/REF/RUL/POL/MET, tratamiento de estados/defaults, conversiones tipadas, predicados candidatos FP-01/02/03 y distinción entre paquete destino declarado, estado realmente aplicado y entorno destino.
 
 La matriz no selecciona claves ni valores reales, no fija obligatoriedad final ni mappings concretos, y no cierra el oráculo. Sus predicados deben reconciliarse con SM-01…SM-10 y el catálogo atómico para evitar duplicidad/doble conteo. No hay truth, fixtures, validación técnica, revisión independiente, evidencia empírica ni ejecución.
+
+
+# 105. Reconciliación SM-01…SM-10 y familias FP (2026-11-05)
+
+Se crea `C10_S_SM_ATOMIC_PROPERTY_FP_RECONCILIATION_DRAFT_001.md` para reconciliar las dimensiones semánticas SM-01…SM-10 con CMP/PAR/REF/RUL/POL/MET y FP-01…FP-08. La reconciliación corrige la matriz inicial separando propiedades compuestas: estructura formal FP-01, integridad relacional FP-02, significado funcional FP-03, compatibilidad FP-04, seguridad FP-05, aplicación FP-06, verificación post-aplicación FP-07 y procedencia FP-08.
+
+No se aprueba aún obligatoriedad/NA ni predicados confirmatorios. Se preserva DEC-C10-053: CMP/PAR/REF/RUL constitutivos; POL condicional; MET de identidad/versión/procedencia obligatorio. No se genera truth ni se ejecuta.
