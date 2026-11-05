@@ -7539,3 +7539,12 @@ El usuario confirma la selección de la clase A: **paquete de configuración de 
 La decisión permite especializar el contrato FP-03 sobre un objeto delimitado y separar explícitamente el contenido migrado de recursos/capacidad, permisos efectivos, dependencias instaladas y estado de los entornos, provisión B, transformación/ejecución y Outcome/Value. No introduce una capa semántica persistida adicional.
 
 **No se cierra:** dominio de entradas, contratos fuente/destino, propiedades atómicas obligatorias, mappings, tolerancias, excepciones, envolvente de observación, F1/F2/A1/A2, oráculo, DGP, D1/D2, estimandos ni identificación causal. No hay implementación, validación técnica, revisión independiente o evidencia empírica. `scientific_execution=false`; `execution_authorized=false`.
+
+
+# 99. Catálogo candidato de propiedades atómicas del objeto (2026-11-05)
+
+Se crea `C10_S_CONFIGURATION_OBJECT_ATOMIC_PROPERTY_CATALOG_DRAFT_001.md`, derivado de DEC-C10-052. Atomiza la estructura seleccionada en candidatos para componentes (CMP), parámetros (PAR), referencias (REF), reglas (RUL), políticas (POL) y metadatos (MET); relaciona las propiedades con SM-01…SM-10 y FP-01…FP-08.
+
+Se explicitan límites para no duplicar integridad, compatibilidad, seguridad, aplicación y procedencia; se mantiene separada la política declarada del permiso efectivo y la dependencia declarada de la instalada.
+
+**Estado:** catálogo candidato, no contrato confirmatorio. Ninguna propiedad se declara obligatoria por aparecer en el catálogo; aplicabilidad y obligatoriedad requieren decisión ex ante. Contratos fuente/destino, dominio, mappings, tolerancias y oráculo permanecen abiertos. Sin validación técnica, revisión independiente, evidencia empírica ni ejecución.
