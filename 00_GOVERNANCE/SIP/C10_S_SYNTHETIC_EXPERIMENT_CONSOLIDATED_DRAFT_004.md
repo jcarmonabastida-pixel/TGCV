@@ -7347,3 +7347,49 @@ MD-C1 y MD-C4 permanecen abiertos: no se ha demostrado que B sea aislada, que A1
 Se crea C10_S_GRAPH_COVERAGE_AND_TRIVALENT_EVIDENCE_MATRIX_DRAFT_001.md. El universo U_G contiene 23 roles de nodos y 23 aristas candidatas; se identifican 14 predicados de accesibilidad/ruta y cinco clases de ruta (focal, alternativa, compartida, externa y desconocida). Este catálogo es un universo candidato de inspección, no un inventario técnico real ni exhaustivo. Todos los estados técnicos siguen ? y cobertura NONE por falta de manifiesto, SBOM, runtime, snapshots y grafo transitivo.
 
 Se separan status estructural, coverage, evidence_status e intención contractual. Ruta=0 exige predicado necesario refutado con evidencia y cobertura; Reach=0 exige descarte de todas las rutas con cobertura exhaustiva; F_alt,0=0 exige descartar todas las rutas funcionalmente substituibles dentro del universo delimitado. Runknown se conserva para evitar inferencia de exhaustividad. Resultado actual: Reach_H=?, F_alt,0=?, A_f*=?; R0/R1 no clasificables y R2 posible pero no observado. MD-C1/2/4 y AUD-005/007 permanecen abiertos. No se ejecuta ni simula.
+
+
+# 82. Contrato de frontera, granularidad e inventario de U_G (2026-11-05)
+
+**Fuente:** C10_S_SYSTEM_BOUNDARY_AND_GRAPH_GRANULARITY_CONTRACT_DRAFT_001.md. **Estado:** DRAFT; integración documental, no aprobación científica.
+
+## 82.1. Alcance y precedencia
+
+Esta sección desarrolla U_G de §81 sin convertir el catálogo candidato (23 roles de nodo, 23 aristas, 14 predicados y cinco clases de ruta) en inventario observado ni en prueba de exhaustividad. Se reutilizan los contratos de identidad/snapshot (§72), Reach y propagación trivalente (§73), inventario finito (§74), predicados por tiempo/rama (§76), manifiesto B (§80) y matriz de cobertura (§81). No los sustituye ni redefine sus objetos.
+
+## 82.2. Frontera y granularidad
+
+Un elemento se representa como nodo independiente cuando difiere materialmente en intervención/cambio, identidad o versión, fallo/sustitución, interfaz, permisos, recursos, exposición causal, ruta afectada o fuente de evidencia. No se separa por nombre, archivo, hash o paquete sin diferencia funcional/causal relevante. La agregación solo es admisible si no oculta vías diferenciales, dependencias compartidas ni rutas alternativas; ante duda, separar provisionalmente o marcar ?.
+
+Cada arista debe registrar origen/destino, tipo y dirección, tiempo, condición, brazos afectados, versión, evidencia, cobertura y necesidad para la ruta. Se distinguen dependencias directas, transitivas, compartidas y críticas compartidas. La independencia respecto de B requiere análisis transitivo y evidencia pre/post; separar procesos o runtimes no basta.
+
+## 82.3. Alternativas, externos y recursos
+
+Una ruta solo es funcionalmente substituible respecto de F* si parte de entrada admisible común y satisface el mismo criterio independiente bajo C0, G, H, restricciones y tolerancias equivalentes, con cobertura y evidencia suficientes. Un éxito aislado o etiqueta similar no basta. F_alt,0=0 exige descartar todas las rutas substituibles dentro del universo delimitado.
+
+Los servicios fuera de la frontera de control se registran como externos, con interfaz, versión, permisos, disponibilidad, latencia, cuotas, dependencias, observabilidad y exposición a B. Los servicios opacos se representan como cajas negras/nodos desconocidos; la opacidad no prueba ausencia de vías colaterales.
+
+Se separan capacidad instalada, disponibilidad compartida temporal, reserva/asignación por unidad/ruta y consumo durante ejecución. Los tres primeros niveles pueden ser condiciones de accesibilidad según el reloj causal; el consumo de ejecución no se retrotrae a accesibilidad basal.
+
+## 82.4. Versiones, cobertura y estados
+
+Hash/build distinto no implica TID distinta. Un cambio es material si afecta función, contrato entrada/salida, precondiciones, composición, permisos, recursos, fallos o criterio de resultado relevantes para las rutas/estimandos. La continuidad incierta queda ?.
+
+La cobertura se informa por componentes, dependencias directas y transitivas/carga dinámica, interfaces, datos/estado, permisos, recursos, alternativas, externos, tiempo/versiones, observabilidad y adjudicación. COMPLETE solo significa cobertura suficiente del universo operativo declarado, siempre acotado por frontera, versión, contexto y horizonte; no exhaustividad ontológica absoluta. MISSING/NO INVENTARIADO no equivale a 0; PARTIAL no equivale a COMPLETE.
+
+## 82.5. Protocolo de inventario
+
+1. Declarar frontera, unidad, microdominio/F*, S0, G, C0, H/ventanas, versiones, recursos, permisos y periodo; si no están fijados, el inventario es preliminar.
+2. Definir snapshots inmutables baseline/post-B/rollback con fecha, origen, hash y limitaciones.
+3. Reunir manifiestos, lockfiles/SBOM, análisis estático, configuración, carga dinámica, llamadas, permisos, trazas y documentación de proveedor; ninguna fuente aislada acredita completitud universal.
+4. Normalizar nodos/aristas versionados, calcular cierre transitivo, registrar ciclos, resolución dinámica, fallbacks y dependencias desconocidas.
+5. Enumerar rutas focales, alternativas, nativas, manuales, externas, compartidas y de recuperación; evaluarlas contra F* común.
+6. Comparar snapshots y comportamiento pre/post-B/rollback, incluidos residuos y efectos sobre alternativas, permisos, recursos y estado.
+7. Obtener clasificación independiente de nodos, aristas, rutas y cobertura, ciega a Outcome/Value; conservar discrepancias y adjudicación.
+8. Para cada ?, registrar fuente faltante, impacto, posible resolución y condición de parada.
+
+Este protocolo define evidencia requerida; no autoriza inspección de sistemas reales, instalación, ejecución ni captura de snapshots.
+
+## 82.6. Estado y consecuencias
+
+No existe aún inventario técnico real. Dependencias directas/transitivas, endpoints externos, recursos compartidos y cambios materiales siguen sin observarse; la independencia A1/A2 respecto de B no está demostrada. La cobertura efectiva permanece NONE donde no hay fuentes inspeccionadas. A_f*, F_alt,0 y Reach_H siguen ?. No se cierra MD-C1…6, AUD-005/007/010/011 ni OPEN-C10-001/003/005/007; tampoco se decide D1/D2, q*, G/H, Value o dimensionamiento. No hay freeze ni autorización de implementación, simulación o ejecución.
