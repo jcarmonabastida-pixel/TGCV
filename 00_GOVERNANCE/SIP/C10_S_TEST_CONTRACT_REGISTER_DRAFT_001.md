@@ -238,9 +238,11 @@ Las fichas siguientes se transcriben de las tablas de aceptación de la fuente c
 La fuente especifica que las pruebas son propuestas, no ejecutadas. La sección 183 exige dictámenes separados para ITT sobre O, ITT por dimensión de V, efecto mediado por A, LATE sobre V, efecto residual e índice agregado si se utiliza; no debe emitirse un único dictamen global que oculte diferencias de identificación.
 
 
-## 14. Contrato candidato D1/D2 y primera etapa focal
+## 14. Contrato D2 primario candidato / D1 secundario y primera etapa focal
 
-| Elemento | D1 principal condicionado | D2 contraste |
+**Precedencia vigente por DEC-C10-066:** D2 es el escenario primario candidato; D1 es el escenario secundario. Esta precedencia no aprueba todavía el comparador, sus parámetros ni la identificación causal. Los valores de la tabla son objetivos candidatos del DGP, no resultados validados.
+
+| Elemento | D1 secundario | D2 primario candidato |
 |---|---:|---:|
 | C_dep,base | 0 | 0 |
 | P(C_dep,post=1 dado Z=0) | .20 | 0 |
@@ -553,7 +555,7 @@ Estado: contratos documentales; no implementados ni ejecutados.
 | CMP-10 | Invariantes de política | Módulo, hash, protocolo, actor, recursos por intento y verificación son comparables según escenario |
 | CMP-11 | Crossover | Recepción fuera de política/version se distingue de provisión ordinaria asignada |
 | CMP-12 | Efecto de paquete | Vías colaterales impiden atribución exclusiva a accesibilidad |
-| CMP-13 | Selección primaria | D1 requiere justificación de régimen ordinario; D2 requiere justificación del objetivo ausencia-vs-provisión |
+| CMP-13 | Precedencia y legitimidad | D2 ya está aceptado como primario candidato por DEC-C10-066; su legitimidad exige verificar el objetivo ausencia-vs-provisión y la ausencia de provisión focal de fondo. D1 queda secundario y requiere justificar el régimen ordinario si se conserva como comparador interpretable |
 | CMP-14 | No ejecución anticipada | Sin aceptación y gates no hay freeze, implementación, simulación ni ejecución |
 
 Estado: contratos documentales; no implementados ni ejecutados.
@@ -666,9 +668,9 @@ Estos son contratos especificados documentalmente; no se han generado fixtures n
 | FSTAR-04 | Ruta accesible pero no aplicable desde S0 | Juicios separados de accesibilidad y aplicabilidad | Inferir aplicabilidad desde accesibilidad |
 | FSTAR-05 | Ruta supera H o viola restricción de seguridad | No substituible dentro de F*/H/C0 definidos | Afirmar imposibilidad universal |
 | FSTAR-06 | Evaluador conoce O/V o Z | Clasificación inválida por falta de cegamiento | Usar resultados para definir F* o alternativas |
-| CMP-15 | D1 justificado por fuente independiente .25/.20 | D1 puede considerarse para selección primaria tras decisión | Aceptar D1 solo por etiqueta “ordinario” |
+| CMP-15 | D1 justificado por fuente independiente .25/.20 | D1 puede considerarse un comparador secundario incremental legítimo; no desplaza la precedencia D2 de DEC-C10-066 | Aceptar D1 como primario o tratar .25/.20 como realidad sin fuente |
 | CMP-16 | D1 sin justificación externa | D1 permanece no validado como comparador ordinario | Tratar .25/.20 como realidad del dominio |
-| CMP-17 | D2 con ausencia de provisión focal de fondo verificada | D2 puede considerarse para objetivo ausencia-vs-provisión | Asumir ausencia por diseño sin verificar fondo |
+| CMP-17 | D2 con ausencia de provisión focal de fondo verificada | Satisface un requisito de legitimidad del comparador D2 primario candidato; no equivale a validar parámetros ni identificación | Asumir ausencia por diseño sin verificar fondo |
 | CMP-18 | D1/D2 con diferentes first stages/compliers | Reporte y dictamen separados | Agrupar o transportar LATE |
 
 Estos contratos son especificaciones documentales; no se han generado fixtures ni ejecutado pruebas. Para cerrar AUD-003 deben añadirse entradas, salidas, verdad oculta, versiones, tolerancias, oráculos y revisión independiente.
