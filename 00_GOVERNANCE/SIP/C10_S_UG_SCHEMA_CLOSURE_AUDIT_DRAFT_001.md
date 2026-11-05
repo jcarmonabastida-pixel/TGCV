@@ -94,9 +94,9 @@ Los registros de vínculo, evaluación y adjudicación utilizan `object_type + o
 
 ### UG-SCH-07 — alcance de unicidad de object_record_id y supersedes_record_id
 
-**Severidad:** MEDIA · **Estado:** PROPOSAL_CREATED; acceptance pending.
+**Severidad:** MEDIA · **Estado:** ACCEPTED_DOCUMENTALLY — DEC-C10-062; physical validation pending.
 
-Se crea `C10_S_UG_RECORD_ID_VERSION_AND_SUPERSESSION_CONTRACT_PROPOSAL_DRAFT_001.md`. Propone `object_record_id` UNIQUE por tabla (no global); `object_version` entero positivo y secuencial por identidad semántica; `supersedes_record_id` autorreferente a la misma tabla, misma identidad y versión inmediatamente anterior; cadena lineal, sin bifurcaciones/ciclos ni reescritura histórica. Distingue record-time de tiempo de observación y mantiene SNAPSHOT→NODE fijado a la versión exacta. No se modifica aún la plantilla: requiere aceptación del usuario y posterior reconciliación estática.
+DEC-C10-062 acepta el contrato `C10_S_UG_RECORD_ID_VERSION_AND_SUPERSESSION_CONTRACT_PROPOSAL_DRAFT_001.md`. La plantilla U_G incorpora el complemento normativo §12.12. Se fijan unicidad de `object_record_id` por tabla; `object_version` INT positivo, contiguo por identidad semántica; `supersedes_record_id` autorreferente al predecesor inmediato de la misma tabla/identidad; cadena lineal e historial inmutable; distinción record-time/observación; y SNAPSHOT→NODE fijado a versión exacta. Constraints, parser y validación física permanecen pendientes.
 
 ### UG-SCH-08 — estados de SNAPSHOT y boundary_class
 
@@ -128,7 +128,7 @@ La fila de esquema de SNAPSHOT usa `observed_state=NA`, mientras que el contrato
 | semantic_role / nodo raíz | ACCEPTED_DOCUMENTALLY (DEC-C10-060); physical validation pending |
 | Procedencia y CLAIM_EVIDENCE_LINK | ACCEPTED_DOCUMENTALLY (DEC-C10-061); physical validation pending |
 | FK polimórficas | ACCEPTED_DOCUMENTALLY (DEC-C10-061); physical validation pending |
-| Unicidad/versionado/supersedes | PROPOSAL_CREATED; acceptance pending |
+| Unicidad/versionado/supersedes | ACCEPTED_DOCUMENTALLY — DEC-C10-062; physical validation pending |
 | Parser, tipos, dominios y constraints | NOT_ASSESSED |
 | Seguridad, custodia y permisos | NOT_ASSESSED |
 | Inventario real, evidencia y cobertura | NONE / NOT_STARTED |
@@ -185,3 +185,8 @@ La segunda pasada detectó y corrigió dos residuos editoriales: (1) §10.5 aún
 ## 12. Propuesta UG-SCH-07 — 2026-11-05
 
 Se creó `C10_S_UG_RECORD_ID_VERSION_AND_SUPERSESSION_CONTRACT_PROPOSAL_DRAFT_001.md`. La propuesta distingue identidad semántica, identidad de registro y versión de registro; define unicidad por tabla, versión positiva secuencial y supersession inmediato dentro de la misma tabla/identidad. No hay aceptación, freeze ni validación física. UG-SCH-07 sigue abierto; el esquema global continúa SCHEMA_NOT_CLOSED.
+
+
+## 13. Aplicación de DEC-C10-062 — 2026-11-05
+
+DEC-C10-062 queda ACCEPTED DOCUMENTALLY. La plantilla U_G contiene §12.12 con las reglas de identidad de registro, secuencia de versiones, supersession lineal e inmutabilidad. UG-SCH-07 queda aceptado documentalmente; no validado físicamente. El dictamen global permanece SCHEMA_NOT_CLOSED hasta completar revisión integral y gate técnico. No hay freeze ni ejecución científica.
