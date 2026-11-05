@@ -105,3 +105,8 @@ Reglas:
 
 `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`.  
 `scientific_execution=false`; `execution_authorized=false`.
+
+ 
+## 7. Aceptación — DEC-C10-060 (2026-11-05)
+
+El usuario acepta el vocabulario controlado de 16 valores, la separación entre `parent_catalog_id`, `semantic_role` y `boundary_class`, el crosswalk no uno-a-uno N01–N23 y las reglas del nodo raíz lógico. El contrato queda ACCEPTED_DOCUMENTALLY bajo DEC-C10-060. Esta aceptación no equivale a implementación física ni validación del esquema. Se mantienen los límites de §6.
