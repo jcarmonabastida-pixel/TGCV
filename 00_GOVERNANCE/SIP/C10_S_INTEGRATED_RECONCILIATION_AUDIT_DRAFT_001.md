@@ -165,3 +165,11 @@ Esta auditoría resuelve las contradicciones editoriales y de precedencia identi
 Las referencias de §§3.8, 5 y 7 a revisión independiente externa como condición para aceptar o cerrar el diseño quedan supersedidas para la continuidad científica actual. Prevalecen el maestro C10-S §130, Closure Control Matrix §12 y Test Contract Register §§54–55: AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT; R1/R2 no son condición de avance ni de ejecución sintética autorizada.
 
 El evaluador independiente de la arquitectura es un rol computacional separado del analizador, con acceso a truth solo tras congelar su salida. No se afirma revisión humana independiente. La arquitectura causal y las decisiones abiertas de esta auditoría no cambian por este addendum.
+
+## 12. Supersesión de precedencia por DEC-C10-066 (2026-11-06)
+
+La recomendación histórica de §3.3 y las filas R-03/estado residual que dejaban D1 como principal condicionado, D2 como contraste o la selección primaria abierta quedan supersedidas únicamente en la precedencia del comparador. El estado operativo vigente es: **D2 primario candidato; D1 secundario**, conforme a DEC-C10-066.
+
+Se mantienen las definiciones, probabilidades candidatas, distinción de intento/éxito/estado final y requisitos de legitimidad. D2 exige comprobar ausencia basal y ausencia de provisión focal de fondo; D1 requiere justificación independiente del régimen ordinario para interpretar su contraste incremental. No se validan s=.80, p0/p1 ni las primeras etapas. ITT, primeras etapas y LATE siguen siendo específicos de cada escenario.
+
+La decisión no cierra estimandos, q*, población, soporte, vías colaterales, exclusión, medición ni identificación. No autoriza freeze, implementación, simulación ni ejecución.
