@@ -261,8 +261,8 @@ E1 y E2 deben emitir registros independientes antes de conocer la clasificación
 ### 12.5. Registro de discrepancia y adjudicación (ADJUDICATION_REGISTER)
 
 | adjudication_id | object_type (NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_SCOPE) | target_node_record_id (FK nullable) | target_edge_record_id (FK nullable) | target_route_record_id (FK nullable) | target_predicate_record_id (FK nullable) | target_snapshot_record_id (FK nullable) | target_coverage_scope_id (FK nullable) | evaluator_record_E1 (FK) | evaluator_record_E2 (FK) | disagreement_type | adjudicator_id | decision (1/0/?/NA) | rule_and_reason | minority_position | unresolved_limitations | timestamp |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|
 
 No se permite majority-vote automático. Si no se resuelve el conflicto con evidencia y regla aplicable, decisión final ?.
 
