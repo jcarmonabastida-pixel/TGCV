@@ -1143,3 +1143,12 @@ La propuesta define criterios de inclusión/exclusión y casos límite (endpoint
 **Estado:** propuesta no aceptada ni congelada. Pendiente decisión P0/P1/P2 y concreción de servicio lógico, deployment manifests/variables, secretos, datos persistentes, servicios externos opacos, snapshots y unidad experimental. No hay inventario real, IAM instanciado, truth, fixtures, validación, instalación, simulación ni ejecución.
 
 **Siguiente paso tras aceptación:** convertir la arquitectura de frontera en un contrato de clasificación por elemento y preparar el formulario de inventario para el dominio, manteniendo los registros técnicos en ?/NONE hasta disponer de evidencia autorizada.
+
+
+# L. DEC-C10-057 y especialización de unidad lógica (2026-11-05)
+
+Se acepta la arquitectura P0/P1/P2 y la regla de clasificación semántica (DEC-C10-057). P0 contiene la configuración declarativa migrable; P1 la realización/estado técnico de los entornos; P2 es la frontera causal transversal. La aceptación no clasifica automáticamente todos los elementos concretos ni implica inventario o freeze.
+
+Se crea `C10_S_LOGICAL_SERVICE_UNIT_AND_BOUNDARY_CLASSIFICATION_PROPOSAL_DRAFT_001.md`, con definición candidata de servicio lógico, criterios de inclusión, clasificación campo a campo de deployment manifests y variables, tratamiento de secretos/datos persistentes/migraciones de esquema, servicios opacos, mapping, sidecar B y oráculo. Sigue pendiente de decisión y de reconciliación con unidad de aleatorización/interferencia.
+
+**Siguiente paso:** revisar la definición de servicio lógico y resolver los casos de frontera para aprobar la unidad candidata antes de construir el IAM de inventario.
