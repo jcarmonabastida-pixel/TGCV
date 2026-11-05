@@ -1274,3 +1274,10 @@ Se revisó de nuevo la plantilla U_G frente a DEC-C10-059…062, los contratos d
 La revisión identifica UG-SCH-10 (OPEN / DESIGN_RECONCILIATION_REQUIRED): falta un vínculo relacional explícito de NODE/EDGE/ROUTE/PREDICATE a snapshot_id y pinning inequívoco de EDGE→NODE, ROUTE→NODE/EDGE y PREDICATE→ROUTE a object_record_id/versiones concretas. Timestamp y coverage_scope_id no bastan para demostrar esa pertenencia. Antes de alterar columnas o cardinalidades, se debe comparar alternativas de pertenencia y referencias versionadas, preservando snapshots inmutables e identidad semántica. No se ha elegido solución ni añadido tabla/campo.
 
 La auditoría mantiene SCHEMA_NOT_CLOSED. No se ejecutaron validadores, parser, constraints, fixtures, simulaciones ni experimentos; `scientific_execution=false`; `execution_authorized=false`.
+
+
+# LXV. Comparación de alternativas para UG-SCH-10 (2026-11-05)
+
+Se crea `C10_S_UG_SNAPSHOT_MEMBERSHIP_AND_VERSIONED_GRAPH_REFERENCES_OPTIONS_DRAFT_001.md`. La propuesta compara cuatro vías: A) registros de grafo ligados directamente a snapshot y versionado observacional, con ROUTE_STEP; B) relación SNAPSHOT_MEMBER normalizada, más bindings de extremos y ROUTE_STEP; C) manifiesto serializado; D) inferencia por timestamp/coverage/última versión. C y D se descartan como esquema canónico por falta de integridad referencial inequívoca. A se recomienda provisionalmente por ajuste a los registros observacionales actuales y menor complejidad que B, pero exige definir object_version como versión del registro de observación y resolver la FK circular SNAPSHOT↔NODE raíz. B permanece alternativa si la reutilización de la misma fila inmutable entre snapshots es requisito esencial.
+
+No se ha aceptado una opción ni modificado la plantilla. UG-SCH-10 sigue OPEN; no se alteran DEC-C10-059…062. Próximo paso: decisión del usuario sobre la alternativa y, si se elige A, cerrar explícitamente sus dos condiciones estructurales antes de propagar cambios de esquema. No se ejecutan validadores, parser, constraints, fixtures, simulaciones ni experimentos; `scientific_execution=false`; `execution_authorized=false`.
