@@ -487,3 +487,22 @@ DEC-C10-050 es reconciliación documental, no aprobación/freeze del esquema ni 
 La decisión no modifica la estructura conceptual de seis elementos de DEC-C10-052: POL sigue perteneciendo al objeto conceptual, aunque no sea constitutivo del escenario base. La ausencia de políticas migrables deberá declararse ex ante, nunca inferirse después de observar resultados.
 
 **No cierra:** gramática, dominios de tipos/parámetros, cardinalidad/direccionalidad, semántica ausencia/null/default, mappings, tolerancias, oráculo ni DGP completo. No hay truth, fixtures, validación técnica, revisión independiente, evidencia empírica ni autorización de ejecución.
+
+
+## 48. Perfil finito de dominios y complejidad de reglas — DEC-C10-054 (2026-11-05)
+
+**Decisión explícita:** el usuario aprueba el perfil estructural de dominios finitos por clave y el presupuesto de complejidad del DGP base propuesto en `C10_S_FINITE_DOMAIN_AND_RULE_COMPLEXITY_PROFILE_PROPOSAL_DRAFT_001.md`:
+- dominios finitos declarados por clave/parámetro, sin imponer rangos universales arbitrarios;
+- BOOL binario; INT finito o intervalo entero cerrado; DECIMAL escalado con precisión/redondeo explícitos; ENUM y REF cerrados/versionados; STRING acotado y normalización explícita;
+- distinción ABSENT/NULL/DEFAULT/VALUE y separación de DEFAULT_DECLARED, DEFAULT_INHERITED y DEFAULT_ENV_RESOLVED;
+- AST declarativo acíclico, sin bucles, recursión, macros, llamadas externas, I/O, reloj real ni efectos laterales;
+- operadores tipados EQ/NEQ/LT/LE/GT/GE/IN/NOT_IN, predicados de estado y referencia; composición NOT/AND/OR con precedencia declarada;
+- límites de complejidad: profundidad máxima 4, 16 átomos por regla y 16 reglas por paquete;
+- efectos del núcleo limitados a REQUIRE/FORBID; SELECT_ENUM_VALUE queda fuera del núcleo confirmatorio y reservado a extensión separada;
+- UNKNOWN no se convierte silenciosamente en TRUE/FALSE; propagación a F* conforme al perfil aprobado.
+
+**Alcance y reservas:** se aprueba el perfil estructural y los límites 4/16/16 como presupuesto inicial, no su calibración empírica. No se aprueban todavía límites numéricos, escalas, catálogos, longitudes o valores concretos por clave: deberán derivarse del contrato abstracto y quedar declarados ex ante. Tampoco se cierra la política de conflictos entre reglas, mapping completo, tolerancias ni oráculo.
+
+**No implica:** gramática implementada; parser validado; contrato fuente/destino cerrado; FP-01/02/03 cerrados; truth, fixtures o datos generados; revisión independiente; evidencia empírica; ejecución autorizada; freeze del DGP o cambio de main. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
+
+**Siguiente trabajo:** construir el contrato abstracto de parámetros por clave y la matriz de correspondencias C_src→C_dst/M, vinculando cada predicado con FP-01 (estructura/tipos), FP-02 (integridad relacional) y FP-03 (preservación semántica), con regla de predicado primario para evitar doble conteo.
