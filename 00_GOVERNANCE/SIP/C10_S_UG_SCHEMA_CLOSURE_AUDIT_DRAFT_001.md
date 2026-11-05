@@ -70,19 +70,19 @@ El contrato de DEC-C10-059 exige que el NODE destino de SNAPSHOT tenga `semantic
 
 ### UG-SCH-04 — source_provenance: conflicto entre §10.6 y §12.7
 
-**Severidad:** MEDIA · **Estado:** PROPOSAL_CREATED; acceptance pending.
+**Severidad:** MEDIA · **Estado:** ACCEPTED_DOCUMENTALLY (DEC-C10-061); physical validation pending.
 
-El §10.6 declara `source_provenance` obligatorio en todas las tablas de registro. El esquema normalizado §12.7 no lo incluye entre los campos comunes de las cinco tablas de objetos y §12.1 lo registra canónicamente en EVIDENCE_REGISTER.
+El §10.6 lo declaraba como campo común, mientras §12.1 ya lo registra canónicamente en EVIDENCE_REGISTER. DEC-C10-061 resuelve la discrepancia: la procedencia se normaliza en EVIDENCE_REGISTER y se enlaza mediante CLAIM_EVIDENCE_LINK; no se duplica en las tablas de objetos.
 
-**Corrección requerida:** elegir y documentar una sola regla. Recomendación: mantener la procedencia completa en EVIDENCE_REGISTER, enlazada mediante CLAIM_EVIDENCE_LINK; no duplicarla como texto libre en cada fila de objeto. Si se necesita una referencia de procedencia directa, definirla como campo de navegación tipado, no como segundo expediente. Esta aclaración no debe debilitar la obligación de procedencia de cada afirmación observada.
+**Resolución DEC-C10-061:** source_provenance es canónica en EVIDENCE_REGISTER; cada afirmación observada enlaza a evidencia mediante CLAIM_EVIDENCE_LINK. La procedencia no se elimina ni se debilita; se evita duplicación textual.
 
 ### UG-SCH-05 — CLAIM_EVIDENCE_LINK: destino de cobertura no resuelto
 
-**Severidad:** ALTA · **Estado:** PROPOSAL_CREATED; acceptance pending.
+**Severidad:** ALTA · **Estado:** ACCEPTED_DOCUMENTALLY (DEC-C10-061); physical validation pending.
 
 §12.10 atribuye a COVERAGE_REGISTER vínculos claim-evidence 0..n. Sin embargo, CLAIM_EVIDENCE_LINK.claim_target_id se define como `object_record_id`, mientras que COVERAGE_REGISTER tiene `coverage_scope_id` como clave y no contiene `object_record_id`.
 
-**Corrección requerida:** definir cómo se enlazan afirmaciones de cobertura: o bien `claim_target_type=COVERAGE_SCOPE` con `claim_target_id=coverage_scope_id`, o bien mediante un objeto de registro versionado explícito. La elección debe ser consistente con el dominio de claim_target_type y con las reglas de integridad.
+**Resolución DEC-C10-061:** se incorpora `claim_target_type=COVERAGE_SCOPE` y la FK tipada `target_coverage_scope_id → COVERAGE_REGISTER.coverage_scope_id`, con exclusividad exactamente-una respecto de las otras cinco FKs.
 
 ### UG-SCH-06 — FK polimórficas de CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER
 
@@ -90,7 +90,7 @@ El §10.6 declara `source_provenance` obligatorio en todas las tablas de registr
 
 Los registros de vínculo, evaluación y adjudicación utilizan `object_type + object_record_id` para identificar objetos de varias tablas. El contrato indica “FK tipada”, pero no especifica un mecanismo de integridad referencial que garantice que la pareja resuelva a una y solo una tabla/registro válido, ni los dominios cerrados de object_type/claim_target_type.
 
-**Corrección requerida:** definir explícitamente una de estas estrategias: (a) FK específicas por tipo y restricciones de exclusividad; (b) registro/supertipo común de objetos con clave global; o (c) otro mecanismo formal equivalente. La solución debe incluir COVERAGE_REGISTER si se le atribuyen vínculos. No declarar integridad física resuelta antes de especificar el mecanismo.
+**Resolución DEC-C10-061:** se elige estrategia de seis FKs específicas por tipo y restricciones de exclusividad/coherencia enum en CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER. La integridad es definida documentalmente, no implementada ni validada físicamente.
 
 ### UG-SCH-07 — alcance de unicidad de object_record_id y supersedes_record_id
 
@@ -177,3 +177,8 @@ Se creó `C10_S_UG_TYPED_TARGET_REFERENTIAL_INTEGRITY_CONTRACT_PROPOSAL_DRAFT_00
 ## 11. Actualización — DEC-C10-061 (2026-11-05)
 
 UG-SCH-04, UG-SCH-05 y UG-SCH-06 quedan ACCEPTED_DOCUMENTALLY por decisión explícita DEC-C10-061. La plantilla incorpora procedencia canónica en EVIDENCE_REGISTER y FKs tipadas exclusivas para CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER, incluyendo COVERAGE_SCOPE. Se requiere exactamente una FK de destino no nula y coherencia con el enum de tipo. object_record_id debe ser UNIQUE por tabla de objeto y coverage_scope_id PK/UNIQUE. La plantilla se modificó documentalmente; constraints, parser, unicidad y pruebas negativas no están implementados ni validados. UG-SCH-07 permanece OPEN. Dictamen global: SCHEMA_NOT_CLOSED.
+
+
+## 12. Corrección de consistencia post-aceptación — 2026-11-05
+
+La segunda pasada detectó y corrigió dos residuos editoriales: (1) §10.5 aún mencionaba source_provenance como columna de objeto, aunque DEC-C10-061 la normaliza en EVIDENCE_REGISTER; (2) la lista §12.8 conservaba una secuencia literal `\\n` que había concatenado las reglas SNAPSHOT/boundary_class. Se separaron las reglas y se renumeraron. También se igualaron las anchuras de las filas ilustrativas de CLAIM_EVIDENCE_LINK (15 columnas), EVALUATOR_ASSESSMENT (18) y ADJUDICATION_REGISTER (18). Esta es una comprobación estática de Markdown, no validación física.
