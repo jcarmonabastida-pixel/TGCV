@@ -446,3 +446,10 @@ DEC-C10-048 es una corrección documental, no validación ejecutable ni aprobaci
 Se crea C10_S_UG_SCHEMA_INDEPENDENT_REVIEW_CHECKLIST_DRAFT_001.md, que define SR-01…20, perfiles R1/R2, independencia, cegamiento, procedimiento y dictamen. La revisión está preparada pero NO INICIADA. No se designan revisores ni se declara aceptabilidad del esquema. FCM-01…19 y XSYNC-138-01 permanecen abiertos; el freeze y la selección del microdominio quedan condicionados a revisión y validación pertinentes.
 
 DEC-C10-049 es registro de preparación documental; no autoriza parser, validación ejecutable, inspección, simulación o experimento.
+
+
+## 44. Cardinalidad de evidence_ref y evaluación independiente — DEC-C10-050
+
+Se decide como convención documental candidata: evidence_ref en objetos admite cero o un vínculo de navegación opcional; CLAIM_EVIDENCE_LINK conserva la relación completa 0..n, también por evaluador/adjudicador. EVALUATOR_ASSESSMENT conserva evaluator_record_id singular por fila; evaluator_record_ids plural en objetos es solo una vista/resumen opcional. Se corrige FCM-12 y se registra FCM-20.
+
+DEC-C10-050 es reconciliación documental, no aprobación/freeze del esquema ni validación ejecutable.
