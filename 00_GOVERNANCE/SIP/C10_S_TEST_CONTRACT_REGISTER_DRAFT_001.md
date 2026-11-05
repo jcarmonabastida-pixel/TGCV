@@ -949,3 +949,20 @@ Contratos de revisión documental. No son tests de software ni se han ejecutado.
 | UGE-08 | Desacuerdo 1 vs 0 | Tercer adjudicador; conservar opiniones y, si no se resuelve, ? |
 
 Contratos documentales de revisión; no implementados ni ejecutados.
+
+
+## 47. Contratos de revisión del esquema normalizado — FCM-01…09
+
+| ID | Caso de revisión | Resultado esperado |
+|---|---|---|
+| FCM-01 | evidence_ref huérfano | Rechazar registro sin cadena claim-evidence-evidence válida |
+| FCM-02 | evidencia de otra unidad/versión/tiempo | No aceptar como soporte sin justificación de transportabilidad |
+| FCM-03 | COMPLETE sin denominador | Rechazar estado COMPLETE |
+| FCM-04 | E1/E2 comparten clasificación antes de registrar | Detectar pérdida de independencia; conservar evaluaciones separadas |
+| FCM-05 | Desacuerdo 1 vs 0 | Requerir adjudicador y preservar opinión minoritaria |
+| FCM-06 | truth DGP accesible al analizador | Rechazar paquete; truth segregada fuera de superficie analítica |
+| FCM-07 | route_subtype usado como clase U_G | Rechazar; exigir parent_route_class |
+| FCM-08 | Tabla de objeto sin campos comunes | Rechazar instancia incompleta |
+| FCM-09 | Revisión sobrescribe versión previa | Rechazar; exigir supersedes_record_id y conservar historial |
+
+Contratos documentales de revisión. No son validadores implementados ni pruebas ejecutadas.
