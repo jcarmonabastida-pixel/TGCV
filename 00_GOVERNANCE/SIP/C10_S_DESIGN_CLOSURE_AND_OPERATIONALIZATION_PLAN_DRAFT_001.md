@@ -1183,3 +1183,12 @@ No se recrea una plantilla ni se amplía el inventario por duplicado. Se crea `C
 Se realiza auditoría documental contra contratos históricos. El overlay general es compatible con U_G y DEC-C10-055, pero requiere correcciones antes de modificar la plantilla: predicados primarios/secundarios por propiedad; FP-07 post-aplicación; FP-08 separado como procedencia/reproducibilidad; no introducir CONTAINS_FIELD; resolver atributos overlay frente a columnas existentes; separar C_dst^decl, C_dst^applied, E_dst y M.
 
 Artefacto: `C10_S_IAM_FP_EDGE_CROSSWALK_AUDIT_DRAFT_001.md`. La auditoría es auto-revisión asistida no independiente. No se ejecutan validadores ni se instancian nodos/aristas. Próxima operación: aplicar correcciones al overlay y producir field-to-column crosswalk mínimo; solo después decidir si la plantilla U_G necesita cambios.
+
+
+# LIV. Crosswalk de atributos IAM a esquema U_G (2026-11-05)
+
+Tras la auditoría FP/EDGE se ha contrastado cada atributo propuesto del overlay con U_G §§2–6 y 10–12. La mayoría se representa mediante columnas/relaciones existentes: NODE raíz + SNAPSHOT.unit_id para unidad lógica; semantic_role para object_scope; notes/unknowns para rationale; confidentiality/access_ref en EVIDENCE_REGISTER para sensibilidad; parent_catalog_id para linaje de catálogo. P2 permanece como frontera causal transversal.
+
+Se identifica una única extensión candidata clara: NODE.boundary_class (P0_CONFIG/P1_ENVIRONMENT/DUAL_P0_P1), sin sobrecargar NODE.class ni semantic_role. No se modifica la plantilla. Documento: `C10_S_IAM_FIELD_TO_COLUMN_CROSSWALK_PROPOSAL_DRAFT_001.md`.
+
+**Decisión pendiente del usuario:** aceptar/rechazar la extensión NODE.boundary_class y su dominio/restricciones. También queda pendiente cerrar la FK entre SNAPSHOT.unit_id y NODE.node_id. No se ha añadido schema ni se han instanciado filas.
