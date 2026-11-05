@@ -965,3 +965,12 @@ Solicitar/registrar decisión explícita sobre la regla propuesta; después, si 
 El usuario acepta explícitamente la regla de evidencia y cardinalidad. Se armonizan plantilla §11/§12.11, protocolo §§10/13/17, Test Contract Register §§52–53, autoauditoría y maestro (§93). UG-SR-A01 queda **resuelto documentalmente**; SR-03 permanece CONDITIONAL por validación técnica pendiente. No se han ejecutado parser, FK, constraints ni pruebas, y no hay freeze ni revisión independiente.
 
 **Siguiente paso del plan:** iniciar reconciliación de los contratos de objeto y el catálogo U_G para F1/F2/A1/A2 y F*. Primero recuperar sus definiciones canónicas, requisitos funcionales, precondiciones, entradas/salidas, restricciones, horizonte, granularidad, contexto y reglas de identidad/versionado ya presentes en el maestro y contratos; contrastarlas con los campos de NODE/EDGE/ROUTE/PREDICATE y el inventario U_G. No inventariar componentes técnicos ni asignar estados 0/1/? sin evidencia. Mantener la distinción entre catálogo de inspección y sistema real. No ejecutar inspección, implementación, simulación ni experimento.
+
+
+# XXXIII. Propuesta de F* y fichas F1/F2/A1/A2 (2026-11-05)
+
+Se ha creado `C10_S_OPTION_A_FSTAR_AND_TRANSFORMATION_CARDS_PROPOSAL_DRAFT_001.md` a partir de la reconciliación histórica y la recomendación comparativa de microdominio. El documento convierte los aliases topológicos en semánticas funcionales candidatas para la Opción A: F1 conversión focal; F2 aplicación/verificación en destino; A1 exportación neutral; A2 importación/aplicación nativa; F* contrato funcional común de esquema, integridad, compatibilidad, preservación y seguridad.
+
+La propuesta mantiene separadas accesibilidad, aplicabilidad, ejecución, Reach y substituibilidad; B no ejecuta ninguna transformación. No se asignan formatos, versiones, tolerancias, recursos, ventanas ni estados truth. No se presenta la Opción A como aprobada: el registro canónico de microdominio la sigue marcando como recomendación no seleccionada/no aprobada. La propuesta debe compararse con el historial y someterse a decisión explícita.
+
+**Siguiente paso:** revisión crítica de la propuesta F*/fichas, fijación de la selección del microdominio y del contrato F*; después cerrar mappings, entradas/salidas, precondiciones, tolerancias y oráculo antes de generar valores del DGP. No ejecutar ni implementar.
