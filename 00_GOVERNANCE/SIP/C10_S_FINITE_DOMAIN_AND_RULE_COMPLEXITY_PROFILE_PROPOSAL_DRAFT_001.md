@@ -1,4 +1,6 @@
-# C10-S — Perfil de dominios finitos y límites de complejidad de reglas: propuesta
+# C10-S — Perfil de dominios finitos y límites de complejidad de reglas
+
+**Estado:** PERFIL ESTRUCTURAL APROBADO — DEC-C10-054; dominios concretos por clave y mapping aún abiertos.
 
 **ID:** C10-S-FINITE-DOMAIN-001 · **Versión:** Draft 001 · **Fecha:** 2026-11-05  
 **Estado:** PROPUESTA DOCUMENTAL — NO APROBADA / NO CONGELADA / NO IMPLEMENTADA / NO VALIDADA.  
@@ -88,21 +90,16 @@ Un mapping parcial no se considera conforme por defecto. Para una propiedad obli
 
 Una misma observación puede ser evidencia para más de una familia, pero el dictamen debe indicar el predicado primario para evitar doble conteo. La conformidad estructural no prueba preservación semántica; la preservación semántica no prueba compatibilidad del entorno ni seguridad FP-05.
 
-## 8. Decisiones que siguen abiertas
+## 8. Elementos aprobados y pendientes
 
-1. Aprobar/revisar profundidad 4, 16 átomos/regla y 16 reglas/paquete.
-2. Definir límites, escalas y catálogos por parámetro cuando se conozcan las claves del contrato abstracto.
-3. Fijar repertorios y longitudes de STRING según clases de campo.
-4. Resolver DEFAULT_DECLARED / DEFAULT_INHERITED y la exclusión de DEFAULT_ENV_RESOLVED.
-5. Confirmar exclusión de SELECT_ENUM_VALUE del núcleo.
-6. Fijar tratamiento de conflictos y UNKNOWN por clase de propiedad.
-7. Completar correspondencia con SM-01…SM-10 y los predicados FP-01/02/03.
-8. Especificar evidencia, cobertura, cegamiento y oráculo independiente.
+**Aprobados por DEC-C10-054:** dominios finitos por clave; familias y restricciones de tipos; distinción de estados/defaults; AST acíclico y operadores declarativos; presupuesto 4/16/16; efectos REQUIRE/FORBID; exclusión de SELECT_ENUM_VALUE del núcleo; prohibición de conversión silenciosa de UNKNOWN.
+
+**Pendientes:** límites, escalas y catálogos concretos por parámetro una vez definidas las claves; repertorios/longitudes STRING por clase de campo; reglas detalladas para conflictos; correspondencia SM-01…SM-10 y predicados FP-01/02/03; evidencia, cobertura, cegamiento y oráculo independiente.
 
 ## 9. Dictamen y límites
 
 La propuesta convierte dominios potencialmente abiertos en contratos finitos por clave y limita la complejidad expresiva. No selecciona aún valores de configuración concretos, sistema software, formato, parser ni implementación.
 
-**Estado:** DEC-C10-053 se mantiene; perfil de dominios y límites PROPUESTO; gramática NO CERRADA; UNKNOWN POLICY PROPUESTA; mapping/oráculo NO CERRADOS; validación técnica NO REALIZADA; revisión independiente NO REALIZADA; evidencia empírica NINGUNA; ejecución NO AUTORIZADA.
+**Estado:** DEC-C10-053 y DEC-C10-054 aprobadas; perfil estructural APROBADO; valores concretos por clave y mapping ABIERTOS; gramática documental delimitada, NO IMPLEMENTADA/VALIDADA; oráculo NO VALIDADO; revisión independiente NO REALIZADA; evidencia empírica NINGUNA; ejecución NO AUTORIZADA.
 
 No se generan truth, fixtures, datos ni escenarios; no se ejecutan parser, validadores, pruebas, simulaciones o experimentos.
