@@ -213,7 +213,7 @@ Los campos existentes evidence_ref, observed_status, coverage_status, evaluator/
 
 La captura de evidencias, los campos de procedencia, la clasificación 1/0/? y la cobertura NONE/PARTIAL/COMPLETE se rigen por C10_S_UG_EVIDENCE_PROVENANCE_AND_ADJUDICATION_PROTOCOL_DRAFT_001.md. Esa especificación prevalece para reglas de evidencia y adjudicación; esta plantilla define las tablas de captura.
 
-Cuando `evidence_ref` esté poblado, debe resolver a un `claim_evidence_id` existente de CLAIM_EVIDENCE_LINK; el campo es opcional y no representa el conjunto completo de evidencias. Para instancias con `observed_state=1` o `0` se exige al menos un vínculo válido en CLAIM_EVIDENCE_LINK, con alcance compatible. Para `observed_state=?` se registra evidencia vinculada si existe; si no existe, deben consignarse `unknown_reason`, `evidence_status=MISSING` y las limitaciones de búsqueda/cobertura, sin fabricar un vínculo. `NA` requiere justificación de no aplicabilidad y no exige vínculo de evidencia por defecto. Los campos source_provenance, collection_method, scope, timestamp, integrity, access_lineage, completeness_limitations, evidence_status, reviewer y reproducibility se registran en el expediente de evidencia enlazado cuando exista. observed_status/observed_state y coverage_status nunca se sustituyen por evidence_status. Ningún 0 se admite sin argumento de cobertura negativa; ningún COMPLETE sin universo, denominador y excepciones. Las discrepancias críticas requieren adjudicación independiente y preservación del desacuerdo. **Esta regla es una propuesta de reconciliación UG-SR-A01, pendiente de aceptación; no es todavía una regla congelada.**
+Cuando `evidence_ref` esté poblado, debe resolver a un `claim_evidence_id` existente de CLAIM_EVIDENCE_LINK; el campo es opcional y no representa el conjunto completo de evidencias. Para instancias con `observed_state=1` o `0` se exige al menos un vínculo válido en CLAIM_EVIDENCE_LINK, con alcance compatible. Para `observed_state=?` se registra evidencia vinculada si existe; si no existe, deben consignarse `unknown_reason`, `evidence_status=MISSING` y las limitaciones de búsqueda/cobertura, sin fabricar un vínculo. `NA` requiere justificación de no aplicabilidad y no exige vínculo de evidencia por defecto. Los campos source_provenance, collection_method, scope, timestamp, integrity, access_lineage, completeness_limitations, evidence_status, reviewer y reproducibility se registran en el expediente de evidencia enlazado cuando exista. observed_status/observed_state y coverage_status nunca se sustituyen por evidence_status. Ningún 0 se admite sin argumento de cobertura negativa; ningún COMPLETE sin universo, denominador y excepciones. Las discrepancias críticas requieren adjudicación independiente y preservación del desacuerdo. **Regla documental aceptada para C10-S por decisión del usuario de 2026-11-05.** La aceptación no equivale a validación técnica ni freeze.
 
 El crosswalk §10 identifica que las tablas actuales aún requieren columnas explícitas para parent_catalog_id, source_provenance, evidence_status, contract_intent, coverage_scope_id, review_adjudication_status y unknown_reason; este protocolo define su semántica, pero no declara el esquema tabular completamente cerrado. La revisión de correspondencia de todas las columnas sigue abierta.
 
@@ -384,9 +384,9 @@ Estos cambios son especificación documental y no han sido probados con parser n
 **FCM-20:** la cardinalidad de `evidence_ref` era ambigua entre §12.7 (uno o varios) y §§12.9/14 (un vínculo primario). Se armoniza como cero o un vínculo de navegación opcional; la relación completa 0..n permanece exclusivamente en CLAIM_EVIDENCE_LINK. Se corrige además el resumen histórico FCM-12 para distinguir la PK singular de evaluación de la referencia plural resumida en objetos.
 
 
-### 12.11. Propuesta de reconciliación UG-SR-A01 — pendiente de aceptación
+### 12.11. Regla aceptada de reconciliación UG-SR-A01
 
-Se propone distinguir la obligatoriedad de soporte probatorio de la referencia de navegación:
+Se adopta la distinción entre obligatoriedad de soporte probatorio y referencia de navegación:
 
 - `evidence_ref` permanece opcional (0..1) y, si se usa, debe resolver a un vínculo existente. No es el repositorio de evidencias.
 - `CLAIM_EVIDENCE_LINK` sigue siendo la relación canónica 0..n.
@@ -394,4 +394,4 @@ Se propone distinguir la obligatoriedad de soporte probatorio de la referencia d
 - Una instancia con `observed_state=?` puede carecer de vínculo solo si registra `unknown_reason`, `evidence_status=MISSING` y límites de búsqueda/cobertura; si hay evidencia relevante de incertidumbre, se vincula.
 - `NA` requiere justificación de no aplicabilidad; no exige vínculo de evidencia por defecto.
 
-Esta propuesta no se considera aceptada ni congelada. Requiere decisión explícita y posterior validación de cardinalidad/FK.
+**Aceptación documental:** la regla queda aceptada en el diseño documental C10-S por decisión explícita del usuario (2026-11-05). No queda congelada ni validada técnicamente. Requiere posterior validación de cardinalidad/FK con instancias y motor.
