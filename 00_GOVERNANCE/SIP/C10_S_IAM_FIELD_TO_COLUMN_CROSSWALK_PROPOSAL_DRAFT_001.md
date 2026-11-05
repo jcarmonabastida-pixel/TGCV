@@ -1,7 +1,7 @@
 # C10-S — Crosswalk de atributos IAM a columnas existentes de U_G
 
 **ID:** C10-S-IAM-FIELD-CROSSWALK-001 · **Versión:** Draft 001 · **Fecha:** 2026-11-05  
-**Estado:** propuesta de normalización documental; no aprobada, no schema freeze, no modificación de plantilla.  
+**Estado:** propuesta documental parcialmente aceptada mediante DEC-C10-059; plantilla actualizada documentalmente, sin schema freeze ni validación técnica.  
 **Base:** DEC-C10-057/058; U_G template §§2–6 y 10–12; auditoría IAM FP/EDGE.
 
 ## 1. Propósito
@@ -60,9 +60,9 @@ Alternativa menos recomendable: codificar P0/P1 en NODE.class. Se desaconseja po
 
 **Dictamen documental:** la mayoría de atributos IAM se pueden mapear a campos U_G existentes o al grafo; no justifican columnas universales nuevas. Existe una única brecha candidata clara: `NODE.boundary_class`, cuya adopción debe decidirse explícitamente.
 
-**Estado:** propuesta pendiente. No se ha modificado la plantilla U_G, no se han añadido columnas, no se han creado filas ni IDs de inventario, no se ha ejecutado parser/validador y no se ha iniciado captura técnica.
+**Estado histórico supersedido por DEC-C10-059:** boundary_class aceptada y añadida documentalmente; unit_object_record_id incorporado a SNAPSHOT para FK compuesta. No se han creado filas/IDs de inventario ni ejecutado parser/validador; no se ha iniciado captura técnica.
 
-**Siguiente gate:** decidir si se acepta la columna NODE.boundary_class con el dominio y las restricciones de §4. Tras esa decisión, reconciliar las FK unit_id↔node_id y cerrar el esquema mínimo sin alterar el resto de U_G.
+**Siguiente gate:** revisar el esquema completo actualizado, resolver los dominios/vocabularios de semantic_role y boundary_class y preparar validación estructural autorizada. La FK compuesta está definida documentalmente en DEC-C10-059 y en el contrato asociado.
 
 
 ## 7. Resolución — DEC-C10-059
