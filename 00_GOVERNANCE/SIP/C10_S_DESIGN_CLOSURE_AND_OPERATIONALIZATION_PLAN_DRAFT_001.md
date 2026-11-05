@@ -926,3 +926,18 @@ Se mantiene el orden de cierre C10-S y se retoma desde la auditoría interna de 
 La orientación de dos líneas queda registrada en Draft. No cambia TGCV Core, RMA, Evidence→Claim Matrix, STATUS, claims, autorizaciones ni decisiones experimentales. No autoriza implementación web, playground, inspección de sistemas, generación de datos, simulación o ejecución del experimento. C10-S sigue sin aprobar, congelar ni ejecutar. La web germen no está implementada y la comunidad todavía no está constituida.
 
 **Siguiente operación de trabajo:** comenzar la autoauditoría documental SR-01…20 de U_G, dejando para cada control evidencia, dictamen provisional y brecha restante; no pasar todavía a implementación ni al playground.
+
+
+# XXX. Resultado de autoauditoría documental U_G SR-01…20 (2026-11-05)
+
+Se completa la primera pasada documental control-a-control y se registra el expediente `C10_S_UG_SR01_20_AUTHOR_SELF_AUDIT_DRAFT_001.md`.
+
+- Dictámenes: 8 PASS_STATIC; 10 CONDITIONAL; 2 NOT_ASSESSED; 0 FAIL.
+- Modalidad: `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`; no es revisión externa ni independiente.
+- Hallazgo transversal UG-SR-A01: aclarar la diferencia entre la exigencia de evidencia por estado en el protocolo §10 y el carácter opcional de `evidence_ref` según §16/plantilla, manteniendo CLAIM_EVIDENCE_LINK como relación 0..n.
+- SR-19/20 no evaluables sin arquitectura/controles de seguridad e instancia operativa. Los demás CONDITIONAL requieren evidencia/instancias, validación ejecutable o revisión externa según control.
+- No se ejecutaron validadores, parser, constraints, fixtures, inspección técnica, seguridad, cegamiento, simulación ni experimento. No se declara freeze ni cierre de esquema.
+
+## Siguiente operación
+
+Resolver documentalmente UG-SR-A01 en plantilla, protocolo y Test Contract Register; después completar la reconciliación de contratos U_G y continuar con DGP/arquitectura causal. La resolución documental no autoriza inspección técnica, implementación, generación, simulación ni experimento.
