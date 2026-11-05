@@ -205,3 +205,16 @@ La instalación puede afectar configuración, permisos, recursos, seguridad, cos
 Las referencias de §9 a revisión causal independiente como condición de cierre quedan supersedidas para la continuidad actual de C10-S. Prevalece el protocolo autocontenido del maestro §130, Closure Control Matrix §12 y Test Contract Register §54: AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT. No se exige R1/R2 para seguir especificando, preanalizar, preparar o ejecutar una simulación una vez autorizada.
 
 La independencia de generador, analizador y evaluador es una separación computacional de truth, datos, permisos y momento de acceso; no equivale a revisión humana independiente. La arquitectura causal y las decisiones abiertas de este documento no cambian por este addendum.
+
+
+## 12. Precedencia posterior: DEC-C10-066 (2026-11-06)
+
+La selección del escenario primario candidato queda resuelta por aceptación expresa: **D2 es el escenario primario candidato** de C10-S para el contraste mecanístico de provisión focal frente a ausencia de intento focal en control; **D1 se conserva como escenario secundario** para el contraste incremental frente a provisión ordinaria de baja frecuencia.
+
+Esta decisión supersede la apertura de selección registrada en §§5.5 y 9, así como las recomendaciones previas de D1 como principal condicionado, exclusivamente en lo relativo a qué comparador ocupa la posición primaria candidata. No modifica la pregunta general (\theta_A(q)), no convierte (B_{g0}/B_{g1}) en equivalentes automáticos de (g_0/g_1), y no cierra la jerarquía de estimandos ni los supuestos de atribución.
+
+Los ITT, primeras etapas y LATE/Wald se mantienen específicos por escenario. La legitimidad de la atribución a accesibilidad sigue dependiendo de las vías colaterales, exclusión, medición y supuestos de identificación; si B afecta directamente otros determinantes de Outcome o Value, el resultado se interpreta como efecto de política/paquete salvo identificación adicional.
+
+El registro autónomo es `DEC-C10-066_D2_PRIMARY_CANDIDATE_ACCEPTANCE.md`. Parámetros, incluido (s=0.80), DGP, políticas materiales, (q_X^*), poblaciones, Value, horizonte y ejecución permanecen abiertos/no aprobados.
+
+**Autorización:** `scientific_execution=false`; `execution_authorized=false`.
