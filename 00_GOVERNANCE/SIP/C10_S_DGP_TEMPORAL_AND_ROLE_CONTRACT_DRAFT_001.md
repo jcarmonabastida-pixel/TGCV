@@ -718,3 +718,10 @@ La comprobación estática de alineación de las diez tablas es documental; no p
 Se incorpora como propuesta externa al contrato temporal/rol `C10_S_OPTION_A_FSTAR_AND_TRANSFORMATION_CARDS_PROPOSAL_DRAFT_001.md`. Para el escenario de migración de configuración entre entornos software, F1/τ2 es conversión focal S0→S2; F2 aplicación/verificación S2→SF; A1 exportación neutral S0→S1; A2 importación/aplicación nativa S1→SF. F* es el contrato común de conformidad técnica, independiente de Outcome/Value.
 
 Esta semántica es candidata y no modifica retroactivamente truth, ecuaciones ni roles del DGP. La Opción A no consta como formalmente seleccionada/aprobada; los valores generadores, H/G/C0, recursos, ventanas, versiones, mappings y tolerancias siguen abiertos. La apertura de F1 no implica accesibilidad/aplicabilidad de F2 ni Reach(SF)=1; la ruta A1→A2 solo es substituible si satisface el mismo F* con cobertura y oráculo válidos. B no ejecuta F1/F2/A1/A2.
+
+
+## 16. Microdominio seleccionado y F* de trabajo — DEC-C10-051
+
+Opción A —migración de configuración entre dos entornos software— queda seleccionada para el diseño C10-S. F* se adopta como contrato funcional de trabajo candidato: la ruta completa debe producir y aplicar una configuración en el entorno destino conforme a propiedades obligatorias de esquema, integridad, compatibilidad, preservación funcional y seguridad.
+
+Las fichas F1/F2/A1/A2 se interpretan según el documento `C10_S_OPTION_A_FSTAR_AND_TRANSFORMATION_CARDS_PROPOSAL_DRAFT_001.md`. Esta decisión no fija aún mappings, versiones, TID/SID/RID, H/G/C0, recursos, ventanas, tolerancias ni oráculo; no modifica truth del DGP ni autoriza generación/ejecución. D1/D2 y R0–R3 permanecen separados y abiertos.
