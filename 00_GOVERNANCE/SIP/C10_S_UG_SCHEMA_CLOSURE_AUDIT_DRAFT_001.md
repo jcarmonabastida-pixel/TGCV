@@ -40,13 +40,13 @@ La principal brecha no es el número de columnas, sino la falta de sincronizaci�
 
 ### UG-SCH-01 — EDGE: contrato normalizado no reflejado íntegramente en el encabezado físico
 
-**Severidad:** ALTA · **Estado:** CORRECTION_REQUIRED.
+**Severidad:** ALTA · **Estado:** CORRECTED_DOCUMENTALLY; pending second-pass review.
 
 El §12.7 declara para EDGE los campos `parent_edge_id` y `atomic_edge_id`, además de `source_node_id` y `target_node_id`. El encabezado físico actual utiliza `source_node` y `target_node`, y no contiene `parent_edge_id` ni `atomic_edge_id`.
 
 El propio §10.6 ya declara `parent_edge_id` y `atomic_edge_id` necesarios para conservar el catálogo padre E01–E23 y atomizar relaciones mult destino. Por tanto, la omisión no puede tratarse como una preferencia de nomenclatura.
 
-**Corrección requerida:** reconciliar el encabezado EDGE con §10.6 y §12.7, manteniendo los IDs padre y atómicos. Elegir un único nombre canónico para los extremos y actualizar simultáneamente el crosswalk, las reglas de FK y las referencias documentales. No añadir tipos de arista nuevos ni instancias.
+**Resolución documental (2026-11-05):** el encabezado EDGE ahora incluye `atomic_edge_id`, `parent_edge_id`, `source_node_id` y `target_node_id`; `source_node`/`target_node` se sustituyen por los nombres explícitos. Se conserva `edge_id` como identidad semántica local de la arista atómica. El encabezado, separador y fila de esquema tienen 31 columnas. Pendiente segunda pasada del crosswalk y de integridad referencial; no es validación física.
 
 ### UG-SCH-02 — SNAPSHOT: etiqueta de FK incompleta
 
@@ -62,11 +62,11 @@ La columna está presente; la etiqueta del encabezado no expresa la restricción
 
 ### UG-SCH-03 — Vocabulario de semantic_role y rol raíz no formalizados
 
-**Severidad:** ALTA · **Estado:** OPEN.
+**Severidad:** ALTA · **Estado:** PROPOSAL_CREATED; pending acceptance.
 
 El contrato de DEC-C10-059 exige que el NODE destino de SNAPSHOT tenga `semantic_role=LOGICAL_SERVICE_UNIT`. Sin embargo, la plantilla no presenta un dominio controlado completo para `semantic_role`, ni el crosswalk de roles U_G consultado define explícitamente cómo se incorpora ese rol raíz a los 23 roles existentes.
 
-**Corrección requerida:** documentar un vocabulario versionado de semantic_role, su relación con los roles U_G existentes y una regla inequívoca para identificar el nodo raíz lógico. No asumir que un rol nuevo sustituye o duplica un rol histórico. La cardinalidad de nodos raíz por unidad/scope debe quedar explícita.
+**Resolución propuesta:** se creó `C10_S_UG_SEMANTIC_ROLE_AND_LOGICAL_ROOT_CONTRACT_DRAFT_001.md`. Distingue semantic_role de parent_catalog_id y boundary_class; propone vocabulario controlado y crosswalk no uno-a-uno N01–N23; conserva DEC-C10-059 y fija exactamente un nodo raíz por combinación unidad/snapshot/scope. Pendiente aceptación del usuario y validación técnica.
 
 ### UG-SCH-04 — source_provenance: conflicto entre §10.6 y §12.7
 
@@ -126,8 +126,8 @@ La fila de esquema de SNAPSHOT usa `observed_state=NA`, mientras que el contrato
 | Nombres de columnas duplicados | No detectados en los diez encabezados |
 | DEC-C10-059 / boundary_class conceptual | ACCEPTED; sin validación física |
 | FK compuesta SNAPSHOT→NODE | DEFINED_DOCUMENTALLY; etiqueta física por corregir |
-| EDGE parent/atomic IDs y extremos | CORRECTION_REQUIRED |
-| semantic_role / nodo raíz | OPEN |
+| EDGE parent/atomic IDs y extremos | CORRECTED_DOCUMENTALLY; second pass pending |
+| semantic_role / nodo raíz | PROPOSED; acceptance pending |
 | Procedencia y CLAIM_EVIDENCE_LINK | OPEN |
 | FK polimórficas | OPEN |
 | Unicidad/versionado/supersedes | OPEN |
@@ -153,3 +153,12 @@ Esta auditoría es `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`. No es revi
 No modifica TGCV Core, RMA, Evidence→Claim Matrix, STATUS, claims ni estimandos. No convierte el diseño en FROZEN. No genera instancias, truth, fixtures ni datos. No autoriza acceso a sistemas reales, parser, pruebas, simulación ni experimento.
 
 `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 8. Actualización de seguimiento — 2026-11-05
+
+UG-SCH-01 ha sido corregido documentalmente en la plantilla: EDGE pasa a 31 columnas e incorpora `atomic_edge_id`, `parent_edge_id`, `source_node_id` y `target_node_id`. Se conserva E07 como regla lógica no-arista y E22 sin inventar nodos destino. La anchura física estática coincide en encabezado, separador y fila de esquema.
+
+Para UG-SCH-03 se ha creado el contrato propuesto `C10_S_UG_SEMANTIC_ROLE_AND_LOGICAL_ROOT_CONTRACT_DRAFT_001.md`. No se considera cerrado ni aprobado hasta aceptación explícita. El crosswalk N01–N23 es de roles de catálogo a tipos semánticos, no una equivalencia uno-a-uno.
+
+Los demás hallazgos UG-SCH-02 y UG-SCH-04…08 permanecen abiertos. Dictamen global: SCHEMA_NOT_CLOSED.
