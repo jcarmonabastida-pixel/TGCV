@@ -1116,3 +1116,8 @@ Se crea `C10_S_PROPERTY_APPLICABILITY_AND_OBLIGATORINESS_MATRIX_DRAFT_001.md`. P
 **Estado:** DEC-C10-055 aceptada; matriz propuesta, no aprobada ni congelada. Abiertos: cardinalidad cero de REF/RUL, alcance FP-04/05/06 dentro de F*, activación de CMP-02/PAR-05, seguridad, conflictos RUL, diseño IAM y evidencia de cobertura. No hay instancia IAM, truth, fixtures, validación, revisión independiente, evidencia empírica ni ejecución.
 
 **Siguiente paso recomendado:** revisión crítica de las reglas de cardinalidad y de la frontera F* frente a FP-04/05/06; resolverlas antes de especializar F1/F2/A1/A2 y el oráculo.
+
+
+### XLVII-A. Precisión de frontera F* / FP-08
+
+La matriz IAM se ha precisado para mantener F* como capacidad funcional de ruta completa, coherente con su contrato candidato de producción y aplicación en destino: FP-01…FP-07 pueden integrar su adjudicación por dimensiones separadas y no compensatorias. FP-08 es gate de validez probatoria separado. POL ausente por diseño no elimina requisitos de seguridad FP-05 que formen parte de F*; estos se declaran independientemente de POL. Esta precisión evita reducir F* a preservación interna del paquete.
