@@ -7478,3 +7478,12 @@ Se registra `C10_S_UG_SR01_20_AUTHOR_SELF_AUDIT_DRAFT_001.md`, realizada como `A
 **Hallazgo UG-SR-A01:** el protocolo §10 dice “ningún estado sin evidence_ref”, mientras §16 y plantilla §12.9 establecen `evidence_ref` como 0..1 opcional y CLAIM_EVIDENCE_LINK como relación 0..n canónica. Debe aclararse si cada estado exige vínculo de evidencia en CLAIM_EVIDENCE_LINK, sin exigir que el atajo `evidence_ref` esté poblado. SR-03 permanece CONDITIONAL.
 
 No se ejecutaron validadores, parser, constraints, fixtures, pruebas de seguridad/cegamiento, inspección técnica, simulación ni experimento. No hay inventario ni cobertura real; A_f*, F_alt,0 y Reach_H permanecen indeterminados. No se cierra FCM-01…20 ni XSYNC-138-01…10, no se congela U_G y no cambia Core/RMA/Matrix/claims/autorización.
+
+
+# 92. Propuesta de reconciliación UG-SR-A01 — evidencia y cardinalidad
+
+La revisión ampliada detectó que la ambigüedad no se limita al protocolo §10: también afecta a la cadena de §13 y a la regla por fila de la plantilla §11/§12.8, frente a la opcionalidad de `evidence_ref` en plantilla §12.9 y protocolo §16.
+
+Se propone: (a) `evidence_ref` opcional 0..1 como atajo de navegación; (b) CLAIM_EVIDENCE_LINK como relación canónica 0..n; (c) vínculo válido obligatorio para `observed_state=1/0`; (d) `observed_state=?` sin vínculo solo con `unknown_reason`, `evidence_status=MISSING` y límites de búsqueda/cobertura; (e) `NA` con justificación de no aplicabilidad. La propuesta está desarrollada en plantilla §12.11, protocolo §17 y Test Contract Register §§52–53.
+
+**Estado:** propuesta documental pendiente de aceptación; SR-03 permanece CONDITIONAL. No se ha ejecutado parser, FK, constraints ni pruebas. No hay instancias U_G. No se declara FCM cerrado ni esquema congelado.
