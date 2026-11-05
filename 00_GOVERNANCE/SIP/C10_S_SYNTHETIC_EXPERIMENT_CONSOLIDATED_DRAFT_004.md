@@ -7785,3 +7785,16 @@ Se completa el cotejo documental de U_G con DEC-C10-059…065 y los contratos de
 Control estático de las 19 tablas Markdown: PASS_FORMAT_ONLY, sin discrepancias de columnas ni encabezados duplicados. OAS-01/02/04/06/08/09/10/11 resueltos documentalmente; OAS-03 requiere revisión independiente y validación del motor; OAS-05 requiere revisión independiente; OAS-07 permanece como nota de gobernanza (PR #116 base no-main). UG-SCH-10 permanece OPEN; SCHEMA_NOT_CLOSED.
 
 Siguiente gate: preparar R1 (modelo de datos/ingeniería) y R2 (metodología/causalidad), fijando hashes y commit exactos al iniciar la revisión. No hay validación técnica ni ejecución científica autorizada.
+
+
+## 130. Protocolo de investigador único, web germen *as is* y estadística C10-S (2026-11-05)
+
+Se reconcilia el orden de trabajo con el documento C10-S-WORKSTREAMS-001 y §XXIX del plan. En la fase actual se continúa con `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`; R1/R2 son perfiles de revisión externa futura, no revisores que deban designarse ahora ni gate para continuar el trabajo documental. La autoauditoría usa PASS_STATIC/CONDITIONAL/FAIL/NOT_ASSESSED y nunca se presenta como validación independiente. Los controles que requieran parser, constraints, motor, seguridad, permisos, cegamiento o evidencia empírica siguen abiertos hasta su validación y autorización propias.
+
+La línea web germen es complementaria: publicar TGCV *as is* con arquitectura, hipótesis, estados, materiales, evidencia, incertidumbres, límites y agenda comunitaria. Puede abrir antes del cierre científico completo si existe preparación proporcionada de transparencia, coherencia, trazabilidad, falsabilidad, criticabilidad, honestidad probatoria, reproducibilidad posible, seguridad, privacidad, licencias y atribución. No requiere schema freeze ni certificación académica global. El playground no es prerrequisito y será posterior, derivado de los contratos científicos, sin modelo paralelo ni valor probatorio causal propio.
+
+Se corrige así la formulación de §129 que situaba R1/R2 como siguiente gate. El siguiente trabajo es actualizar la autoauditoría documental U_G contra el commit reconciliado y continuar DGP/arquitectura causal, medición/validez, identificación, sensibilidad y estadística.
+
+**Estadística:** N=2.000 y 1.000 réplicas siguen siendo candidatos provisionales; faltan justificación de tamaño, potencia/precisión, error Monte Carlo, δ/ε, escenarios de primeras etapas débiles, heterogeneidad, missingness e interferencia. NEXT4 en otra línea no sustituye el dimensionamiento específico C10-S.
+
+Este registro no modifica decisiones científicas, RMA, Evidence→Claim Matrix, STATUS, Core, claims ni autorizaciones. C10-S sigue Draft/no ejecutado; web y playground no implementados.
