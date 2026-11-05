@@ -999,3 +999,15 @@ Contratos documentales; no implementados ni ejecutados.
 Los criterios, evidencia exigible y dictámenes están especificados en C10_S_UG_SCHEMA_INDEPENDENT_REVIEW_CHECKLIST_DRAFT_001.md. Cada SR-01…20 requiere revisor identificado, versión/hash, PASS/FAIL/CONDITIONAL/NOT_ASSESSED, fundamento y acción. Los controles críticos de integridad, trivalencia, truth firewall, cobertura, identidad y trazabilidad no pueden quedar FAIL para aceptar freeze.
 
 Este registro no acredita ejecución ni revisión. No se han designado revisores ni emitido dictamen.
+
+
+## 51. Revisión de cardinalidad de evidencia — FCM-20
+
+| Caso | Resultado esperado |
+|---|---|
+| evidence_ref contiene varios IDs serializados | Rechazar; el campo admite 0..1 referencia de navegación |
+| CLAIM_EVIDENCE_LINK omite parte de la relación de evidencias | Registrar vínculo faltante; la relación completa es 0..n |
+| EVALUATOR_ASSESSMENT usa evaluator_record_ids como PK | Rechazar; PK singular evaluator_record_id por fila |
+| Objeto omite evaluator_record_ids de resumen | Permitido si las filas EVALUATOR_ASSESSMENT están enlazadas correctamente |
+
+Contrato documental; no ejecutado.
