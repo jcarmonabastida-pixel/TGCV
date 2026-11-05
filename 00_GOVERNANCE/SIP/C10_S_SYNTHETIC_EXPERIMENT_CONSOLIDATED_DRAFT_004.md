@@ -7690,3 +7690,19 @@ UG-SCH-09 queda corregido documentalmente; el ledger de auditoría actualiza est
 Se crea la propuesta comparativa `C10_S_UG_SNAPSHOT_MEMBERSHIP_AND_VERSIONED_GRAPH_REFERENCES_OPTIONS_DRAFT_001.md`. Se comparan: A) snapshot_id directo en registros NODE/EDGE/ROUTE/PREDICATE, referencias versionadas exactas y ROUTE_STEP; B) SNAPSHOT_MEMBER normalizado más relaciones de binding/ROUTE_STEP; C) manifiesto serializado; D) inferencia por timestamp/coverage/última versión. C y D no son aceptables como fuente canónica de integridad. Se recomienda A provisionalmente por su correspondencia directa con los registros observacionales y menor complejidad relacional, pero depende de definir object_version como revisión del registro observacional y resolver la dependencia circular SNAPSHOT↔NODE raíz. B queda como alternativa si se requiere reutilizar una misma fila inmutable en varios snapshots.
 
 La propuesta no constituye aceptación ni modifica DEC-C10-059…062. UG-SCH-10 permanece OPEN; no se modifica la plantilla ni se ejecutan validadores, parser, constraints, fixtures, truth, simulaciones o experimentos. `scientific_execution=false`; `execution_authorized=false`.
+
+
+
+# 118. DEC-C10-063 — aceptación de Opción A para UG-SCH-10 (2026-11-05)
+
+El usuario acepta Opción A como arquitectura de referencia para pertenencia a snapshot y referencias versionadas. Se registra DEC-C10-063. Se mantienen intactas DEC-C10-059…062: identidad semántica, nodo raíz lógico único, referencias tipadas/procedencia e identidad/versionado/supersession.
+
+Se crea `C10_S_UG_OPTION_A_STRUCTURAL_RESOLUTION_DRAFT_001.md` para desarrollar las dos condiciones de aceptación:
+- `object_version` representa revisión de registro observacional por identidad semántica; una captura nueva crea nuevo registro/version aunque no cambien las propiedades. Esto no equivale a cambio estructural, `ΔT_acc*` ni `ΔE_T`.
+- La FK circular SNAPSHOT↔NODE raíz se conserva íntegra y se resuelve mediante transacción atómica con constraints diferibles hasta COMMIT; la FK compuesta incluye snapshot_id para garantizar pertenencia del NODE raíz al snapshot.
+
+Se especifican además referencias compuestas de EDGE a las revisiones exactas de NODE, PREDICATE a ROUTE, y ROUTE_STEP como relación normalizada para secuencia exacta y ordenada. El diseño separa cambio de captura, cambio estructural, cambio de evidencia y cambio de accesibilidad.
+
+**Estado:** Opción A aceptada; resolución de detalle propuesta, pendiente de aceptación expresa. La compatibilidad del motor con FKs diferibles es un gate técnico obligatorio. Si no soporta el mecanismo equivalente, no se debilita integridad ni se aplica workaround; se detiene implementación y se reabre la arquitectura. No se modifica todavía la plantilla U_G. UG-SCH-10 sigue OPEN hasta aplicar y revisar el contrato. Esquema global SCHEMA_NOT_CLOSED.
+
+No se han ejecutado validadores, parser, constraints, fixtures, truth, simulaciones o experimentos. No cambia Core, RMA, Evidence→Claim Matrix, claims, estimandos, Outcome o Value. `scientific_execution=false`; `execution_authorized=false`.
