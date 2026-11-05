@@ -184,3 +184,26 @@ Native/manual/fallback/recovery son subtipos descriptivos, no sustitutos de las 
 Añadir a los registros node/edge/route/predicate: parent_catalog_id, evidence_status (AVAILABLE/MISSING/CONFLICTING), contract_intent (intención normativa, no observación), coverage_scope_id, source_provenance, review/adjudication_status y unknown_reason. Para aristas, parent_edge_id y atomic_edge_id; para rutas, route_subtype y parent_route_class. Para predicados, predicate_id completo y separación truth_dgp_restricted / observed_state.
 
 **Dictamen:** correspondencia semántica completa en los cuatro catálogos; normalización necesaria de aristas mult destino; E07 es regla lógica; E22 carece de nodos destino identificados; N16 y N23 tienen granularidad compuesta que debe revisarse. La plantilla necesita los campos complementarios anteriores antes de cerrar su esquema. No se asignan estados técnicos ni se declara inventario completo.
+
+
+### 10.6. Definición de campos complementarios (schema)
+
+Los campos siguientes pasan a formar parte del esquema obligatorio de cada tabla de registro, no son valores precargados:
+
+| Campo | Aplicación | Dominio/uso |
+|---|---|---|
+| parent_catalog_id | Nodo/arista/predicado/ruta | ID de catálogo U_G de origen (Nxx, Exx, código de predicado o clase de ruta). |
+| source_provenance | Todas | Documento/sistema/origen, ubicación, método de obtención, fecha y custodio. |
+| evidence_status | Todas | AVAILABLE / MISSING / CONFLICTING; no sustituye observed_status. |
+| contract_intent | Nodo/arista/ruta/predicado | Requisito normativo de diseño, separado de observación. |
+| coverage_scope_id | Todas | Identificador de la frontera/universo operativo y versión a la que aplica la cobertura. |
+| review_adjudication_status | Todas | NOT_REVIEWED / INDEPENDENT_REVIEWED / DISAGREEMENT / ADJUDICATED. |
+| unknown_reason | Todas | Motivo concreto del estado ?, fuente faltante y consecuencia sobre clasificación. |
+| parent_edge_id | Aristas | ID padre E01–E23 conservado para trazabilidad. |
+| atomic_edge_id | Aristas | ID único por relación origen-destino; requerido para mult destino. |
+| route_subtype | Rutas | native/manual/fallback/recovery u otro subtipo; no sustituye clase primaria. |
+| parent_route_class | Rutas | Rτ2/RA12/Rshared/Rexternal/Runknown exacta. |
+| truth_dgp_restricted | Predicados | Campo reservado al generador/evaluador; acceso restringido, nunca expuesto al analizador. |
+| observed_state | Predicados | 1/0/? basado en evidencia observacional y regla de adjudicación. |
+
+Los campos existentes evidence_ref, observed_status, coverage_status, evaluator/blinding y timestamp se conservan. Si se registra un estado observado 0, evidence_status debe ser AVAILABLE y coverage_status debe justificar cobertura suficiente para ese predicado. CONFLICTING fuerza ? hasta adjudicación; MISSING no equivale a 0.
