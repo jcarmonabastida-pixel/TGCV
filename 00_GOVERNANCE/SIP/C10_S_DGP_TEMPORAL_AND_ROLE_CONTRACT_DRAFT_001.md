@@ -697,3 +697,10 @@ La plantilla U_G §§12–13 establece registros separados EVIDENCE_REGISTER, CL
 La truth del DGP se elimina de la tabla de predicados analítica y queda segregada en el entorno del generador/evaluador autorizado, fuera del acceso del analizador. El esquema no altera roles causales ni reloj t0–t9. Se preservan observed_state, evidence_status y coverage_status como dimensiones distintas.
 
 Especificación documental, no implementación ni prueba de seguridad. No hay truth poblada ni evidencia real; cobertura NONE y estados técnicos ?.
+
+
+## 46. Consistencia de esquema y separación de registros
+
+La plantilla U_G §§12.9–12.10 fija dominios candidatos para observed_state, evidence_status, coverage_status y review_adjudication_status, además de tipos de ID, timestamps, hashes, conteos y cegamiento. CLAIM_EVIDENCE_LINK es relación 1:N y apunta a object_record_id; los evaluadores E1/E2 permanecen en filas separadas. La truth del DGP sigue segregada y no se incorpora al esquema analítico.
+
+Especificación documental, no parser ni validación de seguridad ejecutados. El esquema no está aprobado ni implementado.
