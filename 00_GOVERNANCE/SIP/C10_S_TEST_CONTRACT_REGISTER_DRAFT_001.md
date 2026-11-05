@@ -919,3 +919,17 @@ Contratos documentales; no implementados ni ejecutados.
 | UGI-07 | Cobertura COMPLETE | Limitarla al universo operativo declarado/versionado; no reclamar exhaustividad ontológica |
 
 Contratos documentales para revisar la futura instancia de la plantilla; no implementados ni ejecutados. La plantilla no contiene fixtures ni observaciones reales.
+
+
+## 45. Contratos de revisión del crosswalk U_G — UGC-01…06
+
+| ID | Caso documental | Resultado esperado |
+|---|---|---|
+| UGC-01 | Cada N01–N23 tiene correspondencia | 23 IDs mapeados; ninguna fila implica existencia técnica. |
+| UGC-02 | Aristas mult destino E17–E23 | Una fila por par; conservar parent_edge_id y atomic_edge_id. |
+| UGC-03 | E07 | Se registra como regla lógica, no como edge técnico binario. |
+| UGC-04 | E22 | No inventar destinos; mantener pendiente definición de eventos/variables de selección y ejecución. |
+| UGC-05 | Predicados y rutas | 14 códigos exactos y cinco clases primarias; subtipos separados. |
+| UGC-06 | Roles compuestos N16/N23 | Separar criterio F*, oráculo y adjudicación; ejecución, Outcome y Value según identidad/tiempo. |
+
+Contratos de revisión documental. No son tests de software ni se han ejecutado.
