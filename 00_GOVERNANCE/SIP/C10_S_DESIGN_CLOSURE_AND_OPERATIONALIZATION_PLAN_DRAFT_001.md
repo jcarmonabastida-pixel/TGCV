@@ -974,3 +974,14 @@ Se ha creado `C10_S_OPTION_A_FSTAR_AND_TRANSFORMATION_CARDS_PROPOSAL_DRAFT_001.m
 La propuesta mantiene separadas accesibilidad, aplicabilidad, ejecución, Reach y substituibilidad; B no ejecuta ninguna transformación. No se asignan formatos, versiones, tolerancias, recursos, ventanas ni estados truth. No se presenta la Opción A como aprobada: el registro canónico de microdominio la sigue marcando como recomendación no seleccionada/no aprobada. La propuesta debe compararse con el historial y someterse a decisión explícita.
 
 **Siguiente paso:** revisión crítica de la propuesta F*/fichas, fijación de la selección del microdominio y del contrato F*; después cerrar mappings, entradas/salidas, precondiciones, tolerancias y oráculo antes de generar valores del DGP. No ejecutar ni implementar.
+
+
+# XXXIV. Decisión DEC-C10-051 y continuación del cierre (2026-11-05)
+
+Se registra la decisión explícita del usuario: Opción A (migración de configuración entre dos entornos software) queda seleccionada como microdominio de diseño y operacionalización de C10-S. F* queda adoptado como contrato funcional de trabajo candidato: producir y aplicar la configuración en destino conforme a propiedades preespecificadas de esquema, integridad, compatibilidad, preservación funcional y seguridad.
+
+La decisión queda registrada en el documento de opciones §13, DEC-C10-051, fichas Opción A §9, decision log §45 y maestro §95. Se actualiza el estado anterior «recomendada, no seleccionada». B/C se conservan como alternativas históricas.
+
+**No se cierra:** lista de propiedades F*, mappings, tolerancias, casos frontera, oráculo, TID/SID/RID, C0/G/H, recursos/ventanas, cobertura de rutas, D1/D2, R0–R3, DGP, estimandos ni identificación. No hay aprobación de ejecución ni validación técnica/empírica/revisión independiente.
+
+**Siguiente bloque:** completar el contrato de F* por propiedades observables y reglas de adjudicación; especificar para F1/F2/A1/A2 los contratos de entrada/salida, precondiciones, invariantes, fallos y mapping; definir un oráculo independiente ciego a Z/B y separado de Outcome/Value. Después reconciliar el catálogo de roles U_G con estas fichas y actualizar DGP/estimandos sin asignar truth no sustentada.
