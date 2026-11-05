@@ -1067,3 +1067,12 @@ Se crea `C10_S_MINIMAL_RULE_GRAMMAR_AND_PARAMETER_TYPE_DOMAIN_PROPOSAL_DRAFT_001
 **No cerrado:** dominios y límites finitos, profundidad/tamaño de expresiones, efectos, precedencia, política UNKNOWN, conversiones y oráculo. No ejecutar ni generar truth.
 
 **Siguiente paso:** deliberar la gramática y fijar un dominio mínimo de valores y límites para el escenario base; después especificar mapping y reconciliar FP-01/02/03.
+
+
+# XLIII. Perfil de dominios finitos y complejidad de reglas (2026-11-05)
+
+Se crea `C10_S_FINITE_DOMAIN_AND_RULE_COMPLEXITY_PROFILE_PROPOSAL_DRAFT_001.md` como desarrollo de §XLII y DEC-C10-053. La propuesta establece dominios finitos por clave de parámetro (sin rangos universales arbitrarios), representación decimal escalada, catálogos ENUM/REF cerrados, STRING acotado, separación de ABSENT/NULL/DEFAULT/VALUE y subtipos de DEFAULT. Propone AST declarativo acíclico, operadores tipados, profundidad 4, 16 átomos/regla y 16 reglas/paquete como presupuesto candidato; limita efectos del núcleo a REQUIRE/FORBID y excluye SELECT_ENUM_VALUE por su potencial mutativo. Define propagación de UNKNOWN a F* sin equipararlo a FALSE.
+
+**Estado:** propuesta no aprobada ni congelada. Los límites 4/16/16 no están calibrados; dominios por clave, cadenas, escalas, reglas de conflicto, UNKNOWN, mapping y oráculo siguen abiertos. No se crean fixtures ni truth; no hay validación técnica, revisión independiente, evidencia empírica ni ejecución.
+
+**Siguiente paso:** revisión crítica del perfil y decisión explícita sobre el presupuesto de complejidad y los efectos permitidos. Después, construir el contrato abstracto de parámetros por clave y la matriz de mapping fuente/destino, reconciliando FP-01/FP-02/FP-03 y evitando doble conteo. No elegir todavía valores concretos de configuración ni ejecutar.
