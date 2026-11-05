@@ -94,3 +94,10 @@ Se recomienda adoptar esta definición operativa de servicio lógico y las regla
 ## 9. Estado
 
 Propuesta documental para decisión. No contiene inventario real, instancias, valores, truth, fixtures, schema ejecutable ni validación. No autoriza instalación, acceso a sistemas, generación de datos ni experimento. scientific_execution=false; execution_authorized=false.
+
+
+## 10. Resolución de la propuesta — DEC-C10-058
+
+El usuario acepta la definición operativa de servicio lógico y las reglas semánticas P0/P1/P2. La propuesta queda aceptada como contrato conceptual de clasificación y unidad de migración, sin convertirla en inventario o schema ejecutable.
+
+Se mantienen expresamente abiertas la unidad de aleatorización/analítica, la estructura concreta de IAM, las cardinalidades y los dominios detallados CMP/PAR/REF/RUL, y la identificación de servicios/entornos reales. La decisión no autoriza acceso a sistemas, captura de snapshots, instalación ni ejecución científica.
