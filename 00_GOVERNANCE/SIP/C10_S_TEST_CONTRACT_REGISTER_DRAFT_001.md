@@ -996,7 +996,7 @@ Contratos documentales; no implementados ni ejecutados.
 
 ## 50. Controles de revisión independiente del esquema — SR-01…20
 
-Los criterios, evidencia exigible y dictámenes están especificados en C10_S_UG_SCHEMA_INDEPENDENT_REVIEW_CHECKLIST_DRAFT_001.md. Cada SR-01…20 requiere revisor identificado, versión/hash, PASS/FAIL/CONDITIONAL/NOT_ASSESSED, fundamento y acción. Los controles críticos de integridad, trivalencia, truth firewall, cobertura, identidad y trazabilidad no pueden quedar FAIL para aceptar freeze.
+Los criterios y evidencia exigible SR-01…20 están especificados en C10_S_UG_SCHEMA_INDEPENDENT_REVIEW_CHECKLIST_DRAFT_001.md. En la fase actual de investigador único, la autoauditoría se registra como AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT y cada control recibe PASS_STATIC/CONDITIONAL/FAIL/NOT_ASSESSED, con versión/hash, fundamento, alcance y acción pendiente. Un revisor identificado y una declaración de independencia solo se exigen cuando se active una revisión externa futura. R1/R2 no son gate inmediato ni bloquean continuidad documental. Los controles críticos no pueden quedar FAIL para aceptar freeze técnico; la apertura web germen as is es un gate separado y no requiere freeze ni revisión por pares global.
 
 Este registro no acredita ejecución ni revisión. No se han designado revisores ni emitido dictamen.
 
@@ -1039,3 +1039,12 @@ Estos contratos documentan la regla UG-SR-A01 aceptada documentalmente el 2026-1
 | UG-SR-A01-T12 | evidence_ref poblado pero CLAIM_EVIDENCE_LINK inexistente | Rechazar referencia huérfana |
 
 Los resultados son contratos documentales aceptados para UG-SR-A01; no están implementados ni ejecutados. La validación de cardinalidad, FK y comportamiento sigue pendiente.
+
+
+## 54. Aplicación del protocolo de investigador único y separación de gates
+
+La ausencia actual de revisores externos no bloquea la autoauditoría ni la continuación del diseño C10-S. Los dictámenes asistidos deben conservar `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT` y la escala estática/condicional/no evaluada. La exigencia de revisor identificado de §50 aplica solo cuando se active una revisión externa; R1/R2 se difieren, no se designan ahora.
+
+La apertura de la web germen TGCV *as is* tiene un gate propio de transparencia, trazabilidad, estados, falsabilidad, límites, seguridad, privacidad, licencias y atribución. No exige C10-S cerrado ni schema freeze, siempre que no se presenten diseños como resultados ni demos como validación. El playground puede desarrollarse posteriormente sobre los mismos contratos.
+
+El dimensionamiento estadístico C10-S permanece pendiente: N y réplicas son candidatos hasta justificar potencia/precisión, error Monte Carlo y criterios δ/ε. Ningún resultado NEXT4 de otra línea sustituye este cálculo.
