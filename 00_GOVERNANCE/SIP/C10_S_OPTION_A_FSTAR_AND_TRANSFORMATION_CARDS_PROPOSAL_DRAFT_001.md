@@ -1,0 +1,149 @@
+# C10-S — Propuesta de F* y fichas transformacionales para Opción A
+
+**ID:** C10-S-OPTION-A-CARDS-001 · **Versión:** Draft 001 · **Fecha:** 2026-11-05  
+**Estado:** propuesta de operacionalización; NO seleccionada formalmente, NO aprobada, NO congelada, NO ejecutable.  
+**Ámbito:** migración de configuración entre dos entornos software.  
+**Fuentes:** C10_S_TRANSFORMATION_CARDS_HISTORICAL_RECONCILIATION_DRAFT_001.md; C10_S_SYNTHETIC_MICRODOMAIN_OPTIONS_AND_SELECTION_RECOMMENDATION_DRAFT_001.md; maestro C10-S §§48–57, 74–76, 91–94; contrato de provisión B; contrato DGP temporal/roles; matriz U_G.
+
+## 1. Propósito y límites
+
+Este documento avanza desde aliases topológicos a una propuesta funcional concreta, sin convertir una recomendación histórica en decisión aprobada. Opción A es el microdominio preferente recomendado en el análisis comparativo, pero el repositorio aún la marca como no seleccionada/no aprobada. Por ello las fichas siguientes son una propuesta para decisión explícita.
+
+No se definen formatos concretos, productos, versiones, comandos, umbrales numéricos, recursos, permisos ni tiempos. Tampoco se asignan estados generadores 1/0/? ni se afirma que exista una ruta técnica real. Esos elementos requieren decisión de diseño y, después, evidencia/validación.
+
+## 2. Contrato funcional común F*
+
+**F* (candidata):** dada una configuración fuente admisible y un contrato de configuración destino preespecificado, producir y dejar aplicada en el entorno destino una configuración que satisfaga las propiedades obligatorias de esquema, integridad, compatibilidad y seguridad definidas por ese contrato, preservando las propiedades funcionales declaradas como invariantes.
+
+F* se evalúa sobre la ruta completa, no sobre F1, F2, A1 o A2 aisladamente. No incluye Outcome ni Value, productividad, satisfacción, coste económico ni el mero hecho de alcanzar el marcador formal SF.
+
+### 2.1 Predicados observables candidatos
+
+| Dimensión | Criterio a fijar ex ante | No basta |
+|---|---|---|
+| Esquema | Campos obligatorios, tipos, cardinalidades, restricciones y versión de contrato conformes | Parseo sintáctico |
+| Integridad | Referencias, relaciones y consistencia interna preservadas | Archivo generado |
+| Compatibilidad | Configuración admisible para versión/capacidades del destino | Importación sin error |
+| Preservación | Propiedades funcionales obligatorias mantienen semántica según mapping declarado | Igualdad textual o de hash |
+| Seguridad | No se introducen permisos, secretos o configuraciones prohibidas; controles requeridos se mantienen | Aplicación técnica exitosa |
+| Aplicación | El destino acepta/aplica la configuración y el estado resultante puede verificarse | Artefacto convertido pero no aplicado |
+
+Los conjuntos exactos de propiedades, mappings, excepciones, tolerancias y criterios de rechazo quedan OPEN. No se asignan umbrales arbitrarios.
+
+### 2.2 Entrada, salida y contexto
+
+- Entrada común: configuración fuente versionada, su contrato/esquema, estado inicial del entorno destino y contexto basal C0.
+- Salida: configuración aplicada en destino más evidencia de conformidad con F*.
+- C0: versiones, capacidades, permisos, recursos, ventana de mantenimiento y restricciones del entorno, todos fijados ex ante.
+- H: ventana máxima desde inicio de la ruta hasta aplicación y verificación; valor pendiente.
+- G: granularidad de transformación y propiedades de configuración; valor pendiente.
+- Oráculo: validador independiente, versionado e inmutable, ciego a Z/B y separado del generador. No puede usar Outcome/Value para decidir conformidad.
+
+### 2.3 Regla de equivalencia funcional
+
+Una ruta focal F1→F2 y una alternativa A1→A2 son funcionalmente substituibles solo si ambas, desde la misma clase de entradas admisibles y bajo C0, H y G comunes, satisfacen las mismas propiedades obligatorias de F*, restricciones de seguridad e integridad y tolerancias preespecificadas. No se exige identidad de mecanismo. No se presume igualdad de coste, latencia, fiabilidad o riesgo: se registran separadamente.
+
+## 3. Fichas transformacionales candidatas
+
+### 3.1 F1 / τ2 — conversión focal
+
+- **Rol:** transformación focal cuya accesibilidad puede verse afectada por B.
+- **Transición abstracta:** S0 → S2.
+- **Función candidata:** convertir la configuración fuente admisible a una representación/configuración objetivo que pueda ser consumida por la continuación F2.
+- **Entrada:** configuración fuente y contrato de origen; metadatos/versiones necesarios.
+- **Salida:** artefacto convertido en S2, aún no aplicado en destino.
+- **Precondiciones de aplicabilidad:** fuente dentro del dominio admitido; mapping disponible; formato/versión reconocidos; restricciones de conversión satisfechas.
+- **Accesibilidad:** A_f*(τ2) se evalúa separadamente mediante ID, REL, COND, AUTH, RES, DEP y ausencia de BLOCK. La provisión de B, C_dep=1 o presencia del adaptador no bastan por sí solos.
+- **Ejecución:** Exec(F1) solo tras selección/inicio. B no ejecuta F1.
+- **Fallo observable:** identidad/mapping no resuelto, fuente no admitida, dependencia incompatible, recurso insuficiente, autorización inválida o conversión no conforme.
+- **Pendiente:** TID/SID/RID, contrato exacto de conversión, mapping, tolerancias, recursos, ventana y evidencia E1–E4.
+
+### 3.2 F2 — aplicación y verificación focal
+
+- **Rol:** continuación necesaria de la ruta focal; no se presume accesible por abrir F1.
+- **Transición abstracta:** S2 → SF.
+- **Función candidata:** aplicar la configuración convertida en el entorno destino y verificar que el estado aplicado satisface las propiedades destino de F*.
+- **Entrada:** artefacto S2 validado estructuralmente; entorno destino y snapshot de referencia.
+- **Salida:** configuración aplicada más resultado de verificación, o fallo reversible/registrado.
+- **Precondiciones de aplicabilidad:** destino compatible; ventana habilitada; permiso de escritura/aplicación; estado destino no bloqueante; validaciones previas satisfechas.
+- **Accesibilidad:** predicados propios de identidad, canal, autorización, recursos, dependencias y bloqueos; se evalúa separadamente de F1.
+- **Ejecución:** aplicación efectiva posterior a selección/inicio; no forma parte de B.
+- **Fallo observable:** rechazo del destino, incompatibilidad, conflicto con estado actual, permiso/ventana ausente, aplicación parcial o verificación F* fallida.
+- **Pendiente:** contrato de aplicación, estrategia transaccional/rollback, criterios de verificación, residuos, tolerancias, duración y recursos.
+
+### 3.3 A1 — exportación alternativa
+
+- **Rol:** primer paso de una ruta alternativa basal, no provisionada por B.
+- **Transición abstracta:** S0 → S1.
+- **Función candidata:** exportar la configuración fuente mediante un mecanismo de exportación disponible en baseline a un artefacto de intercambio neutral.
+- **Entrada:** misma configuración fuente y contrato de origen admisible.
+- **Salida:** artefacto neutral S1 con esquema, versión y metadatos de procedencia.
+- **Precondiciones:** exportador baseline presente y funcional; permiso de lectura; formato de intercambio admitido; recursos y ventana disponibles.
+- **Accesibilidad:** propia de A1; no se infiere de la disponibilidad de F1 ni del adaptador.
+- **Fallo observable:** exportador ausente/incompatible, cobertura incompleta, pérdida de propiedades, permisos o recursos insuficientes.
+- **Pendiente:** mecanismo/exportador concreto, formato neutral, mapping, TID/SID/RID, dependencias transitivas y evidencia.
+
+### 3.4 A2 — importación/aplicación alternativa
+
+- **Rol:** cierre de la ruta alternativa A1→A2.
+- **Transición abstracta:** S1 → SF.
+- **Función candidata:** importar/aplicar el artefacto neutral mediante un mecanismo nativo del entorno destino y verificar el mismo contrato F*.
+- **Entrada:** artefacto S1 producido por A1; destino y contexto comparables a F2.
+- **Salida:** configuración aplicada y verificada contra F* o fallo registrado.
+- **Precondiciones:** importador nativo baseline; permiso de escritura; compatibilidad del artefacto; ventana, recursos y estado destino admisibles.
+- **Accesibilidad:** propia de A2; se evalúa separadamente de A1.
+- **Fallo observable:** formato no admitido, mapping insuficiente, incompatibilidad, aplicación parcial o fallo del mismo oráculo F*.
+- **Pendiente:** mecanismo/importador concreto, mapping, TID/SID/RID, recursos, dependencias y evidencia.
+
+## 4. Separaciones causales obligatorias
+
+1. B provisiona/configura la dependencia focal; no convierte, aplica ni valida.
+2. C_dep describe estado técnico de la dependencia; no equivale a A_f*.
+3. A_f* describe accesibilidad de τ2; no equivale a App(F1,S0), ejecución ni éxito.
+4. App se evalúa desde el estado de entrada de cada transformación.
+5. F1 y F2 son transformaciones distintas; la accesibilidad de F1 no implica accesibilidad/alcanzabilidad de SF.
+6. A1/A2 deben ser una ruta mecanísticamente genuina y basal. Si B altera sus dependencias, recursos, permisos o rendimiento, se registra R2/vía colateral y no se sostiene exclusión IV focal.
+7. La existencia de A1→A2 no prueba substituibilidad: debe satisfacer el mismo F* con evidencia y cobertura.
+8. Reach(SF) puede permanecer 1 antes y después de abrir τ2 si la alternativa ya es funcional. ΔT_acc no implica necesariamente ΔReach.
+9. Outcome y Value se miden después y no forman parte del oráculo F*.
+
+## 5. Matriz de pendientes por ficha
+
+| Elemento | Ya definido documentalmente | Abierto antes de DGP cerrado |
+|---|---|---|
+| F* | Dominio funcional técnico, independiente de O/V; propiedades candidatas | Lista cerrada de propiedades, mappings, tolerancias, rechazo y oráculo |
+| F1/τ2 | Rol focal, conversión, S0→S2, separación B/ejecución | Contrato, identidad, versión, precondiciones y recursos |
+| F2 | Aplicación destino y verificación, S2→SF | Contrato, atomicidad, rollback, recursos y precondiciones |
+| A1 | Exportación neutral, S0→S1 | Formato y mecanismo baseline, mapping, dependencias |
+| A2 | Importación/aplicación nativa, S1→SF | Mecanismo, mapping, rollback, recursos y precondiciones |
+| Rutas | Composiciones F1→F2 y A1→A2 | Universo cerrado, alternativas adicionales, H/G/C0 y cobertura |
+| B | Provisión técnica sin ejecutar rutas | Arquitectura y manifiesto reales; no-afectación y recursos |
+| Oráculo | Independiente de O/V y ciego a Z/B como requisito | Especificación, validación, error, fiabilidad y cegamiento |
+
+## 6. Riesgos y pruebas de falsación que debe preservar el DGP
+
+- La ruta alternativa puede ser funcional en baseline y mantener Reach(SF)=1.
+- F1 puede abrirse mientras F2 sigue inaccesible o no aplicable.
+- Ambas rutas pueden fallar F* por razones distintas.
+- La conversión puede preservar esquema pero alterar semántica; por eso parseo no basta.
+- B puede consumir recursos o modificar dependencias compartidas y afectar F2/A1/A2.
+- Un artefacto neutral puede ser válido pero no importable en el destino.
+- La ruta puede alcanzar SF nominal y aun así incumplir F*.
+- Un cambio en accesibilidad puede no cambiar selección, ejecución, Outcome o Value.
+- Las observaciones del analizador pueden ser ? aun cuando la verdad del DGP sea 0/1; no filtrar truth al analizador.
+
+## 7. Decisiones y datos que siguen sin fijarse
+
+1. Aceptar, modificar o rechazar Opción A como microdominio del DGP.
+2. Aprobar la definición operacional final de F*.
+3. Definir catálogo de propiedades, mappings, tolerancias y casos fronterizos.
+4. Definir formatos/versiones de origen, destino e intercambio.
+5. Ratificar contratos de entrada/salida y TID/SID/RID de F1/F2/A1/A2.
+6. Fijar C0, G, H, recursos, permisos, ventanas y rollback.
+7. Determinar independencia real de A1/A2 respecto de B y componentes compartidos.
+8. Especificar oráculo, cegamiento, error y validación E1–E4.
+9. Solo después, instanciar R0–R3 y completar ecuaciones/valores del DGP.
+
+## 8. Dictamen
+
+Esta propuesta hace explícita una interpretación funcional candidata para las cuatro transformaciones y F*, sin presentarla como diseño aprobado. No cierra OPEN-C10-003 ni los hallazgos de accesibilidad, cobertura, medición o identificación. La selección del microdominio y la aprobación de F* siguen siendo decisiones separadas. No hay inventario técnico, validación empírica, generación, simulación, implementación ni ejecución.
