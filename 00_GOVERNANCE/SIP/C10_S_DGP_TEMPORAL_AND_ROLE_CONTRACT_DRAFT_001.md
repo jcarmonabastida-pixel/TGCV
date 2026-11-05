@@ -764,3 +764,10 @@ La estructura conceptual de seis elementos de DEC-C10-052 permanece intacta. POL
 Se crea `C10_S_MINIMAL_RULE_GRAMMAR_AND_PARAMETER_TYPE_DOMAIN_PROPOSAL_DRAFT_001.md`. Propone tipos abstractos BOOL, INT, DECIMAL, ENUM, STRING y REF; estados de parámetro ABSENT/NULL/DEFAULT/VALUE; operadores comparativos, pertenencia, estado y referencia; composición AND/OR/NOT; y efectos declarativos finitos sin ejecución arbitraria.
 
 Se propone semántica de expresión TRUE/FALSE/UNKNOWN, que deberá distinguirse de la adjudicación de evidencia 1/0/?. Límites de dominio, tamaño/profundidad, efectos, política UNKNOWN y conversión siguen abiertos. No se asigna truth ni se ejecuta.
+
+
+## 22. Perfil aprobado de dominios finitos y complejidad — DEC-C10-054
+
+El DGP base adopta el perfil estructural aprobado: dominios finitos por clave; tipos BOOL/INT/DECIMAL/ENUM/STRING/REF con restricciones declaradas; estados ABSENT/NULL/DEFAULT/VALUE y subtipos de DEFAULT; AST declarativo acíclico sin ejecución arbitraria; operadores tipados y composición NOT/AND/OR; presupuesto máximo 4 niveles, 16 átomos/regla y 16 reglas/paquete; efectos REQUIRE/FORBID; SELECT_ENUM_VALUE excluido del núcleo. UNKNOWN no se transforma silenciosamente en TRUE/FALSE.
+
+Los límites concretos de valores, escalas, catálogos y cadenas se especificarán por clave una vez definido el contrato abstracto. No se asignan valores ni truth en este contrato. Mapping, conflictos, tolerancias y oráculo siguen abiertos. DEC-C10-054 aprueba perfil de diseño, no implementación, validación o ejecución.
