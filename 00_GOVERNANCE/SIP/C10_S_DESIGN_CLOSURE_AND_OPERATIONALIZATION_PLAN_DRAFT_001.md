@@ -1248,3 +1248,10 @@ UG-SCH-04 (procedencia), UG-SCH-05 (claim target de cobertura), UG-SCH-06 (integ
 # LX. Propuesta de referencias tipadas y procedencia canónica (2026-11-05)
 
 Se crea `C10_S_UG_TYPED_TARGET_REFERENTIAL_INTEGRITY_CONTRACT_PROPOSAL_DRAFT_001.md` para UG-SCH-04/05/06. La propuesta define FKs específicas por destino (NODE, EDGE, ROUTE, PREDICATE, SNAPSHOT y COVERAGE_SCOPE), exclusividad exactamente-una y coherencia con enum de tipo en CLAIM_EVIDENCE_LINK; extiende el mismo patrón a EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER. `source_provenance` queda canónica en EVIDENCE_REGISTER y no duplicada en tablas de objetos. La propuesta está pendiente de aceptación; no se altera todavía la plantilla. UG-SCH-07 sigue OPEN; esquema global SCHEMA_NOT_CLOSED. No se ejecutan parser, constraints, fixtures, simulaciones ni experimentos; `scientific_execution=false`; `execution_authorized=false`.
+
+
+# LXI. Aceptación y aplicación DEC-C10-061 — referencias tipadas U_G (2026-11-05)
+
+El usuario acepta la arquitectura de referencias tipadas y procedencia canónica. Se actualiza la plantilla U_G: CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER contienen seis FKs tipadas (NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_SCOPE), exactamente una no nula y coherente con el enum de destino. object_record_id se declara UNIQUE por tabla; coverage_scope_id PK/UNIQUE. source_provenance queda normalizada en EVIDENCE_REGISTER; evidence_ref sigue opcional 0..1 y CLAIM_EVIDENCE_LINK 0..n.
+
+UG-SCH-04/05/06 quedan ACCEPTED_DOCUMENTALLY, pendientes de validación física. UG-SCH-07 permanece OPEN. El dictamen global sigue SCHEMA_NOT_CLOSED. No se ejecutan parser, constraints, fixtures, simulaciones ni experimentos; `scientific_execution=false`; `execution_authorized=false`.
