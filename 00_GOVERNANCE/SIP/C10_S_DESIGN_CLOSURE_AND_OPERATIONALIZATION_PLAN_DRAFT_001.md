@@ -1313,3 +1313,10 @@ La aplicación es documental y de diseño; no supone schema freeze ni validació
 Se actualizan los encabezados físicos de NODE, EDGE, ROUTE y PREDICATE para incorporar snapshot_id; EDGE incorpora source_node_record_id/target_node_record_id; PREDICATE incorpora route_record_id. La FK raíz de SNAPSHOT se expresa con snapshot_id en ambos lados. Se añade el registro ROUTE_STEP en la sección de rutas. El control mecánico de las 19 tablas Markdown de la plantilla confirma consistencia de número de columnas entre encabezado, separador y filas presentes.
 
 Este control solo comprueba forma Markdown/columnas; no valida tipos, obligatoriedad, claves, cardinalidades, constraints, referencias cruzadas, semántica ni compatibilidad con motor. El esquema sigue abierto. Siguiente: reconciliar matriz de claves y contratos cruzados, revisar que los nombres de columnas de las diez tablas normalizadas coincidan con las vistas §§2–7, y preparar revisión independiente antes de cualquier gate técnico.
+
+
+# LXIX. Reconciliación de matriz de claves ROUTE_STEP — avance (2026-11-05)
+
+Se actualiza la matriz de claves de U_G §12.10 para incorporar ROUTE_STEP como relación normalizada adicional, sin asignarle object_version ni supersedes_record_id. Se aclara su FK a ROUTE, FKs tipadas de mismo snapshot a NODE/EDGE, exclusividad de destino y validación cross-row de continuidad. Se distingue ROUTE_STEP de las diez tablas/registros normalizados previos y de las cinco tablas de objetos versionados.
+
+Queda pendiente una revisión integral de consistencia entre encabezados §§2–6, esquema normalizado §§12.7–12.10, tabla ROUTE_STEP, field-to-column IAM/FP y contratos de integridad. La actualización no implica cierre de UG-SCH-10.
