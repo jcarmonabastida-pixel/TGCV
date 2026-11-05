@@ -7487,3 +7487,8 @@ La revisión ampliada detectó que la ambigüedad no se limita al protocolo §10
 Se propone: (a) `evidence_ref` opcional 0..1 como atajo de navegación; (b) CLAIM_EVIDENCE_LINK como relación canónica 0..n; (c) vínculo válido obligatorio para `observed_state=1/0`; (d) `observed_state=?` sin vínculo solo con `unknown_reason`, `evidence_status=MISSING` y límites de búsqueda/cobertura; (e) `NA` con justificación de no aplicabilidad. La propuesta está desarrollada en plantilla §12.11, protocolo §17 y Test Contract Register §§52–53.
 
 **Estado:** propuesta documental pendiente de aceptación; SR-03 permanece CONDITIONAL. No se ha ejecutado parser, FK, constraints ni pruebas. No hay instancias U_G. No se declara FCM cerrado ni esquema congelado.
+
+
+# 93. Decisión documental UG-SR-A01 — aceptación explícita (2026-11-05)
+
+El usuario acepta la regla de evidencia y cardinalidad registrada en plantilla §12.11, protocolo §17 y Test Contract Register §§52–53: `evidence_ref` opcional 0..1 de navegación; CLAIM_EVIDENCE_LINK relación canónica 0..n; vínculo válido obligatorio para observed_state 1/0; estado ? sin vínculo solo con unknown_reason, MISSING y límites de búsqueda/cobertura; NA con justificación. La contradicción documental queda resuelta. SR-03 se mantiene CONDITIONAL hasta validación técnica de instancias, cardinalidad, FK y parser. No se declara freeze, revisión independiente, inventario U_G ni cobertura efectiva.
