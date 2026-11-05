@@ -1,3 +1,7 @@
+> **HISTÓRICO / SUPERSEDIDO COMO GUÍA OPERATIVA (2026-11-05).** Draft 002 se conserva para trazabilidad y no debe dirigir nuevas decisiones. La guía vigente es `C10_S_DESIGN_CLOSURE_AND_OPERATIONALIZATION_PLAN_DRAFT_003.md`, alineada con el maestro C10-S §§1–130 y con la integración conversacional 130–183 en §§16–52. El Draft 002 incorporó una hipótesis errónea de laguna histórica y una arquitectura simplificada; no usarlo como referencia normativa.
+
+---
+
 # C10-S — Plan integral de cierre científico y operacionalización
 
 **ID:** C10-S-PLAN-001 · **Versión:** Draft 002 · **Fecha:** 2026-11-05  
