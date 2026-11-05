@@ -19,35 +19,35 @@ Reglas obligatorias:
 
 ## 2. Registro de nodos
 
-| node_id | semantic_role | class | TID | SID | RID | version/build/hash | owner/boundary | consumers/routes/arms | direct_dependencies | external/shared_resource | permissions/state | evidence_ref | observed_status (1/0/?) | coverage_status (NONE/PARTIAL/COMPLETE) | evaluator/blinding | timestamp | notes/unknowns |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | NO INVENTARIADO | — | — | — | — | — | — | — | — | — | — | — | ? | NONE | — | — | Fila de esquema; no representa componente real |
+| node_id | semantic_role | class | TID | SID | RID | version/build/hash | owner/boundary | consumers/routes/arms | direct_dependencies | external/shared_resource | permissions/state | evidence_ref | observed_state (1/0/?) | coverage_status (NONE/PARTIAL/COMPLETE) | evaluator/blinding | timestamp | notes/unknowns | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | NO INVENTARIADO | — | — | — | — | — | — | — | — | — | — | — | ? | NONE | — | — | Fila de esquema; no representa componente real | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
 ## 3. Registro de aristas/dependencias
 
-| edge_id | source_node | target_node | relation_type | direction | direct_or_transitive | version_constraint | time_window | condition | arms/routes_affected | resource_or_permission | necessary_for_path | evidence_ref | observed_status (1/0/?) | coverage_status | evaluator/blinding | timestamp | unknowns |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | — | — | NO INVENTARIADO | — | — | — | — | — | — | — | ? | — | ? | NONE | — | — | Fila de esquema; no representa dependencia real |
+| edge_id | source_node | target_node | relation_type | direction | direct_or_transitive | version_constraint | time_window | condition | arms/routes_affected | resource_or_permission | necessary_for_path | evidence_ref | observed_state (1/0/?) | coverage_status | evaluator/blinding | timestamp | unknowns | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | — | — | NO INVENTARIADO | — | — | — | — | — | — | — | ? | — | ? | NONE | — | — | Fila de esquema; no representa dependencia real | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
 ## 4. Registro de rutas y substituibilidad
 
-| route_id | parent_route_class (Rτ2/RA12/Rshared/Rexternal/Runknown) | route_subtype (native/manual/fallback/recovery/other) | ordered_node_edge_sequence | entry_state | target/F* | G | H/window | C0/constraints | version_set | shared_dependencies | affected_by_B | functional_substitutability (1/0/?) | evidence_ref(s) | coverage_scope_id | evaluator_record_id | unresolved_alternatives | notes |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | Runknown | unknown | — | — | — | — | — | — | — | — | ? | ? | — | — | — | Runknown | Fila de esquema; no representa ruta real |
+| route_id | parent_route_class (Rτ2/RA12/Rshared/Rexternal/Runknown) | route_subtype (native/manual/fallback/recovery/other) | ordered_node_edge_sequence | entry_state | target/F* | G | H/window | C0/constraints | version_set | shared_dependencies | affected_by_B | functional_substitutability (1/0/?) | evidence_ref(s) | coverage_scope_id | evaluator_record_id | unresolved_alternatives | notes | observed_state (1/0/?) | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | Runknown | unknown | — | — | — | — | — | — | — | — | ? | ? | — | — | — | Runknown | Fila de esquema; no representa ruta real | ? | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
 ## 5. Registro de predicados por ruta/paso/tiempo
 
-| predicate_id | route_id | step | time/snapshot | predicate_type (ID/REL/COND/AUTH/RES/DEP/BLOCK/APP/ALT/ORACLE/EXT) | observed_state (1/0/?) | evidence_ref(s) | coverage_scope_id | source/version/hash | adjudication_rule/tolerance | evaluator_record_id | reason_for_unknown | impact_on_A_f/App/Reach/F_alt/IV | timestamp |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | — | — | — | — | ? | — | — | — | — | — | No existe evidencia aportada | Mantener indeterminación | — |
+| predicate_id | route_id | step | time/snapshot | predicate_type (ID/REL/COND/AUTH/RES/DEP/BLOCK/APP/ALT/ORACLE/EXT) | observed_state (1/0/?) | evidence_ref(s) | coverage_scope_id | source/version/hash | adjudication_rule/tolerance | evaluator_record_id | reason_for_unknown | impact_on_A_f/App/Reach/F_alt/IV | timestamp | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | — | — | — | — | ? | — | — | — | — | — | No existe evidencia aportada | Mantener indeterminación | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
 **La truth del DGP no forma parte de esta tabla ni de ningún artefacto visible al analizador.** Se almacena únicamente en un registro separado, segregado y con control de acceso del generador/evaluador autorizado. Esta plantilla contiene solo observed_state y evidence_ref.
 
 ## 6. Registro de snapshots y fuentes
 
-| snapshot_id | unit_id | phase (baseline/post-B/rollback/route-test) | timestamp | scope | source_artifacts | version/hash | method | coverage_limitations | custodian | integrity_check | evidence_ref |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | — | — | — | — | — | — | — | No capturado | — | — | — |
+| snapshot_id | unit_id | phase (baseline/post-B/rollback/route-test) | timestamp | scope | source_artifacts | version/hash | method | coverage_limitations | custodian | integrity_check | evidence_ref | observed_state (1/0/?) | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | — | — | — | — | — | — | — | No capturado | — | — | — | ? | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
 ## 7. Matriz de cobertura por dimensión
 
@@ -217,6 +217,9 @@ Para cada fila, evidence_ref debe resolver a un evidence_id del registro de proc
 
 El crosswalk §10 identifica que las tablas actuales aún requieren columnas explícitas para parent_catalog_id, source_provenance, evidence_status, contract_intent, coverage_scope_id, review_adjudication_status y unknown_reason; este protocolo define su semántica, pero no declara el esquema tabular completamente cerrado. La revisión de correspondencia de todas las columnas sigue abierta.
 
+
+
+**Nota de normalización:** la tabla de §7 es una vista-resumen legible de cobertura; el registro canónico por dimensión es `COVERAGE_REGISTER` (§12.3). Las tablas de §§2–6 son ahora instancias físicas de captura y deben contener las columnas comunes de §12.7, añadidas explícitamente a sus encabezados. Los campos `observed_state` se aplican solo cuando el objeto admite clasificación trivalente; para snapshots se registra `NA` cuando no sea una afirmación de presencia/ausencia.
 
 ## 12. Esquema canónico normalizado de captura (Draft 001)
 
