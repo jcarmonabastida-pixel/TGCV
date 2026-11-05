@@ -1121,3 +1121,14 @@ Se crea `C10_S_PROPERTY_APPLICABILITY_AND_OBLIGATORINESS_MATRIX_DRAFT_001.md`. P
 ### XLVII-A. Precisión de frontera F* / FP-08
 
 La matriz IAM se ha precisado para mantener F* como capacidad funcional de ruta completa, coherente con su contrato candidato de producción y aplicación en destino: FP-01…FP-07 pueden integrar su adjudicación por dimensiones separadas y no compensatorias. FP-08 es gate de validez probatoria separado. POL ausente por diseño no elimina requisitos de seguridad FP-05 que formen parte de F*; estos se declaran independientemente de POL. Esta precisión evita reducir F* a preservación interna del paquete.
+
+
+# XLVIII. DEC-C10-056 y contrato abstracto de instancia (2026-11-05)
+
+El usuario acepta la política de cardinalidad: CMP≥1, PAR≥1, REF≥0 solo con declaración ex ante y cobertura exhaustiva, RUL≥1, POL≥0 ausente por diseño en el núcleo mínimo y MET obligatorio. CMP/PAR/RUL vacíos son SCOPE_ERROR; REF vacío no se infiere de falta de evidencia.
+
+Se registra DEC-C10-056 y se crea `C10_S_ABSTRACT_CONFIGURATION_INSTANCE_CONTRACT_DRAFT_001.md`, que formaliza estructura C=(ID_C,V_C,CMP,PAR,REF,RUL,POL?,MET), entidades abstractas, correspondencia C_src→M→C_dst_decl→C_dst_applied, invariantes y límites. No fija valores, claves concretas, topología, reglas sustantivas ni schema ejecutable.
+
+**Estado:** cardinalidad aprobada; contrato abstracto Draft 001 no aprobado/congelado/implementado. Pendiente especializar frontera/unidad de servicio, clases CMP, claves PAR, tipos de REF, reglas RUL, mapping, cobertura REF=0 y oráculo. Sin IAM instanciado, truth, fixtures, validación técnica, revisión independiente, evidencia empírica ni ejecución.
+
+**Siguiente paso:** definir la frontera de la unidad de configuración del servicio software y el criterio de inclusión/exclusión de componentes/dependencias, sin asignar todavía valores concretos.
