@@ -110,3 +110,14 @@ Reglas:
 ## 7. Aceptación — DEC-C10-060 (2026-11-05)
 
 El usuario acepta el vocabulario controlado de 16 valores, la separación entre `parent_catalog_id`, `semantic_role` y `boundary_class`, el crosswalk no uno-a-uno N01–N23 y las reglas del nodo raíz lógico. El contrato queda ACCEPTED_DOCUMENTALLY bajo DEC-C10-060. Esta aceptación no equivale a implementación física ni validación del esquema. Se mantienen los límites de §6.
+
+
+## 8. Addendum DEC-C10-065 — actualización de la FK raíz
+
+La regla conceptual de nodo raíz y semantic_role aceptada por DEC-C10-060 se conserva. La FK física completa, tras DEC-C10-065, es:
+
+`SNAPSHOT(snapshot_id, object_record_id, unit_object_record_id, unit_id) → NODE(snapshot_id, snapshot_object_record_id, object_record_id, node_id)`.
+
+El `object_record_id` de SNAPSHOT debe coincidir con el `snapshot_object_record_id` del NODE raíz. `unit_object_record_id` identifica el registro NODE exacto y `unit_id` comprueba su identidad semántica. El NODE destino mantiene `semantic_role=LOGICAL_SERVICE_UNIT`. La FK compuesta debe ser diferible o disponer de mecanismo transaccional equivalente probado, sin debilitar integridad.
+
+Este addendum es la especificación vigente y complementa el mapping histórico de §4; no altera el vocabulario de 16 roles ni el crosswalk N01–N23. Validación física pendiente.
