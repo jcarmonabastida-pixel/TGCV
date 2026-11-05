@@ -426,8 +426,8 @@ OPEN-C10-005 y XAUD-001/002 permanecen ABIERTOS. La especificación no es un tra
 | p0=.20 / p1=.80 | ESTADO FINAL C_dep | Calibración y verificación |
 | W_attempt | D1: .25/1; D2: 0/1 | Actor, disparador y registro |
 | S_success condicional | .80 propuesto | Especificación conjunta y validación |
-| B0 sin provisión | D2 solamente | Confirmar D2 como contraste |
-| D1 como primario | PRINCIPAL CONDICIONADO | Justificar control ordinario |
+| B0 sin provisión | D2 solamente | Verificar ausencia real de provisión focal de fondo; D2 es primario candidato por DEC-C10-066 |
+| D1 como primario | SUPERSEDIDO POR DEC-C10-066 | D1 queda secundario; justificar el control ordinario para interpretar el contraste incremental |
 | A_f*/D_f* | No inferidos desde C_dep | Calcular desde predicados completos |
 | OPEN-C10-001/005 | ABIERTAS | Aprobación, materialización y revisión independiente |
 
@@ -441,14 +441,14 @@ La ambigüedad semántica entre «política probabilística» y «brazo determin
 | D1 como contraste incremental | DEFINIDO | Provisión programada frente a provisión ordinaria |
 | Justificación del régimen ordinario D1 | NO ACREDITADA | Fuente, frecuencia .25/.20, población y contexto |
 | D2 como contraste mecanístico | DEFINIDO | Provisión programada frente a ausencia de intento focal |
-| D2 como candidato preferente provisional | RECOMENDADO, NO APROBADO | Depende de objetivo explícito y ausencia de provisión de fondo |
+| D2 como escenario primario candidato | ACEPTADO POR DEC-C10-066 | Verificar objetivo ausencia-vs-provisión y ausencia real de provisión focal de fondo |
 | ITT_D1 / ITT_D2 | DISTINTOS | No agrupar ni promediar |
 | Primera etapa | PENDIENTE POR VARIABLE Y ESCENARIO | C_dep, A_f,post*, D_f, ΔT_acc |
 | LATE/Wald | PENDIENTE POR ESCENARIO | No asumir mismos cumplidores ni exclusión |
-| Selección primaria | ABIERTA | Aceptación científica explícita |
+| Selección primaria | RESUELTA: D2 PRIMARIO CANDIDATO / D1 SECUNDARIO | No reabrir precedencia; legitimidad y parámetros siguen abiertos |
 | OPEN-C10-001/005 | ABIERTAS | Política, mecanismo, calibración y revisión independiente |
 
-La recomendación no cambia retrospectivamente los datos ni parámetros históricos. D1 no se descarta; se retira únicamente su presunción de primario mientras falte justificación del régimen ordinario.
+La decisión DEC-C10-066 cambia la precedencia vigente, no los datos ni parámetros históricos. D1 no se descarta: queda como escenario secundario y su régimen ordinario debe justificarse para interpretar el contraste incremental. Las condiciones técnicas y causales de legitimidad de D2 siguen abiertas.
 
 
 ## 28. Primera etapa técnica y derivación de accesibilidad — reconciliación documental
