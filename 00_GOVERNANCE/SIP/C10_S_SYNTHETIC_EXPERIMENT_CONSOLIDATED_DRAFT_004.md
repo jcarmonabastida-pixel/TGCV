@@ -7739,3 +7739,8 @@ UG-SCH-10 permanece OPEN. No hay schema freeze, validación física, revisión i
 Se aprueba DEC-C10-065: NODE, EDGE, ROUTE, PREDICATE y ROUTE_STEP incorporan `snapshot_object_record_id` junto a `snapshot_id`, con FK compuesta a SNAPSHOT(`snapshot_id`, `object_record_id`). OAS-02 queda RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING. Se conserva el versionado de SNAPSHOT y la separación entre identidad semántica y revisión observacional.
 
 La plantilla U_G actualiza los cinco encabezados y filas de esquema; el crosswalk IAM incorpora el mapping. Persisten la reconciliación de claves compuestas, referencias cruzadas y raíz SNAPSHOT→NODE, selección de motor, pruebas físicas y revisión independiente. UG-SCH-10 sigue OPEN. No se ejecuta experimento ni validación técnica.
+
+
+# 124. Claves candidatas y FKs compuestas — DEC-C10-065 (2026-11-05)
+
+U_G §15.2/§15.6 ahora especifica claves candidatas y FKs compuestas en orden explícito para el pinning de SNAPSHOT, EDGE→NODE, PREDICATE→ROUTE, ROUTE_STEP→ROUTE/NODE/EDGE y SNAPSHOT→NODE raíz. OAS-02 queda RESOLVED_DOCUMENTARILY; OAS-03 SPECIFIED_DOCUMENTARILY / COMPLETENESS_AND_ENGINE_VALIDATION_PENDING. La coherencia integral de tablas normalizadas/crosswalks, circularidad raíz y compatibilidad de motor siguen pendientes. UG-SCH-10 OPEN; sin validación técnica ni ejecución científica.
