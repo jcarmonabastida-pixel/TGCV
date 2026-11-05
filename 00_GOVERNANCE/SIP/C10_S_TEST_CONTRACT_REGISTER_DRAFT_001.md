@@ -904,3 +904,18 @@ Contratos documentales; no implementados ni ejecutados. El detalle de evidencias
 | GC-12 | Dependencia externa no observable | Mantener frontera abierta y Reach=? cuando sea necesaria |
 
 Contratos documentales; no implementados ni ejecutados.
+
+
+## 44. Contratos de plantilla U_G — UGI-01…07
+
+| ID | Escenario | Aserción esperada |
+|---|---|---|
+| UGI-01 | Nodo no observado | La fila permanece NO INVENTARIADO / ?; no inferir ausencia |
+| UGI-02 | Dependencia directa sin fuente | Estado ?; cobertura NONE/PARTIAL |
+| UGI-03 | Dependencia transitiva o dinámica no resuelta | Registrar nodo desconocido; no declarar independencia de rutas |
+| UGI-04 | Ruta externa/opaca | Mantener EXT_UNKNOWN/Runknown y propagar ? cuando sea relevante |
+| UGI-05 | Ruta alternativa sin evidencia F* común | Substituibilidad ?; no declarar F_alt,0=0 |
+| UGI-06 | Truth DGP en plantilla | No exponer truth_dgp al analizador; separar clasificación observada |
+| UGI-07 | Cobertura COMPLETE | Limitarla al universo operativo declarado/versionado; no reclamar exhaustividad ontológica |
+
+Contratos documentales para revisar la futura instancia de la plantilla; no implementados ni ejecutados. La plantilla no contiene fixtures ni observaciones reales.
