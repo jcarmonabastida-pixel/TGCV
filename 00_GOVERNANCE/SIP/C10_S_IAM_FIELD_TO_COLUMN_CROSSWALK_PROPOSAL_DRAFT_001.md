@@ -117,3 +117,16 @@ Los IDs semánticos se conservan como crosswalk, pero nunca sustituyen los recor
 | Versión observacional | Cinco tablas versionadas.object_record_id/object_version/supersedes_record_id | Misma tabla e identidad semántica | Nueva captura crea nueva versión, sin implicar cambio material |
 
 **Bloqueo explícito:** el mapping de snapshot_id solo fija identidad semántica, no una versión concreta de SNAPSHOT. DEC-C10-062 versiona también SNAPSHOT; se requiere resolver OAS-02 mediante un campo de pinning exacto (recomendación: snapshot_object_record_id) o mediante decisión que cambie expresamente la semántica/versionado de SNAPSHOT. Hasta entonces no se declara FK física de mismo snapshot completamente especificada.
+
+
+### 9.2. DEC-C10-065 — exact SNAPSHOT revision pinning
+
+| Concepto/campo | Tabla.columna | Clave destino | Regla |
+|---|---|---|---|
+| Revisión exacta del snapshot | NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP.snapshot_id + snapshot_object_record_id | SNAPSHOT(snapshot_id, object_record_id) | FK compuesta obligatoria; nunca latest-version/timestamp |
+| Extremos EDGE | EDGE.snapshot_id + snapshot_object_record_id + source/target_node_record_id | SNAPSHOT(snapshot_id,object_record_id) y NODE(snapshot_id,snapshot_object_record_id,object_record_id) | Mismo snapshot revision y NODE record exacto |
+| Ruta de PREDICATE | PREDICATE.snapshot_id + snapshot_object_record_id + route_record_id | SNAPSHOT(snapshot_id,object_record_id) y ROUTE(snapshot_id,snapshot_object_record_id,object_record_id) | Mismo snapshot revision y ROUTE record exacto |
+| Paso ROUTE_STEP | ROUTE_STEP.snapshot_id + snapshot_object_record_id + route_record_id/node_record_id/edge_record_id | SNAPSHOT + ROUTE/NODE/EDGE compuestos | Todas las referencias fijan el mismo snapshot revision |
+| NODE raíz de SNAPSHOT | SNAPSHOT.snapshot_id + unit_object_record_id | NODE(snapshot_id,object_record_id,node_id) | El registro NODE raíz pertenece al snapshot; circularidad diferible/transaccional |
+
+DEC-C10-065 resuelve OAS-02 a nivel documental. El crosswalk físico aún debe verificarse con claves candidatas completas y orden de columnas exacto; el motor no está seleccionado.
