@@ -31,17 +31,17 @@ Reglas obligatorias:
 
 ## 4. Registro de rutas y substituibilidad
 
-| route_id | ordered_node_edge_sequence | route_class (focal/alternative/native/manual/external/shared/fallback/recovery/unknown) | entry_state | target/F* | G | H/window | C0/constraints | version_set | shared_dependencies | affected_by_B | functional_substitutability (1/0/?) | evidence_ref | coverage_status | evaluator/blinding | unresolved_alternatives | notes |
+| route_id | parent_route_class (Rτ2/RA12/Rshared/Rexternal/Runknown) | route_subtype (native/manual/fallback/recovery/other) | ordered_node_edge_sequence | entry_state | target/F* | G | H/window | C0/constraints | version_set | shared_dependencies | affected_by_B | functional_substitutability (1/0/?) | evidence_ref(s) | coverage_scope_id | evaluator_record_id | unresolved_alternatives | notes |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | — | unknown | — | — | — | — | — | — | — | ? | ? | — | NONE | — | Runknown | Fila de esquema; no representa ruta real |
+| — | Runknown | unknown | — | — | — | — | — | — | — | ? | ? | — | NONE | — | Runknown | Fila de esquema; no representa ruta real |
 
 ## 5. Registro de predicados por ruta/paso/tiempo
 
-| predicate_id | route_id | step | time/snapshot | predicate_type (ID/REL/COND/AUTH/RES/DEP/BLOCK/APP/ALT/ORACLE/EXT) | truth_dgp (restricted) | observed_state (1/0/?) | evidence_ref | coverage_scope | source/version/hash | adjudication_rule/tolerance | evaluator/blinding | reason_for_unknown | impact_on_A_f/App/Reach/F_alt/IV | timestamp |
+| predicate_id | route_id | step | time/snapshot | predicate_type (ID/REL/COND/AUTH/RES/DEP/BLOCK/APP/ALT/ORACLE/EXT) | observed_state (1/0/?) | evidence_ref(s) | coverage_scope_id | source/version/hash | adjudication_rule/tolerance | evaluator_record_id | reason_for_unknown | impact_on_A_f/App/Reach/F_alt/IV | timestamp |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | — | — | — | — | RESTRINGIDO | ? | — | NONE | — | — | — | No existe evidencia aportada | Mantener indeterminación | — |
+| — | — | — | — | — | ? | — | NONE | — | — | — | No existe evidencia aportada | Mantener indeterminación | — |
 
-truth_dgp es una columna reservada al generador/evaluador independiente; no debe exponerse al analizador. En inventario real sin DGP conocido, mantenerla vacía/restringida.
+**La truth del DGP no forma parte de esta tabla ni de ningún artefacto visible al analizador.** Se almacena únicamente en un registro separado, segregado y con control de acceso del generador/evaluador autorizado. Esta plantilla contiene solo observed_state y evidence_ref.
 
 ## 6. Registro de snapshots y fuentes
 
@@ -216,3 +216,99 @@ La captura de evidencias, los campos de procedencia, la clasificación 1/0/? y l
 Para cada fila, evidence_ref debe resolver a un evidence_id del registro de procedencia. Los campos source_provenance, collection_method, scope, timestamp, integrity, access_lineage, completeness_limitations, evidence_status, reviewer y reproducibility se registran en el expediente de evidencia enlazado. observed_status/observed_state y coverage_status nunca se sustituyen por evidence_status. Ningún 0 se admite sin argumento de cobertura negativa; ningún COMPLETE sin universo, denominador y excepciones. Las discrepancias críticas requieren adjudicación independiente y preservación del desacuerdo.
 
 El crosswalk §10 identifica que las tablas actuales aún requieren columnas explícitas para parent_catalog_id, source_provenance, evidence_status, contract_intent, coverage_scope_id, review_adjudication_status y unknown_reason; este protocolo define su semántica, pero no declara el esquema tabular completamente cerrado. La revisión de correspondencia de todas las columnas sigue abierta.
+
+
+## 12. Esquema canónico normalizado de captura (Draft 001)
+
+Esta sección es normativa para futuras instancias de la plantilla y resuelve la insuficiencia de las tablas abreviadas §§2–7. Los encabezados abreviados anteriores sirven como vistas de trabajo; cuando difieran, prevalece el esquema normalizado de esta sección. Ninguna fila de ejemplo constituye observación.
+
+### 12.1. Registro de evidencia (EVIDENCE_REGISTER)
+
+Una fila por artefacto/fuente y versión exacta. Un mismo evidence_id puede respaldar varias afirmaciones; cada vínculo claim-evidence se registra en CLAIM_EVIDENCE_LINK.
+
+| evidence_id | source_class (S1–S8) | source_type | source_provenance | source_location_ref | custodian | collection_method/tool_version | scope_id | unit/environment | version_identity | timestamp_start/end_tz | integrity_hash/signature | access_lineage | completeness_limitations | confidentiality/access_ref | evidence_status | reviewer_id | reproducibility_ref |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | MISSING | — | — |
+
+No incluir secretos, credenciales ni datos personales innecesarios. source_location_ref debe ser referencia segura, no volcado de material sensible.
+
+### 12.2. Registro de vínculo afirmación-evidencia (CLAIM_EVIDENCE_LINK)
+
+| claim_evidence_id | claim_target_type | claim_target_id | claim_statement | evidence_id | support_type (direct/inferred/contradictory/contextual) | relevance_scope | reviewer_note |
+|---|---|---|---|---|---|---|---|
+| — | — | — | — | — | — | — | — |
+
+Toda fila de nodo, arista, predicado, ruta o cobertura debe enlazar al menos un claim_evidence_id cuando tenga una clasificación observada. Una fila ? puede tener cero evidencia disponible, pero debe registrar unknown_reason.
+
+### 12.3. Registro normalizado de cobertura (COVERAGE_REGISTER)
+
+| coverage_scope_id | dimension | universe_definition/version | denominator_unit_and_count | expected_sources | examined_sources | valid_sources | covered_units/count | excluded_units/reason | opaque_or_unknown_units/count | status (NONE/PARTIAL/COMPLETE) | completion_rule | exceptions_and_impact | reviewer_id | timestamp |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | — | — | — | — | — | — | — | — | — | NONE | — | — | — | — |
+
+COMPLETE exige denominador finito y trazable, regla de enumeración, fuentes válidas, excepciones resueltas/justificadas y revisión. El porcentaje no sustituye la evaluación de superficies críticas ni la cobertura transitiva.
+
+### 12.4. Registro de evaluación independiente (EVALUATOR_ASSESSMENT)
+
+| evaluator_record_id | object_type | object_id | evaluator_id | role (E1/E2/ADJUDICATOR) | observed_state | evidence_ids | rule_version | scope_id | blinded_to_outcome_value | blinded_to_Z_B | confidence_or_limitations | rationale | timestamp |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | — | — | — | — | ? | — | — | — | — | — | — | — | — |
+
+E1 y E2 deben emitir registros independientes antes de conocer la clasificación del otro. Las variables de cegamiento aceptan YES/NO/NOT_FEASIBLE con justificación; no se presupone cegamiento logrado por declarar un procedimiento.
+
+### 12.5. Registro de discrepancia y adjudicación (ADJUDICATION_REGISTER)
+
+| adjudication_id | object_type | object_id | evaluator_record_E1 | evaluator_record_E2 | disagreement_type | evidence_reviewed | adjudicator_id | decision (1/0/?/NA) | rule_and_reason | minority_position | unresolved_limitations | timestamp |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | — | — | — | — | — | — | — | ? | — | — | — | — |
+
+No se permite majority-vote automático. Si no se resuelve el conflicto con evidencia y regla aplicable, decisión final ?.
+
+### 12.6. Registro de truth restringida del DGP (DGP_TRUTH_SECURE)
+
+**No forma parte de este inventario ni del paquete accesible al analizador.** Se mantiene en el entorno/artefacto segregado del generador/evaluador autorizado, con control de acceso, versionado, hash y log de accesos. Solo se permite exportar resultados de evaluación observables autorizados y cegados; nunca los valores de truth que permitan reconstruir la asignación verdadera antes del cierre analítico. La existencia de esta tabla en el esquema conceptual no autoriza crearla ni poblarla.
+
+### 12.7. Campos comunes obligatorios y extensión de tablas
+
+Todas las tablas de objetos (NODE, EDGE, ROUTE, PREDICATE, SNAPSHOT) deben incluir:
+- `object_record_id` único; `parent_catalog_id`; `object_version` o versión aplicable;
+- `coverage_scope_id`; `evidence_status`; `review_adjudication_status`;
+- `observed_state` cuando el objeto admita clasificación trivalente;
+- `evidence_ref` como uno o varios `claim_evidence_id`, nunca como texto libre sin resolución;
+- `unknown_reason`; `contract_intent` cuando aplique; `created_at`, `recorded_by`, `supersedes_record_id`.
+
+Extensiones:
+- NODE: TID/SID/RID, estado declarado/instalado/desplegado/cargado/invocado/ejecutado, owner/boundary, consumers, dependencias.
+- EDGE: parent_edge_id, atomic_edge_id, source_node_id, target_node_id, dirección, tipo, condición, directo/transitivo, versión/tiempo, necesidad para ruta.
+- ROUTE: parent_route_class (una de cinco clases U_G) y route_subtype separado; secuencia ordenada y predicados necesarios.
+- PREDICATE: predicate_id exacto, familia, ruta/paso/tiempo, observed_state, regla y tolerancia; nunca DGP truth.
+- SNAPSHOT: snapshot_id, unit_id, phase, scope_id, timestamp, artefactos/hash, método, cobertura y evidence refs.
+
+### 12.8. Reglas de consistencia entre tablas
+
+1. evidence_ref → CLAIM_EVIDENCE_LINK.claim_evidence_id → EVIDENCE_REGISTER.evidence_id; no se aceptan referencias huérfanas.
+2. Cada claim-evidence link debe tener alcance compatible con la unidad, versión, entorno y tiempo de la afirmación.
+3. observed_state no se copia desde evidence_status; evidence_status no se deriva de observed_state.
+4. coverage_scope_id debe resolver a una fila COVERAGE_REGISTER; no se puede declarar COMPLETE sin denominador.
+5. E1/E2 se almacenan por separado; ADJUDICATION_REGISTER solo se crea cuando proceda.
+6. parent_route_class no puede sustituirse por route_subtype.
+7. DGP_TRUTH_SECURE no se mezcla ni sincroniza con los registros visibles al analizador.
+8. Las revisiones generan nuevos registros versionados; no se sobrescribe el historial.
+
+## 13. Auditoría campo-a-campo: resultado
+
+La auditoría detecta que el protocolo de procedencia estaba más desarrollado que la plantilla física. Se identifican y corrigen/documentan estas brechas:
+
+| ID | Brecha encontrada | Resolución documental | Estado |
+|---|---|---|---|
+| FCM-01 | No existía tabla separada EVIDENCE_REGISTER con evidence_id | §12.1–12.2 | Incorporada |
+| FCM-02 | evidence_ref no resolvía explícitamente a vínculo afirmación-evidencia | Cadena de referencias §12.8.1 | Incorporada |
+| FCM-03 | Cobertura carecía de denominador, fuentes válidas y unidades opacas | COVERAGE_REGISTER §12.3 | Incorporada |
+| FCM-04 | No había tabla de doble evaluación individual | EVALUATOR_ASSESSMENT §12.4 | Incorporada |
+| FCM-05 | No había expediente de discrepancia/adjudicación | ADJUDICATION_REGISTER §12.5 | Incorporada |
+| FCM-06 | truth_dgp aparecía físicamente en la tabla de predicados | Retirada de tabla analítica; segregación §12.6 | Corregida documentalmente |
+| FCM-07 | route_class mezclaba cinco clases primarias y subtipos | parent_route_class y route_subtype separados | Corregida documentalmente |
+| FCM-08 | Campos complementarios no estaban como columnas/contrato común | Schema común §12.7 | Incorporado |
+| FCM-09 | No existía regla de integridad referencial y versionado | §12.8 | Incorporada |
+
+**Dictamen:** la correspondencia semántica se mantiene, pero el esquema anterior no era operacionalmente completo. El esquema normalizado queda especificado documentalmente en §12; aún requiere revisión independiente, validación de tipos/valores, y correspondencia exacta con cada tabla antes de declararse cerrado. No se han creado instancias reales, no hay inventario ni cobertura técnica. FCM-01…09 son hallazgos documentales, no tests ejecutados.
