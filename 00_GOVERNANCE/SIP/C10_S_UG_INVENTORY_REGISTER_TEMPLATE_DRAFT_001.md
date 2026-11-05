@@ -277,7 +277,7 @@ Todas las tablas de objetos (NODE, EDGE, ROUTE, PREDICATE, SNAPSHOT) deben inclu
 - `object_record_id` único; `parent_catalog_id`; `object_version` o versión aplicable;
 - `coverage_scope_id`; `evidence_status`; `review_adjudication_status`;
 - `observed_state` cuando el objeto admita clasificación trivalente;
-- `evidence_ref` como uno o varios `claim_evidence_id`, nunca como texto libre sin resolución;
+- `evidence_ref` como cero o un `claim_evidence_id` de navegación opcional, nunca como lista serializada ni texto libre; el conjunto completo se obtiene de CLAIM_EVIDENCE_LINK;
 - `unknown_reason`; `contract_intent` cuando aplique; `created_at`, `recorded_by`, `supersedes_record_id`.
 
 Extensiones:
@@ -314,7 +314,7 @@ Extensiones:
 | Cegamiento | Enum | YES/NO/NOT_FEASIBLE, con justificación para NO/NOT_FEASIBLE |
 | Referencias | FK tipada | No aceptar referencia huérfana ni alcance incompatible |
 
-**Normalización de evidencia:** `CLAIM_EVIDENCE_LINK` es la relación uno-a-muchos canónica entre objetos/afirmaciones y evidencias. Los campos `evidence_ref` de las tablas de objeto son referencias de navegación opcionales (un vínculo primario); no sustituyen el conjunto completo de vínculos. Cada vínculo adicional se registra como fila independiente en CLAIM_EVIDENCE_LINK. `claim_target_id` debe apuntar a `object_record_id` y `evidence_id` a EVIDENCE_REGISTER. No almacenar listas serializadas de IDs como sustituto de la relación.
+**Normalización de evidencia:** `CLAIM_EVIDENCE_LINK` es la relación uno-a-muchos canónica entre objetos/afirmaciones y evidencias. Los campos `evidence_ref` de las tablas de objeto son referencias de navegación opcionales (cero o un vínculo primario); no sustituyen el conjunto completo de vínculos. Cada vínculo adicional se registra como fila independiente en CLAIM_EVIDENCE_LINK. `claim_target_id` debe apuntar a `object_record_id` y `evidence_id` a EVIDENCE_REGISTER. No almacenar listas serializadas de IDs como sustituto de la relación.
 
 **Identidad de registro:** `object_record_id` identifica la fila versionada; `node_id/edge_id/route_id/predicate_id/snapshot_id` identifican el objeto semántico. `object_version` y `supersedes_record_id` preservan revisiones. `parent_catalog_id` enlaza al catálogo U_G o a un subcatálogo versionado.
 
@@ -363,8 +363,8 @@ La auditoría detecta que el protocolo de procedencia estaba más desarrollado q
 |---|---|---|---|
 | FCM-10 | §12.7 exigía campos comunes, pero las tablas §§2–6 no los mostraban físicamente. | Añadidos encabezados comunes a NODE, EDGE, ROUTE, PREDICATE y SNAPSHOT. | Corregido documentalmente; pendiente parser |
 | FCM-11 | SNAPSHOT usaba ? aunque observed_state no aplica por defecto. | Ejemplo corregido a NA; NA requiere justificación de no aplicabilidad. | Corregido |
-| FCM-12 | evaluator_record_id singular no representaba E1/E2. | Renombrado evaluator_record_ids y exigida una fila por evaluador. | Corregido |
-| FCM-13 | evidence_ref(s) podía interpretarse como lista serializada. | CLAIM_EVIDENCE_LINK se declara relación 1:N canónica; evidence_ref es solo enlace primario opcional. | Regla definida |
+| FCM-12 | La clave singular evaluator_record_id en EVALUATOR_ASSESSMENT podía confundirse con el campo de navegación plural en las tablas de objeto. | Se conserva evaluator_record_id singular como PK/FK de cada evaluación E1/E2; evaluator_record_ids plural solo como referencia resumida opcional en objetos. | Corregido documentalmente en §13.2 |
+| FCM-13 | evidence_ref(s) podía interpretarse como lista serializada. | CLAIM_EVIDENCE_LINK se declara relación 1:N canónica; evidence_ref es cero o un enlace primario opcional. | Regla definida |
 | FCM-14 | Matriz §7 podía confundirse con cobertura canónica sin denominador. | Se declara vista resumen; COVERAGE_REGISTER §12.3 es registro normativo. | Corregido |
 | FCM-15 | Tipos/domínios/estados de revisión no estaban fijados. | Diccionario candidato §12.9 y matriz de obligatoriedad §12.10. | Definido documentalmente |
 | FCM-16 | No estaba fijado si claim_target_id apuntaba a ID semántico o registro versionado. | Se fija object_record_id; IDs semánticos y de registro quedan separados. | Corregido documentalmente |
