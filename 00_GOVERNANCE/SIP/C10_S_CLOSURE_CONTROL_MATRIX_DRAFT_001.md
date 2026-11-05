@@ -750,3 +750,20 @@ No se asignan estados técnicos ni cobertura efectiva. El esquema no se declara 
 | UGE-08 | Seguridad y custodia | Abierto | Ubicación de fuentes, secretos, acceso, retención y referencias seguras |
 
 Protocolo no aplicado. No hay inventario ni cobertura técnica; no se cierran UGE ni GC/UGI/UGC, MD-C1…6 o auditorías relacionadas.
+
+
+## 24. Seguimiento — auditoría campo-a-campo del esquema de evidencia U_G
+
+| ID | Hallazgo | Estado | Criterio de cierre |
+|---|---|---|---|
+| FCM-01 | EVIDENCE_REGISTER separado | Definido en plantilla §12.1 | Validar tipos, unicidad, integridad y seguridad |
+| FCM-02 | Vínculo afirmación-evidencia | Definido §12.2 y §12.8 | Comprobar referencias y alcance compatible |
+| FCM-03 | Cobertura con denominador | Definida §12.3 | Validar denominadores/reglas por dimensión y microdominio |
+| FCM-04 | Doble evaluación independiente | Definida §12.4 | Revisar independencia, cegamiento y flujo de captura |
+| FCM-05 | Adjudicación/discrepancias | Definida §12.5 | Revisar trazabilidad y conservación de posición minoritaria |
+| FCM-06 | Truth DGP separada | Retirada de tabla analítica; §12.6 | Validar segregación técnica y control de acceso antes de implementación |
+| FCM-07 | Clases de ruta/subtipos | Separadas en esquema | Validar tipos/valores y correspondencia U_G |
+| FCM-08 | Campos comunes | Definidos §12.7 | Validar presencia exacta en cada tabla de objeto |
+| FCM-09 | Integridad referencial/versionado | Reglas §12.8 | Validar parser/constraints y supersession |
+
+**Estado global:** corregido documentalmente, pendiente revisión independiente y validación ejecutable. No son tests ejecutados ni evidencia de cobertura.
