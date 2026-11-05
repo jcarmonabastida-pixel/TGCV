@@ -1058,3 +1058,12 @@ Se estructuran C_src, C_dst y M y se proponen predicados base para correspondenc
 El usuario aprueba la partición del DGP base: CMP/PAR/REF/RUL constitutivos; POL condicional, fuera del núcleo confirmatorio mínimo; metadatos contractuales obligatorios para identidad/versionado/procedencia, con extensiones desconocidas condicionales. Se conserva la estructura conceptual de seis elementos de DEC-C10-052; POL no se elimina, y su ausencia en el escenario base deberá declararse ex ante.
 
 **Siguiente bloque:** definir gramática declarativa mínima y finita de reglas/restricciones y dominio abstracto de tipos/parámetros. No se fijan aún cardinalidades, semántica de null/default, mappings, tolerancias ni oráculo. No generar truth ni ejecutar.
+
+
+# XLII. Gramática mínima y dominio de tipos (2026-11-05)
+
+Se crea `C10_S_MINIMAL_RULE_GRAMMAR_AND_PARAMETER_TYPE_DOMAIN_PROPOSAL_DRAFT_001.md`, con propuesta de tipos abstractos BOOL/INT/DECIMAL/ENUM/STRING/REF, estados ABSENT/NULL/DEFAULT/VALUE, operadores declarativos y semántica TRUE/FALSE/UNKNOWN, diferenciada de la evidencia 1/0/?.
+
+**No cerrado:** dominios y límites finitos, profundidad/tamaño de expresiones, efectos, precedencia, política UNKNOWN, conversiones y oráculo. No ejecutar ni generar truth.
+
+**Siguiente paso:** deliberar la gramática y fijar un dominio mínimo de valores y límites para el escenario base; después especificar mapping y reconciliar FP-01/02/03.
