@@ -35,7 +35,7 @@ Draft 003 mejoró el plan anterior, pero todavía comprimía u omitía formulaci
 ## 4. Reconciliaciones causales que se mantienen abiertas
 
 - θ_A(q) es la pregunta general C10-D1; S4-R focaliza τ2 y no la sustituye.
-- D1 y D2 son políticas/estimandos distintos. D2 es candidato preferente recomendado en §66 para el contraste mecanístico mientras no se justifique el régimen ordinario D1; no está aprobado como primario. D1 permanece principal condicionado.
+- D1 y D2 son políticas/estimandos distintos. Por DEC-C10-066, D2 es el escenario primario candidato y D1 el secundario. La legitimidad de D2 exige verificar ausencia de provisión focal de fondo; la legitimidad de D1 exige justificar el régimen ordinario si se conserva como comparador incremental. No se agrupan ITT, primeras etapas ni LATE.
 - ITT_Z identifica el efecto de asignación/política bajo supuestos de diseño; no prueba exclusión ni mediación.
 - LATE_f es local a compliers del escenario. Heterogeneidad y composición distinta impiden equiparar automáticamente D1/D2 o extrapolar a ATE/ATT.
 - θ_Af(q*), θ_A(q), ψ_policy, ITT, primeras etapas de C_dep/A_f/D_f/ΔT_acc y efectos directos/interactivos no son intercambiables.
@@ -61,4 +61,4 @@ Draft 004 incorpora las correcciones MRA3-01…11 y la secuencia estadística ac
 
 Se han propagado documentalmente MRA3-12…14: familias P177/P178/P179 al Test Contract Register; indexación DEC-C10-063/064 al Decision Log y registro autónomo DEC-C10-063; y supersesión de los antiguos requisitos de revisión externa en Test Register, Closure Control Matrix, causal architecture reconciliation, DGP e integrated reconciliation audit. Las pruebas siguen NO IMPLEMENTADAS / NO EJECUTADAS; no hay revisión humana independiente ni se exige para continuar.
 
-El siguiente bloque científico no es otra auditoría documental general: es cerrar la arquitectura causal y los estimandos/políticas factibles (θ_A(q), θ_Af(q*), ITT, LATE/ψ_policy, q_X*, B_g0/B_g1, C_auth y D1/D2) sin convertir recomendaciones en decisiones.
+El siguiente bloque científico es cerrar la arquitectura causal y los estimandos/políticas factibles (θ_A(q), θ_Af(q*), ITT, LATE/ψ_policy, q_X*, B_g0/B_g1, C_auth), tomando D2 como primario candidato y D1 como secundario conforme a DEC-C10-066. No reabrir la selección primaria; resolver legitimidad, soporte, vías colaterales y condiciones de identificación.
