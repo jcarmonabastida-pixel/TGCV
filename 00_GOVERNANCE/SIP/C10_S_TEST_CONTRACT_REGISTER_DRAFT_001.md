@@ -933,3 +933,19 @@ Contratos documentales para revisar la futura instancia de la plantilla; no impl
 | UGC-06 | Roles compuestos N16/N23 | Separar criterio F*, oráculo y adjudicación; ejecución, Outcome y Value según identidad/tiempo. |
 
 Contratos de revisión documental. No son tests de software ni se han ejecutado.
+
+
+## 46. Contratos de revisión del protocolo U_G — UGE-01…08
+
+| ID | Caso documental | Resultado esperado |
+|---|---|---|
+| UGE-01 | Fuente declarativa sin runtime | No inferir componente cargado/ejecutado |
+| UGE-02 | Búsqueda sin hallazgo y cobertura incompleta | observed_state=?; no asignar 0 |
+| UGE-03 | Fuentes contradictorias | evidence_status=CONFLICTING y estado ? hasta adjudicación |
+| UGE-04 | Dependencia dinámica no observada | Cierre transitivo incompleto; independencia=? |
+| UGE-05 | Ruta externa/opaca relevante | Mantener Rexternal/Runknown y propagar ? |
+| UGE-06 | Declaración de ausencia | Exigir universo, método de detección, integridad, cobertura negativa y revisión |
+| UGE-07 | COMPLETE sin denominador | Rechazar COMPLETE; exigir scope, universo, fuentes y excepciones |
+| UGE-08 | Desacuerdo 1 vs 0 | Tercer adjudicador; conservar opiniones y, si no se resuelve, ? |
+
+Contratos documentales de revisión; no implementados ni ejecutados.
