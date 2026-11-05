@@ -425,3 +425,20 @@ Se aplica el contrato aceptado:
 - evidence_ref: opcional 0..1 de navegación; CLAIM_EVIDENCE_LINK mantiene 0..n.
 
 Las constraints CHECK/FK, la compatibilidad del motor/formato y las pruebas negativas no se han ejecutado. La decisión es documental, no freeze ni validación técnica.
+
+
+### 12.12. Identidad de registro, versionado y supersession — DEC-C10-062
+
+Esta sección complementa y prevalece sobre cualquier formulación genérica anterior de `object_version` o `supersedes_record_id`.
+
+- Ámbito: solo NODE, EDGE, ROUTE, PREDICATE y SNAPSHOT.
+- `object_record_id`: identificador opaco, no vacío y UNIQUE dentro de cada tabla; no se exige unicidad global entre tablas.
+- ID semántico: identifica la entidad dentro de su tabla. `UNIQUE(semantic_id, object_version)` identifica cada revisión.
+- `object_version`: INT positivo; comienza en 1 y aumenta de uno en uno. Sin duplicados, saltos, decrementos ni reutilización.
+- `supersedes_record_id`: NULL solo en v1; desde v2 referencia la fila inmediatamente anterior de la misma tabla e identidad semántica, con versión actual menos uno.
+- Cadena lineal: cada registro admite como máximo un sucesor; sin autorreferencias, referencias futuras, bifurcaciones, ciclos, huérfanos ni múltiples raíces/extremos vigentes.
+- Historial inmutable: correcciones crean nuevas filas. Supersession no significa equivalencia funcional, causal ni de valor.
+- Cambio semántico material, split/merge, derivación, alternativa o nueva captura SNAPSHOT requiere identidad/relación propia; continuidad incierta permanece `MATCH_UNRESOLVED / ?`.
+- `created_at` es record-time, no tiempo de observación/validez. SNAPSHOT conserva la FK compuesta a la versión exacta del NODE raíz; nunca se resuelve a la última versión implícitamente.
+
+**Estado:** ACCEPTED DOCUMENTALLY por DEC-C10-062. Constraints, FK autorreferentes, secuencias, triggers, inmutabilidad y detección de ciclos quedan pendientes del gate técnico autorizado; no hay validación física.
