@@ -27,3 +27,14 @@ El contrato y este registro son DRAFT. No se ha inventariado una implementación
 ## 5. Siguiente paso
 
 Crear una plantilla de registro para U_G §81, sin completar valores técnicos no observados, y reconciliarla con el contrato de cobertura. Después, integrar de forma controlada las referencias de §82/DGP/Plan cuando la vía de edición del maestro extenso permita una actualización verificable.
+
+
+## 6. Addendum de reintento de integración (2026-11-05)
+
+Se releyeron 00_GOVERNANCE/README.md y el bootstrap canónico desde main, así como el maestro, DGP, plan, contrato de frontera, inventario finito, matriz de cobertura y matriz de cierre desde research/c10-s-consolidation-draft. El bloqueo previo no se reproduce en este reintento.
+
+**Corrección de numeración tras inspección de los archivos vigentes:** el maestro pasa de §81 a §82; el DGP ya contiene §§1–40 y recibe §41 (no §9); el plan ya contiene bloques I–XIX y recibe XX (no IX). La referencia §9 / IX del cuerpo original de esta nota se conserva como registro histórico de la intención errónea y queda corregida por este addendum.
+
+Se han actualizado físicamente los tres documentos de destino con sus secciones correspondientes. La plantilla de inventario U_G se registra como artefacto separado. Se verificará cada escritura mediante recuperación posterior y hash/blob SHA; si alguna actualización no se recupera exactamente, no se declarará integrada.
+
+La integración es documental y DRAFT. No cambia la verdad técnica ni los estados de evidencia: no hay inventario real, cobertura NONE donde no hay inspección, y A_f*, F_alt,0 y Reach_H permanecen ?. No se ejecuta validación local porque el entorno local no está cargado en esta sesión; tampoco se ejecuta experimento ni simulación.
