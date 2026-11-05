@@ -164,3 +164,8 @@ El detalle de correspondencia se desarrolla en `C10_S_IAM_FIELD_TO_COLUMN_CROSSW
 Conclusión provisional: logical_service_id se representa mediante NODE raíz y SNAPSHOT.unit_id; object_scope se mapea a semantic_role/vocabulario tipado; rationale a notes/unknowns; sensibilidad a confidentiality/access_ref del expediente de evidencia; parent/child mediante parent_catalog_id sin EDGE de contención. P2 sigue siendo perímetro transversal, no clase.
 
 La única extensión candidata que parece justificar campo propio es NODE.boundary_class ∈ {P0_CONFIG, P1_ENVIRONMENT, DUAL_P0_P1}. No se añade a la plantilla hasta aceptación explícita y cierre de FK con unit_id/node_id.
+
+
+## 13. Addendum DEC-C10-064 — compatibilidad con Opción A
+
+El overlay IAM se conserva como capa de clasificación/crosswalk, no como mecanismo alternativo de pertenencia. Los registros NODE/EDGE/ROUTE/PREDICATE quedan ligados a snapshot; las referencias EDGE→NODE y PREDICATE→ROUTE deben fijar record IDs exactos del mismo snapshot. SNAPSHOT conserva la unidad lógica y su NODE raíz exacto. Los atributos IAM no sustituyen estas FKs ni crean aristas no catalogadas. La matriz field-to-column deberá actualizarse para incluir snapshot_id, record IDs tipados y ROUTE_STEP.
