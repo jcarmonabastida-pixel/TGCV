@@ -132,3 +132,18 @@ La revisión independiente no debe usar sin actualización las referencias hist�
 - Cadena de versionado solo para las cinco tablas de objetos; ROUTE_STEP y registros de evidencia/evaluación/adjudicación conservan contratos propios.
 
 **Estado:** actualización documental del paquete de revisión. R1/R2 NOT STARTED; los hashes/commits exactos se fijarán al iniciar la revisión. No acredita PASS SR-01…20 ni validación física. El gate de revisión debe evaluar explícitamente OAS-01…10 y las decisiones DEC-C10-059…065, sin dar por resuelto técnicamente ningún punto.
+
+
+## 11. Addendum de revisión — matriz tipada y procedencia (OAS-11)
+
+La revisión R1/R2 deberá cotejar U_G §15.4 y crosswalk §9.4 contra DEC-C10-061 y el protocolo de evidencia/adjudicación. Controles específicos:
+- exclusividad de las seis FKs y concordancia con claim_target_type/object_type;
+- evidencia obligatoria por evidence_id y CLAIM_EVIDENCE_LINK 0..n;
+- navegación evidence_ref opcional 0..1, sin convertirla en requisito de soporte;
+- FKs opcionales evaluator_record_id/adjudication_id y FKs obligatorias evaluator_record_E1/E2;
+- PK/UNIQUE de claim_evidence_id, evidence_id, evaluator_record_id, adjudication_id y coverage_scope_id;
+- source_provenance normalizada en EVIDENCE_REGISTER;
+- cobertura negativa suficiente para observed_state=0 y trivalencia de ?/NA;
+- segregación de DGP_TRUTH_SECURE y límites de acceso/custodia.
+
+No se declara PASS de SR-02/03/04/05/06/07/12/13/17/19. La ampliación es documental; validación técnica e independencia pendientes.
