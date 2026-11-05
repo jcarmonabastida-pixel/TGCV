@@ -72,3 +72,10 @@ El usuario acepta `NODE.boundary_class` con tres clases sustantivas `P0_CONFIG/P
 La FK se cierra documentalmente con `SNAPSHOT.(unit_object_record_id, unit_id) → NODE.(object_record_id, node_id)`; el nodo destino debe tener `semantic_role=LOGICAL_SERVICE_UNIT`. Se añade `unit_object_record_id` a SNAPSHOT porque `unit_id` aislado no identifica una revisión concreta del registro NODE.
 
 Véase `C10_S_UG_LOGICAL_UNIT_FOREIGN_KEY_AND_BOUNDARY_CLASS_CONTRACT_DRAFT_001.md`. La plantilla se actualiza documentalmente; no se declara implementada ni validada por parser/constraints.
+
+
+## Addendum — EDGE y semantic_role (2026-11-05)
+
+La plantilla EDGE actualizada utiliza `edge_id`, `atomic_edge_id`, `parent_edge_id`, `source_node_id` y `target_node_id`. El primero es la identidad semántica local de la arista en el registro versionado; atomic_edge_id identifica la relación atómica estable; parent_edge_id conserva E01–E23. Los extremos resuelven a NODE.node_id dentro del scope/versión aplicable. E07 no es arista binaria y E22 no autoriza inventar nodos de selección/ejecución.
+
+El vocabulario de `semantic_role` y el nodo raíz se desarrolla en `C10_S_UG_SEMANTIC_ROLE_AND_LOGICAL_ROOT_CONTRACT_DRAFT_001.md`. El crosswalk N01–N23 no es uno-a-uno y no altera `boundary_class` ni DEC-C10-059. Propuesta pendiente de aceptación.
