@@ -182,3 +182,8 @@ La correspondencia de F* con CMP/PAR/REF/RUL/POL/MET y FP-01…FP-08 se desarrol
 ## 17. Aplicabilidad ex ante y DEC-C10-055
 
 La arquitectura de familias FP queda aceptada por DEC-C10-055, pero la selección de propiedades obligatorias por instancia no se cierra por esa aceptación. Se propone el IAM en `C10_S_PROPERTY_APPLICABILITY_AND_OBLIGATORINESS_MATRIX_DRAFT_001.md`, con declaración previa de O/C/NA/? y cardinalidad/cobertura. La frontera entre F* funcional y gates técnicos FP-04/05/06, y el tratamiento separado de FP-08 como validez probatoria, permanece abierta a decisión antes del freeze.
+
+
+## 18. Frontera F* / FP-08 precisada
+
+F* es capacidad funcional de ruta completa (producción y aplicación en destino) y puede requerir FP-01…FP-07 en dimensiones separadas, incluida compatibilidad FP-04, seguridad efectiva FP-05, aplicación FP-06 y verificación FP-07. FP-08 es gate probatorio independiente, no atributo funcional ni compensación. La exclusión de POL en el núcleo mínimo no elimina los requisitos de seguridad F*; estos se declaran independientemente del módulo POL. Véase la precisión en la matriz IAM.
