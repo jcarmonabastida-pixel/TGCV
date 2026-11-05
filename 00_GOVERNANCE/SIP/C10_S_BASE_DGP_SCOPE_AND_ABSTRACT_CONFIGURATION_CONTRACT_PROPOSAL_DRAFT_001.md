@@ -1,7 +1,7 @@
 # C10-S — Alcance del DGP base y contrato abstracto de configuración: propuesta
 
 **ID:** C10-S-DGP-BASE-CONTRACT-001 · **Versión:** Draft 001 · **Fecha:** 2026-11-05  
-**Estado:** propuesta de diseño derivada de DEC-C10-051/052; NO aprobada como contrato confirmatorio, NO congelada, NO implementada, NO validada.  
+**Estado:** partición del DGP base aprobada por decisión explícita del usuario (DEC-C10-053); contrato abstracto y predicados aún candidatos; NO congelado, NO implementado, NO validado.  
 **Propósito inmediato:** reducir la indeterminación del objeto y de FP-03 para poder completar el DGP sin asignar truth ni parámetros empíricos prematuramente.
 
 ## 1. Decisiones marco que se preservan
@@ -156,13 +156,13 @@ Una propiedad puede aportar evidencia a más de una familia, pero el mismo fallo
 
 ## 10. Decisiones aún abiertas
 
-1. Aprobar/modificar la partición constitutivo/condicional del §2.
+1. La partición constitutivo/condicional del §2 queda aprobada por DEC-C10-053; la formalización detallada sigue abierta.
 2. Fijar la gramática mínima de reglas y el dominio de tipos/parámetros.
 3. Decidir si el DGP base requiere una o varias entidades y qué clases funcionales se permiten.
 4. Definir multiplicidad y direccionalidad de referencias.
 5. Cerrar las distinciones ausencia/null/default y sus reglas.
 6. Especificar el contrato de correspondencia M y las variaciones admitidas.
-7. Decidir si POL queda fuera del DGP base y se incorpora solo como escenario secundario.
+7. POL queda fuera del núcleo confirmatorio mínimo y se incorpora como módulo/escenario secundario, conforme a DEC-C10-053.
 8. Definir el alcance del oráculo y su independencia/fiabilidad.
 9. Reconciliar los predicados con F1/F2/A1/A2 sin asumir sus mecanismos técnicos.
 10. Integrar el contrato resultante en DGP/estimandos una vez aprobadas las definiciones.
@@ -171,4 +171,20 @@ Una propiedad puede aportar evidencia a más de una familia, pero el mismo fallo
 
 La propuesta reduce el objeto a un paquete funcional finito con cuatro familias constitutivas y módulos condicionales, y define las obligaciones mínimas de C_src, C_dst y M. Es suficiente para orientar la siguiente decisión y el trabajo de formalización; no constituye todavía un DGP completo.
 
-**Estado:** OBJECT SELECTED; BASE SCOPE PROPOSED; SOURCE/DESTINATION CONTRACTS STRUCTURED; ATOMIC PREDICATES CANDIDATE; OBLIGATORINESS OPEN; MAPPING NOT SPECIFIED; ORACLE NOT VALIDATED; NO TECHNICAL VALIDATION; NO INDEPENDENT REVIEW; NO EMPIRICAL EVIDENCE; NO EXECUTION AUTHORIZATION.
+**Estado:** OBJECT SELECTED; BASE FAMILY PARTITION APPROVED (DEC-C10-053); POL CONDITIONAL; METADATA TRACEABILITY REQUIRED; SOURCE/DESTINATION CONTRACTS STRUCTURED BUT NOT CLOSED; ATOMIC PREDICATES CANDIDATE; DOMAIN/GRAMMAR/CARDINALITY/NULL-DEFAULT RULES OPEN; MAPPING NOT SPECIFIED; ORACLE NOT VALIDATED; NO TECHNICAL VALIDATION; NO INDEPENDENT REVIEW; NO EMPIRICAL EVIDENCE; NO EXECUTION AUTHORIZATION.
+
+
+## 12. Registro de decisión — DEC-C10-053 (2026-11-05)
+
+**Decisión explícita del usuario:** se aprueba la partición propuesta para el DGP base:
+- constitutivos: componentes, parámetros tipados, referencias y reglas/restricciones con gramática mínima;
+- políticas asociadas (POL): fuera del núcleo confirmatorio mínimo, como módulo/escenario condicional secundario;
+- metadatos contractuales: soporte obligatorio de identidad, versionado y procedencia; extensiones desconocidas condicionales.
+
+La decisión mantiene intacta la estructura conceptual de seis elementos de DEC-C10-052. Que POL sea condicional no significa que se elimine del objeto; el escenario base deberá declarar ex ante si no hay políticas migrables. La regla de metadatos tampoco convierte las extensiones desconocidas en obligatorias.
+
+**Alcance:** aprobación de la partición del DGP base para continuar la formalización documental. No aprueba aún la gramática de reglas, dominios de tipos/parámetros, número/clases de componentes, cardinalidad/direccionalidad de referencias, semántica ausencia/null/default, mappings, tolerancias, oráculo ni DGP completo.
+
+**Límites:** no genera truth, parámetros empíricos, fixtures ni resultados; no valida FP-03/F*, no constituye revisión independiente ni evidencia empírica. `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente paso:** fijar una gramática declarativa mínima y finita para reglas/restricciones, junto con el dominio abstracto de tipos/parámetros, manteniendo los restantes puntos abiertos.
