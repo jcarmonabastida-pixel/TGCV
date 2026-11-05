@@ -7683,3 +7683,10 @@ Se amplía la matriz §12.10 a los diez registros operativos y se alinea el cont
 UG-SCH-10 queda OPEN: no está formalizada la pertenencia de NODE/EDGE/ROUTE/PREDICATE a un snapshot concreto ni el pinning de extremos EDGE, secuencias ROUTE y PREDICATE→ROUTE a registros/versiones exactos. Timestamp y coverage_scope_id no sustituyen FKs inequívocas. Debe prepararse comparación de alternativas antes de modificar la plantilla. No se ha seleccionado solución ni creado nuevas columnas/tablas.
 
 UG-SCH-09 queda corregido documentalmente; el ledger de auditoría actualiza estados previos de UG-SCH-01…08. Dictamen global U_G: SCHEMA_NOT_CLOSED. Sin validadores, parser, constraints, fixtures, truth, simulación ni experimento. `scientific_execution=false`; `execution_authorized=false`.
+
+
+# 117. Comparación de alternativas para UG-SCH-10 (2026-11-05)
+
+Se crea la propuesta comparativa `C10_S_UG_SNAPSHOT_MEMBERSHIP_AND_VERSIONED_GRAPH_REFERENCES_OPTIONS_DRAFT_001.md`. Se comparan: A) snapshot_id directo en registros NODE/EDGE/ROUTE/PREDICATE, referencias versionadas exactas y ROUTE_STEP; B) SNAPSHOT_MEMBER normalizado más relaciones de binding/ROUTE_STEP; C) manifiesto serializado; D) inferencia por timestamp/coverage/última versión. C y D no son aceptables como fuente canónica de integridad. Se recomienda A provisionalmente por su correspondencia directa con los registros observacionales y menor complejidad relacional, pero depende de definir object_version como revisión del registro observacional y resolver la dependencia circular SNAPSHOT↔NODE raíz. B queda como alternativa si se requiere reutilizar una misma fila inmutable en varios snapshots.
+
+La propuesta no constituye aceptación ni modifica DEC-C10-059…062. UG-SCH-10 permanece OPEN; no se modifica la plantilla ni se ejecutan validadores, parser, constraints, fixtures, truth, simulaciones o experimentos. `scientific_execution=false`; `execution_authorized=false`.
