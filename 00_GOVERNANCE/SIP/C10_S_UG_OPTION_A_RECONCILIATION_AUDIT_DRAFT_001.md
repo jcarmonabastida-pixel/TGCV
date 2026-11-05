@@ -18,13 +18,15 @@ La auditoría es documental y asistida por la autoría. No constituye revisión 
 La plantilla contiene 19 tablas Markdown. El control programático confirma que encabezado, separador y filas de esquema presentes mantienen el mismo número de columnas en las 19; no se detectaron nombres de columna duplicados dentro de esos encabezados.
 
 Conteos de las tablas físicas principales:
-- NODE: 31 columnas.
-- EDGE: 34.
+- NODE: 32 columnas.
+- EDGE: 35.
 - ROUTE: 30.
-- ROUTE_STEP: 7.
-- PREDICATE: 26.
+- ROUTE_STEP: 8.
+- PREDICATE: 27.
 - SNAPSHOT: 26.
+- EVIDENCE_REGISTER: 18.
 - CLAIM_EVIDENCE_LINK: 15.
+- COVERAGE_REGISTER: 15.
 - EVALUATOR_ASSESSMENT: 18.
 - ADJUDICATION_REGISTER: 17.
 
@@ -147,3 +149,38 @@ La plantilla ahora especifica las claves candidatas compuestas y FKs con orden d
 OAS-02 queda RESOLVED_DOCUMENTARILY. OAS-03 pasa a SPECIFIED_DOCUMENTARILY / COMPLETENESS_AND_ENGINE_VALIDATION_PENDING. No se declara cierre porque aún debe comprobarse la simetría de claves destino/origen en todas las tablas normalizadas, la circularidad raíz, nulabilidad/CHECKs, unicidad de route_step, continuidad cross-row y compatibilidad física. La auditoría estática de Markdown de 19 tablas se repetirá después de la propagación final.
 
 El hallazgo OAS-01 queda mitigado por §15 como contrato de prevalencia, pero las definiciones históricas §§12.7–12.10 y los crosswalks deben reconciliarse para evitar dos fuentes normativas. OAS-04 está corregido en el encabezado ROUTE; OAS-05 parcialmente actualizado; OAS-06 parcialmente actualizado. OAS-07 permanece como nota de gobernanza del PR #116. UG-SCH-10 OPEN.
+
+
+## 9. Reconciliación posterior — control de referencias exactas (2026-11-05)
+
+### OAS-08 — ROUTE_STEP omitía el pinning exacto en sus FKs a objetos
+**Severidad:** HIGH / DOCUMENTARY CONSISTENCY BLOCKER.
+
+Aunque §§15.1–15.2 y DEC-C10-065 exigen que ROUTE_STEP comparta el par `snapshot_id + snapshot_object_record_id` con ROUTE/NODE/EDGE, las tres FKs enumeradas en §15.3 usaban solo `snapshot_id` más el record ID del objeto. Esa forma permitía una referencia cruzada a una revisión de objeto asociada a otra revisión del mismo snapshot semántico y contradecía el requisito de pinning exacto.
+
+**Corrección documental aplicada:** las FKs de §15.3 se han ampliado para incluir `snapshot_object_record_id` en ambos lados y mantener el mismo orden de columnas que las claves candidatas de §15.2. También se ha propagado el campo a la formulación resumida de §13.5 y §14. No se ha modificado DEC-C10-065.
+
+### Reconciliación de §§12.7–12.10
+- §12.7 incorpora una nota de precedencia que dirige a §§15.1–15.3 para el pinning Opción A + DEC-C10-065.
+- §12.8.12 explicita la FK SNAPSHOT→NODE raíz y la pertenencia de los cinco registros dependientes a la revisión exacta.
+- §12.10 queda expresamente clasificada como matriz de baseline histórica para las referencias de snapshot; §15.2 es la matriz física normativa vigente.
+- El crosswalk IAM/FP añade §9.3 con las doce relaciones y columnas de origen/destino en orden exacto, incluyendo SNAPSHOT→NODE raíz.
+
+### Control estático repetido
+La plantilla contiene 19 tablas Markdown. Los encabezados, separadores y filas presentes mantienen el mismo número de columnas; no se detectan nombres duplicados dentro de los encabezados. Recuento actualizado de las tablas operativas:
+- NODE 32; EDGE 35; ROUTE 30; ROUTE_STEP 8; PREDICATE 27; SNAPSHOT 26.
+- EVIDENCE_REGISTER 18; CLAIM_EVIDENCE_LINK 15; COVERAGE_REGISTER 15; EVALUATOR_ASSESSMENT 18; ADJUDICATION_REGISTER 17.
+
+**Límite:** PASS_FORMAT_ONLY. No valida que las claves candidatas sean físicamente aceptables, que las FKs sean implementables, ni la circularidad, nulabilidad, dominios, CHECKs, integridad cross-row o semántica. La verificación de las FKs requiere DDL/constraints y pruebas técnicas autorizadas.
+
+### Disposición actualizada
+- OAS-01: RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING — prevalencia explícita de §15 y matriz histórica §12.10 identificada.
+- OAS-02: RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING — DEC-C10-065.
+- OAS-03: SPECIFIED_DOCUMENTARILY / COMPLETENESS_AND_ENGINE_VALIDATION_PENDING — las claves/FKs están descritas, pero falta revisión independiente de simetría/completitud y validación del motor.
+- OAS-04: RESOLVED_DOCUMENTARILY — `ordered_node_edge_sequence` no figura como columna persistida de ROUTE.
+- OAS-05: SPECIFIED_DOCUMENTARILY — crosswalk físico §9.3 añadido; requiere revisión independiente.
+- OAS-06: PARTIALLY_RESOLVED — se actualizan recuentos y alcance; checklist/autoauditoría heredados aún requieren confirmación de vigencia.
+- OAS-07: OPEN GOVERNANCE NOTE — PR #116 conserva base `research/c10-d1-protocol-draft`, no `main`.
+- OAS-08: RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING — FKs ROUTE_STEP corregidas; el motor debe verificar su implementación.
+
+**Dictamen global:** UG-SCH-10 OPEN; SCHEMA_NOT_CLOSED; revisión independiente R1/R2 NOT STARTED; validación técnica NOT RUN; no DDL/parser/fixtures; `scientific_execution=false`; `execution_authorized=false`.
