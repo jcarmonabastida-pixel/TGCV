@@ -7557,3 +7557,12 @@ Se crea `C10_S_BASE_DGP_SCOPE_AND_ABSTRACT_CONFIGURATION_CONTRACT_PROPOSAL_DRAFT
 Se definen las obligaciones documentales de C_src, C_dst y M, y predicados candidatos BASE-CMP, BASE-PAR-TYPE/VALUE/STATE, BASE-REF-ENDPOINT/RELATION, BASE-RULE-LOGIC, BASE-MAP-COVERAGE y BASE-APPLIED-STATE. Se preserva la separación entre FP-01…FP-08 y entre objeto, entorno, provisión, accesibilidad, ejecución, Outcome y Value.
 
 **Estado:** propuesta de alcance, no decisión aprobada ni DGP completo. No fija cardinalidades, dominios, gramática, mappings, valores, probabilidades, truth, oráculo o estimandos. Sin validación técnica, revisión independiente, evidencia empírica ni ejecución.
+
+
+# 101. DEC-C10-053 — aprobación de la partición del DGP base (2026-11-05)
+
+El usuario aprueba la partición del DGP base propuesta en el documento de alcance: componentes, parámetros tipados, referencias y reglas/restricciones con gramática mínima son constitutivos; POL queda como módulo/escenario condicional fuera del núcleo confirmatorio mínimo; metadatos contractuales son soporte obligatorio de identidad, versionado y procedencia, con extensiones desconocidas condicionales.
+
+Se preserva la estructura conceptual de seis elementos de DEC-C10-052. POL no se elimina del objeto: solo queda fuera del núcleo base. La ausencia de políticas en un escenario base deberá declararse ex ante.
+
+La decisión aprueba la partición, no el contrato completo. Gramática, dominios, cardinalidad/direccionalidad, ausencia/null/default, mappings, tolerancias, oráculo y DGP siguen abiertos. Sin truth, fixtures, validación técnica, revisión independiente, evidencia empírica ni ejecución.
