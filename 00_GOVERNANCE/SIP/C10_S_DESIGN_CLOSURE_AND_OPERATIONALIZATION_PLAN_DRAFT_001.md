@@ -1260,3 +1260,8 @@ UG-SCH-04/05/06 quedan ACCEPTED_DOCUMENTALLY, pendientes de validación física.
 # LXII. Propuesta de cierre UG-SCH-07 — identidad de registro y supersession (2026-11-05)
 
 Se crea `C10_S_UG_RECORD_ID_VERSION_AND_SUPERSESSION_CONTRACT_PROPOSAL_DRAFT_001.md`. La propuesta recomienda `object_record_id` UNIQUE por tabla, `object_version` entero positivo secuencial por identidad semántica y `supersedes_record_id` como referencia autorreferente al predecesor inmediato de la misma tabla e identidad. La cadena debe ser lineal, sin ciclos, bifurcaciones, saltos ni reescritura histórica. Se separa record-time de tiempo de observación y se conserva el pinning SNAPSHOT→NODE a la versión exacta. Pendiente aceptación; no se altera todavía la plantilla U_G ni se ejecutan constraints, parser, fixtures o experimentos. UG-SCH-07 sigue OPEN; esquema global SCHEMA_NOT_CLOSED.
+
+
+# LXIII. Aplicación de DEC-C10-062 — cierre documental UG-SCH-07 (2026-11-05)
+
+El usuario acepta el contrato de identidad de registro, versionado y supersession. Se registra DEC-C10-062 y se incorpora §12.12 a la plantilla U_G. `object_record_id` es UNIQUE por tabla; `object_version` INT positivo y contiguo por identidad semántica; `supersedes_record_id` referencia al predecesor inmediato de la misma tabla/identidad; cadena lineal sin bifurcaciones/ciclos/huérfanos, historial inmutable. `created_at` es record-time; SNAPSHOT fija la versión exacta de NODE raíz. UG-SCH-07 queda ACCEPTED_DOCUMENTALLY, no validado físicamente. El esquema global sigue SCHEMA_NOT_CLOSED; quedan revisión integral de diez tablas y gate técnico autorizado. No se ejecutan parser, constraints, fixtures, simulaciones ni experimentos.
