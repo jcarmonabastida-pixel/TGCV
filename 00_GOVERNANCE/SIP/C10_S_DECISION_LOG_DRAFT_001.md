@@ -390,3 +390,10 @@ La política B puede abrir vías colaterales por permisos, recursos, estado/conf
 Se registra la recomendación de evaluar ARCH-B1: provisionar el adaptador focal como sidecar/runtime separado, aditivo, con versiones fijadas, permisos mínimos, cuotas y canal explícito. No es una decisión de instalación ni de implementación. B no debe ejecutar F1/F2/A1/A2 ni cambiar F*, oráculo, datos fuente/destino, C_auth funcional o ruta alternativa.
 
 Se crea C10_S_ADAPTER_PROVISION_MANIFEST_AND_DEPENDENCY_GRAPH_DRAFT_001.md con catálogo B-M01…15, clases de dependencia, snapshots, criterios de reversibilidad y no-afectación, y contratos PROV-01…12. Todas las superficies técnicas permanecen NO INVENTARIADO hasta aportar evidencia; no significa que no cambien. MD-C1/MD-C4 abiertos. DEC-C10-041 no selecciona definitivamente microdominio, no decide D1/D2 y no autoriza instalar, implementar, simular o ejecutar.
+
+
+## 36. Universo candidato y cobertura trivalente — DEC-C10-042
+
+Se registra U_G como catálogo finito candidato de inspección (23 roles de nodo, 23 aristas, predicados y cinco clases de ruta), no como universo técnico real/exhaustivo. Todos los estados técnicos permanecen indeterminados y la cobertura efectiva es NONE hasta disponer de inventario real, SBOM, runtime, snapshots y grafo de dependencias transitivas.
+
+Se adopta como regla documental que MISSING/PARTIAL no equivalen a 0; ruta=0 exige evidencia válida y cobertura suficiente; Reach=0 exige descarte exhaustivo de rutas; F_alt,0=0 exige descarte exhaustivo de alternativas funcionalmente substituibles. Runknown permanece como clase abierta. Reach_H=?, F_alt,0=?, A_f*=?; R0/R1 no clasificables, R2 posible pero no observado. No se aprueba DGP, microdominio, comparador ni ejecución.
