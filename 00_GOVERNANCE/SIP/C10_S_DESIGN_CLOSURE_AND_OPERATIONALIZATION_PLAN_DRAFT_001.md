@@ -1105,3 +1105,14 @@ Hallazgos clave: CMP-01/02 y PAR-01 son semánticos FP-03; PAR-02 se divide entr
 **Estado:** reconciliación propuesta, no confirmatoria ni aprobada. Obligatoriedad/NA por instancia, cardinalidades, dominios, mapping, F1/F2/A1/A2 y oráculo siguen abiertos. Sin validación técnica, revisión independiente, evidencia empírica ni ejecución.
 
 **Siguiente paso:** revisar la asignación de predicados primarios/secundarios y cerrar obligatoriedad/NA ex ante en el contrato abstracto antes de especializar F1/F2/A1/A2.
+
+
+# XLVII. DEC-C10-055 y matriz de obligatoriedad/aplicabilidad ex ante (2026-11-05)
+
+El usuario acepta la reconciliación SM/FP. Se registra DEC-C10-055: FP-01 estructura formal; FP-02 integridad relacional; FP-03 preservación semántica; FP-04 compatibilidad; FP-05 seguridad; FP-06 aplicación; FP-07 verificación post-aplicación; FP-08 procedencia/reproducibilidad. Se mantiene un predicado primario por discrepancia y se prohíbe el doble conteo.
+
+Se crea `C10_S_PROPERTY_APPLICABILITY_AND_OBLIGATORINESS_MATRIX_DRAFT_001.md`. Propone un Instance Applicability Manifest (IAM) sellado antes de Z/B; reglas O/C/NA/? para cada propiedad atómica; declaración de cardinalidad y cobertura; criterios de scope error; separación F* funcional, gates FP-04/05/06 y FP-08 probatorio; controles contra decisiones post hoc.
+
+**Estado:** DEC-C10-055 aceptada; matriz propuesta, no aprobada ni congelada. Abiertos: cardinalidad cero de REF/RUL, alcance FP-04/05/06 dentro de F*, activación de CMP-02/PAR-05, seguridad, conflictos RUL, diseño IAM y evidencia de cobertura. No hay instancia IAM, truth, fixtures, validación, revisión independiente, evidencia empírica ni ejecución.
+
+**Siguiente paso recomendado:** revisión crítica de las reglas de cardinalidad y de la frontera F* frente a FP-04/05/06; resolverlas antes de especializar F1/F2/A1/A2 y el oráculo.
