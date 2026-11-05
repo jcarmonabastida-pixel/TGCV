@@ -1340,3 +1340,8 @@ Se aplican correcciones documentales parciales: se retira ordered_node_edge_sequ
 **Dictamen:** UG-SCH-10 permanece OPEN / NOT CLOSED. OAS-02 BLOCKS PHYSICAL DESIGN. No schema freeze, revisión independiente, validadores, parser, DDL, fixtures ni experimento. `scientific_execution=false`; `execution_authorized=false`.
 
 **Siguiente paso obligatorio:** decisión explícita sobre pinning exacto de SNAPSHOT. Recomendación: añadir `snapshot_object_record_id` a NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP y FK compuesta (snapshot_id, snapshot_object_record_id) → SNAPSHOT(snapshot_id, object_record_id), manteniendo identidad semántica y versión observacional. Después se integrarán las claves compuestas y se repetirá la auditoría estática.
+
+
+## Bootstrap canónico verificado para la auditoría OAS (2026-11-05)
+
+Se confirma desde `main`: RMA v3.37; Evidence→Claim Matrix v1.47; alias de matriz idéntico al artefacto versionado por SHA; traceability CSV consistente; C10 downstream value linkage OPEN. No se ejecutaron validadores locales porque no hay checkout local disponible en esta sesión. El trabajo documental permanece en la rama PR #116; su base efectiva es `research/c10-d1-protocol-draft`, no `main`.
