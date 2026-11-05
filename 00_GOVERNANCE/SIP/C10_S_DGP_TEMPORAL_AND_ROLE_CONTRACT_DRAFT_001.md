@@ -663,3 +663,10 @@ Predicados requeridos: ID, REL, COND, AUTH, RES, DEP, BLOCK, APP, ALT-A1, ALT-A2
 8. Cobertura COMPLETE se refiere solo al universo operativo delimitado y versionado, no a exhaustividad ontológica absoluta. MISSING/NO INVENTARIADO no equivale a 0; PARTIAL no equivale a COMPLETE.
 9. Si dependencia crítica, servicio externo, ruta alternativa o dimensión de cobertura queda desconocida, conservar ?. No declarar Reach_H=0, F_alt,0=0 ni independencia de B. Si B puede afectar rutas/recursos/permiso/servicio compartido, mantener vía colateral y estimando de paquete salvo identificación adicional.
 10. La plantilla de inventario y el protocolo de evidencia son artefactos documentales; no autorizan inspección/instalación ni ejecución técnica. A_f*, F_alt,0 y Reach_H siguen indeterminados hasta que exista evidencia válida y adjudicada.
+
+
+## 42. Plantilla documental de inventario U_G y evidencia (crosswalk C10-S §83)
+
+La plantilla C10_S_UG_INVENTORY_REGISTER_TEMPLATE_DRAFT_001.md define registros separados de nodos, aristas, rutas, predicados por paso/tiempo, snapshots/fuentes y cobertura. Exige identidad/versionado, procedencia, evidencia, cobertura, evaluador/cegamiento y motivo de indeterminación. Las filas ilustrativas son solo esquema: no acreditan componentes ni relaciones reales.
+
+La columna truth_dgp queda restringida al generador/evaluador independiente y no se expone al analizador. Sin inventario observado, los estados técnicos permanecen ?. NONE/PARTIAL/COMPLETE describen cobertura y no truth estructural. La plantilla no autoriza inspección, instalación ni ejecución.
