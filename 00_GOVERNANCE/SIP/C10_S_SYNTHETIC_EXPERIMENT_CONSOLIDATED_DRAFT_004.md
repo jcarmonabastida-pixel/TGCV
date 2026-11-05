@@ -7621,3 +7621,12 @@ Se crea `C10_S_SOFTWARE_SERVICE_CONFIGURATION_BOUNDARY_PROFILE_PROPOSAL_DRAFT_00
 Se incluyen reglas de clasificación de referencias/recursos, secretos, políticas, binarios/runtime, datos persistentes, mapping, sidecar B, alternativas y snapshots. No se afirma que componentes reales hayan sido inventariados.
 
 **Estado:** propuesta no aceptada/congelada. La frontera concreta, unidad de servicio, deployment manifests, secretos, estado persistente, servicios opacos y unidad experimental siguen abiertos. Sin ejecución.
+
+
+# 109. DEC-C10-057 — aceptación de arquitectura de frontera (2026-11-05)
+
+El usuario acepta la arquitectura P0/P1/P2 y la clasificación semántica. P0: paquete declarativo migrable; P1: envolvente técnica y estado de los entornos; P2: frontera causal transversal que integra dependencias, alternativas, B, medición, ejecución y resultados. P2 no es clase mutuamente excluyente con P0/P1.
+
+Se registra DEC-C10-057 y se actualiza el perfil de frontera. Se crea `C10_S_LOGICAL_SERVICE_UNIT_AND_BOUNDARY_CLASSIFICATION_PROPOSAL_DRAFT_001.md`, que propone delimitar una instancia lógica de servicio y clasificar por semántica manifests, variables, secretos, datos persistentes, servicios externos y mapping. El nuevo perfil es propuesta pendiente, no decisión aprobada.
+
+**Estado:** arquitectura aceptada; clasificación elemento a elemento, unidad lógica definitiva, IAM, inventario y diseño de interferencia pendientes. Sin ejecución científica.
