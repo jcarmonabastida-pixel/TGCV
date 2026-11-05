@@ -165,7 +165,7 @@ ARCH-B1 (sidecar/runtime aislado, aditivo, versionado, permisos mínimos y cuota
 
 Estos valores son objetivos candidatos del DGP, no hechos empíricos. El .80 es éxito técnico conjunto condicional; no cuatro probabilidades marginales independientes. El .20 de D1 es estado final postasignación derivado de .25×.80, no accesibilidad basal.
 
-D1 es principal condicionado a justificar ex ante que la provisión ordinaria de control representa el comparador legítimo. D2 es candidato preferente recomendado en §66 para el contraste mecanístico de provisión focal frente a ausencia de intento. D2 no está seleccionado ni aprobado como primario; D1 no queda eliminado. ITT, primeras etapas y compliers de D1/D2 no se agrupan ni transportan automáticamente.
+**Precedencia vigente por DEC-C10-066:** D2 es el escenario primario candidato para el contraste mecanístico de provisión focal frente a ausencia de intento focal en control; D1 queda como escenario secundario para el contraste incremental frente a provisión ordinaria de baja frecuencia. La justificación del régimen ordinario D1 es requisito para interpretar ese comparador secundario, no para decidir la precedencia primaria. La legitimidad de D2 sigue condicionada a verificar ausencia basal y ausencia de provisión focal de fondo. ITT, primeras etapas y compliers de D1/D2 no se agrupan ni transportan automáticamente.
 
 ### 5.3 Población, régimen y unidad
 
@@ -289,7 +289,7 @@ Un PASS de C10-S acredita solo la capacidad del procedimiento dentro de los DGP,
 
 ## 12. Estado y siguiente operación
 
-La información histórica está integrada; no se abre una nueva recuperación. Draft 004 es la guía operativa. El crosswalk de no-regresión y la propagación documental inmediata están completados en el alcance auditado: Decision Log indexa DEC-C10-063/064; P177/P178/P179 están en Test Register; y los requisitos históricos de revisión externa quedan supersedidos en los auxiliares actualizados. La siguiente operación científica es cerrar la arquitectura causal y los estimandos/políticas factibles: θ_A(q), θ_Af(q*), ITT/LATE/ψ_policy, q_X*, B_g0/B_g1, C_auth y la selección D1/D2, manteniendo todas las recomendaciones como no aceptadas hasta decisión expresa.
+La información histórica está integrada; no se abre una nueva recuperación. Draft 004 es la guía operativa. DEC-C10-066 ha resuelto la precedencia del comparador: D2 es primario candidato y D1 secundario. La siguiente operación científica es cerrar la arquitectura causal y los estimandos/políticas factibles: θ_A(q), θ_Af(q*), ITT/LATE/ψ_policy, q_X*, B_g0/B_g1, C_auth y las condiciones de legitimidad/identificación de D2 y D1; no se reabre la selección primaria. La propagación documental de DEC-C10-066 debe mantenerse sincronizada en los contratos auxiliares.
 
 No se cambia main, Core, RMA, Evidence→Claim Matrix, STATUS, claims ni C09. No se implementa, simula ni ejecuta el experimento.
 
