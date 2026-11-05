@@ -149,14 +149,10 @@ La revisión R1/R2 deberá cotejar U_G §15.4 y crosswalk §9.4 contra DEC-C10-0
 No se declara PASS de SR-02/03/04/05/06/07/12/13/17/19. La ampliación es documental; validación técnica e independencia pendientes.
 
 
-## 12. Aclaración de uso del paquete — protocolo de investigador único (2026-11-05)
+## 12. Protocolo de autoauditoría científica C10-S (2026-11-05)
 
-Este checklist conserva los SR-01…20 como especificación de controles y como posible paquete de revisión externa futura. **No es una orden para designar ahora R1/R2 ni un gate de continuidad del trabajo documental.**
+La modalidad vigente es `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`. Los SR-01…20 se evalúan con `PASS_STATIC`, `CONDITIONAL`, `FAIL` o `NOT_ASSESSED`, con evidencia, versión/hash, alcance, limitaciones y acción pendiente.
 
-En la fase actual, con investigador único, la modalidad aplicable es `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`. La autoauditoría asistida puede emitir únicamente `PASS_STATIC`, `CONDITIONAL`, `FAIL` o `NOT_ASSESSED`, con evidencia documental, alcance, versión, límites y acción. No puede declarar independencia, validar controles que requieren pruebas técnicas/empíricas ni autorizar schema freeze.
+La ausencia de revisores externos no bloquea la continuidad del diseño C10-S ni la preparación del experimento. La autoauditoría no se denomina independiente y no puede declarar superados controles que exigen ejecución, pruebas de motor, medición empírica o evidencia no disponible.
 
-R1/R2 son perfiles candidatos de revisión externa futura. Se difiere su designación hasta que aporte valor real: antes de congelar artefactos técnicos que la requieran y/o antes de publicar afirmaciones de reproducibilidad o validación. La web germen TGCV puede presentar materiales *as is* antes del cierre científico completo, siempre que comunique con precisión su estado, procedencia, evidencia, incertidumbre y límites. La apertura no equivale a revisión por pares ni a certificación de C10-S.
-
-La preparación de apertura web es un gate separado: accesibilidad intelectual, coherencia, trazabilidad, falsabilidad, criticabilidad, honestidad probatoria, reproducibilidad posible, seguridad, privacidad, licencias y atribución. El playground no es prerrequisito de apertura y se desarrollará después, derivado de los contratos científicos.
-
-Este addendum no cambia los criterios SR ni recalifica sus dictámenes históricos; actualiza el momento y propósito de la revisión externa.
+El criterio de suficiencia es que el protocolo sea autocontenido, falsable y reproducible: estimandos y reglas ex ante; DGP y truth sellados; separación generador/analizador/evaluador; entradas/salidas y aserciones; semillas y versiones; registro de resultados; auditoría de integridad y replay autorizado. Este checklist no autoriza ejecución ni schema freeze.
