@@ -46,8 +46,8 @@ Reglas obligatorias:
 ## 6. Registro de snapshots y fuentes
 
 | snapshot_id | unit_id | phase (baseline/post-B/rollback/route-test) | timestamp | scope | source_artifacts | version/hash | method | coverage_limitations | custodian | integrity_check | evidence_ref | observed_state (1/0/?) | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | — | — | — | — | — | — | — | — | — | No capturado | — | — | — | NA | — | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | — | — | — | — | — | — | — | No capturado | — | — | — | NA | — | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
 ## 7. Matriz de cobertura por dimensión
 
@@ -238,8 +238,8 @@ No incluir secretos, credenciales ni datos personales innecesarios. source_locat
 ### 12.2. Registro de vínculo afirmación-evidencia (CLAIM_EVIDENCE_LINK)
 
 | claim_evidence_id | claim_target_type | claim_target_id (object_record_id) | claim_statement | evidence_id | support_type (direct/inferred/contradictory/contextual) | relevance_scope | evaluator_record_id (optional FK) | adjudication_id (optional FK) | reviewer_note |
-|---|---|---|---|---|---|---|---|
-| — | — | — | — | — | — | — | — |
+|---|---|---|---|---|---|---|---|---|---|
+| — | — | — | — | — | — | — | — | — | — |
 
 Toda fila de nodo, arista, predicado, ruta o cobertura debe enlazar al menos un claim_evidence_id cuando tenga una clasificación observada. Una fila ? puede tener cero evidencia disponible, pero debe registrar unknown_reason.
 
