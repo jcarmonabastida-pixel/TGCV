@@ -128,8 +128,8 @@ La fila de esquema de SNAPSHOT usa `observed_state=NA`, mientras que el contrato
 | FK compuesta SNAPSHOT→NODE | DEFINED_DOCUMENTALLY; label corrected; physical constraint pending |
 | EDGE parent/atomic IDs y extremos | CORRECTED_DOCUMENTALLY; second pass pending |
 | semantic_role / nodo raíz | ACCEPTED_DOCUMENTALLY (DEC-C10-060); physical validation pending |
-| Procedencia y CLAIM_EVIDENCE_LINK | OPEN |
-| FK polimórficas | OPEN |
+| Procedencia y CLAIM_EVIDENCE_LINK | ACCEPTED_DOCUMENTALLY (DEC-C10-061); physical validation pending |
+| FK polimórficas | ACCEPTED_DOCUMENTALLY (DEC-C10-061); physical validation pending |
 | Unicidad/versionado/supersedes | OPEN |
 | Parser, tipos, dominios y constraints | NOT_ASSESSED |
 | Seguridad, custodia y permisos | NOT_ASSESSED |
@@ -172,3 +172,8 @@ UG-SCH-03 queda aceptado documentalmente por DEC-C10-060; enum y constraints fí
 ## 10. Propuesta de resolución tipada — 2026-11-05
 
 Se creó `C10_S_UG_TYPED_TARGET_REFERENTIAL_INTEGRITY_CONTRACT_PROPOSAL_DRAFT_001.md`. Propone FKs nullable específicas por tabla destino con exclusividad exactamente-una y coherencia con enum de tipo, incluyendo COVERAGE_REGISTER; aplica el patrón a CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER. Resuelve conceptualmente la procedencia al mantener source_provenance canónica en EVIDENCE_REGISTER y retirar su duplicación de las tablas de objetos. UG-SCH-04/05/06 quedan PROPOSAL_CREATED, pendientes de aceptación y de reconciliación física. No modificar la plantilla hasta decisión del usuario. UG-SCH-07 permanece OPEN. Dictamen global: SCHEMA_NOT_CLOSED.
+
+
+## 11. Actualización — DEC-C10-061 (2026-11-05)
+
+UG-SCH-04, UG-SCH-05 y UG-SCH-06 quedan ACCEPTED_DOCUMENTALLY por decisión explícita DEC-C10-061. La plantilla incorpora procedencia canónica en EVIDENCE_REGISTER y FKs tipadas exclusivas para CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER, incluyendo COVERAGE_SCOPE. Se requiere exactamente una FK de destino no nula y coherencia con el enum de tipo. object_record_id debe ser UNIQUE por tabla de objeto y coverage_scope_id PK/UNIQUE. La plantilla se modificó documentalmente; constraints, parser, unicidad y pruebas negativas no están implementados ni validados. UG-SCH-07 permanece OPEN. Dictamen global: SCHEMA_NOT_CLOSED.
