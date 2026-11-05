@@ -1,7 +1,7 @@
 # C10-S — Propuesta de contrato de referencias tipadas e integridad referencial U_G
 
 **ID:** C10-S-UG-TYPED-REF-001 · **Versión:** Draft 001 · **Fecha:** 2026-11-05  
-**Estado:** PROPUESTA PARA DECISIÓN; no modifica todavía la plantilla canónica.  
+**Estado:** ACCEPTED DOCUMENTALLY — DEC-C10-061; plantilla actualizada en rama Draft, validación física pendiente.  
 **Ámbito:** UG-SCH-04, UG-SCH-05 y UG-SCH-06. No resuelve UG-SCH-07.
 
 ## 1. Hallazgos que aborda
@@ -85,10 +85,15 @@ La propuesta no introduce una tabla adicional ni una capa semántica persistida.
 
 ## 8. Límites
 
-- Propuesta documental pendiente de aceptación del usuario.
+- Aceptada documentalmente por el usuario mediante DEC-C10-061; no congelada ni validada técnicamente.
 - No se han creado instancias, claves, registros de evidencia o cobertura.
 - No se ha elegido motor/formato ni ejecutado parser, CHECK, FK, fixtures o pruebas.
 - La FK tipada es especificación de diseño, no integridad física demostrada.
 - UG-SCH-07 (unicidad/versionado/supersedes) permanece separado.
 - Autoauditoría: AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT.
 - `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 9. Aceptación y aplicación — DEC-C10-061 (2026-11-05)
+
+El usuario acepta la arquitectura de referencias tipadas y la procedencia canónica. La plantilla U_G de la rama C10-S se actualiza en §§10.6, 11, 12.2, 12.4, 12.5, 12.8, 12.9 y 14.2. La aceptación no declara constraints físicas implementadas ni esquema cerrado.
