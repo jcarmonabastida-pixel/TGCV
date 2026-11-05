@@ -11,7 +11,7 @@ Draft 003 mejoró el plan anterior, pero todavía comprimía u omitía formulaci
 - Gobernanza canónica en main: README, bootstrap, CANONICAL_STATE, STATUS, regla de reconstrucción, RMA v3.37, Matrix v1.47, traceability y principios operativos.
 - Maestro C10-S Draft 004, §§16–130, con lectura focal de §§53–81 y §§82–130.
 - Decision Log, DGP temporal/roles, reconciliación C10-D1/S4-R, causal architecture reconciliation, Closure Control Matrix, Test Contract Register, XSYNC tracker, manifiesto B, matriz de cobertura U_G, matriz temporal de predicados y DEC-C10.
-- Fuente DOCX Notes_261104_163033.docx, recuperada en Files, para comprobar los bloques 165–183 y la arquitectura estadística/medición.
+- Fuente DOCX Notes_261104_163033.docx, recuperada en Files, que comienza en §164 y contiene el desarrollo 164–183; el registro auxiliar organiza específicamente 165–183.
 
 ## 3. Hallazgos de no-regresión
 
