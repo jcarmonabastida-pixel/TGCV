@@ -821,10 +821,10 @@ Paquete preparado, revisión no iniciada, sin revisores designados. FCM-01…19 
 Pendiente revisión independiente SR-01…20 y validación ejecutable. FCM-01…20 no se declaran técnicamente cerrados.
 
 
-## 12. Separación de revisión externa y apertura comunitaria *as is* (2026-11-05)
+## 12. Gate científico C10-S sin dependencia de revisión externa (2026-11-05)
 
-La matriz G6 se interpreta como gate de revisión externa asociado al freeze técnico y a claims de reproducibilidad/validación, no como condición para continuar la autoauditoría asistida ni para publicar una web germen honesta. En la fase actual, el trabajo interno se realiza bajo `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`; no se designan R1/R2 ni se simula independencia.
+La continuidad del trabajo científico se realiza mediante AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT. No se designan R1/R2 como condición de avance ni se simula independencia. Los controles se califican solo hasta donde llegue la evidencia disponible.
 
-La apertura web tiene un gate propio de preparación: claridad, coherencia, trazabilidad, estados de evidencia, falsabilidad, criticabilidad, límites, privacidad, seguridad, licencias y atribución. Puede presentar TGCV *as is* sin declarar cierre científico. El playground queda como desarrollo posterior, derivado de los contratos. La comunidad podrá aportar crítica, replicación y propuestas mediante gobernanza versionada.
+La preparación del experimento exige autocontención y auditabilidad: contrato causal y estimandos, DGP/truth versionados y ocultos al analizador, roles separados, reglas ex ante, pruebas negativas/adversariales, medición independiente, manifiestos, resultados brutos, auditoría de integridad y replay sujeto a autorización.
 
-La matriz G7 de freeze no se convierte en requisito para la apertura web. Ninguna apertura o contribución comunitaria cambia automáticamente el estado científico, Core, claims o autorización de ejecución.
+La revisión externa no es gate para continuar ni para concluir una prueba sintética correctamente ejecutada. El alcance de las conclusiones se limita al DGP, parámetros, población, horizonte, políticas y regla de Value definidos. Ninguna conclusión sintética se presenta como causalidad empírica general.
