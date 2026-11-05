@@ -25,9 +25,9 @@ Reglas obligatorias:
 
 ## 3. Registro de aristas/dependencias
 
-| edge_id | source_node | target_node | relation_type | direction | direct_or_transitive | version_constraint | time_window | condition | arms/routes_affected | resource_or_permission | necessary_for_path | evidence_ref (0..1 optional) | observed_state (1/0/?) | coverage_status | timestamp | unknowns | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | — | — | NO INVENTARIADO | — | — | — | — | — | — | — | ? | — | ? | NONE | — | Fila de esquema; no representa dependencia real | — | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
+| edge_id | atomic_edge_id | parent_edge_id | source_node_id | target_node_id | relation_type | direction | direct_or_transitive | version_constraint | time_window | condition | arms/routes_affected | resource_or_permission | necessary_for_path | evidence_ref (0..1 optional) | observed_state (1/0/?) | coverage_status | timestamp | unknowns | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | — | — | — | — | NO INVENTARIADO | — | — | — | — | — | — | — | ? | — | ? | NONE | — | Fila de esquema; no representa dependencia real | — | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
 ## 4. Registro de rutas y substituibilidad
 
@@ -282,7 +282,7 @@ Todas las tablas de objetos (NODE, EDGE, ROUTE, PREDICATE, SNAPSHOT) deben inclu
 
 Extensiones:
 - NODE: TID/SID/RID, `boundary_class`, estado declarado/instalado/desplegado/cargado/invocado/ejecutado, owner/boundary, consumers, dependencias.
-- EDGE: parent_edge_id, atomic_edge_id, source_node_id, target_node_id, dirección, tipo, condición, directo/transitivo, versión/tiempo, necesidad para ruta.
+- EDGE: edge_id (identidad semántica de la arista atómica en el snapshot), atomic_edge_id (identidad estable de la relación origen-destino), parent_edge_id (E01–E23), source_node_id, target_node_id, dirección, tipo, condición, directo/transitivo, versión/tiempo, necesidad para ruta.
 - ROUTE: parent_route_class (una de cinco clases U_G) y route_subtype separado; secuencia ordenada y predicados necesarios.
 - PREDICATE: predicate_id exacto, familia, ruta/paso/tiempo, observed_state, regla y tolerancia; nunca DGP truth.
 - SNAPSHOT: snapshot_id, `unit_id`, `unit_object_record_id` (FK compuesta al nodo raíz de servicio), phase, scope_id, timestamp, artefactos/hash, método, cobertura y evidence refs.
@@ -395,3 +395,16 @@ Se adopta la distinción entre obligatoriedad de soporte probatorio y referencia
 - `NA` requiere justificación de no aplicabilidad; no exige vínculo de evidencia por defecto.
 
 **Aceptación documental:** la regla queda aceptada en el diseño documental C10-S por decisión explícita del usuario (2026-11-05). No queda congelada ni validada técnicamente. Requiere posterior validación de cardinalidad/FK con instancias y motor.
+
+
+### 14.1. Reconciliación física EDGE — UG-SCH-01
+
+El encabezado EDGE se alinea con el contrato normalizado y el catálogo E01–E23:
+- `edge_id`: identidad semántica de la arista atómica dentro del registro/grafo versionado.
+- `atomic_edge_id`: identificador estable de la relación origen-destino atómica.
+- `parent_edge_id`: uno de los IDs de catálogo E01–E23; conserva trazabilidad al contrato padre.
+- `source_node_id` y `target_node_id`: referencias explícitas a NODE; sustituyen los nombres ambiguos `source_node`/`target_node`.
+
+Para una relación padre con varios destinos se registra una fila por par origen-destino, con el mismo `parent_edge_id` y distinto `atomic_edge_id`. La clave local EDGE sigue siendo `(object_record_id, edge_id)`; `atomic_edge_id` requiere unicidad dentro del `coverage_scope_id` y versión de grafo correspondiente. No se crean filas observadas ni IDs atómicos nuevos en esta actualización.
+
+E07 permanece fuera de EDGE porque es una regla lógica/conjuntiva. E22 conserva sus destinos como eventos/variables no identificados: no se inventan nodos para selección o ejecución. Las 39 filas descritas en el catálogo siguen siendo candidatas, no relaciones observadas.
