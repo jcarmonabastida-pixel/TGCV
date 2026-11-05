@@ -7548,3 +7548,12 @@ Se crea `C10_S_CONFIGURATION_OBJECT_ATOMIC_PROPERTY_CATALOG_DRAFT_001.md`, deriv
 Se explicitan límites para no duplicar integridad, compatibilidad, seguridad, aplicación y procedencia; se mantiene separada la política declarada del permiso efectivo y la dependencia declarada de la instalada.
 
 **Estado:** catálogo candidato, no contrato confirmatorio. Ninguna propiedad se declara obligatoria por aparecer en el catálogo; aplicabilidad y obligatoriedad requieren decisión ex ante. Contratos fuente/destino, dominio, mappings, tolerancias y oráculo permanecen abiertos. Sin validación técnica, revisión independiente, evidencia empírica ni ejecución.
+
+
+# 100. Alcance del DGP base y contrato abstracto fuente/destino (2026-11-05)
+
+Se crea `C10_S_BASE_DGP_SCOPE_AND_ABSTRACT_CONFIGURATION_CONTRACT_PROPOSAL_DRAFT_001.md`. La propuesta recomienda cuatro familias constitutivas para el DGP base (componentes, parámetros tipados, referencias y reglas/restricciones con gramática mínima), políticas como módulo condicional y metadatos como soporte obligatorio de trazabilidad; extensiones desconocidas, orden semántico, temporalidad y mappings complejos se reservan para escenarios condicionales/adversariales.
+
+Se definen las obligaciones documentales de C_src, C_dst y M, y predicados candidatos BASE-CMP, BASE-PAR-TYPE/VALUE/STATE, BASE-REF-ENDPOINT/RELATION, BASE-RULE-LOGIC, BASE-MAP-COVERAGE y BASE-APPLIED-STATE. Se preserva la separación entre FP-01…FP-08 y entre objeto, entorno, provisión, accesibilidad, ejecución, Outcome y Value.
+
+**Estado:** propuesta de alcance, no decisión aprobada ni DGP completo. No fija cardinalidades, dominios, gramática, mappings, valores, probabilidades, truth, oráculo o estimandos. Sin validación técnica, revisión independiente, evidencia empírica ni ejecución.
