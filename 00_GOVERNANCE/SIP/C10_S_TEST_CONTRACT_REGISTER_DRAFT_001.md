@@ -992,3 +992,10 @@ Contratos documentales, no validador implementado ni pruebas ejecutadas.
 | FCM-19 | Evaluación/adjudicación apunta a ID semántico no versionado | Rechazar; exigir object_record_id existente |
 
 Contratos documentales; no implementados ni ejecutados.
+
+
+## 50. Controles de revisión independiente del esquema — SR-01…20
+
+Los criterios, evidencia exigible y dictámenes están especificados en C10_S_UG_SCHEMA_INDEPENDENT_REVIEW_CHECKLIST_DRAFT_001.md. Cada SR-01…20 requiere revisor identificado, versión/hash, PASS/FAIL/CONDITIONAL/NOT_ASSESSED, fundamento y acción. Los controles críticos de integridad, trivalencia, truth firewall, cobertura, identidad y trazabilidad no pueden quedar FAIL para aceptar freeze.
+
+Este registro no acredita ejecución ni revisión. No se han designado revisores ni emitido dictamen.
