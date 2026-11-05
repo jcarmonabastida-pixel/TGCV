@@ -137,3 +137,10 @@ La matriz propone un procedimiento reproducible para declarar obligatoriedad y a
 ## 10. Nota de reconciliación F* — frontera funcional y probatoria (2026-11-05)
 
 Se precisa que F* es una función de ruta completa que produce y aplica configuración en destino; por ello FP-01…FP-07 pueden integrar su adjudicación por dimensiones separadas, no compensatorias. FP-08 permanece como gate de validez probatoria separado. La exclusión de POL del núcleo base no excluye requisitos de seguridad de FP-05 cuando formen parte del contrato F*; estos deben especificarse independientemente de POL.
+
+
+## 11. DEC-C10-056 — cardinalidad de clases aprobada (2026-11-05)
+
+Se registra la decisión explícita: CMP≥1, PAR≥1 y RUL≥1; REF≥0 solo con IAM pre-Z/B y cobertura exhaustiva; POL≥0 ausente por diseño en el núcleo mínimo salvo módulo condicional predeclarado; MET obligatorio para identidad/versionado/procedencia. CMP=0, PAR=0 o RUL=0 implica SCOPE_ERROR, no NA. REF=0 requiere evidencia de cobertura completa; falta de evidencia queda ?. La estructura abstracta se formaliza en `C10_S_ABSTRACT_CONFIGURATION_INSTANCE_CONTRACT_DRAFT_001.md`.
+
+La matriz de aplicabilidad continúa en Draft: la decisión cierra cardinalidad de clase, no obligatoriedad de cada propiedad atómica, máximos, valores, mappings, instancia IAM ni validación.
