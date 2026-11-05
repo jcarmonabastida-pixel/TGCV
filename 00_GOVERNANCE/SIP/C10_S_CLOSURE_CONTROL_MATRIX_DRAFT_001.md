@@ -808,3 +808,13 @@ Comprobación estática de alineación de columnas: PASS documental en diez tabl
 | Dictamen | Procedimiento §6 del checklist | No emitido | ACEPTABLE / CONDITIONAL / REVISE / NOT ASSESSABLE con evidencia |
 
 Paquete preparado, revisión no iniciada, sin revisores designados. FCM-01…19 y XSYNC-138-01 siguen abiertos; no hay freeze ni autorización de ejecución.
+
+
+## 28. Reconciliación de cardinalidad evidence_ref — FCM-20
+
+| Hallazgo | Resolución documental | Estado |
+|---|---|---|
+| §12.7 permitía uno o varios evidence_ref; §§12.9/14 limitaban a un vínculo primario | evidence_ref = 0..1 navegación; CLAIM_EVIDENCE_LINK = relación completa 0..n | Tratado documentalmente |
+| FCM-12 describía de forma ambigua la PK de evaluación | evaluator_record_id singular por fila E1/E2; evaluator_record_ids plural solo en objetos | Armonizado |
+
+Pendiente revisión independiente SR-01…20 y validación ejecutable. FCM-01…20 no se declaran técnicamente cerrados.
