@@ -1229,3 +1229,10 @@ Se corrige UG-SCH-01 en la plantilla U_G: EDGE incorpora `atomic_edge_id`, `pare
 Se crea `C10_S_UG_SEMANTIC_ROLE_AND_LOGICAL_ROOT_CONTRACT_DRAFT_001.md` para abordar UG-SCH-03. Distingue `semantic_role`, `parent_catalog_id` y `boundary_class`; propone un vocabulario controlado y crosswalk no uno-a-uno desde N01–N23; conserva la FK compuesta SNAPSHOT→NODE de DEC-C10-059 y exige exactamente un nodo raíz por unidad/snapshot/scope. Esta propuesta queda pendiente de aceptación, no se eleva a decisión.
 
 La auditoría y el crosswalk IAM se actualizan. UG-SCH-02 y UG-SCH-04…08 siguen abiertos. Dictamen global SCHEMA_NOT_CLOSED. La revisión es documental asistida/no independiente; no se ejecutan parser, constraints, fixtures, simulaciones ni experimentos. `scientific_execution=false`; `execution_authorized=false`.
+
+ 
+# LVIII. Aceptación DEC-C10-060 — semantic_role y nodo raíz lógico (2026-11-05)
+
+El usuario acepta el contrato `C10_S_UG_SEMANTIC_ROLE_AND_LOGICAL_ROOT_CONTRACT_DRAFT_001.md`. Se registra DEC-C10-060: vocabulario controlado de 16 semantic_role; separación de `parent_catalog_id`, `semantic_role` y `boundary_class`; crosswalk N01–N23 no uno-a-uno; nodo raíz lógico único por unidad/snapshot/scope; y conservación de la FK compuesta SNAPSHOT→NODE de DEC-C10-059.
+
+UG-SCH-03 queda ACCEPTED_DOCUMENTALLY, pendiente de validación física de enum, FK y cardinalidad. UG-SCH-02 y UG-SCH-04…08 siguen abiertos. Dictamen global U_G: SCHEMA_NOT_CLOSED. No se crean registros, inventario real, truth, fixtures, parser, constraints, simulaciones ni experimentos. `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`; `scientific_execution=false`; `execution_authorized=false`.
