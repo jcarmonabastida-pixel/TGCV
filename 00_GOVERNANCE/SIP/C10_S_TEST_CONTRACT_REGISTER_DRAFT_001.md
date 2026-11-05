@@ -884,3 +884,23 @@ Contratos documentales; no ejecutados.
 | PROV-12 | Primera etapa | C_dep no se interpreta como A_f* sin predicados restantes |
 
 Contratos documentales; no implementados ni ejecutados. El detalle de evidencias y estados está en el manifiesto B.
+
+
+## 43. Contratos de cobertura de grafo GC-01…GC-12
+
+| ID | Escenario | Aserción esperada |
+|---|---|---|
+| GC-01 | Nodo sin inventario | Estado ?; no inferir ausencia |
+| GC-02 | Arista sin evidencia | Estado ? y cobertura NONE/PARTIAL |
+| GC-03 | Inventario parcial | No permite Reach=0 ni F_alt,0=0 |
+| GC-04 | Ruta con predicado necesario 0 válido | Ruta=0 dentro de universo cubierto |
+| GC-05 | Ruta con cualquier predicado necesario ? y ningún 0 | Ruta=? |
+| GC-06 | Todos predicados de ruta confirmados 1 | Ruta=1 si orden/identidad temporal también verificados |
+| GC-07 | Una ruta confirmada 1 | Reach=1 aunque otras rutas sean ? |
+| GC-08 | Todas rutas enumeradas 0 pero Runknown sin cobertura | Reach=? |
+| GC-09 | Todas rutas relevantes 0 y cobertura exhaustiva | Reach=0 dentro del universo/horizonte declarado |
+| GC-10 | Ruta alternativa satisface F* | F_alt=1 |
+| GC-11 | No se encuentra alternativa, cobertura incompleta | F_alt=? |
+| GC-12 | Dependencia externa no observable | Mantener frontera abierta y Reach=? cuando sea necesaria |
+
+Contratos documentales; no implementados ni ejecutados.
