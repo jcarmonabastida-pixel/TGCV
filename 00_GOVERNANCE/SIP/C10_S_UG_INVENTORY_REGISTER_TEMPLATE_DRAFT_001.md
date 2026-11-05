@@ -181,7 +181,7 @@ Native/manual/fallback/recovery son subtipos descriptivos, no sustitutos de las 
 
 ### 10.5. Campos complementarios y dictamen
 
-Añadir a los registros node/edge/route/predicate: parent_catalog_id, evidence_status (AVAILABLE/MISSING/CONFLICTING), contract_intent (intención normativa, no observación), coverage_scope_id, source_provenance, review/adjudication_status y unknown_reason. Para aristas, parent_edge_id y atomic_edge_id; para rutas, route_subtype y parent_route_class. Para predicados, predicate_id completo y separación truth_dgp_restricted / observed_state.
+Añadir a los registros node/edge/route/predicate: parent_catalog_id, evidence_status (AVAILABLE/MISSING/CONFLICTING), contract_intent (intención normativa, no observación), coverage_scope_id, review/adjudication_status y unknown_reason. La procedencia de la fuente se registra una sola vez en EVIDENCE_REGISTER y se enlaza desde las afirmaciones. Para aristas, parent_edge_id y atomic_edge_id; para rutas, route_subtype y parent_route_class. Para predicados, predicate_id completo y separación truth_dgp_restricted / observed_state.
 
 **Dictamen:** correspondencia semántica completa en los cuatro catálogos; normalización necesaria de aristas mult destino; E07 es regla lógica; E22 carece de nodos destino identificados; N16 y N23 tienen granularidad compuesta que debe revisarse. La plantilla necesita los campos complementarios anteriores antes de cerrar su esquema. No se asignan estados técnicos ni se declara inventario completo.
 
@@ -238,7 +238,7 @@ No incluir secretos, credenciales ni datos personales innecesarios. source_locat
 
 | claim_evidence_id | claim_target_type (NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_SCOPE) | target_node_record_id (FK nullable) | target_edge_record_id (FK nullable) | target_route_record_id (FK nullable) | target_predicate_record_id (FK nullable) | target_snapshot_record_id (FK nullable) | target_coverage_scope_id (FK nullable) | claim_statement | evidence_id (FK EVIDENCE_REGISTER) | support_type (direct/inferred/contradictory/contextual) | relevance_scope | evaluator_record_id (optional FK) | adjudication_id (optional FK) | reviewer_note |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
+|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|
 
 Toda fila de nodo, arista, predicado, ruta o cobertura debe enlazar al menos un claim_evidence_id cuando tenga una clasificación observada. Una fila ? puede tener cero evidencia disponible, pero debe registrar unknown_reason.
 
@@ -254,15 +254,15 @@ COMPLETE exige denominador finito y trazable, regla de enumeración, fuentes vá
 
 | evaluator_record_id | object_type (NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_SCOPE) | target_node_record_id (FK nullable) | target_edge_record_id (FK nullable) | target_route_record_id (FK nullable) | target_predicate_record_id (FK nullable) | target_snapshot_record_id (FK nullable) | target_coverage_scope_id (FK nullable) | evaluator_id | role (E1/E2) | observed_state | rule_version | scope_id | blinded_to_outcome_value | blinded_to_Z_B | confidence_or_limitations | rationale | timestamp |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | — | — | — | — | — | — | — | — | — | ? | — | — | — | — | — | — | — |
+|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|
 
 E1 y E2 deben emitir registros independientes antes de conocer la clasificación del otro. Las variables de cegamiento aceptan YES/NO/NOT_FEASIBLE con justificación; no se presupone cegamiento logrado por declarar un procedimiento.
 
 ### 12.5. Registro de discrepancia y adjudicación (ADJUDICATION_REGISTER)
 
 | adjudication_id | object_type (NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_SCOPE) | target_node_record_id (FK nullable) | target_edge_record_id (FK nullable) | target_route_record_id (FK nullable) | target_predicate_record_id (FK nullable) | target_snapshot_record_id (FK nullable) | target_coverage_scope_id (FK nullable) | evaluator_record_E1 (FK) | evaluator_record_E2 (FK) | disagreement_type | adjudicator_id | decision (1/0/?/NA) | rule_and_reason | minority_position | unresolved_limitations | timestamp |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | — | — | — | — | — | — | — | — | — | — | — | ? | — | — | — | — |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|
 
 No se permite majority-vote automático. Si no se resuelve el conflicto con evidencia y regla aplicable, decisión final ?.
 
@@ -297,7 +297,9 @@ Extensiones:
 7. E1/E2 se almacenan por separado; ADJUDICATION_REGISTER solo se crea cuando proceda. Los vínculos de evidencia revisados por cada rol se filtran mediante evaluator_record_id/adjudication_id en CLAIM_EVIDENCE_LINK.
 8. parent_route_class no puede sustituirse por route_subtype.
 9. DGP_TRUTH_SECURE no se mezcla ni sincroniza con los registros visibles al analizador.
-10. Las revisiones generan nuevos registros versionados; no se sobrescribe el historial.\n9. `SNAPSHOT.(unit_id, unit_object_record_id)` debe resolver conjuntamente a `NODE.(node_id, object_record_id)` y el NODE referenciado debe tener `semantic_role=LOGICAL_SERVICE_UNIT`; el `unit_id` es la identidad semántica estable y `unit_object_record_id` fija la versión concreta del registro raíz aplicable al snapshot.\n10. `NODE.boundary_class` admite `P0_CONFIG`, `P1_ENVIRONMENT`, `DUAL_P0_P1` y `NA`. Los tres primeros son clases sustantivas; `NA` es solo no aplicabilidad justificada para nodos fuera de los objetos/artefactos P0/P1. No usar null/ausencia como sustituto de NA. El campo no codifica P2.
+10. Las revisiones generan nuevos registros versionados; no se sobrescribe el historial.
+11. `SNAPSHOT.(unit_id, unit_object_record_id)` debe resolver conjuntamente a `NODE.(node_id, object_record_id)` y el NODE referenciado debe tener `semantic_role=LOGICAL_SERVICE_UNIT`; el `unit_id` es la identidad semántica estable y `unit_object_record_id` fija la versión concreta del registro raíz aplicable al snapshot.
+12. `NODE.boundary_class` admite `P0_CONFIG`, `P1_ENVIRONMENT`, `DUAL_P0_P1` y `NA`. Los tres primeros son clases sustantivas; `NA` es solo no aplicabilidad justificada para nodos fuera de los objetos/artefactos P0/P1. No usar null/ausencia como sustituto de NA. El campo no codifica P2.
 
 
 ### 12.9. Diccionario de tipos, dominios e integridad
