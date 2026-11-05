@@ -1,3 +1,7 @@
+> **HISTÓRICO / SUPERSEDIDO COMO GUÍA OPERATIVA (2026-11-05).** Draft 003 omitía desarrollos vigentes de §§59–81 y parte de la arquitectura estadística 165–183. La guía operativa vigente es C10_S_DESIGN_CLOSURE_AND_OPERATIONALIZATION_PLAN_DRAFT_004.md. Se conserva este archivo para trazabilidad; no dirigir nuevas operaciones desde él.
+
+---
+
 # C10-S — Plan integrado de cierre científico y operacionalización
 **ID:** C10-S-PLAN-001 · **Versión:** Draft 003 · **Fecha:** 2026-11-05  
 **Estado:** DRAFT / NO APROBADO / NO CONGELADO / NO IMPLEMENTADO / NO EJECUTADO  
