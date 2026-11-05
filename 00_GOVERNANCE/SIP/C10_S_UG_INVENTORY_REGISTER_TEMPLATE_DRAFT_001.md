@@ -19,9 +19,9 @@ Reglas obligatorias:
 
 ## 2. Registro de nodos
 
-| node_id | semantic_role | class | TID | SID | RID | version/build/hash | owner/boundary | consumers/routes/arms | direct_dependencies | external/shared_resource | permissions/state | evidence_ref (0..1 optional) | observed_state (1/0/?) | coverage_status (NONE/PARTIAL/COMPLETE) | timestamp | notes/unknowns | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | NO INVENTARIADO | — | — | — | — | — | — | — | — | — | — | — | ? | NONE | — | Fila de esquema; no representa componente real | — | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
+| node_id | semantic_role | class | boundary_class (P0_CONFIG/P1_ENVIRONMENT/DUAL_P0_P1/NA) | TID | SID | RID | version/build/hash | owner/boundary | consumers/routes/arms | direct_dependencies | external/shared_resource | permissions/state | evidence_ref (0..1 optional) | observed_state (1/0/?) | coverage_status (NONE/PARTIAL/COMPLETE) | timestamp | notes/unknowns | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | NO INVENTARIADO | — | NA | — | — | — | — | — | — | — | — | — | — | ? | NONE | — | Fila de esquema; no representa componente real | — | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
 ## 3. Registro de aristas/dependencias
 
@@ -45,9 +45,9 @@ Reglas obligatorias:
 
 ## 6. Registro de snapshots y fuentes
 
-| snapshot_id | unit_id | phase (baseline/post-B/rollback/route-test) | timestamp | scope | source_artifacts | version/hash | method | coverage_limitations | custodian | integrity_check | evidence_ref (0..1 optional) | observed_state (1/0/?) | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | — | — | — | — | — | — | — | No capturado | — | — | — | NA | — | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
+| snapshot_id | unit_id | unit_object_record_id (FK NODE.object_record_id) | phase (baseline/post-B/rollback/route-test) | timestamp | scope | source_artifacts | version/hash | method | coverage_limitations | custodian | integrity_check | evidence_ref (0..1 optional) | observed_state (1/0/?) | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | — | — | — | — | — | — | — | — | No capturado | — | — | — | NA | — | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
 ## 7. Matriz de cobertura por dimensión
 
@@ -281,11 +281,11 @@ Todas las tablas de objetos (NODE, EDGE, ROUTE, PREDICATE, SNAPSHOT) deben inclu
 - `unknown_reason`; `contract_intent` cuando aplique; `created_at`, `recorded_by`, `supersedes_record_id`.
 
 Extensiones:
-- NODE: TID/SID/RID, estado declarado/instalado/desplegado/cargado/invocado/ejecutado, owner/boundary, consumers, dependencias.
+- NODE: TID/SID/RID, `boundary_class`, estado declarado/instalado/desplegado/cargado/invocado/ejecutado, owner/boundary, consumers, dependencias.
 - EDGE: parent_edge_id, atomic_edge_id, source_node_id, target_node_id, dirección, tipo, condición, directo/transitivo, versión/tiempo, necesidad para ruta.
 - ROUTE: parent_route_class (una de cinco clases U_G) y route_subtype separado; secuencia ordenada y predicados necesarios.
 - PREDICATE: predicate_id exacto, familia, ruta/paso/tiempo, observed_state, regla y tolerancia; nunca DGP truth.
-- SNAPSHOT: snapshot_id, unit_id, phase, scope_id, timestamp, artefactos/hash, método, cobertura y evidence refs.
+- SNAPSHOT: snapshot_id, `unit_id`, `unit_object_record_id` (FK compuesta al nodo raíz de servicio), phase, scope_id, timestamp, artefactos/hash, método, cobertura y evidence refs.
 
 ### 12.8. Reglas de consistencia entre tablas
 
@@ -296,7 +296,7 @@ Extensiones:
 5. E1/E2 se almacenan por separado; ADJUDICATION_REGISTER solo se crea cuando proceda. Los vínculos de evidencia revisados por cada rol se filtran mediante evaluator_record_id/adjudication_id en CLAIM_EVIDENCE_LINK.
 6. parent_route_class no puede sustituirse por route_subtype.
 7. DGP_TRUTH_SECURE no se mezcla ni sincroniza con los registros visibles al analizador.
-8. Las revisiones generan nuevos registros versionados; no se sobrescribe el historial.
+8. Las revisiones generan nuevos registros versionados; no se sobrescribe el historial.\n9. `SNAPSHOT.(unit_id, unit_object_record_id)` debe resolver conjuntamente a `NODE.(node_id, object_record_id)` y el NODE referenciado debe tener `semantic_role=LOGICAL_SERVICE_UNIT`; el `unit_id` es la identidad semántica estable y `unit_object_record_id` fija la versión concreta del registro raíz aplicable al snapshot.\n10. `NODE.boundary_class` admite `P0_CONFIG`, `P1_ENVIRONMENT`, `DUAL_P0_P1` y `NA`. Los tres primeros son clases sustantivas; `NA` es solo no aplicabilidad justificada para nodos fuera de los objetos/artefactos P0/P1. No usar null/ausencia como sustituto de NA. El campo no codifica P2.
 
 
 ### 12.9. Diccionario de tipos, dominios e integridad
@@ -336,7 +336,7 @@ Extensiones:
 | COVERAGE_REGISTER | coverage_scope_id | Universo/versionado | — | — | — | Obligatorio | 0..n |
 | EVIDENCE_REGISTER | evidence_id | Scope/versionado | — | evidence_status | — | Obligatorio | 1..n si soporta claims |
 
-Las claves compuestas aquí expresan unicidad lógica propuesta; su implementación física requiere escoger motor/formato y constraints. Esta especificación no equivale a un esquema SQL implementado.
+La referencia SNAPSHOT→NODE usa la pareja `(unit_object_record_id, unit_id)` para resolver la clave `(object_record_id, node_id)` del nodo raíz de servicio. `unit_id` por sí solo no es FK suficiente porque NODE admite revisiones versionadas y su unicidad lógica está definida por la pareja `object_record_id + node_id`. El nodo referenciado debe tener `semantic_role=LOGICAL_SERVICE_UNIT`.\n\nLas claves compuestas aquí expresan unicidad lógica propuesta; su implementación física requiere escoger motor/formato y constraints. Esta especificación no equivale a un esquema SQL implementado.
 
 
 ## 13. Auditoría campo-a-campo: resultado
