@@ -289,7 +289,7 @@ Un PASS de C10-S acredita solo la capacidad del procedimiento dentro de los DGP,
 
 ## 12. Estado y siguiente operación
 
-La información histórica está integrada; no se abre una nueva recuperación. Draft 004 es la guía operativa. La siguiente operación es cerrar el crosswalk de no-regresión y propagar de forma atómica las correcciones a Decision Log y contratos auxiliares, empezando por DEC-C10-063/064 y por las referencias obsoletas a revisión externa en Test Register/Closure Matrix.
+La información histórica está integrada; no se abre una nueva recuperación. Draft 004 es la guía operativa. El crosswalk de no-regresión y la propagación documental inmediata están completados en el alcance auditado: Decision Log indexa DEC-C10-063/064; P177/P178/P179 están en Test Register; y los requisitos históricos de revisión externa quedan supersedidos en los auxiliares actualizados. La siguiente operación científica es cerrar la arquitectura causal y los estimandos/políticas factibles: θ_A(q), θ_Af(q*), ITT/LATE/ψ_policy, q_X*, B_g0/B_g1, C_auth y la selección D1/D2, manteniendo todas las recomendaciones como no aceptadas hasta decisión expresa.
 
 No se cambia main, Core, RMA, Evidence→Claim Matrix, STATUS, claims ni C09. No se implementa, simula ni ejecuta el experimento.
 
