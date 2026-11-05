@@ -2,7 +2,8 @@
 
 - Created immutable RMA v3.38 as a governance-maintenance successor to v3.37, correcting its two stale declarations that named Evidence→Claim Matrix v1.44 as current; v1.47 remains the current matrix.
 - Preserved RMA v3.37 and traceability v3.37 unchanged as historical artifacts. Created traceability v3.38, advanced the stable RMA and traceability aliases, and aligned `CANONICAL_STATE.json` and `STATUS.md`.
-- The current traceability alias and versioned traceability v3.38 are identical. Matrix v1.44 remains historical; matrix v1.47 remains current and unchanged.
+- Restored the historical `RMA-v3.36` and `MT5-DTS-RECONSTRUCTION` rows that were absent from the prior current traceability alias, and restored the original RMA-v3.36 dependency for historical Matrix v1.43. The v3.37 versioned traceability remains immutable.
+- The current traceability alias and versioned traceability v3.38 are identical and cumulative. Matrix v1.44 remains historical; matrix v1.47 remains current and unchanged.
 - Governance maintenance only: no scientific evidence, claim status/level, TGCV Core, threshold, falsification criterion or experiment authorization changed. No scientific execution was run.
 
 # Changelog
