@@ -1255,3 +1255,8 @@ Se crea `C10_S_UG_TYPED_TARGET_REFERENTIAL_INTEGRITY_CONTRACT_PROPOSAL_DRAFT_001
 El usuario acepta la arquitectura de referencias tipadas y procedencia canónica. Se actualiza la plantilla U_G: CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER contienen seis FKs tipadas (NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_SCOPE), exactamente una no nula y coherente con el enum de destino. object_record_id se declara UNIQUE por tabla; coverage_scope_id PK/UNIQUE. source_provenance queda normalizada en EVIDENCE_REGISTER; evidence_ref sigue opcional 0..1 y CLAIM_EVIDENCE_LINK 0..n.
 
 UG-SCH-04/05/06 quedan ACCEPTED_DOCUMENTALLY, pendientes de validación física. UG-SCH-07 permanece OPEN. El dictamen global sigue SCHEMA_NOT_CLOSED. No se ejecutan parser, constraints, fixtures, simulaciones ni experimentos; `scientific_execution=false`; `execution_authorized=false`.
+
+
+# LXII. Propuesta de cierre UG-SCH-07 — identidad de registro y supersession (2026-11-05)
+
+Se crea `C10_S_UG_RECORD_ID_VERSION_AND_SUPERSESSION_CONTRACT_PROPOSAL_DRAFT_001.md`. La propuesta recomienda `object_record_id` UNIQUE por tabla, `object_version` entero positivo secuencial por identidad semántica y `supersedes_record_id` como referencia autorreferente al predecesor inmediato de la misma tabla e identidad. La cadena debe ser lineal, sin ciclos, bifurcaciones, saltos ni reescritura histórica. Se separa record-time de tiempo de observación y se conserva el pinning SNAPSHOT→NODE a la versión exacta. Pendiente aceptación; no se altera todavía la plantilla U_G ni se ejecutan constraints, parser, fixtures o experimentos. UG-SCH-07 sigue OPEN; esquema global SCHEMA_NOT_CLOSED.
