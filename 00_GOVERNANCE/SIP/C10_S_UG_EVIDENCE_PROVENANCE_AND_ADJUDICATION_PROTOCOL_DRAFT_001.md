@@ -188,3 +188,12 @@ La cobertura se normaliza con denominador, definición/versionado del universo, 
 La ruta utiliza parent_route_class con las cinco clases U_G y route_subtype separado. Los campos comunes de objetos, versiones, alcance, evidence_status, observed_state, adjudicación y supersession quedan definidos en la plantilla.
 
 **Resultado de auditoría:** brechas FCM-01…09 identificadas y tratadas documentalmente. El esquema normalizado todavía no está validado por un parser, tipos/constraints ejecutables ni revisión independiente. No se ha aplicado a fuentes reales. No implica inventario ni cobertura; estados técnicos siguen ? y cobertura NONE. No se autoriza ejecución.
+
+
+## 14. Reconciliación de tipos, cardinalidad e integridad de captura
+
+La plantilla §§12.9–12.10 concreta tipos y dominios candidatos, cardinalidad de relaciones, claves lógicas y obligatoriedad por tabla. CLAIM_EVIDENCE_LINK es la relación 1:N canónica entre object_record_id/claim_target_id y evidence_id; las referencias de navegación de las tablas no sustituyen ese conjunto. COVERAGE_REGISTER es el registro normativo; la tabla de §7 es solo vista resumen. E1/E2 se guardan en filas independientes; evaluator_record_ids no serializa múltiples evaluadores en una celda.
+
+Los estados se mantienen ortogonales: observed_state {1,0,?,NA}; evidence_status {AVAILABLE,MISSING,CONFLICTING}; coverage_status {NONE,PARTIAL,COMPLETE}; review_adjudication_status usa el dominio definido en plantilla. Tiempos ISO 8601 con offset, hashes con algoritmo explícito y conteos enteros no negativos. COMPLETE exige denominador trazable.
+
+Esta reconciliación es documental. No hay parser, constraints, base de datos ni validación de seguridad ejecutados. La plantilla y protocolo siguen Draft; revisión independiente y validación ejecutable quedan pendientes.
