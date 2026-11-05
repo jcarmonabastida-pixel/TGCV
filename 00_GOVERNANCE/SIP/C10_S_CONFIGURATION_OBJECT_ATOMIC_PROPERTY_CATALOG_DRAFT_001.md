@@ -148,3 +148,8 @@ No se agregan puntuaciones compensatorias. F* solo puede adjudicarse cuando toda
 Se ha producido una primera atomización candidata del objeto seleccionado, con propiedades vinculadas a sus seis elementos y límites entre FP-01…FP-08. Es suficiente para guiar la siguiente ronda de especificación, pero no para declarar FP-03 o F* operacionalmente cerrados.
 
 **Estado:** OBJECT CLASS SELECTED; INITIAL SIX-ELEMENT STRUCTURE ADOPTED; ATOMIC PROPERTY CATALOG DRAFTED; OBLIGATORINESS/APPLICABILITY OPEN; SOURCE/DESTINATION CONTRACTS OPEN; MAPPINGS OPEN; ORACLE NOT VALIDATED; NO TECHNICAL VALIDATION; NO INDEPENDENT REVIEW; NO EMPIRICAL EVIDENCE; NO EXECUTION AUTHORIZATION.
+
+
+## 9. Reconciliación con FP-01…FP-08
+
+La asignación de familia primaria/secundaria y la separación de predicados compuestos se desarrolla en `C10_S_SM_ATOMIC_PROPERTY_FP_RECONCILIATION_DRAFT_001.md`. El catálogo original se conserva como catálogo candidato; la reconciliación no eleva propiedades a obligatorias. En especial, CMP-03/REF-03 separan cardinalidad/integridad de impacto semántico; PAR-02/PAR-06 separan validez formal y significado; REF-04 queda en FP-02; POL-05 queda en FP-05; MET-02/04 quedan en FP-08.
