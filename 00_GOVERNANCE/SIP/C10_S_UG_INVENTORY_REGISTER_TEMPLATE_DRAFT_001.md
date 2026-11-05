@@ -530,9 +530,41 @@ Todas las referencias interobjeto comparten exactamente el mismo par (snapshot_i
 
 Todas las FKs de pertenencia fijan la misma revisión exacta de SNAPSHOT. EDGE, PREDICATE y ROUTE_STEP deben satisfacer además que los registros relacionados comparten el mismo par (snapshot_id, snapshot_object_record_id). Las FKs de ROUTE_STEP a ROUTE/NODE/EDGE incluyen obligatoriamente ambos componentes del pinning; una FK que omita `snapshot_object_record_id` no satisface DEC-C10-065.
 
-### 15.4. Referencias tipadas de evidencia y evaluación
+### 15.4. Referencias tipadas de evidencia y evaluación — DEC-C10-061
 
-CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER conservan las seis FKs tipadas y la regla de exactamente un destino no nulo coherente con el enum. Estas relaciones son independientes de las FKs interobjeto de Opción A. CLAIM_EVIDENCE_LINK sigue siendo 0..n; evidence_ref sigue siendo navegación opcional 0..1.
+Estas relaciones son independientes de las FKs interobjeto de Opción A y conservan los seis destinos tipados aprobados. Las columnas y constraints documentales son:
+
+**CLAIM_EVIDENCE_LINK**
+- PK/UNIQUE: `claim_evidence_id`.
+- `claim_target_type` enum cerrado: NODE, EDGE, ROUTE, PREDICATE, SNAPSHOT, COVERAGE_SCOPE.
+- Seis columnas nullable: `target_node_record_id`, `target_edge_record_id`, `target_route_record_id`, `target_predicate_record_id`, `target_snapshot_record_id`, `target_coverage_scope_id`; cada una FK a la clave única de su tabla destino.
+- CHECK: exactamente una de las seis columnas no nula y coherente con `claim_target_type`.
+- `evidence_id` NOT NULL → EVIDENCE_REGISTER(`evidence_id`).
+- `evaluator_record_id` y `adjudication_id` son FKs opcionales a EVALUATOR_ASSESSMENT(`evaluator_record_id`) y ADJUDICATION_REGISTER(`adjudication_id`).
+- Cardinalidad 0..n por destino: múltiples afirmaciones/evidencias se representan mediante filas distintas, nunca listas serializadas.
+
+**EVALUATOR_ASSESSMENT**
+- PK/UNIQUE: `evaluator_record_id`.
+- `object_type` usa el mismo enum de seis destinos.
+- Conserva las seis columnas nullable `target_*`; exactamente una debe estar poblada y concordar con `object_type`, con FK tipada al destino correspondiente.
+- `role` distingue E1/E2. Una fila representa una evaluación de un evaluador; no se serializan evaluadores múltiples.
+
+**ADJUDICATION_REGISTER**
+- PK/UNIQUE: `adjudication_id`.
+- `object_type` y las seis columnas nullable `target_*` siguen la misma regla de destino exclusivo y FK tipada.
+- `evaluator_record_E1` y `evaluator_record_E2` son FKs obligatorias a EVALUATOR_ASSESSMENT(`evaluator_record_id`); la posición minoritaria y el razonamiento quedan preservados.
+
+**EVIDENCE_REGISTER y COVERAGE_REGISTER**
+- `evidence_id` es PK/UNIQUE; `source_provenance` y sus campos complementarios de origen/custodia/integridad/completitud son canónicos aquí, no duplicados en NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT.
+- `coverage_scope_id` es PK/UNIQUE en COVERAGE_REGISTER; el destino COVERAGE_SCOPE de las tres tablas relacionales referencia esa clave.
+
+**Reglas de evidencia**
+- `evidence_ref` en registros de objeto es navegación opcional 0..1 hacia `claim_evidence_id`, no el soporte probatorio completo.
+- Todo registro observado real con `observed_state=1` o `0` requiere al menos un CLAIM_EVIDENCE_LINK válido y de alcance compatible; un 0 requiere además cobertura negativa suficiente.
+- Un `?` sin vínculo exige `unknown_reason`, `evidence_status=MISSING` y límites de búsqueda/cobertura; NA exige justificación.
+- La segregación de DGP_TRUTH_SECURE respecto del analizador es una condición de arquitectura/custodia, no una FK ni una etiqueta que por sí sola pruebe seguridad.
+
+La matriz precedente expresa el contrato documental aceptado por DEC-C10-061 y UG-SR-A01. CHECK, FK, cardinalidades, dominios, protección de truth y consultas de reconstrucción no están implementados ni validados físicamente.
 
 ### 15.5. Estado y gate
 
