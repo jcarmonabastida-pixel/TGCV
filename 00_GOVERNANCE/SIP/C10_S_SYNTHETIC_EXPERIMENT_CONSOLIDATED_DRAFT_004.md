@@ -7753,3 +7753,10 @@ La auditoría OAS posterior a DEC-C10-065 detectó que las FKs ROUTE_STEP→ROUT
 Se marca §12.10 como matriz histórica de baseline para las referencias de snapshot, con §15.2 como matriz física normativa vigente; §§12.7 y 12.8.12 explicitan la precedencia y la pertenencia exacta. El crosswalk IAM/FP §9.3 registra las doce relaciones de origen/destino con orden de columnas explícito.
 
 El control de las 19 tablas Markdown mantiene PASS_FORMAT_ONLY; recuentos físicos actualizados: NODE 32, EDGE 35, ROUTE 30, ROUTE_STEP 8, PREDICATE 27, SNAPSHOT 26, EVIDENCE_REGISTER 18, CLAIM_EVIDENCE_LINK 15, COVERAGE_REGISTER 15, EVALUATOR_ASSESSMENT 18 y ADJUDICATION_REGISTER 17. No hay validación física, revisión independiente ni schema freeze. UG-SCH-10 permanece OPEN. No cambia TGCV Core, C10 claim status, RMA, Evidence→Claim Matrix ni STATUS. No se autoriza implementación o ejecución científica.
+
+
+## 126. Unicidad semántica dentro de revisiones exactas de SNAPSHOT (2026-11-05)
+
+Se corrige una insuficiencia de claves candidatas: `UNIQUE(snapshot_id,node_id)` no distinguía revisiones de SNAPSHOT y podía impedir que la misma identidad NODE apareciera en dos revisiones distintas del mismo snapshot semántico. También se necesitaba una clave semántica por revisión exacta para evitar duplicados dentro de esa revisión.
+
+U_G §§13.1 y 15.2 sustituyen esa unicidad por `UNIQUE(snapshot_id,snapshot_object_record_id,semantic_id)` para NODE, EDGE, ROUTE y PREDICATE, manteniendo las claves compuestas con object_record_id para FKs. OAS-09 queda resuelto documentalmente, pendiente de validación física del motor. No cambia el Core, C10 claim status, RMA, Evidence→Claim Matrix o STATUS; UG-SCH-10 permanece OPEN.
