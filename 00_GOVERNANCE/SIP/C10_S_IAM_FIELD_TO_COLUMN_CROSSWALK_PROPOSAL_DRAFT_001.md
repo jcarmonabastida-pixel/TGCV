@@ -130,3 +130,27 @@ Los IDs semánticos se conservan como crosswalk, pero nunca sustituyen los recor
 | NODE raíz de SNAPSHOT | SNAPSHOT.snapshot_id + unit_object_record_id | NODE(snapshot_id,object_record_id,node_id) | El registro NODE raíz pertenece al snapshot; circularidad diferible/transaccional |
 
 DEC-C10-065 resuelve OAS-02 a nivel documental. El crosswalk físico aún debe verificarse con claves candidatas completas y orden de columnas exacto; el motor no está seleccionado.
+
+
+## 9.3. Reconciliación física completa de referencias — DEC-C10-065
+
+**Precedencia:** esta tabla completa y corrige el mapping previo de §§9.1–9.2. Las menciones anteriores a una FK basada solo en `snapshot_id`, o a una referencia sin `snapshot_object_record_id`, se conservan como historial de la evolución documental y no son normativas.
+
+| Relación | Columnas de origen, en orden | Clave destino, en el mismo orden | Regla |
+|---|---|---|---|
+| Pertenencia de NODE | NODE(`snapshot_id,snapshot_object_record_id`) | SNAPSHOT(`snapshot_id,object_record_id`) | Fija revisión exacta de SNAPSHOT |
+| Pertenencia de EDGE | EDGE(`snapshot_id,snapshot_object_record_id`) | SNAPSHOT(`snapshot_id,object_record_id`) | Fija revisión exacta de SNAPSHOT |
+| Pertenencia de ROUTE | ROUTE(`snapshot_id,snapshot_object_record_id`) | SNAPSHOT(`snapshot_id,object_record_id`) | Fija revisión exacta de SNAPSHOT |
+| Pertenencia de PREDICATE | PREDICATE(`snapshot_id,snapshot_object_record_id`) | SNAPSHOT(`snapshot_id,object_record_id`) | Fija revisión exacta de SNAPSHOT |
+| Pertenencia de ROUTE_STEP | ROUTE_STEP(`snapshot_id,snapshot_object_record_id`) | SNAPSHOT(`snapshot_id,object_record_id`) | Fija revisión exacta de SNAPSHOT |
+| EDGE origen → NODE | EDGE(`snapshot_id,snapshot_object_record_id,source_node_record_id,source_node_id`) | NODE(`snapshot_id,snapshot_object_record_id,object_record_id,node_id`) | Mismo snapshot exacto, record ID y node_id semántico |
+| EDGE destino → NODE | EDGE(`snapshot_id,snapshot_object_record_id,target_node_record_id,target_node_id`) | NODE(`snapshot_id,snapshot_object_record_id,object_record_id,node_id`) | Mismo snapshot exacto, record ID y node_id semántico |
+| PREDICATE → ROUTE | PREDICATE(`snapshot_id,snapshot_object_record_id,route_record_id,route_id`) | ROUTE(`snapshot_id,snapshot_object_record_id,object_record_id,route_id`) | Misma revisión exacta de ROUTE |
+| ROUTE_STEP → ROUTE | ROUTE_STEP(`snapshot_id,snapshot_object_record_id,route_record_id`) | ROUTE(`snapshot_id,snapshot_object_record_id,object_record_id`) | Misma revisión exacta de ROUTE |
+| ROUTE_STEP → NODE | ROUTE_STEP(`snapshot_id,snapshot_object_record_id,node_record_id`) | NODE(`snapshot_id,snapshot_object_record_id,object_record_id`) | Mismo snapshot exacto y NODE |
+| ROUTE_STEP → EDGE | ROUTE_STEP(`snapshot_id,snapshot_object_record_id,edge_record_id`) | EDGE(`snapshot_id,snapshot_object_record_id,object_record_id`) | Mismo snapshot exacto y EDGE |
+| SNAPSHOT → NODE raíz | SNAPSHOT(`snapshot_id,object_record_id,unit_object_record_id,unit_id`) | NODE(`snapshot_id,snapshot_object_record_id,object_record_id,node_id`) | El object_record_id de SNAPSHOT ocupa el valor de snapshot_object_record_id en NODE; exige semantic_role=LOGICAL_SERVICE_UNIT |
+
+**Claves destino exigidas:** las claves candidatas UNIQUE indicadas en U_G §15.2 deben existir en el mismo orden de columnas que las FKs anteriores. La tabla no declara implementadas esas constraints. ROUTE_STEP conserva PK/UNIQUE por ruta y posición, además de la FK de snapshot exacto.
+
+**Estado:** reconciliación documental de columnas y orden de referencias; motor, DDL, constraints, circularidad diferible, CHECKs, continuidad cross-row, inmutabilidad y pruebas negativas siguen pendientes. No hay schema freeze ni autorización de ejecución.
