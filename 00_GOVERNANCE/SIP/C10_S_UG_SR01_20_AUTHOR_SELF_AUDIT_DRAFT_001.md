@@ -56,7 +56,7 @@ Ningún PASS_STATIC equivale a PASS técnico, revisión independiente, freeze de
 
 ## 4. Resumen de resultados
 
-- PASS_STATIC: **7** (SR-01, 06, 07, 08, 10, 15, 16, 17) — corrección: son **8** controles.
+- PASS_STATIC: **8** (SR-01, 06, 07, 08, 10, 15, 16, 17).
 - CONDITIONAL: **10** (SR-02, 03, 04, 05, 09, 11, 12, 13, 14, 18).
 - NOT_ASSESSED: **2** (SR-19, SR-20).
 - FAIL: **0**.
