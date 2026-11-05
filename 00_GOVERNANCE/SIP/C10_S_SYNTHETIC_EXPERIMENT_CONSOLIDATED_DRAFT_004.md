@@ -7501,3 +7501,12 @@ Se ha creado `C10_S_OPTION_A_FSTAR_AND_TRANSFORMATION_CARDS_PROPOSAL_DRAFT_001.m
 La propuesta distingue conversión focal, aplicación/verificación destino, exportación neutral e importación/aplicación nativa; define un F* común técnico, independiente de Outcome/Value; y explicita entradas/salidas, precondiciones, accesibilidad, ejecución, fallos y pendientes. No fija formatos, versiones, tolerancias, recursos, ventanas ni estados generadores.
 
 **Estado:** propuesta de operacionalización; Opción A y F* siguen sin aprobación formal en el repositorio. No se cierra OPEN-C10-003 ni la selección de microdominio. No hay inventario real, DGP completo, validación, simulación o ejecución.
+
+
+# 95. DEC-C10-051 — selección de Opción A y adopción de F* (2026-11-05)
+
+El usuario selecciona Opción A —migración de configuración entre dos entornos software— como microdominio de diseño de C10-S y adopta F* como contrato funcional de trabajo candidato. La ruta completa debe producir y aplicar en el destino una configuración que satisfaga propiedades obligatorias preespecificadas de esquema, integridad, compatibilidad, preservación funcional y seguridad.
+
+La decisión sustituye el estado previo «recomendado, no seleccionado» para el diseño C10-S. Las Opciones B/C permanecen documentadas como alternativas históricas. F* no se considera cerrado: catálogo exacto de propiedades, mappings, tolerancias, casos frontera, oráculo y protocolo de validación permanecen pendientes. Tampoco se han decidido D1/D2, R0–R3 ni parámetros del DGP.
+
+La selección no constituye aprobación de ejecución, validación técnica, evidencia empírica, revisión independiente ni freeze. `scientific_execution=false`; `execution_authorized=false`.
