@@ -31,9 +31,9 @@ Reglas obligatorias:
 
 ## 4. Registro de rutas y substituibilidad
 
-| route_id | parent_route_class (Rτ2/RA12/Rshared/Rexternal/Runknown) | route_subtype (native/manual/fallback/recovery/other) | ordered_node_edge_sequence | entry_state | target/F* | G | H/window | C0/constraints | version_set | shared_dependencies | affected_by_B | functional_substitutability (1/0/?) | evidence_ref (0..1 optional) | coverage_scope_id | evaluator_record_ids | unresolved_alternatives | notes | observed_state (1/0/?) | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id  | snapshot_id |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|--- | --- |
-| — | Runknown | unknown | — | — | — | — | — | — | — | — | ? | ? | — | — | — | Runknown | Fila de esquema; no representa ruta real | ? | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | —  | — |
+| route_id | parent_route_class (Rτ2/RA12/Rshared/Rexternal/Runknown) | route_subtype (native/manual/fallback/recovery/other) | entry_state | target/F* | G | H/window | C0/constraints | version_set | shared_dependencies | affected_by_B | functional_substitutability (1/0/?) | evidence_ref (0..1 optional) | coverage_scope_id | evaluator_record_ids | unresolved_alternatives | notes | observed_state (1/0/?) | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id  | snapshot_id |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|--- | --- |
+| — | Runknown | unknown | — | — | — | — | — | — | — | ? | ? | — | — | — | Runknown | Fila de esquema; no representa ruta real | ? | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | —  | — |
 
 
 ### 4.1. Registro normalizado de pasos de ruta (ROUTE_STEP)
@@ -472,3 +472,45 @@ Los campos comunes de §12.7 se mantienen para las cinco tablas de objetos versi
 ROUTE_STEP no sustituye CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_ASSESSMENT ni ADJUDICATION_REGISTER. Si en una fase posterior se requiere evidencia directa por paso, deberá definirse una extensión tipada explícita; no se amplía implícitamente el enum de destinos actual.
 
 **Control pendiente:** la matriz y los encabezados deberán revisarse conjuntamente contra DDL/serialización del motor seleccionado. La continuidad cross-row no queda garantizada por la fila ROUTE_STEP aislada.
+
+
+## 15. Contrato normalizado reconciliado — Opción A / DEC-C10-064 (addendum normativo)
+
+Este apartado sustituye las formulaciones incompatibles de §§12.7–12.10 en lo relativo a snapshot membership, referencias interobjeto y secuencia de rutas. Los campos y relaciones no afectados por Opción A conservan sus reglas previas. La sustitución es documental; el diseño físico continúa bloqueado por OAS-02 hasta decidir cómo fijar la versión exacta de SNAPSHOT.
+
+### 15.1. Cinco tablas versionadas
+
+NODE, EDGE, ROUTE, PREDICATE y SNAPSHOT conservan `object_record_id` opaco y UNIQUE por tabla, identidad semántica separada y `object_version` positivo, secuencial por identidad semántica, con `supersedes_record_id` al predecesor inmediato. Una nueva observación en snapshot nuevo crea nuevo registro/version aunque no haya cambio material.
+
+NODE, EDGE, ROUTE y PREDICATE incorporan `snapshot_id` obligatorio como asociación semántica al snapshot observado. SNAPSHOT conserva `snapshot_id` como identidad semántica y `object_record_id` como identidad de fila versionada. **No se declara todavía una FK física válida desde los hijos a SNAPSHOT.snapshot_id**, porque DEC-C10-062 permite varias versiones del mismo snapshot_id y la columna no identifica una fila concreta. Ver OAS-02 del informe de auditoría.
+
+### 15.2. Claves candidatas y referencias interobjeto aprobadas
+
+- NODE: UNIQUE(`object_record_id`); UNIQUE(`node_id, object_version`); UNIQUE(`snapshot_id, object_record_id`); UNIQUE(`snapshot_id, object_record_id, node_id`); UNIQUE(`snapshot_id, node_id`).
+- EDGE: UNIQUE(`object_record_id`); UNIQUE(`edge_id, object_version`); UNIQUE(`snapshot_id, object_record_id`); UNIQUE(`snapshot_id, object_record_id, edge_id`).
+- ROUTE: UNIQUE(`object_record_id`); UNIQUE(`route_id, object_version`); UNIQUE(`snapshot_id, object_record_id`); UNIQUE(`snapshot_id, object_record_id, route_id`).
+- PREDICATE: UNIQUE(`object_record_id`); UNIQUE(`predicate_id, object_version`); UNIQUE(`snapshot_id, object_record_id`); UNIQUE(`snapshot_id, object_record_id, predicate_id`).
+- SNAPSHOT: UNIQUE(`object_record_id`); UNIQUE(`snapshot_id, object_version`); UNIQUE(`snapshot_id, object_record_id`).
+
+Las FKs compuestas de EDGE fijan source/target NODE mediante `(snapshot_id, source_node_record_id, source_node_id)` y `(snapshot_id, target_node_record_id, target_node_id)` hacia `NODE(snapshot_id, object_record_id, node_id)`. PREDICATE fija la revisión exacta de ROUTE mediante `(snapshot_id, route_record_id, route_id)` hacia `ROUTE(snapshot_id, object_record_id, route_id)`. SNAPSHOT fija NODE raíz mediante `(snapshot_id, unit_object_record_id, unit_id)` hacia `NODE(snapshot_id, object_record_id, node_id)`, además de `semantic_role=LOGICAL_SERVICE_UNIT`. Las FKs circulares se difieren al COMMIT si el motor soporta la garantía requerida.
+
+### 15.3. ROUTE y ROUTE_STEP
+
+`ordered_node_edge_sequence` deja de ser columna persistida de ROUTE. ROUTE_STEP es la única fuente canónica del orden y usa: route_step_id, snapshot_id, route_record_id, step_index, step_type, node_record_id nullable y edge_record_id nullable.
+
+- FK de ruta: `(snapshot_id, route_record_id)` → ROUTE(`snapshot_id, object_record_id`).
+- FK de nodo: `(snapshot_id, node_record_id)` → NODE(`snapshot_id, object_record_id`).
+- FK de arista: `(snapshot_id, edge_record_id)` → EDGE(`snapshot_id, object_record_id`).
+- CHECK: exactamente uno de node_record_id/edge_record_id no nulo y coherente con step_type.
+- UNIQUE(route_record_id, step_index); step_index entero positivo y contiguo desde 1.
+- La continuidad entre extremos exactos de EDGE y NODE adyacentes es una invariante cross-row que requiere constraint/trigger verificable o validador independiente y pruebas negativas.
+
+Estas FKs conservan el snapshot_id semántico común, pero su pinning a una revisión concreta de SNAPSHOT queda bloqueado por OAS-02.
+
+### 15.4. Referencias tipadas de evidencia y evaluación
+
+CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER conservan las seis FKs tipadas y la regla de exactamente un destino no nulo coherente con el enum. Estas relaciones son independientes de las FKs interobjeto de Opción A. CLAIM_EVIDENCE_LINK sigue siendo 0..n; evidence_ref sigue siendo navegación opcional 0..1.
+
+### 15.5. Estado y gate
+
+La matriz anterior §12.10 se considera reemplazada por este addendum solo para los elementos aquí enumerados; debe convertirse en una matriz física única cuando OAS-02 se resuelva. No se declara schema freeze ni integridad física. Motor no seleccionado; soporte de FKs diferibles, restricciones cross-row, inmutabilidad y parser pendientes. `scientific_execution=false`; `execution_authorized=false`.
