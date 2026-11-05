@@ -50,7 +50,7 @@ El propio §10.6 ya declara `parent_edge_id` y `atomic_edge_id` necesarios para 
 
 ### UG-SCH-02 — SNAPSHOT: etiqueta de FK incompleta
 
-**Severidad:** MEDIA · **Estado:** CORRECTION_REQUIRED.
+**Severidad:** MEDIA · **Estado:** CORRECTED_DOCUMENTALLY; physical constraint pending.
 
 El encabezado identifica `unit_object_record_id` como “FK NODE.object_record_id”, pero DEC-C10-059 y el contrato asociado requieren la pareja compuesta:
 
@@ -58,7 +58,7 @@ El encabezado identifica `unit_object_record_id` como “FK NODE.object_record_i
 
 La columna está presente; la etiqueta del encabezado no expresa la restricción completa.
 
-**Corrección requerida:** actualizar la descripción del campo para indicar explícitamente que forma parte de una FK compuesta junto con `unit_id`. Mantener la decisión DEC-C10-059 sin reabrirla.
+**Resolución documental (2026-11-05):** la etiqueta del encabezado ahora declara que `unit_object_record_id` forma parte de la FK compuesta junto con `unit_id` hacia `(object_record_id,node_id)` de NODE. DEC-C10-059 se mantiene sin cambios. La constraint física sigue pendiente.
 
 ### UG-SCH-03 — Vocabulario de semantic_role y rol raíz no formalizados
 
@@ -102,11 +102,11 @@ El esquema declara object_record_id “único”, pero la matriz de claves usa p
 
 ### UG-SCH-08 — estados de SNAPSHOT y boundary_class
 
-**Severidad:** BAJA · **Estado:** CLARIFICATION_REQUIRED.
+**Severidad:** BAJA · **Estado:** CLARIFIED_DOCUMENTALLY; second-pass review pending.
 
 La fila de esquema de SNAPSHOT usa `observed_state=NA`, mientras que el contrato común describe estados trivalentes y NA por no aplicabilidad. NODE utiliza boundary_class=NA en su fila de esquema vacía. Ambas filas están rotuladas como filas de esquema, no como observaciones.
 
-**Corrección requerida:** añadir una nota explícita de que esos NA son marcadores de plantilla y no valores asignados a registros reales. En filas reales, NA requiere justificación conforme al contrato. No cambiar la regla sustantiva de DEC-C10-059.
+**Resolución documental (2026-11-05):** las filas ilustrativas NODE y SNAPSHOT identifican NA como marcador de plantilla, no observación ni clasificación real. En registros reales, NA requiere justificación conforme al contrato. No cambia la regla sustantiva de DEC-C10-059.
 
 ## 4. Reconciliaciones que se mantienen válidas
 
@@ -125,7 +125,7 @@ La fila de esquema de SNAPSHOT usa `observed_state=NA`, mientras que el contrato
 | Diez tablas y anchuras de filas de esquema | PASS_STATIC |
 | Nombres de columnas duplicados | No detectados en los diez encabezados |
 | DEC-C10-059 / boundary_class conceptual | ACCEPTED; sin validación física |
-| FK compuesta SNAPSHOT→NODE | DEFINED_DOCUMENTALLY; etiqueta física por corregir |
+| FK compuesta SNAPSHOT→NODE | DEFINED_DOCUMENTALLY; label corrected; physical constraint pending |
 | EDGE parent/atomic IDs y extremos | CORRECTED_DOCUMENTALLY; second pass pending |
 | semantic_role / nodo raíz | ACCEPTED_DOCUMENTALLY (DEC-C10-060); physical validation pending |
 | Procedencia y CLAIM_EVIDENCE_LINK | OPEN |
@@ -162,3 +162,8 @@ UG-SCH-01 ha sido corregido documentalmente en la plantilla: EDGE pasa a 31 colu
 Para UG-SCH-03 se creó `C10_S_UG_SEMANTIC_ROLE_AND_LOGICAL_ROOT_CONTRACT_DRAFT_001.md` y el usuario lo aceptó mediante DEC-C10-060. El crosswalk N01–N23 es de roles de catálogo a tipos semánticos, no una equivalencia uno-a-uno. La aceptación es documental; la implementación y validación física siguen pendientes.
 
 Los demás hallazgos UG-SCH-02 y UG-SCH-04…08 permanecen abiertos. Dictamen global: SCHEMA_NOT_CLOSED.
+
+
+## 9. Seguimiento — 2026-11-05
+
+UG-SCH-03 queda aceptado documentalmente por DEC-C10-060; enum y constraints físicos pendientes. UG-SCH-02 queda corregido documentalmente al explicitar la FK compuesta en SNAPSHOT. UG-SCH-08 queda aclarado documentalmente: NA en filas de esquema es marcador, no dato observado. UG-SCH-04, UG-SCH-05, UG-SCH-06 y UG-SCH-07 permanecen OPEN. Dictamen global: SCHEMA_NOT_CLOSED.
