@@ -647,3 +647,19 @@ La arquitectura candidata ARCH-B1 es sidecar/runtime aislado, aditivo, versionad
 El contrato C10_S_GRAPH_COVERAGE_AND_TRIVALENT_EVIDENCE_MATRIX_DRAFT_001.md define U_G como universo candidato de nodos, aristas, predicados y rutas. Sus 23 nodos y 23 aristas son roles de inspección, no evidencia de existencia ni inventario exhaustivo. Se separan verdad estructural, cobertura, estado de evidencia e intención contractual. Los nodos/aristas desconocidos permanecen ?; cobertura parcial no permite declarar ausencia.
 
 Predicados requeridos: ID, REL, COND, AUTH, RES, DEP, BLOCK, APP, ALT-A1, ALT-A2, ALT-DEP, ALT-F*, ORACLE y EXT. Las rutas candidatas Rτ2, RA12, Rshared, Rexternal y Runknown permanecen ?. Reach=0 y F_alt,0=0 requieren cobertura exhaustiva del universo relevante. El estado actual no permite clasificar R0/R1; R2 es posibilidad causal no observada.
+
+
+## 41. Frontera, granularidad y dependencias de U_G (crosswalk C10-S §82)
+
+**Estado:** propuesta documental; no inventario técnico observado ni aprobación del DGP.
+
+1. Se aplica el contrato C10_S_SYSTEM_BOUNDARY_AND_GRAPH_GRANULARITY_CONTRACT_DRAFT_001.md. U_G de §§33/40 y C10-S §§81–82 es un catálogo de inspección, no un inventario real/exhaustivo.
+2. Separar nodos cuando exista diferencia material de intervención, TID/SID/RID, versión, fallo/sustitución, interfaz, permisos, recursos, exposición causal, ruta o evidencia. Agregar solo si no se ocultan vías diferenciales ni dependencias compartidas; en duda, mantener separados o ?.
+3. Registrar aristas dirigidas con tipo, ventana temporal, condición, brazos, versión, evidencia y cobertura. Calcular dependencias transitivas y marcar ciclos, carga dinámica, fallback, consumidores y nodos desconocidos. La independencia de A1/A2 respecto de B requiere análisis transitivo y evidencia pre/post; aislamiento nominal no basta.
+4. Evaluar rutas alternativas respecto de una F* común, entrada admisible, C0, G, H, restricciones y tolerancias. F_alt,0=0 exige descarte exhaustivo dentro del universo operativo declarado; una búsqueda sin hallazgos no basta.
+5. Registrar servicios externos y opacos como dependencias explícitas, con contrato observable y exposición a B. La opacidad mantiene incertidumbre y no elimina vías colaterales.
+6. Separar capacidad instalada, disponibilidad compartida temporal, reserva/asignación por unidad/ruta y consumo en ejecución. No retrotraer consumo post-ejecución a accesibilidad basal.
+7. Hash/build distinto no implica nueva identidad; cambios materiales en función, contrato, precondiciones, composición, permisos, recursos, fallos o criterio de resultado exigen snapshot/mapping y revisión de continuidad.
+8. Cobertura COMPLETE se refiere solo al universo operativo delimitado y versionado, no a exhaustividad ontológica absoluta. MISSING/NO INVENTARIADO no equivale a 0; PARTIAL no equivale a COMPLETE.
+9. Si dependencia crítica, servicio externo, ruta alternativa o dimensión de cobertura queda desconocida, conservar ?. No declarar Reach_H=0, F_alt,0=0 ni independencia de B. Si B puede afectar rutas/recursos/permiso/servicio compartido, mantener vía colateral y estimando de paquete salvo identificación adicional.
+10. La plantilla de inventario y el protocolo de evidencia son artefactos documentales; no autorizan inspección/instalación ni ejecución técnica. A_f*, F_alt,0 y Reach_H siguen indeterminados hasta que exista evidencia válida y adjudicada.
