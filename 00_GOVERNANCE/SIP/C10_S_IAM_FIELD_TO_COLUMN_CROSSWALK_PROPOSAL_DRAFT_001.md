@@ -1,0 +1,65 @@
+# C10-S — Crosswalk de atributos IAM a columnas existentes de U_G
+
+**ID:** C10-S-IAM-FIELD-CROSSWALK-001 · **Versión:** Draft 001 · **Fecha:** 2026-11-05  
+**Estado:** propuesta de normalización documental; no aprobada, no schema freeze, no modificación de plantilla.  
+**Base:** DEC-C10-057/058; U_G template §§2–6 y 10–12; auditoría IAM FP/EDGE.
+
+## 1. Propósito
+
+Resolver cómo representar la clasificación del servicio lógico sin duplicar campos ya normalizados en U_G ni introducir columnas por simple conveniencia. La plantilla U_G ya contiene un esquema normalizado común en §12.7 y extensiones por tipo de registro; este documento debe leerse junto a esa sección, que prevalece sobre las vistas abreviadas §§2–6.
+
+## 2. Regla de diseño
+
+- No añadir columnas si un campo existente expresa el mismo concepto sin pérdida semántica.
+- No reutilizar una columna con significado distinto (p. ej. `class` no debe confundirse automáticamente con P0/P1).
+- No repetir `logical_service_id` en todas las tablas si puede identificarse mediante el nodo raíz de servicio y las relaciones U_G.
+- P2 no es una clase de objeto excluyente: se expresa por pertenencia a la frontera causal y relaciones pertinentes, no como `class=P2`.
+- Los campos de evidencia, cobertura, adjudicación y procedencia se rigen por U_G §§11–12 y no se redefinen aquí.
+
+## 3. Crosswalk atributo IAM → esquema U_G
+
+| Atributo propuesto | Destino U_G | Dictamen | Justificación/límite |
+|---|---|---|---|
+| `logical_service_id` | NODE raíz con `semantic_role=LOGICAL_SERVICE_UNIT`; SNAPSHOT.`unit_id` referencia ese ID; EDGE conecta objetos incluidos | Reutilizar, sin columna común nueva | La unidad lógica es un objeto identificable del grafo. No duplicar su ID en todas las filas; verificar que unit_id y node_id usen el mismo espacio de IDs o definir FK explícita. |
+| `boundary_class` | Candidato a nueva columna NODE.`boundary_class` con P0_CONFIG / P1_ENVIRONMENT / DUAL_P0_P1 | Brecha real candidata; requiere aprobación antes de schema | No sobrecargar NODE.`class`, que clasifica roles amplios del grafo (frontera, intervención, recurso, externo, etc.) y no equivale a P0/P1. P2 no es valor de este enum. |
+| `object_scope` | NODE.`semantic_role` cuando describa el rol semántico; campos tipados existentes en EDGE/ROUTE/PREDICATE para sus respectivas entidades | Reutilizar con vocabulario controlado | No añadir object_scope universal. Definir vocabulario y cardinalidad por tabla; no convertir texto libre en categoría validada sin decisión. |
+| `semantic_inclusion_rationale` | NODE.`notes/unknowns`; usar `contract_intent` solo para requisito normativo | Reutilizar, con convención documental | La razón de inclusión no es lo mismo que la intención contractual. No duplicar ambos conceptos en contract_intent. |
+| `sensitivity_class` | EVIDENCE_REGISTER.`confidentiality/access_ref` y controles de acceso del repositorio de evidencia | Reutilizar referencia de custodia; no añadir al NODE por defecto | La sensibilidad pertenece al artefacto/fuente y a su régimen de acceso. No registrar secretos ni valores confidenciales en U_G. Si un nodo requiere clasificación intrínseca de seguridad, documentar el caso y proponer extensión separada. |
+| P2 / causal boundary membership | Grafo U_G: NODE/EDGE/ROUTE/PREDICATE y coverage_scope_id del universo causal | Sin columna P2 ni clase excluyente | P2 es perímetro analítico transversal. Un objeto P0/P1 puede participar en P2; nodos de asignación, oráculo, evaluación y resultados pueden ser relevantes sin ser contenido P0 ni entorno P1. |
+| Parent/child de manifiesto descompuesto | NODE.`parent_catalog_id` para linaje de catálogo; object_record_id/object_version para versión de fila | Reutilizar; no crear EDGE CONTAINS_FIELD | Parent_catalog_id no representa una dependencia causal. Solo crear EDGE si existe relación tipada y el catálogo la admite. |
+| Evidencia y procedencia | object tables §12.7 + EVIDENCE_REGISTER + CLAIM_EVIDENCE_LINK | Reutilizar exactamente | evidence_ref es navegación opcional 0..1; CLAIM_EVIDENCE_LINK conserva relación completa 0..n. |
+| Cobertura del inventario | coverage_scope_id + COVERAGE_REGISTER | Reutilizar exactamente | No confundir cobertura del objeto con boundary_class ni con observed_state. |
+
+## 4. Propuesta mínima de extensión, pendiente de decisión
+
+La única extensión que parece semánticamente justificada en esta fase es:
+
+**NODE.boundary_class ∈ {P0_CONFIG, P1_ENVIRONMENT, DUAL_P0_P1}.**
+
+Condiciones:
+1. Aplica solo a nodos que representan objetos/artefactos dentro del contenido de servicio o entorno.
+2. No se aplica a Z, oráculo, evaluador, Outcome/Value u otros nodos analíticos P2-only.
+3. P2 se determina por inclusión en la frontera causal y relaciones, no por este campo.
+4. DUAL solo cuando un artefacto físico no pueda descomponerse sin perder integridad/versionado; preferir descomposición por campo/clave cuando sea viable.
+5. La columna no se añade hasta aceptar el dominio, reglas de obligatoriedad/NA y su relación con NODE.class/semantic_role.
+6. La aceptación de la columna no equivale a inventario ni permite rellenar instancias sin evidencia.
+
+Alternativa menos recomendable: codificar P0/P1 en NODE.class. Se desaconseja porque mezcla dos taxonomías distintas y dificulta preservar los roles U_G ya existentes.
+
+## 5. Comprobaciones de consistencia
+
+- NODE lógico de servicio, snapshot.unit_id y enlaces EDGE deben referirse a la misma unidad de migración; la FK exacta sigue abierta.
+- boundary_class no reemplaza class ni semantic_role.
+- object_scope no debe duplicar route_class, predicate_type ni relation_type.
+- La sensibilidad no se resuelve copiando valores secretos o credenciales.
+- P2 no puede utilizarse para inferir presencia, accesibilidad, ausencia de alternativas o cobertura completa.
+- No añadir una relación de contención no existente al catálogo EDGE.
+- Ninguna extensión modifica los estados 1/0/?/NA ni evidence_status/coverage_status.
+
+## 6. Dictamen y siguiente gate
+
+**Dictamen documental:** la mayoría de atributos IAM se pueden mapear a campos U_G existentes o al grafo; no justifican columnas universales nuevas. Existe una única brecha candidata clara: `NODE.boundary_class`, cuya adopción debe decidirse explícitamente.
+
+**Estado:** propuesta pendiente. No se ha modificado la plantilla U_G, no se han añadido columnas, no se han creado filas ni IDs de inventario, no se ha ejecutado parser/validador y no se ha iniciado captura técnica.
+
+**Siguiente gate:** decidir si se acepta la columna NODE.boundary_class con el dominio y las restricciones de §4. Tras esa decisión, reconciliar las FK unit_id↔node_id y cerrar el esquema mínimo sin alterar el resto de U_G.
