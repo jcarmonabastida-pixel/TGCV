@@ -44,7 +44,7 @@ Una fila por paso ordenado. ROUTE_STEP sustituye a `ordered_node_edge_sequence` 
 |---|---| — |---|---|---|---|---|
 | — | — | — | — | — | — | — | — |
 
-Invariantes: exactamente uno de node_record_id/edge_record_id no nulo y coherente con step_type; FKs compuestas con snapshot_id a ROUTE y NODE/EDGE; step_index entero positivo, único y contiguo por route_record_id; continuidad de extremos de EDGE con los NODE adyacentes. La continuidad es una regla cross-row que requiere constraint/trigger verificable o validador independiente y pruebas negativas. No se han creado pasos reales.
+Invariantes: exactamente uno de node_record_id/edge_record_id no nulo y coherente con step_type; FK `(snapshot_id,snapshot_object_record_id)` → SNAPSHOT(`snapshot_id,object_record_id`); FKs a ROUTE/NODE/EDGE con el mismo par exacto `(snapshot_id,snapshot_object_record_id)` y el record ID de destino correspondiente; step_index entero positivo, único y contiguo por route_record_id; continuidad de extremos de EDGE con los NODE adyacentes. La continuidad es una regla cross-row que requiere constraint/trigger verificable o validador independiente y pruebas negativas. No se han creado pasos reales.
 
 ## 5. Registro de predicados por ruta/paso/tiempo
 
@@ -56,7 +56,7 @@ Invariantes: exactamente uno de node_record_id/edge_record_id no nulo y coherent
 
 ## 6. Registro de snapshots y fuentes
 
-| snapshot_id | unit_id | unit_object_record_id (FK compuesta SNAPSHOT(snapshot_id,unit_object_record_id,unit_id) → NODE(snapshot_id,object_record_id,node_id)) | phase (baseline/post-B/rollback/route-test) | timestamp | scope | source_artifacts | version/hash | method | coverage_limitations | custodian | integrity_check | evidence_ref (0..1 optional) | observed_state (1/0/?) | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
+| snapshot_id | unit_id | unit_object_record_id (FK raíz: SNAPSHOT(snapshot_id,object_record_id,unit_object_record_id,unit_id) → NODE(snapshot_id,snapshot_object_record_id,object_record_id,node_id); semantic_role=LOGICAL_SERVICE_UNIT) | phase (baseline/post-B/rollback/route-test) | timestamp | scope | source_artifacts | version/hash | method | coverage_limitations | custodian | integrity_check | evidence_ref (0..1 optional) | observed_state (1/0/?) | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | — | — | — | — | — | — | — | — | — | No capturado | — | — | — | NA | — | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
