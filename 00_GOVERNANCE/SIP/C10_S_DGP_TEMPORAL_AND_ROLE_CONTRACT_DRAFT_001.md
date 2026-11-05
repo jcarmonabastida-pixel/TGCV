@@ -704,3 +704,10 @@ Especificación documental, no implementación ni prueba de seguridad. No hay tr
 La plantilla U_G §§12.9–12.10 fija dominios candidatos para observed_state, evidence_status, coverage_status y review_adjudication_status, además de tipos de ID, timestamps, hashes, conteos y cegamiento. CLAIM_EVIDENCE_LINK es relación 1:N y apunta a object_record_id; los evaluadores E1/E2 permanecen en filas separadas. La truth del DGP sigue segregada y no se incorpora al esquema analítico.
 
 Especificación documental, no parser ni validación de seguridad ejecutados. El esquema no está aprobado ni implementado.
+
+
+## 47. Referencias de evidencia por evaluador y adjudicación
+
+EVALUATOR_ASSESSMENT utiliza evaluator_record_id singular y object_record_id. ADJUDICATION_REGISTER enlaza E1/E2 por sus IDs de evaluación. CLAIM_EVIDENCE_LINK permite reconstruir la evidencia revisada por evaluador/adjudicador mediante relaciones, sin listas serializadas. Los registros de objeto mantienen evaluator_record_ids solo como navegación, no como sustituto del registro independiente.
+
+La comprobación estática de alineación de las diez tablas es documental; no prueba FKs, unicidad, tipos, seguridad ni cegamiento. No se altera truth DGP ni reloj causal.
