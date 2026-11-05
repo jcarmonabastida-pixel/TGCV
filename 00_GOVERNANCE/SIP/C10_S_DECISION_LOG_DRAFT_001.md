@@ -658,3 +658,20 @@ Tras DEC-C10-060, se actualiza el encabezado SNAPSHOT para declarar la FK compue
 7. Las FKs, CHECK de exclusividad/tipo, dominios y reglas de unicidad son requisitos de diseño; su implementación y validación física quedan pendientes del gate técnico autorizado.
 
 **Estado:** DEC-C10-061 ACCEPTED DOCUMENTALLY. No hay freeze, parser, constraints, fixtures, inventario real, truth, simulación ni experimento. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## DEC-C10-062 — identidad de registro, versionado y supersession U_G (2026-11-05)
+
+**Decisión explícita del usuario:** acepta la propuesta `C10_S_UG_RECORD_ID_VERSION_AND_SUPERSESSION_CONTRACT_PROPOSAL_DRAFT_001.md`.
+
+1. `object_record_id` es identificador opaco, persistente, no vacío y UNIQUE dentro de cada tabla de objetos NODE, EDGE, ROUTE, PREDICATE y SNAPSHOT; no se exige unicidad global entre tablas porque las referencias externas son tipadas.
+2. Los IDs semánticos (`node_id`, `edge_id`, `route_id`, `predicate_id`, `snapshot_id`) permanecen separados de la identidad de registro. La clave de versión es UNIQUE por (ID semántico, `object_version`) dentro de cada tabla.
+3. `object_version` es entero positivo, inicia en 1 y aumenta secuencialmente de uno en uno para revisiones de la misma identidad semántica. No admite duplicados, saltos, decrementos ni reutilización.
+4. La versión 1 tiene `supersedes_record_id=NULL`. Cada versión posterior referencia el registro inmediatamente anterior de la misma tabla y misma identidad semántica. La referencia debe resolver, y la versión predecesora debe ser la actual menos uno.
+5. La cadena es lineal: cada registro puede tener como máximo un sucesor inmediato; no se permiten autorreferencias, referencias futuras, bifurcaciones, ciclos ni huérfanos. Se exige una única raíz v1 y un único extremo vigente por cadena.
+6. Los registros históricos son inmutables; correcciones generan nuevas filas. Supersession no implica equivalencia funcional, causal ni de valor.
+7. Cambios semánticos materiales, split/merge, derivación, alternativa o nueva captura SNAPSHOT no se representan como supersession. Requieren identidad/relación propia; continuidad incierta permanece `MATCH_UNRESOLVED / ?`.
+8. `created_at` es record-time y no equivale al tiempo de observación o validez. SNAPSHOT conserva la FK compuesta a la versión exacta del NODE raíz.
+9. Estas reglas se aplican solo a NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT. Las demás tablas mantienen claves y contratos propios.
+
+**Estado:** DEC-C10-062 ACCEPTED DOCUMENTALLY. Se aplica a la plantilla y documentos relacionados. Constraints físicos, parser, validador de cadena, protección de inmutabilidad y pruebas negativas quedan pendientes del gate técnico autorizado. No implica freeze, inventario real ni ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
