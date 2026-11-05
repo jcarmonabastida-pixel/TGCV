@@ -1,7 +1,7 @@
 # C10-S — Delimitación del objeto de configuración y contrato mínimo: propuesta
 
 **ID:** C10-S-CONFIG-SCOPE-001 · **Versión:** Draft 001 · **Fecha:** 2026-11-05  
-**Estado:** propuesta para decisión; NO seleccionada como subdominio técnico, NO congelada, NO implementada, NO validada.  
+**Estado:** objeto seleccionado para el diseño documental mediante DEC-C10-052; contrato inicial adoptado como estructura de trabajo candidata, NO congelado, NO implementado, NO validado.  
 **Decisión marco:** DEC-C10-051 selecciona Opción A (migración de configuración entre dos entornos software); esta propuesta delimita el objeto que se migraría, sin modificar esa decisión.
 
 ## 1. Decisión que falta
@@ -111,20 +111,32 @@ La candidata solo será aceptable si el futuro diseño puede demostrar documenta
 7. el contrato no depende de un producto concreto ni de un entorno real;
 8. el modelo es suficientemente pequeño para un DGP manejable, pero permite distinguir ACC, APP, Reach, ejecución y F*.
 
-## 8. Decisiones aún necesarias
+## 8. Decisiones y estado tras DEC-C10-052
 
-1. Seleccionar A, B o C como clase del objeto de configuración.
-2. Si se selecciona A, aprobar o modificar los seis elementos lógicos de §3.1.
-3. Determinar qué propiedades de §4 son obligatorias, condicionales o NA.
-4. Delimitar la clase de entradas admisibles y los contratos fuente/destino.
-5. Decidir qué reglas declarativas tienen semántica operacional y cómo se comparan.
-6. Fijar qué elementos del entorno son condiciones basales, mediadores potenciales o efectos colaterales de B.
-7. Solo después, cerrar mappings atómicos, tolerancias, envolvente de observación y oráculo.
+La decisión explícita selecciona la clase A: **paquete de configuración de un servicio software**. Se adoptan como estructura inicial de trabajo los seis elementos lógicos de §3.1: componente, parámetros tipados, referencias, reglas/restricciones, políticas asociadas y metadatos contractuales.
+
+Esta adopción es un contrato de diseño candidato, no una lista final de campos ni una aprobación de todas las propiedades de §4. Permanecen por decidir:
+1. clase de entradas admisibles y contratos fuente/destino;
+2. propiedades obligatorias, condicionales y NA;
+3. reglas declarativas con semántica operacional y su método de comparación;
+4. elementos del entorno que son condiciones basales, mediadores potenciales o efectos colaterales de B;
+5. mappings atómicos, tolerancias, envolvente de observación y oráculo.
 
 ## 9. Dictamen y límites
 
-La candidata A es la recomendación de menor complejidad para concretar FP-03 sin incorporar un dominio humano ni un producto específico. Separa el contenido migrado de recursos, permisos efectivos, estado del entorno, provisión y ejecución.
+La clase A queda **seleccionada para el diseño documental**. Los seis elementos constituyen el esquema conceptual inicial del objeto; no implican un formato, producto, plataforma, implementación ni inventario real. Se mantiene separada la configuración migrada de recursos, permisos efectivos, estado del entorno, provisión y ejecución.
 
-**No se adopta automáticamente.** La selección requiere decisión explícita del usuario. DEC-C10-051 permanece intacta: el microdominio general sigue siendo migración de configuración entre entornos software. Esta propuesta solo pretende fijar la clase del objeto y el contrato mínimo.
+DEC-C10-052 complementa DEC-C10-051 sin modificarla: esta última selecciona el microdominio general; la nueva decisión delimita el objeto dentro de ese microdominio.
 
 No hay inventario real, TID/SID/RID, implementación, fixtures, validación técnica, simulación, experimento ni evidencia empírica. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 10. Registro de decisión — DEC-C10-052
+
+**Decisión (2026-11-05):** el usuario confirma adoptar la candidata A, paquete de configuración de un servicio software, como objeto concreto de trabajo para el diseño C10-S. Confirma asimismo los seis elementos lógicos de §3.1 como estructura inicial: componente, parámetros tipados, referencias, reglas/restricciones, políticas asociadas y metadatos contractuales.
+
+**Alcance:** selección documental del objeto y de su estructura conceptual inicial. Complementa DEC-C10-051; no altera el microdominio general de migración de configuración entre dos entornos software.
+
+**No implica:** esquema de datos final, obligatoriedad universal de todas las dimensiones SM, contratos fuente/destino cerrados, mapping aprobado, TID/SID/RID, oráculo validado, implementación, inventario real, validación técnica, revisión independiente, evidencia empírica, freeze ni autorización de ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente trabajo:** especializar SM-01…SM-10 sobre el objeto seleccionado, definir propiedades obligatorias/condicionales, invariantes atómicas y mappings, manteniendo fuera del objeto los recursos y condiciones efectivas del entorno.
