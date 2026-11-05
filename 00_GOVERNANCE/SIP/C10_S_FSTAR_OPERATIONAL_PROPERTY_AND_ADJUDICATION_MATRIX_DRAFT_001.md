@@ -165,3 +165,10 @@ Un F*=1 no implica Outcome favorable ni Value positivo. Un cambio en F* no demue
 La matriz establece una arquitectura operacional de propiedades y una regla candidata de adjudicación no compensatoria, suficientemente explícita para orientar el cierre posterior de contratos y oráculos. No es aún una definición confirmatoria completa porque los predicados atómicos, mappings, tolerancias, H/G/C0 y evidencia no están fijados.
 
 **Estado:** DEFINED AT FAMILY/LOGIC LEVEL; ATOMIC OPERATIONALIZATION OPEN; ORACLE NOT IMPLEMENTED/NOT VALIDATED; NO EMPIRICAL EVIDENCE; NO EXECUTION AUTHORIZATION.
+
+
+## 13. Desarrollo específico de FP-03
+
+La operacionalización específica de preservación semántica se desarrolla en `C10_S_FP03_SEMANTIC_PRESERVATION_CONTRACT_DRAFT_001.md`. Este documento define dimensiones SM-01…SM-10, mappings 1:1/1:N/N:1/N:M, clases de variación, adjudicación trivalente y requisitos de evidencia.
+
+La ampliación no cierra FP-03: el dominio de configuración, invariantes atómicas, mappings, envolvente de observación, excepciones, tolerancias y oráculo siguen abiertos. Las dimensiones son un catálogo de inspección, no la afirmación de que todas estén presentes o sean obligatorias en cada instancia.
