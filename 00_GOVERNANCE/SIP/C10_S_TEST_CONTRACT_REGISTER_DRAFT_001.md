@@ -1023,7 +1023,7 @@ Contrato documental; no ejecutado.
 | UG-SR-A01-T04 | CLAIM_EVIDENCE_LINK apunta a evidence_id inexistente o a object_record_id incompatible | Rechazar FK/alcance |
 | UG-SR-A01-T05 | Varios vínculos válidos para un mismo objeto | Aceptar filas múltiples normalizadas; no serializar listas en `evidence_ref` |
 
-Estos son contratos propuestos para resolver la ambigüedad documental UG-SR-A01. No están implementados ni ejecutados. El comportamiento T01 queda condicionado a la decisión documental sobre si todo estado clasificado requiere al menos un vínculo CLAIM_EVIDENCE_LINK.
+Estos contratos documentan la regla UG-SR-A01 aceptada documentalmente el 2026-11-05. No están implementados ni ejecutados. T01 queda definido para los estados observados 1/0; los estados ? y NA se rigen por las condiciones explícitas de la regla.
 
 
 ## 53. Casos ampliados para propuesta UG-SR-A01 — estados y vínculos
@@ -1038,4 +1038,4 @@ Estos son contratos propuestos para resolver la ambigüedad documental UG-SR-A01
 | UG-SR-A01-T11 | observed_state=1/0 con vínculo válido y evidence_ref vacío | Aceptar; evidence_ref es opcional |
 | UG-SR-A01-T12 | evidence_ref poblado pero CLAIM_EVIDENCE_LINK inexistente | Rechazar referencia huérfana |
 
-Los resultados son contratos propuestos, no implementados ni ejecutados. Quedan pendientes de aceptación de la regla normativa UG-SR-A01.
+Los resultados son contratos documentales aceptados para UG-SR-A01; no están implementados ni ejecutados. La validación de cardinalidad, FK y comportamiento sigue pendiente.
