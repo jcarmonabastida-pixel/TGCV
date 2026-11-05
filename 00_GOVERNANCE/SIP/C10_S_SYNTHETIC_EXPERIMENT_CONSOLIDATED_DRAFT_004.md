@@ -7769,3 +7769,10 @@ El cotejo de U_G §§2–6 y §§13–16 con DEC-C10-065 detecta que dos descrip
 La FK raíz vigente queda como `SNAPSHOT(snapshot_id,object_record_id,unit_object_record_id,unit_id) → NODE(snapshot_id,snapshot_object_record_id,object_record_id,node_id)`; el object_record_id de SNAPSHOT ocupa el valor snapshot_object_record_id del NODE raíz. ROUTE_STEP exige el par exacto `snapshot_id + snapshot_object_record_id` para pertenencia y referencias a ROUTE/NODE/EDGE.
 
 Se añaden addenda DEC-C10-065 a los contratos especializados de unidad lógica, semantic_role y versionado. OAS-10 queda RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING. Checklist y autoauditoría reciben el alcance OAS-08…10; no se recalifican los SR-01…20. No hay schema freeze, revisión independiente, validación técnica ni ejecución científica. UG-SCH-10 permanece OPEN.
+
+
+## 128. OAS-11 — explicitación de referencias tipadas, evidencia y adjudicación (2026-11-05)
+
+U_G §15.4 y crosswalk IAM/FP §9.4 consolidan ahora las columnas/destinos de las seis FKs tipadas para CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER, junto con evidence_id, FKs de E1/E2, PK/UNIQUE de los registros relacionados, source_provenance en EVIDENCE_REGISTER, coverage_scope_id, evidence_ref opcional y la cardinalidad 0..n de CLAIM_EVIDENCE_LINK.
+
+La actualización consolida DEC-C10-061 y UG-SR-A01 sin cambiar sus decisiones. OAS-11 queda RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING. No hay freeze, revisión independiente, validación técnica ni ejecución científica; UG-SCH-10 permanece OPEN.
