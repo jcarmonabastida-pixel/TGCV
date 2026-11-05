@@ -433,7 +433,7 @@ Esta sección complementa y prevalece sobre los encabezados incompatibles de §�
 
 ### 13.1. NODE
 
-Añadir `snapshot_id` y `snapshot_object_record_id` obligatorios a cada registro NODE. La FK compuesta `(snapshot_id, snapshot_object_record_id) → SNAPSHOT(snapshot_id, object_record_id)` fija la revisión exacta del snapshot. Mantener `node_id` como identidad semántica y `object_record_id` como identidad inmutable de fila. Claves candidatas necesarias, conforme a §15.2: UNIQUE(`snapshot_id, snapshot_object_record_id, object_record_id`), UNIQUE(`snapshot_id, snapshot_object_record_id, object_record_id, node_id`) y UNIQUE(`snapshot_id, node_id`). La última impide duplicar una misma identidad semántica dentro del mismo snapshot.
+Añadir `snapshot_id` y `snapshot_object_record_id` obligatorios a cada registro NODE. La FK compuesta `(snapshot_id, snapshot_object_record_id) → SNAPSHOT(snapshot_id, object_record_id)` fija la revisión exacta del snapshot. Mantener `node_id` como identidad semántica y `object_record_id` como identidad inmutable de fila. Claves candidatas necesarias, conforme a §15.2: UNIQUE(`snapshot_id, snapshot_object_record_id, object_record_id`), UNIQUE(`snapshot_id, snapshot_object_record_id, node_id`) y UNIQUE(`snapshot_id, snapshot_object_record_id, object_record_id, node_id`). La clave semántica por snapshot debe incluir `snapshot_object_record_id`; `UNIQUE(snapshot_id,node_id)` sería incorrecta porque impediría conservar la misma identidad NODE en distintas revisiones del mismo snapshot semántico.
 
 ### 13.2. EDGE
 
@@ -488,19 +488,19 @@ NODE, EDGE, ROUTE, PREDICATE y ROUTE_STEP incorporan `snapshot_id` y `snapshot_o
 
 ### 15.2. Claves candidatas y referencias interobjeto aprobadas
 
-- NODE: UNIQUE(`object_record_id`); UNIQUE(`node_id, object_version`); UNIQUE(`snapshot_id, object_record_id`); UNIQUE(`snapshot_id, object_record_id, node_id`); UNIQUE(`snapshot_id, node_id`).
-- EDGE: UNIQUE(`object_record_id`); UNIQUE(`edge_id, object_version`); UNIQUE(`snapshot_id, object_record_id`); UNIQUE(`snapshot_id, object_record_id, edge_id`).
-- ROUTE: UNIQUE(`object_record_id`); UNIQUE(`route_id, object_version`); UNIQUE(`snapshot_id, object_record_id`); UNIQUE(`snapshot_id, object_record_id, route_id`).
-- PREDICATE: UNIQUE(`object_record_id`); UNIQUE(`predicate_id, object_version`); UNIQUE(`snapshot_id, object_record_id`); UNIQUE(`snapshot_id, object_record_id, predicate_id`).
+- NODE: UNIQUE(`object_record_id`); UNIQUE(`node_id, object_version`); UNIQUE(`snapshot_id, object_record_id`); UNIQUE(`snapshot_id, snapshot_object_record_id, object_record_id`); UNIQUE(`snapshot_id, snapshot_object_record_id, node_id`); UNIQUE(`snapshot_id, snapshot_object_record_id, object_record_id, node_id`).
+- EDGE: UNIQUE(`object_record_id`); UNIQUE(`edge_id, object_version`); UNIQUE(`snapshot_id, object_record_id`); UNIQUE(`snapshot_id, snapshot_object_record_id, object_record_id`); UNIQUE(`snapshot_id, snapshot_object_record_id, edge_id`); UNIQUE(`snapshot_id, snapshot_object_record_id, object_record_id, edge_id`).
+- ROUTE: UNIQUE(`object_record_id`); UNIQUE(`route_id, object_version`); UNIQUE(`snapshot_id, object_record_id`); UNIQUE(`snapshot_id, snapshot_object_record_id, object_record_id`); UNIQUE(`snapshot_id, snapshot_object_record_id, route_id`); UNIQUE(`snapshot_id, snapshot_object_record_id, object_record_id, route_id`).
+- PREDICATE: UNIQUE(`object_record_id`); UNIQUE(`predicate_id, object_version`); UNIQUE(`snapshot_id, object_record_id`); UNIQUE(`snapshot_id, snapshot_object_record_id, object_record_id`); UNIQUE(`snapshot_id, snapshot_object_record_id, predicate_id`); UNIQUE(`snapshot_id, snapshot_object_record_id, object_record_id, predicate_id`).
 - SNAPSHOT: UNIQUE(`object_record_id`); UNIQUE(`snapshot_id, object_version`); UNIQUE(`snapshot_id, object_record_id`).
 - Para NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP: FK compuesta (`snapshot_id`, `snapshot_object_record_id`) → SNAPSHOT(`snapshot_id`, `object_record_id`).
 
 Las claves candidatas necesarias para las FKs compuestas de mismo snapshot quedan explicitadas así (columnas en el mismo orden en origen y destino):
 
-- NODE: UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id); UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id, node_id).
-- EDGE: UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id); UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id, edge_id).
-- ROUTE: UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id); UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id, route_id).
-- PREDICATE: UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id); UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id, predicate_id).
+- NODE: UNIQUE(snapshot_id, snapshot_object_record_id, node_id); UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id); UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id, node_id).
+- EDGE: UNIQUE(snapshot_id, snapshot_object_record_id, edge_id); UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id); UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id, edge_id).
+- ROUTE: UNIQUE(snapshot_id, snapshot_object_record_id, route_id); UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id); UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id, route_id).
+- PREDICATE: UNIQUE(snapshot_id, snapshot_object_record_id, predicate_id); UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id); UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id, predicate_id).
 - SNAPSHOT: UNIQUE(snapshot_id, object_record_id), que ya forma la clave candidata destino del pinning exacto.
 - ROUTE_STEP: PK/UNIQUE(route_record_id, step_index); UNIQUE(snapshot_id, snapshot_object_record_id, route_record_id, step_index).
 
