@@ -7718,3 +7718,8 @@ La aplicación documental no cierra todavía UG-SCH-10: §§2–6 conservan enca
 # 120. Reconciliación inicial de encabezados U_G y ROUTE_STEP (2026-11-05)
 
 La plantilla U_G actualiza los encabezados de NODE/EDGE/ROUTE/PREDICATE con snapshot_id y referencias exactas; la FK raíz SNAPSHOT incorpora snapshot_id y se añade ROUTE_STEP como registro normalizado. El control mecánico confirma consistencia de columnas en las 19 tablas Markdown de la plantilla. Esto es únicamente un control de forma; no valida semántica, tipos, constraints, motor, parser o integridad. UG-SCH-10 permanece OPEN y el esquema global SCHEMA_NOT_CLOSED.
+
+
+# 121. ROUTE_STEP y matriz de claves reconciliados (2026-11-05)
+
+ROUTE_STEP queda incorporado en la matriz de claves U_G §12.10 como relación normalizada adicional, sin versionado de objeto independiente. Su secuencia se fija a route_record_id y snapshot_id; los destinos NODE/EDGE son mutuamente excluyentes y la continuidad requiere validación cross-row. La revisión integral de encabezados, tablas normalizadas y crosswalks IAM/FP sigue abierta; UG-SCH-10 no se cierra.
