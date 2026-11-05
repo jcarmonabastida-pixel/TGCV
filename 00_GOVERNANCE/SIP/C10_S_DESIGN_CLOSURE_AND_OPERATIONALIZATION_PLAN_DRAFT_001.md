@@ -847,3 +847,12 @@ Se crea el protocolo documental C10_S_UG_EVIDENCE_PROVENANCE_AND_ADJUDICATION_PR
 **Resultado de diseño:** protocolo elaborado e integrado; todavía no validado contra un microdominio ni aplicado a fuentes reales. Define cuándo una evidencia puede respaldar 1, 0 o ?, cuándo cobertura es NONE/PARTIAL/COMPLETE y qué discrepancias exigen tercer adjudicador. No transforma la plantilla en inventario ni demuestra exhaustividad.
 
 **Pendientes:** auditoría campo-a-campo entre protocolo y plantilla; definición de denominadores por dimensión para el microdominio seleccionado; selección y aprobación de fuentes concretas; seguridad/acceso; tolerancias y fiabilidad del oráculo; número y selección de evaluadores; cegamiento; criterios operativos de cobertura; cierre de N16/N23 y E22. Mantener MD-C1…6, GC/UGI/UGC, AUD-005/007/010/011 y OPEN-C10 abiertos. Sin ejecución ni autorización.
+
+
+# XXIV. Ejecución del plan — auditoría campo-a-campo del esquema U_G (2026-11-05)
+
+Se compara el protocolo de evidencia con las columnas y registros de la plantilla. La auditoría detecta nueve brechas: falta de registro de evidencia, falta de vínculo afirmación-evidencia, cobertura sin denominador, ausencia de registros separados E1/E2, ausencia de expediente de adjudicación, truth DGP visible como columna analítica, mezcla de clases de ruta y subtipos, falta de campos comunes obligatorios y falta de integridad referencial/versionado.
+
+Se corrige documentalmente en la plantilla §§12–13 y protocolo §13 mediante registros EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER; truth DGP segregada; parent_route_class separado de route_subtype; campos comunes y reglas de referencias/versionado.
+
+**Resultado:** FCM-01…09 tratados en el diseño. El esquema no se declara cerrado: falta revisión independiente, validación de tipos/constraints y prueba de no exposición de truth. No se ha generado instancia real ni inventario. Cobertura NONE, A_f*/F_alt,0/Reach_H indeterminados. Sin inspección real ni ejecución.
