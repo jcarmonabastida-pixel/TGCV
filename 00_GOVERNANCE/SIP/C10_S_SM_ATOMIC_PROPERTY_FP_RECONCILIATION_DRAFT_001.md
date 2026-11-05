@@ -121,3 +121,8 @@ Un defecto formal puede impedir evaluar semántica y conducir a FP-03=? (no auto
 La reconciliación identifica y corrige solapamientos de familia. Separa semántica de estructura, integridad, compatibilidad, seguridad, aplicación y procedencia. No declara predicados confirmatorios ni obligatoriedad final, y no convierte el catálogo candidato en un inventario de propiedades presentes.
 
 **Estado:** RECONCILIACIÓN DOCUMENTAL PROPUESTA; DEC-C10-052/053/054 vigentes; mapping inicial requiere las precisiones §4; obligatoriedad/NA ABIERTAS; F1/F2/A1/A2 y oráculo ABIERTOS; no validación técnica, revisión independiente, evidencia empírica ni ejecución.
+
+
+## 9. Estado decisional — DEC-C10-055 (2026-11-05)
+
+**ACEPTADA POR EL USUARIO** la arquitectura de reconciliación SM-01…SM-10 ↔ CMP/PAR/REF/RUL/POL/MET ↔ FP-01…FP-08. La aceptación cubre la separación de responsabilidades, predicados primarios/secundarios y regla anti-doble-conteo. No convierte las propiedades candidatas en requisitos confirmatorios ni cierra obligatoriedad/NA por instancia. La operacionalización de esa dimensión se desarrolla en `C10_S_PROPERTY_APPLICABILITY_AND_OBLIGATORINESS_MATRIX_DRAFT_001.md`.
