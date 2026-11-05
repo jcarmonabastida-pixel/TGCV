@@ -145,3 +145,8 @@ Se propone una separación en tres perímetros: paquete migrable P0, envolvente 
 La arquitectura P0/P1/P2 y la clasificación por función semántica han sido aceptadas mediante DEC-C10-057. P0 es el paquete declarativo migrable; P1 es la envolvente técnica de los entornos; P2 es la frontera causal transversal que conserva dependencias, alternativas, intervención y vías hacia Outcome/Value. La aceptación no resuelve automáticamente la clasificación concreta de cada elemento ni congela el perfil como schema.
 
 El documento complementario `C10_S_LOGICAL_SERVICE_UNIT_AND_BOUNDARY_CLASSIFICATION_PROPOSAL_DRAFT_001.md` desarrolla la unidad candidata de servicio lógico y las reglas campo a campo para manifiestos, variables, secretos, estado persistente, servicios externos, mapping, sidecar y oráculo. Permanece como propuesta pendiente de revisión/decisión.
+
+
+## 10. Reconciliación con DEC-C10-058
+
+La unidad de migración queda delimitada como una instancia lógica de servicio software, no necesariamente coincidente con proceso, microservicio, binario o unidad de despliegue. P0/P1 se clasifican por semántica y P2 conserva la frontera causal transversal. Véase DEC-C10-058 en el Decision Log y el documento de unidad lógica. La aceptación no crea inventario real ni congela schema técnico.
