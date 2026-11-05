@@ -1376,3 +1376,12 @@ El control estático vuelve a analizar las 19 tablas Markdown: encabezados, sepa
 **Resultado limitado:** PASS_FORMAT_ONLY. No demuestra integridad referencial física, validez de las claves candidatas, nulabilidad/CHECKs, circularidad diferible, continuidad cross-row, inmutabilidad, compatibilidad de motor ni validez científica. OAS-01/02/04/08 quedan resueltos documentalmente; OAS-03 requiere revisión independiente y validación de motor; OAS-05 está especificado documentalmente y pendiente de revisión; OAS-06 parcial; OAS-07 permanece como nota de gobernanza. UG-SCH-10 OPEN; esquema no congelado.
 
 Siguiente operación: cotejar las claves y referencias del contrato normalizado contra los contratos de identidad/versionado, SNAPSHOT→NODE raíz, referencias tipadas, procedencia y adjudicación; después actualizar checklist/autoauditoría y someter el esquema completo a revisión independiente R1/R2. No seleccionar motor, crear DDL, ejecutar parser/fixtures/validadores ni simulaciones sin gate y autorización separados. `scientific_execution=false`; `execution_authorized=false`.
+
+
+# LXXIV. Claves de unicidad semántica por revisión exacta (2026-11-05)
+
+La reconciliación detecta que `UNIQUE(snapshot_id,node_id)` sería incompatible con el versionado de SNAPSHOT: snapshot_id identifica el snapshot semántico, no una revisión concreta, por lo que la misma identidad NODE puede reaparecer en distintas revisiones. Además, las claves que incorporan object_record_id no impiden por sí solas duplicar un ID semántico dentro de una revisión exacta.
+
+Se corrige §13.1 y §15.2: la unicidad semántica queda condicionada a `(snapshot_id,snapshot_object_record_id,semantic_id)` para NODE, EDGE, ROUTE y PREDICATE. Se conservan por separado las claves compuestas con object_record_id necesarias para las FKs. No se modifican DEC-C10-062/065.
+
+OAS-09 queda RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING. No se ha seleccionado motor ni implementado UNIQUE/FK; UG-SCH-10 sigue OPEN. Esta corrección no altera el número de columnas ni el estado de las 19 tablas Markdown. No hay schema freeze, revisión independiente ni ejecución técnica/científica.
