@@ -38,3 +38,10 @@ Se releyeron 00_GOVERNANCE/README.md y el bootstrap canónico desde main, así c
 Se han actualizado físicamente los tres documentos de destino con sus secciones correspondientes. La plantilla de inventario U_G se registra como artefacto separado. Se verificará cada escritura mediante recuperación posterior y hash/blob SHA; si alguna actualización no se recupera exactamente, no se declarará integrada.
 
 La integración es documental y DRAFT. No cambia la verdad técnica ni los estados de evidencia: no hay inventario real, cobertura NONE donde no hay inspección, y A_f*, F_alt,0 y Reach_H permanecen ?. No se ejecuta validación local porque el entorno local no está cargado en esta sesión; tampoco se ejecuta experimento ni simulación.
+
+
+## 7. Verificación post-write (2026-11-05)
+
+La recuperación posterior confirmó la presencia de §82 en el maestro (blob f8ffe74bbaea56545ae4b0634dce98febcb00bfd), §41 en el DGP (blob 350dadb00bacbf7dda1d30f923cbb6989d1cf9a2) y bloque XX en el plan (blob 120ed13329825865eac57dca40e35d95bbac3398). La plantilla U_G se creó y recuperó (blob 5ef40361a2a17ad846d67b08ee54ac17ac6f171b). Las referencias anteriores de §3 y §5 que afirmaban que esas integraciones seguían bloqueadas quedan históricamente preservadas, pero supersedidas por este addendum y su verificación.
+
+La plantilla se ha propagado además a maestro §83, DGP §42, plan XXI, matriz de cierre §21, Decision Log §37 (DEC-C10-043 propuesta) y registro de pruebas §44. La integración sigue en Draft y no acredita inventario, evidencia técnica ni ejecución.
