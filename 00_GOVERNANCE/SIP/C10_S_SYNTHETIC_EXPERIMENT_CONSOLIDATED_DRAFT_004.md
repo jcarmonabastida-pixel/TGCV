@@ -7605,3 +7605,10 @@ El usuario acepta la reconciliación SM-01…SM-10, propiedades CMP/PAR/REF/RUL/
 Se crea `C10_S_PROPERTY_APPLICABILITY_AND_OBLIGATORINESS_MATRIX_DRAFT_001.md` para operacionalizar la declaración ex ante mediante IAM sellado antes de Z/B. La matriz propone O/C/NA/? por propiedad, disparadores, cardinalidad explícita, controles contra scope gaming y separación entre F* funcional, gates técnicos FP-04/05/06 y validez probatoria FP-08.
 
 **Estado:** DEC-C10-055 aceptada; matriz de aplicabilidad PROPUESTA, no aprobada/congelada/validada. Persisten decisiones sobre cardinalidad cero de REF/RUL, fronteras F*/gates y detalle del IAM. Sin truth, fixtures, ejecución ni evidencia empírica.
+
+
+# 107. DEC-C10-056 — cardinalidad de clases y contrato abstracto (2026-11-05)
+
+El usuario aprueba CMP≥1, PAR≥1, RUL≥1; REF≥0 solo con IAM ex ante y cobertura exhaustiva; POL≥0 ausente por diseño en el núcleo confirmatorio; MET obligatorio para identidad/versionado/procedencia. CMP/PAR/RUL vacíos son SCOPE_ERROR; REF vacío no equivale a falta de evidencia. Se crea `C10_S_ABSTRACT_CONFIGURATION_INSTANCE_CONTRACT_DRAFT_001.md` con estructura e invariantes abstractos, sin valores concretos ni schema ejecutable.
+
+**Estado:** DEC-C10-056 aceptada. Contrato abstracto Draft; unidad de servicio, frontera del paquete, clases, claves, mapping, oráculo y validación pendientes. Sin ejecución científica.
