@@ -21,19 +21,19 @@ Reglas obligatorias:
 
 | node_id | semantic_role | class | boundary_class (P0_CONFIG/P1_ENVIRONMENT/DUAL_P0_P1/NA) | TID | SID | RID | version/build/hash | owner/boundary | consumers/routes/arms | direct_dependencies | external/shared_resource | permissions/state | evidence_ref (0..1 optional) | observed_state (1/0/?) | coverage_status (NONE/PARTIAL/COMPLETE) | timestamp | notes/unknowns | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id  | snapshot_id | snapshot_object_record_id |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|--- | --- | — |
-| — | NO INVENTARIADO | — | NA | — | — | — | — | — | — | — | — | — | — | ? | NONE | — | Marcador NA de plantilla; no es observación ni clasificación real | — | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | —  | — |
+| — | NO INVENTARIADO | — | NA | — | — | — | — | — | — | — | — | — | — | ? | NONE | — | Marcador NA de plantilla; no es observación ni clasificación real | — | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | —  | — | — |
 
 ## 3. Registro de aristas/dependencias
 
 | edge_id | atomic_edge_id | parent_edge_id | source_node_id | target_node_id | relation_type | direction | direct_or_transitive | version_constraint | time_window | condition | arms/routes_affected | resource_or_permission | necessary_for_path | evidence_ref (0..1 optional) | observed_state (1/0/?) | coverage_status | timestamp | unknowns | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id  | snapshot_id | snapshot_object_record_id | source_node_record_id | target_node_record_id |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|--- | --- | — | --- | --- |
-| — | — | — | — | — | NO INVENTARIADO | — | — | — | — | — | — | — | ? | — | ? | NONE | — | Fila de esquema; no representa dependencia real | — | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | —  | — | — | — |
+| — | — | — | — | — | NO INVENTARIADO | — | — | — | — | — | — | — | ? | — | ? | NONE | — | Fila de esquema; no representa dependencia real | — | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | —  | — | — | — | — |
 
 ## 4. Registro de rutas y substituibilidad
 
 | route_id | parent_route_class (Rτ2/RA12/Rshared/Rexternal/Runknown) | route_subtype (native/manual/fallback/recovery/other) | entry_state | target/F* | G | H/window | C0/constraints | version_set | shared_dependencies | affected_by_B | functional_substitutability (1/0/?) | evidence_ref (0..1 optional) | coverage_scope_id | evaluator_record_ids | unresolved_alternatives | notes | observed_state (1/0/?) | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id  | snapshot_id | snapshot_object_record_id |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|--- | --- | — |
-| — | Runknown | unknown | — | — | — | — | — | — | — | ? | ? | — | — | — | Runknown | Fila de esquema; no representa ruta real | ? | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | —  | — |
+| — | Runknown | unknown | — | — | — | — | — | — | — | ? | ? | — | — | — | Runknown | Fila de esquema; no representa ruta real | ? | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | —  | — | — |
 
 
 ### 4.1. Registro normalizado de pasos de ruta (ROUTE_STEP)
@@ -42,7 +42,7 @@ Una fila por paso ordenado. ROUTE_STEP sustituye a `ordered_node_edge_sequence` 
 
 | route_step_id | snapshot_id | snapshot_object_record_id | route_record_id | step_index | step_type (NODE/EDGE) | node_record_id (nullable) | edge_record_id (nullable) |
 |---|---| — |---|---|---|---|---|
-| — | — | — | — | — | — | — |
+| — | — | — | — | — | — | — | — |
 
 Invariantes: exactamente uno de node_record_id/edge_record_id no nulo y coherente con step_type; FKs compuestas con snapshot_id a ROUTE y NODE/EDGE; step_index entero positivo, único y contiguo por route_record_id; continuidad de extremos de EDGE con los NODE adyacentes. La continuidad es una regla cross-row que requiere constraint/trigger verificable o validador independiente y pruebas negativas. No se han creado pasos reales.
 
@@ -50,7 +50,7 @@ Invariantes: exactamente uno de node_record_id/edge_record_id no nulo y coherent
 
 | predicate_id | route_id | step | time/snapshot | predicate_type (ID/REL/COND/AUTH/RES/DEP/BLOCK/APP/ALT/ORACLE/EXT) | observed_state (1/0/?) | evidence_ref (0..1 optional) | coverage_scope_id | source/version/hash | adjudication_rule/tolerance | evaluator_record_ids | reason_for_unknown | impact_on_A_f/App/Reach/F_alt/IV | timestamp | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id  | snapshot_id | snapshot_object_record_id | route_record_id |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|--- | --- | — | --- |
-| — | — | — | — | — | ? | — | — | — | — | — | No existe evidencia aportada | Mantener indeterminación | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | —  | — | — |
+| — | — | — | — | — | ? | — | — | — | — | — | No existe evidencia aportada | Mantener indeterminación | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | —  | — | — | — |
 
 **La truth del DGP no forma parte de esta tabla ni de ningún artefacto visible al analizador.** Se almacena únicamente en un registro separado, segregado y con control de acceso del generador/evaluador autorizado. Esta plantilla contiene solo observed_state y evidence_ref.
 
