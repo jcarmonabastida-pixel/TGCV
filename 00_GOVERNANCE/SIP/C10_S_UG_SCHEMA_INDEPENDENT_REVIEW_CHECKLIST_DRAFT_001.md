@@ -147,3 +147,16 @@ La revisión R1/R2 deberá cotejar U_G §15.4 y crosswalk §9.4 contra DEC-C10-0
 - segregación de DGP_TRUTH_SECURE y límites de acceso/custodia.
 
 No se declara PASS de SR-02/03/04/05/06/07/12/13/17/19. La ampliación es documental; validación técnica e independencia pendientes.
+
+
+## 12. Aclaración de uso del paquete — protocolo de investigador único (2026-11-05)
+
+Este checklist conserva los SR-01…20 como especificación de controles y como posible paquete de revisión externa futura. **No es una orden para designar ahora R1/R2 ni un gate de continuidad del trabajo documental.**
+
+En la fase actual, con investigador único, la modalidad aplicable es `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`. La autoauditoría asistida puede emitir únicamente `PASS_STATIC`, `CONDITIONAL`, `FAIL` o `NOT_ASSESSED`, con evidencia documental, alcance, versión, límites y acción. No puede declarar independencia, validar controles que requieren pruebas técnicas/empíricas ni autorizar schema freeze.
+
+R1/R2 son perfiles candidatos de revisión externa futura. Se difiere su designación hasta que aporte valor real: antes de congelar artefactos técnicos que la requieran y/o antes de publicar afirmaciones de reproducibilidad o validación. La web germen TGCV puede presentar materiales *as is* antes del cierre científico completo, siempre que comunique con precisión su estado, procedencia, evidencia, incertidumbre y límites. La apertura no equivale a revisión por pares ni a certificación de C10-S.
+
+La preparación de apertura web es un gate separado: accesibilidad intelectual, coherencia, trazabilidad, falsabilidad, criticabilidad, honestidad probatoria, reproducibilidad posible, seguridad, privacidad, licencias y atribución. El playground no es prerrequisito de apertura y se desarrollará después, derivado de los contratos científicos.
+
+Este addendum no cambia los criterios SR ni recalifica sus dictámenes históricos; actualiza el momento y propósito de la revisión externa.
