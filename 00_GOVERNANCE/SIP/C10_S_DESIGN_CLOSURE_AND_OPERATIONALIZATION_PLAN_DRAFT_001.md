@@ -1191,7 +1191,7 @@ Tras la auditoría FP/EDGE se ha contrastado cada atributo propuesto del overlay
 
 Se identifica una única extensión candidata clara: NODE.boundary_class (P0_CONFIG/P1_ENVIRONMENT/DUAL_P0_P1), sin sobrecargar NODE.class ni semantic_role. No se modifica la plantilla. Documento: `C10_S_IAM_FIELD_TO_COLUMN_CROSSWALK_PROPOSAL_DRAFT_001.md`.
 
-**Decisión pendiente del usuario:** aceptar/rechazar la extensión NODE.boundary_class y su dominio/restricciones. También queda pendiente cerrar la FK entre SNAPSHOT.unit_id y NODE.node_id. No se ha añadido schema ni se han instanciado filas.
+**Estado histórico supersedido por DEC-C10-059:** el usuario aceptó NODE.boundary_class y se definió la FK compuesta SNAPSHOT.(unit_object_record_id, unit_id) → NODE.(object_record_id, node_id). Los cambios están incorporados documentalmente; validación técnica y freeze siguen pendientes.
 
 
 # LV. DEC-C10-059 — boundary_class y FK versionada de snapshots (2026-11-05)
