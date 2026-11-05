@@ -35,3 +35,8 @@ La plantilla U_G incorpora el contrato normativo en §13. Se deben reconciliar e
 - Plan integral C10-S §LXVI
 - Auditoría U_G §14.8
 - Maestro C10-S §118
+
+
+## Nota de auditoría posterior — OAS-02 (2026-11-05)
+
+DEC-C10-064 permanece como aceptación de la resolución base de Opción A. La auditoría posterior detecta que el contrato de versionado de DEC-C10-062 también aplica a SNAPSHOT, mientras los registros hijos solo fijan snapshot_id semántico. Por ello, la aceptación no debe interpretarse como demostración de pinning a una revisión exacta de SNAPSHOT. OAS-02 requiere decisión adicional; la recomendación es incorporar snapshot_object_record_id en NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP y FK compuesta al registro exacto de SNAPSHOT. Hasta esa decisión, el diseño físico y UG-SCH-10 permanecen abiertos. No se invalida ni reescribe DEC-C10-059…064.
