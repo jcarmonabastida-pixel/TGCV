@@ -464,3 +464,14 @@ DEC-C10-050 es reconciliación documental, no aprobación/freeze del esquema ni 
 **No implica:** aprobación de ejecución; selección de D1/D2; cierre de R0–R3; identificación causal; inventario real de componentes; parámetros de versiones/recursos/ventanas; validación técnica; revisión independiente; freeze o cambio de main.
 
 **Siguiente trabajo:** cerrar el contrato operacional F*, fichas F1/F2/A1/A2, mappings, condiciones y oráculo; después completar DGP y análisis de identificación.
+
+
+## 46. Selección del objeto de configuración — DEC-C10-052 (2026-11-05)
+
+**Decisión:** se selecciona la clase A, paquete de configuración de un servicio software, como objeto concreto de trabajo dentro del microdominio Opción A ya adoptado por DEC-C10-051. Se adoptan como estructura conceptual inicial los seis elementos: componente; parámetros tipados; referencias; reglas/restricciones; políticas asociadas; metadatos contractuales.
+
+**Alcance:** selección para diseño documental y especialización de FP-03. Los seis elementos son estructura inicial, no esquema final ni afirmación de obligatoriedad universal. Se mantiene separada la configuración declarada de recursos, permisos efectivos, dependencias instaladas y estado del entorno, provisión B, transformación/ejecución y Outcome/Value.
+
+**No implica:** contratos fuente/destino cerrados; propiedades atómicas obligatorias; mappings o tolerancias aprobados; semántica concreta de F1/F2/A1/A2; TID/SID/RID; oráculo validado; implementación; inventario real; validación técnica; revisión independiente; evidencia empírica; freeze o autorización de ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente trabajo:** especializar SM-01…SM-10, determinar obligatoriedad/aplicabilidad, definir invariantes y mappings atómicos y reconciliar las fichas de transformación con el historial.
