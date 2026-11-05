@@ -767,3 +767,18 @@ Protocolo no aplicado. No hay inventario ni cobertura técnica; no se cierran UG
 | FCM-09 | Integridad referencial/versionado | Reglas §12.8 | Validar parser/constraints y supersession |
 
 **Estado global:** corregido documentalmente, pendiente revisión independiente y validación ejecutable. No son tests ejecutados ni evidencia de cobertura.
+
+
+## 25. Seguimiento — consistencia interna del esquema U_G
+
+| ID | Hallazgo | Tratamiento documental | Cierre restante |
+|---|---|---|---|
+| FCM-10 | Campos comunes no materializados en tablas | Encabezados añadidos §§2–6 | Parser y revisión independiente |
+| FCM-11 | SNAPSHOT observado ? sin aplicabilidad | Ejemplo NA | Verificar semántica por instancia |
+| FCM-12 | Evaluador singular | evaluator_record_ids y filas E1/E2 separadas | Validar flujo |
+| FCM-13 | Evidence refs multi valor | CLAIM_EVIDENCE_LINK 1:N | Validar integridad FK |
+| FCM-14 | Cobertura §7 ambigua | Vista resumen; COVERAGE_REGISTER normativo | Revisar instancias |
+| FCM-15 | Tipos/domínios ausentes | §§12.9–12.10 | Implementar/validar constraints cuando se autorice |
+| FCM-16 | Destino claim_target_id ambiguo | object_record_id | Validar referencias |
+
+FCM-01…16 están tratados documentalmente, no probados técnicamente. Esquema Draft; revisión independiente y validación ejecutable pendientes.
