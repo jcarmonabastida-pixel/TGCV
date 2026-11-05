@@ -137,3 +137,10 @@ La aprobación de Opción A exige que el crosswalk de aristas distinga el ID pad
 EDGE conserva IDs semánticos edge_id/source_node_id/target_node_id y añade source_node_record_id/target_node_record_id para pinning exacto; PREDICATE conserva route_id y añade route_record_id. ROUTE_STEP sustituye ordered_node_edge_sequence como secuencia canónica. Todas las referencias interobjeto deben incorporar snapshot_id y resolver a claves candidatas explícitas.
 
 **OAS-02 sigue bloqueante:** snapshot_id no selecciona una versión exacta de SNAPSHOT cuando SNAPSHOT tiene object_version por DEC-C10-062. El crosswalk IAM/FP no puede declarar completada la integridad de mismo snapshot hasta que exista pinning al object_record_id de SNAPSHOT o una decisión que elimine esa multiplicidad de versiones.
+
+
+### 10. DEC-C10-065 — exact snapshot revision pinning
+
+EDGE/PREDICATE/ROUTE_STEP y los restantes registros dependientes incorporan `snapshot_object_record_id` obligatorio además de `snapshot_id`. Toda referencia interobjeto debe fijar la misma revisión exacta de SNAPSHOT mediante FK compuesta a SNAPSHOT(`snapshot_id`, `object_record_id`). Los record IDs exactos de NODE/EDGE/ROUTE se mantienen en sus propias FKs; los IDs semánticos no sustituyen a las claves de registro.
+
+OAS-02 queda resuelto documentalmente; compatibilidad física y orden exacto de claves/FKs siguen pendientes. No se declara cierre del crosswalk.
