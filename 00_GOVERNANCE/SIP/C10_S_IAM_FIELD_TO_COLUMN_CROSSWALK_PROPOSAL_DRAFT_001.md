@@ -95,3 +95,10 @@ Se acepta el vocabulario controlado de `semantic_role` y el contrato del nodo ra
 - evidence_ref sigue siendo referencia de navegación 0..1; la relación probatoria canónica es CLAIM_EVIDENCE_LINK 0..n.
 
 La aceptación DEC-C10-061 es documental. No se han ejecutado parser, FK/CHECK, constraints ni pruebas negativas.
+
+
+## 9. Addendum DEC-C10-064 — snapshot pinning y referencias exactas
+
+Opción A queda aprobada por DEC-C10-064. La plantilla U_G §13 es normativa para la correspondencia física: NODE/EDGE/ROUTE/PREDICATE incluyen snapshot_id; EDGE incorpora source_node_record_id/target_node_record_id; PREDICATE incorpora route_record_id; SNAPSHOT fija la versión exacta del NODE raíz mediante FK compuesta que incluye snapshot_id; ROUTE_STEP normaliza la secuencia.
+
+Los IDs semánticos se conservan como crosswalk, pero nunca sustituyen los record IDs en las FKs. Todas las referencias interobjeto deben comprobar mismo snapshot. El crosswalk IAM/FP deberá mapear estos nuevos campos y claves compuestas en la siguiente reconciliación. No se inventan relaciones ni instancias.
