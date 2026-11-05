@@ -1,3 +1,7 @@
+> **INVALIDADA / SUPERSEDIDA (2026-11-05).** Esta auditoría partió de una lectura incorrecta del maestro y afirmó erróneamente que faltaban §§131–163 y que §§165–183 no estaban integradas. La correspondencia correcta está documentada en el maestro: conversación 130→§16; 131–137→ §§17–24; 138–163→ §§25–50; 164→§51; 165–183→síntesis §52. No usar este documento para dirigir trabajo. La auditoría corregida es `C10_S_MASTER_RECONCILIATION_AUDIT_DRAFT_002.md`; el plan vigente es Draft 003.
+
+---
+
 # C10-S — Auditoría profunda de sincronización del maestro y reconciliación del diseño
 
 **ID:** C10-S-MRA-001 · **Versión:** Draft 001 · **Fecha:** 2026-11-05  
