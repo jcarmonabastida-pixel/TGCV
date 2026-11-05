@@ -793,3 +793,18 @@ FCM-01…16 están tratados documentalmente, no probados técnicamente. Esquema 
 | FCM-19 | object_id ambiguo | object_record_id en evaluación/adjudicación | Validar integridad referencial |
 
 Comprobación estática de alineación de columnas: PASS documental en diez tablas. No es validación ejecutable; FCM-01…19 siguen pendientes de revisión independiente y validación técnica.
+
+
+## 27. Revisión independiente del esquema U_G — SR-01…20
+
+| Grupo | Controles | Estado | Criterio de cierre |
+|---|---|---|---|
+| Identidad/relaciones | SR-01…04, SR-10, SR-18 | No revisados | Revisión R1 y validación de claves/FK/cardinalidad |
+| Cobertura/evidencia | SR-05…07, SR-15 | No revisados | Revisión R2; evidencia negativa y propagación correctas |
+| Grafo U_G | SR-08, SR-09, SR-16 | No revisados | Crosswalk y dependencias coherentes |
+| Medición/causalidad | SR-12, SR-14 | No revisados | Cegamiento y no circularidad revisados |
+| Truth/security | SR-13, SR-19 | No revisados | Revisión de segregación, permisos y custodia |
+| Tipos/operación | SR-11, SR-17, SR-20 | No revisados | Tipos, timestamps, NA y aptitud operativa |
+| Dictamen | Procedimiento §6 del checklist | No emitido | ACEPTABLE / CONDITIONAL / REVISE / NOT ASSESSABLE con evidencia |
+
+Paquete preparado, revisión no iniciada, sin revisores designados. FCM-01…19 y XSYNC-138-01 siguen abiertos; no hay freeze ni autorización de ejecución.
