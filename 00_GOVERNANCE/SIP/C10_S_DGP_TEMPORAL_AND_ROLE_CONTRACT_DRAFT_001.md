@@ -640,3 +640,10 @@ A1/A2 requieren mecanismo y dependencias propios; el oráculo F* común puede se
 El contrato C10_S_ADAPTER_PROVISION_MANIFEST_AND_DEPENDENCY_GRAPH_DRAFT_001.md establece B como provisión/configuración aislada del adaptador, sin ejecutar F1/F2/A1/A2 ni modificar F*, oráculo, datos funcionales, C_auth basal o ruta alternativa. Se requiere separar C_dep (estado técnico) de A_f* (accesibilidad completa), y no inferir una primera etapa focal desde la primera etapa de C_dep.
 
 La arquitectura candidata ARCH-B1 es sidecar/runtime aislado, aditivo, versionado, con permisos mínimos y cuotas; es recomendación para evaluación, no decisión ni implementación. B-M01…15 permanecen no inventariados hasta identificar componentes reales. Snapshots preB/postB/rollback y pruebas de comportamiento A1/A2 pre/post son requisitos de evidencia. Los nodos/aristas desconocidos propagan cobertura incompleta; la ausencia de un nodo no se deduce de que no aparezca en un inventario parcial.
+
+
+## 40. Cobertura del grafo y estados de evidencia
+
+El contrato C10_S_GRAPH_COVERAGE_AND_TRIVALENT_EVIDENCE_MATRIX_DRAFT_001.md define U_G como universo candidato de nodos, aristas, predicados y rutas. Sus 23 nodos y 23 aristas son roles de inspección, no evidencia de existencia ni inventario exhaustivo. Se separan verdad estructural, cobertura, estado de evidencia e intención contractual. Los nodos/aristas desconocidos permanecen ?; cobertura parcial no permite declarar ausencia.
+
+Predicados requeridos: ID, REL, COND, AUTH, RES, DEP, BLOCK, APP, ALT-A1, ALT-A2, ALT-DEP, ALT-F*, ORACLE y EXT. Las rutas candidatas Rτ2, RA12, Rshared, Rexternal y Runknown permanecen ?. Reach=0 y F_alt,0=0 requieren cobertura exhaustiva del universo relevante. El estado actual no permite clasificar R0/R1; R2 es posibilidad causal no observada.
