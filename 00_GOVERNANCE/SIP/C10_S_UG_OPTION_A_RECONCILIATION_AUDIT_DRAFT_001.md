@@ -183,6 +183,7 @@ La plantilla contiene 19 tablas Markdown. Los encabezados, separadores y filas p
 - OAS-07: OPEN GOVERNANCE NOTE — PR #116 conserva base `research/c10-d1-protocol-draft`, no `main`.
 - OAS-08: RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING — FKs ROUTE_STEP corregidas; el motor debe verificar su implementación.
 - OAS-09: RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING — unicidad semántica condicionada a la revisión exacta.
+- OAS-10: RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING — vistas físicas §4.1 y §6 alineadas con DEC-C10-065.
 
 **Dictamen global:** UG-SCH-10 OPEN; SCHEMA_NOT_CLOSED; revisión independiente R1/R2 NOT STARTED; validación técnica NOT RUN; no DDL/parser/fixtures; `scientific_execution=false`; `execution_authorized=false`.
 
@@ -195,3 +196,15 @@ La propuesta previa incluía `UNIQUE(snapshot_id,node_id)`. Como `snapshot_id` e
 **Corrección documental aplicada:** se elimina `UNIQUE(snapshot_id,node_id)` y se sustituye por `UNIQUE(snapshot_id,snapshot_object_record_id,node_id)`. Se añaden claves semánticas equivalentes para EDGE, ROUTE y PREDICATE dentro de la revisión exacta. Se mantienen las claves compuestas adicionales con object_record_id que necesitan las FKs tipadas. La corrección se aplica en §§13.1 y 15.2; no modifica DEC-C10-062 ni DEC-C10-065.
 
 **Disposición:** OAS-09 RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING. La validez física de las claves UNIQUE y la compatibilidad del motor siguen sin probarse.
+
+
+### OAS-10 — Vistas físicas §4.1 y §6 conservaban FKs sin pinning exacto
+**Severidad:** HIGH / DOCUMENTARY CONSISTENCY BLOCKER.
+
+El control de la plantilla mostraba que §15.2 y §15.3 estaban actualizadas, pero dos descripciones de las vistas físicas seguían expresando referencias anteriores:
+- ROUTE_STEP §4.1 indicaba genéricamente FKs compuestas solo «con snapshot_id», sin exigir `snapshot_object_record_id`.
+- SNAPSHOT §6 describía la FK raíz como `SNAPSHOT(snapshot_id,unit_object_record_id,unit_id) → NODE(snapshot_id,object_record_id,node_id)`, omitiendo que el object_record_id de SNAPSHOT debe fijar `NODE.snapshot_object_record_id`.
+
+**Corrección documental aplicada:** §4.1 exige ahora el par exacto `(snapshot_id,snapshot_object_record_id)` en pertenencia y referencias a ROUTE/NODE/EDGE. §6 expresa la FK raíz completa `SNAPSHOT(snapshot_id,object_record_id,unit_object_record_id,unit_id) → NODE(snapshot_id,snapshot_object_record_id,object_record_id,node_id)`. Se propagan addenda DEC-C10-065 a los contratos especializados de unidad lógica, semantic_role y versionado para que sus formulaciones históricas no compitan con el contrato vigente.
+
+**Disposición:** OAS-10 RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING. La circularidad SNAPSHOT↔NODE, constraints diferibles, unicidad y FKs siguen sin validación física.
