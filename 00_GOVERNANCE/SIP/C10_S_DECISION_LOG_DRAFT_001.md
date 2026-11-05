@@ -675,3 +675,14 @@ Tras DEC-C10-060, se actualiza el encabezado SNAPSHOT para declarar la FK compue
 9. Estas reglas se aplican solo a NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT. Las demás tablas mantienen claves y contratos propios.
 
 **Estado:** DEC-C10-062 ACCEPTED DOCUMENTALLY. Se aplica a la plantilla y documentos relacionados. Constraints físicos, parser, validador de cadena, protección de inmutabilidad y pruebas negativas quedan pendientes del gate técnico autorizado. No implica freeze, inventario real ni ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## DEC-C10-065 — Pinning exacto de revisión SNAPSHOT (2026-11-05)
+
+**Estado:** ACCEPTED — decisión expresa del usuario.
+
+Se aprueba `snapshot_object_record_id` obligatorio en NODE, EDGE, ROUTE, PREDICATE y ROUTE_STEP, junto con `snapshot_id`. La pareja forma FK compuesta hacia SNAPSHOT(`snapshot_id`, `object_record_id`). La decisión conserva el versionado de SNAPSHOT de DEC-C10-062 y prohíbe resolución por timestamp, última versión o fallback.
+
+La plantilla U_G actualiza encabezados y filas de esquema. §15.2/§15.6 especifican claves candidatas y FKs compuestas en orden explícito, incluyendo EDGE→NODE, PREDICATE→ROUTE, ROUTE_STEP→ROUTE/NODE/EDGE y SNAPSHOT→NODE raíz. Las referencias deben conservar exactamente el mismo snapshot_id + snapshot_object_record_id. La circularidad SNAPSHOT↔NODE raíz queda sujeta a FK diferibles o mecanismo transaccional equivalente probado.
+
+OAS-02: RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING. OAS-03: matriz compuesta especificada documentalmente; validación de completitud/implementabilidad pendiente. UG-SCH-10 sigue OPEN; no schema freeze, revisión independiente, DDL, parser, fixtures ni ejecución científica.
