@@ -7612,3 +7612,12 @@ Se crea `C10_S_PROPERTY_APPLICABILITY_AND_OBLIGATORINESS_MATRIX_DRAFT_001.md` pa
 El usuario aprueba CMP≥1, PAR≥1, RUL≥1; REF≥0 solo con IAM ex ante y cobertura exhaustiva; POL≥0 ausente por diseño en el núcleo confirmatorio; MET obligatorio para identidad/versionado/procedencia. CMP/PAR/RUL vacíos son SCOPE_ERROR; REF vacío no equivale a falta de evidencia. Se crea `C10_S_ABSTRACT_CONFIGURATION_INSTANCE_CONTRACT_DRAFT_001.md` con estructura e invariantes abstractos, sin valores concretos ni schema ejecutable.
 
 **Estado:** DEC-C10-056 aceptada. Contrato abstracto Draft; unidad de servicio, frontera del paquete, clases, claves, mapping, oráculo y validación pendientes. Sin ejecución científica.
+
+
+# 108. Perfil de frontera P0/P1/P2 — propuesta para decisión (2026-11-05)
+
+Se crea `C10_S_SOFTWARE_SERVICE_CONFIGURATION_BOUNDARY_PROFILE_PROPOSAL_DRAFT_001.md`. Propone separar P0 (paquete declarativo migrable C), P1 (envolvente técnica de origen/destino) y P2 (sistema causal: P0+P1, B, alternativas, dependencias compartidas, agentes, medición y resultados). La separación evita que runtime, permisos efectivos o disponibilidad de dependencias se confundan con contenido del paquete, sin excluirlos del análisis causal.
+
+Se incluyen reglas de clasificación de referencias/recursos, secretos, políticas, binarios/runtime, datos persistentes, mapping, sidecar B, alternativas y snapshots. No se afirma que componentes reales hayan sido inventariados.
+
+**Estado:** propuesta no aceptada/congelada. La frontera concreta, unidad de servicio, deployment manifests, secretos, estado persistente, servicios opacos y unidad experimental siguen abiertos. Sin ejecución.
