@@ -1051,3 +1051,10 @@ Se estructuran C_src, C_dst y M y se proponen predicados base para correspondenc
 **No cerrado:** decisión sobre la partición; gramática de reglas; cardinalidades; taxonomías; semántica de ausencia/null/default; mapping; propiedades obligatorias; oráculo; reconciliación F1/F2/A1/A2; DGP completo y parámetros. No hay validación técnica, revisión independiente, evidencia empírica ni ejecución.
 
 **Siguiente paso:** deliberar y registrar explícitamente el alcance del DGP base. Solo después formalizar el contrato abstracto con dominios finitos y mappings permitidos, revisar los contratos de transformación y actualizar DGP/estimandos. No generar truth ni ejecutar.
+
+
+# XLI. DEC-C10-053 — partición aprobada y siguiente formalización (2026-11-05)
+
+El usuario aprueba la partición del DGP base: CMP/PAR/REF/RUL constitutivos; POL condicional, fuera del núcleo confirmatorio mínimo; metadatos contractuales obligatorios para identidad/versionado/procedencia, con extensiones desconocidas condicionales. Se conserva la estructura conceptual de seis elementos de DEC-C10-052; POL no se elimina, y su ausencia en el escenario base deberá declararse ex ante.
+
+**Siguiente bloque:** definir gramática declarativa mínima y finita de reglas/restricciones y dominio abstracto de tipos/parámetros. No se fijan aún cardinalidades, semántica de null/default, mappings, tolerancias ni oráculo. No generar truth ni ejecutar.
