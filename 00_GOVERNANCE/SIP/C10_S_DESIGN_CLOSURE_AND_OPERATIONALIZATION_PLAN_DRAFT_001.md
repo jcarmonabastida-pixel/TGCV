@@ -1354,3 +1354,10 @@ El usuario aprueba añadir `snapshot_object_record_id` obligatorio a NODE, EDGE,
 La plantilla U_G incorpora el campo en los cinco registros y ajusta filas ilustrativas/separadores. El crosswalk IAM recibe tabla explícita de pinning exacto. La auditoría OAS se actualiza: OAS-02 RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING.
 
 Pendiente: reconciliación completa de todas las claves candidatas/FKs, referencias entre NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP y raíz SNAPSHOT→NODE, tablas normalizadas, crosswalks y contratos. Motor no seleccionado; no DDL, parser, validadores, fixtures ni pruebas. UG-SCH-10 OPEN; sin revisión independiente ni ejecución científica.
+
+
+# LXXII. Claves candidatas y FKs compuestas tras DEC-C10-065 (2026-11-05)
+
+Se amplía U_G §15.2/§15.6 con claves candidatas y FKs compuestas en orden explícito para la revisión exacta de SNAPSHOT y las referencias EDGE→NODE, PREDICATE→ROUTE, ROUTE_STEP→ROUTE/NODE/EDGE y SNAPSHOT→NODE raíz. Se exige el mismo par snapshot_id + snapshot_object_record_id en todos los enlaces. OAS-02 queda RESOLVED_DOCUMENTARILY; OAS-03 SPECIFIED_DOCUMENTARILY / COMPLETENESS_AND_ENGINE_VALIDATION_PENDING.
+
+Siguiente bloque: reconciliar las tablas normalizadas §12.1–§12.10, los campos físicos §§2–6, crosswalk IAM/FP y contratos de integridad, asegurando que no existan definiciones normativas duplicadas. Después repetir control estático de 19 tablas y revisión independiente. No hay DDL ni validación técnica.
