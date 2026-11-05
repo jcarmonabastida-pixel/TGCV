@@ -178,3 +178,10 @@ La clase de objeto deja de ser una alternativa pendiente: se selecciona un **paq
 SM-01…SM-10 deberán especializarse sobre estos elementos, sin asumir que todas las dimensiones aplican u obligan en cada instancia. La obligatoriedad se fijará ex ante en el contrato del dominio. Recursos/capacidad, permisos efectivos, dependencias instaladas y estado del entorno permanecen como condiciones del entorno, no como contenido del paquete.
 
 **Estado:** objeto seleccionado para diseño; predicados atómicos, obligatoriedad, mappings, contratos fuente/destino y oráculo siguen abiertos. No hay validación técnica, revisión independiente, evidencia empírica ni ejecución.
+
+
+## 15. Catálogo candidato de propiedades atómicas
+
+La primera atomización del objeto seleccionado se registra en `C10_S_CONFIGURATION_OBJECT_ATOMIC_PROPERTY_CATALOG_DRAFT_001.md`. Propone CMP-01…03, PAR-01…06, REF-01…05, RUL-01…05, POL-01…05 y MET-01…04, con correspondencia a SM-01…SM-10 y límites entre FP-01…FP-08.
+
+La atomización no cierra obligatoriedad ni aplicabilidad. Las propiedades candidatas centrales no son automáticamente obligatorias; las propiedades condicionales requieren que el contrato de la instancia declare la dimensión pertinente. Dominio, contratos fuente/destino, mappings, tolerancias y oráculo siguen abiertos.
