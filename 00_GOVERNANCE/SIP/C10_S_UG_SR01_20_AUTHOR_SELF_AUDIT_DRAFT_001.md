@@ -111,3 +111,13 @@ La propuesta de reconciliación está registrada en la plantilla §12.11, protoc
 La autoauditoría SR-01…20 y su conteo histórico 8 PASS_STATIC + 10 CONDITIONAL + 2 NOT_ASSESSED corresponden a la versión anterior a Opción A/ROUTE_STEP. No se deben trasladar como dictamen de la plantilla vigente. El nuevo control formal de 19 tablas solo acredita igualdad de columnas y no actualiza SR-01/02/10/11/17/18.
 
 OAS-01 y OAS-02 introducen contradicciones/bloqueos documentales que requieren resolución antes de recalificar los controles. Se mantiene AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT; no hay revisión independiente, validación técnica ni ejecución.
+
+
+### Addendum de alcance — OAS-08…10 / DEC-C10-065 (2026-11-05)
+
+La autoauditoría histórica no se recalifica automáticamente. Se añaden tres controles de coherencia documental a verificar en la revisión futura:
+- **OAS-08:** FKs ROUTE_STEP→ROUTE/NODE/EDGE deben incorporar `snapshot_id + snapshot_object_record_id`.
+- **OAS-09:** unicidad semántica NODE/EDGE/ROUTE/PREDICATE debe estar condicionada a la revisión exacta de SNAPSHOT.
+- **OAS-10:** las vistas físicas U_G §4.1 y §6 y los contratos especializados de nodo raíz deben expresar el pinning exacto DEC-C10-065.
+
+La corrección documental de OAS-08…10 no actualiza por sí sola los estados SR-01/02/10/11/17/18. Se mantienen los dictámenes históricos como referencia temporal, no como dictamen vigente de la plantilla actual. La nueva revisión de SR-01…20 debe fijarse sobre el conjunto reconciliado de artefactos y commit SHA exacto. `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`; revisión R1/R2 NOT STARTED; validación técnica NOT RUN.
