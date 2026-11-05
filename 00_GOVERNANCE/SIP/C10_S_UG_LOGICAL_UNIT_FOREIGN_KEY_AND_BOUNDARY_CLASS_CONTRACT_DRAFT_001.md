@@ -63,3 +63,14 @@ No se han ejecutado validadores ni fixtures. No se han creado nodos, snapshots, 
 ## 6. Addendum DEC-C10-064 — actualización de la FK raíz
 
 Se conserva el contrato de unidad lógica y boundary_class, ampliando la FK raíz para incluir pertenencia al snapshot: SNAPSHOT(snapshot_id, unit_object_record_id, unit_id) → NODE(snapshot_id, object_record_id, node_id). El NODE referenciado debe tener semantic_role=LOGICAL_SERVICE_UNIT. La circularidad con NODE.snapshot_id se valida al COMMIT mediante constraints diferibles y transacción atómica. La compatibilidad del motor es gate técnico obligatorio. Las formulaciones previas que describen la FK solo como (object_record_id,node_id) quedan complementadas por esta regla más específica; no se elimina el pinning exacto.
+
+
+## 7. Addendum DEC-C10-065 — revisión exacta de SNAPSHOT en la FK raíz
+
+La FK raíz histórica de §§2 y 6 queda especificada, tras DEC-C10-065, como:
+
+`SNAPSHOT(snapshot_id, object_record_id, unit_object_record_id, unit_id) → NODE(snapshot_id, snapshot_object_record_id, object_record_id, node_id)`.
+
+El `object_record_id` de la fila SNAPSHOT es el valor que debe coincidir con `snapshot_object_record_id` del NODE raíz; `unit_object_record_id` resuelve el `object_record_id` exacto de NODE. El NODE raíz debe pertenecer por tanto a la revisión exacta del SNAPSHOT que lo referencia y tener `semantic_role=LOGICAL_SERVICE_UNIT`.
+
+Esta formulación complementa/sustituye cualquier FK raíz anterior que omitiera el pinning exacto. No modifica DEC-C10-059 ni DEC-C10-060; los extiende documentalmente conforme a DEC-C10-065. Circularidad y unicidad física siguen pendientes de motor/constraints y pruebas.
