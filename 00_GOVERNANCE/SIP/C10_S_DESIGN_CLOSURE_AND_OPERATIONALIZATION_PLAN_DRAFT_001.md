@@ -1281,3 +1281,19 @@ La auditoría mantiene SCHEMA_NOT_CLOSED. No se ejecutaron validadores, parser, 
 Se crea `C10_S_UG_SNAPSHOT_MEMBERSHIP_AND_VERSIONED_GRAPH_REFERENCES_OPTIONS_DRAFT_001.md`. La propuesta compara cuatro vías: A) registros de grafo ligados directamente a snapshot y versionado observacional, con ROUTE_STEP; B) relación SNAPSHOT_MEMBER normalizada, más bindings de extremos y ROUTE_STEP; C) manifiesto serializado; D) inferencia por timestamp/coverage/última versión. C y D se descartan como esquema canónico por falta de integridad referencial inequívoca. A se recomienda provisionalmente por ajuste a los registros observacionales actuales y menor complejidad que B, pero exige definir object_version como versión del registro de observación y resolver la FK circular SNAPSHOT↔NODE raíz. B permanece alternativa si la reutilización de la misma fila inmutable entre snapshots es requisito esencial.
 
 No se ha aceptado una opción ni modificado la plantilla. UG-SCH-10 sigue OPEN; no se alteran DEC-C10-059…062. Próximo paso: decisión del usuario sobre la alternativa y, si se elige A, cerrar explícitamente sus dos condiciones estructurales antes de propagar cambios de esquema. No se ejecutan validadores, parser, constraints, fixtures, simulaciones ni experimentos; `scientific_execution=false`; `execution_authorized=false`.
+
+
+# LXVI. DEC-C10-063 — aceptación de Opción A y resolución de sus condiciones estructurales (2026-11-05)
+
+El usuario acepta Opción A como arquitectura de referencia para UG-SCH-10: NODE/EDGE/ROUTE/PREDICATE ligados directamente a snapshot, referencias exactas entre registros y ROUTE_STEP normalizado. Se registra DEC-C10-063. La aceptación selecciona la arquitectura, pero no equivale a freeze, aplicación física ni autorización de ejecución.
+
+Se crea `C10_S_UG_OPTION_A_STRUCTURAL_RESOLUTION_DRAFT_001.md` para resolver documentalmente las dos condiciones:
+
+1. **object_version:** revisión secuencial del registro observacional por identidad semántica. Cada aparición en un snapshot nuevo genera un nuevo registro inmutable/versionado, aunque las propiedades sean idénticas. Por sí solo, el incremento de versión, cambio de record ID o snapshot no constituye cambio material ni `ΔT_acc*`.
+2. **FK circular SNAPSHOT↔NODE raíz:** conservar la integridad referencial en ambas direcciones y resolver la inserción mediante una transacción atómica con FKs compuestas diferibles hasta COMMIT. La FK SNAPSHOT→NODE se extiende para comprobar el mismo `snapshot_id`, sin perder el pinning exacto ni el rol LOGICAL_SERVICE_UNIT.
+
+La resolución también concreta EDGE→NODE, PREDICATE→ROUTE y ROUTE_STEP con referencias exactas y reglas de mismo-snapshot. ROUTE_STEP es una relación operativa adicional justificada por la secuencia ordenada de ruta. Se separan cambio de observación, cambio estructural, cambio de evidencia (`ΔE_T`) y cambio de accesibilidad (`ΔT_acc*`).
+
+**Estado:** arquitectura A aceptada; detalle de resolución propuesto, pendiente de aceptación expresa. La circularidad queda resuelta a nivel lógico, pero condicionada a demostrar que el motor elegido soporta FKs diferibles equivalentes. Si no los soporta, se detiene la implementación y se reabre una decisión arquitectónica; no se debilitan FKs ni se introduce un workaround tácito.
+
+**Siguiente paso:** revisar y aceptar/corregir el contrato de resolución antes de propagar columnas y ROUTE_STEP a la plantilla U_G. Después, reconciliar encabezados, §12.7, §12.8, §12.9, §12.10, §12.12, IAM/FP crosswalk y matriz de claves; solo posteriormente preparar el gate técnico. No se ha modificado la plantilla, no se han ejecutado validadores/parser/constraints/fixtures ni experimentos. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
