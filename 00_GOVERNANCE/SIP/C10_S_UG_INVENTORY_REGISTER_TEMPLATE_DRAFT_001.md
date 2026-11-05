@@ -273,11 +273,11 @@ No se permite majority-vote automático. Si no se resuelve el conflicto con evid
 ### 12.7. Campos comunes obligatorios y extensión de tablas
 
 Todas las tablas de objetos (NODE, EDGE, ROUTE, PREDICATE, SNAPSHOT) deben incluir:
-- `object_record_id` único; `parent_catalog_id`; `object_version` o versión aplicable;
+- `object_record_id` opaco, no vacío y UNIQUE dentro de su tabla (no global); `parent_catalog_id`; `object_version` como INT positivo, secuencial desde 1 y único por identidad semántica;
 - `coverage_scope_id`; `evidence_status`; `review_adjudication_status`;
 - `observed_state` cuando el objeto admita clasificación trivalente;
 - `evidence_ref` como cero o un `claim_evidence_id` de navegación opcional, nunca como lista serializada ni texto libre; el conjunto completo se obtiene de CLAIM_EVIDENCE_LINK;
-- `unknown_reason`; `contract_intent` cuando aplique; `created_at`, `recorded_by`, `supersedes_record_id`.
+- `unknown_reason`; `contract_intent` cuando aplique; `created_at` (record-time), `recorded_by`, `supersedes_record_id` según DEC-C10-062.
 
 Extensiones:
 - NODE: TID/SID/RID, `boundary_class`, estado declarado/instalado/desplegado/cargado/invocado/ejecutado, owner/boundary, consumers, dependencias.
@@ -320,7 +320,7 @@ Extensiones:
 
 **Normalización de evidencia:** `CLAIM_EVIDENCE_LINK` es la relación uno-a-muchos canónica entre objetos/afirmaciones y evidencias. Los campos `evidence_ref` de las tablas de objeto son referencias de navegación opcionales (cero o un vínculo primario); no sustituyen el conjunto completo de vínculos. Cada vínculo adicional se registra como fila independiente. `claim_target_type` selecciona exactamente una FK tipada (`target_*`) a NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT o COVERAGE_REGISTER; `evidence_id` apunta a EVIDENCE_REGISTER. La exclusividad y correspondencia tipo-destino son constraints obligatorias, no convenciones. No almacenar listas serializadas de IDs.
 
-**Identidad de registro:** `object_record_id` identifica la fila versionada y debe ser UNIQUE dentro de cada tabla de objetos para permitir las FKs tipadas; `node_id/edge_id/route_id/predicate_id/snapshot_id` identifican el objeto semántico. `object_version` y `supersedes_record_id` preservan revisiones. `parent_catalog_id` enlaza al catálogo U_G o a un subcatálogo versionado.
+**Identidad de registro — DEC-C10-062:** `object_record_id` identifica una fila inmutable y es UNIQUE dentro de cada tabla de objetos; no se exige unicidad global. `node_id/edge_id/route_id/predicate_id/snapshot_id` identifican la entidad semántica. `UNIQUE(semantic_id, object_version)` identifica cada revisión dentro de su tabla. `object_version` es INT positivo, comienza en 1 y aumenta de uno en uno, sin saltos ni reutilización. `supersedes_record_id` es NULL solo en v1; desde v2 referencia el registro inmediatamente anterior de la misma tabla e identidad. La cadena es lineal, sin bifurcaciones, ciclos ni huérfanos; las filas históricas son inmutables. `created_at` es record-time, no tiempo de observación/validez. `parent_catalog_id` enlaza al catálogo U_G o a un subcatálogo versionado. SNAPSHOT conserva la FK compuesta a la versión exacta del NODE raíz conforme a DEC-C10-059.
 
 **Cobertura:** `coverage_scope_id` es FK a COVERAGE_REGISTER. Las tablas de objeto no replican el estado de cobertura como sustituto del registro canónico; los campos heredados `coverage_status` son vistas/resúmenes y deben coincidir con el scope enlazado o marcar discrepancia.
 
@@ -328,65 +328,32 @@ Extensiones:
 
 **Estado de revisión:** NOT_REVIEWED antes de doble evaluación; INDEPENDENT_PENDING mientras falta una de las dos; AGREED si E1/E2 coinciden bajo la misma regla y versión; ADJUDICATION_PENDING si discrepan; ADJUDICATED tras resolución motivada; UNRESOLVED si persiste ?; NOT_APPLICABLE solo con justificación.
 
-### 12.10. Matriz de obligatoriedad por tabla
+### 12.10. Matriz de claves, referencias y obligatoriedad por tabla
 
-| Tabla | PK | Parent/version | Coverage FK | Evidence status | Observed state | Review status | Claim-evidence links |
-|---|---|---|---|---|---|---|---|
-| NODE | object_record_id + node_id | Obligatorio | Obligatorio | Obligatorio | Obligatorio | Obligatorio | 0..n |
-| EDGE | object_record_id + edge_id | Obligatorio | Obligatorio | Obligatorio | Obligatorio | Obligatorio | 0..n |
-| ROUTE | object_record_id + route_id | Obligatorio | Obligatorio | Obligatorio | Obligatorio | Obligatorio | 0..n |
-| PREDICATE | object_record_id + predicate_id | Obligatorio | Obligatorio | Obligatorio | Obligatorio | Obligatorio | 0..n |
-| SNAPSHOT | object_record_id + snapshot_id | Obligatorio | Obligatorio | Obligatorio | NA si no aplica | Obligatorio | 0..n |
-| COVERAGE_REGISTER | coverage_scope_id | Universo/versionado | — | — | — | Obligatorio | 0..n |
-| EVIDENCE_REGISTER | evidence_id | Scope/versionado | — | evidence_status | — | Obligatorio | 1..n si soporta claims |
+La matriz cubre los diez registros operativos canónicos. `DGP_TRUTH_SECURE` queda fuera de este inventario y del paquete accesible al analizador (§12.6). Las claves primarias compuestas históricas se conservan como definición lógica; las claves candidatas UNIQUE adicionales se declaran explícitamente cuando son necesarias para FKs tipadas.
 
-La referencia SNAPSHOT→NODE usa la pareja `(unit_object_record_id, unit_id)` para resolver la clave `(object_record_id, node_id)` del nodo raíz de servicio. `unit_id` por sí solo no es FK suficiente porque NODE admite revisiones versionadas y su unicidad lógica está definida por la pareja `object_record_id + node_id`. El nodo referenciado debe tener `semantic_role=LOGICAL_SERVICE_UNIT`.\n\nLas claves compuestas aquí expresan unicidad lógica propuesta; su implementación física requiere escoger motor/formato y constraints. Esta especificación no equivale a un esquema SQL implementado.
+| Tabla | PK lógica | Claves candidatas / unicidad | Referencias obligatorias y cardinalidad | Estado / campos de control |
+|---|---|---|---|---|
+| NODE | (object_record_id, node_id) | UNIQUE(object_record_id); UNIQUE(node_id, object_version) | coverage_scope_id → COVERAGE_REGISTER; supersedes_record_id autorreferente según DEC-C10-062; claim-evidence 0..n; evidence_ref 0..1 | semantic_role enum obligatorio; boundary_class obligatorio; observed_state según aplicabilidad |
+| EDGE | (object_record_id, edge_id) | UNIQUE(object_record_id); UNIQUE(edge_id, object_version) | coverage_scope_id; supersedes_record_id autorreferente; claim-evidence 0..n; evidence_ref 0..1; extremos source_node_id/target_node_id resuelven a NODE conforme a identidad/versionado | observed_state 1/0/?/NA justificado; parent_edge_id y atomic_edge_id según crosswalk |
+| ROUTE | (object_record_id, route_id) | UNIQUE(object_record_id); UNIQUE(route_id, object_version) | coverage_scope_id; supersedes_record_id autorreferente; claim-evidence 0..n; evidence_ref 0..1; secuencia refiere a nodos/aristas existentes | parent_route_class y route_subtype separados; observed_state según aplicabilidad |
+| PREDICATE | (object_record_id, predicate_id) | UNIQUE(object_record_id); UNIQUE(predicate_id, object_version) | coverage_scope_id; supersedes_record_id autorreferente; claim-evidence 0..n; evidence_ref 0..1; route_id resuelve a ROUTE | observed_state 1/0/?; regla/tolerancia y unknown_reason cuando proceda |
+| SNAPSHOT | (object_record_id, snapshot_id) | UNIQUE(object_record_id); UNIQUE(snapshot_id, object_version) | coverage_scope_id; supersedes_record_id autorreferente; FK compuesta (unit_object_record_id, unit_id) → NODE(object_record_id, node_id); claim-evidence 0..n; evidence_ref 0..1 | phase y timestamp obligatorios; nodo raíz con semantic_role=LOGICAL_SERVICE_UNIT |
+| EVIDENCE_REGISTER | evidence_id | UNIQUE(evidence_id) | scope_id conforme al contrato de procedencia; 1..n CLAIM_EVIDENCE_LINK cuando la evidencia respalda afirmaciones | source_provenance y evidence_status; custodia, integridad, alcance y límites |
+| CLAIM_EVIDENCE_LINK | claim_evidence_id | UNIQUE(claim_evidence_id) | exactamente una FK destino tipada: NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_SCOPE; evidence_id → EVIDENCE_REGISTER obligatorio; evaluator_record_id y adjudication_id opcionales | claim_target_type coherente con la única FK poblada; una fila por vínculo; relación 0..n desde cada destino |
+| COVERAGE_REGISTER | coverage_scope_id | UNIQUE(coverage_scope_id) | destino tipado opcional de CLAIM_EVIDENCE_LINK; referenciado por coverage_scope_id desde tablas de objeto | universo/versionado y denominador; COMPLETE solo con regla y cobertura suficiente |
+| EVALUATOR_ASSESSMENT | evaluator_record_id | UNIQUE(evaluator_record_id) | exactamente una FK destino tipada a NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_SCOPE | evaluator_id y rol E1/E2; registros separados; cegamiento y regla versionada |
+| ADJUDICATION_REGISTER | adjudication_id | UNIQUE(adjudication_id) | exactamente una FK destino tipada; evaluator_record_E1 y evaluator_record_E2 → EVALUATOR_ASSESSMENT obligatorias | decisión 1/0/?/NA motivada; conservar posición minoritaria y limitaciones |
 
+Reglas transversales:
 
-## 13. Auditoría campo-a-campo: resultado
+1. En NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT, `object_record_id` es UNIQUE por tabla y `UNIQUE(semantic_id, object_version)` evita dos revisiones con la misma versión. Se conserva la PK lógica compuesta declarada; la unicidad individual de object_record_id es una clave candidata adicional requerida por las FKs tipadas.
+2. En las mismas cinco tablas, `object_version` es INT positivo, comienza en 1 y es contiguo por identidad semántica. `supersedes_record_id` es NULL en v1 y referencia al predecesor inmediato de la misma tabla/identidad desde v2. Cada fila admite como máximo un sucesor; no se permiten ciclos, bifurcaciones ni huérfanos. El historial es inmutable.
+3. Cada fila CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER debe poblar exactamente una de sus seis FKs destino tipadas, coherente con su enum. Las FKs opcionales de evaluación/adjudicación en CLAIM_EVIDENCE_LINK no sustituyen las relaciones E1/E2.
+4. `DGP_TRUTH_SECURE` no es una undécima tabla del inventario operativo ni se añade a la matriz: permanece segregada y fuera del acceso del analizador.
+5. Las cardinalidades descritas son contratos documentales. La implementación de PK/UNIQUE/FK/CHECK, secuencias, triggers, permisos de inmutabilidad y restricciones compuestas requiere gate técnico autorizado y pruebas negativas.
 
-La auditoría detecta que el protocolo de procedencia estaba más desarrollado que la plantilla física. Se identifican y corrigen/documentan estas brechas:
-
-| ID | Brecha encontrada | Resolución documental | Estado |
-|---|---|---|---|
-| FCM-01 | No existía tabla separada EVIDENCE_REGISTER con evidence_id | §12.1–12.2 | Incorporada |
-| FCM-02 | evidence_ref no resolvía explícitamente a vínculo afirmación-evidencia | Cadena de referencias §12.8.1 | Incorporada |
-| FCM-03 | Cobertura carecía de denominador, fuentes válidas y unidades opacas | COVERAGE_REGISTER §12.3 | Incorporada |
-| FCM-04 | No había tabla de doble evaluación individual | EVALUATOR_ASSESSMENT §12.4 | Incorporada |
-| FCM-05 | No había expediente de discrepancia/adjudicación | ADJUDICATION_REGISTER §12.5 | Incorporada |
-| FCM-06 | truth_dgp aparecía físicamente en la tabla de predicados | Retirada de tabla analítica; segregación §12.6 | Corregida documentalmente |
-| FCM-07 | route_class mezclaba cinco clases primarias y subtipos | parent_route_class y route_subtype separados | Corregida documentalmente |
-| FCM-08 | Campos complementarios no estaban como columnas/contrato común | Schema común §12.7 | Incorporado |
-| FCM-09 | No existía regla de integridad referencial y versionado | §12.8 | Incorporada |
-
-**Dictamen:** la correspondencia semántica se mantiene, pero el esquema anterior no era operacionalmente completo. El esquema normalizado queda especificado documentalmente en §12; aún requiere revisión independiente, validación de tipos/valores, y correspondencia exacta con cada tabla antes de declararse cerrado. No se han creado instancias reales, no hay inventario ni cobertura técnica. FCM-01…09 son hallazgos documentales, no tests ejecutados.
-
-### 13.1. Segunda pasada de consistencia interna — FCM-10…16
-
-| ID | Hallazgo | Tratamiento | Estado |
-|---|---|---|---|
-| FCM-10 | §12.7 exigía campos comunes, pero las tablas §§2–6 no los mostraban físicamente. | Añadidos encabezados comunes a NODE, EDGE, ROUTE, PREDICATE y SNAPSHOT. | Corregido documentalmente; pendiente parser |
-| FCM-11 | SNAPSHOT usaba ? aunque observed_state no aplica por defecto. | Ejemplo corregido a NA; NA requiere justificación de no aplicabilidad. | Corregido |
-| FCM-12 | La clave singular evaluator_record_id en EVALUATOR_ASSESSMENT podía confundirse con el campo de navegación plural en las tablas de objeto. | Se conserva evaluator_record_id singular como PK/FK de cada evaluación E1/E2; evaluator_record_ids plural solo como referencia resumida opcional en objetos. | Corregido documentalmente en §13.2 |
-| FCM-13 | evidence_ref (0..1 optional) podía interpretarse como lista serializada. | CLAIM_EVIDENCE_LINK se declara relación 1:N canónica; evidence_ref es cero o un enlace primario opcional. | Regla definida |
-| FCM-14 | Matriz §7 podía confundirse con cobertura canónica sin denominador. | Se declara vista resumen; COVERAGE_REGISTER §12.3 es registro normativo. | Corregido |
-| FCM-15 | Tipos/domínios/estados de revisión no estaban fijados. | Diccionario candidato §12.9 y matriz de obligatoriedad §12.10. | Definido documentalmente |
-| FCM-16 | No estaba fijado si claim_target_id apuntaba a ID semántico o registro versionado. | Se fija object_record_id; IDs semánticos y de registro quedan separados. | Corregido documentalmente |
-
-**Dictamen actualizado:** FCM-01…16 tratados en el diseño. No se ha ejecutado parser, validador de esquema, constraint check, test de seguridad ni prueba de cegamiento. La consistencia es documental y estática; el esquema permanece Draft y requiere revisión independiente.
-
-### 13.2. Tercera pasada — normalización de referencias de evaluación/evidencia
-
-Se corrige la estructura para que EVALUATOR_ASSESSMENT use una clave singular `evaluator_record_id` (una fila por E1/E2) y `object_record_id` como FK. ADJUDICATION_REGISTER referencia los dos registros E1/E2 y el mismo object_record_id. CLAIM_EVIDENCE_LINK admite `evaluator_record_id` y `adjudication_id` opcionales, de modo que la evidencia revisada por cada evaluador o adjudicador se reconstruye por relación y no mediante listas serializadas. Las tablas NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT incluyen el campo de navegación `evaluator_record_ids`, pero no sustituyen las filas normalizadas de evaluación.
-
-**FCM-17:** se detectó pluralización accidental de la clave primaria del registro EVALUATOR_ASSESSMENT; corregida a singular.  
-**FCM-18:** se detectó almacenamiento potencial de listas `evidence_ids/evidence_reviewed` en EVALUATOR_ASSESSMENT/ADJUDICATION_REGISTER; sustituidas por relaciones en CLAIM_EVIDENCE_LINK.  
-**FCM-19:** se detectó `object_id` ambiguo en registros de evaluación/adjudicación; fijado como `object_record_id`.
-
-Estos cambios son especificación documental y no han sido probados con parser ni motor relacional.
-
-**FCM-20:** la cardinalidad de `evidence_ref` era ambigua entre §12.7 (uno o varios) y §§12.9/14 (un vínculo primario). Se armoniza como cero o un vínculo de navegación opcional; la relación completa 0..n permanece exclusivamente en CLAIM_EVIDENCE_LINK. Se corrige además el resumen histórico FCM-12 para distinguir la PK singular de evaluación de la referencia plural resumida en objetos.
-
+La FK SNAPSHOT→NODE conserva exactamente la pareja `(unit_object_record_id, unit_id)` hacia `(object_record_id, node_id)`; no se resuelve por `unit_id` aislado ni por “última versión”.
 
 ### 12.11. Regla aceptada de reconciliación UG-SR-A01
 
