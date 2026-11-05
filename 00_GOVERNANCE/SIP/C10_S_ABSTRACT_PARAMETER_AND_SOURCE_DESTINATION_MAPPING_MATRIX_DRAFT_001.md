@@ -138,3 +138,10 @@ FP-01/02/03 comparan C_src con C_dst^applied mediante M. C_dst^decl no sustituye
 Matriz abstracta creada como puente documental entre DEC-C10-054 y la especialización de FP-01/02/03. No cierra el contrato de configuración ni el DGP. No contiene valores concretos, truth, fixtures, resultados o evidencia empírica.
 
 **Estado:** DEC-C10-052/053/054 aprobadas en sus alcances; perfil estructural aprobado; matriz de mapping PROPUESTA; dominios concretos por clave ABIERTOS; predicados por reconciliar; C_dst^applied/oráculo NO CERRADOS; validación técnica NO REALIZADA; revisión independiente NO REALIZADA; ejecución NO AUTORIZADA.
+
+
+## 11. Reconciliación de familias y predicados
+
+La asignación inicial de §3 y §6 debe interpretarse con la reconciliación posterior `C10_S_SM_ATOMIC_PROPERTY_FP_RECONCILIATION_DRAFT_001.md`. En particular, CMP-01/02 y PAR-01 tienen primacía semántica FP-03; PAR-02 se desdobla en esquema FP-01 y significado FP-03; REF-01/02 son FP-03 y REF-04 FP-02; RUL semántica FP-03 y AST FP-01; POL condicional FP-03, seguridad FP-05; MET-01 FP-01/04, MET-02/04 FP-08, MET-03 condicional FP-03. La cobertura MAP-CMP/PAR es FP-01, no sustituto de equivalencia semántica.
+
+APPLIED-STATE-SEMANTICS se descompone: FP-06 verifica aplicación, FP-07 observa el estado aplicado y las familias FP-01…05 evalúan las propiedades correspondientes sobre ese estado. No se contará un mismo defecto semántico dos veces.
