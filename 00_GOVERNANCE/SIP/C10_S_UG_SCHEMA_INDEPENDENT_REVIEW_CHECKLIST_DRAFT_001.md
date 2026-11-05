@@ -124,8 +124,8 @@ Antes de iniciar la revisión independiente R1/R2, incorporar OAS-01…07 del in
 La revisión independiente no debe usar sin actualización las referencias históricas de §§2–5 y §9. La versión vigente del esquema y contratos que debe revisarse incluye:
 - U_G §§2–6 (vistas físicas) y §§13–16 (contrato normativo vigente).
 - DEC-C10-059…065 y sus contratos especializados de boundary_class, semantic_role/nodo raíz, referencias tipadas/procedencia, identidad/versionado/supersession y pinning exacto.
-- Crosswalk IAM/FP §9.3, con las doce relaciones y orden de columnas.
-- Auditoría OAS-01…10, incluido el pinning exacto en ROUTE_STEP y SNAPSHOT→NODE raíz.
+- Crosswalk IAM/FP §§9.3–9.4: doce relaciones de pinning exacto de SNAPSHOT y matriz de referencias tipadas/evidencia/adjudicación.
+- Auditoría OAS-01…11, incluido el pinning exacto en ROUTE_STEP y SNAPSHOT→NODE raíz, y la matriz tipada de evidencia/adjudicación.
 - Reglas de ROUTE_STEP: mismo par `snapshot_id + snapshot_object_record_id` en pertenencia y FKs a ROUTE/NODE/EDGE; continuidad cross-row, índices contiguos y CHECK de destino exclusivo.
 - Claves semánticas por revisión exacta para NODE/EDGE/ROUTE/PREDICATE; no reutilizar `UNIQUE(snapshot_id,semantic_id)` como si snapshot_id identificara una revisión.
 - FKs tipadas a seis destinos en CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER; procedencia canónica en EVIDENCE_REGISTER; `evidence_ref` navegación 0..1 y CLAIM_EVIDENCE_LINK 0..n.
