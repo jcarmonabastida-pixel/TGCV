@@ -102,7 +102,7 @@ El archivo fuente está disponible como adjunto de esta conversación. Este regi
 | Transcripción estructurada y extracción de tablas | REALIZADA EN EL ENTORNO DE TRABAJO |
 | Copia íntegra DOCX persistida en GitHub | PENDIENTE |
 | Reconciliación completa con matriz/decision log/test register | EN CURSO |
-| Decisiones científicas aceptadas | NO DECLARADAS |
+| Decisiones científicas aceptadas | DEC-C10-066: D2 primario candidato / D1 secundario; no implica aprobación de parámetros o ejecución |
 | P181/P182/P183 ejecutadas | NO |
 | Revisión independiente | PENDIENTE |
 | Freeze C10-S | NO ALCANZADO |
