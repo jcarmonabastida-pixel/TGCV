@@ -411,3 +411,10 @@ DEC-C10-043 es una propuesta de instrumento documental, no una decisión de inve
 Se registra el crosswalk 23/23 nodos, 23/23 IDs padre de arista, 14/14 predicados y 5/5 clases de ruta entre §81 y la plantilla. Se determina que E07 debe ser regla lógica y no arista técnica; las relaciones mult destino se normalizan a 39 filas binarias candidatas. E22 carece de destinos identificados como nodos/eventos. N16 y N23 son roles compuestos que requieren desagregación analítica.
 
 DEC-C10-044 es un hallazgo/recomendación documental, no decisión sobre topología real, DGP o microdominio. Se amplía la plantilla con campos de procedencia/evidencia/cobertura/adjudicación. Esquema no cerrado; todos los estados técnicos ? y cobertura NONE. No autoriza inventario real, implementación, simulación ni ejecución.
+
+
+## 39. Protocolo de evidencia U_G — DEC-C10-045 (propuesta documental)
+
+Se registra la creación de C10_S_UG_EVIDENCE_PROVENANCE_AND_ADJUDICATION_PROTOCOL_DRAFT_001.md. Define S1–S8, procedencia, evidencia mínima por objeto, argumentos de cobertura negativa, denominadores, doble evaluación cegada, adjudicación independiente y propagación trivalente.
+
+DEC-C10-045 es propuesta documental, no aprobación de fuentes, microdominio, procedimiento de inspección ni ejecución. No hay evidencia observada ni inventario; cobertura NONE, A_f*, F_alt,0 y Reach_H siguen ?. Requiere auditoría campo-a-campo de la plantilla y definición contextual de denominadores, evaluadores, seguridad, oráculo y tolerancias. No autoriza inspección real, implementación, simulación o experimento.
