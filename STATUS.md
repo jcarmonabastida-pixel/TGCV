@@ -31,7 +31,7 @@
 - The downstream `ΔT_acc → ΔV / Value` linkage remains open.
 
 ## Governance integrity
-- Canonical maintenance reconciliation (2026-11-06): RMA v3.38 corrects the stale v1.44 current-matrix declarations inherited from v3.37; current traceability v3.38 is byte-identical to its versioned artifact and resolves Matrix v1.47. This is documentation/pointer maintenance only; no scientific state, claim status/level, Core element or authorization changes.
+- Canonical maintenance reconciliation (2026-11-06): RMA v3.38 corrects the stale v1.44 current-matrix declarations inherited from v3.37; traceability v3.38 restores the omitted historical RMA-v3.36 and MT5-DTS-RECONSTRUCTION rows, preserves the original Matrix v1.43 dependency, and is byte-identical to its versioned artifact. It resolves current Matrix v1.47. This is documentation/pointer maintenance only; no scientific state, claim status/level, Core element or authorization changes.
 - Canonical current versions: RMA `v3.38`, Evidence→Claim Matrix `v1.47`, RMA traceability `v3.38`, governance operating principles `v0.1`.
 - `EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` is the stable alias of complete Matrix v1.47 and has the corresponding immutable versioned artifact.
 - Historical matrix versions remain immutable; v1.13 is preserved unchanged; v1.46 remains preserved as the immediate predecessor of current v1.47.
