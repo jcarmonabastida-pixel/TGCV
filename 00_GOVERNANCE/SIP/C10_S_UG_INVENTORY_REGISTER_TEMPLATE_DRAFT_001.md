@@ -341,7 +341,7 @@ Extensiones:
 
 ### 12.10. Matriz de claves, referencias y obligatoriedad por tabla
 
-La matriz cubre los diez registros operativos canónicos. `DGP_TRUTH_SECURE` queda fuera de este inventario y del paquete accesible al analizador (§12.6). Las claves primarias compuestas históricas se conservan como definición lógica; las claves candidatas UNIQUE adicionales se declaran explícitamente cuando son necesarias para FKs tipadas.
+La matriz cubre los diez registros operativos normalizados preexistentes más ROUTE_STEP, relación operativa de secuencia aprobada por DEC-C10-064. `DGP_TRUTH_SECURE` queda fuera de este inventario y del paquete accesible al analizador (§12.6). Las claves primarias compuestas históricas se conservan como definición lógica; las claves candidatas UNIQUE adicionales se declaran explícitamente cuando son necesarias para FKs tipadas.
 
 | Tabla | PK lógica | Claves candidatas / unicidad | Referencias obligatorias y cardinalidad | Estado / campos de control |
 |---|---|---|---|---|
@@ -350,6 +350,7 @@ La matriz cubre los diez registros operativos canónicos. `DGP_TRUTH_SECURE` que
 | ROUTE | (object_record_id, route_id) | UNIQUE(object_record_id); UNIQUE(route_id, object_version) | coverage_scope_id; supersedes_record_id autorreferente; claim-evidence 0..n; evidence_ref 0..1; secuencia refiere a nodos/aristas existentes | parent_route_class y route_subtype separados; observed_state según aplicabilidad |
 | PREDICATE | (object_record_id, predicate_id) | UNIQUE(object_record_id); UNIQUE(predicate_id, object_version) | coverage_scope_id; supersedes_record_id autorreferente; claim-evidence 0..n; evidence_ref 0..1; route_id resuelve a ROUTE | observed_state 1/0/?; regla/tolerancia y unknown_reason cuando proceda |
 | SNAPSHOT | (object_record_id, snapshot_id) | UNIQUE(object_record_id); UNIQUE(snapshot_id, object_version) | coverage_scope_id; supersedes_record_id autorreferente; FK compuesta (unit_object_record_id, unit_id) → NODE(object_record_id, node_id); claim-evidence 0..n; evidence_ref 0..1 | phase y timestamp obligatorios; nodo raíz con semantic_role=LOGICAL_SERVICE_UNIT |
+| ROUTE_STEP | route_step_id (o PK compuesta route_record_id, step_index) | UNIQUE(route_record_id, step_index) | route_record_id → ROUTE; FK compuestas (snapshot_id, node_record_id) → NODE y (snapshot_id, edge_record_id) → EDGE, exactamente una por fila | step_index positivo, único y contiguo; step_type coherente; continuidad NODE/EDGE cross-row validada |
 | EVIDENCE_REGISTER | evidence_id | UNIQUE(evidence_id) | scope_id conforme al contrato de procedencia; 1..n CLAIM_EVIDENCE_LINK cuando la evidencia respalda afirmaciones | source_provenance y evidence_status; custodia, integridad, alcance y límites |
 | CLAIM_EVIDENCE_LINK | claim_evidence_id | UNIQUE(claim_evidence_id) | exactamente una FK destino tipada: NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_SCOPE; evidence_id → EVIDENCE_REGISTER obligatorio; evaluator_record_id y adjudication_id opcionales | claim_target_type coherente con la única FK poblada; una fila por vínculo; relación 0..n desde cada destino |
 | COVERAGE_REGISTER | coverage_scope_id | UNIQUE(coverage_scope_id) | destino tipado opcional de CLAIM_EVIDENCE_LINK; referenciado por coverage_scope_id desde tablas de objeto | universo/versionado y denominador; COMPLETE solo con regla y cobertura suficiente |
@@ -460,3 +461,14 @@ Añadir ROUTE_STEP como relación de secuencia con campos mínimos: `route_step_
 ### 13.7. Estado
 
 DEC-C10-064 aprueba esta resolución de detalle. La aplicación documental de encabezados queda registrada aquí; la plantilla sigue siendo Draft y vacía de observaciones. No equivale a freeze, validación física, parser, fixtures ni autorización de experimento. El motor relacional aún no está fijado; compatibilidad con FKs diferibles, constraints compuestas, ROUTE_STEP cross-row, secuencia/supersession e inmutabilidad son gates técnicos pendientes. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 14. Reconciliación de matriz de claves y campos comunes — DEC-C10-064
+
+ROUTE_STEP se incorpora a la matriz de claves de §12.10 como relación normalizada adicional. No se cuenta como una de las cinco tablas de objetos versionados (NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT) ni recibe object_version/supersedes_record_id: sus filas pertenecen a una revisión exacta de ROUTE y quedan identificadas por route_record_id + step_index. Una modificación de secuencia se registra en la revisión de ROUTE correspondiente y en sus ROUTE_STEP asociados; no se reescribe el historial de una ruta publicada.
+
+Los campos comunes de §12.7 se mantienen para las cinco tablas de objetos versionados. snapshot_id es además obligatorio en NODE, EDGE, ROUTE y PREDICATE bajo Opción A. En SNAPSHOT, snapshot_id es la identidad semántica del snapshot y participa en la FK compuesta hacia NODE raíz. EDGE añade source_node_record_id/target_node_record_id; PREDICATE añade route_record_id. ROUTE_STEP usa snapshot_id y route_record_id para fijar la secuencia al mismo snapshot.
+
+ROUTE_STEP no sustituye CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_ASSESSMENT ni ADJUDICATION_REGISTER. Si en una fase posterior se requiere evidencia directa por paso, deberá definirse una extensión tipada explícita; no se amplía implícitamente el enum de destinos actual.
+
+**Control pendiente:** la matriz y los encabezados deberán revisarse conjuntamente contra DDL/serialización del motor seleccionado. La continuidad cross-row no queda garantizada por la fila ROUTE_STEP aislada.
