@@ -1024,3 +1024,18 @@ Contrato documental; no ejecutado.
 | UG-SR-A01-T05 | Varios vínculos válidos para un mismo objeto | Aceptar filas múltiples normalizadas; no serializar listas en `evidence_ref` |
 
 Estos son contratos propuestos para resolver la ambigüedad documental UG-SR-A01. No están implementados ni ejecutados. El comportamiento T01 queda condicionado a la decisión documental sobre si todo estado clasificado requiere al menos un vínculo CLAIM_EVIDENCE_LINK.
+
+
+## 53. Casos ampliados para propuesta UG-SR-A01 — estados y vínculos
+
+| ID | Caso | Resultado esperado propuesto |
+|---|---|---|
+| UG-SR-A01-T06 | observed_state=1 sin vínculo CLAIM_EVIDENCE_LINK | Rechazar como registro observado sin soporte |
+| UG-SR-A01-T07 | observed_state=0 sin vínculo, aunque evidence_ref vacío | Rechazar; además exigir cobertura negativa suficiente |
+| UG-SR-A01-T08 | observed_state=? sin vínculo, unknown_reason vacío | Rechazar/incompleto |
+| UG-SR-A01-T09 | observed_state=? sin vínculo, unknown_reason presente, evidence_status=MISSING y límites documentados | Aceptar como indeterminado, nunca como 0 |
+| UG-SR-A01-T10 | observed_state=NA sin vínculo y con justificación de no aplicabilidad | Aceptar si NA está permitido para esa entidad |
+| UG-SR-A01-T11 | observed_state=1/0 con vínculo válido y evidence_ref vacío | Aceptar; evidence_ref es opcional |
+| UG-SR-A01-T12 | evidence_ref poblado pero CLAIM_EVIDENCE_LINK inexistente | Rechazar referencia huérfana |
+
+Los resultados son contratos propuestos, no implementados ni ejecutados. Quedan pendientes de aceptación de la regla normativa UG-SR-A01.
