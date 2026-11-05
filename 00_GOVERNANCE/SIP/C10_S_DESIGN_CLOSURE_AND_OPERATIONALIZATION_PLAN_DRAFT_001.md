@@ -1220,3 +1220,12 @@ Se realiza revisión estática de la plantilla U_G, el contrato DEC-C10-059, el 
 Se mantienen DEC-C10-055 y DEC-C10-059; no se reabren responsabilidades FP, catálogo EDGE ni decisión conceptual de FK compuesta. No se modifica aún la plantilla: las correcciones requieren resolver los crosswalks y las claves antes de cambiar encabezados. Próxima operación: corregir documentalmente EDGE y formalizar semantic_role/nodo raíz; después resolver CLAIM_EVIDENCE_LINK/FK polimórficas y versionado.
 
 La revisión es `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`. No se ejecutaron parser, validador, constraints, fixtures, pruebas, simulaciones ni experimentos; no hay inventario real ni evidencia nueva. `scientific_execution=false`; `execution_authorized=false`.
+
+
+# LVII. Corrección EDGE y propuesta semantic_role/nodo raíz (2026-11-05)
+
+Se corrige UG-SCH-01 en la plantilla U_G: EDGE incorpora `atomic_edge_id`, `parent_edge_id`, `source_node_id` y `target_node_id`, con 31 columnas. `edge_id` se conserva como identidad semántica local de la arista atómica versionada. No se crean instancias; E07 sigue siendo regla lógica y E22 conserva destinos sin identificar sin inventar nodos.
+
+Se crea `C10_S_UG_SEMANTIC_ROLE_AND_LOGICAL_ROOT_CONTRACT_DRAFT_001.md` para abordar UG-SCH-03. Distingue `semantic_role`, `parent_catalog_id` y `boundary_class`; propone un vocabulario controlado y crosswalk no uno-a-uno desde N01–N23; conserva la FK compuesta SNAPSHOT→NODE de DEC-C10-059 y exige exactamente un nodo raíz por unidad/snapshot/scope. Esta propuesta queda pendiente de aceptación, no se eleva a decisión.
+
+La auditoría y el crosswalk IAM se actualizan. UG-SCH-02 y UG-SCH-04…08 siguen abiertos. Dictamen global SCHEMA_NOT_CLOSED. La revisión es documental asistida/no independiente; no se ejecutan parser, constraints, fixtures, simulaciones ni experimentos. `scientific_execution=false`; `execution_authorized=false`.
