@@ -207,3 +207,12 @@ Los campos siguientes pasan a formar parte del esquema obligatorio de cada tabla
 | observed_state | Predicados | 1/0/? basado en evidencia observacional y regla de adjudicación. |
 
 Los campos existentes evidence_ref, observed_status, coverage_status, evaluator/blinding y timestamp se conservan. Si se registra un estado observado 0, evidence_status debe ser AVAILABLE y coverage_status debe justificar cobertura suficiente para ese predicado. CONFLICTING fuerza ? hasta adjudicación; MISSING no equivale a 0.
+
+
+## 11. Protocolo de fuentes y adjudicación (cross-reference)
+
+La captura de evidencias, los campos de procedencia, la clasificación 1/0/? y la cobertura NONE/PARTIAL/COMPLETE se rigen por C10_S_UG_EVIDENCE_PROVENANCE_AND_ADJUDICATION_PROTOCOL_DRAFT_001.md. Esa especificación prevalece para reglas de evidencia y adjudicación; esta plantilla define las tablas de captura.
+
+Para cada fila, evidence_ref debe resolver a un evidence_id del registro de procedencia. Los campos source_provenance, collection_method, scope, timestamp, integrity, access_lineage, completeness_limitations, evidence_status, reviewer y reproducibility se registran en el expediente de evidencia enlazado. observed_status/observed_state y coverage_status nunca se sustituyen por evidence_status. Ningún 0 se admite sin argumento de cobertura negativa; ningún COMPLETE sin universo, denominador y excepciones. Las discrepancias críticas requieren adjudicación independiente y preservación del desacuerdo.
+
+El crosswalk §10 identifica que las tablas actuales aún requieren columnas explícitas para parent_catalog_id, source_provenance, evidence_status, contract_intent, coverage_scope_id, review_adjudication_status y unknown_reason; este protocolo define su semántica, pero no declara el esquema tabular completamente cerrado. La revisión de correspondencia de todas las columnas sigue abierta.
