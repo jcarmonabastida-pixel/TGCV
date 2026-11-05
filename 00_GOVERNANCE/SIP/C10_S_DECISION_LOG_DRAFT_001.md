@@ -397,3 +397,10 @@ Se crea C10_S_ADAPTER_PROVISION_MANIFEST_AND_DEPENDENCY_GRAPH_DRAFT_001.md con c
 Se registra U_G como catálogo finito candidato de inspección (23 roles de nodo, 23 aristas, predicados y cinco clases de ruta), no como universo técnico real/exhaustivo. Todos los estados técnicos permanecen indeterminados y la cobertura efectiva es NONE hasta disponer de inventario real, SBOM, runtime, snapshots y grafo de dependencias transitivas.
 
 Se adopta como regla documental que MISSING/PARTIAL no equivalen a 0; ruta=0 exige evidencia válida y cobertura suficiente; Reach=0 exige descarte exhaustivo de rutas; F_alt,0=0 exige descarte exhaustivo de alternativas funcionalmente substituibles. Runknown permanece como clase abierta. Reach_H=?, F_alt,0=?, A_f*=?; R0/R1 no clasificables, R2 posible pero no observado. No se aprueba DGP, microdominio, comparador ni ejecución.
+
+
+## 37. Plantilla de inventario U_G — DEC-C10-043 (propuesta documental)
+
+Se crea C10_S_UG_INVENTORY_REGISTER_TEMPLATE_DRAFT_001.md como esquema vacío para registrar nodos, aristas/dependencias, rutas, predicados, snapshots/fuentes y cobertura. Se exige procedencia, identidad/versionado, estado observado 1/0/?, cobertura, evaluador/cegamiento y motivo de indeterminación. La truth del DGP queda restringida al generador/evaluador independiente.
+
+DEC-C10-043 es una propuesta de instrumento documental, no una decisión de inventario ni una aprobación del DGP. No se completan componentes, rutas, dependencias, versiones o valores de truth; cobertura NONE y A_f*, F_alt,0 y Reach_H permanecen ?. No cierra auditorías ni OPEN-C10; no autoriza inspección técnica, implementación, simulación o ejecución.
