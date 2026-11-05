@@ -31,13 +31,13 @@ Reglas obligatorias:
 
 ## 4. Registro de rutas y substituibilidad
 
-| route_id | parent_route_class (Rτ2/RA12/Rshared/Rexternal/Runknown) | route_subtype (native/manual/fallback/recovery/other) | ordered_node_edge_sequence | entry_state | target/F* | G | H/window | C0/constraints | version_set | shared_dependencies | affected_by_B | functional_substitutability (1/0/?) | evidence_ref(s) | coverage_scope_id | evaluator_record_ids | unresolved_alternatives | notes | observed_state (1/0/?) | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
+| route_id | parent_route_class (Rτ2/RA12/Rshared/Rexternal/Runknown) | route_subtype (native/manual/fallback/recovery/other) | ordered_node_edge_sequence | entry_state | target/F* | G | H/window | C0/constraints | version_set | shared_dependencies | affected_by_B | functional_substitutability (1/0/?) | evidence_ref (0..1 optional) | coverage_scope_id | evaluator_record_ids | unresolved_alternatives | notes | observed_state (1/0/?) | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | — | Runknown | unknown | — | — | — | — | — | — | — | — | ? | ? | — | — | — | Runknown | Fila de esquema; no representa ruta real | ? | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
 ## 5. Registro de predicados por ruta/paso/tiempo
 
-| predicate_id | route_id | step | time/snapshot | predicate_type (ID/REL/COND/AUTH/RES/DEP/BLOCK/APP/ALT/ORACLE/EXT) | observed_state (1/0/?) | evidence_ref(s) | coverage_scope_id | source/version/hash | adjudication_rule/tolerance | evaluator_record_ids | reason_for_unknown | impact_on_A_f/App/Reach/F_alt/IV | timestamp | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
+| predicate_id | route_id | step | time/snapshot | predicate_type (ID/REL/COND/AUTH/RES/DEP/BLOCK/APP/ALT/ORACLE/EXT) | observed_state (1/0/?) | evidence_ref (0..1 optional) | coverage_scope_id | source/version/hash | adjudication_rule/tolerance | evaluator_record_ids | reason_for_unknown | impact_on_A_f/App/Reach/F_alt/IV | timestamp | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | — | — | — | — | — | ? | — | — | — | — | — | No existe evidencia aportada | Mantener indeterminación | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
@@ -364,7 +364,7 @@ La auditoría detecta que el protocolo de procedencia estaba más desarrollado q
 | FCM-10 | §12.7 exigía campos comunes, pero las tablas §§2–6 no los mostraban físicamente. | Añadidos encabezados comunes a NODE, EDGE, ROUTE, PREDICATE y SNAPSHOT. | Corregido documentalmente; pendiente parser |
 | FCM-11 | SNAPSHOT usaba ? aunque observed_state no aplica por defecto. | Ejemplo corregido a NA; NA requiere justificación de no aplicabilidad. | Corregido |
 | FCM-12 | La clave singular evaluator_record_id en EVALUATOR_ASSESSMENT podía confundirse con el campo de navegación plural en las tablas de objeto. | Se conserva evaluator_record_id singular como PK/FK de cada evaluación E1/E2; evaluator_record_ids plural solo como referencia resumida opcional en objetos. | Corregido documentalmente en §13.2 |
-| FCM-13 | evidence_ref(s) podía interpretarse como lista serializada. | CLAIM_EVIDENCE_LINK se declara relación 1:N canónica; evidence_ref es cero o un enlace primario opcional. | Regla definida |
+| FCM-13 | evidence_ref (0..1 optional) podía interpretarse como lista serializada. | CLAIM_EVIDENCE_LINK se declara relación 1:N canónica; evidence_ref es cero o un enlace primario opcional. | Regla definida |
 | FCM-14 | Matriz §7 podía confundirse con cobertura canónica sin denominador. | Se declara vista resumen; COVERAGE_REGISTER §12.3 es registro normativo. | Corregido |
 | FCM-15 | Tipos/domínios/estados de revisión no estaban fijados. | Diccionario candidato §12.9 y matriz de obligatoriedad §12.10. | Definido documentalmente |
 | FCM-16 | No estaba fijado si claim_target_id apuntaba a ID semántico o registro versionado. | Se fija object_record_id; IDs semánticos y de registro quedan separados. | Corregido documentalmente |
