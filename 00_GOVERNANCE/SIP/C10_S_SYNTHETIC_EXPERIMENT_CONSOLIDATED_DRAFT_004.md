@@ -7530,3 +7530,12 @@ El criterio es equivalencia semántica observable y acotada al contrato, entrada
 **Límite histórico importante:** la selección de Opción A y la adopción de F* no determinan por sí solas los mecanismos concretos de F1/F2/A1/A2. Las descripciones de las fichas actuales se mantienen como roles candidatos de diseño, no TID ni contratos técnicos aprobados, hasta reconciliación/decisión explícita.
 
 **Estado:** FP-03 definido a nivel de dimensiones y lógica; predicados atómicos, dominio, mappings, envolvente de observación, excepciones, tolerancias y oráculo siguen OPEN. No hay validación, evidencia empírica ni ejecución.
+
+
+# 98. DEC-C10-052 — selección del objeto de configuración (2026-11-05)
+
+El usuario confirma la selección de la clase A: **paquete de configuración de un servicio software**, dentro del microdominio ya seleccionado por DEC-C10-051. Se adoptan como estructura conceptual inicial seis elementos: componente; parámetros tipados; referencias; reglas/restricciones; políticas asociadas; metadatos contractuales.
+
+La decisión permite especializar el contrato FP-03 sobre un objeto delimitado y separar explícitamente el contenido migrado de recursos/capacidad, permisos efectivos, dependencias instaladas y estado de los entornos, provisión B, transformación/ejecución y Outcome/Value. No introduce una capa semántica persistida adicional.
+
+**No se cierra:** dominio de entradas, contratos fuente/destino, propiedades atómicas obligatorias, mappings, tolerancias, excepciones, envolvente de observación, F1/F2/A1/A2, oráculo, DGP, D1/D2, estimandos ni identificación causal. No hay implementación, validación técnica, revisión independiente o evidencia empírica. `scientific_execution=false`; `execution_authorized=false`.
