@@ -130,3 +130,10 @@ La auditoría es `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`. No valida la
 ## 8. Addendum DEC-C10-064 — referencias versionadas bajo Opción A
 
 La aprobación de Opción A exige que el crosswalk de aristas distinga el ID padre E01–E23, la identidad atómica y las referencias a registros NODE concretos. EDGE.source_node_record_id/target_node_record_id fijan los extremos exactos dentro del mismo snapshot; source_node_id/target_node_id permanecen como IDs semánticos para trazabilidad. E07 continúa siendo regla lógica, no EDGE. E22 no autoriza inventar destinos. La nueva FK no convierte ninguna arista candidata en observada. IAM/FP debe reconciliar sus claves compuestas y snapshot_id antes del cierre.
+
+
+## 9. Reconciliación estructural Opción A — DEC-C10-064 y OAS-01…07
+
+EDGE conserva IDs semánticos edge_id/source_node_id/target_node_id y añade source_node_record_id/target_node_record_id para pinning exacto; PREDICATE conserva route_id y añade route_record_id. ROUTE_STEP sustituye ordered_node_edge_sequence como secuencia canónica. Todas las referencias interobjeto deben incorporar snapshot_id y resolver a claves candidatas explícitas.
+
+**OAS-02 sigue bloqueante:** snapshot_id no selecciona una versión exacta de SNAPSHOT cuando SNAPSHOT tiene object_version por DEC-C10-062. El crosswalk IAM/FP no puede declarar completada la integridad de mismo snapshot hasta que exista pinning al object_record_id de SNAPSHOT o una decisión que elimine esa multiplicidad de versiones.
