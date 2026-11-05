@@ -190,3 +190,64 @@ Se creó `C10_S_UG_RECORD_ID_VERSION_AND_SUPERSESSION_CONTRACT_PROPOSAL_DRAFT_00
 ## 13. Aplicación de DEC-C10-062 — 2026-11-05
 
 DEC-C10-062 queda ACCEPTED DOCUMENTALLY. La plantilla U_G contiene §12.12 con las reglas de identidad de registro, secuencia de versiones, supersession lineal e inmutabilidad. UG-SCH-07 queda aceptado documentalmente; no validado físicamente. El dictamen global permanece SCHEMA_NOT_CLOSED hasta completar revisión integral y gate técnico. No hay freeze ni ejecución científica.
+
+
+## 14. Segunda pasada documental — estado vigente tras DEC-C10-062 (2026-11-05)
+
+Esta sección es el ledger vigente de la auditoría. Los apartados 8–13 anteriores conservan su valor como registro cronológico de hallazgos y decisiones en el momento en que se redactaron; sus estados intermedios no deben interpretarse como estado actual cuando contradigan esta actualización y las decisiones DEC-C10-059…062.
+
+### 14.1. Ledger vigente de hallazgos
+
+| Hallazgo | Estado vigente | Base documental / pendiente |
+|---|---|---|
+| UG-SCH-01 — EDGE parent/atomic IDs y extremos | CORRECTED_DOCUMENTALLY; second-pass crosswalk pending | Encabezado EDGE incorpora atomic_edge_id, parent_edge_id, source_node_id y target_node_id. Sin FK física. |
+| UG-SCH-02 — SNAPSHOT→NODE | CORRECTED_DOCUMENTALLY; physical constraint pending | Etiqueta y contrato conservan FK compuesta (unit_object_record_id, unit_id) → (object_record_id, node_id). |
+| UG-SCH-03 — semantic_role y nodo raíz | ACCEPTED_DOCUMENTALLY — DEC-C10-060 | Vocabulario controlado de 16 roles y raíz LOGICAL_SERVICE_UNIT; enum/FK/constraints físicos pendientes. |
+| UG-SCH-04 — source_provenance | ACCEPTED_DOCUMENTALLY — DEC-C10-061 | Procedencia canónica en EVIDENCE_REGISTER, no duplicada en tablas de objeto. |
+| UG-SCH-05 — destino COVERAGE_SCOPE | ACCEPTED_DOCUMENTALLY — DEC-C10-061 | target_coverage_scope_id y FK tipada a coverage_scope_id. |
+| UG-SCH-06 — referencias polimórficas | ACCEPTED_DOCUMENTALLY — DEC-C10-061 | Seis FKs tipadas con exclusividad y coherencia enum en tres tablas relacionales; validación física pendiente. |
+| UG-SCH-07 — unicidad/versionado/supersession | ACCEPTED_DOCUMENTALLY — DEC-C10-062 | Unicidad por tabla, versión secuencial y cadena de supersession lineal e inmutable. |
+| UG-SCH-08 — NA en filas de esquema | CLARIFIED_DOCUMENTALLY | NA ilustrativo no es observación; NA real exige justificación. |
+| UG-SCH-09 — matriz de obligatoriedad incompleta y claves/versionado no sincronizados | CORRECTED_DOCUMENTALLY; second-pass semantic review pending | §12.10 se amplía a los diez registros operativos y separa PK lógica, claves candidatas UNIQUE, FKs y cardinalidades conforme a DEC-C10-061/062. |
+
+### 14.2. Recuento estático actualizado de los diez registros operativos
+
+Se han vuelto a contrastar encabezado, separador y primera fila de esquema en la plantilla vigente:
+
+| Tabla | Columnas |
+|---|---:|
+| NODE | 30 |
+| EDGE | 31 |
+| ROUTE | 29 |
+| PREDICATE | 24 |
+| SNAPSHOT | 26 |
+| EVIDENCE_REGISTER | 18 |
+| CLAIM_EVIDENCE_LINK | 15 |
+| COVERAGE_REGISTER | 15 |
+| EVALUATOR_ASSESSMENT | 18 |
+| ADJUDICATION_REGISTER | 17 |
+
+No se detectaron nombres de columna duplicados en esos diez encabezados. Las anchuras actuales de CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER son 15, 18 y 17; los recuentos anteriores 10, 13 y 12 quedan como mediciones históricas anteriores a la ampliación documental, no como descripción del esquema vigente.
+
+Este recuento verifica únicamente forma tabular estática. No prueba tipos, PK/FK, UNIQUE, cardinalidades, enum, CHECK, constraints, inmutabilidad, parser ni comportamiento.
+
+### 14.3. Reconciliación de la matriz §12.10
+
+La revisión detectó que la matriz anterior solo enumeraba siete registros y omitía CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER, pese a que los tres forman parte de los diez registros operativos. También resumía PK compuestas sin distinguirlas de las claves candidatas UNIQUE requeridas por las FKs tipadas y por DEC-C10-062.
+
+La plantilla §12.10 se ha sustituido documentalmente por una matriz de diez filas que:
+- conserva las PK lógicas compuestas previamente declaradas para las cinco tablas de objetos;
+- declara por separado UNIQUE(object_record_id) por tabla, requerido por las FKs tipadas;
+- declara UNIQUE(semantic_id, object_version) por tabla;
+- incorpora las cinco tablas de evidencia, vínculo, cobertura, evaluación y adjudicación;
+- mantiene DGP_TRUTH_SECURE segregada y fuera de los diez registros operativos.
+
+La actualización es una reconciliación de decisiones ya aceptadas, no una nueva decisión científica. El significado físico de PK compuesta más UNIQUE(object_record_id) deberá implementarse y comprobarse en el formato/motor elegido.
+
+### 14.4. Dictamen vigente
+
+**Dictamen: CORRECTION_REQUIRED / SCHEMA_NOT_CLOSED.**
+
+UG-SCH-01…08 tienen resoluciones documentales o aclaraciones aceptadas conforme al ledger §14.1. UG-SCH-09 se ha corregido documentalmente, pero requiere segunda pasada semántica de los diez contratos y crosswalk. Permanecen sin validar físicamente las claves, FKs compuestas/autorreferentes/tipadas, exclusividad, cardinalidades, enums, CHECK, secuencias, ciclos, inmutabilidad y seguridad/custodia.
+
+No hay freeze, inventario real, instancias, truth accesible al analizador, fixtures, validación ejecutable, revisión independiente ni evidencia empírica nueva. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
