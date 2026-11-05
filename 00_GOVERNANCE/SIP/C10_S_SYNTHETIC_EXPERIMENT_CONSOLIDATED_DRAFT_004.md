@@ -7596,3 +7596,12 @@ La matriz no selecciona claves ni valores reales, no fija obligatoriedad final n
 Se crea `C10_S_SM_ATOMIC_PROPERTY_FP_RECONCILIATION_DRAFT_001.md` para reconciliar las dimensiones semánticas SM-01…SM-10 con CMP/PAR/REF/RUL/POL/MET y FP-01…FP-08. La reconciliación corrige la matriz inicial separando propiedades compuestas: estructura formal FP-01, integridad relacional FP-02, significado funcional FP-03, compatibilidad FP-04, seguridad FP-05, aplicación FP-06, verificación post-aplicación FP-07 y procedencia FP-08.
 
 No se aprueba aún obligatoriedad/NA ni predicados confirmatorios. Se preserva DEC-C10-053: CMP/PAR/REF/RUL constitutivos; POL condicional; MET de identidad/versión/procedencia obligatorio. No se genera truth ni se ejecuta.
+
+
+# 106. DEC-C10-055 — aceptación de reconciliación SM/FP y matriz de aplicabilidad (2026-11-05)
+
+El usuario acepta la reconciliación SM-01…SM-10, propiedades CMP/PAR/REF/RUL/POL/MET y familias FP-01…FP-08. Se adopta la separación entre estructura, integridad, semántica, compatibilidad, seguridad, aplicación, verificación post-aplicación y procedencia, con predicado primario y sin doble conteo. La aceptación no hace confirmatorios todos los candidatos ni resuelve obligatoriedad/NA por instancia.
+
+Se crea `C10_S_PROPERTY_APPLICABILITY_AND_OBLIGATORINESS_MATRIX_DRAFT_001.md` para operacionalizar la declaración ex ante mediante IAM sellado antes de Z/B. La matriz propone O/C/NA/? por propiedad, disparadores, cardinalidad explícita, controles contra scope gaming y separación entre F* funcional, gates técnicos FP-04/05/06 y validez probatoria FP-08.
+
+**Estado:** DEC-C10-055 aceptada; matriz de aplicabilidad PROPUESTA, no aprobada/congelada/validada. Persisten decisiones sobre cardinalidad cero de REF/RUL, fronteras F*/gates y detalle del IAM. Sin truth, fixtures, ejecución ni evidencia empírica.
