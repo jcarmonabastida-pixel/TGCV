@@ -7519,3 +7519,14 @@ Se crea `C10_S_FSTAR_OPERATIONAL_PROPERTY_AND_ADJUDICATION_MATRIX_DRAFT_001.md`,
 **Estado de F*:** definido a nivel de familias y lógica de adjudicación; predicados atómicos, mappings, tolerancias, H/G/C0, contratos concretos y oráculo siguen abiertos. No hay implementación, validación ni evidencia empírica.
 
 **Reconciliación de DEC-C10-051:** las menciones previas en §94 que describen Opción A como «no aprobada» son estado histórico anterior a la decisión. Para el estado vigente rige §95 y DEC-C10-051: Opción A está seleccionada para el diseño C10-S y F* adoptado como contrato de trabajo candidato. La selección no equivale a aprobación de ejecución ni cierre operacional. La referencia de §94 se interpreta como descripción de la propuesta original en el momento de su registro, no como estado vigente.
+
+
+# 97. Contrato candidato FP-03 — preservación semántica (2026-11-05)
+
+Se crea `C10_S_FP03_SEMANTIC_PRESERVATION_CONTRACT_DRAFT_001.md`. Desarrolla FP-03 mediante dimensiones candidatas SM-01…SM-10 (identidad/significado, valores/tipos/dominios, relaciones, null/default/ausencia, cardinalidad, orden, reglas, tiempo, permisos/control y extensiones desconocidas), reglas de mapping, clases de variación, adjudicación trivalente y requisitos de evidencia/cegamiento.
+
+El criterio es equivalencia semántica observable y acotada al contrato, entradas, C0, G y H preespecificados; no igualdad textual ni equivalencia universal. No se introduce una capa semántica persistida paralela. Se distinguen las propiedades semánticas de FP-03 y el cumplimiento de seguridad FP-05.
+
+**Límite histórico importante:** la selección de Opción A y la adopción de F* no determinan por sí solas los mecanismos concretos de F1/F2/A1/A2. Las descripciones de las fichas actuales se mantienen como roles candidatos de diseño, no TID ni contratos técnicos aprobados, hasta reconciliación/decisión explícita.
+
+**Estado:** FP-03 definido a nivel de dimensiones y lógica; predicados atómicos, dominio, mappings, envolvente de observación, excepciones, tolerancias y oráculo siguen OPEN. No hay validación, evidencia empírica ni ejecución.
