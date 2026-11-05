@@ -1297,3 +1297,12 @@ La resolución también concreta EDGE→NODE, PREDICATE→ROUTE y ROUTE_STEP con
 **Estado:** arquitectura A aceptada; detalle de resolución propuesto, pendiente de aceptación expresa. La circularidad queda resuelta a nivel lógico, pero condicionada a demostrar que el motor elegido soporta FKs diferibles equivalentes. Si no los soporta, se detiene la implementación y se reabre una decisión arquitectónica; no se debilitan FKs ni se introduce un workaround tácito.
 
 **Siguiente paso:** revisar y aceptar/corregir el contrato de resolución antes de propagar columnas y ROUTE_STEP a la plantilla U_G. Después, reconciliar encabezados, §12.7, §12.8, §12.9, §12.10, §12.12, IAM/FP crosswalk y matriz de claves; solo posteriormente preparar el gate técnico. No se ha modificado la plantilla, no se han ejecutado validadores/parser/constraints/fixtures ni experimentos. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
+
+
+# LXVII. DEC-C10-064 — aprobación y aplicación documental de resolución Opción A (2026-11-05)
+
+El usuario aprueba la resolución de detalle de Opción A. La decisión queda registrada en `DEC-C10-064_OPTION_A_STRUCTURAL_RESOLUTION_ACCEPTANCE.md`. La plantilla U_G incorpora el contrato en §13. Se aprueban versionado observacional, FK circular diferible SNAPSHOT↔NODE raíz, pinning de EDGE→NODE y PREDICATE→ROUTE, ROUTE_STEP y separación entre Δobservación/Δestructura/ΔE_T/ΔT_acc*.
+
+La aplicación es documental y de diseño; no supone schema freeze ni validación física. El motor relacional no está fijado y su compatibilidad con FKs diferibles es un gate obligatorio. La continuidad cross-row de ROUTE_STEP, constraints compuestas, secuencias/supersession, inmutabilidad, parser y pruebas negativas siguen pendientes.
+
+**Siguiente paso:** auditoría integral de reconciliación de plantilla, encabezados, PK/UK/FK/CHECK, diccionario, IAM/FP crosswalk y contratos UG-SR/059–062. Corregir las contradicciones heredadas y comprobar recuentos de columnas/filas antes de ejecutar validadores autorizados. Mantener PR #116 Draft y no tocar main. No se ejecutan validadores ni experimentos en esta fase; `scientific_execution=false`; `execution_authorized=false`.
