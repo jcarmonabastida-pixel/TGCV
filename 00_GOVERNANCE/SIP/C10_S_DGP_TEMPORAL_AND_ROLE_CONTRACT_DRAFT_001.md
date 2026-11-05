@@ -732,3 +732,10 @@ Las fichas F1/F2/A1/A2 se interpretan según el documento `C10_S_OPTION_A_FSTAR_
 La evaluación de conformidad de las rutas se rige, como diseño candidato, por `C10_S_FSTAR_OPERATIONAL_PROPERTY_AND_ADJUDICATION_MATRIX_DRAFT_001.md`. F* se adjudica mediante propiedades obligatorias aplicables y regla no compensatoria: 1 solo si todas cumplen; 0 si alguna incumple; ? si falta evidencia concluyente y no existe fallo confirmado. NA exige no aplicabilidad preespecificada y justificada.
 
 Esta regla de medición no sustituye los mecanismos causales del DGP. El truth generador, la observación del analizador, accesibilidad, aplicabilidad, ejecución, Outcome y Value permanecen separados. La matriz no autoriza asignar valores truth ni completar parámetros sin decisión/evidencia.
+
+
+## 18. Preservación semántica FP-03
+
+La evaluación de preservación semántica se especifica en `C10_S_FP03_SEMANTIC_PRESERVATION_CONTRACT_DRAFT_001.md`. Las dimensiones SM-01…SM-10 son candidatas; el DGP no debe asignarles truth hasta que se delimiten el objeto de configuración, las propiedades obligatorias, mappings y cobertura. El analizador solo recibe observaciones permitidas; no se filtra truth generador.
+
+La selección de Opción A no basta para inferir mecanismos técnicos de F1/F2/A1/A2. Las fichas actuales describen roles candidatos, no identidades TID ni contratos implementables. La semántica funcional concreta deberá derivarse de una decisión de diseño explícita antes de completar R0–R3.
