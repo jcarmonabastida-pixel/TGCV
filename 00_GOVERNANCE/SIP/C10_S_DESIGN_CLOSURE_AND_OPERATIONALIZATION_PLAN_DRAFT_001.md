@@ -1038,3 +1038,16 @@ Se crea `C10_S_CONFIGURATION_OBJECT_ATOMIC_PROPERTY_CATALOG_DRAFT_001.md`, con p
 **No cerrado:** dominio abstracto concreto, contratos fuente/destino, taxonomías, semántica de parámetros/reglas, inclusión de políticas, obligatoriedad y NA por propiedad, mappings, tolerancias, cobertura y oráculo. No hay ejecución ni validación.
 
 **Siguiente paso:** decidir el alcance mínimo del DGP base (qué dimensiones SM son constitutivas del paquete y cuáles quedan condicionales/adversariales) y definir un contrato abstracto fuente/destino que permita fijar predicados atómicos y mappings sin elegir tecnología real. Mantener la política de seguridad FP-05 diferenciada de la preservación FP-03.
+
+
+# XL. Alcance del DGP base y contrato abstracto fuente/destino (2026-11-05)
+
+Se crea `C10_S_BASE_DGP_SCOPE_AND_ABSTRACT_CONFIGURATION_CONTRACT_PROPOSAL_DRAFT_001.md` como siguiente derivación de DEC-C10-052 y del catálogo CMP/PAR/REF/RUL/POL/MET.
+
+**Recomendación para deliberación:** cuatro familias constitutivas en el DGP base (componentes, parámetros tipados, referencias y reglas/restricciones con gramática mínima); políticas asociadas como módulo condicional; metadatos contractuales obligatorios para identidad/procedencia, con extensiones desconocidas en escenarios condicionales. La estructura conceptual de seis elementos permanece intacta: la propuesta no elimina políticas, sino que permite declarar ex ante su ausencia en el escenario base y examinarlas en escenarios secundarios.
+
+Se estructuran C_src, C_dst y M y se proponen predicados base para correspondencia de componentes, tipos/valores/estados de parámetros, extremos/relaciones de referencias, lógica de reglas, cobertura del mapping y estado realmente aplicado. Son predicados candidatos, sin dominios ni truth.
+
+**No cerrado:** decisión sobre la partición; gramática de reglas; cardinalidades; taxonomías; semántica de ausencia/null/default; mapping; propiedades obligatorias; oráculo; reconciliación F1/F2/A1/A2; DGP completo y parámetros. No hay validación técnica, revisión independiente, evidencia empírica ni ejecución.
+
+**Siguiente paso:** deliberar y registrar explícitamente el alcance del DGP base. Solo después formalizar el contrato abstracto con dominios finitos y mappings permitidos, revisar los contratos de transformación y actualizar DGP/estimandos. No generar truth ni ejecutar.
