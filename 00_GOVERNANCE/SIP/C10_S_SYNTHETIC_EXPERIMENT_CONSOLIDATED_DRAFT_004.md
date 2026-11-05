@@ -7795,7 +7795,7 @@ El objetivo C10-S es comprobar si el procedimiento causal recupera la contribuci
 
 La simulación solo demuestra capacidad metodológica dentro del DGP y los supuestos definidos. No demuestra por sí sola causalidad empírica en sistemas reales ni confirma/refuta una regularidad TGCV general. La conclusión debe limitarse a población, políticas, régimen, horizonte, constructos y regla de Value especificados.
 
-Prioridad inmediata: resolver intervención autónoma sobre accesibilidad, q/g0/g1/C_auth, jerarquía de estimandos, población y comparador D1/D2; completar DGP, medición, identificación/falsación/sensibilidad y dimensionamiento estadístico. N=2.000 y 1.000 réplicas siguen candidatos provisionales; faltan potencia/precisión, error Monte Carlo, escenarios de primera etapa débil, heterogeneidad, missingness, interferencia y criterios delta/epsilon.
+Prioridad inmediata: resolver intervención autónoma sobre accesibilidad, q/g0/g1/C_auth, jerarquía de estimandos, población/soporte y legitimidad del comparador D2 (primario candidato) y D1 (secundario); completar DGP, medición, identificación/falsación/sensibilidad y dimensionamiento estadístico. La selección de precedencia D2/D1 ya está resuelta por DEC-C10-066 y no debe reabrirse. N=2.000 y 1.000 réplicas siguen candidatos provisionales; faltan potencia/precisión, error Monte Carlo, escenarios de primera etapa débil, heterogeneidad, missingness, interferencia y criterios delta/epsilon.
 
 Este registro no aprueba decisiones científicas, no cambia Core/RMA/matriz/STATUS y no autoriza implementación ni ejecución. C10-S sigue Draft/no congelado/no ejecutado.
 
