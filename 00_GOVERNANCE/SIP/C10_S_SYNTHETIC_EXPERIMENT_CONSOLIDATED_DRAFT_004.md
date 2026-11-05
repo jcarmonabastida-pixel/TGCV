@@ -7723,3 +7723,12 @@ La plantilla U_G actualiza los encabezados de NODE/EDGE/ROUTE/PREDICATE con snap
 # 121. ROUTE_STEP y matriz de claves reconciliados (2026-11-05)
 
 ROUTE_STEP queda incorporado en la matriz de claves U_G §12.10 como relación normalizada adicional, sin versionado de objeto independiente. Su secuencia se fija a route_record_id y snapshot_id; los destinos NODE/EDGE son mutuamente excluyentes y la continuidad requiere validación cross-row. La revisión integral de encabezados, tablas normalizadas y crosswalks IAM/FP sigue abierta; UG-SCH-10 no se cierra.
+
+
+# 122. Auditoría integral de reconciliación U_G / Opción A (2026-11-05)
+
+Se crea `C10_S_UG_OPTION_A_RECONCILIATION_AUDIT_DRAFT_001.md` con siete hallazgos OAS-01…07. El control de forma de las 19 tablas Markdown pasa solo igualdad de columnas/ausencia de encabezados duplicados. Se detecta un bloqueo crítico: SNAPSHOT está versionado (DEC-C10-062), pero las tablas hijas solo contienen snapshot_id semántico y no fijan object_record_id exacto de la revisión referenciada. También se detectan contratos heredados §12.7–12.10, claves candidatas incompletas, secuencia duplicada en ROUTE, crosswalk IAM/FP narrativo sin mapping tabular y artefactos de revisión obsoletos.
+
+Se retira ordered_node_edge_sequence del encabezado ROUTE; se añade §15 como contrato reconciliado para las partes aprobadas; se amplía crosswalk y se actualizan documentos de revisión. El pinning exacto de SNAPSHOT no se modifica unilateralmente: requiere DEC adicional. Recomendación técnica/documental: snapshot_object_record_id en NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP y FK compuesta (snapshot_id, snapshot_object_record_id) → SNAPSHOT(snapshot_id, object_record_id).
+
+UG-SCH-10 permanece OPEN. No hay schema freeze, validación física, revisión independiente, parser, DDL, fixtures ni experimento. `scientific_execution=false`; `execution_authorized=false`.
