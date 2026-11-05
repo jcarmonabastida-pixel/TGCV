@@ -117,3 +117,18 @@ No modifica main, RMA, Evidence→Claim Matrix, STATUS, TGCV Core, ni claim-leve
 La sección 5 documenta una revisión estática histórica de diez tablas, anterior a DEC-C10-064. No debe interpretarse como control de la plantilla vigente. La versión actual incluye además ROUTE_STEP (19 tablas Markdown totales, 11 registros operativos si se cuenta ROUTE_STEP como relación normalizada adicional) y nuevos campos snapshot_id y referencias exactas.
 
 Antes de iniciar la revisión independiente R1/R2, incorporar OAS-01…07 del informe `C10_S_UG_OPTION_A_RECONCILIATION_AUDIT_DRAFT_001.md`, fijar el commit exacto de todos los artefactos y resolver OAS-02. La revisión independiente continúa NOT STARTED; el addendum no cambia ningún estado SR-01…20 ni acredita PASS técnico.
+
+
+## 10. Addendum de reconciliación — DEC-C10-065 y OAS-08…10 (2026-11-05)
+
+La revisión independiente no debe usar sin actualización las referencias históricas de §§2–5 y §9. La versión vigente del esquema y contratos que debe revisarse incluye:
+- U_G §§2–6 (vistas físicas) y §§13–16 (contrato normativo vigente).
+- DEC-C10-059…065 y sus contratos especializados de boundary_class, semantic_role/nodo raíz, referencias tipadas/procedencia, identidad/versionado/supersession y pinning exacto.
+- Crosswalk IAM/FP §9.3, con las doce relaciones y orden de columnas.
+- Auditoría OAS-01…10, incluido el pinning exacto en ROUTE_STEP y SNAPSHOT→NODE raíz.
+- Reglas de ROUTE_STEP: mismo par `snapshot_id + snapshot_object_record_id` en pertenencia y FKs a ROUTE/NODE/EDGE; continuidad cross-row, índices contiguos y CHECK de destino exclusivo.
+- Claves semánticas por revisión exacta para NODE/EDGE/ROUTE/PREDICATE; no reutilizar `UNIQUE(snapshot_id,semantic_id)` como si snapshot_id identificara una revisión.
+- FKs tipadas a seis destinos en CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER; procedencia canónica en EVIDENCE_REGISTER; `evidence_ref` navegación 0..1 y CLAIM_EVIDENCE_LINK 0..n.
+- Cadena de versionado solo para las cinco tablas de objetos; ROUTE_STEP y registros de evidencia/evaluación/adjudicación conservan contratos propios.
+
+**Estado:** actualización documental del paquete de revisión. R1/R2 NOT STARTED; los hashes/commits exactos se fijarán al iniciar la revisión. No acredita PASS SR-01…20 ni validación física. El gate de revisión debe evaluar explícitamente OAS-01…10 y las decisiones DEC-C10-059…065, sin dar por resuelto técnicamente ningún punto.
