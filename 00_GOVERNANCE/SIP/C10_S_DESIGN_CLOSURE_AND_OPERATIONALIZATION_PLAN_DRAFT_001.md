@@ -1361,3 +1361,18 @@ Pendiente: reconciliación completa de todas las claves candidatas/FKs, referenc
 Se amplía U_G §15.2/§15.6 con claves candidatas y FKs compuestas en orden explícito para la revisión exacta de SNAPSHOT y las referencias EDGE→NODE, PREDICATE→ROUTE, ROUTE_STEP→ROUTE/NODE/EDGE y SNAPSHOT→NODE raíz. Se exige el mismo par snapshot_id + snapshot_object_record_id en todos los enlaces. OAS-02 queda RESOLVED_DOCUMENTARILY; OAS-03 SPECIFIED_DOCUMENTARILY / COMPLETENESS_AND_ENGINE_VALIDATION_PENDING.
 
 Siguiente bloque: reconciliar las tablas normalizadas §12.1–§12.10, los campos físicos §§2–6, crosswalk IAM/FP y contratos de integridad, asegurando que no existan definiciones normativas duplicadas. Después repetir control estático de 19 tablas y revisión independiente. No hay DDL ni validación técnica.
+
+
+# LXXIII. Reconciliación de referencias U_G tras DEC-C10-065 (2026-11-05)
+
+Se completa un nuevo pase documental de coherencia entre §§12.7–12.10, §§13–16, los encabezados físicos U_G y el crosswalk IAM/FP.
+
+Hallazgo añadido OAS-08: las FKs ROUTE_STEP→ROUTE/NODE/EDGE de §15.3 omitían `snapshot_object_record_id`, pese a que §15.1–15.2 y DEC-C10-065 exigen fijar la misma revisión exacta de SNAPSHOT en todas las referencias interobjeto. Se corrigen las tres FKs incluyendo el par completo `snapshot_id + snapshot_object_record_id`, con orden coincidente con las claves candidatas de destino. Se propaga el campo a las formulaciones resumidas de §13.5 y §14.
+
+Se explicita la precedencia normativa: §15.2 es la matriz física vigente para Opción A + DEC-C10-065; §12.10 se conserva como baseline histórico, sin prevalencia sobre §15.2. §12.7 y §12.8.12 reciben notas de reconciliación. El crosswalk IAM/FP incorpora §9.3 con las doce relaciones físicas, columnas origen/destino y orden de FK explícito, incluida la referencia SNAPSHOT→NODE raíz.
+
+El control estático vuelve a analizar las 19 tablas Markdown: encabezados, separadores y filas presentes son dimensionalmente consistentes y no presentan nombres duplicados en los encabezados. Recuentos: NODE 32; EDGE 35; ROUTE 30; ROUTE_STEP 8; PREDICATE 27; SNAPSHOT 26; EVIDENCE_REGISTER 18; CLAIM_EVIDENCE_LINK 15; COVERAGE_REGISTER 15; EVALUATOR_ASSESSMENT 18; ADJUDICATION_REGISTER 17.
+
+**Resultado limitado:** PASS_FORMAT_ONLY. No demuestra integridad referencial física, validez de las claves candidatas, nulabilidad/CHECKs, circularidad diferible, continuidad cross-row, inmutabilidad, compatibilidad de motor ni validez científica. OAS-01/02/04/08 quedan resueltos documentalmente; OAS-03 requiere revisión independiente y validación de motor; OAS-05 está especificado documentalmente y pendiente de revisión; OAS-06 parcial; OAS-07 permanece como nota de gobernanza. UG-SCH-10 OPEN; esquema no congelado.
+
+Siguiente operación: cotejar las claves y referencias del contrato normalizado contra los contratos de identidad/versionado, SNAPSHOT→NODE raíz, referencias tipadas, procedencia y adjudicación; después actualizar checklist/autoauditoría y someter el esquema completo a revisión independiente R1/R2. No seleccionar motor, crear DDL, ejecutar parser/fixtures/validadores ni simulaciones sin gate y autorización separados. `scientific_execution=false`; `execution_authorized=false`.
