@@ -856,3 +856,10 @@ Se compara el protocolo de evidencia con las columnas y registros de la plantill
 Se corrige documentalmente en la plantilla §§12–13 y protocolo §13 mediante registros EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER; truth DGP segregada; parent_route_class separado de route_subtype; campos comunes y reglas de referencias/versionado.
 
 **Resultado:** FCM-01…09 tratados en el diseño. El esquema no se declara cerrado: falta revisión independiente, validación de tipos/constraints y prueba de no exposición de truth. No se ha generado instancia real ni inventario. Cobertura NONE, A_f*/F_alt,0/Reach_H indeterminados. Sin inspección real ni ejecución.
+
+
+# XXV. Ejecución del plan — consistencia interna y cierre documental del esquema U_G (2026-11-05)
+
+La segunda pasada detecta FCM-10…16 y corrige físicamente los encabezados de NODE, EDGE, ROUTE, PREDICATE y SNAPSHOT; establece diccionario de tipos/dominios, obligatoriedad por tabla, cardinalidades, integridad referencial y semántica de NA. CLAIM_EVIDENCE_LINK se define como relación 1:N; COVERAGE_REGISTER como fuente normativa; §7 queda como vista resumen; evaluadores E1/E2 como filas separadas.
+
+**Resultado:** FCM-01…16 tratados documentalmente. La consistencia estática de los artefactos ha sido revisada, pero no se ha ejecutado parser, validador, constraint check, prueba de seguridad o prueba de cegamiento. No se declara esquema validado/cerrado. Revisión independiente y validación ejecutable pendientes. No hay inventario técnico ni cobertura real; no se modifica la autorización.
