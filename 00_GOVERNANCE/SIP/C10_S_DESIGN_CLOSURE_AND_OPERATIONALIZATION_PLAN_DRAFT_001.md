@@ -1367,7 +1367,7 @@ Siguiente bloque: reconciliar las tablas normalizadas §12.1–§12.10, los camp
 
 Se completa un nuevo pase documental de coherencia entre §§12.7–12.10, §§13–16, los encabezados físicos U_G y el crosswalk IAM/FP.
 
-Hallazgo añadido OAS-08: las FKs ROUTE_STEP→ROUTE/NODE/EDGE de §15.3 omitían `snapshot_object_record_id`, pese a que §15.1–15.2 y DEC-C10-065 exigen fijar la misma revisión exacta de SNAPSHOT en todas las referencias interobjeto. Se corrigen las tres FKs incluyendo el par completo `snapshot_id + snapshot_object_record_id`, con orden coincidente con las claves candidatas de destino. Se propaga el campo a las formulaciones resumidas de §13.5 y §14.
+Hallazgo añadido OAS-08: las FKs ROUTE_STEP→ROUTE/NODE/EDGE de §15.3 omitían `snapshot_object_record_id`, pese a que §15.1–15.2 y DEC-C10-065 exigen fijar la misma revisión exacta de SNAPSHOT en todas las referencias interobjeto. Se corrigen las tres FKs incluyendo el par completo `snapshot_id + snapshot_object_record_id`, con orden coincidente con las claves candidatas de destino. Se actualizan §§13.1–13.5 y §14: los cinco registros dependientes incorporan el pinning exacto; las FKs EDGE→NODE, PREDICATE→ROUTE y SNAPSHOT→NODE raíz quedan expresadas con columnas/orden coherentes con §15.2.
 
 Se explicita la precedencia normativa: §15.2 es la matriz física vigente para Opción A + DEC-C10-065; §12.10 se conserva como baseline histórico, sin prevalencia sobre §15.2. §12.7 y §12.8.12 reciben notas de reconciliación. El crosswalk IAM/FP incorpora §9.3 con las doce relaciones físicas, columnas origen/destino y orden de FK explícito, incluida la referencia SNAPSHOT→NODE raíz.
 
