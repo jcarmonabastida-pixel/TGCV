@@ -1243,3 +1243,8 @@ UG-SCH-03 queda ACCEPTED_DOCUMENTALLY, pendiente de validación física de enum,
 Se corrige documentalmente UG-SCH-02: el encabezado SNAPSHOT expresa la FK compuesta `(unit_object_record_id, unit_id) → NODE.(object_record_id, node_id)`, conforme a DEC-C10-059. Se aclara UG-SCH-08: los NA de las filas ilustrativas NODE/SNAPSHOT son marcadores de plantilla, no observaciones reales. UG-SCH-03 queda aceptado documentalmente por DEC-C10-060.
 
 UG-SCH-04 (procedencia), UG-SCH-05 (claim target de cobertura), UG-SCH-06 (integridad de FK polimórficas) y UG-SCH-07 (unicidad/versionado/supersedes) permanecen abiertos. Dictamen global: SCHEMA_NOT_CLOSED. No se ejecutan parser, constraints, fixtures, simulaciones ni experimentos; `scientific_execution=false`; `execution_authorized=false`.
+
+
+# LX. Propuesta de referencias tipadas y procedencia canónica (2026-11-05)
+
+Se crea `C10_S_UG_TYPED_TARGET_REFERENTIAL_INTEGRITY_CONTRACT_PROPOSAL_DRAFT_001.md` para UG-SCH-04/05/06. La propuesta define FKs específicas por destino (NODE, EDGE, ROUTE, PREDICATE, SNAPSHOT y COVERAGE_SCOPE), exclusividad exactamente-una y coherencia con enum de tipo en CLAIM_EVIDENCE_LINK; extiende el mismo patrón a EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER. `source_provenance` queda canónica en EVIDENCE_REGISTER y no duplicada en tablas de objetos. La propuesta está pendiente de aceptación; no se altera todavía la plantilla. UG-SCH-07 sigue OPEN; esquema global SCHEMA_NOT_CLOSED. No se ejecutan parser, constraints, fixtures, simulaciones ni experimentos; `scientific_execution=false`; `execution_authorized=false`.
