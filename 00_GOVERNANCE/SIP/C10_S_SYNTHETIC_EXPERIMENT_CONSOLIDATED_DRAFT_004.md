@@ -7426,3 +7426,12 @@ El protocolo establece que ausencia solo puede clasificarse 0 con universo opera
 El cross-reference se incorpora a la plantilla §11, DGP §44, plan XXIII, matriz de cierre §23, Decision Log §39 y registro de pruebas §46.
 
 **Dictamen:** protocolo documental desarrollado, no aplicado ni validado sobre sistemas reales. No hay fuentes observadas, inventario ni adjudicación. Cobertura NONE; A_f*, F_alt,0 y Reach_H permanecen ?. La plantilla aún necesita auditoría de correspondencia campo a campo. No se cierran MD-C1…6, GC/UGI/UGC, AUD-005/007/010/011 ni OPEN-C10; no se aprueba microdominio, D1/D2, DGP o freeze, ni se autoriza implementación/simulación/ejecución.
+
+
+# 86. Auditoría campo-a-campo del esquema de evidencia U_G (2026-11-05)
+
+Se audita la correspondencia del protocolo U_G con las tablas físicas de la plantilla. Se detecta que el protocolo definía requisitos sin tablas/campos suficientes: no había EVIDENCE_REGISTER separado, vínculo claim-evidence, denominadores y fuentes válidas en cobertura, registros independientes E1/E2 ni expediente de adjudicación. Además, truth_dgp aparecía como columna de la tabla analítica y route_class mezclaba clases primarias con subtipos.
+
+Se normaliza la plantilla §§12–13: EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_ASSESSMENT, ADJUDICATION_REGISTER, segregación DGP_TRUTH_SECURE fuera del dataset analítico, separación parent_route_class/route_subtype, campos comunes y reglas de integridad referencial/versionado. El protocolo §13 se actualiza con el mismo contrato.
+
+**Dictamen:** brechas FCM-01…09 tratadas documentalmente. El esquema aún requiere revisión independiente y validación de tipos/constraints; no está cerrado. No hay inventario ni cobertura real; A_f*, F_alt,0 y Reach_H siguen ?. No se cierra UGI/UGC/UGE, MD-C1…6 ni AUD-005/007/010/011. No se autoriza inspección real, implementación, simulación ni ejecución.
