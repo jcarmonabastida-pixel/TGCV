@@ -7492,3 +7492,12 @@ Se propone: (a) `evidence_ref` opcional 0..1 como atajo de navegación; (b) CLAI
 # 93. Decisión documental UG-SR-A01 — aceptación explícita (2026-11-05)
 
 El usuario acepta la regla de evidencia y cardinalidad registrada en plantilla §12.11, protocolo §17 y Test Contract Register §§52–53: `evidence_ref` opcional 0..1 de navegación; CLAIM_EVIDENCE_LINK relación canónica 0..n; vínculo válido obligatorio para observed_state 1/0; estado ? sin vínculo solo con unknown_reason, MISSING y límites de búsqueda/cobertura; NA con justificación. La contradicción documental queda resuelta. SR-03 se mantiene CONDITIONAL hasta validación técnica de instancias, cardinalidad, FK y parser. No se declara freeze, revisión independiente, inventario U_G ni cobertura efectiva.
+
+
+# 94. F* y fichas transformacionales candidatas para Opción A
+
+Se ha creado `C10_S_OPTION_A_FSTAR_AND_TRANSFORMATION_CARDS_PROPOSAL_DRAFT_001.md`. El documento desarrolla una propuesta funcional para F*, F1/τ2, F2, A1 y A2, basada en la recomendación de migración de configuración entre entornos software y en la reconciliación histórica de fichas.
+
+La propuesta distingue conversión focal, aplicación/verificación destino, exportación neutral e importación/aplicación nativa; define un F* común técnico, independiente de Outcome/Value; y explicita entradas/salidas, precondiciones, accesibilidad, ejecución, fallos y pendientes. No fija formatos, versiones, tolerancias, recursos, ventanas ni estados generadores.
+
+**Estado:** propuesta de operacionalización; Opción A y F* siguen sin aprobación formal en el repositorio. No se cierra OPEN-C10-003 ni la selección de microdominio. No hay inventario real, DGP completo, validación, simulación o ejecución.
