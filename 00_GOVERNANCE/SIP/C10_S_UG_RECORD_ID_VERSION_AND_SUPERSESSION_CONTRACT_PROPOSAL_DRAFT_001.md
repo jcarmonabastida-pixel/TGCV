@@ -132,3 +132,8 @@ Se recomienda aceptar este contrato con:
 - snapshots fijados a la versión exacta del registro raíz.
 
 **Estado:** ACEPTED DOCUMENTALLY por DEC-C10-062. La plantilla U_G ha recibido el complemento normativo §12.12. No implica freeze ni validación física.
+
+
+## 12. Addendum DEC-C10-064 — significado observacional de object_version
+
+Bajo Opción A, object_version sigue siendo entero positivo, secuencial y lineal por identidad semántica, pero representa la revisión del registro observacional. Cada nueva aparición de una entidad semántica en un snapshot nuevo genera nuevo object_record_id y siguiente versión aunque la estructura observada sea idéntica. supersedes_record_id sigue apuntando al predecesor inmediato. Una versión nueva no prueba cambio material, cambio de accesibilidad ni cambio de evidencia. El diff debe comparar atributos/relaciones sustantivos entre snapshots comparables, excluyendo IDs opacos, record IDs, timestamps y números de versión como señales de cambio.
