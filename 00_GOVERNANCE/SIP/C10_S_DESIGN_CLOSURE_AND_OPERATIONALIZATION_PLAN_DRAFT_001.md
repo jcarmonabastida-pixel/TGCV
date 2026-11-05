@@ -1,3 +1,7 @@
+> **HISTÓRICO / SUPERSEDIDO COMO GUÍA OPERATIVA (2026-11-05).** Este plan conserva el registro de su elaboración, pero no debe utilizarse para dirigir nuevas decisiones o secuencias de C10-S. La guía vigente de trabajo es `C10_S_DESIGN_CLOSURE_AND_OPERATIONALIZATION_PLAN_DRAFT_002.md`, sujeta a la auditoría `C10_S_MASTER_RECONCILIATION_AUDIT_DRAFT_001.md` y a la precedencia del maestro. Las formulaciones anteriores solo se mantienen para trazabilidad.
+
+---
+
 # C10-S — Plan integral de cierre del diseño y operacionalización
 
 **ID:** C10-S-PLAN-001 · **Versión:** Draft 001 · **Fecha:** 2026-11-04
