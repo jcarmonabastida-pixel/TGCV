@@ -409,3 +409,43 @@ Esta sección complementa y prevalece sobre cualquier formulación genérica ant
 - `created_at` es record-time, no tiempo de observación/validez. SNAPSHOT conserva la FK compuesta a la versión exacta del NODE raíz; nunca se resuelve a la última versión implícitamente.
 
 **Estado:** ACCEPTED DOCUMENTALLY por DEC-C10-062. Constraints, FK autorreferentes, secuencias, triggers, inmutabilidad y detección de ciclos quedan pendientes del gate técnico autorizado; no hay validación física.
+
+
+## 13. Aplicación normativa — DEC-C10-064 / Opción A (2026-11-05)
+
+Esta sección complementa y prevalece sobre los encabezados incompatibles de §§2–6 y sobre formulaciones previas de pertenencia/referencias. No crea instancias ni altera la semántica de los catálogos.
+
+### 13.1. NODE
+
+Añadir `snapshot_id` obligatorio (FK a SNAPSHOT) a cada registro NODE bajo Opción A. Mantener `node_id` como identidad semántica y `object_record_id` como identidad inmutable de fila. Claves candidatas necesarias: UNIQUE(`snapshot_id, object_record_id`), UNIQUE(`snapshot_id, object_record_id, node_id`) y UNIQUE(`snapshot_id, node_id`). La última impide duplicar una misma identidad semántica dentro del mismo snapshot.
+
+### 13.2. EDGE
+
+Añadir `snapshot_id`, `source_node_record_id` y `target_node_record_id`, todos obligatorios en filas EDGE observadas. Mantener `source_node_id`/`target_node_id` como IDs semánticos/crosswalk. Las FKs compuestas deben comprobar que ambos record IDs y sus IDs semánticos resuelven a NODE del mismo snapshot. No se admiten aristas con extremos de otro snapshot ni resolución por identidad semántica aislada/última versión.
+
+### 13.3. ROUTE y PREDICATE
+
+ROUTE añade `snapshot_id` obligatorio. PREDICATE añade `snapshot_id` y `route_record_id`; su FK compuesta debe resolver a la revisión exacta de ROUTE del mismo snapshot y comprobar `route_id` semántico. `route_id` aislado no identifica la versión evaluada.
+
+### 13.4. SNAPSHOT y nodo raíz
+
+SNAPSHOT conserva `unit_id` y `unit_object_record_id`. La FK raíz se refuerza a:
+`SNAPSHOT(snapshot_id, unit_object_record_id, unit_id) → NODE(snapshot_id, object_record_id, node_id)`.
+El NODE destino debe tener `semantic_role=LOGICAL_SERVICE_UNIT`. Se mantiene la unicidad de la raíz para unidad/snapshot/scope. La circularidad SNAPSHOT↔NODE se valida al COMMIT mediante constraints diferibles y transacción atómica. Si el motor elegido no soporta FKs diferibles o garantía equivalente demostrada, el gate físico queda BLOCKED; no se debilitan FKs ni se confirma un estado huérfano.
+
+### 13.5. ROUTE_STEP — relación operativa normalizada
+
+Añadir ROUTE_STEP como relación de secuencia con campos mínimos: `route_step_id` (o PK compuesta `route_record_id, step_index`), `snapshot_id`, `route_record_id`, `step_index`, `step_type` (NODE/EDGE), `node_record_id` nullable y `edge_record_id` nullable. Cada paso debe referenciar exactamente uno de NODE/EDGE, coherente con step_type. Todas las FKs incluyen snapshot_id. Los índices empiezan en 1, son únicos y contiguos por ruta. La continuidad entre nodos y aristas adyacentes es una invariante cross-row que requiere constraint/trigger verificable o validador independiente y pruebas negativas. La secuencia serializada de ROUTE deja de ser fuente canónica; puede sobrevivir solo como vista/export derivado.
+
+### 13.6. Interpretación y diff
+
+`object_version` es la revisión observacional secuencial por identidad semántica. Nueva captura en otro snapshot genera nueva fila/version aunque los atributos sean idénticos. Por ello:
+- cambio de record ID/version/snapshot no implica cambio material;
+- cambios estructurales se determinan comparando propiedades constitutivas y relaciones entre snapshots comparables;
+- cambios de evidencia/cobertura se registran separadamente como ΔE_T;
+- ΔT_acc* se deriva mediante su contrato independiente, outcome-blind y con universo/frontera/granularidad/mapping fijados;
+- no se comparan IDs opacos, record IDs, timestamps ni object_version como diferencias sustantivas.
+
+### 13.7. Estado
+
+DEC-C10-064 aprueba esta resolución de detalle. La aplicación documental de encabezados queda registrada aquí; la plantilla sigue siendo Draft y vacía de observaciones. No equivale a freeze, validación física, parser, fixtures ni autorización de experimento. El motor relacional aún no está fijado; compatibilidad con FKs diferibles, constraints compuestas, ROUTE_STEP cross-row, secuencia/supersession e inmutabilidad son gates técnicos pendientes. `scientific_execution=false`; `execution_authorized=false`.
