@@ -1011,3 +1011,16 @@ Este registro no acredita ejecución ni revisión. No se han designado revisores
 | Objeto omite evaluator_record_ids de resumen | Permitido si las filas EVALUATOR_ASSESSMENT están enlazadas correctamente |
 
 Contrato documental; no ejecutado.
+
+
+## 52. Casos de control de obligatoriedad y cardinalidad de evidencia — UG-SR-A01
+
+| ID | Caso | Resultado esperado |
+|---|---|---|
+| UG-SR-A01-T01 | Objeto con estado 1/0/? sin fila correspondiente en CLAIM_EVIDENCE_LINK | Rechazar o marcar incompleto conforme a la regla que se confirme; no inferir soporte por silencio |
+| UG-SR-A01-T02 | Objeto con CLAIM_EVIDENCE_LINK válido y `evidence_ref` vacío | Aceptar si `evidence_ref` se confirma como atajo opcional |
+| UG-SR-A01-T03 | `evidence_ref` apunta a vínculo inexistente | Rechazar referencia huérfana |
+| UG-SR-A01-T04 | CLAIM_EVIDENCE_LINK apunta a evidence_id inexistente o a object_record_id incompatible | Rechazar FK/alcance |
+| UG-SR-A01-T05 | Varios vínculos válidos para un mismo objeto | Aceptar filas múltiples normalizadas; no serializar listas en `evidence_ref` |
+
+Estos son contratos propuestos para resolver la ambigüedad documental UG-SR-A01. No están implementados ni ejecutados. El comportamiento T01 queda condicionado a la decisión documental sobre si todo estado clasificado requiere al menos un vínculo CLAIM_EVIDENCE_LINK.
