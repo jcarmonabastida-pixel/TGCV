@@ -121,3 +121,8 @@ La autoauditoría histórica no se recalifica automáticamente. Se añaden tres 
 - **OAS-10:** las vistas físicas U_G §4.1 y §6 y los contratos especializados de nodo raíz deben expresar el pinning exacto DEC-C10-065.
 
 La corrección documental de OAS-08…10 no actualiza por sí sola los estados SR-01/02/10/11/17/18. Se mantienen los dictámenes históricos como referencia temporal, no como dictamen vigente de la plantilla actual. La nueva revisión de SR-01…20 debe fijarse sobre el conjunto reconciliado de artefactos y commit SHA exacto. `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`; revisión R1/R2 NOT STARTED; validación técnica NOT RUN.
+
+
+### Addendum de alcance — OAS-11 (2026-11-05)
+
+**OAS-11 RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING:** U_G §15.4 y crosswalk §9.4 enumeran ahora el mapping de seis FKs tipadas, sus destinos, las FKs de evidencia/evaluador/adjudicación, PK/UNIQUE, procedencia canónica y reglas UG-SR-A01. Esta consolidación no cambia el estado de los controles SR. La autoauditoría sigue siendo `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`; no equivale a revisión independiente R1/R2 ni a validación física.
