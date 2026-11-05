@@ -757,3 +757,10 @@ Se estructuran tres contratos: C_src (contenido y semántica de origen), C_dst (
 La partición descrita en §19 queda aprobada por decisión explícita del usuario: componentes, parámetros tipados, referencias y reglas/restricciones de gramática mínima son constitutivos del DGP base; POL queda como módulo/escenario condicional secundario; metadatos contractuales son soporte obligatorio de identidad, versionado y procedencia, con extensiones desconocidas condicionales.
 
 La estructura conceptual de seis elementos de DEC-C10-052 permanece intacta. POL no se elimina del objeto; el escenario base declarará ex ante si no contiene políticas migrables. Esta decisión no fija todavía gramática, dominios, cardinalidad, mappings, tolerancias, oráculo ni truth.
+
+
+## 21. Gramática mínima y dominio de tipos — propuesta posterior a DEC-C10-053
+
+Se crea `C10_S_MINIMAL_RULE_GRAMMAR_AND_PARAMETER_TYPE_DOMAIN_PROPOSAL_DRAFT_001.md`. Propone tipos abstractos BOOL, INT, DECIMAL, ENUM, STRING y REF; estados de parámetro ABSENT/NULL/DEFAULT/VALUE; operadores comparativos, pertenencia, estado y referencia; composición AND/OR/NOT; y efectos declarativos finitos sin ejecución arbitraria.
+
+Se propone semántica de expresión TRUE/FALSE/UNKNOWN, que deberá distinguirse de la adjudicación de evidencia 1/0/?. Límites de dominio, tamaño/profundidad, efectos, política UNKNOWN y conversión siguen abiertos. No se asigna truth ni se ejecuta.
