@@ -110,3 +110,10 @@ Esta comprobación no valida FK, unicidad, tipos, dominios, cardinalidades reale
 La revisión independiente y validación ejecutable son gates previos a declarar el esquema congelado. La selección del microdominio y el inventario se mantienen posteriores a esos gates. XSYNC-138-01 y FCM-01…20 no se declaran cerrados por la mera creación de este paquete.
 
 No modifica main, RMA, Evidence→Claim Matrix, STATUS, TGCV Core, ni claim-level statuses. No cambia la autorización científica.
+
+
+## 9. Addendum de alcance — Opción A / ROUTE_STEP (2026-11-05)
+
+La sección 5 documenta una revisión estática histórica de diez tablas, anterior a DEC-C10-064. No debe interpretarse como control de la plantilla vigente. La versión actual incluye además ROUTE_STEP (19 tablas Markdown totales, 11 registros operativos si se cuenta ROUTE_STEP como relación normalizada adicional) y nuevos campos snapshot_id y referencias exactas.
+
+Antes de iniciar la revisión independiente R1/R2, incorporar OAS-01…07 del informe `C10_S_UG_OPTION_A_RECONCILIATION_AUDIT_DRAFT_001.md`, fijar el commit exacto de todos los artefactos y resolver OAS-02. La revisión independiente continúa NOT STARTED; el addendum no cambia ningún estado SR-01…20 ni acredita PASS técnico.
