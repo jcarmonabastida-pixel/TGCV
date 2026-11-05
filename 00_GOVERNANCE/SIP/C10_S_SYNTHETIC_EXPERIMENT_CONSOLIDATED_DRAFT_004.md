@@ -7650,3 +7650,10 @@ La unidad de aleatorización/analítica no queda decidida: depende de la evaluac
 Se recuperaron los artefactos previos de inventario U_G y evidencia. La plantilla existente ya dispone de diez registros canónicos; por tanto, no se crea un inventario paralelo. Se añade `C10_S_IAM_SERVICE_BOUNDARY_OVERLAY_AND_CROSSWALK_DRAFT_001.md` para especializar los registros existentes al servicio lógico: clasificación P0/P1, relaciones causales P2, crosswalk de FP-01…08 y campos de dominio.
 
 El overlay no crea nodos/instancias, truth, fixtures ni evidencia. La matriz trivalente y la cardinalidad de evidencia se conservan. Los nombres de EDGE deben mapearse al catálogo existente, sin ampliarlo tácitamente. El crosswalk FP y el esquema relacional permanecen abiertos.
+
+
+# 112. Auditoría documental IAM FP/EDGE (2026-11-05)
+
+La revisión del overlay contra DEC-C10-055, reconciliación SM/FP, mapping C_src→C_dst/M, FP-03, F*, U_G y frontera/granularidad confirma la arquitectura de alto nivel, pero requiere seis precisiones antes de schema: FP-07 como verificación post-aplicación de FP-01…05; FP-08 como validez probatoria separada; predicados primarios/secundarios por propiedad; retiro de CONTAINS_FIELD no catalogada; mapeo de atributos overlay a columnas existentes; y separación C_dst^decl/C_dst^applied/E_dst/M. La auditoría está en `C10_S_IAM_FP_EDGE_CROSSWALK_AUDIT_DRAFT_001.md`.
+
+No se reabre DEC-C10-055 ni se crean nuevas relaciones EDGE. No se añaden columnas ni se instancian registros. Estado: PASS_DOCUMENTAL de arquitectura general; CORRECTION_REQUIRED en crosswalk; schema/field mapping OPEN; integridad técnica NOT_ASSESSED.
