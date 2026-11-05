@@ -7760,3 +7760,12 @@ El control de las 19 tablas Markdown mantiene PASS_FORMAT_ONLY; recuentos físic
 Se corrige una insuficiencia de claves candidatas: `UNIQUE(snapshot_id,node_id)` no distinguía revisiones de SNAPSHOT y podía impedir que la misma identidad NODE apareciera en dos revisiones distintas del mismo snapshot semántico. También se necesitaba una clave semántica por revisión exacta para evitar duplicados dentro de esa revisión.
 
 U_G §§13.1 y 15.2 sustituyen esa unicidad por `UNIQUE(snapshot_id,snapshot_object_record_id,semantic_id)` para NODE, EDGE, ROUTE y PREDICATE, manteniendo las claves compuestas con object_record_id para FKs. OAS-09 queda resuelto documentalmente, pendiente de validación física del motor. No cambia el Core, C10 claim status, RMA, Evidence→Claim Matrix o STATUS; UG-SCH-10 permanece OPEN.
+
+
+## 127. OAS-10 — pinning exacto en las vistas físicas U_G y contratos especializados (2026-11-05)
+
+El cotejo de U_G §§2–6 y §§13–16 con DEC-C10-065 detecta que dos descripciones físicas heredadas no reflejaban el pinning exacto: §4.1 ROUTE_STEP solo mencionaba FKs «con snapshot_id» y §6 SNAPSHOT→NODE raíz omitía `snapshot_object_record_id` en la clave destino de NODE. Se corrigen ambas formulaciones.
+
+La FK raíz vigente queda como `SNAPSHOT(snapshot_id,object_record_id,unit_object_record_id,unit_id) → NODE(snapshot_id,snapshot_object_record_id,object_record_id,node_id)`; el object_record_id de SNAPSHOT ocupa el valor snapshot_object_record_id del NODE raíz. ROUTE_STEP exige el par exacto `snapshot_id + snapshot_object_record_id` para pertenencia y referencias a ROUTE/NODE/EDGE.
+
+Se añaden addenda DEC-C10-065 a los contratos especializados de unidad lógica, semantic_role y versionado. OAS-10 queda RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING. Checklist y autoauditoría reciben el alcance OAS-08…10; no se recalifican los SR-01…20. No hay schema freeze, revisión independiente, validación técnica ni ejecución científica. UG-SCH-10 permanece OPEN.
