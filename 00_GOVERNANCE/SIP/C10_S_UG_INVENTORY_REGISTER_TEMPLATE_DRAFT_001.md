@@ -15,7 +15,7 @@ Reglas obligatorias:
 - No derivar accesibilidad, aplicabilidad, Reach o ausencia de alternativa desde Outcome/Value.
 - No declarar independencia de B sin análisis de dependencias transitivas y evidencia pre/post.
 - No usar 0 por falta de observación. Todo 0 requiere evidencia válida y cobertura suficiente para el predicado concreto.
-- Toda fila debe incluir procedencia, versión, fecha, responsable/evaluador y limitaciones.
+- Toda afirmación observada debe reconstruir su procedencia mediante CLAIM_EVIDENCE_LINK → EVIDENCE_REGISTER; cada objeto conserva identidad, versión, fecha, responsable y limitaciones aplicables.
 
 ## 2. Registro de nodos
 
@@ -188,12 +188,11 @@ Añadir a los registros node/edge/route/predicate: parent_catalog_id, evidence_s
 
 ### 10.6. Definición de campos complementarios (schema)
 
-Los campos siguientes pasan a formar parte del esquema obligatorio de cada tabla de registro, no son valores precargados:
+Los campos siguientes forman parte del esquema de registro en las tablas indicadas; la procedencia de la fuente se normaliza exclusivamente en EVIDENCE_REGISTER (§12.1), no se duplica en NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT:
 
 | Campo | Aplicación | Dominio/uso |
 |---|---|---|
 | parent_catalog_id | Nodo/arista/predicado/ruta | ID de catálogo U_G de origen (Nxx, Exx, código de predicado o clase de ruta). |
-| source_provenance | Todas | Documento/sistema/origen, ubicación, método de obtención, fecha y custodio. |
 | evidence_status | Todas | AVAILABLE / MISSING / CONFLICTING; no sustituye observed_status. |
 | contract_intent | Nodo/arista/ruta/predicado | Requisito normativo de diseño, separado de observación. |
 | coverage_scope_id | Todas | Identificador de la frontera/universo operativo y versión a la que aplica la cobertura. |
@@ -215,7 +214,7 @@ La captura de evidencias, los campos de procedencia, la clasificación 1/0/? y l
 
 Cuando `evidence_ref` esté poblado, debe resolver a un `claim_evidence_id` existente de CLAIM_EVIDENCE_LINK; el campo es opcional y no representa el conjunto completo de evidencias. Para instancias con `observed_state=1` o `0` se exige al menos un vínculo válido en CLAIM_EVIDENCE_LINK, con alcance compatible. Para `observed_state=?` se registra evidencia vinculada si existe; si no existe, deben consignarse `unknown_reason`, `evidence_status=MISSING` y las limitaciones de búsqueda/cobertura, sin fabricar un vínculo. `NA` requiere justificación de no aplicabilidad y no exige vínculo de evidencia por defecto. Los campos source_provenance, collection_method, scope, timestamp, integrity, access_lineage, completeness_limitations, evidence_status, reviewer y reproducibility se registran en el expediente de evidencia enlazado cuando exista. observed_status/observed_state y coverage_status nunca se sustituyen por evidence_status. Ningún 0 se admite sin argumento de cobertura negativa; ningún COMPLETE sin universo, denominador y excepciones. Las discrepancias críticas requieren adjudicación independiente y preservación del desacuerdo. **Regla documental aceptada para C10-S por decisión del usuario de 2026-11-05.** La aceptación no equivale a validación técnica ni freeze.
 
-El crosswalk §10 identifica que las tablas actuales aún requieren columnas explícitas para parent_catalog_id, source_provenance, evidence_status, contract_intent, coverage_scope_id, review_adjudication_status y unknown_reason; este protocolo define su semántica, pero no declara el esquema tabular completamente cerrado. La revisión de correspondencia de todas las columnas sigue abierta.
+El crosswalk §10 identifica columnas comunes que deben estar presentes en las tablas de objetos. `source_provenance` no es una columna de esas tablas: su registro canónico es EVIDENCE_REGISTER; los objetos se vinculan a la evidencia mediante CLAIM_EVIDENCE_LINK. La revisión de correspondencia de todas las columnas sigue abierta.
 
 
 
@@ -237,9 +236,9 @@ No incluir secretos, credenciales ni datos personales innecesarios. source_locat
 
 ### 12.2. Registro de vínculo afirmación-evidencia (CLAIM_EVIDENCE_LINK)
 
-| claim_evidence_id | claim_target_type | claim_target_id (object_record_id) | claim_statement | evidence_id | support_type (direct/inferred/contradictory/contextual) | relevance_scope | evaluator_record_id (optional FK) | adjudication_id (optional FK) | reviewer_note |
-|---|---|---|---|---|---|---|---|---|---|
-| — | — | — | — | — | — | — | — | — | — |
+| claim_evidence_id | claim_target_type (NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_SCOPE) | target_node_record_id (FK nullable) | target_edge_record_id (FK nullable) | target_route_record_id (FK nullable) | target_predicate_record_id (FK nullable) | target_snapshot_record_id (FK nullable) | target_coverage_scope_id (FK nullable) | claim_statement | evidence_id (FK EVIDENCE_REGISTER) | support_type (direct/inferred/contradictory/contextual) | relevance_scope | evaluator_record_id (optional FK) | adjudication_id (optional FK) | reviewer_note |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 
 Toda fila de nodo, arista, predicado, ruta o cobertura debe enlazar al menos un claim_evidence_id cuando tenga una clasificación observada. Una fila ? puede tener cero evidencia disponible, pero debe registrar unknown_reason.
 
@@ -253,17 +252,17 @@ COMPLETE exige denominador finito y trazable, regla de enumeración, fuentes vá
 
 ### 12.4. Registro de evaluación independiente (EVALUATOR_ASSESSMENT)
 
-| evaluator_record_id | object_type | object_record_id | evaluator_id | role (E1/E2) | observed_state | rule_version | scope_id | blinded_to_outcome_value | blinded_to_Z_B | confidence_or_limitations | rationale | timestamp |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | — | — | — | — | ? | — | — | — | — | — | — | — |
+| evaluator_record_id | object_type (NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_SCOPE) | target_node_record_id (FK nullable) | target_edge_record_id (FK nullable) | target_route_record_id (FK nullable) | target_predicate_record_id (FK nullable) | target_snapshot_record_id (FK nullable) | target_coverage_scope_id (FK nullable) | evaluator_id | role (E1/E2) | observed_state | rule_version | scope_id | blinded_to_outcome_value | blinded_to_Z_B | confidence_or_limitations | rationale | timestamp |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | — | — | — | — | — | — | — | — | — | ? | — | — | — | — | — | — | — |
 
 E1 y E2 deben emitir registros independientes antes de conocer la clasificación del otro. Las variables de cegamiento aceptan YES/NO/NOT_FEASIBLE con justificación; no se presupone cegamiento logrado por declarar un procedimiento.
 
 ### 12.5. Registro de discrepancia y adjudicación (ADJUDICATION_REGISTER)
 
-| adjudication_id | object_type | object_record_id | evaluator_record_E1 | evaluator_record_E2 | disagreement_type | adjudicator_id | decision (1/0/?/NA) | rule_and_reason | minority_position | unresolved_limitations | timestamp |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | — | — | — | — | — | — | ? | — | — | — | — |
+| adjudication_id | object_type (NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_SCOPE) | target_node_record_id (FK nullable) | target_edge_record_id (FK nullable) | target_route_record_id (FK nullable) | target_predicate_record_id (FK nullable) | target_snapshot_record_id (FK nullable) | target_coverage_scope_id (FK nullable) | evaluator_record_E1 (FK) | evaluator_record_E2 (FK) | disagreement_type | adjudicator_id | decision (1/0/?/NA) | rule_and_reason | minority_position | unresolved_limitations | timestamp |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | — | — | — | — | — | — | — | — | — | — | — | ? | — | — | — | — |
 
 No se permite majority-vote automático. Si no se resuelve el conflicto con evidencia y regla aplicable, decisión final ?.
 
@@ -293,10 +292,12 @@ Extensiones:
 2. Cada claim-evidence link debe tener alcance compatible con la unidad, versión, entorno y tiempo de la afirmación.
 3. observed_state no se copia desde evidence_status; evidence_status no se deriva de observed_state.
 4. coverage_scope_id debe resolver a una fila COVERAGE_REGISTER; no se puede declarar COMPLETE sin denominador.
-5. E1/E2 se almacenan por separado; ADJUDICATION_REGISTER solo se crea cuando proceda. Los vínculos de evidencia revisados por cada rol se filtran mediante evaluator_record_id/adjudication_id en CLAIM_EVIDENCE_LINK.
-6. parent_route_class no puede sustituirse por route_subtype.
-7. DGP_TRUTH_SECURE no se mezcla ni sincroniza con los registros visibles al analizador.
-8. Las revisiones generan nuevos registros versionados; no se sobrescribe el historial.\n9. `SNAPSHOT.(unit_id, unit_object_record_id)` debe resolver conjuntamente a `NODE.(node_id, object_record_id)` y el NODE referenciado debe tener `semantic_role=LOGICAL_SERVICE_UNIT`; el `unit_id` es la identidad semántica estable y `unit_object_record_id` fija la versión concreta del registro raíz aplicable al snapshot.\n10. `NODE.boundary_class` admite `P0_CONFIG`, `P1_ENVIRONMENT`, `DUAL_P0_P1` y `NA`. Los tres primeros son clases sustantivas; `NA` es solo no aplicabilidad justificada para nodos fuera de los objetos/artefactos P0/P1. No usar null/ausencia como sustituto de NA. El campo no codifica P2.
+5. En CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER exactamente una de las seis FK tipadas debe estar poblada y debe coincidir con el enum claim_target_type/object_type.
+6. Cada FK tipada a NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT apunta a object_record_id UNIQUE dentro de su tabla; la FK a cobertura apunta a COVERAGE_REGISTER.coverage_scope_id PK/UNIQUE.
+7. E1/E2 se almacenan por separado; ADJUDICATION_REGISTER solo se crea cuando proceda. Los vínculos de evidencia revisados por cada rol se filtran mediante evaluator_record_id/adjudication_id en CLAIM_EVIDENCE_LINK.
+8. parent_route_class no puede sustituirse por route_subtype.
+9. DGP_TRUTH_SECURE no se mezcla ni sincroniza con los registros visibles al analizador.
+10. Las revisiones generan nuevos registros versionados; no se sobrescribe el historial.\n9. `SNAPSHOT.(unit_id, unit_object_record_id)` debe resolver conjuntamente a `NODE.(node_id, object_record_id)` y el NODE referenciado debe tener `semantic_role=LOGICAL_SERVICE_UNIT`; el `unit_id` es la identidad semántica estable y `unit_object_record_id` fija la versión concreta del registro raíz aplicable al snapshot.\n10. `NODE.boundary_class` admite `P0_CONFIG`, `P1_ENVIRONMENT`, `DUAL_P0_P1` y `NA`. Los tres primeros son clases sustantivas; `NA` es solo no aplicabilidad justificada para nodos fuera de los objetos/artefactos P0/P1. No usar null/ausencia como sustituto de NA. El campo no codifica P2.
 
 
 ### 12.9. Diccionario de tipos, dominios e integridad
@@ -314,9 +315,9 @@ Extensiones:
 | Cegamiento | Enum | YES/NO/NOT_FEASIBLE, con justificación para NO/NOT_FEASIBLE |
 | Referencias | FK tipada | No aceptar referencia huérfana ni alcance incompatible |
 
-**Normalización de evidencia:** `CLAIM_EVIDENCE_LINK` es la relación uno-a-muchos canónica entre objetos/afirmaciones y evidencias. Los campos `evidence_ref` de las tablas de objeto son referencias de navegación opcionales (cero o un vínculo primario); no sustituyen el conjunto completo de vínculos. Cada vínculo adicional se registra como fila independiente en CLAIM_EVIDENCE_LINK. `claim_target_id` debe apuntar a `object_record_id` y `evidence_id` a EVIDENCE_REGISTER. No almacenar listas serializadas de IDs como sustituto de la relación.
+**Normalización de evidencia:** `CLAIM_EVIDENCE_LINK` es la relación uno-a-muchos canónica entre objetos/afirmaciones y evidencias. Los campos `evidence_ref` de las tablas de objeto son referencias de navegación opcionales (cero o un vínculo primario); no sustituyen el conjunto completo de vínculos. Cada vínculo adicional se registra como fila independiente. `claim_target_type` selecciona exactamente una FK tipada (`target_*`) a NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT o COVERAGE_REGISTER; `evidence_id` apunta a EVIDENCE_REGISTER. La exclusividad y correspondencia tipo-destino son constraints obligatorias, no convenciones. No almacenar listas serializadas de IDs.
 
-**Identidad de registro:** `object_record_id` identifica la fila versionada; `node_id/edge_id/route_id/predicate_id/snapshot_id` identifican el objeto semántico. `object_version` y `supersedes_record_id` preservan revisiones. `parent_catalog_id` enlaza al catálogo U_G o a un subcatálogo versionado.
+**Identidad de registro:** `object_record_id` identifica la fila versionada y debe ser UNIQUE dentro de cada tabla de objetos para permitir las FKs tipadas; `node_id/edge_id/route_id/predicate_id/snapshot_id` identifican el objeto semántico. `object_version` y `supersedes_record_id` preservan revisiones. `parent_catalog_id` enlaza al catálogo U_G o a un subcatálogo versionado.
 
 **Cobertura:** `coverage_scope_id` es FK a COVERAGE_REGISTER. Las tablas de objeto no replican el estado de cobertura como sustituto del registro canónico; los campos heredados `coverage_status` son vistas/resúmenes y deben coincidir con el scope enlazado o marcar discrepancia.
 
@@ -408,3 +409,16 @@ El encabezado EDGE se alinea con el contrato normalizado y el catálogo E01–E2
 Para una relación padre con varios destinos se registra una fila por par origen-destino, con el mismo `parent_edge_id` y distinto `atomic_edge_id`. La clave local EDGE sigue siendo `(object_record_id, edge_id)`; `atomic_edge_id` requiere unicidad dentro del `coverage_scope_id` y versión de grafo correspondiente. No se crean filas observadas ni IDs atómicos nuevos en esta actualización.
 
 E07 permanece fuera de EDGE porque es una regla lógica/conjuntiva. E22 conserva sus destinos como eventos/variables no identificados: no se inventan nodos para selección o ejecución. Las 39 filas descritas en el catálogo siguen siendo candidatas, no relaciones observadas.
+
+
+### 14.2. Reconciliación de referencias tipadas y procedencia — DEC-C10-061
+
+Se aplica el contrato aceptado:
+- CLAIM_EVIDENCE_LINK: seis FK tipadas; exactamente una no nula y coherente con claim_target_type.
+- EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER: mismo patrón con object_type.
+- NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT: object_record_id UNIQUE dentro de cada tabla como clave candidata para las FKs; se preservan sus claves semánticas y versionadas.
+- COVERAGE_REGISTER.coverage_scope_id: PK/UNIQUE.
+- source_provenance: canónica en EVIDENCE_REGISTER; retirada de la lista de campos comunes de las tablas de objetos.
+- evidence_ref: opcional 0..1 de navegación; CLAIM_EVIDENCE_LINK mantiene 0..n.
+
+Las constraints CHECK/FK, la compatibilidad del motor/formato y las pruebas negativas no se han ejecutado. La decisión es documental, no freeze ni validación técnica.
