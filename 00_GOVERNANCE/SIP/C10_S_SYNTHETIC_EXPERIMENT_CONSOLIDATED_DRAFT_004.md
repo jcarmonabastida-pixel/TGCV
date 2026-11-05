@@ -7573,3 +7573,12 @@ La decisión aprueba la partición, no el contrato completo. Gramática, dominio
 Se crea `C10_S_MINIMAL_RULE_GRAMMAR_AND_PARAMETER_TYPE_DOMAIN_PROPOSAL_DRAFT_001.md`. Propone BOOL/INT/DECIMAL/ENUM/STRING/REF, distinción ABSENT/NULL/DEFAULT/VALUE, operadores atómicos finitos, composición AND/OR/NOT y efectos declarativos limitados sin scripts ni ejecución arbitraria.
 
 Se distingue el resultado lógico TRUE/FALSE/UNKNOWN de la clasificación de evidencia 1/0/?. La propuesta no fija dominios finitos, límites, semántica final de UNKNOWN, conversiones ni oráculo; no es gramática aprobada ni implementación.
+
+
+# 103. DEC-C10-054 — aprobación del perfil finito de dominios y complejidad (2026-11-05)
+
+El usuario aprueba el perfil estructural de dominios finitos por clave y el presupuesto 4/16/16: dominios cerrados/declarados por parámetro; representación decimal escalada; ENUM/REF finitos; STRING acotado; estados ABSENT/NULL/DEFAULT/VALUE con distinción de defaults; AST declarativo acíclico; operadores tipados y composición NOT/AND/OR; efectos base REQUIRE/FORBID; SELECT_ENUM_VALUE fuera del núcleo; UNKNOWN no se convierte silenciosamente en TRUE/FALSE.
+
+La aprobación de 4 niveles, 16 átomos por regla y 16 reglas por paquete es un presupuesto inicial de complejidad, no una calibración empírica. Los límites, escalas, catálogos y valores concretos por clave permanecen abiertos hasta definir el contrato abstracto. También siguen abiertos el mapping completo, los conflictos entre reglas, tolerancias y oráculo.
+
+No implica implementación, parser, validación, truth, fixtures, revisión independiente, evidencia empírica, ejecución autorizada ni freeze del DGP. El siguiente bloque es el contrato abstracto de parámetros y la matriz C_src→C_dst/M con trazabilidad FP-01/02/03 y prevención de doble conteo.
