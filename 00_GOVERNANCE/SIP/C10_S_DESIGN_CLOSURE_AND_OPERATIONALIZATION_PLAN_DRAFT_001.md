@@ -877,3 +877,10 @@ Se corrigen FCM-17…19: clave primaria singular de evaluación; eliminación de
 Se prepara C10_S_UG_SCHEMA_INDEPENDENT_REVIEW_CHECKLIST_DRAFT_001.md con controles SR-01…20, perfiles R1 (modelo de datos/ingeniería) y R2 (metodología/causalidad), reglas de independencia/cegamiento, procedimiento y dictámenes.
 
 **Resultado:** paquete preparado, revisión NO INICIADA. No se han designado revisores ni ejecutado validadores. Los controles SR y FCM-01…19 no se cierran por preparación documental. El freeze del esquema, selección definitiva del microdominio e inventario permanecen posteriores a revisión independiente y validación ejecutable. No cambia la autorización científica.
+
+
+# XXVIII. Ejecución del plan — cuarta pasada de reconciliación semántica U_G (2026-11-05)
+
+La revisión cruzada de la plantilla detecta contradicción entre §12.7 y §§12.9/14 sobre cardinalidad de evidence_ref y una descripción histórica ambigua de FCM-12. Se corrige: evidence_ref es 0..1 referencia de navegación opcional; CLAIM_EVIDENCE_LINK conserva la relación completa 0..n. Se distingue evaluator_record_id singular por fila E1/E2 de evaluator_record_ids plural como referencia resumida en objetos. El protocolo incorpora §16.
+
+**Resultado:** FCM-20 registrado y tratado documentalmente; FCM-12 armonizado. Esquema sigue Draft; revisión independiente y validación ejecutable pendientes. No hay inventario ni cobertura real.
