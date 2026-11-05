@@ -7706,3 +7706,10 @@ Se especifican además referencias compuestas de EDGE a las revisiones exactas d
 **Estado:** Opción A aceptada; resolución de detalle propuesta, pendiente de aceptación expresa. La compatibilidad del motor con FKs diferibles es un gate técnico obligatorio. Si no soporta el mecanismo equivalente, no se debilita integridad ni se aplica workaround; se detiene implementación y se reabre la arquitectura. No se modifica todavía la plantilla U_G. UG-SCH-10 sigue OPEN hasta aplicar y revisar el contrato. Esquema global SCHEMA_NOT_CLOSED.
 
 No se han ejecutado validadores, parser, constraints, fixtures, truth, simulaciones o experimentos. No cambia Core, RMA, Evidence→Claim Matrix, claims, estimandos, Outcome o Value. `scientific_execution=false`; `execution_authorized=false`.
+
+
+# 119. DEC-C10-064 — resolución Opción A aprobada y aplicada a plantilla (2026-11-05)
+
+El usuario aprueba la resolución de detalle. DEC-C10-064 queda registrada en artefacto propio. La plantilla U_G §13 incorpora el contrato: versionado observacional; SNAPSHOT↔NODE raíz mediante FK compuesta diferible/transacción atómica; EDGE→NODE y PREDICATE→ROUTE con pinning exacto de mismo snapshot; ROUTE_STEP normalizado; y separación de cambio de captura, estructura, evidencia y accesibilidad.
+
+La aplicación documental no cierra todavía UG-SCH-10: §§2–6 conservan encabezados abreviados heredados que deben reconciliarse físicamente con §13 y §12. La auditoría de encabezados/columnas, claves, crosswalk IAM/FP y contratos queda como siguiente paso. El motor relacional no está fijado; sin soporte demostrado de FKs diferibles, el gate físico permanece bloqueado. No se han ejecutado validadores, parser, constraints, fixtures, truth, simulaciones ni experimentos. `scientific_execution=false`; `execution_authorized=false`.
