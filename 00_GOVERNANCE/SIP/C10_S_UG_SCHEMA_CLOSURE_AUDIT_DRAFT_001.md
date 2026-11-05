@@ -300,3 +300,18 @@ Se comparan:
 Recomendación provisional: Opción A, condicionada a aceptar semántica observacional de object_version, resolver la circularidad de la FK raíz y definir ROUTE_STEP. Opción B queda abierta si reutilizar la misma fila en múltiples snapshots es requisito esencial. No se ha elegido ni aceptado ninguna opción.
 
 UG-SCH-10 permanece OPEN / DESIGN_RECONCILIATION_REQUIRED. No modificar encabezados ni cardinalidades antes de aceptación expresa. No se ejecutan validadores, parser, constraints, fixtures, simulaciones ni experimentos.
+
+
+### 14.8. DEC-C10-063 — aceptación de Opción A y resolución estructural propuesta
+
+El usuario acepta Opción A como arquitectura de referencia. Se registra DEC-C10-063; la aceptación no congela ni autoriza implementación.
+
+La propuesta `C10_S_UG_OPTION_A_STRUCTURAL_RESOLUTION_DRAFT_001.md` resuelve documentalmente:
+- `object_version` como revisión del registro observacional por identidad semántica; una nueva captura produce una nueva fila/version incluso sin cambio material.
+- SNAPSHOT↔NODE raíz mediante FKs compuestas diferibles y transacción atómica; la FK raíz comprueba mismo snapshot y conserva la versión exacta/semantic_role.
+- EDGE→NODE y PREDICATE→ROUTE mediante FKs compuestas que fijan record ID, semantic ID y snapshot.
+- ROUTE_STEP como relación ordenada tipada, con exactamente un destino NODE/EDGE, mismo snapshot, índices contiguos y verificación de continuidad entre aristas y nodos adyacentes.
+
+**Dictamen UG-SCH-10:** arquitectura seleccionada; resolución de detalle propuesta y pendiente de aceptación. La condición de circularidad queda resuelta lógicamente, pero el gate físico exige comprobar soporte de FKs diferibles en el motor elegido. Si no existe soporte equivalente, implementación BLOCKED y nueva decisión arquitectónica obligatoria.
+
+La plantilla U_G no se ha modificado. No hay validación física, parser, constraints, fixtures, inventario, truth, revisión independiente ni ejecución. El esquema global continúa SCHEMA_NOT_CLOSED.
