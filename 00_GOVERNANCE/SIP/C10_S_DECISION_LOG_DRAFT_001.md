@@ -439,3 +439,10 @@ DEC-C10-047 es hallazgo/corrección documental. No declara esquema cerrado, no a
 Se corrigen FCM-17…19: EVALUATOR_ASSESSMENT usa evaluator_record_id singular; ADJUDICATION_REGISTER apunta a object_record_id y conserva referencias E1/E2; CLAIM_EVIDENCE_LINK asocia evidencias a evaluadores/adjudicaciones sin listas serializadas. Se registra comprobación estática de alineación de columnas de diez tablas.
 
 DEC-C10-048 es una corrección documental, no validación ejecutable ni aprobación de esquema. No acredita integridad referencial, seguridad, cegamiento o inventario técnico.
+
+
+## 43. Preparación de revisión independiente U_G — DEC-C10-049
+
+Se crea C10_S_UG_SCHEMA_INDEPENDENT_REVIEW_CHECKLIST_DRAFT_001.md, que define SR-01…20, perfiles R1/R2, independencia, cegamiento, procedimiento y dictamen. La revisión está preparada pero NO INICIADA. No se designan revisores ni se declara aceptabilidad del esquema. FCM-01…19 y XSYNC-138-01 permanecen abiertos; el freeze y la selección del microdominio quedan condicionados a revisión y validación pertinentes.
+
+DEC-C10-049 es registro de preparación documental; no autoriza parser, validación ejecutable, inspección, simulación o experimento.
