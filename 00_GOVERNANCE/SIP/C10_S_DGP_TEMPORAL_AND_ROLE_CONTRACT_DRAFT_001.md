@@ -725,3 +725,10 @@ Esta semántica es candidata y no modifica retroactivamente truth, ecuaciones ni
 Opción A —migración de configuración entre dos entornos software— queda seleccionada para el diseño C10-S. F* se adopta como contrato funcional de trabajo candidato: la ruta completa debe producir y aplicar una configuración en el entorno destino conforme a propiedades obligatorias de esquema, integridad, compatibilidad, preservación funcional y seguridad.
 
 Las fichas F1/F2/A1/A2 se interpretan según el documento `C10_S_OPTION_A_FSTAR_AND_TRANSFORMATION_CARDS_PROPOSAL_DRAFT_001.md`. Esta decisión no fija aún mappings, versiones, TID/SID/RID, H/G/C0, recursos, ventanas, tolerancias ni oráculo; no modifica truth del DGP ni autoriza generación/ejecución. D1/D2 y R0–R3 permanecen separados y abiertos.
+
+
+## 17. Matriz operacional de F* y límites de adjudicación
+
+La evaluación de conformidad de las rutas se rige, como diseño candidato, por `C10_S_FSTAR_OPERATIONAL_PROPERTY_AND_ADJUDICATION_MATRIX_DRAFT_001.md`. F* se adjudica mediante propiedades obligatorias aplicables y regla no compensatoria: 1 solo si todas cumplen; 0 si alguna incumple; ? si falta evidencia concluyente y no existe fallo confirmado. NA exige no aplicabilidad preespecificada y justificada.
+
+Esta regla de medición no sustituye los mecanismos causales del DGP. El truth generador, la observación del analizador, accesibilidad, aplicabilidad, ejecución, Outcome y Value permanecen separados. La matriz no autoriza asignar valores truth ni completar parámetros sin decisión/evidencia.
