@@ -179,7 +179,7 @@ La plantilla contiene 19 tablas Markdown. Los encabezados, separadores y filas p
 - OAS-03: SPECIFIED_DOCUMENTARILY / COMPLETENESS_AND_ENGINE_VALIDATION_PENDING — las claves/FKs están descritas, pero falta revisión independiente de simetría/completitud y validación del motor.
 - OAS-04: RESOLVED_DOCUMENTARILY — `ordered_node_edge_sequence` no figura como columna persistida de ROUTE.
 - OAS-05: SPECIFIED_DOCUMENTARILY — crosswalk físico §9.3 añadido; requiere revisión independiente.
-- OAS-06: PARTIALLY_RESOLVED — se actualizan recuentos y alcance; checklist/autoauditoría heredados aún requieren confirmación de vigencia.
+- OAS-06: RESOLVED_DOCUMENTARILY / SR_REASSESSMENT_PENDING — checklist y autoauditoría incorporan addenda OAS-08…11 y delimitan sus dictámenes históricos; los SR-01…20 no se recalifican automáticamente.
 - OAS-07: OPEN GOVERNANCE NOTE — PR #116 conserva base `research/c10-d1-protocol-draft`, no `main`.
 - OAS-08: RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING — FKs ROUTE_STEP corregidas; el motor debe verificar su implementación.
 - OAS-09: RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING — unicidad semántica condicionada a la revisión exacta.
