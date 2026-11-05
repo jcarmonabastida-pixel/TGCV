@@ -7444,3 +7444,12 @@ La segunda pasada de auditoría detecta FCM-10…16: campos comunes no materiali
 Se actualiza la plantilla con columnas comunes físicas en NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT, diccionario de tipos/domínios y matriz de obligatoriedad (§§12.9–12.10). CLAIM_EVIDENCE_LINK queda como relación 1:N canónica; evidence_ref es enlace primario opcional. COVERAGE_REGISTER es registro normativo y §7 vista resumen. Los evaluadores se conservan como filas independientes; SNAPSHOT usa NA cuando observed_state no aplica.
 
 **Dictamen:** FCM-01…16 tratados documentalmente. No se ha ejecutado parser, validador, constraint check, prueba de seguridad ni cegamiento. Consistencia estática documental, no cierre técnico. Esquema Draft; revisión independiente pendiente. No hay inventario ni cobertura real; A_f*, F_alt,0 y Reach_H siguen ?. Sin autorización de inspección/implementación/simulación/ejecución.
+
+
+# 88. Tercera pasada de normalización de referencias U_G (2026-11-05)
+
+Se detectan FCM-17…19: clave singular/plural inconsistente en EVALUATOR_ASSESSMENT, listas serializadas de evidencias en evaluación/adjudicación y uso ambiguo de object_id. Se corrige la plantilla: EVALUATOR_ASSESSMENT usa evaluator_record_id singular y object_record_id; ADJUDICATION_REGISTER usa object_record_id y referencias E1/E2; CLAIM_EVIDENCE_LINK enlaza cada evidencia y puede asociarse a evaluator_record_id/adjudication_id. Los objetos exponen evaluator_record_ids solo como navegación; la evaluación canónica sigue siendo una fila por evaluador.
+
+Se ejecuta comprobación estática de tablas: en NODE, EDGE, ROUTE, PREDICATE, SNAPSHOT y EVIDENCE/CLAIM-LINK/COVERAGE/EVALUATOR/ADJUDICATION, los conteos de columnas de encabezado, separador y fila de esquema coinciden (29/29/29; 29/29/29; 29/29/29; 24/24/24; 25/25/25; 18/18/18; 10/10/10; 15/15/15; 13/13/13; 12/12/12). No se detectan referencias de verdad DGP en la tabla analítica de predicados.
+
+**Límite:** es una comprobación estática de Markdown/tablas mediante lectura del artefacto remoto; no es parser de esquema, validador FK, constraint check, prueba de seguridad ni ejecución. FCM-01…19 están tratados documentalmente; revisión independiente y validación ejecutable pendientes.
