@@ -104,3 +104,10 @@ La propuesta de reconciliación está registrada en la plantilla §12.11, protoc
 ### Dictamen actualizado UG-SR-A01 — 2026-11-05
 
 **RESUELTO_DOCUMENTALMENTE / TECHNICAL_VALIDATION_PENDING.** El usuario aceptó explícitamente la regla: `evidence_ref` opcional 0..1 de navegación; CLAIM_EVIDENCE_LINK relación canónica 0..n; vínculo válido obligatorio para observed_state 1/0; estado ? sin vínculo solo con unknown_reason, MISSING y límites de búsqueda/cobertura; NA con justificación. Se armonizaron las referencias en plantilla §11/§12.11, protocolo §§10/13/17 y Test Contract Register §§52–53. SR-03 continúa CONDITIONAL porque no se han validado instancias, cardinalidad, FK ni parser. No hay freeze ni revisión independiente.
+
+
+### Actualización de alcance — DEC-C10-064 / OAS audit (2026-11-05)
+
+La autoauditoría SR-01…20 y su conteo histórico 8 PASS_STATIC + 10 CONDITIONAL + 2 NOT_ASSESSED corresponden a la versión anterior a Opción A/ROUTE_STEP. No se deben trasladar como dictamen de la plantilla vigente. El nuevo control formal de 19 tablas solo acredita igualdad de columnas y no actualiza SR-01/02/10/11/17/18.
+
+OAS-01 y OAS-02 introducen contradicciones/bloqueos documentales que requieren resolución antes de recalificar los controles. Se mantiene AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT; no hay revisión independiente, validación técnica ni ejecución.
