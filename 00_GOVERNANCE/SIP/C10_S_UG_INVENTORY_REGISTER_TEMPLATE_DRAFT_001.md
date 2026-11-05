@@ -19,20 +19,20 @@ Reglas obligatorias:
 
 ## 2. Registro de nodos
 
-| node_id | semantic_role | class | boundary_class (P0_CONFIG/P1_ENVIRONMENT/DUAL_P0_P1/NA) | TID | SID | RID | version/build/hash | owner/boundary | consumers/routes/arms | direct_dependencies | external/shared_resource | permissions/state | evidence_ref (0..1 optional) | observed_state (1/0/?) | coverage_status (NONE/PARTIAL/COMPLETE) | timestamp | notes/unknowns | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id  | snapshot_id |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|--- | --- |
+| node_id | semantic_role | class | boundary_class (P0_CONFIG/P1_ENVIRONMENT/DUAL_P0_P1/NA) | TID | SID | RID | version/build/hash | owner/boundary | consumers/routes/arms | direct_dependencies | external/shared_resource | permissions/state | evidence_ref (0..1 optional) | observed_state (1/0/?) | coverage_status (NONE/PARTIAL/COMPLETE) | timestamp | notes/unknowns | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id  | snapshot_id | snapshot_object_record_id |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|--- | --- | — |
 | — | NO INVENTARIADO | — | NA | — | — | — | — | — | — | — | — | — | — | ? | NONE | — | Marcador NA de plantilla; no es observación ni clasificación real | — | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | —  | — |
 
 ## 3. Registro de aristas/dependencias
 
-| edge_id | atomic_edge_id | parent_edge_id | source_node_id | target_node_id | relation_type | direction | direct_or_transitive | version_constraint | time_window | condition | arms/routes_affected | resource_or_permission | necessary_for_path | evidence_ref (0..1 optional) | observed_state (1/0/?) | coverage_status | timestamp | unknowns | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id  | snapshot_id | source_node_record_id | target_node_record_id |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|--- | --- | --- | --- |
+| edge_id | atomic_edge_id | parent_edge_id | source_node_id | target_node_id | relation_type | direction | direct_or_transitive | version_constraint | time_window | condition | arms/routes_affected | resource_or_permission | necessary_for_path | evidence_ref (0..1 optional) | observed_state (1/0/?) | coverage_status | timestamp | unknowns | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id  | snapshot_id | snapshot_object_record_id | source_node_record_id | target_node_record_id |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|--- | --- | — | --- | --- |
 | — | — | — | — | — | NO INVENTARIADO | — | — | — | — | — | — | — | ? | — | ? | NONE | — | Fila de esquema; no representa dependencia real | — | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | —  | — | — | — |
 
 ## 4. Registro de rutas y substituibilidad
 
-| route_id | parent_route_class (Rτ2/RA12/Rshared/Rexternal/Runknown) | route_subtype (native/manual/fallback/recovery/other) | entry_state | target/F* | G | H/window | C0/constraints | version_set | shared_dependencies | affected_by_B | functional_substitutability (1/0/?) | evidence_ref (0..1 optional) | coverage_scope_id | evaluator_record_ids | unresolved_alternatives | notes | observed_state (1/0/?) | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id  | snapshot_id |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|--- | --- |
+| route_id | parent_route_class (Rτ2/RA12/Rshared/Rexternal/Runknown) | route_subtype (native/manual/fallback/recovery/other) | entry_state | target/F* | G | H/window | C0/constraints | version_set | shared_dependencies | affected_by_B | functional_substitutability (1/0/?) | evidence_ref (0..1 optional) | coverage_scope_id | evaluator_record_ids | unresolved_alternatives | notes | observed_state (1/0/?) | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id  | snapshot_id | snapshot_object_record_id |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|--- | --- | — |
 | — | Runknown | unknown | — | — | — | — | — | — | — | ? | ? | — | — | — | Runknown | Fila de esquema; no representa ruta real | ? | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | —  | — |
 
 
@@ -40,16 +40,16 @@ Reglas obligatorias:
 
 Una fila por paso ordenado. ROUTE_STEP sustituye a `ordered_node_edge_sequence` como fuente canónica; el campo serializado de ROUTE, si se conserva, será una vista/export derivado.
 
-| route_step_id | snapshot_id | route_record_id | step_index | step_type (NODE/EDGE) | node_record_id (nullable) | edge_record_id (nullable) |
-|---|---|---|---|---|---|---|
+| route_step_id | snapshot_id | snapshot_object_record_id | route_record_id | step_index | step_type (NODE/EDGE) | node_record_id (nullable) | edge_record_id (nullable) |
+|---|---| — |---|---|---|---|---|
 | — | — | — | — | — | — | — |
 
 Invariantes: exactamente uno de node_record_id/edge_record_id no nulo y coherente con step_type; FKs compuestas con snapshot_id a ROUTE y NODE/EDGE; step_index entero positivo, único y contiguo por route_record_id; continuidad de extremos de EDGE con los NODE adyacentes. La continuidad es una regla cross-row que requiere constraint/trigger verificable o validador independiente y pruebas negativas. No se han creado pasos reales.
 
 ## 5. Registro de predicados por ruta/paso/tiempo
 
-| predicate_id | route_id | step | time/snapshot | predicate_type (ID/REL/COND/AUTH/RES/DEP/BLOCK/APP/ALT/ORACLE/EXT) | observed_state (1/0/?) | evidence_ref (0..1 optional) | coverage_scope_id | source/version/hash | adjudication_rule/tolerance | evaluator_record_ids | reason_for_unknown | impact_on_A_f/App/Reach/F_alt/IV | timestamp | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id  | snapshot_id | route_record_id |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|--- | --- | --- |
+| predicate_id | route_id | step | time/snapshot | predicate_type (ID/REL/COND/AUTH/RES/DEP/BLOCK/APP/ALT/ORACLE/EXT) | observed_state (1/0/?) | evidence_ref (0..1 optional) | coverage_scope_id | source/version/hash | adjudication_rule/tolerance | evaluator_record_ids | reason_for_unknown | impact_on_A_f/App/Reach/F_alt/IV | timestamp | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id  | snapshot_id | snapshot_object_record_id | route_record_id |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|--- | --- | — | --- |
 | — | — | — | — | — | ? | — | — | — | — | — | No existe evidencia aportada | Mantener indeterminación | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | —  | — | — |
 
 **La truth del DGP no forma parte de esta tabla ni de ningún artefacto visible al analizador.** Se almacena únicamente en un registro separado, segregado y con control de acceso del generador/evaluador autorizado. Esta plantilla contiene solo observed_state y evidence_ref.
@@ -476,13 +476,13 @@ ROUTE_STEP no sustituye CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_ASSESS
 
 ## 15. Contrato normalizado reconciliado — Opción A / DEC-C10-064 (addendum normativo)
 
-Este apartado sustituye las formulaciones incompatibles de §§12.7–12.10 en lo relativo a snapshot membership, referencias interobjeto y secuencia de rutas. Los campos y relaciones no afectados por Opción A conservan sus reglas previas. La sustitución es documental; el diseño físico continúa bloqueado por OAS-02 hasta decidir cómo fijar la versión exacta de SNAPSHOT.
+Este apartado sustituye las formulaciones incompatibles de §§12.7–12.10 en lo relativo a snapshot membership, referencias interobjeto y secuencia de rutas. Los campos y relaciones no afectados por Opción A conservan sus reglas previas. La sustitución incorpora la decisión DEC-C10-065: los cinco registros dependientes fijan la revisión exacta de SNAPSHOT mediante snapshot_object_record_id y FK compuesta. La validación física y compatibilidad de motor siguen pendientes.
 
 ### 15.1. Cinco tablas versionadas
 
 NODE, EDGE, ROUTE, PREDICATE y SNAPSHOT conservan `object_record_id` opaco y UNIQUE por tabla, identidad semántica separada y `object_version` positivo, secuencial por identidad semántica, con `supersedes_record_id` al predecesor inmediato. Una nueva observación en snapshot nuevo crea nuevo registro/version aunque no haya cambio material.
 
-NODE, EDGE, ROUTE y PREDICATE incorporan `snapshot_id` obligatorio como asociación semántica al snapshot observado. SNAPSHOT conserva `snapshot_id` como identidad semántica y `object_record_id` como identidad de fila versionada. **No se declara todavía una FK física válida desde los hijos a SNAPSHOT.snapshot_id**, porque DEC-C10-062 permite varias versiones del mismo snapshot_id y la columna no identifica una fila concreta. Ver OAS-02 del informe de auditoría.
+NODE, EDGE, ROUTE, PREDICATE y ROUTE_STEP incorporan `snapshot_id` y `snapshot_object_record_id` obligatorios. El primero identifica el snapshot semántico; el segundo fija la fila versionada exacta de SNAPSHOT. SNAPSHOT conserva `snapshot_id` como identidad semántica y `object_record_id` como identidad de fila versionada. La FK compuesta evita resolver por última versión o timestamp.
 
 ### 15.2. Claves candidatas y referencias interobjeto aprobadas
 
@@ -491,13 +491,15 @@ NODE, EDGE, ROUTE y PREDICATE incorporan `snapshot_id` obligatorio como asociaci
 - ROUTE: UNIQUE(`object_record_id`); UNIQUE(`route_id, object_version`); UNIQUE(`snapshot_id, object_record_id`); UNIQUE(`snapshot_id, object_record_id, route_id`).
 - PREDICATE: UNIQUE(`object_record_id`); UNIQUE(`predicate_id, object_version`); UNIQUE(`snapshot_id, object_record_id`); UNIQUE(`snapshot_id, object_record_id, predicate_id`).
 - SNAPSHOT: UNIQUE(`object_record_id`); UNIQUE(`snapshot_id, object_version`); UNIQUE(`snapshot_id, object_record_id`).
+- Para NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP: FK compuesta (`snapshot_id`, `snapshot_object_record_id`) → SNAPSHOT(`snapshot_id`, `object_record_id`).
 
 Las FKs compuestas de EDGE fijan source/target NODE mediante `(snapshot_id, source_node_record_id, source_node_id)` y `(snapshot_id, target_node_record_id, target_node_id)` hacia `NODE(snapshot_id, object_record_id, node_id)`. PREDICATE fija la revisión exacta de ROUTE mediante `(snapshot_id, route_record_id, route_id)` hacia `ROUTE(snapshot_id, object_record_id, route_id)`. SNAPSHOT fija NODE raíz mediante `(snapshot_id, unit_object_record_id, unit_id)` hacia `NODE(snapshot_id, object_record_id, node_id)`, además de `semantic_role=LOGICAL_SERVICE_UNIT`. Las FKs circulares se difieren al COMMIT si el motor soporta la garantía requerida.
 
 ### 15.3. ROUTE y ROUTE_STEP
 
-`ordered_node_edge_sequence` deja de ser columna persistida de ROUTE. ROUTE_STEP es la única fuente canónica del orden y usa: route_step_id, snapshot_id, route_record_id, step_index, step_type, node_record_id nullable y edge_record_id nullable.
+`ordered_node_edge_sequence` deja de ser columna persistida de ROUTE. ROUTE_STEP es la única fuente canónica del orden y usa: route_step_id, snapshot_id, snapshot_object_record_id, route_record_id, step_index, step_type, node_record_id nullable y edge_record_id nullable.
 
+- FK de snapshot: `(snapshot_id, snapshot_object_record_id)` → SNAPSHOT(`snapshot_id`, `object_record_id`).
 - FK de ruta: `(snapshot_id, route_record_id)` → ROUTE(`snapshot_id, object_record_id`).
 - FK de nodo: `(snapshot_id, node_record_id)` → NODE(`snapshot_id, object_record_id`).
 - FK de arista: `(snapshot_id, edge_record_id)` → EDGE(`snapshot_id, object_record_id`).
@@ -505,7 +507,7 @@ Las FKs compuestas de EDGE fijan source/target NODE mediante `(snapshot_id, sour
 - UNIQUE(route_record_id, step_index); step_index entero positivo y contiguo desde 1.
 - La continuidad entre extremos exactos de EDGE y NODE adyacentes es una invariante cross-row que requiere constraint/trigger verificable o validador independiente y pruebas negativas.
 
-Estas FKs conservan el snapshot_id semántico común, pero su pinning a una revisión concreta de SNAPSHOT queda bloqueado por OAS-02.
+Todas las FKs de pertenencia fijan la misma revisión exacta de SNAPSHOT. EDGE, PREDICATE y ROUTE_STEP deben satisfacer además que los registros relacionados comparten el mismo par (snapshot_id, snapshot_object_record_id).
 
 ### 15.4. Referencias tipadas de evidencia y evaluación
 
@@ -513,4 +515,13 @@ CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER conservan las 
 
 ### 15.5. Estado y gate
 
-La matriz anterior §12.10 se considera reemplazada por este addendum solo para los elementos aquí enumerados; debe convertirse en una matriz física única cuando OAS-02 se resuelva. No se declara schema freeze ni integridad física. Motor no seleccionado; soporte de FKs diferibles, restricciones cross-row, inmutabilidad y parser pendientes. `scientific_execution=false`; `execution_authorized=false`.
+La matriz anterior §12.10 se considera reemplazada por este addendum solo para los elementos aquí enumerados; debe convertirse en una matriz física única y verificarse contra DDL tras seleccionar motor. No se declara schema freeze ni integridad física. Motor no seleccionado; soporte de FKs diferibles, restricciones cross-row, inmutabilidad y parser pendientes. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 16. DEC-C10-065 — pinning exacto de revisión SNAPSHOT (aprobado)
+
+DEC-C10-065 aprueba añadir `snapshot_object_record_id` obligatorio a NODE, EDGE, ROUTE, PREDICATE y ROUTE_STEP. En cada caso, junto con `snapshot_id`, forma la FK compuesta hacia SNAPSHOT(`snapshot_id`, `object_record_id`). La columna snapshot_id sola no se considera referencia suficiente a una fila versionada.
+
+La referencia exacta debe propagarse también a las referencias entre objetos: EDGE.source/target NODE, PREDICATE→ROUTE, ROUTE_STEP→ROUTE/NODE/EDGE y SNAPSHOT→NODE raíz deben compartir el mismo snapshot_id y snapshot_object_record_id del registro SNAPSHOT fijado. El nodo raíz del snapshot mantiene su referencia exacta mediante unit_object_record_id; la circularidad NODE↔SNAPSHOT se resolverá con FK diferibles o mecanismo transaccional equivalente, sujeto a prueba del motor.
+
+No se alteran las identidades semánticas, object_record_id, object_version ni supersedes_record_id. No se permite latest-version lookup, timestamp inference ni fallback. Esta decisión cierra el requisito documental de OAS-02, pero no acredita integridad física, schema freeze, parser, DDL ni compatibilidad de motor. UG-SCH-10 permanece OPEN hasta reconciliación completa y revisión independiente.
