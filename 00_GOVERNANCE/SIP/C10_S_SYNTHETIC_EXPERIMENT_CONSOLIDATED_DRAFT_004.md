@@ -7435,3 +7435,12 @@ Se audita la correspondencia del protocolo U_G con las tablas físicas de la pla
 Se normaliza la plantilla §§12–13: EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_ASSESSMENT, ADJUDICATION_REGISTER, segregación DGP_TRUTH_SECURE fuera del dataset analítico, separación parent_route_class/route_subtype, campos comunes y reglas de integridad referencial/versionado. El protocolo §13 se actualiza con el mismo contrato.
 
 **Dictamen:** brechas FCM-01…09 tratadas documentalmente. El esquema aún requiere revisión independiente y validación de tipos/constraints; no está cerrado. No hay inventario ni cobertura real; A_f*, F_alt,0 y Reach_H siguen ?. No se cierra UGI/UGC/UGE, MD-C1…6 ni AUD-005/007/010/011. No se autoriza inspección real, implementación, simulación ni ejecución.
+
+
+# 87. Auditoría de consistencia interna del esquema U_G (2026-11-05)
+
+La segunda pasada de auditoría detecta FCM-10…16: campos comunes no materializados en §§2–6; estado NA de snapshots; evaluador singular frente a E1/E2; posible serialización de múltiples evidence refs; matriz §7 confundible con cobertura canónica; dominios/tipos no definidos; y destino ambiguo de claim_target_id.
+
+Se actualiza la plantilla con columnas comunes físicas en NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT, diccionario de tipos/domínios y matriz de obligatoriedad (§§12.9–12.10). CLAIM_EVIDENCE_LINK queda como relación 1:N canónica; evidence_ref es enlace primario opcional. COVERAGE_REGISTER es registro normativo y §7 vista resumen. Los evaluadores se conservan como filas independientes; SNAPSHOT usa NA cuando observed_state no aplica.
+
+**Dictamen:** FCM-01…16 tratados documentalmente. No se ha ejecutado parser, validador, constraint check, prueba de seguridad ni cegamiento. Consistencia estática documental, no cierre técnico. Esquema Draft; revisión independiente pendiente. No hay inventario ni cobertura real; A_f*, F_alt,0 y Reach_H siguen ?. Sin autorización de inspección/implementación/simulación/ejecución.
