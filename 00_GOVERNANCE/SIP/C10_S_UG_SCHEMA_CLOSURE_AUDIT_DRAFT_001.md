@@ -127,7 +127,7 @@ La fila de esquema de SNAPSHOT usa `observed_state=NA`, mientras que el contrato
 | DEC-C10-059 / boundary_class conceptual | ACCEPTED; sin validación física |
 | FK compuesta SNAPSHOT→NODE | DEFINED_DOCUMENTALLY; etiqueta física por corregir |
 | EDGE parent/atomic IDs y extremos | CORRECTED_DOCUMENTALLY; second pass pending |
-| semantic_role / nodo raíz | PROPOSED; acceptance pending |
+| semantic_role / nodo raíz | ACCEPTED_DOCUMENTALLY (DEC-C10-060); physical validation pending |
 | Procedencia y CLAIM_EVIDENCE_LINK | OPEN |
 | FK polimórficas | OPEN |
 | Unicidad/versionado/supersedes | OPEN |
@@ -159,6 +159,6 @@ No modifica TGCV Core, RMA, Evidence→Claim Matrix, STATUS, claims ni estimando
 
 UG-SCH-01 ha sido corregido documentalmente en la plantilla: EDGE pasa a 31 columnas e incorpora `atomic_edge_id`, `parent_edge_id`, `source_node_id` y `target_node_id`. Se conserva E07 como regla lógica no-arista y E22 sin inventar nodos destino. La anchura física estática coincide en encabezado, separador y fila de esquema.
 
-Para UG-SCH-03 se ha creado el contrato propuesto `C10_S_UG_SEMANTIC_ROLE_AND_LOGICAL_ROOT_CONTRACT_DRAFT_001.md`. No se considera cerrado ni aprobado hasta aceptación explícita. El crosswalk N01–N23 es de roles de catálogo a tipos semánticos, no una equivalencia uno-a-uno.
+Para UG-SCH-03 se creó `C10_S_UG_SEMANTIC_ROLE_AND_LOGICAL_ROOT_CONTRACT_DRAFT_001.md` y el usuario lo aceptó mediante DEC-C10-060. El crosswalk N01–N23 es de roles de catálogo a tipos semánticos, no una equivalencia uno-a-uno. La aceptación es documental; la implementación y validación física siguen pendientes.
 
 Los demás hallazgos UG-SCH-02 y UG-SCH-04…08 permanecen abiertos. Dictamen global: SCHEMA_NOT_CLOSED.
