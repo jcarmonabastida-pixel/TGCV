@@ -1236,3 +1236,10 @@ La auditoría y el crosswalk IAM se actualizan. UG-SCH-02 y UG-SCH-04…08 sigue
 El usuario acepta el contrato `C10_S_UG_SEMANTIC_ROLE_AND_LOGICAL_ROOT_CONTRACT_DRAFT_001.md`. Se registra DEC-C10-060: vocabulario controlado de 16 semantic_role; separación de `parent_catalog_id`, `semantic_role` y `boundary_class`; crosswalk N01–N23 no uno-a-uno; nodo raíz lógico único por unidad/snapshot/scope; y conservación de la FK compuesta SNAPSHOT→NODE de DEC-C10-059.
 
 UG-SCH-03 queda ACCEPTED_DOCUMENTALLY, pendiente de validación física de enum, FK y cardinalidad. UG-SCH-02 y UG-SCH-04…08 siguen abiertos. Dictamen global U_G: SCHEMA_NOT_CLOSED. No se crean registros, inventario real, truth, fixtures, parser, constraints, simulaciones ni experimentos. `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`; `scientific_execution=false`; `execution_authorized=false`.
+
+
+# LIX. Reconciliación de FK SNAPSHOT y marcadores NA (2026-11-05)
+
+Se corrige documentalmente UG-SCH-02: el encabezado SNAPSHOT expresa la FK compuesta `(unit_object_record_id, unit_id) → NODE.(object_record_id, node_id)`, conforme a DEC-C10-059. Se aclara UG-SCH-08: los NA de las filas ilustrativas NODE/SNAPSHOT son marcadores de plantilla, no observaciones reales. UG-SCH-03 queda aceptado documentalmente por DEC-C10-060.
+
+UG-SCH-04 (procedencia), UG-SCH-05 (claim target de cobertura), UG-SCH-06 (integridad de FK polimórficas) y UG-SCH-07 (unicidad/versionado/supersedes) permanecen abiertos. Dictamen global: SCHEMA_NOT_CLOSED. No se ejecutan parser, constraints, fixtures, simulaciones ni experimentos; `scientific_execution=false`; `execution_authorized=false`.
