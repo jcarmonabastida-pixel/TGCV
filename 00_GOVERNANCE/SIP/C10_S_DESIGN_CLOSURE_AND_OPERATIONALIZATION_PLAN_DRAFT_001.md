@@ -985,3 +985,14 @@ La decisión queda registrada en el documento de opciones §13, DEC-C10-051, fic
 **No se cierra:** lista de propiedades F*, mappings, tolerancias, casos frontera, oráculo, TID/SID/RID, C0/G/H, recursos/ventanas, cobertura de rutas, D1/D2, R0–R3, DGP, estimandos ni identificación. No hay aprobación de ejecución ni validación técnica/empírica/revisión independiente.
 
 **Siguiente bloque:** completar el contrato de F* por propiedades observables y reglas de adjudicación; especificar para F1/F2/A1/A2 los contratos de entrada/salida, precondiciones, invariantes, fallos y mapping; definir un oráculo independiente ciego a Z/B y separado de Outcome/Value. Después reconciliar el catálogo de roles U_G con estas fichas y actualizar DGP/estimandos sin asignar truth no sustentada.
+
+
+# XXXV. Matriz operacional de F* y reconciliación de estado (2026-11-05)
+
+Se crea `C10_S_FSTAR_OPERATIONAL_PROPERTY_AND_ADJUDICATION_MATRIX_DRAFT_001.md`, con familias FP-01…FP-08, regla trivalente no compensatoria, evaluación diferenciada por etapa, requisitos del oráculo y condiciones de equivalencia funcional de rutas.
+
+**Dictamen:** F* queda definido a nivel de familias de propiedades y lógica de adjudicación; no está cerrado a nivel de predicados atómicos ni validado. Permanecen abiertos dominio de entrada, invariantes exactas, mappings, contratos/versiones, tolerancias, H/G/C0, reglas NA, oráculo, error/cegamiento y cobertura de alternativas.
+
+**Reconciliación de texto histórico:** el bloque XXXIII de este plan y el maestro §94 conservan la formulación previa a DEC-C10-051 («Opción A no seleccionada/no aprobada»). Se preservan como registro del estado en el momento de su redacción; para el estado vigente prevalecen el bloque XXXIV, el maestro §95 y DEC-C10-051. No hay contradicción decisional vigente: Opción A está seleccionada para diseño, no autorizada para ejecución.
+
+**Siguiente paso:** cerrar el catálogo de propiedades atómicas y las reglas de mapping/preservación, empezando por FP-03 (semántica) y FP-01/FP-02 (estructura e integridad), y definir los criterios de seguridad FP-05. Después concretar los contratos de F1/F2/A1/A2 y el oráculo. No generar truth del DGP ni ejecutar.
