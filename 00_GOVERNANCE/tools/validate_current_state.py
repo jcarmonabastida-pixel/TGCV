@@ -149,7 +149,7 @@ if matrix_declared_version and manifest_matrix_version != matrix_declared_versio
 # must agree with the resolved current matrix version.
 if rma_text and matrix_declared_version:
     rma_current_matrix_versions = set(re.findall(
-        r"current Evidence→Claim Matrix(?: is)?\\s*\\**(v\\d+\\.\\d+)",
+        r"current Evidence→Claim Matrix(?: is)?\s*(?:\*\*)?(v\d+\.\d+)",
         rma_text,
         flags=re.IGNORECASE,
     ))
