@@ -177,3 +177,8 @@ La ampliación no cierra FP-03: el dominio de configuración, invariantes atómi
 ## 14. Reconciliación con el catálogo atómico
 
 La correspondencia de F* con CMP/PAR/REF/RUL/POL/MET y FP-01…FP-08 se desarrolla en `C10_S_SM_ATOMIC_PROPERTY_FP_RECONCILIATION_DRAFT_001.md`. Los predicados estructurales y semánticos se separan; FP-06/07 no duplican FP-03, y POL preservada no implica seguridad FP-05. La reconciliación sigue siendo propuesta y no cierra obligatoriedad, NA ni oráculo.
+
+
+## 17. Aplicabilidad ex ante y DEC-C10-055
+
+La arquitectura de familias FP queda aceptada por DEC-C10-055, pero la selección de propiedades obligatorias por instancia no se cierra por esa aceptación. Se propone el IAM en `C10_S_PROPERTY_APPLICABILITY_AND_OBLIGATORINESS_MATRIX_DRAFT_001.md`, con declaración previa de O/C/NA/? y cardinalidad/cobertura. La frontera entre F* funcional y gates técnicos FP-04/05/06, y el tratamiento separado de FP-08 como validez probatoria, permanece abierta a decisión antes del freeze.
