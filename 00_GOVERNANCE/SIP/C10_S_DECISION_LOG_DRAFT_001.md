@@ -624,3 +624,17 @@ El overlay propone campos semánticos P0/P1 y relaciones P2, crosswalk a los die
 **Alcance:** decisión conceptual/documental; no freeze ejecutable, no captura, no inventario real, no truth, fixtures, simulación ni experimento. `scientific_execution=false`; `execution_authorized=false`.
 
 **Estado:** DEC-C10-059 ACCEPTED.
+
+## DEC-C10-060 — vocabulario semantic_role y nodo raíz lógico U_G (2026-11-05)
+
+**Decisión explícita del usuario:** acepta el contrato propuesto `C10_S_UG_SEMANTIC_ROLE_AND_LOGICAL_ROOT_CONTRACT_DRAFT_001.md`, incluido el vocabulario controlado de 16 roles, el crosswalk no uno-a-uno N01–N23 y las reglas del nodo raíz lógico.
+
+1. Se distinguen tres dimensiones independientes: `parent_catalog_id` (linaje N01–N23), `semantic_role` (tipo semántico del objeto NODE) y `boundary_class` (P0/P1/DUAL/NA conforme a DEC-C10-059).
+2. Los NODE utilizan exactamente un `semantic_role` del vocabulario controlado versionado de 16 valores. Si un objeto no encaja, no se fuerza su clasificación: se documenta la indeterminación y se propone revisión del vocabulario antes de instanciarlo.
+3. N01–N23 son roles/elementos del catálogo U_G, no una taxonomía de NODE; su correspondencia con semantic_role puede ser muchos-a-muchos y no crea nodos/aristas.
+4. Se confirma la regla DEC-C10-059: `SNAPSHOT.(unit_object_record_id, unit_id) → NODE.(object_record_id, node_id)`; el NODE destino debe tener `semantic_role=LOGICAL_SERVICE_UNIT`.
+5. Para cada combinación `(unit_id, snapshot_id, scope)` debe resolver exactamente un nodo raíz lógico. Los snapshots preservan la revisión exacta del nodo raíz; no se reescribe historia.
+6. El nodo raíz es ancla de identidad analítica, no necesariamente un objeto P0/P1. `boundary_class=NA` solo con justificación si no es por sí mismo un objeto/artefacto P0/P1; no asignar DUAL por representar la unidad lógica.
+7. Esta decisión es conceptual/documental. Enums, FK compuesta, exclusividad/cardinalidad y restricciones físicas quedan pendientes del gate técnico autorizado.
+
+**Estado:** DEC-C10-060 ACCEPTED. No se crean instancias, inventario real, truth, fixtures ni evidencia. `scientific_execution=false`; `execution_authorized=false`.
