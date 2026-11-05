@@ -7510,3 +7510,12 @@ El usuario selecciona Opción A —migración de configuración entre dos entorn
 La decisión sustituye el estado previo «recomendado, no seleccionado» para el diseño C10-S. Las Opciones B/C permanecen documentadas como alternativas históricas. F* no se considera cerrado: catálogo exacto de propiedades, mappings, tolerancias, casos frontera, oráculo y protocolo de validación permanecen pendientes. Tampoco se han decidido D1/D2, R0–R3 ni parámetros del DGP.
 
 La selección no constituye aprobación de ejecución, validación técnica, evidencia empírica, revisión independiente ni freeze. `scientific_execution=false`; `execution_authorized=false`.
+
+
+# 96. Matriz operacional de F* y reconciliación de estados previos (2026-11-05)
+
+Se crea `C10_S_FSTAR_OPERATIONAL_PROPERTY_AND_ADJUDICATION_MATRIX_DRAFT_001.md`, complementaria a las fichas Opción A. Define familias FP-01…FP-08 (esquema, integridad, preservación semántica, compatibilidad destino, seguridad, aplicación efectiva, verificación post-aplicación y procedencia/reproducibilidad), regla trivalente no compensatoria, evaluación por etapas y requisitos del oráculo independiente.
+
+**Estado de F*:** definido a nivel de familias y lógica de adjudicación; predicados atómicos, mappings, tolerancias, H/G/C0, contratos concretos y oráculo siguen abiertos. No hay implementación, validación ni evidencia empírica.
+
+**Reconciliación de DEC-C10-051:** las menciones previas en §94 que describen Opción A como «no aprobada» son estado histórico anterior a la decisión. Para el estado vigente rige §95 y DEC-C10-051: Opción A está seleccionada para el diseño C10-S y F* adoptado como contrato de trabajo candidato. La selección no equivale a aprobación de ejecución ni cierre operacional. La referencia de §94 se interpreta como descripción de la propuesta original en el momento de su registro, no como estado vigente.
