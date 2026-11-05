@@ -58,3 +58,8 @@ La aceptación es conceptual/documental. Antes de considerar el esquema implemen
 - compatibilidad con todas las diez tablas U_G y con CLAIM_EVIDENCE_LINK.
 
 No se han ejecutado validadores ni fixtures. No se han creado nodos, snapshots, evidencias ni truth. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 6. Addendum DEC-C10-064 — actualización de la FK raíz
+
+Se conserva el contrato de unidad lógica y boundary_class, ampliando la FK raíz para incluir pertenencia al snapshot: SNAPSHOT(snapshot_id, unit_object_record_id, unit_id) → NODE(snapshot_id, object_record_id, node_id). El NODE referenciado debe tener semantic_role=LOGICAL_SERVICE_UNIT. La circularidad con NODE.snapshot_id se valida al COMMIT mediante constraints diferibles y transacción atómica. La compatibilidad del motor es gate técnico obligatorio. Las formulaciones previas que describen la FK solo como (object_record_id,node_id) quedan complementadas por esta regla más específica; no se elimina el pinning exacto.
