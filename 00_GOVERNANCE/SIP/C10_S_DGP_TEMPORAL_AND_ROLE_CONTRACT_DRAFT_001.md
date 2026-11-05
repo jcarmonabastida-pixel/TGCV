@@ -739,3 +739,14 @@ Esta regla de medición no sustituye los mecanismos causales del DGP. El truth g
 La evaluación de preservación semántica se especifica en `C10_S_FP03_SEMANTIC_PRESERVATION_CONTRACT_DRAFT_001.md`. Las dimensiones SM-01…SM-10 son candidatas; el DGP no debe asignarles truth hasta que se delimiten el objeto de configuración, las propiedades obligatorias, mappings y cobertura. El analizador solo recibe observaciones permitidas; no se filtra truth generador.
 
 La selección de Opción A no basta para inferir mecanismos técnicos de F1/F2/A1/A2. Las fichas actuales describen roles candidatos, no identidades TID ni contratos implementables. La semántica funcional concreta deberá derivarse de una decisión de diseño explícita antes de completar R0–R3.
+
+
+## 19. Alcance candidato del DGP base y contratos abstractos de configuración
+
+La propuesta `C10_S_BASE_DGP_SCOPE_AND_ABSTRACT_CONFIGURATION_CONTRACT_PROPOSAL_DRAFT_001.md` deriva de DEC-C10-051/052 una partición candidata: componentes, parámetros tipados, referencias y reglas/restricciones como familias constitutivas del DGP base; políticas asociadas como módulo condicional; metadatos contractuales como soporte de identidad/procedencia, con extensiones desconocidas en escenarios condicionales.
+
+Esta partición no modifica la estructura conceptual de seis elementos seleccionada por DEC-C10-052 ni convierte POL en inexistente: propone que el DGP base pueda declarar ex ante ausencia de políticas migrables y que escenarios secundarios estudien su preservación y su separación de FP-05.
+
+Se estructuran tres contratos: C_src (contenido y semántica de origen), C_dst (representación y restricciones de destino) y M (mapping versionado para evaluación, no capa operativa persistida adicional). Se enumeran predicados BASE-CMP/PAR/REF/RULE/MAP-COVERAGE/APPLIED-STATE como candidatos, sin truth ni valores.
+
+**Estado:** propuesta no aprobada; gramática de reglas, dominios, cardinalidad, ausencia/null/default, mappings, alcance de POL, oráculo y obligatoriedad siguen abiertos. No se asigna truth ni se autoriza generación/ejecución.
