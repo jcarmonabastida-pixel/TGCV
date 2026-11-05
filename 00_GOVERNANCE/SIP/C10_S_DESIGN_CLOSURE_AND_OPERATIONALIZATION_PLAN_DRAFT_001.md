@@ -1306,3 +1306,10 @@ El usuario aprueba la resolución de detalle de Opción A. La decisión queda re
 La aplicación es documental y de diseño; no supone schema freeze ni validación física. El motor relacional no está fijado y su compatibilidad con FKs diferibles es un gate obligatorio. La continuidad cross-row de ROUTE_STEP, constraints compuestas, secuencias/supersession, inmutabilidad, parser y pruebas negativas siguen pendientes.
 
 **Siguiente paso:** auditoría integral de reconciliación de plantilla, encabezados, PK/UK/FK/CHECK, diccionario, IAM/FP crosswalk y contratos UG-SR/059–062. Corregir las contradicciones heredadas y comprobar recuentos de columnas/filas antes de ejecutar validadores autorizados. Mantener PR #116 Draft y no tocar main. No se ejecutan validadores ni experimentos en esta fase; `scientific_execution=false`; `execution_authorized=false`.
+
+
+# LXVIII. Reconciliación física de encabezados U_G — primer pase (2026-11-05)
+
+Se actualizan los encabezados físicos de NODE, EDGE, ROUTE y PREDICATE para incorporar snapshot_id; EDGE incorpora source_node_record_id/target_node_record_id; PREDICATE incorpora route_record_id. La FK raíz de SNAPSHOT se expresa con snapshot_id en ambos lados. Se añade el registro ROUTE_STEP en la sección de rutas. El control mecánico de las 19 tablas Markdown de la plantilla confirma consistencia de número de columnas entre encabezado, separador y filas presentes.
+
+Este control solo comprueba forma Markdown/columnas; no valida tipos, obligatoriedad, claves, cardinalidades, constraints, referencias cruzadas, semántica ni compatibilidad con motor. El esquema sigue abierto. Siguiente: reconciliar matriz de claves y contratos cruzados, revisar que los nombres de columnas de las diez tablas normalizadas coincidan con las vistas §§2–7, y preparar revisión independiente antes de cualquier gate técnico.
