@@ -110,3 +110,9 @@ El archivo fuente está disponible como adjunto de esta conversación. Este regi
 ## 7. Criterio de continuación
 
 El trabajo siguiente no es desarrollar una nueva sección teórica. Es integrar esta fuente con los artefactos existentes, contrastar ecuaciones/estimandos y completar las fichas P182/P183. La sección 184 solo se abordará después de cerrar esa integración y decidir si realmente queda una incertidumbre no cubierta.
+
+## 4. Nota de supersesión de precedencia — DEC-C10-066 (2026-11-06)
+
+Las filas y el resumen de §§2–3.1 reproducen fielmente la recomendación histórica de la fuente recuperada: D1 principal condicionado y D2 contraste. Esa recomendación es evidencia histórica de lo que proponía la fuente, no el estado de decisión vigente. DEC-C10-066 la supersede exclusivamente en la selección del escenario primario candidato: D2 primario candidato y D1 secundario. Se conserva el registro fuente sin reescritura para mantener trazabilidad.
+
+La legitimidad de D2 sigue requiriendo verificación de ausencia basal y ausencia de provisión focal de fondo. D1 requiere justificar el régimen ordinario si se interpreta como contraste incremental. Ningún parámetro de la fuente queda validado por DEC-C10-066.
