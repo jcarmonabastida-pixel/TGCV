@@ -84,3 +84,14 @@ El vocabulario de `semantic_role` y el nodo raíz se desarrolla en `C10_S_UG_SEM
 ## Addendum — DEC-C10-060 accepted (2026-11-05)
 
 Se acepta el vocabulario controlado de `semantic_role` y el contrato del nodo raíz lógico. La correspondencia N01–N23 → semantic_role no es uno-a-uno y no genera instancias ni aristas. `parent_catalog_id`, `semantic_role` y `boundary_class` permanecen dimensiones distintas. La regla de referencia compuesta SNAPSHOT→NODE se conserva conforme a DEC-C10-059 y requiere validación física futura.
+
+
+## 8. Reconciliación de procedencia y referencias tipadas — DEC-C10-061
+
+- `source_provenance` pertenece al registro normalizado EVIDENCE_REGISTER; no es columna común duplicada en NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT.
+- CLAIM_EVIDENCE_LINK usa una FK destino tipada entre NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_REGISTER, con exclusividad exactamente-una y coherencia de claim_target_type.
+- EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER aplican el mismo patrón mediante object_type; las referencias E1/E2 son FKs directas a evaluator_record_id.
+- object_record_id debe ser UNIQUE dentro de cada tabla de objeto; coverage_scope_id es PK/UNIQUE.
+- evidence_ref sigue siendo referencia de navegación 0..1; la relación probatoria canónica es CLAIM_EVIDENCE_LINK 0..n.
+
+La aceptación DEC-C10-061 es documental. No se han ejecutado parser, FK/CHECK, constraints ni pruebas negativas.
