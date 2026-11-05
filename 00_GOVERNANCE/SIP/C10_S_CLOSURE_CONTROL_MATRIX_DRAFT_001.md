@@ -782,3 +782,14 @@ Protocolo no aplicado. No hay inventario ni cobertura técnica; no se cierran UG
 | FCM-16 | Destino claim_target_id ambiguo | object_record_id | Validar referencias |
 
 FCM-01…16 están tratados documentalmente, no probados técnicamente. Esquema Draft; revisión independiente y validación ejecutable pendientes.
+
+
+## 26. Seguimiento — tercera pasada de normalización relacional U_G
+
+| ID | Hallazgo | Corrección documental | Cierre restante |
+|---|---|---|---|
+| FCM-17 | PK plural en EVALUATOR_ASSESSMENT | evaluator_record_id singular, una fila por E1/E2 | Validar unicidad/FK |
+| FCM-18 | Evidencias serializadas en evaluaciones/adjudicaciones | CLAIM_EVIDENCE_LINK con evaluator_record_id/adjudication_id | Validar relaciones |
+| FCM-19 | object_id ambiguo | object_record_id en evaluación/adjudicación | Validar integridad referencial |
+
+Comprobación estática de alineación de columnas: PASS documental en diez tablas. No es validación ejecutable; FCM-01…19 siguen pendientes de revisión independiente y validación técnica.
