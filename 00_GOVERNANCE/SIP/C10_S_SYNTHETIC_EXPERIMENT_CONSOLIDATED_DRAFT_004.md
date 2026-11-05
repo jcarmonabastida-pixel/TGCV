@@ -7415,3 +7415,14 @@ Hallazgos de estructura:
 - Se identifican campos complementarios: parent_catalog_id, evidence_status, contract_intent, coverage_scope_id, source_provenance, review/adjudication_status y unknown_reason; además parent_edge_id/atomic_edge_id y route_subtype/parent_route_class.
 
 **Dictamen:** correspondencia semántica completa, pero esquema no cerrado. Requiere normalización y ampliación de campos. Todos los estados técnicos permanecen ?; cobertura NONE; A_f*, F_alt,0 y Reach_H siguen indeterminados. No se completa inventario, no se aprueba microdominio/DGP ni se autoriza ejecución.
+
+
+# 85. Protocolo de fuentes, procedencia y adjudicación U_G (2026-11-05)
+
+Se crea C10_S_UG_EVIDENCE_PROVENANCE_AND_ADJUDICATION_PROTOCOL_DRAFT_001.md. Define clases de fuentes S1–S8; procedencia reproducible; evidencia mínima por nodo, arista, predicado y ruta; argumento de cobertura negativa; cobertura por dimensión y denominador; doble evaluación cegada; adjudicación de discrepancias; propagación trivalente y condiciones de parada.
+
+El protocolo establece que ausencia solo puede clasificarse 0 con universo operativo, fuentes pertinentes, método con capacidad de detección, integridad, tratamiento de dependencias dinámicas/alias/externos/fallback, cobertura suficiente y revisión independiente. MISSING no es 0; CONFLICTING fuerza ?; COMPLETE es local al universo declarado. C_dep no implica A_f*. Reach=0 y F_alt,0=0 requieren descarte exhaustivo dentro del universo operativo relevante; Runknown y dependencias críticas no resueltas impiden esa conclusión.
+
+El cross-reference se incorpora a la plantilla §11, DGP §44, plan XXIII, matriz de cierre §23, Decision Log §39 y registro de pruebas §46.
+
+**Dictamen:** protocolo documental desarrollado, no aplicado ni validado sobre sistemas reales. No hay fuentes observadas, inventario ni adjudicación. Cobertura NONE; A_f*, F_alt,0 y Reach_H permanecen ?. La plantilla aún necesita auditoría de correspondencia campo a campo. No se cierran MD-C1…6, GC/UGI/UGC, AUD-005/007/010/011 ni OPEN-C10; no se aprueba microdominio, D1/D2, DGP o freeze, ni se autoriza implementación/simulación/ejecución.
