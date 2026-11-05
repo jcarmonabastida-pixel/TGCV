@@ -213,9 +213,9 @@ Se confirma que `evidence_ref` en NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT es cero o u
 FCM-20 es corrección documental; no valida cardinalidad de instancias ni FK en motor.
 
 
-## 17. Propuesta de reconciliación de obligatoriedad — UG-SR-A01 (pendiente de aceptación)
+## 17. Regla adoptada de obligatoriedad — UG-SR-A01
 
-La frase histórica de §10 «ningún estado sin evidence_ref» se considera imprecisa y se propone sustituirla por la siguiente regla:
+La frase histórica de §10 «ningún estado sin evidence_ref» se considera imprecisa y queda sustituida por la siguiente regla adoptada:
 
 1. `evidence_ref` es opcional (0..1), solo de navegación. Si está poblado, debe resolver a un `claim_evidence_id` válido.
 2. Todo registro real con `observed_state=1` o `0` requiere al menos un vínculo CLAIM_EVIDENCE_LINK válido y de alcance compatible. Para `0`, además, se exige cobertura negativa suficiente.
@@ -223,4 +223,4 @@ La frase histórica de §10 «ningún estado sin evidence_ref» se considera imp
 4. `NA` exige justificación de no aplicabilidad y no requiere vínculo por defecto.
 5. CLAIM_EVIDENCE_LINK mantiene la relación canónica 0..n; EVIDENCE_REGISTER conserva las fuentes/artefactos y sus versiones.
 
-Esta reconciliación queda propuesta para resolver la contradicción entre §§10, 13, 14, 16 y la plantilla §§11, 12.8–12.9. No se considera decisión aceptada ni cierre de SR-03 hasta aprobación explícita y validación técnica de instancias, cardinalidad y FK.
+Esta reconciliación resuelve documentalmente la contradicción entre §§10, 13, 14, 16 y la plantilla §§11, 12.8–12.9. **Aceptada documentalmente por decisión explícita del usuario (2026-11-05).** SR-03 permanece CONDITIONAL hasta validación técnica de instancias, cardinalidad y FK; esta aceptación no implica freeze ni revisión independiente.
