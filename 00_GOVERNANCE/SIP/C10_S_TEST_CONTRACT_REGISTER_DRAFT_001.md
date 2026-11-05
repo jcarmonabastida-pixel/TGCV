@@ -966,3 +966,18 @@ Contratos documentales de revisión; no implementados ni ejecutados.
 | FCM-09 | Revisión sobrescribe versión previa | Rechazar; exigir supersedes_record_id y conservar historial |
 
 Contratos documentales de revisión. No son validadores implementados ni pruebas ejecutadas.
+
+
+## 48. Contratos de revisión de consistencia del esquema — FCM-10…16
+
+| ID | Caso | Resultado esperado |
+|---|---|---|
+| FCM-10 | Tabla de objeto sin campos comunes | Rechazar |
+| FCM-11 | SNAPSHOT usa ? cuando observed_state no aplica | Exigir NA justificado; no inferir ausencia |
+| FCM-12 | E1/E2 en una sola celda | Rechazar; una fila por evaluación |
+| FCM-13 | Evidence refs serializados como lista en celda | Exigir CLAIM_EVIDENCE_LINK 1:N |
+| FCM-14 | COMPLETE en vista resumen sin denominator | Rechazar; resolver COVERAGE_REGISTER |
+| FCM-15 | Estado fuera de dominio o timestamp sin offset | Rechazar |
+| FCM-16 | claim_target_id no resuelve a object_record_id | Rechazar referencia huérfana |
+
+Contratos documentales, no validador implementado ni pruebas ejecutadas.
