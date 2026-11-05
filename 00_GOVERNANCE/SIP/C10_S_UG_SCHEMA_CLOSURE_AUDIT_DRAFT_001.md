@@ -324,3 +324,10 @@ El usuario aprueba la resolución de detalle y queda registrada en `DEC-C10-064_
 **Estado de auditoría:** DESIGN_CONTRACT_ACCEPTED; TEMPLATE_ADDENDUM_APPLIED; HEADER_RECONCILIATION_PENDING; TECHNICAL_VALIDATION_NOT_RUN. La plantilla todavía contiene encabezados abreviados heredados en §§2–6 y formulaciones históricas incompatibles; §13 es normativa, pero no se declara aún reconciliación física completa. Es obligatorio alinear los encabezados y matrices para eliminar duplicidad/ambigüedad, verificar cada fila de esquema y actualizar crosswalk IAM/FP antes de cerrar UG-SCH-10.
 
 La compatibilidad de FKs diferibles con el motor elegido y la integridad cross-row de ROUTE_STEP son gates técnicos. No se han ejecutado parser, constraints, fixtures ni experimentos. Esquema global SCHEMA_NOT_CLOSED.
+
+
+### 14.10. Primer pase de reconciliación física de encabezados
+
+Se aplican a los encabezados de §§2–5 los campos Opción A y se incorpora ROUTE_STEP como registro normalizado. SNAPSHOT conserva snapshot_id como PK y su referencia raíz se expresa ahora como FK compuesta con snapshot_id incluido. Un control mecánico de Markdown sobre las 19 tablas de la plantilla confirma que cada encabezado, separador y fila presente tiene igual número de columnas.
+
+**Resultado limitado:** PASS_FORMAT_COLUMN_COUNT; no equivale a validación de nombres/tipos/dominos, constraints, claves, cardinalidades ni integridad referencial. La plantilla sigue Draft y vacía de observaciones. Pendiente reconciliar los encabezados de vistas §§2–6 con el esquema normalizado §§12.7–12.10, así como ROUTE_STEP en la matriz de claves y todos los crosswalks. No se ejecutó parser/validador de aplicación, DDL ni pruebas negativas. UG-SCH-10 continúa OPEN; esquema global SCHEMA_NOT_CLOSED.
