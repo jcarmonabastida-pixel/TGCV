@@ -331,3 +331,10 @@ La compatibilidad de FKs diferibles con el motor elegido y la integridad cross-r
 Se aplican a los encabezados de §§2–5 los campos Opción A y se incorpora ROUTE_STEP como registro normalizado. SNAPSHOT conserva snapshot_id como PK y su referencia raíz se expresa ahora como FK compuesta con snapshot_id incluido. Un control mecánico de Markdown sobre las 19 tablas de la plantilla confirma que cada encabezado, separador y fila presente tiene igual número de columnas.
 
 **Resultado limitado:** PASS_FORMAT_COLUMN_COUNT; no equivale a validación de nombres/tipos/dominos, constraints, claves, cardinalidades ni integridad referencial. La plantilla sigue Draft y vacía de observaciones. Pendiente reconciliar los encabezados de vistas §§2–6 con el esquema normalizado §§12.7–12.10, así como ROUTE_STEP en la matriz de claves y todos los crosswalks. No se ejecutó parser/validador de aplicación, DDL ni pruebas negativas. UG-SCH-10 continúa OPEN; esquema global SCHEMA_NOT_CLOSED.
+
+
+### 14.11. ROUTE_STEP incorporado a matriz de claves
+
+Se incorpora ROUTE_STEP a la matriz de claves de §12.10 como relación operativa de secuencia. No es una tabla adicional de objetos versionados: no recibe object_version ni supersedes_record_id. Su identidad se fija por route_record_id + step_index; todas sus referencias deben conservar snapshot_id y la continuidad NODE/EDGE exige validación cross-row. La matriz mantiene separados los registros de evidencia, cobertura, evaluación y adjudicación.
+
+El control de forma de §§2–6 y la matriz se han actualizado, pero aún falta auditoría integral de nombres de columnas y correspondencia con todas las tablas normalizadas y crosswalks IAM/FP. UG-SCH-10 permanece OPEN.
