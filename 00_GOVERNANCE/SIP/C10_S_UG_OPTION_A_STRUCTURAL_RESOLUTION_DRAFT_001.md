@@ -137,3 +137,12 @@ No basta una FK aislada a `object_record_id` si la regla exige además mismo sna
 **Pendiente de gate técnico posterior:** motor/DDL, soporte de constraints diferibles, constraints compuestas, integridad cross-row de ROUTE_STEP, unicidad/secuencias/supersession, inmutabilidad, parser, pruebas positivas/negativas, rollback y replay de captura.
 
 No se crean instancias, inventario real, truth, fixtures ni datasets. No se ejecutan validadores, parser, constraints, simulaciones ni experimentos. No cambia TGCV Core, RMA, Evidence→Claim Matrix, claims, estimandos, Outcome o Value. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
+
+
+## 8. Estado actualizado tras DEC-C10-064 y auditoría OAS
+
+DEC-C10-064 acepta documentalmente la resolución de detalle y la plantilla U_G ya incorpora Opción A/ROUTE_STEP. Por tanto, las formulaciones de §7 que indicaban “pendiente de aceptación” y “la plantilla no se modifica aún” quedan supersedidas por la decisión posterior y su aplicación documental.
+
+La auditoría integral OAS identifica un bloqueo adicional no resuelto por la aceptación: SNAPSHOT está versionado bajo DEC-C10-062, pero las filas NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP solo fijan snapshot_id semántico. No se identifica así una revisión exacta de SNAPSHOT. La solución recomendada es añadir snapshot_object_record_id a cada registro hijo y fijar FK compuesta (snapshot_id, snapshot_object_record_id) → SNAPSHOT(snapshot_id, object_record_id), conservando el pinning del NODE raíz y difiriendo la circularidad completa hasta COMMIT. Esta extensión requiere decisión expresa; no se incorpora unilateralmente.
+
+Estado actual: Opción A y su detalle base aceptados documentalmente; aplicación documental parcial; pinning exacto de versión SNAPSHOT BLOCKED_PENDING_DECISION; esquema no congelado ni implementado; sin validación técnica ni ejecución científica.
