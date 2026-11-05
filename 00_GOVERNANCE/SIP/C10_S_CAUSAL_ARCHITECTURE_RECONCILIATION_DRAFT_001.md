@@ -2,7 +2,7 @@
 **ID:** C10-S-CAUSAL-ARCH-001 · **Versión:** Draft 001 · **Corte:** 2026-11-04  
 **Estado:** PROPUESTA DE RECONCILIACIÓN / NO APROBADA / NO CONGELADA.  
 **Ámbito:** Bloque 1 del plan C10-S: arquitectura causal y estimandos.  
-**No autoriza:** implementación, simulación, ejecución, selección primaria D1/D2 ni modificación de C10-D1/Core.
+**Precedencia de comparador:** DEC-C10-066 acepta D2 como escenario primario candidato y D1 como secundario. **No autoriza:** freeze, implementación, simulación, ejecución ni modificación de C10-D1/Core.
 
 ## 1. Resultado de la reconstrucción histórica
 
