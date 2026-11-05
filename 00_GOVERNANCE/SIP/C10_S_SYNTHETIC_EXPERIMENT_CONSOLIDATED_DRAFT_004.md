@@ -7798,3 +7798,13 @@ La simulación solo demuestra capacidad metodológica dentro del DGP y los supue
 Prioridad inmediata: resolver intervención autónoma sobre accesibilidad, q/g0/g1/C_auth, jerarquía de estimandos, población y comparador D1/D2; completar DGP, medición, identificación/falsación/sensibilidad y dimensionamiento estadístico. N=2.000 y 1.000 réplicas siguen candidatos provisionales; faltan potencia/precisión, error Monte Carlo, escenarios de primera etapa débil, heterogeneidad, missingness, interferencia y criterios delta/epsilon.
 
 Este registro no aprueba decisiones científicas, no cambia Core/RMA/matriz/STATUS y no autoriza implementación ni ejecución. C10-S sigue Draft/no congelado/no ejecutado.
+
+## Addendum de precedencia vigente — DEC-C10-066 (2026-11-06)
+
+**Estado operativo vigente:** D2 es el escenario primario candidato de C10-S para el contraste mecanístico de provisión técnica focal frente a ausencia de intento focal en control; D1 es el escenario secundario para el contraste incremental frente a provisión ordinaria de baja frecuencia.
+
+Este addendum supersede las recomendaciones anteriores de §§65–67 y las referencias posteriores del maestro que mantuvieran D1 como principal condicionado, D2 como mero contraste o la selección primaria abierta. En particular, las formulaciones de §§65.4, 66.4 y §67.7 deben leerse como antecedentes históricos, no como precedencia operativa vigente. No se reescribe su contenido histórico ni se alteran las probabilidades candidatas D1 (.25/1 intentos; .20/.80 C_dep) y D2 (0/1 intentos; 0/.80 C_dep).
+
+La selección de D2 no valida s=.80 ni otras probabilidades, ni demuestra ausencia real de provisión focal de fondo. Permanecen abiertos: actor/recepción/versiones, verificación de ausencia basal y de fondo, población y soporte, unidad/interferencia, primeras etapas independientes C_dep/A_f/D_f/ΔT_acc, vías colaterales/exclusión, estimandos, Value, calibración, potencia y precisión. ITT, primeras etapas y LATE son específicos por escenario; no se agrupan ni transportan automáticamente.
+
+No hay freeze, implementación, simulación ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
