@@ -7582,3 +7582,10 @@ El usuario aprueba el perfil estructural de dominios finitos por clave y el pres
 La aprobación de 4 niveles, 16 átomos por regla y 16 reglas por paquete es un presupuesto inicial de complejidad, no una calibración empírica. Los límites, escalas, catálogos y valores concretos por clave permanecen abiertos hasta definir el contrato abstracto. También siguen abiertos el mapping completo, los conflictos entre reglas, tolerancias y oráculo.
 
 No implica implementación, parser, validación, truth, fixtures, revisión independiente, evidencia empírica, ejecución autorizada ni freeze del DGP. El siguiente bloque es el contrato abstracto de parámetros y la matriz C_src→C_dst/M con trazabilidad FP-01/02/03 y prevención de doble conteo.
+
+
+# 104. Matriz abstracta de parámetros y mapping fuente/destino (2026-11-05)
+
+Se crea `C10_S_ABSTRACT_PARAMETER_AND_SOURCE_DESTINATION_MAPPING_MATRIX_DRAFT_001.md` como desarrollo documental posterior a DEC-C10-054. Define campos contractuales por clave de parámetro, correspondencias C_src→C_dst/M para CMP/PAR/REF/RUL/POL/MET, tratamiento de estados/defaults, conversiones tipadas, predicados candidatos FP-01/02/03 y distinción entre paquete destino declarado, estado realmente aplicado y entorno destino.
+
+La matriz no selecciona claves ni valores reales, no fija obligatoriedad final ni mappings concretos, y no cierra el oráculo. Sus predicados deben reconciliarse con SM-01…SM-10 y el catálogo atómico para evitar duplicidad/doble conteo. No hay truth, fixtures, validación técnica, revisión independiente, evidencia empírica ni ejecución.
