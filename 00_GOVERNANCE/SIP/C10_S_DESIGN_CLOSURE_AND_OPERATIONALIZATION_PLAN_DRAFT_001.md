@@ -1201,3 +1201,22 @@ Se acepta `NODE.boundary_class` con clases sustantivas P0_CONFIG/P1_ENVIRONMENT/
 Artefacto contractual: `C10_S_UG_LOGICAL_UNIT_FOREIGN_KEY_AND_BOUNDARY_CLASS_CONTRACT_DRAFT_001.md`.
 
 **Estado:** decisión aceptada y cambios documentales persistidos. No se ha implementado parser ni constraint físico, ni ejecutado validador; schema implementado permanece NOT_ASSESSED. No se crean instancias ni se ejecuta experimento.
+
+
+# LVI. Auditoría de cierre documental del esquema U_G (2026-11-05)
+
+Se realiza revisión estática de la plantilla U_G, el contrato DEC-C10-059, el protocolo de evidencia, la matriz trivalente, el crosswalk IAM, la reconciliación SM/FP y la matriz operacional F*. Las diez tablas canónicas están presentes; los encabezados, separadores y filas de esquema tienen anchuras consistentes (NODE 30, EDGE 29, ROUTE 29, PREDICATE 24, SNAPSHOT 26, EVIDENCE_REGISTER 18, CLAIM_EVIDENCE_LINK 10, COVERAGE_REGISTER 15, EVALUATOR_ASSESSMENT 13, ADJUDICATION_REGISTER 12). No se detectan nombres duplicados en los diez encabezados examinados.
+
+**Dictamen: CORRECTION_REQUIRED / SCHEMA_NOT_CLOSED.** Se crea `C10_S_UG_SCHEMA_CLOSURE_AUDIT_DRAFT_001.md` con ocho hallazgos:
+- UG-SCH-01: encabezado EDGE no refleja parent_edge_id/atomic_edge_id ni la nomenclatura normalizada de extremos.
+- UG-SCH-02: descripción de unit_object_record_id no expresa la FK compuesta SNAPSHOT→NODE ya aceptada en DEC-C10-059.
+- UG-SCH-03: semantic_role y LOGICAL_SERVICE_UNIT carecen de vocabulario/crosswalk formal cerrado.
+- UG-SCH-04: conflicto entre source_provenance obligatorio en §10.6 y su ubicación canónica en EVIDENCE_REGISTER/§12.7.
+- UG-SCH-05: CLAIM_EVIDENCE_LINK no resuelve cómo vincular COVERAGE_REGISTER, cuya clave es coverage_scope_id y no object_record_id.
+- UG-SCH-06: las FK polimórficas object_type + object_record_id carecen de mecanismo físico de integridad especificado.
+- UG-SCH-07: ámbito de unicidad de object_record_id y reglas de supersedes_record_id necesitan precisión.
+- UG-SCH-08: aclarar que NA en filas de esquema de NODE/SNAPSHOT es marcador de plantilla, no observación.
+
+Se mantienen DEC-C10-055 y DEC-C10-059; no se reabren responsabilidades FP, catálogo EDGE ni decisión conceptual de FK compuesta. No se modifica aún la plantilla: las correcciones requieren resolver los crosswalks y las claves antes de cambiar encabezados. Próxima operación: corregir documentalmente EDGE y formalizar semantic_role/nodo raíz; después resolver CLAIM_EVIDENCE_LINK/FK polimórficas y versionado.
+
+La revisión es `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`. No se ejecutaron parser, validador, constraints, fixtures, pruebas, simulaciones ni experimentos; no hay inventario real ni evidencia nueva. `scientific_execution=false`; `execution_authorized=false`.
