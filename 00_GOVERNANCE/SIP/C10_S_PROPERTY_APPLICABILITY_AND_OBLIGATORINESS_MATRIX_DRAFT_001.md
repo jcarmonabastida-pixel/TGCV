@@ -77,16 +77,22 @@ De DEC-C10-053:
 - Los elementos constitutivos requieren campos/inventarios explícitos en IAM. La cardinalidad concreta de instancias por clase (incluido cero) no se fijará por intuición: debe justificarse por el dominio abstracto seleccionado y por la pregunta F*.
 - Para evitar que un paquete vacío pase como conforme, un universo CMP o PAR vacío produce SCOPE_ERROR salvo justificación formal de que la unidad no contiene componentes/parameters. REF/RUL pueden tener cardinalidad cero solo si el contrato de dominio permite esa ausencia y la cobertura demuestra que no se omitieron registros. RUL vacío exige especial cautela dado que reglas/restricciones son constitutivas; no se acepta como default.
 
-## 5. Separación F* funcional, gates técnicos y validez probatoria
+## 5. Frontera correcta de F* y gates de validez probatoria
 
-No se agrega todo en una sola puntuación:
-- **F* funcional:** propiedades constitutivas obligatorias aplicables de CMP/PAR/REF/RUL y semántica declarada; regla no compensatoria 1/0/?.
-- **Gates técnicos externos:** FP-04 compatibilidad destino, FP-05 seguridad efectiva si el contrato la exige, FP-06 aplicación efectiva.
-- **FP-07:** verificación de las propiedades pertinentes en C_dst^applied; reutiliza criterios sin crear un segundo fallo.
-- **FP-08:** procedencia y reproducibilidad, gate de validez probatoria, no propiedad funcional compensable.
-- C_dep, E_dst, recursos, permisos efectivos y runtime son condiciones externas; no se absorben en F* ni se confunden con T_acc.
+F* representa la **capacidad funcional de la ruta completa**, no solo la preservación interna del paquete. Según el contrato candidato F* ya definido (producir y aplicar en destino una configuración que satisfaga esquema, integridad, compatibilidad, preservación funcional y seguridad), su adjudicación de ruta puede depender de FP-01…FP-07:
+- FP-01/02/03: conformidad estructural, integridad y preservación funcional del objeto;
+- FP-04: compatibilidad técnica con el entorno destino;
+- FP-05: seguridad efectiva conforme a requisitos de seguridad declarados ex ante;
+- FP-06: aplicación efectiva en destino;
+- FP-07: verificación post-aplicación de los requisitos pertinentes sobre C_dst^applied.
 
-La matriz F* deberá definir explícitamente si FP-04/05/06 son condiciones de éxito de la ruta completa, outcomes técnicos separados o gates de elegibilidad. No se debe cambiar silenciosamente el estimando F* para incluir/excluirlas.
+Estas dimensiones se reportan por separado y sin puntuación compensatoria. FP-06 no es un atributo semántico del paquete, pero sí condición de que la ruta completa haya realizado la función F*. FP-07 verifica el estado aplicado y no crea un segundo fallo si ya se registró la causa primaria.
+
+FP-08 (procedencia/reproducibilidad) es un **gate de validez probatoria** separado: su fallo puede hacer que el resultado sea no evaluable/no aceptable como evidencia, pero no convierte por sí solo una configuración funcionalmente correcta en F*=0. Del mismo modo, un F* técnico positivo sin trazabilidad suficiente no autoriza una conclusión probatoria.
+
+La exclusión de POL del núcleo confirmatorio por DEC-C10-053 significa que no se exige preservar un módulo de políticas declaradas ausente por diseño. **No exime de FP-05**: los requisitos de seguridad efectivos que formen parte de F* deben definirse por un contrato de seguridad independiente del contenido POL y evaluarse en el entorno destino. Preservar POL, cuando exista, no demuestra seguridad; ausencia de POL no equivale a ausencia de requisitos de seguridad.
+
+C_dep, E_dst, recursos, permisos efectivos y runtime se registran como condiciones/mediciones técnicas externas; cuando formen parte de compatibilidad o seguridad, informan FP-04/05 sin confundirse con T_acc ni con el objeto migrado. El contrato F* debe declarar antes de Z/B qué requisitos FP-04/05 aplican y qué evidencia los adjudica.
 
 ## 6. Regla de estado por propiedad
 
@@ -126,3 +132,8 @@ La matriz F* deberá definir explícitamente si FP-04/05/06 son condiciones de �
 La matriz propone un procedimiento reproducible para declarar obligatoriedad y aplicabilidad por instancia sin convertir la estructura conceptual de seis elementos en una lista plana de requisitos siempre presentes. Distingue propiedad constitutiva, disparador condicional, NA, incertidumbre, gate técnico y validez probatoria.
 
 **Estado:** propuesta documental derivada de DEC-C10-053/054/055; no aprobada ni congelada; sin claves ni valores concretos, sin IAM instanciado, sin truth/fixtures, sin validación técnica, sin revisión independiente, sin evidencia empírica y sin autorización de ejecución.
+
+
+## 10. Nota de reconciliación F* — frontera funcional y probatoria (2026-11-05)
+
+Se precisa que F* es una función de ruta completa que produce y aplica configuración en destino; por ello FP-01…FP-07 pueden integrar su adjudicación por dimensiones separadas, no compensatorias. FP-08 permanece como gate de validez probatoria separado. La exclusión de POL del núcleo base no excluye requisitos de seguridad de FP-05 cuando formen parte del contrato F*; estos deben especificarse independientemente de POL.
