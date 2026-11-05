@@ -1085,3 +1085,12 @@ El usuario aprueba el perfil estructural de dominios finitos por clave, el presu
 La aprobación no fija valores concretos por parámetro ni calibra empíricamente los límites. Se actualiza el estado del perfil a APROBADO en su dimensión estructural; dominios concretos, mapping, conflictos, tolerancias y oráculo permanecen abiertos.
 
 **Siguiente bloque:** matriz abstracta de parámetros y mapping C_src→C_dst/M, enlazando cada propiedad con FP-01/02/03 y asignando un predicado primario para evitar doble conteo. No generar valores, truth, fixtures ni ejecutar.
+
+
+# XLV. Matriz abstracta de parámetros y mapping fuente/destino (2026-11-05)
+
+Se crea `C10_S_ABSTRACT_PARAMETER_AND_SOURCE_DESTINATION_MAPPING_MATRIX_DRAFT_001.md`. La matriz define el contrato por clave de parámetro, la relación C_src→C_dst mediante M, la correspondencia por familias CMP/PAR/REF/RUL/POL/MET, el tratamiento de ABSENT/NULL/DEFAULT/VALUE, las conversiones tipadas y predicados candidatos separados por FP-01/02/03. Distingue C_dst declarado de C_dst realmente aplicado y mantiene E_dst fuera del objeto migrado.
+
+**Estado:** propuesta documental; no fija claves, valores, dominios concretos, obligatoriedad/NA final ni mappings reales. Los predicados son candidatos sujetos a reconciliación con SM-01…SM-10 y el catálogo atómico. No hay truth, fixtures, validación, revisión independiente, evidencia empírica ni ejecución.
+
+**Siguiente paso:** reconciliar matriz con SM-01…SM-10 y catálogo CMP/PAR/REF/RUL/POL/MET; producir tabla de correspondencia predicado→FP primario/secundario, identificar duplicidades y decidir obligatoriedad/NA ex ante. Después, especializar contratos F1/F2/A1/A2 y el oráculo F*. No elegir aún valores ni ejecutar.
