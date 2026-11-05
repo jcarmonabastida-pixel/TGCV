@@ -158,3 +158,8 @@ La asignación de familia primaria/secundaria y la separación de predicados com
 ## 10. Estado decisional y matriz de aplicabilidad
 
 La reconciliación de familias fue aceptada mediante DEC-C10-055. La obligatoriedad y aplicabilidad concreta por propiedad no se infiere de esta aceptación; se desarrolla separadamente en `C10_S_PROPERTY_APPLICABILITY_AND_OBLIGATORINESS_MATRIX_DRAFT_001.md`. CMP/PAR/REF/RUL siguen siendo elementos constitutivos del DGP base según DEC-C10-053; la cardinalidad de instancias por clase, los predicados condicionales y NA deben declararse ex ante en IAM. POL permanece fuera del núcleo confirmatorio mínimo. MET-01/MET-02 obligatorios para trazabilidad.
+
+
+## 11. DEC-C10-056 — cardinalidad de clases
+
+La cardinalidad base queda fijada por DEC-C10-056: CMP≥1, PAR≥1, RUL≥1; REF≥0 con declaración IAM ex ante y cobertura exhaustiva; POL≥0 ausente por diseño salvo módulo condicional predeclarado; MET obligatorio. La ausencia de CMP/PAR/RUL es SCOPE_ERROR, no NA. Véase el contrato abstracto `C10_S_ABSTRACT_CONFIGURATION_INSTANCE_CONTRACT_DRAFT_001.md`. Esta decisión no convierte cada propiedad atómica en obligatoria ni fija máximos/valores.
