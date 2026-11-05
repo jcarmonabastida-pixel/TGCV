@@ -825,3 +825,16 @@ Se crea C10_S_UG_INVENTORY_REGISTER_TEMPLATE_DRAFT_001.md y se incorpora su cros
 **Auditoría:** plantilla estructural completa como esquema documental; no contiene inventario técnico real. Las filas de ejemplo no son entidades observadas. No se asignan truth, versiones, recursos, dependencias ni rutas. La truth del DGP permanece restringida al generador/evaluador independiente. Cobertura NONE; A_f*, F_alt,0 y Reach_H siguen ?. La plantilla no demuestra independencia A1/A2 respecto de B ni permite cerrar MD-C1…6, AUD-005/007/010/011 u OPEN-C10-001/003/005/007.
 
 **Siguiente operación:** reconciliar el esquema de la plantilla con los 23 roles de nodo, 23 aristas, 14 predicados y cinco clases de ruta de U_G (§81), verificando correspondencia y campos faltantes sin rellenar estados técnicos. Después, definir el protocolo documental de fuentes y adjudicación por dimensión. No se autoriza inspección de sistemas reales, implementación, generación de datos, simulación ni experimento.
+
+
+# XXII. Ejecución del plan — reconciliación del catálogo U_G con la plantilla (2026-11-05)
+
+Se ha contrastado el catálogo de §81 línea por línea con C10_S_UG_INVENTORY_REGISTER_TEMPLATE_DRAFT_001.md. Correspondencia semántica: 23/23 roles de nodo, 23/23 IDs padre de arista, 14/14 predicados y 5/5 clases de ruta.
+
+La auditoría no se limita a comprobar conteos. Detecta que E07 es una relación lógica y no una arista técnica; E17–E23 incluyen relaciones mult destino que deben normalizarse; la normalización propuesta genera 39 filas binarias candidatas. E22 no identifica nodos/eventos destino. N16 y N23 agregan constructos/etapas que deben descomponerse cuando se formalicen. Las clases primarias de ruta deben permanecer diferenciadas de los subtipos descriptivos.
+
+Se amplía la plantilla con el crosswalk y campos complementarios de procedencia, evidencia, intención contractual, cobertura y adjudicación. La correspondencia es semántica, no inventario ni cobertura.
+
+**Resultado:** esquema mejorado, pero **no cerrado**. Debe revisarse la desagregación N16/N23, la representación de E22 y la atomicidad/semántica de las 39 relaciones candidatas. Estados técnicos ?, cobertura NONE, A_f*/F_alt,0/Reach_H indeterminados. No se cierran GC-01…12, MD-C1…6, AUD-005/007/010/011 ni OPEN-C10-001/003/005/007.
+
+**Siguiente operación:** elaborar el protocolo de fuentes, procedencia y adjudicación por dimensión, fijando qué evidencia mínima permite clasificar nodos, aristas, predicados y rutas, qué cobertura puede declararse y cómo resolver discrepancias. No inspeccionar sistemas reales ni ejecutar pruebas sin autorización expresa.
