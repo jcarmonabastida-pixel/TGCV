@@ -7453,3 +7453,10 @@ Se detectan FCM-17…19: clave singular/plural inconsistente en EVALUATOR_ASSESS
 Se ejecuta comprobación estática de tablas: en NODE, EDGE, ROUTE, PREDICATE, SNAPSHOT y EVIDENCE/CLAIM-LINK/COVERAGE/EVALUATOR/ADJUDICATION, los conteos de columnas de encabezado, separador y fila de esquema coinciden (29/29/29; 29/29/29; 29/29/29; 24/24/24; 25/25/25; 18/18/18; 10/10/10; 15/15/15; 13/13/13; 12/12/12). No se detectan referencias de verdad DGP en la tabla analítica de predicados.
 
 **Límite:** es una comprobación estática de Markdown/tablas mediante lectura del artefacto remoto; no es parser de esquema, validador FK, constraint check, prueba de seguridad ni ejecución. FCM-01…19 están tratados documentalmente; revisión independiente y validación ejecutable pendientes.
+
+
+# 89. Paquete de revisión independiente del esquema U_G (2026-11-05)
+
+Se crea C10_S_UG_SCHEMA_INDEPENDENT_REVIEW_CHECKLIST_DRAFT_001.md con 20 controles SR-01…20, perfil propuesto de revisión de modelo de datos y metodología causal, criterios de independencia/cegamiento, procedimiento, dictámenes y evidencia exigible. El paquete distingue revisión documental de validación ejecutable y de autorización científica.
+
+**Estado:** preparado, no iniciado; no hay revisores designados ni dictamen independiente. La comprobación estática de autoría no se presenta como revisión independiente. XSYNC-138-01 y FCM-01…19 permanecen abiertos hasta revisión y validación pertinentes. No hay inventario ni cobertura técnica; sin autorización de ejecución.
