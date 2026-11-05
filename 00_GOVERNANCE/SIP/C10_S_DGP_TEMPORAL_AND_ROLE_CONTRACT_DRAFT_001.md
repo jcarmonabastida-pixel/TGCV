@@ -670,3 +670,12 @@ Predicados requeridos: ID, REL, COND, AUTH, RES, DEP, BLOCK, APP, ALT-A1, ALT-A2
 La plantilla C10_S_UG_INVENTORY_REGISTER_TEMPLATE_DRAFT_001.md define registros separados de nodos, aristas, rutas, predicados por paso/tiempo, snapshots/fuentes y cobertura. Exige identidad/versionado, procedencia, evidencia, cobertura, evaluador/cegamiento y motivo de indeterminación. Las filas ilustrativas son solo esquema: no acreditan componentes ni relaciones reales.
 
 La columna truth_dgp queda restringida al generador/evaluador independiente y no se expone al analizador. Sin inventario observado, los estados técnicos permanecen ?. NONE/PARTIAL/COMPLETE describen cobertura y no truth estructural. La plantilla no autoriza inspección, instalación ni ejecución.
+
+
+## 43. Crosswalk U_G §81 con plantilla de inventario (C10-S §84)
+
+La plantilla registra 23/23 roles de nodo, 23/23 IDs padre de arista, 14/14 predicados y 5/5 clases de ruta. Las relaciones mult destino se normalizan en filas binarias enlazadas al ID padre; E07 se representa como regla lógica, no arista técnica. El esquema contempla 39 filas binarias candidatas, no observadas.
+
+Se señalan tres problemas que el DGP deberá resolver antes del freeze: E22 referencia selección/ejecución sin nodos/eventos explícitos; N16 agrupa F*, oráculo y adjudicación; N23 agrupa ejecución, Outcome y Value. Se separan además las clases primarias Rτ2/RA12/Rshared/Rexternal/Runknown de subtipos native/manual/fallback/recovery. El código completo de predicado se conserva separado de su familia.
+
+No se asigna truth ni observación. Cobertura NONE; no se declara inventario ni topología completa. Esta reconciliación no modifica el reloj t0–t9 ni los roles causales.
