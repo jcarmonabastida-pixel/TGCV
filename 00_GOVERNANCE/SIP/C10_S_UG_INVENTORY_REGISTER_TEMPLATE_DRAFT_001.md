@@ -31,13 +31,13 @@ Reglas obligatorias:
 
 ## 4. Registro de rutas y substituibilidad
 
-| route_id | parent_route_class (Rτ2/RA12/Rshared/Rexternal/Runknown) | route_subtype (native/manual/fallback/recovery/other) | ordered_node_edge_sequence | entry_state | target/F* | G | H/window | C0/constraints | version_set | shared_dependencies | affected_by_B | functional_substitutability (1/0/?) | evidence_ref(s) | coverage_scope_id | evaluator_record_id | unresolved_alternatives | notes | observed_state (1/0/?) | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
+| route_id | parent_route_class (Rτ2/RA12/Rshared/Rexternal/Runknown) | route_subtype (native/manual/fallback/recovery/other) | ordered_node_edge_sequence | entry_state | target/F* | G | H/window | C0/constraints | version_set | shared_dependencies | affected_by_B | functional_substitutability (1/0/?) | evidence_ref(s) | coverage_scope_id | evaluator_record_ids | unresolved_alternatives | notes | observed_state (1/0/?) | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | — | Runknown | unknown | — | — | — | — | — | — | — | — | ? | ? | — | — | — | Runknown | Fila de esquema; no representa ruta real | ? | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
 ## 5. Registro de predicados por ruta/paso/tiempo
 
-| predicate_id | route_id | step | time/snapshot | predicate_type (ID/REL/COND/AUTH/RES/DEP/BLOCK/APP/ALT/ORACLE/EXT) | observed_state (1/0/?) | evidence_ref(s) | coverage_scope_id | source/version/hash | adjudication_rule/tolerance | evaluator_record_id | reason_for_unknown | impact_on_A_f/App/Reach/F_alt/IV | timestamp | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
+| predicate_id | route_id | step | time/snapshot | predicate_type (ID/REL/COND/AUTH/RES/DEP/BLOCK/APP/ALT/ORACLE/EXT) | observed_state (1/0/?) | evidence_ref(s) | coverage_scope_id | source/version/hash | adjudication_rule/tolerance | evaluator_record_ids | reason_for_unknown | impact_on_A_f/App/Reach/F_alt/IV | timestamp | object_record_id | parent_catalog_id | object_version | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | — | — | — | — | — | ? | — | — | — | — | — | No existe evidencia aportada | Mantener indeterminación | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
@@ -47,7 +47,7 @@ Reglas obligatorias:
 
 | snapshot_id | unit_id | phase (baseline/post-B/rollback/route-test) | timestamp | scope | source_artifacts | version/hash | method | coverage_limitations | custodian | integrity_check | evidence_ref | observed_state (1/0/?) | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | — | — | — | — | — | — | — | No capturado | — | — | — | ? | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
+| — | — | — | — | — | — | — | — | No capturado | — | — | — | NA | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
 ## 7. Matriz de cobertura por dimensión
 
@@ -253,7 +253,7 @@ COMPLETE exige denominador finito y trazable, regla de enumeración, fuentes vá
 
 ### 12.4. Registro de evaluación independiente (EVALUATOR_ASSESSMENT)
 
-| evaluator_record_id | object_type | object_id | evaluator_id | role (E1/E2/ADJUDICATOR) | observed_state | evidence_ids | rule_version | scope_id | blinded_to_outcome_value | blinded_to_Z_B | confidence_or_limitations | rationale | timestamp |
+| evaluator_record_ids | object_type | object_id | evaluator_id | role (E1/E2/ADJUDICATOR) | observed_state | evidence_ids | rule_version | scope_id | blinded_to_outcome_value | blinded_to_Z_B | confidence_or_limitations | rationale | timestamp |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | — | — | — | — | — | ? | — | — | — | — | — | — | — | — |
 
@@ -298,6 +298,47 @@ Extensiones:
 7. DGP_TRUTH_SECURE no se mezcla ni sincroniza con los registros visibles al analizador.
 8. Las revisiones generan nuevos registros versionados; no se sobrescribe el historial.
 
+
+### 12.9. Diccionario de tipos, dominios e integridad
+
+| Familia | Tipo/formato candidato | Dominio/regla |
+|---|---|---|
+| Identificadores | String UTF-8, estable, no vacío | Unicidad por tabla; no reutilizar IDs; referencias a IDs existentes |
+| Estados estructurales | Enum | `observed_state ∈ {1,0,?,NA}`; NA solo cuando la dimensión no aplique |
+| Estado de evidencia | Enum | `evidence_status ∈ {AVAILABLE,MISSING,CONFLICTING}` |
+| Cobertura | Enum | `coverage_status ∈ {NONE,PARTIAL,COMPLETE}`; COMPLETE exige denominador y regla |
+| Revisión | Enum | `review_adjudication_status ∈ {NOT_REVIEWED,INDEPENDENT_PENDING,AGREED,ADJUDICATION_PENDING,ADJUDICATED,UNRESOLVED,NOT_APPLICABLE}` |
+| Tiempos | ISO 8601 con offset explícito | No aceptar fecha/hora sin zona; intervalos con inicio ≤ fin |
+| Hashes | Algoritmo + digest | Registrar algoritmo (p. ej. SHA-256) junto al digest; no asumir algoritmo por longitud |
+| Conteos | Entero no negativo | Denominador > 0 para COMPLETE; cubiertos ≤ denominador |
+| Cegamiento | Enum | YES/NO/NOT_FEASIBLE, con justificación para NO/NOT_FEASIBLE |
+| Referencias | FK tipada | No aceptar referencia huérfana ni alcance incompatible |
+
+**Normalización de evidencia:** `CLAIM_EVIDENCE_LINK` es la relación uno-a-muchos canónica entre objetos/afirmaciones y evidencias. Los campos `evidence_ref` de las tablas de objeto son referencias de navegación opcionales (un vínculo primario); no sustituyen el conjunto completo de vínculos. Cada vínculo adicional se registra como fila independiente en CLAIM_EVIDENCE_LINK. `claim_target_id` debe apuntar a `object_record_id` y `evidence_id` a EVIDENCE_REGISTER. No almacenar listas serializadas de IDs como sustituto de la relación.
+
+**Identidad de registro:** `object_record_id` identifica la fila versionada; `node_id/edge_id/route_id/predicate_id/snapshot_id` identifican el objeto semántico. `object_version` y `supersedes_record_id` preservan revisiones. `parent_catalog_id` enlaza al catálogo U_G o a un subcatálogo versionado.
+
+**Cobertura:** `coverage_scope_id` es FK a COVERAGE_REGISTER. Las tablas de objeto no replican el estado de cobertura como sustituto del registro canónico; los campos heredados `coverage_status` son vistas/resúmenes y deben coincidir con el scope enlazado o marcar discrepancia.
+
+**Evaluadores:** `evaluator_record_ids` admite varios registros, pero cada E1/E2 se conserva como fila independiente en EVALUATOR_ASSESSMENT. No almacenar dos evaluadores en una sola celda.
+
+**Estado de revisión:** NOT_REVIEWED antes de doble evaluación; INDEPENDENT_PENDING mientras falta una de las dos; AGREED si E1/E2 coinciden bajo la misma regla y versión; ADJUDICATION_PENDING si discrepan; ADJUDICATED tras resolución motivada; UNRESOLVED si persiste ?; NOT_APPLICABLE solo con justificación.
+
+### 12.10. Matriz de obligatoriedad por tabla
+
+| Tabla | PK | Parent/version | Coverage FK | Evidence status | Observed state | Review status | Claim-evidence links |
+|---|---|---|---|---|---|---|---|
+| NODE | object_record_id + node_id | Obligatorio | Obligatorio | Obligatorio | Obligatorio | Obligatorio | 0..n |
+| EDGE | object_record_id + edge_id | Obligatorio | Obligatorio | Obligatorio | Obligatorio | Obligatorio | 0..n |
+| ROUTE | object_record_id + route_id | Obligatorio | Obligatorio | Obligatorio | Obligatorio | Obligatorio | 0..n |
+| PREDICATE | object_record_id + predicate_id | Obligatorio | Obligatorio | Obligatorio | Obligatorio | Obligatorio | 0..n |
+| SNAPSHOT | object_record_id + snapshot_id | Obligatorio | Obligatorio | Obligatorio | NA si no aplica | Obligatorio | 0..n |
+| COVERAGE_REGISTER | coverage_scope_id | Universo/versionado | — | — | — | Obligatorio | 0..n |
+| EVIDENCE_REGISTER | evidence_id | Scope/versionado | — | evidence_status | — | Obligatorio | 1..n si soporta claims |
+
+Las claves compuestas aquí expresan unicidad lógica propuesta; su implementación física requiere escoger motor/formato y constraints. Esta especificación no equivale a un esquema SQL implementado.
+
+
 ## 13. Auditoría campo-a-campo: resultado
 
 La auditoría detecta que el protocolo de procedencia estaba más desarrollado que la plantilla física. Se identifican y corrigen/documentan estas brechas:
@@ -315,3 +356,17 @@ La auditoría detecta que el protocolo de procedencia estaba más desarrollado q
 | FCM-09 | No existía regla de integridad referencial y versionado | §12.8 | Incorporada |
 
 **Dictamen:** la correspondencia semántica se mantiene, pero el esquema anterior no era operacionalmente completo. El esquema normalizado queda especificado documentalmente en §12; aún requiere revisión independiente, validación de tipos/valores, y correspondencia exacta con cada tabla antes de declararse cerrado. No se han creado instancias reales, no hay inventario ni cobertura técnica. FCM-01…09 son hallazgos documentales, no tests ejecutados.
+
+### 13.1. Segunda pasada de consistencia interna — FCM-10…16
+
+| ID | Hallazgo | Tratamiento | Estado |
+|---|---|---|---|
+| FCM-10 | §12.7 exigía campos comunes, pero las tablas §§2–6 no los mostraban físicamente. | Añadidos encabezados comunes a NODE, EDGE, ROUTE, PREDICATE y SNAPSHOT. | Corregido documentalmente; pendiente parser |
+| FCM-11 | SNAPSHOT usaba ? aunque observed_state no aplica por defecto. | Ejemplo corregido a NA; NA requiere justificación de no aplicabilidad. | Corregido |
+| FCM-12 | evaluator_record_id singular no representaba E1/E2. | Renombrado evaluator_record_ids y exigida una fila por evaluador. | Corregido |
+| FCM-13 | evidence_ref(s) podía interpretarse como lista serializada. | CLAIM_EVIDENCE_LINK se declara relación 1:N canónica; evidence_ref es solo enlace primario opcional. | Regla definida |
+| FCM-14 | Matriz §7 podía confundirse con cobertura canónica sin denominador. | Se declara vista resumen; COVERAGE_REGISTER §12.3 es registro normativo. | Corregido |
+| FCM-15 | Tipos/domínios/estados de revisión no estaban fijados. | Diccionario candidato §12.9 y matriz de obligatoriedad §12.10. | Definido documentalmente |
+| FCM-16 | No estaba fijado si claim_target_id apuntaba a ID semántico o registro versionado. | Se fija object_record_id; IDs semánticos y de registro quedan separados. | Corregido documentalmente |
+
+**Dictamen actualizado:** FCM-01…16 tratados en el diseño. No se ha ejecutado parser, validador de esquema, constraint check, test de seguridad ni prueba de cegamiento. La consistencia es documental y estática; el esquema permanece Draft y requiere revisión independiente.
