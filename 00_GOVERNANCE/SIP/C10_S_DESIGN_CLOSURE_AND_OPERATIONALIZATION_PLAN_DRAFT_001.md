@@ -838,3 +838,12 @@ Se amplía la plantilla con el crosswalk y campos complementarios de procedencia
 **Resultado:** esquema mejorado, pero **no cerrado**. Debe revisarse la desagregación N16/N23, la representación de E22 y la atomicidad/semántica de las 39 relaciones candidatas. Estados técnicos ?, cobertura NONE, A_f*/F_alt,0/Reach_H indeterminados. No se cierran GC-01…12, MD-C1…6, AUD-005/007/010/011 ni OPEN-C10-001/003/005/007.
 
 **Siguiente operación:** elaborar el protocolo de fuentes, procedencia y adjudicación por dimensión, fijando qué evidencia mínima permite clasificar nodos, aristas, predicados y rutas, qué cobertura puede declararse y cómo resolver discrepancias. No inspeccionar sistemas reales ni ejecutar pruebas sin autorización expresa.
+
+
+# XXIII. Ejecución del plan — protocolo de fuentes, procedencia y adjudicación (2026-11-05)
+
+Se crea el protocolo documental C10_S_UG_EVIDENCE_PROVENANCE_AND_ADJUDICATION_PROTOCOL_DRAFT_001.md. Especifica ocho clases contextuales de fuentes, contrato de procedencia, evidencia mínima por nodos/aristas/predicados/rutas, argumento de cobertura negativa, cobertura con denominadores, doble evaluación cegada, adjudicación y propagación de estados.
+
+**Resultado de diseño:** protocolo elaborado e integrado; todavía no validado contra un microdominio ni aplicado a fuentes reales. Define cuándo una evidencia puede respaldar 1, 0 o ?, cuándo cobertura es NONE/PARTIAL/COMPLETE y qué discrepancias exigen tercer adjudicador. No transforma la plantilla en inventario ni demuestra exhaustividad.
+
+**Pendientes:** auditoría campo-a-campo entre protocolo y plantilla; definición de denominadores por dimensión para el microdominio seleccionado; selección y aprobación de fuentes concretas; seguridad/acceso; tolerancias y fiabilidad del oráculo; número y selección de evaluadores; cegamiento; criterios operativos de cobertura; cierre de N16/N23 y E22. Mantener MD-C1…6, GC/UGI/UGC, AUD-005/007/010/011 y OPEN-C10 abiertos. Sin ejecución ni autorización.
