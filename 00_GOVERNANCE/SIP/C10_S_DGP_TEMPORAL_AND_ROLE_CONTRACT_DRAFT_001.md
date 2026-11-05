@@ -679,3 +679,12 @@ La plantilla registra 23/23 roles de nodo, 23/23 IDs padre de arista, 14/14 pred
 Se señalan tres problemas que el DGP deberá resolver antes del freeze: E22 referencia selección/ejecución sin nodos/eventos explícitos; N16 agrupa F*, oráculo y adjudicación; N23 agrupa ejecución, Outcome y Value. Se separan además las clases primarias Rτ2/RA12/Rshared/Rexternal/Runknown de subtipos native/manual/fallback/recovery. El código completo de predicado se conserva separado de su familia.
 
 No se asigna truth ni observación. Cobertura NONE; no se declara inventario ni topología completa. Esta reconciliación no modifica el reloj t0–t9 ni los roles causales.
+
+
+## 44. Protocolo de procedencia y adjudicación U_G
+
+C10_S_UG_EVIDENCE_PROVENANCE_AND_ADJUDICATION_PROTOCOL_DRAFT_001.md define S1–S8, los campos de procedencia, evidencia mínima por objeto, cobertura negativa, cobertura por dimensión/denominador, doble evaluación cegada, adjudicación y reglas trivalentes. Separa evidencia declarativa de configuración/runtime/funcional; no permite inferir ausencia por falta de logs o búsqueda sin cobertura.
+
+Para el DGP, el protocolo exige separar truth_dgp_restricted de observed_state; la truth queda en generador/evaluador independiente y no se expone al analizador. Los evaluadores de inventario se mantienen cegados a Outcome/Value y, cuando sea viable, a Z/B. Una discrepancia no resuelta mantiene ?. Las reglas de evidencia no cambian el reloj t0–t9 ni convierten C_dep en A_f*.
+
+Protocolo documental no aplicado; no añade observaciones, parámetros ni truth. Cobertura NONE; A_f*, F_alt,0 y Reach_H siguen ?.
