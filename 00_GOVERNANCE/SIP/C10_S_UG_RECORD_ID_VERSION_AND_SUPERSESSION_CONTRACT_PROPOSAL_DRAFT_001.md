@@ -1,7 +1,7 @@
 # C10-S — Contrato de identidad de registro, versionado y supersession U_G
 
 **ID:** C10-S-UG-RECORD-VERSION-001 · **Versión:** Draft 001 · **Fecha:** 2026-11-05  
-**Estado:** PROPUESTA DOCUMENTAL / PENDIENTE DE ACEPTACIÓN / NO CONGELADA.  
+**Estado:** ACCEPTED DOCUMENTALLY — DEC-C10-062 / NO CONGELADA.  
 **Hallazgo:** UG-SCH-07.  
 **Dependencias:** DEC-C10-059, DEC-C10-060, DEC-C10-061; contrato de identidad/versionado y matching de snapshots.  
 **No autoriza:** modificación de datos observados, inventario real, implementación, parser, constraints ejecutables, fixtures, simulación ni experimento.
@@ -121,7 +121,7 @@ La propuesta resuelve conceptualmente el ámbito de unicidad y el significado de
 
 No cambia el DGP, el estimando, el Core TGCV, RMA, Evidence→Claim Matrix, claim status ni autorización científica.
 
-## 11. Decisión solicitada
+## 11. Decisión adoptada — DEC-C10-062
 
 Se recomienda aceptar este contrato con:
 - unicidad de `object_record_id` por tabla, no global;
@@ -131,4 +131,4 @@ Se recomienda aceptar este contrato con:
 - separación entre record-time y tiempo de observación;
 - snapshots fijados a la versión exacta del registro raíz.
 
-**Estado:** propuesta para decisión del usuario. No registrar DEC-C10-062 ni modificar la plantilla U_G hasta recibir aceptación explícita.
+**Estado:** ACEPTED DOCUMENTALLY por DEC-C10-062. La plantilla U_G ha recibido el complemento normativo §12.12. No implica freeze ni validación física.
