@@ -131,7 +131,7 @@ La revisión independiente no debe usar sin actualización las referencias hist�
 - FKs tipadas a seis destinos en CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER; procedencia canónica en EVIDENCE_REGISTER; `evidence_ref` navegación 0..1 y CLAIM_EVIDENCE_LINK 0..n.
 - Cadena de versionado solo para las cinco tablas de objetos; ROUTE_STEP y registros de evidencia/evaluación/adjudicación conservan contratos propios.
 
-**Estado:** actualización documental del paquete de revisión. R1/R2 NOT STARTED; los hashes/commits exactos se fijarán al iniciar la revisión. No acredita PASS SR-01…20 ni validación física. El gate de revisión debe evaluar explícitamente OAS-01…10 y las decisiones DEC-C10-059…065, sin dar por resuelto técnicamente ningún punto.
+**Estado:** actualización documental del paquete de revisión. R1/R2 NOT STARTED; los hashes/commits exactos se fijarán al iniciar la revisión. No acredita PASS SR-01…20 ni validación física. El gate de revisión debe evaluar explícitamente OAS-01…11 y las decisiones DEC-C10-059…065, sin dar por resuelto técnicamente ningún punto.
 
 
 ## 11. Addendum de revisión — matriz tipada y procedencia (OAS-11)
