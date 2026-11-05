@@ -63,3 +63,12 @@ Alternativa menos recomendable: codificar P0/P1 en NODE.class. Se desaconseja po
 **Estado:** propuesta pendiente. No se ha modificado la plantilla U_G, no se han añadido columnas, no se han creado filas ni IDs de inventario, no se ha ejecutado parser/validador y no se ha iniciado captura técnica.
 
 **Siguiente gate:** decidir si se acepta la columna NODE.boundary_class con el dominio y las restricciones de §4. Tras esa decisión, reconciliar las FK unit_id↔node_id y cerrar el esquema mínimo sin alterar el resto de U_G.
+
+
+## 7. Resolución — DEC-C10-059
+
+El usuario acepta `NODE.boundary_class` con tres clases sustantivas `P0_CONFIG/P1_ENVIRONMENT/DUAL_P0_P1`. Se incorpora `NA` exclusivamente como no aplicabilidad justificada, no como cuarta clase ni como sustituto de unknown. El campo es obligatorio en NODE y no codifica P2.
+
+La FK se cierra documentalmente con `SNAPSHOT.(unit_object_record_id, unit_id) → NODE.(object_record_id, node_id)`; el nodo destino debe tener `semantic_role=LOGICAL_SERVICE_UNIT`. Se añade `unit_object_record_id` a SNAPSHOT porque `unit_id` aislado no identifica una revisión concreta del registro NODE.
+
+Véase `C10_S_UG_LOGICAL_UNIT_FOREIGN_KEY_AND_BOUNDARY_CLASS_CONTRACT_DRAFT_001.md`. La plantilla se actualiza documentalmente; no se declara implementada ni validada por parser/constraints.
