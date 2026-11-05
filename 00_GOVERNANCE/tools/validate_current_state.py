@@ -143,6 +143,23 @@ if matrix_version and matrix_declared_version and matrix_version != matrix_decla
 manifest_matrix_version = current_versions.get("claim_matrix")
 if matrix_declared_version and manifest_matrix_version != matrix_declared_version:
     fail(f"canonical manifest matrix version mismatch: manifest {manifest_matrix_version} != resolved {matrix_declared_version}")
+
+# The operative RMA must name the same current matrix resolved by the canonical pointer chain.
+# Historical matrix versions may be discussed, but any declaration that calls a matrix current
+# must agree with the resolved current matrix version.
+if rma_text and matrix_declared_version:
+    rma_current_matrix_versions = set(re.findall(
+        r"current Evidence→Claim Matrix(?: is)?\\s*\\**(v\\d+\\.\\d+)",
+        rma_text,
+        flags=re.IGNORECASE,
+    ))
+    if not rma_current_matrix_versions:
+        fail("resolved current RMA has no explicit current Evidence→Claim Matrix version declaration")
+    elif rma_current_matrix_versions != {matrix_declared_version}:
+        fail(
+            "resolved current RMA current-matrix declaration mismatch: "
+            f"RMA {sorted(rma_current_matrix_versions)} != resolved {matrix_declared_version}"
+        )
 if rma_pointer_text and matrix_rel:
     declared_matrix_in_rma = extract(rma_pointer_text, r"^\*\*Current Evidence→Claim Matrix:\*\*\s*`([^`]+)`", "RMA pointer current matrix")
     if declared_matrix_in_rma and declared_matrix_in_rma != matrix_rel:
@@ -260,6 +277,27 @@ if "TRACEABILITY-current" in by_id:
 if rma_version:
     versioned_trace = ROOT / "00_GOVERNANCE" / "rma" / f"TGCV_RMA_traceability_{rma_version}.csv"
     require_file(versioned_trace, "versioned current RMA traceability")
+    if versioned_trace.is_file() and trace_pointer and trace_pointer.is_file():
+        try:
+            versioned_trace_text = versioned_trace.read_text(encoding="utf-8")
+            if trace_text != versioned_trace_text:
+                fail("stable current RMA traceability alias and versioned current traceability artifact diverge")
+        except Exception as exc:
+            fail(f"UNREADABLE versioned current RMA traceability: {exc}")
+
+# The current matrix traceability row must resolve to the same RMA and matrix as the manifest.
+current_matrix_asset = f"CLAIM-MATRIX-{matrix_declared_version}" if matrix_declared_version else None
+if current_matrix_asset and current_matrix_asset not in by_id:
+    fail(f"current RMA traceability missing current matrix row: {current_matrix_asset}")
+elif current_matrix_asset:
+    row = by_id[current_matrix_asset]
+    if row.get("status", "").strip() != "CURRENT":
+        fail("current matrix traceability row is not CURRENT")
+    if row.get("canonical_location", "").strip() != f"00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_{matrix_declared_version}.md":
+        fail("current matrix traceability location mismatch")
+    dependencies = {item.strip() for item in row.get("depends_on", "").split(";") if item.strip()}
+    if rma_version and f"RMA-{rma_version}" not in dependencies:
+        fail("current matrix traceability does not resolve to the current RMA master")
 
 manifest_trace_version = current_versions.get("rma_traceability")
 if rma_version and manifest_trace_version != rma_version:
