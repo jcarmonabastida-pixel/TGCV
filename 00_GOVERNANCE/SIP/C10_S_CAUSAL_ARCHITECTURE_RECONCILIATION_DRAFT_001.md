@@ -199,3 +199,9 @@ La auditoría C10_S_MICRODOMAIN_CAUSAL_COMPATIBILITY_AUDIT_DRAFT_001.md concluye
 Se corrige una ambigüedad de fichas: B provisiona/configura el adaptador; C_dep mide el estado técnico; A_f* mide accesibilidad de τ2; F1 es la conversión ejecutada mediante el adaptador disponible, no su instalación; F2 aplica/valida en destino. No usar “habilitar y utilizar” como una sola definición de F1. App, ejecución y F* se mantienen separados.
 
 La instalación puede afectar configuración, permisos, recursos, seguridad, costes, latencia, información, librerías o dependencias compartidas. Se requiere manifiesto de cambios y grafo de dependencias. A1/A2 deben ser no afectadas por B en R0/R1 para sostener interpretación focal; si B las modifica, R2/vía colateral y efecto de paquete. D1/D2 permanece abierto. Recomendación condicionada, no aprobada.
+
+## 11. Precedencia de continuidad y revisión asistida (2026-11-05)
+
+Las referencias de §9 a revisión causal independiente como condición de cierre quedan supersedidas para la continuidad actual de C10-S. Prevalece el protocolo autocontenido del maestro §130, Closure Control Matrix §12 y Test Contract Register §54: AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT. No se exige R1/R2 para seguir especificando, preanalizar, preparar o ejecutar una simulación una vez autorizada.
+
+La independencia de generador, analizador y evaluador es una separación computacional de truth, datos, permisos y momento de acceso; no equivale a revisión humana independiente. La arquitectura causal y las decisiones abiertas de este documento no cambian por este addendum.
