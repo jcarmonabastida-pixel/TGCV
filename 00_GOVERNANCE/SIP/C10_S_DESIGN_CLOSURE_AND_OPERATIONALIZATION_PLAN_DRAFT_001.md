@@ -1076,3 +1076,12 @@ Se crea `C10_S_FINITE_DOMAIN_AND_RULE_COMPLEXITY_PROFILE_PROPOSAL_DRAFT_001.md` 
 **Estado:** propuesta no aprobada ni congelada. Los límites 4/16/16 no están calibrados; dominios por clave, cadenas, escalas, reglas de conflicto, UNKNOWN, mapping y oráculo siguen abiertos. No se crean fixtures ni truth; no hay validación técnica, revisión independiente, evidencia empírica ni ejecución.
 
 **Siguiente paso:** revisión crítica del perfil y decisión explícita sobre el presupuesto de complejidad y los efectos permitidos. Después, construir el contrato abstracto de parámetros por clave y la matriz de mapping fuente/destino, reconciliando FP-01/FP-02/FP-03 y evitando doble conteo. No elegir todavía valores concretos de configuración ni ejecutar.
+
+
+# XLIV. DEC-C10-054 — perfil finito aprobado y transición a mapping (2026-11-05)
+
+El usuario aprueba el perfil estructural de dominios finitos por clave, el presupuesto 4/16/16, el AST acíclico y declarativo, los operadores tipados, los efectos REQUIRE/FORBID y la exclusión de SELECT_ENUM_VALUE del núcleo. Se aprueba la distinción de estados/defaults y la regla de no convertir UNKNOWN silenciosamente en TRUE/FALSE.
+
+La aprobación no fija valores concretos por parámetro ni calibra empíricamente los límites. Se actualiza el estado del perfil a APROBADO en su dimensión estructural; dominios concretos, mapping, conflictos, tolerancias y oráculo permanecen abiertos.
+
+**Siguiente bloque:** matriz abstracta de parámetros y mapping C_src→C_dst/M, enlazando cada propiedad con FP-01/02/03 y asignando un predicado primario para evitar doble conteo. No generar valores, truth, fixtures ni ejecutar.
