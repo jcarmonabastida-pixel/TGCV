@@ -70,7 +70,7 @@ El contrato de DEC-C10-059 exige que el NODE destino de SNAPSHOT tenga `semantic
 
 ### UG-SCH-04 — source_provenance: conflicto entre §10.6 y §12.7
 
-**Severidad:** MEDIA · **Estado:** OPEN.
+**Severidad:** MEDIA · **Estado:** PROPOSAL_CREATED; acceptance pending.
 
 El §10.6 declara `source_provenance` obligatorio en todas las tablas de registro. El esquema normalizado §12.7 no lo incluye entre los campos comunes de las cinco tablas de objetos y §12.1 lo registra canónicamente en EVIDENCE_REGISTER.
 
@@ -78,7 +78,7 @@ El §10.6 declara `source_provenance` obligatorio en todas las tablas de registr
 
 ### UG-SCH-05 — CLAIM_EVIDENCE_LINK: destino de cobertura no resuelto
 
-**Severidad:** ALTA · **Estado:** OPEN.
+**Severidad:** ALTA · **Estado:** PROPOSAL_CREATED; acceptance pending.
 
 §12.10 atribuye a COVERAGE_REGISTER vínculos claim-evidence 0..n. Sin embargo, CLAIM_EVIDENCE_LINK.claim_target_id se define como `object_record_id`, mientras que COVERAGE_REGISTER tiene `coverage_scope_id` como clave y no contiene `object_record_id`.
 
@@ -86,7 +86,7 @@ El §10.6 declara `source_provenance` obligatorio en todas las tablas de registr
 
 ### UG-SCH-06 — FK polimórficas de CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER
 
-**Severidad:** ALTA · **Estado:** OPEN.
+**Severidad:** ALTA · **Estado:** PROPOSAL_CREATED; acceptance pending.
 
 Los registros de vínculo, evaluación y adjudicación utilizan `object_type + object_record_id` para identificar objetos de varias tablas. El contrato indica “FK tipada”, pero no especifica un mecanismo de integridad referencial que garantice que la pareja resuelva a una y solo una tabla/registro válido, ni los dominios cerrados de object_type/claim_target_type.
 
@@ -167,3 +167,8 @@ Los demás hallazgos UG-SCH-02 y UG-SCH-04…08 permanecen abiertos. Dictamen gl
 ## 9. Seguimiento — 2026-11-05
 
 UG-SCH-03 queda aceptado documentalmente por DEC-C10-060; enum y constraints físicos pendientes. UG-SCH-02 queda corregido documentalmente al explicitar la FK compuesta en SNAPSHOT. UG-SCH-08 queda aclarado documentalmente: NA en filas de esquema es marcador, no dato observado. UG-SCH-04, UG-SCH-05, UG-SCH-06 y UG-SCH-07 permanecen OPEN. Dictamen global: SCHEMA_NOT_CLOSED.
+
+
+## 10. Propuesta de resolución tipada — 2026-11-05
+
+Se creó `C10_S_UG_TYPED_TARGET_REFERENTIAL_INTEGRITY_CONTRACT_PROPOSAL_DRAFT_001.md`. Propone FKs nullable específicas por tabla destino con exclusividad exactamente-una y coherencia con enum de tipo, incluyendo COVERAGE_REGISTER; aplica el patrón a CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER. Resuelve conceptualmente la procedencia al mantener source_provenance canónica en EVIDENCE_REGISTER y retirar su duplicación de las tablas de objetos. UG-SCH-04/05/06 quedan PROPOSAL_CREATED, pendientes de aceptación y de reconciliación física. No modificar la plantilla hasta decisión del usuario. UG-SCH-07 permanece OPEN. Dictamen global: SCHEMA_NOT_CLOSED.
