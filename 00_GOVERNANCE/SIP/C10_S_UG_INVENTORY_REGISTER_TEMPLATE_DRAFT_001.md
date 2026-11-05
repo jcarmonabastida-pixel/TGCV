@@ -380,3 +380,5 @@ Se corrige la estructura para que EVALUATOR_ASSESSMENT use una clave singular `e
 **FCM-19:** se detectó `object_id` ambiguo en registros de evaluación/adjudicación; fijado como `object_record_id`.
 
 Estos cambios son especificación documental y no han sido probados con parser ni motor relacional.
+
+**FCM-20:** la cardinalidad de `evidence_ref` era ambigua entre §12.7 (uno o varios) y §§12.9/14 (un vínculo primario). Se armoniza como cero o un vínculo de navegación opcional; la relación completa 0..n permanece exclusivamente en CLAIM_EVIDENCE_LINK. Se corrige además el resumen histórico FCM-12 para distinguir la PK singular de evaluación de la referencia plural resumida en objetos.
