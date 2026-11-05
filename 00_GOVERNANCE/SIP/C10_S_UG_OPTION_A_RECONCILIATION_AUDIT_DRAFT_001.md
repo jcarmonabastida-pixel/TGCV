@@ -182,5 +182,16 @@ La plantilla contiene 19 tablas Markdown. Los encabezados, separadores y filas p
 - OAS-06: PARTIALLY_RESOLVED — se actualizan recuentos y alcance; checklist/autoauditoría heredados aún requieren confirmación de vigencia.
 - OAS-07: OPEN GOVERNANCE NOTE — PR #116 conserva base `research/c10-d1-protocol-draft`, no `main`.
 - OAS-08: RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING — FKs ROUTE_STEP corregidas; el motor debe verificar su implementación.
+- OAS-09: RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING — unicidad semántica condicionada a la revisión exacta.
 
 **Dictamen global:** UG-SCH-10 OPEN; SCHEMA_NOT_CLOSED; revisión independiente R1/R2 NOT STARTED; validación técnica NOT RUN; no DDL/parser/fixtures; `scientific_execution=false`; `execution_authorized=false`.
+
+
+### OAS-09 — Unicidad semántica no condicionada a la revisión exacta de SNAPSHOT
+**Severidad:** HIGH / DOCUMENTARY KEY-CONSISTENCY BLOCKER.
+
+La propuesta previa incluía `UNIQUE(snapshot_id,node_id)`. Como `snapshot_id` es identidad semántica y SNAPSHOT admite varias revisiones `object_version`, esa clave impediría conservar la misma identidad NODE en dos revisiones distintas del mismo snapshot semántico. Además, las claves compuestas con `object_record_id` no bastan por sí solas para impedir duplicados de un mismo ID semántico dentro de una misma revisión exacta, porque `object_record_id` ya es único.
+
+**Corrección documental aplicada:** se elimina `UNIQUE(snapshot_id,node_id)` y se sustituye por `UNIQUE(snapshot_id,snapshot_object_record_id,node_id)`. Se añaden claves semánticas equivalentes para EDGE, ROUTE y PREDICATE dentro de la revisión exacta. Se mantienen las claves compuestas adicionales con object_record_id que necesitan las FKs tipadas. La corrección se aplica en §§13.1 y 15.2; no modifica DEC-C10-062 ni DEC-C10-065.
+
+**Disposición:** OAS-09 RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING. La validez física de las claves UNIQUE y la compatibilidad del motor siguen sin probarse.
