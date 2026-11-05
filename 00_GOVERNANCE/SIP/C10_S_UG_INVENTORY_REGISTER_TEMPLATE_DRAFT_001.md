@@ -19,13 +19,13 @@ Reglas obligatorias:
 
 ## 2. Registro de nodos
 
-| node_id | semantic_role | class | TID | SID | RID | version/build/hash | owner/boundary | consumers/routes/arms | direct_dependencies | external/shared_resource | permissions/state | evidence_ref | observed_state (1/0/?) | coverage_status (NONE/PARTIAL/COMPLETE) | evaluator/blinding | timestamp | notes/unknowns | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
+| node_id | semantic_role | class | TID | SID | RID | version/build/hash | owner/boundary | consumers/routes/arms | direct_dependencies | external/shared_resource | permissions/state | evidence_ref | observed_state (1/0/?) | coverage_status (NONE/PARTIAL/COMPLETE) timestamp | notes/unknowns | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | — | NO INVENTARIADO | — | — | — | — | — | — | — | — | — | — | — | ? | NONE | — | — | Fila de esquema; no representa componente real | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
 ## 3. Registro de aristas/dependencias
 
-| edge_id | source_node | target_node | relation_type | direction | direct_or_transitive | version_constraint | time_window | condition | arms/routes_affected | resource_or_permission | necessary_for_path | evidence_ref | observed_state (1/0/?) | coverage_status | evaluator/blinding | timestamp | unknowns | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
+| edge_id | source_node | target_node | relation_type | direction | direct_or_transitive | version_constraint | time_window | condition | arms/routes_affected | resource_or_permission | necessary_for_path | evidence_ref | observed_state (1/0/?) | coverage_status timestamp | unknowns | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | — | — | — | NO INVENTARIADO | — | — | — | — | — | — | — | ? | — | ? | NONE | — | — | Fila de esquema; no representa dependencia real | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
@@ -45,7 +45,7 @@ Reglas obligatorias:
 
 ## 6. Registro de snapshots y fuentes
 
-| snapshot_id | unit_id | phase (baseline/post-B/rollback/route-test) | timestamp | scope | source_artifacts | version/hash | method | coverage_limitations | custodian | integrity_check | evidence_ref | observed_state (1/0/?) | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
+| snapshot_id | unit_id | phase (baseline/post-B/rollback/route-test) | timestamp | scope | source_artifacts | version/hash | method | coverage_limitations | custodian | integrity_check | evidence_ref | observed_state (1/0/?) | evaluator_record_ids | object_record_id | parent_catalog_id | object_version | coverage_scope_id | evidence_status (AVAILABLE/MISSING/CONFLICTING) | review_adjudication_status | unknown_reason | contract_intent | created_at | recorded_by | supersedes_record_id |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | — | — | — | — | — | — | — | — | No capturado | — | — | — | NA | — | — | — | — | MISSING | NOT_REVIEWED | — | — | — | — | — |
 
@@ -237,7 +237,7 @@ No incluir secretos, credenciales ni datos personales innecesarios. source_locat
 
 ### 12.2. Registro de vínculo afirmación-evidencia (CLAIM_EVIDENCE_LINK)
 
-| claim_evidence_id | claim_target_type | claim_target_id | claim_statement | evidence_id | support_type (direct/inferred/contradictory/contextual) | relevance_scope | reviewer_note |
+| claim_evidence_id | claim_target_type | claim_target_id (object_record_id) | claim_statement | evidence_id | support_type (direct/inferred/contradictory/contextual) | relevance_scope | evaluator_record_id (optional FK) | adjudication_id (optional FK) | reviewer_note |
 |---|---|---|---|---|---|---|---|
 | — | — | — | — | — | — | — | — |
 
@@ -253,7 +253,7 @@ COMPLETE exige denominador finito y trazable, regla de enumeración, fuentes vá
 
 ### 12.4. Registro de evaluación independiente (EVALUATOR_ASSESSMENT)
 
-| evaluator_record_ids | object_type | object_id | evaluator_id | role (E1/E2/ADJUDICATOR) | observed_state | evidence_ids | rule_version | scope_id | blinded_to_outcome_value | blinded_to_Z_B | confidence_or_limitations | rationale | timestamp |
+| evaluator_record_id | object_type | object_record_id | evaluator_id | role (E1/E2) | observed_state | rule_version | scope_id | blinded_to_outcome_value | blinded_to_Z_B | confidence_or_limitations | rationale | timestamp |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | — | — | — | — | — | ? | — | — | — | — | — | — | — | — |
 
@@ -261,7 +261,7 @@ E1 y E2 deben emitir registros independientes antes de conocer la clasificación
 
 ### 12.5. Registro de discrepancia y adjudicación (ADJUDICATION_REGISTER)
 
-| adjudication_id | object_type | object_id | evaluator_record_E1 | evaluator_record_E2 | disagreement_type | evidence_reviewed | adjudicator_id | decision (1/0/?/NA) | rule_and_reason | minority_position | unresolved_limitations | timestamp |
+| adjudication_id | object_type | object_record_id | evaluator_record_E1 | evaluator_record_E2 | disagreement_type | adjudicator_id | decision (1/0/?/NA) | rule_and_reason | minority_position | unresolved_limitations | timestamp |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | — | — | — | — | — | — | — | — | ? | — | — | — | — |
 
@@ -293,7 +293,7 @@ Extensiones:
 2. Cada claim-evidence link debe tener alcance compatible con la unidad, versión, entorno y tiempo de la afirmación.
 3. observed_state no se copia desde evidence_status; evidence_status no se deriva de observed_state.
 4. coverage_scope_id debe resolver a una fila COVERAGE_REGISTER; no se puede declarar COMPLETE sin denominador.
-5. E1/E2 se almacenan por separado; ADJUDICATION_REGISTER solo se crea cuando proceda.
+5. E1/E2 se almacenan por separado; ADJUDICATION_REGISTER solo se crea cuando proceda. Los vínculos de evidencia revisados por cada rol se filtran mediante evaluator_record_id/adjudication_id en CLAIM_EVIDENCE_LINK.
 6. parent_route_class no puede sustituirse por route_subtype.
 7. DGP_TRUTH_SECURE no se mezcla ni sincroniza con los registros visibles al analizador.
 8. Las revisiones generan nuevos registros versionados; no se sobrescribe el historial.
@@ -370,3 +370,13 @@ La auditoría detecta que el protocolo de procedencia estaba más desarrollado q
 | FCM-16 | No estaba fijado si claim_target_id apuntaba a ID semántico o registro versionado. | Se fija object_record_id; IDs semánticos y de registro quedan separados. | Corregido documentalmente |
 
 **Dictamen actualizado:** FCM-01…16 tratados en el diseño. No se ha ejecutado parser, validador de esquema, constraint check, test de seguridad ni prueba de cegamiento. La consistencia es documental y estática; el esquema permanece Draft y requiere revisión independiente.
+
+### 13.2. Tercera pasada — normalización de referencias de evaluación/evidencia
+
+Se corrige la estructura para que EVALUATOR_ASSESSMENT use una clave singular `evaluator_record_id` (una fila por E1/E2) y `object_record_id` como FK. ADJUDICATION_REGISTER referencia los dos registros E1/E2 y el mismo object_record_id. CLAIM_EVIDENCE_LINK admite `evaluator_record_id` y `adjudication_id` opcionales, de modo que la evidencia revisada por cada evaluador o adjudicador se reconstruye por relación y no mediante listas serializadas. Las tablas NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT incluyen el campo de navegación `evaluator_record_ids`, pero no sustituyen las filas normalizadas de evaluación.
+
+**FCM-17:** se detectó pluralización accidental de la clave primaria del registro EVALUATOR_ASSESSMENT; corregida a singular.  
+**FCM-18:** se detectó almacenamiento potencial de listas `evidence_ids/evidence_reviewed` en EVALUATOR_ASSESSMENT/ADJUDICATION_REGISTER; sustituidas por relaciones en CLAIM_EVIDENCE_LINK.  
+**FCM-19:** se detectó `object_id` ambiguo en registros de evaluación/adjudicación; fijado como `object_record_id`.
+
+Estos cambios son especificación documental y no han sido probados con parser ni motor relacional.
