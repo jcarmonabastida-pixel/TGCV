@@ -283,6 +283,8 @@ No se permite majority-vote automático. Si no se resuelve el conflicto con evid
 
 ### 12.7. Campos comunes obligatorios y extensión de tablas
 
+**Precedencia vigente:** para Opción A + DEC-C10-065, NODE/EDGE/ROUTE/PREDICATE y ROUTE_STEP deben incluir `snapshot_id` y `snapshot_object_record_id`; SNAPSHOT conserva `snapshot_id` como identidad semántica y `object_record_id` como revisión exacta. Las reglas detalladas y las FKs normativas vigentes están en §§15.1–15.3. La lista heredada siguiente se conserva como contrato base y no prevalece sobre esas secciones.
+
 Todas las tablas de objetos (NODE, EDGE, ROUTE, PREDICATE, SNAPSHOT) deben incluir:
 - `object_record_id` opaco, no vacío y UNIQUE dentro de su tabla (no global); `parent_catalog_id`; `object_version` como INT positivo, secuencial desde 1 y único por identidad semántica;
 - `coverage_scope_id`; `evidence_status`; `review_adjudication_status`;
@@ -310,7 +312,7 @@ Extensiones:
 9. parent_route_class no puede sustituirse por route_subtype.
 10. DGP_TRUTH_SECURE no se mezcla ni sincroniza con los registros visibles al analizador.
 11. Las revisiones generan nuevos registros versionados; no se sobrescribe el historial.
-12. `SNAPSHOT.(unit_id, unit_object_record_id)` debe resolver conjuntamente a `NODE.(node_id, object_record_id)` y el NODE referenciado debe tener `semantic_role=LOGICAL_SERVICE_UNIT`; el `unit_id` es la identidad semántica estable y `unit_object_record_id` fija la versión concreta del registro raíz aplicable al snapshot.
+12. `SNAPSHOT` fija su revisión mediante `(snapshot_id, object_record_id)`; su referencia al nodo raíz usa `(snapshot_id, object_record_id, unit_object_record_id, unit_id) → NODE(snapshot_id, snapshot_object_record_id, object_record_id, node_id)`. El NODE destino debe tener `semantic_role=LOGICAL_SERVICE_UNIT`. Además, cada NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP fija la revisión SNAPSHOT exacta mediante `(snapshot_id, snapshot_object_record_id) → SNAPSHOT(snapshot_id, object_record_id)`. Todas las referencias interobjeto dentro del snapshot deben compartir exactamente ese par. Esta regla sustituye cualquier formulación previa basada solo en `snapshot_id` o `unit_id`.
 13. `NODE.boundary_class` admite `P0_CONFIG`, `P1_ENVIRONMENT`, `DUAL_P0_P1` y `NA`. Los tres primeros son clases sustantivas; `NA` es solo no aplicabilidad justificada para nodos fuera de los objetos/artefactos P0/P1. No usar null/ausencia como sustituto de NA. El campo no codifica P2.
 
 
@@ -340,6 +342,8 @@ Extensiones:
 **Estado de revisión:** NOT_REVIEWED antes de doble evaluación; INDEPENDENT_PENDING mientras falta una de las dos; AGREED si E1/E2 coinciden bajo la misma regla y versión; ADJUDICATION_PENDING si discrepan; ADJUDICATED tras resolución motivada; UNRESOLVED si persiste ?; NOT_APPLICABLE solo con justificación.
 
 ### 12.10. Matriz de claves, referencias y obligatoriedad por tabla
+
+**Nota de precedencia (Opción A + DEC-C10-065):** la matriz que sigue conserva el baseline histórico del esquema y ya no es la fuente normativa de las claves/FKs de snapshot. Para NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/ROUTE_STEP, la matriz física vigente es §15.2 y sus reglas complementarias §§15.1, 15.3 y 16. En caso de discrepancia prevalecen esas secciones. Los demás registros y reglas tipadas de evidencia/evaluación conservan las disposiciones de §§12.7–12.9 y 15.4.
 
 La matriz cubre los diez registros operativos normalizados preexistentes más ROUTE_STEP, relación operativa de secuencia aprobada por DEC-C10-064. `DGP_TRUTH_SECURE` queda fuera de este inventario y del paquete accesible al analizador (§12.6). Las claves primarias compuestas históricas se conservan como definición lógica; las claves candidatas UNIQUE adicionales se declaran explícitamente cuando son necesarias para FKs tipadas.
 
@@ -447,7 +451,7 @@ El NODE destino debe tener `semantic_role=LOGICAL_SERVICE_UNIT`. Se mantiene la 
 
 ### 13.5. ROUTE_STEP — relación operativa normalizada
 
-Añadir ROUTE_STEP como relación de secuencia con campos mínimos: `route_step_id` (o PK compuesta `route_record_id, step_index`), `snapshot_id`, `route_record_id`, `step_index`, `step_type` (NODE/EDGE), `node_record_id` nullable y `edge_record_id` nullable. Cada paso debe referenciar exactamente uno de NODE/EDGE, coherente con step_type. Todas las FKs incluyen snapshot_id. Los índices empiezan en 1, son únicos y contiguos por ruta. La continuidad entre nodos y aristas adyacentes es una invariante cross-row que requiere constraint/trigger verificable o validador independiente y pruebas negativas. La secuencia serializada de ROUTE deja de ser fuente canónica; puede sobrevivir solo como vista/export derivado.
+Añadir ROUTE_STEP como relación de secuencia con campos mínimos: `route_step_id` (o PK compuesta `route_record_id, step_index`), `snapshot_id`, `snapshot_object_record_id`, `route_record_id`, `step_index`, `step_type` (NODE/EDGE), `node_record_id` nullable y `edge_record_id` nullable. `snapshot_object_record_id` fija la revisión exacta de SNAPSHOT y debe coincidir con la revisión fijada por ROUTE, NODE y EDGE. Cada paso debe referenciar exactamente uno de NODE/EDGE, coherente con step_type. Todas las FKs incluyen snapshot_id. Los índices empiezan en 1, son únicos y contiguos por ruta. La continuidad entre nodos y aristas adyacentes es una invariante cross-row que requiere constraint/trigger verificable o validador independiente y pruebas negativas. La secuencia serializada de ROUTE deja de ser fuente canónica; puede sobrevivir solo como vista/export derivado.
 
 ### 13.6. Interpretación y diff
 
@@ -467,7 +471,7 @@ DEC-C10-064 aprueba esta resolución de detalle. La aplicación documental de en
 
 ROUTE_STEP se incorpora a la matriz de claves de §12.10 como relación normalizada adicional. No se cuenta como una de las cinco tablas de objetos versionados (NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT) ni recibe object_version/supersedes_record_id: sus filas pertenecen a una revisión exacta de ROUTE y quedan identificadas por route_record_id + step_index. Una modificación de secuencia se registra en la revisión de ROUTE correspondiente y en sus ROUTE_STEP asociados; no se reescribe el historial de una ruta publicada.
 
-Los campos comunes de §12.7 se mantienen para las cinco tablas de objetos versionados. snapshot_id es además obligatorio en NODE, EDGE, ROUTE y PREDICATE bajo Opción A. En SNAPSHOT, snapshot_id es la identidad semántica del snapshot y participa en la FK compuesta hacia NODE raíz. EDGE añade source_node_record_id/target_node_record_id; PREDICATE añade route_record_id. ROUTE_STEP usa snapshot_id y route_record_id para fijar la secuencia al mismo snapshot.
+Los campos comunes de §12.7 se mantienen para las cinco tablas de objetos versionados. snapshot_id es además obligatorio en NODE, EDGE, ROUTE y PREDICATE bajo Opción A. En SNAPSHOT, snapshot_id es la identidad semántica del snapshot y participa en la FK compuesta hacia NODE raíz. EDGE añade source_node_record_id/target_node_record_id; PREDICATE añade route_record_id. ROUTE_STEP usa snapshot_id + snapshot_object_record_id y route_record_id para fijar la secuencia a la misma revisión exacta de SNAPSHOT y a la revisión exacta de ROUTE.
 
 ROUTE_STEP no sustituye CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_ASSESSMENT ni ADJUDICATION_REGISTER. Si en una fase posterior se requiere evidencia directa por paso, deberá definirse una extensión tipada explícita; no se amplía implícitamente el enum de destinos actual.
 
@@ -519,14 +523,14 @@ Todas las referencias interobjeto comparten exactamente el mismo par (snapshot_i
 `ordered_node_edge_sequence` deja de ser columna persistida de ROUTE. ROUTE_STEP es la única fuente canónica del orden y usa: route_step_id, snapshot_id, snapshot_object_record_id, route_record_id, step_index, step_type, node_record_id nullable y edge_record_id nullable.
 
 - FK de snapshot: `(snapshot_id, snapshot_object_record_id)` → SNAPSHOT(`snapshot_id`, `object_record_id`).
-- FK de ruta: `(snapshot_id, route_record_id)` → ROUTE(`snapshot_id, object_record_id`).
-- FK de nodo: `(snapshot_id, node_record_id)` → NODE(`snapshot_id, object_record_id`).
-- FK de arista: `(snapshot_id, edge_record_id)` → EDGE(`snapshot_id, object_record_id`).
+- FK de ruta: `(snapshot_id, snapshot_object_record_id, route_record_id)` → ROUTE(`snapshot_id, snapshot_object_record_id, object_record_id`).
+- FK de nodo: `(snapshot_id, snapshot_object_record_id, node_record_id)` → NODE(`snapshot_id, snapshot_object_record_id, object_record_id`).
+- FK de arista: `(snapshot_id, snapshot_object_record_id, edge_record_id)` → EDGE(`snapshot_id, snapshot_object_record_id, object_record_id`).
 - CHECK: exactamente uno de node_record_id/edge_record_id no nulo y coherente con step_type.
 - UNIQUE(route_record_id, step_index); step_index entero positivo y contiguo desde 1.
 - La continuidad entre extremos exactos de EDGE y NODE adyacentes es una invariante cross-row que requiere constraint/trigger verificable o validador independiente y pruebas negativas.
 
-Todas las FKs de pertenencia fijan la misma revisión exacta de SNAPSHOT. EDGE, PREDICATE y ROUTE_STEP deben satisfacer además que los registros relacionados comparten el mismo par (snapshot_id, snapshot_object_record_id).
+Todas las FKs de pertenencia fijan la misma revisión exacta de SNAPSHOT. EDGE, PREDICATE y ROUTE_STEP deben satisfacer además que los registros relacionados comparten el mismo par (snapshot_id, snapshot_object_record_id). Las FKs de ROUTE_STEP a ROUTE/NODE/EDGE incluyen obligatoriamente ambos componentes del pinning; una FK que omita `snapshot_object_record_id` no satisface DEC-C10-065.
 
 ### 15.4. Referencias tipadas de evidencia y evaluación
 
