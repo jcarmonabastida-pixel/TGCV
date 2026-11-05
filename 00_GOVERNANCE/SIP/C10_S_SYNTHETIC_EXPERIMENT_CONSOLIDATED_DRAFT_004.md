@@ -7393,3 +7393,10 @@ Este protocolo define evidencia requerida; no autoriza inspección de sistemas r
 ## 82.6. Estado y consecuencias
 
 No existe aún inventario técnico real. Dependencias directas/transitivas, endpoints externos, recursos compartidos y cambios materiales siguen sin observarse; la independencia A1/A2 respecto de B no está demostrada. La cobertura efectiva permanece NONE donde no hay fuentes inspeccionadas. A_f*, F_alt,0 y Reach_H siguen ?. No se cierra MD-C1…6, AUD-005/007/010/011 ni OPEN-C10-001/003/005/007; tampoco se decide D1/D2, q*, G/H, Value o dimensionamiento. No hay freeze ni autorización de implementación, simulación o ejecución.
+
+
+# 83. Plantilla de inventario U_G y registro de evidencia (2026-11-05)
+
+Se crea C10_S_UG_INVENTORY_REGISTER_TEMPLATE_DRAFT_001.md como esquema vacío para registrar nodos, aristas/dependencias, rutas, predicados por paso/tiempo, snapshots/fuentes y cobertura por dimensión. La plantilla separa identidad/versionado, estado observado 1/0/?, truth DGP restringida, procedencia, cobertura, evaluador/cegamiento y motivo de indeterminación.
+
+Las filas de ejemplo son filas de esquema, no componentes, aristas o rutas reales. No se han completado registros técnicos. La plantilla no acredita existencia ni ausencia, ni exhaustividad del universo. Cobertura NONE; A_f*, F_alt,0 y Reach_H permanecen ?. No se cierran MD-C1…6, AUD-005/007/010/011 ni OPEN-C10-001/003/005/007. No autoriza inspección técnica, instalación, implementación, simulación ni ejecución.
