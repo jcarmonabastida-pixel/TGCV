@@ -1009,3 +1009,12 @@ Se crea `C10_S_FP03_SEMANTIC_PRESERVATION_CONTRACT_DRAFT_001.md`, complementario
 **No cerrado:** dominio de configuración, invariantes atómicas, obligatoriedad de SM, mapping, excepciones, envolvente de observación, tolerancias, oráculo y fiabilidad. No hay ejecución ni evidencia empírica.
 
 **Siguiente paso:** fijar el objeto/configuración y el dominio funcional mínimo del microdominio, para poder convertir SM-01…SM-10 en predicados atómicos sin inventar semánticas. A continuación, seleccionar qué propiedades son obligatorias y cerrar mappings/oráculo; después reconciliar contratos concretos F1/F2/A1/A2.
+
+
+# XXXVII. Delimitación del objeto de configuración (2026-11-05)
+
+Se crea `C10_S_CONFIGURATION_OBJECT_SCOPE_AND_MINIMUM_CONTRACT_PROPOSAL_DRAFT_001.md`, que compara tres clases de objeto para la Opción A y recomienda un paquete de configuración de servicio software. La propuesta define un contenido lógico mínimo (componente, parámetros tipados, referencias, reglas/restricciones, políticas asociadas y metadatos contractuales), separa el objeto de recursos/permisos/ventanas/estado del entorno y deriva un F* candidato.
+
+**Estado:** propuesta pendiente de decisión explícita; no modifica DEC-C10-051 ni fija un sistema/producto/formato. No se aprueban todavía los mecanismos concretos F1/F2/A1/A2. No hay validación técnica ni evidencia.
+
+**Siguiente paso:** decisión del usuario sobre la clase del objeto y, si acepta la candidata A, sobre el contenido lógico mínimo y las propiedades obligatorias. Tras esa decisión se especializarán SM-01…SM-10, se definirán mappings y predicados atómicos, y se reconciliarán las fichas de transformaciones con el historial sin inventar mecanismos.
