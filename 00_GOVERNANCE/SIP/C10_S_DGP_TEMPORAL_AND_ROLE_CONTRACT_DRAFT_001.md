@@ -771,3 +771,10 @@ Se propone semántica de expresión TRUE/FALSE/UNKNOWN, que deberá distinguirse
 El DGP base adopta el perfil estructural aprobado: dominios finitos por clave; tipos BOOL/INT/DECIMAL/ENUM/STRING/REF con restricciones declaradas; estados ABSENT/NULL/DEFAULT/VALUE y subtipos de DEFAULT; AST declarativo acíclico sin ejecución arbitraria; operadores tipados y composición NOT/AND/OR; presupuesto máximo 4 niveles, 16 átomos/regla y 16 reglas/paquete; efectos REQUIRE/FORBID; SELECT_ENUM_VALUE excluido del núcleo. UNKNOWN no se transforma silenciosamente en TRUE/FALSE.
 
 Los límites concretos de valores, escalas, catálogos y cadenas se especificarán por clave una vez definido el contrato abstracto. No se asignan valores ni truth en este contrato. Mapping, conflictos, tolerancias y oráculo siguen abiertos. DEC-C10-054 aprueba perfil de diseño, no implementación, validación o ejecución.
+
+
+## 23. Matriz abstracta de parámetros y mapping C_src→C_dst/M
+
+La operacionalización del perfil aprobado se desarrolla en `C10_S_ABSTRACT_PARAMETER_AND_SOURCE_DESTINATION_MAPPING_MATRIX_DRAFT_001.md`. El contrato por clave deberá declarar tipo, dominio, unidad, estados, obligatoriedad, default, normalización, conversiones, versiones y requisito de evidencia. M será mapping de evaluación versionado, no capa persistida adicional.
+
+La comparación distinguirá C_src, C_dst declarado, C_dst realmente aplicado y E_dst (entorno externo al objeto). FP-01 cubre estructura/tipos, FP-02 integridad relacional y FP-03 preservación semántica; cada discrepancia deberá declarar predicado primario para evitar doble conteo. Los predicados de la matriz son candidatos, no aceptados ni validados. Claves, valores, dominios concretos, obligatoriedad/NA, mappings, oráculo y evidencia siguen abiertos. Sin truth ni ejecución.
