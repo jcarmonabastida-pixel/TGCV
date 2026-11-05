@@ -1176,3 +1176,10 @@ Tras DEC-C10-058 se realizó reconstrucción histórica obligatoria de la planti
 No se recrea una plantilla ni se amplía el inventario por duplicado. Se crea `C10_S_IAM_SERVICE_BOUNDARY_OVERLAY_AND_CROSSWALK_DRAFT_001.md` como overlay específico del servicio lógico. Define clasificación P0/P1, pertenencia/relaciones P2, crosswalk con registros U_G y mapping funcional provisional FP-01…08.
 
 **Pendiente:** revisar/aceptar el overlay; reconciliar FP-01…08 con contratos canónicos; validar los tipos EDGE frente al catálogo existente; fijar campos/cardinalidades/FK; después actualizar la plantilla existente solo si la brecha concreta lo exige. Sin instanciación ni ejecución.
+
+
+# LIII. Auditoría FP/EDGE del overlay IAM (2026-11-05)
+
+Se realiza auditoría documental contra contratos históricos. El overlay general es compatible con U_G y DEC-C10-055, pero requiere correcciones antes de modificar la plantilla: predicados primarios/secundarios por propiedad; FP-07 post-aplicación; FP-08 separado como procedencia/reproducibilidad; no introducir CONTAINS_FIELD; resolver atributos overlay frente a columnas existentes; separar C_dst^decl, C_dst^applied, E_dst y M.
+
+Artefacto: `C10_S_IAM_FP_EDGE_CROSSWALK_AUDIT_DRAFT_001.md`. La auditoría es auto-revisión asistida no independiente. No se ejecutan validadores ni se instancian nodos/aristas. Próxima operación: aplicar correcciones al overlay y producir field-to-column crosswalk mínimo; solo después decidir si la plantilla U_G necesita cambios.
