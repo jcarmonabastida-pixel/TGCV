@@ -288,12 +288,13 @@ Extensiones:
 
 ### 12.8. Reglas de consistencia entre tablas
 
-1. Si `evidence_ref` está poblado, debe resolver a `CLAIM_EVIDENCE_LINK.claim_evidence_id` y de ahí a `EVIDENCE_REGISTER.evidence_id`; no se aceptan referencias huérfanas. La existencia de `evidence_ref` no es obligatoria: la relación canónica completa es CLAIM_EVIDENCE_LINK. Como regla propuesta UG-SR-A01, observed_state 1/0 exige al menos un vínculo válido; observed_state ? admite ausencia de vínculo solo con unknown_reason, evidence_status=MISSING y limitaciones de búsqueda/cobertura documentadas; NA exige justificación.
+1. Si `evidence_ref` está poblado, debe resolver a `CLAIM_EVIDENCE_LINK.claim_evidence_id` y de ahí a `EVIDENCE_REGISTER.evidence_id`; no se aceptan referencias huérfanas. La existencia de `evidence_ref` no es obligatoria: la relación canónica completa es CLAIM_EVIDENCE_LINK. Conforme a la regla aceptada UG-SR-A01, observed_state 1/0 exige al menos un vínculo válido; observed_state ? admite ausencia de vínculo solo con unknown_reason, evidence_status=MISSING y limitaciones de búsqueda/cobertura documentadas; NA exige justificación.
 2. Cada claim-evidence link debe tener alcance compatible con la unidad, versión, entorno y tiempo de la afirmación.
 3. observed_state no se copia desde evidence_status; evidence_status no se deriva de observed_state.
 4. coverage_scope_id debe resolver a una fila COVERAGE_REGISTER; no se puede declarar COMPLETE sin denominador.
 5. En CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER exactamente una de las seis FK tipadas debe estar poblada y debe coincidir con el enum claim_target_type/object_type.
 6. Cada FK tipada a NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT apunta a object_record_id UNIQUE dentro de su tabla; la FK a cobertura apunta a COVERAGE_REGISTER.coverage_scope_id PK/UNIQUE.
+7. La exclusividad se expresa como CHECK de suma de indicadores de no-nulo igual a 1; un CHECK adicional vincula el único campo no nulo con el enum correspondiente (NODE↔target_node_record_id, EDGE↔target_edge_record_id, ROUTE↔target_route_record_id, PREDICATE↔target_predicate_record_id, SNAPSHOT↔target_snapshot_record_id, COVERAGE_SCOPE↔target_coverage_scope_id).
 7. E1/E2 se almacenan por separado; ADJUDICATION_REGISTER solo se crea cuando proceda. Los vínculos de evidencia revisados por cada rol se filtran mediante evaluator_record_id/adjudication_id en CLAIM_EVIDENCE_LINK.
 8. parent_route_class no puede sustituirse por route_subtype.
 9. DGP_TRUTH_SECURE no se mezcla ni sincroniza con los registros visibles al analizador.
