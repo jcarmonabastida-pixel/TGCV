@@ -686,3 +686,18 @@ Se aprueba `snapshot_object_record_id` obligatorio en NODE, EDGE, ROUTE, PREDICA
 La plantilla U_G actualiza encabezados y filas de esquema. §15.2/§15.6 especifican claves candidatas y FKs compuestas en orden explícito, incluyendo EDGE→NODE, PREDICATE→ROUTE, ROUTE_STEP→ROUTE/NODE/EDGE y SNAPSHOT→NODE raíz. Las referencias deben conservar exactamente el mismo snapshot_id + snapshot_object_record_id. La circularidad SNAPSHOT↔NODE raíz queda sujeta a FK diferibles o mecanismo transaccional equivalente probado.
 
 OAS-02: RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING. OAS-03: matriz compuesta especificada documentalmente; validación de completitud/implementabilidad pendiente. UG-SCH-10 sigue OPEN; no schema freeze, revisión independiente, DDL, parser, fixtures ni ejecución científica.
+
+
+## 46. Reconciliación de registro — DEC-C10-063 y DEC-C10-064 (2026-11-05)
+
+Esta entrada completa la indexación documental de decisiones ya aceptadas y registradas en el maestro; no constituye una nueva decisión ni altera su fecha, alcance o contenido.
+
+### DEC-C10-063 — Opción A para UG-SCH-10
+
+El usuario aceptó Opción A como arquitectura de referencia para pertenencia de NODE/EDGE/ROUTE/PREDICATE a snapshots, referencias versionadas exactas y ROUTE_STEP normalizado. El registro autónomo queda en DEC-C10-063_UG_OPTION_A_ARCHITECTURE_ACCEPTANCE.md. Su aceptación no implica schema freeze ni validación técnica. El maestro la registra en §118.
+
+### DEC-C10-064 — resolución estructural de Opción A
+
+El usuario aprobó documentalmente el contrato de versionado observacional, SNAPSHOT↔NODE raíz con integridad referencial diferible/transacción atómica, referencias exactas EDGE→NODE y PREDICATE→ROUTE, ROUTE_STEP normalizado y separación de cambios de observación, estructura, evidencia y accesibilidad. El registro autónomo es DEC-C10-064_OPTION_A_STRUCTURAL_RESOLUTION_ACCEPTANCE.md. Su alcance y condiciones técnicas permanecen como constan en ese registro y en el maestro §119.
+
+DEC-C10-065 completa el pinning exacto de revisión SNAPSHOT y permanece en su registro autónomo. Esta reconciliación solo cierra la laguna de indexación del Decision Log; UG-SCH-10 sigue OPEN y no hay schema freeze, validación física ni ejecución científica.
