@@ -7732,3 +7732,10 @@ Se crea `C10_S_UG_OPTION_A_RECONCILIATION_AUDIT_DRAFT_001.md` con siete hallazgo
 Se retira ordered_node_edge_sequence del encabezado ROUTE; se añade §15 como contrato reconciliado para las partes aprobadas; se amplía crosswalk y se actualizan documentos de revisión. El pinning exacto de SNAPSHOT no se modifica unilateralmente: requiere DEC adicional. Recomendación técnica/documental: snapshot_object_record_id en NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP y FK compuesta (snapshot_id, snapshot_object_record_id) → SNAPSHOT(snapshot_id, object_record_id).
 
 UG-SCH-10 permanece OPEN. No hay schema freeze, validación física, revisión independiente, parser, DDL, fixtures ni experimento. `scientific_execution=false`; `execution_authorized=false`.
+
+
+# 123. DEC-C10-065 — pinning exacto de revisión SNAPSHOT (2026-11-05)
+
+Se aprueba DEC-C10-065: NODE, EDGE, ROUTE, PREDICATE y ROUTE_STEP incorporan `snapshot_object_record_id` junto a `snapshot_id`, con FK compuesta a SNAPSHOT(`snapshot_id`, `object_record_id`). OAS-02 queda RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING. Se conserva el versionado de SNAPSHOT y la separación entre identidad semántica y revisión observacional.
+
+La plantilla U_G actualiza los cinco encabezados y filas de esquema; el crosswalk IAM incorpora el mapping. Persisten la reconciliación de claves compuestas, referencias cruzadas y raíz SNAPSHOT→NODE, selección de motor, pruebas físicas y revisión independiente. UG-SCH-10 sigue OPEN. No se ejecuta experimento ni validación técnica.
