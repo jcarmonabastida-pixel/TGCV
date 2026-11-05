@@ -7748,7 +7748,7 @@ U_G §15.2/§15.6 ahora especifica claves candidatas y FKs compuestas en orden e
 
 ## 125. Reconciliación U_G de pinning exacto — consistencia ROUTE_STEP (2026-11-05)
 
-La auditoría OAS posterior a DEC-C10-065 detectó que las FKs ROUTE_STEP→ROUTE/NODE/EDGE de U_G §15.3 omitían `snapshot_object_record_id`, pese a que las secciones normativas de pinning exigían que todas las referencias compartieran la misma revisión exacta de SNAPSHOT. Se corrige §15.3 para incluir `snapshot_id` y `snapshot_object_record_id` en ambos lados de cada FK y se actualizan las formulaciones resumidas §§13.5 y 14.
+La auditoría OAS posterior a DEC-C10-065 detectó que las FKs ROUTE_STEP→ROUTE/NODE/EDGE de U_G §15.3 omitían `snapshot_object_record_id`, pese a que las secciones normativas de pinning exigían que todas las referencias compartieran la misma revisión exacta de SNAPSHOT. Se corrige §15.3 para incluir `snapshot_id` y `snapshot_object_record_id` en ambos lados de cada FK y se actualizan §§13.1–13.5 y 14 para reflejar el pinning exacto en los cinco registros dependientes y la FK SNAPSHOT→NODE raíz.
 
 Se marca §12.10 como matriz histórica de baseline para las referencias de snapshot, con §15.2 como matriz física normativa vigente; §§12.7 y 12.8.12 explicitan la precedencia y la pertenencia exacta. El crosswalk IAM/FP §9.3 registra las doce relaciones de origen/destino con orden de columnas explícito.
 
