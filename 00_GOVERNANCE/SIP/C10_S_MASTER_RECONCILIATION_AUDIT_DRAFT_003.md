@@ -28,9 +28,9 @@ Draft 003 mejoró el plan anterior, pero todavía comprimía u omitía formulaci
 | MRA3-09 | Estadística resumida en exceso | Fuente 165–183 y contratos P177/P182/P183: heterogeneidad τ_i, composición de compliers D1/D2, sensibilidad δ/γ, ITT-A/O/V, LATE por resultado, cotas, potencia por estimando, N por cuadrícula, R por error Monte Carlo, semillas y métricas | Corregir plan |
 | MRA3-10 | N/R históricos sin procedimiento de selección | §178: elegir N por búsqueda de escenarios que satisfaga potencia y precisión; R según precisión de métricas Monte Carlo. N=2.000 y R=1.000 no son decisiones confirmatorias | Corregir plan |
 | MRA3-11 | Value vectorial poco especificado | §§179–182: dimensiones candidatas eficiencia, calidad, acceso de destinatarios, robustez y sostenibilidad; vector recomendado, índice secundario sujeto a pesos/sensibilidad | Corregir plan |
-| MRA3-12 | Familias de pruebas estadísticas incompletas en Test Register | Propagar P177/P179 y reglas P178 sin declarar tests ejecutados | Pendiente auxiliar |
-| MRA3-13 | Decision Log no refleja DEC-C10-063/064 | Maestro §§118–119 contiene ambas; Decision Log termina en DEC-C10-062 y DEC-C10-065. DEC-064 tiene registro propio; DEC-063 carece de archivo autónomo | Pendiente auxiliar |
-| MRA3-14 | Auxiliares conservan revisión externa como requisito | Closure Matrix §12 y Test Register §54 permiten autoauditoría asistida sin R1/R2 como condición; marcar requisitos antiguos como históricos/supersedidos | Pendiente auxiliar |
+| MRA3-12 | Familias de pruebas estadísticas incompletas en Test Register | P177-01…12, P178-SIM-01…10 y P179-01…08 incorporados en §55; P182/P183 conservados en §13 | RESUELTO DOCUMENTALMENTE; NO EJECUTADO |
+| MRA3-13 | Decision Log no refleja DEC-C10-063/064 | Creado registro autónomo DEC-C10-063 y añadida reconciliación de índice para DEC-C10-063/064 en Decision Log §46; DEC-064/065 conservan sus registros propios | RESUELTO DOCUMENTALMENTE |
+| MRA3-14 | Auxiliares conservan revisión externa como requisito | Addenda en Test Register §55, Closure Matrix §29, causal architecture reconciliation §11, DGP §24 e integrated reconciliation audit §11; autoauditoría asistida prevalece | RESUELTO DOCUMENTALMENTE; NO REVISIÓN HUMANA EXTERNA |
 
 ## 4. Reconciliaciones causales que se mantienen abiertas
 
@@ -55,3 +55,10 @@ Draft 003 mejoró el plan anterior, pero todavía comprimía u omitía formulaci
 Draft 004 incorpora las correcciones MRA3-01…11 y la secuencia estadística actualizada. La sincronización pendiente de Decision Log y contratos auxiliares se registra como trabajo documental derivado, no como decisión científica nueva.
 
 **Dictamen:** Draft 003 no era suficientemente completo para dirigir nuevas operaciones. Draft 004 es la guía operativa corregida, pero sigue DRAFT / NO APROBADO / NO CONGELADO. Esta autoauditoría no es independiente y no se ha ejecutado simulación, análisis estadístico ni experimento.
+
+
+## 7. Cierre del crosswalk auxiliar (2026-11-05)
+
+Se han propagado documentalmente MRA3-12…14: familias P177/P178/P179 al Test Contract Register; indexación DEC-C10-063/064 al Decision Log y registro autónomo DEC-C10-063; y supersesión de los antiguos requisitos de revisión externa en Test Register, Closure Control Matrix, causal architecture reconciliation, DGP e integrated reconciliation audit. Las pruebas siguen NO IMPLEMENTADAS / NO EJECUTADAS; no hay revisión humana independiente ni se exige para continuar.
+
+El siguiente bloque científico no es otra auditoría documental general: es cerrar la arquitectura causal y los estimandos/políticas factibles (θ_A(q), θ_Af(q*), ITT, LATE/ψ_policy, q_X*, B_g0/B_g1, C_auth y D1/D2) sin convertir recomendaciones en decisiones.
