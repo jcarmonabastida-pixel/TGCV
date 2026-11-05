@@ -794,3 +794,12 @@ Se crea C10_S_ADAPTER_PROVISION_MANIFEST_AND_DEPENDENCY_GRAPH_DRAFT_001.md y se 
 Se define el límite normativo de B: provisionar/configurar el adaptador, verificar el paquete y habilitar un canal restringido, sin ejecutar transformaciones ni modificar F*, oráculo, fuente/destino, permisos funcionales o A1/A2. Se compara ARCH-B1 (sidecar aislado), ARCH-B2 (host compartido) y ARCH-B3 (servicio externo); ARCH-B1 se recomienda para evaluación, no está aprobada ni instalada. El catálogo B-M01…15 sigue NO INVENTARIADO y se establecen snapshots, grafo de dependencias, recursos, permisos, rollback y pruebas de no-afectación.
 
 MD-C1/MD-C4 y MD-B01…08 permanecen abiertos. No se ha demostrado no-afectación de la ruta alternativa ni primera etapa sobre A_f*. No se han elegido D1/D2 ni parámetros, ni se han generado datos o ejecutado pruebas. Siguiente bloque: construir matriz de cobertura de nodos/aristas/predicados y estados 1/0/? para delimitar el universo de rutas y propagar indeterminación a Reach/F_alt.
+
+
+# XIX. Ejecución del plan — matriz de cobertura y evidencia trivalente (2026-11-05)
+
+Se crea C10_S_GRAPH_COVERAGE_AND_TRIVALENT_EVIDENCE_MATRIX_DRAFT_001.md y se propaga al maestro §81, contrato DGP §40, DEC-C10-042, matriz de cierre §20 y registro de pruebas §43.
+
+El catálogo U_G contiene 23 roles de nodos, 23 aristas, 14 predicados y cinco clases de ruta. Es un universo candidato de inspección, no inventario técnico real ni exhaustivo. La cobertura efectiva es NONE porque no hay manifiesto real, SBOM, runtime, snapshots ni grafo transitivo. Se formalizan reglas trivalentes: Reach=0 exige cobertura exhaustiva; F_alt,0=0 exige descarte de todas las rutas funcionalmente substituibles del universo definido; unknowns y Runknown mantienen ?. Estado actual: Reach_H=?, F_alt,0=?, A_f*=?; R0/R1 no clasificables; R2 posible pero no observado.
+
+GC-01…12 y GC-01…08 quedan como contratos/controles documentales, no ejecutados. MD-C1/2/4, AUD-005/007 siguen abiertos. Siguiente bloque: contrato de frontera y granularidad de U_G (componentes, dependencias, ruta funcionalmente substituible, servicio externo, versión y recursos compartidos), seguido de protocolo de inventario y evidencia. No se genera DGP técnico final ni se ejecuta.
