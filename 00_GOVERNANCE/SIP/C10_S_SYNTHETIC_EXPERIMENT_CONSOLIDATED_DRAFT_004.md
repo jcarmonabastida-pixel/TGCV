@@ -7566,3 +7566,10 @@ El usuario aprueba la partición del DGP base propuesta en el documento de alcan
 Se preserva la estructura conceptual de seis elementos de DEC-C10-052. POL no se elimina del objeto: solo queda fuera del núcleo base. La ausencia de políticas en un escenario base deberá declararse ex ante.
 
 La decisión aprueba la partición, no el contrato completo. Gramática, dominios, cardinalidad/direccionalidad, ausencia/null/default, mappings, tolerancias, oráculo y DGP siguen abiertos. Sin truth, fixtures, validación técnica, revisión independiente, evidencia empírica ni ejecución.
+
+
+# 102. Gramática mínima de reglas y dominio de tipos (2026-11-05)
+
+Se crea `C10_S_MINIMAL_RULE_GRAMMAR_AND_PARAMETER_TYPE_DOMAIN_PROPOSAL_DRAFT_001.md`. Propone BOOL/INT/DECIMAL/ENUM/STRING/REF, distinción ABSENT/NULL/DEFAULT/VALUE, operadores atómicos finitos, composición AND/OR/NOT y efectos declarativos limitados sin scripts ni ejecución arbitraria.
+
+Se distingue el resultado lógico TRUE/FALSE/UNKNOWN de la clasificación de evidencia 1/0/?. La propuesta no fija dominios finitos, límites, semántica final de UNKNOWN, conversiones ni oráculo; no es gramática aprobada ni implementación.
