@@ -80,3 +80,107 @@ truth_dgp es una columna reservada al generador/evaluador independiente; no debe
 ## 9. Estado inicial de la plantilla
 
 La plantilla se entrega vacía de observaciones reales. Todos los registros de ejemplo son filas de esquema, no nodos, aristas o rutas existentes. Cobertura NONE; A_f*=?, F_alt,0=?, Reach_H=?. No hay evidencia de instalación, runtime, SBOM, snapshots, grafo de dependencias, no-afectación A1/A2 ni independencia de B. No se ha ejecutado auditoría técnica, simulación ni experimento.
+
+
+## 10. Crosswalk explícito con U_G §81 (reconciliación Draft 001)
+
+**Dictamen:** correspondencia semántica 23/23 roles de nodo, 23/23 IDs padre de arista, 14/14 predicados y 5/5 clases de ruta. La correspondencia es semántica, no evidencia de existencia. Todos los estados siguen ? y cobertura NONE.
+
+### 10.1. Roles de nodo N01–N23
+
+| ID | Rol U_G | Registro | Observación |
+|---|---|---|---|
+| N01 | Unidad/sistema anfitrión y S0 | Nodo | Separar unidad y snapshot S0 si tienen identidad propia. |
+| N02 | Asignación Z | Nodo/evento | Distinguir asignación Z de política B recibida. |
+| N03 | Política/proceso B | Nodo/evento | Diferenciar política asignada, intento de provisión y provisión recibida. |
+| N04 | Paquete adaptador focal | Nodo | Registrar identidad y versión. |
+| N05 | Runtime/sidecar focal | Nodo | Separar runtime/configuración si difieren en ciclo de vida o fallo. |
+| N06 | Librerías/dependencias focales | Nodos | Desagregar dependencias por identidad/versión material. |
+| N07 | Endpoint/canal focal | Nodo | Distinguir interfaz lógica, endpoint desplegado y permisos cuando proceda. |
+| N08 | C_dep | Variable/medición | No asumir componente físico; registrar estado derivado y componentes constituyentes. |
+| N09 | Predicados A_f* | Constructo/variable | No tratar cada predicado como nodo técnico. |
+| N10 | Transformación focal τ2/F1 | Transformación | Distinguir definición/versionado de evento de ejecución. |
+| N11 | Aplicación F2 | Transformación | Distinguir definición de F2 y su ejecución. |
+| N12 | Estado destino | Estado/snapshot | Identificar por unidad, versión y tiempo. |
+| N13 | Exportador A1 | Nodo/transformación alternativa | Distinguir capacidad, implementación y ejecución. |
+| N14 | Formato/artefacto intercambio | Nodo/artefacto | Versionar formato y artefacto concreto cuando difieran. |
+| N15 | Importador A2 | Nodo/transformación alternativa | Distinguir capacidad, implementación y ejecución. |
+| N16 | Oráculo/criterio F* | Criterio/medición | Separar definición de F*, oráculo implementado y adjudicación. |
+| N17 | Autorizaciones C_auth | Política/condición | Separar política, principal/rol, permiso efectivo y evento. |
+| N18 | Recursos/capacidad compartida | Recurso | Separar capacidad instalada, pool disponible, reserva y consumo. |
+| N19 | Configuración fuente/destino | Datos/estado | Separar fuente, destino y snapshots/versiones. |
+| N20 | Dependencias/API/servicios compartidos | Nodos/dependencias | Desagregar servicios/APIs y registrar consumidores/transitividad. |
+| N21 | Servicios externos | Nodos externos | Un nodo por servicio/contrato/versión material; opacos siguen ?. |
+| N22 | Información/conocimiento agente | Variable/mecanismo | Separar información disponible, conocimiento, consideración y selección. |
+| N23 | Ejecución/Outcome/Value | Resultado compuesto | No es unidad única válida por defecto: separar ejecución, Outcome y Value/contextual valuation con reloj t7/t8/t9. |
+
+### 10.2. Aristas E01–E23 y normalización
+
+Conservar los 23 IDs originales como parent_edge_id. Una relación mult destino se registra como una fila por par origen-destino. Los IDs atómicos siguientes son claves propuestas, no relaciones observadas.
+
+| ID padre | Filas atómicas candidatas | Regla |
+|---|---|---|
+| E01 | E01 | Z→B |
+| E02 | E02 | B→N04 |
+| E03 | E03 | N04→N05 |
+| E04 | E04 | N05→N06; desagregar por dependencia real. |
+| E05 | E05 | N05→N07 |
+| E06 | E06 | N07→N08; medición/verificación, C_dep no equivale a A_f*. |
+| E07 | Ninguna arista técnica | Relación lógica/conjuntiva N04–N08→N09; registrar como regla de derivación, no edge binario. |
+| E08 | E08 | N09→N10; separar accesibilidad de invocación/ejecución. |
+| E09 | E09 | N10→N11 |
+| E10 | E10 | N11→N12 |
+| E11 | E11 | N01→N13 |
+| E12 | E12 | N13→N14 |
+| E13 | E13 | N14→N15 |
+| E14 | E14 | N15→N12 |
+| E15 | E15 | N12→N16; evaluación observa el estado, no necesariamente lo causa. |
+| E16 | E16 | N18→N05 |
+| E17 | E17.1 (N18→N13); E17.2 (N18→N15) | Dos filas; no presumir pool compartido real. |
+| E18 | E18.1 (N17→N07); E18.2 (N17→N10); E18.3 (N17→N11); E18.4 (N17→N13); E18.5 (N17→N15) | Cinco relaciones potenciales; autorización por operación/tiempo. |
+| E19 | E19.1 (N20→N05); E19.2 (N20→N13); E19.3 (N20→N15) | Tres relaciones potenciales; ampliar por dependencia/consumidor. |
+| E20 | E20.1 (N21→N04); E20.2 (N21→N05); E20.3 (N21→N07); E20.4 (N21→N13); E20.5 (N21→N15) | Cinco relaciones potenciales; desagregar servicio/contrato/versión. |
+| E21 | E21.1 (N19→N10); E21.2 (N19→N11); E21.3 (N19→N13); E21.4 (N19→N15) | Cuatro relaciones potenciales; desagregar fuente/destino y snapshots. |
+| E22 | E22.1 (N22→selección); E22.2 (N22→ejecución) | Destinos sin IDs explícitos en U_G; definir como eventos/variables, no inventar nodos técnicos. |
+| E23 | E23.1 (N10→ejecución); E23.2 (N11→ejecución); E23.3 (N15→ejecución) | Tres relaciones candidatas; separar además ejecución→Outcome y Outcome→Value en el modelo causal si aplica. |
+
+Resultado: **39 filas binarias candidatas** derivadas de E01–E06 y E08–E23; E07 es regla lógica, no arista. No son 39 dependencias observadas. La topología definitiva puede cambiar tras inventario y adjudicación.
+
+### 10.3. Los 14 predicados
+
+| Código U_G | Familia en plantilla | Momento y regla |
+|---|---|---|
+| ID-τ2 | ID | t−1,t2; TID/SID/RID, mapping y versión. |
+| REL-τ2 | REL | t2–t3; canal lógico y endpoint desplegado. |
+| COND-τ2 | COND | t−1,t3; precondiciones y S0. |
+| AUTH-τ2 | AUTH | t−1,t3; política y permisos efectivos; cambios por B. |
+| RES-τ2 | RES | t1–t3; capacidad, pool, reserva y ventana. |
+| DEP-τ2 | DEP | t1–t3; dependencias transitivas, integridad y compatibilidad; C_dep es subconjunto técnico. |
+| BLOCK-τ2 | BLOCK | t−1–t3; bloqueos y cobertura suficiente. |
+| APP-τ2 | APP | t3; aplicabilidad desde S0, distinta de A_f*. |
+| ALT-A1 | ALT | t−1–t3; conservar código exacto en predicate_id. |
+| ALT-A2 | ALT | t−1–t3; conservar código exacto en predicate_id. |
+| ALT-DEP | ALT | t−1–t3; dependencia directa/transitiva y afectación por B. |
+| ALT-F* | ALT | t3,t7,t8; F*, C0, G, H, restricciones y tolerancias comunes. |
+| ORACLE | ORACLE | t−1–t8; separar F*, oráculo implementado, versión y cegamiento. |
+| EXT | EXT | t−1–t3; servicios externos/opacos y cobertura. |
+
+El código completo va en predicate_id; predicate_type solo identifica la familia. Truth DGP y estado observado permanecen separados.
+
+### 10.4. Las cinco clases de ruta
+
+| Clase U_G | route_class | Regla |
+|---|---|---|
+| Rτ2 | focal | Ruta focal potencial, no ejecución. |
+| RA12 | alternative | Ruta A1→A2; evaluar F* separadamente. |
+| Rshared | shared | Exposición compartida; puede ser variante de Rτ2/RA12, no ruta disjunta. |
+| Rexternal | external | Ruta con servicio externo; opacidad mantiene ?. |
+| Runknown | unknown | Clase abierta; no convertirla en ruta ficticia enumerada. |
+
+Native/manual/fallback/recovery son subtipos descriptivos, no sustitutos de las cinco clases primarias. Añadir route_subtype y conservar parent_route_class.
+
+### 10.5. Campos complementarios y dictamen
+
+Añadir a los registros node/edge/route/predicate: parent_catalog_id, evidence_status (AVAILABLE/MISSING/CONFLICTING), contract_intent (intención normativa, no observación), coverage_scope_id, source_provenance, review/adjudication_status y unknown_reason. Para aristas, parent_edge_id y atomic_edge_id; para rutas, route_subtype y parent_route_class. Para predicados, predicate_id completo y separación truth_dgp_restricted / observed_state.
+
+**Dictamen:** correspondencia semántica completa en los cuatro catálogos; normalización necesaria de aristas mult destino; E07 es regla lógica; E22 carece de nodos destino identificados; N16 y N23 tienen granularidad compuesta que debe revisarse. La plantilla necesita los campos complementarios anteriores antes de cerrar su esquema. No se asignan estados técnicos ni se declara inventario completo.
