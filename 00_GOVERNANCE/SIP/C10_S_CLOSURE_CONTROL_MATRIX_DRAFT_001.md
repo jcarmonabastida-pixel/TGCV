@@ -705,3 +705,18 @@ El documento de manifiesto contiene PROV-01…12, contratos documentales no ejec
 | GC-08 | Evidencia y cegamiento | NONE | Proveniencia, hash, método, observer, cobertura y error registrados |
 
 La matriz C10_S_GRAPH_COVERAGE_AND_TRIVALENT_EVIDENCE_MATRIX_DRAFT_001.md contiene 23 nodos, 23 aristas, 14 predicados y cinco rutas candidatas.
+
+
+## 21. Seguimiento — plantilla de inventario U_G
+
+| ID | Punto | Estado | Criterio de cierre |
+|---|---|---|---|
+| UGI-01 | Registro de nodos | Esquema creado; sin observaciones | Correspondencia completa con roles U_G y campos TID/SID/RID, versión, frontera, consumidores y evidencia |
+| UGI-02 | Registro de aristas/dependencias | Esquema creado; sin observaciones | Correspondencia con catálogo de aristas; directas/transitivas, ciclos, compartidas y cobertura |
+| UGI-03 | Registro de rutas | Esquema creado; sin rutas observadas | Mapear cinco clases U_G y registrar F*, G, H, C0, versiones, alternativas y substituibilidad |
+| UGI-04 | Predicados por paso/tiempo | Esquema creado; truth restringida | Correspondencia con ID/REL/COND/AUTH/RES/DEP/BLOCK/APP/ALT/ORACLE/EXT y separación truth/observed |
+| UGI-05 | Snapshots y fuentes | Esquema creado; no capturados | Procedencia, integridad, timestamps, hash y limitaciones |
+| UGI-06 | Cobertura por dimensión | Esquema creado; cobertura NONE | Definir universo, fuentes examinadas, alcance cubierto, omisiones/opacidad y adjudicación |
+| UGI-07 | Adjudicación/cegamiento | Parcialmente especificado | Protocolo de evaluadores, discrepancias, reglas y revisión independiente |
+
+La plantilla es un artefacto documental vacío. No hay inventario técnico real ni evidencia para actualizar estados 1/0/?. No se cierra GC-01…12, MD-C1…6, AUD-005/007/010/011 ni OPEN-C10-001/003/005/007.
