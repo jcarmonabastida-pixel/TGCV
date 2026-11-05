@@ -7674,3 +7674,12 @@ Se crea `C10_S_UG_RECORD_ID_VERSION_AND_SUPERSESSION_CONTRACT_PROPOSAL_DRAFT_001
 # 115. DEC-C10-062 — identidad de registro, versionado y supersession U_G (2026-11-05)
 
 El usuario acepta el contrato de identidad de registro, versionado y supersession. `object_record_id` es UNIQUE por tabla de objetos; `object_version` es INT positivo, comienza en 1 y aumenta secuencialmente por identidad semántica; `supersedes_record_id` referencia al predecesor inmediato de la misma tabla/identidad. La cadena es lineal, sin bifurcaciones, ciclos ni huérfanos; el historial es inmutable. `created_at` es record-time y no tiempo de observación/validez. SNAPSHOT conserva el pinning a la versión exacta de NODE raíz. La plantilla U_G incorpora §12.12. UG-SCH-07 queda ACCEPTED_DOCUMENTALLY; el esquema global sigue SCHEMA_NOT_CLOSED hasta revisión integral y gate técnico. No se alteran Core, claims, estimando ni autorizaciones. `scientific_execution=false`; `execution_authorized=false`.
+
+
+# 116. Segunda pasada U_G y hallazgo UG-SCH-10 (2026-11-05)
+
+Se amplía la matriz §12.10 a los diez registros operativos y se alinea el contrato común/identidad con DEC-C10-062. Recuento estático actual de anchuras: NODE 30; EDGE 31; ROUTE 29; PREDICATE 24; SNAPSHOT 26; EVIDENCE_REGISTER 18; CLAIM_EVIDENCE_LINK 15; COVERAGE_REGISTER 15; EVALUATOR_ASSESSMENT 18; ADJUDICATION_REGISTER 17. Sin nombres duplicados en esos diez encabezados. No es validación física.
+
+UG-SCH-10 queda OPEN: no está formalizada la pertenencia de NODE/EDGE/ROUTE/PREDICATE a un snapshot concreto ni el pinning de extremos EDGE, secuencias ROUTE y PREDICATE→ROUTE a registros/versiones exactos. Timestamp y coverage_scope_id no sustituyen FKs inequívocas. Debe prepararse comparación de alternativas antes de modificar la plantilla. No se ha seleccionado solución ni creado nuevas columnas/tablas.
+
+UG-SCH-09 queda corregido documentalmente; el ledger de auditoría actualiza estados previos de UG-SCH-01…08. Dictamen global U_G: SCHEMA_NOT_CLOSED. Sin validadores, parser, constraints, fixtures, truth, simulación ni experimento. `scientific_execution=false`; `execution_authorized=false`.
