@@ -1,7 +1,7 @@
 # C10-S — Propuesta de F* y fichas transformacionales para Opción A
 
 **ID:** C10-S-OPTION-A-CARDS-001 · **Versión:** Draft 001 · **Fecha:** 2026-11-05  
-**Estado:** propuesta de operacionalización; NO seleccionada formalmente, NO aprobada, NO congelada, NO ejecutable.  
+**Estado:** Opción A seleccionada para el diseño C10-S; F* adoptado como contrato funcional de trabajo candidato. Documento Draft, no congelado ni ejecutable.  
 **Ámbito:** migración de configuración entre dos entornos software.  
 **Fuentes:** C10_S_TRANSFORMATION_CARDS_HISTORICAL_RECONCILIATION_DRAFT_001.md; C10_S_SYNTHETIC_MICRODOMAIN_OPTIONS_AND_SELECTION_RECOMMENDATION_DRAFT_001.md; maestro C10-S §§48–57, 74–76, 91–94; contrato de provisión B; contrato DGP temporal/roles; matriz U_G.
 
@@ -134,8 +134,9 @@ Una ruta focal F1→F2 y una alternativa A1→A2 son funcionalmente substituible
 
 ## 7. Decisiones y datos que siguen sin fijarse
 
-1. Aceptar, modificar o rechazar Opción A como microdominio del DGP.
-2. Aprobar la definición operacional final de F*.
+La selección de Opción A y la adopción de F* como contrato de trabajo se registran en DEC-C10-051 (2026-11-05). No deben reabrirse como decisiones pendientes salvo que nueva evidencia o contradicción justifique reconsideración.
+
+1. Cerrar la definición operacional final de F* y su catálogo de propiedades.
 3. Definir catálogo de propiedades, mappings, tolerancias y casos fronterizos.
 4. Definir formatos/versiones de origen, destino e intercambio.
 5. Ratificar contratos de entrada/salida y TID/SID/RID de F1/F2/A1/A2.
@@ -146,4 +147,9 @@ Una ruta focal F1→F2 y una alternativa A1→A2 son funcionalmente substituible
 
 ## 8. Dictamen
 
-Esta propuesta hace explícita una interpretación funcional candidata para las cuatro transformaciones y F*, sin presentarla como diseño aprobado. No cierra OPEN-C10-003 ni los hallazgos de accesibilidad, cobertura, medición o identificación. La selección del microdominio y la aprobación de F* siguen siendo decisiones separadas. No hay inventario técnico, validación empírica, generación, simulación, implementación ni ejecución.
+Esta propuesta hace explícita la interpretación funcional adoptada como base de trabajo para las cuatro transformaciones y F*. La selección del microdominio y la adopción del contrato de trabajo quedan decididas por DEC-C10-051; no se consideran cerrados el contrato operacional final, OPEN-C10-003 ni los hallazgos de accesibilidad, cobertura, medición o identificación. No hay inventario técnico, validación empírica, generación, simulación, implementación ni ejecución.
+
+
+## 9. Registro de decisión DEC-C10-051
+
+El 2026-11-05 el usuario selecciona Opción A —migración de configuración entre dos entornos software— como microdominio de diseño C10-S y adopta F* como contrato funcional de trabajo candidato. La selección habilita completar fichas y DGP documental; no autoriza ejecución ni cierra los parámetros, propiedades, mappings, tolerancias, oráculo, D1/D2 o identificación causal.
