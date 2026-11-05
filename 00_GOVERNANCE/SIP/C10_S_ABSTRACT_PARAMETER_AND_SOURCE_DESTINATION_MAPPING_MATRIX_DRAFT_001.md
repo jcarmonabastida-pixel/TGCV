@@ -145,3 +145,8 @@ Matriz abstracta creada como puente documental entre DEC-C10-054 y la especializ
 La asignación inicial de §3 y §6 debe interpretarse con la reconciliación posterior `C10_S_SM_ATOMIC_PROPERTY_FP_RECONCILIATION_DRAFT_001.md`. En particular, CMP-01/02 y PAR-01 tienen primacía semántica FP-03; PAR-02 se desdobla en esquema FP-01 y significado FP-03; REF-01/02 son FP-03 y REF-04 FP-02; RUL semántica FP-03 y AST FP-01; POL condicional FP-03, seguridad FP-05; MET-01 FP-01/04, MET-02/04 FP-08, MET-03 condicional FP-03. La cobertura MAP-CMP/PAR es FP-01, no sustituto de equivalencia semántica.
 
 APPLIED-STATE-SEMANTICS se descompone: FP-06 verifica aplicación, FP-07 observa el estado aplicado y las familias FP-01…05 evalúan las propiedades correspondientes sobre ese estado. No se contará un mismo defecto semántico dos veces.
+
+
+## 12. Estado de reconciliación y aplicabilidad
+
+La arquitectura SM/FP de esta matriz ha sido aceptada por DEC-C10-055. Los predicados de mapping se interpretan conforme a la reconciliación aceptada; la obligatoriedad/NA por instancia no queda resuelta por dicha aceptación y se desarrolla en `C10_S_PROPERTY_APPLICABILITY_AND_OBLIGATORINESS_MATRIX_DRAFT_001.md`. La asignación de O/C/NA requiere IAM sellado ex ante, cobertura y cardinalidad declarada.
