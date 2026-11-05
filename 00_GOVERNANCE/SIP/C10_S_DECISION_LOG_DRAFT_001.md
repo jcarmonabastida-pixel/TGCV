@@ -425,3 +425,10 @@ DEC-C10-045 es propuesta documental, no aprobación de fuentes, microdominio, pr
 Se identifican nueve brechas FCM-01…09 entre el protocolo de procedencia y las tablas de la plantilla: ausencia de registro separado de evidencia y vínculo claim-evidence, cobertura sin denominador, falta de doble evaluación y adjudicación estructuradas, exposición de truth DGP en la tabla analítica, mezcla de clases de ruta/subtipos y ausencia de campos comunes/integridad referencial.
 
 Se incorporan registros normalizados y segregación de truth en la plantilla §§12–13 y se actualiza el protocolo §13. DEC-C10-046 registra la corrección documental y la necesidad de revisión independiente/validación de tipos y constraints; no aprueba el esquema para uso, no acredita seguridad efectiva y no autoriza inspección, implementación, simulación o ejecución.
+
+
+## 41. Segunda pasada de consistencia del esquema U_G — DEC-C10-047
+
+Se registran FCM-10…16: campos comunes no materializados en las tablas, NA en snapshots, referencia singular de evaluador, cardinalidad de evidencia, cobertura resumen vs registro normativo, dominios/tipos y destino de claim_target_id. La plantilla se actualiza con campos físicos, diccionario candidato y matriz de obligatoriedad; CLAIM_EVIDENCE_LINK queda como relación 1:N y E1/E2 como filas separadas.
+
+DEC-C10-047 es hallazgo/corrección documental. No declara esquema cerrado, no aprueba implementación ni acredita validación técnica, seguridad o cegamiento. No autoriza inventario real, parser, simulación o ejecución.
