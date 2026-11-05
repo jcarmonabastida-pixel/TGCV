@@ -101,3 +101,14 @@ Propuesta documental para decisión. No contiene inventario real, instancias, va
 El usuario acepta la definición operativa de servicio lógico y las reglas semánticas P0/P1/P2. La propuesta queda aceptada como contrato conceptual de clasificación y unidad de migración, sin convertirla en inventario o schema ejecutable.
 
 Se mantienen expresamente abiertas la unidad de aleatorización/analítica, la estructura concreta de IAM, las cardinalidades y los dominios detallados CMP/PAR/REF/RUL, y la identificación de servicios/entornos reales. La decisión no autoriza acceso a sistemas, captura de snapshots, instalación ni ejecución científica.
+
+
+## 10. Resolución de la propuesta — DEC-C10-058
+
+El usuario acepta la definición operativa de servicio lógico y las reglas semánticas P0/P1/P2. La propuesta queda aceptada como contrato conceptual de clasificación y unidad de migración, sin convertirla en inventario o schema ejecutable.
+
+Se mantienen expresamente abiertas la unidad de aleatorización/analítica, la estructura concreta de IAM, las cardinalidades y los dominios detallados CMP/PAR/REF/RUL, y la identificación de servicios/entornos reales. La decisión no autoriza acceso a sistemas, captura de snapshots, instalación ni ejecución científica.
+
+## 11. Continuidad del inventario U_G
+
+La operacionalización posterior reutiliza la plantilla U_G de diez registros. Véase `C10_S_IAM_SERVICE_BOUNDARY_OVERLAY_AND_CROSSWALK_DRAFT_001.md`. No se crea un inventario paralelo ni se considera que la aceptación de la unidad lógica haya generado instancias técnicas observadas.
