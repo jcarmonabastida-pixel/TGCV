@@ -102,3 +102,18 @@ La aceptación DEC-C10-061 es documental. No se han ejecutado parser, FK/CHECK, 
 Opción A queda aprobada por DEC-C10-064. La plantilla U_G §13 es normativa para la correspondencia física: NODE/EDGE/ROUTE/PREDICATE incluyen snapshot_id; EDGE incorpora source_node_record_id/target_node_record_id; PREDICATE incorpora route_record_id; SNAPSHOT fija la versión exacta del NODE raíz mediante FK compuesta que incluye snapshot_id; ROUTE_STEP normaliza la secuencia.
 
 Los IDs semánticos se conservan como crosswalk, pero nunca sustituyen los record IDs en las FKs. Todas las referencias interobjeto deben comprobar mismo snapshot. El crosswalk IAM/FP deberá mapear estos nuevos campos y claves compuestas en la siguiente reconciliación. No se inventan relaciones ni instancias.
+
+
+### 9.1. Field-to-column mapping reconciled under Opción A
+
+| Concepto/campo | Tabla.columna | Identidad/FK destino | Regla |
+|---|---|---|---|
+| Pertenencia semántica a snapshot | NODE/EDGE/ROUTE/PREDICATE.snapshot_id | SNAPSHOT.snapshot_id (identidad semántica; FK física exacta aún bloqueada) | Mismo snapshot lógico; no resolver por última versión |
+| Extremo origen de EDGE | EDGE.source_node_id + source_node_record_id | NODE.node_id + NODE.object_record_id, compuesto con snapshot_id | ID semántico y revisión exacta deben coincidir |
+| Extremo destino de EDGE | EDGE.target_node_id + target_node_record_id | NODE.node_id + NODE.object_record_id, compuesto con snapshot_id | ID semántico y revisión exacta deben coincidir |
+| Ruta evaluada por PREDICATE | PREDICATE.route_id + route_record_id | ROUTE.route_id + ROUTE.object_record_id, compuesto con snapshot_id | Pinning exacto; route_id aislado no basta |
+| Nodo raíz de unidad | SNAPSHOT.unit_id + unit_object_record_id | NODE.node_id + NODE.object_record_id, compuesto con snapshot_id | semantic_role=LOGICAL_SERVICE_UNIT |
+| Secuencia de ruta | ROUTE_STEP.route_record_id / node_record_id / edge_record_id | ROUTE/ NODE/ EDGE.object_record_id, compuesto con snapshot_id | ROUTE_STEP es fuente canónica; ordered_node_edge_sequence no se persiste |
+| Versión observacional | Cinco tablas versionadas.object_record_id/object_version/supersedes_record_id | Misma tabla e identidad semántica | Nueva captura crea nueva versión, sin implicar cambio material |
+
+**Bloqueo explícito:** el mapping de snapshot_id solo fija identidad semántica, no una versión concreta de SNAPSHOT. DEC-C10-062 versiona también SNAPSHOT; se requiere resolver OAS-02 mediante un campo de pinning exacto (recomendación: snapshot_object_record_id) o mediante decisión que cambie expresamente la semántica/versionado de SNAPSHOT. Hasta entonces no se declara FK física de mismo snapshot completamente especificada.
