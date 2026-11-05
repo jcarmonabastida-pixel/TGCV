@@ -1415,4 +1415,44 @@ Hallazgos documentales OAS-10 y OAS-11 se corrigen en las vistas físicas U_G §
 
 **Estado del pase:** reconciliación documental del alcance examinado completada; control estático Markdown PASS_FORMAT_ONLY. OAS-01/02/04/06/08/09/10/11 quedan resueltos documentalmente; OAS-03 sigue especificado y pendiente de revisión independiente/validación de motor; OAS-05 especificado y pendiente de revisión independiente; OAS-07 se mantiene como nota de gobernanza por la base no-main de PR #116. UG-SCH-10 permanece OPEN hasta R1/R2 y gates técnicos; SCHEMA_NOT_CLOSED.
 
-**Siguiente gate:** preparar la revisión independiente R1 (modelo de datos/ingeniería) y R2 (metodología/causalidad), fijando en su inicio los hashes de los artefactos y el commit exacto de la rama. No declarar PASS SR-01…20 por autoauditoría. La validación ejecutable requerirá autorización separada. Sin DDL, parser, fixtures, simulación ni ejecución científica.
+**Siguiente gate operativo:** continuar la autoauditoría asistida y no independiente sobre la versión reconciliada de U_G, cerrar discrepancias documentales residuales y retomar DGP/arquitectura causal, validez de constructo, identificación, sensibilidad y dimensionamiento estadístico. R1/R2 son perfiles para revisión externa futura; no se designan ahora ni bloquean el trabajo documental. La validación ejecutable y cualquier freeze de artefactos técnicos que la requieran se tratarán en su gate propio y con autorización separada. No declarar PASS SR-01…20 por autoauditoría. Sin DDL, parser, fixtures, simulación ni ejecución científica.
+
+
+# LXXVIII. Reafirmación del protocolo de investigador único y corrección del gate inmediato (2026-11-05)
+
+Este addendum aplica la orientación ya registrada en §XXIX y en `C10_S_TWO_WORKSTREAMS_SCIENTIFIC_CORE_AND_COMMUNITY_SEED_WEB_DRAFT_001.md`. Prevalece sobre cualquier formulación posterior de este plan que sitúe la designación de R1/R2 como siguiente paso obligatorio.
+
+## 1. Protocolo vigente en la fase de investigador único
+
+- La modalidad actual es `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`: auditoría interna estructurada, crítica, trazable y limitada por evidencia.
+- Cada control se clasifica `PASS_STATIC`, `CONDITIONAL`, `FAIL` o `NOT_ASSESSED`, con artefacto/versión, fundamento, alcance, limitación y acción pendiente.
+- La asistencia de ChatGPT no se denomina ni presenta como revisión independiente, peer review o validación externa.
+- Los controles que exijan parser, constraints, motor, inspección técnica, permisos/seguridad, cegamiento o evidencia empírica permanecen abiertos/no evaluados hasta disponer del mecanismo, entorno y autorización adecuados.
+- R1 (modelo de datos/ingeniería) y R2 (metodología/causalidad) son perfiles de revisión externa futura, no revisores designados ni gate para continuar el trabajo actual.
+- La revisión externa se difiere hasta que aporte valor real: antes de congelar artefactos técnicos que la requieran y/o antes de publicar claims de reproducibilidad o validación. La apertura pública *as is* no se presenta como certificación científica ni requiere una revisión por pares global previa.
+
+## 2. Dos líneas de trabajo y web germen
+
+**Línea A — C10-S científico:** mantiene prioridad de trabajo inmediata para cerrar diseño causal, DGP, medición, identificación, falsación, sensibilidad y estadística. No se debe fingir cierre por ausencia de revisores ni bloquear la consolidación documental por no disponer de ellos.
+
+**Línea B — web germen TGCV:** objetivo de publicación honesta del estado real *as is*, con arquitectura conceptual, hipótesis, decisiones, materiales, evidencia disponible, incertidumbres, límites, preguntas abiertas y agenda comunitaria. La web puede abrirse antes del cierre científico completo si cada material y claim se etiqueta con su estado y alcance probatorio. La apertura no requiere que el playground esté terminado. El playground es posterior y deriva de los contratos científicos; no crea un modelo paralelo ni evidencia causal.
+
+La web germen no equivale a freeze de C10-S. Antes de publicar se realizará una revisión de preparación/transparencia proporcionada a lo que efectivamente se exponga: accesibilidad intelectual, coherencia, trazabilidad, estados, falsabilidad, criticabilidad, honestidad probatoria, reproducibilidad posible, seguridad, privacidad, licencias y atribución. Después de abrir, crítica, replicación y contribuciones comunitarias se incorporarán mediante gobernanza versionada, preservando procedencia, autoría, revisión, desacuerdos y decisiones.
+
+## 3. Secuencia inmediata corregida
+
+1. Completar la reconciliación documental U_G ya iniciada y recalificar solo lo que la evidencia estática permita; la pasada de 19 tablas es `PASS_FORMAT_ONLY`, no PASS de esquema.
+2. Actualizar la autoauditoría SR-01…20 contra el commit reconciliado, conservando `AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT`; no trasladar sin más el conteo histórico anterior a Opción A.
+3. Continuar la resolución de DGP e intervención autónoma sobre accesibilidad, jerarquía de estimandos, vías alternativas y condiciones de identificación.
+4. Cerrar medición/validez de constructo, error, cegamiento, falsadores y análisis de sensibilidad.
+5. Completar el plan estadístico: justificación de N, número de réplicas, potencia/precisión, error Monte Carlo, primeras etapas débiles, heterogeneidad, missingness, interferencia y criterios `δ/ε`. `N=2.000` y `1.000` réplicas siguen siendo candidatos provisionales, no parámetros aprobados ni cálculo de potencia. La evidencia de potencia de NEXT4 en otra línea no sustituye este dimensionamiento específico de C10-S.
+6. En paralelo, preparar el paquete de publicación *as is* y la gobernanza de participación; no iniciar implementación del playground hasta decidir su alcance y dependencia contractual.
+
+## 4. Gates separados
+
+- **Gate de continuidad documental/científica:** autoauditoría asistida y resolución trazable; no exige revisores externos.
+- **Gate de validación técnica/freeze:** constraints, parser, motor, seguridad, cegamiento y revisión externa cuando el artefacto/claim lo requiera; autorización separada.
+- **Gate de apertura web germen:** preparación de transparencia, coherencia, trazabilidad, límites, privacidad/licencias y seguridad proporcionada al contenido; no exige cierre de C10-S ni certificación global.
+- **Gate de evolución comunitaria/playground:** gobernanza de contribuciones y especificación funcional derivada de contratos; posterior a la apertura germen.
+
+**Estado:** este addendum corrige la secuencia operativa; no cambia decisiones científicas, estimandos, DGP, estado de C10-S, TGCV Core, RMA, Evidence→Claim Matrix, STATUS ni autorizaciones. C10-S sigue Draft, no congelado ni ejecutado; web/playground no están implementados.
