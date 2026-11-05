@@ -209,6 +209,7 @@ Esta sección es el ledger vigente de la auditoría. Los apartados 8–13 anteri
 | UG-SCH-07 — unicidad/versionado/supersession | ACCEPTED_DOCUMENTALLY — DEC-C10-062 | Unicidad por tabla, versión secuencial y cadena de supersession lineal e inmutable. |
 | UG-SCH-08 — NA en filas de esquema | CLARIFIED_DOCUMENTALLY | NA ilustrativo no es observación; NA real exige justificación. |
 | UG-SCH-09 — matriz de obligatoriedad incompleta y claves/versionado no sincronizados | CORRECTED_DOCUMENTALLY; second-pass semantic review pending | §12.10 se amplía a los diez registros operativos y separa PK lógica, claves candidatas UNIQUE, FKs y cardinalidades conforme a DEC-C10-061/062. |
+| UG-SCH-10 — vinculación de registros de grafo con snapshot y referencias versionadas | OPEN / DESIGN_RECONCILIATION_REQUIRED | NODE/EDGE/ROUTE/PREDICATE no contienen una FK explícita a snapshot_id; EDGE usa source_node_id/target_node_id y ROUTE/PREDICATE referencias semánticas sin pinning inequívoco a object_record_id/versiones. Los contratos de snapshot exigen comparabilidad y matching, pero la plantilla no define el mecanismo relacional de pertenencia y referencias exactas. |
 
 ### 14.2. Recuento estático actualizado de los diez registros operativos
 
@@ -251,3 +252,36 @@ La actualización es una reconciliación de decisiones ya aceptadas, no una nuev
 UG-SCH-01…08 tienen resoluciones documentales o aclaraciones aceptadas conforme al ledger §14.1. UG-SCH-09 se ha corregido documentalmente, pero requiere segunda pasada semántica de los diez contratos y crosswalk. Permanecen sin validar físicamente las claves, FKs compuestas/autorreferentes/tipadas, exclusividad, cardinalidades, enums, CHECK, secuencias, ciclos, inmutabilidad y seguridad/custodia.
 
 No hay freeze, inventario real, instancias, truth accesible al analizador, fixtures, validación ejecutable, revisión independiente ni evidencia empírica nueva. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
+
+
+### 14.5. Nuevo hallazgo UG-SCH-10 — pertenencia a snapshot y pinning de referencias
+
+**Severidad:** ALTA · **Estado:** OPEN / DESIGN_RECONCILIATION_REQUIRED.
+
+La plantilla registra NODE, EDGE, ROUTE y PREDICATE con identidad semántica y versión de registro, pero no contiene una referencia explícita de esos registros al `snapshot_id` al que pertenecen. SNAPSHOT fija la versión exacta del NODE raíz, pero no la pertenencia del resto del grafo a esa captura.
+
+Además:
+- EDGE identifica extremos mediante `source_node_id/target_node_id`, sin referencias explícitas a los `object_record_id` concretos de NODE.
+- ROUTE mantiene `ordered_node_edge_sequence` sin un contrato de serialización ni resolución a registros versionados exactos.
+- PREDICATE usa `route_id` sin pinning explícito a la revisión de ROUTE.
+- Timestamp y `coverage_scope_id` no sustituyen por sí solos una FK inequívoca a snapshot ni resuelven registros versionados.
+
+Los contratos de identidad y snapshot exigen que los diffs se calculen sobre snapshots comparables, con identidad, granularidad y mapping explícitos; sin embargo, no definen aún cómo se resuelven físicamente la pertenencia al snapshot y las referencias entre versiones del grafo.
+
+**Riesgo:** dos revisiones del mismo objeto semántico podrían ser seleccionadas para una arista/ruta/predicado sin una regla inequívoca de versión/snapshot. No se afirma que el sistema contenga ya una referencia errónea; se identifica que el contrato de captura no permite comprobarla todavía.
+
+**Siguiente acción documental:** elaborar una reconciliación de alternativas para:
+1. vincular cada registro de grafo a un snapshot exacto;
+2. fijar los extremos de EDGE a revisiones concretas de NODE;
+3. fijar la secuencia de ROUTE a revisiones concretas de NODE/EDGE;
+4. vincular PREDICATE a la revisión exacta de ROUTE;
+5. preservar identidad semántica, historial y snapshots inmutables sin inferir correspondencia por timestamp;
+6. valorar si puede resolverse dentro de las diez tablas aceptadas o requiere una relación normalizada adicional.
+
+No modificar todavía la plantilla para añadir columnas/relaciones en este punto: la solución puede afectar cardinalidades, claves y estructura del registro. Requiere una propuesta explícita y aceptación antes de su aplicación.
+
+### 14.6. Revisión de segunda pasada — alcance actual
+
+La revisión ha cubierto la matriz de diez tablas, claves declaradas, referencias tipadas, versionado, snapshots, contratos de identidad, frontera/granularidad, cobertura y crosswalk IAM/FP. UG-SCH-09 se corrigió documentalmente. UG-SCH-10 es un hallazgo nuevo y bloquea el cierre integral del esquema.
+
+El dictamen global permanece **CORRECTION_REQUIRED / SCHEMA_NOT_CLOSED**. No se ha ejecutado ningún validador ni se han creado instancias, fixtures, truth, simulaciones o experimentos.
