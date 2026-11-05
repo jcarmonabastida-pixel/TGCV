@@ -7776,3 +7776,12 @@ Se añaden addenda DEC-C10-065 a los contratos especializados de unidad lógica,
 U_G §15.4 y crosswalk IAM/FP §9.4 consolidan ahora las columnas/destinos de las seis FKs tipadas para CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER, junto con evidence_id, FKs de E1/E2, PK/UNIQUE de los registros relacionados, source_provenance en EVIDENCE_REGISTER, coverage_scope_id, evidence_ref opcional y la cardinalidad 0..n de CLAIM_EVIDENCE_LINK.
 
 La actualización consolida DEC-C10-061 y UG-SR-A01 sin cambiar sus decisiones. OAS-11 queda RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING. No hay freeze, revisión independiente, validación técnica ni ejecución científica; UG-SCH-10 permanece OPEN.
+
+
+## 129. Cierre del pase de reconciliación documental U_G (2026-11-05)
+
+Se completa el cotejo documental de U_G con DEC-C10-059…065 y los contratos de identidad/versionado, nodo raíz, referencias tipadas, procedencia y adjudicación. OAS-10 alinea las vistas físicas §4.1/§6 con el pinning exacto; OAS-11 explicita el contrato de seis FKs tipadas, evidencia, evaluadores, adjudicación y cobertura en §15.4 y crosswalk §9.4. Checklist y autoauditoría se actualizan sin recalificar los controles SR.
+
+Control estático de las 19 tablas Markdown: PASS_FORMAT_ONLY, sin discrepancias de columnas ni encabezados duplicados. OAS-01/02/04/06/08/09/10/11 resueltos documentalmente; OAS-03 requiere revisión independiente y validación del motor; OAS-05 requiere revisión independiente; OAS-07 permanece como nota de gobernanza (PR #116 base no-main). UG-SCH-10 permanece OPEN; SCHEMA_NOT_CLOSED.
+
+Siguiente gate: preparar R1 (modelo de datos/ingeniería) y R2 (metodología/causalidad), fijando hashes y commit exactos al iniciar la revisión. No hay validación técnica ni ejecución científica autorizada.
