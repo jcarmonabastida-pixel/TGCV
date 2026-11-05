@@ -537,3 +537,12 @@ No implica implementación, validación, truth, fixtures, revisión independient
 **Artefacto derivado:** `C10_S_ABSTRACT_CONFIGURATION_INSTANCE_CONTRACT_DRAFT_001.md`, propuesta documental que formaliza estructura e invariantes sin constituir schema ejecutable.
 
 No implica implementación, truth, fixtures, validación técnica, revisión independiente, evidencia empírica, freeze ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## Propuesta de frontera P0/P1/P2 — pendiente de decisión del usuario (2026-11-05)
+
+Se crea `C10_S_SOFTWARE_SERVICE_CONFIGURATION_BOUNDARY_PROFILE_PROPOSAL_DRAFT_001.md`. Propone tres perímetros: P0 paquete declarativo migrable C (CMP/PAR/REF/RUL/POL?/MET); P1 envolvente técnica E_src/E_dst (software/runtime, recursos, permisos efectivos, servicios, estado y mecanismos de aplicación); P2 sistema causal de la unidad (P0+P1, B, alternativas, dependencias compartidas, agentes, medición, ejecución y Outcomes/Value pertinentes).
+
+La propuesta distingue declaración REF de disponibilidad real del recurso, POL de permisos efectivos, C_dst_decl de C_dst_applied y mapping M del contenido fuente. Incluye reglas para secretos, endpoints, deployment manifests, datos persistentes, sidecar B, alternativas A1/A2 y oráculo. La unidad experimental permanece candidata y no se redefine.
+
+**Estado:** propuesta documental no aceptada ni congelada; no se crea DEC-C10-057 hasta decisión explícita. Sin inventario real, snapshots, IAM instanciado, truth, fixtures, validación, instalación ni ejecución.
