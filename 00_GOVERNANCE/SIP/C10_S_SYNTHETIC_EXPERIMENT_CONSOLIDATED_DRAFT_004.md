@@ -7400,3 +7400,18 @@ No existe aún inventario técnico real. Dependencias directas/transitivas, endp
 Se crea C10_S_UG_INVENTORY_REGISTER_TEMPLATE_DRAFT_001.md como esquema vacío para registrar nodos, aristas/dependencias, rutas, predicados por paso/tiempo, snapshots/fuentes y cobertura por dimensión. La plantilla separa identidad/versionado, estado observado 1/0/?, truth DGP restringida, procedencia, cobertura, evaluador/cegamiento y motivo de indeterminación.
 
 Las filas de ejemplo son filas de esquema, no componentes, aristas o rutas reales. No se han completado registros técnicos. La plantilla no acredita existencia ni ausencia, ni exhaustividad del universo. Cobertura NONE; A_f*, F_alt,0 y Reach_H permanecen ?. No se cierran MD-C1…6, AUD-005/007/010/011 ni OPEN-C10-001/003/005/007. No autoriza inspección técnica, instalación, implementación, simulación ni ejecución.
+
+
+# 84. Reconciliación U_G ↔ plantilla de inventario (2026-11-05)
+
+Se incorpora en la sección 10 de C10_S_UG_INVENTORY_REGISTER_TEMPLATE_DRAFT_001.md el crosswalk explícito con U_G §81: 23/23 roles de nodo, 23/23 IDs padre de arista, 14/14 predicados y 5/5 clases de ruta tienen correspondencia semántica. Esto no acredita existencia ni cobertura técnica.
+
+Hallazgos de estructura:
+- Las aristas mult destino E17–E21 y E22–E23 requieren normalización a filas binarias con parent_edge_id; E07 es una relación lógica/conjuntiva y no debe representarse como arista técnica binaria.
+- La normalización propuesta produce 39 filas binarias candidatas y mantiene E07 como regla lógica. Son claves de captura, no relaciones observadas.
+- E22 apunta a selección/ejecución sin IDs de nodo explícitos; se deben definir eventos/variables sin inventar componentes.
+- N16 agrupa criterio F*, oráculo y adjudicación; N23 agrupa ejecución, Outcome y Value. Ambos requieren desagregación analítica cuando tengan identidad/tiempo propio.
+- Los cinco tipos primarios de ruta se mapean a Rτ2/RA12/Rshared/Rexternal/Runknown; native/manual/fallback/recovery quedan como subtipos.
+- Se identifican campos complementarios: parent_catalog_id, evidence_status, contract_intent, coverage_scope_id, source_provenance, review/adjudication_status y unknown_reason; además parent_edge_id/atomic_edge_id y route_subtype/parent_route_class.
+
+**Dictamen:** correspondencia semántica completa, pero esquema no cerrado. Requiere normalización y ampliación de campos. Todos los estados técnicos permanecen ?; cobertura NONE; A_f*, F_alt,0 y Reach_H siguen indeterminados. No se completa inventario, no se aprueba microdominio/DGP ni se autoriza ejecución.
