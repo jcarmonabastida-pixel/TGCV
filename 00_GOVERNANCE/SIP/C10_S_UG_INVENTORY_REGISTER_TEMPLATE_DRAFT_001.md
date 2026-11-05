@@ -493,7 +493,26 @@ NODE, EDGE, ROUTE, PREDICATE y ROUTE_STEP incorporan `snapshot_id` y `snapshot_o
 - SNAPSHOT: UNIQUE(`object_record_id`); UNIQUE(`snapshot_id, object_version`); UNIQUE(`snapshot_id, object_record_id`).
 - Para NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP: FK compuesta (`snapshot_id`, `snapshot_object_record_id`) → SNAPSHOT(`snapshot_id`, `object_record_id`).
 
-Las FKs compuestas de EDGE fijan source/target NODE mediante `(snapshot_id, source_node_record_id, source_node_id)` y `(snapshot_id, target_node_record_id, target_node_id)` hacia `NODE(snapshot_id, object_record_id, node_id)`. PREDICATE fija la revisión exacta de ROUTE mediante `(snapshot_id, route_record_id, route_id)` hacia `ROUTE(snapshot_id, object_record_id, route_id)`. SNAPSHOT fija NODE raíz mediante `(snapshot_id, unit_object_record_id, unit_id)` hacia `NODE(snapshot_id, object_record_id, node_id)`, además de `semantic_role=LOGICAL_SERVICE_UNIT`. Las FKs circulares se difieren al COMMIT si el motor soporta la garantía requerida.
+Las claves candidatas necesarias para las FKs compuestas de mismo snapshot quedan explicitadas así (columnas en el mismo orden en origen y destino):
+
+- NODE: UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id); UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id, node_id).
+- EDGE: UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id); UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id, edge_id).
+- ROUTE: UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id); UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id, route_id).
+- PREDICATE: UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id); UNIQUE(snapshot_id, snapshot_object_record_id, object_record_id, predicate_id).
+- SNAPSHOT: UNIQUE(snapshot_id, object_record_id), que ya forma la clave candidata destino del pinning exacto.
+- ROUTE_STEP: PK/UNIQUE(route_record_id, step_index); UNIQUE(snapshot_id, snapshot_object_record_id, route_record_id, step_index).
+
+FKs normativas:
+- Cada NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP: (snapshot_id, snapshot_object_record_id) → SNAPSHOT(snapshot_id, object_record_id).
+- EDGE origen: (snapshot_id, snapshot_object_record_id, source_node_record_id, source_node_id) → NODE(snapshot_id, snapshot_object_record_id, object_record_id, node_id).
+- EDGE destino: (snapshot_id, snapshot_object_record_id, target_node_record_id, target_node_id) → NODE(snapshot_id, snapshot_object_record_id, object_record_id, node_id).
+- PREDICATE→ROUTE: (snapshot_id, snapshot_object_record_id, route_record_id, route_id) → ROUTE(snapshot_id, snapshot_object_record_id, object_record_id, route_id).
+- ROUTE_STEP→ROUTE: (snapshot_id, snapshot_object_record_id, route_record_id) → ROUTE(snapshot_id, snapshot_object_record_id, object_record_id).
+- ROUTE_STEP→NODE: (snapshot_id, snapshot_object_record_id, node_record_id) → NODE(snapshot_id, snapshot_object_record_id, object_record_id).
+- ROUTE_STEP→EDGE: (snapshot_id, snapshot_object_record_id, edge_record_id) → EDGE(snapshot_id, snapshot_object_record_id, object_record_id).
+- SNAPSHOT→NODE raíz: (snapshot_id, object_record_id, unit_object_record_id, unit_id) → NODE(snapshot_id, snapshot_object_record_id, object_record_id, node_id). En este caso, el object_record_id de la fila SNAPSHOT ocupa el papel snapshot_object_record_id de NODE y fija el registro SNAPSHOT que contiene la referencia raíz.
+
+Todas las referencias interobjeto comparten exactamente el mismo par (snapshot_id, snapshot_object_record_id). Las claves semánticas node_id/edge_id/route_id/predicate_id son comprobaciones adicionales de identidad y no sustituyen a los record IDs. Las FKs circulares SNAPSHOT↔NODE raíz deberán ser diferibles hasta COMMIT o equivalentes transaccionales, y se probarán sin relajar integridad.
 
 ### 15.3. ROUTE y ROUTE_STEP
 
@@ -525,3 +544,8 @@ DEC-C10-065 aprueba añadir `snapshot_object_record_id` obligatorio a NODE, EDGE
 La referencia exacta debe propagarse también a las referencias entre objetos: EDGE.source/target NODE, PREDICATE→ROUTE, ROUTE_STEP→ROUTE/NODE/EDGE y SNAPSHOT→NODE raíz deben compartir el mismo snapshot_id y snapshot_object_record_id del registro SNAPSHOT fijado. El nodo raíz del snapshot mantiene su referencia exacta mediante unit_object_record_id; la circularidad NODE↔SNAPSHOT se resolverá con FK diferibles o mecanismo transaccional equivalente, sujeto a prueba del motor.
 
 No se alteran las identidades semánticas, object_record_id, object_version ni supersedes_record_id. No se permite latest-version lookup, timestamp inference ni fallback. Esta decisión cierra el requisito documental de OAS-02, pero no acredita integridad física, schema freeze, parser, DDL ni compatibilidad de motor. UG-SCH-10 permanece OPEN hasta reconciliación completa y revisión independiente.
+
+
+### 15.6. Integridad de revisión exacta — matriz de claves y FKs
+
+La matriz precedente constituye la especificación documental de orden de columnas para Opción A + DEC-C10-065. La compatibilidad de cada clave candidata con las restricciones físicas del motor seleccionado sigue pendiente. No se permite asumir que la presencia de una UNIQUE textual en este documento equivale a constraint implementado.
