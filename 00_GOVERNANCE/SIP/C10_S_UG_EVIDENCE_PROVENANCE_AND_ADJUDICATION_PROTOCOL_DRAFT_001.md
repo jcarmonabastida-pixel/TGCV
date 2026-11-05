@@ -160,7 +160,7 @@ La independencia exige que evaluadores no compartan una inferencia no verificada
 
 Cada ciclo futuro entrega: (a) manifiesto de alcance; (b) índice de fuentes; (c) registro de evidencia/procedencia; (d) tablas de nodos/aristas/rutas/predicados; (e) matriz de cobertura; (f) doble evaluación; (g) discrepancias/adjudicación; (h) informe de unknowns/vías colaterales; (i) hashes y versión del paquete.
 
-La revisión verifica consistencia de IDs U_G, plantilla y crosswalk; ningún estado sin evidence_ref; ningún 0 sin argumento de cobertura negativa; ningún COMPLETE sin denominador/alcance; ningún cambio de versión sin snapshot; ninguna truth DGP expuesta al analizador.
+La revisión verifica consistencia de IDs U_G, plantilla y crosswalk; ningún estado 1/0 sin vínculo válido CLAIM_EVIDENCE_LINK; todo estado ? sin vínculo debe justificar unknown_reason, MISSING y límites de búsqueda/cobertura; ningún 0 sin argumento de cobertura negativa; ningún COMPLETE sin denominador/alcance; ningún cambio de versión sin snapshot; ninguna truth DGP expuesta al analizador. `evidence_ref` es una referencia de navegación opcional, no un requisito de soporte.
 
 ## 11. Condiciones de parada
 
@@ -177,9 +177,9 @@ No se han consultado fuentes técnicas de sistema real ni generado inventario. C
 
 La auditoría campo-a-campo detectó que las reglas de este protocolo no tenían representación suficiente en las tablas abreviadas iniciales de la plantilla. La plantilla se amplía en §§12–13 con EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER con denominadores, EVALUATOR_ASSESSMENT, ADJUDICATION_REGISTER, esquema común de objetos y reglas de integridad referencial.
 
-La cadena normativa es:
-`object_record.evidence_ref → CLAIM_EVIDENCE_LINK.claim_evidence_id → EVIDENCE_REGISTER.evidence_id`.
-Los identificadores de evidencia y de afirmación no se confunden. Cada evidencia respalda una afirmación específica, con alcance compatible.
+La cadena normativa de soporte es:
+`object_record_id / claim_target_id → CLAIM_EVIDENCE_LINK → EVIDENCE_REGISTER.evidence_id`.
+`object_record.evidence_ref` es únicamente un atajo de navegación opcional hacia un `claim_evidence_id`; su ausencia no elimina los vínculos normalizados. Los identificadores de evidencia y de afirmación no se confunden. Cada evidencia respalda una afirmación específica, con alcance compatible.
 
 Se elimina la columna truth_dgp de la tabla de predicados analítica. La truth DGP queda segregada en el entorno del generador/evaluador autorizado, fuera de los artefactos accesibles al analizador. Esta separación es una condición de arquitectura y seguridad de información, no una mera etiqueta de columna.
 
@@ -211,3 +211,16 @@ La comprobación estática de encabezados/separadores/filas de esquema muestra a
 Se confirma que `evidence_ref` en NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT es cero o un vínculo de navegación opcional. No representa la relación completa de evidencias. Todas las relaciones 0..n entre objetos/afirmaciones y evidencias, incluidas las revisadas por E1/E2/adjudicador, se conservan en CLAIM_EVIDENCE_LINK. El registro completo se recupera por object_record_id/claim_target_id y, cuando proceda, evaluator_record_id/adjudication_id. La corrección armoniza la plantilla §§12.7/12.9 y el protocolo §§13–15.
 
 FCM-20 es corrección documental; no valida cardinalidad de instancias ni FK en motor.
+
+
+## 17. Propuesta de reconciliación de obligatoriedad — UG-SR-A01 (pendiente de aceptación)
+
+La frase histórica de §10 «ningún estado sin evidence_ref» se considera imprecisa y se propone sustituirla por la siguiente regla:
+
+1. `evidence_ref` es opcional (0..1), solo de navegación. Si está poblado, debe resolver a un `claim_evidence_id` válido.
+2. Todo registro real con `observed_state=1` o `0` requiere al menos un vínculo CLAIM_EVIDENCE_LINK válido y de alcance compatible. Para `0`, además, se exige cobertura negativa suficiente.
+3. Un registro con `observed_state=?` puede carecer de vínculo únicamente si documenta `unknown_reason`, `evidence_status=MISSING` y las limitaciones de búsqueda/cobertura; si hay evidencia pertinente sobre la incertidumbre, debe vincularse.
+4. `NA` exige justificación de no aplicabilidad y no requiere vínculo por defecto.
+5. CLAIM_EVIDENCE_LINK mantiene la relación canónica 0..n; EVIDENCE_REGISTER conserva las fuentes/artefactos y sus versiones.
+
+Esta reconciliación queda propuesta para resolver la contradicción entre §§10, 13, 14, 16 y la plantilla §§11, 12.8–12.9. No se considera decisión aceptada ni cierre de SR-03 hasta aprobación explícita y validación técnica de instancias, cardinalidad y FK.
