@@ -133,3 +133,17 @@ Persisten condiciones de reconciliación:
 - revisión independiente R1/R2.
 
 El dictamen general no cambia: UG-SCH-10 OPEN; esquema no congelado; revisión independiente NOT STARTED; validación técnica NOT RUN; sin ejecución científica.
+
+
+## 8. Revisión de estado tras §15.2/§15.6 y DEC-C10-065
+
+La plantilla ahora especifica las claves candidatas compuestas y FKs con orden de columnas explícito para:
+- pinning de cinco registros a SNAPSHOT;
+- EDGE→NODE origen/destino;
+- PREDICATE→ROUTE;
+- ROUTE_STEP→ROUTE/NODE/EDGE;
+- SNAPSHOT→NODE raíz.
+
+OAS-02 queda RESOLVED_DOCUMENTARILY. OAS-03 pasa a SPECIFIED_DOCUMENTARILY / COMPLETENESS_AND_ENGINE_VALIDATION_PENDING. No se declara cierre porque aún debe comprobarse la simetría de claves destino/origen en todas las tablas normalizadas, la circularidad raíz, nulabilidad/CHECKs, unicidad de route_step, continuidad cross-row y compatibilidad física. La auditoría estática de Markdown de 19 tablas se repetirá después de la propagación final.
+
+El hallazgo OAS-01 queda mitigado por §15 como contrato de prevalencia, pero las definiciones históricas §§12.7–12.10 y los crosswalks deben reconciliarse para evitar dos fuentes normativas. OAS-04 está corregido en el encabezado ROUTE; OAS-05 parcialmente actualizado; OAS-06 parcialmente actualizado. OAS-07 permanece como nota de gobernanza del PR #116. UG-SCH-10 OPEN.
