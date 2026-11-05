@@ -1048,3 +1048,71 @@ La ausencia de revisores externos no bloquea la continuidad del diseño C10-S. L
 La suficiencia interna exige que el experimento pueda reconstruirse desde artefactos y registros: DGP y truth versionados; analizador sin acceso a truth; evaluador separado; estimandos y criterios preespecificados; semillas y versiones; salidas brutas; auditoría de integridad; y replay cuando esté autorizado.
 
 La simulación puede probar si el método recupera la verdad causal estipulada y detecta no-identificación dentro del DGP. No constituye por sí sola demostración empírica de la hipótesis general C10 en sistemas reales.
+
+
+## 55. Reconciliación de estadística, Value y continuidad sin revisión externa (2026-11-05)
+
+Este addendum propaga la arquitectura estadística y de medición de la fuente 165–183. No declara contratos ejecutados ni sustituye la especificación completa del DGP.
+
+### 55.1 P177-01…12 — estimación y evaluación
+
+| ID | Control | Criterio de aceptación |
+|---|---|---|
+| P177-01 | ITT-A/O/V | Diferencias por asignación correctas y reportadas por resultado |
+| P177-02 | Primera etapa | Estimación, error estándar e intervalo correctos para accesibilidad |
+| P177-03 | Wald | Cociente correcto; etiqueta LATE solo si los supuestos están defendidos |
+| P177-04 | Instrumento débil | Inferencia robusta y dictamen adecuado; no depender solo de aproximación normal |
+| P177-05 | O/V | Estimaciones independientes; no inferencia automática entre Outcome y Value |
+| P177-06 | Ajuste basal | Ajuste preespecificado; no incorporar mediadores postasignación |
+| P177-07 | ATE/ATT | No confundir con ITT ni LATE; no extrapolar automáticamente |
+| P177-08 | Heterogeneidad | Ponderación y composición de compliers explícitas |
+| P177-09 | Multiplicidad | Jerarquía confirmatoria/exploratoria respetada |
+| P177-10 | Recuperación sintética | Sesgo, RMSE y cobertura frente a truth del generador |
+| P177-11 | Equivalencia | No significación no se interpreta como equivalencia |
+| P177-12 | Dictamen causal | Efecto de política separado de atribución a accesibilidad |
+
+### 55.2 P178-SIM-01…10 — protocolo cuantitativo derivado
+
+Los siguientes controles formalizan el procedimiento de §178 de la fuente; son IDs de organización del registro, no IDs originales de la fuente:
+
+| ID | Control | Criterio de aceptación |
+|---|---|---|
+| P178-SIM-01 | Potencia separada | Potencia ITT, primera etapa, LATE y clasificación adversarial reportadas por separado |
+| P178-SIM-02 | Búsqueda de N | Cuadrícula de N; seleccionar el menor que satisfaga potencia y precisión predefinidas |
+| P178-SIM-03 | Clústeres | ICC, efecto de diseño y número de clústeres incluidos si UA es clúster |
+| P178-SIM-04 | Réplicas R | R justificado por error Monte Carlo deseado para cobertura, sesgo y clasificación |
+| P178-SIM-05 | Error Monte Carlo | SE_MC de métricas y su incertidumbre reportados |
+| P178-SIM-06 | Semillas | Jerarquía determinista maestra/escenario/configuración/réplica |
+| P178-SIM-07 | Reproducibilidad | Hashes de DGP, analizador, parámetros, reglas y artefactos de salida |
+| P178-SIM-08 | Pérdidas | MCAR/MAR/MNAR, censura y selección postasignación por escenario |
+| P178-SIM-09 | Métricas | Sesgo, RMSE, cobertura, error tipo I, potencia, convergencia y réplicas inválidas |
+| P178-SIM-10 | Parámetros ex ante | MDE, relevancia práctica, equivalencia, δ/ε y tolerancias fijados antes de resultados |
+
+N=2.000 y R=1.000 permanecen como valores históricos ilustrativos, no como parámetros confirmatorios aceptados.
+
+### 55.3 P179-01…08 — valoración de Value
+
+| ID | Control | Criterio de aceptación |
+|---|---|---|
+| P179-01 | Separación A/O/V | Constructos definidos y medidos independientemente |
+| P179-02 | Vector Value | Resultados por dimensión disponibles |
+| P179-03 | Independencia de medición | Outcome no se reutiliza como Value sin justificación |
+| P179-04 | Contexto de valoración | Observador/beneficiario, contexto y criterio registrados |
+| P179-05 | Medición basal | Medidas iniciales diferenciadas y disponibles |
+| P179-06 | Efectos discordantes | Deterioros y trade-offs no se ocultan mediante agregación |
+| P179-07 | Estimación causal | ITT/LATE por dimensión cuando sean identificables |
+| P179-08 | Agregación | Índice solo con ponderaciones y regla justificadas |
+
+Las dimensiones candidatas (eficiencia, calidad, acceso de destinatarios, robustez y sostenibilidad) siguen provisionales; el vector es la opción metodológica recomendada durante identificación.
+
+### 55.4 Relación con P182/P183
+
+P182-01…12 y P183-01…13 ya están registrados en §13. Deben leerse conjuntamente con P177/P178/P179: validez de constructo, error/invariancia, ausencia, censura, selección y cotas se evalúan por estimando y dimensión, no mediante un dictamen global único.
+
+### 55.5 Revisión externa no es gate de continuidad
+
+El punto 8 de §12 («obtener revisión independiente») queda SUPERSEDED como requisito general de conversión a contrato ejecutable y avance científico. Prevalecen el protocolo autocontenido de §54 y el gate científico de la Closure Control Matrix §12: la continuidad se realiza mediante AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT; R1/R2 no son condición de avance. La separación generador/analizador/evaluador es computacional y no equivale a revisión humana externa.
+
+La trazabilidad histórica se conserva; no se simula independencia ni se declara una revisión externa inexistente. La ejecución científica sigue requiriendo autorización expresa separada.
+
+**Estado:** P177/P178/P179 incorporados como contratos de diseño; P182/P183 ya persistidos. Ninguno de estos controles se declara implementado o ejecutado.
