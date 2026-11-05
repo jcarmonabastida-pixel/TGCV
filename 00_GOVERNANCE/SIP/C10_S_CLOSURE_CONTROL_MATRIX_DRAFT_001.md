@@ -734,3 +734,19 @@ La plantilla es un artefacto documental vacío. No hay inventario técnico real 
 | UGC-06 | N16/N23 y eventos | Abierto | Separar F*, oráculo, adjudicación; ejecución, Outcome, Value; definir selección/ejecución como eventos/variables. |
 
 No se asignan estados técnicos ni cobertura efectiva. El esquema no se declara cerrado. UGC-01…06 son controles documentales pendientes de revisión; no pruebas ejecutadas.
+
+
+## 23. Seguimiento — protocolo de procedencia y adjudicación U_G
+
+| ID | Control | Estado | Criterio de cierre |
+|---|---|---|---|
+| UGE-01 | Taxonomía S1–S8 y ajuste fuente-afirmación | Propuesta definida | Revisar fuentes concretas y adecuación por afirmación/dimensión |
+| UGE-02 | Campos de procedencia | Definidos documentalmente | Correspondencia campo-a-campo con plantilla y expediente evidence_id |
+| UGE-03 | Evidencia mínima de nodos/aristas | Definida | Validar por microdominio; ausencia con cobertura negativa |
+| UGE-04 | Predicados y rutas | Definidos | Criterios específicos por F*, ruta, tiempo y oráculo |
+| UGE-05 | Cobertura y denominadores | Marco definido, denominadores abiertos | Fijar universo y denominadores por dimensión/versionado |
+| UGE-06 | Doble evaluación/cegamiento | Procedimiento propuesto | Definir evaluadores, factibilidad, acuerdo y tercer adjudicador |
+| UGE-07 | Propagación trivalente/parada | Reglas documentales | Auditar consistencia con contratos Reach, ALT y DGP |
+| UGE-08 | Seguridad y custodia | Abierto | Ubicación de fuentes, secretos, acceso, retención y referencias seguras |
+
+Protocolo no aplicado. No hay inventario ni cobertura técnica; no se cierran UGE ni GC/UGI/UGC, MD-C1…6 o auditorías relacionadas.
