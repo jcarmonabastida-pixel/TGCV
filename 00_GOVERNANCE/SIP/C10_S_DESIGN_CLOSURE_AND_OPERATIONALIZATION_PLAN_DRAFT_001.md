@@ -1385,3 +1385,16 @@ La reconciliación detecta que `UNIQUE(snapshot_id,node_id)` sería incompatible
 Se corrige §13.1 y §15.2: la unicidad semántica queda condicionada a `(snapshot_id,snapshot_object_record_id,semantic_id)` para NODE, EDGE, ROUTE y PREDICATE. Se conservan por separado las claves compuestas con object_record_id necesarias para las FKs. No se modifican DEC-C10-062/065.
 
 OAS-09 queda RESOLVED_DOCUMENTARILY / TECHNICAL_VALIDATION_PENDING. No se ha seleccionado motor ni implementado UNIQUE/FK; UG-SCH-10 sigue OPEN. Esta corrección no altera el número de columnas ni el estado de las 19 tablas Markdown. No hay schema freeze, revisión independiente ni ejecución técnica/científica.
+
+
+# LXXV. Reconciliación de las vistas físicas y contratos del nodo raíz — OAS-10 (2026-11-05)
+
+El cotejo de U_G con los contratos DEC-C10-059…065 detectó dos descripciones físicas heredadas que no reflejaban el pinning exacto aprobado por DEC-C10-065: §4.1 ROUTE_STEP solo indicaba FKs «con snapshot_id» y §6 SNAPSHOT→NODE raíz omitía el componente `snapshot_object_record_id` del NODE destino.
+
+Se corrigen ambas vistas:
+- ROUTE_STEP exige `(snapshot_id,snapshot_object_record_id)` para su pertenencia a SNAPSHOT y en las FKs a ROUTE/NODE/EDGE, junto con el record ID exacto de destino.
+- La FK raíz se expresa como `SNAPSHOT(snapshot_id,object_record_id,unit_object_record_id,unit_id) → NODE(snapshot_id,snapshot_object_record_id,object_record_id,node_id)`; el object_record_id de SNAPSHOT fija el snapshot_object_record_id del NODE raíz.
+
+Se añaden addenda DEC-C10-065 a los contratos especializados de unidad lógica, semantic_role y versionado. Se actualizan auditoría OAS, auditoría de cierre, checklist y autoauditoría. OAS-10 queda resuelto documentalmente; las constraints, unicidad, circularidad diferible y compatibilidad del motor siguen pendientes. El paquete de revisión independiente está actualizado documentalmente, pero R1/R2 no se ha iniciado y no se recalifican los SR-01…20.
+
+**Dictamen:** UG-SCH-10 OPEN; SCHEMA_NOT_CLOSED; TECHNICAL_VALIDATION_NOT_RUN; INDEPENDENT_REVIEW_NOT_STARTED; `scientific_execution=false`; `execution_authorized=false`.
