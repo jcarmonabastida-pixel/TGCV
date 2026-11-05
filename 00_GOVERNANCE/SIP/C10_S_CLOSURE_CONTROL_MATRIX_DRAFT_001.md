@@ -720,3 +720,17 @@ La matriz C10_S_GRAPH_COVERAGE_AND_TRIVALENT_EVIDENCE_MATRIX_DRAFT_001.md contie
 | UGI-07 | Adjudicación/cegamiento | Parcialmente especificado | Protocolo de evaluadores, discrepancias, reglas y revisión independiente |
 
 La plantilla es un artefacto documental vacío. No hay inventario técnico real ni evidencia para actualizar estados 1/0/?. No se cierra GC-01…12, MD-C1…6, AUD-005/007/010/011 ni OPEN-C10-001/003/005/007.
+
+
+## 22. Seguimiento — reconciliación U_G/plantilla
+
+| ID | Control | Estado | Criterio de cierre |
+|---|---|---|---|
+| UGC-01 | Correspondencia de nodos N01–N23 | 23/23 semántica | Resolver desagregaciones N05/N06/N07/N16/N18/N19/N20/N21/N23 y documentar reglas de identidad. |
+| UGC-02 | Correspondencia de aristas E01–E23 | 23/23 IDs padre | Normalizar mult destino; E07 como regla lógica; resolver destinos E22; adjudicar las 39 filas candidatas. |
+| UGC-03 | Predicados | 14/14 | Verificar tiempos, evidencia mínima, familia vs código y separación truth/observed. |
+| UGC-04 | Clases de ruta | 5/5 | Preservar Rτ2/RA12/Rshared/Rexternal/Runknown y distinguir subtipos. |
+| UGC-05 | Campos de evidencia/cobertura | Parcial | Incorporar procedencia, evidence_status, contract_intent, coverage_scope_id, adjudicación y unknown_reason en todas las tablas. |
+| UGC-06 | N16/N23 y eventos | Abierto | Separar F*, oráculo, adjudicación; ejecución, Outcome, Value; definir selección/ejecución como eventos/variables. |
+
+No se asignan estados técnicos ni cobertura efectiva. El esquema no se declara cerrado. UGC-01…06 son controles documentales pendientes de revisión; no pruebas ejecutadas.
