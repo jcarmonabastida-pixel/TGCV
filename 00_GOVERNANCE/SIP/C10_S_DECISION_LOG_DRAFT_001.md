@@ -609,3 +609,18 @@ La decisión acepta la arquitectura operativa y las reglas generales, no crea in
 Se recuperaron y reconciliaron la plantilla U_G de diez registros, el protocolo de evidencia/adjudicación, la matriz trivalente, el contrato de frontera/granularidad, el manifiesto B y los contratos de identidad/snapshots. Se determina que la brecha pendiente no justifica recrear una plantilla: se crea `C10_S_IAM_SERVICE_BOUNDARY_OVERLAY_AND_CROSSWALK_DRAFT_001.md` como overlay sobre los diez registros U_G existentes.
 
 El overlay propone campos semánticos P0/P1 y relaciones P2, crosswalk a los diez registros canónicos y correspondencia funcional provisional FP-01…08. No crea registros ni estados técnicos, no amplía el catálogo EDGE y no modifica los contratos trivalentes. Sigue pendiente de revisión/decisión y reconciliación detallada de FP y cardinalidades.
+
+
+## DEC-C10-059 — incorporación de NODE.boundary_class y FK versionada SNAPSHOT→NODE (2026-11-05)
+
+**Decisión explícita del usuario:** acepta la columna `NODE.boundary_class` con el dominio sustantivo `{P0_CONFIG, P1_ENVIRONMENT, DUAL_P0_P1}` y las restricciones del crosswalk IAM.
+
+1. Se incorpora `NA` únicamente como marcador de no aplicabilidad justificada; no es una cuarta clase sustantiva. No se admite null/omisión como sustituto de NA. Si la clase aplicable es desconocida, no se usa NA.
+2. `boundary_class` es obligatorio en NODE, no sustituye `class` ni `semantic_role`, no codifica P2 y no implica existencia, truth, accesibilidad ni cobertura.
+3. Se resuelve la referencia SNAPSHOT→NODE usando la clave compuesta: `SNAPSHOT.(unit_object_record_id, unit_id) → NODE.(object_record_id, node_id)`. `unit_id` conserva identidad semántica estable; `unit_object_record_id` identifica la versión de fila del nodo raíz, cuyo `semantic_role=LOGICAL_SERVICE_UNIT`.
+4. La referencia compuesta evita que una FK simple a node_id apunte ambiguamente a varias revisiones versionadas.
+5. La plantilla se actualiza documentalmente; parser, constraints físicos y validador siguen pendientes.
+
+**Alcance:** decisión conceptual/documental; no freeze ejecutable, no captura, no inventario real, no truth, fixtures, simulación ni experimento. `scientific_execution=false`; `execution_authorized=false`.
+
+**Estado:** DEC-C10-059 ACCEPTED.
