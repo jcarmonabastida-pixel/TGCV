@@ -584,3 +584,28 @@ La aceptación valida la arquitectura y la regla general, no clasifica automáti
 La decisión acepta la arquitectura operativa y las reglas generales, no crea inventario real, no clasifica elementos concretos de un sistema no observado, no congela cardinalidades/schema ejecutable y no decide unidad de aleatorización. La identidad concreta del servicio y los contratos CMP/PAR/REF/RUL deberán fijarse ex ante en IAM/registro de inventario.
 
 **Estado:** DEC-C10-058 ACCEPTED. Documental only; no truth, fixtures, validación, acceso a sistemas, instalación, simulación ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## DEC-C10-058 — unidad de servicio lógico y clasificación semántica de frontera (2026-11-05)
+
+**Decisión explícita del usuario:** acepta la definición operativa de unidad de servicio lógico y las reglas de clasificación P0/P1/P2 desarrolladas en `C10_S_LOGICAL_SERVICE_UNIT_AND_BOUNDARY_CLASSIFICATION_PROPOSAL_DRAFT_001.md`.
+
+1. **Objeto/unidad de migración:** una instancia lógica de un servicio software, identificada por un contrato funcional distinguible y un contrato de configuración versionado, migrada entre un entorno fuente y uno destino. No equivale necesariamente a microservicio, proceso, binario o unidad de despliegue.
+2. **P0:** configuración declarativa propia del servicio y versionada; incluye parámetros, referencias declaradas, reglas, manifiestos/variables solo en sus campos contractuales, esquema/descriptor y metadatos.
+3. **P1:** realización técnica y estado ambiental; incluye runtime, binarios, infraestructura, permisos efectivos, secretos reales, datos persistentes, servicios externos efectivos y mecanismos de aplicación.
+4. **P2:** frontera causal transversal; conserva elementos/relaciones que puedan afectar B, accesibilidad, aplicabilidad, Reach, rutas alternativas, selección, ejecución, Outcome, Value o medición. No es clase mutuamente excluyente.
+5. **Clasificación semántica:** manifiestos y variables se descomponen campo a campo/clave a clave, sin clasificar por extensión o ubicación.
+6. **Secretos:** solo referencia/identificador/requisito en P0; material secreto real en P1, nunca copiado a documentación o fixtures.
+7. **Datos persistentes:** fuera de P0 por defecto; en P1 si condicionan la migración y en P2 cuando constituyan vía causal/interferencia. Migraciones de esquema de datos son proceso/artefacto separado, fuera de F* base de configuración, y se registran como cointervención cuando la ruta/B las active.
+8. **Servicios externos opacos:** no se excluyen por opacidad; se registran en P2 con dependencia P1, límites de observabilidad y estado ? donde no haya evidencia suficiente.
+9. **Unidad de aleatorización/analítica:** no queda decidida por DEC-C10-058. Se determinará tras resolver recursos/entornos compartidos e interferencia; podrá requerir clúster/mapa de exposición sin ampliar P0.
+
+**Alcance:** aceptación conceptual; no crea inventario real, no clasifica elementos concretos de sistemas no observados, no congela cardinalidades/schema ejecutable ni decide unidad de aleatorización.
+
+**Estado:** DEC-C10-058 ACCEPTED. Documental only; no truth, fixtures, validación, acceso a sistemas, instalación, simulación ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+## Operacionalización documental posterior a DEC-C10-058 — IAM overlay (2026-11-05)
+
+Se recuperaron y reconciliaron la plantilla U_G de diez registros, el protocolo de evidencia/adjudicación, la matriz trivalente, el contrato de frontera/granularidad, el manifiesto B y los contratos de identidad/snapshots. Se determina que la brecha pendiente no justifica recrear una plantilla: se crea `C10_S_IAM_SERVICE_BOUNDARY_OVERLAY_AND_CROSSWALK_DRAFT_001.md` como overlay sobre los diez registros U_G existentes.
+
+El overlay propone campos semánticos P0/P1 y relaciones P2, crosswalk a los diez registros canónicos y correspondencia funcional provisional FP-01…08. No crea registros ni estados técnicos, no amplía el catálogo EDGE y no modifica los contratos trivalentes. Sigue pendiente de revisión/decisión y reconciliación detallada de FP y cardinalidades.
