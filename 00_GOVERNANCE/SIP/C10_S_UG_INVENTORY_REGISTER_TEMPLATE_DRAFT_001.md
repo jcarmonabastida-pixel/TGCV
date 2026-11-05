@@ -295,12 +295,12 @@ Extensiones:
 5. En CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER exactamente una de las seis FK tipadas debe estar poblada y debe coincidir con el enum claim_target_type/object_type.
 6. Cada FK tipada a NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT apunta a object_record_id UNIQUE dentro de su tabla; la FK a cobertura apunta a COVERAGE_REGISTER.coverage_scope_id PK/UNIQUE.
 7. La exclusividad se expresa como CHECK de suma de indicadores de no-nulo igual a 1; un CHECK adicional vincula el único campo no nulo con el enum correspondiente (NODE↔target_node_record_id, EDGE↔target_edge_record_id, ROUTE↔target_route_record_id, PREDICATE↔target_predicate_record_id, SNAPSHOT↔target_snapshot_record_id, COVERAGE_SCOPE↔target_coverage_scope_id).
-7. E1/E2 se almacenan por separado; ADJUDICATION_REGISTER solo se crea cuando proceda. Los vínculos de evidencia revisados por cada rol se filtran mediante evaluator_record_id/adjudication_id en CLAIM_EVIDENCE_LINK.
-8. parent_route_class no puede sustituirse por route_subtype.
-9. DGP_TRUTH_SECURE no se mezcla ni sincroniza con los registros visibles al analizador.
-10. Las revisiones generan nuevos registros versionados; no se sobrescribe el historial.
-11. `SNAPSHOT.(unit_id, unit_object_record_id)` debe resolver conjuntamente a `NODE.(node_id, object_record_id)` y el NODE referenciado debe tener `semantic_role=LOGICAL_SERVICE_UNIT`; el `unit_id` es la identidad semántica estable y `unit_object_record_id` fija la versión concreta del registro raíz aplicable al snapshot.
-12. `NODE.boundary_class` admite `P0_CONFIG`, `P1_ENVIRONMENT`, `DUAL_P0_P1` y `NA`. Los tres primeros son clases sustantivas; `NA` es solo no aplicabilidad justificada para nodos fuera de los objetos/artefactos P0/P1. No usar null/ausencia como sustituto de NA. El campo no codifica P2.
+8. E1/E2 se almacenan por separado; ADJUDICATION_REGISTER solo se crea cuando proceda. Los vínculos de evidencia revisados por cada rol se filtran mediante evaluator_record_id/adjudication_id en CLAIM_EVIDENCE_LINK.
+9. parent_route_class no puede sustituirse por route_subtype.
+10. DGP_TRUTH_SECURE no se mezcla ni sincroniza con los registros visibles al analizador.
+11. Las revisiones generan nuevos registros versionados; no se sobrescribe el historial.
+12. `SNAPSHOT.(unit_id, unit_object_record_id)` debe resolver conjuntamente a `NODE.(node_id, object_record_id)` y el NODE referenciado debe tener `semantic_role=LOGICAL_SERVICE_UNIT`; el `unit_id` es la identidad semántica estable y `unit_object_record_id` fija la versión concreta del registro raíz aplicable al snapshot.
+13. `NODE.boundary_class` admite `P0_CONFIG`, `P1_ENVIRONMENT`, `DUAL_P0_P1` y `NA`. Los tres primeros son clases sustantivas; `NA` es solo no aplicabilidad justificada para nodos fuera de los objetos/artefactos P0/P1. No usar null/ausencia como sustituto de NA. El campo no codifica P2.
 
 
 ### 12.9. Diccionario de tipos, dominios e integridad
