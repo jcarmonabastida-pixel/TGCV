@@ -7637,3 +7637,16 @@ Se registra DEC-C10-057 y se actualiza el perfil de frontera. Se crea `C10_S_LOG
 Se acepta la definición de unidad de migración como una instancia lógica de servicio software identificada por contrato funcional y contrato de configuración versionado, sin equipararla a microservicio/proceso/binario/unidad de despliegue. Se aceptan las reglas semánticas de P0 (configuración declarativa), P1 (realización técnica/estado del entorno) y P2 (frontera causal transversal), incluida la clasificación campo a campo de manifests/variables, separación referencia/secretos, tratamiento por defecto de datos persistentes fuera de P0, migraciones de esquema fuera de F* base y registro de servicios externos opacos como dependencias con incertidumbre explícita.
 
 La unidad de aleatorización/analítica no queda decidida: depende de la evaluación de entornos/recursos compartidos e interferencia. La aceptación no implica inventario real ni schema ejecutable.
+
+
+# 110. DEC-C10-058 — unidad lógica de servicio y clasificación P0/P1 (2026-11-05)
+
+Se acepta la definición de unidad de migración como una instancia lógica de servicio software identificada por contrato funcional y contrato de configuración versionado, sin equipararla a microservicio/proceso/binario/unidad de despliegue. Se aceptan las reglas semánticas de P0 (configuración declarativa), P1 (realización técnica/estado del entorno) y P2 (frontera causal transversal), incluida la clasificación campo a campo de manifests/variables, separación referencia/secretos, tratamiento por defecto de datos persistentes fuera de P0, migraciones de esquema fuera de F* base y registro de servicios externos opacos como dependencias con incertidumbre explícita.
+
+La unidad de aleatorización/analítica no queda decidida: depende de la evaluación de entornos/recursos compartidos e interferencia. La aceptación no implica inventario real ni schema ejecutable.
+
+# 111. IAM overlay — reutilización del inventario U_G (2026-11-05)
+
+Se recuperaron los artefactos previos de inventario U_G y evidencia. La plantilla existente ya dispone de diez registros canónicos; por tanto, no se crea un inventario paralelo. Se añade `C10_S_IAM_SERVICE_BOUNDARY_OVERLAY_AND_CROSSWALK_DRAFT_001.md` para especializar los registros existentes al servicio lógico: clasificación P0/P1, relaciones causales P2, crosswalk de FP-01…08 y campos de dominio.
+
+El overlay no crea nodos/instancias, truth, fixtures ni evidencia. La matriz trivalente y la cardinalidad de evidencia se conservan. Los nombres de EDGE deben mapearse al catálogo existente, sin ampliarlo tácitamente. El crosswalk FP y el esquema relacional permanecen abiertos.
