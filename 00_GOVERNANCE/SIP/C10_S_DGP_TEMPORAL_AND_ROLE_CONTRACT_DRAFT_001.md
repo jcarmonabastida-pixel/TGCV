@@ -778,3 +778,14 @@ Los límites concretos de valores, escalas, catálogos y cadenas se especificar�
 La operacionalización del perfil aprobado se desarrolla en `C10_S_ABSTRACT_PARAMETER_AND_SOURCE_DESTINATION_MAPPING_MATRIX_DRAFT_001.md`. El contrato por clave deberá declarar tipo, dominio, unidad, estados, obligatoriedad, default, normalización, conversiones, versiones y requisito de evidencia. M será mapping de evaluación versionado, no capa persistida adicional.
 
 La comparación distinguirá C_src, C_dst declarado, C_dst realmente aplicado y E_dst (entorno externo al objeto). FP-01 cubre estructura/tipos, FP-02 integridad relacional y FP-03 preservación semántica; cada discrepancia deberá declarar predicado primario para evitar doble conteo. Los predicados de la matriz son candidatos, no aceptados ni validados. Claves, valores, dominios concretos, obligatoriedad/NA, mappings, oráculo y evidencia siguen abiertos. Sin truth ni ejecución.
+
+## 24. Reconciliación con el protocolo científico autocontenido y la arquitectura vigente (2026-11-05)
+
+1. La separación Generador/Analizador/Evaluador es una separación de roles computacionales y de acceso a datos. «Evaluador independiente» significa independiente del analizador y con acceso a truth solo después de congelar la salida; no implica ni exige un revisor humano externo.
+2. La continuidad científica se audita como AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT. No se requiere R1/R2 para avanzar; la ausencia de revisores externos no bloquea el diseño ni una ejecución sintética autorizada.
+3. La cadena del DGP se interpreta junto con la arquitectura relacional de §60 del maestro: T_cap(sys,t) y T_acc(i,t) no se colapsan; frontera, recursos compartidos/asignados y unidad deben indexarse explícitamente.
+4. La definición focal A_f* de §§59 y 63 del maestro sigue siendo candidata y requiere clasificación de predicados; App_f* es separada.
+5. Para snapshots, §71 del maestro prevalece sobre la formulación histórica que incorporaba ΔValidity en ΔT_acc: S_T* y E_T son objetos separados; ΔT_acc* es estructural y ΔE_T epistémico.
+6. Reach_H* y Reach_H,obs, propagación 1/0/? y Reach_H−/Reach_H+ siguen el contrato del maestro §§73–75. H=3 es profundidad candidata, no duración temporal.
+7. La estadística se cierra según la fuente 165–183 y el plan Draft 004: estimandos ITT-A/O/V, LATE por resultado, heterogeneidad/compliers, sensibilidad δ/γ, potencia/precisión por estimando, búsqueda de N, R por error Monte Carlo y reproducibilidad.
+8. Este addendum no aprueba fórmulas, comparador D1/D2, Value, parámetros, implementación, simulación ni ejecución.
