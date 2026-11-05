@@ -338,3 +338,14 @@ Se aplican a los encabezados de §§2–5 los campos Opción A y se incorpora RO
 Se incorpora ROUTE_STEP a la matriz de claves de §12.10 como relación operativa de secuencia. No es una tabla adicional de objetos versionados: no recibe object_version ni supersedes_record_id. Su identidad se fija por route_record_id + step_index; todas sus referencias deben conservar snapshot_id y la continuidad NODE/EDGE exige validación cross-row. La matriz mantiene separados los registros de evidencia, cobertura, evaluación y adjudicación.
 
 El control de forma de §§2–6 y la matriz se han actualizado, pero aún falta auditoría integral de nombres de columnas y correspondencia con todas las tablas normalizadas y crosswalks IAM/FP. UG-SCH-10 permanece OPEN.
+
+
+### 14.12. Auditoría integral Opción A — OAS-01…07
+
+Se registra el informe `C10_S_UG_OPTION_A_RECONCILIATION_AUDIT_DRAFT_001.md`. Control formal: 19 tablas, sin discrepancia de recuento de columnas ni nombres de encabezado duplicados; PASS_FORMAT_ONLY.
+
+OAS-01 CRITICAL: §§12.7–12.10 heredados no estaban reconciliados con §§13–14. OAS-02 CRITICAL: SNAPSHOT está versionado, pero snapshot_id en registros hijos no identifica una revisión exacta. OAS-03 HIGH: matriz de claves candidatas compuestas incompleta. OAS-04 HIGH: ROUTE mantenía secuencia serializada además de ROUTE_STEP. OAS-05 HIGH: crosswalk IAM/FP sin mapping explícito de nuevas columnas/claves. OAS-06 MEDIUM: checklist y autoauditoría con alcance histórico. OAS-07: PR #116 tiene base research/c10-d1-protocol-draft, no main.
+
+Se retiró ordered_node_edge_sequence del encabezado físico ROUTE; §15 de la plantilla declara el contrato normalizado reconciliado para las partes aprobadas; crosswalk y artefactos de revisión se actualizaron. OAS-02 permanece BLOCKING_PENDING_DECISION: se recomienda snapshot_object_record_id en los registros hijos y FK compuesta a la versión exacta de SNAPSHOT. No se aplica sin aprobación expresa.
+
+**Dictamen:** FORMAT PASS limitado; SCHEMA COHERENCE FAIL / OPEN por OAS-02; TECHNICAL VALIDATION NOT RUN; INDEPENDENT REVIEW NOT STARTED. Esquema global SCHEMA_NOT_CLOSED. Sin experimento.
