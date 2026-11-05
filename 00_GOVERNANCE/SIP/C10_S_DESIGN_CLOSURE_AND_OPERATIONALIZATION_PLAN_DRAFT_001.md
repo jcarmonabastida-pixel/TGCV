@@ -1398,3 +1398,10 @@ Se corrigen ambas vistas:
 Se añaden addenda DEC-C10-065 a los contratos especializados de unidad lógica, semantic_role y versionado. Se actualizan auditoría OAS, auditoría de cierre, checklist y autoauditoría. OAS-10 queda resuelto documentalmente; las constraints, unicidad, circularidad diferible y compatibilidad del motor siguen pendientes. El paquete de revisión independiente está actualizado documentalmente, pero R1/R2 no se ha iniciado y no se recalifican los SR-01…20.
 
 **Dictamen:** UG-SCH-10 OPEN; SCHEMA_NOT_CLOSED; TECHNICAL_VALIDATION_NOT_RUN; INDEPENDENT_REVIEW_NOT_STARTED; `scientific_execution=false`; `execution_authorized=false`.
+
+
+# LXXVI. Consolidación explícita de referencias tipadas y procedencia — OAS-11 (2026-11-05)
+
+Se amplía U_G §15.4 con el mapping explícito de las seis FKs tipadas en CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER; sus destinos; la exclusividad por enum; PK/UNIQUE de registros; FKs de evidencia, evaluadores y adjudicación; normalización de source_provenance en EVIDENCE_REGISTER; cobertura por COVERAGE_REGISTER; y separación de evidence_ref opcional frente a CLAIM_EVIDENCE_LINK 0..n. El crosswalk IAM/FP incorpora §9.4.
+
+OAS-11 queda resuelto documentalmente. No se modifica DEC-C10-061 ni UG-SR-A01; no se implementan constraints ni se valida la seguridad/custodia. Revisión independiente y validación técnica siguen pendientes.
