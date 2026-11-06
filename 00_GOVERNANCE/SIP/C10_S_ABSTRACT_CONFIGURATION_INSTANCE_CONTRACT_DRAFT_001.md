@@ -186,3 +186,18 @@ DEC-C10-056 prevalece sobre formulaciones anteriores que permitían RUL=0: CMP�
 ### 9.4. Criterio de cierre
 
 Siguen abiertos máximos/clases CMP; claves/dominios PAR; universo/tipos/multiplicidad REF; gramática y UNKNOWN/conflictos RUL; representación DEFAULT; M por clase y conversiones; IAM completo; evidencia de C_dst aplicado; oráculo/cegamiento/error. Sin parámetros, fixtures, implementación ni ejecución.
+
+
+## 10. Reconciliación normativa de DEFAULT (DEC-C10-054)
+
+**Estado:** interpretación documental alineada con una decisión ya aceptada; no es una nueva DEC ni amplía su alcance.
+
+El contrato §3.2 conserva \`state ∈ {ABSENT,NULL,DEFAULT,VALUE}\` como estado de alto nivel. Cuando \`state=DEFAULT\`, exige \`default_kind ∈ {DECLARED,INHERITED}\`: DECLARED es default declarado en paquete/contrato; INHERITED es default heredado mediante regla explícita, con ámbito y procedencia identificables.
+
+\`DEFAULT_ENV_RESOLVED\` no es estado de PAR ni valor de C_src/C_dst. Es observación de E_dst/runtime: se registra en snapshot ambiental enlazado a parameter_key, versiones, identidad del entorno, instante/ventana, valor resuelto y procedencia. No se reescribe como DECLARED o INHERITED.
+
+Así se conserva el enum de alto nivel y se materializa la distinción tripartita ya exigida por DEC-C10-054. Si el origen no permite distinguir DECLARED de INHERITED, el mapping semántico es UNKNOWN salvo evidencia independiente suficiente. La falta de observación ambiental tampoco equivale a ausencia de default.
+
+La equivalencia se adjudica en dos planos: (i) contrato/paquete y (ii) resolución efectiva en E_dst. Igualdad del valor resuelto no demuestra equivalencia del origen; igualdad del contrato no demuestra que el entorno resolviera el mismo valor.
+
+**Pendiente:** campos exactos del snapshot E_dst, evidencia/procedencia, reglas de herencia por clave y predicados FP primarios. Sin instancia, parser, fixture ni ejecución.
