@@ -1005,10 +1005,6 @@ Se ha preparado un roster lógico parsimonioso: activación BOOL requerida, perf
 
 La cardinalidad RUL≥1 ya está aceptada por DEC-C10-056. El cierre sustantivo requiere una regla constitutiva P0, no tautológica, con fuente funcional estipulada ex ante dentro del DGP, owner CMP, scope, claves/dominios, AST 4/16/16, efecto REQUIRE/FORBID y semántica TRUE/FALSE/UNKNOWN. La propuesta ENABLED→PROFILE se especializa en §16.28 como regla del mundo sintético, pendiente de aceptación; no necesita una norma externa, pero sí congelar el contrato antes de generar/analizar resultados. Después se requiere preservar semántica en F1/A1, aplicar en F2/A2, FP-03/06/07 y oráculo independiente. No freeze ni implementación.
 
-## 16.27. Cierre sustantivo de RUL
-
-La cardinalidad RUL≥1 ya está aceptada por DEC-C10-056. El cierre sustantivo requiere una regla constitutiva P0, no tautológica, con fuente funcional estipulada ex ante dentro del DGP, owner CMP, scope, claves/dominios, AST 4/16/16, efecto REQUIRE/FORBID y semántica TRUE/FALSE/UNKNOWN. La propuesta ENABLED→PROFILE se especializa en §16.28 como regla del mundo sintético, pendiente de aceptación; no necesita una norma externa, pero sí congelar el contrato antes de generar/analizar resultados. Después se requiere preservar semántica en F1/A1, aplicar en F2/A2, FP-03/06/07 y oráculo independiente. No freeze ni implementación.
-
 ## 16.28. Especialización funcional sintética del servicio lógico y RUL
 
 DEC-C10-051/052/057/058 ya fijan microdominio, clase de objeto y unidad lógica; no se requiere elegir un producto real. Se propone un servicio lógico sintético de procesamiento de solicitudes con ENABLED BOOL, PROFILE ENUM={STANDARD,READ_ONLY,DISABLED} y RUL-SVC-ENABLE-PROFILE-01: ENABLED=true implica PROFILE∈{STANDARD,READ_ONLY}, REQUIRE. La especificación estipulada ex ante es la fuente constitutiva interna de verdad del DGP, no norma externa ni evidencia empírica. Pendiente: aceptación explícita, owner CMP/versión, IAM, mapping, FP-03/06/07, oráculo y propagación coherente a F1/F2/A1/A2. No freeze, fixtures ni implementación.
