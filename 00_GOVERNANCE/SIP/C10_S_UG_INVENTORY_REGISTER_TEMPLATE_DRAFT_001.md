@@ -583,3 +583,86 @@ No se alteran las identidades semánticas, object_record_id, object_version ni s
 ### 15.6. Integridad de revisión exacta — matriz de claves y FKs
 
 La matriz precedente constituye la especificación documental de orden de columnas para Opción A + DEC-C10-065. La compatibilidad de cada clave candidata con las restricciones físicas del motor seleccionado sigue pendiente. No se permite asumir que la presencia de una UNIQUE textual en este documento equivale a constraint implementado.
+
+
+---
+
+## 17. Aplicación del crosswalk de provisión B-M01…15 al registro U_G (D2, 2026-11-06)
+
+**Estado:** protocolo de instanciación documental DRAFT / NO APROBADO / NO CONGELADO / NO EJECUTADO. Reutiliza el crosswalk de la matriz de cobertura §9 y la matriz de cierre §31. No añade entidades observadas, no altera los catálogos U_G ni modifica las claves/columnas aprobadas en §§12–16.
+
+### 17.1. Regla de identidad y separación de catálogos
+
+1. B-M01…15 identifica **dominios de auditoría de la provisión**, no nodos, aristas, rutas ni predicados del sistema. No crear un NODE llamado “B-Mxx”, una EDGE por cada dominio ni un PREDICATE nuevo con ese código.
+2. Los objetos materiales que se encuentren dentro de cada dominio se registran con la identidad U_G que corresponda: NODE para componentes/servicios/artefactos con identidad propia; EDGE para relaciones reales entre extremos identificados; ROUTE para secuencias funcionales candidatas; PREDICATE para condiciones tipadas por ruta/paso/tiempo; SNAPSHOT para capturas comparables.
+3. En `parent_catalog_id` se conserva exclusivamente el ID del catálogo U_G definido en §10.6 (Nxx, Exx, código de predicado o clase de ruta). **No** introducir B-Mxx en ese campo. La trazabilidad del dominio de auditoría se conserva en `notes/unknowns` de NODE/EDGE/ROUTE, y en `claim_statement` + `relevance_scope` de CLAIM_EVIDENCE_LINK para cada afirmación/predicado; `dimension` identifica B-Mxx en COVERAGE_REGISTER. No se añaden columnas ni se amplía el enum de destinos.
+4. Los IDs Nxx/Exx de la matriz §9 son roles y relaciones candidatas, no IDs de registros observados. La instanciación crea un registro solo después de identificar un objeto/relación real, asignarle identidad, versión, snapshot y frontera. Las relaciones mult destino se desagregan en filas EDGE atómicas conforme a §10.2. E07 sigue siendo regla lógica, no EDGE; E22 no autoriza inventar nodos destino.
+5. La intención contractual de B se registra en `contract_intent`; nunca se copia como `observed_state`. La truth del DGP sigue fuera del registro visible al analizador.
+
+### 17.2. Correspondencia de cada dominio con los registros
+
+La tabla determina **qué buscar y dónde registrarlo si se encuentra**, no afirma que exista. Los Nxx/Exx remiten a la matriz de cobertura §9 y al catálogo §10.
+
+| Dominio de auditoría | NODE / EDGE | ROUTE | PREDICATE | SNAPSHOT / evidencia | Dimensión de cobertura |
+|---|---|---|---|---|---|
+| B-M01 Artefacto/versión | NODE por paquete, artefacto o dependencia versionada; EDGE por carga/dependencia real (N04/N06; E02–E04) | Rτ2 si el artefacto integra una ruta material identificada | ID-τ2, DEP-τ2, REL-τ2 | Capturas/hash de paquete, manifiesto/SBOM y versiones; evidencia de procedencia | B-M01-ARTEFACTO_VERSION |
+| B-M02 Runtime | NODE por runtime, sidecar, librería o servicio identificado; EDGE de carga/dependencia (N05/N06/N18/N20) | Rτ2 y rutas compartidas solo si se demuestra participación | DEP-τ2, RES-τ2, ALT-DEP, EXT | Configuración/runtime, aislamiento, dependencias y consumidores pre/post | B-M02-RUNTIME |
+| B-M03 Host | NODE por host/SO/configuración material y recursos/servicios compartidos; EDGE por dependencia/consumo comprobado | Rτ2/RA12/Rshared según relación real | RES-τ2, ALT-A1, ALT-A2, ALT-DEP, EXT | Snapshot host/SO/paquetes y diff; evidencia de comportamiento de rutas | B-M03-HOST |
+| B-M04 Interfaz | NODE por interfaz lógica, endpoint desplegado y servicio; EDGE por llamada/relación efectiva (N07/N17/N20) | Rτ2 si el canal forma parte de la secuencia | REL-τ2, AUTH-τ2, DEP-τ2, EXT | API/schema/endpoint/ACL/versiones y trazas de llamada | B-M04-INTERFAZ |
+| B-M05 Permisos | NODE por política, principal/rol y permiso efectivo cuando tengan identidad propia; EDGE por autorización efectiva a operación (N17/E18) | Rτ2/RA12 solo para operaciones autorizadas concretas | AUTH-τ2, ALT-A1, ALT-A2, BLOCK-τ2 | Snapshot/diff de políticas y permisos; fuente normativa de C_auth separada de ACL técnica | B-M05-PERMISOS |
+| B-M06 Datos | NODE por fuente, destino, dataset/configuración y estado versionado; EDGE por flujo/lectura/escritura real (N19/E21) | Rτ2/RA12 para rutas que consuman los datos | COND-τ2, APP-τ2, ALT-F*, ORACLE | Snapshots fuente/destino, hashes, linaje, reglas y versión del oráculo | B-M06-DATOS |
+| B-M07 Recursos | NODE por pool/recurso/cuota/reserva identificados; EDGE por asignación, consumo o dependencia real (N18/E16–E17) | Rτ2/RA12/Rshared según consumidores demostrados | RES-τ2, ALT-DEP, ALT-A1, ALT-A2 | Medición por unidad/ventana, cuotas, reservas, consumo B y consumidores compartidos | B-M07-RECURSOS |
+| B-M08 Red | NODE por endpoint, red, servicio externo o intermediario identificado; EDGE por conectividad/ruta efectiva (N07/N20/N21) | Rτ2/RA12/Rexternal/Rshared | REL-τ2, DEP-τ2, EXT, ALT-DEP | Configuración DNS/proxy/firewall/rutas/puertos y contratos de servicios | B-M08-RED |
+| B-M09 Seguridad | NODE por control, política, certificado, sandbox o principal identificable; EDGE por aplicación/alcance efectivo | Rτ2/RA12 si afecta una operación de la ruta | AUTH-τ2, BLOCK-τ2, EXT | Configuración y revisión de seguridad; snapshots/diff con alcance y vigencia | B-M09-SEGURIDAD |
+| B-M10 Observabilidad | NODE solo para agente/sistema de logging/telemetría si tiene identidad; EDGE para flujo/destinatario real (N16/N22/E15/E22) | No crear ruta causal estructural por el mero registro de telemetría | ORACLE/EXT cuando proceda; separar K/conocimiento de E_T/observabilidad | Fuentes, esquema, retención, destinatarios y cegamiento; evidencia del evaluador separada de comunicación al agente | B-M10-OBSERVABILIDAD |
+| B-M11 Estado | NODE por estado persistente, caché, registro, índice o configuración versionada; EDGE por lectura/escritura/propagación (N01/N12/N19/N20) | Rτ2/RA12 según la secuencia efectiva | COND-τ2, APP-τ2, ALT-DEP, RES-τ2 | Snapshots pre-B/post-B/rollback y diffs; persistencia/residuos | B-M11-ESTADO |
+| B-M12 Rendimiento | NODE por recurso/servicio/cola identificable; EDGE por contención/consumo/llamada medida | Rτ2/RA12/Rshared cuando el rendimiento afecte factibilidad de la ruta | REL-τ2, RES-τ2, ALT-A1, ALT-A2, ALT-F* | Series temporales de latencia, throughput, carga, prioridad y contención por brazo/ventana | B-M12-RENDIMIENTO |
+| B-M13 Oráculo | NODE para criterio/oráculo implementado y versionado (N16); EDGE solo si existe dependencia técnica real | Asociar a rutas evaluadas, sin convertir evaluación en causa de la ruta | ORACLE, ALT-F* | Hash/versión, dataset, regla, cegamiento y adjudicación; PROV-02 | B-M13-ORACULO |
+| B-M14 Alternativas | NODE por exportador/formato/importador/servicio/recursos alternativos identificados (N13–N15/N20/N21); EDGE por cada dependencia real | ROUTE por cada alternativa funcional candidata, con ROUTE_STEP ordenado | ALT-A1, ALT-A2, ALT-DEP, ALT-F*, EXT, RES-τ2 | Catálogo de alternativas, snapshots y prueba funcional con frontera/G/H/F* comunes | B-M14-ALTERNATIVAS |
+| B-M15 Reversibilidad | NODE/EDGE solo para objetos y relaciones identificados mediante diff; no preasignar Nxx/Exx por rollback | Registrar rutas afectadas y su estado en cada snapshot; no inventar ruta de rollback | Revaluar los predicados realmente afectados antes/después de rollback | SNAPSHOT S_preB, S_postB, S_rollback y S_routeA; diffs, residuos, versiones y evidencia de reversión | B-M15-REVERSIBILIDAD |
+
+Una misma entidad puede ser relevante para varios B-Mxx; se mantiene una sola identidad material por snapshot y se crean vínculos de evidencia/afirmaciones por dominio. No duplicar NODE/EDGE para representar etiquetas de auditoría. Las rutas compartidas no se fuerzan a clases disjuntas.
+
+### 17.3. Registro de evidencia y afirmaciones
+
+- Crear una fila EVIDENCE_REGISTER por fuente/artefacto y versión exacta, no por cada afirmación que soporte. La fuente debe tener procedencia, custodio, método/herramienta, alcance, unidad/entorno, identidad de versión, intervalo temporal, hash/firma, linaje de acceso y limitaciones.
+- Para cada afirmación derivada de esa fuente, crear un CLAIM_EVIDENCE_LINK con destino tipado único y `claim_statement` explícito. Incluir el dominio, por ejemplo `B-M07: la cuota del adaptador consume X durante la ventana W`, y `relevance_scope` con unidad, snapshot, brazo, ruta, predicado y ventana. No convertir una fuente contextual en soporte directo.
+- Un mismo evidence_id puede enlazarse a varias afirmaciones. No duplicar la fuente para cada NODE/EDGE/PREDICATE. No almacenar secretos, tokens ni datos personales innecesarios.
+- EVALUATOR_ASSESSMENT E1/E2 se registra por separado y cegado cuando sea factible; ADJUDICATION_REGISTER solo cuando haya discrepancia. No se inventan evaluadores ni se marca revisión independiente por declaración.
+- Un estado observado 1/0 exige vínculo válido y alcance compatible. Un 0 exige cobertura negativa suficiente. Si la fuente falta, es opaca, contradictoria o no cubre el objeto/ventana, mantener ? con `unknown_reason`; MISSING/CONFLICTING no son 0.
+
+### 17.4. Instancias de cobertura previstas para B-M01…15
+
+Se reservan los siguientes identificadores lógicos para scopes D2. Son **filas de planificación de cobertura**, no observaciones ni registros físicos creados. Al materializar COVERAGE_REGISTER se completarán sus campos según §12.3; hasta entonces no deben enlazarse desde NODE/EDGE/ROUTE/PREDICATE.
+
+| coverage_scope_id propuesto | dimension | universe_definition/version | denominator_unit_and_count | expected_sources (clases, no fuentes supuestas) | examined_sources / valid_sources / covered_units | opaque_or_unknown_units | status actual |
+|---|---|---|---|---|---|---|---|
+| COV-D2-BM01 | B-M01 artefacto/versión | Catálogo de artefactos/dependencias dentro de la frontera D2; B-M01…15 + U_G §9 | UNKNOWN — requiere inventario | Manifiestos, paquetes, hashes, SBOM, registros de despliegue | 0 fuentes técnicas / 0 válidas / 0 unidades cubiertas | UNKNOWN | NONE |
+| COV-D2-BM02 | B-M02 runtime | Runtime, procesos, contenedores, sidecars y librerías de la frontera | UNKNOWN | Inventario runtime, configuración, imágenes, dependencias y telemetría | 0 / 0 / 0 | UNKNOWN | NONE |
+| COV-D2-BM03 | B-M03 host | Hosts, SO, configuración y recursos del entorno relevante | UNKNOWN | Inventario host/SO, configuración, paquetes, métricas y consumidores | 0 / 0 / 0 | UNKNOWN | NONE |
+| COV-D2-BM04 | B-M04 interfaz | Interfaces, endpoints, APIs, canales y contratos | UNKNOWN | Esquemas, configuración, ACL, trazas y contratos API | 0 / 0 / 0 | UNKNOWN | NONE |
+| COV-D2-BM05 | B-M05 permisos | Políticas normativas, principales, roles, ACL y permisos efectivos | UNKNOWN | Fuente normativa, IAM/ACL, logs de autorización y diffs | 0 / 0 / 0 | UNKNOWN | NONE |
+| COV-D2-BM06 | B-M06 datos | Fuentes, destinos, datasets, configuraciones y estados funcionales | UNKNOWN | Inventarios de datos, snapshots, hashes, linaje y reglas | 0 / 0 / 0 | UNKNOWN | NONE |
+| COV-D2-BM07 | B-M07 recursos | Pools, cuotas, reservas, consumidores y recursos compartidos | UNKNOWN | Inventario de recursos, cuotas, reservas, métricas y telemetría | 0 / 0 / 0 | UNKNOWN | NONE |
+| COV-D2-BM08 | B-M08 red | Redes, endpoints, intermediarios y servicios externos | UNKNOWN | Configuración de red, DNS, proxy, firewall, rutas y contratos externos | 0 / 0 / 0 | UNKNOWN | NONE |
+| COV-D2-BM09 | B-M09 seguridad | Controles, políticas, certificados, sandbox y principals | UNKNOWN | Políticas, configuración de seguridad, certificados y auditorías | 0 / 0 / 0 | UNKNOWN | NONE |
+| COV-D2-BM10 | B-M10 observabilidad | Telemetría, logs, oráculo y canales de comunicación al agente | UNKNOWN | Esquemas, configuración, retención, destinatarios, logs y protocolos | 0 / 0 / 0 | UNKNOWN | NONE |
+| COV-D2-BM11 | B-M11 estado | Estados persistentes, cachés, índices, registros y configuración | UNKNOWN | Snapshots, diffs, logs de cambios y almacenamiento | 0 / 0 / 0 | UNKNOWN | NONE |
+| COV-D2-BM12 | B-M12 rendimiento | Carga, latencia, throughput, colas y contención | UNKNOWN | Series temporales, métricas, perfiles y trazas | 0 / 0 / 0 | UNKNOWN | NONE |
+| COV-D2-BM13 | B-M13 oráculo | Criterios, oráculo, datasets y reglas de evaluación | UNKNOWN | Especificación F*, versión de oráculo, dataset, configuración y cegamiento | 0 / 0 / 0 | UNKNOWN | NONE |
+| COV-D2-BM14 | B-M14 alternativas | Rutas alternativas, dependencias y condiciones de sustituibilidad | UNKNOWN | Catálogo, grafo transitivo, pruebas funcionales y snapshots | 0 / 0 / 0 | UNKNOWN | NONE |
+| COV-D2-BM15 | B-M15 reversibilidad | Objetos/relaciones afectados por provisión y rollback | UNKNOWN | Snapshots pre/post/rollback, diffs, residuos y registros de reversión | 0 / 0 / 0 | UNKNOWN | NONE |
+
+Los ceros de la columna de captura significan **ninguna fuente técnica ni unidad material inventariada en este registro a la fecha**, no ausencia de componentes, relaciones o efectos en el sistema. El denominador permanece UNKNOWN; por ello el estado es NONE, nunca COMPLETE. La lectura documental del manifiesto y de los contratos no cuenta como inspección técnica de runtime/host/datos/permisos reales. Si posteriormente aparece una fuente, se añade como EVIDENCE_REGISTER y se actualiza el scope con su denominador, cobertura y limitaciones; no se sobrescribe la historia.
+
+### 17.5. Gates de instanciación y límites
+
+1. Antes de crear registros observados: fijar unidad, frontera P0/P1/P2, versión, TID/SID/RID, ventana, brazo y snapshot aplicables; comprobar que el objeto no duplica otro ID ni mezcla definición, instalación, despliegue, carga, invocación y ejecución.
+2. Para EDGE: identificar ambos extremos versionados y la relación efectiva; desagregar destinos múltiples; separar relación causal/funcional de relación de medición. Sin extremos identificados no se crea EDGE observado.
+3. Para ROUTE: fijar F*, frontera, G, H, restricciones y pasos ordenados; una ruta candidata o desconocida no se presenta como ruta observada ni como exhaustiva.
+4. Para PREDICATE: usar los 14 códigos tipados existentes y su regla temporal; no crear predicados por cada B-Mxx. Separar constitutivo, aplicabilidad, bloqueo, alternativa, oráculo y plano epistémico.
+5. Para SNAPSHOT: capturar unidad raíz y artefactos exactos, hash, timestamp y alcance; respetar pinning DEC-C10-065. No inferir S_preB/S_postB/S_rollback de descripciones del diseño.
+6. Para cobertura: cada scope requiere universo y denominador trazables. NONE/PARTIAL no permiten declarar ausencia; COMPLETE exige cierre del universo operativo, fuentes válidas, excepciones y revisión conforme a §12.3 y §8.
+7. Cualquier cambio inducido por B en autorización funcional, recursos/capacidad compartidos, datos, información del agente, rutas alternativas, oráculo, seguridad, estado o rendimiento se conserva como vía potencial/observada según evidencia. Si no puede descartarse, no se declara aislamiento causal; el ITT sigue siendo efecto de política/paquete y la atribución exclusiva a ΔT_acc permanece abierta.
+8. Esta aplicación no aprueba las fichas D2-INV-AUTH-01, D2-RES-01, D2-CAP-01 ni I-INFO-01…06; no demuestra independencia, no resuelve MD-C1/MD-C2/MD-C4 ni AUD-005/AUD-007 y no modifica DEC-C10-067.
+9. No hay inventario técnico, implementación, simulación ni ejecución científica registrados por esta sección. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
