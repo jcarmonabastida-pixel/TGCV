@@ -203,3 +203,14 @@ La equivalencia se adjudica en dos planos: (i) contrato/paquete y (ii) resoluci�
 **Pendiente:** campos exactos del snapshot E_dst, evidencia/procedencia, reglas de herencia por clave y predicados FP primarios. Sin instancia, parser, fixture ni ejecución.
 
 **Precedencia interna:** La formulación de §9.2 que calificaba esta reconciliación como propuesta no aprobada queda supersedida por §10: DEC-C10-054 ya aceptó la distinción; §10 fija únicamente su representación coherente.
+
+
+## 11. Roster PAR candidato para especializar la instancia lógica de servicio
+
+Se propone, sin congelarlo, un mínimo de tres roles abstractos: (i) PAR-SVC-ENABLED: BOOL/REQUIRED/{false,true}; (ii) PAR-SVC-PROFILE: ENUM/REQUIRED/D_profile finito con al menos dos símbolos abstractos; (iii) PAR-SVC-RETRY-COUNT: INT/OPTIONAL/D_retry={n∈Z:0≤n≤N_retry_max}, con N_retry_max finito pendiente. Son roles semánticos, no claves reales ni selección de producto. El slot retry solo permanece si pertenece al contrato P0 del servicio lógico; no representa capacidad/recursos P1.
+
+Estados por clave: ENABLED y PROFILE admiten VALUE y DEFAULT con contrato explícito; ABSENT/NULL no admisibles. RETRY-COUNT admite ABSENT y VALUE; DEFAULT solo con contrato; NULL no admitido salvo especificación expresa. En todo DEFAULT se usa default_kind DECLARED/INHERITED; DEFAULT_ENV_RESOLVED pertenece a snapshot E_dst. La ausencia OPTIONAL no se interpreta como resolución ambiental.
+
+DECIMAL y STRING quedan como extensiones condicionales si una propiedad funcional exige umbral cuantitativo o texto con significado contractual; REF se representa normalmente en clase REF y solo se duplica como PAR tipo REF si es un escalar genuino. No se requiere instanciar todos los tipos admitidos por el contrato.
+
+No se fijan símbolos ENUM, límites numéricos, valores, conversiones ni regla RUL. Se debe confirmar pertenencia P0, dominio por clave, mapping, IAM y evidencia antes de congelar. Esta sección no modifica DEC-C10-052/053/054/056 ni crea una decisión aceptada.
