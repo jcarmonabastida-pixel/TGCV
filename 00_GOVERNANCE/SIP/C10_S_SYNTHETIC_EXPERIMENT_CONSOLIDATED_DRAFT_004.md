@@ -8060,3 +8060,7 @@ Símbolos, límites, valores, reglas RUL, mappings, tolerancias e IAM operativo 
 ## 173. Contrato mínimo candidato de RUL
 
 DEC-C10-056 exige RUL≥1; DEC-C10-054 limita AST a acíclico 4/16/16, efectos REQUIRE/FORBID y UNKNOWN trivalente. Se documenta una plantilla para evaluar, no una regla aprobada: cuando ENABLED=true, PROFILE pertenece a D_profile_enabled, expresable como OR(NEQ(ENABLED,true), IN(PROFILE,D_profile_enabled)) con REQUIRE. El dominio, fuente funcional, owner/scope, no-tautologicidad, mapping y oráculo están abiertos. Si no existe fundamento contractual independiente, se descarta y se sustituye por una restricción constitutiva P0 real. No se fuerza RETRY-COUNT ni se incorporan variables P1. La cardinalidad RUL está decidida; su semántica operacional no.
+
+## 173. Contrato mínimo candidato de RUL
+
+DEC-C10-056 exige RUL≥1; DEC-C10-054 limita AST a acíclico 4/16/16, efectos REQUIRE/FORBID y UNKNOWN trivalente. Se documenta una plantilla para evaluar, no una regla aprobada: cuando ENABLED=true, PROFILE pertenece a D_profile_enabled, expresable como OR(NEQ(ENABLED,true), IN(PROFILE,D_profile_enabled)) con REQUIRE. El dominio, fuente funcional, owner/scope, no-tautologicidad, mapping y oráculo están abiertos. Si no existe fundamento contractual independiente, se descarta y se sustituye por una restricción constitutiva P0 real. No se fuerza RETRY-COUNT ni se incorporan variables P1. La cardinalidad RUL está decidida; su semántica operacional no.
