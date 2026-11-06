@@ -1209,3 +1209,25 @@ Los contratos de §§57–58 se reutilizan para IV-G1/G4/G6; no se crean fixture
 | IV-REL/EXC/MON/CROSS/INT/MEAS/OUT (§58) | IV-G2…G8 | Abstención correcta bajo escenarios DGP conocidos, débiles o violados | Validez de supuestos en un sistema real fuera de DGP |
 
 La suite debe probar conjuntamente las dependencias, manteniendo hidden_truth inaccesible al analizador. La cobertura de un contrato no implica cierre de los demás. No hay fixtures serializados, oráculos ejecutables ni resultados de pruebas.
+
+
+
+## 60. Contratos adversariales de exclusión por superficies B-M01…15
+
+Los contratos deben separar las quince superficies, aunque algunos escenarios puedan combinarse. La salida del analizador se compara con hidden_truth solo por el evaluador independiente.
+
+| Familia | Manipulación/escenario DGP | Resultado que el analizador debe distinguir |
+|---|---|---|
+| EXC-F0 | B solo modifica componente focal necesario y capturado por D_f*; no altera otras rutas, Outcome/Value ni medición | LATE_f potencialmente identificable solo si IV-G1…G8 y demás supuestos se satisfacen |
+| EXC-B01…04/08/09 | Función extra, runtime/host, interfaz, red o seguridad altera otra ruta, permiso, riesgo, coste o resultado | No atribuir automáticamente a D_f*; clasificar paquete/no identificación según vía y estimando |
+| EXC-B05 | C_auth,base diferencial frente a ACL técnica de provisión | Violación del aislamiento de autorización; no LATE_f focal sin estrategia adicional |
+| EXC-B06 | Datos/estado/App/F* cambian con B fuera de D_f* | Vía directa a ejecución/Outcome; no exclusión focal |
+| EXC-B07 | B consume/desplaza recursos o capacidad de rutas alternativas; pool compartido | Efecto de paquete y/o interferencia; no IV individual estándar |
+| EXC-B10 | Formación/avisos cambian K o observabilidad/missingness por brazo | Vía mediadora/colateral o error diferencial; no ajustar mecánicamente por K postratamiento |
+| EXC-B11 | Caché/índice/estado residual sobrevive a B o rollback | Inconsistencia, carryover o spillover; abstenerse de Wald estándar |
+| EXC-B12 | Latencia/throughput/calidad/coste cambian fuera de τ2 | Vía directa a Outcome/Value o interferencia |
+| EXC-B13 | Oráculo/dataset/regla de Outcome cambia | Resultado no comparable; invalidar interpretación causal común |
+| EXC-B14 | A1/A2 se habilita, degrada o elimina | Vía directa por alternativa a Reach/Exec/Outcome; exclusión focal violada |
+| EXC-B15 | Rollback incompleto/residuos entre unidades o periodos | Carryover/interferencia y consistencia comprometida |
+
+No se serializan fixtures ni se ejecuta esta suite en esta operación. Los escenarios no asignan tasas ni parámetros. La cobertura de una familia no prueba invariancia de las restantes.
