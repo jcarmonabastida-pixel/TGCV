@@ -226,6 +226,3 @@ Para la instancia sintética propuesta RUL-SVC-ENABLE-PROFILE-01:
 Falsadores: operador/negación alterados; clave/operando intercambiado; scope alterado; dominio ENUM incompleto, fusionado o ampliado; regla eliminada/duplicada; REQUIRE↔FORBID; UNKNOWN convertido en booleano; regla no aplicada en destino; mapping nominalmente igual pero semánticamente divergente.
 
 No se fijan nombres físicos ni tabla concreta porque no se ha elegido formato/plataforma. FP-03 adjudica preservación; FP-06 aplicación; FP-07 verificación; FP-08 trazabilidad. Esta sección especifica invariantes, no mapping implementado ni evidencia de preservación.
-## 17. Mapping candidato del contrato sintético ENABLED/PROFILE/RUL
-
-El mapping debe preservar la semántica de ENABLED y los tres símbolos de PROFILE, así como RUL-SVC-ENABLE-PROFILE-01, su owner/scope, versión y efecto REQUIRE. Las etiquetas físicas pueden diferir entre fuente/destino únicamente con tabla de correspondencia explícita hacia los mismos IDs semánticos. Deben probarse los dos perfiles permitidos y el violador DISABLED cuando ENABLED=true. Una conversión que cambie el conjunto permitido o la condición falla FP-03; una regla correcta no aplicada falla FP-06; falta de evidencia deja ?. No se fija aún ninguna tabla de mapping concreta.
