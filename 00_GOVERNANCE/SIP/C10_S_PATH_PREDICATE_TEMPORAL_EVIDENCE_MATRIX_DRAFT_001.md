@@ -146,3 +146,114 @@ Se dispone ahora de una matriz operacional que identifica qué se evalúa por tr
 **Siguiente bloqueo:** definir el catálogo de predicados constitutivos y su ficha sustantiva para F1/F2/A1/A2, incluyendo qué es realmente state-dependent, temporal, recurso-dependiente o invariante. Después podrá fijarse el vector de evidencia y el oráculo de clasificación sin inventar valores.
 
 No se han generado datos, implementado fixtures, simulado ni ejecutado el experimento.
+
+
+---
+
+## 13. Especialización D2 — condiciones basales, recursos, capacidad e información
+
+**Estado:** fichas de trabajo recuperadas de material conversacional aportado el 2026-11-06 y reconciliadas documentalmente con esta matriz, el maestro C10-S y el manifiesto B. **DRAFT / PROPUESTA / NO APROBADO / NO CONGELADO / NO EJECUTABLE.** Los identificadores indicados como candidatos no adquieren carácter canónico por su inclusión aquí.
+
+**Alcance:** especialización del contraste D2 (B_g0^D2 frente a B_g1^D2), manteniendo D2 como escenario primario candidato y D1 como secundario conforme a DEC-C10-066. No modifica DEC-C10-067 ni afirma que las condiciones sean invariantes demostradas.
+
+### 13.1. Ficha D2-INV-AUTH-01 — autorización normativa basal
+
+| Campo | Especificación candidata |
+|---|---|
+| Predicado | `C_auth,base` |
+| Función | Condición constitutiva basal de autorización funcional para la transformación focal `τ2` |
+| Nivel | Unidad × transformación `τ2` |
+| Momento basal | Antes de asignación `Z` |
+| Estado exigido | `C_auth,base=1` en la población primaria elegible |
+| Clase | I — invariante respecto de la política B, como postulado del DGP aislado |
+| Ventana | Desde la evaluación basal hasta la adjudicación de accesibilidad postprovisión |
+| Tolerancia | Cero cambios inducidos por B en la autorización normativa funcional |
+| Evidencia | Registro de autorización, titular, alcance, vigencia, objeto autorizado y versiones pre/post |
+| Falsificador | Cualquier cambio diferencial inducido por B en la autorización normativa funcional |
+
+**Distinción semántica obligatoria:**
+
+1. **Autorización normativa funcional:** permiso para realizar `τ2`; debe estar satisfecha basalmente y permanecer común entre políticas.
+2. **Permisos técnicos de provisión:** ACL, credenciales, tokens o acceso al endpoint del adaptador; pueden formar parte de B bajo alcance mínimo, sin ampliar la autorización funcional.
+3. **Conocimiento o consideración del agente:** mecanismo posterior; no equivale a autorización ni a accesibilidad estructural.
+
+Si B amplía el permiso funcional para ejecutar `τ2`, aparece la vía `B→C_auth→A_f*`; el contraste deja de aislar únicamente la provisión técnica. La ficha es compatible conceptualmente con B-M05/PROV-06. **Abierto:** fuente normativa, titular competente, alcance exacto y regla de vigencia/adjudicación de `C_auth,base` (véase maestro §59.6). No declarar ficha verificada hasta resolverlo.
+
+### 13.2. Ficha D2-RES-01 — recursos no focales
+
+**Estado:** propuesta de especialización; no aprobada. Evitar un indicador único que mezcle disponibilidad estructural y consumo de ejecución.
+
+| Objeto | Qué representa | Función causal | Tratamiento D2 |
+|---|---|---|---|
+| Disponibilidad basal | Recursos no focales asignados y disponibles para que `τ2` pueda estar a disposición | Condición constitutiva candidata de accesibilidad | Común, suficiente y verificada antes de Z |
+| Capacidad instalada | Recursos técnicos que permiten ofrecer `τ2`, separados de la carga de una ejecución concreta | Propiedad de configuración; solo condición de acceso si habilita la oferta | Común, salvo escenario adversarial |
+| Consumo de ejecución | CPU, memoria, almacenamiento, tiempo, trabajo humano u otros insumos de una instancia | Aplicabilidad, ejecución o calidad, según recurso y nivel | Medición separada; no incorporarlo automáticamente a `A_f*` |
+| Recursos usados por B | Recursos para instalar, mantener y operar el adaptador | Parte de provisión y posible vía colateral | Registrar y comprobar no desplazamiento de rutas alternativas |
+
+**Predicado candidato:** `R_access*(i,t;τ2)=1` cuando, para la unidad y ventana declaradas, existe una asignación verificable y suficiente de recursos no focales requeridos para poner `τ2` a disposición, independientemente de selección o ejecución. La suficiencia exige identificar recurso/unidad, titular o mecanismo de asignación, cantidad disponible y comprometida, unidad/sistema, ventana, dependencias/consumidores compartidos, evidencia y regla preespecificada. La existencia nominal no basta.
+
+**Contraste D2:** el régimen de recursos no focales debe ser el mismo en control y tratamiento; los recursos reservados/consumidos por el adaptador se registran por separado; se mide la disponibilidad de recursos compartidos y consumidores; el consumo de ejecución no se retrotrae como accesibilidad. Si B desplaza recursos de A1/A2 u otras rutas, registrar `B→recursos compartidos→ruta alternativa→Reach/Outcome/Value`.
+
+**Evidencia y falsadores:** inventario/asignación/medición pre-Z; insuficiencia o compromiso del recurso; umbral no satisfecho o retrospectivo; disponibilidad A1/A2 degradada; consumo B no registrado; variación diferencial no modelada. Sin cobertura suficiente, estado `?`, nunca invariancia presumida.
+
+**Reutilización y dependencias:** maestro §§46–47 y 59.2–59.3; manifiesto B-M07; PROV-05 (no reducción de disponibilidad A1/A2/F2) y PROV-09 (no modificación de dependencias críticas compartidas); MD-C1/MD-C4 permanecen abiertos. No introducir nuevos símbolos definitivos para subcomponentes sin mapearlos a `R_access*` y al DGP.
+
+### 13.3. Ficha D2-CAP-01 — capacidad no focal
+
+**Estado:** propuesta de especialización; no aprobada. `C_capacity` no es sinónimo de `C_resource`.
+
+| Objeto | Definición | Papel en el modelo |
+|---|---|---|
+| Capacidad instalada | Máximo técnico soportable bajo condiciones especificadas | Propiedad del sistema/configuración |
+| Capacidad disponible | Parte utilizable en una ventana, descontando compromisos y restricciones | Condición potencial de acceso |
+| Capacidad reservada | Fracción asignada a unidad, transformación o ruta | Factibilidad de ruta |
+| Capacidad consumida | Capacidad efectivamente utilizada durante operación | Aplicabilidad/ejecución y posible vía colateral |
+| Margen operativo | Diferencia entre capacidad disponible y demanda comprometida | Indicador de suficiencia, no primitivo autónomo |
+
+**Predicado candidato (plantilla, no operacionalizada):**
+
+`C_capacity,i,w = I(K_available(i,w) ≥ K_required(τ2,w))`
+
+No aplicar hasta fijar dimensión (concurrencia, tasa, memoria, procesamiento, red, capacidad humana u otra), unidad/método, configuración/versión, ventana, demanda requerida, compromisos/reglas de reserva y umbral preespecificado. Si se requieren varias dimensiones, la suficiencia es conjuntiva; no sumar magnitudes incompatibles.
+
+**Contraste D2:** capacidad no focal basal bajo régimen común; capacidad focal introducida por B pertenece a `C_dep*`, no se vuelve a contabilizar en `C_capacity`; capacidad compartida se registra por compromisos y contención; saturación/degradación inducida por B es posible vía colateral. Si B modifica capacidad disponible de A1/A2, no se absorbe como mejora de accesibilidad focal.
+
+**Falsadores:** capacidad basal inferior al umbral; capacidad nominal comprometida durante la ventana; reserva de una ruta reduce otra; adaptador degrada capacidad no focal; medición/configuración diferencial; interferencia entre unidades. Ausencia de cobertura → `?`.
+
+**Fuentes:** Path Predicate Temporal Evidence Matrix §8 (reserva/concurrencia/factibilidad); manifiesto §5; maestro §§46–47 y 59; Closure Control Matrix §§20, 26 y 29. **Abiertos:** pertenencia de la capacidad necesaria para ofrecer `τ2` a `C_dep*` o a una condición no focal; ventana cuando hay rutas secuenciales/reservas; necesidad de conglomerados/interferencia por capacidad compartida. DGP S4-R aislado postula no modificación de capacidad no focal; es hipótesis verificable, no hecho demostrado.
+
+### 13.4. Ficha de clasificación D2-C_INFO — información
+
+**Estado:** propuesta conceptual de clasificación; no crear por ahora un predicado autónomo `C_info` ni añadirlo a `A_f*`. Primero comprobar duplicidad con `C_dep*`, autorización, recursos y dominio.
+
+| Objeto | Contenido | Clasificación causal provisional |
+|---|---|---|
+| Información técnica del sistema | Datos, descriptores, metadatos, especificaciones o parámetros incorporados al sistema para invocar/realizar `τ2` | Podría ser constitutiva de accesibilidad |
+| Conocimiento del agente | Conocer existencia y modo de uso de `τ2` | Mecanismo posterior de conocimiento/consideración |
+| Información comunicada por B | Avisos, instrucciones, formación o asistencia de B | Posible vía colateral de la intervención |
+| Información del evaluador | Fuentes, registros, cobertura, validez y observabilidad | Plano epistémico `E_T`, no condición causal de accesibilidad |
+
+La información técnica solo se considera constitutiva si conjuntamente: (a) está incorporada/disponible en frontera y versión declaradas; (b) es necesaria para invocar/realizar `τ2`, no solo conveniente; (c) se verifica independientemente del conocimiento/comportamiento del agente; (d) su ausencia impide la realizabilidad focal con las demás condiciones satisfechas; y (e) no duplica contenido ya representado en `C_dep*`, autorización, recursos o dominio.
+
+**Relación con B:** instalar/configurar información técnica imprescindible exige decidir si pertenece a `C_dep*` o es vía adicional; manuales/formación/avisos al agente son vía informativa distinta; conocimiento puede alterar consideración/selección/ejecución sin cambiar accesibilidad estructural; cambios en registros/cobertura del evaluador modifican `E_T`, no necesariamente el sistema.
+
+**Contratos adversariales recuperados I-INFO-01…06 (propuestos):**
+
+| ID | Caso | Resultado requerido |
+|---|---|---|
+| I-INFO-01 | Sistema dispone de información técnica, agente desconoce `τ2` | No convertir automáticamente accesibilidad en 0 |
+| I-INFO-02 | Agente conoce `τ2`, sistema carece de dato técnico imprescindible | Conocimiento no implica accesibilidad |
+| I-INFO-03 | B mejora manuales/formación sin modificar sistema | Detectar vía informativa colateral |
+| I-INFO-04 | Mejora documentación del evaluador sin cambiar sistema | Cambio en `E_T`, no necesariamente en `ΔT_acc*` |
+| I-INFO-05 | Información técnica duplicada por condición incluida en `C_dep*` | Evitar doble contabilización |
+| I-INFO-06 | Información necesaria cuya presencia no puede verificarse | Mantener `?`, no asumir presencia/ausencia |
+
+**Consecuencia arquitectónica:** mantener separados (i) accesibilidad estructural, con información técnica solo si supera los criterios constitutivos; (ii) mecanismo de conocimiento del agente; y (iii) evidencia del evaluador en `E_T`. No ajustar automáticamente por conocimiento postratamiento: la vía `B→K→Selection→Execution` puede ser mediadora/colateral y el ajuste no resuelve por sí solo identificación.
+
+**Abiertos:** inventario concreto de información técnica imprescindible; mapping de cada elemento a `C_dep*` u otra condición sin duplicidad; evidencia para invariancia técnica y ausencia de comunicaciones diferenciales.
+
+### 13.5. Regla transversal de clasificación y trazabilidad
+
+Las fichas deben mapearse a las clases I/S/T/R/D/E ya definidas en esta matriz, sin reemplazar la clasificación por una etiqueta universal. Separar: (1) invariancia postulada en el DGP; (2) invariancia definida contractualmente; y (3) no-afectación demostrada empíricamente. Ninguna implica las otras. Para cada condición, conservar unidad, transformación, paso, rama, ventana, verdad del DGP, estado observado, fuente, cobertura, versión, adjudicador y razón de `?`, reutilizando la clave y reglas de propagación ya definidas en §§2–10.
+
+Estas fichas son especializaciones D2 para revisión; no son evidencia empírica, no cierran elegibilidad, no demuestran invariancia y no autorizan implementación, simulación ni ejecución.
