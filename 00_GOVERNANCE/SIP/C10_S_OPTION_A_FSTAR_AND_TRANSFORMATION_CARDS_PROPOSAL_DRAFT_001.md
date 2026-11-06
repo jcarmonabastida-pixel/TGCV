@@ -209,3 +209,9 @@ R1 (alternativa basal funcional y estable) es distinto de R2 (alternativa modifi
 ### 11.5. Dictamen
 
 La semántica de alto nivel de las transformaciones está definida suficientemente para orientar el DGP; no está cerrada para generar instancias confirmatorias. El siguiente trabajo es reconciliar C_src/C_dst/M con F1/F2/A1/A2, IAM, FP-01…FP-08 y manifiesto B, resolviendo discrepancias de cardinalidad, mapping, frontera y evidencia. No asignar parámetros ni generar fixtures todavía. Sin freeze, implementación, validación, simulación ni ejecución autorizada.
+
+
+
+## 12. Corrección de cabecera y reconciliación decisional (2026-11-06)
+
+La cabecera de §1 conserva texto histórico que describía Opción A como no seleccionada/no aprobada. Esa formulación quedó supersedida por la selección de Opción A registrada en DEC-C10-051 y reiterada en la consolidación vigente. Interpretación correcta: **Opción A seleccionada como microdominio de trabajo; F* contrato funcional candidato; fichas Draft, no congeladas ni ejecutables.** La selección no aprueba formatos, productos, versiones, parámetros, umbrales, recursos, permisos o implementación. Esta nota resuelve la precedencia sin borrar el historial.
