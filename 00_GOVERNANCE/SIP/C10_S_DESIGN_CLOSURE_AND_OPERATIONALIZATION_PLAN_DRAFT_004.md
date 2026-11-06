@@ -1016,3 +1016,7 @@ La pregunta sobre un servicio real queda resuelta metodológicamente: DEC-C10-05
 ## 16.28. Especialización funcional sintética del servicio lógico y RUL
 
 La pregunta sobre un servicio real queda resuelta metodológicamente: DEC-C10-051/052/057/058 ya fijan microdominio, clase de objeto y unidad lógica; C10-S no necesita seleccionar producto/plataforma. Se propone un servicio sintético de procesamiento de solicitudes, con ENABLED BOOL y PROFILE ENUM={STANDARD,READ_ONLY,DISABLED}. RUL-SVC-ENABLE-PROFILE-01 impone ENABLED=true ⇒ PROFILE∈{STANDARD,READ_ONLY}. Especificación estipulada ex ante para conocer la verdad del DGP, no evidencia empírica ni decisión aprobada. Cierre pendiente: aceptación explícita, owner CMP/versión, mapping, IAM, oráculo y propagación a F1/F2/A1/A2. No fixtures ni implementación.
+
+## 16.28. Especialización funcional sintética del servicio lógico y RUL
+
+La pregunta sobre un servicio real queda resuelta metodológicamente: DEC-C10-051/052/057/058 ya fijan microdominio, clase de objeto y unidad lógica; C10-S no necesita seleccionar producto/plataforma. Se propone un servicio sintético de procesamiento de solicitudes, con ENABLED BOOL y PROFILE ENUM={STANDARD,READ_ONLY,DISABLED}. RUL-SVC-ENABLE-PROFILE-01 impone ENABLED=true => PROFILE pertenece a {STANDARD,READ_ONLY}. Especificación estipulada ex ante para conocer la verdad del DGP, no evidencia empírica ni decisión aprobada. Cierre pendiente: aceptación explícita, owner CMP/versión, mapping, IAM, oráculo y propagación a F1/F2/A1/A2. No fixtures ni implementación.
