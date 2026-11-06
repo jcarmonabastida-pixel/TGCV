@@ -227,3 +227,7 @@ El mapping RUL no consiste en copiar el texto/AST ni en conservar identificadore
 Falsadores mínimos: operador o negación alterados; operandos/clave intercambiados; scope ampliado/reducido; dominio ENUM cambiado; regla eliminada/duplicada; REQUIRE↔FORBID; UNKNOWN convertido en TRUE/FALSE; precedencia alterada cuando sea significativa; regla nominalmente preservada pero no aplicada. La equivalencia se adjudica con FP-03 y evidencia del destino aplicado; igualdad textual/AST no basta si mappings cambian significado.
 
 La plantilla ENABLED→PROFILE aún carece de D_profile_enabled y fuente funcional, por lo que no hay mapping instanciable ni resultado esperado por ruta. No crear tabla concreta hasta cerrar esas entradas.
+
+## 17. Mapping candidato del contrato sintético ENABLED/PROFILE/RUL
+
+El mapping debe preservar la semántica de ENABLED y los tres símbolos de PROFILE, así como RUL-SVC-ENABLE-PROFILE-01, su owner/scope, versión y efecto REQUIRE. Las etiquetas físicas pueden diferir entre fuente/destino únicamente con tabla de correspondencia explícita hacia los mismos IDs semánticos. Deben probarse los dos perfiles permitidos y el violador DISABLED cuando ENABLED=true. Una conversión que cambie el conjunto permitido o la condición falla FP-03; una regla correcta no aplicada falla FP-06; falta de evidencia deja ?. No se fija aún ninguna tabla de mapping concreta.
