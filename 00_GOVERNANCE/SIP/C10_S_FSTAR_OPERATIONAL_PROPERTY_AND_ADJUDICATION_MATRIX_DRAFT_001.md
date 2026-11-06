@@ -192,3 +192,15 @@ F* es capacidad funcional de ruta completa (producción y aplicación en destino
 ## 19. DEC-C10-056 — cardinalidad del objeto F*
 
 La instancia funcional de F* se restringe al DGP base con CMP≥1, PAR≥1, RUL≥1; REF puede ser cero únicamente con IAM ex ante y cobertura exhaustiva; POL ausente por diseño en el núcleo mínimo; MET obligatorio. Esta cardinalidad delimita la unidad/objeto candidato y no reemplaza los gates FP-01…FP-07 ni el gate probatorio FP-08. El contrato abstracto es `C10_S_ABSTRACT_CONFIGURATION_INSTANCE_CONTRACT_DRAFT_001.md`.
+
+
+
+## 20. Reconciliación con las fichas funcionales de Opción A (2026-11-06)
+
+La lectura conjunta con la propuesta de fichas §11 fija la interpretación sin ampliar DEC-C10-051: F1/τ2 es conversión S0→S2; F2 aplica S2→SF; A1/A2 componen la ruta alternativa S0→S1→SF; F* se adjudica sobre la ruta completa. El adaptador es provisión técnica de B y no ejecuta transformaciones.
+
+La conformidad local de F1/F2/A1/A2 no sustituye la adjudicación F* de ruta completa. Las rutas comparadas usan la misma instancia contractual, clase de entrada, destino, IAM, C0, G, H, familias FP aplicables y oráculo versionado. La substituibilidad exige satisfacer el mismo F*, no identidad de mecanismo ni igualdad presumida de coste/riesgo/latencia; estos últimos se registran separadamente.
+
+FP-01…FP-07 conservan adjudicación funcional por dimensiones no compensatorias y FP-08 es gate probatorio separado. Outcome/Value quedan fuera del oráculo. La declaración O/C/NA/? se sella en IAM pre-Z/B; unknown y falta de cobertura no se convierten en NA.
+
+**Estado:** reconciliación documental; no cierra propiedades atómicas, IAM, mappings, tolerancias, C0/G/H, oráculo, MD-C1/MD-C4 ni exclusión IV. No implementación ni ejecución.
