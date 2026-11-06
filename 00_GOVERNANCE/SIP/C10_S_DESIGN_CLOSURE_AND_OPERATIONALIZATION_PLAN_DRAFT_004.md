@@ -975,3 +975,15 @@ Se reutilizan las fichas F1/τ2, F2, A1/A2, matriz F*, contrato abstracto C_src/
 **Bloqueos:** (1) mappings y dominios de parámetros; (2) IAM pre-Z/B con obligatoriedad/NA/cobertura; (3) predicados/tolerancias y equivalencia funcional; (4) oráculo independiente, fiabilidad y cegamiento; (5) manifiesto B-M01…15 y grafo transitivo; (6) no-afectación A1/A2/F2 bajo B; (7) unidad/recursos compartidos e interferencia; (8) rollback/residuos/carryover. La ausencia de evidencia mantiene ?.
 
 No cierra OPEN-C10-003, MD-C1/MD-C4, IV-G4, IV-G6, IV-INT ni Value; no selecciona formatos, productos, parámetros o umbrales. No Design Freeze, implementación, fixtures, validación ni ejecución.
+
+
+
+## 16.24. Crosswalk del objeto y criterio de salida
+
+Se reconcilia C_src/C_dst/M con CMP/PAR/REF/RUL/POL/MET, F1/F2/A1/A2, IAM y F*. Se reutilizan DEC-C10-053 (partición), DEC-C10-054 (perfil gramatical), DEC-C10-055 (reconciliación SM/FP) y DEC-C10-056 (cardinalidad), solo dentro de su alcance.
+
+**Salida documental:** trazada la correspondencia por familia, las etapas de transformación, separación E_dst/objeto, IAM común por ruta y gate FP-08. No cierra el contrato confirmatorio.
+
+**Bloqueos:** (1) DEFAULT vs DEFAULT_DECLARED/INHERITED/ENV_RESOLVED; (2) claves/dominios PAR; (3) universo/cardinalidad/clases CMP y multiplicidad REF; (4) M por clase, many-to-one/one-to-many y conversiones/pérdidas; (5) UNKNOWN/conflictos RUL; (6) IAM/cobertura/NA; (7) snapshot/evidencia independiente C_dst aplicado; (8) oráculo, cegamiento, concordancia/error; (9) no-afectación A1/A2/F2 por B, recursos/interferencia/carryover.
+
+No parámetros, fixtures, parser/oráculo validado, freeze ni autorización de implementación.
