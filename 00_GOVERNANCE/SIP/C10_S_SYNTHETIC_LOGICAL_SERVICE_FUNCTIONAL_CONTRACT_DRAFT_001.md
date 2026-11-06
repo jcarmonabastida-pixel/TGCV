@@ -1,7 +1,7 @@
 # C10-S — Contrato funcional del servicio lógico sintético de referencia
 
 **ID:** C10-S-SYNTHETIC-SERVICE-CONTRACT-001 · **Versión:** Draft 001 · **Fecha:** 2026-11-06  
-**Estado:** PROPUESTA DOCUMENTAL PARA C10-S; no DEC aceptada, no contrato congelado, no inventario real, no implementación ni ejecución.
+**Estado:** ACEPTADO CONCEPTUALMENTE POR DEC-C10-068; contrato funcional de referencia para C10-S. No es aún Design Freeze, mapping físico implementado, inventario real, implementación ni ejecución.
 
 ## 1. Propósito y relación con decisiones vigentes
 
@@ -85,8 +85,8 @@ Los casos no son fixtures serializados ni pruebas ejecutadas. Los resultados fut
 
 ## 8. Límites y gates pendientes
 
-Esta propuesta permite especificar una RUL no tautológica en un DGP sintético sin seleccionar un servicio real. No cierra:
-- aceptación explícita de esta especialización funcional;
+La especialización funcional y RUL descritas quedan aceptadas conceptualmente por DEC-C10-068 como contrato de referencia del DGP sintético. No cierra:
+- identidad CMP concreta, versión de instancia, procedencia detallada y serialización final;
 - identidad CMP definitiva, versión, procedencia y serialización;
 - tabla concreta de mapping fuente/destino;
 - obligatoriedad/aplicabilidad IAM de cada predicado;
@@ -94,4 +94,8 @@ Esta propuesta permite especificar una RUL no tautológica en un DGP sintético 
 - unidad de asignación/interferencia y estimandos;
 - fixtures, implementación, validadores, simulación o ejecución.
 
-**Estado final:** propuesta de semántica sintética candidata; DEC-C10-056 sigue siendo la fuente de la cardinalidad. No se crea una decisión nueva ni se autoriza implementación o ejecución.
+**Estado final:** contrato funcional sintético aceptado por DEC-C10-068; DEC-C10-056 sigue siendo la fuente de cardinalidad. La aceptación no congela el diseño completo ni autoriza implementación o ejecución.
+
+## 9. Registro de aceptación
+
+DEC-C10-068 acepta el servicio lógico sintético, los parámetros PAR-SVC-ENABLED/PAR-SVC-PROFILE y RUL-SVC-ENABLE-PROFILE-01 con la semántica y contrastes de §§2–4. CMP-SERVICE-LOGIC permanece como owner lógico provisional; identidad/versionado concretos, IAM de instancia, mapping físico, tolerancias y oráculo siguen abiertos. PAR-SVC-RETRY-COUNT continúa excluido del núcleo. No hay fixtures ni ejecución.
