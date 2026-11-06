@@ -7931,7 +7931,7 @@ Siguiente: regla trivalente de agregación de predicados y rutas, con conflicto 
 
 ## §135. Regla trivalente de agregación de A_f* y D_f observado (2026-11-06)
 
-**Registro:** `C10_S_AF_DF_TRIVALENT_AGGREGATION_RULE_DRAFT_001.md`.
+**Registro:** `C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md §10`.
 
 Se concreta la aplicación a A_f/D_f de las reglas existentes de DGP §26/§32, matriz U_G §5 y protocolo de evidencia/adjudicación. Dominios `observed_state`, `evidence_status`, `coverage_status`, adjudicación y `truth_dgp` permanecen ortogonales. Para A_f: cualquier término necesario 0 con evidencia válida/suficiente ⇒ 0; todos 1 con comparabilidad y cobertura adecuadas ⇒ 1; en otro caso ?. Para DEP: una ruta 1 basta; DEP=0 exige todas las rutas del universo operativo declarado refutadas y cobertura COMPLETE, incluida resolución de Runknown/alternativas/externas/compartidas; en otro caso ?. Para D_f: baseline 0/post 1 ⇒ 1; baseline 1 o post 0 ⇒ 0; resto ?. No comparabilidad de τ2/snapshots ⇒ NOT_COMPARABLE/?.
 
