@@ -200,3 +200,14 @@ El mapping evalúa por separado origen, regla/ámbito de herencia, valor contrac
 Esta lectura implementa DEC-C10-054 y el perfil §3; no añade decisión nueva. La tabla §4 se mantiene, precisando DEFAULT_ENV_RESOLVED como E_dst. La igualdad del valor resuelto no acredita preservación semántica del default.
 
 **Precedencia interna:** La nota de §13.2 que dejaba toda la distinción DEFAULT como propuesta no congelada queda precisada por §14: la distinción conceptual procede de DEC-C10-054 aceptada; permanecen abiertos solo los detalles de instancia, snapshot, mapping y evidencia.
+
+
+## 15. Mapping candidato para el roster PAR de servicio lógico
+
+| Slot lógico | Tipo fuente/destino | Mapping permitido a explorar | Falsador semántico |
+|---|---|---|---|
+| PAR-SVC-ENABLED | BOOL→BOOL | Preservación exacta de estado y valor; cualquier conversión exige tabla explícita | true/false invertido, ABSENT/NULL colapsado o default no preservado |
+| PAR-SVC-PROFILE | ENUM→ENUM | Tabla total y versionada para todos los símbolos obligatorios; no se presupone igualdad nominal | Dos símbolos funcionalmente distintos fusionados o símbolo sin correspondencia |
+| PAR-SVC-RETRY-COUNT | INT→INT | Preservación exacta dentro de dominio finito; INT→DECIMAL solo si se justifica y es exacto | Overflow, truncamiento, signo alterado, cambio de límite o estado |
+
+El roster no fija nombres físicos ni tablas de conversión concretas. Para DECIMAL/STRING/REF condicionales se exige mapping por clave y dominio; no se presume normalización, coerción ni equivalencia por igualdad textual. Cada ruta F1/F2 y A1/A2 usa el mismo contrato semántico y el mismo IAM. Los resultados locales de conversión no sustituyen C_dst_applied ni F*.
