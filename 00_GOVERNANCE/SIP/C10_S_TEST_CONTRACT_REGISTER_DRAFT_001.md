@@ -522,12 +522,12 @@ Estado: contratos documentales; no implementados ni ejecutados.
 | ID | Prueba | Criterio de aceptación propuesto |
 |---|---|---|
 | BPOL-01 | Separación de escenarios | D1 y D2 están identificados como contrastes distintos, no mezclados |
-| BPOL-02 | Intento vs estado final | W_attempt no se confunde con C_dep verificado |
-| BPOL-03 | D1 control | P(W_attempt=1|Z=0)=.25 y P(C_dep=1|Z=0)=.20 bajo factorización candidata |
-| BPOL-04 | D1 tratamiento | P(W_attempt=1|Z=1)=1 y P(C_dep=1|Z=1)=.80 |
-| BPOL-05 | D2 control | P(W_attempt=1|Z=0)=0 y P(C_dep=1|Z=0)=0 |
-| BPOL-06 | D2 tratamiento | P(W_attempt=1|Z=1)=1 y P(C_dep=1|Z=1)=.80 |
-| BPOL-07 | Éxito condicional | .80 identificado como propuesta algebraica condicional, no dato empírico |
+| BPOL-02 | Programación, intento y estado final | W_programmed, W_attempt efectivo y C_dep verificado no se confunden |
+| BPOL-03 | D1 control | P(W_programmed=1|Z=0)=.25; W_attempt efectivo y C_dep se registran/derivan aparte |
+| BPOL-04 | D1 tratamiento | P(W_programmed=1|Z=1)=1; no se presume W_attempt efectivo=1 |
+| BPOL-05 | D2 control | P(W_programmed=1|Z=0)=0; intento de fondo y C_dep=1 se investigan y registran, no se presuponen ausentes |
+| BPOL-06 | D2 tratamiento | P(W_programmed=1|Z=1)=1; W_attempt efectivo, recepción y C_dep se observan/derivan aparte |
+| BPOL-07 | Éxito condicional | .80 es candidato condicional a W_attempt efectivo elegible; no dato empírico ni tasa de cumplimiento |
 | BPOL-08 | Componentes conjuntos | No se presume independencia entre instalación, integridad, compatibilidad y operatividad |
 | BPOL-09 | Primera etapa focal | C_dep no sustituye a A_f*/D_f*; accesibilidad se deriva de todos los predicados |
 | BPOL-10 | Control D1 legítimo | La justificación del comparador ordinario se documenta antes de aprobar D1 |
@@ -1126,7 +1126,7 @@ La trazabilidad histórica se conserva; no se simula independencia ni se declara
 |---|---|---|---|
 | D2POL-01 | Control D2 no programa ni inicia intento focal por la política asignada | Política/versionado y registro temporal | Tratar el control como provisión ordinaria D1 o inferir ausencia efectiva sin medir fondo |
 | D2POL-02 | Tratamiento D2 programa provisión focal estandarizada | Protocolo, actor, artefacto y versión | Confundir programación con intento efectivo o éxito |
-| D2POL-03 | Asignación, intento programado/efectivo, recepción y éxito son variables separadas | Registro por unidad y tiempos | Sustituir ITT por recepción/cumplimiento |
+| D2POL-03 | Asignación, W_programmed, W_attempt efectivo, recepción y éxito son variables separadas | Registro por unidad y tiempos | Sustituir ITT por recepción/cumplimiento |
 | D2POL-04 | Componentes técnicos se verifican separadamente | Evidencia de instalación, integridad, compatibilidad y operatividad | Inferir (C_{dep}^{*}) desde intento o instalación declarada |
 | D2POL-05 | (C_{dep}^{*}), (A_f^{*}) y (D_f^{*}) se determinan por separado | Predicados completos y snapshots basal/post | Transferir la primera etapa técnica automáticamente a accesibilidad/apertura |
 | D2POL-06 | (C_{auth,base}=1) y condiciones no focales comunes en DGP aislado | Contrato de elegibilidad y auditoría de invariantes | Introducir cambio de autorización o recursos no declarado |
