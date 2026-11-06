@@ -214,7 +214,7 @@ Si no hay fundamento contractual verificable para esa relación, se descarta y s
 
 ## 14. RUL constitutiva del servicio sintético: distinción de identificadores
 
-RUL-01/02/03 del catálogo son propiedades de preservación (condición lógica, ámbito y efecto), no la identidad de una regla de instancia. La regla de instancia propuesta se denomina RUL-SVC-ENABLE-PROFILE-01 y está descrita en `C10_S_SYNTHETIC_LOGICAL_SERVICE_FUNCTIONAL_CONTRACT_DRAFT_001.md`. Su condición es ENABLED=true ⇒ PROFILE∈{STANDARD,READ_ONLY}, con PROFILE={STANDARD,READ_ONLY,DISABLED}. El identificador de instancia no debe confundirse con los predicados de preservación. Estado: propuesta sintética, no aprobada; owner, scope/versionado definitivo, mapping y oráculo OPEN.
+RUL-01/02/03 del catálogo son propiedades de preservación (condición lógica, ámbito y efecto), no la identidad de una regla de instancia. La regla de instancia aceptada conceptualmente por DEC-C10-068 se denomina RUL-SVC-ENABLE-PROFILE-01 y está descrita en `C10_S_SYNTHETIC_LOGICAL_SERVICE_FUNCTIONAL_CONTRACT_DRAFT_001.md`. Su condición es ENABLED=true ⇒ PROFILE∈{STANDARD,READ_ONLY}, con PROFILE={STANDARD,READ_ONLY,DISABLED}. El identificador de instancia no debe confundirse con los predicados de preservación. Estado: regla sintética aceptada conceptualmente por DEC-C10-068; owner lógico y scope definidos; identidad/versionado de instancia, mapping y oráculo OPEN.
 
 ## 14. RUL constitutiva del servicio sintético: distinción de identificadores
 
