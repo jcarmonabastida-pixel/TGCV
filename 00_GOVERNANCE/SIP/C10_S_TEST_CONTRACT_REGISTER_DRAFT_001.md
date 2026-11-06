@@ -1118,3 +1118,21 @@ El punto 8 de §12 («obtener revisión independiente») queda SUPERSEDED como r
 La trazabilidad histórica se conserva; no se simula independencia ni se declara una revisión externa inexistente. La ejecución científica sigue requiriendo autorización expresa separada.
 
 **Estado:** P177/P178/P179 incorporados como contratos de diseño; P182/P183 ya persistidos. Ninguno de estos controles se declara implementado o ejecutado.
+
+
+## 56. Contrato de aceptación documental de políticas materiales D2 — DEC-C10-067
+
+| ID | Condición de aceptación | Evidencia exigida | Fallo que debe detectar |
+|---|---|---|---|
+| D2POL-01 | Control D2 no programa ni inicia intento focal por la política asignada | Política/versionado y registro temporal | Tratar el control como provisión ordinaria D1 o inferir ausencia efectiva sin medir fondo |
+| D2POL-02 | Tratamiento D2 programa provisión focal estandarizada | Protocolo, actor, artefacto y versión | Confundir programación con intento efectivo o éxito |
+| D2POL-03 | Asignación, intento programado/efectivo, recepción y éxito son variables separadas | Registro por unidad y tiempos | Sustituir ITT por recepción/cumplimiento |
+| D2POL-04 | Componentes técnicos se verifican separadamente | Evidencia de instalación, integridad, compatibilidad y operatividad | Inferir (C_{dep}^{*}) desde intento o instalación declarada |
+| D2POL-05 | (C_{dep}^{*}), (A_f^{*}) y (D_f^{*}) se determinan por separado | Predicados completos y snapshots basal/post | Transferir la primera etapa técnica automáticamente a accesibilidad/apertura |
+| D2POL-06 | (C_{auth,base}=1) y condiciones no focales comunes en DGP aislado | Contrato de elegibilidad y auditoría de invariantes | Introducir cambio de autorización o recursos no declarado |
+| D2POL-07 | Vías colaterales de provisión quedan registradas | Manifiesto de cambios y grafo de dependencias | Etiquetar ITT de paquete como efecto puro de accesibilidad |
+| D2POL-08 | Ausencia de provisión focal de fondo en control D2 se verifica, no se presupone | Inventario/cobertura y evidencia independiente | Declarar control limpio por el mero hecho de no programar intento |
+| D2POL-09 | (s=0.80) se mantiene como hipótesis no validada | Configuración del DGP y análisis de sensibilidad futuro | Presentar el parámetro candidato como dato empírico o aprobado |
+| D2POL-10 | Provisión no ejecuta F1/F2/A1/A2 | Separación de eventos/protocolos | Mezclar provisión técnica con ejecución transformacional |
+
+**Estado:** contrato documental aceptado; evidencias, implementación y ejecución permanecen pendientes. No implica aprobación del DGP ni autorización científica.
