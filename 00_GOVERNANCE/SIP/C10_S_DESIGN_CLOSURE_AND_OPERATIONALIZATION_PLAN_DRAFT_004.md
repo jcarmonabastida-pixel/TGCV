@@ -956,7 +956,7 @@ No confundir: (a) exclusión estructural; (b) relevancia de primera etapa focal;
 
 ## 16.22. Crosswalk temporal y de roles — prerrequisito de parametrización
 
-Se incorpora DGP §28 / auditoría IV §13 como contrato común para los escenarios adversariales. No basta la tabla de familias: cada escenario debe materializar las variables en el reloj t−1/t0–t9/t+1…, mantener truth/observed y roles separados, y demostrar los invariantes declarados dentro del propio DGP.
+Se incorpora DGP §28 / auditoría IV §13 como contrato común para los escenarios adversariales. DEC-C10-051 ya seleccionó Opción A como microdominio de trabajo y F* como contrato funcional candidato; esa selección no cierra las fichas operacionales versionadas de F1/τ2, adaptador, F2, A1/A2 ni el oráculo. No basta la tabla de familias: cada escenario debe materializar las variables en el reloj t−1/t0–t9/t+1…, mantener truth/observed y roles separados, y demostrar los invariantes declarados dentro del propio DGP.
 
 **Orden obligatorio antes de parametrizar:** (1) resolver precedencia y semántica funcional de F1=τ2, F2, A1/A2 y adaptador con identidad/versiones; (2) fijar O*/O_obs y V*/V_obs, regla de Value, beneficiario y horizonte; (3) fijar unidad experimental/asignación, unidad de interferencia, pool y mapa de exposición; (4) fijar snapshots y regla temporal de rollback/washout; (5) completar variable×tiempo×rol y gates por escenario; (6) justificar soporte, distribuciones, parámetros y sensibilidad por estimando; (7) solo después serializar fixtures/oráculos con hidden_truth segregada y autorización correspondiente.
 
