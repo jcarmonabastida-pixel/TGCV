@@ -1118,3 +1118,16 @@ El documento DGP §28 y la auditoría IV §13 son referencias de este control. N
 OBJ-CARD-01: CMP≥1, PAR≥1, RUL≥1; REF≥0 con IAM/cobertura; POL condicional; MET obligatorio (DEC-C10-056, alcance cerrado). OBJ-MAP-01: M tipado/versionado por clase y etapa (estructura documentada, instancia abierta). OBJ-STATE-01: DEFAULT y subclases aún no reconciliadas (propuesta/decisión abierta). OBJ-RULE-01: AST acíclico 4/16/16 y REQUIRE/FORBID (perfil aceptado, no implementado). OBJ-IAM-01: O/C/NA/? sellado pre-Z/B (IAM abierto). OBJ-APPLIED-01: C_dst declarado distinto del aplicado (evidencia abierta). OBJ-FSTAR-01: mismo IAM/entrada/destino/C0/G/H/F* para ambas rutas (no validado). OBJ-ALT-01: equivalencia F* y no-afectación por B (no validado).
 
 Dictamen: crosswalk documental parcial; sin freeze, fixtures, parser, oráculo validado ni ejecución.
+
+
+## 44. Control de coherencia DEFAULT
+
+| Control | Criterio | Estado |
+|---|---|---|
+| DEF-STATE-01 | PAR usa ABSENT/NULL/DEFAULT/VALUE | CONTRATO ABSTRACTO |
+| DEF-KIND-01 | Si DEFAULT, distinguir DECLARED/INHERITED con regla y procedencia | DEC-C10-054 ACEPTADA / REPRESENTACIÓN DOCUMENTADA |
+| DEF-ENV-01 | ENV_RESOLVED pertenece a snapshot E_dst, no a PAR/C_src/C_dst | DEC-C10-054 ACEPTADA / SEPARACIÓN DOCUMENTADA |
+| DEF-UNK-01 | Fuente no distingue origen → UNKNOWN salvo evidencia independiente | REGLA DOCUMENTADA / ORÁCULO OPEN |
+| DEF-EQ-01 | Igualdad de valor resuelto no prueba equivalencia de origen/contrato | REGLA DOCUMENTADA / FP OPEN |
+
+No se abre DEC nueva ni se cierra la parametrización por clave, snapshot E_dst, evidencia u oráculo.
