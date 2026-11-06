@@ -816,3 +816,26 @@ Una vía colateral B→Value o una modificación de alternativas puede conservar
 Se actualizan REC-CAUS-02/03/04/07 en la matriz de cierre. No se aprueban REC-EST-01…09 ni se cierran XSYNC-138. No hay freeze, implementación, simulación o ejecución.
 
 **Siguiente operación:** auditar (LATE_f) y la validez de (D_f^*) como tratamiento endógeno IV en D2; no seleccionar Wald hasta revisar exclusión, monotonicidad, versiones, interferencia y error de medición.
+
+
+### 16.13. Auditoría IV de D2: validez de LATE_f y D_f* (2026-11-06)
+
+**Registro:** `C10_S_D2_LATE_F_IV_VALIDITY_AUDIT_DRAFT_001.md`.  
+**Estado:** AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT. Auditoría documental; no es validación empírica ni autorización.
+
+**Dictamen:** `LATE_f` permanece **NO IDENTIFICADO / NO LISTO PARA WALD**. La aleatorización candidata puede identificar el ITT de la política D2 si se cierra y respeta la asignación, pero no prueba exclusión, monotonicidad, consistencia, ausencia de interferencia ni validez de medición.
+
+Hallazgos:
+- **Relevancia:** no demostrada para `D_f^*`. Programación, intento y éxito técnico son estados distintos; `s=0.80` es candidato no validado. Separar primeras etapas de `C_dep^*`, `A_f,post^*`, `D_f^*` y `ΔT_acc^*`.
+- **Independencia:** condicional a unidad, elegibilidad pre-Z, aleatorización/bloques y nivel de clúster, aún abiertos.
+- **Exclusión:** no demostrada. Las vías B-M01…15 pueden alterar recursos, rendimiento, coste, seguridad, información, alternativas, estado, rollback y medición. Las vías posteriores a `D_f^*` forman parte de su efecto; las vías B→Outcome/Value que no pasan por `D_f^*` invalidan la atribución focal.
+- **Monotonicidad:** abierta; crowding-out, desplazamiento de recursos o degradación de alternativas podrían producir defiers. El crossover de control puede producir always-takers y debe medirse.
+- **Consistencia/versiones:** faltan identidad/hash y trazabilidad operativa completa.
+- **Interferencia:** no resuelta por dependencias y recursos compartidos.
+- **Medición:** distinguir `D_f^*` de `D_f^{obs}`; adjudicar `A_f^*` con predicados y snapshots independientes; fijar medición de Value, error diferencial y missingness.
+
+No calcular Wald como efecto causal nominal. Mantener `ITT_Z` como efecto de asignación/política y `LATE_f` como objeto secundario condicional. Si no se sostiene exclusión, informar efecto de paquete o no identificación focal. Un eventual LATE sería local a compliers D2, no `θ_Af(q_X^*)` poblacional ni `θ_A(q)` general.
+
+**Gates IV-G1…IV-G8:** definición y medición del tratamiento/población; primera etapa e inferencia débil; independencia/interferencia; exclusión; monotonicidad; consistencia/versiones; resultado Outcome/Value y missingness; recuperación sintética bajo escenarios adversariales. Su cierre no autoriza ejecución.
+
+No se modifican DEC-C10-066/067 ni el estado de autorización. No hay freeze, implementación, simulación, estimación o ejecución. La siguiente operación es auditar la definición observacional de `D_f^*` y el protocolo de medición de `A_f^*`.
