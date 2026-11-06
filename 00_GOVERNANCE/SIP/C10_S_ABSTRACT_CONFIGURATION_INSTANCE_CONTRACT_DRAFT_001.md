@@ -220,3 +220,9 @@ No se fijan símbolos ENUM, límites numéricos, valores, conversiones ni regla 
 Cada instancia debe contener al menos una RUL según DEC-C10-056. Para cada regla, además de rule_id/scope/AST/resultado/efecto ya definidos, el IAM debe registrar fuente funcional, owner CMP, claves y dominios referidos, versión, precedencia si aplica, mapping M, predicados FP-03, cobertura y oráculo. El AST debe cumplir DEC-C10-054 y preservar UNKNOWN.
 
 Plantilla a evaluar —no regla aceptada—: OR(NEQ(PAR-SVC-ENABLED,true), IN(PAR-SVC-PROFILE,D_profile_enabled)) bajo REQUIRE. Solo será elegible si una fuente funcional independiente justifica el subconjunto activo y este no vuelve la regla tautológica. Si no hay tal fuente, se sustituye por otra restricción constitutiva P0 antes de instanciar. No usar RETRY-COUNT, POL o variables P1 por conveniencia. RUL≥1 no se considera operacionalmente cerrado hasta completar esos campos y su prueba de preservación en F1/A1 y aplicación F2/A2.
+
+## 12. Especialización mínima del contrato RUL
+
+Cada instancia debe contener al menos una RUL según DEC-C10-056. Para cada regla, además de rule_id/scope/AST/resultado/efecto ya definidos, el IAM debe registrar fuente funcional, owner CMP, claves y dominios referidos, versión, precedencia si aplica, mapping M, predicados FP-03, cobertura y oráculo. El AST debe cumplir DEC-C10-054 y preservar UNKNOWN.
+
+Plantilla a evaluar —no regla aceptada—: OR(NEQ(PAR-SVC-ENABLED,true), IN(PAR-SVC-PROFILE,D_profile_enabled)) bajo REQUIRE. Solo será elegible si una fuente funcional independiente justifica el subconjunto activo y este no vuelve la regla tautológica. Si no hay tal fuente, se sustituye por otra restricción constitutiva P0 antes de instanciar. No usar RETRY-COUNT, POL o variables P1 por conveniencia. RUL≥1 no se considera operacionalmente cerrado hasta completar esos campos y su prueba de preservación en F1/A1 y aplicación F2/A2.
