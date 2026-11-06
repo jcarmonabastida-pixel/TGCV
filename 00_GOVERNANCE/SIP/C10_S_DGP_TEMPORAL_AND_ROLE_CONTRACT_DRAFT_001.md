@@ -869,7 +869,7 @@ La notación O*/O_obs y V*/V_obs se introduce aquí como separación explícita 
 ### 28.4 Huecos detectados antes de parametrizar
 
 - F1=τ2 y su relación con el artefacto/adaptador, F2 y la semántica exacta de A1/A2 aún requieren contrato funcional único y versionado; las etiquetas no son fixtures técnicos.
-- El archivo contiene precedencias históricas sobre Opción A que deben armonizarse: §§37–38 llaman candidato a la semántica y §24 remite a selección/decisión; no inferir que el detalle de F1/F2/A1/A2 quedó aprobado por la selección del microdominio.
+- Precedencia de selección: DEC-C10-051 (Decision Log §45; recomendación de microdominio §13) selecciona Opción A como microdominio de trabajo y adopta F* como contrato funcional candidato. Por tanto, las frases históricas de §37 y de la auditoría de compatibilidad que describen Opción A como no seleccionada quedan supersedidas solo respecto al estado de selección. No quedan supersedidas sus reservas sobre el cierre operacional: F1/τ2, adaptador, F2, A1/A2, propiedades de F*, mappings, identidades/versiones, tolerancias y oráculo siguen pendientes. La selección del microdominio no equivale a aprobación de esas fichas ni a freeze.
 - Los campos O*/O_obs y V*/V_obs, regla de Value, horizonte y beneficiario requieren nombres/esquemas canónicos y matching con los contratos estadísticos existentes.
 - t+1… requiere unidad temporal y regla de washout/rollback por escenario; no asumir ausencia de carryover.
 - La unidad de interferencia, pool compartido, mapa de exposición y régimen de asignación por cluster deben fijarse antes de parametrizar escenarios de spillover.
