@@ -8027,3 +8027,15 @@ La alternativa solo es substituible si usa la misma clase de entradas, destino, 
 FP-01…FP-07 son dimensiones funcionales no compensatorias; FP-08 es gate probatorio independiente; Outcome/Value quedan fuera del oráculo. Predicados atómicos, mappings, IAM, tolerancias, C0/G/H, versiones, oráculo y pruebas siguen abiertos.
 
 **Dictamen:** contrato semántico de alto nivel reconciliado; no contrato operacional congelado. MD-C1/MD-C4, IV-G4, Value, unidad/interferencia y carryover siguen abiertos. No parámetros, fixtures, implementación ni ejecución.
+
+
+
+## 170. Crosswalk C_src/C_dst/M, IAM y transformaciones Opción A
+
+CMP/PAR/REF/RUL constituyen el paquete base con cardinalidades DEC-C10-056; POL es condicional y MET obligatorio. M versiona correspondencias tipadas por clase/etapa, sin ser una capa semántica persistida. F1 genera S2; F2 aplica/verifica destino; A1/A2 generan S1 y aplican por ruta alternativa. C_dst declarado y aplicado son distintos. E_dst/runtime/permisos/recursos quedan fuera del objeto.
+
+La matriz M distingue subclases DEFAULT aún no reconciliadas con el enum abstracto DEFAULT. Propuesta no aprobada: DECLARED/INHERITED como metadatos de DEFAULT y ENV_RESOLVED como observación E_dst. Los casos donde esa diferencia altere significado quedan ? hasta decisión.
+
+DEC-C10-054 fija AST acíclico 4/16/16 y REQUIRE/FORBID; DEC-C10-056 fija CMP≥1, PAR≥1, RUL≥1 y REF≥0 con cobertura exhaustiva. IAM conserva O/C/NA/? por propiedad. No se generan valores, truth, fixtures ni pruebas.
+
+**Dictamen:** crosswalk parcial; contrato/M Draft. Claves, dominios, máximos, mapping, conversión, IAM, oráculo y evidencia de destino aplicado abiertos. Sin Design Freeze, implementación o ejecución.
