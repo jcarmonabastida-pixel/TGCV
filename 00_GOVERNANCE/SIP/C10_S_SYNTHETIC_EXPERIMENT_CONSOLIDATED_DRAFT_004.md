@@ -7912,3 +7912,16 @@ Hallazgos materiales:
 **Consecuencia:** mantener `D_f^*) como tratamiento focal verdadero del DGP. No sustituirlo por `D_f^{obs}` en una primera etapa IV/Wald sin un modelo de error defendible. `LATE_f` sigue bloqueado. No se cambia DEC-C10-065 ni se cierra UG-SCH-10, XSYNC o ningún gate IV.
 
 **Siguiente:** crosswalk exhaustivo de predicados de `A_f^*` para resolver duplicidades y rol causal, sin alterar todavía la fórmula ni crear símbolos; después, regla trivalente de agregación de predicados y rutas.
+
+
+---
+
+## §134. Corrección de precedencia y crosswalk de predicados A_f* (2026-11-06)
+
+**Registro:** `C10_S_D2_AF_PREDICATE_CAUSAL_CROSSWALK_DRAFT_001.md`.
+
+Se corrige el hallazgo de §133: la fórmula histórica de §30.1 no es la composición vigente. La referencia candidata depurada es maestro §67.3 / DGP §59.3: `A_f*=I(ID_f* AND REL_f* AND COND_f* AND AUTH_f* AND RES_f* AND DEP_f* AND NOT BLOCK_f*)`. El crosswalk clasifica C_auth_base→AUTH; disponibilidad de recursos/capacidad ex ante necesaria y no duplicada→RES/R_access; C_info sin factor autónomo (técnica imprescindible solo dentro de condición existente; K/comunicaciones como vía posterior; E_T epistémico); C_domain/D_support→ID/tipo o COND según semántica; C_dep y sus cuatro componentes→DEP; C_other inadmisible; VALID/cobertura fuera de truth; App_f/K/selección/ejecución/Outcome/Value fuera de A_f*.
+
+**Estado actualizado de MEAS-G1:** PARTIAL — fórmula candidata identificada; mappings y operacionalización sin duplicidad pendientes. No se modifica ni congela la fórmula; no se declara invariancia empírica ni cierre de UG-SCH-10, PROV, XSYNC o gates IV. `LATE_f` continúa bloqueado.
+
+Siguiente: regla trivalente de agregación de predicados y rutas, con conflicto de evidencia, cobertura, matching unresolved y derivación de D_f observada.
