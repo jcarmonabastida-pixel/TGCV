@@ -1060,3 +1060,19 @@ Registro de subcasos: `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md`, §57. Los TRI
 | Reversibilidad/interferencia | B-M02/B-M03/B-M07/B-M08/B-M11/B-M12/B-M14/B-M15 | Consumidores, recursos compartidos, unidades/periodos, rollback, spillover y carryover | ABIERTO |
 
 **Dictamen agregado:** IV-G4 permanece ABIERTO; exclusión NO DEMOSTRADA. La ausencia de cambio debe probarse con cobertura completa relevante; inventario documental o invariancia postulada no son evidencia material. LATE_f no listo para Wald.
+
+## 40. Control de aceptación de escenarios adversariales Opción A
+
+| Control | Escenario discriminante | Criterio de aceptación documental | Estado |
+|---|---|---|---|
+| DGP-EXC-01 | R0 / EXC-F0 focal exclusiva | Solo D_f* cambia por B; ausencia de rutas colaterales estipulada y verificable dentro del DGP; gates IV restantes separados | OPEN |
+| DGP-EXC-02 | R1 alternativa basal estable | A1→A2 permanece estable; no marcar violación de exclusión por mera existencia; permitir Reach constante y efecto heterogéneo/nulo | OPEN |
+| DGP-EXC-03 | R2 alternativa afectada por B | A1/A2 cambia por B; clasificar ruta colateral y efecto de paquete/no LATE_f focal | OPEN |
+| DGP-EXC-04 | R3 intento/provisión fallida | W_attempt separado de C_dep*/D_f*; distinguir primera etapa nula/débil y posibles costes/residuos | OPEN |
+| DGP-EXC-05 | B→Outcome directo | Outcome verdadero cambia sin mediación por D_f*; exclusión focal falla | OPEN |
+| DGP-EXC-06 | B→Value directo | Value verdadero cambia con Outcome constante; no asumir O→V completo | OPEN |
+| DGP-EXC-07 | K/conocimiento diferencial | B cambia K/selección/ejecución fuera de D_f*; no ajustar por mediador post-Z | OPEN |
+| DGP-EXC-08 | Medición/oráculo diferencial | Distinguir estado verdadero, observación y definición de resultado; no comparabilidad/missingness | OPEN |
+| DGP-EXC-09 | Recursos compartidos/carryover | Mapa de exposición y unidad/clúster; rechazar SUTVA/Wald individual si procede | OPEN |
+
+Los controles son especificaciones, no resultados PASS. Ningún escenario está serializado o ejecutado. La aceptación requiere correspondencia con variables/tiempos/roles y expected_output por Outcome y Value.
