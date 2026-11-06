@@ -1042,3 +1042,21 @@ Registro de subcasos: `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md`, §57. Los TRI
 | IV-G6 ↔ consistencia/medición | MEAS-G2…G8; TRI-OBS-01…03; TRI-DF-01…06; protocolo de adjudicación | Versiones/eventos pinned; ciego y adjudicación; error diferencial/missingness cuantificados o acotados | OPEN |
 
 **Regla de no equivalencia:** completar medición no demuestra exclusión, monotonicidad, independencia ni ausencia de interferencia. La regla trivalente evita falsos ceros; no convierte la cobertura documental en evidencia material. LATE_f permanece NO IDENTIFICADO / NO LISTO PARA WALD.
+
+
+
+## 39. Seguimiento de exclusión por superficies B-M01…15
+
+| Bloque | Superficies | Requisito de evidencia | Estado de cierre |
+|---|---|---|---|
+| Focal capturado | B-M01/B-M02/B-M04/B-M08/B-M09 | Contrato funcional limitado a τ2; diff/versiones; prueba de que funciones extra, seguridad, permisos, rutas y recursos no introducen vías paralelas | PARCIAL / NO DEMOSTRADO |
+| Datos/aplicabilidad | B-M06 | Snapshots/hash, estado X, entradas/salidas, F*, App y Outcome separados; prueba de no cambio fuera de D_f* | ABIERTO |
+| Recursos/capacidad | B-M07 | Disponibilidad, reservas, consumo, colas, consumidores y no desplazamiento de A1/A2/F2; unidad/ventana | ABIERTO |
+| Autorización | B-M05 | Fuente normativa, ACL técnica separada y C_auth,base común pre-Z | ABIERTO |
+| Conocimiento/medición | B-M10 | Comunicaciones/K por brazo; E_T, cobertura, missingness, cegamiento y adjudicación | ABIERTO |
+| Integridad de Outcome | B-M13 | Oráculo, dataset, regla y versión inmutables; separación de B | ABIERTO |
+| Seguridad/rendimiento/estado | B-M09/B-M11/B-M12 | Riesgo/coste, residuos/cachés, latencia/throughput, snapshots y métricas comparables | ABIERTO |
+| Alternativas | B-M03/B-M08/B-M14 | Grafo y pruebas funcionales A1/A2/F2 pre/post, dependencias compartidas y margen de equivalencia | ABIERTO |
+| Reversibilidad/interferencia | B-M02/B-M03/B-M07/B-M08/B-M11/B-M12/B-M14/B-M15 | Consumidores, recursos compartidos, unidades/periodos, rollback, spillover y carryover | ABIERTO |
+
+**Dictamen agregado:** IV-G4 permanece ABIERTO; exclusión NO DEMOSTRADA. La ausencia de cambio debe probarse con cobertura completa relevante; inventario documental o invariancia postulada no son evidencia material. LATE_f no listo para Wald.
