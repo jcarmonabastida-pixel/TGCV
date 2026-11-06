@@ -226,3 +226,12 @@ La decisión aceptada DEC-C10-066 supersede la cláusula de §5 que reservaba la
 Esta decisión no cierra la arquitectura causal: no equipara B_g0/B_g1 con g0/g1, no identifica θ_A(q), θ_Af(q*) ni el efecto mediado, y no valida exclusión, población, soporte, parámetros o vías colaterales. La legitimidad del comparador D2 sigue requiriendo ausencia basal y ausencia de provisión focal de fondo verificadas. D1 conserva su uso secundario condicionado a justificar el régimen ordinario.
 
 No se autoriza freeze, implementación, simulación ni ejecución.
+
+
+## 13. Aceptación del contrato material de políticas D2 — DEC-C10-067 (2026-11-06)
+
+Se aceptan documentalmente las definiciones materiales de (B_{g0}^{D2}) y (B_{g1}^{D2}) del registro DEC-C10-067: control sin intento focal programado y tratamiento con intento de provisión técnica focal programado, usando artefacto/versionado identificados y verificación separada de instalación, integridad, compatibilidad y operatividad. Ninguna política garantiza éxito técnico, (C_{dep}^{*}), (A_f^{*}), (D_f^{*}) ni ejecución de F1/F2/A1/A2.
+
+(C_{auth,base}=1), elegibilidad, recursos no focales, capacidad, información basal y protocolo de medición/adjudicación se mantienen comunes en el DGP aislado. Los cambios diferenciales en permisos, recursos, costes, latencia, calidad, seguridad, información, incentivos o alternativas constituyen vías colaterales que deben registrarse. El ITT mantiene interpretación de efecto de política/paquete si existen esas vías; no equivale automáticamente a efecto puro de accesibilidad.
+
+El registro no cierra actor, artefacto/hash, recepción, ventanas, reintentos, rollback, evidencia de componentes ni ausencia de provisión de fondo. (s=0.80) sigue siendo hipótesis no validada y no se transfiere automáticamente a (A_f^{*}) o (D_f^{*}). No se autoriza freeze, implementación ni ejecución.
