@@ -875,7 +875,7 @@ No se cambia DEC ni se congela la fórmula. Próximo: consolidar regla trivalent
 
 ### 16.16. Regla trivalente A_f / DEP / D_f observados
 
-**Fuente:** `C10_S_AF_DF_TRIVALENT_AGGREGATION_RULE_DRAFT_001.md`.  
+**Fuente:** `C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md §10`.  
 **Estado:** AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT.
 
 - A_f observado: 0 si algún término necesario tiene 0 válido y suficiente; 1 solo si todos los términos son 1 con comparabilidad/cobertura; resto ?.
