@@ -249,3 +249,19 @@ La aleatorización puede identificar el ITT de la política asignada, bajo su di
 **MD-C4** solo cierra cuando el catálogo/grafo es completo dentro de frontera explícita, componentes alternativos están identificados/versionados, recursos/permisos/configuración no se modifican ni degradan por B y la equivalencia funcional pre/post se evalúa con margen justificado. Si no se demuestra no-afectación, permanece el escenario colateral/efecto de paquete y no se interpreta IV focal.
 
 Ningún estado `NO INVENTARIADO`, `?`, `NONE` o `PARTIAL` equivale a ausencia, invariancia o PASS. Ningún hash idéntico demuestra equivalencia funcional; ningún nombre distinto demuestra independencia. Los contratos aquí descritos son documentales y no han sido implementados ni ejecutados. No se declara aislamiento de B, cierre MD-C1/MD-C4 ni autorización científica.
+
+
+
+## 13. Reconciliación del límite entre provisión y operación funcional (2026-11-06)
+
+- **B/provisión:** obtiene y provisiona el artefacto adaptador, verifica identidad/integridad/compatibilidad técnica, configura runtime aislado y expone el canal previsto con permisos/recursos acotados. No ejecuta F1/F2/A1/A2, no transforma S0 ni aplica C_dst.
+- **Adaptador provisionado:** artefacto/runtime/canal técnicamente dispuesto, desglosado en evidencia por componente. No significa que τ2 sea accesible para la unidad.
+- **C_dep*:** describe estado técnico de dependencia; no sustituye A_f*(τ2), cobertura de rutas ni aplicabilidad de F1.
+- **F1/τ2:** conversión S0→S2 tras selección/inicio; ejecución posterior a medición de accesibilidad y fuera de B.
+- **F2:** aplicación S2→SF y verificación destino, con condiciones propias.
+- **A1/A2:** ruta basal S0→S1→SF; no-afectación por B requiere comparación funcional pre/post y cobertura de dependencias, recursos, permisos y rendimiento, no solo hashes.
+- **F*:** criterio de ruta completa, separado de Outcome/Value. PASS local no implica F*=1.
+
+Esta reconciliación no convierte ARCH-B1 en arquitectura aprobada ni acredita aislamiento material. MD-C1 y MD-C4 permanecen OPEN hasta completar manifiesto real, grafo transitivo, snapshots y pruebas de no-afectación. NO INVENTARIADO/?/PARTIAL conservan incertidumbre.
+
+**Estado:** clarificación documental; sin instalación, ejecución, validación ni cierre de vía colateral/exclusión.
