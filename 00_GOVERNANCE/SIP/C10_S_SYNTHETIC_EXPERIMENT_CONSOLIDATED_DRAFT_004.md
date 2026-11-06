@@ -5509,7 +5509,8 @@ Registrar por unidad y versión:
 - (B_{assigned}): versión de política asignada.
 - (B_{offered}): política efectivamente ofrecida.
 - (B_{received}): provisión recibida/activada.
-- (W): intento técnico, con actor/sistema, instante y motivo.
+- (W_programmed): intento programado por la política.
+- (W_attempt): intento efectivamente iniciado, con actor/sistema, instante y motivo; registrar también intentos de fondo cuando W_programmed=0.
 - (S): éxito de instalación y verificación.
 - (C_{install},C_{integrity},C_{compat},C_{oper}): resultados separados y evidencia.
 - (C_{dep}): conjunción técnica final.
@@ -5527,7 +5528,7 @@ La única diferencia intencionada es la política de frecuencia de intento. Si l
 
 ## 54.6. Reglas de aceptación documental propuestas
 
-1. Las probabilidades de intento son las de la tabla D1/D2; las probabilidades finales verificadas son .20/.80 o 0/.80.
+1. Las probabilidades de programación son las de la tabla D1/D2. W_attempt efectivo depende de recepción/cumplimiento y de intentos de fondo; las probabilidades finales de C_dep se derivan, no se fijan. .20/.80 y 0/.80 solo resultan bajo cumplimiento perfecto, una oportunidad, ausencia de fondo y s=.80.
 2. El éxito técnico conjunto condicional a intento es .80 en la factorización candidata, con componentes separados y sin independencia supuesta.
 3. (C_{dep,base}=0) y (A_{f,base}^*=0) se fijan antes de Z en la población de apertura.
 4. Ningún registro confunde W, S, C_dep, A_f*, D_f, aplicabilidad o ejecución.
@@ -5540,7 +5541,7 @@ La única diferencia intencionada es la política de frecuencia de intento. Si l
 
 La propuesta concreta el mecanismo B y muestra una factorización coherente con la fuente recuperada. No resuelve aún: (i) si la política D1 representa realmente el comparador científico deseado; (ii) quién/qué ejecuta el intento; (iii) qué constituye la recepción de B; (iv) qué componentes y tolerancias definen el éxito técnico; (v) cómo se codifica crossover; (vi) si se acepta .80 como tasa conjunta de éxito condicional; (vii) si el estimando focal es sobre C_dep o sobre D_f; y (viii) revisión independiente de exclusión y versiones.
 
-**Dictamen:** B queda especificada como propuesta operativa candidata, no como decisión aceptada. OPEN-C10-001 continúa ABIERTA hasta aprobación explícita de la política, sus versiones y su comparador. No hay implementación, simulación ni ejecución.
+**Dictamen actualizado por DEC-C10-067:** las definiciones materiales conceptuales de las políticas D2 están aceptadas; la operacionalización completa continúa OPEN-C10-001 hasta concretar actor, artefacto/versionado, recepción, cumplimiento, intentos efectivos/de fondo, evidencia técnica y vías colaterales. No hay implementación, simulación ni ejecución.
 
 
 ---
