@@ -843,3 +843,27 @@ El plan operativo vigente pasa a ser C10_S_DESIGN_CLOSURE_AND_OPERATIONALIZATION
 7. La implementación técnica, simulación y ejecución científica siguen sujetas a autorización separada.
 
 **Estado:** reconciliación documental del control. No se cierran gates científicos ni se declara ejecución, validación técnica o revisión independiente.
+
+
+## 30. Crosswalk de aceptación material de políticas D2 — DEC-C10-067 (2026-11-06)
+
+Este addendum propaga al control de cierre la decisión registrada en 00_GOVERNANCE/SIP/DEC-C10-067_D2_MATERIAL_POLICY_CONTRACT_ACCEPTANCE.md (blob 2c3e1dbff4c83ded910a1fd8ca0a47a602df2213) y el contrato auxiliar del Test Contract Register §56 (D2POL-01…10). No reescribe los registros históricos de §6.2 ni las precedencias ya supersedidas por DEC-C10-066.
+
+| Control de cierre | Condición reconciliada | Fuente/contrato | Estado actual | Evidencia pendiente |
+|---|---|---|---|---|
+| FCM-D2-01 | B_g0^D2: no programar/iniciar intento focal por política | DEC-C10-067 §§3–4; D2POL-01 | Definición conceptual aceptada | Política versionada y registros temporales; provisión de fondo medida |
+| FCM-D2-02 | B_g1^D2: programar intento estandarizado de provisión focal | DEC-C10-067 §§3–4; D2POL-02 | Definición conceptual aceptada | Actor/rol, artefacto/version/hash, recepción y desviaciones |
+| FCM-D2-03 | Separar Z, W_programmed, W_attempt, recepción y éxito | DEC-C10-067 §4; D2POL-03 | Criterio definido | Timestamps, cumplimiento, reintentos y fallos parciales |
+| FCM-D2-04 | Verificar por separado instalación, integridad, compatibilidad y operatividad | DEC-C10-067 §4; D2POL-04 | Criterio definido | Evidencia independiente por componente y regla de adjudicación |
+| FCM-D2-05 | No equiparar C_dep*, A_f* y D_f* | DEC-C10-067 §4; D2POL-05 | Distinción conceptual aceptada | Predicados completos y snapshots basal/post |
+| FCM-D2-06 | Mantener C_auth,base=1 y condiciones no focales comunes en DGP aislado | DEC-C10-067 §4; D2POL-06 | Invariantes candidatas, no demostradas | Fichas operativas, evidencias y escenarios adversariales |
+| FCM-D2-07 | Registrar cambios colaterales inducidos por la provisión | DEC-C10-067 §4; D2POL-07 | Obligación conceptual aceptada | Manifiesto de cambios y grafo de dependencias |
+| FCM-D2-08 | Verificar ausencia de provisión focal de fondo/rutas equivalentes en control | DEC-C10-067 §§3–4; D2POL-08 | Requisito abierto | Inventario, cobertura y evidencia independiente |
+| FCM-D2-09 | Mantener s=0.80 como hipótesis no validada | DEC-C10-067 §5; D2POL-09 | Estado reconciliado | Sensibilidad y eventual calibración, sin aprobación anticipada |
+| FCM-D2-10 | Separar provisión técnica de ejecución F1/F2/A1/A2 | DEC-C10-067 §3; D2POL-10 | Restricción conceptual aceptada | Contratos/eventos y pruebas negativas |
+
+### Dictamen de cierre
+
+La definición conceptual de ambas políticas D2 está aceptada; la aceptación no convierte en invariantes demostradas las condiciones comunes ni acredita ausencia efectiva de provisión de fondo. Tampoco valida parámetros, población/soporte, unidad/interferencia, estimandos, exclusión o identificación. D2 sigue siendo primario candidato y D1 secundario por DEC-C10-066. El contrato documental no está implementado ni ejecutado; no se declara PASS técnico o científico.
+
+**Estado de control:** crosswalk DEC-C10-067 incorporado; evidencias y operacionalización pendientes. scientific_execution=false; execution_authorized=false.
