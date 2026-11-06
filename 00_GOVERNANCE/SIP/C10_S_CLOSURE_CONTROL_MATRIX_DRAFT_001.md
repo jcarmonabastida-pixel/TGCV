@@ -1094,3 +1094,20 @@ Los controles son especificaciones, no resultados PASS. Ningún escenario está 
 El documento DGP §28 y la auditoría IV §13 son referencias de este control. Ningún estado DOCUMENTADO equivale a PASS de prueba; los escenarios no están parametrizados ni ejecutados.
 
 **Dictamen agregado:** prerequisitos para parametrización abiertos; no Design Freeze ni implementación.
+
+
+
+## 42. Control de reconciliación funcional Opción A
+
+| Control | Criterio | Estado |
+|---|---|---|
+| FUNC-B-01 | B/adaptador provisiona dependencia; no ejecuta F1/F2/A1/A2 ni aplica configuración | DOCUMENTADO / NO VALIDADO |
+| FUNC-DEP-01 | C_dep* se distingue de A_f*(τ2), DEP_f*, App_f y F* | DOCUMENTADO / NO IMPLEMENTADO |
+| FUNC-F1-01 | F1/τ2 convierte S0→S2; S2 no equivale a estado aplicado | DEFINIDO A NIVEL FUNCIONAL / CONTRATO OPERACIONAL OPEN |
+| FUNC-F2-01 | F2 aplica S2→SF y verifica destino, con condiciones propias | DEFINIDO A NIVEL FUNCIONAL / CONTRATO OPERACIONAL OPEN |
+| FUNC-A-01 | A1/A2 componen ruta basal S0→S1→SF | DEFINIDO A NIVEL FUNCIONAL / NO-AFECTACIÓN POR B OPEN |
+| FUNC-FSTAR-01 | F* se adjudica sobre ruta completa con FP-01…07; FP-08 probatorio separado | DOCUMENTADO / IAM Y ORÁCULO OPEN |
+| FUNC-EQUIV-01 | Substituibilidad exige mismo F*, entrada, destino, IAM, C0/G/H y evidencia | DOCUMENTADO / NO VALIDADO |
+| FUNC-ALT-01 | R1 alternativa basal estable distinta de R2 alternativa afectada por B | DOCUMENTADO / NO VALIDADO |
+
+**Dictamen:** semántica funcional de alto nivel reconciliada; no implica cierre operacional, causal, empírico o técnico. Sin freeze ni implementación.
