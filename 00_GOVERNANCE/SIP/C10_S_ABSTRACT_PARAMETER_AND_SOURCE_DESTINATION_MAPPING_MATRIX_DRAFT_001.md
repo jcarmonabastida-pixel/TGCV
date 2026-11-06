@@ -219,3 +219,11 @@ El mapping RUL no consiste en copiar el texto/AST ni en conservar identificadore
 Falsadores mínimos: operador o negación alterados; operandos/clave intercambiados; scope ampliado/reducido; dominio ENUM cambiado; regla eliminada/duplicada; REQUIRE↔FORBID; UNKNOWN convertido en TRUE/FALSE; precedencia alterada cuando sea significativa; regla nominalmente preservada pero no aplicada. La equivalencia se adjudica con FP-03 y evidencia del destino aplicado; igualdad textual/AST no basta si mappings cambian significado.
 
 La plantilla ENABLED→PROFILE aún carece de D_profile_enabled y fuente funcional, por lo que no hay mapping instanciable ni resultado esperado por ruta. No crear tabla concreta hasta cerrar esas entradas.
+
+## 16. Mapping de reglas RUL entre rutas
+
+El mapping RUL no consiste en copiar el texto/AST ni en conservar identificadores nominales. Debe preservar la semántica de condición, operandos, scope, efecto REQUIRE/FORBID y evaluación trivalente, con correspondencia de cada referencia PAR/CMP y su versión. F1 y A1 producen representaciones intermedias; F2 y A2 aplican la regla en destino bajo el mismo contrato funcional.
+
+Falsadores mínimos: operador o negación alterados; operandos/clave intercambiados; scope ampliado/reducido; dominio ENUM cambiado; regla eliminada/duplicada; REQUIRE↔FORBID; UNKNOWN convertido en TRUE/FALSE; precedencia alterada cuando sea significativa; regla nominalmente preservada pero no aplicada. La equivalencia se adjudica con FP-03 y evidencia del destino aplicado; igualdad textual/AST no basta si mappings cambian significado.
+
+La plantilla ENABLED→PROFILE aún carece de D_profile_enabled y fuente funcional, por lo que no hay mapping instanciable ni resultado esperado por ruta. No crear tabla concreta hasta cerrar esas entradas.
