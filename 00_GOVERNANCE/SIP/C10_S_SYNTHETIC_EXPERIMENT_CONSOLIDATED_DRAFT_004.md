@@ -7808,3 +7808,14 @@ Este addendum supersede las recomendaciones anteriores de §§65–67 y las refe
 La selección de D2 no valida s=.80 ni otras probabilidades, ni demuestra ausencia real de provisión focal de fondo. Permanecen abiertos: actor/recepción/versiones, verificación de ausencia basal y de fondo, población y soporte, unidad/interferencia, primeras etapas independientes C_dep/A_f/D_f/ΔT_acc, vías colaterales/exclusión, estimandos, Value, calibración, potencia y precisión. ITT, primeras etapas y LATE son específicos por escenario; no se agrupan ni transportan automáticamente.
 
 No hay freeze, implementación, simulación ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 130. DEC-C10-067 — aceptación del contrato material de políticas D2 (2026-11-06)
+
+Se aceptan las definiciones conceptuales de (B_{g0}^{D2}) y (B_{g1}^{D2}): el control mantiene la configuración basal y no programa/inicia intento focal; el tratamiento programa provisión técnica focal con artefacto/versionado identificados, actor y eventos registrados, y verificación separada de instalación, integridad, compatibilidad y operatividad. La política no garantiza intento efectivo, recepción, éxito, (C_{dep}^{*}), accesibilidad ni ejecución de transformaciones.
+
+Se mantienen comunes (C_{auth,base}=1), elegibilidad, recursos no focales, capacidad, información basal y protocolo de medición/adjudicación en el DGP aislado. Cualquier efecto diferencial sobre permisos, recursos, costes, latencia, calidad, seguridad, información, incentivos o alternativas debe modelarse como vía colateral/cointervención. El ITT no se identifica automáticamente con el efecto puro de accesibilidad.
+
+DEC-C10-067 complementa DEC-C10-066 sin modificar la precedencia D2 primario candidato/D1 secundario. (s=0.80) sigue siendo candidato no validado. Actor, artefacto/hash, recepción, ventanas, reintentos, evidencia independiente, detección de provisión de fondo, rutas alternativas, estimandos, población/soporte e identificación permanecen abiertos.
+
+**Estado:** ACCEPTED — conceptual/documental; no freeze ni autorización de implementación, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
