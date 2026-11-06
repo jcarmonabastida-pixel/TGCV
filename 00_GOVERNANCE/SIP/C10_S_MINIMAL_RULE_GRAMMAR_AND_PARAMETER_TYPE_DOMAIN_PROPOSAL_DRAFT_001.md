@@ -129,3 +129,7 @@ Para evitar una regla meramente tautológica o decorativa, la RUL mínima debe s
 No se afirma que la regla describa ya Opción A: si no existe fundamento contractual para ese vínculo, se descarta esta plantilla y se identifica otra restricción real del P0. No se inventa semántica para conservar el roster. El parámetro RETRY-COUNT no participa por defecto en esta regla; solo se vinculará si el contrato del servicio lo exige.
 
 **Criterios de cierre:** fuente normativa/funcional; owner CMP y scope; claves y dominios finitos cerrados; AST tipado dentro de 4/16/16; efecto REQUIRE/FORBID; tabla de verdad trivalente incluyendo UNKNOWN; mapping semántico en F1/A1 y aplicación en F2/A2; predicados RUL-01…03 y FP-03; falsadores y casos límite; evidencia/oráculo independiente. Hasta entonces RUL≥1 está satisfecho como cardinalidad de diseño, pero no como contrato sustantivo operacionalmente cerrado.
+
+## 12. Instancia sintética de referencia para comprobar expresividad RUL
+
+La especialización propuesta usa BOOL ENABLED y ENUM PROFILE={STANDARD,READ_ONLY,DISABLED}; RUL-SVC-ENABLE-PROFILE-01 se expresa como OR(NEQ(ENABLED,true),IN(PROFILE,{STANDARD,READ_ONLY})) bajo REQUIRE. Esta instancia demuestra expresividad sintáctica y contraste lógico dentro del mundo sintético estipulado; no valida parser, semántica ejecutable ni dominio de servicios reales. ENABLED=true/PROFILE=DISABLED es violador conocido; un valor ausente/conflictivo produce UNKNOWN conforme a la regla trivalente. Mantener presupuesto AST 4/16/16 y no introducir operadores o tipos nuevos.
