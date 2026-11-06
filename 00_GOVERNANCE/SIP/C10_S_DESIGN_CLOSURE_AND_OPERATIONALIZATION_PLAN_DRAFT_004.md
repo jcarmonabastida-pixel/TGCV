@@ -899,3 +899,19 @@ La tabla D_f incluye las nueve combinaciones de estados observados, pero solo es
 Los IDs TRI-AF-01…05, TRI-DEP-01…05, TRI-DF-01…06 y TRI-OBS-01…03 son casos lógicos propuestos, sin fixtures serializados ni ejecución. Materialización futura reutilizará el esquema existente de test_case y mantendrá hidden_truth segregada del analizador.
 
 **Estado:** mejora de cobertura documental, no cierre de MEAS-G4/G6/G7/G8. Pendientes la plantilla U_G completa, matching/UG-SCH-10, adjudicación independiente, error diferencial/missingness, fixtures/oráculos y revisión independiente. No autoriza implementación ni ejecución.
+
+
+
+## 16.18. Cierre de validez IV D2 — propagación de C10-S-IV-AUD-001 (2026-11-06)
+
+**Estado:** dictamen documental incorporado; supuestos y gates abiertos. No es cierre de identificación.
+
+La auditoría `C10_S_D2_LATE_F_IV_VALIDITY_AUDIT_DRAFT_001.md` establece que `LATE_f` no está identificado ni listo para Wald. Se mantiene como estimando secundario condicional. La asignación aleatoria candidata puede identificar `ITT_Z` como efecto de política asignada, bajo el diseño realmente implementado y sus condiciones; no atribuye automáticamente el resultado a `D_f^*`.
+
+Se incorporan como gates obligatorios IV-G1…IV-G8: (1) tratamiento/población/unidad/versiones; (2) primeras etapas separadas e instrumento débil; (3) independencia/interferencia/carryover; (4) exclusión y vías colaterales; (5) monotonicidad/defiers; (6) consistencia y medición; (7) Outcome y Value separados, horizonte y missingness; (8) recuperación sintética adversarial de identificación/no identificación.
+
+Amenazas materiales: recursos/capacidad y desplazamiento, permisos, coste, latencia/calidad/seguridad, información/conocimiento, alternativas, dependencias compartidas, rollback/carryover y observación diferencial. Si no se defiende exclusión, el estimando reportable será el efecto de política/paquete (`ITT_Z` u objeto de política que corresponda) o no identificación; no Wald etiquetado como `LATE_f`.
+
+Las primeras etapas de `C_dep^*`, `A_f,post^*`, `D_f^*` y `ΔT_acc^*` no son intercambiables. `s=0.80` no es parámetro validado. Un LATE para Outcome no identifica el LATE para Value. No se transportan resultados entre D2/D1 ni hacia `θ_A(q)` sin condiciones adicionales.
+
+**Dependencia de cierre:** la auditoría observacional trivalente de `A_f^*/D_f^*` y el cierre de rutas/cobertura deben alimentar IV-G1/G4/G6; no se habilita Wald por completar únicamente una primera etapa técnica. No se autoriza freeze, implementación, simulación ni ejecución. La siguiente operación documental es cruzar IV-G1/G4/G6 con el contrato de snapshots, identidad/versionado, cobertura U_G y error diferencial, sin reabrir DEC-C10-066/067.
