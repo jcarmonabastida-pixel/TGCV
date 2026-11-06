@@ -958,3 +958,26 @@ El crosswalk conceptual B-M01…15 → variable/predicado → clase U_G → meca
 **Gates MEAS-G1…G8:** composición; identidad/comparabilidad; pinning/pertenencia; cobertura; temporalidad; adjudicación; error/missingness; recuperación sintética con truth oculta. Su cierre no autoriza ejecución.
 
 **Siguiente:** crosswalk exhaustivo de predicados de `A_f^*), sin alterar la fórmula ni crear símbolos, y luego regla trivalente de agregación. Wald/`LATE_f` permanece bloqueado.
+
+
+---
+
+## 34. Crosswalk causal de predicados de accesibilidad
+
+**Fuente:** `C10_S_D2_AF_PREDICATE_CAUSAL_CROSSWALK_DRAFT_001.md`  
+**Estado:** AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT.
+
+| Dimensión | Estado | Dictamen |
+|---|---|---|
+| Fórmula de referencia | IDENTIFICADA / CANDIDATE | Maestro §67.3 / DGP §59.3; no es definición universal ni freeze. |
+| C_auth_base | MAPPED → AUTH | Condición funcional basal; permisos técnicos de provisión separados. |
+| C_resource/C_capacity | MAPPED CONDITIONALLY → RES/R_access | Solo disponibilidad ex ante necesaria y no duplicada; consumo/carga ejecución fuera. |
+| C_info | NO AUTONOMOUS FACTOR | Técnica imprescindible dentro de condición existente; K/avisos colateral; E_T epistémico. |
+| C_domain/D_support | MAPPING OPEN → ID/type or COND | No duplicar; separar dominio/tipo de precondición S0. |
+| C_dep/C_install…C_oper | MAPPED → DEP | Ruta única en DGP aislado; generalización exige al menos una ruta válida. |
+| C_other | EXCLUDED | Residual inadmisible. |
+| VALID/cobertura/E_T | EPISTEMIC | Fuera de truth de A_f*. |
+| App_f/K/selección/ejecución/O/V | DOWNSTREAM / OUTSIDE | No integrar en A_f*. |
+| MEAS-G1 | PARTIAL | Fórmula candidata identificada; mapping/operacionalización de componentes y rutas pendientes. |
+
+**Corrección de §33:** no describir C_info/C_resource/C_capacity/C_domain/C_other como factores vigentes autónomos; la fórmula histórica no prevalece sobre §§59.3/67.3. Siguiente: regla trivalente de agregación y rutas. `LATE_f` sigue bloqueado.
