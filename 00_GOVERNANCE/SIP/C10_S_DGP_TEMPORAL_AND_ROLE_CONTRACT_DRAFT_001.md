@@ -49,7 +49,7 @@ La probabilidad de programación, el intento efectivo y el estado final verifica
 ### 3.2 Intento, éxito y estado final
 
 [
-W_{programmed,i} \sim Bernoulli(q_{z,D})
+W_{programmed,i} \sim Bernoulli(π_{z,D}^{prog})
 ]
 [
 P(W_{attempt,i}=1|W_{programmed,i}=1,Z,D,X,H)=c_{z,D}(X,H)
