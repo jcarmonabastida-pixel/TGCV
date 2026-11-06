@@ -1178,40 +1178,12 @@ La plantilla ENABLED→PROFILE no satisface controles mientras no haya fuente y 
 
 | Control | Criterio | Estado |
 |---|---|---|
-| SVC-RUL-01 | Unidad lógica coherente con DEC-C10-051/052/057/058 | Base decisional aceptada; especialización sintética propuesta |
-| SVC-RUL-02 | Dominios ENABLED y PROFILE finitos y explícitos | Propuestos; no congelados |
-| SVC-RUL-03 | RUL no tautológica con estado permitido y violador conocido | Propuesta documentada; aceptación OPEN |
+| SVC-RUL-01 | Unidad lógica coherente con DEC-C10-051/052/057/058 | Base decisional aceptada |
+| SVC-RUL-02 | Contrato sintético ENABLED/PROFILE y dominios finitos | Propuesta especificada ex ante; aceptación OPEN |
+| SVC-RUL-03 | RUL-SVC-ENABLE-PROFILE-01 no tautológica, con permitido y violador conocidos | Propuesta; aceptación OPEN |
 | SVC-RUL-04 | Owner CMP, scope, versión y procedencia | OPEN |
-| SVC-RUL-05 | Mapping semántico F1/A1 y aplicación F2/A2 | OPEN |
+| SVC-RUL-05 | Mapping semántico F1/A1 y aplicación F2/A2 | Invariantes especificados; mapping concreto OPEN |
 | SVC-RUL-06 | UNKNOWN, FP-03/06/07 y oráculo independiente | OPEN |
-| SVC-RUL-07 | Contrastes adversariales y truth segregada | Especificados conceptualmente; sin fixtures/pruebas |
+| SVC-RUL-07 | Contrastes adversariales y truth segregada | Contratos conceptuales; sin fixtures/pruebas |
 
-La especialización no selecciona producto real ni cambia DEC-C10-056. No freeze ni implementación.
-
-## 47. Control de cierre del contrato funcional sintético RUL
-
-| Control | Criterio | Estado |
-|---|---|---|
-| SVC-RUL-01 | Unidad lógica coherente con DEC-C10-051/052/057/058 | Base decisional aceptada; especialización sintética propuesta |
-| SVC-RUL-02 | Dominios ENABLED y PROFILE finitos y explícitos | Propuestos; no congelados |
-| SVC-RUL-03 | RUL no tautológica con estado permitido y violador conocido | Propuesta documentada; aceptación OPEN |
-| SVC-RUL-04 | Owner CMP, scope, versión y procedencia | OPEN |
-| SVC-RUL-05 | Mapping semántico F1/A1 y aplicación F2/A2 | OPEN |
-| SVC-RUL-06 | UNKNOWN, FP-03/06/07 y oráculo independiente | OPEN |
-| SVC-RUL-07 | Contrastes adversariales y truth segregada | Especificados conceptualmente; sin fixtures/pruebas |
-
-La especialización no selecciona producto real ni cambia DEC-C10-056. No freeze ni implementación.
-
-## 47. Control de cierre del contrato funcional sintético RUL
-
-| Control | Criterio | Estado |
-|---|---|---|
-| SVC-RUL-01 | Unidad lógica coherente con DEC-C10-051/052/057/058 | Base decisional aceptada; especialización sintética propuesta |
-| SVC-RUL-02 | Dominios ENABLED y PROFILE finitos y explícitos | Propuestos; no congelados |
-| SVC-RUL-03 | RUL no tautológica con estado permitido y violador conocido | Propuesta documentada; aceptación OPEN |
-| SVC-RUL-04 | Owner CMP, scope, versión y procedencia | OPEN |
-| SVC-RUL-05 | Mapping semántico F1/A1 y aplicación F2/A2 | OPEN |
-| SVC-RUL-06 | UNKNOWN, FP-03/06/07 y oráculo independiente | OPEN |
-| SVC-RUL-07 | Contrastes adversariales y truth segregada | Especificados conceptualmente; sin fixtures/pruebas |
-
-La especialización no selecciona producto real ni cambia DEC-C10-056. No freeze ni implementación.
+La fuente de verdad para el DGP será el contrato sintético versionado y congelado antes de generar/analizar resultados. No se presenta como norma externa. No freeze ni implementación.
