@@ -915,3 +915,17 @@ Amenazas materiales: recursos/capacidad y desplazamiento, permisos, coste, laten
 Las primeras etapas de `C_dep^*`, `A_f,post^*`, `D_f^*` y `ΔT_acc^*` no son intercambiables. `s=0.80` no es parámetro validado. Un LATE para Outcome no identifica el LATE para Value. No se transportan resultados entre D2/D1 ni hacia `θ_A(q)` sin condiciones adicionales.
 
 **Dependencia de cierre:** la auditoría observacional trivalente de `A_f^*/D_f^*` y el cierre de rutas/cobertura deben alimentar IV-G1/G4/G6; no se habilita Wald por completar únicamente una primera etapa técnica. No se autoriza freeze, implementación, simulación ni ejecución. La siguiente operación documental es cruzar IV-G1/G4/G6 con el contrato de snapshots, identidad/versionado, cobertura U_G y error diferencial, sin reabrir DEC-C10-066/067.
+
+
+
+## 16.19. Dependencias cruzadas de identificación y medición — IV-G1/G4/G6 (2026-11-06)
+
+Se fija el crosswalk operativo entre la auditoría IV D2 y la auditoría de medición, sin crear un sistema paralelo de IDs:
+
+- **IV-G1** reutiliza MEAS-G1…G5/G8, TRI-AF-01…05, TRI-DF-01…06, ID-01…15 y SNAP-01…15 para identidad, elegibilidad basal, predicados, matching, snapshots y clasificación D_f*/D_f_obs.
+- **IV-G4** reutiliza MEAS-G4, U_G y B-M01…15 para rutas alternativas/compartidas/externas/desconocidas, cobertura negativa y examen de vías colaterales. La invariancia postulada por el DGP no es prueba de exclusión.
+- **IV-G6** reutiliza MEAS-G2…G8 y TRI-OBS-01…03 para pinning, cegamiento, adjudicación, error diferencial, missingness y separación truth/observación.
+
+La regla trivalente impide convertir unknown, MISSING, NONE, PARTIAL o conflicto en cero; DEP_f_obs=0 exige universo declarado exhaustivamente cubierto; no comparabilidad temporal/semántica conserva ?. La verdad oculta no se expone al analizador. Esta especificación no demuestra que los contratos estén implementados ni que los datos permitan identificación.
+
+**Resultado:** dependencia documental reconciliada; IV-G1/G4/G6 siguen abiertos, exclusión continúa amenazada materialmente y LATE_f no está identificado. La siguiente operación científica/documental es revisar, por cada vía B-M01…15 y ficha de invariante, qué evidencia permitiría refutar o acotar la exclusión en el DGP Opción A, sin presuponer invariancia ni crear parámetros. No se autoriza implementación ni ejecución.
