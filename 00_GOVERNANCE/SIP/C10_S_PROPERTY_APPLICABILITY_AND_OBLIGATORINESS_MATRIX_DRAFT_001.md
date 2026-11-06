@@ -170,3 +170,16 @@ El IAM se aplica a F1/F2 y A1/A2 por igual. Antes de Z/B sella propiedades O/C/N
 | PAR-SVC-RETRY-COUNT / INT | Candidato base solo si el servicio declara reintentos | OPTIONAL | ABSENT/VALUE; DEFAULT con contrato; NULL no salvo declaración | PAR-01/02/03/05/06 | N_retry_max, semántica de ausencia y regla vinculada |
 
 La tabla es un IAM candidato, no un sellado operativo. Ninguna propiedad pasa a O/C/NA confirmatorio hasta que la unidad, fuente contractual, dominio, mapping, cobertura y regla de evidencia estén definidos ex ante. Si un slot no pertenece al P0 de la unidad, se elimina/sustituye antes de Z/B y se registra justificación; no se declara NA post hoc. POL sigue ausente por diseño y MET obligatorio conforme a decisiones existentes.
+
+## 14. IAM candidato para RUL mínima
+
+| Control | Requisito ex ante | Estado |
+|---|---|---|
+| RUL-BASE-01 | Al menos una regla constitutiva, no tautológica y con fuente funcional | Cardinalidad DEC-C10-056 aceptada; contenido OPEN |
+| RUL-BASE-02 | Owner CMP, scope, claves/dominios y versión inequívocos | OPEN |
+| RUL-BASE-03 | AST acíclico 4/16/16, operadores/efecto dentro de DEC-C10-054 | Perfil aprobado; instancia OPEN |
+| RUL-BASE-04 | TRUE/FALSE/UNKNOWN y tratamiento explícito de UNKNOWN | Regla general documentada; tabla de caso OPEN |
+| RUL-BASE-05 | Mapping de regla y operandos F1/A1, aplicación F2/A2 | OPEN |
+| RUL-BASE-06 | FP-03 RUL-01/02/03, cobertura, oráculo independiente | OPEN |
+
+La plantilla ENABLED→PROFILE se evalúa solo como candidata. No se asigna O/C/NA confirmatorio hasta acreditar fuente, dominio y evidencia. Si carece de base funcional, debe reemplazarse antes de Z/B, no declararse NA.
