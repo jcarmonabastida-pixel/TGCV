@@ -5444,7 +5444,7 @@ Outcome y Value son constructos distintos. Value permanece vectorial de forma pr
 
 ## 53.9. Pendientes que permanecen abiertos
 
-La armonización no cierra: definición física/versionado de B; aceptación de D1 como comparador principal; q* y soporte; F* y equivalencia funcional; unidad de asignación/interferencia; especificación completa de ΔT_acc, Reach y lógica de indeterminación; exclusión IV y rangos δ/γ; Value operacional; N, réplicas, precisión, tolerancias; fixtures y oráculos de todas las familias; cotejo literal y persistencia del DOCX; revisión independiente XSYNC; aprobación científica y gates de freeze.
+La armonización no cierra: definición física/versionado de B; justificación de D1 como comparador secundario; q* y soporte; F* y equivalencia funcional; unidad de asignación/interferencia; especificación completa de ΔT_acc, Reach y lógica de indeterminación; exclusión IV y rangos δ/γ; Value operacional; N, réplicas, precisión, tolerancias; fixtures y oráculos de todas las familias; cotejo literal y persistencia del DOCX; revisión independiente XSYNC; aprobación científica y gates de freeze.
 
 ## 53.10. Criterio de interpretación
 
