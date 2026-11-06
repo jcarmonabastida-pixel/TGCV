@@ -1030,3 +1030,15 @@ Registro de subcasos: `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md`, §57. Los TRI
 | IV-G8 Suite sintética | Truth oculta adversarial para instrumento débil, exclusión, defiers, interferencia, versiones y medición | ESPECIFICACIÓN PENDIENTE DE IMPLEMENTACIÓN | No validar capacidad del analizador para abstenerse |
 
 **Dictamen agregado:** `LATE_f` = NO IDENTIFICADO / NO LISTO PARA WALD. Los gates son requisitos de diseño; su documentación no constituye validación empírica ni autorización de ejecución. `ITT_Z` conserva objeto de efecto de asignación de política y no atribuye automáticamente accesibilidad.
+
+
+
+## 38. Crosswalk de dependencias entre identificación IV y medición trivalente
+
+| Dependencia | Referencias reutilizadas | Criterio de aceptación | Estado |
+|---|---|---|---|
+| IV-G1 ↔ tratamiento/población observables | MEAS-G1…G5/G8; TRI-AF-01…05; TRI-DF-01…06; ID-01…15; SNAP-01…15 | Misma identidad τ2 y snapshots comparables; elegibilidad pre-Z; D_f* no sustituido por D_f_obs | OPEN / PARTIAL |
+| IV-G4 ↔ exclusión | MEAS-G4; U_G; B-M01…15; fichas D2-RES/CAP/INFO e invariantes | Rutas y vías colaterales inventariadas por alcance; cobertura negativa suficiente; invariancia demostrada o vía separada/modelada; unknowns materiales no ocultos | MATERIAL THREAT / OPEN |
+| IV-G6 ↔ consistencia/medición | MEAS-G2…G8; TRI-OBS-01…03; TRI-DF-01…06; protocolo de adjudicación | Versiones/eventos pinned; ciego y adjudicación; error diferencial/missingness cuantificados o acotados | OPEN |
+
+**Regla de no equivalencia:** completar medición no demuestra exclusión, monotonicidad, independencia ni ausencia de interferencia. La regla trivalente evita falsos ceros; no convierte la cobertura documental en evidencia material. LATE_f permanece NO IDENTIFICADO / NO LISTO PARA WALD.
