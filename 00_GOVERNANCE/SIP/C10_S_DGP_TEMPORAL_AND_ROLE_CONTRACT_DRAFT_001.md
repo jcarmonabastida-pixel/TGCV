@@ -804,7 +804,7 @@ Permanecen abiertos actor, artefacto/hash, recepción, ventanas, reintentos, rol
 
 ## 27. Regla trivalente de agregación de A_f* y D_f observado — reconciliación C10-S (2026-11-06)
 
-**Fuente:** `C10_S_AF_DF_TRIVALENT_AGGREGATION_RULE_DRAFT_001.md`.  
+**Fuente:** `C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md §10`.  
 **Estado:** reconciliación documental asistida; no aprobada, no congelada, no ejecutada.
 
 1. Se preservan como dominios ortogonales `observed_state={1,0,?}`, `evidence_status={AVAILABLE,MISSING,CONFLICTING}`, `coverage_status={NONE,PARTIAL,COMPLETE}`, adjudicación y `truth_dgp` restringida. No convertir MISSING/NONE/PARTIAL/no inventariado en 0.
