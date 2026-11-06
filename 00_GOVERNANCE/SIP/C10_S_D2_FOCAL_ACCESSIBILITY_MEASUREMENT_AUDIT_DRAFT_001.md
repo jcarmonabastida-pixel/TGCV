@@ -174,3 +174,17 @@ Resolver **MEAS-01** primero: construir un crosswalk exhaustivo de cada predicad
 Por tanto, C_info no es factor autónomo; C_resource/C_capacity se canalizan a RES/R_access solo si son disponibilidad ex ante necesaria y no duplicada; C_domain/D_support se mapea a ID/tipo o COND; C_other es residual inadmisible; VALID/cobertura/E_T son epistémicos; App_f/K/selección/ejecución quedan fuera. El crosswalk completo está en `C10_S_D2_AF_PREDICATE_CAUSAL_CROSSWALK_DRAFT_001.md`.
 
 MEAS-01 deja de describir una fórmula no reconciliada y pasa a **PARTIAL**: fórmula candidata identificada; mappings y operacionalización de RES, D_support↔ID/COND, REL/COND/BLOCK y rutas aún abiertos. Esta corrección no aprueba ni congela §67.3 y no altera DEC-C10-065/066/067. La auditoría sigue siendo asistida/no independiente.
+
+
+---
+
+## Addendum: regla trivalente de agregación (2026-11-06)
+
+**Fuente:** `C10_S_AF_DF_TRIVALENT_AGGREGATION_RULE_DRAFT_001.md`.  
+**Estado:** AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT.
+
+Se formaliza la propagación de `A_f^{obs}`, `DEP_f^{obs}` y `D_f^{obs}` reutilizando DGP §26/§32 y U_G §5 / protocolo de adjudicación. La conjunción de A_f observada da 0 ante cualquier término necesario con 0 válido/suficiente; da 1 solo si todos los términos son 1 con comparabilidad/cobertura adecuadas; en otro caso ?. DEP es disyunción de rutas: una ruta 1 basta; 0 exige universo exhaustivo COMPLETE y todas las rutas 0; en otro caso ?. D_f observado da 1 solo con baseline 0/post 1; da 0 si baseline 1 o post 0; en los demás casos ?. No comparabilidad de τ2/snapshots implica NOT_COMPARABLE/?.
+
+Se distingue evidencia/conflicto/cobertura de estado observado y truth DGP. No se convierte MISSING/NONE/PARTIAL/unknown en 0. Una alternativa válida impide inferir DEP=0 desde C_dep=0. La elegibilidad verdadera basal no se sustituye por clasificación observada sin modelar error.
+
+La regla no aprueba ni congela la fórmula, no valida error diferencial ni cierra IV. `LATE_f` sigue bloqueado. Documento formal: `C10_S_AF_DF_TRIVALENT_AGGREGATION_RULE_DRAFT_001.md`.
