@@ -214,20 +214,18 @@ El roster no fija nombres físicos ni tablas de conversión concretas. Para DECI
 
 ## 16. Mapping de reglas RUL entre rutas
 
-El mapping RUL no consiste en copiar el texto/AST ni en conservar identificadores nominales. Debe preservar la semántica de condición, operandos, scope, efecto REQUIRE/FORBID y evaluación trivalente, con correspondencia de cada referencia PAR/CMP y su versión. F1 y A1 producen representaciones intermedias; F2 y A2 aplican la regla en destino bajo el mismo contrato funcional.
+El mapping preserva la semántica de condición, operandos, scope, efecto REQUIRE/FORBID y evaluación trivalente, con correspondencia de cada referencia PAR/CMP y versión. F1/A1 producen representaciones intermedias; F2/A2 aplican la regla en destino bajo el mismo contrato funcional.
 
-Falsadores mínimos: operador o negación alterados; operandos/clave intercambiados; scope ampliado/reducido; dominio ENUM cambiado; regla eliminada/duplicada; REQUIRE↔FORBID; UNKNOWN convertido en TRUE/FALSE; precedencia alterada cuando sea significativa; regla nominalmente preservada pero no aplicada. La equivalencia se adjudica con FP-03 y evidencia del destino aplicado; igualdad textual/AST no basta si mappings cambian significado.
+Para la instancia sintética propuesta RUL-SVC-ENABLE-PROFILE-01:
+- PAR-SVC-ENABLED conserva BOOL y sus estados; ABSENT/NULL/DEFAULT se mantienen diferenciados conforme al contrato de parámetros.
+- PAR-SVC-PROFILE conserva el dominio semántico {STANDARD, READ_ONLY, DISABLED}. La correspondencia física puede renombrar símbolos, pero debe ser total, inyectiva respecto de los tres significados y versionada.
+- La regla conserva ENABLED=true implica PROFILE∈{STANDARD, READ_ONLY}, scope de la unidad lógica y efecto REQUIRE.
+- ENABLED=true con STANDARD/READ_ONLY sigue satisfaciendo; ENABLED=true con DISABLED sigue violando. ENABLED=false no queda restringido por esta implicación.
+- UNKNOWN no puede colapsarse en TRUE/FALSE.
 
-La plantilla ENABLED→PROFILE aún carece de D_profile_enabled y fuente funcional, por lo que no hay mapping instanciable ni resultado esperado por ruta. No crear tabla concreta hasta cerrar esas entradas.
+Falsadores: operador/negación alterados; clave/operando intercambiado; scope alterado; dominio ENUM incompleto, fusionado o ampliado; regla eliminada/duplicada; REQUIRE↔FORBID; UNKNOWN convertido en booleano; regla no aplicada en destino; mapping nominalmente igual pero semánticamente divergente.
 
-## 16. Mapping de reglas RUL entre rutas
-
-El mapping RUL no consiste en copiar el texto/AST ni en conservar identificadores nominales. Debe preservar la semántica de condición, operandos, scope, efecto REQUIRE/FORBID y evaluación trivalente, con correspondencia de cada referencia PAR/CMP y su versión. F1 y A1 producen representaciones intermedias; F2 y A2 aplican la regla en destino bajo el mismo contrato funcional.
-
-Falsadores mínimos: operador o negación alterados; operandos/clave intercambiados; scope ampliado/reducido; dominio ENUM cambiado; regla eliminada/duplicada; REQUIRE↔FORBID; UNKNOWN convertido en TRUE/FALSE; precedencia alterada cuando sea significativa; regla nominalmente preservada pero no aplicada. La equivalencia se adjudica con FP-03 y evidencia del destino aplicado; igualdad textual/AST no basta si mappings cambian significado.
-
-La plantilla ENABLED→PROFILE aún carece de D_profile_enabled y fuente funcional, por lo que no hay mapping instanciable ni resultado esperado por ruta. No crear tabla concreta hasta cerrar esas entradas.
-
+No se fijan nombres físicos ni tabla concreta porque no se ha elegido formato/plataforma. FP-03 adjudica preservación; FP-06 aplicación; FP-07 verificación; FP-08 trazabilidad. Esta sección especifica invariantes, no mapping implementado ni evidencia de preservación.
 ## 17. Mapping candidato del contrato sintético ENABLED/PROFILE/RUL
 
 El mapping debe preservar la semántica de ENABLED y los tres símbolos de PROFILE, así como RUL-SVC-ENABLE-PROFILE-01, su owner/scope, versión y efecto REQUIRE. Las etiquetas físicas pueden diferir entre fuente/destino únicamente con tabla de correspondencia explícita hacia los mismos IDs semánticos. Deben probarse los dos perfiles permitidos y el violador DISABLED cuando ENABLED=true. Una conversión que cambie el conjunto permitido o la condición falla FP-03; una regla correcta no aplicada falla FP-06; falta de evidencia deja ?. No se fija aún ninguna tabla de mapping concreta.
