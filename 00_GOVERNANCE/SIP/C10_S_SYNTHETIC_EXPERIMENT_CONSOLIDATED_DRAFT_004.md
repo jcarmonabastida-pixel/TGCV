@@ -7936,3 +7936,15 @@ Siguiente: regla trivalente de agregación de predicados y rutas, con conflicto 
 Se concreta la aplicación a A_f/D_f de las reglas existentes de DGP §26/§32, matriz U_G §5 y protocolo de evidencia/adjudicación. Dominios `observed_state`, `evidence_status`, `coverage_status`, adjudicación y `truth_dgp` permanecen ortogonales. Para A_f: cualquier término necesario 0 con evidencia válida/suficiente ⇒ 0; todos 1 con comparabilidad y cobertura adecuadas ⇒ 1; en otro caso ?. Para DEP: una ruta 1 basta; DEP=0 exige todas las rutas del universo operativo declarado refutadas y cobertura COMPLETE, incluida resolución de Runknown/alternativas/externas/compartidas; en otro caso ?. Para D_f: baseline 0/post 1 ⇒ 1; baseline 1 o post 0 ⇒ 0; resto ?. No comparabilidad de τ2/snapshots ⇒ NOT_COMPARABLE/?.
 
 No convertir MISSING/NONE/PARTIAL en 0; C_dep=0 no implica DEP=0 con alternativa admisible; D_f observado no sustituye D_f verdadero para IV sin modelo de error. No cambia fórmula ni decisiones. `LATE_f` permanece bloqueado.
+
+
+## §136. Reconciliación de contratos adversariales y suite trivalente TRI (2026-11-06)
+
+
+**Fuente de detalle:** `C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md`, §11 (C10-S-TRI-ADVERSARIAL-CROSSWALK-001).
+
+Se reutilizan ID-01…15 (identidad/matching), SNAP-01…15 (snapshots/diff), DGP §§26–28 y 32–35, U_G §§4–8 y matriz de fixtures §30. No se crea un catálogo adversarial paralelo ni se alteran los contratos históricos. La suite TRI añade solo cruces agregados no explicitados: conjunción A_f con cero independiente y unknown/conflicto; DEP con ruta confirmada más Runknown, cobertura completa vs parcial, alternativa funcional y bloqueo por ruta; tabla completa basal/post D_f; precedencia de NOT_COMPARABLE; redescubrimiento de ruta basal; MISSING/NONE/PARTIAL; no filtración de truth y error diferencial.
+
+IDs propuestos TRI-AF-01…05, TRI-DEP-01…05, TRI-DF-01…06 y TRI-OBS-01…03 son especificaciones lógicas, no fixtures serializados ni pruebas. Se fija una tabla de nueve combinaciones D_f, subordinada a la guarda global de comparabilidad. El contrato de materialización reutiliza el esquema existente de test_case y separación generador/analizador/evaluador.
+
+Dictamen: cobertura documental TRI ampliada; MEAS-G8 sigue OPEN y MEAS-G4/G6/G7 no se cierran. No implementación, ejecución, freeze, cambios de decisión ni autorización científica.
