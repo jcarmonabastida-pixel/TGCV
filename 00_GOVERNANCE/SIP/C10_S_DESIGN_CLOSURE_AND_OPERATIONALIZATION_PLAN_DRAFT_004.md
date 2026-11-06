@@ -434,3 +434,43 @@ Secuencia: arquitectura → población/unidad/soporte/políticas → estimandos/
 El hito previo será un **C10-S Design Freeze Candidate** con arquitectura causal reconciliada; DGP y parámetros justificados; población/unidad/soporte; estimandos/supuestos; contratos de medición/análisis; escenarios de validación/falsación; y criterios de aceptación/no identificación. No basta con nombrar variables: debe saberse qué cambia materialmente, cómo separar accesibilidad de otros efectos, qué miden los instrumentos, qué identifica el diseño y si el analizador recupera la verdad causal.
 
 **Límites:** no se aprueban fichas, no se validan parámetros, no se declara Design Freeze Candidate ni readiness de implementación. Se mantienen `scientific_execution=false` y `execution_authorized=false`. D2 sigue primario candidato y D1 secundario; DEC-C10-066/067 no se reabren.
+
+
+### 16.5. Resultado de auditoría cruzada de invariantes, provisión y U_G (2026-11-06)
+
+**Estado:** auditoría documental cruzada completada; DRAFT / NO APROBADA / NO CONGELADA. No es auditoría técnica de una implementación ni validación científica.
+
+#### 16.5.1. Artefactos y contenido verificados
+
+| Artefacto | Contenido comprobado | Estado |
+|---|---|---|
+| `C10_S_PATH_PREDICATE_TEMPORAL_EVIDENCE_MATRIX_DRAFT_001.md`, §13 | `D2-INV-AUTH-01`, `D2-RES-01`, `D2-CAP-01`, clasificación `D2-C_INFO`, contratos `I-INFO-01…06` | Presente y recuperado |
+| `C10_S_ADAPTER_PROVISION_MANIFEST_AND_DEPENDENCY_GRAPH_DRAFT_001.md`, §12 | Vía focal, B-M01…15, cinco clases topológicas U_G separadas de cuatro mecanismos causales, pruebas de separación, evidencia y consecuencias para estimandos | Presente y recuperado |
+| `C10_S_GRAPH_COVERAGE_AND_TRIVALENT_EVIDENCE_MATRIX_DRAFT_001.md`, §9 | Crosswalk de los quince dominios hacia N01–N23, E01–E23, predicados, rutas y PROV | Presente y recuperado |
+| `C10_S_CLOSURE_CONTROL_MATRIX_DRAFT_001.md`, §31 | Crosswalk B-M01…15 → variable/mecanismo/evidencia/estimando/FCM-D2 | Presente y recuperado |
+| `C10_S_UG_INVENTORY_REGISTER_TEMPLATE_DRAFT_001.md`, §17 | Correspondencia de B-M01…15 con NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT y registros de evidencia/cobertura; scopes COV-D2-BM01…15 | Presente y recuperado |
+
+El registro de continuidad §16.1–16.2 queda confirmado en cuanto a la localización de fichas y auditoría. La recuperación de esos artefactos no implica que las fichas estén aprobadas ni que la auditoría material se haya ejecutado.
+
+#### 16.5.2. Divergencias documentales detectadas y corregidas
+
+1. La tabla de §17.2 de la plantilla omitía o no explicitaba varios roles/aristas candidatos presentes en el crosswalk rector de cobertura §9 (entre otros, B-M04, B-M06, B-M07, B-M08 y B-M14). Se reconciliaron las quince filas B-M01…15 con los candidatos Nxx/Exx y clases de ruta de §9. Las identidades siguen siendo candidatas; no se crean registros observados.
+2. La matriz de cobertura §9 y la matriz de cierre §31 conservaban instrucciones históricas que pedían aplicar el mapping o construir la matriz de cobertura, pese a que esos artefactos ya existían. Ambas instrucciones se actualizaron para registrar la aplicación en plantilla §17 y la auditoría cruzada completada.
+3. Se preservó la distinción entre cinco clases topológicas de ruta (focal, alternativa, compartida, externa, desconocida) y cuatro mecanismos causales de adjudicación (focal, cambio de condición constitutiva, vía colateral a resultados, cambio epistémico/informativo). No se fusionaron en una taxonomía única.
+4. Se comprobó que las quince filas lógicas `COV-D2-BM01…15` se presentan como planificación de cobertura, no como registros físicos: denominador UNKNOWN y estado NONE. Los ceros de captura no se interpretan como ausencia de componentes o efectos.
+5. Se comprobó que la ficha de autorización mantiene abierta la fuente normativa/alcance/vigencia de `C_auth,base`; recursos y capacidad siguen separados; la clasificación informativa no introduce un `C_info` autónomo en `A_f*`.
+
+#### 16.5.3. Resultado y límites
+
+- **Consistencia documental del mapping:** reconciliada en los artefactos examinados tras las correcciones indicadas.
+- **Cobertura de dominios:** 15/15 dominios B-M01…15 tienen trazabilidad conceptual; esto no equivale a cobertura técnica del sistema.
+- **Inventario real:** no disponible en esta fase; nodos, aristas, dependencias, consumidores, versiones y snapshots reales siguen sin inventariar.
+- **Evidencia empírica de invariancia/no-afectación:** no disponible; no se declara PASS, ausencia, independencia funcional ni aislamiento de B.
+- **Estimandos e identificación:** no resueltos por esta auditoría documental; el ITT conserva interpretación como efecto de la política material asignada. La atribución exclusiva a `ΔT_acc*` sigue requiriendo exclusión defendible o identificación adicional.
+- **Gates:** MD-C1, MD-C2, MD-C4, AUD-005 y AUD-007 permanecen abiertos. No se cierra DGP, población/soporte, estimandos, medición, potencia ni Design Freeze Candidate.
+- **Decisiones:** no se modifica DEC-C10-066 ni DEC-C10-067; no se actualiza Decision Log porque ninguna decisión aceptada ha cambiado.
+- **Ejecución:** no se ha inspeccionado ni modificado ningún sistema técnico real; no se han ejecutado validadores científicos, simulaciones ni experimentos. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
+
+#### 16.5.4. Siguiente gate
+
+Realizar el crosswalk causal **ficha por ficha**: definición/clase temporal → predicado y condición del DGP → dominio B-M → contrato PROV → objeto/arista/ruta U_G → fuente/evidencia/falsador → mecanismo causal y estimando afectado → control FCM-D2. El alcance inicial comprende `D2-INV-AUTH-01`, `D2-RES-01`, `D2-CAP-01` y `D2-C_INFO/I-INFO-01…06`; las condiciones adicionales del maestro (`C_domain`, `C_other,j`, `C_dep*`, `A_f*`) se incorporarán solo donde la correspondencia esté respaldada. No crear predicados/símbolos duplicados ni elevar propuestas a invariantes demostradas.
