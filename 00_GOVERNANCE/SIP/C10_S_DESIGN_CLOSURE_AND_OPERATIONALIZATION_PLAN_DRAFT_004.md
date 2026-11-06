@@ -869,3 +869,19 @@ No sustituir `D_f^*) por `D_f^{obs}` en primera etapa/Wald sin modelo de error d
 La auditoría de medición §16.14 queda corregida: la fórmula candidata depurada ya está en maestro §67.3/DGP §59.3. MEAS-G1 pasa a **PARTIAL**, no OPEN por ausencia de fórmula. C_auth_base→AUTH; C_resource/C_capacity solo disponibilidad ex ante necesaria/no duplicada→RES/R_access; C_info no es factor autónomo; C_domain/D_support→ID/tipo o COND; C_dep→DEP; C_other inadmisible; VALID/cobertura/E_T epistémicos; App_f/K/selección/ejecución downstream. El crosswalk especializado conserva mappings y operacionalización material como abiertos.
 
 No se cambia DEC ni se congela la fórmula. Próximo: consolidar regla trivalente de conjunción y rutas.
+
+
+---
+
+### 16.16. Regla trivalente A_f / DEP / D_f observados
+
+**Fuente:** `C10_S_AF_DF_TRIVALENT_AGGREGATION_RULE_DRAFT_001.md`.  
+**Estado:** AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT.
+
+- A_f observado: 0 si algún término necesario tiene 0 válido y suficiente; 1 solo si todos los términos son 1 con comparabilidad/cobertura; resto ?.
+- DEP observado: disyunción de rutas; una ruta 1 basta; 0 exige universo operativo COMPLETE y todas las rutas 0, con Runknown/alternativas resueltas; resto ?.
+- D_f observado: baseline 0/post 1 → 1; baseline 1 o post 0 → 0; resto ?. No comparabilidad → NOT_COMPARABLE/?.
+- Evidencia, cobertura, adjudicación, observed_state y truth DGP permanecen separados. MISSING/NONE/PARTIAL no son 0.
+- C_dep=0 no implica DEP=0 cuando existe alternativa admisible. D_f observado no reemplaza al verdadero en IV sin modelo de error defendible.
+
+No se aprueba ni congela la fórmula, no se cierran MEAS-G2…G8 ni IV, y no se autoriza implementación/ejecución.
