@@ -1298,3 +1298,9 @@ Cada caso separará hidden_truth, entrada del analizador, PAR contractual, mappi
 La futura suite deberá discriminar, sin asumir resultados: (1) BOOL preservado frente a inversión true/false; (2) ENUM con mapping total frente a símbolo obligatorio sin mapping; (3) fusión many-to-one de símbolos funcionalmente distintos; (4) INT dentro del dominio frente a overflow/truncamiento/signo alterado; (5) OPTIONAL ABSENT preservado frente a default introducido; (6) DEFAULT declarado frente a heredado y resolución ambiental separada; (7) NULL introducido en clave no nullable; (8) slot RETRY-COUNT que pertenece a P0 frente a recurso/capacidad P1 indebidamente incorporado; (9) STRING descriptivo en MET frente a STRING funcional contractual; (10) PAR tipo REF duplicando indebidamente una relación REF.
 
 Cada contrato fijará fuente/versión, owner CMP, tipo, dominio, requiredness, estados, default, mapping M, IAM, C_dst_applied, oráculo FP primario y entradas permitidas al analizador. hidden_truth seguirá fuera del analizador. Son contratos lógicos, no fixtures ni pruebas ejecutadas.
+
+## 67. Contratos adversariales de RUL
+
+La suite futura debe discriminar, para la regla finalmente instanciada: (1) AST y semántica preservados; (2) operador EQ/NEQ/IN/NOT_IN alterado; (3) clave/operando intercambiado; (4) scope alterado; (5) REQUIRE/FORBID invertido; (6) dominio finito incompleto o ampliado; (7) regla eliminada/duplicada; (8) UNKNOWN convertido a TRUE/FALSE; (9) regla preservada en F1/A1 pero no aplicada en F2/A2; (10) igualdad textual con mapping semántico divergente; (11) regla tautológica sin capacidad de discriminar; (12) regla sin fuente funcional o fuera de P0.
+
+Cada contrato separará hidden_truth, AST/entrada del analizador, resultado de mapping, estado aplicado, evidencia y oráculo FP-03/06/07. Las salidas admiten 1/0/? según cobertura y evidencia. No hay fixtures serializados ni pruebas ejecutadas.
