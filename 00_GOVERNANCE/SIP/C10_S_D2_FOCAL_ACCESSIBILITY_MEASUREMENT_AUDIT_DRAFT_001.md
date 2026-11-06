@@ -163,3 +163,14 @@ El cierre documental de estos gates no autoriza ejecución; la validación técn
 ## 9. Siguiente operación documental
 
 Resolver **MEAS-01** primero: construir un crosswalk exhaustivo de cada predicado que aparece en `A_f^*` frente a DGP, fichas de invariantes, contratos de recursos/capacidad/información, B-M01…15 y matriz de cobertura; clasificarlo como constitutivo, invariante postulada, vía colateral, epistémico o duplicado, sin alterar aún la fórmula aceptada ni crear símbolos. Después, reconciliar la regla trivalente de agregación de predicados/rutas. Mantener `LATE_f` bloqueado.
+
+
+---
+
+## Addendum de corrección y crosswalk (2026-11-06)
+
+**Corrección de MEAS-01:** la auditoría original tomó la fórmula histórica de §30.1/§3.x como si fuera composición vigente. Se corrige expresamente. La precedencia documental del DGP §59.3 y del maestro §67.3 ya presenta una fórmula candidata depurada:
+`A_f*=I(ID_f* AND REL_f* AND COND_f* AND AUTH_f* AND RES_f* AND DEP_f* AND NOT BLOCK_f*)`.
+Por tanto, C_info no es factor autónomo; C_resource/C_capacity se canalizan a RES/R_access solo si son disponibilidad ex ante necesaria y no duplicada; C_domain/D_support se mapea a ID/tipo o COND; C_other es residual inadmisible; VALID/cobertura/E_T son epistémicos; App_f/K/selección/ejecución quedan fuera. El crosswalk completo está en `C10_S_D2_AF_PREDICATE_CAUSAL_CROSSWALK_DRAFT_001.md`.
+
+MEAS-01 deja de describir una fórmula no reconciliada y pasa a **PARTIAL**: fórmula candidata identificada; mappings y operacionalización de RES, D_support↔ID/COND, REL/COND/BLOCK y rutas aún abiertos. Esta corrección no aprueba ni congela §67.3 y no altera DEC-C10-065/066/067. La auditoría sigue siendo asistida/no independiente.
