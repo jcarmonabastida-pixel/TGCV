@@ -994,3 +994,9 @@ No parámetros, fixtures, parser/oráculo validado, freeze ni autorización de i
 La reconstrucción de DEC-C10-054 y del perfil de dominios demuestra que la distinción tripartita ya estaba aceptada. No procede abrir una nueva decisión ni reducirla a propuesta. Se armoniza la representación: estado PAR ABSENT/NULL/DEFAULT/VALUE; default_kind=DECLARED|INHERITED cuando DEFAULT; DEFAULT_ENV_RESOLVED como observación de E_dst, externa al paquete.
 
 **Criterios aún abiertos:** contrato de herencia y scope por clave; estructura/procedencia del snapshot ambiental; mapping y tolerancias; comportamiento cuando la fuente no distingue; FP primario y oráculo; error de medición. La resolución conceptual elimina la contradicción de nivel, pero no cierra el contrato de instancia ni autoriza implementación.
+
+## 16.26. Especialización candidata de claves PAR
+
+Se ha preparado un roster lógico parsimonioso: activación BOOL requerida, perfil ENUM requerido y contador de reintentos INT opcional. Es una propuesta para una unidad lógica de servicio, no un esquema real ni una decisión aceptada. El slot de reintentos queda condicionado a que sea configuración P0 del servicio y no capacidad/recursos P1. DECIMAL/STRING quedan como extensiones condicionales; REF se modela normalmente en la clase REF.
+
+**Cierre necesario:** verificar pertinencia P0 de cada slot; definir D_profile, N_retry_max y dominios por clave; estados admisibles/defaults; mapping por ruta; obligatoriedad IAM; regla RUL constitutiva y oráculo. No fijar valores de escenario antes de cerrar contrato. Sin freeze ni autorización de implementación.
