@@ -188,3 +188,103 @@ Se formaliza la propagación de `A_f^{obs}`, `DEP_f^{obs}` y `D_f^{obs}` reutili
 Se distingue evidencia/conflicto/cobertura de estado observado y truth DGP. No se convierte MISSING/NONE/PARTIAL/unknown en 0. Una alternativa válida impide inferir DEP=0 desde C_dep=0. La elegibilidad verdadera basal no se sustituye por clasificación observada sin modelar error.
 
 La regla no aprueba ni congela la fórmula, no valida error diferencial ni cierra IV. `LATE_f` sigue bloqueado. Documento formal: `C10_S_AF_DF_TRIVALENT_AGGREGATION_RULE_DRAFT_001.md`.
+
+
+---
+
+## 10. Regla trivalente de agregación de A_f*, DEP_f* y D_f observado
+
+**ID lógico:** C10-S-AF-DF-TRI-001 · **Estado:** reconciliación documental asistida; no aprobada, no congelada, no ejecutada.  
+**Crosswalk normativo:** DGP §§26, 30–32; matriz U_G §5; protocolo U_G §§2, 5–11, 14, 17–18; fórmula candidata del maestro §67.3 y crosswalk causal de predicados.
+
+### 10.1 Dominios ortogonales
+
+Para cada predicado/ruta se conservan por separado:
+- `observed_state ∈ {1,0,?}`;
+- `evidence_status ∈ {AVAILABLE,MISSING,CONFLICTING}`;
+- `coverage_status ∈ {NONE,PARTIAL,COMPLETE}`;
+- estado de revisión/adjudicación;
+- `truth_dgp ∈ {0,1}), solo en generador/evaluador restringido y nunca en el paquete del analizador.
+
+No existe conversión mecánica entre ellos. MISSING, NONE, PARTIAL, no inventariado, no observado o sin logs no significan 0. CONFLICTING no se resuelve por mayoría automática.
+
+### 10.2 Conjunción de A_f observada
+
+Se mantiene la fórmula candidata:
+`A_f^*=I(ID_f^*∧REL_f^*∧COND_f^*∧AUTH_f^*∧RES_f^*∧DEP_f^*∧¬BLOCK_f^*)`.
+
+Cada término debe referirse a la misma unidad, identidad τ2, frontera, contexto, snapshot/revisión y ventana compatibles.
+
+| Regla | Resultado |
+|---|---|
+| Algún término necesario es 0 con evidencia válida, alcance compatible y cobertura suficiente para ese incumplimiento | `A_f^{obs}=0` |
+| Todos los términos necesarios son 1, con matching/comparabilidad válidos y cobertura adecuada para cada afirmación | `A_f^{obs}=1` |
+| No hay 0 suficiente y existe ?, conflicto no resuelto, falta de evidencia, identidad no comparable o cobertura insuficiente | `A_f^{obs}=?` |
+
+Un 0 local basta para refutar la conjunción si el predicado es necesario y la evidencia demuestra su incumplimiento en el alcance focal. No es necesario completar los demás términos una vez establecido ese 0. En cambio, no encontrar una ruta, permiso, recurso o componente no basta para 0 sin cobertura negativa suficiente. Un 1 requiere respaldo de todos los términos; no se infiere de intención contractual, intento o éxito de un componente técnico.
+
+Un conflicto impide adjudicar ese término como 1/0. Un 0 independiente, válido y suficiente en otro término necesario puede mantener la conjunción agregada en 0, dejando registrado el conflicto. Si el conflicto afecta identidad, frontera, unidad o comparabilidad global, el agregado queda ?.
+
+### 10.3 DEP_f y rutas
+
+Cada ruta es una conjunción:
+- ruta=1 si todos sus predicados necesarios son 1 y secuencia, identidad, versiones y orden temporal son compatibles;
+- ruta=0 si al menos un necesario es 0 con evidencia válida/suficiente para esa ruta;
+- ruta=? en cualquier otro caso.
+
+DEP en el contrato general es la existencia de al menos una ruta admisible válida para la misma τ2:
+
+| Universo de rutas | `DEP_f^{obs}` |
+|---|---|
+| Existe al menos una ruta adjudicada 1 | 1 |
+| Todas las rutas del universo operativo declarado son 0 y cobertura COMPLETE, con Runknown y rutas externas/compartidas/alternativas materiales resueltas | 0 |
+| No hay ruta 1 y queda alguna ruta ?, Runknown, ruta material no inventariada o cobertura NONE/PARTIAL | ? |
+
+Una ruta 1 basta aunque otras sigan ?. Una ruta alternativa válida impide declarar DEP=0 solo porque la ruta focal `C_dep` sea 0. C_dep=DEP únicamente bajo el supuesto explícito de ruta única del DGP aislado; no se generaliza sin inventario/cobertura.
+
+### 10.4 Bloqueo
+
+El término de la fórmula es `¬BLOCK_f^*`:
+- bloqueo efectivo focal demostrado (`BLOCK_f^{obs}=1`) implica término negado=0 y puede hacer A_f=0;
+- ausencia de bloqueo (`BLOCK_f^{obs}=0`) requiere cobertura suficiente del universo de bloqueos relevantes;
+- bloqueo/cobertura desconocidos mantienen ?.
+
+Un bloqueo de una ruta no bloquea necesariamente rutas alternativas. Falta de logs/conflicto no demuestra ausencia de bloqueo.
+
+### 10.5 Derivación de D_f observado
+
+La verdad sigue siendo `D_f^*=I(A_{f,base}^*=0 ∧ A_{f,post}^*=1)`. D_f observado se deriva solo de A_f observado basal y post:
+
+| Baseline obs | Post obs | D_f obs |
+|---|---|---|
+| 0 | 1 | 1 |
+| 0 | 0 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 0 |
+| ? | 0 | 0 |
+| ? | 1 | ? |
+| 0 | ? | ? |
+| ? | ? | ? |
+
+Equivalente: D=1 solo si baseline=0 y post=1; D=0 si baseline=1 o post=0; resto ?. Si τ2, frontera, unidad/contexto, granularidad, catálogo, mapping o snapshots no son comparables, registrar `NOT_COMPARABLE/?`, nunca 0.
+
+La elegibilidad verdadera exige `A_{f,base}^*=0` pre-Z. Una clasificación observada basal 0 no la sustituye automáticamente sin tratar el error de clasificación/selección.
+
+### 10.6 Ejemplos lógicos de frontera
+
+1. ID=1, REL=1, COND=1, AUTH=1, RES=1, DEP=?, ¬BLOCK=1 → A_f obs=?.
+2. Si AUTH=0 válido y focal, A_f obs=0 aunque DEP=?.
+3. Ruta focal=0 y alternativa equivalente=1 → DEP obs=1.
+4. Runknown=? sin ruta confirmada → DEP obs=?.
+5. Rutas inventariadas=0 con cobertura PARTIAL → DEP obs=?.
+6. Baseline=0 y post=? → D_f obs=?.
+7. Baseline=? y post=1 → D_f obs=?.
+8. τ2/snapshot post no comparable → D_f obs=? / NOT_COMPARABLE.
+
+### 10.7 Trazabilidad y consecuencias IV
+
+Cada agregado enlaza unidad, frontera, contexto, τ2/TID, versiones/snapshots, predicados/rutas, regla versionada, evidencias/hashes/fuentes/tiempos, coverage scope/denominador, cegamiento, evaluaciones, conflictos, adjudicación, composición y razón explícita de 0/1/?. El analizador no recibe truth_dgp; el evaluador solo accede a truth tras congelar la salida observada.
+
+La primera etapa focal causal se define sobre D_f verdadero, no D_f obs sin más. No convertir ? en 0, excluir indeterminados como si fueran aleatorios ni imputar sin modelo. Informar 1/0/? y error por brazo/tiempo/versión/ruta; si error diferencial/missingness no identificados, usar límites/sensibilidad o declarar no identificación. Esta regla no resuelve independencia, exclusión, monotonicidad, interferencia, consistencia ni relevancia IV. `LATE_f` permanece bloqueado.
+
+**Pendiente:** armonizar dominios con plantilla U_G y matching/snapshots; resolver pertenencia exacta/UG-SCH-10; concretar rutas del microdominio; diseñar fixtures adversariales y medir error contra truth oculta bajo autorización futura. No cierra MEAS-G2…G8, XSYNC, PROV, MD-C1/MD-C4 ni gates IV. No modifica DEC-C10-065/066/067, fórmula, autorización o claims; no autoriza implementación, validación ejecutable, simulación ni experimento.
