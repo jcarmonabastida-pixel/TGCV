@@ -7941,7 +7941,9 @@ No convertir MISSING/NONE/PARTIAL en 0; C_dep=0 no implica DEP=0 con alternativa
 ## §136. Reconciliación de contratos adversariales y suite trivalente TRI (2026-11-06)
 
 
-**Fuente de detalle:** `C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md`, §11 (C10-S-TRI-ADVERSARIAL-CROSSWALK-001).
+**Fuente de detalle:
+
+La materialización de los subcasos se registra en el test register §57, como extensiones de MEAS-01…24; no son una familia paralela.** `C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md`, §11 (C10-S-TRI-ADVERSARIAL-CROSSWALK-001).
 
 Se reutilizan ID-01…15 (identidad/matching), SNAP-01…15 (snapshots/diff), DGP §§26–28 y 32–35, U_G §§4–8 y matriz de fixtures §30. No se crea un catálogo adversarial paralelo ni se alteran los contratos históricos. La suite TRI añade solo cruces agregados no explicitados: conjunción A_f con cero independiente y unknown/conflicto; DEP con ruta confirmada más Runknown, cobertura completa vs parcial, alternativa funcional y bloqueo por ruta; tabla completa basal/post D_f; precedencia de NOT_COMPARABLE; redescubrimiento de ruta basal; MISSING/NONE/PARTIAL; no filtración de truth y error diferencial.
 
