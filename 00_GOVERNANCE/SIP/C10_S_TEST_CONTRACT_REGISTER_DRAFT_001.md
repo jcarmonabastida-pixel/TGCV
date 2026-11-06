@@ -1231,3 +1231,24 @@ Los contratos deben separar las quince superficies, aunque algunos escenarios pu
 | EXC-B15 | Rollback incompleto/residuos entre unidades o periodos | Carryover/interferencia y consistencia comprometida |
 
 No se serializan fixtures ni se ejecuta esta suite en esta operación. Los escenarios no asignan tasas ni parámetros. La cobertura de una familia no prueba invariancia de las restantes.
+
+## 61. Contratos de escenario DGP Opción A para discriminación causal
+
+Estos contratos concretan §60 y C10-S-IV-AUD-001 §12. No duplican EXC-B01…15 ni sustituyen IV-REL/EXC/MON/CROSS/INT/MEAS/OUT de §58. Cada fixture futuro tendrá un contraste principal aislado, con controles invariantes explícitos y hidden_truth inaccesible al analizador.
+
+| ID | Escenario base | Manipulación única principal | Invariantes/control | Expected output mínimo |
+|---|---|---|---|---|
+| DGP-EXC-01 / R0 | Opción A, F1=τ2 focal | B abre F1 y solo F1; no cambia F2, A1/A2, datos, F*, recursos, K, coste/riesgo ni medición | Asignación, monotonicidad, consistencia, no interferencia y medición se prueban en fixtures separados | LATE_f solo candidato condicional; ITT_O e ITT_V separados |
+| DGP-EXC-02 / R1 | A1→A2 factible antes de Z | Ninguna; alternativa basal estable | B no altera A1/A2 ni sus recursos | No marcar exclusión violada por alternativa basal; Reach puede permanecer constante; permitir efecto nulo/heterogéneo |
+| DGP-EXC-03 / R2 | A1→A2 basal presente | B altera una propiedad funcional de A1/A2 | Mantener demás superficies invariantes | Efecto de paquete/vía colateral; no LATE_f focal |
+| DGP-EXC-04 / R3 | Adaptador focal candidato | W_attempt sin C_dep* ni D_f* | Separar subcasos sin y con consumo/residuo | Primera etapa focal nula/débil; si hay coste/residuo, efecto de paquete adicional |
+| DGP-EXC-05 | R0 | B cambia S0/datos/mapping/App/F* con D_f* fijo | Outcome oracle invariante | Exclusión violada por vía directa a O; no LATE_f |
+| DGP-EXC-06 | R0 | B cambia coste/riesgo/recursos que entran en V*, manteniendo O* constante | Medición y regla V invariantes | Vía directa B→V; ITT_V de política posible, LATE_f no |
+| DGP-EXC-07 | R0 | B cambia K mediante mensajes/formación y con ello selección/ejecución | Observabilidad constante para aislar conocimiento | Vía no focal a O/V; no ajustar mecánicamente por K post-Z |
+| DGP-EXC-08a | R0 | B cambia logs/cobertura/missingness, no estado O*/V* | Truth fija; oráculo semántico invariante | No atribuir diferencia observada a efecto verdadero; IV-G6/medición no cerrado |
+| DGP-EXC-08b | R0 | B cambia oráculo/F*/regla/dataset de Outcome | No cambiar mecanismo de estado subyacente | Resultado no comparable; invalidar interpretación causal común |
+| DGP-EXC-09 | R0 | B consume recurso compartido o deja residuo entre unidades/periodos | Declarar exposición, UA/UE/clúster y reloj | Interferencia/carryover; rechazar Wald individual estándar sin modelo de exposición |
+
+**Regla de aislamiento:** si un escenario combina varias manipulaciones, debe descomponerse en fixtures separados más un escenario compuesto de estrés. El escenario compuesto no sustituye los controles de una sola vía. Los expected outputs son estados cualitativos, no estimaciones numéricas ni garantías de identificación fuera del DGP.
+
+**Estado:** contratos documentales; no hay fixtures serializados, parámetros, distribuciones, tolerancias, potencia, oráculos ni pruebas ejecutadas. No se autoriza implementación o ejecución.
