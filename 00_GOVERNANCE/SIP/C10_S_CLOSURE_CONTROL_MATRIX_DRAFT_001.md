@@ -910,3 +910,27 @@ La definición conceptual de ambas políticas D2 está aceptada; la aceptación 
 El crosswalk conceptual B-M01…15 → variable/predicado → clase U_G → mecanismo → evidencia/PROV → cadena causal/estimando → FCM-D2 queda incorporado como instrumento de trazabilidad. **No** completa el manifiesto técnico real ni demuestra aislamiento. MD-C1 y MD-C4 siguen abiertos.
 
 **Actualización de continuidad (2026-11-06):** la matriz de cobertura U_G y su crosswalk B-M01…15 están en C10_S_GRAPH_COVERAGE_AND_TRIVALENT_EVIDENCE_MATRIX_DRAFT_001.md, §§1–9; la aplicación del mapping a NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT y registros de evidencia/cobertura está en C10_S_UG_INVENTORY_REGISTER_TEMPLATE_DRAFT_001.md, §17. La auditoría cruzada con el manifiesto §12 y las fichas temporales §13 se completó; resultado y correcciones en el plan de cierre §16.5. La siguiente operación es auditar la trazabilidad causal individual de las fichas de invariantes hacia predicados, contratos PROV, dominios B-M, U_G, vías y estimandos. Los estados técnicos permanecen desconocidos hasta que haya inventario y evidencia reales. No avanzar a ejecución ni a declaración de exhaustividad.
+
+
+---
+
+## 32. Auditoría IV de D2 — LATE_f y tratamiento focal D_f*
+
+**Fuente:** `C10_S_D2_LATE_F_IV_VALIDITY_AUDIT_DRAFT_001.md`  
+**Estado:** AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT · auditoría documental, no validación empírica.
+
+| Componente | Estado | Hallazgo / condición de cierre |
+|---|---|---|
+| Tratamiento `D_f^*` / observación | PARCIAL | Separar verdad focal, registro observado y error; no inferir desde Z/B/W/C_dep. |
+| Relevancia | OPEN | No hay primera etapa focal observada ni parámetros aprobados; separar C_dep, A_f, D_f y ΔT_acc. |
+| Independencia | CONDITIONAL | Unidad, asignación, estratos, clústeres y elegibilidad pre-Z no cerrados. |
+| Exclusión | OPEN / AMENAZA MATERIAL | Vías B-M01…15 hacia Outcome/Value fuera de D_f* no están descartadas; aleatorización no demuestra exclusión. |
+| Monotonicidad | OPEN | No demostrada; crowding-out, alternativas y dependencias pueden producir defiers; crossover puede generar always-takers. |
+| Consistencia/versiones | OPEN | Falta identidad/hash y trazabilidad de recepción, intento, instalación, verificación, fallos y rollback. |
+| Interferencia | OPEN | Recursos/dependencias compartidas, spillovers y carryover no resueltos. |
+| Medición Outcome/Value | OPEN | Adjudicación independiente, error diferencial, missingness, regla Value y horizonte pendientes. |
+| Wald / `LATE_f` | BLOCKED / NOT READY | No seleccionar ni reportar como efecto causal hasta cerrar IV-G1…IV-G8. |
+
+**Regla de interpretación:** `ITT_Z` puede conservar interpretación como efecto de asignación/política bajo el diseño. Si falla exclusión, el ITT es efecto de paquete; no atribuirlo a `D_f^*`. Un eventual `LATE_f` es local a compliers D2 y no equivale a `θ_Af(q_X^*)` poblacional ni a `θ_A(q)` general.
+
+**Siguiente operación:** auditar la definición observacional de `D_f^*` y el protocolo de medición de `A_f^*`. No hay freeze, implementación, simulación ni ejecución.
