@@ -56,13 +56,15 @@ W_{attempt,i} sim Bernoulli(\omega_{z,D})
 C_{dep,i1}^{*}=C_{install,i1}^{*}\land C_{integrity,i1}^{*}\land C_{compat,i1}^{*}\land C_{oper,i1}^{*}
 ]
 
-`ω_{z,D}` es la probabilidad de intento efectivo bajo la política asignada al escenario D; no sustituye el registro de intento programado, recepción ni cumplimiento. El éxito técnico condicional candidato `s=0.80` se refiere a la probabilidad conjunta de que la ruta técnica complete los cuatro componentes tras un intento elegible, bajo protocolo, actor, versión, recursos y ventana fijados. No se presume independencia entre componentes.
+`q_{z,D}` es la probabilidad de programar el intento bajo la política asignada; `W_programmed` y `W_attempt` son registros distintos. `W_attempt` representa el intento efectivamente iniciado y depende de recepción/cumplimiento, además de posibles provisiones de fondo. Su probabilidad no se fija igual a `q_{z,D}` sin una hipótesis explícita de cumplimiento perfecto. El éxito técnico condicional candidato `s=0.80` se refiere a la probabilidad conjunta de que la ruta técnica complete los cuatro componentes tras un intento elegible, bajo protocolo, actor, versión, recursos y ventana fijados. No se presume independencia entre componentes.
 
-En el DGP idealizado de una oportunidad y sin provisión focal de fondo, la factorización candidata es:
-- D1: intentos `.25/1.00`; estados finales esperados de `C_dep*` `.20/.80` si `s=.80`.
-- D2: intentos `0/1.00`; estados finales esperados de `C_dep*` `0/.80` si `s=.80`.
+En el DGP candidato, las probabilidades de **programación** son:
+- D1: `P(W_programmed=1|Z=0)=.25`; `P(W_programmed=1|Z=1)=1.00`.
+- D2: `P(W_programmed=1|Z=0)=0`; `P(W_programmed=1|Z=1)=1.00`.
 
-Estos valores son hipótesis algebraicas de diseño, no tasas empíricas ni parámetros aprobados. En particular, D2 `P(C_dep*=1|Z=1)=.80` solo se deriva bajo `s=.80`, una oportunidad, protocolo cumplido y ausencia de provisión de fondo. No implica automáticamente `P(A_f,post*=1)` ni `P(D_f*=1)`; ambos se calculan desde todos sus predicados constitutivos y condiciones basales.
+El intento efectivo `W_attempt` depende de recepción/cumplimiento y debe registrarse por separado. También se registra cualquier intento de fondo cuando `W_programmed=0`. El estado final `C_dep*` se deriva del intento efectivo y del éxito técnico conjunto; no se fija marginalmente.
+
+Solo bajo una idealización adicional de cumplimiento perfecto (`W_attempt=W_programmed`), una oportunidad, ausencia de provisión de fondo y `s=.80`, se obtendrían como expectativas algebraicas `P(C_dep*=1)` de `.20/.80` en D1 y `0/.80` en D2. Esas cifras no son tasas empíricas ni parámetros aprobados. En particular, el `.80` de D2 no se deriva de programar un intento si este no llega a iniciarse o no se recibe. No implica automáticamente `P(A_f,post*=1)` ni `P(D_f*=1)`; ambos se calculan desde todos sus predicados constitutivos y condiciones basales.
 
 ### 3.3 Accesibilidad focal y cambio completo
 
@@ -442,16 +444,15 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
    - D1: control ordinario con provisión de baja frecuencia frente a provisión programada; escenario secundario.
    - D2: control sin provisión frente a provisión programada; escenario primario candidato por DEC-C10-066.
 2. Los parámetros p0=.20 y p1=.80 de §3.1 representan probabilidades objetivo del estado técnico final verificado C_dep, no probabilidades de intento W_attempt.
-3. Factorización candidata de §54:
+3. Probabilidades candidatas de **programación** de §54:
    | Parámetro | D1 Z=0 | D1 Z=1 | D2 Z=0 | D2 Z=1 |
    |---|---:|---:|---:|---:|
-   | P(W_attempt=1) | .25 | 1.00 | 0 | 1.00 |
-   | P(S_success=1 | W_attempt=1) | .80 | .80 | .80 | .80 |
-   | P(C_dep=1) | .20 | .80 | 0 | .80 |
-4. El .80 condicional es una factorización propuesta algebraicamente para reproducir los estados finales; no es dato empírico ni parámetro histórico literalmente recuperado. No se presume independencia entre componentes técnicos de C_dep.
+   | P(W_programmed=1) | .25 | 1.00 | 0 | 1.00 |
+   El intento efectivo W_attempt depende de recepción/cumplimiento y se observa por separado; la provisión de fondo cuando W_programmed=0 también debe medirse.
+4. El éxito técnico condicional candidato s=.80 se aplica solo a un intento efectivo elegible. Las probabilidades marginales de C_dep se derivan de programación, cumplimiento, intentos de fondo y éxito conjunto; no son parámetros independientes. Solo con cumplimiento perfecto, una oportunidad y ausencia de provisión de fondo se reproducen .20/.80 en D1 y 0/.80 en D2. No se presume independencia entre componentes técnicos de C_dep.
 5. La descripción de B0 como mantenimiento sin provisión focal y B1 como provisión programada en §21 corresponde a D2. No debe usarse como definición general de B0/B1 ni como descripción de D1.
 6. En D1, B_g0 es la política ordinaria de baja frecuencia; B_g1 programa el mismo procedimiento para todas las unidades elegibles. En D2, B_g0 no inicia provisión; B_g1 la programa para todas.
-7. Z asigna política; B_assigned/offered/received, W_attempt, S_success, componentes técnicos, C_dep, A_f*, D_f*, App_f y Exec_f permanecen separados.
+7. Z asigna política; B_assigned/offered/received, W_programmed, W_attempt, S_success, componentes técnicos, C_dep, A_f*, D_f*, App_f y Exec_f permanecen separados.
 8. La primera etapa .60 (D1) o .80 (D2) es primero una diferencia en C_dep. Solo equivale a primera etapa de accesibilidad/apertura si los demás predicados estructurales de A_f* y la elegibilidad basal lo permiten.
 9. **Supersedido por DEC-C10-066:** D2 ya es el escenario primario candidato y D1 el secundario. La legitimidad de D2 sigue condicionada a verificar ausencia basal y ausencia de provisión focal de fondo; la legitimidad de D1 requiere justificar el régimen ordinario. Esta precedencia no cierra población, soporte, estimandos, parámetros ni identificación.
 10. Esta sección aclara la ambigüedad registrada en §23.10; no altera silenciosamente el texto histórico ni declara aprobadas las políticas.
