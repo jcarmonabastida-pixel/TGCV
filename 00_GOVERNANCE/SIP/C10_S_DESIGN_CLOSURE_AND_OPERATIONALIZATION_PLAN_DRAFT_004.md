@@ -1004,3 +1004,7 @@ Se ha preparado un roster lógico parsimonioso: activación BOOL requerida, perf
 ## 16.27. Cierre sustantivo de RUL
 
 La cardinalidad RUL≥1 ya está aceptada por DEC-C10-056. El siguiente cierre no consiste en añadir una regla artificial: exige una restricción constitutiva P0, no tautológica, con fuente funcional, owner CMP, scope, claves/dominios, AST 4/16/16, efecto REQUIRE/FORBID y semántica TRUE/FALSE/UNKNOWN. La plantilla ENABLED→PROFILE es solo un candidato y debe descartarse si no existe fuente que justifique D_profile_enabled. Después se requiere preservar semántica en F1/A1, aplicar en F2/A2, FP-03/06/07 y oráculo independiente. No freeze ni implementación.
+
+## 16.27. Cierre sustantivo de RUL
+
+La cardinalidad RUL≥1 ya está aceptada por DEC-C10-056. El siguiente cierre no consiste en añadir una regla artificial: exige una restricción constitutiva P0, no tautológica, con fuente funcional, owner CMP, scope, claves/dominios, AST 4/16/16, efecto REQUIRE/FORBID y semántica TRUE/FALSE/UNKNOWN. La plantilla ENABLED→PROFILE es solo un candidato y debe descartarse si no existe fuente que justifique D_profile_enabled. Después se requiere preservar semántica en F1/A1, aplicar en F2/A2, FP-03/06/07 y oráculo independiente. No freeze ni implementación.
