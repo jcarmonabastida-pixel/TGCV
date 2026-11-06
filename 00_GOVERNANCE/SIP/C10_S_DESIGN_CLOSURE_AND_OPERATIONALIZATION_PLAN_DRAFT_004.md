@@ -598,3 +598,56 @@ La ficha protege el supuesto de que la política D2 no modifica autorización no
 **Dictamen:** el crosswalk conceptual D2-CAP-01 está completado y persistido. Siguen abiertos dimensión, K_required, unidad/ventana, reglas de reserva, inventario de pools/consumidores, interferencia, evidencia de invariancia y frontera con App_f*. No se modifica DEC-C10-066/067, no se aprueba ni congela la ficha, y no se autoriza implementación, simulación o ejecución.
 
 **Siguiente operación:** revisar D2-C_INFO (información) y decidir si existe información técnica constitutiva diferenciable de C_dep*, o si manuales/conocimiento/comunicaciones pertenecen a mecanismos posteriores o vías colaterales. Mantener separado el plano epistémico E_T del sistema y no añadir C_info como factor autónomo sin demostrar necesidad y no duplicidad.
+### 16.9. Crosswalk causal D2-C_INFO — información, conocimiento y observabilidad (2026-11-06)
+
+**Estado:** clasificación y trazabilidad conceptual completadas; DRAFT, no aprobada ni congelada. No se crea un predicado C_info autónomo ni se añade a A_f*. No se ha demostrado cambio material inducido por B ni comparabilidad de medición.
+
+#### 16.9.1. Reconstrucción histórica y precedencia
+
+- Fuente primaria de clasificación: matriz temporal §13.4 y contratos adversariales I-INFO-01…06. Mapping de provisión: manifiesto §§3/12.3–12.4; matriz de cobertura §9; matriz de cierre §31; maestro §§30.1, 59.3–59.6, 64.5 y 65.
+- §30.1 conserva una fórmula histórica del juguete sintético con C_info=1 entre siete condiciones. No debe borrarse ni leerse como especificación depurada actual.
+- §59.3 propone para S4-R una ecuación candidata depurada sin C_info autónomo: información técnica solo entra en R_access*/D_support* si es necesaria y no duplica C_dep*. §59.5 separa información técnica del conocimiento del agente. Esta precedencia es propuesta, no freeze; requiere inventario, prueba de necesidad y reconciliación de usos históricos.
+- Si un dato técnico imprescindible forma parte del adaptador/configuración focal, su ubicación primaria es C_dep*. Solo podría clasificarse en R_access*/D_support* si es una condición distinta, ex ante, necesaria y no duplicada. No crear un sexto factor ni un predicado C_info independiente.
+
+#### 16.9.2. Cuatro planos que deben permanecer separados
+
+1. **Información técnica del sistema:** dato/metadato/parámetro necesario para invocar/realizar τ2. Puede ser constitutivo, pero debe localizarse en un predicado ya existente y superar necesidad, independencia de conocimiento del agente y no duplicidad.
+2. **Conocimiento del agente (K):** mecanismo posterior B→manuales/formación/avisos→K→consideración/selección/inicio→Execution. Puede ser mediador o co-intervención; no redefine accesibilidad estructural.
+3. **Información comunicada por B:** mensajes, manuales, formación, asistencia o avisos. Se inspecciona en B-M10 y, cuando implique datos/configuración funcional del sistema, B-M06. No inferir que existió sin inventario.
+4. **Observabilidad del evaluador (E_T):** esquema, fuentes, cobertura, permisos, retención, validez y adjudicación. Separa estado verdadero del sistema de A_f_obs/ΔT_acc_obs. Un cambio E_T puede generar error o missingness diferencial sin cambiar el sistema.
+
+#### 16.9.3. Crosswalk de extremo a extremo
+
+| Eslabón | Correspondencia | Lectura y estado |
+|---|---|---|
+| Predicado | C_info histórico §30.1; ecuación depurada §59.3: C_dep*, R_access*, D_support* | No mantener C_info autónomo. Información técnica se asigna una sola vez, si necesaria/no duplicada |
+| Mecanismo del agente | K; B→comunicación→consideración/selección/Execution | Vía informativa/mediadora; no equivale a ΔT_acc* |
+| Medición | E_T; A_f_obs/ΔT_acc_obs frente a estado real | Cambio epistémico; posible error/missingness diferencial |
+| Dominios B-M | B-M10 rector; B-M06 solo si cambia datos/configuración funcional; B-M13 inspección del oráculo | No mezclar comunicación al agente con medición evaluador ni modificar oráculo |
+| U_G | B-M10: N16, N22, N23; E15, E22, E23; ORACLE/EXT y E_T según matriz de cobertura §9 | Roles/aristas candidatos, no observados. N22/E22 para conocimiento; N16/E15 y N23/E23 para observabilidad/evaluación |
+| Contratos | PROV-02 (F*/dataset/oráculo inmutables), PROV-03 (snapshots), PROV-04 (dependencias/consumidores), PROV-11 (propagación de unknown); I-INFO-01…06 | Contratos documentales no implementados ni ejecutados; no PASS material |
+| Evidencia | Inventario de contenido, destinatarios, exposición, timestamps, permisos, esquema, retención, cobertura, validez, adjudicación y acceso por brazo | Ausencia de inventario → ?; no asumir invariancia o ausencia |
+| Estimandos | ITT D2 de política material; mediación por K; error de medición en E_T | Si B comunica/formaliza conocimiento diferencial, ITT es efecto del paquete; mediación exige estrategia/supuestos. No ajustar mecánicamente por K post-B. Si cambia E_T, no confundir cambio observado con cambio estructural |
+| Control | FCM-D2-07/10 | Registrar vías colaterales; separar provisión técnica de ejecución y preservar oráculo/medición independiente |
+
+#### 16.9.4. Pruebas adversariales y falsadores
+
+- I-INFO-01: información técnica del sistema presente y agente ignorante → no convertir A_f* en 0 por desconocimiento.
+- I-INFO-02: agente informado y dato técnico imprescindible ausente → conocimiento no implica accesibilidad.
+- I-INFO-03: manuales/formación B sin cambio del sistema → detectar B→K→selección/ejecución.
+- I-INFO-04: mejora de documentación evaluador → cambio E_T, no inferir ΔT_acc*.
+- I-INFO-05: dato técnico ya contenido en C_dep* → no doble contabilización.
+- I-INFO-06: información imprescindible no verificable → ?.
+- Falsadores de aislamiento: mensajes o destinatarios diferenciales, modificación del dataset/oráculo, permisos/cobertura de logs distintos por brazo, timestamps incompletos, cambio de reglas de adjudicación, error/missingness dependiente de B.
+
+#### 16.9.5. Regla de salida y estimandos
+
+- Distinguir verdad del DGP/estado del sistema, conocimiento del agente y proceso de observación. No sustituir uno por otro.
+- Si B altera K, el ITT sigue siendo efecto de la política asignada y puede incluir esa vía. No atribuirlo exclusivamente a accesibilidad sin identificación adicional.
+- Si B altera E_T, el cambio en A_f_obs/ΔT_acc_obs puede ser artefacto de observación. Exigir medición comparable o modelar explícitamente error/missingness.
+- No ajustar automáticamente por K u observabilidad postratamiento; pueden ser mediadores o variables de selección inducidas por B.
+- El estado NO INVENTARIADO no equivale a ausencia; cobertura incompleta conserva ?. No crear símbolos/aristas nuevos.
+
+**Dictamen:** crosswalk conceptual D2-C_INFO completado. Quedan abiertos inventario de información técnica imprescindible, mapeo final a C_dep*/R_access*/D_support*, evidencia de invariancia de comunicaciones, validación de E_T, medición comparable y adjudicación de I-INFO-01…06. No se aprueba C_info, no se cierra D2 ni se modifica DEC-C10-066/067; no se autoriza implementación, simulación o ejecución.
+
+**Siguiente operación:** consolidar el crosswalk de las fichas D2-INV-AUTH-01, D2-RES-01, D2-CAP-01 y D2-C_INFO y realizar una auditoría de no duplicidad entre sus condiciones, dominios B-M, U_G, PROV y FCM antes de pasar a estimandos/población/medición. No repetir la construcción de fichas; buscar contradicciones entre ellas y el maestro §§59/64/65.
