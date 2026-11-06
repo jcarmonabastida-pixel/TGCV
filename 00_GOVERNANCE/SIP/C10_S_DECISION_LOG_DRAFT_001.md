@@ -740,4 +740,12 @@ DEC-C10-056 acepta RUL≥1 y DEC-C10-054 fija el presupuesto y semántica genera
 
 Se propone especializar la unidad ya aceptada por DEC-C10-051/052/057/058 como servicio lógico sintético de procesamiento de solicitudes. Parámetros: PAR-SVC-ENABLED BOOL y PAR-SVC-PROFILE ENUM={STANDARD,READ_ONLY,DISABLED}. Regla candidata RUL-SVC-ENABLE-PROFILE-01: ENABLED=true implica PROFILE∈{STANDARD,READ_ONLY}, efecto REQUIRE. La especificación del servicio es estipulada ex ante y constituye la fuente funcional interna del DGP, con un estado violador conocido; no se presenta como norma externa ni como afirmación sobre servicios reales.
 
-**Estado: PROPUESTA, pendiente de aceptación explícita.** No modifica DEC-C10-056 ni convierte RUL-01/02/03 (propiedades de preservación) en identificador de esta regla. RETRY-COUNT queda fuera del núcleo hasta justificar su pertenencia a P0. Owner CMP definitivo, versión, IAM, mapping, oráculo, estimandos y unidad de asignación siguen abiertos. No crea fixtures ni autoriza implementación/ejecución.
+**Estado actualizado por DEC-C10-068: ACEPTADA CONCEPTUALMENTE como contrato funcional sintético de referencia.** No modifica DEC-C10-056 ni convierte RUL-01/02/03 (propiedades de preservación) en identificador de esta regla. RETRY-COUNT queda fuera del núcleo. Owner CMP de instancia/versionado, IAM detallado, mapping físico, oráculo, estimandos y unidad de asignación siguen abiertos. No crea fixtures ni autoriza implementación/ejecución.
+
+## 52. DEC-C10-068 — aceptación del contrato funcional sintético del servicio de referencia (2026-11-07)
+
+El usuario acepta el servicio lógico sintético de procesamiento de solicitudes, PAR-SVC-ENABLED BOOL, PAR-SVC-PROFILE ENUM={STANDARD,READ_ONLY,DISABLED} y RUL-SVC-ENABLE-PROFILE-01: ENABLED=true implica PROFILE∈{STANDARD,READ_ONLY}, efecto REQUIRE. El contrato es constitutivo del mundo sintético y fija la verdad del DGP ex ante; no es norma externa ni afirmación empírica sobre servicios reales. ENABLED=false no queda restringido por esta implicación. PAR-SVC-RETRY-COUNT permanece fuera del núcleo.
+
+El registro autónomo es `00_GOVERNANCE/decisions/DEC-C10-068_SYNTHETIC_SERVICE_FUNCTIONAL_CONTRACT_ACCEPTANCE.md`. CMP-SERVICE-LOGIC es owner lógico provisional; identidad/versionado de instancia, serialización, IAM detallado, mapping físico, tolerancias y oráculo permanecen abiertos. La aceptación no constituye Design Freeze ni autoriza fixtures, implementación, validación ejecutable, simulación o ejecución científica.
+
+**Autorización:** `scientific_execution=false`; `execution_authorized=false`.
