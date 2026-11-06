@@ -839,3 +839,24 @@ No calcular Wald como efecto causal nominal. Mantener `ITT_Z` como efecto de asi
 **Gates IV-G1…IV-G8:** definición y medición del tratamiento/población; primera etapa e inferencia débil; independencia/interferencia; exclusión; monotonicidad; consistencia/versiones; resultado Outcome/Value y missingness; recuperación sintética bajo escenarios adversariales. Su cierre no autoriza ejecución.
 
 No se modifican DEC-C10-066/067 ni el estado de autorización. No hay freeze, implementación, simulación, estimación o ejecución. La siguiente operación es auditar la definición observacional de `D_f^*` y el protocolo de medición de `A_f^*`.
+
+
+### 16.14. Auditoría de medición focal D_f* / A_f* (2026-11-06)
+
+**Registro:** `C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md`.  
+**Estado:** AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT.
+
+**Dictamen:** concepto parcialmente estabilizado; medición observacional no cerrada. Se separan `S_T^*`, `E_T`, `A_f^*), `A_f^{obs}`, `D_f^*) y `D_f^{obs}`; `ΔT_acc^*) no se confunde con `ΔE_T).
+
+Hallazgos:
+1. La conjunción de DGP §3.3 no está reconciliada con las fichas: `C_info` aparece en la fórmula aunque el crosswalk mantiene su inclusión autónoma pendiente; recursos/capacidad también requieren desduplicación.
+2. Matching de τ2, frontera, unidad/contexto, granularidad, catálogo y mapping son requisitos de comparabilidad; unresolved implica `D_f^{obs}=?`.
+3. DEC-C10-065 acepta pinning exacto, pero UG-SCH-10 permanece abierto; no hay validación técnica de pertenencia/FKs/constraints.
+4. La cobertura de rutas alternativas/compartidas/externas/desconocidas es NONE en la plantilla; ausencia de evidencia no equivale a inaccesibilidad.
+5. Cegamiento, doble adjudicación y evaluación con truth oculta son propuestas, no procedimientos ejecutados.
+6. Error diferencial y missingness por brazo/tiempo/versión/ruta no están cuantificados.
+7. La secuencia temporal t0–t9 está propuesta; ventanas, simultaneidad y vigencia siguen abiertas.
+
+No sustituir `D_f^*) por `D_f^{obs}` en primera etapa/Wald sin modelo de error defendible. `LATE_f` sigue bloqueado. No se altera DEC-C10-065, ni se cierra UG-SCH-10/XSYNC/gates IV.
+
+**Siguiente operación:** crosswalk exhaustivo de predicados de `A_f^*` (constitutivo/invariante/vía colateral/epistémico/duplicado), sin alterar fórmula; luego regla trivalente de agregación.
