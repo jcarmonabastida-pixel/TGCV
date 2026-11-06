@@ -306,3 +306,15 @@ La recomendación histórica de §3.3 y las referencias anteriores a D1 como pri
 La decisión no modifica la jerarquía causal de este documento: θ_A(q) sigue siendo la pregunta científica general C10-D1; ITT_Z es el efecto de asignación de la política D2 en el diseño S4-R; LATE_f es local y condicionado a IV; θ_Af(q*) requiere identificación adicional. La legitimidad de D2, el soporte, las vías colaterales, los parámetros y la identificación permanecen abiertos. D1 requiere justificación del régimen ordinario para interpretar su contraste secundario.
 
 No se autoriza freeze, implementación, simulación ni ejecución.
+
+
+
+## 19. Addendum D2: correspondencia de políticas materiales y políticas focales de accesibilidad (2026-11-06)
+
+DEC-C10-066/067 no convierten (B_{g0}^{D2}/B_{g1}^{D2}) en (g_0^{Af}/g_1^{Af}). Las políticas g de C10-D1 son distribuciones objetivo factibles sobre cambios de accesibilidad; las políticas B D2 son mecanismos materiales de provisión. La correspondencia requiere reconstruir la distribución de (ΔA_f) inducida por cada B según historia y verificar consistencia, soporte, población basal, snapshots comparables, medición independiente, ausencia de rutas de fondo no registradas y separación de vías colaterales.
+
+La pareja ilustrativa 0,20→0,80 de §33.4 no describe D2. D2 programa intento focal con probabilidad 0 en control y 1 en tratamiento. Solo bajo s=.80 candidato, cumplimiento perfecto, una oportunidad, ausencia de provisión de fondo, ruta focal única, inaccesibilidad basal y predicados restantes satisfechos/invariantes, la apertura focal (D_f^*) sería algebraicamente 0→0,80. No se valida s, no se identifica la primera etapa de accesibilidad por la de C_dep, y no se traslada el valor 3,6 a D2.
+
+(ψ_B(q_X^*)) es la instancia del contraste de política (ψ_{policy}(q)) para las versiones recibidas B bajo el régimen/población basal (q_X^*), solo si ambos representan el mismo contraste y el régimen común está completo. No equivale a (ITT_Z) con incumplimiento ni a (θ_{Af}(q_X^*)) sin atribución focal. Si q exige (q_L^*), (q_X^*) no lo sustituye.
+
+La auditoría se desarrolla en el maestro C10-S §131 y el plan de cierre §16.12. Estado: correspondencia B→g^Af condicional/no demostrada; (θ_{Af}) no identificado; sin freeze, implementación, simulación o ejecución.
