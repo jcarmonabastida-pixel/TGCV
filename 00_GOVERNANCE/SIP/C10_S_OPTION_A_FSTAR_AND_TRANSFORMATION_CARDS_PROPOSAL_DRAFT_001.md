@@ -222,3 +222,9 @@ La cabecera de §1 conserva texto histórico que describía Opción A como no se
 RUL forma parte del paquete P0 migrado. F1 y A1 deben preservar su significado y referencias en la representación intermedia; F2 y A2 deben aplicar la configuración/reglas resultantes en destino. FP-03 evalúa condición, scope, operandos y efecto; FP-06 verifica aplicación efectiva y FP-07 la verificación. FP-08 conserva trazabilidad probatoria, sin sustituir conformidad semántica.
 
 Una RUL que sobrevive textualmente pero pierde un operando, cambia scope/efecto, queda sin aplicar o resuelve UNKNOWN como binario puede hacer F*=0 o ?, según suficiencia/cobertura de evidencia. La regla candidata ENABLED→PROFILE no se considera todavía parte confirmatoria de F*: necesita fuente funcional y dominio no tautológico. La misma regla y versión contractual se usarán en ruta focal y alternativa; no se permite definir reglas distintas para favorecer una ruta.
+
+## 12. Encaje de RUL en F1/F2/A1/A2 y F*
+
+RUL forma parte del paquete P0 migrado. F1 y A1 deben preservar su significado y referencias en la representación intermedia; F2 y A2 deben aplicar la configuración/reglas resultantes en destino. FP-03 evalúa condición, scope, operandos y efecto; FP-06 verifica aplicación efectiva y FP-07 la verificación. FP-08 conserva trazabilidad probatoria, sin sustituir conformidad semántica.
+
+Una RUL que sobrevive textualmente pero pierde un operando, cambia scope/efecto, queda sin aplicar o resuelve UNKNOWN como binario puede hacer F*=0 o ?, según suficiencia/cobertura de evidencia. La regla candidata ENABLED→PROFILE no se considera todavía parte confirmatoria de F*: necesita fuente funcional y dominio no tautológico. La misma regla y versión contractual se usarán en ruta focal y alternativa; no se permite definir reglas distintas para favorecer una ruta.
