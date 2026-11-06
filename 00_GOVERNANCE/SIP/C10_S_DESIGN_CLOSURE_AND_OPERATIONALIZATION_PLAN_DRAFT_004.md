@@ -513,3 +513,49 @@ Se actualizó REC-CAUS-04 en la matriz de cierre para reflejar esa delimitación
 La ficha protege el supuesto de que la política D2 no modifica autorización normativa funcional, evitando que una apertura por autorización se confunda con la provisión técnica de `C_dep*). La arquitectura semántica es coherente para el D2 actual; la invariancia material **no está demostrada**. Para cerrar se requiere identificar la fuente normativa competente y su regla de vigencia, comprobar basalmente `C_auth,base=1` en la población elegible y comparar de forma independiente el alcance funcional pre/post B, separando ACL/credenciales técnicas de permisos funcionales. Si el contraste no puede observar esa separación, la clasificación permanece indeterminada y no se afirma aislamiento.
 
 **Siguiente ficha:** `D2-RES-01`, con idéntica cadena de trazabilidad, distinguiendo disponibilidad basal, recursos usados por B, consumidores compartidos y posibles vías a rutas alternativas/interferencia.
+
+
+### 16.7. Crosswalk causal ficha D2-RES-01 — recursos no focales (2026-11-06)
+
+**Estado:** trazabilidad documental individual realizada; ficha DRAFT, no aprobada ni congelada. No se ha inspeccionado un sistema material, ni demostrado invariancia, no desplazamiento o ausencia de interferencia.
+
+#### 16.7.1. Semántica y reconciliación de predicados
+
+- Ficha: D2-RES-01, matriz temporal §13.2; dominio rector B-M07.
+- La ficha separa disponibilidad basal de recursos no focales, capacidad instalada, consumo de ejecución y recursos reservados/consumidos por B.
+- Maestro §59.2 distingue explícitamente stock/disponibilidad ex ante de demanda/consumo de ejecución. §59.3 sitúa en R_access* únicamente la disponibilidad ex ante necesaria para poner τ2 a disposición y no duplicada por C_dep* u otro predicado.
+- El maestro §46.2 incluye C_resource=1 y C_capacity=1 en una regla ilustrativa de elegibilidad. No se interpreta como autorización para añadir dos factores autónomos a la fórmula depurada de A_f*. Antes del freeze, cada dimensión concreta debe asignarse a (a) R_access*, (b) C_dep*, o (c) aplicabilidad/ejecución, con una sola función causal primaria.
+- C_capacity mantiene ficha separada §13.3; su capacidad focal introducida por B pertenece a C_dep*, mientras que capacidad no focal compartida debe evaluarse como condición común y posible vía de interferencia.
+
+#### 16.7.2. Crosswalk de extremo a extremo
+
+| Eslabón | Correspondencia | Lectura y estado |
+|---|---|---|
+| Definición → DGP | Disponibilidad suficiente basal, unidad×recurso×ventana, antes de Z; maestro §§46–47, 59.2–59.4 y 64.5 | Invariancia postulada/contractual en DGP aislado; no demostrada |
+| Predicado | R_access*(i,t;τ2); C_resource como descriptor de disponibilidad; consumo de ejecución separado | No crear multiplicadores redundantes. Stock/disponibilidad ≠ demanda/consumo |
+| Dominio de provisión | B-M07; B-M02/B-M03/B-M12 relacionados según dependencias transitivas; B-M14 si afecta consumidores alternativos | Crosswalk candidato; no prueba que los componentes o consumidores existan |
+| PROV | PROV-05 (no reducción A1/A2/F2), PROV-09 (no modificación de dependencias críticas compartidas), PROV-03/04 (snapshots y grafo transitivo) | Contratos documentales no implementados ni ejecutados |
+| U_G candidato | N18, N05, N13, N15, N20; E16, E17, E19; RES-τ2, ALT-DEP, Rshared, Rτ2, RA12 | IDs de rol/candidatos según matriz de cobertura §9; no registros observados |
+| Evidencia/falsador | Inventario, asignación, cuotas, reservas, consumo B, compromisos, consumidores y series por unidad/ventana; snapshots pre-B/post-B/rollback | Insuficiencia/compromiso basal, consumo no registrado, desplazamiento/degradación de A1/A2/F2, dependencias o consumidores no cubiertos; cobertura insuficiente → ? |
+| Mecanismo | Cambio constitutivo si cambia disponibilidad estructural; vía colateral si afecta rutas alternativas, rendimiento, ejecución, Outcome/Value; interferencia si cruza unidades | Mecanismos potencialmente simultáneos; no adjudicados sin evidencia |
+| Estimandos | ITT de la política material D2; efecto específico de accesibilidad de C10-D1; LATE_f solo bajo supuestos IV | Si B afecta recursos no focales, ITT es efecto de política/paquete. No atribuirlo exclusivamente a ΔT_acc*. La aleatorización individual no elimina interferencia por recursos compartidos; la estructura de conglomerados/exposición queda abierta |
+| Control | FCM-D2-06/07 y, si afecta alternativas o fondo, FCM-D2-08 | Invariancia candidata; obligación de registrar cambios; comprobación de alternativas pendiente |
+
+#### 16.7.3. Reconciliación de los cuatro objetos
+
+1. **Disponibilidad basal:** puede ser constitutiva de accesibilidad solo si es necesaria para poner τ2 a disposición, está asignada a la unidad/ventana y no está ya representada por C_dep*.
+2. **Capacidad instalada/no focal:** propiedad de configuración; su papel de acceso depende de si habilita la oferta, no de la carga concreta de una ejecución.
+3. **Consumo de ejecución:** se mide en aplicabilidad/ejecución/calidad según recurso y nivel; no se retrotrae como accesibilidad.
+4. **Recursos usados por B:** forman parte de la provisión y se miden separadamente. Si consumen recursos compartidos, pueden afectar A1/A2/F2, Reach, ejecución, Outcome/Value y otras unidades.
+
+#### 16.7.4. Consecuencias causales y regla de salida
+
+- Si solo cambia la dependencia focal y los recursos no focales permanecen comunes, el mecanismo focal sigue siendo candidato, sujeto a los demás supuestos.
+- Si B altera disponibilidad basal o capacidad no focal constitutiva, aparece un cambio adicional en condiciones de accesibilidad; el ITT es efecto del paquete y la atribución exclusiva a ΔT_acc* no queda identificada por aleatorización de B.
+- Si B desplaza recursos de rutas alternativas o degrada servicios compartidos, existe una vía paralela a Reach/Outcome/Value y posible interferencia.
+- Si no puede determinarse el inventario/consumo/consumidores, el estado es ?; no se declara no-afectación, aislamiento ni ausencia.
+- No ajustar mecánicamente por recursos/consumo postratamiento como si fueran covariables basales: pueden ser mediadores o co-intervenciones inducidos por B.
+
+**Dictamen:** el crosswalk conceptual de D2-RES-01 está completado y persistido. Permanecen abiertos la operacionalización de suficiencia, la conciliación final de §46.2 con §59.3, inventario y consumidores, PROV-05/09, MD-C1/MD-C4, interferencia/unidad y la atribución específica a accesibilidad. No se modifica DEC-C10-066/067, no se aprueba D2-RES-01 y no se autoriza implementación ni ejecución.
+
+**Siguiente ficha:** D2-CAP-01. El trabajo deberá resolver primero el límite entre capacidad necesaria para ofrecer τ2 (posible condición de acceso), capacidad focal ya contenida en C_dep*, y capacidad/margen dependiente de carga o estado (aplicabilidad/ejecución), sin duplicar R_access* ni C_resource.
