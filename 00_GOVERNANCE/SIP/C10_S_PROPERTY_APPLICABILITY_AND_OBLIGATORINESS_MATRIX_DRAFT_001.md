@@ -208,3 +208,15 @@ La plantilla ENABLED→PROFILE se evalúa solo como candidata. No se asigna O/C/
 | PAR-SVC-RETRY-COUNT | Excluido del núcleo hasta justificación P0 | Condicional/OPEN |
 
 No asignar O/C/NA confirmatorio hasta aceptación, fuente/versionado, mapping y evidencia ex ante. La regla de servicio no sustituye RUL-01/02/03, que siguen siendo predicados de preservación.
+
+## 15. IAM provisional de la regla sintética de servicio
+
+| Elemento | Aplicabilidad/obligatoriedad propuesta | Estado |
+|---|---|---|
+| CMP-SERVICE-LOGIC | Owner de RUL; identidad/versión definitivas pendientes | OPEN |
+| PAR-SVC-ENABLED | P0 REQUIRED para la instancia sintética | Propuesto |
+| PAR-SVC-PROFILE | P0 REQUIRED para la instancia sintética | Propuesto |
+| RUL-SVC-ENABLE-PROFILE-01 | P0 REQUIRED; efecto REQUIRE; scope servicio lógico | Propuesto |
+| PAR-SVC-RETRY-COUNT | Excluido del núcleo hasta justificación P0 | Condicional/OPEN |
+
+No asignar O/C/NA confirmatorio hasta aceptación, fuente/versionado, mapping y evidencia ex ante. La regla de servicio no sustituye RUL-01/02/03, que siguen siendo predicados de preservación.
