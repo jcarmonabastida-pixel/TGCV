@@ -183,3 +183,16 @@ La tabla es un IAM candidato, no un sellado operativo. Ninguna propiedad pasa a 
 | RUL-BASE-06 | FP-03 RUL-01/02/03, cobertura, oráculo independiente | OPEN |
 
 La plantilla ENABLED→PROFILE se evalúa solo como candidata. No se asigna O/C/NA confirmatorio hasta acreditar fuente, dominio y evidencia. Si carece de base funcional, debe reemplazarse antes de Z/B, no declararse NA.
+
+## 14. IAM candidato para RUL mínima
+
+| Control | Requisito ex ante | Estado |
+|---|---|---|
+| RUL-BASE-01 | Al menos una regla constitutiva, no tautológica y con fuente funcional | Cardinalidad DEC-C10-056 aceptada; contenido OPEN |
+| RUL-BASE-02 | Owner CMP, scope, claves/dominios y versión inequívocos | OPEN |
+| RUL-BASE-03 | AST acíclico 4/16/16, operadores/efecto dentro de DEC-C10-054 | Perfil aprobado; instancia OPEN |
+| RUL-BASE-04 | TRUE/FALSE/UNKNOWN y tratamiento explícito de UNKNOWN | Regla general documentada; tabla de caso OPEN |
+| RUL-BASE-05 | Mapping de regla y operandos F1/A1, aplicación F2/A2 | OPEN |
+| RUL-BASE-06 | FP-03 RUL-01/02/03, cobertura, oráculo independiente | OPEN |
+
+La plantilla ENABLED→PROFILE se evalúa solo como candidata. No se asigna O/C/NA confirmatorio hasta acreditar fuente, dominio y evidencia. Si carece de base funcional, debe reemplazarse antes de Z/B, no declararse NA.
