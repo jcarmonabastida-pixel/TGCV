@@ -249,3 +249,52 @@ La auditoría de exclusión debe incluir resultados separados para Outcome y Val
 **Resultado adversarial que debe poder recuperar el analizador:** (i) solo modificación focal capturada por D_f* y sin vías laterales; (ii) una vía directa a Outcome; (iii) vía directa a Value sin pasar por Outcome; (iv) alternativa A1/A2 modificada; (v) recursos/rendimiento compartidos con spillover; (vi) conocimiento/medición diferencial; (vii) cambio de oráculo; (viii) residuo/rollback/carryover. Salida esperada: LATE_f solo en (i) si los demás supuestos IV se cumplen; efecto de política/paquete o no identificación en los restantes según el estimando y la evidencia. No se fijan parámetros ni tasas.
 
 No hay inventario material, fixtures serializados, pruebas ejecutadas ni revisión independiente. No se cierra IV-G4, no se aprueba exclusión, no se habilita Wald y no se autoriza implementación/ejecución.
+
+## 12. Especificación causal adversarial del DGP Opción A — escenarios cualitativos (2026-11-06)
+
+**Propósito:** convertir el dictamen de §11 en escenarios discriminantes para el DGP Opción A (migración de configuración entre entornos software), reutilizando R0–R3, EXC-F0 y EXC-B01…15. Esta sección especifica estructuras causales y salidas esperadas; no fija parámetros, tasas, distribuciones, umbrales ni fixtures. No declara identificado ningún efecto.
+
+### 12.1 Contrato funcional común del microdominio
+
+- S0: configuración fuente; S2: estado/configuración intermedia tras la transformación focal; SF: configuración objetivo en entorno destino.
+- F1 = τ2: conversión de S0 a S2 mediante adaptador focal. B puede provisionar/configurar el adaptador, pero no ejecuta F1.
+- F2: aplicación y validación de S2 en SF. B tampoco ejecuta F2.
+- A1: exportación de S0 a formato neutral preexistente; A2: importación/aplicación y validación desde formato neutral a SF. A1→A2 es la ruta alternativa candidata, no debe suponerse funcionalmente equivalente sin F* y contrato versionados.
+- F*: criterio funcional común de conformidad técnica (esquema, integridad y compatibilidad) fijado antes de Z y separado del oráculo de medición. Las definiciones concretas siguen pendientes.
+- D_f*: apertura verdadera basal→post de la accesibilidad focal de F1, no éxito de F1, aplicación F2, Reach(SF), selección ni ejecución. D_f_obs es su clasificación observada y no sustituye a truth.
+
+La apertura de F1 no implica por sí sola Reach(SF): F2 debe ser accesible, aplicable y componible. Una alternativa estable A1→A2 puede mantener Reach(SF)=1 sin que F1 esté abierta. Esta circunstancia no viola por sí sola exclusión: puede generar efecto nulo o heterogéneo de D_f* sobre O/V.
+
+### 12.2 Familias mínimas de escenarios causales
+
+| ID/familia | Modificación estructural de B en el DGP | Ruta causal verdadera | Dictamen que debe emitir el analizador |
+|---|---|---|---|
+| EXC-F0 / R0 focal exclusiva | B solo provisiona el adaptador necesario para abrir F1; F2, A1/A2, F*, datos, autorización, recursos no focales, coste/riesgo, K y medición permanecen invariantes | Z→B→D_f*→Reach/Π→selección→Exec→O→V; no existe otra ruta Z/B→O/V | LATE_f solo es candidato si relevancia focal, independencia, monotonicidad, consistencia, no interferencia y medición válida también se sostienen. Reportar O y V por separado. |
+| R1 alternativa basal estable | F1 puede abrirse por B, pero A1→A2 ya es factible y no cambia por B | Z→D_f*; A1→A2 permanece basal e invariante. El acceso focal puede no alterar Reach(SF), o cambiar opciones/valor solo mediante uso de F1 | No declarar violación de exclusión por la mera existencia de alternativa. Distinguir efecto sobre D_f*, Reach, conjunto de trayectorias y O/V; reportar heterogeneidad y posible efecto nulo. |
+| EXC-B06 / vía directa a Outcome | B altera datos fuente/destino, mapping, S0, aplicabilidad o conformidad F* fuera de D_f* | Z→B→datos/App/F*→Exec/O (y eventualmente V), sin pasar por D_f* | Exclusión focal violada; no etiquetar Wald como LATE_f. ITT_Z puede seguir siendo efecto de política si diseño, consistencia, interferencia y medición del resultado son válidos. |
+| EXC-B09/B12 / vía directa a Value | B cambia seguridad, exposición, latencia, rendimiento, coste o consumo de recursos que entra en Value aunque O permanezca igual | Z→B→riesgo/coste/recursos→V; posible Z→B→rendimiento→O→V en paralelo | No inferir mediación completa O→V. LATE_f focal no identificado bajo exclusión violada; informar ITT_V como efecto de política si V es comparable y medido válidamente. |
+| EXC-B14 / alternativa modificada (R2) | B habilita, degrada o elimina A1/A2, o altera sus dependencias/recursos | Z→B→A1/A2→Reach/Π/Exec→O/V, además o en lugar de D_f* | Efecto de paquete; no atribuir a D_f*. Comparar R2 con R1 y mantener alternativas como ruta separada. |
+| EXC-B07/B02/B03/B12 / recursos compartidos | B consume, reserva, desplaza o congestiona recursos/runtime/host/colas que sirven a F2, A1/A2 u otras unidades | Z_i→B_i→R_pool/latencia→Reach/Exec/O/V de i y/o j≠i | Interferencia/carryover potencial. El ITT individual y Wald individual no se interpretan con SUTVA; exigir mapa de exposición o asignación/análisis por clúster. |
+| EXC-B10 / conocimiento diferencial | B entrega formación, avisos o instrucciones que cambian K, consideración, selección o inicio independientemente de D_f* | Z→B→K→Consider→Sel→Start→Exec→O/V | Vía no focal que viola exclusión para D_f*. No ajustar mecánicamente por K post-Z; tratar como efecto de política/paquete o diseñar intervención separada. |
+| EXC-B10/OBS / medición diferencial | B cambia logs, telemetría, permisos, retención, cobertura o adjudicación sin cambiar necesariamente el estado verdadero | Z→B→E_T/observación/missingness→O_obs/V_obs y D_f_obs | No es por sí sola una vía causal sobre O*/V*, pero invalida o sesga estimación observada si el error es diferencial/no identificado. Separar exclusión estructural de IV-G6/medición. |
+| EXC-B13 / oráculo alterado | B cambia F*, dataset, validador o regla de clasificación/resultado | Z→B→regla de medición/definición→O_obs/V_obs; el constructo medido difiere por brazo | Resultado no comparable; invalidar interpretación causal común. No reinterpretar el cambio del oráculo como accesibilidad. |
+| EXC-B11/B15 / residuo y carryover | Estado, caché, índice, permiso o dependencia persiste tras rollback o contamina otra unidad/periodo | B_t→estado residual_(t+1)→exposición/Reach/Exec/O/V posteriores | Consistencia temporal e interferencia comprometidas; exigir snapshots y mapa de exposición. No Wald estándar. |
+| R3 / intento o provisión fallida | W_attempt ocurre pero C_dep* no se satisface y no hay apertura focal; considerar por separado si el intento consume recursos o deja residuos | Z→B→W_attempt; no llega a C_dep*/D_f*. Si consume recursos/residuos, añadir vía colateral específica | Primera etapa focal nula/débil: no relevancia o instrumento débil, no LATE_f. Si hay coste/residuo, además efecto de paquete/interferencia; no asumir ITT nulo. |
+
+### 12.3 Separación de dictámenes por resultado y mecanismo
+
+El generador debe conservar al menos cuatro objetos distintos: (a) potenciales de D_f*; (b) potenciales de Reach_H/trayectorias/ejecución; (c) O* y su medición O_obs; (d) V* y su medición V_obs. No se permite inferir que una vía a O es también la única vía a V, ni que ausencia de efecto sobre O implica ausencia de efecto sobre V.
+
+La salida analítica distingue: LATE_f identificado condicionalmente; ITT_Z como efecto de asignación de política; efecto de paquete cuando B actúa por múltiples componentes; instrumento irrelevante/débil; interferencia; resultado no comparable; error de medición/missingness no identificado; y NOT_IDENTIFIED. Estas categorías no son mutuamente excluyentes: el reporte debe indicar el estimando y el gate que falla.
+
+### 12.4 Reglas de comparación y no identificación
+
+1. EXC-F0 es un control positivo de atribución focal, no el escenario por defecto ni una demostración de exclusión real.
+2. R1 es un control de discriminación: alternativa basal estable no equivale a vía colateral inducida por B. Puede bloquear efecto sobre Reach sin bloquear por ello la identificación del efecto local de D_f* sobre un resultado que sí responda al tratamiento.
+3. R2 debe manipular únicamente la alternativa especificada para aislar la violación; otros mecanismos se mantienen invariantes en ese contraste conceptual.
+4. La vía directa a Value se prueba con O* constante y V* sensible al coste/riesgo/recursos; la vía a Outcome se prueba separadamente. No se imponen magnitudes.
+5. La manipulación epistémica/medición se mantiene separada de la manipulación del estado verdadero; el analizador no recibe hidden_truth.
+6. Los escenarios de recursos compartidos y carryover cambian explícitamente el mapa de exposición/unidad; no se etiquetan como simple violación de exclusión individual si el problema adicional es interferencia.
+7. Si la evidencia observada no distingue entre F0 y una vía colateral, el resultado correcto es indeterminado/no identificado, no selección del escenario más favorable.
+
+**Estado:** especificación causal cualitativa propuesta; sin parámetros, tasas, distribuciones, fixtures serializados, oráculos ejecutables o pruebas. IV-G4 permanece abierto; relevancia, monotonicidad, independencia, consistencia, interferencia y medición conservan gates propios. No se habilita Wald, freeze, implementación ni ejecución.
