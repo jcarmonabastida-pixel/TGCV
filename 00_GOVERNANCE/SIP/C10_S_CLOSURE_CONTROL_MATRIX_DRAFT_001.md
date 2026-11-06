@@ -985,7 +985,7 @@ El crosswalk conceptual B-M01…15 → variable/predicado → clase U_G → meca
 
 ### 35. Regla trivalente de agregación A_f / DEP / D_f
 
-**Fuente:** `C10_S_AF_DF_TRIVALENT_AGGREGATION_RULE_DRAFT_001.md`.
+**Fuente:** `C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md §10`.
 
 | Objeto | Regla de 1 | Regla de 0 | Regla de ? |
 |---|---|---|---|
