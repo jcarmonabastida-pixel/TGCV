@@ -149,3 +149,40 @@ CMP=0, PAR=0 o RUL=0 produce SCOPE_ERROR en el DGP base según DEC-C10-056. No s
 Este contrato convierte la decisión de cardinalidad en una estructura abstracta comparable sin introducir valores de escenario ni código ejecutable. Es una propuesta de contrato, no una instancia, schema validado, oráculo, truth, fixture ni experimento.
 
 **Estado:** DEC-C10-056 aceptada; contrato abstracto Draft 001; parámetros concretos, instancias, IAM operativo, mapping final, oráculo y validación técnica pendientes. Sin ejecución científica autorizada.
+
+
+
+## 9. Reconciliación C_src/C_dst/M con F1/F2/A1/A2, IAM y F* (2026-11-06)
+
+**Estado:** crosswalk documental propuesto; no modifica DEC-C10-053/054/055/056 ni congela contrato/instancia.
+
+| Clase/objeto | C_src | F1/F2 | A1/A2 | C_dst declarado/aplicado | Control IAM/F* |
+|---|---|---|---|---|---|
+| CMP | Inventario, clase/rol y scope | Mapping de identidad/clase y composición explícita | Mismo criterio de identidad funcional | Cobertura, clase y duplicación sobre estado aplicado | CMP≥1; correspondencia adjudicable |
+| PAR | Clave, owner, tipo, estado, valor/dominio, unidad y requiredness | Conversión tipada sin colapsar estado/semántica | Mismo significado bajo ruta neutral | Tipo, valor y estado sobre destino aplicado | PAR≥1; O/C/NA/? por propiedad |
+| REF | Extremos, tipo, dirección, rol, multiplicidad e integridad | Correspondencia de extremos y referencias | Mismo universo y criterio | Integridad y dependencias declaradas | REF≥0 solo con IAM/cobertura exhaustivos |
+| RUL | AST tipado, scope, efecto y UNKNOWN | Transformación sin alterar lógica/ámbito/efecto | Mismo criterio semántico | Reglas aplicadas, no Outcome/Value | RUL≥1; AST 4/16/16, REQUIRE/FORBID |
+| POL | Ausente por diseño salvo módulo secundario | Mapping si se activa | Igual contrato | Política declarada separada de permisos efectivos | POL condicional; FP-05 independiente |
+| MET | Identidad/versiones/procedencia | Registrar versión de F1, S2, M | Registrar versiones A1/A2 y S1 | Sellar destino declarado/aplicado | MET obligatorio; FP-08 separado |
+| E_dst/runtime | Fuera de C_src | Dependencias, permisos, recursos/runtime externos | Mismas variables externas | Compatibilidad/seguridad/aplicación | FP-04/05 y C_dep fuera del objeto |
+
+### 9.1. Pipeline de correspondencia
+
+1. Sellar antes de Z/B C_src, contratos/versiones, universo CMP/PAR/REF/RUL, M, IAM, C0, G, H, criterios FP y oráculos.
+2. M contiene correspondencias tipadas/versionadas; distingue MAPPED, UNMAPPED, AMBIGUOUS y NOT_APPLICABLE. La falta de correspondencia no se convierte tácitamente en eliminación, default o NA.
+3. F1 produce S2 y F2 aplica/verifica destino; A1/A2 siguen ruta S1. S1/S2 no son C_dst aplicado.
+4. Capturar C_dst declarado y C_dst aplicado por separado, con snapshot y evidencia independiente.
+5. FP-01/02/03 evalúan contenido/correspondencia; FP-04/05 entorno/seguridad; FP-06 aplicación; FP-07 verificación; FP-08 gate probatorio. Evitar doble conteo.
+6. F* se adjudica por ruta completa, sin compensación. Outcome y Value quedan fuera del oráculo.
+
+### 9.2. Discrepancia DEFAULT abierta
+
+El contrato abstracto §3.2 usa DEFAULT; la matriz M §4 distingue DEFAULT_DECLARED, DEFAULT_INHERITED y DEFAULT_ENV_RESOLVED. No son sinónimos automáticos. Propuesta no aprobada: DECLARED/INHERITED serían metadatos de resolución del estado DEFAULT; ENV_RESOLVED sería observación de E_dst, externa a C_src/C_dst. Requiere reconciliación con catálogo PAR e IAM. Hasta entonces, los casos donde cambie el significado quedan ?.
+
+### 9.3. Cardinalidad y reglas
+
+DEC-C10-056 prevalece sobre formulaciones anteriores que permitían RUL=0: CMP≥1, PAR≥1, RUL≥1; REF≥0 solo con IAM pre-Z/B y cobertura exhaustiva; POL ausente por diseño salvo módulo secundario; MET obligatorio. DEC-C10-054 fija AST acíclico, profundidad 4, 16 átomos/regla, 16 reglas/paquete y efectos REQUIRE/FORBID. Esto no equivale a parser validado.
+
+### 9.4. Criterio de cierre
+
+Siguen abiertos máximos/clases CMP; claves/dominios PAR; universo/tipos/multiplicidad REF; gramática y UNKNOWN/conflictos RUL; representación DEFAULT; M por clase y conversiones; IAM completo; evidencia de C_dst aplicado; oráculo/cegamiento/error. Sin parámetros, fixtures, implementación ni ejecución.
