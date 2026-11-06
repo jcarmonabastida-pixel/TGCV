@@ -101,3 +101,17 @@ Para mantener el DGP base parsimonioso, el roster de trabajo propone instanciar 
 Los dominios son simbólicos: BOOL={false,true}; ENUM=D_profile finito con al menos dos símbolos sin orden implícito; INT=D_retry={n∈Z:0≤n≤N_retry_max}, con máximo finito pendiente. No se asignan valores ni límites numéricos. DECIMAL requiere escala/precisión/unidad/redondeo por clave; STRING requiere longitud/dominio y normalización explícita; REF requiere universo cerrado y mapping de extremos.
 
 Las reglas REQUIRE/FORBID del núcleo deben usar únicamente claves y dominios declarados. Una regla candidata podría restringir los perfiles permitidos cuando el servicio esté habilitado, pero su semántica y dominio deben cerrarse en el contrato RUL; no se crea una regla confirmatoria por esta nota. Se mantienen AST 4/16/16, acíclico, y UNKNOWN no convertido silenciosamente.
+
+## 11. Contrato mínimo candidato de RUL para la unidad lógica de servicio
+
+**Estado:** plantilla semántica candidata; no regla confirmatoria instanciada ni nueva DEC.
+
+DEC-C10-056 exige RUL≥1 y DEC-C10-054 limita el núcleo a AST declarativo acíclico 4/16/16, operadores atómicos declarados, composición AND/OR/NOT y efectos REQUIRE/FORBID. Se excluye SELECT_ENUM_VALUE del núcleo. La evaluación conserva TRUE/FALSE/UNKNOWN; UNKNOWN no se fuerza a un resultado binario.
+
+Para evitar una regla meramente tautológica o decorativa, la RUL mínima debe ser una restricción constitutiva, comprobable y con al menos un estado admisible y otro inadmisible dentro del dominio preespecificado. Debe referirse a elementos P0 declarados, tener scope y owner inequívocos, y afectar la validez funcional del paquete sin codificar Outcome, Value, permisos efectivos, recursos P1 ni condiciones postratamiento.
+
+**Plantilla de trabajo para validar semántica, no regla aprobada:** restricción condicional entre PAR-SVC-ENABLED y PAR-SVC-PROFILE: cuando ENABLED=true, PROFILE debe pertenecer al subconjunto de perfiles contractualmente admisibles para servicio activo. En la gramática disponible puede expresarse la condición como OR(NEQ(ENABLED,true), IN(PROFILE,D_profile_enabled)), bajo efecto REQUIRE. D_profile_enabled no está definido aún; debe derivarse de una especificación funcional de servicio independiente del escenario y contener contraste no tautológico si se pretende que la regla discrimine.
+
+No se afirma que la regla describa ya Opción A: si no existe fundamento contractual para ese vínculo, se descarta esta plantilla y se identifica otra restricción real del P0. No se inventa semántica para conservar el roster. El parámetro RETRY-COUNT no participa por defecto en esta regla; solo se vinculará si el contrato del servicio lo exige.
+
+**Criterios de cierre:** (1) fuente normativa/funcional; (2) owner CMP y scope; (3) claves y dominios finitos cerrados; (4) AST tipado dentro de 4/16/16; (5) efecto REQUIRE/FORBID; (6) tabla de verdad trivalente incluyendo UNKNOWN; (7) mapping semántico en F1/A1 y aplicación en F2/A2; (8) predicados RUL-01…03 y FP-03; (9) falsadores y casos límite; (10) evidencia/oráculo independiente. Hasta entonces RUL≥1 está satisfecho como cardinalidad de diseño, pero no como contrato sustantivo operacionalmente cerrado.
