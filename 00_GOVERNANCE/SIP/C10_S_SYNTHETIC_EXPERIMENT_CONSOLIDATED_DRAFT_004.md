@@ -8039,3 +8039,12 @@ La matriz M distingue subclases DEFAULT aún no reconciliadas con el enum abstra
 DEC-C10-054 fija AST acíclico 4/16/16 y REQUIRE/FORBID; DEC-C10-056 fija CMP≥1, PAR≥1, RUL≥1 y REF≥0 con cobertura exhaustiva. IAM conserva O/C/NA/? por propiedad. No se generan valores, truth, fixtures ni pruebas.
 
 **Dictamen:** crosswalk parcial; contrato/M Draft. Claves, dominios, máximos, mapping, conversión, IAM, oráculo y evidencia de destino aplicado abiertos. Sin Design Freeze, implementación o ejecución.
+
+
+## 171. Cierre de discrepancia de representación DEFAULT
+
+DEC-C10-054 ya aprobó distinguir DEFAULT_DECLARED, DEFAULT_INHERITED y DEFAULT_ENV_RESOLVED. La discrepancia era de representación: el contrato abstracto usaba state=DEFAULT, mientras la matriz desplegaba los subcasos. Se armonizan los auxiliares: PAR mantiene ABSENT/NULL/DEFAULT/VALUE; si DEFAULT, default_kind=DECLARED|INHERITED. La resolución ambiental se registra en snapshot E_dst, fuera de C_src/C_dst. No se crea DEC nueva ni se cambia la decisión aceptada.
+
+Origen, regla de herencia y valor ambiental resuelto se evalúan separadamente. Fuente incapaz de distinguir declarado/heredado → UNKNOWN salvo evidencia independiente; snapshot ambiental ausente → resolución desconocida, no inexistente. Igualdad del valor resuelto no prueba equivalencia del contrato.
+
+Campos exactos, evidencia, reglas por clave y oráculo siguen abiertos. Sin fixtures, parser, ejecución o Design Freeze.
