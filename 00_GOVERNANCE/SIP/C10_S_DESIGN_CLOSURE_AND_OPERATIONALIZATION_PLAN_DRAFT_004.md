@@ -885,3 +885,17 @@ No se cambia DEC ni se congela la fórmula. Próximo: consolidar regla trivalent
 - C_dep=0 no implica DEP=0 cuando existe alternativa admisible. D_f observado no reemplaza al verdadero en IV sin modelo de error defendible.
 
 No se aprueba ni congela la fórmula, no se cierran MEAS-G2…G8 ni IV, y no se autoriza implementación/ejecución.
+
+
+### 16.17. Reconciliación de casos adversariales y cobertura lógica trivalente
+
+
+**Fuente:** auditoría de medición focal §11, `C10-S-TRI-ADVERSARIAL-CROSSWALK-001`.
+
+Se evita duplicar catálogos existentes. Se reutilizan ID-01…15, SNAP-01…15, DGP §§26–28/32–35, U_G §§4–8 y matriz de fixtures §30. La suite TRI propuesta cubre la agregación A_f/DEP/D_f que esos contratos no articulaban conjuntamente: ceros necesarios con unknown/conflicto, ruta válida con Runknown, DEP=0 con universo COMPLETE frente a PARTIAL, ruta alternativa y bloqueo focal, combinaciones basal/post, no comparabilidad global, redescubrimiento de ruta basal, ausencia de logs, separación truth/observed y error diferencial.
+
+La tabla D_f incluye las nueve combinaciones de estados observados, pero solo es aplicable tras validar matching, identidad, frontera, granularidad, mapping y snapshots. La no comparabilidad global fuerza ?/NOT_COMPARABLE. La elegibilidad verdadera pre-Z no se acredita solo por A_f^{obs}=0.
+
+Los IDs TRI-AF-01…05, TRI-DEP-01…05, TRI-DF-01…06 y TRI-OBS-01…03 son casos lógicos propuestos, sin fixtures serializados ni ejecución. Materialización futura reutilizará el esquema existente de test_case y mantendrá hidden_truth segregada del analizador.
+
+**Estado:** mejora de cobertura documental, no cierre de MEAS-G4/G6/G7/G8. Pendientes la plantilla U_G completa, matching/UG-SCH-10, adjudicación independiente, error diferencial/missingness, fixtures/oráculos y revisión independiente. No autoriza implementación ni ejecución.
