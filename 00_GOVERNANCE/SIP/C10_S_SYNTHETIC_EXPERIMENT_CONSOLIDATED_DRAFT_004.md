@@ -8010,6 +8010,6 @@ La cadena temporal queda: t−1 sella población, elegibilidad, identidad/versio
 
 El crosswalk distingue R0 focal exclusiva, R1 alternativa basal estable, R2 alternativa modificada por B, R3 provisión fallida, vías directas a Outcome y Value, conocimiento diferencial, medición/oráculo diferencial, recursos compartidos e interferencia/carryover. R1 no se clasifica como violación por mera existencia de alternativa; R2 sí constituye vía colateral cuando B modifica A1/A2. La vía a Value se prueba separadamente con Outcome verdadero constante.
 
-**Huecos de precedencia:** no se declara aprobada la semántica concreta F1/F2/A1/A2 por la sola selección de Opción A; el DGP temporal mantiene pendiente el contrato funcional versionado, el esquema O*/V* y la regla de Value, la unidad de interferencia/exposición y el washout de carryover. No asignar parámetros hasta resolverlos.
+**Precedencia y huecos:** DEC-C10-051 selecciona Opción A como microdominio de trabajo y F* como contrato funcional candidato. Las menciones históricas a Opción A como no seleccionada quedan supersedidas en ese único punto. La selección no aprueba la semántica operacional de F1/τ2, adaptador, F2, A1/A2, propiedades/mappings/tolerancias de F*, ni su oráculo. Siguen pendientes además el esquema O*/V* y la regla de Value, la unidad de interferencia/exposición y el washout de carryover. No asignar parámetros hasta resolverlos.
 
 **Estado:** integración documental; no parámetros, fixtures, pruebas ni ejecución. IV-G4, IV-G6, IV-INT y Value siguen abiertos; no Design Freeze ni implementación.
