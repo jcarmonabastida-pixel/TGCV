@@ -150,3 +150,34 @@ APPLIED-STATE-SEMANTICS se descompone: FP-06 verifica aplicación, FP-07 observa
 ## 12. Estado de reconciliación y aplicabilidad
 
 La arquitectura SM/FP de esta matriz ha sido aceptada por DEC-C10-055. Los predicados de mapping se interpretan conforme a la reconciliación aceptada; la obligatoriedad/NA por instancia no queda resuelta por dicha aceptación y se desarrolla en `C10_S_PROPERTY_APPLICABILITY_AND_OBLIGATORINESS_MATRIX_DRAFT_001.md`. La asignación de O/C/NA requiere IAM sellado ex ante, cobertura y cardinalidad declarada.
+
+
+
+## 13. Crosswalk M con contrato abstracto y transformaciones Opción A (2026-11-06)
+
+M es un artefacto versionado de evaluación, no una capa semántica persistida. Su dominio es C_src→S2→C_dst declarado→C_dst aplicado para F1/F2 y C_src→S1→C_dst declarado→C_dst aplicado para A1/A2. S1/S2 no prueban aplicación ni conformidad F*.
+
+| Familia | Identidad mínima enlazada | Transformación y prueba |
+|---|---|---|
+| CMP | component_id/key, clase/rol, scope y cardinalidad | Correspondencia inequívoca o composición explícita; cobertura, identidad funcional y duplicación |
+| PAR | key, owner, type, state, value/domain, unit, requiredness, default | Conversión tipada; conservar semántica de estado/valor y registrar pérdida/redondeo |
+| REF | ref_id, extremos internos/externos, relation_type, direction, role, multiplicity | Mapear ambos extremos y comprobar integridad/dirección/rol/cardinalidad |
+| RUL | rule_id, scope, AST, efecto y versión de gramática | Equivalencia declarativa de operadores, operandos, ámbito, efecto y UNKNOWN |
+| POL | policy_id/scope/roles/rules, solo si se activa | Preservar política declarada; permisos efectivos/seguridad en E_dst/FP-05 |
+| MET | IDs/versiones contractuales, provenance, IAM y oráculo | Identidad/procedencia; hash identifica artefacto, no equivalencia funcional |
+
+### 13.1. Estados de mapping
+
+MAPPED exige correspondencia tipada y evidencia suficiente; UNMAPPED es fallo solo si la pérdida/omisión obligatoria está demostrada; AMBIGUOUS produce ? salvo composición explícita adjudicable; NOT_APPLICABLE requiere IAM pre-Z/B y justificación. Conversión no especificada no se presume válida.
+
+### 13.2. DEFAULT y conversiones
+
+La matriz abstracta usa ABSENT/NULL/DEFAULT/VALUE, mientras M distingue subclases DEFAULT. Propuesta no congelada: DECLARED/INHERITED como metadatos de DEFAULT; ENV_RESOLVED como observación de E_dst. La propuesta no está aprobada; casos semánticamente sensibles quedan ?. Requiere armonizar contrato, catálogo PAR, gramática y predicados FP.
+
+BOOL exige tabla explícita si cambia tipo; INT no admite overflow; DECIMAL declara escala/precisión/redondeo; ENUM mapping completo para valores obligatorios; STRING normalización explícita; REF correspondencia de extremos. Límites concretos abiertos.
+
+### 13.3. M común a F1/F2 y A1/A2
+
+M puede describir submappings por etapa, pero ambas rutas deben satisfacer mismo contrato de entrada/destino, IAM, C0/G/H y F*. F1 PASS no demuestra F2; S2 no es destino aplicado. A1/A2 no es alternativa funcional por alcanzar estado nominal: requiere mismo F* y evidencia de no-afectación por B. FP-01…07 sin compensación; FP-08 gate separado.
+
+**Pendiente:** mappings completos por instancia, reglas many-to-one/one-to-many, conversiones/pérdidas, defaults, C_dst aplicado, IAM y oráculo. No instancias ni fixtures.
