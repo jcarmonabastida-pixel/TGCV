@@ -963,3 +963,15 @@ Se incorpora DGP §28 / auditoría IV §13 como contrato común para los escenar
 No se permite tratar el reloj temporal como ejecución real, fijar invariancia por declaración sin contraste de control, ni confundir F* técnico con oráculo de Outcome o regla de Value. La falta de observación mantiene ?; no es ausencia verdadera.
 
 **Estado:** prerequisito documental abierto; no parametrización, implementación ni ejecución.
+
+
+
+## 16.23. Reconciliación funcional de Opción A y criterios de salida documental (2026-11-06)
+
+Se reutilizan las fichas F1/τ2, F2, A1/A2, matriz F*, contrato abstracto C_src/C_dst/M, matriz IAM y manifiesto B. La semántica de alto nivel queda documentada: B provisiona; C_dep* acredita estado técnico; A_f*(τ2) adjudica accesibilidad; F1 convierte S0→S2; F2 aplica S2→SF; A1/A2 componen S0→S1→SF; F* evalúa la ruta completa. No se crea una segunda especificación.
+
+**Criterio de salida:** coherencia semántica de objetos y etapas, no aprobación de detalles ausentes. Sigue pendiente instanciación reproducible con identidad/versiones, C_src/C_dst/M, IAM, predicados FP, C0/G/H, recursos/permisos, oráculo y evidencia.
+
+**Bloqueos:** (1) mappings y dominios de parámetros; (2) IAM pre-Z/B con obligatoriedad/NA/cobertura; (3) predicados/tolerancias y equivalencia funcional; (4) oráculo independiente, fiabilidad y cegamiento; (5) manifiesto B-M01…15 y grafo transitivo; (6) no-afectación A1/A2/F2 bajo B; (7) unidad/recursos compartidos e interferencia; (8) rollback/residuos/carryover. La ausencia de evidencia mantiene ?.
+
+No cierra OPEN-C10-003, MD-C1/MD-C4, IV-G4, IV-G6, IV-INT ni Value; no selecciona formatos, productos, parámetros o umbrales. No Design Freeze, implementación, fixtures, validación ni ejecución.
