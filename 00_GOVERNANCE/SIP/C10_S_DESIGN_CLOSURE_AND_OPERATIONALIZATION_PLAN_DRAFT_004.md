@@ -987,3 +987,10 @@ Se reconcilia C_src/C_dst/M con CMP/PAR/REF/RUL/POL/MET, F1/F2/A1/A2, IAM y F*. 
 **Bloqueos:** (1) DEFAULT vs DEFAULT_DECLARED/INHERITED/ENV_RESOLVED; (2) claves/dominios PAR; (3) universo/cardinalidad/clases CMP y multiplicidad REF; (4) M por clase, many-to-one/one-to-many y conversiones/pérdidas; (5) UNKNOWN/conflictos RUL; (6) IAM/cobertura/NA; (7) snapshot/evidencia independiente C_dst aplicado; (8) oráculo, cegamiento, concordancia/error; (9) no-afectación A1/A2/F2 por B, recursos/interferencia/carryover.
 
 No parámetros, fixtures, parser/oráculo validado, freeze ni autorización de implementación.
+
+
+## 16.25. Resolución de la discrepancia DEFAULT
+
+La reconstrucción de DEC-C10-054 y del perfil de dominios demuestra que la distinción tripartita ya estaba aceptada. No procede abrir una nueva decisión ni reducirla a propuesta. Se armoniza la representación: estado PAR ABSENT/NULL/DEFAULT/VALUE; default_kind=DECLARED|INHERITED cuando DEFAULT; DEFAULT_ENV_RESOLVED como observación de E_dst, externa al paquete.
+
+**Criterios aún abiertos:** contrato de herencia y scope por clave; estructura/procedencia del snapshot ambiental; mapping y tolerancias; comportamiento cuando la fuente no distingue; FP primario y oráculo; error de medición. La resolución conceptual elimina la contradicción de nivel, pero no cierra el contrato de instancia ni autoriza implementación.
