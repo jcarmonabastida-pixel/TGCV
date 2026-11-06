@@ -219,12 +219,6 @@ La cabecera de §1 conserva texto histórico que describía Opción A como no se
 
 ## 12. Encaje de RUL en F1/F2/A1/A2 y F*
 
-RUL forma parte del paquete P0 migrado. F1 y A1 deben preservar su significado y referencias en la representación intermedia; F2 y A2 deben aplicar la configuración/reglas resultantes en destino. FP-03 evalúa condición, scope, operandos y efecto; FP-06 verifica aplicación efectiva y FP-07 la verificación. FP-08 conserva trazabilidad probatoria, sin sustituir conformidad semántica.
+RUL forma parte del paquete P0 migrado. F1/A1 preservan significado, referencias, dominio, scope, versión y efecto en la representación intermedia; F2/A2 aplican la configuración y la regla en destino bajo el mismo contrato funcional. Para RUL-SVC-ENABLE-PROFILE-01 deben preservarse los perfiles permitidos STANDARD/READ_ONLY y el contraste violador DISABLED cuando ENABLED=true. FP-03 evalúa preservación semántica; FP-06 aplicación efectiva; FP-07 verificación post-aplicación; FP-08 trazabilidad probatoria.
 
-Una RUL que sobrevive textualmente pero pierde un operando, cambia scope/efecto, queda sin aplicar o resuelve UNKNOWN como binario puede hacer F*=0 o ?, según suficiencia/cobertura de evidencia. La regla candidata ENABLED→PROFILE no se considera todavía parte confirmatoria de F*: necesita fuente funcional y dominio no tautológico. La misma regla y versión contractual se usarán en ruta focal y alternativa; no se permite definir reglas distintas para favorecer una ruta.
-
-## 12. Encaje de RUL en F1/F2/A1/A2 y F*
-
-RUL forma parte del paquete P0 migrado. F1 y A1 deben preservar su significado y referencias en la representación intermedia; F2 y A2 deben aplicar la configuración/reglas resultantes en destino. FP-03 evalúa condición, scope, operandos y efecto; FP-06 verifica aplicación efectiva y FP-07 la verificación. FP-08 conserva trazabilidad probatoria, sin sustituir conformidad semántica.
-
-Una RUL que sobrevive textualmente pero pierde un operando, cambia scope/efecto, queda sin aplicar o resuelve UNKNOWN como binario puede hacer F*=0 o ?, según suficiencia/cobertura de evidencia. La regla candidata ENABLED→PROFILE no se considera todavía parte confirmatoria de F*: necesita fuente funcional y dominio no tautológico. La misma regla y versión contractual se usarán en ruta focal y alternativa; no se permite definir reglas distintas para favorecer una ruta.
+Una regla que sobrevive textualmente pero pierde un operando, cambia scope/efecto, queda sin aplicar o resuelve UNKNOWN como booleano puede hacer F*=0 o ?, según suficiencia y cobertura. La verdad funcional del DGP procede del contrato sintético fijado ex ante; no se infiere de resultados de ruta. La misma versión contractual se aplica a ruta focal y alternativa. Esta especificación no congela F*, mapping, tolerancias ni oráculo.
