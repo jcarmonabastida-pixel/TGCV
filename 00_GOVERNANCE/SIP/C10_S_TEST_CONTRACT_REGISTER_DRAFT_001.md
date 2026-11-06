@@ -1285,3 +1285,10 @@ Estos son contratos lógicos de discriminación, no IDs de fixture ni fixtures s
 La suite futura debe distinguir: (a) correspondencia CMP/PAR inequívoca vs ambigua; (b) pérdida obligatoria vs falta de evidencia; (c) ABSENT vs NULL; (d) DEFAULT declarado vs heredado; (e) default resuelto por entorno en E_dst vs estado del paquete; (f) REF vacío con cobertura completa vs inventario incompleto; (g) REF externo vs dependencia instalada; (h) AST preservado vs estructuralmente válido pero semánticamente alterado; (i) artefacto intermedio F1/A1 conforme vs C_dst aplicado divergente; (j) estado aplicado correcto con FP-08 insuficiente; (k) alternativa A1/A2 alterada por B; (l) UNKNOWN/conflicto RUL vs NA legítimo.
 
 Cada caso fijará C_src/C_dst, M, IAM, versiones, C0/G/H, cobertura, snapshot E_dst, oráculo y rol de cada dato. Declarará predicado FP primario, evitará doble conteo y mantendrá hidden_truth fuera del analizador. Son contratos lógicos, no fixtures ni pruebas ejecutadas.
+
+
+## 65. Contratos de discriminación DEFAULT
+
+La suite debe separar: (1) DEFAULT declarado frente a heredado; (2) mismo valor resuelto con distinto origen contractual; (3) regla/ámbito de herencia distinto; (4) ENV_RESOLVED observado en E_dst frente a no observado; (5) valor ambiental distinto con contrato idéntico; (6) fuente incapaz de distinguir DECLARED/INHERITED; (7) valor resuelto no atribuible a versión/instancia; (8) ausencia real de default acreditada frente a snapshot/evidencia ausente.
+
+Cada caso separará hidden_truth, entrada del analizador, PAR contractual, mapping M y snapshot E_dst; declarará FP primario y resultado esperado 1/0/?. Son contratos lógicos, no fixtures ni pruebas ejecutadas.
