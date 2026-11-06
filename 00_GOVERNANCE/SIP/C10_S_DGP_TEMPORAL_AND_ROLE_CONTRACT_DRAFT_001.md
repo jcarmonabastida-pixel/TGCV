@@ -49,14 +49,20 @@ La probabilidad de intento y el estado final verificado se derivan del escenario
 ### 3.2 Intento, éxito y estado final
 
 [
-W_{attempt,i} sim Bernoulli(\omega_{z,D})
+W_{programmed,i} \sim Bernoulli(q_{z,D})
+]
+[
+P(W_{attempt,i}=1|W_{programmed,i}=1,Z,D,X,H)=c_{z,D}(X,H)
+]
+[
+P(W_{attempt,i}=1|W_{programmed,i}=0,Z,D,X,H)=b_{z,D}(X,H)
 ]
 
 [
 C_{dep,i1}^{*}=C_{install,i1}^{*}\land C_{integrity,i1}^{*}\land C_{compat,i1}^{*}\land C_{oper,i1}^{*}
 ]
 
-`q_{z,D}` es la probabilidad de programar el intento bajo la política asignada; `W_programmed` y `W_attempt` son registros distintos. `W_attempt` representa el intento efectivamente iniciado y depende de recepción/cumplimiento, además de posibles provisiones de fondo. Su probabilidad no se fija igual a `q_{z,D}` sin una hipótesis explícita de cumplimiento perfecto. El éxito técnico condicional candidato `s=0.80` se refiere a la probabilidad conjunta de que la ruta técnica complete los cuatro componentes tras un intento elegible, bajo protocolo, actor, versión, recursos y ventana fijados. No se presume independencia entre componentes.
+`q_{z,D}` es la probabilidad de programar el intento bajo la política asignada; `c_{z,D}` representa cumplimiento/recepción que lleva al intento efectivo y `b_{z,D}` representa intento de fondo cuando no se programó. Ambos mecanismos permanecen abiertos y deben medirse; no se presume `c=1` ni `b=0`. El éxito técnico condicional candidato `s=0.80` se refiere a la probabilidad conjunta de que la ruta técnica complete los cuatro componentes tras un intento elegible, bajo protocolo, actor, versión, recursos y ventana fijados. No se presume independencia entre componentes.
 
 En el DGP candidato, las probabilidades de **programación** son:
 - D1: `P(W_programmed=1|Z=0)=.25`; `P(W_programmed=1|Z=1)=1.00`.
@@ -443,7 +449,7 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
 1. La discrepancia aparente se resuelve distinguiendo dos escenarios candidatos ya definidos en maestro §§53.4–54:
    - D1: control ordinario con provisión de baja frecuencia frente a provisión programada; escenario secundario.
    - D2: control sin provisión frente a provisión programada; escenario primario candidato por DEC-C10-066.
-2. Los parámetros p0=.20 y p1=.80 de §3.1 representan probabilidades objetivo del estado técnico final verificado C_dep, no probabilidades de intento W_attempt.
+2. **Supersedido por DEC-C10-067:** la lectura de p0=.20 y p1=.80 como probabilidades genéricas de política/estado final no gobierna D2. Las probabilidades vigentes de §3.1/§24 son de programación (`W_programmed`); el intento efectivo y C_dep se derivan de cumplimiento, provisión de fondo y éxito técnico.
 3. Probabilidades candidatas de **programación** de §54:
    | Parámetro | D1 Z=0 | D1 Z=1 | D2 Z=0 | D2 Z=1 |
    |---|---:|---:|---:|---:|
@@ -451,9 +457,9 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
    El intento efectivo W_attempt depende de recepción/cumplimiento y se observa por separado; la provisión de fondo cuando W_programmed=0 también debe medirse.
 4. El éxito técnico condicional candidato s=.80 se aplica solo a un intento efectivo elegible. Las probabilidades marginales de C_dep se derivan de programación, cumplimiento, intentos de fondo y éxito conjunto; no son parámetros independientes. Solo con cumplimiento perfecto, una oportunidad y ausencia de provisión de fondo se reproducen .20/.80 en D1 y 0/.80 en D2. No se presume independencia entre componentes técnicos de C_dep.
 5. La descripción de B0 como mantenimiento sin provisión focal y B1 como provisión programada en §21 corresponde a D2. No debe usarse como definición general de B0/B1 ni como descripción de D1.
-6. En D1, B_g0 es la política ordinaria de baja frecuencia; B_g1 programa el mismo procedimiento para todas las unidades elegibles. En D2, B_g0 no inicia provisión; B_g1 la programa para todas.
+6. En D1, B_g0 programa provisión ordinaria de baja frecuencia; B_g1 programa el mismo procedimiento para todas las unidades elegibles. En D2, B_g0 no programa provisión focal; B_g1 la programa para todas. El inicio efectivo se observa por separado.
 7. Z asigna política; B_assigned/offered/received, W_programmed, W_attempt, S_success, componentes técnicos, C_dep, A_f*, D_f*, App_f y Exec_f permanecen separados.
-8. La primera etapa .60 (D1) o .80 (D2) es primero una diferencia en C_dep. Solo equivale a primera etapa de accesibilidad/apertura si los demás predicados estructurales de A_f* y la elegibilidad basal lo permiten.
+8. Las diferencias .60 (D1) y .80 (D2) en C_dep solo se reproducen bajo cumplimiento perfecto, una oportunidad, ausencia de provisión de fondo y s=.80. No son primeras etapas aprobadas; las primeras etapas efectivas se calculan desde W_attempt y C_dep observados/verdaderos por separado.
 9. **Supersedido por DEC-C10-066:** D2 ya es el escenario primario candidato y D1 el secundario. La legitimidad de D2 sigue condicionada a verificar ausencia basal y ausencia de provisión focal de fondo; la legitimidad de D1 requiere justificar el régimen ordinario. Esta precedencia no cierra población, soporte, estimandos, parámetros ni identificación.
 10. Esta sección aclara la ambigüedad registrada en §23.10; no altera silenciosamente el texto histórico ni declara aprobadas las políticas.
 11. Permanecen abiertos: actor/disparador, recepción, hash/versión, evidencia, distribución conjunta de componentes, crossover/contaminación, calibración de A_f*, exclusión y aprobación del comparador.
