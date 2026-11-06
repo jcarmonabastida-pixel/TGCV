@@ -1013,3 +1013,20 @@ Registro de subcasos: `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md`, §57. Los TRI
 | Separación/medición | TRI-OBS-01…03 | Contratos de no filtración/error propuestos | Doble evaluación, error diferencial y missingness |
 
 **Dictamen:** cobertura documental mejorada por reutilización y crosswalk; MEAS-G8 OPEN, MEAS-G4/G6/G7 OPEN/PARTIAL según sus fuentes. No se declaran cerrados ID/SNAP, UG-SCH-10, XSYNC, PROV, MD-C1/MD-C4 ni IV. No hay fixtures serializados, ejecución ni autorización.
+
+
+
+## 37. Cierre de validez IV de D2 — C10-S-IV-AUD-001
+
+| Gate | Evidencia/condición requerida | Estado al corte | Consecuencia si no cierra |
+|---|---|---|---|
+| IV-G1 Tratamiento/población | `D_f^*` vs `D_f^{obs}`, elegibilidad pre-Z, unidad, versiones y snapshots comparables | PARCIAL / ABIERTO | No definir tratamiento IV observado ni población de compliers |
+| IV-G2 Relevancia | Primeras etapas separadas para `C_dep^*`, `A_f,post^*`, `D_f^*`, `ΔT_acc^*`; incertidumbre y debilidad | ABIERTO / NO DEMOSTRADO | No Wald; no sustituir tratamiento focal por éxito técnico |
+| IV-G3 Independencia/interferencia | Mecanismo/unidad de asignación, clúster, exposición compartida y carryover | ABIERTO | No inferencia IV estándar |
+| IV-G4 Exclusión | Inventario y evidencia por rutas focales/alternativas/compartidas/externas/desconocidas; vías B→Outcome/Value | AMENAZA MATERIAL / NO DEMOSTRADA | Interpretar ITT como política/paquete o declarar no identificación |
+| IV-G5 Monotonicidad | Justificación sustantiva y DGP con defiers/crowding-out | ABIERTO | No LATE estándar |
+| IV-G6 Consistencia/medición | Pin de versiones, recepción/cumplimiento, adjudicación independiente, error diferencial | ABIERTO | No usar `D_f^{obs}` como `D_f^*` |
+| IV-G7 Resultado | Outcome y Value separados, regla/beneficiario/horizonte, missingness/censura | ABIERTO | No interpretar un LATE como otro |
+| IV-G8 Suite sintética | Truth oculta adversarial para instrumento débil, exclusión, defiers, interferencia, versiones y medición | ESPECIFICACIÓN PENDIENTE DE IMPLEMENTACIÓN | No validar capacidad del analizador para abstenerse |
+
+**Dictamen agregado:** `LATE_f` = NO IDENTIFICADO / NO LISTO PARA WALD. Los gates son requisitos de diseño; su documentación no constituye validación empírica ni autorización de ejecución. `ITT_Z` conserva objeto de efecto de asignación de política y no atribuye automáticamente accesibilidad.
