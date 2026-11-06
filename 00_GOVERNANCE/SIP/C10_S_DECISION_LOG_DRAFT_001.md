@@ -723,3 +723,12 @@ El registro autónomo es `DEC-C10-067_D2_MATERIAL_POLICY_CONTRACT_ACCEPTANCE.md`
 La aceptación es conceptual/documental. (s=0.80) sigue siendo candidato no validado; no se aprueban parámetros, distribuciones conjuntas, actor, artefacto/hash, recepción, ventanas, reintentos, evidencia, inventario de rutas, estimandos, población/soporte ni identificación. D2 continúa primario candidato y D1 secundario por DEC-C10-066. No se autoriza freeze, implementación, validación ejecutable, simulación ni ejecución científica.
 
 **Autorización:** `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 49. Reconciliación de representación DEFAULT (2026-11-06)
+
+DEC-C10-054 ya acepta distinguir DEFAULT_DECLARED / DEFAULT_INHERITED / DEFAULT_ENV_RESOLVED. La discrepancia posterior era de representación entre el enum PAR y la matriz de mapping, no una cuestión que requiera reabrir la decisión.
+
+Interpretación armonizada: PAR conserva state ∈ {ABSENT,NULL,DEFAULT,VALUE}; cuando DEFAULT, default_kind ∈ {DECLARED,INHERITED}. DEFAULT_ENV_RESOLVED es observación del entorno E_dst/snapshot, no estado del paquete. Si no se puede distinguir origen declarado/heredado, UNKNOWN salvo evidencia independiente. Igualdad del valor ambiental resuelto no demuestra equivalencia del contrato.
+
+Esta entrada registra reconciliación de alcance de decisión existente, no una nueva DEC aceptada, no modifica DEC-C10-054 y no autoriza implementación/ejecución. Campos por clave, herencia, snapshot, evidencia y oráculo siguen abiertos.
