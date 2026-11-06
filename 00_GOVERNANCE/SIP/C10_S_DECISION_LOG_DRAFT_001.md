@@ -712,3 +712,14 @@ El registro autónomo es `DEC-C10-066_D2_PRIMARY_CANDIDATE_ACCEPTANCE.md`. Esta 
 La decisión no valida (s=0.80), parámetros ni DGP; no cierra (B_{g0}/B_{g1}), (g_0/g_1), estimandos, (q_X^*), poblaciones, Value, horizonte ni identificación; tampoco autoriza freeze, implementación, simulación o ejecución científica. ITT, primeras etapas y LATE/Wald de D1 y D2 permanecen específicos por comparador y no se agrupan ni transportan automáticamente.
 
 **Autorización:** `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 48. DEC-C10-067 — aceptación del contrato material de políticas D2 (2026-11-06)
+
+El usuario acepta las definiciones materiales conceptuales de (B_{g0}^{D2}) y (B_{g1}^{D2}): control sin intento focal programado, frente a tratamiento con provisión técnica focal programada y protocolo de verificación separado. La asignación, intento programado/efectivo, recepción, instalación, componentes técnicos, (C_{dep}^{*}), (A_f^{*}) y (D_f^{*}) permanecen distintos.
+
+El registro autónomo es `DEC-C10-067_D2_MATERIAL_POLICY_CONTRACT_ACCEPTANCE.md`. La autorización basal (C_{auth,base}=1) y las condiciones no focales declaradas se mantienen comunes en el DGP aislado. Cualquier cambio diferencial en recursos, permisos, costes, latencia, calidad, seguridad, información, incentivos o alternativas se registra como vía colateral/cointervención; el ITT no se etiqueta automáticamente como efecto puro de accesibilidad.
+
+La aceptación es conceptual/documental. (s=0.80) sigue siendo candidato no validado; no se aprueban parámetros, distribuciones conjuntas, actor, artefacto/hash, recepción, ventanas, reintentos, evidencia, inventario de rutas, estimandos, población/soporte ni identificación. D2 continúa primario candidato y D1 secundario por DEC-C10-066. No se autoriza freeze, implementación, validación ejecutable, simulación ni ejecución científica.
+
+**Autorización:** `scientific_execution=false`; `execution_authorized=false`.
