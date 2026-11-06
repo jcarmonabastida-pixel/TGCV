@@ -166,3 +166,25 @@ El cierre de estos gates no autoriza por sí mismo ejecución: siguen siendo nec
 Esta auditoría no acepta nuevos parámetros, no cierra DEC-C10-066/067, REC-EST-01…09, XSYNC ni el diseño D2; no modifica C10-D1, TGCV Core, RMA, Matrix, STATUS o claims. No autoriza freeze, implementación, simulación, estimación, adquisición de datos ni ejecución científica.
 
 **Siguiente operación documental:** integrar este dictamen en el maestro, plan y matriz de cierre; después, auditar la definición observacional de `D_f^*` y el protocolo de medición de `A_f^*` frente a los contratos de snapshots, predicados, cobertura y error. Mantener Wald bloqueado hasta que los gates IV estén cerrados.
+
+
+
+## 10. Crosswalk operativo IV-G1/G4/G6 ↔ medición trivalente y cobertura U_G (2026-11-06)
+
+**Fuentes enlazadas:** C10-S-MEAS-AUD-001 §§8–10; C10-S-AF-XWALK-001 §§1–6; registro de contratos de prueba §57 (familias TRI-AF/DEP/DF/OBS); identidad/versionado y matching; matriz de cobertura U_G y protocolo de procedencia/adjudicación. Esta sección reconcilia dependencias; no declara gates cerrados.
+
+| Gate IV | Contratos de medición/cobertura que lo soportan | Condición de cierre específica para IV | Estado |
+|---|---|---|---|
+| IV-G1 Tratamiento/población | MEAS-G1…G5; MEAS-G8; TRI-AF-01…05; TRI-DF-01…06; ID-01…15; SNAP-01…15 | Identidad focal τ2, frontera/unidad/contexto y snapshots comparables; elegibilidad basal pre-Z; fórmula candidata y predicados sin duplicidad; D_f* separado de D_f_obs; unknown/no comparabilidad conservados | ABIERTO / PARCIAL |
+| IV-G4 Exclusión | MEAS-G4; U_G rutas focales/alternativas/compartidas/externas/desconocidas; B-M01…15; D2-RES-01/D2-CAP-01/D2-C_INFO y fichas de invariantes | Inventario por unidad/frontera/versión/ventana, cobertura negativa suficiente, rutas desconocidas resueltas o explícitamente acotadas y evaluación de cada vía B→Outcome/Value; invariancia postulada no se etiqueta como demostrada | AMENAZA MATERIAL / NO DEMOSTRADA |
+| IV-G6 Consistencia/medición | MEAS-G2…G8; TRI-OBS-01…03; TRI-DF-01…06; contratos de snapshots, adjudicación y truth segregada | Versiones y eventos pinned; adjudicación ciega/independiente especificada; error diferencial y missingness cuantificados o acotados; D_f_obs no sustituye a D_f* sin modelo defendible | ABIERTO |
+
+### 10.1 Regla de propagación para la decisión IV
+
+1. A_f_obs=0 o D_f_obs=0 solo puede usarse si la evidencia negativa es válida, suficiente y de alcance compatible; MISSING, NONE, PARTIAL, unknown o conflicto no son cero.
+2. DEP_f_obs=0 exige que todas las rutas del universo declarado estén clasificadas 0 y cobertura COMPLETE; una ruta alternativa confirmada 1 basta para DEP=1; una ruta desconocida material conserva ?.
+3. No comparabilidad de identidad, frontera, unidad/contexto, granularidad, catálogo, mapping o snapshots fuerza NOT_COMPARABLE/?; no se calcula apertura focal basal→post como si fuera la misma τ2.
+4. Truth DGP queda segregada del analizador. La evaluación de error compara la salida congelada con truth después, nunca la usa para construir la clasificación.
+5. Incluso una medición trivalente correctamente especificada no demuestra exclusión, monotonicidad, independencia ni ausencia de interferencia. Esos supuestos conservan gates propios.
+
+**Dictamen:** el crosswalk permite reutilizar la especificación trivalente y U_G, sin crear un catálogo paralelo. No hay inventario material completo, fixtures serializados ni validación ejecutada; IV-G1/G4/G6 permanecen abiertos. LATE_f continúa bloqueado.
