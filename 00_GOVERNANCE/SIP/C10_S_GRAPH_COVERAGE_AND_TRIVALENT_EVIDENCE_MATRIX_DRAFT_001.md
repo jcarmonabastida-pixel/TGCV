@@ -176,3 +176,40 @@ La decisión metodológica correcta es mantener Reach=?, F_alt,0=?, A_f*=? y MD-
 **Siguiente bloque:** fijar el contrato de frontera y granularidad de U_G (qué cuenta como componente, dependencia, ruta funcionalmente substituible, servicio externo, versión y recurso compartido), y diseñar el protocolo de evidencia/cobertura para completar el inventario sin confundir búsqueda finita con exhaustividad ontológica.
 
 **Prohibición:** no ejecutar, instalar, simular, generar datos ni marcar contratos PASS en este bloque.
+
+
+---
+
+## 9. Crosswalk de dominios de provisión B-M01…15 con U_G — D2 (2026-11-06)
+
+**Estado:** mapeo conceptual de cobertura; DRAFT / NO APROBADO / NO CONGELADO / NO EJECUTADO. Reutiliza los IDs N01–N23, E01–E23 y predicados de §§2–4; no crea nodos/aristas ni afirma su existencia material. La asignación es un índice de inspección, no un inventario observado.
+
+| Dominio B | Nodos U_G candidatos | Aristas U_G candidatas | Predicados/rutas que revisar | Contrato/evidencia asociada |
+|---|---|---|---|---|
+| B-M01 Artefacto/versión | N04, N06 | E02–E04 | ID-τ2, DEP-τ2, Rτ2 | Identidad/versionado, hash, firma, SBOM; PROV-03/04/12 |
+| B-M02 Runtime | N05, N06, N18, N20, N21 | E03, E04, E16, E19, E20 | DEP-τ2, RES-τ2, ALT-DEP, EXT, Rshared/Rexternal | Imagen/runtime, aislamiento, librerías, cuotas, dependencias/consumidores; PROV-03/04/05/09 |
+| B-M03 Host | N01, N06, N13, N15, N18, N20, N21 | E16–E20 | ALT-A1, ALT-A2, ALT-DEP, RES-τ2, EXT, Rshared | Diff de host/SO/paquetes, consumidores y comportamiento alternativo; PROV-03/04/08/09 |
+| B-M04 Interfaz | N07, N17, N20, N21 | E05, E06, E18–E20 | REL-τ2, AUTH-τ2, DEP-τ2, EXT | API/schema, endpoint, ACL, puertos, llamadas y relaciones; PROV-04/06/09/12 |
+| B-M05 Permisos | N17, N07, N10, N11, N13, N15 | E18 | AUTH-τ2, ALT-A1, ALT-A2 | Registro normativo y diff de permisos técnicos/funcionales; PROV-06 |
+| B-M06 Datos | N19, N10, N11, N12, N13, N15, N16 | E10, E14, E15, E21, E23 | COND-τ2, APP-τ2, ALT-F*, ORACLE | Hashes/snapshots de fuente-destino, datos funcionales y oráculo; PROV-02/03/07 |
+| B-M07 Recursos | N18, N05, N13, N15, N20 | E16, E17, E19 | RES-τ2, ALT-DEP, Rshared, Rτ2, RA12 | Cuotas, reservas, consumo, contención y consumidores por unidad/ventana; PROV-05/09 |
+| B-M08 Red | N07, N13, N15, N20, N21 | E05, E11–E14, E19, E20 | REL-τ2, ALT-DEP, EXT, Rexternal, Runknown | DNS/proxy/firewall/rutas/puertos, servicios y límites externos; PROV-03/04/09/11 |
+| B-M09 Seguridad | N05, N07, N17, N20, N21 | E18–E20 | AUTH-τ2, BLOCK-τ2, EXT | Sandbox, certificados, políticas, bloqueos, alcance y revisión de seguridad; PROV-03/06 |
+| B-M10 Observabilidad | N16, N22, N23 | E15, E22, E23 | ORACLE, EXT; plano E_T separado de predicados estructurales | Esquema/retención/destinatarios de logs y métricas; conocimiento del agente frente a evidencia del evaluador |
+| B-M11 Estado | N01, N12, N19, N20, N13, N15 | E10, E14, E17, E19, E21 | COND-τ2, APP-τ2, ALT-DEP, Rshared | Cachés, registros, índices, estado persistente y snapshots pre/post/rollback; PROV-03/07/10 |
+| B-M12 Rendimiento | N05, N07, N13, N15, N18, N20 | E05, E16, E17, E19 | REL-τ2, RES-τ2, ALT-A1, ALT-A2, ALT-F*, Rshared | Latencia, throughput, prioridad, contención y degradación por brazo/ventana; PROV-05/08/09 |
+| B-M13 Oráculo | N16 | E15 | ORACLE, ALT-F* | Hash/version, ceguera, dataset y reglas inmutables; PROV-02. Modificación funcional por B prohibida |
+| B-M14 Alternativas | N13, N14, N15, N12, N18, N20, N21 | E11–E14, E17, E19, E20 | ALT-A1, ALT-A2, ALT-DEP, ALT-F*, Rτ2/RA12/Rshared/Rexternal | Catálogo, grafo transitivo y pruebas funcionales pre/post con margen justificado; PROV-05/08/09. Modificación por B prohibida |
+| B-M15 Reversibilidad | N01, N03–N08, N13–N21 | Aristas afectadas por el cambio y snapshots asociados; no existe E-ID específico de rollback en E01–E23 | Predicados/rutas afectados antes y después de rollback; Runknown si quedan residuos sin clasificar | S_preB, S_postB, S_rollback y S_routeA; diffs, residuos y PROV-03/10/11 |
+
+**Precauciones de mapping:**
+
+1. Los rangos E03–E04, E16–E20 y E11–E14 remiten a los IDs ya existentes; no se crean nuevas aristas por esta tabla.
+2. B-M15 es un evento/proceso de reversibilidad y evidencia de snapshots, no una arista causal única. No asignar un E-ID ficticio.
+3. B-M10 afecta dos planos distintos: conocimiento/comunicación del agente (N22/E22) y observabilidad/medición (N16/E15 y E_T). No convertir ambos en una sola condición de accesibilidad.
+4. B-M13 y B-M14 se inspeccionan para detectar desviaciones, pero siguen prohibidos como modificaciones funcionales de B según manifiesto §3.
+5. Las clases U_G, predicados, estado y cobertura conservan los valores ya declarados en §§2–6. El mapping no transforma ?/NONE en 0 ni NONE en ausencia.
+
+**Reconciliación histórica:** el contrato de frontera y granularidad C10_S_SYSTEM_BOUNDARY_AND_GRAPH_GRANULARITY_CONTRACT_DRAFT_001.md ya existe y debe gobernar la instanciación del universo. Por tanto, el “siguiente bloque” anunciado históricamente en §8 (crear dicho contrato) está satisfecho documentalmente; no se vuelve a crear. Esta sección §9 actualiza la secuencia: el paso siguiente es aplicar el mapping a la plantilla U_G y al registro de evidencia, manteniendo sin inventar todos los estados observados.
+
+**Límites:** N01–N23 y E01–E23 siguen siendo roles y aristas candidatas; existencia, relaciones, dependencias transitivas, consumidores, cobertura y no-afectación reales continúan indeterminados. Reach=?, F_alt,0=? y A_f*=?; MD-C1/MD-C2/MD-C4 y AUD-005/AUD-007 siguen abiertos. No hay implementación ni autorización de ejecución.
