@@ -180,14 +180,14 @@ MEAS-01 deja de describir una fórmula no reconciliada y pasa a **PARTIAL**: fó
 
 ## Addendum: regla trivalente de agregación (2026-11-06)
 
-**Fuente:** `C10_S_AF_DF_TRIVALENT_AGGREGATION_RULE_DRAFT_001.md`.  
+**Fuente:** `C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md §10`.  
 **Estado:** AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT.
 
 Se formaliza la propagación de `A_f^{obs}`, `DEP_f^{obs}` y `D_f^{obs}` reutilizando DGP §26/§32 y U_G §5 / protocolo de adjudicación. La conjunción de A_f observada da 0 ante cualquier término necesario con 0 válido/suficiente; da 1 solo si todos los términos son 1 con comparabilidad/cobertura adecuadas; en otro caso ?. DEP es disyunción de rutas: una ruta 1 basta; 0 exige universo exhaustivo COMPLETE y todas las rutas 0; en otro caso ?. D_f observado da 1 solo con baseline 0/post 1; da 0 si baseline 1 o post 0; en los demás casos ?. No comparabilidad de τ2/snapshots implica NOT_COMPARABLE/?.
 
 Se distingue evidencia/conflicto/cobertura de estado observado y truth DGP. No se convierte MISSING/NONE/PARTIAL/unknown en 0. Una alternativa válida impide inferir DEP=0 desde C_dep=0. La elegibilidad verdadera basal no se sustituye por clasificación observada sin modelar error.
 
-La regla no aprueba ni congela la fórmula, no valida error diferencial ni cierra IV. `LATE_f` sigue bloqueado. Documento formal: `C10_S_AF_DF_TRIVALENT_AGGREGATION_RULE_DRAFT_001.md`.
+La regla no aprueba ni congela la fórmula, no valida error diferencial ni cierra IV. `LATE_f` sigue bloqueado. Documento formal: `C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md §10`.
 
 
 ---
@@ -204,7 +204,7 @@ Para cada predicado/ruta se conservan por separado:
 - `evidence_status ∈ {AVAILABLE,MISSING,CONFLICTING}`;
 - `coverage_status ∈ {NONE,PARTIAL,COMPLETE}`;
 - estado de revisión/adjudicación;
-- `truth_dgp ∈ {0,1}), solo en generador/evaluador restringido y nunca en el paquete del analizador.
+- `truth_dgp ∈ {0,1}`, solo en generador/evaluador restringido y nunca en el paquete del analizador.
 
 No existe conversión mecánica entre ellos. MISSING, NONE, PARTIAL, no inventariado, no observado o sin logs no significan 0. CONFLICTING no se resuelve por mayoría automática.
 
@@ -382,3 +382,8 @@ Cada TRI se materializará, cuando se autorice, usando el esquema existente del 
 La suite existente cubre identidad/matching, snapshots, cambios estructurales frente a epistémicos, rutas/Reach y algunos escenarios de DGP. La suite TRI añade los cruces que no estaban explicitados como casos agregados: cero local con unknown concomitante; conflicto local frente a conflicto global; ruta válida junto a Runknown; cero de DEP bajo cobertura completa frente a parcial; C_dep fallido con alternativa; bloqueo de una ruta; tabla completa D_f; precedencia de no comparabilidad; redescubrimiento basal; ausencia de evidencia y filtración/error diferencial.
 
 **Dictamen:** especificación lógica TRI propuesta y trazada; cobertura documental mejorada, pero MEAS-G8 sigue OPEN. No se han creado fixtures serializados, truth oculta, oráculos, código, tolerancias calibradas ni pruebas. MEAS-G4/G6/G7 tampoco se cierran por este crosswalk. No se cierra ID-01…15, SNAP-01…15, UG-SCH-10, XSYNC, PROV, MD-C1/MD-C4 ni ningún gate IV. No se modifica DEC-C10-065/066/067, fórmula candidata, Core, estimandos ni autorización. No se autoriza implementación, validación ejecutable, simulación o experimento.
+
+
+### 11.7. Registro canónico de subcasos
+
+Los subcasos TRI-AF/DEP/DF/OBS quedan registrados como extensiones de MEAS-01…24 en `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md`, §57. No constituyen una familia independiente ni duplican ID/SNAP. Su estado sigue siendo documental/no ejecutado.
