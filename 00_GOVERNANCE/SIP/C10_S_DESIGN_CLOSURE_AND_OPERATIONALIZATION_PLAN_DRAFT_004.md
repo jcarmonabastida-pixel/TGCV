@@ -408,11 +408,11 @@ La auditoría del manifiesto §12 distingue la taxonomía topológica U_G (focal
 
 Inventario real, grafo transitivo, snapshots pre-B/post-B/rollback y pruebas materiales de no-afectación siguen pendientes. `NO INVENTARIADO`, `?`, `NONE` o `PARTIAL` no significan ausencia ni PASS. ARCH-B1 es recomendación, no instalación aprobada. MD-C1 y MD-C4 permanecen abiertos.
 
-### 16.3. Próxima operación documental
+### 16.3. Crosswalk y siguiente operación documental
 
-Completar un crosswalk, reutilizando Closure Control Matrix y U_G:
+El crosswalk conceptual B-M01…15 → variable/predicado → clase U_G → mecanismo causal → evidencia/PROV → cadena causal/estimando → FCM-D2 ha quedado incorporado en C10_S_CLOSURE_CONTROL_MATRIX_DRAFT_001.md, §31. Se reutilizan el manifiesto §3/§12, la taxonomía U_G y los contratos PROV-01…12. Es trazabilidad candidata, no inventario real ni prueba de aislamiento.
 
-`B-M01…15 → componente/variable → predicado → clase de ruta → mecanismo causal → evidencia → PROV → Reach/Π_H/Execution/Outcome/Value → estimando afectado → consecuencia de identificación → FCM-D2`.
+La siguiente operación es construir la matriz de cobertura del grafo real/candidato y el registro de estados 1/0/? por nodo, arista, consumidor, predicado y ventana. Debe reutilizar la matriz temporal §§2–10 y el inventario B-M01…15; distinguir universo candidato de componentes efectivamente inventariados; y propagar incertidumbre para elementos externos o rutas no cubiertas. MD-C1/MD-C4 permanecen abiertos hasta que exista evidencia material suficiente.
 
 ### 16.4. Cierre científico-operacional previo a implementación
 
