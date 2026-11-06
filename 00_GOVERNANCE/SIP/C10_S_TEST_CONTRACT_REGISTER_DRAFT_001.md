@@ -1193,3 +1193,19 @@ Se amplía el catálogo de aceptación para que el analizador no convierta un co
 | IV-OUT | LATE para Outcome frente a LATE para Value con reglas/horizontes distintos | No transportar identificación de un resultado al otro |
 
 Cada fixture deberá usar el contrato común de §§1–2: `hidden_truth` accesible solo al generador/evaluador, nunca al analizador; entradas/roles separados; expected_output y assertions fijados antes de ejecutar; hash reproducible. La especificación de parámetros, tolerancias, potencia y serialización queda abierta. No se autoriza implementación ni ejecución.
+
+
+
+## 59. Crosswalk de contratos trivalentes con gates IV
+
+Los contratos de §§57–58 se reutilizan para IV-G1/G4/G6; no se crean fixtures duplicados ni se asigna PASS sin ejecución autorizada y evidencia.
+
+| Familia existente | Gate IV soportado | Afirmación que puede comprobar | Lo que no demuestra por sí sola |
+|---|---|---|---|
+| TRI-AF-01…05 | IV-G1, IV-G6 | Agregación trivalente de predicados focales, conflicto, comparabilidad y unknown | Elegibilidad verdadera sin error ni identificación IV |
+| TRI-DEP-01…05 | IV-G1, IV-G4 | Disyunción de rutas, alternativas, cobertura completa y Runknown | Exclusión causal ni ausencia real de vías colaterales |
+| TRI-DF-01…06 | IV-G1, IV-G6 | Comparación basal/post de la misma τ2 y derivación observada de apertura | Que D_f_obs=D_f* en datos reales |
+| TRI-OBS-01…03 | IV-G6 | Separación de estado, evidencia, cobertura y truth; abstención ante conflicto/falta de cobertura | Cegamiento operativo, fiabilidad real ni error diferencial identificado |
+| IV-REL/EXC/MON/CROSS/INT/MEAS/OUT (§58) | IV-G2…G8 | Abstención correcta bajo escenarios DGP conocidos, débiles o violados | Validez de supuestos en un sistema real fuera de DGP |
+
+La suite debe probar conjuntamente las dependencias, manteniendo hidden_truth inaccesible al analizador. La cobertura de un contrato no implica cierre de los demás. No hay fixtures serializados, oráculos ejecutables ni resultados de pruebas.
