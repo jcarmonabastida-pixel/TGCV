@@ -5462,68 +5462,44 @@ La persistencia de este capítulo significa **especificación candidata reconcil
 
 ## 54.1. Unidad técnica y acción de la política
 
-La intervención focal candidata es la provisión/activación de un módulo de dependencia software en un sandbox sintético. El módulo habilita técnicamente la operación focal de reconfiguración τ₂ sobre un objeto de sistema predefinido. No ejecuta τ₂, no la selecciona y no determina su resultado.
+La intervención focal candidata es la provisión/configuración de un módulo de dependencia software en un sandbox sintético. El módulo habilita técnicamente la operación focal de reconfiguración τ₂ sobre un objeto de sistema predefinido. No ejecuta τ₂, no la selecciona y no determina su resultado.
 
-La acción asignada es una política de provisión que determina la probabilidad de que el procedimiento técnico de activación sea iniciado. El procedimiento, módulo, versión, instrucciones, recursos, verificación y soporte técnico son comunes entre brazos. La diferencia focal entre versiones es la frecuencia/probabilidad de intento de provisión.
+La política asignada determina si se programa el procedimiento técnico de provisión y con qué frecuencia. Deben distinguirse:
+- `W_programmed`: intento programado por la política;
+- `W_attempt`: intento efectivamente iniciado;
+- recepción/cumplimiento del protocolo;
+- componentes técnicos verificados y `C_dep*`.
+
+Programar no garantiza que el intento se inicie, sea recibido o tenga éxito. El procedimiento, módulo, versión, instrucciones, recursos, verificación y soporte técnico deben ser comparables entre brazos; cualquier diferencia material se registra como posible vía colateral.
 
 ## 54.2. Versiones candidatas de B
 
-| Versión | Escenario | Política de provisión | Probabilidad de intento |
+| Versión | Escenario | Política de provisión | Probabilidad candidata de programación |
 |---|---|---|---:|
 | B_g0^D1 | D1 control ordinario | Provisión ordinaria de baja frecuencia del mismo módulo | 0,25 |
-| B_g1^D1 | D1 tratamiento | Provisión programada del mismo módulo a todas las unidades elegibles | 1,00 |
-| B_g0^D2 | D2 control sin provisión | No se inicia provisión focal | 0 |
-| B_g1^D2 | D2 tratamiento | Provisión programada del mismo módulo a todas las unidades elegibles | 1,00 |
+| B_g1^D1 | D1 tratamiento | Programar provisión del mismo módulo para todas las unidades elegibles | 1,00 |
+| B_g0^D2 | D2 control sin provisión | No programar provisión focal | 0 |
+| B_g1^D2 | D2 tratamiento | Programar provisión del mismo módulo para todas las unidades elegibles | 1,00 |
 
-Los valores 0,25/1,00 y 0/1,00 proceden de la tabla recuperada para D1/D2 en §52.2. No son tasas observadas ni una decisión aceptada. Debe precisarse quién/qué dispara el intento, la regla de elegibilidad técnica y el registro de recepción.
+Los valores representan programación por la política, no intentos efectivos observados ni estados técnicos finales. La provisión de fondo/crossover se registra incluso cuando la política no programa un intento.
 
-## 54.3. Mecanismo de intento a estado técnico verificado
+## 54.3. Mecanismo de programación a estado técnico verificado
 
-Sea (W_i) el intento de provisión y (S_i) el éxito técnico conjunto de instalación/verificación condicionado a que se haya intentado:
-
+Sea `W_programmed` la programación asignada por la política y `W_attempt` el intento efectivamente iniciado. Las probabilidades candidatas de programación son:
 [
-P(W_i=1mid Z_i=z,D1)=
-egin{cases}
-0.25 & z=0\
-1.00 & z=1
-end{cases}
-qquad
-P(W_i=1mid Z_i=z,D2)=
-egin{cases}
-0 & z=0\
-1.00 & z=1
-end{cases}
+P(W_{programmed}=1|Z,D1)=.25\text{ (control)},\
+1.00\text{ (tratamiento)}
+]
+[
+P(W_{programmed}=1|Z,D2)=0\text{ (control)},\
+1.00\text{ (tratamiento)}
 ]
 
-[
-P(S_i=1mid W_i=1,Z_i=z,D)=0.80
-]
+La probabilidad de intento efectivo condicionada a programación depende de recepción/cumplimiento y permanece por especificar. Cuando no se programa, cualquier intento efectivo se registra como provisión de fondo/crossover; su ausencia debe verificarse, no suponerse.
 
-El 0,80 es la calibración algebraicamente necesaria para reconciliar las probabilidades de intento recuperadas con los estados finales objetivo .20/.80 en D1 y 0/.80 en D2. No es un parámetro original recuperado de forma literal ni un dato empírico: es una propuesta de factorización que deberá aceptarse o reemplazarse.
+El éxito técnico condicional candidato `s=.80` se aplica a un intento efectivo elegible y representa la probabilidad conjunta de completar instalación, integridad, compatibilidad y operatividad. No es dato empírico ni parámetro aprobado. Las probabilidades de `C_dep*` se derivan de programación, cumplimiento, intentos de fondo y éxito conjunto; no se fijan como marginales independientes.
 
-La condición técnica sigue siendo:
-
-[
-C_{dep,i1}=C_{install,i1}land C_{integrity,i1}
-land C_{compat,i1}land C_{oper,i1}
-]
-
-El contrato debe definir la distribución conjunta de esos componentes de modo que:
-
-[
-P(C_{dep,i1}=1mid W_i=1,D)=0.80
-]
-
-No se presupone independencia entre instalación, integridad, compatibilidad y operatividad. Tampoco se permite que un fallo de verificación se convierta en éxito por imputación.
-
-Bajo esta factorización:
-
-| Escenario | (P(W=1mid Z=0)) | (P(W=1mid Z=1)) | (P(C_{dep}=1mid Z=0)) | (P(C_{dep}=1mid Z=1)) |
-|---|---:|---:|---:|---:|
-| D1 | .25 | 1.00 | .20 | .80 |
-| D2 | 0 | 1.00 | 0 | .80 |
-
-La primera etapa de (C_{dep}) es .60 en D1 y .80 en D2. Para que también sea la primera etapa de accesibilidad focal (D_f), todas las demás condiciones de τ₂ deben estar satisfechas en la población de apertura, o se debe calcular (A_f^*) desde todos sus predicados y reportar la diferencia real.
+Solo bajo cumplimiento perfecto (`W_attempt=W_programmed`), una oportunidad, ausencia de provisión de fondo y `s=.80`, se obtienen como expectativas algebraicas .20/.80 para D1 y 0/.80 para D2. Si el intento programado no se inicia o no se recibe, esas cifras dejan de ser válidas. No se presume independencia entre componentes técnicos.
 
 ## 54.4. Separación de política, asignación, recepción y cumplimiento
 
