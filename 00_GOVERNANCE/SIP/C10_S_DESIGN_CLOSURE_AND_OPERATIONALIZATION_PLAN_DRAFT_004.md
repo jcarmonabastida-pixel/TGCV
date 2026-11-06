@@ -929,3 +929,15 @@ Se fija el crosswalk operativo entre la auditoría IV D2 y la auditoría de medi
 La regla trivalente impide convertir unknown, MISSING, NONE, PARTIAL o conflicto en cero; DEP_f_obs=0 exige universo declarado exhaustivamente cubierto; no comparabilidad temporal/semántica conserva ?. La verdad oculta no se expone al analizador. Esta especificación no demuestra que los contratos estén implementados ni que los datos permitan identificación.
 
 **Resultado:** dependencia documental reconciliada; IV-G1/G4/G6 siguen abiertos, exclusión continúa amenazada materialmente y LATE_f no está identificado. La siguiente operación científica/documental es revisar, por cada vía B-M01…15 y ficha de invariante, qué evidencia permitiría refutar o acotar la exclusión en el DGP Opción A, sin presuponer invariancia ni crear parámetros. No se autoriza implementación ni ejecución.
+
+
+
+## 16.20. Exclusión IV: auditoría de las quince superficies B-M01…15
+
+Se incorpora el crosswalk adversarial C10-S-IV-AUD-001 §11 como dependencia de cierre de IV-G4. No se presume que las superficies cambien materialmente. El dossier debe distinguir modificación focal capturada por D_f*, colateral directa a Outcome/Value, mediación por conocimiento/selección/ejecución, cambio epistémico, integridad del oráculo y residuos/interferencia.
+
+**Prioridad de prueba:** B-M06 datos/estado/App/F*; B-M07 recursos/capacidad/contención; B-M09 seguridad/riesgo/coste; B-M11 estado residual; B-M12 rendimiento/latencia; B-M14 alternativas A1/A2. Además, B-M10 conocimiento/observabilidad y B-M13 oráculo exigen controles de medición; B-M05 debe mantener C_auth,base invariante. B-M02/B-M03/B-M08 y B-M15 requieren grafo transitivo y análisis de spillover/carryover.
+
+La evidencia de invariancia exige snapshots/diffs con cobertura suficiente, inventario de consumidores y rutas, medición independiente por unidad/versión/ventana, adjudicación ciega y falsadores explícitos. Falta de evidencia no prueba ausencia. El DGP adversarial deberá incluir al menos las ocho familias de escenarios de §11.5, sin asignar parámetros no justificados.
+
+**Estado:** exclusión NO DEMOSTRADA; IV-G4 ABIERTO; LATE_f bloqueado. No freeze, implementación ni ejecución.
