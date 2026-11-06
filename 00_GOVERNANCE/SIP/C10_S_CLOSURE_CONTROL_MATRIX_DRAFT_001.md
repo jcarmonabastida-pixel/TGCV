@@ -1160,20 +1160,6 @@ El roster no es instancia, fixture, parámetro aprobado ni contrato congelado.
 
 La plantilla ENABLED→PROFILE no satisface controles mientras no haya fuente y dominio. RUL≥1 no se marca como cerrado operacionalmente.
 
-## 46. Controles de cierre sustantivo RUL
-
-| Control | Criterio | Estado |
-|---|---|---|
-| RUL-SUB-01 | Fuente funcional independiente y regla constitutiva P0 | OPEN |
-| RUL-SUB-02 | Regla no tautológica; al menos un estado permitido y otro prohibido en dominio fijado | OPEN |
-| RUL-SUB-03 | Owner CMP, scope, claves, dominios y versión | OPEN |
-| RUL-SUB-04 | AST acíclico 4/16/16 y efecto REQUIRE/FORBID | Perfil aceptado / instancia OPEN |
-| RUL-SUB-05 | UNKNOWN trivalente, propagación y adjudicación | OPEN |
-| RUL-SUB-06 | Mapping/preservación F1/A1 y aplicación F2/A2 | OPEN |
-| RUL-SUB-07 | FP-03/06/07, oráculo independiente y falsadores | OPEN |
-
-La plantilla ENABLED→PROFILE no satisface controles mientras no haya fuente y dominio. RUL≥1 no se marca como cerrado operacionalmente.
-
 ## 47. Control de cierre del contrato funcional sintético RUL
 
 | Control | Criterio | Estado |
