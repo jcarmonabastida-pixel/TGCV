@@ -92,3 +92,12 @@ La propuesta ofrece un núcleo pequeño, finito y sin ejecución arbitraria. Tod
 ## 9. Reconciliación decisional posterior — DEC-C10-054
 
 La propuesta de gramática se interpreta ahora junto con el perfil estructural aprobado por DEC-C10-054: AST acíclico declarativo; profundidad máxima 4; 16 átomos por regla; 16 reglas por paquete; efectos del núcleo REQUIRE/FORBID; SELECT_ENUM_VALUE fuera del núcleo; dominios finitos por clave; UNKNOWN no se convierte silenciosamente en TRUE/FALSE. Los dominios numéricos/catálogos concretos por clave, reglas de conflicto, mapping y oráculo permanecen abiertos. La aprobación del perfil no equivale a implementación o validación de esta gramática.
+
+
+## 10. Aplicación candidata del dominio de tipos al roster PAR
+
+Para mantener el DGP base parsimonioso, el roster de trabajo propone instanciar BOOL (activación lógica), ENUM (perfil funcional finito) e INT (contador opcional acotado). Esto no reduce el conjunto abstracto admitido por el contrato: DECIMAL, STRING y REF siguen disponibles bajo condiciones justificadas, pero no es necesario instanciarlos todos en el caso base.
+
+Los dominios son simbólicos: BOOL={false,true}; ENUM=D_profile finito con al menos dos símbolos sin orden implícito; INT=D_retry={n∈Z:0≤n≤N_retry_max}, con máximo finito pendiente. No se asignan valores ni límites numéricos. DECIMAL requiere escala/precisión/unidad/redondeo por clave; STRING requiere longitud/dominio y normalización explícita; REF requiere universo cerrado y mapping de extremos.
+
+Las reglas REQUIRE/FORBID del núcleo deben usar únicamente claves y dominios declarados. Una regla candidata podría restringir los perfiles permitidos cuando el servicio esté habilitado, pero su semántica y dominio deben cerrarse en el contrato RUL; no se crea una regla confirmatoria por esta nota. Se mantienen AST 4/16/16, acíclico, y UNKNOWN no convertido silenciosamente.
