@@ -1268,3 +1268,13 @@ El esquema es una propuesta de crosswalk, no un schema implementado. Los campos 
 Cada familia requiere por lo menos un control negativo que compruebe los invariantes del contraste, y el escenario de estrés compuesto no sustituye escenarios de una sola vía. Para interferencia/carryover, fixture incluye mapa de exposición y snapshots longitudinales; no usar una sola fila individual como sustituto.
 
 **Estado:** contrato documental; no schema, fixtures, control de acceso, oráculos ni pruebas implementados. No se autoriza ejecución.
+
+
+
+## 63. Contratos de discriminación funcional de Opción A — extensión documental
+
+La futura suite debe distinguir sin colapsar: (a) adaptador no provisionado/provisión fallida; (b) adaptador provisionado con C_dep* positivo pero A_f*(τ2)=0 o ?; (c) A_f* positiva con F1 no aplicable o no ejecutada; (d) F1 PASS local con F2 inaccesible/fallida; (e) F1→F2 con F*=0/? pese a éxito local; (f) A1/A2 alternativa funcional estable (R1); (g) A1/A2 alterada por B (R2); (h) ambas rutas alcanzan destino nominal pero no satisfacen el mismo F*; (i) ruta conforme funcionalmente con FP-08 probatorio insuficiente.
+
+Cada caso futuro debe fijar identidad/versiones, C_src/C_dst/M, IAM, C0/G/H, recursos/permisos, snapshots y oráculo; mantener hidden_truth segregada del analizador; registrar cobertura y estados 1/0/?; y declarar qué dimensión FP falla sin doble conteo. Los casos simples de una sola diferencia no serán sustituidos por un escenario compuesto.
+
+Estos son contratos lógicos de discriminación, no IDs de fixture ni fixtures serializados. No se alteran MEAS/TRI existentes ni se afirma que las pruebas estén implementadas. La correspondencia final con MEAS, PROV, ID, SNAP y FP debe cerrarse antes de materialización.
