@@ -188,3 +188,64 @@ Esta auditoría no acepta nuevos parámetros, no cierra DEC-C10-066/067, REC-EST
 5. Incluso una medición trivalente correctamente especificada no demuestra exclusión, monotonicidad, independencia ni ausencia de interferencia. Esos supuestos conservan gates propios.
 
 **Dictamen:** el crosswalk permite reutilizar la especificación trivalente y U_G, sin crear un catálogo paralelo. No hay inventario material completo, fixtures serializados ni validación ejecutada; IV-G1/G4/G6 permanecen abiertos. LATE_f continúa bloqueado.
+
+
+
+## 11. Auditoría adversarial de exclusión por superficies B-M01…15 — Opción A (2026-11-06)
+
+**Base documental:** inventario B-M01…15 y reglas de adjudicación de la Closure Control Matrix §§31–31.1; crosswalk A_f*; DGP temporal/roles; contratos PROV; U_G y snapshots. **Estado:** auditoría conceptual asistida, no revisión independiente, sin inventario material ni evidencia empírica. Las superficies son dominios de inspección; no se afirma que B las modifique realmente.
+
+### 11.1 Regla de decisión
+
+Para D2, la exclusión IV exige que Z/B no afecte Outcome/Value por una vía que evite el tratamiento focal definido como apertura estructural D_f* (o el tratamiento focal que se fije finalmente), una vez fijados población, versiones, horizonte y régimen. Una modificación que forme parte de la definición constitutiva de A_f* no es automáticamente una violación; pero si cambia otro predicado, otra transformación, aplicabilidad, conocimiento, ejecución, coste, riesgo, medición o resultado fuera del tratamiento focal, no puede atribuirse a D_f* sin estrategia adicional.
+
+Clasificaciones de esta sección:
+- **Focal admisible condicional:** parte del mecanismo que abre τ2 y queda íntegramente capturada por D_f*/A_f*; exige no ampliar el tratamiento después de observar resultados.
+- **Colateral amenazante:** posible vía B→otra condición/Reach/selección/ejecución/Outcome/Value no mediada por D_f*.
+- **Epistémica/medición:** cambia lo observado, adjudicado o perdido, no necesariamente el estado del sistema; puede sesgar IV/ITT por error o selección.
+- **Residual/interferencia:** persiste tras B o afecta otras unidades/periodos.
+- **Control de integridad:** superficie que no debe formar parte de B; cualquier cambio invalida comparabilidad del resultado o de la medición.
+
+Una fila en la tabla expresa una posibilidad causal que debe probarse/refutarse, no un efecto constatado. La ausencia de diff en una fuente parcial no acredita invariancia. Se requiere evidencia positiva de cobertura y alcance; unknown material permanece ?.
+
+### 11.2 Crosswalk adversarial de las quince superficies
+
+| Superficie | Vía que debe someterse a prueba | Clasificación para exclusión | Evidencia mínima y falsador relevante |
+|---|---|---|---|
+| B-M01 Artefacto/versión | B→artefacto/configuración→C_dep*→A_f* (focal); funcionalidad, permisos, seguridad o rutas extra no previstas→Outcome/Value (directa) | Focal admisible solo si artefacto y contenido quedan restringidos al contrato; resto colateral | Manifiesto/SBOM, firma, hashes y diff de contenido/funciones, procedencia, snapshots y consumidores. Falsador: funcionalidad/permiso/ruta adicional o dependencia transitiva no declarada. |
+| B-M02 Runtime | B→runtime/aislamiento/cuotas→C_dep*; también recursos, seguridad, latencia o dependencias compartidas→Reach/Exec/Outcome | Mixta: focal + colateral/interferencia posible | Imagen/hash/configuración, cuotas, llamadas, grafo transitivo, consumidores, métricas de carga/seguridad y snapshots. Falsador: cambios en capacidad, latencia, seguridad o servicios fuera de τ2. |
+| B-M03 Host | B→paquetes/SO/servicios/variables→compatibilidad o rutas A1/A2, seguridad y Reach | Colateral amenazante, salvo componente estrictamente necesario y declarado en τ2 | Diff completo pre/post, grafo de host y dependencias, consumidores A1/A2, pruebas funcionales y seguridad. Falsador: cambio en alternativa, servicio compartido o condición no focal. |
+| B-M04 Interfaz | B→endpoint/API/ACL técnica→relación focal/REL; canal compartido, latencia o ruta adicional→otras transformaciones/resultados | Focal admisible + colateral posible | Contrato API/schema, ACL/puertos, grafo de llamadas y consumidores, pruebas de latencia/errores y cambios de rutas. Falsador: canal compartido alterado, autorización funcional ampliada o nueva ruta no focal. |
+| B-M05 Permisos | B→ACL/credenciales técnicas→C_dep*; posible B→C_auth,base→A_f* si cambia autorización normativa funcional | Invariante basal requerida; violación material si cambia C_auth,base | Fuente normativa, titular/alcance/vigencia y diff de ACL, roles, tokens y permisos por unidad/actor/τ2/ventana. Falsador: autorización funcional diferencial; separar credencial técnica de permiso normativo. |
+| B-M06 Datos | B→datos/configuración/estado X/F*→App_f/ejecución/Outcome, o altera el objeto que se evalúa | Colateral directo; potencial cambio constitutivo solo si pertenece a la definición fijada antes | Hashes/snapshots de fuente y destino, mapping, metadatos, estado S0, F* y prueba ciega de equivalencia. Falsador: datos de entrada, estado o conformidad cambian por B sin quedar capturados por D_f*. |
+| B-M07 Recursos | B→reservas/cuotas/colas/capacidad→R_access* o C_dep*; desplazamiento/saturación de A1/A2/F2→Reach/Exec/Outcome; pool compartido→spillover | Colateral e interferencia; constitutivo solo para disponibilidad ex ante necesaria y no duplicada dentro de A_f* | Capacidad utilizable, K_required, reservas/compromisos, demanda, consumo B, consumidores, ventanas y snapshots. Falsador: reducción o redistribución de recursos no focales, saturación o spillover. |
+| B-M08 Red | B→DNS/proxy/firewall/rutas/puertos→REL/DEP focal; cambios topológicos→rutas alternativas, Reach y seguridad | Mixta: focal + colateral/rutas alternativas | Diff topológico y reglas, grafo transitivo, dependencias externas/compartidas, consumidores y pruebas de rutas. Falsador: apertura/cierre de ruta distinta de τ2 o cobertura de red incompleta. |
+| B-M09 Seguridad | B→sandbox/certificados/bloqueos→A_f*; riesgo, superficie de ataque, coste o exposición→Outcome/Value | Mixta: constitutiva si bloquea τ2; colateral directa si cambia riesgo/coste/seguridad más allá de τ2 | Configuración y revisión de seguridad pre/post, vulnerabilidades, incidentes, permisos, coste/riesgo y adjudicación independiente. Falsador: riesgo/coste diferencial no incluido en D_f*. |
+| B-M10 Observabilidad | B→manuales/formación/avisos→K→consideración/selección/Exec; B→logs/telemetría/permisos→E_T, A_f_obs, Outcome/Value observados | Epistémica y mediación/colateral de conocimiento; no es accesibilidad estructural por sí misma | Contenido/destinatarios/timestamps, exposición por brazo, permisos, esquema, retención, cobertura, missingness y ceguera. Falsador: comunicación diferencial o observación/adjudicación/retención diferencial. No ajustar automáticamente por K post-Z. |
+| B-M11 Estado | B→cachés/registros/índices/estado persistente→App, relaciones o rutas alternativas; residuos tras retirada | Colateral residual y amenaza a consistencia/carryover | Inventario de estado, snapshots pre/post/rollback, diffs, consumidores y pruebas de restauración. Falsador: estado residual, caché o ruta modificada que persiste o contamina otra unidad/periodo. |
+| B-M12 Rendimiento | B→latencia/throughput/prioridad/contención/disponibilidad→factibilidad temporal, calidad, coste, Exec, Outcome/Value | Colateral directa e interferencia potencial | Medición comparable por unidad/brazo/ventana, perfil de carga, colas, margen, disponibilidad y métricas de A1/A2. Falsador: degradación/mejora diferencial fuera de la apertura focal o contención compartida. |
+| B-M13 Oráculo | B→F*/dataset/validador/regla→clasificación o definición de Outcome | Control de integridad; cambio prohibido dentro de B | Hash/version inmutable, separación de roles, ceguera, snapshots y registro de adjudicación. Falsador: oráculo/regla/dataset diferencial; invalida comparabilidad del resultado, no es un mecanismo admisible de accesibilidad. |
+| B-M14 Alternativas | B→A1/A2/exportador/importador/formato/dependencias/recursos→F_alt→Reach/Exec/Outcome | Colateral directa crítica para exclusión | Catálogo/grafo completo, pruebas funcionales pre/post, recursos/permisos y margen de equivalencia preespecificado. Falsador: alternativa habilitada, degradada o eliminada por B; un cambio así convierte el contraste en paquete. |
+| B-M15 Reversibilidad | B→rollback/residuos/dependencias/permisos/recursos→exposición posterior, carryover e interferencia | Residual/interferencia y amenaza a consistencia | Snapshots S_preB/S_postB/S_rollback/S_routeA, diff, pruebas de restauración, ventanas y unidades afectadas. Falsador: rollback incompleto, residuos o spillover entre periodos/unidades. |
+
+### 11.3 Síntesis por clase causal
+
+1. **Ruta focal potencialmente compatible con exclusión:** B-M01/B-M02/B-M04/B-M08/B-M09 solo en la parte estrictamente necesaria para habilitar τ2 y capturada por la definición preespecificada de D_f*. No basta con etiquetar la modificación como técnica: cualquier función adicional, seguridad, coste, ruta alternativa o recurso compartido abre una vía colateral.
+2. **Amenazas directas prioritarias:** B-M06 (datos/estado/aplicabilidad/F*), B-M07 (recursos y desplazamiento), B-M09 (riesgo/coste), B-M11 (estado residual), B-M12 (rendimiento) y B-M14 (alternativas). Pueden afectar Reach, ejecución, Outcome o Value sin pasar por D_f*.
+3. **Amenazas de medición/conocimiento:** B-M10 y B-M13. B-M10 puede cambiar selección/ejecución mediante K y puede cambiar la observación; B-M13 no debe ser manipulado por B. Si cambia el proceso de observación o el criterio de Outcome, el contraste medido deja de ser comparable.
+4. **Amenazas de consistencia/interferencia:** B-M02/B-M03/B-M07/B-M08/B-M11/B-M12/B-M14/B-M15 requieren identificar recursos, dependencias, consumidores, unidades, periodos y carryover. La aleatorización individual no resuelve spillovers por sí sola.
+5. **B-M05:** la autorización normativa funcional basal se mantiene común e invariante por contrato. Permisos técnicos de provisión no son equivalentes a autorización funcional. Si esta última cambia, se viola el aislamiento previsto.
+
+### 11.4 Regla de evidencia para sostener exclusión
+
+Para cada superficie y unidad/versión/ventana, el dossier debe registrar: (a) componente real y frontera; (b) nodos/aristas y consumidores; (c) snapshot pre-B/post-B/rollback; (d) diff y cobertura positiva/negativa; (e) medida independiente de la vía causal y resultado al que podría llegar; (f) exposición de otras unidades/periodos; (g) adjudicación ciega; (h) falsador y estado 1/0/? con procedencia. La etiqueta «no cambia» requiere evidencia con alcance suficiente; ausencia de logs, inventario incompleto o búsqueda sin denominador conserva ?. No basta un contrato declarativo de invariancia.
+
+La auditoría de exclusión debe incluir resultados separados para Outcome y Value. Si una vía llega a Outcome y luego a Value, debe representarse explícitamente; si llega directamente a Value (p. ej., coste/riesgo/recursos), no puede asumirse mediación completa por Outcome. No ajustar mecánicamente por mediadores postratamiento para fabricar exclusión.
+
+### 11.5 Dictamen y consecuencias
+
+**Dictamen actual:** exclusión **NO DEMOSTRADA; amenazas materiales abiertas**. El inventario de B-M01…15 permite localizar amenazas y especificar pruebas, pero no contiene observaciones materiales ni evidencia de no-afectación. No se puede declarar que D2 identifica LATE_f. El ITT_Z sigue siendo el efecto de asignación de la política D2, condicionado a validez de asignación, interferencia, consistencia y observación del resultado; si hay vías no focales, su lectura es de política/paquete. No se reabre DEC-C10-066/067.
+
+**Resultado adversarial que debe poder recuperar el analizador:** (i) solo modificación focal capturada por D_f* y sin vías laterales; (ii) una vía directa a Outcome; (iii) vía directa a Value sin pasar por Outcome; (iv) alternativa A1/A2 modificada; (v) recursos/rendimiento compartidos con spillover; (vi) conocimiento/medición diferencial; (vii) cambio de oráculo; (viii) residuo/rollback/carryover. Salida esperada: LATE_f solo en (i) si los demás supuestos IV se cumplen; efecto de política/paquete o no identificación en los restantes según el estimando y la evidencia. No se fijan parámetros ni tasas.
+
+No hay inventario material, fixtures serializados, pruebas ejecutadas ni revisión independiente. No se cierra IV-G4, no se aprueba exclusión, no se habilita Wald y no se autoriza implementación/ejecución.
