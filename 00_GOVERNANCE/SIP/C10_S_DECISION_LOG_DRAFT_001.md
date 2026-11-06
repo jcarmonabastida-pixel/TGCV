@@ -733,22 +733,11 @@ Interpretación armonizada: PAR conserva state ∈ {ABSENT,NULL,DEFAULT,VALUE}; 
 
 Esta entrada registra reconciliación de alcance de decisión existente, no una nueva DEC aceptada, no modifica DEC-C10-054 y no autoriza implementación/ejecución. Campos por clave, herencia, snapshot, evidencia y oráculo siguen abiertos.
 
-## 50. Contrato RUL: distinción entre cardinalidad aceptada y semántica abierta (2026-11-06)
+## 50. Contrato RUL: cardinalidad aceptada y semántica de instancia (2026-11-06)
 
-DEC-C10-056 ya acepta RUL≥1 y DEC-C10-054 acepta el presupuesto/efectos/semántica general del núcleo. Esta entrada no crea DEC nueva ni interpreta la cardinalidad como aprobación de una regla concreta.
-
-Se registra como plantilla de evaluación (no decisión): restricción condicional ENABLED→PROFILE, expresable con OR(NEQ(ENABLED,true), IN(PROFILE,D_profile_enabled)) y REQUIRE. Su validez depende de una fuente funcional P0 independiente, dominio finito no tautológico, owner/scope, mapping, UNKNOWN y oráculo. Si no existe esa base, se descarta y se formula otra regla constitutiva real. La regla debe conservarse en F1/A1 y aplicarse en F2/A2 con el mismo F*.
-
-No se aprueba la plantilla, no se fija D_profile_enabled, no se crea instancia ni fixture y no se autoriza implementación/ejecución.
-
+DEC-C10-056 acepta RUL≥1 y DEC-C10-054 fija el presupuesto y semántica general del núcleo. Esta entrada no aprueba una regla de instancia. La propuesta posterior de §51 especializa el mundo sintético del DGP mediante un contrato estipulado ex ante; su fuente es interna al DGP y no una norma externa. §51 prevalece para describir esa propuesta, sin cambiar su estado pendiente de aceptación.
 ## 51. Propuesta de especialización funcional sintética del servicio lógico (2026-11-06)
 
-Se propone especializar la unidad ya aceptada por DEC-C10-051/052/057/058 como servicio lógico sintético de procesamiento de solicitudes. Parámetros candidatos: ENABLED BOOL y PROFILE ENUM={STANDARD,READ_ONLY,DISABLED}. Regla candidata RUL-SVC-ENABLE-PROFILE-01: ENABLED=true ⇒ PROFILE∈{STANDARD,READ_ONLY}, efecto REQUIRE. La regla tiene un estado violador conocido y se estipula como parte del contrato del mundo sintético para que el DGP tenga verdad conocida; no se presenta como norma externa ni como afirmación sobre servicios reales.
+Se propone especializar la unidad ya aceptada por DEC-C10-051/052/057/058 como servicio lógico sintético de procesamiento de solicitudes. Parámetros: PAR-SVC-ENABLED BOOL y PAR-SVC-PROFILE ENUM={STANDARD,READ_ONLY,DISABLED}. Regla candidata RUL-SVC-ENABLE-PROFILE-01: ENABLED=true implica PROFILE∈{STANDARD,READ_ONLY}, efecto REQUIRE. La especificación del servicio es estipulada ex ante y constituye la fuente funcional interna del DGP, con un estado violador conocido; no se presenta como norma externa ni como afirmación sobre servicios reales.
 
-**Estado: PROPUESTA, pendiente de aceptación explícita.** No modifica DEC-C10-056 ni convierte RUL-01/02/03 (propiedades de preservación) en identificador de esta regla. RETRY-COUNT queda fuera del núcleo hasta justificar su pertenencia a P0. No fija owner CMP definitivo, mapping, IAM, oráculo, estimandos ni unidad de asignación. No crea fixtures ni autoriza implementación/ejecución.
-
-## 51. Propuesta de especialización funcional sintética del servicio lógico (2026-11-06)
-
-Se propone especializar la unidad ya aceptada por DEC-C10-051/052/057/058 como servicio lógico sintético de procesamiento de solicitudes. Parámetros candidatos: ENABLED BOOL y PROFILE ENUM={STANDARD,READ_ONLY,DISABLED}. Regla candidata RUL-SVC-ENABLE-PROFILE-01: ENABLED=true implica PROFILE∈{STANDARD,READ_ONLY}, efecto REQUIRE. La regla tiene un estado violador conocido y se estipula como parte del contrato del mundo sintético para que el DGP tenga verdad conocida; no se presenta como norma externa ni como afirmación sobre servicios reales.
-
-**Estado: PROPUESTA, pendiente de aceptación explícita.** No modifica DEC-C10-056 ni convierte RUL-01/02/03 (propiedades de preservación) en identificador de esta regla. RETRY-COUNT queda fuera del núcleo hasta justificar su pertenencia a P0. No fija owner CMP definitivo, mapping, IAM, oráculo, estimandos ni unidad de asignación. No crea fixtures ni autoriza implementación/ejecución.
+**Estado: PROPUESTA, pendiente de aceptación explícita.** No modifica DEC-C10-056 ni convierte RUL-01/02/03 (propiedades de preservación) en identificador de esta regla. RETRY-COUNT queda fuera del núcleo hasta justificar su pertenencia a P0. Owner CMP definitivo, versión, IAM, mapping, oráculo, estimandos y unidad de asignación siguen abiertos. No crea fixtures ni autoriza implementación/ejecución.
