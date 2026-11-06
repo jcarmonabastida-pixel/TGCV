@@ -1150,26 +1150,40 @@ El roster no es instancia, fixture, parámetro aprobado ni contrato congelado.
 
 | Control | Criterio | Estado |
 |---|---|---|
-| RUL-SUB-01 | Fuente funcional independiente y regla constitutiva P0 | OPEN |
-| RUL-SUB-02 | Regla no tautológica; al menos un estado permitido y otro prohibido en dominio fijado | OPEN |
-| RUL-SUB-03 | Owner CMP, scope, claves, dominios y versión | OPEN |
-| RUL-SUB-04 | AST acíclico 4/16/16 y efecto REQUIRE/FORBID | Perfil aceptado / instancia OPEN |
-| RUL-SUB-05 | UNKNOWN trivalente, propagación y adjudicación | OPEN |
-| RUL-SUB-06 | Mapping/preservación F1/A1 y aplicación F2/A2 | OPEN |
-| RUL-SUB-07 | FP-03/06/07, oráculo independiente y falsadores | OPEN |
+| RUL-SUB-01 | Fuente funcional y regla constitutiva P0 | ACEPTADO CONCEPTUALMENTE POR DEC-C10-068: contrato sintético interno al DGP |
+| RUL-SUB-02 | Regla no tautológica con permitido y violador conocidos | ACEPTADO CONCEPTUALMENTE: ENABLED=true × STANDARD/READ_ONLY frente a DISABLED |
+| RUL-SUB-03 | Owner CMP, scope, claves, dominios y versión de instancia | Scope/IDs lógicos aceptados; identidad/versionado concreto OPEN |
+| RUL-SUB-04 | AST acíclico 4/16/16 y efecto REQUIRE/FORBID | Perfil de gramática aceptado; instancia RUL aceptada conceptualmente, serialización/verificación OPEN |
+| RUL-SUB-05 | UNKNOWN trivalente, propagación y adjudicación | Regla general documentada; adjudicación/oráculo OPEN |
+| RUL-SUB-06 | Mapping/preservación F1/A1 y aplicación F2/A2 | Invariantes especificados; mapping concreto y evidencia OPEN |
+| RUL-SUB-07 | FP-03/06/07, oráculo independiente y falsadores | Contratos conceptuales; pruebas y oráculo OPEN |
 
-La plantilla ENABLED→PROFILE no satisface controles mientras no haya fuente y dominio. RUL≥1 no se marca como cerrado operacionalmente.
+DEC-C10-068 acepta ENABLED→PROFILE como regla constitutiva del mundo sintético. El cierre es conceptual, no operacional: RUL≥1 no se marca como implementado, probado ni congelado.
 
 ## 47. Control de cierre del contrato funcional sintético RUL
 
 | Control | Criterio | Estado |
 |---|---|---|
 | SVC-RUL-01 | Unidad lógica coherente con DEC-C10-051/052/057/058 | Base decisional aceptada |
-| SVC-RUL-02 | Contrato sintético ENABLED/PROFILE y dominios finitos | Propuesta especificada ex ante; aceptación OPEN |
-| SVC-RUL-03 | RUL-SVC-ENABLE-PROFILE-01 no tautológica, con permitido y violador conocidos | Propuesta; aceptación OPEN |
-| SVC-RUL-04 | Owner CMP, scope, versión y procedencia | OPEN |
+| SVC-RUL-02 | Contrato sintético ENABLED/PROFILE y dominios finitos | ACEPTADO CONCEPTUALMENTE — DEC-C10-068 |
+| SVC-RUL-03 | RUL-SVC-ENABLE-PROFILE-01 con permitido y violador conocidos | ACEPTADA CONCEPTUALMENTE — DEC-C10-068 |
+| SVC-RUL-04 | Owner CMP, scope, versión y procedencia | Owner lógico CMP-SERVICE-LOGIC y scope aceptados; identidad/versionado de instancia OPEN |
 | SVC-RUL-05 | Mapping semántico F1/A1 y aplicación F2/A2 | Invariantes especificados; mapping concreto OPEN |
 | SVC-RUL-06 | UNKNOWN, FP-03/06/07 y oráculo independiente | OPEN |
 | SVC-RUL-07 | Contrastes adversariales y truth segregada | Contratos conceptuales; sin fixtures/pruebas |
 
-La fuente de verdad para el DGP será el contrato sintético versionado y congelado antes de generar/analizar resultados. No se presenta como norma externa. No freeze ni implementación.
+DEC-C10-068 acepta el contrato como fuente constitutiva interna de verdad para el DGP. Su versionado/serialización final y congelación pre-generación siguen pendientes. No se presenta como norma externa. No freeze ni implementación.
+
+## 48. Control de propagación de DEC-C10-068
+
+| Control | Criterio | Estado |
+|---|---|---|
+| DEC068-01 | Servicio lógico sintético y unidad funcional de referencia | ACEPTADO CONCEPTUALMENTE |
+| DEC068-02 | PAR-SVC-ENABLED BOOL y PAR-SVC-PROFILE ENUM con dominios declarados | ACEPTADOS CONCEPTUALMENTE |
+| DEC068-03 | RUL-SVC-ENABLE-PROFILE-01, REQUIRE, implicación unidireccional | ACEPTADA CONCEPTUALMENTE |
+| DEC068-04 | Fuente constitutiva interna al DGP y verdad fijada ex ante | ACEPTADA; no norma externa |
+| DEC068-05 | CMP concreto, versión de instancia y serialización | OPEN |
+| DEC068-06 | IAM detallado, mapping físico, tolerancias y oráculo | OPEN |
+| DEC068-07 | Fixtures, pruebas, implementación y ejecución | NO AUTORIZADOS / NO EJECUTADOS |
+
+Registro: `00_GOVERNANCE/decisions/DEC-C10-068_SYNTHETIC_SERVICE_FUNCTIONAL_CONTRACT_ACCEPTANCE.md`. No constituye Design Freeze.
