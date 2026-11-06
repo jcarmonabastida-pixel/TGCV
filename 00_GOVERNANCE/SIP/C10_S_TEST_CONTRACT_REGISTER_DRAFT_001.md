@@ -1252,3 +1252,19 @@ Estos contratos concretan §60 y C10-S-IV-AUD-001 §12. No duplican EXC-B01…15
 **Regla de aislamiento:** si un escenario combina varias manipulaciones, debe descomponerse en fixtures separados más un escenario compuesto de estrés. El escenario compuesto no sustituye los controles de una sola vía. Los expected outputs son estados cualitativos, no estimaciones numéricas ni garantías de identificación fuera del DGP.
 
 **Estado:** contratos documentales; no hay fixtures serializados, parámetros, distribuciones, tolerancias, potencia, oráculos ni pruebas ejecutadas. No se autoriza implementación o ejecución.
+
+
+
+## 62. Contratos de captura temporal y segregación de roles para DGP-EXC-01…09
+
+Estos contratos concretan §§58–61 y DGP §28. Cada fixture futuro deberá capturar al menos:
+
+- unit_id, cluster_id/pool_id cuando proceda, scenario_id, assignment_id, timepoint, event_timestamp, object_id, semantic_version, implementation_version, snapshot_hash y provenance_ref;
+- variable_id, causal_role, truth_value en almacén restringido, observed_value, evidence_status, coverage_status, missingness_reason, evaluator_id y adjudication_status;
+- inputs_by_role, hidden_truth_ref, expected_output, assertions, failure_codes, evidence_artifacts y reproducibility_hash según el contrato común vigente.
+
+El esquema es una propuesta de crosswalk, no un schema implementado. Los campos de truth/potenciales/mecanismos se segregan físicamente o mediante control de acceso efectivo: el analizador no debe poder leerlos por API, logs, metadatos, nombres de fixture ni orden de ejecución. El evaluador independiente accede solo después de congelar la salida analítica.
+
+Cada familia requiere por lo menos un control negativo que compruebe los invariantes del contraste, y el escenario de estrés compuesto no sustituye escenarios de una sola vía. Para interferencia/carryover, fixture incluye mapa de exposición y snapshots longitudinales; no usar una sola fila individual como sustituto.
+
+**Estado:** contrato documental; no schema, fixtures, control de acceso, oráculos ni pruebas implementados. No se autoriza ejecución.
