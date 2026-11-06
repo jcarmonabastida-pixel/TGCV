@@ -1131,3 +1131,17 @@ Dictamen: crosswalk documental parcial; sin freeze, fixtures, parser, oráculo v
 | DEF-EQ-01 | Igualdad de valor resuelto no prueba equivalencia de origen/contrato | REGLA DOCUMENTADA / FP OPEN |
 
 No se abre DEC nueva ni se cierra la parametrización por clave, snapshot E_dst, evidencia u oráculo.
+
+## 45. Control de especialización del roster PAR
+
+| Control | Criterio | Estado |
+|---|---|---|
+| PAR-ROSTER-01 | Tres roles candidatos BOOL/ENUM/INT, sin claves reales | PROPUESTA DOCUMENTADA |
+| PAR-ROSTER-02 | Pertinencia de cada slot dentro de P0 y owner CMP | OPEN |
+| PAR-ROSTER-03 | D_profile finito y N_retry_max finito por fijar | OPEN |
+| PAR-ROSTER-04 | Estados y defaults por clave coherentes con DEC-C10-054 | ESTRUCTURA DOCUMENTADA / DETALLE OPEN |
+| PAR-ROSTER-05 | Mapping total ENUM y preservación BOOL/INT | OPEN |
+| PAR-ROSTER-06 | RUL≥1 sustantiva y vinculada al contrato | OPEN |
+| PAR-ROSTER-07 | IAM pre-Z/B, cobertura, oráculo y evidencia | OPEN |
+
+El roster no es instancia, fixture, parámetro aprobado ni contrato congelado.
