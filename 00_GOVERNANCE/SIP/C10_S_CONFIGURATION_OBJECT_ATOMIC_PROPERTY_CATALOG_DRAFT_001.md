@@ -163,3 +163,39 @@ La reconciliación de familias fue aceptada mediante DEC-C10-055. La obligatorie
 ## 11. DEC-C10-056 — cardinalidad de clases
 
 La cardinalidad base queda fijada por DEC-C10-056: CMP≥1, PAR≥1, RUL≥1; REF≥0 con declaración IAM ex ante y cobertura exhaustiva; POL≥0 ausente por diseño salvo módulo condicional predeclarado; MET obligatorio. La ausencia de CMP/PAR/RUL es SCOPE_ERROR, no NA. Véase el contrato abstracto `C10_S_ABSTRACT_CONFIGURATION_INSTANCE_CONTRACT_DRAFT_001.md`. Esta decisión no convierte cada propiedad atómica en obligatoria ni fija máximos/valores.
+
+
+## 12. Especialización candidata del catálogo PAR: claves lógicas mínimas
+
+**Estado:** propuesta de especialización documental; no DEC nueva, no aprobación confirmatoria y no instancia concreta.
+
+Se proponen tres roles de clave para una unidad lógica de servicio, no nombres de campos de un producto ni una serialización:
+
+| ID lógico | Rol semántico | Tipo candidato | Requiredness candidato | Dominio abstracto | Estados admisibles propuestos |
+|---|---|---|---|---|---|
+| PAR-SVC-ENABLED | Activación lógica del servicio | BOOL | REQUIRED | {false,true} | VALUE; DEFAULT solo si el contrato declara/hereda explícitamente el default; ABSENT/NULL inválidos |
+| PAR-SVC-PROFILE | Perfil funcional de operación/configuración | ENUM | REQUIRED | D_profile finito, con al menos dos símbolos abstractos distinguibles; sin orden implícito | VALUE; DEFAULT solo con contrato; ABSENT/NULL inválidos |
+| PAR-SVC-RETRY-COUNT | Número configurado de reintentos | INT | OPTIONAL | D_retry={n∈Z: 0≤n≤N_retry_max}; N_retry_max finito y por fijar | ABSENT, VALUE; DEFAULT solo con contrato; NULL no admitido salvo decisión explícita |
+
+Los nombres son etiquetas de trabajo para roles semánticos, no claves literales de configuración. PROFILE no presupone nombres ni significados de perfiles reales. RETRY-COUNT es un parámetro de configuración del servicio, no disponibilidad/capacidad de recursos P1. Si la unidad lógica elegida no posee una semántica contractual de reintentos, este slot debe sustituirse antes de congelar la instancia, no forzarse.
+
+### 12.1 Tipos del núcleo y extensiones
+
+El conjunto de tipos admitidos por el contrato abstracto sigue siendo BOOL, INT, DECIMAL, ENUM, STRING y REF. La propuesta de roster base instancia BOOL, ENUM e INT para mantener el núcleo parsimonioso. No exige que toda instancia use todos los tipos admitidos.
+
+- DECIMAL: slot condicional (p. ej. umbral cuantitativo) solo si una regla constitutiva lo necesita; escala, precisión, unidad y redondeo deben definirse por clave.
+- STRING: slot condicional solo si el texto tiene significado funcional contractual; etiquetas descriptivas sin efecto funcional pertenecen a MET, no se añaden para aumentar cobertura de tipos.
+- REF: usar la clase REF para relaciones/dependencias ordinarias. Un PAR de tipo REF solo se admite si el contrato demuestra que es un valor escalar configuracional y no duplica la misma relación.
+- ARRAY/MAP/BINARY/fecha-hora y tipos definidos por usuario siguen fuera del núcleo primitivo conforme a la propuesta gramatical vigente.
+
+### 12.2 Reglas comunes por clave
+
+Cada registro PAR debe fijar key estable, owner CMP, type, requiredness, dominio, estado, value cuando proceda, default contract, versión y procedencia. Los estados ABSENT/NULL/DEFAULT/VALUE no se colapsan. Si state=DEFAULT, default_kind=DECLARED|INHERITED; la resolución DEFAULT_ENV_RESOLVED se observa en E_dst, fuera de PAR.
+
+Los estados admisibles de la tabla son candidatos por clave, no una relajación del enum global. Un estado no admitido es incumplimiento formal si está observado; si la evidencia no permite decidirlo, queda ?. ABSENT en OPTIONAL significa ausencia explícita del parámetro, no default ambiental. El comportamiento efectivo de E_dst se mide separadamente.
+
+### 12.3 Criterio de parsimonia y condición de reemplazo
+
+Tres slots cubren tres semánticas diferenciables: activación booleana, selección categórica y límite entero opcional. No se afirma que sean universales a todo servicio software. Antes de fijar instancia debe verificarse que los tres pertenecen realmente al contrato P0 de la unidad lógica; si no, se reemplaza el slot manteniendo la misma justificación de tipo/función y sin trasladar recursos, permisos efectivos, runtime o estado externo desde P1.
+
+La propuesta no fija valores, símbolos ENUM, N_retry_max, versión, conversión, mapping, unidades, tolerancias ni truth. Tampoco resuelve todavía la regla RUL constitutiva que debe relacionar o restringir propiedades: RUL≥1 sigue siendo obligatorio por DEC-C10-056 y su contenido sustantivo queda abierto.
