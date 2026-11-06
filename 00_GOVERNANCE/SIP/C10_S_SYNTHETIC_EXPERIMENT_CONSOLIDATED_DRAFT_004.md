@@ -7925,3 +7925,14 @@ Se corrige el hallazgo de §133: la fórmula histórica de §30.1 no es la compo
 **Estado actualizado de MEAS-G1:** PARTIAL — fórmula candidata identificada; mappings y operacionalización sin duplicidad pendientes. No se modifica ni congela la fórmula; no se declara invariancia empírica ni cierre de UG-SCH-10, PROV, XSYNC o gates IV. `LATE_f` continúa bloqueado.
 
 Siguiente: regla trivalente de agregación de predicados y rutas, con conflicto de evidencia, cobertura, matching unresolved y derivación de D_f observada.
+
+
+---
+
+## §135. Regla trivalente de agregación de A_f* y D_f observado (2026-11-06)
+
+**Registro:** `C10_S_AF_DF_TRIVALENT_AGGREGATION_RULE_DRAFT_001.md`.
+
+Se concreta la aplicación a A_f/D_f de las reglas existentes de DGP §26/§32, matriz U_G §5 y protocolo de evidencia/adjudicación. Dominios `observed_state`, `evidence_status`, `coverage_status`, adjudicación y `truth_dgp` permanecen ortogonales. Para A_f: cualquier término necesario 0 con evidencia válida/suficiente ⇒ 0; todos 1 con comparabilidad y cobertura adecuadas ⇒ 1; en otro caso ?. Para DEP: una ruta 1 basta; DEP=0 exige todas las rutas del universo operativo declarado refutadas y cobertura COMPLETE, incluida resolución de Runknown/alternativas/externas/compartidas; en otro caso ?. Para D_f: baseline 0/post 1 ⇒ 1; baseline 1 o post 0 ⇒ 0; resto ?. No comparabilidad de τ2/snapshots ⇒ NOT_COMPARABLE/?.
+
+No convertir MISSING/NONE/PARTIAL en 0; C_dep=0 no implica DEP=0 con alternativa admisible; D_f observado no sustituye D_f verdadero para IV sin modelo de error. No cambia fórmula ni decisiones. `LATE_f` permanece bloqueado.
