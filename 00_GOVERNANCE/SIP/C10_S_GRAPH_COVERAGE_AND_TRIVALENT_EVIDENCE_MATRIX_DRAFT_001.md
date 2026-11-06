@@ -195,7 +195,7 @@ La decisión metodológica correcta es mantener Reach=?, F_alt,0=?, A_f*=? y MD-
 | B-M07 Recursos | N18, N05, N13, N15, N20 | E16, E17, E19 | RES-τ2, ALT-DEP, Rshared, Rτ2, RA12 | Cuotas, reservas, consumo, contención y consumidores por unidad/ventana; PROV-05/09 |
 | B-M08 Red | N07, N13, N15, N20, N21 | E05, E11–E14, E19, E20 | REL-τ2, ALT-DEP, EXT, Rexternal, Runknown | DNS/proxy/firewall/rutas/puertos, servicios y límites externos; PROV-03/04/09/11 |
 | B-M09 Seguridad | N05, N07, N17, N20, N21 | E18–E20 | AUTH-τ2, BLOCK-τ2, EXT | Sandbox, certificados, políticas, bloqueos, alcance y revisión de seguridad; PROV-03/06 |
-| B-M10 Observabilidad | N16, N22, N23 | E15, E22, E23 | ORACLE, EXT; plano E_T separado de predicados estructurales | Esquema/retención/destinatarios de logs y métricas; conocimiento del agente frente a evidencia del evaluador |
+| B-M10 Observabilidad | N16 (oráculo/evaluación funcional), N22 (conocimiento agente), N23 (endpoint de resultados) | E15 (evaluación funcional), E22 (conocimiento→selección/ejecución), E23 (ejecución→Outcome/Value) | ORACLE, EXT; E_T separado y sin nodo/arista U_G explícitos | Esquema/retención/destinatarios de logs y métricas; distinguir K, proceso de medición E_T y endpoints observados |
 | B-M11 Estado | N01, N12, N19, N20, N13, N15 | E10, E14, E17, E19, E21 | COND-τ2, APP-τ2, ALT-DEP, Rshared | Cachés, registros, índices, estado persistente y snapshots pre/post/rollback; PROV-03/07/10 |
 | B-M12 Rendimiento | N05, N07, N13, N15, N18, N20 | E05, E16, E17, E19 | REL-τ2, RES-τ2, ALT-A1, ALT-A2, ALT-F*, Rshared | Latencia, throughput, prioridad, contención y degradación por brazo/ventana; PROV-05/08/09 |
 | B-M13 Oráculo | N16 | E15 | ORACLE, ALT-F* | Hash/version, ceguera, dataset y reglas inmutables; PROV-02. Modificación funcional por B prohibida |
@@ -206,7 +206,7 @@ La decisión metodológica correcta es mantener Reach=?, F_alt,0=?, A_f*=? y MD-
 
 1. Los rangos E03–E04, E16–E20 y E11–E14 remiten a los IDs ya existentes; no se crean nuevas aristas por esta tabla.
 2. B-M15 es un evento/proceso de reversibilidad y evidencia de snapshots, no una arista causal única. No asignar un E-ID ficticio.
-3. B-M10 afecta dos planos distintos: conocimiento/comunicación del agente (N22/E22) y observabilidad/medición (N16/E15 y E_T). No convertir ambos en una sola condición de accesibilidad.
+3. B-M10 afecta dos planos distintos: conocimiento/comunicación del agente (N22/E22) y observabilidad/medición del evaluador (E_T), que permanece como plano externo no representado por nodo/arista específico en U_G. N16/E15 representa evaluación funcional/oráculo; N23/E23 son endpoints de resultados, no el proceso E_T. No convertir K o E_T en una condición de accesibilidad.
 4. B-M13 y B-M14 se inspeccionan para detectar desviaciones, pero siguen prohibidos como modificaciones funcionales de B según manifiesto §3.
 5. Las clases U_G, predicados, estado y cobertura conservan los valores ya declarados en §§2–6. El mapping no transforma ?/NONE en 0 ni NONE en ausencia.
 
