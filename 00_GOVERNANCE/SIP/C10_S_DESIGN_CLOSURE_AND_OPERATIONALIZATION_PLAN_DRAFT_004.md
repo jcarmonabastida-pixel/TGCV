@@ -383,3 +383,52 @@ El siguiente bloque debe cerrar, en este orden:
 7. Antes de pasar a implementación o ejecución, exigir revisión explícita de los contratos y autorización separada. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
 
 **Estado de salida de este addendum:** continuidad operativa propuesta y laguna documental identificada; fichas conversacionales completas y auditoría conversacional íntegra aún no recuperadas; no se declara cierre científico ni técnico.
+
+
+---
+
+## 16. Estado de recuperación y siguiente fase de cierre
+
+**Corte:** 2026-11-06. **Origen:** contenido detallado aportado por el usuario en la conversación de continuidad C10-S. Se conserva su contenido sustantivo, sin atribuirle literalidad histórica. **Estado:** DRAFT / NO APROBADO / NO CONGELADO / NO IMPLEMENTADO / NO EJECUTADO.
+
+### 16.1. Recuperación y persistencia documental
+
+Este apartado actualiza los dictámenes de §15.2–15.3: las fichas D2 y la auditoría causal que antes solo estaban parcialmente recuperadas han sido aportadas en esta conversación y persistidas en los artefactos existentes:
+
+- `C10_S_PATH_PREDICATE_TEMPORAL_EVIDENCE_MATRIX_DRAFT_001.md`, §13: `D2-INV-AUTH-01`, `D2-RES-01`, `D2-CAP-01`, clasificación `D2-C_INFO` e invariantes adversariales `I-INFO-01…06`.
+- `C10_S_ADAPTER_PROVISION_MANIFEST_AND_DEPENDENCY_GRAPH_DRAFT_001.md`, §12: auditoría causal D2, B-M01…15, taxonomías de ruta/mecanismo, pruebas de separación, evidencia y consecuencias para estimandos.
+
+Se ha reutilizado la matriz temporal y el manifiesto existentes; no se ha creado una matriz general duplicada ni una auditoría paralela. La persistencia actualiza el estado de recuperación documental de §15, pero no aprueba las fichas ni demuestra invariancia, aislamiento o ausencia de vías colaterales.
+
+### 16.2. Estado científico de las fichas y la auditoría
+
+Las cuatro fichas/clasificaciones siguen siendo propuestas: autorización basal `C_auth,base`; recursos no focales; capacidad no focal; y clasificación de información técnica, conocimiento del agente, comunicaciones de B y evidencia del evaluador. No se añade todavía `C_info` como predicado autónomo de `A_f*`. Los detalles, criterios, falsadores y contratos I-INFO-01…06 están en la matriz §13.
+
+La auditoría del manifiesto §12 distingue la taxonomía topológica U_G (focal, alternativa, compartida, externa, desconocida) de los mecanismos causales (focal, cambio constitutivo, vía colateral a resultados y cambio epistémico/informativo). El ITT sigue siendo efecto de la política asignada; la atribución exclusiva a `ΔT_acc*` requiere excluir o identificar otras vías.
+
+Inventario real, grafo transitivo, snapshots pre-B/post-B/rollback y pruebas materiales de no-afectación siguen pendientes. `NO INVENTARIADO`, `?`, `NONE` o `PARTIAL` no significan ausencia ni PASS. ARCH-B1 es recomendación, no instalación aprobada. MD-C1 y MD-C4 permanecen abiertos.
+
+### 16.3. Próxima operación documental
+
+Completar un crosswalk, reutilizando Closure Control Matrix y U_G:
+
+`B-M01…15 → componente/variable → predicado → clase de ruta → mecanismo causal → evidencia → PROV → Reach/Π_H/Execution/Outcome/Value → estimando afectado → consecuencia de identificación → FCM-D2`.
+
+### 16.4. Cierre científico-operacional previo a implementación
+
+C10-S permanece en fase de cierre de diseño. Los ocho bloques pendientes son:
+
+1. Arquitectura: reconciliar condiciones, relaciones, bloqueos y solapamientos entre `R_access*`, `D_support*`, `C_dep*` y predicados.
+2. Contraste causal: formalizar ITT D2, estimando de accesibilidad, régimen común y vías alternativas.
+3. Población/unidad/soporte: elegibilidad, asignación/análisis, versiones `τ2`, consistencia, interferencia, cumplimiento y compliers.
+4. Medición: `T_acc`, Reach, trayectorias, ejecución, Outcome y Value; fuentes, ventanas, adjudicación y separación verdad DGP/observación.
+5. DGP/parámetros: ecuaciones, dependencias, heterogeneidad y probabilidades; justificar o sustituir `s=.80`, aún no validado.
+6. Análisis/identificación: P177/P178/P179/P182/P183, efectos directos/indirectos, confusión inducida, mediadores, selección, sensibilidad y falsadores.
+7. Validación/potencia: escenarios con verdad conocida, recuperación de efectos, detección de vías colaterales, errores, robustez, N y potencia.
+8. Contrato/autorización: especificación ejecutable, entradas/salidas, trazabilidad, reproducibilidad, aceptación, pruebas negativas y autorización separada.
+
+Secuencia: arquitectura → población/unidad/soporte/políticas → estimandos/identificación → mediciones/DGP → análisis/sensibilidad/potencia → validación/especificación → decisión separada de autorización.
+
+El hito previo será un **C10-S Design Freeze Candidate** con arquitectura causal reconciliada; DGP y parámetros justificados; población/unidad/soporte; estimandos/supuestos; contratos de medición/análisis; escenarios de validación/falsación; y criterios de aceptación/no identificación. No basta con nombrar variables: debe saberse qué cambia materialmente, cómo separar accesibilidad de otros efectos, qué miden los instrumentos, qué identifica el diseño y si el analizador recupera la verdad causal.
+
+**Límites:** no se aprueban fichas, no se validan parámetros, no se declara Design Freeze Candidate ni readiness de implementación. Se mantienen `scientific_execution=false` y `execution_authorized=false`. D2 sigue primario candidato y D1 secundario; DEC-C10-066/067 no se reabren.
