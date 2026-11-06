@@ -7796,3 +7796,74 @@ Se mantienen comunes (C_{auth,base}=1), elegibilidad, recursos no focales, capac
 DEC-C10-067 complementa DEC-C10-066 sin modificar la precedencia D2 primario candidato/D1 secundario. (s=0.80) sigue siendo candidato no validado. Actor, artefacto/hash, recepción, ventanas, reintentos, evidencia independiente, detección de provisión de fondo, rutas alternativas, estimandos, población/soporte e identificación permanecen abiertos.
 
 **Estado:** ACCEPTED — conceptual/documental; no freeze ni autorización de implementación, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+
+## 131. Auditoría de correspondencia entre las políticas materiales D2 y las políticas focales de accesibilidad (2026-11-06)
+
+**Estado:** reconciliación documental de correspondencia causal, reutilizando C10-D1 §§17.7 y 26.1–26.2, C10-S §§26.3, 33.1–33.4, 43.3–43.4, 53–55, 65 y 67–69, y DEC-C10-066/067. No es aceptación de estimandos, calibración, revisión independiente, freeze, implementación, simulación ni ejecución.
+
+### 131.1. Precedencia y objeto de la correspondencia
+
+C10-D1 gobierna el significado de (g_0/g_1): políticas estocásticas implementables sobre cambios de accesibilidad, condicionadas por historia/contexto y restringidas al conjunto factible. No son asignaciones abstractas de (A_f^*), ni sinónimos de una política de autorización o de provisión.
+
+DEC-C10-066/067 fijan D2 como escenario primario candidato y aceptan materialmente (B_{g0}^{D2}) y (B_{g1}^{D2}). No aceptan que esas versiones sean ya equivalentes a (g_0^{Af}/g_1^{Af}). La correspondencia debe derivarse de la distribución de cambios de accesibilidad que cada política B induce por el mecanismo técnico, por historia elegible, no por sustitución nominal.
+
+### 131.2. Cadena causal y semántica de los objetos
+
+`Z → B_assigned^D2 → W_programmed → W_attempt → C_dep^* → A_f^* → D_f^* → ΔT_acc^* → Reach/Π_H → K/consideración → selección/inicio → Exec → Outcome → Value`
+
+- (B_{g0}^{D2}): mantener configuración basal y no programar ni iniciar un intento focal como parte de la política. No equivale a prohibir cambios externos; provisión de fondo/crossover debe detectarse.
+- (B_{g1}^{D2}): programar el intento de provisión técnica focal para las unidades elegibles. No garantiza recepción, inicio, instalación, verificación ni éxito.
+- (W_{programmed}), (W_{attempt}), recepción/cumplimiento y (C_{dep}^*) son estados distintos.
+- (C_{dep}^*=C_{install}^*∧C_{integrity}^*∧C_{compat}^*∧C_{oper}^*) acredita la ruta técnica focal; no es definición suficiente de accesibilidad.
+- (A_f^*) requiere además los predicados estructurales aplicables de identidad, relaciones, condiciones, autorización, recursos, dependencias y ausencia de bloqueos.
+- (D_f^*=I(A_{f,base}^*=0∧A_{f,post}^*=1)) es la apertura focal basal→post.
+- (ΔT_{acc}^*) conserva el cambio estructurado completo; (D_f^*) es una proyección focal y no lo sustituye.
+
+### 131.3. Qué distribución focal induciría D2
+
+La política (g_j^{Af}) debe representar la distribución factible de cambios focales inducida por el mecanismo implementable (B_{gj}^{D2}), condicionada por la historia y las condiciones basales relevantes. Para que esa distribución quede definida y pueda compararse, se requieren conjuntamente:
+
+1. Población elegible fijada antes de Z, con (A_{f,base}^*=0) respaldada y condiciones constitutivas basales satisfechas.
+2. Identidad, versión, frontera y contrato de invocación de (τ_2) estables y comparables entre snapshots.
+3. Recepción, intento efectivo, reintentos, éxito técnico, fallo, rollback y provisión de fondo registrados por separado.
+4. Inventario y cobertura suficientes para descartar rutas técnicas alternativas no registradas en el control D2.
+5. Predicados no técnicos de (A_f^*) satisfechos e invariantes, o sus cambios identificados por separado.
+6. Medición independiente de (A_f^*), (D_f^*), (ΔT_{acc}^*) y Value, sin filtración de truth al analizador.
+7. Régimen común factible, soporte por historia, consistencia/versiones y ausencia de interferencia no modelada.
+8. Ausencia de vías diferenciales de B hacia Value fuera del cambio focal, o estrategia defendible que las separe.
+
+Solo si se satisfacen estas condiciones puede la distribución inducida por cada (B_g^{D2}) instanciar las políticas focales (g^{Af}) pertinentes. La correspondencia no se presume por el hecho de que B se denomine política de provisión.
+
+### 131.4. Diferencia D2 frente a la ilustración 0,20→0,80
+
+Las probabilidades materiales candidatas de programación D2 son 0 en control y 1 en tratamiento. El (s=0,80) es una probabilidad conjunta de éxito técnico condicional a un intento elegible, todavía no validada. Por tanto, la pareja (P(A_{f,post}^*=1|g_0^{Af})=0,20), (P(A_{f,post}^*=1|g_1^{Af})=0,80) de la ilustración anterior §33.4 **no es la distribución inducida por D2**.
+
+Bajo la factorización ilustrativa (s=0,80), cumplimiento perfecto, una oportunidad, ausencia de provisión de fondo, ruta focal única, inaccesibilidad basal confirmada y todos los demás predicados de acceso satisfechos e invariantes, D2 produciría algebraicamente (P(D_f^*=1|Z=0)=0) y (P(D_f^*=1|Z=1)=0,80). Esto es solo una consecuencia condicional del DGP candidato, no un parámetro aprobado, una primera etapa observada ni una afirmación sobre (A_f^*) en ausencia de las demás condiciones.
+
+La pareja 0,20→0,80 corresponde a la factorización candidata de D1 (intento de control .25, tratamiento 1 y éxito condicional .80), no al contraste D2. No se traslada el valor ilustrativo (3,6) de §33.4 a D2 ni se calcula un nuevo valor de (θ_{Af}) hasta que la distribución inducida, el DGP de Outcome/Value y sus parámetros hayan sido aceptados. Las primeras etapas de (C_{dep}^*), (A_f^*), (D_f^*) y (ΔT_{acc}^*) se mantienen separadas.
+
+### 131.5. Correspondencia entre (ψ_B(q_X^*)) y (ψ_{policy}(q))
+
+La auditoría distingue dos niveles de notación ya existentes:
+
+- (ψ_{policy}(q)) es el contraste general entre versiones de una política implementable B bajo un régimen común q; incluye todas las vías que esas versiones activen.
+- (ψ_B(q_X^*)) en §44 es la instanciación de ese contraste para las versiones B₁/B₀ recibidas, estandarizada sobre la distribución basal objetivo (q_X^*).
+
+Por tanto, (ψ_B(q_X^*)) puede leerse como caso particular de (ψ_{policy}) **solo cuando** se refiera a las mismas versiones B, población, resultado, regla Value, horizonte y cuando (q_X^*) represente por completo el régimen común relevante. Si q requiere además una intervención secuencial postasignación (q_L^*), (q_X^*) por sí solo no es equivalente.
+
+Esta armonización de notación no identifica (ψ_B) mediante (ITT_Z). El ITT es el efecto de asignación a la política D2; el contraste de versiones recibidas requiere consistencia de versiones, recepción/cumplimiento y estrategia de identificación propia. Tampoco convierte (ψ_{policy}) en (θ_{Af}(q_X^*)): esa reducción exige la correspondencia B→g^Af, exclusión/separación de vías alternativas y los demás supuestos de C10-D1 §26.2.
+
+### 131.6. Dictamen y estado
+
+- DEC-C10-066/067 permanecen aceptadas dentro de su alcance limitado.
+- La semántica material de (B_{g0}^{D2}/B_{g1}^{D2}) queda diferenciada de las políticas objetivo (g^{Af}); su correspondencia causal permanece **CONDICIONAL / NO DEMOSTRADA**.
+- La ilustración 0,20→0,80 y el valor 3,6 no se trasladan al D2 primario.
+- (ψ_B(q_X^*)) queda armonizado como instancia específica de (ψ_{policy}(q)) solo bajo igualdad de versiones, población, resultado, horizonte y régimen completo; no equivale a ITT_Z.
+- (θ_{Af}(q_X^*)) no se considera identificado. (θ_A(q)) general C10-D1 permanece distinto y fuera del alcance probatorio automático de D2.
+- Permanecen abiertos s, recepción/cumplimiento, provisión de fondo, inventario de rutas, predicados no focales, población/soporte, unidad/interferencia, Value, exclusión, medición y revisión independiente.
+
+**Siguiente operación:** revisar el estimando instrumental (LATE_f) y el uso de (D_f^*) como tratamiento endógeno para D2, incluyendo exclusión, monotonicidad, versiones, interferencia y error de medición. No seleccionar una fórmula Wald ni declarar IV defendible hasta completar esa auditoría.
+
+No hay freeze, implementación, simulación ni ejecución científica autorizada.
