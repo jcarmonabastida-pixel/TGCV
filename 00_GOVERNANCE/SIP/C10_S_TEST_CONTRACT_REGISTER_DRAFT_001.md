@@ -1304,3 +1304,9 @@ Cada contrato fijará fuente/versión, owner CMP, tipo, dominio, requiredness, e
 La suite futura debe discriminar, para la regla finalmente instanciada: (1) AST y semántica preservados; (2) operador EQ/NEQ/IN/NOT_IN alterado; (3) clave/operando intercambiado; (4) scope alterado; (5) REQUIRE/FORBID invertido; (6) dominio finito incompleto o ampliado; (7) regla eliminada/duplicada; (8) UNKNOWN convertido a TRUE/FALSE; (9) regla preservada en F1/A1 pero no aplicada en F2/A2; (10) igualdad textual con mapping semántico divergente; (11) regla tautológica sin capacidad de discriminar; (12) regla sin fuente funcional o fuera de P0.
 
 Cada contrato separará hidden_truth, AST/entrada del analizador, resultado de mapping, estado aplicado, evidencia y oráculo FP-03/06/07. Las salidas admiten 1/0/? según cobertura y evidencia. No hay fixtures serializados ni pruebas ejecutadas.
+
+## 67. Contratos adversariales de RUL
+
+La suite futura debe discriminar, para la regla finalmente instanciada: (1) AST y semántica preservados; (2) operador EQ/NEQ/IN/NOT_IN alterado; (3) clave/operando intercambiado; (4) scope alterado; (5) REQUIRE/FORBID invertido; (6) dominio finito incompleto o ampliado; (7) regla eliminada/duplicada; (8) UNKNOWN convertido a TRUE/FALSE; (9) regla preservada en F1/A1 pero no aplicada en F2/A2; (10) igualdad textual con mapping semántico divergente; (11) regla tautológica sin capacidad de discriminar; (12) regla sin fuente funcional o fuera de P0.
+
+Cada contrato separará hidden_truth, AST/entrada del analizador, resultado de mapping, estado aplicado, evidencia y oráculo FP-03/06/07. Las salidas admiten 1/0/? según cobertura y evidencia. No hay fixtures serializados ni pruebas ejecutadas.
