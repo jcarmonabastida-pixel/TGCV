@@ -288,3 +288,97 @@ Cada agregado enlaza unidad, frontera, contexto, τ2/TID, versiones/snapshots, p
 La primera etapa focal causal se define sobre D_f verdadero, no D_f obs sin más. No convertir ? en 0, excluir indeterminados como si fueran aleatorios ni imputar sin modelo. Informar 1/0/? y error por brazo/tiempo/versión/ruta; si error diferencial/missingness no identificados, usar límites/sensibilidad o declarar no identificación. Esta regla no resuelve independencia, exclusión, monotonicidad, interferencia, consistencia ni relevancia IV. `LATE_f` permanece bloqueado.
 
 **Pendiente:** armonizar dominios con plantilla U_G y matching/snapshots; resolver pertenencia exacta/UG-SCH-10; concretar rutas del microdominio; diseñar fixtures adversariales y medir error contra truth oculta bajo autorización futura. No cierra MEAS-G2…G8, XSYNC, PROV, MD-C1/MD-C4 ni gates IV. No modifica DEC-C10-065/066/067, fórmula, autorización o claims; no autoriza implementación, validación ejecutable, simulación ni experimento.
+
+
+---
+
+## 11. Reconciliación de contratos adversariales existentes y suite lógica trivalente (2026-11-06)
+
+**ID de reconciliación:** C10-S-TRI-ADVERSARIAL-CROSSWALK-001  
+**Estado:** especificación documental asistida; AUTHOR_SELF_REVIEW / NOT_INDEPENDENT; no aprobada, no congelada, no implementada, no ejecutada.
+
+### 11.1. Regla de no duplicación y fuentes históricas reutilizadas
+
+No se crea un catálogo paralelo de casos adversariales. Se reutilizan y se enlazan:
+- contrato de identidad/versionado/matching §12: ID-01…15;
+- contrato de snapshots y ΔT_acc §9: SNAP-01…15;
+- DGP temporal/roles §§26–28 y 32–35: conjunción técnica, distribución conjunta, propagación Reach y universo de rutas;
+- inventario finito candidato DGP §33 y matriz U_G §§4–8: Rτ2, RA12, Rshared, Rexternal, Runknown y cobertura;
+- contrato de procedencia/adjudicación U_G §§5–11 y 17–18;
+- matriz de cierre §30, familias de fixtures y sensibilidad de primeras etapas;
+- esta auditoría §10: regla agregada A_f^{obs}/DEP_f^{obs}/D_f^{obs}.
+
+Los IDs ID/SNAP son contratos de diseño, no fixtures ni resultados de pruebas. Se conservan sus identidades y salidas originales; los IDs TRI siguientes son una capa de trazabilidad para los casos que la regla agregada necesita cubrir explícitamente. No sustituyen ID/SNAP ni declaran implementado el fixture.
+
+### 11.2. Crosswalk de reutilización
+
+| Caso preexistente | Cobertura pertinente | Resultado trivalente que debe verificarse | Límite que permanece |
+|---|---|---|---|
+| ID-08 | Cobertura basal incompleta | UNKNOWN; no ADD post ni NO_MATCH | No cubre por sí solo toda la agregación D_f |
+| ID-09/10 | Frontera o granularidad distinta | NOT_COMPARABLE/? salvo mapping validado | Debe propagarse a D_f, no solo al diff |
+| ID-11 | Cambio de condición/recurso con TID estable | MODIFY_STRUCTURAL y reevaluación de A_f | No fija por sí solo el agregado 1/0/? |
+| ID-12; SNAP-01/02 | Cambia E_T/cobertura, no el sistema | ΔE_T distinto; no inventar ΔT_acc*; observación puede ser ? | Debe impedir que mejora/pérdida de evidencia se codifique como cambio estructural |
+| ID-13; SNAP-07/13 | τ2/mapping/snapshot no comparables | No calcular transición de la misma identidad; D_f^{obs}=? | La no comparabilidad global prevalece sobre una tabla local de estados |
+| ID-14 | Mapping 1:N no validado | MATCH_UNRESOLVED/?; no colapsar identidades | Debe bloquear matching basal/post de τ2 |
+| SNAP-03/04/08/09 | Cambio estructural focal/no focal | Separar ΔT_acc* y D_f*; recalcular A_f* sin equipararlos | No son pruebas de adjudicación de evidencia |
+| SNAP-11 | Truth cambia pero evidencia no detecta | Truth separada; observación ?/error | Necesita evaluación posterior contra truth oculta |
+| SNAP-12 | Evidencia revela ruta ya presente en baseline | Corregir clasificación basal mediante adjudicación; no fechar ADD en post | Debe comprobarse efecto sobre D_f y DEP agregados |
+| SNAP-14 | Cambio de autorización/recursos inducido por B | Cambio constitutivo y/o vía colateral según contrato | No prueba exclusión ni atribución focal |
+| DGP §32 / §33; U_G §5 | Conjunción por ruta y disyunción de rutas; alternativas y Runknown | Ruta 1 basta para DEP=1; DEP=0 exige cobertura completa y todas las rutas 0; resto ? | No existían IDs de fixture específicos para el agregado focal A_f/DEP/D_f |
+| U_G §6–8 y protocolo §6–9 | Cobertura negativa, unknown, conflicto y adjudicación | MISSING/NONE/PARTIAL/CONFLICTING no se convierten mecánicamente en 0 | Faltaban casos agregados de conflicto y cero independiente |
+
+### 11.3. Suite lógica TRI propuesta — entradas y salidas esperadas
+
+Los casos siguientes son fixtures lógicos abstractos. No describen componentes técnicos observados ni asignan estados al microdominio real. Los estados son entradas observadas hipotéticas para probar la regla; la truth DGP, si se incorpora al fixture completo, permanece oculta al analizador y solo se usa por el evaluador después de congelar la salida.
+
+| ID | Caso adversarial | Entrada relevante | Salida esperada | Aserción crítica |
+|---|---|---|---|---|
+| TRI-AF-01 | Conjunción completa positiva | ID/REL/COND/AUTH/RES/DEP/¬BLOCK todos 1; matching/cobertura adecuados | A_f^{obs}=1 | No basta un subconjunto ni una declaración de provisión |
+| TRI-AF-02 | Un necesario refutado y otros desconocidos | AUTH=0 válido; DEP=?; restantes 1 | A_f^{obs}=0 | Un cero necesario, focal y suficiente refuta la conjunción |
+| TRI-AF-03 | Sin cero suficiente y un término desconocido | Todos 1 salvo RES=? | A_f^{obs}=? | No imputar ? como 0 ni 1 |
+| TRI-AF-04 | Conflicto local más cero independiente | AUTH=CONFLICTING/?; otro término necesario 0 válido y comparable | A_f^{obs}=0, conflicto conservado | El cero independiente basta, pero no borra el conflicto |
+| TRI-AF-05 | Conflicto global de identidad/frontera | Identidad τ2 o frontera no comparable | A_f^{obs}=?; no agregar términos incompatibles | La incompatibilidad global impide combinar estados |
+| TRI-DEP-01 | Ruta válida junto a ruta desconocida | Rτ2=1; Runknown=? | DEP_f^{obs}=1 | Una ruta válida basta para existencia; no afirmar exhaustividad |
+| TRI-DEP-02 | Todas las rutas declaradas refutadas con cobertura completa | Rτ2/RA12/Rshared/Rexternal/Runknown=0 o resueltas fuera del universo con justificación; coverage COMPLETE | DEP_f^{obs}=0 | El cero exige universo operativo declarado, completo y todas las rutas refutadas |
+| TRI-DEP-03 | Todas las rutas conocidas refutadas, pero Runknown/cobertura parcial | Rτ2=0; RA12=0; Runknown=?; coverage PARTIAL | DEP_f^{obs}=? | No convertir inventario parcial en ausencia |
+| TRI-DEP-04 | Ruta focal técnica falla, alternativa equivalente funciona | C_dep=0; ruta alternativa para la misma τ2/F* =1 | DEP_f^{obs}=1; no derivar A_f=0 desde C_dep | C_dep no equivale a DEP en el contrato general |
+| TRI-DEP-05 | Bloqueo solo de una ruta | Ruta focal bloqueada; alternativa admisible confirmada 1 | DEP_f^{obs}=1; BLOCK no se generaliza a todo el universo | Bloqueo de una ruta no demuestra bloqueo de todas |
+| TRI-DF-01 | Apertura observada comparable | A_base=0; A_post=1; misma τ2 y snapshots comparables | D_f^{obs}=1 | Única combinación que produce apertura |
+| TRI-DF-02 | No apertura demostrada por post | A_base=?; A_post=0; comparación válida | D_f^{obs}=0 | Post=0 descarta apertura aunque baseline sea ? |
+| TRI-DF-03 | Baseline ya accesible | A_base=1; A_post∈{0,1,?}; comparación válida | D_f^{obs}=0 | No puede haber apertura basal→post si baseline era 1 |
+| TRI-DF-04 | Baseline desconocido y post positivo | A_base=?; A_post=1 | D_f^{obs}=? | No inferir apertura sin baseline=0 |
+| TRI-DF-05 | No comparabilidad de identidad/snapshot | τ2 distinta, mapping no resuelto o frontera/G incompatibles | D_f^{obs}=? / NOT_COMPARABLE | Esta guarda global prevalece incluso si una tabla local sugeriría 0/1 |
+| TRI-DF-06 | Evidencia post revela ruta ya existente en baseline | SNAP-12; ruta/transformación reclasificada basal tras adjudicación | Recalcular A_base y D_f; no registrar ADD post por fecha de descubrimiento | La fecha de descubrimiento no es fecha de creación |
+| TRI-OBS-01 | Ausencia de logs/fuente | evidence_status=MISSING; coverage NONE/PARTIAL; sin refutación válida | Estado observado ? | Silencio/no observación no equivale a 0 |
+| TRI-OBS-02 | Fuga de truth o Outcome al analizador | Inputs del analizador contienen truth_dgp, Z/B no permitidos u Outcome/Value downstream | FAIL de separación de roles; caso no interpretable | No evaluar clasificación con filtración |
+| TRI-OBS-03 | Error potencial diferencial | Mismo patrón de verdad con perfiles de evidencia/missingness distintos por brazo/tiempo | Reportar matriz de error y unknown por estrato; sin corrección puntual automática | No asumir sensibilidad/especificidad ni missingness no diferenciales |
+
+### 11.4. Tabla exhaustiva de D_f observado y precedencia
+
+Con misma identidad focal, frontera, unidad, contexto, granularidad, catálogo, mapping y snapshots comparables:
+
+| A_base^{obs} \ A_post^{obs} | 0 | 1 | ? |
+|---|---:|---:|---:|
+| 0 | 0 | 1 | ? |
+| 1 | 0 | 0 | 0 |
+| ? | 0 | ? | ? |
+
+La tabla se aplica **solo después** de superar la guarda de comparabilidad. Si matching/identidad/frontera/versión temporal no son comparables, la salida es ? / NOT_COMPARABLE independientemente de los estados locales. La elegibilidad verdadera pre-Z sigue siendo A_{f,base}^*=0; A_{f,base}^{obs}=0 no la acredita sin evaluación explícita del error de clasificación.
+
+### 11.5. Contrato mínimo por fixture y criterios de evaluación
+
+Cada TRI se materializará, cuando se autorice, usando el esquema existente del registro de contratos de prueba: `test_id, objective, fixture_version, unit_id, initial_state, inputs_by_role, hidden_truth, expected_output, assertions, tolerance, failure_codes, evidence_artifacts, reproducibility_hash`.
+
+- `inputs_by_role` debe separar generador, analizador y evaluador; el analizador recibe solo la evidencia/observación permitida.
+- `hidden_truth` solo es accesible al generador/evaluador independiente; nunca se serializa en el paquete de entrada del analizador.
+- `expected_output` define estados observados, agregados, unknown_reason, evidencia y cobertura; no revela truth.
+- Los casos de conflicto deben conservar ambos registros, adjudicación y opinión minoritaria; no usar mayoría automática.
+- Los casos de cero exigen evidencia suficiente para el predicado necesario concreto; los ceros de DEP exigen cobertura negativa del universo operativo completo.
+- Las pruebas de error diferencial comparan contra truth solo después de congelar resultados; reportan 1/0/? y errores por brazo × tiempo × versión × ruta × cobertura.
+- Cada caso termina en PASS/FAIL/INDETERMINATE con aserciones y artefactos reproducibles. INDETERMINATE es salida válida cuando el contrato no permite clasificar.
+
+### 11.6. Huecos y dictamen de cobertura
+
+La suite existente cubre identidad/matching, snapshots, cambios estructurales frente a epistémicos, rutas/Reach y algunos escenarios de DGP. La suite TRI añade los cruces que no estaban explicitados como casos agregados: cero local con unknown concomitante; conflicto local frente a conflicto global; ruta válida junto a Runknown; cero de DEP bajo cobertura completa frente a parcial; C_dep fallido con alternativa; bloqueo de una ruta; tabla completa D_f; precedencia de no comparabilidad; redescubrimiento basal; ausencia de evidencia y filtración/error diferencial.
+
+**Dictamen:** especificación lógica TRI propuesta y trazada; cobertura documental mejorada, pero MEAS-G8 sigue OPEN. No se han creado fixtures serializados, truth oculta, oráculos, código, tolerancias calibradas ni pruebas. MEAS-G4/G6/G7 tampoco se cierran por este crosswalk. No se cierra ID-01…15, SNAP-01…15, UG-SCH-10, XSYNC, PROV, MD-C1/MD-C4 ni ningún gate IV. No se modifica DEC-C10-065/066/067, fórmula candidata, Core, estimandos ni autorización. No se autoriza implementación, validación ejecutable, simulación o experimento.
