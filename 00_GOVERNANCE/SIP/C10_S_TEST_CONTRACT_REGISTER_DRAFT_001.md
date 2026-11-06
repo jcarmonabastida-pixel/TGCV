@@ -1278,3 +1278,10 @@ La futura suite debe distinguir sin colapsar: (a) adaptador no provisionado/prov
 Cada caso futuro debe fijar identidad/versiones, C_src/C_dst/M, IAM, C0/G/H, recursos/permisos, snapshots y oráculo; mantener hidden_truth segregada del analizador; registrar cobertura y estados 1/0/?; y declarar qué dimensión FP falla sin doble conteo. Los casos simples de una sola diferencia no serán sustituidos por un escenario compuesto.
 
 Estos son contratos lógicos de discriminación, no IDs de fixture ni fixtures serializados. No se alteran MEAS/TRI existentes ni se afirma que las pruebas estén implementadas. La correspondencia final con MEAS, PROV, ID, SNAP y FP debe cerrarse antes de materialización.
+
+
+## 64. Contratos de discriminación del mapping y estado aplicado
+
+La suite futura debe distinguir: (a) correspondencia CMP/PAR inequívoca vs ambigua; (b) pérdida obligatoria vs falta de evidencia; (c) ABSENT vs NULL; (d) DEFAULT declarado vs heredado; (e) default resuelto por entorno en E_dst vs estado del paquete; (f) REF vacío con cobertura completa vs inventario incompleto; (g) REF externo vs dependencia instalada; (h) AST preservado vs estructuralmente válido pero semánticamente alterado; (i) artefacto intermedio F1/A1 conforme vs C_dst aplicado divergente; (j) estado aplicado correcto con FP-08 insuficiente; (k) alternativa A1/A2 alterada por B; (l) UNKNOWN/conflicto RUL vs NA legítimo.
+
+Cada caso fijará C_src/C_dst, M, IAM, versiones, C0/G/H, cobertura, snapshot E_dst, oráculo y rol de cada dato. Declarará predicado FP primario, evitará doble conteo y mantendrá hidden_truth fuera del analizador. Son contratos lógicos, no fixtures ni pruebas ejecutadas.
