@@ -216,7 +216,7 @@ El roster no fija nombres físicos ni tablas de conversión concretas. Para DECI
 
 El mapping preserva la semántica de condición, operandos, scope, efecto REQUIRE/FORBID y evaluación trivalente, con correspondencia de cada referencia PAR/CMP y versión. F1/A1 producen representaciones intermedias; F2/A2 aplican la regla en destino bajo el mismo contrato funcional.
 
-Para la instancia sintética propuesta RUL-SVC-ENABLE-PROFILE-01:
+Para la instancia sintética aceptada conceptualmente por DEC-C10-068, RUL-SVC-ENABLE-PROFILE-01:
 - PAR-SVC-ENABLED conserva BOOL y sus estados; ABSENT/NULL/DEFAULT se mantienen diferenciados conforme al contrato de parámetros.
 - PAR-SVC-PROFILE conserva el dominio semántico {STANDARD, READ_ONLY, DISABLED}. La correspondencia física puede renombrar símbolos, pero debe ser total, inyectiva respecto de los tres significados y versionada.
 - La regla conserva ENABLED=true implica PROFILE∈{STANDARD, READ_ONLY}, scope de la unidad lógica y efecto REQUIRE.
