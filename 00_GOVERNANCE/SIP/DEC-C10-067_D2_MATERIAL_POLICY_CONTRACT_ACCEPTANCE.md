@@ -3,7 +3,7 @@
 **Fecha:** 2026-11-06  
 **Estado:** ACEPTADA — alcance conceptual/documental  
 **Ámbito:** C10-S / D2 primario candidato / definición material de políticas de provisión  
-**Rama de registro:** \`research/c10-s-consolidation-draft\`
+**Rama de registro:** `research/c10-s-consolidation-draft`
 
 ## Decisión
 
@@ -86,4 +86,4 @@ Esta decisión complementa DEC-C10-066: D2 sigue siendo el escenario primario ca
 
 **No autoriza** freeze, implementación, validación ejecutable, simulación ni ejecución científica.
 
-**Autorización:** \`scientific_execution=false\`; \`execution_authorized=false\`.
+**Autorización:** `scientific_execution=false`; `execution_authorized=false`.
