@@ -5478,7 +5478,7 @@ Programar no garantiza que el intento se inicie, sea recibido o tenga éxito. El
 |---|---|---|---:|
 | B_g0^D1 | D1 control ordinario | Provisión ordinaria de baja frecuencia del mismo módulo | 0,25 |
 | B_g1^D1 | D1 tratamiento | Programar provisión del mismo módulo para todas las unidades elegibles | 1,00 |
-| B_g0^D2 | D2 control sin provisión | No programar provisión focal | 0 |
+| B_g0^D2 | D2 control sin provisión programada | No programar provisión focal | 0 |
 | B_g1^D2 | D2 tratamiento | Programar provisión del mismo módulo para todas las unidades elegibles | 1,00 |
 
 Los valores representan programación por la política, no intentos efectivos observados ni estados técnicos finales. La provisión de fondo/crossover se registra incluso cuando la política no programa un intento.
@@ -5524,7 +5524,7 @@ Una asignación a B_g1 no garantiza que el intento o instalación hayan tenido �
 
 Entre versiones deben permanecer idénticos: módulo y hash/versionado; protocolo técnico; criterios de elegibilidad; recursos por intento; soporte; instrumentos y umbrales de verificación; personal/actor o automatización; hardware/software no focal; información, formación, expectativas e incentivos; costes y latencias no inherentes; calidad, seguridad y riesgo; reglas de selección y ejecución; horizonte y regla de Value.
 
-La única diferencia intencionada es la política de frecuencia de intento. Si la provisión ordinaria D1 produce vías adicionales o cambia otros recursos/expectativas, se registra como paquete y no se atribuye el ITT exclusivamente a accesibilidad. D2 es un contraste de diseño distinto, no una corrección silenciosa de D1.
+La única diferencia intencionada es la política de frecuencia de programación del intento; la recepción y el inicio efectivo se registran por separado. Si la provisión ordinaria D1 produce vías adicionales o cambia otros recursos/expectativas, se registra como paquete y no se atribuye el ITT exclusivamente a accesibilidad. D2 es un contraste de diseño distinto, no una corrección silenciosa de D1.
 
 ## 54.6. Reglas de aceptación documental propuestas
 
@@ -5539,9 +5539,9 @@ La única diferencia intencionada es la política de frecuencia de intento. Si l
 
 ## 54.7. Decisión que queda por tomar
 
-La propuesta concreta el mecanismo B y muestra una factorización coherente con la fuente recuperada. No resuelve aún: (i) si la política D1 representa realmente el comparador científico deseado; (ii) quién/qué ejecuta el intento; (iii) qué constituye la recepción de B; (iv) qué componentes y tolerancias definen el éxito técnico; (v) cómo se codifica crossover; (vi) si se acepta .80 como tasa conjunta de éxito condicional; (vii) si el estimando focal es sobre C_dep o sobre D_f; y (viii) revisión independiente de exclusión y versiones.
+DEC-C10-067 acepta las definiciones materiales conceptuales de las políticas D2; no acepta la legitimidad final del comparador, el mecanismo de cumplimiento, las probabilidades efectivas de intento ni el éxito técnico. Permanecen abiertos: (i) justificación de D1 como comparador secundario; (ii) identidad/rol del actor; (iii) artefacto/hash/versionado; (iv) recepción de B; (v) cumplimiento y probabilidad de inicio efectivo; (vi) componentes y tolerancias de verificación; (vii) codificación de provisión de fondo/crossover; (viii) validez de s=.80; (ix) estimando focal sobre C_dep o D_f; y (x) vías colaterales/exclusión.
 
-**Dictamen actualizado por DEC-C10-067:** las definiciones materiales conceptuales de las políticas D2 están aceptadas; la operacionalización completa continúa OPEN-C10-001 hasta concretar actor, artefacto/versionado, recepción, cumplimiento, intentos efectivos/de fondo, evidencia técnica y vías colaterales. No hay implementación, simulación ni ejecución.
+**Dictamen:** definiciones materiales conceptuales D2 aceptadas; operacionalización completa OPEN-C10-001. No hay implementación, simulación ni ejecución.
 
 
 ---
