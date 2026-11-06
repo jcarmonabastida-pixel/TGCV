@@ -951,3 +951,15 @@ R0/EXC-F0 es control positivo focal; R1 es alternativa basal estable; R2 es alte
 No confundir: (a) exclusión estructural; (b) relevancia de primera etapa focal; (c) independencia/aleatorización; (d) monotonicidad; (e) consistencia/versionado; (f) interferencia; (g) validez de medición. Un escenario puede violar varios, pero debe haber controles que aíslen cada fallo. ITT_Z y LATE_f se informan por separado y Outcome/Value por separado.
 
 **Pendiente antes de parametrizar:** ratificar semántica Opción A y definiciones F*/equivalencia alternativa; completar la tabla variable×tiempo×rol para las manipulaciones; cerrar unidad/soporte/interferencia y regla de Value; luego justificar parámetros y sensibilidad. No implementación ni ejecución.
+
+
+
+## 16.22. Crosswalk temporal y de roles — prerrequisito de parametrización
+
+Se incorpora DGP §28 / auditoría IV §13 como contrato común para los escenarios adversariales. No basta la tabla de familias: cada escenario debe materializar las variables en el reloj t−1/t0–t9/t+1…, mantener truth/observed y roles separados, y demostrar los invariantes declarados dentro del propio DGP.
+
+**Orden obligatorio antes de parametrizar:** (1) resolver precedencia y semántica funcional de F1=τ2, F2, A1/A2 y adaptador con identidad/versiones; (2) fijar O*/O_obs y V*/V_obs, regla de Value, beneficiario y horizonte; (3) fijar unidad experimental/asignación, unidad de interferencia, pool y mapa de exposición; (4) fijar snapshots y regla temporal de rollback/washout; (5) completar variable×tiempo×rol y gates por escenario; (6) justificar soporte, distribuciones, parámetros y sensibilidad por estimando; (7) solo después serializar fixtures/oráculos con hidden_truth segregada y autorización correspondiente.
+
+No se permite tratar el reloj temporal como ejecución real, fijar invariancia por declaración sin contraste de control, ni confundir F* técnico con oráculo de Outcome o regla de Value. La falta de observación mantiene ?; no es ausencia verdadera.
+
+**Estado:** prerequisito documental abierto; no parametrización, implementación ni ejecución.
