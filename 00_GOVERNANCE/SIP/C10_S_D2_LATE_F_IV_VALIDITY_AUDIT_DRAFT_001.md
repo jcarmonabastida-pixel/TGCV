@@ -298,3 +298,27 @@ La salida analítica distingue: LATE_f identificado condicionalmente; ITT_Z como
 7. Si la evidencia observada no distingue entre F0 y una vía colateral, el resultado correcto es indeterminado/no identificado, no selección del escenario más favorable.
 
 **Estado:** especificación causal cualitativa propuesta; sin parámetros, tasas, distribuciones, fixtures serializados, oráculos ejecutables o pruebas. IV-G4 permanece abierto; relevancia, monotonicidad, independencia, consistencia, interferencia y medición conservan gates propios. No se habilita Wald, freeze, implementación ni ejecución.
+
+
+
+## 13. Crosswalk variable×tiempo×rol de escenarios Opción A
+
+Se incorpora el contrato temporal C10-S DGP §28 como mapa de implementación documental. Se conserva el reloj t−1/t0–t9/t+1… y la separación Generador/Analizador/Evaluador. El mapa no añade parámetros ni supone que las manipulaciones estén materialmente observadas.
+
+| Familia | Tiempo focal | Variables principales | Truth oculta al analizador | Observación disponible al analizador | Gate/dictamen |
+|---|---|---|---|---|---|
+| R0/EXC-F0 | t1–t4; resultados t8/t9 | B/W (t1), C_dep (t2), A_f*/D_f*/ΔT_acc* (t3), Reach/Π (t4), O/V (t8/t9) | D_f*, ausencia de vías colaterales, potenciales O*/V* | Asignación, intento, snapshots/evidencia, A_f,obs, Reach/Π obs, O_obs/V_obs | Control positivo; LATE_f solo condicional |
+| R1 | t−1 y t2–t4 | F_alt,base, A1/A2 y dependencias | Factibilidad basal y ausencia de modificación por B | Inventario/snapshots y cobertura trivalente | No violación por alternativa basal; efecto sobre Reach puede ser nulo |
+| R2/EXC-B14 | t2–t4, t7–t9 | Cambio A1/A2/dependencias, Reach, ejecución y resultados | Ruta colateral inducida por B | Diffs/snapshots, mapa de rutas, O_obs/V_obs | Exclusión focal violada; paquete/no LATE_f |
+| R3 | t1–t3 y t+1 | W_attempt, C_dep, D_f*, consumo/residuo | Fallo de provisión y primera etapa focal verdadera | Intento y verificación; recursos/residuos observables | No relevancia/débil; posible coste/carryover |
+| Directa a O | t2/t7/t8 | Datos/S0/mapping/App/F* técnico, Exec, O | Ruta B→O no mediada por D_f* | Diffs, registros de ejecución y O_obs | IV-G4 falla |
+| Directa a V | t2/t7/t9 | Coste/riesgo/recursos, O* constante y V* afectado en subcaso aislado | O* constante y V* afectado en subcaso aislado | Costes/riesgos medidos, O_obs/V_obs | IV-G4 falla para V; ITT_V política puede ser estimable |
+| K diferencial | t1/t5/t6/t7 | Mensajes, K, Consider, Sel, Start, Exec | Efecto de B sobre K y conducta | Comunicaciones y registros conductuales | Vía epistémica; no ajustar por K post-Z |
+| Medición diferencial | t2/t3/t8/t9 | ΔE_T, cobertura, R_A/R_O/R_V | Truth fija; missingness/error inducido por B | Logs, cobertura, adjudicación y ausencia por brazo | IV-G6; sensibilidad/cotas o no identificación |
+| Oráculo diferencial | t8/t9 | Versión de regla/dataset/oráculo | Cambio de definición por brazo | Especificación y versión accesible | Resultado no comparable |
+| Recursos compartidos | t1/t2/t4/t7–t9 | Pool, reservas, consumo, exposición i←j | Spillover entre unidades | Mapa de exposición y métricas del pool | IV-INT; cluster/exposure model o no identificación |
+| Carryover | t+1… | Estado residual, rollback, recursos/exposición futura | Persistencia entre periodos/unidades | Snapshots longitudinales y rollback | Consistencia/interferencia; no Wald individual estándar |
+
+La observabilidad de una variable no la convierte en verdad estructural. O_obs y V_obs no reemplazan O* y V*; el analizador no recibe truth ni parámetros. El contrato es una especificación de entrada/salida, no evidencia de validez de supuestos en un sistema externo.
+
+**Estado:** crosswalk añadido; IV-G4/IV-G6/IV-INT continúan abiertos. No se parametriza ni ejecuta.
