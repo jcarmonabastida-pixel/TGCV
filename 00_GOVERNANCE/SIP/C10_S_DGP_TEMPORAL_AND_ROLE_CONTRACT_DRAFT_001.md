@@ -62,7 +62,7 @@ P(W_{attempt,i}=1|W_{programmed,i}=0,Z,D,X,H)=b_{z,D}(X,H)
 C_{dep,i1}^{*}=C_{install,i1}^{*}\land C_{integrity,i1}^{*}\land C_{compat,i1}^{*}\land C_{oper,i1}^{*}
 ]
 
-`q_{z,D}` es la probabilidad de programar el intento bajo la política asignada; `c_{z,D}` representa cumplimiento/recepción que lleva al intento efectivo y `b_{z,D}` representa intento de fondo cuando no se programó. Ambos mecanismos permanecen abiertos y deben medirse; no se presume `c=1` ni `b=0`. El éxito técnico condicional candidato `s=0.80` se refiere a la probabilidad conjunta de que la ruta técnica complete los cuatro componentes tras un intento elegible, bajo protocolo, actor, versión, recursos y ventana fijados. No se presume independencia entre componentes.
+`π_{z,D}^{prog}` es la probabilidad de programar el intento bajo la política asignada; `c_{z,D}` representa cumplimiento/recepción que lleva al intento efectivo y `b_{z,D}` representa intento de fondo cuando no se programó. Ambos mecanismos permanecen abiertos y deben medirse; no se presume `c=1` ni `b=0`. El éxito técnico condicional candidato `s=0.80` se refiere a la probabilidad conjunta de que la ruta técnica complete los cuatro componentes tras un intento elegible, bajo protocolo, actor, versión, recursos y ventana fijados. No se presume independencia entre componentes.
 
 En el DGP candidato, las probabilidades de **programación** son:
 - D1: `P(W_programmed=1|Z=0)=.25`; `P(W_programmed=1|Z=1)=1.00`.
