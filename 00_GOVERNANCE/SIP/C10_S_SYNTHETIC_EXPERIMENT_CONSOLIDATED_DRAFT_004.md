@@ -7890,3 +7890,25 @@ La auditoría separa los supuestos:
 **Consecuencia:** conservar `LATE_f` como estimando secundario condicional. No seleccionar ni reportar Wald como efecto causal hasta cerrar los gates IV-G1…IV-G8 definidos en el registro de auditoría. Si exclusión no es defendible, el resultado se mantiene como ITT de política/paquete o se declara no identificado para atribución focal. Incluso un `LATE_f` identificado sería local a compliers D2 y no equivaldría a `θ_Af(q_X^*)` poblacional ni a `θ_A(q)` general.
 
 No se acepta ningún parámetro, no se cierra XSYNC, no se modifica C10-D1/Core/RMA/Matrix/STATUS/claims y no se autoriza freeze, implementación, simulación ni ejecución. La siguiente operación documental es auditar la definición observacional de `D_f^*` y el protocolo de medición de `A_f^*`.
+
+
+---
+
+## §133. Auditoría observacional de D_f* y medición de A_f* (2026-11-06)
+
+**Registro:** `C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md` · Estado AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT.
+
+**Dictamen:** la definición conceptual de `A_f^*`/`D_f^*` está parcialmente estabilizada; el contrato observacional no está cerrado. Se preserva la separación entre verdad estructural `S_T^*`, evidencia `E_T), accesibilidad verdadera `A_f^*), clasificación observada `A_f^{obs}), apertura verdadera `D_f^*) y apertura observada `D_f^{obs}). `ΔT_acc^*) y `ΔE_T) continúan siendo objetos distintos.
+
+Hallazgos materiales:
+- **Composición de predicados:** DGP §3.3 aún incluye `C_info`, `C_resource`, `C_capacity`, `C_domain` y `C_other`; los crosswalks de información/recursos advierten que algunos pueden duplicar condiciones o no estar resueltos como constitutivos. Falta una conjunción única reconciliada; no se altera la fórmula por inferencia.
+- **Identidad/comparabilidad:** `D_f^*) exige misma identidad semántica `τ2`, frontera, unidad/contexto, granularidad, catálogo y mapping compatibles. Si matching es unresolved o snapshots no comparables, `D_f^{obs}=?`.
+- **Pinning:** DEC-C10-065 acepta referencias exactas a revisión SNAPSHOT; UG-SCH-10 y su reconciliación integral siguen abiertos. La decisión no acredita implementación ni coherencia de todas las FKs/constraints.
+- **Cobertura:** U_G conserva rutas alternativas, compartidas, externas y desconocidas. NONE/MISSING/PARTIAL no equivalen a inaccesibilidad; sin cobertura válida no se asigna 0.
+- **Adjudicación:** cegamiento, doble evaluación, conservación de desacuerdos y comparación posterior con truth son propuestas, no procedimientos ejecutados.
+- **Error/missingness:** no hay tasas, parámetros o límites aprobados de error diferencial de `A_f^{obs}/D_f^{obs}) por brazo, tiempo, versión, ruta y cobertura.
+- **Tiempo:** la secuencia t0–t9 está propuesta, pero faltan ventanas, tolerancias, simultaneidad y reglas definitivas de vigencia; t3 debe sellarse antes de conocimiento/selección/ejecución.
+
+**Consecuencia:** mantener `D_f^*) como tratamiento focal verdadero del DGP. No sustituirlo por `D_f^{obs}` en una primera etapa IV/Wald sin un modelo de error defendible. `LATE_f` sigue bloqueado. No se cambia DEC-C10-065 ni se cierra UG-SCH-10, XSYNC o ningún gate IV.
+
+**Siguiente:** crosswalk exhaustivo de predicados de `A_f^*` para resolver duplicidades y rol causal, sin alterar todavía la fórmula ni crear símbolos; después, regla trivalente de agregación de predicados y rutas.
