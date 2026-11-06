@@ -159,3 +159,93 @@ No existe inventario técnico real; no se han fijado formatos, runtime, SO, libr
 Siguiente operación documental: matriz de cobertura del grafo y estados de evidencia 1/0/? por nodo/arista y predicado de accesibilidad/ruta. Solo después se determinará si el universo es exhaustivo o Reach/F_alt deben quedar indeterminados.
 
 Ningún NO INVENTARIADO equivale a “sin cambio”; ningún hash idéntico prueba equivalencia funcional; ningún nombre distinto prueba independencia; ningún test documental equivale a ejecución o PASS.
+
+
+---
+
+## 12. Auditoría causal de vías colaterales para D2 — reconciliación especializada
+
+**Estado:** auditoría conceptual/documental especializada, recuperada y ampliada a partir del material conversacional aportado el 2026-11-06 y reconciliada con B-M01…15, PROV-01…12, la matriz U_G y la arquitectura causal. **DRAFT / NO APROBADA / NO CONGELADA / NO EJECUTADA.** No certifica aislamiento material de B ni cierre MD-C1/MD-C4.
+
+### 12.1. Dictamen
+
+El contrato material aceptado en DEC-C10-067 define conceptualmente la política de provisión, pero no demuestra que una implementación concreta sea una intervención técnica aislada sobre accesibilidad. ARCH-B1 (sidecar/runtime separado, aditivo, versionado, permisos mínimos y cuotas propias) es recomendación para evaluar, no arquitectura aprobada ni instalada. El inventario real permanece no disponible: `NO INVENTARIADO` no significa ausencia.
+
+La vía focal candidata es:
+
+`Z → B → W_attempt → C_dep* → A_f* → D_f* → ΔT_acc* → Reach → Π_H → Execution → Outcome → Value`
+
+Debe distinguirse de cualquier cambio concurrente en condiciones constitutivas adicionales, rutas alternativas, resultados, información/conocimiento o medición. Si B afecta vías distintas de la focal, el ITT sigue siendo efecto de la política material asignada, pero no puede atribuirse exclusivamente a `ΔT_acc*` sin identificación adicional.
+
+### 12.2. Dominios B-M01…15 y riesgos que deben auditarse
+
+| Dominio | Qué comprobar | Vía/riesgo si cambia diferencialmente |
+|---|---|---|
+| B-M01 Artefacto y versión | Identidad, versión, hash y firma del componente focal | Confundir cambio de dependencia con cambio de funcionalidad |
+| B-M02 Runtime | Runtime/imagen/configuración donde se aloja el adaptador | Dependencias o comportamiento compartido |
+| B-M03 Host | Cambios en host, sistema operativo y paquetes modificados | B→A1/A2, compatibilidad y seguridad |
+| B-M04 Interfaz | Endpoint/canal de invocación realmente habilitado | B→REL/AUTH/latencia; rutas adicionales |
+| B-M05 Permisos | ACL, credenciales, tokens y roles creados; alcance y expiración | B→AUTH/App/A_f*/Value |
+| B-M06 Datos | Configuración fuente/destino, metadatos y datos funcionales modificados | B→estado/App/F*/Outcome |
+| B-M07 Recursos | CPU, RAM, almacenamiento, I/O y slots reservados/consumidos | B→RES/CAP→rutas/Outcome |
+| B-M08 Red | DNS, proxy, firewall, rutas y puertos | B→REL/A1/A2/seguridad |
+| B-M09 Seguridad | Superficie de ataque, políticas, certificados y sandbox | Bloqueos, habilitaciones, riesgo/coste/Value |
+| B-M10 Observabilidad | Logs, métricas y telemetría añadidos; acceso de agente/evaluador | Vía informativa o sesgo de medición |
+| B-M11 Estado | Cachés, registros, índices y estado persistente | B→estado fuente/destino/rutas |
+| B-M12 Rendimiento | Latencia, throughput, contención, prioridad y degradación | B→tiempo/ejecución/Outcome |
+| B-M13 Oráculo | Criterios, reglas, versiones y mecanismo de evaluación | Cambio artificial de resultado medido |
+| B-M14 Alternativas | Inventario, disponibilidad y comportamiento de rutas alternativas | Cambio en Reach independiente de la apertura focal |
+| B-M15 Reversibilidad | Rollback, residuos, dependencias y efectos persistentes | Estado postprovisión distinto aun tras rollback |
+
+La tabla es un mapa de inspección y riesgo, no evidencia de que las alteraciones hayan ocurrido. Los estados actuales del manifiesto permanecen `NO INVENTARIADO` mientras no exista evidencia técnica observada.
+
+### 12.3. Dos taxonomías que no deben confundirse
+
+**A. Clases de ruta del universo candidato U_G** (taxonomía topológica de la matriz de cobertura): focal, alternativa, compartida, externa y desconocida. Se conserva tal cual; la cobertura parcial/desconocida impide declarar exhaustividad.
+
+**B. Clases de mecanismo causal para adjudicar hallazgos** (taxonomía analítica; no sustituye U_G):
+
+1. **Mecanismo focal:** provisión cambia `C_dep*`, que puede cambiar `A_f*` y después `T_acc*`.
+2. **Cambio de condición constitutiva:** B altera autorización, recursos, capacidad u otra condición que también interviene en `A_f*`; ya no es modificación exclusiva de la dependencia focal.
+3. **Vía colateral hacia resultados:** B afecta directamente Reach, trayectoria, ejecución, Outcome o Value, sin pasar necesariamente por la accesibilidad focal.
+4. **Cambio epistémico/informativo:** B altera conocimiento del agente, comunicaciones, observabilidad, cobertura o adjudicación, sin que ello implique por sí mismo cambio estructural de accesibilidad.
+
+Una modificación puede activar varias clases de mecanismo simultáneamente; no forzar exclusividad. La vía epistémica del evaluador debe mantenerse separada de cambios estructurales, y el conocimiento del agente separado de la información técnica constitutiva.
+
+### 12.4. Pruebas de separación y evidencia exigible
+
+Para defender D2 como contraste de provisión técnica aislada se requieren, al menos:
+
+- **Independencia funcional:** A1/A2 y rutas alternativas conservan comportamiento y conformidad F* antes/después de B, con margen preespecificado.
+- **Independencia de recursos:** B no consume ni desplaza recursos compartidos que condicionan otras transformaciones; medir cuotas, compromisos, contención y consumidores.
+- **Separación de permisos:** interfaz técnica de B no modifica autorización normativa basal ni permisos funcionales del destino.
+- **Invariancia informativa:** no hay comunicaciones, formación, avisos o incentivos diferenciales que cambien conocimiento/selección, salvo que se modelen como vías de política.
+- **Invariancia del entorno:** datos, red, seguridad, rendimiento, latencia, estado, dependencias y oráculo no cambian de forma causalmente relevante fuera de la vía focal.
+- **Reversibilidad:** rollback restituye el estado previo y no deja dependencias ni efectos residuales relevantes.
+
+Evidencia mínima: manifiesto real con identidad/versiones/hash/firmas; grafo transitivo de componentes, dependencias y consumidores; snapshots inmutables pre-B, post-B y post-rollback; diffs de configuración/permisos/red/datos; cuotas y medidas de recursos; mediciones comparables de rendimiento; pruebas funcionales de alternativas; trazabilidad de comunicaciones y registros; adjudicación ciega cuando corresponda. Los snapshots deben asociarse a unidad, versión y ventana; no comparar granularidades distintas sin mapping.
+
+Los contratos ya definidos siguen siendo rectores: PROV-01…12, en especial PROV-02 (F*/dataset/oráculo), PROV-03 (snapshots), PROV-04 (dependencias/consumidores), PROV-05 (no reducción de disponibilidad A1/A2/F2), PROV-06 (permisos mínimos sin ampliar C_auth funcional), PROV-08 (conformidad A1/A2), PROV-09 (no modificación de dependencias críticas compartidas), PROV-10 (rollback limpio), PROV-11 (propagación de desconocidos) y PROV-12 (no equiparar primera etapa C_dep con primera etapa A_f*).
+
+### 12.5. Regla de adjudicación y consecuencia para los estimandos
+
+| Hallazgo observado | Consecuencia interpretativa |
+|---|---|
+| Solo cambia C_dep* y después A_f*; demás condiciones y rutas permanecen bajo contrato/evidencia | Compatible con mecanismo focal, sujeto al resto de supuestos e identificación |
+| Cambia otra condición constitutiva | Efecto de provisión conjunta; atribución exclusiva a accesibilidad no demostrada |
+| Cambia ruta alternativa o recurso compartido | Vía paralela potencial a Reach, trayectoria u Outcome; revisar estimando/exclusión/interferencia |
+| Cambia información conocida por agente | Posible mediación por conocimiento/consideración/selección; ITT es efecto de paquete si B la induce |
+| Cambia oráculo, observación, cobertura o adjudicación | Cambio epistémico/medición; no confundir con cambio estructural de T_acc |
+| No puede determinarse si hubo cambios | Identificación limitada; no declarar aislamiento ni ausencia de vías |
+
+La aleatorización puede identificar el ITT de la política asignada, bajo su diseño, pero no convierte automáticamente ese ITT en efecto causal específico de `ΔT_acc*`. Tampoco debe ajustarse mecánicamente por conocimiento postratamiento: puede ser mediador inducido por B y generar sesgo si se condiciona sin estrategia de identificación apropiada.
+
+### 12.6. Estado y condiciones de cierre
+
+**Abierto:** inventario técnico real; grafo transitivo y cobertura; snapshots; pruebas de no-afectación; fuente/alcance de autorización; cuotas y medición de recursos/capacidad; información comunicada; oráculo y rendimiento; alternativas; reversibilidad; reglas de adjudicación de desviaciones.
+
+**MD-C1** solo cierra cuando M01–M15 tienen estado y evidencia, componentes/versiones/hash/firmas/dependencias están identificados, permisos/recursos/red/datos se comparan, B no ejecuta transformaciones ni cambia F*/oráculo, reversibilidad/residuos se caracterizan y vías directas se incorporan al DGP.
+
+**MD-C4** solo cierra cuando el catálogo/grafo es completo dentro de frontera explícita, componentes alternativos están identificados/versionados, recursos/permisos/configuración no se modifican ni degradan por B y la equivalencia funcional pre/post se evalúa con margen justificado. Si no se demuestra no-afectación, permanece el escenario colateral/efecto de paquete y no se interpreta IV focal.
+
+Ningún estado `NO INVENTARIADO`, `?`, `NONE` o `PARTIAL` equivale a ausencia, invariancia o PASS. Ningún hash idéntico demuestra equivalencia funcional; ningún nombre distinto demuestra independencia. Los contratos aquí descritos son documentales y no han sido implementados ni ejecutados. No se declara aislamiento de B, cierre MD-C1/MD-C4 ni autorización científica.
