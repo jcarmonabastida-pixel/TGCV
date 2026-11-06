@@ -1139,3 +1139,39 @@ La trazabilidad histórica se conserva; no se simula independencia ni se declara
 | D2POL-10 | Provisión no ejecuta F1/F2/A1/A2 | Separación de eventos/protocolos | Mezclar provisión técnica con ejecución transformacional |
 
 **Estado:** contrato documental aceptado; evidencias, implementación y ejecución permanecen pendientes. No implica aprobación del DGP ni autorización científica.
+
+
+
+---
+
+## 57. Subcasos agregados trivalentes de medición — crosswalk MEAS / ID / SNAP / U_G
+
+**Estado:** contratos documentales suplementarios; no implementados ni ejecutados.  
+**Fuente de reglas:** auditoría focal §10 y crosswalk adversarial §11.  
+**Precedencia:** estos subcasos concretan la aplicación agregada de los contratos MEAS-01…24; no los sustituyen, no duplican los catálogos ID-01…15/SNAP-01…15 y no modifican contratos o decisiones aceptados.
+
+| Subcaso | Contrato padre existente | Criterio de aceptación suplementario |
+|---|---|---|
+| TRI-AF-01 | MEAS-03 / MEAS-08 | Todos los predicados constitutivos 1 y comparabilidad/cobertura adecuadas producen A_f^{obs}=1; no aceptar subconjuntos |
+| TRI-AF-02 | MEAS-01 / MEAS-23 | Un predicado necesario 0 válido/suficiente produce A_f^{obs}=0 aunque otro término sea ?; conservar unknown |
+| TRI-AF-03 | MEAS-08 / MEAS-23 | Sin cero suficiente y con un término ? producir A_f^{obs}=? |
+| TRI-AF-04 | MEAS-23 | Conflicto local se conserva; un cero independiente válido puede producir A_f^{obs}=0; no mayoría automática |
+| TRI-AF-05 | MEAS-15 / ID-09/10/13/14 | Incompatibilidad global de identidad/frontera/G/mapping impide agregar; A_f^{obs}=? |
+| TRI-DEP-01 | MEAS-02 / GC-06/07 / DGP §32 | Una ruta admisible 1 junto a Runknown=? produce DEP_f^{obs}=1 sin declarar exhaustividad |
+| TRI-DEP-02 | MEAS-21 / GC-06/07 / U_G §6 | DEP_f^{obs}=0 solo si todas las rutas del universo declarado están refutadas y coverage COMPLETE, con Runknown resuelto |
+| TRI-DEP-03 | MEAS-21 / GC-06/07 | Rutas conocidas 0 con Runknown o cobertura PARTIAL mantienen DEP_f^{obs}=? |
+| TRI-DEP-04 | MEAS-02 / ACC-11 | C_dep=0 y alternativa equivalente válida 1 producen DEP_f^{obs}=1 |
+| TRI-DEP-05 | MEAS-02 / MEAS-20 / PROV | Bloqueo de una ruta no refuta rutas alternativas; evaluar bloqueo al nivel de la transformación/universo |
+| TRI-DF-01 | MEAS-09 | Tabla de nueve combinaciones basal/post; solo (0,1) produce D_f^{obs}=1 |
+| TRI-DF-02 | MEAS-09 / MEAS-10 | Baseline=? y post=0, con comparación válida, produce D_f^{obs}=0 |
+| TRI-DF-03 | MEAS-09 | Baseline=1 produce D_f^{obs}=0 para post 0, 1 o ? |
+| TRI-DF-04 | MEAS-09 / MEAS-10 | Baseline=? y post=1 produce D_f^{obs}=? |
+| TRI-DF-05 | MEAS-15 / ID-13 / SNAP-07/13 | No comparabilidad global produce ?/NOT_COMPARABLE, con precedencia sobre estados locales |
+| TRI-DF-06 | MEAS-24 / SNAP-12 | Descubrimiento post de una ruta preexistente obliga a revisar baseline; no fechar ADD en post sin evidencia temporal |
+| TRI-OBS-01 | MEAS-08 / MEAS-23 | MISSING/NONE/PARTIAL/no logs sin refutación suficiente producen ?, nunca 0 |
+| TRI-OBS-02 | MEAS-06/07/22 | Truth/Z/B/Outcome/Value no permitidos en el analizador provocan FAIL de separación/cegamiento |
+| TRI-OBS-03 | MEAS-12/13 / P183 | Error y missingness se informan por brazo×tiempo×versión×ruta×cobertura; no aplicar corrección puntual sin identificación |
+
+La materialización futura seguirá el contrato común de §2: test_id, fixture_id/hash, entradas por rol, hidden_truth segregada, expected_output, assertions, failure_codes y artefactos. Los subcasos no tienen fixtures serializados, oráculos implementados, tolerancias calibradas ni hashes de ejecución. Sus resultados futuros serán PASS/FAIL/INDETERMINATE; no ejecutar hasta autorización aplicable.
+
+**Dictamen:** registro de pruebas ampliado documentalmente. MEAS-G8 sigue OPEN; MEAS-G4/G6/G7 permanecen abiertos o parciales según los contratos fuente. No se autoriza implementación, validación ejecutable, simulación ni experimento.
