@@ -200,22 +200,11 @@ Tres slots cubren tres semánticas diferenciables: activación booleana, selecci
 
 La propuesta no fija valores, símbolos ENUM, N_retry_max, versión, conversión, mapping, unidades, tolerancias ni truth. Tampoco resuelve todavía la regla RUL constitutiva que debe relacionar o restringir propiedades: RUL≥1 sigue siendo obligatorio por DEC-C10-056 y su contenido sustantivo queda abierto.
 
-## 13. Contrato candidato de la RUL mínima
+## 13. Contrato mínimo de RUL para la instancia sintética aceptada
 
-RUL≥1 es requisito de cardinalidad, no licencia para añadir una regla tautológica. La primera plantilla a evaluar es una restricción condicional entre ENABLED y PROFILE: si el servicio está habilitado, el perfil debe pertenecer al conjunto contractualmente permitido en estado activo. La expresión candidata es OR(NEQ(ENABLED,true), IN(PROFILE,D_profile_enabled)) con efecto REQUIRE. El conjunto D_profile_enabled, la fuente funcional y la no-tautologicidad permanecen sin definir; por tanto, RUL-01/02/03 siguen candidatos, no propiedades confirmatorias cerradas.
+DEC-C10-056 exige RUL≥1; DEC-C10-054 fija el presupuesto y la semántica general del núcleo. DEC-C10-068 acepta la instancia RUL-SVC-ENABLE-PROFILE-01 como regla constitutiva del servicio lógico sintético: ENABLED=true implica PROFILE∈{STANDARD,READ_ONLY}, efecto REQUIRE, con ENABLED=false no restringido por esta implicación. La regla tiene un estado permitido y un violador conocido dentro del dominio finito estipulado ex ante.
 
-Si no hay fundamento contractual verificable para esa relación, se descarta y se busca una restricción genuina del P0. No se fuerza RETRY-COUNT ni se incorporan permisos/recursos/runtime P1. Criterios: owner CMP, scope, dominio, AST 4/16/16, UNKNOWN, mapping, aplicación y oráculo independiente.
-
-## 13. Contrato candidato de la RUL mínima
-
-RUL≥1 es requisito de cardinalidad, no licencia para añadir una regla tautológica. La primera plantilla a evaluar es una restricción condicional entre ENABLED y PROFILE: si el servicio está habilitado, el perfil debe pertenecer al conjunto contractualmente permitido en estado activo. La expresión candidata es OR(NEQ(ENABLED,true), IN(PROFILE,D_profile_enabled)) con efecto REQUIRE. El conjunto D_profile_enabled, la fuente funcional y la no-tautologicidad permanecen sin definir; por tanto, RUL-01/02/03 siguen candidatos, no propiedades confirmatorias cerradas.
-
-Si no hay fundamento contractual verificable para esa relación, se descarta y se busca una restricción genuina del P0. No se fuerza RETRY-COUNT ni se incorporan permisos/recursos/runtime P1. Criterios: owner CMP, scope, dominio, AST 4/16/16, UNKNOWN, mapping, aplicación y oráculo independiente.
-
+Esta aceptación es conceptual y documental. No demuestra ejecución del AST, preservación en mapping, aplicación en destino ni corrección de un parser/oráculo. Owner lógico y scope están definidos; identidad/versionado CMP de instancia, serialización, IAM por escenario, mapping, cobertura y adjudicación permanecen abiertos.
 ## 14. RUL constitutiva del servicio sintético: distinción de identificadores
 
 RUL-01/02/03 del catálogo son propiedades de preservación (condición lógica, ámbito y efecto), no la identidad de una regla de instancia. La regla de instancia aceptada conceptualmente por DEC-C10-068 se denomina RUL-SVC-ENABLE-PROFILE-01 y está descrita en `C10_S_SYNTHETIC_LOGICAL_SERVICE_FUNCTIONAL_CONTRACT_DRAFT_001.md`. Su condición es ENABLED=true ⇒ PROFILE∈{STANDARD,READ_ONLY}, con PROFILE={STANDARD,READ_ONLY,DISABLED}. El identificador de instancia no debe confundirse con los predicados de preservación. Estado: regla sintética aceptada conceptualmente por DEC-C10-068; owner lógico y scope definidos; identidad/versionado de instancia, mapping y oráculo OPEN.
-
-## 14. RUL constitutiva del servicio sintético: distinción de identificadores
-
-RUL-01/02/03 del catálogo son propiedades de preservación (condición lógica, ámbito y efecto), no la identidad de una regla de instancia. La regla de instancia propuesta se denomina RUL-SVC-ENABLE-PROFILE-01 y está descrita en C10_S_SYNTHETIC_LOGICAL_SERVICE_FUNCTIONAL_CONTRACT_DRAFT_001.md. Su condición es ENABLED=true implica PROFILE∈{STANDARD,READ_ONLY}, con PROFILE={STANDARD,READ_ONLY,DISABLED}. El identificador de instancia no debe confundirse con los predicados de preservación. Estado: propuesta sintética, no aprobada; owner, scope/versionado definitivo, mapping y oráculo OPEN.
