@@ -800,3 +800,19 @@ Una vía colateral B→Value o una modificación de alternativas puede conservar
 **Dictamen:** la jerarquía existente es conceptualmente compatible con D2 si se conserva la separación de los objetos y las condiciones anteriores. La principal discrepancia documental nueva es la notación `ψ_B(q_X^*)` (§44) frente a `ψ_policy` (§53); no se resuelve por sustitución automática. La correspondencia B_g^D2→g^Af y la identificación de `θ_Af(q_X^*)` permanecen pendientes.
 
 **Siguiente operación:** auditar específicamente la correspondencia de intervención `B_g^D2 → C_dep → A_f^* → D_f/ΔT_acc` frente a las políticas g de C10-D1, y resolver la relación/notación `ψ_B(q_X^*)` / `ψ_policy` antes de seleccionar una estrategia de identificación. Reutilizar §§26–33, 42–44, 53–55, DEC-C10-066/067 y XSYNC-138; no crear símbolos nuevos.
+
+
+
+### 16.12. Correspondencia D2 (B_g\rightarrow g^{Af}) y armonización (ψ_B/ψ_{policy}) (2026-11-06)
+
+**Estado:** auditoría documental completada y persistida en el maestro §131; no aceptación de estimandos ni identificación.
+
+1. **Regla causal:** (g^{Af}) son políticas objetivo sobre distribuciones factibles de cambios focales de accesibilidad; (B_g^{D2}) son mecanismos materiales de provisión. No son idénticos. La correspondencia solo existe si la distribución de (ΔA_f) inducida por cada versión B se reconstruye por historia, con población/soporte, consistencia, medición y vías alternativas resueltas.
+2. **Cadena:** (Z→B_{assigned}^{D2}→W_{programmed}→W_{attempt}→C_{dep}^*→A_f^*→D_f^*→ΔT_{acc}^*→Reach/Π_H→Exec→Outcome→Value). (C_{dep}^*) no es suficiente para (A_f^*); (D_f^*) es proyección focal, no (ΔT_{acc}^*).
+3. **D2 frente a §33.4:** el contraste ilustrativo 0,20→0,80 no corresponde a D2. Bajo s=.80 candidato, cumplimiento perfecto, una oportunidad, ausencia de provisión de fondo, ruta única y predicados restantes satisfechos/invariantes, D2 implicaría 0→0,80 para (D_f^*). Son condiciones algebraicas no validadas; no se traslada el valor 3,6 ni se calcula otro efecto Value.
+4. **Notación:** (ψ_B(q_X^*)) es una instancia específica de (ψ_{policy}(q)) cuando coinciden versiones B, población, resultado, regla Value, horizonte y régimen completo. No es igual a (ITT_Z), que es efecto de asignación, ni a (θ_{Af}), que exige atribución focal adicional. (q_X^*) no reemplaza (q_L^*) si se necesita un régimen secuencial postratamiento.
+5. **Estado:** DEC-C10-066/067 conservan alcance. Correspondencia (B_g^{D2}↔g^{Af}): CONDICIONAL/NO DEMOSTRADA. (θ_{Af}(q_X^*)): no identificado. (θ_A(q)): pregunta general C10-D1, no resuelta por D2.
+
+Se actualizan REC-CAUS-02/03/04/07 en la matriz de cierre. No se aprueban REC-EST-01…09 ni se cierran XSYNC-138. No hay freeze, implementación, simulación o ejecución.
+
+**Siguiente operación:** auditar (LATE_f) y la validez de (D_f^*) como tratamiento endógeno IV en D2; no seleccionar Wald hasta revisar exclusión, monotonicidad, versiones, interferencia y error de medición.
