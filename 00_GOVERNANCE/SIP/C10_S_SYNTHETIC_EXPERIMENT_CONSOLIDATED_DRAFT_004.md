@@ -8013,3 +8013,17 @@ El crosswalk distingue R0 focal exclusiva, R1 alternativa basal estable, R2 alte
 **Precedencia y huecos:** DEC-C10-051 selecciona Opción A como microdominio de trabajo y F* como contrato funcional candidato. Las menciones históricas a Opción A como no seleccionada quedan supersedidas en ese único punto. La selección no aprueba la semántica operacional de F1/τ2, adaptador, F2, A1/A2, propiedades/mappings/tolerancias de F*, ni su oráculo. Siguen pendientes además el esquema O*/V* y la regla de Value, la unidad de interferencia/exposición y el washout de carryover. No asignar parámetros hasta resolverlos.
 
 **Estado:** integración documental; no parámetros, fixtures, pruebas ni ejecución. IV-G4, IV-G6, IV-INT y Value siguen abiertos; no Design Freeze ni implementación.
+
+
+
+## 169. Reconciliación funcional B/adaptador/F1–F2/A1–A2/F* — Opción A (2026-11-06)
+
+**Fuentes:** fichas Opción A §11; matriz F* §§18–20; manifiesto B §§12–13; contrato abstracto de instancia e IAM.
+
+B provisiona el adaptador/runtime/canal y no ejecuta transformaciones; C_dep* describe estado técnico; A_f*(τ2) adjudica accesibilidad; F1/τ2 convierte S0→S2 tras selección/inicio; F2 aplica S2→SF y verifica destino; A1/A2 componen la ruta alternativa S0→S1→SF; F* se evalúa sobre la ruta completa. Provisión, accesibilidad, aplicabilidad, ejecución, aplicación y conformidad son estados distintos.
+
+La alternativa solo es substituible si usa la misma clase de entradas, destino, IAM, C0, G, H y F*, con evidencia de cobertura y no-afectación por B. R1 (alternativa basal estable) difiere de R2 (alternativa alterada por B). Coste, latencia, fiabilidad y riesgo se registran separadamente.
+
+FP-01…FP-07 son dimensiones funcionales no compensatorias; FP-08 es gate probatorio independiente; Outcome/Value quedan fuera del oráculo. Predicados atómicos, mappings, IAM, tolerancias, C0/G/H, versiones, oráculo y pruebas siguen abiertos.
+
+**Dictamen:** contrato semántico de alto nivel reconciliado; no contrato operacional congelado. MD-C1/MD-C4, IV-G4, Value, unidad/interferencia y carryover siguen abiertos. No parámetros, fixtures, implementación ni ejecución.
