@@ -197,26 +197,14 @@ La plantilla ENABLED→PROFILE se evalúa solo como candidata. No se asigna O/C/
 
 La plantilla ENABLED→PROFILE se evalúa solo como candidata. No se asigna O/C/NA confirmatorio hasta acreditar fuente, dominio y evidencia. Si carece de base funcional, debe reemplazarse antes de Z/B, no declararse NA.
 
-## 15. IAM provisional de la regla sintética de servicio
+## 15. IAM conceptual aceptado y aplicabilidad de la regla sintética de servicio
 
-| Elemento | Aplicabilidad/obligatoriedad propuesta | Estado |
+| Elemento | Aplicabilidad/obligatoriedad conceptual | Estado |
 |---|---|---|
-| CMP-SERVICE-LOGIC | Owner de RUL; identidad/versión definitivas pendientes | OPEN |
-| PAR-SVC-ENABLED | P0 REQUIRED para la instancia sintética | Propuesto |
-| PAR-SVC-PROFILE | P0 REQUIRED para la instancia sintética | Propuesto |
-| RUL-SVC-ENABLE-PROFILE-01 | P0 REQUIRED; efecto REQUIRE; scope servicio lógico | Propuesto |
-| PAR-SVC-RETRY-COUNT | Excluido del núcleo hasta justificación P0 | Condicional/OPEN |
+| CMP-SERVICE-LOGIC | Owner lógico de RUL-SVC-ENABLE-PROFILE-01 | Aceptado por DEC-C10-068; identidad/versionado de instancia OPEN |
+| PAR-SVC-ENABLED | P0 REQUIRED para la instancia sintética | Aceptado conceptualmente por DEC-C10-068 |
+| PAR-SVC-PROFILE | P0 REQUIRED para la instancia sintética | Aceptado conceptualmente por DEC-C10-068 |
+| RUL-SVC-ENABLE-PROFILE-01 | P0 REQUIRED; efecto REQUIRE; scope de unidad lógica | Aceptada conceptualmente por DEC-C10-068 |
+| PAR-SVC-RETRY-COUNT | Fuera del núcleo mínimo | Excluido hasta justificación P0 |
 
-No asignar O/C/NA confirmatorio hasta aceptación, fuente/versionado, mapping y evidencia ex ante. La regla de servicio no sustituye RUL-01/02/03, que siguen siendo predicados de preservación.
-
-## 15. IAM provisional de la regla sintética de servicio
-
-| Elemento | Aplicabilidad/obligatoriedad propuesta | Estado |
-|---|---|---|
-| CMP-SERVICE-LOGIC | Owner de RUL; identidad/versión definitivas pendientes | OPEN |
-| PAR-SVC-ENABLED | P0 REQUIRED para la instancia sintética | Propuesto |
-| PAR-SVC-PROFILE | P0 REQUIRED para la instancia sintética | Propuesto |
-| RUL-SVC-ENABLE-PROFILE-01 | P0 REQUIRED; efecto REQUIRE; scope servicio lógico | Propuesto |
-| PAR-SVC-RETRY-COUNT | Excluido del núcleo hasta justificación P0 | Condicional/OPEN |
-
-No asignar O/C/NA confirmatorio hasta aceptación, fuente/versionado, mapping y evidencia ex ante. La regla de servicio no sustituye RUL-01/02/03, que siguen siendo predicados de preservación.
+La aceptación conceptual no asigna todavía O/C/NA por escenario ni sustituye la matriz IAM de evidencia/cobertura. Owner lógico y scope quedan definidos; la identidad CMP concreta, versión de instancia, serialización, mapping, predicados observables y oráculo permanecen OPEN. La regla de servicio no sustituye RUL-01/02/03, que siguen siendo predicados de preservación.
