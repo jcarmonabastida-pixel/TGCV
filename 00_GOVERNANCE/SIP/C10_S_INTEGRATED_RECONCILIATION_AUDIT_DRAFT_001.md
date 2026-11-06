@@ -173,3 +173,28 @@ La recomendación histórica de §3.3 y las filas R-03/estado residual que dejab
 Se mantienen las definiciones, probabilidades candidatas, distinción de intento/éxito/estado final y requisitos de legitimidad. D2 exige comprobar ausencia basal y ausencia de provisión focal de fondo; D1 requiere justificación independiente del régimen ordinario para interpretar su contraste incremental. No se validan s=.80, p0/p1 ni las primeras etapas. ITT, primeras etapas y LATE siguen siendo específicos de cada escenario.
 
 La decisión no cierra estimandos, q*, población, soporte, vías colaterales, exclusión, medición ni identificación. No autoriza freeze, implementación, simulación ni ejecución.
+
+
+## 13. Reconciliación de políticas materiales D2 — DEC-C10-067 (2026-11-06)
+
+Se incorpora la aceptación conceptual de las políticas materiales D2 conforme a DEC-C10-067 (00_GOVERNANCE/SIP/DEC-C10-067_D2_MATERIAL_POLICY_CONTRACT_ACCEPTANCE.md, blob 2c3e1dbff4c83ded910a1fd8ca0a47a602df2213). Esta reconciliación es documental y no modifica los parámetros ni el estado de autorización.
+
+| Dimensión | Control B_g0^D2 | Tratamiento B_g1^D2 | Estado |
+|---|---|---|---|
+| Política de provisión | Mantener configuración basal; no programar ni iniciar intento focal para τ2 | Programar intento estandarizado de despliegue/configuración de dependencia focal para τ2 | Definición conceptual aceptada |
+| Autorización | Mantener autorización normativa basal | No modificar autorización normativa basal | Invariante candidata; verificación pendiente |
+| Eventos | Registrar cualquier provisión focal de fondo/crossover; no inferir ausencia efectiva desde no-programación | Registrar actor, inicio, recepción, finalización, versión recibida y desviaciones | Contrato temporal pendiente de operacionalizar |
+| Estado técnico | Medir por separado cualquier provisión efectiva | Verificar instalación, integridad, compatibilidad y operatividad | C_dep* no se infiere del intento |
+| Accesibilidad/apertura | Determinar predicados basales y post por separado | Determinar A_f*, D_f* y ΔT_acc* mediante condiciones completas | No se transfieren probabilidades técnicas a accesibilidad |
+
+La cadena de eventos que debe preservar el DGP es:
+
+Z_i → B_gZ_i^D2 → W_programmed,i → W_attempt,i → S_install,i → C_dep,i* → A_f,i* → D_f,i*.
+
+La programación, el intento efectivo, la recepción, el éxito de cada componente técnico y la apertura de accesibilidad son variables/eventos distintos. El control solo representa ausencia de intento focal programado por política; la ausencia efectiva de provisión focal de fondo y de rutas técnicas equivalentes debe verificarse mediante cobertura/evidencia independiente.
+
+Las condiciones comunes candidatas incluyen C_auth,base=1, elegibilidad y versionado de τ2, recursos no focales, capacidad, información técnica basal y protocolo común de medición/adjudicación. La invariancia efectiva aún no está demostrada. Cambios inducidos por la provisión en recursos, permisos, costes, latencia, calidad, seguridad, información, incentivos o alternativas deben registrarse como vías colaterales/cointervenciones; no pueden absorberse dentro de C_dep*. En presencia de tales vías, el ITT identifica el efecto de la política/paquete bajo supuestos de diseño, no automáticamente un efecto puro de accesibilidad.
+
+El registro contractual auxiliar es Test Contract Register §56 (D2POL-01…10). Sus condiciones son criterios documentales; evidencias, fixtures, oráculos y validación ejecutable siguen pendientes. Se mantienen abiertos actor/rol, artefacto y versión/hash, recepción, ventanas temporales, reintentos/fallos parciales/rollback, detección de provisión de fondo, evidencia independiente de componentes y cobertura de rutas alternativas.
+
+DEC-C10-067 no valida s=0.80, probabilidades conjuntas, cumplimiento, parámetros de Value, potencia o tamaño muestral; tampoco cierra estimandos, población/soporte, unidad/interferencia, correspondencia B↔g, exclusión ni identificación. D2 continúa como primario candidato y D1 como secundario por DEC-C10-066. **No autoriza freeze, implementación, simulación ni ejecución científica.**
