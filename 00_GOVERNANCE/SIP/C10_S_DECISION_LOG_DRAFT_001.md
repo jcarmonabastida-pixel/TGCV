@@ -732,3 +732,11 @@ DEC-C10-054 ya acepta distinguir DEFAULT_DECLARED / DEFAULT_INHERITED / DEFAULT_
 Interpretación armonizada: PAR conserva state ∈ {ABSENT,NULL,DEFAULT,VALUE}; cuando DEFAULT, default_kind ∈ {DECLARED,INHERITED}. DEFAULT_ENV_RESOLVED es observación del entorno E_dst/snapshot, no estado del paquete. Si no se puede distinguir origen declarado/heredado, UNKNOWN salvo evidencia independiente. Igualdad del valor ambiental resuelto no demuestra equivalencia del contrato.
 
 Esta entrada registra reconciliación de alcance de decisión existente, no una nueva DEC aceptada, no modifica DEC-C10-054 y no autoriza implementación/ejecución. Campos por clave, herencia, snapshot, evidencia y oráculo siguen abiertos.
+
+## 50. Contrato RUL: distinción entre cardinalidad aceptada y semántica abierta (2026-11-06)
+
+DEC-C10-056 ya acepta RUL≥1 y DEC-C10-054 acepta el presupuesto/efectos/semántica general del núcleo. Esta entrada no crea DEC nueva ni interpreta la cardinalidad como aprobación de una regla concreta.
+
+Se registra como plantilla de evaluación (no decisión): restricción condicional ENABLED→PROFILE, expresable con OR(NEQ(ENABLED,true), IN(PROFILE,D_profile_enabled)) y REQUIRE. Su validez depende de una fuente funcional P0 independiente, dominio finito no tautológico, owner/scope, mapping, UNKNOWN y oráculo. Si no existe esa base, se descarta y se formula otra regla constitutiva real. La regla debe conservarse en F1/A1 y aplicarse en F2/A2 con el mismo F*.
+
+No se aprueba la plantilla, no se fija D_profile_enabled, no se crea instancia ni fixture y no se autoriza implementación/ejecución.
