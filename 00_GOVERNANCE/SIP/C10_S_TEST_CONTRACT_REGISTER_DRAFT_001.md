@@ -528,6 +528,9 @@ Estado: contratos documentales; no implementados ni ejecutados.
 | BPOL-05 | D2 control | P(W_programmed=1|Z=0)=0; intento de fondo y C_dep=1 se investigan y registran, no se presuponen ausentes |
 | BPOL-06 | D2 tratamiento | P(W_programmed=1|Z=1)=1; W_attempt efectivo, recepción y C_dep se observan/derivan aparte |
 | BPOL-07 | Éxito condicional | .80 es candidato condicional a W_attempt efectivo elegible; no dato empírico ni tasa de cumplimiento |
+| BPOL-15 | Cumplimiento | P(W_attempt=1|W_programmed=1) se registra/modela; no se fija en 1 sin autorización y evidencia |
+| BPOL-16 | Provisión de fondo | P(W_attempt=1|W_programmed=0) se mide; D2 control no se declara limpio solo por q_programmed=0 |
+| BPOL-17 | C_dep derivado | C_dep se deriva de W_attempt, éxito conjunto y fondo; .20/.80 o 0/.80 solo bajo supuestos explícitos de cumplimiento perfecto y una oportunidad |
 | BPOL-08 | Componentes conjuntos | No se presume independencia entre instalación, integridad, compatibilidad y operatividad |
 | BPOL-09 | Primera etapa focal | C_dep no sustituye a A_f*/D_f*; accesibilidad se deriva de todos los predicados |
 | BPOL-10 | Control D1 legítimo | La justificación del comparador ordinario se documenta antes de aprobar D1 |
