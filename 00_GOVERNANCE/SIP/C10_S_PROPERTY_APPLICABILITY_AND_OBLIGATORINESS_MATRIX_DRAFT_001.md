@@ -171,32 +171,18 @@ El IAM se aplica a F1/F2 y A1/A2 por igual. Antes de Z/B sella propiedades O/C/N
 
 La tabla es un IAM candidato, no un sellado operativo. Ninguna propiedad pasa a O/C/NA confirmatorio hasta que la unidad, fuente contractual, dominio, mapping, cobertura y regla de evidencia estén definidos ex ante. Si un slot no pertenece al P0 de la unidad, se elimina/sustituye antes de Z/B y se registra justificación; no se declara NA post hoc. POL sigue ausente por diseño y MET obligatorio conforme a decisiones existentes.
 
-## 14. IAM candidato para RUL mínima
+## 14. IAM conceptual de la RUL mínima aceptada
 
 | Control | Requisito ex ante | Estado |
 |---|---|---|
-| RUL-BASE-01 | Al menos una regla constitutiva, no tautológica y con fuente funcional | Cardinalidad DEC-C10-056 aceptada; contenido OPEN |
-| RUL-BASE-02 | Owner CMP, scope, claves/dominios y versión inequívocos | OPEN |
-| RUL-BASE-03 | AST acíclico 4/16/16, operadores/efecto dentro de DEC-C10-054 | Perfil aprobado; instancia OPEN |
-| RUL-BASE-04 | TRUE/FALSE/UNKNOWN y tratamiento explícito de UNKNOWN | Regla general documentada; tabla de caso OPEN |
-| RUL-BASE-05 | Mapping de regla y operandos F1/A1, aplicación F2/A2 | OPEN |
-| RUL-BASE-06 | FP-03 RUL-01/02/03, cobertura, oráculo independiente | OPEN |
+| RUL-BASE-01 | Al menos una regla constitutiva, no tautológica y con fuente funcional | Instancia aceptada conceptualmente por DEC-C10-068 |
+| RUL-BASE-02 | Owner CMP, scope, claves/dominios y versión inequívocos | Owner lógico/scope y claves/dominios aceptados; CMP concreto/versionado OPEN |
+| RUL-BASE-03 | AST acíclico 4/16/16, operadores/efecto dentro de DEC-C10-054 | Perfil y expresión compatibles documentalmente; ejecución/parser no validados |
+| RUL-BASE-04 | TRUE/FALSE/UNKNOWN y tratamiento explícito de UNKNOWN | Regla general documentada; oráculo/adjudicación OPEN |
+| RUL-BASE-05 | Mapping de regla y operandos F1/A1, aplicación F2/A2 | Invariantes definidos; mapping concreto y evidencia OPEN |
+| RUL-BASE-06 | FP-03 RUL-01/02/03, cobertura, oráculo independiente | Contratos conceptuales; cobertura/oráculo OPEN |
 
-La plantilla ENABLED→PROFILE se evalúa solo como candidata. No se asigna O/C/NA confirmatorio hasta acreditar fuente, dominio y evidencia. Si carece de base funcional, debe reemplazarse antes de Z/B, no declararse NA.
-
-## 14. IAM candidato para RUL mínima
-
-| Control | Requisito ex ante | Estado |
-|---|---|---|
-| RUL-BASE-01 | Al menos una regla constitutiva, no tautológica y con fuente funcional | Cardinalidad DEC-C10-056 aceptada; contenido OPEN |
-| RUL-BASE-02 | Owner CMP, scope, claves/dominios y versión inequívocos | OPEN |
-| RUL-BASE-03 | AST acíclico 4/16/16, operadores/efecto dentro de DEC-C10-054 | Perfil aprobado; instancia OPEN |
-| RUL-BASE-04 | TRUE/FALSE/UNKNOWN y tratamiento explícito de UNKNOWN | Regla general documentada; tabla de caso OPEN |
-| RUL-BASE-05 | Mapping de regla y operandos F1/A1, aplicación F2/A2 | OPEN |
-| RUL-BASE-06 | FP-03 RUL-01/02/03, cobertura, oráculo independiente | OPEN |
-
-La plantilla ENABLED→PROFILE se evalúa solo como candidata. No se asigna O/C/NA confirmatorio hasta acreditar fuente, dominio y evidencia. Si carece de base funcional, debe reemplazarse antes de Z/B, no declararse NA.
-
+DEC-C10-068 acepta la regla como verdad constitutiva interna al DGP. No asigna todavía O/C/NA confirmatorio por escenario ni acredita preservación/aplicación.
 ## 15. IAM conceptual aceptado y aplicabilidad de la regla sintética de servicio
 
 | Elemento | Aplicabilidad/obligatoriedad conceptual | Estado |
