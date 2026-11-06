@@ -981,3 +981,16 @@ El crosswalk conceptual B-M01…15 → variable/predicado → clase U_G → meca
 | MEAS-G1 | PARTIAL | Fórmula candidata identificada; mapping/operacionalización de componentes y rutas pendientes. |
 
 **Corrección de §33:** no describir C_info/C_resource/C_capacity/C_domain/C_other como factores vigentes autónomos; la fórmula histórica no prevalece sobre §§59.3/67.3. Siguiente: regla trivalente de agregación y rutas. `LATE_f` sigue bloqueado.
+
+
+### 35. Regla trivalente de agregación A_f / DEP / D_f
+
+**Fuente:** `C10_S_AF_DF_TRIVALENT_AGGREGATION_RULE_DRAFT_001.md`.
+
+| Objeto | Regla de 1 | Regla de 0 | Regla de ? |
+|---|---|---|---|
+| `A_f^{obs}` | Todos los términos necesarios 1, matching/comparabilidad y cobertura adecuados | Algún término necesario 0 con evidencia válida/suficiente | Resto; conflictos o cobertura insuficiente sin 0 suficiente |
+| `DEP_f^{obs}` | Existe una ruta válida 1 | Todas las rutas del universo declarado 0 y cobertura COMPLETE, Runknown resuelto | No hay ruta 1 y queda unknown/cobertura incompleta |
+| `D_f^{obs}` | Baseline 0 y post 1 | Baseline 1 o post 0 | Resto; no comparabilidad → NOT_COMPARABLE/? |
+
+**Guardas:** MISSING/NONE/PARTIAL no equivalen a 0; C_dep=0 no implica DEP=0 con alternativa admisible; D_f observado no sustituye D_f verdadero para IV sin modelo de error defendible. Esta regla es documental, asistida/no independiente; no valida ejecución, cierra MEAS-G2…G8 ni IV, ni modifica DEC-C10-065/066/067.
