@@ -7867,3 +7867,26 @@ Esta armonización de notación no identifica (ψ_B) mediante (ITT_Z). El ITT es
 **Siguiente operación:** revisar el estimando instrumental (LATE_f) y el uso de (D_f^*) como tratamiento endógeno para D2, incluyendo exclusión, monotonicidad, versiones, interferencia y error de medición. No seleccionar una fórmula Wald ni declarar IV defendible hasta completar esa auditoría.
 
 No hay freeze, implementación, simulación ni ejecución científica autorizada.
+
+
+---
+
+## §132. Auditoría de validez IV de D2 y del tratamiento focal D_f* (2026-11-06)
+
+**Registro:** `C10_S_D2_LATE_F_IV_VALIDITY_AUDIT_DRAFT_001.md`  
+**Estado:** AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT. Auditoría documental; no validación empírica ni ejecución.
+
+**Dictamen:** `LATE_f` no está actualmente identificado ni listo para estimación Wald en D2. La asignación puede identificar `ITT_Z` como efecto de la política material bajo el diseño correspondiente, pero no atribuye automáticamente ese efecto a la apertura focal `D_f^*`.
+
+La auditoría separa los supuestos:
+1. **Relevancia:** abierta. La programación de un intento y el parámetro candidato `s=0.80` no son una primera etapa observada de `D_f^*`. Deben medirse por separado las primeras etapas de `C_dep^*`, `A_f,post^*`, `D_f^*` y `ΔT_acc^*`.
+2. **Independencia:** condicional. Depende de unidad de asignación, elegibilidad pre-Z, bloques/estratos, clústeres y correspondencia entre asignación e inferencia.
+3. **Exclusión:** no demostrada y materialmente amenazada por recursos/capacidad, costes, permisos, latencia/rendimiento, seguridad, información, alternativas, rollback, dependencias compartidas y medición. Los efectos posteriores a la apertura focal pertenecen al efecto de `D_f^*`; las vías de B hacia Value fuera de ese tratamiento focal violan la exclusión.
+4. **Monotonicidad:** abierta. Una primera etapa media positiva no excluye defiers. El desplazamiento de recursos, degradación de alternativas, incompatibilidades o rollback pueden reducir la apertura focal en algunas unidades. El crossover en control puede crear always-takers, sin ser por sí solo una violación.
+5. **Consistencia/versiones:** abierta. Faltan pin operativo y trazabilidad completa de artefacto, recepción, intento, instalación, componentes verificados, fallos y rollback.
+6. **Interferencia:** abierta. Recursos y dependencias compartidas pueden generar spillovers, contaminación y carryover.
+7. **Medición:** abierta. Deben distinguirse `D_f^*` y `D_f^{obs}`; adjudicar accesibilidad desde predicados/snapshots independientes, no desde Z/B/W/C_dep; y fijar Value y missingness por separado.
+
+**Consecuencia:** conservar `LATE_f` como estimando secundario condicional. No seleccionar ni reportar Wald como efecto causal hasta cerrar los gates IV-G1…IV-G8 definidos en el registro de auditoría. Si exclusión no es defendible, el resultado se mantiene como ITT de política/paquete o se declara no identificado para atribución focal. Incluso un `LATE_f` identificado sería local a compliers D2 y no equivaldría a `θ_Af(q_X^*)` poblacional ni a `θ_A(q)` general.
+
+No se acepta ningún parámetro, no se cierra XSYNC, no se modifica C10-D1/Core/RMA/Matrix/STATUS/claims y no se autoriza freeze, implementación, simulación ni ejecución. La siguiente operación documental es auditar la definición observacional de `D_f^*` y el protocolo de medición de `A_f^*`.
