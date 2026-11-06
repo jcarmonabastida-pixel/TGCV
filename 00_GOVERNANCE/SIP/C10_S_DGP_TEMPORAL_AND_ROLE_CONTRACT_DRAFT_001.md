@@ -815,3 +815,64 @@ Permanecen abiertos actor, artefacto/hash, recepción, ventanas, reintentos, rol
 6. La elegibilidad verdadera focal exige `A_{f,base}^*=0) pre-Z; `A_{f,base}^{obs}=0) no la sustituye sin tratamiento explícito del error de clasificación.
 
 La regla formal y sus tablas de casos están en el documento de referencia. No cierra MEAS-G2…G8, UG-SCH-10, XSYNC, PROV, MD-C1/MD-C4 o IV; no cambia la fórmula, decisiones, autorización ni estimandos.
+
+
+
+## 28. Crosswalk temporal y de roles para escenarios adversariales Opción A (2026-11-06)
+
+**Estado:** addendum de integración documental; no congela la semántica funcional ni el DGP. Reutiliza el reloj t−1/t0–t9 de §2, la separación de roles de §6, la reconciliación temporal-causal de §23, el contrato Opción A de §§37–38 y los escenarios C10-S-IV-AUD-001 §12. No crea un segundo reloj.
+
+### 28.1 Mapa común variable×tiempo×rol
+
+| Tiempo | Variables/objetos a mantener separados | Papel causal/medición | Generador | Analizador | Evaluador independiente |
+|---|---|---|---|---|---|
+| t−1 | X,H0, unidad/clúster, frontera, identidad/versiones τ2/F1/F2/A1/A2, A_f,base*, T_acc,base*, C_dep,base, F_alt,base, recursos/capacidad disponibles, C_auth,base, datos S0/SF, F*, oráculo y regla O/V basales | Elegibilidad, soporte, comparabilidad, alternativas basales y covariables; nunca reconstruir desde post-Z | Truth y observaciones simuladas | Solo observaciones basales y evidencia accesible; no truth | Truth, parámetros, potenciales y observaciones |
+| t0 | Z, probabilidad y unidad de asignación, estrato/cluster | Asignación de política; no es recepción, intento ni tratamiento recibido | Sí | Sí | Sí |
+| t1 | B_assigned/offered/received, versión/hash, actor/disparador, W_programmed, W_attempt, comunicaciones/formación iniciales, exposición a otros tratamientos | Política e intento; inicio de vías colaterales, recursos y conocimiento; registrar incumplimiento y provisión de fondo | Sí | Registros observables | Sí |
+| t2 | S_install, C_install/integrity/compat/oper, C_dep*, snapshots B-M01…15, ACL técnica vs C_auth, recursos disponibles/reservados/consumidos, capacidad, datos/mapping/App, estado A1/A2 y dependencias, seguridad/coste/latencia | Estado técnico y cambios colaterales posteriores a B; no equivalen a A_f*, Reach ni ejecución | Truth y observación | Evidencia observable, nunca truth oculta | Sí |
+| t3 | A_f,post*, A_f,obs, D_f*, T_acc,post*, ΔT_acc*, App_f*, snapshot F1/τ2; evidencia/cobertura de medición | Apertura focal y estructura accesible antes de K/selección/ejecución; observabilidad diferencial se registra aparte en ΔE_T | Truth y observación | A_f,obs/T_acc,obs/evidencia; no truth ni ΔT_acc* oculto | Sí |
+| t4 | Reach_H*, Reach_H,obs, Π_H, rutas Rτ2/RA12/Rshared/Rexternal/Runknown y condiciones de composición | Consecuencias estructurales de accesibilidad y alternativas; no usar ejecución observada para reconstruir Reach | Truth y observación | Reach/Π observables o derivados con estados 1/0/? | Sí |
+| t5 | K, Consider, mensajes recibidos, conocimiento de F1 y A1/A2, observabilidad del agente | Mediación epistémica downstream; no ajustar mecánicamente ITT por K post-Z | Sí | Medidas observadas | Sí |
+| t6 | Sel, Start, actor, motivo, fecha y posibilidad considerada | Selección e inicio separados; posibles mediadores | Sí | Sí | Sí |
+| t7 | Exec parcial/completa, fallos/interrupciones, F1/F2/A1/A2 realmente ejecutadas, recursos consumidos, residuos | Ejecución no redefine retrospectivamente T_acc ni Reach basal | Sí | Sí | Sí |
+| t8 | O* y O_obs, R_O, regla/dataset/oráculo/versionado, latencia/calidad/seguridad relevantes para Outcome | Estado verdadero de resultado separado de observación y de la definición del oráculo | Sí | O_obs y procedencia pública; no O* oculto | Sí |
+| t9 | V* y V_obs, R_V, regla/versionado, beneficiario/horizonte, coste/riesgo/recursos | Valor verdadero y observado separados; puede cambiar aunque O* permanezca constante | Sí | V_obs y regla pública; no V* oculto | Sí |
+| t+1… | snapshots post-ejecución, caché/índice/estado residual, rollback, recursos y exposición de unidades/periodos siguientes | Carryover/spillover; nunca sobrescribir t−1…t9 | Sí | Evidencia observable y cobertura | Sí |
+
+La notación O*/O_obs y V*/V_obs se introduce aquí como separación explícita de truth y observación para los contratos adversariales; no sustituye silenciosamente O_i/V_i en §§2–7. Antes de freeze se deberá fijar el nombre de campo canónico y el oráculo, sin mezclar estado de resultado con regla de medición. F* funcional de conformidad de transformación y el oráculo de O/V son objetos distintos.
+
+### 28.2 Crosswalk por escenario
+
+| Escenario | Manipulación principal y momento | Variables/tiempos afectados | Variables que deben permanecer invariantes en el contraste aislado | Diagnóstico esperado |
+|---|---|---|---|---|
+| R0 / EXC-F0 | B provisiona adaptador en t1; éxito técnico se verifica en t2 | C_dep* (t2) → A_f,post*/D_f*/ΔT_acc* (t3) → Reach/Π (t4) → O (t8), V (t9) | F2, A1/A2, F*, datos, C_auth, recursos no focales, K, costes/riesgos y observación/oráculo; verificar no solo estipular | Control positivo de ruta focal; LATE_f solo candidato tras gates IV completos |
+| R1 | A1→A2 ya factible en t−1 y no cambia tras B | F_alt,base (t−1), snapshots alternativos t2/t3, Reach/Π t4 | B no modifica A1/A2, dependencias, recursos ni medición | No es violación por mera existencia de alternativa; puede bloquear cambio en Reach o generar heterogeneidad |
+| R2 / EXC-B14 | B modifica A1/A2 o dependencias en t2 | Snapshot/diff alternativo t−1→t2/t3; Reach/Π t4; Exec t7; O/V t8/t9 | Mantener focal D_f* y las otras superficies fijas para aislar esta vía | Vía colateral/efecto de paquete; no LATE_f focal bajo exclusión violada |
+| R3 | Intento W_attempt en t1; provisión no alcanza C_dep* en t2 | W_programmed/W_attempt (t1), C_dep* (t2), D_f* (t3); consumo/residuo t2/t+1 si aplica | Sin otras vías en subcaso base; separar subcaso con consumo/residuo | Primera etapa focal nula/débil; no asumir ITT nulo si hay coste o residuo |
+| EXC-B06 | B cambia S0/datos/mapping/App/F* técnico fuera de D_f* en t2 | Datos/App/F* (t−1,t2), Exec (t7), O* (t8) | D_f* fijo; oráculo de O invariante | Vía directa a Outcome; exclusión focal violada |
+| EXC-B09/B12 | B cambia riesgo/coste/latencia/recursos relevantes en t2/t7 | Métricas de coste/riesgo/latencia (t2,t7), O* (t8), V* (t9) | Subcaso Value: O* constante; regla V y observación invariantes | Vía directa a Value; no inferir O→V completo |
+| EXC-B10-K | B comunica/formación en t1; cambia K/Consider en t5 | Mensajes (t1), K/Consider (t5), Sel/Start (t6), Exec/O/V (t7–t9) | D_f* y observabilidad fijos para aislar K | Vía epistémica no focal; no ajustar por K post-Z |
+| EXC-B10-OBS | B cambia logs/permisos/retención/cobertura en t2/t3/t8/t9 | ΔE_T y R_A/R_O/R_V por brazo/tiempo; estados verdaderos constantes | Truth estructural y O*/V* constantes | Error/missingness diferencial; gate IV-G6, no confundir con vía causal verdadera |
+| EXC-B13 | B altera oráculo/dataset/regla de O o V en t8/t9 | Versiones y definición de resultado/valor por brazo | Mecanismo de estado subyacente constante | No comparabilidad del resultado; no estimar contraste común sin armonización válida |
+| EXC-B07 / interferencia | B consume/reserva recursos compartidos desde t1/t2 | Pool y mapa de exposición por unidad/cluster t1–t2; Reach/Exec/O/V t4/t7–t9 | Contraste individual aislado solo si pool no compartido o exposición modelada | SUTVA/independencia individual no sostenibles sin régimen de exposición o cluster |
+| EXC-B11/B15 / carryover | B deja estado tras rollback/fin de periodo | Snapshot t+1… y exposición de siguientes unidades/periodos | Sin residuo solo en control negativo explícito y verificado | Consistencia temporal/interferencia; no Wald individual estándar |
+
+### 28.3 Reglas de rol y de no fuga
+
+1. El generador produce truth, potenciales y observaciones simuladas; mantiene truth de rutas, D_f*, O*, V*, mecanismos colaterales y parámetros fuera del analizador.
+2. El analizador recibe Z/B/W, snapshots y evidencia observables, A_f,obs, T_acc,obs, Reach/Π observables, K/Sel/Exec observados, O_obs/V_obs y reglas públicas versionadas. No recibe truth, potenciales, mecanismos ocultos ni flags de escenario que revelen la respuesta.
+3. El evaluador accede a truth y parámetros solo después de congelar la salida del analizador; calcula recuperación, clasificación de gates y errores por estimando y escenario.
+4. La manipulación del oráculo (B-M13) no debe confundirse con la manipulación del estado de Outcome/Value; la manipulación de cobertura (B-M10-OBS) no debe cambiar truth.
+5. Escenarios de interferencia requieren indexación por unidad i, unidad expuesta j, cluster/pool y tiempo. No codificar el spillover como una simple covariable individual.
+6. Los controles negativos deben comprobar que las variables declaradas invariantes realmente permanecen invariantes dentro del DGP; el contrato no autoriza afirmar invariancia en sistemas reales.
+
+### 28.4 Huecos detectados antes de parametrizar
+
+- F1=τ2 y su relación con el artefacto/adaptador, F2 y la semántica exacta de A1/A2 aún requieren contrato funcional único y versionado; las etiquetas no son fixtures técnicos.
+- El archivo contiene precedencias históricas sobre Opción A que deben armonizarse: §§37–38 llaman candidato a la semántica y §24 remite a selección/decisión; no inferir que el detalle de F1/F2/A1/A2 quedó aprobado por la selección del microdominio.
+- Los campos O*/O_obs y V*/V_obs, regla de Value, horizonte y beneficiario requieren nombres/esquemas canónicos y matching con los contratos estadísticos existentes.
+- t+1… requiere unidad temporal y regla de washout/rollback por escenario; no asumir ausencia de carryover.
+- La unidad de interferencia, pool compartido, mapa de exposición y régimen de asignación por cluster deben fijarse antes de parametrizar escenarios de spillover.
+- F* técnico, oráculo de Outcome y regla de Value deben ser tres artefactos diferenciados, versionados y cegados al analizador salvo sus especificaciones públicas.
+
+**Dictamen:** crosswalk documental integrado; los escenarios siguen sin parametrizar, serializar ni ejecutar. No cierra exclusión, IV-G6, consistencia, interferencia, Value ni Design Freeze. No autoriza implementación ni ejecución.
