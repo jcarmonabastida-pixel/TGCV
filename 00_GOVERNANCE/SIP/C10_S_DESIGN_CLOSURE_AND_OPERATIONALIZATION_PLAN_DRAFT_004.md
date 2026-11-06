@@ -860,3 +860,12 @@ Hallazgos:
 No sustituir `D_f^*) por `D_f^{obs}` en primera etapa/Wald sin modelo de error defendible. `LATE_f` sigue bloqueado. No se altera DEC-C10-065, ni se cierra UG-SCH-10/XSYNC/gates IV.
 
 **Siguiente operación:** crosswalk exhaustivo de predicados de `A_f^*` (constitutivo/invariante/vía colateral/epistémico/duplicado), sin alterar fórmula; luego regla trivalente de agregación.
+
+
+### 16.15. Crosswalk causal de predicados A_f*
+
+**Registro:** `C10_S_D2_AF_PREDICATE_CAUSAL_CROSSWALK_DRAFT_001.md`.
+
+La auditoría de medición §16.14 queda corregida: la fórmula candidata depurada ya está en maestro §67.3/DGP §59.3. MEAS-G1 pasa a **PARTIAL**, no OPEN por ausencia de fórmula. C_auth_base→AUTH; C_resource/C_capacity solo disponibilidad ex ante necesaria/no duplicada→RES/R_access; C_info no es factor autónomo; C_domain/D_support→ID/tipo o COND; C_dep→DEP; C_other inadmisible; VALID/cobertura/E_T epistémicos; App_f/K/selección/ejecución downstream. El crosswalk especializado conserva mappings y operacionalización material como abiertos.
+
+No se cambia DEC ni se congela la fórmula. Próximo: consolidar regla trivalente de conjunción y rutas.
