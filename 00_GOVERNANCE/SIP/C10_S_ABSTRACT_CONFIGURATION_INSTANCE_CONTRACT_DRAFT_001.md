@@ -201,3 +201,5 @@ Así se conserva el enum de alto nivel y se materializa la distinción tripartit
 La equivalencia se adjudica en dos planos: (i) contrato/paquete y (ii) resolución efectiva en E_dst. Igualdad del valor resuelto no demuestra equivalencia del origen; igualdad del contrato no demuestra que el entorno resolviera el mismo valor.
 
 **Pendiente:** campos exactos del snapshot E_dst, evidencia/procedencia, reglas de herencia por clave y predicados FP primarios. Sin instancia, parser, fixture ni ejecución.
+
+**Precedencia interna:** La formulación de §9.2 que calificaba esta reconciliación como propuesta no aprobada queda supersedida por §10: DEC-C10-054 ya aceptó la distinción; §10 fija únicamente su representación coherente.
