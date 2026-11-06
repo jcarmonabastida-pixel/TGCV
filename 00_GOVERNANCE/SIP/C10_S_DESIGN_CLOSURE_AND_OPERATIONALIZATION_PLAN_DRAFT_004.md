@@ -1000,3 +1000,7 @@ La reconstrucción de DEC-C10-054 y del perfil de dominios demuestra que la dist
 Se ha preparado un roster lógico parsimonioso: activación BOOL requerida, perfil ENUM requerido y contador de reintentos INT opcional. Es una propuesta para una unidad lógica de servicio, no un esquema real ni una decisión aceptada. El slot de reintentos queda condicionado a que sea configuración P0 del servicio y no capacidad/recursos P1. DECIMAL/STRING quedan como extensiones condicionales; REF se modela normalmente en la clase REF.
 
 **Cierre necesario:** verificar pertinencia P0 de cada slot; definir D_profile, N_retry_max y dominios por clave; estados admisibles/defaults; mapping por ruta; obligatoriedad IAM; regla RUL constitutiva y oráculo. No fijar valores de escenario antes de cerrar contrato. Sin freeze ni autorización de implementación.
+
+## 16.27. Cierre sustantivo de RUL
+
+La cardinalidad RUL≥1 ya está aceptada por DEC-C10-056. El siguiente cierre no consiste en añadir una regla artificial: exige una restricción constitutiva P0, no tautológica, con fuente funcional, owner CMP, scope, claves/dominios, AST 4/16/16, efecto REQUIRE/FORBID y semántica TRUE/FALSE/UNKNOWN. La plantilla ENABLED→PROFILE es solo un candidato y debe descartarse si no existe fuente que justifique D_profile_enabled. Después se requiere preservar semántica en F1/A1, aplicar en F2/A2, FP-03/06/07 y oráculo independiente. No freeze ni implementación.
