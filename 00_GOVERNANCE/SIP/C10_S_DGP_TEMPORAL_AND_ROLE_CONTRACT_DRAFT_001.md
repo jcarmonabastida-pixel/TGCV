@@ -800,3 +800,18 @@ DEC-C10-067 acepta el contrato conceptual de las políticas (B_{g0}^{D2}) y (B_{
 Se mantienen comunes (C_{auth,base}=1), elegibilidad, recursos no focales, capacidad, información basal y medición/adjudicación en el DGP aislado. Cualquier cambio diferencial de permisos, recursos, costes, latencia, calidad, seguridad, información, incentivos o alternativas debe registrarse como vía colateral. El ITT de Z sigue siendo efecto de política/paquete; no se etiqueta automáticamente como efecto puro de accesibilidad.
 
 Permanecen abiertos actor, artefacto/hash, recepción, ventanas, reintentos, rollback, evidencia de componentes, detección de provisión de fondo y rutas alternativas. (s=0.80) no está validado. No se aprueban parámetros ni DGP, ni se autoriza freeze, implementación, simulación o ejecución científica.
+
+
+## 27. Regla trivalente de agregación de A_f* y D_f observado — reconciliación C10-S (2026-11-06)
+
+**Fuente:** `C10_S_AF_DF_TRIVALENT_AGGREGATION_RULE_DRAFT_001.md`.  
+**Estado:** reconciliación documental asistida; no aprobada, no congelada, no ejecutada.
+
+1. Se preservan como dominios ortogonales `observed_state={1,0,?}`, `evidence_status={AVAILABLE,MISSING,CONFLICTING}`, `coverage_status={NONE,PARTIAL,COMPLETE}`, adjudicación y `truth_dgp` restringida. No convertir MISSING/NONE/PARTIAL/no inventariado en 0.
+2. Para la conjunción candidata `ID∧REL∧COND∧AUTH∧RES∧DEP∧¬BLOCK`: un predicado necesario adjudicado 0 con evidencia válida, alcance compatible y cobertura suficiente basta para `A_f^{obs}=0`; todos los términos necesarios 1 con matching/comparabilidad y cobertura adecuados permiten 1; en los demás casos, ?.
+3. `DEP_f^{obs}` es disyunción de rutas admisibles: una ruta confirmada 1 basta para 1; 0 exige todas las rutas del universo operativo declarado refutadas y cobertura COMPLETE, incluida resolución de Runknown/rutas externas/compartidas/alternativas; en otro caso ?.
+4. Un `C_dep=0` no implica `DEP=0) si existe ruta alternativa admisible. La equivalencia solo rige bajo ruta única estipulada e inventario/cobertura demostrados.
+5. `D_f^{obs}=1) solo para baseline 0 y post 1; es 0 si baseline=1 o post=0; en los demás casos ?. Snapshots no comparables o identidad τ2 unresolved producen NOT_COMPARABLE/?; nunca 0.
+6. La elegibilidad verdadera focal exige `A_{f,base}^*=0) pre-Z; `A_{f,base}^{obs}=0) no la sustituye sin tratamiento explícito del error de clasificación.
+
+La regla formal y sus tablas de casos están en el documento de referencia. No cierra MEAS-G2…G8, UG-SCH-10, XSYNC, PROV, MD-C1/MD-C4 o IV; no cambia la fórmula, decisiones, autorización ni estimandos.
