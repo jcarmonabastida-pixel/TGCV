@@ -934,3 +934,27 @@ El crosswalk conceptual B-M01…15 → variable/predicado → clase U_G → meca
 **Regla de interpretación:** `ITT_Z` puede conservar interpretación como efecto de asignación/política bajo el diseño. Si falla exclusión, el ITT es efecto de paquete; no atribuirlo a `D_f^*`. Un eventual `LATE_f` es local a compliers D2 y no equivale a `θ_Af(q_X^*)` poblacional ni a `θ_A(q)` general.
 
 **Siguiente operación:** auditar la definición observacional de `D_f^*` y el protocolo de medición de `A_f^*`. No hay freeze, implementación, simulación ni ejecución.
+
+
+---
+
+## 33. Auditoría de medición de accesibilidad focal
+
+**Fuente:** `C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md`  
+**Estado:** AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT.
+
+| Dimensión | Estado | Hallazgo / regla |
+|---|---|---|
+| Verdad vs observación | PARCIALMENTE ESTABILIZADA | Separar `S_T^*`, `E_T`, `A_f^*), `A_f^{obs}`, `D_f^*), `D_f^{obs}), `ΔT_acc^*) y `ΔE_T). |
+| Composición de predicados | OPEN / MATERIAL | `C_info` y recursos/capacidad no están reconciliados con fichas; evitar duplicidad. |
+| Identidad/comparabilidad | PARTIAL | τ2, frontera, contexto, G, catálogo y M deben fijarse; unresolved → ?. |
+| Pinning/pertenencia | DEC-C10-065 ACCEPTED / UG-SCH-10 OPEN | Pinning no equivale a validación técnica del grafo/FKs/constraints. |
+| Cobertura | NONE en plantilla | Rutas alternativas/compartidas/externas/desconocidas no inventariadas; no inferir ausencia. |
+| Adjudicación/cegamiento | PROPOSED / NOT EXECUTED | Doble evaluación, ciego y truth oculta no demostrados operativamente. |
+| Error/missingness | OPEN | Sin cuantificación/límites diferenciales por brazo, tiempo, versión, ruta y cobertura. |
+| Temporalidad | PARTIAL | t0–t9 propuesto; ventanas, simultaneidad y vigencia pendientes. |
+| Uso IV | BLOCKED | No usar `D_f^{obs}) como sustituto de `D_f^*) sin modelo de error defendible. |
+
+**Gates MEAS-G1…G8:** composición; identidad/comparabilidad; pinning/pertenencia; cobertura; temporalidad; adjudicación; error/missingness; recuperación sintética con truth oculta. Su cierre no autoriza ejecución.
+
+**Siguiente:** crosswalk exhaustivo de predicados de `A_f^*), sin alterar la fórmula ni crear símbolos, y luego regla trivalente de agregación. Wald/`LATE_f` permanece bloqueado.
