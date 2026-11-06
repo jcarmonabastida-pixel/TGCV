@@ -198,6 +198,27 @@ Si B amplía el permiso funcional para ejecutar `τ2`, aparece la vía `B→C_au
 
 **Reutilización y dependencias:** maestro §§46–47 y 59.2–59.3; manifiesto B-M07; PROV-05 (no reducción de disponibilidad A1/A2/F2) y PROV-09 (no modificación de dependencias críticas compartidas); MD-C1/MD-C4 permanecen abiertos. No introducir nuevos símbolos definitivos para subcomponentes sin mapearlos a `R_access*` y al DGP.
 
+#### 13.2.1. Crosswalk causal individual de D2-RES-01
+
+**Estado:** reconciliación documental especializada; la ficha sigue siendo propuesta no aprobada/no congelada. No existe inventario material ni prueba de invariancia.
+
+| Eslabón | Correspondencia | Lectura causal y estado |
+|---|---|---|
+| Definición y clase | Disponibilidad basal de recursos no focales asignados y utilizables para poner τ2 a disposición; separar capacidad instalada, consumo de ejecución y recursos usados por B | Condición constitutiva candidata. No usar un indicador agregado que mezcle stock/disponibilidad ex ante con demanda/consumo de una instancia. |
+| DGP y elegibilidad | Maestro §§46–47, 59.2–59.4 y 64.5; elegibilidad basal antes de Z | La disponibilidad suficiente se postula común/satisfecha en la población primaria. La notación histórica C_resource/C_capacity de §46.2 requiere reconciliarse con R_access* y C_dep*; no implica tres factores autónomos ni autoriza doble contabilización. |
+| Predicado estructural | R_access*(i,t;τ2), maestro §59.3; C_resource solo como descriptor de la disponibilidad de recursos, no como nuevo multiplicador | Incluir en R_access* únicamente disponibilidad ex ante necesaria y no duplicada. Consumo de ejecución, carga S0 y recursos consumidos por B no se retrotraen automáticamente a accesibilidad. |
+| Dominio de provisión | B-M07 Recursos; B-M02 Runtime/B-M03 Host/B-M12 Rendimiento relacionados si el grafo transitivo revela recursos o servicios compartidos; B-M14 Alternativas si los consumidores son A1/A2 | B-M07 es el dominio rector; los demás son superficies relacionadas, no vías observadas. |
+| Contratos PROV | PROV-05 y PROV-09; PROV-03/04 para snapshots, dependencias y consumidores | PROV-05 exige no reducción de disponibilidad A1/A2/F2; PROV-09 exige no modificar dependencias críticas compartidas. Son contratos documentales pendientes, no PASS ni prueba material. |
+| U_G candidato | N18, N05, N13, N15, N20; E16, E17, E19; predicados RES-τ2, ALT-DEP, Rshared, Rτ2 y RA12 | Roles/aristas candidatos según matriz de cobertura §9. Crear registros solo con objetos, extremos, unidad, frontera, versión, ventana y evidencia observados. No inferir consumidores ni relaciones por el crosswalk. |
+| Evidencia/falsadores | Inventario y asignación pre-Z; disponibilidad, compromisos, cuotas, consumo B, consumidores compartidos y medición por unidad/ventana; snapshots pre-B/post-B/rollback | Falsadores: recurso basal insuficiente/comprometido; consumo B no registrado; desplazamiento o degradación A1/A2/F2; variación diferencial; consumidores/dependencias no cubiertos. Cobertura insuficiente → ?. |
+| Mecanismo causal | (i) cambio constitutivo si B altera R_access* y con ello A_f*; (ii) vía colateral si desplaza recursos/capacidad de rutas alternativas o afecta rendimiento, ejecución, Outcome/Value; (iii) interferencia si el consumo de una unidad afecta a otras | Puede haber varios mecanismos simultáneos. No confundir la ruta topológica compartida/alternativa con la clase de mecanismo causal. |
+| Estimandos | ITT de la política material D2; efecto específico de accesibilidad/estimando C10-D1 y LATE_f solo bajo sus supuestos | Si B cambia recursos no focales, el ITT conserva interpretación como efecto de la política/paquete. No atribuirlo exclusivamente a ΔT_acc*. La aleatorización individual no elimina interferencia por recursos compartidos; si existe, se necesita exposición/interferencia definida, diseño por conglomerados u otra estrategia defendible. No se elige aquí una unidad de conglomerado. |
+| Control | FCM-D2-06 y FCM-D2-07; FCM-D2-08 cuando afecte alternativas/provisión de fondo | FCM-D2-06: condición común postulada, no demostrada. FCM-D2-07: registrar cambios colaterales. FCM-D2-08: comprobar alternativas y fondo. MD-C1/MD-C4 permanecen abiertos. |
+
+**Regla de no duplicidad que queda abierta para reconciliación:** §46.2 enumera C_resource y C_capacity en la elegibilidad; §59.2–59.3 los descompone y sitúa la disponibilidad ex ante dentro de R_access* solo si es necesaria y no duplicada, mientras que capacidad/consumo dependientes del estado pueden pertenecer a aplicabilidad o ejecución. Antes de congelar A_f* debe decidirse, para cada dimensión concreta, si es (a) disponibilidad estructural dentro de R_access*, (b) componente ya cubierto por C_dep*, o (c) aplicabilidad/ejecución/resultado. No mantener simultáneamente predicados redundantes.
+
+**Dictamen:** la trazabilidad conceptual de D2-RES-01 queda desarrollada. La invariancia de recursos, la independencia de A1/A2/F2, el inventario de consumidores, la suficiencia basal y la ausencia de interferencia no están demostrados. No se aprueba la ficha ni se cierra PROV-05/09, MD-C1/MD-C4 o la identificación causal.
+
 ### 13.3. Ficha D2-CAP-01 — capacidad no focal
 
 **Estado:** propuesta de especialización; no aprobada. `C_capacity` no es sinónimo de `C_resource`.
