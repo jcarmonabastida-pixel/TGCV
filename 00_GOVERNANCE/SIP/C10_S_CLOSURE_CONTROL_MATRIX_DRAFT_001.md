@@ -1076,3 +1076,21 @@ Registro de subcasos: `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md`, §57. Los TRI
 | DGP-EXC-09 | Recursos compartidos/carryover | Mapa de exposición y unidad/clúster; rechazar SUTVA/Wald individual si procede | OPEN |
 
 Los controles son especificaciones, no resultados PASS. Ningún escenario está serializado o ejecutado. La aceptación requiere correspondencia con variables/tiempos/roles y expected_output por Outcome y Value.
+
+
+
+## 41. Control de cierre del crosswalk temporal y de roles Opción A
+
+| Control | Criterio | Estado |
+|---|---|---|
+| DGP-TIME-01 | Reloj único t−1/t0–t9/t+1…; cada escenario mapea manipulación y resultado al momento correcto | DOCUMENTADO / NO VALIDADO |
+| DGP-ROLE-01 | Generador, analizador y evaluador separados; truth/potenciales ocultos al analizador | DOCUMENTADO / NO IMPLEMENTADO |
+| DGP-SEM-01 | Contrato funcional versionado F1/τ2, F2, A1/A2 y adaptador; sin inferirlo de la selección de microdominio | OPEN |
+| DGP-OUT-01 | O*/O_obs y V*/V_obs, oráculos, regla Value, beneficiario/horizonte diferenciados | OPEN |
+| DGP-INT-01 | Unidad de interferencia, pool, mapa de exposición y asignación/análisis cluster | OPEN |
+| DGP-CARRY-01 | Snapshots t+1…, rollback y washout/carryover por unidad/periodo | OPEN |
+| DGP-CROSS-01 | Crosswalk escenario×variable×tiempo×rol y controles invariantes completos | DOCUMENTADO / REQUIERE RECONCILIACIÓN |
+
+El documento DGP §28 y la auditoría IV §13 son referencias de este control. Ningún estado DOCUMENTADO equivale a PASS de prueba; los escenarios no están parametrizados ni ejecutados.
+
+**Dictamen agregado:** prerequisitos para parametrización abiertos; no Design Freeze ni implementación.
