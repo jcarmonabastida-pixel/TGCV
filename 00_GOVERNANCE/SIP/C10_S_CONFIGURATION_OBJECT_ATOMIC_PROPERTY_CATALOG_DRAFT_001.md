@@ -199,3 +199,9 @@ Los estados admisibles de la tabla son candidatos por clave, no una relajación 
 Tres slots cubren tres semánticas diferenciables: activación booleana, selección categórica y límite entero opcional. No se afirma que sean universales a todo servicio software. Antes de fijar instancia debe verificarse que los tres pertenecen realmente al contrato P0 de la unidad lógica; si no, se reemplaza el slot manteniendo la misma justificación de tipo/función y sin trasladar recursos, permisos efectivos, runtime o estado externo desde P1.
 
 La propuesta no fija valores, símbolos ENUM, N_retry_max, versión, conversión, mapping, unidades, tolerancias ni truth. Tampoco resuelve todavía la regla RUL constitutiva que debe relacionar o restringir propiedades: RUL≥1 sigue siendo obligatorio por DEC-C10-056 y su contenido sustantivo queda abierto.
+
+## 13. Contrato candidato de la RUL mínima
+
+RUL≥1 es requisito de cardinalidad, no licencia para añadir una regla tautológica. La primera plantilla a evaluar es una restricción condicional entre ENABLED y PROFILE: si el servicio está habilitado, el perfil debe pertenecer al conjunto contractualmente permitido en estado activo. La expresión candidata es OR(NEQ(ENABLED,true), IN(PROFILE,D_profile_enabled)) con efecto REQUIRE. El conjunto D_profile_enabled, la fuente funcional y la no-tautologicidad permanecen sin definir; por tanto, RUL-01/02/03 siguen candidatos, no propiedades confirmatorias cerradas.
+
+Si no hay fundamento contractual verificable para esa relación, se descarta y se busca una restricción genuina del P0. No se fuerza RETRY-COUNT ni se incorporan permisos/recursos/runtime P1. Criterios: owner CMP, scope, dominio, AST 4/16/16, UNKNOWN, mapping, aplicación y oráculo independiente.
