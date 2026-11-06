@@ -712,3 +712,91 @@ Los nodos/aristas son roles y relaciones candidatos del grafo; su cobertura mate
 **Dictamen:** las cuatro fichas son conceptualmente compatibles con la ecuación candidata §59.3 si se mantienen las reglas de no duplicidad anteriores. La representación de E_T en U_G queda expresamente incompleta y corregida como tal. La auditoría no convierte la arquitectura candidata en diseño aprobado ni operacionalizado.
 
 **Siguiente operación:** retomar el Bloque 2 del plan de cierre: reconciliar formalmente la jerarquía de estimandos y la identificación para D2, reutilizando C10-D1 §§5, 17, 25–30, la reconciliación C10-D1/S4-R, P177/P178/P179/P182/P183 y las decisiones DEC-C10-001…067. No crear un nuevo estimando ni empezar por fórmulas sin resolver primero la correspondencia entre políticas materiales B_g, régimen q, política g y estimandos.
+
+
+### 16.11. Reconciliación histórica de estimandos e identificación para D2 (2026-11-06)
+
+**Estado:** auditoría documental de precedencia y coherencia; reutiliza trabajo existente. No crea estimandos, no aprueba REC-EST-01…09, no cierra identificación ni constituye revisión independiente.
+
+#### 16.11.1. Fuentes recuperadas y regla de precedencia
+
+Se recuperaron desde GitHub en la rama de investigación:
+- C10-D1, `C10_D1_CAUSAL_ACCESSIBILITY_VALUE_PROTOCOL_DRAFT_001.md`, §§5.1–5.3, 17.7–17.9, 24.2, 25.2–25.3 y 26.1–26.3.
+- Maestro C10-S, §§43–44, 51, 53–55, 65 y addenda de §§130 y 130 (DEC-C10-067).
+- `C10_S_C10D1_S4R_ESTIMAND_RECONCILIATION_DRAFT_001.md`, §§1–18, incluida §12 y addendum de precedencia DEC-C10-066.
+- `C10_S_RECOVERY_165_183_SOURCE_REGISTER_DRAFT_001.md`, §§2–5.
+- `C10_S_POPULATION_ELIGIBILITY_AND_COMPARATOR_RECONCILIATION_DRAFT_001.md`.
+- `C10_S_DECISION_LOG_DRAFT_001.md`, DEC-C10-066/067 y registros relacionados.
+- `C10_S_CLOSURE_CONTROL_MATRIX_DRAFT_001.md`, REC-CAUS-02/03/07 y SRC-09.
+
+La precedencia aplicable es:
+1. C10-D1 gobierna el significado de la pregunta causal general `θ_A(q)` y las condiciones de identificación.
+2. C10-S maestro §§43/53 operacionaliza el experimento sintético focal; no redefine C10-D1.
+3. DEC-C10-066 fija D2 como escenario primario candidato y D1 como secundario.
+4. DEC-C10-067 acepta el contrato material conceptual de las políticas D2.
+5. Ninguna de esas dos decisiones acepta la jerarquía completa de estimandos, el mapeo B→g, la población, q*, soporte, exclusión, IV, Value o ejecución.
+
+#### 16.11.2. Objetos causales distintos — no intercambiables
+
+| Objeto | Pregunta que responde | Alcance y condición |
+|---|---|---|
+| `θ_A(q)` | ¿Cuál es la contribución causal de políticas factibles sobre el cambio estructurado de accesibilidad `ΔT_acc` a Value, bajo un régimen común factible? | Pregunta científica general C10-D1. Requiere g1/g0 implementables, factibilidad por historia, soporte, temporalidad, consistencia/versiones y separación/identificación de vías alternativas. |
+| `ITT_Z` / `TE_Z` | ¿Cuál es el efecto de asignar Z a las políticas D2 sobre Value? | Estimando primario de asignación S4-R. La aleatorización puede identificarlo bajo consistencia, interferencia tratada y observación/manejo válido de Value y pérdidas. Incluye incumplimiento/crossover según asignación; no es efecto de recibir B ni de accesibilidad. |
+| `ψ_B(q_X^*)` | ¿Cuál es el contraste entre las versiones implementables B1/B0 en la población basal objetivo común? | El maestro §44 lo formula como contraste de políticas recibidas/versiones bajo `q_X^*`. No se identifica automáticamente por `ITT_Z`; requiere correspondencia entre asignación y versión recibida, consistencia y estrategia propia. |
+| `ψ_policy` | ¿Cuál es el efecto de la política/paquete incluyendo las vías que activa? | Etiqueta usada en el maestro §53 y en la reconciliación para el efecto de paquete. No debe intercambiarse sin aclaración con `ψ_B(q_X^*)`: el maestro §42/§44 usa `ψ_B`, mientras §53 usa `ψ_policy`. La relación/notación entre ambos sigue pendiente de armonización. |
+| `LATE_f` | ¿Cuál es el efecto local de apertura focal entre compliers inducidos por Z? | Wald basado en `ITT_Z/ITT_{D_f}`, solo bajo relevancia, independencia, exclusión, monotonicidad, consistencia/versiones, no interferencia y medición válida. Es local a D2 y a sus compliers; no es ATE, `θ_A(q)` ni `θ_Af(q_X^*)`. Si se estima para O y V, cada resultado requiere su propio contraste. |
+| `θ_Af(q_X^*)` / `θ_Af(q*)` | ¿Cuál es el contraste poblacional de políticas que inducen apertura focal de `τ2` bajo un referente común? | Estimando focal candidato. Requiere demostrar que las políticas B_g^D2 implementan las políticas g^Af pertinentes, que el régimen es común/factible y que no quedan vías diferenciales hacia Value fuera de accesibilidad focal. No equivale automáticamente a ITT ni a LATE. |
+| `θ_{L,A}` | ¿Cuál es el efecto conjunto de cambiar coordinadamente condiciones y accesibilidad? | Alternativa de interpretación si ambas dimensiones cambian y no pueden separarse. No atribuye el efecto exclusivamente a accesibilidad. |
+
+No se define un residual `TE_Z-θ_A(q)` como efecto directo puro. La descomposición requiere secuencia de intervenciones y contrastes compatibles, misma población/escala/horizonte y tratamiento explícito de interacciones.
+
+#### 16.11.3. D2 y el mapeo de política a accesibilidad
+
+DEC-C10-066/067 permiten fijar la lectura material siguiente:
+- `B_g0^D2`: mantener configuración basal; no programar ni iniciar provisión focal ni desplegar/configurar el adaptador focal.
+- `B_g1^D2`: programar provisión técnica focal con artefacto/versionado y eventos que deberán identificarse y registrarse.
+- `C_auth,base=1`, elegibilidad, recursos no focales, capacidad, información basal y medición/adjudicación se mantienen comunes en el DGP aislado.
+- La política asignada no garantiza recepción, intento efectivo, éxito de instalación, `C_dep*`, `A_f*`, `D_f*`, `ΔT_acc`, selección ni ejecución. Provisión de fondo/crossover debe observarse en ambos brazos.
+
+La secuencia a preservar es:
+`Z → B_assigned/offered → B_received/W_programmed → W_attempt → C_dep → A_f* → D_f*/ΔT_acc → Reach/Π_H → K/consideración/selección → Exec → O → V`.
+
+La flecha `B_g^D2 → g^Af` **no está aceptada ni demostrada**. Es una condición de interpretación de `θ_Af(q_X^*)`, no una equivalencia otorgada por DEC-C10-067. Si B cambia recursos, permisos, información, coste, latencia, seguridad, calidad, incentivos, alternativas u otras vías hacia Value, el ITT sigue siendo efecto de asignación al paquete; la atribución focal/IV no se mantiene sin identificación adicional.
+
+#### 16.11.4. Régimen común: q, q_X* y q_L* no son sinónimos
+
+- `q` en C10-D1 es un régimen común, explícito y factible de condiciones/historias no constitutivas bajo las políticas de accesibilidad.
+- `q_X^*` en C10-S §44 es la distribución objetivo común de características e historia **basales** (X, H₀, C_c) de la población elegible. No es una intervención que fuerce covariables y no representa automáticamente todo el régimen `q` de C10-D1.
+- `q_L^*` es una política secuencial sobre variables postasignación L_m cuando sean indispensables. Una distribución marginal o ajuste estadístico por L_m no la sustituye.
+- La regla de Value es parte de la definición del resultado/estimando y debe permanecer fija; no es una variable que se manipule dentro de q.
+
+El uso de `q_X^*` en S4-R es candidato y depende de definir P*, elegibilidad pre-Z, soporte/factibilidad por estrato, unidad/interferencia y regla Value. No convertir q_X* en evidencia de que se ha identificado el q general.
+
+#### 16.11.5. Primera etapa e identificación IV
+
+Calcular y reportar por separado las primeras etapas sobre `C_dep`, `A_f,post^*`, `D_f` y `ΔT_acc`. La primera etapa técnica no sustituye la primera etapa de accesibilidad focal; ninguna demuestra por sí misma exclusión.
+
+`LATE_f` solo se interpreta mediante Wald cuando:
+- existe relevancia y la inferencia es robusta a instrumento débil;
+- Z es independiente de los potenciales pertinentes en la unidad de asignación;
+- se sostiene exclusión de vías Z/B hacia el resultado fuera de D_f;
+- se sostiene monotonicidad en el tratamiento focal definido;
+- hay consistencia y versiones coherentes;
+- no hay interferencia relevante no modelada;
+- D_f y Value están medidos con validez y error diferencial controlado.
+
+Una vía colateral B→Value o una modificación de alternativas puede conservar el ITT de asignación y, a la vez, invalidar la interpretación LATE focal. D1 y D2 tienen primeras etapas y poblaciones de compliers distintas; no agrupar ni transportar sus Wald/LATE.
+
+#### 16.11.6. Estado real de decisiones y pendientes
+
+- DEC-C10-066: ACCEPTED, alcance limitado a D2 primario candidato / D1 secundario.
+- DEC-C10-067: ACCEPTED, alcance limitado a definiciones materiales conceptuales de B_g0^D2/B_g1^D2.
+- REC-EST-01…09: permanecen como propuestas/abiertas en la reconciliación; no se promueven a decisiones aceptadas.
+- La reconciliación previa ya contiene la jerarquía; este trabajo no la recrea. Se actualiza su lectura tras DEC-C10-066/067 y se registran las diferencias de notación pendientes.
+- Población P*_τ2/P*_F, q_X*, q_L*, soporte, F*, Value, actor/artefacto/recepción, cumplimiento, ausencia de provisión de fondo, primeras etapas, exclusión, monotonicidad, interferencia, medición y pérdidas siguen abiertos.
+- Las secciones 177–183 recuperadas son propuestas metodológicas; P177/178 parámetros y precisión pendientes; P179 regla dimensional de Value pendiente; P181–183 pruebas de medición, error y missingness no ejecutadas.
+- No se declara XSYNC cerrado, no se acepta el DGP ni se aprueba freeze, implementación, simulación o ejecución.
+
+**Dictamen:** la jerarquía existente es conceptualmente compatible con D2 si se conserva la separación de los objetos y las condiciones anteriores. La principal discrepancia documental nueva es la notación `ψ_B(q_X^*)` (§44) frente a `ψ_policy` (§53); no se resuelve por sustitución automática. La correspondencia B_g^D2→g^Af y la identificación de `θ_Af(q_X^*)` permanecen pendientes.
+
+**Siguiente operación:** auditar específicamente la correspondencia de intervención `B_g^D2 → C_dep → A_f^* → D_f/ΔT_acc` frente a las políticas g de C10-D1, y resolver la relación/notación `ψ_B(q_X^*)` / `ψ_policy` antes de seleccionar una estrategia de identificación. Reutilizar §§26–33, 42–44, 53–55, DEC-C10-066/067 y XSYNC-138; no crear símbolos nuevos.
