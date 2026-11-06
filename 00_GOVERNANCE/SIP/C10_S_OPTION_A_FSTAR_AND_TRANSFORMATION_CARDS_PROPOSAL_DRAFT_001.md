@@ -160,3 +160,52 @@ El 2026-11-05 el usuario selecciona Opción A —migración de configuración en
 La matriz complementaria `C10_S_FSTAR_OPERATIONAL_PROPERTY_AND_ADJUDICATION_MATRIX_DRAFT_001.md` desarrolla las familias FP-01…FP-08, la regla trivalente no compensatoria de conformidad, las evaluaciones por etapa, los requisitos del oráculo y las condiciones de substituibilidad. Debe leerse conjuntamente con estas fichas.
 
 La matriz no fija todavía predicados atómicos, mappings, tolerancias, H/G/C0, catálogo de entrada, contratos de formato/versiones ni oráculo concreto. Por tanto, F* permanece definido a nivel de familias/arquitectura lógica, no cerrado operacionalmente.
+
+
+
+## 11. Reconciliación funcional integrada B/adaptador/F1–F2/A1–A2/F* (2026-11-06)
+
+**Estado:** RECONCILIACIÓN DOCUMENTAL / PROPUESTA OPERACIONAL; NO CONGELADA, NO IMPLEMENTADA, NO VALIDADA. No modifica DEC-C10-051 ni decisiones posteriores.
+
+### 11.1. Precedencia y objetos no colapsables
+
+Se reutilizan estas fichas, la matriz F* (C10_S_FSTAR_OPERATIONAL_PROPERTY_AND_ADJUDICATION_MATRIX_DRAFT_001.md), el manifiesto B (C10_S_ADAPTER_PROVISION_MANIFEST_AND_DEPENDENCY_GRAPH_DRAFT_001.md), el contrato abstracto de instancia y la matriz IAM. No se crea una segunda definición de F1/F2/A1/A2.
+
+| Objeto | Función | Acredita | No acredita |
+|---|---|---|---|
+| B/adaptador | Provisionar dependencia focal, runtime/canal y verificar estado técnico | Política y provisión documentada | Ejecutar F1/F2, aplicación, accesibilidad completa o F*=1 |
+| C_dep* | Estado técnico de instalación, integridad, compatibilidad y operación | Dependencia técnica | A_f*, rutas completas, aplicabilidad ni éxito funcional |
+| F1/τ2 | Conversión focal S0→S2 | Resultado local y artefacto intermedio | Aplicación, F2 ni F* completo |
+| F2 | Aplicar S2→SF y verificar destino | Aplicación/verificación local | Accesibilidad de F1 ni substituibilidad |
+| A1→A2 | Ruta alternativa basal S0→S1→SF | Capacidad alternativa si satisface el mismo F* | Independencia respecto de B sin evidencia |
+| F* | Evaluación de ruta completa desde fuente admisible a configuración aplicada/verificada | Conformidad funcional bajo IAM/C0/G/H | Accesibilidad TGCV, ausencia de vías colaterales, Outcome o Value |
+
+### 11.2. Secuencia causal/funcional
+
+1. Antes de Z/B se sellan fuente, destino, versiones, mapping, unidad/frontera, IAM, C0, alternativas y condiciones basales.
+2. B provisiona y registra el estado técnico; no ejecuta F1/F2/A1/A2 ni modifica fuente, destino, F*, oráculo o alternativa.
+3. A_f*(τ2) se adjudica con predicados completos; adaptador presente o C_dep*=1 no bastan.
+4. F1 se ejecuta solo tras selección/inicio y produce S2; S2 no equivale a C_dst aplicado.
+5. F2 aplica S2 y verifica destino, con precondiciones y fallos propios.
+6. A1/A2 se ejecutan por su ruta basal y se evalúan bajo entrada/contexto comparables.
+7. F* se adjudica sobre la ruta completa. FP-01…FP-07 son dimensiones funcionales no compensatorias; FP-08 es gate probatorio separado. Outcome/Value quedan fuera del oráculo.
+
+### 11.3. Alternativa genuina y R1/R2
+
+A1→A2 debe existir dentro de la frontera/universo declarado, estar identificada/versionada, ser mecanísticamente distinta, partir de la misma clase de entradas y contexto C0, alcanzar el mismo destino y satisfacer el mismo F*, IAM, H y G. Su independencia requiere evidencia de no-afectación por B sobre dependencias transitivas, permisos, recursos, configuración, red, rendimiento y calidad, con márgenes preespecificados y cobertura suficiente. Un hash o nombre distinto no demuestra independencia; un estado nominal SF no demuestra F*.
+
+R1 (alternativa basal funcional y estable) es distinto de R2 (alternativa modificada/degradada por B). La mera existencia de A1→A2 no viola exclusión; su modificación por B puede abrir una vía colateral. Sin cobertura completa, F_alt queda ?.
+
+### 11.4. Definido frente a abierto
+
+| Dominio | Definido documentalmente | Abierto |
+|---|---|---|
+| B/adaptador | No ejecuta transformaciones; clases M01–15; snapshots; aislamiento recomendado para evaluar | Implementación/hash/versiones reales, grafo transitivo, permisos efectivos, cuotas, red, residuos y no-afectación |
+| F1/τ2 | Rol focal, S0→S2, separación provisión/ejecución | TID/SID/RID, formato, mapping, aplicabilidad, recursos, ventana, tolerancias y evidencia |
+| F2 | S2→SF, aplicación y verificación separadas | Contrato, atomicidad, permisos, compatibilidad, rollback y criterios de verificación |
+| A1/A2 | Ruta S0→S1→SF | Mecanismos/formatos, mapping, cobertura, dependencias y no-afectación por B |
+| F* | Ruta completa, familias FP, adjudicación no compensatoria | IAM de instancia, predicados, obligatoriedad, mappings, tolerancias, C0/G/H, oráculo, cegamiento y error |
+
+### 11.5. Dictamen
+
+La semántica de alto nivel de las transformaciones está definida suficientemente para orientar el DGP; no está cerrada para generar instancias confirmatorias. El siguiente trabajo es reconciliar C_src/C_dst/M con F1/F2/A1/A2, IAM, FP-01…FP-08 y manifiesto B, resolviendo discrepancias de cardinalidad, mapping, frontera y evidencia. No asignar parámetros ni generar fixtures todavía. Sin freeze, implementación, validación, simulación ni ejecución autorizada.
