@@ -198,3 +198,5 @@ La matriz y el perfil de dominios se armonizan con el contrato abstracto mediant
 El mapping evalúa por separado origen, regla/ámbito de herencia, valor contractual y valor resuelto en entorno. La resolución ambiental se enlaza a parameter_key y versiones/snapshot; no se incorpora retroactivamente al paquete. Si la fuente no distingue declarado/heredado, el resultado es UNKNOWN salvo evidencia independiente. Snapshot ambiental ausente deja desconocida la resolución, no demuestra que no exista.
 
 Esta lectura implementa DEC-C10-054 y el perfil §3; no añade decisión nueva. La tabla §4 se mantiene, precisando DEFAULT_ENV_RESOLVED como E_dst. La igualdad del valor resuelto no acredita preservación semántica del default.
+
+**Precedencia interna:** La nota de §13.2 que dejaba toda la distinción DEFAULT como propuesta no congelada queda precisada por §14: la distinción conceptual procede de DEC-C10-054 aceptada; permanecen abiertos solo los detalles de instancia, snapshot, mapping y evidencia.
