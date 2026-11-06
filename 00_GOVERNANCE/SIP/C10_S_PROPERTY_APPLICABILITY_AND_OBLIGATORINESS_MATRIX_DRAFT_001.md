@@ -159,3 +159,14 @@ Cardinalidad de clase y obligatoriedad de predicados son niveles distintos:
 El IAM se aplica a F1/F2 y A1/A2 por igual. Antes de Z/B sella propiedades O/C/NA/?, C_src/C_dst, versiones, M, C0/G/H, cobertura y oráculos. Ninguna ruta redefine el IAM tras observar resultados.
 
 **Discrepancia preservada:** §4 histórico de esta matriz contiene formulaciones de REF/RUL con cardinalidad cero anteriores a DEC-C10-056. Se consideran supersedidas para cardinalidad de clase; no se reescribe el historial ni se altera la obligatoriedad de predicados individuales más allá de esa decisión.
+
+
+## 13. IAM candidato por roster PAR de servicio lógico
+
+| Slot | Aplicabilidad | Requiredness del parámetro | Estados candidatos | Predicados atómicos prioritarios | Pendiente |
+|---|---|---|---|---|---|
+| PAR-SVC-ENABLED / BOOL | Candidato base si es configuración declarada P0 | REQUIRED | VALUE; DEFAULT con contrato; no ABSENT/NULL | PAR-01/02/03/05/06 | Evidencia P0, mapping, default |
+| PAR-SVC-PROFILE / ENUM | Candidato base si determina perfil funcional P0 | REQUIRED | VALUE; DEFAULT con contrato; no ABSENT/NULL | PAR-01/02/03/05/06 | D_profile, tabla mapping, default |
+| PAR-SVC-RETRY-COUNT / INT | Candidato base solo si el servicio declara reintentos | OPTIONAL | ABSENT/VALUE; DEFAULT con contrato; NULL no salvo declaración | PAR-01/02/03/05/06 | N_retry_max, semántica de ausencia y regla vinculada |
+
+La tabla es un IAM candidato, no un sellado operativo. Ninguna propiedad pasa a O/C/NA confirmatorio hasta que la unidad, fuente contractual, dominio, mapping, cobertura y regla de evidencia estén definidos ex ante. Si un slot no pertenece al P0 de la unidad, se elimina/sustituye antes de Z/B y se registra justificación; no se declara NA post hoc. POL sigue ausente por diseño y MET obligatorio conforme a decisiones existentes.
