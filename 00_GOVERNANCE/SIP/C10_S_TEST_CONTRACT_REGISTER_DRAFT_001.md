@@ -1175,3 +1175,21 @@ La trazabilidad histórica se conserva; no se simula independencia ni se declara
 La materialización futura seguirá el contrato común de §2: test_id, fixture_id/hash, entradas por rol, hidden_truth segregada, expected_output, assertions, failure_codes y artefactos. Los subcasos no tienen fixtures serializados, oráculos implementados, tolerancias calibradas ni hashes de ejecución. Sus resultados futuros serán PASS/FAIL/INDETERMINATE; no ejecutar hasta autorización aplicable.
 
 **Dictamen:** registro de pruebas ampliado documentalmente. MEAS-G8 sigue OPEN; MEAS-G4/G6/G7 permanecen abiertos o parciales según los contratos fuente. No se autoriza implementación, validación ejecutable, simulación ni experimento.
+
+
+
+## 58. Contratos de discriminación de validez IV (derivados de C10-S-IV-AUD-001)
+
+Se amplía el catálogo de aceptación para que el analizador no convierta un cociente Wald computable en un LATE interpretado cuando la verdad DGP viola supuestos. Estos contratos son propuestas; no hay fixtures serializados ni pruebas ejecutadas.
+
+| Familia | Escenario mínimo | Salida esperada del analizador |
+|---|---|---|
+| IV-REL | Primera etapa nula, débil y fuerte, por separado para `C_dep^*`, `A_f,post^*`, `D_f^*`, `ΔT_acc^*` | Distinguir no relevancia/instrumento débil de relevancia focal; no sustituir un constructo por otro |
+| IV-EXC | Exclusión satisfecha y violada por cada familia de vías colaterales B-M01…15 | `LATE_f` solo bajo condición satisfecha; efecto de política/paquete o no identificación si se viola |
+| IV-MON | Monotonicidad satisfecha y violada con defiers/crowding-out | Abstenerse de declarar LATE estándar cuando hay defiers |
+| IV-CROSS | Provisión focal de fondo/crossover en controles y versiones múltiples | Clasificar exposición y consistencia; no inferir tipo individual desde observación incompleta |
+| IV-INT | Interferencia, recursos/dependencias compartidos y carryover | Rechazar IV individual estándar o exigir régimen de exposición/clúster definido |
+| IV-MEAS | Error diferencial de `D_f^{obs}`, Outcome y Value; missingness/censura por brazo | Separar truth/observación; producir sensibilidad/cotas o no identificación |
+| IV-OUT | LATE para Outcome frente a LATE para Value con reglas/horizontes distintos | No transportar identificación de un resultado al otro |
+
+Cada fixture deberá usar el contrato común de §§1–2: `hidden_truth` accesible solo al generador/evaluador, nunca al analizador; entradas/roles separados; expected_output y assertions fijados antes de ejecutar; hash reproducible. La especificación de parámetros, tolerancias, potencia y serialización queda abierta. No se autoriza implementación ni ejecución.
