@@ -144,3 +144,18 @@ Se precisa que F* es una función de ruta completa que produce y aplica configur
 Se registra la decisión explícita: CMP≥1, PAR≥1 y RUL≥1; REF≥0 solo con IAM pre-Z/B y cobertura exhaustiva; POL≥0 ausente por diseño en el núcleo mínimo salvo módulo condicional predeclarado; MET obligatorio para identidad/versionado/procedencia. CMP=0, PAR=0 o RUL=0 implica SCOPE_ERROR, no NA. REF=0 requiere evidencia de cobertura completa; falta de evidencia queda ?. La estructura abstracta se formaliza en `C10_S_ABSTRACT_CONFIGURATION_INSTANCE_CONTRACT_DRAFT_001.md`.
 
 La matriz de aplicabilidad continúa en Draft: la decisión cierra cardinalidad de clase, no obligatoriedad de cada propiedad atómica, máximos, valores, mappings, instancia IAM ni validación.
+
+
+
+## 12. Reconciliación de aplicabilidad con contrato abstracto y Opción A (2026-11-06)
+
+Cardinalidad de clase y obligatoriedad de predicados son niveles distintos:
+- CMP≥1, PAR≥1 y RUL≥1 en el paquete base; REF≥0 solo si IAM pre-Z/B acredita inventario/cobertura exhaustivos; POL ausente por diseño salvo módulo secundario; MET obligatorio.
+- Esta cardinalidad no convierte automáticamente todas las propiedades atómicas CMP/PAR/REF/RUL en O. La matriz §3 conserva O/C/NA/? por predicado y objeto.
+- RUL no puede desaparecer como clase; RUL-04/05 pueden ser NA si los disparadores no existen por contrato y el inventario lo acredita. UNKNOWN/conflicto no equivale a NA.
+- REF=0 no equivale a REF desconocido; falta de cobertura deja ?. Referencias externas/dependencias respetan la frontera.
+- POL ausente no elimina requisitos FP-05 declarados independientemente.
+
+El IAM se aplica a F1/F2 y A1/A2 por igual. Antes de Z/B sella propiedades O/C/NA/?, C_src/C_dst, versiones, M, C0/G/H, cobertura y oráculos. Ninguna ruta redefine el IAM tras observar resultados.
+
+**Discrepancia preservada:** §4 histórico de esta matriz contiene formulaciones de REF/RUL con cardinalidad cero anteriores a DEC-C10-056. Se consideran supersedidas para cardinalidad de clase; no se reescribe el historial ni se altera la obligatoriedad de predicados individuales más allá de esa decisión.
