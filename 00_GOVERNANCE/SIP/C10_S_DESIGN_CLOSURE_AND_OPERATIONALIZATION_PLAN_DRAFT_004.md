@@ -890,9 +890,7 @@ No se aprueba ni congela la fórmula, no se cierran MEAS-G2…G8 ni IV, y no se 
 ### 16.17. Reconciliación de casos adversariales y cobertura lógica trivalente
 
 
-**Fuente:** auditoría de medición focal §11,
-
-Los subcasos TRI están registrados en `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md`, §57, como extensiones de MEAS-01…24; se reutilizan ID/SNAP sin duplicarlos. `C10-S-TRI-ADVERSARIAL-CROSSWALK-001`.
+**Fuentes:** auditoría de medición focal §11 (`C10-S-TRI-ADVERSARIAL-CROSSWALK-001`) y registro de pruebas §57. Los subcasos TRI son extensiones de MEAS-01…24; se reutilizan ID/SNAP sin duplicarlos.
 
 Se evita duplicar catálogos existentes. Se reutilizan ID-01…15, SNAP-01…15, DGP §§26–28/32–35, U_G §§4–8 y matriz de fixtures §30. La suite TRI propuesta cubre la agregación A_f/DEP/D_f que esos contratos no articulaban conjuntamente: ceros necesarios con unknown/conflicto, ruta válida con Runknown, DEP=0 con universo COMPLETE frente a PARTIAL, ruta alternativa y bloqueo focal, combinaciones basal/post, no comparabilidad global, redescubrimiento de ruta basal, ausencia de logs, separación truth/observed y error diferencial.
 
