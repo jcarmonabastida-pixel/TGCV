@@ -941,3 +941,13 @@ Se incorpora el crosswalk adversarial C10-S-IV-AUD-001 §11 como dependencia de 
 La evidencia de invariancia exige snapshots/diffs con cobertura suficiente, inventario de consumidores y rutas, medición independiente por unidad/versión/ventana, adjudicación ciega y falsadores explícitos. Falta de evidencia no prueba ausencia. El DGP adversarial deberá incluir al menos las ocho familias de escenarios de §11.5, sin asignar parámetros no justificados.
 
 **Estado:** exclusión NO DEMOSTRADA; IV-G4 ABIERTO; LATE_f bloqueado. No freeze, implementación ni ejecución.
+
+## 16.21. DGP adversarial Opción A — contrato de escenarios antes de parametrizar
+
+La auditoría IV §12 es la especificación cualitativa de referencia para el DGP Opción A. La secuencia de trabajo queda fijada: (i) aceptar/rechazar la semántica funcional S0/S2/SF, F1=τ2, F2, A1/A2 y F*; (ii) mapear cada escenario a variables y tiempos del DGP; (iii) decidir qué mecanismos se manipulan y cuáles permanecen invariantes; (iv) definir potenciales separados para D_f*, Reach/Π/Exec, O*/O_obs y V*/V_obs; (v) solo después justificar parámetros, distribuciones, soporte y sensibilidad; (vi) materializar fixtures y oráculos únicamente tras cierre documental y autorización.
+
+R0/EXC-F0 es control positivo focal; R1 es alternativa basal estable; R2 es alternativa afectada por B; R3 es provisión fallida. Se añaden como contrastes cualitativos separados vía directa a Outcome, vía directa a Value, conocimiento diferencial, medición diferencial, oráculo modificado, recursos compartidos y carryover. No combinar varias violaciones en un mismo fixture si impide identificar qué gate causa el dictamen.
+
+No confundir: (a) exclusión estructural; (b) relevancia de primera etapa focal; (c) independencia/aleatorización; (d) monotonicidad; (e) consistencia/versionado; (f) interferencia; (g) validez de medición. Un escenario puede violar varios, pero debe haber controles que aíslen cada fallo. ITT_Z y LATE_f se informan por separado y Outcome/Value por separado.
+
+**Pendiente antes de parametrizar:** ratificar semántica Opción A y definiciones F*/equivalencia alternativa; completar la tabla variable×tiempo×rol para las manipulaciones; cerrar unidad/soporte/interferencia y regla de Value; luego justificar parámetros y sensibilidad. No implementación ni ejecución.
