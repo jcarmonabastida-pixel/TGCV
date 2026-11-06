@@ -7948,3 +7948,34 @@ Se reutilizan ID-01…15 (identidad/matching), SNAP-01…15 (snapshots/diff), DG
 IDs propuestos TRI-AF-01…05, TRI-DEP-01…05, TRI-DF-01…06 y TRI-OBS-01…03 son especificaciones lógicas, no fixtures serializados ni pruebas. Se fija una tabla de nueve combinaciones D_f, subordinada a la guarda global de comparabilidad. El contrato de materialización reutiliza el esquema existente de test_case y separación generador/analizador/evaluador.
 
 Dictamen: cobertura documental TRI ampliada; MEAS-G8 sigue OPEN y MEAS-G4/G6/G7 no se cierran. No implementación, ejecución, freeze, cambios de decisión ni autorización científica.
+
+
+
+## 165. Propagación de auditoría de validez IV D2 — 2026-11-06
+
+**Fuente:** `C10_S_D2_LATE_F_IV_VALIDITY_AUDIT_DRAFT_001.md` (C10-S-IV-AUD-001; blob `f97117ad99d01648a3a20bd7ce2e146bee23b8ca`). Auditoría asistida propia, no independiente.
+
+### 165.1 Dictamen vigente
+
+`LATE_f` permanece **NO IDENTIFICADO / NO LISTO PARA WALD** en D2. La aleatorización candidata puede identificar el efecto de asignación de la política D2 (`ITT_Z`) si se cierran y respetan asignación, consistencia, interferencia y observación del resultado; no atribuye por sí sola el efecto a `D_f^*`. `LATE_f` continúa secundario y estrictamente condicional. No sustituye `θ_A(q)`, `θ_Af(q_X^*)` ni el contraste de política.
+
+### 165.2 Supuestos y amenazas no cerrados
+
+- **Relevancia:** no demostrada para `D_f^*`; primeras etapas de `C_dep^*`, `A_f,post^*`, `D_f^*` y `ΔT_acc^*` deben permanecer separadas. `s=0.80` es candidato no validado, no primera etapa observada.
+- **Independencia:** condicional a unidad/mecanismo de asignación, elegibilidad pre-Z, bloques, probabilidades y estructura de clúster/recursos compartidos.
+- **Exclusión:** amenazada materialmente por recursos/capacidad, permisos, coste, latencia, calidad, seguridad, información/conocimiento, alternativas, dependencias compartidas, rollback/carryover y medición. Si no se defiende, el resultado es efecto de política/paquete o no identificación, no `LATE_f`.
+- **Monotonicidad:** abierta; desplazamiento de capacidad, degradación de alternativas, incompatibilidades o rollback pueden producir defiers. Una primera etapa media positiva no la demuestra.
+- **Consistencia/versiones:** identidad/hash, recepción, cumplimiento, reintentos, fallos parciales y rollback siguen pendientes.
+- **Interferencia:** riesgo estructural por servicios, licencias, equipos, servidores, recursos y dependencias compartidas.
+- **Medición y resultado:** `D_f^*
+eq D_f^{obs}`; adjudicación ciega, error diferencial, missingness/censura y definición independiente de Outcome y Value siguen abiertos.
+
+### 165.3 Consecuencias de interpretación
+
+Separar `ITT_Z` de efecto de política recibida, `ψ_policy`, `θ_Af(q_X^*)` y `LATE_f`. Un LATE identificado para Outcome no identifica el LATE de Value. Ninguno se transporta automáticamente a D1 ni al estimando general de C10-D1. Si falla exclusión u otro supuesto, no reportar un Wald nominal como efecto de accesibilidad.
+
+### 165.4 Gates IV-G1…IV-G8
+
+Antes de seleccionar Wald deben cerrarse: (G1) tratamiento/población/unidad/versiones; (G2) primeras etapas separadas e inferencia ante instrumento débil; (G3) asignación/interferencia/carryover; (G4) rutas colaterales y exclusión o abandono de atribución focal; (G5) monotonicidad y escenarios con defiers; (G6) consistencia y medición independiente; (G7) resultado Outcome/Value, horizonte y missingness; (G8) recuperación sintética de identificación/no identificación bajo verdad oculta adversarial.
+
+Estos gates no equivalen a aprobación de parámetros, cierre del diseño global, freeze ni autorización de implementación/ejecución. Se mantiene `scientific_execution=false` y `execution_authorized=false`.
