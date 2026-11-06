@@ -200,7 +200,7 @@ La decisión metodológica correcta es mantener Reach=?, F_alt,0=?, A_f*=? y MD-
 | B-M12 Rendimiento | N05, N07, N13, N15, N18, N20 | E05, E16, E17, E19 | REL-τ2, RES-τ2, ALT-A1, ALT-A2, ALT-F*, Rshared | Latencia, throughput, prioridad, contención y degradación por brazo/ventana; PROV-05/08/09 |
 | B-M13 Oráculo | N16 | E15 | ORACLE, ALT-F* | Hash/version, ceguera, dataset y reglas inmutables; PROV-02. Modificación funcional por B prohibida |
 | B-M14 Alternativas | N13, N14, N15, N12, N18, N20, N21 | E11–E14, E17, E19, E20 | ALT-A1, ALT-A2, ALT-DEP, ALT-F*, Rτ2/RA12/Rshared/Rexternal | Catálogo, grafo transitivo y pruebas funcionales pre/post con margen justificado; PROV-05/08/09. Modificación por B prohibida |
-| B-M15 Reversibilidad | N01, N03–N08, N13–N21 | Aristas afectadas por el cambio y snapshots asociados; no existe E-ID específico de rollback en E01–E23 | Predicados/rutas afectados antes y después de rollback; Runknown si quedan residuos sin clasificar | S_preB, S_postB, S_rollback y S_routeA; diffs, residuos y PROV-03/10/11 |
+| B-M15 Reversibilidad | Nodos identificados por el diff entre S_preB/S_postB/S_rollback/S_routeA; no preasignar IDs fuera de evidencia | Aristas identificadas por el diff y snapshots asociados; no existe E-ID específico de rollback en E01–E23 | Predicados/rutas afectados antes y después de rollback; Runknown si quedan residuos sin clasificar | S_preB, S_postB, S_rollback y S_routeA; diffs, residuos y PROV-03/10/11 |
 
 **Precauciones de mapping:**
 
