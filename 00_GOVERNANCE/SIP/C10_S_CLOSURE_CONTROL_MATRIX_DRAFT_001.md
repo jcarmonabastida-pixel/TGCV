@@ -994,3 +994,20 @@ El crosswalk conceptual B-M01…15 → variable/predicado → clase U_G → meca
 | `D_f^{obs}` | Baseline 0 y post 1 | Baseline 1 o post 0 | Resto; no comparabilidad → NOT_COMPARABLE/? |
 
 **Guardas:** MISSING/NONE/PARTIAL no equivalen a 0; C_dep=0 no implica DEP=0 con alternativa admisible; D_f observado no sustituye D_f verdadero para IV sin modelo de error defendible. Esta regla es documental, asistida/no independiente; no valida ejecución, cierra MEAS-G2…G8 ni IV, ni modifica DEC-C10-065/066/067.
+
+
+## 36. Reconciliación de contratos adversariales y suite lógica TRI
+
+
+**Fuente:** `C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md`, §11.
+
+| Dimensión | Reutilización/cobertura | Estado tras reconciliación | Criterio aún pendiente |
+|---|---|---|---|
+| Identidad/matching | ID-01…15 | Contratos documentales existentes; no ejecutados | Fixtures/oráculos, error y adjudicación |
+| Snapshots/diff | SNAP-01…15 | Contratos documentales existentes; no ejecutados | Validación de comparabilidad y matching |
+| A_f trivalente | TRI-AF-01…05 | Especificación lógica propuesta | Evidencia por predicado, conflicto y cobertura |
+| DEP/rutas | TRI-DEP-01…05 + U_G Rτ2/RA12/Rshared/Rexternal/Runknown | Especificación lógica propuesta | Inventario y cobertura completa para 0 |
+| D_f basal/post | TRI-DF-01…06 | Tabla lógica de nueve combinaciones propuesta | Matching temporal y snapshots comparables |
+| Separación/medición | TRI-OBS-01…03 | Contratos de no filtración/error propuestos | Doble evaluación, error diferencial y missingness |
+
+**Dictamen:** cobertura documental mejorada por reutilización y crosswalk; MEAS-G8 OPEN, MEAS-G4/G6/G7 OPEN/PARTIAL según sus fuentes. No se declaran cerrados ID/SNAP, UG-SCH-10, XSYNC, PROV, MD-C1/MD-C4 ni IV. No hay fixtures serializados, ejecución ni autorización.
