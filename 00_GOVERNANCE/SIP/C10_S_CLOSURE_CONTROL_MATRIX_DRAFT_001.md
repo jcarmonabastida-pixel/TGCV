@@ -1085,7 +1085,7 @@ Los controles son especificaciones, no resultados PASS. Ningún escenario está 
 |---|---|---|
 | DGP-TIME-01 | Reloj único t−1/t0–t9/t+1…; cada escenario mapea manipulación y resultado al momento correcto | DOCUMENTADO / NO VALIDADO |
 | DGP-ROLE-01 | Generador, analizador y evaluador separados; truth/potenciales ocultos al analizador | DOCUMENTADO / NO IMPLEMENTADO |
-| DGP-SEM-01 | Contrato funcional versionado F1/τ2, F2, A1/A2 y adaptador; sin inferirlo de la selección de microdominio | OPEN |
+| DGP-SEM-01 | Opción A seleccionada por DEC-C10-051; contrato funcional versionado de F1/τ2, adaptador, F2, A1/A2 y F* aún no cerrado | OPEN |
 | DGP-OUT-01 | O*/O_obs y V*/V_obs, oráculos, regla Value, beneficiario/horizonte diferenciados | OPEN |
 | DGP-INT-01 | Unidad de interferencia, pool, mapa de exposición y asignación/análisis cluster | OPEN |
 | DGP-CARRY-01 | Snapshots t+1…, rollback y washout/carryover por unidad/periodo | OPEN |
