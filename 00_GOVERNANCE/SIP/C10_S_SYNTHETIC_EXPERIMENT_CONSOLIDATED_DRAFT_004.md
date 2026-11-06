@@ -7979,3 +7979,13 @@ Separar `ITT_Z` de efecto de política recibida, `ψ_policy`, `θ_Af(q_X^*)` y `
 Antes de seleccionar Wald deben cerrarse: (G1) tratamiento/población/unidad/versiones; (G2) primeras etapas separadas e inferencia ante instrumento débil; (G3) asignación/interferencia/carryover; (G4) rutas colaterales y exclusión o abandono de atribución focal; (G5) monotonicidad y escenarios con defiers; (G6) consistencia y medición independiente; (G7) resultado Outcome/Value, horizonte y missingness; (G8) recuperación sintética de identificación/no identificación bajo verdad oculta adversarial.
 
 Estos gates no equivalen a aprobación de parámetros, cierre del diseño global, freeze ni autorización de implementación/ejecución. Se mantiene `scientific_execution=false` y `execution_authorized=false`.
+
+
+
+## 166. Auditoría adversarial de exclusión por B-M01…15 — Opción A
+
+Se incorpora como referencia el dictamen de C10-S-IV-AUD-001 §11. La auditoría conceptual de las quince superficies distingue la parte estrictamente focal que podría quedar capturada por D_f* (artefacto/runtime/interfaz/red/seguridad, bajo definición previa) de vías colaterales a aplicabilidad/estado, recursos, alternativas, rendimiento, riesgo/coste, conocimiento, observación, oráculo y carryover. B-M01…15 son superficies de inspección, no cambios materiales constatados.
+
+**Dictamen:** exclusión NO DEMOSTRADA; amenazas materiales abiertas. B-M06, B-M07, B-M09, B-M11, B-M12 y B-M14 son amenazas directas prioritarias; B-M10/B-M13 comprometen conocimiento/medición/comparabilidad; B-M02/B-M03/B-M07/B-M08/B-M11/B-M12/B-M14/B-M15 requieren examen de interferencia y persistencia. B-M05 exige invariancia de autorización funcional basal. Un cambio funcional extra, vía directa a Outcome/Value, alternativa modificada, medición diferencial o spillover impide atribución automática a D_f*.
+
+El ITT_Z conserva interpretación como efecto de asignación de la política D2 si se satisfacen sus condiciones de diseño; con vías laterales, la lectura es política/paquete. LATE_f sigue NO IDENTIFICADO / NO LISTO PARA WALD. No se modifican DEC-C10-066/067 ni se autoriza freeze, implementación o ejecución.
