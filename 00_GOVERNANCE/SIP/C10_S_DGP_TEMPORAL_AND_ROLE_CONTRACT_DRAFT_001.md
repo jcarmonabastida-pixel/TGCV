@@ -44,7 +44,7 @@ Los snapshots posteriores a una ejecución que altere el sistema se registran co
 - **D2 primario candidato (DEC-C10-066/067):** `B_{g0}^{D2}` mantiene la configuración basal y no programa intento focal; `B_{g1}^{D2}` programa provisión técnica focal estandarizada para unidades elegibles. No se modifica la autorización normativa basal.
 - **D1 secundario:** `B_{g0}^{D1}` representa provisión ordinaria de baja frecuencia; `B_{g1}^{D1}` programa el mismo procedimiento para las unidades elegibles. No se redefine D1 como ausencia de provisión.
 
-La probabilidad de intento y el estado final verificado se derivan del escenario y del mecanismo técnico; no son una única probabilidad genérica `p0/p1`. Los valores candidatos se detallan en §24 y no están validados.
+La probabilidad de programación, el intento efectivo y el estado final verificado se derivan del escenario y del mecanismo técnico; no son una única probabilidad genérica `p0/p1`. Los valores candidatos se detallan en §24 y no están validados.
 
 ### 3.2 Intento, éxito y estado final
 
