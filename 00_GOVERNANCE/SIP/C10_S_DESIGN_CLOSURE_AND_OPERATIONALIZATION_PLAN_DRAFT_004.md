@@ -651,3 +651,64 @@ La ficha protege el supuesto de que la política D2 no modifica autorización no
 **Dictamen:** crosswalk conceptual D2-C_INFO completado. Quedan abiertos inventario de información técnica imprescindible, mapeo final a C_dep*/R_access*/D_support*, evidencia de invariancia de comunicaciones, validación de E_T, medición comparable y adjudicación de I-INFO-01…06. No se aprueba C_info, no se cierra D2 ni se modifica DEC-C10-066/067; no se autoriza implementación, simulación o ejecución.
 
 **Siguiente operación:** consolidar el crosswalk de las fichas D2-INV-AUTH-01, D2-RES-01, D2-CAP-01 y D2-C_INFO y realizar una auditoría de no duplicidad entre sus condiciones, dominios B-M, U_G, PROV y FCM antes de pasar a estimandos/población/medición. No repetir la construcción de fichas; buscar contradicciones entre ellas y el maestro §§59/64/65.
+
+
+### 16.10. Auditoría transversal de no duplicidad y coherencia de las cuatro fichas D2 (2026-11-06)
+
+**Estado:** auditoría documental transversal realizada sobre las fichas §13.1–13.4, el maestro C10-S §§46–47, 59.1–59.6 y 64.2–64.3, el manifiesto B-M01…15/PROV-01…12, la matriz U_G §9, la matriz de cierre §31 y DEC-C10-066/067. Resultado: coherencia conceptual parcial con una corrección de mapping aplicada; no es freeze, validación material ni revisión independiente.
+
+#### 16.10.1. Resultado de no duplicidad
+
+| Frontera | Regla reconciliada | Estado y pendiente |
+|---|---|---|
+| Autorización funcional vs permiso técnico | C_auth,base es autorización normativa funcional basal. ACL, token, credencial y acceso al endpoint son permisos técnicos de provisión B. El canal/interfaz de invocación tampoco equivale a autorización normativa. | Distinción conceptual consistente con B-M04/B-M05, PROV-06 y FCM-D2-06/07. Fuente normativa, titular, alcance, vigencia y evidencia de C_auth siguen abiertos. |
+| Recursos vs capacidad | C_resource describe recursos materiales/económicos y su disponibilidad/asignación ex ante. C_capacity describe capacidad de servicio/slots bajo configuración y ventana. No son sinónimos, pero pueden referirse al mismo pool físico y por tanto solaparse. | No se admiten dos factores independientes ni doble contabilización. Maestro §59.3 permite incorporarlos a R_access* solo si son necesarios y distintos de C_dep*. Falta descomposición por dimensión, unidad, pool, compromiso, ventana y regla de derivación de capacidad. |
+| Capacidad focal vs no focal | La capacidad/recursos que B añade para instalar/operar el adaptador forman parte de C_dep* o del proceso de provisión según el objeto; no son capacidad basal no focal. | Regla coherente entre D2-RES-01 y D2-CAP-01. Falta evidencia de separación material y no desplazamiento de A1/A2/F2. |
+| Información técnica vs dependencia | Un parámetro/configuración imprescindible integrado en el adaptador puede estar ya representado en C_dep*. Solo si es una condición distinta, ex ante y necesaria puede clasificarse en R_access*/D_support*. | C_info autónomo no se incorpora a A_f*. Inventario de información imprescindible y prueba de necesidad/no duplicidad siguen abiertos. |
+| Conocimiento del agente vs accesibilidad | K, avisos, formación y consideración son mecanismos posteriores; no se usan para redefinir A_f*. | B-M10/N22/E22. Posible mediación/cointervención; no ajustar automáticamente por K postratamiento. |
+| Aplicabilidad/ejecución vs accesibilidad | Precondiciones de S0 y demanda de una ejecución concreta pertenecen a App_f*/ejecución/rendimiento, no a A_f*. | Coherente con §59.3 y §64.2–64.3. Umbrales y medición material siguen pendientes. |
+| Evidencia del evaluador E_T vs objeto medido | E_T es el proceso/plano epistémico de observación, cobertura y adjudicación; no es un predicado del sistema ni equivale al oráculo o al resultado observado. | E_T no tiene nodo/arista U_G explícitos. N16/E15 es oráculo/evaluación funcional; N22/E22 es conocimiento; N23/E23 es endpoint de resultados. La ausencia de representación explícita de E_T debe permanecer visible, no rellenarse por analogía. |
+
+#### 16.10.2. Corrección de la inconsistencia U_G / E_T
+
+La versión anterior del crosswalk D2-C_INFO atribuía N23/E23 a observabilidad del evaluador. La definición canónica de U_G los identifica como resultado de ejecución/Outcome/Value (N23) y su relación downstream (E23). Esa atribución era incorrecta.
+
+Se corrigió de forma consistente en:
+- Path Predicate Temporal Evidence Matrix §13.4.1.
+- Closure Control Matrix, fila B-M10.
+- Design Closure and Operationalization Plan §16.9.3.
+- Graph Coverage and Trivalent Evidence Matrix §9, fila B-M10 y precaución transversal 3.
+
+La lectura reconciliada es:
+- N22/E22: conocimiento del agente y vía a consideración/selección/ejecución.
+- N16/E15: oráculo/criterio y evaluación funcional.
+- N23/E23: endpoint de resultados de ejecución/Outcome/Value.
+- E_T: plano de medición/observabilidad separado, sin nodo/arista U_G específico en el esquema actual.
+
+B-M10 puede afectar a los tres tipos de superficies/endpoint, pero ello no convierte a N16, N22 o N23 en el proceso E_T. PROV-02 protege F*/dataset/oráculo; PROV-03 exige snapshots; PROV-11 propaga desconocidos. Ninguno constituye por sí solo un contrato completo de validez, comparabilidad y adjudicación de E_T. No se inventa un nuevo PROV, FCM, nodo o arista.
+
+FCM-D2-10 se mantiene como separación de provisión técnica y ejecución; aplica a la vía K→selección/ejecución, no como validación del proceso E_T. FCM-D2-07 obliga a registrar cambios colaterales.
+
+#### 16.10.3. Correspondencia cruzada consolidada
+
+| Ficha | Dominio B-M rector | U_G candidato existente | PROV / FCM principal | No duplicidad que debe preservarse |
+|---|---|---|---|---|
+| D2-INV-AUTH-01 | B-M05; B-M04/B-M09 relacionados | N17/E18; otras superficies solo si el grafo lo demuestra | PROV-06; FCM-D2-06/07 | Autorización funcional basal ≠ ACL/credencial/endpoint técnico |
+| D2-RES-01 | B-M07; B-M02/B-M03/B-M12 relacionados; B-M14 si afecta alternativas | N18/N05/N13/N15/N20; E16/E17/E19 | PROV-03/04/05/09; FCM-D2-06/07/08 | Disponibilidad ex ante ≠ consumo; no duplicar capacidad ni C_dep* |
+| D2-CAP-01 | B-M07; B-M02/B-M03/B-M12 relacionados; B-M14 si afecta alternativas | N18/N05/N13/N15/N20; E16/E17/E19 | PROV-03/04/05/09; FCM-D2-06/07/08 | Capacidad de servicio/slots ≠ cantidad de recursos; capacidad focal de B ≠ capacidad basal no focal |
+| D2-C_INFO | B-M10; B-M06 solo si cambia datos/configuración funcional | N22/E22 (K), N16/E15 (evaluación funcional), N23/E23 (resultados); E_T no mapeado explícitamente | PROV-02/03/11; FCM-D2-07 y FCM-D2-10 solo para separación provisión/ejecución | Información técnica ≠ conocimiento; E_T ≠ oráculo ni Outcome; no crear C_info autónomo |
+
+Los nodos/aristas son roles y relaciones candidatos del grafo; su cobertura material sigue siendo NONE/unknown según el registro. El crosswalk no prueba que existan componentes, dependencias o cambios.
+
+#### 16.10.4. Alcance y límites del dictamen
+
+1. La auditoría solo cubre las cuatro fichas solicitadas; no cierra todos los elementos de A_f*. C_domain/D_support*, identidad/versión, bloqueos, C_other histórico y su retirada requieren reconciliación propia dentro del maestro.
+2. La matriz de elegibilidad histórica §46.2 y §47.3 contiene C_resource/C_capacity/C_info/C_domain/C_other. La ecuación candidata §59.3 depura su interpretación hacia C_dep*, C_auth_base, R_access* y D_support*. La precedencia es propuesta; no autoriza borrar la historia ni declarar cerrada la población.
+3. Las invariancias de DGP, obligaciones contractuales y no-afectación empírica son estados distintos. Ninguna de las fichas demuestra invariancia material.
+4. DEC-C10-066 mantiene D2 como escenario primario candidato y D1 como secundario; DEC-C10-067 acepta el contrato material conceptual D2. Ninguna decisión se amplía por esta auditoría.
+5. El ITT sigue siendo efecto de asignación de la política material D2. Si cambian vías colaterales, recursos compartidos, conocimiento o medición, no se atribuye automáticamente el resultado a ΔT_acc*. Unidad/interferencia, Value, población/soporte, estimandos y supuestos siguen abiertos.
+6. No se modifica C10-D1, TGCV Core, RMA, Evidence→Claim Matrix, STATUS ni DEC-C10-066/067. No se autoriza freeze, implementación, simulación o ejecución científica.
+
+**Dictamen:** las cuatro fichas son conceptualmente compatibles con la ecuación candidata §59.3 si se mantienen las reglas de no duplicidad anteriores. La representación de E_T en U_G queda expresamente incompleta y corregida como tal. La auditoría no convierte la arquitectura candidata en diseño aprobado ni operacionalizado.
+
+**Siguiente operación:** retomar el Bloque 2 del plan de cierre: reconciliar formalmente la jerarquía de estimandos y la identificación para D2, reutilizando C10-D1 §§5, 17, 25–30, la reconciliación C10-D1/S4-R, P177/P178/P179/P182/P183 y las decisiones DEC-C10-001…067. No crear un nuevo estimando ni empezar por fórmulas sin resolver primero la correspondencia entre políticas materiales B_g, régimen q, política g y estimandos.
