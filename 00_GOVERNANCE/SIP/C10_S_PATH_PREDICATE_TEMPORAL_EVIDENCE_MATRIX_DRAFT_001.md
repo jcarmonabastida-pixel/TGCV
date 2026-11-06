@@ -294,6 +294,36 @@ La información técnica solo se considera constitutiva si conjuntamente: (a) es
 
 **Abiertos:** inventario concreto de información técnica imprescindible; mapping de cada elemento a `C_dep*` u otra condición sin duplicidad; evidencia para invariancia técnica y ausencia de comunicaciones diferenciales.
 
+
+#### 13.4.1. Crosswalk causal individual de D2-C_INFO
+
+**Estado:** clasificación y trazabilidad documental especializada; propuesta DRAFT. No se crea un predicado autónomo C_info, no se incorpora a A_f* y no se declara que B haya alterado materialmente información, conocimiento u observabilidad.
+
+| Objeto | Correspondencia causal | Evidencia/contrato y falsador | Dictamen |
+|---|---|---|---|
+| Información técnica del sistema | Si el dato/metadato/parámetro es imprescindible para invocar o realizar τ2, debe localizarse en la condición ya existente que lo contiene: normalmente C_dep* si forma parte del adaptador/configuración focal; o R_access*/D_support* solo si es condición distinta, ex ante y no duplicada | Especificación/versionado, frontera, diff de configuración, prueba de necesidad/ausencia y fuente independiente; PROV-03/04/12. Falsador de autonomía: el elemento ya está representado en C_dep*, autorización, recursos o dominio | No añadir C_info a A_f*. La etiqueta histórica C_info de §30.1 se conserva como antecedente del juguete, no como factor depurado vigente |
+| Conocimiento del agente (K) | Mecanismo posterior: B → manuales/formación/avisos → K → consideración/selección/inicio → Execution. Puede mediar una parte del efecto de política sin cambiar accesibilidad estructural | Inventario de mensajes, destinatarios, contenido, tiempos y exposición; B-M10, N22/E22 y B-M06 solo si cambia información/datos funcionales del sistema; PROV-03/04. I-INFO-01/03. Falsador de aislamiento: comunicación diferencial inducida por B | Vía informativa/mediadora o co-intervención; no confundir K con A_f* ni ajustar automáticamente por K postratamiento |
+| Observabilidad y evidencia del evaluador | E_T separado: esquema, cobertura, validez, permisos, retención y adjudicación de logs/métricas. B puede cambiar A_f_obs/ΔT_acc_obs sin cambiar A_f*/T_acc* | B-M10; N16/E15 y N23/E23; ORACLE en la cobertura existente; PROV-02/03/11. I-INFO-04/06. Falsador: cobertura/medición diferencial por brazo, cambio de regla/oráculo o missingness no comparable | Cambio epistémico/medición, no condición causal del sistema. Si no se puede reconstruir verdad del DGP o estado real, mantener ? |
+| Información técnica imprescindible no verificable | Estado de presencia/ausencia desconocido | Evidencia independiente de configuración/versión y fuente; I-INFO-06; PROV-11 propaga cobertura incompleta | ?; nunca convertir falta de registro en ausencia ni asumir presencia |
+
+**Contratos adversariales I-INFO-01…06:**
+
+| ID | Caso | Resultado de clasificación requerido |
+|---|---|---|
+| I-INFO-01 | Sistema dispone de información técnica; agente desconoce τ2 | La accesibilidad no se hace 0 por desconocimiento del agente |
+| I-INFO-02 | Agente conoce τ2; sistema carece de dato técnico imprescindible | El conocimiento no convierte la transformación en accesible |
+| I-INFO-03 | B mejora manuales/formación sin modificar el sistema | Registrar vía B→K→consideración/selección/ejecución; posible mediación/colateral |
+| I-INFO-04 | B mejora documentación del evaluador sin cambiar el sistema | Registrar ΔE_T; no inferir ΔT_acc* |
+| I-INFO-05 | Información técnica duplicada por condición incluida en C_dep* | Una sola representación causal; no duplicar predicados |
+| I-INFO-06 | Información necesaria cuya presencia no puede verificarse | Mantener ? y propagar cobertura incompleta |
+
+**Reconciliación histórica obligatoria:** la ecuación de §30.1 contiene C_info=1 en la conjunción histórica de siete condiciones. La ecuación candidata depurada de §59.3 reemplaza su interpretación para S4-R por ID/versión válidos, C_dep*, C_auth_base, R_access* y D_support*, indicando que información técnica solo entra en R_access*/D_support* si satisface necesidad y no duplicidad. §59.5 distingue expresamente información técnica de conocimiento del agente. Se conserva §30.1 como antecedente; no se elimina ni se presenta como fórmula operativa actual. La precedencia de §59.3 es candidata, no freeze, y su cierre requiere inventario técnico y pruebas de necesidad/no duplicidad.
+
+**Regla de medición:** distinguir el estado del sistema (truth/estado estructural), el conocimiento del agente (mecanismo) y el proceso de observación del evaluador (E_T). Si B cambia el acceso a telemetría, cobertura o adjudicación, modelar error/missingness diferencial. No condicionar análisis primario en variables postratamiento de conocimiento/observabilidad como si fueran covariables basales; la mediación/efecto de política exige estimando y supuestos propios.
+
+**Dictamen:** el crosswalk de D2-C_INFO queda desarrollado conceptualmente. No hay inventario de información técnica imprescindible, prueba de ausencia/presencia, prueba de invariancia de comunicaciones, validación de E_T ni evidencia de medición comparable. No se aprueba C_info como predicado, no se cierra D2, PROV-02/03/04/11 ni los contratos I-INFO, y no se autoriza implementación, simulación o ejecución.
+
+
 ### 13.5. Regla transversal de clasificación y trazabilidad
 
 Las fichas deben mapearse a las clases I/S/T/R/D/E ya definidas en esta matriz, sin reemplazar la clasificación por una etiqueta universal. Separar: (1) invariancia postulada en el DGP; (2) invariancia definida contractualmente; y (3) no-afectación demostrada empíricamente. Ninguna implica las otras. Para cada condición, conservar unidad, transformación, paso, rama, ventana, verdad del DGP, estado observado, fuente, cobertura, versión, adjudicador y razón de `?`, reutilizando la clave y reglas de propagación ya definidas en §§2–10.
