@@ -39,35 +39,30 @@ Los snapshots posteriores a una ejecución que altere el sistema se registran co
 
 ### 3.1 Asignación y política
 
-`Z_i ∈ {0,1}` asigna la política técnica `B_g0` o `B_g1`. La asignación no es accesibilidad ni ejecución.
+`Z_i ∈ {0,1}` asigna una política material indexada por escenario: `B_{g0}^{D1}/B_{g1}^{D1}` o `B_{g0}^{D2}/B_{g1}^{D2}`. La asignación no es intento, recepción, accesibilidad ni ejecución.
 
-- `B_g0`: provisión técnica de menor probabilidad objetivo, `p0=.20`.
-- `B_g1`: provisión técnica de mayor probabilidad objetivo, `p1=.80`.
+- **D2 primario candidato (DEC-C10-066/067):** `B_{g0}^{D2}` mantiene la configuración basal y no programa intento focal; `B_{g1}^{D2}` programa provisión técnica focal estandarizada para unidades elegibles. No se modifica la autorización normativa basal.
+- **D1 secundario:** `B_{g0}^{D1}` representa provisión ordinaria de baja frecuencia; `B_{g1}^{D1}` programa el mismo procedimiento para las unidades elegibles. No se redefine D1 como ausencia de provisión.
 
-Estos valores se conservan como parámetros ilustrativos de §30.2, sujetos a calibración del estado final verificado. Ambas ramas son políticas de provisión; g0 no significa necesariamente ausencia de provisión.
+La probabilidad de intento y el estado final verificado se derivan del escenario y del mecanismo técnico; no son una única probabilidad genérica `p0/p1`. Los valores candidatos se detallan en §24 y no están validados.
 
 ### 3.2 Intento, éxito y estado final
 
-\\[
-W_{attempt,i} \sim Bernoulli(\omega_{Z_i})
-\\]
+[
+W_{attempt,i} sim Bernoulli(\omega_{z,D})
+]
 
 [
-S_{install,i} \sim Bernoulli(s_{Z_i}(W_{attempt,i},X_i,H_{i0}))
-\\]
+C_{dep,i1}^{*}=C_{install,i1}^{*}\land C_{integrity,i1}^{*}\land C_{compat,i1}^{*}\land C_{oper,i1}^{*}
+]
 
-[
-C_{dep,i1}=C_{install,i1}\land C_{integrity,i1}\land C_{compat,i1}\land C_{oper,i1}
-\\]
+`ω_{z,D}` es la probabilidad de intento efectivo bajo la política asignada al escenario D; no sustituye el registro de intento programado, recepción ni cumplimiento. El éxito técnico condicional candidato `s=0.80` se refiere a la probabilidad conjunta de que la ruta técnica complete los cuatro componentes tras un intento elegible, bajo protocolo, actor, versión, recursos y ventana fijados. No se presume independencia entre componentes.
 
-`ω_z` es probabilidad de intento; `s_z` modela éxito condicional. La probabilidad final de C_dep no se iguala a ω_z salvo que el procedimiento haga idénticos intento y éxito. Para preservar la verdad analítica de §30.5, el generador debe calibrar:
+En el DGP idealizado de una oportunidad y sin provisión focal de fondo, la factorización candidata es:
+- D1: intentos `.25/1.00`; estados finales esperados de `C_dep*` `.20/.80` si `s=.80`.
+- D2: intentos `0/1.00`; estados finales esperados de `C_dep*` `0/.80` si `s=.80`.
 
-[
-P(C_{dep,i1}=1\mid Z=0,P^*_{\tau2})=.20,\quad
-P(C_{dep,i1}=1\mid Z=1,P^*_{\tau2})=.80
-\\]
-
-Si las condiciones restantes están satisfechas, estas probabilidades pueden coincidir con las probabilidades finales de accesibilidad focal. Si no, calcular `P(A_f,post*=1|Z=z)` desde todas las condiciones, no desde C_dep solamente.
+Estos valores son hipótesis algebraicas de diseño, no tasas empíricas ni parámetros aprobados. En particular, D2 `P(C_dep*=1|Z=1)=.80` solo se deriva bajo `s=.80`, una oportunidad, protocolo cumplido y ausencia de provisión de fondo. No implica automáticamente `P(A_f,post*=1)` ni `P(D_f*=1)`; ambos se calculan desde todos sus predicados constitutivos y condiciones basales.
 
 ### 3.3 Accesibilidad focal y cambio completo
 
@@ -789,3 +784,12 @@ La comparación distinguirá C_src, C_dst declarado, C_dst realmente aplicado y 
 6. Reach_H* y Reach_H,obs, propagación 1/0/? y Reach_H−/Reach_H+ siguen el contrato del maestro §§73–75. H=3 es profundidad candidata, no duración temporal.
 7. La estadística se cierra según la fuente 165–183 y el plan Draft 004: estimandos ITT-A/O/V, LATE por resultado, heterogeneidad/compliers, sensibilidad δ/γ, potencia/precisión por estimando, búsqueda de N, R por error Monte Carlo y reproducibilidad.
 8. Este addendum no aprueba fórmulas, comparador D1/D2, Value, parámetros, implementación, simulación ni ejecución.
+
+
+## 26. Precedencia material D2 por DEC-C10-067
+
+DEC-C10-067 acepta el contrato conceptual de las políticas (B_{g0}^{D2}) y (B_{g1}^{D2}). El control no programa ni inicia provisión focal; el tratamiento programa provisión técnica focal con artefacto/versionado identificados y verificación separada de los cuatro componentes técnicos. Asignación, intento programado/efectivo, recepción, éxito, (C_{dep}^{*}), (A_f^{*}) y (D_f^{*}) no se sustituyen entre sí.
+
+Se mantienen comunes (C_{auth,base}=1), elegibilidad, recursos no focales, capacidad, información basal y medición/adjudicación en el DGP aislado. Cualquier cambio diferencial de permisos, recursos, costes, latencia, calidad, seguridad, información, incentivos o alternativas debe registrarse como vía colateral. El ITT de Z sigue siendo efecto de política/paquete; no se etiqueta automáticamente como efecto puro de accesibilidad.
+
+Permanecen abiertos actor, artefacto/hash, recepción, ventanas, reintentos, rollback, evidencia de componentes, detección de provisión de fondo y rutas alternativas. (s=0.80) no está validado. No se aprueban parámetros ni DGP, ni se autoriza freeze, implementación, simulación o ejecución científica.
