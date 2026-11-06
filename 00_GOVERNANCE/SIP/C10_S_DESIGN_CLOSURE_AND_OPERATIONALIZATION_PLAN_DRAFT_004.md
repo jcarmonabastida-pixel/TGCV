@@ -474,3 +474,42 @@ El registro de continuidad §16.1–16.2 queda confirmado en cuanto a la localiz
 #### 16.5.4. Siguiente gate
 
 Realizar el crosswalk causal **ficha por ficha**: definición/clase temporal → predicado y condición del DGP → dominio B-M → contrato PROV → objeto/arista/ruta U_G → fuente/evidencia/falsador → mecanismo causal y estimando afectado → control FCM-D2. El alcance inicial comprende `D2-INV-AUTH-01`, `D2-RES-01`, `D2-CAP-01` y `D2-C_INFO/I-INFO-01…06`; las condiciones adicionales del maestro (`C_domain`, `C_other,j`, `C_dep*`, `A_f*`) se incorporarán solo donde la correspondencia esté respaldada. No crear predicados/símbolos duplicados ni elevar propuestas a invariantes demostradas.
+
+
+### 16.6. Crosswalk causal ficha D2-INV-AUTH-01 — autorización normativa basal (2026-11-06)
+
+**Estado:** trazabilidad documental individual realizada; ficha DRAFT, no aprobada ni congelada. La fuente normativa concreta y la verificación material permanecen abiertas.
+
+#### 16.6.1. Semántica y predicado protegido
+
+- Ficha: `D2-INV-AUTH-01`, matriz temporal §13.1.
+- Predicado: `C_auth,base`; condición constitutiva basal de autorización funcional de la unidad para la transformación focal `τ2`.
+- Clase/tiempo: candidata I (invariante respecto de B en el DGP aislado); satisfecha antes de Z y mantenida común hasta la adjudicación postprovisión.
+- No equivale a ACL, token, credencial o permiso técnico de instalación/invocación del adaptador; tampoco equivale a conocimiento/consideración del agente.
+- Falsador: cambio diferencial inducido por B en la autorización normativa funcional. En ese caso se activa una condición constitutiva adicional y el contraste deja de representar únicamente provisión técnica focal.
+
+#### 16.6.2. Crosswalk de extremo a extremo
+
+| Eslabón | Correspondencia | Lectura y estado |
+|---|---|---|
+| Definición → DGP | `C_auth,base=1`; maestro §§46–47, 59.2, 59.4 y 64.5 | Elegibilidad basal y régimen común; invariancia postulada/contractual, no demostrada |
+| Predicado de evidencia | `AUTH-τ2`; matriz U_G §3 y matriz temporal | Pregunta: autorización funcional válida e invariante en t−1/t3; estado actual `?`, cobertura `NONE` |
+| Dominio de provisión | B-M05 Permisos; B-M04 Interfaz y B-M09 Seguridad como dominios relacionados | Separar política normativa/permiso funcional de ACL técnica, canal, roles y controles que puedan afectar otras operaciones |
+| Contrato PROV | PROV-06; manifiesto §10 | Permisos de B mínimos y sin ampliar `C_auth` funcional; contrato documental, no ejecutado |
+| U_G candidato | N17 y E18, más N07/N10/N11/N13/N15 cuando correspondan a principal/operación/consumidor; E18 representa autorización de operaciones | Roles candidatos, no identidades observadas. La asignación B-M05→N17/N07/N10/N11/N13/N15 y E18 está en matriz de cobertura §9 y plantilla U_G §17 |
+| Evidencia y falsador | Fuente normativa, titular competente, objeto/operación `τ2`, alcance, vigencia, unidad, ventana y versiones/diffs pre/post | Fuente/alcance/vigencia no resueltos en maestro §59.6. Un diff funcional inducido por B falsifica invariancia; ausencia de evidencia conserva `?` |
+| Mecanismo causal | Vía focal no manipulada por autorización; vía adversarial `B→C_auth→A_f*→ΔT_acc*` si B amplía autorización funcional | La segunda es cambio de condición constitutiva, no parte admisible del mecanismo técnico focal D2 |
+| Estimando | ITT de la política material D2; atribución específica a accesibilidad | Con `C_auth,base` común y satisfecha, no es la variable manipulada por D2. Si cambia por B, el ITT sigue siendo efecto de política/paquete; la atribución exclusiva a `ΔT_acc*` requiere identificación adicional |
+| Control de cierre | FCM-D2-06 y FCM-D2-07 | FCM-D2-06: invariancia candidata, no demostrada. FCM-D2-07: registrar cambios colaterales; evidencia pendiente |
+
+#### 16.6.3. Resolución de la aparente contradicción histórica
+
+La matriz de cierre §4, REC-CAUS-04, conservaba `Z_A→C_auth→A_f*` como modalidad propuesta y dejaba abierto si la política modificaba autorización o provisión. El maestro §64.5 ya distingue expresamente esa modalidad histórica de autorización del escenario primario actual: son diseños diferentes; la primera queda como alternativa histórica/adversarial y no se mezcla con D2 sin decisión explícita. DEC-C10-067 mantiene `C_auth,base=1` común en el DGP D2 aislado y exige que los permisos técnicos de B no amplíen la autorización funcional.
+
+Se actualizó REC-CAUS-04 en la matriz de cierre para reflejar esa delimitación. **No** se declara cerrada la reconciliación causal general: permanecen abiertos q frente a g, legitimidad del comparador, fuente/alcance/vigencia de `C_auth,base`, cumplimiento material de PROV-06 y la demostración de invariancia. No se cambia DEC-C10-066/067 ni se elimina la modalidad histórica.
+
+#### 16.6.4. Dictamen y condición de cierre
+
+La ficha protege el supuesto de que la política D2 no modifica autorización normativa funcional, evitando que una apertura por autorización se confunda con la provisión técnica de `C_dep*). La arquitectura semántica es coherente para el D2 actual; la invariancia material **no está demostrada**. Para cerrar se requiere identificar la fuente normativa competente y su regla de vigencia, comprobar basalmente `C_auth,base=1` en la población elegible y comparar de forma independiente el alcance funcional pre/post B, separando ACL/credenciales técnicas de permisos funcionales. Si el contraste no puede observar esa separación, la clasificación permanece indeterminada y no se afirma aislamiento.
+
+**Siguiente ficha:** `D2-RES-01`, con idéntica cadena de trazabilidad, distinguiendo disponibilidad basal, recursos usados por B, consumidores compartidos y posibles vías a rutas alternativas/interferencia.
