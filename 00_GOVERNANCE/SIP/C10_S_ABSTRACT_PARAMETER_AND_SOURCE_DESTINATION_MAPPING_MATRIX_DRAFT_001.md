@@ -181,3 +181,20 @@ BOOL exige tabla explícita si cambia tipo; INT no admite overflow; DECIMAL decl
 M puede describir submappings por etapa, pero ambas rutas deben satisfacer mismo contrato de entrada/destino, IAM, C0/G/H y F*. F1 PASS no demuestra F2; S2 no es destino aplicado. A1/A2 no es alternativa funcional por alcanzar estado nominal: requiere mismo F* y evidencia de no-afectación por B. FP-01…07 sin compensación; FP-08 gate separado.
 
 **Pendiente:** mappings completos por instancia, reglas many-to-one/one-to-many, conversiones/pérdidas, defaults, C_dst aplicado, IAM y oráculo. No instancias ni fixtures.
+
+
+## 14. Reconciliación normativa de DEFAULT con DEC-C10-054
+
+La matriz y el perfil de dominios se armonizan con el contrato abstracto mediante una representación discriminada, no mediante colapso:
+
+| Plano | Representación | Ubicación |
+|---|---|---|
+| Estado de parámetro | ABSENT / NULL / DEFAULT / VALUE | PAR en C_src/C_dst |
+| Tipo de default contractual | DECLARED / INHERITED, obligatorio cuando state=DEFAULT | Metadato contractual PAR/default_contract |
+| Resolución ambiental | Valor efectivamente resuelto, si existe | Snapshot E_dst; fuera de C_src/C_dst |
+
+\`DEFAULT_DECLARED\` y \`DEFAULT_INHERITED\` son abreviaturas de (state=DEFAULT, default_kind=DECLARED|INHERITED). \`DEFAULT_ENV_RESOLVED\` identifica una observación ambiental y no un tercer default_kind del paquete.
+
+El mapping evalúa por separado origen, regla/ámbito de herencia, valor contractual y valor resuelto en entorno. La resolución ambiental se enlaza a parameter_key y versiones/snapshot; no se incorpora retroactivamente al paquete. Si la fuente no distingue declarado/heredado, el resultado es UNKNOWN salvo evidencia independiente. Snapshot ambiental ausente deja desconocida la resolución, no demuestra que no exista.
+
+Esta lectura implementa DEC-C10-054 y el perfil §3; no añade decisión nueva. La tabla §4 se mantiene, precisando DEFAULT_ENV_RESOLVED como E_dst. La igualdad del valor resuelto no acredita preservación semántica del default.
