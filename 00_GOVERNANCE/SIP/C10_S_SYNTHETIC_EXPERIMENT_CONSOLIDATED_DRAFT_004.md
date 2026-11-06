@@ -7999,3 +7999,17 @@ La especificación separa la ruta focal Z→B→D_f*→Reach/Π→selección/eje
 El generador conservará D_f*, Reach/Π/Exec, O*/O_obs y V*/V_obs separados; el analizador no recibe truth. Los dictámenes distinguirán LATE_f condicional, ITT_Z de política, efecto de paquete, instrumento débil/irrelevante, interferencia, medición diferencial, resultado no comparable y no identificación. Outcome y Value se evalúan por separado.
 
 **Estado:** propuesta cualitativa, no parametrizada ni implementada; no cierra IV-G4 ni los demás gates IV. Sin fixtures, pruebas o autorización de ejecución.
+
+
+
+## 168. Crosswalk temporal y de roles para DGP adversarial Opción A
+
+Se incorpora el contrato DGP §28 y la auditoría IV §13 como referencia única para ubicar los escenarios en el reloj existente t−1/t0–t9/t+1… y en los roles Generador/Analizador/Evaluador. No se crea reloj paralelo.
+
+La cadena temporal queda: t−1 sella población, elegibilidad, identidad/versiones, alternativas y condiciones basales; t0 asigna Z; t1 registra B y W_programmed/W_attempt; t2 verifica C_dep y captura superficies colaterales; t3 mide A_f*/D_f*/ΔT_acc* antes de K/selección/ejecución; t4 deriva Reach/Π; t5 K/Consider; t6 Sel/Start; t7 Exec; t8 Outcome; t9 Value; t+1… registra residuos/carryover. O*/O_obs y V*/V_obs se mantienen separados en el generador/evaluador y el analizador recibe solo observaciones y reglas públicas.
+
+El crosswalk distingue R0 focal exclusiva, R1 alternativa basal estable, R2 alternativa modificada por B, R3 provisión fallida, vías directas a Outcome y Value, conocimiento diferencial, medición/oráculo diferencial, recursos compartidos e interferencia/carryover. R1 no se clasifica como violación por mera existencia de alternativa; R2 sí constituye vía colateral cuando B modifica A1/A2. La vía a Value se prueba separadamente con Outcome verdadero constante.
+
+**Huecos de precedencia:** no se declara aprobada la semántica concreta F1/F2/A1/A2 por la sola selección de Opción A; el DGP temporal mantiene pendiente el contrato funcional versionado, el esquema O*/V* y la regla de Value, la unidad de interferencia/exposición y el washout de carryover. No asignar parámetros hasta resolverlos.
+
+**Estado:** integración documental; no parámetros, fixtures, pruebas ni ejecución. IV-G4, IV-G6, IV-INT y Value siguen abiertos; no Design Freeze ni implementación.
