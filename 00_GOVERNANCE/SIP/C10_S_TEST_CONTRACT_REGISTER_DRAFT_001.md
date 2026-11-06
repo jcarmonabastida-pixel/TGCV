@@ -1292,3 +1292,9 @@ Cada caso fijará C_src/C_dst, M, IAM, versiones, C0/G/H, cobertura, snapshot E_
 La suite debe separar: (1) DEFAULT declarado frente a heredado; (2) mismo valor resuelto con distinto origen contractual; (3) regla/ámbito de herencia distinto; (4) ENV_RESOLVED observado en E_dst frente a no observado; (5) valor ambiental distinto con contrato idéntico; (6) fuente incapaz de distinguir DECLARED/INHERITED; (7) valor resuelto no atribuible a versión/instancia; (8) ausencia real de default acreditada frente a snapshot/evidencia ausente.
 
 Cada caso separará hidden_truth, entrada del analizador, PAR contractual, mapping M y snapshot E_dst; declarará FP primario y resultado esperado 1/0/?. Son contratos lógicos, no fixtures ni pruebas ejecutadas.
+
+## 66. Contratos de discriminación del roster PAR candidato
+
+La futura suite deberá discriminar, sin asumir resultados: (1) BOOL preservado frente a inversión true/false; (2) ENUM con mapping total frente a símbolo obligatorio sin mapping; (3) fusión many-to-one de símbolos funcionalmente distintos; (4) INT dentro del dominio frente a overflow/truncamiento/signo alterado; (5) OPTIONAL ABSENT preservado frente a default introducido; (6) DEFAULT declarado frente a heredado y resolución ambiental separada; (7) NULL introducido en clave no nullable; (8) slot RETRY-COUNT que pertenece a P0 frente a recurso/capacidad P1 indebidamente incorporado; (9) STRING descriptivo en MET frente a STRING funcional contractual; (10) PAR tipo REF duplicando indebidamente una relación REF.
+
+Cada contrato fijará fuente/versión, owner CMP, tipo, dominio, requiredness, estados, default, mapping M, IAM, C_dst_applied, oráculo FP primario y entradas permitidas al analizador. hidden_truth seguirá fuera del analizador. Son contratos lógicos, no fixtures ni pruebas ejecutadas.
