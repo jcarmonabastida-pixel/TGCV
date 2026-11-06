@@ -7989,3 +7989,13 @@ Se incorpora como referencia el dictamen de C10-S-IV-AUD-001 §11. La auditoría
 **Dictamen:** exclusión NO DEMOSTRADA; amenazas materiales abiertas. B-M06, B-M07, B-M09, B-M11, B-M12 y B-M14 son amenazas directas prioritarias; B-M10/B-M13 comprometen conocimiento/medición/comparabilidad; B-M02/B-M03/B-M07/B-M08/B-M11/B-M12/B-M14/B-M15 requieren examen de interferencia y persistencia. B-M05 exige invariancia de autorización funcional basal. Un cambio funcional extra, vía directa a Outcome/Value, alternativa modificada, medición diferencial o spillover impide atribución automática a D_f*.
 
 El ITT_Z conserva interpretación como efecto de asignación de la política D2 si se satisfacen sus condiciones de diseño; con vías laterales, la lectura es política/paquete. LATE_f sigue NO IDENTIFICADO / NO LISTO PARA WALD. No se modifican DEC-C10-066/067 ni se autoriza freeze, implementación o ejecución.
+
+## 167. Especificación causal adversarial del DGP Opción A
+
+Se incorpora C10-S-IV-AUD-001 §12 como contrato cualitativo de escenarios Opción A. Se reutilizan R0–R3 y EXC-F0/EXC-B06/B07/B09/B10/B11/B12/B13/B14/B15; no se crea un universo de IDs alternativo ni se asignan parámetros.
+
+La especificación separa la ruta focal Z→B→D_f*→Reach/Π→selección/ejecución→Outcome→Value de las rutas directas a Outcome, directas a Value, alternativas A1/A2, conocimiento, medición/oráculo y recursos compartidos/carryover. R1 (alternativa basal estable) es deliberadamente distinto de R2 (alternativa afectada por B): la primera no viola por sí sola exclusión, la segunda sí puede hacerlo. R3 separa intento de éxito y apertura focal; una provisión fallida puede tener primera etapa nula/débil y, si consume recursos o deja residuos, además una vía colateral.
+
+El generador conservará D_f*, Reach/Π/Exec, O*/O_obs y V*/V_obs separados; el analizador no recibe truth. Los dictámenes distinguirán LATE_f condicional, ITT_Z de política, efecto de paquete, instrumento débil/irrelevante, interferencia, medición diferencial, resultado no comparable y no identificación. Outcome y Value se evalúan por separado.
+
+**Estado:** propuesta cualitativa, no parametrizada ni implementada; no cierra IV-G4 ni los demás gates IV. Sin fixtures, pruebas o autorización de ejecución.
