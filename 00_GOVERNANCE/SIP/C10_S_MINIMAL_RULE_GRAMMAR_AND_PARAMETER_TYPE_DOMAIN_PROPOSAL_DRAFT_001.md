@@ -132,7 +132,7 @@ No se afirma que la regla describa ya Opción A: si no existe fundamento contrac
 
 ## 12. Instancia sintética de referencia para comprobar expresividad RUL
 
-La especialización propuesta usa BOOL ENABLED y ENUM PROFILE={STANDARD,READ_ONLY,DISABLED}; RUL-SVC-ENABLE-PROFILE-01 se expresa como OR(NEQ(ENABLED,true),IN(PROFILE,{STANDARD,READ_ONLY})) bajo REQUIRE. Esta instancia demuestra expresividad sintáctica y contraste lógico dentro del mundo sintético estipulado; no valida parser, semántica ejecutable ni dominio de servicios reales. ENABLED=true/PROFILE=DISABLED es violador conocido; un valor ausente/conflictivo produce UNKNOWN conforme a la regla trivalente. Mantener presupuesto AST 4/16/16 y no introducir operadores o tipos nuevos.
+La especialización aceptada conceptualmente por DEC-C10-068 usa BOOL ENABLED y ENUM PROFILE={STANDARD,READ_ONLY,DISABLED}; RUL-SVC-ENABLE-PROFILE-01 se expresa como OR(NEQ(ENABLED,true),IN(PROFILE,{STANDARD,READ_ONLY})) bajo REQUIRE. Esta instancia demuestra expresividad sintáctica y contraste lógico dentro del mundo sintético estipulado; no valida parser, semántica ejecutable ni dominio de servicios reales. ENABLED=true/PROFILE=DISABLED es violador conocido; un valor ausente/conflictivo produce UNKNOWN conforme a la regla trivalente. Mantener presupuesto AST 4/16/16 y no introducir operadores o tipos nuevos.
 
 ## 12. Instancia sintética de referencia para comprobar expresividad RUL
 
