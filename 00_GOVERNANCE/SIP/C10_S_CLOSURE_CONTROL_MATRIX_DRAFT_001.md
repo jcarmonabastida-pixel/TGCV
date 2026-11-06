@@ -1001,6 +1001,8 @@ El crosswalk conceptual B-M01…15 → variable/predicado → clase U_G → meca
 
 **Fuente:** `C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md`, §11.
 
+Registro de subcasos: `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md`, §57. Los TRI son extensiones de MEAS-01…24, no una familia de pruebas independiente.
+
 | Dimensión | Reutilización/cobertura | Estado tras reconciliación | Criterio aún pendiente |
 |---|---|---|---|
 | Identidad/matching | ID-01…15 | Contratos documentales existentes; no ejecutados | Fixtures/oráculos, error y adjudicación |
