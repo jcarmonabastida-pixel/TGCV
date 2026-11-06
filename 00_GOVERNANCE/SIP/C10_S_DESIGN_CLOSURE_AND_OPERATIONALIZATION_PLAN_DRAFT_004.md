@@ -314,3 +314,72 @@ La aceptación no resuelve la correspondencia (B_{g0}/B_{g1}leftrightarrow g_0/g
 DEC-C10-067 acepta las definiciones materiales conceptuales de (B_{g0}^{D2}) y (B_{g1}^{D2}). El siguiente bloque debe resolver invariantes verificables y vías colaterales de la provisión, y concretar los campos operativos pendientes (actor, artefacto/hash, recepción, ventanas, reintentos, evidencia de componentes y detección de provisión de fondo). No reabrir la precedencia D2 primario candidato/D1 secundario de DEC-C10-066.
 
 La aceptación no valida (s=0.80), parámetros, estimandos, población/soporte, unidad/interferencia, exclusión ni identificación. No autoriza freeze, implementación, simulación ni ejecución científica.
+
+
+---
+
+## 15. Control de continuidad, recuperación y persistencia del bloque de invariantes y vías colaterales
+
+**Estado:** addendum de coordinación documental asistida; DRAFT / NO APROBADO / NO CONGELADO.  
+**Fecha de corte:** 2026-11-06.  
+**No constituye:** decisión científica nueva, cierre de auditoría, validación independiente, autorización de implementación, simulación o ejecución.  
+**Precedencia:** conserva DEC-C10-066 (D2 primario candidato; D1 secundario) y DEC-C10-067. No reabre ni amplía su alcance.
+
+### 15.1. Regla de continuidad operativa propuesta
+
+GitHub es la fuente de verdad. La conversación y la memoria solo sirven como ayudas de recuperación y nunca sustituyen un artefacto canónico. Cada unidad de trabajo C10-S debe cerrar un ciclo documental verificable antes de iniciar la siguiente:
+
+1. **Recuperar:** leer desde GitHub `main` el README de gobernanza, bootstrap y estado canónico; leer desde la rama C10-S el plan, maestro, Decision Log, Closure Control Matrix y artefactos especializados directamente afectados.
+2. **Reconciliar:** contrastar el trabajo nuevo con decisiones aceptadas, propuestas, artefactos históricos y estado real de la rama/PR. Reutilizar lo compatible; no duplicar ni sustituir semántica silenciosamente.
+3. **Resolver:** delimitar el objeto de trabajo, las alternativas, dependencias, contradicciones y estado epistemológico. Una contradicción bloqueante se resuelve antes de avanzar.
+4. **Registrar:** incorporar el resultado en el artefacto existente más adecuado de la rama C10-S, o justificar expresamente la creación de uno nuevo. Una conclusión material no debe quedar solo en la conversación.
+5. **Verificar:** recuperar de GitHub cada archivo modificado y comprobar contenido, blob SHA, commit, diff y PR. No declarar persistencia antes de esta comprobación.
+6. **Comunicar:** informar por separado qué se recuperó, qué se reconstruyó, qué se persistió, qué se verificó y qué permanece abierto.
+
+La reconstrucción desde memoria debe etiquetarse como tal cuando no exista fuente primaria recuperable. Nunca debe presentarse como transcripción literal, ficha original ni auditoría íntegra.
+
+### 15.2. Estado de recuperación de las fichas de invariantes
+
+La inspección de los artefactos actuales confirma que el maestro consolidado, §§46–47, contiene una arquitectura preliminar de condiciones de elegibilidad y clasificación: `C_auth,base`, `C_resource`, `C_capacity`, `C_info`, `C_domain`, `C_other,j`, `C_dep,0` y `A_f,0*`; incluye regla conjuntiva, estados cumplida/incumplida/indeterminada/no aplicable y pruebas ELIG-01…12. También distingue condiciones estructurales de calidad/cobertura de evidencia. Estos contenidos son antecedentes útiles, pero el propio maestro declara que cada condición requiere ficha operacional completa.
+
+La recuperación conversacional disponible aporta solo una **reconstrucción parcial**, no el texto original completo:
+
+| Objeto | Recuperación disponible | Límite que debe conservarse |
+|---|---|---|
+| `C_auth,base` | Se recuperó el identificador conversacional `D2-INV-AUTH-01`, autorización normativa basal por unidad×ventana, evidencia de titular/alcance/vigencia/objeto/versiones y falsador basado en cambio diferencial inducido por B. | No se recuperó la ficha literal completa, sus campos íntegros ni la totalidad de sus pruebas. |
+| `C_resource` | Se recuperó la separación entre disponibilidad basal, capacidad instalada, consumo de ejecución y recursos usados por B; desplazamiento de recursos de rutas alternativas como vía potencial. | No se recuperaron literalmente ID, umbrales, ventanas, fuentes, adjudicación ni batería completa de pruebas. |
+| `C_capacity` | Se recuperó la separación entre capacidad instalada, disponible, reservada, consumida y margen; `K_available ≥ K_required` como criterio candidato, no validado. | No se recuperaron literalmente ID, dimensionalidad completa, reglas de agregación ni pruebas completas. |
+| `C_info` | Se recuperó la separación entre información técnica constitutiva, conocimiento del agente, comunicación inducida por B y observabilidad/evidencia del evaluador; riesgo de vía `B→K→Selection→Execution`. | Se conocen referencias conversacionales a I-INFO-01…06, pero no su texto literal ni correspondencia completa. No deben reconstruirse como fichas originales. |
+| Otras condiciones/invariantes | El maestro aporta `C_domain`, `C_other,j`, `C_dep*`, `A_f*` y elegibilidad. | No se puede afirmar que el conjunto de fichas conversacionales se limite a las cuatro filas anteriores ni que estas agoten el paquete generado. |
+
+**Dictamen de recuperación:** las fichas desarrolladas que se elaboraron en conversación no se han recuperado íntegramente desde los artefactos GitHub inspeccionados ni desde el contexto conversacional disponible. Lo anterior conserva una síntesis parcial verificable y sus límites; no reemplaza ni certifica las fichas originales. Queda pendiente recuperar la versión íntegra o reconstruirla explícitamente, campo por campo, con trazabilidad y sin atribuir literalidad.
+
+### 15.3. Estado de recuperación de la auditoría de vías colaterales
+
+Se han localizado y contrastado los siguientes artefactos que contienen partes sustantivas de la auditoría:
+
+- `C10_S_CAUSAL_ARCHITECTURE_RECONCILIATION_DRAFT_001.md`: jerarquía de estimandos, efecto de política/paquete y condiciones de atribución.
+- `C10_S_MICRODOMAIN_CAUSAL_COMPATIBILITY_AUDIT_DRAFT_001.md`: compatibilidad causal de Opción A, riesgos de B, independencia de A1/A2 y separación de objetos.
+- `C10_S_ADAPTER_PROVISION_MANIFEST_AND_DEPENDENCY_GRAPH_DRAFT_001.md`: superficies B-M01…15, grafo transitivo, snapshots preB/postB/rollback y contratos PROV.
+- `C10_S_GRAPH_COVERAGE_AND_TRIVALENT_EVIDENCE_MATRIX_DRAFT_001.md`: universo candidato U_G, nodos/aristas, cobertura y cinco clases de ruta: focal, alternativa, compartida, externa y desconocida.
+- Maestro consolidado, especialmente §§53–54 y §§61–67, y `C10_S_CLOSURE_CONTROL_MATRIX_DRAFT_001.md`, especialmente el crosswalk FCM-D2-01…10.
+
+La reconstrucción recuperable de la lógica de auditoría distingue: (i) vía focal de provisión hacia dependencia, accesibilidad y transformaciones accesibles; (ii) cambios inducidos en condiciones constitutivas no focales; (iii) cambios en rutas alternativas, recursos o dependencias compartidas con consecuencias para Reach, trayectoria, ejecución, Outcome o Value; (iv) vías de información/conocimiento/selección; y (v) cambios epistémicos de observación, cobertura o adjudicación, que no deben confundirse con cambios estructurales. Esta clasificación sintetiza las cinco clases de ruta del artefacto U_G; no sustituye el inventario detallado de aristas ni sus pruebas.
+
+La auditoría conceptual disponible requiere, entre otros elementos, manifiesto real de componentes y versiones, grafo transitivo, snapshots comparables preB/postB/rollback, cambios de permisos, recursos, red, seguridad, estado, rendimiento, información y rutas alternativas, además de pruebas de comportamiento e independencia funcional. Los estados `NO INVENTARIADO`, `?` o cobertura `NONE/PARTIAL` no equivalen a ausencia ni a PASS. Si B cambia vías distintas de accesibilidad, el contraste es efecto de paquete salvo estrategia adicional de identificación.
+
+**Dictamen de recuperación:** se han recuperado los artefactos y la arquitectura conceptual de la auditoría, pero no se ha certificado que reproduzcan íntegramente la auditoría conversacional desarrollada ni todas sus fichas de prueba, evidencias y reglas de adjudicación. El texto original completo de esa auditoría permanece **NO RECUPERADO ÍNTEGRAMENTE**. No se declarará independencia de B, ausencia de vías colaterales ni cierre de MD-C1/MD-C4 por esta reconstrucción documental.
+
+### 15.4. Próximo trabajo documental y reglas de no-regresión
+
+El siguiente bloque debe cerrar, en este orden:
+
+1. Localizar en los artefactos de la rama cualquier ficha detallada adicional y cotejarla contra la síntesis de §15.2, evitando duplicados.
+2. Recuperar la fuente íntegra de las fichas y de la auditoría conversacional si está disponible; si no, reconstruir cada ficha desde sus campos y fuentes, marcando cada elemento como recuperado, inferido o pendiente.
+3. Consolidar una matriz única de invariantes con ID estable, definición operacional, unidad/ventana, papel causal, fuente, procedimiento, temporalidad, evaluador/cegamiento, estados 1/0/?/NA, evidencia, falsadores, pruebas adversariales y trazabilidad.
+4. Completar el crosswalk de cada invariante y cada vía colateral hacia B-M01…15, PROV, U_G, predicados, Reach/alternativas, estimandos y filas FCM-D2 correspondientes.
+5. Distinguir invariancia postulada en el DGP, invariancia definida contractualmente y no-afectación empíricamente demostrada. Ninguna de ellas se infiere de la otra.
+6. Registrar la reconciliación en el maestro y en los artefactos afectados en un mismo ciclo documental, sin alterar DEC-C10-066/067 ni convertir propuestas en decisiones aceptadas.
+7. Antes de pasar a implementación o ejecución, exigir revisión explícita de los contratos y autorización separada. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
+
+**Estado de salida de este addendum:** continuidad operativa propuesta y laguna documental identificada; fichas conversacionales completas y auditoría conversacional íntegra aún no recuperadas; no se declara cierre científico ni técnico.
