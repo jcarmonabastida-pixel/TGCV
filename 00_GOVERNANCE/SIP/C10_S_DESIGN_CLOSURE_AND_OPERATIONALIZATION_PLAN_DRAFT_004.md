@@ -559,3 +559,42 @@ La ficha protege el supuesto de que la política D2 no modifica autorización no
 **Dictamen:** el crosswalk conceptual de D2-RES-01 está completado y persistido. Permanecen abiertos la operacionalización de suficiencia, la conciliación final de §46.2 con §59.3, inventario y consumidores, PROV-05/09, MD-C1/MD-C4, interferencia/unidad y la atribución específica a accesibilidad. No se modifica DEC-C10-066/067, no se aprueba D2-RES-01 y no se autoriza implementación ni ejecución.
 
 **Siguiente ficha:** D2-CAP-01. El trabajo deberá resolver primero el límite entre capacidad necesaria para ofrecer τ2 (posible condición de acceso), capacidad focal ya contenida en C_dep*, y capacidad/margen dependiente de carga o estado (aplicabilidad/ejecución), sin duplicar R_access* ni C_resource.
+
+### 16.8. Crosswalk causal ficha D2-CAP-01 — capacidad no focal (2026-11-06)
+
+**Estado:** trazabilidad documental individual realizada; ficha DRAFT, no aprobada ni congelada. La capacidad no ha sido operacionalizada ni medida en una implementación real.
+
+#### 16.8.1. Reconstrucción y precedencia semántica
+
+- Ficha temporal §13.3; fuentes: Path Predicate Temporal Evidence Matrix §8, manifiesto §5/§12, maestro §§46–47 y 59.2–59.4/64.5, matriz de cierre §§20/26/29/31 y matriz de cobertura §9.
+- Maestro §59.2 diferencia capacidad instalada/slots disponibles para ofrecer τ2 (posible condición de acceso) de margen operativo requerido por S0 o carga concurrente concreta (aplicabilidad).
+- §59.3 es la precedencia semántica candidata: capacidad instalada e información técnica solo se incorporan a R_access*/D_support* si son necesarias y no duplican C_dep*. La plantilla C_capacity,i,w de §13.3 no añade por sí sola un factor nuevo a A_f*.
+- Capacidad focal introducida por B pertenece a C_dep*. Capacidad no focal común puede formar parte de R_access* solo si se demuestra que es necesaria para poner τ2 a disposición, existe antes de Z, está asignada a unidad/ventana y no está ya contenida en C_dep*.
+- La demanda, saturación, cola, consumo o margen de una ejecución concreta no se confunden con la disponibilidad estructural. Se clasifican en App_f*, ejecución/rendimiento o resultado según el mecanismo.
+
+#### 16.8.2. Crosswalk de extremo a extremo
+
+| Eslabón | Correspondencia | Lectura y estado |
+|---|---|---|
+| Definición → DGP | Capacidad instalada, disponible, reservada, consumida y margen; S4-R postula capacidad no focal común/suficiente | Supuesto de diseño, no invariancia demostrada |
+| Predicado | Plantilla existente C_capacity,i,w = I(K_available ≥ K_required); posible disponibilidad en R_access* | No convertir en factor autónomo ni en CAP-τ2. Requiere dimensión, unidad, configuración, ventana, demanda y umbral preespecificados |
+| Frontera A_f*/App_f* | Capacidad/slots para ofrecer τ2 vs precondiciones de S0/carga/ejecución | Primera puede integrar R_access* si necesaria/no duplicada; segunda pertenece a App_f*/ejecución |
+| Dominio B-M | B-M07 rector; B-M02/B-M03/B-M12 relacionados por runtime/host/servicios/colas; B-M14 por rutas alternativas | Mapping candidato sujeto a inventario y grafo transitivo |
+| PROV | PROV-05 no reducción A1/A2/F2; PROV-09 no modificación de servicios críticos compartidos; PROV-03/04 snapshots y dependencias | Salvaguardas documentales indirectas; no demuestran capacidad ni aislamiento |
+| U_G | N18, N05, N13, N15, N20; E16, E17, E19; RES-τ2, ALT-DEP, Rshared, Rτ2, RA12 | Roles y aristas candidatos del mapping B-M07; no observados ni ampliables por inferencia |
+| Evidencia/falsadores | Capacidad máxima/utilizable, K_required, cuotas/reservas, compromisos, demanda concurrente, colas/contención, consumo B, consumidores, snapshots pre/post/rollback | Capacidad nominal comprometida, insuficiencia, desplazamiento, saturación inducida, medición diferencial o cobertura incompleta (→ ?) |
+| Mecanismo | Condición constitutiva; vía colateral a alternativas/Reach/ejecución/Outcome/Value; interferencia entre unidades | Mecanismos no excluyentes; requieren adjudicación empírica |
+| Estimandos | ITT D2 de la política material; atribución exclusiva a ΔT_acc*; interferencia | Cambio de capacidad no focal hace ITT efecto de paquete; no ajustar mecánicamente por capacidad post-B; unidad/exposición ante pools compartidos sigue abierta |
+| Control | FCM-D2-06/07/08 | Invariancia postulada; cambios colaterales por registrar; ausencia de provisión de fondo/rutas equivalentes no demostrada |
+
+#### 16.8.3. Regla de salida
+
+1. No declarar suficiente capacidad instalada si está comprometida, no disponible en la ventana o no asignada a la unidad/ruta.
+2. No inferir independencia porque los componentes tengan nombres o identificadores distintos: comprobar pool, host, runtime, servicio, cola y consumidores transitivos.
+3. No sumar CPU, memoria, concurrencia, almacenamiento, red u otras dimensiones inconmensurables; si varias son necesarias, fijar una regla conjuntiva y umbrales ex ante.
+4. No crear símbolos/edges nuevos ni rellenar huecos del U_G por analogía; cobertura parcial conserva ?.
+5. Si B altera capacidad no focal o el margen de rutas alternativas, el ITT sigue siendo el efecto de la política asignada, pero la atribución exclusiva a accesibilidad exige identificación adicional. Si la capacidad compartida produce interferencia, el estimando y la unidad de asignación/análisis deben revisarse.
+
+**Dictamen:** el crosswalk conceptual D2-CAP-01 está completado y persistido. Siguen abiertos dimensión, K_required, unidad/ventana, reglas de reserva, inventario de pools/consumidores, interferencia, evidencia de invariancia y frontera con App_f*. No se modifica DEC-C10-066/067, no se aprueba ni congela la ficha, y no se autoriza implementación, simulación o ejecución.
+
+**Siguiente operación:** revisar D2-C_INFO (información) y decidir si existe información técnica constitutiva diferenciable de C_dep*, o si manuales/conocimiento/comunicaciones pertenecen a mecanismos posteriores o vías colaterales. Mantener separado el plano epistémico E_T del sistema y no añadir C_info como factor autónomo sin demostrar necesidad y no duplicidad.
