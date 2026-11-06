@@ -410,9 +410,9 @@ Inventario real, grafo transitivo, snapshots pre-B/post-B/rollback y pruebas mat
 
 ### 16.3. Crosswalk y siguiente operación documental
 
-El crosswalk conceptual B-M01…15 → variable/predicado → clase U_G → mecanismo causal → evidencia/PROV → cadena causal/estimando → FCM-D2 ha quedado incorporado en C10_S_CLOSURE_CONTROL_MATRIX_DRAFT_001.md, §31. Se reutilizan el manifiesto §3/§12, la taxonomía U_G y los contratos PROV-01…12. Es trazabilidad candidata, no inventario real ni prueba de aislamiento.
+El crosswalk causal B-M01…15 → variable/predicado → clase U_G → mecanismo → evidencia/PROV → cadena/estimando → FCM-D2 está incorporado en C10_S_CLOSURE_CONTROL_MATRIX_DRAFT_001.md, §31. Su correspondencia con los IDs existentes N01–N23, E01–E23 y predicados de la matriz de cobertura está registrada en C10_S_GRAPH_COVERAGE_AND_TRIVALENT_EVIDENCE_MATRIX_DRAFT_001.md, §9. Se reutilizan el manifiesto §3/§12, U_G y PROV-01…12. Es trazabilidad candidata, no inventario real ni prueba de aislamiento.
 
-La siguiente operación es construir la matriz de cobertura del grafo real/candidato y el registro de estados 1/0/? por nodo, arista, consumidor, predicado y ventana. Debe reutilizar la matriz temporal §§2–10 y el inventario B-M01…15; distinguir universo candidato de componentes efectivamente inventariados; y propagar incertidumbre para elementos externos o rutas no cubiertas. MD-C1/MD-C4 permanecen abiertos hasta que exista evidencia material suficiente.
+La matriz de cobertura y la plantilla U_G ya existen; no se deben recrear. El contrato de frontera/granularidad también existe y gobierna la instanciación. La siguiente operación es aplicar el mapping a C10_S_UG_INVENTORY_REGISTER_TEMPLATE_DRAFT_001.md, definiendo cómo registrar B-M01…15 en NODE/EDGE/ROUTE/PREDICATE, EVIDENCE_REGISTER y COVERAGE_REGISTER, sin crear observaciones ficticias: observed_state seguirá ?, coverage_status NONE/PARTIAL según el alcance real, evidence_status MISSING cuando no haya fuente, y contract_intent separado de estado observado. MD-C1/MD-C2/MD-C4 siguen abiertos.
 
 ### 16.4. Cierre científico-operacional previo a implementación
 
