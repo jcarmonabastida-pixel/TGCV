@@ -211,3 +211,11 @@ Esta lectura implementa DEC-C10-054 y el perfil §3; no añade decisión nueva. 
 | PAR-SVC-RETRY-COUNT | INT→INT | Preservación exacta dentro de dominio finito; INT→DECIMAL solo si se justifica y es exacto | Overflow, truncamiento, signo alterado, cambio de límite o estado |
 
 El roster no fija nombres físicos ni tablas de conversión concretas. Para DECIMAL/STRING/REF condicionales se exige mapping por clave y dominio; no se presume normalización, coerción ni equivalencia por igualdad textual. Cada ruta F1/F2 y A1/A2 usa el mismo contrato semántico y el mismo IAM. Los resultados locales de conversión no sustituyen C_dst_applied ni F*.
+
+## 16. Mapping de reglas RUL entre rutas
+
+El mapping RUL no consiste en copiar el texto/AST ni en conservar identificadores nominales. Debe preservar la semántica de condición, operandos, scope, efecto REQUIRE/FORBID y evaluación trivalente, con correspondencia de cada referencia PAR/CMP y su versión. F1 y A1 producen representaciones intermedias; F2 y A2 aplican la regla en destino bajo el mismo contrato funcional.
+
+Falsadores mínimos: operador o negación alterados; operandos/clave intercambiados; scope ampliado/reducido; dominio ENUM cambiado; regla eliminada/duplicada; REQUIRE↔FORBID; UNKNOWN convertido en TRUE/FALSE; precedencia alterada cuando sea significativa; regla nominalmente preservada pero no aplicada. La equivalencia se adjudica con FP-03 y evidencia del destino aplicado; igualdad textual/AST no basta si mappings cambian significado.
+
+La plantilla ENABLED→PROFILE aún carece de D_profile_enabled y fuente funcional, por lo que no hay mapping instanciable ni resultado esperado por ruta. No crear tabla concreta hasta cerrar esas entradas.
