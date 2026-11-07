@@ -747,3 +747,14 @@ El informe registra además reason_code, evidencia utilizada, perfiles/versions,
 ### 20.14.7. Límites
 
 UDG-03 no está aceptada. No crea fingerprint semántico, algoritmo automático de equivalencia, regla de migración, parser/comparator, fixtures, schema change ni autorización de ejecución. No modifica las decisiones DEC-C10-073/074. La equivalencia semántica permanece un juicio sustentado por evidencia, no una propiedad del hash.
+
+
+## 20.15. DEC-C10-075 — UDG-03 aceptada
+
+DEC-C10-075 acepta UDG-03 como contrato documental de comparación semántica por dimensiones. Se mantienen siete niveles separados: (1) identidad del artefacto, (2) igualdad canónica bajo mismo perfil/hash recalculado, (3) identidad universe_id, (4) identidad de revisión inmutable, (5) igualdad extensional de miembros completos, (6) equivalencia definicional de inclusión/exclusión/reglas/AST/dominios/dependencias y (7) compatibilidad dirigida entre revisiones demostrada, no inferida por revision number/cardinality.
+
+Projection-ID conserva identidad/revisión/schema/contract/instance/C0/stage_key/route/route_record/snapshot/perfil; Projection-SEM conserva modo membership, refs tipadas/versionadas, reglas y fuentes/cobertura. Provenance/timestamp/hash son trazabilidad, no miembros; C0/stage/route/snapshot/contract/instance/object version condicionan comparabilidad. Igualdad extensional requiere dos universos exhaustivos y scopes/snapshots compatibles. Equivalencia definicional requiere evidencia adicional de reglas/domínios/dependencias. EXPLICIT y RULE_DEFINED con mismos miembros en un snapshot no prueban equivalencia definicional.
+
+Resultados: EQUAL, DIFFERENT, UNKNOWN, NOT_COMPARABLE; FAIL para incumplimiento de integridad. Scope/snapshot/contract incompatibles sin mapping explícito = NOT_COMPARABLE; evidencia faltante = UNKNOWN. Registrar dimensión, reason_code, evidencia, perfiles/versiones y scope. No elevar UNKNOWN/NOT_COMPARABLE a PASS ni emitir equivalencia global con dimensión crítica abierta.
+
+Esta aceptación es documental: no crea fingerprint semántico, comparator ejecutable, migración, fixtures, parser/validator ni schema change; no autoriza Design Freeze, implementación o ejecución científica. DEC-C10-075 prevalece sobre §20.14, que describía UDG-03 como no aceptada.
