@@ -434,3 +434,10 @@ Resultados EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE; FAIL para integridad. Scope i
 Identidad lógica: `(object_class, object_id)`; identidad exacta de registro: `(object_class, object_id, object_record_id)`. Referencia: `(ref_role, target_object_class, target_object_id, target_object_record_id)`; el catálogo de roles debe reconciliarse con REF vigente y no se cierra aquí. No resolver por nombre/valor/hash/posición ni por latest implícito.
 
 Comprobar record_id exacto, clase/id, inmutabilidad, compatibilidad de versiones y cardinalidad en registry versionado con scope definido. Requerida ausente, dangling exhaustivo, contradicción de clase/id o record_id mutable = FAIL; registry inaccesible/incompleto = UNKNOWN; incompatibilidad no mapeada = NOT_COMPARABLE; opcional ausente = NOT_APPLICABLE. Ciclos y cardinalidad se declaran por tipo de relación; no asumir DAG universal. La resolución no prueba pertenencia, aplicabilidad ni ejecución. Propuesta no aceptada; mapping físico REF y mapping CMP/PAR/RUL permanecen OPEN.
+
+
+### 20.19. DEC-C10-076 — identidad y resolución de referencias aceptadas
+
+Identidad lógica `(object_class, object_id)` distinta de identidad inmutable de registro `(object_class, object_id, object_record_id)`. Referencia tipada por rol y target exacto. Resolución contra registry versionado/scope explícito; prohibido latest implícito o fallback por nombre/valor/posición/hash. REQUIRED/OPTIONAL y cardinalidad según contrato de clase. Ausencia requerida/dangling exhaustivo/conflicto/inmutabilidad = FAIL; registry incompleto/inaccesible = UNKNOWN; incompatibilidad no mapeada = NOT_COMPARABLE; opcional ausente = NOT_APPLICABLE. Ciclos por relación, sin DAG universal. Resolver no prueba membership, aplicabilidad, preservación ni ejecución.
+
+Catálogo REF, schema físico/API/registry/resolver/parser/validator/comparator/fixtures y mapping CMP/PAR/RUL siguen abiertos. No Design Freeze ni ejecución. DEC-C10-076.
