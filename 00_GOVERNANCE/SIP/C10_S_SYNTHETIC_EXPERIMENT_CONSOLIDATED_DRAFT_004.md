@@ -8127,3 +8127,13 @@ Se formalizan denominadores y criterios COMPLETE por clase. NONE/PARTIAL nunca j
 Se detecta una limitación no resuelta: COVERAGE_REGISTER carece de FK directa a snapshot_id/snapshot_object_record_id. El snapshot enlaza coverage_scope_id y universe_definition/version puede documentar el pinning, pero la integridad inversa no es físicamente exigible con el esquema actual. No se añade columna unilateralmente. La pertenencia versionada del grafo a SNAPSHOT está aceptada por DEC-C10-065 (Opción A); la validación física de ese diseño tiene su propio gate. La integridad COVERAGE_REGISTER→snapshot descrita aquí es un problema distinto y sigue OPEN.
 
 La convención SNAPSHOT.scope y su compatibilidad siguen pendientes de aceptación. No se pueblan scopes, snapshots ni evidencias; no se declara COMPLETE/REF=0, no Design Freeze ni ejecución.
+
+## 182. Reconciliación del binding de scopes de cobertura a snapshots (2026-11-07)
+
+Se corrige la clasificación previa: U_G-SCH-10 es pertenencia/referencias del grafo, con Opción A aceptada mediante DEC-C10-065. La limitación de COVERAGE_REGISTER es un gate independiente.
+
+Los registros de objeto enlazan coverage_scope_id y los registros de grafo fijan snapshot_id + snapshot_object_record_id. COVERAGE_REGISTER no contiene el par de snapshot, de modo que existe enlace indirecto pero no enforcement de coincidencia snapshot-scope mediante FK compuesta. universe_definition/version puede declarar el pinning, no imponerlo relacionalmente.
+
+Se comparan C0 (esquema actual + contrato de tupla exacta + control independiente, recomendación provisional), C1 (añadir snapshot_id/snapshot_object_record_id y FK compuesta a COVERAGE_REGISTER y a referencias de objeto) y C2 (tabla puente, no recomendada). C0 queda CONDITIONAL hasta que exista control auditado; C1 requiere decisión explícita y revisión de ciclos/compatibilidad. Ninguna alternativa está aceptada como cambio de schema.
+
+Este análisis no reabre DEC-C10-065, no acepta la convención SNAPSHOT.scope, no crea scopes/snapshots ni evidencia, y no autoriza implementación o ejecución.
