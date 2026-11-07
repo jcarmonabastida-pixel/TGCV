@@ -1082,3 +1082,12 @@ Antes de freeze: comparar alternativas contra DDL completo, cardinalidad scopes�
 DEC-C10-070 acepta C0 como contrato documental condicionado: mantener el schema y fijar por coverage_scope_id la tupla exacta en universe_definition/version. Todo objeto que referencia el scope debe coincidir. El control futuro debe comprobar binding exacto, unicidad, cardinalidad, huérfanos/no usados y conflictos.
 
 Gate previo a Design Freeze: especificación del control y sus casos adversariales; autorización específica antes de implementarlo/ejecutarlo; evidencia de resultado; auditoría independiente/adjudicación. Hasta entonces CONDITIONAL; no afirmar FK ni integridad relacional garantizada. C1/C2 no aceptadas. No hay autorización actual de implementación ni ejecución científica.
+
+
+## 16.39. Especificación del control C0 y gates de cierre
+
+La especificación documental está en el protocolo de evidencia/adjudicación §19. Incluye tupla completa, invariantes C0-I01…I11, precedencia de resultados PASS/FAIL/UNKNOWN y casos ADV-C0-01…15.
+
+Pendiente antes de implementación: recuperar y reconciliar DDL completo; demostrar mapping de campos y cardinalidad; definir exportación cerrada del universo; revisar casos adversariales y falsos PASS/FAIL/UNKNOWN. La implementación y ejecución requieren autorización técnica específica, distinta de la autorización científica. Antes de Design Freeze: ejecutar y auditar todas las pruebas, preservar inputs/outputs/hash y adjudicar discrepancias.
+
+Estado actual: especificación documental completada; NOT IMPLEMENTED / NOT EXECUTED / NOT AUDITED; C0 CONDITIONAL. Un PASS del control no equivale a COMPLETE ni REF=0.
