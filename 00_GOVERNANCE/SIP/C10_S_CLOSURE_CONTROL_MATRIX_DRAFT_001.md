@@ -1368,16 +1368,17 @@ La especificación documental no implica implementación, validación física ni
 
 No puede emitirse PASS completo del control C0 hasta resolver los mappings aplicables. UNKNOWN es obligatorio si falta correspondencia; contradicción demostrada es FAIL. No se infiere por nombre, phase, semantic_role ni texto libre.
 
-## 59. Crosswalk semántico C0↔U_G — estado reconciliado
+
+## 59. Crosswalk semántico C0↔U_G — estado tras DEC-C10-071
 
 | ID | Eje / correspondencia | Dictamen actual | Estado |
 |---|---|---|---|
 | C0-XW-01 | object_class C10 vs ug_record_type | Ejes distintos; mapping explícito 1:N/N:M | DOCUMENTED PROPOSAL |
 | C0-XW-02 | ug_record_type vs NODE.semantic_role / boundary_class | No equivalencia; preservar DEC-C10-059/060 | ACCEPTED BASELINE |
-| C0-XW-03 | stage_key C10-S | Siete candidatos U_G §18.2: C_SRC, F1_S2, A1_S1, F2_DST_DECL, A2_DST_DECL, F2_DST_APPLIED, A2_DST_APPLIED | HISTORICAL PROPOSAL; ACCEPTANCE OPEN |
+| C0-XW-03 | stage_key C10-S | Siete valores cerrados por DEC-C10-071: C_SRC, F1_S2, A1_S1, F2_DST_DECL, A2_DST_DECL, F2_DST_APPLIED, A2_DST_APPLIED | ACCEPTED VOCABULARY |
 | C0-XW-04 | DGP time t−1…t9 vs stage_key | Ejes distintos; mapping solo por regla explícita | NO EQUIVALENCE |
 | C0-XW-05 | stage_key vs SNAPSHOT.phase | phase=baseline/post-B/rollback/route-test; no equivalencia | NO AUTOMATIC MAPPING |
-| C0-XW-06 | SNAPSHOT.scope | Propuesta de codificación de §18.2 no aceptada por DEC-C10-070 | NOT ACCEPTED |
+| C0-XW-06 | SNAPSHOT.scope | Codificación de etapa/ruta no aceptada; DEC-C10-070/071 no la aprueban | NOT ACCEPTED |
 | C0-XW-07 | route_family F/A vs route_id | F/A es etiqueta auxiliar; C0 exige route_id exacto o token global reservado | OPEN |
 | C0-XW-08 | NODE/EDGE route membership | ROUTE_STEP y record IDs exactos | DOCUMENTED RULE; exhaustividad OPEN |
 | C0-XW-09 | PREDICATE/ROUTE route membership | route_record_id exacto / propia revisión de ROUTE | DOCUMENTED RULE |
@@ -1386,4 +1387,4 @@ No puede emitirse PASS completo del control C0 hasta resolver los mappings aplic
 | C0-XW-12 | dimension | COVERAGE_REGISTER.dimension; C10S_CONFIG_*; fuera de tupla | DOCUMENTED |
 | C0-XW-13 | Tupla C0 | Nueve componentes conforme a DEC-C10-070 | RECONCILED |
 
-No se acepta aún el vocabulario final de stage_key, el token global, la gramática completa de universe_definition/version ni las asignaciones por propiedad. No se crean columnas, no se reabre Opción A y no se autoriza implementación/ejecución.
+DEC-C10-071 cierra únicamente el vocabulario stage_key. Permanecen OPEN el token global, route_id exacto por universo, gramática completa de universe_definition/version y mappings por propiedad. No se crean columnas, scopes ni snapshots; no se reabre Opción A ni se autoriza implementación/ejecución.
