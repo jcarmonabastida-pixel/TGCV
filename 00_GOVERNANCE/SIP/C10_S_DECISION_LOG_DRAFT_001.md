@@ -784,3 +784,9 @@ La especificación es documental y no constituye nueva decisión del usuario ni 
 Se documenta en la matriz IAM §18 la reconciliación de DEC-C10-056/068/069: CMP focal aceptado, dos PAR y una RUL funcional aceptados, MET obligatorio, POL fuera del núcleo y REF=0 condicionado a inventario/cobertura exhaustivos pre-Z/B. RETRY-COUNT queda excluido del núcleo por DEC-C10-068. No se declara cerrado el inventario exhaustivo ni se sella IAM.
 
 Los PAR aceptados no tienen DEFAULT contractual declarado; no se asignan valores por escenario. La especificación no constituye una nueva decisión del usuario, no acepta el mapping §20 ni autoriza implementación/ejecución.
+
+## 58. Protocolo documental de inventario por snapshot (2026-11-07)
+
+Se especializa la plantilla U_G existente §18 y la matriz IAM §19 para el inventario de configuración C10-S por snapshot, ruta y etapa. Se reutilizan NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT y los registros de evidencia/cobertura; no se alteran schema/FKs ni se crean tablas físicas. PAR/RUL permanecen en el catálogo/manifiesto de configuración, sin forzarlos a NODE/PREDICATE. C_src, F1→S2, A1→S1, C_dst declarado y aplicado por F2/A2 se mantienen separados.
+
+Se reconcilian contrato abstracto §16 y catálogo atómico §15: RETRY-COUNT histórico queda supersedido para el núcleo por DEC-C10-068; no hay DEFAULT aceptado para ENABLED/PROFILE. El protocolo no crea snapshots ni evidencia y no es decisión aceptada de schema/manifiesto físico. La codificación de etapa/ruta en scope y el inventario exhaustivo siguen OPEN. No autoriza ejecución.
