@@ -1177,3 +1177,11 @@ Propuesta en protocolo §20.16, plantilla U_G §18.21, mapping §20.18 y maestro
 UDG-04 queda ACCEPTED documentalmente: identidad lógica vs record identity inmutable; referencia tipada por rol y target exacto; resolución exacta contra registry versionado/scope explícito; estados FAIL/UNKNOWN/NOT_COMPARABLE/NOT_APPLICABLE separados; ciclos y cardinalidad declarados por relación. Resolver no implica membership/aplicabilidad/preservación/ejecución.
 
 Pendientes: reconciliar catálogo REF; cerrar roles/cardinalidad por clase; schema físico, API/registry/resolver y mapping CMP/PAR/RUL. No autorizados parser/validator/comparator/fixtures/implementación/Design Freeze/ejecución. DEC-C10-076 prevalece sobre §16.50.
+
+## 16.52. Gate de reconciliación del catálogo REF con UDG-04
+
+**Estado:** propuesta documental; no aceptada ni congelada.
+
+Antes de fijar schema físico REF se deben resolver: distinción REF/UDG-reference/FK U_G; modelo de extremos internos/externos; identidad lógica y record_id exactos; dominio de relation_type/direction/role; multiplicidad y cardinalidad; mapping REF↔EDGE y reglas split/merge/n-arias; aplicabilidad por stage_key/scope; evidencia y adjudicación. Los roles de DEC-C10-076 siguen ilustrativos, no enum cerrado.
+
+Criterio de salida documental: matriz IAM por clase×rol×extremo×ruta×etapa; cardinalidades justificadas ex ante; crosswalk REF→EDGE con mapping versionado; casos ADV para endpoint intercambiado, revisión equivocada, snapshot cruzado, duplicación, dangling, endpoint externo no resoluble y dependencia declarada confundida con instalada. El gate no requiere implementar ni ejecutar; schema físico, resolver y pruebas siguen sujetos a autorización separada.
