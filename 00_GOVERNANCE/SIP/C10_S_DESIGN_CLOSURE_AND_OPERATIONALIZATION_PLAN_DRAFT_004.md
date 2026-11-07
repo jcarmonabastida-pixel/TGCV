@@ -1076,3 +1076,9 @@ Separar este gate de U_G-SCH-10: la pertenencia del grafo a snapshot está acept
 C0 (esquema actual, tupla exacta en universe_definition/version y control independiente) es la recomendación provisional, CONDITIONAL hasta control auditado. C1 (columnas de snapshot + FK compuestas) necesita decisión de schema, análisis de ciclo con SNAPSHOT.coverage_scope_id y compatibilidad/legacy. C2 (tabla puente) no se recomienda salvo inviabilidad de C1.
 
 Antes de freeze: comparar alternativas contra DDL completo, cardinalidad scopes×snapshot, filas históricas y motor. No alterar schema ni declarar integridad relacional plena.
+
+## 16.38. C0 aceptada y gate del control independiente
+
+DEC-C10-070 acepta C0 como contrato documental condicionado: mantener el schema y fijar por coverage_scope_id la tupla exacta en universe_definition/version. Todo objeto que referencia el scope debe coincidir. El control futuro debe comprobar binding exacto, unicidad, cardinalidad, huérfanos/no usados y conflictos.
+
+Gate previo a Design Freeze: especificación del control y sus casos adversariales; autorización específica antes de implementarlo/ejecutarlo; evidencia de resultado; auditoría independiente/adjudicación. Hasta entonces CONDITIONAL; no afirmar FK ni integridad relacional garantizada. C1/C2 no aceptadas. No hay autorización actual de implementación ni ejecución científica.
