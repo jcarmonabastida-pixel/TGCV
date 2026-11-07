@@ -1451,3 +1451,18 @@ La aceptación del token global no acepta UDG-01. Gramática, canonicalización/
 | UDG-09 | Adjudicación | PASS exhaustivo; FAIL contradicción; UNKNOWN no resoluble | ACCEPTED — criterio documental |
 
 No equivale a schema freeze ni autoriza parser, validator, fixtures, mapping físico, implementación o ejecución.
+
+
+## 64. UDG-02 — gates de canonicalización e integridad
+
+| ID | Requisito | Criterio | Estado |
+|---|---|---|---|
+| UDG-10 | Perfil | C1 RFC 8785 JCS + prevalidación TGCV vs C2 propio vs C3 raw bytes | COMPARED — C1 RECOMMENDED |
+| UDG-11 | Unicode | JCS preserva strings; NFC previa solo en campos marcados, sin autocorrección | PROPOSED |
+| UDG-12 | Arrays | Set-valued arrays ordenados por identidad antes de JCS; secuencias preservadas | PROPOSED |
+| UDG-13 | Números/null | Enteros seguros no negativos; null prohibido; omisión ≠ [] | PROPOSED |
+| UDG-14 | Hashes | source_artifact_hash separado de canonical_content_hash SHA-256 externo al envelope | PROPOSED |
+| UDG-15 | Semántica | Igual hash/perfil = mismos bytes canónicos, no equivalencia semántica/exhaustividad | PROPOSED |
+| UDG-16 | Perfil/versiones | Perfil identificado/versionado; perfiles distintos no comparables sin recanonicalización | PROPOSED |
+
+UDG-02 no está aceptada. No hash de producción, parser/validator, fixtures, schema change ni ejecución autorizados.
