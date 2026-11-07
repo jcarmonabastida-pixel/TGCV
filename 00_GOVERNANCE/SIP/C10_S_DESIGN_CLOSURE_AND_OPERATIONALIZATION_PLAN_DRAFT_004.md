@@ -1185,3 +1185,7 @@ Pendientes: reconciliar catálogo REF; cerrar roles/cardinalidad por clase; sche
 Antes de fijar schema físico REF se deben resolver: distinción REF/UDG-reference/FK U_G; modelo de extremos internos/externos; identidad lógica y record_id exactos; dominio de relation_type/direction/role; multiplicidad y cardinalidad; mapping REF↔EDGE y reglas split/merge/n-arias; aplicabilidad por stage_key/scope; evidencia y adjudicación. Los roles de DEC-C10-076 siguen ilustrativos, no enum cerrado.
 
 Criterio de salida documental: matriz IAM por clase×rol×extremo×ruta×etapa; cardinalidades justificadas ex ante; crosswalk REF→EDGE con mapping versionado; casos ADV para endpoint intercambiado, revisión equivocada, snapshot cruzado, duplicación, dangling, endpoint externo no resoluble y dependencia declarada confundida con instalada. El gate no requiere implementar ni ejecutar; schema físico, resolver y pruebas siguen sujetos a autorización separada.
+
+## 16.53. DEC-C10-077 — gate conceptual REF aceptado; IAM pendiente
+
+La base conceptual de REF↔UDG-04 queda ACCEPTED: REF es objeto del dominio con identidad propia/extremos tipados; referencias envelope y FK U_G son capas distintas; REF→EDGE solo por M versionado, sin 1:1 presumido y con parent/group identity para split/merge/n-aria. Permanecen como gates OPEN el catálogo final de roles, dominios de extremos, cardinalidad/obligatoriedad por clase×rol×extremo×stage_key×scope, reglas de ciclos, endpoints externos, IAM y evidencia. No hay autorización de schema físico, resolver ni ejecución.
