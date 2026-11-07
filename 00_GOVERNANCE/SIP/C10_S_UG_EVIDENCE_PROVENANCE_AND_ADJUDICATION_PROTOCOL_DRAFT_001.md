@@ -758,3 +758,74 @@ Projection-ID conserva identidad/revisión/schema/contract/instance/C0/stage_key
 Resultados: EQUAL, DIFFERENT, UNKNOWN, NOT_COMPARABLE; FAIL para incumplimiento de integridad. Scope/snapshot/contract incompatibles sin mapping explícito = NOT_COMPARABLE; evidencia faltante = UNKNOWN. Registrar dimensión, reason_code, evidencia, perfiles/versiones y scope. No elevar UNKNOWN/NOT_COMPARABLE a PASS ni emitir equivalencia global con dimensión crítica abierta.
 
 Esta aceptación es documental: no crea fingerprint semántico, comparator ejecutable, migración, fixtures, parser/validator ni schema change; no autoriza Design Freeze, implementación o ejecución científica. DEC-C10-075 prevalece sobre §20.14, que describía UDG-03 como no aceptada.
+
+
+## 20.16. Referencias tipadas, identidad de registro y resolución — propuesta UDG-04
+
+**Estado:** propuesta documental; NO ACEPTADA. Se apoya en DEC-C10-073/074/075 y no modifica U1, JCS ni el contrato de comparación.
+
+### 20.16.1. Identidad en dos niveles
+
+Separar obligatoriamente:
+
+- **Identidad lógica:** `(object_class, object_id)`; identifica el objeto conceptual dentro de su espacio de nombres/clase. No demuestra que exista una versión concreta ni que dos registros sean intercambiables.
+- **Identidad de registro:** `(object_class, object_id, object_record_id)`; identifica una materialización/versionado inmutable concreto del objeto. Es la unidad mínima para resolver una referencia histórica reproducible.
+
+El `object_record_id` no se reutiliza para contenido diferente. Si un registro declara además versión semántica, esta se verifica contra el registro recuperado; no sustituye el record_id. No resolver por nombre visible, valor, posición, hash aislado ni similitud textual.
+
+### 20.16.2. Contrato abstracto de referencia
+
+Toda referencia semánticamente relevante debe resolverse como una tupla tipada:
+
+`(ref_role, target_object_class, target_object_id, target_object_record_id)`
+
+- `ref_role` describe la relación desde el origen (p. ej. MEMBER, OWNER, SOURCE, INCLUSION_RULE, EXCLUSION_RULE, DEPENDENCY, PROVENANCE); no altera la identidad del target.
+- `target_object_class` restringe el espacio de resolución y evita colisiones entre clases.
+- `target_object_id` declara la identidad lógica esperada.
+- `target_object_record_id` fija el registro exacto e inmutable.
+
+El conjunto de roles es ilustrativo y requiere validación contra el catálogo REF vigente; no se declara enum cerrado en esta propuesta. Las referencias se clasifican además como REQUIRED/OPTIONAL por contrato del campo. La ausencia de una referencia opcional no es un dangling reference; la ausencia de una requerida es FAIL estructural.
+
+### 20.16.3. Resolución y estados
+
+La resolución se realiza contra un registro/manifiesto versionado y delimitado por el scope declarado; nunca contra “latest” implícito. Para una referencia se comprueba en orden: (1) sintaxis/forma; (2) existencia exacta del record_id; (3) clase e identidad lógica coincidentes; (4) integridad/inmutabilidad del registro; (5) compatibilidad de versión/schema/contract cuando aplique; (6) autorización/alcance de acceso a la fuente; (7) cardinalidad de resolución exactamente uno.
+
+| Situación | Resultado |
+|---|---|
+| Referencia requerida ausente | FAIL |
+| Record_id inexistente tras búsqueda exhaustiva en registry cerrado | FAIL / DANGLING_REFERENCE |
+| Registry no disponible o cobertura no exhaustiva | UNKNOWN |
+| Más de un registro candidato por clave lógica sin record_id exacto | UNKNOWN; NOT_COMPARABLE si se pretende comparar objetos no fijados |
+| Clase u object_id contradicen el registro recuperado | FAIL / IDENTITY_CONFLICT |
+| Registro correcto pero versión/schema/contract incompatible sin mapping aprobado | NOT_COMPARABLE |
+| Fuente inaccesible o permiso insuficiente | UNKNOWN (no inferir inexistencia) |
+| Referencia opcional ausente | NOT_APPLICABLE para esa relación, no FAIL |
+| Mismo record_id asociado a contenidos distintos | FAIL / IMMUTABILITY_VIOLATION |
+
+No colapsar NOT_FOUND con INACCESSIBLE ni NOT_FOUND con UNKNOWN. Solo puede afirmarse inexistencia si el registry relevante está cerrado, completo y consultado exhaustivamente.
+
+### 20.16.4. Ciclos y dependencias
+
+Construir grafo dirigido con aristas etiquetadas por ref_role. La detección de ciclos se aplica por tipo de relación:
+
+- MEMBER/OWNER/SOURCE/INCLUSION_RULE/EXCLUSION_RULE no se presumen acíclicas ni cíclicas universalmente; su semántica debe declarar si transitividad o ciclos están permitidos.
+- DEPENDENCY requiere política explícita por clase: DAG cuando la ejecución/orden topológico sea requisito; ciclos permitidos solo si el contrato define semántica de grupo/SCC y punto fijo. Sin esa definición, ciclo observado = UNKNOWN para interpretación semántica y FAIL solo si viola una regla acíclica ya declarada.
+- PROVENANCE puede formar cadenas históricas; no confundir ciclos de procedencia con dependencia funcional.
+
+Un ciclo no se “rompe” eliminando una arista ni se resuelve escogiendo un nodo arbitrario. Registrar los miembros del ciclo, roles y versiones exactas. La falta de visibilidad del grafo completo produce UNKNOWN sobre aciclicidad.
+
+### 20.16.5. Cardinalidad y propagación
+
+Cada relación declara cardinalidad min/max y si es REQUIRED/OPTIONAL en el contrato de su clase. No asumir cardinalidad universal 1:N por el tipo de referencia. Para una referencia singular, resolución válida exige exactamente un target. Para una colección, comprobar límites, duplicados por identidad de registro y completitud.
+
+La resolución de una referencia no prueba la pertenencia semántica del target al universo: esa pertenencia se adjudica separadamente bajo UDG-01/03 y C0. Resolver un OWNER o SOURCE tampoco prueba que la configuración sea aplicable o que la transformación se haya ejecutado.
+
+Propagación: FAIL de identidad/inmutabilidad invalida la relación afectada y cualquier conclusión que dependa de ella; UNKNOWN en una dependencia requerida propaga UNKNOWN a las conclusiones dependientes; NOT_COMPARABLE no se convierte en DIFFERENT. No propagar un fallo local a objetos no dependientes sin arista causal/dependencia demostrada.
+
+### 20.16.6. Consecuencias para UDG-03
+
+La igualdad extensional compara identidades de registro exactas en scopes/snapshots compatibles. Una misma identidad lógica con record_id distinto no equivale automáticamente al mismo miembro. Puede reconocerse continuidad lógica, pero la comparación de registros/versiones queda DIFFERENT o UNKNOWN según evidencia; para declarar equivalencia semántica se requiere mapping de versión explícito y aprobado. Nombres iguales no bastan.
+
+### 20.16.7. Límites
+
+UDG-04 no está aceptada. No fija schema físico REF, catálogo cerrado de roles, algoritmo de resolución, registro concreto, API, parser, validator, fixtures, comparador, Design Freeze ni ejecución. Tampoco resuelve aún mapping CMP/PAR/RUL entre F1/A1 y F2/A2. La propuesta debe reconciliarse con los contratos y decisiones previas antes de aceptar.
