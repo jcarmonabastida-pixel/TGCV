@@ -902,3 +902,10 @@ Se registra UDG-03 en protocolo §20.14, plantilla U_G §18.19, matriz de mappin
 **Estado: ACEPTADA.** Se acepta UDG-03 como contrato documental de comparación vectorial por siete niveles: artefacto, canónico, identidad universe_id, revisión, extensional, definicional y compatibilidad dirigida entre revisiones. Se separan Projection-ID y Projection-SEM; igualdad extensional exige universos completos/exhaustivos y scope/snapshot compatibles; equivalencia definicional requiere reglas/AST/domínios/dependencias equivalentes. Resultados EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE y FAIL de integridad.
 
 No se infiere equivalencia por hash/ID/nombre/cardinality. Aceptación no crea fingerprint ni comparator ejecutable y no autoriza fixtures, parser/validator, schema change, Design Freeze, implementación o ejecución científica. Registro: `00_GOVERNANCE/decisions/DEC-C10-075_SEMANTIC_UNIVERSE_COMPARISON_ACCEPTANCE.md`. Este asiento prevalece sobre §72, propuesta previa no aceptada.
+
+
+## 74. UDG-04 — propuesta de referencias tipadas y resolución (2026-11-07)
+
+Se registra UDG-04 en protocolo §20.16, plantilla U_G §18.21, matriz de mapping §20.18, maestro §195, plan §16.50 y matriz de control §68. Distingue identidad lógica de identidad de registro inmutable, define referencia tipada por rol y target exacto, resolución en registry versionado, estados de ausencia/conflicto/inaccesibilidad/incompatibilidad, y tratamiento de ciclos/cardinalidad por relación. Resolver no prueba pertenencia, aplicabilidad ni ejecución.
+
+**Estado: NO ACEPTADA.** Requiere reconciliación con catálogo REF y contratos vigentes; no fija schema físico ni autoriza resolver/API/parser/validator/fixtures/implementación/ejecución.
