@@ -232,3 +232,7 @@ No se fijan nombres físicos ni tabla concreta porque no se ha elegido formato/p
 La tabla M deberá consumir, sin colapsarlos, contract_id/version, instance_id/version, component_id/class, owner_component_id, parameter_key, rule_id, source_id/version, destination_id/version, mapping_id/version, IAM_id/version/hash y oráculo/version. La propuesta de valores candidatos está en `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md` y requiere aceptación.
 
 CMP-SERVICE-LOGIC no debe usarse como component_id único: es etiqueta de rol/owner lógico; CMP-SERVICE-LOGIC-001 es candidato. El hash identifica serialización exacta, no equivalencia semántica. C_src, C_dst declarado y C_dst aplicado permanecen separados. No se asignan todavía nombres físicos ni tablas concretas de plataforma.
+
+## 19. Gate siguiente: mapping semántico bajo DEC-C10-069
+
+El mapping M debe usar los IDs aceptados por DEC-C10-069 y mantener versionado independiente. La tabla siguiente a completar será por familia CMP/PAR/RUL: identidad y cardinalidad fuente; identidad y cardinalidad destino; correspondencia/transformación; precondición y postcondición; preservación semántica FP-03; aplicación FP-06/07; evidencia y oráculo; tratamiento de ausencia, conflicto y UNKNOWN; cobertura IAM. Se distinguirán C_dst declarado y C_dst aplicado. No se aceptará equivalencia por igualdad nominal de IDs ni se declarará REF=0 sin cobertura exhaustiva. Mapping concreto y evidencias siguen OPEN; no ejecución autorizada.
