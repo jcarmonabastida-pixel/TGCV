@@ -924,3 +924,12 @@ Se propone separar REF de configuración, referencias tipadas del envelope UDG y
 ## 77. DEC-C10-077 — aceptación conceptual de reconciliación REF↔UDG-04 (2026-11-07)
 
 **Estado: ACEPTADA.** Se acepta separar REF de configuración, referencia envelope UDG y FK estructural U_G; REF posee identidad y extremos tipados; REF→EDGE requiere M explícito/versionado, sin equivalencia automática ni 1:1 asumida; split/merge/n-aria requiere parent/group identity. Los roles UDG siguen ilustrativos. No se fijan roles finales, dominios, cardinalidades, obligatoriedad, IAM ni schema físico. Registro: 00_GOVERNANCE/decisions/DEC-C10-077_REF_UDG04_CONCEPTUAL_RECONCILIATION_ACCEPTANCE.md. No autoriza implementación/Design Freeze/ejecución.
+
+
+## 78. DEC-C10-078 — aceptación del contrato lógico de filas IAM (2026-11-07)
+
+**Estado: ACEPTADA.** Se acepta la estructura de cuatro capas L1 membership del universo; L2 referencias del envelope UDG; L3 extremos funcionales de REF; L4 FK/vínculos estructurales U_G, y el contrato lógico de fila IAM: `iam_rule_id`, `layer`, `source_class`, `source_identity_rule`, `role_namespace`, `role_key`, `endpoint_position`, `target_domain`, `min_cardinality`, `max_cardinality`, `requiredness`, `applicability_trigger`, `stage_key`, `scope_mode`, `route_binding`, `version_snapshot_binding`, `integrity_rule`, `mapping_rule`, `evidence_rule`, `adjudication` y `rationale/provenance`.
+
+La estructura es lógica y contextual; no todos los campos aplican a todas las capas. No se fijan vocabularios cerrados, cardinalidades numéricas, valores REQUIRED/OPTIONAL/CONDITIONAL, endpoints externos, enum relation_type, mapping M concreto ni schema físico. Se reutilizan los siete stage_key de DEC-C10-071 y C10S_SCOPE_GLOBAL de DEC-C10-072. Los roles UDG siguen ilustrativos y no crean objetos REF automáticamente. El siguiente trabajo puede proponer vocabularios candidatos por capa, manteniendo separados roles UDG y roles funcionales REF.
+
+No modifica DEC-C10-077 ni autoriza roster exhaustivo, IAM poblado, DDL/API/registry/resolver, parser/validator, fixtures, Design Freeze, implementación, simulación, experimento o ejecución científica. Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-078_IAM_LOGICAL_ROW_CONTRACT_ACCEPTANCE.md`.
