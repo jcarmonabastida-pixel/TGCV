@@ -8134,7 +8134,7 @@ Se corrige la clasificación previa: U_G-SCH-10 es pertenencia/referencias del g
 
 Los registros de objeto enlazan coverage_scope_id y los registros de grafo fijan snapshot_id + snapshot_object_record_id. COVERAGE_REGISTER no contiene el par de snapshot, de modo que existe enlace indirecto pero no enforcement de coincidencia snapshot-scope mediante FK compuesta. universe_definition/version puede declarar el pinning, no imponerlo relacionalmente.
 
-Se comparan C0 (esquema actual + contrato de tupla exacta + control independiente, recomendación provisional), C1 (añadir snapshot_id/snapshot_object_record_id y FK compuesta a COVERAGE_REGISTER y a referencias de objeto) y C2 (tabla puente, no recomendada). C0 queda CONDITIONAL hasta que exista control auditado; C1 requiere decisión explícita y revisión de ciclos/compatibilidad. Ninguna alternativa está aceptada como cambio de schema.
+La comparación C0/C1/C2 queda como antecedente histórico. Estado vigente: C0 fue aceptada como contrato documental condicionado por DEC-C10-070; su especificación de control está en el protocolo §19. El control sigue OPEN/CONDITIONAL, NOT IMPLEMENTED, NOT EXECUTED y NOT AUDITED. C1/C2 no aceptadas ni autorizadas; el schema no se modifica.
 
 Este análisis no reabre DEC-C10-065, no acepta la convención SNAPSHOT.scope, no crea scopes/snapshots ni evidencia, y no autoriza implementación o ejecución.
 
