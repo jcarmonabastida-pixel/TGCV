@@ -1201,3 +1201,17 @@ Registro: `00_GOVERNANCE/decisions/DEC-C10-068_SYNTHETIC_SERVICE_FUNCTIONAL_CONT
 | CMP-ID-07 | Matching de snapshots con identidad/frontera/granularidad/cobertura | Contrato existente; cierre por instancia OPEN |
 
 Documento: `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md`. No crea instancia ejecutable ni cierra F*. No Design Freeze ni autorización de implementación/ejecución.
+
+## 45. Control de roster PAR y alcance aceptado por DEC-C10-068
+
+| Control | Criterio | Estado |
+|---|---|---|
+| PAR-ROSTER-01 | ENABLED BOOL y PROFILE ENUM como núcleo de instancia | ACEPTADO CONCEPTUALMENTE — DEC-C10-068 |
+| PAR-ROSTER-02 | RETRY-COUNT dentro del núcleo P0 | EXCLUIDO POR DEC-C10-068 |
+| PAR-ROSTER-03 | Dominios ENABLED={false,true}; PROFILE={STANDARD,READ_ONLY,DISABLED} | ACEPTADOS CONCEPTUALMENTE |
+| PAR-ROSTER-04 | Estados/defaults por clave y serialización | OPEN; estructura general DEC-C10-054 |
+| PAR-ROSTER-05 | Mapping total/versionado y preservación semántica | INVARIANTES DOCUMENTADOS; MAPPING CONCRETO OPEN |
+| PAR-ROSTER-06 | IAM por escenario, cobertura y oráculo | OPEN |
+| PAR-ROSTER-07 | Identidad CMP/versionado de instancia | PROPUESTA PENDIENTE DE ACEPTACIÓN — §49 |
+
+La tabla histórica de tres slots queda supersedida en cuanto a RETRY-COUNT. No se declara instancia serializada ni IAM sellado.
