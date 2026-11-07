@@ -1189,3 +1189,14 @@ Criterio de salida documental: matriz IAM por clase×rol×extremo×ruta×etapa; 
 ## 16.53. DEC-C10-077 — gate conceptual REF aceptado; IAM pendiente
 
 La base conceptual de REF↔UDG-04 queda ACCEPTED: REF es objeto del dominio con identidad propia/extremos tipados; referencias envelope y FK U_G son capas distintas; REF→EDGE solo por M versionado, sin 1:1 presumido y con parent/group identity para split/merge/n-aria. Permanecen como gates OPEN el catálogo final de roles, dominios de extremos, cardinalidad/obligatoriedad por clase×rol×extremo×stage_key×scope, reglas de ciclos, endpoints externos, IAM y evidencia. No hay autorización de schema físico, resolver ni ejecución.
+
+
+## 16.54. DEC-C10-078 — contrato lógico IAM aceptado; valores de aplicación abiertos
+
+DEC-C10-078 acepta documentalmente las cuatro capas IAM (L1 membership del universo; L2 referencias del envelope UDG; L3 extremos funcionales REF; L4 FK/vínculos estructurales U_G) y el contrato lógico contextual de fila: `iam_rule_id`, `layer`, `source_class`, `source_identity_rule`, `role_namespace`, `role_key`, `endpoint_position`, `target_domain`, `min_cardinality`, `max_cardinality`, `requiredness`, `applicability_trigger`, `stage_key`, `scope_mode`, `route_binding`, `version_snapshot_binding`, `integrity_rule`, `mapping_rule`, `evidence_rule`, `adjudication` y `rationale/provenance`.
+
+La aceptación cierra la estructura documental del contrato de filas, no los valores de sus campos ni la aplicabilidad por instancia. Se reutilizan DEC-C10-071/072 sin reabrir sus vocabularios.
+
+**Siguiente gate documental:** proponer y contrastar vocabularios candidatos por capa, separando expresamente (a) roles de referencias del envelope UDG en L2 y (b) roles/extremos funcionales de objetos REF en L3. Mantener L1 y L4 como membership/FK estructural, no convertirlos en roles REF. Después, justificar dominios/cardinalidades/requiredness por clase×rol×extremo×stage_key×scope, y reconciliar mapping M sin fijar aún un mapping concreto.
+
+**OPEN:** vocabularios finales, dominios internos/externos, cardinalidades numéricas, requiredness, integridad concreta, evidencia/adjudicación concreta y mapping M. No schema físico, roster exhaustivo, IAM poblado, fixtures, parser/validator, implementación, Design Freeze ni ejecución autorizados.
