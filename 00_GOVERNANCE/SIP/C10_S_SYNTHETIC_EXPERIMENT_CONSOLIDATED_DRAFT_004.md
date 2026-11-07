@@ -8231,3 +8231,10 @@ Igual canonical hash bajo mismo perfil solo prueba igualdad de bytes canónicos;
 Se propone comparación vectorial, no booleano único: artefacto idéntico; representación canónica idéntica; identidad universe_id; misma revisión; igualdad extensional de miembros; equivalencia definicional; compatibilidad dirigida entre revisiones. Projection-ID retiene schema/contract/instance/C0/stage/route/snapshot/profile. Projection-SEM compara modo de membership, refs tipadas y versiones, inclusión/exclusión, reglas/AST/dependencias, fuentes/cobertura y cardinalidad. Provenance/timestamp/hash no son miembros; C0/snapshot/route/instance/object version sí condicionan comparabilidad.
 
 EQUAL exige evidencia completa para la dimensión; DIFFERENT solo con ambos lados completos/comparables; UNKNOWN por falta de evidencia; NOT_COMPARABLE por scopes/contratos/snapshots incompatibles sin mapping explícito; FAIL por contradicción de integridad. Igualdad extensional no implica equivalencia definicional (p. ej. EXPLICIT vs RULE_DEFINED). UDG-03 NO ACEPTADA; no comparator, fingerprint semántico, schema change ni ejecución.
+
+
+## 194. DEC-C10-075 — aceptación de comparación semántica UDG-03 (2026-11-07)
+
+UDG-03 queda ACEPTADA como contrato documental de comparación por siete niveles: artefacto, canónico, identidad universe_id, revisión, igualdad extensional de miembros, equivalencia definicional y compatibilidad dirigida entre revisiones. Projection-ID y Projection-SEM se mantienen separadas. C0/stage/route/snapshot/contract/instance/object version condicionan comparabilidad; provenance/timestamp/hash son trazabilidad, no miembros.
+
+Igualdad extensional exige conjuntos completos y exhaustivos bajo scopes/snapshots compatibles; equivalencia definicional exige además equivalencia demostrada de reglas/AST/domínios/dependencias. Resultados por dimensión EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE; FAIL para integridad. No inferir equivalencia por hash/ID/nombre/cardinality. No se crea fingerprint/comparator ejecutable ni se autoriza parser, fixtures, schema change, Design Freeze o ejecución. Registro DEC-C10-075.
