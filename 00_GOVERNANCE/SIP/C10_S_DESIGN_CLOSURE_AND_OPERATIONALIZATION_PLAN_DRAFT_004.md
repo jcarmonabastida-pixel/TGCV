@@ -1223,3 +1223,13 @@ El contrato sintético aceptado CMP-SERVICE-LOGIC-001 + PAR-SVC-ENABLED/PROFILE 
 El roster mínimo no es un inventario exhaustivo: no autoriza declarar REF=0. El valor cero solo podrá adjudicarse por snapshot×etapa×ruta×scope con enumeración exhaustiva y cobertura COMPLETE pre-Z/B. Todo REF añadido debe justificar identidad propia de la relación, extremos exactos, semántica, dirección/tipo/rol, multiplicidad, versión/snapshot y distinción frente a FK/condición externa/referencia de regla.
 
 Estado: auditoría documental propuesta; sin filas observadas ni IAM sellado. El siguiente gate es contrastar esta lista negativa con inventarios exhaustivos de C_src/C_dst y con los scopes por stage_key, antes de asignar cardinalidad/requiredness.
+
+## 16.58. Auditoría REF por snapshot y etapa — protocolo propuesto
+
+El siguiente gate IAM es una auditoría de relaciones REF por cada combinación exacta de contrato/instancia, snapshot, stage_key, ruta, scope y universo versionado. Reutiliza el inventario U_G y sus registros de evidencia/cobertura; no crea un segundo inventario. La matriz IAM §19.16 especifica inspección diferenciada de C_SRC, F1_S2, A1_S1, F2/A2_DST_DECL y F2/A2_DST_APPLIED.
+
+Una relación solo se clasifica REF si tiene identidad propia, semántica de dominio, extremos exactos, dirección/tipo/multiplicidad, pertenencia al paquete y procedencia. EDGE/FK/ROUTE_STEP, CLAIM_EVIDENCE_LINK, operandos RUL, R_acc/R*, dependencias técnicas C_dep/E_dst y refs de evaluación RULE_DEFINED no se elevan por defecto a REF. Cualquier doble representación U_G↔REF requiere mapping M explícito/versionado.
+
+PRESENT requiere evidencia suficiente; ABSENT/REF=0 exige universo y fuentes exhaustivos y COVERAGE_REGISTER COMPLETE para el scope exacto; UNKNOWN permanece si hay cualquier laguna/conflicto; NA exige no aplicabilidad ex ante. Los snapshots declarados no prueban el estado aplicado. Sin snapshots reales, el resultado sigue siendo protocolo documental, no inventario ni adjudicación.
+
+**Gate:** obtener fuentes/snapshots exactos, poblar U_G y coverage por etapa×ruta×clase, adjudicar candidatos REF y solo entonces derivar cardinalidad/requiredness IAM. Propuesta no aceptada; sin ejecución ni implementación autorizada.
