@@ -948,3 +948,11 @@ Para una dependencia como relación del dominio de configuración, se propone qu
 El roster mínimo CMP/PAR/RUL aceptado no declara por sí mismo una relación REF. REF=0 solo será adjudicable tras inventario/cobertura exhaustivos pre-Z/B; no se inventa relación ni se declara REF=0 ahora.
 
 **Estado:** propuesta no aceptada; vocabulario, cardinalidad y requiredness abiertos. No modifica DEC-C10-076/077/078 ni autoriza implementación, Design Freeze o ejecución.
+
+## 81. Auditoría propuesta del conjunto mínimo REF L3 (2026-11-07) — no aceptada
+
+El contrato sintético aceptado CMP-SERVICE-LOGIC-001, PAR-SVC-ENABLED, PAR-SVC-PROFILE y RUL-SVC-ENABLE-PROFILE-01 no exige actualmente una relación REF funcional concreta. Operandos de RUL, R_acc/R* transformacionales, C_dep/E_dst técnicos/ambientales y dependencias de evaluación RULE_DEFINED no se convierten en REF por defecto.
+
+El roster mínimo no es exhaustivo; REF=0 solo podrá declararse con inventario/cobertura COMPLETE por snapshot×etapa×ruta×scope pre-Z/B. La auditoría no crea filas de instancia ni sella IAM.
+
+**Estado:** propuesta de auditoría documental no aceptada; no modifica DEC-C10-078 ni autoriza implementación/ejecución.
