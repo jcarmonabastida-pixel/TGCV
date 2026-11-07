@@ -392,3 +392,10 @@ Se propone un envelope JSON autocontenido en universe_definition/version. Su sco
 member_ref identifica object_class, object_id y object_record_id; owner_ref/source_record_ref se incluyen cuando sean necesarios para resolver la semántica de CMP/PAR/REF/RUL/MET. La clase del miembro debe coincidir con la clase del scope. La pertenencia a otra etapa solo se permite mediante proyección explícita y versionada. No inferir identidad por nombre/valor/hash/posición.
 
 Se propone canonicalización determinista UTF-8/NFC, claves ordenadas, arrays ordenados por identidad y SHA-256 del contenido; semver para schema_version y revisión entera monotónica e inmutable para universe_revision. Es una propuesta, no un contrato aceptado. Mapping físico por clase/propiedad y control C0 siguen OPEN; no schema change ni implementación/ejecución.
+
+
+### 20.13. DEC-C10-073 — envelope aceptado; mapping físico abierto
+
+Se acepta U1 como arquitectura documental de universe_definition: envelope JSON autocontenido/versionado con los campos/cardinalidades de §20.12 y scope C0 de nueve componentes. member_ref se tipa mediante object_class/object_id/object_record_id, con owner/source refs cuando aplique; no se infiere identidad por nombre/valor/hash/posición. EXPLICIT y RULE_DEFINED se aceptan con sus requisitos de exhaustividad y referencias versionadas.
+
+No se acepta canonicalización UTF-8/NFC como obligación, SHA-256 normativo, RFC/JCS ni serialización ejecutable. El mapping físico CMP/PAR/REF/RUL/MET sigue OPEN; esta decisión no valida la pertenencia por clase propuesta en §20.10/20.11 ni cierra C0.
