@@ -8177,3 +8177,12 @@ Mapping candidato: CMP→NODE (EDGE solo relación); PAR→NODE o propiedad ató
 
 Estado: stage_key vocabulary ACCEPTED; crosswalk general DOCUMENTED AS PROPOSAL. Token global, route_id exacto por universo, gramática universe_definition/version y mapping por propiedad OPEN. No se modifica schema, no se crean instancias, no se implementa ni ejecuta C0.
 
+
+
+## 187. Scope global y route-specific — propuesta documental (2026-11-07)
+
+Se ha especializado el crosswalk histórico sin reabrir DEC-C10-064/065/070/071. Para scope route-specific, route_id es identidad semántica de ROUTE y universe_definition/version fija route_record_id + snapshot exacto. NODE/EDGE se vinculan mediante ROUTE_STEP; PREDICATE mediante route_record_id; ROUTE por su propia revisión.
+
+Se comparan G1 token reservado, G2 NULL/vacío y G3 scope_kind separado. G1 se recomienda provisionalmente con candidato C10S_SCOPE_GLOBAL, que significa “sin restricción a ruta concreta”, nunca “no hay rutas” ni “el objeto no pertenece a ruta”. No es valor aceptado. CMP/PAR/REF/RUL/MET requieren reglas de pertenencia específicas; scopes globales cuentan cada objeto una vez y scopes route-specific mantienen denominadores independientes. 1/0/? se adjudican con mapping y cobertura exactos; 0 solo significa no pertenencia a esa ruta.
+
+Protocolo de evidencia §20.8, matriz de mapping §20.10 y plantilla U_G §18.13 contienen la especificación. Token, namespace y gramática universe_definition/version permanecen OPEN. No schema change, scopes, snapshots, implementación ni ejecución.
