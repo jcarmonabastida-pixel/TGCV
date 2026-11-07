@@ -1312,7 +1312,7 @@ U_G-SCH-10 (pertenencia/referencias versionadas del grafo) no debe usarse como e
 |---|---|---|
 | COVERAGE-SCOPE-11g | Binding coverage_scope_id↔snapshot exacto demostrable por FK compuesta | OPEN — COVERAGE_REGISTER no almacena snapshot_id/snapshot_object_record_id |
 | COVERAGE-SCOPE-11g1 | C0: tupla exacta en universe_definition/version + control independiente | ACCEPTED — DEC-C10-070; control OPEN / CONDITIONAL |
-| COVERAGE-SCOPE-11g2 | C1: extender COVERAGE_REGISTER y FKs compuestas | ALTERNATIVE; no aceptada; requiere análisis de ciclos/legacy/motor |
+| COVERAGE-SCOPE-11g2 | C1: extender COVERAGE_REGISTER y FKs compuestas | NOT ACCEPTED; requiere nueva decisión y análisis de ciclos/legacy/motor |
 | COVERAGE-SCOPE-11g3 | C2: tabla puente | NOT RECOMMENDED; solo si C1 no es viable |
 | U_G-SCH-10 | Pertenencia/referencias de grafo a snapshot | SEMANTIC DESIGN ACCEPTED — DEC-C10-065/Opción A; physical validation OPEN |
 | SNAPSHOT.scope | Codificación etapa/ruta C10-S | OPEN — propuesta no aceptada/compatibilidad pendiente |
