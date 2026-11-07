@@ -1402,3 +1402,17 @@ DEC-C10-071 cierra únicamente el vocabulario stage_key. Permanecen OPEN el toke
 | C0-RT-06 | Adjudicación | 1 exacto; 0 solo no pertenencia a ruta con universo/ROUTE_STEP completos; ? incompleto; NA IAM ex ante | DOCUMENTED PROPOSAL |
 
 No se acepta el token ni se modifica schema. La gramática de universe_definition/version, el mapping físico por propiedad y el control C0 implementado/auditado siguen OPEN/CONDITIONAL. No scopes/snapshots ni ejecución autorizados.
+
+
+## 61. DEC-C10-072 — actualización del gate de scope global
+
+| ID | Requisito | Criterio / límite | Estado |
+|---|---|---|---|
+| C0-RT-01 | route_id route-specific | Resolver route_record_id y snapshot exactos en universe_definition/version | OPEN |
+| C0-RT-02 | Token global | Literal reservado `C10S_SCOPE_GLOBAL`, “sin restricción a ruta concreta”; colisión con route_id real = FAIL | ACCEPTED — DEC-C10-072 |
+| C0-RT-03 | Alternativas | G1 aceptada; G2 NULL/vacío descartada por ambigüedad; G3 scope_kind no adoptada | DECIDED |
+| C0-RT-04 | CMP/PAR/REF/RUL/MET | Crosswalk físico por clase/owner/propiedad, sin inferencia nominal | OPEN |
+| C0-RT-05 | Multi-ruta | Scope global cuenta una vez por identidad; scopes route-specific con denominadores separados | ACCEPTED SEMANTICS |
+| C0-RT-06 | Adjudicación | 1 exacto; 0 solo no pertenencia a ruta con universo/ROUTE_STEP completos; ? incompleto; NA IAM ex ante | DOCUMENTED PROPOSAL |
+
+La aceptación del token no cierra la gramática universe_definition/version ni el control C0 independiente implementado/auditado. No schema change ni ejecución autorizados.
