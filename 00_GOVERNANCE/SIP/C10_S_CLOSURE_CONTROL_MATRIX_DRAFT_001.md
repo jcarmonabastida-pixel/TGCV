@@ -1215,3 +1215,17 @@ Documento: `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md
 | PAR-ROSTER-07 | Identidad CMP/versionado de instancia | PROPUESTA PENDIENTE DE ACEPTACIÓN — §49 |
 
 La tabla histórica de tres slots queda supersedida en cuanto a RETRY-COUNT. No se declara instancia serializada ni IAM sellado.
+
+## 50. Estado de identidad/versionado tras DEC-C10-069
+
+| Control | Criterio | Estado |
+|---|---|---|
+| CMP-ID-01 | Separar contract_id, instance_id, component_id y component_class | ACCEPTED — DEC-C10-069 |
+| CMP-ID-02 | contract_version semver; instance_version entero positivo inmutable | ACCEPTED — DEC-C10-069 |
+| CMP-ID-03 | IDs C10S-SVC-REQUEST-PROCESSOR / C10S-SVC-REQUEST-PROCESSOR-001 / CMP-SERVICE-LOGIC-001 | ACCEPTED — DEC-C10-069 |
+| CMP-ID-04 | MET enlaza C_src/C_dst, M, IAM, oráculo y procedencia | Especificación documental; serialización/valores OPEN |
+| CMP-ID-05 | Hash solo de serialización canónica congelada | Regla ACCEPTED; formato/hash OPEN |
+| CMP-ID-06 | Matching de snapshots con identidad/frontera/granularidad/cobertura | Regla aceptada; aplicación/evidencia OPEN |
+| CMP-ID-07 | Mapping semántico CMP/PAR/RUL entre F1/A1 y F2/A2 | NEXT GATE — OPEN |
+
+Registro: `00_GOVERNANCE/decisions/DEC-C10-069_SERVICE_CMP_IDENTITY_AND_VERSIONING_ACCEPTANCE.md`. No instancia ejecutable, no Design Freeze ni autorización de implementación/ejecución.
