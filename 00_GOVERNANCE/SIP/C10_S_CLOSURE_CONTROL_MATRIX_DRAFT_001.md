@@ -1434,3 +1434,20 @@ La aceptación del token no cierra la gramática universe_definition/version ni 
 | UDG-09 | Adjudicación | PASS solo exhaustivo; FAIL contradicción; UNKNOWN no resoluble | PROPOSED |
 
 La aceptación del token global no acepta UDG-01. Gramática, canonicalización/hash y mapping físico permanecen abiertos. No parser/validator, schema change, fixtures ni ejecución autorizados.
+
+
+## 63. DEC-C10-073 — actualización del gate UDG-01
+
+| ID | Requisito | Criterio | Estado |
+|---|---|---|---|
+| UDG-01 | Arquitectura envelope | U1 JSON autocontenido/versionado | ACCEPTED — DEC-C10-073 |
+| UDG-02 | Scope | Réplica exacta de tupla C0 de nueve componentes; dimension fuera | ACCEPTED |
+| UDG-03 | Membership | EXPLICIT con referencias tipadas o RULE_DEFINED con regla/dependencias exactas | ACCEPTED — arquitectura |
+| UDG-04 | Exhaustividad | Fuentes/manifiestos, cardinalidad; cero requiere prueba exhaustiva | ACCEPTED — criterio |
+| UDG-05 | Route binding | Route-specific resuelve route_record_id; global usa C10S_SCOPE_GLOBAL | ALIGNED — DEC-C10-072 |
+| UDG-06 | Canonicalización/hash | UTF-8/NFC, orden y SHA-256 son propuestas, no requisitos | OPEN |
+| UDG-07 | Versionado | Separación schema_version/universe_revision aceptada; reglas completas abiertas | PARTIAL / OPEN |
+| UDG-08 | Integridad | Igualdad scope, referencias, cardinalidad, duplicados y provenance | ACCEPTED — criterio documental |
+| UDG-09 | Adjudicación | PASS exhaustivo; FAIL contradicción; UNKNOWN no resoluble | ACCEPTED — criterio documental |
+
+No equivale a schema freeze ni autoriza parser, validator, fixtures, mapping físico, implementación o ejecución.
