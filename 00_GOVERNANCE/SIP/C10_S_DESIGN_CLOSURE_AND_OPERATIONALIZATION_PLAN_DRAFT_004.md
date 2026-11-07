@@ -1170,3 +1170,10 @@ No comparator/fingerprint semántico, migración, fixtures, parser/validator, sc
 Antes de cerrar mapping REF/CMP/PAR/RUL, resolver identidad lógica vs record identity, roles de referencia, resolución exacta contra registry versionado, cardinalidad, referencias opcionales/requeridas, acceso/incompletitud y ciclos por relación. Se propone que UNKNOWN distinga registry no disponible de inexistencia exhaustiva; NOT_COMPARABLE cubra incompatibilidad sin mapping; FAIL se reserve a ausencia requerida/dangling exhaustivo/conflicto/inmutabilidad. Resolver no equivale a pertenencia ni aplicabilidad.
 
 Propuesta en protocolo §20.16, plantilla U_G §18.21, mapping §20.18 y maestro §195. UDG-04 NO ACEPTADA; schema REF/API/resolver/parser/validator/fixtures/implementación/ejecución no autorizados.
+
+
+## 16.51. DEC-C10-076 — contrato documental de referencias aceptado
+
+UDG-04 queda ACCEPTED documentalmente: identidad lógica vs record identity inmutable; referencia tipada por rol y target exacto; resolución exacta contra registry versionado/scope explícito; estados FAIL/UNKNOWN/NOT_COMPARABLE/NOT_APPLICABLE separados; ciclos y cardinalidad declarados por relación. Resolver no implica membership/aplicabilidad/preservación/ejecución.
+
+Pendientes: reconciliar catálogo REF; cerrar roles/cardinalidad por clase; schema físico, API/registry/resolver y mapping CMP/PAR/RUL. No autorizados parser/validator/comparator/fixtures/implementación/Design Freeze/ejecución. DEC-C10-076 prevalece sobre §16.50.
