@@ -1229,3 +1229,17 @@ La tabla histórica de tres slots queda supersedida en cuanto a RETRY-COUNT. No 
 | CMP-ID-07 | Mapping semántico CMP/PAR/RUL entre F1/A1 y F2/A2 | NEXT GATE — OPEN |
 
 Registro: `00_GOVERNANCE/decisions/DEC-C10-069_SERVICE_CMP_IDENTITY_AND_VERSIONING_ACCEPTANCE.md`. No instancia ejecutable, no Design Freeze ni autorización de implementación/ejecución.
+
+## 50. Estado del gate CMP-ID-07 — mapping semántico CMP/PAR/RUL
+
+| ID | Requisito | Estado |
+|---|---|---|
+| CMP-ID-07a | Identidad lógica CMP, clase, owner y cardinalidad de referencia | DOCUMENTED PROPOSAL — matriz §20.2; IAM/cobertura OPEN |
+| CMP-ID-07b | Mapping semántico PAR-SVC-ENABLED BOOL | DOCUMENTED PROPOSAL — matriz §20.3 |
+| CMP-ID-07c | Mapping semántico PAR-SVC-PROFILE ENUM total e inyectivo | DOCUMENTED PROPOSAL — matriz §20.3 |
+| CMP-ID-07d | Mapping RUL-SVC-ENABLE-PROFILE-01: identidad, scope, AST, operandos y REQUIRE | DOCUMENTED PROPOSAL — matriz §20.4 |
+| CMP-ID-07e | Separación F1/A1 preservación y F2/A2 aplicación; FP-06/07 | DOCUMENTED PROPOSAL — matriz §20.5 |
+| CMP-ID-07f | Evidencia, truth/analyst/oracle y 1/0/?/NA | DOCUMENTED PROPOSAL — matriz §20.6 |
+| CMP-ID-07g | Aceptación de mapping, IAM sellado, mapping físico y oráculo | OPEN |
+
+Referencia: C10_S_ABSTRACT_PARAMETER_AND_SOURCE_DESTINATION_MAPPING_MATRIX_DRAFT_001.md §20. La propuesta no es freeze, validación ni autorización de implementación/ejecución.
