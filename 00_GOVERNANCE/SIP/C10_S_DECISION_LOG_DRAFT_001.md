@@ -865,3 +865,12 @@ Se registra propuesta documental UDG-01 en protocolo de evidencia §20.10, plant
 Estado: NO ACEPTADA. No crea schema ni contrato ejecutable; no parser, validator, fixtures, Design Freeze ni autorización de implementación/ejecución. La gramática final, canonicalización/hash y mapping físico permanecen OPEN.
 
 **Reconciliación de estado DEC-C10-072:** los asientos históricos §§64 y 66 y las redacciones previas de §§20.8.6/18.13 reflejan el estado anterior a la aceptación. No se reescriben por inmutabilidad histórica. Desde DEC-C10-072 (asiento §67 y registro autónomo), G1 y el literal C10S_SCOPE_GLOBAL están ACEPTADOS. Toda lectura vigente debe aplicar DEC-C10-072; solo permanecen abiertos la gramática completa, mappings físicos y control C0.
+
+
+## 69. DEC-C10-073 — aceptación de arquitectura U1 para universe_definition (2026-11-07)
+
+**Estado: ACEPTADA.** U1 se adopta como arquitectura documental: envelope JSON autocontenido y versionado con campos/cardinalidades UDG-01, scope C0 exacto de nueve componentes, EXPLICIT/RULE_DEFINED, referencias tipadas, cardinalidad declarada, fuentes y provenance. Universo vacío exige evidencia exhaustiva. La separación conceptual schema_version/universe_revision queda aceptada.
+
+**No aceptado/cerrado:** canonicalización UTF-8/NFC/orden determinista como obligación, SHA-256 normativo, RFC/JCS, serialización física ejecutable, reglas completas de compatibilidad semver, mapping físico CMP/PAR/REF/RUL/MET y control C0 implementado/auditado. No schema change, parser, validator, fixtures, Design Freeze ni ejecución autorizados.
+
+Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-073_UNIVERSE_DEFINITION_ENVELOPE_ACCEPTANCE.md`. Este asiento prevalece sobre §68, que registraba UDG-01 como propuesta no aceptada antes de la aceptación explícita.
