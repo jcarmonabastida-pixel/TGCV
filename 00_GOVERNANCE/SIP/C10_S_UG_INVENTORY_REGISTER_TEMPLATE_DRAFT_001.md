@@ -704,3 +704,14 @@ Crear scopes COVERAGE_REGISTER por snapshot×etapa×ruta×clase CMP/PAR/REF/RUL/
 ### 18.5. Estado
 
 No existen snapshots C10-S observados en este overlay; no se ha capturado C_src, S1/S2, C_dst declarado ni C_dst aplicado. La plantilla conserva su estado de captura NONE y no acredita ejecución. scientific_execution=false; execution_authorized=false.
+### 18.6. Overlay de COVERAGE_REGISTER C10-S
+
+Se conserva el esquema U_G §12.3 sin añadir columnas: coverage_scope_id (PK/UNIQUE), dimension, universe_definition/version, denominator_unit_and_count, expected_sources, examined_sources, valid_sources, covered_units/count, excluded_units/reason, opaque_or_unknown_units/count, status, completion_rule, exceptions_and_impact, reviewer_id y timestamp.
+
+Un scope C10-S es específico de la tupla exacta contract/version × instance/version × snapshot_id × snapshot_object_record_id × stage_key × route × object_class. Cada scope tiene coverage_scope_id propio, opaco y único; no se reutiliza entre snapshots, etapas, rutas o clases. dimension identifica C10S_CONFIG_CMP/PAR/REF/RUL/MET. universe_definition/version registra la tupla exacta, la regla de enumeración y versión del universo. La matriz 7×5 representa hasta 35 scopes lógicos para el conjunto completo de snapshots, no filas observadas ni scopes que deban crearse sin snapshot.
+
+NONE significa ninguna unidad cubierta; PARTIAL, cobertura incompleta; COMPLETE requiere denominador finito y versionado, regla de enumeración, todas las fuentes esperadas examinadas y válidas, unidades cubiertas o exclusiones justificadas, cero unidades opacas/desconocidas materiales y revisión. COMPLETE es relativo al universo operativo declarado. No se usa NONE/PARTIAL para afirmar ausencia. REF=0 requiere denominator=0 y enumeración exhaustiva; slots PAR REQUIRED ausentes bajo cobertura COMPLETE son incumplimiento, no NA. Si faltan fuentes o denominador, conservar ?.
+
+**Limitación:** COVERAGE_REGISTER no contiene FK directa a snapshot_id/snapshot_object_record_id. El pinning se describe en universe_definition/version y el snapshot referencia coverage_scope_id; la integridad inversa no queda impuesta por FK. No añadir columnas sin decisión específica. U_G-SCH-10 y validación física permanecen OPEN.
+
+No se crean scopes reales ni se afirma cobertura. La codificación de SNAPSHOT.scope permanece propuesta y pendiente de aceptación/compatibilidad.
