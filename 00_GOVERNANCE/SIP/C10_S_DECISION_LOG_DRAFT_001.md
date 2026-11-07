@@ -881,3 +881,10 @@ Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-073_UNIVERSE_DEFINITION_ENV
 Se registra propuesta UDG-02 en protocolo §20.12, plantilla U_G §18.17, matriz de mapping §20.14, maestro §191, plan §16.46 y matriz de control §64. Se comparan C1 RFC 8785 JCS con prevalidación TGCV, C2 canonicalizador propio y C3 hash de bytes fuente; C1 se recomienda provisionalmente. La propuesta distingue hash de artefacto fuente y hash del contenido canónico, define restricciones Unicode/números/null/arrays y prohíbe inferir equivalencia semántica a partir del hash.
 
 **Estado: NO ACEPTADA.** No se convierte SHA-256/JCS en requisito, no hay perfil de producción, parser, validator, fixtures, schema change ni ejecución autorizados. Fuente normativa consultada: RFC 8785 (Informational, no Internet Standards Track): https://www.rfc-editor.org/rfc/rfc8785.html.
+
+
+## 71. DEC-C10-074 — aceptación del perfil JCS (2026-11-07)
+
+**Estado: ACEPTADA.** C1 RFC 8785 JCS + prevalidación TGCV se adopta como política documental de canonicalización del envelope U1, con perfil TGCV-C10S-JCS-1 y las reglas de DEC-C10-074. Se distinguen source_artifact_hash y canonical_content_hash; igualdad de hash/perfil no acredita equivalencia semántica ni exhaustividad.
+
+No autoriza hash de producción, parser/validator, fixtures, schema change, Design Freeze, implementación o ejecución científica. Mapping físico CMP/PAR/REF/RUL/MET y control C0 independiente permanecen abiertos. Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-074_CANONICALIZATION_PROFILE_JCS_ACCEPTANCE.md`. Este asiento prevalece sobre §70, propuesta anterior no aceptada.
