@@ -731,3 +731,10 @@ Este gate es independiente de la pertenencia del grafo a snapshot ya aceptada po
 DEC-C10-070 acepta C0 como contrato documental condicionado: se mantiene el schema; cada coverage_scope_id C10-S fija en universe_definition/version la tupla exacta de contrato/instancia/snapshot/registro/etapa/ruta/clase, y todos los registros que referencian ese scope deben coincidir. El control independiente deberá comprobar igualdad, unicidad, cardinalidad, referencias huérfanas/no usadas y conflictos.
 
 Estado hasta control especificado, implementado bajo autorización, ejecutado y auditado: CONDITIONAL. No existe enforcement FK compuesta. C1/C2 no aceptadas ni autorizadas. No se crean filas ni scopes observados; no Design Freeze ni ejecución.
+
+
+### 18.9. Control independiente C0 — contrato de evaluación
+
+La especificación normativa del control C0 está en `C10_S_UG_EVIDENCE_PROVENANCE_AND_ADJUDICATION_PROTOCOL_DRAFT_001.md`, §19. Define la tupla canónica, invariantes C0-I01…I11, resultado trivalente PASS/FAIL/UNKNOWN, precedencia y casos adversariales ADV-C0-01…15.
+
+Esta plantilla conserva el esquema físico. No añade campos ni FKs a COVERAGE_REGISTER. Hasta disponer de DDL reconciliado y correspondencia inequívoca de todos los campos de la tupla, el binding C0 se evalúa como contrato documental y el control queda NOT IMPLEMENTED / NOT EXECUTED / NOT AUDITED. La aceptación de C0 por DEC-C10-070 no autoriza implementar ni ejecutar el control.
