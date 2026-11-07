@@ -231,3 +231,93 @@ Esta reconciliación resuelve documentalmente la contradicción entre §§10, 13
 El usuario acepta la arquitectura de referencias tipadas. CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER admiten seis destinos tipados (NODE, EDGE, ROUTE, PREDICATE, SNAPSHOT y COVERAGE_SCOPE); exactamente una FK debe estar poblada y concordar con el enum de tipo. `object_record_id` es UNIQUE dentro de cada tabla de objetos; `coverage_scope_id` es PK/UNIQUE. `source_provenance` se conserva canónicamente en EVIDENCE_REGISTER y no se duplica en tablas de objetos.
 
 La plantilla U_G refleja esta decisión. La especificación de CHECK/FK es documental: no hay parser, motor relacional, constraints ni pruebas negativas ejecutadas. DEC-C10-061 no implica freeze, inventario real ni ejecución científica.
+
+## 19. Especificación documental del control independiente C0 — COVERAGE_SCOPE_BINDING_CONTROL (Draft 001)
+
+**Autoridad:** DEC-C10-070. **Estado:** especificación documental propuesta; no implementada, no ejecutada, no auditada.  
+**Propósito limitado:** comprobar que cada `coverage_scope_id` usado por un registro C10-S identifica un único universo de cobertura, anclado a un snapshot/registro exacto, y que ningún registro consume ese scope desde otra etapa, ruta, clase o versión.
+
+### 19.1. Unidad de control y binding canónico
+
+La unidad primaria es una fila de `COVERAGE_REGISTER` identificada por `coverage_scope_id`. Su binding C0 debe declarar, en `universe_definition/version`, una única tupla:
+
+`(contract_id, contract_version, instance_id, instance_version, snapshot_id, snapshot_object_record_id, stage_key, route_id, object_class, dimension)`.
+
+Los valores deben ser explícitos, no inferidos de nombres libres, hashes, timestamps ni proximidad de filas. `route_id` puede ser un identificador reservado explícito para el scope global de una etapa solo si el contrato de universo lo define como tal; NULL, vacío o comodín no significan global. `object_class` usa el vocabulario controlado CMP/PAR/REF/RUL/MET. `dimension` identifica la dimensión concreta de cobertura del registro. La versión de contrato e instancia forma parte de la identidad: no se permite herencia silenciosa desde la versión más reciente.
+
+Cada fila de objeto que referencia el scope debe aportar una identidad compatible y resolver al mismo `snapshot_id + snapshot_object_record_id`, `stage_key`, `route_id`, `object_class`, `dimension`, contrato e instancia. Si alguna de estas correspondencias no puede recuperarse de los campos versionados o de una declaración inequívoca del universo, el resultado no puede ser PASS.
+
+### 19.2. Invariantes obligatorios
+
+| ID | Invariante | Criterio |
+|---|---|---|
+| C0-I01 | Identidad de scope | `coverage_scope_id` identifica una sola fila canónica COVERAGE_REGISTER en el conjunto cerrado examinado. |
+| C0-I02 | Binding total | Los diez elementos de la tupla están declarados, versionados y no ambiguos; no se aceptan comodines implícitos. |
+| C0-I03 | Snapshot exacto | `snapshot_id` y `snapshot_object_record_id` identifican la misma revisión exacta, no solo la misma entidad semántica. |
+| C0-I04 | Consistencia de consumidores | Todos los registros que referencian el scope coinciden con la tupla completa. |
+| C0-I05 | Separación de universos | No se mezclan contratos, versiones de instancia, snapshots, etapas, rutas, clases ni dimensiones distintas bajo un scope. |
+| C0-I06 | Referencias resolubles | Toda FK `coverage_scope_id` resuelve a una fila COVERAGE_REGISTER; no hay referencias huérfanas. |
+| C0-I07 | Cardinalidad declarada | El conjunto observado de consumidores concuerda con el universo/denominador y con la regla de enumeración versionada. |
+| C0-I08 | Uso/no uso justificado | Todo scope declarado como requerido tiene consumidores según su cardinalidad; un scope sin consumidores solo es admisible si el universo declara explícitamente cero consumidores y la enumeración es exhaustiva. |
+| C0-I09 | Integridad del denominador | Denominador, unidad, fuentes esperadas/examinadas/válidas, cubiertas, excluidas y opacas/desconocidas son coherentes y trazables. |
+| C0-I10 | No inferencia de ausencia | NONE/PARTIAL/UNKNOWN o falta de fila no se convierten en ausencia. REF=0 requiere denominador cero y enumeración exhaustiva, conforme al contrato de cobertura vigente. |
+| C0-I11 | Inmutabilidad/provenance | La entrada de control identifica versiones, hashes, timestamp, herramienta/control versionado y conjunto exacto de filas examinadas; no sobrescribe registros. |
+
+### 19.3. Reglas de evaluación del contenido de cobertura
+
+1. `denominator_unit_and_count` debe declarar unidad y entero no negativo; la definición y versión del universo deben permitir reconstruir cómo se enumeró.
+2. `covered_units/count`, `excluded_units/reason` y `opaque_or_unknown_units/count` deben ser disjuntos o disponer de una regla explícita de solapamiento; no sumar porcentajes incompatibles.
+3. `covered + excluded + opaque/unknown` debe reconciliarse con el denominador según la regla de enumeración. Toda diferencia sin explicación es FAIL si se demuestra inconsistencia; UNKNOWN si faltan datos para decidir.
+4. `expected_sources`, `examined_sources` y `valid_sources` deben respetar la relación declarada por la regla de universo. Una fuente esperada no examinada no puede contarse como válida.
+5. `COMPLETE` solo puede aceptarse si el denominador es finito y trazable, la enumeración es exhaustiva, las fuentes esperadas han sido examinadas y son válidas, las excepciones están resueltas/justificadas y no quedan unidades opacas/desconocidas materiales. COMPLETE es relativo al universo operativo declarado, no a exhaustividad ontológica.
+6. `PARTIAL` expresa cobertura incompleta del universo declarado; `NONE` expresa que no se ha cubierto ninguna unidad, no que no existan unidades; `UNKNOWN` se conserva cuando no se puede fijar denominador, enumeración o correspondencia.
+7. Un universo con denominador cero puede pasar la integridad C0 únicamente si la regla de enumeración y las fuentes demuestran exhaustividad del cero. Ese PASS estructural no autoriza por sí solo una afirmación REF=0; deben cumplirse además todas las condiciones de evidencia negativa y adjudicación aplicables.
+8. La ausencia de un registro de objeto no equivale a ausencia del objeto. No se emite REF=0 a partir de una consulta vacía sin demostrar cierre del universo.
+
+### 19.4. Resultado trivalente y precedencia
+
+El control devuelve exactamente uno de estos resultados por scope y uno agregado:
+
+- **PASS:** todos los invariantes aplicables fueron evaluados con entradas completas y versionadas; no se detectaron violaciones; universo y cardinalidad están reconciliados.
+- **FAIL:** existe al menos una violación demostrada (binding contradictorio, duplicidad, FK huérfana, versión/snapshot/ruta/clase incorrectos, cardinalidad incompatible o contradicción aritmética).
+- **UNKNOWN:** no hay violación demostrada, pero una o más comprobaciones necesarias no pueden evaluarse por campos ausentes, universo no exhaustivo, versión/hash no recuperable, fuente no examinada o ambigüedad.
+
+**Precedencia:** cualquier FAIL demostrado domina a UNKNOWN; si no hay FAIL pero queda al menos una comprobación necesaria sin resolver, resultado UNKNOWN; solo el cierre completo sin violaciones permite PASS. No existe PASS parcial. Los controles no aplicables deben registrar motivo y regla, no desaparecer del informe.
+
+### 19.5. Casos adversariales mínimos y resultados esperados
+
+| Caso | Perturbación deliberada | Resultado esperado | Razón |
+|---|---|---|---|
+| ADV-C0-01 | Tupla completa y todos los consumidores coinciden | PASS | Binding íntegro |
+| ADV-C0-02 | Un objeto apunta a otro `snapshot_id` | FAIL | Cruce de snapshot |
+| ADV-C0-03 | Mismo `snapshot_id`, distinto `snapshot_object_record_id` | FAIL | Revisión exacta distinta |
+| ADV-C0-04 | Mismo nombre de instancia, distinta `instance_version` | FAIL | Versiones no equivalentes |
+| ADV-C0-05 | Consumidor con `route_id` diferente | FAIL | Scope de ruta cruzado |
+| ADV-C0-06 | Consumidor CMP bajo scope PAR, o dimensión distinta | FAIL | Clase/dimensión contaminada |
+| ADV-C0-07 | Dos definiciones/filas canónicas para el mismo `coverage_scope_id` | FAIL | Identidad no unívoca |
+| ADV-C0-08 | Registro consumidor referencia un scope inexistente | FAIL | FK lógica huérfana |
+| ADV-C0-09 | Scope requerido sin consumidores aunque universo declara cardinalidad positiva | FAIL | Cardinalidad/uso contradictorios |
+| ADV-C0-10 | Scope sin consumidores y sin declaración exhaustiva de universo vacío | UNKNOWN | No se puede distinguir cero real de omisión |
+| ADV-C0-11 | Denominador, versión de universo o regla de enumeración ausente | UNKNOWN | Cobertura no evaluable |
+| ADV-C0-12 | Fuente esperada no examinada o unidades opacas sin resolver | UNKNOWN para COMPLETE | No hay cobertura exhaustiva demostrada |
+| ADV-C0-13 | Denominador cero con enumeración exhaustiva y fuentes cerradas | PASS estructural C0; REF=0 sujeto a gate de evidencia negativa | Cero demostrado, no inferido |
+| ADV-C0-14 | `covered + excluded + opaque` contradice el denominador | FAIL si la contradicción es demostrable; UNKNOWN si faltan conteos | Reconciliación cuantitativa |
+| ADV-C0-15 | Hash/versión del snapshot o del universo no recuperable | UNKNOWN | No se puede fijar identidad/provenance |
+
+Los casos son especificaciones de pruebas futuras, no resultados ejecutados.
+
+### 19.6. Registro de ejecución y evidencia exigida
+
+Cada futuro informe de control deberá registrar, como mínimo: `control_id`, `control_version`, `run_id`, fecha/hora y zona, versión/hash de herramienta, commit de la especificación, identidad/hash del universo, contract/instance y versiones, snapshot y snapshot_object_record_id, coverage_scope_id, lista cerrada de object_record_id examinados, invariantes evaluados, resultado por invariante, resultado agregado, excepciones, unknown_reason, evidencia de entrada/salida, responsable y adjudicación/revisión.
+
+El informe debe permitir reproducir qué filas se incluyeron y cuáles quedaron fuera. No se admite que el control consulte silenciosamente el estado más reciente o que complete versiones por heurística. El output del control es evidencia de integridad de binding; no demuestra por sí solo que las fuentes sean verdaderas, que el inventario sea ontológicamente completo o que una afirmación causal de TGCV sea válida.
+
+### 19.7. Gates y límites
+
+- **Ahora:** especificación documental únicamente. No parser, SQL, script, fixtures poblados, ejecución de casos adversariales ni validación física.
+- **Antes de implementar:** revisión del DDL completo, correspondencia real de campos que componen la tupla, regla exacta de cardinalidad/denominador, contrato de exportación y decisión/ autorización técnica específica.
+- **Antes de ejecutar:** autorización explícita del control y conjunto de datos congelado/versionado; separar prueba del control de ejecución científica.
+- **Antes de Design Freeze:** todos los casos adversariales ejecutados con resultados auditables, revisión de falsos PASS/FAIL/UNKNOWN, integridad de provenance y adjudicación.
+- Un PASS del control C0 no convierte automáticamente `coverage_status=COMPLETE`, `observed_state=0`, `REF=0` ni una afirmación causal en PASS. Son capas de evidencia distintas.
+
+**Estado:** DOCUMENTED SPECIFICATION / NOT IMPLEMENTED / NOT EXECUTED / NOT AUDITED. `scientific_execution=false`; `execution_authorized=false`.
