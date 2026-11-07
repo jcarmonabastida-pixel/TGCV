@@ -8165,14 +8165,14 @@ Consecuencia: el control C0 no puede dar PASS completo mientras no exista crossw
 
 Se reutiliza el crosswalk histórico `C10_S_IAM_FIELD_TO_COLUMN_CROSSWALK_PROPOSAL_DRAFT_001.md`, la auditoría IAM FP/EDGE y los contratos U_G §§12.7 y 15.1–15.4. No se crea un segundo inventario ni se reabren DEC-C10-059…065.
 
-Se separan: (1) `object_class` C10 = clase de origen CMP/PAR/REF/RUL/MET; (2) `ug_record_type` = tabla/tipo de registro U_G; (3) `semantic_role` y `boundary_class` = ejes NODE ya definidos por DEC-C10-059/060. El crosswalk es explícito y puede ser 1:N/N:M; no se deduce por nombre.
+Se separan: (1) `object_class` C10 = CMP/PAR/REF/RUL/MET; (2) `ug_record_type` = tipo de registro U_G; (3) `semantic_role`/`boundary_class` = ejes NODE de DEC-C10-059/060. No hay equivalencia uno-a-uno.
 
-La tupla C0 aceptada por DEC-C10-070 contiene nueve componentes: contract_id/version, instance_id/version, snapshot_id, snapshot_object_record_id, stage_key, route_id y object_class. `dimension` pertenece a COVERAGE_REGISTER y al universo versionado, no es décimo componente de la tupla.
+La tupla C0 aceptada tiene nueve componentes: contract_id/version, instance_id/version, snapshot_id, snapshot_object_record_id, stage_key, route_id y object_class. `dimension` es atributo de COVERAGE_REGISTER y queda fuera de la tupla.
 
-`stage_key` corresponde al reloj DGP t−1…t9; `SNAPSHOT.phase` (baseline/post-B/rollback/route-test) describe contexto de captura y permanece separado. Cada scope fija una etapa y snapshot exacto; múltiples etapas requieren scopes separados salvo decisión posterior.
+Se recuperan de U_G §18.2 siete stage_key candidatos: C_SRC, F1_S2, A1_S1, F2_DST_DECL, A2_DST_DECL, F2_DST_APPLIED y A2_DST_APPLIED. No son el reloj DGP t−1…t9 ni SNAPSHOT.phase (baseline/post-B/rollback/route-test). El reloj DGP es un eje causal superior; cualquier correspondencia requiere regla explícita. La propuesta de codificar stage/ruta en SNAPSHOT.scope no fue aceptada por DEC-C10-070; el binding C0 reside en universe_definition/version.
 
-La pertenencia route-specific se demuestra por ROUTE/ROUTE_STEP y record IDs exactos: NODE/EDGE por inclusión en ROUTE_STEP; PREDICATE por route_record_id; ROUTE por su propia revisión. `routes_affected` no prueba pertenencia. Scope global requiere token reservado explícito y versionado, todavía no seleccionado; NULL/vacío no significan global.
+U_G §18.2 también proponía route=NONE/F/A y object_class=CONFIG. F/A son etiquetas de familia de ruta, no route_id exacto; CONFIG no satisface el object_class aceptado por C0. Se conserva route_family como metadato auxiliar si procede, pero C0 requiere route_id exacto o token global reservado aún OPEN. Para NODE/EDGE la pertenencia route-specific se demuestra por ROUTE_STEP; PREDICATE por route_record_id; ROUTE por su propia revisión. NULL/vacío/texto libre no prueban globalidad ni pertenencia.
 
-Mapping candidato: CMP→NODE (EDGE solo para relaciones); PAR→NODE o propiedades atómicas del owner según granularidad; REF→EDGE/referencias tipadas; RUL→PREDICATE y sus operandos; MET→metadatos transversales de objeto, SNAPSHOT o EVIDENCE_REGISTER según función. No hay equivalencia uno-a-uno. La dimensión de cobertura se fija en COVERAGE_REGISTER y la regla de inclusión versionada.
+Mapping candidato: CMP→NODE (EDGE solo relación); PAR→NODE o propiedad atómica del owner; REF→EDGE/referencia tipada; RUL→PREDICATE/operandos; MET→metadatos transversales y registros SNAPSHOT/EVIDENCE_REGISTER según función. La dimensión C10S_CONFIG_CMP/PAR/REF/RUL/MET se conserva en COVERAGE_REGISTER; object_class se mantiene como clase específica CMP/PAR/REF/RUL/MET.
 
-Estado: CROSSWALK DOCUMENTED AS PROPOSAL; vocabulario global de ruta, gramática de universe_definition y mappings por campo/propiedad OPEN. No se modifica schema, no se crean instancias, no se implementa ni ejecuta C0.
+Estado: CROSSWALK DOCUMENTED AS PROPOSAL; aceptación de stage_key y mapping por propiedad, token global, gramática universe_definition/version y route_id exacto OPEN. No se modifica schema, no se crean instancias, no se implementa ni ejecuta C0.
