@@ -1108,3 +1108,10 @@ DEC-C10-071 acepta los siete valores de stage_key C10-S de U_G §18.2: C_SRC, F1
 La aceptación del vocabulario no acepta la serialización de etapa/ruta en SNAPSHOT.scope. La antigua ruta NONE/F/A es familia/branch label, no route_id exacto; CONFIG no es object_class aceptado por C0. C0 requiere CMP/PAR/REF/RUL/MET y route_id exacto o token global reservado. NODE/EDGE route membership se demuestra por ROUTE_STEP; PREDICATE por route_record_id; ROUTE por su propia revisión.
 
 Gate pendiente: definir token global y route_id exacto, gramática versionada de universe_definition/version y mappings por propiedad/owner; después reconciliar contra DDL. Hasta entonces UNKNOWN donde no pueda demostrarse correspondencia. No schema change, scopes/snapshots, implementación ni ejecución autorizada.
+
+
+## 16.42. Semántica route_id y scope global — propuesta pendiente de aceptación
+
+El protocolo de evidencia §20.8 compara G1 token reservado, G2 NULL/vacío y G3 scope_kind. Recomendación provisional G1 con literal candidato C10S_SCOPE_GLOBAL para “sin restricción a ruta concreta”; no significa ausencia de rutas ni no pertenencia. En route-specific, route_id semántico debe resolver route_record_id y snapshot exactos. CMP/PAR/REF/RUL/MET tienen reglas de pertenencia diferenciadas; ROUTE_STEP/record IDs exactos son evidencia para NODE/EDGE y no se sustituye por routes_affected.
+
+Scopes globales cuentan cada objeto una vez; scopes route-specific conservan denominadores separados. Pertenencia 1 requiere crosswalk exacto; 0 requiere cobertura exhaustiva y significa únicamente no pertenencia a esa ruta; ? ante mapping/cobertura incompletos; NA solo por IAM ex ante. El token no está aceptado y la gramática universe_definition/version sigue OPEN. No schema change ni autorización de implementación/ejecución.
