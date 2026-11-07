@@ -807,3 +807,10 @@ Se documentan alternativas C0 (esquema actual + pinning en universe_definition/v
 El usuario acepta C0 para el binding COVERAGE_REGISTER↔SNAPSHOT: conservar el schema y fijar en universe_definition/version una tupla exacta por coverage_scope_id (contrato/instancia/snapshot/registro/etapa/ruta/clase). Todo registro que referencia el scope debe coincidir. Se requiere control independiente de igualdad, unicidad, cardinalidad, huérfanos/no usados y conflictos.
 
 C0 es una decisión documental aceptada, pero su enforcement queda CONDITIONAL hasta que el control esté especificado, implementado bajo autorización, ejecutado y auditado antes de Design Freeze. No equivale a FK compuesta. C1/C2 no aceptadas ni autorizadas. No se modifica schema, no se reabre DEC-C10-065, no se acepta SNAPSHOT.scope ni se autoriza implementación/ejecución.
+
+
+## 62. Especificación documental del control C0 (2026-11-07)
+
+Se registra que el protocolo de evidencia/adjudicación §19 contiene la especificación documental del control independiente C0: binding canónico, invariantes, reconciliación de cobertura/denominador, resultados PASS/FAIL/UNKNOWN, casos adversariales y requisitos de provenance. No se registra como nueva aceptación del usuario ni autorización de implementación/ejecución.
+
+Estado: DOCUMENTED SPECIFICATION; DDL mapping OPEN; NOT IMPLEMENTED; NOT EXECUTED; NOT AUDITED. DEC-C10-070 sigue siendo la decisión que acepta C0 como contrato documental. No Design Freeze ni ejecución científica.
