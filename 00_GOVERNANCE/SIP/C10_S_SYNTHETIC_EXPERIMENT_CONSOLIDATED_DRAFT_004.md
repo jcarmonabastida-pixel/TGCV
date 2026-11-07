@@ -8186,3 +8186,10 @@ Se ha especializado el crosswalk histórico sin reabrir DEC-C10-064/065/070/071.
 Se comparan G1 token reservado, G2 NULL/vacío y G3 scope_kind separado. G1 se recomienda provisionalmente con candidato C10S_SCOPE_GLOBAL, que significa “sin restricción a ruta concreta”, nunca “no hay rutas” ni “el objeto no pertenece a ruta”. No es valor aceptado. CMP/PAR/REF/RUL/MET requieren reglas de pertenencia específicas; scopes globales cuentan cada objeto una vez y scopes route-specific mantienen denominadores independientes. 1/0/? se adjudican con mapping y cobertura exactos; 0 solo significa no pertenencia a esa ruta.
 
 Protocolo de evidencia §20.8, matriz de mapping §20.10 y plantilla U_G §18.13 contienen la especificación. Token, namespace y gramática universe_definition/version permanecen OPEN. No schema change, scopes, snapshots, implementación ni ejecución.
+
+
+## 188. DEC-C10-072 — aceptación del token global (2026-11-07)
+
+Se acepta el literal reservado `C10S_SCOPE_GLOBAL` para el slot route_id C0, con significado exclusivo “sin restricción a una ruta concreta”. No significa ausencia de rutas, no pertenencia ni NA; no puede usarse como route_id semántico real (colisión = FAIL). NULL/vacío/NONE/F/A no son sustitutos.
+
+El scope global enumera el universo elegible por clase/etapa/snapshot y cuenta cada identidad una vez; scopes route-specific mantienen denominadores independientes y exigen route_id semántico, route_record_id y snapshot exactos. DEC-C10-072 cierra el literal/semántica, no la gramática universe_definition/version, mappings físicos, control C0, schema, fixtures ni implementación. scientific_execution=false; execution_authorized=false.
