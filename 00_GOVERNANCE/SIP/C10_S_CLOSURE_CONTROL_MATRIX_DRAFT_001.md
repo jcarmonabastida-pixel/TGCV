@@ -1588,3 +1588,17 @@ No se concede PASS de schema/integridad física ni se autoriza implementación o
 | IAM-LR-09 | Reglas concretas de integridad, evidencia y adjudicación por capa | OPEN |
 
 DEC-C10-078 no cierra el gate REF ni concede PASS de schema/integridad física. No crea roster/filas observadas, fixtures ni IAM de instancia. No autoriza DDL, API/registry/resolver, parser/validator, implementación, Design Freeze ni ejecución científica.
+
+
+## 73. Propuesta de separación de vocabularios IAM L2/L3
+
+| Control | Criterio | Estado |
+|---|---|---|
+| IAM-VOC-01 | Namespace L2 separado `UDG_ENVELOPE_ROLE`; roles ilustrativos MEMBER/OWNER/SOURCE/INCLUSION_RULE/EXCLUSION_RULE/DEPENDENCY/PROVENANCE con dominios/límites candidatos | PROPOSED — NOT ACCEPTED |
+| IAM-VOC-02 | Namespace L3 separado `REF_FUNCTIONAL_ROLE`; role_key y relation_type siguen OPEN | PROPOSED — NOT ACCEPTED |
+| IAM-VOC-03 | SOURCE/TARGET se interpreta como endpoint_position binario, no como role_key | ACCEPTED boundary from DEC-C10-078 |
+| IAM-VOC-04 | Semántica de DEPENDENCY L2 (referencia a REF vs target directo) | OPEN |
+| IAM-VOC-05 | Conjunto mínimo de relaciones REF L3 exigido por el DGP; binario/n-ario | OPEN |
+| IAM-VOC-06 | Dominios/cardinalidades/requiredness por clase×rol×extremo×stage_key×scope | OPEN |
+
+La propuesta no crea enums, filas de instancia, REF observados ni IAM poblado. No produce PASS de integridad ni autoriza schema, parser/validator, fixtures, Design Freeze o ejecución.
