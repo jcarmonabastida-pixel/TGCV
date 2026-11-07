@@ -1555,3 +1555,19 @@ Catálogo REF/schema/API/registry/resolver/parser/validator/comparator/fixtures 
 | REF-UDG-09 | Estados FAIL/UNKNOWN/NOT_COMPARABLE/NOT_APPLICABLE siguen DEC-C10-076 | REQUIRED — límite |
 
 No se concede PASS de schema ni de integridad física. No hay roster observado, fixtures, validator ejecutado ni Design Freeze.
+
+## 71. DEC-C10-077 — estado del gate conceptual REF↔UDG-04
+
+| Control | Criterio | Estado |
+|---|---|---|
+| REF-UDG-01 | REF de dominio separado de UDG envelope y FK U_G | ACCEPTED — DEC-C10-077 |
+| REF-UDG-02 | Identidad propia y extremos tipados | ACCEPTED — conceptual |
+| REF-UDG-03 | REF→EDGE solo mediante M explícito/versionado | ACCEPTED — conceptual |
+| REF-UDG-04 | No asumir 1:1; parent/group identity para split/merge/n-aria | ACCEPTED — conceptual |
+| REF-UDG-05 | Roles UDG siguen ilustrativos, no enum cerrado | ACCEPTED — límite |
+| REF-UDG-06 | IAM fija cardinalidad/obligatoriedad por clase×rol×extremo×etapa×scope | OPEN |
+| REF-UDG-07 | Dependencia declarada no equivale a instalada/disponible | REQUIRED — límite |
+| REF-UDG-08 | FKs U_G no se cuentan como REF por defecto | ACCEPTED — límite |
+| REF-UDG-09 | Estados de resolución siguen DEC-C10-076 | ACCEPTED — límite |
+
+No se concede PASS de schema/integridad física ni se autoriza implementación o ejecución.
