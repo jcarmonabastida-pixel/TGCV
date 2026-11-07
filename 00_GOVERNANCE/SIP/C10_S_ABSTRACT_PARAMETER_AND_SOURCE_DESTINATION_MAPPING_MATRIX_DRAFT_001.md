@@ -346,14 +346,15 @@ DEC-C10-070 acepta C0 como contrato documental condicionado para los scopes de e
 
 El control independiente del binding sigue OPEN y es condición previa al Design Freeze. Hasta su auditoría, cobertura y adjudicación que dependan del binding permanecen CONDITIONAL o ? cuando la correspondencia no pueda demostrarse. No se han creado registros ni se autoriza implementación/ejecución.
 
+
 ### 20.9. Reutilización del crosswalk IAM y separación de ejes C0
 
 Se reutiliza el crosswalk histórico `C10_S_IAM_FIELD_TO_COLUMN_CROSSWALK_PROPOSAL_DRAFT_001.md` y la auditoría IAM FP/EDGE. No se crea una taxonomía paralela.
 
 El `object_class` de C0 identifica CMP/PAR/REF/RUL/MET; no identifica directamente NODE/EDGE/ROUTE/PREDICATE ni NODE.semantic_role/boundary_class. El universo versionado debe declarar mapping a ug_record_type, rol/propiedad destino, owner, cardinalidad y regla de inclusión. Mapping candidato: CMP→NODE (EDGE solo relación); PAR→NODE o propiedad atómica del owner; REF→EDGE/referencia tipada; RUL→PREDICATE/operandos; MET→metadatos transversales y SNAPSHOT/EVIDENCE_REGISTER según función.
 
-U_G §18.2 ya contiene siete stage_key candidatos: C_SRC, F1_S2, A1_S1, F2_DST_DECL, A2_DST_DECL, F2_DST_APPLIED y A2_DST_APPLIED. No equivalen al reloj DGP t−1…t9 ni a SNAPSHOT.phase. La propuesta de codificarlos en SNAPSHOT.scope no fue aceptada; C0 fija la tupla en universe_definition/version.
+DEC-C10-071 acepta siete stage_key C10-S: C_SRC, F1_S2, A1_S1, F2_DST_DECL, A2_DST_DECL, F2_DST_APPLIED y A2_DST_APPLIED. No equivalen al reloj DGP t−1…t9 ni a SNAPSHOT.phase. La propuesta de codificarlos en SNAPSHOT.scope no fue aceptada; C0 fija la tupla en universe_definition/version.
 
-Los valores NONE/F/A son etiquetas de familia de ruta, no route_id exacto; route_id debe identificar la ruta concreta o usar un token global reservado aún OPEN. Para NODE/EDGE, la pertenencia se prueba mediante ROUTE_STEP y record IDs exactos; PREDICATE usa route_record_id; ROUTE su propia revisión. El valor CONFIG de la antigua serialización §18.2 no satisface C0: object_class debe ser CMP/PAR/REF/RUL/MET. dimension C10S_CONFIG_* permanece en COVERAGE_REGISTER, fuera de la tupla de nueve componentes.
+NONE/F/A son etiquetas de familia de ruta, no route_id exacto; route_id debe identificar la ruta concreta o usar un token global reservado aún OPEN. Para NODE/EDGE, la pertenencia se prueba mediante ROUTE_STEP y record IDs exactos; PREDICATE usa route_record_id; ROUTE su propia revisión. El valor CONFIG de la antigua serialización §18.2 no satisface C0: object_class debe ser CMP/PAR/REF/RUL/MET. dimension C10S_CONFIG_* permanece en COVERAGE_REGISTER, fuera de la tupla de nueve componentes.
 
 El literal del token global, gramática de universe_definition/version y mapping por propiedad permanecen OPEN. Esta sección es propuesta documental, no nueva aceptación ni autorización de cambio de schema/implementación/ejecución.
