@@ -766,3 +766,9 @@ La propuesta separa versión del contrato, revisión inmutable del paquete y has
 El usuario acepta los identificadores y la política de versionado propuestos para la instancia de servicio sintético: contract_id=C10S-SVC-REQUEST-PROCESSOR, contract_version=1.0.0, instance_id=C10S-SVC-REQUEST-PROCESSOR-001, instance_version=1, component_id=CMP-SERVICE-LOGIC-001, component_class=SERVICE_LOGIC. CMP-SERVICE-LOGIC de DEC-C10-068 permanece como owner/rol lógico, no ID único. Se acepta contract_version MAJOR.MINOR.PATCH; instance_version entero positivo, monotónico e inmutable; hash solo de serialización canónica definida; versionado independiente de C_src/C_dst, M, IAM y oráculo; matching explícito sin equivalencia inferida por nombre/hash.
 
 Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-069_SERVICE_CMP_IDENTITY_AND_VERSIONING_ACCEPTANCE.md`. DEC-C10-069 especializa DEC-C10-068. Serialización, MET físico, IAM sellado, mapping, valores por escenario, oráculo y evidencia siguen OPEN. No Design Freeze ni autorización de implementación/ejecución.
+
+## 55. Especialización documental del mapping CMP/PAR/RUL (2026-11-07)
+
+Se incorpora la especialización propuesta en C10_S_ABSTRACT_PARAMETER_AND_SOURCE_DESTINATION_MAPPING_MATRIX_DRAFT_001.md §20, reutilizando el crosswalk previo. El mapping referencia los IDs aceptados por DEC-C10-069 y el contrato funcional DEC-C10-068. Define CMP lógico, los dos PAR aceptados y RUL-SVC-ENABLE-PROFILE-01, con separación por etapa F1/A1 frente a F2/A2, FP-06/07 y adjudicación 1/0/?/NA.
+
+No constituye una nueva decisión del usuario ni acepta/congela la propuesta. RETRY-COUNT queda excluido por DEC-C10-068; la nota de aceptación pendiente de §18 de la matriz queda supersedida por DEC-C10-069. IAM, defaults/valores concretos, mapping físico, serialización/MET, oráculo y evidencia siguen OPEN. Sin fixtures, implementación, validación ejecutable o ejecución científica.
