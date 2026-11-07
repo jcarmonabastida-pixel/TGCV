@@ -345,3 +345,13 @@ La verdad estipulada del DGP, la información visible al Analizador y la adjudic
 DEC-C10-070 acepta C0 como contrato documental condicionado para los scopes de evidencia usados por este mapping. Cada coverage_scope_id debe quedar ligado en universe_definition/version a un único snapshot exacto, registro, etapa, ruta, clase y versiones de contrato/instancia. La evidencia CMP/PAR/RUL no puede reutilizar un scope de otra etapa/ruta/clase ni inferir equivalencia por compartir nombre o valor.
 
 El control independiente del binding sigue OPEN y es condición previa al Design Freeze. Hasta su auditoría, cobertura y adjudicación que dependan del binding permanecen CONDITIONAL o ? cuando la correspondencia no pueda demostrarse. No se han creado registros ni se autoriza implementación/ejecución.
+
+### 20.9. Reutilización del crosswalk IAM y separación de ejes C0
+
+Se reutiliza el crosswalk histórico `C10_S_IAM_FIELD_TO_COLUMN_CROSSWALK_PROPOSAL_DRAFT_001.md` y la auditoría IAM FP/EDGE. No se crea una taxonomía paralela.
+
+El `object_class` de C0 identifica la familia de origen CMP/PAR/REF/RUL/MET; no identifica directamente NODE/EDGE/ROUTE/PREDICATE ni NODE.semantic_role/boundary_class. El universo versionado debe declarar el mapping a `ug_record_type`, rol/propiedad destino, owner, cardinalidad y regla de inclusión. Mapping candidato: CMP→NODE (EDGE solo relación); PAR→NODE o propiedad atómica del owner; REF→EDGE/referencia tipada; RUL→PREDICATE/operandos; MET→metadatos transversales y registros SNAPSHOT/EVIDENCE_REGISTER según función.
+
+`stage_key` se vincula al reloj DGP t−1…t9; SNAPSHOT.phase describe baseline/post-B/rollback/route-test y no es equivalente. Route-specific requiere ROUTE_STEP y record IDs exactos; NODE/EDGE no heredan route_id desde texto libre. La dimensión permanece en COVERAGE_REGISTER y su regla de elegibilidad, fuera de la tupla C0 de nueve componentes.
+
+El literal del token global de ruta, gramática de universe_definition/version y mapping por propiedad permanecen OPEN. Esta sección es propuesta documental, no nueva aceptación ni autorización de cambio de schema/implementación/ejecución.
