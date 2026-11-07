@@ -1339,7 +1339,7 @@ La aceptación de C0 no declara integridad relacional, no crea scopes ni modific
 
 | ID | Requisito | Estado |
 |---|---|---|
-| C0-SPEC-01 | Tupla canónica contract/instance/snapshot/stage/route/class/dimension | DOCUMENTED — protocolo §19.1 |
+| C0-SPEC-01 | Tupla canónica de nueve componentes contract/instance/snapshot/stage/route/class; dimension separada en COVERAGE_REGISTER | DOCUMENTED — protocolo §19.1; DEC-C10-070 |
 | C0-SPEC-02 | Invariantes C0-I01…I11 | DOCUMENTED — protocolo §19.2 |
 | C0-SPEC-03 | Reglas denominador/cobertura/REF=0 | DOCUMENTED — protocolo §19.3 |
 | C0-SPEC-04 | Semántica trivalente y precedencia | DOCUMENTED — protocolo §19.4 |
