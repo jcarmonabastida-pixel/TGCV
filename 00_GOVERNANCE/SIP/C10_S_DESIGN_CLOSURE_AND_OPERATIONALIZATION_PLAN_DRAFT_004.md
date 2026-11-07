@@ -1027,3 +1027,11 @@ La siguiente tarea documental reutiliza el contrato abstracto de instancia y el 
 ## 16.31. Efecto de DEC-C10-069 — identidad/versionado CMP
 
 DEC-C10-069 acepta contract_id=C10S-SVC-REQUEST-PROCESSOR / 1.0.0, instance_id=C10S-SVC-REQUEST-PROCESSOR-001 / instance_version=1, component_id=CMP-SERVICE-LOGIC-001 / SERVICE_LOGIC y la política de versionado semver + revisión entera inmutable. CMP-SERVICE-LOGIC se conserva como rol/owner lógico. La propuesta §16.30 pasa de pendiente de aceptación a aceptada en IDs y política; MET físico, serialización canónica, IAM, mapping, cobertura, oráculo y evidencia siguen abiertos. Próximo gate: mapping semántico de CMP/PAR/RUL para F1/A1 y F2/A2, con preservación, aplicación y estados UNKNOWN explícitos. No freeze, fixtures, implementación ni ejecución autorizadas.
+
+## 16.32. Especialización CMP/PAR/RUL del mapping — propuesta documental
+
+Se incorpora en la matriz existente C10_S_ABSTRACT_PARAMETER_AND_SOURCE_DESTINATION_MAPPING_MATRIX_DRAFT_001.md §20 una especialización del mapping para el servicio sintético aceptado por DEC-C10-068/069. Define identidad CMP lógica y cardinalidad de referencia; correspondencias BOOL/ENUM de los dos PAR aceptados; distinción de estados/defaults; identidad, scope, AST tipado y efecto REQUIRE de RUL-SVC-ENABLE-PROFILE-01; y separación F1/A1 (preservación), F2/A2 (aplicación), FP-06 y FP-07.
+
+Se reconcilian explícitamente las referencias históricas: RETRY-COUNT de §15 queda fuera del núcleo por DEC-C10-068 y la aceptación de IDs pendiente de §18 queda supersedida por DEC-C10-069. No se infiere equivalencia por nombres/IDs ni se declara REF=0.
+
+**Estado:** propuesta documental persistida; no aceptada/congelada. IAM, valores/defaults concretos, mapping físico, serialización/MET, oráculo, cobertura y evidencia siguen OPEN. Siguiente gate: reconciliar esta propuesta con IAM y contrato de oráculo, sin crear fixtures ni ejecutar. No Design Freeze, implementación o ejecución autorizadas.
