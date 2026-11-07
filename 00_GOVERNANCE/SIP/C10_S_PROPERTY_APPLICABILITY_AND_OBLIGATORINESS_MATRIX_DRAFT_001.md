@@ -388,3 +388,29 @@ El manifiesto visible al Analizador contiene observaciones autorizadas, no truth
 ### 19.6. Estado y gate
 
 **Estado:** protocolo de captura por snapshot documentado; sin snapshots, filas observadas ni evidencia técnica aportada. Inventario exhaustivo e IAM operativo siguen OPEN. La plantilla U_G §17.5 ya advierte que la captura técnica no se ha realizado; esta especialización no modifica ese estado. No se declara COMPLETE, REF=0 ni ausencia de objetos. No se crean fixtures, schema físico, parser, implementación, simulación o ejecución científica.
+### 19.7. Contrato documental de COVERAGE_REGISTER para C10-S
+
+Se reutiliza sin cambios el encabezado vigente de COVERAGE_REGISTER (§12.3 U_G): coverage_scope_id; dimension; universe_definition/version; denominator_unit_and_count; expected_sources; examined_sources; valid_sources; covered_units/count; excluded_units/reason; opaque_or_unknown_units/count; status; completion_rule; exceptions_and_impact; reviewer_id; timestamp. No se añade una columna física ni se cambia la PK.
+
+**Unidad lógica de cobertura:** una combinación exacta de (contract_id/version, instance_id/version, snapshot_id, snapshot_object_record_id, stage_key, route/route_id, object_class). Cada combinación tiene un coverage_scope_id propio; no se comparte una fila entre snapshots, etapas, rutas o clases. coverage_scope_id es una clave opaca/única, no se parsea para reconstruir la semántica. dimension identifica la familia y clase, por ejemplo C10S_CONFIG_CMP, C10S_CONFIG_PAR, C10S_CONFIG_REF, C10S_CONFIG_RUL o C10S_CONFIG_MET. universe_definition/version debe fijar explícitamente la tupla anterior, la regla de enumeración y la versión del universo; no basta con una etiqueta libre como “complete”.
+
+La matriz de 7 etapas × 5 clases define hasta 35 scopes lógicos por instancia completa de snapshots. Es una plantilla de cobertura, no 35 filas observadas ni obligación de crear scope para un snapshot inexistente. Las fuentes examinadas y válidas se enumeran en cada scope; no se mezclan fuentes de C_src con evidencia post-aplicación ni rutas F/A.
+
+**Denominadores y reglas por clase:**
+- CMP: unidades = identidades CMP del universo declarado; cubrir identidad/clase/versión/owner y frontera. El CMP focal aceptado no cierra el denominador total.
+- PAR: unidades = claves PAR declaradas por contrato/instancia; cubrir existencia, estado, tipo, dominio, valor y owner. ENABLED y PROFILE son slots requeridos; RETRY-COUNT no pertenece al núcleo.
+- REF: unidades = referencias declaradas y extremos/tipos/relaciones que el contrato de enumeración incluya. Denominador 0 solo es válido si fuentes y universo se han enumerado exhaustivamente; de otro modo UNKNOWN.
+- RUL: unidades = reglas constitutivas; cubrir ID/versión, AST, scope, operandos, efecto y dependencias PAR. La regla aceptada no prueba que el universo de reglas sea exhaustivo.
+- MET: unidades = assertions de identidad, versión, procedencia, snapshot, mapping/IAM/oráculo y hashes solo cuando exista serialización canónica. No convertir metadatos ausentes en NA por defecto.
+
+**Estados de cobertura y clasificación:**
+- NONE = ninguna unidad cubierta; no significa ausencia.
+- PARTIAL = cobertura incompleta, con omisiones/opacidad explícitas.
+- COMPLETE = denominador finito/versionado, regla de enumeración explícita, todas las fuentes esperadas examinadas y válidas, unidades cubiertas o exclusiones justificadas, cero unidades opacas/desconocidas relevantes y revisión registrada. COMPLETE es relativo al universo operativo declarado, no exhaustividad ontológica.
+- Un objeto/propiedad no observado con cobertura NONE/PARTIAL conserva ?; no se adjudica 0 por falta de fila.
+- Un 0 de ausencia exige scope COMPLETE y evidencia válida para el predicado de ausencia. Para REF=0 se requiere denominator=0 con enumeración exhaustiva demostrada. Para slots PAR REQUIRED, ausencia observada en scope COMPLETE es incumplimiento (0), no NA.
+- Si el denominador no puede determinarse, o hay fuentes esperadas no examinadas, artefactos opacos, conflictos no resueltos o límites materiales, status no puede ser COMPLETE.
+
+**Limitación de integridad referencial detectada:** el esquema vigente de COVERAGE_REGISTER tiene coverage_scope_id como PK/UNIQUE, pero no contiene snapshot_id ni snapshot_object_record_id. La tupla exacta se puede documentar en universe_definition/version y el snapshot/objeto apunta al scope mediante su FK coverage_scope_id; sin embargo, el vínculo inverso no es una FK compuesta físicamente verificable. No se oculta esta limitación ni se añaden columnas unilateralmente. U_G-SCH-10/validación física permanece OPEN; si se exige integridad relacional bidireccional, hará falta una decisión de schema antes del freeze.
+
+**Estado:** contrato documental de cobertura propuesto; no hay filas COVERAGE_REGISTER C10-S pobladas, snapshots ni evidencia observada. La codificación de SNAPSHOT.scope sigue pendiente de aceptación/compatibilidad. No se declara COMPLETE ni REF=0.
