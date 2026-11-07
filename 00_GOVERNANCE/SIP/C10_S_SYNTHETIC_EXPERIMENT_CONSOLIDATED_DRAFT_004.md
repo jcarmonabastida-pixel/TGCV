@@ -8118,3 +8118,12 @@ Se definen scopes de cobertura separados por snapshot×etapa×ruta×clase; COMPL
 También se reconcilian los residuos históricos del roster de tres PAR en el contrato abstracto §16 y el catálogo §15: RETRY-COUNT queda supersedido para la instancia confirmatoria base por DEC-C10-068; ENABLED/PROFILE no tienen DEFAULT aceptado. No se fijan valores por escenario.
 
 **Estado:** protocolo documental de captura; sin snapshots/filas observadas ni evidencia técnica. IAM e inventario exhaustivo OPEN. No schema físico, fixtures, parser, implementación, simulación o ejecución.
+## 181. Contrato documental de cobertura por snapshot×etapa×ruta×clase (2026-11-07)
+
+La matriz IAM §19.7 y la plantilla U_G §18.6 especializan COVERAGE_REGISTER sin modificar su encabezado vigente. Un scope lógico es específico de contract/version, instance/version, snapshot_id + snapshot_object_record_id, stage_key, route y clase CMP/PAR/REF/RUL/MET. Cada scope tiene coverage_scope_id único; dimension distingue la clase C10S_CONFIG_*; universe_definition/version conserva la tupla exacta, regla de enumeración y versión del universo. La matriz 7×5 representa hasta 35 scopes lógicos, no filas observadas ni registros a poblar sin snapshots.
+
+Se formalizan denominadores y criterios COMPLETE por clase. NONE/PARTIAL nunca justifican ausencia; REF=0 requiere denominator=0 y enumeración exhaustiva; ausencia de PAR REQUIRED con cobertura COMPLETE es incumplimiento. El universo COMPLETE es operativo y versionado, no exhaustividad ontológica.
+
+Se detecta una limitación no resuelta: COVERAGE_REGISTER carece de FK directa a snapshot_id/snapshot_object_record_id. El snapshot enlaza coverage_scope_id y universe_definition/version puede documentar el pinning, pero la integridad inversa no es físicamente exigible con el esquema actual. No se añade columna unilateralmente; U_G-SCH-10/validación física sigue OPEN.
+
+La convención SNAPSHOT.scope y su compatibilidad siguen pendientes de aceptación. No se pueblan scopes, snapshots ni evidencias; no se declara COMPLETE/REF=0, no Design Freeze ni ejecución.
