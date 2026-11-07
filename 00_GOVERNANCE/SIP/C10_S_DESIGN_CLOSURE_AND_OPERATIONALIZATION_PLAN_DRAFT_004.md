@@ -1091,3 +1091,9 @@ La especificación documental está en el protocolo de evidencia/adjudicación �
 Pendiente antes de implementación: recuperar y reconciliar DDL completo; demostrar mapping de campos y cardinalidad; definir exportación cerrada del universo; revisar casos adversariales y falsos PASS/FAIL/UNKNOWN. La implementación y ejecución requieren autorización técnica específica, distinta de la autorización científica. Antes de Design Freeze: ejecutar y auditar todas las pruebas, preservar inputs/outputs/hash y adjudicar discrepancias.
 
 Estado actual: especificación documental completada; NOT IMPLEMENTED / NOT EXECUTED / NOT AUDITED; C0 CONDITIONAL. Un PASS del control no equivale a COMPLETE ni REF=0.
+
+## 16.40. Crosswalk de la tupla C0 al esquema — gate abierto
+
+El protocolo §20 identifica huecos de representación: stage_key no tiene columna propia; SNAPSHOT.phase no equivale a stage_key y SNAPSHOT.scope sigue sin aceptación; route_id no está directamente en NODE/EDGE; object_class CMP/PAR/REF/RUL/MET carece de campo común tipado. contract/instance versions y dimension dependen de declaraciones versionadas recuperables. snapshot_id + snapshot_object_record_id sí están cubiertos por DEC-C10-065/Opción A.
+
+Antes de implementar C0 se requiere crosswalk semántico por campo/tabla, con regla para rutas globales y route-specific, clases y etapas, y gramática/hash de universe_definition/version. Hasta entonces UNKNOWN para correspondencias no demostradas; no PASS por inferencia. No schema change ni implementación autorizada.
