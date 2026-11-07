@@ -661,3 +661,10 @@ JSON inválido, claves duplicadas, campo desconocido no permitido por schema, nu
 ### 20.12.6. Límites
 
 UDG-02 no está aceptada. No modifica DEC-C10-073 ni convierte RFC 8785/SHA-256 en requisitos normativos. No define implementación, parser, validator, fixtures, hash de producción, schema físico, Design Freeze ni autorización de ejecución. La fuente primaria de JCS es RFC 8785: https://www.rfc-editor.org/rfc/rfc8785.html.
+
+
+## 20.13. DEC-C10-074 — perfil JCS aceptado
+
+DEC-C10-074 acepta C1 (RFC 8785 JCS + prevalidación TGCV) como política documental de canonicalización del envelope U1, bajo las reglas UDG-02 §20.12: entrada UTF-8/JSON/I-JSON válida sin claves duplicadas/lone surrogates/NaN/Infinity; validación NFC previa solo para campos identificadores marcados, sin reescritura; orden de propiedades JCS; orden previo por identidad solo para arrays declarados conjuntos y conservación del orden secuencial; enteros seguros no negativos; null prohibido y omisión distinta de array vacío; SHA-256 de bytes canónicos con hash/metadatos fuera del envelope; separación source_artifact_hash/canonical_content_hash; perfil TGCV-C10S-JCS-1.
+
+La igualdad de canonical_content_hash bajo el mismo perfil acredita igualdad de bytes canónicos, no equivalencia semántica, exhaustividad ni verdad de fuentes. Perfiles distintos requieren recanonicalización desde fuente preservada o UNKNOWN/NOT_COMPARABLE. Esta aceptación no autoriza parser/validator, fixtures, hash de producción, schema change, Design Freeze, implementación ni ejecución científica; mapping físico y C0 independiente siguen abiertos. DEC-C10-074 prevalece sobre §20.12 que calificaba UDG-02 como no aceptada.
