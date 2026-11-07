@@ -241,7 +241,7 @@ La plantilla U_G refleja esta decisión. La especificación de CHECK/FK es docum
 
 La unidad primaria es una fila de `COVERAGE_REGISTER` identificada por `coverage_scope_id`. Su binding C0 debe declarar, en `universe_definition/version`, una única tupla:
 
-`(contract_id, contract_version, instance_id, instance_version, snapshot_id, snapshot_object_record_id, stage_key, route_id, object_class, dimension)`.
+`(contract_id, contract_version, instance_id, instance_version, snapshot_id, snapshot_object_record_id, stage_key, route_id, object_class)`.
 
 Los valores deben ser explícitos, no inferidos de nombres libres, hashes, timestamps ni proximidad de filas. `route_id` puede ser un identificador reservado explícito para el scope global de una etapa solo si el contrato de universo lo define como tal; NULL, vacío o comodín no significan global. `object_class` usa el vocabulario controlado CMP/PAR/REF/RUL/MET. `dimension` identifica la dimensión concreta de cobertura del registro. La versión de contrato e instancia forma parte de la identidad: no se permite herencia silenciosa desde la versión más reciente.
 
@@ -252,7 +252,7 @@ Cada fila de objeto que referencia el scope debe aportar una identidad compatibl
 | ID | Invariante | Criterio |
 |---|---|---|
 | C0-I01 | Identidad de scope | `coverage_scope_id` identifica una sola fila canónica COVERAGE_REGISTER en el conjunto cerrado examinado. |
-| C0-I02 | Binding total | Los diez elementos de la tupla están declarados, versionados y no ambiguos; no se aceptan comodines implícitos. |
+| C0-I02 | Binding total | Los nueve elementos de la tupla están declarados, versionados y no ambiguos; no se aceptan comodines implícitos. |
 | C0-I03 | Snapshot exacto | `snapshot_id` y `snapshot_object_record_id` identifican la misma revisión exacta, no solo la misma entidad semántica. |
 | C0-I04 | Consistencia de consumidores | Todos los registros que referencian el scope coinciden con la tupla completa. |
 | C0-I05 | Separación de universos | No se mezclan contratos, versiones de instancia, snapshots, etapas, rutas, clases ni dimensiones distintas bajo un scope. |
@@ -335,7 +335,7 @@ El informe debe permitir reproducir qué filas se incluyeron y cuáles quedaron 
 | stage_key | No hay columna canónica stage_key en el esquema descrito. SNAPSHOT.phase contiene baseline/post-B/rollback/route-test y no es sinónimo automático de stage_key | NO MAPEADO; UNKNOWN para comparación de consumidores |
 | route_id | Existe en ROUTE y PREDICATE; ROUTE_STEP usa route_record_id; NODE/EDGE no tienen una columna route_id directa común | PARCIAL; la pertenencia derivada exige una regla exhaustiva de recorrido y no puede inferirse de texto libre `routes_affected` |
 | object_class (CMP/PAR/REF/RUL/MET) | No hay una columna común object_class en todas las tablas U_G. semantic_role, relation_type, predicate_type y boundary_class tienen semánticas distintas | NO MAPEADO; requiere crosswalk explícito, no equivalencia nominal |
-| dimension | Columna `dimension` en COVERAGE_REGISTER; no es un campo común de cada registro consumidor | REPRESENTADO en scope; asociación con cada consumidor requiere mapping |
+| dimension | Columna `dimension` en COVERAGE_REGISTER; no es parte de la tupla C0 ni campo común de consumidores | REPRESENTADO como atributo del scope; elegibilidad de consumidores se fija en universe_definition/version |
 | universe_definition/version | Campo de COVERAGE_REGISTER | REPRESENTADO como declaración, pero su gramática, identidad y hash/version canónico no están cerrados |
 
 ### 20.1. Consecuencias para el control C0
@@ -356,6 +356,10 @@ El informe debe permitir reproducir qué filas se incluyeron y cuáles quedaron 
 - Reconciliar todo lo anterior con DDL completo y DEC-C10-065 antes de proponer cualquier extensión de schema.
 
 **Estado:** DOCUMENTALMENTE IDENTIFICADO; MAPPING FÍSICO/SEMÁNTICO OPEN. No se acepta SNAPSHOT.scope, no se equipara phase con stage, no se añaden columnas, no se ejecuta control ni se autoriza implementación.
+
+
+
+**Aclaración de conformidad con DEC-C10-070:** la tupla aceptada tiene nueve componentes (contract_id/version, instance_id/version, snapshot_id, snapshot_object_record_id, stage_key, route_id, object_class). `dimension` no se añade como décimo componente de identidad: es atributo del propio `coverage_scope_id` en COVERAGE_REGISTER y se versiona junto con la regla de universo. El control comprueba su consistencia y elegibilidad, pero no altera la tupla aceptada.
 
 ### 20.3. Separación de ejes: clase C10, tipo de registro U_G y rol semántico
 
