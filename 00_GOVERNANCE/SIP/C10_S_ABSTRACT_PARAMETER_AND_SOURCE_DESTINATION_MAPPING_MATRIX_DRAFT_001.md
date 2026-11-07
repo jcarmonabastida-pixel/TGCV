@@ -413,3 +413,10 @@ Separar source_artifact_hash (bytes físicos originales) de canonical_content_ha
 Se acepta C1 RFC 8785 JCS + prevalidación TGCV para U1, perfil documental TGCV-C10S-JCS-1, conforme a las restricciones DEC-C10-074. Arrays de conjunto se ordenan por identidad antes de JCS; secuencias conservan orden; NFC se valida previamente solo donde se marque; null prohibido; enteros seguros no negativos; hashes de fuente y contenido canónico separados.
 
 canonical_content_hash igual bajo el mismo perfil demuestra igualdad de bytes canónicos, nunca equivalencia semántica o exhaustividad. La equivalencia del universo requiere evaluación de mapping/miembros/reglas/fuentes por separado. No hash de producción ni parser/validator autorizados; mapping físico CMP/PAR/REF/RUL/MET sigue OPEN.
+
+
+### 20.16. UDG-03 — comparación semántica de universos (propuesta)
+
+No inferir equivalencia semántica por hash, nombre, universe_id, revision ni cardinalidad. Comparar por separado: identidad/revisión; scope C0, stage_key, route_id/route_record_id y snapshot; conjunto completo de member identities (object_class/object_id/object_record_id/version); reglas/AST/dependencias y fuentes/cobertura. Provenance/timestamp/hash son evidencia, no miembros; cambios en contrato/instancia/snapshot/ruta o versiones de objetos exigen mapping explícito o NOT_COMPARABLE.
+
+Igualdad extensional requiere conjuntos exhaustivos idénticos en scope/snapshot compatibles. Equivalencia definicional requiere además equivalencia probada de inclusión/exclusión/reglas/dependencias. EXPLICIT y RULE_DEFINED pueden producir mismo conjunto en un snapshot sin ser definicionalmente equivalentes. Estados por dimensión EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE; FAIL reservado a violación de integridad. Propuesta no aceptada; no comparator/implementación.
