@@ -888,3 +888,10 @@ Se registra propuesta UDG-02 en protocolo §20.12, plantilla U_G §18.17, matriz
 **Estado: ACEPTADA.** C1 RFC 8785 JCS + prevalidación TGCV se adopta como política documental de canonicalización del envelope U1, con perfil TGCV-C10S-JCS-1 y las reglas de DEC-C10-074. Se distinguen source_artifact_hash y canonical_content_hash; igualdad de hash/perfil no acredita equivalencia semántica ni exhaustividad.
 
 No autoriza hash de producción, parser/validator, fixtures, schema change, Design Freeze, implementación o ejecución científica. Mapping físico CMP/PAR/REF/RUL/MET y control C0 independiente permanecen abiertos. Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-074_CANONICALIZATION_PROFILE_JCS_ACCEPTANCE.md`. Este asiento prevalece sobre §70, propuesta anterior no aceptada.
+
+
+## 72. UDG-03 — propuesta de comparación semántica de universos (2026-11-07)
+
+Se registra UDG-03 en protocolo §20.14, plantilla U_G §18.19, matriz de mapping §20.16, maestro §193, plan §16.48 y matriz de control §66. Propone un vector de comparación por dimensión: artefacto, canónico, identidad, revisión, extensional, definicional y compatibilidad. Establece precondiciones de scope/snapshot, miembros versionados y exhaustividad; separa igualdad extensional de equivalencia definicional; fija EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE y FAIL de integridad.
+
+**Estado: NO ACEPTADA.** No crea fingerprint semántico ni comparator ni autoriza fixtures, schema change o ejecución. La propuesta no modifica DEC-C10-073/074.
