@@ -1061,3 +1061,10 @@ Los scopes de cobertura se separan por snapshot×etapa×ruta×clase CMP/PAR/REF/
 El contrato abstracto §16 y catálogo atómico §15 reconcilian el slot histórico RETRY-COUNT como supersedido por DEC-C10-068; ENABLED/PROFILE no tienen DEFAULT aceptado.
 
 **Gate siguiente:** aceptar o revisar la convención textual propuesta para SNAPSHOT.scope en matriz IAM §19.3 y plantilla U_G §18.2; después verificar compatibilidad/parseo antes de instanciar snapshots sintéticos. La propuesta fija phase=route-test y stage/ruta en scope, sin codificar Z/B. No capturar datos ficticios, no declarar COMPLETE, no Design Freeze, implementación o ejecución autorizadas.
+## 16.36. Scopes de cobertura por snapshot, etapa, ruta y clase
+
+La matriz IAM §19.7 y U_G §18.6 definen un scope lógico independiente por snapshot exacto × etapa × ruta × clase CMP/PAR/REF/RUL/MET, con hasta 35 scopes para las siete etapas y cinco clases. Se reutiliza COVERAGE_REGISTER §12.3 sin ampliar columnas. coverage_scope_id es PK opaca; dimension distingue la clase; universe_definition/version debe fijar snapshot_id y snapshot_object_record_id, etapa/ruta, regla de enumeración y versión del universo.
+
+Se fijan denominadores por clase y criterios NONE/PARTIAL/COMPLETE. Ausencia/REF=0 exige cobertura completa y evidencia de enumeración exhaustiva; no se infiere 0 por falta de filas. Los dos PAR REQUIRED ausentes bajo cobertura COMPLETE constituyen incumplimiento.
+
+**Limitación a resolver antes de schema freeze:** COVERAGE_REGISTER no contiene FK directa al snapshot exacto; el pinning en universe_definition/version no permite constraint relacional inversa. Mantener U_G-SCH-10 OPEN y no añadir columnas sin decisión de schema. La codificación de SNAPSHOT.scope continúa pendiente de aceptación/compatibilidad. No crear scopes ficticios ni ejecutar.
