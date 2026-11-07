@@ -1539,3 +1539,19 @@ UDG-04 NO ACEPTADA; schema/API/resolver/parser/validator/fixtures/implementació
 | UDG-29 | Pertenencia | Resolver no implica membership/applicability/preservation/execution | ACCEPTED |
 
 Catálogo REF/schema/API/registry/resolver/parser/validator/comparator/fixtures y mapping CMP/PAR/RUL continúan abiertos. Sin Design Freeze ni ejecución. DEC-C10-076 prevalece sobre §68.
+
+## 70. Reconciliación REF↔UDG-04 — control de cierre documental
+
+| Control | Criterio | Estado |
+|---|---|---|
+| REF-UDG-01 | REF de configuración separado de referencia envelope y FK U_G | CONDITIONAL — propuesta |
+| REF-UDG-02 | Ambos extremos tipados con record_id exacto | OPEN |
+| REF-UDG-03 | Endpoint externo tiene namespace/tipo/versión y resolver declarado | OPEN |
+| REF-UDG-04 | Mapping REF→EDGE versionado; split/merge/n-aria explícitos | OPEN |
+| REF-UDG-05 | Roles MEMBER/OWNER/SOURCE/rules/DEPENDENCY/PROVENANCE no se tratan como enum aceptado | CONDITIONAL |
+| REF-UDG-06 | IAM define obligatoriedad/cardinalidad/NA ex ante | OPEN |
+| REF-UDG-07 | Dependencia declarada no equivale a instalada/disponible | REQUIRED — límite |
+| REF-UDG-08 | FKs U_G y CLAIM_EVIDENCE_LINK no se cuentan como REF de dominio por defecto | REQUIRED — límite |
+| REF-UDG-09 | Estados FAIL/UNKNOWN/NOT_COMPARABLE/NOT_APPLICABLE siguen DEC-C10-076 | REQUIRED — límite |
+
+No se concede PASS de schema ni de integridad física. No hay roster observado, fixtures, validator ejecutado ni Design Freeze.
