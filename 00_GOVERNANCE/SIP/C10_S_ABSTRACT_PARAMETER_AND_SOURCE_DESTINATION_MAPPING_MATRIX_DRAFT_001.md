@@ -236,3 +236,106 @@ CMP-SERVICE-LOGIC no debe usarse como component_id único: es etiqueta de rol/ow
 ## 19. Gate siguiente: mapping semántico bajo DEC-C10-069
 
 El mapping M debe usar los IDs aceptados por DEC-C10-069 y mantener versionado independiente. La tabla siguiente a completar será por familia CMP/PAR/RUL: identidad y cardinalidad fuente; identidad y cardinalidad destino; correspondencia/transformación; precondición y postcondición; preservación semántica FP-03; aplicación FP-06/07; evidencia y oráculo; tratamiento de ausencia, conflicto y UNKNOWN; cobertura IAM. Se distinguirán C_dst declarado y C_dst aplicado. No se aceptará equivalencia por igualdad nominal de IDs ni se declarará REF=0 sin cobertura exhaustiva. Mapping concreto y evidencias siguen OPEN; no ejecución autorizada.
+
+## 20. Especialización documental del mapping CMP/PAR/RUL tras DEC-C10-069
+
+**Estado:** PROPUESTA DE ESPECIALIZACIÓN DOCUMENTAL; no aceptada como mapping confirmatorio, no congelada, no implementada ni validada. Reutiliza §§3–8 y 11–19; no crea una matriz paralela. Base conceptual: DEC-C10-068 y DEC-C10-069.
+
+### 20.1. Identidad de referencia y frontera de comparación
+
+La instancia funcional de referencia queda enlazada por:
+
+| Nivel | Identificador | Regla |
+|---|---|---|
+| Contrato | `C10S-SVC-REQUEST-PROCESSOR` / `1.0.0` | Identidad y versión semántica del contrato |
+| Instancia | `C10S-SVC-REQUEST-PROCESSOR-001` / `1` | Identidad lógica y revisión inmutable del paquete |
+| Componente | `CMP-SERVICE-LOGIC-001` / `SERVICE_LOGIC` | CMP lógico de referencia |
+| Owner lógico | `CMP-SERVICE-LOGIC` | Etiqueta de rol/owner; no sustituye component_id |
+| Parámetros | `PAR-SVC-ENABLED`, `PAR-SVC-PROFILE` | Claves semánticas aceptadas |
+| Regla | `RUL-SVC-ENABLE-PROFILE-01` | Identidad de la regla constitutiva aceptada |
+
+M debe registrar por separado las identidades/versiones de C_src, C_dst, M, IAM y oráculo. Los IDs aceptados identifican el objeto lógico de referencia; no demuestran por sí solos correspondencia entre dos representaciones. La equivalencia exige un registro M explícito, cobertura y evidencia.
+
+### 20.2. Mapping CMP
+
+| Dimensión | C_src | M / transformación | C_dst declarado | C_dst aplicado y adjudicación |
+|---|---|---|---|---|
+| Identidad | CMP lógico de la instancia, enlazado a `CMP-SERVICE-LOGIC-001` | Correspondencia explícita de identidad funcional; no basta igualdad de nombre/ID | Un CMP destino correspondiente, o composición declarada que represente una sola unidad lógica | Comprobar identidad funcional en el estado aplicado; no inferirla de la configuración preparada |
+| Clase | `SERVICE_LOGIC` | Preservación de clase/rol semántico | Clase destino equivalente | Verificar clase funcional efectiva; clase ausente/conflictiva → ? |
+| Owner | Owner lógico `CMP-SERVICE-LOGIC`, enlazado al component_id aceptado | Resolver owner_component_id sin confundir etiqueta de rol con identidad | Owner destino explícito y trazable | Verificar que parámetros y regla pertenecen al CMP lógico correspondiente |
+| Cardinalidad | Un CMP lógico en la instancia sintética mínima de referencia | Correspondencia 1:1 a nivel de identidad lógica; split/merge físico solo si una regla de composición explícita preserva la unidad | Un CMP lógico correspondiente | Duplicación, omisión o composición no declarada que altere la unidad → 0 si demostrada; falta de inventario/cobertura → ? |
+
+La cardinalidad anterior se refiere a la unidad lógica de referencia, no impone una cardinalidad de procesos, contenedores, servicios físicos o componentes de plataforma. Esos elementos pertenecen a P1 y requieren clasificación/IAM separado. No se fija REF=0 ni se deduce ausencia de dependencias de la cardinalidad CMP.
+
+### 20.3. Mapping PAR
+
+| Clave | Contrato fuente/destino | Correspondencia semántica exigida | Falsadores observables |
+|---|---|---|---|
+| `PAR-SVC-ENABLED` | BOOL; dominio `{false,true}`; parámetro obligatorio en el contrato lógico aceptado | Preservar significado booleano y estado; conversión física solo con tabla total explícita y reversible respecto de ambos valores | Inversión true/false; coerción no declarada; pérdida o colapso de estado |
+| `PAR-SVC-PROFILE` | ENUM; dominio semántico `{STANDARD, READ_ONLY, DISABLED}`; parámetro obligatorio | Mapping total y semánticamente inyectivo entre los tres significados; los símbolos físicos pueden renombrarse, pero no fusionarse ni ampliarse silenciosamente | Símbolo sin correspondencia; fusión de perfiles; ampliación/restricción del dominio; igualdad nominal con significado distinto |
+
+Reglas de estado y valor:
+
+1. ABSENT y NULL no son equivalentes a VALUE ni entre sí; el contrato funcional aceptado los trata como no admisibles para los dos parámetros obligatorios. La observación de ausencia/null es incumplimiento formal si está acreditada en el objeto cubierto; si no se puede inspeccionar el objeto completo, es ?.
+2. DEFAULT solo puede evaluarse cuando exista un default contractual declarado o heredado, con tipo, origen, scope y versión trazables. No se inventa un default para completar el mapping.
+3. DEFAULT_ENV_RESOLVED es observación de E_dst/snapshot, no estado PAR del paquete. Su valor no sustituye el default contractual ni demuestra preservación.
+4. VALUE se compara tras tipado y decodificación semántica. La igualdad textual no basta; conversiones, normalización y pérdida requieren regla explícita por clave.
+5. Los valores concretos de C_src/C_dst por escenario, los defaults y la obligatoriedad/NA atómica más allá de lo aceptado conceptualmente permanecen sujetos al IAM pre-Z/B.
+
+### 20.4. Mapping RUL
+
+Identidad y contrato de regla:
+
+- `rule_id=RUL-SVC-ENABLE-PROFILE-01`.
+- Owner lógico: `CMP-SERVICE-LOGIC`; componente enlazado: `CMP-SERVICE-LOGIC-001`.
+- Scope: configuración declarativa completa de la unidad lógica del servicio.
+- Efecto: REQUIRE.
+- Dominio de operandos: ENABLED BOOL y PROFILE ENUM={STANDARD, READ_ONLY, DISABLED}.
+- Condición semántica: ENABLED=true implica PROFILE∈{STANDARD, READ_ONLY}.
+
+Representación declarativa de referencia:
+
+`OR(NEQ(PAR-SVC-ENABLED,true), IN(PAR-SVC-PROFILE,{STANDARD,READ_ONLY}))`
+
+M debe conservar, por separado, identidad de regla, scope, referencias a claves PAR, tipos, operadores, operandos, conjunto ENUM, composición/precedencia, efecto y versión de gramática. La equivalencia se juzga por semántica tipada, no por igualdad textual del AST. Un renombrado físico es admisible únicamente con correspondencia explícita de cada referencia y símbolo.
+
+Contrastes semánticos que el mapping debe preservar:
+- ENABLED=true / PROFILE=STANDARD → regla satisfecha.
+- ENABLED=true / PROFILE=READ_ONLY → regla satisfecha.
+- ENABLED=true / PROFILE=DISABLED → regla violada.
+- ENABLED=false / cualquier PROFILE declarado → esta implicación no impone restricción.
+
+Falsadores: operador o negación alterados; clave/operando cambiado; conjunto ENUM fusionado/ampliado/restringido; scope/owner alterado; REQUIRE↔FORBID; regla omitida/duplicada; UNKNOWN forzado a booleano. Esta enumeración expresa consecuencias lógicas del contrato aceptado, no fixtures ni resultados ejecutados.
+
+### 20.5. Separación por ruta y etapa
+
+| Ruta/etapa | Objeto producido/observado | Obligación | Familia de evaluación |
+|---|---|---|---|
+| F1 | Representación intermedia S2 | Preservar CMP/PAR/RUL mediante M; no declarar aplicación | FP-03; FP-01/02 cuando proceda |
+| F2 | Aplicación en destino | Aplicar el paquete/regla correspondiente al contrato | FP-06 |
+| F2 post-aplicación | Estado destino observado | Verificar CMP/PAR/RUL sobre C_dst^applied, no sobre C_dst^decl | FP-07 y FP-01…05 según predicado |
+| A1 | Representación intermedia S1 | Misma obligación semántica, evaluada independientemente de F1 | FP-03; FP-01/02 cuando proceda |
+| A2 | Aplicación en destino | Aplicar el paquete/regla correspondiente al mismo contrato funcional | FP-06 |
+| A2 post-aplicación | Estado destino observado | Verificar CMP/PAR/RUL sobre C_dst^applied | FP-07 y FP-01…05 según predicado |
+
+F1 PASS no implica F2 PASS; A1 PASS no implica A2 PASS. No se agrupan rutas ni se transfiere evidencia entre ellas. S1/S2 y C_dst^decl no sustituyen C_dst^applied. La comparación de F1/F2 frente a A1/A2 exige mismo contrato funcional, IAM aplicable y criterio F*, pero conserva resultados y evidencia separados por ruta.
+
+### 20.6. Evidencia mínima y adjudicación trivalente
+
+Para cada correspondencia CMP/PAR/RUL y cada ruta/etapa se requiere, documentalmente, enlace a: identidad/versiones de contrato e instancia; snapshots C_src, S1/S2 cuando aplique, C_dst^decl y C_dst^applied; versión de M; IAM y cobertura; observación independiente del estado aplicado; versión/identidad del oráculo; procedencia y timestamps. El hash de artefacto solo se añade cuando exista serialización canónica definida conforme a DEC-C10-069.
+
+- **1:** correspondencia semántica satisfecha, cobertura suficiente y evidencia independiente del objeto/estado pertinente.
+- **0:** omisión, mutación o incumplimiento confirmado dentro de un universo cuya cobertura es suficiente.
+- **?:** identidad, mapping, cobertura, snapshot aplicado, evidencia o adjudicación incompletos/conflictivos; UNKNOWN nunca se fuerza a 0/1.
+- **NA:** solo si el IAM lo predeclara antes de Z/B y demuestra que la propiedad no pertenece al dominio de la instancia. NA no sustituye falta de cobertura.
+
+La verdad estipulada del DGP, la información visible al Analizador y la adjudicación del Evaluador siguen siendo planos distintos. El Evaluador podrá usar verdad oculta/potenciales tras el cegamiento previsto; el Analizador no. Ningún resultado de preservación demuestra por sí solo aplicación, y ningún resultado de aplicación demuestra preservación semántica.
+
+### 20.7. Reconciliaciones necesarias y límites
+
+- La fila histórica PAR-SVC-RETRY-COUNT de §15 queda supersedida para el núcleo por DEC-C10-068; no forma parte del mapping confirmatorio base.
+- La nota de §18 que condicionaba la aceptación de los IDs queda supersedida por DEC-C10-069. Los IDs enumerados en §20.1 son aceptados; serialización/MET físico siguen OPEN.
+- Esta especialización no completa IAM, cardinalidades globales, referencias REF, defaults concretos, mapping físico, formato, oráculo, tolerancias, cobertura ni reglas de conflicto.
+- No convierte FP-03, FP-06, FP-07 o F* en propiedades validadas; no crea fixtures, parser, schema, pruebas, implementación, simulación o ejecución científica.
+
+**Resultado del gate:** la estructura semántica de referencia CMP/PAR/RUL y sus falsadores quedan especificados documentalmente como propuesta trazable. Su aceptación, IAM y evidencia operacional permanecen OPEN. `scientific_execution=false`; `execution_authorized=false`.
