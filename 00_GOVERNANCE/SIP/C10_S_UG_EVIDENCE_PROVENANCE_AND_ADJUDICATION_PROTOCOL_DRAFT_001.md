@@ -829,3 +829,12 @@ La igualdad extensional compara identidades de registro exactas en scopes/snapsh
 ### 20.16.7. Límites
 
 UDG-04 no está aceptada. No fija schema físico REF, catálogo cerrado de roles, algoritmo de resolución, registro concreto, API, parser, validator, fixtures, comparador, Design Freeze ni ejecución. Tampoco resuelve aún mapping CMP/PAR/RUL entre F1/A1 y F2/A2. La propuesta debe reconciliarse con los contratos y decisiones previas antes de aceptar.
+
+
+## 20.17. DEC-C10-076 — UDG-04 aceptada
+
+DEC-C10-076 acepta UDG-04 documentalmente. Identidad lógica `(object_class, object_id)`; identidad exacta de registro `(object_class, object_id, object_record_id)`, inmutable. Referencia tipada `(ref_role, target_object_class, target_object_id, target_object_record_id)`. Roles de ejemplo MEMBER/OWNER/SOURCE/INCLUSION_RULE/EXCLUSION_RULE/DEPENDENCY/PROVENANCE deben reconciliarse con catálogo REF; no son enum físico cerrado. REQUIRED/OPTIONAL y cardinalidad se declaran por contrato de clase.
+
+Resolver contra registry/manifiesto versionado y scope explícito; no latest implícito ni fallback por nombre/valor/posición/hash aislado. Comprobar forma, record_id, clase/id, inmutabilidad, compatibilidad, acceso y cardinalidad. Requerida ausente/dangling exhaustivo/conflicto/mutabilidad = FAIL; registry incompleto/inaccesible = UNKNOWN; incompatibilidad sin mapping = NOT_COMPARABLE; opcional ausente = NOT_APPLICABLE. Ciclos por relación; DAG solo cuando contrato DEPENDENCY lo exige. Propagar estados solo por dependencias demostradas.
+
+Resolver ref no prueba membership, aplicabilidad, preservación o ejecución. La aceptación no cierra catálogo/schema/API/registry/resolver/parser/validator/comparator/fixtures ni mapping CMP/PAR/RUL; no autoriza Design Freeze ni ejecución. DEC-C10-076 prevalece sobre §20.16.
