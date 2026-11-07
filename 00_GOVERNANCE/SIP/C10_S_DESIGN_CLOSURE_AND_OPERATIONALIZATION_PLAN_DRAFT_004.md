@@ -1073,7 +1073,7 @@ Se fijan denominadores por clase y criterios NONE/PARTIAL/COMPLETE. Ausencia/REF
 
 Separar este gate de U_G-SCH-10: la pertenencia del grafo a snapshot está aceptada semánticamente por DEC-C10-065/Opción A; la validación física del grafo conserva su propio estado. Para COVERAGE_REGISTER, los objetos enlazan coverage_scope_id y fijan snapshot exacto, pero la fila de cobertura no contiene snapshot_id/snapshot_object_record_id; no hay enforcement compuesto de coincidencia.
 
-C0 (esquema actual, tupla exacta en universe_definition/version y control independiente) es la recomendación provisional, CONDITIONAL hasta control auditado. C1 (columnas de snapshot + FK compuestas) necesita decisión de schema, análisis de ciclo con SNAPSHOT.coverage_scope_id y compatibilidad/legacy. C2 (tabla puente) no se recomienda salvo inviabilidad de C1.
+C0 fue aceptada mediante DEC-C10-070 como contrato documental (esquema actual + tupla exacta en universe_definition/version). El control independiente sigue OPEN y CONDITIONAL hasta su especificación, autorización, ejecución y auditoría. C1 (columnas de snapshot + FK compuestas) necesita decisión de schema, análisis de ciclo con SNAPSHOT.coverage_scope_id y compatibilidad/legacy. C2 (tabla puente) no se recomienda salvo inviabilidad de C1.
 
 Antes de freeze: comparar alternativas contra DDL completo, cardinalidad scopes×snapshot, filas históricas y motor. No alterar schema ni declarar integridad relacional plena.
 
