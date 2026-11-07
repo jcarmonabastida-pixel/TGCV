@@ -528,3 +528,20 @@ Las relaciones n-arias requieren una identidad de grupo/parent explícita y una 
 5. Solo después proponer cardinalidades/requiredness por clase×rol×extremo×stage_key×scope.
 
 **Estado:** PROPUESTA NO ACEPTADA. No se cierra vocabulario, cardinalidad, obligatoriedad, endpoints externos ni mapping M. No se crean instancias/filas IAM, no se declara REF=0, y no se autoriza schema físico, implementación, parser/validator, fixtures, Design Freeze ni ejecución científica.
+
+### 19.14. Resolución conceptual de DEPENDENCY en L2 — propuesta no aceptada
+
+**Pregunta:** cuando el envelope UDG declara una dependencia, ¿la referencia L2 apunta al objeto dependiente directamente o a un objeto REF que representa la relación?
+
+**Propuesta de resolución, condicionada al significado declarado:**
+
+1. **Dependencia como relación del dominio de configuración:** si se afirma que un objeto de configuración depende de otro, L2 `DEPENDENCY` debe apuntar al registro REF exacto que representa esa relación. El REF conserva identidad propia y contiene sus extremos tipados, dirección, tipo/rol, multiplicidad e integridad. El envelope L2 referencia ese REF; no duplica sus extremos ni sustituye su identidad por la del target.
+2. **Dependencia técnica/ambiental:** disponibilidad de servicio externo, runtime, recurso, permiso efectivo, instalación o condición de entorno pertenece a las condiciones técnicas/ambientales (p. ej. C_dep/E_dst) salvo que el DGP declare expresamente una relación de configuración como REF. No se crea un REF solo porque una condición técnica sea necesaria.
+3. **Dependencias para evaluar un universo RULE_DEFINED:** las reglas y sus dependencias de resolución/evaluación deben permanecer como referencias tipadas/versionadas de la definición de universo/regla. No deben reutilizarse automáticamente como relación funcional REF ni confundirse con el role_key L2 `DEPENDENCY` de una relación de configuración.
+4. **No doble contabilización:** si L2 apunta a REF, el objeto REF es la unidad de relación en L3; el objeto endpoint no se vuelve otra relación REF. Los extremos se resuelven por identidad exacta UDG-04. Una referencia L2 no crea un REF.
+5. **Caso externo:** un REF de configuración puede tener un extremo externo solo con namespace, tipo, versión, identidad y política de resolución explícitos. Hasta entonces el extremo permanece UNKNOWN; no se sustituye por un identificador nominal ni se fuerza a MET.
+6. **DGP base actual:** el roster mínimo aceptado CMP-SERVICE-LOGIC-001, PAR-SVC-ENABLED, PAR-SVC-PROFILE y RUL-SVC-ENABLE-PROFILE-01 no declara por sí mismo una relación REF. La cardinalidad REF=0 solo podrá adjudicarse después de inventario y cobertura exhaustivos pre-Z/B. No crear una fila DEPENDENCY ni un REF sintético por conveniencia del envelope.
+
+**Consecuencia:** para el significado «relación de dependencia declarada en la configuración», el target de L2 es REF exacto, no el objeto dependiente directamente. El target directo queda reservado a referencias tipadas que expresen explícitamente otro propósito de envelope, no a una dependencia funcional encubierta.
+
+**Estado:** PROPUESTA NO ACEPTADA. No se cierra el enum L2, ni se acepta cardinalidad/requiredness, ni se declara REF presente o ausente en la instancia. No modifica DEC-C10-076/077/078. No autoriza schema, resolver, parser/validator, fixtures, implementación, Design Freeze ni ejecución científica.
