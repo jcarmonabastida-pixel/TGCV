@@ -8264,3 +8264,12 @@ Se requiere pinning exacto de ambos extremos, snapshot y versión; endpoint exte
 ## 198. DEC-C10-077 — aceptación de reconciliación conceptual REF↔UDG-04 (2026-11-07)
 
 Se acepta separar REF de configuración, referencia tipada UDG y FK estructural U_G; REF tiene identidad propia y extremos tipados. REF→EDGE requiere M explícito/versionado; no se presupone 1:1, y split/merge/n-aria exige parent/group identity. Los roles UDG de DEC-C10-076 siguen ilustrativos. No se fijan vocabulario final, dominios, cardinalidades, obligatoriedad, IAM, endpoints externos ni schema físico. FKs Opción A/ROUTE_STEP/CLAIM_EVIDENCE_LINK no se reinterpretan como REF. Sin DDL, resolver, parser/validator, fixtures, implementación, Design Freeze ni ejecución.
+
+
+## 199. DEC-C10-078 — aceptación del contrato lógico de filas IAM (2026-11-07)
+
+Se acepta documentalmente la estructura de cuatro capas: L1 membership del universo CMP/PAR/REF/RUL/MET; L2 referencias tipadas del envelope UDG; L3 extremos funcionales de REF con identidad propia; L4 FK/vínculos estructurales U_G, no contabilizados como REF por defecto. Las capas no comparten automáticamente universo, denominador ni obligatoriedad.
+
+Se acepta el contrato lógico contextual de fila IAM: `iam_rule_id`, `layer`, `source_class`, `source_identity_rule`, `role_namespace`, `role_key`, `endpoint_position`, `target_domain`, `min_cardinality`, `max_cardinality`, `requiredness`, `applicability_trigger`, `stage_key`, `scope_mode`, `route_binding`, `version_snapshot_binding`, `integrity_rule`, `mapping_rule`, `evidence_rule`, `adjudication` y `rationale/provenance`. La presencia/valor de cada campo es contextual por capa; no se fija serialización física.
+
+No se aceptan vocabularios cerrados, cardinalidades numéricas, valores REQUIRED/OPTIONAL/CONDITIONAL, endpoints externos, enum relation_type, mapping M concreto ni schema físico. Se reutilizan los siete stage_key de DEC-C10-071 y C10S_SCOPE_GLOBAL de DEC-C10-072. El siguiente gate es proponer vocabularios candidatos por capa, separando roles UDG L2 de roles funcionales REF L3; luego justificar dominios/cardinalidades/requiredness y reconciliar mapping M. DEC-C10-077 permanece intacta. No se autoriza implementación, parser/validator, fixtures, Design Freeze, simulación, experimento ni ejecución científica.
