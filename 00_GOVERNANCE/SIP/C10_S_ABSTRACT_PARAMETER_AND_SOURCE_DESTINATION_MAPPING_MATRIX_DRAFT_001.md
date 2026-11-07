@@ -382,3 +382,13 @@ No se crea route_id real, token canónico, scope, mapping físico ni fixture. La
 El literal reservado `C10S_SCOPE_GLOBAL` queda aceptado para el slot route_id C0 con semántica exclusiva “sin restricción a una ruta concreta”. No denota ausencia de rutas ni no pertenencia. Está prohibido como route_id semántico real; colisión produce FAIL. NULL/vacío/NONE/F/A no sustituyen el token.
 
 Scope global: universo elegible de clase/etapa/snapshot, conteo único por identidad. Scope route-specific: route_id real + route_record_id + snapshot exactos, denominadores independientes. Las reglas de pertenencia CMP/PAR/REF/RUL/MET de §20.10 siguen siendo propuesta de mapping y no quedan aprobadas por DEC-C10-072. La gramática universe_definition/version y mapping físico permanecen OPEN.
+
+
+
+### 20.12. Envelope y tipado de universe_definition — propuesta UDG-01
+
+Se propone un envelope JSON autocontenido en universe_definition/version. Su scope replica los nueve componentes C0 y debe igualar exactamente la tupla externa; dimension permanece fuera. El envelope declara schema_id/schema_version, universe_id/universe_revision, scope, membership_mode (EXPLICIT/RULE_DEFINED), member_refs tipados o inclusion_rule_ref versionado, exclusion_rule_refs, source_manifest_refs, declared_member_count y provenance_ref.
+
+member_ref identifica object_class, object_id y object_record_id; owner_ref/source_record_ref se incluyen cuando sean necesarios para resolver la semántica de CMP/PAR/REF/RUL/MET. La clase del miembro debe coincidir con la clase del scope. La pertenencia a otra etapa solo se permite mediante proyección explícita y versionada. No inferir identidad por nombre/valor/hash/posición.
+
+Se propone canonicalización determinista UTF-8/NFC, claves ordenadas, arrays ordenados por identidad y SHA-256 del contenido; semver para schema_version y revisión entera monotónica e inmutable para universe_revision. Es una propuesta, no un contrato aceptado. Mapping físico por clase/propiedad y control C0 siguen OPEN; no schema change ni implementación/ejecución.
