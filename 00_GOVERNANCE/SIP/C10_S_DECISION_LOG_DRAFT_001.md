@@ -778,3 +778,9 @@ No constituye una nueva decisión del usuario ni acepta/congela la propuesta. RE
 La matriz IAM §17 corrige el estado histórico de §16: los IDs contract/instance/CMP ya fueron aceptados por DEC-C10-069; mapping_id, IAM_id, oracle_id y serialización/hash siguen OPEN. Se especifica como requisito la instanciación IAM por ruta/etapa/objeto/propiedad/snapshot, la distinción C_dst declarado/aplicado y E_dst, y la separación de truth del DGP, salidas del Analizador y adjudicación del Evaluador.
 
 La especificación es documental y no constituye nueva decisión del usuario ni contrato de oráculo aceptado/congelado. Roster global, valores/defaults por escenario, AST/mapping, cobertura, evidencia, cegamiento y reglas operativas de UNKNOWN/conflicto permanecen OPEN. Sin fixtures, implementación o ejecución científica.
+
+## 57. Reconciliación documental del roster funcional mínimo (2026-11-07)
+
+Se documenta en la matriz IAM §18 la reconciliación de DEC-C10-056/068/069: CMP focal aceptado, dos PAR y una RUL funcional aceptados, MET obligatorio, POL fuera del núcleo y REF=0 condicionado a inventario/cobertura exhaustivos pre-Z/B. RETRY-COUNT queda excluido del núcleo por DEC-C10-068. No se declara cerrado el inventario exhaustivo ni se sella IAM.
+
+Los PAR aceptados no tienen DEFAULT contractual declarado; no se asignan valores por escenario. La especificación no constituye una nueva decisión del usuario, no acepta el mapping §20 ni autoriza implementación/ejecución.
