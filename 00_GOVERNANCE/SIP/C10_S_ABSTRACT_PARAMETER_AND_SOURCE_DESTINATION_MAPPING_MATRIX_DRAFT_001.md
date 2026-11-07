@@ -486,3 +486,7 @@ El mapping REF→EDGE solo es admisible con una regla M versionada que conserve 
 Falsadores: extremo fuente/destino intercambiado; target con misma identidad lógica pero record_id distinto; EDGE de snapshot distinto; route membership inferida sin ROUTE_STEP; dependencia declarada confundida con dependencia instalada; cardinalidad colapsada; REF transformada en FK estructural; evidencia/provenance contada como miembro; resolución por latest/nombre/hash.
 
 **Gate siguiente:** aceptar/corregir este crosswalk semántico; después definir matriz IAM por clase×rol×extremo×stage_key×scope y cardinalidad. Schema físico REF, enum de roles, registry, resolver, fixtures y ejecución permanecen OPEN/no autorizados.
+
+### 20.21. DEC-C10-077 — aceptación de la base conceptual REF↔UDG-04
+
+Se acepta la distinción REF de configuración / referencia tipada UDG / FK estructural U_G; la identidad propia y extremos tipados de REF; y que REF→EDGE solo sea candidato mediante M explícito/versionado, sin presunción 1:1 y con parent/group identity para split/merge/n-aria. Los roles de DEC-C10-076 siguen ilustrativos, no enum cerrado. No quedan aceptados roles finales, dominios de extremos, cardinalidades, REQUIRED/OPTIONAL, IAM ni mapping físico. DEC-C10-077 prevalece sobre la propuesta de §20.20 solo en estos límites conceptuales; gates abiertos permanecen abiertos.
