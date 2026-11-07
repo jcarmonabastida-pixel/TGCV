@@ -725,3 +725,9 @@ Contrato provisional C0: cada coverage_scope_id C10-S fija una sola tupla exacta
 Alternativa C1, no aceptada: añadir snapshot_id y snapshot_object_record_id a COVERAGE_REGISTER y FKs/clave candidata compuestas para asegurar la coincidencia en base de datos. Antes se debe resolver la interacción con el coverage_scope_id ya presente en SNAPSHOT, los posibles ciclos, la compatibilidad del motor y las filas históricas. C2 (tabla puente) no recomendada salvo que C1 no sea viable.
 
 Este gate es independiente de la pertenencia del grafo a snapshot ya aceptada por DEC-C10-065. No se modifica el esquema actual ni se ejecutan controles.
+
+### 18.8. Estado de C0 tras DEC-C10-070
+
+DEC-C10-070 acepta C0 como contrato documental condicionado: se mantiene el schema; cada coverage_scope_id C10-S fija en universe_definition/version la tupla exacta de contrato/instancia/snapshot/registro/etapa/ruta/clase, y todos los registros que referencian ese scope deben coincidir. El control independiente deberá comprobar igualdad, unicidad, cardinalidad, referencias huérfanas/no usadas y conflictos.
+
+Estado hasta control especificado, implementado bajo autorización, ejecutado y auditado: CONDITIONAL. No existe enforcement FK compuesta. C1/C2 no aceptadas ni autorizadas. No se crean filas ni scopes observados; no Design Freeze ni ejecución.
