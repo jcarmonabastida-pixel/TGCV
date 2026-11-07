@@ -545,3 +545,23 @@ Las relaciones n-arias requieren una identidad de grupo/parent explícita y una 
 **Consecuencia:** para el significado «relación de dependencia declarada en la configuración», el target de L2 es REF exacto, no el objeto dependiente directamente. El target directo queda reservado a referencias tipadas que expresen explícitamente otro propósito de envelope, no a una dependencia funcional encubierta.
 
 **Estado:** PROPUESTA NO ACEPTADA. No se cierra el enum L2, ni se acepta cardinalidad/requiredness, ni se declara REF presente o ausente en la instancia. No modifica DEC-C10-076/077/078. No autoriza schema, resolver, parser/validator, fixtures, implementación, Design Freeze ni ejecución científica.
+
+### 19.15. Conjunto mínimo de REF L3 exigido por el contrato sintético actual — auditoría propuesta
+
+**Pregunta:** ¿qué objetos REF funcionales L3 exige realmente el contrato aceptado del servicio lógico?
+
+| Elemento observado en el DGP/contrato | Interpretación correcta provisional | ¿Crea REF L3? |
+|---|---|---|
+| CMP-SERVICE-LOGIC-001 | Identidad del componente lógico | No por sí mismo |
+| PAR-SVC-ENABLED / PAR-SVC-PROFILE | Propiedades tipadas del CMP | No; su ownership no crea una relación REF independiente |
+| RUL-SVC-ENABLE-PROFILE-01 y sus operandos ENABLED/PROFILE | Regla constitutiva con AST y referencias a operandos PAR | No por sí mismo; los operandos pertenecen a la gramática/contrato RUL, salvo declaración independiente de relación REF |
+| R_acc / R* en el generador TGCV | Relaciones/dependencias activas del espacio transformacional y de composición | No automáticamente; no son la clase REF del paquete de configuración |
+| C_dep / E_dst, recursos, permisos efectivos, runtime, instalación y condiciones ambientales | Dependencias/condiciones técnicas externas | No automáticamente; permanecen en el plano técnico/ambiental |
+| Dependencias de evaluación de universo RULE_DEFINED | Referencias tipadas/versionadas necesarias para evaluar regla y cierre del universo | No automáticamente; no son relaciones funcionales REF |
+| Dependencia explícita entre objetos del paquete de configuración | Relación del dominio con identidad propia y extremos tipados | Sí: REF L3, si el contrato la declara expresamente |
+
+**Resultado de la auditoría del roster mínimo:** no se identifica actualmente ningún REF funcional L3 exigido por el contrato mínimo aceptado CMP/PAR/RUL. Esto no prueba REF=0 para los snapshots reales ni para C_src/C_dst: el roster es mínimo, no exhaustivo. REF=0 solo podrá declararse por snapshot×etapa×ruta×scope después de enumeración exhaustiva, fuentes examinadas, denominador trazable y cobertura COMPLETE pre-Z/B.
+
+**Regla de no-colapso:** no convertir operandos de RUL, FK U_G, R_acc/R*, dependencias ambientales o referencias de evaluación UDG en REF por semejanza nominal. Para añadir un REF candidato se debe aportar: identidad de la relación, source/target exactos, semántica de dominio, dirección/tipo/rol, multiplicidad, versión/snapshot y justificación de por qué no es solo una FK, condición externa o referencia de regla.
+
+**Estado:** AUDITORÍA DOCUMENTAL PROPUESTA; no se declara REF=0 ni se sella roster/IAM. No se crea fila de instancia. La clasificación debe revisarse frente al inventario exhaustivo por snapshot antes de cualquier adjudicación. No autoriza implementación ni ejecución.
