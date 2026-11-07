@@ -1495,3 +1495,17 @@ No hash de producción, parser/validator, fixtures, schema change, Design Freeze
 | UDG-22 | Revision compatibility | Relación dirigida demostrada; no inferida por número/cardinalidad | PROPOSED |
 
 No comparator/fingerprint semántico, fixtures, schema change, Design Freeze ni ejecución autorizados.
+
+
+## 67. DEC-C10-075 — estado de comparación semántica UDG-03
+
+| ID | Requisito | Criterio | Estado |
+|---|---|---|---|
+| UDG-17 | Niveles | Siete dimensiones de comparación separadas | ACCEPTED — DEC-C10-075 |
+| UDG-18 | Scope comparability | C0 + stage_key + route/route_record + snapshot; mapping explícito si cambia contrato/instancia | ACCEPTED |
+| UDG-19 | Membership equality | Conjuntos exhaustivos de refs tipadas/versionadas | ACCEPTED |
+| UDG-20 | Definition equivalence | Inclusión/exclusión/reglas/AST/domínios/dependencias equivalentes | ACCEPTED |
+| UDG-21 | Result codes | EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE; FAIL integridad | ACCEPTED |
+| UDG-22 | Revision compatibility | Relación dirigida demostrada, no inferida por número/cardinalidad | ACCEPTED |
+
+Aceptación documental; comparator/fingerprint, fixtures, parser/validator, schema change, Design Freeze e implementación/ejecución no autorizados. DEC-C10-075 prevalece sobre §66.
