@@ -744,3 +744,18 @@ Esta plantilla conserva el esquema físico. No añade campos ni FKs a COVERAGE_R
 La reconciliación del protocolo §20 confirma que snapshot_id y snapshot_object_record_id están representados por el contrato Opción A, mientras que stage_key no tiene columna propia, route_id solo está representado directamente en ROUTE/PREDICATE/ROUTE_STEP, y object_class CMP/PAR/REF/RUL/MET no dispone de campo común tipado. contract/instance versions y dimension requieren vínculo documental desde universe_definition/version y COVERAGE_REGISTER.
 
 Por tanto, la aceptación C0 no basta para PASS del control: stage_key/object_class y pertenencias route-specific sin crosswalk producen UNKNOWN, salvo contradicción demostrada (FAIL). SNAPSHOT.phase no se equipara a stage_key y SNAPSHOT.scope sigue OPEN. No se añaden columnas ni se cambia el schema.
+
+### 18.11. Reconciliación de §18.2 con DEC-C10-070 y el binding C0
+
+La tabla de §18.2 conserva siete stage_key candidatos: C_SRC, F1_S2, A1_S1, F2_DST_DECL, A2_DST_DECL, F2_DST_APPLIED y A2_DST_APPLIED. Su vocabulario es una propuesta histórica reutilizable, pero no queda aceptado automáticamente por DEC-C10-070. Debe distinguirse de los momentos del reloj DGP t−1…t9 y de SNAPSHOT.phase (baseline/post-B/rollback/route-test).
+
+La propuesta de serializar etapa/ruta en SNAPSHOT.scope permanece NO ACEPTADA. El binding C0 aceptado por DEC-C10-070 reside en COVERAGE_REGISTER.universe_definition/version; no se debe duplicar ni parsear heurísticamente desde SNAPSHOT.scope.
+
+La serialización ilustrativa de §18.2 (`route=NONE|F|A`, `object_class=CONFIG`) no satisface por sí sola la tupla C0:
+- NONE/F/A son etiquetas de alcance/familia de ruta, no route_id exacto. F/A pueden conservarse como metadato auxiliar route_family; el binding C0 necesita route_id exacto o token global reservado explícito, aún OPEN.
+- CONFIG es demasiado amplio. object_class de C0 debe ser CMP/PAR/REF/RUL/MET.
+- dimension C10S_CONFIG_CMP/PAR/REF/RUL/MET permanece en COVERAGE_REGISTER.dimension, fuera de la tupla C0 de nueve componentes.
+
+La pertenencia de NODE/EDGE a ruta se demuestra por ROUTE_STEP y record IDs exactos; PREDICATE por route_record_id; ROUTE por su propia revisión. No se usa routes_affected como prueba.
+
+Esta reconciliación no modifica columnas, no acepta SNAPSHOT.scope, no crea scopes ni snapshots y no autoriza implementación/ejecución.
