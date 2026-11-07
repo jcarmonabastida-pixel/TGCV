@@ -565,3 +565,47 @@ Las relaciones n-arias requieren una identidad de grupo/parent explícita y una 
 **Regla de no-colapso:** no convertir operandos de RUL, FK U_G, R_acc/R*, dependencias ambientales o referencias de evaluación UDG en REF por semejanza nominal. Para añadir un REF candidato se debe aportar: identidad de la relación, source/target exactos, semántica de dominio, dirección/tipo/rol, multiplicidad, versión/snapshot y justificación de por qué no es solo una FK, condición externa o referencia de regla.
 
 **Estado:** AUDITORÍA DOCUMENTAL PROPUESTA; no se declara REF=0 ni se sella roster/IAM. No se crea fila de instancia. La clasificación debe revisarse frente al inventario exhaustivo por snapshot antes de cualquier adjudicación. No autoriza implementación ni ejecución.
+
+### 19.16. Protocolo de auditoría REF por snapshot y etapa — propuesta no aceptada
+
+**Objetivo.** Convertir la conclusión negativa provisional de §19.15 en una inspección reproducible, sin crear registros hipotéticos ni declarar REF=0 a partir del roster mínimo.
+
+#### A. Unidad de auditoría
+
+La unidad mínima de adjudicación es la combinación exacta:
+(contract_id/version, instance_id/version, snapshot_id, snapshot_object_record_id, stage_key, route_id o NONE justificado, scope, clase REF, universe_definition/version).
+
+Cada combinación requiere un COVERAGE_REGISTER propio, con denominador, fuentes esperadas/examinadas/válidas, unidades cubiertas/excluidas y unidades opacas/desconocidas. Se reutilizan SNAPSHOT, COVERAGE_REGISTER, EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER U_G; no se crea un inventario U_G paralelo.
+
+#### B. Inspección por etapa
+
+| stage_key | Ruta | Objeto inspeccionado | Pregunta REF específica | Límite |
+|---|---|---|---|---|
+| C_SRC | NONE | Paquete fuente exacto | ¿Qué relaciones REF funcionales declara el paquete fuente? | No inferir contenido de destino. |
+| F1_S2 | F | Representación intermedia S2 | ¿Qué REF se preservan, transforman, dividen, agregan o pierden respecto de C_SRC bajo M? | S2 no prueba aplicación. |
+| A1_S1 | A | Representación intermedia S1 | La misma inspección para la ruta A, con evidencia propia. | No copiar inventario ni resultado de F. |
+| F2_DST_DECL | F | Paquete destino declarado antes de aplicar | ¿Qué REF declara la configuración preparada para F2? | No prueba estado aplicado. |
+| A2_DST_DECL | A | Paquete destino declarado antes de aplicar | ¿Qué REF declara la configuración preparada para A2? | No heredar la declaración F. |
+| F2_DST_APPLIED | F | Configuración efectivamente aplicada | ¿Qué REF existen y resuelven en el estado aplicado F2? | Exige snapshot y evidencia post-aplicación independientes. |
+| A2_DST_APPLIED | A | Configuración efectivamente aplicada | La misma inspección para el estado aplicado A2. | Exige snapshot y evidencia post-aplicación independientes. |
+
+#### C. Criterios para clasificar una relación como REF
+
+Una candidata solo se registra como REF funcional si se acredita: (i) identidad propia de la relación; (ii) semántica de dominio declarada; (iii) extremos exactos por identidad lógica y record/version; (iv) dirección, tipo/rol y multiplicidad aplicables; (v) pertenencia al paquete de configuración; y (vi) procedencia y snapshot exactos.
+
+No se elevan automáticamente a REF: EDGE de U_G, FK/ROUTE_STEP, CLAIM_EVIDENCE_LINK, operandos o referencias internas de RUL/AST, R_acc/R* transformacionales, dependencias técnicas C_dep/E_dst ni referencias usadas solo para resolver universos RULE_DEFINED. Si una estructura U_G corresponde además a una relación REF, la doble representación exige mapping M explícito/versionado y trazabilidad; no identidad por semejanza nominal.
+
+#### D. Estados de adjudicación
+
+- **1 / PRESENT:** REF identificado y respaldado por evidencia suficiente.
+- **0 / ABSENT:** solo tras enumeración exhaustiva del universo y fuentes pertinentes, cobertura COMPLETE para el scope exacto y ausencia confirmada. REF=0 se adjudica por snapshot×stage_key×ruta×scope, nunca por extrapolación entre etapas.
+- **? / UNKNOWN:** snapshot ausente, inspección parcial, universo/denominador no cerrado, fuentes no accesibles, mapping ambiguo o evidencia conflictiva/no suficiente.
+- **NA:** únicamente si la clase/propiedad está fuera del dominio por regla ex ante explícita; no sustituye a un inventario vacío.
+
+Un estado 0 requiere CLAIM_EVIDENCE_LINK y justificación de cobertura negativa. COMPLETE es relativo al universo operativo declarado/versionado y no implica exhaustividad ontológica. C_DST_DECLARED no permite inferir C_DST_APPLIED.
+
+#### E. Salida mínima de la auditoría
+
+Por cada REF candidato: ref_id/record_id/version, semantic role/relation type (sin enum supuesto), source endpoint y target endpoint exactos, dirección, multiplicidad, snapshot/stage/route/scope, mapping M si aplica, evidence/claim links, coverage_scope_id, adjudicación y rationale. Para una clase sin candidatos, conservar denominador y evidencia de enumeración que sustenten 0 o ?, sin crear una fila REF ficticia.
+
+**Estado:** PROPUESTA NO ACEPTADA. No hay snapshots ni observaciones incorporados por esta sección; no se adjudica REF=0, no se sella IAM y no se autoriza schema físico, parser/validator, fixtures, implementación, Design Freeze ni ejecución científica.
