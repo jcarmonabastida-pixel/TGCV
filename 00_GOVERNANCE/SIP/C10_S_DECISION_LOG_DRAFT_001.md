@@ -801,3 +801,9 @@ Se explicitan denominadores y criterios de cobertura NONE/PARTIAL/COMPLETE; ause
 Se corrige el registro anterior: U_G-SCH-10 no es el gate de COVERAGE_REGISTER. La pertenencia versionada del grafo a SNAPSHOT fue aceptada semánticamente mediante DEC-C10-065/Opción A; su validación física sigue separada. Los registros de objeto enlazan coverage_scope_id y snapshot exacto, pero COVERAGE_REGISTER no contiene el par snapshot_id/snapshot_object_record_id, por lo que el motor no puede imponer su coincidencia mediante FK compuesta.
 
 Se documentan alternativas C0 (esquema actual + pinning en universe_definition/version + control independiente, provisional/conditional), C1 (extensión de COVERAGE_REGISTER y FK compuesta, no aceptada) y C2 (tabla puente, no recomendada salvo necesidad). No se modifica schema ni se declara integridad relacional plena. La convención SNAPSHOT.scope permanece pendiente.
+
+## 61. DEC-C10-070 — aceptación condicionada de C0 (2026-11-07)
+
+El usuario acepta C0 para el binding COVERAGE_REGISTER↔SNAPSHOT: conservar el schema y fijar en universe_definition/version una tupla exacta por coverage_scope_id (contrato/instancia/snapshot/registro/etapa/ruta/clase). Todo registro que referencia el scope debe coincidir. Se requiere control independiente de igualdad, unicidad, cardinalidad, huérfanos/no usados y conflictos.
+
+C0 es una decisión documental aceptada, pero su enforcement queda CONDITIONAL hasta que el control esté especificado, implementado bajo autorización, ejecutado y auditado antes de Design Freeze. No equivale a FK compuesta. C1/C2 no aceptadas ni autorizadas. No se modifica schema, no se reabre DEC-C10-065, no se acepta SNAPSHOT.scope ni se autoriza implementación/ejecución.
