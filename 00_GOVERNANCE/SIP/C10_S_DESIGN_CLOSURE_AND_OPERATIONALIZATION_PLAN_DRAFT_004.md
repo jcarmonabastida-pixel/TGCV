@@ -997,7 +997,7 @@ La reconstrucción de DEC-C10-054 y del perfil de dominios demuestra que la dist
 
 ## 16.26. Especialización candidata de claves PAR
 
-Se ha preparado un roster lógico parsimonioso: activación BOOL requerida, perfil ENUM requerido y contador de reintentos INT opcional. Es una propuesta para una unidad lógica de servicio, no un esquema real ni una decisión aceptada. El slot de reintentos queda condicionado a que sea configuración P0 del servicio y no capacidad/recursos P1. DECIMAL/STRING quedan como extensiones condicionales; REF se modela normalmente en la clase REF.
+El roster histórico de tres slots queda supersedido por DEC-C10-068: el núcleo aceptado contiene ENABLED BOOL y PROFILE ENUM; RETRY-COUNT queda excluido. No es esquema físico ni amplía la decisión a otros parámetros. DECIMAL/STRING quedan como extensiones condicionales; REF se modela normalmente en la clase REF.
 
 **Cierre necesario:** verificar pertinencia P0 de cada slot; definir D_profile, N_retry_max y dominios por clave; estados admisibles/defaults; mapping por ruta; obligatoriedad IAM; regla RUL constitutiva y oráculo. No fijar valores de escenario antes de cerrar contrato. Sin freeze ni autorización de implementación.
 
