@@ -604,3 +604,60 @@ DEC-C10-073 acepta U1 como arquitectura documental: envelope JSON autocontenido 
 **No aceptado por DEC-C10-073:** canonicalización UTF-8/NFC/orden determinista como requisito normativo, SHA-256 obligatorio, RFC/JCS, serialización física ejecutable, reglas completas de compatibilidad/incremento semver, mapping físico por clase ni control C0 implementado/auditado. SHA-256 y canonicalización permanecen opciones de diseño abiertas. La aceptación es documental/arquitectónica, no autorización de schema change, parser, validator, fixtures, Design Freeze o ejecución.
 
 Ante conflicto de estatus, este asiento y DEC-C10-073 prevalecen sobre frases históricas de §20.10 que calificaban toda UDG-01 como no aceptada.
+
+
+## 20.12. Canonicalización e integridad del envelope — propuesta UDG-02
+
+**Estado:** propuesta técnica/documental; no aceptada. Aplica a la arquitectura U1 aceptada por DEC-C10-073 sin modificar sus campos/cardinalidades.
+
+### 20.12.1. Separaciones obligatorias
+
+Se distinguen tres capas:
+
+1. **Bytes de artefacto:** representación física recibida (p. ej. JSON pretty-printed); su hash cambia si cambian whitespace, codificación o finales de línea.
+2. **Bytes JSON canónicos:** serialización determinista del envelope validado bajo un perfil de canonicalización identificado; aptos para checksum reproducible.
+3. **Equivalencia semántica:** juicio separado que exige comparar identidad, scope, miembros, reglas, fuentes y versión bajo reglas explícitas. Ni igualdad de bytes ni igualdad de hash prueba por sí sola equivalencia semántica, exhaustividad del universo o verdad de las fuentes.
+
+### 20.12.2. Alternativas
+
+| Perfil | Descripción | Evaluación |
+|---|---|---|
+| C1 — JCS estricto + prevalidación TGCV | RFC 8785 para serialización JSON, con restricciones del schema TGCV antes de canonicalizar | Recomendada provisionalmente; reduce reglas criptográficas ad hoc |
+| C2 — Canonicalizador TGCV propio | UTF-8/NFC, claves ordenadas y serialización numérica propia | No recomendado: duplica reglas complejas y puede divergir entre lenguajes |
+| C3 — Hash de bytes fuente solamente | SHA-256 del fichero tal como se recibió | Insuficiente para igualdad representacional ante whitespace/orden; útil solo como hash de artefacto fuente |
+
+RFC 8785 (JCS) define serialización determinista sobre I-JSON, ordena recursivamente propiedades de objetos, conserva el orden de arrays y exige que las cadenas Unicode se preserven sin normalización durante canonicalización. Por ello C1 **no** normaliza cadenas a NFC: la prevalidación TGCV rechaza identificadores/cadenas declaradas NFC-required que no estén ya en NFC; nunca las reescribe silenciosamente. JCS es RFC Informational, no Internet Standards Track; la decisión de adoptarlo debe reconocer esa condición.
+
+### 20.12.3. Perfil C1 candidato
+
+A. **Entrada:** UTF-8 válido; JSON parseable; objetos sin nombres de propiedad duplicados; Unicode válido sin lone surrogates; solo tipos JSON admitidos. Rechazar NaN/Infinity y cualquier dato no I-JSON.
+
+B. **Strings:** no alterar durante canonicalización. Para campos identificadores declarados NFC-required, comprobar NFC antes; si no cumple, FAIL de conformidad de entrada, sin autocorrección. Los identificadores son case-sensitive; no recortar whitespace ni aplicar case-folding. Un identificador con whitespace periférico incumple el patrón de su campo y se rechaza, no se transforma.
+
+C. **Properties:** usar exactamente ordenamiento recursivo JCS por unidades UTF-16; no sustituir por orden UTF-8, locale ni orden de inserción.
+
+D. **Arrays:** JCS conserva el orden de arrays. Antes de JCS, los campos cuyo schema declare semántica de conjunto se ordenan por clave de identidad estable: `member_refs` por (object_class, object_id, object_record_id); `exclusion_rule_refs` y `source_manifest_refs` por referencia tipada/versionada. Arrays de secuencia/orden de ejecución mantienen orden declarado. No se ordena ningún array sin clasificación explícita en schema.
+
+E. **Numbers:** para UDG-01 los campos numéricos del envelope son enteros no negativos en rango seguro interoperable (0…2^53−1), en particular declared_member_count y universe_revision; no se admiten floats, -0, NaN o Infinity. Boolean no se acepta como entero. Cualquier entero futuro fuera de rango se representa mediante string tipado definido por schema, no como JSON number.
+
+F. **Null/omisión:** no usar null para representar desconocido, global, vacío ni no aplicable. Campo opcional ausente = no declarado; campo obligatorio ausente = FAIL estructural. Arrays opcionales ausentes se distinguen de arrays presentes vacíos. member_refs es obligatorio en EXPLICIT; [] solo es válido con declared_member_count=0 y evidencia exhaustiva que pruebe universo vacío. En RULE_DEFINED member_refs se omite y inclusion_rule_ref es obligatorio. No aceptar null en ningún campo UDG-01.
+
+G. **Hash:** calcular SHA-256 sobre bytes UTF-8 canónicos del envelope completo, sin incluir el propio hash ni metadatos de integridad externos (evita autorreferencia). Registrar fuera del envelope `canonicalization_profile_id`, `hash_algorithm`, `canonical_content_hash` y, opcionalmente, `source_artifact_hash` calculado sobre bytes originales. No confundir ambos hashes.
+
+H. **Versionado del perfil:** identificar el perfil como candidato `TGCV-C10S-JCS-1`; cualquier cambio en prevalidación, clasificación/orden de arrays, reglas numéricas o tratamiento de campos requiere nueva versión del perfil y evaluación de compatibilidad. No sobrescribir hashes previos.
+
+### 20.12.4. Interpretación de hash y comparaciones
+
+- Mismo perfil + mismo canonical_content_hash: evidencia de igualdad de bytes canónicos, sujeta a la seguridad criptográfica del algoritmo; no prueba verdad, completitud, validez causal ni equivalencia semántica general.
+- Distinto source_artifact_hash y mismo canonical_content_hash: representaciones físicas distintas del mismo contenido canónico bajo el perfil.
+- Distinto canonical_content_hash: contenidos canónicos distintos; no permite concluir por sí solo que el universo sea semánticamente distinto, pues pueden variar provenance, revisión u otros metadatos.
+- Distinto perfil o versión: hashes no comparables directamente; requiere recanonicalización de la fuente preservada bajo un perfil común compatible. Si la fuente no está disponible, UNKNOWN/NOT_COMPARABLE.
+- Igualdad de universo requiere comparación semántica explícita; no se define fingerprint semántico en esta propuesta.
+
+### 20.12.5. Fallos y adjudicación
+
+JSON inválido, claves duplicadas, campo desconocido no permitido por schema, null prohibido, tipo/rango incorrecto, identificador NFC-required no conforme, array de conjunto con duplicados, o discrepancia entre hash declarado y recalculado = FAIL. Campo/referencia/fuente requerido no disponible o perfil incompatible sin fuente original = UNKNOWN/NOT_COMPARABLE, no PASS. PASS de integridad solo acredita conformidad estructural y hash reproducible; no adjudica exhaustividad ni pertenencia del universo, que se evalúan por separado conforme UDG-01.
+
+### 20.12.6. Límites
+
+UDG-02 no está aceptada. No modifica DEC-C10-073 ni convierte RFC 8785/SHA-256 en requisitos normativos. No define implementación, parser, validator, fixtures, hash de producción, schema físico, Design Freeze ni autorización de ejecución. La fuente primaria de JCS es RFC 8785: https://www.rfc-editor.org/rfc/rfc8785.html.
