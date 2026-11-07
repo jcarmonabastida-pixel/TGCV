@@ -8084,3 +8084,15 @@ La política separa versión semántica del contrato, revisión inmutable de ins
 ## 177. Propagación de DEC-C10-069 — identidad/versionado CMP aceptados
 
 DEC-C10-069 acepta contract_id=C10S-SVC-REQUEST-PROCESSOR / contract_version=1.0.0; instance_id=C10S-SVC-REQUEST-PROCESSOR-001 / instance_version=1; component_id=CMP-SERVICE-LOGIC-001 / component_class=SERVICE_LOGIC. CMP-SERVICE-LOGIC permanece como owner/rol lógico. Se acepta versionado semver del contrato y revisión entera inmutable de instancia; hash solo tras serialización canónica; versiones C_src/C_dst, M, IAM y oráculo independientes; matching explícito. La propuesta §176 queda aceptada en ese alcance. MET físico, serialización, IAM/mapping operativo, cobertura, oráculo y evidencia siguen OPEN. No se crea fixture, no Design Freeze y no autorización de implementación/ejecución.
+
+## 178. Especialización documental del mapping semántico CMP/PAR/RUL tras DEC-C10-069 (2026-11-07)
+
+Se completa una primera especialización documental —todavía propuesta, no aceptada ni congelada— de la matriz existente C10_S_ABSTRACT_PARAMETER_AND_SOURCE_DESTINATION_MAPPING_MATRIX_DRAFT_001.md §20. Reutiliza el crosswalk histórico y no crea una matriz paralela.
+
+La referencia queda enlazada a contract_id/version C10S-SVC-REQUEST-PROCESSOR / 1.0.0, instance_id/version C10S-SVC-REQUEST-PROCESSOR-001 / 1, component_id/class CMP-SERVICE-LOGIC-001 / SERVICE_LOGIC, owner lógico CMP-SERVICE-LOGIC, PAR-SVC-ENABLED, PAR-SVC-PROFILE y RUL-SVC-ENABLE-PROFILE-01. Se distingue identidad lógica CMP de componentes físicos P1; la igualdad de IDs/nombres no prueba equivalencia.
+
+La propuesta define: CMP como una unidad lógica de referencia con mapping explícito; BOOL ENABLED exacto; ENUM PROFILE con mapping semántico total e inyectivo; estados ABSENT/NULL/DEFAULT/VALUE sin colapso y resolución ambiental fuera del paquete; RUL con scope, operandos tipados, AST, efecto REQUIRE y semántica trivalente. RETRY-COUNT queda excluido conforme a DEC-C10-068.
+
+F1/A1 preservan semántica en S2/S1; F2/A2 aplican; FP-06 verifica aplicación y FP-07 observa C_dst aplicado. Se mantienen separadas rutas, C_dst declarado/aplicado, truth del DGP, información del Analizador y adjudicación del Evaluador. Se especifican falsadores y 1/0/?/NA con cobertura/IAM.
+
+**Estado:** mapping CMP/PAR/RUL especificado documentalmente como propuesta; aceptación de la especialización, IAM sellado, defaults/valores por escenario, mapping físico, serialización/MET, oráculo y evidencia OPEN. No fixtures, parser, schema ejecutable, implementación, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
