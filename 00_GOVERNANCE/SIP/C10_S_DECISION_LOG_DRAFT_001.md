@@ -846,3 +846,12 @@ Se documenta en protocolo de evidencia §20.8 una comparación de tres alternati
 Se especifican reglas de pertenencia CMP/PAR/REF/RUL/MET, denominadores independientes para scopes route-specific y conteo único por objeto en scope global, además de adjudicación 1/0/?/NA. El 0 de pertenencia solo significa no miembro de una ruta concreta y requiere inventario/mapping/ROUTE_STEP exhaustivos.
 
 Referencias: protocolo de evidencia §20.8; matriz mapping §20.10; plantilla U_G §18.13; maestro §187; plan §16.42; matriz de control §60. La aceptación del literal/namespace y la gramática versionada universe_definition/version siguen pendientes. No schema change, implementación ni ejecución autorizada.
+
+
+## 67. DEC-C10-072 — aceptación del token de scope global (2026-11-07)
+
+**Estado: ACEPTADA.** Se acepta G1 y el literal reservado `C10S_SCOPE_GLOBAL` en el slot route_id de C0, con significado exclusivo “sin restricción a una ruta concreta”. No significa ausencia de rutas, no pertenencia de objetos ni NA. Se prohíbe como route_id semántico real; colisión = FAIL. NULL/vacío/NONE/F/A no son sustitutos.
+
+Scope global cuenta cada identidad elegible una sola vez por clase/etapa/snapshot; scopes route-specific mantienen denominadores independientes y exigen route_id semántico, route_record_id y snapshot exactos. G2 queda descartada por ambigüedad; G3 no se adopta.
+
+DEC-C10-072 cierra solo literal y semántica. Gramática/versionado universe_definition, mapping físico, control C0 implementado/auditado y Design Freeze permanecen abiertos. No implementación ni ejecución autorizadas. Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-072_GLOBAL_ROUTE_SCOPE_TOKEN_ACCEPTANCE.md`.
