@@ -815,3 +815,10 @@ No se acepta canonicalización concreta, SHA-256 obligatorio, RFC/JCS ni seriali
 Se comparan C1 (RFC 8785 JCS + prevalidación TGCV), C2 (canonicalizador propio) y C3 (hash solo de bytes fuente). C1 se recomienda provisionalmente. JCS ordena propiedades de objetos, conserva el orden de arrays y no normaliza Unicode; por tanto los campos NFC-required se validan previamente y se rechazan si no están en NFC, sin reescritura. Arrays con semántica de conjunto se ordenan por identidad antes de JCS; arrays secuenciales conservan su orden.
 
 Se propone restringir números UDG-01 a enteros seguros no negativos, prohibir null, distinguir omisión de array vacío y exigir prueba exhaustiva para EXPLICIT con cero miembros. SHA-256 del envelope canónico se registra fuera del envelope; hash de bytes fuente es distinto y opcional. Hash igual acredita bytes canónicos iguales bajo el mismo perfil, no equivalencia semántica ni exhaustividad. UDG-02 permanece NO ACEPTADA; sin parser/validator/fixture/schema change/ejecución.
+
+
+### 18.18. Estado de canonicalización tras DEC-C10-074
+
+C1 RFC 8785 JCS con prevalidación TGCV queda ACEPTADA como política documental. Se aplican las reglas de §18.17: NFC validada previamente en campos marcados sin autocorrección; propiedades ordenadas por JCS; arrays de conjunto ordenados por identidad antes de JCS y secuencias preservadas; enteros seguros no negativos; null prohibido; omisión distinta de array vacío; SHA-256 del contenido canónico separado del hash del artefacto fuente y con metadatos fuera del contenido hasheado. Perfil: TGCV-C10S-JCS-1.
+
+La igualdad de hash solo acredita bytes canónicos iguales bajo mismo perfil; no equivalencia semántica ni exhaustividad. DEC-C10-074 no autoriza hash de producción, parser/validator, fixtures, schema change, Design Freeze ni ejecución. Prevalece sobre el estado no aceptado consignado en §18.17.
