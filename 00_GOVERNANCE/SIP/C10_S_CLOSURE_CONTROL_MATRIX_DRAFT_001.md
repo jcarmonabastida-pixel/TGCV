@@ -1615,3 +1615,16 @@ La propuesta no crea enums, filas de instancia, REF observados ni IAM poblado. N
 | IAM-DEP-06 | Sin doble contabilización entre referencia L2, objeto REF y objetos endpoint | PROPOSED — NOT ACCEPTED |
 
 Esta propuesta no acepta vocabulario final, cardinalidad ni requiredness; no declara REF presente/ausente y no autoriza schema, resolver, fixtures, parser/validator, implementación, Design Freeze ni ejecución.
+
+## 75. Auditoría del conjunto mínimo REF L3
+
+| Control | Criterio | Estado |
+|---|---|---|
+| IAM-REFMIN-01 | El roster CMP/PAR/RUL aceptado no exige por sí mismo REF funcional concreto | PROPOSED — DOCUMENTARY AUDIT |
+| IAM-REFMIN-02 | Operandos de RUL no se elevan automáticamente a REF | PROPOSED — NO COLLAPSE |
+| IAM-REFMIN-03 | R_acc/R* del espacio transformacional no se equiparan a REF del paquete | PROPOSED — NO COLLAPSE |
+| IAM-REFMIN-04 | C_dep/E_dst y condiciones ambientales no crean REF automáticamente | PROPOSED — NO COLLAPSE |
+| IAM-REFMIN-05 | Dependencias de evaluación RULE_DEFINED no son REF funcionales por defecto | PROPOSED — NO COLLAPSE |
+| IAM-REFMIN-06 | REF=0 requiere inventario/cobertura exhaustivos por snapshot×stage_key×ruta×scope | OPEN — NO ADJUDICATED |
+
+No se declara REF=0, no se sella IAM ni se crean filas observadas. Cualquier REF candidato requiere identidad propia de relación y extremos tipados, más semántica y procedencia explícitas.
