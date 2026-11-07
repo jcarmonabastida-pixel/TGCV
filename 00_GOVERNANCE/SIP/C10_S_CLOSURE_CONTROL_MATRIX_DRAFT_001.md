@@ -1524,3 +1524,18 @@ Aceptación documental; comparator/fingerprint, fixtures, parser/validator, sche
 | UDG-29 | Pertenencia | Resolución no implica membership/applicability/execution | PROPOSED |
 
 UDG-04 NO ACEPTADA; schema/API/resolver/parser/validator/fixtures/implementación/ejecución no autorizados.
+
+
+## 69. DEC-C10-076 — estado de identidad y resolución UDG-04
+
+| ID | Requisito | Criterio | Estado |
+|---|---|---|---|
+| UDG-23 | Identidad lógica | object_class + object_id | ACCEPTED — DEC-C10-076 |
+| UDG-24 | Identidad de registro | object_class + object_id + object_record_id inmutable | ACCEPTED |
+| UDG-25 | Ref tipada | ref_role + target class/id/record_id | ACCEPTED |
+| UDG-26 | Resolución | Registry versionado/scope explícito; sin latest/fallback | ACCEPTED |
+| UDG-27 | Estados | FAIL/UNKNOWN/NOT_COMPARABLE/NOT_APPLICABLE separados | ACCEPTED |
+| UDG-28 | Ciclos/cardinalidad | Por relación/contrato; sin DAG universal | ACCEPTED |
+| UDG-29 | Pertenencia | Resolver no implica membership/applicability/preservation/execution | ACCEPTED |
+
+Catálogo REF/schema/API/registry/resolver/parser/validator/comparator/fixtures y mapping CMP/PAR/RUL continúan abiertos. Sin Design Freeze ni ejecución. DEC-C10-076 prevalece sobre §68.
