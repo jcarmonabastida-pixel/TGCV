@@ -940,3 +940,11 @@ No modifica DEC-C10-077 ni autoriza roster exhaustivo, IAM poblado, DDL/API/regi
 Se registra como propuesta documental, no como decisión: separar namespace L2 `UDG_ENVELOPE_ROLE` de namespace L3 `REF_FUNCTIONAL_ROLE`. L2 reutiliza los ejemplos ilustrativos MEMBER, OWNER, SOURCE, INCLUSION_RULE, EXCLUSION_RULE, DEPENDENCY y PROVENANCE con dominios destino candidatos y límites en matriz IAM §19.13. L3 conserva role_key y relation_type abiertos; SOURCE/TARGET es endpoint_position binario. `DEPENDS_ON` solo se estudiará como candidato si una relación de dependencia REF resulta necesaria para el DGP.
 
 OPEN: semántica de DEPENDENCY en L2; conjunto mínimo de REF funcionales requeridos por DGP; binario/n-ario; dominios de extremos; cardinalidad/requiredness por clase×rol×extremo×stage_key×scope. No se fijan enums, cardinalidades, requiredness, endpoints externos ni mapping M. No se modifica DEC-C10-078 ni se autoriza implementación/Design Freeze/ejecución.
+
+## 80. Propuesta de resolución semántica de DEPENDENCY L2 (2026-11-07) — no aceptada
+
+Para una dependencia como relación del dominio de configuración, se propone que L2 DEPENDENCY apunte al REF exacto que representa la relación, mientras REF/L3 conserva sus extremos tipados. Las dependencias técnicas/ambientales C_dep/E_dst no crean REF automáticamente. Las dependencias usadas para resolver/evaluar universos RULE_DEFINED permanecen como referencias tipadas/versionadas de regla/envelope, no como REF funcional por defecto. Se evita doble contabilización entre L2, REF y endpoints.
+
+El roster mínimo CMP/PAR/RUL aceptado no declara por sí mismo una relación REF. REF=0 solo será adjudicable tras inventario/cobertura exhaustivos pre-Z/B; no se inventa relación ni se declara REF=0 ahora.
+
+**Estado:** propuesta no aceptada; vocabulario, cardinalidad y requiredness abiertos. No modifica DEC-C10-076/077/078 ni autoriza implementación, Design Freeze o ejecución.
