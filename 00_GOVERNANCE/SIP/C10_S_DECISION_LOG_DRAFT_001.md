@@ -933,3 +933,10 @@ Se propone separar REF de configuración, referencias tipadas del envelope UDG y
 La estructura es lógica y contextual; no todos los campos aplican a todas las capas. No se fijan vocabularios cerrados, cardinalidades numéricas, valores REQUIRED/OPTIONAL/CONDITIONAL, endpoints externos, enum relation_type, mapping M concreto ni schema físico. Se reutilizan los siete stage_key de DEC-C10-071 y C10S_SCOPE_GLOBAL de DEC-C10-072. Los roles UDG siguen ilustrativos y no crean objetos REF automáticamente. El siguiente trabajo puede proponer vocabularios candidatos por capa, manteniendo separados roles UDG y roles funcionales REF.
 
 No modifica DEC-C10-077 ni autoriza roster exhaustivo, IAM poblado, DDL/API/registry/resolver, parser/validator, fixtures, Design Freeze, implementación, simulación, experimento o ejecución científica. Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-078_IAM_LOGICAL_ROW_CONTRACT_ACCEPTANCE.md`.
+
+
+## 79. Propuesta de vocabularios IAM L2/L3 (2026-11-07) — no aceptada
+
+Se registra como propuesta documental, no como decisión: separar namespace L2 `UDG_ENVELOPE_ROLE` de namespace L3 `REF_FUNCTIONAL_ROLE`. L2 reutiliza los ejemplos ilustrativos MEMBER, OWNER, SOURCE, INCLUSION_RULE, EXCLUSION_RULE, DEPENDENCY y PROVENANCE con dominios destino candidatos y límites en matriz IAM §19.13. L3 conserva role_key y relation_type abiertos; SOURCE/TARGET es endpoint_position binario. `DEPENDS_ON` solo se estudiará como candidato si una relación de dependencia REF resulta necesaria para el DGP.
+
+OPEN: semántica de DEPENDENCY en L2; conjunto mínimo de REF funcionales requeridos por DGP; binario/n-ario; dominios de extremos; cardinalidad/requiredness por clase×rol×extremo×stage_key×scope. No se fijan enums, cardinalidades, requiredness, endpoints externos ni mapping M. No se modifica DEC-C10-078 ni se autoriza implementación/Design Freeze/ejecución.
