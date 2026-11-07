@@ -441,3 +441,48 @@ Comprobar record_id exacto, clase/id, inmutabilidad, compatibilidad de versiones
 Identidad lógica `(object_class, object_id)` distinta de identidad inmutable de registro `(object_class, object_id, object_record_id)`. Referencia tipada por rol y target exacto. Resolución contra registry versionado/scope explícito; prohibido latest implícito o fallback por nombre/valor/posición/hash. REQUIRED/OPTIONAL y cardinalidad según contrato de clase. Ausencia requerida/dangling exhaustivo/conflicto/inmutabilidad = FAIL; registry incompleto/inaccesible = UNKNOWN; incompatibilidad no mapeada = NOT_COMPARABLE; opcional ausente = NOT_APPLICABLE. Ciclos por relación, sin DAG universal. Resolver no prueba membership, aplicabilidad, preservación ni ejecución.
 
 Catálogo REF, schema físico/API/registry/resolver/parser/validator/comparator/fixtures y mapping CMP/PAR/RUL siguen abiertos. No Design Freeze ni ejecución. DEC-C10-076.
+
+### 20.20. Reconciliación REF↔UDG-04 y crosswalk de referencias — propuesta documental
+
+**Estado:** propuesta de reconciliación; no acepta un enum físico de roles, no congela el mapping REF ni modifica el esquema U_G. Prevalecen DEC-C10-061/064/065 para relaciones tipadas de evidencia, snapshot pinning y ROUTE_STEP; DEC-C10-076 gobierna identidad/resolución.
+
+#### A. Tres conceptos que no deben colapsarse
+
+1. **REF de configuración:** objeto del dominio con identidad propia `(REF, ref_id, ref_record_id)`, extremos tipados, dirección, papel/tipo de relación, multiplicidad y regla de integridad. Es candidato a mapping hacia EDGE, no una EDGE por definición.
+2. **Referencia UDG-04:** vínculo de resolución desde un origen a un target exacto `(object_class, object_id, object_record_id)`. Su `ref_role` califica la relación desde el origen; no es por sí solo una nueva instancia REF.
+3. **FK/vínculo estructural U_G:** integridad de registros como ROUTE_STEP→NODE/EDGE/ROUTE, SNAPSHOT→NODE raíz y CLAIM_EVIDENCE_LINK→destino tipado. No se convierte en REF de configuración ni en miembro REF salvo declaración IAM independiente y justificada.
+
+#### B. Reconciliación de roles ilustrativos
+
+| Rol ilustrativo DEC-C10-076 | Destino/clase esperable | Interpretación y límite |
+|---|---|---|
+| MEMBER | CMP/PAR/REF/RUL/MET | Referencia de envelope a un miembro; no crea un objeto REF adicional |
+| OWNER | Normalmente CMP | Owner exacto del objeto; no sustituir component_id por etiqueta de rol |
+| SOURCE | CMP/PAR/REF/RUL/MET o artefacto externo tipado | Origen/procedencia; si es fuente externa no inventar clase CMP ni convertirla en MET sin contrato |
+| INCLUSION_RULE | RUL | Regla versionada que define inclusión en universo |
+| EXCLUSION_RULE | RUL | Regla versionada que define exclusión |
+| DEPENDENCY | REF como relación declarada; target según contrato | No implica instalación, disponibilidad, consumo ni éxito de resolución técnica |
+| PROVENANCE | MET o referencia a EVIDENCE_REGISTER/artefacto de procedencia | Evidencia/procedencia no es automáticamente miembro del universo |
+
+La tabla es un crosswalk candidato, no un vocabulario cerrado. Los roles deben tener dominio, cardinalidad, obligatoriedad, origen permitido, destino permitido y condiciones por clase definidos en IAM antes de sellar el universo.
+
+#### C. Modelo semántico candidato de REF
+
+Cada REF debe declarar: identidad lógica y record_id exactos; owner/source endpoint; target endpoint; clase/ID/record_id de ambos extremos; relation_type; direction; role; multiplicity/cardinality; integrity_rule; versión y provenance. Los extremos internos deben resolver en el registry/snapshot compatible. Un endpoint externo requiere tipo/namespace/versión y política de resolución explícitos; no se fuerza a CMP/PAR/MET por conveniencia.
+
+El mapping REF→EDGE solo es admisible con una regla M versionada que conserve extremos exactos, dirección, relation_type/role, multiplicidad e integridad. Una REF binaria puede mapear a una EDGE atómica; una relación n-aria o multiplicidad expandida puede requerir varias EDGE con parent/group identity explícita. No asumir 1:1. Una EDGE U_G no se interpreta automáticamente como REF: puede representar relación analítica, causal, de ruta o estructural.
+
+#### D. Cardinalidad y adjudicación
+
+- Referencia REQUIRED ausente o dangling solo produce FAIL tras demostrar registry cerrado y búsqueda exhaustiva en scope/version exactos.
+- Registry incompleto/inaccesible, endpoint sin record_id, más de un candidato o snapshot no fijado → UNKNOWN.
+- Versión/schema/contract incompatible sin mapping aprobado → NOT_COMPARABLE.
+- Referencia OPTIONAL ausente → NOT_APPLICABLE para esa relación; no elimina la clase REF ni demuestra universo vacío.
+- Duplicación, omisión, split/merge o multiplicidad solo se juzgan contra cardinalidad IAM/M predeclarada.
+- Resolver ambos extremos no demuestra pertenencia al universo, preservación semántica, instalación de dependencia ni ejecución.
+
+#### E. Falsadores y límites
+
+Falsadores: extremo fuente/destino intercambiado; target con misma identidad lógica pero record_id distinto; EDGE de snapshot distinto; route membership inferida sin ROUTE_STEP; dependencia declarada confundida con dependencia instalada; cardinalidad colapsada; REF transformada en FK estructural; evidencia/provenance contada como miembro; resolución por latest/nombre/hash.
+
+**Gate siguiente:** aceptar/corregir este crosswalk semántico; después definir matriz IAM por clase×rol×extremo×stage_key×scope y cardinalidad. Schema físico REF, enum de roles, registry, resolver, fixtures y ejecución permanecen OPEN/no autorizados.
