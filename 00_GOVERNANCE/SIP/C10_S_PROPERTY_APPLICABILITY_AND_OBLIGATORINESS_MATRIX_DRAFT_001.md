@@ -194,3 +194,9 @@ DEC-C10-068 acepta la regla como verdad constitutiva interna al DGP. No asigna t
 | PAR-SVC-RETRY-COUNT | Fuera del núcleo mínimo | Excluido hasta justificación P0 |
 
 La aceptación conceptual no asigna todavía O/C/NA por escenario ni sustituye la matriz IAM de evidencia/cobertura. Owner lógico y scope quedan definidos; la identidad CMP concreta, versión de instancia, serialización, mapping, predicados observables y oráculo permanecen OPEN. La regla de servicio no sustituye RUL-01/02/03, que siguen siendo predicados de preservación.
+
+## 16. Identidad/versionado de la instancia CMP: propuesta pendiente
+
+La matriz IAM reutilizará la separación de `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md`: contract_id/version, instance_id/version, component_id/class, owner_component_id, IDs de PAR/RUL, mapping_id/version, IAM_id/version/hash y oráculo. La propuesta de IDs candidatos no está aceptada ni sellada.
+
+CMP-SERVICE-LOGIC es rol/owner lógico provisional, no component_id único. CMP-SERVICE-LOGIC-001 es solo candidato. La matriz deberá registrar IDs y versiones de C_src/C_dst y cobertura por clase antes de Z/B. No declarar REF=0 sin inventario/cobertura exhaustivos; no calcular hash antes de serialización canónica. El IAM operativo permanece OPEN.
