@@ -895,3 +895,10 @@ No autoriza hash de producción, parser/validator, fixtures, schema change, Desi
 Se registra UDG-03 en protocolo §20.14, plantilla U_G §18.19, matriz de mapping §20.16, maestro §193, plan §16.48 y matriz de control §66. Propone un vector de comparación por dimensión: artefacto, canónico, identidad, revisión, extensional, definicional y compatibilidad. Establece precondiciones de scope/snapshot, miembros versionados y exhaustividad; separa igualdad extensional de equivalencia definicional; fija EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE y FAIL de integridad.
 
 **Estado: NO ACEPTADA.** No crea fingerprint semántico ni comparator ni autoriza fixtures, schema change o ejecución. La propuesta no modifica DEC-C10-073/074.
+
+
+## 73. DEC-C10-075 — aceptación de comparación semántica UDG-03 (2026-11-07)
+
+**Estado: ACEPTADA.** Se acepta UDG-03 como contrato documental de comparación vectorial por siete niveles: artefacto, canónico, identidad universe_id, revisión, extensional, definicional y compatibilidad dirigida entre revisiones. Se separan Projection-ID y Projection-SEM; igualdad extensional exige universos completos/exhaustivos y scope/snapshot compatibles; equivalencia definicional requiere reglas/AST/domínios/dependencias equivalentes. Resultados EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE y FAIL de integridad.
+
+No se infiere equivalencia por hash/ID/nombre/cardinality. Aceptación no crea fingerprint ni comparator ejecutable y no autoriza fixtures, parser/validator, schema change, Design Freeze, implementación o ejecución científica. Registro: `00_GOVERNANCE/decisions/DEC-C10-075_SEMANTIC_UNIVERSE_COMPARISON_ACCEPTANCE.md`. Este asiento prevalece sobre §72, propuesta previa no aceptada.
