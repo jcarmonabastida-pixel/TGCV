@@ -1481,3 +1481,17 @@ UDG-02 no está aceptada. No hash de producción, parser/validator, fixtures, sc
 | UDG-16 | Perfil/versiones | Perfil identificado; perfiles diferentes requieren recanonicalización o UNKNOWN | ACCEPTED — principio |
 
 No hash de producción, parser/validator, fixtures, schema change, Design Freeze ni ejecución autorizados.
+
+
+## 66. UDG-03 — gates de comparación semántica de universos
+
+| ID | Requisito | Criterio | Estado |
+|---|---|---|---|
+| UDG-17 | Niveles | Artefacto, canónico, identidad, revisión, extensional, definicional y compatibilidad separados | PROPOSED |
+| UDG-18 | Scope comparability | C0 + stage_key + route/route_record + snapshot exactos o mapping explícito | PROPOSED |
+| UDG-19 | Membership equality | Conjuntos completos de refs tipadas/versionadas idénticos | PROPOSED |
+| UDG-20 | Definition equivalence | Reglas/AST/domínios/dependencias e inclusión/exclusión equivalentes | PROPOSED |
+| UDG-21 | Result codes | EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE; FAIL integridad | PROPOSED |
+| UDG-22 | Revision compatibility | Relación dirigida demostrada; no inferida por número/cardinalidad | PROPOSED |
+
+No comparator/fingerprint semántico, fixtures, schema change, Design Freeze ni ejecución autorizados.
