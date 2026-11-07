@@ -759,3 +759,10 @@ Candidatos: contract_id=C10S-SVC-REQUEST-PROCESSOR, contract_version=1.0.0, inst
 La propuesta separa versión del contrato, revisión inmutable del paquete y hash de serialización. No se fija hash antes de formato canónico; versiones de C_src/C_dst, M, IAM y oráculo son independientes. Matching no se infiere por nombre/hash.
 
 **Estado:** propuesta documental; aceptación de IDs/política pendiente. No crea fixture, IAM sellado, serialización, prueba ni autorización de implementación/ejecución.
+
+
+## 54. DEC-C10-069 — aceptación de identidad y versionado CMP (2026-11-07)
+
+El usuario acepta los identificadores y la política de versionado propuestos para la instancia de servicio sintético: contract_id=C10S-SVC-REQUEST-PROCESSOR, contract_version=1.0.0, instance_id=C10S-SVC-REQUEST-PROCESSOR-001, instance_version=1, component_id=CMP-SERVICE-LOGIC-001, component_class=SERVICE_LOGIC. CMP-SERVICE-LOGIC de DEC-C10-068 permanece como owner/rol lógico, no ID único. Se acepta contract_version MAJOR.MINOR.PATCH; instance_version entero positivo, monotónico e inmutable; hash solo de serialización canónica definida; versionado independiente de C_src/C_dst, M, IAM y oráculo; matching explícito sin equivalencia inferida por nombre/hash.
+
+Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-069_SERVICE_CMP_IDENTITY_AND_VERSIONING_ACCEPTANCE.md`. DEC-C10-069 especializa DEC-C10-068. Serialización, MET físico, IAM sellado, mapping, valores por escenario, oráculo y evidencia siguen OPEN. No Design Freeze ni autorización de implementación/ejecución.
