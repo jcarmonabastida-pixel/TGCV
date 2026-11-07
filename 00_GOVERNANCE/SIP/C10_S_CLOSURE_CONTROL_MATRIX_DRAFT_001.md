@@ -1302,7 +1302,7 @@ Referencias: matriz IAM §19; plantilla U_G §18; contrato abstracto §16; catá
 | COVERAGE-SCOPE-11h | Scopes y snapshots observados/poblados | OPEN / NONE |
 | COVERAGE-SCOPE-11i | Compatibilidad de SNAPSHOT.scope | OPEN — aceptación y verificación pendientes |
 
-Referencia: IAM §19.7 y plantilla U_G §18.6. No se ha alterado el esquema físico ni se ha cerrado U_G-SCH-10.
+Referencia histórica: IAM §19.7 y plantilla U_G §18.6. Estado actualizado por DEC-C10-070 y §56: C0 aceptada; control independiente OPEN/CONDITIONAL. No se ha alterado el esquema físico. U_G-SCH-10 conserva su gate de validación física separado.
 
 ## 55. Reconciliación de COVERAGE-SCOPE-11 y U_G-SCH-10
 
