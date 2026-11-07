@@ -749,3 +749,13 @@ El usuario acepta el servicio lógico sintético de procesamiento de solicitudes
 El registro autónomo es `00_GOVERNANCE/decisions/DEC-C10-068_SYNTHETIC_SERVICE_FUNCTIONAL_CONTRACT_ACCEPTANCE.md`. CMP-SERVICE-LOGIC es owner lógico provisional; identidad/versionado de instancia, serialización, IAM detallado, mapping físico, tolerancias y oráculo permanecen abiertos. La aceptación no constituye Design Freeze ni autoriza fixtures, implementación, validación ejecutable, simulación o ejecución científica.
 
 **Autorización:** `scientific_execution=false`; `execution_authorized=false`.
+
+## 53. Propuesta de identidad/versionado CMP para el servicio sintético (2026-11-07)
+
+Se documenta `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md` como especialización pendiente del contrato abstracto de instancia y de MET. Se separan contract_id/version, instance_id/version, component_id/class, owner, mapping, IAM, oráculo y hash de artefacto. TID/SID/RID/EID del espacio transformacional no se reutilizan como IDs CMP.
+
+Candidatos: contract_id=C10S-SVC-REQUEST-PROCESSOR, contract_version=1.0.0, instance_id=C10S-SVC-REQUEST-PROCESSOR-001, instance_version=1, component_id=CMP-SERVICE-LOGIC-001, component_class=SERVICE_LOGIC. Son candidatos y no valores canónicos hasta aceptación. CMP-SERVICE-LOGIC de DEC-C10-068 es rol/owner lógico, no identidad única. RETRY-COUNT sigue excluido.
+
+La propuesta separa versión del contrato, revisión inmutable del paquete y hash de serialización. No se fija hash antes de formato canónico; versiones de C_src/C_dst, M, IAM y oráculo son independientes. Matching no se infiere por nombre/hash.
+
+**Estado:** propuesta documental; aceptación de IDs/política pendiente. No crea fixture, IAM sellado, serialización, prueba ni autorización de implementación/ejecución.
