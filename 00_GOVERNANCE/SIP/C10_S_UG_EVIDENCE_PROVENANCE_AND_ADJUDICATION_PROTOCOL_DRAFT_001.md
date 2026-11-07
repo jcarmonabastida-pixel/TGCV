@@ -444,3 +444,60 @@ El crosswalk es explícito y puede ser 1:N/N:M. Debe registrar origen/clave exac
 Cada `universe_definition/version` deberá especificar: (a) dimensión y vocabulario; (b) unidad de denominador; (c) object_class aplicable (CMP/PAR/REF/RUL/MET); (d) ug_record_type admisible; (e) regla de inclusión/exclusión por objeto/propiedad; (f) owner y cardinalidad esperada; (g) stage_key C10-S, route_id exacto o token global reservado y snapshot exacto; (h) mapping auxiliar route_family F/A cuando aplique; (i) correspondencia declarada con el reloj DGP cuando proceda; (j) fuentes para reconstruir la enumeración. Un registro puede pertenecer a scopes distintos solo si cada dimensión/etapa/ruta/clase y regla de inclusión están declaradas; no se fusionan denominadores.
 
 **Dictamen de esta operación:** se reutilizan los contratos y crosswalk históricos. Se propone mantener `stage_key` en el universo versionado, preservar `SNAPSHOT.phase` como eje separado, resolver rutas mediante ROUTE/ROUTE_STEP exactos, y mantener `source_object_class` separado de `ug_record_type` y `semantic_role`. No se selecciona aún el token global de ruta, ni la gramática serializada completa de `universe_definition/version`, ni se autoriza cambio de schema, implementación o ejecución.
+
+
+
+## 20.8. Semántica de scope global y route-specific — propuesta para DEC-C10-072
+
+**Estado:** propuesta documental para revisión; no aceptada ni congelada. Reutiliza DEC-C10-064/065/070/071 y §§20.3–20.7. No modifica el schema U_G ni crea scopes.
+
+### 20.8.1. Qué identifica route_id
+
+Para un scope route-specific, `route_id` identifica la identidad semántica estable de una ruta dentro del contrato/instancia. No identifica por sí solo una revisión observada: el universo debe fijar además el `route_record_id` exacto y el par `snapshot_id + snapshot_object_record_id` al que pertenece, conforme a DEC-C10-065. Dos revisiones del mismo `route_id` no se consideran intercambiables por nombre ni por orden temporal.
+
+La tupla C0 mantiene el `route_id` semántico; la revisión exacta se resuelve dentro de `universe_definition/version` y se verifica contra ROUTE/ROUTE_STEP/PREDICATE. `route_family=F/A` es metadato auxiliar y no identidad.
+
+### 20.8.2. Alternativas para scope no restringido a una ruta
+
+| Alternativa | Representación del slot route_id C0 | Ventaja | Riesgo/limitación |
+|---|---|---|---|
+| G1 — token reservado | Literal reservado versionado, candidato `C10S_SCOPE_GLOBAL` | Mantiene la tupla C0 de nueve componentes y evita NULL/vacío | Requiere reservar namespace, gramática y prohibir colisión con route_id real |
+| G2 — NULL/vacío | Sin valor | Simple en serialización | Ambiguo: confunde global, dato ausente y no aplicable; no satisface identidad inequívoca C0 |
+| G3 — nuevo campo scope_kind | GLOBAL/ROUTE más route_id nullable | Expresa explícitamente el tipo de scope | Cambia la tupla/estructura aceptada o exige nueva decisión de schema; no procede bajo DEC-C10-070 sin reabrirlo |
+
+**Recomendación provisional: G1.** El candidato `C10S_SCOPE_GLOBAL` significa exclusivamente “el universo de esta etapa/clase no está restringido a una ruta concreta”. No significa que no existan rutas, que el objeto no pertenezca a ninguna ruta, ni que la clase sea NA. El literal queda reservado y no podrá asignarse como route_id semántico real. No se usa `NONE`, NULL ni cadena vacía.
+
+### 20.8.3. Reglas de pertenencia por clase
+
+El scope route-specific requiere crosswalk por objeto y revisión, no solo una etiqueta en el registro:
+
+| source_object_class | Evidencia mínima de pertenencia route-specific | Regla de no inferencia |
+|---|---|---|
+| CMP | CMP→NODE/propiedad del owner, identidad exacta y NODE incluido en ROUTE_STEP de la revisión ROUTE fijada; si el CMP es raíz/unidad, debe existir una regla explícita de inclusión | Ser owner o nodo raíz no implica automáticamente pertenencia a todos los recorridos |
+| PAR | parameter_key y owner CMP exactos; hereda pertenencia solo si la regla versionada declara que las propiedades del owner siguen su NODE en ROUTE_STEP | No convertir cada PAR en NODE ni inferir ruta por nombre de parámetro |
+| REF | REF→EDGE exacto; EDGE aparece como paso en ROUTE_STEP de la revisión ROUTE, con extremos y snapshot exactos | La mera existencia de una relación/EDGE no prueba que una ruta la recorra |
+| RUL | rule_id/versión y scope/AST tipado; scope GLOBAL usa scope global; scope de componente/ruta requiere resolver operandos/owner y vínculo exacto con la ruta | La validez del AST o el uso de un operando no prueba por sí solo pertenencia a una ruta |
+| MET | Campo MET con owner/target y función versionados; route-specific solo si apunta explícitamente a la revisión ROUTE o a un objeto cuya pertenencia se ha probado | Metadatos de instancia/contrato son globales; timestamp/hash no asignan ruta por sí solos |
+
+El crosswalk puede ser 1:N o N:M. Si un objeto pertenece a varias rutas, cada pertenencia route-specific se declara en su scope correspondiente; los denominadores no se suman ni se deduplican entre scopes distintos.
+
+### 20.8.4. Semántica del scope global
+
+Con el token global, el universo enumera todos los objetos elegibles de la clase para la etapa y snapshot indicados, con independencia de su pertenencia a rutas concretas. Cada objeto se cuenta una vez por identidad/versionado dentro de ese scope global. La pertenencia múltiple a rutas no multiplica el denominador global.
+
+Un scope global no es un “scope de objetos sin ruta”. No se puede derivar de que ROUTE/ROUTE_STEP esté vacío, ni sustituye el inventario de rutas. Si la pregunta científica exige comparar una ruta concreta, debe usarse un scope route-specific adicional.
+
+### 20.8.5. Adjudicación 1/0/? de pertenencia
+
+- **1:** route_id semántico y route_record_id exactos resueltos; snapshot exacto fijado; crosswalk de clase/objeto completo; relación de pertenencia demostrada por ROUTE_STEP o por la regla específica de clase de §20.8.3.
+- **0:** el universo y el mapping del objeto están completos, la revisión ROUTE y todos sus ROUTE_STEP están exhaustivamente cubiertos, y la regla de pertenencia aplicable demuestra que el objeto no pertenece a esa ruta. Este 0 solo significa “no miembro de esta ruta”; no significa que el objeto esté ausente del snapshot ni que no exista otra ruta.
+- **?:** ruta/revisión, mapping de clase, owner, ROUTE_STEP, snapshot o cobertura incompletos/conflictivos; también cuando la clase no tiene una regla de pertenencia resoluble.
+- **NA:** solo si la relación de pertenencia no pertenece al dominio de la clase por declaración IAM ex ante; no usar NA para ocultar falta de mapping.
+
+Para un scope global no se adjudica pertenencia a una ruta concreta. Se adjudica inclusión en el universo global por regla de clase y cobertura; los estados de ruta individuales se mantienen separados.
+
+### 20.8.6. Consecuencia para C0 y gate siguiente
+
+El control C0 debe validar que el slot route_id contiene o bien una identidad de ruta real con revisión exacta resuelta, o bien el token global reservado una vez que su literal/gramática hayan sido aceptados. Un valor vacío, NULL, `NONE`, `F` o `A` produce UNKNOWN si no hay contradicción demostrada; una referencia incompatible o colisionada produce FAIL.
+
+La propuesta G1 no queda aprobada por su inclusión en este protocolo. Requiere aceptación explícita del token, namespace y semántica. La gramática completa/versionado de `universe_definition`, el crosswalk físico por propiedad y el control C0 ejecutable permanecen OPEN/CONDITIONAL. No se modifica schema, no se crean snapshots/scopes y no se autoriza implementación ni ejecución científica.
