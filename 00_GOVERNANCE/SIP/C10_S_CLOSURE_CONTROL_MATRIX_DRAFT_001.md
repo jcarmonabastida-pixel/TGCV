@@ -1333,3 +1333,22 @@ No se ha cambiado el schema. C0 no equivale a FK ni a validación técnica; C1/C
 | SNAPSHOT.scope | Codificación de etapa/ruta | OPEN — sin aceptación |
 
 La aceptación de C0 no declara integridad relacional, no crea scopes ni modifica schema. CONDITIONAL hasta el control independiente auditado.
+
+
+## 57. Descomposición del control C0 — estado documental y gates
+
+| ID | Requisito | Estado |
+|---|---|---|
+| C0-SPEC-01 | Tupla canónica contract/instance/snapshot/stage/route/class/dimension | DOCUMENTED — protocolo §19.1 |
+| C0-SPEC-02 | Invariantes C0-I01…I11 | DOCUMENTED — protocolo §19.2 |
+| C0-SPEC-03 | Reglas denominador/cobertura/REF=0 | DOCUMENTED — protocolo §19.3 |
+| C0-SPEC-04 | Semántica trivalente y precedencia | DOCUMENTED — protocolo §19.4 |
+| C0-SPEC-05 | Casos adversariales ADV-C0-01…15 | DOCUMENTED / NOT EXECUTED |
+| C0-SPEC-06 | Run manifest, provenance y evidencia | DOCUMENTED — protocolo §19.6 |
+| C0-GATE-01 | Reconciliar DDL completo y mapping de campos | OPEN |
+| C0-GATE-02 | Implementación del control | NOT IMPLEMENTED / NOT AUTHORIZED |
+| C0-GATE-03 | Ejecución de casos adversariales | NOT EXECUTED / NOT AUTHORIZED |
+| C0-GATE-04 | Auditoría de resultados y falsos PASS/FAIL/UNKNOWN | NOT AUDITED |
+| C0-GATE-05 | Cierre C0 para Design Freeze | CONDITIONAL / BLOCKED BY GATES |
+
+La especificación documental no implica implementación, validación física ni ejecución científica. La autorización de C0 como diseño (DEC-C10-070) no autoriza estos gates técnicos.
