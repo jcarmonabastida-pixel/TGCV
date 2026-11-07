@@ -768,3 +768,17 @@ DEC-C10-071 acepta los siete valores de la tabla de §18.2 como vocabulario cont
 La aceptación se limita al vocabulario. No acepta la serialización propuesta en §18.2 dentro de `SNAPSHOT.scope`, ni los campos `route=NONE|F|A` u `object_class=CONFIG`. La tupla C0 se mantiene en `COVERAGE_REGISTER.universe_definition/version`; exige route_id exacto o token global reservado aún OPEN y object_class CMP/PAR/REF/RUL/MET. F/A solo pueden ser metadatos auxiliares de familia de ruta.
 
 El stage_key permanece distinto del reloj DGP t−1…t9, de SNAPSHOT.phase y de SNAPSHOT.timestamp. Cualquier relación con el reloj DGP debe declararse explícitamente en el universo versionado. No se amplía SNAPSHOT.phase ni se cambia schema. No se crean snapshots/scopes ni se autoriza implementación/ejecución.
+
+
+
+### 18.13. Crosswalk de route_id y scopes globales — propuesta pendiente
+
+Se incorpora como overlay documental de C10-S, sin añadir columnas ni cambiar la plantilla física:
+
+- Route-specific: la tupla C0 usa route_id semántico real; `universe_definition/version` fija route_record_id exacto y snapshot exacto. ROUTE_STEP prueba NODE/EDGE; PREDICATE usa route_record_id; ROUTE se identifica por su revisión.
+- Global: candidato reservado `C10S_SCOPE_GLOBAL` en el slot route_id. Significa “sin restricción a una ruta concreta”, no “sin rutas” ni “objeto no pertenece a ruta”. No es todavía valor aceptado ni puede colisionar con un route_id real.
+- CMP requiere crosswalk a NODE/owner y regla de inclusión; PAR hereda pertenencia solo desde owner con regla explícita; REF requiere EDGE en ROUTE_STEP; RUL requiere scope/AST/owner resueltos; MET requiere target explícito o scope global de instancia/contrato.
+- El scope global cuenta cada objeto una vez por identidad; scopes route-specific son independientes y no comparten denominadores. Multi-ruta se declara por scope, sin duplicar el objeto físico.
+- Pertenencia 1 requiere evidencia exacta; 0 requiere inventario del objeto y ROUTE_STEP exhaustivos y solo significa no miembro de esa ruta; ? ante mapping/cobertura incompletos; NA solo por IAM ex ante.
+
+Alternativas evaluadas: G1 token reservado (recomendado provisionalmente), G2 NULL/vacío (ambiguo y no recomendado), G3 scope_kind separado (requiere reabrir tupla/schema). No se acepta G1 aún. No se usa NONE/F/A como route_id. No se crean snapshots/scopes ni se autoriza implementación/ejecución.
