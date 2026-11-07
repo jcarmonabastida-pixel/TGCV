@@ -375,3 +375,10 @@ Esta sección especializa §§20.5–20.9 sin aprobar el token global ni alterar
 6. La ausencia de un objeto en ROUTE_STEP no prueba su ausencia del snapshot, ni ausencia de otras rutas. La ausencia de rutas solo podría sostenerse con cobertura exhaustiva de ROUTE y universo operativo, según el protocolo de evidencia.
 
 No se crea route_id real, token canónico, scope, mapping físico ni fixture. La propuesta queda OPEN hasta aceptación explícita; scientific_execution=false y execution_authorized=false.
+
+
+### 20.11. DEC-C10-072 — token global aceptado
+
+El literal reservado `C10S_SCOPE_GLOBAL` queda aceptado para el slot route_id C0 con semántica exclusiva “sin restricción a una ruta concreta”. No denota ausencia de rutas ni no pertenencia. Está prohibido como route_id semántico real; colisión produce FAIL. NULL/vacío/NONE/F/A no sustituyen el token.
+
+Scope global: universo elegible de clase/etapa/snapshot, conteo único por identidad. Scope route-specific: route_id real + route_record_id + snapshot exactos, denominadores independientes. Las reglas de pertenencia CMP/PAR/REF/RUL/MET de §20.10 siguen siendo propuesta de mapping y no quedan aprobadas por DEC-C10-072. La gramática universe_definition/version y mapping físico permanecen OPEN.
