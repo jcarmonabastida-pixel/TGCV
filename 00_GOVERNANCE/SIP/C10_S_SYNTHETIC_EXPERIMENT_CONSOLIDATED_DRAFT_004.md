@@ -8224,3 +8224,10 @@ Se distinguen hash del artefacto fuente y SHA-256 del contenido canónico (metad
 C1 RFC 8785 JCS + prevalidación TGCV queda ACEPTADA como política documental del envelope U1, perfil TGCV-C10S-JCS-1. Reglas: entrada UTF-8/JSON válida; NFC previa solo en campos marcados, sin reescritura; propiedades JCS; arrays de conjunto ordenados por identidad, secuencias preservadas; enteros seguros no negativos; null prohibido; SHA-256 sobre bytes canónicos con metadatos/hash fuera del envelope; source_artifact_hash separado de canonical_content_hash.
 
 Igual canonical hash bajo mismo perfil solo prueba igualdad de bytes canónicos; no equivalencia semántica, exhaustividad ni verdad de fuentes. Perfiles distintos requieren recanonicalización o UNKNOWN/NOT_COMPARABLE. No se autoriza hash de producción, parser, validator, fixtures, schema change, Design Freeze ni ejecución científica. Registro: DEC-C10-074.
+
+
+## 193. UDG-03 — comparación semántica de universos (propuesta, 2026-11-07)
+
+Se propone comparación vectorial, no booleano único: artefacto idéntico; representación canónica idéntica; identidad universe_id; misma revisión; igualdad extensional de miembros; equivalencia definicional; compatibilidad dirigida entre revisiones. Projection-ID retiene schema/contract/instance/C0/stage/route/snapshot/profile. Projection-SEM compara modo de membership, refs tipadas y versiones, inclusión/exclusión, reglas/AST/dependencias, fuentes/cobertura y cardinalidad. Provenance/timestamp/hash no son miembros; C0/snapshot/route/instance/object version sí condicionan comparabilidad.
+
+EQUAL exige evidencia completa para la dimensión; DIFFERENT solo con ambos lados completos/comparables; UNKNOWN por falta de evidencia; NOT_COMPARABLE por scopes/contratos/snapshots incompatibles sin mapping explícito; FAIL por contradicción de integridad. Igualdad extensional no implica equivalencia definicional (p. ej. EXPLICIT vs RULE_DEFINED). UDG-03 NO ACEPTADA; no comparator, fingerprint semántico, schema change ni ejecución.
