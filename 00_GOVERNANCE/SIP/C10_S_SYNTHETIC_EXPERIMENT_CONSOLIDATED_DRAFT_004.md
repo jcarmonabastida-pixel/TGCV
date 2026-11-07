@@ -8280,3 +8280,11 @@ No se aceptan vocabularios cerrados, cardinalidades numéricas, valores REQUIRED
 La matriz IAM §19.13 propone separar `UDG_ENVELOPE_ROLE` (L2) de `REF_FUNCTIONAL_ROLE` (L3). L2 conserva MEMBER, OWNER, SOURCE, INCLUSION_RULE, EXCLUSION_RULE, DEPENDENCY y PROVENANCE como candidatos ilustrativos, sin enum aprobado ni obligatoriedad/cardinalidad fijadas. L3 mantiene abiertos role_key y relation_type; SOURCE/TARGET es endpoint_position binario, no rol funcional. `DEPENDS_ON` es solo un candidato a estudiar si el DGP requiere una relación REF de dependencia.
 
 Permanecen OPEN: target de DEPENDENCY en L2; conjunto mínimo de relaciones REF exigido por el DGP; representación binaria/n-aria; dominios de extremos; cardinalidades/requiredness por clase×rol×extremo×stage_key×scope. La propuesta no altera DEC-C10-078, no crea filas/instancias IAM y no autoriza implementación, Design Freeze ni ejecución científica.
+
+## 201. DEPENDENCY L2 — propuesta de resolución semántica (2026-11-07)
+
+Para una dependencia entendida como relación del dominio de configuración, L2 debe apuntar al REF exacto que representa la relación; REF/L3 conserva identidad propia, extremos tipados, dirección, tipo/rol, multiplicidad e integridad. No se apunta directamente al objeto dependiente, pues se colapsaría la identidad de la relación con la de su endpoint y se perdería la separación L2/L3.
+
+No se confunden con ello: (a) dependencias técnicas/ambientales C_dep/E_dst, runtime, recursos, permisos efectivos o instalación, que no crean REF por sí mismas; (b) dependencias usadas para resolver/evaluar universos RULE_DEFINED, que permanecen como referencias tipadas/versionadas de regla/envelope y no son REF funcionales por defecto. No hay doble contabilización: la referencia L2 apunta al REF; los extremos del REF identifican los objetos relacionados.
+
+El roster funcional mínimo aceptado CMP/PAR/RUL no declara por sí mismo una relación REF. REF=0 solo será adjudicable tras inventario y cobertura exhaustivos pre-Z/B; no se crea dependencia artificial ni se declara REF=0 ahora. Propuesta no aceptada; no altera DEC-C10-076/077/078, no cierra vocabularios/cardinalidades/requiredness ni autoriza implementación o ejecución.
