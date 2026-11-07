@@ -909,3 +909,10 @@ No se infiere equivalencia por hash/ID/nombre/cardinality. Aceptación no crea f
 Se registra UDG-04 en protocolo §20.16, plantilla U_G §18.21, matriz de mapping §20.18, maestro §195, plan §16.50 y matriz de control §68. Distingue identidad lógica de identidad de registro inmutable, define referencia tipada por rol y target exacto, resolución en registry versionado, estados de ausencia/conflicto/inaccesibilidad/incompatibilidad, y tratamiento de ciclos/cardinalidad por relación. Resolver no prueba pertenencia, aplicabilidad ni ejecución.
 
 **Estado: NO ACEPTADA.** Requiere reconciliación con catálogo REF y contratos vigentes; no fija schema físico ni autoriza resolver/API/parser/validator/fixtures/implementación/ejecución.
+
+
+## 75. DEC-C10-076 — aceptación UDG-04 (2026-11-07)
+
+**Estado: ACEPTADA.** Se acepta la separación de identidad lógica y de registro inmutable; referencia tipada por rol/target exacto; resolución en registry/manifiesto versionado con scope explícito; estados FAIL/UNKNOWN/NOT_COMPARABLE/NOT_APPLICABLE; ciclos y cardinalidad por relación. Resolver no demuestra pertenencia, aplicabilidad, preservación ni ejecución.
+
+La aceptación no cierra catálogo REF/schema/API/registry/resolver ni mapping CMP/PAR/RUL; no autoriza parser/validator/comparator/fixtures/implementación/Design Freeze/ejecución. Registro: `00_GOVERNANCE/decisions/DEC-C10-076_TYPED_REFERENCE_IDENTITY_AND_RESOLUTION_ACCEPTANCE.md`. Prevalece sobre §74, propuesta previa no aceptada.
