@@ -1100,8 +1100,10 @@ Antes de implementar C0 se requiere crosswalk semántico por campo/tabla, con re
 
 ## 16.41. Cierre del crosswalk semántico C0↔U_G
 
-Reutilizar `C10_S_IAM_FIELD_TO_COLUMN_CROSSWALK_PROPOSAL_DRAFT_001.md` y sus auditorías; no recrear el mapping. Mantener separados object_class C10, ug_record_type y NODE.semantic_role/boundary_class. La clase de origen se mapea explícitamente a registros/propiedades U_G con cardinalidad declarada.
+Reutilizar el crosswalk IAM histórico y sus auditorías; no recrear el mapping. Mantener separados object_class C10, ug_record_type y NODE.semantic_role/boundary_class.
 
-El reloj DGP t−1…t9 alimenta stage_key; SNAPSHOT.phase conserva baseline/post-B/rollback/route-test como contexto de captura, sin equivalencia automática. Route-specific se prueba mediante ROUTE_STEP y record IDs exactos. El scope global requiere token reservado explícito aún OPEN. CMP/PAR/REF/RUL/MET tienen mappings candidatos en maestro §186/protocolo §20.3–20.7.
+La plantilla U_G §18.2 contiene siete stage_key candidatos (C_SRC, F1_S2, A1_S1, F2_DST_DECL, A2_DST_DECL, F2_DST_APPLIED, A2_DST_APPLIED). No son el reloj DGP t−1…t9 ni SNAPSHOT.phase (baseline/post-B/rollback/route-test). La antigua propuesta de codificarlos en SNAPSHOT.scope no está aceptada; DEC-C10-070 fija el binding en universe_definition/version.
 
-Gate pendiente: aprobar vocabulario de stage_key, token global, gramática versionada de universe_definition/version y mappings a nivel propiedad/owner; luego reconciliar contra DDL completo. Hasta entonces C0 puede devolver UNKNOWN en campos no demostrables. No schema change, implementación ni ejecución autorizada.
+La antigua ruta NONE/F/A es familia/branch label, no route_id exacto; CONFIG no es object_class aceptado por C0. C0 requiere CMP/PAR/REF/RUL/MET y route_id exacto o token global reservado. NODE/EDGE route membership se demuestra por ROUTE_STEP; PREDICATE por route_record_id; ROUTE por su propia revisión.
+
+Gate pendiente: aceptar el vocabulario de stage_key, definir token global y route_id exacto, gramática versionada de universe_definition/version y mappings por propiedad/owner; después reconciliar contra DDL. Hasta entonces UNKNOWN donde no pueda demostrarse correspondencia. No schema change, implementación ni ejecución autorizada.
