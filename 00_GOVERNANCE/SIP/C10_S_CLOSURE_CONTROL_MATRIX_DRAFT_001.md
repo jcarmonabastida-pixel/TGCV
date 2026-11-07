@@ -1509,3 +1509,18 @@ No comparator/fingerprint semántico, fixtures, schema change, Design Freeze ni 
 | UDG-22 | Revision compatibility | Relación dirigida demostrada, no inferida por número/cardinalidad | ACCEPTED |
 
 Aceptación documental; comparator/fingerprint, fixtures, parser/validator, schema change, Design Freeze e implementación/ejecución no autorizados. DEC-C10-075 prevalece sobre §66.
+
+
+## 68. UDG-04 — gates de identidad y resolución de referencias
+
+| ID | Requisito | Criterio | Estado |
+|---|---|---|---|
+| UDG-23 | Identidad lógica | object_class + object_id | PROPOSED |
+| UDG-24 | Identidad de registro | object_class + object_id + object_record_id inmutable | PROPOSED |
+| UDG-25 | Ref tipada | ref_role + target class/id/record_id exactos | PROPOSED |
+| UDG-26 | Resolución | Registry versionado/scope explícito; sin latest/nombre/hash fallback | PROPOSED |
+| UDG-27 | Estados | FAIL vs UNKNOWN vs NOT_COMPARABLE vs NOT_APPLICABLE separados | PROPOSED |
+| UDG-28 | Ciclos/cardinalidad | Declarados por relación/clase; sin DAG universal asumido | PROPOSED |
+| UDG-29 | Pertenencia | Resolución no implica membership/applicability/execution | PROPOSED |
+
+UDG-04 NO ACEPTADA; schema/API/resolver/parser/validator/fixtures/implementación/ejecución no autorizados.
