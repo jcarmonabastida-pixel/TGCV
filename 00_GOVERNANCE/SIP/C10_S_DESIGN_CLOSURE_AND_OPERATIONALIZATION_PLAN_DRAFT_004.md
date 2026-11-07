@@ -1051,3 +1051,13 @@ La matriz IAM §18 reconcilia el roster funcional mínimo aceptado: CMP-SERVICE-
 No hay DEFAULT contractual declarado para los dos PAR; no se inventan defaults ni valores de escenario. VALUE tipado es candidato confirmatorio; ABSENT/NULL no son admisibles para REQUIRED; DEFAULT requiere declaración contractual trazable. El roster no es todavía inventario exhaustivo ni permite declarar ausencias.
 
 **Gate siguiente:** completar el inventario por C_src, S1/S2, C_dst declarado y C_dst aplicado; fijar cobertura; después instanciar O/C/NA/? por ruta/etapa/propiedad y sellar IAM antes de Z/B. No Design Freeze, implementación o ejecución autorizadas.
+
+## 16.35. Inventario de configuración por snapshot y cobertura
+
+La matriz IAM §19 y la plantilla U_G §18 establecen el overlay de captura para C_src, F1→S2, A1→S1, C_dst declarado y C_dst aplicado en F2/A2. Reutilizan los registros U_G y DEC-C10-065; no crean tablas físicas ni fuerzan PAR/RUL a NODE/PREDICATE. Un manifiesto documental por objeto/propiedad enlaza snapshot exacto, etapa/ruta, mapping, evidencia y coverage_scope.
+
+Los scopes de cobertura se separan por snapshot×etapa×ruta×clase CMP/PAR/REF/RUL/MET. COMPLETE requiere universo/denominador trazables. REF=0 exige cobertura exhaustiva; NONE/PARTIAL/UNKNOWN mantienen ?. Contrato/catálogo no equivalen a evidencia de snapshot ni de aplicación.
+
+El contrato abstracto §16 y catálogo atómico §15 reconcilian el slot histórico RETRY-COUNT como supersedido por DEC-C10-068; ENABLED/PROFILE no tienen DEFAULT aceptado.
+
+**Gate siguiente:** definir si el esquema actual puede codificar inequívocamente stage/ruta en scope y acordar el manifiesto documental antes de instanciar snapshots sintéticos. No capturar datos ficticios, no declarar COMPLETE, no Design Freeze, implementación o ejecución autorizadas.
