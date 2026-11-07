@@ -1571,3 +1571,20 @@ No se concede PASS de schema ni de integridad física. No hay roster observado, 
 | REF-UDG-09 | Estados de resolución siguen DEC-C10-076 | ACCEPTED — límite |
 
 No se concede PASS de schema/integridad física ni se autoriza implementación o ejecución.
+
+
+## 72. DEC-C10-078 — cierre estructural del contrato lógico IAM
+
+| Control | Criterio | Estado |
+|---|---|---|
+| IAM-LR-01 | Cuatro capas separadas: L1 membership, L2 referencias envelope UDG, L3 extremos funcionales REF, L4 FK/vínculos estructurales U_G | ACCEPTED — DEC-C10-078 |
+| IAM-LR-02 | Contrato lógico de fila con identidad, capa, clase origen, regla de identidad, namespace/rol, extremo/dominio destino, cardinalidad, requiredness, trigger, stage/scope/binding, integridad, mapping, evidencia y adjudicación/procedencia | ACCEPTED — estructura documental |
+| IAM-LR-03 | Aplicabilidad contextual de campos por capa; sin asumir que todos aplican a todas las capas | ACCEPTED — límite |
+| IAM-LR-04 | Vocabulario final de roles UDG (L2) separado de roles funcionales REF (L3) | OPEN — siguiente gate |
+| IAM-LR-05 | Dominios y cardinalidades numéricas por clase×rol×extremo×stage_key×scope | OPEN |
+| IAM-LR-06 | Valores REQUIRED/OPTIONAL/CONDITIONAL y disparadores | OPEN |
+| IAM-LR-07 | Endpoints externos y sus namespaces/tipos/versiones | OPEN |
+| IAM-LR-08 | Mapping M concreto, directionality y split/merge/n-aria | OPEN |
+| IAM-LR-09 | Reglas concretas de integridad, evidencia y adjudicación por capa | OPEN |
+
+DEC-C10-078 no cierra el gate REF ni concede PASS de schema/integridad física. No crea roster/filas observadas, fixtures ni IAM de instancia. No autoriza DDL, API/registry/resolver, parser/validator, implementación, Design Freeze ni ejecución científica.
