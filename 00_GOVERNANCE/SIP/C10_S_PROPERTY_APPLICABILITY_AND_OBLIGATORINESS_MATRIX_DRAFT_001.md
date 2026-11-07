@@ -429,3 +429,11 @@ Alternativas:
 **Recomendación de trabajo:** mantener C0 como contrato provisional y registrar la limitación. Antes de cualquier freeze, comparar C0/C1 contra DDL completo y casos de snapshot con scopes múltiples; si la integridad en base de datos es requisito, elevar C1 a decisión explícita. No atribuir a C0 enforcement relacional.
 
 Este gate no cambia Opción A/DEC-C10-065, no modifica el enum SNAPSHOT.phase, ni acepta la codificación SNAPSHOT.scope. Tampoco crea scopes/snapshots, valida DDL, implementa parser o autoriza ejecución.
+
+### 19.9. DEC-C10-070 — aceptación de C0 para binding de scopes
+
+**ACEPTADO POR EL USUARIO — diseño documental condicionado.** Se acepta C0: conservar el esquema actual y fijar en universe_definition/version la tupla exacta contract/version × instance/version × snapshot_id × snapshot_object_record_id × stage_key × route × object_class por coverage_scope_id. Todo registro que apunte al scope debe coincidir con esa tupla.
+
+El control independiente debe comprobar igualdad del binding, unicidad, cardinalidad, scopes huérfanos/no usados y conflictos. Hasta que esté especificado, implementado bajo autorización, ejecutado y auditado, C0 permanece CONDITIONAL y no equivale a FK compuesta ni integridad relacional garantizada.
+
+C1 (FK compuestas) y C2 (tabla puente) no se aceptan ni autorizan. La decisión no modifica el schema, no reabre DEC-C10-065/Opción A, no acepta SNAPSHOT.scope ni cambia SNAPSHOT.phase. No crea registros ni autoriza validación ejecutable, implementación o ejecución científica.
