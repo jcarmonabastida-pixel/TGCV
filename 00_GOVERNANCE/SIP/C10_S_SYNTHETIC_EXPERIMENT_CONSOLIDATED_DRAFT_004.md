@@ -8096,3 +8096,13 @@ La propuesta define: CMP como una unidad lógica de referencia con mapping expl�
 F1/A1 preservan semántica en S2/S1; F2/A2 aplican; FP-06 verifica aplicación y FP-07 observa C_dst aplicado. Se mantienen separadas rutas, C_dst declarado/aplicado, truth del DGP, información del Analizador y adjudicación del Evaluador. Se especifican falsadores y 1/0/?/NA con cobertura/IAM.
 
 **Estado:** mapping CMP/PAR/RUL especificado documentalmente como propuesta; aceptación de la especialización, IAM sellado, defaults/valores por escenario, mapping físico, serialización/MET, oráculo y evidencia OPEN. No fixtures, parser, schema ejecutable, implementación, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
+
+## 179. Roster funcional mínimo aceptado e IAM por etapa (2026-11-07)
+
+Se reconcilia el roster de la instancia de servicio con DEC-C10-056/068/069 en la matriz IAM §18. El núcleo funcional mínimo identificado comprende CMP focal CMP-SERVICE-LOGIC-001; PAR-SVC-ENABLED BOOL; PAR-SVC-PROFILE ENUM; y RUL-SVC-ENABLE-PROFILE-01 REQUIRE. MET es obligatorio para identidad/versionado/procedencia; POL queda fuera del núcleo mínimo por diseño. REF puede tener cardinalidad cero solo tras IAM pre-Z/B e inventario/cobertura exhaustivos.
+
+La fila histórica PAR-SVC-RETRY-COUNT de IAM §13 queda supersedida para el núcleo confirmatorio por DEC-C10-068. Los dos PAR aceptados no tienen DEFAULT contractual declarado: VALUE tipado es el estado confirmatorio candidato; ABSENT/NULL no son admisibles para REQUIRED; DEFAULT exige declaración contractual explícita y trazable. No se fijan valores por escenario.
+
+El roster es mínimo funcional, no inventario exhaustivo de C_src/S1/S2/C_dst. No se infiere ausencia de CMP/PAR/RUL adicionales ni REF=0. La matriz §18 define aplicación por etapa y conserva C_dst declarado/aplicado y E_dst separados.
+
+**Estado:** roster mínimo funcional reconciliado documentalmente; inventario exhaustivo, cobertura, IAM operativo, valores por escenario, mapping_id/IAM_id/oracle_id y evidencia OPEN. No fixtures, Design Freeze, implementación o ejecución científica.
