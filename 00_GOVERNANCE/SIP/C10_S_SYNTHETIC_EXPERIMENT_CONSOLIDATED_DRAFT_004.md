@@ -8288,3 +8288,11 @@ Para una dependencia entendida como relación del dominio de configuración, L2 
 No se confunden con ello: (a) dependencias técnicas/ambientales C_dep/E_dst, runtime, recursos, permisos efectivos o instalación, que no crean REF por sí mismas; (b) dependencias usadas para resolver/evaluar universos RULE_DEFINED, que permanecen como referencias tipadas/versionadas de regla/envelope y no son REF funcionales por defecto. No hay doble contabilización: la referencia L2 apunta al REF; los extremos del REF identifican los objetos relacionados.
 
 El roster funcional mínimo aceptado CMP/PAR/RUL no declara por sí mismo una relación REF. REF=0 solo será adjudicable tras inventario y cobertura exhaustivos pre-Z/B; no se crea dependencia artificial ni se declara REF=0 ahora. Propuesta no aceptada; no altera DEC-C10-076/077/078, no cierra vocabularios/cardinalidades/requiredness ni autoriza implementación o ejecución.
+
+## 202. Auditoría propuesta del conjunto mínimo REF L3 para el DGP aceptado
+
+El contrato sintético aceptado del servicio lógico (CMP-SERVICE-LOGIC-001, PAR-SVC-ENABLED, PAR-SVC-PROFILE y RUL-SVC-ENABLE-PROFILE-01) no exige actualmente una relación REF funcional concreta. Los operandos PAR de la RUL no se elevan a REF por defecto; tampoco las relaciones/dependencias R_acc/R* del espacio transformacional, las condiciones técnicas/ambientales C_dep/E_dst ni las referencias necesarias para evaluar universos RULE_DEFINED. Cada uno pertenece a su plano contractual/analítico propio.
+
+Esto es una conclusión negativa sobre el roster funcional mínimo, no una declaración de REF=0 para snapshots reales. REF=0 exige inventario exhaustivo y cobertura COMPLETE por snapshot×etapa×ruta×scope pre-Z/B. Cualquier REF futuro debe tener identidad propia, extremos exactos, semántica, dirección/tipo/rol, multiplicidad, versionado y justificación frente a FK U_G, condición externa o referencia de regla.
+
+Auditoría documental propuesta; no crea filas de instancia ni sella IAM, no modifica DEC-C10-078 y no autoriza implementación/ejecución.
