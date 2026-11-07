@@ -666,3 +666,41 @@ Los ceros de la columna de captura significan **ninguna fuente técnica ni unida
 7. Cualquier cambio inducido por B en autorización funcional, recursos/capacidad compartidos, datos, información del agente, rutas alternativas, oráculo, seguridad, estado o rendimiento se conserva como vía potencial/observada según evidencia. Si no puede descartarse, no se declara aislamiento causal; el ITT sigue siendo efecto de política/paquete y la atribución exclusiva a ΔT_acc permanece abierta.
 8. Esta aplicación no aprueba las fichas D2-INV-AUTH-01, D2-RES-01, D2-CAP-01 ni I-INFO-01…06; no demuestra independencia, no resuelve MD-C1/MD-C2/MD-C4 ni AUD-005/AUD-007 y no modifica DEC-C10-067.
 9. No hay inventario técnico, implementación, simulación ni ejecución científica registrados por esta sección. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
+
+## 18. Overlay C10-S de inventario de configuración por snapshot (2026-11-07)
+
+**Estado:** protocolo documental de captura / NO INVENTARIADO / NO EJECUTADO. Este overlay especializa el registro U_G existente para la instancia sintética de servicio; no añade tablas físicas, no altera NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT ni las FKs de §§12–16.
+
+### 18.1. Regla de no duplicación de catálogos
+
+El inventario U_G registra entidades y relaciones reales: NODE, EDGE, ROUTE, PREDICATE y SNAPSHOT. El catálogo atómico C10-S define semántica CMP/PAR/REF/RUL; la matriz IAM §19 determina aplicabilidad por snapshot. No convertir cada PAR o RUL en NODE ni introducir IDs PAR/RUL en parent_catalog_id. El CMP focal puede corresponder al nodo raíz LOGICAL_SERVICE_UNIT; solo se crean NODE adicionales para componentes reales con identidad y frontera demostradas. Los IDs TID/SID/RID no sustituyen IDs CMP/PAR/RUL.
+
+### 18.2. Etapas de captura C10-S
+
+El snapshot U_G exacto se pinnea mediante snapshot_id + snapshot_object_record_id según DEC-C10-065. La etapa/ruta se declara en scope y en la referencia cruzada IAM, sin ampliar el enum phase de SNAPSHOT:
+
+| Stage key | Artefacto esperado | Inventario de configuración |
+|---|---|---|
+| C_SRC | Snapshot de origen | CMP/PAR/REF/RUL/MET declarados |
+| F1_S2 | Snapshot S2 producido por F1 | Preservación y mapping de CMP/PAR/REF/RUL |
+| A1_S1 | Snapshot S1 producido por A1 | Preservación independiente bajo ruta A |
+| F2_DST_DECL | Destino declarado para F2 | Configuración antes de aplicar |
+| A2_DST_DECL | Destino declarado para A2 | Configuración antes de aplicar |
+| F2_DST_APPLIED | Destino observado tras F2 | Estado efectivamente aplicado |
+| A2_DST_APPLIED | Destino observado tras A2 | Estado efectivamente aplicado |
+
+Los stage keys son etiquetas de scope del overlay, no valores nuevos del enum SNAPSHOT.phase. Si no se puede representar ruta/etapa inequívocamente con scope sin alterar el schema, detener y solicitar decisión antes de capturar.
+
+### 18.3. Campos de manifiesto documental
+
+Una fila por objeto/propiedad y snapshot, enlazada a snapshot exacto, IAM y evidencia: manifest_record_id; contract_id/version; instance_id/version; snapshot_id/snapshot_object_record_id; stage_key; route_id/route_record_id; object_class (CMP/PAR/REF/RUL/MET); semantic_id/version; owner_component_id; property_key/type/state/value; rule_id/version/scope/AST_ref/effect; mapping_id/version/status; declared_or_applied; evidence_id; claim_evidence_id; coverage_scope_id; observed_state/unknown_reason; recorded_at/by/supersedes.
+
+Este manifiesto es una estructura de referencia para el IAM, no una nueva tabla física ni una serialización aprobada. No contiene DGP truth. Los valores y defaults por escenario no se inventan; VALUE se captura solo desde evidencia del snapshot.
+
+### 18.4. Scopes de cobertura separados
+
+Crear scopes COVERAGE_REGISTER por snapshot×etapa×ruta×clase CMP/PAR/REF/RUL/MET, con universo y denominador trazables. COMPLETE requiere regla de enumeración, fuentes válidas y excepciones resueltas. NONE/PARTIAL/UNKNOWN impiden declarar ausencia. REF=0 exige cobertura exhaustiva. No combinar clases en un porcentaje global.
+
+### 18.5. Estado
+
+No existen snapshots C10-S observados en este overlay; no se ha capturado C_src, S1/S2, C_dst declarado ni C_dst aplicado. La plantilla conserva su estado de captura NONE y no acredita ejecución. scientific_execution=false; execution_authorized=false.
