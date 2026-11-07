@@ -956,3 +956,11 @@ El contrato sintético aceptado CMP-SERVICE-LOGIC-001, PAR-SVC-ENABLED, PAR-SVC-
 El roster mínimo no es exhaustivo; REF=0 solo podrá declararse con inventario/cobertura COMPLETE por snapshot×etapa×ruta×scope pre-Z/B. La auditoría no crea filas de instancia ni sella IAM.
 
 **Estado:** propuesta de auditoría documental no aceptada; no modifica DEC-C10-078 ni autoriza implementación/ejecución.
+
+## 82. Propuesta de protocolo de auditoría REF por snapshot/etapa (2026-11-07) — no aceptada
+
+Se propone adjudicar REF por contrato/instancia, snapshot exacto, stage_key, ruta, scope y universo versionado, reutilizando U_G/COVERAGE_REGISTER. La inspección separa C_SRC, F1_S2, A1_S1, F2/A2_DST_DECL y F2/A2_DST_APPLIED. Una relación exige identidad propia, semántica de dominio, extremos exactos, dirección/tipo/multiplicidad y procedencia; EDGE/FK/ROUTE_STEP, CLAIM_EVIDENCE_LINK, operandos RUL, R_acc/R*, C_dep/E_dst y referencias RULE_DEFINED no son REF por defecto.
+
+ABSENT/REF=0 requiere enumeración exhaustiva y cobertura COMPLETE para el scope exacto; UNKNOWN ante cualquier laguna; NA solo por no aplicabilidad ex ante. Los estados no se extrapolan entre snapshots/rutas y C_DST_DECLARED no prueba C_DST_APPLIED.
+
+**Estado:** propuesta no aceptada; sin observaciones, REF=0 ni IAM sellado. No modifica DEC-C10-078 ni autoriza implementación/ejecución.
