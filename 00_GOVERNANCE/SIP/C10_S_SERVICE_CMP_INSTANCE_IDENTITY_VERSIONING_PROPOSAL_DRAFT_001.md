@@ -1,7 +1,7 @@
 # C10-S — Propuesta de identidad y versionado de la instancia CMP del servicio sintético
 
 **ID:** C10-S-SVC-CMP-ID-001 · **Versión:** Draft 001 · **Fecha:** 2026-11-07  
-**Estado:** PROPUESTA DOCUMENTAL DERIVADA DE DEC-C10-068; pendiente de aceptación; no congelada ni implementada.  
+**Estado:** ACEPTADA DOCUMENTALMENTE POR DEC-C10-069 para IDs y política de versionado; MET físico, serialización, IAM/mapping y evidencia siguen OPEN; no implementada.  
 **Ámbito:** C10-S / Opción A / DGP sintético / identidad MET de la instancia de servicio.  
 **No autoriza:** serialización ejecutable, fixtures, parser, validación técnica, simulación ni ejecución científica.
 
@@ -106,9 +106,11 @@ El mapping puede traducir identificadores físicos, pero exige una tabla total/v
 
 ## 8. Pendientes y no-claims
 
-Pendiente de aceptación explícita:
-- los valores candidatos de §3;
+Aceptado por DEC-C10-069:
+- los identificadores y valores de §3;
 - la política de versionado de §4;
+
+Pendiente:
 - el roster CMP/PAR/RUL completo y la cardinalidad REF con cobertura IAM;
 - la forma serializada de MET y el esquema de artefacto;
 - identidad/versionado concreto de C_src/C_dst, M, IAM y oráculo;
@@ -119,3 +121,8 @@ No se ha elegido plataforma/formato físico, no se ha generado hash, no hay inst
 ## 9. Dictamen
 
 La propuesta concreta el hueco entre el contrato abstracto de instancia y el servicio sintético aceptado por DEC-C10-068. Distingue rol lógico, identidad de componente, identidad de instancia, versiones contractuales, revisión de paquete y hashes de artefacto. Su aceptación permitiría instanciar documentalmente MET y pasar al mapping semántico por familia, manteniendo abiertos los valores de escenario y la evidencia.
+
+
+## 10. Estado tras DEC-C10-069
+
+Los valores de §3 y la política de §4 quedan ACCEPTED por `00_GOVERNANCE/decisions/DEC-C10-069_SERVICE_CMP_IDENTITY_AND_VERSIONING_ACCEPTANCE.md`. No se acepta por extensión un formato físico, hash, IAM sellado, mapping implementado ni oráculo validado. No Design Freeze ni autorización de implementación/ejecución.
