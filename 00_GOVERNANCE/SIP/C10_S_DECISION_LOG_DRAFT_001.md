@@ -920,3 +920,7 @@ La aceptación no cierra catálogo REF/schema/API/registry/resolver ni mapping C
 ## 76. Reconciliación REF↔UDG-04 (2026-11-07) — propuesta, no decisión aceptada
 
 Se propone separar REF de configuración, referencias tipadas del envelope UDG y FK/vínculos estructurales U_G. REF conserva identidad propia y extremos tipados; REF→EDGE solo por M versionado y con cardinalidad/split/merge explícitos. EDGE no es automáticamente REF. Los roles ilustrativos de DEC-C10-076 no se convierten en enum físico. IAM, cardinalidades, endpoints externos, schema físico y mapping siguen OPEN. La propuesta no modifica DEC-C10-076 ni autoriza implementación/ejecución.
+
+## 77. DEC-C10-077 — aceptación conceptual de reconciliación REF↔UDG-04 (2026-11-07)
+
+**Estado: ACEPTADA.** Se acepta separar REF de configuración, referencia envelope UDG y FK estructural U_G; REF posee identidad y extremos tipados; REF→EDGE requiere M explícito/versionado, sin equivalencia automática ni 1:1 asumida; split/merge/n-aria requiere parent/group identity. Los roles UDG siguen ilustrativos. No se fijan roles finales, dominios, cardinalidades, obligatoriedad, IAM ni schema físico. Registro: 00_GOVERNANCE/decisions/DEC-C10-077_REF_UDG04_CONCEPTUAL_RECONCILIATION_ACCEPTANCE.md. No autoriza implementación/Design Freeze/ejecución.
