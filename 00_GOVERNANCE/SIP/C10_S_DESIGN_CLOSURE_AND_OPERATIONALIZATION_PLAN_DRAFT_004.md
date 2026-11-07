@@ -1068,3 +1068,11 @@ La matriz IAM §19.7 y U_G §18.6 definen un scope lógico independiente por sna
 Se fijan denominadores por clase y criterios NONE/PARTIAL/COMPLETE. Ausencia/REF=0 exige cobertura completa y evidencia de enumeración exhaustiva; no se infiere 0 por falta de filas. Los dos PAR REQUIRED ausentes bajo cobertura COMPLETE constituyen incumplimiento.
 
 **Limitación a resolver antes de schema freeze:** COVERAGE_REGISTER no contiene FK directa al snapshot exacto; el pinning en universe_definition/version no permite constraint relacional inversa. Mantener U_G-SCH-10 OPEN y no añadir columnas sin decisión de schema. La codificación de SNAPSHOT.scope continúa pendiente de aceptación/compatibilidad. No crear scopes ficticios ni ejecutar.
+
+## 16.37. Cierre de integridad de scopes de cobertura
+
+Separar este gate de U_G-SCH-10: la pertenencia del grafo a snapshot está aceptada semánticamente por DEC-C10-065/Opción A; la validación física del grafo conserva su propio estado. Para COVERAGE_REGISTER, los objetos enlazan coverage_scope_id y fijan snapshot exacto, pero la fila de cobertura no contiene snapshot_id/snapshot_object_record_id; no hay enforcement compuesto de coincidencia.
+
+C0 (esquema actual, tupla exacta en universe_definition/version y control independiente) es la recomendación provisional, CONDITIONAL hasta control auditado. C1 (columnas de snapshot + FK compuestas) necesita decisión de schema, análisis de ciclo con SNAPSHOT.coverage_scope_id y compatibilidad/legacy. C2 (tabla puente) no se recomienda salvo inviabilidad de C1.
+
+Antes de freeze: comparar alternativas contra DDL completo, cardinalidad scopes×snapshot, filas históricas y motor. No alterar schema ni declarar integridad relacional plena.
