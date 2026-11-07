@@ -218,3 +218,13 @@ La fila histórica PAR-SVC-RETRY-COUNT de §12 se conserva como antecedente traz
 El roster PAR funcional vigente de la instancia aceptada se limita a PAR-SVC-ENABLED BOOL {false,true} y PAR-SVC-PROFILE ENUM {STANDARD, READ_ONLY, DISABLED}. No existe DEFAULT contractual aceptado para ninguno. La regla RUL-SVC-ENABLE-PROFILE-01 vincula ambos. El catálogo histórico no constituye evidencia de valores presentes en C_src/S1/S2/C_dst.
 
 **Estado:** precedencia documental reconciliada; no se alteran IDs/valores aceptados ni se crean filas observadas.
+
+## 16. Reconciliación del catálogo REF con UDG-04 — propuesta (2026-11-07)
+
+REF-01…REF-05 conservan su alcance candidato. Se precisa que REF es un objeto de relación declarado en el paquete de configuración, con identidad propia y dos extremos (o estructura n-aria expresamente modelada); no es sinónimo de EDGE, FK U_G ni CLAIM_EVIDENCE_LINK.
+
+La especialización propuesta de REF incluye: identidad lógica/record exacto; owner/source endpoint y target endpoint tipados; relation_type; direction; role; multiplicity/cardinality; integrity_rule; versión y provenance. La cardinalidad de extremos y la posibilidad de endpoint externo deben declararse por contrato/IAM; no se presume que todos los destinos pertenezcan a CMP/PAR/REF/RUL/MET.
+
+REF→EDGE es mapping candidato sujeto a M versionado. Una relación binaria puede mapear a una EDGE atómica; split/merge o relación n-aria exige agrupación/parent identity explícita y conservación de extremos, dirección y multiplicidad. EDGE→REF no es inferencia automática.
+
+Los roles MEMBER/OWNER/SOURCE/INCLUSION_RULE/EXCLUSION_RULE/DEPENDENCY/PROVENANCE citados en DEC-C10-076 siguen siendo ilustrativos, no enum aprobado. Se distinguen roles de referencia del envelope UDG y relaciones declaradas dentro de un objeto REF. Obligatoriedad, cardinalidad, dominio de roles y NA requieren IAM ex ante. No se cambia schema, catálogo de clases ni estado de aceptación.
