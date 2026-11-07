@@ -360,3 +360,18 @@ NONE/F/A son etiquetas de familia de ruta, no route_id exacto; route_id debe ide
 El literal del token global, gramática de universe_definition/version y mapping por propiedad permanecen OPEN. Esta sección es propuesta documental, no nueva aceptación ni autorización de cambio de schema/implementación/ejecución.
 
 Esta aceptación es documental. No cambia schema, no crea snapshots/scopes y no autoriza implementación, validación ejecutable, simulación ni ejecución científica; el mapping por propiedad y el enforcement C0 permanecen OPEN/CONDITIONAL.
+
+
+
+### 20.10. Semántica de route_id y scope global — propuesta alineada con DEC-C10-070/071
+
+Esta sección especializa §§20.5–20.9 sin aprobar el token global ni alterar el mapping CMP/PAR/REF/RUL/MET.
+
+1. En scope route-specific, route_id es la identidad semántica de ROUTE y el universo versionado fija route_record_id + snapshot_id + snapshot_object_record_id exactos. ROUTE_STEP prueba la secuencia y la pertenencia de NODE/EDGE; PREDICATE resuelve route_record_id; ROUTE queda fijada por su propio object_record_id.
+2. El token global candidato `C10S_SCOPE_GLOBAL` ocuparía el slot route_id de C0 y significaría “sin restricción a ruta concreta”, nunca “no existe ruta” ni “objeto no pertenece a ruta”. Es propuesta G1, pendiente de aceptación y reserva formal del namespace.
+3. CMP route-specific requiere CMP→NODE/owner exacto y presencia del NODE en ROUTE_STEP, salvo regla de inclusión explícita para unidad raíz. PAR solo hereda ruta mediante owner CMP y regla IAM explícita. REF requiere EDGE exacto presente en ROUTE_STEP. RUL exige scope/AST/owner resolubles. MET exige target explícito; metadata de contrato/instancia es global.
+4. Un objeto en varias rutas se incluye en scopes específicos separados; el scope global lo cuenta una vez. No se agregan denominadores de scopes diferentes.
+5. Pertenencia=1 exige mapping y ruta/revisión exactos; pertenencia=0 exige universo del objeto y ROUTE_STEP completos y solo significa no pertenencia a esa ruta; ? conserva mapping/cobertura incompletos; NA requiere IAM ex ante.
+6. La ausencia de un objeto en ROUTE_STEP no prueba su ausencia del snapshot, ni ausencia de otras rutas. La ausencia de rutas solo podría sostenerse con cobertura exhaustiva de ROUTE y universo operativo, según el protocolo de evidencia.
+
+No se crea route_id real, token canónico, scope, mapping físico ni fixture. La propuesta queda OPEN hasta aceptación explícita; scientific_execution=false y execution_authorized=false.
