@@ -595,3 +595,12 @@ Se recomienda U1 con referencias externas permitidas solo como soporte, no como 
 ### 20.10.9. Límites del gate
 
 La propuesta no cierra mappings físicos CMP/PAR/REF/RUL/MET, reglas de pertenencia por clase, el control independiente C0, ni la compatibilidad del campo físico U_G. No crea fixtures, parser, validator, snapshots o scopes. No modifica schema, no constituye Design Freeze y no autoriza implementación ni ejecución científica.
+
+
+## 20.11. DEC-C10-073 — estado vigente de UDG-01
+
+DEC-C10-073 acepta U1 como arquitectura documental: envelope JSON autocontenido y versionado, con los campos/cardinalidades de §20.10. La tupla scope replica exactamente C0 (nueve componentes); dimension sigue fuera. Se aceptan los invariantes de EXPLICIT/RULE_DEFINED, tipado/resolución de referencias, cardinalidad, prueba exhaustiva para universo vacío, route binding y adjudicación PASS/FAIL/UNKNOWN allí definidos.
+
+**No aceptado por DEC-C10-073:** canonicalización UTF-8/NFC/orden determinista como requisito normativo, SHA-256 obligatorio, RFC/JCS, serialización física ejecutable, reglas completas de compatibilidad/incremento semver, mapping físico por clase ni control C0 implementado/auditado. SHA-256 y canonicalización permanecen opciones de diseño abiertas. La aceptación es documental/arquitectónica, no autorización de schema change, parser, validator, fixtures, Design Freeze o ejecución.
+
+Ante conflicto de estatus, este asiento y DEC-C10-073 prevalecen sobre frases históricas de §20.10 que calificaban toda UDG-01 como no aceptada.
