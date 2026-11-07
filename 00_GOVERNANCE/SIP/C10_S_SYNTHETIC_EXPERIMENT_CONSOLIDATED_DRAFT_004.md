@@ -8273,3 +8273,10 @@ Se acepta documentalmente la estructura de cuatro capas: L1 membership del unive
 Se acepta el contrato lógico contextual de fila IAM: `iam_rule_id`, `layer`, `source_class`, `source_identity_rule`, `role_namespace`, `role_key`, `endpoint_position`, `target_domain`, `min_cardinality`, `max_cardinality`, `requiredness`, `applicability_trigger`, `stage_key`, `scope_mode`, `route_binding`, `version_snapshot_binding`, `integrity_rule`, `mapping_rule`, `evidence_rule`, `adjudication` y `rationale/provenance`. La presencia/valor de cada campo es contextual por capa; no se fija serialización física.
 
 No se aceptan vocabularios cerrados, cardinalidades numéricas, valores REQUIRED/OPTIONAL/CONDITIONAL, endpoints externos, enum relation_type, mapping M concreto ni schema físico. Se reutilizan los siete stage_key de DEC-C10-071 y C10S_SCOPE_GLOBAL de DEC-C10-072. El siguiente gate es proponer vocabularios candidatos por capa, separando roles UDG L2 de roles funcionales REF L3; luego justificar dominios/cardinalidades/requiredness y reconciliar mapping M. DEC-C10-077 permanece intacta. No se autoriza implementación, parser/validator, fixtures, Design Freeze, simulación, experimento ni ejecución científica.
+
+
+## 200. Propuesta documental de vocabularios IAM separados L2/L3
+
+La matriz IAM §19.13 propone separar `UDG_ENVELOPE_ROLE` (L2) de `REF_FUNCTIONAL_ROLE` (L3). L2 conserva MEMBER, OWNER, SOURCE, INCLUSION_RULE, EXCLUSION_RULE, DEPENDENCY y PROVENANCE como candidatos ilustrativos, sin enum aprobado ni obligatoriedad/cardinalidad fijadas. L3 mantiene abiertos role_key y relation_type; SOURCE/TARGET es endpoint_position binario, no rol funcional. `DEPENDS_ON` es solo un candidato a estudiar si el DGP requiere una relación REF de dependencia.
+
+Permanecen OPEN: target de DEPENDENCY en L2; conjunto mínimo de relaciones REF exigido por el DGP; representación binaria/n-aria; dominios de extremos; cardinalidades/requiredness por clase×rol×extremo×stage_key×scope. La propuesta no altera DEC-C10-078, no crea filas/instancias IAM y no autoriza implementación, Design Freeze ni ejecución científica.
