@@ -406,3 +406,10 @@ No se acepta canonicalización UTF-8/NFC como obligación, SHA-256 normativo, RF
 Para el envelope U1 se propone C1: RFC 8785 JCS con prevalidación de schema TGCV. No normalizar Unicode durante canonicalización; exigir NFC previamente solo en campos identificadores declarados NFC-required y rechazar, sin autocorregir. Propiedades ordenadas según JCS; arrays de conjunto ordenados por identidad tipada antes de JCS; arrays secuenciales conservan orden. Números UDG-01 restringidos a enteros seguros no negativos; null prohibido y omisión distinta de array vacío.
 
 Separar source_artifact_hash (bytes físicos originales) de canonical_content_hash (SHA-256 sobre envelope canónico; hash y metadatos fuera del contenido hasheado). Igual hash bajo mismo perfil solo acredita igualdad de bytes canónicos; no prueba equivalencia semántica, pertenencia o exhaustividad. Perfiles distintos no comparables directamente. C1/UDG-02 no aceptada; mapping físico y C0 siguen OPEN.
+
+
+### 20.15. DEC-C10-074 — canonicalización aceptada; semántica separada
+
+Se acepta C1 RFC 8785 JCS + prevalidación TGCV para U1, perfil documental TGCV-C10S-JCS-1, conforme a las restricciones DEC-C10-074. Arrays de conjunto se ordenan por identidad antes de JCS; secuencias conservan orden; NFC se valida previamente solo donde se marque; null prohibido; enteros seguros no negativos; hashes de fuente y contenido canónico separados.
+
+canonical_content_hash igual bajo el mismo perfil demuestra igualdad de bytes canónicos, nunca equivalencia semántica o exhaustividad. La equivalencia del universo requiere evaluación de mapping/miembros/reglas/fuentes por separado. No hash de producción ni parser/validator autorizados; mapping físico CMP/PAR/REF/RUL/MET sigue OPEN.
