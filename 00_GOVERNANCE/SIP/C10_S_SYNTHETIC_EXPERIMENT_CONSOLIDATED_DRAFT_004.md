@@ -8145,3 +8145,12 @@ Se acepta C0: conservar COVERAGE_REGISTER y el schema actuales; cada coverage_sc
 La aceptación es documental y CONDITIONAL hasta que el control se especifique, implemente bajo autorización, ejecute y audite antes del Design Freeze. C0 no equivale a FK compuesta ni enforcement relacional. C1/C2 no aceptadas ni autorizadas.
 
 No se reabre DEC-C10-065/Opción A, no se modifica SNAPSHOT.phase ni se acepta SNAPSHOT.scope. No se crean scopes/snapshots ni evidencias; no se autoriza schema change, implementación, validación ejecutable, simulación o ejecución científica.
+
+
+## 184. Especificación del control independiente C0 (2026-11-07)
+
+El protocolo `C10_S_UG_EVIDENCE_PROVENANCE_AND_ADJUDICATION_PROTOCOL_DRAFT_001.md` §19 especifica el control C0: tupla canónica contract/version, instance/version, snapshot exacto, stage, route, class y dimension; invariantes C0-I01…I11; resultados PASS/FAIL/UNKNOWN con precedencia FAIL>UNKNOWN>PASS; y 15 casos adversariales ADV-C0-01…15.
+
+La especificación es documental. No se ha reconciliado DDL completo, implementado el control, poblado fixtures, ejecutado pruebas ni auditado resultados. La aceptación de C0 (DEC-C10-070) es distinta del cierre operacional del control. Estado: DOCUMENTED SPECIFICATION / NOT IMPLEMENTED / NOT EXECUTED / NOT AUDITED; C0 permanece CONDITIONAL para Design Freeze.
+
+Un PASS C0 solo acredita integridad del binding dentro del conjunto cerrado examinado; no demuestra cobertura COMPLETE, ausencia REF=0, verdad de fuentes ni causalidad.
