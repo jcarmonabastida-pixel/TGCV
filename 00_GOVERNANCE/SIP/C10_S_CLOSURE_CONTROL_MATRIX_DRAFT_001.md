@@ -1628,3 +1628,18 @@ Esta propuesta no acepta vocabulario final, cardinalidad ni requiredness; no dec
 | IAM-REFMIN-06 | REF=0 requiere inventario/cobertura exhaustivos por snapshot×stage_key×ruta×scope | OPEN — NO ADJUDICATED |
 
 No se declara REF=0, no se sella IAM ni se crean filas observadas. Cualquier REF candidato requiere identidad propia de relación y extremos tipados, más semántica y procedencia explícitas.
+
+## 76. Protocolo de auditoría REF por snapshot/etapa
+
+| Control | Criterio | Estado |
+|---|---|---|
+| IAM-REF-AUD-01 | Unidad de auditoría exacta por contrato/instancia/snapshot/stage_key/ruta/scope/universo versionado | PROPOSED — NOT ACCEPTED |
+| IAM-REF-AUD-02 | Reutiliza U_G y COVERAGE_REGISTER; no crea inventario paralelo | ALIGNED WITH EXISTING CONTRACT |
+| IAM-REF-AUD-03 | Inspección independiente C_SRC, F1_S2, A1_S1, F2/A2_DECL y F2/A2_APPLIED | PROPOSED — NOT ACCEPTED |
+| IAM-REF-AUD-04 | REF exige identidad propia, semántica, endpoints exactos, dirección/tipo/multiplicidad y procedencia | PROPOSED — NOT ACCEPTED |
+| IAM-REF-AUD-05 | EDGE/FK/ROUTE_STEP, CLAIM_EVIDENCE_LINK, RUL operands, R_acc/R*, C_dep/E_dst y RULE_DEFINED refs no se elevan por defecto a REF | PROPOSED — NO COLLAPSE |
+| IAM-REF-AUD-06 | ABSENT/REF=0 requiere universo/fuentes exhaustivos y COVERAGE COMPLETE en scope exacto | OPEN — NOT ADJUDICATED |
+| IAM-REF-AUD-07 | C_DST_DECLARED no demuestra C_DST_APPLIED; A y F requieren evidencia independiente | ALIGNED WITH EXISTING CONTRACT |
+| IAM-REF-AUD-08 | Sin snapshots reales no se crean filas observadas ni se sella IAM | OPEN — NO OBSERVATIONS |
+
+El protocolo no produce REF=0 ni PASS de cobertura por sí mismo; no autoriza implementación, fixtures, parser/validator, Design Freeze o ejecución.
