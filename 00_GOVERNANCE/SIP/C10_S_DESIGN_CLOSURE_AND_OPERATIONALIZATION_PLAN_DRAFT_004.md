@@ -1137,3 +1137,10 @@ Estado: DOCUMENTED PROPOSAL; U1 recomendada provisionalmente; no schema change, 
 U1 queda ACCEPTED como arquitectura documental de universe_definition: envelope JSON autocontenido/versionado, estructura y cardinalidades UDG-01, scope C0 exacto de nueve componentes, modos EXPLICIT/RULE_DEFINED, referencias tipadas, cardinalidad y procedencia. Universo vacío exige evidencia exhaustiva. La separación conceptual schema_version/universe_revision se acepta; reglas completas de incremento/compatibilidad permanecen por especificar.
 
 Gates abiertos: canonicalización concreta, hash normativo, autoridad RFC/JCS, serialización física, mapping CMP/PAR/REF/RUL/MET y control C0 independiente implementado/auditado. No schema change, parser, validator, fixtures, Design Freeze ni ejecución.
+
+
+## 16.46. UDG-02 — canonicalización/hash (propuesta)
+
+El protocolo §20.12 compara C1 RFC 8785 JCS + prevalidación TGCV, C2 canonicalizador propio y C3 hash de bytes fuente; recomienda provisionalmente C1. Reglas candidatas: strings preservadas por JCS y NFC validada previamente en campos señalados; arrays de conjunto ordenados por identidad antes de canonicalizar, secuencias preservadas; enteros seguros no negativos; null prohibido; hash canónico separado del hash de bytes fuente y registrado fuera del contenido hasheado.
+
+No se acepta aún C1, SHA-256, el perfil TGCV-C10S-JCS-1 ni sus restricciones. La igualdad de hash no demuestra equivalencia semántica/exhaustividad. Pendiente decisión explícita; no parser, validator, fixtures, schema change ni ejecución.
