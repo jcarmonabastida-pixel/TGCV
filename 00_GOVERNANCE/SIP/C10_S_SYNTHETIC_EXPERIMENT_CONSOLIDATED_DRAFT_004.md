@@ -8124,6 +8124,6 @@ La matriz IAM §19.7 y la plantilla U_G §18.6 especializan COVERAGE_REGISTER si
 
 Se formalizan denominadores y criterios COMPLETE por clase. NONE/PARTIAL nunca justifican ausencia; REF=0 requiere denominator=0 y enumeración exhaustiva; ausencia de PAR REQUIRED con cobertura COMPLETE es incumplimiento. El universo COMPLETE es operativo y versionado, no exhaustividad ontológica.
 
-Se detecta una limitación no resuelta: COVERAGE_REGISTER carece de FK directa a snapshot_id/snapshot_object_record_id. El snapshot enlaza coverage_scope_id y universe_definition/version puede documentar el pinning, pero la integridad inversa no es físicamente exigible con el esquema actual. No se añade columna unilateralmente; U_G-SCH-10/validación física sigue OPEN.
+Se detecta una limitación no resuelta: COVERAGE_REGISTER carece de FK directa a snapshot_id/snapshot_object_record_id. El snapshot enlaza coverage_scope_id y universe_definition/version puede documentar el pinning, pero la integridad inversa no es físicamente exigible con el esquema actual. No se añade columna unilateralmente. La pertenencia versionada del grafo a SNAPSHOT está aceptada por DEC-C10-065 (Opción A); la validación física de ese diseño tiene su propio gate. La integridad COVERAGE_REGISTER→snapshot descrita aquí es un problema distinto y sigue OPEN.
 
 La convención SNAPSHOT.scope y su compatibilidad siguen pendientes de aceptación. No se pueblan scopes, snapshots ni evidencias; no se declara COMPLETE/REF=0, no Design Freeze ni ejecución.
