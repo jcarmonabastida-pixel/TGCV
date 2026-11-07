@@ -759,3 +759,12 @@ La serialización ilustrativa de §18.2 (`route=NONE|F|A`, `object_class=CONFIG`
 La pertenencia de NODE/EDGE a ruta se demuestra por ROUTE_STEP y record IDs exactos; PREDICATE por route_record_id; ROUTE por su propia revisión. No se usa routes_affected como prueba.
 
 Esta reconciliación no modifica columnas, no acepta SNAPSHOT.scope, no crea scopes ni snapshots y no autoriza implementación/ejecución.
+
+
+### 18.12. DEC-C10-071 — vocabulario stage_key aceptado
+
+DEC-C10-071 acepta los siete valores de la tabla de §18.2 como vocabulario controlado de `stage_key`: `C_SRC`, `F1_S2`, `A1_S1`, `F2_DST_DECL`, `A2_DST_DECL`, `F2_DST_APPLIED`, `A2_DST_APPLIED`. No se aceptan sinónimos ni variantes implícitas.
+
+La aceptación se limita al vocabulario. No acepta la serialización propuesta en §18.2 dentro de `SNAPSHOT.scope`, ni los campos `route=NONE|F|A` u `object_class=CONFIG`. La tupla C0 se mantiene en `COVERAGE_REGISTER.universe_definition/version`; exige route_id exacto o token global reservado aún OPEN y object_class CMP/PAR/REF/RUL/MET. F/A solo pueden ser metadatos auxiliares de familia de ruta.
+
+El stage_key permanece distinto del reloj DGP t−1…t9, de SNAPSHOT.phase y de SNAPSHOT.timestamp. Cualquier relación con el reloj DGP debe declararse explícitamente en el universo versionado. No se amplía SNAPSHOT.phase ni se cambia schema. No se crean snapshots/scopes ni se autoriza implementación/ejecución.
