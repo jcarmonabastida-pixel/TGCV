@@ -510,3 +510,88 @@ DEC-C10-072 acepta G1 y reserva el literal exacto `C10S_SCOPE_GLOBAL` para el sl
 En scope global se enumera el universo elegible de la clase/etapa/snapshot y cada identidad se cuenta una vez, aunque aparezca en varias rutas. Los denominadores route-specific permanecen separados. Para route-specific se mantienen route_id semántico, route_record_id y snapshot exactos.
 
 Esta aceptación no cierra la gramática/versionado completo de universe_definition, el mapping físico ni el control C0 implementado/auditado. Estos gates permanecen OPEN/CONDITIONAL. No schema change, fixtures ni ejecución autorizados.
+
+
+
+## 20.10. Gramática versionada de universe_definition — propuesta UDG-01
+
+**Estado:** propuesta documental, no aceptada como contrato final. DEC-C10-070/071/072 prevalecen sobre cualquier redacción histórica anterior de este protocolo.
+
+### 20.10.1. Separación entre identidad C0 y contenido de la definición
+
+La tupla C0 conserva exactamente nueve componentes: `contract_id`, `contract_version`, `instance_id`, `instance_version`, `snapshot_id`, `snapshot_object_record_id`, `stage_key`, `route_id`, `object_class`. `dimension` permanece fuera de la tupla, como atributo independiente de COVERAGE_REGISTER.
+
+`universe_definition/version` porta una definición estructurada y versionada del universo que justifica el denominador de ese scope. No reemplaza ningún componente C0, no es un registro de miembro y no es el resultado del control C0.
+
+### 20.10.2. Envelope candidato
+
+Se propone un objeto JSON UTF-8 con esta estructura lógica (campos ilustrativos normativos solo si la propuesta se acepta):
+
+| Campo | Cardinalidad | Regla propuesta |
+|---|---:|---|
+| `schema_id` | 1 | Literal `TGCV-C10S-UNIVERSE` |
+| `schema_version` | 1 | Versión semántica de la gramática, separada de la versión de instancia/contrato |
+| `universe_id` | 1 | Identidad estable del universo definido |
+| `universe_revision` | 1 | Entero positivo, inmutable por revisión |
+| `scope` | 1 | Los nueve componentes C0, sin campos adicionales en su identidad |
+| `membership_mode` | 1 | `EXPLICIT` o `RULE_DEFINED` |
+| `member_refs` | 0..N | Referencias tipadas y versionadas, ordenadas canónicamente; obligatorias si EXPLICIT |
+| `inclusion_rule_ref` | 0..1 | Referencia exacta a regla/version; obligatoria si RULE_DEFINED |
+| `exclusion_rule_refs` | 0..N | Reglas exactas de exclusión, si existen; no pueden contradecir inclusión sin resolución explícita |
+| `source_manifest_refs` | 1..N | Fuentes/manifiestos que permiten reconstruir el universo y su cobertura |
+| `declared_member_count` | 1 | Entero no negativo; igual a la cardinalidad deduplicada del universo declarado |
+| `provenance_ref` | 1 | Identidad/versionado de la procedencia de la definición |
+
+La referencia `scope` replica los nueve componentes aceptados para permitir inspección autocontenida, pero el consumidor debe comprobar igualdad exacta con los campos C0 externos; no crea una segunda identidad independiente.
+
+### 20.10.3. Reglas de route binding
+
+- Si `scope.route_id = C10S_SCOPE_GLOBAL`, no se declara `route_record_id` como ruta focal. El universo es independiente de una ruta concreta.
+- En scope route-specific, `route_id` es la identidad semántica y el manifiesto debe resolver un único `route_record_id` exacto para el snapshot fijado.
+- El token global no puede colisionar con un route_id real. La colisión es FAIL.
+- No se admiten NULL, cadena vacía, NONE, F ni A como sustitutos.
+
+### 20.10.4. Member reference tipado
+
+Cada `member_ref` candidato contiene `object_class`, `object_id`, `object_record_id` y, cuando aplique, `owner_ref` y `source_record_ref`. La clase del miembro debe coincidir con `scope.object_class`. Las referencias deben resolver a registros de la misma instancia y snapshot/etapa, salvo que una regla de mapping aceptada defina explícitamente una proyección entre etapas. No se permite resolver identidad solo por nombre, valor, hash o posición de array.
+
+Para `membership_mode=EXPLICIT`, member_refs es la enumeración del denominador; duplicados exactos son FAIL, referencias no resolubles UNKNOWN y contradicciones de identidad FAIL. Para `RULE_DEFINED`, inclusion_rule_ref y todas sus dependencias deben estar versionadas y el resultado debe ser reproducible; mientras no exista evaluación autorizada, la completitud queda UNKNOWN.
+
+### 20.10.5. Canonicalización y hash — propuesta
+
+Se propone canonicalización JSON determinista: UTF-8, Unicode NFC, claves de objeto ordenadas lexicográficamente, sin whitespace no semántico, arrays de referencias ordenados por (object_class, object_id, object_record_id), números enteros en forma decimal canónica y prohibición de NaN/Infinity. El hash candidato es SHA-256 sobre los bytes canonicalizados. El hash no sustituye identidad ni versión; se almacena como checksum de contenido y debe poder recalcularse.
+
+No se ha fijado aún una dependencia normativa de implementación (por ejemplo, RFC/JCS), ni se acepta todavía esta política de canonicalización/hash.
+
+### 20.10.6. Versionado, compatibilidad y mutabilidad
+
+- `schema_version`: semver de la gramática; cambio incompatible de estructura/semántica requiere major; adición compatible minor; corrección editorial sin cambio semántico patch.
+- `universe_revision`: entero monotónico por `universe_id`; una revisión publicada es inmutable. Cambio de miembros, reglas, fuentes, scope o denominador crea revisión nueva.
+- `contract_version` e `instance_version` conservan su ciclo independiente aceptado por DEC-C10-069.
+- El hash identifica contenido exacto, no equivalencia semántica.
+- No se infiere compatibilidad entre versiones; requiere regla explícita y comprobación del mismo scope C0.
+
+### 20.10.7. Invariantes y adjudicación
+
+1. La tupla interna scope debe ser idéntica a la tupla C0 externa.
+2. Todas las referencias deben resolver dentro del contrato/instancia y snapshot fijados, o contar con una proyección de etapa explícita.
+3. `declared_member_count` debe igualar el conjunto deduplicado de miembros; nunca se corrige automáticamente.
+4. EXPLICIT exige lista completa; RULE_DEFINED exige regla y dependencias cerradas.
+5. La cobertura de fuentes debe justificar exhaustividad; la lista vacía no prueba universo vacío por sí sola.
+6. La versión/hash deben corresponder al contenido recuperado; discrepancia demostrada = FAIL.
+7. Dato requerido ausente/no resoluble = UNKNOWN; contradicción demostrada = FAIL; PASS requiere todos los invariantes aplicables y exhaustividad demostrada.
+8. Un universo de cardinalidad cero solo puede declararse con fuente y regla de enumeración exhaustivas que demuestren cero miembros.
+
+### 20.10.8. Alternativas de representación
+
+| Alternativa | Descripción | Evaluación provisional |
+|---|---|---|
+| U1 | Envelope JSON autocontenido dentro de universe_definition, versión/hash registrados por separado | Recomendada; portable y auditable |
+| U2 | Cadena compacta con delimitadores | Rechazada provisionalmente: escaping, cardinalidad y tipos ambiguos |
+| U3 | Referencia externa a manifiesto versionado | Útil como optimización, pero necesita resolver inmutabilidad/disponibilidad; no basta sola |
+
+Se recomienda U1 con referencias externas permitidas solo como soporte, no como sustituto del envelope autocontenido y su hash. No queda aceptada.
+
+### 20.10.9. Límites del gate
+
+La propuesta no cierra mappings físicos CMP/PAR/REF/RUL/MET, reglas de pertenencia por clase, el control independiente C0, ni la compatibilidad del campo físico U_G. No crea fixtures, parser, validator, snapshots o scopes. No modifica schema, no constituye Design Freeze y no autoriza implementación ni ejecución científica.
