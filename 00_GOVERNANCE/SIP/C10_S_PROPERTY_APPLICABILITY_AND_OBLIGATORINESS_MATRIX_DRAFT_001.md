@@ -451,3 +451,27 @@ Las seis FK tipadas de CLAIM_EVIDENCE_LINK y las FKs Opción A siguen siendo int
 ### 19.11. DEC-C10-077 — límites IAM aceptados para REF
 
 Quedan aceptadas las cuatro capas separadas: membership del universo; referencias UDG del envelope; extremos funcionales de REF; FK estructurales U_G. No comparten denominador ni obligatoriedad por defecto. IAM aún debe declarar, ex ante y por clase/rol/extremo/stage_key/scope, dominios, cardinalidades, REQUIRED/OPTIONAL, endpoints internos/externos, integridad, mapping M y evidencia. DEC-C10-077 no asigna esos valores ni cierra applicability.
+
+
+### 19.12. DEC-C10-078 — contrato lógico de filas IAM aceptado
+
+**ACEPTADO POR EL USUARIO — contrato documental lógico.** Se acepta la estructura de cuatro capas y el contrato lógico de filas IAM, sin convertir esta aceptación en schema físico, roster exhaustivo ni IAM poblado.
+
+**Capas:**
+
+1. **L1 — Membership del universo:** pertenencia de objetos CMP/PAR/REF/RUL/MET al universo declarado, con identidad lógica y referencia exacta al registro/versionado.
+2. **L2 — Referencias del envelope UDG:** referencias tipadas usadas para membership, owner, source, reglas de inclusión/exclusión, dependencias y provenance. Los ejemplos `MEMBER`, `OWNER`, `SOURCE`, `INCLUSION_RULE`, `EXCLUSION_RULE`, `DEPENDENCY` y `PROVENANCE` son ilustrativos; `ref_role` no crea por sí mismo un objeto REF.
+3. **L3 — Extremos funcionales REF:** REF es objeto con identidad propia y extremos tipados; SOURCE/TARGET es patrón binario, no catálogo cerrado. N-aria requiere representación/grupo explícito.
+4. **L4 — FK/vínculos estructurales U_G:** relaciones estructurales de registros/tablas U_G; no se cuentan como REF por defecto salvo declaración de dominio independiente, explícita y justificada.
+
+Las capas no comparten automáticamente universo, denominador, obligatoriedad ni cardinalidad.
+
+**Contrato lógico de fila:** `iam_rule_id`, `layer`, `source_class`, `source_identity_rule`, `role_namespace`, `role_key`, `endpoint_position`, `target_domain`, `min_cardinality`, `max_cardinality`, `requiredness`, `applicability_trigger`, `stage_key`, `scope_mode`, `route_binding`, `version_snapshot_binding`, `integrity_rule`, `mapping_rule`, `evidence_rule`, `adjudication` y `rationale/provenance`. Es un contrato lógico contextual: no exige que todos los campos se apliquen a todas las capas ni les asigna valores por defecto.
+
+Se reutilizan los siete `stage_key` aceptados en DEC-C10-071 y el token de scope global `C10S_SCOPE_GLOBAL` de DEC-C10-072; no se reabren ni amplían aquí.
+
+**No aceptado/no fijado:** vocabulario cerrado de roles/namespaces; cardinalidades numéricas; valores finales REQUIRED/OPTIONAL/CONDITIONAL; endpoints externos; enum `relation_type`; mapping M concreto o split/merge; schema físico/DDL/FKs adicionales/API/registry/resolver; roster exhaustivo o IAM poblado.
+
+El siguiente desarrollo puede proponer vocabularios candidatos por capa, separando roles UDG de roles funcionales REF. Cardinalidades, obligatoriedad y reglas concretas permanecen OPEN. No se modifica DEC-C10-077 ni se autoriza implementación, validator/parser, fixtures, Design Freeze, simulación, experimento o ejecución científica.
+
+Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-078_IAM_LOGICAL_ROW_CONTRACT_ACCEPTANCE.md`.
