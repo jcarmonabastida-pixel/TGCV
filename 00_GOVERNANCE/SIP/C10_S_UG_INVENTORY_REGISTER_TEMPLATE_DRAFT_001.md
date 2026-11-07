@@ -782,3 +782,10 @@ Se incorpora como overlay documental de C10-S, sin añadir columnas ni cambiar l
 - Pertenencia 1 requiere evidencia exacta; 0 requiere inventario del objeto y ROUTE_STEP exhaustivos y solo significa no miembro de esa ruta; ? ante mapping/cobertura incompletos; NA solo por IAM ex ante.
 
 Alternativas evaluadas: G1 token reservado (recomendado provisionalmente), G2 NULL/vacío (ambiguo y no recomendado), G3 scope_kind separado (requiere reabrir tupla/schema). No se acepta G1 aún. No se usa NONE/F/A como route_id. No se crean snapshots/scopes ni se autoriza implementación/ejecución.
+
+
+### 18.14. DEC-C10-072 — token de scope global aceptado
+
+Se acepta `C10S_SCOPE_GLOBAL` como literal reservado del slot route_id C0: “sin restricción a una ruta concreta”. No significa que no existan rutas ni que un objeto carezca de pertenencia a rutas. El token no puede colisionar con route_id semántico real; colisión = FAIL. No usar NULL, vacío, NONE, F ni A como sustitutos.
+
+El scope global cuenta cada identidad elegible una sola vez dentro de clase/etapa/snapshot; los scopes route-specific mantienen denominadores independientes y requieren route_id, route_record_id y snapshot exactos. La gramática completa universe_definition/version sigue OPEN; esta decisión no cambia el schema ni autoriza implementación/ejecución.
