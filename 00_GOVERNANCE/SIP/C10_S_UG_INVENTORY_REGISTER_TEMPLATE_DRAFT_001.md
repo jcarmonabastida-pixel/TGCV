@@ -822,3 +822,10 @@ Se propone restringir números UDG-01 a enteros seguros no negativos, prohibir n
 C1 RFC 8785 JCS con prevalidación TGCV queda ACEPTADA como política documental. Se aplican las reglas de §18.17: NFC validada previamente en campos marcados sin autocorrección; propiedades ordenadas por JCS; arrays de conjunto ordenados por identidad antes de JCS y secuencias preservadas; enteros seguros no negativos; null prohibido; omisión distinta de array vacío; SHA-256 del contenido canónico separado del hash del artefacto fuente y con metadatos fuera del contenido hasheado. Perfil: TGCV-C10S-JCS-1.
 
 La igualdad de hash solo acredita bytes canónicos iguales bajo mismo perfil; no equivalencia semántica ni exhaustividad. DEC-C10-074 no autoriza hash de producción, parser/validator, fixtures, schema change, Design Freeze ni ejecución. Prevalece sobre el estado no aceptado consignado en §18.17.
+
+
+### 18.19. UDG-03 — comparación semántica (propuesta no aceptada)
+
+La comparación de universos produce resultados separados para artefacto, representación canónica, identidad, revisión, igualdad extensional de miembros, equivalencia definicional y compatibilidad entre revisiones. No colapsar en un booleano. Projection-ID conserva identity/revision/schema/contract/instance/C0/stage/route/snapshot/profile; Projection-SEM compara membership, refs tipadas/versiones, reglas/AST/dependencias, exclusiones, fuentes/cobertura y cardinalidad. Provenance/timestamp/hash son trazabilidad, no miembros; cambios de C0, snapshot, ruta, instancia o versión de objeto pueden impedir comparación.
+
+Resultados por dimensión: EQUAL, DIFFERENT, UNKNOWN, NOT_COMPARABLE; FAIL es incumplimiento de integridad. Diferentes scopes/snapshots sin mapping explícito = NOT_COMPARABLE; falta de evidencia = UNKNOWN; contradicción = FAIL. Igualdad extensional exige dos conjuntos completos y scopes comparables; equivalencia definicional exige además demostrar reglas/AST/domínios/dependencias equivalentes. Mismo conjunto EXPLICIT/RULE_DEFINED no prueba equivalencia de definición. UDG-03 NO ACEPTADA; sin comparator, fingerprint, fixtures, schema change o ejecución.
