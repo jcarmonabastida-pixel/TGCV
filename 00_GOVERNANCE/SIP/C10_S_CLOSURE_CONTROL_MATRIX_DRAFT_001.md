@@ -1258,3 +1258,18 @@ Referencia: C10_S_ABSTRACT_PARAMETER_AND_SOURCE_DESTINATION_MAPPING_MATRIX_DRAFT
 | IAM-ORACLE-08h | Valores/defaults, mapping AST, UNKNOWN/conflicto, cegamiento y serialización | OPEN |
 
 Referencia: C10_S_PROPERTY_APPLICABILITY_AND_OBLIGATORINESS_MATRIX_DRAFT_001.md §17. Requisitos documentales no equivalen a aceptación, freeze, validación ni autorización de implementación/ejecución.
+
+## 52. Estado del gate ROSTER-IAM-09 — roster funcional mínimo
+
+| ID | Requisito | Estado |
+|---|---|---|
+| ROSTER-IAM-09a | CMP focal y versión aceptados por DEC-C10-069 | ACCEPTED |
+| ROSTER-IAM-09b | Dos PAR y RUL funcional aceptados por DEC-C10-068 | ACCEPTED |
+| ROSTER-IAM-09c | MET obligatorio y POL fuera del núcleo mínimo | ACCEPTED / DECISION-BASED |
+| ROSTER-IAM-09d | RETRY-COUNT excluido del roster confirmatorio | SUPERSEDED BY DEC-C10-068 |
+| ROSTER-IAM-09e | Estados/defaults de PAR sin defaults inventados | DOCUMENTED REQUIREMENT |
+| ROSTER-IAM-09f | Inventario exhaustivo CMP/PAR/RUL/REF por snapshot | OPEN |
+| ROSTER-IAM-09g | Cobertura, REF=0, valores por escenario y mapping/IAM/oracle IDs | OPEN |
+| ROSTER-IAM-09h | IAM O/C/NA/? sellado pre-Z/B | OPEN |
+
+Referencia: matriz IAM §18. El roster funcional mínimo no equivale a inventario exhaustivo, IAM sellado, Design Freeze o autorización de ejecución.
