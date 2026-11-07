@@ -230,3 +230,11 @@ Plantilla a evaluar —no regla aceptada—: OR(NEQ(PAR-SVC-ENABLED,true), IN(PA
 ## 13. Instancia de servicio sintético — extensión candidata
 
 La instancia de referencia propuesta usa CMP-SERVICE-LOGIC, PAR-SVC-ENABLED, PAR-SVC-PROFILE y RUL-SVC-ENABLE-PROFILE-01. La regla exige ENABLED=true ⇒ PROFILE∈{STANDARD,READ_ONLY}; dominios y semántica están especificados en `C10_S_SYNTHETIC_LOGICAL_SERVICE_FUNCTIONAL_CONTRACT_DRAFT_001.md`. Estos IDs son etiquetas lógicas de diseño, no claves serializadas ni instancia aprobada. IAM definitivo, versiones, mapping, snapshots, evidencia y oráculo permanecen abiertos.
+
+## 12. Especialización documental propuesta para la instancia de servicio aceptada
+
+DEC-C10-068 acepta conceptualmente el contrato funcional ENABLED/PROFILE/RUL. La propuesta de identidad/versionado que lo especializa es `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md`; sus valores no son canónicos hasta aceptación explícita.
+
+Candidatos: contract_id=C10S-SVC-REQUEST-PROCESSOR; contract_version=1.0.0; instance_id=C10S-SVC-REQUEST-PROCESSOR-001; instance_version=1; component_id=CMP-SERVICE-LOGIC-001; component_class=SERVICE_LOGIC. CMP-SERVICE-LOGIC es owner/rol lógico provisional, no identidad única. PAR-SVC-ENABLED, PAR-SVC-PROFILE y RUL-SVC-ENABLE-PROFILE-01 mantienen los identificadores de DEC-C10-068. RETRY-COUNT excluido.
+
+Esta especialización no resuelve REF=0: requiere declaración IAM y cobertura exhaustiva. MET debe enlazar contrato/instancia/CMP, C_src/C_dst, M, IAM, oráculo, procedencia y hash de artefacto. El hash solo se calcula después de fijar serialización canónica. No hay instancia serializada ni IAM sellado.
