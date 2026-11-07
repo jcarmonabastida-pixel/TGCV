@@ -1035,3 +1035,11 @@ Se incorpora en la matriz existente C10_S_ABSTRACT_PARAMETER_AND_SOURCE_DESTINAT
 Se reconcilian explícitamente las referencias históricas: RETRY-COUNT de §15 queda fuera del núcleo por DEC-C10-068 y la aceptación de IDs pendiente de §18 queda supersedida por DEC-C10-069. No se infiere equivalencia por nombres/IDs ni se declara REF=0.
 
 **Estado:** propuesta documental persistida; no aceptada/congelada. IAM, valores/defaults concretos, mapping físico, serialización/MET, oráculo, cobertura y evidencia siguen OPEN. Siguiente gate: reconciliar esta propuesta con IAM y contrato de oráculo, sin crear fixtures ni ejecutar. No Design Freeze, implementación o ejecución autorizadas.
+
+## 16.33. Reconciliación IAM/Oráculo tras DEC-C10-069
+
+La matriz IAM §17 reconcilia las notas históricas de §16 con DEC-C10-069: contract_id/version, instance_id/version y component_id/class están aceptados. La identidad del CMP focal no determina cardinalidad global CMP ni inventario físico P1. Mapping_id, IAM_id, oracle_id y hash de artefacto permanecen pendientes de sus contratos/versiones.
+
+Se define como requisito documental que IAM instancie O/C/NA/? por ruta, etapa, objeto, propiedad, snapshot y cobertura; distinga C_src, S1/S2, C_dst declarado, C_dst aplicado y E_dst/runtime; y mantenga separados truth del DGP, salidas cegadas del Analizador y adjudicación posterior del Evaluador. El oráculo compara truth esperada con estado efectivamente observado; no convierte truth en evidencia ni C_dst declarado en C_dst aplicado.
+
+**Estado:** requisitos IAM/oráculo documentados, no aceptados ni congelados. Roster completo, valores/defaults por escenario, mapping/AST, política UNKNOWN/conflicto, evidencia admisible, cegamiento, suficiencia de cobertura y serialización siguen OPEN. No fixtures, schema ejecutable, parser, implementación ni ejecución científica.
