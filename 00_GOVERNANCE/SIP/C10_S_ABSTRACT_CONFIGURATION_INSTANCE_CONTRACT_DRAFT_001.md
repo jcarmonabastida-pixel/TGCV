@@ -221,17 +221,11 @@ Cada instancia debe contener al menos una RUL según DEC-C10-056. Para cada regl
 
 Plantilla a evaluar —no regla aceptada—: OR(NEQ(PAR-SVC-ENABLED,true), IN(PAR-SVC-PROFILE,D_profile_enabled)) bajo REQUIRE. Solo será elegible si una fuente funcional independiente justifica el subconjunto activo y este no vuelve la regla tautológica. Si no hay tal fuente, se sustituye por otra restricción constitutiva P0 antes de instanciar. No usar RETRY-COUNT, POL o variables P1 por conveniencia. RUL≥1 no se considera operacionalmente cerrado hasta completar esos campos y su prueba de preservación en F1/A1 y aplicación F2/A2.
 
-## 12. Especialización mínima del contrato RUL
-
-Cada instancia debe contener al menos una RUL según DEC-C10-056. Para cada regla, además de rule_id/scope/AST/resultado/efecto ya definidos, el IAM debe registrar fuente funcional, owner CMP, claves y dominios referidos, versión, precedencia si aplica, mapping M, predicados FP-03, cobertura y oráculo. El AST debe cumplir DEC-C10-054 y preservar UNKNOWN.
-
-Plantilla a evaluar —no regla aceptada—: OR(NEQ(PAR-SVC-ENABLED,true), IN(PAR-SVC-PROFILE,D_profile_enabled)) bajo REQUIRE. Solo será elegible si una fuente funcional independiente justifica el subconjunto activo y este no vuelve la regla tautológica. Si no hay tal fuente, se sustituye por otra restricción constitutiva P0 antes de instanciar. No usar RETRY-COUNT, POL o variables P1 por conveniencia. RUL≥1 no se considera operacionalmente cerrado hasta completar esos campos y su prueba de preservación en F1/A1 y aplicación F2/A2.
-
 ## 13. Instancia de servicio sintético — extensión candidata
 
 La instancia de referencia propuesta usa CMP-SERVICE-LOGIC, PAR-SVC-ENABLED, PAR-SVC-PROFILE y RUL-SVC-ENABLE-PROFILE-01. La regla exige ENABLED=true ⇒ PROFILE∈{STANDARD,READ_ONLY}; dominios y semántica están especificados en `C10_S_SYNTHETIC_LOGICAL_SERVICE_FUNCTIONAL_CONTRACT_DRAFT_001.md`. Estos IDs son etiquetas lógicas de diseño, no claves serializadas ni instancia aprobada. IAM definitivo, versiones, mapping, snapshots, evidencia y oráculo permanecen abiertos.
 
-## 12. Especialización documental propuesta para la instancia de servicio aceptada
+## 15. Especialización documental propuesta para la instancia de servicio aceptada
 
 DEC-C10-068 acepta conceptualmente el contrato funcional ENABLED/PROFILE/RUL. La propuesta de identidad/versionado que lo especializa es `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md`; sus valores no son canónicos hasta aceptación explícita.
 
