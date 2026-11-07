@@ -1388,3 +1388,17 @@ No puede emitirse PASS completo del control C0 hasta resolver los mappings aplic
 | C0-XW-13 | Tupla C0 | Nueve componentes conforme a DEC-C10-070 | RECONCILED |
 
 DEC-C10-071 cierra únicamente el vocabulario stage_key. Permanecen OPEN el token global, route_id exacto por universo, gramática completa de universe_definition/version y mappings por propiedad. No se crean columnas, scopes ni snapshots; no se reabre Opción A ni se autoriza implementación/ejecución.
+
+
+## 60. Scope global y route-specific — gate documental
+
+| ID | Requisito | Criterio / límite | Estado |
+|---|---|---|---|
+| C0-RT-01 | route_id semántico | Debe resolver route_record_id y snapshot exactos en universe_definition/version | OPEN |
+| C0-RT-02 | Token global | Candidato G1 `C10S_SCOPE_GLOBAL`; significa sin restricción a ruta, no ausencia/no pertenencia | PROPOSED — NOT ACCEPTED |
+| C0-RT-03 | Alternativas | G2 NULL/vacío ambiguo; G3 scope_kind separado requiere reabrir estructura/tupla | COMPARED |
+| C0-RT-04 | CMP/PAR/REF/RUL/MET | Crosswalk por clase/owner/propiedad; no inferir por nombre | DOCUMENTED PROPOSAL |
+| C0-RT-05 | Multi-ruta | Scopes route-specific separados; scope global cuenta objeto una vez; no sumar denominadores | DOCUMENTED PROPOSAL |
+| C0-RT-06 | Adjudicación | 1 exacto; 0 solo no pertenencia a ruta con universo/ROUTE_STEP completos; ? incompleto; NA IAM ex ante | DOCUMENTED PROPOSAL |
+
+No se acepta el token ni se modifica schema. La gramática de universe_definition/version, el mapping físico por propiedad y el control C0 implementado/auditado siguen OPEN/CONDITIONAL. No scopes/snapshots ni ejecución autorizados.
