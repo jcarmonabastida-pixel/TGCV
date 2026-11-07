@@ -1022,3 +1022,8 @@ La siguiente tarea documental reutiliza el contrato abstracto de instancia y el 
 **Reglas:** contrato semver para cambios semánticos; revisión entera inmutable para cambios de paquete; hash solo identifica serialización exacta después de congelar formato; IDs sin brazo/tiempo/resultado/plataforma; matching explícito para comparar snapshots. Versiones de C_src/C_dst, M, IAM y oráculo independientes.
 
 **Gate:** aceptar o revisar los IDs candidatos y la política de versionado; luego instanciar MET/IAM documentalmente y cerrar tabla de mapping semántico. No fijar valores de escenario ni REF=0 sin cobertura exhaustiva. No serialización ejecutable, fixtures, parser, pruebas, Design Freeze ni autorización de implementación/ejecución.
+
+
+## 16.31. Efecto de DEC-C10-069 — identidad/versionado CMP
+
+DEC-C10-069 acepta contract_id=C10S-SVC-REQUEST-PROCESSOR / 1.0.0, instance_id=C10S-SVC-REQUEST-PROCESSOR-001 / instance_version=1, component_id=CMP-SERVICE-LOGIC-001 / SERVICE_LOGIC y la política de versionado semver + revisión entera inmutable. CMP-SERVICE-LOGIC se conserva como rol/owner lógico. La propuesta §16.30 pasa de pendiente de aceptación a aceptada en IDs y política; MET físico, serialización canónica, IAM, mapping, cobertura, oráculo y evidencia siguen abiertos. Próximo gate: mapping semántico de CMP/PAR/RUL para F1/A1 y F2/A2, con preservación, aplicación y estados UNKNOWN explícitos. No freeze, fixtures, implementación ni ejecución autorizadas.
