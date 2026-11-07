@@ -1115,3 +1115,10 @@ Gate pendiente: definir token global y route_id exacto, gramática versionada de
 El protocolo de evidencia §20.8 compara G1 token reservado, G2 NULL/vacío y G3 scope_kind. Recomendación provisional G1 con literal candidato C10S_SCOPE_GLOBAL para “sin restricción a ruta concreta”; no significa ausencia de rutas ni no pertenencia. En route-specific, route_id semántico debe resolver route_record_id y snapshot exactos. CMP/PAR/REF/RUL/MET tienen reglas de pertenencia diferenciadas; ROUTE_STEP/record IDs exactos son evidencia para NODE/EDGE y no se sustituye por routes_affected.
 
 Scopes globales cuentan cada objeto una vez; scopes route-specific conservan denominadores separados. Pertenencia 1 requiere crosswalk exacto; 0 requiere cobertura exhaustiva y significa únicamente no pertenencia a esa ruta; ? ante mapping/cobertura incompletos; NA solo por IAM ex ante. El token no está aceptado y la gramática universe_definition/version sigue OPEN. No schema change ni autorización de implementación/ejecución.
+
+
+## 16.43. DEC-C10-072 — token global aceptado; gates restantes
+
+El literal reservado `C10S_SCOPE_GLOBAL` queda aceptado en el slot route_id C0 para “sin restricción a una ruta concreta”; no denota ausencia de rutas/no pertenencia/NA y no puede ser route_id semántico real. Colisión = FAIL. NULL/vacío/NONE/F/A no son sustitutos. Scope global cuenta cada identidad elegible una vez; route-specific mantiene denominadores independientes y requiere route_id + route_record_id + snapshot exactos.
+
+Cerrado: elección G1 y literal/semántica. Abiertos: gramática y versionado completos de universe_definition, mapping físico por clase/propiedad, controles C0 implementados y auditados, fixtures y cualquier Design Freeze. No se autoriza implementación ni ejecución científica.
