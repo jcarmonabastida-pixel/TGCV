@@ -789,3 +789,15 @@ Alternativas evaluadas: G1 token reservado (recomendado provisionalmente), G2 NU
 Se acepta `C10S_SCOPE_GLOBAL` como literal reservado del slot route_id C0: “sin restricción a una ruta concreta”. No significa que no existan rutas ni que un objeto carezca de pertenencia a rutas. El token no puede colisionar con route_id semántico real; colisión = FAIL. No usar NULL, vacío, NONE, F ni A como sustitutos.
 
 El scope global cuenta cada identidad elegible una sola vez dentro de clase/etapa/snapshot; los scopes route-specific mantienen denominadores independientes y requieren route_id, route_record_id y snapshot exactos. La gramática completa universe_definition/version sigue OPEN; esta decisión no cambia el schema ni autoriza implementación/ejecución.
+
+
+
+### 18.15. Envelope de universe_definition — propuesta UDG-01
+
+Se propone que `COVERAGE_REGISTER.universe_definition/version` represente un envelope JSON autocontenido y versionado. La identidad scope replica los nueve componentes C0 (contrato/versión, instancia/versión, snapshot/registro, stage_key, route_id, object_class); dimension permanece fuera. El envelope candidato incluye schema_id/schema_version, universe_id/universe_revision, scope, membership_mode, member_refs o inclusion_rule_ref, exclusion_rule_refs, source_manifest_refs, declared_member_count y provenance_ref.
+
+Dos modos: EXPLICIT enumera referencias tipadas (object_class, object_id, object_record_id y owner/source refs cuando aplique); RULE_DEFINED fija regla/version y dependencias. EXPLICIT exige lista exhaustiva; RULE_DEFINED no puede declararse completa sin regla versionada y resultado reproducible. Cero miembros requiere prueba exhaustiva; lista vacía por sí sola no demuestra cero.
+
+Route-specific resuelve route_id semántico a un route_record_id exacto. Global usa el token aceptado C10S_SCOPE_GLOBAL y no declara ruta focal. Duplicados/contradicciones demostrados = FAIL; referencias requeridas no resolubles = UNKNOWN; PASS exige scope idéntico a C0, fuentes exhaustivas, cardinalidad consistente y provenance íntegra.
+
+Se propone canonicalización determinista UTF-8/NFC, claves ordenadas, arrays de member_refs ordenados por identidad, enteros canónicos y SHA-256 del contenido canonicalizado. Hash no reemplaza identidad/versión. schema_version semver; universe_revision entero monotónico e inmutable; cambios de contenido crean revisión nueva. No queda aceptada la gramática ni la política de canonicalización/hash. No schema change, parser, fixtures, implementación o ejecución autorizados.
