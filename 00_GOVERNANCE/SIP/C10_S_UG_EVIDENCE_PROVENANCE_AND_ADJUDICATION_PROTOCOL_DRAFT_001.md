@@ -668,3 +668,82 @@ UDG-02 no está aceptada. No modifica DEC-C10-073 ni convierte RFC 8785/SHA-256 
 DEC-C10-074 acepta C1 (RFC 8785 JCS + prevalidación TGCV) como política documental de canonicalización del envelope U1, bajo las reglas UDG-02 §20.12: entrada UTF-8/JSON/I-JSON válida sin claves duplicadas/lone surrogates/NaN/Infinity; validación NFC previa solo para campos identificadores marcados, sin reescritura; orden de propiedades JCS; orden previo por identidad solo para arrays declarados conjuntos y conservación del orden secuencial; enteros seguros no negativos; null prohibido y omisión distinta de array vacío; SHA-256 de bytes canónicos con hash/metadatos fuera del envelope; separación source_artifact_hash/canonical_content_hash; perfil TGCV-C10S-JCS-1.
 
 La igualdad de canonical_content_hash bajo el mismo perfil acredita igualdad de bytes canónicos, no equivalencia semántica, exhaustividad ni verdad de fuentes. Perfiles distintos requieren recanonicalización desde fuente preservada o UNKNOWN/NOT_COMPARABLE. Esta aceptación no autoriza parser/validator, fixtures, hash de producción, schema change, Design Freeze, implementación ni ejecución científica; mapping físico y C0 independiente siguen abiertos. DEC-C10-074 prevalece sobre §20.12 que calificaba UDG-02 como no aceptada.
+
+
+## 20.14. Comparación semántica de universos versionados — propuesta UDG-03
+
+**Estado:** propuesta documental; NO ACEPTADA. Se apoya en U1/DEC-C10-073 y JCS/DEC-C10-074. No modifica el envelope, C0 ni el perfil de canonicalización.
+
+### 20.14.1. Principio: no colapsar niveles de igualdad
+
+La comparación produce un vector de resultados por dimensión; no un booleano único. Se distinguen:
+
+1. **Artefacto idéntico:** mismos bytes fuente y mismo source_artifact_hash verificado.
+2. **Representación canónica idéntica:** mismo perfil TGCV-C10S-JCS-1 y mismo canonical_content_hash recalculado.
+3. **Identidad de universo:** mismo universe_id. La identidad no implica misma revisión ni mismo contenido.
+4. **Misma revisión:** mismo universe_id + universe_revision, con artefacto y referencias recuperados y verificados. Si dos artefactos contradictorios reclaman la misma revisión, FAIL de integridad/inmutabilidad.
+5. **Igualdad extensional de miembros:** mismo conjunto completo de member identities bajo scope y snapshot comparables, aunque difieran procedencia, representación o modo EXPLICIT/RULE_DEFINED.
+6. **Equivalencia de definición:** mismas condiciones de inclusión/exclusión, reglas, dependencias, dominios y semántica de pertenencia; requiere demostrar equivalencia de las definiciones, no solo de los resultados observados.
+7. **Compatibilidad de revisiones:** relación dirigida y explícita entre revisiones (p. ej. SAME_MEMBERS, STRICT_SUPERSET, STRICT_SUBSET, REDEFINED, INCOMPARABLE), nunca inferida solo de revision number.
+
+### 20.14.2. Proyección semántica de comparación
+
+La comparación debe construir dos proyecciones separadas:
+
+- **Projection-ID (identidad/revisión):** universe_id, universe_revision, schema_id/version, contract_id/version, instance_id/version, scope C0, stage_key, route_id/route_record_id, snapshot exacto y perfil de canonicalización.
+- **Projection-SEM (contenido que define el universo):** membership_mode; conjunto de member_refs normalizados por identidad tipada y sus object_record_id/version; inclusión/exclusión; inclusion_rule_ref y versión/AST/dependencias cuando RULE_DEFINED; manifiestos/fuentes y límites de cobertura; declared_member_count; semántica de proyección entre etapas, si existe.
+
+Provenance, timestamp de captura, source_artifact_hash y canonical_content_hash son evidencia de procedencia/integridad, no miembros del conjunto. Se conservan y auditan, pero su cambio aislado no implica cambio semántico. En cambio, un cambio de snapshot, C0, route_record_id, instancia, versión de objeto o regla puede alterar el universo o impedir compararlo; no se elimina de la comparación como “metadato”.
+
+### 20.14.3. Requisitos previos de comparabilidad
+
+Antes de emitir igualdad/diferencia semántica, comprobar:
+
+- identidad y revisión recuperables e inmutabilidad de cada versión;
+- schema/perfil compatibles o recanonicalización reproducible desde las fuentes originales;
+- igualdad exacta de la tupla C0 (incluidos scope global o route-specific exacto), stage_key, snapshot y route_record_id cuando aplique;
+- misma frontera de contrato/instancia o una proyección/mapping explícito, versionado y validado entre ellas;
+- referencias de miembro resueltas a registros inmutables, con clases y versiones exactas;
+- exhaustividad demostrada de ambos universos y cobertura suficiente de fuentes/manifiestos;
+- reglas, dependencias y AST recuperables si la definición es RULE_DEFINED.
+
+Si difieren scope, etapa, snapshot, ruta o contrato/instancia sin mapping explícito, el resultado es NOT_COMPARABLE (no DIFFERENT). Si falta evidencia requerida, UNKNOWN. Una contradicción demostrada (p. ej. misma revisión con dos contenidos válidos incompatibles, count incorrecto, referencia que contradice la clase) es FAIL.
+
+### 20.14.4. Reglas de igualdad/diferencia
+
+- **Artefacto:** EQUAL solo si bytes fuente completos coinciden; distinto hash verificado = DIFFERENT a nivel artefacto.
+- **Canónico:** EQUAL solo con mismo perfil y hash recalculado coincidente; hash diferente = DIFFERENT a nivel de representación canónica.
+- **Identidad:** EQUAL si universe_id coincide; DIFFERENT si no coincide. Esto no responde igualdad de contenido.
+- **Misma revisión:** EQUAL solo si mismo universe_id/revision y no hay conflicto de contenido; conflicto = FAIL.
+- **Extensional:** comparar conjuntos completos de identidades tipadas exactas. EQUAL si conjuntos idénticos y scope/snapshot compatibles. DIFFERENT si ambos completos/comparables y existe al menos una pertenencia distinta. UNKNOWN si cualquiera no es exhaustivo o hay refs sin resolver. NOT_COMPARABLE si scopes/denominadores no coinciden ni existe proyección autorizada.
+- **Definicional:** EQUAL requiere equivalencia probada de reglas/AST, dominios, dependencias y condiciones de aplicación. Coincidencia extensional en un snapshot no basta. DIFFERENT requiere contradicción demostrada de semántica/reglas; de otro modo UNKNOWN.
+- **Compatibilidad:** clasificar relación dirigida entre revisiones solo después de comparación extensional y, cuando la pregunta lo requiera, definicional. No inferir “superset/subset” de cardinalidades solamente.
+
+### 20.14.5. Resultados controlados
+
+Cada dimensión usa uno de estos resultados:
+
+- `EQUAL`: igualdad demostrada en esa dimensión bajo requisitos cumplidos.
+- `DIFFERENT`: diferencia demostrada en esa dimensión con ambos lados comparables y evidencia completa.
+- `UNKNOWN`: información/evidencia insuficiente o referencias no resolubles.
+- `NOT_COMPARABLE`: objetos válidos pero distintos en scope/contrato/snapshot/perfil no armonizable; no equivale a diferencia.
+- `FAIL`: violación de integridad/contrato (p. ej. hash incorrecto, misma revisión mutable, cardinalidad contradictoria); es estado de conformidad, no una clase de igualdad.
+
+El informe registra además reason_code, evidencia utilizada, perfiles/versions, scope comparado y dimensión. No se permite elevar UNKNOWN/NOT_COMPARABLE a PASS ni resumir el vector como “equivalente” si alguna dimensión crítica está abierta.
+
+### 20.14.6. Ejemplos límite
+
+| Caso | Artefacto/canónico | Extensional | Definicional | Dictamen |
+|---|---|---|---|---|
+| Pretty-print distinto, JCS idéntico | Artefacto DIFFERENT; canónico EQUAL | Puede ser EQUAL | Puede ser EQUAL | No hay cambio de contenido canónico |
+| Provenance/timestamp cambia, mismo scope y miembros exhaustivos | Canónico puede DIFFERENT | EQUAL | EQUAL si reglas idénticas | Nueva evidencia de procedencia, no nuevo universo semántico |
+| Mismo universe_id, nueva revisión y miembro añadido | DIFFERENT | DIFFERENT | Depende de regla/cambio | Nueva revisión; relación superset solo si ambos exhaustivos |
+| Mismo conjunto materializado, EXPLICIT frente a RULE_DEFINED | DIFFERENT | EQUAL | No demostrado por ello | Igualdad extensional, definición aún por comparar |
+| Mismo nombre de miembro, distinto object_record_id/version | Puede variar | DIFFERENT o UNKNOWN si mapping no resuelve | UNKNOWN | No inferir identidad por nombre |
+| Mismo hash, scope/snapshot distinto en metadatos externos | Hash solo no resuelve | NOT_COMPARABLE | NOT_COMPARABLE | Hash no anula C0 ni snapshot |
+| Scope global frente a route-specific | Cualquier | NOT_COMPARABLE por defecto | NOT_COMPARABLE | No mezclar denominadores; proyección explícita requerida |
+| Lista vacía sin evidencia exhaustiva | Puede ser canónica | UNKNOWN | UNKNOWN | No prueba universo vacío |
+
+### 20.14.7. Límites
+
+UDG-03 no está aceptada. No crea fingerprint semántico, algoritmo automático de equivalencia, regla de migración, parser/comparator, fixtures, schema change ni autorización de ejecución. No modifica las decisiones DEC-C10-073/074. La equivalencia semántica permanece un juicio sustentado por evidencia, no una propiedad del hash.
