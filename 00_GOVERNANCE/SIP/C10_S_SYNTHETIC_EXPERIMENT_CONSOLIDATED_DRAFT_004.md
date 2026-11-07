@@ -8051,7 +8051,7 @@ Campos exactos, evidencia, reglas por clave y oráculo siguen abiertos. Sin fixt
 
 ## 172. Roster PAR candidato para la unidad lógica de servicio
 
-Se documenta como propuesta de especialización, no como decisión aceptada, un roster de tres roles abstractos: PAR-SVC-ENABLED (BOOL/REQUIRED), PAR-SVC-PROFILE (ENUM/REQUIRED, D_profile finito con ≥2 símbolos abstractos) y PAR-SVC-RETRY-COUNT (INT/OPTIONAL, D_retry entero no negativo acotado por N_retry_max pendiente). No son claves reales ni valores de escenario. RETRY-COUNT solo se conserva si pertenece al contrato P0 del servicio lógico; no representa capacidad o recursos P1.
+Nota de precedencia DEC-C10-068: el roster de tres roles descrito aquí es histórico y queda supersedido en cuanto a RETRY-COUNT. El núcleo aceptado conceptualmente contiene solo PAR-SVC-ENABLED (BOOL/REQUIRED) y PAR-SVC-PROFILE (ENUM/REQUIRED); PAR-SVC-RETRY-COUNT queda excluido. Los dominios y semántica aceptados se detallan en §175 y en el contrato funcional. No son claves físicas ni valores de escenario.
 
 ENABLED/PROFILE admiten VALUE y DEFAULT con contrato explícito; no ABSENT/NULL. RETRY-COUNT admite ABSENT/VALUE y DEFAULT con contrato; NULL solo si se especifica. DEFAULT distingue DECLARED/INHERITED y ENV_RESOLVED permanece en E_dst. DECIMAL/STRING son extensiones condicionales; REF usa preferentemente clase REF para evitar duplicación. No se exige instanciar todos los tipos del contrato abstracto.
 
