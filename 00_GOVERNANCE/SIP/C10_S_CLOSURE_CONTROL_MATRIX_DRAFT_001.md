@@ -1466,3 +1466,18 @@ No equivale a schema freeze ni autoriza parser, validator, fixtures, mapping fí
 | UDG-16 | Perfil/versiones | Perfil identificado/versionado; perfiles distintos no comparables sin recanonicalización | PROPOSED |
 
 UDG-02 no está aceptada. No hash de producción, parser/validator, fixtures, schema change ni ejecución autorizados.
+
+
+## 65. DEC-C10-074 — estado de canonicalización UDG-02
+
+| ID | Requisito | Criterio | Estado |
+|---|---|---|---|
+| UDG-10 | Perfil | RFC 8785 JCS + prevalidación TGCV; TGCV-C10S-JCS-1 | ACCEPTED — DEC-C10-074 |
+| UDG-11 | Unicode | NFC previa solo en campos marcados; sin reescritura | ACCEPTED |
+| UDG-12 | Arrays | Conjuntos ordenados por identidad antes de JCS; secuencias preservadas | ACCEPTED |
+| UDG-13 | Números/null | Enteros seguros no negativos; null prohibido; omisión ≠ [] | ACCEPTED |
+| UDG-14 | Hashes | SHA-256 canónico separado de hash de fuente; metadatos fuera del envelope | ACCEPTED — política documental |
+| UDG-15 | Semántica | Igual hash/perfil ≠ equivalencia semántica/exhaustividad | ACCEPTED |
+| UDG-16 | Perfil/versiones | Perfil identificado; perfiles diferentes requieren recanonicalización o UNKNOWN | ACCEPTED — principio |
+
+No hash de producción, parser/validator, fixtures, schema change, Design Freeze ni ejecución autorizados.
