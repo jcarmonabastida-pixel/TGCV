@@ -264,3 +264,55 @@ Truth esperada, salida del Analizador y adjudicación del Evaluador se conservan
 No puede congelarse IAM/oráculo hasta que estén definidos y versionados: mapping_id, IAM_id, oracle_id; roster CMP completo y cobertura; valores/defaults concretos por escenario; snapshots y reglas de captura; mapping de AST/operadores y política de UNKNOWN/conflicto; evidencia admisible y criterios de suficiencia; cegamiento, momento de liberación de truth y hash/procedencia de artefactos. No se fijan aquí defaults, tolerancias, fixture, parser, serialización ni schema.
 
 **Estado:** identidad CMP reconciliada con DEC-C10-069; IAM operativo y contrato del oráculo especificados solo a nivel de requisitos. No aceptados ni congelados. No Design Freeze, implementación, validación ejecutable o ejecución científica.
+
+## 18. Roster mínimo de referencia y reconciliación de slots PAR (2026-11-07)
+
+### 18.1. Base normativa y roster funcional aceptado
+
+El roster funcional mínimo conocido se deriva conjuntamente de DEC-C10-056, DEC-C10-068 y DEC-C10-069. No se infiere el universo completo de componentes ni referencias a partir de la identidad del CMP focal.
+
+| Clase | ID lógico | Cardinalidad mínima | Estado de aceptación | Tratamiento IAM |
+|---|---|---:|---|---|
+| CMP | `CMP-SERVICE-LOGIC-001` | 1 focal | Identidad/clase aceptadas por DEC-C10-069 | REQUIRED; registrar inventario completo CMP y cobertura antes de Z/B |
+| PAR | `PAR-SVC-ENABLED` | 1 | Contrato funcional aceptado por DEC-C10-068 | REQUIRED; BOOL {false,true} |
+| PAR | `PAR-SVC-PROFILE` | 1 | Contrato funcional aceptado por DEC-C10-068 | REQUIRED; ENUM {STANDARD, READ_ONLY, DISABLED} |
+| RUL | `RUL-SVC-ENABLE-PROFILE-01` | 1 | Contrato funcional aceptado por DEC-C10-068 | REQUIRED; REQUIRE, scope y semántica aceptados |
+| REF | Sin IDs asignados | 0 o más | No se ha aceptado un inventario vacío ni un roster de referencias | Si REF=0, exige IAM pre-Z/B e inventario/cobertura exhaustivos; si no, ? |
+| POL | Ausente por diseño en núcleo mínimo | 0 | Exclusión condicional del núcleo conforme a DEC-C10-053 | NA/ausente por diseño solo bajo declaración ex ante; no elimina FP-05 |
+| MET | Identidades/versiones/procedencia | Obligatorio | Obligación estructural aceptada | Registrar vínculos y procedencia; serialización/hash físico OPEN |
+
+Este es el roster **mínimo funcional aceptado**, no un inventario exhaustivo ya observado de C_src, S1/S2 o C_dst. CMP focal=1, PAR aceptados=2 y RUL aceptada=1 son identificables; no se afirma que no existan CMP/PAR/RUL adicionales hasta completar inventario y cobertura. DEC-C10-056 impide que una clase constitutiva exigida se omita o se recodifique como NA.
+
+### 18.2. Supersesión del slot RETRY-COUNT
+
+La fila `PAR-SVC-RETRY-COUNT` de §13 es una propuesta histórica anterior a DEC-C10-068 y queda **supersedida para el núcleo confirmatorio base**. No pertenece al roster aceptado, no tiene requiredness ni dominio confirmatorio, y no debe aparecer en fixtures/IAM como slot base. Una futura ampliación requeriría justificación P0, decisión/versionado explícitos y revisión del contrato/IAM; no se incorpora por defecto.
+
+### 18.3. Estados de los dos PAR aceptados
+
+Para evitar inventar defaults:
+
+- El contrato funcional acepta las claves, tipos y dominios, pero no declara un valor DEFAULT para ninguna.
+- El estado confirmatorio candidato es VALUE con valor perteneciente al dominio tipado.
+- ABSENT y NULL son estados no admisibles para estos parámetros REQUIRED; si se observan con cobertura válida en el objeto inspeccionado, constituyen incumplimiento del contrato/IAM.
+- DEFAULT no puede utilizarse como sustituto de VALUE mientras no exista default contractual explícito con kind, origen, scope, precedencia y versión. Si aparece DEFAULT sin esa declaración, se adjudica ?/CONTRACT_ERROR según el predicado predefinido; nunca se inventa el valor.
+- DEFAULT_ENV_RESOLVED es una observación del entorno/runtime y no un estado del paquete declarativo P0.
+
+No se eligen valores por escenario ni se prescribe ENABLED=true/false o PROFILE concreto: la regla aceptada admite los contrastes definidos en DEC-C10-068. La asignación de valores para cada DGP/escenario debe ser predeclarada por el diseño experimental, no inferida del mapping.
+
+### 18.4. Aplicabilidad por etapa y objeto
+
+| Objeto/etapa | CMP focal | PAR-ENABLED | PAR-PROFILE | RUL aceptada | REF |
+|---|---|---|---|---|---|
+| C_src | Inventario/clase/scope | REQUIRED | REQUIRED | REQUIRED | Inventario y cobertura |
+| F1→S2 / A1→S1 | Identidad/clase preservada | Tipo/estado/valor preservados | Tipo/estado/dominio/valor preservados | Identidad/scope/AST/operandos/efecto preservados | Correspondencias/integridad si existen |
+| C_dst^decl | Inventario declarado | REQUIRED | REQUIRED | REQUIRED | Declaraciones de referencias |
+| F2/A2→C_dst^applied | CMP efectivamente aplicado | Estado/valor efectivos | Estado/valor efectivos | Regla efectiva y evaluable | Integridad observada |
+| E_dst/runtime | No confundir con CMP P0 | No sustituye PAR | No sustituye PAR | No sustituye RUL | Dependencias ambientales separadas |
+
+La tabla define qué debe inventariarse/adjudicarse, no afirma que las etapas o artefactos ya existan ni que hayan pasado. Cada ruta se evalúa independientemente. Si un snapshot o universo no se puede inspeccionar, el resultado es ? y no NA.
+
+### 18.5. Gate de cierre de roster/IAM
+
+Antes de sellar IAM pre-Z/B faltan: inventario exhaustivo CMP/PAR/RUL/REF en C_src y destino; criterio y evidencia de cobertura; confirmación de que no hay slots adicionales obligatorios; mapping_id/version; IAM_id/version; valores por escenario y sus reglas de asignación; snapshots S1/S2 y C_dst declarado/aplicado; política de DEFAULT/conflicto/UNKNOWN; y evidencia/oráculo. REF=0 solo se podrá registrar tras cobertura exhaustiva. No se infiere un universo cerrado de la lista funcional mínima.
+
+**Estado:** roster funcional mínimo aceptado reconciliado; roster exhaustivo e IAM operativo OPEN. No se asignan valores de escenario, no se declara REF=0, no se crean fixtures y no se autoriza implementación/ejecución.
