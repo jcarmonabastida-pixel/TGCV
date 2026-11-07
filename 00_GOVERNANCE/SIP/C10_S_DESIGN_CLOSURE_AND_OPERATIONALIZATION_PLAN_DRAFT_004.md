@@ -1163,3 +1163,10 @@ Antes de Design Freeze debe existir contrato de comparación que separe identida
 UDG-03 queda ACCEPTED documentalmente: siete niveles de comparación, Projection-ID/Projection-SEM, precondiciones de scope/snapshot/miembros versionados/exhaustividad y resultados EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE; FAIL reservado a integridad. Igualdad extensional no implica equivalencia definicional; mismo hash/ID/nombre/cardinality no la demuestra. Incompatibilidad de scope sin mapping = NOT_COMPARABLE; evidencia faltante = UNKNOWN.
 
 No comparator/fingerprint semántico, migración, fixtures, parser/validator, schema change, Design Freeze ni ejecución autorizados. Registro DEC-C10-075; prevalece sobre §16.48.
+
+
+## 16.50. UDG-04 — contrato de referencias tipadas (propuesta)
+
+Antes de cerrar mapping REF/CMP/PAR/RUL, resolver identidad lógica vs record identity, roles de referencia, resolución exacta contra registry versionado, cardinalidad, referencias opcionales/requeridas, acceso/incompletitud y ciclos por relación. Se propone que UNKNOWN distinga registry no disponible de inexistencia exhaustiva; NOT_COMPARABLE cubra incompatibilidad sin mapping; FAIL se reserve a ausencia requerida/dangling exhaustivo/conflicto/inmutabilidad. Resolver no equivale a pertenencia ni aplicabilidad.
+
+Propuesta en protocolo §20.16, plantilla U_G §18.21, mapping §20.18 y maestro §195. UDG-04 NO ACEPTADA; schema REF/API/resolver/parser/validator/fixtures/implementación/ejecución no autorizados.
