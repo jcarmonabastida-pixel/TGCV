@@ -1283,7 +1283,7 @@ Referencia: matriz IAM §18. El roster funcional mínimo no equivale a inventari
 | SNAPSHOT-INVENTORY-10c | Crosswalk C_src, S2/S1, C_dst declarado/aplicado por ruta | DOCUMENTED PROPOSAL |
 | SNAPSHOT-INVENTORY-10d | Manifiesto por objeto/propiedad enlazado a snapshot/evidencia | DOCUMENTED PROPOSAL; no schema físico |
 | SNAPSHOT-INVENTORY-10e | Coverage scopes por snapshot×etapa×ruta×clase | DOCUMENTED REQUIREMENT |
-| SNAPSHOT-INVENTORY-10f | Scope codifica inequívocamente etapa/ruta sin ampliar enum | OPEN |
+| SNAPSHOT-INVENTORY-10f | Codificación textual determinista de etapa/ruta en SNAPSHOT.scope sin ampliar enum | DOCUMENTED PROPOSAL; ACCEPTANCE/COMPATIBILITY OPEN |
 | SNAPSHOT-INVENTORY-10g | Snapshots y evidencia observados; inventario exhaustivo | OPEN / NONE |
 | SNAPSHOT-INVENTORY-10h | REF=0 y COMPLETE con denominador/cobertura | OPEN |
 
