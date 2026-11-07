@@ -420,3 +420,10 @@ canonical_content_hash igual bajo el mismo perfil demuestra igualdad de bytes ca
 No inferir equivalencia semántica por hash, nombre, universe_id, revision ni cardinalidad. Comparar por separado: identidad/revisión; scope C0, stage_key, route_id/route_record_id y snapshot; conjunto completo de member identities (object_class/object_id/object_record_id/version); reglas/AST/dependencias y fuentes/cobertura. Provenance/timestamp/hash son evidencia, no miembros; cambios en contrato/instancia/snapshot/ruta o versiones de objetos exigen mapping explícito o NOT_COMPARABLE.
 
 Igualdad extensional requiere conjuntos exhaustivos idénticos en scope/snapshot compatibles. Equivalencia definicional requiere además equivalencia probada de inclusión/exclusión/reglas/dependencias. EXPLICIT y RULE_DEFINED pueden producir mismo conjunto en un snapshot sin ser definicionalmente equivalentes. Estados por dimensión EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE; FAIL reservado a violación de integridad. Propuesta no aceptada; no comparator/implementación.
+
+
+### 20.17. DEC-C10-075 — comparación semántica aceptada
+
+Se acepta comparación vectorial en siete niveles: artefacto, canónico, identidad, revisión, extensional, definicional y compatibilidad entre revisiones. No inferir equivalencia por hash/nombre/ID/cardinalidad. Igualdad extensional exige conjuntos completos de refs tipadas/versionadas idénticos en C0/stage/route/snapshot comparables; equivalencia definicional exige además inclusión/exclusión/reglas/AST/domínios/dependencias equivalentes. Provenance/timestamp/hash son trazabilidad, no miembros. Scope/snapshot/contrato/instancia/versiones condicionan comparabilidad.
+
+Resultados EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE; FAIL para integridad. Scope incompatible sin mapping explícito = NOT_COMPARABLE; falta evidencia = UNKNOWN. No se autoriza comparator/fingerprint/fixtures/schema change/implementación/ejecución. DEC-C10-075 es aceptación documental.
