@@ -501,3 +501,12 @@ Para un scope global no se adjudica pertenencia a una ruta concreta. Se adjudica
 El control C0 debe validar que el slot route_id contiene o bien una identidad de ruta real con revisión exacta resuelta, o bien el token global reservado una vez que su literal/gramática hayan sido aceptados. Un valor vacío, NULL, `NONE`, `F` o `A` produce UNKNOWN si no hay contradicción demostrada; una referencia incompatible o colisionada produce FAIL.
 
 La propuesta G1 no queda aprobada por su inclusión en este protocolo. Requiere aceptación explícita del token, namespace y semántica. La gramática completa/versionado de `universe_definition`, el crosswalk físico por propiedad y el control C0 ejecutable permanecen OPEN/CONDITIONAL. No se modifica schema, no se crean snapshots/scopes y no se autoriza implementación ni ejecución científica.
+
+
+## 20.9. DEC-C10-072 — estado normativo del token global
+
+DEC-C10-072 acepta G1 y reserva el literal exacto `C10S_SCOPE_GLOBAL` para el slot `route_id` de C0. Su significado normativo es “sin restricción a una ruta concreta”. No significa ausencia de rutas, no pertenencia de un objeto ni NA. El literal no puede ser un route_id real; colisión = FAIL. NULL, vacío, NONE, F y A no son sustitutos válidos.
+
+En scope global se enumera el universo elegible de la clase/etapa/snapshot y cada identidad se cuenta una vez, aunque aparezca en varias rutas. Los denominadores route-specific permanecen separados. Para route-specific se mantienen route_id semántico, route_record_id y snapshot exactos.
+
+Esta aceptación no cierra la gramática/versionado completo de universe_definition, el mapping físico ni el control C0 implementado/auditado. Estos gates permanecen OPEN/CONDITIONAL. No schema change, fixtures ni ejecución autorizados.
