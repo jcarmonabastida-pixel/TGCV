@@ -1273,3 +1273,18 @@ Referencia: C10_S_PROPERTY_APPLICABILITY_AND_OBLIGATORINESS_MATRIX_DRAFT_001.md 
 | ROSTER-IAM-09h | IAM O/C/NA/? sellado pre-Z/B | OPEN |
 
 Referencia: matriz IAM §18. El roster funcional mínimo no equivale a inventario exhaustivo, IAM sellado, Design Freeze o autorización de ejecución.
+
+## 53. Estado del gate SNAPSHOT-INVENTORY-10 — captura de configuración C10-S
+
+| ID | Requisito | Estado |
+|---|---|---|
+| SNAPSHOT-INVENTORY-10a | Reutilizar plantilla U_G y esquema DEC-C10-064/065 | DOCUMENTED |
+| SNAPSHOT-INVENTORY-10b | No duplicar NODE/PREDICATE con PAR/RUL | DOCUMENTED REQUIREMENT |
+| SNAPSHOT-INVENTORY-10c | Crosswalk C_src, S2/S1, C_dst declarado/aplicado por ruta | DOCUMENTED PROPOSAL |
+| SNAPSHOT-INVENTORY-10d | Manifiesto por objeto/propiedad enlazado a snapshot/evidencia | DOCUMENTED PROPOSAL; no schema físico |
+| SNAPSHOT-INVENTORY-10e | Coverage scopes por snapshot×etapa×ruta×clase | DOCUMENTED REQUIREMENT |
+| SNAPSHOT-INVENTORY-10f | Scope codifica inequívocamente etapa/ruta sin ampliar enum | OPEN |
+| SNAPSHOT-INVENTORY-10g | Snapshots y evidencia observados; inventario exhaustivo | OPEN / NONE |
+| SNAPSHOT-INVENTORY-10h | REF=0 y COMPLETE con denominador/cobertura | OPEN |
+
+Referencias: matriz IAM §19; plantilla U_G §18; contrato abstracto §16; catálogo atómico §15. Protocolo documental no equivale a captura, validación, freeze o autorización.
