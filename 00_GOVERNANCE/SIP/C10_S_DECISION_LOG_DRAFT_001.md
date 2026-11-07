@@ -820,3 +820,9 @@ Estado: DOCUMENTED SPECIFICATION; DDL mapping OPEN; NOT IMPLEMENTED; NOT EXECUTE
 La inspección documental del esquema vigente (protocolo §20) identifica que stage_key no tiene columna propia; SNAPSHOT.phase no equivale y SNAPSHOT.scope sigue OPEN. route_id solo está directo en ROUTE/PREDICATE/ROUTE_STEP, no en NODE/EDGE. object_class CMP/PAR/REF/RUL/MET carece de campo común tipado. contract/instance versions y dimension requieren binding documental recuperable. snapshot_id + snapshot_object_record_id sí están cubiertos por DEC-C10-065/Opción A.
 
 Esto no revoca DEC-C10-070 ni la aceptación de C0; delimita su evaluabilidad. No habrá PASS completo hasta un crosswalk explícito y verificable. Correspondencia no demostrada → UNKNOWN; contradicción demostrada → FAIL. No se añade schema ni se autoriza implementación/ejecución.
+
+## 64. Reconciliación del crosswalk C0↔U_G (2026-11-07)
+
+Se registra como propuesta documental la reutilización del crosswalk IAM histórico y la separación de tres ejes: object_class C10, ug_record_type y semantic_role/boundary_class de NODE. stage_key se refiere al reloj DGP t−1…t9; SNAPSHOT.phase conserva su significado de contexto de captura. La pertenencia route-specific requiere ROUTE_STEP y referencias exactas. CMP/PAR/REF/RUL/MET disponen de mappings candidatos no uno-a-uno; dimension permanece como atributo de COVERAGE_REGISTER, fuera de la tupla de nueve componentes de DEC-C10-070.
+
+No constituye aceptación nueva del usuario. Token global, gramática universe_definition/version y mapping por propiedad permanecen OPEN. No se modifica schema ni se autoriza implementación/ejecución.
