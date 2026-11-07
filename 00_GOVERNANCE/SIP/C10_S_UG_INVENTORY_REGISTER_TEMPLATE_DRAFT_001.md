@@ -715,3 +715,13 @@ NONE significa ninguna unidad cubierta; PARTIAL, cobertura incompleta; COMPLETE 
 **Limitación:** COVERAGE_REGISTER no contiene FK directa a snapshot_id/snapshot_object_record_id. El pinning se describe en universe_definition/version y el snapshot referencia coverage_scope_id; la integridad inversa no queda impuesta por FK. No añadir columnas sin decisión específica. La pertenencia versionada del grafo a SNAPSHOT está aceptada por DEC-C10-065 (Opción A); su validación física sigue el gate técnico correspondiente. La limitación aquí descrita es independiente y afecta al vínculo COVERAGE_REGISTER→snapshot de los scopes C10-S.
 
 No se crean scopes reales ni se afirma cobertura. La codificación de SNAPSHOT.scope permanece propuesta y pendiente de aceptación/compatibilidad.
+
+### 18.7. Integridad de binding COVERAGE_REGISTER↔SNAPSHOT
+
+El esquema existente enlaza los registros de objeto con COVERAGE_REGISTER mediante coverage_scope_id; los registros de grafo fijan por separado snapshot_id y snapshot_object_record_id. Como COVERAGE_REGISTER no contiene el par de snapshot, el motor no puede garantizar mediante FK compuesta que ambos enlaces identifican el mismo snapshot. El pinning escrito en universe_definition/version es una declaración verificable por control externo, no una FK.
+
+Contrato provisional C0: cada coverage_scope_id C10-S fija una sola tupla exacta de contrato/instancia/snapshot/registro/etapa/ruta/clase. Todo registro que apunte a ese scope debe coincidir con la tupla; se requiere control de integridad que compruebe referencias, unicidad, cardinalidad, scopes huérfanos y conflictos. Hasta que ese control se implemente y audite, estado CONDITIONAL.
+
+Alternativa C1, no aceptada: añadir snapshot_id y snapshot_object_record_id a COVERAGE_REGISTER y FKs/clave candidata compuestas para asegurar la coincidencia en base de datos. Antes se debe resolver la interacción con el coverage_scope_id ya presente en SNAPSHOT, los posibles ciclos, la compatibilidad del motor y las filas históricas. C2 (tabla puente) no recomendada salvo que C1 no sea viable.
+
+Este gate es independiente de la pertenencia del grafo a snapshot ya aceptada por DEC-C10-065. No se modifica el esquema actual ni se ejecutan controles.
