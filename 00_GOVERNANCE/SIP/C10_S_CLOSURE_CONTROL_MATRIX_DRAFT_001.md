@@ -1352,3 +1352,18 @@ La aceptación de C0 no declara integridad relacional, no crea scopes ni modific
 | C0-GATE-05 | Cierre C0 para Design Freeze | CONDITIONAL / BLOCKED BY GATES |
 
 La especificación documental no implica implementación, validación física ni ejecución científica. La autorización de C0 como diseño (DEC-C10-070) no autoriza estos gates técnicos.
+
+## 58. Mapping C0↔U_G — gates de correspondencia
+
+| ID | Campo C0 | Estado del esquema | Consecuencia |
+|---|---|---|---|
+| C0-MAP-01 | contract_id/version | Documental en universe_definition/version | Requiere identidad/versionado recuperable |
+| C0-MAP-02 | instance_id/version | Documental en universe_definition/version | Requiere vínculo verificable |
+| C0-MAP-03 | snapshot_id + snapshot_object_record_id | Representado por Opción A/DEC-C10-065 | Comparación exacta obligatoria |
+| C0-MAP-04 | stage_key | Sin columna propia; phase no equivalente; scope no aceptado | OPEN — UNKNOWN |
+| C0-MAP-05 | route_id | Directo en ROUTE/PREDICATE/ROUTE_STEP; no directo en NODE/EDGE | OPEN — crosswalk/exhaustividad |
+| C0-MAP-06 | object_class CMP/PAR/REF/RUL/MET | Sin campo común tipado | OPEN — crosswalk semántico |
+| C0-MAP-07 | dimension | COVERAGE_REGISTER; no común en consumidores | OPEN — asociación por mapping |
+| C0-MAP-08 | universe_definition/version | Campo existente; gramática/hash no cerrados | OPEN — versionado/provenance |
+
+No puede emitirse PASS completo del control C0 hasta resolver los mappings aplicables. UNKNOWN es obligatorio si falta correspondencia; contradicción demostrada es FAIL. No se infiere por nombre, phase, semantic_role ni texto libre.
