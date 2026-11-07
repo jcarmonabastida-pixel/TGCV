@@ -8160,3 +8160,19 @@ Un PASS C0 solo acredita integridad del binding dentro del conjunto cerrado exam
 El protocolo §20 inspecciona la representación de la tupla C0 en el esquema vigente. snapshot_id y snapshot_object_record_id están cubiertos por Opción A/DEC-C10-065. stage_key no tiene columna propia; SNAPSHOT.phase no es equivalente y SNAPSHOT.scope no está aceptado. route_id solo está representado directamente en ROUTE/PREDICATE/ROUTE_STEP; para NODE/EDGE se requiere derivación exhaustiva desde ROUTE_STEP. object_class CMP/PAR/REF/RUL/MET no tiene campo común tipado. contract/instance versions y dimension requieren binding documental recuperable y versionado.
 
 Consecuencia: el control C0 no puede dar PASS completo mientras no exista crosswalk explícito y comprobable para esos campos. UNKNOWN es obligatorio si la correspondencia no puede demostrarse; FAIL solo ante contradicción demostrada. No se añaden columnas, no se acepta SNAPSHOT.scope, no se equipara phase con stage_key y no se ejecuta.
+
+## 186. Crosswalk C0↔U_G: reconciliación de ejes y mappings (2026-11-07)
+
+Se reutiliza el crosswalk histórico `C10_S_IAM_FIELD_TO_COLUMN_CROSSWALK_PROPOSAL_DRAFT_001.md`, la auditoría IAM FP/EDGE y los contratos U_G §§12.7 y 15.1–15.4. No se crea un segundo inventario ni se reabren DEC-C10-059…065.
+
+Se separan: (1) `object_class` C10 = clase de origen CMP/PAR/REF/RUL/MET; (2) `ug_record_type` = tabla/tipo de registro U_G; (3) `semantic_role` y `boundary_class` = ejes NODE ya definidos por DEC-C10-059/060. El crosswalk es explícito y puede ser 1:N/N:M; no se deduce por nombre.
+
+La tupla C0 aceptada por DEC-C10-070 contiene nueve componentes: contract_id/version, instance_id/version, snapshot_id, snapshot_object_record_id, stage_key, route_id y object_class. `dimension` pertenece a COVERAGE_REGISTER y al universo versionado, no es décimo componente de la tupla.
+
+`stage_key` corresponde al reloj DGP t−1…t9; `SNAPSHOT.phase` (baseline/post-B/rollback/route-test) describe contexto de captura y permanece separado. Cada scope fija una etapa y snapshot exacto; múltiples etapas requieren scopes separados salvo decisión posterior.
+
+La pertenencia route-specific se demuestra por ROUTE/ROUTE_STEP y record IDs exactos: NODE/EDGE por inclusión en ROUTE_STEP; PREDICATE por route_record_id; ROUTE por su propia revisión. `routes_affected` no prueba pertenencia. Scope global requiere token reservado explícito y versionado, todavía no seleccionado; NULL/vacío no significan global.
+
+Mapping candidato: CMP→NODE (EDGE solo para relaciones); PAR→NODE o propiedades atómicas del owner según granularidad; REF→EDGE/referencias tipadas; RUL→PREDICATE y sus operandos; MET→metadatos transversales de objeto, SNAPSHOT o EVIDENCE_REGISTER según función. No hay equivalencia uno-a-uno. La dimensión de cobertura se fija en COVERAGE_REGISTER y la regla de inclusión versionada.
+
+Estado: CROSSWALK DOCUMENTED AS PROPOSAL; vocabulario global de ruta, gramática de universe_definition y mappings por campo/propiedad OPEN. No se modifica schema, no se crean instancias, no se implementa ni ejecuta C0.
