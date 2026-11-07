@@ -1207,3 +1207,11 @@ La aceptación cierra la estructura documental del contrato de filas, no los val
 Se incorpora como propuesta no aceptada la separación de namespaces `UDG_ENVELOPE_ROLE` (L2) y `REF_FUNCTIONAL_ROLE` (L3). L2 reutiliza como candidatos ilustrativos MEMBER, OWNER, SOURCE, INCLUSION_RULE, EXCLUSION_RULE, DEPENDENCY y PROVENANCE, con dominios destino y límites documentados en la matriz IAM §19.13. L3 mantiene `role_key` y `relation_type` abiertos; SOURCE/TARGET es solo posición de extremo binario. `DEPENDS_ON` puede examinarse como candidato funcional únicamente si aparece en REF necesario para el DGP, sin aceptarlo como enum.
 
 **Siguiente tarea:** resolver la semántica de DEPENDENCY en L2 (target REF frente a target directo); extraer el conjunto mínimo de relaciones REF realmente exigido por el DGP; modelar sus extremos binarios/n-arios; y luego derivar dominios/cardinalidades/requiredness por clase×rol×extremo×stage_key×scope. No instanciar filas ni sellar IAM todavía. Esta propuesta no cambia el estado de los bloques 3–8 del §10 ni autoriza implementación/ejecución.
+
+## 16.56. DEPENDENCY L2 — propuesta de resolución semántica no aceptada
+
+Para una dependencia entendida como relación del dominio de configuración, la referencia L2 debe apuntar al REF exacto que representa esa relación; los extremos funcionales pertenecen al REF/L3. No apuntar directamente al objeto dependiente, porque se perdería la identidad propia de la relación y se colapsarían L2/L3.
+
+Se separan dos casos que no deben reutilizar ese significado: (a) dependencias técnicas/ambientales (C_dep/E_dst, runtime, recursos, permisos, instalación), que no crean REF por sí mismas; y (b) dependencias usadas para resolver/evaluar un universo RULE_DEFINED, que se registran como referencias tipadas/versionadas de la regla/envelope, no como REF funcional salvo declaración independiente.
+
+Para el DGP base actual, el roster mínimo CMP/PAR/RUL aceptado no declara una relación REF concreta. REF=0 sigue posible solo tras inventario/cobertura exhaustivos pre-Z/B; no se inventa una dependencia ni se sella REF=0 ahora. Propuesta no aceptada; no cambia DEC-C10-078 ni autoriza implementación/ejecución.
