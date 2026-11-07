@@ -8245,3 +8245,10 @@ Igualdad extensional exige conjuntos completos y exhaustivos bajo scopes/snapsho
 Se propone distinguir identidad lógica `(object_class, object_id)` de identidad de registro inmutable `(object_class, object_id, object_record_id)`. Referencias tipadas por rol y target exacto; resolver contra registry/manifiesto versionado y scope explícito, nunca latest implícito ni por nombre/valor/hash/posición. La resolución comprueba existencia exacta, clase/id, inmutabilidad, compatibilidad y cardinalidad.
 
 Requerida ausente, dangling tras búsqueda exhaustiva, conflicto clase/id o record_id mutable = FAIL; registry no disponible/incompleto = UNKNOWN; versión/schema incompatible sin mapping = NOT_COMPARABLE; opcional ausente = NOT_APPLICABLE. Ciclos se evalúan por relación; DEPENDENCY solo DAG si contrato lo declara. Resolver ref no prueba pertenencia al universo, aplicabilidad o ejecución. UDG-04 NO ACEPTADA; sin schema REF/API/resolver/parser/validator/fixtures/comparator/ejecución.
+
+
+## 196. DEC-C10-076 — aceptación UDG-04 (2026-11-07)
+
+Se acepta documentalmente identidad lógica `(object_class, object_id)` separada de identidad exacta de registro inmutable `(object_class, object_id, object_record_id)`, referencia tipada por rol y target exacto, y resolución contra registry/manifiesto versionado con scope explícito. No latest implícito ni fallback por nombre/valor/posición/hash. REQUIRED/OPTIONAL y cardinalidad por contrato de clase; ciclos por relación, DAG solo si DEPENDENCY lo exige.
+
+Requerida ausente/dangling exhaustivo/conflicto/mutabilidad = FAIL; registry inaccesible/incompleto = UNKNOWN; incompatibilidad no mapeada = NOT_COMPARABLE; opcional ausente = NOT_APPLICABLE. Resolver no demuestra pertenencia, aplicabilidad, preservación ni ejecución. Catálogo REF/schema/API/registry/resolver/parser/validator/comparator/fixtures y mapping CMP/PAR/RUL permanecen abiertos. Sin Design Freeze ni ejecución. DEC-C10-076.
