@@ -1060,4 +1060,4 @@ Los scopes de cobertura se separan por snapshot×etapa×ruta×clase CMP/PAR/REF/
 
 El contrato abstracto §16 y catálogo atómico §15 reconcilian el slot histórico RETRY-COUNT como supersedido por DEC-C10-068; ENABLED/PROFILE no tienen DEFAULT aceptado.
 
-**Gate siguiente:** definir si el esquema actual puede codificar inequívocamente stage/ruta en scope y acordar el manifiesto documental antes de instanciar snapshots sintéticos. No capturar datos ficticios, no declarar COMPLETE, no Design Freeze, implementación o ejecución autorizadas.
+**Gate siguiente:** aceptar o revisar la convención textual propuesta para SNAPSHOT.scope en matriz IAM §19.3 y plantilla U_G §18.2; después verificar compatibilidad/parseo antes de instanciar snapshots sintéticos. La propuesta fija phase=route-test y stage/ruta en scope, sin codificar Z/B. No capturar datos ficticios, no declarar COMPLETE, no Design Freeze, implementación o ejecución autorizadas.
