@@ -1156,3 +1156,10 @@ No autoriza hash de producción, parser/validator, fixtures, schema físico, Des
 ## 16.48. UDG-03 — comparación semántica (propuesta)
 
 Antes de Design Freeze debe existir contrato de comparación que separe identidad/revisión, artefacto/canónico, igualdad extensional y equivalencia definicional. Requisitos: scope C0/stage/route/snapshot compatibles; versiones exactas de miembros; exhaustividad de ambos universos; reglas/AST/dependencias y fuentes recuperables; mapping explícito entre contratos/instancias cuando difieran. Resultados por dimensión EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE; FAIL para integridad. Hash/ID/revision/cardinality no demuestran equivalencia. Propuesta UDG-03 en protocolo §20.14, no aceptada; comparator/fingerprint/fixtures/schema change/ejecución no autorizados.
+
+
+## 16.49. DEC-C10-075 — contrato documental de comparación aceptado
+
+UDG-03 queda ACCEPTED documentalmente: siete niveles de comparación, Projection-ID/Projection-SEM, precondiciones de scope/snapshot/miembros versionados/exhaustividad y resultados EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE; FAIL reservado a integridad. Igualdad extensional no implica equivalencia definicional; mismo hash/ID/nombre/cardinality no la demuestra. Incompatibilidad de scope sin mapping = NOT_COMPARABLE; evidencia faltante = UNKNOWN.
+
+No comparator/fingerprint semántico, migración, fixtures, parser/validator, schema change, Design Freeze ni ejecución autorizados. Registro DEC-C10-075; prevalece sobre §16.48.
