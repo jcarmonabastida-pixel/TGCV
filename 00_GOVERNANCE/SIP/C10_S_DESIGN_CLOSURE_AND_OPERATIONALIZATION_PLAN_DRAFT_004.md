@@ -1122,3 +1122,11 @@ Scopes globales cuentan cada objeto una vez; scopes route-specific conservan den
 El literal reservado `C10S_SCOPE_GLOBAL` queda aceptado en el slot route_id C0 para “sin restricción a una ruta concreta”; no denota ausencia de rutas/no pertenencia/NA y no puede ser route_id semántico real. Colisión = FAIL. NULL/vacío/NONE/F/A no son sustitutos. Scope global cuenta cada identidad elegible una vez; route-specific mantiene denominadores independientes y requiere route_id + route_record_id + snapshot exactos.
 
 Cerrado: elección G1 y literal/semántica. Abiertos: gramática y versionado completos de universe_definition, mapping físico por clase/propiedad, controles C0 implementados y auditados, fixtures y cualquier Design Freeze. No se autoriza implementación ni ejecución científica.
+
+
+
+## 16.44. UDG-01 — gramática versionada de universe_definition (propuesta)
+
+El protocolo de evidencia §20.10 especifica UDG-01: envelope JSON autocontenido con scope C0 exacto de nueve componentes, membership_mode EXPLICIT/RULE_DEFINED, referencias tipadas o regla versionada, fuentes/manifiestos, cardinalidad declarada y provenance. Dimension permanece fuera de la tupla. Cero miembros exige evidencia exhaustiva; lista vacía no basta. Canonicalización UTF-8/NFC, orden determinista y SHA-256 son propuestas, no contrato aprobado. schema_version semver y universe_revision monotónica/inmutable son candidatos.
+
+Estado: DOCUMENTED PROPOSAL; U1 recomendada provisionalmente; no schema change, parser, validator, fixture, implementación ni ejecución. Pendientes: aceptación de envelope/gramática, canonicalización/hash, mapping físico por clase/propiedad y control C0 independiente auditado.
