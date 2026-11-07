@@ -1367,3 +1367,23 @@ La especificación documental no implica implementación, validación física ni
 | C0-MAP-08 | universe_definition/version | Campo existente; gramática/hash no cerrados | OPEN — versionado/provenance |
 
 No puede emitirse PASS completo del control C0 hasta resolver los mappings aplicables. UNKNOWN es obligatorio si falta correspondencia; contradicción demostrada es FAIL. No se infiere por nombre, phase, semantic_role ni texto libre.
+
+## 59. Crosswalk semántico C0↔U_G — estado
+
+| ID | Eje / correspondencia | Dictamen actual | Estado |
+|---|---|---|---|
+| C0-XW-01 | object_class C10 vs ug_record_type | Ejes distintos; crosswalk explícito 1:N/N:M | DOCUMENTED PROPOSAL |
+| C0-XW-02 | ug_record_type vs NODE.semantic_role / boundary_class | No equivalencia; conservar DEC-C10-059/060 | ACCEPTED BASELINE |
+| C0-XW-03 | stage_key vs SNAPSHOT.phase | stage_key = reloj DGP t−1…t9; phase = contexto de captura | DISTINCT / NO AUTOMATIC MAPPING |
+| C0-XW-04 | route_id para NODE/EDGE | Membresía exacta mediante ROUTE_STEP y record IDs | DOCUMENTED RULE; exhaustividad OPEN |
+| C0-XW-05 | route_id para PREDICATE/ROUTE | route_record_id exacto / identidad de la propia ruta | DOCUMENTED RULE |
+| C0-XW-06 | Scope global | Token reservado explícito y versionado; literal pendiente | OPEN |
+| C0-XW-07 | CMP | NODE; EDGE solo relación | CANDIDATE |
+| C0-XW-08 | PAR | NODE o propiedad atómica del owner según granularidad | CANDIDATE |
+| C0-XW-09 | REF | EDGE / referencia tipada | CANDIDATE |
+| C0-XW-10 | RUL | PREDICATE + operandos/referencias | CANDIDATE |
+| C0-XW-11 | MET | Metadatos transversales; SNAPSHOT/EVIDENCE_REGISTER según función | CANDIDATE |
+| C0-XW-12 | dimension | COVERAGE_REGISTER.dimension + regla de elegibilidad del universo | DOCUMENTED; mapping por propiedad OPEN |
+| C0-XW-13 | Tupla C0 | Nueve componentes conforme a DEC-C10-070; dimension fuera de la tupla | RECONCILED |
+
+No se acepta aún el token global, la gramática completa de universe_definition/version ni las asignaciones por propiedad. No se crean columnas, no se reabre Opción A y no se autoriza implementación/ejecución.
