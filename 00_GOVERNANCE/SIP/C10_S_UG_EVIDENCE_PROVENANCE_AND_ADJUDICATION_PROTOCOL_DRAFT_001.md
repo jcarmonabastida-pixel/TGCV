@@ -385,7 +385,7 @@ La reconstrucción de la plantilla U_G §18.2 recupera siete `stage_key` de capt
 | `F2_DST_APPLIED` | Destino observado tras F2 | Estado efectivamente aplicado |
 | `A2_DST_APPLIED` | Destino observado tras A2 | Estado efectivamente aplicado |
 
-Estos valores se recuperan como vocabulario propuesto en §18.2, no como decisión aceptada ni como snapshots ya creados. Se reutilizan antes que inventar una segunda taxonomía, pero requieren reconciliación/aceptación final de su mapping.
+DEC-C10-071 acepta estos siete valores como vocabulario controlado de stage_key. La aceptación se limita al enum y sus significados; no acepta serialización SNAPSHOT.scope ni crea snapshots. El mapping de cada etapa a snapshots concretos y a rutas/objetos permanece sujeto a los gates siguientes.
 
 Hay tres ejes temporales diferentes:
 
