@@ -801,3 +801,10 @@ Dos modos: EXPLICIT enumera referencias tipadas (object_class, object_id, object
 Route-specific resuelve route_id semántico a un route_record_id exacto. Global usa el token aceptado C10S_SCOPE_GLOBAL y no declara ruta focal. Duplicados/contradicciones demostrados = FAIL; referencias requeridas no resolubles = UNKNOWN; PASS exige scope idéntico a C0, fuentes exhaustivas, cardinalidad consistente y provenance íntegra.
 
 Se propone canonicalización determinista UTF-8/NFC, claves ordenadas, arrays de member_refs ordenados por identidad, enteros canónicos y SHA-256 del contenido canonicalizado. Hash no reemplaza identidad/versión. schema_version semver; universe_revision entero monotónico e inmutable; cambios de contenido crean revisión nueva. No queda aceptada la gramática ni la política de canonicalización/hash. No schema change, parser, fixtures, implementación o ejecución autorizados.
+
+
+### 18.16. Estado vigente tras DEC-C10-073
+
+U1 queda ACEPTADA como arquitectura documental de `universe_definition`: envelope JSON autocontenido/versionado, estructura y cardinalidades de §18.15. Se aceptan scope C0 exacto de nueve componentes, EXPLICIT/RULE_DEFINED, referencias tipadas, cardinalidad declarada y prueba exhaustiva para universo vacío. Dimension permanece fuera de la tupla.
+
+No se acepta canonicalización concreta, SHA-256 obligatorio, RFC/JCS ni serialización física ejecutable. Mapping físico y control C0 independiente siguen abiertos. Este estado prevalece sobre el cierre histórico “no queda aceptada la gramática” de §18.15, que corresponde al momento anterior a DEC-C10-073.
