@@ -1368,22 +1368,22 @@ La especificación documental no implica implementación, validación física ni
 
 No puede emitirse PASS completo del control C0 hasta resolver los mappings aplicables. UNKNOWN es obligatorio si falta correspondencia; contradicción demostrada es FAIL. No se infiere por nombre, phase, semantic_role ni texto libre.
 
-## 59. Crosswalk semántico C0↔U_G — estado
+## 59. Crosswalk semántico C0↔U_G — estado reconciliado
 
 | ID | Eje / correspondencia | Dictamen actual | Estado |
 |---|---|---|---|
-| C0-XW-01 | object_class C10 vs ug_record_type | Ejes distintos; crosswalk explícito 1:N/N:M | DOCUMENTED PROPOSAL |
-| C0-XW-02 | ug_record_type vs NODE.semantic_role / boundary_class | No equivalencia; conservar DEC-C10-059/060 | ACCEPTED BASELINE |
-| C0-XW-03 | stage_key vs SNAPSHOT.phase | stage_key = reloj DGP t−1…t9; phase = contexto de captura | DISTINCT / NO AUTOMATIC MAPPING |
-| C0-XW-04 | route_id para NODE/EDGE | Membresía exacta mediante ROUTE_STEP y record IDs | DOCUMENTED RULE; exhaustividad OPEN |
-| C0-XW-05 | route_id para PREDICATE/ROUTE | route_record_id exacto / identidad de la propia ruta | DOCUMENTED RULE |
-| C0-XW-06 | Scope global | Token reservado explícito y versionado; literal pendiente | OPEN |
-| C0-XW-07 | CMP | NODE; EDGE solo relación | CANDIDATE |
-| C0-XW-08 | PAR | NODE o propiedad atómica del owner según granularidad | CANDIDATE |
-| C0-XW-09 | REF | EDGE / referencia tipada | CANDIDATE |
-| C0-XW-10 | RUL | PREDICATE + operandos/referencias | CANDIDATE |
-| C0-XW-11 | MET | Metadatos transversales; SNAPSHOT/EVIDENCE_REGISTER según función | CANDIDATE |
-| C0-XW-12 | dimension | COVERAGE_REGISTER.dimension + regla de elegibilidad del universo | DOCUMENTED; mapping por propiedad OPEN |
-| C0-XW-13 | Tupla C0 | Nueve componentes conforme a DEC-C10-070; dimension fuera de la tupla | RECONCILED |
+| C0-XW-01 | object_class C10 vs ug_record_type | Ejes distintos; mapping explícito 1:N/N:M | DOCUMENTED PROPOSAL |
+| C0-XW-02 | ug_record_type vs NODE.semantic_role / boundary_class | No equivalencia; preservar DEC-C10-059/060 | ACCEPTED BASELINE |
+| C0-XW-03 | stage_key C10-S | Siete candidatos U_G §18.2: C_SRC, F1_S2, A1_S1, F2_DST_DECL, A2_DST_DECL, F2_DST_APPLIED, A2_DST_APPLIED | HISTORICAL PROPOSAL; ACCEPTANCE OPEN |
+| C0-XW-04 | DGP time t−1…t9 vs stage_key | Ejes distintos; mapping solo por regla explícita | NO EQUIVALENCE |
+| C0-XW-05 | stage_key vs SNAPSHOT.phase | phase=baseline/post-B/rollback/route-test; no equivalencia | NO AUTOMATIC MAPPING |
+| C0-XW-06 | SNAPSHOT.scope | Propuesta de codificación de §18.2 no aceptada por DEC-C10-070 | NOT ACCEPTED |
+| C0-XW-07 | route_family F/A vs route_id | F/A es etiqueta auxiliar; C0 exige route_id exacto o token global reservado | OPEN |
+| C0-XW-08 | NODE/EDGE route membership | ROUTE_STEP y record IDs exactos | DOCUMENTED RULE; exhaustividad OPEN |
+| C0-XW-09 | PREDICATE/ROUTE route membership | route_record_id exacto / propia revisión de ROUTE | DOCUMENTED RULE |
+| C0-XW-10 | object_class=CONFIG de §18.2 | No satisface C0; C0 conserva CMP/PAR/REF/RUL/MET | NOT ADOPTED FOR C0 |
+| C0-XW-11 | CMP/PAR/REF/RUL/MET | Mappings candidatos a NODE/propiedades/EDGE/PREDICATE/MET transversal | CANDIDATE |
+| C0-XW-12 | dimension | COVERAGE_REGISTER.dimension; C10S_CONFIG_*; fuera de tupla | DOCUMENTED |
+| C0-XW-13 | Tupla C0 | Nueve componentes conforme a DEC-C10-070 | RECONCILED |
 
-No se acepta aún el token global, la gramática completa de universe_definition/version ni las asignaciones por propiedad. No se crean columnas, no se reabre Opción A y no se autoriza implementación/ejecución.
+No se acepta aún el vocabulario final de stage_key, el token global, la gramática completa de universe_definition/version ni las asignaciones por propiedad. No se crean columnas, no se reabre Opción A y no se autoriza implementación/ejecución.
