@@ -808,3 +808,10 @@ Se propone canonicalización determinista UTF-8/NFC, claves ordenadas, arrays de
 U1 queda ACEPTADA como arquitectura documental de `universe_definition`: envelope JSON autocontenido/versionado, estructura y cardinalidades de §18.15. Se aceptan scope C0 exacto de nueve componentes, EXPLICIT/RULE_DEFINED, referencias tipadas, cardinalidad declarada y prueba exhaustiva para universo vacío. Dimension permanece fuera de la tupla.
 
 No se acepta canonicalización concreta, SHA-256 obligatorio, RFC/JCS ni serialización física ejecutable. Mapping físico y control C0 independiente siguen abiertos. Este estado prevalece sobre el cierre histórico “no queda aceptada la gramática” de §18.15, que corresponde al momento anterior a DEC-C10-073.
+
+
+### 18.17. Canonicalización/hash UDG-02 — propuesta no aceptada
+
+Se comparan C1 (RFC 8785 JCS + prevalidación TGCV), C2 (canonicalizador propio) y C3 (hash solo de bytes fuente). C1 se recomienda provisionalmente. JCS ordena propiedades de objetos, conserva el orden de arrays y no normaliza Unicode; por tanto los campos NFC-required se validan previamente y se rechazan si no están en NFC, sin reescritura. Arrays con semántica de conjunto se ordenan por identidad antes de JCS; arrays secuenciales conservan su orden.
+
+Se propone restringir números UDG-01 a enteros seguros no negativos, prohibir null, distinguir omisión de array vacío y exigir prueba exhaustiva para EXPLICIT con cero miembros. SHA-256 del envelope canónico se registra fuera del envelope; hash de bytes fuente es distinto y opcional. Hash igual acredita bytes canónicos iguales bajo el mismo perfil, no equivalencia semántica ni exhaustividad. UDG-02 permanece NO ACEPTADA; sin parser/validator/fixture/schema change/ejecución.
