@@ -8238,3 +8238,10 @@ EQUAL exige evidencia completa para la dimensión; DIFFERENT solo con ambos lado
 UDG-03 queda ACEPTADA como contrato documental de comparación por siete niveles: artefacto, canónico, identidad universe_id, revisión, igualdad extensional de miembros, equivalencia definicional y compatibilidad dirigida entre revisiones. Projection-ID y Projection-SEM se mantienen separadas. C0/stage/route/snapshot/contract/instance/object version condicionan comparabilidad; provenance/timestamp/hash son trazabilidad, no miembros.
 
 Igualdad extensional exige conjuntos completos y exhaustivos bajo scopes/snapshots compatibles; equivalencia definicional exige además equivalencia demostrada de reglas/AST/domínios/dependencias. Resultados por dimensión EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE; FAIL para integridad. No inferir equivalencia por hash/ID/nombre/cardinality. No se crea fingerprint/comparator ejecutable ni se autoriza parser, fixtures, schema change, Design Freeze o ejecución. Registro DEC-C10-075.
+
+
+## 195. UDG-04 — referencias tipadas e identidad de registro (propuesta, 2026-11-07)
+
+Se propone distinguir identidad lógica `(object_class, object_id)` de identidad de registro inmutable `(object_class, object_id, object_record_id)`. Referencias tipadas por rol y target exacto; resolver contra registry/manifiesto versionado y scope explícito, nunca latest implícito ni por nombre/valor/hash/posición. La resolución comprueba existencia exacta, clase/id, inmutabilidad, compatibilidad y cardinalidad.
+
+Requerida ausente, dangling tras búsqueda exhaustiva, conflicto clase/id o record_id mutable = FAIL; registry no disponible/incompleto = UNKNOWN; versión/schema incompatible sin mapping = NOT_COMPARABLE; opcional ausente = NOT_APPLICABLE. Ciclos se evalúan por relación; DEPENDENCY solo DAG si contrato lo declara. Resolver ref no prueba pertenencia al universo, aplicabilidad o ejecución. UDG-04 NO ACEPTADA; sin schema REF/API/resolver/parser/validator/fixtures/comparator/ejecución.
