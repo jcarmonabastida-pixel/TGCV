@@ -316,3 +316,75 @@ La tabla define qué debe inventariarse/adjudicarse, no afirma que las etapas o 
 Antes de sellar IAM pre-Z/B faltan: inventario exhaustivo CMP/PAR/RUL/REF en C_src y destino; criterio y evidencia de cobertura; confirmación de que no hay slots adicionales obligatorios; mapping_id/version; IAM_id/version; valores por escenario y sus reglas de asignación; snapshots S1/S2 y C_dst declarado/aplicado; política de DEFAULT/conflicto/UNKNOWN; y evidencia/oráculo. REF=0 solo se podrá registrar tras cobertura exhaustiva. No se infiere un universo cerrado de la lista funcional mínima.
 
 **Estado:** roster funcional mínimo aceptado reconciliado; roster exhaustivo e IAM operativo OPEN. No se asignan valores de escenario, no se declara REF=0, no se crean fixtures y no se autoriza implementación/ejecución.
+
+## 19. Protocolo de inventario por snapshot — overlay C10-S sobre U_G (2026-11-07)
+
+### 19.1. Precedencia y reutilización de registros existentes
+
+El inventario C10-S debe reutilizar la plantilla U_G C10_S_UG_INVENTORY_REGISTER_TEMPLATE_DRAFT_001.md y sus registros versionados NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT, EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER. No se crea un segundo inventario U_G ni se alteran las claves/FKs aprobadas por DEC-C10-064/065.
+
+La configuración lógica se describe mediante el catálogo atómico de CMP/PAR/REF/RUL y esta matriz IAM. **No se fuerzan PAR ni RUL a NODE o PREDICATE**: NODE representa entidades U_G con identidad propia; PREDICATE conserva el catálogo de predicados U_G. CMP focal se enlaza al nodo raíz LOGICAL_SERVICE_UNIT cuando corresponda; componentes adicionales solo generan NODE si son entidades reales identificadas y pertenecen al universo U_G. Los valores de PAR y la definición/estado de RUL se registran en el manifiesto de configuración C10-S descrito abajo, vinculado a snapshot/evidencia, sin crear nodos artificiales.
+
+### 19.2. Manifiesto de configuración C10-S — estructura de captura propuesta
+
+Este manifiesto es una vista documental de captura para poblar/referenciar la matriz IAM; **no es tabla física aprobada, schema ejecutable ni dato observado**. Una fila por objeto/propiedad y snapshot exacto:
+
+| Campo | Semántica / restricción |
+|---|---|
+| manifest_record_id | Identidad opaca de la fila de captura; versionada conforme a DEC-C10-062 si se adopta |
+| contract_id / contract_version | Identidad aceptada por DEC-C10-069 |
+| instance_id / instance_version | Identidad/revisión aceptadas por DEC-C10-069 |
+| snapshot_id / snapshot_object_record_id | FK exacta al snapshot U_G conforme a DEC-C10-065; nunca latest/timestamp lookup |
+| stage | C_src; F1→S2; A1→S1; C_dst_declared_F2; C_dst_declared_A2; C_dst_applied_F2; C_dst_applied_A2 |
+| route_id / route_record_id | F o A, según ruta; NULL solo cuando la etapa no pertenece a ruta y se justifica |
+| object_class | CMP / PAR / REF / RUL / MET; no amplía NODE/PREDICATE enum |
+| semantic_id / semantic_version | ID y versión propios de CMP/PAR/RUL/REF/MET; no reutilizar TID/SID/RID |
+| owner_component_id | CMP-SERVICE-LOGIC-001 como referencia al CMP aceptado; owner lógico CMP-SERVICE-LOGIC no es component_id |
+| property_key / property_type | Obligatorio para PAR; tipo/domain exactos por contrato |
+| state / value | Estados separados ABSENT/NULL/DEFAULT/VALUE; value solo si VALUE; no inferir default |
+| rule_id / rule_version / scope / AST_ref / effect | Obligatorio para RUL; contenido/AST versionado, no inferido de un nombre |
+| mapping_id / mapping_version / mapping_status | OPEN hasta asignación; status MAPPED/UNMAPPED/AMBIGUOUS/NOT_APPLICABLE, con NA solo justificado |
+| declared_or_applied | Distingue paquete/configuración declarada de estado aplicado; no se usa para E_dst/runtime |
+| evidence_id / claim_evidence_id | Referencia a EVIDENCE_REGISTER y CLAIM_EVIDENCE_LINK, con procedencia |
+| coverage_scope_id | Universo/denominador por clase, snapshot, ruta y etapa |
+| observed_state / unknown_reason | 1/0/?/NA con reglas U_G; truth DGP permanece fuera del manifiesto visible al Analizador |
+| recorded_at / recorded_by / supersedes | Record-time y linaje; no sustituye timestamp del snapshot |
+
+El manifiesto solo se instancia cuando existan snapshots y evidencia. Antes, sus filas son esquema y no observaciones. No se fijan aquí valores de escenario, serialización, enums físicos ni DDL.
+
+### 19.3. Crosswalk de snapshots y etapas
+
+| Etapa lógica | Snapshot U_G requerido | Universo que se inventaría | Límite |
+|---|---|---|---|
+| C_src | Snapshot exacto de origen | CMP/PAR/REF/RUL/MET declarados en fuente | No inferir estado destino |
+| F1→S2 | Snapshot exacto de representación S2 | Correspondencias y preservación CMP/PAR/REF/RUL | No equivale a aplicación |
+| A1→S1 | Snapshot exacto de representación S1 | Mismo universo semántico bajo ruta A | Evidencia independiente; no copiar resultados F |
+| C_dst_declared_F2 | Snapshot del destino declarado para ruta F | Declaración pre-aplicación | No prueba instalación ni estado efectivo |
+| C_dst_declared_A2 | Snapshot del destino declarado para ruta A | Declaración pre-aplicación | No heredar el snapshot F |
+| C_dst_applied_F2 | Snapshot post-aplicación de F2 | CMP/PAR/RUL/REF efectivamente observables | No inferir desde declaración |
+| C_dst_applied_A2 | Snapshot post-aplicación de A2 | CMP/PAR/RUL/REF efectivamente observables | No inferir desde declaración |
+
+Los nombres de etapa se almacenan en scope/phase conforme al enum vigente del SNAPSHOT; esta propuesta no amplía el enum phase ni altera la tabla SNAPSHOT. Si el esquema vigente no puede distinguir inequívocamente etapa/ruta en scope, se requiere una decisión de esquema antes de capturar, no una convención informal.
+
+### 19.4. Cobertura por clase y por etapa
+
+Crear COVERAGE_REGISTER scopes separados para cada combinación de snapshot×etapa×ruta×clase (CMP, PAR, REF, RUL, MET) y para fuentes de evidencia pertinentes. Cada scope fija universe_definition/version, denominator, expected_sources, examined_sources, valid_sources, covered_units, excluded_units y opaque_or_unknown_units. No agregar clases distintas en un único porcentaje.
+
+Reglas:
+- CMP: cubrir roster de componentes lógicos, clases, owners, versiones y límites P0/P1. La cardinalidad del CMP focal no demuestra que el roster total esté cerrado.
+- PAR: cubrir todas las claves declaradas en el contrato/instancia, estado, tipo, dominio, valor y owner. Para la instancia mínima conocida, ENABLED y PROFILE son obligatorios; RETRY-COUNT queda excluido por DEC-C10-068.
+- RUL: cubrir todas las reglas constitutivas del paquete, IDs/versiones, scope, AST, operandos, efecto y referencias PAR. RUL≥1 es exigencia estructural; la regla aceptada es la base funcional, pero no demuestra que no existan reglas adicionales.
+- REF: cobertura de extremos, tipo, dirección, multiplicidad, integridad y dependencias; REF=0 solo si universo y fuentes exhaustivos justifican ausencia.
+- MET: cubrir IDs/versiones, procedencia, timestamps, relaciones a snapshots/M/IAM/oráculo y hashes solo si serialización canónica existe.
+
+COMPLETE es relativo al universo operativo declarado y versionado; no significa exhaustividad ontológica. NONE/PARTIAL o universo desconocido impiden declarar ausencia (0) o REF=0; se conserva ?.
+
+### 19.5. Cobertura de evidencia y cegamiento
+
+Las fuentes de contrato y catálogos prueban intención/semántica aceptada, no el contenido de un snapshot ni el estado aplicado. Para clasificar una propiedad observada se exige evidencia del artefacto/snapshot exacto y un CLAIM_EVIDENCE_LINK con support_type, scope y limitaciones. C_dst_applied exige evidencia post-aplicación independiente; logs o telemetría diferencial por ruta deben reflejarse en cobertura y E_T.
+
+El manifiesto visible al Analizador contiene observaciones autorizadas, no truth DGP ni potenciales. DGP_TRUTH_SECURE permanece segregado. El Evaluador compara tras congelación de salidas del Analizador, pero no sustituye observación faltante por truth. Dos evaluadores independientes E1/E2 y adjudicación se aplican conforme al registro U_G cuando se habilite esa fase; no se afirma que estén disponibles ahora.
+
+### 19.6. Estado y gate
+
+**Estado:** protocolo de captura por snapshot documentado; sin snapshots, filas observadas ni evidencia técnica aportada. Inventario exhaustivo e IAM operativo siguen OPEN. La plantilla U_G §17.5 ya advierte que la captura técnica no se ha realizado; esta especialización no modifica ese estado. No se declara COMPLETE, REF=0 ni ausencia de objetos. No se crean fixtures, schema físico, parser, implementación, simulación o ejecución científica.
