@@ -143,6 +143,6 @@ No se propone cambiar objeto experimental, F*, DGP causal, estimandos, intervenc
 
 ## 7. Estado y límites
 
-UG-SCH-10 permanece OPEN hasta aceptación explícita de una alternativa y propagación de la decisión. Este documento es propuesta comparativa, no decisión ni freeze.
+Estado histórico actualizado: la Opción A fue aceptada semánticamente mediante DEC-C10-065 y propagada al contrato U_G vigente (§15 de la plantilla). Este documento conserva la comparación A/B/C/D como antecedente de diseño; no debe leerse como estado actual ni como autorización de implementación. La validación física/compatibilidad de motor sigue pendiente en su gate técnico separado.
 
 No se han creado instancias U_G, inventarios reales, fixtures, truth accesible al analizador, parser, constraints, simulaciones ni experimentos. No se ha ejecutado validación técnica. Se mantienen scientific_execution=false y execution_authorized=false.
