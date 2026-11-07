@@ -210,3 +210,11 @@ Esta aceptación es conceptual y documental. No demuestra ejecución del AST, pr
 RUL-01/02/03 del catálogo son propiedades de preservación (condición lógica, ámbito y efecto), no la identidad de una regla de instancia. La regla de instancia aceptada conceptualmente por DEC-C10-068 se denomina RUL-SVC-ENABLE-PROFILE-01 y está descrita en `C10_S_SYNTHETIC_LOGICAL_SERVICE_FUNCTIONAL_CONTRACT_DRAFT_001.md`. Su condición es ENABLED=true ⇒ PROFILE∈{STANDARD,READ_ONLY}, con PROFILE={STANDARD,READ_ONLY,DISABLED}. El identificador de instancia no debe confundirse con los predicados de preservación. Estado: regla sintética aceptada conceptualmente por DEC-C10-068; owner lógico y scope definidos; identidad/versionado de instancia, mapping y oráculo OPEN.
 
 **Precedencia decisional:** la tabla histórica de §12 queda supersedida en lo relativo a RETRY-COUNT y al estado de ENABLED/PROFILE. DEC-C10-068 acepta solo PAR-SVC-ENABLED BOOL y PAR-SVC-PROFILE ENUM como núcleo; PAR-SVC-RETRY-COUNT queda excluido. La identidad/versionado CMP candidato se documenta por separado en `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md`; no queda aceptado por DEC-C10-068.
+
+## 15. Reconciliación de roster del catálogo atómico tras DEC-C10-068/069
+
+La fila histórica PAR-SVC-RETRY-COUNT de §12 se conserva como antecedente trazable, pero queda **SUPERSEDED FOR THE BASE CONFIRMATORY INSTANCE** por DEC-C10-068. No es slot obligatorio ni opcional del roster funcional base; no debe poblarse ni usarse para satisfacer PAR≥1 en la instancia aceptada. Cualquier futura extensión requeriría decisión/versionado y justificación P0 explícitos.
+
+El roster PAR funcional vigente de la instancia aceptada se limita a PAR-SVC-ENABLED BOOL {false,true} y PAR-SVC-PROFILE ENUM {STANDARD, READ_ONLY, DISABLED}. No existe DEFAULT contractual aceptado para ninguno. La regla RUL-SVC-ENABLE-PROFILE-01 vincula ambos. El catálogo histórico no constituye evidencia de valores presentes en C_src/S1/S2/C_dst.
+
+**Estado:** precedencia documental reconciliada; no se alteran IDs/valores aceptados ni se crean filas observadas.
