@@ -447,3 +447,7 @@ Por cada REF incluido, IAM predeclarará: origen/owner permitido; clase y cardin
 REF vacío solo podrá declararse con universo REF exhaustivo y evidencia completa. Ausencia de una referencia opcional no implica REF=0. La ausencia de EDGE en ROUTE_STEP solo prueba no pertenencia a esa ruta cuando la cobertura correspondiente es completa; no prueba ausencia de REF ni del objeto en snapshot.
 
 Las seis FK tipadas de CLAIM_EVIDENCE_LINK y las FKs Opción A siguen siendo integridad U_G; no se añaden al roster REF salvo una declaración de dominio independiente. El IAM sigue abierto y no autoriza instancias ni ejecución.
+
+### 19.11. DEC-C10-077 — límites IAM aceptados para REF
+
+Quedan aceptadas las cuatro capas separadas: membership del universo; referencias UDG del envelope; extremos funcionales de REF; FK estructurales U_G. No comparten denominador ni obligatoriedad por defecto. IAM aún debe declarar, ex ante y por clase/rol/extremo/stage_key/scope, dominios, cardinalidades, REQUIRED/OPTIONAL, endpoints internos/externos, integridad, mapping M y evidencia. DEC-C10-077 no asigna esos valores ni cierra applicability.
