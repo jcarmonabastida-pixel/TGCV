@@ -843,3 +843,10 @@ Resultados por dimensión EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE; FAIL para inte
 Separar identidad lógica `(object_class, object_id)` de identidad inmutable de registro `(object_class, object_id, object_record_id)`. Referencia abstracta: `(ref_role, target_object_class, target_object_id, target_object_record_id)`; roles MEMBER/OWNER/SOURCE/INCLUSION_RULE/EXCLUSION_RULE/DEPENDENCY/PROVENANCE son ilustrativos, no enum cerrado. Resolución exacta contra registry/manifiesto versionado y scope declarado; prohibido “latest” implícito o fallback por nombre/valor/hash/posición.
 
 Estados: requerida ausente o conflicto de identidad/inmutabilidad = FAIL; registry no disponible/cobertura incompleta = UNKNOWN; versiones/schema incompatibles sin mapping aprobado = NOT_COMPARABLE; referencia opcional ausente = NOT_APPLICABLE. No inferir inexistencia sin registry cerrado/exhaustivo. Ciclos se evalúan por relación; DEPENDENCY solo DAG si contrato lo exige; ciclos no se rompen arbitrariamente. Resolver una referencia no demuestra pertenencia al universo ni aplicabilidad. UDG-04 NO ACEPTADA; sin schema/API/resolver/parser/validator/fixtures/ejecución.
+
+
+### 18.22. Estado UDG-04 tras DEC-C10-076
+
+UDG-04 queda ACEPTADA documentalmente. Identidad lógica `(object_class, object_id)`; identidad exacta de registro `(object_class, object_id, object_record_id)` inmutable. Referencia tipada `(ref_role, target_object_class, target_object_id, target_object_record_id)`; roles ilustrativos pendientes de reconciliación REF, no enum físico cerrado. Resolución exacta en registry/manifiesto versionado y scope explícito; sin latest implícito ni fallback nominal/valor/posición/hash.
+
+Requerida ausente/dangling exhaustivo/conflicto/mutabilidad = FAIL; registry incompleto/inaccesible = UNKNOWN; incompatibilidad sin mapping = NOT_COMPARABLE; opcional ausente = NOT_APPLICABLE. Ciclos/cardinalidad por relación; DAG solo si contrato lo exige. Resolver no demuestra membership/aplicabilidad/ejecución. Aceptación documental, sin schema/API/resolver/parser/validator/comparator/fixtures ni ejecución. DEC-C10-076 prevalece sobre §18.21.
