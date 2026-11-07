@@ -99,3 +99,9 @@ La especialización funcional y RUL descritas quedan aceptadas conceptualmente p
 ## 9. Registro de aceptación
 
 DEC-C10-068 acepta el servicio lógico sintético, los parámetros PAR-SVC-ENABLED/PAR-SVC-PROFILE y RUL-SVC-ENABLE-PROFILE-01 con la semántica y contrastes de §§2–4. CMP-SERVICE-LOGIC permanece como owner lógico provisional; identidad/versionado concretos, IAM de instancia, mapping físico, tolerancias y oráculo siguen abiertos. PAR-SVC-RETRY-COUNT continúa excluido del núcleo. No hay fixtures ni ejecución.
+
+## 10. Clarificación de owner lógico e identidad CMP
+
+En DEC-C10-068, `CMP-SERVICE-LOGIC` se usó como owner/rol lógico provisional. No es por sí mismo un `component_id` único, un `instance_id` ni una versión. La propuesta `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md` separa esas entidades y somete a aceptación los candidatos `C10S-SVC-REQUEST-PROCESSOR`, `C10S-SVC-REQUEST-PROCESSOR-001` y `CMP-SERVICE-LOGIC-001`.
+
+La semántica funcional de ENABLED/PROFILE/RUL permanece aceptada por DEC-C10-068; los IDs/versiones candidatos no quedan aceptados por esa decisión. No se asigna hash hasta congelar formato canónico. El contrato no fija valores de escenario, instancia serializada ni mapping físico.
