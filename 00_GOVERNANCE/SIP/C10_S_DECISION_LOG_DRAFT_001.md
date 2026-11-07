@@ -772,3 +772,9 @@ Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-069_SERVICE_CMP_IDENTITY_AN
 Se incorpora la especialización propuesta en C10_S_ABSTRACT_PARAMETER_AND_SOURCE_DESTINATION_MAPPING_MATRIX_DRAFT_001.md §20, reutilizando el crosswalk previo. El mapping referencia los IDs aceptados por DEC-C10-069 y el contrato funcional DEC-C10-068. Define CMP lógico, los dos PAR aceptados y RUL-SVC-ENABLE-PROFILE-01, con separación por etapa F1/A1 frente a F2/A2, FP-06/07 y adjudicación 1/0/?/NA.
 
 No constituye una nueva decisión del usuario ni acepta/congela la propuesta. RETRY-COUNT queda excluido por DEC-C10-068; la nota de aceptación pendiente de §18 de la matriz queda supersedida por DEC-C10-069. IAM, defaults/valores concretos, mapping físico, serialización/MET, oráculo y evidencia siguen OPEN. Sin fixtures, implementación, validación ejecutable o ejecución científica.
+
+## 56. Reconciliación documental IAM/Oráculo tras DEC-C10-069 (2026-11-07)
+
+La matriz IAM §17 corrige el estado histórico de §16: los IDs contract/instance/CMP ya fueron aceptados por DEC-C10-069; mapping_id, IAM_id, oracle_id y serialización/hash siguen OPEN. Se especifica como requisito la instanciación IAM por ruta/etapa/objeto/propiedad/snapshot, la distinción C_dst declarado/aplicado y E_dst, y la separación de truth del DGP, salidas del Analizador y adjudicación del Evaluador.
+
+La especificación es documental y no constituye nueva decisión del usuario ni contrato de oráculo aceptado/congelado. Roster global, valores/defaults por escenario, AST/mapping, cobertura, evidencia, cegamiento y reglas operativas de UNKNOWN/conflicto permanecen OPEN. Sin fixtures, implementación o ejecución científica.
