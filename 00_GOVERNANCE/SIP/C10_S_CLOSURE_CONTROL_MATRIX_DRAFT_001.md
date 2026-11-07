@@ -1602,3 +1602,16 @@ DEC-C10-078 no cierra el gate REF ni concede PASS de schema/integridad física. 
 | IAM-VOC-06 | Dominios/cardinalidades/requiredness por clase×rol×extremo×stage_key×scope | OPEN |
 
 La propuesta no crea enums, filas de instancia, REF observados ni IAM poblado. No produce PASS de integridad ni autoriza schema, parser/validator, fixtures, Design Freeze o ejecución.
+
+## 74. DEPENDENCY L2 — propuesta de resolución semántica
+
+| Control | Criterio | Estado |
+|---|---|---|
+| IAM-DEP-01 | Una dependencia funcional declarada de configuración se representa mediante objeto REF con identidad propia | PROPOSED — NOT ACCEPTED |
+| IAM-DEP-02 | L2 DEPENDENCY referencia el REF exacto; extremos de la relación permanecen en L3 | PROPOSED — NOT ACCEPTED |
+| IAM-DEP-03 | Dependencias técnicas/ambientales C_dep/E_dst no crean REF automáticamente | PROPOSED — NOT ACCEPTED |
+| IAM-DEP-04 | Dependencias de evaluación de universo RULE_DEFINED se mantienen como refs tipadas/versionadas de regla/envelope, no como REF por defecto | PROPOSED — NOT ACCEPTED |
+| IAM-DEP-05 | Roster mínimo actual no declara por sí mismo una relación REF; REF=0 exige inventario/cobertura exhaustivos pre-Z/B | CONSISTENT WITH ACCEPTED ROSTER; INSTANCE ADJUDICATION OPEN |
+| IAM-DEP-06 | Sin doble contabilización entre referencia L2, objeto REF y objetos endpoint | PROPOSED — NOT ACCEPTED |
+
+Esta propuesta no acepta vocabulario final, cardinalidad ni requiredness; no declara REF presente/ausente y no autoriza schema, resolver, fixtures, parser/validator, implementación, Design Freeze ni ejecución.
