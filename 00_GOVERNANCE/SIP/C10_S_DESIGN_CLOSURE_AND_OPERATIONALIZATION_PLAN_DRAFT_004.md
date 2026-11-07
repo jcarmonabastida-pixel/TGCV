@@ -1215,3 +1215,11 @@ Para una dependencia entendida como relación del dominio de configuración, la 
 Se separan dos casos que no deben reutilizar ese significado: (a) dependencias técnicas/ambientales (C_dep/E_dst, runtime, recursos, permisos, instalación), que no crean REF por sí mismas; y (b) dependencias usadas para resolver/evaluar un universo RULE_DEFINED, que se registran como referencias tipadas/versionadas de la regla/envelope, no como REF funcional salvo declaración independiente.
 
 Para el DGP base actual, el roster mínimo CMP/PAR/RUL aceptado no declara una relación REF concreta. REF=0 sigue posible solo tras inventario/cobertura exhaustivos pre-Z/B; no se inventa una dependencia ni se sella REF=0 ahora. Propuesta no aceptada; no cambia DEC-C10-078 ni autoriza implementación/ejecución.
+
+## 16.57. Auditoría del conjunto mínimo REF L3 — resultado provisional
+
+El contrato sintético aceptado CMP-SERVICE-LOGIC-001 + PAR-SVC-ENABLED/PROFILE + RUL-SVC-ENABLE-PROFILE-01 no exige actualmente una relación REF funcional concreta. Los operandos de la RUL, las relaciones R_acc/R* del espacio transformacional, las dependencias técnicas C_dep/E_dst y las referencias de evaluación RULE_DEFINED no se convierten en REF por defecto.
+
+El roster mínimo no es un inventario exhaustivo: no autoriza declarar REF=0. El valor cero solo podrá adjudicarse por snapshot×etapa×ruta×scope con enumeración exhaustiva y cobertura COMPLETE pre-Z/B. Todo REF añadido debe justificar identidad propia de la relación, extremos exactos, semántica, dirección/tipo/rol, multiplicidad, versión/snapshot y distinción frente a FK/condición externa/referencia de regla.
+
+Estado: auditoría documental propuesta; sin filas observadas ni IAM sellado. El siguiente gate es contrastar esta lista negativa con inventarios exhaustivos de C_src/C_dst y con los scopes por stage_key, antes de asignar cardinalidad/requiredness.
