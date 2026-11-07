@@ -828,3 +828,12 @@ Se registra como propuesta documental la reutilización del crosswalk IAM histó
 Las etiquetas NONE/F/A son familia de ruta, no route_id exacto; CONFIG no satisface el object_class C0, que permanece CMP/PAR/REF/RUL/MET. Route membership requiere ROUTE_STEP/record IDs exactos. dimension permanece en COVERAGE_REGISTER, fuera de la tupla C0 de nueve componentes.
 
 No constituye aceptación nueva del usuario. Vocabulario final de stage_key, token global, gramática universe_definition/version y mapping por propiedad permanecen OPEN. No se modifica schema ni se autoriza implementación/ejecución.
+
+
+## 65. DEC-C10-071 — aceptación del vocabulario controlado stage_key (2026-11-07)
+
+El usuario acepta como vocabulario cerrado de stage_key C10-S los siete valores de U_G §18.2: C_SRC, F1_S2, A1_S1, F2_DST_DECL, A2_DST_DECL, F2_DST_APPLIED y A2_DST_APPLIED. La decisión se registra en `00_GOVERNANCE/decisions/DEC-C10-071_C10S_STAGE_KEY_VOCABULARY_ACCEPTANCE.md`.
+
+La aceptación se limita a los valores y sus significados. stage_key se mantiene separado del reloj DGP t−1…t9, SNAPSHOT.phase y SNAPSHOT.timestamp. No se acepta la serialización en SNAPSHOT.scope ni los campos route=NONE/F/A u object_class=CONFIG de la propuesta histórica. El binding C0 permanece en COVERAGE_REGISTER.universe_definition/version; route_id exacto/token global y mappings físicos siguen OPEN. C0 mantiene object_class CMP/PAR/REF/RUL/MET y dimension fuera de la tupla.
+
+DEC-C10-071 no modifica schema, no crea scopes/snapshots ni autoriza implementación, validación ejecutable o ejecución científica. No Design Freeze.
