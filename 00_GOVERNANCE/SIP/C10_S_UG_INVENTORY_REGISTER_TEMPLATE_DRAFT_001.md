@@ -850,3 +850,11 @@ Estados: requerida ausente o conflicto de identidad/inmutabilidad = FAIL; regist
 UDG-04 queda ACEPTADA documentalmente. Identidad lógica `(object_class, object_id)`; identidad exacta de registro `(object_class, object_id, object_record_id)` inmutable. Referencia tipada `(ref_role, target_object_class, target_object_id, target_object_record_id)`; roles ilustrativos pendientes de reconciliación REF, no enum físico cerrado. Resolución exacta en registry/manifiesto versionado y scope explícito; sin latest implícito ni fallback nominal/valor/posición/hash.
 
 Requerida ausente/dangling exhaustivo/conflicto/mutabilidad = FAIL; registry incompleto/inaccesible = UNKNOWN; incompatibilidad sin mapping = NOT_COMPARABLE; opcional ausente = NOT_APPLICABLE. Ciclos/cardinalidad por relación; DAG solo si contrato lo exige. Resolver no demuestra membership/aplicabilidad/ejecución. Aceptación documental, sin schema/API/resolver/parser/validator/comparator/fixtures ni ejecución. DEC-C10-076 prevalece sobre §18.21.
+
+### 18.23. Reconciliación REF↔U_G tras DEC-C10-076 — propuesta
+
+REF de configuración, referencia tipada UDG y FK estructural U_G son conceptos separados. REF puede mapearse a EDGE solo mediante M versionado que preserve source/target record IDs, direction, relation_type/role, multiplicity e integrity_rule. No asumir correspondencia 1:1: una REF binaria puede corresponder a una EDGE atómica; split/merge o relación n-aria requiere parent/group identity explícita. Una EDGE no es REF automáticamente.
+
+Crosswalk candidato de registros: CMP→NODE; PAR→NODE o propiedad tipada del NODE owner; REF→EDGE cuando sea relación de configuración; RUL→PREDICATE; MET→metadatos transversales y registros SNAPSHOT/EVIDENCE_REGISTER según función. El mapping es semántico y contextual, no una equivalencia de clases/tablas. CLAIM_EVIDENCE_LINK y ROUTE_STEP conservan sus funciones U_G aprobadas y no se cuentan como REF del dominio por defecto.
+
+Para cada extremo REF se requiere identidad lógica y record_id exacto; los extremos internos deben fijar snapshot_object_record_id común según DEC-C10-065. Los externos requieren namespace, tipo, versión y política de resolución explícitos. La ausencia de pinning o la multiplicidad ambigua mantiene UNKNOWN; no resolver por latest ni por nombre. Esta addenda no modifica DDL ni el esquema normalizado.
