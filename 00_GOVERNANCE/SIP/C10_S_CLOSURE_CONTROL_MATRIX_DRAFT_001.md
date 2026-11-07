@@ -1416,3 +1416,21 @@ No se acepta el token ni se modifica schema. La gramática de universe_definitio
 | C0-RT-06 | Adjudicación | 1 exacto; 0 solo no pertenencia a ruta con universo/ROUTE_STEP completos; ? incompleto; NA IAM ex ante | DOCUMENTED PROPOSAL |
 
 La aceptación del token no cierra la gramática universe_definition/version ni el control C0 independiente implementado/auditado. No schema change ni ejecución autorizados.
+
+
+
+## 62. UDG-01 — gates de gramática universe_definition
+
+| ID | Requisito | Criterio | Estado |
+|---|---|---|---|
+| UDG-01 | Envelope | JSON autocontenido; scope replica tupla C0 de nueve componentes | PROPOSED |
+| UDG-02 | Identidad | schema_id/version, universe_id/revision separados de contrato/instancia | PROPOSED |
+| UDG-03 | Membership | EXPLICIT con member_refs tipados o RULE_DEFINED con regla/dependencias exactas | PROPOSED |
+| UDG-04 | Exhaustividad | fuentes/manifiestos + declared_member_count; cero exige evidencia exhaustiva | PROPOSED |
+| UDG-05 | Route binding | route-specific resuelve route_record_id; global usa C10S_SCOPE_GLOBAL | ALIGNED WITH DEC-C10-072 |
+| UDG-06 | Canonicalización | UTF-8/NFC, orden determinista, SHA-256 candidato | PROPOSED |
+| UDG-07 | Versionado | schema_version semver; universe_revision monotónica/inmutable | PROPOSED |
+| UDG-08 | Integridad | igualdad scope externo/interno, referencias, cardinalidad, duplicados, provenance | PROPOSED |
+| UDG-09 | Adjudicación | PASS solo exhaustivo; FAIL contradicción; UNKNOWN no resoluble | PROPOSED |
+
+La aceptación del token global no acepta UDG-01. Gramática, canonicalización/hash y mapping físico permanecen abiertos. No parser/validator, schema change, fixtures ni ejecución autorizados.
