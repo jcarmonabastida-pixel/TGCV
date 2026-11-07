@@ -8193,3 +8193,13 @@ Protocolo de evidencia §20.8, matriz de mapping §20.10 y plantilla U_G §18.13
 Se acepta el literal reservado `C10S_SCOPE_GLOBAL` para el slot route_id C0, con significado exclusivo “sin restricción a una ruta concreta”. No significa ausencia de rutas, no pertenencia ni NA; no puede usarse como route_id semántico real (colisión = FAIL). NULL/vacío/NONE/F/A no son sustitutos.
 
 El scope global enumera el universo elegible por clase/etapa/snapshot y cuenta cada identidad una vez; scopes route-specific mantienen denominadores independientes y exigen route_id semántico, route_record_id y snapshot exactos. DEC-C10-072 cierra el literal/semántica, no la gramática universe_definition/version, mappings físicos, control C0, schema, fixtures ni implementación. scientific_execution=false; execution_authorized=false.
+
+
+
+## 189. Gramática de universe_definition — propuesta UDG-01 (2026-11-07)
+
+Se propone un envelope JSON autocontenido/versionado para COVERAGE_REGISTER.universe_definition/version. La identidad scope replica exactamente la tupla C0 de nueve componentes; dimension permanece fuera. El envelope contiene schema_id/schema_version, universe_id/universe_revision, scope, membership_mode (EXPLICIT/RULE_DEFINED), member_refs tipados o inclusion_rule_ref versionado, exclusion_rule_refs, source_manifest_refs, declared_member_count y provenance_ref.
+
+EXPLICIT enumera el denominador con referencias object_class/object_id/object_record_id; RULE_DEFINED exige regla/dependencias versionadas y resultado reproducible. Cero miembros requiere evidencia exhaustiva; array vacío no basta. Route-specific resuelve route_id a route_record_id exacto; global usa C10S_SCOPE_GLOBAL y no tiene ruta focal. Scope interno debe igualar C0 externo; duplicados/contradicciones demostrados FAIL; referencias no resolubles UNKNOWN.
+
+Se propone canonicalización UTF-8/NFC, claves ordenadas, arrays ordenados por identidad, enteros canónicos y SHA-256. schema_version semver; universe_revision monotónica/inmutable; cambio de contenido crea revisión. U1 envelope JSON se recomienda frente a cadena delimitada o referencia externa sola. Todo queda como propuesta no aceptada: no parser, validator, fixture, schema change, Design Freeze ni ejecución.
