@@ -823,6 +823,8 @@ Esto no revoca DEC-C10-070 ni la aceptación de C0; delimita su evaluabilidad. N
 
 ## 64. Reconciliación del crosswalk C0↔U_G (2026-11-07)
 
-Se registra como propuesta documental la reutilización del crosswalk IAM histórico y la separación de tres ejes: object_class C10, ug_record_type y semantic_role/boundary_class de NODE. stage_key se refiere al reloj DGP t−1…t9; SNAPSHOT.phase conserva su significado de contexto de captura. La pertenencia route-specific requiere ROUTE_STEP y referencias exactas. CMP/PAR/REF/RUL/MET disponen de mappings candidatos no uno-a-uno; dimension permanece como atributo de COVERAGE_REGISTER, fuera de la tupla de nueve componentes de DEC-C10-070.
+Se registra como propuesta documental la reutilización del crosswalk IAM histórico y la separación de object_class C10, ug_record_type y semantic_role/boundary_class de NODE. U_G §18.2 aporta siete stage_key candidatos (C_SRC, F1_S2, A1_S1, F2_DST_DECL, A2_DST_DECL, F2_DST_APPLIED, A2_DST_APPLIED); no equivalen al reloj DGP t−1…t9 ni a SNAPSHOT.phase. La propuesta de SNAPSHOT.scope no fue aceptada por DEC-C10-070.
 
-No constituye aceptación nueva del usuario. Token global, gramática universe_definition/version y mapping por propiedad permanecen OPEN. No se modifica schema ni se autoriza implementación/ejecución.
+Las etiquetas NONE/F/A son familia de ruta, no route_id exacto; CONFIG no satisface el object_class C0, que permanece CMP/PAR/REF/RUL/MET. Route membership requiere ROUTE_STEP/record IDs exactos. dimension permanece en COVERAGE_REGISTER, fuera de la tupla C0 de nueve componentes.
+
+No constituye aceptación nueva del usuario. Vocabulario final de stage_key, token global, gramática universe_definition/version y mapping por propiedad permanecen OPEN. No se modifica schema ni se autoriza implementación/ejecución.
