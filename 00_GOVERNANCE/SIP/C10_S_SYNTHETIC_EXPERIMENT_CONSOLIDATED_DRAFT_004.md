@@ -8203,3 +8203,10 @@ Se propone un envelope JSON autocontenido/versionado para COVERAGE_REGISTER.univ
 EXPLICIT enumera el denominador con referencias object_class/object_id/object_record_id; RULE_DEFINED exige regla/dependencias versionadas y resultado reproducible. Cero miembros requiere evidencia exhaustiva; array vacío no basta. Route-specific resuelve route_id a route_record_id exacto; global usa C10S_SCOPE_GLOBAL y no tiene ruta focal. Scope interno debe igualar C0 externo; duplicados/contradicciones demostrados FAIL; referencias no resolubles UNKNOWN.
 
 Se propone canonicalización UTF-8/NFC, claves ordenadas, arrays ordenados por identidad, enteros canónicos y SHA-256. schema_version semver; universe_revision monotónica/inmutable; cambio de contenido crea revisión. U1 envelope JSON se recomienda frente a cadena delimitada o referencia externa sola. Todo queda como propuesta no aceptada: no parser, validator, fixture, schema change, Design Freeze ni ejecución.
+
+
+## 190. DEC-C10-073 — U1 aceptada (2026-11-07)
+
+Se acepta U1 como arquitectura documental para `universe_definition`: envelope JSON autocontenido/versionado con campos/cardinalidades UDG-01 y scope que replica exactamente los nueve componentes C0; dimension permanece fuera. Se aceptan EXPLICIT/RULE_DEFINED, member_refs tipados, referencias exactas, declared_member_count, fuentes/provenance y la exigencia de prueba exhaustiva para universo vacío. Versionado de schema y revisión de universo quedan separados conceptualmente.
+
+La aceptación no hace normativa la canonicalización UTF-8/NFC, orden determinista, SHA-256 ni RFC/JCS; tampoco congela serialización física, compatibilidad semver detallada, mappings físicos o control C0. No parser/validator/fixtures/schema change, Design Freeze ni ejecución autorizados. Registro: DEC-C10-073.
