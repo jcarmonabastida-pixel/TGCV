@@ -236,3 +236,13 @@ Esta especialización no resuelve REF=0: requiere declaración IAM y cobertura e
 ## 13. Identidad/versionado CMP aceptados por DEC-C10-069
 
 La instancia de servicio sintético usa contract_id=C10S-SVC-REQUEST-PROCESSOR / contract_version=1.0.0; instance_id=C10S-SVC-REQUEST-PROCESSOR-001 / instance_version=1; component_id=CMP-SERVICE-LOGIC-001 / component_class=SERVICE_LOGIC. CMP-SERVICE-LOGIC conserva el rol/owner lógico. La política semver del contrato y revisión entera inmutable de instancia queda aceptada. MET enlaza los IDs y versiones con C_src/C_dst, M, IAM, oráculo y procedencia; serialización/hash permanecen OPEN hasta fijar formato canónico. DEC-C10-069 no sella IAM ni crea instancia ejecutable.
+
+## 16. Reconciliación del roster PAR tras DEC-C10-068/069
+
+Las §§11–12 históricas describen un roster candidato de tres PAR (ENABLED, PROFILE, RETRY-COUNT) y reglas de estado candidatas. Su estado vigente queda reconciliado por DEC-C10-068: el núcleo funcional aceptado contiene únicamente PAR-SVC-ENABLED BOOL y PAR-SVC-PROFILE ENUM; PAR-SVC-RETRY-COUNT queda excluido del núcleo confirmatorio. No debe instanciarse como slot requerido ni aparecer en el manifiesto base.
+
+DEC-C10-068 no declara DEFAULT para ENABLED ni PROFILE. Por tanto, la posibilidad histórica de DEFAULT de §11 no autoriza un default concreto ni su uso confirmatorio. ABSENT/NULL no son admisibles para los dos parámetros REQUIRED; DEFAULT requiere una declaración contractual explícita posterior, con kind/origen/scope/precedencia/versión. DEFAULT_ENV_RESOLVED pertenece a E_dst/runtime, no al paquete declarativo.
+
+Los dominios funcionales aceptados son BOOL {false,true} y ENUM {STANDARD, READ_ONLY, DISABLED}. No se fijan valores por escenario. La regla RUL-SVC-ENABLE-PROFILE-01 aceptada por DEC-C10-068 vincula ambos parámetros; el mapping y la aplicación se evalúan separadamente en F1/A1 y F2/A2.
+
+**Estado:** reconciliación documental; no cambia las decisiones aceptadas ni sella el IAM. No hay instancia serializada, defaults, valores de escenario, snapshots ni evidencia observada.
