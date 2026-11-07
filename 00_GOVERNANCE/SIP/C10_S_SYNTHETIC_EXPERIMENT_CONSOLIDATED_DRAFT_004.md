@@ -8137,3 +8137,11 @@ Los registros de objeto enlazan coverage_scope_id y los registros de grafo fijan
 Se comparan C0 (esquema actual + contrato de tupla exacta + control independiente, recomendación provisional), C1 (añadir snapshot_id/snapshot_object_record_id y FK compuesta a COVERAGE_REGISTER y a referencias de objeto) y C2 (tabla puente, no recomendada). C0 queda CONDITIONAL hasta que exista control auditado; C1 requiere decisión explícita y revisión de ciclos/compatibilidad. Ninguna alternativa está aceptada como cambio de schema.
 
 Este análisis no reabre DEC-C10-065, no acepta la convención SNAPSHOT.scope, no crea scopes/snapshots ni evidencia, y no autoriza implementación o ejecución.
+
+## 183. DEC-C10-070 — aceptación condicionada de C0 para scopes de cobertura (2026-11-07)
+
+Se acepta C0: conservar COVERAGE_REGISTER y el schema actuales; cada coverage_scope_id C10-S queda pinneado en universe_definition/version a la tupla exacta de contrato/instancia/snapshot/registro/etapa/ruta/clase. Los registros que referencian el scope deben coincidir con ella. Un control independiente comprobará igualdad, unicidad, cardinalidad, scopes huérfanos/no usados y conflictos.
+
+La aceptación es documental y CONDITIONAL hasta que el control se especifique, implemente bajo autorización, ejecute y audite antes del Design Freeze. C0 no equivale a FK compuesta ni enforcement relacional. C1/C2 no aceptadas ni autorizadas.
+
+No se reabre DEC-C10-065/Opción A, no se modifica SNAPSHOT.phase ni se acepta SNAPSHOT.scope. No se crean scopes/snapshots ni evidencias; no se autoriza schema change, implementación, validación ejecutable, simulación o ejecución científica.
