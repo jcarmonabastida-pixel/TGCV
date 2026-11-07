@@ -8154,3 +8154,9 @@ El protocolo `C10_S_UG_EVIDENCE_PROVENANCE_AND_ADJUDICATION_PROTOCOL_DRAFT_001.m
 La especificación es documental. No se ha reconciliado DDL completo, implementado el control, poblado fixtures, ejecutado pruebas ni auditado resultados. La aceptación de C0 (DEC-C10-070) es distinta del cierre operacional del control. Estado: DOCUMENTED SPECIFICATION / NOT IMPLEMENTED / NOT EXECUTED / NOT AUDITED; C0 permanece CONDITIONAL para Design Freeze.
 
 Un PASS C0 solo acredita integridad del binding dentro del conjunto cerrado examinado; no demuestra cobertura COMPLETE, ausencia REF=0, verdad de fuentes ni causalidad.
+
+## 185. Mapping C0↔U_G: campos no representados y UNKNOWN obligatorio
+
+El protocolo §20 inspecciona la representación de la tupla C0 en el esquema vigente. snapshot_id y snapshot_object_record_id están cubiertos por Opción A/DEC-C10-065. stage_key no tiene columna propia; SNAPSHOT.phase no es equivalente y SNAPSHOT.scope no está aceptado. route_id solo está representado directamente en ROUTE/PREDICATE/ROUTE_STEP; para NODE/EDGE se requiere derivación exhaustiva desde ROUTE_STEP. object_class CMP/PAR/REF/RUL/MET no tiene campo común tipado. contract/instance versions y dimension requieren binding documental recuperable y versionado.
+
+Consecuencia: el control C0 no puede dar PASS completo mientras no exista crosswalk explícito y comprobable para esos campos. UNKNOWN es obligatorio si la correspondencia no puede demostrarse; FAIL solo ante contradicción demostrada. No se añaden columnas, no se acepta SNAPSHOT.scope, no se equipara phase con stage_key y no se ejecuta.
