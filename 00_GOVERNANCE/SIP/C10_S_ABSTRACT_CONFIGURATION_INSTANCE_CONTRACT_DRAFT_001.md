@@ -232,3 +232,7 @@ DEC-C10-068 acepta conceptualmente el contrato funcional ENABLED/PROFILE/RUL. La
 Candidatos: contract_id=C10S-SVC-REQUEST-PROCESSOR; contract_version=1.0.0; instance_id=C10S-SVC-REQUEST-PROCESSOR-001; instance_version=1; component_id=CMP-SERVICE-LOGIC-001; component_class=SERVICE_LOGIC. CMP-SERVICE-LOGIC es owner/rol lógico provisional, no identidad única. PAR-SVC-ENABLED, PAR-SVC-PROFILE y RUL-SVC-ENABLE-PROFILE-01 mantienen los identificadores de DEC-C10-068. RETRY-COUNT excluido.
 
 Esta especialización no resuelve REF=0: requiere declaración IAM y cobertura exhaustiva. MET debe enlazar contrato/instancia/CMP, C_src/C_dst, M, IAM, oráculo, procedencia y hash de artefacto. El hash solo se calcula después de fijar serialización canónica. No hay instancia serializada ni IAM sellado.
+
+## 13. Identidad/versionado CMP aceptados por DEC-C10-069
+
+La instancia de servicio sintético usa contract_id=C10S-SVC-REQUEST-PROCESSOR / contract_version=1.0.0; instance_id=C10S-SVC-REQUEST-PROCESSOR-001 / instance_version=1; component_id=CMP-SERVICE-LOGIC-001 / component_class=SERVICE_LOGIC. CMP-SERVICE-LOGIC conserva el rol/owner lógico. La política semver del contrato y revisión entera inmutable de instancia queda aceptada. MET enlaza los IDs y versiones con C_src/C_dst, M, IAM, oráculo y procedencia; serialización/hash permanecen OPEN hasta fijar formato canónico. DEC-C10-069 no sella IAM ni crea instancia ejecutable.
