@@ -1187,3 +1187,17 @@ DEC-C10-068 acepta el contrato como fuente constitutiva interna de verdad para e
 | DEC068-07 | Fixtures, pruebas, implementación y ejecución | NO AUTORIZADOS / NO EJECUTADOS |
 
 Registro: `00_GOVERNANCE/decisions/DEC-C10-068_SYNTHETIC_SERVICE_FUNCTIONAL_CONTRACT_ACCEPTANCE.md`. No constituye Design Freeze.
+
+## 49. Control de identidad y versionado CMP de la instancia sintética
+
+| Control | Criterio | Estado |
+|---|---|---|
+| CMP-ID-01 | Separar contract_id, instance_id, component_id y component_class | Especificado en propuesta; pendiente de aceptación |
+| CMP-ID-02 | Separar contract_version, instance_version y hash de artefacto | Política propuesta; pendiente de aceptación |
+| CMP-ID-03 | Reutilizar contrato abstracto de instancia y matching snapshots | Crosswalk documentado; instanciación pendiente |
+| CMP-ID-04 | Identidad candidata C10S-SVC-REQUEST-PROCESSOR / C10S-SVC-REQUEST-PROCESSOR-001 / CMP-SERVICE-LOGIC-001 | Propuesta, no canónica |
+| CMP-ID-05 | Enlazar MET con C_src/C_dst, M, IAM y oráculo versionados | Campos heredados definidos; valores/serialización OPEN |
+| CMP-ID-06 | Hash calculado solo sobre serialización canónica congelada | Regla propuesta; no hash generado |
+| CMP-ID-07 | Matching de snapshots con identidad/frontera/granularidad/cobertura | Contrato existente; cierre por instancia OPEN |
+
+Documento: `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md`. No crea instancia ejecutable ni cierra F*. No Design Freeze ni autorización de implementación/ejecución.
