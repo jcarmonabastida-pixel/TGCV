@@ -1200,3 +1200,10 @@ La aceptación cierra la estructura documental del contrato de filas, no los val
 **Siguiente gate documental:** proponer y contrastar vocabularios candidatos por capa, separando expresamente (a) roles de referencias del envelope UDG en L2 y (b) roles/extremos funcionales de objetos REF en L3. Mantener L1 y L4 como membership/FK estructural, no convertirlos en roles REF. Después, justificar dominios/cardinalidades/requiredness por clase×rol×extremo×stage_key×scope, y reconciliar mapping M sin fijar aún un mapping concreto.
 
 **OPEN:** vocabularios finales, dominios internos/externos, cardinalidades numéricas, requiredness, integridad concreta, evidencia/adjudicación concreta y mapping M. No schema físico, roster exhaustivo, IAM poblado, fixtures, parser/validator, implementación, Design Freeze ni ejecución autorizados.
+
+
+## 16.55. Propuesta de vocabularios IAM L2/L3 — gate documental siguiente
+
+Se incorpora como propuesta no aceptada la separación de namespaces `UDG_ENVELOPE_ROLE` (L2) y `REF_FUNCTIONAL_ROLE` (L3). L2 reutiliza como candidatos ilustrativos MEMBER, OWNER, SOURCE, INCLUSION_RULE, EXCLUSION_RULE, DEPENDENCY y PROVENANCE, con dominios destino y límites documentados en la matriz IAM §19.13. L3 mantiene `role_key` y `relation_type` abiertos; SOURCE/TARGET es solo posición de extremo binario. `DEPENDS_ON` puede examinarse como candidato funcional únicamente si aparece en REF necesario para el DGP, sin aceptarlo como enum.
+
+**Siguiente tarea:** resolver la semántica de DEPENDENCY en L2 (target REF frente a target directo); extraer el conjunto mínimo de relaciones REF realmente exigido por el DGP; modelar sus extremos binarios/n-arios; y luego derivar dominios/cardinalidades/requiredness por clase×rol×extremo×stage_key×scope. No instanciar filas ni sellar IAM todavía. Esta propuesta no cambia el estado de los bloques 3–8 del §10 ni autoriza implementación/ejecución.
