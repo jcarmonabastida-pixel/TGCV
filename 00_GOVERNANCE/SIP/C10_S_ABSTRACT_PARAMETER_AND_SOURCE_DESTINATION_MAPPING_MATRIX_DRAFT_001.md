@@ -399,3 +399,10 @@ Se propone canonicalización determinista UTF-8/NFC, claves ordenadas, arrays or
 Se acepta U1 como arquitectura documental de universe_definition: envelope JSON autocontenido/versionado con los campos/cardinalidades de §20.12 y scope C0 de nueve componentes. member_ref se tipa mediante object_class/object_id/object_record_id, con owner/source refs cuando aplique; no se infiere identidad por nombre/valor/hash/posición. EXPLICIT y RULE_DEFINED se aceptan con sus requisitos de exhaustividad y referencias versionadas.
 
 No se acepta canonicalización UTF-8/NFC como obligación, SHA-256 normativo, RFC/JCS ni serialización ejecutable. El mapping físico CMP/PAR/REF/RUL/MET sigue OPEN; esta decisión no valida la pertenencia por clase propuesta en §20.10/20.11 ni cierra C0.
+
+
+### 20.14. Canonicalización e integridad UDG-02 — propuesta no aceptada
+
+Para el envelope U1 se propone C1: RFC 8785 JCS con prevalidación de schema TGCV. No normalizar Unicode durante canonicalización; exigir NFC previamente solo en campos identificadores declarados NFC-required y rechazar, sin autocorregir. Propiedades ordenadas según JCS; arrays de conjunto ordenados por identidad tipada antes de JCS; arrays secuenciales conservan orden. Números UDG-01 restringidos a enteros seguros no negativos; null prohibido y omisión distinta de array vacío.
+
+Separar source_artifact_hash (bytes físicos originales) de canonical_content_hash (SHA-256 sobre envelope canónico; hash y metadatos fuera del contenido hasheado). Igual hash bajo mismo perfil solo acredita igualdad de bytes canónicos; no prueba equivalencia semántica, pertenencia o exhaustividad. Perfiles distintos no comparables directamente. C1/UDG-02 no aceptada; mapping físico y C0 siguen OPEN.
