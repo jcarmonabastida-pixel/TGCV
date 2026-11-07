@@ -8296,3 +8296,13 @@ El contrato sintético aceptado del servicio lógico (CMP-SERVICE-LOGIC-001, PAR
 Esto es una conclusión negativa sobre el roster funcional mínimo, no una declaración de REF=0 para snapshots reales. REF=0 exige inventario exhaustivo y cobertura COMPLETE por snapshot×etapa×ruta×scope pre-Z/B. Cualquier REF futuro debe tener identidad propia, extremos exactos, semántica, dirección/tipo/rol, multiplicidad, versionado y justificación frente a FK U_G, condición externa o referencia de regla.
 
 Auditoría documental propuesta; no crea filas de instancia ni sella IAM, no modifica DEC-C10-078 y no autoriza implementación/ejecución.
+
+## 203. Auditoría REF por snapshot y etapa — protocolo documental propuesto
+
+La adjudicación de REF se realizará por contrato/instancia, snapshot exacto, stage_key, ruta, scope y universo versionado, reutilizando U_G/COVERAGE_REGISTER y sus registros probatorios. Se inspeccionan de forma independiente C_SRC, F1_S2, A1_S1, F2_DST_DECL, A2_DST_DECL, F2_DST_APPLIED y A2_DST_APPLIED. Los estados de una etapa/ruta no se copian a otra.
+
+Solo es REF una relación del paquete con identidad propia, semántica de dominio, extremos exactos, dirección/tipo/multiplicidad y procedencia. EDGE/FK/ROUTE_STEP, CLAIM_EVIDENCE_LINK, operandos RUL, R_acc/R*, dependencias técnicas C_dep/E_dst y referencias de evaluación RULE_DEFINED no se convierten en REF por semejanza nominal. Doble representación U_G↔REF requiere mapping M explícito/versionado.
+
+PRESENT requiere evidencia suficiente. ABSENT/REF=0 exige inventario exhaustivo del universo y fuentes pertinentes, COVERAGE_REGISTER COMPLETE en el scope exacto y evidencia negativa. UNKNOWN se conserva ante inspección parcial, universo no cerrado, fuente inaccesible, mapping ambiguo o conflicto. NA requiere no aplicabilidad ex ante. C_DST_DECLARED nunca sustituye C_DST_APPLIED.
+
+No hay snapshots ni observaciones incorporados por esta sección; es un protocolo, no un resultado. No se declara REF=0, no se sella IAM y no se autoriza implementación/ejecución.
