@@ -228,3 +228,7 @@ La especialización propuesta de REF incluye: identidad lógica/record exacto; o
 REF→EDGE es mapping candidato sujeto a M versionado. Una relación binaria puede mapear a una EDGE atómica; split/merge o relación n-aria exige agrupación/parent identity explícita y conservación de extremos, dirección y multiplicidad. EDGE→REF no es inferencia automática.
 
 Los roles MEMBER/OWNER/SOURCE/INCLUSION_RULE/EXCLUSION_RULE/DEPENDENCY/PROVENANCE citados en DEC-C10-076 siguen siendo ilustrativos, no enum aprobado. Se distinguen roles de referencia del envelope UDG y relaciones declaradas dentro de un objeto REF. Obligatoriedad, cardinalidad, dominio de roles y NA requieren IAM ex ante. No se cambia schema, catálogo de clases ni estado de aceptación.
+
+## 17. DEC-C10-077 — aceptación conceptual REF↔UDG-04
+
+Se acepta que REF sea objeto de relación del dominio con identidad propia y extremos tipados, separado de las referencias del envelope UDG y de FK/vínculos estructurales U_G. REF→EDGE requiere M explícito y versionado; no hay equivalencia automática ni 1:1 asumida. Las relaciones n-arias/split/merge requieren agrupación explícita. Los roles ilustrativos no son enum cerrado. La aceptación no fija cardinalidades, obligatoriedad, IAM, endpoints externos ni schema físico. REF-01…REF-05 siguen siendo propiedades candidatas, no PASS empírico ni freeze.
