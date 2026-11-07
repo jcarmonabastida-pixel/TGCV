@@ -1318,3 +1318,18 @@ U_G-SCH-10 (pertenencia/referencias versionadas del grafo) no debe usarse como e
 | SNAPSHOT.scope | Codificación etapa/ruta C10-S | OPEN — propuesta no aceptada/compatibilidad pendiente |
 
 No se ha cambiado el schema. C0 no equivale a FK ni a validación técnica; C1/C2 no se han aplicado.
+
+## 56. Estado tras DEC-C10-070 — C0 aceptada
+
+| ID | Requisito | Estado |
+|---|---|---|
+| COVERAGE-SCOPE-11g | Binding documental coverage_scope_id↔snapshot exacto mediante tupla pinneada | ACCEPTED — DEC-C10-070 |
+| COVERAGE-SCOPE-11g1 | Esquema físico sin cambios (C0) | ACCEPTED |
+| COVERAGE-SCOPE-11g2 | Control independiente: igualdad, unicidad, cardinalidad, huérfanos/no usados y conflictos | OPEN — necesario antes de Design Freeze |
+| COVERAGE-SCOPE-11g3 | Control ejecutado y auditado | NOT EXECUTED |
+| COVERAGE-SCOPE-11g4 | Enforcement FK compuesta (C1) | NOT ACCEPTED / NOT AUTHORIZED |
+| COVERAGE-SCOPE-11g5 | Tabla puente (C2) | NOT ACCEPTED / NOT AUTHORIZED |
+| U_G-SCH-10 | Pertenencia del grafo a snapshot (DEC-C10-065/Opción A) | SEMANTICALLY ACCEPTED; physical validation in separate gate |
+| SNAPSHOT.scope | Codificación de etapa/ruta | OPEN — sin aceptación |
+
+La aceptación de C0 no declara integridad relacional, no crea scopes ni modifica schema. CONDITIONAL hasta el control independiente auditado.
