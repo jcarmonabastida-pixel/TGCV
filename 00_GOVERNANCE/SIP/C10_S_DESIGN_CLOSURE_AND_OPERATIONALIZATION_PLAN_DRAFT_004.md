@@ -1130,3 +1130,10 @@ Cerrado: elección G1 y literal/semántica. Abiertos: gramática y versionado co
 El protocolo de evidencia §20.10 especifica UDG-01: envelope JSON autocontenido con scope C0 exacto de nueve componentes, membership_mode EXPLICIT/RULE_DEFINED, referencias tipadas o regla versionada, fuentes/manifiestos, cardinalidad declarada y provenance. Dimension permanece fuera de la tupla. Cero miembros exige evidencia exhaustiva; lista vacía no basta. Canonicalización UTF-8/NFC, orden determinista y SHA-256 son propuestas, no contrato aprobado. schema_version semver y universe_revision monotónica/inmutable son candidatos.
 
 Estado: DOCUMENTED PROPOSAL; U1 recomendada provisionalmente; no schema change, parser, validator, fixture, implementación ni ejecución. Pendientes: aceptación de envelope/gramática, canonicalización/hash, mapping físico por clase/propiedad y control C0 independiente auditado.
+
+
+## 16.45. DEC-C10-073 — arquitectura U1 aceptada
+
+U1 queda ACCEPTED como arquitectura documental de universe_definition: envelope JSON autocontenido/versionado, estructura y cardinalidades UDG-01, scope C0 exacto de nueve componentes, modos EXPLICIT/RULE_DEFINED, referencias tipadas, cardinalidad y procedencia. Universo vacío exige evidencia exhaustiva. La separación conceptual schema_version/universe_revision se acepta; reglas completas de incremento/compatibilidad permanecen por especificar.
+
+Gates abiertos: canonicalización concreta, hash normativo, autoridad RFC/JCS, serialización física, mapping CMP/PAR/REF/RUL/MET y control C0 independiente implementado/auditado. No schema change, parser, validator, fixtures, Design Freeze ni ejecución.
