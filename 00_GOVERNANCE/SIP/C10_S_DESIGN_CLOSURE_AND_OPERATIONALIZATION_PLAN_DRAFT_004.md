@@ -1012,3 +1012,13 @@ DEC-C10-051/052/057/058 ya fijan microdominio, clase de objeto y unidad lógica;
 ## 16.29. Efecto de DEC-C10-068 sobre el cierre de RUL
 
 DEC-C10-068 cierra la aceptación conceptual del servicio lógico sintético, los parámetros ENABLED/PROFILE y RUL-SVC-ENABLE-PROFILE-01. La fuente funcional es el contrato constitutivo interno del DGP, no una norma externa. Por tanto, RUL-SUB-01/02 pasan de OPEN a ACCEPTED CONCEPTUALLY para esta instancia. Siguen abiertos owner CMP concreto/versionado, serialización, IAM de escenario, mapping físico, FP-03/06/07/08, oráculo, tolerancias y evidencia de preservación/aplicación. El paso siguiente es cerrar la identidad/versionado y el contrato de mapping sin elegir plataforma real ni inventar etiquetas físicas. No Design Freeze ni autorización de implementación/ejecución.
+
+## 16.30. Identidad y versionado de la instancia CMP del servicio sintético
+
+La siguiente tarea documental reutiliza el contrato abstracto de instancia y el contrato de matching de snapshots, sin crear otra ontología. La propuesta `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md` separa contrato, instancia, CMP, rol, versión, revisión, mapping, IAM, oráculo y hash.
+
+**Candidatos sometidos a decisión:** contract_id=C10S-SVC-REQUEST-PROCESSOR / contract_version=1.0.0; instance_id=C10S-SVC-REQUEST-PROCESSOR-001 / instance_version=1; component_id=CMP-SERVICE-LOGIC-001 / component_class=SERVICE_LOGIC. CMP-SERVICE-LOGIC permanece como rol/owner lógico, no ID de instancia. La regla RUL y las dos claves PAR aceptadas por DEC-C10-068 conservan sus IDs.
+
+**Reglas:** contrato semver para cambios semánticos; revisión entera inmutable para cambios de paquete; hash solo identifica serialización exacta después de congelar formato; IDs sin brazo/tiempo/resultado/plataforma; matching explícito para comparar snapshots. Versiones de C_src/C_dst, M, IAM y oráculo independientes.
+
+**Gate:** aceptar o revisar los IDs candidatos y la política de versionado; luego instanciar MET/IAM documentalmente y cerrar tabla de mapping semántico. No fijar valores de escenario ni REF=0 sin cobertura exhaustiva. No serialización ejecutable, fixtures, parser, pruebas, Design Freeze ni autorización de implementación/ejecución.
