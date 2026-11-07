@@ -200,3 +200,67 @@ La aceptación conceptual no asigna todavía O/C/NA por escenario ni sustituye l
 La matriz IAM reutilizará la separación de `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md`: contract_id/version, instance_id/version, component_id/class, owner_component_id, IDs de PAR/RUL, mapping_id/version, IAM_id/version/hash y oráculo. La propuesta de IDs candidatos no está aceptada ni sellada.
 
 CMP-SERVICE-LOGIC es rol/owner lógico provisional, no component_id único. CMP-SERVICE-LOGIC-001 es solo candidato. La matriz deberá registrar IDs y versiones de C_src/C_dst y cobertura por clase antes de Z/B. No declarar REF=0 sin inventario/cobertura exhaustivos; no calcular hash antes de serialización canónica. El IAM operativo permanece OPEN.
+
+## 17. Reconciliación IAM con DEC-C10-069 y gate de adjudicación independiente (2026-11-07)
+
+### 17.1. Corrección de estado de identidad
+
+La §16 histórica queda **supersedida únicamente en su estado de aceptación**, no eliminada: DEC-C10-069 acepta los identificadores candidatos y la separación de versionado. En consecuencia:
+
+| Campo | Valor aceptado | Estado IAM |
+|---|---|---|
+| contract_id / version | `C10S-SVC-REQUEST-PROCESSOR` / `1.0.0` | Identidad aceptada; snapshot/versionado de contenido por registrar |
+| instance_id / version | `C10S-SVC-REQUEST-PROCESSOR-001` / `1` | Identidad/revisión aceptadas; no equivale a serialización |
+| component_id / class | `CMP-SERVICE-LOGIC-001` / `SERVICE_LOGIC` | Identidad/clase del CMP focal aceptadas |
+| owner lógico | `CMP-SERVICE-LOGIC` | Rol/owner, no ID de componente |
+| PAR | `PAR-SVC-ENABLED`, `PAR-SVC-PROFILE` | Contrato funcional aceptado por DEC-C10-068 |
+| RUL | `RUL-SVC-ENABLE-PROFILE-01` | Contrato funcional aceptado por DEC-C10-068 |
+| mapping_id/version | Por asignar | OPEN |
+| IAM_id/version | Por asignar | OPEN |
+| oracle_id/version | Por asignar | OPEN |
+| artifact_hash | No calculable aún | OPEN hasta serialización canónica |
+
+La identidad aceptada no determina por sí sola cardinalidad global CMP, inventario de CMP auxiliares ni correspondencia física P1. CMP focal ≠ universo CMP completo. CMP≥1 se satisface conceptualmente por el focal aceptado; inventario adicional y cobertura permanecen pre-Z/B.
+
+### 17.2. Instanciación IAM pendiente por objeto y etapa
+
+El IAM confirmatorio deberá materializar una fila por combinación de: ruta (F/A), etapa (1/2), objeto fuente/intermedio/destino, clase, propiedad atómica y snapshot/version. Como mínimo:
+
+- C_src: inventario y versión del CMP/PAR/RUL de origen.
+- S2 en F1 y S1 en A1: representación intermedia efectivamente producida, con mapping/version y evidencia de preservación.
+- C_dst^decl: destino declarado antes de aplicación, no evidencia de estado aplicado.
+- C_dst^applied: estado observado tras F2/A2, con snapshot/version, timestamp y evidencia independiente.
+- E_dst/runtime: entorno y condiciones de aplicación, entidad separada de la configuración declarada/aplicada.
+
+Cada fila registrará O/C/NA/? y disparador, expected semantic identity/value, observed value/state, source/destination snapshot refs, coverage denominator/numerator, evidence refs, primary predicate (FP-01…07), diagnostic predicates, adjudicator y rationale. NA requiere disparador ex ante y evidencia de pertenencia fuera del dominio; falta de inspección/cobertura siempre deja ?. No se sella ninguna fila después de conocer resultados.
+
+### 17.3. Contrato de roles y oráculo — requisitos de adjudicación, no instancia ejecutable
+
+Se explicita el contrato de separación que debe implementar el futuro oráculo:
+
+| Rol | Acceso permitido | Acceso prohibido / condición |
+|---|---|---|
+| Generador DGP | Parámetros ex ante, verdad estipulada, potenciales y mecanismo asignado necesarios para generar el mundo | No adjudica el resultado de preservación/aplicación |
+| F1/F2 y A1/A2 | Solo entradas, contratos, permisos e interfaces previstos para cada ruta | No reciben truth/potenciales ocultos ni etiquetas del oráculo |
+| Analizador | Artefactos observables y evidencia autorizada por el protocolo; produce predicados/estimandos antes de revelar truth | No accede a truth oculta, potenciales, claves privadas del oráculo ni etiquetas de Evaluador |
+| Evaluador/oráculo | Truth del DGP, snapshots sellados, IAM pre-Z/B, mapping versionado y evidencia observada, tras cierre/congelación de salidas del Analizador | No altera truth/IAM/criterios tras observar salidas; no repara datos faltantes inventando evidencia |
+
+El Evaluador no convierte la verdad estipulada en evidencia de que una ruta la preservó: compara truth esperada con estado efectivamente observado y documenta cobertura. El oráculo adjudica por predicado y objeto; no reemplaza medición independiente ni infiere C_dst^applied desde C_dst^decl.
+
+### 17.4. Adjudicación trivalente y reglas de evidencia
+
+Para cada predicado aplicable:
+
+- **1:** evidencia observada válida satisface el predicado, con cobertura suficiente del universo declarado.
+- **0:** evidencia válida demuestra violación/omisión en el universo cubierto, y el criterio de fallo estaba predeclarado.
+- **?:** snapshot ausente, inspección parcial, mapping ambiguo, conflicto de fuentes, identidad/versionado no trazable o cobertura insuficiente.
+- **NA:** IAM pre-Z/B demuestra que el predicado no aplica; nunca se deriva de falta de datos.
+- **SCOPE_ERROR:** falta una clase constitutiva exigida o el universo de comparación no satisface el contrato; no se recodifica como NA.
+
+Truth esperada, salida del Analizador y adjudicación del Evaluador se conservan como campos distintos. Un mismo defecto tiene un único predicado primario para evitar double counting; FP-07 puede referenciarlo como diagnóstico sin sumar un segundo fallo. FP-08 es gate de validez probatoria, no sustituto de FP-01…07.
+
+### 17.5. Gate de cierre pendiente
+
+No puede congelarse IAM/oráculo hasta que estén definidos y versionados: mapping_id, IAM_id, oracle_id; roster CMP completo y cobertura; valores/defaults concretos por escenario; snapshots y reglas de captura; mapping de AST/operadores y política de UNKNOWN/conflicto; evidencia admisible y criterios de suficiencia; cegamiento, momento de liberación de truth y hash/procedencia de artefactos. No se fijan aquí defaults, tolerancias, fixture, parser, serialización ni schema.
+
+**Estado:** identidad CMP reconciliada con DEC-C10-069; IAM operativo y contrato del oráculo especificados solo a nivel de requisitos. No aceptados ni congelados. No Design Freeze, implementación, validación ejecutable o ejecución científica.
