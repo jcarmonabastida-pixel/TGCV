@@ -738,3 +738,9 @@ Estado hasta control especificado, implementado bajo autorización, ejecutado y 
 La especificación normativa del control C0 está en `C10_S_UG_EVIDENCE_PROVENANCE_AND_ADJUDICATION_PROTOCOL_DRAFT_001.md`, §19. Define la tupla canónica, invariantes C0-I01…I11, resultado trivalente PASS/FAIL/UNKNOWN, precedencia y casos adversariales ADV-C0-01…15.
 
 Esta plantilla conserva el esquema físico. No añade campos ni FKs a COVERAGE_REGISTER. Hasta disponer de DDL reconciliado y correspondencia inequívoca de todos los campos de la tupla, el binding C0 se evalúa como contrato documental y el control queda NOT IMPLEMENTED / NOT EXECUTED / NOT AUDITED. La aceptación de C0 por DEC-C10-070 no autoriza implementar ni ejecutar el control.
+
+### 18.10. Mapping C0↔U_G: limitación detectada
+
+La reconciliación del protocolo §20 confirma que snapshot_id y snapshot_object_record_id están representados por el contrato Opción A, mientras que stage_key no tiene columna propia, route_id solo está representado directamente en ROUTE/PREDICATE/ROUTE_STEP, y object_class CMP/PAR/REF/RUL/MET no dispone de campo común tipado. contract/instance versions y dimension requieren vínculo documental desde universe_definition/version y COVERAGE_REGISTER.
+
+Por tanto, la aceptación C0 no basta para PASS del control: stage_key/object_class y pertenencias route-specific sin crosswalk producen UNKNOWN, salvo contradicción demostrada (FAIL). SNAPSHOT.phase no se equipara a stage_key y SNAPSHOT.scope sigue OPEN. No se añaden columnas ni se cambia el schema.
