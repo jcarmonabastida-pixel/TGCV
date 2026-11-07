@@ -8069,3 +8069,13 @@ La unidad lógica y el microdominio ya están seleccionados por DEC-C10-051/052/
 DEC-C10-068 acepta como contrato funcional de referencia del DGP el servicio lógico sintético de procesamiento de solicitudes, PAR-SVC-ENABLED BOOL, PAR-SVC-PROFILE ENUM={STANDARD,READ_ONLY,DISABLED} y RUL-SVC-ENABLE-PROFILE-01 con efecto REQUIRE: ENABLED=true implica PROFILE∈{STANDARD,READ_ONLY}. La implicación no restringe ENABLED=false; no se añade regla inversa. El contrato constituye la verdad interna del mundo sintético, no una norma externa. PAR-SVC-RETRY-COUNT permanece fuera del núcleo.
 
 La decisión cierra la elección conceptual de la unidad/servicio y la RUL de instancia. No cierra la identidad/versionado CMP concreto, serialización, roster IAM por escenario, mapping físico, predicados y tolerancias de F*, oráculo ni contratos de error. No es Design Freeze y no autoriza fixtures, implementación, validación ejecutable, simulación o ejecución científica. Ver registro autónomo DEC-C10-068.
+
+## 176. Propuesta de identidad/versionado CMP para el servicio sintético
+
+Se ha creado `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md` para especializar MET y el contrato abstracto de instancia a la unidad aceptada por DEC-C10-068. Distingue contract_id/version, instance_id/version, component_id/class, owner_component_id, IDs PAR/RUL, mapping, IAM, oráculo y hash de artefacto. No reutiliza TID/SID/RID/EID del espacio transformacional.
+
+La propuesta candidata es contract_id=C10S-SVC-REQUEST-PROCESSOR, contract_version=1.0.0, instance_id=C10S-SVC-REQUEST-PROCESSOR-001, instance_version=1 y component_id=CMP-SERVICE-LOGIC-001 (component_class=SERVICE_LOGIC). Son valores propuestos, no identidades aceptadas. CMP-SERVICE-LOGIC de DEC-C10-068 se interpreta como owner/rol lógico provisional, no como ID único de instancia.
+
+La política separa versión semántica del contrato, revisión inmutable de instancia y hash de serialización. No se calcula hash antes de fijar formato canónico. C_src/C_dst, M, IAM y oráculo conservan versionado independiente. La comparación de snapshots requiere matching y cobertura; igualdad de nombre/hash no prueba equivalencia.
+
+**Precedencia:** las §§172 y 174 describen roster/especialización como propuesta histórica; DEC-C10-068 acepta conceptualmente ENABLED/PROFILE/RUL, pero no acepta por extensión los IDs/versiones candidatos de §176 ni el roster RETRY-COUNT (que queda excluido). La propuesta de §176 es el siguiente gate de decisión. Sin serialización, IAM sellado, fixtures, pruebas, Design Freeze ni autorización de implementación/ejecución.
