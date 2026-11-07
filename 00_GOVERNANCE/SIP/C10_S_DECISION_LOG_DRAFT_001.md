@@ -874,3 +874,10 @@ Estado: NO ACEPTADA. No crea schema ni contrato ejecutable; no parser, validator
 **No aceptado/cerrado:** canonicalización UTF-8/NFC/orden determinista como obligación, SHA-256 normativo, RFC/JCS, serialización física ejecutable, reglas completas de compatibilidad semver, mapping físico CMP/PAR/REF/RUL/MET y control C0 implementado/auditado. No schema change, parser, validator, fixtures, Design Freeze ni ejecución autorizados.
 
 Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-073_UNIVERSE_DEFINITION_ENVELOPE_ACCEPTANCE.md`. Este asiento prevalece sobre §68, que registraba UDG-01 como propuesta no aceptada antes de la aceptación explícita.
+
+
+## 70. UDG-02 — propuesta de canonicalización e integridad (2026-11-07)
+
+Se registra propuesta UDG-02 en protocolo §20.12, plantilla U_G §18.17, matriz de mapping §20.14, maestro §191, plan §16.46 y matriz de control §64. Se comparan C1 RFC 8785 JCS con prevalidación TGCV, C2 canonicalizador propio y C3 hash de bytes fuente; C1 se recomienda provisionalmente. La propuesta distingue hash de artefacto fuente y hash del contenido canónico, define restricciones Unicode/números/null/arrays y prohíbe inferir equivalencia semántica a partir del hash.
+
+**Estado: NO ACEPTADA.** No se convierte SHA-256/JCS en requisito, no hay perfil de producción, parser, validator, fixtures, schema change ni ejecución autorizados. Fuente normativa consultada: RFC 8785 (Informational, no Internet Standards Track): https://www.rfc-editor.org/rfc/rfc8785.html.
