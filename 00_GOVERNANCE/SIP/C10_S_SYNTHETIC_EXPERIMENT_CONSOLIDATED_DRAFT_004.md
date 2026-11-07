@@ -8210,3 +8210,10 @@ Se propone canonicalización UTF-8/NFC, claves ordenadas, arrays ordenados por i
 Se acepta U1 como arquitectura documental para `universe_definition`: envelope JSON autocontenido/versionado con campos/cardinalidades UDG-01 y scope que replica exactamente los nueve componentes C0; dimension permanece fuera. Se aceptan EXPLICIT/RULE_DEFINED, member_refs tipados, referencias exactas, declared_member_count, fuentes/provenance y la exigencia de prueba exhaustiva para universo vacío. Versionado de schema y revisión de universo quedan separados conceptualmente.
 
 La aceptación no hace normativa la canonicalización UTF-8/NFC, orden determinista, SHA-256 ni RFC/JCS; tampoco congela serialización física, compatibilidad semver detallada, mappings físicos o control C0. No parser/validator/fixtures/schema change, Design Freeze ni ejecución autorizados. Registro: DEC-C10-073.
+
+
+## 191. UDG-02 — propuesta de canonicalización e integridad (2026-11-07)
+
+Se compara C1 (RFC 8785 JCS + prevalidación TGCV), C2 (canonicalizador propio) y C3 (hash de bytes fuente); C1 recomendada provisionalmente. JCS ordena propiedades, preserva orden de arrays y preserva cadenas Unicode sin normalizarlas. Campos NFC-required se validan previamente y se rechazan si no cumplen. Arrays declarados conjuntos se ordenan por identidad antes de JCS; arrays secuenciales conservan orden. Números UDG-01: enteros seguros no negativos; null prohibido, omisión distinta de array vacío.
+
+Se distinguen hash del artefacto fuente y SHA-256 del contenido canónico (metadatos/hash fuera del contenido hasheado). Igual canonical hash bajo mismo perfil acredita igualdad de bytes canónicos, no equivalencia semántica ni exhaustividad. Perfiles diferentes no comparables directamente. UDG-02 NO ACEPTADA; no implementación/validator/fixtures/schema change ni ejecución.
