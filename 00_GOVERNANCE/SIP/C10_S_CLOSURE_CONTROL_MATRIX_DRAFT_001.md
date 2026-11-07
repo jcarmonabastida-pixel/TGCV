@@ -1288,3 +1288,18 @@ Referencia: matriz IAM §18. El roster funcional mínimo no equivale a inventari
 | SNAPSHOT-INVENTORY-10h | REF=0 y COMPLETE con denominador/cobertura | OPEN |
 
 Referencias: matriz IAM §19; plantilla U_G §18; contrato abstracto §16; catálogo atómico §15. Protocolo documental no equivale a captura, validación, freeze o autorización.
+## 54. Estado del gate COVERAGE-SCOPE-11 — scopes C10-S
+
+| ID | Requisito | Estado |
+|---|---|---|
+| COVERAGE-SCOPE-11a | Reutilizar COVERAGE_REGISTER §12.3 sin columnas nuevas | DOCUMENTED |
+| COVERAGE-SCOPE-11b | Un scope por snapshot exacto×etapa×ruta×clase | DOCUMENTED PROPOSAL |
+| COVERAGE-SCOPE-11c | coverage_scope_id opaco/único y dimension C10S_CONFIG_* | DOCUMENTED PROPOSAL |
+| COVERAGE-SCOPE-11d | universe_definition/version fija snapshot, stage/route y enumeración | DOCUMENTED REQUIREMENT |
+| COVERAGE-SCOPE-11e | Denominadores y COMPLETE diferenciados por CMP/PAR/REF/RUL/MET | DOCUMENTED REQUIREMENT |
+| COVERAGE-SCOPE-11f | REF=0 y ausencia PAR REQUIRED solo con cobertura COMPLETE | DOCUMENTED REQUIREMENT |
+| COVERAGE-SCOPE-11g | FK inversa COVERAGE_REGISTER→SNAPSHOT exacto | OPEN — esquema vigente no la contiene |
+| COVERAGE-SCOPE-11h | Scopes y snapshots observados/poblados | OPEN / NONE |
+| COVERAGE-SCOPE-11i | Compatibilidad de SNAPSHOT.scope | OPEN — aceptación y verificación pendientes |
+
+Referencia: IAM §19.7 y plantilla U_G §18.6. No se ha alterado el esquema físico ni se ha cerrado U_G-SCH-10.
