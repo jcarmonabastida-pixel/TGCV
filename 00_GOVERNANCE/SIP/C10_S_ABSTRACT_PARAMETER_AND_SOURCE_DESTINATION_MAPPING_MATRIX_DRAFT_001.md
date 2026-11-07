@@ -226,3 +226,9 @@ Para la instancia sintética aceptada conceptualmente por DEC-C10-068, RUL-SVC-E
 Falsadores: operador/negación alterados; clave/operando intercambiado; scope alterado; dominio ENUM incompleto, fusionado o ampliado; regla eliminada/duplicada; REQUIRE↔FORBID; UNKNOWN convertido en booleano; regla no aplicada en destino; mapping nominalmente igual pero semánticamente divergente.
 
 No se fijan nombres físicos ni tabla concreta porque no se ha elegido formato/plataforma. FP-03 adjudica preservación; FP-06 aplicación; FP-07 verificación; FP-08 trazabilidad. Esta sección especifica invariantes, no mapping implementado ni evidencia de preservación.
+
+## 18. Identidad/versionado de la instancia y metadatos para M
+
+La tabla M deberá consumir, sin colapsarlos, contract_id/version, instance_id/version, component_id/class, owner_component_id, parameter_key, rule_id, source_id/version, destination_id/version, mapping_id/version, IAM_id/version/hash y oráculo/version. La propuesta de valores candidatos está en `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md` y requiere aceptación.
+
+CMP-SERVICE-LOGIC no debe usarse como component_id único: es etiqueta de rol/owner lógico; CMP-SERVICE-LOGIC-001 es candidato. El hash identifica serialización exacta, no equivalencia semántica. C_src, C_dst declarado y C_dst aplicado permanecen separados. No se asignan todavía nombres físicos ni tablas concretas de plataforma.
