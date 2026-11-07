@@ -1007,7 +1007,7 @@ La cardinalidad RUL≥1 ya está aceptada por DEC-C10-056. El cierre sustantivo 
 
 ## 16.28. Especialización funcional sintética del servicio lógico y RUL
 
-DEC-C10-051/052/057/058 ya fijan microdominio, clase de objeto y unidad lógica; no se requiere elegir un producto real. Se propone un servicio lógico sintético de procesamiento de solicitudes con ENABLED BOOL, PROFILE ENUM={STANDARD,READ_ONLY,DISABLED} y RUL-SVC-ENABLE-PROFILE-01: ENABLED=true implica PROFILE∈{STANDARD,READ_ONLY}, REQUIRE. La especificación estipulada ex ante es la fuente constitutiva interna de verdad del DGP, no norma externa ni evidencia empírica. Aceptación conceptual: DEC-C10-068. Pendiente: identidad CMP/versión de instancia, IAM detallado, mapping físico, FP-03/06/07, oráculo y propagación coherente a F1/F2/A1/A2. No freeze, fixtures ni implementación.
+DEC-C10-068 acepta conceptualmente el servicio lógico sintético de procesamiento de solicitudes con ENABLED BOOL, PROFILE ENUM={STANDARD,READ_ONLY,DISABLED} y RUL-SVC-ENABLE-PROFILE-01: ENABLED=true implica PROFILE∈{STANDARD,READ_ONLY}, REQUIRE. La especificación estipulada ex ante es la fuente constitutiva interna del DGP, no norma externa ni evidencia empírica. RETRY-COUNT queda excluido. La identidad CMP/versión se trata en §16.30; IAM detallado, mapping físico, FP-03/06/07, oráculo y propagación F1/F2/A1/A2 siguen abiertos. No freeze, fixtures ni implementación.
 
 ## 16.29. Efecto de DEC-C10-068 sobre el cierre de RUL
 
