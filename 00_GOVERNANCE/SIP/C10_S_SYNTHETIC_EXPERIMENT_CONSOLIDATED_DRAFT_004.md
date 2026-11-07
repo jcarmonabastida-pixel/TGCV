@@ -8217,3 +8217,10 @@ La aceptación no hace normativa la canonicalización UTF-8/NFC, orden determini
 Se compara C1 (RFC 8785 JCS + prevalidación TGCV), C2 (canonicalizador propio) y C3 (hash de bytes fuente); C1 recomendada provisionalmente. JCS ordena propiedades, preserva orden de arrays y preserva cadenas Unicode sin normalizarlas. Campos NFC-required se validan previamente y se rechazan si no cumplen. Arrays declarados conjuntos se ordenan por identidad antes de JCS; arrays secuenciales conservan orden. Números UDG-01: enteros seguros no negativos; null prohibido, omisión distinta de array vacío.
 
 Se distinguen hash del artefacto fuente y SHA-256 del contenido canónico (metadatos/hash fuera del contenido hasheado). Igual canonical hash bajo mismo perfil acredita igualdad de bytes canónicos, no equivalencia semántica ni exhaustividad. Perfiles diferentes no comparables directamente. UDG-02 NO ACEPTADA; no implementación/validator/fixtures/schema change ni ejecución.
+
+
+## 192. DEC-C10-074 — JCS aceptado para canonicalización documental (2026-11-07)
+
+C1 RFC 8785 JCS + prevalidación TGCV queda ACEPTADA como política documental del envelope U1, perfil TGCV-C10S-JCS-1. Reglas: entrada UTF-8/JSON válida; NFC previa solo en campos marcados, sin reescritura; propiedades JCS; arrays de conjunto ordenados por identidad, secuencias preservadas; enteros seguros no negativos; null prohibido; SHA-256 sobre bytes canónicos con metadatos/hash fuera del envelope; source_artifact_hash separado de canonical_content_hash.
+
+Igual canonical hash bajo mismo perfil solo prueba igualdad de bytes canónicos; no equivalencia semántica, exhaustividad ni verdad de fuentes. Perfiles distintos requieren recanonicalización o UNKNOWN/NOT_COMPARABLE. No se autoriza hash de producción, parser, validator, fixtures, schema change, Design Freeze ni ejecución científica. Registro: DEC-C10-074.
