@@ -437,3 +437,13 @@ Este gate no cambia Opción A/DEC-C10-065, no modifica el enum SNAPSHOT.phase, n
 El control independiente debe comprobar igualdad del binding, unicidad, cardinalidad, scopes huérfanos/no usados y conflictos. Hasta que esté especificado, implementado bajo autorización, ejecutado y auditado, C0 permanece CONDITIONAL y no equivale a FK compuesta ni integridad relacional garantizada.
 
 C1 (FK compuestas) y C2 (tabla puente) no se aceptan ni autorizan. La decisión no modifica el schema, no reabre DEC-C10-065/Opción A, no acepta SNAPSHOT.scope ni cambia SNAPSHOT.phase. No crea registros ni autoriza validación ejecutable, implementación o ejecución científica.
+
+### 19.10. Crosswalk IAM para REF bajo DEC-C10-076 — propuesta
+
+El IAM deberá separar: (i) pertenencia de un objeto REF al universo; (ii) referencias de envelope UDG (member/owner/source/rule/provenance); (iii) extremos funcionales de REF; (iv) FK estructurales U_G. No comparten denominador ni obligatoriedad automáticamente.
+
+Por cada REF incluido, IAM predeclarará: origen/owner permitido; clase y cardinalidad de source/target endpoints; relation_type, direction, role y multiplicity; internal/external namespace; integridad requerida; versión/snapshot; si aplica a ruta global o específica; regla de inclusión/exclusión; mapping permitido a EDGE y política split/merge; evidencia y cobertura exigidas. No se asignan aquí valores ni cardinalidades numéricas.
+
+REF vacío solo podrá declararse con universo REF exhaustivo y evidencia completa. Ausencia de una referencia opcional no implica REF=0. La ausencia de EDGE en ROUTE_STEP solo prueba no pertenencia a esa ruta cuando la cobertura correspondiente es completa; no prueba ausencia de REF ni del objeto en snapshot.
+
+Las seis FK tipadas de CLAIM_EVIDENCE_LINK y las FKs Opción A siguen siendo integridad U_G; no se añaden al roster REF salvo una declaración de dominio independiente. El IAM sigue abierto y no autoriza instancias ni ejecución.
