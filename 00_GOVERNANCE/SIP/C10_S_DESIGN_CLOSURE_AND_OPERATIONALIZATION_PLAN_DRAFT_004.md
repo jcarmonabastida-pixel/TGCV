@@ -1097,3 +1097,11 @@ Estado actual: especificación documental completada; NOT IMPLEMENTED / NOT EXEC
 El protocolo §20 identifica huecos de representación: stage_key no tiene columna propia; SNAPSHOT.phase no equivale a stage_key y SNAPSHOT.scope sigue sin aceptación; route_id no está directamente en NODE/EDGE; object_class CMP/PAR/REF/RUL/MET carece de campo común tipado. contract/instance versions y dimension dependen de declaraciones versionadas recuperables. snapshot_id + snapshot_object_record_id sí están cubiertos por DEC-C10-065/Opción A.
 
 Antes de implementar C0 se requiere crosswalk semántico por campo/tabla, con regla para rutas globales y route-specific, clases y etapas, y gramática/hash de universe_definition/version. Hasta entonces UNKNOWN para correspondencias no demostradas; no PASS por inferencia. No schema change ni implementación autorizada.
+
+## 16.41. Cierre del crosswalk semántico C0↔U_G
+
+Reutilizar `C10_S_IAM_FIELD_TO_COLUMN_CROSSWALK_PROPOSAL_DRAFT_001.md` y sus auditorías; no recrear el mapping. Mantener separados object_class C10, ug_record_type y NODE.semantic_role/boundary_class. La clase de origen se mapea explícitamente a registros/propiedades U_G con cardinalidad declarada.
+
+El reloj DGP t−1…t9 alimenta stage_key; SNAPSHOT.phase conserva baseline/post-B/rollback/route-test como contexto de captura, sin equivalencia automática. Route-specific se prueba mediante ROUTE_STEP y record IDs exactos. El scope global requiere token reservado explícito aún OPEN. CMP/PAR/REF/RUL/MET tienen mappings candidatos en maestro §186/protocolo §20.3–20.7.
+
+Gate pendiente: aprobar vocabulario de stage_key, token global, gramática versionada de universe_definition/version y mappings a nivel propiedad/owner; luego reconciliar contra DDL completo. Hasta entonces C0 puede devolver UNKNOWN en campos no demostrables. No schema change, implementación ni ejecución autorizada.
