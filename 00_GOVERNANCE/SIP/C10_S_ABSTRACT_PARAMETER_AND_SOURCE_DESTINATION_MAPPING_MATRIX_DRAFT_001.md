@@ -339,3 +339,9 @@ La verdad estipulada del DGP, la información visible al Analizador y la adjudic
 - No convierte FP-03, FP-06, FP-07 o F* en propiedades validadas; no crea fixtures, parser, schema, pruebas, implementación, simulación o ejecución científica.
 
 **Resultado del gate:** la estructura semántica de referencia CMP/PAR/RUL y sus falsadores quedan especificados documentalmente como propuesta trazable. Su aceptación, IAM y evidencia operacional permanecen OPEN. `scientific_execution=false`; `execution_authorized=false`.
+
+### 20.8. Binding de cobertura aceptado
+
+DEC-C10-070 acepta C0 como contrato documental condicionado para los scopes de evidencia usados por este mapping. Cada coverage_scope_id debe quedar ligado en universe_definition/version a un único snapshot exacto, registro, etapa, ruta, clase y versiones de contrato/instancia. La evidencia CMP/PAR/RUL no puede reutilizar un scope de otra etapa/ruta/clase ni inferir equivalencia por compartir nombre o valor.
+
+El control independiente del binding sigue OPEN y es condición previa al Design Freeze. Hasta su auditoría, cobertura y adjudicación que dependan del binding permanecen CONDITIONAL o ? cuando la correspondencia no pueda demostrarse. No se han creado registros ni se autoriza implementación/ejecución.
