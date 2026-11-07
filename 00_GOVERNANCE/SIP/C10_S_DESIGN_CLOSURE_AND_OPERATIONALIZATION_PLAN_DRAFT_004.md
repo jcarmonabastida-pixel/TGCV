@@ -1098,12 +1098,13 @@ El protocolo §20 identifica huecos de representación: stage_key no tiene colum
 
 Antes de implementar C0 se requiere crosswalk semántico por campo/tabla, con regla para rutas globales y route-specific, clases y etapas, y gramática/hash de universe_definition/version. Hasta entonces UNKNOWN para correspondencias no demostradas; no PASS por inferencia. No schema change ni implementación autorizada.
 
+
 ## 16.41. Cierre del crosswalk semántico C0↔U_G
 
 Reutilizar el crosswalk IAM histórico y sus auditorías; no recrear el mapping. Mantener separados object_class C10, ug_record_type y NODE.semantic_role/boundary_class.
 
-La plantilla U_G §18.2 contiene siete stage_key candidatos (C_SRC, F1_S2, A1_S1, F2_DST_DECL, A2_DST_DECL, F2_DST_APPLIED, A2_DST_APPLIED). No son el reloj DGP t−1…t9 ni SNAPSHOT.phase (baseline/post-B/rollback/route-test). La antigua propuesta de codificarlos en SNAPSHOT.scope no está aceptada; DEC-C10-070 fija el binding en universe_definition/version.
+DEC-C10-071 acepta los siete valores de stage_key C10-S de U_G §18.2: C_SRC, F1_S2, A1_S1, F2_DST_DECL, A2_DST_DECL, F2_DST_APPLIED y A2_DST_APPLIED. No son el reloj DGP t−1…t9 ni SNAPSHOT.phase (baseline/post-B/rollback/route-test); SNAPSHOT.timestamp es el instante de captura. Cualquier correspondencia al reloj DGP requiere regla explícita en universe_definition/version.
 
-La antigua ruta NONE/F/A es familia/branch label, no route_id exacto; CONFIG no es object_class aceptado por C0. C0 requiere CMP/PAR/REF/RUL/MET y route_id exacto o token global reservado. NODE/EDGE route membership se demuestra por ROUTE_STEP; PREDICATE por route_record_id; ROUTE por su propia revisión.
+La aceptación del vocabulario no acepta la serialización de etapa/ruta en SNAPSHOT.scope. La antigua ruta NONE/F/A es familia/branch label, no route_id exacto; CONFIG no es object_class aceptado por C0. C0 requiere CMP/PAR/REF/RUL/MET y route_id exacto o token global reservado. NODE/EDGE route membership se demuestra por ROUTE_STEP; PREDICATE por route_record_id; ROUTE por su propia revisión.
 
-Gate pendiente: aceptar el vocabulario de stage_key, definir token global y route_id exacto, gramática versionada de universe_definition/version y mappings por propiedad/owner; después reconciliar contra DDL. Hasta entonces UNKNOWN donde no pueda demostrarse correspondencia. No schema change, implementación ni ejecución autorizada.
+Gate pendiente: definir token global y route_id exacto, gramática versionada de universe_definition/version y mappings por propiedad/owner; después reconciliar contra DDL. Hasta entonces UNKNOWN donde no pueda demostrarse correspondencia. No schema change, scopes/snapshots, implementación ni ejecución autorizada.
