@@ -8079,3 +8079,8 @@ La propuesta candidata es contract_id=C10S-SVC-REQUEST-PROCESSOR, contract_versi
 La política separa versión semántica del contrato, revisión inmutable de instancia y hash de serialización. No se calcula hash antes de fijar formato canónico. C_src/C_dst, M, IAM y oráculo conservan versionado independiente. La comparación de snapshots requiere matching y cobertura; igualdad de nombre/hash no prueba equivalencia.
 
 **Precedencia:** las §§172 y 174 describen roster/especialización como propuesta histórica; DEC-C10-068 acepta conceptualmente ENABLED/PROFILE/RUL, pero no acepta por extensión los IDs/versiones candidatos de §176 ni el roster RETRY-COUNT (que queda excluido). La propuesta de §176 es el siguiente gate de decisión. Sin serialización, IAM sellado, fixtures, pruebas, Design Freeze ni autorización de implementación/ejecución.
+
+
+## 177. Propagación de DEC-C10-069 — identidad/versionado CMP aceptados
+
+DEC-C10-069 acepta contract_id=C10S-SVC-REQUEST-PROCESSOR / contract_version=1.0.0; instance_id=C10S-SVC-REQUEST-PROCESSOR-001 / instance_version=1; component_id=CMP-SERVICE-LOGIC-001 / component_class=SERVICE_LOGIC. CMP-SERVICE-LOGIC permanece como owner/rol lógico. Se acepta versionado semver del contrato y revisión entera inmutable de instancia; hash solo tras serialización canónica; versiones C_src/C_dst, M, IAM y oráculo independientes; matching explícito. La propuesta §176 queda aceptada en ese alcance. MET físico, serialización, IAM/mapping operativo, cobertura, oráculo y evidencia siguen OPEN. No se crea fixture, no Design Freeze y no autorización de implementación/ejecución.
