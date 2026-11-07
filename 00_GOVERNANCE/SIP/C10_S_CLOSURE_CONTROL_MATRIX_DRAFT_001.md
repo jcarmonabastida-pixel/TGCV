@@ -1303,3 +1303,18 @@ Referencias: matriz IAM §19; plantilla U_G §18; contrato abstracto §16; catá
 | COVERAGE-SCOPE-11i | Compatibilidad de SNAPSHOT.scope | OPEN — aceptación y verificación pendientes |
 
 Referencia: IAM §19.7 y plantilla U_G §18.6. No se ha alterado el esquema físico ni se ha cerrado U_G-SCH-10.
+
+## 55. Reconciliación de COVERAGE-SCOPE-11 y U_G-SCH-10
+
+U_G-SCH-10 (pertenencia/referencias versionadas del grafo) no debe usarse como etiqueta para el vínculo de COVERAGE_REGISTER. Opción A fue aceptada semánticamente mediante DEC-C10-065; su verificación física permanece en el control de schema correspondiente.
+
+| ID | Requisito | Estado |
+|---|---|---|
+| COVERAGE-SCOPE-11g | Binding coverage_scope_id↔snapshot exacto demostrable por FK compuesta | OPEN — COVERAGE_REGISTER no almacena snapshot_id/snapshot_object_record_id |
+| COVERAGE-SCOPE-11g1 | C0: tupla exacta en universe_definition/version + control independiente | PROVISIONAL / CONDITIONAL; control no implementado ni auditado |
+| COVERAGE-SCOPE-11g2 | C1: extender COVERAGE_REGISTER y FKs compuestas | ALTERNATIVE; no aceptada; requiere análisis de ciclos/legacy/motor |
+| COVERAGE-SCOPE-11g3 | C2: tabla puente | NOT RECOMMENDED; solo si C1 no es viable |
+| U_G-SCH-10 | Pertenencia/referencias de grafo a snapshot | SEMANTIC DESIGN ACCEPTED — DEC-C10-065/Opción A; physical validation OPEN |
+| SNAPSHOT.scope | Codificación etapa/ruta C10-S | OPEN — propuesta no aceptada/compatibilidad pendiente |
+
+No se ha cambiado el schema. C0 no equivale a FK ni a validación técnica; C1/C2 no se han aplicado.
