@@ -1144,3 +1144,10 @@ Gates abiertos: canonicalización concreta, hash normativo, autoridad RFC/JCS, s
 El protocolo §20.12 compara C1 RFC 8785 JCS + prevalidación TGCV, C2 canonicalizador propio y C3 hash de bytes fuente; recomienda provisionalmente C1. Reglas candidatas: strings preservadas por JCS y NFC validada previamente en campos señalados; arrays de conjunto ordenados por identidad antes de canonicalizar, secuencias preservadas; enteros seguros no negativos; null prohibido; hash canónico separado del hash de bytes fuente y registrado fuera del contenido hasheado.
 
 No se acepta aún C1, SHA-256, el perfil TGCV-C10S-JCS-1 ni sus restricciones. La igualdad de hash no demuestra equivalencia semántica/exhaustividad. Pendiente decisión explícita; no parser, validator, fixtures, schema change ni ejecución.
+
+
+## 16.47. DEC-C10-074 — canonicalización JCS aceptada
+
+C1 RFC 8785 JCS con prevalidación TGCV queda ACCEPTED como política documental para envelope U1, perfil TGCV-C10S-JCS-1. Reglas completas en DEC-C10-074/protocolo §20.13: validación NFC previa en campos marcados; arrays conjuntos ordenados por identidad; arrays secuenciales preservados; enteros seguros no negativos; null prohibido; hashes de artefacto y contenido canónico separados; SHA-256 del contenido canónico.
+
+No autoriza hash de producción, parser/validator, fixtures, schema físico, Design Freeze ni ejecución. Pendientes: mapping físico CMP/PAR/REF/RUL/MET y control C0 independiente implementado/auditado.
