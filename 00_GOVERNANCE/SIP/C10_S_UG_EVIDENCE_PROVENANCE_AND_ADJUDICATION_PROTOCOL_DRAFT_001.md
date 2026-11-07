@@ -356,3 +356,67 @@ El informe debe permitir reproducir qué filas se incluyeron y cuáles quedaron 
 - Reconciliar todo lo anterior con DDL completo y DEC-C10-065 antes de proponer cualquier extensión de schema.
 
 **Estado:** DOCUMENTALMENTE IDENTIFICADO; MAPPING FÍSICO/SEMÁNTICO OPEN. No se acepta SNAPSHOT.scope, no se equipara phase con stage, no se añaden columnas, no se ejecuta control ni se autoriza implementación.
+
+### 20.3. Separación de ejes: clase C10, tipo de registro U_G y rol semántico
+
+La inspección histórica de `C10_S_IAM_FIELD_TO_COLUMN_CROSSWALK_PROPOSAL_DRAFT_001.md`, su auditoría FP/EDGE y U_G §§12.7, 15.1–15.4 confirma que no existe una equivalencia uno-a-uno entre `object_class` C10 y una tabla U_G. Deben mantenerse tres ejes:
+
+1. **`source_object_class` C10:** familia constitutiva que se cubre: CMP, PAR, REF, RUL o MET.
+2. **`ug_record_type`:** tipo físico/relacional del registro U_G: NODE, EDGE, ROUTE, PREDICATE, SNAPSHOT u otro registro probatorio aplicable.
+3. **`semantic_role` / `boundary_class`:** clasificación semántica y de frontera de NODE, conforme a DEC-C10-059/060. No codifican la clase C10.
+
+La tupla C0 conserva el campo `object_class` como clase de origen, pero el universo versionado debe definir explícitamente el crosswalk `source_object_class → {ug_record_type, semantic_role, target field/property, inclusion rule}`. El crosswalk puede ser 1:N o N:M y debe conservar el identificador exacto del objeto/campo de origen y el `object_record_id` U_G de destino cuando exista. No se deduce la clase desde NODE/EDGE/PREDICATE por nombre, ni se deduce la tabla desde CMP/PAR/REF/RUL/MET.
+
+### 20.4. Crosswalk temporal: `stage_key` no es `SNAPSHOT.phase`
+
+El contrato DGP temporal define los momentos `t−1` basal, `t0` asignación, `t1` política/intento, `t2` instalación/verificación, `t3` accesibilidad post, `t4` espacio de posibilidades, `t5` conocimiento/consideración, `t6` selección/inicio, `t7` ejecución, `t8` Outcome y `t9` Value. En cambio, U_G `SNAPSHOT.phase` utiliza `baseline/post-B/rollback/route-test` para describir el tipo/contexto de captura. Son ejes distintos.
+
+| Eje | Semántica | Representación C0/U_G | Regla |
+|---|---|---|---|
+| `stage_key` | Momento del proceso DGP | Declaración explícita en `universe_definition/version` | Usar el vocabulario temporal DGP versionado; no inferirlo de phase |
+| `SNAPSHOT.phase` | Tipo/contexto de captura | Columna `SNAPSHOT.phase` | Conservar su dominio propio; no convertirlo en etapa causal |
+| Tiempo de captura | Instante efectivo de captura | `SNAPSHOT.timestamp` con zona | Evidencia temporal auxiliar; por sí solo no identifica el stage |
+| Pertenencia a snapshot | Revisión exacta observada | `snapshot_id + snapshot_object_record_id` | Fijar por DEC-C10-065/Opción A |
+
+**Regla propuesta:** cada `coverage_scope_id` C10-S declara un solo `stage_key` y una revisión exacta de SNAPSHOT en `universe_definition/version`. El registro U_G queda vinculado por el par exacto `snapshot_id + snapshot_object_record_id`. Si el diseño requiere cubrir más de una etapa, se crean scopes distintos; no se agrupan varias etapas bajo un único scope salvo que una decisión posterior defina explícitamente un universo multi-etapa y sus denominadores.
+
+No se acepta una transformación automática `stage_key ↔ SNAPSHOT.phase`. La tabla anterior es un crosswalk de ejes, no una equivalencia de valores.
+
+### 20.5. Crosswalk de ruta y alcance global
+
+Opción A + DEC-C10-065 ya fija pertenencia y referencias exactas:
+
+- ROUTE tiene `route_id` semántico y `object_record_id` versionado, fijados al snapshot exacto.
+- PREDICATE referencia la revisión exacta de ROUTE mediante `route_record_id` y el pinning del snapshot.
+- ROUTE_STEP es la fuente canónica del orden y referencia ROUTE/NODE/EDGE mediante record IDs exactos dentro del mismo snapshot.
+- NODE y EDGE no tienen una columna universal `route_id`; su pertenencia a una ruta concreta solo se demuestra por su inclusión exacta en ROUTE_STEP de la revisión concreta de ROUTE.
+- `routes_affected` y texto libre no son evidencia de pertenencia.
+
+**Regla propuesta para C0:**
+
+1. Scope route-specific: `route_id` debe resolver a una única revisión de ROUTE dentro del snapshot fijado; para NODE/EDGE, el registro debe aparecer en la secuencia ROUTE_STEP de esa revisión. Para PREDICATE, debe resolver `route_record_id` a esa misma revisión. Para ROUTE, debe ser el propio registro.
+2. Scope global a etapa/snapshot: se requiere un token reservado, explícito y versionado para “global/no restringido a una ruta”, distinto de NULL, vacío o comodín. Su literal aún NO está aceptado; no se fija aquí.
+3. Si la ruta no puede reconstruirse exhaustivamente desde ROUTE_STEP, la pertenencia route-specific es UNKNOWN. Si una referencia exacta contradice el route_id declarado, es FAIL.
+4. La inclusión de un nodo/edge en varias rutas produce varias relaciones de pertenencia, no duplicación ficticia del objeto ni colapso de los scopes.
+
+### 20.6. Crosswalk candidato por familia C10
+
+El siguiente cuadro es una guía de correspondencia semántica para diseñar el `universe_definition`; no establece equivalencias obligatorias ni crea registros.
+
+| source_object_class | Registros U_G candidatos | Correspondencia y cautela |
+|---|---|---|
+| CMP | NODE; EDGE cuando exista una relación constitutiva entre componentes | CMP material se representa normalmente como NODE con semantic_role apropiado; EDGE representa dependencia/interacción, no el componente. No convertir una relación en CMP. |
+| PAR | NODE para propiedad/clave cuando tenga identidad propia y granularidad exigida; propiedades tipadas del NODE/artefacto propietario cuando el contrato admita representación atómica en sus campos | El crosswalk debe fijar clave/owner, tipo, dominio, estado y granularidad. No crear NODE por cada valor ni asumir que todos los PAR son nodos separados. |
+| REF | EDGE para referencias/dependencias tipadas; en casos definidos, campos de referencia tipada U_G | Usar el catálogo de relaciones permitido. Una REF declarativa no demuestra por sí sola resolución, instalación o disponibilidad efectiva. |
+| RUL | PREDICATE cuando la regla se evalúa como condición/predicado; NODE/EDGE solo para la identidad de su definición u operandos cuando sea necesario | Preservar rule_id, AST, operandos, scope y efecto mediante mapping explícito; no confundir AST bien formado (FP-01) con preservación semántica (FP-03). |
+| MET | Metadatos tipados de los registros de objeto; SNAPSHOT para metadatos de captura; EVIDENCE_REGISTER para procedencia/custodia de fuente | MET es transversal y no corresponde a una tabla única. Clasificar cada propiedad por owner, ámbito, tiempo y función; no duplicar source_provenance fuera de EVIDENCE_REGISTER ni confundir record-time con validez/observación. |
+
+La granularidad fuente puede exigir varios registros U_G, y un registro U_G puede contener varias propiedades tipadas. El crosswalk debe declarar cardinalidad, owner, clave de propiedad, regla de inclusión y evidencia de correspondencia; no se permite deducirla por similitud nominal.
+
+### 20.7. Dimensión de cobertura y regla de inclusión
+
+`COVERAGE_REGISTER.dimension` identifica la dimensión del universo cubierto; `coverage_scope_id` es el vínculo común de los registros U_G. La dimensión no necesita replicarse como columna en NODE/EDGE/ROUTE/PREDICATE: se obtiene del scope, pero el universo debe definir qué registros/propiedades son elegibles para ese scope.
+
+Cada `universe_definition/version` deberá especificar: (a) `dimension` y su vocabulario; (b) unidad de denominador; (c) conjunto de clases C10 aplicables; (d) tipos de registro U_G admisibles; (e) regla de inclusión/exclusión por objeto/propiedad; (f) cardinalidad esperada; (g) ruta/etapa y snapshot fijados; (h) fuentes que permiten reconstruir la enumeración. El mismo registro puede pertenecer a scopes distintos solo cuando sus dimensiones/etapas/rutas sean distintas y cada pertenencia esté declarada; no se fusionan denominadores.
+
+**Dictamen de esta operación:** se reutilizan los contratos y crosswalk históricos. Se propone mantener `stage_key` en el universo versionado, preservar `SNAPSHOT.phase` como eje separado, resolver rutas mediante ROUTE/ROUTE_STEP exactos, y mantener `source_object_class` separado de `ug_record_type` y `semantic_role`. No se selecciona aún el token global de ruta, ni la gramática serializada completa de `universe_definition/version`, ni se autoriza cambio de schema, implementación o ejecución.
