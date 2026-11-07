@@ -916,3 +916,7 @@ Se registra UDG-04 en protocolo §20.16, plantilla U_G §18.21, matriz de mappin
 **Estado: ACEPTADA.** Se acepta la separación de identidad lógica y de registro inmutable; referencia tipada por rol/target exacto; resolución en registry/manifiesto versionado con scope explícito; estados FAIL/UNKNOWN/NOT_COMPARABLE/NOT_APPLICABLE; ciclos y cardinalidad por relación. Resolver no demuestra pertenencia, aplicabilidad, preservación ni ejecución.
 
 La aceptación no cierra catálogo REF/schema/API/registry/resolver ni mapping CMP/PAR/RUL; no autoriza parser/validator/comparator/fixtures/implementación/Design Freeze/ejecución. Registro: `00_GOVERNANCE/decisions/DEC-C10-076_TYPED_REFERENCE_IDENTITY_AND_RESOLUTION_ACCEPTANCE.md`. Prevalece sobre §74, propuesta previa no aceptada.
+
+## 76. Reconciliación REF↔UDG-04 (2026-11-07) — propuesta, no decisión aceptada
+
+Se propone separar REF de configuración, referencias tipadas del envelope UDG y FK/vínculos estructurales U_G. REF conserva identidad propia y extremos tipados; REF→EDGE solo por M versionado y con cardinalidad/split/merge explícitos. EDGE no es automáticamente REF. Los roles ilustrativos de DEC-C10-076 no se convierten en enum físico. IAM, cardinalidades, endpoints externos, schema físico y mapping siguen OPEN. La propuesta no modifica DEC-C10-076 ni autoriza implementación/ejecución.
