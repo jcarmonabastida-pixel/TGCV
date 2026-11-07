@@ -855,3 +855,13 @@ Referencias: protocolo de evidencia §20.8; matriz mapping §20.10; plantilla U_
 Scope global cuenta cada identidad elegible una sola vez por clase/etapa/snapshot; scopes route-specific mantienen denominadores independientes y exigen route_id semántico, route_record_id y snapshot exactos. G2 queda descartada por ambigüedad; G3 no se adopta.
 
 DEC-C10-072 cierra solo literal y semántica. Gramática/versionado universe_definition, mapping físico, control C0 implementado/auditado y Design Freeze permanecen abiertos. No implementación ni ejecución autorizadas. Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-072_GLOBAL_ROUTE_SCOPE_TOKEN_ACCEPTANCE.md`.
+
+
+
+## 68. UDG-01 — propuesta de gramática universe_definition (2026-11-07)
+
+Se registra propuesta documental UDG-01 en protocolo de evidencia §20.10, plantilla U_G §18.15, matriz de mapping §20.12, maestro §189, plan §16.44 y matriz de control §62. Recomienda envelope JSON autocontenido con scope C0 exacto de nueve componentes, membership EXPLICIT/RULE_DEFINED, referencias tipadas/reglas versionadas, fuentes, cardinalidad y provenance; propone canonicalización determinista y SHA-256, semver de schema y revisión inmutable de universo.
+
+Estado: NO ACEPTADA. No crea schema ni contrato ejecutable; no parser, validator, fixtures, Design Freeze ni autorización de implementación/ejecución. La gramática final, canonicalización/hash y mapping físico permanecen OPEN.
+
+**Reconciliación de estado DEC-C10-072:** los asientos históricos §§64 y 66 y las redacciones previas de §§20.8.6/18.13 reflejan el estado anterior a la aceptación. No se reescriben por inmutabilidad histórica. Desde DEC-C10-072 (asiento §67 y registro autónomo), G1 y el literal C10S_SCOPE_GLOBAL están ACEPTADOS. Toda lectura vigente debe aplicar DEC-C10-072; solo permanecen abiertos la gramática completa, mappings físicos y control C0.
