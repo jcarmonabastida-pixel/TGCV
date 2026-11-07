@@ -1243,3 +1243,18 @@ Registro: `00_GOVERNANCE/decisions/DEC-C10-069_SERVICE_CMP_IDENTITY_AND_VERSIONI
 | CMP-ID-07g | Aceptación de mapping, IAM sellado, mapping físico y oráculo | OPEN |
 
 Referencia: C10_S_ABSTRACT_PARAMETER_AND_SOURCE_DESTINATION_MAPPING_MATRIX_DRAFT_001.md §20. La propuesta no es freeze, validación ni autorización de implementación/ejecución.
+
+## 51. Estado del gate IAM-ORACLE-08 — reconciliación de identidad y adjudicación
+
+| ID | Requisito | Estado |
+|---|---|---|
+| IAM-ORACLE-08a | Reconciliar identidad contract/instance/CMP con DEC-C10-069 | DOCUMENTED / DECISION ACCEPTED |
+| IAM-ORACLE-08b | Separar CMP focal de cardinalidad global e inventario P1 | DOCUMENTED REQUIREMENT |
+| IAM-ORACLE-08c | IAM por ruta, etapa, objeto, propiedad y snapshot | DOCUMENTED REQUIREMENT; instanciación OPEN |
+| IAM-ORACLE-08d | Distinguir C_src, S1/S2, C_dst declarado/aplicado y E_dst | DOCUMENTED REQUIREMENT |
+| IAM-ORACLE-08e | Separar truth DGP, salida Analizador y adjudicación Evaluador | DOCUMENTED REQUIREMENT |
+| IAM-ORACLE-08f | Adjudicación 1/0/?/NA/SCOPE_ERROR y suficiencia de cobertura | DOCUMENTED REQUIREMENT; criterios concretos OPEN |
+| IAM-ORACLE-08g | Mapping_id, IAM_id, oracle_id/version, roster, snapshots y evidencia | OPEN |
+| IAM-ORACLE-08h | Valores/defaults, mapping AST, UNKNOWN/conflicto, cegamiento y serialización | OPEN |
+
+Referencia: C10_S_PROPERTY_APPLICABILITY_AND_OBLIGATORINESS_MATRIX_DRAFT_001.md §17. Requisitos documentales no equivalen a aceptación, freeze, validación ni autorización de implementación/ejecución.
