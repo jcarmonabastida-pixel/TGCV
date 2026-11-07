@@ -321,3 +321,38 @@ El informe debe permitir reproducir qué filas se incluyeron y cuáles quedaron 
 - Un PASS del control C0 no convierte automáticamente `coverage_status=COMPLETE`, `observed_state=0`, `REF=0` ni una afirmación causal en PASS. Son capas de evidencia distintas.
 
 **Estado:** DOCUMENTED SPECIFICATION / NOT IMPLEMENTED / NOT EXECUTED / NOT AUDITED. `scientific_execution=false`; `execution_authorized=false`.
+
+## 20. Reconciliación de la tupla C0 con el esquema U_G vigente
+
+**Resultado de inspección documental:** la tupla C0 aceptada no está íntegramente representada mediante columnas tipadas en las tablas actuales. Por tanto, §19 define el contrato semántico, pero todavía no existe mapping físico suficiente para declarar PASS de consumidores. No se propone añadir columnas en esta operación.
+
+| Elemento C0 | Representación documentada actualmente | Evaluación de correspondencia |
+|---|---|---|
+| contract_id / contract_version | Declaración en `universe_definition/version`; no son columnas propias de COVERAGE_REGISTER ni de las tablas de objeto | DOCUMENTAL; requiere identidad/versionado inequívoco del contrato |
+| instance_id / instance_version | Declaración en `universe_definition/version`; no son columnas comunes de las tablas de objeto | DOCUMENTAL; requiere vínculo verificable con la identidad de instancia |
+| snapshot_id | Columna en SNAPSHOT y en NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP | REPRESENTADO |
+| snapshot_object_record_id | En tablas dependientes fija la revisión exacta; en la fila SNAPSHOT el identificador de esa revisión es `object_record_id` | REPRESENTADO por DEC-C10-065/Opción A; requiere comparar el par exacto |
+| stage_key | No hay columna canónica stage_key en el esquema descrito. SNAPSHOT.phase contiene baseline/post-B/rollback/route-test y no es sinónimo automático de stage_key | NO MAPEADO; UNKNOWN para comparación de consumidores |
+| route_id | Existe en ROUTE y PREDICATE; ROUTE_STEP usa route_record_id; NODE/EDGE no tienen una columna route_id directa común | PARCIAL; la pertenencia derivada exige una regla exhaustiva de recorrido y no puede inferirse de texto libre `routes_affected` |
+| object_class (CMP/PAR/REF/RUL/MET) | No hay una columna común object_class en todas las tablas U_G. semantic_role, relation_type, predicate_type y boundary_class tienen semánticas distintas | NO MAPEADO; requiere crosswalk explícito, no equivalencia nominal |
+| dimension | Columna `dimension` en COVERAGE_REGISTER; no es un campo común de cada registro consumidor | REPRESENTADO en scope; asociación con cada consumidor requiere mapping |
+| universe_definition/version | Campo de COVERAGE_REGISTER | REPRESENTADO como declaración, pero su gramática, identidad y hash/version canónico no están cerrados |
+
+### 20.1. Consecuencias para el control C0
+
+1. No se equipara `SNAPSHOT.phase` con `stage_key`; hacerlo requeriría una decisión semántica expresa y un mapping total.
+2. No se usa `SNAPSHOT.scope` como sustituto: su codificación y compatibilidad siguen OPEN y no están aceptadas.
+3. No se deriva `object_class` de semantic_role, predicate_type, relation_type o boundary_class por coincidencia de nombres o intuición. Se necesita un crosswalk explícito por tipo de registro.
+4. No se considera que `routes_affected` pruebe pertenencia exacta a una ruta. Para NODE/EDGE, la pertenencia route-specific solo podría derivarse de ROUTE_STEP y sus FKs exactas, si se demuestra que la enumeración del grafo/ruta está cerrada.
+5. La información declarada en `universe_definition/version` solo es comprobable si su formato permite recuperar valores inequívocos y versionados. Una cadena libre o hash sin contenido recuperable no basta para verificar la tupla.
+6. En consecuencia, el control C0 no puede emitir PASS completo mientras stage_key, object_class y las relaciones route-specific aplicables permanezcan sin mapping. Debe devolver UNKNOWN para esos componentes; cualquier contradicción demostrada en los campos ya representados sigue siendo FAIL.
+
+### 20.2. Trabajo pendiente, sin autorización de cambio físico
+
+- Definir un crosswalk semántico stage_key↔fase/etapa de captura sin colapsar tiempos o roles.
+- Definir el crosswalk CMP/PAR/REF/RUL/MET a registros U_G, preservando cardinalidad y tipo; no asumir que las cinco clases equivalen uno-a-uno a NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT.
+- Definir cómo se demuestra route_id para objetos sin columna directa, y cuándo el scope es global a etapa frente a route-specific.
+- Fijar gramática/versionado de universe_definition/version y su regla de hash/provenance.
+- Reconciliar todo lo anterior con DDL completo y DEC-C10-065 antes de proponer cualquier extensión de schema.
+
+**Estado:** DOCUMENTALMENTE IDENTIFICADO; MAPPING FÍSICO/SEMÁNTICO OPEN. No se acepta SNAPSHOT.scope, no se equipara phase con stage, no se añaden columnas, no se ejecuta control ni se autoriza implementación.
