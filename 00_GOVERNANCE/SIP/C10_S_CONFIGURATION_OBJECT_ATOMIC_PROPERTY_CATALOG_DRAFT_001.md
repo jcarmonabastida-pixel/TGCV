@@ -167,7 +167,7 @@ La cardinalidad base queda fijada por DEC-C10-056: CMP≥1, PAR≥1, RUL≥1; RE
 
 ## 12. Especialización candidata del catálogo PAR: claves lógicas mínimas
 
-**Estado:** propuesta de especialización documental; no DEC nueva, no aprobación confirmatoria y no instancia concreta.
+**Estado histórico:** propuesta documental original, posteriormente acotada por DEC-C10-068; no es roster vigente completo ni instancia serializada.
 
 Se proponen tres roles de clave para una unidad lógica de servicio, no nombres de campos de un producto ni una serialización:
 
@@ -208,3 +208,5 @@ Esta aceptación es conceptual y documental. No demuestra ejecución del AST, pr
 ## 14. RUL constitutiva del servicio sintético: distinción de identificadores
 
 RUL-01/02/03 del catálogo son propiedades de preservación (condición lógica, ámbito y efecto), no la identidad de una regla de instancia. La regla de instancia aceptada conceptualmente por DEC-C10-068 se denomina RUL-SVC-ENABLE-PROFILE-01 y está descrita en `C10_S_SYNTHETIC_LOGICAL_SERVICE_FUNCTIONAL_CONTRACT_DRAFT_001.md`. Su condición es ENABLED=true ⇒ PROFILE∈{STANDARD,READ_ONLY}, con PROFILE={STANDARD,READ_ONLY,DISABLED}. El identificador de instancia no debe confundirse con los predicados de preservación. Estado: regla sintética aceptada conceptualmente por DEC-C10-068; owner lógico y scope definidos; identidad/versionado de instancia, mapping y oráculo OPEN.
+
+**Precedencia decisional:** la tabla histórica de §12 queda supersedida en lo relativo a RETRY-COUNT y al estado de ENABLED/PROFILE. DEC-C10-068 acepta solo PAR-SVC-ENABLED BOOL y PAR-SVC-PROFILE ENUM como núcleo; PAR-SVC-RETRY-COUNT queda excluido. La identidad/versionado CMP candidato se documenta por separado en `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md`; no queda aceptado por DEC-C10-068.
