@@ -427,3 +427,10 @@ Igualdad extensional requiere conjuntos exhaustivos idénticos en scope/snapshot
 Se acepta comparación vectorial en siete niveles: artefacto, canónico, identidad, revisión, extensional, definicional y compatibilidad entre revisiones. No inferir equivalencia por hash/nombre/ID/cardinalidad. Igualdad extensional exige conjuntos completos de refs tipadas/versionadas idénticos en C0/stage/route/snapshot comparables; equivalencia definicional exige además inclusión/exclusión/reglas/AST/domínios/dependencias equivalentes. Provenance/timestamp/hash son trazabilidad, no miembros. Scope/snapshot/contrato/instancia/versiones condicionan comparabilidad.
 
 Resultados EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE; FAIL para integridad. Scope incompatible sin mapping explícito = NOT_COMPARABLE; falta evidencia = UNKNOWN. No se autoriza comparator/fingerprint/fixtures/schema change/implementación/ejecución. DEC-C10-075 es aceptación documental.
+
+
+### 20.18. UDG-04 — identidad y resolución de referencias (propuesta)
+
+Identidad lógica: `(object_class, object_id)`; identidad exacta de registro: `(object_class, object_id, object_record_id)`. Referencia: `(ref_role, target_object_class, target_object_id, target_object_record_id)`; el catálogo de roles debe reconciliarse con REF vigente y no se cierra aquí. No resolver por nombre/valor/hash/posición ni por latest implícito.
+
+Comprobar record_id exacto, clase/id, inmutabilidad, compatibilidad de versiones y cardinalidad en registry versionado con scope definido. Requerida ausente, dangling exhaustivo, contradicción de clase/id o record_id mutable = FAIL; registry inaccesible/incompleto = UNKNOWN; incompatibilidad no mapeada = NOT_COMPARABLE; opcional ausente = NOT_APPLICABLE. Ciclos y cardinalidad se declaran por tipo de relación; no asumir DAG universal. La resolución no prueba pertenencia, aplicabilidad ni ejecución. Propuesta no aceptada; mapping físico REF y mapping CMP/PAR/RUL permanecen OPEN.
