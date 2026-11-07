@@ -837,3 +837,12 @@ El usuario acepta como vocabulario cerrado de stage_key C10-S los siete valores 
 La aceptación se limita a los valores y sus significados. stage_key se mantiene separado del reloj DGP t−1…t9, SNAPSHOT.phase y SNAPSHOT.timestamp. No se acepta la serialización en SNAPSHOT.scope ni los campos route=NONE/F/A u object_class=CONFIG de la propuesta histórica. El binding C0 permanece en COVERAGE_REGISTER.universe_definition/version; route_id exacto/token global y mappings físicos siguen OPEN. C0 mantiene object_class CMP/PAR/REF/RUL/MET y dimension fuera de la tupla.
 
 DEC-C10-071 no modifica schema, no crea scopes/snapshots ni autoriza implementación, validación ejecutable o ejecución científica. No Design Freeze.
+
+
+## 66. Propuesta de route_id y scope global (2026-11-07) — no es decisión aceptada
+
+Se documenta en protocolo de evidencia §20.8 una comparación de tres alternativas para el slot route_id de C0. G1 usa un token reservado, candidato `C10S_SCOPE_GLOBAL`, recomendado provisionalmente; G2 NULL/vacío se considera ambiguo; G3 scope_kind separado requeriría reabrir estructura/tupla. El candidato G1 significa “sin restricción a ruta concreta”, no ausencia de rutas ni no pertenencia de objetos. No queda aceptado por este asiento.
+
+Se especifican reglas de pertenencia CMP/PAR/REF/RUL/MET, denominadores independientes para scopes route-specific y conteo único por objeto en scope global, además de adjudicación 1/0/?/NA. El 0 de pertenencia solo significa no miembro de una ruta concreta y requiere inventario/mapping/ROUTE_STEP exhaustivos.
+
+Referencias: protocolo de evidencia §20.8; matriz mapping §20.10; plantilla U_G §18.13; maestro §187; plan §16.42; matriz de control §60. La aceptación del literal/namespace y la gramática versionada universe_definition/version siguen pendientes. No schema change, implementación ni ejecución autorizada.
