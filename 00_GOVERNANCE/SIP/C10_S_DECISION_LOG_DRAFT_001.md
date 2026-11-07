@@ -814,3 +814,9 @@ C0 es una decisión documental aceptada, pero su enforcement queda CONDITIONAL h
 Se registra que el protocolo de evidencia/adjudicación §19 contiene la especificación documental del control independiente C0: binding canónico, invariantes, reconciliación de cobertura/denominador, resultados PASS/FAIL/UNKNOWN, casos adversariales y requisitos de provenance. No se registra como nueva aceptación del usuario ni autorización de implementación/ejecución.
 
 Estado: DOCUMENTED SPECIFICATION; DDL mapping OPEN; NOT IMPLEMENTED; NOT EXECUTED; NOT AUDITED. DEC-C10-070 sigue siendo la decisión que acepta C0 como contrato documental. No Design Freeze ni ejecución científica.
+
+## 63. Limitación de mapping C0↔U_G (2026-11-07)
+
+La inspección documental del esquema vigente (protocolo §20) identifica que stage_key no tiene columna propia; SNAPSHOT.phase no equivale y SNAPSHOT.scope sigue OPEN. route_id solo está directo en ROUTE/PREDICATE/ROUTE_STEP, no en NODE/EDGE. object_class CMP/PAR/REF/RUL/MET carece de campo común tipado. contract/instance versions y dimension requieren binding documental recuperable. snapshot_id + snapshot_object_record_id sí están cubiertos por DEC-C10-065/Opción A.
+
+Esto no revoca DEC-C10-070 ni la aceptación de C0; delimita su evaluabilidad. No habrá PASS completo hasta un crosswalk explícito y verificable. Correspondencia no demostrada → UNKNOWN; contradicción demostrada → FAIL. No se añade schema ni se autoriza implementación/ejecución.
