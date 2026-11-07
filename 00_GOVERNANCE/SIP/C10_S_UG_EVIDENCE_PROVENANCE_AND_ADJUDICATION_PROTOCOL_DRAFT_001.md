@@ -243,9 +243,9 @@ La unidad primaria es una fila de `COVERAGE_REGISTER` identificada por `coverage
 
 `(contract_id, contract_version, instance_id, instance_version, snapshot_id, snapshot_object_record_id, stage_key, route_id, object_class)`.
 
-Los valores deben ser explícitos, no inferidos de nombres libres, hashes, timestamps ni proximidad de filas. `route_id` puede ser un identificador reservado explícito para el scope global de una etapa solo si el contrato de universo lo define como tal; NULL, vacío o comodín no significan global. `object_class` usa el vocabulario controlado CMP/PAR/REF/RUL/MET. `dimension` identifica la dimensión concreta de cobertura del registro. La versión de contrato e instancia forma parte de la identidad: no se permite herencia silenciosa desde la versión más reciente.
+Los valores deben ser explícitos, no inferidos de nombres libres, hashes, timestamps ni proximidad de filas. `route_id` puede ser un identificador reservado explícito para el scope global de una etapa solo si el contrato de universo lo define como tal; NULL, vacío o comodín no significan global. `object_class` usa el vocabulario controlado CMP/PAR/REF/RUL/MET. `dimension` identifica la dimensión del scope en COVERAGE_REGISTER, pero no forma parte de la tupla de identidad aceptada por DEC-C10-070. La versión de contrato e instancia forma parte de la identidad: no se permite herencia silenciosa desde la versión más reciente.
 
-Cada fila de objeto que referencia el scope debe aportar una identidad compatible y resolver al mismo `snapshot_id + snapshot_object_record_id`, `stage_key`, `route_id`, `object_class`, `dimension`, contrato e instancia. Si alguna de estas correspondencias no puede recuperarse de los campos versionados o de una declaración inequívoca del universo, el resultado no puede ser PASS.
+Cada fila de objeto que referencia el scope debe ser compatible con los nueve componentes de la tupla. La dimensión se comprueba separadamente contra COVERAGE_REGISTER.dimension y la regla de elegibilidad versionada; no se incorpora a la tupla. Si alguna correspondencia no puede recuperarse de los campos versionados o de una declaración inequívoca del universo, el resultado no puede ser PASS.
 
 ### 19.2. Invariantes obligatorios
 
@@ -255,7 +255,7 @@ Cada fila de objeto que referencia el scope debe aportar una identidad compatibl
 | C0-I02 | Binding total | Los nueve elementos de la tupla están declarados, versionados y no ambiguos; no se aceptan comodines implícitos. |
 | C0-I03 | Snapshot exacto | `snapshot_id` y `snapshot_object_record_id` identifican la misma revisión exacta, no solo la misma entidad semántica. |
 | C0-I04 | Consistencia de consumidores | Todos los registros que referencian el scope coinciden con la tupla completa. |
-| C0-I05 | Separación de universos | No se mezclan contratos, versiones de instancia, snapshots, etapas, rutas, clases ni dimensiones distintas bajo un scope. |
+| C0-I05 | Separación de universos | No se mezclan contratos, versiones de instancia, snapshots, etapas, rutas o clases distintas bajo un scope; la dimensión del scope debe concordar con su regla de universo y no se fusionan dimensiones incompatibles. |
 | C0-I06 | Referencias resolubles | Toda FK `coverage_scope_id` resuelve a una fila COVERAGE_REGISTER; no hay referencias huérfanas. |
 | C0-I07 | Cardinalidad declarada | El conjunto observado de consumidores concuerda con el universo/denominador y con la regla de enumeración versionada. |
 | C0-I08 | Uso/no uso justificado | Todo scope declarado como requerido tiene consumidores según su cardinalidad; un scope sin consumidores solo es admisible si el universo declara explícitamente cero consumidores y la enumeración es exhaustiva. |
@@ -334,7 +334,7 @@ El informe debe permitir reproducir qué filas se incluyeron y cuáles quedaron 
 | snapshot_object_record_id | En tablas dependientes fija la revisión exacta; en la fila SNAPSHOT el identificador de esa revisión es `object_record_id` | REPRESENTADO por DEC-C10-065/Opción A; requiere comparar el par exacto |
 | stage_key | No hay columna canónica stage_key en el esquema descrito. SNAPSHOT.phase contiene baseline/post-B/rollback/route-test y no es sinónimo automático de stage_key | NO MAPEADO; UNKNOWN para comparación de consumidores |
 | route_id | Existe en ROUTE y PREDICATE; ROUTE_STEP usa route_record_id; NODE/EDGE no tienen una columna route_id directa común | PARCIAL; la pertenencia derivada exige una regla exhaustiva de recorrido y no puede inferirse de texto libre `routes_affected` |
-| object_class (CMP/PAR/REF/RUL/MET) | No hay una columna común object_class en todas las tablas U_G. semantic_role, relation_type, predicate_type y boundary_class tienen semánticas distintas | NO MAPEADO; requiere crosswalk explícito, no equivalencia nominal |
+| object_class (CMP/PAR/REF/RUL/MET) | Clase de origen declarada en el universo; no es columna común de las tablas U_G | Requiere crosswalk explícito a ug_record_type/semantic_role y propiedades; no equivalencia nominal |
 | dimension | Columna `dimension` en COVERAGE_REGISTER; no es parte de la tupla C0 ni campo común de consumidores | REPRESENTADO como atributo del scope; elegibilidad de consumidores se fija en universe_definition/version |
 | universe_definition/version | Campo de COVERAGE_REGISTER | REPRESENTADO como declaración, pero su gramática, identidad y hash/version canónico no están cerrados |
 
