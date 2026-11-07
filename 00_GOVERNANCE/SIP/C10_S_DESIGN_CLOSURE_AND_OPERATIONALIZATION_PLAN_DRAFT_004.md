@@ -1043,3 +1043,11 @@ La matriz IAM §17 reconcilia las notas históricas de §16 con DEC-C10-069: con
 Se define como requisito documental que IAM instancie O/C/NA/? por ruta, etapa, objeto, propiedad, snapshot y cobertura; distinga C_src, S1/S2, C_dst declarado, C_dst aplicado y E_dst/runtime; y mantenga separados truth del DGP, salidas cegadas del Analizador y adjudicación posterior del Evaluador. El oráculo compara truth esperada con estado efectivamente observado; no convierte truth en evidencia ni C_dst declarado en C_dst aplicado.
 
 **Estado:** requisitos IAM/oráculo documentados, no aceptados ni congelados. Roster completo, valores/defaults por escenario, mapping/AST, política UNKNOWN/conflicto, evidencia admisible, cegamiento, suficiencia de cobertura y serialización siguen OPEN. No fixtures, schema ejecutable, parser, implementación ni ejecución científica.
+
+## 16.34. Roster mínimo y cierre IAM pre-Z/B
+
+La matriz IAM §18 reconcilia el roster funcional mínimo aceptado: CMP-SERVICE-LOGIC-001; PAR-SVC-ENABLED BOOL; PAR-SVC-PROFILE ENUM; RUL-SVC-ENABLE-PROFILE-01 REQUIRE; MET obligatorio; POL ausente por diseño en el núcleo. REF=0 requiere inventario/cobertura exhaustivos pre-Z/B. La fila histórica PAR-SVC-RETRY-COUNT de §13 queda supersedida para el núcleo por DEC-C10-068.
+
+No hay DEFAULT contractual declarado para los dos PAR; no se inventan defaults ni valores de escenario. VALUE tipado es candidato confirmatorio; ABSENT/NULL no son admisibles para REQUIRED; DEFAULT requiere declaración contractual trazable. El roster no es todavía inventario exhaustivo ni permite declarar ausencias.
+
+**Gate siguiente:** completar el inventario por C_src, S1/S2, C_dst declarado y C_dst aplicado; fijar cobertura; después instanciar O/C/NA/? por ruta/etapa/propiedad y sellar IAM antes de Z/B. No Design Freeze, implementación o ejecución autorizadas.
