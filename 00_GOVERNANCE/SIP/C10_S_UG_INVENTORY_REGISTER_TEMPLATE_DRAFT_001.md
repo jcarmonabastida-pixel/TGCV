@@ -689,7 +689,7 @@ El snapshot U_G exacto se pinnea mediante snapshot_id + snapshot_object_record_i
 | F2_DST_APPLIED | Destino observado tras F2 | Estado efectivamente aplicado |
 | A2_DST_APPLIED | Destino observado tras A2 | Estado efectivamente aplicado |
 
-Los stage keys son etiquetas de scope del overlay, no valores nuevos del enum SNAPSHOT.phase. Si no se puede representar ruta/etapa inequívocamente con scope sin alterar el schema, detener y solicitar decisión antes de capturar.
+Los stage keys son etiquetas del campo textual SNAPSHOT.scope, no valores nuevos del enum SNAPSHOT.phase. Propuesta aún no aceptada: program=C10-S|contract_id=C10S-SVC-REQUEST-PROCESSOR|contract_version=1.0.0|instance_id=C10S-SVC-REQUEST-PROCESSOR-001|instance_version=1|stage_key=<STAGE>|route=<NONE|F|A>|object_class=CONFIG. C_SRC usa route=NONE; las otras seis etapas usan F o A según corresponda. Para este conjunto de capturas, phase=route-test; esto no afirma ni codifica asignación Z/B. coverage_scope_id sigue siendo la FK independiente al COVERAGE_REGISTER. No se permiten campos duplicados, ausentes o valores no reconocidos; no se admite parsing heurístico. La convención utiliza el campo textual scope existente y no amplía SNAPSHOT.phase, pero requiere aceptación y pruebas de compatibilidad antes de capturar.
 
 ### 18.3. Campos de manifiesto documental
 
