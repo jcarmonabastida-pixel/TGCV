@@ -475,3 +475,56 @@ Se reutilizan los siete `stage_key` aceptados en DEC-C10-071 y el token de scope
 El siguiente desarrollo puede proponer vocabularios candidatos por capa, separando roles UDG de roles funcionales REF. Cardinalidades, obligatoriedad y reglas concretas permanecen OPEN. No se modifica DEC-C10-077 ni se autoriza implementación, validator/parser, fixtures, Design Freeze, simulación, experimento o ejecución científica.
 
 Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-078_IAM_LOGICAL_ROW_CONTRACT_ACCEPTANCE.md`.
+
+
+### 19.13. Vocabularios candidatos separados para L2 y L3 — propuesta no aceptada
+
+**Propósito.** Desarrollar DEC-C10-078 sin colapsar referencias del envelope UDG (L2) con relaciones funcionales REF (L3). Esta sección es una propuesta de trabajo, no una decisión aceptada ni un enum cerrado.
+
+#### A. L2 — referencias del envelope UDG
+
+Namespace candidato: `UDG_ENVELOPE_ROLE`. Los siguientes `role_key` reutilizan exclusivamente los ejemplos ilustrativos ya registrados; su presencia aquí no los convierte en vocabulario aprobado.
+
+| role_key candidato | Función de la referencia del envelope | Dominio destino candidato | Límite / cuestión abierta |
+|---|---|---|---|
+| `MEMBER` | Identificar un miembro declarado del universo | CMP/PAR/REF/RUL/MET | La referencia apunta al registro exacto; no crea un REF. |
+| `OWNER` | Identificar el owner del objeto declarado | CMP como caso ordinario | No sustituir identidad CMP por etiqueta de rol; otros dominios requieren contrato explícito. |
+| `SOURCE` | Identificar fuente/origen de la declaración | CMP/PAR/REF/RUL/MET o artefacto externo tipado | El endpoint externo y su namespace siguen OPEN; no forzarlo a MET. |
+| `INCLUSION_RULE` | Referenciar regla que determina inclusión | RUL | Resolver la regla no prueba exhaustividad ni pertenencia observada. |
+| `EXCLUSION_RULE` | Referenciar regla que determina exclusión | RUL | Mismo límite: debe evaluarse sobre universo/scope/version exactos. |
+| `DEPENDENCY` | Declarar/identificar dependencia relacionada con el envelope | OPEN: REF y/o target contractual | No inferir instalación, disponibilidad, consumo ni éxito técnico. No asumir que la referencia misma sea un objeto REF. |
+| `PROVENANCE` | Referenciar procedencia de la definición | MET o artefacto/registro de evidencia tipado | Evidencia/procedencia no es automáticamente miembro del universo. |
+
+La matriz no fija obligatoriedad ni cardinalidad para ninguna fila. El universo destino y el record_id deben ser exactos según DEC-C10-076. Un target externo exige contrato de tipo/namespace/versión/resolución antes de poder abandonar UNKNOWN.
+
+#### B. L3 — extremos funcionales de objetos REF
+
+Namespace candidato: `REF_FUNCTIONAL_ROLE`, distinto de `UDG_ENVELOPE_ROLE). L3 aplica a un objeto REF que ya tiene identidad propia; no a cada referencia del envelope.
+
+| Campo | Propuesta de interpretación | Estado |
+|---|---|---|
+| `role_key` | Semántica funcional de la relación declarada por REF | OPEN; no se propone enum cerrado. `DEPENDS_ON` puede estudiarse como candidato solo para relaciones de dependencia efectivamente declaradas en el DGP. |
+| `endpoint_position` | Posición del extremo dentro de la relación | SOURCE/TARGET como patrón binario de DEC-C10-078; no equivale a role_key. |
+| `target_domain` | Clase/namespace del objeto al que apunta ese extremo | OPEN por extremo; distinguir dominios internos y externos. |
+| `relation_type` | Tipo de relación declarado por el contrato REF | OPEN y separado de role_key y endpoint_position; no se acepta enum. |
+| identidad del extremo | object_class + object_id + object_record_id y versión/snapshot compatibles | Reutiliza DEC-C10-076; nunca resolver por nombre, posición o latest implícito. |
+
+Las relaciones n-arias requieren una identidad de grupo/parent explícita y una representación que conserve todos los extremos, dirección, tipo, multiplicidad e integridad. No se convierten automáticamente en pares SOURCE/TARGET ni en una colección de REF binarias sin mapping M explícito.
+
+#### C. Separación de capas y reglas de no-colapso
+
+- L2 referencia objetos/artefactos desde el envelope; L3 describe una relación del dominio cuyo objeto REF tiene identidad propia.
+- El mismo texto —por ejemplo DEPENDENCY— podría aparecer como etiqueta ilustrativa en ambos contextos, pero no implica misma identidad, namespace, cardinalidad ni semántica.
+- L1 sigue siendo membership de CMP/PAR/REF/RUL/MET; L4 sigue siendo integridad FK/vínculo estructural U_G. Ninguna de las dos capas hereda roles L2/L3.
+- No inferir REF=0 por ausencia de MEMBER/DEPENDENCY en un envelope parcial, ni inferir dependencia técnica instalada desde una declaración REF.
+- Para ambas capas, requiredness, cardinalidades, triggers, stage_key, scope, binding, integridad, evidencia y adjudicación deben justificarse por regla IAM y evidencia/cobertura. No asignar valores por defecto.
+
+#### D. Siguiente gate propuesto
+
+1. Validar conceptualmente cada fila L2 contra la gramática U1/UDG-04 y los dominios exactos del registry.
+2. Determinar si DEPENDENCY en L2 apunta a un objeto REF o directamente a un target tipado, sin doble contabilización.
+3. Construir ejemplos mínimos de REF L3 realmente necesarios para el DGP; no inventar relaciones adicionales.
+4. Para cada REF, decidir si es binaria o n-aria y separar role_key, relation_type, endpoint_position y target_domain.
+5. Solo después proponer cardinalidades/requiredness por clase×rol×extremo×stage_key×scope.
+
+**Estado:** PROPUESTA NO ACEPTADA. No se cierra vocabulario, cardinalidad, obligatoriedad, endpoints externos ni mapping M. No se crean instancias/filas IAM, no se declara REF=0, y no se autoriza schema físico, implementación, parser/validator, fixtures, Design Freeze ni ejecución científica.
