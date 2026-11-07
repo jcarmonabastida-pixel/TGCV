@@ -8106,3 +8106,15 @@ La fila histórica PAR-SVC-RETRY-COUNT de IAM §13 queda supersedida para el nú
 El roster es mínimo funcional, no inventario exhaustivo de C_src/S1/S2/C_dst. No se infiere ausencia de CMP/PAR/RUL adicionales ni REF=0. La matriz §18 define aplicación por etapa y conserva C_dst declarado/aplicado y E_dst separados.
 
 **Estado:** roster mínimo funcional reconciliado documentalmente; inventario exhaustivo, cobertura, IAM operativo, valores por escenario, mapping_id/IAM_id/oracle_id y evidencia OPEN. No fixtures, Design Freeze, implementación o ejecución científica.
+
+## 180. Protocolo de inventario C10-S por snapshot (2026-11-07)
+
+Se especializa la plantilla U_G existente C10_S_UG_INVENTORY_REGISTER_TEMPLATE_DRAFT_001.md §18 y la matriz IAM §19 para capturar configuración CMP/PAR/REF/RUL/MET por snapshot exacto. Se reutilizan los registros U_G y el pinning DEC-C10-065; no se crea un inventario U_G paralelo ni se alteran tablas/FKs aprobadas.
+
+No se fuerzan PAR/RUL a NODE/PREDICATE ni se crean nodos artificiales. El catálogo atómico define semántica; el manifiesto documental IAM enlaza cada objeto/propiedad con snapshot, etapa/ruta, mapping, evidencia y scope de cobertura. Las etapas diferenciadas son C_src, F1→S2, A1→S1, C_dst declarado F2/A2 y C_dst aplicado F2/A2. La etapa/ruta se expresa mediante scope y crosswalk IAM, sin ampliar el enum SNAPSHOT.phase.
+
+Se definen scopes de cobertura separados por snapshot×etapa×ruta×clase; COMPLETE requiere universo y denominador trazables. El contrato y catálogo prueban intención, no estado observado. REF=0 exige cobertura exhaustiva; UNKNOWN se mantiene ?. La truth DGP permanece segregada del Analizador.
+
+También se reconcilian los residuos históricos del roster de tres PAR en el contrato abstracto §16 y el catálogo §15: RETRY-COUNT queda supersedido para la instancia confirmatoria base por DEC-C10-068; ENABLED/PROFILE no tienen DEFAULT aceptado. No se fijan valores por escenario.
+
+**Estado:** protocolo documental de captura; sin snapshots/filas observadas ni evidencia técnica. IAM e inventario exhaustivo OPEN. No schema físico, fixtures, parser, implementación, simulación o ejecución.
