@@ -1151,3 +1151,8 @@ No se acepta aún C1, SHA-256, el perfil TGCV-C10S-JCS-1 ni sus restricciones. L
 C1 RFC 8785 JCS con prevalidación TGCV queda ACCEPTED como política documental para envelope U1, perfil TGCV-C10S-JCS-1. Reglas completas en DEC-C10-074/protocolo §20.13: validación NFC previa en campos marcados; arrays conjuntos ordenados por identidad; arrays secuenciales preservados; enteros seguros no negativos; null prohibido; hashes de artefacto y contenido canónico separados; SHA-256 del contenido canónico.
 
 No autoriza hash de producción, parser/validator, fixtures, schema físico, Design Freeze ni ejecución. Pendientes: mapping físico CMP/PAR/REF/RUL/MET y control C0 independiente implementado/auditado.
+
+
+## 16.48. UDG-03 — comparación semántica (propuesta)
+
+Antes de Design Freeze debe existir contrato de comparación que separe identidad/revisión, artefacto/canónico, igualdad extensional y equivalencia definicional. Requisitos: scope C0/stage/route/snapshot compatibles; versiones exactas de miembros; exhaustividad de ambos universos; reglas/AST/dependencias y fuentes recuperables; mapping explícito entre contratos/instancias cuando difieran. Resultados por dimensión EQUAL/DIFFERENT/UNKNOWN/NOT_COMPARABLE; FAIL para integridad. Hash/ID/revision/cardinality no demuestran equivalencia. Propuesta UDG-03 en protocolo §20.14, no aceptada; comparator/fingerprint/fixtures/schema change/ejecución no autorizados.
