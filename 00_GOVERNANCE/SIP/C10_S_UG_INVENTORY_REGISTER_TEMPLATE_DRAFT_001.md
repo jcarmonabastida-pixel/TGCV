@@ -858,3 +858,7 @@ REF de configuración, referencia tipada UDG y FK estructural U_G son conceptos 
 Crosswalk candidato de registros: CMP→NODE; PAR→NODE o propiedad tipada del NODE owner; REF→EDGE cuando sea relación de configuración; RUL→PREDICATE; MET→metadatos transversales y registros SNAPSHOT/EVIDENCE_REGISTER según función. El mapping es semántico y contextual, no una equivalencia de clases/tablas. CLAIM_EVIDENCE_LINK y ROUTE_STEP conservan sus funciones U_G aprobadas y no se cuentan como REF del dominio por defecto.
 
 Para cada extremo REF se requiere identidad lógica y record_id exacto; los extremos internos deben fijar snapshot_object_record_id común según DEC-C10-065. Los externos requieren namespace, tipo, versión y política de resolución explícitos. La ausencia de pinning o la multiplicidad ambigua mantiene UNKNOWN; no resolver por latest ni por nombre. Esta addenda no modifica DDL ni el esquema normalizado.
+
+### 18.24. DEC-C10-077 — aceptación conceptual de REF↔U_G
+
+Se acepta REF como objeto de configuración con identidad propia, distinto de referencia envelope UDG y FK estructural U_G. REF→EDGE solo mediante mapping M explícito/versionado; no asumir 1:1; split/merge/n-aria exige parent/group identity. Las FKs Opción A, ROUTE_STEP y CLAIM_EVIDENCE_LINK conservan sus funciones previas. No se modifica DDL, registry ni esquema normalizado; endpoints, roles finales y cardinalidades siguen OPEN.
