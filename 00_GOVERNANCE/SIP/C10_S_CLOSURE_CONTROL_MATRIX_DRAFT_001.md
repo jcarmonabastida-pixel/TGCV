@@ -1967,3 +1967,16 @@ No obstante, el roster total CMP no está demostrado exhaustivo y no se puede in
 **Clasificación:** contrato de anclaje 1:1 = cerrado documentalmente (DEC-C10-082); identidad CMP de referencia = cerrada documentalmente (DEC-C10-069); proyección field-to-column detallada y roster exhaustivo = definidos parcialmente / pendientes de aceptación y evidencia; mappings P1 y demás CMP = OPEN. No hay IAM sellado ni inventario observado.
 
 No se autoriza implementar el mapping, poblar registros, ejecutar controles, Design Freeze ni ejecución científica. scientific_execution=false; execution_authorized=false.
+
+
+## 89 — Reconciliación U_G N01–N23 con membership IAM y frontera
+
+**Estado:** propuesta de clasificación registrada en crosswalk §10.21; pendiente de aceptación.
+
+La reconciliación fija una distinción necesaria: NODE es una clase de registro del grafo U_G; CMP es una clase de objeto del dominio IAM. Por ello, el catálogo de 23 roles no equivale a 23 CMP ni permite declarar exhaustivo el roster. Cada CMP aplicable tendrá un único NODE anchor por snapshot (DEC-C10-082), pero NODE no implica CMP.
+
+El crosswalk §10.21 clasifica los 23 roles en: no CMP por función; CMP candidato; y condicional a identidad contractual, granularidad y frontera. No asigna component_id ni afirma existencia técnica. Reutiliza P0_CONFIG/P1_ENVIRONMENT/DUAL_P0_P1/NA conforme DEC-C10-059 y mantiene P2 como perímetro transversal.
+
+**Estado de cierre:** identidad CMP de referencia y regla 1:1 NODE anchor cerradas documentalmente; clasificación semántica de roles U_G propuesta; roster CMP exhaustivo, membership por objeto, mappings adicionales y cobertura permanecen OPEN/UNKNOWN hasta evidencia y aceptación. No hay inventario técnico ni IAM sellado.
+
+No autoriza inspección, captura de snapshots, población IAM, implementación, Design Freeze ni ejecución científica. scientific_execution=false; execution_authorized=false.
