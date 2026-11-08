@@ -1559,3 +1559,18 @@ Orden de cierre:
 5. definir controles de unicidad, cobertura y evidencia; mantenerlos como especificación hasta autorización técnica.
 
 **Estado:** propuesta documental; no IAM poblado, no mappings observados, no implementación ni ejecución. La aceptación de esta especificación lógica, si se produce, no implicará aprobación de schema físico ni cierre de evidencia.
+
+
+## 16.71 — Reconciliación de roster CMP con U_G y frontera
+
+El crosswalk §10.21 es la propuesta vigente para clasificar los 23 roles U_G frente a las clases IAM. No debe derivarse el roster CMP de la lista de nodos ni de boundary_class.
+
+Siguiente secuencia:
+1. aceptar/corregir la clasificación funcional de N01–N23;
+2. recuperar el universo contractual completo de la instancia y enumerar component_id/component_class/version sin inventar instancias;
+3. resolver cada objeto condicional N01, N07, N14, N17, N18, N20 y N21 por identidad, granularidad, clase IAM y boundary_class;
+4. mapear solo los CMP confirmados a NODE anchor exacto por snapshot, reutilizando DEC-C10-082;
+5. especificar los mappings REF/PAR/RUL/MET sin colapsar sus clases;
+6. mantener roster completeness UNKNOWN/PARTIAL hasta enumeración y cobertura suficientes.
+
+**Gate:** la propuesta de clasificación no acredita existencia, ausencia, roster exhaustivo ni cobertura. No se crean registros ni se captura información técnica. La aceptación conceptual no autoriza implementación o ejecución.
