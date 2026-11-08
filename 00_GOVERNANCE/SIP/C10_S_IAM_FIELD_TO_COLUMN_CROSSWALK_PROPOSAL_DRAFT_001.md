@@ -445,3 +445,16 @@ Esta propuesta no añade columnas/FK ni filas IAM, no define mappings físicos, 
 El contrato IAM debe permitir resolver por separado `P-DECL` y `P-TRANS`, por ruta F/A, parámetro/regla, CMP owner/NODE anchor, snapshots/registros, etapa, ruta/scope, mapping/versiones y evidencia. La conformidad semántica del destino declarado no implica que la transición haya producido ese artefacto; el lineage probatorio requiere evidencia propia del proceso y vínculo exacto de entradas/salidas.
 
 Los resultados F y A no se compensan. La configuración declarada no acredita aplicación efectiva; FP-06/FP-07 y las etapas applied permanecen separadas. Esta aceptación no añade campos físicos/FK, no sella IAM y no autoriza implementación o ejecución científica.
+
+## 10.17. Propuesta IAM — aplicación efectiva y verificación post-aplicación (FP-06/07/08)
+
+**Estado:** PROPUESTA DOCUMENTAL — pendiente de aceptación. Véase matriz abstracta §15.7.
+
+El contrato IAM deberá poder resolver separadamente, para F y A: (i) artefacto declarado exacto; (ii) evento de aplicación y target/environment identity; (iii) snapshot/registro post-aplicación; (iv) CMP owner/NODE anchor, PAR/RUL, stage_key, route/scope y mapping/versiones; y (v) evidencia de proceso y observación con provenance/integridad.
+
+La separación semántica es obligatoria:
+- FP-06 acredita la aplicación efectiva del paquete/configuración declarada sobre el destino identificado, con evidencia del evento y resultado.
+- FP-07 acredita que el estado post-aplicación observado satisface el contrato, usando snapshot/cobertura y predicados FP-01…05 aplicables. No basta el log o exit code de la herramienta.
+- FP-08 acredita identidad, procedencia, integridad y reproducibilidad de paquete, evento, destino, snapshot y evidencia; no sustituye FP-06 ni FP-07.
+
+Los resultados se mantienen independientes por ruta y por familia. La falta de registro de aplicación no demuestra no aplicación: UNKNOWN salvo evidencia autoritativa/exhaustiva o contradicción positiva. La configuración declarada no se confunde con la aplicada. Esta propuesta no añade columnas/FK, no sella IAM ni autoriza implementación o ejecución científica.
