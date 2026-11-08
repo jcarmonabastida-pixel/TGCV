@@ -674,3 +674,12 @@ El CMP contractual CMP-SERVICE-LOGIC-001 no debe confundirse automáticamente co
 La definición conceptual de unidad lógica y la clasificación P0/P1/P2 están aceptadas por DEC-C10-058; el dominio de boundary_class y la regla de raíz SNAPSHOT→NODE están aceptados por DEC-C10-059/064/065. Esta sección propone su aplicación sin ambigüedad a N01.
 
 No se ha identificado host, entorno, runtime, clúster, servicio externo ni registro basal real. El inventario permanece sin observación y la cobertura NONE donde no existe inspección. No se asignan node_id, object_record_id, snapshot_id, component_id ni mapping IDs. No se sella IAM, no se declara roster exhaustivo y no se autoriza acceso técnico, captura de snapshots, implementación, Design Freeze o ejecución. scientific_execution=false; execution_authorized=false.
+## 10.23. Aplicación aceptada de N01 — DEC-C10-089
+
+**Estado:** ACCEPTED — DOCUMENTAL. Esta sección resuelve la propuesta §10.22.
+
+Se acepta que NODE raíz `LOGICAL_SERVICE_UNIT` represente la unidad lógica de servicio, separada conceptualmente del host/entorno y de S0. S0 se representa como SNAPSHOT basal con pinning exacto de la revisión raíz. Host/runtime se descomponen como NODE P1 solo cuando satisfacen el criterio de granularidad y existe identidad/versión suficiente.
+
+La relación entre NODE raíz y CMP-SERVICE-LOGIC-001 queda OPEN: no se presume identidad ni separación. Solo un mapping explícito, versionado y sustentado podrá resolverla, preservando DEC-C10-082. No se fuerzan uno o dos NODE ni se asignan IDs.
+
+La aceptación es conceptual/documental. No hay identidad raíz observada, host inventariado, snapshots ni cobertura. No sella IAM ni autoriza acceso, captura, implementación, Design Freeze o ejecución. Véase DEC-C10-089.
