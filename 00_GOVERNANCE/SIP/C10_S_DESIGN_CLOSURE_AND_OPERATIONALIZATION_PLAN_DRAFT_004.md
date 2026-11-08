@@ -1517,3 +1517,31 @@ No se amplía U_G ni se cierra gramática/escaping/canonicalización/predicate. 
 Queda aceptado el §20.18 del protocolo de evidencia como control independiente del binding PAR, con reutilización de C0, cinco capas, entradas mínimas, secuencia P0–P11, identidad/supersession DEC-C10-079, estados por capa y 18 casos adversariales. Integridad, pertinencia sustantiva y cobertura permanecen como evaluaciones distintas.
 
 No se cierran los mappings físicos/semánticos stage_key, clase y ruta ni la gramática del localizador. UNKNOWN es obligatorio cuando falte resolución inequívoca. Esta decisión no autoriza automatización, implementación, Design Freeze ni ejecución del control o del experimento. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 16.69 — Reconciliación del plan de cierre con DEC-C10-082…088
+
+**Corte:** 2026-11-08. **Estado:** actualización documental del plan; no es Design Freeze ni autorización de implementación.
+
+La cadena de adjudicación temporal F/A queda documentalmente definida por DEC-C10-085, DEC-C10-086, DEC-C10-087 e integrada por DEC-C10-088. El trabajo pendiente ya no es decidir la estructura conceptual de esos tres tramos, sino especificar mappings, poblar/validar el manifiesto con evidencia y construir el control técnico autorizado.
+
+### Secuencia de cierre revisada
+
+1. **Sincronización documental:** mantener Closure Control Matrix, plan, matriz abstracta, matriz temporal, crosswalk y Decision Log alineados con DEC-C10-088. La discrepancia documental queda identificada para reconciliación; no debe presentarse como bloqueo científico nuevo.
+2. **Cierre de especificación IAM/U_G:** resolver roster CMP, clases y rutas; mappings exactos/versionados; cardinalidades y requiredness por rol/etapa/scope; REF endpoints y mapping M; localizador PAR (gramática/escaping/canonicalización); relación con COVERAGE_REGISTER y evidencia 1:N.
+3. **Cierre de invariantes y vías colaterales D2:** completar auditoría adversarial de rutas alternativas y de IV-G4; no convertir una lista de controles definidos en evidencia de exclusión. Registrar fuente, método, resultado y sensibilidad por vía.
+4. **Cierre de estimandos e identificación:** especificar población/unidad, elegibilidad, soporte, versiones, interferencia, ITT primario y condiciones para LATE secundario; separar efecto total, mediado por accesibilidad y residual. Resolver medición independiente de T_acc, Reach, trayectoria, Outcome y Value, y los requisitos P177/P178/P179/P182/P183.
+5. **Contrato de implementación:** solo después de los cierres anteriores, definir artefactos, interfaces, oráculo, generador, analizador, evaluador, fixtures, hashes y auditoría técnica. La especificación debe preservar separación Generator/Analyzer/Evaluator y no exponer truth/potentials al Analyzer.
+6. **Autorización y ejecución:** fase separada, requiere autorización explícita, preflight y workflow técnico completo. No está habilitada por esta actualización.
+
+### Gates y estado
+
+- DEC-C10-088: **cerrada documentalmente** en el alcance de integración temporal F/A.
+- IAM/U_G: **definido parcialmente; especificación y mappings pendientes**.
+- Cobertura/observaciones: **pendiente de evidencia**; no hay sello IAM ni adjudicación de cobertura.
+- Exclusión causal D2/IV-G4: **pendiente de evidencia y análisis**.
+- Identificación/medición/potencia/sensibilidad: **pendiente de especificación y evidencia**.
+- Implementación D2: **bloqueada** hasta cerrar especificaciones mínimas y aprobar el contrato de implementación.
+- Ejecución científica: **no autorizada**; scientific_execution=false; execution_authorized=false.
+
+La clasificación detallada y trazable por requisito reside en la Closure Control Matrix §87; este plan no crea una segunda matriz. No se declara Design Freeze ni se rebajan los criterios de identificación causal.
