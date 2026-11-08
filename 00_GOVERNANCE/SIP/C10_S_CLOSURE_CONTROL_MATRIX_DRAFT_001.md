@@ -1992,3 +1992,12 @@ La unidad raíz puede usar boundary_class=NA cuando solo actúa como contenedor 
 **Clasificación:** definición conceptual y regla de raíz aceptadas documentalmente; aplicación de N01 propuesta; identidades/instancias, host, snapshots y cobertura reales no observados. Estado de inventario: NONE donde no existe inspección; no inferir ausencia.
 
 No autoriza acceso técnico, captura, población IAM, implementación, Design Freeze ni ejecución científica.
+## 91 — DEC-C10-089: aceptación de N01 y relación CMP↔unidad raíz
+
+**Estado:** ACCEPTED — DOCUMENTAL (2026-11-08).
+
+Se acepta la unidad lógica de servicio como NODE raíz `LOGICAL_SERVICE_UNIT`, distinta conceptualmente del host/entorno y del estado basal S0 (SNAPSHOT). La relación entre NODE raíz y CMP-SERVICE-LOGIC-001 queda OPEN hasta mapping explícito, versionado y sustentado; no se infiere ni identidad ni separación.
+
+**Cierre:** ambigüedad conceptual N01 = cerrada documentalmente. Mapping CMP↔raíz, identidad/registro raíz, host/entorno, snapshots y evidencia = OPEN/UNKNOWN. DEC-C10-082 permanece sin cambios.
+
+No hay registros ni cobertura observados; no se sella IAM ni se autoriza captura, implementación, Design Freeze o ejecución científica. scientific_execution=false; execution_authorized=false.
