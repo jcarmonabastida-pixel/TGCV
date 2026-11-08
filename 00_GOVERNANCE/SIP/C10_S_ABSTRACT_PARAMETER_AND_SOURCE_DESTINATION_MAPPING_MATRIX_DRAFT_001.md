@@ -891,3 +891,54 @@ La equivalencia de artefactos no demuestra por sí sola que el proceso produjo e
 PASS requiere demostración suficiente; FAIL, contradicción demostrada con cobertura suficiente; UNKNOWN, información/cobertura/evidencia insuficiente; NOT_COMPARABLE, incompatibilidad sin mapping aprobado; NA, inaplicabilidad ex ante (no admisible para PAR/RUL del contrato base).
 
 F2/A2 declaradas no demuestran aplicación efectiva; FP-06/FP-07 y F2/A2 applied permanecen fuera de este bloque. Esta aceptación no define mappings físicos, no sella IAM ni autoriza parser, validator, implementación, Design Freeze o ejecución científica.
+
+## 15.7. Propuesta de adjudicación de aplicación efectiva y verificación post-aplicación
+
+**Estado:** PROPUESTA DOCUMENTAL — pendiente de aceptación. Especializa la frontera de §15.5–15.6 y reutiliza FP-06, FP-07 y FP-08 según la reconciliación SM/FP aceptada en DEC-C10-055. No crea familias ni predicados confirmatorios paralelos.
+
+### A. Unidad y rutas independientes
+
+Se evalúan separadamente:
+
+- F: `F2_DST_DECL → F2_DST_APPLIED`.
+- A: `A2_DST_DECL → A2_DST_APPLIED`.
+
+Cada evaluación fija contract_id/version, instance_id/version, CMP owner/NODE anchor, artefacto declarado y su registro exacto, evento de aplicación, destino/environment identity, snapshot post-aplicación y registro exacto, `stage_key`, route_id/route_record_id, coverage_scope_id, mapping_id/version y evidencia. No se infiere identidad por nombre, timestamp, ruta familiar F/A ni similitud del contenido.
+
+### B. Separación de funciones FP-06 / FP-07 / FP-08
+
+**1. FP-06 — aplicación efectiva del paquete.** Comprueba que el paquete/configuración declarada exacta fue objeto de una operación de aplicación identificable sobre el destino previsto, y que existe evidencia del resultado de esa operación. Requiere vincular el artefacto declarado, versión/hash/provenance, operación, target/environment identity, alcance y resultado. Un plan, intención, comando preparado, declaración de éxito sin registro trazable o mera existencia del artefacto no demuestra aplicación. Un código de salida aislado tampoco demuestra que el estado resultante satisfaga el contrato.
+
+**2. FP-07 — verificación post-aplicación contra el contrato.** Comprueba mediante una captura/observación post-aplicación identificada que el estado realmente observado en el destino satisface el contrato declarado. La observación debe ser del destino y snapshot exactos, con cobertura suficiente para las propiedades aplicables. Los parámetros se evalúan con FP-01/FP-03 según validez formal y semántica; relaciones con FP-02; compatibilidad con FP-04; seguridad efectiva con FP-05 solo cuando esté activada y sea aplicable. FP-07 no sustituye esas familias ni permite declarar conformidad total si una propiedad obligatoria queda UNKNOWN/FAIL.
+
+**3. FP-08 — procedencia, identidad y reproducibilidad probatoria.** Asegura que el paquete, evento de aplicación, destino, snapshot y evidencia observacional son artefactos identificables, versionados, íntegros y trazables. FP-08 soporta la adjudicación de FP-06/FP-07, pero no reemplaza la evidencia de aplicación ni la observación del estado.
+
+La misma evidencia puede informar más de una familia cuando sea legítimo, pero cada afirmación debe conservar su vínculo probatorio y predicado primario. Un único defecto no se cuenta dos veces en el agregado confirmatorio.
+
+### C. Reglas sustantivas del contrato base
+
+- Los dos PAR nucleares deben observarse en el estado post-aplicación con la aplicabilidad/obligatoriedad ex ante de DEC-C10-083: estado VALUE, BOOL exacto para ENABLED y biyección ENUM total/versionada para PROFILE conforme a DEC-C10-084.
+- La regla `RUL-SVC-ENABLE-PROFILE-01` debe estar presente y conservar la semántica REQUIRE/scope/operandos. Su preservación declarativa no demuestra evaluación/aplicación efectiva; la comprobación post-aplicación debe usar el oráculo/observación aprobado cuando exista.
+- La conformidad de configuración no implica compatibilidad ambiental FP-04 ni seguridad FP-05. No se incorporan silenciosamente permisos, recursos o runtime al objeto de configuración.
+- Una operación FP-06 exitosa no implica FP-07 PASS. FP-07 PASS no reconstruye por sí solo la procedencia del paquete ni demuestra qué operación lo aplicó (FP-06/08).
+- F y A no se compensan. Los resultados se conservan por ruta, parámetro/regla y familia.
+
+### D. Adjudicación
+
+Cada familia/predicado recibe:
+
+- `PASS`: aplicación demostrada (FP-06), y/o estado post-aplicación observado y conforme (FP-07), con identidad, mapping, cobertura y evidencia suficientes para la afirmación concreta.
+- `FAIL`: no aplicación o aplicación a destino equivocado demostrada con registro/cobertura exhaustivos; o estado post-aplicación que contradice una propiedad obligatoria del contrato.
+- `UNKNOWN`: falta evento, destino, snapshot, observación, cobertura, evidencia, mapping u oráculo suficiente.
+- `NOT_COMPARABLE`: incompatibilidad de versiones/namespaces sin mapping aprobado.
+- `NA`: inaplicabilidad ex ante justificada; no admisible para FP-06/FP-07 ni para los dos PAR y RUL del contrato base en ambas rutas.
+
+La falta de registro no demuestra que la aplicación no ocurrió. FAIL por no aplicación exige un registro autoritativo y exhaustivo del universo de operaciones/target o evidencia positiva de contradicción; de lo contrario UNKNOWN. Un exit code cero o log de herramienta sin captura independiente del estado no basta para FP-07 PASS.
+
+### E. Resultado agregado y no compensación
+
+Se reportan por separado `FP06_APPLY`, `FP07_POSTCHECK` y la validez probatoria FP-08, junto con el vector FP-01…05 aplicable al estado observado. No se fusionan en un booleano único que oculte la causa. Para una ruta, cualquier FAIL obligatorio permanece visible; en ausencia de FAIL, UNKNOWN impide declarar conformidad global PASS. La suficiencia de cobertura se informa aparte del estado semántico.
+
+### F. Límites y no autorizaciones
+
+Esta propuesta no selecciona herramienta/command de aplicación, protocolo de observación, oráculo, tolerancias, método de captura, runtime ni mapping físico. No crea registros observados, fixtures, columnas/FK ni nuevos predicados FP. No sella IAM ni autoriza parser, validator, scripts, implementación, Design Freeze, validación técnica, ejecución del control o experimento científico. `scientific_execution=false`; `execution_authorized=false`.
