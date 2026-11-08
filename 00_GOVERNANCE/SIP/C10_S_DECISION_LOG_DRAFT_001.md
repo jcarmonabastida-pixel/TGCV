@@ -1336,3 +1336,15 @@ Instancias, identidades, mappings, rutas, snapshots, cobertura y evidencia perma
 Se acepta refinar N14 existente separando formato/contrato versionado, payload concreto y eventos temporales de transferencia/recepción/parseo/validación/aplicación. Formato y payload tienen identidad/versionado separados; N13/A1 produce, N15/A2 consume, N07 conserva canal y M mapping. E12/E13 siguen candidatas. Hash no demuestra equivalencia semántica; JCS de DEC-C10-074 no se extiende al payload. Recepción no implica validación ni aplicación.
 
 Permanecen OPEN formato y objetos/eventos reales, mapping, compatibilidad, aplicación, evidencia y cobertura. No se crean IDs ni se autoriza captura, implementación, Design Freeze o ejecución. Véase DEC-C10-091.
+
+## DEC-C10-092 — Aceptación conceptual de N15: importador A2
+
+**Estado:** ACCEPTED — DOCUMENTAL. **Fecha:** 2026-11-08.
+
+Se acepta la descomposición conceptual N15 propuesta en el crosswalk IAM↔U_G §10.29: capacidad/contrato A2, implementación concreta y ejecución temporal son planos distintos; recepción efectiva, parseo, validación estructural/semántica, resolución M, aplicación FP-06, verificación FP-07 y procedencia FP-08 son hitos distintos. N15 no se presume CMP autónomo; requiere identidad contractual, lifecycle y frontera autónomos para serlo.
+
+Se reutilizan DEC-C10-071/086/087/088, los siete stage_key y FP-01…08. No se crean nuevos predicados confirmatorios. F/A se adjudican independientemente; evidencia no heredable entre etapas/rutas; ausencia de registro no demuestra ausencia de evento.
+
+La aceptación cierra solo la descomposición conceptual. Permanecen abiertos protocolo/implementación A2, formato/parser, validación, mapping físico, destino, eventos reales, snapshots, cobertura y evidencia. No crea IDs, registros ni columnas, no sella IAM y no autoriza captura, pruebas, implementación, Design Freeze o ejecución.
+
+**Propagación:** crosswalk IAM↔U_G §10.30; Closure Control Matrix §98; Plan de cierre §16.80.
