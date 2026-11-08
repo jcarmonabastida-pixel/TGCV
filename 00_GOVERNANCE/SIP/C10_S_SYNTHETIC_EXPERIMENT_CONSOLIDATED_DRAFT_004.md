@@ -8569,3 +8569,16 @@ Pendiente de aceptación: perfil COVERAGE_SCOPE + localizador en claim_statement
 - El enlace al scope no implica COVERAGE COMPLETE; se aplican U_G §12.3/§18.6.
 
 **Restricciones:** no se añade target_type PAR, FK, tabla o puente. No se aprueban gramática, escaping, canonicalización, serialización, parser ni automatización. Los campos singulares `evidence_id`/`claim_evidence_id` del manifiesto no sustituyen el registro 1:N de CLAIM_EVIDENCE_LINK. No se crean observaciones, no se sella IAM, no se declara cobertura ni se autoriza implementación/ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 212 — Reconciliación de adjudicaciones F/A y gates de cierre (DEC-C10-088)
+
+**Corte documental:** 2026-11-08. **Estado:** reconciliación de decisiones aceptadas y pendientes; no es nueva DEC.
+
+DEC-C10-088 acepta la integración temporal de los tres tramos F/A: (i) C_SRC→F1/A1, DEC-C10-085; (ii) F1/A1→F2/A2 declaradas, con P-DECL/P-TRANS, DEC-C10-086; y (iii) F2/A2 declaradas→aplicadas, con FP-06/07/08, DEC-C10-087. La evidencia permanece específica por etapa, ruta y afirmación. No se hereda ni se compensa entre F/A.
+
+Esta aceptación cierra el contrato documental temporal, no el IAM ni las observaciones. Permanecen pendientes los mappings físicos/semánticos y roster IAM; la gramática/escaping/canonicalización del localizador PAR; la cobertura real C0/COVERAGE_REGISTER; los registros y evidencias; el oráculo y sus tolerancias; la auditoría de invariantes y vías colaterales D2 (incluida IV-G4); y los estimandos, identificación, sensibilidad y medición independientes.
+
+La Closure Control Matrix §87 contiene el inventario único y clasifica requisitos como cerrados documentalmente, definidos pendientes de especificación, pendientes de evidencia, bloqueantes de implementación o bloqueantes de ejecución. El plan §16.69 establece la secuencia de cierre; no se duplica aquí el inventario.
+
+No se declara que el efecto causal esté identificado. No se confunde configuración conforme con accesibilidad, Reach, trayectoria o Value. No se autoriza implementación, Design Freeze, validación técnica ni ejecución. scientific_execution=false; execution_authorized=false.
