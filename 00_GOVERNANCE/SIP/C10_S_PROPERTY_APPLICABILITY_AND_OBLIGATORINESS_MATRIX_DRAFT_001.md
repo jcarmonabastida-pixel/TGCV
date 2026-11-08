@@ -906,3 +906,14 @@ La continuidad entre snapshots se prueba mediante `component_id` contractual est
 La adjudicación exige comprobar identidad, snapshot y NODE record exactos, unicidad en ambos sentidos, universe_definition/version, scope C0, mapping/provenance y evidencia. Falta de universo o evidencia suficiente produce UNKNOWN; contradicción o cardinalidad múltiple produce FAIL; incompatibilidad semántica sin mapping aprobado produce NOT_COMPARABLE; NA requiere no aplicabilidad ex ante.
 
 Esta propuesta no fija roster completo de CMP, no resuelve mappings P1, no crea columnas/FKs/tablas ni autoriza poblar IAM, implementar o ejecutar controles. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 19.28. Aceptación del anclaje CMP↔NODE por snapshot — DEC-C10-082
+
+**Estado:** ACEPTADO — contrato lógico documental.
+
+Se acepta el anclaje 1:1 por CMP y snapshot: cada CMP aplicable resuelve a un único NODE anchor exacto dentro del snapshot; ningún NODE anchor representa dos CMP. La continuidad entre snapshots se basa en `component_id` contractual y mappings versionados separados, sin exigir igualdad de IDs U_G. `stage_key` y `route_id/scope` califican cobertura, no crean NODE por etapa/ruta.
+
+Se aplican los estados y controles de §10.7 del crosswalk y DEC-C10-082. Un PASS solo demuestra correspondencia de identidad; no demuestra verdad PAR, preservación, pertenencia a ruta ni completitud del universo.
+
+No se completa roster CMP ni mappings P1/PAR, no se sella IAM ni se autoriza implementación, Design Freeze o ejecución. `scientific_execution=false`; `execution_authorized=false`.
