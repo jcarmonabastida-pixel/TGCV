@@ -1613,3 +1613,10 @@ No realizar inspección técnica ni pruebas de red sin autorización específica
 DEC-C10-090 acepta la separación endpoint/interfaz/servicio y sus criterios conceptuales de clasificación. Se continúa con N14 (formato/artefacto de intercambio), manteniendo la misma disciplina: contrato/formato versionado, artefacto concreto y componente que lo produce/consume son objetos distintos salvo identidad contractual demostrada.
 
 Los objetos técnicos N07 siguen sin observarse ni adjudicarse. No inspeccionar sistemas, probar conectividad ni asignar IDs sin autorización específica. Sin IAM sellado, implementación, Design Freeze o ejecución.
+## 16.77 — Resolver N14: formato, payload y transferencia
+
+Crosswalk §10.27 refina el N14 ya existente y plantilla U_G §25. Antes de aceptar o implementar, verificar que la propuesta preserva N14, E12/E13 y B-M14 sin duplicar objetos ni convertir relaciones candidatas en observadas.
+
+Tras aceptación conceptual, el siguiente gate será N15 (importador A2): separar capacidad/implementación/ejecución; entrada declarada frente a payload realmente recibido; parseo, validación, mapping M y aplicación efectiva; errores, tolerancias y evidencia por etapa. Reutilizar DEC-C10-088 para la adjudicación temporal F/A donde corresponda. No inferir aplicación desde recepción ni duplicar el oráculo N16.
+
+No fijar aún formato concreto, IDs, columnas, parser, serialización de payload ni mapping físico. Sin captura, implementación, Design Freeze o ejecución.
