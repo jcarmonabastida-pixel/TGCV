@@ -436,3 +436,12 @@ La primera exige equivalencia de estado, tipo/dominio y valor BOOL/ENUM, y prese
 Los resultados se adjudican por ruta, sin compensación F/A. UNKNOWN ante cobertura/evidencia insuficientes; FAIL solo ante contradicción o ausencia exhaustivamente demostrada; NOT_COMPARABLE ante incompatibilidad sin mapping aprobado. La configuración declarada no demuestra aplicación efectiva: FP-06/FP-07 y F2/A2 applied quedan fuera de este bloque.
 
 Esta propuesta no añade columnas/FK ni filas IAM, no define mappings físicos, no sella IAM y no autoriza implementación o ejecución científica.
+
+
+## 10.16. Aceptación DEC-C10-086 — mapping de conformidad F1/A1→F2/A2 declarada
+
+**Estado:** ACCEPTED — DOCUMENTAL. Véase DEC-C10-086 y matriz abstracta §15.5.
+
+El contrato IAM debe permitir resolver por separado `P-DECL` y `P-TRANS`, por ruta F/A, parámetro/regla, CMP owner/NODE anchor, snapshots/registros, etapa, ruta/scope, mapping/versiones y evidencia. La conformidad semántica del destino declarado no implica que la transición haya producido ese artefacto; el lineage probatorio requiere evidencia propia del proceso y vínculo exacto de entradas/salidas.
+
+Los resultados F y A no se compensan. La configuración declarada no acredita aplicación efectiva; FP-06/FP-07 y las etapas applied permanecen separadas. Esta aceptación no añade campos físicos/FK, no sella IAM y no autoriza implementación o ejecución científica.
