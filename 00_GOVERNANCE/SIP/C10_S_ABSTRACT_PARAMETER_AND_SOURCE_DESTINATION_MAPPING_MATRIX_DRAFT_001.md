@@ -955,3 +955,15 @@ FP-06 requiere evidencia trazable del evento que aplicó el paquete exacto al de
 F y A se adjudican independientemente. La falta de registro no demuestra no aplicación: UNKNOWN salvo evidencia autoritativa/exhaustiva o contradicción positiva. FAIL exige contradicción o no aplicación demostrada con cobertura suficiente. FP-06 PASS no implica FP-07 PASS. Se reportan FP06_APPLY, FP07_POSTCHECK, FP-08 y vector FP-01…05, sin doble contabilización de un defecto.
 
 La configuración declarada no equivale a aplicada. Esta aceptación no define herramienta, protocolo de observación, oráculo, tolerancias ni mapping físico; no sella IAM ni autoriza parser, validator, implementación, Design Freeze o ejecución científica.
+
+## 15.9. Integración de adjudicación por etapa y ruta
+
+**Estado:** PROPUESTA DOCUMENTAL — pendiente de aceptación. La matriz temporal rectora es `C10_S_PATH_PREDICATE_TEMPORAL_EVIDENCE_MATRIX_DRAFT_001.md` §14; este apartado mantiene el contrato de configuración ya definido en §§15.3–15.8.
+
+El vector por ruta F/A conserva tres tramos no transferibles: (1) `C_SRC→F1_S2/A1_S1`, DEC-C10-085; (2) `F1_S2/A1_S1→F2_DST_DECL/A2_DST_DECL`, DEC-C10-086 con `P-DECL` y `P-TRANS`; (3) `F2_DST_DECL/A2_DST_DECL→F2_DST_APPLIED/A2_DST_APPLIED`, DEC-C10-087 con FP-06/07/08. No se colapsan en una puntuación ni se compensan entre rutas.
+
+`stage_key` identifica la etapa de configuración; no equivale al reloj DGP `t0…t9`, a SNAPSHOT.phase ni a paso hipotético k. Cada registro debe enlazar explícitamente etapa, snapshot/registro, ruta, unidad, instante de generación/observación y mapping versionado. La evidencia no se transfiere entre etapas ni entre F y A.
+
+La conformidad de configuración no prueba por sí sola ACC/APP/REL/DEP/Reach; FP-06 no implica FP-07; FP-07 evalúa estado post-aplicación mediante FP-01…05 aplicables; FP-08 soporta identidad/procedencia sin sustituir evento u observación. La falta de registro produce UNKNOWN salvo contradicción o ausencia exhaustivamente demostrada. Véase §14 de la matriz temporal.
+
+No se crean predicados FP/SM, columnas/FK o mappings físicos. No se sella IAM ni se autoriza implementación o ejecución científica.
