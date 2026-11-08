@@ -362,3 +362,12 @@ Un PASS de correspondencia no acredita por sí mismo la verdad de propiedades PA
 7. Trazabilidad de mapping, evidencia y adjudicador independiente.
 
 **No se autoriza** crear el registro de mapping físico, poblar IAM, generar snapshots, añadir columnas/FKs/tablas, implementar controles, ni ejecutar validación. La propuesta tampoco cierra el roster CMP completo ni los mappings P1.
+
+
+### 10.8. Registro de aceptación — DEC-C10-082
+
+**Estado:** ACEPTADO — contrato lógico documental.
+
+La cardinalidad 1:1 del anclaje CMP↔NODE por CMP y snapshot queda aceptada conforme a DEC-C10-082. Se acepta la unidad (identidad contractual CMP exacta, snapshot exacto), NODE anchor identificado por `node_id + object_record_id`, mapping versionado, unicidad en ambos sentidos y continuidad entre snapshots mediante `component_id` contractual sin exigir igualdad de IDs U_G.
+
+La etapa y ruta califican cobertura, no multiplican la identidad NODE. Los resultados de adjudicación y sus límites son los establecidos en §10.7 y DEC-C10-082. Esta aceptación no completa el roster CMP, no resuelve mappings P1/PAR, no sella IAM ni autoriza poblar registros, implementar o ejecutar controles. `scientific_execution=false`; `execution_authorized=false`.
