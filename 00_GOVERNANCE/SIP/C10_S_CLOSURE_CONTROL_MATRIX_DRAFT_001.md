@@ -2051,3 +2051,11 @@ N15 no se presume CMP autónomo: separar capacidad/contrato A2, implementación 
 Recepción ≠ parseo; parseo ≠ validación; validación ≠ mapping resuelto; mapping ≠ aplicación; aplicación ≠ post-check PASS. Los hitos internos no crean nuevos stage_key ni predicados confirmatorios. Se reutilizan los siete stage_key y FP-01…08; F/A independientes, sin herencia de evidencia.
 
 Faltan implementación/protocolo A2, formato y parser reales, reglas de validación, mapping físico, destino, eventos, snapshots, cobertura y evidencia. No hay CMP N15 adjudicado, registros ni observaciones. IAM no sellado; no autoriza captura, pruebas, implementación, Design Freeze o ejecución.
+
+## 98 — DEC-C10-092: aceptación conceptual N15, importador A2
+
+**Estado:** ACCEPTED — DOCUMENTAL (2026-11-08). Se acepta la descomposición conceptual ya propuesta en §10.29 del crosswalk IAM↔U_G. N15 se analiza en tres planos: capacidad/contrato A2, implementación concreta y ejecución temporal. La cadena distingue A2_DST_DECL, recepción efectiva, parseo, validación estructural/semántica, resolución M, aplicación FP-06, post-check FP-07 y provenance FP-08.
+
+Se reutilizan DEC-C10-071/086/087/088 y los siete stage_key; no se crean hitos confirmatorios nuevos. F/A se adjudican independientemente y no heredan evidencia. N15 solo será CMP si se demuestra identidad contractual, lifecycle y frontera autónomos. Recepción, parseo, validación, mapping, aplicación y post-check son estados distintos; ausencia de registro no demuestra ausencia de evento.
+
+**Cerrado documentalmente:** descomposición conceptual N15. **Definido pero pendiente de especificación:** protocolo A2, formato/parser, reglas de validación, estrategia de errores/transacciones, mapping físico y destino. **Pendiente de evidencia:** eventos, snapshots, cobertura y estado realmente aplicado. **Bloqueante de implementación:** contrato técnico y mappings no cerrados. **Bloqueante de ejecución:** sin autorización ni Design Freeze. No se crean registros/IDs/columnas, no se sella IAM y no se autoriza captura, pruebas, implementación ni ejecución.
