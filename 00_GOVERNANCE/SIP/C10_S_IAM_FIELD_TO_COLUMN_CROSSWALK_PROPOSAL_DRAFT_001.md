@@ -731,3 +731,10 @@ Para cada candidato N07 se deberá resolver: (a) identidad y versión del endpoi
 No se conoce endpoint, protocolo, contrato de interfaz, servicio proveedor, topología ni registro técnico real. N07 queda semánticamente descompuesto como propuesta; ninguna clase se adjudica a una instancia concreta. No se asignan IDs, no se crean REF/EDGE/CMP, no se sella IAM ni se captura snapshot.
 
 No autoriza inspección técnica, llamadas de red, pruebas de conectividad, acceso a credenciales, parser, validator, implementación, Design Freeze o ejecución científica. scientific_execution=false; execution_authorized=false.
+## 10.26. Aplicación aceptada de N07 — DEC-C10-090
+
+**Estado:** ACCEPTED — DOCUMENTAL. Esta sección formaliza la aceptación de la propuesta §10.25.
+
+N07 queda descompuesto conceptualmente en endpoint técnico, contrato/interfaz de comunicación y servicio proveedor. Se aplican las reglas de clasificación de DEC-C10-090: endpoint no equivale automáticamente a CMP/REF; interfaz es REF solo con identidad de objeto y extremos tipados propios; servicio es CMP solo con identidad contractual, lifecycle y frontera autónomos; servicio externo no se incorpora al roster interno por mero consumo; EDGE y REF no se infieren entre sí.
+
+La propuesta §10.25 queda aceptada como regla conceptual, no como adjudicación de objetos técnicos concretos. Permanecen OPEN identidades, protocolo, topología, mappings, rutas, snapshots, cobertura y evidencia. No se asignan IDs ni se crean registros; no se sella IAM ni se autoriza inspección, captura, implementación, Design Freeze o ejecución. Véase DEC-C10-090.
