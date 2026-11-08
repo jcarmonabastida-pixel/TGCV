@@ -1927,3 +1927,30 @@ No se amplía U_G ni se cierra gramática/escaping/canonicalización/predicate. 
 El protocolo §20.18 del protocolo de evidencia queda aceptado como control del binding PAR. Reutiliza C0 y exige cinco capas independientes: C0_SCOPE, PAR_ROW_BINDING, EVIDENCE_LINK_INTEGRITY, EVIDENCE_RELEVANCE y COVERAGE_COMPLETENESS. Aplica entradas mínimas y secuencia P0–P11, reglas DEC-C10-079 de identidad/supersession, resultados por capa PASS/FAIL/UNKNOWN/NOT_COMPARABLE/NA y 18 casos adversariales documentales.
 
 No se colapsan capas ni se infiere pertinencia o COMPLETE desde una FK. Los mappings abiertos o la resolución ambigua producen UNKNOWN. No autoriza implementación, validator, fixtures, Design Freeze ni ejecución; `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 87 — Reconciliación temporal F/A y estado de cierre hasta DEC-C10-088
+
+**Corte:** 2026-11-08. **Naturaleza:** reconciliación documental; no constituye nueva DEC ni cierre de evidencia.
+
+DEC-C10-082…088 quedan incorporadas al registro de decisiones aceptadas de esta matriz. En particular, DEC-C10-088 integra sin compensación los tres tramos F/A: C_SRC→F1/A1 (085), destino declarado y transición (086), y aplicación efectiva/verificación (087). La matriz temporal, la matriz abstracta §15.9 y el crosswalk §10.19 contienen la integración aceptada. La aceptación de contratos no equivale a adjudicación de observaciones ni a cobertura completa.
+
+### Clasificación consolidada de requisitos
+
+| Estado | Requisitos / controles | Condición para avanzar |
+|---|---|---|
+| Cerrado documentalmente | Contratos lógicos DEC-C10-068…088 en el alcance expresamente aceptado; identidad/supersession PAR; binding probatorio; control lógico PAR; anclaje CMP↔NODE; aplicabilidad y equivalencia PAR; adjudicación temporal F/A | Mantener trazabilidad y no reabrir sin contradicción o nueva evidencia/decisión |
+| Definido, pendiente de especificación | Mappings concretos/versionados CMP↔NODE, PAR↔U_G, REF↔EDGE y stage_key/clase/ruta; roster y cardinalidades IAM; gramática, escaping y canonicalización del localizador PAR; mapping M; oráculo/tolerancias; especificación de observación y de registros; contrato técnico del control independiente | Especificar identidades, dominios, cardinalidades, reglas y mappings sin inferencia nominal; someter cualquier decisión nueva a aceptación |
+| Pendiente de evidencia | Cobertura C0/COVERAGE_REGISTER por snapshot×etapa×ruta×clase; resolución real de filas PAR y evidencia 1:N; invariantes y auditoría de vías colaterales D2 (incluida IV-G4); evidencia de exclusión de rutas alternativas/interferencia; evidencia de primeras etapas y mediciones independientes | Obtener evidencia autoritativa y exhaustiva; conservar UNKNOWN cuando falte cobertura o resolución |
+| Bloqueante de implementación | Mappings y roster IAM no cerrados; contrato técnico/serialización del manifiesto y localizador; contrato de control independiente y fixtures de prueba aún no autorizados; operacionalización de oráculo, medidas y fuentes | No implementar el experimento D2 hasta que el conjunto mínimo necesario esté especificado y aprobado |
+| Bloqueante de ejecución | Ausencia de autorización explícita; no hay Design Freeze; no se ha demostrado preflight de integridad, identidad de artefactos, entorno, configuración ni autorización de ejecución | Requiere autorización y workflow técnico completo; scientific_execution=false; execution_authorized=false |
+
+### Dependencias y lectura causal
+
+1. El cierre documental DEC-C10-088 elimina ambigüedad sobre la secuencia de adjudicación F/A, pero no sella IAM ni demuestra que existan observaciones o evidencia para cada celda.
+2. La resolución IAM/U_G y la cobertura son prerrequisitos para adjudicar las observaciones de configuración y lineage sin falsos PASS/FAIL.
+3. La exclusión de vías colaterales y la identificación de estimandos D2 son prerrequisitos científicos independientes del cierre de configuración F/A.
+4. Ningún PASS de configuración, aplicación o procedencia implica por sí solo ACC, Reach, ΔT_acc ni un efecto causal sobre Value.
+5. No se infiere FAIL ni ausencia desde un registro inexistente; UNKNOWN/? se mantiene cuando la cobertura no es exhaustiva.
+
+Esta sección reconcilia el estado documental conocido; no declara cerrado ningún control de evidencia no observado, no modifica el estado de aprobación del documento y no autoriza implementación, Design Freeze, validación técnica ni ejecución.
