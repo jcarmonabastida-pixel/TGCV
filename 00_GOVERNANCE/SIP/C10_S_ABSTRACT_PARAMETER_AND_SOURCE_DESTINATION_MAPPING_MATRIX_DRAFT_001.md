@@ -737,3 +737,13 @@ La evaluación de la regla es independiente de la comparación de valores PAR: a
 - `NA`: solo no aplicabilidad declarada ex ante; no se deriva de falta de datos y no se admite para los dos PAR en las siete etapas del contrato base.
 
 La propuesta no fija valores por escenario, nombres físicos, codificación concreta, tablas de conversión, tolerancias, oráculo ni mediciones. No adjudica resultados F1/A1/F2/A2, no sella IAM, no crea fixtures/parser/validator ni autoriza implementación, Design Freeze o ejecución científica.
+
+### 15.2. Aceptación del contrato de equivalencia semántica — DEC-C10-084
+
+**Estado:** ACEPTADO — contrato lógico documental.
+
+La propuesta §15.1 queda aceptada conforme a DEC-C10-084. Para `PAR-SVC-ENABLED` se exige identidad semántica BOOL exacta (`false→false`, `true→true`); para `PAR-SVC-PROFILE`, biyección total, inyectiva y versionada entre los tres significados STANDARD/READ_ONLY/DISABLED, sin exigir igualdad de grafía física. Estado y valor se adjudican separadamente.
+
+Se acepta la preservación independiente de `RUL-SVC-ENABLE-PROFILE-01`, las adjudicaciones independientes F1/A1 y la separación entre destino declarado y aplicación efectiva F2/A2. La composición exige mappings explícitos y versionados; no se presume transitividad ni equivalencia por literales físicos.
+
+Rigen estados y límites de DEC-C10-084. No se aprueban codificaciones ni mappings físicos, no se adjudican resultados observados, no se sella IAM ni se autoriza implementación o ejecución científica.
