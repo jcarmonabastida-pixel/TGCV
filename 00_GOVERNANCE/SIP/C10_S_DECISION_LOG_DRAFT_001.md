@@ -1286,3 +1286,13 @@ Se acepta el contrato de §15.3 de la matriz abstracta para C_SRC→F1_S2 y C_SR
 Se mantienen BOOL exacto, biyección ENUM total/versionada, preservación semántica RUL, binding exacto CMP/snapshot/etapa/ruta/scope/mapping y suficiencia probatoria. PASS exige evidencia y cobertura suficientes; FAIL exige contradicción demostrada con cobertura suficiente; UNKNOWN refleja insuficiencia; NOT_COMPARABLE incompatibilidad sin mapping aprobado; NA solo inaplicabilidad ex ante (no admisible para estos elementos en el contrato base).
 
 No se definen mappings físicos ni observaciones; no se sella IAM ni se autoriza implementación, Design Freeze o ejecución científica. Véase `00_GOVERNANCE/decisions/DEC-C10-085_PAR_F1_A1_ADJUDICATION_PREDICATES_ACCEPTANCE.md`.
+
+## DEC-C10-086 — Aceptación de conformidad del destino declarado y de la transición F1/A1→F2/A2
+
+**Estado:** ACCEPTED — DOCUMENTAL. **Fecha:** 2026-11-08.
+
+Se acepta la matriz abstracta §15.5 y el crosswalk §10.15. Se separan dos dimensiones no compensables: P-DECL, equivalencia semántica del destino declarado frente a F1/A1; y P-TRANS, evidencia íntegra y trazable de que la transición identificada produjo el artefacto declarado exacto. F y A se adjudican independientemente, conservando vectores por parámetro/regla/predicado y reconciliación SM/FP sin duplicidad.
+
+Se aplican BOOL exacto, biyección ENUM total/versionada y preservación semántica RUL. PASS exige demostración suficiente; FAIL contradicción demostrada con cobertura suficiente; UNKNOWN insuficiencia; NOT_COMPARABLE incompatibilidad sin mapping aprobado; NA solo inaplicabilidad ex ante (no admisible para los PAR/RUL del contrato base). La equivalencia de artefactos no demuestra lineage. F2/A2 declaradas no prueban aplicación efectiva, que permanece en FP-06/FP-07 y etapas applied.
+
+No se definen mappings físicos ni se sella IAM; no se autoriza parser, validator, implementación, Design Freeze o ejecución científica. Véase el Decision Record DEC-C10-086.
