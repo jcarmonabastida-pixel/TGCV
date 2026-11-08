@@ -333,7 +333,7 @@ Estas fichas son especializaciones D2 para revisión; no son evidencia empírica
 
 ## 14. Integración temporal de adjudicaciones de configuración y transición C10-S
 
-**Estado:** PROPUESTA DOCUMENTAL — pendiente de aceptación. Reutiliza las etapas, predicados, clases I/S/T/R/D/E y reglas de evidencia de §§2–10; integra DEC-C10-083…087 y la matriz abstracta de mapping §§15.3–15.8. No crea un sistema de predicados paralelo ni adjudica observaciones.
+**Estado:** ACCEPTED — DOCUMENTAL por DEC-C10-088. La integración reutiliza las etapas y predicados vigentes; no crea un sistema paralelo.
 
 ### 14.1. Dos ejes distintos: stage_key y tiempo DGP
 
