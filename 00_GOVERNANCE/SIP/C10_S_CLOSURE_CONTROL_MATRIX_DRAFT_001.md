@@ -2042,3 +2042,12 @@ Se acepta separar N14 en formato/contrato versionado, payload concreto y eventos
 Hash de bytes no demuestra equivalencia semántica ni aplicación. JCS de DEC-C10-074 se limita al envelope UDG-01. La alternativa A1→N14→A2 exige demostración bajo el mismo F*, frontera, G y H.
 
 **Cierre:** descomposición conceptual N14 = cerrada documentalmente. Formato, payload, identidades, mapping, lineage, eventos, compatibilidad, aplicación, evidencia y cobertura reales = OPEN/UNKNOWN. Sin IDs ni registros creados; IAM no sellado; sin autorización de captura, implementación, Design Freeze o ejecución.
+## 97 — Propuesta N15: importador A2 y separación de procesamiento/aplicación
+
+**Estado:** PROPUESTA DOCUMENTAL pendiente de aceptación (crosswalk §10.29). Reutiliza el N15 del inventario U_G y los contratos ya aceptados DEC-C10-071/086/087/088/090/091.
+
+N15 no se presume CMP autónomo: separar capacidad/contrato A2, implementación concreta y ejecución temporal; CMP independiente solo si tiene identidad contractual, lifecycle y frontera autónomos. Distinguir entrada declarada A2_DST_DECL, recepción efectiva, parseo, validación estructural/semántica, resolución M, aplicación FP-06, post-check FP-07 y provenance FP-08.
+
+Recepción ≠ parseo; parseo ≠ validación; validación ≠ mapping resuelto; mapping ≠ aplicación; aplicación ≠ post-check PASS. Los hitos internos no crean nuevos stage_key ni predicados confirmatorios. Se reutilizan los siete stage_key y FP-01…08; F/A independientes, sin herencia de evidencia.
+
+Faltan implementación/protocolo A2, formato y parser reales, reglas de validación, mapping físico, destino, eventos, snapshots, cobertura y evidencia. No hay CMP N15 adjudicado, registros ni observaciones. IAM no sellado; no autoriza captura, pruebas, implementación, Design Freeze o ejecución.
