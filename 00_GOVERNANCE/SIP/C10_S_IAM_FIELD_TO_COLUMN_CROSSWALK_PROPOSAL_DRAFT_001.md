@@ -415,3 +415,12 @@ El IAM deberá enlazar las filas PAR/RUL con sus registros y evidencias exactos,
 Los predicados de estado/valor se adjudican separadamente; la regla `ENABLED=true ⇒ PROFILE∈{STANDARD, READ_ONLY}` se comprueba como preservación semántica FP-03, no como prueba de aplicación runtime FP-06/FP-07. Falta de observación/cobertura produce UNKNOWN; contradicción solo produce FAIL con cobertura suficiente.
 
 **Estado:** propuesta documental pendiente de aceptación. No crea columnas, FK ni filas IAM; no define mappings físicos ni autoriza implementación/ejecución.
+
+
+## 10.14. Aceptación DEC-C10-085 — adjudicación PAR F1/A1
+
+**Estado:** ACCEPTED — DOCUMENTAL. La matriz abstracta §15.3 y DEC-C10-085 gobiernan los predicados C_SRC→F1_S2 y C_SRC→A1_S1.
+
+El IAM deberá soportar adjudicaciones independientes por ruta y parámetro/regla, resolviendo CMP owner/NODE anchor, snapshots/registros, stage_key, route_id/route_record_id, coverage_scope_id y mapping_id/version exactos. Las cinco familias (estado PAR; valor/tipo/dominio; RUL; identidad/alcance; procedencia) son organizadoras y se reconcilian con SM/FP; no generan predicados duplicados ni doble contabilización.
+
+La ausencia de observación o cobertura suficiente es UNKNOWN, no ABSENT ni FAIL. FAIL requiere contradicción demostrada con cobertura suficiente. La evidencia de F1 no cubre A1. Esta aceptación no crea columnas/FK/filas IAM, no sella IAM ni autoriza implementación o ejecución científica. Véase DEC-C10-085.
