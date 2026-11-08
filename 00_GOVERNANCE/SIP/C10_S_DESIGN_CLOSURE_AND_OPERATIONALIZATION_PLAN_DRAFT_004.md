@@ -1574,3 +1574,16 @@ Siguiente secuencia:
 6. mantener roster completeness UNKNOWN/PARTIAL hasta enumeración y cobertura suficientes.
 
 **Gate:** la propuesta de clasificación no acredita existencia, ausencia, roster exhaustivo ni cobertura. No se crean registros ni se captura información técnica. La aceptación conceptual no autoriza implementación o ejecución.
+
+## 16.72 — Resolver N01: unidad lógica frente a host y S0
+
+La propuesta crosswalk §10.22 desambigua N01 en tres objetos: NODE raíz LOGICAL_SERVICE_UNIT; host/entorno P1 descompuesto solo según el criterio de granularidad; y S0 como SNAPSHOT basal con pinning exacto.
+
+Siguiente secuencia:
+1. aceptar/corregir esta separación conceptual;
+2. mantener sin IDs ni registros cualquier host/runtime no observado;
+3. resolver si CMP-SERVICE-LOGIC-001 y NODE raíz son la misma entidad de dominio o requieren mapping explícito, sin inferirlo de sus etiquetas;
+4. solo tras autorización específica, capturar snapshots y evidencias por universo/scope; hasta entonces cobertura NONE/UNKNOWN;
+5. continuar con el siguiente rol condicional únicamente después de resolver N01.
+
+No se autoriza acceso a sistemas, captura de snapshots, población IAM, implementación, Design Freeze o ejecución.
