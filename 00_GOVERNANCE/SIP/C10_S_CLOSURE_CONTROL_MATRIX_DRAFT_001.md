@@ -1980,3 +1980,15 @@ El crosswalk §10.21 clasifica los 23 roles en: no CMP por función; CMP candida
 **Estado de cierre:** identidad CMP de referencia y regla 1:1 NODE anchor cerradas documentalmente; clasificación semántica de roles U_G propuesta; roster CMP exhaustivo, membership por objeto, mappings adicionales y cobertura permanecen OPEN/UNKNOWN hasta evidencia y aceptación. No hay inventario técnico ni IAM sellado.
 
 No autoriza inspección, captura de snapshots, población IAM, implementación, Design Freeze ni ejecución científica. scientific_execution=false; execution_authorized=false.
+
+## 90 — Desambiguación de N01: unidad lógica, host y S0
+
+**Estado:** propuesta documental registrada en crosswalk §10.22; pendiente de aceptación.
+
+N01 mezclaba la unidad lógica de servicio, el sistema anfitrión y el estado basal S0. La propuesta los separa: (i) NODE raíz LOGICAL_SERVICE_UNIT para identidad estable de la unidad migrada; (ii) host/entorno/runtime como contexto P1 y NODE independientes solo si satisfacen el criterio de granularidad; (iii) S0 como SNAPSHOT basal con pinning exacto, no como CMP ni como host.
+
+La unidad raíz puede usar boundary_class=NA cuando solo actúa como contenedor de identidad, conforme DEC-C10-059. SNAPSHOT mantiene la FK compuesta a la revisión exacta del NODE raíz según DEC-C10-064/065. No se presupone que CMP-SERVICE-LOGIC-001 sea idéntico al NODE raíz: cualquier equivalencia requerirá mapping explícito y evidencia.
+
+**Clasificación:** definición conceptual y regla de raíz aceptadas documentalmente; aplicación de N01 propuesta; identidades/instancias, host, snapshots y cobertura reales no observados. Estado de inventario: NONE donde no existe inspección; no inferir ausencia.
+
+No autoriza acceso técnico, captura, población IAM, implementación, Design Freeze ni ejecución científica.
