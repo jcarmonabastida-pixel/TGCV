@@ -1239,3 +1239,12 @@ El control conserva resultados PASS/FAIL/UNKNOWN/NOT_COMPARABLE/NA por capa, sin
 Se añaden 18 casos adversariales documentales y requisitos de informe. Se reconocen expresamente las limitaciones ya detectadas en §20.1–20.5: mappings stage_key, clase y ruta aún abiertos producen UNKNOWN donde impiden resolución inequívoca.
 
 No se amplía U_G ni se cierra gramática/escaping/canonicalización/predicate. No crea fixtures, parser, validator ni registros. No autoriza implementación, Design Freeze, validación técnica ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+ 
+## 92 — DEC-C10-081: aceptación del protocolo de control independiente PAR
+
+**Estado:** ACEPTADA — DEC-C10-081 (2026-11-08).
+
+Se acepta §20.18 del protocolo de evidencia como contrato lógico documental del control independiente PAR. Comprende reutilización de C0 §19; cinco capas separadas; entradas mínimas; secuencia P0–P11; identidad y supersession conforme a DEC-C10-079; resultados por capa PASS/FAIL/UNKNOWN/NOT_COMPARABLE/NA; separación entre integridad, pertinencia y cobertura; 18 casos adversariales y requisitos de informe.
+
+**Límites:** no amplía U_G, no cierra mappings stage_key/clase/ruta ni gramática/escaping/canonicalización/predicate, y no crea registros o fixtures. No autoriza parser, validator, scripts, SQL, implementación, Design Freeze, validación técnica ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
