@@ -1322,3 +1322,10 @@ Aceptación documental únicamente. No sella IAM, no declara Design Freeze y no 
 Se acepta NODE raíz `LOGICAL_SERVICE_UNIT` como representación de la unidad lógica de servicio, separada conceptualmente del host/entorno y de S0, que se representa como SNAPSHOT basal con pinning exacto. La relación entre NODE raíz y CMP-SERVICE-LOGIC-001 queda OPEN: no se presume identidad ni separación; requiere mapping explícito, versionado y sustentado, compatible con DEC-C10-082.
 
 No se asignan IDs ni se crean registros; no se sella IAM, no se declara roster exhaustivo ni cobertura y no se autoriza acceso técnico, captura, implementación, Design Freeze o ejecución científica. Véase DEC-C10-089.
+## DEC-C10-090 — Descomposición semántica de N07: endpoint, interfaz y servicio
+
+**Estado:** ACCEPTED — DOCUMENTAL. **Fecha:** 2026-11-08.
+
+Se acepta separar N07 en endpoint técnico, contrato/interfaz y servicio proveedor. Endpoint no implica CMP/REF; interfaz solo es REF con identidad propia y extremos tipados; servicio solo es CMP con identidad contractual, lifecycle y frontera autónomos. Los servicios externos no ingresan al roster CMP interno por mero consumo; EDGE y REF no se infieren entre sí.
+
+Instancias, identidades, mappings, rutas, snapshots, cobertura y evidencia permanecen OPEN/UNKNOWN. No se crean registros ni se autoriza inspección, implementación, Design Freeze o ejecución. Véase DEC-C10-090.
