@@ -1086,3 +1086,17 @@ Pendiente de aceptación: perfil COVERAGE_SCOPE + localizador en claim_statement
 - El enlace al scope no implica COVERAGE COMPLETE; se aplican U_G §12.3/§18.6.
 
 **Restricciones:** no se añade target_type PAR, FK, tabla o puente. No se aprueban gramática, escaping, canonicalización, serialización, parser ni automatización. Los campos singulares `evidence_id`/`claim_evidence_id` del manifiesto no sustituyen el registro 1:N de CLAIM_EVIDENCE_LINK. No se crean observaciones, no se sella IAM, no se declara cobertura ni se autoriza implementación/ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+## 25. Refinamiento propuesto de N14 — formato, payload y eventos de transferencia
+
+**Estado:** PROPUESTA DOCUMENTAL pendiente de aceptación; desarrolla el N14 existente de §§10.1–10.2 y no altera el catálogo de IDs.
+
+- **Formato/contrato:** definición versionada de sintaxis, estructura, tipos, codificación, compatibilidad y semántica de campos. No clasificar como REF salvo objeto de dominio con identidad propia y extremos tipados conforme DEC-C10-077; de otro modo, metadato/artefacto contractual referenciado.
+- **Payload:** instancia concreta producida por A1 y destinada a A2, con identidad/procedencia y revisión separadas de la versión del formato. NODE solo si tiene identidad y relevancia material independiente según §82; de lo contrario, artefacto de transferencia/evidencia sin forzar NODE.
+- **Eventos:** producido, transmitido, recibido, parseado, validado y aplicado son etapas distintas. No son CMP/REF por sí mismas; recibido no implica validado ni aplicado.
+- **A1/N13 y A2/N15** son productores/consumidores, no parte del objeto N14. N07 conserva el canal/endpoint; M conserva el mapping fuente→payload→destino.
+- Formato y payload no mantienen cardinalidad necesariamente 1:1. Preservar lineage y revisiones ante split/merge o transformaciones. Hash/digest prueba, como máximo, integridad de bytes en el ámbito declarado; no equivalencia semántica ni éxito funcional.
+- JCS/TGCV-C10S-JCS-1 de DEC-C10-074 aplica al envelope UDG-01, no al payload sin especificación propia.
+- E12/E13 siguen siendo aristas candidatas, no observadas. No adjudicar existencia ni cobertura sin evidencia.
+
+No se fijan nombres de columnas, IDs físicos, formato, parser, serialización de payload, mapping ni estados observados. No se autoriza captura, implementación, Design Freeze ni ejecución.
