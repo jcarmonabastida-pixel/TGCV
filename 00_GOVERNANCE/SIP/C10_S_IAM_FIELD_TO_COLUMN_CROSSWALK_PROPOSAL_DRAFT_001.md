@@ -469,3 +469,13 @@ El contrato IAM debe permitir resolver por ruta F/A el artefacto declarado y reg
 Se distinguen FP-06 (evento efectivo), FP-07 (estado observado post-aplicación contra FP-01…05 aplicables) y FP-08 (procedencia, identidad e integridad). FP-08 no sustituye evidencia de aplicación ni observación. Ausencia de registro no demuestra no aplicación: UNKNOWN salvo evidencia autoritativa/exhaustiva o contradicción positiva. F y A no se compensan; no hay doble contabilización de un mismo defecto.
 
 Esta aceptación no añade campos/FK, no sella IAM ni autoriza implementación o ejecución científica.
+
+## 10.19. Propuesta de integración IAM por etapa, ruta y tiempo
+
+**Estado:** PROPUESTA DOCUMENTAL — pendiente de aceptación. Véase la matriz temporal §14 y matriz abstracta §15.9.
+
+El IAM/crosswalk debe resolver, sin inferencia nominal, la tupla de cada observación y transición: contrato/instancia y versiones; CMP owner/NODE anchor; object/record identities; `stage_key`; snapshot y snapshot record; route_id/route_record_id; coverage_scope_id y universe_definition/version; parameter_key/rule_id y manifest_record_id/revision; mapping_id/version; evidencia y su predicado/afirmación; instante DGP de generación y observación. `stage_key`, reloj DGP `t0…t9`, SNAPSHOT.phase y step_k son ejes distintos y requieren enlaces explícitos.
+
+El crosswalk debe representar tres tramos independientes por ruta: C_SRC→F1/A1 (DEC-C10-085), F1/A1→F2/A2 declaradas (DEC-C10-086), y F2/A2 declaradas→aplicadas (DEC-C10-087). En el tercer tramo debe resolver evento FP-06, observación post-aplicación FP-07 y provenance/identidad FP-08, sin convertirlos en campos físicos no aprobados ni en predicados nuevos.
+
+La evidencia no se hereda entre etapa, ruta ni afirmación. COV/E_T es epistémico; UNKNOWN ante cobertura, mapping o lineage insuficientes. El vínculo IAM no acredita por sí solo ACC/APP/Reach ni causalidad de ΔT_acc→Value. Esta propuesta no añade columnas/FK, no sella IAM y no autoriza implementación o ejecución científica.
