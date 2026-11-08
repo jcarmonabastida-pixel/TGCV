@@ -616,31 +616,15 @@ La aceptación confirmaría solo este contrato lógico documental de identidad/s
 
 **Pendiente de aceptación expresa:** unicidad global; append-only + revisión explícita; nombres exactos indicados.
 
+## 17.3 — Aplicación de DEC-C10-079 a la identidad de filas PAR
 
-## DEC-C10-078 — Identidad global y supersession append-only de filas del manifiesto PAR
+**Estado:** ACEPTADO — DEC-C10-079. Esta sección propaga el contrato lógico aprobado; prevalece sobre cualquier recomendación previa que mantuviera abiertas estas cuestiones.
 
-**Estado:** ACEPTADA POR EL USUARIO Y PERSISTIDA EN LA RAMA DE INVESTIGACIÓN.  
-**Fecha:** 2026-11-08  
-**Alcance:** contrato lógico documental de identidad y revisión de filas PAR del manifiesto IAM/inspección. No constituye autorización de implementación o ejecución.
+- `manifest_record_id`: globalmente único en toda la línea C10-S, opaco, inmutable y nunca reutilizado, independiente de la versión IAM.
+- Append-only: ninguna fila se sobrescribe ni elimina. Toda corrección de la misma captura lógica crea un nuevo ID y conserva el anterior.
+- `manifest_record_revision`: revisión secuencial por clave lógica, desde 1, sin saltos.
+- `supersedes_manifest_record_id`: en revisiones posteriores, referencia a la revisión inmediatamente anterior de la misma clave lógica. Cadena lineal única, sin bifurcaciones, ciclos, huérfanos ni referencias cruzadas.
+- Cambio de snapshot, etapa, ruta/scope, contrato/instancia o revisión del CMP owner inicia una nueva clave lógica y revisión 1. Cambio semántico de `parameter_key` exige nueva identidad semántica.
+- Múltiples evidencias no crean revisiones por sí solas. Reempaquetar en nueva versión IAM no crea automáticamente nueva observación; migración exige mapping explícito.
 
-### Decisión
-1. **Unicidad global:** `manifest_record_id` es opaco, inmutable, no vacío, nunca reutilizable y globalmente único en toda la línea C10-S, con independencia de la versión del manifiesto/IAM. La versión IAM sigue siendo parte del contexto de resolución, pero no del namespace de unicidad.
-2. **Append-only:** los registros no se sobrescriben ni eliminan. Toda corrección de captura, evidencia, mapping, estado o adjudicación para la misma clave lógica crea un nuevo `manifest_record_id`; el registro anterior permanece íntegro.
-3. **Revisión explícita:** `manifest_record_revision` empieza en 1 para cada clave lógica de observación y aumenta exactamente en uno. La revisión es secuencia de captura/adjudicación, no versión semántica del parámetro.
-4. **Supersession:** toda revisión posterior incluye `supersedes_manifest_record_id`, apuntando al registro inmediatamente anterior de la misma clave lógica. Se admite una única cadena lineal, sin bifurcaciones, ciclos, saltos, huérfanos ni referencias cruzadas entre claves.
-5. **Nombres normativos exactos:** `manifest_record_revision` y `supersedes_manifest_record_id`.
-6. **Nueva observación:** cambio de contrato/instancia, snapshot, etapa, ruta/scope, revisión del CMP owner o cualquier dimensión de la clave lógica inicia una nueva cadena en revisión 1. Cambio semántico de `parameter_key` exige nueva identidad semántica, no supersession.
-7. Varias evidencias vinculadas a una fila no crean revisiones por sí solas. El mero reempaquetado por una nueva versión IAM tampoco crea una observación nueva; cualquier migración entre versiones requiere mapping explícito y no se presume.
-
-### Reglas de integridad
-- Un `manifest_record_id` identifica exactamente un registro y no puede repetirse en ningún manifiesto C10-S.
-- La combinación de clave lógica + revisión identifica exactamente un registro.
-- Revisión 1 no tiene predecesor; revisiones posteriores apuntan a la revisión inmediatamente anterior.
-- Toda supersession conserva la misma clave lógica y pinning exacto de snapshot y CMP owner.
-- Se preservan por separado las evidencias múltiples y la identidad independiente de `coverage_scope_id`.
-
-### Límites y no-autorizaciones
-Esta decisión **no** crea tabla PAR, columnas U_G, DDL, serialización, generador de IDs, API, parser, validator, fixtures ni registros reales. No cierra el crosswalk PAR↔U_G, no sella IAM, no asigna valores de escenario, no modifica DEC-C10-062 ni convierte `manifest_record_id` en entidad U_G. No autoriza Design Freeze, implementación, validación técnica ni experimento. `scientific_execution=false`; `execution_authorized=false`.
-
-### Propagación
-Esta decisión prevalece sobre las propuestas anteriores §17.1/§17.2, §19.20/§19.21, §20/§21, §16.62/§16.63, §80/§81, §207/§208 y §86/§87 en cualquier punto donde indiquen que las tres cuestiones siguen pendientes o recomienden unicidad limitada a versión IAM. Esas secciones se conservan como historial de propuesta; DEC-C10-078 es la resolución aceptada.
+**Límites:** decisión documental lógica. No crea tabla/columnas PAR o U_G, DDL, serialización, generador, API, parser, validator, fixtures ni registros reales; no sella IAM, no cierra PAR↔U_G, no autoriza Design Freeze, implementación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
