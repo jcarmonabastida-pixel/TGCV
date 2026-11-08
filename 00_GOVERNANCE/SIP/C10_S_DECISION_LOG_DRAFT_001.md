@@ -1259,3 +1259,11 @@ Se acepta el contrato lógico del crosswalk §10.7: cardinalidad 1:1 del anclaje
 La adjudicación conserva PASS/FAIL/UNKNOWN/NOT_COMPARABLE/NA según las condiciones documentadas. PASS de correspondencia no demuestra verdad PAR, preservación, pertenencia a ruta ni completitud.
 
 **Límites:** no completa roster CMP, mappings P1/PAR ni IAM; no crea registros ni cambia U_G; no autoriza poblar IAM, parser, validator, implementación, Design Freeze o ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+## 94 — DEC-C10-083: aceptación de aplicabilidad PAR por stage_key
+
+**Estado:** ACEPTADA — DEC-C10-083 (2026-11-08).
+
+Se aceptan para `PAR-SVC-ENABLED` y `PAR-SVC-PROFILE` las obligaciones por las siete etapas DEC-C10-071: P0 REQUIRED; VALUE tipado en posiciones declarativas; preservación semántica independiente en F1/A1; evidencia del estado efectivamente aplicado en F2/A2. No hay DEFAULT contractual; ABSENT/NULL no son admisibles si la ausencia está demostrada con cobertura suficiente. Falta de evidencia/cobertura → UNKNOWN; runtime no es `stage_key`.
+
+La aceptación no adjudica observaciones ni asigna valores por escenario, no sella IAM y no autoriza mappings físicos, implementación ni ejecución científica. Véase DEC-C10-083.
