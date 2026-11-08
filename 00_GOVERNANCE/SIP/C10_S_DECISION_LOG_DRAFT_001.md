@@ -1267,3 +1267,11 @@ La adjudicación conserva PASS/FAIL/UNKNOWN/NOT_COMPARABLE/NA según las condici
 Se aceptan para `PAR-SVC-ENABLED` y `PAR-SVC-PROFILE` las obligaciones por las siete etapas DEC-C10-071: P0 REQUIRED; VALUE tipado en posiciones declarativas; preservación semántica independiente en F1/A1; evidencia del estado efectivamente aplicado en F2/A2. No hay DEFAULT contractual; ABSENT/NULL no son admisibles si la ausencia está demostrada con cobertura suficiente. Falta de evidencia/cobertura → UNKNOWN; runtime no es `stage_key`.
 
 La aceptación no adjudica observaciones ni asigna valores por escenario, no sella IAM y no autoriza mappings físicos, implementación ni ejecución científica. Véase DEC-C10-083.
+
+## 95 — DEC-C10-084: aceptación del contrato de equivalencia semántica PAR
+
+**Estado:** ACEPTADA — DEC-C10-084 (2026-11-08).
+
+Se acepta matriz abstracta §15.1–15.2: identidad BOOL exacta; biyección total, inyectiva y versionada ENUM entre STANDARD/READ_ONLY/DISABLED; separación de estado y valor; preservación independiente de `RUL-SVC-ENABLE-PROFILE-01); evaluación independiente F1/A1; y separación entre configuración destino declarada y aplicación efectiva F2/A2.
+
+La composición requiere mappings explícitos/versionados, sin inferir transitividad ni comparar literales físicos de namespaces distintos. La aceptación no fija codificaciones ni mappings físicos, no adjudica observaciones, no sella IAM y no autoriza implementación, Design Freeze ni ejecución científica. Véase DEC-C10-084.
