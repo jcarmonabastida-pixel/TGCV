@@ -1296,3 +1296,13 @@ Se acepta la matriz abstracta §15.5 y el crosswalk §10.15. Se separan dos dime
 Se aplican BOOL exacto, biyección ENUM total/versionada y preservación semántica RUL. PASS exige demostración suficiente; FAIL contradicción demostrada con cobertura suficiente; UNKNOWN insuficiencia; NOT_COMPARABLE incompatibilidad sin mapping aprobado; NA solo inaplicabilidad ex ante (no admisible para los PAR/RUL del contrato base). La equivalencia de artefactos no demuestra lineage. F2/A2 declaradas no prueban aplicación efectiva, que permanece en FP-06/FP-07 y etapas applied.
 
 No se definen mappings físicos ni se sella IAM; no se autoriza parser, validator, implementación, Design Freeze o ejecución científica. Véase el Decision Record DEC-C10-086.
+
+## DEC-C10-087 — Aceptación de aplicación efectiva y verificación post-aplicación F/A
+
+**Estado:** ACCEPTED — DOCUMENTAL. **Fecha:** 2026-11-08.
+
+Se acepta §15.7 y §10.17 para F2_DST_DECL→F2_DST_APPLIED y A2_DST_DECL→A2_DST_APPLIED. Se reutilizan FP-06 (aplicación efectiva), FP-07 (observación post-aplicación) y FP-08 (procedencia/identidad/reproducibilidad), sin crear predicados confirmatorios paralelos. FP-06 requiere evidencia trazable del evento y destino; FP-07 observación del estado aplicado exacto y evaluación mediante FP-01…05; FP-08 soporta la procedencia sin sustituir los otros dos.
+
+F y A se adjudican independientemente. La falta de registro no demuestra no aplicación; UNKNOWN salvo evidencia autoritativa/exhaustiva o contradicción positiva. FP-06 PASS no implica FP-07 PASS. Se reportan por separado aplicación, post-check, procedencia y vector FP-01…05, sin doble contabilización.
+
+No se define herramienta, observación, oráculo, tolerancias o mapping físico; no se sella IAM ni se autoriza implementación, Design Freeze o ejecución científica. Véase el Decision Record DEC-C10-087.
