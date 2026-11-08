@@ -371,3 +371,14 @@ Un PASS de correspondencia no acredita por sí mismo la verdad de propiedades PA
 La cardinalidad 1:1 del anclaje CMP↔NODE por CMP y snapshot queda aceptada conforme a DEC-C10-082. Se acepta la unidad (identidad contractual CMP exacta, snapshot exacto), NODE anchor identificado por `node_id + object_record_id`, mapping versionado, unicidad en ambos sentidos y continuidad entre snapshots mediante `component_id` contractual sin exigir igualdad de IDs U_G.
 
 La etapa y ruta califican cobertura, no multiplican la identidad NODE. Los resultados de adjudicación y sus límites son los establecidos en §10.7 y DEC-C10-082. Esta aceptación no completa el roster CMP, no resuelve mappings P1/PAR, no sella IAM ni autoriza poblar registros, implementar o ejecutar controles. `scientific_execution=false`; `execution_authorized=false`.
+
+
+### 10.9. Reconciliación de PAR por stage_key — propuesta pendiente
+
+La matriz de aplicabilidad §18.6 desarrolla la obligación de los dos PAR aceptados en las siete etapas DEC-C10-071. Se distingue: configuración fuente (`C_SRC`); preservación intermedia independiente (`F1_S2`, `A1_S1`); configuración destino declarada (`F2_DST_DECL`, `A2_DST_DECL`); y estado efectivamente aplicado (`F2_DST_APPLIED`, `A2_DST_APPLIED`).
+
+Ambos parámetros son P0 REQUIRED por DEC-C10-068. Para estados declarativos, el contrato base espera VALUE tipado; no hay DEFAULT contractual aceptado y ABSENT/NULL no son admisibles. Las etapas intermedias exigen preservación semántica por ruta, no aplicación. Las etapas aplicadas exigen snapshot y evidencia del estado real, sin inferirlo desde la declaración ni desde runtime.
+
+La falta de evidencia/cobertura produce UNKNOWN; la contradicción demostrada produce 0 en el predicado predeclarado; NA no se deriva de falta de datos ni se aplica a estos dos parámetros en las siete etapas del contrato base. `E_dst/runtime` permanece fuera de `stage_key`.
+
+**Estado:** propuesta pendiente de aceptación. No asigna valores por escenario, no sella IAM ni crea mappings físicos/fixtures ni autoriza implementación o ejecución. Prevalecen DEC-C10-068/069/071/082 y matriz §18.3–18.6.
