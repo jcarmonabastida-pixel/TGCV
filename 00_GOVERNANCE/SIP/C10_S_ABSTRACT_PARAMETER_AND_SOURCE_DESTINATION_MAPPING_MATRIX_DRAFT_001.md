@@ -942,3 +942,16 @@ Se reportan por separado `FP06_APPLY`, `FP07_POSTCHECK` y la validez probatoria 
 ### F. Límites y no autorizaciones
 
 Esta propuesta no selecciona herramienta/command de aplicación, protocolo de observación, oráculo, tolerancias, método de captura, runtime ni mapping físico. No crea registros observados, fixtures, columnas/FK ni nuevos predicados FP. No sella IAM ni autoriza parser, validator, scripts, implementación, Design Freeze, validación técnica, ejecución del control o experimento científico. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 15.8. Aceptación DEC-C10-087 — aplicación efectiva y verificación post-aplicación
+
+**Estado:** ACCEPTED — DOCUMENTAL. Véase `00_GOVERNANCE/decisions/DEC-C10-087_EFFECTIVE_APPLICATION_AND_POST_APPLICATION_VERIFICATION_ACCEPTANCE.md`.
+
+Se acepta §15.7 para F2_DST_DECL→F2_DST_APPLIED y A2_DST_DECL→A2_DST_APPLIED, reutilizando FP-06 (aplicación efectiva), FP-07 (verificación post-aplicación) y FP-08 (procedencia/identidad/reproducibilidad) existentes. No se crean predicados confirmatorios paralelos.
+
+FP-06 requiere evidencia trazable del evento que aplicó el paquete exacto al destino identificado; plan, intención, existencia del paquete o exit code aislado no bastan. FP-07 requiere observación post-aplicación del destino/snapshot exactos y evaluación mediante FP-01…05 aplicables; log o exit code sin observación del estado no bastan. FP-08 soporta identidad/procedencia/integridad, sin sustituir FP-06/07.
+
+F y A se adjudican independientemente. La falta de registro no demuestra no aplicación: UNKNOWN salvo evidencia autoritativa/exhaustiva o contradicción positiva. FAIL exige contradicción o no aplicación demostrada con cobertura suficiente. FP-06 PASS no implica FP-07 PASS. Se reportan FP06_APPLY, FP07_POSTCHECK, FP-08 y vector FP-01…05, sin doble contabilización de un defecto.
+
+La configuración declarada no equivale a aplicada. Esta aceptación no define herramienta, protocolo de observación, oráculo, tolerancias ni mapping físico; no sella IAM ni autoriza parser, validator, implementación, Design Freeze o ejecución científica.
