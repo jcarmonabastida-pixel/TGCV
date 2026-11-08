@@ -1594,3 +1594,12 @@ DEC-C10-089 acepta NODE raíz `LOGICAL_SERVICE_UNIT` como representación de la 
 La relación del NODE raíz con CMP-SERVICE-LOGIC-001 queda OPEN hasta mapping explícito, versionado y sustentado. No se debe crear ni inferir un segundo NODE ni reutilizar automáticamente la raíz como CMP anchor.
 
 **Siguiente paso:** mantener esta distinción y continuar con el siguiente rol condicional del roster, N07, separando endpoint/interfaz (REF) de componente/servicio (CMP) según identidad contractual, lifecycle y granularidad. No capturar ni inspeccionar sistemas sin autorización específica. Sin IAM sellado, implementación, Design Freeze ni ejecución.
+## 16.74 — Reconciliación del NODE raíz y el anchor CMP
+
+Conforme DEC-C10-089 y la reconciliación crosswalk §10.24, mantener separados los conceptos:
+- NODE raíz LOGICAL_SERVICE_UNIT = unidad lógica de servicio;
+- NODE anchor CMP = correspondencia 1:1 del CMP contractual por snapshot conforme DEC-C10-082.
+
+Ambos pueden ser el mismo registro solo si un mapping explícito lo demuestra; si son distintos, se conservan dos registros relacionados. No se infiere ninguna de las dos alternativas. Esta precisión corrige la lectura ambigua de «NODE raíz para el CMP» en §10.6 sin reabrir ni modificar DEC-C10-082.
+
+Siguiente trabajo: resolver N07 como interfaz/REF frente a CMP de servicio independiente, sin inventar endpoints ni IDs; la decisión será documental hasta contar con identidad contractual y evidencia.
