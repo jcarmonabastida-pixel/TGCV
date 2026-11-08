@@ -893,3 +893,16 @@ No se amplía U_G ni se cierra gramática/escaping/canonicalización/predicate. 
 Se acepta el protocolo §20.18 del protocolo de evidencia como control independiente del binding probatorio PAR, reutilizando C0 §19 y conservando las cinco capas, entradas mínimas, pasos P0–P11, estados por capa y 18 casos adversariales. La integridad del vínculo, la pertinencia sustantiva y la completitud de cobertura se evalúan separadamente.
 
 Los mappings stage_key/clase/ruta y la gramática/escaping/canonicalización del localizador permanecen abiertos; sin resolución inequívoca corresponde UNKNOWN. Esta aceptación no sella IAM ni autoriza implementación, automatización, Design Freeze o ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 19.27. Mapping candidato CMP→NODE por snapshot — dependencia del IAM
+
+**Estado:** propuesta de correspondencia pendiente de aceptación; remite al contrato detallado del crosswalk §10.7. No modifica las decisiones DEC-C10-068/069 ni sella IAM.
+
+Para cada CMP aplicable, el IAM deberá poder resolver exactamente un NODE anchor dentro del snapshot exacto `(snapshot_id, snapshot_object_record_id)`. Un NODE anchor no puede representar dos CMP distintos. NODE subordinados no se convierten automáticamente en CMP; requieren identidad funcional propia declarada ex ante.
+
+La continuidad entre snapshots se prueba mediante `component_id` contractual estable y mappings versionados separados por snapshot. No se exige igualdad de `node_id`/ `object_record_id` entre snapshots. `stage_key` y `route_id/scope` diferencian filas de cobertura, no duplican el NODE.
+
+La adjudicación exige comprobar identidad, snapshot y NODE record exactos, unicidad en ambos sentidos, universe_definition/version, scope C0, mapping/provenance y evidencia. Falta de universo o evidencia suficiente produce UNKNOWN; contradicción o cardinalidad múltiple produce FAIL; incompatibilidad semántica sin mapping aprobado produce NOT_COMPARABLE; NA requiere no aplicabilidad ex ante.
+
+Esta propuesta no fija roster completo de CMP, no resuelve mappings P1, no crea columnas/FKs/tablas ni autoriza poblar IAM, implementar o ejecutar controles. `scientific_execution=false`; `execution_authorized=false`.
