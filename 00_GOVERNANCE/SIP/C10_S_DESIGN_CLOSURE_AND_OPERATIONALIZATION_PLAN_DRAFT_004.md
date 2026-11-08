@@ -1608,3 +1608,8 @@ Siguiente trabajo: resolver N07 como interfaz/REF frente a CMP de servicio indep
 Crosswalk §10.25 propone separar endpoint técnico, contrato/interfaz y servicio proveedor. Tras aceptación conceptual, resolver identidad/clase de cada uno sin inferencia nominal; determinar REF solo para objeto de dominio con identidad y extremos propios; CMP solo para servicio contractual autónomo; endpoint como atributo o recurso P1 según granularidad.
 
 No realizar inspección técnica ni pruebas de red sin autorización específica. No asignar IDs ni poblar IAM.
+## 16.76 — DEC-C10-090: cierre conceptual N07 y pendientes de adjudicación
+
+DEC-C10-090 acepta la separación endpoint/interfaz/servicio y sus criterios conceptuales de clasificación. Se continúa con N14 (formato/artefacto de intercambio), manteniendo la misma disciplina: contrato/formato versionado, artefacto concreto y componente que lo produce/consume son objetos distintos salvo identidad contractual demostrada.
+
+Los objetos técnicos N07 siguen sin observarse ni adjudicarse. No inspeccionar sistemas, probar conectividad ni asignar IDs sin autorización específica. Sin IAM sellado, implementación, Design Freeze o ejecución.
