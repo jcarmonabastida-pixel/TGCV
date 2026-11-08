@@ -458,3 +458,14 @@ La separación semántica es obligatoria:
 - FP-08 acredita identidad, procedencia, integridad y reproducibilidad de paquete, evento, destino, snapshot y evidencia; no sustituye FP-06 ni FP-07.
 
 Los resultados se mantienen independientes por ruta y por familia. La falta de registro de aplicación no demuestra no aplicación: UNKNOWN salvo evidencia autoritativa/exhaustiva o contradicción positiva. La configuración declarada no se confunde con la aplicada. Esta propuesta no añade columnas/FK, no sella IAM ni autoriza implementación o ejecución científica.
+
+
+## 10.18. Aceptación DEC-C10-087 — mapping IAM de aplicación efectiva y post-check
+
+**Estado:** ACCEPTED — DOCUMENTAL. Véase DEC-C10-087 y matriz abstracta §15.7.
+
+El contrato IAM debe permitir resolver por ruta F/A el artefacto declarado y registro exactos, evento de aplicación, target/environment identity, snapshot y registro post-aplicación, CMP owner/NODE anchor, PAR/RUL, stage_key, route/scope, mapping/versiones y evidencia.
+
+Se distinguen FP-06 (evento efectivo), FP-07 (estado observado post-aplicación contra FP-01…05 aplicables) y FP-08 (procedencia, identidad e integridad). FP-08 no sustituye evidencia de aplicación ni observación. Ausencia de registro no demuestra no aplicación: UNKNOWN salvo evidencia autoritativa/exhaustiva o contradicción positiva. F y A no se compensan; no hay doble contabilización de un mismo defecto.
+
+Esta aceptación no añade campos/FK, no sella IAM ni autoriza implementación o ejecución científica.
