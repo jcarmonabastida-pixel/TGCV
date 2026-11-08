@@ -2024,3 +2024,12 @@ No hay objetos técnicos observados ni IDs adjudicados. La clasificación por in
 Se acepta N07 como tres conceptos separables: endpoint técnico; contrato/interfaz; servicio proveedor. Endpoint no implica CMP/REF; interfaz solo es REF con identidad propia y extremos tipados; servicio solo es CMP con identidad contractual, lifecycle y frontera autónomos. Servicio externo no se incorpora al roster interno por consumo. EDGE y REF no se infieren entre sí.
 
 **Cierre:** ambigüedad conceptual N07 = cerrada documentalmente. Instancias, identidades, topología, mappings, rutas, snapshots, cobertura y evidencia = OPEN/UNKNOWN. No hay IDs ni registros creados; IAM no sellado. No autoriza inspección, llamadas de red, implementación, Design Freeze ni ejecución científica.
+## 95 — Propuesta N14: contrato/formato, payload y transferencia
+
+**Estado:** PROPUESTA DOCUMENTAL pendiente de aceptación (crosswalk §10.27). Reutiliza N14, E12/E13 y B-M14 ya existentes.
+
+El gate separa definición versionada del formato/contrato, payload concreto producido por A1 y consumido por A2, y eventos de transferencia/recepción/aplicación. Formato no es REF automáticamente; payload no es NODE automáticamente; evento no es CMP. N07 mantiene el canal/endpoint y M el mapping fuente→payload→destino. E12/E13 son relaciones candidatas, no observadas.
+
+Quedan OPEN formato, codificación, payload, identidad/revisión, mapping, cardinalidades reales, lineage, etapas de transferencia, compatibilidad sintáctica/semántica, aplicación, F*, evidencia y cobertura. DEC-C10-074 JCS se limita a UDG-01, no al payload. Hash no prueba equivalencia semántica ni aplicación.
+
+No se crean IDs/filas ni se autoriza captura, parser, validator, implementación, Design Freeze o ejecución científica.
