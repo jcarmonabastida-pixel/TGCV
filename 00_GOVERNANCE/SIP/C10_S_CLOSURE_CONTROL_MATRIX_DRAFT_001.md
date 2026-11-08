@@ -2033,3 +2033,12 @@ El gate separa definición versionada del formato/contrato, payload concreto pro
 Quedan OPEN formato, codificación, payload, identidad/revisión, mapping, cardinalidades reales, lineage, etapas de transferencia, compatibilidad sintáctica/semántica, aplicación, F*, evidencia y cobertura. DEC-C10-074 JCS se limita a UDG-01, no al payload. Hash no prueba equivalencia semántica ni aplicación.
 
 No se crean IDs/filas ni se autoriza captura, parser, validator, implementación, Design Freeze o ejecución científica.
+## 96 — DEC-C10-091: aceptación de la descomposición semántica N14
+
+**Estado:** ACCEPTED — DOCUMENTAL (2026-11-08).
+
+Se acepta separar N14 en formato/contrato versionado, payload concreto y eventos de transferencia/recepción/parseo/validación/aplicación. Formato y payload conservan identidad/versionado separados; formato no implica REF; payload no implica NODE; N13/A1 produce, N15/A2 consume, N07 conserva canal/endpoint y M el mapping. E12/E13 siguen candidatas.
+
+Hash de bytes no demuestra equivalencia semántica ni aplicación. JCS de DEC-C10-074 se limita al envelope UDG-01. La alternativa A1→N14→A2 exige demostración bajo el mismo F*, frontera, G y H.
+
+**Cierre:** descomposición conceptual N14 = cerrada documentalmente. Formato, payload, identidades, mapping, lineage, eventos, compatibilidad, aplicación, evidencia y cobertura reales = OPEN/UNKNOWN. Sin IDs ni registros creados; IAM no sellado; sin autorización de captura, implementación, Design Freeze o ejecución.
