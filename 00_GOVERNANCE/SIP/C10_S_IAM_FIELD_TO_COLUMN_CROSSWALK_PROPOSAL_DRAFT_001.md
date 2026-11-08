@@ -698,3 +698,36 @@ Se resuelve la terminología del siguiente modo:
 6. La frase «NODE raíz para el CMP» en §10.6 debe leerse como formulación histórica no adjudicativa; DEC-C10-089 gobierna la identidad de la unidad raíz.
 
 Esta reconciliación evita tanto la inferencia de identidad como la inferencia de separación. No añade entidades ni cardinalidades, no cambia el esquema U_G y no crea mappings observados. Permanecen OPEN el mapping concreto, la identidad de registros, el snapshot y la evidencia. No sella IAM ni autoriza captura, implementación, Design Freeze o ejecución.
+## 10.25. Resolución propuesta de N07 — endpoint, interfaz y servicio
+
+**Estado:** PROPUESTA DOCUMENTAL — pendiente de aceptación. Reutiliza DEC-C10-058/059/076/077/082/089 y el contrato de granularidad §82. No declara endpoint observado ni crea identidades.
+
+### 10.25.1. Descomposición semántica
+
+La etiqueta N07 «endpoint/canal focal» puede mezclar tres objetos distintos que deben adjudicarse por separado:
+
+1. **Endpoint técnico concreto:** dirección, URL, socket, puerto, topic, canal o punto de acceso desplegado. Por defecto es un atributo/recurso de interfaz del servicio o un NODE de entorno P1 si tiene identidad/versionado y relevancia material independiente. No es CMP por ser direccionable.
+2. **Contrato/interfaz de comunicación:** especificación versionada de operaciones, protocolo, esquema, roles de extremo y reglas de intercambio. Puede representarse como REF solo cuando constituye un objeto de dominio con identidad propia y extremos tipados; si es una propiedad del CMP, se mantiene como atributo/artefacto contractual referenciado. No inferir REF desde un endpoint, FK o EDGE.
+3. **Servicio/componente que atiende el endpoint:** CMP únicamente si posee identidad contractual component_id, clase y versión/revisión propias, lifecycle y frontera funcional diferenciados. Si el endpoint es una fachada o capacidad interna de un CMP, no se crea CMP adicional.
+
+### 10.25.2. Regla de adjudicación
+
+| Evidencia/condición | Clase candidata | Regla |
+|---|---|---|
+| URL/socket/puerto/topic sin identidad funcional autónoma | Atributo de interfaz o recurso P1 | No CMP ni REF automáticamente |
+| Interfaz/contrato versionado con identidad y extremos tipados propios | REF | Registrar extremos SOURCE/TARGET y mapping explícito; conservar dirección y cardinalidad según DEC-C10-077 |
+| Servicio atendido con component_id/versión y lifecycle autónomos | CMP | Roster IAM propio y NODE anchor por snapshot conforme DEC-C10-082 |
+| Servicio externo consumido por la instancia focal | Externo / relación P2 | No incluir como CMP interno por consumo; registrar identidad externa, contrato, disponibilidad y límites si son observables |
+| Canal compartido o recurso de infraestructura | P1/P2 según frontera y función | Separar solo si cumple granularidad; no convertirlo en CMP por ser una dependencia |
+
+Un REF no se crea para cada conexión: la conexión observada puede ser EDGE; REF es un objeto del dominio con identidad propia. EDGE y REF no se infieren entre sí. El endpoint puede ser solo el valor técnico de un extremo de interfaz, no la entidad REF misma.
+
+### 10.25.3. Preguntas independientes de control
+
+Para cada candidato N07 se deberá resolver: (a) identidad y versión del endpoint; (b) identidad del contrato/interfaz; (c) identidad del servicio proveedor; (d) extremos y dirección; (e) interno/externo y boundary_class; (f) owner CMP; (g) snapshot y mapping exactos; (h) rutas F/A, fallback y compartición; (i) permisos, recursos y efectos de B; (j) evidencia y cobertura. La falta de información conserva UNKNOWN, no ausencia.
+
+### 10.25.4. Estado y límites
+
+No se conoce endpoint, protocolo, contrato de interfaz, servicio proveedor, topología ni registro técnico real. N07 queda semánticamente descompuesto como propuesta; ninguna clase se adjudica a una instancia concreta. No se asignan IDs, no se crean REF/EDGE/CMP, no se sella IAM ni se captura snapshot.
+
+No autoriza inspección técnica, llamadas de red, pruebas de conectividad, acceso a credenciales, parser, validator, implementación, Design Freeze o ejecución científica. scientific_execution=false; execution_authorized=false.
