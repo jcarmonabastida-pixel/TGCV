@@ -838,3 +838,141 @@ DEC-C10-076 acepta UDG-04 documentalmente. Identidad lógica `(object_class, obj
 Resolver contra registry/manifiesto versionado y scope explícito; no latest implícito ni fallback por nombre/valor/posición/hash aislado. Comprobar forma, record_id, clase/id, inmutabilidad, compatibilidad, acceso y cardinalidad. Requerida ausente/dangling exhaustivo/conflicto/mutabilidad = FAIL; registry incompleto/inaccesible = UNKNOWN; incompatibilidad sin mapping = NOT_COMPARABLE; opcional ausente = NOT_APPLICABLE. Ciclos por relación; DAG solo cuando contrato DEPENDENCY lo exige. Propagar estados solo por dependencias demostradas.
 
 Resolver ref no prueba membership, aplicabilidad, preservación o ejecución. La aceptación no cierra catálogo/schema/API/registry/resolver/parser/validator/comparator/fixtures ni mapping CMP/PAR/RUL; no autoriza Design Freeze ni ejecución. DEC-C10-076 prevalece sobre §20.16.
+
+## 20.18.
+
+## 20.18. Protocolo de control independiente del binding probatorio PAR — propuesta vinculada a DEC-C10-080
+
+**Estado:** PROPUESTA DOCUMENTAL; pendiente de aceptación expresa.  
+**Autoridad de binding:** DEC-C10-080.  
+**Dependencias:** DEC-C10-070 (C0), DEC-C10-073 (U1), DEC-C10-076 (identidad/resolución tipada), DEC-C10-079 (identidad y supersession PAR), y §19 (COVERAGE_SCOPE_BINDING_CONTROL).  
+**Propósito:** especificar la comprobación lógica de que una afirmación probatoria sobre una fila PAR está vinculada al scope exacto, a la revisión de manifiesto exacta y a evidencia identificable y pertinente, sin ampliar el esquema U_G.
+
+### 20.18.1. Principio de no duplicación y separación de controles
+
+El control PAR no reemplaza ni duplica C0. Reutiliza el control C0 de §19 para comprobar la identidad/binding del COVERAGE_SCOPE. El control PAR añade la resolución del localizador de fila PAR y la consistencia de la relación afirmación–evidencia.
+
+Se emiten resultados separados para:
+- **C0_SCOPE:** integridad de COVERAGE_SCOPE, su tupla C0 y consumidores.
+- **PAR_ROW_BINDING:** resolución exacta de la fila PAR y correspondencia con el scope.
+- **EVIDENCE_LINK_INTEGRITY:** integridad del CLAIM_EVIDENCE_LINK y resolución de EVIDENCE_REGISTER.
+- **EVIDENCE_RELEVANCE:** suficiencia de la evidencia para el predicado/estado concreto.
+- **COVERAGE_COMPLETENESS:** estado del universo cubierto, evaluado por §19.3 y U_G §18.6; nunca se infiere del mero vínculo.
+
+Un resultado favorable en una capa no compensa ni sustituye una capa no evaluada. No se crea un PASS global si alguna capa obligatoria está UNKNOWN o NOT_COMPARABLE.
+
+### 20.18.2. Entradas mínimas del control
+
+El conjunto de entrada debe estar cerrado, identificado y versionado e incluir, cuando sean aplicables:
+
+1. La versión exacta del contrato/instancia y del IAM/manifest utilizado.
+2. La fila PAR exacta, con `manifest_record_id`, `manifest_record_revision`, `supersedes_manifest_record_id` (si aplica), clave lógica y campos de contexto.
+3. La fila CLAIM_EVIDENCE_LINK completa: tipo de target, FK poblada, `claim_statement`, `evidence_id`, `support_type`, `relevance_scope` y referencias opcionales a evaluación/adjudicación.
+4. La fila COVERAGE_REGISTER exacta y su `coverage_scope_id`, `dimension` y `universe_definition/version`.
+5. La identidad exacta del SNAPSHOT y su `snapshot_object_record_id`.
+6. El registro exacto del CMP owner cuando el contrato de fila PAR lo requiere.
+7. La entrada EVIDENCE_REGISTER y la fuente/artefacto subyacente, con identidad, versión, provenance y alcance temporal.
+8. Los mappings versionados necesarios para resolver clases, etapas, rutas y versiones; no se permiten inferencias por nombre o por `latest`.
+9. El conjunto cerrado de registros/manifiestos consultados para comprobar unicidad, supersession y ausencia de duplicados.
+
+Si falta una fuente necesaria o no se puede demostrar que el conjunto de resolución está cerrado, el resultado correspondiente es UNKNOWN, no FAIL ni ausencia.
+
+### 20.18.3. Secuencia lógica de comprobación
+
+| Paso | Control | Condición para conformidad | Resultado adverso |
+|---|---|---|---|
+| P0 | Aplicabilidad | La fila PAR y la afirmación son aplicables al contrato, instancia, snapshot, etapa y scope declarados | NA solo por inaplicabilidad ex ante justificada; ambigüedad = UNKNOWN |
+| P1 | Forma y target | `claim_target_type=COVERAGE_SCOPE`; exactamente la FK target correspondiente está poblada; no se usa NODE como sustituto | Contradicción demostrada = FAIL |
+| P2 | Resolución C0 | `target_coverage_scope_id` resuelve a una única fila y C0 §19 verifica su binding | Reutilizar el resultado C0; no fabricar PASS |
+| P3 | Dimensión y universo | `dimension=C10S_CONFIG_PAR`; el envelope y su versión fijan el contexto exacto de la fila PAR | Contradicción = FAIL; versión incompatible sin mapping = NOT_COMPARABLE; falta de datos = UNKNOWN |
+| P4 | Resolución PAR | `manifest_record_id` resuelve globalmente a un único registro inmutable y la revisión indicada coincide exactamente | Colisión/duplicidad/identidad contradictoria = FAIL; registry incompleto = UNKNOWN |
+| P5 | Clave lógica y pinning | Contrato/instancia, snapshot/record, stage_key, ruta/scope, owner CMP y parameter_key coinciden exactamente con el registro PAR y con el scope | Mismatch demostrado = FAIL; mapping de versión no aprobado = NOT_COMPARABLE |
+| P6 | Supersession | Revisión 1 no tiene predecesor; las posteriores enlazan al inmediato anterior; cadena única, sin ciclos, saltos, bifurcaciones ni cruces de clave | Violación demostrada = FAIL; cadena incompleta/no accesible = UNKNOWN |
+| P7 | Evidencia | `evidence_id` resuelve a una única entrada EVIDENCE_REGISTER y su artefacto/version/provenance son recuperables | Dangling tras búsqueda exhaustiva = FAIL; fuente inaccesible = UNKNOWN |
+| P8 | Correspondencia afirmación–fila | `claim_statement` identifica sin ambigüedad el predicado/estado y la fila PAR; `relevance_scope` coincide con todo el contexto exigido | Contradicción = FAIL; localizador ambiguo o incompleto = UNKNOWN |
+| P9 | Pertinencia sustantiva | La fuente respalda el predicado/estado, la unidad, el momento y el alcance declarados; se registran límites y contradicciones | Evidencia contraria o no pertinente demostrada = FAIL para la afirmación; juicio no resoluble = UNKNOWN |
+| P10 | Owner CMP separado | Si existe una afirmación independiente sobre el owner, hay otro vínculo NODE exacto; no se exige ese vínculo cuando no se afirma nada independiente sobre el owner | Mezcla/sustitución de targets = FAIL; referencia requerida no resoluble = UNKNOWN |
+| P11 | Cobertura | Se evalúa separadamente el denominador, enumeración, fuentes, excepciones y estado COMPLETE/PARTIAL/NONE conforme a §19.3 y U_G §18.6 | Cobertura insuficiente impide claims de exhaustividad/ausencia; no invalida automáticamente una afirmación positiva local bien sustentada |
+
+### 20.18.4. Clave lógica y reglas de identidad
+
+La clave lógica de observación se evalúa conforme a DEC-C10-079. Incluye como mínimo la identidad exacta del contrato/instancia, snapshot y registro, stage_key, ruta/scope, revisión del CMP owner y la identidad semántica de parameter_key. El universo/version y el IAM se comprueban como contexto de resolución y mapping; un simple cambio de empaquetado IAM no crea automáticamente nueva observación.
+
+- `manifest_record_id` es globalmente único en toda la línea C10-S, independiente de versión IAM.
+- `manifest_record_revision` identifica la secuencia de captura/adjudicación de esa clave lógica.
+- `supersedes_manifest_record_id` debe apuntar al predecesor inmediato de la misma clave.
+- Un registro histórico superseded sigue siendo una identidad histórica válida. No se sustituye silenciosamente por la revisión más reciente.
+- La afirmación debe declarar si se refiere a la revisión histórica exacta o al estado vigente en un momento determinado. Una afirmación de estado actual no puede usar una revisión superseded como si fuera la última sin justificación temporal explícita.
+- Cambio semántico de parameter_key inicia identidad semántica nueva; no se reinterpreta como corrección de captura.
+
+### 20.18.5. Regla de correspondencia del localizador
+
+El control compara los componentes identificadores presentes en `claim_statement` y `relevance_scope` con la fila PAR, el scope y los registros exactos. Ambos campos deben ser mutuamente coherentes y suficientes para una única resolución. Los componentes requeridos no pueden completarse mediante nombre visible, posición de fila, valor de parámetro, timestamp aproximado, hash aislado ni selección de la versión más reciente.
+
+Esta propuesta no congela todavía una gramática serializada, escaping, orden de campos, vocabulario cerrado de `predicate` ni canonicalización del localizador. Mientras esos elementos no se definan, el control es documental/manual: si la representación concreta no permite resolución inequívoca, UNKNOWN. No se permite parsing heurístico para forzar PASS.
+
+### 20.18.6. Resultados por capa y precedencia
+
+Cada capa emite uno de los siguientes estados, con razón y evidencia:
+
+- **PASS:** entradas completas, identidad exacta resuelta, controles aplicables satisfechos y ninguna contradicción detectada.
+- **FAIL:** violación demostrada de identidad, unicidad, inmutabilidad, FK, binding, clave lógica, supersession o contradicción sustantiva de la evidencia con la afirmación.
+- **UNKNOWN:** faltan fuentes, cobertura de búsqueda, mapping, contexto o evidencia para decidir; incluye localizador ambiguo.
+- **NOT_COMPARABLE:** objetos válidos pero incompatibles en versión/schema/contract/scope sin mapping aprobado. No equivale a FAIL ni a DIFFERENT.
+- **NA:** relación no aplicable ex ante según contrato y con justificación explícita. No se usa para ocultar datos ausentes o una comprobación fallida.
+
+Para el dictamen de una capa, FAIL demostrado domina; en ausencia de FAIL, una incompatibilidad demostrada produce NOT_COMPARABLE; en ausencia de ambos, cualquier comprobación necesaria irresuelta produce UNKNOWN; solo la evaluación completa permite PASS. NA se informa por control no aplicable y no se elimina del informe. Se conserva el vector de capas; no se colapsa en una etiqueta global que oculte UNKNOWN/NOT_COMPARABLE.
+
+### 20.18.7. Separación entre integridad, evidencia y cobertura
+
+- PASS de C0 solo acredita el binding del scope bajo el universo declarado.
+- PASS de PAR_ROW_BINDING acredita que el localizador identifica una fila PAR exacta.
+- PASS de EVIDENCE_LINK_INTEGRITY acredita que el vínculo y la fuente se resuelven correctamente.
+- PASS de EVIDENCE_RELEVANCE requiere adjudicación de que la evidencia respalda el predicado/estado específico; no se deriva de FK, hash, metadatos o proximidad.
+- COMPLETE de COVERAGE_REGISTER es independiente y relativo al universo operativo declarado.
+- Ningún resultado de estas capas prueba por sí solo truth DGP, ejecución, efecto causal, contribución a Value ni cierre científico C10.
+
+Una afirmación de ausencia/estado 0 requiere, además, universo pertinente exhaustivo, fuentes válidas y evidencia negativa suficiente conforme a las reglas del predicado. Falta de vínculo, fila o fuente nunca equivale a 0.
+
+### 20.18.8. Casos adversariales documentales mínimos
+
+| Caso | Perturbación | Resultado esperado |
+|---|---|---|
+| PAR-BIND-01 | Target COVERAGE_SCOPE exacto, localizador y fila PAR coincidentes, evidencia pertinente | PASS por capas evaluadas |
+| PAR-BIND-02 | target_coverage_scope_id resuelve a scope de CMP o REF | FAIL |
+| PAR-BIND-03 | claim_statement apunta a manifest_record_id distinto del registro resuelto | FAIL |
+| PAR-BIND-04 | manifest_record_id duplicado en dos manifiestos | FAIL |
+| PAR-BIND-05 | manifest_record_id no encontrado y registry no exhaustivo/inaccesible | UNKNOWN |
+| PAR-BIND-06 | manifest_record_revision no coincide con el registro | FAIL |
+| PAR-BIND-07 | supersedes apunta a otra clave lógica o salta una revisión | FAIL |
+| PAR-BIND-08 | Se usa revisión histórica superseded para afirmar estado actual sin justificación | FAIL de pertinencia temporal |
+| PAR-BIND-09 | Nueva versión IAM reempaqueta la misma observación sin mapping de migración | NOT_COMPARABLE para la resolución entre versiones; no crear observación automáticamente |
+| PAR-BIND-10 | CMP owner, snapshot, stage_key o ruta no coincide con el scope | FAIL si mismatch explícito; UNKNOWN si falta mapping |
+| PAR-BIND-11 | La evidencia existe pero fuente/versión no es accesible | UNKNOWN |
+| PAR-BIND-12 | FK correcta pero evidencia no respalda el predicado | FAIL de EVIDENCE_RELEVANCE |
+| PAR-BIND-13 | Afirmación PAR y afirmación independiente del owner mezcladas en un único target NODE | FAIL |
+| PAR-BIND-14 | Link válido a scope PARTIAL usado para afirmar ausencia exhaustiva | FAIL de la afirmación de ausencia; binding puede PASS |
+| PAR-BIND-15 | Localizador no parseable/ambiguo bajo el perfil documental vigente | UNKNOWN |
+| PAR-BIND-16 | Se omite vínculo NODE del owner y no existe afirmación independiente sobre el owner | No es fallo; NODE no aplicable |
+| PAR-BIND-17 | Evidencias múltiples representadas como filas independientes para misma afirmación/fila | PASS si cada vínculo se resuelve y se evalúa por separado |
+| PAR-BIND-18 | Evidencias múltiples comprimidas en un único campo singular/lista embebida | FAIL de cardinalidad/representación |
+
+Los casos son especificaciones adversariales futuras, no fixtures ni resultados ejecutados.
+
+### 20.18.9. Informe documental requerido
+
+Cada futura ejecución autorizada deberá identificar: control y versión, commit de especificación, IAM/manifest y versiones, contrato/instancia, snapshot/record, stage_key, route/scope, object_class/dimension, coverage_scope_id, manifest_record_id/revision/supersession, CMP owner exacto, claim_evidence_id, evidence_id, fuente/version/hash/provenance, conjunto cerrado consultado, resultado por capa e invariante, reason_code, unknown_reason, excepciones, evaluador/adjudicador y timestamp con zona.
+
+La evidencia de salida debe permitir reconstruir exactamente qué registros se examinaron y cuáles quedaron fuera. No se consulta latest implícito ni se corrigen datos durante el control.
+
+### 20.18.10. Gates y límites
+
+- Esta propuesta reutiliza §19 C0 y DEC-C10-079; no crea un segundo control genérico de COVERAGE_SCOPE.
+- Los mappings físicos/semánticos pendientes de §20.1–20.5 siguen condicionando PASS; donde no exista correspondencia inequívoca, UNKNOWN.
+- No añade columnas, FK, target_type, tabla, tabla puente ni entidad PAR a U_G.
+- No cierra la gramática del localizador, escaping, canonicalización, vocabulario predicate, crosswalk IAM↔U_G ni la suficiencia de evidencia para predicados no definidos.
+- No crea datos, scopes, manifiestos, fixtures ni registros observados.
+- No autoriza parser, validator, scripts, SQL, implementación, Design Freeze, validación técnica, ejecución del control ni experimento científico.
+
+**Estado:** DOCUMENTAL PROPOSAL / NOT ACCEPTED / NOT IMPLEMENTED / NOT EXECUTED / NOT AUDITED. `scientific_execution=false`; `execution_authorized=false`.
+
