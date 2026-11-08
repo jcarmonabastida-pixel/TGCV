@@ -782,3 +782,47 @@ No se conoce formato, esquema, codificación, payload, herramienta, mapping M, e
 Se preservan las reglas de lineage, split/merge, integridad de bytes frente a equivalencia semántica y el alcance limitado de JCS al envelope UDG-01. La alternativa A1→N14→A2 requiere demostración contra el mismo F*, frontera, G y H; recepción no implica validación ni aplicación.
 
 Permanecen OPEN los objetos y eventos reales, formato, payload, mapping, compatibilidad, aplicación, evidencia y cobertura. No se asignan IDs ni se crean filas; IAM no se sella. No autoriza captura, parser, validator, implementación, Design Freeze o ejecución. Véase DEC-C10-091.
+## 10.29. Resolución propuesta de N15 — importador A2, procesamiento y aplicación
+
+**Estado:** PROPUESTA DOCUMENTAL — pendiente de aceptación. Refina el N15 ya existente del catálogo U_G y reutiliza DEC-C10-071/082/083/084/086/087/088/090/091, la matriz abstracta §§15.6–15.9 y el crosswalk temporal §§10.1/10.19. No crea nuevas etapas `stage_key`, predicados FP/SM ni entidades U_G.
+
+### 10.29.1. Identidad funcional de N15
+
+N15 representa la función de importación A2, pero no se presume que sea un CMP autónomo. Distinguir:
+
+1. **Capacidad/contrato A2:** función lógica de importar/aplicar un artefacto N14 en un destino. Es una capacidad del CMP owner salvo que exista un componente software separado con identidad contractual, versión, lifecycle y frontera autónomos conforme DEC-C10-090.
+2. **Implementación A2:** software/herramienta concreta que realiza la función. Solo se registra como CMP independiente si satisface esos criterios; un comando, módulo, plugin o endpoint no crea CMP por su nombre.
+3. **Ejecución A2:** instancia temporal de invocación/importación, con identidad de evento, instante, actor, entrada exacta, destino, ruta, resultado y provenance. No es un CMP ni se confunde con `stage_key`.
+
+### 10.29.2. Cadena de procesamiento a distinguir
+
+Para cada ruta y unidad de adjudicación, conservar los siguientes hitos como eventos/observaciones distintos:
+
+1. **Entrada declarada (`A2_DST_DECL`):** artefacto/paquete que A2 declara que importará, con referencia exacta a N14, formato, versión, mapping y destino. La declaración no demuestra disponibilidad ni recepción.
+2. **Recepción efectiva:** payload exacto recibido por la instancia A2, con identidad/revisión, integridad de bytes en el ámbito declarado, canal N07, evento y lineage. No se infiere desde el envío ni desde el artefacto declarado.
+3. **Parseo/decodificación:** intento y resultado de interpretar bytes conforme al formato/versionado. Registrar por separado parse success, parse failure y causa; parsear no implica validez semántica.
+4. **Validación estructural y semántica:** comprobar estructura, tipos, dominios, obligatoriedad y reglas aplicables al payload decodificado. Mantener conformidad sintáctica separada de conformidad semántica y de compatibilidad del destino.
+5. **Resolución del mapping M:** resolver mapping_id/version para cada propiedad/clase/owner/versión/snapshot, incluidos split/merge, conversiones, pérdidas y elementos no mapeados. Mapping disponible o resuelto no prueba que se haya aplicado.
+6. **Aplicación efectiva (FP-06):** evento trazable que aplica el paquete exacto al destino identificado. Reutilizar FP-06; no crear otro predicado de importación/aplicación.
+7. **Verificación post-aplicación (FP-07):** snapshot/observación exacta del destino y adjudicación del estado real mediante FP-01…05 aplicables. Reutilizar FP-07; no derivar conformidad de un log o código de salida.
+8. **Identidad y provenance (FP-08):** vincular formato, payload, recepción, ejecución A2, mapping, evento de aplicación, destino, snapshot y evidencia. FP-08 soporta, no sustituye, FP-06/FP-07.
+
+### 10.29.3. Fallos y estados no intercambiables
+
+Distinguir al menos: fallo de transporte/recepción; fallo de integridad del artefacto; formato/codificación desconocidos o incompatibles; parseo/decodificación; validación estructural; validación semántica/reglas; mapping ausente/ambiguo/incompatible; incompatibilidad del destino; fallo de aplicación; aplicación ejecutada con post-check fallido; y estado no observable.
+
+El estado de cada hito se conserva como observado con su evidencia o UNKNOWN cuando falte cobertura. `RECEIVED` no implica `PARSED`; `PARSED` no implica `VALIDATED`; `VALIDATED` no implica `MAPPED`; `MAPPED` no implica `APPLIED`; `APPLIED` no implica `POSTCHECK_PASS`. La ausencia de registro no demuestra fallo ni ausencia de evento.
+
+Los errores intermedios son diagnóstico/provenance y no nuevas familias confirmatorias. La adjudicación final continúa usando DEC-C10-085/086/087/088, FP-01…08 y los estados ya aceptados; no se duplican ni se suman predicados.
+
+### 10.29.4. Tiempo, ruta y evidencia
+
+El vocabulario `stage_key` sigue exactamente los siete valores aceptados por DEC-C10-071. Los hitos internos de A2 (recepción, parseo, validación y resolución M) no se convierten en nuevos `stage_key`: se registran como eventos temporales con identidad, instante DGP, actor, artefacto, etapa de configuración relacionada, ruta/route_record_id, snapshot, cobertura y provenance. `A2_DST_DECL` y `A2_DST_APPLIED` siguen representando declaración y estado efectivamente aplicado, no los pasos internos del importador.
+
+F y A se adjudican independientemente. La evidencia no se hereda entre rutas ni etapas. La falta de cobertura, mapping o snapshot conserva UNKNOWN; incompatibilidad sin mapping aprobado produce NOT_COMPARABLE; FAIL requiere contradicción/no aplicación demostrada con cobertura suficiente. No se infiere ausencia a partir de registros faltantes.
+
+### 10.29.5. Límites
+
+No se conoce la implementación A2, su protocolo, formato concreto, parser, política de errores, estrategia transaccional, mapping físico ni destino real. No se adjudica N15 como CMP independiente ni se asignan IDs; no se crean registros NODE/EDGE/REF/CMP ni columnas. No se altera el catálogo U_G, los siete `stage_key`, F*, N16 ni los predicados FP existentes. IAM no se sella y no se declara cobertura.
+
+No autoriza acceso técnico, captura, pruebas de importación/conectividad, parser, validator, fixtures, implementación, Design Freeze ni ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
