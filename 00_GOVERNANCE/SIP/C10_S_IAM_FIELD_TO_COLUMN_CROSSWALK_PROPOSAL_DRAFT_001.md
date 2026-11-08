@@ -561,3 +561,80 @@ Un PASS solo demuestra anclaje de identidad. No prueba pertenencia exhaustiva de
 Permanecen OPEN: roster CMP exhaustivo; mappings de CMP P1 y otros CMP no identificados; ubicación física del mapping; dominio y cardinalidad de las referencias IAM por capa; integración exacta de MET; mappings de REF/RUL y mapping M; evidencia observacional y cobertura real; controles técnicos de unicidad y resolución.
 
 Esta propuesta no sella IAM, no declara cobertura, no modifica DEC-C10-082, no añade columnas/FK/tablas, no autoriza parser, resolver, validator, fixtures, implementación, Design Freeze ni ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 10.21. Reconciliación del catálogo U_G N01–N23 con membership IAM CMP/PAR/REF/RUL/MET
+
+**Estado:** PROPUESTA DOCUMENTAL DE CLASIFICACIÓN — pendiente de aceptación. Reutiliza U_G §§81–84, el contrato de frontera §82, DEC-C10-058/059/065/069/082 y el contrato IAM L1–L4. No crea nodos ni instancias y no convierte el catálogo candidato en roster observado.
+
+### 10.21.1. Distinción normativa: NODE no equivale a CMP
+
+U_G NODE es una clase de registro del grafo de auditoría. CMP es una clase de objeto del dominio de instancia dentro del IAM. Por tanto:
+- todo CMP que entre en U_G debe tener un NODE anchor exacto conforme a DEC-C10-082;
+- no todo NODE U_G es CMP;
+- la pertenencia a NODE, la clasificación P0/P1/DUAL_P0_P1/NA y el rol semántico no demuestran por sí solos membership CMP;
+- PAR, REF, RUL y MET conservan sus identidades/clases propias y no se convierten en CMP por estar asociados a un NODE;
+- P2 es perímetro causal transversal, no clase de boundary_class ni clase IAM.
+
+DEC-C10-058 fija el criterio conceptual de unidad lógica y clasificación P0/P1/P2; DEC-C10-059 fija el dominio de boundary_class. DEC-C10-082 fija la cardinalidad del anclaje CMP↔NODE por snapshot. Ninguna de estas decisiones declara que los 23 roles U_G sean 23 CMP ni determina el roster técnico real.
+
+### 10.21.2. Clasificación provisional de los 23 roles U_G
+
+La columna “IAM candidato” es una hipótesis de clase primaria que debe resolverse a partir de identidad contractual y descomposición observada. “No CMP por función” no significa inexistencia del nodo: significa que su papel conceptual no es un componente CMP. “Condicional” exige evidencia de identidad/versión propia y criterio de frontera antes de asignar clase.
+
+| U_G | Rol candidato | IAM candidato | Regla de reconciliación / condición |
+|---|---|---|---|
+| N01 | Unidad/sistema anfitrión y S0 | Condicional: unidad lógica / NODE raíz; objetos host descompuestos pueden ser CMP P1 | La unidad lógica se representa por NODE raíz LOGICAL_SERVICE_UNIT y SNAPSHOT.unit_id/FK exacta; host/SO no se fusiona con la unidad ni se declara CMP sin identidad contractual propia |
+| N02 | Asignación Z | No CMP; diseño/registro de asignación | Mantener como objeto de diseño/medición según U_G; no introducir en roster CMP |
+| N03 | Política/proceso B | No CMP por defecto; intervención/política | Identidad de política y eventos de provisión no son automáticamente componentes de la instancia destino |
+| N04 | Paquete adaptador focal | CMP candidato P0/P1 según frontera funcional | CMP solo si tiene component_id/clase/versión contractuales propios; artefacto/paquete puede ser parte de CMP o CMP separado si supera criterio de granularidad §82.2 |
+| N05 | Runtime/sidecar focal | CMP candidato P1 o DUAL_P0_P1 | Separar de N04 solo si identidad, versión, fallo, interfaz, recursos o exposición causal difieren materialmente; sidecar no se presupone CMP autónomo |
+| N06 | Librerías/dependencias focales | CMP candidato P1, posiblemente múltiple | Cada dependencia solo es CMP si objeto contractual independiente; lockfile/SBOM y dependencia transitiva son evidencia/relación, no membership automática |
+| N07 | Endpoint/canal focal | Condicional: REF/interfaz o CMP | Normalmente interfaz/endpoint referido por REF o atributo del CMP; CMP separado solo si es servicio/componente con identidad, lifecycle y contrato propios |
+| N08 | C_dep | No CMP; MET/medición técnica | Constructo/resultado de evaluación, no componente técnico |
+| N09 | Predicados A_f* | No CMP; MET/constructo | Predicados y dictámenes de accesibilidad permanecen separados de los componentes que evalúan |
+| N10 | Transformación focal τ2/F1 | No CMP por defecto; transformación/objeto semántico | Identidad transformacional TID/SID/RID no se reutiliza como component_id; mapping explícito si existe implementación técnica CMP |
+| N11 | Aplicación F2 | No CMP por defecto; transformación/operación semántica | La operación o etapa no es componente salvo implementación autónoma contractual diferenciada |
+| N12 | Estado destino | No CMP; estado/datos | Configuración/estado se representa como PAR/NODE/artefacto según identidad y granularidad; no como CMP por nombre |
+| N13 | Exportador A1 | CMP candidato de ruta alternativa | CMP solo con identidad contractual independiente; si es una capacidad dentro de otro CMP, se conserva como rol/función y relación |
+| N14 | Formato/artefacto de intercambio | Condicional: PAR/REF/artefacto de datos, raramente CMP | Formato/contrato puede ser REF o metadato/versionado; el archivo/artefacto concreto no es CMP salvo que sea componente ejecutable independiente |
+| N15 | Importador A2 | CMP candidato de ruta alternativa | Mismo criterio de N13; no se presume existente ni funcional |
+| N16 | Oráculo/criterio F* | No CMP; MET y/o activo de evaluación P2 | Oráculo, criterio, evaluator y evidencia deben permanecer separados del mecanismo focal; si existe software de oráculo, su implementación puede tener CMP propio, sin confundirlo con el criterio MET |
+| N17 | Autorizaciones C_auth | Condicional: PAR/POL/REF y/o servicio IAM técnico | La regla/estado de autorización no es automáticamente CMP; un servicio de autorización independiente puede ser CMP P1 si tiene identidad contractual propia. Diferenciar autorización basal de ACL/credenciales técnicas |
+| N18 | Recursos/capacidad compartida | Condicional: recurso P1/P2, no CMP por defecto | Registrar capacidad, disponibilidad, asignación y consumo separadamente; recurso compartido solo es CMP si corresponde a componente software contractual; recurso físico/cuota es recurso/condición, no CMP |
+| N19 | Configuración fuente/destino | PAR y/o NODE de estado/configuración | Las propiedades atómicas pertenecen al roster PAR con owner CMP exacto; no crear CMP por cada configuración ni confundir configuración con el componente owner |
+| N20 | Dependencias/API/servicios compartidos | Condicional: CMP, REF o externo | Dependencia software bajo contrato de instancia puede ser CMP; API/interface puede ser REF; servicio fuera del control/contrato se mantiene externo. Requiere identidad, owner, versión y boundary |
+| N21 | Servicios externos | Externo; CMP solo en su propio dominio contractual si se modela explícitamente | En el IAM de la instancia focal no se incorporan como CMP internos por el mero consumo; registrar identidad/contrato externo, interfaz, versión, disponibilidad, límites y relaciones P2 |
+| N22 | Información/conocimiento agente | No CMP por defecto; mecanismo/estado informacional P2 | Conocimiento, aviso y consideración son mecanismos/mediadores posteriores; información técnica incorporada al sistema puede ser PAR/REF o componente solo si cumple criterio propio |
+| N23 | Ejecución/Outcome/Value | No CMP; eventos/resultados/constructos | Mantener ejecución, Outcome y Value desagregados cuando tengan identidad/tiempo propio; el software evaluado puede ser CMP, pero no el resultado |
+
+### 10.21.3. Regla para construir el roster CMP completo
+
+El roster completo no se obtiene enumerando los 23 roles U_G ni copiando los IDs de una tabla candidata. Debe construirse por contrato e instancia:
+1. partir de contract_id/version e instance_id/version exactos;
+2. enumerar objetos con identidad contractual component_id, component_class y versión/revisión propia;
+3. decidir granularidad conforme a §82.2, evitando tanto agregación que oculte vías como fragmentación por archivo/hash/nombre;
+4. clasificar boundary_class conforme DEC-C10-059 sin inferir membership CMP desde P0/P1;
+5. mapear cada CMP aplicable a exactamente un NODE anchor por snapshot, y garantizar unicidad inversa, conforme DEC-C10-082;
+6. vincular relaciones y dependencias mediante EDGE/REF según su naturaleza; REF no se infiere de FK ni de endpoint;
+7. mantener PAR/RUL/MET en sus clases propias y enlazar sus owners/referencias sin duplicar identidad;
+8. declarar universo, scope, regla de enumeración, fuentes y cobertura. Sin enumeración exhaustiva, roster completeness=UNKNOWN/PARTIAL, nunca PASS por ausencia de IDs adicionales.
+
+### 10.21.4. Matriz de decisión de frontera vs membership
+
+La adjudicación de cada objeto debe responder separadamente:
+- **Identidad:** ¿existe objeto contractual autónomo con component_id/version propios?
+- **Granularidad:** ¿difiere materialmente en función, cambio, fallo, interfaz, permisos, recursos, ruta o evidencia?
+- **Clase IAM:** ¿CMP, PAR, REF, RUL o MET, sin doble contabilización?
+- **Frontera:** ¿P0_CONFIG, P1_ENVIRONMENT, DUAL_P0_P1 o NA según DEC-C10-059?
+- **Relación:** ¿EDGE estructural, REF de dominio, dependencia externa o vínculo probatorio?
+- **Snapshot:** ¿qué registro exacto y qué mapping versionado lo ancla?
+- **Evidencia/cobertura:** ¿qué fuentes y denominador sustentan membership, exclusión y completitud?
+
+Las preguntas son independientes: un objeto puede ser P1 y no CMP; puede ser CMP P1 y tener relaciones P2; una REF puede conectar dos CMP sin ser CMP; un parámetro PAR puede ser propiedad de un CMP sin ser CMP; un servicio externo puede ser P2 y no pertenecer al roster interno.
+
+### 10.21.5. Estado y límites
+
+Identidad CMP-SERVICE-LOGIC-001 continúa siendo la única identidad CMP concreta recuperada en el contrato de servicio de referencia, no el roster exhaustivo. N04–N07, N13–N15 y N20–N21 son candidatos/condicionales según la clasificación anterior, no instancias existentes. N01 y N17–N19 requieren descomposición adicional. No se asignan IDs ni versiones a candidatos.
+
+La matriz no sella IAM, no adjudica membership de ningún CMP adicional, no cambia boundary_class, no añade columnas/FK/tablas, no crea registros U_G, no declara cobertura ni exclusión causal. No autoriza inspección técnica, captura de snapshots, parser, validator, fixtures, implementación, Design Freeze o ejecución. scientific_execution=false; execution_authorized=false.
