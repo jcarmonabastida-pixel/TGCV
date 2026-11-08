@@ -472,7 +472,7 @@ Esta aceptación no añade campos/FK, no sella IAM ni autoriza implementación o
 
 ## 10.19. Propuesta de integración IAM por etapa, ruta y tiempo
 
-**Estado:** PROPUESTA DOCUMENTAL — pendiente de aceptación. Véase la matriz temporal §14 y matriz abstracta §15.9.
+**Estado:** ACCEPTED — DOCUMENTAL por DEC-C10-088.
 
 El IAM/crosswalk debe resolver, sin inferencia nominal, la tupla de cada observación y transición: contrato/instancia y versiones; CMP owner/NODE anchor; object/record identities; `stage_key`; snapshot y snapshot record; route_id/route_record_id; coverage_scope_id y universe_definition/version; parameter_key/rule_id y manifest_record_id/revision; mapping_id/version; evidencia y su predicado/afirmación; instante DGP de generación y observación. `stage_key`, reloj DGP `t0…t9`, SNAPSHOT.phase y step_k son ejes distintos y requieren enlaces explícitos.
 
