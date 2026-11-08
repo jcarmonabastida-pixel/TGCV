@@ -747,3 +747,64 @@ La propuesta §15.1 queda aceptada conforme a DEC-C10-084. Para `PAR-SVC-ENABLED
 Se acepta la preservación independiente de `RUL-SVC-ENABLE-PROFILE-01`, las adjudicaciones independientes F1/A1 y la separación entre destino declarado y aplicación efectiva F2/A2. La composición exige mappings explícitos y versionados; no se presume transitividad ni equivalencia por literales físicos.
 
 Rigen estados y límites de DEC-C10-084. No se aprueban codificaciones ni mappings físicos, no se adjudican resultados observados, no se sella IAM ni se autoriza implementación o ejecución científica.
+
+### 15.3. Predicados candidatos de adjudicación C_SRC→F1_S2 / C_SRC→A1_S1
+
+**Estado:** propuesta documental pendiente de aceptación. Especializa DEC-C10-083/084; no afirma observaciones ni mappings implementados. Se aplica exclusivamente a `PAR-SVC-ENABLED`, `PAR-SVC-PROFILE` y `RUL-SVC-ENABLE-PROFILE-01`.
+
+#### A. Unidad de adjudicación
+
+Cada adjudicación es independiente por la tupla:
+
+`contract_id/version + instance_id/version + component_id + source_snapshot_record + target_snapshot_record + stage_key + route_id/route_record_id + coverage_scope_id + parameter_key/rule_id + mapping_id/version`.
+
+La comparación F1 usa `stage_key=F1_S2` y la ruta F exacta; la comparación A1 usa `stage_key=A1_S1` y la ruta A exacta. El snapshot C_SRC de referencia debe estar fijado explícitamente en el envelope del universo y ser el mismo baseline lógico para ambas comparaciones, salvo que el diseño declare y versiona baselines separados ex ante. Ninguna inferencia se realiza desde SNAPSHOT.phase, timestamp, texto libre o familia F/A sin route_id exacto.
+
+#### B. Cinco familias de predicados
+
+| Familia | Predicado lógico | PASS exige | FAIL exige |
+|---|---|---|---|
+| Estado PAR | `P-STATE(k,r)` | Estado fuente y salida observados y conformes; VALUE preservado en ambos extremos para estos PAR | Contradicción observada y cubierta: estado no VALUE, ABSENT/NULL o pérdida/alteración de estado |
+| Valor/tipo/dominio PAR | `P-VALUE(k,r)` | Decodificación total/versionada; tipo y dominio válidos; significado lógico idéntico | Contradicción demostrada: BOOL invertido/colapsado o ENUM fusionado/perdido/alterado |
+| Regla RUL | `P-RUL(r)` | Misma identidad/versionado lógico, AST/operandos, efecto REQUIRE, scope y semántica después de normalización aprobada | Regla ausente/alterada o implicación/efecto/scope contradictorios, con cobertura suficiente |
+| Identidad y alcance | `P-BIND(r)` | CMP owner, snapshots, etapa, ruta, scope, registros y mapping/version resueltos exactamente | Colisión, contradicción de identidad, scope o referencia demostrada |
+| Procedencia probatoria | `P-EVID(r)` | EVIDENCE_REGISTER y CLAIM_EVIDENCE_LINK resuelven fuente, método, custodio, captura, integridad y predicado respaldado | Evidencia contradictoria, inválida o procedencia rota demostrada |
+
+Donde `k∈{PAR-SVC-ENABLED, PAR-SVC-PROFILE}` y `r∈{F1,A1}`. Cada familia se registra por separado; no se suman en una puntuación ni se permite que un PASS compense un FAIL.
+
+#### C. Instanciación por ruta
+
+Para cada ruta se crean, conceptualmente, estas adjudicaciones separadas:
+
+- `P-STATE(PAR-SVC-ENABLED,r)`
+- `P-VALUE(PAR-SVC-ENABLED,r)`
+- `P-STATE(PAR-SVC-PROFILE,r)`
+- `P-VALUE(PAR-SVC-PROFILE,r)`
+- `P-RUL(r)`
+- `P-BIND(r)`
+- `P-EVID(r)`
+
+La matriz de observaciones debe conservar `r=F1` y `r=A1` como unidades distintas. No se crea un predicado agregado F1+A1 que permita compensación o imputación cruzada.
+
+#### D. Reglas específicas
+
+1. **BOOL:** comparar los valores lógicos decodificados; `false→false` y `true→true`. Si la codificación física cambia, M debe cubrir el dominio completo y ser determinista/versionado.
+2. **ENUM:** resolver cada símbolo observado al significado lógico STANDARD/READ_ONLY/DISABLED. M debe cubrir el dominio completo, ser biyectivo y versionado; no basta con que el símbolo observado tenga una traducción si el mapping contractual global es parcial.
+3. **Estado:** para ambos PAR, VALUE debe estar presente en C_SRC y F1_S2/A1_S1. Ausencia de fila, captura o evidencia no demuestra ABSENT; se mantiene UNKNOWN salvo que el universo y cobertura permitan demostrar ausencia.
+4. **RUL:** evaluar la preservación de `ENABLED=true ⇒ PROFILE∈{STANDARD, READ_ONLY}`, efecto REQUIRE y scope lógico. La comprobación FP-03 es preservación estructural/semántica; no prueba que el runtime haya aplicado la regla (FP-06/FP-07).
+5. **Owner y binding:** la identidad del CMP debe resolver al NODE anchor por snapshot según DEC-C10-082. Los PAR no crean NODE ni se vinculan por similitud nominal.
+6. **Evidencia:** el analizador no recibe DGP truth ni valores potenciales. La fuente de referencia y la salida observada se fijan por artefactos/snapshots exactos; el adjudicador no puede inferir equivalencia desde el nombre de clave.
+
+#### E. Resultados y agregación
+
+- `PASS`: todos los requisitos de ese predicado están observados y cubiertos, con identidad y mapping exactos.
+- `FAIL`: contradicción sustantiva demostrada con universo/cobertura suficientes. No usar FAIL por ausencia de registro cuando la cobertura es incompleta.
+- `UNKNOWN`: snapshot, observación, cobertura, evidencia, mapping o resolución insuficientes.
+- `NOT_COMPARABLE`: contratos/versiones/namespaces incompatibles sin mapping aprobado.
+- `NA`: no aplicable ex ante; no admisible para estos dos PAR ni la regla en las dos rutas del contrato base.
+
+El resultado de una ruta es un vector de estados por predicado, no un único PASS binario. Si se requiere resumen, se reporta el peor estado sin ocultar componentes: cualquier FAIL permanece FAIL; en ausencia de FAIL, cualquier UNKNOWN impide PASS global; NOT_COMPARABLE se mantiene explícito.
+
+#### F. Límites
+
+Estos predicados definen criterios de adjudicación, no valores concretos, snapshots, fuentes, mappings físicos, resultados ni truth. No definen todavía tolerancias/oráculo técnico ni predicados de compatibilidad FP-04, seguridad FP-05, aplicación FP-06 o verificación post-aplicación FP-07. No completan IAM ni autorizan fixtures, parser, validator, implementación, Design Freeze o ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
