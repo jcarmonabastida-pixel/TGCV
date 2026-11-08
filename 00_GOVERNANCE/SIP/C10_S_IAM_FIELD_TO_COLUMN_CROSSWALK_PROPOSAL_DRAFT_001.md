@@ -826,3 +826,13 @@ F y A se adjudican independientemente. La evidencia no se hereda entre rutas ni 
 No se conoce la implementación A2, su protocolo, formato concreto, parser, política de errores, estrategia transaccional, mapping físico ni destino real. No se adjudica N15 como CMP independiente ni se asignan IDs; no se crean registros NODE/EDGE/REF/CMP ni columnas. No se altera el catálogo U_G, los siete `stage_key`, F*, N16 ni los predicados FP existentes. IAM no se sella y no se declara cobertura.
 
 No autoriza acceso técnico, captura, pruebas de importación/conectividad, parser, validator, fixtures, implementación, Design Freeze ni ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
+
+## 10.30. DEC-C10-092 — aceptación conceptual de N15 (importador A2)
+
+**Estado:** ACCEPTED — DOCUMENTAL (2026-11-08).
+
+Se acepta la descomposición conceptual de N15 propuesta en §10.29: distinguir capacidad/contrato A2, implementación concreta y ejecución temporal; separar entrada declarada, recepción efectiva, parseo, validación estructural/semántica, resolución del mapping M, aplicación FP-06, verificación post-aplicación FP-07 y procedencia FP-08. N15 no se presume CMP autónomo; solo se clasificará como CMP si se demuestra identidad contractual, lifecycle y frontera propios.
+
+Se reutilizan los siete stage_key y los contratos FP-01…FP-08 y DEC-C10-086/087/088. Los hitos internos no crean etapas ni predicados confirmatorios. F y A permanecen independientes; la evidencia no se hereda entre etapas/rutas. La ausencia de registro no demuestra ausencia de evento.
+
+**Pendiente:** implementación/protocolo A2, formato y parser reales, reglas de validación, mapping físico, destino, eventos, snapshots, cobertura y evidencia. La aceptación no adjudica N15 como CMP, no crea IDs/filas/columnas, no sella IAM ni autoriza captura, pruebas, parser, validator, implementación, Design Freeze o ejecución.
