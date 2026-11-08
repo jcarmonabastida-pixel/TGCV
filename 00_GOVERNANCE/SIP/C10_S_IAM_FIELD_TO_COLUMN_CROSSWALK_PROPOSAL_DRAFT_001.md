@@ -388,3 +388,14 @@ La falta de evidencia/cobertura produce UNKNOWN; la contradicción demostrada pr
 La adjudicación de `PAR-SVC-ENABLED` y `PAR-SVC-PROFILE` en las siete etapas DEC-C10-071 queda aceptada conforme a DEC-C10-083 y matriz §18.6–18.7: P0 REQUIRED; VALUE tipado en configuración declarada; preservación semántica independiente en F1/A1; evidencia independiente del estado aplicado en F2/A2; sin DEFAULT contractual; ABSENT/NULL no admisibles si la ausencia está demostrada con cobertura suficiente.
 
 La falta de snapshot, mapping o cobertura es UNKNOWN. Runtime permanece separado de `stage_key`. Esta aceptación no adjudica observaciones ni fija valores por escenario, no sella IAM ni autoriza implementación/ejecución.
+
+
+### 10.11. Equivalencia semántica de PAR — referencia a matriz §15.1
+
+**Estado:** propuesta documental pendiente de aceptación.
+
+La matriz abstracta §15.1 especifica el contrato candidato reutilizable para equivalencia semántica de `PAR-SVC-ENABLED` y `PAR-SVC-PROFILE`: identidad exacta BOOL; biyección total, inyectiva y versionada ENUM sobre STANDARD/READ_ONLY/DISABLED; preservación separada de estado y valor; mappings F1 y A1 independientes; declaración destino separada de aplicación efectiva; y conservación independiente de `RUL-SVC-ENABLE-PROFILE-01`.
+
+El IAM deberá referenciar el `mapping_id/version` y el contrato semántico aprobado, sin inferir equivalencia por igualdad de literales físicos ni por igualdad de nombre de parámetro. Los resultados se adjudican por etapa/ruta; falta de evidencia produce UNKNOWN y versiones incompatibles sin mapping aprobado producen NOT_COMPARABLE.
+
+No se aprueban codificaciones físicas, tablas concretas, valores por escenario, oráculo ni resultados observados. No se sella IAM ni se autoriza implementación o ejecución científica.
