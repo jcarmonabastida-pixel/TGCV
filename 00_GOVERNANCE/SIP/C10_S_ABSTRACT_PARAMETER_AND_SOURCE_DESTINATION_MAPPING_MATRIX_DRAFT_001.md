@@ -821,3 +821,57 @@ F1 y A1 se adjudican independientemente por parámetro/regla, con identidad exac
 Se mantienen las reglas BOOL/ENUM, preservación RUL, estados y evidencia de §15.3. PASS requiere observación, cobertura y evidencia suficientes; FAIL requiere contradicción demostrada con cobertura suficiente; falta de información produce UNKNOWN; incompatibilidad sin mapping aprobado produce NOT_COMPARABLE; NA solo procede por inaplicabilidad ex ante y no aplica al contrato base.
 
 Esta aceptación no define mappings físicos, valores observados, tolerancias ni oráculo; no sella IAM ni autoriza fixtures, parser, validator, implementación, Design Freeze o ejecución científica.
+
+## 15.5. Predicados candidatos de comparación F1/A1→destino declarado F2/A2
+
+**Estado:** PROPUESTA DOCUMENTAL — pendiente de aceptación. Especializa DEC-C10-083/084/085. No adjudica observaciones ni demuestra aplicación efectiva.
+
+### A. Unidad de comparación
+
+Se mantienen dos comparaciones independientes:
+
+- Ruta F: `F1_S2 → F2_DST_DECL`.
+- Ruta A: `A1_S1 → A2_DST_DECL`.
+
+Cada comparación fija contrato/versión, instancia/versión, CMP owner y NODE anchor por snapshot, snapshot y registro intermedio, snapshot y registro destino declarado, `stage_key`, `route_id/route_record_id`, `coverage_scope_id`, `parameter_key/rule_id` y `mapping_id/version`. No se infiere identidad por nombre, posición, timestamp ni semejanza de valores.
+
+### B. Dos dimensiones no compensables
+
+**1. Conformidad semántica del destino declarado (`P-DECL`).** Comprueba si la configuración declarada F2/A2 conserva el significado lógico de la salida intermedia correspondiente. Para cada PAR evalúa separadamente estado, tipo/dominio y valor semántico; para RUL evalúa identidad lógica, efecto REQUIRE, operandos, scope y semántica normalizada mediante mapping aprobado. Se aplican DEC-C10-068 y DEC-C10-084: BOOL exacto; ENUM mediante biyección total, inyectiva y versionada sobre STANDARD/READ_ONLY/DISABLED. La conformidad se calcula por parámetro/regla y ruta.
+
+**2. Conformidad probatoria de la transición (`P-TRANS`).** Comprueba que existe evidencia íntegra y trazable del proceso de transformación que vincula la salida F1/A1 exacta con el artefacto declarado F2/A2 exacto, y que el artefacto declarado evaluado es realmente el producto declarado de esa transición. Requiere registros de proceso, entradas/salidas identificadas, mapping/versiones, procedencia, captura e integridad, con cobertura suficiente. La mera equivalencia entre dos artefactos no prueba que el proceso haya producido el destino; un enlace o declaración sin evidencia del proceso no basta.
+
+Ambas dimensiones se reportan por separado. `P-DECL=PASS` no implica `P-TRANS=PASS`; un resultado no compensa al otro. F y A tampoco se compensan.
+
+### C. Predicados por objeto
+
+Para cada ruta `r∈{F,A}`:
+
+- `P-DECL-STATE(k,r)`: estado PAR intermedio/destino declarado.
+- `P-DECL-VALUE(k,r)`: tipo, dominio y significado lógico BOOL/ENUM.
+- `P-DECL-RUL(r)`: preservación semántica de `RUL-SVC-ENABLE-PROFILE-01`.
+- `P-DECL-BIND(r)`: identidad CMP, snapshots, registros, etapa, ruta, scope y mapping exactos.
+- `P-TRANS-LINEAGE(r)`: evidencia de que la transición identificada produjo el artefacto declarado.
+- `P-TRANS-EVID(r)`: integridad, procedencia, suficiencia y correspondencia de la evidencia con la afirmación.
+
+Estas etiquetas son descomposición operativa de las familias SM/FP existentes, no autorización para crear predicados confirmatorios duplicados ni doble contabilización. La matriz debe conservar la asignación primaria SM/FP vigente.
+
+### D. Resultados
+
+Cada predicado recibe uno de los estados:
+
+- `PASS`: equivalencia semántica o lineage probatorio demostrado, según la dimensión evaluada, con identidad, mapping, observación, cobertura y evidencia suficientes.
+- `FAIL`: diferencia semántica o contradicción de lineage demostrada con cobertura suficiente.
+- `UNKNOWN`: artefacto, observación, cobertura, mapping, lineage o evidencia insuficientes.
+- `NOT_COMPARABLE`: versiones/namespaces incompatibles sin mapping aprobado.
+- `NA`: inaplicabilidad ex ante justificada; no admisible para estos PAR/RUL en las rutas del contrato base.
+
+La falta de registro no demuestra ABSENT ni demuestra que la transición no ocurrió. FAIL requiere contradicción o ausencia exhaustivamente demostrada dentro de un universo/cobertura cerrados.
+
+### E. Frontera con aplicación efectiva
+
+`F2_DST_DECL` y `A2_DST_DECL` son configuraciones declaradas. Ningún resultado de §15.5 acredita que se instalaron, activaron o quedaron efectivamente vigentes. La aplicación y observación post-aplicación pertenecen a los predicados FP-06/FP-07 y a las etapas `F2_DST_APPLIED`/`A2_DST_APPLIED`. No se define aquí runtime, tolerancias, oráculo ni criterio de éxito de aplicación.
+
+### F. Límites
+
+Esta propuesta no define codificaciones ni mappings físicos, no crea registros reales, fixtures, columnas o FK, no sella IAM y no autoriza parser, validator, implementación, Design Freeze ni ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
