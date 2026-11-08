@@ -638,3 +638,39 @@ Las preguntas son independientes: un objeto puede ser P1 y no CMP; puede ser CMP
 Identidad CMP-SERVICE-LOGIC-001 continúa siendo la única identidad CMP concreta recuperada en el contrato de servicio de referencia, no el roster exhaustivo. N04–N07, N13–N15 y N20–N21 son candidatos/condicionales según la clasificación anterior, no instancias existentes. N01 y N17–N19 requieren descomposición adicional. No se asignan IDs ni versiones a candidatos.
 
 La matriz no sella IAM, no adjudica membership de ningún CMP adicional, no cambia boundary_class, no añade columnas/FK/tablas, no crea registros U_G, no declara cobertura ni exclusión causal. No autoriza inspección técnica, captura de snapshots, parser, validator, fixtures, implementación, Design Freeze o ejecución. scientific_execution=false; execution_authorized=false.
+
+## 10.22. Resolución conceptual de N01 — unidad lógica, host y S0
+
+**Estado:** PROPUESTA DE DESAMBIGUACIÓN DOCUMENTAL — pendiente de aceptación. Reutiliza DEC-C10-058, DEC-C10-059, DEC-C10-064, DEC-C10-065 y el contrato de frontera §82. No crea instancias técnicas ni cambia las decisiones aceptadas.
+
+### 10.22.1. Dictamen
+
+N01 no debe conservarse como un único objeto indiferenciado «unidad/sistema anfitrión y S0». Esa etiqueta mezcla tres entidades conceptualmente distintas:
+
+1. **Unidad lógica de servicio (objeto raíz):** identidad estable del servicio migrado, definida por contrato funcional/configuracional; independiente del host, pod, contenedor, clúster o ubicación. Es la unidad lógica del estudio, no una afirmación de que el host o toda la plataforma formen parte de ella.
+2. **Host/entorno anfitrión (contexto P1):** infraestructura y realización técnica que alojan, ejecutan o condicionan el servicio. Deben representarse como NODE P1 separados solo cuando exista identidad/versión y alguna diferencia material de intervención, fallo, interfaz, permisos, recursos, exposición causal, ruta o evidencia conforme al contrato de granularidad §82. No se presupone host concreto ni que el entorno sea un único nodo.
+3. **S0 (estado basal):** estado temporal observado de la unidad y su contexto antes de la intervención; pertenece al registro SNAPSHOT y a sus referencias exactas, no es un segundo CMP ni debe confundirse con el host. Un snapshot fija snapshot_id + snapshot_object_record_id y apunta a la revisión exacta del NODE raíz mediante la FK compuesta aceptada.
+
+### 10.22.2. Proyección U_G
+
+| Elemento | Representación | boundary_class | Condición |
+|---|---|---|---|
+| Unidad lógica de servicio | NODE raíz con semantic_role=LOGICAL_SERVICE_UNIT; identidad semántica estable en node_id | NA si actúa solo como contenedor de identidad, conforme DEC-C10-059 | Contrato lógico aceptado; identidad concreta de instancia/registro aún no poblada |
+| Host físico/virtual | NODE P1 independiente, solo si supera criterio de granularidad | P1_ENVIRONMENT | Requiere inventario y evidencia de identidad/versión; no inferir del nombre de proveedor o ubicación |
+| Runtime, SO, orquestador, red, storage y capacidad | NODE P1 por objeto/grupo técnicamente justificable | P1_ENVIRONMENT | Separar cuando existan ciclos de cambio, fallos, permisos, recursos o exposiciones materiales diferentes |
+| S0 | SNAPSHOT basal con referencias exactas a unidad raíz y objetos observados | No aplica boundary_class a SNAPSHOT | Captura y evidencia aún no autorizadas ni realizadas |
+| Dependencias/servicios externos | NODE P1 cuando realizan/condicionan el servicio; relaciones P2 en grafo causal | P1_ENVIRONMENT si aplica | Identidad/contrato/versión o caja negra observable; desconocimiento se mantiene ? |
+
+La unidad lógica raíz no absorbe el host, el runtime ni los recursos. Tampoco se divide automáticamente en varios CMP por estar implementada en varios procesos: DEC-C10-058 permite varios procesos para un servicio lógico si comparten un contrato funcional/configuracional único. La separación se justifica por identidad y diferencias materiales, no por despliegue o nombre.
+
+### 10.22.3. Identidad y anclaje
+
+La identidad de la unidad lógica (unit_id) coincide con NODE.node_id del NODE raíz. SNAPSHOT.unit_object_record_id fija la revisión exacta de ese NODE; la FK compuesta incluye snapshot_id según DEC-C10-064/065. La revisión de NODE no se reescribe retroactivamente en snapshots históricos.
+
+El CMP contractual CMP-SERVICE-LOGIC-001 no debe confundirse automáticamente con el NODE raíz: DEC-C10-082 exige un NODE anchor por CMP y snapshot, mientras que el NODE raíz representa la unidad lógica de servicio. Si el mismo objeto de dominio cumple ambas funciones, el mapping deberá declararlo explícitamente y demostrar identidad y cardinalidad; no se presupone que raíz y CMP sean idénticos ni que deban ser dos nodos distintos.
+
+### 10.22.4. Estados y límites
+
+La definición conceptual de unidad lógica y la clasificación P0/P1/P2 están aceptadas por DEC-C10-058; el dominio de boundary_class y la regla de raíz SNAPSHOT→NODE están aceptados por DEC-C10-059/064/065. Esta sección propone su aplicación sin ambigüedad a N01.
+
+No se ha identificado host, entorno, runtime, clúster, servicio externo ni registro basal real. El inventario permanece sin observación y la cobertura NONE donde no existe inspección. No se asignan node_id, object_record_id, snapshot_id, component_id ni mapping IDs. No se sella IAM, no se declara roster exhaustivo y no se autoriza acceso técnico, captura de snapshots, implementación, Design Freeze o ejecución. scientific_execution=false; execution_authorized=false.
