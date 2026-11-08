@@ -950,3 +950,13 @@ La columna «Estados candidatos» de §13 es preliminar y queda precisada por §
 #### Límites
 
 La tabla no asigna valores concretos a los escenarios, no fija tablas físicas de conversión, no adjudica predicados de preservación ya ejecutados y no completa la cobertura por snapshot. No sella IAM, no crea fixtures, parser, validator ni mappings físicos y no autoriza Design Freeze, implementación o ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
+
+## 18.7. Aceptación — DEC-C10-083
+
+**Estado:** ACEPTADA — contrato documental de aplicabilidad.
+
+La tabla de §18.6 queda aceptada para `PAR-SVC-ENABLED` y `PAR-SVC-PROFILE` en las siete etapas DEC-C10-071. Se confirma P0 REQUIRED en todas ellas; VALUE tipado en las posiciones declarativas; preservación semántica independiente en F1/A1; y evidencia del estado efectivamente aplicado en F2/A2.
+
+No hay DEFAULT contractual; ABSENT/NULL no son admisibles cuando su ausencia se demuestra con cobertura suficiente. La falta de evidencia o cobertura produce UNKNOWN, no ABSENT ni NA. `E_dst/runtime` permanece fuera de `stage_key`.
+
+Rigen los detalles y límites de DEC-C10-083. La aceptación no adjudica observaciones, no asigna valores por escenario, no sella IAM ni autoriza mappings físicos, implementación o ejecución científica.
