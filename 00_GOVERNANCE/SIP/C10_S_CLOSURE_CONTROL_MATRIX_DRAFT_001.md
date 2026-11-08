@@ -2001,3 +2001,12 @@ Se acepta la unidad lógica de servicio como NODE raíz `LOGICAL_SERVICE_UNIT`, 
 **Cierre:** ambigüedad conceptual N01 = cerrada documentalmente. Mapping CMP↔raíz, identidad/registro raíz, host/entorno, snapshots y evidencia = OPEN/UNKNOWN. DEC-C10-082 permanece sin cambios.
 
 No hay registros ni cobertura observados; no se sella IAM ni se autoriza captura, implementación, Design Freeze o ejecución científica. scientific_execution=false; execution_authorized=false.
+## 92 — Reconciliación histórica del anchor CMP frente al NODE raíz
+
+**Estado:** reconciliación documental conforme DEC-C10-089.
+
+Se revisan §§10.6–10.7 del crosswalk: la regla aceptada DEC-C10-082 define un NODE anchor único por CMP y snapshot, pero no adjudica que ese anchor sea necesariamente el NODE raíz LOGICAL_SERVICE_UNIT. DEC-C10-089 deja abierta la identidad o separación entre ambos.
+
+**Regla reconciliada:** NODE raíz identifica la unidad lógica; NODE anchor identifica al CMP contractual. Pueden coincidir solo con mapping explícito y evidencia. Si no coinciden, se mantienen separados. La cardinalidad 1:1 CMP↔NODE anchor se conserva sin cambios.
+
+La ambigüedad textual queda reconciliada documentalmente; mapping, registros y evidencia siguen OPEN/UNKNOWN. No se sella IAM ni se autoriza captura, implementación o ejecución.
