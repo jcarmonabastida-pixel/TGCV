@@ -976,3 +976,11 @@ La evidencia de salida debe permitir reconstruir exactamente qué registros se e
 
 **Estado:** DOCUMENTAL PROPOSAL / NOT ACCEPTED / NOT IMPLEMENTED / NOT EXECUTED / NOT AUDITED. `scientific_execution=false`; `execution_authorized=false`.
 
+ 
+### 20.18.11. Registro de aceptación — DEC-C10-081
+
+**Estado:** ACEPTADO — contrato lógico documental conforme a DEC-C10-081 (2026-11-08). La aceptación cubre íntegramente el protocolo de §20.18.1–20.18.10: cinco capas, entradas mínimas, secuencia P0–P11, reglas de identidad/supersession, resultados por capa, separación de pertinencia y cobertura, 18 casos adversariales y requisitos de informe.
+
+Se mantienen sin cerrar los mappings físicos/semánticos, la gramática/escaping/canonicalización del localizador y el vocabulario de predicate. Donde la resolución no sea inequívoca, el resultado será UNKNOWN.
+
+La aceptación no autoriza fixtures, parser, validator, scripts, SQL, implementación, Design Freeze, validación técnica, ejecución del control ni experimento científico. No modifica U_G ni el estado científico TGCV. `scientific_execution=false`; `execution_authorized=false`.
