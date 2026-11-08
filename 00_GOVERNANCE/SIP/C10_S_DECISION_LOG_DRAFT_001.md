@@ -1306,3 +1306,11 @@ Se acepta §15.7 y §10.17 para F2_DST_DECL→F2_DST_APPLIED y A2_DST_DECL→A2_
 F y A se adjudican independientemente. La falta de registro no demuestra no aplicación; UNKNOWN salvo evidencia autoritativa/exhaustiva o contradicción positiva. FP-06 PASS no implica FP-07 PASS. Se reportan por separado aplicación, post-check, procedencia y vector FP-01…05, sin doble contabilización.
 
 No se define herramienta, observación, oráculo, tolerancias o mapping físico; no se sella IAM ni se autoriza implementación, Design Freeze o ejecución científica. Véase el Decision Record DEC-C10-087.
+
+## DEC-C10-088 — Aceptación de integración temporal de adjudicaciones F/A
+
+**Estado:** ACCEPTED — DOCUMENTAL. **Fecha:** 2026-11-08.
+
+Se acepta la integración de la matriz temporal §14, matriz abstracta §15.9 y crosswalk IAM §10.19. Consolida por ruta F/A tres tramos: C_SRC→F1/A1 (DEC-C10-085); F1/A1→F2/A2 declaradas con P-DECL/P-TRANS (DEC-C10-086); y F2/A2 declaradas→aplicadas con FP-06/07/08 (DEC-C10-087). `stage_key`, reloj DGP, SNAPSHOT.phase y step_k son ejes distintos; la evidencia no se transfiere automáticamente entre etapas/rutas/afirmaciones. Se mantienen PASS/FAIL/UNKNOWN/NOT_COMPARABLE/NA, no compensación, cobertura epistémica y ausencia de inferencia causal automática hacia ACC/Reach/ΔT_acc→Value.
+
+Aceptación documental únicamente. No sella IAM, no declara Design Freeze y no autoriza parser, validator, implementación ni ejecución científica. Véase DEC-C10-088.
