@@ -1314,3 +1314,11 @@ No se define herramienta, observación, oráculo, tolerancias o mapping físico;
 Se acepta la integración de la matriz temporal §14, matriz abstracta §15.9 y crosswalk IAM §10.19. Consolida por ruta F/A tres tramos: C_SRC→F1/A1 (DEC-C10-085); F1/A1→F2/A2 declaradas con P-DECL/P-TRANS (DEC-C10-086); y F2/A2 declaradas→aplicadas con FP-06/07/08 (DEC-C10-087). `stage_key`, reloj DGP, SNAPSHOT.phase y step_k son ejes distintos; la evidencia no se transfiere automáticamente entre etapas/rutas/afirmaciones. Se mantienen PASS/FAIL/UNKNOWN/NOT_COMPARABLE/NA, no compensación, cobertura epistémica y ausencia de inferencia causal automática hacia ACC/Reach/ΔT_acc→Value.
 
 Aceptación documental únicamente. No sella IAM, no declara Design Freeze y no autoriza parser, validator, implementación ni ejecución científica. Véase DEC-C10-088.
+
+## DEC-C10-089 — Identidad de unidad lógica raíz y relación con CMP
+
+**Estado:** ACCEPTED — DOCUMENTAL. **Fecha:** 2026-11-08.
+
+Se acepta NODE raíz `LOGICAL_SERVICE_UNIT` como representación de la unidad lógica de servicio, separada conceptualmente del host/entorno y de S0, que se representa como SNAPSHOT basal con pinning exacto. La relación entre NODE raíz y CMP-SERVICE-LOGIC-001 queda OPEN: no se presume identidad ni separación; requiere mapping explícito, versionado y sustentado, compatible con DEC-C10-082.
+
+No se asignan IDs ni se crean registros; no se sella IAM, no se declara roster exhaustivo ni cobertura y no se autoriza acceso técnico, captura, implementación, Design Freeze o ejecución científica. Véase DEC-C10-089.
