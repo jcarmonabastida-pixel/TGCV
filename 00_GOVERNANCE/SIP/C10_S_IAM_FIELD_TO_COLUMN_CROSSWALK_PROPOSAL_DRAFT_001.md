@@ -424,3 +424,15 @@ Los predicados de estado/valor se adjudican separadamente; la regla `ENABLED=tru
 El IAM deberá soportar adjudicaciones independientes por ruta y parámetro/regla, resolviendo CMP owner/NODE anchor, snapshots/registros, stage_key, route_id/route_record_id, coverage_scope_id y mapping_id/version exactos. Las cinco familias (estado PAR; valor/tipo/dominio; RUL; identidad/alcance; procedencia) son organizadoras y se reconcilian con SM/FP; no generan predicados duplicados ni doble contabilización.
 
 La ausencia de observación o cobertura suficiente es UNKNOWN, no ABSENT ni FAIL. FAIL requiere contradicción demostrada con cobertura suficiente. La evidencia de F1 no cubre A1. Esta aceptación no crea columnas/FK/filas IAM, no sella IAM ni autoriza implementación o ejecución científica. Véase DEC-C10-085.
+
+## 10.15. Propuesta de mapping IAM para F1/A1→destino declarado
+
+**Estado:** PROPUESTA DOCUMENTAL — pendiente de aceptación. Véase la matriz abstracta §15.5.
+
+El IAM deberá poder resolver separadamente para F y A: artefacto intermedio exacto, artefacto destino declarado exacto, CMP owner/NODE anchor por snapshot, `stage_key`, ruta/scope, parámetros PAR y regla RUL, mapping/versiones y evidencia del proceso. Se distinguen dos dimensiones no compensables: (i) conformidad semántica del destino declarado respecto de F1/A1 y (ii) conformidad probatoria de la transición que afirma haber producido ese destino.
+
+La primera exige equivalencia de estado, tipo/dominio y valor BOOL/ENUM, y preservación semántica RUL conforme a DEC-C10-084. La segunda exige lineage de proceso y evidencia íntegra que vincule entrada/salida y artefacto declarado; la mera igualdad/equivalencia de artefactos no demuestra que la transformación los conecte causalmente.
+
+Los resultados se adjudican por ruta, sin compensación F/A. UNKNOWN ante cobertura/evidencia insuficientes; FAIL solo ante contradicción o ausencia exhaustivamente demostrada; NOT_COMPARABLE ante incompatibilidad sin mapping aprobado. La configuración declarada no demuestra aplicación efectiva: FP-06/FP-07 y F2/A2 applied quedan fuera de este bloque.
+
+Esta propuesta no añade columnas/FK ni filas IAM, no define mappings físicos, no sella IAM y no autoriza implementación o ejecución científica.
