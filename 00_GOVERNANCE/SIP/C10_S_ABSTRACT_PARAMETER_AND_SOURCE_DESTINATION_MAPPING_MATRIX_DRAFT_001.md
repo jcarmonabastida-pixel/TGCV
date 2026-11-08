@@ -808,3 +808,16 @@ El resultado de una ruta es un vector de estados por predicado, no un único PAS
 #### F. Límites
 
 Estos predicados definen criterios de adjudicación, no valores concretos, snapshots, fuentes, mappings físicos, resultados ni truth. No definen todavía tolerancias/oráculo técnico ni predicados de compatibilidad FP-04, seguridad FP-05, aplicación FP-06 o verificación post-aplicación FP-07. No completan IAM ni autorizan fixtures, parser, validator, implementación, Design Freeze o ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 15.4. Aceptación DEC-C10-085 — adjudicación PAR C_SRC→F1/A1
+
+**Estado:** ACCEPTED — DOCUMENTAL. Véase `00_GOVERNANCE/decisions/DEC-C10-085_PAR_F1_A1_ADJUDICATION_PREDICATES_ACCEPTANCE.md`.
+
+Se acepta §15.3 con reconciliación obligatoria de sus cinco familias organizadoras con el catálogo SM/FP aceptado por DEC-C10-055. Las familias no crean predicados confirmatorios duplicados ni permiten doble contabilización de una misma discrepancia. Se conserva la primacía FP correspondiente: cobertura estructural no sustituye equivalencia semántica; tipo/esquema y significado se distinguen; FP-06 verifica aplicación y FP-07 observa estado aplicado.
+
+F1 y A1 se adjudican independientemente por parámetro/regla, con identidad exacta de CMP, snapshots, etapa, ruta, scope, registros y mapping versionado. El resultado es un vector de estados por predicado, sin compensación entre rutas.
+
+Se mantienen las reglas BOOL/ENUM, preservación RUL, estados y evidencia de §15.3. PASS requiere observación, cobertura y evidencia suficientes; FAIL requiere contradicción demostrada con cobertura suficiente; falta de información produce UNKNOWN; incompatibilidad sin mapping aprobado produce NOT_COMPARABLE; NA solo procede por inaplicabilidad ex ante y no aplica al contrato base.
+
+Esta aceptación no define mappings físicos, valores observados, tolerancias ni oráculo; no sella IAM ni autoriza fixtures, parser, validator, implementación, Design Freeze o ejecución científica.
