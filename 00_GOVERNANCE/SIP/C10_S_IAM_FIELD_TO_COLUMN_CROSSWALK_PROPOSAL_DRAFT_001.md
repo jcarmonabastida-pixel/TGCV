@@ -683,3 +683,18 @@ Se acepta que NODE raíz `LOGICAL_SERVICE_UNIT` represente la unidad lógica de 
 La relación entre NODE raíz y CMP-SERVICE-LOGIC-001 queda OPEN: no se presume identidad ni separación. Solo un mapping explícito, versionado y sustentado podrá resolverla, preservando DEC-C10-082. No se fuerzan uno o dos NODE ni se asignan IDs.
 
 La aceptación es conceptual/documental. No hay identidad raíz observada, host inventariado, snapshots ni cobertura. No sella IAM ni autoriza acceso, captura, implementación, Design Freeze o ejecución. Véase DEC-C10-089.
+## 10.24. Reconciliación de DEC-C10-089 con los contratos históricos CMP↔NODE
+
+**Estado:** RECONCILIACIÓN DOCUMENTAL — aplicación de DEC-C10-089; no modifica DEC-C10-082.
+
+La revisión histórica de §§10.6–10.7 detecta una precisión necesaria. §10.6 utilizaba la expresión «NODE raíz para el CMP focal», mientras que DEC-C10-082 acepta un NODE anchor único por CMP y snapshot. DEC-C10-089 establece que el NODE raíz `LOGICAL_SERVICE_UNIT` y CMP-SERVICE-LOGIC-001 no deben presumirse idénticos ni distintos.
+
+Se resuelve la terminología del siguiente modo:
+1. **NODE raíz de unidad lógica:** representa la unidad lógica de servicio del estudio.
+2. **NODE anchor CMP:** registro U_G exacto que corresponde al CMP contractual en un snapshot conforme DEC-C10-082.
+3. Ambas funciones pueden recaer en el mismo NODE únicamente si un mapping explícito demuestra que se trata del mismo objeto de dominio y satisface identidad/cardinalidad.
+4. Si son objetos distintos, el NODE raíz y el NODE anchor CMP se mantienen diferenciados, con relaciones U_G explícitas y sin duplicar el anchor del CMP.
+5. La regla 1:1 CMP↔NODE anchor de DEC-C10-082 permanece intacta. No implica que todo NODE raíz sea CMP ni que cada unidad lógica tenga necesariamente un CMP idéntico.
+6. La frase «NODE raíz para el CMP» en §10.6 debe leerse como formulación histórica no adjudicativa; DEC-C10-089 gobierna la identidad de la unidad raíz.
+
+Esta reconciliación evita tanto la inferencia de identidad como la inferencia de separación. No añade entidades ni cardinalidades, no cambia el esquema U_G y no crea mappings observados. Permanecen OPEN el mapping concreto, la identidad de registros, el snapshot y la evidencia. No sella IAM ni autoriza captura, implementación, Design Freeze o ejecución.
