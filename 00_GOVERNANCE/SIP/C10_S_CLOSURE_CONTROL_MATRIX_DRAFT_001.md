@@ -1954,3 +1954,16 @@ DEC-C10-082…088 quedan incorporadas al registro de decisiones aceptadas de est
 5. No se infiere FAIL ni ausencia desde un registro inexistente; UNKNOWN/? se mantiene cuando la cobertura no es exhaustiva.
 
 Esta sección reconcilia el estado documental conocido; no declara cerrado ningún control de evidencia no observado, no modifica el estado de aprobación del documento y no autoriza implementación, Design Freeze, validación técnica ni ejecución.
+
+
+## 88 — Estado de especificación del roster CMP y mapping IAM↔U_G
+
+**Corte:** 2026-11-08. **Estado:** PROPUESTA DOCUMENTAL registrada en crosswalk §10.20; pendiente de aceptación.
+
+La identidad del CMP de referencia está documentalmente fijada por DEC-C10-069: CMP-SERVICE-LOGIC-001, clase SERVICE_LOGIC, bajo contrato e instancia versionados. La etiqueta CMP-SERVICE-LOGIC es solo owner/rol lógico. DEC-C10-082 ya acepta el anclaje 1:1 CMP↔NODE por snapshot exacto.
+
+No obstante, el roster total CMP no está demostrado exhaustivo y no se puede inferir CMP=1 de que solo haya un ID concreto identificado. La proyección propuesta reutiliza NODE, SNAPSHOT, EDGE, MET/provenance y los registros U_G de cobertura/evidencia/adjudicación; no autoriza columnas nuevas. La cardinalidad, resolución, evidencia y cobertura deben adjudicarse según DEC-C10-082, manteniendo UNKNOWN cuando la enumeración no sea exhaustiva.
+
+**Clasificación:** contrato de anclaje 1:1 = cerrado documentalmente (DEC-C10-082); identidad CMP de referencia = cerrada documentalmente (DEC-C10-069); proyección field-to-column detallada y roster exhaustivo = definidos parcialmente / pendientes de aceptación y evidencia; mappings P1 y demás CMP = OPEN. No hay IAM sellado ni inventario observado.
+
+No se autoriza implementar el mapping, poblar registros, ejecutar controles, Design Freeze ni ejecución científica. scientific_execution=false; execution_authorized=false.
