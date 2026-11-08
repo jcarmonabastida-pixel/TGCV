@@ -329,3 +329,69 @@ La información técnica solo se considera constitutiva si conjuntamente: (a) es
 Las fichas deben mapearse a las clases I/S/T/R/D/E ya definidas en esta matriz, sin reemplazar la clasificación por una etiqueta universal. Separar: (1) invariancia postulada en el DGP; (2) invariancia definida contractualmente; y (3) no-afectación demostrada empíricamente. Ninguna implica las otras. Para cada condición, conservar unidad, transformación, paso, rama, ventana, verdad del DGP, estado observado, fuente, cobertura, versión, adjudicador y razón de `?`, reutilizando la clave y reglas de propagación ya definidas en §§2–10.
 
 Estas fichas son especializaciones D2 para revisión; no son evidencia empírica, no cierran elegibilidad, no demuestran invariancia y no autorizan implementación, simulación ni ejecución.
+
+
+## 14. Integración temporal de adjudicaciones de configuración y transición C10-S
+
+**Estado:** PROPUESTA DOCUMENTAL — pendiente de aceptación. Reutiliza las etapas, predicados, clases I/S/T/R/D/E y reglas de evidencia de §§2–10; integra DEC-C10-083…087 y la matriz abstracta de mapping §§15.3–15.8. No crea un sistema de predicados paralelo ni adjudica observaciones.
+
+### 14.1. Dos ejes distintos: stage_key y tiempo DGP
+
+La secuencia de siete valores `stage_key` (DEC-C10-071) identifica etapas de configuración/representación:
+
+`C_SRC → F1_S2 / A1_S1 → F2_DST_DECL / A2_DST_DECL → F2_DST_APPLIED / A2_DST_APPLIED`.
+
+No equivale a los tiempos DGP `t0…t9`, a `SNAPSHOT.phase`, ni al paso hipotético `k=1…H`. La matriz temporal (§2) mantiene su reloj causal. El registro de cada observación debe enlazar explícitamente stage_key con snapshot/registro y con el instante DGP de generación/observación, sin inferir correspondencia por orden, timestamp o nombre. La ruta F/A es un eje separado y exige `route_id/route_record_id` exactos.
+
+### 14.2. Crosswalk de etapas y adjudicación
+
+| Etapa de configuración | Unidad de comparación | Predicados/familias primarios | Qué se puede concluir | Qué no se concluye |
+|---|---|---|---|---|
+| `C_SRC` | Artefacto fuente exacto, contrato/instancia, CMP owner y snapshot | Identidad/aplicabilidad/obligatoriedad IAM; cobertura y binding C0 | Baseline fuente identificable y aplicable | No prueba preservación ni accesibilidad causal |
+| `F1_S2` | `C_SRC→F1_S2`, ruta F exacta | §15.3: estado PAR, tipo/dominio/valor, RUL, binding y evidencia; SM/FP primarios según DEC-C10-055 | Conformidad observada de la salida intermedia F | No cubre A1 ni destino/aplicación |
+| `A1_S1` | `C_SRC→A1_S1`, ruta A exacta | Los mismos predicados, adjudicados independientemente | Conformidad observada de la salida intermedia A | No cubre F1 ni destino/aplicación |
+| `F2_DST_DECL` | `F1_S2→F2_DST_DECL`, ruta F exacta | `P-DECL` semántico; `P-TRANS` lineage probatorio; SM/FP primarios sin duplicidad | Conformidad del destino declarado y, por separado, evidencia de que la transición lo produjo | No prueba instalación, activación ni estado runtime |
+| `A2_DST_DECL` | `A1_S1→A2_DST_DECL`, ruta A exacta | Igual que F, adjudicación independiente | Conformidad del destino A declarado y lineage correspondiente | No prueba aplicación efectiva |
+| `F2_DST_APPLIED` | `F2_DST_DECL→F2_DST_APPLIED`, destino y snapshot exactos | FP-06 aplicación; FP-07 post-check mediante FP-01…05 aplicables; FP-08 procedencia/identidad | Evento de aplicación y estado observado post-aplicación, cada uno por separado | FP-06 PASS no implica FP-07 PASS; FP-07 no reconstruye FP-06/08 |
+| `A2_DST_APPLIED` | `A2_DST_DECL→A2_DST_APPLIED`, destino y snapshot exactos | Igual que F, adjudicación independiente | Aplicación y estado observado de A | No hereda evidencia de F |
+
+### 14.3. Vector de adjudicación por ruta
+
+Para cada ruta `r∈{F,A}`, unidad, parámetro/regla y versión, conservar un vector no compensable:
+
+- **Intermedia:** predicados de §15.3/DEC-C10-085 para `C_SRC→F1_S2` o `C_SRC→A1_S1`.
+- **Destino declarado:** `P-DECL` y `P-TRANS` de §15.5/DEC-C10-086, con la asignación primaria SM/FP vigente.
+- **Aplicación y post-check:** FP-06, FP-07 y FP-08 de §15.7/DEC-C10-087; FP-07 se descompone por FP-01…05 aplicables.
+
+No se construye un score ni un booleano agregado que compense predicados, rutas o dimensiones. Los resúmenes de etapa y ruta conservan todos los estados; un FAIL obligatorio permanece visible; si no hay FAIL, cualquier UNKNOWN impide PASS global. NOT_COMPARABLE se mantiene explícito y NA solo se permite por inaplicabilidad ex ante justificada, no para los PAR/RUL/FP obligatorios del contrato base.
+
+### 14.4. Regla de lineage y no transferencia de evidencia
+
+La evidencia debe referenciar el objeto exacto y la afirmación concreta. Una observación C_SRC no acredita F1/A1; evidencia F no acredita A; una salida intermedia no acredita el destino declarado; la equivalencia declarada no acredita que el proceso la produjo; el artefacto declarado no acredita aplicación; un evento FP-06 no acredita por sí solo el estado FP-07. FP-08 soporta procedencia/identidad, pero no reemplaza observación ni evento.
+
+Se permite reutilizar una misma pieza de evidencia en más de un vínculo solo cuando su contenido soporte realmente cada afirmación; cada uso conserva predicado primario y alcance. Un mismo defecto causal no se cuenta dos veces en el agregado confirmatorio, de acuerdo con la reconciliación SM/FP.
+
+### 14.5. Estados y cobertura
+
+Se preservan los estados de DEC-C10-075/076 y DEC-C10-085…087:
+- `PASS`: predicado satisfecho con identidad, mapping, observación, cobertura y evidencia suficientes.
+- `FAIL`: contradicción demostrada con universo/cobertura suficientes; para no aplicación, evidencia autoritativa/exhaustiva o contradicción positiva.
+- `UNKNOWN`: falta de observación, cobertura, identidad, mapping, lineage, evento, destino, snapshot u oráculo suficiente. La falta de registro nunca se convierte automáticamente en ABSENT o no aplicación.
+- `NOT_COMPARABLE`: incompatibilidad de versiones/namespaces sin mapping aprobado.
+- `NA`: inaplicabilidad ex ante justificada, no ausencia de datos.
+
+COV/E_T sigue siendo epistémico: informa qué puede adjudicarse, no cambia por sí mismo la verdad del DGP, la accesibilidad o Reach. La mejora de cobertura puede revelar estado preexistente; no se registra como cambio estructural salvo regla DGP independiente.
+
+### 14.6. Interfaz con la matriz temporal de rutas
+
+Los predicados de configuración alimentan únicamente los componentes que su significado permite. La conformidad de PAR/RUL no equivale automáticamente a ACC, APP, REL, AUTH, RES, DEP, BLOCK o WIN. En particular:
+- La presencia/configuración de una dependencia no demuestra su instalación/disponibilidad efectiva; debe resolverse en la frontera C_dep*/DEP y con evidencia pertinente.
+- FP-04 compatibilidad ambiental y FP-05 seguridad permanecen diferenciadas de la equivalencia semántica de configuración.
+- La aplicación de paquete (FP-06) y el post-check (FP-07) no se retrotraen para redefinir `T_acc(t3)` ni los estados previos.
+- Outcome/Value en t8/t9 no se utiliza para adjudicar configuración, aplicación, Reach o cobertura.
+
+Cualquier relación entre estado aplicado y accesibilidad/Reach requiere predicado causal explícito del DGP, unidad/transformación/ventana y evidencia; no se infiere por el solo hecho de FP-07 PASS.
+
+### 14.7. Límites y cuestiones de cierre
+
+Esta integración es un crosswalk documental, no una especificación ejecutable. Permanecen abiertos los mappings físicos CMP/PAR/REF/RUL/MET↔U_G, route_id y ROUTE_STEP exhaustivos, universe_definition/version y C0, gramática del localizador PAR, mapping M concreto, oráculo/observación, IAM completo, cobertura y evidencias materiales. No sella IAM ni autoriza fixtures, parser, validator, implementación, Design Freeze o ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
