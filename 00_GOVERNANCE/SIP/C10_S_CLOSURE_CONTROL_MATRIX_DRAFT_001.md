@@ -2010,3 +2010,10 @@ Se revisan §§10.6–10.7 del crosswalk: la regla aceptada DEC-C10-082 define u
 **Regla reconciliada:** NODE raíz identifica la unidad lógica; NODE anchor identifica al CMP contractual. Pueden coincidir solo con mapping explícito y evidencia. Si no coinciden, se mantienen separados. La cardinalidad 1:1 CMP↔NODE anchor se conserva sin cambios.
 
 La ambigüedad textual queda reconciliada documentalmente; mapping, registros y evidencia siguen OPEN/UNKNOWN. No se sella IAM ni se autoriza captura, implementación o ejecución.
+## 93 — Propuesta de clasificación de N07: endpoint/interfaz/servicio
+
+**Estado:** PROPUESTA DOCUMENTAL pendiente de aceptación (crosswalk §10.25).
+
+N07 se descompone en: endpoint técnico concreto; contrato/interfaz versionado; y servicio proveedor. El endpoint no es CMP por ser direccionable. La interfaz solo es REF si tiene identidad propia y extremos tipados conforme DEC-C10-077; de otro modo permanece atributo/artefacto contractual. El servicio solo es CMP si posee identidad contractual, lifecycle y frontera autónomos. Un servicio externo no entra en el roster CMP interno por el mero consumo.
+
+No hay objetos técnicos observados ni IDs adjudicados. La clasificación por instancia, mappings, rutas, cobertura y evidencia permanecen OPEN/UNKNOWN. No autoriza inspección, llamadas de red, implementación, Design Freeze ni ejecución.
