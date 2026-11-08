@@ -1329,3 +1329,10 @@ No se asignan IDs ni se crean registros; no se sella IAM, no se declara roster e
 Se acepta separar N07 en endpoint técnico, contrato/interfaz y servicio proveedor. Endpoint no implica CMP/REF; interfaz solo es REF con identidad propia y extremos tipados; servicio solo es CMP con identidad contractual, lifecycle y frontera autónomos. Los servicios externos no ingresan al roster CMP interno por mero consumo; EDGE y REF no se infieren entre sí.
 
 Instancias, identidades, mappings, rutas, snapshots, cobertura y evidencia permanecen OPEN/UNKNOWN. No se crean registros ni se autoriza inspección, implementación, Design Freeze o ejecución. Véase DEC-C10-090.
+## DEC-C10-091 — Descomposición semántica de N14: formato, payload y transferencia
+
+**Estado:** ACCEPTED — DOCUMENTAL. **Fecha:** 2026-11-08.
+
+Se acepta refinar N14 existente separando formato/contrato versionado, payload concreto y eventos temporales de transferencia/recepción/parseo/validación/aplicación. Formato y payload tienen identidad/versionado separados; N13/A1 produce, N15/A2 consume, N07 conserva canal y M mapping. E12/E13 siguen candidatas. Hash no demuestra equivalencia semántica; JCS de DEC-C10-074 no se extiende al payload. Recepción no implica validación ni aplicación.
+
+Permanecen OPEN formato y objetos/eventos reales, mapping, compatibilidad, aplicación, evidencia y cobertura. No se crean IDs ni se autoriza captura, implementación, Design Freeze o ejecución. Véase DEC-C10-091.
