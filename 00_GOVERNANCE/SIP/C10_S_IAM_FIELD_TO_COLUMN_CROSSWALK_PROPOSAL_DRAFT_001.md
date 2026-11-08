@@ -470,7 +470,7 @@ Se distinguen FP-06 (evento efectivo), FP-07 (estado observado post-aplicación 
 
 Esta aceptación no añade campos/FK, no sella IAM ni autoriza implementación o ejecución científica.
 
-## 10.19. Propuesta de integración IAM por etapa, ruta y tiempo
+## 10.19. Integración IAM por etapa, ruta y tiempo (DEC-C10-088 aceptada)
 
 **Estado:** ACCEPTED — DOCUMENTAL por DEC-C10-088.
 
