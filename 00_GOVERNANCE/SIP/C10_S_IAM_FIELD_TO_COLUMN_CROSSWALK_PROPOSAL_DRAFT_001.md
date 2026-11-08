@@ -738,3 +738,40 @@ No autoriza inspección técnica, llamadas de red, pruebas de conectividad, acce
 N07 queda descompuesto conceptualmente en endpoint técnico, contrato/interfaz de comunicación y servicio proveedor. Se aplican las reglas de clasificación de DEC-C10-090: endpoint no equivale automáticamente a CMP/REF; interfaz es REF solo con identidad de objeto y extremos tipados propios; servicio es CMP solo con identidad contractual, lifecycle y frontera autónomos; servicio externo no se incorpora al roster interno por mero consumo; EDGE y REF no se infieren entre sí.
 
 La propuesta §10.25 queda aceptada como regla conceptual, no como adjudicación de objetos técnicos concretos. Permanecen OPEN identidades, protocolo, topología, mappings, rutas, snapshots, cobertura y evidencia. No se asignan IDs ni se crean registros; no se sella IAM ni se autoriza inspección, captura, implementación, Design Freeze o ejecución. Véase DEC-C10-090.
+## 10.27. Resolución propuesta de N14 — contrato/formato, payload y transferencia
+
+**Estado:** PROPUESTA DOCUMENTAL — pendiente de aceptación. Reutiliza N14 y E12/E13 de la plantilla U_G §10.2, B-M14 §17.2, DEC-C10-073/074/075/076/077/079/080 y la separación ya aceptada para N07 en DEC-C10-090. No crea una nueva entidad universal ni una tabla.
+
+### 10.27.1. Hallazgo histórico y alcance
+
+N14 ya existe en el catálogo U_G como «Formato/artefacto intercambio»; la plantilla indica versionar formato y artefacto cuando difieran. E12 (N13→N14) y E13 (N14→N15) son relaciones candidatas, no relaciones observadas. B-M14 ya incluye N14 entre los objetos candidatos para auditar alternativas. Por tanto, este gate refina una definición existente; no crea otro N14 ni sustituye el catálogo.
+
+### 10.27.2. Descomposición semántica
+
+Separar, como mínimo, tres planos:
+
+1. **Definición de formato/contrato de intercambio:** especificación versionada que define sintaxis, estructura, tipos, codificación, reglas de compatibilidad y, cuando corresponda, semántica de campos. Se registra como referencia/artefacto contractual versionado. No es REF automáticamente: solo se clasifica REF si es un objeto de dominio con identidad propia y extremos tipados, según DEC-C10-077. Si es una propiedad o perfil interno de un CMP, permanece como metadato/artefacto referenciado de ese CMP.
+2. **Payload/artefacto concreto:** instancia de datos producida por A1 y destinada a A2. Tiene identidad/procedencia de artefacto y versión o revisión propia, separada de la identidad/versionado del formato. Se representa como NODE/artefacto U_G solo si tiene identidad y relevancia causal/material independiente según §82; si no, se conserva como artefacto de transferencia/evidencia con sus referencias exactas, sin forzar un NODE.
+3. **Transferencia y recepción:** eventos temporales distintos (producido, transmitido, recibido, parseado, validado y aplicado). No son estados intercambiables ni crean por sí solos un CMP/REF. La evidencia de cada transición se registra con su tiempo, actor, snapshot, ruta y procedencia; «recibido» no implica «validado» ni «aplicado».
+
+El exportador A1 (N13) y el importador A2 (N15) siguen siendo actores/operaciones separados de N14. El endpoint/canal técnico corresponde al ámbito N07; el mapping de contenido fuente→payload→destino es M y no se confunde con el formato ni con el canal.
+
+### 10.27.3. Identidad, versiones e integridad
+
+- Identificar por separado `format_id + format_version`, `artifact_id + artifact_revision` (o equivalente contractual que se defina), y los identificadores/versiones de A1/A2 y de los snapshots fuente/destino. Estos nombres son etiquetas conceptuales de propuesta, no columnas ni IDs físicos aprobados.
+- El mismo formato puede producir muchos payloads; un payload puede dividirse en partes o ser consumido por más de un proceso. No asumir cardinalidad 1:1 entre formato, artefacto, exportación e importación.
+- Preservar lineage explícito entre snapshot/estado fuente, ejecución A1, artefacto producido, transferencia, recepción, ejecución A2 y estado destino. Si el payload se transforma durante transporte, conversión, normalización o empaquetado, registrar cada versión/etapa y su relación; no sobrescribir el artefacto previo.
+- Hash/digest puede respaldar integridad de bytes en un punto definido, pero no demuestra identidad semántica, equivalencia de contenido, compatibilidad, aplicación ni éxito funcional. Registrar algoritmo, ámbito exacto (bytes/paquete/parte), etapa y procedencia; no comparar hashes de representaciones distintas como si fueran equivalencia.
+- DEC-C10-074 y el perfil TGCV-C10S-JCS-1 gobiernan la canonicalización del envelope UDG-01; no se extienden automáticamente al payload de N14. La serialización del payload, su canonicalización y su hash requieren especificación propia si fueran necesarios.
+
+### 10.27.4. Compatibilidad y evaluación
+
+La compatibilidad debe evaluarse por separado en: (a) conformidad sintáctica con el formato; (b) compatibilidad semántica de campos/tipos; (c) resolución del mapping M; (d) integridad/procedencia del payload; (e) recepción y parseo; (f) aplicación efectiva en destino; y (g) criterio funcional F* común. El oráculo F* y su implementación permanecen separados del mecanismo A1/A2, conforme al catálogo N16.
+
+La ruta alternativa A1→N14→A2 solo cuenta como alternativa funcional cuando se demuestra contra el mismo F*, frontera, granularidad G, horizonte H y condiciones comparables; su mera existencia documental o un payload recibido no demuestra Reach ni substituibilidad. Deben preservarse R0/R1 frente a R2 y auditarse vías colaterales B→A1/A2, formato, mapping, dependencias, permisos y recursos conforme B-M14/PROV. No inferir exclusión instrumental.
+
+### 10.27.5. Estados y límites
+
+Estados mínimos a mantener diferenciados: no generado; generado; transmitido; recibido; parseado; validado; aplicado; fallido; desconocido/no observable. La falta de registro no prueba que el evento no ocurriera. La evidencia se adjudica por etapa, artefacto, snapshot, ruta y cobertura; no se hereda entre etapas.
+
+No se conoce formato, esquema, codificación, payload, herramienta, mapping M, endpoint, ni eventos de transferencia reales. No se asignan IDs, no se crean filas NODE/REF/EDGE/CMP, no se declara presencia/ausencia ni cobertura. No se sella IAM ni se autoriza acceso técnico, captura, parser, validator, fixtures, implementación, Design Freeze o ejecución científica. scientific_execution=false; execution_authorized=false.
