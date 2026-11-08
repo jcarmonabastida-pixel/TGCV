@@ -1248,3 +1248,14 @@ No se amplía U_G ni se cierra gramática/escaping/canonicalización/predicate. 
 Se acepta §20.18 del protocolo de evidencia como contrato lógico documental del control independiente PAR. Comprende reutilización de C0 §19; cinco capas separadas; entradas mínimas; secuencia P0–P11; identidad y supersession conforme a DEC-C10-079; resultados por capa PASS/FAIL/UNKNOWN/NOT_COMPARABLE/NA; separación entre integridad, pertinencia y cobertura; 18 casos adversariales y requisitos de informe.
 
 **Límites:** no amplía U_G, no cierra mappings stage_key/clase/ruta ni gramática/escaping/canonicalización/predicate, y no crea registros o fixtures. No autoriza parser, validator, scripts, SQL, implementación, Design Freeze, validación técnica ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 93 — DEC-C10-082: aceptación del anclaje CMP↔NODE 1:1 por snapshot
+
+**Estado:** ACEPTADA — DEC-C10-082 (2026-11-08).
+
+Se acepta el contrato lógico del crosswalk §10.7: cardinalidad 1:1 del anclaje por CMP y snapshot exacto, unicidad en ambos sentidos, NODE subordinados no considerados CMP sin identidad propia, continuidad entre snapshots mediante `component_id` contractual y mappings separados. `stage_key`/ruta califican cobertura y no multiplican la identidad NODE.
+
+La adjudicación conserva PASS/FAIL/UNKNOWN/NOT_COMPARABLE/NA según las condiciones documentadas. PASS de correspondencia no demuestra verdad PAR, preservación, pertenencia a ruta ni completitud.
+
+**Límites:** no completa roster CMP, mappings P1/PAR ni IAM; no crea registros ni cambia U_G; no autoriza poblar IAM, parser, validator, implementación, Design Freeze o ejecución. `scientific_execution=false`; `execution_authorized=false`.
