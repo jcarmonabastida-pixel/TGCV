@@ -775,3 +775,10 @@ La ruta alternativa A1→N14→A2 solo cuenta como alternativa funcional cuando 
 Estados mínimos a mantener diferenciados: no generado; generado; transmitido; recibido; parseado; validado; aplicado; fallido; desconocido/no observable. La falta de registro no prueba que el evento no ocurriera. La evidencia se adjudica por etapa, artefacto, snapshot, ruta y cobertura; no se hereda entre etapas.
 
 No se conoce formato, esquema, codificación, payload, herramienta, mapping M, endpoint, ni eventos de transferencia reales. No se asignan IDs, no se crean filas NODE/REF/EDGE/CMP, no se declara presencia/ausencia ni cobertura. No se sella IAM ni se autoriza acceso técnico, captura, parser, validator, fixtures, implementación, Design Freeze o ejecución científica. scientific_execution=false; execution_authorized=false.
+## 10.28. Aplicación aceptada de N14 — DEC-C10-091
+
+**Estado:** ACCEPTED — DOCUMENTAL. Se acepta §10.27 como refinamiento del N14 existente: definición versionada de formato/contrato, payload concreto y eventos separados de transferencia/recepción/parseo/validación/aplicación. Formato y payload tienen identidad/versionado separados; formato no es REF automáticamente; payload no es NODE automáticamente; N13/A1 y N15/A2 son productor y consumidor; N07 conserva endpoint/canal y M el mapping. E12/E13 siguen siendo candidatas, no observadas.
+
+Se preservan las reglas de lineage, split/merge, integridad de bytes frente a equivalencia semántica y el alcance limitado de JCS al envelope UDG-01. La alternativa A1→N14→A2 requiere demostración contra el mismo F*, frontera, G y H; recepción no implica validación ni aplicación.
+
+Permanecen OPEN los objetos y eventos reales, formato, payload, mapping, compatibilidad, aplicación, evidencia y cobertura. No se asignan IDs ni se crean filas; IAM no se sella. No autoriza captura, parser, validator, implementación, Design Freeze o ejecución. Véase DEC-C10-091.
