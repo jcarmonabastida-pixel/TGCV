@@ -399,3 +399,9 @@ La matriz abstracta §15.1 especifica el contrato candidato reutilizable para eq
 El IAM deberá referenciar el `mapping_id/version` y el contrato semántico aprobado, sin inferir equivalencia por igualdad de literales físicos ni por igualdad de nombre de parámetro. Los resultados se adjudican por etapa/ruta; falta de evidencia produce UNKNOWN y versiones incompatibles sin mapping aprobado producen NOT_COMPARABLE.
 
 No se aprueban codificaciones físicas, tablas concretas, valores por escenario, oráculo ni resultados observados. No se sella IAM ni se autoriza implementación o ejecución científica.
+
+### 10.12. Aceptación del contrato semántico PAR — DEC-C10-084
+
+La referencia de §10.11 queda aceptada conforme a DEC-C10-084 y matriz abstracta §15.1–15.2: BOOL con identidad semántica exacta; ENUM con biyección total, inyectiva y versionada sobre STANDARD/READ_ONLY/DISABLED; separación estado/valor; preservación independiente de la regla constitutiva; mappings F1/A1 independientes; y verificación separada de destino declarado y estado aplicado F2/A2.
+
+El IAM deberá identificar el mapping y versión aprobados y la unidad CMP/snapshot/etapa/ruta exacta. No inferirá equivalencia por igualdad de nombres o literales físicos ni transitividad entre mappings incompatibles. La aceptación no aprueba codificaciones físicas, mappings observados ni sella IAM; no autoriza implementación o ejecución científica.
