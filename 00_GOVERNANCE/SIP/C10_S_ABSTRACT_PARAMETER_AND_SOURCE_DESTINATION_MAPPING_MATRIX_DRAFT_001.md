@@ -875,3 +875,19 @@ La falta de registro no demuestra ABSENT ni demuestra que la transición no ocur
 ### F. Límites
 
 Esta propuesta no define codificaciones ni mappings físicos, no crea registros reales, fixtures, columnas o FK, no sella IAM y no autoriza parser, validator, implementación, Design Freeze ni ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 15.6. Aceptación DEC-C10-086 — conformidad destino declarado y transición F1/A1→F2/A2
+
+**Estado:** ACCEPTED — DOCUMENTAL. Véase `00_GOVERNANCE/decisions/DEC-C10-086_PAR_DECLARED_DESTINATION_AND_TRANSITION_CONFORMANCE_ACCEPTANCE.md`.
+
+Se acepta §15.5 para las rutas independientes F1_S2→F2_DST_DECL y A1_S1→A2_DST_DECL, con dos dimensiones no compensables:
+
+- `P-DECL`: conformidad semántica del destino declarado respecto de la salida intermedia exacta, por parámetro/regla, estado, tipo/dominio/valor, RUL e identidad/alcance.
+- `P-TRANS`: conformidad probatoria de la transición, con lineage íntegro y trazable que vincule entrada, proceso y artefacto destino declarado exacto.
+
+La equivalencia de artefactos no demuestra por sí sola que el proceso produjo el destino. F y A se adjudican independientemente y conservan vectores de resultado por predicado. Se aplican DEC-C10-068/084 y la reconciliación SM/FP, sin duplicidad ni doble contabilización.
+
+PASS requiere demostración suficiente; FAIL, contradicción demostrada con cobertura suficiente; UNKNOWN, información/cobertura/evidencia insuficiente; NOT_COMPARABLE, incompatibilidad sin mapping aprobado; NA, inaplicabilidad ex ante (no admisible para PAR/RUL del contrato base).
+
+F2/A2 declaradas no demuestran aplicación efectiva; FP-06/FP-07 y F2/A2 applied permanecen fuera de este bloque. Esta aceptación no define mappings físicos, no sella IAM ni autoriza parser, validator, implementación, Design Freeze o ejecución científica.
