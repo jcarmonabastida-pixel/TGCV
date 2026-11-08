@@ -405,3 +405,13 @@ No se aprueban codificaciones físicas, tablas concretas, valores por escenario,
 La referencia de §10.11 queda aceptada conforme a DEC-C10-084 y matriz abstracta §15.1–15.2: BOOL con identidad semántica exacta; ENUM con biyección total, inyectiva y versionada sobre STANDARD/READ_ONLY/DISABLED; separación estado/valor; preservación independiente de la regla constitutiva; mappings F1/A1 independientes; y verificación separada de destino declarado y estado aplicado F2/A2.
 
 El IAM deberá identificar el mapping y versión aprobados y la unidad CMP/snapshot/etapa/ruta exacta. No inferirá equivalencia por igualdad de nombres o literales físicos ni transitividad entre mappings incompatibles. La aceptación no aprueba codificaciones físicas, mappings observados ni sella IAM; no autoriza implementación o ejecución científica.
+
+### 10.13. Predicados C_SRC→F1_S2 / C_SRC→A1_S1 — propuesta pendiente
+
+La matriz abstracta §15.3 define cinco familias independientes: estado PAR, valor/tipo/dominio PAR, preservación RUL, binding de identidad/alcance y suficiencia de procedencia. Cada familia se instancia por separado para `r=F1` y `r=A1`; la unidad de adjudicación fija CMP owner, snapshot fuente/destino, stage_key, route_id/route_record_id, coverage_scope_id, parámetro/regla y mapping_id/version.
+
+El IAM deberá enlazar las filas PAR/RUL con sus registros y evidencias exactos, sin inferir mapping por nombre ni usar el NODE anchor como sustituto de la identidad PAR. El NODE anchor por snapshot se resuelve conforme a DEC-C10-082. La evidencia de una ruta no cubre la otra.
+
+Los predicados de estado/valor se adjudican separadamente; la regla `ENABLED=true ⇒ PROFILE∈{STANDARD, READ_ONLY}` se comprueba como preservación semántica FP-03, no como prueba de aplicación runtime FP-06/FP-07. Falta de observación/cobertura produce UNKNOWN; contradicción solo produce FAIL con cobertura suficiente.
+
+**Estado:** propuesta documental pendiente de aceptación. No crea columnas, FK ni filas IAM; no define mappings físicos ni autoriza implementación/ejecución.
