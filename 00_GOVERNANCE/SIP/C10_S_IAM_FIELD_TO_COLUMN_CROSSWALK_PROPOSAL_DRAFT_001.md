@@ -239,3 +239,62 @@ La tupla C0 conserva exactamente nueve componentes conforme a DEC-C10-070. `dime
 **Siguiente unidad de trabajo recomendada:** resolver el mapping CMP→NODE y PAR→propiedad tipada/owner como un único par de granularidad e identidad, porque PAR no puede adjudicarse sin un owner CMP exacto. Después abordar REF→EDGE conforme a DEC-C10-077 y mapping M. RUL y MET quedan para sus contratos específicos.
 
 **Límites:** esta auditoría no puebla IAM, no crea snapshots/scopes/registros, no cierra mappings por instancia, no añade columnas/FKs/tablas, no autoriza parser, validator, fixtures, Design Freeze, validación técnica, implementación ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+### 10.6. Par CMP→NODE y PAR→propiedad del CMP — granularidad e identidad
+
+**Estado:** reconciliación documental candidata, basada en DEC-C10-068/069/070/071/079 y en las reglas de no duplicación del inventario U_G §18.1. No constituye aceptación nueva del mapping por instancia ni completa IAM.
+
+#### A. Identidad del CMP focal
+
+Para el contrato sintético de referencia, los identificadores aceptados por DEC-C10-069 son:
+
+- contrato: `C10S-SVC-REQUEST-PROCESSOR`, versión `1.0.0`;
+- instancia: `C10S-SVC-REQUEST-PROCESSOR-001`, revisión `1`;
+- componente: `CMP-SERVICE-LOGIC-001`, clase `SERVICE_LOGIC`;
+- `CMP-SERVICE-LOGIC` es alias/rol lógico histórico, no identificador de instancia.
+
+La identidad lógica CMP y su representación U_G son distintas. El mapping candidato se expresa como una correspondencia explícita entre:
+1. identidad CMP contractual `(contract_id, contract_version, instance_id, instance_version, component_id, component_class)`;
+2. NODE semántico `(snapshot_id, snapshot_object_record_id, node_id)`;
+3. registro físico U_G exacto `object_record_id`, dentro del mismo snapshot.
+
+La resolución exige un mapping versionado que vincule la identidad CMP con un único NODE raíz para el CMP focal en cada snapshot aplicable. La unicidad se comprueba dentro del universo/snapshot declarado; no se infiere por nombre, alias, `parent_catalog_id`, TID/SID/RID ni por `semantic_role` aislado. El NODE raíz puede usar `semantic_role=LOGICAL_SERVICE_UNIT` según el contrato de inventario, pero ese rol por sí solo no demuestra que sea el CMP contractual.
+
+Los CMP adicionales solo se materializan como NODE si son componentes funcionales distintos con identidad y frontera propias declaradas ex ante. Un CMP no se duplica como NODE en cada etapa: se conserva la identidad lógica y se resuelve el registro NODE de cada snapshot exacto. Si una instancia contiene varios CMP, cada uno requiere su propia correspondencia inequívoca.
+
+#### B. Identidad y granularidad PAR
+
+PAR no recibe por defecto un NODE ni un EDGE. La identidad de la propiedad se define en el ámbito de su owner:
+`(owner_component_id, parameter_key)`, con tipo, dominio, unidad, estados permitidos y semántica contractual asociados.
+
+La fila de manifiesto que registra su aplicabilidad/observación conserva además la identidad append-only de DEC-C10-079: `manifest_record_id` global y `manifest_record_revision` por clave lógica, con supersession lineal. Esa identidad de fila no convierte PAR en entidad U_G ni sustituye `parameter_key`.
+
+La correspondencia candidata para cada PAR y snapshot es:
+`(component_id, parameter_key)` → propiedad tipada declarada del CMP → NODE owner exacto del snapshot.
+Debe resolver:
+- contrato/versión e instancia/revisión;
+- owner `component_id` y su NODE `object_record_id` exacto en el snapshot;
+- `parameter_key`, tipo, dominio, unidad y allowed_states;
+- estado/valor conforme a DEC-C10-068 y contrato de parámetro;
+- `stage_key`, ruta/scope y `coverage_scope_id`;
+- mapping_id/version y evidencia/provenance aplicables.
+
+Los valores ABSENT, NULL, DEFAULT y VALUE son estados tipados distintos cuando estén permitidos; no se convierten en filas NODE ni se equiparan por omisión. Los parámetros del CMP focal aceptados en DEC-C10-068 (`PAR-SVC-ENABLED`, `PAR-SVC-PROFILE`) conservan sus claves y tipos contractuales; esta sección no reabre sus dominios ni obligatoriedad.
+
+#### C. Cuándo sería legítimo un NODE PAR separado
+
+Solo podría proponerse un NODE propio si el objeto tiene identidad y ciclo de vida independientes del owner —no solo porque tenga un valor, cambie entre snapshots o necesite trazabilidad— y si se especifican semántica de entidad, frontera, identidad estable, relaciones con owner, cardinalidad y regla de conservación. Esa excepción requiere decisión explícita y mapping M; no se presume en esta reconciliación.
+
+#### D. Resolución y estados
+
+- CMP con identidad contractual pero sin NODE exacto o mapping inequívoco: `UNKNOWN`.
+- Dos NODE candidatos para el mismo CMP en el mismo scope, o identidad/owner contradictorios: `FAIL`.
+- Revisión de contrato/instancia/snapshot incompatible sin mapping aprobado: `NOT_COMPARABLE`.
+- PAR sin owner CMP resuelto: no se adjudica como PAR independiente; `UNKNOWN`.
+- PAR ausente solo es `ABSENT` si el universo y la cobertura ex ante permiten demostrarlo; la falta de fila no demuestra ausencia.
+- No aplicable requiere declaración ex ante y justificación de dominio; no equivale a desconocido.
+
+**Conclusión:** el par de granularidad queda fijado como hipótesis de trabajo: un CMP funcional se vincula a un NODE exacto por snapshot; sus PAR se representan como propiedades tipadas del owner y como filas IAM/PAR trazables, no como NODE por parámetro. La resolución por objeto, snapshot y etapa sigue abierta hasta que exista mapping versionado y evidencia suficiente.
+
+**Límites:** no se crea esquema, entidad PAR, columna, FK, tabla, mapping físico ni registro de instancia. No se sella IAM, no se acepta mapping M concreto y no se autoriza parser, validator, fixtures, Design Freeze, implementación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
