@@ -958,7 +958,7 @@ La configuración declarada no equivale a aplicada. Esta aceptación no define h
 
 ## 15.9. Integración de adjudicación por etapa y ruta
 
-**Estado:** PROPUESTA DOCUMENTAL — pendiente de aceptación. La matriz temporal rectora es `C10_S_PATH_PREDICATE_TEMPORAL_EVIDENCE_MATRIX_DRAFT_001.md` §14; este apartado mantiene el contrato de configuración ya definido en §§15.3–15.8.
+**Estado:** ACCEPTED — DOCUMENTAL por DEC-C10-088. Este apartado integra, sin sustituir, los contratos previos.
 
 El vector por ruta F/A conserva tres tramos no transferibles: (1) `C_SRC→F1_S2/A1_S1`, DEC-C10-085; (2) `F1_S2/A1_S1→F2_DST_DECL/A2_DST_DECL`, DEC-C10-086 con `P-DECL` y `P-TRANS`; (3) `F2_DST_DECL/A2_DST_DECL→F2_DST_APPLIED/A2_DST_APPLIED`, DEC-C10-087 con FP-06/07/08. No se colapsan en una puntuación ni se compensan entre rutas.
 
