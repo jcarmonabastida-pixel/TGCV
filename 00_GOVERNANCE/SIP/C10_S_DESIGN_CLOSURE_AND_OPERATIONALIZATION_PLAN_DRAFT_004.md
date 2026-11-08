@@ -1587,3 +1587,10 @@ Siguiente secuencia:
 5. continuar con el siguiente rol condicional únicamente después de resolver N01.
 
 No se autoriza acceso a sistemas, captura de snapshots, población IAM, implementación, Design Freeze o ejecución.
+## 16.73 — DEC-C10-089: cierre conceptual N01 y mapping pendiente
+
+DEC-C10-089 acepta NODE raíz `LOGICAL_SERVICE_UNIT` como representación de la unidad lógica de servicio; host/entorno se mantiene separado como contexto P1 sujeto a granularidad; S0 se representa como SNAPSHOT basal con pinning exacto.
+
+La relación del NODE raíz con CMP-SERVICE-LOGIC-001 queda OPEN hasta mapping explícito, versionado y sustentado. No se debe crear ni inferir un segundo NODE ni reutilizar automáticamente la raíz como CMP anchor.
+
+**Siguiente paso:** mantener esta distinción y continuar con el siguiente rol condicional del roster, N07, separando endpoint/interfaz (REF) de componente/servicio (CMP) según identidad contractual, lifecycle y granularidad. No capturar ni inspeccionar sistemas sin autorización específica. Sin IAM sellado, implementación, Design Freeze ni ejecución.
