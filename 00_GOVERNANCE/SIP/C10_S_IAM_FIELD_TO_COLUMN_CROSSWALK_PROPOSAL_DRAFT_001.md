@@ -479,3 +479,85 @@ El IAM/crosswalk debe resolver, sin inferencia nominal, la tupla de cada observa
 El crosswalk debe representar tres tramos independientes por ruta: C_SRC→F1/A1 (DEC-C10-085), F1/A1→F2/A2 declaradas (DEC-C10-086), y F2/A2 declaradas→aplicadas (DEC-C10-087). En el tercer tramo debe resolver evento FP-06, observación post-aplicación FP-07 y provenance/identidad FP-08, sin convertirlos en campos físicos no aprobados ni en predicados nuevos.
 
 La evidencia no se hereda entre etapa, ruta ni afirmación. COV/E_T es epistémico; UNKNOWN ante cobertura, mapping o lineage insuficientes. El vínculo IAM no acredita por sí solo ACC/APP/Reach ni causalidad de ΔT_acc→Value. Esta propuesta no añade columnas/FK, no sella IAM y no autoriza implementación o ejecución científica.
+
+
+## 10.20. Contrato lógico candidato de roster CMP y mapping IAM↔U_G
+
+**Estado:** PROPUESTA DOCUMENTAL — pendiente de aceptación. Desarrolla DEC-C10-078 y especializa el anclaje ya aceptado por DEC-C10-082. No amplía el schema U_G ni crea una decisión nueva.
+
+### 10.20.1. Roster CMP: lo identificado frente a lo exhaustivo
+
+El roster se construye desde identidades contractuales, nunca desde nombres observados de NODE ni desde roles inferidos.
+
+| Elemento | Identidad/valor documental | Estado | Tratamiento IAM |
+|---|---|---|---|
+| Contrato de servicio | contract_id=C10S-SVC-REQUEST-PROCESSOR; contract_version=1.0.0 | Aceptado por DEC-C10-069 | Referencia contractual inmutable para la instancia de referencia |
+| Instancia lógica | instance_id=C10S-SVC-REQUEST-PROCESSOR-001; instance_version=1 | Aceptado por DEC-C10-069 | Unidad versionada; no confundir con NODE ni snapshot |
+| CMP de referencia | component_id=CMP-SERVICE-LOGIC-001; component_class=SERVICE_LOGIC | Aceptado por DEC-C10-069 | Único CMP con identidad concreta recuperada en este contrato |
+| Etiqueta de owner | CMP-SERVICE-LOGIC | Etiqueta/rol lógico provisional | No es component_id ni una segunda instancia |
+| CMP adicionales | No hay IDs adicionales aceptados en el contrato de servicio recuperado | OPEN / roster no exhaustivo | No inventar ni declarar cardinalidad total 1 por ausencia de otros IDs |
+
+La propuesta de roster mínimo identificable contiene el CMP de referencia anterior. No afirma que el universo total CMP de toda la instancia experimental esté exhaustivamente enumerado. Antes de sellar IAM deberá reconciliarse el roster completo con el universo UDG, la instancia y el boundary contract; cada CMP adicional requerirá identidad contractual propia, clase, versión y justificación de inclusión. La regla de cardinalidad de clase CMP≥1 (DEC-C10-056) no autoriza inferir CMP=1.
+
+### 10.20.2. Unidad y clave del mapping CMP↔NODE
+
+Se reutiliza, sin modificar, la unidad ya aceptada en DEC-C10-082:
+
+- CMP contractual exacto: contract_id/version + instance_id/version + component_id + component_class.
+- Snapshot exacto: snapshot_id + snapshot_object_record_id.
+- NODE anchor exacto: node_id + object_record_id, perteneciente al snapshot indicado.
+- Mapping: mapping_id + mapping_version, ligado a universe_definition_id/version y scope.
+
+**Cardinalidad aceptada:** exactamente un NODE anchor por cada CMP aplicable y snapshot; ningún NODE anchor puede representar dos CMP. Los NODE subordinados no son CMP adicionales por defecto. La continuidad entre snapshots se basa en component_id y mappings versionados independientes; no exige igualdad de node_id/object_record_id.
+
+stage_key y route_id/scope califican la cobertura de observaciones; no forman parte de la identidad CMP↔NODE ni multiplican el NODE anchor. Si un mismo snapshot exacto es utilizado en varias etapas/rutas, se reutiliza el mismo anchor y se registran scopes de cobertura distintos.
+
+### 10.20.3. Proyección propuesta sobre U_G existente
+
+La proyección se limita a los diez registros U_G existentes y a los campos que ya aparecen en la plantilla. No autoriza columnas nuevas.
+
+| Concepto IAM/CMP | Ubicación U_G | Regla de enlace |
+|---|---|---|
+| Identidad contractual CMP | NODE.owner/boundary y/o notes/unknowns como referencia descriptiva; identidad normativa permanece en contrato/MET y mapping versionado | No sustituir component_id por node_id, nombre o semantic_role |
+| CMP anchor | NODE.node_id + object_record_id + snapshot_id + snapshot_object_record_id | Debe resolver al registro NODE exacto del snapshot; FK compuesta conforme al contrato snapshot |
+| Unidad lógica del servicio | SNAPSHOT.unit_id + unit_object_record_id → NODE raíz semantic_role=LOGICAL_SERVICE_UNIT | No duplicar logical_service_id en cada fila; aplicar el pinning de snapshot aceptado |
+| Clase de frontera | NODE.boundary_class existente | Usar únicamente P0_CONFIG, P1_ENVIRONMENT, DUAL_P0_P1 o NA conforme DEC-C10-059; P2 es transversal, no valor |
+| Rol semántico | NODE.semantic_role existente | Describe función en U_G; no es identidad CMP ni prueba de membership |
+| Revisión/identidad del registro | NODE.object_record_id, object_version, supersedes_record_id y snapshot exacto | No usar latest implícito; respetar append-only y DEC-C10-079 cuando aplique |
+| Relaciones entre CMP/NODE | EDGE y sus endpoints/record IDs existentes | Solo relaciones observadas y tipos ya catalogados; no crear EDGE por inferencia |
+| Aplicabilidad y membership | IAM L1/L2 + universe_definition/version + COVERAGE_REGISTER | La membership se prueba contra universo exacto; mapping anchor no demuestra exhaustividad |
+| Evidencia y adjudicación | EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER | Mantener evidencia 1:N, cobertura y dictamen separados; no sobrecargar NODE.evidence_ref |
+
+boundary_class y semantic_role son atributos de clasificación/rol, nunca claves de matching. No se autoriza añadir component_id, mapping_id, logical_service_id u otras columnas nuevas a NODE por esta propuesta; cuando no exista campo U_G adecuado, la identidad contractual se conserva en el artefacto de mapping/MET enlazado y versionado, no se simula con un campo semánticamente distinto.
+
+### 10.20.4. Contrato mínimo del registro lógico de mapping
+
+Cada mapping candidato debe declarar, como mínimo:
+
+1. mapping_id, mapping_version y estado de adjudicación;
+2. identidad CMP completa (contract_id/version, instance_id/version, component_id, component_class);
+3. snapshot_id y snapshot_object_record_id exactos;
+4. node_id y object_record_id exactos del NODE anchor;
+5. universe_definition_id/version, coverage_scope_id y scope aplicable;
+6. semantic_role y boundary_class observados, sin usarlos como sustitutos de identidad;
+7. regla de selección/identidad, cardinalidad esperada 1:1 y controles de unicidad bidireccional;
+8. provenance, evidencia y adjudicación independiente;
+9. compatibilidad/continuidad respecto de otros mappings del mismo component_id, sin igualdad nominal implícita.
+
+El contrato lógico no determina todavía dónde se almacenará físicamente este registro ni añade una tabla. Su representación debe reutilizar el artefacto/registro de mapping ya previsto y el soporte de MET/U_G, una vez que se resuelva su crosswalk físico.
+
+### 10.20.5. Reglas de resolución y estados
+
+- PASS: identidad contractual y snapshot exactos; un NODE anchor; unicidad CMP→NODE y NODE→CMP; mapping versionado; universo/scope y evidencia suficientes.
+- FAIL: contradicción positiva o cardinalidad distinta de 1:1 demostrada con enumeración exhaustiva del universo/snapshot aplicable.
+- UNKNOWN: universo, snapshot, registro, mapping, cobertura o evidencia incompletos/no accesibles; no convertir ausencia de fila en ausencia de CMP/NODE.
+- NOT_COMPARABLE: contrato, clase, versión, frontera o snapshot incompatibles sin mapping de comparabilidad aprobado.
+- NA: solo cuando la no aplicabilidad del CMP al snapshot se declaró ex ante, con disparador y fundamento; nunca por ausencia de observación.
+
+Un PASS solo demuestra anclaje de identidad. No prueba pertenencia exhaustiva del universo, equivalencia semántica, verdad PAR, preservación F1/A1, destino declarado/aplicado, disponibilidad, accesibilidad, Reach ni causalidad.
+
+### 10.20.6. Límites y decisiones aún abiertas
+
+Permanecen OPEN: roster CMP exhaustivo; mappings de CMP P1 y otros CMP no identificados; ubicación física del mapping; dominio y cardinalidad de las referencias IAM por capa; integración exacta de MET; mappings de REF/RUL y mapping M; evidencia observacional y cobertura real; controles técnicos de unicidad y resolución.
+
+Esta propuesta no sella IAM, no declara cobertura, no modifica DEC-C10-082, no añade columnas/FK/tablas, no autoriza parser, resolver, validator, fixtures, implementación, Design Freeze ni ejecución. scientific_execution=false; execution_authorized=false.
