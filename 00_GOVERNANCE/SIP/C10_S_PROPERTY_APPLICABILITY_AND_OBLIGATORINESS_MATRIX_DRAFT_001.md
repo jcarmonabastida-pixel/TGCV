@@ -917,3 +917,36 @@ Se acepta el anclaje 1:1 por CMP y snapshot: cada CMP aplicable resuelve a un ú
 Se aplican los estados y controles de §10.7 del crosswalk y DEC-C10-082. Un PASS solo demuestra correspondencia de identidad; no demuestra verdad PAR, preservación, pertenencia a ruta ni completitud del universo.
 
 No se completa roster CMP ni mappings P1/PAR, no se sella IAM ni se autoriza implementación, Design Freeze o ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+### 18.6. Propuesta de adjudicación PAR por los siete stage_key
+
+**Estado:** propuesta documental pendiente de aceptación. Deriva del contrato funcional aceptado en DEC-C10-068, del vocabulario DEC-C10-071, de la identidad CMP DEC-C10-069 y de las reglas de estado de §§18.3–18.4. No sella filas IAM ni afirma que existan snapshots observados.
+
+| stage_key | Objeto/posición | PAR-SVC-ENABLED | PAR-SVC-PROFILE | Qué se puede adjudicar |
+|---|---|---|---|---|
+| `C_SRC` | Configuración fuente declarada | REQUIRED; estado VALUE y BOOL del dominio | REQUIRED; estado VALUE y ENUM del dominio | Presencia, identidad/owner, tipo, dominio y valor fuente |
+| `F1_S2` | Representación intermedia producida por F1 | Preservar estado y valor BOOL de origen mediante mapping versionado | Preservar estado, dominio y valor ENUM de origen mediante mapping versionado | Correspondencia semántica F1; no prueba aplicación en destino |
+| `A1_S1` | Representación intermedia producida por A1 | Igual obligación de preservación, evaluada independientemente de F1 | Igual obligación de preservación, evaluada independientemente de F1 | Correspondencia semántica A1; no prueba aplicación en destino |
+| `F2_DST_DECL` | Configuración destino declarada para F2 | REQUIRED; VALUE BOOL, sin DEFAULT implícito | REQUIRED; VALUE ENUM, sin DEFAULT implícito | Declaración destino antes de aplicación |
+| `A2_DST_DECL` | Configuración destino declarada para A2 | REQUIRED; VALUE BOOL, sin DEFAULT implícito | REQUIRED; VALUE ENUM, sin DEFAULT implícito | Declaración destino antes de aplicación |
+| `F2_DST_APPLIED` | Configuración observada tras aplicación F2 | Estado/valor aplicado observado; debe concordar con mapping y contrato | Estado/valor aplicado observado; debe concordar con mapping y contrato | Aplicación efectiva F2, con snapshot y evidencia independientes |
+| `A2_DST_APPLIED` | Configuración observada tras aplicación A2 | Estado/valor aplicado observado; debe concordar con mapping y contrato | Estado/valor aplicado observado; debe concordar con mapping y contrato | Aplicación efectiva A2, con snapshot y evidencia independientes |
+
+#### Reglas transversales de interpretación
+
+1. Los dos PAR son P0 REQUIRED para la instancia sintética. Esta obligatoriedad conceptual no significa que cada fila ya esté observada ni adjudicada.
+2. En `C_SRC`, `F2_DST_DECL` y `A2_DST_DECL`, la representación declarativa debe contener un valor `VALUE` tipado. No hay DEFAULT contractual aceptado; ABSENT/NULL incumplen el contrato cuando su presencia/ausencia se demuestra con cobertura suficiente.
+3. En `F1_S2` y `A1_S1`, la obligación es preservación semántica independiente por ruta. El mapping puede cambiar representación física, pero no tipo/dominio/estado/valor sin regla explícita, total y versionada. La salida intermedia no se confunde con destino aplicado.
+4. En `F2_DST_APPLIED` y `A2_DST_APPLIED`, la adjudicación requiere evidencia del estado realmente aplicado. No se infiere desde `*_DST_DECL`, desde el paquete preparado ni desde DEFAULT_ENV_RESOLVED.
+5. La falta de snapshot, mapping, inspección o cobertura produce `?`/UNKNOWN; contradicción observada con evidencia suficiente produce `0` para el predicado predeclarado; `NA` requiere no aplicabilidad ex ante y no es admisible para los dos PAR en estas siete etapas del contrato base.
+6. Cada fila debe vincular CMP owner exacto, snapshot exacto, `stage_key`, ruta/scope, `coverage_scope_id`, `parameter_key`, mapping/version y evidencia. La identidad NODE anchor sigue DEC-C10-082; no se crea NODE por PAR.
+7. `E_dst/runtime` no es un octavo `stage_key` ni sustituye la configuración P0. Los valores resueltos por el entorno se registran como evidencia ambiental separada.
+
+#### Precedencia sobre la tabla histórica de §13
+
+La columna «Estados candidatos» de §13 es preliminar y queda precisada por §§18.3 y 18.6: para el núcleo aceptado no hay DEFAULT contractual; VALUE es el estado declarativo esperado; ABSENT/NULL no son admisibles para los dos PAR REQUIRED. La fila RETRY-COUNT permanece supersedida conforme a §18.2.
+
+#### Límites
+
+La tabla no asigna valores concretos a los escenarios, no fija tablas físicas de conversión, no adjudica predicados de preservación ya ejecutados y no completa la cobertura por snapshot. No sella IAM, no crea fixtures, parser, validator ni mappings físicos y no autoriza Design Freeze, implementación o ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
