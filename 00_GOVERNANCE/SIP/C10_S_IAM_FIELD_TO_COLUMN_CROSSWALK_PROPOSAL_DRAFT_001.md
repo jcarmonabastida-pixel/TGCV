@@ -298,3 +298,67 @@ Solo podría proponerse un NODE propio si el objeto tiene identidad y ciclo de v
 **Conclusión:** el par de granularidad queda fijado como hipótesis de trabajo: un CMP funcional se vincula a un NODE exacto por snapshot; sus PAR se representan como propiedades tipadas del owner y como filas IAM/PAR trazables, no como NODE por parámetro. La resolución por objeto, snapshot y etapa sigue abierta hasta que exista mapping versionado y evidencia suficiente.
 
 **Límites:** no se crea esquema, entidad PAR, columna, FK, tabla, mapping físico ni registro de instancia. No se sella IAM, no se acepta mapping M concreto y no se autoriza parser, validator, fixtures, Design Freeze, implementación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+### 10.7. Contrato candidato de correspondencia CMP↔NODE por snapshot
+
+**Estado:** propuesta documental para adjudicación; no aceptada todavía. Especializa §10.6 sin crear entidad ni campo físico.
+
+#### 10.7.1. Unidad de correspondencia
+
+La unidad de mapping es el par:
+
+`(CMP contractual exacto, SNAPSHOT exacto)`
+
+donde CMP contractual exacto comprende `contract_id/version`, `instance_id/version`, `component_id` y `component_class`; SNAPSHOT exacto comprende `snapshot_id + snapshot_object_record_id` conforme a DEC-C10-065.
+
+La relación propuesta es una correspondencia de anclaje semántico **1:1 dentro de cada snapshot**:
+- cada CMP declarado aplicable tiene exactamente un NODE raíz/anchor en ese snapshot;
+- un NODE anchor no puede representar simultáneamente dos CMP distintos;
+- los NODE subordinados que describan partes, dependencias o estructura interna no son mappings CMP adicionales salvo que tengan identidad funcional propia declarada ex ante como CMP separado;
+- un CMP no se duplica en varios NODE anchor para resolver una descomposición estructural. La descomposición se representa mediante las relaciones U_G existentes y no altera la identidad del CMP.
+
+La cardinalidad 1:1 se limita al anclaje de identidad CMP↔NODE, no a la transformación semántica completa entre configuraciones ni a la correspondencia entre todos los NODE de origen y destino.
+
+#### 10.7.2. Registro de mapping exigido
+
+Cada mapping debe declarar, como mínimo:
+- `mapping_id` y `mapping_version`;
+- identidad contractual completa CMP;
+- `snapshot_id` y `snapshot_object_record_id`;
+- `node_id` y `object_record_id` exactos del NODE anchor;
+- `semantic_role` y `boundary_class` observados, sin usarlos como sustitutos de identidad;
+- `universe_definition_id/version` y scope de aplicabilidad;
+- regla de selección/identidad, cardinalidad esperada y control de unicidad;
+- provenance, evidencia y adjudicación independiente.
+
+No se permite resolver por nombre, alias, parent_catalog_id, TID/SID/RID, similitud de atributos o posición en tabla. El mapping debe apuntar al registro NODE real del mismo snapshot exacto; no basta con node_id sin record ID.
+
+#### 10.7.3. Continuidad entre snapshots y etapas
+
+La continuidad se establece mediante el mismo `component_id` contractual y mappings separados a cada snapshot exacto. No se exige que `node_id` ni `object_record_id` se repitan entre snapshots; son identidades de registro sujetas a snapshot. La continuidad semántica entre versiones debe justificarse por el contrato y la provenance del mapping, no por igualdad de IDs U_G.
+
+`stage_key` y `route_id/scope` califican la observación/cobertura C0, no multiplican la identidad del NODE ni crean un NODE por etapa o ruta. Si un mismo snapshot exacto sirve a más de una etapa declarada, el NODE anchor es el mismo registro y las filas de cobertura permanecen diferenciadas por sus scopes C0.
+
+#### 10.7.4. Estados de adjudicación
+
+- Exactamente un NODE anchor, identidad CMP/snapshot concordante y mapping versionado completo: candidato a `PASS` de correspondencia.
+- Ningún NODE encontrado tras enumeración exhaustiva del universo declarado, pese a que el CMP es aplicable: `FAIL` de integridad del mapping/inventario.
+- Dos o más NODE candidatos para el mismo CMP y snapshot, o un NODE asignado a dos CMP: `FAIL` por violación de unicidad.
+- Universo, snapshot o mapping incompleto/no accesible, o falta de evidencia para decidir unicidad: `UNKNOWN`.
+- Cambio incompatible de contrato/instancia o semántica sin mapping de comparabilidad aprobado: `NOT_COMPARABLE`.
+- CMP declarado no aplicable ex ante en ese snapshot: `NA`, con disparador y justificación predeclarados; nunca por ausencia de NODE observada.
+
+Un PASS de correspondencia no acredita por sí mismo la verdad de propiedades PAR, la pertenencia a rutas, la preservación entre transformaciones ni la completitud global del universo.
+
+#### 10.7.5. Controles independientes mínimos
+
+1. Integridad de identidad contractual y versión.
+2. Existencia exacta del SNAPSHOT y del NODE record dentro de ese snapshot.
+3. Unicidad CMP→NODE y NODE→CMP dentro del universo/snapshot.
+4. Consistencia de `node_id`, `object_record_id`, `snapshot_id` y `snapshot_object_record_id`.
+5. Concordancia con `universe_definition/version`, aplicabilidad y scope C0.
+6. Ausencia de mappings implícitos por alias, nombre o similitud.
+7. Trazabilidad de mapping, evidencia y adjudicador independiente.
+
+**No se autoriza** crear el registro de mapping físico, poblar IAM, generar snapshots, añadir columnas/FKs/tablas, implementar controles, ni ejecutar validación. La propuesta tampoco cierra el roster CMP completo ni los mappings P1.
