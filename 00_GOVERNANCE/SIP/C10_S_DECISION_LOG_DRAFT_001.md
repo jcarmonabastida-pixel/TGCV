@@ -1275,3 +1275,14 @@ La aceptación no adjudica observaciones ni asigna valores por escenario, no sel
 Se acepta matriz abstracta §15.1–15.2: identidad BOOL exacta; biyección total, inyectiva y versionada ENUM entre STANDARD/READ_ONLY/DISABLED; separación de estado y valor; preservación independiente de `RUL-SVC-ENABLE-PROFILE-01); evaluación independiente F1/A1; y separación entre configuración destino declarada y aplicación efectiva F2/A2.
 
 La composición requiere mappings explícitos/versionados, sin inferir transitividad ni comparar literales físicos de namespaces distintos. La aceptación no fija codificaciones ni mappings físicos, no adjudica observaciones, no sella IAM y no autoriza implementación, Design Freeze ni ejecución científica. Véase DEC-C10-084.
+
+
+## DEC-C10-085 — Aceptación de predicados de adjudicación PAR en F1/A1
+
+**Estado:** ACCEPTED — DOCUMENTAL. **Fecha:** 2026-11-08.
+
+Se acepta el contrato de §15.3 de la matriz abstracta para C_SRC→F1_S2 y C_SRC→A1_S1, con reconciliación obligatoria de las cinco familias organizadoras con SM/FP aceptado (DEC-C10-055), sin predicados confirmatorios duplicados ni doble contabilización. F1 y A1 se adjudican independientemente; el resultado conserva el vector de estados por predicado.
+
+Se mantienen BOOL exacto, biyección ENUM total/versionada, preservación semántica RUL, binding exacto CMP/snapshot/etapa/ruta/scope/mapping y suficiencia probatoria. PASS exige evidencia y cobertura suficientes; FAIL exige contradicción demostrada con cobertura suficiente; UNKNOWN refleja insuficiencia; NOT_COMPARABLE incompatibilidad sin mapping aprobado; NA solo inaplicabilidad ex ante (no admisible para estos elementos en el contrato base).
+
+No se definen mappings físicos ni observaciones; no se sella IAM ni se autoriza implementación, Design Freeze o ejecución científica. Véase `00_GOVERNANCE/decisions/DEC-C10-085_PAR_F1_A1_ADJUDICATION_PREDICATES_ACCEPTANCE.md`.
