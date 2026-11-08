@@ -175,3 +175,67 @@ DEC-C10-065 resuelve OAS-02 a nivel documental. El crosswalk físico aún debe v
 **Integridad complementaria:** `claim_evidence_id`, `evidence_id`, `evaluator_record_id`, `adjudication_id` y `coverage_scope_id` deben ser PK/UNIQUE en sus tablas. Las FKs tipadas no se mezclan con las FKs de pertenencia a SNAPSHOT ni sustituyen el par `snapshot_id + snapshot_object_record_id` de las relaciones de grafo. `source_provenance` reside en EVIDENCE_REGISTER; `evidence_ref` es solo navegación 0..1; CLAIM_EVIDENCE_LINK mantiene la relación 0..n.
 
 **Estado:** mapping documental consolidado; CHECK/FK, cardinalidad efectiva, integridad de instancia, custodia y consultas de reconstrucción pendientes de validación técnica autorizada.
+
+
+## 10. Auditoría de estado del crosswalk C0 — reconciliación temporal, de clase y ruta
+
+**Estado:** reconciliación documental de trabajo; no constituye aceptación nueva, cierre del mapping por propiedad, schema freeze ni autorización de implementación. Prevalecen DEC-C10-065, DEC-C10-070, DEC-C10-071, DEC-C10-072, DEC-C10-074, DEC-C10-075, DEC-C10-076, DEC-C10-077, DEC-C10-079, DEC-C10-080 y DEC-C10-081.
+
+### 10.1. Eje temporal — stage_key
+
+El vocabulario de siete valores está aceptado por DEC-C10-071 y sus significados se encuentran reconciliados en el protocolo de evidencia §20.4:
+
+| stage_key | Función temporal C10-S | Límite del mapping |
+|---|---|---|
+| C_SRC | Snapshot de configuración fuente | No implica ruta F/A ni estado aplicado |
+| F1_S2 | Representación S2 producida por F1 | No equivale a aplicación en destino |
+| A1_S1 | Representación S1 producida por A1 | Preservación independiente bajo ruta A |
+| F2_DST_DECL | Configuración destino declarada para F2 | No prueba aplicación |
+| A2_DST_DECL | Configuración destino declarada para A2 | No prueba aplicación |
+| F2_DST_APPLIED | Estado destino observado tras F2 | Requiere snapshot post-aplicación y evidencia |
+| A2_DST_APPLIED | Estado destino observado tras A2 | Requiere snapshot post-aplicación y evidencia |
+
+**Dictamen:** el enum y la semántica de etapa no están abiertos. Lo abierto es la asignación de cada captura concreta a una revisión exacta de SNAPSHOT y su evidencia, dentro de `universe_definition/version`. `SNAPSHOT.phase`, reloj DGP `t−1…t9` y timestamp son ejes separados. No se acepta codificar `stage_key` en `SNAPSHOT.scope`; tampoco se infiere desde `phase`, timestamp o texto libre.
+
+### 10.2. Eje de clase — object_class C10 frente a U_G
+
+La clase de origen C10 y el tipo físico U_G son ejes diferentes. La siguiente tabla es una guía de mapping candidato, no una equivalencia automática:
+
+| object_class | Materialización U_G candidata | Regla mínima para resolver | Estado |
+|---|---|---|---|
+| CMP | NODE; EDGE solo representa relaciones | Identidad CMP/versión exacta, NODE record exacto, semantic_role y boundary_class aplicables; EDGE no sustituye al CMP | Parcial; mapping por instancia/objeto pendiente |
+| PAR | Propiedad tipada del owner CMP; NODE solo si la propiedad necesita identidad propia justificada | parameter_key/type/state/value y owner CMP exactos; regla explícita de granularidad; sin NODE por cada valor | OPEN por propiedad |
+| REF | EDGE y/o referencia tipada conforme al modelo de REF aceptado | REF conserva identidad propia y extremos; mapping M explícito/versionado; split/merge/n-aria con identidad de grupo y conservación | OPEN por REF y mapping M |
+| RUL | PREDICATE y referencias a operandos/owner | rule_id/version, scope, AST, operandos y efecto exactos; distinguir regla de registro de sus referencias | Parcial; mapping por regla pendiente |
+| MET | Metadatos tipados distribuidos entre registros existentes, SNAPSHOT y EVIDENCE_REGISTER según función | Clasificar cada atributo por owner, temporalidad, custodia y función; no inventar tabla MET ni target único | OPEN por atributo |
+
+No se infiere `object_class` desde `ug_record_type`, `semantic_role`, `boundary_class`, `predicate_type` o `relation_type`. El mapping debe declarar, como mínimo, identidad de origen/registro, destino/propiedad U_G, owner cuando aplique, cardinalidad, regla de inclusión/exclusión, etapa, snapshot exacto, evidencia y provenance. Puede ser 1:N o N:M; no se fuerza una correspondencia uno-a-uno.
+
+### 10.3. Eje de ruta — familia, identidad y pertenencia
+
+- `F` y `A` son etiquetas auxiliares de familia/branch; no son `route_id`.
+- En scope route-specific, `route_id` identifica la ruta y el universo fija `route_record_id` exacto dentro del par `snapshot_id + snapshot_object_record_id`.
+- ROUTE_STEP es la fuente canónica de pertenencia de NODE/EDGE a la revisión exacta de ROUTE; PREDICATE debe resolver `route_record_id`; ROUTE se fija por su propio record.
+- `routes_affected`, nombre, proximidad o texto libre no demuestran pertenencia.
+- El token global `C10S_SCOPE_GLOBAL` y su semántica están aceptados por DEC-C10-072: “sin restricción a una ruta concreta”. No significa ausencia de rutas ni ausencia de pertenencia; no puede colisionar con un route_id real. NULL, vacío, NONE, F y A no lo sustituyen.
+- La pertenencia de PAR sigue la regla explícita de owner CMP; no se crea una ruta implícita para cada parámetro. REF requiere mapping a EDGE y pertenencia demostrada; RUL/MET necesitan reglas de clase/función explícitas.
+
+**Dictamen:** la semántica del slot route_id y del token global está decidida. La adjudicación de pertenencia para cada objeto concreto permanece OPEN/UNKNOWN hasta resolver mapping de clase, owner, revisión ROUTE y ROUTE_STEP exhaustivos.
+
+### 10.4. Vinculación con C0 y dimension
+
+La tupla C0 conserva exactamente nueve componentes conforme a DEC-C10-070. `dimension` es atributo independiente de COVERAGE_REGISTER, no décimo componente. La tupla se declara y versiona en `universe_definition/version`; no se reconstruye desde `SNAPSHOT.scope`. La dimensión debe concordar con la clase, regla de elegibilidad y universo, pero no cambia la identidad de C0.
+
+### 10.5. Dictamen de cierre por eje
+
+| Eje | Vocabulario/semántica | Mapping a registro/captura exacta | Resultado actual |
+|---|---|---|---|
+| stage_key | ACEPTADO | Snapshot exacto y evidencia por etapa | PARCIAL / OPEN |
+| object_class | ACEPTADO: CMP/PAR/REF/RUL/MET | Mapping por objeto/propiedad a U_G | OPEN |
+| route_id/global | DEC-C10-072 ACEPTADO | Route record y pertenencia por objeto | PARCIAL / OPEN |
+| dimension | Separada de C0 | Regla de elegibilidad por scope | OPEN |
+| universe_definition/version | Envelope U1 y canonicalización sujetos a DEC-C10-073/074 | Contenido recuperable, versión y provenance por scope | Según DEC-C10-073/074; no reabrir |
+
+**Siguiente unidad de trabajo recomendada:** resolver el mapping CMP→NODE y PAR→propiedad tipada/owner como un único par de granularidad e identidad, porque PAR no puede adjudicarse sin un owner CMP exacto. Después abordar REF→EDGE conforme a DEC-C10-077 y mapping M. RUL y MET quedan para sus contratos específicos.
+
+**Límites:** esta auditoría no puebla IAM, no crea snapshots/scopes/registros, no cierra mappings por instancia, no añade columnas/FKs/tablas, no autoriza parser, validator, fixtures, Design Freeze, validación técnica, implementación ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
