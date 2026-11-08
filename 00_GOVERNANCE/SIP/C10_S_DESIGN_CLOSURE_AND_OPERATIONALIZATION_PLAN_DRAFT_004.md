@@ -1634,3 +1634,11 @@ Crosswalk §10.29 propone descomponer N15 en capacidad/contrato, implementación
 Tras aceptación conceptual, el siguiente gate debe ser N16 — oráculo F*: delimitar criterio funcional, implementación del oráculo y adjudicación/evaluator; fijar F* común para F/A y ruta alternativa, con cegamiento del Analyzer y evaluación posterior independiente. Antes de ello, reconciliar si el contrato F* ya está definido en artefactos históricos y qué partes siguen abiertas. No duplicar el criterio, no asumir oráculo implementado ni usar logs A2 como veredicto funcional.
 
 No inspeccionar ni probar importadores. Sin parser, validator, implementación, Design Freeze o ejecución.
+
+## 16.80 — DEC-C10-092: aceptación conceptual N15 y gate N16
+
+Se acepta documentalmente la descomposición N15 propuesta en crosswalk §10.29: capacidad/contrato A2, implementación y ejecución separados; hitos de recepción, parseo, validación, resolución M, aplicación FP-06, post-check FP-07 y provenance FP-08 diferenciados. Se reutilizan DEC-C10-071/086/087/088, los siete stage_key y FP-01…08. No se crean nuevos predicados ni se presume CMP autónomo.
+
+**Siguiente gate: N16 — reconciliación del oráculo F*.** Antes de proponer especificación nueva, recuperar los contratos históricos de F*, matriz FP-01…08, regla no compensatoria, reglas de aplicabilidad/NA/UNKNOWN, C0/G/H, equivalencia F/A y adjudicación Generator/Analyzer/Evaluator. El resultado debe separar: (1) criterio funcional común F* para ambas rutas; (2) implementación/versionado del oráculo independiente; (3) adjudicación y evidencia, con Analyzer ciego a truth/potenciales y Evaluator actuando después de congelar sus outputs.
+
+No asumir que la regla candidata es decisión aceptada ni que existe oráculo implementado/validado. No usar logs A2 como veredicto funcional. El siguiente trabajo es documental; sin fixtures, parser, validator, pruebas, simulaciones, implementación, Design Freeze o ejecución.
