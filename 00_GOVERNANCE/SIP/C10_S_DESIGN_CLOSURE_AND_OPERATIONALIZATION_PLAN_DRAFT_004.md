@@ -1545,3 +1545,17 @@ La cadena de adjudicación temporal F/A queda documentalmente definida por DEC-C
 - Ejecución científica: **no autorizada**; scientific_execution=false; execution_authorized=false.
 
 La clasificación detallada y trazable por requisito reside en la Closure Control Matrix §87; este plan no crea una segunda matriz. No se declara Design Freeze ni se rebajan los criterios de identificación causal.
+
+
+## 16.70 — Especificación lógica CMP↔NODE e inventario de identidad
+
+El crosswalk §10.20 propone el primer contrato lógico de mapping CMP↔NODE reutilizando DEC-C10-069, DEC-C10-082 y los diez registros U_G existentes.
+
+Orden de cierre:
+1. aceptar o corregir el contrato lógico propuesto;
+2. completar el roster CMP desde el universo contractual completo, sin inferir cardinalidad total desde el único CMP de referencia;
+3. especificar mapping de CMP adicionales y P1, si aplican, por snapshot exacto;
+4. resolver el soporte físico ya existente para mapping/MET sin añadir columnas por conveniencia;
+5. definir controles de unicidad, cobertura y evidencia; mantenerlos como especificación hasta autorización técnica.
+
+**Estado:** propuesta documental; no IAM poblado, no mappings observados, no implementación ni ejecución. La aceptación de esta especificación lógica, si se produce, no implicará aprobación de schema físico ni cierre de evidencia.
