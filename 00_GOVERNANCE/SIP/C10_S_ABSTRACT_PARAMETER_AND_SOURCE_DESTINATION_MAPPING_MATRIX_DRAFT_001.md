@@ -678,3 +678,62 @@ Pendiente de aceptación: perfil COVERAGE_SCOPE + localizador en claim_statement
 - El enlace al scope no implica COVERAGE COMPLETE; se aplican U_G §12.3/§18.6.
 
 **Restricciones:** no se añade target_type PAR, FK, tabla o puente. No se aprueban gramática, escaping, canonicalización, serialización, parser ni automatización. Los campos singulares `evidence_id`/`claim_evidence_id` del manifiesto no sustituyen el registro 1:N de CLAIM_EVIDENCE_LINK. No se crean observaciones, no se sella IAM, no se declara cobertura ni se autoriza implementación/ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+### 15.1. Contrato candidato de equivalencia semántica para los dos PAR nucleares
+
+**Estado:** propuesta documental pendiente de aceptación. Especializa §§4–5 y 15–16 para el roster aceptado por DEC-C10-068 y las obligaciones de etapa DEC-C10-083. No selecciona representación física ni declara mappings observados.
+
+#### A. Separación de dos niveles
+
+La equivalencia se adjudica en dos niveles no intercambiables:
+
+1. **Equivalencia de estado:** conserva la distinción entre VALUE, ABSENT, NULL y cualquier estado DEFAULT contractual que pudiera aprobarse en el futuro. Para los dos PAR del núcleo, DEC-C10-083 exige VALUE en posiciones declarativas y no hay DEFAULT contractual aceptado. La falta de registro/evidencia no se recodifica como ABSENT.
+2. **Equivalencia de valor:** solo se evalúa cuando ambos lados tienen estado VALUE y sus tipos/dominios están resueltos. Un valor igual no compensa estado, tipo, dominio u owner incorrectos.
+
+Cada adjudicación identifica parámetro, owner CMP, snapshot, stage_key, ruta, mapping_id/version y evidencia. Los mappings F1 y A1 se adjudican por separado.
+
+#### B. PAR-SVC-ENABLED — BOOL
+
+El mapping semántico candidato es identidad exacta:
+- dominio fuente y destino: `{false,true}`;
+- `false → false`, `true → true`;
+- sin inversión de polaridad, coerción implícita, codificación ambigua ni valor por defecto;
+- cualquier representación física alternativa debe decodificarse mediante regla total, determinista y versionada a exactamente uno de los dos valores lógicos.
+
+Falsadores: inversión true/false; colapso de ambos valores; conversión no determinista; coerción dependiente de entorno; estado no VALUE tratado como booleano.
+
+#### C. PAR-SVC-PROFILE — ENUM
+
+El mapping semántico candidato debe ser una **biyección total versionada** entre los tres significados lógicos:
+- `STANDARD ↔ STANDARD` (significado funcional STANDARD);
+- `READ_ONLY ↔ READ_ONLY` (significado funcional READ_ONLY);
+- `DISABLED ↔ DISABLED` (significado funcional DISABLED).
+
+La notación muestra identidades lógicas; no obliga a que los símbolos físicos de origen/destino tengan esos mismos literales. Si difieren, M debe declarar explícitamente los tres pares físicos→significado lógico→destino. No se admite símbolo sin correspondencia, fusión de dos significados, expansión silenciosa del dominio ni mapping parcial. La bijección preserva los tres significados, no necesariamente la grafía.
+
+Falsadores: STANDARD y READ_ONLY fusionados; DISABLED traducido a un modo habilitado; símbolo obligatorio sin mapping; mapping dependiente de alias no versionado; valor desconocido convertido a uno de los tres símbolos.
+
+#### D. Invariante de la regla constitutiva
+
+Después de decodificar ambos parámetros al dominio lógico común, debe conservarse sin alteración:
+`ENABLED=true ⇒ PROFILE∈{STANDARD, READ_ONLY}`, efecto `REQUIRE`, scope de la unidad lógica y semántica de evaluación. No se añade la implicación inversa. `ENABLED=false` no restringe PROFILE por esta regla.
+
+La evaluación de la regla es independiente de la comparación de valores PAR: ambos PAR pueden mapearse individualmente y, aun así, la regla podría estar alterada, ausente o no aplicada. FP-03 evalúa preservación; FP-06 aplicación efectiva; FP-07 verificación post-aplicación; FP-08 validez probatoria/procedencia.
+
+#### E. Composición por etapas y rutas
+
+- `C_SRC → F1_S2` y `C_SRC → A1_S1`: dos adjudicaciones independientes; no se permite que el PASS de una ruta cubra la otra.
+- `F1_S2 → F2_DST_DECL` y `A1_S1 → A2_DST_DECL`: comparar la declaración destino con el resultado intermedio de su propia ruta y con la semántica lógica fuente.
+- `F2_DST_DECL → F2_DST_APPLIED` y `A2_DST_DECL → A2_DST_APPLIED`: comprobar aplicación efectiva por evidencia independiente. La igualdad declarativa no demuestra aplicación.
+- Las comparaciones se hacen mediante composición explícita de mappings versionados; no se presume transitividad entre mappings incompatibles ni se comparan literales físicos directamente si sus namespaces difieren.
+
+#### F. Resultados y límites
+
+- `PASS`: estado y valor semántico conformes, owner/snapshot/mapping exactos y evidencia/cobertura suficientes.
+- `FAIL`: contradicción semántica demostrada (inversión BOOL, pérdida/fusión ENUM, estado indebido, alteración de regla o valor distinto).
+- `UNKNOWN`: evidencia, cobertura, owner, snapshot, mapping o decodificación insuficientes.
+- `NOT_COMPARABLE`: identidades/versiones incompatibles sin mapping aprobado.
+- `NA`: solo no aplicabilidad declarada ex ante; no se deriva de falta de datos y no se admite para los dos PAR en las siete etapas del contrato base.
+
+La propuesta no fija valores por escenario, nombres físicos, codificación concreta, tablas de conversión, tolerancias, oráculo ni mediciones. No adjudica resultados F1/A1/F2/A2, no sella IAM, no crea fixtures/parser/validator ni autoriza implementación, Design Freeze o ejecución científica.
