@@ -1627,3 +1627,10 @@ DEC-C10-091 acepta la separación de formato/contrato, payload y eventos de tran
 **Siguiente gate: N15 — importador A2.** Separar capacidad/contrato del importador, entrada declarada, payload realmente recibido, parseo, validación, resolución/aplicación de M, estado efectivamente aplicado y evidencia por etapa. Diferenciar errores de transporte, formato, semántica, mapping y aplicación. Reutilizar DEC-C10-088 para adjudicación temporal F/A cuando corresponda; no duplicar el oráculo N16 ni inferir aplicación desde recepción.
 
 El siguiente trabajo será documental. No fijar parser, formato físico, IDs, columnas ni mapping físico. Sin captura, implementación, Design Freeze o ejecución.
+## 16.79 — Resolver N15: importador A2
+
+Crosswalk §10.29 propone descomponer N15 en capacidad/contrato, implementación y ejecución, sin asumir CMP autónomo. La cadena de inspección documental separa A2_DST_DECL, recepción, parseo, validación estructural/semántica, resolución M, aplicación FP-06, post-check FP-07 y provenance FP-08. Se reutilizan DEC-C10-086/087/088 y los siete stage_key; los hitos internos no crean etapas ni predicados nuevos.
+
+Tras aceptación conceptual, el siguiente gate debe ser N16 — oráculo F*: delimitar criterio funcional, implementación del oráculo y adjudicación/evaluator; fijar F* común para F/A y ruta alternativa, con cegamiento del Analyzer y evaluación posterior independiente. Antes de ello, reconciliar si el contrato F* ya está definido en artefactos históricos y qué partes siguen abiertas. No duplicar el criterio, no asumir oráculo implementado ni usar logs A2 como veredicto funcional.
+
+No inspeccionar ni probar importadores. Sin parser, validator, implementación, Design Freeze o ejecución.
