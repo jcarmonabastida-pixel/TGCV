@@ -1508,3 +1508,12 @@ El control conserva resultados PASS/FAIL/UNKNOWN/NOT_COMPARABLE/NA por capa, sin
 Se añaden 18 casos adversariales documentales y requisitos de informe. Se reconocen expresamente las limitaciones ya detectadas en §20.1–20.5: mappings stage_key, clase y ruta aún abiertos producen UNKNOWN donde impiden resolución inequívoca.
 
 No se amplía U_G ni se cierra gramática/escaping/canonicalización/predicate. No crea fixtures, parser, validator ni registros. No autoriza implementación, Design Freeze, validación técnica ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+ 
+## 16.68 — Aceptación del protocolo de control independiente PAR (DEC-C10-081)
+
+**Estado:** ACEPTADO — contrato lógico documental.
+
+Queda aceptado el §20.18 del protocolo de evidencia como control independiente del binding PAR, con reutilización de C0, cinco capas, entradas mínimas, secuencia P0–P11, identidad/supersession DEC-C10-079, estados por capa y 18 casos adversariales. Integridad, pertinencia sustantiva y cobertura permanecen como evaluaciones distintas.
+
+No se cierran los mappings físicos/semánticos stage_key, clase y ruta ni la gramática del localizador. UNKNOWN es obligatorio cuando falte resolución inequívoca. Esta decisión no autoriza automatización, implementación, Design Freeze ni ejecución del control o del experimento. `scientific_execution=false`; `execution_authorized=false`.
