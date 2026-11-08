@@ -884,3 +884,12 @@ El control conserva resultados PASS/FAIL/UNKNOWN/NOT_COMPARABLE/NA por capa, sin
 Se añaden 18 casos adversariales documentales y requisitos de informe. Se reconocen expresamente las limitaciones ya detectadas en §20.1–20.5: mappings stage_key, clase y ruta aún abiertos producen UNKNOWN donde impiden resolución inequívoca.
 
 No se amplía U_G ni se cierra gramática/escaping/canonicalización/predicate. No crea fixtures, parser, validator ni registros. No autoriza implementación, Design Freeze, validación técnica ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+ 
+## 19.26 — Aceptación del control independiente PAR (DEC-C10-081)
+
+**Estado:** ACEPTADO — contrato lógico documental.
+
+Se acepta el protocolo §20.18 del protocolo de evidencia como control independiente del binding probatorio PAR, reutilizando C0 §19 y conservando las cinco capas, entradas mínimas, pasos P0–P11, estados por capa y 18 casos adversariales. La integridad del vínculo, la pertinencia sustantiva y la completitud de cobertura se evalúan separadamente.
+
+Los mappings stage_key/clase/ruta y la gramática/escaping/canonicalización del localizador permanecen abiertos; sin resolución inequívoca corresponde UNKNOWN. Esta aceptación no sella IAM ni autoriza implementación, automatización, Design Freeze o ejecución. `scientific_execution=false`; `execution_authorized=false`.
