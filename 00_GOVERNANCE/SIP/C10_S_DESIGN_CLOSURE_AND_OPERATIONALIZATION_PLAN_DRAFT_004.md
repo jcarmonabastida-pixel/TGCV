@@ -1620,3 +1620,10 @@ Crosswalk §10.27 refina el N14 ya existente y plantilla U_G §25. Antes de acep
 Tras aceptación conceptual, el siguiente gate será N15 (importador A2): separar capacidad/implementación/ejecución; entrada declarada frente a payload realmente recibido; parseo, validación, mapping M y aplicación efectiva; errores, tolerancias y evidencia por etapa. Reutilizar DEC-C10-088 para la adjudicación temporal F/A donde corresponda. No inferir aplicación desde recepción ni duplicar el oráculo N16.
 
 No fijar aún formato concreto, IDs, columnas, parser, serialización de payload ni mapping físico. Sin captura, implementación, Design Freeze o ejecución.
+## 16.78 — DEC-C10-091: cierre conceptual N14 y siguiente gate N15
+
+DEC-C10-091 acepta la separación de formato/contrato, payload y eventos de transferencia. Se conserva N14 existente, E12/E13 candidatas, N07 para canal/endpoint y M para mapping. Permanecen pendientes la adjudicación de objetos y eventos reales, compatibilidad y evidencia.
+
+**Siguiente gate: N15 — importador A2.** Separar capacidad/contrato del importador, entrada declarada, payload realmente recibido, parseo, validación, resolución/aplicación de M, estado efectivamente aplicado y evidencia por etapa. Diferenciar errores de transporte, formato, semántica, mapping y aplicación. Reutilizar DEC-C10-088 para adjudicación temporal F/A cuando corresponda; no duplicar el oráculo N16 ni inferir aplicación desde recepción.
+
+El siguiente trabajo será documental. No fijar parser, formato físico, IDs, columnas ni mapping físico. Sin captura, implementación, Design Freeze o ejecución.
