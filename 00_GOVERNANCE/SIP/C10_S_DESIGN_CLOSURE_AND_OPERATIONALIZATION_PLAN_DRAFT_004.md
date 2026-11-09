@@ -2012,3 +2012,14 @@ No se autoriza Design Freeze, código, parser, validator, fixture ejecutable, si
 Se acepta como base de diseño de trabajo el paquete de resoluciones DEC-C10-094: inventario lógico y operand bindings únicos; encoding REF/AST físico pendiente de gramática; namespaces/mapping semántico; IAM exhaustivo por dimensión; FP-05 endurecido; G/C0/H; D2 event log y distribución conjunta de C_dep*; población pre-Z, q_X* y soporte; unidad/interferencia; truth/observed y oráculo independiente. No se reabren las decisiones conceptuales ya aceptadas.
 
 La aceptación cierra elecciones documentales, no evidencia. Permanecen gates materiales: serialización/encoding físico; H* y ancla definitiva; MD-C1/MD-C4; parámetros D2 y sensibilidad; algoritmo/roster/q_X*/soporte; cluster/interferencia real; validación y adjudicación del oráculo. AB sigue IN_PROGRESS, no DONE, no Design Freeze y no implementable. Paquete C puede preparar estimandos y medición, pero no asumir cerrados los inputs AB que condicionan identificación. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 16.99 — Interfaz contractual AB→C (2026-11-09)
+
+Se incorpora el maestro §221 como contrato de transferencia. C recibe objetos causales no intercambiables: ITT_Z^D2; primeras etapas FS_Cdep/FS_Af/FS_Df; efecto de paquete/política; ψ_B para versiones recibidas; LATE_f^D2; θ_Af(q_X*); θ_A(q); y estimandos propios de mediación/residual. Se prohíbe sustituir unos por otros, condicionar por mediadores post-Z al estimar ITT o calcular efectos residuales mediante restas de estimandos no armonizados.
+
+AB debe entregar a C entradas versionadas de unidad/población pre-Z, asignación y eventos B, C0/G/H, distribución conjunta C_dep*, predicados y ΔT_acc*, vías colaterales, Outcome/Value, truth/observed y soporte. C debe devolver diagnósticos de asignación/seguimiento/interferencia, ITT por Outcome y Value, primeras etapas separadas, dictamen IV por supuesto, evaluación B→g^Af, recuperación de truth DGP y abstención correcta cuando no hay identificación.
+
+La interfaz permite avanzar documentalmente en diccionario, medición y análisis, pero no declarar identificados LATE_f, θ_Af o θ_A ni cerrar mediación/residual. Se mantienen los gates AB y los requisitos de C sobre Value, población, soporte, interferencia, identificación, sensibilidad, potencia y N. Fuente: maestro §221; jerarquía previa C10-D1/S4-R §18 y auditoría IV mantienen precedencia.
+
+Estado: CONTRACT_DEFINED / MATERIAL INPUTS OPEN / IDENTIFICATION NOT ESTABLISHED. No Design Freeze ni autorización de implementación/ejecución; scientific_execution=false; execution_authorized=false.
