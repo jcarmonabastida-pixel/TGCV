@@ -2147,3 +2147,20 @@ El estado documental vigente es el siguiente:
 
 La corrección de §33 ya estaba indicada en §34 y desarrollada en §35; este addendum elimina cualquier ambigüedad de precedencia para lectores que consulten la tabla anterior de forma aislada. No cierra LATE_f, XSYNC, exclusión, identificación, ni autoriza implementación o ejecución.
 
+
+
+---
+## 102. Gate de correspondencia D2→g y exclusión (2026-11-09)
+
+| Gate | Objeto | Estado | Criterio de cierre |
+|---|---|---|---|
+| MAP-01 | Versiones, actor, alcance, tiempos y factibilidad de B_g0/B_g1 | OPEN | Contrato material por brazo, versión, historia y desviaciones |
+| MAP-02 | B→W→C_dep*→A_f*/D_f*→ΔT_acc* | OPEN | Mapping temporal con medidas independientes y verdad/observación separadas |
+| MAP-03 | Distribuciones inducidas g_j^ind(a|h;q) y soporte | NOT_IDENTIFIED | Distribuciones por historia/contexto y positividad demostrables |
+| MAP-04 | Equivalencia de versiones y diferencias directas | OPEN | Versiones equivalentes o vías directas separadas mediante diseño/estimando |
+| MAP-05 | Rutas alternativas/compartidas, recursos y residuos | OPEN | Cobertura suficiente por unidad, frontera, versión y ventana |
+| MAP-06 | Exclusión Outcome/Value, medición, interferencia y carryover | NOT_DEMONSTRATED | Evidencia diferenciada por resultado y supuestos de diseño defendibles |
+| MAP-07 | Separación LATE_f, θ_Af(q_X*) y θ_A(q) | DEFINED / NOT_IDENTIFIED | Contratos y condiciones de identificación propios para cada estimando |
+
+**Regla de interpretación:** la definición conceptual de B_g^D2 no identifica las distribuciones inducidas g_j^ind. ITT_Z^D2 es efecto de asignación a la política D2; no es por sí mismo θ_A(q), θ_Af(q_X*) ni LATE_f. No se habilita Wald, implementación ni ejecución.
+
