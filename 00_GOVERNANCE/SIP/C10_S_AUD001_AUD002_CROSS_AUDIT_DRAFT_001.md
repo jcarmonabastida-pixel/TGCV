@@ -151,3 +151,14 @@ No conviene redactar todavía ecuaciones definitivas para `θ_{A_f}(q)) hasta re
 - Este informe es una revisión documental, no evidencia empírica sobre C10.
 
 **Conclusión:** la integración propuesta es una dirección adecuada, pero antes de cerrar los bloqueos P0 hay que definir una intervención físicamente coherente y separar con rigor el efecto de la política de habilitación del efecto causal atribuible al cambio de accesibilidad.
+
+
+---
+## 7. Delimitación de alcance tras DEC-C10-066/067 (2026-11-09)
+
+Los hallazgos, recomendaciones y siguientes pasos de §§1–6 se refieren a la propuesta histórica AUD-001/002 de intervención focal sobre autorización. No constituyen una recomendación pendiente para seleccionar o construir la política primaria D2.
+
+Para D2 rigen DEC-C10-066/067: provisión técnica focal, con C_auth,base=1 común e invariante; C_auth_base se corresponde con AUTH_f*. La intervención focal sobre autorización solo puede recuperarse como escenario alternativo/adversarial, con política, estimando y vías causales propios.
+
+Por tanto, la frase de §6 sobre definir una intervención físicamente coherente antes de cerrar los bloqueos P0 se limita a la eventual reutilización de AUD-001/002 como escenario alternativo. No reabre D2 ni convierte este informe en contrato operativo. La correspondencia general B→g^Af, exclusión, vías colaterales y revisión independiente continúan abiertos en sus artefactos rectores. No se autoriza freeze, implementación, simulación ni ejecución.
+
