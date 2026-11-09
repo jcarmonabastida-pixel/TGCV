@@ -2450,3 +2450,18 @@ PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-
 | Mediación/residual | Intervención mediadora y descomposición formal | Confusión postratamiento, régimen, escala y horizonte comunes | OPEN / NOT IDENTIFIED |
 
 **Dictamen:** la interfaz contractual AB→C queda definida en maestro §221. C puede avanzar documentalmente; no puede tratar inputs AB como congelados ni declarar identificación. Sin Design Freeze ni ejecución.
+
+
+## 118. Paquete C — identificación, Value y atribución causal (2026-11-09)
+
+| Dominio | Especificación integrada | Gates pendientes | Estado |
+|---|---|---|---|
+| Jerarquía causal | ITT_Z^D2, primeras etapas, efecto paquete, LATE_f, θ_Af, θ_A, mediación y residual separados | Mapping B→g^Af, IV, población/soporte | CONTRACT RECONCILED |
+| Outcome / Value | Medición independiente; Value vectorial primario durante identificación | Dimensiones, escalas, observadores, regla de ausencia/ponderación | DESIGN PROPOSED |
+| ΔT_acc y mediación | Mediador transformacional completo; Reach/trayectoria como posibles mediadores secuenciales | Intervención mediadora, confusión post-Z, régimen y horizonte | OPEN / NOT IDENTIFIED |
+| Identificación | ITT primero; primeras etapas separadas; IV solo tras gates; sensibilidad/cotas | Exclusión, monotonicidad, versiones, interferencia, medición | NOT ESTABLISHED |
+| DGP / Analyzer | Truth oculta, Analyzer aislado, Evaluator separado; recovery y abstención por estimando | Escenarios, umbrales, leakage audit | CONTRACT REUSED / NOT EXECUTED |
+| Estadística | P177/P178 y pérdidas/censura P183 | MDE, potencia, precisión, N, R, tolerancias | OPEN |
+| Validez de constructo | P179/P182, fuentes/versiones y error por dimensión | Instrumentos, cegamiento, reproducibilidad | OPEN |
+
+**Dictamen:** C dispone de arquitectura documental integrada; no está aprobado, congelado, implementable ni ejecutado. No hay cambio en claims ni en estado científico de TGCV. No autoriza simulación.
