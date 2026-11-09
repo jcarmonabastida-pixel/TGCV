@@ -44,14 +44,16 @@ La regla de dos capas de snapshot y la separación entre `ΔT_acc^*` y `ΔE_T` s
 
 ## 4. Hallazgos y discrepancias
 
-### MEAS-01 — Composición de A_f* no reconciliada completamente
-**Estado:** OPEN / MATERIAL.
+### MEAS-01 — Composición de A_f* reconciliada conceptualmente; operacionalización parcial
+**Estado:** PARTIAL — la precedencia de la fórmula está resuelta; mappings y evidencia material siguen OPEN.
 
-El DGP §3.3 define `A_f,i1^*` mediante `C_dep`, `C_auth,base`, `C_resource`, `C_capacity`, `C_info`, `C_domain` y `C_other`. Sin embargo, el crosswalk de información advierte que no se debe crear `C_info` autónomo ni incorporarlo a `A_f^*` hasta resolver duplicidades; la ficha D2-RES-01 también separa disponibilidad estructural, capacidad instalada, consumo de ejecución y recursos usados por B. No está cerrado qué predicados son constitutivos, cuáles son condiciones ya incluidas en `C_dep^*` o `R_access^*`, cuáles son invariantes postulados y cuáles son mediciones.
+La lectura histórica del DGP §3.3 que enumeraba `C_dep`, `C_auth,base`, `C_resource`, `C_capacity`, `C_info`, `C_domain` y `C_other` como factores de una conjunción no gobierna la especificación actual. La fórmula candidata depurada de maestro §67.3 / DGP §59.3 y el crosswalk causal D2 es:
 
-**Riesgo:** doble contabilización, condición postratamiento mal clasificada o definición de tratamiento que varía según el documento consultado.
+`A_f*=I(ID_f* ∧ REL_f* ∧ COND_f* ∧ AUTH_f* ∧ RES_f* ∧ DEP_f* ∧ ¬BLOCK_f*)`.
 
-**Resolución necesaria:** crosswalk único por predicado con definición, rol causal, nivel, unidad, tiempo, evidencia y pertenencia a la conjunción; declarar expresamente duplicidades y exclusiones. No añadir símbolos ni cambiar la conjunción por inferencia editorial.
+El crosswalk vigente determina que `C_auth,base` se corresponde con `AUTH_f*` y no es un factor independiente duplicado; `C_resource`/`C_capacity` solo pueden contribuir a `RES_f*`/`R_access*` cuando acrediten disponibilidad ex ante necesaria y no duplicada; `C_info` no es factor autónomo; `C_domain`/`D_support` se asigna a identidad/tipo o `COND_f*` según semántica; `C_dep*` se integra en `DEP_f*`; `C_other` queda excluido como comodín; `VALID`/cobertura/`E_T` son epistémicos; `App_f`, conocimiento, selección, ejecución, Outcome y Value quedan fuera de `A_f*`.
+
+**Riesgo residual:** no se ha completado la operacionalización material de `RES_f*`, el mapping `D_support`↔identidad/COND, los catálogos de `REL_f*`/`COND_f*`/`BLOCK_f*`, ni la adjudicación exhaustiva de rutas alternativas. No se debe volver a describir la composición de la fórmula como abierta o ambigua; lo abierto es su especificación material y evidencia. El crosswalk completo es `C10_S_D2_AF_PREDICATE_CAUSAL_CROSSWALK_DRAFT_001.md`.
 
 ### MEAS-02 — El estado focal exige identidad semántica y comparabilidad pre/post
 **Estado:** PRINCIPIO DEFINIDO / OPERACIONALIZACIÓN ABIERTA.
