@@ -2217,3 +2217,25 @@ La corrección de §33 ya estaba indicada en §34 y desarrollada en §35; este a
 
 **Dictamen:** DOCUMENTARY_READY / NO_SOURCE_INVENTORY / COVERAGE_NONE. El siguiente gate es cerrar la legitimidad del universo/denominador y mappings de scope, no iniciar una inspección técnica ni una ejecución. scientific_execution=false; execution_authorized=false.
 
+
+
+---
+## 106. Legitimidad del universo y denominadores C0/UDG (2026-11-09)
+
+| Control | Estado | Dictamen |
+|---|---|---|
+| C0 tuple (9 componentes) | DOCUMENTED | DEC-C10-070; dimension fuera de la identidad |
+| Stage keys | ACCEPTED ENUM / NOT MAPPED TO SNAPSHOTS | DEC-C10-071; no equivale a SNAPSHOT.phase |
+| Route global | ACCEPTED TOKEN | C10S_SCOPE_GLOBAL; no usar NONE/F/A |
+| UDG-01 / JCS / UDG-03 / UDG-04 | ACCEPTED DOCUMENTALLY | DEC-C10-073…076; no implementación |
+| B-M01…15 vs dimension | CONFLICT RESOLVED DOCUMENTALLY | B-M es dominio de auditoría; dimension=C10S_CONFIG_* |
+| COV-D2-BM01…15 | PLANNING LABELS ONLY | No coverage_scope_id físico ni FK |
+| Cuadrícula 7×5 | LOGICAL PLANNING GRID | Hasta 35 combinaciones, no denominador ni filas automáticas |
+| Unidad raíz↔CMP anchor | OPEN | Mapping exacto pendiente |
+| CMP/PAR/REF/RUL/MET | PARTIAL CROSSWALK | Unidades de denominador/mapping físico incompletos |
+| Contract/instance/snapshot | NOT MATERIALIZED | Sin tupla C0 instanciable |
+| C0 control | DOCUMENTED / NOT IMPLEMENTED / NOT AUDITED | No PASS |
+| Denominador / cobertura | UNKNOWN / NONE | No emitir 0 ni COMPLETE |
+
+**Dictamen:** DOCUMENTARY_RECONCILIATION_PARTIAL / NO_C0_INSTANCE / NO_SNAPSHOT / DENOMINATOR_UNKNOWN / COVERAGE_NONE. El siguiente gate es crosswalk de identidad/unidad por clase, no captura técnica.
+
