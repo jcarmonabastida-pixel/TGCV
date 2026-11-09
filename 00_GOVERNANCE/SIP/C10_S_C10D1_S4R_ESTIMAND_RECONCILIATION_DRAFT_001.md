@@ -271,7 +271,7 @@ La definición cuantitativa de F*, universo, umbrales, cobertura, error de clasi
 
 ## 17. Contrato vigente de escenarios y políticas materiales D1/D2
 
-**Precedencia:** DEC-C10-066/067 y maestro C10-S §§53.4, 65–67 y 131. Este apartado reemplaza la formulación anterior que presentaba D1 como principal condicionado y D2 como contraste.
+**Precedencia:** DEC-C10-066/067 y maestro C10-S §§53.4, 67 y 131–132. Las §§65–66 del maestro son únicamente registros de supersesión histórica, no especificaciones operativas.
 
 | Elemento | D2 — primario candidato | D1 — secundario |
 |---|---|---|
