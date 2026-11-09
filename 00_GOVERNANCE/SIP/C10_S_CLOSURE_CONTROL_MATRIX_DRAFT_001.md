@@ -2117,3 +2117,18 @@ La generación de código puede recuperar nombres, fórmulas, decisiones o estru
 ### Criterio de cierre
 
 PASS solo cuando el código y sus pruebas se vinculan a fuentes vigentes, no materializan formulaciones supersedidas y respetan el contrato de roles/datos. UNKNOWN/OPEN ante trazabilidad incompleta; FAIL ante contradicción semántica demostrada. Este gate no es una validación automatizada ya implementada, no crea una matriz paralela, no aprueba Design Freeze ni autoriza ejecución.
+
+### Auditoría transversal de fuentes dependientes — 2026-11-09
+
+**Referencia rectora:** maestro C10-S §215. **Alcance comprobado:** 100/100 archivos modificados por PR #116, recuperados y revisados documentalmente. No equivale a auditoría de todo el repositorio ni a revisión independiente.
+
+**Controles de no-regresión que deben mantenerse:**
+1. DEC-C10-066/067: D2 primario candidato / D1 secundario; políticas D2 de provisión técnica focal.
+2. `C_auth,base=1` basal común e invariante; `C_auth_base`→`AUTH_f*`; intervención focal AUD-001/002 no primaria D2.
+3. Fórmula candidata de `A_f*` según maestro §67.3/crosswalk D2; no reintroducir `C_info` autónomo ni `C_other`; no duplicar `C_auth_base` y `AUTH_f*`.
+4. `ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*)` y `ΔE_T` epistémico separado.
+5. `θ_A(q)`, `ITT_Z^D2`, `LATE_f^D2` y `θ_Af(q_X*)` permanecen diferenciados; ITT no equivale automáticamente a efecto puro de accesibilidad.
+
+**Correcciones persistidas en esta auditoría:** auditoría integrada; reconciliación de arquitectura causal; auditoría de medición focal; reconciliación de población/comparadores; avisos en AUD-001/002 y auditoría integrada de consistencia; plan Draft 004; Test Contract Register. Ver maestro §215.2 para detalle.
+
+**Evidencia y límites:** `PASS_STATIC` en la revisión documental del conjunto PR #116; `CONDITIONAL` para referencias del resto del repositorio y para la futura generación de código. No se han ejecutado validadores, fixtures, parsers, generadores, simulaciones o experimentos. Sin revisión humana independiente. No se autoriza implementación, Design Freeze ni ejecución.
