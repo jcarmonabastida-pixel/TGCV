@@ -1720,3 +1720,17 @@ La comprobación focal de referencias cruzadas detectó tres puntos en los que e
 
 Se preservan los textos originales, las propuestas y la trazabilidad; no se reescriben DEC aceptadas ni se altera el alcance de D2. La fórmula A_f* continúa candidata, MEAS-G1 parcial y el mapping general B→g^Af/exclusión abiertos. No se modifica main, C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS ni claims. No se ejecutan validadores, código, fixtures, parsers, simulaciones o experimentos. scientific_execution=false; execution_authorized=false; sin Design Freeze.
 
+
+
+## 16.84. Mapping D2→g de accesibilidad y gate de exclusión (2026-11-09)
+
+**Estado:** análisis documental incorporado; NOT_IDENTIFIED / MAPPING OPEN. No modifica DEC-C10-066/067 ni autoriza implementación.
+
+Se añade como siguiente bloque causal la distinción entre las políticas materiales B_g0^D2/B_g1^D2 y las políticas estocásticas g_j sobre cambios de accesibilidad definidas en C10-D1 §26. Las primeras son reglas implementables de provisión técnica; las segundas son distribuciones objetivo sobre ΔT_acc* condicionadas por historia/contexto y restringidas a transformaciones factibles. La correspondencia debe reconstruirse como distribución inducida por cada B, no suponerse por notación ni por la primera etapa de C_dep*.
+
+El nuevo §14 de C10_S_D2_LATE_F_IV_VALIDITY_AUDIT_DRAFT_001.md especifica la cadena B→W→C_dep*→A_f*/D_f*→ΔT_acc*, los requisitos de historia/soporte/consistencia/versiones, la diferencia entre exclusión focal para D_f* y atribución sobre ΔT_acc* completo, y los siete gates MAP-01…07.
+
+**Consecuencia:** ITT_Z^D2/ψ_policy^D2, LATE_f^D2, θ_Af(q_X*) y θ_A(q) siguen siendo objetos distintos. El mapping no está identificado; las vías colaterales y exclusión no están demostradas. No convertir B_g1/B_g0 en g_1/g_0 ni renombrar el ITT como efecto de accesibilidad.
+
+Siguiente operación documental: completar MAP-01/02 como contrato de correspondencia de intervención y medición, reutilizando DEC-C10-067, D2POL, manifiesto B-M01…15, fichas de invariantes y los predicados vigentes del maestro §67.3. La inspección de evidencias materiales, el cierre de MAP-03…06 y la validación de MAP-07 quedan sujetos a sus propios datos, supuestos y gates. No ejecutar ni implementar; scientific_execution=false; execution_authorized=false.
+
