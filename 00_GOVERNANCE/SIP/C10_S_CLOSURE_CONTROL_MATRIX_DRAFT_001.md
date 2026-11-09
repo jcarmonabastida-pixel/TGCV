@@ -2520,3 +2520,19 @@ PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-
 | C-ID-13 | Crosswalk P177/P178/P179/P182/P183 y reconciliación C10-D1/S4-R | PROPOSED |
 
 **Dictamen:** la estrategia metodológica queda especificada como propuesta; no hay parámetros, identificación, potencia, N, umbrales ni evaluación ejecutada cerrados. C permanece NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. Sin autorización de implementación o ejecución.
+
+
+## 122. Auditoría de correspondencia contractual de mediación (2026-11-10)
+
+| Control | Contrato/fuente correctamente aplicable | Estado verificado |
+|---|---|---|
+| No ajustar ITT por mediadores post-Z | P177-06 | DEFINED; no ejecutado |
+| Separar política y atribución focal | P177-12; C10-D1/S4-R §18/§23 | DEFINED; mapping/identificación OPEN |
+| Validez y adjudicación independiente de A | P182-01/02/06/07 | DEFINED; evidencia/operacionalización OPEN |
+| Ausencia de A y efecto en identificación | P183-08 | DEFINED; no cubre toda la mediación |
+| Outcome y Value independientes | P177-05; P179-01…03 | DEFINED; fichas concretas OPEN |
+| Estimando/intervención mediadora y confusión inducida | Maestro §225.3 | PROPOSED; contrato específico incompleto |
+
+**Corrección:** la referencia P177-05…08 como cobertura de mediación en Register §72 queda retirada. Esos IDs no tienen ese alcance. El gate C-MED permanece OPEN; no se declara cobertura contractual completa ni identificación.
+
+**Dictamen:** auditoría documental PASS para detectar y corregir la referencia; C-MED OPEN; paquete C NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. Sin ejecución.
