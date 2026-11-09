@@ -2465,3 +2465,20 @@ PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-
 | Validez de constructo | P179/P182, fuentes/versiones y error por dimensión | Instrumentos, cegamiento, reproducibilidad | OPEN |
 
 **Dictamen:** C dispone de arquitectura documental integrada; no está aprobado, congelado, implementable ni ejecutado. No hay cambio en claims ni en estado científico de TGCV. No autoriza simulación.
+
+
+## 119. Paquete C — jerarquía y contratos operativos (2026-11-09)
+
+| ID | Resolución / control | Estado | Dependencia |
+|---|---|---|---|
+| C-01 | θ_A(q) es pregunta científica primaria; ITT_Z^D2 es primario solo como estimando de asignación S4-R | PROPOSED | Aceptación y coherencia C10-D1/S4-R |
+| C-02 | Value vectorial y Outcome separado, análisis por dimensión | PROPOSED | Fichas P179/P182 |
+| C-03 | No selección de dimensiones/pesos/índice/MDE por default o post hoc | PROPOSED | Contexto de valoración y P178 |
+| C-04 | Registro versionado de estimando con campos §223.2 | PROPOSED | Diccionario y población AB |
+| C-05 | ITT sin ajuste post-Z; missingness y selección tratados explícitamente | PROPOSED | P177/P183 y diseño |
+| C-06 | Dictamen por estimando y dimensión; abstención correcta | PROPOSED | P177/P183 |
+| C-07 | Truth oculta al Analyzer; Evaluator separado | PROPOSED | Firewall y auditoría leakage |
+
+**Gates materiales:** dimensiones/indicadores Value, Outcome, H, régimen de mediación, población/soporte, unidad/interferencia, mapping B→g^Af, exclusión, medición/cegamiento, multiplicidad, MDE, potencia, N, R y umbrales.
+
+**Dictamen:** especialización operativa propuesta; no aceptada ni congelada. No cambia el estado científico ni autoriza implementación/ejecución.
