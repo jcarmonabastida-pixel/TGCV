@@ -2550,3 +2550,21 @@ PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-
 | Recuperación, firewall y clasificación | P177-10/12; P182-11; P183-12 | Cobertura parcial; falsa identificación y abstención requieren criterios explícitos |
 
 **Dictamen:** las referencias erróneas/incompletas se corrigen en el registro; no se interpreta la presencia de un ID como prueba de ejecución o cierre. Gates C-MED y C-ANALYZER permanecen OPEN.
+
+
+## 124. Gates de mediación y evaluación del Analyzer — especialización candidata (2026-11-10)
+
+| Gate | Criterio de cierre | Estado |
+|---|---|---|
+| C-MED-01 | Estimandos interventional indirect/direct, mediador completo/focal y población/horizonte versionados | OPEN |
+| C-MED-02 | DAG longitudinal, orden temporal y confusores basales/postratamiento | OPEN |
+| C-MED-03 | Método compatible con confusión inducida, soporte secuencial y positividad | OPEN |
+| C-MED-04 | Rutas colaterales, interacción, mediadores múltiples y sensibilidad/bounds | OPEN |
+| C-MED-05 | Criterio de recuperación/abstención por DGP y dimensión | OPEN |
+| C-AN-01 | Truth/observed/firewall y Evaluator separados; leakage audit | PROPOSED |
+| C-AN-02 | Recuperación puntual solo en DGP identificables; bounds en parciales | PROPOSED |
+| C-AN-03 | Falsa identificación y falsa atribución focal medidas con denominador explícito | OPEN |
+| C-AN-04 | Abstención correcta y falsa abstención adjudicadas | OPEN |
+| C-AN-05 | Tolerancias, métricas, réplicas inválidas y reglas de aceptación preespecificadas | OPEN |
+
+**Dictamen:** propuesta de especialización; no equivale a aceptación de los métodos, parámetros o umbrales. C-MED y C-ANALYZER no están cerrados. Sin implementación o ejecución.
