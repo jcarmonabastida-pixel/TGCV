@@ -8569,6 +8569,7 @@ El barrido completo del maestro detectó además restos operativos que no quedab
 - §63.7 queda como registro histórico supersedido: validez/cobertura de evidencia pertenece a `E_T`, no a la verdad estructural.
 - §13.1 y §10.6 distinguen la autorización basal D2 de la intervención alternativa; §25.2 reclasifica XSYNC-138-01 como parcialmente resuelto para D2 y abierto en el mapping B→g^Af/exclusión.
 - §§68.7 y 69.5 ya no presentan la selección primaria D1/D2 como abierta; se conserva abierto el fixture/distribución confirmatoria, que es una cuestión distinta.
+- `C10_S_XSYNC_138_CLOSURE_TRACKER_DRAFT_001.md` y Closure Control Matrix S4R-18 reflejan que XSYNC-138-01 está parcialmente resuelto para D2, con mapping B→g^Af, exclusión y cierre independiente aún abiertos.
 
 **Resultado de barrido del maestro:** las únicas fórmulas antiguas encontradas en la búsqueda de expresiones A_f* son ahora registros explícitos no operativos en §§30.1 y 59.3. Las menciones históricas de `ΔValidity` quedan en registros de supersesión, no en la definición estructural vigente. Las menciones históricas de D1-principal y de intervención sobre autorización quedan calificadas como supersedidas o alternativas. El gate §0.5.3 reúne estas precedencias para cualquier lectura o generación futura.
 
