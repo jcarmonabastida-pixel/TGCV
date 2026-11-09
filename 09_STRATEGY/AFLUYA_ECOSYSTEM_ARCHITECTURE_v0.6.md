@@ -116,6 +116,18 @@ AFLUYA recoge y hace accesibles, en lenguaje público, preguntas como:
 - ¿Qué resultados se producen?
 - ¿Para quién y bajo qué condiciones esos resultados constituyen valor?
 
+### 2.3 Qué no debe hacer la marca
+
+AFLUYA no debe:
+- presentar la conexión como causa suficiente de valor;
+- convertir la metáfora del flujo en un constructo científico de TGCV;
+- presentar simulaciones, demostradores o casos ilustrativos como evidencia causal;
+- sugerir que TGCV ha demostrado validez general en todos los sectores;
+- confundir una propuesta de aplicación con una validación científica;
+- simplificar o sustituir la gobernanza, los límites o los estados de evidencia de TGCV.
+
+La marca puede ser cálida, evocadora y accesible. Las afirmaciones científicas deben seguir siendo precisas, falsables, trazables y proporcionales a la evidencia disponible.
+
 ### 2.4 Relación entre los tres niveles de nombre
 
 La relación es de traducción y aplicación, no de equivalencia:
@@ -125,8 +137,6 @@ La relación es de traducción y aplicación, no de equivalencia:
 - TGCV identifica el programa científico específico que investiga formalmente una parte de esas preguntas.
 
 No debe afirmarse que Inteligencia Transformacional es otro nombre de TGCV, que reemplaza su pregunta causal central sobre accesibilidad y valor, o que todas sus prácticas están científicamente validadas por TGCV. Los métodos aplicados y sus resultados requieren evaluación propia.
-
-### 2.3 Qué no debe hacer la marca
 
 AFLUYA no debe:
 - presentar la conexión como causa suficiente de valor;
