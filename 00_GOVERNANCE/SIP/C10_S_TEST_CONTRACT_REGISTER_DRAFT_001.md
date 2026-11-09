@@ -1362,3 +1362,21 @@ Este crosswalk no crea nuevos contratos ni declara pruebas ejecutadas. Las propu
 | Preespecificación | P177-09/10; P178-SIM-10; P179-08 | Dimensiones, multiplicidad y umbrales fijados ex ante |
 
 No se crean pruebas ejecutadas ni se seleccionan indicadores/valores. §224 define fichas y criterios; los gates materiales siguen abiertos.
+
+
+## 72. Crosswalk de identificación y evaluación estadística del paquete C (2026-11-09)
+
+| Elemento §225 | Contratos / fuentes existentes | Verificación exigida |
+|---|---|---|
+| Jerarquía e identificación por estimando | P177-01…12; C10-D1/S4-R §§18,20,22; auditoría D2 IV §§1–8 | Dictamen separado por estimando, resultado, población y horizonte; no sustitución de θ_A(q) |
+| Primera etapa y tratamiento | P177-03/04; AB event log; contratos C_dep*/A_f*/D_f* | FS_Cdep, FS_Af, FS_Df independientes; truth y observed separados |
+| Mediación y confusión postratamiento | P177-05…08; P182-01/02/06/07; §225.3 | DAG temporal, confusores inducidos, estimando interventional y no ajuste post-Z |
+| Población/soporte/interferencia | P177-01/02/06; P183-01…10; AB population/unit contracts | Elegibilidad pre-Z, q_X*, overlap, unidad y mapa de exposición |
+| Missingness/censura | P183-01…10; §224.5 | Estados de observación, mecanismo, sensibilidad y bounds |
+| IV/LATE | Auditoría C10-S D2 LATE/IV §§3–8; C10-D1/S4-R §18.4 | Gates IV-G1…G8; no Wald causal antes de cierre |
+| Sensibilidad/bounds | P178-SIM-10; P179-06/08; P183-09/10 | Escenarios adversariales, rangos justificados, cobertura y tipping points |
+| Evaluación Analyzer | P177-10/12; P182-11; P183-11/12 | Truth oculta, clasificación de identificación, falsa identificación y abstención |
+| Potencia/N/Monte Carlo | P178-SIM-10; P179-08; §225.8 | N/replicates derivados de precisión/potencia/error Monte Carlo, no arbitrarios |
+| Criterios de aceptación/falsación | P177-10/12; P178-SIM-10; §225.9 | Tolerancias ex ante y clasificación por estimando×resultado×DGP |
+
+Este crosswalk reutiliza contratos existentes y añade criterios de evaluación, no nuevas pruebas ejecutadas. Los IDs citados deberán comprobarse contra la versión contractual vigente antes del implementation contract; este registro no altera P177/P178/P179/P182/P183.
