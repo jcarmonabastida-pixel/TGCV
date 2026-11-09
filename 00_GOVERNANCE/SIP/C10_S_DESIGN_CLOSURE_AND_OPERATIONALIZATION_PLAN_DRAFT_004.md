@@ -1683,7 +1683,7 @@ Se retiran de los documentos operativos las formulaciones que inducían regresi�
 
 ## 16.82. Auditoría transversal de precedencia semántica y no-regresión (2026-11-09)
 
-**Estado:** auditoría documental asistida / autoauditoría / no independiente. **Alcance:** los 100 archivos modificados por PR #116 fueron recuperados y revisados para detectar formulaciones históricas o supersedidas que pudieran actuar como especificaciones operativas.
+**Estado:** auditoría documental asistida / autoauditoría / no independiente. **Alcance:** los 100 archivos modificados por PR #116 fueron recuperados y revisados para detectar formulaciones históricas o supersedidas que pudieran actuar como especificaciones operativas; además, se contrastaron las secciones causales de referencia §§17/24–30 del protocolo C10-D1 en `research/c10-d1-protocol-draft`.
 
 Se aplicó el criterio de retirada selectiva: eliminar o sustituir texto operativo contradictorio cuando la precedencia está resuelta; conservar IDs, anclas y registros históricos útiles; no borrar definiciones técnicas vigentes ni decisiones aceptadas; no convertir propuestas en decisiones.
 
