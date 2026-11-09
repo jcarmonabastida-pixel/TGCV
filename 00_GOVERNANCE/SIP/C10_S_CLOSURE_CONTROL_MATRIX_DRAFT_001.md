@@ -2324,3 +2324,16 @@ No exigir sistema real para crear el fixture sintético; no implementar toda U_G
 PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-consolidation-draft; 100 archivos cambiados y 1.411 commits ahead según comparación consultada. No promoción a main ni cambio de base en este gate.
 
 **Siguiente trabajo:** ejecutar conjuntamente A+B sobre la misma instancia sintética. No código, validadores, fixtures ejecutables, simulación ni ejecución científica. scientific_execution=false; execution_authorized=false.
+
+
+---
+
+## 111. Regla operativa vinculante — cuatro paquetes C10-S (2026-11-09)
+
+**Unidad de seguimiento:** cuatro paquetes sustantivos: **AB** (instancia funcional + DGP/diseño causal, resueltos conjuntamente), **C** (medición/Value/estimandos), **D** (contrato computacional) y **E** (gate final de aceptación). A y B no se gestionan como paquetes separados.
+
+**Regla de trabajo:** trabajo agrupado de extremo a extremo; reutilizar maestro, decisiones, matrices y registros existentes; no crear documentos ni microgates por subtema; no reabrir decisiones aceptadas; cada requisito debe tener ID, definición operacional, fuente/DEC, estado, decisión pendiente, componente y criterio de aceptación. Clasificar ACCEPTED/DEFINED/OPEN/NOT_REQUIRED/BLOCKED; no inventar mappings, parámetros ni supuestos; explicitar no-identificación. Cerrar cada paquete con resultado integrado, pendientes residuales acotados y reconciliación documental releída. No declarar DONE si quedan contradicciones o requisitos críticos sin criterio de aceptación.
+
+**Criterio DONE:** decisiones críticas aceptadas o NOT_REQUIRED justificado; dependencias resueltas o explicitadas; trazabilidad y criterio de aceptación por requisito; instrumentos actualizados y releídos; sin contradicciones conocidas.
+
+**Secuencia:** AB → C → D → E. E acepta la especificación; no autoriza automáticamente generación de código ni ejecución científica. Código requiere autorización explícita posterior; ejecución científica requiere autorización independiente. Sin ejecución durante la especificación. Estado global: NOT_READY hasta superar E.
