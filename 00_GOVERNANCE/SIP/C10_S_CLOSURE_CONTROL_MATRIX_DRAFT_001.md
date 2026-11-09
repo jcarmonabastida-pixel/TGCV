@@ -2499,3 +2499,24 @@ PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-
 **Gates:** microdominio/beneficiarios; indicadores y fuentes; escalas/unidades; horizonte H y ventanas; validez/error/acuerdo; cegamiento viable; ausencia/censura; trade-offs; multiplicidad y umbrales.
 
 **Dictamen:** se define la estructura de medición, no sus valores materiales. No se declara operacionalización completada ni se autoriza implementación/ejecución.
+
+
+## 121. Paquete C — identificación y evaluación estadística (2026-11-09)
+
+| Control | Criterio de salida | Estado |
+|---|---|---|
+| C-ID-01 | ITT, primeras etapas, ψ_policy, ψ_B, LATE_f, θ_Af y θ_A diferenciados por resultado/población/horizonte | PROPOSED |
+| C-ID-02 | D_f*, D_f^obs y primeras etapas independientes; ninguna etapa técnica sustituye accesibilidad | OPEN |
+| C-ID-03 | DAG/temporalidad; confusores basales/postratamiento; mediadores y rutas colaterales | OPEN |
+| C-ID-04 | Mediación con estimando/intervención propia; no ajuste post-Z ni resta de efectos incompatibles | PROPOSED |
+| C-ID-05 | Población pre-Z, q_X*, positividad, overlap, soporte y transporte | OPEN |
+| C-ID-06 | Unidad asignación/análisis/exposición e interferencia/carryover | OPEN |
+| C-ID-07 | Missingness, censura, selección y error diferencial por brazo | OPEN |
+| C-ID-08 | Sensibilidad, bounds y tipping points con rangos justificados | OPEN |
+| C-ID-09 | Generator/Analyzer/Evaluator separados y firewall auditado | PROPOSED |
+| C-ID-10 | Métricas por estimando×resultado×DGP; falsos positivos de identificación y abstención | OPEN |
+| C-ID-11 | Potencia, precisión, N, multiplicidad y réplicas Monte Carlo justificadas | OPEN |
+| C-ID-12 | Tolerancias y criterios recover/fail/partial/not identified fijados ex ante | OPEN |
+| C-ID-13 | Crosswalk P177/P178/P179/P182/P183 y reconciliación C10-D1/S4-R | PROPOSED |
+
+**Dictamen:** la estrategia metodológica queda especificada como propuesta; no hay parámetros, identificación, potencia, N, umbrales ni evaluación ejecutada cerrados. C permanece NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. Sin autorización de implementación o ejecución.
