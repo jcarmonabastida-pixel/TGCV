@@ -9642,3 +9642,60 @@ La lectura de las definiciones fuente de §55 del Test Contract Register identif
 **Correspondencia corregida para §72:** primera etapa → P177-02; Wald/weak-IV → P177-03/04; potencia/N/clúster/R/SE_MC → P178-SIM-01…05 y SIM-09/10 según el criterio; sensibilidad/censura/bounds → P183-09…12, distinguiendo cada ID; trade-offs/agregación Value → P179-06/08. No atribuir a un contrato un criterio que no contiene.
 
 **Dictamen:** crosswalk estadístico corregido en lo verificable; quedan gates de especificación para falsos positivos/abstención del Analyzer, mediación causal y elección de criterios/tolerancias. C continúa NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. Sin ejecución.
+
+
+# 228. Especialización propuesta de los gates C-MED y C-ANALYZER (2026-11-10)
+
+**Estado:** especificación candidata para completar los contratos existentes; NO aceptada, NO congelada, NO implementable. No crea una autorización ni resultados.
+
+## 228.1. C-MED — identificación mediacional
+
+**Pregunta:** qué parte del efecto de la política material D2 sobre cada dimensión Value puede atribuirse a un cambio inducido en el objeto de accesibilidad definido, sin confundirlo con rutas directas o colaterales de la política.
+
+La unidad de análisis es estimando × dimensión Value × población objetivo × horizonte × versión de régimen. Se mantienen separados: (a) ITT de asignación/política; (b) efecto de política recibida; (c) efecto interventional indirecto atribuible al cambio en la distribución conjunta de ΔT_acc*; (d) efecto interventional directo/residual bajo una intervención mediadora de referencia, solo si está definido y es identificable; (e) mediación focal por A_f*, que no sustituye la mediación del objeto completo ΔT_acc*. No se obtiene ningún componente por resta de estimandos no armonizados.
+
+**Intervención mediadora candidata:** comparar distribuciones conjuntas versionadas de ΔT_acc* inducidas por regímenes factibles g1/g0 bajo una historia basal q común. La intervención debe preservar la dependencia entre componentes de ΔT_acc*; no se factoriza por conveniencia ni se interviene sobre componentes no manipulables sin justificar una intervención estocástica bien definida. La política B material solo puede representar g después de demostrar el mapping inducido B→g y sus condiciones de equivalencia/soporte de §14 de la auditoría IV.
+
+**Contrato mínimo de identificación:**
+1. DAG longitudinal versionado con tiempos y orden de Z/B, confusores basales, variables inducidas por tratamiento, mediadores, mediadores secuenciales (Reach/trayectoria si se incluyen), Outcome y Value.
+2. Separación explícita entre confusores basales y confusores mediador–resultado inducidos por Z/B. No ajustar convencionalmente por variables postratamiento; especificar método longitudinal compatible (p. ej. g-computation/sequential g-formula o estimando interventional equivalente) y justificarlo frente al DAG.
+3. Definición del régimen común q, población pre-Z, soporte/positividad secuencial y versiones; no extrapolar celdas sin soporte.
+4. Definición del mediador como ΔT_acc* completo o A_f* focal; no intercambiarlos. Si se incluye Reach/Trayectoria como mediadores posteriores, fijar orden y estimandos secuenciales sin absorberlos en ΔT_acc*.
+5. Inventario de rutas B→Value/Outcome no representadas en el mediador, incluidas recursos, coste, seguridad, latencia, conocimiento, selección, ejecución, medición, alternativas, interferencia y carryover.
+6. Sensibilidad a confusión no medida, error de medición, positividad débil, versiones, interacción y especificación del DAG; bounds o no identificación cuando no sea defendible identificación puntual.
+7. Truth mediacional por DGP reservada al Evaluator; Analyzer recibe solo variables observadas y contratos autorizados.
+
+**Criterio de aceptación:** en DGP identificables, el Analyzer estima el estimando interventional preespecificado dentro de tolerancias ex ante y con cobertura calibrada; en DGP con confusión inducida no resuelta, falta de soporte o rutas no separables, informa identificación parcial/no identificación y no atribuye falsamente el efecto a ΔT_acc*. Se reporta por dimensión Value y escenario, no solo en promedio.
+
+**Trazabilidad:** especialización candidata de P177-06/P177-12, P182-01/02/06/07 y P183-08/10/11/12; esos contratos cubren partes del problema, no el contrato mediacional completo. C-MED permanece OPEN hasta concretar DAG/microdominio, q, confusores, estimando, método, parámetros de sensibilidad y criterios numéricos ex ante.
+
+## 228.2. C-ANALYZER — recuperación, falsa atribución y abstención
+
+La evaluación se realiza por estimando × dimensión Value × DGP × condición de soporte. Generator conserva la truth y sus potenciales; Analyzer no recibe truth, semillas latentes, etiquetas de escenario ni resultados potenciales; Evaluator compara la salida sellada con la truth tras congelar el resultado del Analyzer. Se requiere auditoría de leakage y provenance de las tres capas.
+
+**Clases de verdad que deben estar representadas:**
+- efecto de política identificado con efecto de accesibilidad identificable;
+- efecto de política identificado, pero efecto de accesibilidad no identificado por vías colaterales/exclusión;
+- efecto de accesibilidad nulo o adverso con efecto de política distinto de cero;
+- mediación identificable y mediación no identificable por confusión postratamiento;
+- identificación puntual, parcial, no identificación e indeterminación por medición/soporte.
+
+**Métricas y errores críticos:**
+- recuperación puntual: sesgo, error absoluto/RMSE e intervalos/cobertura solo en DGP identificables;
+- bounds: cobertura y anchura del conjunto de identificación en DGP parcialmente identificables;
+- falsa identificación: proporción de DGP no identificables en que el Analyzer declara identificación puntual;
+- falsa atribución focal: proporción de DGP donde existe efecto de paquete/rutas alternativas pero el Analyzer lo atribuye a ΔT_acc*;
+- abstención correcta: proporción de DGP no identificables/parciales en que el Analyzer informa el límite adecuado;
+- falsa abstención: proporción de DGP identificables con soporte suficiente en que el Analyzer se abstiene sin causa válida;
+- clasificación de estado y calibración de incertidumbre, cuando se emita confianza;
+- fallos numéricos, convergencia, estabilidad y reproducibilidad.
+
+**Regla de evaluación:** un número cercano a truth no rescata una declaración causal inválida. Un falso positivo de identificación o atribución en DGP adversarial se registra como fallo crítico, aunque la estimación puntual sea numéricamente próxima. La abstención correcta no se penaliza como fallo de recuperación. Umbrales, tolerancias, denominadores y tratamiento de réplicas inválidas se preespecifican antes de observar resultados.
+
+**Trazabilidad:** extensión propuesta de P177-10/12, P182-11 y P183-12; P183-11 se aplica a bounds. La cobertura contractual sigue PARCIAL hasta que las reglas de adjudicación, denominadores, tolerancias y severidad de error se fijen ex ante. C-ANALYZER permanece OPEN.
+
+## 228.3. Límites y estado
+
+Esta especialización no selecciona todavía un DAG concreto, el régimen q, la dimensión Value confirmatoria, un método definitivo, parámetros de sensibilidad, tolerancias, MDE, N o réplicas. Requiere inputs materiales AB y decisión/aceptación posterior. No convierte una propuesta de mediación en identificación ni un DGP sintético en evidencia empírica.
+
+Mantener scientific_execution=false; execution_authorized=false; no implementación, fixtures, parsers, validadores, simulaciones ni experimentos.
