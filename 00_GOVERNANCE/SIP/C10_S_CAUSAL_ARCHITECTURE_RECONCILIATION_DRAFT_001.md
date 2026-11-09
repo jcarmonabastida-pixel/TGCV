@@ -64,33 +64,27 @@ Pendiente: fijar población, componentes de X/H/C_c, pesos, soporte y positivida
 
 La asignación Z aleatoriza una versión de política B. No asigna directamente `A_f*`.
 
-### 5.2 Reconciliación de las dos propuestas históricas
+### 5.2 Distinción de propuestas históricas y precedencia vigente
 
-Se identifican dos propuestas no equivalentes:
+La propuesta AUD-001/002 planteaba una intervención focal sobre autorización (`C_auth`) para habilitar τ2. Esa propuesta no fue aceptada como política primaria D2. DEC-C10-066/067 resuelven la precedencia y el contrato material D2; la propuesta antigua solo puede conservarse como escenario alternativo/adversarial de política de autorización.
 
-- **Propuesta de resolución AUD-001/002:** manipular `C_auth` para habilitar τ2, manteniendo otras condiciones invariantes.
-- **Propuesta material DEC-C10-022 / DGP:** B1 despliega/configura la dependencia técnica focal, habilita interfaz/canal técnico y verifica instalación, integridad, compatibilidad y operación; B0 conserva la configuración asignada de control.
+No debe confundirse la intervención focal sobre autorización con la autorización basal constitutiva. Que AUD-001/002 no gobierne D2 no vuelve obsoleta la autorización basal ni el término `AUTH_f*`.
 
-DEC-C10-024 ya advierte que intervenir C_auth no equivale al diseño primario de provisión técnica con C_auth basal/invariante. No debe mantenerse una mezcla tácita.
+### 5.3 Contrato vigente del D2 primario candidato — DEC-C10-066/067
 
-### 5.3 Arquitectura candidata recomendada para el DGP aislado
+1. D2 es el escenario primario candidato; D1 es el escenario secundario.
+2. `C_auth,base=1` es una condición basal común, satisfecha antes de Z e invariante frente a B en el DGP aislado D2.
+3. `B_g0^D2` no programa ni inicia un intento focal; `B_g1^D2` programa un intento estandarizado de provisión técnica focal. La asignación de política no asigna directamente `A_f*`, `D_f*` ni `ΔT_acc*`.
+4. La provisión técnica puede modificar `C_dep*`; la accesibilidad focal `A_f*` se adjudica separadamente a partir de la fórmula candidata `ID_f* ∧ REL_f* ∧ COND_f* ∧ AUTH_f* ∧ RES_f* ∧ DEP_f* ∧ ¬BLOCK_f*`.
+5. `C_auth_base` se corresponde con `AUTH_f*`; no son dos factores independientes. La autorización funcional basal es distinta de ACL, credenciales, endpoint y permisos técnicos usados para provisionar.
+6. Las primeras etapas `FS_Cdep`, `FS_Af`, `FS_Df` y `FS_ΔTacc` se mantienen separadas. Una primera etapa de `C_dep*` no demuestra una primera etapa de accesibilidad ni de `ΔT_acc*`.
+7. Cambios diferenciales en recursos, capacidad, información, costes, latencia, calidad, seguridad, incentivos, alternativas o medición se registran como vías colaterales/cointervenciones; el ITT continúa siendo efecto de asignación a la política/paquete y no se etiqueta automáticamente como efecto puro de accesibilidad.
 
-**Candidata A — provisión técnica focal con autorización basal común:**
+La aceptación de la política material no valida `s=.80`, parámetros, cumplimiento, ausencia de provisión de fondo, soporte, exclusión, población ni identificación causal. Estos asuntos permanecen abiertos conforme al maestro y al plan.
 
-1. `C_auth,0=1` es condición de elegibilidad pre-Z y permanece invariante entre brazos.
-2. `B_g1` intenta desplegar/configurar la dependencia técnica focal de τ2, habilitando su interfaz técnica y verificando los cuatro componentes técnicos.
-3. `B_g0` aplica el régimen de comparación especificado (D1 o D2), sin alterar autorización basal.
-4. Recursos, capacidad, información técnica, dominio, necesidad, incentivos, costes y calidad no cambian diferencialmente por B en el DGP aislado.
-5. `C_dep*` es resultado técnico intermedio; `A_f*` se deriva además de ID/REL/COND/AUTH/RES/DEP/BLOCK.
-6. Z→B→W_attempt→componentes→C_dep*→A_f*→T_acc/ΔT_acc; después Reach/Π_H, conocimiento, selección, ejecución, O y V.
+### 5.4 Escenario alternativo/adversarial de intervención sobre autorización
 
-**Frontera crítica:** habilitar un canal técnico de invocación no puede introducir silenciosamente un cambio de autorización normativa. Si B también concede permisos, modifica expectativas, costes, recursos o incentivos, se registra como cointervención/vía directa. El ITT sigue siendo válido como efecto del paquete; la atribución a A_f* no queda identificada por ese contraste sin una estrategia adicional.
-
-La Candidata A es la opción documental más coherente con DEC-C10-022 y el contrato DGP actual. Se recomienda para revisión, pero no se acepta ni congela en este documento.
-
-### 5.4 Alternativa si se mantiene la intervención sobre C_auth
-
-Si la pregunta requiere manipular autorización, la intervención debe llamarse política conjunta de autorización/provisión. Si autorización forma parte constitutiva de A_f*, el efecto de política puede ser efecto conjunto de cambio de condición y accesibilidad; no etiquetarlo automáticamente como efecto puro de accesibilidad. Para preservar `θ_A(q)`, habría que demostrar que el contraste implementa g1/g0 bajo q y separar cualquier vía directa de C_auth hacia Value.
+Si se estudia la intervención sobre `C_auth` de AUD-001/002, debe declararse como una política distinta, con su propio estimando y DGP. Si autorización forma parte constitutiva de `A_f*`, el contraste puede representar un efecto conjunto de política/paquete; no se etiqueta automáticamente como efecto puro de accesibilidad. No debe mezclarse con D2 ni presentarse como alternativa aún pendiente para decidir la política primaria.
 
 ## 6. DAG temporal de trabajo
 
