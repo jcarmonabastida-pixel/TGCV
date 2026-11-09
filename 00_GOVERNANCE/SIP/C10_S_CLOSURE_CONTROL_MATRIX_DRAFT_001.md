@@ -2132,3 +2132,18 @@ PASS solo cuando el código y sus pruebas se vinculan a fuentes vigentes, no mat
 **Correcciones persistidas en esta auditoría:** auditoría integrada; reconciliación de arquitectura causal; auditoría de medición focal; reconciliación de población/comparadores; avisos en AUD-001/002 y auditoría integrada de consistencia; plan Draft 004; Test Contract Register; retirada de la ecuación intermedia de maestro §59.3 como representación operativa; corrección del crosswalk D2 y de los mappings de las fichas D2-RES/CAP/C_INFO/MEAS-G1 en plan Draft004; aviso de precedencia en la propuesta snapshot/delta; alineación de `C10_S_PATH_PREDICATE_TEMPORAL_EVIDENCE_MATRIX_DRAFT_001.md §13.4` con §67.3. Ver maestro §§215.2 y 215.5 para detalle, incluidas las correcciones de §§16.2/16.4, 30.1, 53.5, 58.4/58.6, 59.3, 63.7, 68.7/69.5 y el estado parcial de XSYNC-138-01 y su propagación al XSYNC Closure Tracker.
 
 **Evidencia y límites:** `PASS_STATIC` en la revisión documental del conjunto PR #116; `CONDITIONAL` para referencias del resto del repositorio y para la futura generación de código. No se han ejecutado validadores, fixtures, parsers, generadores, simulaciones o experimentos. Sin revisión humana independiente. No se autoriza implementación, Design Freeze ni ejecución.
+
+
+---
+## 101. Reconciliación de precedencia de §33 y estado actual MEAS-G1 (2026-11-09)
+
+**Aclaración de lectura obligatoria:** la fila de §33 que registraba «Composición de predicados — OPEN / MATERIAL» corresponde al corte anterior a la reconciliación del crosswalk D2. No debe leerse como estado operativo vigente ni como contradicción no resuelta sobre la existencia de una fórmula candidata.
+
+El estado documental vigente es el siguiente:
+- La fórmula candidata de referencia está identificada en el maestro §67.3 y reconciliada conceptualmente en C10_S_D2_AF_PREDICATE_CAUSAL_CROSSWALK_DRAFT_001.md.
+- C_auth,base=1 permanece común, basal e invariante en D2; C_auth_base corresponde a AUTH_f*; no se duplican.
+- C_info no es un factor autónomo; C_other queda excluido; recursos/capacidad solo pueden contribuir a RES_f* si son disponibilidad ex ante necesaria y no duplicada; D_support requiere mapping semántico a ID/tipo o COND.
+- MEAS-G1 es **PARTIAL**: mappings, operacionalización material de RES_f*, REL_f*, COND_f*, BLOCK_f* y cobertura de rutas permanecen abiertos. La fórmula no está aprobada ni congelada.
+
+La corrección de §33 ya estaba indicada en §34 y desarrollada en §35; este addendum elimina cualquier ambigüedad de precedencia para lectores que consulten la tabla anterior de forma aislada. No cierra LATE_f, XSYNC, exclusión, identificación, ni autoriza implementación o ejecución.
+
