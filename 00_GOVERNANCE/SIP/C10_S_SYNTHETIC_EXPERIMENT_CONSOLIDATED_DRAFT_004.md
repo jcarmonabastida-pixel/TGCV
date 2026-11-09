@@ -906,15 +906,16 @@ Siguiente operación recomendada:
 - **XAUD-002 (alto):** insuficiente separación entre efecto de política y efecto atribuible a accesibilidad.
 - Hallazgos asociados: separar accesibilidad verdadera/observada, aplicabilidad y ejecución; no forzar transformaciones que incumplan precondiciones; conservar temporalidad y snapshots de T_acc.
 
-### 16.2. Resolución de q/g
-Se distingue el contexto basal común del componente de intervención focal:
-- q_X controla una distribución común de contexto e historia preintervención: estado inicial, recursos, capacidad, información basal, necesidad, horizonte y regla Value.
-- q_X no fija la autorización focal ni consecuencias posteriores que forman parte del mecanismo.
-- g1 y g0 son políticas implementables sobre autorización focal, condicionadas por X e historia basal pertinente.
-- A_f* es accesibilidad verdadera derivada de las condiciones efectivas de realizabilidad de τ_f; A_f^obs es su medición.
-- La autorización C_auth es condición habilitadora, no una asignación abstracta de A_f*.
+### 16.2. Resolución de q/g — formulación histórica reconciliada para D2
+Se conserva la distinción general entre régimen común y política implementable, con la precedencia específica posterior de DEC-C10-066/067:
+- `q_X` controla una distribución común de contexto e historia preintervención: estado inicial, condiciones constitutivas basales, recursos/capacidad no focales, información basal, necesidad, horizonte y regla Value.
+- En el DGP aislado D2, `C_auth,base=1` forma parte de las condiciones basales comunes, se satisface antes de Z y permanece invariante frente a B.
+- D2 no asigna una política focal de autorización. `B_g0^D2` no programa/inicia intento focal; `B_g1^D2` programa un intento estandarizado de provisión técnica focal, conforme a DEC-C10-067.
+- Las políticas generales `g0/g1` de C10-D1 no se identifican automáticamente con `B_g0^D2/B_g1^D2`; la correspondencia `B→g^Af` y la exclusión siguen abiertas.
+- `A_f*` se adjudica mediante la fórmula candidata §67.3; `A_f^obs` es su clasificación observada, y `App_f*`/ejecución permanecen separadas.
+- Una intervención focal sobre autorización (S4-O/AUD-001/002) solo puede estudiarse como política alternativa/adversarial, con estimando propio y sin confundirla con la autorización basal.
 
-DAG focal: Z_A → C_auth → A_f* → T_acc → Π_H → Exec → O → V.
+DAG D2: `Z → B_g^D2 → W_programmed → W_attempt → S_install → C_dep* → A_f* → ΔT_acc* → Reach/Π → selección/ejecución → Outcome → Value`, con `C_auth,base=1` común e invariante.
 
 ### 16.3. Estimandos separados
 **Efecto de política:** ψ_policy(q_X)=E[V^(q_X,g1)]−E[V^(q_X,g0)]. Incluye todas las vías que la política active, incluidas expectativas, incentivos o prioridades si cambian.
@@ -923,15 +924,16 @@ DAG focal: Z_A → C_auth → A_f* → T_acc → Π_H → Exec → O → V.
 
 S4-R debe describir q_X y g como componentes implementables y compatibles. No utilizar automáticamente P(L|Z) observado como régimen común ni sustituir intervención por estandarización retrospectiva.
 
-### 16.4. Modalidades y cumplimiento
-- Modalidad A — manipulación técnica aislada: preferida para C10-S; cambia la condición técnica focal sin alterar información, incentivos, expectativas, trato o recursos no focales.
-- Modalidad B — política de autorización: puede activar otras vías; requiere diseño factorial u otra estrategia de separación e interacciones explícitas.
+### 16.4. Modalidades y cumplimiento — precedencia DEC-C10-067
+- **D2 primario candidato:** provisión técnica focal. `B_g0^D2` no programa ni inicia intento focal; `B_g1^D2` programa un intento estandarizado de provisión técnica focal. La política no garantiza intento efectivo, instalación, éxito, accesibilidad ni ejecución.
+- **Autorización basal:** `C_auth,base=1` permanece común, pre-Z e invariante frente a B; `C_auth_base` se corresponde con `AUTH_f*`. ACL, credenciales y endpoint técnicos de provisión no sustituyen autorización normativa funcional.
+- **Escenario alternativo/adversarial:** una política que intervenga focalmente sobre autorización puede estudiarse por separado, con su propio DGP/estimando y vías colaterales; no es D2.
 
-Registrar separadamente Z, C_auth, A_f*, A_f^obs, App_f y Exec_f. Una trayectoria experimental estandarizada no puede forzar una transformación inaccesible. La ejecución debe respetar precondiciones; selección libre es un régimen distinto.
+Registrar separadamente Z, B, W_programmed, W_attempt, S_install, C_dep*, C_auth, A_f*, A_f^obs, App_f y Exec_f. Una trayectoria experimental estandarizada no puede forzar una transformación inaccesible. La ejecución debe respetar precondiciones; selección libre es un régimen distinto.
 
-### 16.5. Dictamen
-- XAUD-001: resuelto conceptualmente, pendiente de cierre formal por auditoría.
-- XAUD-002: parcialmente resuelto; estimandos separados, pero identificación específica de θ_Af depende del diseño implementado.
+### 16.5. Dictamen actualizado
+- XAUD-001: la incompatibilidad concreta entre autorización basal y política de intervención sobre autorización queda resuelta para D2 por DEC-C10-066/067. Permanece abierto el mapping general entre políticas `B` y `g^Af`, factibilidad y exclusión; no se declara resuelto para todo C10-D1.
+- XAUD-002: parcialmente resuelto; los estimandos de política y accesibilidad están separados, pero la identificación específica de `θ_Af` depende del diseño y de supuestos aún no demostrados.
 No se modifica el estado científico ni se declara resuelta la identificación empírica de C10.
 
 ---
@@ -1451,7 +1453,7 @@ C10-D1 contiene precisiones posteriores sobre condiciones constitutivas, factibi
 
 | ID | Severidad provisional | Hallazgo | Consecuencia | Disposición requerida |
 |---|---|---|---|---|
-| XSYNC-138-01 | P0 — bloqueante para congelación causal | C10-S §16.3 define g1/g0 como políticas sobre autorización focal; C10-D1 §§17.5, 17.7 y 26 define g1/g0 como políticas implementables sobre cambios de accesibilidad, inducidos por componentes B/Z y respetando el conjunto factible. | Puede confundirse efecto de política de autorización con θ_A(q), o tratar autorización como si fuera accesibilidad. | Reformular el mapeo B/Z → condiciones/intervención → A=ΔT_acc; mantener ψ_policy como efecto de política y θ_A(q) como contraste entre políticas factibles de accesibilidad. |
+| XSYNC-138-01 | PARCIALMENTE RESUELTO PARA D2; RESIDUAL OPEN PARA EL MAPPING GENERAL B→g^Af Y EXCLUSIÓN | La formulación histórica de §16.2/16.4 trataba g1/g0 como políticas sobre autorización focal. DEC-C10-066/067 fijan D2 como provisión técnica focal con C_auth,base=1 común e invariante; no hacen B_g^D2 equivalente automático de g^Af. | La intervención antigua sobre autorización no puede seguir leyéndose como D2; sigue sin demostrarse la correspondencia entre la política material D2, las políticas factibles g^Af de C10-D1 y la atribución específica a accesibilidad. | Usar DEC-C10-066/067 para D2; mantener ψ_policy distinto de θ_A(q); documentar B→g^Af, factibilidad, vías colaterales y exclusión antes de freeze. |
 | XSYNC-138-02 | P1 | C10-S §16.2 incluye la regla de Value dentro de los elementos controlados por q_X. C10-D1 define q como régimen común de condiciones/historias; la regla de Value es una regla evaluativa fijada para el contraste, no una condición aleatoria de q. | Mezcla régimen causal con definición del resultado y puede introducir diferencias evaluativas entre regímenes. | Separar q_X de la regla Value; fijar beneficiario, criterio, escala y horizonte como parte del resultado/estimando, constantes en el contraste salvo que la pregunta estudie explícitamente un cambio evaluativo. |
 | XSYNC-138-03 | P1 | C10-S utiliza A_f* como indicador focal binario y en algunos pasajes aproxima A a ΔT_acc. C10-D1 §27 define ΔT_acc como objeto estructurado que puede incluir A+, A−, reconfiguración, cambios relacionales y configuracionales. | El indicador focal puede confundirse con el cambio completo del espacio transformacional. | Declarar A_f* como componente/indicador de accesibilidad de una transformación focal τ_f; preservar ΔT_acc estructurado como constructo TGCV más amplio. Definir la proyección focal y sus límites. |
 | XSYNC-138-04 | P1 | S4-R usa q*(L=1|X)=0.5 y políticas g1=.8/g0=.2 bajo la premisa de factibilidad en todos los estratos, pero no separa explícitamente L_c de L_m ni demuestra que las cuatro asignaciones sean realizables. | Puede generar contrafactuales imposibles o falta de positividad. | Especificar que el L de S4-R representa condiciones no constitutivas compatibles con el contraste; si incluye L_c, definir conjuntos factibles por historia. Verificar soporte de ambas políticas en cada estrato y declarar no identificación si falla. |
