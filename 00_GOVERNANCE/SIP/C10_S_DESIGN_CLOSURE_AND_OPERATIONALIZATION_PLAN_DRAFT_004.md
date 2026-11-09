@@ -2045,3 +2045,14 @@ Se propone un registro versionado por estimando con intervención/contraste, pob
 Resoluciones propuestas C-01…C-07: jerarquía científica/diseño; Value vectorial; no selección post hoc de dimensiones/pesos; registro de estimandos; ITT sin ajuste post-Z; dictamen por estimando/dimensión y abstención correcta; firewall Generator/Analyzer/Evaluator. Todas requieren aceptación; ninguna está congelada.
 
 **Estado:** paquete C continúa DOCUMENTED DESIGN PROPOSAL / NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. Gates materiales y estadísticos siguen OPEN; sin ejecución.
+
+
+## 16.102 — Paquete C: contrato operativo de Outcome y Value (2026-11-09)
+
+El maestro §224 establece fichas versionadas independientes para cada indicador Outcome y cada dimensión Value, separando constructo, evidencia y adjudicación. O describe resultados operativos; V expresa valoración contextual. A_f*, ΔT_acc*, Reach, trayectoria y ejecución permanecen separados. Se fijan campos obligatorios para fuentes, unidades/escalas, cálculo, baseline, ventana/ancla, validez, error, acuerdo, ausencia/censura, cegamiento, trade-offs y provenance.
+
+Se propone firewall Generator/truth → Evaluator y Analyzer/observed sin truth; adjudicación independiente de A/ΔT_acc sin consultar O/V. Los estados OBSERVED_VALID, OBSERVED_INVALID, NOT_OBSERVED, NOT_APPLICABLE, CENSORED, DISPUTED y UNKNOWN no se colapsan en cero ni entre sí.
+
+No se eligen indicadores, dimensiones confirmatorias, escalas, ventanas, ponderaciones, tolerancias ni parámetros estadísticos por defecto. El cierre exige fichas completas y preespecificación de dimensiones/multiplicidad, fuentes, ventanas, validez/error/ausencia y auditoría del firewall.
+
+**Estado:** contrato de medición propuesto; indicadores y dimensiones aún no operacionalizados; paquete C no aprobado, no congelado y no implementable. Sin ejecución.
