@@ -2179,3 +2179,23 @@ La corrección de §33 ya estaba indicada en §34 y desarrollada en §35; este a
 
 **Regla:** el cierre de campos y esquema no es cierre de intervención, de medición, de primera etapa, de exclusión ni de identificación. No se autoriza implementación o ejecución.
 
+
+
+---
+## 104. Resultado MAP-05 — adjudicación documental de superficies y PROV (2026-11-09)
+
+| Elemento | Estado | Dictamen |
+|---|---|---|
+| B-M01…15 | CLASSIFICATION_DEFINED | Vías y falsadores clasificados; evidencia material ? / NO INVENTARIADO |
+| PROV-01…12 | CONTRACTS_DEFINED / NOT_EXECUTED | Contratos de control, no PASS |
+| MD-C1 | OPEN | Manifiesto real y evidencias incompletos |
+| MD-C4 | OPEN | Independencia funcional de alternativas no demostrada |
+| IV-G4 | OPEN | Exclusión no demostrada |
+| ITT_Z^D2 | CONDITIONAL | Solo efecto de asignación/política si diseño y observación lo permiten |
+| LATE_f^D2 | NOT_IDENTIFIED | Gates IV y mapping focal abiertos |
+| θ_Af(q_X*) / θ_A(q) | NOT_IDENTIFIED | Mapping a política de accesibilidad y supuestos propios abiertos |
+
+**Prioridad de evidencia:** B-M06, B-M07, B-M09, B-M11, B-M12 y B-M14; B-M10/B-M13 para conocimiento y medición; B-M05 para autorización; B-M02/B-M03/B-M08/B-M15 para dependencias compartidas y residuos.
+
+**Regla:** clasificación documental no equivale a observación, ausencia, invariancia, exclusión ni PASS. No se autoriza ejecución.
+
