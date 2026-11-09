@@ -9454,3 +9454,153 @@ Estos estados no se convierten automáticamente en cero, ausencia de Value o ina
 No se asignan todavía nombres finales ni número de indicadores Outcome; dimensiones Value confirmatorias; escalas/unidades; instrumentos/fuentes; H, ventanas y anclas; tolerancias de acuerdo/error; regla de trade-off; cegamiento viable; umbrales de validez; estrategia de ausencia/censura; ni multiplicidad. Cada uno requiere justificación del microdominio/beneficiario y consistencia con el DGP. La especificación de la ficha y sus estados sí queda propuesta como estructura común.
 
 **Criterio de salida de este subpaquete:** cada O_i y V_j tiene ficha completa, fuente y ventana; su validez/error/ausencia está especificada; existe adjudicación y firewall verificables; las dimensiones confirmatorias y multiplicidad están preespecificadas. Hasta entonces, resultados de Value permanecen NOT_OPERATIONALIZED, aunque el vector conceptual esté definido.
+
+
+# 225. Paquete C — contrato integrado de identificación, sensibilidad y evaluación estadística (2026-11-09)
+
+**Estado:** especialización metodológica propuesta para revisión/aceptación; no aprobada, no congelada y no implementable. Reutiliza la jerarquía de §§223–224, la interfaz AB→C de §221, los contratos P177/P178/P179/P182/P183, la reconciliación C10-D1/S4-R §18 y la auditoría IV D2. No los sustituye ni declara cerrada la identificación. No se seleccionan estimadores, parámetros, umbrales, tamaños muestrales ni número de réplicas sin completar los gates materiales.
+
+## 225.1. Regla de identificación por estimando
+
+La unidad de decisión es cada combinación de estimando × resultado (Outcome o dimensión Value) × población × horizonte × versión/régimen. No se emite un dictamen global que oculte diferencias entre resultados o supuestos.
+
+| Objeto | Qué puede identificar | Condiciones mínimas / límite |
+|---|---|---|
+| ITT_Z^D2 | Efecto de asignación a la política D2 sobre cada O_i y V_j | Mecanismo de asignación válido y documentado; consistencia de asignación/versiones; unidad e interferencia tratadas; seguimiento y missingness válidos. No identifica por sí solo efecto de recepción, C_dep*, A_f*, D_f* o ΔT_acc*. |
+| FS_Cdep, FS_Af, FS_Df | Efectos de Z sobre cada etapa distinta de provisión/accesibilidad | Definiciones y adjudicación independientes, medición comparable, población y ventana preespecificadas. Ninguna primera etapa sustituye a otra. |
+| ψ_policy^D2 | Efecto total de la política/paquete material asignado | Conserva todas las vías activadas por la política, focales y colaterales. Si hay aleatorización válida, puede coincidir con ITT para el resultado y población definidos; no renombrarlo efecto de accesibilidad. |
+| ψ_B(q_X*) | Efecto de versiones recibidas de B bajo régimen común | Requiere estrategia propia frente a incumplimiento, versiones múltiples y confusión de recepción; no se obtiene condicionando por recepción ni por comparación simple de tratados. |
+| LATE_f^D2 | Efecto local de D_f* entre compliers inducidos por Z | Todos los supuestos IV y gates IV-G1…G8 de la auditoría: relevancia focal, independencia, exclusión, monotonicidad, consistencia/versiones, interferencia, medición y resultado. No calcular/reportar Wald causal mientras alguno permanezca abierto. |
+| θ_Af(q_X*) | Efecto poblacional de políticas focales de accesibilidad | Requiere mapping B→g^Af, población/soporte, consistencia, régimen común y estrategia para vías colaterales; no se deduce de ITT ni de LATE. |
+| θ_A(q) | Pregunta científica general C10 sobre políticas factibles que inducen cambios estructurados de ΔT_acc bajo q común | Requiere intervención/políticas g bien definidas, población target, versiones, horizonte, soporte y estrategia de identificación propia. D2 focal no basta para identificarlo. |
+| Efectos de mediación/residuales | Contribuciones indirectas/intervencionales y componentes no mediados, si se definen | Requieren estimando y régimen propios, temporalidad, población, mediadores multicomponente, confusores basales y postratamiento y supuestos de identificación explícitos. Nunca se obtienen por resta de ITT, LATE, θ_Af o efectos de escalas/poblaciones incompatibles. |
+
+Un resultado de aleatorización identifica el efecto de asignación bajo el diseño, no valida automáticamente exclusión IV, consistencia de recepción, mediación ni atribución a ΔT_acc.
+
+## 225.2. Contrato de primera etapa y tratamiento
+
+Para cada DGP y análisis se conservarán como variables distintas: Z; B asignada; B recibida; W programada/intentada/recibida; C_dep*; A_f*; D_f*; cada dimensión y relación de ΔT_acc*; Reach; trayectoria; ejecución; Outcome; Value. Se mantendrán también sus versiones observadas, cobertura y error de clasificación.
+
+Las primeras etapas se reportan separadamente, con diferencia de medias/probabilidades o contraste adecuado a la escala, incertidumbre e intervalos. Una primera etapa técnica no se interpreta como primera etapa transformacional. Relevancia estadística no demuestra exclusión, monotonicidad ni ausencia de interferencia. No se presupone s=.80 ni las tasas históricas .20/.80.
+
+## 225.3. Identificación de θ_A(q) y mediación
+
+Para θ_A(q), el contrato debe representar las políticas g0/g1 como regímenes factibles y versionados que inducen distribuciones de cambios de accesibilidad, con q común fijado. La identificación puntual observacional exige, como mínimo, consistencia y versiones bien definidas, intercambiabilidad condicional/secuencial respecto de la historia medida, positividad para las acciones relevantes, medición válida, temporalidad y una estructura de interferencia defendible. La lista de supuestos debe adaptarse al DGP y a la unidad; no se declara que se cumplen por definición.
+
+Cuando variables post-Z/post-política afecten tanto a mediadores posteriores como a resultados, el ajuste convencional por covariables postratamiento puede bloquear parte del efecto o inducir sesgo de collider. El contrato deberá:
+- dibujar y versionar el DAG/orden temporal por ola, incluyendo confusores basales, variables inducidas por política, mediadores, rutas colaterales y resultados;
+- distinguir confusores pretratamiento de confusores inducidos por tratamiento;
+- no ajustar el ITT por recepción, cumplimiento, C_dep*, A_f*, D_f*, ΔT_acc*, Reach, trayectoria, ejecución o selección post-Z;
+- para mediación, definir intervenciones estocásticas/interventional indirect effects o g-computation longitudinal y otros métodos g compatibles con el régimen; justificar cualquier alternativa;
+- no usar efectos naturales directos/indirectos como opción por defecto cuando haya confusión mediador–resultado inducida por tratamiento o supuestos cross-world no defendibles;
+- separar el efecto mediado por accesibilidad focal del mediado por otras dimensiones de ΔT_acc y de rutas no representadas en el mediador;
+- especificar cómo se tratan interacciones, múltiples mediadores, orden parcial, retroalimentación temporal y mediadores no manipulables;
+- declarar no identificación o identificación parcial si la historia necesaria, el soporte o los supuestos no están disponibles.
+
+La contribución residual no es un residuo aritmético. Solo se informa como estimando formal bajo descomposición identificada, escalas, población y horizonte compatibles; de otro modo se describen vías no atribuidas sin llamarlas efecto directo.
+
+## 225.4. Población, soporte, positividad e interferencia
+
+La población objetivo y elegibilidad se definen con variables medidas antes de Z. Se registran por separado población elegible, asignada, seguida, con tratamiento focal observado y con resultado observado; ninguna población postratamiento sustituye silenciosamente a la población target.
+
+q_X* debe identificar covariables basales, distribución objetivo, fuente, versión, soporte y regla de ponderación/estandarización. Se evaluará:
+- positividad estructural y práctica para Z, políticas, historias, mediadores y regímenes requeridos;
+- solapamiento por brazo, estrato y subpoblación; pesos extremos y tamaño efectivo;
+- celdas vacías, extrapolación y dependencia de modelos;
+- diferencias entre población target y población con soporte;
+- transporte solo con supuestos y variables de selección explícitos.
+
+La unidad de asignación, unidad de análisis, unidad de exposición y unidad de inferencia se declararán por separado. Para interferencia se elegirá y justificará una de estas opciones: ausencia defendible; asignación por clúster; mapa de exposición/interferencia parcial con vecindad y exposición versionadas; o dictamen de no identificación. Recursos compartidos, dependencias, licencias, equipos, estado persistente, crossover y carryover se incorporan al mapa. Errores estándar y remuestreo respetan la unidad de asignación/exposición; no se presupone independencia individual.
+
+## 225.5. Missingness, censura y selección
+
+Se distinguen NOT_OBSERVED, NOT_APPLICABLE, CENSORED, DISPUTED, UNKNOWN y OBSERVED_INVALID según §224. No se colapsan en cero ni se eliminan por complete-case sin justificación.
+
+Por estimando y resultado se documentan causa, momento y dependencia de la ausencia respecto de Z, historia, mediadores y resultado potencial. Se preespecifica el tratamiento de:
+- pérdida de seguimiento y observación diferencial por brazo;
+- censura administrativa y competitiva;
+- selección para ejecución o medición;
+- ausencia de Value por beneficiario/observador;
+- clasificación errónea y observabilidad diferencial;
+- datos parcialmente observados en historias longitudinales.
+
+La salida distingue análisis principal bajo supuestos declarados, análisis de sensibilidad (p. ej. ponderación/modelos de observación cuando proceda), límites/bounds y no identificación. MAR no se presume por conveniencia; MNAR requiere parámetros de sensibilidad o límites explícitos.
+
+## 225.6. Sensibilidad, bounds y tipping points
+
+Cada estimando tendrá una ficha de sensibilidad con: supuesto crítico; mecanismo de violación; parámetro(s) de sensibilidad; rango justificado por evidencia o escenarios; método; resultado de referencia; tipping point; interpretación y regla de dictamen. No se inventan rangos ni distribuciones.
+
+Mínimos adversariales que debe cubrir el diseño sintético, cuando sean pertinentes:
+- exclusión IV violada por familias de vías colaterales, y efectos directos de magnitud/signo diversos;
+- monotonicidad violada por defiers/crowding-out;
+- instrumento débil o primera etapa nula;
+- confusión no medida basal y postratamiento;
+- error de medición diferencial de D_f*, ΔT_acc*, Outcome y Value;
+- versiones múltiples, incumplimiento, crossover y provisión de fondo;
+- interferencia, recursos compartidos y carryover;
+- positividad insuficiente, pesos extremos y transporte fuera de soporte;
+- missingness/censura MNAR y selección postratamiento;
+- especificación errónea del DAG, temporalidad o interacción;
+- heterogeneidad por beneficiario, dimensión Value y subpoblación.
+
+Cuando no sea defendible identificación puntual, evaluar identificación parcial mediante cotas compatibles con los datos/supuestos disponibles, bounds de selección/missingness o restricciones explícitas. Reportar intervalos de identificación y su anchura, no un punto estimado disfrazado. El tipping point indica qué magnitud de desviación cambiaría el signo, conclusión o decisión; no constituye prueba de que esa desviación sea plausible.
+
+## 225.7. Contrato de evaluación estadística y recuperación del Analyzer
+
+Generator, Analyzer y Evaluator mantienen separación estricta. El Generator fija DGP y truth con semilla/versionado/provenance; el Analyzer recibe únicamente observables y contratos permitidos; el Evaluator accede a truth y compara el dictamen/salida del Analyzer con el estimando verdadero. Se audita leakage antes de cualquier evaluación.
+
+La evaluación se hace por estimando, resultado, escenario DGP y condición de soporte; no solo por promedio agregado. Métricas candidatas:
+- sesgo, error absoluto, RMSE y cobertura de intervalos para parámetros identificados;
+- error tipo I, potencia y calibración de incertidumbre donde exista hipótesis/contraste confirmatorio;
+- cobertura y anchura de intervalos de identificación parcial;
+- error de primera etapa y clasificación de instrumento débil;
+- tasa de falsas declaraciones de identificación/causalidad;
+- tasa de falsa atribución focal cuando la verdad solo contiene efecto de paquete;
+- exactitud de clasificación entre IDENTIFIED, PARTIALLY_IDENTIFIED, NOT_IDENTIFIED, INDETERMINATE y NOT_APPLICABLE;
+- sensibilidad, especificidad y matriz de confusión para supuestos violados conocidos por truth;
+- calibración de probabilidades/confianza si el Analyzer las emite;
+- tasa y calidad de abstención, distinguiendo abstención correcta de abstención improcedente;
+- convergencia, fallos numéricos, estabilidad y reproducibilidad.
+
+La recuperación puntual solo se puntúa cuando el DGP la hace identificable y el soporte es suficiente. Si la truth viola un supuesto, la salida correcta es no identificar, parcial-identificar o limitar el estimando; un número próximo al parámetro no rescata una conclusión causal inválida. No se penaliza la abstención correcta como error de estimación.
+
+## 225.8. Potencia, precisión, N y réplicas Monte Carlo
+
+No se fija N, MDE, número de réplicas, umbral de sesgo, cobertura o potencia por intuición ni por copiar tasas históricas. Antes de fijarlos se necesitan: población/unidad, mecanismo de asignación y clúster, outcomes/dimensiones confirmatorias, escalas/varianzas, correlaciones, prevalencias y cumplimiento DGP justificados, pérdida/censura, multiplicidad, estimando, precisión objetivo y coste/viabilidad.
+
+El cálculo de N debe respetar la unidad real de asignación, ICC/estructura de clúster si aplica, tamaños desiguales, soporte, pérdidas, multiplicidad y precisión por dimensión. Se reportarán supuestos y escenarios de sensibilidad; no se seleccionará N para producir un resultado deseado.
+
+El número de réplicas Monte Carlo se determina por el error Monte Carlo tolerable de las métricas de evaluación (por ejemplo, incertidumbre de cobertura, sesgo y error tipo I), no por una cifra arbitraria. Se documentan semillas, independencia/reutilización, convergencia y precisión Monte Carlo. La precisión de la simulación se distingue de la incertidumbre estadística dentro de cada réplica.
+
+## 225.9. Clasificación de resultados y reglas de aceptación/falsación
+
+Cada estimando × resultado recibe uno de estos estados:
+- **IDENTIFIED / RECOVERED:** supuestos y soporte del DGP permiten identificación y el Analyzer recupera dentro de tolerancias preespecificadas.
+- **IDENTIFIED / NOT RECOVERED:** la truth es identificable, pero el Analyzer falla métricas o clasificación; es fallo del método/implementación analítica, no refutación automática de TGCV.
+- **PARTIALLY_IDENTIFIED:** solo se sostienen cotas o conjunto de valores; se evalúa cobertura y anchura.
+- **NOT_IDENTIFIED — CORRECTLY RECOGNIZED:** el DGP viola/omite supuestos esenciales y el Analyzer se abstiene o informa el límite correctamente.
+- **FALSE_IDENTIFICATION:** el Analyzer declara causalidad/identificación puntual donde la truth no la permite; fallo crítico.
+- **INDETERMINATE:** truth, medición, soporte o evaluación no permiten adjudicar.
+- **NOT_APPLICABLE:** contraste no definido por diseño, únicamente bajo regla ex ante.
+
+Las tolerancias y reglas numéricas se fijarán antes de observar las salidas, justificadas por el estimando, escala, coste de error y objetivo científico. Se prohíbe ajustar tolerancias post hoc para declarar recuperación.
+
+Un resultado sintético favorable acredita recuperación metodológica bajo los DGP y supuestos cubiertos; no demuestra que esos supuestos se cumplan empíricamente ni que ΔT_acc cause Value en sistemas reales. Un fallo en un DGP identificable refuta la capacidad de recuperación en ese dominio de condiciones. Un falso positivo de identificación en DGP adversarial es un falsador del Analyzer para esa clase. Ninguno, aislado, resuelve toda la pregunta científica C10.
+
+## 225.10. Gates de salida del paquete C
+
+C no puede pasar a Design Freeze/implementation contract hasta que estén cerrados y aceptados:
+1. estimandos y resultados concretos, con población, unidad, horizonte, régimen, escala y versiones;
+2. DAG/orden temporal y rutas colaterales, mediadores y confusores inducidos por tratamiento;
+3. régimen de mediación y método de identificación por estimando;
+4. población pre-Z, q_X*, positividad, soporte, transporte e interferencia;
+5. mecanismo de asignación, unidad/clúster y análisis de missingness/censura;
+6. parámetros DGP y escenarios base/adversariales justificados;
+7. fichas Outcome/Value de §224 cumplimentadas y dimensiones confirmatorias preespecificadas;
+8. método principal, alternativas, sensibilidad, bounds y reglas de abstención;
+9. métricas, tolerancias, multiplicidad, potencia, N y precisión Monte Carlo justificadas;
+10. protocolo de truth/observed, firewall y adjudicación independiente;
+11. crosswalk completo a P177/P178/P179/P182/P183 y reconciliación C10-D1/S4-R;
+12. criterio de aceptación/falsación y límites de generalización.
+
+**Dictamen actual:** paquete C sigue DOCUMENTED DESIGN PROPOSAL / NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. La jerarquía de estimandos y la estructura de medición están documentadas; la identificación de θ_A(q), θ_Af(q_X*), mediación y LATE_f no está cerrada; Outcome/Value no están operacionalizados; parámetros, soporte, potencia, N y umbrales siguen OPEN. Mantener scientific_execution=false y execution_authorized=false. No generar código, fixtures, parsers, validadores, simulaciones ni ejecutar experimentos.
