@@ -1396,3 +1396,27 @@ La fila de mediación/confusión postratamiento de §72 no debe citar P177-05…
 | Mediación propiamente dicha | Maestro §225.3 | Propuesta de DAG, temporalidad, confusión inducida e intervención/método g; aún sin contrato de aceptación completo |
 
 **Resultado:** crosswalk corregido; cobertura C-MED = PARCIAL / OPEN. No modificar definiciones de P177/P178/P179/P182/P183 ni declarar pruebas ejecutadas. No crear un test nuevo por duplicación; antes debe determinarse si la extensión cabe en P177-12 o requiere una especialización versionada y trazable.
+
+
+## 74. Corrección ampliada del crosswalk estadístico P177–P183 (2026-11-10)
+
+La revisión directa de §55 del propio registro confirma las correspondencias siguientes. Esta tabla gobierna la interpretación del crosswalk previo de §72, sin reescribir el historial ni modificar los contratos fuente.
+
+| Criterio | Contrato correcto | Precisión de alcance |
+|---|---|---|
+| Primera etapa | P177-02 | Estimación, SE e intervalo de accesibilidad/etapa definida |
+| Wald/LATE | P177-03 | Cociente y etiqueta LATE solo si supuestos sostenidos |
+| Instrumento débil | P177-04 | Inferencia robusta; no solo aproximación normal |
+| O/V independiente | P177-05 | No inferencia automática entre Outcome y Value |
+| Ajuste basal/no post-Z | P177-06 | Ajuste preespecificado; no mediadores postasignación |
+| ATE/ATT y heterogeneidad | P177-07/08 | No confundir con ITT/LATE; composición/ponderación explícita |
+| Potencia/N/clúster/R/SE_MC | P178-SIM-01…05 | SIM-01 potencia; 02 N; 03 clúster; 04 réplicas; 05 error Monte Carlo |
+| Métricas y parámetros ex ante | P178-SIM-09/10 | Métricas; MDE/relevancia/equivalencia/δ/ε/tolerancias |
+| Trade-offs/agregación Value | P179-06/08 | No son contratos generales de bounds ni potencia |
+| Censura/sensibilidad/bounds/dictamen | P183-09/10/11/12 | Mantener cada función diferenciada |
+| Recuperación y firewall | P177-10; P182-11 | No cubren por sí solos falsa identificación ni abstención correcta |
+| Política frente a atribución | P177-12 | No identifica mediación ni θ_A(q) por sí solo |
+
+**Gates de cobertura parcial:** C-MED: §225.3 no tiene aún contrato de aceptación mediacional completo. C-ANALYZER: falta formalizar adjudicación y tolerancias de falsa identificación, falsa atribución focal y abstención. Ambos permanecen OPEN; no crear pruebas duplicadas hasta decidir si una especialización versionada de contratos existentes es suficiente.
+
+No se declaran pruebas ejecutadas, parámetros fijados, potencia demostrada ni identificación causal.
