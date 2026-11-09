@@ -8553,11 +8553,13 @@ Se ha actualizado documentalmente la precedencia y retirado contenido que induc�
 - `C10_S_AUD001_AUD002_RESOLUTION_DRAFT_001.md` y `C10_S_AUD001_AUD002_CROSS_AUDIT_DRAFT_001.md`: añadidos avisos de no operatividad para D2 y preservación explícita de autorización basal.
 - `C10_S_INTEGRATED_CONSISTENCY_AUDIT_DRAFT_001.md`: añadido aviso de precedencia DEC-C10-066/067 para que los hallazgos históricos no reabran D2.
 - `C10_S_DESIGN_CLOSURE_AND_OPERATIONALIZATION_PLAN_DRAFT_004.md`: fórmula §4.3 alineada con §67.3/crosswalk D2; §15.2 distingue la elegibilidad histórica de la composición actual de `A_f*`.
+- Maestro §59.3: la ecuación intermedia `C_dep/C_auth_base/R_access/D_support` se ha sustituido por un registro histórico no operativo; §§59.4–59.6 se alinean con DEC-C10-066/067 y §67.3.
+- `C10_S_PATH_PREDICATE_TEMPORAL_EVIDENCE_MATRIX_DRAFT_001.md`: §13.4 deja expresamente supersedida la ecuación intermedia de §59.3 y alinea la clasificación de información con los términos actuales de §67.3.
 - `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md`: MEAS-03 distingue validez estructural de validez/cobertura epistémica.
 
 ### 215.3. Documentos históricos conservados y criterio aplicado
 
-Se conservan sin borrado indiscriminado los planes Draft 001–003 y auditorías MRA Draft 001–002, ya marcados como históricos/supersedidos; el registro de recuperación 165–183, que conserva la recomendación D1 como fuente histórica y declara la supersesión DEC-C10-066; el antecedente de DGP §12, que declara supersedida la recomendación anterior; la matriz temporal de predicados §30.1, que etiqueta la fórmula anterior como antecedente; la reconciliación snapshot/delta, que declara supersedida `ΔValidity`; y los registros de DEC-C10-068…092, que preservan sus límites de alcance y no autorización. Se mantienen los IDs y anclas necesarias para trazabilidad.
+Se conservan sin borrado indiscriminado los planes Draft 001–003 y auditorías MRA Draft 001–002, ya marcados como históricos/supersedidos; el registro de recuperación 165–183, que conserva la recomendación D1 como fuente histórica y declara la supersesión DEC-C10-066; el antecedente de DGP §12, que declara supersedida la recomendación anterior; la matriz temporal de predicados §30.1 y la ecuación intermedia de §59.3, ambas ahora identificadas como antecedentes no operativos; la reconciliación snapshot/delta, que declara supersedida `ΔValidity`; y los registros de DEC-C10-068…092, que preservan sus límites de alcance y no autorización. Se mantienen los IDs y anclas necesarias para trazabilidad.
 
 Las menciones históricas en Decision Log, matrices y contratos se conservan cuando están claramente rotuladas como propuesta, antecedente o supersedidas y cuando una decisión posterior aplicable resuelve su alcance. No se borran decisiones aceptadas, escenarios adversariales ni definiciones de D1 que siguen siendo útiles.
 
