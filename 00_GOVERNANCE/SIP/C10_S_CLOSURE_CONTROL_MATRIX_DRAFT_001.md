@@ -2290,3 +2290,37 @@ El gate conceptual queda especificado; el mapping material sigue OPEN. No asigna
 | Outcome / Value | OUTSIDE F* | No pueden definir ni adjudicar conformidad |
 
 N16: RECONCILED_DOCUMENTARILY / PARTIAL. Siguiente gate: crosswalk atómico SM-01…SM-10 ↔ FP-01…FP-07 ↔ IAM, sin duplicar matrices ni elevar propuestas a decisiones. No código, fixtures, validadores ni ejecución.
+
+
+---
+
+## 110. Auditoría focalizada de readiness de implementación C10-S (2026-11-09)
+
+**Dictamen:** NOT_READY / SPECIFICATION_INCOMPLETE. Auditoría documental asistida, autoauditoría, no independiente; no es validación de código.
+
+| Dominio | Estado de readiness | Bloqueo real |
+|---|---|---|
+| Decisiones de arquitectura | REUSABLE / NO REOPEN | Opción A, D2/D1, servicio lógico, familias FP, cardinalidades y DEC-C10-068…092 dentro de sus alcances |
+| Instancia funcional | PARTIAL | Especialización completa de CMP/PAR/REF/RUL/MET, C_src/C_dst/M, C0/G/H, F/A y SM↔FP↔IAM |
+| DGP | PARTIAL | Ecuaciones, parámetros/distribuciones, versiones, ventanas, actor/recepción/fidelidad, truth y escenarios completos |
+| Diseño causal | OPEN | Población/soporte, unidad/interferencia, correspondencia B→g^Af, vías colaterales, exclusión y jerarquía confirmatoria |
+| Medición/estadística | OPEN | Medidas independientes A/D/ΔT/Reach/trayectoria/O/V, regla Value, error/missingness, sensibilidad, potencia y réplicas |
+| Oráculo/software | NOT IMPLEMENTED | Interfaces, serialización, oráculo independiente, firewall efectivo, fixtures y aceptación por módulo |
+| Evidencia U_G | NOT MATERIALIZED | IAM/snapshots/scopes/cobertura sin instancias ni evidencia; implementar solo el subconjunto necesario para el DGP sintético |
+| Gate de implementación | BLOCKED | Contrato integrado no aceptado; sin Design Freeze ni autorización explícita |
+
+### Paquetes mínimos de cierre
+
+- **A — Instancia funcional y transformación:** un contrato funcional versionado y especializado, incluyendo F1/F2/A1/A2, C0/G/H, M, IAM, SM↔FP, requiredness, tolerancias y oráculo.
+- **B — DGP y diseño causal:** unidad/población, asignación, políticas D2, reloj, mecanismo, soporte, escenarios limpio/adversariales, truth y potenciales.
+- **C — Medición y estimandos:** A_f/D_f/ΔT/Reach/trayectoria/Outcome/Value, ITT, efecto de paquete, LATE/θ_Af/θ_A, identificación, error, sensibilidad y potencia.
+- **D — Contrato computacional:** Generator/Analyzer/Evaluator, firewall, interfaces, serialización, evidencia, oráculo, fixtures y hashes.
+- **E — Aceptación integrada:** trazabilidad requisito→fuente→módulo→test y aceptación del contrato; autorización de código separada de autorización de ejecución.
+
+### Salvaguardas de alcance
+
+No exigir sistema real para crear el fixture sintético; no implementar toda U_G como plataforma genérica; no crear otra matriz/oráculo; no elevar las clasificaciones B-M a evidencia de exclusión; no reutilizar N=2.000/R=1.000, s=.80 o .20/.80 como confirmatorios sin aprobación. No exigir revisión humana externa para continuar especificando.
+
+PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-consolidation-draft; 100 archivos cambiados y 1.411 commits ahead según comparación consultada. No promoción a main ni cambio de base en este gate.
+
+**Siguiente trabajo:** ejecutar conjuntamente A+B sobre la misma instancia sintética. No código, validadores, fixtures ejecutables, simulación ni ejecución científica. scientific_execution=false; execution_authorized=false.
