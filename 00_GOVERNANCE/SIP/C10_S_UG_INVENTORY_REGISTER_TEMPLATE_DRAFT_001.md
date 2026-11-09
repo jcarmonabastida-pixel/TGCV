@@ -595,7 +595,7 @@ La matriz precedente constituye la especificación documental de orden de column
 
 1. B-M01…15 identifica **dominios de auditoría de la provisión**, no nodos, aristas, rutas ni predicados del sistema. No crear un NODE llamado “B-Mxx”, una EDGE por cada dominio ni un PREDICATE nuevo con ese código.
 2. Los objetos materiales que se encuentren dentro de cada dominio se registran con la identidad U_G que corresponda: NODE para componentes/servicios/artefactos con identidad propia; EDGE para relaciones reales entre extremos identificados; ROUTE para secuencias funcionales candidatas; PREDICATE para condiciones tipadas por ruta/paso/tiempo; SNAPSHOT para capturas comparables.
-3. En `parent_catalog_id` se conserva exclusivamente el ID del catálogo U_G definido en §10.6 (Nxx, Exx, código de predicado o clase de ruta). **No** introducir B-Mxx en ese campo. La trazabilidad del dominio de auditoría se conserva en `notes/unknowns` de NODE/EDGE/ROUTE, y en `claim_statement` + `relevance_scope` de CLAIM_EVIDENCE_LINK para cada afirmación/predicado; `dimension` identifica B-Mxx en COVERAGE_REGISTER. No se añaden columnas ni se amplía el enum de destinos.
+3. En `parent_catalog_id` se conserva exclusivamente el ID del catálogo U_G definido en §10.6 (Nxx, Exx, código de predicado o clase de ruta). **No** introducir B-Mxx en ese campo. La trazabilidad del dominio de auditoría se conserva en `notes/unknowns` de NODE/EDGE/ROUTE, y en `claim_statement` + `relevance_scope` de CLAIM_EVIDENCE_LINK para cada afirmación/predicado; B-Mxx identifica el dominio de auditoría en notes/unknowns y en claim_statement + relevance_scope; `COVERAGE_REGISTER.dimension` conserva el vocabulario C10S_CONFIG_* de §18.6. No se añaden columnas ni se amplía el enum de destinos.
 4. Los IDs Nxx/Exx de la matriz §9 son roles y relaciones candidatas, no IDs de registros observados. La instanciación crea un registro solo después de identificar un objeto/relación real, asignarle identidad, versión, snapshot y frontera. Las relaciones mult destino se desagregan en filas EDGE atómicas conforme a §10.2. E07 sigue siendo regla lógica, no EDGE; E22 no autoriza inventar nodos destino.
 5. La intención contractual de B se registra en `contract_intent`; nunca se copia como `observed_state`. La truth del DGP sigue fuera del registro visible al analizador.
 
@@ -635,7 +635,7 @@ Una misma entidad puede ser relevante para varios B-Mxx; se mantiene una sola id
 
 Se reservan los siguientes identificadores lógicos para scopes D2. Son **filas de planificación de cobertura**, no observaciones ni registros físicos creados. Al materializar COVERAGE_REGISTER se completarán sus campos según §12.3; hasta entonces no deben enlazarse desde NODE/EDGE/ROUTE/PREDICATE.
 
-| coverage_scope_id propuesto | dimension | universe_definition/version | denominator_unit_and_count | expected_sources (clases, no fuentes supuestas) | examined_sources / valid_sources / covered_units | opaque_or_unknown_units | status actual |
+| etiqueta lógica de planificación (no coverage_scope_id físico) | dominio de auditoría | universe_definition/version | denominator_unit_and_count | expected_sources (clases, no fuentes supuestas) | examined_sources / valid_sources / covered_units | opaque_or_unknown_units | status actual |
 |---|---|---|---|---|---|---|---|
 | COV-D2-BM01 | B-M01 artefacto/versión | Catálogo de artefactos/dependencias dentro de la frontera D2; B-M01…15 + U_G §9 | UNKNOWN — requiere inventario | Manifiestos, paquetes, hashes, SBOM, registros de despliegue | 0 fuentes técnicas / 0 válidas / 0 unidades cubiertas | UNKNOWN | NONE |
 | COV-D2-BM02 | B-M02 runtime | Runtime, procesos, contenedores, sidecars y librerías de la frontera | UNKNOWN | Inventario runtime, configuración, imágenes, dependencias y telemetría | 0 / 0 / 0 | UNKNOWN | NONE |
@@ -1103,7 +1103,7 @@ No se fijan nombres de columnas, IDs físicos, formato, parser, serialización d
 
 ## 26. Roster de afirmaciones y paquetes probatorios MAP-05 — D2 (2026-11-09)
 
-**Estado:** roster de preparación documental derivado de §§17.2–17.4; no crea scopes, filas U_G, CLAIM_EVIDENCE_LINK ni fuentes. Reutiliza los identificadores lógicos COV-D2-BM01…15 ya propuestos en §17.4. Todos conservan denominador UNKNOWN, fuentes técnicas examinadas=0, unidades cubiertas=0 y coverage NONE. No se asignan IDs de evidencia ni resultados 1/0.
+**Estado:** roster de preparación documental derivado de §§17.2–17.4; no crea scopes, filas U_G, CLAIM_EVIDENCE_LINK ni fuentes. Reutiliza las etiquetas lógicas COV-D2-BM01…15 de §17.4 como dominios de auditoría, no como coverage_scope_id físicos. Todos conservan denominador UNKNOWN, fuentes técnicas examinadas=0, unidades cubiertas=0 y coverage NONE. No se asignan IDs de evidencia ni resultados 1/0.
 
 ### 26.1. Regla de uso y destinos
 
@@ -1171,4 +1171,31 @@ Las clases S1–S8 son familias de fuentes del protocolo, no fuentes que se afir
 - Si cualquier vía colateral crítica sigue ?: no exclusión ni atribución focal exclusiva.
 
 **Resultado del roster:** DOCUMENTARY_READY / NO_SOURCE_INVENTORY / COVERAGE_NONE. El roster precisa qué afirmaciones y fuentes serán necesarias, pero no aporta fuentes, observaciones ni cobertura. No cambia los estados científicos: MD-C1/MD-C4 e IV-G4 OPEN; Reach=?, F_alt,0=?, A_f*=?; LATE_f^D2 y θ_Af(q_X*) no identificados. No crea filas, no implementa controles, no ejecuta validadores, pruebas, simulaciones ni experimento.
+
+
+
+## 27. Auditoría de legitimidad de universos y denominadores C0/UDG (2026-11-09)
+
+**Precedencia correctiva sobre §§17.1, 17.4 y 26:** B-M01…15 son dominios transversales de auditoría de la provisión, no valores de `COVERAGE_REGISTER.dimension` ni identidades físicas de `coverage_scope_id`. Las etiquetas `COV-D2-BM01…15` se conservan únicamente como identificadores lógicos de planificación/agrupación del trabajo probatorio. No se materializan como filas COVERAGE_REGISTER ni se usan como FK C0 mientras no exista una decisión específica que reconcilie su función con el esquema vigente.
+
+La frase de §17.1 que asignaba B-Mxx a `COVERAGE_REGISTER.dimension` queda supersedida. En la captura C10-S, `dimension` conserva el vocabulario `C10S_CONFIG_CMP/PAR/REF/RUL/MET` de §18.6. La dimensión es atributo del scope, fuera de la tupla C0 de nueve componentes. El dominio B-Mxx se conserva en `claim_statement`, `relevance_scope` y trazabilidad del roster; una afirmación puede vincularse a uno o más scopes C0 exactos mediante CLAIM_EVIDENCE_LINK, sin fusionar denominadores.
+
+**No confundir dos planificaciones distintas:**
+- Las 15 etiquetas COV-D2-BMxx agrupan preguntas de auditoría de provisión.
+- La cuadrícula 7 stage_key × 5 object_class de §18.6 representa hasta 35 combinaciones lógicas de configuración por conjunto de snapshots, no 35 unidades materiales, no 35 fuentes y no 35 filas que deban crearse automáticamente.
+- Cada scope C0 real requiere su tupla completa: contract/version, instance/version, snapshot_id + snapshot_object_record_id, stage_key, route_id, object_class. Un route_id global usa exclusivamente `C10S_SCOPE_GLOBAL`; un scope route-specific exige route_id semántico y route_record_id exactos. F/A son familias auxiliares, no route_id.
+- Si existen varias rutas exactas para una etapa/clase, los scopes route-specific se separan y sus denominadores no se suman ni se fusionan con el scope global.
+
+**Denominador:** cuenta miembros del universo versionado de ese scope, deduplicados por identidad tipada y registro exacto conforme UDG-01/04; no cuenta scopes, etiquetas B-M, claims, vínculos, archivos ni fuentes. EXPLICIT requiere member_refs completos y resolubles. RULE_DEFINED requiere regla/version, dependencias y resultado reproducible. La unidad concreta de cada clase y su crosswalk físico deben quedar fijados en universe_definition/version; mientras el mapping de clase/owner/propiedad no esté cerrado, el denominador permanece UNKNOWN.
+
+**Limitaciones específicas abiertas:**
+1. No hay snapshots materiales C10-S ni instancias observadas; por tanto no existe todavía una tupla C0 instanciable.
+2. El mapping del NODE raíz LOGICAL_SERVICE_UNIT con el CMP contractual anchor sigue explícitamente abierto; no inferir identidad a partir de etiquetas.
+3. CMP→NODE requiere mapping exacto por snapshot. PAR sigue siendo propiedad tipada del CMP owner, identificada por parameter_key y manifest_record_id; no tiene object_record_id U_G propio ni target_type PAR. No aplicar UDG-04 genéricamente a PAR sin el mapping aprobado.
+4. REF→EDGE, RUL→PREDICATE y MET→target/propiedad tipados requieren reglas de inclusión y pertenencia exactas; no son equivalencias automáticas. MET puede ser transversal.
+5. Los siete stage_key aceptados no equivalen a SNAPSHOT.phase ni al reloj DGP; su asociación con snapshots concretos no está materializada.
+6. La gramática UDG-01/JCS y los contratos UDG-03/04 están aceptados documentalmente por DEC-C10-073…076, pero ello no implementa C0, no resuelve el mapping físico ni prueba exhaustividad.
+7. Los valores ilustrativos históricos `route=NONE/F/A` y `object_class=CONFIG` de §18.2 quedan no operativos: usar el token global aceptado o route_id exacto y una clase CMP/PAR/REF/RUL/MET.
+
+**Dictamen:** `DOCUMENTARY_RECONCILIATION_PARTIAL / NO_C0_INSTANCE / NO_SNAPSHOT / DENOMINATOR_UNKNOWN / COVERAGE_NONE`. No crear filas, scopes físicos, member_refs ficticios, snapshots ni evidencia. No declarar 0, COMPLETE, ausencia de ruta, independencia ni exclusión. Se conserva `scientific_execution=false` y `execution_authorized=false`.
 
