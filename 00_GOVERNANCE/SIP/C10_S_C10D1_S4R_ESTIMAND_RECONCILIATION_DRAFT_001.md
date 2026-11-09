@@ -382,3 +382,10 @@ La transferencia exige entradas versionadas AB: unidad/población pre-Z, Z/B y e
 Reglas no negociables: no condicionar ITT por recepción/cumplimiento/mediadores post-Z; no inferir A_f o D_f desde C_dep; no presentar Wald como causal mientras los supuestos IV sigan abiertos; no equiparar ITT o efecto de paquete con θ_Af/θ_A; no obtener mediación o residual por resta de estimandos no armonizados. La recuperación de truth sintética evalúa al Analyzer, no demuestra empíricamente ΔT_acc→Value.
 
 Estado: interfaz contractual definida; inputs materiales AB y gates de identificación permanecen abiertos. Este addendum no supersede §18 ni la auditoría IV, no aprueba identificación y no autoriza implementación o ejecución.
+
+
+## 22. Aclaración de jerarquía para el paquete C (2026-11-09)
+
+La primacía de θ_A(q) como pregunta científica general de C10-D1 se mantiene. ITT_Z^D2 es el estimando primario de asignación dentro del diseño S4-R, no un sustituto de la pregunta científica. LATE_f^D2 y θ_Af(q_X*) siguen siendo objetivos focales secundarios/condicionales y no se transportan automáticamente a θ_A(q).
+
+Si D2 activa vías diferenciales no mediadas por el tratamiento focal, el contraste debe conservarse como efecto de política/paquete. La exclusión no se deduce de la aleatorización. Esta aclaración desarrolla la jerarquía ya contenida en §18 y no la supersede.
