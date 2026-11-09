@@ -1988,3 +1988,10 @@ Se añade al maestro §217 una propuesta única y acotada para especializar la i
 No se acepta automáticamente: REF como clase separada frente a operand bindings del AST; namespaces/códigos físicos sintéticos; alcance G; perfil FP-05; y parámetros/ventana H. Se presentan como propuesta explícita, no como DEC ni como implementación.
 
 La continuidad será una única decisión de paquete sobre la especialización semántica. Después se cerrarán H, mecanismo probabilístico D2 y elegibilidad/soporte como subbloques coordinados del mismo AB. No abrir otra auditoría general ni volver a discutir decisiones ya aceptadas. No código/fixtures/simulación/ejecución; autorizaciones permanecen false.
+
+
+## 16.96 — DEC-C10-093: aceptación de la base de especialización AB
+
+Se registra la aceptación expresa del usuario de §217 como base de diseño de trabajo, formalizada en DEC-C10-093. Se conservan sin reabrir las elecciones conceptuales cubiertas y se mantienen OPEN las reservas enumeradas en §3 de la decisión: REF/AST, namespaces/serialización, roster IAM/cobertura, FP-05, G/C0/H, mecanismo/distribución D2, aislamiento, población/soporte/interferencia y oráculo.
+
+La siguiente operación es completar la especificación material integrada AB-01…AB-09 sobre esta base; no repetir auditorías generales ni reabrir el núcleo funcional ya aceptado. AB permanece IN_PROGRESS hasta que cada bloqueo tenga definición, trazabilidad y criterio de aceptación. No Design Freeze ni autorización de implementación/ejecución.
