@@ -2164,3 +2164,18 @@ La corrección de §33 ya estaba indicada en §34 y desarrollada en §35; este a
 
 **Regla de interpretación:** la definición conceptual de B_g^D2 no identifica las distribuciones inducidas g_j^ind. ITT_Z^D2 es efecto de asignación a la política D2; no es por sí mismo θ_A(q), θ_Af(q_X*) ni LATE_f. No se habilita Wald, implementación ni ejecución.
 
+
+
+---
+## 103. Cierre documental parcial MAP-01/MAP-02 (2026-11-09)
+
+| Subgate | Estado | Resultado documental | Pendiente material |
+|---|---|---|---|
+| MAP-01a | CONTRACT_FIELDS_DEFINED | Esquema por unidad de asignación, actor, artefacto, runtime/canal y eventos de provisión | Identidades, roles, versiones, hashes y arquitectura real |
+| MAP-01b | OPEN | Reglas de reintento, fallo parcial, rollback, desviación y registro de crossover especificadas | Protocolo operativo, ventanas y detección con cobertura suficiente |
+| MAP-02a | TEMPORAL_SCHEMA_DEFINED | Anclas basal pre-Z, provisión, C_dep*, A_f*, D_f*/ΔT_acc* y resultados separados | Ventanas, relojes, fuentes e instrumentos |
+| MAP-02b | OPEN | Estados 1/0/? y verdad/observación separados | Evidencia independiente, tolerancias, ceguera y cobertura |
+| MAP-02c | OPEN | Orden lógico de eventos definido | Validación del mapping temporal con datos/evidencia |
+
+**Regla:** el cierre de campos y esquema no es cierre de intervención, de medición, de primera etapa, de exclusión ni de identificación. No se autoriza implementación o ejecución.
+
