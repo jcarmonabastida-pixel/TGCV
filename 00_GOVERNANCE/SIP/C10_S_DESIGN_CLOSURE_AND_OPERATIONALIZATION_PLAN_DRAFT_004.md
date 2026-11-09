@@ -1786,3 +1786,20 @@ La auditoría también separa la cuadrícula 7×5 (hasta 35 combinaciones lógic
 
 **Siguiente gate:** cerrar crosswalk de identidad y unidad de denominador CMP/PAR/REF/RUL/MET, reutilizando U_G §18 y el contrato PAR, en coherencia con N01/anchor CMP y N16/oráculo. No repetir diseño UDG ni crear scopes. No captura, C0, schema change, implementación, Design Freeze ni ejecución.
 
+
+
+## 16.89. Crosswalk de identidad y unidad de denominador CMP/PAR/REF/RUL/MET (2026-11-09)
+
+Se ha consolidado en U_G §28 la matriz tipada de identidad, proyección U_G, unidad candidata de denominador, condición de inclusión y bloqueo por clase. Se reutilizan U_G §§18–24 y las decisiones vigentes; no se vuelve a diseñar UDG-01…04 ni se reabre PAR.
+
+**Resultado por clase:**
+- CMP: unidad candidata = componente contractual distinto elegible por snapshot; CMP→NODE requiere identidad/versión/owner y record exactos. Root LOGICAL_SERVICE_UNIT↔CMP anchor sigue OPEN.
+- PAR: propiedad atómica del CMP owner, unidad owner×parameter_key×versión semántica×clave lógica de captura; identidad/supersession DEC-C10-079 y binding DEC-C10-080 aceptados. Sin tabla PAR ni NODE por parámetro.
+- REF: unidad candidata = relación tipada, no extremos ni apariciones en rutas; DEC-C10-077 acepta mapping conceptual, pero IDs, endpoints, cardinalidad y mapping M concreto siguen OPEN.
+- RUL: unidad candidata = regla/version/scope; PREDICATE solo si es evaluable y operandos/efecto están resueltos. Mapping final OPEN.
+- MET: unidad candidata = metadata field tipado por owner/target/tiempo/alcance, solo si es configuración elegible; sin tabla MET única ni taxonomía cerrada.
+
+Se añadieron criterios PASS/FAIL/UNKNOWN/NOT_COMPARABLE por clase en el protocolo §22. El PASS de mapping no equivale a cobertura COMPLETE. Los denominadores continúan UNKNOWN y no se crean scopes/member_refs. Estado: CROSSWALK_TYPED / PAR_IDENTITY_ACCEPTED / CMP_REF_RUL_MET_MAPPING_PARTIAL / NO_INSTANCE / DENOMINATOR_UNKNOWN / COVERAGE_NONE.
+
+**Siguiente gate:** decisión documental focal sobre el mapping del CMP raíz y la cardinalidad de sus componentes, sin inferir identidad por nombre; después, mapping REF/RUL/MET con sus fuentes de contrato. No implementación, captura ni ejecución.
+
