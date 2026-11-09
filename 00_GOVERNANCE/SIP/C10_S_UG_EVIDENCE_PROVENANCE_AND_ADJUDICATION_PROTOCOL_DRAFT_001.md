@@ -1047,3 +1047,23 @@ Se resolvió la contradicción documental B-Mxx↔dimension sin alterar schema: 
 
 **Gate siguiente:** cerrar el crosswalk de identidad y unidad de denominador CMP/PAR/REF/RUL/MET —reutilizando U_G §18 y el contrato de identidad PAR— y reconciliarlo con N01/anchor CMP y N16/oráculo. No volver a diseñar UDG-01…04; no crear scopes; no capturar datos ni ejecutar C0. Sin schema change, implementación, Design Freeze o ejecución científica.
 
+
+
+## 22. Criterios de adjudicación del crosswalk de identidad y denominador por clase (2026-11-09)
+
+Este protocolo aplica U_G §28 y no crea una equivalencia automática entre clase C10 y registro U_G.
+
+| Clase | PASS de mapping | FAIL de mapping | UNKNOWN / NOT_COMPARABLE |
+|---|---|---|---|
+| CMP | Identidad/versión/owner y NODE record exactos dentro del snapshot; regla de inclusión satisfecha | Identidad duplicada contradictoria, owner/record incompatible o mapping que viola frontera | Root anchor o record no disponible; versiones sin mapping |
+| PAR | manifest_record_id y revisión resuelven; owner CMP y parameter_key/versión coinciden; scope PAR y localizador DEC-C10-080 exactos | Colisión ID, cadena supersession inválida, owner/clave/snapshot/scope contradictorios | Manifiesto/fuente no disponible, localizador ambiguo, mapping de versión ausente |
+| REF | Identidad de relación, tipo, cardinalidad y extremos exactos; mapping M versionado y compatible | Extremo/relación contradicho, cardinalidad o identidad incompatible | Endpoints, M, registry o enumeración no exhaustivos |
+| RUL | rule_id/version/scope/AST/operandos recuperables y semántica evaluable; PREDICATE exacto cuando aplique | AST/operandos/efecto contradicen identidad o predicate adjudicado | Regla opaca, scope/owner no resuelto, AST inaccesible o mapping no evaluable |
+| MET | metadata_key/tipo/owner/target/tiempo y elegibilidad fijados; destino tipado exacto | Owner/tiempo/tipo incompatibles o duplicidad contradictoria | Metadata sin owner/target, ámbito temporal desconocido o elegibilidad sin regla |
+
+PASS solo acredita el mapping tipado de la unidad declarada, no la exhaustividad del universo ni la validez sustantiva de la afirmación. COMPLETE exige además UDG-01 EXPLICIT exhaustivo o RULE_DEFINED reproducible, fuentes válidas, denominador finito, excepciones resueltas y binding C0 correcto. Una discrepancia de contenido debe separarse de una discrepancia de identidad.
+
+La evaluación de pertenencia 1/0/? se realiza por miembro y scope. 0 requiere identidad del objeto y universo de pertenencia cerrados, además de enumeración suficiente para descartar inclusión; no se deriva de no encontrar una fila. NOT_COMPARABLE se reserva para versiones/contratos sin mapping semántico aprobado; no se sustituye por UNKNOWN cuando la incompatibilidad está demostrada.
+
+**PAR específico:** DEC-C10-079/080 prevalecen: target COVERAGE_SCOPE, localizador exacto, manifest_record_id global y revisión append-only. No crear target PAR ni FK directa. El control independiente verifica la fila contra el manifiesto; integridad del binding y verdad de la afirmación siguen siendo capas distintas.
+
