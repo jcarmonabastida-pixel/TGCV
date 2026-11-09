@@ -704,7 +704,7 @@ Conservar alternativas descartadas y razones.
 
 ### 10.6. Contaminación causal
 
-Comprobar que G0/G1 mantienen constantes recursos, capacidad técnica, información diagnóstica, motivación, incentivos y expectativas, salvo el componente constitutivo deliberadamente intervenido. Si la autorización focal también altera expectativas, prioridades o incentivos, medir esas vías y revisar identificación. No etiquetar automáticamente como “constante” una variable afectada por la intervención.
+Comprobar que las políticas comparadas mantienen constantes recursos, capacidad técnica, información diagnóstica, motivación, incentivos y expectativas, salvo el componente expresamente manipulado. En D2, la autorización funcional basal `C_auth,base=1` debe permanecer común e invariante; ACL/credenciales/endpoint técnicos no son esa autorización. Una intervención focal sobre autorización pertenece a un escenario alternativo/adversarial y, si altera expectativas, prioridades o incentivos, debe tratarse como política conjunta/paquete. No etiquetar automáticamente como constante una variable afectada por la intervención.
 
 ### 10.7. Dictamen EXC
 
@@ -790,7 +790,7 @@ El paso a C10-P no queda autorizado automáticamente por superar C10-S. Requiere
 - relación de identidad ≡I y granularidad definitiva de transformaciones;
 - demostración de que no existe ruta alternativa G0 para F*;
 - cobertura del universo sintético declarado;
-- justificación de factibilidad y manipulación focal de autorización;
+- fuente, alcance, vigencia y evidencia de la autorización basal común `C_auth,base=1`; la intervención focal sobre autorización de AUD-001/002 solo queda como escenario alternativo/adversarial y no es la manipulación primaria D2;
 - δ y ε;
 - cálculo de potencia y precisión Monte Carlo;
 - tratamiento de missingness, interferencia y no cumplimiento;
@@ -1446,6 +1446,8 @@ C10-D1 contiene precisiones posteriores sobre condiciones constitutivas, factibi
 4. toda adaptación sintética debe identificarse como tal y preservar las restricciones de factibilidad.
 
 ### 25.2 Hallazgos de auditoría
+
+**Nota de precedencia posterior:** XSYNC-138-01 documenta correctamente una contradicción del diseño previo, que formulaba `g1/g0` como intervención sobre autorización. Para D2, esa modalidad queda supersedida por DEC-C10-066/067: provisión técnica focal con `C_auth,base=1` común e invariante. El hallazgo permanece como antecedente sobre el diseño anterior y como advertencia para cualquier escenario alternativo de intervención sobre autorización; no debe usarse para reabrir la política D2. La correspondencia general B→g^Af, exclusión y vías colaterales siguen abiertas.
 
 | ID | Severidad provisional | Hallazgo | Consecuencia | Disposición requerida |
 |---|---|---|---|---|
@@ -5484,7 +5486,7 @@ La cadena de referencia es:
 - `C_dep,post=C_install∧C_integrity∧C_compat∧C_oper`; cada componente conserva valor, estado epistémico, evidencia y tiempo de verificación.
 - `A_f,post*` se deriva de `C_dep,post` y del resto de condiciones focales. Si estas últimas no están todas satisfechas, no se copia automáticamente la probabilidad de C_dep a A_f.
 - La probabilidad .20/.80 se calibra en el estado final verificado. Si se usan `ω_z` y `s_z` para intento y éxito, la distribución conjunta debe producir las probabilidades finales objetivo; no se presume independencia.
-- `A_f` es una proyección focal. `ΔT_acc=(ΔU,ΔR,ΔC,ΔValidity,ΔState)` conserva el cambio transformacional completo.
+- `A_f*` es una proyección focal. `ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*)` conserva el cambio estructural completo; `ΔE_T` registra en paralelo los cambios de evidencia/observabilidad y no forma parte de la verdad estructural.
 - Accesibilidad, aplicabilidad, Reach, conocimiento/consideración, selección, inicio, ejecución parcial/completa, Outcome y Value son predicados/eventos separados y fechados.
 
 ## 53.6. q*, g y factibilidad
@@ -5935,13 +5937,15 @@ Para cada componente se distinguen: satisfecho, incumplido e indeterminado en la
 
 C_dep no basta por sí solo para establecer A_f*. La relación entre dependencia técnica y accesibilidad debe especificar los demás predicados necesarios, y demostrar que son condiciones de acceso y no condiciones de aplicabilidad, ejecución o resultado.
 
-## 58.4. Definición generadora de A_f* y App_f*
+## 58.4. Definición generadora de A_f* y App_f* — precedencia de §67.3
 
-La propuesta de definición para cada snapshot es:
+La fórmula candidata de referencia para cada snapshot es la reconciliada en §67.3 y el crosswalk D2:
 
-A_f*(i,t) = I[ID_τ2 válido en versión declarada ∧ C_dep*(i,t)=1 ∧ todos los predicados adicionales de acceso focal preespecificados satisfechos].
+`A_f*=I(ID_f* ∧ REL_f* ∧ COND_f* ∧ AUTH_f* ∧ RES_f* ∧ DEP_f* ∧ ¬BLOCK_f*)`.
 
-El inventario de predicados adicionales debe ser explícito y clasificado antes de construir los fixtures. No se presume que C_auth, recursos, capacidad, información, compatibilidad de dominio u otros campos pertenezcan todos a la misma clase: cada uno debe clasificarse como condición de acceso, precondición de aplicabilidad, condición constitutiva, mecanismo de provisión o variable postratamiento. La fórmula solo podrá cerrarse cuando esta clasificación esté aprobada.
+La fórmula placeholder de esta sección (identidad válida + C_dep* + predicados adicionales no enumerados) queda supersedida como representación operativa. No debe utilizarse como contrato alternativo ni copiarse a código. `C_auth,base=1` permanece como condición basal común D2 y se corresponde con `AUTH_f*`; `C_dep*` se integra en `DEP_f*`; recursos/capacidad ex ante solo pueden contribuir a `RES_f*` sin duplicidad; `C_info` no es factor autónomo; `C_other` queda excluido; `App_f*` se evalúa separadamente.
+
+La fórmula sigue siendo candidata, no universal ni congelada. Siguen abiertos los mappings y la operacionalización material de REL/COND/RES/DEP/BLOCK y la cobertura de rutas.
 
 App_f*(i,t) = I[las precondiciones de τ2 para el estado S0_i,t se satisfacen] se evalúa por separado. Es posible que A_f*=1 y App_f*=0: la transformación está accesible en el sistema, pero no es aplicable desde el estado actual. También es posible que la evidencia para uno de los juicios sea indeterminada mientras el otro está respaldado.
 
@@ -5957,29 +5961,22 @@ D_f* se distingue del estado posterior A_f*,post. Para el analizador se construy
 
 No se sustituye ITT_Df* por ITT_Df_obs sin advertirlo. Si hay error, se reportan sensibilidad/especificidad y su incertidumbre cuando la validación lo permita, o límites/análisis de sensibilidad cuando no. La corrección requiere una submuestra de validación con selección conocida; una referencia imperfecta no se denomina gold standard y debe aportar su propia incertidumbre.
 
-## 58.6. Contrato de T_acc y ΔT_acc
+## 58.6. Contrato de T_acc y ΔT_acc — verdad estructural y evidencia separadas
 
-Cada snapshot T_acc(i,t) debe incluir, al menos:
+El snapshot estructural verdadero `S_T*(i,b,c,t)` contiene los elementos estructurales que determinan el espacio accesible dentro de la unidad, frontera, contexto y tiempo declarados:
 
-1. U_acc: identidades canónicas de transformaciones y versiones accesibles, con estados respaldados/indeterminados.
-2. R_acc: relaciones tipadas, dirigidas cuando corresponda, con origen/destino, versión, condiciones, estado activo/inactivo/indeterminado y evidencia.
-3. C_acc: condiciones/configuraciones relevantes para realizabilidad y composición, con valor/estado, ámbito, temporalidad y procedencia.
-4. Validity: validez de identidad, versión, evidencia y cobertura del snapshot.
-5. State: estado del sistema e historia necesarios para interpretar el snapshot, sin incorporar Outcome o Value como criterio de accesibilidad.
+1. `U_t*`: identidades y versiones de transformaciones estructuralmente accesibles, con su estado verdadero.
+2. `R_t*`: relaciones tipadas y relaciones de composición relevantes para realizabilidad.
+3. `C_t*`: condiciones/configuraciones estructurales de realizabilidad, incluidas precondiciones de invocación, autorización funcional, recursos disponibles, dependencias y bloqueos con alcance temporal.
+4. `X_t*`: otras propiedades estructurales tipadas necesarias para describir el snapshot y comparar cambios sin introducir resultados posteriores.
 
-La comparación exige snapshots con unidad, dominio, horizonte de observación, granularidad, catálogo de referencia y reglas de identidad/versionado compatibles. Si no son comparables, ΔT_acc es indeterminado o requiere una transformación explícita de correspondencia; no se fuerza una diferencia por nombres parecidos.
+`E_T(i,b,c,t)` es un paquete epistémico separado: fuentes, cobertura, validez/fiabilidad de evidencia, procedencia, versiones de los registros, timestamps y adjudicación. La validez de la evidencia y su cobertura no forman parte de `S_T*` ni de la verdad estructural de `T_acc*`.
 
-Se conserva la descomposición:
+La diferencia causal/estructural se expresa como `ΔT_acc* = Diff(S_T*(t0),S_T*(t1)) = (ΔU*,ΔR*,ΔC*,ΔX*)`. En paralelo, `ΔE_T=Diff_E(E_T(t0),E_T(t1))` registra cambios en fuentes, cobertura, validez epistémica, procedencia, versiones de registro y adjudicación.
 
-- ΔU = (altas, bajas, cambios de versión/definición);
-- ΔR = (relaciones añadidas, retiradas, reconfiguradas);
-- ΔC = (condiciones/configuraciones añadidas, retiradas o modificadas);
-- ΔValidity = (cambios de validez, evidencia, cobertura o estado epistémico);
-- ΔState = (cambios relevantes del estado/contexto entre snapshots).
+La comparación exige unidad, dominio, frontera, horizonte, granularidad, catálogo y reglas de identidad/versionado compatibles. Si no son comparables, la diferencia estructural queda indeterminada o requiere una correspondencia explícita/versionada; no se fuerza un diff por similitud nominal.
 
-Cada evento de diferencia mantiene referencia al objeto antes/después, tipo de cambio, momento, fuente, regla de comparación y evidencia. Cambio de versión no implica automáticamente nueva identidad; cambio de condición o relación no implica automáticamente nueva transformación. Las indeterminaciones se propagan y no se convierten en altas/bajas ciertas.
-
-ΔT_acc = (ΔU, ΔR, ΔC, ΔValidity, ΔState) es un objeto estructurado multidimensional, no una magnitud escalar ni una suma ponderada. A_f* es una proyección focal de τ2 dentro de este objeto, no su definición completa. Reach y trayectorias candidatas se derivan posteriormente conforme a reglas separadas; no forman parte del snapshot ni se infieren de ejecuciones.
+`A_f*` es una proyección focal de `ΔT_acc*`, no el objeto completo. Reach y trayectorias candidatas se derivan después conforme a reglas separadas; no forman parte del snapshot ni se infieren de ejecuciones.
 
 ## 58.7. Protocolo de medición y cegamiento
 
@@ -6523,30 +6520,15 @@ Reportar separadamente:
 
 No sustituir ITT_Df* por ITT_Df,obs sin declarar el error. Una primera etapa sobre C_dep* no es primera etapa de accesibilidad.
 
-## 63.7. ΔT_acc*: snapshots y diferencia estructurada
+## 63.7. Registro histórico de la definición de ΔT_acc — SUPERSEDIDA
 
-Para cada unidad i y tiempo t, el snapshot contiene al menos:
+**Estado:** HISTÓRICO / NO OPERATIVO para la composición causal de `ΔT_acc*`.
 
-- U_acc: identidades canónicas/versiones de transformaciones y estado accesible/inaccesible/indeterminado;
-- R_acc: relaciones tipadas/dirigidas, extremos, condiciones, estado y evidencia;
-- C_acc: condiciones/configuraciones de realizabilidad, ámbito, temporalidad y procedencia;
-- Validity: identidad, versión, evidencia, cobertura y estado epistémico;
-- State/context: estado e historia necesarios para interpretar realizabilidad, sin usar Outcome/Value como criterio.
+La formulación anterior de esta sección incluía `Validity` dentro del snapshot estructural y `ΔValidity` dentro de `ΔT_acc*`. Esa composición queda supersedida por la separación de §58.6 y el contrato de snapshots/delta vigente: `S_T*=(U_t*,R_t*,C_t*,X_t*)`; `E_T` contiene fuentes, cobertura, validez de evidencia, procedencia, versiones de registro, timestamps y adjudicación; `ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*)`; `ΔE_T` registra los cambios epistémicos.
 
-La diferencia basal-post se registra como:
+La validez estructural/operativa de una transformación, cuando sea una condición real de realizabilidad, se asigna al predicado estructural correspondiente. La validez o cobertura de la evidencia utilizada para conocer ese estado permanece en `E_T`. No reintroducir `Validity`/`ΔValidity` como dimensión epistémica dentro de `T_acc*`/`ΔT_acc*`.
 
-ΔT_acc^*(i)=(ΔU, ΔR, ΔC, ΔValidity, ΔState).
-
-Cada componente identifica altas, bajas, cambios de versión/definición, relaciones añadidas/retiradas/reconfiguradas, condiciones/configuraciones modificadas, cambios de validez/cobertura y variaciones relevantes del estado/contexto. Cada evento conserva objeto antes/después, momento, fuente, regla de comparación y evidencia.
-
-Los snapshots solo se comparan si coinciden o se transforman explícitamente a una identidad/versionado, frontera, granularidad G, catálogo y reglas compatibles. De lo contrario, la diferencia es indeterminada o requiere una correspondencia versionada; no se fuerza un diff.
-
-La proyección focal h_f(ΔT_acc*)=D_f* se permite únicamente bajo el contrato focal y snapshots comparables. No conserva cambios no focales. En consecuencia:
-
-- D_f*=1 no implica ΔReach>0, selección, ejecución ni Value positivo.
-- ΔT_acc*≠0 no implica D_f*=1.
-- D_f*=0 no implica ΔT_acc*=0.
-- La ausencia de cambio focal no autoriza a descartar cambios relacionales/configuracionales no focales.
+Se conserva el historial Git de la formulación anterior. Esta supersesión no elimina cambios estructurales de validez semántica/operativa que deban clasificarse dentro de `C_t*`/`X_t*`, ni cierra los mappings materiales o la adjudicación.
 
 ## 63.8. Auditoría de atribución y vías alternativas
 
