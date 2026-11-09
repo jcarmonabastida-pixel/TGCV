@@ -9043,3 +9043,11 @@ Estos son **gates de decisión/evidencia**, no invitaciones a abrir auditorías 
 **Estado AB:** INTEGRATED SPECIFICATION PROPOSED / NOT DONE / NOT IMPLEMENTABLE.  
 **Design Freeze:** NO. **Code/fixture/parser/validator authorization:** NO. **Scientific execution:** false. **Execution authorization:** false.  
 **Siguiente paquete:** C no comienza como si AB estuviera congelado; puede preparar su estructura de estimandos y medición referenciando los contratos AB, pero los gates AB que afectan identificación deben permanecer visibles y bloqueantes.
+
+# 220. DEC-C10-094 — resoluciones materiales integradas de AB (2026-11-09)
+
+Se registra la aceptación de las resoluciones de diseño material descritas en DEC-C10-094. Este apartado complementa §219 y resuelve como decisiones de trabajo: dos operand bindings semánticos representados exactamente una vez (REF o AST); namespaces sintéticos y mapping PROFILE total/injectivo; IAM por rol/acción/objeto/etapa/ruta/snapshot; FP-05 como mínimo privilegio y no exposición de secretos; G como unidad lógica completa; C0 como snapshot pre-Z; H común con ancla preespecificada y valor/unidad aún pendientes; D2 con event log por etapas y distribución conjunta de C_dep* sin probabilidades inventadas; elegibilidad pre-Z, q_X* y soporte sin extrapolación; unidad/cluster/interferencia explícitos; truth/observed separados y oráculo independiente sujeto a evidencia.
+
+La decisión no elige REF frente a AST físico, no asigna H*, probabilidades D2, q_X*, tamaño de población ni topología de cluster. MD-C1/MD-C4 y la independencia/cegamiento/adjudicación del oráculo requieren evidencia material. Los estimandos ITT-Z-D2, efecto de paquete, LATE_f, θ_Af(q_X*) y θ_A(q) siguen diferenciados y se transfieren a C sin afirmar identificación.
+
+**Estado:** ACCEPTED WORKING DESIGN RESOLUTIONS; AB sigue IN_PROGRESS / NOT DONE / NOT IMPLEMENTABLE. No Design Freeze, código, fixture ejecutable, parser, validator, simulación ni experimento. `scientific_execution=false`; `execution_authorized=false`. Fuente decisoria: DEC-C10-094.
