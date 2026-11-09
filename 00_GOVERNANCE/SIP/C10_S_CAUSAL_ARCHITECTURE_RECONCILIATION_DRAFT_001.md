@@ -248,3 +248,18 @@ Por tanto:
 **Control de lectura:** no interpretar «AUD-001/002 es antiguo/no primario» como «C_auth basal es obsoleto» ni como «AUTH_f* debe retirarse». La intervención focal sobre autorización y el predicado basal de autorización son objetos distintos.
 
 **Estado:** reconciliación documental basada en DEC-C10-067 y en el crosswalk de predicados; no es una nueva DEC ni una aprobación de la arquitectura causal completa. No autoriza freeze, implementación, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 21. Paquete C — integración de identificación, Value y mediación transformacional (2026-11-09)
+
+El maestro C10-S §222 organiza el paquete C y conserva la precedencia de este documento y de C10-D1/S4-R §18. Se reutilizan P177/P178/P179/P182/P183; no se reabren ni duplican.
+
+La pregunta causal se mantiene jerárquica: ITT_Z^D2 identifica, bajo diseño válido, asignación a la política material; el efecto de paquete recibido exige versiones y cumplimiento definidos; LATE_f exige supuestos IV; θ_Af exige mapping B→g^Af, población y soporte; θ_A(q) sigue siendo la pregunta general C10-D1. Ninguno se sustituye por otro.
+
+Para la atribución transformacional, el mediador de interés no se reduce a A_f*: es el cambio estructural completo ΔT_acc*. Reach y trayectoria pueden ser mediadores secuenciales posteriores y deben modelarse como tales o formar parte de un bloque mediador conjunto explícito. El efecto total de política, el componente interventional indirecto vía ΔT_acc* y el residual/directo requieren una descomposición formal con población, régimen, horizonte y escala de Value comunes. No se obtiene el residual restando ITT, LATE o θ_Af incompatibles.
+
+Value se mantiene vectorial durante identificación y separado de Outcome. Las dimensiones, escalas, fuentes, contexto, pesos y agregación siguen pendientes de operacionalización. La mediación interventional es una opción metodológica de trabajo, no una decisión aprobada ni identificada; si hay confusión mediador-Value postratamiento afectada por Z, se requiere estrategia longitudinal y no ajuste convencional.
+
+La evaluación sintética debe comprobar tanto recuperación cuando truth identifica el estimando como abstención correcta cuando no lo identifica, con truth oculta al Analyzer y Evaluator separado. Esto valida el método dentro del DGP, no la afirmación empírica general ΔT_acc→Value.
+
+Estado: paquete C propuesto/documentado; no aprobado, no congelado, no implementable. No se modifica C10-D1 ni TGCV Core; sin simulación o ejecución.
