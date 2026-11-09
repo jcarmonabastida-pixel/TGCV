@@ -463,7 +463,7 @@ Estado: contratos documentales, no implementados ni ejecutados.
 |---|---|---|
 | MEAS-01 | C_dep no suficiente | C_dep*=1 con AUTH/RES/REL/COND/BLOCK fallido no produce A_f*=1 |
 | MEAS-02 | Ruta alternativa de acceso | C_dep*=0 no fuerza A_f*=0 si otra ruta válida invoca la misma τ2 |
-| MEAS-03 | Predicado focal | A_f* requiere identidad, relaciones, condiciones, autorización, recursos, dependencias, no bloqueo y validez |
+| MEAS-03 | Predicado focal | A_f* requiere ID/REL/COND/AUTH/RES/DEP y ausencia de BLOCK; validez/cobertura de evidencia se registra en E_T y no se incorpora a truth estructural |
 | MEAS-04 | Acceso vs aplicabilidad | A_f*=1 y App_f=0 es representable |
 | MEAS-05 | Acceso vs ejecución | No ejecución no implica A_f*=0; ejecución no sustituye medición |
 | MEAS-06 | Canal de verdad | Analizador no recibe A_f*, C_dep*, D_f*, T_acc* ni ΔT_acc* |
