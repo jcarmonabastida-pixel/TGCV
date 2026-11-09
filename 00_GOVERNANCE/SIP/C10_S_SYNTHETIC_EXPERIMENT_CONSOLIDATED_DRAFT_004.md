@@ -9625,3 +9625,20 @@ La referencia correcta en futuros crosswalks será, por tanto, «§225.3 + P177-
 **Dictamen de auditoría:** el diseño estadístico general de §225 está documentado, pero la cobertura contractual de mediación es PARCIAL. Gate C-MED permanece OPEN hasta fijar estimando/intervención mediadora, secuencia temporal y conjunto de confusores, supuestos de identificación, método principal/alternativo, sensibilidad y criterio de recuperación/abstención por escenario DGP. No se crea un contrato ejecutable ni se seleccionan supuestos por defecto.
 
 Mantener scientific_execution=false; execution_authorized=false; no código, fixtures, validadores, simulaciones ni experimentos.
+
+
+# 227. Auditoría ampliada del crosswalk P177–P183: etapas, potencia y dictamen del Analyzer (2026-11-10)
+
+**Estado:** corrección de trazabilidad y delimitación de cobertura; sin modificación de contratos fuente ni autorización de ejecución.
+
+La lectura de las definiciones fuente de §55 del Test Contract Register identifica tres correspondencias adicionales que deben precisarse:
+
+1. **Primera etapa e IV.** P177-02 es la primera etapa; P177-03 es Wald/LATE condicionado; P177-04 es instrumento débil. La fila «Primera etapa y tratamiento» del Register §72 citaba P177-03/04 como soporte de primera etapa sin distinguir esas funciones. La referencia primaria correcta para estimar FS es P177-02; P177-03/04 aplican únicamente a los gates IV posteriores.
+2. **Potencia, N y Monte Carlo.** P178-SIM-02 gobierna búsqueda de N; SIM-03 clústeres; SIM-04 número de réplicas; SIM-05 error Monte Carlo; SIM-01 potencia separada; SIM-09 métricas; SIM-10 parámetros/tolerancias ex ante. Citar solo SIM-10 para N, R y precisión es insuficiente. P179-08 solo regula agregación de Value, no dimensionamiento muestral ni error Monte Carlo.
+3. **Sensibilidad y bounds.** P183-09 cubre censura; P183-10 sensibilidad MAR/MNAR; P183-11 bounds; P183-12 dictamen por estimando. P179-06/08 cubren trade-offs y agregación de Value, no bounds generales de identificación. P178-SIM-10 cubre parámetros y tolerancias ex ante, no sustituye los métodos de cotas.
+
+**Cobertura del Analyzer:** P177-10 aporta recuperación sintética (sesgo/RMSE/cobertura); P177-12 separa efecto de política y atribución; P182-11 protege la separación Generator/Analyzer; P183-11/12 cubren cotas y dictamen. Sin embargo, la tasa de falsa identificación, falsa atribución focal y calidad de abstención descritas en §225.7 no aparecen como criterios completos y explícitos en esos contratos fuente. Permanecen como criterios propuestos, con cobertura contractual parcial hasta especificar su adjudicación y tolerancias ex ante.
+
+**Correspondencia corregida para §72:** primera etapa → P177-02; Wald/weak-IV → P177-03/04; potencia/N/clúster/R/SE_MC → P178-SIM-01…05 y SIM-09/10 según el criterio; sensibilidad/censura/bounds → P183-09…12, distinguiendo cada ID; trade-offs/agregación Value → P179-06/08. No atribuir a un contrato un criterio que no contiene.
+
+**Dictamen:** crosswalk estadístico corregido en lo verificable; quedan gates de especificación para falsos positivos/abstención del Analyzer, mediación causal y elección de criterios/tolerancias. C continúa NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. Sin ejecución.
