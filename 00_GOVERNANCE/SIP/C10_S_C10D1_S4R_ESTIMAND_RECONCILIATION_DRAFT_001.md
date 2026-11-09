@@ -424,3 +424,14 @@ Se corrige el crosswalk de Register §72 conforme a las definiciones exactas de 
 La recuperación del Analyzer y el firewall tienen soporte parcial en P177-10/12 y P182-11, pero falsa identificación, falsa atribución focal y abstención correcta requieren criterios de adjudicación/tolerancias explícitos. La mediación permanece en §225.3 como propuesta, sin contrato completo.
 
 **Estado:** crosswalk ampliado corregido; C-MED y C-ANALYZER OPEN. No modifica jerarquía de estimandos, contratos fuente, autorización ni estado científico. Sin implementación o ejecución.
+
+
+## 26. Interfaz C10-D1/S4-R con los gates C-MED y C-ANALYZER (2026-11-10)
+
+La jerarquía de §18 y las aclaraciones de §§22–25 se mantienen. §228 propone una especialización para evaluar la mediación de ΔT_acc* sin sustituir θ_A(q) por ITT_Z^D2, ψ_policy^D2 o LATE_f^D2. La intervención mediadora se define sobre la distribución conjunta del objeto transformacional completo o, en un análisis separado, sobre A_f*; no se equiparan ambas.
+
+El mapping material B→g y las rutas colaterales de §14 de la auditoría IV son precondiciones para interpretar el contraste de D2 como intervención de accesibilidad. Cuando no se sostengan, se conserva el efecto de política/paquete y se impide atribución focal automática.
+
+C-ANALYZER evaluará la recuperación solo en DGP identificables, bounds en parciales y clasificación/abstención en escenarios no identificables. Falsa identificación y falsa atribución focal se tratan como errores críticos; sus denominadores y tolerancias permanecen OPEN.
+
+**Estado:** especialización propuesta; C-MED y C-ANALYZER OPEN; no cambia estimandos aceptados, no identifica ΔT_acc→Value y no autoriza implementación/ejecución.
