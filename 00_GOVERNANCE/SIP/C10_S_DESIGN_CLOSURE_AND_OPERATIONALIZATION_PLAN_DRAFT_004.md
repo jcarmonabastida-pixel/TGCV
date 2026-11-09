@@ -2023,3 +2023,14 @@ AB debe entregar a C entradas versionadas de unidad/población pre-Z, asignació
 La interfaz permite avanzar documentalmente en diccionario, medición y análisis, pero no declarar identificados LATE_f, θ_Af o θ_A ni cerrar mediación/residual. Se mantienen los gates AB y los requisitos de C sobre Value, población, soporte, interferencia, identificación, sensibilidad, potencia y N. Fuente: maestro §221; jerarquía previa C10-D1/S4-R §18 y auditoría IV mantienen precedencia.
 
 Estado: CONTRACT_DEFINED / MATERIAL INPUTS OPEN / IDENTIFICATION NOT ESTABLISHED. No Design Freeze ni autorización de implementación/ejecución; scientific_execution=false; execution_authorized=false.
+
+
+## 16.100 — Paquete C: especificación integrada de identificación, Value y atribución (2026-11-09)
+
+Se incorpora el maestro §222 como arquitectura de análisis y medición propuesta, reutilizando los contratos ya existentes P177-01…12, P178-SIM-01…10, P179-01…08, P182-01…12 y P183-01…13. No se crea una batería paralela.
+
+**Decisiones de diseño recomendadas para C:** (i) ITT_Z^D2 como estimando primario de asignación, separado de efecto de política recibida, primeras etapas, LATE_f, θ_Af y θ_A; (ii) Outcome y Value como constructos independientes; (iii) Value vectorial como salida primaria durante identificación, sin seleccionar aún dimensiones/pesos; (iv) medición independiente y temporal de A_f*, ΔT_acc*, Reach, trayectoria, Outcome y Value; (v) análisis por gates, con abstención explícita cuando identificación falle; (vi) evaluación del Analyzer frente a truth oculta por Evaluator separado; (vii) efectos interventional indirect/direct sobre ΔT_acc* como candidato de mediación, no como estimando ya aprobado o identificado.
+
+**Condiciones pendientes:** dimensiones/escala/regla Value; intervención y distribución de referencia del mediador ΔT_acc*; confusión postratamiento y modelo secuencial; población/q_X*/soporte/unidad/interferencia; mapping B→g^Af y exclusión; medición y cegamiento; parámetros de sensibilidad, MDE, potencia, precisión, N y R; umbrales del Analyzer. Los valores históricos N=2.000, R=1.000, s=.80 y .20/.80 no se elevan a parámetros confirmatorios.
+
+**Dictamen:** paquete C DOCUMENTED DESIGN PROPOSAL / NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. La identificación de ΔT_acc→Value sigue abierta. Sin código, simulación ni ejecución; scientific_execution=false; execution_authorized=false.
