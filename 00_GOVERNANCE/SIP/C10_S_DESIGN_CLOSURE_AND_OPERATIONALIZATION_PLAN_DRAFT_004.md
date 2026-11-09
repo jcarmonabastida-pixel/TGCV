@@ -529,8 +529,8 @@ La ficha protege el supuesto de que la política D2 no modifica autorización no
 
 - Ficha: D2-RES-01, matriz temporal §13.2; dominio rector B-M07.
 - La ficha separa disponibilidad basal de recursos no focales, capacidad instalada, consumo de ejecución y recursos reservados/consumidos por B.
-- Maestro §59.2 distingue explícitamente stock/disponibilidad ex ante de demanda/consumo de ejecución. §59.3 sitúa en R_access* únicamente la disponibilidad ex ante necesaria para poner τ2 a disposición y no duplicada por C_dep* u otro predicado.
-- El maestro §46.2 incluye C_resource=1 y C_capacity=1 en una regla ilustrativa de elegibilidad. No se interpreta como autorización para añadir dos factores autónomos a la fórmula depurada de A_f*. Antes del freeze, cada dimensión concreta debe asignarse a (a) R_access*, (b) C_dep*, o (c) aplicabilidad/ejecución, con una sola función causal primaria.
+- Maestro §59.2 conserva la distinción conceptual entre stock/disponibilidad ex ante y demanda/consumo de ejecución. La asignación histórica de esa disponibilidad a `R_access*` en §59.3 queda supersedida; conforme a §67.3/crosswalk D2, solo la disponibilidad ex ante necesaria y no duplicada puede contribuir a `RES_f*`. El consumo durante ejecución permanece downstream.
+- El maestro §46.2 incluye `C_resource=1` y `C_capacity=1` en una regla histórica/ilustrativa de elegibilidad. No se interpreta como autorización para añadir factores autónomos a `A_f*`. Conforme a §67.3, cada dimensión debe asignarse una sola vez a `RES_f*` (disponibilidad ex ante necesaria/no duplicada), `DEP_f*` (capacidad/dependencia técnica focal), o aplicabilidad/ejecución.
 - C_capacity mantiene ficha separada §13.3; su capacidad focal introducida por B pertenece a C_dep*, mientras que capacidad no focal compartida debe evaluarse como condición común y posible vía de interferencia.
 
 #### 16.7.2. Crosswalk de extremo a extremo
@@ -538,7 +538,7 @@ La ficha protege el supuesto de que la política D2 no modifica autorización no
 | Eslabón | Correspondencia | Lectura y estado |
 |---|---|---|
 | Definición → DGP | Disponibilidad suficiente basal, unidad×recurso×ventana, antes de Z; maestro §§46–47, 59.2–59.4 y 64.5 | Invariancia postulada/contractual en DGP aislado; no demostrada |
-| Predicado | R_access*(i,t;τ2); C_resource como descriptor de disponibilidad; consumo de ejecución separado | No crear multiplicadores redundantes. Stock/disponibilidad ≠ demanda/consumo |
+| Predicado | `RES_f*(i,t;τ2)`; `C_resource` como descriptor de disponibilidad ex ante; consumo de ejecución separado | No crear multiplicadores redundantes. Stock/disponibilidad ≠ demanda/consumo |
 | Dominio de provisión | B-M07; B-M02/B-M03/B-M12 relacionados según dependencias transitivas; B-M14 si afecta consumidores alternativos | Crosswalk candidato; no prueba que los componentes o consumidores existan |
 | PROV | PROV-05 (no reducción A1/A2/F2), PROV-09 (no modificación de dependencias críticas compartidas), PROV-03/04 (snapshots y grafo transitivo) | Contratos documentales no implementados ni ejecutados |
 | U_G candidato | N18, N05, N13, N15, N20; E16, E17, E19; RES-τ2, ALT-DEP, Rshared, Rτ2, RA12 | IDs de rol/candidatos según matriz de cobertura §9; no registros observados |
@@ -562,7 +562,7 @@ La ficha protege el supuesto de que la política D2 no modifica autorización no
 - Si no puede determinarse el inventario/consumo/consumidores, el estado es ?; no se declara no-afectación, aislamiento ni ausencia.
 - No ajustar mecánicamente por recursos/consumo postratamiento como si fueran covariables basales: pueden ser mediadores o co-intervenciones inducidos por B.
 
-**Dictamen:** el crosswalk conceptual de D2-RES-01 está completado y persistido. Permanecen abiertos la operacionalización de suficiencia, la conciliación final de §46.2 con §59.3, inventario y consumidores, PROV-05/09, MD-C1/MD-C4, interferencia/unidad y la atribución específica a accesibilidad. No se modifica DEC-C10-066/067, no se aprueba D2-RES-01 y no se autoriza implementación ni ejecución.
+**Dictamen:** el crosswalk conceptual de D2-RES-01 está completado y persistido. Permanecen abiertos la operacionalización de suficiencia, la conciliación material de §46.2 con la fórmula candidata §67.3, inventario y consumidores, PROV-05/09, MD-C1/MD-C4, interferencia/unidad y la atribución específica a accesibilidad. La asignación antigua a `R_access*` de §59.3 es histórica/supersedida; la referencia actual es `RES_f*`. No se modifica DEC-C10-066/067, no se aprueba D2-RES-01 y no se autoriza implementación ni ejecución.
 
 **Siguiente ficha:** D2-CAP-01. El trabajo deberá resolver primero el límite entre capacidad necesaria para ofrecer τ2 (posible condición de acceso), capacidad focal ya contenida en C_dep*, y capacidad/margen dependiente de carga o estado (aplicabilidad/ejecución), sin duplicar R_access* ni C_resource.
 
@@ -574,8 +574,8 @@ La ficha protege el supuesto de que la política D2 no modifica autorización no
 
 - Ficha temporal §13.3; fuentes: Path Predicate Temporal Evidence Matrix §8, manifiesto §5/§12, maestro §§46–47 y 59.2–59.4/64.5, matriz de cierre §§20/26/29/31 y matriz de cobertura §9.
 - Maestro §59.2 diferencia capacidad instalada/slots disponibles para ofrecer τ2 (posible condición de acceso) de margen operativo requerido por S0 o carga concurrente concreta (aplicabilidad).
-- §59.3 es la precedencia semántica candidata: capacidad instalada e información técnica solo se incorporan a R_access*/D_support* si son necesarias y no duplican C_dep*. La plantilla C_capacity,i,w de §13.3 no añade por sí sola un factor nuevo a A_f*.
-- Capacidad focal introducida por B pertenece a C_dep*. Capacidad no focal común puede formar parte de R_access* solo si se demuestra que es necesaria para poner τ2 a disposición, existe antes de Z, está asignada a unidad/ventana y no está ya contenida en C_dep*.
+- §67.3 y el crosswalk D2 son la precedencia semántica candidata: capacidad no focal solo puede contribuir a `RES_f*` si es disponibilidad ex ante necesaria y no duplica `DEP_f*`; capacidad focal introducida por B forma parte de `DEP_f*`. Información técnica no crea un predicado autónomo y se asigna al término estructural correspondiente según su función. La plantilla `C_capacity,i,w` de §13.3 no añade por sí sola un factor nuevo a `A_f*`. La asignación antigua a `R_access*/D_support*` de §59.3 es histórica/supersedida.
+- Capacidad focal introducida por B pertenece a `DEP_f*` (a través de `C_dep*`). Capacidad no focal común puede contribuir a `RES_f*` solo si se demuestra que es necesaria para poner τ2 a disposición, existe antes de Z, está asignada a unidad/ventana y no está ya contenida en `DEP_f*`.
 - La demanda, saturación, cola, consumo o margen de una ejecución concreta no se confunden con la disponibilidad estructural. Se clasifican en App_f*, ejecución/rendimiento o resultado según el mecanismo.
 
 #### 16.8.2. Crosswalk de extremo a extremo
@@ -583,8 +583,8 @@ La ficha protege el supuesto de que la política D2 no modifica autorización no
 | Eslabón | Correspondencia | Lectura y estado |
 |---|---|---|
 | Definición → DGP | Capacidad instalada, disponible, reservada, consumida y margen; S4-R postula capacidad no focal común/suficiente | Supuesto de diseño, no invariancia demostrada |
-| Predicado | Plantilla existente C_capacity,i,w = I(K_available ≥ K_required); posible disponibilidad en R_access* | No convertir en factor autónomo ni en CAP-τ2. Requiere dimensión, unidad, configuración, ventana, demanda y umbral preespecificados |
-| Frontera A_f*/App_f* | Capacidad/slots para ofrecer τ2 vs precondiciones de S0/carga/ejecución | Primera puede integrar R_access* si necesaria/no duplicada; segunda pertenece a App_f*/ejecución |
+| Predicado | Plantilla existente `C_capacity,i,w = I(K_available ≥ K_required)`; posible disponibilidad en `RES_f*` solo si es no focal, ex ante y necesaria | No convertir en factor autónomo ni en CAP-τ2. Requiere dimensión, unidad, configuración, ventana, demanda y umbral preespecificados |
+| Frontera A_f*/App_f* | Capacidad/slots para ofrecer τ2 vs precondiciones de S0/carga/ejecución | La primera puede contribuir a `RES_f*` si es no focal, necesaria y no duplicada; la segunda pertenece a `App_f*`/ejecución |
 | Dominio B-M | B-M07 rector; B-M02/B-M03/B-M12 relacionados por runtime/host/servicios/colas; B-M14 por rutas alternativas | Mapping candidato sujeto a inventario y grafo transitivo |
 | PROV | PROV-05 no reducción A1/A2/F2; PROV-09 no modificación de servicios críticos compartidos; PROV-03/04 snapshots y dependencias | Salvaguardas documentales indirectas; no demuestran capacidad ni aislamiento |
 | U_G | N18, N05, N13, N15, N20; E16, E17, E19; RES-τ2, ALT-DEP, Rshared, Rτ2, RA12 | Roles y aristas candidatos del mapping B-M07; no observados ni ampliables por inferencia |
