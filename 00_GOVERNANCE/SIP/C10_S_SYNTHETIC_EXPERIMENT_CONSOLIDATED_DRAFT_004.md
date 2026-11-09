@@ -8866,3 +8866,180 @@ Se acepta §217 como **base de diseño de trabajo** del paquete AB, con las rese
 No se reabren estas elecciones conceptuales. La aceptación no congela los detalles materiales aún abiertos: representación REF/AST, namespaces/serialización, roster IAM/cobertura, FP-05, G/C0/H, mecanismo y distribución D2, aislamiento MD-C1/MD-C4, población/soporte/interferencia y oráculo/cegamiento/adjudicación. Estos asuntos se resolverán coordinadamente dentro del paquete AB o se transferirán expresamente al paquete correspondiente.
 
 **Estado:** ACCEPTED WORKING DESIGN BASE; AB sigue IN_PROGRESS. No Design Freeze, implementación, fixture ejecutable, código, simulación ni experimento. scientific_execution=false; execution_authorized=false. Fuente decisoria: 00_GOVERNANCE/decisions/DEC-C10-093_AB_PACKAGE_BASE_SPECIALIZATION_ACCEPTANCE.md.
+
+
+---
+
+# 219. Paquete AB — especificación integrada de cierre propuesta (2026-11-09)
+
+**Estado:** INTEGRATED CLOSURE PROPOSAL / DOCUMENTARY SPECIFICATION; NOT DESIGN FREEZE.  
+**Base decisoria:** DEC-C10-093 y maestro §§216–218.  
+**Propósito:** resolver conjuntamente AB-01…AB-09 sobre una misma instancia, grafo de transformación, mecanismo D2 y DGP; evitar que el cierre de una capa dependa de supuestos tácitos de otra. Este apartado especializa el diseño, pero no declara observados los elementos, no inventa parámetros estocásticos y no autoriza implementación o ejecución.
+
+## 219.1. Contrato común y unidad de análisis
+
+Se conserva sin modificación la identidad DEC-C10-069:
+
+- Contract: \`C10S-SVC-REQUEST-PROCESSOR\`, versión \`1.0.0\`.
+- Instance: \`C10S-SVC-REQUEST-PROCESSOR-001\`, revisión \`1\`.
+- CMP anchor: \`CMP-SERVICE-LOGIC-001\`, clase \`SERVICE_LOGIC\`.
+
+La unidad experimental primaria es la unidad lógica de servicio instanciada en un contexto/versionado de configuración y seguida a través de snapshots temporales. No se tratarán como unidades independientes los parámetros, operandos, rutas o eventos del mismo servicio. La unidad de asignación Z debe coincidir con esta unidad o definirse como un cluster superior que la contiene; si varias unidades comparten host, adaptador, permisos, recursos o estado, la exposición compartida debe modelarse como cluster/interferencia y no como independencia.
+
+**Contrato de snapshot:** cada snapshot identifica contract/version, instance/revision, CMP anchor, namespace, actor/rol, etapa temporal, reloj, estado fuente/destino, versiones de M/IAM/oráculo y procedencia. Los snapshots son inmutables; correcciones y adjudicaciones generan registros nuevos enlazados, nunca sobrescritura retroactiva.
+
+## 219.2. AB-01/02 — inventario, representación REF/AST, namespaces, mapping e IAM
+
+### Inventario constitutivo mínimo
+
+Se adopta como roster lógico de referencia:
+
+| Clase | Elementos | Cardinalidad base | Regla |
+|---|---|---:|---|
+| CMP | CMP-SERVICE-LOGIC-001 | 1 | Identidad única del servicio |
+| PAR | PAR-SVC-ENABLED; PAR-SVC-PROFILE | 2 | Owner CMP explícito |
+| RUL | RUL-SVC-ENABLE-PROFILE-01 | 1 | REQUIRE de DEC-C10-068 |
+| REF | Dos operand bindings tipados | 2 lógicos | Representación física condicionada por la gramática |
+| POL | Ninguna | 0 | POL fuera del núcleo constitutivo mínimo por DEC-C10-053 |
+| MET | Identidad, versión, procedencia, actor/rol, snapshot, mapping, IAM y oráculo | Obligatorio | Metadatos de control, no componentes funcionales adicionales |
+
+**Resolución REF/AST recomendada:** mantener dos relaciones operand-binding como entidades semánticas obligatorias del contrato. Su representación física será una de estas dos, mutuamente excluyentes: (a) dos objetos REF tipados con endpoints exactos; o (b) dos enlaces internos del AST con el mismo tipo, identidad y trazabilidad. No duplicar una misma relación en REF y AST. La gramática/serializador deberá declarar cuál representación usa y el mapping será total respecto de ella. Hasta que la gramática canónica existente confirme la representación física, el estado es **DEFINED SEMANTICALLY / PHYSICAL ENCODING OPEN**; no se permite declarar REF=0 por omisión.
+
+El universo se cierra por contract/version + instance/revision + snapshot + etapa + ruta. El roster lógico no equivale a cobertura material: cada elemento obligatorio debe tener identidad, owner, versión semántica, scope y presencia/estado adjudicable en cada snapshot aplicable. La ausencia solo es 0 cuando la enumeración del universo y la captura son exhaustivas; en otro caso es ?. La cobertura IAM se calcula sobre el roster obligatorio aplicable, no sobre todos los posibles campos del sistema.
+
+### Namespaces y mapping
+
+Se mantienen los namespaces sintéticos aceptados como base de trabajo:
+
+- \`C10S-SRC-REQUEST-CONFIG v1.0.0\`
+- \`C10S-DST-REQUEST-CONFIG v1.0.0\`
+- \`M-C10S-REQUEST-CONFIG v1.0.0\`
+
+El mapping semántico de PROFILE es total e inyectivo: \`STD→STANDARD\`, \`RO→READ_ONLY\`, \`OFF→DISABLED\`. ENABLED conserva BOOL sin coerción. El AST conserva operador REQUIRE, operandos, scope, orden/semántica evaluativa y tratamiento de UNKNOWN. No se permite default silencioso, coerción, pérdida de null/absence, ni equivalencia por igualdad de hash. Toda conversión no definida produce mapping error y no un valor inferido.
+
+La serialización deberá ser determinista y versionada, con reglas explícitas de escaping, canonicalización, orden de campos, ausencia/null/default, codificación ENUM y representación REF/AST. Un hash podrá verificar identidad de bytes de un artefacto ya serializado, pero no sustituye la prueba de equivalencia semántica.
+
+### IAM
+
+IAM se define como matriz de aplicabilidad por rol × acción × objeto × etapa × ruta × snapshot. Cada requisito se marca ex ante como REQUIRED, CONDITIONAL o NOT_APPLICABLE; UNKNOWN es estado de evidencia y no una categoría de diseño. NOT_APPLICABLE exige justificación previa y no puede asignarse tras observar un fallo. Los roles mínimos diferenciados son provisioner, transformer/adapter, importer/applier, inspector/oracle adjudicator y evaluator; un mismo actor puede desempeñar más de un rol solo si el conflicto se registra y la independencia probatoria no depende de esa separación.
+
+La cobertura IAM se expresa como número de obligaciones aplicables verificadas dividido por obligaciones aplicables enumeradas. Si el denominador no está cerrado, la cobertura es UNKNOWN, nunca 100%. Se conserva evidencia separada de autorización funcional basal, credenciales/ACL técnicas y conocimiento del agente. \`AUTH_f*\` no se deriva de que una API acepte una llamada ni de que el agente conozca la configuración.
+
+**Criterio de aceptación AB-01/02:** inventario cerrado y versionado; dos operand bindings representados exactamente una vez; mapping total para todos los campos obligatorios; IAM aplicable enumerado por etapa/ruta; cero referencias huérfanas; toda ausencia diferenciada de UNKNOWN; snapshot y procedencia reconstruibles.
+
+## 219.3. AB-03/04/05 — fichas de ruta, predicados, F*, C0/G/H y oráculo
+
+### Fichas de transformación
+
+Las rutas se fijan como secuencias contractuales distintas, evaluadas bajo el mismo destino y criterio funcional:
+
+- **Focal F:** F1 (adaptación C_src→S2 mediante adaptador provisionado por B) → F2 (aplicación de S2 en destino).
+- **Alternativa A:** A1 (exportación C_src→S1 mediante exportador baseline) → A2 (importación/aplicación de S1 mediante importador baseline).
+
+Cada ficha de transición debe declarar: input snapshot, output snapshot, actor/rol, artefacto y versión, precondiciones, operación, postcondiciones, efectos laterales permitidos, recursos, ventana, errores, reversibilidad y evidencia. Una transición fallida no produce un snapshot conforme por inferencia. Las rutas comparten contrato de destino, roster, mapping, IAM, C0/G/H y oráculo; su diferencia mecanística debe estar documentada. No se presume que A sea independiente de B: se prueba mediante MD-C1/MD-C4 y superficies B-M.
+
+### Predicados de accesibilidad
+
+Se conserva la conjunción candidata de §67.3:
+
+\`A_f* = I(ID_f* ∧ REL_f* ∧ COND_f* ∧ AUTH_f* ∧ RES_f* ∧ DEP_f* ∧ ¬BLOCK_f*)\`.
+
+Para cada predicado se exige definición por unidad, transformación, etapa y tiempo; dominio y regla de verdad; fuente observable; instrumento/versión; tolerancia; missingness; y cobertura. \`DEP_f*\` describe la dependencia técnica focal de la ruta F y no puede reutilizarse como criterio de sustitución de A1/A2. La ruta alternativa se evalúa bajo sus propias dependencias y el F* común. Los estados se propagan trivaluadamente: 1 si la condición está demostrada, 0 si su negación está demostrada con cobertura suficiente, ? si la evidencia es incompleta o contradictoria. Una conjunción con cualquier 0 es 0; sin 0 y con algún ? es ?; solo todos 1 produce 1.
+
+### F* y FP
+
+F* es un criterio no compensatorio común a F y A. FP-01…FP-07 son las propiedades funcionales; FP-08 es exclusivamente un gate probatorio. Se mantiene el perfil propuesto de §217.5. FP-05 se interpreta como: no incorporar secretos en artefactos/snapshots, no ampliar privilegios respecto del baseline pre-Z, aplicar mínimo privilegio, y no relajar controles de seguridad; el permiso necesario debe estar predeclarado en C0/IAM. Cualquier elevación, secreto expuesto o relajación es FAIL, no compensable. Si la función requiere un permiso que no existía en baseline, debe declararse como requisito previo y evaluarse como posible vía directa/colateral, no introducirse silenciosamente por B.
+
+F* se calcula solo con FP-01…FP-07 aplicables: cualquier fallo obligatorio da F*=0; ausencia de fallos con al menos un estado desconocido da F*=?; todos los requisitos obligatorios demostrados dan F*=1. FP-08 no cambia F*: determina si el resultado puede aceptarse probatoriamente. No se fija tolerancia numérica para identidad semántica discreta; cualquier tolerancia temporal/operativa deberá ser común, preespecificada y justificada para ambas rutas.
+
+### C0, G y H
+
+- **G:** se adopta como unidad lógica completa del servicio y el roster constitutivo anterior, incluyendo los dos operand bindings, sus owners y los metadatos necesarios para identidad/procedencia. Los límites de host/runtime/recursos pertenecen a C0 y al mapa de superficies, no se añaden al roster constitutivo por conveniencia.
+- **C0:** snapshot basal anterior a Z y a cualquier programación B. Debe fijar contract/instance, C_src/C_dst y versiones, runtime/host/capacidades, permisos funcionales y técnicos, recursos disponibles/reservados, estado de F y A, rutas de fondo conocidas, unidad/cluster, reloj, ventana, versión de M/IAM/oráculo y estado de elegibilidad. Variables posteriores a Z no pueden redefinir C0.
+- **H:** horizonte común de observación y adjudicación para F y A, contado desde el mismo ancla temporal preespecificada (asignación Z o instante de inicio común que el protocolo defina antes de Z). No puede depender de la duración observada de cada ruta ni detenerse selectivamente al éxito. El símbolo \`H*\` es un parámetro de protocolo que debe recibir unidad y valor antes de congelar el DGP; su valor numérico no es deducible del repositorio revisado y permanece OPEN. Deben registrarse eventos posteriores a H como carryover/residuo, sin reescribir el resultado dentro de H.
+
+### Oráculo y adjudicación
+
+El Generator conoce el DGP truth y genera estados/eventos; el Analyzer recibe solo datos observables permitidos y no accede a truth, potenciales, asignación oculta ni etiquetas de escenarios; el Evaluator compara salidas congeladas del Analyzer con truth después de cerrar su ejecución. El oráculo funcional debe ser independiente de las rutas y de los resultados de Outcome/Value; se versiona antes de generar fixtures. La adjudicación se realiza con reglas deterministas para los predicados discretos y procedimiento documentado para casos no deterministas; el adjudicador no debe conocer brazo/escenario cuando el cegamiento sea factible. Las excepciones al cegamiento se justifican y registran.
+
+Truth y observed se almacenan en espacios separados, enlazados por identificadores opacos. El Analyzer no recibe truth ni puede reconstruirla desde nombres de escenarios, IDs o metadatos. FP-08 exige procedencia, integridad, snapshots, versiones, cobertura, cegamiento y registro de adjudicación; un test de software que pase no valida por sí solo la independencia del oráculo.
+
+**Criterio de aceptación AB-03/04/05:** fichas completas F1/F2/A1/A2; predicados medibles con estados 1/0/?; F* computable sin compensación; G/C0 definidos; H preespecificado con valor aprobado antes del freeze; oráculo versionado y firewall truth/observed demostrable; FP-08 independiente.
+
+## 219.4. AB-06/07 — mecanismo D2 y distribución técnica conjunta
+
+D2 se conserva como política primaria candidata; D1 permanece secundario y separado. La secuencia de eventos obligatoria es:
+
+\`Z → B_assigned → W_programmed → receipt → compliance → W_attempt → S_install → C_dep* → A_f* → D_f* → ΔT_acc*\`.
+
+Se registran por separado asignación, programación, recepción, cumplimiento de programación, intento efectivo, actor, artefacto/versión, inicio/fin, resultado, reintentos, fallo parcial, rollback, provisión de fondo, crossover y desviación. Z=1 no implica recepción, intento ni instalación; Z=0 no implica ausencia de provisión de fondo. El control no se define como ausencia universal de adaptador, sino como ausencia de programación/intento focal bajo la política, con todo acceso/provisión de fondo observado y clasificado.
+
+\`C_dep* = C_install* ∧ C_integrity* ∧ C_compat* ∧ C_oper*\` sigue siendo conjunción de cuatro condiciones necesarias. No asumir independencia. La DGP debe especificar la distribución conjunta condicional de los cuatro estados por brazo, historia basal y estrato relevante; puede representarse como una tabla de 16 celdas por estrato o una parametrización conjunta equivalente validada. Las probabilidades marginales no sustituyen la distribución conjunta. La suma de las 16 probabilidades debe ser 1 y cada celda estar en [0,1]. No se asignan valores numéricos ni se fija \`s=.80\`; cualquier valor requiere fuente/calibración o decisión de diseño explícita y análisis de sensibilidad.
+
+El DGP distingue éxito técnico conjunto de elegibilidad funcional: incluso con C_dep*=1, A_f*, D_f* y ΔT_acc* se evalúan independientemente. Si C_dep*=0, no se fuerza A_f*=0 si una vía alternativa o una provisión de fondo puede mantener accesibilidad; se adjudica desde el estado real del sistema y el universo de rutas.
+
+### Aislamiento y vías colaterales
+
+ARCH-B1 (sidecar/runtime aislado y aditivo) permanece arquitectura candidata, no decisión confirmada. MD-C1 requiere manifiesto completo de cambios y superficies antes/después; MD-C4 requiere evidencia de que A1/A2 no se modifica materialmente por B en las dimensiones que determinan F*. B-M01…15 y PROV-01…12 son controles existentes a reutilizar, no nuevos catálogos. Toda superficie sin evidencia es UNKNOWN, no invariancia. Cualquier modificación de A, host, permisos, recursos, red, seguridad, observabilidad o Outcome/Value se clasifica como vía colateral, R2/interferencia o efecto de paquete según el mecanismo, y se refleja en el estimando; no se elimina por definición.
+
+**Criterio de aceptación AB-06/07:** event log reproducible; política D2 materialmente distinguible; tratamiento y control definidos sin suponer cumplimiento; distribución conjunta válida y parametrizada; rutas de fondo/reintentos/rollback observables; MD-C1 y MD-C4 demostrados para alegar aislamiento. Mientras MD-C1/MD-C4 no estén demostrados, no se afirma que D2 sea una intervención exclusiva sobre la ruta focal.
+
+## 219.5. AB-08 — población, q_X*, positividad, unidad e interferencia
+
+La población objetivo primaria se define como conjunto de unidades elegibles según un algoritmo determinista evaluado exclusivamente con variables de C0, antes de Z y de cualquier programación B. La elegibilidad debe depender de capacidad de evaluación de ambas políticas y de existencia de mediciones basales requeridas, no de resultados postasignación, recepción, instalación, F* o éxito. Las exclusiones se enumeran con razón y momento; no se elimina una unidad por fallo posterior.
+
+Se distinguen:
+- \`P*_τ2\`: población elegible para evaluar la transformación focal τ2 bajo el contrato basal;
+- \`P*_F\`: subconjunto con soporte/evidencia para evaluar la ruta focal F;
+- \`q_X*\`: distribución objetivo de covariables/contextos X dentro de la población declarada, fijada pre-Z y versionada. No se estima redefiniéndola tras observar asignación o resultados.
+
+No se asignan prevalencias ni pesos numéricos sin datos o decisión de diseño. El estimando estandarizado solo se define sobre el soporte común donde las políticas comparadas tienen probabilidad positiva. Para cada estrato/historia relevante se exige positividad de asignación y posibilidad de observación; celdas sin soporte se excluyen del estimando objetivo con regla ex ante o se reportan como no identificadas, nunca se extrapolan silenciosamente.
+
+La unidad de asignación, unidad de análisis y unidad de interferencia deben declararse separadamente. Si la provisión B, los recursos, el host o las alternativas son compartidos, asignar por cluster o modelar exposición de red/vecindad; no asumir SUTVA individual. Se registran spillovers, contaminación, crossover y carryover. El análisis primario debe especificar el estimando bajo la unidad de asignación efectiva; cualquier efecto directo/indirecto por exposición requiere definición propia.
+
+**Criterio de aceptación AB-08:** algoritmo de elegibilidad pre-Z reproducible; población y q_X* versionadas; soporte de ambas políticas documentado; unidad/cluster y mapa de interferencia definidos; exclusiones y missingness no condicionados a resultados post-Z. Los valores y tamaños muestrales se resuelven en paquete C, no se inventan en AB.
+
+## 219.6. AB-09 — escenarios, truth/observed y falsadores mínimos
+
+Se reutilizan R0–R3 y los controles EXC/PM/IV ya existentes, sin crear IDs paralelos. Cada escenario debe tener regla generadora explícita y resultados truth definidos para cada etapa/predicado:
+
+- **R0:** no alternativa substituible basal dentro del universo cerrado; la política focal puede abrir τ2.
+- **R1:** alternativa basal estable satisface F* antes/después; τ2 puede cambiar sin alterar F*/Reach; no implica por sí sola contaminación.
+- **R2:** B altera A1/A2, recursos compartidos, permisos, calidad o Outcome/Value; identifica vía colateral/interferencia y evita interpretar el ITT como efecto exclusivo de accesibilidad.
+- **R3:** intento sin C_dep* completo; no inferir A_f*, D_f* ni ΔT_acc* desde programación/intento.
+- **Adversariales:** provisión de fondo/crossover; fallo parcial/reintento/rollback; conocimiento diferencial; medición/oráculo diferencial; truth leakage; pérdida/censura; recurso compartido; vía directa a Outcome/Value; carryover.
+
+Cada variable y predicado tiene campos separados \`truth\`, \`observed\`, \`measurement_status\`, \`coverage\` y \`adjudication_ref\`. La verdad del DGP no se rellena desde la observación ni viceversa. Para Reach y existencia de camino: 1 requiere camino válido demostrado; 0 requiere búsqueda exhaustiva sobre universo cerrado y regla de no-existencia; ? es obligatorio cuando el universo o la cobertura son incompletos. La misma disciplina aplica a alternativas y superficies B-M.
+
+**Criterio de aceptación AB-09:** todos los escenarios tienen reglas generadoras, truth y patrones observacionales esperados; controles negativos y falsadores son explícitos; no hay leakage de truth; R0/R1/R2/R3 se distinguen; unknown no se convierte en cero.
+
+## 219.7. Integración causal y frontera con paquete C
+
+AB entrega a C una intervención D2 definida como asignación a política y un mecanismo observado por etapas; no entrega una identificación automática del efecto de accesibilidad.
+
+- ITT-Z-D2 estima el efecto de asignación a la política D2 sobre el resultado definido, si la aleatorización, unidad, seguimiento y medición son válidos.
+- El efecto de paquete incluye cualquier vía causada por B, incluidas las colaterales; no se etiqueta como efecto exclusivo de ΔT_acc.
+- LATE_f exige instrumento/exclusión, relevancia, monotonicidad, mapping focal y ausencia de interferencia bajo condiciones defendibles; permanece NOT_IDENTIFIED mientras no se demuestren.
+- θ_Af(q_X*) y θ_A(q) requieren sus propios mappings de política a accesibilidad, soporte y supuestos de identificación. No se sustituyen entre sí ni por ITT.
+- La mediación/intervención indirecta y el efecto residual se trasladan a C con los grafos, variables y escenarios de vías directas/interacciones ya definidos. No condicionar ingenuamente por mediadores post-Z si ello induce confusión o sesgo.
+
+AB no decide N, potencia, nivel de error, estimador final de Value ni criterio de éxito estadístico. C debe recibir distribuciones conjuntas, población, soporte, unidad/interferencia, reloj, variables independientes y escenarios adversariales como entradas congelables.
+
+## 219.8. Dictamen integrado y pendientes no deducibles
+
+La pasada integrada convierte AB-01…AB-09 en contratos, reglas y criterios de aceptación verificables. Sin embargo, no puede declarar AB DONE ni implementable porque permanecen decisiones empíricas/de diseño que no se deducen de las DEC ni de la documentación disponible:
+
+1. representación física final REF o AST y serialización/canonicalización;
+2. valor/unidad de H* y ancla temporal exacta;
+3. manifiesto material y evidencia de MD-C1/MD-C4;
+4. parámetros/distribución conjunta D2 y sensibilidad de cumplimiento/éxito;
+5. algoritmo y roster material de elegibilidad/cobertura, q_X* y soporte;
+6. unidad de asignación/cluster e interferencia según topología real del fixture;
+7. validación del oráculo independiente, cegamiento y adjudicación;
+8. reconciliación de cualquier detalle de FP-05, C0/G/IAM con las DEC originales.
+
+Estos son **gates de decisión/evidencia**, no invitaciones a abrir auditorías conceptuales. Deben resolverse mediante una sola revisión integrada de coherencia y elección de los pocos valores no deducibles. La propuesta no convierte valores desconocidos en defaults.
+
+**Estado AB:** INTEGRATED SPECIFICATION PROPOSED / NOT DONE / NOT IMPLEMENTABLE.  
+**Design Freeze:** NO. **Code/fixture/parser/validator authorization:** NO. **Scientific execution:** false. **Execution authorization:** false.  
+**Siguiente paquete:** C no comienza como si AB estuviera congelado; puede preparar su estructura de estimandos y medición referenciando los contratos AB, pero los gates AB que afectan identificación deben permanecer visibles y bloqueantes.
