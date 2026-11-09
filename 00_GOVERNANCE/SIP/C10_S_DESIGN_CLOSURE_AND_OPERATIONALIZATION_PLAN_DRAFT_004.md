@@ -1933,3 +1933,36 @@ PR #116 sigue abierto y Draft, con base research/c10-d1-protocol-draft, head res
 4. **Paquete E:** auditoría de consistencia final y aceptación del contrato de implementación. Solo después se solicitará autorización explícita para generar código; ejecución científica requerirá autorización distinta.
 
 **Estado de autorización:** no se genera ni modifica código ejecutable; no se ejecutan validadores, parsers, fixtures, simulaciones ni experimentos. scientific_execution=false; execution_authorized=false. La auditoría recomienda pasar de la reconciliación documental fragmentada a los paquetes A+B, C, D y E, agrupados y trazables.
+
+
+## 16.93 — Regla operativa vinculante y cuatro paquetes de trabajo (2026-11-09)
+
+Esta sección concreta la secuencia de §16.92 y evita que la planificación dependa de memoria conversacional.
+
+### Los cuatro paquetes sustantivos
+
+La unidad de seguimiento son **cuatro paquetes**, no cinco. A y B son subámbitos que se resuelven juntos como un solo paquete AB:
+
+1. **AB — Instancia funcional + DGP/diseño causal:** una única instancia sintética versionada y un único DGP coherente. Incluye contrato funcional F/A, roster y mappings necesarios, IAM/F*, C0/G/H, unidad/población, asignación D2, secuencia temporal, rutas alternativas, escenarios y truth/potenciales.
+2. **C — Medición, Value y estimandos:** mediciones independientes, regla de Value, jerarquía confirmatoria, estimandos, identificación/no-identificación, error, missingness, sensibilidad, potencia y réplicas, todos referidos a la instancia y DGP del paquete AB.
+3. **D — Contrato computacional:** interfaces Generator/Analyzer/Evaluator, separación efectiva de truth/potenciales, esquema y serialización, oráculo independiente, evidencia/snapshots, fixtures y aserciones, versionado y reproducibilidad.
+4. **E — Gate final de aceptación:** auditoría integrada requisito→fuente/decisión→componente→test; resolución o aceptación explícita de cada OPEN; clasificación de riesgos residuales; aceptación del contrato implementable.
+
+### Regla de trabajo obligatoria para cada paquete
+
+- Trabajar de forma **agrupada y de extremo a extremo**, resolviendo dependencias en la misma pasada; no abrir microgates o documentos auxiliares por cada subtema.
+- Usar como fuentes los documentos y registros ya existentes. El maestro consolidado y los instrumentos oficiales siguen siendo la referencia; actualizar sus secciones/crosswalks cuando corresponda. Crear un artefacto nuevo solo si existe una necesidad funcional que no pueda alojarse razonablemente en los instrumentos actuales.
+- Antes de editar, recuperar la fuente vigente y las decisiones aplicables; no inferir contenido de títulos, resúmenes conversacionales ni versiones históricas.
+- Para cada requisito, registrar en el instrumento existente: identificador, definición operacional, fuente/DEC, estado, decisión pendiente (si la hay), componente afectado y criterio de aceptación/prueba.
+- Reutilizar lo ya aceptado; no reabrir decisiones canónicas dentro de su alcance. Distinguir explícitamente ACCEPTED/DEFINED/OPEN/NOT_REQUIRED/BLOCKED. Una clasificación documental no se elevará a evidencia empírica.
+- No introducir parámetros, mappings, supuestos causales, exclusiones o umbrales sin justificación y estado explícito. Si no hay identificación, especificar abstención/no-identificación y sus condiciones.
+- Cerrar cada paquete con un único resultado integrado, una lista residual acotada y una comprobación de consistencia contra maestro, decisiones y matrices existentes. No declarar cierre si hay contradicciones o requisitos críticos sin criterio de aceptación.
+- No ejecutar código, validadores, parsers, fixtures, simulaciones ni experimentos durante la especificación. No modificar código ejecutable. La generación de código requiere autorización explícita posterior; la ejecución científica requiere autorización separada.
+
+### Condición de salida por paquete
+
+Un paquete solo pasa a DONE cuando: (i) todas sus decisiones críticas están aceptadas o justificadamente declaradas NOT_REQUIRED; (ii) las dependencias con otros paquetes están resueltas o tienen interfaz/estado explícito; (iii) cada requisito tiene fuente y criterio de aceptación; (iv) el instrumento canónico afectado ha sido actualizado y releído; y (v) no quedan contradicciones internas conocidas. En otro caso permanece IN_PROGRESS/BLOCKED con causas concretas.
+
+### Estado y orden
+
+Orden: **AB → C → D → E**. El trabajo inmediato es AB. E es el gate final de aceptación de la especificación, no una autorización automática para programar ni ejecutar. El estado global continúa NOT_READY hasta superar E.
