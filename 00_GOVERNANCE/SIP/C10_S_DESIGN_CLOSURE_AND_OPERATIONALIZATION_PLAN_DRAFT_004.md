@@ -1803,3 +1803,20 @@ Se añadieron criterios PASS/FAIL/UNKNOWN/NOT_COMPARABLE por clase en el protoco
 
 **Siguiente gate:** decisión documental focal sobre el mapping del CMP raíz y la cardinalidad de sus componentes, sin inferir identidad por nombre; después, mapping REF/RUL/MET con sus fuentes de contrato. No implementación, captura ni ejecución.
 
+
+
+## 16.90. Cierre del gate conceptual NODE raíz ↔ CMP anchor (2026-11-09)
+
+Se ha reconciliado DEC-C10-089 (root NODE LOGICAL_SERVICE_UNIT) con DEC-C10-082 (mapping del CMP contractual a NODE por snapshot) en U_G §28.5 y protocolo §23.
+
+La resolución correcta no es decidir por inferencia si ambos son el mismo objeto. Se fijan criterios documentales diferenciados:
+- SAME_ENTITY exige contrato/versión, identidad CMP, definición explícita de unidad lógica, correspondencia 1:1 y mapping exacto al NODE del snapshot.
+- DISTINCT_ENTITIES exige identidades/definiciones separadas y NODE distintos; una relación se registra como EDGE solo si está definida y sustentada.
+- UNKNOWN se mantiene ante falta de contrato, roster, snapshot o mapping; NOT_COMPARABLE ante versiones sin mapping semántico; FAIL ante contradicción demostrada.
+
+**Resultado:** root NODE conceptualmente aceptado; CMP anchor no mapeado; relación SAME/DISTINCT UNKNOWN; CMP roster y cardinalidad UNKNOWN; denominador UNKNOWN; cobertura NONE. La mención histórica CMP-SERVICE-LOGIC-001 sigue siendo candidata no resuelta, no identidad demostrada.
+
+Este bloque cierra el criterio conceptual, no la adjudicación material. Para avanzar se necesita el artefacto contractual versionado que define la unidad lógica y enumera los CMP, o autorización específica para obtenerlo desde la fuente que lo contiene. No se crea un contrato sintético ni se asignan IDs. No se capturan snapshots, no se inspeccionan sistemas, no se modifica schema ni se implementa IAM. scientific_execution=false; execution_authorized=false.
+
+**Siguiente gate:** localizar y revisar el contrato/artefacto de Opción A y el roster completo de componentes; después resolver N07/REF y las demás clases contra ese universo, preservando las decisiones N07/N14/N15 ya aceptadas. No reabrirlas.
+
