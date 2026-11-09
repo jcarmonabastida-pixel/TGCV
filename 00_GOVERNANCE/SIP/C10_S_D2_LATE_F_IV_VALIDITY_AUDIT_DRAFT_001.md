@@ -404,3 +404,66 @@ Gates documentales/empíricos que deben cerrarse antes de interpretar D2 como po
 
 Hasta superar estos gates, mantener el resultado como efecto de asignación/política cuando sea identificable; si los supuestos de ese efecto tampoco se sostienen, declarar no identificación. No calcular Wald como LATE_f ni presentar θ_A(q) como identificado. No se parametriza, implementa ni ejecuta.
 
+
+
+### 14.6. Contrato documental MAP-01: identidad y versión de la intervención material
+
+Este contrato operacionaliza el registro conceptual de DEC-C10-067 sin completar por inferencia los datos que esa decisión dejó pendientes. Su función es impedir que una política nominal se confunda con una intervención material reproducible.
+
+**Elementos invariantes ya aceptados**
+- B_g0^D2: mantener la configuración basal asignada; no programar ni iniciar por política el intento focal; no desplegar/configurar el adaptador como parte de la intervención.
+- B_g1^D2: programar un intento estandarizado de provisión de la dependencia focal, usando artefacto y versión identificados antes de la asignación; habilitar el canal técnico requerido sin alterar autorización normativa basal.
+- Ninguna política ejecuta F1/F2/A1/A2 ni aplica una transformación funcional.
+- C_auth,base=1, elegibilidad, τ2, condiciones basales no focales y protocolo/oráculo de medición permanecen comunes conforme a DEC-C10-067.
+- La provisión de fondo/crossover en B_g0 se registra como exposición recibida, nunca como cambio retrospectivo de asignación.
+
+**Registro mínimo por unidad y asignación**
+Cada registro futuro deberá contener:
+1. unit_id, eligibility_record_id, Z, policy_id, policy_version, assignment_time;
+2. actor_id, actor_role, authorization_scope, actor_action_time;
+3. artifact_id, artifact_version, artifact_hash, signature_or_integrity_evidence, runtime_id/version, endpoint_or_channel_id/version;
+4. planned_attempt_id, planned_window_start/end, actual_attempt_id, attempt_start/end;
+5. receipt_id, receipt_time, received_artifact_hash, acceptance_protocol_version, acceptance_result;
+6. retry_parent_id, retry_number, failure_code, partial_state, rollback_id/time/result, deviation_id;
+7. background_provision_detected, detection_method, coverage_window, evidence_ref;
+8. resource_profile_id, permission_diff_ref, network_diff_ref, snapshot_preB_ref, snapshot_postB_ref, snapshot_rollback_ref.
+
+Los valores concretos de identidad/rol, artefacto, hash, runtime, endpoint, ventanas, protocolo de recepción, número/regla de reintentos, rollback y detección de provisión de fondo siguen NOT SPECIFIED / NOT INVENTORIED. Este esquema define campos necesarios; no los rellena ni selecciona ARCH-B1/B2/B3.
+
+**Reglas de adjudicación**
+- W_programmed se adjudica desde el registro de programación de la política, no desde el intento observado.
+- W_attempt exige evidencia de inicio efectivo; la programación no lo prueba.
+- Recepción exige evidencia del artefacto recibido y su integridad; no se infiere de intento.
+- Reintentos son eventos separados vinculados al intento raíz; no se colapsan en éxito único ni se elige retrospectivamente el mejor.
+- Fallo parcial, rollback y desviación conservan sus estados/tiempos y no borran exposición previa.
+- En B_g0, cualquier provisión focal detectada es crossover/background provision. Si la cobertura de detección no es suficiente, su ausencia es ? y no 0.
+- Las desviaciones se registran por brazo y antes/después de conocer resultados; no se reclasifica el brazo asignado.
+
+**Estado MAP-01:** CONTRACT_FIELDS_DEFINED / MATERIAL VALUES OPEN. El contrato de registro está definido documentalmente; la intervención material reproducible aún no puede congelarse porque faltan datos operativos aceptados y evidencia técnica. No autoriza implementación.
+
+### 14.7. Contrato documental MAP-02: secuencia temporal y medición independiente
+
+La secuencia causal candidata se conserva como orden lógico de estados, no como calendario ya especificado:
+
+baseline/eligibility → Z/B → W_programmed → W_attempt → receipt → S_install → C_dep* → A_f* → D_f* / ΔT_acc*
+
+Cada evento debe registrar unit_id, event_id, event_type, event_time, time_source, window_id, policy_version, artifact_version, observer_or_system_id, evidence_ref, status ∈ {1,0,?}, missingness_reason y deviation_id. Los relojes y ventanas deben sincronizarse y documentarse; cuando solo se conozca un intervalo, se conserva como intervalo, no se inventa un instante.
+
+**Anclas y separación de medición**
+- **Basal, antes de Z:** elegibilidad y estado basal de τ2; medición de A_f,0* y de los componentes de ΔT_acc* requeridos para establecer inaccesibilidad focal basal. No se usa información posterior para reconstruir la línea basal.
+- **Asignación/provisión:** Z, versión de B, programación, intento, recepción e instalación son exposiciones/eventos separados.
+- **Estado técnico postprovisión:** C_dep* se adjudica mediante evidencia separada de instalación, integridad, compatibilidad y operatividad. Cada componente conserva su resultado y evidencia; el compuesto no se completa por imputación de otro componente.
+- **Accesibilidad postprovisión, antes de selección/inicio y antes de F1:** adjudicar por separado ID_f*, REL_f*, COND_f*, AUTH_f*, RES_f*, DEP_f* y BLOCK_f*, con evidencia de la unidad y ventana aplicables. La instalación o C_dep* no sustituyen estos predicados. La regla exacta de composición sigue siendo la fórmula candidata §67.3, no aprobada ni congelada.
+- **Cambio focal y estructural:** D_f* se adjudica mediante contraste basal→post de la transformación focal bajo su definición/versionado; ΔT_acc* conserva las dimensiones estructurales ΔU*, ΔR*, ΔC*, ΔX*. No introducir ΔE_T como componente estructural: evidencia, cobertura y validez de observación se registran en paralelo.
+- **Resultados downstream:** selección, inicio, ejecución, Outcome y Value se registran después y por separado. No se usan para definir A_f*, D_f* ni ΔT_acc*.
+
+**Reglas temporales/epistémicas**
+1. Una observación tardía no se retrodata: si la ventana basal/post no permite adjudicación, estado ?.
+2. Un estado 0 exige evidencia de ausencia dentro de un universo y ventana con cobertura declarada; la falta de registro es ?.
+3. Los predicados se miden con fuentes independientes del asignador/provisionador cuando sea posible; se identifica quién observa y si conoce Z/B.
+4. Se conservan verdad DGP y observación como campos distintos; el Analyzer no recibe truth ni potenciales.
+5. Medición diferencial, pérdida de seguimiento, censura, contaminación o desalineación temporal se registran como amenazas, no se reparan con inferencia.
+6. Si la provisión de fondo en control o el crossover no se puede detectar con cobertura suficiente, MAP-02 no puede sostener ausencia de exposición ni una primera etapa causal limpia.
+
+**Estado MAP-02:** TEMPORAL_SCHEMA_DEFINED / WINDOWS_AND_MEASUREMENT_OPEN. Se ha definido qué eventos y mediciones deben distinguirse; no están fijadas ventanas, fuentes, instrumentos, tolerancias ni evidencias observadas. No se afirma que B→C_dep*→A_f*→D_f* haya ocurrido ni que el mapping esté identificado.
+
