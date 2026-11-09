@@ -1240,3 +1240,40 @@ La siguiente aceptación documental debe resolver explícitamente: (i) CMP root 
 
 **Dictamen:** CROSSWALK_TYPED / PAR_IDENTITY_ACCEPTED / CMP_REF_RUL_MET_MAPPING_PARTIAL / NO_INSTANCE / DENOMINATOR_UNKNOWN / COVERAGE_NONE. No se declara cerrada la legitimidad material del denominador. No se crean member_refs, scopes, snapshots ni evidencia; no se modifica DDL, parser, validator ni IAM. scientific_execution=false; execution_authorized=false.
 
+
+
+## 28.5. Cierre documental del límite NODE raíz ↔ CMP anchor (DEC-C10-082/089)
+
+**Precedencia:** DEC-C10-089 fija el NODE raíz con semantic_role=LOGICAL_SERVICE_UNIT como unidad lógica del servicio. DEC-C10-082 fija el contrato de correspondencia del CMP contractual a NODE por snapshot. Son identidades/funciones distintas; la coincidencia no se deduce de compartir nombre, descripción, contrato o alcance.
+
+**Regla de identidad:**
+- La unidad lógica raíz se identifica por unit_id + unit_object_record_id dentro del SNAPSHOT exacto, con semantic_role=LOGICAL_SERVICE_UNIT.
+- Cada CMP se identifica en origen por contract_id/version, instance_id/version, component_id y semantic version, más owner/parent y frontera.
+- El CMP anchor es el NODE que representa ese componente contractual en el snapshot exacto. Su resolución requiere mapping explícito, versionado y sustentado entre identidad CMP y node_id/object_record_id/snapshot.
+- El NODE raíz y el CMP anchor pueden coincidir únicamente si la fuente contractual define la unidad lógica como ese mismo componente CMP y el mapping demuestra identidad 1:1 en la versión/snapshot correspondiente. La coincidencia no se presume.
+- Si la unidad lógica es contenedor/límite de servicio y el CMP es un componente dentro de ella, son NODE distintos; la relación entre ellos se modela mediante EDGE tipada solo si el contrato establece esa relación. No crear EDGE por conveniencia.
+- Si un contrato define varios componentes CMP bajo una unidad lógica, el root NODE sigue siendo uno por unidad/snapshot y cada CMP elegible tiene su identidad y mapping propios. No deducir cardinalidad desde el catálogo N01–N23 ni desde el NODE raíz.
+
+**Prueba mínima para adjudicar SAME_ENTITY:**
+1. Identidad de contrato y versión recuperable; instancia y versión exactas.
+2. Definición contractual explícita de la unidad lógica y del component_id.
+3. Correspondencia 1:1 entre ambos conceptos en el ámbito y versión declarados.
+4. Ausencia de componentes hijos/owners distintos que contradigan la identidad única.
+5. Mapping versionado al NODE exacto del snapshot y consistencia con la FK raíz SNAPSHOT→NODE.
+6. Reglas de identidad/supersession DEC-C10-062 y comparabilidad entre snapshots satisfechas.
+
+**Prueba mínima para adjudicar DISTINCT_ENTITIES:**
+1. Definiciones contractuales separadas de unidad lógica y componente.
+2. Identidades/owners/lifecycle o fronteras diferenciadas, o relación explícita de contención/uso.
+3. Mapping del root y del CMP a NODE distintos en el mismo snapshot; si hay relación estructural, EDGE con extremos y tipo exactos.
+4. No duplicar el mismo componente con dos NODE por diferencias nominales.
+
+**Estados de adjudicación:**
+- SAME_ENTITY: solo tras satisfacer íntegramente la prueba de identidad.
+- DISTINCT_ENTITIES: solo tras satisfacer la prueba de separación.
+- UNKNOWN: falta fuente, identidad, versión, mapping o snapshot.
+- NOT_COMPARABLE: contratos/versiones sin mapping semántico aprobado.
+- FAIL: contradicción demostrada en identidad, versión, owner, frontera o referencias.
+
+**Estado actual:** DEC-C10-089 cierra la distinción conceptual y mantiene OPEN la relación root↔CMP-SERVICE-LOGIC-001. DEC-C10-082 proporciona el contrato de mapping CMP↔NODE, pero no hay evidencia contractual recuperada ni instancia/snapshot que permita adjudicar SAME_ENTITY o DISTINCT_ENTITIES. Por tanto: ROOT_NODE=CONCEPTUALLY_ACCEPTED; CMP_ANCHOR_MAPPING=OPEN; SAME_OR_DISTINCT=UNKNOWN; CMP_ROSTER=UNKNOWN; denominator=UNKNOWN; coverage=NONE. No inferir que CMP-SERVICE-LOGIC-001 es el root ni que es otro objeto; no asignar IDs ni crear registros.
+
