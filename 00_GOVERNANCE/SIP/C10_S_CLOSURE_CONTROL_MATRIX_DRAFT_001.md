@@ -2403,3 +2403,24 @@ PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-
 | Oráculo, truth/observed, cegamiento/adjudicación | OPEN |
 
 **Control:** no reabrir elecciones conceptuales aceptadas; resolver las reservas como una sola especificación integrada. No declarar AB DONE ni Design Freeze, y no generar código/fixtures ni ejecutar validaciones, simulaciones o experimentos. Autorizaciones false.
+
+
+---
+
+## 115. Paquete AB — especificación integrada y gates residuales (2026-11-09)
+
+**Estado:** INTEGRATED SPECIFICATION PROPOSED / NOT DONE / NOT IMPLEMENTABLE. Fuente desarrollada: maestro §219; no duplicar el contrato.
+
+| ID | Resultado integrado | Estado final de esta pasada | Gate residual |
+|---|---|---|---|
+| AB-01 | Inventario constitutivo por snapshot; CMP=1, PAR=2, RUL=1, dos operand bindings, POL=0, MET obligatorio | LOGICAL ROSTER DEFINED | Confirmar representación física REF/AST, roster material y cobertura exhaustiva |
+| AB-02 | Namespaces sintéticos y mapping BOOL/ENUM total e inyectivo; serialización determinista exigida; IAM por rol/acción/objeto/etapa | SEMANTIC MAPPING DEFINED | Gramática, serialización/canonicalización y matriz IAM instanciada |
+| AB-03 | F1→F2 y A1→A2 con fichas contractuales simétricas, entradas/salidas/snapshots/eventos | TRANSITION CONTRACT DEFINED | Artefactos/versiones, actor y runtime concretos |
+| AB-04 | Predicados ID/REL/COND/AUTH/RES/DEP/BLOCK y lógica trivaluada 1/0/?; DEP focal no sustituye alternativas | SEMANTIC RULE DEFINED | Instrumentos, fuentes, cobertura y adjudicación material |
+| AB-05 | F* no compensatorio FP-01…07; FP-08 probatorio; G y C0 definidos; H común | ACCEPTANCE LOGIC DEFINED | H* con unidad/valor/ancla; oráculo independiente; evidencia FP-08 |
+| AB-06 | Máquina de eventos D2 y distinción Z/programación/recepción/intento/éxito/fondo/crossover/rollback | MECHANISM CONTRACT DEFINED | Parámetros, protocolo material y registro verificable |
+| AB-07 | C_dep* como conjunción de cuatro estados con distribución conjunta condicional | JOINT-DGP FORM DEFINED | Probabilidades/parámetros y sensibilidad; no asumir independencia ni s=.80 |
+| AB-08 | Población elegible pre-Z, P*_τ2/P*_F, q_X*, soporte, unidad e interferencia | POPULATION CONTRACT DEFINED | Algoritmo instanciado, q_X*, soporte y cluster según topología |
+| AB-09 | R0–R3, adversariales, truth/observed separados y regla exhaustiva para 0 frente a ? | SCENARIO/TRUTH CONTRACT DEFINED | Truth tables y validación del oráculo/cegamiento/adjudicación |
+
+**Regla de lectura:** “contract/logic defined” significa especificación documental, no objeto implementado ni evidencia observada. Los gates residuales no se consideran cerrados por esta pasada. No declarar AB DONE, Design Freeze ni readiness de implementación. scientific_execution=false; execution_authorized=false.
