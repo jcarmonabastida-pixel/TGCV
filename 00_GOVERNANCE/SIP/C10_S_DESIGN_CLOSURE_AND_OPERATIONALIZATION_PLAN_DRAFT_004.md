@@ -2082,3 +2082,12 @@ La mediación queda vinculada parcialmente a §225.3, P177-06 (no ajuste post-Z)
 **Gate C-MED — OPEN:** faltan estimando e intervención mediadora versionados; DAG y orden temporal por ola; conjunto de confusores basales e inducidos por tratamiento; soporte/positividad secuencial; tratamiento de múltiples mediadores, interacción y retroalimentación; método principal y alternativa; sensibilidad/bounds; y criterio de recuperación/abstención del Analyzer por DGP. No se elige por defecto un efecto natural ni una descomposición residual.
 
 La corrección no añade pruebas ejecutadas ni cambia el estado de los contratos fuente. Paquete C sigue DOCUMENTED DESIGN PROPOSAL / NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. Sin implementación ni ejecución.
+
+
+## 16.105 — Auditoría ampliada de trazabilidad P177–P183 (2026-11-10)
+
+Se amplía la corrección del crosswalk: P177-02 es el contrato de primera etapa; P177-03/04 cubren Wald/LATE e instrumento débil. Para dimensionamiento, P178-SIM-02/03/04/05 cubren N, clústeres, réplicas y error Monte Carlo; SIM-01 y SIM-09 cubren potencia/métricas y SIM-10 parámetros/tolerancias ex ante. Para sensibilidad/cotas, P183-09/10/11/12 distinguen censura, sensibilidad, bounds y dictamen; P179-06/08 solo cubren trade-offs y agregación de Value.
+
+P177-10/12, P182-11 y P183-11/12 aportan cobertura parcial a recuperación, firewall y clasificación. Las tasas de falsa identificación/falsa atribución y la evaluación de abstención correcta propuestas en §225.7 todavía requieren criterios explícitos de adjudicación y tolerancias; no se declaran cubiertas por mera proximidad temática.
+
+**Estado:** crosswalk documental corregido; gates de Analyzer y mediación permanecen OPEN. No se alteran contratos fuente ni se declara implementación/ejecución. Paquete C sigue NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE.
