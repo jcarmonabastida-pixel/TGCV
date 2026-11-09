@@ -1199,3 +1199,44 @@ La frase de §17.1 que asignaba B-Mxx a `COVERAGE_REGISTER.dimension` queda supe
 
 **Dictamen:** `DOCUMENTARY_RECONCILIATION_PARTIAL / NO_C0_INSTANCE / NO_SNAPSHOT / DENOMINATOR_UNKNOWN / COVERAGE_NONE`. No crear filas, scopes físicos, member_refs ficticios, snapshots ni evidencia. No declarar 0, COMPLETE, ausencia de ruta, independencia ni exclusión. Se conserva `scientific_execution=false` y `execution_authorized=false`.
 
+
+
+## 28. Crosswalk de identidad y unidad de denominador por clase C10 (2026-11-09)
+
+**Estado:** reconciliación documental tipada; no cierra mappings físicos ni instancia universos. Prevalecen DEC-C10-064/065/070/073–076/077/079/080 y el overlay §§18–24. No crear una clase U_G, tabla, FK ni fila material nueva.
+
+### 28.1. Matriz de crosswalk y unidad candidata
+
+| object_class C10 | Identidad de origen que debe fijarse | Proyección U_G permitida / vínculo | Unidad candidata de denominador | Condición para contar un miembro | Bloqueo vigente |
+|---|---|---|---|---|---|
+| CMP | contract_id/version + instance_id/version + component_id/semantic version + owner/parent exactos | NODE con component_id/node_id + object_record_id + snapshot_id; EDGE solo para relación entre componentes | Un componente contractual distinto elegible en el snapshot, deduplicado por identidad semántica y revisión exacta | Frontera, identidad, versión, owner y regla de inclusión resueltos; mapping del CMP focal al NODE raíz explícito | ROOT LOGICAL_SERVICE_UNIT↔CMP anchor OPEN; no hay CMP observado |
+| PAR | CMP owner exacto + parameter_key estable + tipo/dominio + semantic version; observación delimitada por C0 y manifest_record_id | Fila lógica del manifiesto; no NODE/EDGE/PAR table. CLAIM_EVIDENCE_LINK → COVERAGE_SCOPE C10S_CONFIG_PAR, con localizador DEC-C10-080; NODE owner solo para afirmación distinta sobre CMP | Una propiedad esperada/inspeccionada por owner×parameter_key×versión semántica×clave lógica de captura; no contar valores ni revisiones como propiedades distintas | Owner y revisión exacta resueltos; roster requerido/condicional fijado; estados ABSENT/NULL/DEFAULT/VALUE distinguidos; manifest_record_id global y cadena append-only conforme DEC-C10-079 | Contrato lógico de identidad aceptado; manifiesto no instanciado; gramática/localizador automatizado OPEN |
+| REF | ref_id/semantic_id + versión + relación tipada + cardinalidad/parent-group + endpoints y namespace exactos | EDGE solo mediante mapping M explícito/versionado; extremos y record IDs exactos; ROUTE_STEP solo demuestra pertenencia a ruta, no identidad REF | Una relación declarada distinta, no cada extremo ni cada aparición de esa relación en una ruta | Identidad de relación, extremos, tipo, cardinalidad, snapshot y mapping 1:1/1:N/N:M resueltos; distinguir referencia declarada de disponibilidad/instalación | DEC-C10-077 acepta mapping conceptual; IDs, endpoints, roles/cardinalidad y M concreto OPEN |
+| RUL | rule_id + versión + scope + AST_ref/hash recuperable + operandos/owner + efecto | PREDICATE solo cuando la regla es evaluable como predicado; conservar referencias a operandos/owner; regla declarativa no evaluable queda en manifiesto/procedencia, no se fuerza a PREDICATE | Una regla semántica distinta por identidad/version/scope, no cada nodo del AST ni cada evaluación temporal | AST y dependencias recuperables, operandos/owner exactos, semántica/effect y condición de aplicabilidad fijados; mapping de regla a PREDICATE explícito | Crosswalk RUL→PREDICATE es condicional; alcance, identidad y reglas no evaluables OPEN |
+| MET | metadata_key/field + tipo + owner/target + alcance temporal/contextual + provenance | Propiedad/atributo del registro propietario cuando el schema lo soporte; SNAPSHOT para metadato de captura; EVIDENCE_REGISTER para procedencia/custodia. Nunca asumir una tabla MET única | Un campo/propiedad tipado por owner/target×metadata_key×versión/alcance, solo si pertenece al universo de configuración declarado | Owner/target, tipo, tiempo, ámbito, función y regla de inclusión resueltos; excluir metadatos administrativos/de captura que no sean configuración | Crosswalk y elegibilidad caso por caso OPEN; no hay entidad MET física |
+
+Las unidades candidatas anteriores son reglas de diseño para someter a aceptación, no denominadores observados ni universos aprobados. En particular, el número de revisiones de manifiesto PAR no aumenta el número de propiedades semánticas: las revisiones preservan historial de una misma clave lógica; una nueva etapa/snapshot/ruta/contrato/owner revision inicia nueva clave de observación según DEC-C10-079.
+
+### 28.2. Reglas de no-colapso y cardinalidad
+
+1. object_class C10, ug_record_type, semantic_role y boundary_class son ejes separados. No inferir uno desde otro.
+2. Una misma entidad material puede soportar varias afirmaciones B-M y pertenecer a más de un scope; se conserva una identidad NODE/EDGE por snapshot y se crean vínculos separados. No duplicar el objeto para simular dimensiones.
+3. CMP→NODE no implica CMP→EDGE. REF→EDGE exige mapping semántico de relación, no mera presencia de dos NODE conectados.
+4. PAR no se convierte en NODE por cada parámetro ni por cada valor. El target de una afirmación PAR sigue siendo COVERAGE_SCOPE y el localizador de manifiesto DEC-C10-080; una afirmación sobre el CMP owner es otra afirmación y otro vínculo.
+5. RUL→PREDICATE solo cuando la unidad es una condición evaluable. AST, operandos, owner y efectos permanecen referencias/atributos, no miembros extra del denominador.
+6. MET no agrega automáticamente SNAPSHOT/EVIDENCE_REGISTER al denominador de configuración. Solo se incluye el campo tipado que satisfaga la regla de universo; metadata de captura y provenance quedan fuera salvo que la definición de universo lo justifique.
+7. REF=0 solo puede concluirse para un scope REF concreto con universo y enumeración exhaustivos. Ausencia de fila, mapping no resuelto o registry inaccesible producen ?, no 0.
+8. Una unidad no puede contarse dos veces dentro del mismo scope por alias, rutas múltiples o revisiones de captura. Los scopes global y route-specific mantienen universos y denominadores distintos.
+
+### 28.3. Contrato mínimo de mapping por miembro
+
+Antes de incluir un miembro en member_refs o en el resultado de una inclusion_rule_ref, el mapping versionado debe recuperar: (a) clase de origen; (b) identidad semántica y versión; (c) owner y frontera; (d) tipo/registro U_G destino, si existe; (e) object_record_id exacto y snapshot para registros U_G; (f) propiedad/clave y cardinalidad cuando no exista registro U_G propio; (g) stage_key, route_id/route_record_id o token global; (h) regla de inclusión/exclusión; (i) fuente/provenance; (j) estado de resolución 1/0/?/NOT_COMPARABLE. Los campos no aplicables se justifican; no se inventan IDs.
+
+Para PAR, el localizador debe resolver la clave lógica completa y manifest_record_id/revision conforme a DEC-C10-079/080. Para REF, debe resolver ambos extremos y la identidad de relación. Para RUL, debe resolver operandos y scope. Para MET, debe resolver owner/target y tiempo. Un hash sin contenido recuperable no sustituye identidad ni mapping.
+
+### 28.4. Gate de aceptación pendiente
+
+La siguiente aceptación documental debe resolver explícitamente: (i) CMP root anchor; (ii) unidad CMP y cardinalidad de componentes/relaciones; (iii) REF relation identity y mapping M; (iv) frontera entre RUL evaluable y regla declarativa; (v) taxonomía MET elegible; (vi) tratamiento de aliases, múltiples owners, split/merge y versiones; (vii) reglas de deduplicación por scope. PAR conserva DEC-C10-079/080 y no se reabre.
+
+**Dictamen:** CROSSWALK_TYPED / PAR_IDENTITY_ACCEPTED / CMP_REF_RUL_MET_MAPPING_PARTIAL / NO_INSTANCE / DENOMINATOR_UNKNOWN / COVERAGE_NONE. No se declara cerrada la legitimidad material del denominador. No se crean member_refs, scopes, snapshots ni evidencia; no se modifica DDL, parser, validator ni IAM. scientific_execution=false; execution_authorized=false.
+
