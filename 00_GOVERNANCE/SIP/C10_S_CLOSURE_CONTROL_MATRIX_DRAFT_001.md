@@ -2437,3 +2437,16 @@ PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-
 | AB-09 escenarios/oráculo | R0–R3, truth/observed y Generator/Analyzer/Evaluator separados | Truth tables, validación, cegamiento y adjudicación | DESIGN RESOLVED / EVIDENCE OPEN |
 
 **Dictamen:** resoluciones de diseño AB aceptadas; AB permanece IN_PROGRESS y NOT IMPLEMENTABLE. Ningún gate de evidencia se considera satisfecho por esta decisión. No Design Freeze ni autorización de ejecución.
+
+
+## 117. Interfaz AB→C — contrato de transferencia (2026-11-09)
+
+| Dominio | Contrato | Gate/resultado requerido | Estado |
+|---|---|---|---|
+| Estimandos | ITT_Z^D2, FS_Cdep/FS_Af/FS_Df, ψ_policy/ψ_B, LATE_f, θ_Af, θ_A, mediación y residual separados | Población, régimen, horizonte, versión y escala compatibles; no sustitución | CONTRACT DEFINED |
+| Inputs AB | Unidad/población, Z/B event log, C0/G/H, C_dep conjunto, A_f/D_f/ΔT_acc, vías colaterales, Outcome/Value, truth/observed, soporte | Identidad, versión, cobertura y UNKNOWN explícitos | MATERIAL INPUTS OPEN |
+| Outputs C | ITT Outcome/Value, primeras etapas, diagnóstico de diseño, dictamen IV, mapping B→g, recuperación DGP y abstención | Gates propios por conclusión y métricas/umbrales preespecificados | ANALYTIC CONTRACT DEFINED |
+| Atribución ΔT_acc→Value | Variación de accesibilidad y medición independiente; soporte; separación de vías directas/alternativas/interacciones | No equiparar ITT o éxito del Analyzer a contribución causal general | NOT ESTABLISHED |
+| Mediación/residual | Intervención mediadora y descomposición formal | Confusión postratamiento, régimen, escala y horizonte comunes | OPEN / NOT IDENTIFIED |
+
+**Dictamen:** la interfaz contractual AB→C queda definida en maestro §221. C puede avanzar documentalmente; no puede tratar inputs AB como congelados ni declarar identificación. Sin Design Freeze ni ejecución.
