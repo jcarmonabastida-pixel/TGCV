@@ -9138,3 +9138,152 @@ C debe producir resultados separados y trazables:
 - Sin Design Freeze, implementación, parser, validator, fixture ejecutable, simulación ni experimento. scientific_execution=false; execution_authorized=false.
 
 **Estado de interfaz AB→C:** CONTRACT_DEFINED / MATERIAL INPUTS OPEN / IDENTIFICATION NOT ESTABLISHED.
+
+
+# 222. Paquete C — especificación integrada de identificación, Value y atribución causal (2026-11-09)
+
+**Estado:** propuesta integrada de diseño C / NO APROBADA / NO CONGELADA.  
+**Precedencia:** DEC-C10-094 y maestro §221 para la interfaz AB→C; jerarquía C10-D1/S4-R §18; reconciliación causal §20; contratos P177/P178/P179 y P182/P183 del registro de pruebas.  
+**Alcance:** cerrar documentalmente qué debe estimarse, qué debe medirse, qué puede identificarse y cómo evaluar la recuperación del Analyzer en DGP conocidos. No autoriza implementación, simulación ni ejecución.
+
+## 222.1. Resultado de reconstrucción y regla de no duplicación
+
+El paquete C reutiliza, sin reescribirlos ni rebajar su estado:
+- P177-01…12: estimación, primeras etapas, IV, instrumento débil, Outcome/Value, ajuste basal, ATE/ATT, heterogeneidad, multiplicidad, recuperación, equivalencia y dictamen causal.
+- P178-SIM-01…10: potencia, búsqueda de N, clústeres, réplicas Monte Carlo, error Monte Carlo, semillas, reproducibilidad, pérdidas, métricas y parámetros ex ante.
+- P179-01…08: separación A/O/V, Value vectorial, independencia de medición, contexto de valoración, baseline, trade-offs, estimación por dimensión y agregación.
+- P182-01…12: validez de constructo, circularidad, especificación, reproducibilidad, acuerdo, error, invariancia, sensibilidad, firewall y trazabilidad.
+- P183-01…13: ausencia, MCAR/MAR/MNAR, separación de desconocido/cero, ITT, selección, mediación, censura, sensibilidad, cotas y dictamen por estimando.
+- C10-D1/S4-R §18, maestro §§50–56, 62 y 221, auditoría IV y contrato temporal/roles.
+
+Este §222 organiza sus dependencias y resuelve la arquitectura de análisis. No sustituye las fuentes rectoras ni declara ejecutados sus controles.
+
+## 222.2. Jerarquía de objetos causales y estimandos
+
+Todo resultado debe declarar intervención, población, régimen, horizonte, unidad/interferencia, versión, outcome/escala y estado de identificación. Se prohíbe colapsar:
+
+1. **ITT de asignación D2 (ITT_Z^D2):** contraste por Z en la población pre-Z fijada. Es el estimando primario de asignación. Conserva intención de tratar y no condiciona por recepción, cumplimiento, instalación, accesibilidad, selección o ejecución post-Z.
+2. **Primeras etapas:** efectos de Z sobre C_dep*, A_f* y D_f*, estimados por separado. Ninguna sustituye a otra ni a ΔT_acc*.
+3. **Efecto de política/paquete:** efecto de la intervención material completa y sus vías. Se identifica solo para un contraste de versiones/régimen bien definido; no se renombra ITT cuando se pretende efecto de versiones recibidas bajo incumplimiento.
+4. **LATE_f^D2:** efecto local de la apertura focal inducida por Z entre compliers, solo bajo todos los supuestos IV pertinentes y para el resultado específico (Outcome o dimensión de Value) analizado. No transporta automáticamente entre resultados, poblaciones o políticas.
+5. **θ_Af(q_X*):** objetivo poblacional focal de política de accesibilidad. Requiere mapping defendible B_D2→g^Af, población/soporte, régimen común y separación de vías colaterales. No está identificado por la aleatorización D2 por sí sola.
+6. **θ_A(q):** pregunta general C10-D1 sobre políticas factibles de accesibilidad/cambios estructurados de ΔT_acc; permanece distinta del escenario focal D2.
+7. **Efectos mediados por ΔT_acc y efecto residual/directo:** estimandos de mediación propios, no sinónimos de ITT, LATE o θ_Af. Requieren una intervención mediadora explícita y estrategia longitudinal si existen confusores postratamiento.
+8. **Efectos sobre Reach, trayectoria, ejecución y Outcome:** variables/objetos intermedios y resultados diferenciados; no deben fusionarse en Value.
+
+El efecto total de asignar D2, el efecto total de la política material recibida, la contribución mediada por ΔT_acc y el residual no son intercambiables. No se calcula un residual restando estimandos con población, régimen, horizonte o escala distintos.
+
+## 222.3. Contrato de medición independiente A / ΔT_acc / Reach / trayectoria / Outcome / Value
+
+Se establece una cadena de medición con constructos y fuentes diferenciados:
+
+- A_f*: accesibilidad estructural focal, adjudicada desde sus predicados y evidencia; nunca definida por éxito de ejecución o Value.
+- ΔT_acc*: cambio estructural completo del espacio de transformaciones, conservando sus dimensiones ΔU*, ΔR*, ΔC*, ΔX*; no reducirlo a A_f* ni a una etiqueta de instalación.
+- Reach: existencia de camino válido en el universo y horizonte definidos; 0 solo con cobertura exhaustiva, ? ante universo/observación incompletos.
+- Trayectoria: posibilidades, selección y ejecución en campos distintos; una trayectoria ejecutada no agota las disponibles.
+- Outcome: resultado operativo observable, con indicadores, unidad, fuente, dirección, ventana y regla de missingness preespecificados.
+- Value: vector multidimensional contextualizado, con observador/beneficiario, contexto, criterio, escala, dirección y momento basal/post. No se deriva mecánicamente de A, Reach, ejecución u Outcome.
+
+**Regla de Value:** mantener vector por dimensiones como salida primaria durante identificación. Las dimensiones candidatas de P179 (eficiencia, calidad, acceso de destinatarios, robustez, sostenibilidad u otras justificadas) no se declaran seleccionadas ni exhaustivas por este §222. Cada dimensión debe tener definición, unidad/escala, fuente, ventana, dirección de mejora, baseline, regla de ausencia y evidencia de validez. Las dimensiones discordantes y trade-offs se reportan; no se ocultan con agregación. Un índice escalar solo podrá añadirse como análisis secundario tras justificar selección, normalización, ponderaciones, compensabilidad y sensibilidad. No se fijan pesos ni umbrales aquí.
+
+La medición de A, ΔT_acc, Reach, trayectoria, Outcome y Value debe ser temporalmente ordenada y, cuando sea posible, independiente/ciega al asignador y al evaluador de otros constructos. Toda medida conserva versión, responsable, evidencia, ventana, estado 1/0/? y motivo de ausencia.
+
+## 222.4. Identificación: orden de análisis y gates
+
+El orden analítico obligatorio es:
+
+A. **Integridad del diseño:** unidad de asignación/análisis/interferencia; probabilidades de asignación; consistencia de versiones; pérdidas; crossover; exposición de fondo; balance y seguimiento.  
+B. **ITT:** estimar ITT_Z^D2 sobre Outcome y cada dimensión de Value por separado, manteniendo la población asignada. Ajuste solo con covariables basales preespecificadas; errores e intervalos acordes a aleatorización/clúster.  
+C. **Primeras etapas:** estimar efectos de Z sobre C_dep*, A_f* y D_f*, con denominadores, ventanas y medición separados.  
+D. **IV/LATE:** evaluar relevancia (incluida debilidad), independencia, exclusión, monotonicidad, consistencia/versiones, interferencia y validez de medición. Reportar diagnóstico por supuesto. Si no están defendidos, abstenerse de Wald causal y emitir NOT_IDENTIFIED o CONDITIONAL con motivo.  
+E. **Mapping poblacional:** demostrar o rechazar B_D2→g^Af; verificar P*_τ2 frente a P*_F, q_X*, soporte común, positividad y transporte. No extrapolar ni redefinir población tras observar resultados.  
+F. **Mediación/atribución:** solo después de definir intervención mediadora, orden temporal, confusión basal/postratamiento, interacciones, versiones y soporte. Aplicar métodos compatibles con confusores postratamiento; el ajuste convencional por mediador no identifica por sí solo efectos directos/indirectos.  
+G. **Sensibilidad y cotas:** si identificación puntual depende de supuestos no verificables, parametrizar escenarios adversariales, sesgo, error de medición, pérdida/censura, exclusión y confusión; reportar cotas cuando estén justificadas o no identificación si no lo están.
+
+Un ITT válido puede coexistir con LATE no identificado. La no identificación de mediación no invalida automáticamente el ITT total. La primera etapa positiva no demuestra exclusión. Un efecto sobre Outcome no demuestra un efecto sobre Value.
+
+## 222.5. Mediación por ΔT_acc y residual: objeto científico correcto
+
+La mediación de interés TGCV no se define solo como Z→A_f*→Value. El bloque transformacional relevante es el cambio medido completo de ΔT_acc*, con sus dimensiones y, cuando el modelo lo requiera, sus consecuencias secuenciales sobre Reach y trayectoria.
+
+Se propone distinguir:
+- **Efecto total de asignación/política:** todas las vías activadas por la intervención material, incluidas vías directas y colaterales.
+- **Componente interventional indirecto vía ΔT_acc*:** cambio esperado en Value al sustituir, bajo un régimen común definido, la distribución del mediador transformacional por la inducida por la política frente a la distribución de referencia.
+- **Componente residual/directo:** contraste restante bajo la misma descomposición, que incluye vías no mediadas por el mediador definido; no debe etiquetarse como efecto directo puro si contiene vías no medidas, mediadores alternativos o interacción.
+- **Vías secuenciales:** si Reach/trayectoria se sitúan después de ΔT_acc*, especificar si forman parte del bloque mediador conjunto o son mediadores secuenciales separados. No ajustar por ellos de forma ad hoc.
+
+La descomposición interventional es preferible como candidato de trabajo frente a efectos naturales que exijan supuestos contrafactuales cruzados difíciles de defender. No queda seleccionada ni identificada por este documento: exige definir el régimen de intervención sobre ΔT_acc*, distribución de referencia, población, horizonte, escala de Value, interacción, confusores postratamiento y estrategia de estimación. Si una variable post-Z confunde mediador-Value y es afectada por Z, se requiere formulación longitudinal (p. ej. g-formula/interventional effects u otro método justificado); la fórmula simple de mediación no es admisible.
+
+El residual se informa solo como componente de una descomposición formal compatible. No se obtiene por ITT−LATE, ITT−θ_Af ni por resta entre resultados incompatibles.
+
+## 222.6. Ausencia, censura, selección y error de medición
+
+Reutilizar P183 y P182 como gates por constructo y estimando:
+- desconocido no equivale a inaccesible; no observado no equivale a cero; ausencia dimensional de Value no equivale a Value nulo;
+- separar ausencia de registro, fallo técnico, abandono, censura administrativa, censura informativa, indefinición estructural y medición inválida;
+- evaluar MCAR/MAR/MNAR y mecanismos de selección postasignación; mantener ITT sobre población aleatorizada;
+- no excluir unidades por recepción, accesibilidad, ejecución o Value post-Z;
+- medir error y clasificación de A/ΔT_acc/Outcome/Value, falsos positivos/negativos, acuerdo interevaluador e invariancia de instrumentos entre brazos;
+- usar sensibilidad/cotas cuando la información lo permita; declarar no identificación cuando no se pueda sostener una corrección.
+
+Cada estimando y dimensión de Value recibe un dictamen propio. No existe un único PASS global que oculte dimensiones no identificadas.
+
+## 222.7. Evaluación de recuperación del Analyzer en DGP sintéticos
+
+La evaluación separa tres objetos:
+1. **Truth del Generator:** potenciales, parámetros, mecanismos, población, mediadores y Value verdadero, versionados y ocultos.
+2. **Salida del Analyzer:** estimaciones, intervalos, diagnósticos, supuestos y estado de identificación a partir solo de entradas permitidas.
+3. **Evaluación:** comparación posterior entre salida y truth por un Evaluator independiente del Analyzer.
+
+La suite debe incluir, como mínimo, DGP donde:
+- el estimando está identificado y el Analyzer debe recuperarlo;
+- el efecto total existe pero el efecto focal no está identificado por exclusión;
+- primera etapa nula/débil;
+- heterogeneidad y diferentes composiciones de compliers;
+- B modifica rutas alternativas o vías colaterales;
+- interacción y efectos directos;
+- interferencia/cluster;
+- error diferencial de medición;
+- MCAR/MAR/MNAR, censura y selección;
+- Value multidimensional con trade-offs y ausencia parcial;
+- mediación identificada bajo supuestos estipulados y mediación no identificada por confusión postratamiento.
+
+Métricas P177/P178: sesgo, RMSE, cobertura, error tipo I, potencia, precisión, convergencia, réplicas inválidas, error Monte Carlo y clasificación de identificación. Evaluar por estimando, dimensión de Value y escenario; no solo promedio agregado. La abstención correcta (NOT_IDENTIFIED, CONDITIONAL, INDETERMINATE) cuenta como resultado correcto cuando truth y supuestos así lo requieren. Distinguir fallo del Analyzer de no-identificación real.
+
+El Analyzer no recibe potenciales, truth, parámetros generadores, etiquetas ocultas, escenario ni semillas que revelen el resultado. El Evaluator accede a ellos solo después de congelar la salida. El protocolo debe detectar leakage por pruebas negativas.
+
+## 222.8. Diseño cuantitativo y criterio ex ante
+
+Reutilizar P178-SIM-01…10. Antes de cualquier ejecución se deben fijar y justificar: población/soporte, unidad y clústeres, mecanismo de asignación, escenarios, parámetros y rangos de sensibilidad, estimandos, MDE/relevancia práctica, error tipo I, potencia/precisión, cobertura objetivo, equivalencia si procede, N, réplicas Monte Carlo R, semillas, pérdidas/censura, tolerancias, métricas, reglas de parada y artefactos/hashes.
+
+No adoptar N=2.000, R=1.000, s=.80, tasas .20/.80, pesos de Value ni umbrales históricos ilustrativos como parámetros confirmatorios. N y R se derivarán de potencia/precisión y error Monte Carlo; si el cálculo no es posible con inputs actuales, permanecerán OPEN. La ausencia de parámetro justificado no se resuelve con un default.
+
+## 222.9. Salidas obligatorias y clasificación de conclusiones
+
+El paquete C deberá entregar:
+- informe de integridad del diseño y flujo de unidades;
+- ITT de asignación por Outcome y dimensión de Value;
+- primeras etapas técnicas/funcionales separadas;
+- dictamen IV y, si procede, LATE por resultado/dimensión;
+- dictamen del mapping B→g^Af, población y soporte;
+- estimandos de mediación/residual solo si formalmente definidos e identificados;
+- sensibilidad/cotas y mapa de vías colaterales;
+- métricas de recuperación DGP por estimando/escenario;
+- registro de abstenciones y no-identificación correcta;
+- trazabilidad de definiciones, versiones, datos, reglas y artefactos.
+
+Estados de salida: IDENTIFIED_WITHIN_DGP_ASSUMPTIONS, CONDITIONALLY_IDENTIFIED, NOT_IDENTIFIED, INDETERMINATE_MEASUREMENT, OUT_OF_SUPPORT, PACKAGE_EFFECT_ONLY y ANALYZER_RECOVERY_FAIL. Los estados no son intercambiables y deben acompañarse de los supuestos/gates concretos.
+
+## 222.10. Gates pendientes antes de implementación o ejecución
+
+No se pueden cerrar documentalmente por este paquete:
+- definición/selección final y validación de dimensiones, escalas y reglas de Value;
+- régimen y estimando formal de mediación interventional por ΔT_acc*, secuencialidad y confusión postratamiento;
+- población material, q_X*, soporte, unidad/interferencia y entradas AB pendientes;
+- mapping D2→políticas focales de accesibilidad y exclusión;
+- instrumentos, fuentes, cegamiento y evidencia de validez/reproducibilidad de A/ΔT_acc/Outcome/Value;
+- parámetros adversariales, sensibilidad, MDE, potencia, precisión, N y R;
+- criterios/umbrales de aceptación del Analyzer y evaluación de leakage;
+- autorización de implementación/ejecución.
+
+**Dictamen:** C queda organizado como arquitectura analítica y de medición propuesta, reutilizando P177/P178/P179/P182/P183. No queda aprobada una estrategia final de mediación ni identificado el vínculo ΔT_acc→Value. No se modifica C10-D1, TGCV Core, RMA, Evidence→Claim Matrix ni claim status. No Design Freeze, implementación ni ejecución. scientific_execution=false; execution_authorized=false.
