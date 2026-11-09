@@ -1067,3 +1067,17 @@ La evaluación de pertenencia 1/0/? se realiza por miembro y scope. 0 requiere i
 
 **PAR específico:** DEC-C10-079/080 prevalecen: target COVERAGE_SCOPE, localizador exacto, manifest_record_id global y revisión append-only. No crear target PAR ni FK directa. El control independiente verifica la fila contra el manifiesto; integridad del binding y verdad de la afirmación siguen siendo capas distintas.
 
+
+
+## 23. Adjudicación del mapping NODE raíz ↔ CMP anchor (DEC-C10-082/089)
+
+Este control aplica U_G §28.5 y no reabre las decisiones aceptadas. El objeto de adjudicación es la relación entre dos identidades de dominio, no una comparación de etiquetas.
+
+**Evidencia mínima:** contrato y versión; definición de unidad lógica; roster de componentes y component_id/version; owner/parent; frontera; relación de lifecycle/contención; snapshot exacto; mapping CMP↔NODE; y resolución de la FK SNAPSHOT→NODE raíz.
+
+**Regla:** SAME_ENTITY requiere definición contractual 1:1 y mapping exacto por snapshot. DISTINCT_ENTITIES requiere definiciones e identidades separadas y mappings a NODE distintos; cualquier relación se representa solo con EDGE sustentada. Si falta una fuente crítica o no existe snapshot comparable, UNKNOWN. Si las versiones no tienen mapping semántico aprobado, NOT_COMPARABLE. Contradicciones demostradas producen FAIL. La ausencia de un CMP adicional en un roster no exhaustivo no permite declarar cardinalidad 1 ni inexistencia.
+
+La evaluación de identidad es independiente de la cobertura del roster: PASS de mapping no acredita que todos los CMP estén enumerados. El roster permanece UNKNOWN/PARTIAL hasta que el universo contractual completo y su regla de enumeración estén disponibles. No se declara CMP=1 ni CMP>1 por la sola existencia del root NODE.
+
+No hay inspección técnica ni evidencia contractual aportada en este bloque. No se asignan estados observados 1/0 a objetos, no se crean registros, snapshots o scopes y no se ejecuta C0. El resultado actual es UNKNOWN / OPEN, no un rechazo de identidad.
+
