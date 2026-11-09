@@ -1878,3 +1878,58 @@ N16 se resuelve reutilizando, sin duplicarlos, los siguientes artefactos de esta
 N16 queda **RECONCILED_DOCUMENTARILY / PARTIAL**: no hace falta crear otro contrato funcional ni otra matriz de propiedades. Sí falta cerrar la atomización confirmatoria, aplicabilidad IAM por instancia, C0/G/H, mappings/tolerancias y el diseño técnico del oráculo; después se requerirá validación adversarial independiente del Analyzer y del Evaluator.
 
 El siguiente gate documental es cruzar el catálogo atómico SM-01…SM-10 con FP-01…FP-07 y el IAM vigente, resolver duplicidades/huecos y fijar requiredness/NA/? por propiedad y etapa sin elevar la propuesta a decisión. Solo entonces podrá definirse un contrato de implementación del oráculo. No generar código, fixtures ni validadores; no ejecutar pruebas, simulaciones ni experimentos. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 16.92 — Auditoría focalizada de readiness para especificación implementable C10-S (2026-11-09)
+
+**Tipo:** auditoría documental asistida / autoauditoría / no independiente. **Alcance:** gobierno canónico main (README, bootstrap, canonical state, STATUS, RMA/Matrix pointers y workflows); estado C10-S en research/c10-s-consolidation-draft; maestro Draft 004, plan, Closure Control Matrix §§87/100–109 y contratos especializados funcionales, DGP, causalidad, población, medición, IV, IAM/U_G, provisión, Reach/trayectoria y Test Contract Register. No es auditoría de código ni validación técnica.
+
+### Dictamen ejecutivo
+
+**IMPLEMENTATION_READINESS = NOT_READY / SPECIFICATION_INCOMPLETE.** La arquitectura y varias decisiones de alto nivel están suficientemente desarrolladas para dejar de reabrirlas. El bloqueo no es falta de más arquitectura general: es la ausencia de un contrato integrado, concreto y versionado que permita programar un experimento sintético sin que el implementador tenga que decidir semántica científica por su cuenta.
+
+La auditoría no encuentra motivo para volver a seleccionar Opción A, redefinir D2, recrear el contrato funcional del servicio, rehacer la arquitectura de familias FP o reabrir decisiones DEC-C10-068…092 dentro de sus alcances aceptados. Sí encuentra especificaciones candidatas, crosswalks parciales y contratos lógicos que aún no han sido instanciados, atomizados o aceptados como paquete implementable.
+
+### Base ya reutilizable — no reabrir
+
+- Opción A y servicio lógico sintético: DEC-C10-051/068.
+- DGP base, tipos/dominios y complejidad: DEC-C10-052…056.
+- D2 primario candidato / D1 secundario y políticas materiales D2: DEC-C10-066/067.
+- Identidad contractual CMP, C0/UDG, stage_key, IAM lógico y binding PAR: DEC-C10-069…081.
+- Aplicabilidad y equivalencia PAR, predicados F1/A1, destino declarado, aplicación/verificación y secuencia temporal F/A: DEC-C10-083…088.
+- Unidad lógica raíz y descomposición conceptual N07/N14/N15: DEC-C10-089…092.
+- Separación Generator/Analyzer/Evaluator, cegamiento y pruebas adversariales: contratos existentes del DGP y Test Contract Register.
+- F* como criterio común de ruta completa y familias FP-01…FP-08: aceptados a nivel conceptual/arquitectura, no como oráculo operativo.
+
+### Bloqueos agrupados para obtener la especificación implementable
+
+| Paquete | Qué falta cerrar en un único trabajo agrupado | Resultado verificable |
+|---|---|---|
+| A. Instancia funcional y transformación | Instancia sintética concreta; roster CMP/PAR/REF/RUL/MET dentro del alcance elegido; C_src/C_dst declarado/aplicado; M versionado; C0/G/H; F1/F2/A1/A2; crosswalk SM↔FP↔IAM; predicados, requiredness, tolerancias y oráculo F* | Un único contrato funcional versionado con ejemplos/fixtures lógicos y expected adjudication, sin mappings implícitos |
+| B. DGP y diseño causal | Unidad/población y elegibilidad; asignación y soporte; versiones/actor/recepción/reintentos/rollback de B_g^D2; reloj/ventanas; secuencia B→W→C_dep*→A_f*→D_f*/ΔT_acc*; rutas alternativas/interferencia; DGP limpio y adversariales; truth y potenciales | Especificación de escenarios con ecuaciones, parámetros, distribuciones, soporte y truth esperado |
+| C. Medición y estimandos | Medición independiente A_f*, D_f*, ΔT_acc*, Reach, trayectoria, Outcome y Value; regla/horizonte/dimensiones de Value; separación ITT_Z^D2, efecto de paquete, LATE_f y θ_Af/θ_A; error, missingness, censura, sensibilidad, cotas, potencia y réplicas | Plan estadístico y de medición preespecificado, con condiciones explícitas de identificación y abstención |
+| D. Contrato computacional y de evidencia | Interfaces Generator/Analyzer/Evaluator; firewall efectivo de truth/potenciales; serialización y versionado; oráculo independiente; snapshots/evidencias/cobertura; fixtures adversariales y aserciones; hashes/reproducibilidad y estados de salida | Contrato de software trazable a A–C, con entradas/salidas y criterios de aceptación por módulo |
+| E. Gate integrado | Reconciliación final con DEC, matriz y maestro; trazabilidad requisito→fuente→componente→test; clasificación de cada requisito y decisiones pendientes resueltas; aceptación explícita del contrato de implementación | Paquete implementable aprobado; autorización de generación de código separada de autorización de ejecución científica |
+
+### Hallazgos transversales que no deben convertirse en vueltas adicionales
+
+1. **No exigir una inspección de sistema real para poder construir el fixture sintético.** El CMP contractual de referencia ya tiene identidad aceptada; su mapping físico por snapshot solo se necesita en el nivel de evidencia que el diseño vaya a ejercitar. La instancia sintética puede definirse como artefacto del DGP con IDs/versiones propios, sin fingir observaciones reales.
+2. **No implementar todo U_G como plataforma genérica antes de C10-S.** Debe implementarse el subconjunto de identidad, snapshots, scopes, evidencia y cobertura que sea necesario para comprobar los requisitos científicos. No se alteran los contratos U_G aceptados; se evita sobredimensionar el software.
+3. **No crear otro oráculo, otra matriz ni otro registro.** Reutilizar maestro, Closure Control Matrix, F* matrix, IAM, temporal matrix y Test Contract Register; corregirlos solo cuando haya una discrepancia concreta.
+4. **No confundir contratos aceptados con implementación:** DEC-C10-088 cierra la secuencia temporal documental F/A, no mappings, IAM sellado, observaciones ni oráculo.
+5. **No confundir clasificación de vías con exclusión demostrada:** MAP-05 mantiene MD-C1/MD-C4/IV-G4 abiertos; las superficies B-M01…15 están clasificadas, no observadas.
+6. **No usar los valores históricos N=2.000, R=1.000, s=.80 o probabilidades .20/.80 como confirmatorios sin derivación y aprobación.**
+7. **No exigir revisión humana externa para continuar especificando:** la autoauditoría se declara asistida/no independiente. La validación computacional y la revisión semántica del contrato se mantienen separadas.
+
+### Riesgo de integración del PR
+
+PR #116 sigue abierto y Draft, con base research/c10-d1-protocol-draft, head research/c10-s-consolidation-draft, 100 archivos modificados y 1.411 commits por delante de su base según comparación GitHub consultada. No debe tratarse como un PR pequeño de implementación ni promocionarse automáticamente a main. Antes de integración habrá que revisar el alcance/base del PR de forma independiente; esta auditoría no cambia su estado.
+
+### Secuencia de trabajo recomendada — agrupada
+
+1. **Paquete A+B en una sola pasada de especialización:** fijar una única instancia sintética y, sobre ella, las rutas F/A, IAM/F*, DGP temporal, unidad, asignación y escenarios limpio/adversariales. Resolver conjuntamente las dependencias, sin microgates documentales separados.
+2. **Paquete C sobre la misma instancia y DGP:** cerrar medición, Value, estimandos, supuestos, sensibilidad y potencia. Si un estimando no puede identificarse, especificar la salida correcta de no-identificación en vez de forzar supuestos.
+3. **Paquete D:** traducir A–C a interfaces, esquema de datos, oráculo, fixtures y aserciones; reutilizar el Test Contract Register.
+4. **Paquete E:** auditoría de consistencia final y aceptación del contrato de implementación. Solo después se solicitará autorización explícita para generar código; ejecución científica requerirá autorización distinta.
+
+**Estado de autorización:** no se genera ni modifica código ejecutable; no se ejecutan validadores, parsers, fixtures, simulaciones ni experimentos. scientific_execution=false; execution_authorized=false. La auditoría recomienda pasar de la reconciliación documental fragmentada a los paquetes A+B, C, D y E, agrupados y trazables.
