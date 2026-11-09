@@ -252,7 +252,7 @@ Se recibió y examinó el archivo `Notes_261104_163033.docx`, que contiene el in
 
 El registro de contenido y alertas se documenta en `C10_S_RECOVERY_165_183_SOURCE_REGISTER_DRAFT_001.md`. La fuente original fue recibida y leída; la copia íntegra DOCX y la transcripción literal completa todavía no están persistidas en GitHub. Por tanto, G0 pasa de “fuente no localizada” a “fuente recibida y cobertura recuperada”, pero **no** a “persistencia íntegra verificada”.
 
-Decisiones que deben conservarse como propuestas, no aceptarse automáticamente: D1 principal condicionado y D2 contraste; D1 p0=.20/p1=.80 por provisión ordinaria posterior a la asignación con C_dep,base=0; Wald/LATE local, no ATE; δ/γ y vías alternativas pueden invalidar exclusión; Value vectorial provisional; ausencia de A/O/V no se recodifica como cero. P181/P182/P183 siguen sin ejecución y requieren normalización/cotejo de contratos.
+La fuente recuperada contenía la recomendación histórica D1 principal condicionado / D2 contraste; DEC-C10-066 la supersede y establece D2 primario candidato / D1 secundario. DEC-C10-067 acepta las políticas materiales D2. Se mantienen como propuestas no aceptadas automáticamente: factorización de s=.80, mecanismos de éxito, δ/γ y vías alternativas; Value vectorial provisional; ausencia de A/O/V no se recodifica como cero. P181/P182/P183 siguen sin ejecución y requieren normalización/cotejo de contratos.
 
 La sección 184 es solo una propuesta de siguiente paso y queda fuera de la fuente 165–183. No se declara cierre causal, aprobación del DGP, freeze ni autorización de ejecución.
 
@@ -266,7 +266,7 @@ El cambio es documental: los criterios todavía deben convertirse en fixtures, e
 
 ## 14. Corrección de precedencia tras auditoría integral (2026-11-04)
 
-La recomendación de §6.2 S4R-08 (DGP limpio p0=0, p1=.80, relegando p0>0 a contaminación) queda sustituida para la especificación candidata, no borrada: D1 principal condicionado tiene C_dep,base=0, p0=.20 y p1=.80 postasignación, primera etapa .60; D2 contraste tiene p0=0 y p1=.80, primera etapa .80. D1 no es contaminación si la provisión ordinaria en control es parte del comparador preespecificado. Si no, no se acepta como principal.
+La recomendación histórica de §6.2 S4R-08 se sustituyó para conservar dos escenarios diferenciados: D1 tiene C_dep,base=0, p0=.20 y p1=.80 postasignación, primera etapa .60; D2 tiene C_dep,base=0, p0=0 y p1=.80, primera etapa .80. La precedencia vigente es D2 primario candidato / D1 secundario por DEC-C10-066. D1 no es contaminación si la provisión ordinaria forma parte de la política asignada; no se presenta como escenario primario vigente.
 
 G0: la fuente 165–183 fue recibida y examinada; persistencia íntegra del DOCX y transcripción literal completa siguen pendientes. P182-01…12 y P183-01…13: criterios recuperados e incorporados al registro; definidos documentalmente, no implementados ni ejecutados. XSYNC-138-01…10: contenido localizado en el documento maestro histórico; revisión independiente y resolución formal pendientes. El capítulo 53 y la auditoría integral armonizan la especificación candidata, pero no cierran automáticamente AUD/XAUD ni G1–G7.
 
@@ -442,7 +442,7 @@ La ambigüedad semántica entre «política probabilística» y «brazo determin
 |---|---|---|
 | D1 como contraste incremental | DEFINIDO | Provisión programada frente a provisión ordinaria |
 | Justificación del régimen ordinario D1 | NO ACREDITADA | Fuente, frecuencia .25/.20, población y contexto |
-| D2 como contraste mecanístico | DEFINIDO | Provisión programada frente a ausencia de intento focal |
+| D2 como escenario primario candidato | ACEPTADO POR DEC-C10-066 | Provisión programada frente a ausencia de intento focal; ausencia real de provisión de fondo pendiente |
 | D2 como escenario primario candidato | ACEPTADO POR DEC-C10-066 | Verificar objetivo ausencia-vs-provisión y ausencia real de provisión focal de fondo |
 | ITT_D1 / ITT_D2 | DISTINTOS | No agrupar ni promediar |
 | Primera etapa | PENDIENTE POR VARIABLE Y ESCENARIO | C_dep, A_f,post*, D_f, ΔT_acc |
