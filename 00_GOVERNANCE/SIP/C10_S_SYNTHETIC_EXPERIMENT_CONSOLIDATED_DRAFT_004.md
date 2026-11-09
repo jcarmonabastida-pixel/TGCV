@@ -2039,11 +2039,11 @@ La condición técnica focal será C_dep: disponibilidad efectiva de un componen
 
 C_dep=1 significa que el componente está instalado, íntegro, compatible con la versión del sistema y operativo en el momento relevante. No significa que τ2 ya se haya ejecutado, que haya sido seleccionada ni que su resultado sea exitoso.
 
-La accesibilidad estructural de τ2 se deriva de:
-A_f* = I(C_dep=1 ∧ C_auth_base=1 ∧ C_resource=1 ∧ C_capacity=1 ∧ C_info=1 ∧ C_domain=1 ∧ C_other=1),
-donde cada condición distinta de C_dep permanece constante y satisfecha en la población primaria S4-R. La expresión es una regla de este juguete sintético, no una definición universal de T_acc.
+**Registro histórico — fórmula no operativa:** la versión original de este juguete definía A_f* mediante la conjunción C_dep, C_auth_base, C_resource, C_capacity, C_info, C_domain y C_other. Esa fórmula queda supersedida por la composición candidata del maestro §67.3 y el crosswalk D2; no debe reutilizarse como contrato de accesibilidad ni para generar código. Se conserva aquí únicamente para explicar la evolución del diseño sintético y la clasificación inicial de condiciones.
 
-Si una de las condiciones restantes no se satisface, A_f*=0 o indeterminado según la evidencia; el generador no debe corregirla ni forzarla. La transformación τ2 solo será applicable después de τ1 y de cumplirse sus precondiciones de estado. Accesible no equivale a aplicable.
+La referencia actual es `A_f*=I(ID_f* ∧ REL_f* ∧ COND_f* ∧ AUTH_f* ∧ RES_f* ∧ DEP_f* ∧ ¬BLOCK_f*)`. En D2, C_auth,base=1 es basal, común e invariante; C_auth_base se corresponde con AUTH_f* y no se duplica; C_dep* se integra en DEP_f*; recursos/capacidad ex ante necesarios pueden contribuir a RES_f* sin duplicidad; C_info no es factor autónomo; C_other queda excluido; C_domain/D_support se mapea a ID/tipo o COND según semántica.
+
+La transformación τ2 solo será aplicable después de τ1 y de cumplirse sus precondiciones de estado. Accesible no equivale a aplicable.
 
 ### 30.2. Política implementable y mecanismo de generación
 
