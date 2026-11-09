@@ -1100,3 +1100,75 @@ Pendiente de aceptación: perfil COVERAGE_SCOPE + localizador en claim_statement
 - E12/E13 siguen siendo aristas candidatas, no observadas. No adjudicar existencia ni cobertura sin evidencia.
 
 No se fijan nombres de columnas, IDs físicos, formato, parser, serialización de payload, mapping ni estados observados. No se autoriza captura, implementación, Design Freeze ni ejecución.
+
+## 26. Roster de afirmaciones y paquetes probatorios MAP-05 — D2 (2026-11-09)
+
+**Estado:** roster de preparación documental derivado de §§17.2–17.4; no crea scopes, filas U_G, CLAIM_EVIDENCE_LINK ni fuentes. Reutiliza los identificadores lógicos COV-D2-BM01…15 ya propuestos en §17.4. Todos conservan denominador UNKNOWN, fuentes técnicas examinadas=0, unidades cubiertas=0 y coverage NONE. No se asignan IDs de evidencia ni resultados 1/0.
+
+### 26.1. Regla de uso y destinos
+
+1. Una fila de este roster describe una familia de afirmaciones que habrá que formular si aparece evidencia, no una afirmación observada ni un claim físico ya creado.
+2. B-Mxx identifica la dimensión de auditoría. No es NODE, EDGE, ROUTE, PREDICATE ni parent_catalog_id.
+3. Se crea EVIDENCE_REGISTER por fuente/artefacto y versión exacta; los vínculos CLAIM_EVIDENCE_LINK se crean por evidencia × afirmación × destino, con alcance exacto. Una fuente puede soportar varias afirmaciones solo si la pertinencia se argumenta por separado.
+4. Para afirmaciones sobre NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT se usa el destino tipado correspondiente y sus FKs exactas. Para una afirmación cuyo objeto sea la completitud/estado del scope, se usa COVERAGE_SCOPE. Para una fila PAR del manifiesto se aplica exclusivamente DEC-C10-080/081: target COVERAGE_SCOPE exacto C10S_CONFIG_PAR, localizador PAR y control independiente; no se simula FK PAR.
+5. No crear un claim negativo por no encontrar artefacto. Un resultado 0 exige universo, método de enumeración, sensibilidad/capacidad de detección y cobertura negativa suficiente. Si falta cualquiera, ?.
+6. La separación E1/E2 y el control de binding se mantienen como contratos documentales; no hay evaluadores asignados ni revisión independiente realizada. Los cinco resultados por capa PAR (PASS/FAIL/UNKNOWN/NOT_COMPARABLE/NA) no se simplifican a un PASS global.
+
+### 26.2. Roster por dominio B-M
+
+| Scope lógico existente | Afirmaciones que se deberán distinguir | Destino U_G cuando exista el objeto | Fuentes mínimas a solicitar (clases S1–S8 del protocolo) | Consecuencia si falta cobertura |
+|---|---|---|---|---|
+| COV-D2-BM01 | Identidad/versión del artefacto; integridad; dependencias declaradas frente a cargadas; compatibilidad | NODE N04/N06 y EDGE reales; PREDICATE ID/DEP/REL; SNAPSHOT | S1 SBOM/lock/manifiesto + S4 hash/firma + S3 carga runtime + S6 compatibilidad | DEP/ID=?; no afirmar C_dep ni primera etapa |
+| COV-D2-BM02 | Runtime efectivo; aislamiento; librerías y consumidores; recursos compartidos; llamadas/carga tardía | NODE N05/N06/N18/N20/N21 y EDGE observadas; PREDICATE DEP/RES/EXT; SNAPSHOT | S2 configuración + S3 procesos/módulos/trazas + S4 imágenes/snapshots + S8 cierre transitivo | Rshared/Rexternal y spillover=?; exclusión abierta |
+| COV-D2-BM03 | Cambios de host/SO/paquetes; consumidores; efecto sobre alternativas y recursos | NODE anfitrión/consumidores; EDGE reales; ROUTE/PREDICATE ALT/RES; SNAPSHOT | S1 inventario/config + S3 consumidores/métricas + S4 diff pre/post/rollback + S6 pruebas autorizadas | No afirmar no-afectación A1/A2 |
+| COV-D2-BM04 | Identidad de interfaz; contrato/schema; endpoint y permisos; invocación real y destino | NODE interfaz/servicios; EDGE invoca/expone; PREDICATE REL/DEP/AUTH | S5 API/schema + S2 ACL/red + S3 trazas + S4 versión/config | REL/DEP=?; endpoint configurado no prueba canal operativo |
+| COV-D2-BM05 | Permiso técnico efectivo vs autorización funcional normativa; cambios por brazo; señales/credenciales visibles | NODE de autorización/interfaz; EDGE autoriza observada; PREDICATE AUTH/BLOCK | S2 IAM/ACL/logs + fuente normativa primaria + S4 diff + S3 eventos de autorización | AUTH=?; C_auth,base no se presume invariante materialmente |
+| COV-D2-BM06 | Identidad y linaje de fuente/destino; cambios semánticos; estado funcional; efecto sobre F*/dataset/oráculo | NODE datos/estado/oráculo; EDGE lee/escribe/evalúa; ROUTE/PREDICATE COND/APP/ORACLE; SNAPSHOT | S1 inventario/hash + S4 snapshots/diffs + S2 reglas/config + S6 adjudicación F* independiente | No atribuir diferencia exclusivamente a accesibilidad; posible vía constitutiva/colateral |
+| COV-D2-BM07 | Capacidad instalada, disponibilidad temporal, reserva por unidad y consumo; contención de rutas compartidas | NODE recursos/consumidores; EDGE asigna/consume; PREDICATE RES; ROUTE Rshared | S2 cuotas/reservas + S3 métricas/colas/consumo por unidad + S4 snapshots + S8 grafo consumidores | RES=?; no afirmar no reducción de A1/A2/F2 ni ausencia de interferencia |
+| COV-D2-BM08 | Configuración de red; rutas/ACL/DNS/proxy; servicios externos y límites; conectividad efectiva | NODE canal/red/servicio externo; EDGE conectividad; ROUTE Rexternal/Rshared; PREDICATE REL/EXT | S2 configuración + S3 flujos/trazas + S5 contratos externos + S4 diffs | EXT/REL=?; frontera externa y rutas desconocidas mantienen Reach=? |
+| COV-D2-BM09 | Controles/certificados/sandbox; bloqueos efectivos; exposición, riesgo, coste y confianza diferencial | NODE seguridad/principals; EDGE aplica/autoriza; PREDICATE AUTH/BLOCK/DEP | S2 políticas/certificados + S3 eventos + S4 diffs + S6 revisión funcional/seguridad | BLOCK/AUTH=?; vía colateral a Outcome/Value no descartada |
+| COV-D2-BM10 | Información accesible al agente y cambio de conocimiento K; observabilidad del evaluador y E_T; retención/cegamiento | NODE N22/N16/N23 solo si material; EDGE comunicación/evaluación observadas; CLAIM sobre medición con destino apropiado | S2 permisos/retención + S3 logs/mensajes/trazas + S4 config/hash + protocolo de cegamiento y auditoría | Separar vía epistémica de medición; no inferir cambio de T_acc desde telemetría |
+| COV-D2-BM11 | Estado persistente/cachés/índices; contaminación/carryover; rollback y residuos semánticos | NODE estado/almacenamiento/consumidores; EDGE lee/escribe/propaga; SNAPSHOT; PREDICATE COND/APP | S3 inventario/uso + S4 snapshots/diffs pre/post/rollback + S2 configuración + S6 pruebas de residuo | Interferencia/residuo=?; no afirmar reversibilidad ni ausencia de carryover |
+| COV-D2-BM12 | Latencia/throughput/carga/prioridad/colas; diferencias por brazo, unidad, ruta y ventana | NODE runtime/recursos/consumidores; EDGE consumo/llamada; PREDICATE RES/REL; ROUTE afectada | S3 series temporales/trazas/benchmarks + S2 configuración de carga + S4 versiones + S8 mapping de consumidores | Vía de rendimiento=?; no declarar alternativas no afectadas |
+| COV-D2-BM13 | Identidad/hash/versionado de F*, dataset y oráculo; acceso/cambios; independencia y cegamiento | NODE N16 si objeto observado; EDGE evaluación real; PREDICATE ORACLE; SNAPSHOT del criterio | S1/S4 hash/version + S2 control de acceso + S6 evaluación independiente + S7 historial de cambios | Validez comparativa=?; prohibición contractual de modificar no equivale a cumplimiento |
+| COV-D2-BM14 | Inventario de rutas alternativas; pasos/identidad/versiones; equivalencia funcional bajo F*, C0, G, H; dependencias compartidas | NODE/EDGE reales; ROUTE + ROUTE_STEP; PREDICATE ALT/APP/ORACLE; SNAPSHOT | S1 catálogo/contratos + S3 trazas + S4 snapshots/grafo + S6 oráculo y pruebas equivalencia + S8 enumeración | F_alt,0=?, MD-C4 OPEN; no afirmar Reach=0 ni exclusión |
+| COV-D2-BM15 | Objetos/relaciones modificados; integridad de rollback; residuos y efectos temporales/carryover | NODE/EDGE identificados por diff; SNAPSHOT preB/postB/rollback/routeA; ROUTE/PREDICATE revaluados | S4 snapshots/hash/diffs + S2 configuración + S3 eventos/estado + S6 pruebas postrollback | Reversibilidad=?; no inferir ausencia de efectos previos ni residuos |
+
+Las clases S1–S8 son familias de fuentes del protocolo, no fuentes que se afirme que estén disponibles. Una fuente primaria debe quedar identificada por custodio, origen, método, alcance, unidad, versión, ventana, integridad, linaje y limitaciones en EVIDENCE_REGISTER.
+
+### 26.3. Roster de afirmaciones transversales MAP-05
+
+| Familia de afirmación | Scope/destino | Criterio probatorio |
+|---|---|---|
+| Identidad/versión de B y artefacto | COV-D2-BM01/BM02; NODE/EDGE/SNAPSHOT aplicables | Igualdad exacta de identidad y versión; hash/integridad y vínculo temporal |
+| Cambio inducido por B | Scopes BM pertinentes; NODE/EDGE/SNAPSHOT | Comparación basal/post/rollback con misma frontera, unidad y régimen; separar cambio configurado de observado |
+| Dependencia compartida y consumidor | BM02/03/07/08/11/12; NODE/EDGE | Cierre transitivo, alias/carga dinámica y consumidor identificados; unknowns explícitos |
+| Ruta alternativa y substituibilidad | BM03/06/07/08/11/12/14; ROUTE/ROUTE_STEP/PREDICATE | Entrada/S0, F*, C0, G, H, versiones y recursos comparables; oráculo independiente común |
+| Autorización funcional vs permiso técnico | BM05/BM09; PREDICATE AUTH/BLOCK y evidencia normativa/técnica separada | No inferir C_auth desde ACL técnica ni viceversa |
+| Información vs medición | BM10/BM13; N22/K separado de E_T/oráculo | Destinatario, momento, contenido y cegamiento; no mezclar información del agente con evidencia del evaluador |
+| Recursos y rendimiento | BM02/BM03/BM07/BM12; NODE/EDGE/PREDICATE RES | Capacidad instalada ≠ disponibilidad ≠ reserva ≠ consumo; medidas temporales por unidad/ruta |
+| Residuos/interferencia | BM02/BM03/BM07/BM11/BM15; SNAPSHOT y relaciones afectadas | Exposición entre unidades/periodos, estado residual, ventana y cobertura explícitos |
+| Integridad de oráculo | BM06/BM10/BM13; PREDICATE ORACLE/SNAPSHOT | Versión/hash inmutable, acceso, ceguera y adjudicación independiente |
+
+### 26.4. Orden de captura y reglas de parada
+
+**Orden documental de preparación (no ejecución):**
+1. Fijar el alcance candidato de unidad, frontera P0/P1/P2, contrato/instancia/versiones, etapa, rutas y universo operativo; mantenerlo PRELIMINARY si F*, G, H o frontera no están cerrados.
+2. Recuperar de custodios las fuentes existentes sin instalar, modificar ni probar componentes; clasificar primero disponibilidad, autoridad, integridad y alcance.
+3. Crear EVIDENCE_REGISTER solo para artefactos realmente recibidos y verificables. Si no hay artefacto, no crear evidencia ficticia ni evidence_id.
+4. Resolver identidades y versiones antes de crear NODE/EDGE/SNAPSHOT; reutilizar los catálogos padre Nxx/Exx como mapping, no como identidades observadas.
+5. Abrir CLAIM_EVIDENCE_LINK por afirmación y destino exactos; comprobar la pertinencia sustantiva separadamente de la integridad del enlace.
+6. Materializar COVERAGE_REGISTER solo con denominador y universo versionados; los COV-D2-BMxx actuales siguen siendo propuestas lógicas, no filas físicas.
+7. Mantener estados observados ? hasta adjudicación suficiente; separar E1/E2, discrepancia y adjudicación conforme al protocolo.
+
+**Paradas obligatorias:**
+- Sin frontera/universo/denominador: cobertura NONE/PRELIMINARY; no emitir 0 ni COMPLETE.
+- Sin versión/unidad/ventana comparable: NOT_COMPARABLE o ?; no extrapolar.
+- Sin cierre de dependencias transitivas/consumidores: independencia y ausencia de vías colaterales ?.
+- Sin F*, G, H y oráculo común válidos: substituibilidad y F_alt,0=?.
+- Sin evidencia separada de K y E_T: no adjudicar ausencia de vía informativa/medición.
+- Sin evidencia de recursos por unidad/ventana: no afirmar no-contención/no-interferencia.
+- Si cualquier vía colateral crítica sigue ?: no exclusión ni atribución focal exclusiva.
+
+**Resultado del roster:** DOCUMENTARY_READY / NO_SOURCE_INVENTORY / COVERAGE_NONE. El roster precisa qué afirmaciones y fuentes serán necesarias, pero no aporta fuentes, observaciones ni cobertura. No cambia los estados científicos: MD-C1/MD-C4 e IV-G4 OPEN; Reach=?, F_alt,0=?, A_f*=?; LATE_f^D2 y θ_Af(q_X*) no identificados. No crea filas, no implementa controles, no ejecuta validadores, pruebas, simulaciones ni experimento.
+
