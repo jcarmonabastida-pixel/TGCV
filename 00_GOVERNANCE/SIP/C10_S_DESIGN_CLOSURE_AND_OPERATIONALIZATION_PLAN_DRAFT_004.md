@@ -1734,3 +1734,17 @@ El nuevo §14 de C10_S_D2_LATE_F_IV_VALIDITY_AUDIT_DRAFT_001.md especifica la ca
 
 Siguiente operación documental: completar MAP-01/02 como contrato de correspondencia de intervención y medición, reutilizando DEC-C10-067, D2POL, manifiesto B-M01…15, fichas de invariantes y los predicados vigentes del maestro §67.3. La inspección de evidencias materiales, el cierre de MAP-03…06 y la validación de MAP-07 quedan sujetos a sus propios datos, supuestos y gates. No ejecutar ni implementar; scientific_execution=false; execution_authorized=false.
 
+
+
+## 16.85. Contratos MAP-01/MAP-02: intervención material y secuencia de medición (2026-11-09)
+
+**Estado:** contratos de campos y reglas documentales definidos; valores materiales, ventanas y evidencias siguen abiertos. No se modifica DEC-C10-067 ni se declara identificación.
+
+Se desarrollan MAP-01 y MAP-02 en §§14.6–14.7 de la auditoría IV D2:
+- MAP-01 separa identidad/versionado de B, actor/rol, artefacto/hash, runtime/canal, programación, intento, recepción, reintentos, fallos, rollback, desviaciones y detección de provisión de fondo. Los valores concretos permanecen NOT SPECIFIED / NOT INVENTORIED.
+- MAP-02 define anclas basales pre-Z, eventos de provisión, medición técnica C_dep*, adjudicación independiente de predicados A_f*, contraste D_f*/ΔT_acc* y resultados downstream separados. Se preservan estados 1/0/? y verdad/observación distintas; no se retrodata ni se imputa accesibilidad desde instalación.
+
+La secuencia es un orden causal y de medición propuesto, no un calendario confirmado. Se requieren ventanas, fuentes, instrumentos, sincronización, observadores y tolerancias antes de completar los mappings. La regla candidata de §67.3 no queda aprobada ni congelada.
+
+**Siguiente bloque tras MAP-01/02:** resolver MAP-05 por dominios B-M01…15 y PROV-01…12, con foco en dependencias compartidas, recursos, seguridad, rendimiento, alternativas, oráculo, información y residuos. La cobertura técnica real no existe aún: NO INVENTARIADO no equivale a ausencia. MAP-03/04/06 y la identificación siguen abiertas. No ejecutar, implementar ni parametrizar.
+
