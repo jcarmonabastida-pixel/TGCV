@@ -415,3 +415,12 @@ Se corrige la correspondencia del Register §72: P177-05…08 no son contratos d
 La identificación mediacional sigue gobernada por la pregunta y los requisitos de C10-D1 §18 y por la propuesta del maestro §225.3. La cobertura contractual es parcial: falta definir el estimando/intervención mediadora, la secuencia y confusores postratamiento, soporte secuencial, método de identificación, sensibilidad y criterio de recuperación/abstención. No se infiere efecto mediado ni residual por resta de estimandos.
 
 **Estado:** corrección documental verificada como necesaria; C-MED OPEN; no modifica la jerarquía θ_A(q)/ITT_Z^D2/LATE_f, no aprueba identificación, no congela diseño ni autoriza implementación/ejecución.
+
+
+## 25. Auditoría ampliada de cobertura de contratos estadísticos (2026-11-10)
+
+Se corrige el crosswalk de Register §72 conforme a las definiciones exactas de §55: P177-02 es primera etapa; P177-03 Wald/LATE; P177-04 instrumento débil. P178-SIM-02/03/04/05 corresponden a N, clústeres, réplicas y error Monte Carlo, complementados por SIM-01/09/10 para potencia, métricas y parámetros ex ante. P183-09/10/11/12 separan censura, sensibilidad, bounds y dictamen. P179-06/08 se limitan a trade-offs y agregación de Value.
+
+La recuperación del Analyzer y el firewall tienen soporte parcial en P177-10/12 y P182-11, pero falsa identificación, falsa atribución focal y abstención correcta requieren criterios de adjudicación/tolerancias explícitos. La mediación permanece en §225.3 como propuesta, sin contrato completo.
+
+**Estado:** crosswalk ampliado corregido; C-MED y C-ANALYZER OPEN. No modifica jerarquía de estimandos, contratos fuente, autorización ni estado científico. Sin implementación o ejecución.
