@@ -8739,3 +8739,119 @@ AB ha sido reconstruido como un único diseño integrado y su base aceptada se h
 La siguiente pasada dentro del mismo paquete debe cerrar conjuntamente la instancia y el grafo de transformaciones (AB-01…AB-05) y enlazarlos al mecanismo D2 y al DGP (AB-06…AB-09), sin separar el trabajo en microgates documentales. Si una elección exige decisión científica no deducible de las fuentes, se presentará como decisión explícita con consecuencias y alternativa mínima; no se rellenará por conveniencia.
 
 **Autorización:** no se crea código, parser, validator, fixture ejecutable ni simulación; no se ejecuta experimento. scientific_execution=false; execution_authorized=false.
+
+
+---
+
+# 217. Paquete AB — propuesta de especialización mínima de la instancia y de las rutas (2026-11-09)
+
+**Estado:** PROPOSED WORKING SPECIFICATION / PENDING USER DECISION. Se desarrolla una única propuesta mínima sobre la instancia aceptada en §216. No es una DEC, no modifica decisiones aceptadas, no congela IAM/F*, no acredita verdad observada y no autoriza implementación. Su propósito es sustituir la indeterminación genérica por una propuesta concreta, acotada y falsable que pueda aceptarse, corregirse o rechazarse como conjunto.
+
+## 217.1. Instancia base recomendada
+
+Se recomienda conservar exactamente la identidad contractual ya aceptada por DEC-C10-069:
+
+- Contract: C10S-SVC-REQUEST-PROCESSOR, version 1.0.0.
+- Instance: C10S-SVC-REQUEST-PROCESSOR-001, revision 1.
+- CMP: CMP-SERVICE-LOGIC-001, class SERVICE_LOGIC.
+- Owner lógico: CMP-SERVICE-LOGIC (rol, no una segunda identidad).
+
+Roster mínimo propuesto para el DGP base:
+
+| Clase | Roster propuesto | Cardinalidad | Fundamento |
+|---|---|---:|---|
+| CMP | CMP-SERVICE-LOGIC-001 | 1 | Unidad lógica funcional aceptada |
+| PAR | PAR-SVC-ENABLED; PAR-SVC-PROFILE | 2 | Núcleo funcional DEC-C10-068/083 |
+| REF | REF-RUL-ENABLED; REF-RUL-PROFILE | 2 | Enlaces tipados desde los dos operandos de la regla al PAR owner; no referencias externas |
+| RUL | RUL-SVC-ENABLE-PROFILE-01 | 1 | Regla constitutiva aceptada |
+| POL | POL_ABSENT_BY_DESIGN | 0 | Núcleo confirmatorio mínimo DEC-C10-053 |
+| MET | Identidad/versiones/procedencia/IAM/oráculo | obligatorio | DEC-C10-053/069 y gate probatorio |
+
+Las dos REF se proponen únicamente como bindings explícitos de los operandos de la regla a sus parámetros; no se añade topología de componentes ni dependencias técnicas ficticias. El inventario cerrado del fixture incluirá todos los CMP/PAR/REF/RUL y sus scopes por snapshot y etapa. Si la gramática aprobada representa los operandos exclusivamente dentro del AST y no como REF independientes, el roster REF se ajustará a esa representación sin duplicar relaciones; la decisión requiere comprobar el contrato de REF/AST antes de congelar IAM. No declarar REF=0 por omisión.
+
+## 217.2. Valores semánticos de referencia
+
+Se recomienda fijar un caso funcional basal válido y un caso adversarial de regla, ambos como verdad estipulada del DGP:
+
+| Caso | ENABLED | PROFILE | Regla |
+|---|---|---|---|
+| Base conforme | true | STANDARD | Cumple |
+| Adversarial | true | DISABLED | Viola REQUIRE |
+| Control lógico | false | DISABLED | No viola la implicación aceptada |
+
+El dominio semántico de PROFILE permanece {STANDARD, READ_ONLY, DISABLED} y ENABLED es BOOL REQUIRED. No se añade la implicación inversa. Estos casos son estados sintéticos declarados, no datos observados ni una distribución de prevalencia.
+
+## 217.3. Contratos C_src/C_dst y mapping M — recomendación
+
+Para hacer visible una transformación real sin elegir plataforma ni formato comercial, se recomienda usar dos namespaces sintéticos versionados:
+
+- C10S-SRC-REQUEST-CONFIG v1.0.0.
+- C10S-DST-REQUEST-CONFIG v1.0.0.
+- M-C10S-REQUEST-CONFIG v1.0.0.
+
+Mapping semántico candidato:
+
+| Elemento | C_src | S2/S1 neutral | C_dst declarado/aplicado |
+|---|---|---|---|
+| CMP | CMP-SERVICE-LOGIC-001 / SERVICE_LOGIC | Identidad lógica preservada | Correspondencia 1:1 al CMP anchor del snapshot destino |
+| ENABLED | BOOL true/false | BOOL sin coerción | BOOL true/false |
+| PROFILE | ENUM STD, RO, OFF | ENUM canónico STANDARD, READ_ONLY, DISABLED | ENUM destino STANDARD, READ_ONLY, DISABLED |
+| RUL | Regla REQUIRE aceptada | AST semánticamente equivalente, mismos operandos/scope/efecto | Regla aplicada y verificada en destino |
+| REF | Los dos operand bindings del roster, si se confirma REF como clase separada | Correspondencia exacta de ambos extremos | Dos bindings íntegros; sin extremos externos |
+| MET | Identidad y procedencia de origen | Lineage de F1/A1 y mapping | Snapshot/versión de destino y evidencia de aplicación |
+
+La tabla ENUM propuesta es total e inyectiva: STD→STANDARD, RO→READ_ONLY, OFF→DISABLED. No se permite colapsar símbolos. La representación física del AST, el escaping, la canonicalización y la serialización permanecen fuera de esta propuesta hasta resolver el contrato de gramática/IAM. El mapping no usa igualdad de hash como prueba de equivalencia.
+
+## 217.4. Fichas de ruta recomendadas
+
+**Ruta focal F — dependiente de B:**
+1. F1/τ2 convierte C_src a S2 mediante el adaptador focal provisionado por B; conserva CMP, BOOL, semántica ENUM y AST REQUIRE.
+2. F2 aplica S2 al destino, captura C_dst_decl y C_dst_applied separadamente, y verifica FP-01…FP-07.
+
+**Ruta alternativa A — baseline:**
+1. A1 exporta C_src a un paquete neutral S1 usando el exportador baseline, sin adaptador focal.
+2. A2 importa/aplica S1 mediante el importador baseline y el mismo contrato destino.
+
+A1/A2 deben ser mecanísticamente distintos de F1/F2, pero se juzgan contra el mismo contrato, mapping semántico, IAM, C0/G/H y oráculo. La ruta A solo cuenta como alternativa substituible si satisface F* y la evidencia de cobertura/no-afectación lo permite. No se declara independencia de B por definición.
+
+## 217.5. F* — perfil mínimo de aceptación recomendado
+
+F* se mantiene como conjunción no compensatoria de FP-01…FP-07, aplicada a las propiedades pertinentes del roster:
+
+- FP-01: CMP/PAR/REF/RUL/MET tipados, completos y dentro de sus dominios.
+- FP-02: unicidad CMP, owner PAR, integridad de operand bindings/REF y ausencia de referencias rotas.
+- FP-03: preservación de ENABLED, mapping ENUM total e inyectivo, y semántica del AST (operandos, scope, REQUIRE y UNKNOWN).
+- FP-04: destino admite el contrato/versión declarados y el paquete.
+- FP-05: sin secretos ni privilegios nuevos; permisos mínimos predeclarados y ninguna relajación de controles de seguridad.
+- FP-06: configuración efectivamente aplicada, no solo exportada/preparada.
+- FP-07: estado aplicado inspeccionado y consistente con FP-01…FP-05.
+
+FP-08 permanece gate probatorio separado: procedencia, snapshots, versión de M/IAM/oráculo, cegamiento y evidencia. F*=1 requiere todas las propiedades obligatorias aplicables FP-01…FP-07 en 1; cualquier 0 implica F*=0; ausencia de fallo pero algún ? implica F*=?. No se fija tolerancia numérica porque el objeto es discreto y el contrato semántico exige correspondencia exacta para BOOL/ENUM/AST.
+
+**C0/G/H:** se recomienda G=la unidad lógica completa y todo el roster constitutivo de §217.1. C0 debe fijar antes de Z/B versiones de contratos, estado inicial fuente/destino, runtime/capacidades, permisos, recursos disponibles, frontera, ventanas y estado de las rutas A/F. H sigue requiriendo una decisión explícita: debe ser un límite temporal común a F y A, fijado antes de Z/B; no se sustituye por “hasta que termine” ni se estima después de observar resultados.
+
+## 217.6. Propuesta de frontera de provisión D2
+
+Se recomienda evaluar ARCH-B1 (adaptador sidecar/runtime aislado y aditivo) como arquitectura focal, manteniéndola como candidata hasta resolver MD-C1/MD-C4. Bajo D2:
+
+- Z=0: no programar ni iniciar intento focal; registrar cualquier provisión de fondo.
+- Z=1: programar un intento de provisión del adaptador identificado y versionado; registrar recepción, intento efectivo, resultado de cada etapa y desviaciones.
+- B no transforma, aplica ni valida la configuración; no modifica F*, IAM, M, oráculo, permisos funcionales basales, fuente, destino ni A1/A2.
+- C_dep* exige instalación, integridad, compatibilidad y operatividad conjuntas. No se fija tasa de cumplimiento ni éxito conjunto.
+- Cualquier cambio en host, permisos, recursos compartidos, red, seguridad, observabilidad, estado o alternativa se registra como superficie B-M01…15; si afecta A1/A2 o Outcomes, clasificar como vía colateral/R2 o interferencia, no asumir exclusión.
+
+## 217.7. C0/G/H, población y parámetro de provisión: decisiones explícitas restantes
+
+La propuesta deja deliberadamente sin valor inventado:
+1. H: ventana temporal común de F/A y de adjudicación, expresada en unidad temporal del DGP.
+2. Parámetros de recepción/cumplimiento, inicio efectivo, reintentos, fallo parcial, rollback y provisión de fondo.
+3. Distribución conjunta de instalación/integridad/compatibilidad/operatividad; s=.80 no es valor aprobado.
+4. Criterio material de aislamiento y márgenes de no-afectación de A1/A2; MD-C1/MD-C4 abiertos.
+5. Fuente/cobertura que hace confirmable P*_τ2 y el subgrupo P*_F; q_X*, positividad, unidad e interferencia deben quedar cerrados con el contrato poblacional.
+6. Oráculo independiente y su procedimiento de adjudicación; no se simula su validación.
+
+## 217.8. Decisión solicitada y criterio de continuidad
+
+La propuesta recomendada es adoptar como instancia mínima el servicio lógico ya aceptado, con dos PAR, una regla REQUIRE, mapping ENUM total entre namespaces sintéticos, dos rutas completas bajo F* común y B limitado a provisión focal. La decisión del usuario debe resolver únicamente las opciones no deducibles de las DEC: roster REF/AST, namespaces y codificación ENUM, perfil FP-05, y si se acepta el alcance G propuesto. H y parámetros estocásticos se resuelven después como decisiones de diseño explícitas, no como parte de la aceptación semántica de la instancia.
+
+Hasta esa decisión, §217 es propuesta de trabajo, no verdad canónica aceptada. No se declara AB DONE, no se sella IAM, no se congela F*, no se crea fixture ejecutable y no se autoriza código, simulación ni experimento. scientific_execution=false; execution_authorized=false.
