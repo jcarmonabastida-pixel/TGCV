@@ -1680,3 +1680,24 @@ Antes de generar código en el futuro, aplicar el gate del maestro §0.6 y Closu
 Se retiran de los documentos operativos las formulaciones que inducían regresión cuando ya existe una decisión posterior y explícita. La retirada se limita al texto contradictorio: se conservan valores candidatos, mecanismos D1/D2, escenarios adversariales y referencias útiles. El historial Git mantiene la trazabilidad del contenido anterior. No se borra una sección histórica útil sin comprobar referencias dependientes.
 
 **Límites:** este gate no implica que se haya generado, inspeccionado o validado código. No se ejecutaron validadores, fixtures, parsers, simulaciones ni experimentos. `scientific_execution=false`; `execution_authorized=false`.
+
+## 16.82. Auditoría transversal de precedencia semántica y no-regresión (2026-11-09)
+
+**Estado:** auditoría documental asistida / autoauditoría / no independiente. **Alcance:** los 100 archivos modificados por PR #116 fueron recuperados y revisados para detectar formulaciones históricas o supersedidas que pudieran actuar como especificaciones operativas.
+
+Se aplicó el criterio de retirada selectiva: eliminar o sustituir texto operativo contradictorio cuando la precedencia está resuelta; conservar IDs, anclas y registros históricos útiles; no borrar definiciones técnicas vigentes ni decisiones aceptadas; no convertir propuestas en decisiones.
+
+**Correcciones realizadas:**
+- Auditoría integrada: retirada de la recomendación D1-principal y corrección de `ΔT_acc*`/`ΔE_T`.
+- Reconciliación causal: D2 material y autorización basal separados de la intervención histórica AUD-001/002.
+- Auditoría de medición: MEAS-01 actualizado a fórmula conceptualmente reconciliada con mappings aún abiertos.
+- Reconciliación de población: fórmula histórica de elegibilidad y selección D1/D2 abiertas retiradas como reglas operativas.
+- Propuestas AUD-001/002 y auditoría integrada de consistencia: avisos explícitos de no operatividad para D2.
+- Este plan §4.3: fórmula focal alineada con maestro §67.3 y crosswalk D2; elegibilidad histórica separada.
+- Test Contract Register MEAS-03: validez/cobertura epistémica separada de truth estructural.
+
+**Fuentes históricas conservadas:** Draft 001–003 del plan, MRA 001–002, registro de recuperación 165–183, formulaciones históricas de DGP, matriz temporal §30.1 y demás registros con supersesión explícita. No se borró el historial Git ni se modificó `main`.
+
+**Precedencia protegida:** DEC-C10-066/067; `C_auth,base=1` vigente; `C_auth_base` se corresponde con `AUTH_f*`; D2 es provisión técnica focal, no intervención focal de autorización; fórmula candidata `A_f*` según §67.3; `ΔT_acc*` separado de `ΔE_T`; estimandos ITT/LATE/θ_Af/θ_A no intercambiables.
+
+**Límites y siguiente gate:** la revisión cubre los 100 archivos del PR #116, no todo el repositorio. Antes de cualquier generación futura de código debe verificarse la precedencia de todos los documentos y fuentes fuera de ese conjunto y aplicarse maestro §0.6 / Closure Control Matrix §100. No se ejecutaron validadores, generadores, parsers, fixtures, simulaciones ni experimentos. `scientific_execution=false`; `execution_authorized=false`. No Design Freeze.
