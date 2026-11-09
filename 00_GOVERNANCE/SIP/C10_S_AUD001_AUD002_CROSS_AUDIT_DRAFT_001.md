@@ -7,6 +7,8 @@
 **Alcance:** coherencia causal, transformacional, operacional y editorial.  
 **No realizado:** ejecución, simulación, estimación estadística ni auditoría de código.
 
+**Aviso de precedencia vigente (2026-11-09):** esta auditoría revisa la propuesta histórica AUD-001/002 de intervención focal sobre autorización. Sus hallazgos siguen siendo útiles para comprender ese escenario alternativo, pero no deben reabrir la política primaria D2 ni tratar `C_auth,base=1`/`AUTH_f*` como obsoletos. DEC-C10-066/067 rigen D2: provisión técnica focal con autorización basal común e invariante. No usar esta auditoría como contrato operativo de D2 ni como fuente para generar código D2.
+
 ---
 
 ## 1. Dictamen
