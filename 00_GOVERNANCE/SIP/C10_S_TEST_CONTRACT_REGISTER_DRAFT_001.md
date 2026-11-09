@@ -1420,3 +1420,20 @@ La revisión directa de §55 del propio registro confirma las correspondencias s
 **Gates de cobertura parcial:** C-MED: §225.3 no tiene aún contrato de aceptación mediacional completo. C-ANALYZER: falta formalizar adjudicación y tolerancias de falsa identificación, falsa atribución focal y abstención. Ambos permanecen OPEN; no crear pruebas duplicadas hasta decidir si una especialización versionada de contratos existentes es suficiente.
 
 No se declaran pruebas ejecutadas, parámetros fijados, potencia demostrada ni identificación causal.
+
+
+## 75. Especialización candidata de P177/P182/P183 para C-MED y C-ANALYZER (2026-11-10)
+
+Esta sección no crea IDs de prueba nuevos ni declara pruebas ejecutadas. Organiza los criterios de §228 como extensiones propuestas de contratos existentes.
+
+| Contrato existente | Extensión candidata | Límite actual |
+|---|---|---|
+| P177-06 | Comprobar ajuste basal y prohibición de ajuste post-Z para ITT | No identifica mediación |
+| P177-10 | Recuperación y error del Analyzer solo donde truth permite identificación | Métricas de falsa identificación/abstención requieren extensión explícita |
+| P177-12 | Distinguir efecto de política de atribución a accesibilidad | No especifica por sí solo estimando interventional |
+| P182-01/02/06/07 | Validez, circularidad, acuerdo y error de medición de A | No cubre confusión mediador–resultado |
+| P182-11 | Separación de Generator/Analyzer y control de leakage | Requiere prueba de acceso/artefactos y adjudicación |
+| P183-08/10/11/12 | Ausencia de A, sensibilidad, bounds y dictamen por estimando | No cubre por sí solo el régimen de mediación |
+
+**C-MED:** requiere DAG/orden temporal, estimando e intervención mediadora, confusores inducidos, soporte secuencial, rutas colaterales, método y sensibilidad. **C-ANALYZER:** requiere denominadores, verdad de identificación por DGP, falsa identificación/atribución, abstención correcta/falsa abstención y tolerancias ex ante. Ambos gates OPEN.
+
