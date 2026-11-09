@@ -8556,3 +8556,19 @@ Las menciones históricas en Decision Log, matrices y contratos se conservan cua
 - No se ejecutaron validadores, generadores, parsers, fixtures, simulaciones ni experimentos. No se ha realizado generación ni inspección de código ejecutable. No hay revisión humana independiente. `scientific_execution=false`; `execution_authorized=false`.
 
 **Dictamen:** `PASS_STATIC` para la revisión documental de los 100 archivos modificados en PR #116 y para las correcciones enumeradas, sujeto a la relectura de los archivos tocados. `CONDITIONAL` para la garantía global de no-regresión fuera de ese conjunto y para cualquier generación futura de código; se mantiene el gate maestro §0.6 / Closure Control Matrix §100. No Design Freeze ni autorización de implementación/ejecución.
+
+### 215.5. Correcciones adicionales del maestro y resolución parcial de XSYNC-138-01
+
+El barrido completo del maestro detectó además restos operativos que no quedaban suficientemente neutralizados por las notas de precedencia previas. Se corrigieron en el propio maestro:
+
+- §30.1 conserva τ1–τ4 y la definición técnica útil de C_dep, pero la conjunción antigua de A_f* con C_auth_base/C_resource/C_capacity/C_info/C_domain/C_other queda marcada como fórmula histórica no operativa y supersedida por §67.3.
+- §§16.2/16.4 se alinean con DEC-C10-066/067: q_X contiene condiciones basales comunes; D2 manipula provisión técnica focal; `C_auth,base=1` permanece común; la intervención sobre autorización solo es escenario alternativo. §16.5 y XSYNC-138-01 distinguen la resolución específica D2 del mapping general B→g^Af aún abierto.
+- §53.5 sustituye la tupla antigua de `ΔT_acc` con `ΔValidity` por `ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*)` y separa `ΔE_T`.
+- §58.4 deja de usar la fórmula placeholder identidad+C_dep+predicados no enumerados y remite a la fórmula candidata completa de §67.3.
+- §58.6 separa snapshot estructural `S_T*=(U_t*,R_t*,C_t*,X_t*)` de `E_T`; `ΔValidity` deja de ser componente de `ΔT_acc*`.
+- §63.7 queda como registro histórico supersedido: validez/cobertura de evidencia pertenece a `E_T`, no a la verdad estructural.
+- §13.1 y §10.6 distinguen la autorización basal D2 de la intervención alternativa; §25.2 reclasifica XSYNC-138-01 como parcialmente resuelto para D2 y abierto en el mapping B→g^Af/exclusión.
+- §§68.7 y 69.5 ya no presentan la selección primaria D1/D2 como abierta; se conserva abierto el fixture/distribución confirmatoria, que es una cuestión distinta.
+
+**Resultado de barrido del maestro:** las únicas fórmulas antiguas encontradas en la búsqueda de expresiones A_f* son ahora registros explícitos no operativos en §§30.1 y 59.3. Las menciones históricas de `ΔValidity` quedan en registros de supersesión, no en la definición estructural vigente. Las menciones históricas de D1-principal y de intervención sobre autorización quedan calificadas como supersedidas o alternativas. El gate §0.5.3 reúne estas precedencias para cualquier lectura o generación futura.
+
