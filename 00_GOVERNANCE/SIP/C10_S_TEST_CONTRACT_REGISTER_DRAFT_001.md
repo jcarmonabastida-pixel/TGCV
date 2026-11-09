@@ -1334,3 +1334,18 @@ Este apartado organiza contratos existentes; no crea pruebas nuevas ni declara s
 7. Los umbrales de aceptación, MDE, potencia, precisión, N y R se fijan ex ante; no se importan valores ilustrativos históricos.
 
 **Estado:** crosswalk documental; sin fixtures, implementación, simulación o ejecución.
+
+
+## 70. Crosswalk de C-01…C-07 con contratos existentes (2026-11-09)
+
+| Resolución propuesta | Contratos fuente | Verificación exigida |
+|---|---|---|
+| C-01 Jerarquía científica/diseño | P177-12; C10-D1/S4-R §18 | No sustitución de θ_A(q) por ITT/paquete/LATE |
+| C-02 Value vectorial y Outcome separado | P179-01…08; P182-03/04 | Fichas e indicadores independientes por dimensión |
+| C-03 Sin dimensiones/pesos por default | P179-04/06/08; P178-SIM-10 | Justificación contextual y sensibilidad |
+| C-04 Registro de estimando | P177-01…12; P182-12; P183-13 | Campos obligatorios y provenance |
+| C-05 ITT/missingness | P177-01/06; P183-01…10 | Población asignada, ausencia/selección y no ajuste post-Z |
+| C-06 Dictamen/abstención | P177-10/12; P183-11/12 | Recuperación y clasificación correcta |
+| C-07 Firewall | P182-11; contrato Generator/Analyzer/Evaluator | Pruebas negativas de leakage |
+
+Este crosswalk no crea nuevos contratos ni declara pruebas ejecutadas. Las propuestas C-01…C-07 no cambian el estado de P177/P178/P179/P182/P183.
