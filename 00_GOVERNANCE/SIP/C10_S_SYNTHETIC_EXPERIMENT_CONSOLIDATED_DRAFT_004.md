@@ -9287,3 +9287,93 @@ No se pueden cerrar documentalmente por este paquete:
 - autorización de implementación/ejecución.
 
 **Dictamen:** C queda organizado como arquitectura analítica y de medición propuesta, reutilizando P177/P178/P179/P182/P183. No queda aprobada una estrategia final de mediación ni identificado el vínculo ΔT_acc→Value. No se modifica C10-D1, TGCV Core, RMA, Evidence→Claim Matrix ni claim status. No Design Freeze, implementación ni ejecución. scientific_execution=false; execution_authorized=false.
+
+
+# 223. Paquete C — jerarquía científica/confirmatoria y contrato operativo de resultados (2026-11-09)
+
+**Estado:** especialización propuesta para revisión/aceptación; no aprobada ni congelada. Complementa §222 sin sustituir P177/P178/P179/P182/P183 ni C10-D1/S4-R §18.
+
+## 223.1. Pregunta científica frente al estimando identificable del diseño
+
+Para evitar que «ITT primario» desplace inadvertidamente la pregunta científica C10, se establecen dos niveles:
+
+- **Objetivo científico primario C10:** θ_A(q), efecto de políticas factibles que inducen cambios estructurados de accesibilidad/ΔT_acc sobre Value bajo un régimen común q. Es la pregunta de investigación, no un estimando que D2 haya identificado.
+- **Estimando primario de asignación S4-R/D2:** ITT_Z^D2 sobre cada resultado preespecificado. Es el contraste confirmatorio de asignación que D2 puede identificar si sus gates se satisfacen. No sustituye θ_A(q).
+- **Atribución focal secundaria y condicional:** LATE_f^D2 y θ_Af(q_X*), sujetos a supuestos y poblaciones propios.
+- **Efecto de política/paquete:** interpretación obligatoria cuando Z activa vías diferenciales ajenas al tratamiento focal o no se defiende exclusión. Puede ser un resultado válido aunque la atribución a accesibilidad no lo sea.
+
+Dentro de cada nivel, Value y Outcome se estiman y dictaminan separadamente. No se usa «primario» sin especificar si se refiere al objetivo científico, al estimando de asignación o a una dimensión de resultado.
+
+## 223.2. Registro mínimo de cada estimando
+
+Cada estimando se representa mediante un registro versionado con estos campos obligatorios:
+
+| Campo | Contenido |
+|---|---|
+| estimand_id | Identificador estable y único |
+| causal_question | Pregunta que responde y nivel jerárquico |
+| intervention_contrast | Z, B, g o intervención mediadora; versiones exactas |
+| target_population | Población y algoritmo pre-Z; q/q_X* |
+| unit_assignment / unit_analysis / unit_interference | Tres unidades explícitas y su relación |
+| regime | C0, G, H y condiciones basales comunes |
+| treatment_or_mediator | Constructo, definición, versión, momento y medición |
+| outcome_id | Outcome o dimensión Value concreta |
+| horizon | Ancla, duración/unidad y ventana |
+| scale_and_contrast | Escala, dirección y contraste causal |
+| identification_assumptions | Supuestos y evidencia/gates por supuesto |
+| missingness_and_measurement | Cobertura, error, censura, selección y regla de ausencia |
+| estimator_and_inference | Método, inferencia, clúster, incertidumbre y sensibilidad |
+| status | IDENTIFIED / CONDITIONAL / NOT_IDENTIFIED / INDETERMINATE / OUT_OF_SUPPORT |
+| provenance | Versiones, fuentes, hashes, reglas y responsable |
+
+Si falta un campo necesario, el estimando no se considera operacionalmente especificado; se marca OPEN/UNKNOWN y no se rellena mediante convenciones implícitas.
+
+## 223.3. Contrato de cada dimensión de Value
+
+Cada dimensión candidata de Value debe contar con una ficha independiente antes de entrar en la familia confirmatoria:
+
+1. ID y nombre no ambiguos.
+2. Beneficiario/observador y contexto de valoración.
+3. Constructo y frontera respecto de Outcome y otras dimensiones.
+4. Indicador(es), fuente primaria, corroboración y unidad.
+5. Regla de cálculo, dirección de mejora y escala/rango admisible.
+6. Baseline, momento post, ancla y ventana H.
+7. Validez, independencia respecto de A/Outcome, error y acuerdo interevaluador.
+8. Ausencia, censura, observación selectiva y tratamiento analítico.
+9. Regla de trade-off y si la dimensión es no compensable.
+10. Justificación de inclusión/exclusión y versión.
+
+Eficiencia, calidad, acceso de destinatarios, robustez y sostenibilidad permanecen como candidatas de P179; no se convierten en endpoints confirmatorios por repetición documental. El vector de Value se conserva como objeto primario de reporte. La selección de dimensiones y la familia confirmatoria requieren decisión explícita basada en el contexto de valoración, no elección posterior a resultados.
+
+## 223.4. Contrato Outcome y orden temporal
+
+Outcome es un registro operativo separado de Value. Para cada indicador se exige ID, unidad, fuente, regla de cálculo, dirección, baseline, ventana, ancla temporal, cobertura y mecanismo de ausencia. Se prohíbe usar Outcome como Value sin justificación constructual y ficha separada.
+
+La secuencia mínima de snapshots/mediciones se etiqueta por evento y tiempo real:
+- t0: C0 y elegibilidad antes de Z;
+- tZ: asignación;
+- tB: programación/recepción/intento/provisión y eventos de fallo/rollback;
+- tA: adjudicación de A_f y ΔT_acc después de la intervención y antes de los resultados que pretende mediar;
+- tR: Reach y estados de trayectoria, con orden temporal documentado;
+- tO: Outcome en ventana definida;
+- tV: Value en ventana/contexto de valoración definido.
+
+La secuencia es una estructura de registro, no una afirmación de que todas las variables tengan necesariamente ese orden causal. Si Reach/trayectoria preceden o se solapan con ΔT_acc, se conserva el tiempo observado y se modifica el modelo causal antes del análisis; no se fuerza el orden para ajustarlo al diagrama.
+
+## 223.5. Resoluciones propuestas que no requieren inventar parámetros
+
+| ID | Resolución propuesta | Justificación | Estado |
+|---|---|---|---|
+| C-01 | θ_A(q) conserva primacía como pregunta científica C10; ITT_Z^D2 es primario solo dentro del diseño de asignación S4-R | C10-D1/S4-R §18 y §222 | PROPOSED |
+| C-02 | Value vectorial; reporte por dimensión; Outcome separado | P179-01…08, P182-03/04/10 | PROPOSED |
+| C-03 | No elegir dimensiones, pesos, índice ni MDE sin ficha y justificación contextual | P179-04/06/08 y P178-SIM-10 | PROPOSED |
+| C-04 | Registro obligatorio de estimando con campos §223.2 | Trazabilidad P177/P182/P183 y §221 | PROPOSED |
+| C-05 | ITT no ajustado por variables post-Z; casos completos no se etiquetan ITT sin supuestos | P177-01/06 y P183-06/07 | PROPOSED |
+| C-06 | Dictamen separado por estimando y dimensión; abstención correcta cuenta como resultado del Analyzer | P183-12 y P177-10/12 | PROPOSED |
+| C-07 | Truth oculta al Analyzer; Evaluator separado compara tras congelar salida | P182-11 y contrato Generator/Analyzer/Evaluator | PROPOSED |
+
+## 223.6. Dependencias materiales
+
+No se resuelven por redacción: selección/contexto de dimensiones Value; indicadores y escalas; H y ventanas; régimen de mediación y secuencia real; población/q_X*/soporte; unidad/interferencia; mapping B→g^Af y exclusión; error y cegamiento; multiplicidad, MDE, potencia, N, R y umbrales. Se mantienen OPEN y se transfieren a sus responsables contractuales, sin bloquear la definición de campos ni convertirlas en defaults.
+
+**Dictamen:** §223 aclara la jerarquía y convierte medición y análisis en contratos registrables. C-01…C-07 son propuestas pendientes de aceptación; no cambian claim status, no identifican ΔT_acc→Value, no aprueban mediación ni autorizan implementación o ejecución.
