@@ -2254,3 +2254,19 @@ La corrección de §33 ya estaba indicada en §34 y desarrollada en §35; este a
 
 PASS de mapping no equivale a COMPLETE. 0 requiere universo y enumeración exhaustivos; desconocido/no resuelto permanece ?. Estado global: CROSSWALK_TYPED / PAR_IDENTITY_ACCEPTED / CMP_REF_RUL_MET_MAPPING_PARTIAL / DENOMINATOR_UNKNOWN / COVERAGE_NONE. No member_refs, scopes ni evidencia material.
 
+
+
+---
+## 108. Mapping NODE raíz ↔ CMP anchor (2026-11-09)
+
+| Control | Estado | Evidencia/criterio |
+|---|---|---|
+| Root NODE LOGICAL_SERVICE_UNIT | CONCEPTUALLY_ACCEPTED | DEC-C10-089 |
+| CMP↔NODE mapping contract | ACCEPTED DOCUMENTALLY | DEC-C10-082; no mapping observado |
+| SAME_ENTITY | UNKNOWN | Requiere identidad contractual 1:1 y mapping exacto |
+| DISTINCT_ENTITIES | UNKNOWN | Requiere definiciones separadas y NODE distintos |
+| CMP-SERVICE-LOGIC-001 | CANDIDATE / UNRESOLVED | No identidad demostrada |
+| CMP roster/cardinality | UNKNOWN | Falta universo contractual completo |
+| Denominator / coverage | UNKNOWN / NONE | Sin snapshot ni miembros enumerados |
+
+El gate conceptual queda especificado; el mapping material sigue OPEN. No asignar IDs ni crear registros.
