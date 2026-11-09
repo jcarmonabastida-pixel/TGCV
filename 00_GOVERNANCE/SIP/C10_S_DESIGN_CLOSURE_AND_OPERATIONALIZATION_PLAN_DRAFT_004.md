@@ -1760,3 +1760,15 @@ Se incorpora en el manifiesto de provisión §14 una adjudicación dominio por d
 
 Siguiente gate: roster de evidencia y grafo por frontera/nodo/arista/consumidor/unidad/versión/ventana, distinguiendo universo conocido y desconocido. No implementar, parametrizar ni ejecutar.
 
+
+
+## 16.87. Roster probatorio MAP-05 y reglas de captura (2026-11-09)
+
+Se desarrolla el roster dentro de la plantilla U_G §26, reutilizando los COV-D2-BM01…15 propuestos en §17.4 y los contratos de EVIDENCE_REGISTER / CLAIM_EVIDENCE_LINK / COVERAGE_REGISTER. No se crea una matriz paralela ni se alteran las identidades Nxx/Exx.
+
+El roster separa para cada dominio: afirmaciones a comprobar, destinos U_G cuando el objeto exista, clases de fuentes S1–S8, consecuencia de cobertura insuficiente y reglas de parada. Distingue además identidad/versionado, cambio inducido, dependencias compartidas, alternativas, permisos/autorización, K frente a E_T, recursos/rendimiento, residuos/interferencia e integridad del oráculo.
+
+**Estado:** DOCUMENTARY_READY / NO_SOURCE_INVENTORY / COVERAGE_NONE. Los COV-D2-BMxx siguen siendo IDs lógicos propuestos con denominador UNKNOWN; no se crean scopes ni filas. No se inventan evidence_id, NODE, EDGE, ROUTE, PREDICATE o SNAPSHOT. No hay fuente técnica examinada ni unidad cubierta. MD-C1/MD-C4 e IV-G4 permanecen OPEN; Reach=?, F_alt,0=?, A_f*=?; LATE_f^D2 y θ_Af(q_X*) no identificados.
+
+**Siguiente gate:** revisar la legitimidad del universo y su denominador por frontera P0/P1/P2, unidad, versión, etapa, ruta y clase, resolviendo los mappings C0/UDG aún abiertos antes de solicitar o capturar evidencia. No implementación ni ejecución.
+
