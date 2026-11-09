@@ -2034,3 +2034,14 @@ Se incorpora el maestro §222 como arquitectura de análisis y medición propues
 **Condiciones pendientes:** dimensiones/escala/regla Value; intervención y distribución de referencia del mediador ΔT_acc*; confusión postratamiento y modelo secuencial; población/q_X*/soporte/unidad/interferencia; mapping B→g^Af y exclusión; medición y cegamiento; parámetros de sensibilidad, MDE, potencia, precisión, N y R; umbrales del Analyzer. Los valores históricos N=2.000, R=1.000, s=.80 y .20/.80 no se elevan a parámetros confirmatorios.
 
 **Dictamen:** paquete C DOCUMENTED DESIGN PROPOSAL / NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. La identificación de ΔT_acc→Value sigue abierta. Sin código, simulación ni ejecución; scientific_execution=false; execution_authorized=false.
+
+
+## 16.101 — Especialización operativa del paquete C (2026-11-09)
+
+El maestro §223 aclara que θ_A(q) mantiene la primacía como pregunta científica C10, mientras que ITT_Z^D2 es el estimando primario de asignación únicamente dentro de S4-R. Así se evita que el estimando identificable del diseño sustituya a la pregunta científica de atribución a accesibilidad.
+
+Se propone un registro versionado por estimando con intervención/contraste, población pre-Z, unidad de asignación/análisis/interferencia, régimen C0/G/H, tratamiento/mediador, resultado específico, horizonte, escala, supuestos, missingness/medición, estimador/inferencia, estado y provenance. Cada dimensión Value tendrá ficha independiente de beneficiario/contexto, constructo, indicador/fuente/unidad, cálculo/escala/dirección, baseline/ventana, validez/error, ausencia y trade-offs. Outcome se registra aparte. No se seleccionan dimensiones, pesos, índice, MDE o parámetros estadísticos sin justificación.
+
+Resoluciones propuestas C-01…C-07: jerarquía científica/diseño; Value vectorial; no selección post hoc de dimensiones/pesos; registro de estimandos; ITT sin ajuste post-Z; dictamen por estimando/dimensión y abstención correcta; firewall Generator/Analyzer/Evaluator. Todas requieren aceptación; ninguna está congelada.
+
+**Estado:** paquete C continúa DOCUMENTED DESIGN PROPOSAL / NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. Gates materiales y estadísticos siguen OPEN; sin ejecución.
