@@ -8542,6 +8542,7 @@ Se ha actualizado documentalmente la precedencia y retirado contenido que induc�
 - `C10_S_PATH_PREDICATE_TEMPORAL_EVIDENCE_MATRIX_DRAFT_001.md`: §13.4 deja expresamente supersedida la ecuación intermedia de §59.3 y alinea la clasificación de información con los términos actuales de §67.3.
 - `C10_S_D2_AF_PREDICATE_CAUSAL_CROSSWALK_DRAFT_001.md`: se corrige la referencia que aún trataba §59.3 como fórmula depurada vigente; §59.3 es antecedente supersedido y §67.3/crosswalk son la composición candidata actual.
 - `C10_S_TRANSFORMATIONAL_SNAPSHOT_AND_DELTA_RECONCILIATION_DRAFT_001.md`: aviso de precedencia añadido; la propuesta histórica queda subordinada al maestro §58.6 y no se presenta como decisión aceptada.
+- `C10_S_DESIGN_CLOSURE_AND_OPERATIONALIZATION_PLAN_DRAFT_004.md` §§16.8–16.14: reconciliadas las fichas D2-RES/CAP/C_INFO y MEAS-G1; los mappings antiguos `R_access*/D_support*` se retiran como operativos y se alinean con `RES_f*`, `DEP_f*`, `ID_f*`/`COND_f*`; toda referencia a §59.3 como fórmula vigente queda marcada supersedida.
 - `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md`: MEAS-03 distingue validez estructural de validez/cobertura epistémica.
 
 ### 215.3. Documentos históricos conservados y criterio aplicado
