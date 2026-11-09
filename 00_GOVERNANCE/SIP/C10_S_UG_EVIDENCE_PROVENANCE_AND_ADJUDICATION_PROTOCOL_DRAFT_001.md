@@ -984,3 +984,66 @@ La evidencia de salida debe permitir reconstruir exactamente qué registros se e
 Se mantienen sin cerrar los mappings físicos/semánticos, la gramática/escaping/canonicalización del localizador y el vocabulario de predicate. Donde la resolución no sea inequívoca, el resultado será UNKNOWN.
 
 La aceptación no autoriza fixtures, parser, validator, scripts, SQL, implementación, Design Freeze, validación técnica, ejecución del control ni experimento científico. No modifica U_G ni el estado científico TGCV. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 21. Auditoría de legitimidad del universo y denominadores C0/UDG (2026-11-09)
+
+**Alcance:** auditoría documental de U_G §§17–18, protocolo §§19–20, decisiones citadas DEC-C10-065/070–076 y roster MAP-05. No se inspeccionaron sistemas ni se crearon snapshots, scopes o registros físicos.
+
+### 21.1. Precedencia normativa recuperada
+
+- **C0 / DEC-C10-070:** binding de nueve componentes: contract_id/version, instance_id/version, snapshot_id, snapshot_object_record_id, stage_key, route_id, object_class. `dimension` queda fuera de la tupla y es atributo del COVERAGE_REGISTER.
+- **DEC-C10-071:** vocabulario de siete stage_key aceptado; no se equipara con SNAPSHOT.phase ni con el reloj DGP. La etapa se declara en el envelope versionado, no en SNAPSHOT.scope.
+- **DEC-C10-072:** `C10S_SCOPE_GLOBAL` es el único token global aceptado para route_id. NULL, vacío, NONE, F y A no lo sustituyen. F/A pueden ser etiquetas auxiliares route_family.
+- **DEC-C10-073:** UDG-01/U1 aceptada documentalmente como envelope JSON autocontenido, con EXPLICIT/RULE_DEFINED, miembros tipados y declared_member_count.
+- **DEC-C10-074:** JCS + prevalidación TGCV aceptado para canonicalización/integridad; hash canónico no demuestra equivalencia semántica ni exhaustividad.
+- **DEC-C10-075:** UDG-03 aceptada como comparación semántica por dimensiones; exige universos exhaustivos y scopes/snapshots comparables para igualdad extensional.
+- **DEC-C10-076:** UDG-04 aceptada para identidad lógica/registro y referencias tipadas; no cierra mappings físicos ni crea una tabla PAR.
+- La especificación C0 sigue documental, no implementada ni auditada. Las aceptaciones UDG no son autorización de parser, validator, fixtures, schema change ni ejecución.
+
+### 21.2. Inconsistencia detectada y resolución documental
+
+U_G §17.1/§17.4 asignaba B-M01…15 a `COVERAGE_REGISTER.dimension` y presentaba `COV-D2-BMxx` como coverage_scope_id propuestos. U_G §18.6 y C0/UDG, en cambio, reservan `dimension` para C10S_CONFIG_CMP/PAR/REF/RUL/MET y exigen la tupla C0 exacta. Ambas codificaciones no pueden coexistir como valores del mismo campo sin alterar el esquema/enum.
+
+**Resolución:** B-M01…15 son dominios transversales de auditoría, no dimensiones C0. `COV-D2-BMxx` se mantiene como etiqueta lógica de planificación, no como PK/FK física ni fila COVERAGE_REGISTER. El dominio B-M se registra en las afirmaciones y su relevance_scope; cada afirmación se vincula a los scopes C0 pertinentes mediante CLAIM_EVIDENCE_LINK. `COVERAGE_REGISTER.dimension` conserva C10S_CONFIG_CMP/PAR/REF/RUL/MET. No se amplía el enum ni se añade columna. La corrección se refleja en U_G §27.
+
+### 21.3. Universo y denominador: qué cuenta y qué no
+
+1. La cuadrícula 7×5 de U_G §18.6 es un plan de hasta 35 combinaciones lógicas stage_key×object_class por el conjunto previsto de snapshots. No es un denominador material, no son 35 objetos, no es el número de fuentes y no obliga a crear 35 scopes.
+2. Cada scope material requiere una tupla C0 completa y única, con snapshot/record exactos. Sin snapshot material no existe scope instanciable.
+3. El denominador cuenta miembros del universo versionado, deduplicados por identidad tipada y registro exacto. No cuenta etiquetas B-M, scopes, claims, CLAIM_EVIDENCE_LINK, documentos ni fuentes.
+4. EXPLICIT requiere member_refs completos/resolubles; RULE_DEFINED requiere inclusion_rule_ref y dependencias cerradas, resultado reproducible y declared_member_count reconciliado. Una lista vacía no prueba universo vacío.
+5. El denominador por clase exige crosswalk de unidad:
+   - CMP: identidad contractual/versionada y NODE anchor exacto por snapshot.
+   - PAR: propiedad tipada del CMP owner, parameter_key, versión y manifest_record_id; no se inventa object_record_id ni FK PAR.
+   - REF: relación tipada con extremos y EDGE record exactos.
+   - RUL: regla/version/AST/scope y PREDICATE/operandos resueltos.
+   - MET: campo/metadata tipado con owner/target, tiempo y alcance; no se asume una tabla MET única.
+6. C0 exige route_id exacto o `C10S_SCOPE_GLOBAL`. Para route-specific, route_record_id se fija en el envelope y la pertenencia NODE/EDGE se prueba con ROUTE_STEP; PREDICATE con route_record_id. F/A no son IDs de ruta.
+7. stage_key se mantiene separado de SNAPSHOT.phase y del reloj DGP. El mapping a cada snapshot/registro concreto debe ser explícito y versionado.
+8. La dimensión C10S_CONFIG_* es distinta del dominio de auditoría B-M. Un dominio B-M puede requerir evidencia de varios scopes/clases; no se suman sus denominadores ni se crea un scope agregado sin regla de universo aceptada.
+
+### 21.4. Estado de mappings y bloqueos
+
+| Elemento | Estado documental | Qué falta para materializarlo |
+|---|---|---|
+| Contrato/versión e instancia/versión | IDs candidatos; no instanciados | Identidad contractual aprobada y versión exacta |
+| Unidad raíz / CMP anchor | Concepto N01 aceptado, mapping raíz↔CMP OPEN | Mapping exacto y roster contractual |
+| Snapshot/record | Pinning Opción A aceptado | Snapshots reales, autorizados, íntegros |
+| stage_key | Enum de siete valores aceptado | Asociación por snapshot/registro, sin colapsar phase/tiempo |
+| route_id global | Token C10S_SCOPE_GLOBAL aceptado | Aplicación por scope concreto y no colisión |
+| route_id route-specific | Semántica aceptada | route_id + route_record_id + ROUTE_STEP exactos |
+| object_class | CMP/PAR/REF/RUL/MET aceptado | Crosswalk físico y unidad de denominador por clase |
+| dimension | C10S_CONFIG_CMP/PAR/REF/RUL/MET | Regla de elegibilidad por universo; B-M queda como etiqueta de auditoría |
+| UDG envelope | U1/JCS aceptados documentalmente | Artefacto versionado real, referencias y provenance |
+| C0 | Especificación de control documental | Mapping físico completo, conjunto cerrado de filas y control autorizado |
+| Cobertura | NONE / UNKNOWN | Universo/denominador finito, fuentes examinadas/válidas y adjudicación |
+
+### 21.5. Dictamen y gate siguiente
+
+**Resultado:** `DOCUMENTARY_RECONCILIATION_PARTIAL / NO_C0_INSTANCE / NO_SNAPSHOT / DENOMINATOR_UNKNOWN / COVERAGE_NONE`.
+
+Se resolvió la contradicción documental B-Mxx↔dimension sin alterar schema: los B-Mxx son dominios de auditoría; las dimensiones C0 siguen siendo C10S_CONFIG_*; los COV-D2-BMxx son etiquetas lógicas de planificación, no scopes físicos. La legitimidad de denominadores materiales no puede cerrarse hasta resolver contract/instance, unidad raíz↔CMP, snapshots, route-specific IDs y crosswalk por clase.
+
+**Gate siguiente:** cerrar el crosswalk de identidad y unidad de denominador CMP/PAR/REF/RUL/MET —reutilizando U_G §18 y el contrato de identidad PAR— y reconciliarlo con N01/anchor CMP y N16/oráculo. No volver a diseñar UDG-01…04; no crear scopes; no capturar datos ni ejecutar C0. Sin schema change, implementación, Design Freeze o ejecución científica.
+
