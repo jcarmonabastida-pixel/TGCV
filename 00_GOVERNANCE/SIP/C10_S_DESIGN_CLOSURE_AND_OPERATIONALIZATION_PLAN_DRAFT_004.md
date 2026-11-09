@@ -104,17 +104,22 @@ Es un orden temporal/generativo, no una afirmación de mediación exclusiva. Las
 - ΔT_acc*: cambio completo del espacio accesible; A_f es solo una proyección focal.
 - Reach, trayectoria, conocimiento, selección, inicio, ejecución, Outcome y Value son constructos/eventos separados.
 
-### 4.3 Condiciones de acceso y fórmula candidata
+### 4.3 Condiciones de acceso y fórmula candidata — precedencia del crosswalk D2
 
-La matriz de §§59 y 63–64 clasifica cada condición según función causal, nivel y tiempo. La fórmula focal candidata es:
+La composición de referencia para la accesibilidad focal es la fórmula candidata depurada del maestro §67.3 / DGP §59.3 y del crosswalk D2:
 
-A_f*(i,t;τ2) = I[ID_τ2 y versión válidos ∧ C_dep*(i,t)=1 ∧ C_auth_base(i,t)=1 ∧ R_access*(i,t)=1 ∧ D_support*(i,t)=1].
+`A_f^*=I(ID_f^* ∧ REL_f^* ∧ COND_f^* ∧ AUTH_f^* ∧ RES_f^* ∧ DEP_f^* ∧ ¬BLOCK_f^*)`.
 
-App_f*(i,t) = I[Pre_τ2(S0_i,t, historia_i,t)=1].
+La fórmula anterior de esta sección, que expresaba la conjunción mediante `C_dep^*`, `C_auth_base`, `R_access^*` y `D_support^*`, queda supersedida como representación operativa por el crosswalk. Se conserva la correspondencia funcional, no una duplicación de factores:
 
-Esta fórmula es una operacionalización candidata para S4-R, no una definición universal ni una decisión cerrada. C_auth_base, recursos, capacidad, información, dominio y bloqueos deben clasificarse y descomponerse; no se agrupan en C_other. R_access* solo incluye disponibilidad de recursos necesarios para poner τ2 a disposición, no el consumo de una ejecución. D_support* representa soporte del dominio/tipo de objeto, no precondiciones particulares de S0. App_f no redefine A_f.
+- `C_auth,base=1` es la condición basal común e invariante D2 por DEC-C10-067; `C_auth_base` se corresponde con `AUTH_f^*`, no es un factor independiente.
+- `C_dep^*` y sus cuatro componentes técnicos se representan dentro de `DEP_f^*` para la ruta focal; no sustituyen el resto de predicados.
+- Disponibilidad ex ante necesaria de recursos/capacidad puede contribuir a `RES_f^*` solo si se distingue del consumo de ejecución y no duplica dependencias.
+- `D_support^*` debe mapearse a identidad/tipo o `COND_f^*` según su función material; el mapping final sigue abierto.
+- `C_info` no es un factor autónomo; `C_other` queda excluido como comodín.
+- Validez/cobertura de evidencia y `E_T` son epistémicos, no términos de truth estructural. `App_f^*` se evalúa separadamente desde S0.
 
-C_dep* = C_install* ∧ C_integrity* ∧ C_compat* ∧ C_oper*. Los componentes no se presumen independientes. Debe definirse su distribución conjunta de 16 patrones o generador equivalente; el éxito condicional candidato s=.80 no es dato empírico ni calibración aprobada.
+La fórmula es candidata, no universal ni congelada. Siguen abiertas la operacionalización material de `RES_f^*`, el mapping `D_support^*`, los catálogos REL/COND/BLOCK, el inventario de rutas y su evidencia. `C_dep^*`, `A_f^*`, `D_f^*` y `ΔT_acc^*` deben medirse y analizarse por separado.
 
 ### 4.4 Snapshot estructural y evidencia
 
@@ -341,7 +346,7 @@ La reconstrucción desde memoria debe etiquetarse como tal cuando no exista fuen
 
 ### 15.2. Estado de recuperación de las fichas de invariantes
 
-La inspección de los artefactos actuales confirma que el maestro consolidado, §§46–47, contiene una arquitectura preliminar de condiciones de elegibilidad y clasificación: `C_auth,base`, `C_resource`, `C_capacity`, `C_info`, `C_domain`, `C_other,j`, `C_dep,0` y `A_f,0*`; incluye regla conjuntiva, estados cumplida/incumplida/indeterminada/no aplicable y pruebas ELIG-01…12. También distingue condiciones estructurales de calidad/cobertura de evidencia. Estos contenidos son antecedentes útiles, pero el propio maestro declara que cada condición requiere ficha operacional completa.
+La inspección confirma que §§46–47 del maestro contienen una formulación histórica/preliminar de elegibilidad con `C_auth,base`, `C_resource`, `C_capacity`, `C_info`, `C_domain`, `C_other,j`, `C_dep,0` y `A_f,0*`. Se conserva como antecedente para reconstruir condiciones y pruebas ELIG-01…12, no como fórmula operativa vigente de `A_f*` ni como contrato cerrado de elegibilidad. La precedencia de la composición focal corresponde al maestro §67.3 y al crosswalk D2: `C_auth,base`→`AUTH_f*`; recursos/capacidad→`RES_f*` solo si son disponibilidad ex ante necesaria/no duplicada; `C_info` no es factor autónomo; `C_other` no es admisible como comodín. La elegibilidad poblacional sigue requiriendo un contrato propio.
 
 La recuperación conversacional disponible aporta solo una **reconstrucción parcial**, no el texto original completo:
 
