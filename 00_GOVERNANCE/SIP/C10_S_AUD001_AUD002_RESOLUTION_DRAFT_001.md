@@ -6,6 +6,8 @@
 **Hallazgos abordados:** AUD-C10S-001 y AUD-C10S-002.  
 **Naturaleza:** especificación conceptual y matemática preliminar; no es código, ejecución, preregistro ni evidencia científica.
 
+**Aviso de precedencia vigente (2026-11-09):** este documento conserva una propuesta histórica NO ACEPTADA que intervenía focalmente sobre autorización. No es el contrato operativo del D2 primario candidato. DEC-C10-066/067 establecen D2 primario candidato/D1 secundario y políticas materiales D2 de provisión técnica focal, con `C_auth,base=1` común e invariante. La autorización basal y `AUTH_f*` permanecen vigentes; lo no primario es la intervención focal sobre autorización. Este documento solo puede reutilizarse como antecedente o escenario alternativo/adversarial, con estimando de política propio.
+
 ---
 
 ## 1. Decisión de diseño propuesta
