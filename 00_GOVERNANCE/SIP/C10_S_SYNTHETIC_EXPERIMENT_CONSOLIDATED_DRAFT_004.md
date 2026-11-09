@@ -9051,3 +9051,90 @@ Se registra la aceptación de las resoluciones de diseño material descritas en 
 La decisión no elige REF frente a AST físico, no asigna H*, probabilidades D2, q_X*, tamaño de población ni topología de cluster. MD-C1/MD-C4 y la independencia/cegamiento/adjudicación del oráculo requieren evidencia material. Los estimandos ITT-Z-D2, efecto de paquete, LATE_f, θ_Af(q_X*) y θ_A(q) siguen diferenciados y se transfieren a C sin afirmar identificación.
 
 **Estado:** ACCEPTED WORKING DESIGN RESOLUTIONS; AB sigue IN_PROGRESS / NOT DONE / NOT IMPLEMENTABLE. No Design Freeze, código, fixture ejecutable, parser, validator, simulación ni experimento. `scientific_execution=false`; `execution_authorized=false`. Fuente decisoria: DEC-C10-094.
+
+
+# 221. Interfaz contractual AB→C — estimandos, medición y reglas de atribución (2026-11-09)
+
+**Propósito.** Convertir la frontera descrita en §219.7 y DEC-C10-094 en un contrato de transferencia verificable. Este apartado no vuelve a especificar AB ni selecciona un estimador final; establece qué entrega AB, qué debe construir C, qué no puede inferirse y qué condiciones bloquean cada conclusión.
+
+## 221.1. Regla de separación de objetos
+
+C debe conservar como objetos distintos, con identificadores, población, régimen, horizonte, versión y escala propios:
+
+| Objeto | Definición/interpretación | Estado y regla |
+|---|---|---|
+| ITT_Z^D2 | Contraste por asignación Z a las políticas materiales D2 | Primario para el efecto de asignación; no condicionar por variables post-Z |
+| FS_Cdep^D2 | Efecto de Z sobre C_dep* | Primera etapa técnica; no sustituye accesibilidad |
+| FS_Af^D2 | Efecto de Z sobre A_f* | Primera etapa funcional de accesibilidad; medir separadamente |
+| FS_Df^D2 | Efecto de Z sobre apertura focal D_f* | No inferir desde instalación ni desde C_dep* |
+| ψ_policy^D2 | Efecto de la política/paquete material B, incluidas todas sus vías | Requiere definir el contraste y estrategia; no renombrar ITT cuando hay incumplimiento |
+| ψ_B(q_X*) | Efecto de versiones recibidas de B bajo población/régimen especificados | No identificado por aleatorizar Z sin tratar incumplimiento y consistencia de versiones |
+| LATE_f^D2 | Efecto local de D_f* entre compliers inducidos por Z | Secundario; NOT_IDENTIFIED / NOT_READY_FOR_WALD hasta superar todos los gates IV |
+| θ_Af(q_X*) | Contraste poblacional focal bajo políticas de accesibilidad g^Af | No identificado; exige mapping B→g^Af, población, soporte y control/separación de vías colaterales |
+| θ_A(q) | Pregunta científica general sobre políticas factibles que inducen cambios estructurados de ΔT_acc | No sustituible por D2 focal ni por ITT |
+| Mediación / efecto indirecto | Efecto bajo intervención mediadora explícita | Estimando propio; requiere régimen, población, horizonte y tratamiento de confusión postratamiento |
+| Efecto residual/directo | Componente de una descomposición causal formal | No se obtiene restando estimandos distintos ni por diferencia de ITT y efecto focal |
+
+La notación debe seguir el contrato de jerarquía de estimandos de C10-D1/S4-R §18. No introducir sinónimos que colapsen estos objetos.
+
+## 221.2. Paquete de entrada obligatorio de AB a C
+
+Cada réplica/escenario debe transportar, con identidad y versión:
+
+1. **Unidad y población:** identificador de unidad, unidad de asignación, unidad de análisis, cluster/interferencia; algoritmo y roster de elegibilidad pre-Z; definición de P*_τ2, P*_F y q_X* sin intercambiarlos.
+2. **Intervención:** asignación Z; versión de B_g0^D2/B_g1^D2; programación, intento, recepción, cumplimiento, instalación, reintentos, fallo parcial, rollback, provisión de fondo, crossover y desviaciones como eventos distintos.
+3. **Régimen basal:** snapshot C0, G, H y ancla temporal; versiones de runtime, permisos, recursos, configuración, medición y oráculo.
+4. **Mecanismo técnico:** estados separados de instalación, integridad, compatibilidad y operatividad; distribución conjunta condicional de C_dep*; no usar independencia ni probabilidades marginales como sustituto.
+5. **Accesibilidad y transformación:** A_f,base*, predicados ID/REL/COND/AUTH/RES/DEP/BLOCK, A_f,post*, D_f*, dimensiones y relaciones de ΔT_acc*; ΔE_T y cobertura de evidencia en canal separado.
+6. **Vías colaterales:** mapa de superficies B-M/PROV con evidencia por unidad, nodo/arista, consumidor, versión y ventana; estados PASS/FAIL/? y cobertura. Contratos definidos no equivalen a pruebas superadas.
+7. **Resultados:** Outcome, Value y sus dimensiones con reglas de cálculo, escala, ventana, fuente, versión y missingness preespecificadas; conservar Outcome y Value separados.
+8. **Epistemología del DGP:** truth tables/potenciales, variables observadas, estado de medición, cobertura, adjudicación y etiquetas de escenario en canales separados. El Analyzer no recibe truth, potenciales ni etiquetas ocultas.
+9. **Soporte y transporte:** distribución de covariables basales, soporte común, positividad, celdas sin soporte y pesos/estandarización si se justifican; no extrapolar ni redefinir q_X* tras observar resultados.
+
+La ausencia de cualquiera de estos campos se codifica como OPEN/UNKNOWN con razón y efecto sobre el análisis; no se rellena por default.
+
+## 221.3. Salidas obligatorias de C
+
+C debe producir resultados separados y trazables:
+
+- Balance y conformidad de asignación, consistencia de versiones, pérdidas, contaminación, crossover e interferencia.
+- ITT por Outcome y por cada dimensión de Value preespecificada, con incertidumbre y diagnóstico de validez del diseño.
+- Primeras etapas FS_Cdep, FS_Af y FS_Df, cada una con denominador, población, ventana y evidencia propios.
+- Efecto de paquete/política cuando el contraste esté definido; descomposición descriptiva de vías sin atribuirles causalidad automáticamente.
+- Dictamen IV por supuesto (relevancia, independencia, exclusión, monotonicidad, consistencia/versiones, interferencia y medición); no estimación Wald causal si algún gate material falla o permanece no defendido.
+- Dictamen explícito sobre mapping B→g^Af, soporte y población antes de cualquier θ_Af(q_X*).
+- Estimandos de mediación/residual solo si se han definido y defendido identificación, escala, horizonte y régimen comunes.
+- Recuperación del DGP: comparación de estimando verdadero conocido frente a estimación/intervalo del Analyzer, con métricas de sesgo, cobertura, error, calibración y tasa de abstención/NO_IDENTIFIED. Los criterios y umbrales se fijan antes de ejecutar; no se inventan en esta interfaz.
+- Registro de fallos de identificación: estimador que rechaza correctamente identificar debe distinguirse de un estimador que falla en recuperar un efecto identificado.
+
+## 221.4. Reglas de interpretación y no sustitución
+
+1. ITT estima asignación a D2 bajo los supuestos del diseño; si B activa vías colaterales, se interpreta como efecto de política/paquete, no como efecto exclusivo de accesibilidad.
+2. FS_Cdep, FS_Af y FS_Df son primeras etapas diferentes. Una primera etapa técnica no demuestra apertura funcional ni cambio estructural.
+3. La aleatorización de Z no identifica automáticamente efecto de recibir B, LATE, θ_Af ni θ_A.
+4. No ajustar mecánicamente por mediadores post-Z ni condicionar por recepción, cumplimiento, A_f*, selección o ejecución al estimar ITT.
+5. No calcular un «residual» mediante ITT−θ_Af, TE−θ_A o diferencias entre escalas/poblaciones/horizontes no armonizados.
+6. La contribución de ΔT_acc→Value exige variación causal de accesibilidad, medición independiente de ΔT_acc, soporte y separación de vías alternativas/directas e interacciones. El éxito del Analyzer en recuperar truth sintética no constituye evidencia empírica externa de la relación.
+7. Si la verdad es conocida en un DGP, se usa para evaluar el Analyzer, nunca como covariable o entrada del Analyzer.
+
+## 221.5. Matriz de gates por conclusión
+
+| Conclusión pretendida | Gates mínimos | Si no se satisfacen |
+|---|---|---|
+| ITT de asignación D2 | Z/asignación, unidad, consistencia, seguimiento, Outcome/Value y diseño de interferencia | Descriptivo o no identificado según fallo |
+| Efecto de paquete B | Contraste/versiones recibidas, adherencia, interferencia y estrategia para incumplimiento | Mantener solo ITT de asignación o descriptivo |
+| LATE_f^D2 | Relevancia, independencia, exclusión, monotonicidad, consistencia, interferencia y medición focal | NOT_IDENTIFIED; no Wald causal |
+| θ_Af(q_X*) | Mapping B→g^Af, población/roster, q_X*, soporte/positividad, régimen y vías colaterales controladas/separadas | NOT_IDENTIFIED / NO TRANSPORT |
+| θ_A(q) | Políticas factibles sobre ΔT_acc, población q, Outcome/Value, horizonte y estrategia identificadora adecuados | Pregunta general abierta; D2 no la sustituye |
+| Mediación / residual | Intervención mediadora, confusión postratamiento, escala/horizonte/régimen comunes y descomposición identificada | No atribuir ni restar efectos |
+| Validez del Analyzer | Truth independiente, no leakage, DGP versionado, métricas/umbrales preespecificados | Resultado de validación no concluyente |
+
+## 221.6. Transferencia y precedencia
+
+- AB conserva sus gates materiales abiertos: REF/AST físico/serialización; H; MD-C1/MD-C4; parámetros conjuntos D2; roster/q_X*/soporte; topología de unidad/interferencia; oráculo/adjudicación.
+- C puede avanzar en el contrato de estimandos, diccionario de variables, protocolo de medición y especificación analítica sin fijar esos valores ni declararlos satisfechos.
+- C no puede cerrar identificación, potencia, N, estimador final de Value o criterio confirmatorio hasta disponer de entradas AB versionadas y resolver sus propios supuestos.
+- La reconciliación C10-D1/S4-R §18 y la auditoría IV existente conservan precedencia en sus dominios. Este §221 actúa como interfaz y no las supersede.
+- Sin Design Freeze, implementación, parser, validator, fixture ejecutable, simulación ni experimento. scientific_execution=false; execution_authorized=false.
+
+**Estado de interfaz AB→C:** CONTRACT_DEFINED / MATERIAL INPUTS OPEN / IDENTIFICATION NOT ESTABLISHED.
