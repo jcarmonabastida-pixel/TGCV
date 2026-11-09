@@ -2482,3 +2482,20 @@ PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-
 **Gates materiales:** dimensiones/indicadores Value, Outcome, H, régimen de mediación, población/soporte, unidad/interferencia, mapping B→g^Af, exclusión, medición/cegamiento, multiplicidad, MDE, potencia, N, R y umbrales.
 
 **Dictamen:** especialización operativa propuesta; no aceptada ni congelada. No cambia el estado científico ni autoriza implementación/ejecución.
+
+
+## 120. Paquete C — contrato de medición Outcome/Value (2026-11-09)
+
+| Control | Criterio de salida | Estado |
+|---|---|---|
+| O-FICHA | Cada indicador Outcome tiene constructo, unidad, fuente, cálculo, baseline, ventana y missingness | OPEN |
+| V-FICHA | Cada dimensión Value tiene beneficiario/contexto, constructo, indicador, escala, dirección, baseline/ventana y trade-offs | OPEN |
+| O/V-SEPARATION | Outcome y Value no se sustituyen ni se reutilizan circularmente | PROPOSED |
+| ADJUDICATION | A/ΔT_acc se adjudican sin consultar O/V; desacuerdo y error registrados | OPEN |
+| FIREWALL | Analyzer no recibe truth ni etiquetas ocultas; Evaluator separado | PROPOSED |
+| OBS-STATE | Estados de observación y ausencia no se colapsan en cero/UNKNOWN | PROPOSED |
+| PREFSPEC | Dimensiones confirmatorias, multiplicidad y reglas fijadas ex ante | OPEN |
+
+**Gates:** microdominio/beneficiarios; indicadores y fuentes; escalas/unidades; horizonte H y ventanas; validez/error/acuerdo; cegamiento viable; ausencia/censura; trade-offs; multiplicidad y umbrales.
+
+**Dictamen:** se define la estructura de medición, no sus valores materiales. No se declara operacionalización completada ni se autoriza implementación/ejecución.
