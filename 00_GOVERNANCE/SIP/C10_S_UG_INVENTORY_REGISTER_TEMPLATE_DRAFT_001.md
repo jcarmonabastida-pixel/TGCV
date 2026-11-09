@@ -603,7 +603,7 @@ La matriz precedente constituye la especificación documental de orden de column
 
 La tabla determina **qué buscar y dónde registrarlo si se encuentra**, no afirma que exista. Los Nxx/Exx remiten a la matriz de cobertura §9 y al catálogo §10.
 
-| Dominio de auditoría | NODE / EDGE | ROUTE | PREDICATE | SNAPSHOT / evidencia | Dimensión de cobertura |
+| Dominio de auditoría | NODE / EDGE | ROUTE | PREDICATE | SNAPSHOT / evidencia | Dominio de auditoría (B-M; no dimension C0) |
 |---|---|---|---|---|---|
 | B-M01 Artefacto/versión | NODE candidatos N04, N06; EDGE E02–E04, solo si se observan carga/dependencia reales | Rτ2 si integra una ruta material identificada | ID-τ2, DEP-τ2, REL-τ2 | Capturas/hash de paquete, manifiesto/SBOM y versiones; evidencia de procedencia | B-M01-ARTEFACTO_VERSION |
 | B-M02 Runtime | NODE candidatos N05, N06, N18, N20, N21; EDGE E03, E04, E16, E19, E20, solo con relación observada | Rτ2 y rutas compartidas/externas solo si se demuestra participación | DEP-τ2, RES-τ2, ALT-DEP, EXT; Rshared/Rexternal | Configuración/runtime, aislamiento, librerías, cuotas, dependencias y consumidores pre/post | B-M02-RUNTIME |
@@ -631,9 +631,9 @@ Una misma entidad puede ser relevante para varios B-Mxx; se mantiene una sola id
 - EVALUATOR_ASSESSMENT E1/E2 se registra por separado y cegado cuando sea factible; ADJUDICATION_REGISTER solo cuando haya discrepancia. No se inventan evaluadores ni se marca revisión independiente por declaración.
 - Un estado observado 1/0 exige vínculo válido y alcance compatible. Un 0 exige cobertura negativa suficiente. Si la fuente falta, es opaca, contradictoria o no cubre el objeto/ventana, mantener ? con `unknown_reason`; MISSING/CONFLICTING no son 0.
 
-### 17.4. Instancias de cobertura previstas para B-M01…15
+### 17.4. Etiquetas lógicas de planificación para los dominios B-M01…15
 
-Se reservan los siguientes identificadores lógicos para scopes D2. Son **filas de planificación de cobertura**, no observaciones ni registros físicos creados. Al materializar COVERAGE_REGISTER se completarán sus campos según §12.3; hasta entonces no deben enlazarse desde NODE/EDGE/ROUTE/PREDICATE.
+Se conservan las siguientes etiquetas lógicas para planificar dominios de auditoría D2. No son coverage_scope_id ni filas COVERAGE_REGISTER; no son observaciones ni registros físicos creados. Al materializar COVERAGE_REGISTER se completarán sus campos según §12.3; hasta entonces no deben enlazarse desde NODE/EDGE/ROUTE/PREDICATE.
 
 | etiqueta lógica de planificación (no coverage_scope_id físico) | dominio de auditoría | universe_definition/version | denominator_unit_and_count | expected_sources (clases, no fuentes supuestas) | examined_sources / valid_sources / covered_units | opaque_or_unknown_units | status actual |
 |---|---|---|---|---|---|---|---|
@@ -1108,7 +1108,7 @@ No se fijan nombres de columnas, IDs físicos, formato, parser, serialización d
 ### 26.1. Regla de uso y destinos
 
 1. Una fila de este roster describe una familia de afirmaciones que habrá que formular si aparece evidencia, no una afirmación observada ni un claim físico ya creado.
-2. B-Mxx identifica la dimensión de auditoría. No es NODE, EDGE, ROUTE, PREDICATE ni parent_catalog_id.
+2. B-Mxx identifica el dominio transversal de auditoría, no la dimension C0. No es NODE, EDGE, ROUTE, PREDICATE ni parent_catalog_id.
 3. Se crea EVIDENCE_REGISTER por fuente/artefacto y versión exacta; los vínculos CLAIM_EVIDENCE_LINK se crean por evidencia × afirmación × destino, con alcance exacto. Una fuente puede soportar varias afirmaciones solo si la pertinencia se argumenta por separado.
 4. Para afirmaciones sobre NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT se usa el destino tipado correspondiente y sus FKs exactas. Para una afirmación cuyo objeto sea la completitud/estado del scope, se usa COVERAGE_SCOPE. Para una fila PAR del manifiesto se aplica exclusivamente DEC-C10-080/081: target COVERAGE_SCOPE exacto C10S_CONFIG_PAR, localizador PAR y control independiente; no se simula FK PAR.
 5. No crear un claim negativo por no encontrar artefacto. Un resultado 0 exige universo, método de enumeración, sensibilidad/capacidad de detección y cobertura negativa suficiente. Si falta cualquiera, ?.
@@ -1116,7 +1116,7 @@ No se fijan nombres de columnas, IDs físicos, formato, parser, serialización d
 
 ### 26.2. Roster por dominio B-M
 
-| Scope lógico existente | Afirmaciones que se deberán distinguir | Destino U_G cuando exista el objeto | Fuentes mínimas a solicitar (clases S1–S8 del protocolo) | Consecuencia si falta cobertura |
+| Etiqueta lógica de dominio (no scope C0) | Afirmaciones que se deberán distinguir | Destino U_G cuando exista el objeto | Fuentes mínimas a solicitar (clases S1–S8 del protocolo) | Consecuencia si falta cobertura |
 |---|---|---|---|---|
 | COV-D2-BM01 | Identidad/versión del artefacto; integridad; dependencias declaradas frente a cargadas; compatibilidad | NODE N04/N06 y EDGE reales; PREDICATE ID/DEP/REL; SNAPSHOT | S1 SBOM/lock/manifiesto + S4 hash/firma + S3 carga runtime + S6 compatibilidad | DEP/ID=?; no afirmar C_dep ni primera etapa |
 | COV-D2-BM02 | Runtime efectivo; aislamiento; librerías y consumidores; recursos compartidos; llamadas/carga tardía | NODE N05/N06/N18/N20/N21 y EDGE observadas; PREDICATE DEP/RES/EXT; SNAPSHOT | S2 configuración + S3 procesos/módulos/trazas + S4 imágenes/snapshots + S8 cierre transitivo | Rshared/Rexternal y spillover=?; exclusión abierta |
@@ -1138,7 +1138,7 @@ Las clases S1–S8 son familias de fuentes del protocolo, no fuentes que se afir
 
 ### 26.3. Roster de afirmaciones transversales MAP-05
 
-| Familia de afirmación | Scope/destino | Criterio probatorio |
+| Familia de afirmación | Dominio lógico / destino U_G | Criterio probatorio |
 |---|---|---|
 | Identidad/versión de B y artefacto | COV-D2-BM01/BM02; NODE/EDGE/SNAPSHOT aplicables | Igualdad exacta de identidad y versión; hash/integridad y vínculo temporal |
 | Cambio inducido por B | Scopes BM pertinentes; NODE/EDGE/SNAPSHOT | Comparación basal/post/rollback con misma frontera, unidad y régimen; separar cambio configurado de observado |
@@ -1176,7 +1176,7 @@ Las clases S1–S8 son familias de fuentes del protocolo, no fuentes que se afir
 
 ## 27. Auditoría de legitimidad de universos y denominadores C0/UDG (2026-11-09)
 
-**Precedencia correctiva sobre §§17.1, 17.4 y 26:** B-M01…15 son dominios transversales de auditoría de la provisión, no valores de `COVERAGE_REGISTER.dimension` ni identidades físicas de `coverage_scope_id`. Las etiquetas `COV-D2-BM01…15` se conservan únicamente como identificadores lógicos de planificación/agrupación del trabajo probatorio. No se materializan como filas COVERAGE_REGISTER ni se usan como FK C0 mientras no exista una decisión específica que reconcilie su función con el esquema vigente.
+**Precedencia correctiva sobre §§17.1, 17.2, 17.4 y 26:** B-M01…15 son dominios transversales de auditoría de la provisión, no valores de `COVERAGE_REGISTER.dimension` ni identidades físicas de `coverage_scope_id`. Las etiquetas `COV-D2-BM01…15` se conservan únicamente como identificadores lógicos de planificación/agrupación del trabajo probatorio. No se materializan como filas COVERAGE_REGISTER ni se usan como FK C0 mientras no exista una decisión específica que reconcilie su función con el esquema vigente.
 
 La frase de §17.1 que asignaba B-Mxx a `COVERAGE_REGISTER.dimension` queda supersedida. En la captura C10-S, `dimension` conserva el vocabulario `C10S_CONFIG_CMP/PAR/REF/RUL/MET` de §18.6. La dimensión es atributo del scope, fuera de la tupla C0 de nueve componentes. El dominio B-Mxx se conserva en `claim_statement`, `relevance_scope` y trazabilidad del roster; una afirmación puede vincularse a uno o más scopes C0 exactos mediante CLAIM_EVIDENCE_LINK, sin fusionar denominadores.
 
