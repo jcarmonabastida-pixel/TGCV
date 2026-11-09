@@ -8855,3 +8855,14 @@ La propuesta deja deliberadamente sin valor inventado:
 La propuesta recomendada es adoptar como instancia mínima el servicio lógico ya aceptado, con dos PAR, una regla REQUIRE, mapping ENUM total entre namespaces sintéticos, dos rutas completas bajo F* común y B limitado a provisión focal. La decisión del usuario debe resolver únicamente las opciones no deducibles de las DEC: roster REF/AST, namespaces y codificación ENUM, perfil FP-05, y si se acepta el alcance G propuesto. H y parámetros estocásticos se resuelven después como decisiones de diseño explícitas, no como parte de la aceptación semántica de la instancia.
 
 Hasta esa decisión, §217 es propuesta de trabajo, no verdad canónica aceptada. No se declara AB DONE, no se sella IAM, no se congela F*, no se crea fixture ejecutable y no se autoriza código, simulación ni experimento. scientific_execution=false; execution_authorized=false.
+
+
+---
+
+# 218. DEC-C10-093 — aceptación de la base de especialización AB (2026-11-09)
+
+Se acepta §217 como **base de diseño de trabajo** del paquete AB, con las reservas explícitas de DEC-C10-093. Quedan fijados como base de continuidad la instancia de DEC-C10-069, el núcleo ENABLED/PROFILE/REQUIRE de DEC-C10-068, las dos rutas F1/F2 y A1/A2 bajo un criterio F* común no compensatorio, el mapping semántico candidato total e inyectivo y la separación de B como provisión técnica D2. FP-08 sigue separado como gate probatorio.
+
+No se reabren estas elecciones conceptuales. La aceptación no congela los detalles materiales aún abiertos: representación REF/AST, namespaces/serialización, roster IAM/cobertura, FP-05, G/C0/H, mecanismo y distribución D2, aislamiento MD-C1/MD-C4, población/soporte/interferencia y oráculo/cegamiento/adjudicación. Estos asuntos se resolverán coordinadamente dentro del paquete AB o se transferirán expresamente al paquete correspondiente.
+
+**Estado:** ACCEPTED WORKING DESIGN BASE; AB sigue IN_PROGRESS. No Design Freeze, implementación, fixture ejecutable, código, simulación ni experimento. scientific_execution=false; execution_authorized=false. Fuente decisoria: 00_GOVERNANCE/decisions/DEC-C10-093_AB_PACKAGE_BASE_SPECIALIZATION_ACCEPTANCE.md.
