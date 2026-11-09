@@ -106,7 +106,7 @@ Es un orden temporal/generativo, no una afirmación de mediación exclusiva. Las
 
 ### 4.3 Condiciones de acceso y fórmula candidata — precedencia del crosswalk D2
 
-La composición de referencia para la accesibilidad focal es la fórmula candidata depurada del maestro §67.3 / DGP §59.3 y del crosswalk D2:
+La composición de referencia para la accesibilidad focal es la fórmula candidata depurada del maestro §67.3 y del crosswalk D2; la ecuación intermedia de §59.3 queda supersedida: 
 
 `A_f^*=I(ID_f^* ∧ REL_f^* ∧ COND_f^* ∧ AUTH_f^* ∧ RES_f^* ∧ DEP_f^* ∧ ¬BLOCK_f^*)`.
 
@@ -426,7 +426,7 @@ La auditoría cruzada se completó el 2026-11-06; sus resultados, límites y cor
 
 C10-S permanece en fase de cierre de diseño. Los ocho bloques pendientes son:
 
-1. Arquitectura: reconciliar condiciones, relaciones, bloqueos y solapamientos entre `R_access*`, `D_support*`, `C_dep*` y predicados.
+1. Arquitectura: reconciliar condiciones, relaciones, bloqueos y solapamientos entre `RES_f*`, `ID_f*`, `COND_f*`, `DEP_f*` y predicados; conservar `R_access*`/`D_support*` solo como nombres históricos de mappings intermedios.
 2. Contraste causal: formalizar ITT D2, estimando de accesibilidad, régimen común y vías alternativas.
 3. Población/unidad/soporte: elegibilidad, asignación/análisis, versiones `τ2`, consistencia, interferencia, cumplimiento y compliers.
 4. Medición: `T_acc`, Reach, trayectorias, ejecución, Outcome y Value; fuentes, ventanas, adjudicación y separación verdad DGP/observación.
@@ -564,7 +564,7 @@ La ficha protege el supuesto de que la política D2 no modifica autorización no
 
 **Dictamen:** el crosswalk conceptual de D2-RES-01 está completado y persistido. Permanecen abiertos la operacionalización de suficiencia, la conciliación material de §46.2 con la fórmula candidata §67.3, inventario y consumidores, PROV-05/09, MD-C1/MD-C4, interferencia/unidad y la atribución específica a accesibilidad. La asignación antigua a `R_access*` de §59.3 es histórica/supersedida; la referencia actual es `RES_f*`. No se modifica DEC-C10-066/067, no se aprueba D2-RES-01 y no se autoriza implementación ni ejecución.
 
-**Siguiente ficha:** D2-CAP-01. El trabajo deberá resolver primero el límite entre capacidad necesaria para ofrecer τ2 (posible condición de acceso), capacidad focal ya contenida en C_dep*, y capacidad/margen dependiente de carga o estado (aplicabilidad/ejecución), sin duplicar R_access* ni C_resource.
+**Siguiente ficha:** D2-CAP-01. El trabajo deberá resolver primero el límite entre capacidad necesaria para ofrecer τ2 (posible contribución a `RES_f*`), capacidad focal ya contenida en `DEP_f*` a través de `C_dep*`, y capacidad/margen dependiente de carga o estado (aplicabilidad/ejecución), sin duplicar `RES_f*` ni `C_resource`.
 
 ### 16.8. Crosswalk causal ficha D2-CAP-01 — capacidad no focal (2026-11-06)
 
@@ -855,7 +855,7 @@ No se modifican DEC-C10-066/067 ni el estado de autorización. No hay freeze, im
 **Dictamen:** concepto parcialmente estabilizado; medición observacional no cerrada. Se separan `S_T^*`, `E_T`, `A_f^*), `A_f^{obs}`, `D_f^*) y `D_f^{obs}`; `ΔT_acc^*) no se confunde con `ΔE_T).
 
 Hallazgos:
-1. La conjunción de DGP §3.3 no está reconciliada con las fichas: `C_info` aparece en la fórmula aunque el crosswalk mantiene su inclusión autónoma pendiente; recursos/capacidad también requieren desduplicación.
+1. **Hallazgo histórico ya reconciliado conceptualmente:** la conjunción antigua de DGP §3.3 incluía `C_info` y condiciones de recursos/capacidad sin desduplicación suficiente. No es la composición operativa vigente; prevalece §67.3/crosswalk D2. El inventario y mapping material de cada condición siguen abiertos, pero `C_info` no es factor autónomo y los recursos/capacidad solo contribuyen a `RES_f*` si son necesarios ex ante y no duplicados.
 2. Matching de τ2, frontera, unidad/contexto, granularidad, catálogo y mapping son requisitos de comparabilidad; unresolved implica `D_f^{obs}=?`.
 3. DEC-C10-065 acepta pinning exacto, pero UG-SCH-10 permanece abierto; no hay validación técnica de pertenencia/FKs/constraints.
 4. La cobertura de rutas alternativas/compartidas/externas/desconocidas es NONE en la plantilla; ausencia de evidencia no equivale a inaccesibilidad.
