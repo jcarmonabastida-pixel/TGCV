@@ -1694,6 +1694,8 @@ Se aplicó el criterio de retirada selectiva: eliminar o sustituir texto operati
 - Reconciliación de población: fórmula histórica de elegibilidad y selección D1/D2 abiertas retiradas como reglas operativas.
 - Propuestas AUD-001/002 y auditoría integrada de consistencia: avisos explícitos de no operatividad para D2.
 - Este plan §4.3: fórmula focal alineada con maestro §67.3 y crosswalk D2; elegibilidad histórica separada.
+- Maestro §59.3: ecuación intermedia anterior sustituida por registro histórico no operativo; §59.4–59.6 alineadas con la autorización basal D2.
+- Matriz temporal de predicados §13.4: fórmula intermedia §59.3 declarada supersedida y correspondencia de información técnica alineada con §67.3.
 - Test Contract Register MEAS-03: validez/cobertura epistémica separada de truth estructural.
 
 **Fuentes históricas conservadas:** Draft 001–003 del plan, MRA 001–002, registro de recuperación 165–183, formulaciones históricas de DGP, matriz temporal §30.1 y demás registros con supersesión explícita. No se borró el historial Git ni se modificó `main`.
