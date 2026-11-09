@@ -1772,3 +1772,17 @@ El roster separa para cada dominio: afirmaciones a comprobar, destinos U_G cuand
 
 **Siguiente gate:** revisar la legitimidad del universo y su denominador por frontera P0/P1/P2, unidad, versión, etapa, ruta y clase, resolviendo los mappings C0/UDG aún abiertos antes de solicitar o capturar evidencia. No implementación ni ejecución.
 
+
+
+## 16.88. Auditoría de legitimidad del universo y denominadores C0/UDG (2026-11-09)
+
+Se auditó la precedencia entre U_G §§17–18, el protocolo de evidencia §§19–20 y los contratos C0/UDG aceptados documentalmente (DEC-C10-070…076). Se detectó una contradicción interna: §17.1/§17.4 trataba B-M01…15 como valores de COVERAGE_REGISTER.dimension y COV-D2-BMxx como coverage_scope_id; §18.6/C0 limita dimension a C10S_CONFIG_CMP/PAR/REF/RUL/MET y exige la tupla C0 de nueve componentes.
+
+**Corrección persistida en U_G §27:** B-M01…15 son dominios de auditoría transversales; COV-D2-BMxx son etiquetas lógicas de planificación, no scopes físicos ni FK. Se conserva dimension=C10S_CONFIG_*; el dominio B-M se registra en claim_statement/relevance_scope y enlaza a scopes C0 exactos mediante CLAIM_EVIDENCE_LINK. No se amplía enum ni se añade columna.
+
+La auditoría también separa la cuadrícula 7×5 (hasta 35 combinaciones lógicas, no denominador ni obligación de crear filas), los universos UDG EXPLICIT/RULE_DEFINED y los denominadores materiales deduplicados por identidad tipada/registro. Se confirman las precedencias: stage_key ≠ SNAPSHOT.phase ≠ reloj DGP; route_id exacto o C10S_SCOPE_GLOBAL; F/A son familias auxiliares; object_class C10 separado de ug_record_type/semantic_role; PAR es propiedad tipada del CMP owner con parameter_key/manifest_record_id, sin object_record_id U_G propio.
+
+**Bloqueos materiales:** no hay contrato/instancia/snapshot C10-S materializados; mapping NODE raíz↔CMP anchor OPEN; route-specific route_id/route_record_id no fijados; crosswalk físico y unidad de denominador por clase incompletos; C0 no implementado/auditado. El UDG-01/JCS/03/04 está aceptado documentalmente (DEC-C10-073…076), pero no implementado. Estado: DOCUMENTARY_RECONCILIATION_PARTIAL / NO_C0_INSTANCE / NO_SNAPSHOT / DENOMINATOR_UNKNOWN / COVERAGE_NONE.
+
+**Siguiente gate:** cerrar crosswalk de identidad y unidad de denominador CMP/PAR/REF/RUL/MET, reutilizando U_G §18 y el contrato PAR, en coherencia con N01/anchor CMP y N16/oráculo. No repetir diseño UDG ni crear scopes. No captura, C0, schema change, implementación, Design Freeze ni ejecución.
+
