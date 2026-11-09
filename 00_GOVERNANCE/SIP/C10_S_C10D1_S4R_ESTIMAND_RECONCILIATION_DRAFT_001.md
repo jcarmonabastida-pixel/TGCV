@@ -217,16 +217,21 @@ No se han cambiado los estimandos de C10-D1 ni se ha promovido una propuesta a d
 El resultado útil de esta revisión es haber separado la pregunta científica C10, el ITT del diseño S4-R y el efecto local focal, y haber identificado una forma explícita de resolver la ambigüedad `p0=.20` / `C_dep,base=0` sin ocultar contaminación ni cambiar retrospectivamente el DGP.
 
 
-## 12. Resultado de auditoría integral: precedencia y propuesta armonizada
+## 12. Estado vigente de precedencia y alcance causal (actualizado 2026-11-09)
 
-La auditoría integral se registra en `C10_S_INTEGRATED_RECONCILIATION_AUDIT_DRAFT_001.md` y el punto de integración se incorpora en el capítulo 53 del documento maestro.
+Este apartado sustituye la recomendación histórica de §§12, 17 y 18. La precedencia operativa no se reconstruye cronológicamente: se rige por DEC-C10-066/067 y por el maestro C10-S §§53, 131–132 y 213, junto con C10-D1 §§17.7 y 26.1–26.3.
 
-La jerarquía candidata es: `theta_A(q)` pregunta general C10-D1; `ITT_Z` estimando primario de asignación S4-R; `LATE_f` atribución local secundaria condicionada a IV; `theta_Af(q*)` contraste poblacional focal solo bajo aislamiento y régimen común; `psi_policy` efecto de paquete cuando existen vías colaterales. S4-R no identifica por sí solo el efecto general de todo `Delta T_acc`.
+- **Pregunta científica general:** `θ_A(q)`, efecto de políticas factibles sobre cambios estructurados del espacio de accesibilidad bajo un régimen común. C10-S focalizado en τ2 no lo sustituye ni lo identifica por sí solo.
+- **Escenario primario candidato C10-S:** D2, por DEC-C10-066. D1 queda como escenario secundario incremental; la legitimidad de su régimen ordinario se justifica si se pretende transportar o interpretar ese contraste como política ordinaria.
+- **Políticas materiales D2:** DEC-C10-067 acepta `B_g0^D2` (no programar/iniciar intento focal) y `B_g1^D2` (programar un intento estandarizado de provisión técnica focal). No son políticas de accesibilidad abstractas ni manipulan la autorización basal.
+- **Estimando primario del diseño:** `ITT_Z^D2`, efecto de asignación a las políticas materiales D2 sobre Value (y Outcomes preespecificados). No equivale automáticamente al efecto de recepción ni a un efecto de accesibilidad.
+- **Atribución focal:** `LATE_f^D2` es secundario y condicional a todos los supuestos IV y a medición válida de `D_f*`. `θ_Af(q_X*)` requiere identificación poblacional adicional y correspondencia demostrada entre B_D2 y políticas `g^Af`.
+- **Efecto de paquete:** `ψ_policy^D2` conserva las vías activadas por la política cuando no puede atribuirse todo el efecto a accesibilidad. No se obtiene por renombrar el ITT ni por restar estimandos.
+- **Correspondencia material→accesibilidad:** sigue CONDICIONAL / NO DEMOSTRADA. `s=0.80` sigue siendo hipótesis de DGP no validada. Las primeras etapas de `C_dep*`, `A_f*`, `D_f*` y `ΔT_acc*` se mantienen separadas.
 
-La fuente 165–183 recomienda D1 como principal condicionado (p0=.20, p1=.80 postasignación, C_dep,base=0) y D2 como contraste (p0=0, p1=.80). Esta propuesta sustituye, para la especificación candidata, la recomendación anterior de usar exclusivamente p0=0 como DGP limpio y relegar p0>0 a contaminación. La formulación anterior se conserva como antecedente histórico, no se elimina.
+Este estado no aprueba la jerarquía confirmatoria completa, no identifica `θ_A(q)`, `θ_Af(q_X*)` ni `LATE_f`, y no cierra población, soporte, unidad/interferencia, Value, vías colaterales, sensibilidad o potencia. Los detalles y límites se desarrollan en §§17–19 y en el maestro §131.
 
-Poblaciones, q*/g, mecanismo de provisión, exclusión, unidad/interferencia, F*, Value, parámetros estadísticos, fixtures y revisión independiente siguen pendientes. No se acepta automáticamente ninguna DEC ni se cierra AUD/XAUD/XSYNC.
-
+La recomendación antigua D1-principal/D2-contraste se retira del cuerpo operativo de este contrato. Su contenido histórico permanece en el historial Git y en la fuente recuperada 165–183, no como especificación vigente.
 
 ## 13. Política B: mecanismo candidato recuperado y calibración
 
@@ -264,40 +269,88 @@ F* se especifica ex ante con objetivo técnico observable, entrada/S0, salida, r
 La definición cuantitativa de F*, universo, umbrales, cobertura, error de clasificación, sensibilidad, q_X,F*, pesos y estimando confirmatorio P*_F siguen abiertos. DEC-C10-017 es propuesta.
 
 
-## 17. Reconciliación de D1/D2 y del contrato material B
+## 17. Contrato vigente de escenarios y políticas materiales D1/D2
 
-La distinción se interpreta de acuerdo con el maestro §§53.4–54 y 65:
+**Precedencia:** DEC-C10-066/067 y maestro C10-S §§53.4, 65–67 y 131. Este apartado reemplaza la formulación anterior que presentaba D1 como principal condicionado y D2 como contraste.
 
-| Elemento | D1 principal condicionado | D2 contraste |
-|---|---:|---:|
-| C_dep,base | 0 | 0 |
-| P(W_attempt=1 | Z=0) | .25 | 0 |
-| P(W_attempt=1 | Z=1) | 1.00 | 1.00 |
-| P(S_success=1 | W_attempt=1) | .80 | .80 |
-| P(C_dep,post=1 | Z=0) | .20 | 0 |
-| P(C_dep,post=1 | Z=1) | .80 | .80 |
-| Primera etapa C_dep | .60 | .80 |
+| Elemento | D2 — primario candidato | D1 — secundario |
+|---|---|---|
+| `C_dep,base` | 0 antes de Z | 0 antes de Z |
+| `P(W_attempt=1 | Z=0)` | 0 | .25 (política ordinaria candidata) |
+| `P(W_attempt=1 | Z=1)` | 1 | 1 |
+| `P(S_success=1 | W_attempt=1)` | .80 candidato, no validado | .80 candidato, no validado |
+| `P(C_dep,post=1 | Z=0)` | 0, objetivo del DGP candidato | .20, objetivo del DGP candidato |
+| `P(C_dep,post=1 | Z=1)` | .80, objetivo del DGP candidato | .80, objetivo del DGP candidato |
+| Contraste | Provisión focal programada frente a ausencia de intento focal | Provisión programada frente a provisión ordinaria de baja frecuencia |
 
-El .80 de éxito condicional es una factorización propuesta, no evidencia empírica ni parámetro original literal. La tabla no implica que la primera etapa de C_dep sea la de A_f*/D_f*: esta se calcula desde todos los predicados estructurales.
+La tabla describe políticas/objetivos candidatos, no resultados observados ni parámetros validados. La probabilidad .80 es éxito técnico conjunto condicional al intento elegible; no es la probabilidad de cada componente y no se transfiere automáticamente a `A_f*` o `D_f*`.
 
-D1 conserva estatus de principal condicionado a justificar el comparador ordinario. D2 es la alternativa de control sin provisión; no se sustituye uno por otro sin decisión explícita. La definición de §21 como B0 sin provisión/B1 provisión se restringe a D2. Los parámetros .20/.80 de DGP §3.1 se interpretan como estados finales C_dep, no intentos.
+En D2:
+- `B_g0^D2` mantiene configuración basal y no programa ni inicia un intento focal como parte de la política.
+- `B_g1^D2` programa un intento estandarizado de provisión técnica focal para unidades elegibles.
+- La política no garantiza recepción, intento efectivo, instalación, integridad, compatibilidad, operatividad ni accesibilidad.
+- `C_auth,base=1` permanece común, satisfecha antes de Z e invariante frente a B; la política D2 no interviene sobre autorización basal.
+- `C_dep*` no es sinónimo de `A_f*`, `D_f*` ni `ΔT_acc*`. Cada estado y primera etapa se calcula por separado.
 
-Esta reconciliación es propuesta, no decisión aceptada. OPEN-C10-001/005 siguen abiertos; no freeze ni ejecución.
+D1 conserva utilidad como escenario secundario de política incremental. Su provisión ordinaria de control no es contaminación si forma parte de la versión asignada y preespecificada; la legitimidad/transportabilidad del régimen .25/.20 no está acreditada y debe justificarse si se formula esa interpretación.
 
+La correspondencia entre `B_g^D2` y políticas objetivo `g^Af` sigue CONDICIONAL / NO DEMOSTRADA. Se requiere derivar las distribuciones inducidas de cambios de accesibilidad por historia y verificar predicados, soporte, versiones, rutas alternativas y vías colaterales. Ver maestro §131. No trasladar a D2 la ilustración .20→.80 de D1 ni el valor ilustrativo 3.6.
 
-## 18. Interpretación de estimandos bajo la adjudicación provisional D1/D2
+**Estado:** precedencia D2/D1 aceptada dentro del alcance DEC-C10-066; contenido material D2 aceptado dentro del alcance DEC-C10-067; mecanismo de éxito, recepción/cumplimiento, distribución de accesibilidad y exclusión permanecen abiertos.
 
-La sección 17 reconcilia la semántica de los escenarios, pero no selecciona el escenario primario. Se añade la siguiente regla de interpretación:
+## 18. Jerarquía de estimandos y reglas de identificación bajo D2
 
-- D1 estima el contraste de política incremental entre provisión ordinaria de baja frecuencia y provisión programada. Su legitimidad como comparador primario depende de justificar ex ante que .25 intentos/.20 estado final representa el régimen ordinario de la población objetivo.
-- D2 estima el contraste entre ausencia de intento focal y provisión programada. Es el candidato preferente provisional para el objetivo sintético mecanístico de apertura focal mientras no exista evidencia que justifique D1.
-- ITT_D1 e ITT_D2 son estimandos distintos. No se agrupan ni se promedian como un único efecto.
-- La primera etapa debe estimarse para C_dep, A_f,post*, D_f y ΔT_acc completo por escenario. C_dep no sustituye accesibilidad ni apertura.
-- Los Wald/LATE pueden corresponder a estratos de cumplidores diferentes entre D1 y D2; no se transportan ni agrupan automáticamente.
-- La provisión ordinaria incluida en B_g0^D1 no es contaminación. Crossover es recepción fuera de la política/version asignada.
-- La asignación identifica el ITT de la política, no demuestra por sí sola exclusión ni atribución causal exclusiva a accesibilidad.
+Este apartado define la jerarquía de trabajo para el diseño sintético, sin convertirla en una decisión confirmatoria aprobada ni modificar el estimando general de C10-D1.
 
-Estado: recomendación provisional, no decisión aprobada. La selección primaria sigue ABIERTA; OPEN-C10-001/005 continúan abiertas.
+### 18.1. Pregunta científica general
+
+`θ_A(q)=E[V^{q,g1}]-E[V^{q,g0}]` es la pregunta general de C10-D1: contraste entre políticas factibles que inducen cambios estructurados de accesibilidad `ΔT_acc` bajo un régimen común q, para población, horizonte, versiones y regla de Value definidos. S4-R focaliza τ2 y no identifica por sí solo este efecto general.
+
+### 18.2. Estimando primario del diseño D2
+
+`ITT_Z^D2=E[V|Z=1,D2]-E[V|Z=0,D2]` es el efecto de asignación a las políticas materiales D2. Bajo aleatorización válida, consistencia de asignación y tratamiento de interferencia/ausencia conforme al diseño, identifica el efecto de asignar la política, sin condicionar por recepción, cumplimiento, accesibilidad postratamiento, selección o ejecución. Debe reportarse también por Outcome y por cada dimensión de Value preespecificada.
+
+El ITT no es automáticamente el efecto de recibir B, de `C_dep*`, de `A_f*`, de `D_f*` ni de todo `ΔT_acc`. Si hay vías colaterales, sigue siendo efecto de política/paquete.
+
+### 18.3. Primera etapa y tratamiento focal
+
+Reportar separadamente:
+- `FS_Cdep^D2`: efecto de Z sobre `C_dep,post*`;
+- `FS_Af^D2`: efecto de Z sobre `A_f,post*`;
+- `FS_Df^D2`: efecto de Z sobre apertura `D_f*=I(A_f,base*=0 ∧ A_f,post*=1)`;
+- cambio completo de `ΔT_acc*` y sus dimensiones/relaciones.
+
+Ninguna primera etapa se sustituye por otra. `C_dep*` solo coincide con `A_f*`/`D_f*` bajo las condiciones explícitas de ruta única, inaccesibilidad basal y predicados no técnicos satisfechos e invariantes; véanse maestro §§67 y 131.
+
+### 18.4. Atribución local IV
+
+`LATE_f^D2` es un estimando secundario local entre compliers inducidos por Z para el tratamiento focal `D_f*`. Solo puede interpretarse causalmente si se sostienen relevancia, independencia, exclusión, monotonicidad, consistencia/versiones, ausencia de interferencia no modelada y medición válida del tratamiento. Se requiere inferencia robusta a instrumento débil. La auditoría del maestro §132 mantiene estos supuestos abiertos y concluye que `LATE_f` no está actualmente identificado ni listo para Wald. No calcular ni presentar Wald como causal mientras persistan esos gates.
+
+Un eventual `LATE_f^D2` es local a los compliers D2; no es ATE, ATT, `θ_Af(q_X*)` poblacional ni `θ_A(q)` general.
+
+### 18.5. Contraste focal poblacional y efecto de política/paquete
+
+`θ_Af(q_X*)` es un contraste poblacional focal bajo políticas de accesibilidad `g^Af` y régimen común `q_X*`. No queda identificado por el ITT ni por LATE automáticamente. Requiere correspondencia demostrada `B_g^D2→g^Af`, población y soporte, versiones consistentes, régimen común completo y ausencia de vías diferenciales hacia Value o una estrategia que las separe. El maestro §131 clasifica esa correspondencia como CONDICIONAL / NO DEMOSTRADA.
+
+`ψ_policy^D2` representa el efecto de la política material/paquete cuando se mantienen todas las vías que activa B, incluidas las no mediadas por accesibilidad focal. `ψ_B(q_X*)` para versiones recibidas no se identifica por el mero hecho de aleatorizar Z si hay incumplimiento; requiere estrategia propia de identificación y consistencia de versiones.
+
+### 18.6. Mediación, residual y límites
+
+No se interpretará `ITT_Z^D2-θ_Af(q_X*)` ni `TE-θ_A(q)` como efecto directo o residual puro. La mediación requiere intervención/estimando propio, población, horizonte y régimen definidos, con tratamiento de confusión postratamiento. Un efecto residual solo se informará bajo una descomposición formal identificada y compatible en población, escala y horizonte.
+
+El diseño D2 focal no identifica por sí solo la contribución causal general de todo `ΔT_acc`. `θ_A_dyn` permanece fuera del conjunto evaluable hasta formalización.
+
+### 18.7. Estado de cierre
+
+- D2 primario candidato / D1 secundario: precedencia aceptada por DEC-C10-066.
+- Políticas materiales D2: definidas conceptualmente por DEC-C10-067.
+- `ITT_Z^D2`: objeto primario de asignación del diseño; su identificación empírica/sintética depende de aleatorización, consistencia, interferencia y Value.
+- `LATE_f^D2`: secundario y no identificado/no listo para Wald en el estado documental actual.
+- `θ_Af(q_X*)`: objetivo poblacional focal no identificado; mapeo B→g^Af no demostrado.
+- `θ_A(q)`: pregunta científica general, no sustituida por el diseño focal.
+- Población/soporte, Value, horizonte, unidad/interferencia, vías colaterales, medición, sensibilidad y potencia siguen abiertos.
+
+La jerarquía anterior es una reconciliación documental de trabajo con decisiones de escenario/política ya aceptadas; no aprueba la identificación ni autoriza implementación, Design Freeze, simulación o ejecución. Mantener `scientific_execution=false` y `execution_authorized=false`.
 
 ## 8. Supersesión de precedencia del comparador — DEC-C10-066 (2026-11-06)
 
