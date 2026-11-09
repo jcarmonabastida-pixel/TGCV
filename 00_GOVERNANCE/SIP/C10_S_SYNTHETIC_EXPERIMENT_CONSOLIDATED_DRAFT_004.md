@@ -6657,7 +6657,7 @@ La clasificación temporal-causal queda organizada como propuesta coherente con 
 
 La precedencia vigente es D2 como escenario primario candidato y D1 como escenario secundario. Los valores de intento/éxito/estado técnico por escenario se conservan en §§53.4, 67–69 y 131. Las políticas materiales D2 se rigen por DEC-C10-067 y §131. La correspondencia B→g^Af permanece condicional/no demostrada; s=.80 no está validado.
 
-No reutilizar las antiguas condiciones de §65.4 ni la recomendación D1-principal. No se altera la semántica de los mecanismos D1/D2 ni se cierran estimandos, soporte, exclusión, medición o identificación.
+No recuperar la antigua recomendación D1-principal ni los gates condicionales de la versión histórica de §65. No se altera la semántica de los mecanismos D1/D2 ni se cierran estimandos, soporte, exclusión, medición o identificación.
 
 ## 66. Registro de supersesión de la antigua adjudicación D1/D2
 
@@ -6670,7 +6670,7 @@ La decisión de escenario no valida s=.80, no demuestra ausencia de provisión d
 # 67. Calibración de la primera etapa técnica y derivación estructural de accesibilidad focal
 
 **Estado:** propuesta de diseño y reconciliación matemática; NO aprobada, NO congelada.  
-**Dependencias:** §§58–66; DGP §§17–25; AUD-001/004/005/007/010/011; XAUD-003/004/006; OPEN-C10-001/007/008.
+**Dependencias:** §§58–64 y 131–132; DGP §§17–25; DEC-C10-066/067; AUD-001/004/005/007/010/011; XAUD-003/004/006; OPEN-C10-001/007/008.
 
 ## 67.1. Cuatro componentes técnicos y definición de C_dep
 
