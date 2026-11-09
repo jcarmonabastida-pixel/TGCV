@@ -406,3 +406,12 @@ La mediación requiere estimando e intervención propios y tratamiento explícit
 La recuperación de truth sintética mide el desempeño del Analyzer bajo DGPs especificados. No constituye evidencia empírica de identificación de ΔT_acc→Value ni cierra la atribución causal general.
 
 **Estado:** reconciliación documental propuesta; no modifica §18 ni la auditoría IV; no aprueba identificación, Design Freeze, implementación o ejecución. Mantener scientific_execution=false y execution_authorized=false.
+
+
+## 24. Auditoría de cobertura contractual de mediación (2026-11-10)
+
+Se corrige la correspondencia del Register §72: P177-05…08 no son contratos de mediación; sus definiciones vigentes son O/V, ajuste basal, ATE/ATT y heterogeneidad. Para la interfaz causal se aplican P177-06 (ajuste basal/no post-Z), P177-12 (política frente a atribución focal), P182-01/02/06/07 (validez/adjudicación de A) y P183-08 (ausencia de A y efecto sobre identificación), sin atribuirles alcance mayor.
+
+La identificación mediacional sigue gobernada por la pregunta y los requisitos de C10-D1 §18 y por la propuesta del maestro §225.3. La cobertura contractual es parcial: falta definir el estimando/intervención mediadora, la secuencia y confusores postratamiento, soporte secuencial, método de identificación, sensibilidad y criterio de recuperación/abstención. No se infiere efecto mediado ni residual por resta de estimandos.
+
+**Estado:** corrección documental verificada como necesaria; C-MED OPEN; no modifica la jerarquía θ_A(q)/ITT_Z^D2/LATE_f, no aprueba identificación, no congela diseño ni autoriza implementación/ejecución.
