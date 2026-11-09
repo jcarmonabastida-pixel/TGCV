@@ -287,3 +287,12 @@ No resolver estas preguntas por conveniencia matemática. Si el piloto real no p
 - No se modifica ninguna afirmación científica ni estado de TGCV.
 
 **Siguiente operación documental:** armonizar esta propuesta con el documento consolidado C10-S y convertir INT-01 a INT-08 en fichas de prueba completas, una vez revisadas las decisiones conceptuales anteriores.
+
+
+---
+## 11. Supersesión de la siguiente operación histórica para D2 (2026-11-09)
+
+La «siguiente operación documental» descrita al final de §10 —armonizar esta propuesta como contrato operativo y convertir INT-01…08 en fichas— queda **supersedida para el D2 primario candidato** por DEC-C10-066/067 y por el aviso de precedencia de §0. Este documento no debe armonizarse como intervención primaria D2 ni alimentar código o fixtures de D2.
+
+INT-01…08 y la arquitectura de intervención sobre autorización solo podrán reutilizarse si se decide desarrollar un escenario alternativo/adversarial explícito, con estimando de política propio y revisión de sus vías causales. Esta nota no cierra AUD-001/002 ni convierte la propuesta en decisión aceptada.
+
