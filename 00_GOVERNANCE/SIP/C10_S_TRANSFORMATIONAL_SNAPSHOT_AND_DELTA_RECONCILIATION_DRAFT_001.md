@@ -4,6 +4,8 @@
 **Ámbito:** Bloque 3, subbloque de snapshots, correspondencia, ΔT_acc y validez epistémica.  
 **No autoriza:** implementación, simulación, ejecución ni freeze.
 
+**Aviso de precedencia vigente (2026-11-09):** este documento conserva la propuesta histórica de reconciliación de snapshots/delta y no es una especificación operativa autónoma. La formulación anterior de §63.7 que incluía `ΔValidity` en `ΔT_acc*` queda supersedida. Para la lectura actual prevalece el maestro §58.6: `S_T*=(U_t*,R_t*,C_t*,X_t*)`, `E_T` separado y `ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*)`; `ΔE_T` contiene cambios de evidencia/observabilidad. La propuesta aquí documentada no se convierte por este aviso en decisión aceptada ni en freeze.
+
 ## 1. Hallazgo de auditoría: conflación entre cambio estructural y cambio epistémico
 
 La lectura conjunta de maestro §§43.1, 58.1–58.2, 63.5–63.9, 67.3–67.6, DGP §§26–29 y contratos ACC/JNT/FIX revela una inconsistencia de clasificación:
