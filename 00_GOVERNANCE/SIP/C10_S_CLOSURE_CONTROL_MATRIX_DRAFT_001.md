@@ -2360,3 +2360,24 @@ PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-
 **Base aceptada reutilizada:** DEC-C10-051…056, 066…069, 071, 079…092; D2 y su precedencia; contrato funcional de servicio; fórmula candidata §67.3; reloj y separación de roles. No reabrir decisiones aceptadas dentro de su alcance.
 
 **Regla:** AB no pasa a DONE por integración narrativa. Requiere especificación concreta, trazabilidad y criterios de aceptación de AB-01…AB-09, relectura y consistencia. No inventar parámetros ni usar s=.80 o .20/.80 como valores confirmatorios. No código, ejecución o simulación; autorizaciones permanecen false.
+
+
+---
+
+## 113. Paquete AB — especialización propuesta de instancia y rutas (2026-11-09)
+
+**Estado:** PROPOSED / PENDING DECISION. Referencia normativa de trabajo: maestro §217; no duplicar su contenido.
+
+| Dominio | Propuesta | Estado |
+|---|---|---|
+| Identidad instancia | DEC-C10-069, sin cambio | ACCEPTED |
+| Roster | 1 CMP, 2 PAR, 1 RUL, MET; 2 REF si el contrato confirma operand bindings como REF | PROPOSED |
+| Valores semánticos | ENABLED=true/PROFILE=STANDARD; casos adversariales true/DISABLED y false/DISABLED | PROPOSED DGP truth |
+| Namespaces | C_src/C_dst/M sintéticos v1.0.0 | PROPOSED |
+| Mapping ENUM | STD→STANDARD; RO→READ_ONLY; OFF→DISABLED, total/injectivo | PROPOSED |
+| Rutas | F1/F2 focal y A1/A2 alternativa bajo mismo F* | DEFINED AT FUNCTIONAL LEVEL; MATERIAL CARDS OPEN |
+| F* | FP-01…FP-07 no compensatorios; FP-08 gate probatorio | ACCEPTED ARCHITECTURE; INSTANCE PROFILE PROPOSED |
+| C0/G/H | G propuesto como unidad lógica completa; C0/H incompletos | PARTIAL / OPEN |
+| D2 | B_g0/B_g1 según DEC-C10-067; ARCH-B1 candidata | POLICY ACCEPTED; ISOLATION OPEN |
+
+**Regla:** la propuesta no se convierte en DEC por persistencia. Aceptación expresa necesaria para los elementos marcados PROPOSED. H, distribución conjunta de C_dep*, cumplimiento, fondo/crossover, soporte, MD-C1/MD-C4 y oráculo siguen abiertos. No código, fixtures, simulación ni ejecución.
