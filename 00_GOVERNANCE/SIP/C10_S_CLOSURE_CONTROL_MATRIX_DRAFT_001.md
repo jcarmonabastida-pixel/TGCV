@@ -2199,3 +2199,21 @@ La corrección de §33 ya estaba indicada en §34 y desarrollada en §35; este a
 
 **Regla:** clasificación documental no equivale a observación, ausencia, invariancia, exclusión ni PASS. No se autoriza ejecución.
 
+
+
+---
+## 105. Roster probatorio MAP-05 — estado de preparación (2026-11-09)
+
+| Control | Estado | Criterio |
+|---|---|---|
+| Reutilización de COV-D2-BM01…15 | DOCUMENTED | Scopes lógicos ya previstos en U_G §17.4; no crear duplicados |
+| Afirmaciones y destinos por dominio | DOCUMENTED | U_G §26 distingue claim, destino, fuente y efecto de unknown |
+| EVIDENCE_REGISTER / CLAIM_EVIDENCE_LINK | DOCUMENTED | Aplicar DEC-C10-080/081; no inventar fuente ni FK PAR |
+| Denominadores y universos | OPEN | UNKNOWN; requieren frontera, unidad, versión, etapa, ruta y enumeración |
+| Fuentes técnicas | NONE | 0 fuentes recibidas/examinadas; no es ausencia material |
+| Filas U_G observadas | NONE | No crear NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT sin objeto identificado |
+| Cobertura por B-M | NONE | No 0, no COMPLETE, no inferencia de no-afectación |
+| MD-C1 / MD-C4 / IV-G4 | OPEN | Manifiesto, alternativas y exclusión no demostrados |
+
+**Dictamen:** DOCUMENTARY_READY / NO_SOURCE_INVENTORY / COVERAGE_NONE. El siguiente gate es cerrar la legitimidad del universo/denominador y mappings de scope, no iniciar una inspección técnica ni una ejecución. scientific_execution=false; execution_authorized=false.
+
