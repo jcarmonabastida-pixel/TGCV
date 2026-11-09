@@ -1814,9 +1814,67 @@ La resolución correcta no es decidir por inferencia si ambos son el mismo objet
 - DISTINCT_ENTITIES exige identidades/definiciones separadas y NODE distintos; una relación se registra como EDGE solo si está definida y sustentada.
 - UNKNOWN se mantiene ante falta de contrato, roster, snapshot o mapping; NOT_COMPARABLE ante versiones sin mapping semántico; FAIL ante contradicción demostrada.
 
-**Resultado:** root NODE conceptualmente aceptado; CMP anchor no mapeado; relación SAME/DISTINCT UNKNOWN; CMP roster y cardinalidad UNKNOWN; denominador UNKNOWN; cobertura NONE. La mención histórica CMP-SERVICE-LOGIC-001 sigue siendo candidata no resuelta, no identidad demostrada.
+**Resultado reconciliado:** root NODE `LOGICAL_SERVICE_UNIT` conceptualmente aceptado por DEC-C10-089; la identidad contractual `CMP-SERVICE-LOGIC-001`, su clase `SERVICE_LOGIC`, y el `contract_id`/`instance_id` de referencia están aceptados por DEC-C10-069. Lo que permanece UNKNOWN es la relación/mapping material entre ese CMP y el NODE raíz, así como el roster CMP exhaustivo, cardinalidad global, denominador y cobertura. `CMP-SERVICE-LOGIC-001` no es una mera etiqueta candidata: su identidad contractual está aceptada; no está observado su anchor U_G por snapshot.
 
-Este bloque cierra el criterio conceptual, no la adjudicación material. Para avanzar se necesita el artefacto contractual versionado que define la unidad lógica y enumera los CMP, o autorización específica para obtenerlo desde la fuente que lo contiene. No se crea un contrato sintético ni se asignan IDs. No se capturan snapshots, no se inspeccionan sistemas, no se modifica schema ni se implementa IAM. scientific_execution=false; execution_authorized=false.
+Este bloque cierra el criterio conceptual, no la adjudicación material. La identidad y versionado de referencia ya constan en `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md` y DEC-C10-069; no hay que inventar otro contrato ni reabrir la decisión. Sigue haciendo falta enumerar el universo contractual completo y resolver el mapping exacto CMP↔NODE por snapshot. No se crean IDs adicionales ni se presume que el roster mínimo sea el roster exhaustivo. No se capturan snapshots, no se inspeccionan sistemas, no se modifica schema ni se implementa IAM. scientific_execution=false; execution_authorized=false.
 
 **Siguiente gate:** localizar y revisar el contrato/artefacto de Opción A y el roster completo de componentes; después resolver N07/REF y las demás clases contra ese universo, preservando las decisiones N07/N14/N15 ya aceptadas. No reabrirlas.
 
+
+
+## 16.91. N16 — reconciliación histórica del criterio funcional F*, oráculo y adjudicación (2026-11-09)
+
+### Fuentes existentes y precedencia
+
+N16 se resuelve reutilizando, sin duplicarlos, los siguientes artefactos de esta rama:
+
+- DEC-C10-051: Opción A seleccionada como microdominio de trabajo y F* adoptado como contrato funcional candidato.
+- DEC-C10-055: arquitectura de familias FP aceptada; no equivale a aplicabilidad cerrada por instancia.
+- DEC-C10-056: cardinalidad base CMP≥1, PAR≥1, RUL≥1; REF=0 solo con IAM ex ante y cobertura exhaustiva; POL ausente por diseño del núcleo mínimo; MET obligatorio.
+- DEC-C10-068: contrato funcional sintético de servicio aceptado.
+- `C10_S_OPTION_A_FSTAR_AND_TRANSFORMATION_CARDS_PROPOSAL_DRAFT_001.md`: criterio funcional común, ruta completa, C0/G/H y equivalencia funcional.
+- `C10_S_FSTAR_OPERATIONAL_PROPERTY_AND_ADJUDICATION_MATRIX_DRAFT_001.md`: familias FP-01…FP-08, adjudicación trivalente y no compensatoria.
+- `C10_S_SM_ATOMIC_PROPERTY_FP_RECONCILIATION_DRAFT_001.md`: crosswalk propuesto de propiedades atómicas con familias FP; no aprobado como catálogo confirmatorio.
+- `C10_S_PROPERTY_APPLICABILITY_AND_OBLIGATORINESS_MATRIX_DRAFT_001.md`: aplicabilidad O/C/NA/? y etapas; PAR-SVC-ENABLED/PROFILE y su aplicabilidad por siete stage_key están aceptados documentalmente por DEC-C10-083.
+- `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md`: contratos lógicos adversariales, separación de roles y aserciones de no filtración; no son fixtures ni pruebas ejecutadas.
+
+### Tres capas que no deben colapsarse
+
+1. **Criterio funcional F***: contrato común para las rutas focal F1→F2 y alternativa A1→A2, evaluado de extremo a extremo desde una fuente admisible hasta configuración aplicada y verificada en destino. FP-01…FP-07 son dimensiones funcionales no compensatorias; Outcome y Value quedan fuera del criterio.
+2. **Oráculo**: implementación independiente, inmutable y versionada del criterio y de sus predicados/mappings/tolerancias. La matriz F* describe la arquitectura del criterio, pero no acredita que exista tal implementación ni que esté validada.
+3. **Adjudicación**: evaluación de una instancia/ruta/snapshot exactos contra el oráculo versionado y evidencia asociada. El Generator conserva la truth del DGP; el Analyzer recibe solo sus entradas permitidas y no recibe truth, potenciales ni parámetros generadores; el Evaluator accede a truth y compara después de congelar las salidas del Analyzer. FP-08 es gate de procedencia/reproducibilidad separado, no compensación funcional.
+
+### Estado por elemento
+
+| Elemento | Estado N16 |
+|---|---|
+| Opción A y F* como contrato de trabajo | ACCEPTED por DEC-C10-051 |
+| Familias FP-01…FP-08 | ACCEPTED como arquitectura de familias por DEC-C10-055 |
+| Regla no compensatoria | Definida documentalmente en matriz F*; sin predicados/umbrales atómicos cerrados |
+| F* común para F1→F2 y A1→A2 | Definido a nivel funcional; equivalencia exige mismo contrato, entrada, destino, C0/G/H e IAM |
+| Aplicabilidad O/C/NA/? | Esquema documental; aplicabilidad por instancia aún no sellada en IAM |
+| PAR obligatorios y siete stage_key | Aceptación documental DEC-C10-083; sin observaciones materiales |
+| C0, G, H | OPEN; deben fijarse ex ante |
+| Predicados atómicos y mappings M | OPEN / PARTIAL; reconciliación SM↔FP sigue propuesta |
+| Tolerancias, excepciones y reglas de rechazo | OPEN; no inventar umbrales |
+| Oráculo independiente y versión/hash | NOT IMPLEMENTED / NOT VALIDATED |
+| Adjudicación por unidad/ruta/snapshot | NOT MATERIALIZED; evidencia y cobertura NONE |
+| Cegamiento Generator/Analyzer/Evaluator | Requisito documental especificado; no probado |
+| FP-08 / procedencia | Gate separado; no validado |
+| Outcome / Value | Fuera del oráculo F* |
+
+### Reglas de adjudicación preservadas
+
+- Un FAIL obligatorio confirmado en cualquiera de FP-01…FP-07 no puede compensarse con PASS en otra dimensión.
+- UNKNOWN no se convierte en FAIL, FALSE, ABSENT ni NA por falta de observación o cobertura.
+- NA exige inaplicabilidad predeclarada y justificada en IAM ex ante; no equivale a dato ausente.
+- FP-08 se informa separadamente: una falla probatoria no se oculta como conformidad funcional ni redefine la verdad funcional.
+- F* se evalúa por ruta completa. PASS local de F1/F2/A1/A2 no acredita F*.
+- No usar Outcome, Value, selección, ejecución ni el brazo Z/B para definir o adjudicar F*.
+- La equivalencia F/A no exige mismo mecanismo, pero sí el mismo criterio, universo de entrada y contexto comparable.
+
+### Dictamen y siguiente gate
+
+N16 queda **RECONCILED_DOCUMENTARILY / PARTIAL**: no hace falta crear otro contrato funcional ni otra matriz de propiedades. Sí falta cerrar la atomización confirmatoria, aplicabilidad IAM por instancia, C0/G/H, mappings/tolerancias y el diseño técnico del oráculo; después se requerirá validación adversarial independiente del Analyzer y del Evaluator.
+
+El siguiente gate documental es cruzar el catálogo atómico SM-01…SM-10 con FP-01…FP-07 y el IAM vigente, resolver duplicidades/huecos y fijar requiredness/NA/? por propiedad y etapa sin elevar la propuesta a decisión. Solo entonces podrá definirse un contrato de implementación del oráculo. No generar código, fixtures ni validadores; no ejecutar pruebas, simulaciones ni experimentos. `scientific_execution=false`; `execution_authorized=false`.
