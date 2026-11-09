@@ -2424,3 +2424,16 @@ PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-
 | AB-09 | R0–R3, adversariales, truth/observed separados y regla exhaustiva para 0 frente a ? | SCENARIO/TRUTH CONTRACT DEFINED | Truth tables y validación del oráculo/cegamiento/adjudicación |
 
 **Regla de lectura:** “contract/logic defined” significa especificación documental, no objeto implementado ni evidencia observada. Los gates residuales no se consideran cerrados por esta pasada. No declarar AB DONE, Design Freeze ni readiness de implementación. scientific_execution=false; execution_authorized=false.
+
+## 116. DEC-C10-094 — estado tras aceptación de resoluciones materiales AB (2026-11-09)
+
+| Dominio | Resolución aceptada | Gate residual | Estado |
+|---|---|---|---|
+| AB-01/02 inventario, REF/AST, mapping, IAM | Inventario lógico, operand bindings únicos, mapping y matriz IAM definidos | Encoding físico/serialización y cobertura material | DESIGN RESOLVED / EVIDENCE OPEN |
+| AB-03/04 rutas y accesibilidad | F1/F2 y A1/A2; predicados y lógica 1/0/? | Fichas instanciadas y medición/cobertura | DESIGN RESOLVED / EVIDENCE OPEN |
+| AB-05 F*, FP, G/C0/H, oráculo | FP-05, F* no compensatorio, G/C0 y H común | Valor/unidad/ancla H; FP-08 y evidencia oráculo | DESIGN RESOLVED / EVIDENCE OPEN |
+| AB-06/07 D2 y C_dep* | Event log por etapas y distribución conjunta condicional | Parámetros D2, sensibilidad, MD-C1/MD-C4 | DESIGN RESOLVED / EVIDENCE OPEN |
+| AB-08 población/soporte | Elegibilidad pre-Z, q_X* pre-Z, positividad y unidad/interferencia explícitas | Algoritmo/roster, q_X*, soporte y cluster real | DESIGN RESOLVED / EVIDENCE OPEN |
+| AB-09 escenarios/oráculo | R0–R3, truth/observed y Generator/Analyzer/Evaluator separados | Truth tables, validación, cegamiento y adjudicación | DESIGN RESOLVED / EVIDENCE OPEN |
+
+**Dictamen:** resoluciones de diseño AB aceptadas; AB permanece IN_PROGRESS y NOT IMPLEMENTABLE. Ningún gate de evidencia se considera satisfecho por esta decisión. No Design Freeze ni autorización de ejecución.
