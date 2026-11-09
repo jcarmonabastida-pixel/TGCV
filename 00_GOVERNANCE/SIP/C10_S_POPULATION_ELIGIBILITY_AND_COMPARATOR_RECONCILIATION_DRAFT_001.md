@@ -48,11 +48,11 @@ La ausencia de alternativas es requisito de la afirmación de apertura funcional
 
 La elegibilidad candidata es conjuntiva:
 
-E_i=I(C_auth,0=1 ∧ C_resource,0=1 ∧ C_capacity,0=1 ∧ C_info,0=1 ∧ C_domain,0=1 ∧ C_other,0=1).
+**Retirada de la fórmula histórica como regla operativa:** la conjunción `E_i` con `C_auth`, `C_resource`, `C_capacity`, `C_info`, `C_domain` y `C_other` pertenece a una propuesta temprana y no debe reutilizarse como definición vigente de elegibilidad ni de `A_f*`. `C_other` no es un predicado residual admisible.
 
-Esta expresión no se considera cerrada hasta que cada condición tenga ficha operacional, umbral, fuente, ventana basal, procedimiento, evaluador/cegamiento, versión y criterio de suficiencia. C_other no puede funcionar como comodín; debe descomponerse en predicados identificados o justificarse como residuo acotado.
+Para D2, `C_auth,base=1` es condición basal común, satisfecha antes de Z e invariante frente a B, conforme a DEC-C10-067. La accesibilidad focal se determina por separado mediante la fórmula candidata del maestro §67.3 y el crosswalk D2: `A_f*=I(ID_f* ∧ REL_f* ∧ COND_f* ∧ AUTH_f* ∧ RES_f* ∧ DEP_f* ∧ ¬BLOCK_f*)`. `C_auth_base` se corresponde con `AUTH_f*`; no son factores independientes. Los recursos/capacidad, información y dominio solo se asignan a los predicados actuales según su función material y sin duplicidad.
 
-C_auth, recursos, capacidad, información técnica no focal y dominio se tratan como condiciones basales invariantes en la Candidata A de intervención B. Si B cambia alguna, debe registrarse como cointervención/mediador y reconsiderarse la atribución causal.
+La composición de elegibilidad de `P*_τ2` sigue siendo una especificación pendiente: debe derivarse de las condiciones basales constitutivas efectivamente definidas y respaldadas, sin copiar esta fórmula histórica ni confundir elegibilidad con accesibilidad focal.
 
 ### 3.2 Estados
 
@@ -160,23 +160,21 @@ E1 documental, E2 mecanística, E3 técnica y E4 reproducible describen fuerza y
 
 Los parámetros son candidatos analíticos del DGP. El .80 es éxito técnico conjunto condicional tras intento elegible, no dato empírico ni probabilidad marginal por componente. .20 en D1 es estado final post-asignación inducido por .25×.80 bajo la factorización candidata; no es accesibilidad basal. En ambos escenarios se puede tener C_dep,0=0.
 
-### 6.2 Precedencia histórica y propuesta posterior
+### 6.2 Registro histórico de comparadores — NO OPERATIVO
 
-Hay dos recomendaciones registradas:
-- Fuente histórica 165–168: D1 principal condicionado a justificar el régimen ordinario; D2 contraste.
-- DEC-C10-026 / DGP §25: D2 candidato mecanístico provisional mientras no se justifique D1; D1 secundario incremental.
+La fuente 165–168 recomendaba D1 como escenario principal condicionado y D2 como contraste; DEC-C10-026/DGP §25 registraban después D2 como candidato mecanístico provisional. Ambas formulaciones son antecedentes de la evolución documental, no instrucciones actuales de selección.
 
-No se trata de una contradicción matemática: los escenarios responden a comparadores y preguntas diferentes. Sí existe una tensión de precedencia entre recomendaciones. Ninguna está aceptada. La selección primaria permanece ABIERTA.
+**Precedencia vigente:** DEC-C10-066 establece D2 como escenario primario candidato y D1 como escenario secundario. DEC-C10-067 define las políticas materiales D2: `B_g0^D2` no programa/inicia intento focal y `B_g1^D2` programa un intento estandarizado de provisión técnica focal, con `C_auth,base=1` común e invariante. No se reabre la selección primaria.
 
-### 6.3 Regla de decisión
+La tabla de §6.1 conserva parámetros exploratorios históricos (incluidos .25/.20/.80) y no debe usarse como contrato material confirmado de las políticas D2 ni como valores validados. `s=.80` continúa sin validar. La legitimidad del comparador D2 requiere verificar ausencia basal y ausencia de provisión focal de fondo; D1 requiere justificar el régimen ordinario como comparador secundario.
 
-- Elegir D1 si la pregunta primaria es incremental frente a provisión ordinaria real y la frecuencia/estado final están respaldados por fuente independiente, población, periodo y contexto.
-- Elegir D2 si la pregunta primaria es apertura focal frente a ausencia de intento y puede verificarse ausencia de provisión focal de fondo.
-- No llamar contaminación a la provisión ordinaria que forma parte de B_g0^D1.
-- Mantener ITT_D1 e ITT_D2 separados; no agrupar primeras etapas ni Wald/LATE.
-- Calcular por separado primeras etapas de C_dep, A_f,1*, D_f* y ΔT_acc.
+### 6.3 Condiciones de interpretación por escenario
+
+- D2 es el escenario primario candidato; verificar `C_dep,0=0`, `A_f,0*=0` y ausencia real de provisión focal de fondo/rutas equivalentes antes de Z.
+- D1 se conserva como contraste incremental secundario; justificar el régimen ordinario .25/.20 con fuente independiente, población, periodo y contexto.
+- Mantener `ITT_D1` e `ITT_D2` separados; no agrupar primeras etapas ni Wald/LATE.
+- Calcular por separado primeras etapas de `C_dep`, `A_f`, `D_f*` y `ΔT_acc*`.
 - No transportar automáticamente LATE/complier population entre D1 y D2.
-- No fijar escenario primario sin una decisión explícita que conecte la pregunta científica, población y estimando.
 
 ## 7. Unidad experimental y población de inferencia
 
@@ -193,7 +191,7 @@ UO puede ser longitudinal/anidada, pero no aumenta N experimental por sí misma.
 | POP-03 | Elegibilidad es pre-Z, conjuntiva, versionada y ciega | PARCIAL; umbrales/evidencias pendientes |
 | POP-04 | D_f,0 se sustituye en notación nueva por C_dep,0 | CORRECCIÓN PROPUESTA; propagación global pendiente |
 | POP-05 | F* y Sub(π,F*,G,H,C0) | DEFINICIÓN PARCIAL; operacionalización abierta |
-| POP-06 | D1 histórico condicionado vs D2 mecanístico provisional | CONFLICTO DE PRECEDENCIA DOCUMENTADO; decisión primaria abierta |
+| POP-06 | Precedencia D2 primario candidato / D1 secundario | RESUELTA POR DEC-C10-066; legitimidad de cada comparador sigue condicionada |
 | POP-07 | UE=UA y no interferencia | ESTIPULACIÓN CANDIDATA; auditoría de frontera pendiente |
 
 ## 9. Criterios de cierre del Bloque 2
@@ -204,7 +202,7 @@ El bloque requiere:
 3. decisión de notación y migración de D_f,0 a C_dep,0;
 4. F* completo con S0, objetivo, restricciones, tolerancias, H/G/C0 y evidencia;
 5. universo/cobertura de rutas alternativas y adjudicación;
-6. decisión primaria D1/D2 y escenario secundario justificados;
+6. legitimidad del D2 primario candidato y del D1 secundario justificadas por separado;
 7. consistencia de C_dep,0, A_f,0*, A_f,1* y D_f*;
 8. unidad, interferencia y población de inferencia aprobadas;
 9. revisión causal/transformacional independiente.
