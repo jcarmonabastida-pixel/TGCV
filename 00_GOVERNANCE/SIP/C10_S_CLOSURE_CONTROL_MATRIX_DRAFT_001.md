@@ -2265,8 +2265,28 @@ PASS de mapping no equivale a COMPLETE. 0 requiere universo y enumeración exhau
 | CMP↔NODE mapping contract | ACCEPTED DOCUMENTALLY | DEC-C10-082; no mapping observado |
 | SAME_ENTITY | UNKNOWN | Requiere identidad contractual 1:1 y mapping exacto |
 | DISTINCT_ENTITIES | UNKNOWN | Requiere definiciones separadas y NODE distintos |
-| CMP-SERVICE-LOGIC-001 | CANDIDATE / UNRESOLVED | No identidad demostrada |
+| CMP-SERVICE-LOGIC-001 | ACCEPTED CONTRACT ID (DEC-C10-069) | Identidad contractual aceptada; anchor U_G por snapshot y mapping material siguen OPEN |
 | CMP roster/cardinality | UNKNOWN | Falta universo contractual completo |
 | Denominator / coverage | UNKNOWN / NONE | Sin snapshot ni miembros enumerados |
 
 El gate conceptual queda especificado; el mapping material sigue OPEN. No asignar IDs ni crear registros.
+
+
+---
+
+## 109. N16 — criterio F*, oráculo y adjudicación (2026-11-09)
+
+| Capa/control | Estado | Alcance / límite |
+|---|---|---|
+| Opción A + F* contrato de trabajo | ACCEPTED | DEC-C10-051; no Design Freeze |
+| Familias FP-01…FP-08 | ACCEPTED | DEC-C10-055; arquitectura de familias, no requiredness por instancia |
+| Criterio funcional F* | DEFINED / PARTIAL | Ruta completa F1→F2 y A1→A2; predicados/mappings/tolerancias y C0/G/H abiertos |
+| Regla no compensatoria | DOCUMENTED | FAIL obligatorio no se compensa; umbrales atómicos abiertos |
+| Aplicabilidad O/C/NA/? | SPECIFIED / NOT SEALED | IAM por instancia/etapa pendiente; NA solo ex ante |
+| Oráculo independiente versionado | NOT IMPLEMENTED / NOT VALIDATED | Matriz documental no equivale a implementación |
+| Generator / Analyzer / Evaluator | ROLE SEPARATION SPECIFIED | Analyzer sin truth/potenciales; Evaluator después de congelar outputs; no probado |
+| FP-08 | SEPARATE EVIDENCE GATE | No es propiedad funcional ni compensación |
+| Adjudicación material | NOT MATERIALIZED | Sin instancia, snapshots, cobertura ni evidencia |
+| Outcome / Value | OUTSIDE F* | No pueden definir ni adjudicar conformidad |
+
+N16: RECONCILED_DOCUMENTARILY / PARTIAL. Siguiente gate: crosswalk atómico SM-01…SM-10 ↔ FP-01…FP-07 ↔ IAM, sin duplicar matrices ni elevar propuestas a decisiones. No código, fixtures, validadores ni ejecución.
