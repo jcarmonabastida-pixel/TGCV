@@ -1349,3 +1349,16 @@ Este apartado organiza contratos existentes; no crea pruebas nuevas ni declara s
 | C-07 Firewall | P182-11; contrato Generator/Analyzer/Evaluator | Pruebas negativas de leakage |
 
 Este crosswalk no crea nuevos contratos ni declara pruebas ejecutadas. Las propuestas C-01…C-07 no cambian el estado de P177/P178/P179/P182/P183.
+
+## 71. Crosswalk del contrato operativo O/V con pruebas existentes (2026-11-09)
+
+| Elemento §224 | Contratos existentes | Criterio de verificación |
+|---|---|---|
+| Ficha Outcome | P182-03/05/08/12; P183-01…10 | Unidad, fuente, cálculo, ventana, validez y ausencia reconstruibles |
+| Ficha Value | P179-01…08; P182-04/06/08/09/10/12 | Dimensión contextual, vector, acuerdo, error, invariancia y sensibilidad |
+| Adjudicación A/ΔT_acc | P182-01/02/06/07; contratos A/ΔT_acc | Independencia respecto de O/V y verdad del DGP |
+| Firewall | P182-11; contratos Generator/Analyzer/Evaluator | Prueba negativa de acceso a truth y etiquetas ocultas |
+| Estados de observación | P183-01…05/09/10/11 | No colapsar desconocido, ausencia, censura o no aplicable |
+| Preespecificación | P177-09/10; P178-SIM-10; P179-08 | Dimensiones, multiplicidad y umbrales fijados ex ante |
+
+No se crean pruebas ejecutadas ni se seleccionan indicadores/valores. §224 define fichas y criterios; los gates materiales siguen abiertos.
