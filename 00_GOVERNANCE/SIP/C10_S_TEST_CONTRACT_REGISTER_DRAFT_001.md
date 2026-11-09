@@ -1308,3 +1308,29 @@ Cada contrato separará hidden_truth, AST/entrada del analizador, resultado de m
 ## 68. Contratos de verdad conocida para el servicio sintético y RUL
 
 Sobre C10_S_SYNTHETIC_LOGICAL_SERVICE_FUNCTIONAL_CONTRACT_DRAFT_001.md, la futura suite discriminará: (a) ENABLED=true con STANDARD/READ_ONLY (satisface); (b) ENABLED=true con DISABLED (viola); (c) ENABLED=false con cada perfil (no restringido por esta implicación); (d) mutación de operador/dominio; (e) cambio de scope/owner/efecto; (f) regla no aplicada en destino; (g) UNKNOWN por ausencia/conflicto/cobertura; (h) etiquetas físicas distintas con mapping semánticamente equivalente; (i) etiquetas iguales con mapping semánticamente divergente. Separar hidden_truth, entrada del analizador, evidencia y oráculo. Son contratos conceptuales, no fixtures serializados ni pruebas ejecutadas.
+
+
+## 69. Crosswalk integrado de contratos para el paquete C (2026-11-09)
+
+Este apartado organiza contratos existentes; no crea pruebas nuevas ni declara su ejecución.
+
+| Familia | Contratos reutilizados | Papel en C | Estado |
+|---|---|---|---|
+| Estimación/identificación | P177-01…12 | ITT, primeras etapas, IV/LATE, heterogeneidad, multiplicidad, recuperación y dictamen | DEFINED / NOT EXECUTED |
+| Diseño cuantitativo | P178-SIM-01…10 | N, potencia/precisión, réplicas, error Monte Carlo, pérdidas y reproducibilidad | DEFINED / PARAMETERS OPEN |
+| Value | P179-01…08 | Vector, independencia A/O/V, contexto, trade-offs y agregación | DEFINED / OPERATIONALIZATION OPEN |
+| Validez de constructo | P182-01…12 | Circularidad, cobertura, error, acuerdo, invariancia, firewall | DEFINED / EVIDENCE OPEN |
+| Ausencia/censura | P183-01…13 | MCAR/MAR/MNAR, selección, ITT, cotas y dictamen por estimando | DEFINED / PARAMETERS OPEN |
+| Interfaz | Maestro §221 | Entradas AB, salidas C y no sustitución de estimandos | CONTRACT DEFINED |
+
+### 69.1 Reglas de evaluación adicionales como interpretación de los contratos existentes
+
+1. La recuperación se evalúa por estimando, dimensión de Value y escenario; no solo con métricas agregadas.
+2. Una abstención correcta ante no-identificación es acierto del Analyzer, no fallo de recuperación.
+3. La recuperación de truth sintética no es evidencia empírica externa de ΔT_acc→Value.
+4. ITT sobre Outcome no se usa como sustituto de ITT sobre Value.
+5. El LATE de Outcome no se transporta a Value ni a otra dimensión sin justificación.
+6. Los efectos mediados por ΔT_acc* requieren una intervención mediadora y tratamiento explícito de confusión postratamiento.
+7. Los umbrales de aceptación, MDE, potencia, precisión, N y R se fijan ex ante; no se importan valores ilustrativos históricos.
+
+**Estado:** crosswalk documental; sin fixtures, implementación, simulación o ejecución.
