@@ -48,6 +48,48 @@ C10-S comprueba, en un universo sintético controlado, si los componentes transf
 
 C10-S no sustituye C10-D1 ni resuelve por simulación los problemas de identificación de un sistema real.
 
+### 0.5. Control obligatorio de precedencia semántica (lectura anti-regresión)
+
+Esta regla es de aplicación obligatoria antes de resumir, analizar, proponer, aceptar o propagar cualquier elemento de la arquitectura C10-S. Su finalidad es impedir que una formulación histórica, aunque permanezca en el maestro, vuelva a interpretarse como vigente.
+
+**No se determina la vigencia por la posición de una sección, por su detalle, por su antigüedad aparente ni por encontrarla primero en una búsqueda.** La vigencia se establece por la relación explícita de autoridad, alcance y supersesión documentada a continuación.
+
+#### 0.5.1. Orden de autoridad
+
+1. **Decisiones aceptadas (DEC-C10) aplicables al asunto y a su alcance exacto.** Una DEC prevalece sobre propuestas, recomendaciones y estados abiertos anteriores, pero no se extiende a asuntos que no decidió.
+2. **Addenda o secciones posteriores que declaran expresamente qué formulación sustituyen**, siempre que no contradigan una DEC aceptada de mayor autoridad.
+3. **Especificación candidata vigente del maestro y crosswalks correctivos expresamente vinculados**, respetando el alcance y estado DRAFT/ACCEPTED de cada uno.
+4. **Secciones anteriores, propuestas no aceptadas y material recuperado de fuentes históricas.** Se conservan para trazabilidad y comprensión del desarrollo, pero no son fuente operativa cuando existe una corrección o sustitución explícita aplicable.
+
+La fecha o numeración posterior, por sí sola, no crea supersesión. Tampoco una sección de síntesis puede convertir una propuesta en decisión aceptada. Si dos fuentes de autoridad comparable discrepan y no existe una regla explícita que resuelva el alcance, el análisis se detiene y se registra la contradicción como OPEN/UNKNOWN; no se elige por intuición.
+
+#### 0.5.2. Procedimiento obligatorio por asunto
+
+Antes de formular una conclusión:
+1. Identificar el asunto exacto y el objeto semántico, sin agrupar conceptos solo porque compartan una etiqueta (por ejemplo, autorización basal y política de intervención sobre autorización).
+2. Localizar la decisión aceptada y la última corrección explícita aplicable; leer el pasaje completo y sus límites, no solo coincidencias de búsqueda.
+3. Registrar mentalmente o en el análisis de trabajo: fuente vigente, formulación sustituida, alcance de la sustitución y cuestiones que permanecen abiertas.
+4. Comprobar las secciones dependientes y los crosswalks; una corrección local no autoriza generalizar a otras rutas, escenarios o estimandos.
+5. Si no puede demostrarse la precedencia o la identidad semántica, detener la inferencia y pedir resolución; no reconstruirla desde memoria ni desde una sección aislada.
+
+Toda respuesta que use una formulación histórica debe identificarla como histórica y explicar por qué sigue siendo pertinente (por ejemplo, trazabilidad o escenario adversarial). No debe presentarla como arquitectura primaria vigente.
+
+#### 0.5.3. Precedencia semántica ya resuelta: autorización y D2
+
+| Asunto | Formulación que rige | Formulación que NO debe recuperarse como primaria | Alcance y límite |
+|---|---|---|---|
+| Autorización basal | En el DGP aislado D2, `C_auth,base=1` es condición basal común, satisfecha antes de Z e invariante frente a B; DEC-C10-067. | La antigua intervención focal sobre `C_auth` de AUD-001/002. | La propuesta antigua no redefine ni elimina la autorización basal. La intervención sobre autorización solo puede aparecer como política conjunta/escenario distinto, nunca confundida con D2. |
+| Predicado de accesibilidad focal | La fórmula candidata depurada del maestro §67.3 contiene `AUTH_f*`; el crosswalk D2 §1–§4 aclara que `C_auth_base` se corresponde con `AUTH_f*`. | La composición histórica de §30.1 y las listas antiguas que agregaban factores autónomos ya reconciliados. | `C_auth_base`/`C_auth,base` y `AUTH_f*` no son factores independientes duplicados. La fórmula sigue siendo candidata, no universal ni congelada. |
+| Política primaria C10-S | D2 es el escenario primario candidato y D1 el secundario; DEC-C10-066 y contrato material DEC-C10-067. | Recomendaciones anteriores de D1 principal condicionado, D2 meramente comparativo o selección abierta. | La decisión no identifica por sí sola `θ_A(q)`, no valida exclusión ni resuelve estimandos, soporte, vías colaterales o calibración. |
+| Intervención sobre autorización | S4-O/AUD-001/002 puede conservarse como escenario alternativo/adversarial para estudiar el efecto de una política de autorización. | Su reutilización como si fuera la intervención del D2 primario. | Si cambia autorización y otras condiciones, se interpreta como efecto de política/paquete salvo identificación adicional; no se etiqueta automáticamente como efecto puro de accesibilidad. |
+
+**Regla de seguridad específica:** nunca recomendar retirar, borrar, absorber o marcar como obsoletos `C_auth,base=1`, `C_auth_base` o `AUTH_f*` por el mero hecho de que AUD-001/002 sea una propuesta antigua. Lo que queda fuera del D2 primario es la intervención focal sobre autorización, no la autorización basal ni el predicado `AUTH_f*`.
+
+#### 0.5.4. Condición de parada
+
+Si una respuesta, sección o crosswalk parece contradecir esta tabla, no se corrige por intuición ni se continúa con el siguiente paso científico. Se vuelve a las DEC y addenda citadas, se identifica exactamente qué fuente está en conflicto y se mantiene el asunto bloqueado hasta reconciliarlo. Este control es previo a cualquier avance de N17 o a cualquier nueva matriz de identificación.
+
+
 ### 0.4. Regla de no propagación
 
 Ningún resultado futuro de C10-S modificará automáticamente Core, RMA, Evidence→Claim Matrix, STATUS o claims. Cualquier propuesta de cambio científico requerirá una evaluación independiente y el procedimiento de gobernanza aplicable.
@@ -8582,3 +8624,36 @@ Esta aceptación cierra el contrato documental temporal, no el IAM ni las observ
 La Closure Control Matrix §87 contiene el inventario único y clasifica requisitos como cerrados documentalmente, definidos pendientes de especificación, pendientes de evidencia, bloqueantes de implementación o bloqueantes de ejecución. El plan §16.69 establece la secuencia de cierre; no se duplica aquí el inventario.
 
 No se declara que el efecto causal esté identificado. No se confunde configuración conforme con accesibilidad, Reach, trayectoria o Value. No se autoriza implementación, Design Freeze, validación técnica ni ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 213 — Control vinculante de precedencia semántica y prevención de regresiones (2026-11-09)
+
+**Estado:** control documental incorporado al maestro C10-S; no es una nueva decisión científica ni una ampliación del alcance causal. Se aplica junto con §0.5 y no sustituye las DEC-C10 aceptadas.
+
+### 213.1. Hallazgo de integridad documental
+
+La existencia de addenda correctivos y de una regla general de reconstrucción histórica no había impedido que formulaciones antiguas reaparecieran en análisis posteriores como si fueran vigentes. La mera etiqueta «histórico», la numeración posterior o la recuperación de un fragmento no constituyen controles suficientes. El fallo es de resolución de precedencia semántica, no una razón para borrar la historia ni para crear otra matriz paralela.
+
+### 213.2. Regla vinculante de interpretación
+
+Se establece como punto de entrada obligatorio §0.5. Antes de usar cualquier formulación se debe resolver, para ese asunto concreto: (a) decisión aceptada aplicable; (b) addendum correctivo y alcance de supersesión; (c) especificación/crosswalk vigente; (d) estado de lo que permanece abierto. La búsqueda de texto o la lectura cronológica no sustituye este procedimiento.
+
+Una formulación sustituida conserva valor histórico y puede conservar valor como escenario alternativo/adversarial, pero no puede volver a operar como definición primaria. Una formulación marcada como propuesta tampoco adquiere autoridad por estar incluida en el documento maestro o en una sección integrada.
+
+### 213.3. Aplicación a autorización y accesibilidad
+
+Quedan fijadas para la lectura de continuidad, sin alterar las DEC originales:
+
+- `C_auth,base=1` permanece como condición basal común e invariante en el DGP aislado D2, conforme a DEC-C10-067.
+- `C_auth_base` se corresponde con `AUTH_f*` en el crosswalk de predicados; no se contabilizan como factores independientes.
+- La fórmula candidata de referencia para `A_f*` es la de §67.3, reconciliada por el crosswalk D2; la fórmula histórica de §30.1 no la sustituye.
+- La intervención focal sobre autorización de AUD-001/002 no es la intervención primaria D2. Puede conservarse únicamente como diseño/escenario alternativo de política de autorización, con su estimando y vías propios.
+- D2 es el escenario primario candidato y D1 el secundario por DEC-C10-066; DEC-C10-067 fija el contenido material de las políticas D2. Esta precedencia no resuelve por sí sola la atribución causal específica a accesibilidad.
+
+### 213.4. Control de propagación
+
+Toda continuación que toque autorización, `A_f*`, `ΔT_acc`, D1/D2 o estimandos debe comprobar explícitamente §0.5 y las DEC citadas antes de proponer cambios. Si un documento dependiente conserva texto incompatible, debe señalarse como discrepancia documental concreta y reconciliarse mediante addendum trazable; no debe reinterpretarse silenciosamente ni multiplicarse en una matriz nueva.
+
+Si no puede verificarse el estado de una fuente o su relación de autoridad, el resultado es UNKNOWN y la inferencia se detiene. No se permite rellenar la laguna con memoria conversacional.
+
+**Límites:** este control no acepta ni congela la fórmula candidata; no cierra la jerarquía de estimandos, exclusión, mediación, soporte, vías colaterales, población, Value, horizonte, potencia o sensibilidad; no autoriza implementación, validación técnica, simulación ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
