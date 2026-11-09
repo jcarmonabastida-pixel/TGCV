@@ -9604,3 +9604,24 @@ C no puede pasar a Design Freeze/implementation contract hasta que estén cerrad
 12. criterio de aceptación/falsación y límites de generalización.
 
 **Dictamen actual:** paquete C sigue DOCUMENTED DESIGN PROPOSAL / NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. La jerarquía de estimandos y la estructura de medición están documentadas; la identificación de θ_A(q), θ_Af(q_X*), mediación y LATE_f no está cerrada; Outcome/Value no están operacionalizados; parámetros, soporte, potencia, N y umbrales siguen OPEN. Mantener scientific_execution=false y execution_authorized=false. No generar código, fixtures, parsers, validadores, simulaciones ni ejecutar experimentos.
+
+
+# 226. Auditoría de correspondencia entre mediación causal y contratos P177–P183 (2026-11-10)
+
+**Estado:** corrección de trazabilidad documental; sin nueva decisión científica, sin aprobación de mediación y sin autorización de ejecución.
+
+La comprobación directa del Test Contract Register §55.1 confirma que P177-05…08 significan, respectivamente: separación de estimaciones Outcome/Value; ajuste basal sin mediadores postasignación; distinción ATE/ATT frente a ITT/LATE; y heterogeneidad/composición de compliers. Por tanto, la atribución de la mediación/confusión postratamiento a «P177-05…08» en el crosswalk del §72 del Register era imprecisa y no debe mantenerse.
+
+**Correspondencia corregida:**
+- P177-06 cubre la regla de ajuste basal y la prohibición de incorporar mediadores postasignación al ajuste ITT; no es por sí solo un contrato de identificación de mediación.
+- P177-12 cubre la separación entre efecto de política y atribución a accesibilidad; no define el estimando mediacional.
+- P182-01/02/06/07 cubren cobertura, circularidad, acuerdo y error de medición de A; son requisitos de validez/adjudicación, no identificación causal de mediación.
+- P183-08 cubre el impacto de ausencia de A sobre la identificación; no cubre el conjunto de supuestos de confusión mediador–resultado.
+- P177-05 cubre Outcome/Value independientes y P177-07/08 ATE/ATT y heterogeneidad; no son pruebas de mediación.
+- El contrato sustantivo de mediación permanece en §225.3 como propuesta metodológica: DAG y temporalidad, confusión basal e inducida por tratamiento, intervención mediadora/interventional effects o método g longitudinal, mediadores múltiples/interacciones y condiciones de identificación. No hay todavía un contrato de aceptación suficientemente específico que permita declarar este subdominio cerrado.
+
+La referencia correcta en futuros crosswalks será, por tanto, «§225.3 + P177-06/P177-12 + P182-01/02/06/07 + P183-08», con la limitación expresa anterior. No se debe etiquetar ese conjunto como validación completa de mediación.
+
+**Dictamen de auditoría:** el diseño estadístico general de §225 está documentado, pero la cobertura contractual de mediación es PARCIAL. Gate C-MED permanece OPEN hasta fijar estimando/intervención mediadora, secuencia temporal y conjunto de confusores, supuestos de identificación, método principal/alternativo, sensibilidad y criterio de recuperación/abstención por escenario DGP. No se crea un contrato ejecutable ni se seleccionan supuestos por defecto.
+
+Mantener scientific_execution=false; execution_authorized=false; no código, fixtures, validadores, simulaciones ni experimentos.
