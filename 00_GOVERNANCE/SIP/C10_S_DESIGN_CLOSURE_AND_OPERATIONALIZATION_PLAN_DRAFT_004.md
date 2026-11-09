@@ -1979,3 +1979,12 @@ Se incorpora al maestro §216 una especificación integrada de trabajo que reuti
 **Regla de continuidad:** la siguiente pasada debe especializar conjuntamente AB-01…AB-05 y AB-06…AB-09 sobre la misma instancia, no abrir auditorías separadas ni repetir decisiones aceptadas. No fijar por memoria ni conveniencia valores de s, cumplimiento, fondo/crossover, N, probabilidades ni tolerancias. Los asuntos estadísticos de N/potencia/Value se transfieren a C, conservando en AB las variables generadoras e interfaces necesarias.
 
 No se declara AB DONE, Design Freeze ni readiness de implementación. No se ejecuta código/validator/parser/fixture/simulación ni experimento. scientific_execution=false; execution_authorized=false.
+
+
+## 16.95 — Paquete AB: propuesta material para instancia, mapping y rutas (2026-11-09)
+
+Se añade al maestro §217 una propuesta única y acotada para especializar la instancia ya aceptada: roster mínimo CMP/PAR/REF/RUL/MET; valores semánticos de referencia y adversariales; contratos sintéticos C_src/C_dst y mapping ENUM; rutas F1/F2 y A1/A2; perfil F* por FP-01…FP-07 con FP-08 separado; frontera candidata B/ARCH-B1.
+
+No se acepta automáticamente: REF como clase separada frente a operand bindings del AST; namespaces/códigos físicos sintéticos; alcance G; perfil FP-05; y parámetros/ventana H. Se presentan como propuesta explícita, no como DEC ni como implementación.
+
+La continuidad será una única decisión de paquete sobre la especialización semántica. Después se cerrarán H, mecanismo probabilístico D2 y elegibilidad/soporte como subbloques coordinados del mismo AB. No abrir otra auditoría general ni volver a discutir decisiones ya aceptadas. No código/fixtures/simulación/ejecución; autorizaciones permanecen false.
