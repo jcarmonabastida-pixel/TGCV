@@ -83,7 +83,7 @@ Toda respuesta que use una formulación histórica debe identificarla como hist�
 | Asunto | Formulación que rige | Formulación que NO debe recuperarse como primaria | Alcance y límite |
 |---|---|---|---|
 | Autorización basal | En el DGP aislado D2, `C_auth,base=1` es condición basal común, satisfecha antes de Z e invariante frente a B; DEC-C10-067. | La antigua intervención focal sobre `C_auth` de AUD-001/002. | La propuesta antigua no redefine ni elimina la autorización basal. La intervención sobre autorización solo puede aparecer como política conjunta/escenario distinto, nunca confundida con D2. |
-| Predicado de accesibilidad focal | La fórmula candidata depurada del maestro §67.3 contiene `AUTH_f*`; el crosswalk D2 §1–§4 aclara que `C_auth_base` se corresponde con `AUTH_f*`. | La composición histórica de §30.1 y las listas antiguas que agregaban factores autónomos ya reconciliados. | `C_auth_base`/`C_auth,base` y `AUTH_f*` no son factores independientes duplicados. La fórmula sigue siendo candidata, no universal ni congelada. |
+| Predicado de accesibilidad focal | La fórmula candidata depurada del maestro §67.3 contiene `AUTH_f*`; el crosswalk D2 §1–§4 aclara que `C_auth_base` se corresponde con `AUTH_f*`. | Las fórmulas anteriores de §§30.1, 58.4 y 59.3 y las listas que agregaban `C_info`/`C_other` como factores autónomos; son antecedentes, no fuentes operativas. | `C_auth_base`/`C_auth,base` y `AUTH_f*` no son factores independientes duplicados. La fórmula sigue siendo candidata, no universal ni congelada. |
 | Política primaria C10-S | D2 es el escenario primario candidato y D1 el secundario; DEC-C10-066 y contrato material DEC-C10-067. | Recomendaciones anteriores de D1 principal condicionado, D2 meramente comparativo o selección abierta. | La decisión no identifica por sí sola `θ_A(q)`, no valida exclusión ni resuelve estimandos, soporte, vías colaterales o calibración. |
 | Intervención sobre autorización | S4-O/AUD-001/002 puede conservarse como escenario alternativo/adversarial para estudiar el efecto de una política de autorización. | Su reutilización como si fuera la intervención del D2 primario. | Si cambia autorización y otras condiciones, se interpreta como efecto de política/paquete salvo identificación adicional; no se etiqueta automáticamente como efecto puro de accesibilidad. |
 
@@ -902,7 +902,7 @@ Siguiente operación recomendada:
 ## 16. Resolución conceptual de auditoría cruzada XAUD-001 / XAUD-002 (sección conversacional 130)
 
 ### 16.1. Hallazgos
-- **XAUD-001 (crítico):** posible incompatibilidad entre el régimen común q y las políticas g1/g0 si q fija la autorización focal y las políticas g también la modifican.
+- **XAUD-001 (hallazgo inicial):** posible incompatibilidad entre el régimen común q y las políticas g1/g0 si q fija la autorización focal y las políticas g también la modifican. La contradicción específica de autorización para D2 se resolvió después por DEC-C10-066/067; permanece abierto el mapping general B→g^Af y la factibilidad de las políticas de C10-D1.
 - **XAUD-002 (alto):** insuficiente separación entre efecto de política y efecto atribuible a accesibilidad.
 - Hallazgos asociados: separar accesibilidad verdadera/observada, aplicabilidad y ejecución; no forzar transformaciones que incumplan precondiciones; conservar temporalidad y snapshots de T_acc.
 
@@ -6862,7 +6862,7 @@ El analizador no recibe (p_{abcd}), s, truth de componentes ni estado verdadero 
 
 Queda demostrado que s=.80 no identifica la distribución de fallos parciales. El DGP necesita una tabla conjunta de 16 patrones o un generador equivalente explícito. Las familias y la cuadrícula de sensibilidad son propuestas para diseñar pruebas, no decisiones confirmatorias.
 
-No se selecciona una distribución, no se fija s, no se aprueba independencia ni una estructura de dependencia, no se selecciona D1/D2 como primario y no se valida empíricamente el mecanismo. Siguen abiertas la calibración con datos, la heterogeneidad, el protocolo de intentos, la observación de fallos, las rutas alternativas y la revisión independiente. No hay freeze, implementación, simulación ni ejecución.
+No se selecciona una distribución, no se fija s, no se aprueba independencia ni una estructura de dependencia, y no se valida empíricamente el mecanismo. La precedencia ya está resuelta: D2 es primario candidato y D1 secundario por DEC-C10-066. Siguen abiertas la calibración con datos, la heterogeneidad, el protocolo de intentos, la observación de fallos, las rutas alternativas y la revisión independiente. No hay freeze, implementación, simulación ni ejecución.
 
 
 ---
@@ -6955,7 +6955,7 @@ La tabla de sensibilidad cambia s y por tanto los estados esperados de C_dep. No
 
 Quedan construidos cuatro fixtures explícitos y una propagación analítica de la cuadrícula s hacia FS_Cdep para D1 y D2. Se identifica una dependencia que debe conservarse: el .20 de control D1 es consecuencia de q0=.25 y s=.80, no un parámetro independiente si s está en sensibilidad.
 
-No se selecciona fixture confirmatorio, no se justifica empíricamente ninguna tabla, no se infiere accesibilidad desde C_dep sin condiciones y no se elige D1/D2 como primario. Las familias mixtas más generales, las marginales fijas, la heterogeneidad y la calibración observacional siguen abiertas. No hay freeze, implementación, simulación ni ejecución.
+No se selecciona fixture confirmatorio, no se justifica empíricamente ninguna tabla ni se infiere accesibilidad desde C_dep sin condiciones. La selección D2 primario candidato/D1 secundario ya está resuelta por DEC-C10-066 y no equivale a seleccionar una distribución o fixture. Las familias mixtas más generales, las marginales fijas, la heterogeneidad y la calibración observacional siguen abiertas. No hay freeze, implementación, simulación ni ejecución.
 
 
 ---
