@@ -2094,23 +2094,20 @@ Para el S4-R primario:
 
 q* es la distribución común completa de condiciones/historias declaradas, no solo la distribución marginal de L_m. Si la asignación de q* no puede mantenerse común o el soporte de alguna política falla, el escenario debe emitir no-identificación para el contraste poblacional propuesto.
 
-### 30.5. Estimando y verdad del DGP
+### 30.5. Ilustración algebraica histórica del contraste .20→.80 — no primaria para D2
 
-El estimando sintético primario es el contraste entre las dos políticas factibles de accesibilidad:
-θ_A(q*) = E[V^(q*,g1)] − E[V^(q*,g0)].
+La formulación original de esta sección usaba la pareja p1=.80, p0=.20 y denominaba al contraste θ_A(q*) como estimando sintético primario. Esa precedencia no se conserva: la pareja .20→.80 corresponde al mecanismo candidato D1, que hoy es secundario, no al D2 primario candidato. El contraste primario de asignación D2 es ITT_Z^D2; el efecto general θ_A(q) sigue siendo la pregunta científica C10-D1 y no se identifica automáticamente con este ejemplo focal.
 
-Con p1=.80, p0=.20, condiciones restantes satisfechas y medición estructural perfecta:
+Como ilustración algebraica del DGP simplificado asociado a la pareja .20→.80, y solo si las condiciones restantes están satisfechas, la medición estructural es perfecta y la correspondencia entre políticas materiales y políticas de accesibilidad está justificada:
 E[A_f*|g1]−E[A_f*|g0]=.60.
 
-Si el DGP mantiene:
+Si el DGP ilustrativo mantiene:
 - M = 1 + A_f* + 0.5X + ε_M;
 - O = 2M + ε_O;
 - V = 3O + 4L_m + ε_V;
-- errores de media cero, misma distribución bajo ambas políticas y sin interacciones ni vías directas de B_g/C_dep hacia M, O o V;
+- errores de media cero, misma distribución bajo ambas políticas y sin interacciones ni vías directas de B/C_dep hacia M, O o V;
 
-entonces el efecto medio inducido en Value es θ_A(q*) = 6 × .60 = 3.6.
-
-Esta igualdad es verdad analítica del DGP propuesto, condicionada a todos los supuestos listados. No es un valor empírico, umbral de relevancia ni evidencia a favor de TGCV. El generador debe conservar el valor verdadero y el analizador no debe recibirlo.
+el efecto algebraico de esa intervención focal en el DGP ilustrativo sería 6 × .60 = 3.6. Este valor no es el ITT de D2, no se transfiere a D2, no es un resultado empírico ni un parámetro validado, y no prueba que B material instancie g^Af. El generador conserva la verdad; el analizador no recibe el valor.
 
 ### 30.6. Medición, snapshots y temporalidad
 
@@ -5071,16 +5068,15 @@ Se proponen:
 
 ### 50.9. Dictamen y decisiones pendientes
 
-**Dictamen conceptual:** las secciones 46–49 pueden reconciliarse si se distinguen dos objetivos y dos poblaciones. La ausencia de alternativas es necesaria para la afirmación de apertura funcional exclusiva, pero no debe imponerse automáticamente como criterio de elegibilidad del estudio de apertura de τ2.
+**Dictamen conceptual:** las secciones 46–49 distinguen dos objetivos y dos poblaciones: apertura de τ2 y apertura funcional exclusiva F*. La ausencia de alternativas es necesaria para la segunda afirmación, pero no se impone automáticamente como elegibilidad de P*_τ2. La selección del escenario primario C10-S ya está resuelta por DEC-C10-066 (D2 candidato primario; D1 secundario); esta decisión no selecciona por sí sola cuál de los estimandos de accesibilidad queda identificado.
 
 Continúan pendientes:
 - definición formal y operacional de θ_τ2 y θ_F;
-- decisión de cuál será el objetivo primario de C10-S y su transición a C10-P;
 - definición de q* y población de referencia para cada objetivo;
 - protocolo de interacción/heterogeneidad por F_alt,0;
 - análisis de sensibilidad a error de clasificación y selección;
 - especificación de efectos de B sobre rutas alternativas;
-- armonización formal con C10-D1 y revisión independiente de XSYNC.
+- armonización de la identificación focal con C10-D1 y revisión de XSYNC.
 
 No se declara cerrada la auditoría completa ni se congela S4-R. No se implementa ni simula. La propuesta resuelve una contradicción de alcance, pero aún debe comprobarse contra los contratos causales y el DGP antes de aceptar el diseño.
 
@@ -5091,17 +5087,18 @@ No se declara cerrada la auditoría completa ni se congela S4-R. No se implement
 
 **Estado:** propuesta de matriz DGP para contrastar apertura de τ2, apertura funcional y no cumplimiento. No modifica C10-D1 ni el Core TGCV. No es freeze, implementación, simulación, ejecución, auditoría independiente ni aceptación.
 
-### 51.1. Objetivo primario propuesto
+### 51.1. Objetivo de diseño bajo la precedencia vigente DEC-C10-066/067
 
-Se propone que C10-S tenga como objetivo causal primario el efecto de la política aleatorizada de provisión sobre Value en la población P*_τ2, y como objetivo de identificación secundario el efecto local de la accesibilidad focal de τ2 entre las unidades cuyo acceso cambia por la política, si los supuestos IV se sostienen.
+El objetivo primario de asignación de C10-S/S4-R se aplica al escenario D2: efecto de la política aleatorizada de provisión técnica focal sobre Value en P*_τ2, ITT_Z^D2. D1 se conserva como escenario secundario de política incremental. Esta precedencia de escenarios está aceptada por DEC-C10-066; las políticas materiales D2 se rigen por DEC-C10-067.
 
-La elección no debe confundirse con afirmar que el efecto de accesibilidad está ya identificado:
-- **Primario de diseño:** ITT de asignación a la política de provisión (TE_Z), estimable por la aleatorización si Value se observa o su ausencia se trata con supuestos/límites explícitos.
-- **Secundario causal:** efecto de accesibilidad focal (A_f*) inducido por la política; el cociente de Wald solo identifica un LATE entre compliers bajo relevancia, independencia, exclusión, monotonicidad, consistencia/versiones y ausencia de interferencia, además de medición válida.
-- **Subobjetivo funcional:** efecto en P*_F, donde no existen alternativas basales substituibles; análisis de alcance/heterogeneidad, no filtro automático de la población primaria.
-- **No objetivo de S4-R:** estimar el efecto universal de todo ΔT_acc. El instrumento focaliza τ2 y no representa todos los cambios posibles en U_acc, R_acc y C_acc.
+La jerarquía no debe confundirse con afirmar que el efecto específico de accesibilidad está identificado:
+- **Primario de diseño:** ITT_Z^D2, efecto de asignación a las políticas materiales D2. La identificación depende de aleatorización, consistencia, unidad/interferencia y tratamiento de Value ausente.
+- **Secundario de atribución focal:** LATE_f^D2 solo si se sostienen relevancia, independencia, exclusión, monotonicidad, consistencia/versiones, no interferencia y medición válida; el estado actual de §132 es NO IDENTIFICADO / NO LISTO PARA WALD.
+- **Objetivo poblacional focal:** θ_Af(q_X*) permanece no identificado mientras no se demuestre la correspondencia B_D2→g^Af y las condiciones adicionales.
+- **Subobjetivo funcional:** efecto en P*_F, donde no existen alternativas basales substituibles; análisis de alcance/heterogeneidad, no filtro automático de P*_τ2.
+- **Pregunta general C10-D1:** θ_A(q) sobre cambios estructurados de ΔT_acc; no es sustituida por el diseño focal τ2.
 
-Esta jerarquía es una propuesta de diseño para C10-S, pendiente de armonización con C10-D1 y decisión formal.
+ITT, LATE, θ_Af(q_X*) y θ_A(q) son objetos distintos. La jerarquía confirmatoria completa sigue DRAFT y no se declara aprobada por la decisión de escenario.
 
 ### 51.2. Variables y secuencia común del DGP
 
@@ -7009,14 +7006,11 @@ F* continúa parcialmente definido como función técnica de reconfigurar el sis
 
 D1: provisión ordinaria de baja frecuencia en control frente a provisión programada; W_attempt .25/1, C_dep final .20/.80, FS_Cdep .60 bajo factorización candidata. D2: ausencia de intento focal frente a provisión programada; 0/1, C_dep final 0/.80, FS_Cdep .80. El .80 es candidato de éxito conjunto condicional, no dato empírico. El .20 de D1 es postasignación, no basal; ambos escenarios pueden tener C_dep,0=0.
 
-La fuente 165–168 recomienda D1 principal condicionado; DEC-C10-026 y DGP §25 recomiendan D2 provisionalmente como contraste mecanístico mientras no se justifique D1. Ninguna recomendación está aceptada. La selección primaria sigue ABIERTA. ITT y Wald/LATE se mantienen específicos por escenario.
+La precedencia ya no está abierta: DEC-C10-066 establece D2 como escenario primario candidato y D1 como secundario. D1 principal condicionado y D2 contraste son recomendaciones históricas supersedidas. ITT y Wald/LATE se mantienen específicos por escenario.
 
 ### 70.5 Estado
 
-Propuesta de reconciliación documentada. No cierra OPEN-C10-001/003/005/007, AUD-001/004/005/011, ni los contratos CMP/POP. No selecciona D1/D2, no fija F*, no congela y no autoriza implementación, simulación o ejecución.
-
-
----
+La precedencia D2 primario candidato / D1 secundario está aceptada por DEC-C10-066; las políticas materiales D2 están aceptadas conceptualmente por DEC-C10-067. La reconciliación de parámetros y mecanismo no valida s=.80 ni demuestra ausencia de provisión de fondo, equivalencia B→g^Af o identificación causal. OPEN-C10-001/003/005/007, AUD-001/004/005/011 y contratos CMP/POP permanecen abiertos. No se fija F*, no se congela ni se autoriza implementación, simulación o ejecución.
 
 ## 71. Reconciliación de snapshots estructurales, evidencia y ΔT_acc (2026-11-04)
 
