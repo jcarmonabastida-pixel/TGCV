@@ -236,21 +236,3 @@ Se aceptan documentalmente las definiciones materiales de (B_{g0}^{D2}) y (B_{g1
 
 El registro no cierra actor, artefacto/hash, recepción, ventanas, reintentos, rollback, evidencia de componentes ni ausencia de provisión de fondo. (s=0.80) sigue siendo hipótesis no validada y no se transfiere automáticamente a (A_f^{*}) o (D_f^{*}). No se autoriza freeze, implementación ni ejecución.
 
-
-## 14. Precedencia posterior: autorización basal D2 y descarte de la intervención focal como primaria (DEC-C10-067; 2026-11-09)
-
-Esta sección corrige la lectura que pudiera derivarse de CA-03 y de §9. **La cuestión «C_auth basal/invariante o intervención focal sobre autorización» ya no está abierta para el D2 primario candidato.** DEC-C10-067 establece que `C_auth,base=1`, elegibilidad, recursos no focales, capacidad, información basal y protocolo de medición/adjudicación permanecen comunes en el DGP aislado.
-
-Por tanto:
-
-1. En D2, `C_auth,base=1` es una condición basal común, satisfecha antes de Z e invariante frente a B.
-2. La política D2 modifica la provisión técnica focal conforme a DEC-C10-067; no manipula la autorización basal.
-3. La antigua propuesta AUD-001/002 de intervenir focalmente sobre `C_auth` no es la intervención primaria D2. Puede conservarse como escenario alternativo/adversarial de política de autorización, con su propio efecto de política/paquete y vías causales.
-4. La autorización basal no se elimina de la arquitectura: el crosswalk D2 de predicados la corresponde con `AUTH_f*`; `C_auth_base` y `AUTH_f*` no se cuentan como factores independientes duplicados.
-5. Esta resolución no cierra la jerarquía de estimandos, la equivalencia entre B y g, las vías colaterales, exclusión, población, soporte ni identificación de la contribución causal específica de accesibilidad.
-
-**Supersesión limitada:** esta sección supersede exclusivamente el estado ABIERTO de CA-03 en la medida en que se refería a la elección para D2 entre autorización basal y autorización intervenida, y la pregunta equivalente de §9. No borra la propuesta AUD-001/002 ni cierra la posibilidad de estudiarla como escenario distinto. Los restantes asuntos CA-01, CA-02 y CA-04…CA-07 conservan sus estados y alcances, salvo resolución posterior expresa.
-
-**Control de lectura:** no interpretar «AUD-001/002 es antiguo/no primario» como «C_auth basal es obsoleto» ni como «AUTH_f* debe retirarse». La intervención focal sobre autorización y el predicado basal de autorización son objetos distintos.
-
-**Estado:** reconciliación documental basada en DEC-C10-067 y en el crosswalk de predicados; no es una nueva DEC ni una aprobación de la arquitectura causal completa. No autoriza freeze, implementación, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
