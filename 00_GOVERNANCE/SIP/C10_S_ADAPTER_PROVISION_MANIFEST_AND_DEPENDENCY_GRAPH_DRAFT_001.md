@@ -265,3 +265,68 @@ Ningún estado `NO INVENTARIADO`, `?`, `NONE` o `PARTIAL` equivale a ausencia, i
 Esta reconciliación no convierte ARCH-B1 en arquitectura aprobada ni acredita aislamiento material. MD-C1 y MD-C4 permanecen OPEN hasta completar manifiesto real, grafo transitivo, snapshots y pruebas de no-afectación. NO INVENTARIADO/?/PARTIAL conservan incertidumbre.
 
 **Estado:** clarificación documental; sin instalación, ejecución, validación ni cierre de vía colateral/exclusión.
+
+
+## 14. Matriz de adjudicación MAP-05 — cobertura causal de B-M01…15 y PROV-01…12 (2026-11-09)
+
+**Estado:** clasificación analítica documental completada; evidencia material ausente. La matriz no afirma que ninguna superficie haya cambiado ni que las salvaguardas se cumplan. Todas las filas conservan estado ? / NO INVENTARIADO salvo las prohibiciones contractuales explícitas de B-M13 y B-M14. Una prohibición en el diseño no es evidencia de que una implementación la haya respetado.
+
+### 14.1. Reglas de clasificación
+- **Focal condicionada:** cambio estrictamente necesario para provisionar la dependencia y ya representado por C_dep*/D_f*; requiere demostrar que no incorpora funciones adicionales.
+- **Constitutiva:** modifica una condición de A_f* distinta de la dependencia focal o el conjunto de transformaciones factibles.
+- **Colateral:** puede alcanzar Reach, trayectoria, ejecución, Outcome o Value sin quedar representada por el tratamiento focal declarado.
+- **Epistémica/informativa:** cambia conocimiento, señales, comunicaciones o decisiones del agente.
+- **Medición/oráculo:** cambia observabilidad, cobertura, criterios o adjudicación.
+- **Interferencia/residuo:** afecta otras unidades, periodos, rutas o estados posteriores.
+- Las clases no son mutuamente excluyentes.
+
+### 14.2. Cobertura por superficie
+
+| ID | Vía/mecanismo que debe adjudicarse | Clasificación primaria | Evidencia/falsador mínimo | Estado |
+|---|---|---|---|---|
+| B-M01 Artefacto | Identidad/integridad/compatibilidad→C_dep*; vulnerabilidad/calidad→riesgo/coste/Value | Focal condicionada + colateral | SBOM, firma/hash, dependencias, vulnerabilidades, licencia y prueba funcional | ? / NO INVENTARIADO |
+| B-M02 Runtime | Runtime/librerías/colas→C_dep*; runtime compartido→A1/A2/F2, latencia o spillover | Focal condicionada + colateral + interferencia | Imagen/hash, aislamiento, consumidores, recursos, llamadas y pruebas concurrentes | ? / NO INVENTARIADO |
+| B-M03 Host | Paquetes/variables/SO→compatibilidad, estado y rutas alternativas | Colateral + interferencia | Diffs pre/post/rollback y pruebas A1/A2/F2 comparables | ? / NO INVENTARIADO |
+| B-M04 Interfaz | Endpoint/canal→REL_f*/DEP_f*; exposición adicional→seguridad, latencia o información | Focal condicionada + constitutiva/colateral | API/schema, ACL, puertos, topología, logs y alcance | ? / NO INVENTARIADO |
+| B-M05 Permisos | Permiso técnico puede ser focal; autorización funcional altera AUTH_f*; credenciales visibles pueden alterar conocimiento | Focal condicionada o constitutiva + epistémica | Diff ACL/roles/tokens; separar permiso técnico de C_auth,base; probar no ampliación funcional | ? / NO INVENTARIADO |
+| B-M06 Datos/estado | Cambios fuente/destino/metadatos→aplicabilidad, F*, estado, Outcome o Value | Constitutiva + colateral + medición | Hashes/snapshots, diffs semánticos y prueba de invariancia funcional | ? / NO INVENTARIADO |
+| B-M07 Recursos | Reserva/consumo/contención→RES_f* o capacidad; desplazamiento→A1/A2/F2/Reach/Outcome | Constitutiva + colateral + interferencia | Capacidad utilizable, demanda concurrente, cuotas, colas, consumidores y consumo por brazo | ? / NO INVENTARIADO |
+| B-M08 Red | DNS/proxy/firewall/rutas→REL_f*/DEP_f*; rutas comunes→alternativas/seguridad | Focal condicionada + constitutiva + colateral | Diff de red, flujos, rutas, puertos, ACL, consumidores y pruebas de alternativa | ? / NO INVENTARIADO |
+| B-M09 Seguridad | Sandbox/certificados/políticas→BLOCK_f*/DEP_f*; riesgo/coste/confianza→Outcome/Value | Constitutiva + colateral | Threat model, políticas/certificados, superficie de ataque, costes y bloqueos | ? / NO INVENTARIADO |
+| B-M10 Observabilidad | Logs/telemetría→K del agente/selección; acceso evaluador→cobertura y medición | Epistémica + medición | Esquema, acceso por rol, mensajes/notificaciones, retención y ceguera | ? / NO INVENTARIADO |
+| B-M11 Estado persistente | Cachés/índices/registros→estado funcional, alternativas, contaminación entre unidades y carryover | Colateral + interferencia/residuo | Inventario de estado, snapshots, aislamiento por unidad, limpieza y rollback | ? / NO INVENTARIADO |
+| B-M12 Rendimiento | Latencia/throughput/prioridad→condiciones de uso, selección, ejecución y Outcome | Colateral + constitutiva potencial + interferencia | Benchmarks preespecificados, carga equivalente, colas y medidas por ruta/unidad | ? / NO INVENTARIADO |
+| B-M13 Oráculo | Modificación de F*/dataset/criterio→resultado medido artificialmente | Medición/oráculo | Identidad/hash/versionado inmutable y acceso ciego pre/post | PROHIBIDO EN B; cumplimiento ? |
+| B-M14 Alternativas | Cambio de A1/A2/exportador/importador→Reach y trayectoria no focal | Colateral + interferencia | Identidad/versiones, dependencias transitivas y equivalencia funcional pre/post | PROHIBIDO EN B; cumplimiento ? |
+| B-M15 Reversibilidad | Rollback incompleto→residuos, dependencias, permisos, recursos o estado persistente | Interferencia/residuo + colateral | Snapshot pre/post/rollback, diff semántico y prueba posterior de rutas | ? / NO INVENTARIADO |
+
+### 14.3. Trazabilidad PROV-01…12
+
+| Contrato | Qué controla | Qué NO demuestra por sí solo |
+|---|---|---|
+| PROV-01 | B no ejecuta F1/F2/A1/A2 | Ausencia de vías colaterales por runtime, recursos o información |
+| PROV-02 | B no modifica F*/dataset/oráculo | Invariancia de observación, ceguera o cobertura |
+| PROV-03 | Snapshots de host, configuración, permisos, red y componentes | Completitud semántica ni ausencia de cambios no observados |
+| PROV-04 | Dependencias transitivas y consumidores | Equivalencia funcional de las rutas consumidoras |
+| PROV-05 | No reducción de recursos disponibles A1/A2/F2 | Ausencia de contención en todas las cargas/ventanas sin medición |
+| PROV-06 | Permisos mínimos sin ampliar autorización funcional | Que credenciales o señales no cambien conocimiento |
+| PROV-07 | No alterar fuente/destino ni estado funcional basal | Ausencia de cachés, residuos o cambios semánticos no capturados |
+| PROV-08 | Conformidad funcional A1/A2 pre/post dentro de margen | No-afectación de toda ruta alternativa no incluida en el catálogo |
+| PROV-09 | No modificar dependencias críticas compartidas | Ausencia de degradación indirecta por recursos/red/host |
+| PROV-10 | Rollback sin residuos funcionales relevantes | Ausencia de efectos temporales ya producidos o carryover no observado |
+| PROV-11 | Desconocidos propagan cobertura incompleta/Reach=? | Que el universo inspeccionado sea exhaustivo |
+| PROV-12 | C_dep no se equipara a primera etapa A_f* | Que la primera etapa A_f* exista o sea suficientemente fuerte |
+
+**Regla de cobertura:** PROV-01…12 son contratos de control, no pruebas ejecutadas. No sumar PASS por contar contratos definidos. La adjudicación exige evidencia ligada a unidad, versión, ventana, nodo/arista, consumidor, resultado potencialmente afectado y cobertura. Los desconocidos no se recodifican como 0.
+
+### 14.4. Resultado MAP-05 y regla por estimando
+
+La matriz permite concluir qué debe probarse, no qué ocurrió. Por tanto:
+- ITT_Z^D2 / efecto de política podrá estimarse como efecto de asignación a B si el diseño, asignación, seguimiento y observación lo permiten; incluirá las vías que B induzca.
+- LATE_f^D2 no es interpretable como efecto focal mientras exclusión, monotonicidad, relevancia, consistencia, interferencia y mapping del tratamiento focal no estén defendidos.
+- θ_Af(q_X*) / θ_A(q) requieren sus propios mappings a políticas de accesibilidad y no quedan identificados por superar una checklist técnica.
+- Si B-M06/M07/M09/M11/M12/M14 activa vías no incluidas en el objeto focal, el resultado es efecto de paquete o exige rediseño/estimando alternativo. No ajustar mecánicamente por mediadores postratamiento.
+- Si B-M10/B-M13 altera conocimiento u observación, separar efecto informativo del estructural y evaluar comparabilidad de Outcome y Value por separado.
+
+**Dictamen MAP-05:** CLASSIFICATION_DEFINED / MATERIAL_EVIDENCE_NOT_AVAILABLE. MD-C1 y MD-C4 siguen OPEN; IV-G4 sigue OPEN; exclusión no demostrada; no se declara D2 aislado. Siguiente paso admisible: completar roster de evidencia/grafo por frontera, nodo/arista, consumidor, unidad, versión y ventana. No implementación, parametrización, simulación ni ejecución.
+
