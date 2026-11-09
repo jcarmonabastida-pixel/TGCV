@@ -1995,3 +1995,14 @@ La continuidad será una única decisión de paquete sobre la especialización s
 Se registra la aceptación expresa del usuario de §217 como base de diseño de trabajo, formalizada en DEC-C10-093. Se conservan sin reabrir las elecciones conceptuales cubiertas y se mantienen OPEN las reservas enumeradas en §3 de la decisión: REF/AST, namespaces/serialización, roster IAM/cobertura, FP-05, G/C0/H, mecanismo/distribución D2, aislamiento, población/soporte/interferencia y oráculo.
 
 La siguiente operación es completar la especificación material integrada AB-01…AB-09 sobre esta base; no repetir auditorías generales ni reabrir el núcleo funcional ya aceptado. AB permanece IN_PROGRESS hasta que cada bloqueo tenga definición, trazabilidad y criterio de aceptación. No Design Freeze ni autorización de implementación/ejecución.
+
+
+## 16.97 — AB integrado: contratos, criterios y gates residuales
+
+Se incorpora el maestro §219 como especificación integrada propuesta de AB-01…AB-09. La unidad de trabajo es el mismo servicio DEC-C10-069, con inventario CMP/PAR/RUL y dos operand bindings representados una sola vez (REF o AST), namespaces sintéticos versionados, mapping total/injectivo, fichas F1/F2 y A1/A2, F* común no compensatorio, IAM por rol/acción/objeto/etapa, C0 pre-Z, G como unidad lógica completa y H común preespecificado.
+
+La integración fija además el event log D2 (asignación, programación, recepción, cumplimiento, intento, instalación, dependencia conjunta, accesibilidad, aplicación y ΔT_acc); exige distribución conjunta de instalación/integridad/compatibilidad/operatividad sin independencia asumida; separa truth/observed y Generator/Analyzer/Evaluator; define población elegible pre-Z, q_X*, soporte, unidad/interferencia y R0–R3; y especifica las interfaces causales que pasan a C sin equiparar ITT, efecto de paquete, LATE_f, θ_Af o θ_A.
+
+**Resultado documental:** AB-01…AB-09 tienen contratos y criterios de aceptación integrados. **AB no está DONE ni implementable**: faltan elecciones/observaciones no deducibles (REF/AST físico y serialización; valor/ancla de H; manifiesto y evidencia MD-C1/MD-C4; distribución conjunta y parámetros D2; roster/cobertura y población/q_X*/soporte; unidad/interferencia material; validación del oráculo y adjudicación). No se asignan defaults ni tasas inventadas. Estas reservas se mantienen como gates de decisión/evidencia dentro del paquete, no como auditorías conceptuales nuevas.
+
+No se autoriza Design Freeze, código, parser, validator, fixture ejecutable, simulación ni experimento. scientific_execution=false; execution_authorized=false. El paquete C podrá preparar su estructura sin tratar como congelados los inputs AB todavía abiertos.
