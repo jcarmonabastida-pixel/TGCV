@@ -1696,6 +1696,7 @@ Se aplicó el criterio de retirada selectiva: eliminar o sustituir texto operati
 - Este plan §4.3: fórmula focal alineada con maestro §67.3 y crosswalk D2; elegibilidad histórica separada.
 - Maestro §59.3: ecuación intermedia anterior sustituida por registro histórico no operativo; §59.4–59.6 alineadas con la autorización basal D2.
 - Matriz temporal de predicados §13.4: fórmula intermedia §59.3 declarada supersedida y correspondencia de información técnica alineada con §67.3.
+- Crosswalk causal D2: referencias a §59.3 corregidas; la ecuación intermedia queda histórica. La propuesta snapshot/delta queda subordinada al maestro §58.6 y no constituye decisión aceptada.
 - Maestro: §30.1 fórmula antigua de A_f* marcada histórica; §§16.2/16.4 alineadas con DEC-C10-066/067; §§53.5, 58.4/58.6 y 63.7 separan `ΔT_acc*` de `ΔE_T`; §§68.7/69.5 mantienen resuelta la precedencia D2/D1. XSYNC-138-01 queda parcialmente resuelto para D2 y abierto en el mapping general B→g^Af/exclusión; el XSYNC Closure Tracker y S4R-18 reflejan ese alcance.
 - Test Contract Register MEAS-03: validez/cobertura epistémica separada de truth estructural.
 
