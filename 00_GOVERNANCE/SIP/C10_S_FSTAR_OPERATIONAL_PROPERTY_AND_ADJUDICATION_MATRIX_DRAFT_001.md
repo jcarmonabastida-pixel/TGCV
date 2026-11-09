@@ -204,3 +204,24 @@ La conformidad local de F1/F2/A1/A2 no sustituye la adjudicación F* de ruta com
 FP-01…FP-07 conservan adjudicación funcional por dimensiones no compensatorias y FP-08 es gate probatorio separado. Outcome/Value quedan fuera del oráculo. La declaración O/C/NA/? se sella en IAM pre-Z/B; unknown y falta de cobertura no se convierten en NA.
 
 **Estado:** reconciliación documental; no cierra propiedades atómicas, IAM, mappings, tolerancias, C0/G/H, oráculo, MD-C1/MD-C4 ni exclusión IV. No implementación ni ejecución.
+
+
+## 21. N16 — síntesis de precedencia del criterio y del oráculo (2026-11-09)
+
+Esta matriz es el instrumento vigente para las familias funcionales F*. Se mantiene la siguiente precedencia:
+
+- DEC-C10-051 acepta Opción A y F* como contrato funcional de trabajo candidato.
+- DEC-C10-055 acepta la arquitectura de familias FP-01…FP-08, no la selección de obligatoriedad por instancia.
+- DEC-C10-056 fija la cardinalidad del objeto base, sin sustituir IAM ni cobertura.
+- DEC-C10-083 acepta la aplicabilidad de los dos PAR del servicio sintético en los siete stage_key, sin adjudicar observaciones materiales.
+
+La separación de capas es obligatoria:
+1. Criterio funcional común F* de ruta completa.
+2. Oráculo independiente, versionado e inmutable que implementa criterios, mappings y tolerancias aprobados.
+3. Adjudicación por instancia, ruta, versión y snapshot, con evidencia vinculada.
+
+El Generator conserva hidden_truth y potenciales. El Analyzer no recibe hidden_truth, parámetros generadores, potenciales ni Value potencial. El Evaluator compara la salida del Analyzer con truth y criterios de referencia después de congelar esa salida. No se permite que el Analyzer use Outcome/Value, Z/B o la ejecución para definir F*.
+
+FP-01…FP-07 son dimensiones funcionales no compensatorias; FP-08 es un gate probatorio separado. UNKNOWN por falta de evidencia/cobertura no se convierte en 0 ni NA; NA requiere inaplicabilidad ex ante en IAM. Un PASS de una etapa local no equivale a F*=1 de ruta completa.
+
+**Estado:** arquitectura del criterio definida y familias aceptadas; reconciliación atómica, requiredness por instancia, C0/G/H, mappings, tolerancias, oráculo, validación y evidencia siguen OPEN. Esta matriz no afirma implementación, validación ni ejecución.
