@@ -2536,3 +2536,17 @@ PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-
 **Corrección:** la referencia P177-05…08 como cobertura de mediación en Register §72 queda retirada. Esos IDs no tienen ese alcance. El gate C-MED permanece OPEN; no se declara cobertura contractual completa ni identificación.
 
 **Dictamen:** auditoría documental PASS para detectar y corregir la referencia; C-MED OPEN; paquete C NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. Sin ejecución.
+
+
+## 123. Auditoría ampliada de correspondencia P177–P183 (2026-11-10)
+
+| Dominio | Referencia precisa | Estado |
+|---|---|---|
+| Primera etapa | P177-02 | DEFINED; no ejecutado |
+| Wald/LATE e instrumento débil | P177-03/04 | DEFINED; supuestos IV OPEN |
+| N, clúster, réplicas y error Monte Carlo | P178-SIM-02/03/04/05; SIM-01/09/10 para potencia/métricas/parámetros | DEFINED; parámetros OPEN |
+| Censura, sensibilidad, bounds y dictamen | P183-09/10/11/12 | DEFINED; supuestos/rangos OPEN |
+| Trade-offs y agregación Value | P179-06/08 | DEFINED; reglas y dimensiones OPEN |
+| Recuperación, firewall y clasificación | P177-10/12; P182-11; P183-12 | Cobertura parcial; falsa identificación y abstención requieren criterios explícitos |
+
+**Dictamen:** las referencias erróneas/incompletas se corrigen en el registro; no se interpreta la presencia de un ID como prueba de ejecución o cierre. Gates C-MED y C-ANALYZER permanecen OPEN.
