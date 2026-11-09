@@ -2381,3 +2381,25 @@ PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-
 | D2 | B_g0/B_g1 según DEC-C10-067; ARCH-B1 candidata | POLICY ACCEPTED; ISOLATION OPEN |
 
 **Regla:** la propuesta no se convierte en DEC por persistencia. Aceptación expresa necesaria para los elementos marcados PROPOSED. H, distribución conjunta de C_dep*, cumplimiento, fondo/crossover, soporte, MD-C1/MD-C4 y oráculo siguen abiertos. No código, fixtures, simulación ni ejecución.
+
+
+---
+
+## 114. DEC-C10-093 — base AB aceptada; reservas abiertas
+
+**Estado de la base:** ACCEPTED WORKING DESIGN BASE. **Estado del paquete:** IN_PROGRESS.
+
+| Dominio | Estado tras DEC-C10-093 |
+|---|---|
+| Identidad de instancia DEC-C10-069 | ACCEPTED; no reabrir |
+| Núcleo ENABLED/PROFILE/REQUIRE DEC-C10-068 | ACCEPTED; no reabrir |
+| Rutas F1/F2 y A1/A2 bajo F* común | ACCEPTED AS WORKING BASE |
+| Mapping semántico total/injectivo | ACCEPTED AS WORKING CANDIDATE; físico OPEN |
+| B como provisión técnica D2; ARCH-B1 | Frontera conceptual ACCEPTED; arquitectura/aislamiento OPEN |
+| REF vs AST; roster IAM/cobertura | OPEN |
+| FP-05; G/C0/H | OPEN |
+| Mecanismo y distribución conjunta D2; MD-C1/MD-C4 | OPEN |
+| Población, q_X*, positividad, unidad, soporte/interferencia | OPEN |
+| Oráculo, truth/observed, cegamiento/adjudicación | OPEN |
+
+**Control:** no reabrir elecciones conceptuales aceptadas; resolver las reservas como una sola especificación integrada. No declarar AB DONE ni Design Freeze, y no generar código/fixtures ni ejecutar validaciones, simulaciones o experimentos. Autorizaciones false.
