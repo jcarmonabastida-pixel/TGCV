@@ -38,21 +38,15 @@ El diseño previo tenía una arquitectura reconocible, pero no una especificaci�
 - `P*_F`: subpoblación basal sin alternativa funcional substituible según una regla `F*` explícita. Es análisis de alcance/heterogeneidad y no filtro automático de `P*_{τ2}`.
 - Los casos basales indeterminados no se convierten en elegibles ni inelegibles por defecto: se conserva estado indeterminado y se define análisis de sensibilidad.
 
-### 3.3 D1 principal condicionado y D2 contraste
+### 3.3 Registro histórico de la recomendación D1/D2 — NO OPERATIVO
 
-La recuperación 165–183 recomienda D1 como escenario principal condicionado a justificar que la provisión ordinaria del control forma parte del régimen comparador; D2 queda como contraste sin provisión ordinaria en control.
+**Estado:** HISTÓRICO / SUPERSEDED EN PRECEDENCIA POR DEC-C10-066/067. Esta sección conserva el contenido de la recuperación 165–183 y la calibración exploratoria de D1/D2; no es una instrucción vigente para seleccionar ni parametrizar el escenario primario.
 
-| Elemento | D1 — principal condicionado | D2 — contraste |
-|---|---:|---:|
-| `C_dep,base` en población de apertura | 0 | 0 |
-| `p^dep_0=P(C_dep,post=1|Z=0)` | .20 | 0 |
-| `p^dep_1=P(C_dep,post=1|Z=1)` | .80 | .80 |
-| Primera etapa objetivo | .60 | .80 |
-| Interpretación de control | Provisión ordinaria explícita | Sin provisión ordinaria |
+La fuente recuperada recomendaba D1 como escenario principal condicionado a justificar la provisión ordinaria del control, y D2 como contraste sin provisión ordinaria. Los valores exploratorios asociados eran: D1, C_dep,base=0, p_dep,0=.20, p_dep,1=.80 y primera etapa objetivo .60; D2, C_dep,base=0, p_dep,0=0, p_dep,1=.80 y primera etapa objetivo .80. Son objetivos históricos de DGP, no resultados ni parámetros confirmatorios validados.
 
-Los valores son objetivos del DGP, no resultados. `p_0=.20` es postasignación bajo la política de control D1; no es accesibilidad basal. Por ello no contradice `C_dep,base=0`. Si no se puede justificar la provisión ordinaria en control como comparador legítimo, D1 no debe usarse como principal: se mantiene D2 como alternativa y se registra la decisión.
+**Precedencia vigente:** DEC-C10-066 establece D2 como escenario primario candidato y D1 como secundario. DEC-C10-067 define las políticas materiales D2: B_g0^D2 no programa/inicia intento focal; B_g1^D2 programa un intento estandarizado de provisión técnica focal. C_auth,base=1 permanece común, satisfecha antes de Z e invariante frente a B. La antigua recomendación D1-principal queda supersedida solo en la precedencia; D1 y su mecanismo incremental se conservan como escenario secundario.
 
-### 3.4 Mecanismo generativo único
+La selección de D2 no valida p=.80, no demuestra ausencia de provisión de fondo, no cierra la correspondencia B→g^Af ni identifica por sí sola accesibilidad, LATE o θ_A(q).### 3.4 Mecanismo generativo único
 
 La cadena canónica candidata es:
 
@@ -66,7 +60,7 @@ Con:
 - `C_dep,post=C_install∧C_integrity∧C_compat∧C_oper`: estado técnico compuesto, cada componente con estado epistémico, fuente y timestamp.
 - `A_f,post*`: accesibilidad focal verdadera, derivada de `C_dep,post` y del resto de condiciones focales.
 - `D_f=I(A_f,base*=0 ∧ A_f,post*=1)`: apertura basal→post usada para la primera etapa IV en la población de apertura.
-- `ΔT_acc=(ΔU,ΔR,ΔC,ΔValidity,ΔState)`: cambio transformacional completo; `A_f` es una proyección focal, no un sustituto del vector.
+- `ΔT_acc^*=(ΔU^*,ΔR^*,ΔC^*,ΔX^*)`: cambio estructural completo del espacio accesible; `ΔE_T` registra en paralelo el cambio de evidencia/observabilidad y no forma parte de `ΔT_acc^*`. `A_f^*` es una proyección focal, no un sustituto del vector.
 - Aplicabilidad, Reach, conocimiento, selección, inicio, ejecución parcial/completa, Outcome y Value permanecen como estados/constructos separados.
 
 El generador puede parametrizar intentos y éxitos con `ω_z` y `s_z(·)`, pero debe calibrar las probabilidades finales verificadas. Para el escenario limpio con las demás condiciones focales satisfechas, `P(A_f,post*=1|Z=z,P*_{τ2})=p^dep_z`. Si las condiciones restantes varían, las probabilidades de `C_dep` y de `A_f` no se igualan: se calcula la segunda a partir de todos los predicados. No se asume independencia entre latentes sin especificación. Una variable latente común puede implementar monotonicidad, pero la accesibilidad nunca se asigna directamente a partir de Z.
