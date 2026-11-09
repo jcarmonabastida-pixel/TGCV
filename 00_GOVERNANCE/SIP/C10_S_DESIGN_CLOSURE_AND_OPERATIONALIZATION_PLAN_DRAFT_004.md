@@ -2071,3 +2071,14 @@ Estados de salida: IDENTIFIED/RECOVERED, IDENTIFIED/NOT RECOVERED, PARTIALLY_IDE
 **Gates abiertos:** estimandos/resultados concretos; DAG y régimen de mediación; población/soporte/interferencia; missingness; parámetros DGP; fichas O/V; sensibilidad/bounds; métricas/tolerancias; multiplicidad/potencia/N/réplicas; firewall y adjudicación; crosswalk contractual completo.
 
 **Estado:** paquete C DOCUMENTED DESIGN PROPOSAL / NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. No implementación ni ejecución; scientific_execution=false; execution_authorized=false.
+
+
+## 16.104 — Auditoría de crosswalk: mediación causal y P177–P183 (2026-11-10)
+
+La verificación de los criterios originales en Test Contract Register §55 muestra que la referencia P177-05…08 para mediación/confusión postratamiento no es correcta: esos IDs cubren O/V, ajuste basal, ATE/ATT y heterogeneidad. Se corrige la trazabilidad sin modificar sus definiciones.
+
+La mediación queda vinculada parcialmente a §225.3, P177-06 (no ajuste post-Z), P177-12 (política frente a atribución focal), P182-01/02/06/07 (validez/adjudicación de A) y P183-08 (ausencia de A y efecto sobre identificación). Ninguno de esos contratos, individual o conjuntamente, sustituye una especificación completa de identificación mediacional.
+
+**Gate C-MED — OPEN:** faltan estimando e intervención mediadora versionados; DAG y orden temporal por ola; conjunto de confusores basales e inducidos por tratamiento; soporte/positividad secuencial; tratamiento de múltiples mediadores, interacción y retroalimentación; método principal y alternativa; sensibilidad/bounds; y criterio de recuperación/abstención del Analyzer por DGP. No se elige por defecto un efecto natural ni una descomposición residual.
+
+La corrección no añade pruebas ejecutadas ni cambia el estado de los contratos fuente. Paquete C sigue DOCUMENTED DESIGN PROPOSAL / NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. Sin implementación ni ejecución.
