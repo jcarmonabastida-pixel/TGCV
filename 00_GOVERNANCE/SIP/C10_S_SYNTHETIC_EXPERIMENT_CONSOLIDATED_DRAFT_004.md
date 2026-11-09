@@ -48,6 +48,10 @@ C10-S comprueba, en un universo sintético controlado, si los componentes transf
 
 C10-S no sustituye C10-D1 ni resuelve por simulación los problemas de identificación de un sistema real.
 
+### 0.4. Regla de no propagación
+
+Ningún resultado futuro de C10-S modificará automáticamente Core, RMA, Evidence→Claim Matrix, STATUS o claims. Cualquier propuesta de cambio científico requerirá una evaluación independiente y el procedimiento de gobernanza aplicable.
+
 ### 0.5. Control obligatorio de precedencia semántica (lectura anti-regresión)
 
 Esta regla es de aplicación obligatoria antes de resumir, analizar, proponer, aceptar o propagar cualquier elemento de la arquitectura C10-S. Su finalidad es impedir que una formulación histórica, aunque permanezca en el maestro, vuelva a interpretarse como vigente.
@@ -87,6 +91,8 @@ Toda respuesta que use una formulación histórica debe identificarla como hist�
 
 #### 0.5.4. Condición de parada
 
+Si una respuesta, sección o crosswalk parece contradecir esta tabla, no se corrige por intuición ni se continúa con el siguiente paso científico. Se vuelve a las DEC y addenda citadas, se identifica exactamente qué fuente está en conflicto y se mantiene el asunto bloqueado hasta reconciliarlo. Este control es previo a cualquier avance de N17 o a cualquier nueva matriz de identificación.
+
 
 ### 0.6. Gate obligatorio para generación y modificación de código C10-S
 
@@ -105,13 +111,6 @@ Antes de cualquier generación futura:
 8. Si una fuente, mapping o estimando discrepa o no puede verificarse, detener generación/modificación; no resolverlo eligiendo el fragmento más antiguo, más detallado o más fácil de programar.
 
 La revisión de conformidad semántica es distinta de compilación, lint, pruebas unitarias, validación del esquema y ejecución. Ningún PASS técnico cierra identificación causal ni autoriza ejecución científica. El gate se integra con la Closure Control Matrix §100 y el plan §16.81; no crea un manifiesto o matriz paralelos.
-
-Si una respuesta, sección o crosswalk parece contradecir esta tabla, no se corrige por intuición ni se continúa con el siguiente paso científico. Se vuelve a las DEC y addenda citadas, se identifica exactamente qué fuente está en conflicto y se mantiene el asunto bloqueado hasta reconciliarlo. Este control es previo a cualquier avance de N17 o a cualquier nueva matriz de identificación.
-
-
-### 0.4. Regla de no propagación
-
-Ningún resultado futuro de C10-S modificará automáticamente Core, RMA, Evidence→Claim Matrix, STATUS o claims. Cualquier propuesta de cambio científico requerirá una evaluación independiente y el procedimiento de gobernanza aplicable.
 
 ---
 
