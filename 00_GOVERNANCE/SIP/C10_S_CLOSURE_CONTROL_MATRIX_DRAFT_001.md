@@ -2120,7 +2120,7 @@ PASS solo cuando el código y sus pruebas se vinculan a fuentes vigentes, no mat
 
 ### Auditoría transversal de fuentes dependientes — 2026-11-09
 
-**Referencia rectora:** maestro C10-S §215. **Alcance comprobado:** 100/100 archivos modificados por PR #116, recuperados y revisados documentalmente. No equivale a auditoría de todo el repositorio ni a revisión independiente.
+**Referencia rectora:** maestro C10-S §215. **Alcance comprobado:** 100/100 archivos modificados por PR #116, recuperados y revisados documentalmente, más inspección de las secciones causales de referencia §§17/24–30 del protocolo C10-D1. No equivale a auditoría de todo el repositorio ni a revisión independiente.
 
 **Controles de no-regresión que deben mantenerse:**
 1. DEC-C10-066/067: D2 primario candidato / D1 secundario; políticas D2 de provisión técnica focal.
