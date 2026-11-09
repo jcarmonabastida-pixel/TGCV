@@ -87,6 +87,25 @@ Toda respuesta que use una formulación histórica debe identificarla como hist�
 
 #### 0.5.4. Condición de parada
 
+
+### 0.6. Gate obligatorio para generación y modificación de código C10-S
+
+Este gate se aplica a código nuevo, código generado o asistido por IA, modificaciones, refactorizaciones, tests, fixtures, scripts y configuración que materialicen semántica científica C10-S. El código no adquiere autoridad por compilar, pasar pruebas técnicas o aparecer en un repositorio.
+
+**Estado actual:** implementación y ejecución científica no autorizadas. No generar ni modificar código ejecutable que materialice el DGP, estimandos, políticas, oráculo, analizador o evaluador C10-S hasta que exista contrato de implementación aceptado y autorización explícita. La generación de pseudocódigo o ejemplos no ejecutables, si se solicita, debe rotularse como ilustrativa y no normativa.
+
+Antes de cualquier generación futura:
+1. Recuperar desde GitHub la rama/commit exactos y el paquete de especificación vigente: DEC aceptadas aplicables, maestro y crosswalks correctivos, contrato de estimandos, matrices/gates y estado de autorización. No usar prompts, fragmentos ni código histórico como fuente normativa.
+2. Resolver precedencia semántica según §0.5 y clasificar cada requisito como ACCEPTED, DEFINED-CANDIDATE, PROPOSED, OPEN o SUPERSEDED. Un requisito OPEN/UNKNOWN no se implementa como si fuera una decisión; se bloquea o se parametriza únicamente si el contrato lo autoriza expresamente.
+3. Vincular cada módulo, función, variable, regla, fixture y aserción a un requisito identificable y a su fuente/versión/hash. Si no hay fuente vigente, no generar esa parte.
+4. Prohibir la reutilización de código derivado de formulaciones supersedidas sin una justificación explícita y un control de migración. En particular: D1 no es el escenario primario; ITT_Z^D2 no es efecto puro de accesibilidad; B_g^D2 no es g^Af; C_dep* no sustituye A_f*/D_f*/ΔT_acc*; y la intervención antigua sobre autorización no sustituye C_auth,base=1/AUTH_f*.
+5. Mantener separados Generator, Analyzer y Evaluator; no exponer truth/potentials/parámetros generadores al Analyzer; el Evaluator solo accede a truth después de congelar outputs del Analyzer.
+6. Revisar el código generado contra las DEC y contratos actuales, buscar regresiones semánticas, añadir pruebas negativas/adversariales y verificar que cada prueba comprueba significado, no solo formato o ejecución técnica.
+7. Registrar fuente/commit, versiones, requisitos implementados, desviaciones, exclusiones y pruebas aplicadas. Una revisión asistida por IA no se etiqueta como independiente.
+8. Si una fuente, mapping o estimando discrepa o no puede verificarse, detener generación/modificación; no resolverlo eligiendo el fragmento más antiguo, más detallado o más fácil de programar.
+
+La revisión de conformidad semántica es distinta de compilación, lint, pruebas unitarias, validación del esquema y ejecución. Ningún PASS técnico cierra identificación causal ni autoriza ejecución científica. El gate se integra con la Closure Control Matrix §100 y el plan §16.81; no crea un manifiesto o matriz paralelos.
+
 Si una respuesta, sección o crosswalk parece contradecir esta tabla, no se corrige por intuición ni se continúa con el siguiente paso científico. Se vuelve a las DEC y addenda citadas, se identifica exactamente qué fuente está en conflicto y se mantiene el asunto bloqueado hasta reconciliarlo. Este control es previo a cualquier avance de N17 o a cualquier nueva matriz de identificación.
 
 
@@ -1716,15 +1735,17 @@ El generador conserva la verdad completa; el analizador recibe únicamente varia
 
 La verdad A_f* se reserva al generador/evaluador salvo en una submuestra de validación preespecificada. El analizador no recibe coeficientes estructurales ni etiquetas de escenario.
 
-### 27.6. Estimandos y dictámenes por escenario
+### 27.6. Estimandos y dictámenes por escenario — precedencia actualizada
 
-| Escenario | Estimando primario | Lo que puede concluirse | Lo que no debe concluirse |
+| Escenario | Estimando/objeto primario vigente | Interpretación permitida | No concluir |
 |---|---|---|---|
-| S4-O | TE_ZB / ψ_policy | Efecto total de política de autorización | θ_A(q) por mera aleatorización |
-| S4-R | θ_A(q*) en población con soporte | Contraste de políticas factibles de accesibilidad bajo q* | Efecto universal fuera del soporte |
+| S4-O | TE_ZB / ψ_policy | Efecto total de asignación a política de autorización | θ_A(q) por mera aleatorización |
+| S4-R bajo D2 | ITT_Z^D2 | Efecto de asignación a las políticas materiales D2 | Efecto puro de accesibilidad sin identificación adicional |
+| S4-R, atribución focal | LATE_f^D2 secundario y condicionado | Efecto local entre compliers si se sostienen todos los supuestos IV | ATE, θ_Af(q_X*) poblacional o θ_A(q) general |
+| S4-R, contraste poblacional focal | θ_Af(q_X*) objetivo no identificado | Contraste de políticas focales bajo régimen común y correspondencia B→g demostrada | Identificación automática por ITT o LATE |
 | S10b | Efecto conjunto o efecto en estrato factible, si se define | Límite de factibilidad constitutiva | Contrafactual imposible de la población completa |
 
-S4-O y S4-R no son réplicas del mismo diseño ni deben agregarse como si estimaran el mismo parámetro.
+θ_A(q) permanece como pregunta científica general de C10-D1. D2 es el escenario primario candidato y D1 el secundario por DEC-C10-066; las políticas materiales D2 se rigen por DEC-C10-067 y maestro §131. La jerarquía causal completa no queda aprobada por esta tabla. S4-O y S4-R no son réplicas del mismo diseño ni deben agregarse como si estimaran el mismo parámetro.
 
 ### 27.7. Pruebas específicas
 
@@ -5244,7 +5265,7 @@ C_{dep,1}=C_{install}land C_{integrity}land C_{compat}land C_{oper}.
 
 (A_f^*) se deriva de (C_{dep,1}) y de las demás condiciones focales (autorización basal, recursos, capacidad, información, dominio y restricciones); no se asigna directamente a partir de (Z). La variable latente común (U) puede representar propensión a completar la provisión/instalación y generar (A_f^*(z)=I(Ule p_z)), pero solo si el mecanismo de instalación y verificación implementa esa probabilidad. La independencia entre latentes es una elección del DGP, no una condición lógica de monotonicidad.
 
-La recomendación recuperada es D1 como escenario principal **condicionado** a justificar que la provisión en control pertenece al régimen comparador ordinario; D2 como contraste. En D1 no debe llamarse contaminación a una provisión que forma parte del comparador preespecificado. Sí debe registrarse crossover/contaminación si el control recibe componentes reservados al tratamiento. Instalación, integridad, compatibilidad y operatividad permanecen como componentes observables separados.
+La fuente recuperada recomendaba históricamente D1 como principal condicionado y D2 como contraste. Esa recomendación es antecedente documental, no precedencia vigente: DEC-C10-066 la supersede y establece D2 como escenario primario candidato y D1 como secundario. Se conservan las definiciones de mecanismo y la distinción entre provisión ordinaria asignada y crossover; no se conserva la recomendación histórica como instrucción operativa. Instalación, integridad, compatibilidad y operatividad permanecen como componentes observables separados.
 
 ## 52.3. Sección 169 — supuestos IV
 
@@ -5380,7 +5401,7 @@ La matriz S4-R y esta recuperación deben armonizarse con C10-D1 en población, 
 
 Se conservan como propuestas recuperadas, no como decisiones congeladas:
 
-1. D1 como principal condicionado y D2 como contraste.
+1. La fuente histórica recomendaba D1 como principal condicionado y D2 como contraste; esta recomendación fue supersedida por DEC-C10-066, que establece D2 primario candidato y D1 secundario.
 2. Primera etapa generada por mecanismo de provisión verificable, no asignación directa de (A_f^*).
 3. ITT de política separado de atribución focal IV/LATE.
 4. LATE no extrapolado automáticamente a ATE/ATT.
@@ -5442,18 +5463,20 @@ No intercambiar ITT, `θ_A(q)`, `θ_{Af}(q*)`, LATE, ATE, ATT ni efecto de paque
 - Alternativas, equivalencia funcional, soporte y estados indeterminados deben evaluarse solo con información basal para la clasificación primaria.
 - No se excluyen unidades por cumplimiento, accesibilidad postratamiento, selección, ejecución, Outcome o Value.
 
-## 53.4. D1 y D2: resolución de p0=.20 y C_dep,base=0
+## 53.4. D1 y D2: escenarios bajo la precedencia DEC-C10-066/067
 
-La recuperación de las secciones 165–183 propone D1 como escenario principal condicionado a justificar la provisión ordinaria en el control y D2 como contraste.
+DEC-C10-066 establece D2 como escenario primario candidato y D1 como escenario secundario. DEC-C10-067 fija las políticas materiales D2. La tabla conserva los objetivos de probabilidad técnica candidatos por escenario; no convierte .80 en parámetro validado ni traslada las probabilidades de C_dep a accesibilidad.
 
-| Parámetro | D1 principal condicionado | D2 contraste |
+| Parámetro | D2 — primario candidato | D1 — secundario |
 |---|---:|---:|
-| `C_dep,base` | 0 | 0 |
-| `P(C_dep,post=1|Z=0)` | .20 | 0 |
-| `P(C_dep,post=1|Z=1)` | .80 | .80 |
-| Primera etapa objetivo | .60 | .80 |
+| C_dep,base | 0 | 0 |
+| P(C_dep,post=1|Z=0) | 0 | .20 |
+| P(C_dep,post=1|Z=1) | .80 | .80 |
+| Primera etapa objetivo de C_dep | .80 | .60 |
 
-Así, `p0=.20` en D1 es probabilidad de provisión/estado técnico final postasignación bajo la política de control, no accesibilidad basal. No contradice `C_dep,base=0`. D2 representa ausencia de provisión ordinaria en control. Si no se justifica que la provisión de control D1 pertenece al comparador legítimo, no se mantiene D1 como principal sin decisión explícita.
+En D2, B_g0^D2 no programa ni inicia intento focal; B_g1^D2 programa un intento estandarizado de provisión técnica focal. D1 conserva el contraste incremental con provisión ordinaria de baja frecuencia en control; no se descarta ni se denomina contaminación a esa provisión cuando forma parte de la política asignada.
+
+p0=.20 en D1 es un objetivo postasignación de estado técnico verificado, no accesibilidad basal. C_dep,base=0 sigue siendo condición pre-Z. El éxito técnico condicional s=.80 es candidato no validado. A_f*, D_f* y ΔT_acc* deben derivarse de predicados completos; no heredan automáticamente las probabilidades de C_dep.
 
 ## 53.5. Cadena generativa y condiciones
 
@@ -6632,187 +6655,21 @@ La clasificación temporal-causal queda organizada como propuesta coherente con 
 
 ---
 
-# 65. Reconciliación semántica y generativa de la política B: D1 principal condicionado y D2 contraste
+# 65. Registro de supersesión de la antigua precedencia D1/D2
 
-**Estado:** propuesta de reconciliación documental basada en §§53.4–53.5 y 54.1–54.7; no aprobada ni congelada. No autoriza implementación, simulación o ejecución.  
-**Dependencias:** §§21, 23, 30–31, 53–54, 62–64; DGP §§3.1–3.2, 21–24; DEC-C10-022/024; OPEN-C10-001/005.
+**Estado:** HISTÓRICO / NO OPERATIVO. El cuerpo anterior de esta sección —que presentaba D1 como principal condicionado y D2 como contraste— se retira de la lectura operativa porque DEC-C10-066 lo supersedió. Su contenido anterior permanece recuperable en el historial Git; no se elimina la trazabilidad de la evolución.
 
-## 65.1. Hallazgo y regla de precedencia
+La precedencia vigente es D2 como escenario primario candidato y D1 como escenario secundario. Los valores de intento/éxito/estado técnico por escenario se conservan en §§53.4, 67–69 y 131. Las políticas materiales D2 se rigen por DEC-C10-067 y §131. La correspondencia B→g^Af permanece condicional/no demostrada; s=.80 no está validado.
 
-La auditoría confirma que la aparente contradicción no debe resolverse eligiendo entre «política estocástica» y «brazo determinista con incumplimiento» como si fueran las únicas opciones. El diseño ya contiene dos escenarios distintos:
+No reutilizar las antiguas condiciones de §65.4 ni la recomendación D1-principal. No se altera la semántica de los mecanismos D1/D2 ni se cierran estimandos, soporte, exclusión, medición o identificación.
 
-- **D1:** comparador ordinario con provisión focal de baja frecuencia frente a provisión programada; escenario principal condicionado.
-- **D2:** control sin provisión focal frente a provisión programada; contraste de diseño.
+## 66. Registro de supersesión de la antigua adjudicación D1/D2
 
-La precedencia operativa candidata es: §53.4 fija el estatus de D1/D2; §54 concreta la factorización de intentos y éxito; §62 y DGP §21 describen la variante sin provisión en control y deben leerse como D2, no como definición universal de B0/B1. DGP §3.1 debe leerse como objetivo de estado técnico final verificado C_dep, no como probabilidad de intento.
+**Estado:** HISTÓRICO / NO OPERATIVO. Se retira el cuerpo anterior de recomendación y gates de selección porque DEC-C10-066 ya resolvió la precedencia del escenario primario candidato. La recomendación anterior de D2 meramente preferente con selección aún abierta no debe recuperarse como estado actual. El contenido retirado permanece en el historial Git.
 
-Se conserva el texto histórico; esta sección aclara su alcance y no lo borra.
+**Estado vigente:** D2 es el escenario primario candidato; D1 es el escenario secundario. D2 contrasta provisión focal programada frente a ausencia de intento focal; D1 contrasta provisión programada frente a provisión ordinaria de baja frecuencia. Los ITT y los compliers son específicos por escenario y no se combinan ni transportan automáticamente.
 
-## 65.2. Parámetros separados por nivel
-
-| Cantidad | D1 principal condicionado | D2 contraste | Interpretación |
-|---|---:|---:|---|
-| C_dep,base | 0 | 0 | Ausencia basal pre-Z |
-| P(W_attempt=1 | Z=0) | .25 | 0 | Probabilidad de intento bajo control |
-| P(W_attempt=1 | Z=1) | 1.00 | 1.00 | Intento programado bajo tratamiento |
-| P(S_success=1 | W_attempt=1) | .80 | .80 | Éxito técnico conjunto condicional propuesto |
-| P(C_dep,post=1 | Z=0) | .20 | 0 | Estado final técnico verificado |
-| P(C_dep,post=1 | Z=1) | .80 | .80 | Estado final técnico verificado |
-| Primera etapa de C_dep | .60 | .80 | Diferencia entre probabilidades finales |
-
-En la factorización candidata, y si no hay intentos sin registro ni estados finales por otras rutas:
-
-[
-P(C_{dep}=1mid Z=z,D)=P(W_{attempt}=1mid Z=z,D)	imes P(S_{success}=1mid W_{attempt}=1,D)
-]
-
-No se presupone independencia entre componentes de C_dep. El .80 de éxito condicional es una propuesta algebraica de §54, no un parámetro recuperado literalmente ni un dato empírico; requiere aceptación y especificación técnica.
-
-## 65.3. Definición de las versiones de política
-
-- **D1, control ordinario:** el mismo procedimiento/módulo focal se intenta con probabilidad .25; el éxito conjunto condicional candidato es .80.
-- **D1, tratamiento:** el mismo procedimiento se programa para todas las unidades elegibles (intento objetivo 1.00); el éxito conjunto condicional candidato es .80.
-- **D2, control sin provisión:** no se inicia el intento focal (0); no se retira ninguna capacidad basal.
-- **D2, tratamiento:** provisión programada para todas las unidades elegibles (intento objetivo 1.00); éxito conjunto condicional candidato .80.
-
-Dentro de cada escenario, el módulo, versión, protocolo, recursos por intento, actor/automatización, verificación, soporte y condiciones no focales deben ser comunes. La diferencia asignada es la frecuencia del intento focal. Z asigna la política; W_attempt, S_success, C_dep, A_f* y D_f* son resultados/estados posteriores distintos.
-
-## 65.4. Condición para mantener D1 como primario
-
-D1 permanece como **principal condicionado**, no como elección irrevocable. Antes de aprobarlo se debe justificar que la provisión ordinaria de control (25% de intentos; 20% de estados técnicos finales bajo la factorización propuesta) es parte del comparador científicamente legítimo y no contaminación, co-intervención o política externa al contraste pretendido.
-
-Si esa justificación falla, D2 puede pasar a ser el escenario primario mediante decisión explícita; no se cambia silenciosamente el estimando ni se reetiqueta D1.
-
-D2 conserva utilidad como contraste más limpio de ausencia frente a provisión, pero su primera etapa y población de contraste son distintas.
-
-## 65.5. Qué se identifica y qué no
-
-Las probabilidades .20/.80 se refieren primero a C_dep, estado técnico verificado. No se transfieren automáticamente a A_f* ni D_f*. Para que la primera etapa focal sea .60 en D1 o .80 en D2, las demás condiciones de accesibilidad deben estar satisfechas en la población de apertura y la definición estructural de §63 debe confirmarlo. En caso contrario, se calcula:
-
-[
-P(A_{f,post}^*=1mid Z=z,D)
-quad	ext{y}quad
-ITT_{D_f^*}
-]
-
-desde todos los predicados, sin sustituirlos por C_dep.
-
-El ITT por Z estima el efecto de asignación a la política concreta. LATE_f/Wald requiere por separado relevancia, independencia, exclusión, monotonicidad, consistencia/versiones, no interferencia y medición válida. Si D1 produce vías no focales, su ITT es efecto de política/paquete; no se atribuye automáticamente a accesibilidad.
-
-## 65.6. Reconciliación de textos previos
-
-1. DGP §3.1: p0=.20 y p1=.80 son objetivos de probabilidad final verificada C_dep, no probabilidades de intento.
-2. DGP §3.2: ω_z/s_z deben parametrizarse para reproducir la tabla D1/D2; no se asignan automáticamente .20/.80 a W_attempt.
-3. DGP §21 y maestro §62: la descripción «B0 sin provisión / B1 provisión programada» corresponde a D2.
-4. Maestro §54 y DGP §24 (esta sección) detallan la factorización D1/D2; no sustituyen los estados separados de asignación, oferta, recepción, intento, éxito y verificación.
-5. Maestro §64.5 y DGP §23 registraron correctamente la discrepancia en ese momento. Esta sección resuelve la ambigüedad semántica principal, pero no aprueba el comparador D1 ni el .80 condicional.
-
-## 65.7. Pendientes que siguen abiertos
-
-- Justificación científica del control ordinario D1 y decisión de mantener D1 como primario.
-- Identidad/hash del módulo, actor/automatización, disparador de intento y evidencia de recepción.
-- Especificación conjunta de C_install/C_integrity/C_compat/C_oper y validación del .80 condicional.
-- Crossover, contaminación, rollback, intentos parciales, fallos e indeterminación.
-- Calibración de A_f* desde todos sus predicados y cálculo de la primera etapa verdadera.
-- Revisión independiente de exclusión y compatibilidad con C10-D1/S4-R.
-- Aprobación expresa de OPEN-C10-001/005 antes de freeze o ejecución.
-
-**Dictamen:** la semántica D1/D2 y la distinción intento/éxito/estado final quedan reconciliadas documentalmente como propuesta. No se acepta todavía D1 como comparador definitivo, no se cierra OPEN-C10-001/005 y no se autoriza implementación, simulación ni ejecución.
-
-
----
-
-# 66. Adjudicación del comparador D1/D2: objetivo del contraste y regla de selección
-
-**Estado:** auditoría de diseño y recomendación condicionada; no constituye decisión aprobada ni freeze.  
-**Base:** §§52.2–52.4, 53.4–53.9, 54.1–54.7 y 65; DGP §§3.1–3.4, 21–25; S4-R §§17–18.  
-**Pregunta:** qué comparador responde al objetivo científico del experimento sintético C10-S sin confundir efecto de política con efecto atribuible a accesibilidad.
-
-## 66.1. Hallazgo de la auditoría
-
-La recuperación histórica recomienda D1 como principal solo si se justifica que la provisión focal de baja frecuencia en control forma parte del régimen ordinario relevante. La documentación disponible conserva los valores D1 (.25 intentos; .20 estado técnico final) y D2 (0 intentos; 0 estado técnico final), pero no aporta todavía una fuente externa, institucional o empírica que establezca que .25/.20 representa un régimen ordinario objetivo para la población del experimento.
-
-Por tanto, la condición que permitiría elevar D1 a comparador principal no está satisfecha en el expediente actual. La recomendación histórica se conserva como condicional, no como una selección vigente.
-
-## 66.2. Dos objetivos científicos diferentes
-
-| Objetivo del contraste | D1 | D2 |
-|---|---|---|
-| Efecto incremental frente a una política ordinaria de provisión | Adecuado si el régimen ordinario está justificado ex ante | No representa ese contraste |
-| Efecto de introducir provisión focal frente a no iniciarla | Contraste atenuado por provisión basal post-Z | Contraste directo entre provisión programada y ausencia de intento focal |
-| Primera etapa objetivo de C_dep | .60 | .80 |
-| Interpretación | Cambio de intensidad de una política existente | Apertura de provisión focal frente a no provisión focal |
-| Requisito decisivo | Justificar la política ordinaria de control | Justificar que ausencia de provisión es el comparador pertinente |
-
-La diferencia no es simplemente potencia estadística. D1 y D2 definen políticas, contrastes y poblaciones de cumplidores potencialmente distintos.
-
-## 66.3. Recomendación para el experimento sintético mecanístico
-
-Mientras no exista una justificación verificable del régimen ordinario D1, recomiendo:
-
-1. Mantener **D2 como candidato preferente a contraste primario** para el experimento sintético cuyo objetivo es aislar la apertura de la provisión focal frente a ausencia de intento.
-2. Mantener **D1 como escenario secundario de política incremental**, útil para evaluar qué ocurre cuando la provisión focal ya existe con baja frecuencia en el control.
-3. No denominar «contaminación» a la provisión de control D1 cuando forma parte de la política B_g0^D1 asignada y preespecificada. La contaminación/crossover se reserva para recepción de componentes o versiones fuera de la política asignada.
-4. No combinar ni promediar los ITT de D1 y D2 como si fueran el mismo estimando.
-5. No asumir que los Wald/LATE de ambos escenarios representan el mismo estrato de cumplidores: cada contraste induce una primera etapa y una población de cumplidores potencialmente distintas.
-
-Esta recomendación es una regla de diseño provisional. D2 no queda seleccionado ni aprobado por esta sección.
-
-## 66.4. Gates para aceptar D1 como primario
-
-D1 solo podrá pasar a primario si, antes de congelar el DGP, se documenta:
-
-- el régimen ordinario concreto que representa la provisión de control;
-- la fuente y justificación de la frecuencia de intento .25 y del estado final .20, sin derivarlas circularmente de Outcome o Value;
-- la población, periodo y contexto a los que esa política ordinaria es transportable;
-- la equivalencia de módulo, versión, protocolo, actor, recursos por intento y verificación entre brazos;
-- que la diferencia asignada se limita a la frecuencia de intento y que cualquier vía colateral queda identificada como efecto de paquete;
-- la definición de crossover y la evidencia que distinguirá provisión ordinaria asignada de recepción fuera de política.
-
-Si esos gates no se satisfacen, D1 permanece escenario secundario y no puede llamarse comparador ordinario validado.
-
-## 66.5. Gates para aceptar D2 como primario
-
-D2 podrá pasar a primario si se confirma ex ante que:
-
-- el estimando de interés es provisión focal programada frente a ausencia de intento focal bajo control;
-- C_dep,base=0 y A_f,base*=0 están verificados antes de Z en la población de apertura;
-- no existe provisión focal de fondo omitida ni ruta técnica equivalente que haga falso el control «sin provisión»;
-- las condiciones no focales, recursos y reglas de ejecución permanecen comunes;
-- no hay interferencia o spillover no modelado;
-- se preservan por separado intento, éxito técnico, C_dep, A_f*, D_f*, aplicabilidad y ejecución.
-
-Si el control no puede sostener ausencia de provisión, D2 no es el contraste implementado y deberá declararse desviación o crossover, no recodificarse retrospectivamente.
-
-## 66.6. Estimandos y límites de interpretación
-
-Definir, para cada escenario d en {D1,D2}, el ITT de política:
-
-[
-ITT_d = E[V | Z=1, D=d] − E[V | Z=0, D=d]
-]
-
-y análogamente para Outcome y cada dimensión de Value preespecificada. El ITT_D1 responde al cambio entre provisión ordinaria y programada; el ITT_D2 responde a provisión programada frente a ausencia de intento focal.
-
-La primera etapa se estima separadamente para C_dep, A_f,post*, D_f y el ΔT_acc completo. No sustituir una por otra. Los Wald/LATE se estiman por escenario y solo bajo sus supuestos; no se transportan ni agrupan automáticamente entre D1 y D2.
-
-La asignación Z identifica el efecto de la política asignada bajo aleatorización y consistencia, pero no prueba por sí sola que el efecto opere exclusivamente a través de accesibilidad. Una vía colateral mantiene la interpretación como efecto de paquete y bloquea la atribución focal que requiera exclusión.
-
-## 66.7. Estado resultante
-
-- Semántica D1/D2: reconciliada documentalmente.
-- Legitimidad empírica del régimen ordinario D1: no acreditada en el expediente actual.
-- Recomendación provisional: D2 preferente para el contraste mecanístico; D1 como escenario incremental secundario.
-- Selección del escenario primario: ABIERTA, pendiente de aceptación científica explícita.
-- .80 de éxito condicional: sigue siendo hipótesis de factorización, no parámetro validado.
-- OPEN-C10-001/005: permanecen ABIERTAS.
-- No freeze, implementación, simulación ni ejecución.
-
-
----
-
-
----
+La decisión de escenario no valida s=.80, no demuestra ausencia de provisión de fondo, no establece equivalencia B→g^Af ni aprueba la jerarquía confirmatoria completa de estimandos. Véanse §§53, 67–69 y 131–132, y DEC-C10-066/067.
 
 # 67. Calibración de la primera etapa técnica y derivación estructural de accesibilidad focal
 
@@ -6923,14 +6780,11 @@ El generador conserva los valores verdaderos de cada componente, C_dep*, A_f*, D
 
 La cobertura/validez se evalúa por predicado, ruta, unidad, tiempo y versión. Una ausencia de evidencia se distingue de evidencia de ausencia. Los errores de clasificación deben estimarse o acotarse por brazo, componente y escenario; si la validación no identifica sensibilidad/especificidad, se reportan límites/sensibilidad y no una corrección puntual ficticia.
 
-## 67.7. Dictamen y pendientes
+## 67.7. Dictamen y pendientes — actualizado tras DEC-C10-066/067
 
-Queda formalizada la lógica de la conjunción técnica y su relación no suficiente con accesibilidad. No queda validado el 0,80, ni la distribución conjunta de componentes, ni la exclusividad de la ruta focal en un sistema real. D2 sigue siendo candidato preferente recomendado, no escenario primario seleccionado. D1 conserva su papel incremental secundario hasta justificar el régimen ordinario.
+La lógica de la conjunción técnica y su relación no suficiente con accesibilidad permanecen como especificación candidata. No queda validado el 0,80, ni la distribución conjunta de componentes, ni la exclusividad de la ruta focal en un sistema real. **D2 es el escenario primario candidato y D1 el secundario** por DEC-C10-066; DEC-C10-067 fija las políticas materiales D2.
 
-Permanecen abiertos: protocolo/actor/versiones de intento; distribución conjunta y sensibilidad de los cuatro componentes; inventario de rutas alternativas y cobertura; adjudicación E1–E4; clasificación de predicados por tipo de τ2; error diferencial; snapshots comparables; q_X*/soporte; política B y escenario primario; Value y exclusión. No se cierra OPEN-C10-001/007/008, AUD-001/004/005/007/010/011 ni XSYNC-138-03/04/06. No hay freeze, implementación, simulación, ejecución ni autorización empírica.
-
-
----
+Permanecen abiertos: protocolo/actor/versiones de intento; distribución conjunta y sensibilidad de los cuatro componentes; inventario de rutas alternativas y cobertura; adjudicación E1–E4; clasificación de predicados por tipo de τ2; error diferencial; snapshots comparables; q_X*/soporte; recepción/cumplimiento; correspondencia B→g^Af; Value y exclusión. No se cierra OPEN-C10-001/007/008, AUD-001/004/005/007/010/011 ni XSYNC-138-03/04/06. No hay freeze, implementación, simulación, ejecución ni autorización empírica.
 
 # 68. Distribución conjunta de componentes técnicos y sensibilidad del éxito condicional
 
@@ -7822,7 +7676,7 @@ Este registro no aprueba decisiones científicas, no cambia Core/RMA/matriz/STAT
 
 **Estado operativo vigente:** D2 es el escenario primario candidato de C10-S para el contraste mecanístico de provisión técnica focal frente a ausencia de intento focal en control; D1 es el escenario secundario para el contraste incremental frente a provisión ordinaria de baja frecuencia.
 
-Este addendum supersede las recomendaciones anteriores de §§65–67 y las referencias posteriores del maestro que mantuvieran D1 como principal condicionado, D2 como mero contraste o la selección primaria abierta. En particular, las formulaciones de §§65.4, 66.4 y §67.7 deben leerse como antecedentes históricos, no como precedencia operativa vigente. No se reescribe su contenido histórico ni se alteran las probabilidades candidatas D1 (.25/1 intentos; .20/.80 C_dep) y D2 (0/1 intentos; 0/.80 C_dep).
+Este addendum supersede las recomendaciones anteriores de §§65–67 y las referencias posteriores del maestro que mantuvieran D1 como principal condicionado, D2 como mero contraste o la selección primaria abierta. Las formulaciones antiguas de §§65–66 se han retirado del cuerpo operativo y permanecen en el historial Git; §67 se conserva porque contiene la especificación técnica útil, con su dictamen actualizado. No se alteran las probabilidades candidatas D1 (.25/1 intentos; .20/.80 C_dep) y D2 (0/1 intentos; 0/.80 C_dep).
 
 La selección de D2 no valida s=.80 ni otras probabilidades, ni demuestra ausencia real de provisión focal de fondo. Permanecen abiertos: actor/recepción/versiones, verificación de ausencia basal y de fondo, población y soporte, unidad/interferencia, primeras etapas independientes C_dep/A_f/D_f/ΔT_acc, vías colaterales/exclusión, estimandos, Value, calibración, potencia y precisión. ITT, primeras etapas y LATE son específicos por escenario; no se agrupan ni transportan automáticamente.
 
@@ -7843,7 +7697,7 @@ DEC-C10-067 complementa DEC-C10-066 sin modificar la precedencia D2 primario can
 
 ## 131. Auditoría de correspondencia entre las políticas materiales D2 y las políticas focales de accesibilidad (2026-11-06)
 
-**Estado:** reconciliación documental de correspondencia causal, reutilizando C10-D1 §§17.7 y 26.1–26.2, C10-S §§26.3, 33.1–33.4, 43.3–43.4, 53–55, 65 y 67–69, y DEC-C10-066/067. No es aceptación de estimandos, calibración, revisión independiente, freeze, implementación, simulación ni ejecución.
+**Estado:** reconciliación documental de correspondencia causal, reutilizando C10-D1 §§17.7 y 26.1–26.2, C10-S §§26.3, 33.1–33.4, 43.3–43.4, 53–55, 67–69 y 130, y DEC-C10-066/067. No es aceptación de estimandos, calibración, revisión independiente, freeze, implementación, simulación ni ejecución.
 
 ### 131.1. Precedencia y objeto de la correspondencia
 
@@ -8657,3 +8511,32 @@ Toda continuación que toque autorización, `A_f*`, `ΔT_acc`, D1/D2 o estimando
 Si no puede verificarse el estado de una fuente o su relación de autoridad, el resultado es UNKNOWN y la inferencia se detiene. No se permite rellenar la laguna con memoria conversacional.
 
 **Límites:** este control no acepta ni congela la fórmula candidata; no cierra la jerarquía de estimandos, exclusión, mediación, soporte, vías colaterales, población, Value, horizonte, potencia o sensibilidad; no autoriza implementación, validación técnica, simulación ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+## 214. Retirada de formulaciones operativas históricas y gate de conformidad semántica del código (2026-11-09)
+
+**Estado:** control documental vinculante en el ámbito C10-S; no es una nueva DEC científica, no aprueba la jerarquía confirmatoria completa y no autoriza implementación ni ejecución.
+
+### 214.1. Limpieza de formulaciones que inducían regresión
+
+Se retiran del cuerpo operativo las recomendaciones antiguas que presentaban D1 como escenario primario o D2 como contraste/no seleccionado. Las secciones 65–66 conservan únicamente un registro de supersesión; su cuerpo anterior permanece recuperable en el historial Git. Se actualizan los puntos de entrada anteriores que podían propagar la recomendación antigua (§27.6, §52.2, §53.4) y el dictamen de §67.7. El material recuperado 165–183 se conserva como fuente histórica, pero no gobierna la precedencia actual.
+
+La retirada es deliberadamente selectiva: no se borran definiciones técnicas, parámetros candidatos, escenarios adversariales ni trazabilidad que sigan siendo necesarios. Se mantienen D1 como escenario secundario, sus políticas incrementales y sus valores candidatos; lo retirado es su antigua precedencia primaria.
+
+### 214.2. Precedencia de estimandos y políticas
+
+La lectura operativa es la resumida en el contrato de estimandos actualizado y en §§53, 131–132:
+- C10-D1: θ_A(q) sigue siendo la pregunta científica general.
+- C10-S: D2 es el escenario primario candidato y D1 el secundario por DEC-C10-066.
+- D2 material: B_g0^D2 no programa/inicia intento focal; B_g1^D2 programa intento estandarizado de provisión técnica focal por DEC-C10-067.
+- ITT_Z^D2 es efecto de asignación a esas políticas; no equivale automáticamente a ψ_B, ψ_policy recibido ni a contribución específica de accesibilidad.
+- LATE_f^D2 es secundario y no identificado/no listo para Wald en el estado documentado por §132.
+- θ_Af(q_X*) requiere correspondencia B→g^Af y condiciones de identificación adicionales; sigue no identificado.
+- θ_A(q) no se sustituye por el diseño focal τ2.
+
+### 214.3. Conformidad semántica del código
+
+El gate obligatorio es §0.6 y su checklist de cierre está en Closure Control Matrix §100. Ningún código ejecutable C10-S se genera/modifica hasta que exista contrato de implementación aceptado y autorización explícita. En la generación futura, cada elemento de código debe ser trazable a requisitos y fuentes versionadas; el código debe pasar revisión semántica y pruebas adversariales, no solo controles técnicos. Los requisitos abiertos no se implementan como decisiones. Se preserva la separación Generator/Analyzer/Evaluator y el cegamiento de truth.
+
+### 214.4. Estado y límites
+
+Se ha actualizado documentalmente la precedencia y retirado contenido que inducía errores; no se han ejecutado validadores, generadores, parsers, fixtures, simulaciones ni experimentos. No se ha aprobado el contrato de implementación ni Design Freeze. scientific_execution=false; execution_authorized=false.
