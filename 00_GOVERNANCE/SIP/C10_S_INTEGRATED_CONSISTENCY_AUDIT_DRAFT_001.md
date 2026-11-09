@@ -8,6 +8,8 @@
 **No realizado:** ejecución de código, simulación, validación estadística, auditoría de implementación o revisión independiente externa.  
 **Efecto científico:** ninguno. No modifica Core, RMA, Evidence→Claim Matrix, STATUS, claims ni cierres.
 
+**Aviso de precedencia vigente (2026-11-09):** esta auditoría registra hallazgos históricos AUD-001…012 y no es una especificación operativa autónoma. Para el D2 primario candidato prevalecen DEC-C10-066/067 y el maestro §§0.5, 51, 53, 131–132: D2 primario candidato/D1 secundario; provisión técnica focal; `C_auth,base=1` común e invariante; `C_auth_base` se corresponde con `AUTH_f*`. Las observaciones históricas sobre intervención focal de `C_auth` pertenecen al escenario alternativo AUD-001/002 y no deben reabrir D2. Los hallazgos abiertos que no hayan sido resueltos expresamente por esas decisiones conservan su estado y alcance.
+
 ---
 
 ## 1. Dictamen ejecutivo
