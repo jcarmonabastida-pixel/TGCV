@@ -6055,32 +6055,30 @@ La clasificación es relacional y dependiente del nivel: una misma variable nomi
 
 Esta tabla no declara que la clasificación nominal sea universal. En especial, C_resource, C_capacity y C_info requieren descomposición semántica antes de asignarles un único indicador.
 
-## 59.3. Ecuación candidata depurada
+## 59.3. Registro histórico de la ecuación intermedia — SUPERSEDIDA COMO REPRESENTACIÓN OPERATIVA
 
-La fórmula de §30.1 contiene siete condiciones, pero C_other no está definido y varias condiciones pueden mezclar acceso con aplicabilidad. Se propone reemplazar su interpretación —no borrar la formulación histórica— por:
+**Estado:** HISTÓRICO / NO OPERATIVO para la composición de `A_f*`.
 
-A_f*(i,t;τ2) = I[ID_τ2 y versión válidos ∧ C_dep*(i,t)=1 ∧ C_auth_base(i,t)=1 ∧ R_access*(i,t)=1 ∧ D_support*(i,t)=1],
+La ecuación que se propuso en esta sección fue:
 
-donde:
+`A_f*(i,t;τ2)=I[ID_τ2 y versión válidos ∧ C_dep*(i,t)=1 ∧ C_auth_base(i,t)=1 ∧ R_access*(i,t)=1 ∧ D_support*(i,t)=1]`.
 
-- R_access* contiene únicamente disponibilidad ex ante de recursos necesarios para poner τ2 a disposición, no consumo o suficiencia de recursos de una ejecución concreta;
-- D_support* representa compatibilidad del dominio/tipo de objeto con la definición de τ2, no precondiciones particulares del estado S0;
-- capacidad instalada, información técnica y demás predicados solo entran en R_access*/D_support* si su definición satisface el criterio de §59.1 y no duplican C_dep;
-- cada predicado debe tener definición, fuente, versión, ámbito, ventana temporal, estado verdadero y clasificación observada.
+Esta formulación intermedia queda supersedida como representación operativa por la fórmula candidata depurada de §67.3 y el crosswalk D2. Se conserva para trazabilidad de cómo se clasificaron inicialmente las condiciones, pero no debe copiarse a contratos, análisis ni código como fórmula vigente.
 
-La ecuación es una propuesta para el DGP S4-R, no una definición universal de accesibilidad TGCV. Si R_access* o D_support* no añaden condiciones distintas y justificadas, se eliminan en vez de mantener factores redundantes. C_other queda retirado como comodín en la especificación futura, sujeto a auditoría de sus usos históricos.
+**Precedencia actual:**
+- `A_f*=I(ID_f* ∧ REL_f* ∧ COND_f* ∧ AUTH_f* ∧ RES_f* ∧ DEP_f* ∧ ¬BLOCK_f*)` (§67.3).
+- `C_auth,base=1` permanece como condición basal común e invariante D2; `C_auth_base` se corresponde con `AUTH_f*`, no es un factor adicional.
+- `C_dep*` se integra en `DEP_f*`; recursos/capacidad ex ante necesarios pueden contribuir a `RES_f*` sin duplicidad; `D_support*` se mapea a ID/tipo o COND según semántica.
+- `C_info` no es factor autónomo; `C_other` queda excluido como comodín; `App_f*` se mantiene separado.
+- La validez/cobertura de evidencia pertenece a `E_T`, no a la verdad estructural.
 
-La aplicabilidad se define aparte:
-
-App_f*(i,t) = I[Pre_τ2(S0_i,t, historia_i,t)=1].
-
-No se presupone que App_f* sea consecuencia de A_f*. La ejecución válida requiere además trayectoria habilitada, selección/inicio según régimen y cumplimiento de las reglas de ejecución; no se incorpora a ninguna de las dos definiciones.
+Los mappings materiales de `RES_f*`, `D_support*`, `REL_f*`, `COND_f*`, `BLOCK_f*` y rutas alternativas siguen abiertos. La supersesión de la fórmula intermedia no cierra esos contratos ni convierte §67.3 en definición universal o freeze.
 
 ## 59.4. Consecuencia para la intervención y los estimandos
 
-En la modalidad preferida A de §16.4 y S4-R aislado, la política B_g modifica solo el proceso técnico que puede cambiar C_dep. C_auth_base, recursos, capacidad, información, dominio, interfaz, incentivos, conocimiento y calidad condicional de ejecución permanecen invariantes y satisfechos en la población primaria, salvo que se abra un escenario adversarial específico.
+Para D2, DEC-C10-066/067 fijan el escenario primario candidato y las políticas materiales de provisión técnica focal. B_g0^D2 no programa/inicia intento focal; B_g1^D2 programa un intento estandarizado de provisión técnica. La política puede modificar el proceso que cambia C_dep*, pero no asigna directamente A_f*, D_f* ni ΔT_acc*. `C_auth,base=1` permanece común, satisfecha antes de Z e invariante frente a B, y se representa dentro de `AUTH_f*`; los permisos técnicos de B (ACL/credenciales/endpoint) no son autorización normativa funcional.
 
-Si Z/B modifica C_auth, recursos, capacidad, mensajes/conocimiento, prioridades, trato, coste, latencia, seguridad o calidad de ejecución, la intervención deja de ser la manipulación técnica aislada descrita. El ITT sigue siendo efecto de la política/paquete. La atribución a A_f* requiere factorialización, control experimental independiente o supuestos identificadores defendibles; no se obtiene por ajustar estadísticamente variables postratamiento.
+Si Z/B modifica autorización funcional, recursos/capacidad no focales, mensajes/conocimiento, prioridades, trato, coste, latencia, seguridad o calidad de ejecución, la intervención incorpora una vía colateral/cointervención. El ITT sigue siendo efecto de la política/paquete. La atribución a A_f* requiere exclusión por diseño o una estrategia de identificación adicional; no se obtiene por ajustar estadísticamente variables postratamiento.
 
 Las condiciones constitutivas basales delimitan factibilidad y elegibilidad; no se intervienen simultáneamente mediante q* y g. La condición manipulada por g queda fuera del régimen común q*. Cualquier unidad sin soporte para las políticas comparadas se excluye ex ante con regla explícita o se declara fuera del dominio de identificación.
 
@@ -6089,7 +6087,7 @@ Las condiciones constitutivas basales delimitan factibilidad y elegibilidad; no 
 - Accesible y no aplicable: A_f*=1, App_f*=0 es un estado permitido.
 - Aplicable pero inaccesible: App_f*=1 no convierte A_f* en 1; la ejecución válida no puede proceder.
 - Instalado pero incompatible: C_install=1 y C_compat=0 implican C_dep=0.
-- Autorización ausente: si C_auth es constitutiva y no satisfecha, A_f*=0 aunque C_dep=1.
+- Autorización funcional ausente: si `AUTH_f*` es constitutiva y no está satisfecha, `A_f*=0` aunque `DEP_f*=1`; en D2 aislado se postula `C_auth,base=1` antes de Z.
 - Recurso basal suficiente vs recurso consumido: no colapsar disponibilidad ex ante y uso durante ejecución.
 - Capacidad instalada vs saturación puntual: no colapsar stock de capacidad con disponibilidad bajo carga concreta.
 - Información técnica vs conocimiento del agente: el segundo no se usa para redefinir A_f* en el DGP actual.
@@ -6098,7 +6096,7 @@ Las condiciones constitutivas basales delimitan factibilidad y elegibilidad; no 
 
 ## 59.6. Pendientes que impiden el cierre
 
-Siguen abiertos: inventario exacto de componentes de C_resource, C_capacity y C_info; definición y fuente de C_auth_base; semántica de C_domain; inventario que sustituye C_other; si capacidad/recursos forman parte de la definición del sistema o de la unidad de análisis; ventanas de vigencia y reglas de actualización; interacción entre condiciones; evidencia y adjudicación; y reconciliación de toda fórmula histórica que use C_auth como condición basal frente a las modalidades de intervención sobre autorización.
+Siguen abiertos: inventario exacto y suficiencia de recursos/capacidad; fuente normativa, titular, alcance, vigencia y evidencia de `C_auth,base` (sin reabrir su función basal común en D2); semántica y mapping de `D_support*`; catálogos REL/COND/BLOCK; inventario de rutas alternativas; ventanas de vigencia y reglas de actualización; interacción entre condiciones; y adjudicación independiente. La distinción entre autorización basal D2 y la intervención focal histórica AUD-001/002 queda resuelta conceptualmente: esta última solo puede estudiarse como escenario alternativo/adversarial y no debe mezclarse con la provisión técnica D2.
 
 **Dictamen:** se dispone de una matriz de clasificación provisional y una ecuación depurada candidata para S4-R. No se cierra AUD-011, XAUD-003/004, AUD-001/002 ni OPEN-C10-004. DEC-C10-019 queda como propuesta. No hay freeze, implementación, simulación ni ejecución.
 
