@@ -78,13 +78,14 @@ Antes de formular una conclusión:
 
 Toda respuesta que use una formulación histórica debe identificarla como histórica y explicar por qué sigue siendo pertinente (por ejemplo, trazabilidad o escenario adversarial). No debe presentarla como arquitectura primaria vigente.
 
-#### 0.5.3. Precedencia semántica ya resuelta: autorización y D2
+#### 0.5.3. Precedencia semántica ya resuelta: autorización, accesibilidad, ΔT_acc y D2
 
 | Asunto | Formulación que rige | Formulación que NO debe recuperarse como primaria | Alcance y límite |
 |---|---|---|---|
 | Autorización basal | En el DGP aislado D2, `C_auth,base=1` es condición basal común, satisfecha antes de Z e invariante frente a B; DEC-C10-067. | La antigua intervención focal sobre `C_auth` de AUD-001/002. | La propuesta antigua no redefine ni elimina la autorización basal. La intervención sobre autorización solo puede aparecer como política conjunta/escenario distinto, nunca confundida con D2. |
 | Predicado de accesibilidad focal | La fórmula candidata depurada del maestro §67.3 contiene `AUTH_f*`; el crosswalk D2 §1–§4 aclara que `C_auth_base` se corresponde con `AUTH_f*`. | Las fórmulas anteriores de §§30.1, 58.4 y 59.3 y las listas que agregaban `C_info`/`C_other` como factores autónomos; son antecedentes, no fuentes operativas. | `C_auth_base`/`C_auth,base` y `AUTH_f*` no son factores independientes duplicados. La fórmula sigue siendo candidata, no universal ni congelada. |
 | Política primaria C10-S | D2 es el escenario primario candidato y D1 el secundario; DEC-C10-066 y contrato material DEC-C10-067. | Recomendaciones anteriores de D1 principal condicionado, D2 meramente comparativo o selección abierta. | La decisión no identifica por sí sola `θ_A(q)`, no valida exclusión ni resuelve estimandos, soporte, vías colaterales o calibración. |
+| Cambio transformacional | `ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*)`; `ΔE_T` registra separadamente evidencia, cobertura, validez epistémica, procedencia y adjudicación. | Las tuplas antiguas que incorporaban `ΔValidity` dentro de `ΔT_acc*` (en particular §§53.5, 58.6 y 63.7). | La validez estructural/operativa real se asigna al predicado estructural correspondiente; la validez/cobertura de evidencia no forma parte de la verdad estructural. §63.7 queda como registro histórico supersedido. |
 | Intervención sobre autorización | S4-O/AUD-001/002 puede conservarse como escenario alternativo/adversarial para estudiar el efecto de una política de autorización. | Su reutilización como si fuera la intervención del D2 primario. | Si cambia autorización y otras condiciones, se interpreta como efecto de política/paquete salvo identificación adicional; no se etiqueta automáticamente como efecto puro de accesibilidad. |
 
 **Regla de seguridad específica:** nunca recomendar retirar, borrar, absorber o marcar como obsoletos `C_auth,base=1`, `C_auth_base` o `AUTH_f*` por el mero hecho de que AUD-001/002 sea una propuesta antigua. Lo que queda fuera del D2 primario es la intervención focal sobre autorización, no la autorización basal ni el predicado `AUTH_f*`.
