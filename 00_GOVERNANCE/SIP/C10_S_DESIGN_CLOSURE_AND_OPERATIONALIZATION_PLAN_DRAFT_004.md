@@ -35,13 +35,14 @@ No procede recuperar ni reconstruir otra vez §§130–163. El contenido 164–1
 
 1. La gobernanza de main (README, bootstrap, estado canónico y workflows) determina proceso, permisos y límites.
 2. C10-D1 determina la pregunta causal general θ_A(q), sus requisitos y límites.
-3. El maestro C10-S integra la especificación del experimento sintético; las decisiones DEC-C10 se interpretan con su alcance.
+3. Las DEC-C10 aceptadas prevalecen sobre propuestas/recomendaciones anteriores dentro de su alcance exacto; el maestro C10-S integra la especificación vigente y debe reflejar esas decisiones. Las secciones históricas supersedidas no son fuente operativa.
 4. Los contratos especializados, Decision Log, matrices y auditorías complementan al maestro. Si discrepan, la divergencia se registra y se corrige contra el maestro y las decisiones aceptadas; no se elige por intuición.
 5. Este plan es derivado y no crea decisiones científicas.
 6. Una propuesta, recomendación, fixture ilustrativo o ecuación candidata no se convierte en decisión aceptada por estar persistida.
 7. Toda nueva decisión debe actualizar en el mismo ciclo el maestro, Decision Log y artefactos afectados; verificar cada escritura mediante fetch y SHA.
 8. No modificar main ni cambiar la base de PR #116 sin instrucción expresa.
 9. scientific_execution=false y execution_authorized=false hasta autorización expresa y gates previos.
+10. La generación/modificación de código ejecutable C10-S se rige por maestro §0.6 y Closure Control Matrix §100: bloqueada hasta contrato de implementación aceptado y autorización explícita; todo código futuro debe tener trazabilidad semántica a fuentes versionadas.
 
 Los estados DEFINIDO, PROPUESTO, ABIERTO, ACEPTADO, IMPLEMENTADO, EJECUTADO, AUDITADO, NO IDENTIFICADO e INDETERMINADO se mantienen separados.
 
@@ -1642,3 +1643,35 @@ Se acepta documentalmente la descomposición N15 propuesta en crosswalk §10.29:
 **Siguiente gate: N16 — reconciliación del oráculo F*.** Antes de proponer especificación nueva, recuperar los contratos históricos de F*, matriz FP-01…08, regla no compensatoria, reglas de aplicabilidad/NA/UNKNOWN, C0/G/H, equivalencia F/A y adjudicación Generator/Analyzer/Evaluator. El resultado debe separar: (1) criterio funcional común F* para ambas rutas; (2) implementación/versionado del oráculo independiente; (3) adjudicación y evidencia, con Analyzer ciego a truth/potenciales y Evaluator actuando después de congelar sus outputs.
 
 No asumir que la regla candidata es decisión aceptada ni que existe oráculo implementado/validado. No usar logs A2 como veredicto funcional. El siguiente trabajo es documental; sin fixtures, parser, validator, pruebas, simulaciones, implementación, Design Freeze o ejecución.
+
+
+## 16.81 — Gate de conformidad semántica para generación de código y reconciliación de estimandos
+
+**Estado:** control documental integrado; no autoriza implementación, Design Freeze, validación técnica ni ejecución.
+
+### 16.81.1. Contrato de estimandos actualizado
+
+El documento `C10_S_C10D1_S4R_ESTIMAND_RECONCILIATION_DRAFT_001.md` ha retirado del cuerpo operativo las formulaciones anteriores que presentaban D1 como principal condicionado o D2 como contraste. Se mantienen sus definiciones de escenario y trazabilidad en el historial Git, no como instrucción vigente.
+
+La lectura actual queda:
+- C10-D1: θ_A(q) sigue siendo la pregunta científica general.
+- C10-S: D2 primario candidato / D1 secundario por DEC-C10-066.
+- Políticas materiales D2 por DEC-C10-067: B_g0^D2 no programa/inicia intento focal; B_g1^D2 programa intento estandarizado de provisión técnica focal.
+- ITT_Z^D2 es efecto de asignación a las políticas; no se iguala a efecto de accesibilidad ni a política recibida.
+- LATE_f^D2 permanece secundario y no identificado/no listo para Wald por los gates abiertos de §132.
+- θ_Af(q_X*) permanece no identificado mientras no se demuestre la correspondencia B→g^Af y los supuestos correspondientes.
+- s=.80 no está validado; primeras etapas C_dep/A_f/D_f/ΔT_acc separadas.
+
+La precedencia de escenario/políticas está aceptada dentro del alcance DEC-C10-066/067. La jerarquía confirmatoria completa y la identificación causal siguen abiertas.
+
+### 16.81.2. Código ejecutable
+
+No generar ni modificar código ejecutable que materialice DGP, estimandos, políticas, oráculo, Analyzer o Evaluator C10-S hasta contrato de implementación aceptado y autorización explícita. Cualquier pseudocódigo o ejemplo no ejecutable debe rotularse como ilustrativo.
+
+Antes de generar código en el futuro, aplicar el gate del maestro §0.6 y Closure Control Matrix §100: recuperar fuentes/commit exactos, resolver precedencia, trazar cada componente a requisito y fuente versionada, preservar las distinciones causales, separar Generator/Analyzer/Evaluator, ocultar truth al Analyzer y revisar semántica con pruebas adversariales. Una revisión asistida no es independiente.
+
+### 16.81.3. Retirada selectiva de texto histórico
+
+Se retiran de los documentos operativos las formulaciones que inducían regresión cuando ya existe una decisión posterior y explícita. La retirada se limita al texto contradictorio: se conservan valores candidatos, mecanismos D1/D2, escenarios adversariales y referencias útiles. El historial Git mantiene la trazabilidad del contenido anterior. No se borra una sección histórica útil sin comprobar referencias dependientes.
+
+**Límites:** este gate no implica que se haya generado, inspeccionado o validado código. No se ejecutaron validadores, fixtures, parsers, simulaciones ni experimentos. `scientific_execution=false`; `execution_authorized=false`.
