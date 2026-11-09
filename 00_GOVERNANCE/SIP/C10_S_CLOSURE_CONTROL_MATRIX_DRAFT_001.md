@@ -36,7 +36,7 @@ La numeración de las secciones conversacionales no constituye por sí sola una 
 | SRC-07 | PR #115 | `research/c10-d1-protocol-draft` → PR #115 | 23 commits; 1 archivo; abierto Draft | Sin comentarios/revisiones |
 | SRC-08 | PR #116 | `research/c10-s-consolidation-draft` → PR #116 | Trece archivos modificados en el corte de verificación 2026-11-04; el número de commits es dinámico; abierto Draft | Sin comentarios/revisiones registradas |
 
-| SRC-09 | Reconciliación C10-D1 ↔ S4-R | `C10_S_C10D1_S4R_ESTIMAND_RECONCILIATION_DRAFT_001.md`, PR #116 | Jerarquía `θ_A(q)` / ITT_Z / LATE_f; propuesta para `p0` y poblaciones | Propuesta, no aprobada |
+| SRC-09 | Reconciliación C10-D1 ↔ S4-R | `C10_S_C10D1_S4R_ESTIMAND_RECONCILIATION_DRAFT_001.md`, PR #116 | Contrato actualizado: D2 primario candidato; D1 secundario; ITT_Z^D2, LATE_f^D2 y θ_Af(q_X*) separados de θ_A(q) | DRAFT; jerarquía confirmatoria e identificación completas siguen abiertas |
 | SRC-10 | Decision log C10 | `C10_S_DECISION_LOG_DRAFT_001.md`, PR #116 | DEC-C10-001…010, decisiones abiertas y alternativas no admisibles | Registro inicial, no aprobado |
 | SRC-11 | XSYNC tracker | `C10_S_XSYNC_138_CLOSURE_TRACKER_DRAFT_001.md`, PR #116 | Recupera y clasifica XSYNC-138-01…10, respuesta documental y cierre pendiente | Texto recuperado; hallazgos abiertos |
 | SRC-12 | Registro de contratos de prueba | `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md`, PR #116 | Normaliza S4R-01…18, MEAS-01…14, MISS-01…15, VER/TRJ/INT, POL-01…10 y GEN | Especificación; fixtures y pruebas no ejecutados |
@@ -66,7 +66,7 @@ Este resultado no demuestra que el material no exista en exportaciones de conver
 | ID | Punto de reconciliación | C10-D1 (rector causal) | C10-S (sintético) | Estado / criterio de cierre |
 |---|---|---|---|---|
 | REC-CAUS-01 | Pregunta y alcance | Atribución específica de cambios de T_acc/ΔT_acc a Value, separada del efecto de intervención | Prueba sintética de arquitectura y recuperación de escenarios conocidos | COHERENTE EN PROPÓSITO; mantener límite: C10-S no prueba causalidad real |
-| REC-CAUS-02 | TE / ITT | `ITT_Z` es efecto de asignación; `ψ_B(q_X*)` es contraste de versiones B recibidas y `ψ_policy(q)` el efecto del paquete de política. No atribuir ninguno automáticamente a accesibilidad (C10-D1 §§17.7, 26.1–26.2; C10-S §§44, 53) | D2: ITT_Z primario de asignación. `ψ_B` solo coincide con la instancia `ψ_policy` si versiones, población, resultado, Value, horizonte y régimen completo coinciden; recepción/cumplimiento y régimen permanecen abiertos | No igualar ITT_Z con ψ_B/ψ_policy bajo incumplimiento. Ver maestro §131 y plan §16.12; aceptación formal de la jerarquía pendiente.
+| REC-CAUS-02 | TE / ITT | `ITT_Z` es efecto de asignación; `ψ_B(q_X*)` es contraste de versiones B recibidas y `ψ_policy(q)` el efecto del paquete de política. No atribuir ninguno automáticamente a accesibilidad (C10-D1 §§17.7, 26.1–26.2; C10-S §§44, 53) | D2: ITT_Z primario de asignación. `ψ_B` solo coincide con la instancia `ψ_policy` si versiones, población, resultado, Value, horizonte y régimen completo coinciden; recepción/cumplimiento y régimen permanecen abiertos | No igualar ITT_Z con ψ_B/ψ_policy bajo incumplimiento. D2 como escenario primario candidato está aceptado por DEC-C10-066; la jerarquía confirmatoria completa y la identificación focal siguen abiertas.
 | REC-CAUS-03 | Efecto específico de accesibilidad | `θ_A(q)` es el estimando general C10-D1 sobre cambios estructurados `ΔT_acc`; `θ_Af(q_X*)` es focal sobre `D_f*`/apertura de `τ2`, no sustituto del general | D2: B_g0 no programa intento; B_g1 lo programa. La correspondencia con g^Af requiere distribución inducida de `ΔA_f` por historia, predicados completos, soporte y separación de vías. La ilustración 0,20→0,80 no es D2 | No transferir la primera etapa C_dep a A_f/D_f/ΔT_acc ni el valor 3,6 a D2. Ver maestro §131 y plan §16.12; θ_Af no identificado.
 | REC-CAUS-04 | Intervención | La intervención D2 es la política material B sobre programación de provisión focal; g^Af es una política objetivo sobre la distribución de cambios de accesibilidad inducida por B (C10-D1 §26.1–26.2; maestro §131) | DEC-C10-067 acepta B_g0^D2 (no programar/iniciar intento focal) y B_g1^D2 (programarlo), manteniendo C_auth,base=1 y condiciones no focales comunes en el DGP aislado | No equivalencia automática B↔g. Recepción, cumplimiento, s, provisión de fondo, rutas alternativas y predicados de A_f abiertos. La antigua vía Z_A→C_auth permanece histórica/adversarial; PROV-06 material no verificado.
 | REC-CAUS-05 | Variables y constructos | C_c constitutivas, L temporales, A/ΔT_acc, mecanismos, O, V separados | A_f*, A_f_obs, T_acc=(U,R,C), ΔT_acc, Reach, Π_H, selección, ejecución, O, V | PROPUESTA ÚTIL, NO ACEPTADA: consolidar diccionario único y temporal |
@@ -83,19 +83,21 @@ Este resultado no demuestra que el material no exista en exportaciones de conver
 3. Una decisión sintética no puede redefinir el estimando causal de C10-D1 por conveniencia de implementación.
 4. Si una decisión de C10-S exige cambiar el estimando o el alcance de C10-D1, debe abrirse una decisión explícita y trazable; no se resuelve por armonización editorial.
 5. ITT, θ_A(q), θ_Af(q), θ_{L,A}, IV/LATE y cualquier residual son objetos distintos. No se intercambian etiquetas ni interpretaciones.
-6. La propuesta de jerarquía dual (pregunta científica C10 vs. objetivo primario del diseño S4-R) queda documentada en `C10_S_C10D1_S4R_ESTIMAND_RECONCILIATION_DRAFT_001.md`; no se considera aprobada hasta revisión explícita.
+6. La precedencia D2 primario candidato / D1 secundario está aceptada por DEC-C10-066; el contrato de estimandos actualizado distingue esa decisión de la jerarquía causal confirmatoria, que permanece DRAFT.
 
 
-### 4.2 Reconciliación de estimandos (propuesta incorporada, no aprobada)
+### 4.2 Reconciliación de estimandos y políticas (estado actualizado)
 
-Se ha añadido el documento `C10_S_C10D1_S4R_ESTIMAND_RECONCILIATION_DRAFT_001.md` a PR #116. Este documento contrasta C10-D1 §§17, 25–26 y 30–34 con C10-S §§43 y 51 y propone:
-- `θ_A(q)` permanece como pregunta científica C10-D1.
-- `ITT_Z` es el objetivo primario del diseño aleatorizado S4-R, no sustituto de `θ_A(q)`.
-- `LATE_f` es una estimación local focal de apertura de `τ2`, solo bajo supuestos IV; no equivale a ATE, `θ_A(q)` poblacional ni efecto de todo `ΔT_acc`.
-- `P*_τ2` y `P*_F` deben definirse preasignación; `A_f,base*=0` es condición de elegibilidad para estimar apertura basal→post.
-- Se conserva el DGP aislado principal con `p0=.20` y `p1=.80` como probabilidades post-asignación bajo B_g0/B_g1, y se distingue del estado basal `C_dep,base=0`. Se exige separar intento, éxito y estado verificado; el escenario adversarial añade contaminación/vías colaterales explícitas.
+El documento `C10_S_C10D1_S4R_ESTIMAND_RECONCILIATION_DRAFT_001.md` se ha actualizado contra DEC-C10-066/067 y el maestro §§53, 131–132:
+- `θ_A(q)` permanece como pregunta científica general C10-D1.
+- D2 es el escenario primario candidato y D1 el secundario por DEC-C10-066.
+- `B_g0^D2` no programa/inicia intento focal; `B_g1^D2` programa intento estandarizado de provisión técnica focal por DEC-C10-067.
+- `ITT_Z^D2` es el efecto de asignación a esas políticas; no equivale automáticamente a efecto de accesibilidad ni a política recibida.
+- `LATE_f^D2` es secundario, local y no está identificado/listo para Wald en el estado actual (§132).
+- `θ_Af(q_X*)` requiere correspondencia B→g^Af y condiciones adicionales; sigue no identificado.
+- Se separan las primeras etapas de C_dep, A_f, D_f y ΔT_acc. s=.80 sigue como hipótesis no validada.
 
-Estas son propuestas de armonización, no decisiones científicas aceptadas. La referencia completa, las fórmulas y reglas de salida están en el documento enlazado; no cerrar AUD/XAUD ni S4-R hasta revisión y decisión explícita.
+La precedencia del escenario y las definiciones materiales D2 están aceptadas dentro del alcance de DEC-C10-066/067; la jerarquía confirmatoria completa, la identificación causal focal y los parámetros no quedan aprobados por esa aceptación.
 
 ## 5. Registro maestro de auditorías y bloqueos
 
@@ -2091,3 +2093,27 @@ La recuperación de secciones históricas o propuestas no aceptadas puede reintr
 El gate se considera aplicado en un análisis solo si el razonamiento cita las fuentes de precedencia relevantes y mantiene las distinciones anteriores. No se permite avanzar a la siguiente inferencia causal cuando se haya detectado una contradicción no resuelta. La verificación documental de este gate no equivale a una validación automatizada ni garantiza por sí sola que no aparezcan nuevos conflictos; cualquier conflicto nuevo debe incorporarse a la trazabilidad existente, sin crear una matriz paralela.
 
 **Límites:** no cambia el estado científico de C10-S, no resuelve estimandos/identificación, no acepta la fórmula candidata, no modifica C10-D1/Core/RMA/Evidence→Claim Matrix/STATUS, no autoriza implementación, Design Freeze, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+## 100. Gate de conformidad semántica para generación y modificación de código C10-S
+
+**Fuente rectora:** maestro C10-S §§0.5–0.6 y 214; contrato de estimandos actualizado §§12, 17–19; DEC-C10-066/067; auditorías §§131–132.  
+**Estado:** gate documental obligatorio; implementación y ejecución científica no autorizadas.
+
+### Riesgo que controla
+
+La generación de código puede recuperar nombres, fórmulas, decisiones o estructuras de secciones antiguas, aunque existan addenda posteriores. Compilar o superar pruebas técnicas no demuestra conformidad con la semántica científica vigente.
+
+### Checklist previo a generar o modificar código
+
+1. Recuperar el paquete vigente desde GitHub con rama y commit exactos: DEC aplicables, maestro, crosswalks, contrato de estimandos, estado de gates y código existente.
+2. Resolver precedencia semántica por asunto según maestro §0.5. No tomar como autoridad fragmentos de conversaciones, snippets, ejemplos ni secciones históricas.
+3. No generar código ejecutable que materialice DGP, estimandos, políticas, oráculo, Analyzer o Evaluator mientras no exista contrato de implementación aceptado y autorización explícita.
+4. Trazar cada módulo/función/variable/fixture/aserción a requisito, fuente, versión y hash; los requisitos OPEN/UNKNOWN bloquean la implementación salvo parametrización expresamente autorizada.
+5. Proteger distinciones críticas: D2 primario candidato/D1 secundario; ITT_Z^D2 ≠ efecto puro de accesibilidad; B_g^D2 ≠ g^Af; C_dep* ≠ A_f*/D_f*/ΔT_acc*; C_auth,base=1 y AUTH_f* vigentes; intervención focal antigua sobre autorización no primaria D2.
+6. Mantener Generator/Analyzer/Evaluator separados y truth/potentials ocultos al Analyzer; el Evaluator compara solo después de congelar outputs.
+7. Aplicar revisión semántica, pruebas negativas/adversariales y búsqueda de residuos históricos; lint/compilación/tests técnicos son controles distintos.
+8. Registrar versiones, fuentes, requisitos, desviaciones y controles aplicados. Si hay contradicción o fuente no verificable, detener el trabajo.
+
+### Criterio de cierre
+
+PASS solo cuando el código y sus pruebas se vinculan a fuentes vigentes, no materializan formulaciones supersedidas y respetan el contrato de roles/datos. UNKNOWN/OPEN ante trazabilidad incompleta; FAIL ante contradicción semántica demostrada. Este gate no es una validación automatizada ya implementada, no crea una matriz paralela, no aprueba Design Freeze ni autoriza ejecución.
