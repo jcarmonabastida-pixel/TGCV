@@ -2059,3 +2059,35 @@ Faltan implementación/protocolo A2, formato y parser reales, reglas de validaci
 Se reutilizan DEC-C10-071/086/087/088 y los siete stage_key; no se crean hitos confirmatorios nuevos. F/A se adjudican independientemente y no heredan evidencia. N15 solo será CMP si se demuestra identidad contractual, lifecycle y frontera autónomos. Recepción, parseo, validación, mapping, aplicación y post-check son estados distintos; ausencia de registro no demuestra ausencia de evento.
 
 **Cerrado documentalmente:** descomposición conceptual N15. **Definido pero pendiente de especificación:** protocolo A2, formato/parser, reglas de validación, estrategia de errores/transacciones, mapping físico y destino. **Pendiente de evidencia:** eventos, snapshots, cobertura y estado realmente aplicado. **Bloqueante de implementación:** contrato técnico y mappings no cerrados. **Bloqueante de ejecución:** sin autorización ni Design Freeze. No se crean registros/IDs/columnas, no se sella IAM y no se autoriza captura, pruebas, implementación ni ejecución.
+
+
+## 99 — Gate obligatorio de precedencia semántica y prevención de regresiones
+
+**Fuente rectora:** maestro C10-S §§0.5 y 213; crosswalk D2 de predicados §0; DEC-C10-066/067.  
+**Estado:** control documental incorporado; no es una nueva DEC científica, no congela la arquitectura y no autoriza ejecución.
+
+### Riesgo que controla
+
+La recuperación de secciones históricas o propuestas no aceptadas puede reintroducir formulaciones ya corregidas como si fueran vigentes. La existencia de una etiqueta «histórico/obsoleto» o una regla genérica de reconstrucción no basta si el análisis no resuelve la precedencia del asunto concreto.
+
+### Control obligatorio antes de cada análisis o propuesta C10-S
+
+1. Identificar el asunto exacto y evitar colapsar objetos semánticamente distintos.
+2. Consultar primero las DEC aceptadas aplicables; después los addenda que declaran supersesión y su alcance; luego el maestro/crosswalk vigente; finalmente, tratar las formulaciones anteriores como antecedentes.
+3. No inferir precedencia por cronología, numeración, longitud, detalle ni orden de resultados de búsqueda.
+4. Registrar qué formulación rige, cuál queda sustituida, qué alcance tiene la sustitución y qué sigue abierto.
+5. Ante contradicción no resuelta o fuente no verificable: detener la inferencia y clasificar UNKNOWN/OPEN. No completar desde memoria conversacional.
+
+### Caso de control obligatorio: autorización y accesibilidad
+
+- D2: `C_auth,base=1` común, pre-Z e invariante frente a B (DEC-C10-067).
+- Predicado: `C_auth_base` se corresponde con `AUTH_f*`; no son factores independientes duplicados.
+- Fórmula candidata: maestro §67.3 y crosswalk D2; la composición histórica de §30.1 no la sustituye.
+- AUD-001/002: intervención focal sobre autorización no primaria en D2; solo alternativa/adversarial separada. No retirar ni obsoletar autorización basal ni `AUTH_f*`.
+- D2 primario candidato / D1 secundario por DEC-C10-066; esto no resuelve por sí solo atribución causal a accesibilidad.
+
+### Criterio de cierre de este control
+
+El gate se considera aplicado en un análisis solo si el razonamiento cita las fuentes de precedencia relevantes y mantiene las distinciones anteriores. No se permite avanzar a la siguiente inferencia causal cuando se haya detectado una contradicción no resuelta. La verificación documental de este gate no equivale a una validación automatizada ni garantiza por sí sola que no aparezcan nuevos conflictos; cualquier conflicto nuevo debe incorporarse a la trazabilidad existente, sin crear una matriz paralela.
+
+**Límites:** no cambia el estado científico de C10-S, no resuelve estimandos/identificación, no acepta la fórmula candidata, no modifica C10-D1/Core/RMA/Evidence→Claim Matrix/STATUS, no autoriza implementación, Design Freeze, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
