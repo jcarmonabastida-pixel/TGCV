@@ -9377,3 +9377,80 @@ La secuencia es una estructura de registro, no una afirmación de que todas las 
 No se resuelven por redacción: selección/contexto de dimensiones Value; indicadores y escalas; H y ventanas; régimen de mediación y secuencia real; población/q_X*/soporte; unidad/interferencia; mapping B→g^Af y exclusión; error y cegamiento; multiplicidad, MDE, potencia, N, R y umbrales. Se mantienen OPEN y se transfieren a sus responsables contractuales, sin bloquear la definición de campos ni convertirlas en defaults.
 
 **Dictamen:** §223 aclara la jerarquía y convierte medición y análisis en contratos registrables. C-01…C-07 son propuestas pendientes de aceptación; no cambian claim status, no identifican ΔT_acc→Value, no aprueban mediación ni autorizan implementación o ejecución.
+
+
+# 224. Paquete C — fichas operativas de Outcome y Value y protocolo de adjudicación (2026-11-09)
+
+**Estado:** propuesta de contrato de medición; no selecciona indicadores, dimensiones, escalas ni ventanas empíricas. Complementa §§222–223 y operacionaliza P179/P182/P183.
+
+## 224.1. Separación de tres capas de medición
+
+1. **Outcome (O):** estado o resultado operativo observado en el sistema/proceso. Describe qué ocurrió y con qué magnitud/unidad; no incorpora por sí mismo una valoración normativa.
+2. **Value (V):** valoración contextual de consecuencias para beneficiario(s)/observador(es), bajo criterios explícitos. Se mantiene como vector de dimensiones; no se deriva automáticamente de O.
+3. **Evidencia de medición:** observaciones, fuentes, instrumentos, adjudicaciones, cobertura y error que sustentan O/V. No es el constructo medido y debe conservarse separadamente.
+
+A_f*, ΔT_acc*, Reach, trayectoria y ejecución son constructos/estados diferentes de O y V. Ninguno puede formar parte de la definición del otro por conveniencia analítica.
+
+## 224.2. Ficha obligatoria de Outcome
+
+Cada indicador O_i se define en un registro versionado con:
+- outcome_id, constructo y frontera;
+- unidad de análisis y unidad de medida;
+- población, fuente primaria y fuente de corroboración;
+- fórmula/regla de cálculo, dirección y rango admisible;
+- baseline y regla de comparabilidad;
+- evento-ancla, ventana de observación y horizonte;
+- periodicidad y resolución temporal;
+- cobertura, missingness, censura y reglas de agregación;
+- error de medición, validación y reproducibilidad;
+- relación prevista con A_f*, ΔT_acc*, Reach/trayectoria y Value, sin incorporarlos circularmente;
+- versión, provenance y cambios respecto de la versión previa.
+
+Un indicador que no tenga fuente, unidad, regla de cálculo o ventana queda OPEN; no puede entrar en una salida confirmatoria.
+
+## 224.3. Ficha obligatoria de cada dimensión Value
+
+Cada V_j debe tener registro separado con:
+- value_dimension_id, nombre y definición del constructo;
+- beneficiario/observador y contexto concreto de valoración;
+- criterio de valoración y frontera frente a Outcome y otras dimensiones;
+- indicador(es), fuente(s), instrumento y unidad/escala;
+- dirección de mejora, rango, anclas y significado de valores;
+- baseline, momento post, horizonte y ventana;
+- procedimiento de valoración y cualificación de evaluadores;
+- independencia/cegamiento respecto de Z, A_f*, Outcome y truth del DGP;
+- validez de contenido/constructo, acuerdo interevaluador y error;
+- tratamiento de ausencia, desacuerdo, censura y valoración no aplicable;
+- regla de trade-off: compensable/no compensable, sin imponer ponderaciones;
+- justificación contextual de inclusión/exclusión, versión y provenance.
+
+La selección de dimensiones confirmatorias se realiza antes de generar/observar resultados del escenario y queda versionada. La lista candidata de P179 no equivale a selección. Si hay más de un beneficiario u observador legítimo, se conserva la pluralidad o se justifica la regla de representación; no se promedian valoraciones heterogéneas por defecto.
+
+## 224.4. Adjudicación, cegamiento y canales de datos
+
+Se mantienen tres canales lógicos:
+- **Generator/truth:** potenciales, mecanismos y parámetros verdaderos del DGP; accesibles al Evaluator, no al Analyzer.
+- **Analyzer/observed:** datos observables, medidas, metadatos permitidos y missingness; sin truth, etiquetas ocultas ni parámetros del generador.
+- **Evaluator/adjudication:** protocolo de comparación de truth y salida del Analyzer, reglas de scoring y registro de desacuerdos.
+
+La adjudicación de A_f* y ΔT_acc* se realiza sin consultar Outcome/Value. La valoración de Value no recibe la truth del DGP ni la asignación Z cuando el cegamiento sea viable; cualquier imposibilidad de cegamiento se registra y entra en sensibilidad. El adjudicador de O no redefine Value, y el de Value no redefine Outcome.
+
+Cada registro de medida conserva observed_at, event_time, source_id, instrument_version, adjudicator_id (cuando proceda), coverage_status, missingness_reason y evidence_ref. Tiempo del evento y tiempo de observación nunca se colapsan.
+
+## 224.5. Taxonomía mínima de estados de observación
+
+- OBSERVED_VALID: dato disponible y válido conforme al contrato.
+- OBSERVED_INVALID: dato recibido pero incumple validación/protocolo.
+- NOT_OBSERVED: dato no disponible; requiere motivo.
+- NOT_APPLICABLE: el constructo/indicador no aplica según regla pre-Z o estructural.
+- CENSORED: observación limitada por ventana o mecanismo de censura.
+- DISPUTED: fuentes/adjudicadores discrepan más allá de tolerancia predefinida.
+- UNKNOWN: no se puede clasificar con evidencia disponible.
+
+Estos estados no se convierten automáticamente en cero, ausencia de Value o inaccesibilidad. NOT_APPLICABLE exige una regla que no dependa de resultados postratamiento.
+
+## 224.6. Decisiones que siguen abiertas
+
+No se asignan todavía nombres finales ni número de indicadores Outcome; dimensiones Value confirmatorias; escalas/unidades; instrumentos/fuentes; H, ventanas y anclas; tolerancias de acuerdo/error; regla de trade-off; cegamiento viable; umbrales de validez; estrategia de ausencia/censura; ni multiplicidad. Cada uno requiere justificación del microdominio/beneficiario y consistencia con el DGP. La especificación de la ficha y sus estados sí queda propuesta como estructura común.
+
+**Criterio de salida de este subpaquete:** cada O_i y V_j tiene ficha completa, fuente y ventana; su validez/error/ausencia está especificada; existe adjudicación y firewall verificables; las dimensiones confirmatorias y multiplicidad están preespecificadas. Hasta entonces, resultados de Value permanecen NOT_OPERATIONALIZED, aunque el vector conceptual esté definido.
