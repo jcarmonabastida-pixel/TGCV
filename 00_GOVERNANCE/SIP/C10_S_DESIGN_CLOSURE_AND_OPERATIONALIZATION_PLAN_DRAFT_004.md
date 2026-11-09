@@ -2056,3 +2056,18 @@ Se propone firewall Generator/truth → Evaluator y Analyzer/observed sin truth;
 No se eligen indicadores, dimensiones confirmatorias, escalas, ventanas, ponderaciones, tolerancias ni parámetros estadísticos por defecto. El cierre exige fichas completas y preespecificación de dimensiones/multiplicidad, fuentes, ventanas, validez/error/ausencia y auditoría del firewall.
 
 **Estado:** contrato de medición propuesto; indicadores y dimensiones aún no operacionalizados; paquete C no aprobado, no congelado y no implementable. Sin ejecución.
+
+
+## 16.103 — Paquete C: identificación, sensibilidad y evaluación estadística (2026-11-09)
+
+El maestro §225 integra la estrategia de identificación por estimando y resultado. ITT_Z^D2 identifica, si se cumplen sus condiciones, el efecto de asignación a la política; no identifica por sí solo recepción, C_dep*, A_f*, D_f*, ΔT_acc* ni Value mediado por accesibilidad. Las primeras etapas FS_Cdep/FS_Af/FS_Df se reportan separadas. ψ_policy conserva vías colaterales; ψ_B requiere estrategia propia ante incumplimiento. LATE_f permanece NO IDENTIFICADO / NO LISTO PARA WALD según auditoría IV. θ_Af(q_X*) requiere mapping B→g^Af y soporte; θ_A(q) sigue siendo la pregunta científica general no identificada por D2 focal.
+
+Se añade contrato de mediación que exige DAG/temporalidad, confusores basales y postratamiento, mediadores multicomponente, rutas colaterales e interacciones. ITT no se ajusta por variables post-Z. Para mediación se requieren estimandos/intervenciones propios y métodos compatibles con confusión inducida por tratamiento; no se usa la resta de estimandos ni efectos naturales por defecto.
+
+Se integran población pre-Z, q_X*, positividad/overlap, soporte/transporte, unidad de asignación/análisis/exposición e interferencia; missingness, censura, selección y error diferencial; análisis de sensibilidad, bounds y tipping points; métricas de recuperación y falsa identificación; potencia, precisión, N y réplicas Monte Carlo determinados mediante justificación y error Monte Carlo. Ningún valor numérico se fija sin entradas materiales y preespecificación.
+
+Estados de salida: IDENTIFIED/RECOVERED, IDENTIFIED/NOT RECOVERED, PARTIALLY_IDENTIFIED, NOT_IDENTIFIED—CORRECTLY RECOGNIZED, FALSE_IDENTIFICATION, INDETERMINATE y NOT_APPLICABLE. Una recuperación sintética valida solo el Analyzer bajo el DGP cubierto; no prueba causalidad empírica ΔT_acc→Value.
+
+**Gates abiertos:** estimandos/resultados concretos; DAG y régimen de mediación; población/soporte/interferencia; missingness; parámetros DGP; fichas O/V; sensibilidad/bounds; métricas/tolerancias; multiplicidad/potencia/N/réplicas; firewall y adjudicación; crosswalk contractual completo.
+
+**Estado:** paquete C DOCUMENTED DESIGN PROPOSAL / NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. No implementación ni ejecución; scientific_execution=false; execution_authorized=false.
