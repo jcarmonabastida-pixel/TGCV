@@ -1706,3 +1706,17 @@ Se aplicó el criterio de retirada selectiva: eliminar o sustituir texto operati
 **Precedencia protegida:** DEC-C10-066/067; `C_auth,base=1` vigente; `C_auth_base` se corresponde con `AUTH_f*`; D2 es provisión técnica focal, no intervención focal de autorización; fórmula candidata `A_f*` según §67.3; `ΔT_acc*` separado de `ΔE_T`; estimandos ITT/LATE/θ_Af/θ_A no intercambiables.
 
 **Límites y siguiente gate:** la revisión cubre los 100 archivos del PR #116, no todo el repositorio. Antes de cualquier generación futura de código debe verificarse la precedencia de todos los documentos y fuentes fuera de ese conjunto y aplicarse maestro §0.6 / Closure Control Matrix §100. No se ejecutaron validadores, generadores, parsers, fixtures, simulaciones ni experimentos. `scientific_execution=false`; `execution_authorized=false`. No Design Freeze.
+
+
+## 16.83. Cierre de referencias históricas residuales y consistencia de lectura (2026-11-09)
+
+**Estado:** corrección documental persistida en la rama de investigación; autoauditoría asistida, no independiente.
+
+La comprobación focal de referencias cruzadas detectó tres puntos en los que el contenido histórico seguía siendo correcto como registro, pero podía inducir una lectura operativa desactualizada si se consultaba de forma aislada:
+
+1. **Closure Control Matrix §33:** su tabla conservaba «Composición de predicados — OPEN / MATERIAL» del corte anterior. El estado posterior MEAS-G1 **PARTIAL** y la reconciliación conceptual ya estaban en §§34–35; se añadió §101 para fijar expresamente la precedencia y los mappings aún abiertos.
+2. **Auditoría cruzada AUD-001/002:** aunque tenía aviso de precedencia, sus conclusiones y siguientes pasos podían leerse como requisito para D2. Se añadió §7 para limitar su alcance a la intervención histórica sobre autorización y al eventual escenario alternativo/adversarial.
+3. **Resolución AUD-001/002:** su §10 conservaba una «siguiente operación» de armonización que ya no corresponde a D2. Se añadió §11 para declarar su supersesión limitada y preservar INT-01…08 solo como material reutilizable en un escenario alternativo explícito.
+
+Se preservan los textos originales, las propuestas y la trazabilidad; no se reescriben DEC aceptadas ni se altera el alcance de D2. La fórmula A_f* continúa candidata, MEAS-G1 parcial y el mapping general B→g^Af/exclusión abiertos. No se modifica main, C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS ni claims. No se ejecutan validadores, código, fixtures, parsers, simulaciones o experimentos. scientific_execution=false; execution_authorized=false; sin Design Freeze.
+
