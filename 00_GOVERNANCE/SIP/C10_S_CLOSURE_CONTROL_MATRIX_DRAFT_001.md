@@ -153,7 +153,7 @@ La precedencia del escenario y las definiciones materiales D2 están aceptadas d
 | S4R-15 | No interferencia/unidades | PROPUESTO | UE=UA y ausencia de interferencia son estipulaciones sintéticas, no hechos generales; definir spillovers/recursos compartidos |
 | S4R-16 | Heterogeneidad y efectos colaterales | ABIERTO | Definir análisis preespecificados; no reinterpretar exclusión después de ver resultados |
 | S4R-17 | Tamaño y réplicas | PROVISIONAL | N=2000 total por réplica, 1:1 y 1000 réplicas son valores ilustrativos no justificados |
-| S4R-18 | XSYNC | ABIERTO | Cierre independiente documentado; XSYNC-138-01 y XSYNC-138-02…10 no se consideran cerrados por este documento |
+| S4R-18 | XSYNC | PARCIAL / ABIERTO | XSYNC-138-01: la contradicción autorización-focal vs provisión técnica queda resuelta para D2 por DEC-C10-066/067; permanece abierto el mapping general B→g^Af, exclusión y revisión independiente. XSYNC-138-02…10 siguen abiertos según sus propios criterios |
 
 ### 6.1 Pruebas S4-R identificadas
 
@@ -2096,7 +2096,7 @@ El gate se considera aplicado en un análisis solo si el razonamiento cita las f
 
 ## 100. Gate de conformidad semántica para generación y modificación de código C10-S
 
-**Fuente rectora:** maestro C10-S §§0.5–0.6 y 214; contrato de estimandos actualizado §§12, 17–19; DEC-C10-066/067; auditorías §§131–132.  
+**Fuente rectora:** maestro C10-S §§0.5–0.6, 214–215; contrato de estimandos actualizado §§12, 17–19; DEC-C10-066/067; auditorías §§131–132.  
 **Estado:** gate documental obligatorio; implementación y ejecución científica no autorizadas.
 
 ### Riesgo que controla
