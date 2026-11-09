@@ -2091,3 +2091,15 @@ Se amplía la corrección del crosswalk: P177-02 es el contrato de primera etapa
 P177-10/12, P182-11 y P183-11/12 aportan cobertura parcial a recuperación, firewall y clasificación. Las tasas de falsa identificación/falsa atribución y la evaluación de abstención correcta propuestas en §225.7 todavía requieren criterios explícitos de adjudicación y tolerancias; no se declaran cubiertas por mera proximidad temática.
 
 **Estado:** crosswalk documental corregido; gates de Analyzer y mediación permanecen OPEN. No se alteran contratos fuente ni se declara implementación/ejecución. Paquete C sigue NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE.
+
+
+## 16.106 — Especialización candidata de mediación y evaluación del Analyzer (2026-11-10)
+
+El maestro §228 propone completar dos gates sin duplicar automáticamente P177/P182/P183:
+
+- **C-MED:** estimandos interventional indirect/direct separados del ITT y del efecto de política; intervención estocástica sobre la distribución conjunta de ΔT_acc*; DAG longitudinal; confusión mediador–resultado inducida por Z/B; soporte secuencial; rutas colaterales; sensibilidad/bounds y regla de no identificación.
+- **C-ANALYZER:** recuperación solo en DGP identificables; bounds en identificación parcial; falsas declaraciones de identificación; falsa atribución focal de efectos de paquete; abstención correcta y falsa abstención; firewall Generator/Analyzer/Evaluator y adjudicación por estimando×dimensión×DGP.
+
+Se trata de especialización candidata de P177-06/10/12, P182-01/02/06/07/11 y P183-08/10/11/12. La cobertura actual es parcial; las tolerancias y los denominadores no están fijados. No se selecciona un método mediacional ni un DAG sin microdominio y entradas AB aceptadas.
+
+**Estado:** C-MED OPEN; C-ANALYZER OPEN; paquete C NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. Sin ejecución.
