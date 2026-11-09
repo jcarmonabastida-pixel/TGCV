@@ -1380,3 +1380,19 @@ No se crean pruebas ejecutadas ni se seleccionan indicadores/valores. §224 defi
 | Criterios de aceptación/falsación | P177-10/12; P178-SIM-10; §225.9 | Tolerancias ex ante y clasificación por estimando×resultado×DGP |
 
 Este crosswalk reutiliza contratos existentes y añade criterios de evaluación, no nuevas pruebas ejecutadas. Los IDs citados deberán comprobarse contra la versión contractual vigente antes del implementation contract; este registro no altera P177/P178/P179/P182/P183.
+
+
+## 73. Corrección auditada del crosswalk P177–P183 para mediación (2026-11-10)
+
+La fila de mediación/confusión postratamiento de §72 no debe citar P177-05…08 como contratos de mediación. La tabla fuente §55.1 define esos IDs como O/V, ajuste basal, ATE/ATT y heterogeneidad. Se mantiene el historial de §72, pero esta corrección gobierna su interpretación.
+
+| Elemento | Referencia correcta | Alcance real |
+|---|---|---|
+| ITT sin ajuste post-Z | P177-06 | Ajuste basal preespecificado; no incorporar mediadores postasignación |
+| Política frente a atribución focal | P177-12 | Separación del efecto de política y atribución a accesibilidad |
+| Validez/adjudicación de A | P182-01/02/06/07 | Cobertura, circularidad, acuerdo y error; no identificación causal de mediación |
+| Ausencia de A | P183-08 | Efecto de ausencia de A sobre identificación; no contrato mediacional completo |
+| O/V independiente | P177-05; P179-01…03 | Separación de resultados y valoración |
+| Mediación propiamente dicha | Maestro §225.3 | Propuesta de DAG, temporalidad, confusión inducida e intervención/método g; aún sin contrato de aceptación completo |
+
+**Resultado:** crosswalk corregido; cobertura C-MED = PARCIAL / OPEN. No modificar definiciones de P177/P178/P179/P182/P183 ni declarar pruebas ejecutadas. No crear un test nuevo por duplicación; antes debe determinarse si la extensión cabe en P177-12 o requiere una especialización versionada y trazable.
