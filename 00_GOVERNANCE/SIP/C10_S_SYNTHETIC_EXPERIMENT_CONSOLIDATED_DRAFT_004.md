@@ -8578,3 +8578,164 @@ El barrido completo del maestro detectó además restos operativos que no quedab
 
 **Resultado de barrido del maestro:** las únicas fórmulas antiguas encontradas en la búsqueda de expresiones A_f* son ahora registros explícitos no operativos en §§30.1 y 59.3. Las menciones históricas de `ΔValidity` quedan en registros de supersesión, no en la definición estructural vigente. Las menciones históricas de D1-principal y de intervención sobre autorización quedan calificadas como supersedidas o alternativas. El gate §0.5.3 reúne estas precedencias para cualquier lectura o generación futura.
 
+
+
+---
+
+# 216. Paquete AB — especialización integrada de instancia funcional y DGP causal (2026-11-09)
+
+**Estado global del paquete:** IN_PROGRESS / DESIGN SPECIALIZATION REQUIRED. **Naturaleza:** integración de contratos y decisiones existentes más propuesta de especialización; no es DEC nueva, aprobación científica, Design Freeze, contrato implementable ni autorización de código/ejecución. AB se trabaja como un único paquete conforme al Plan §16.93 y Closure Control Matrix §111.
+
+## 216.1. Decisiones heredadas que se reutilizan sin reabrir
+
+| Elemento | Fuente vigente | Tratamiento |
+|---|---|---|
+| Microdominio: migración de configuración entre dos entornos software | DEC-C10-051/052/057/058 | ACCEPTED; no reabrir |
+| Partición del objeto | DEC-C10-053 | ACCEPTED: CMP/PAR/REF/RUL constitutivos; POL fuera del núcleo confirmatorio mínimo; MET obligatorio para identidad/versionado/procedencia |
+| Gramática limitada de RUL | DEC-C10-054 | ACCEPTED: AST acíclico, límites 4/16/16, efectos REQUIRE/FORBID y lógica TRUE/FALSE/UNKNOWN |
+| Cardinalidades base | DEC-C10-056 | ACCEPTED: CMP≥1, PAR≥1, RUL≥1, REF≥0; REF=0 exige universo/inventario/cobertura exhaustivos |
+| Servicio lógico y regla constitutiva | DEC-C10-068 | ACCEPTED conceptualmente: servicio de procesamiento de solicitudes; ENABLED BOOL; PROFILE ENUM; RUL-SVC-ENABLE-PROFILE-01 |
+| Identidad/versionado | DEC-C10-069 | ACCEPTED: contract C10S-SVC-REQUEST-PROCESSOR v1.0.0; instance C10S-SVC-REQUEST-PROCESSOR-001 revision 1; CMP-SERVICE-LOGIC-001 / SERVICE_LOGIC |
+| Aplicabilidad y equivalencia PAR | DEC-C10-083/084 | ACCEPTED documentalmente; mappings físicos/serialización y observaciones pendientes |
+| Adjudicaciones temporales F/A | DEC-C10-085…088 | ACCEPTED documentalmente; no sella IAM ni crea observaciones/oráculo |
+| D2 primario candidato y D1 secundario | DEC-C10-066/067 | ACCEPTED como precedencia y contenido material; no prueba aislamiento ni identifica efecto focal |
+| Identidad CMP↔NODE por snapshot | DEC-C10-082; DEC-C10-089…092 | Contrato lógico aceptado en alcance; mapping material/roster/cobertura no se presume cerrado |
+
+## 216.2. Instancia sintética de referencia — contrato de alcance
+
+Se reutiliza la identidad aceptada por DEC-C10-069:
+
+- contract_id: C10S-SVC-REQUEST-PROCESSOR; contract_version: 1.0.0.
+- instance_id: C10S-SVC-REQUEST-PROCESSOR-001; instance_version: 1.
+- component_id: CMP-SERVICE-LOGIC-001; component_class: SERVICE_LOGIC.
+- Owner/rol lógico: CMP-SERVICE-LOGIC; no constituye una segunda identidad CMP.
+
+Núcleo funcional aceptado por DEC-C10-068:
+- PAR-SVC-ENABLED: BOOL, REQUIRED.
+- PAR-SVC-PROFILE: ENUM {STANDARD, READ_ONLY, DISABLED}, REQUIRED.
+- RUL-SVC-ENABLE-PROFILE-01: efecto REQUIRE; ENABLED=true implica PROFILE∈{STANDARD, READ_ONLY}. No se añade la implicación inversa.
+- PAR-SVC-RETRY-COUNT permanece excluido.
+- MET soporta identidad, versión y procedencia; POL queda fuera del núcleo confirmatorio mínimo.
+
+**REF:** DEC-C10-056 permite cardinalidad cero, pero §179 exige inventario/cobertura exhaustivos antes de declarar REF=0. AB puede adoptar REF=0 solo como universo cerrado estipulado del fixture sintético, con roster explícito y evidencia/cobertura generadas por el DGP. Hasta especificar ese roster y su control de cobertura, el estado operativo es OPEN, no REF=0 demostrado. No se introducen referencias artificiales solo para satisfacer una cardinalidad.
+
+La instancia no selecciona plataforma, proveedor, lenguaje, formato real ni servicio externo. Es la verdad funcional estipulada del mundo sintético.
+
+## 216.3. Contrato de transformación y rutas
+
+La instancia y el DGP deben distinguir estas rutas, sin colapsar provisión, transformación, aplicación y evaluación:
+
+1. **Ruta focal F:** S0 → F1/τ2 → S2 → F2 → SF. B provisiona el adaptador/runtime/canal necesario; no ejecuta F1/F2. F1 produce la representación intermedia; F2 aplica el destino y se verifica separadamente.
+2. **Ruta alternativa A:** S0 → A1 → S1 → A2 → SF. Es una ruta funcional alternativa para F*, no se presume que haga accesible la misma identidad τ2. Su existencia basal se registra como F_alt,0 y afecta la población de apertura funcional exclusiva; no excluye automáticamente de P*_τ2.
+3. **D2:** B_g0^D2 no programa ni inicia intento focal; B_g1^D2 programa un intento estandarizado de provisión técnica focal. W_programmed, recepción/cumplimiento, W_attempt, instalación, integridad, compatibilidad, operatividad y C_dep* son variables distintas.
+4. **F*:** criterio funcional común de ruta completa para F y A. FP-01…FP-07 son dimensiones funcionales no compensatorias; FP-08 es procedencia/adjudicación independiente. F* no usa Outcome ni Value como oráculo.
+
+El destino declarado y el aplicado son estados distintos. Para cada ruta y etapa se conserva evidencia propia; no hay herencia automática de PASS entre C_SRC, intermedia, destino declarado y destino aplicado. DEC-C10-085…088 gobiernan la secuencia documental.
+
+## 216.4. Correspondencia C_src/C_dst/M e IAM
+
+La especificación debe contener contratos versionados de origen y destino y una correspondencia M versionada, con filas explícitas por CMP/PAR/REF/RUL/MET y etapa:
+
+- CMP: correspondencia contractual 1:1 por snapshot, de acuerdo con DEC-C10-082; no confundir NODE raíz y CMP anchor sin mapping exacto.
+- ENABLED: BOOL exacto, con ausencia/null/default/valor tratados conforme a DEC-C10-083/084 y DEC-C10-054.
+- PROFILE: mapping ENUM total, inyectivo y versionado entre los tres símbolos semánticos; no comparar literales físicos entre namespaces sin mapping.
+- RUL: preservar AST, operandos, dominio, scope, versión y efecto REQUIRE; el mapping sintáctico no puede alterar la condición.
+- REF: roster cerrado o inventario completo con scopes y denominador; ausencia de filas no equivale a REF=0.
+- MET: identidad, versión, procedencia, snapshot y lineage; hash solo después de serialización canónica.
+- C_dst declarado ≠ C_dst aplicado; aplicación FP-06, verificación FP-07 y procedencia FP-08 permanecen separadas.
+
+El crosswalk existente contiene semántica abstracta aceptada, pero no mapping físico/material completado. No se fijan aquí codificaciones concretas ENUM, serialización, escaping PAR, IDs de mapping/IAM/oráculo ni hashes.
+
+## 216.5. Predicado de accesibilidad y frontera de DEP
+
+La fórmula candidata vigente —maestro §67.3, no las fórmulas históricas de §§30.1/59.3— es:
+
+A_f*(i,t)=I(ID_f* ∧ REL_f* ∧ COND_f* ∧ AUTH_f* ∧ RES_f* ∧ DEP_f* ∧ ¬BLOCK_f*).
+
+- ID_f*: identidad/tipo/versión de τ2.
+- REL_f*: relaciones/interfaces necesarias para invocar/componer τ2.
+- COND_f*: condiciones constitutivas de realizabilidad; no incorporar automáticamente precondiciones del estado S0.
+- AUTH_f*: autorización funcional válida; C_auth,base=1 es común/basal en D2 y se corresponde con este término, no es factor duplicado.
+- RES_f*: disponibilidad/asignación ex ante de recursos; no consumo posterior.
+- DEP_f*: existencia de al menos una ruta técnica válida que soporta τ2. Solo en el DGP aislado con una única ruta técnica focal exhaustivamente inventariada puede reducirse a C_dep*.
+- BLOCK_f*: bloqueo efectivo de invocación.
+
+App_f* (aplicabilidad desde S0), F_alt (ruta substituible para F*), Reach, conocimiento, selección, inicio y ejecución permanecen separados. Una ruta alternativa A1/A2 que logra F* no demuestra por sí misma que τ2 sea accesible; puede hacer que la apertura de τ2 no sea apertura funcional exclusiva.
+
+COV/E_T es plano epistémico y no forma parte de la verdad estructural de A_f*. La clasificación observada usa 1/0/? y no imputa UNKNOWN.
+
+## 216.6. Población, unidad y régimen común
+
+Se conservan dos poblaciones, con fines distintos:
+
+- P*_τ2: población pre-Z con condiciones constitutivas elegibles confirmadas, C_dep,0=0 y A_f,0*=0 respaldada. La existencia de alternativa funcional no la excluye automáticamente.
+- P*_F ⊆ P*_τ2: subpoblación con F_alt,0=0 respaldado bajo F*, G, H, C0 y universo de búsqueda declarados. Solo soporta la afirmación de apertura funcional exclusiva.
+
+La propuesta primaria es usar P*_τ2 para el contraste de apertura de identidad τ2 y reportar P*_F como subgrupo/objetivo separado, no convertirlo en filtro primario por defecto. El régimen común candidato es q_X* basal; no incorporar variables post-Z como confusores ordinarios ni condicionar por cumplimiento, accesibilidad post, selección, ejecución, O o V.
+
+La propuesta de unidad es UE=UA=una instancia sintética autónoma, con observaciones longitudinales T0–T9. Solo es válida bajo aislamiento construido de recursos, agentes, información, estado y canales. Si se comparten recursos/canales o hay spillovers, se debe modelar clúster/exposición y modificar el estimando; no se presume independencia.
+
+## 216.7. Reloj causal-transformacional único
+
+Se reutiliza el reloj existente:
+
+| Tiempo | Evento y salidas |
+|---|---|
+| t−1 | Fijar frontera, contrato/instancia/versiones, snapshots basales, X/H0/C_c, C_dep,0, A_f,0*, F_alt,0, elegibilidad y cobertura |
+| t0 | Asignar Z bajo mecanismo aleatorio documentado |
+| t1 | Política B asignada/recibida, programación, intento efectivo, actor, versión y desviaciones |
+| t2 | Verificar instalación, integridad, compatibilidad, operatividad, C_dep y superficies colaterales B-M01…15 |
+| t3 | Snapshot post-provisión; adjudicar A_f,post*, D_f*, ΔT_acc* y ΔE_T antes de conocimiento/selección/ejecución |
+| t4 | Derivar Reach_H y Π_H candidatas desde snapshot t3 y reglas explícitas |
+| t5 | Conocimiento y consideración K |
+| t6 | Selección e inicio, separados |
+| t7 | Ejecución parcial/completa, fallo, interrupción y finalización |
+| t8 | Outcome O, definido y medido independientemente |
+| t9 | Value V, regla/beneficiario/horizonte independientes |
+| t+1… | Residuos, rollback, persistencia y carryover; no sobrescribir snapshots previos |
+
+ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*); ΔE_T registra cambios de evidencia/observabilidad por separado. En el fixture base el snapshot estructural se mantiene fijo durante ramas hipotéticas salvo regla DGP explícita; APP se reevalúa por estado de entrada y RES/WIN solo cambia con reglas explícitas de reserva/consumo/tiempo.
+
+## 216.8. DGP D2 y escenarios
+
+D2 es el primario candidato; D1 se conserva como secundario y no se mezcla.
+
+Mecanismo mínimo:
+- Z → B_assigned → W_programmed → receipt/compliance → W_attempt → S_install → C_dep* → A_f* → D_f* → ΔT_acc*.
+- C_dep*=C_install* ∧ C_integrity* ∧ C_compat* ∧ C_oper*; los cuatro estados son conjuntamente necesarios. No asumir independencia ni asignar s=.80 como hecho.
+- D2 control: no programación ni intento focal como parte de la política; cualquier provisión de fondo/crossover se registra.
+- D2 tratamiento: programación estandarizada; no garantiza recepción, intento ni éxito.
+- La distribución conjunta de componentes técnicos debe generar C_dep*; las probabilidades finales se derivan de programación, cumplimiento, intentos de fondo y éxito conjunto. El valor histórico s=.80 solo es candidato de sensibilidad hasta calibración/decisión.
+
+Escenarios mínimos reutilizados, no IDs paralelos:
+- **R0 / apertura focal exclusiva:** no existe ruta alternativa substituible basal dentro del universo cerrado y la política focal puede abrir τ2.
+- **R1 / alternativa basal estable:** A1/A2 ya satisface F* antes y después; τ2 puede abrirse sin que Reach/F* cambie. No es violación automática de D2.
+- **R2 / alternativa afectada por B:** B modifica A1/A2, sus recursos, rendimiento, permisos o calidad; vía colateral/interferencia, efecto de paquete salvo identificación adicional.
+- **R3 / provisión fallida:** intento programado/efectivo sin C_dep completo; no inferir A_f, D_f ni Reach desde W.
+- **Adversariales adicionales:** vías directas a Outcome/Value, conocimiento diferencial, medición/oráculo diferencial, recurso compartido, carryover/rollback y pérdida/censura. Reutilizar EXC/PM/IV-G existentes; no crear catálogos de IDs paralelos.
+
+## 216.9. Matriz de decisiones materiales pendientes
+
+| ID AB | Decisión/definición pendiente | Fuente a reutilizar | Criterio para cerrar |
+|---|---|---|---|
+| AB-01 | Universo exacto CMP/PAR/REF/RUL/MET por snapshot; REF=0 solo con universo cerrado y cobertura completa | DEC-C10-056/069/082/089–092; IAM §§18–20; U_G | Roster versionado, denominador y scopes exhaustivos por snapshot/etapa/ruta |
+| AB-02 | C_src/C_dst/M concretos: namespaces/códigos ENUM, representación RUL, ausencia/null/default, conversiones y mapping por etapa | DEC-C10-054/069/083–088; matriz abstracta §15; crosswalk IAM | Tabla M total para obligatorios, sin mapping implícito ni colapso semántico |
+| AB-03 | Identidad/versiones de τ2, F1/F2/A1/A2, relaciones y frontera técnica del adaptador | DEC-C10-051/067/071; §§169–170; transformation cards | Cards versionadas, actor/objeto/entrada/salida/relación/ventana y contrato de cada transición |
+| AB-04 | Operacionalización material ID/REL/COND/AUTH/RES/DEP/BLOCK; distinguir DEP focal de alternativas para F* | §67.3; crosswalk D2; MEAS audit; path matrix §13 | Predicados con unidad, tiempo, dominio, regla truth, fuente observable y cobertura |
+| AB-05 | F*: objetivo/estado inicial/destino, C0, frontera, G, H, restricciones/tolerancias y sustitución de rutas A | F* matrix; population/F* audit; DEC-C10-088 | Vector no compensatorio y adjudicación independiente para ambas rutas; C0/G/H justificados |
+| AB-06 | Mecanismo D2: asignación, programación, recepción, intento, actor, artefacto/version, reintentos, fallo, rollback y provisión de fondo | DEC-C10-067; §§54/131/132; manifest B | Política material reproducible y estados distintos; no suponer cumplimiento perfecto |
+| AB-07 | Distribución conjunta C_install/integrity/compat/oper y parámetros de éxito; soporte por historia | §§67–69; DGP temporal | DGP explícito, sin independencia asumida; sensibilidad de s |
+| AB-08 | Elegibilidad, q_X*, UE/UA, estratos, positividad y no interferencia/cluster | §§53/55/56; POP audit | Algoritmo pre-Z reproducible; soporte de ambas políticas; unidad y exposición definidas |
+| AB-09 | Universo de alternativas, evidencia R0/R1/R2/R3 y truth/observed por predicado | §57; path matrix §§1–13; MAP-05 | Casos 1/0/? generados por reglas; no inferir ausencia desde falta de evidencia |
+
+### Regla de no-falsa-completitud
+
+AB-01…AB-09 no se consideran cerrados por haber sido enumerados ni por tener una propuesta textual. Se cierra cada uno cuando la especificación incluye valores/reglas concretos, fuente/decisión de autoridad, criterios de aceptación y compatibilidad con el resto del paquete. Los asuntos estadísticos de N/potencia/Value final se transfieren a C, conservando en AB las variables generadoras y las interfaces necesarias.
+
+## 216.10. Dictamen del paquete
+
+AB ha sido reconstruido como un único diseño integrado y su base aceptada se ha consolidado. **AB permanece IN_PROGRESS**, porque AB-01…AB-09 requieren especialización material y/o decisión; no se declara especificación implementable ni Design Freeze.
+
+La siguiente pasada dentro del mismo paquete debe cerrar conjuntamente la instancia y el grafo de transformaciones (AB-01…AB-05) y enlazarlos al mecanismo D2 y al DGP (AB-06…AB-09), sin separar el trabajo en microgates documentales. Si una elección exige decisión científica no deducible de las fuentes, se presentará como decisión explícita con consecuencias y alternativa mínima; no se rellenará por conveniencia.
+
+**Autorización:** no se crea código, parser, validator, fixture ejecutable ni simulación; no se ejecuta experimento. scientific_execution=false; execution_authorized=false.
