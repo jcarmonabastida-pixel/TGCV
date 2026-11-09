@@ -3,6 +3,19 @@
 **Estado:** AUTHOR_SELF_REVIEW / ASSISTED / NOT_INDEPENDENT · propuesta de reconciliación documental, no aprobación ni freeze.
 **Rama:** `research/c10-s-consolidation-draft`
 
+## 0. Regla de lectura anti-regresión
+
+Este crosswalk es la referencia correctiva para la correspondencia entre predicados históricos y la fórmula candidata de accesibilidad focal. Debe leerse junto con el control vinculante §0.5 y §213 del maestro C10-S y con DEC-C10-066/067.
+
+**Corrección que no puede revertirse por recuperación de texto antiguo:**
+- `C_auth,base=1` permanece como condición basal común, satisfecha antes de Z e invariante frente a B en el DGP aislado D2.
+- `C_auth_base` es la denominación usada en las fichas y se corresponde con `AUTH_f*`; no son dos factores independientes.
+- La fórmula candidata de referencia es la de maestro §67.3, no la fórmula histórica de §30.1.
+- AUD-001/002 proponía una intervención focal sobre autorización. Esa intervención antigua no es la política primaria D2 y no invalida ni elimina la autorización basal. Solo puede recuperarse como escenario alternativo/adversarial de política de autorización, con interpretación causal propia.
+- D2 es primario candidato y D1 secundario; ello no identifica automáticamente el efecto causal de accesibilidad.
+
+Si una fuente dependiente contradice estos puntos, se registra discrepancia y se detiene la inferencia hasta reconciliarla. No se elige la formulación más antigua, más detallada o encontrada primero.
+
 ## 1. Alcance y precedencia
 
 Este crosswalk reconcilia la fórmula candidata depurada del maestro §67.3 con DGP §§26, 39–41, 59.1–59.3, 67.3–67.7; Path Predicate Temporal Evidence Matrix §§13.1–13.5; matriz de cobertura U_G §§4–9; contrato de snapshots/delta; y auditoría de medición MEAS-001.
