@@ -389,3 +389,20 @@ Estado: interfaz contractual definida; inputs materiales AB y gates de identific
 La primacía de θ_A(q) como pregunta científica general de C10-D1 se mantiene. ITT_Z^D2 es el estimando primario de asignación dentro del diseño S4-R, no un sustituto de la pregunta científica. LATE_f^D2 y θ_Af(q_X*) siguen siendo objetivos focales secundarios/condicionales y no se transportan automáticamente a θ_A(q).
 
 Si D2 activa vías diferenciales no mediadas por el tratamiento focal, el contraste debe conservarse como efecto de política/paquete. La exclusión no se deduce de la aleatorización. Esta aclaración desarrolla la jerarquía ya contenida en §18 y no la supersede.
+
+
+## 23. Reconciliación de identificación y evaluación estadística — paquete C (2026-11-09)
+
+El maestro C10-S §225 desarrolla sin sustituir la jerarquía de §18:
+- ITT_Z^D2 y ψ_policy^D2 conservan el efecto de asignación/política;
+- FS_Cdep, FS_Af y FS_Df son primeras etapas distintas;
+- LATE_f^D2 sigue no identificado/no listo para Wald según la auditoría IV;
+- ψ_B(q_X*) requiere estrategia propia ante recepción/incumplimiento;
+- θ_Af(q_X*) requiere mapping B→g^Af, población/soporte y tratamiento de vías colaterales;
+- θ_A(q) permanece la pregunta científica general C10, no identificada por el diseño focal D2.
+
+La mediación requiere estimando e intervención propios y tratamiento explícito de confusión inducida por política; no se obtiene por resta ni por ajuste convencional de variables post-Z. Población pre-Z, q_X*, positividad, soporte, interferencia, missingness, sensibilidad, bounds, potencia y evaluación Monte Carlo quedan sujetos a los gates de §225.
+
+La recuperación de truth sintética mide el desempeño del Analyzer bajo DGPs especificados. No constituye evidencia empírica de identificación de ΔT_acc→Value ni cierra la atribución causal general.
+
+**Estado:** reconciliación documental propuesta; no modifica §18 ni la auditoría IV; no aprueba identificación, Design Freeze, implementación o ejecución. Mantener scientific_execution=false y execution_authorized=false.
