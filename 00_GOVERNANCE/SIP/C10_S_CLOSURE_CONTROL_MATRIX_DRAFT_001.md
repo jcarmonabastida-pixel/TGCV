@@ -2337,3 +2337,26 @@ PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-
 **Criterio DONE:** decisiones críticas aceptadas o NOT_REQUIRED justificado; dependencias resueltas o explicitadas; trazabilidad y criterio de aceptación por requisito; instrumentos actualizados y releídos; sin contradicciones conocidas.
 
 **Secuencia:** AB → C → D → E. E acepta la especificación; no autoriza automáticamente generación de código ni ejecución científica. Código requiere autorización explícita posterior; ejecución científica requiere autorización independiente. Sin ejecución durante la especificación. Estado global: NOT_READY hasta superar E.
+
+
+---
+
+## 112. Paquete AB — estado integrado y bloqueos materiales (2026-11-09)
+
+**Estado:** IN_PROGRESS / BASE_RECONCILED. El maestro §216 es la especificación integrada de trabajo; esta matriz registra el estado, no duplica el contrato.
+
+| ID | Dominio | Estado | Condición de salida |
+|---|---|---|---|
+| AB-01 | Roster CMP/PAR/REF/RUL/MET y cobertura | OPEN | Universo/snapshots/scopes/denominador cerrados; REF=0 solo con cobertura exhaustiva |
+| AB-02 | C_src/C_dst/M e IAM por etapa | OPEN | Mapping total para obligatorios, versionado y sin colapsos semánticos |
+| AB-03 | Cards/identidades F1/F2/A1/A2/τ2 y adaptador | OPEN | Contratos de transición, actor, entradas/salidas, versiones y relaciones |
+| AB-04 | Predicados ID/REL/COND/AUTH/RES/DEP/BLOCK | OPEN | Operacionalización material por unidad/tiempo y evidencia; DEP separado de alternativas F* |
+| AB-05 | F*, C0, G, H, tolerancias y substituibilidad | OPEN | Oráculo funcional no compensatorio aplicable a F y A |
+| AB-06 | Mecanismo D2 | OPEN | Asignación, programación, recepción, intento, éxito, fondo/crossover, rollback y actor |
+| AB-07 | Distribución conjunta técnica | OPEN | DGP de cuatro componentes sin independencia asumida; sensibilidad de s |
+| AB-08 | Población/q_X*/unidad/soporte/interferencia | PARTIAL | Algoritmo pre-Z, soporte, estratos, unidad y exposición |
+| AB-09 | Alternativas y truth/observed R0–R3 | PARTIAL | Universo/cobertura, reglas generadoras y observacionales por predicado |
+
+**Base aceptada reutilizada:** DEC-C10-051…056, 066…069, 071, 079…092; D2 y su precedencia; contrato funcional de servicio; fórmula candidata §67.3; reloj y separación de roles. No reabrir decisiones aceptadas dentro de su alcance.
+
+**Regla:** AB no pasa a DONE por integración narrativa. Requiere especificación concreta, trazabilidad y criterios de aceptación de AB-01…AB-09, relectura y consistencia. No inventar parámetros ni usar s=.80 o .20/.80 como valores confirmatorios. No código, ejecución o simulación; autorizaciones permanecen false.
