@@ -322,3 +322,85 @@ Se incorpora el contrato temporal C10-S DGP §28 como mapa de implementación do
 La observabilidad de una variable no la convierte en verdad estructural. O_obs y V_obs no reemplazan O* y V*; el analizador no recibe truth ni parámetros. El contrato es una especificación de entrada/salida, no evidencia de validez de supuestos en un sistema externo.
 
 **Estado:** crosswalk añadido; IV-G4/IV-G6/IV-INT continúan abiertos. No se parametriza ni ejecuta.
+
+
+---
+
+## 14. Correspondencia entre las políticas materiales D2 y las políticas estocásticas g sobre accesibilidad (2026-11-09)
+
+**Estado:** reconciliación causal documental; mapping no identificado ni aprobado. Esta sección desarrolla XSYNC-138-01 residual y no modifica DEC-C10-066/067, C10-D1 ni la jerarquía de estimandos.
+
+### 14.1. Objetos distintos
+
+Se deben mantener separados:
+
+1. **Asignación:** Z.
+2. **Política material D2:** B_g0^D2 o B_g1^D2, definidas por DEC-C10-067. B_g0 no programa/inicia por política un intento focal; B_g1 programa un intento estandarizado de provisión técnica focal. Ninguna política ejecuta F1/F2/A1/A2.
+3. **Respuesta de provisión:** W_programmed, W_attempt, recepción, C_dep*, cada uno con su propio estado y tiempo.
+4. **Respuesta de accesibilidad:** ΔT_acc* completo y su proyección focal A_f*=h_f(ΔT_acc*); no se sustituyen por C_dep*, D_f* ni por el intento.
+5. **Política causal de accesibilidad g_j:** régimen estocástico sobre cambios de accesibilidad, condicionado por historia/contexto y restringido al conjunto factible, según C10-D1 §26. No es el nombre alternativo de B_gj^D2.
+
+### 14.2. Mapping inducido que debe demostrarse
+
+Para cada política material b_j^D2 y cada historia/contexto h compatible con el régimen común q, el objeto a reconstruir es la distribución inducida:
+
+g_j^ind(a | h; q) := P(ΔT_acc*=a | do(B=b_j^D2), H=h, q),
+
+y, para el contraste focal IV, la distribución correspondiente de D_f* o A_f* bajo la definición/versionado basal→post. La expresión es un objetivo de mapping, no una distribución observada ni una afirmación de identificación.
+
+La correspondencia requiere, como mínimo:
+- intervención B versionada y físicamente realizable, con actor, artefacto, alcance, tiempo y desviaciones;
+- mecanismo completo B→W→C_dep*→A_f*/D_f*→ΔT_acc*, sin colapsar etapas;
+- medición independiente de ΔT_acc* completo y de su proyección focal, con verdad y observación separadas;
+- compatibilidad con estado, condiciones constitutivas, historia y conjunto de transformaciones factibles;
+- soporte/positividad de las políticas inducidas dentro de cada estrato/historia objetivo;
+- consistencia y equivalencia de versiones defendibles;
+- especificación de recursos compartidos, interferencia, crossover, provisión de fondo y carryover;
+- inventario y adjudicación de todas las vías B→Outcome/Value que no pasan por ΔT_acc* o por la proyección focal declarada.
+
+No basta observar P(A_f_obs|Z), una primera etapa en C_dep*, ni una diferencia media de D_f_obs. Tampoco se infiere g_j^ind a partir de tasas de intento/instalación. La medición de accesibilidad no puede definirse mediante selección, ejecución, Outcome o Value.
+
+### 14.3. Condición de equivalencia entre B y g
+
+B_g0^D2/B_g1^D2 podrían inducir dos distribuciones candidatas g_0^ind/g_1^ind, pero eso no establece que el contraste material sea θ_A(q). Para interpretarlo como contraste específico de accesibilidad deben cumplirse simultáneamente:
+
+(a) ambas distribuciones están definidas bajo el mismo régimen q, población, historia, versión de τ y regla Value;
+
+(b) la diferencia relevante entre políticas queda representada por el cambio estructurado ΔT_acc* (o por la proyección focal cuando el estimando sea explícitamente focal);
+
+(c) cualquier efecto de B sobre otras condiciones, conocimiento, selección, ejecución, Outcome, Value, medición o rutas alternativas está ausente, contenido en la definición causal de A, o separado por un diseño/estimando identificable;
+
+(d) las versiones de B que inducen el mismo A son equivalentes para el estimando, o sus diferencias directas se modelan y separan;
+
+(e) la factibilidad y el soporte de ambas políticas se sostienen para la población objetivo.
+
+Si estas condiciones no se sostienen, el contraste identificado por Z es ITT de asignación a B_g^D2 y, bajo consistencia, puede interpretarse como efecto de la política/paquete material. No debe renombrarse como θ_A(q), efecto de ΔT_acc* ni LATE_f.
+
+### 14.4. Exclusión focal frente a atribución sobre ΔT_acc completo
+
+La exclusión de IV-G4 es relativa al tratamiento focal D_f*. No debe confundirse con una prueba suficiente de atribución al constructo completo ΔT_acc*. Incluso si una vía está mediada por otro componente de ΔT_acc* distinto de la proyección focal, puede violar la exclusión para D_f* y, a la vez, ser parte del efecto del objeto transformacional completo si el estimando y la intervención están definidos sobre ese objeto.
+
+A la inversa, una vía B→coste/riesgo/recursos/medición/alternativas→Value que no esté representada en ΔT_acc* no se convierte en efecto de accesibilidad por el mero hecho de que B también cambie A_f*. Debe conservarse la clasificación por resultado: vía a Outcome, vía directa a Value con Outcome constante, vía epistémica/medición y vía de interferencia/carryover.
+
+Por tanto:
+- ITT_Z^D2: efecto de asignación a política D2, sujeto a los supuestos de diseño y observación.
+- ψ_policy^D2: efecto de la política material implementable, con sus vías.
+- LATE_f^D2: efecto local focal solo bajo todos los supuestos IV y gates específicos de D_f*.
+- θ_A(q): contraste de políticas estocásticas sobre ΔT_acc* bajo q, según C10-D1; no queda identificado por ITT ni por Wald focal.
+- θ_Af(q_X*): contraste focal distinto y pendiente de mapping/identificación; no equivale automáticamente a θ_A(q).
+
+### 14.5. Dictamen y gates de cierre
+
+**Dictamen actual: NOT_IDENTIFIED / MAPPING OPEN.** Las políticas D2 están definidas conceptualmente, pero no existe aún una distribución inducida g_j^ind adjudicada ni evidencia para demostrar equivalencia, soporte o exclusión. El inventario B-M01…15 es un mapa de inspección, no evidencia de invariancia o ausencia de vías.
+
+Gates documentales/empíricos que deben cerrarse antes de interpretar D2 como política de accesibilidad:
+- MAP-01: versiones, actor, alcance, tiempos y factibilidad de B_g0/B_g1.
+- MAP-02: mapping temporal y medido B→W→C_dep*→A_f*/D_f*→ΔT_acc*.
+- MAP-03: distribución inducida por historia/contexto y soporte común de g_0^ind/g_1^ind.
+- MAP-04: equivalencia de versiones que inducen el mismo ΔT_acc* y separación de diferencias directas.
+- MAP-05: cobertura de rutas alternativas/compartidas, recursos, permisos, rendimiento, seguridad y residuos.
+- MAP-06: exclusión por separado para Outcome y Value, además de medición diferencial, interferencia y carryover.
+- MAP-07: distinción explícita entre estimando focal D_f*/LATE_f y estimando estructurado θ_A(q).
+
+Hasta superar estos gates, mantener el resultado como efecto de asignación/política cuando sea identificable; si los supuestos de ese efecto tampoco se sostienen, declarar no identificación. No calcular Wald como LATE_f ni presentar θ_A(q) como identificado. No se parametriza, implementa ni ejecuta.
+
