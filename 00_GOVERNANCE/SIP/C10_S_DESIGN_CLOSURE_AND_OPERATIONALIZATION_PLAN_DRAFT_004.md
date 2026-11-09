@@ -612,8 +612,8 @@ La ficha protege el supuesto de que la política D2 no modifica autorización no
 
 - Fuente primaria de clasificación: matriz temporal §13.4 y contratos adversariales I-INFO-01…06. Mapping de provisión: manifiesto §§3/12.3–12.4; matriz de cobertura §9; matriz de cierre §31; maestro §§30.1, 59.3–59.6, 64.5 y 65.
 - §30.1 conserva una fórmula histórica del juguete sintético con C_info=1 entre siete condiciones. No debe borrarse ni leerse como especificación depurada actual.
-- §59.3 propone para S4-R una ecuación candidata depurada sin C_info autónomo: información técnica solo entra en R_access*/D_support* si es necesaria y no duplica C_dep*. §59.5 separa información técnica del conocimiento del agente. Esta precedencia es propuesta, no freeze; requiere inventario, prueba de necesidad y reconciliación de usos históricos.
-- Si un dato técnico imprescindible forma parte del adaptador/configuración focal, su ubicación primaria es C_dep*. Solo podría clasificarse en R_access*/D_support* si es una condición distinta, ex ante, necesaria y no duplicada. No crear un sexto factor ni un predicado C_info independiente.
+- La ecuación intermedia de §59.3 que asignaba información a `R_access*/D_support*` queda supersedida como representación operativa por §67.3/crosswalk D2. §59.5 conserva una distinción útil entre información técnica y conocimiento del agente, pero la información no constituye un factor autónomo `C_info`; debe asignarse al término de §67.3 que corresponda a su función material, con prueba de necesidad y no duplicidad.
+- Si un dato técnico imprescindible forma parte del adaptador/configuración focal, su ubicación primaria es `DEP_f*` (a través de `C_dep*`). Solo puede contribuir a `RES_f*`, `COND_f*` o `ID_f*` si es una condición distinta, ex ante y necesaria, con mapping explícito y sin duplicidad. No crear un factor adicional ni un predicado `C_info` independiente.
 
 #### 16.9.2. Cuatro planos que deben permanecer separados
 
@@ -626,7 +626,7 @@ La ficha protege el supuesto de que la política D2 no modifica autorización no
 
 | Eslabón | Correspondencia | Lectura y estado |
 |---|---|---|
-| Predicado | C_info histórico §30.1; ecuación depurada §59.3: C_dep*, R_access*, D_support* | No mantener C_info autónomo. Información técnica se asigna una sola vez, si necesaria/no duplicada |
+| Predicado | `C_info` histórico §30.1; fórmula candidata §67.3: `DEP_f*`, `RES_f*`, `COND_f*` o `ID_f*` según función material | No mantener `C_info` autónomo. Información técnica se asigna una sola vez, si necesaria/no duplicada |
 | Mecanismo del agente | K; B→comunicación→consideración/selección/Execution | Vía informativa/mediadora; no equivale a ΔT_acc* |
 | Medición | E_T; A_f_obs/ΔT_acc_obs frente a estado real | Cambio epistémico; posible error/missingness diferencial |
 | Dominios B-M | B-M10 rector; B-M06 solo si cambia datos/configuración funcional; B-M13 inspección del oráculo | No mezclar comunicación al agente con medición evaluador ni modificar oráculo |
@@ -654,9 +654,9 @@ La ficha protege el supuesto de que la política D2 no modifica autorización no
 - No ajustar automáticamente por K u observabilidad postratamiento; pueden ser mediadores o variables de selección inducidas por B.
 - El estado NO INVENTARIADO no equivale a ausencia; cobertura incompleta conserva ?. No crear símbolos/aristas nuevos.
 
-**Dictamen:** crosswalk conceptual D2-C_INFO completado. Quedan abiertos inventario de información técnica imprescindible, mapeo final a C_dep*/R_access*/D_support*, evidencia de invariancia de comunicaciones, validación de E_T, medición comparable y adjudicación de I-INFO-01…06. No se aprueba C_info, no se cierra D2 ni se modifica DEC-C10-066/067; no se autoriza implementación, simulación o ejecución.
+**Dictamen:** crosswalk conceptual D2-C_INFO completado. Quedan abiertos inventario de información técnica imprescindible, mapping final a `DEP_f*`/`RES_f*`/`COND_f*`/`ID_f*`, evidencia de invariancia de comunicaciones, validación de `E_T`, medición comparable y adjudicación de I-INFO-01…06. No se aprueba C_info, no se cierra D2 ni se modifica DEC-C10-066/067; no se autoriza implementación, simulación o ejecución.
 
-**Siguiente operación:** consolidar el crosswalk de las fichas D2-INV-AUTH-01, D2-RES-01, D2-CAP-01 y D2-C_INFO y realizar una auditoría de no duplicidad entre sus condiciones, dominios B-M, U_G, PROV y FCM antes de pasar a estimandos/población/medición. No repetir la construcción de fichas; buscar contradicciones entre ellas y el maestro §§59/64/65.
+**Siguiente operación:** consolidar el crosswalk de las fichas D2-INV-AUTH-01, D2-RES-01, D2-CAP-01 y D2-C_INFO y realizar una auditoría de no duplicidad entre sus condiciones, dominios B-M, U_G, PROV y FCM antes de pasar a estimandos/población/medición. No repetir la construcción de fichas; buscar contradicciones entre ellas y el maestro §67.3/crosswalk D2 y los contratos vigentes.
 
 
 ### 16.10. Auditoría transversal de no duplicidad y coherencia de las cuatro fichas D2 (2026-11-06)
@@ -668,11 +668,11 @@ La ficha protege el supuesto de que la política D2 no modifica autorización no
 | Frontera | Regla reconciliada | Estado y pendiente |
 |---|---|---|
 | Autorización funcional vs permiso técnico | C_auth,base es autorización normativa funcional basal. ACL, token, credencial y acceso al endpoint son permisos técnicos de provisión B. El canal/interfaz de invocación tampoco equivale a autorización normativa. | Distinción conceptual consistente con B-M04/B-M05, PROV-06 y FCM-D2-06/07. Fuente normativa, titular, alcance, vigencia y evidencia de C_auth siguen abiertos. |
-| Recursos vs capacidad | C_resource describe recursos materiales/económicos y su disponibilidad/asignación ex ante. C_capacity describe capacidad de servicio/slots bajo configuración y ventana. No son sinónimos, pero pueden referirse al mismo pool físico y por tanto solaparse. | No se admiten dos factores independientes ni doble contabilización. Maestro §59.3 permite incorporarlos a R_access* solo si son necesarios y distintos de C_dep*. Falta descomposición por dimensión, unidad, pool, compromiso, ventana y regla de derivación de capacidad. |
+| Recursos vs capacidad | `C_resource` describe recursos materiales/económicos y su disponibilidad/asignación ex ante. `C_capacity` describe capacidad de servicio/slots bajo configuración y ventana. No son sinónimos, pero pueden referirse al mismo pool físico y por tanto solaparse. | No se admiten dos factores independientes ni doble contabilización. La referencia actual es §67.3: disponibilidad ex ante necesaria/no duplicada puede contribuir a `RES_f*`; capacidad técnica focal queda en `DEP_f*`. Falta descomposición por dimensión, unidad, pool, compromiso, ventana y regla de derivación de capacidad. |
 | Capacidad focal vs no focal | La capacidad/recursos que B añade para instalar/operar el adaptador forman parte de C_dep* o del proceso de provisión según el objeto; no son capacidad basal no focal. | Regla coherente entre D2-RES-01 y D2-CAP-01. Falta evidencia de separación material y no desplazamiento de A1/A2/F2. |
-| Información técnica vs dependencia | Un parámetro/configuración imprescindible integrado en el adaptador puede estar ya representado en C_dep*. Solo si es una condición distinta, ex ante y necesaria puede clasificarse en R_access*/D_support*. | C_info autónomo no se incorpora a A_f*. Inventario de información imprescindible y prueba de necesidad/no duplicidad siguen abiertos. |
+| Información técnica vs dependencia | Un parámetro/configuración imprescindible integrado en el adaptador puede estar ya representado en `DEP_f*` a través de `C_dep*`. Solo si es una condición distinta, ex ante y necesaria puede asignarse a `RES_f*`, `COND_f*` o `ID_f*` según función material. | `C_info` autónomo no se incorpora a `A_f*`. Inventario de información imprescindible y prueba de necesidad/no duplicidad siguen abiertos. |
 | Conocimiento del agente vs accesibilidad | K, avisos, formación y consideración son mecanismos posteriores; no se usan para redefinir A_f*. | B-M10/N22/E22. Posible mediación/cointervención; no ajustar automáticamente por K postratamiento. |
-| Aplicabilidad/ejecución vs accesibilidad | Precondiciones de S0 y demanda de una ejecución concreta pertenecen a App_f*/ejecución/rendimiento, no a A_f*. | Coherente con §59.3 y §64.2–64.3. Umbrales y medición material siguen pendientes. |
+| Aplicabilidad/ejecución vs accesibilidad | Precondiciones de S0 y demanda de una ejecución concreta pertenecen a `App_f*`/ejecución/rendimiento, no a `A_f*`. | Coherente con §67.3 y §64.2–64.3. Umbrales y medición material siguen pendientes. |
 | Evidencia del evaluador E_T vs objeto medido | E_T es el proceso/plano epistémico de observación, cobertura y adjudicación; no es un predicado del sistema ni equivale al oráculo o al resultado observado. | E_T no tiene nodo/arista U_G explícitos. N16/E15 es oráculo/evaluación funcional; N22/E22 es conocimiento; N23/E23 es endpoint de resultados. La ausencia de representación explícita de E_T debe permanecer visible, no rellenarse por analogía. |
 
 #### 16.10.2. Corrección de la inconsistencia U_G / E_T
@@ -708,14 +708,14 @@ Los nodos/aristas son roles y relaciones candidatos del grafo; su cobertura mate
 
 #### 16.10.4. Alcance y límites del dictamen
 
-1. La auditoría solo cubre las cuatro fichas solicitadas; no cierra todos los elementos de A_f*. C_domain/D_support*, identidad/versión, bloqueos, C_other histórico y su retirada requieren reconciliación propia dentro del maestro.
-2. La matriz de elegibilidad histórica §46.2 y §47.3 contiene C_resource/C_capacity/C_info/C_domain/C_other. La ecuación candidata §59.3 depura su interpretación hacia C_dep*, C_auth_base, R_access* y D_support*. La precedencia es propuesta; no autoriza borrar la historia ni declarar cerrada la población.
+1. La auditoría solo cubre las cuatro fichas solicitadas; no cierra todos los elementos de A_f*. `C_domain/D_support*`, identidad/versión, bloqueos y mappings a `ID_f*`/`COND_f*` requieren reconciliación material propia; `C_other` histórico queda excluido como comodín por §67.3.
+2. La matriz de elegibilidad histórica §46.2 y §47.3 contiene `C_resource/C_capacity/C_info/C_domain/C_other`. La fórmula intermedia §59.3 está supersedida; la composición candidata actual es la de §67.3: `ID_f*`, `REL_f*`, `COND_f*`, `AUTH_f*`, `RES_f*`, `DEP_f*`, `¬BLOCK_f*`. La precedencia de la fórmula no autoriza borrar la historia ni declarar cerrada la población.
 3. Las invariancias de DGP, obligaciones contractuales y no-afectación empírica son estados distintos. Ninguna de las fichas demuestra invariancia material.
 4. DEC-C10-066 mantiene D2 como escenario primario candidato y D1 como secundario; DEC-C10-067 acepta el contrato material conceptual D2. Ninguna decisión se amplía por esta auditoría.
 5. El ITT sigue siendo efecto de asignación de la política material D2. Si cambian vías colaterales, recursos compartidos, conocimiento o medición, no se atribuye automáticamente el resultado a ΔT_acc*. Unidad/interferencia, Value, población/soporte, estimandos y supuestos siguen abiertos.
 6. No se modifica C10-D1, TGCV Core, RMA, Evidence→Claim Matrix, STATUS ni DEC-C10-066/067. No se autoriza freeze, implementación, simulación o ejecución científica.
 
-**Dictamen:** las cuatro fichas son conceptualmente compatibles con la ecuación candidata §59.3 si se mantienen las reglas de no duplicidad anteriores. La representación de E_T en U_G queda expresamente incompleta y corregida como tal. La auditoría no convierte la arquitectura candidata en diseño aprobado ni operacionalizado.
+**Dictamen:** las cuatro fichas son conceptualmente compatibles con la fórmula candidata de §67.3 si se mantienen las reglas de no duplicidad anteriores. La representación de `E_T` en U_G queda expresamente incompleta y corregida como tal. La auditoría no convierte la arquitectura candidata en diseño aprobado ni operacionalizado.
 
 **Siguiente operación:** retomar el Bloque 2 del plan de cierre: reconciliar formalmente la jerarquía de estimandos y la identificación para D2, reutilizando C10-D1 §§5, 17, 25–30, la reconciliación C10-D1/S4-R, P177/P178/P179/P182/P183 y las decisiones DEC-C10-001…067. No crear un nuevo estimando ni empezar por fórmulas sin resolver primero la correspondencia entre políticas materiales B_g, régimen q, política g y estimandos.
 
@@ -872,7 +872,7 @@ No sustituir `D_f^*) por `D_f^{obs}` en primera etapa/Wald sin modelo de error d
 
 **Registro:** `C10_S_D2_AF_PREDICATE_CAUSAL_CROSSWALK_DRAFT_001.md`.
 
-La auditoría de medición §16.14 queda corregida: la fórmula candidata depurada ya está en maestro §67.3/DGP §59.3. MEAS-G1 pasa a **PARTIAL**, no OPEN por ausencia de fórmula. C_auth_base→AUTH; C_resource/C_capacity solo disponibilidad ex ante necesaria/no duplicada→RES/R_access; C_info no es factor autónomo; C_domain/D_support→ID/tipo o COND; C_dep→DEP; C_other inadmisible; VALID/cobertura/E_T epistémicos; App_f/K/selección/ejecución downstream. El crosswalk especializado conserva mappings y operacionalización material como abiertos.
+La auditoría de medición §16.14 queda corregida: la fórmula candidata depurada de referencia está en maestro §67.3/crosswalk D2; la ecuación intermedia de §59.3 está supersedida. MEAS-G1 pasa a **PARTIAL**, no OPEN por ausencia de fórmula. `C_auth_base`→`AUTH_f*`; `C_resource/C_capacity` solo disponibilidad ex ante necesaria/no duplicada→`RES_f*`; `C_info` no es factor autónomo; `C_domain/D_support`→`ID_f*`/`COND_f*`; `C_dep`→`DEP_f*`; `C_other` inadmisible; VALID/cobertura/`E_T` epistémicos; `App_f*`/K/selección/ejecución downstream. El crosswalk especializado conserva mappings y operacionalización material como abiertos.
 
 No se cambia DEC ni se congela la fórmula. Próximo: consolidar regla trivalente de conjunción y rutas.
 
