@@ -371,3 +371,14 @@ La pareja ilustrativa 0,20→0,80 de §33.4 no describe D2. D2 programa intento 
 (ψ_B(q_X^*)) es la instancia del contraste de política (ψ_{policy}(q)) para las versiones recibidas B bajo el régimen/población basal (q_X^*), solo si ambos representan el mismo contraste y el régimen común está completo. No equivale a (ITT_Z) con incumplimiento ni a (θ_{Af}(q_X^*)) sin atribución focal. Si q exige (q_L^*), (q_X^*) no lo sustituye.
 
 La auditoría se desarrolla en el maestro C10-S §131 y el plan de cierre §16.12. Estado: correspondencia B→g^Af condicional/no demostrada; (θ_{Af}) no identificado; sin freeze, implementación, simulación o ejecución.
+
+
+## 20. Interfaz AB→C y salvaguardas de estimandos (2026-11-09)
+
+El maestro C10-S §221 formaliza la transferencia contractual a C sin modificar la jerarquía de §18. C debe conservar separados ITT_Z^D2, FS_Cdep/FS_Af/FS_Df, ψ_policy^D2, ψ_B(q_X*), LATE_f^D2, θ_Af(q_X*), θ_A(q), mediación y residual. Sus poblaciones, regímenes, horizontes, versiones y escalas deben declararse; ningún estimando sustituye a otro.
+
+La transferencia exige entradas versionadas AB: unidad/población pre-Z, Z/B y event log, C0/G/H, distribución conjunta C_dep*, mediciones independientes A_f/D_f/ΔT_acc, vías colaterales, Outcome/Value, truth/observed y soporte. C debe devolver ITT por Outcome/Value, primeras etapas separadas, diagnóstico de interferencia/seguimiento, dictamen IV por supuesto, evaluación del mapping B→g^Af y validación de recuperación del DGP.
+
+Reglas no negociables: no condicionar ITT por recepción/cumplimiento/mediadores post-Z; no inferir A_f o D_f desde C_dep; no presentar Wald como causal mientras los supuestos IV sigan abiertos; no equiparar ITT o efecto de paquete con θ_Af/θ_A; no obtener mediación o residual por resta de estimandos no armonizados. La recuperación de truth sintética evalúa al Analyzer, no demuestra empíricamente ΔT_acc→Value.
+
+Estado: interfaz contractual definida; inputs materiales AB y gates de identificación permanecen abiertos. Este addendum no supersede §18 ni la auditoría IV, no aprueba identificación y no autoriza implementación o ejecución.
