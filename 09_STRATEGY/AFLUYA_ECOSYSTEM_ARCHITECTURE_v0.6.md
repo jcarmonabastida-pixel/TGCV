@@ -1,8 +1,8 @@
 # AFLUYA — Arquitectura estratégica del ecosistema
-## Documento de concepto, posicionamiento y arquitectura v0.7
+## Documento de concepto, posicionamiento y arquitectura v0.6
 
-**Estado:** DRAFT — arquitectura estratégica y tecnológica ampliada; integra la arquitectura pública de nombres y la decisión de dominio principal, pendientes de validación registral y jurídica.  
-**Fecha:** 2026-11-10
+**Estado:** DRAFT — arquitectura estratégica y tecnológica ampliada; incluye arquitectura profesional de referencia, implantación ligera, herramientas, presupuesto y hoja de ruta operativa.  
+**Fecha:** 2026-11-09
 **Documento anterior:** `09_STRATEGY/AFLUYA_ECOSYSTEM_ARCHITECTURE_v0.4.md`  
 **Repositorio:** `jcarmonabastida-pixel/TGCV`  
 **Rama de trabajo:** `strategy/afluya-ecosystem-v0.2`  
@@ -24,7 +24,7 @@ No modifica ni implica:
 - validación empírica general de los ámbitos de aplicación aquí contemplados;
 - aprobación jurídica, registral o comercial de la marca.
 
-**AFLUYA es la marca paraguas adoptada como arquitectura estratégica de trabajo**, frente a AFLUIA. La preferencia se basa en naturalidad lingüística, pronunciación intuitiva, sonoridad, capacidad de invitación y coherencia con un ecosistema participativo. Esta decisión estratégica no equivale a registro de marca, dictamen jurídico ni comprobación de disponibilidad de dominios.
+**AFLUYA es la denominación recuperada como candidata preferente de trabajo frente a AFLUIA.** La preferencia se basa en naturalidad lingüística, pronunciación intuitiva, sonoridad, capacidad de invitación y coherencia con un ecosistema participativo. No constituye todavía una adopción definitiva ni una comprobación de disponibilidad.
 
 La versión 0.2 conserva y revisa la arquitectura de v0.1. La versión anterior permanece como antecedente histórico; esta revisión no altera el estado científico de TGCV ni borra la trazabilidad del proceso de naming.
 
@@ -82,18 +82,6 @@ Construir un ecosistema abierto donde conocimiento, investigación, aprendizaje,
 **Visión**  
 Contribuir a que personas, organizaciones y comunidades comprendan mejor su potencial y desarrollen nuevas posibilidades de actuación y creación de valor, con rigor, apertura y responsabilidad.
 
-### 1.6 Arquitectura pública de nombres
-
-AFLUYA utilizará una jerarquía de tres niveles, con funciones distintas y sin convertirlos en sinónimos:
-
-1. **Transformación Generativa de Sistemas — denominación pública del campo de conocimiento.** Es la expresión divulgativa que permite explicar el territorio de ideas que AFLUYA explora. Se utilizará preferentemente completa, sin imponer una sigla nueva al público. No se presentará como una disciplina académica formalmente reconocida ni como un campo ya consolidado por consenso externo.
-2. **Inteligencia Transformacional — concepto aplicado de AFLUYA.** Nombra el enfoque y la capacidad práctica de comprender un sistema, reconocer su potencial y sus capacidades, identificar transformaciones y relaciones relevantes, explorar trayectorias y orientar actuaciones hacia resultados cuyo valor se evalúa en contexto. Es una formulación propia de posicionamiento y aplicación; no se presentará como constructo científico validado o disciplina estandarizada.
-3. **TGCV — identidad científica.** Conserva el nombre y acrónimo de la Teoría de Construcción de Valor de Sistemas Generativos como programa de investigación, con sus publicaciones, definiciones, gobernanza, hipótesis y estados de evidencia propios. No se sustituye ni se rebautiza por la denominación pública.
-
-**Regla de comunicación:** la persona visitante puede comprender AFLUYA desde Transformación Generativa de Sistemas sin conocer TGCV. Cuando se explique la aplicación práctica se introduce Inteligencia Transformacional. Cuando se exponga investigación, método formal o evidencia científica se identifica TGCV explícitamente.
-
-No se abreviará Transformación Generativa de Sistemas como «TGS» en comunicación pública: la sigla tiene asociaciones previas con Teoría General de Sistemas y puede crear confusión. Tampoco se creará una nueva sigla para Inteligencia Transformacional mientras no exista una necesidad real y una prueba de comprensión que la justifique.
-
 ## 2. Encaje con TGCV: fundamento sin confusión
 
 ### 2.1 Pregunta científica fundacional
@@ -117,26 +105,6 @@ AFLUYA recoge y hace accesibles, en lenguaje público, preguntas como:
 - ¿Para quién y bajo qué condiciones esos resultados constituyen valor?
 
 ### 2.3 Qué no debe hacer la marca
-
-AFLUYA no debe:
-- presentar la conexión como causa suficiente de valor;
-- convertir la metáfora del flujo en un constructo científico de TGCV;
-- presentar simulaciones, demostradores o casos ilustrativos como evidencia causal;
-- sugerir que TGCV ha demostrado validez general en todos los sectores;
-- confundir una propuesta de aplicación con una validación científica;
-- simplificar o sustituir la gobernanza, los límites o los estados de evidencia de TGCV.
-
-La marca puede ser cálida, evocadora y accesible. Las afirmaciones científicas deben seguir siendo precisas, falsables, trazables y proporcionales a la evidencia disponible.
-
-### 2.4 Relación entre los tres niveles de nombre
-
-La relación es de traducción y aplicación, no de equivalencia:
-
-- Transformación Generativa de Sistemas expresa públicamente el campo de preguntas y exploración.
-- Inteligencia Transformacional expresa cómo AFLUYA lleva esa perspectiva a la comprensión y actuación práctica sobre sistemas.
-- TGCV identifica el programa científico específico que investiga formalmente una parte de esas preguntas.
-
-No debe afirmarse que Inteligencia Transformacional es otro nombre de TGCV, que reemplaza su pregunta causal central sobre accesibilidad y valor, o que todas sus prácticas están científicamente validadas por TGCV. Los métodos aplicados y sus resultados requieren evaluación propia.
 
 AFLUYA no debe:
 - presentar la conexión como causa suficiente de valor;
@@ -462,9 +430,6 @@ Debe permitir comprender en pocos segundos:
 **Titular principal:**
 > El potencial está dentro. Las posibilidades emergen al conectarlo.
 
-**Descriptor público:**
-> AFLUYA explora la Transformación Generativa de Sistemas y promueve una Inteligencia Transformacional para comprender potencial, conectar capacidades y desarrollar nuevas posibilidades.
-
 **Texto de apoyo:**
 > Un ecosistema abierto para conectar conocimiento, capacidades y personas; explorar transformaciones y descubrir nuevas posibilidades de valor.
 
@@ -555,7 +520,7 @@ Las etapas son una propuesta de secuenciación, no un compromiso de ejecución n
 
 ## 15. Validación pendiente de nombre y marca
 
-Antes de formalizar el registro y la protección de AFLUYA deberán realizarse:
+Antes de adoptar AFLUYA definitivamente deberán realizarse:
 - búsquedas oficiales de marcas y nombres comerciales en OEPM, EUIPO/TMview y WIPO;
 - análisis de similitud denominativa, fonética, visual y conceptual en clases pertinentes;
 - comprobación de dominios mediante registrador y servicios RDAP/registro aplicables;
@@ -564,23 +529,20 @@ Antes de formalizar el registro y la protección de AFLUYA deberán realizarse:
 - validación lingüística y de pronunciación en mercados prioritarios;
 - pruebas de comprensión y recuerdo con usuarios.
 
-La disponibilidad de un dominio no demuestra la disponibilidad o registrabilidad de una marca. La adopción estratégica de AFLUYA y de su arquitectura de nombres no constituye una certificación jurídica. La búsqueda debe cubrir denominaciones idénticas y similares, fonética y conceptualmente, y las clases pertinentes.
+La disponibilidad de un dominio no demuestra la disponibilidad o registrabilidad de una marca. La preferencia por AFLUYA frente a AFLUIA es una decisión de naming de trabajo, no una certificación jurídica.
 
 ## 16. Decisiones abiertas
 
-1. Búsqueda registral completa y dictamen de viabilidad de AFLUYA y signos próximos.
-2. Verificación de disponibilidad de afluya.org en registrador y RDAP; decisión de registro y titularidad.
-3. Evaluar si conviene proteger también variantes .com y .es y redirigirlas al dominio canónico, sin dividir el ecosistema.
-4. Prueba de comprensión de la jerarquía Transformación Generativa de Sistemas / Inteligencia Transformacional / TGCV con visitantes no especialistas.
-5. Elección definitiva de tagline y versión inglesa.
-6. Pronunciación y guía de uso de marca en mercados internacionales.
-7. Arquitectura jurídica y operativa del ecosistema.
-8. Política de membresía, contribuciones y reconocimiento.
-9. Licencias, propiedad intelectual y privacidad.
-10. Priorización de secciones y funcionalidades web.
-11. Definición realista de la primera oferta de aprendizaje y aplicación.
-12. Identidad visual y sistema gráfico.
-13. Modelo de sostenibilidad y separación entre investigación y actividad comercial.
+1. Confirmación registral y jurídica de AFLUYA.
+2. Elección definitiva de tagline y versión inglesa.
+3. Pronunciación y guía de uso de marca en mercados internacionales.
+4. Arquitectura jurídica y operativa del ecosistema.
+5. Política de membresía, contribuciones y reconocimiento.
+6. Licencias, propiedad intelectual y privacidad.
+7. Priorización de secciones y funcionalidades web.
+8. Definición realista de la primera oferta de aprendizaje y aplicación.
+9. Identidad visual y sistema gráfico.
+10. Modelo de sostenibilidad y separación entre investigación y actividad comercial.
 
 ## 17. Control de cambios
 
@@ -845,8 +807,6 @@ No se iniciará desarrollo de forma implícita por la inclusión de esta arquite
 9. Selección y documentación del caso compartido para From Potential to Value.
 10. Política de datos, privacidad, accesibilidad, telemetría y publicación de demostradores.
 11. Identidad visual y verbal final, arquitectura web y prioridades de publicación.
-12. Contraste de la arquitectura pública de nombres y prueba de comprensión de Inteligencia Transformacional.
-13. Verificación registral y operativa del dominio principal .org y decisión sobre dominios defensivos.
 
 ## 22. Control de cambios
 
@@ -1406,7 +1366,7 @@ Los plazos son orientativos y presuponen disponibilidad de contenidos y decision
 
 | Fase | Plazo orientativo | Actividades | Entregable y criterio de salida |
 |---|---|---|---|
-| **L0 — Decisiones y preparación** | Semana 1 | Aplicar la arquitectura de nombres acordada; probar comprensión con usuarios; verificar afluya.org y antecedentes de marca; cerrar mapa web, contenidos prioritarios, inventario de activos y presupuesto máximo | Brief de publicación aprobado; verificación técnica y registral documentada antes de cualquier compra; inventario de contenidos y responsables |
+| **L0 — Decisiones y preparación** | Semana 1 | Confirmar naming de trabajo, comprobar dominio, cerrar mapa web, identificar contenidos prioritarios, inventariar activos y definir presupuesto máximo | Brief de publicación aprobado; dominio comprobado antes de compra; inventario de contenidos y responsables |
 | **L1 — Presencia pública** | Semanas 2–3 | Configurar Framer, aplicar identidad visual, construir navegación y páginas esenciales, preparar contacto y responsive | Web AFLUYA publicada en entorno de revisión; navegación y formularios probados; sin servicios ficticiamente presentados como operativos |
 | **L2 — Open Knowledge** | Semanas 3–4 | Seleccionar documentos públicos, definir categorías y estados, configurar Astro/Starlight/GitHub Pages, comprobar enlaces y fórmulas | Base de conocimiento navegable y enlazada desde AFLUYA; GitHub sigue siendo fuente maestra |
 | **L3 — Apertura y participación** | Semana 4–5 | Publicar canales de contacto, formularios mínimos, guía de participación, privacidad y reglas de contribución | Primera versión pública; proceso de contacto y contribución probado; responsables y expectativas explícitos |
@@ -1476,92 +1436,3 @@ Cambios principales:
 - se establece que la primera versión pública puede lanzarse sin tener operativas las aplicaciones Explore ni ValueLabOS.
 
 **Estado:** DRAFT. Herramientas y precios son recomendaciones y estimaciones de planificación sujetas a comprobación antes de contratar. No se han realizado compras, registros de dominio ni contrataciones. No se modifica main, el Core científico, RMA, Evidence→Claim Matrix, C09, C10 ni las autorizaciones científicas de TGCV.
-
-
----
-
-## 33. Arquitectura pública de nombres y dominio principal — decisión v0.7
-
-### 33.1 Decisión adoptada
-
-Se adopta para la arquitectura estratégica de AFLUYA la siguiente estructura:
-
-| Nivel | Denominación | Función | Uso principal |
-|---|---|---|---|
-| Público | **Transformación Generativa de Sistemas** | Expresar de forma accesible el campo de conocimiento que AFLUYA explora | Home, Discover, divulgación, presentación institucional y contenidos introductorios |
-| Aplicado | **Inteligencia Transformacional** | Expresar el enfoque aplicado para comprender sistemas, reconocer potencial y orientar transformaciones hacia resultados y valor contextual | VALUE Framework, AFLUYA Advisory, Learning, experiencias Explore y aplicaciones |
-| Científico | **TGCV — Teoría de Construcción de Valor de Sistemas Generativos** | Identificar el programa científico y su corpus formal | Research, publicaciones científicas, especificaciones, protocolos y evidencia |
-
-La jerarquía se utilizará de forma coherente en la web, documentos institucionales, presentaciones y materiales de servicios. No se crearán siglas alternativas por razones puramente gráficas.
-
-### 33.2 Definición de trabajo de Inteligencia Transformacional
-
-A efectos de posicionamiento y aplicación de AFLUYA, **Inteligencia Transformacional** se define provisionalmente como:
-
-> El enfoque y la capacidad de comprender un sistema desde su potencial y sus capacidades, reconocer qué transformaciones y relaciones pueden activarse, explorar nuevas trayectorias de actuación y orientar su desarrollo hacia resultados cuyo valor se evalúa en un contexto concreto.
-
-Esta definición es una formulación aplicada propia de AFLUYA. No se presenta como disciplina académica consolidada, constructo psicométrico validado, tecnología autónoma ni resultado científico ya demostrado. Su contenido metodológico deberá concretarse mediante VALUE Framework, casos, prácticas y evaluación.
-
-La expresión no equivale a liderazgo transformacional ni debe confundirse con él. Tampoco sustituye TGCV ni absorbe su pregunta científica sobre la contribución de la accesibilidad de transformaciones a la construcción de valor.
-
-### 33.3 Contraste terminológico y criterios de comunicación
-
-El contraste web preliminar no ha identificado una definición pública única y consolidada que permita tratar «Inteligencia Transformacional» como término técnico estandarizado. Sí existe terminología próxima sobre liderazgo transformacional y transformación organizativa. Por ello:
-
-- se conservará la expresión como concepto aplicado propio, acompañado de una definición breve la primera vez que aparezca;
-- se evitarán afirmaciones de prioridad, originalidad absoluta o reconocimiento académico;
-- se probará su comprensión frente a expresiones alternativas en usuarios no especialistas;
-- se distinguirá siempre el concepto aplicado de la investigación científica y de las herramientas concretas;
-- «Transformación Generativa de Sistemas» se utilizará completa en la comunicación pública inicial, sin abreviatura TGS.
-
-El contraste de buscadores es exploratorio y no constituye una búsqueda de anterioridades de marca, una revisión bibliográfica sistemática ni una certificación de disponibilidad denominativa.
-
-### 33.4 Dominio canónico
-
-Se adopta **.org como extensión preferida para el dominio principal de AFLUYA**, sujeto a comprobación técnica y registral de afluya.org antes de su adquisición.
-
-Criterios de uso:
-
-1. Un único dominio canónico para todo el ecosistema: comunidad, conocimiento, investigación, aplicaciones y actividad comercial.
-2. No separar .org para comunidad/investigación y .com o .es para servicios: esa división fragmentaría la identidad y sugeriría organizaciones o marcas distintas.
-3. Si se adquieren variantes .com o .es, se utilizarán únicamente como protección y redirección al dominio canónico, siempre que estén disponibles y el coste sea razonable.
-4. La elección de .org no implica que AFLUYA sea una entidad sin ánimo de lucro ni impone esa forma jurídica. El registro .org es abierto y permite el uso por entidades comerciales; la web deberá describir de forma transparente su modelo comunitario y comercial.
-5. Si afluya.org no estuviera disponible o presentara un conflicto relevante, no se cambiará automáticamente a otra extensión: se abrirá una decisión específica de dominio y marca.
-
-La consulta RDAP de afluya.org no pudo completarse en el contraste de esta versión. Por tanto, su disponibilidad permanece **NOT_VERIFIED**. No se ha registrado ni contratado ningún dominio.
-
-### 33.5 Salvaguardas de identidad y separación científica
-
-- La denominación pública no modifica el nombre, alcance, Core, ontología, hipótesis, RMA, Evidence→Claim Matrix ni estados de evidencia de TGCV.
-- Inteligencia Transformacional no se utilizará para elevar claims científicos o presentar como validadas prácticas aplicadas que aún no se han evaluado.
-- La comunicación comercial deberá dejar claro qué es método, servicio, prototipo, demostrador, producto operativo o evidencia.
-- La apertura comunitaria no dependerá de la compra de servicios.
-- El uso de .org no se utilizará para insinuar una condición jurídica o fiscal no existente.
-
-### 33.6 Verificaciones pendientes antes del lanzamiento
-
-- Búsqueda de AFLUYA y signos similares en OEPM, EUIPO/TMview y WIPO, considerando las clases pertinentes y la similitud fonética/conceptual.
-- Comprobación de afluya.org directamente en registrador y RDAP; documentar fecha, resultado y titularidad prevista.
-- Comprobación opcional de .com y .es para protección, sin asumir que deban adquirirse.
-- Prueba de comprensión de los tres niveles de nombre y de la definición de Inteligencia Transformacional.
-- Revisión de que las páginas Home, Discover, Research, Framework, Explore y Apply/Work with us aplican la jerarquía sin contradicciones.
-
----
-
-## 34. Control de cambios
-
-### v0.7 — 2026-11-10
-
-Integra las decisiones adoptadas sobre arquitectura pública de nombres y dominio preferido, después de un contraste terminológico, técnico y de encaje institucional preliminar.
-
-Cambios principales:
-- se adopta Transformación Generativa de Sistemas como denominación pública del campo de conocimiento;
-- se define Inteligencia Transformacional como concepto aplicado propio de AFLUYA, distinto de TGCV y sin atribuirle estatus de disciplina o constructo validado;
-- se mantiene TGCV como identidad científica y programa de investigación;
-- se incorpora una jerarquía de comunicación para Home, Research, Framework, Explore y servicios;
-- se adopta .org como extensión preferida para un único dominio canónico, con variantes .com y .es únicamente como posibles redirecciones defensivas;
-- se explicita que .org no exige una entidad sin ánimo de lucro y que el modelo comunitario/comercial debe comunicarse transparentemente;
-- se documenta que la disponibilidad de afluya.org no pudo verificarse y queda NOT_VERIFIED;
-- se actualizan las verificaciones previas al lanzamiento y las decisiones pendientes.
-
-**Estado:** DRAFT. Las decisiones estratégicas de arquitectura de nombres y preferencia .org quedan integradas en esta versión; la protección jurídica de la marca y la disponibilidad/registro del dominio permanecen pendientes. No se ha realizado compra ni registro. Esta actualización no modifica main, el Core científico, RMA, Evidence→Claim Matrix, C09, C10 ni las autorizaciones científicas de TGCV.
