@@ -1966,3 +1966,16 @@ Un paquete solo pasa a DONE cuando: (i) todas sus decisiones críticas están ac
 ### Estado y orden
 
 Orden: **AB → C → D → E**. El trabajo inmediato es AB. E es el gate final de aceptación de la especificación, no una autorización automática para programar ni ejecutar. El estado global continúa NOT_READY hasta superar E.
+
+
+## 16.94 — Ejecución documental del paquete AB: integración de instancia y DGP (2026-11-09)
+
+Se incorpora al maestro §216 una especificación integrada de trabajo que reutiliza DEC-C10-051…092 y los contratos funcionales, IAM, F*, causal, población, DGP temporal, provisión B y Reach ya existentes. No crea un artefacto paralelo.
+
+**Resultado:** BASE RECONCILED / AB IN_PROGRESS. Se consolida en una única lectura la instancia aceptada (C10S-SVC-REQUEST-PROCESSOR v1.0.0 / instance C10S-SVC-REQUEST-PROCESSOR-001 rev.1 / CMP-SERVICE-LOGIC-001), núcleo ENABLED/PROFILE/RUL, MET obligatorio, REF=0 solo con cobertura sintética exhaustiva, rutas F1/F2 y A1/A2, provisión B separada de transformación/aplicación, fórmula candidata A_f* §67.3, separación DEP_f*/C_dep*/App_f*/F_alt/Reach, poblaciones P*_τ2/P*_F, q_X* basal, UE/UA propuesta, reloj t−1…t9/t+1, D2 primario candidato/D1 secundario y escenarios R0–R3/adversariales.
+
+**Bloqueos AB-01…AB-09:** roster/cobertura por snapshot; C_src/C_dst/M concretos; cards/identidades de transformaciones y adaptador; mappings materiales ID/REL/COND/AUTH/RES/DEP/BLOCK; F*/C0/G/H/tolerancias; mecanismo operativo D2; distribución conjunta técnica; elegibilidad/q_X*/unidad/soporte/interferencia; universo de alternativas y truth/observed.
+
+**Regla de continuidad:** la siguiente pasada debe especializar conjuntamente AB-01…AB-05 y AB-06…AB-09 sobre la misma instancia, no abrir auditorías separadas ni repetir decisiones aceptadas. No fijar por memoria ni conveniencia valores de s, cumplimiento, fondo/crossover, N, probabilidades ni tolerancias. Los asuntos estadísticos de N/potencia/Value se transfieren a C, conservando en AB las variables generadoras e interfaces necesarias.
+
+No se declara AB DONE, Design Freeze ni readiness de implementación. No se ejecuta código/validator/parser/fixture/simulación ni experimento. scientific_execution=false; execution_authorized=false.
