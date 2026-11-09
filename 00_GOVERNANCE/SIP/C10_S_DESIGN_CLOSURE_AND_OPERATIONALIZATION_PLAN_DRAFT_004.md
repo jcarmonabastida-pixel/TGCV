@@ -1748,3 +1748,15 @@ La secuencia es un orden causal y de medición propuesto, no un calendario confi
 
 **Siguiente bloque tras MAP-01/02:** resolver MAP-05 por dominios B-M01…15 y PROV-01…12, con foco en dependencias compartidas, recursos, seguridad, rendimiento, alternativas, oráculo, información y residuos. La cobertura técnica real no existe aún: NO INVENTARIADO no equivale a ausencia. MAP-03/04/06 y la identificación siguen abiertas. No ejecutar, implementar ni parametrizar.
 
+
+
+## 16.86. Resultado de auditoría MAP-05: superficies B-M y contratos PROV (2026-11-09)
+
+Se incorpora en el manifiesto de provisión §14 una adjudicación dominio por dominio de B-M01…15 y una tabla de alcance/limitación de PROV-01…12. La clasificación distingue mecanismos focales condicionados, cambios constitutivos, vías colaterales, epistémicas, de medición/oráculo e interferencia/residuo; las clases pueden coexistir.
+
+**Hallazgo principal:** las superficies de mayor prioridad causal son B-M06 (datos/estado), B-M07 (recursos/capacidad), B-M09 (seguridad/riesgo/coste), B-M11 (estado residual), B-M12 (rendimiento), B-M14 (rutas alternativas), además de B-M10/B-M13 por conocimiento y medición. B-M05 requiere mantener separadas credenciales/permisos técnicos y autorización funcional basal. B-M02/B-M03/B-M08/B-M15 exigen grafo transitivo y evaluación de spillover/carryover.
+
+**Resultado:** CLASSIFICATION_DEFINED / MATERIAL_EVIDENCE_NOT_AVAILABLE. La auditoría clasifica amenazas y evidencia falsadora, pero no hay inventario real, snapshots, mediciones ni pruebas funcionales para adjudicar estados 1/0. PROV-01…12 no son PASS por estar definidos. MD-C1/MD-C4 e IV-G4 permanecen OPEN; exclusión no demostrada. El ITT, si resulta identificable, conserva interpretación de efecto de política; no se atribuye exclusivamente a ΔT_acc*.
+
+Siguiente gate: roster de evidencia y grafo por frontera/nodo/arista/consumidor/unidad/versión/ventana, distinguiendo universo conocido y desconocido. No implementar, parametrizar ni ejecutar.
+
