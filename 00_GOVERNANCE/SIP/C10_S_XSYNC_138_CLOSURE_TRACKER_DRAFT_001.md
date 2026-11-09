@@ -17,7 +17,7 @@ Lo que no se ha recuperado es un acta independiente de cierre/aprobación ni una
 
 | ID | Severidad fuente | Hallazgo original (síntesis fiel) | Respuesta ya contenida en C10-S | Pendiente para cierre | Estado de control |
 |---|---|---|---|---|---|
-| XSYNC-138-01 | P0 | g1/g0 confundidas con políticas de autorización, no con políticas implementables sobre cambios de accesibilidad inducidos por B/Z | §§26–27 separan B/Z, C_auth, A_f*, ΔT_acc, ψ_policy y θ_A(q); S4-R se reformula como políticas sobre accesibilidad | Auditoría matemática de correspondencia B→A; verificar que no hay vía directa no modelada; revisión independiente y aprobación | RESPUESTA DOCUMENTAL PARCIAL; ABIERTO FORMALMENTE |
+| XSYNC-138-01 | P0 | Hallazgo histórico: el diseño previo confundía la intervención focal sobre autorización con políticas factibles de accesibilidad. | DEC-C10-066/067 resuelven para D2 la política primaria: provisión técnica focal con `C_auth,base=1` común e invariante. La intervención focal sobre autorización queda como escenario alternativo; `B_g^D2` no es automáticamente `g^Af`. | Completar mapping B→g^Af, factibilidad/soporte, exclusión y vías directas/colaterales; verificar consistencia con C10-D1; revisión independiente y aprobación formal. | PARCIALMENTE RESUELTO PARA D2; RESIDUAL OPEN / CIERRE FORMAL PENDIENTE |
 | XSYNC-138-02 | P1 | q_X incorpora indebidamente la regla de Value | §26.8 separa q de la regla evaluativa; reconciliación nueva también mantiene Value fuera de q | Actualizar todos los usos de q_X/q_L y el contrato de Value; fijar beneficiario, criterio, escala y horizonte | CORRECCIÓN PROPUESTA; CIERRE PENDIENTE |
 | XSYNC-138-03 | P1 | A_f* se aproxima indebidamente a ΔT_acc completo | §§26–27 y diccionario §43 distinguen indicador focal y cambio estructurado; h_f(ΔT_acc) es proyección focal | Auditar cada ecuación, tabla, variable y prueba para asegurar que A_f* nunca sustituye ΔT_acc | CORRECCIÓN PARCIAL; AUD-001 ABIERTO |
 | XSYNC-138-04 | P1 | q*(L=1|X)=.5 y g1=.8/g0=.2 asumen factibilidad sin separar L_c/L_m ni probar soporte | §26.7 exige separar L_c/L_m, factibilidad por historia y soporte; la reconciliación nueva propone escenarios limpio/contaminación | Definir distribución q*, historia, conjunto factible por estrato, positividad y tratamiento de estratos sin soporte | CORRECCIÓN PROPUESTA; XAUD-001 ABIERTO |
@@ -43,7 +43,7 @@ Lo que no se ha recuperado es un acta independiente de cierre/aprobación ni una
 No cerrar XSYNC por la existencia de una sección correctiva. Para cada ID se exige:
 
 1. referencia exacta a la regla corregida;
-2. búsqueda global de formulaciones contradictorias en C10-S;
+2. búsqueda de formulaciones contradictorias en el conjunto activo C10-S; la auditoría actual cubre los 100 archivos de PR #116, pero no certifica aún todo el repositorio, ramas históricas ni fuentes fuera del PR;
 3. consistencia con C10-D1, sin cambiar su estimando;
 4. ecuación/variable/diccionario y contrato de prueba coherentes;
 5. prueba adversarial que falle si reaparece el error;
@@ -62,7 +62,7 @@ Los hallazgos P0/P1 bloquean freeze causal mientras permanezcan abiertos. Los P2
 ## 6. Dictamen
 
 **Texto histórico XSYNC-138-01…10: RECUPERADO EN GITHUB.**  
-**Correcciones: PARCIALMENTE INCORPORADAS EN EL BORRADOR.**  
+**Correcciones:** XSYNC-138-01 PARCIALMENTE RESUELTO PARA D2; otros hallazgos mantienen los estados de la matriz. Correcciones documentales adicionales incorporadas en el barrido del PR #116.  
 **Cierre formal: NO ALCANZADO.**  
 **Pruebas: NO EJECUTADAS.**
 
