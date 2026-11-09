@@ -8533,3 +8533,41 @@ El gate obligatorio es §0.6 y su checklist de cierre está en Closure Control M
 ### 214.4. Estado y límites
 
 Se ha actualizado documentalmente la precedencia y retirado contenido que inducía errores; no se han ejecutado validadores, generadores, parsers, fixtures, simulaciones ni experimentos. No se ha aprobado el contrato de implementación ni Design Freeze. scientific_execution=false; execution_authorized=false.
+
+## 215. Auditoría transversal de precedencia semántica en fuentes C10-S dependientes (2026-11-09)
+
+**Estado:** auditoría documental asistida / autoauditoría / no independiente. **Alcance:** los 100 archivos modificados por PR #116 en `research/c10-s-consolidation-draft`; revisión contextual de marcadores de supersesión, recomendaciones históricas, autorización, fórmulas de accesibilidad, D1/D2, estimandos y estados de ejecución. Los 100 archivos fueron recuperados; DEC-C10-065/066/067 requirieron usar el nombre de rama directo como ref, pero se verificó su contenido completo.
+
+### 215.1. Dictamen de precedencia
+
+1. **D1/D2:** DEC-C10-066 resuelve la precedencia: D2 primario candidato; D1 secundario. DEC-C10-067 define las políticas materiales D2. La antigua recomendación D1-principal y la selección abierta quedan supersedidas únicamente en la precedencia del comparador; no se borra D1 ni su historia.
+2. **Autorización:** `C_auth,base=1` sigue siendo basal, común, satisfecha antes de Z e invariante frente a B en el DGP aislado D2. `C_auth_base` se corresponde con `AUTH_f*`; no son factores independientes. La intervención focal de AUD-001/002 sobre autorización no es la política primaria D2 y solo puede tratarse como escenario alternativo/adversarial.
+3. **Accesibilidad focal:** la fórmula candidata de referencia es maestro §67.3 / DGP §59.3: `A_f*=I(ID_f* ∧ REL_f* ∧ COND_f* ∧ AUTH_f* ∧ RES_f* ∧ DEP_f* ∧ ¬BLOCK_f*)`. Las formulaciones anteriores con `C_info`, `C_other` o la conjunción abreviada no gobiernan la composición operativa. `C_dep*` se integra en `DEP_f*`; recursos/capacidad solo se canalizan a `RES_f*` si son disponibilidad ex ante necesaria y no duplicada; `D_support` requiere mapping semántico; `C_info` no es factor autónomo y `C_other` queda excluido.
+4. **Cambio transformacional:** `ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*)`; `ΔE_T` es evidencia/observabilidad paralela, no componente de truth estructural. La formulación histórica que incluía `ΔValidity` está supersedida para la definición causal.
+5. **Estimandos:** `θ_A(q)` sigue siendo la pregunta general C10-D1; `ITT_Z^D2` es efecto de asignación a políticas; `LATE_f^D2` es secundario y permanece bloqueado/no identificado; `θ_Af(q_X*)` requiere correspondencia B→g^Af y supuestos aún no demostrados. No se deduce un efecto puro de accesibilidad del ITT.
+
+### 215.2. Documentos corregidos en esta auditoría
+
+- `C10_S_INTEGRATED_RECONCILIATION_AUDIT_DRAFT_001.md`: sustituida la sección operativa D1-principal/D2-contraste por registro histórico no operativo; corregida la tupla de `ΔT_acc*` y separación `ΔE_T`.
+- `C10_S_CAUSAL_ARCHITECTURE_RECONCILIATION_DRAFT_001.md`: reemplazadas las secciones antiguas que mantenían abierta la intervención primaria sobre `C_auth` por la precedencia DEC-C10-066/067; conservada AUD-001/002 como alternativa/adversarial.
+- `C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md`: MEAS-01 actualizado a PARTIAL; fórmula reconciliada conceptualmente, con mappings/evidencia material abiertos.
+- `C10_S_POPULATION_ELIGIBILITY_AND_COMPARATOR_RECONCILIATION_DRAFT_001.md`: retirada la antigua conjunción de elegibilidad con `C_other` como regla operativa; actualizada precedencia y legitimidad D2/D1.
+- `C10_S_AUD001_AUD002_RESOLUTION_DRAFT_001.md` y `C10_S_AUD001_AUD002_CROSS_AUDIT_DRAFT_001.md`: añadidos avisos de no operatividad para D2 y preservación explícita de autorización basal.
+- `C10_S_INTEGRATED_CONSISTENCY_AUDIT_DRAFT_001.md`: añadido aviso de precedencia DEC-C10-066/067 para que los hallazgos históricos no reabran D2.
+- `C10_S_DESIGN_CLOSURE_AND_OPERATIONALIZATION_PLAN_DRAFT_004.md`: fórmula §4.3 alineada con §67.3/crosswalk D2; §15.2 distingue la elegibilidad histórica de la composición actual de `A_f*`.
+- `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md`: MEAS-03 distingue validez estructural de validez/cobertura epistémica.
+
+### 215.3. Documentos históricos conservados y criterio aplicado
+
+Se conservan sin borrado indiscriminado los planes Draft 001–003 y auditorías MRA Draft 001–002, ya marcados como históricos/supersedidos; el registro de recuperación 165–183, que conserva la recomendación D1 como fuente histórica y declara la supersesión DEC-C10-066; el antecedente de DGP §12, que declara supersedida la recomendación anterior; la matriz temporal de predicados §30.1, que etiqueta la fórmula anterior como antecedente; la reconciliación snapshot/delta, que declara supersedida `ΔValidity`; y los registros de DEC-C10-068…092, que preservan sus límites de alcance y no autorización. Se mantienen los IDs y anclas necesarias para trazabilidad.
+
+Las menciones históricas en Decision Log, matrices y contratos se conservan cuando están claramente rotuladas como propuesta, antecedente o supersedidas y cuando una decisión posterior aplicable resuelve su alcance. No se borran decisiones aceptadas, escenarios adversariales ni definiciones de D1 que siguen siendo útiles.
+
+### 215.4. Resultado, cobertura y límites
+
+- **Cobertura documental del PR #116:** 100/100 archivos modificados recuperados y revisados mediante lectura contextual y búsqueda de marcadores/elementos semánticos de riesgo. La auditoría se limita a ese conjunto de archivos y no certifica una búsqueda exhaustiva de todo el repositorio, ramas históricas, archivos locales o conversaciones no persistidas.
+- **Estado de los puntos críticos:** precedencia D1/D2 resuelta; autorización basal protegida; fórmula de `A_f*` reconciliada conceptualmente; `ΔT_acc*` y `ΔE_T` separados; referencias auxiliares de mayor riesgo corregidas o identificadas como históricas.
+- **Pendiente:** inventario material de rutas/alternativas; fuente y vigencia probatoria de `C_auth,base`; operacionalización de `RES_f*`, `D_support`, `REL`, `COND`, `BLOCK`; población/soporte; correspondencia B→g^Af; exclusión, mediación, interferencia, estimandos y sensibilidad; revisión de referencias fuera del conjunto PR #116 antes de generar código.
+- No se ejecutaron validadores, generadores, parsers, fixtures, simulaciones ni experimentos. No se ha realizado generación ni inspección de código ejecutable. No hay revisión humana independiente. `scientific_execution=false`; `execution_authorized=false`.
+
+**Dictamen:** `PASS_STATIC` para la revisión documental de los 100 archivos modificados en PR #116 y para las correcciones enumeradas, sujeto a la relectura de los archivos tocados. `CONDITIONAL` para la garantía global de no-regresión fuera de ese conjunto y para cualquier generación futura de código; se mantiene el gate maestro §0.6 / Closure Control Matrix §100. No Design Freeze ni autorización de implementación/ejecución.
