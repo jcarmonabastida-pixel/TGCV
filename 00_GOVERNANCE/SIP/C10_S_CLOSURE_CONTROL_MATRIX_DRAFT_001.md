@@ -2239,3 +2239,18 @@ La corrección de §33 ya estaba indicada en §34 y desarrollada en §35; este a
 
 **Dictamen:** DOCUMENTARY_RECONCILIATION_PARTIAL / NO_C0_INSTANCE / NO_SNAPSHOT / DENOMINATOR_UNKNOWN / COVERAGE_NONE. El siguiente gate es crosswalk de identidad/unidad por clase, no captura técnica.
 
+
+
+---
+## 107. Crosswalk de identidad y unidad de denominador por clase (2026-11-09)
+
+| Clase | Unidad candidata | Mapping U_G | Estado |
+|---|---|---|---|
+| CMP | Componente contractual elegible por snapshot | NODE exacto + owner/version; EDGE solo relaciones | OPEN: root anchor y cardinalidad |
+| PAR | Owner CMP × parameter_key × versión semántica × captura lógica | Manifiesto; target COVERAGE_SCOPE; DEC-C10-079/080 | ACCEPTED contract; no instance |
+| REF | Relación tipada con endpoints/cardinalidad | EDGE mediante M versionado | PARTIAL: DEC-C10-077 conceptual; M/endpoints OPEN |
+| RUL | Regla × versión × scope | PREDICATE solo si evaluable; operandos exactos | OPEN |
+| MET | Campo metadata × owner/target × tiempo/alcance | Propiedad tipada o snapshot/evidence según función | OPEN |
+
+PASS de mapping no equivale a COMPLETE. 0 requiere universo y enumeración exhaustivos; desconocido/no resuelto permanece ?. Estado global: CROSSWALK_TYPED / PAR_IDENTITY_ACCEPTED / CMP_REF_RUL_MET_MAPPING_PARTIAL / DENOMINATOR_UNKNOWN / COVERAGE_NONE. No member_refs, scopes ni evidencia material.
+
