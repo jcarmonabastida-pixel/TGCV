@@ -800,3 +800,75 @@ AB-09 solo podrá pasar a DESIGN COMPLETE cuando:
 **Inputs que siguen OPEN:** universo U_G realmente cerrado y cobertura; C0/F*/G/H_time; protocolo/oráculo y cegamiento; mapping y observación por campo/etapa; missingness y error de clasificación; mecanismo material D2 y distribución conjunta C_dep; población/q_X*/soporte/interferencia; parámetros de Outcome/Value; tolerancias y criterios cuantitativos de evaluación que corresponden al paquete C.
 
 **Dictamen:** R0–R3, sus propiedades distintivas y el firewall quedan reconciliados a nivel contractual/documental. AB-09 pasa a DESIGN SPECIFIED / INTEGRATION RECONCILED, pero NO a DESIGN COMPLETE ni materialmente cerrado. No se rellenan truth tables unitarias con valores no derivados, no se generan fixtures, no se implementa, simula ni ejecuta. No Design Freeze; `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 16. AB-01…AB-09 — matriz integrada de dependencias, bloqueos y transferencia parcial AB→C (2026-11-10)
+
+**Propósito.** Consolidar el estado real de AB tras §§8–15 y relacionarlo con los contratos C existentes en maestro §§221–229. Esta matriz no sustituye la tabla de gates §2, el registro de inputs §4 ni el contrato de transferencia §5; los hace operativamente legibles y evita declarar AB cerrado por completar especificaciones documentales o bloquear C por inputs que pueden permanecer OPEN.
+
+### 16.1. Dependencias entre gates y orden de cierre
+
+| Gate | Depende de | Habilita principalmente | Estado actual | Bloqueo material dominante |
+|---|---|---|---|---|
+| AB-01 | DEC/AST/roster CMP-PAR-RUL-MET y snapshots | Identidad de instancia, operandos, mappings | Semántica reconciliada; encoding físico OPEN | Schema/serialización, IAM instanciado, snapshots y cobertura |
+| AB-02 | AB-01 + estados y mapping aceptados | C_src/C_dst/M y error/UNKNOWN de configuración | Crosswalk semántico reconciliado | Schema físico, namespaces, payload y mapping efectivo |
+| AB-03 | AB-01/02 + contratos de rutas | Identidad y comparabilidad F1/F2/A1/A2 | Cards sintéticas abstractas especificadas | TID/SID/RID completos, mecanismos, versiones, pre/postcondiciones y eventos |
+| AB-04 | AB-01/02/03 + matriz de predicados | A_f*, D_f*, ΔT_acc* y rutas con medición independiente | Crosswalk semántico definido parcialmente | Roster de campos, fuentes, captura, cobertura y adjudicación por unidad/etapa/snapshot |
+| AB-05 | AB-03/04 + F* común | Función terminal, C0/G y medición temporal común | Reglas funcionales definidas; input temporal incompleto | H_time/H*, C0 concreto, G instanciado, FP profile y oráculo validado |
+| AB-06 | AB-01…05 + política D2 | Historia de asignación/recepción/intento/instalación | Secuencia y kernel simbólico definidos | Artefactos/actores, timestamps, cumplimiento, fallos, rollback y provisión de fondo |
+| AB-07 | AB-06 + contratos I/G/C/O | Distribución conjunta C_dep* y sensibilidad | Estructura de 16 celdas y reglas de dependencia definidas | θ numérica, soporte por historia/estrato, ceros justificados y calibración/sensibilidad |
+| AB-08 | AB-01…07 + C0 | Población, q_X*, positividad y unidad de inferencia | Regla pre-Z y distinciones poblacionales especificadas | Población marco, C0 efectivo, q_X*, soporte, pesos/estratos y topología de interferencia |
+| AB-09 | AB-03…08 + universo G/H + oráculo | R0–R3, truth/observed, evaluación sellada | Contrato de escenarios y firewall documental reconciliado | Universo alternativo cerrado, truth tables instanciadas, observación/missingness, oráculo y prueba técnica de no-leakage |
+
+**Lectura del grafo:** AB no es una cadena estrictamente lineal. AB-01/02 y parte de AB-03/04 son contratos semánticos que pueden estabilizarse en paralelo; AB-05 aporta el marco común; AB-06/07 forman el bloque de mecanismo técnico; AB-08 define población/soporte/unidad; AB-09 integra escenarios, universo, observación y cegamiento. AB-09 no puede materializarse plenamente antes de instanciar sus inputs, aunque su contrato abstracto ya esté especificado.
+
+### 16.2. Clasificación de los once inputs residuales
+
+| Input | Estado reconciliado | Dependencias principales | ¿Transferible a C ahora? |
+|---|---|---|---|
+| AB-M01 | Semántica AST tipada a PAR resuelta; encoding físico OPEN | AB-01/02 | Sí, como regla semántica; no como schema físico |
+| AB-M02 | Crosswalk BOOL/ENUM y mapping lógico resueltos; payload/schema/canonicalización OPEN | AB-01/02 | Sí, con OPEN explícito y sin extrapolar JCS |
+| AB-M03 | Roles conceptuales de cuatro cards y composición definidos; TID/SID/RID/materialización OPEN | AB-03/05 | Sí, como contrato abstracto, no como identidad ejecutable |
+| AB-M04 | Crosswalk semántico de predicados/campos definido parcialmente; fuentes y cobertura OPEN | AB-04/05/09 | Sí, como diccionario provisional y reglas UNKNOWN |
+| AB-M05 | F*/C0/G estructurados; H_time/H* y unidad OPEN | AB-05/09 | Solo límites y requisitos; no horizonte operativo |
+| AB-M06 | Vías colaterales y superficies de inspección inventariadas; MD-C1/MD-C4 no demostradas | AB-04/06/09 | Sí, como amenazas/hipótesis; no como evidencia de aislamiento |
+| AB-M07 | Secuencia D2, kernel y roster θ definidos simbólicamente; probabilidades OPEN | AB-06/07 | Sí, como estructura; no como distribución parametrizada |
+| AB-M08 | Elegibilidad pre-Z y P*_τ2/P*_F/q_X* diferenciados; población/soporte OPEN | AB-08 | Sí, como reglas; no como población/pesos efectivos |
+| AB-M09 | Principio de unidades e interferencia definido; topología OPEN | AB-08 | Sí, como requisito; no como estructura de clúster/exposición |
+| AB-M10 | Requisitos de independencia/oráculo/cegamiento definidos; validación y adjudicación OPEN | AB-05/09 | Sí, como contrato y gate; no como oráculo validado |
+| AB-M11 | R0–R3, trivalencia y firewall definidos documentalmente; truth por unidad, missingness y no-leakage técnico OPEN | AB-09 | Sí, como contrato; no como verdad instanciada ni prueba superada |
+
+### 16.3. Handoff AB→C: qué se puede consumir y qué no
+
+**Transferible ahora, con versión y estado:** identidad semántica CMP/PAR/RUL/MET; regla AST→PAR sin doble conteo REF; crosswalk lógico de estados y mapping; composición conceptual F/A; definiciones y separaciones C_dep*/A_f*/D_f*/ΔT_acc*/F*/Reach; secuencia de eventos D2 y kernel simbólico; roster conjunto I/G/C/O de 16 estados; regla de elegibilidad pre-Z; separación P*_τ2/P*_F/q_X*; reglas de soporte y UNKNOWN; familias de vías colaterales; definiciones R0–R3; contrato truth/observed y frontera Generator/Analyzer/Evaluator.
+
+**No transferible como valor resuelto:** schema físico/mappings instanciados, TID/SID/RID efectivos, C0/G/H_time, universo U_G y cobertura, valores de predicados y fuentes, evidencia MD-C1/MD-C4, eventos/timestamps y probabilidades D2, θ conjunta, población marco/q_X*/pesos/soporte, topología de clúster/exposición, oráculo validado, truth tables por unidad y modelo de missingness.
+
+**Regla de C:** los contratos transferibles pueden usarse para especificar estimandos, escenarios de identificación, sensibilidad simbólica, bounds y reglas de abstención. Todo input no resuelto conserva ID AB-Mxx, procedencia, alcance y estado OPEN/UNKNOWN. No convertir un parámetro simbólico en valor numérico ni declarar identificación puntual por conveniencia.
+
+### 16.4. Correspondencia con los contratos del paquete C
+
+| Contrato C existente | Inputs AB requeridos | Estado de dependencia |
+|---|---|---|
+| §221 — interfaz AB→C y jerarquía de estimandos | AB-01…09 | Interfaz y jerarquía transferibles; parámetros/materialización OPEN |
+| §§222–223 — estimandos, identificación y jerarquía confirmatoria | AB-04…09 + C10-D1 | Puede continuar especificación; identificación depende de soporte, DAG, intervención y medición |
+| §224 — Outcome/Value y adjudicación | AB-04/05/09 + decisión propia de C | No bloqueado por completar todo AB; requiere definición independiente de dimensiones, unidad, escala y protocolo Outcome/Value |
+| §225 — identificación, sensibilidad, bounds, evaluación y potencia | AB-06…09 + C10-D1 + §224 | Estructura metodológica existente; parametrización, mediación y umbrales OPEN |
+| §§227–229 — crosswalk P177–P183, C-MED y C-ANALYZER | AB-05…09 | Auditoría/candidatos disponibles; mediación y métricas de falsa atribución/abstención con cobertura contractual parcial |
+
+§221 es un contrato de handoff, no prueba de AB cerrado. §225 sigue siendo propuesta documentada no aprobada/no congelada; §§228–229 mantienen C-MED y C-ANALYZER parcialmente especificados.
+
+### 16.5. Bloqueos reales y secuencia mínima recomendada
+
+1. **Medición/identidad:** AB-M03/04/05/10 — identidades, campos, F*, C0/G/H_time y oráculo. Sin esto no se declaran medidos A_f*, D_f* ni ΔT_acc* ni comparabilidad temporal.
+2. **Mecanismo/primeras etapas:** AB-M06/07 — separación de rutas colaterales, eventos D2 y distribución conjunta C_dep*. Sin esto no hay primera etapa técnica/focal parametrizada ni atribución exclusiva.
+3. **Población/identificación:** AB-M08/09 — población, q_X*, soporte e interferencia. Sin esto no se define transporte ni identificación poblacional.
+4. **Evaluación sellada:** AB-M11 + AB-M10 — truth por unidad, observación/missingness y prueba técnica del firewall. Sin esto no se puntúa recuperación ni falsa atribución del Analyzer.
+
+**Orden operativo mínimo:** (a) preparar el registro de campos/artefactos/decisiones requeridas para M03/04/05/10 sin rellenar datos ausentes; (b) definir ficha de evidencia material MD-C1/MD-C4 y captura de eventos D2; (c) obtener o estipular explícitamente, con procedencia, C0/población/soporte/interferencia y θ; (d) instanciar R0–R3 y proceso de observación; (e) completar C-MED/C-ANALYZER y gates estadísticos con P177–P183; (f) revisar coherencia integral antes de proponer Design Freeze. No autoriza implementación ni ejecución.
+
+### 16.6. Dictamen
+
+AB-01…AB-09 están reconciliados a nivel de arquitectura documental en distintos grados, pero AB permanece **IN_PROGRESS / MATERIAL INPUTS OPEN / NOT DESIGN FROZEN / NOT IMPLEMENTABLE**. AB-01 semántico está resuelto; AB-02 tiene crosswalk semántico; AB-03/04 están especificados a nivel abstracto/semántico; AB-06/07 tienen estructura causal/simbólica; AB-08 tiene regla poblacional; AB-09 tiene contrato de escenarios y firewall. Ninguno equivale a evidencia material completa.
+
+El paquete C puede avanzar documentalmente sobre §§221–229, consumiendo los elementos transferibles y manteniendo los demás OPEN. No se autoriza Design Freeze, implementación, simulación ni experimento. scientific_execution=false; execution_authorized=false.
