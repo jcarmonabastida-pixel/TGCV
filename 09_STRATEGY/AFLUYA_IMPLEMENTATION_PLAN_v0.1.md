@@ -6,7 +6,7 @@
 **Fecha:** 2026-11-10  
 **Estado:** DRAFT — rediseño integral alineado con la arquitectura estratégica AWGI v1.1; pendiente de aprobación de fases y gastos.  
 **Rama:** `strategy/afluya-ecosystem-v0.2`  
-**Documento estratégico rector:** `09_STRATEGY/AFLUYA_ECOSYSTEM_ARCHITECTURE_v0.7.md`, §39 (AWGI v1.1).  
+**Documento estratégico rector:** `09_STRATEGY/AFLUYA_ECOSYSTEM_ARCHITECTURE_v1.0.md` (arquitectura integrada v1.0). El documento histórico acumulativo se conserva en `09_STRATEGY/archive/AFLUYA_ECOSYSTEM_ARCHITECTURE_HISTORICAL_v0.7_to_v1.1_2026-11-10.md` y no es referencia vigente.  
 **Antecedentes conservados:** arquitectura económica §§35–36; naming y dominio §33; arquitectura de implantación ligera §§25–31.
 
 ---
@@ -365,6 +365,8 @@ La siguiente operación es completar la Fase 0 y preparar la Fase 1: **redactar 
 ## 11. Control de cambios
 
 ### v0.5 — 2026-11-10
+- Se actualiza la referencia rectora a la nueva arquitectura integrada `AFLUYA_ECOSYSTEM_ARCHITECTURE_v1.0.md`.
+- Se conserva el documento estratégico anterior en el directorio `archive/` exclusivamente para trazabilidad.
 - Rediseño integral del plan conforme a AFLUYA Web-as-Growth Infrastructure (AWGI).
 - La web pasa a ser la primera infraestructura práctica de descubrimiento, aprendizaje, contribución, conexión y evolución.
 - Se elimina la formación de un núcleo de colaboradores como condición previa para empezar.
