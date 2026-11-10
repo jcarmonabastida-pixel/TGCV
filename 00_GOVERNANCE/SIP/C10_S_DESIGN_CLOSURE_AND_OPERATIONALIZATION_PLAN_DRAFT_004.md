@@ -2253,3 +2253,12 @@ Se incorpora la especialización del maestro §249 y ledger AB §17. Se separan 
 La historia post-B pre-M L puede ser confusor mediador–Value inducido por tratamiento. El análisis requiere DAG longitudinal, historia medida suficiente, método g compatible, positividad secuencial, soporte, intervención mediadora factible, consistencia/versiones, medición válida e interferencia tratada. No se resuelve con regresión convencional ni ajuste por covariables postratamiento como si fueran basales.
 
 MED-03 y MED-05 siguen OPEN; los inputs AB-M03…M11 permanecen abiertos donde corresponda. No se aprueba estimando final, método, parámetros, tolerancias ni potencia; sin Design Freeze, implementación ni ejecución.
+
+
+## 16.124 — C-MED: registro causal H/L/M y rutas hacia Value (2026-11-10)
+
+Se operacionaliza el DAG preexistente (§233) y la especificación C-MED (§249) en maestro §250 y ledger AB §18. Se reutiliza el roster, sin crear una matriz paralela: H basal; Z/B y eventos de recepción/instalación; L post-B pre-M candidata; M=ΔT_acc*; E_T como proceso de observación; y variables downstream Reach/Π_H, conocimiento/consideración, selección/inicio, ejecución, Outcome y Value.
+
+La clasificación de L es relativa al estimando y dimensión V_j: solo es confusor mediador–Value inducido si B la afecta y causa tanto M como V_j por una ruta pertinente. Los dominios de recursos, permisos, dependencias, runtime, capacidad y C_dep* no se clasifican automáticamente. Las rutas B→L→M→downstream→V, B→L→V, vías A1/A2/colaterales, observación diferencial e interferencia quedan como hipótesis a auditar.
+
+Siguiente gate material: crosswalk campo a campo del roster U*/R*/C*/X*/E_T, con field_id ya existente, unidad/frontera, tiempo, snapshot, rol, fuente, cobertura, truth/observed y relación con cada V_j. No se inventan campos ni se rellenan valores. Outcome/Value (§224), microdominio, fuentes, topología de interferencia y evidencia de rutas permanecen OPEN. Sin Design Freeze, implementación, simulación ni ejecución.
