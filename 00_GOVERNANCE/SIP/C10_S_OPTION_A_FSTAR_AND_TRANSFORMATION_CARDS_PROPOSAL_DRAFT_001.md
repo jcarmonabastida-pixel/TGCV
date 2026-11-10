@@ -239,10 +239,10 @@ Se instancian cuatro TID propios del microdominio sintético, usando el esquema 
 
 | Alias | TID sintética | SID sintética | Revisión de card | RID/EID |
 |---|---|---|---|---|
-| F1 / τ2 | `tr:tgcv-c10s-syn:focal-convert` | `sp:tgcv-c10s-syn:focal-convert:1.0.0` | 1 | No asignados: no hay implementación ni ejecución |
-| F2 | `tr:tgcv-c10s-syn:focal-apply-verify` | `sp:tgcv-c10s-syn:focal-apply-verify:1.0.0` | 1 | No asignados |
-| A1 | `tr:tgcv-c10s-syn:baseline-export` | `sp:tgcv-c10s-syn:baseline-export:1.0.0` | 1 | No asignados |
-| A2 | `tr:tgcv-c10s-syn:baseline-import-apply-verify` | `sp:tgcv-c10s-syn:baseline-import-apply-verify:1.0.0` | 1 | No asignados |
+| F1 / τ2 | `tr:tgcv-c10s-syn:0001` | `sp:tgcv-c10s-syn:0001:1.0.0` | 1 | No asignados: no hay implementación ni ejecución |
+| F2 | `tr:tgcv-c10s-syn:0002` | `sp:tgcv-c10s-syn:0002:1.0.0` | 1 | No asignados |
+| A1 | `tr:tgcv-c10s-syn:0003` | `sp:tgcv-c10s-syn:0003:1.0.0` | 1 | No asignados |
+| A2 | `tr:tgcv-c10s-syn:0004` | `sp:tgcv-c10s-syn:0004:1.0.0` | 1 | No asignados |
 
 Los TID identifican operaciones funcionales distintas. SID versiona el contrato abstracto. RID solo podrá asignarse a una realización concreta si en una fase posterior se elige y documenta; EID solo a un intento/ejecución identificable. No codificar brazo, tiempo, unidad, resultado, Outcome o Value en los IDs.
 
