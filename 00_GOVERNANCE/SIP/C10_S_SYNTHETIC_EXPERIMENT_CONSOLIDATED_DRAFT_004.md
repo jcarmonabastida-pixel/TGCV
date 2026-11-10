@@ -9865,3 +9865,80 @@ Por tanto, la tupla de §3.3 queda supersedida por §30 y se corrige su lectura.
 No se declara total el crosswalk hasta que cada subcampo X*, cada evento de ΔU* y cada diferencia de granularidad tenga regla explícita de correspondencia y estado 1/0/?.
 
 **Estado:** error de precedencia identificado y corregido documentalmente; MED-02 OPEN hasta crosswalk semántico completo. No se cambia el Core, no se aprueba una nueva ontología ni se autoriza ejecución.
+
+
+# 231. MED-02 — tipado semántico y crosswalk de ΔX* al objeto analítico C10-D1 (2026-11-10)
+
+**Estado:** regla de clasificación de campos propuesta; crosswalk concreto del microdominio no cerrado. No es una decisión de freeze.
+
+## 231.1. Precedencia y conclusión
+
+Se aplican conjuntamente:
+- DGP temporal §30: S_T*=(U*,R*,C*,X*), ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*).
+- Snapshot §2.1–3: X_t* es estado/contexto constitutivo de la relación de accesibilidad en el tiempo; C_t* contiene condiciones/configuraciones estructurales de realizabilidad.
+- C10-D1 §27.1: representación analítica de trabajo ΔT_acc=(A⁺,A⁻,A^reconf,ΔR,ΔC).
+
+No hay correspondencia uno-a-uno entre las cuatro coordenadas estructurales DGP y las cinco dimensiones analíticas C10-D1. En particular, ΔX* se conserva como cambio contextual estructural del DGP y como antecedente/estrato temporal que explica cambios observables en el objeto analítico; no se suma como una sexta dimensión de C10-D1 ni se agrega automáticamente a ΔC.
+
+## 231.2. Regla de tipado por función semántica
+
+La clasificación se hace por el papel que cumple el campo en la verdad estructural, no por su nombre, fuente documental o ubicación física:
+
+| Tipo | Pregunta de clasificación | Contenido típico en el microdominio de migración |
+|---|---|---|
+| U* | ¿Es una transformación identificable o su estado de accesibilidad? | Operación de migración, conversión, adaptación o rollback; identidad y estado accesible de esa operación |
+| R* | ¿Es una relación tipada entre transformaciones/objetos que condiciona composición o dependencia? | Dependencia entre paquetes/servicios, interfaz, orden o regla de composición |
+| C* | ¿Es una condición, predicado, restricción o configuración de realizabilidad que debe satisfacerse? | Compatibilidad source-target, permisos/authorization, recursos disponibles, bloqueo, precondición, constraint o configuración admisible |
+| X* | ¿Es un valor/estado contextual efectivo del sistema-unidad-entorno-tiempo, constitutivo de qué transformaciones pueden ser accesibles en ese momento, pero no es en sí una transformación, relación ni regla? | Versión efectiva del entorno origen/destino, modo de despliegue activo, estado efectivo del runtime o perfil contextual activo, si el contrato demuestra que altera la accesibilidad |
+| E_T | ¿Es información sobre cómo se conoce/adjudica el estado, no sobre el estado del sistema? | Logs disponibles, cobertura, calidad/validez de registros, fuente, hash/provenance documental, timestamp de observación y adjudicación |
+
+Ejemplo de separación semántica: la versión efectiva instalada del runtime puede ser un valor contextual X*; la regla de compatibilidad con la versión objetivo es C*; la dependencia entre dos componentes es R*; la operación que los migra es U*. La mera coincidencia de nombres o de origen de datos no permite fusionarlos.
+
+## 231.3. Qué significa ΔX* en el crosswalk
+
+Cada campo incluido en ΔX* debe clasificarse en una de estas salidas mutuamente excluyentes para su rol primario:
+
+1. **X_CONTEXT_CONSTITUTIVE:** cambia el contexto efectivo que condiciona accesibilidad. Se conserva como dimensión de estado/contexto en el DGP, con valor basal/post y fecha de vigencia. Su consecuencia sobre T_acc debe reflejarse, cuando corresponda, en A⁺, A⁻, A^reconf, ΔR o ΔC; ΔX* documenta el contexto causal y no se cuenta de nuevo como una transformación adicional.
+2. **C_REALIZABILITY:** el supuesto campo X es en realidad un predicado, restricción o configuración de realizabilidad. Se reclasifica en C* mediante decisión semántica explícita, preservando el campo de origen y su mapping.
+3. **Q_NONCONSTITUTIVE_HISTORY:** es historia/contexto temporal no constitutivo que puede fijarse o estandarizarse coherentemente bajo el régimen q. No forma parte del mediador ΔT_acc*; se mantiene en la historia/régimen del estimando.
+4. **OUTSIDE_MEDIATOR:** el campo no cambia la accesibilidad estructural en la frontera, unidad y horizonte declarados. Se conserva si es covariable/contexto pertinente, pero no se incluye en ΔT_acc*.
+5. **UNKNOWN:** no existe definición o evidencia suficiente para distinguir las anteriores. El estado es ?; no se fuerza un mapping ni se atribuye efecto.
+
+Estas salidas no autorizan reclasificar un campo por conveniencia estadística. Si un mismo campo mezcla valor contextual y regla de admisibilidad, debe descomponerse en subcampos tipados antes de clasificarlo. Si la descomposición no es posible, permanece UNKNOWN.
+
+## 231.4. Regla de no doble conteo y correspondencia con C10-D1
+
+- ΔU* → A⁺/A⁻/A^reconf: solo tras matching de identidad, equivalencia y granularidad. Cambios de identidad se registran como baja/alta, no como mera reconfiguración.
+- ΔR* → ΔR: conservar tipo, dirección, alcance y dependencias; no crear una transformación nueva por la mera aparición de una relación.
+- ΔC* → ΔC y, si cambia materialmente el mecanismo/precondición de una transformación emparejada que mantiene accesibilidad, registrar el atributo correspondiente en A^reconf sin duplicar el mismo evento como dos contribuciones independientes.
+- ΔX* → anotación contextual/causal del DGP: no tiene coordenada analítica autónoma en §27.1. Cuando un cambio X altera accesibilidad, sus consecuencias estructurales se observan en las dimensiones analíticas pertinentes, y X se conserva como antecedente/contexto para identificar factibilidad, heterogeneidad y temporalidad. Si no altera accesibilidad, no entra en el mediador.
+- ΔE_T nunca se incorpora a ΔT_acc*. Un cambio de evidencia puede alterar el estado observado 1/0/? sin que cambie la truth estructural.
+
+Un evento causal puede tener varios efectos estructurales, pero el ledger debe asignar un event_id común y distinguir causa/contexto, objeto afectado y diff resultante. No sumar ΔX, ΔC y ΔU como si fueran tres efectos independientes cuando son niveles distintos de la misma transición.
+
+## 231.5. Reglas temporales y relación con q
+
+- X(t0) pre-Z se registra como contexto basal y puede definir estratos/población objetivo; su uso en ajuste depende del estimando y del diseño.
+- Un X(t) post-Z y previo a la medición de ΔT_acc que afecta accesibilidad se mantiene en el DAG como variable postintervención; si también afecta Value por vía distinta de accesibilidad, es candidato a confusor mediador–resultado inducido por B. No se lo convierte automáticamente en componente de q ni se ajusta como covariable basal.
+- Un X no constitutivo y temporal puede pertenecer a q solo si es coherente estandarizarlo/intervenir sobre él y existe soporte común.
+- Un cambio de contexto posterior al snapshot de accesibilidad t3 no se retrotrae a ΔT_acc*(t0,t3). Requiere un nuevo snapshot/diff y, si es causalmente relevante, un estimando dinámico.
+- Si el contexto constitutivo solo puede variar junto con la accesibilidad, el contraste específico de accesibilidad puede no ser identificable; debe informarse un efecto conjunto o de política.
+
+## 231.6. Registro de crosswalk obligatorio
+
+Cada campo/subcampo debe tener: field_id, nombre de origen, definición semántica, unidad/sistema/frontera, tiempo de vigencia, tipo primario (U/R/C/X/E), valor basal/post o regla de diff, condición que lo hace constitutivo, efecto estructural esperado, mapping C10-D1 (o NO_DIRECT_COORDINATE), event_id, relaciones con otros campos, riesgo de doble conteo, fuente de truth, fuente observada, regla de adjudicación y estado 1/0/?.
+
+No se aceptan mappings por nombre, conveniencia, correlación con Value ni disponibilidad documental.
+
+## 231.7. Aplicación al microdominio y estado de MED-02
+
+Los ejemplos de §231.2 son clases orientativas, no un roster aprobado de variables del DGP. Para cerrar MED-02 falta recuperar la ficha contractual concreta de F1/τ2, F2, A1/A2, entornos origen/destino, perfiles activos y el catálogo de campos de snapshot del microdominio seleccionado. Cada campo deberá clasificarse con el registro de §231.6, con truth y medición separadas.
+
+| Subgate | Criterio | Estado |
+|---|---|---|
+| MED-02a | Precedencia DGP §30 / snapshot / C10-D1 §27.1 reconciliada | DEFINED |
+| MED-02b | Regla semántica U/R/C/X/E y no doble conteo | PROPOSED |
+| MED-02c | Roster real del microdominio, campo a campo, con event_id y mapping | OPEN |
+| MED-02d | Adjudicación de campos UNKNOWN y verificación de comparabilidad temporal | OPEN |
+
+**Dictamen:** la ambigüedad conceptual de ΔX* queda acotada por una regla de clasificación verificable. MED-02 no se cierra hasta completar el roster real y adjudicar cada campo. No se declara mapping total, identificación causal, Design Freeze ni implementabilidad.
