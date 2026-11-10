@@ -1460,3 +1460,18 @@ No se amplían P177/P182/P183 en esta sección; cualquier especialización contr
 ## 77. Precedencia corregida del crosswalk ΔT_acc (2026-11-10)
 
 La referencia correcta del DGP es §30: ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*) y ΔValidity_e pertenece a ΔE_T. La expresión anterior de §3.3 (que incluía ΔValidity y ΔState) queda supersedida. Para el cruce con C10-D1 §27.1: ΔU→A⁺/A⁻/A^reconf; ΔR→ΔR; ΔC→ΔC; ΔX queda OPEN para clasificación semántica; ΔE_T permanece separado. No se declara cierre MED-02.
+
+
+## 78. Contrato de crosswalk semántico para ΔX*
+
+No se crea un nuevo test ID ni fixture. Esta especialización operacionaliza el registro de MED-02:
+
+- El campo debe clasificarse por su función semántica U/R/C/X/E, no por su nombre.
+- X* es contexto/estado efectivo constitutivo; no se agrega como coordenada adicional a la representación analítica C10-D1.
+- Se exige no doble conteo entre el contexto ΔX*, sus cambios en condiciones ΔC* y los diffs de transformaciones/relaciones.
+- Cada campo tendrá field_id, definición, unidad/frontera, tiempo, tipo, regla basal/post, condición constitutiva, mapping, event_id, overlap, truth/observed, adjudicación y estado 1/0/?.
+- UNKNOWN/? es salida válida y bloquea la atribución que dependa de ese campo.
+
+**Adversariales a cubrir en la especificación (sin fixtures):** cambio de versión efectiva con regla de compatibilidad constante; regla de compatibilidad que cambia sin cambiar el entorno; cambio de modo de despliegue que abre/cierra una ruta; evidencia/logs que cambian sin cambio estructural; cambio post-t3; un mismo campo documental que mezcla valor y regla.
+
+El roster y la adjudicación de estos casos siguen OPEN. No se amplían contratos P177/P182/P183 ni se afirma ejecución.
