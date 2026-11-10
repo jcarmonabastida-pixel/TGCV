@@ -2177,3 +2177,11 @@ El crosswalk A_f* y la regla trivalente resuelven parte de la semántica AB-04, 
 Se detecta discrepancia de índices: DGP temporal usa baseline t−1, Z t0, política t1; Path Predicate Matrix usa baseline t0 y asignación/oferta t1. Se conserva el orden por nombre de evento, pero no se equiparan índices hasta reconciliación explícita.
 
 Véase ledger AB §§9.1–9.4. No se inventan identidades, mecanismos, estados ni timestamps.
+
+## 16.115 — AB-M05…M11 y discrepancia H_path/H_time (2026-11-10)
+
+La reconciliación final de inputs AB confirma: C0/G/F* tienen estructura aceptada, pero H* temporal exige ancla, valor y unidad todavía OPEN. La Path Predicate Matrix contiene H=3 como profundidad máxima candidata del grafo, no como horizonte temporal; se registra AB-TIME-02 y se prohíbe reutilizar ese 3 como duración/ventana.
+
+La programación D2 está definida por política; intento efectivo, recepción/cumplimiento, provisión de fondo, joint C_dep, fallos y rollback no. P*_τ2/P*_F están diferenciadas; elegibilidad, q_X*, soporte, pesos/estratos y cluster/interferencia no están materializados. Oráculo, cegamiento, adjudicación, R0–R3 truth tables y observación/missingness permanecen sin validación/evidencia.
+
+Véase ledger AB §10. Ningún valor se inventa ni se transfiere a C como si estuviera cerrado.
