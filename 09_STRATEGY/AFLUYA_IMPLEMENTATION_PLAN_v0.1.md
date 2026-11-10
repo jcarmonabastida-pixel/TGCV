@@ -332,14 +332,15 @@ El usuario aprobará cada gasto por separado. El objetivo es minimizar el coste 
 
 | Fase | Estado inicial | Evidencia / condición |
 |---|---|---|
-| 0. Preparación y movilización | IN_PROGRESS | Orientación económica aceptada; paquete de convocatoria y mapa de roles pendientes de completar |
+| 0. Preparación | IN_PROGRESS | Orientación económica aceptada; paquete de convocatoria y mapa de roles pendientes de completar |
 | 1. Movilización | NOT_STARTED | Perfiles y paquete de convocatoria por preparar; sin compromisos con terceros |
 | 2. Dominio | NOT_STARTED | Dominios NOT_VERIFIED; sin compra |
 | 3. Identidad | NOT_STARTED | Dirección visual en arquitectura; kit pendiente |
 | 4. Web pública | NOT_STARTED | Herramienta pendiente de comparación; sin cuenta/plan contratado |
 | 5. Documentación | NOT_STARTED | GitHub es fuente maestra; publicación por configurar |
 | 6. Integración | NOT_STARTED | Depende de fases 4 y 5 |
-| 7. Lanzamiento | NOT_STARTED | No hay publicación autorizada |\n| 8. Mantenimiento | DEFINED_NOT_SCHEDULED | Revisión trimestral definida; no existe seguimiento programado |
+| 7. Lanzamiento | NOT_STARTED | No hay publicación autorizada |
+| 8. Mantenimiento | DEFINED_NOT_SCHEDULED | Revisión trimestral definida; no existe seguimiento programado |
 
 **Situación de dominio:** afluya.org — NOT_VERIFIED; afluya.com — NOT_VERIFIED; afluya.es — NOT_VERIFIED. No se ha registrado ni comprado ningún dominio.
 
