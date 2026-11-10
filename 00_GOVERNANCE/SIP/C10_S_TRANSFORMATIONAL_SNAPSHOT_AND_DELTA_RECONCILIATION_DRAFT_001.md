@@ -188,3 +188,10 @@ Pendientes para cierre:
 - revisión independiente y decisión formal.
 
 No se cierra AUD-001/004/005/007, XAUD-003/004/006 ni XSYNC-138-03/06. No hay freeze, implementación, simulación ni ejecución.
+
+
+## 6. Roster de campos del microdominio y regla X/C/E_T
+
+El roster documental consolidado está en el maestro C10-S §232. Para el diff de snapshots, cada subcampo de U_t*/R_t*/C_t*/X_t* se registra con ID canónico, versión, unidad/frontera, vigencia, regla de matching, valor basal/post, event_id y efecto estructural. La fuente de observación/cobertura/validez/provenance/adjudicación se registra separadamente en E_T.
+
+X_t* solo contiene estado/contexto efectivo constitutivo de accesibilidad; reglas, ACL, cuotas, restricciones y bloqueos pertenecen a C_t*; endpoints/dependencias a R_t*; transformaciones a U_t*; logs/hash/cobertura a E_T. Los campos mixtos se descomponen o quedan UNKNOWN. El roster real y su comparabilidad siguen OPEN.
