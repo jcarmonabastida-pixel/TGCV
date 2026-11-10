@@ -10148,3 +10148,13 @@ D2 tiene programación determinada por política (W_programmed=0 en Z=0 y 1 en Z
 P*_τ2 y P*_F permanecen distintos; algoritmo de elegibilidad, q_X*, pesos/estratos, soporte/positividad y topología de asignación/interferencia no están materializados. El oráculo, cegamiento, adjudicación, truth tables R0–R3 y proceso de observación/missingness están definidos en arquitectura, pero no validados ni poblados; cobertura de grafo permanece NONE.
 
 **Estado:** AB-05…09 mantienen inputs/evidencia OPEN. Sin defaults numéricos, freeze, implementación ni ejecución.
+
+## 238. Propuesta integrada de resolución AB-01…AB-09 para aceptación (2026-11-10)
+
+El ledger AB §11 reúne los inputs residuales en una única propuesta de cierre, sin crear nueva DEC ni alterar DEC-C10-093/094. Separa decisiones sintéticas, reconciliaciones técnicas y evidencia material.
+
+La propuesta recomienda: (i) resolver los dos operand bindings una sola vez contra la gramática, AST tipado o REF tipado según el contrato, sin duplicidad; (ii) conservar mapping BOOL/ENUM y no extrapolar JCS UDG-01 al payload; (iii) completar cuatro cards sintéticas versionadas F1/F2/A1/A2 sin atribuirles productos o mecanismos reales; (iv) reutilizar el crosswalk A_f*, matriz temporal y lógica 1/0/?; (v) distinguir H_path de H_time y aplazar el valor temporal hasta fijar Outcome/Value; (vi) modelar separadamente programación, intento, recepción, instalación y C_dep; (vii) definir distribución conjunta C_dep con sensibilidad justificada, sin s=.80 ni .20/.80 heredados; (viii) fijar elegibilidad C0 pre-Z, P*_τ2/P*_F y q_X* sin extrapolación; (ix) reutilizar R0–R3 con truth/observación separadas y adversariales de interferencia y vías colaterales.
+
+La capa R0 puede estipular invariancia/no interferencia dentro del DGP para comprobar recuperación bajo verdad conocida; no demuestra exclusión o invariancia empírica en sistemas reales. MD-C1/MD-C4 y la cobertura observada siguen siendo gates probatorios.
+
+La propuesta requiere aceptación expresa de AB-03-SYN, AB-05-H, AB-08-POP, AB-09-INT y AB-06/07-PARAM. REF/AST y schema/canonicalización son reconciliaciones técnicas contra contratos vigentes. **No aprobada ni congelada.** AB permanece IN_PROGRESS; no hay implementación, fixtures, simulación ni ejecución.
