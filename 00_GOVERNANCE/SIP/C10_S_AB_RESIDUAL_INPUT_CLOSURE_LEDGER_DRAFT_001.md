@@ -307,3 +307,21 @@ El usuario acepta expresamente la propuesta integrada de §11 como base de traba
 Esta aceptación no aprueba el DAG como identificación causal empírica, no satisface MD-C1/MD-C4, no demuestra cobertura, exclusión ni no-afectación real, no cierra AB y no constituye Design Freeze, autorización de implementación o autorización de ejecución.
 
 **Estado actualizado:** AB-03-SYN, AB-05-H (regla de separación), AB-08-POP (regla de elegibilidad/separación), AB-09-INT (regla de escenarios) y AB-06/07-PARAM (método de parametrización) = ACCEPTED DESIGN RULES WITH OPEN MATERIAL INPUTS. AB permanece IN_PROGRESS. H_time, población/q_X* numéricos, soporte, unidad/interferencia real, parámetros, verdad/observación y evidencia material permanecen OPEN. scientific_execution=false; execution_authorized=false.
+
+## 13. AB-M01 — reconciliación semántica de los operand bindings (2026-11-10)
+
+**Resultado documental: AST_TYPED_PARAMETER_BINDINGS — DESIGN RESOLVED; physical serialization OPEN.**
+
+La reconciliación entre el contrato abstracto de instancia §§3.4/6, la gramática mínima §§3/9/11/12, el perfil DEC-C10-054 y la instancia RUL-SVC-ENABLE-PROFILE-01 aceptada por DEC-C10-068 permite resolver la alternativa semántica:
+
+1. Los dos operandos de la regla son referencias tipadas a claves PAR ya declaradas: ENABLED (BOOL) y PROFILE (ENUM).
+2. Su función es enlazar hojas/operand positions del AST de RUL con parámetros de la misma instancia; no representan relaciones constitutivas entre componentes ni referencias a recursos/dependencias del paquete.
+3. Por tanto, **no se crean dos objetos REF de configuración** para esos operandos. Se representan una sola vez como bindings tipados del AST a parameter_key, con tipo esperado y resolución contra el roster PAR.
+4. Se conserva la cardinalidad semántica exactamente dos; un binding no puede duplicarse simultáneamente como REF y como AST operand.
+5. Un REF de configuración solo se incorporará si el inventario revela una relación/dependencia constitutiva independiente, con sus propios extremos, tipo, dirección y cardinalidad; no por el mero hecho de que un AST consulte un parámetro.
+
+La expresión de referencia documentada es OR(NEQ(ENABLED,true),IN(PROFILE,{STANDARD,READ_ONLY})) bajo REQUIRE. El binding debe resolver ENABLED→PAR-SVC-ENABLED/BOOL y PROFILE→PAR-SVC-PROFILE/ENUM; la gramática conserva operadores y dominios finitos. Esta resolución no introduce una sintaxis serializada concreta ni parser.
+
+**Qué queda OPEN en AB-M01/M02:** nombres físicos de campos/nodos, encoding/schema del AST, serialización canónica del AST, namespace/versionado del parameter_key, constraints físicas y validación de integridad. No se extiende JCS UDG-01 a este payload. El contrato físico debe implementar la referencia tipada y verificar destino existente, tipo concordante y cardinalidad exactamente una.
+
+**Criterio de cierre documental AB-M01:** binding AST tipado a PAR; dos operands y solo dos; no REF duplicado; referencia exacta a claves/versiones PAR del snapshot de instancia; UNKNOWN si el binding o destino no se resuelve. Estado: semántica DESIGN RESOLVED; encoding y validación técnica OPEN.
