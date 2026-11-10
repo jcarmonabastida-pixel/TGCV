@@ -2306,3 +2306,17 @@ Se incorpora maestro §255 y ledger AB §23, desarrollando el contrato ya existe
 Se incorpora maestro §256 y ledger AB §24, reutilizando §§225.7/225.9 y 229.5–229.7, sin duplicar contratos P177/P178/P179/P182/P183. Se fijan clases truth/salida, falsas declaraciones de identificación, falsa atribución focal, sustitución de estimando, bounds incorrectos, abstención correcta/falsa, fallos técnicos, denominadores por clase y solapamiento de errores, ficha de tolerancias ex ante y orden de cegamiento/adjudicación.
 
 **Resultado:** AN-03 DOCUMENTED / DENOMINATOR LOGIC SPECIFIED; AN-04 PARTIALLY SPECIFIED / NUMERIC THRESHOLDS OPEN; C-ANALYZER OPEN. No se asignan umbrales, multiplicidad, N ni réplicas; permanecen pendientes la calibración, potencia/precisión y validación técnica del firewall. Sin fixtures, código, simulación ni ejecución.
+
+
+## 16.131 — C-MED / MAP-01–02: frontera D2→g y separación de estimandos
+
+Se incorpora maestro §257 y ledger AB §25. La reconstrucción confirma que MAP-01/02 ya existían en la auditoría IV §14.6–14.7; se reutilizan sin duplicarlos. MAP-01 tiene campos contractuales definidos pero valores materiales abiertos. MAP-02 tiene secuencia/medición temporal definidas documentalmente, pero ventanas, fuentes, snapshots y evidencia abiertos.
+
+La reconciliación mantiene separados:
+1. θ_A(q): pregunta científica general sobre políticas factibles que inducen el ΔT_acc* completo bajo régimen común q;
+2. ITT_Z^D2: efecto de asignar B_g0/B_g1, interpretable como política/paquete si no se excluyen o identifican rutas colaterales;
+3. IIE_M candidato: componente interventional secundario a través de la distribución conjunta factible de M=ΔT_acc*, con H/L pre-M y método longitudinal pendiente.
+
+D2 no equivale por definición a g^Af ni a las políticas generales g1/g0. La interpretación focal exige versiones, mapping B→g^Af, q*, población/soporte, medición independiente y control de vías colaterales. A_f*/D_f* no sustituyen el mediador estructural completo; ΔE_T permanece separado y ΔX* requiere crosswalk semántico por campo. Se mantienen abiertos MED-03/05 y MAP-03…07.
+
+**Resultado:** reconciliación conceptual/documental; no identificación ni cierre material. Sin aprobación de estimando/método, Design Freeze, implementación, fixtures, simulación o ejecución. scientific_execution=false; execution_authorized=false.
