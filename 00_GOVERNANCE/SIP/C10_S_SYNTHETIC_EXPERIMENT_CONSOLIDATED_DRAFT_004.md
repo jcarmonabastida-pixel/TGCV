@@ -11270,3 +11270,76 @@ E_T permanece separado del estado estructural M. Si el proceso de observación m
 MAP-05 requiere universo de alternativas cerrado para la instancia, snapshots/diffs por unidad, dependencias compartidas, recursos, permisos, seguridad, rendimiento/costes, datos, conocimiento, residuos, cobertura y adjudicación. MAP-06 requiere Outcome y Value por dimensión (constructo/beneficiario/escala/horizonte), dictámenes separados, fuentes comparables, mapa de interferencia/carryover y evidencia de que B no altera oráculo/medición. AB-M06, AB-M09 y AB-M10 siguen OPEN.
 
 **Dictamen:** MAP-05/06 integrados documentalmente; permanecen OPEN materialmente y para identificación. No se declara exclusión empíricamente satisfecha/violada para una instancia aún no materializada. No se aprueba LATE_f, θ_A(q), mediación, población, q, parámetros, umbrales o potencia. Sin Design Freeze, implementación, fixtures, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
+
+# 260. MAP-07 — matriz de adjudicación y frontera de atribución entre estimandos (2026-11-10)
+
+**Precedencia:** especializa, sin sustituir, auditoría IV §14.5, reconciliación C-MED §257, soporte/versión §258, rutas/exclusión §259, Analyzer §256 y jerarquía C10-D1. No introduce estimandos nuevos, no modifica DEC-C10-066/067 y no convierte un gate documental en identificación.
+
+## 260.1. Objeto de MAP-07
+
+MAP-07 no decide cuál estimando es preferible en abstracto. Impide que una evidencia obtenida para una intervención, población, tratamiento, horizonte o resultado se use para sostener otro objeto causal que requiere supuestos adicionales.
+
+La adjudicación es **por estimando × resultado/dimensión × población/unidad × horizonte × versión de intervención**. No existe un único estado global de «identificación C10». Outcome y cada V_j conservan dictámenes separados; la validez de un estimando en un dominio no se transfiere a otro.
+
+## 260.2. Matriz de estimandos y condiciones de admisibilidad
+
+| Objeto ya definido | Qué contraste representa | Condiciones mínimas antes de declarar identificación | Qué no autoriza a afirmar |
+|---|---|---|---|
+| ITT_Z^D2 / efecto de asignación | Contraste por asignación a B_g1^D2 frente a B_g0^D2 en la población/unidad asignada | Elegibilidad y asignación pre-Z trazables; política/versiones consistentes; unidad y población definidas; seguimiento y medición comparable; positividad/diseño de asignación válidos; interferencia/carryover ausentes o incorporados al estimando; horizonte y resultado fijados | No atribuye el efecto exclusivamente a D_f* o ΔT_acc*. Con vías colaterales, se interpreta como efecto de asignación/política/paquete |
+| LATE_f^D2 / IV focal | Efecto local de D_f* para compliers inducidos por Z bajo el instrumento y población definidos | Todos los gates IV-G1…IV-G8 de auditoría §14; relevancia de D_f* observada; independencia; exclusión específica para el resultado (MAP-06); monotonicidad; consistencia/versiones; interferencia; medición independiente de D_f* y resultado | No es ITT, ATE poblacional, θ_Af(q_X*) ni θ_A(q). No se calcula/etiqueta Wald como LATE si algún supuesto crítico es UNKNOWN o CONTRADICTED |
+| θ_Af(q_X*) / contraste focal de políticas | Contraste de políticas factibles sobre la proyección focal de accesibilidad, bajo q_X* común | Políticas g^Af materialmente definidas; mapping de B a esas políticas demostrado si se usa D2; mismo q_X*, población, versiones y horizonte; soporte/positividad; medición del cambio focal independiente; rutas no focales excluidas o separadas bajo el estimando | No representa el espacio transformacional completo ni se convierte en θ_A(q) por equivalencia nominal |
+| θ_A(q) / pregunta general C10-D1 | Contraste entre políticas factibles g1/g0 sobre el ΔT_acc* estructurado completo bajo régimen común q | Definición factible de g0/g1 y régimen q; población/unidad y q_X*; consistencia/versiones; mapping completo de ΔU*, ΔR*, ΔC*, ΔX* sin doble conteo; soporte común estructural y secuencial; medición válida; rutas colaterales e interferencia tratadas; Outcome/Value dimensional y horizonte definidos; supuestos de identificación propios | No queda identificado por ITT_Z^D2, LATE_f, una primera etapa positiva, instalación técnica ni mediación bajo D2 |
+| IIE_M candidato / mediación interventional | Componente interventional secundario a través de la distribución conjunta factible de M=ΔT_acc*, con referencia política b1 y condiciones de historia/régimen declaradas | Estimando interventional y referencia explícitos; H y L pre-M suficientes y temporalmente válidos; distribución mediadora intervenible/factible; modelo longitudinal compatible con L inducido; intercambio secuencial, positividad, consistencia/versiones, medición e interferencia defendibles; definición de V_j/horizonte | No es efecto directo natural, no se obtiene por resta automática del ITT, no identifica θ_A(q) y no elimina rutas de política que no pasan por M |
+
+La tabla no relaja los contratos originales: para ITT, los requisitos de asignación y seguimiento deben corresponder al diseño efectivamente definido; para LATE se aplican íntegramente IV-G1…IV-G8; para θ_A(q) y mediación se requieren sus supuestos propios, no prestados de D2.
+
+## 260.3. Regla de transferencia entre afirmaciones
+
+Se aplican las siguientes reglas no transitivas:
+
+1. **ITT identificado, LATE no identificado:** reportar únicamente el efecto de asignación/política en el resultado y población cubiertos. No dividir por una primera etapa ni atribuir a accesibilidad.
+2. **LATE_f identificado:** limitar la afirmación a compliers, D_f*, instrumento, versión, población y resultado adjudicados. No generalizar a toda la población ni al ΔT_acc* completo.
+3. **θ_Af(q_X*) identificado:** sostener solo el contraste focal y su q_X*; no sustituir el estimando general C10-D1.
+4. **IIE_M identificado bajo D2:** sostener solo la mediación interventional definida, su referencia b1, historia y población; no usarla como prueba automática de θ_A(q).
+5. **θ_A(q) identificado:** la afirmación se limita a las políticas, población, régimen q, componentes del mediador, dimensiones V_j y horizonte efectivamente identificados. No implica universalidad ni validez fuera del soporte.
+6. Un estimando puede estar identificado para Outcome y no para V_j, o para una dimensión V_j y no para otra.
+7. Los estimandos no son sumandos intercambiables. No se calcula «efecto directo» restando IIE_M de ITT salvo que una descomposición y escala compatibles estén explícitamente definidas y justificadas en el contrato correspondiente.
+
+## 260.4. Tabla de salida del Analyzer y abstención
+
+El Analyzer debe recibir únicamente observables y contratos permitidos; no accede a truth DGP, potenciales ni etiquetas ocultas del escenario. El Evaluator conserva la adjudicación contra truth y evidencia.
+
+Para cada tupla de adjudicación el Analyzer debe:
+
+- identificar exactamente el estimando solicitado y rechazar sustituciones de target;
+- verificar si están definidos población/unidad, versión, resultado/dimensión y horizonte;
+- comprobar la disponibilidad de evidencia para cada condición requerida, sin convertir ausencia de evidencia en evidencia de ausencia;
+- distinguir SUPPORTED, CONTRADICTED y UNKNOWN en exclusión, soporte, interferencia y medición cuando corresponda;
+- emitir la clasificación de identificación/bounds/abstención ya definida en §256 y los contratos P177/P178/P179/P182/P183, con denominador y causa trazables;
+- abstenerse de declarar identificación si un supuesto necesario permanece UNKNOWN, la evidencia es no comparable, hay conflicto no resuelto o se intenta transferir evidencia entre estimandos;
+- no elegir el escenario favorable cuando los observables no distinguen verdad focal de vía colateral.
+
+La abstención correcta no es un fallo del Analyzer. Es el resultado requerido cuando la evidencia no permite discriminar identificación puntual, parcial o no identificación. Los umbrales cuantitativos, tolerancias y calibración siguen bajo AN-04; esta sección no los inventa.
+
+## 260.5. Matriz de combinaciones y lectura admisible
+
+| Resultado de adjudicación | Lectura permitida |
+|---|---|
+| ITT_Z^D2 identificado; exclusión focal UNKNOWN/CONTRADICTED | Efecto de asignación/política sobre el resultado, no efecto focal de accesibilidad |
+| ITT identificado; LATE_f no identificado | Conservar ITT; abstenerse de atribución instrumental |
+| LATE_f identificado; θ_Af/θ_A no identificados | Efecto local focal únicamente; pregunta de políticas de accesibilidad sigue abierta |
+| θ_Af identificado; θ_A no identificado | Evidencia causal focal bajo q_X*, no generalización al espacio completo |
+| IIE_M identificado; θ_A no identificado | Mediación interventional bajo referencia y población declaradas; pregunta general sigue abierta |
+| θ_A(q) no identificado por falta de soporte en parte de la población | Informar no identificación o identificación parcial/restricción de soporte solo si el nuevo target está explícitamente definido; nunca extrapolar silenciosamente |
+| Outcome identificado; V_j desconocido/no identificado | No trasladar el dictamen de Outcome a Value |
+| Evidencia insuficiente para distinguir rutas o versiones | UNKNOWN / abstención, sin dictamen causal favorable |
+
+Esta matriz es lógica de interpretación, no una tabla de resultados experimentales ni de parámetros.
+
+## 260.6. Dependencias y estado de cierre
+
+MAP-07 puede considerarse **DOCUMENTED** en su contrato de adjudicación cuando la matriz, reglas de transferencia y abstención estén integradas con §256 y auditoría IV §14.5. No puede considerarse materialmente cerrado hasta que los inputs de los gates pertinentes estén disponibles y adjudicados.
+
+Dependencias aún OPEN: MAP-01/02 valores, ventanas y evidencia; MAP-03 soporte/distribuciones; MAP-04 equivalencia; MAP-05/06 rutas y exclusión; MED-02 inventario/matching material; MED-03 DAG campo×tiempo×V_j; MED-04 políticas factibles g0/g1 y q común; MED-05 identificación interventional; MED-06 sensibilidad/bounds; C-Value §224; AN-04 umbrales/potencia y firewall validado.
+
+**Dictamen:** MAP-07 queda especificado documentalmente como matriz de adjudicación y regla de no transferencia; no queda validado empíricamente ni cierra la identificación de ningún estimando. Se preservan θ_A(q) como pregunta científica general, ITT_Z^D2 como efecto de asignación/política, LATE_f como estimando IV focal condicional, θ_Af(q_X*) como contraste focal distinto e IIE_M como candidato secundario. Sin Design Freeze, implementación, fixtures, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
