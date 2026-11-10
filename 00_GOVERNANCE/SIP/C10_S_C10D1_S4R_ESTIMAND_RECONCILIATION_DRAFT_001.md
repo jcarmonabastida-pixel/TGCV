@@ -455,3 +455,12 @@ El Analyzer se evalúa por estimando×dimensión×DGP×soporte; Generator conser
 Se corrige la descripción de §27 conforme al contrato DGP §30 y al documento de snapshots: la verdad estructural usa S_T*=(U*,R*,C*,X*) y ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*). ΔValidity_e es epistémica y pertenece a ΔE_T. La formulación previa de DGP §3.3 queda supersedida.
 
 El mapping propuesto con C10-D1 §27.1 es ΔU→A⁺/A⁻/A^reconf; ΔR→ΔR; ΔC→ΔC. ΔX no se mapea sin más: requiere decidir si su contenido modifica realizabilidad (ΔC), es historia/contexto q o queda fuera del mediador. MED-02 permanece OPEN.
+
+
+## 29. MED-02 — clasificación de ΔX* y regla de no doble conteo
+
+La definición de snapshot distingue X_t* como estado/contexto efectivo constitutivo de accesibilidad y C_t* como condiciones/configuraciones estructurales de realizabilidad. C10-D1 §27.1 no tiene coordenada autónoma ΔX. Por tanto, ΔX* se conserva como contexto causal del DGP y sus consecuencias estructurales se reflejan en A⁺/A⁻/A^reconf/ΔR/ΔC sin contabilizarlo de nuevo como una contribución adicional.
+
+Los campos se clasifican por función semántica: U transformación, R relación, C condición/predicado, X estado/contexto efectivo, E evidencia. Un supuesto X que sea una regla se reclasifica en C; historia no constitutiva puede pertenecer a q solo si es coherente y soportada; un campo sin efecto en accesibilidad queda fuera del mediador; UNKNOWN/? se conserva como tal. Se exige descomponer campos mixtos y registrar event_id, tiempo, frontera, truth/observed y adjudicación.
+
+**Estado:** regla conceptual propuesta; roster del microdominio y mappings campo a campo OPEN. MED-02 no cerrado.
