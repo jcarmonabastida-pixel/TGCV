@@ -10006,3 +10006,101 @@ Por tanto, el roster presente es una clasificación de superficies y campos cand
 | MED-02d | Adjudicación de UNKNOWN, cobertura y comparabilidad | OPEN |
 
 **Dictamen:** el roster documental de superficies queda estructurado y enlazado a contratos existentes. No cierra MED-02c/d: falta el inventario efectivo de instancia, el mapping por campo y la evidencia de comparabilidad. No Design Freeze, no implementación, no fixtures, no simulación y no ejecución.
+
+
+## 233. DAG causal específico de Opción A bajo D2 — integración del roster MED-02c (2026-11-10)
+
+**Estado:** especificación causal candidata / DRAFT; no aprobada, no congelada, no implementada ni ejecutada. **Precedencia:** DEC-C10-066/067 rigen la política D2; §§229–232 y los contratos especializados rigen la separación B/C_dep/A_f/ΔT_acc/Reach/ejecución y el roster semántico. Este apartado especializa el DAG histórico de la reconciliación causal; no convierte el roster documental en inventario efectivo ni resuelve MED-02c3/c4/d.
+
+### 233.1. Objeto y reloj
+
+La unidad se representa como i, sin decidir todavía si unidad experimental, asignación y análisis coinciden. El reloj se conserva: t−1 basal/elegibilidad; t0 asignación Z; t1 política/provisión; t2 instalación y verificación; t3 snapshot y accesibilidad; t4 Reach/Π_H; t5 conocimiento/consideración; t6 selección/inicio; t7 ejecución; t8 Outcome; t9 Value. Los snapshots son inmutables. Los estados posteriores a una ejecución que altere el sistema crean nuevos tiempos, nunca sobrescriben t3.
+
+### 233.2. DAG de trabajo
+
+~~~text
+t−1  BASELINE / ELEGIBILIDAD (todo pre-Z)
+ X,H0,S0,F*, versiones/identidades, C_auth,base=1,
+ C0, recursos0, capacidad0, información0, C_dep0,
+ A_f0*=0 (si se exige apertura), T_acc0, rutas alternativas0,
+ O0,V0, unidad/frontera/soporte
+          |
+          v
+t0  ALEATORIZACIÓN
+ Z ----------------> B_gZ^D2 (política asignada; no asigna A_f ni ΔT_acc)
+                         |
+                         v
+t1  PROVISIÓN / RECEPCIÓN
+ B --> W_programmed --> W_attempt --> S_install
+ |          |              |              |
+ |          +-- D2: 0 en Z=0; 1 en Z=1 (programación)
+ |              (no implica intento efectivo ni éxito)
+ |
+ +--> posibles cambios colaterales U*/R*/C*/X* (deben auditarse)
+ +--> recursos/capacidad/seguridad/coste/latencia/calidad
+ +--> rutas alternativas A1/A2 y dependencias compartidas
+ +--> información/conocimiento/incentivos/medición
+ +--> rollback/residuos
+                         |
+                         v
+t2  VERIFICACIÓN TÉCNICA
+ S_install --> {C_install*, C_integrity*, C_compat*, C_oper*}
+                         +-------------> C_dep*
+
+t3  SNAPSHOT ESTRUCTURAL Y ACCESIBILIDAD (antes de K/selección/ejecución)
+ {U*,R*,C*,X* efectivos + C_auth,base + RES/DEP/BLOCK + frontera/versiones}
+             +--> T_acc,1=(U_acc,1,R_acc,1,C_acc,1)
+             +--> A_f,1* (predicado/proyección focal de τ2; no mediador adicional)
+             +--> ΔT_acc* = (ΔU*,ΔR*,ΔC*,ΔX*) ; D_f* derivado de A_f,0*/A_f,1*
+
+t4  DERIVACIÓN CIEGA A RESULTADOS
+ T_acc,1 / ΔT_acc* --> Reach_H / Π_H,cand (sin usar ejecución observada ni O/V)
+
+t5–t6  MECANISMOS DE AGENTE Y SELECCIÓN
+ Reach/Π_H --> K --> Consider --> Sel --> Start
+ B ----------------> K/Consider/Sel (solo si existe vía informativa/incentivos; colateral)
+
+t7  RAMAS DE EJECUCIÓN, mutuamente alternativas por unidad/episodio
+ Rama focal:       Start --> Exec(F1/τ2) --> Exec(F2) --> F*(π_F)
+ Rama alternativa: Start --> Exec(A1) --> Exec(A2) --> F*(π_A)
+ Fallo/no inicio/interrupción quedan como estados distintos; no redefinen A_f*.
+
+t8–t9
+ {F*(π), ejecución, calidad/tiempo/seguridad/coste y otros determinantes}
+                  --> Outcome O --> Value V
+ B --> vías colaterales no mediadas por ΔT_acc* --> O/V (si no se excluyen)
+
+CANAL DE OBSERVACIÓN (paralelo, no parte de la verdad estructural)
+ Truth DGP --> proceso de medición/cobertura --> E_T / A_f,obs / O_obs / V_obs
+ B/Z --> medición/cobertura diferencial (riesgo a auditar); E_T no causa ni integra ΔT_acc*.
+~~~
+
+### 233.3. Aplicación del roster U*/R*/C*/X*/E_T
+
+- **U***: identidades/versiones de F1/F2/A1/A2 y de transformaciones disponibles. Un artefacto nuevo no implica automáticamente nueva TID; el cambio se adjudica con el contrato TID/SID/RID. Solo entra en ΔU* si cambia el conjunto de transformaciones semánticamente identificadas y admisibles.
+- **R***: interfaces, endpoints, dependencias transitivas, topología, composición y rutas. Un endpoint es relación/interfaz, no por sí solo X*. Cambios en dependencias compartidas pueden afectar la ruta focal y A1/A2.
+- **C***: reglas/predicados de autorización, ACL, compatibilidad, permisos, recursos, capacidad, ventanas y bloqueos. C_auth,base=1 es autorización normativa basal común; ACL/credenciales técnicas de provisión son objetos distintos. La clasificación concreta se hace por subcampo, no por dominio B-M.
+- **X***: estado/contexto efectivo runtime/host/modo/estado persistente solo cuando sea constitutivo de accesibilidad y no sea en realidad regla, relación o evidencia. ΔX* se mantiene en el DGP; sus consecuencias se representan en A⁺/A⁻/A^reconf/ΔR/ΔC sin doble conteo ni una quinta coordenada analítica autónoma.
+- **E_T**: logs, hashes, SBOM, snapshots, cobertura, validez epistémica, provenance, matching y adjudicación. E_T informa si se puede clasificar truth; no cambia por sí mismo T_acc ni ΔT_acc. Falta de evidencia produce ?/UNKNOWN, nunca 0.
+
+Las superficies B-M01…15 son dominios de inspección y no variables observadas. Cada subcampo requiere field_id, unidad/frontera, tiempo/valid-time, versión, valor/diff, función semántica, event_id, mapping, truth, observación, evidencia/cobertura y adjudicación. No inventar valores para runtime, host, ACL, red, recursos, dependencias, estado ni rendimiento.
+
+### 233.4. Vías colaterales y confusión postratamiento
+
+El DAG exige auditar explícitamente, como mínimo: (a) B→U/R/C/X→ΔT_acc*; (b) B→recursos/capacidad→F2/A1/A2→O/V; (c) B→ACL/seguridad→A_f*/riesgo→O/V; (d) B→dependencias compartidas→A1/A2/Reach; (e) B→coste/latencia/calidad/seguridad→O/V; (f) B→información/conocimiento/incentivos→K/selección/ejecución→O/V; (g) B/Z→observabilidad/missingness→A_f,obs/O_obs/V_obs; (h) spillovers entre unidades por recursos, host o dependencias compartidas; (i) residuos tras rollback.
+
+En el DGP aislado D2, las condiciones no focales que DEC-C10-067 declara comunes deben ser invariantes por construcción y verificadas. Si alguna cambia diferencialmente, no se la elimina estadísticamente por ajuste rutinario: se clasifica como cointervención/confusor mediador inducido por B, se registra su orden temporal y se requiere una estrategia longitudinal explícita o se limita la conclusión al efecto de política/paquete. No ajustar el ITT por W_attempt, S_install, C_dep*, A_f*, ΔT_acc*, Reach, K, selección o ejecución.
+
+### 233.5. Correspondencia con estimandos y mediación
+
+1. **ITT_Z(D2)** estima el efecto de asignar la política material D2 en Value, sujeto al diseño, consistencia, observación y estructura de interferencia. Con vías colaterales sigue siendo efecto de política/paquete.
+2. **Primeras etapas** se informan por separado para W_attempt, S_install/C_dep*, A_f,1*, D_f* y ΔT_acc*. Ninguna implica la siguiente.
+3. **θ_A(q)** sigue siendo la pregunta científica C10-D1: contraste de políticas factibles g1/g0 que inducen distribuciones distintas de accesibilidad bajo régimen común q. D2 no equivale automáticamente a g1/g0. El mapping B→g^Af, soporte, invariancia y exclusión deben demostrarse.
+4. **Mediación secundaria**: el objeto mediador candidato es la distribución conjunta y factible de ΔT_acc* (no A_f* aislada). A_f* y D_f* son predicado/proyección e indicador de apertura, respectivamente; no deben introducirse como mediadores secuenciales independientes de ΔT_acc*. Un efecto indirecto interventional requiere intervención estocástica conjunta bien definida, orden temporal, positividad y tratamiento de confusores mediador–Outcome inducidos por B. No se deduce restando ITT, LATE o estimandos incompatibles.
+5. **LATE/Wald** permanece local y condicionado a relevancia, independencia, exclusión, monotonicidad, consistencia/versiones, no interferencia y medición válida; no sustituye θ_A(q) poblacional.
+
+### 233.6. Estados de identificación y límites
+
+La verdad DGP y las observaciones se mantienen separadas. Predicados constitutivos verdaderos: 1/0; evidencia observada: 1/0/? según cobertura y adjudicación. Una ruta solo se declara inexistente con universo finito y cobertura exhaustiva; si no, Reach/F_alt puede ser ?. Outcome y Value se miden después y con reglas independientes. No se fija aún q_X*, q_L*, población final, unidad/interferencia, F*, horizonte/ventanas, distribución conjunta de parámetros, regla Value, potencia ni tolerancias.
+
+**Dictamen:** DAG temporal específico propuesto e integrado conceptualmente con el roster documental. No demuestra que B solo afecte accesibilidad, no cierra MED-03 ni C-MED, no completa inventario por unidad/versión y no autoriza Design Freeze, implementación, fixtures, simulación ni ejecución. Se mantienen scientific_execution=false y execution_authorized=false.
