@@ -2361,3 +2361,11 @@ Se incorpora maestro §262 y ledger AB §30, especializando el IIE_M candidato d
 Se delimitan g-computation longitudinal, ponderación/densidades y TMLE longitudinal como familias candidatas, sin seleccionar método. Se integra la evolución downstream hasta V_j para el contraste total y se prohíbe el ajuste convencional de L como basal o la transferencia del IIE a θ_A(q), ITT, LATE o V_j distintos. Se incorporan estados IDENTIFIED/PARTIALLY_IDENTIFIED/NOT_IDENTIFIED/INDETERMINATE y reglas de abstención.
 
 **Estado:** MED-05 DOCUMENTED / CANDIDATE; sin validación empírica. MED-03/04/06, §224, inputs AB/MAP y AN-04 siguen OPEN. Sin Design Freeze, implementación, fixtures, simulación o ejecución; scientific_execution=false; execution_authorized=false.
+
+## 16.137 — MED-06: sensibilidad, identificación parcial y bounds para C-MED
+
+Se incorpora maestro §263 y ledger AB §31, reutilizando §225.6–225.9, §§249.5–249.7, §262 y §256. Se especializa la sensibilidad para IIE_M con mediador conjunto ΔT_acc*, por tupla de estimando×V_j/Outcome×población/unidad×horizonte×versión/soporte. Se mantiene la no transferencia a θ_A(q), ITT/paquete D2, LATE_f o θ_Af.
+
+Se definen amenazas y parámetros a justificar para confusión B–resultado y M–V, L incompleta, error conjunto de M, error Outcome/Value, soporte cruzado, missingness/selección, interferencia/carryover, versiones/provisión de fondo y especificación/interacciones. Se exige análisis de tipping points y escenarios conjuntos cuando proceda. Se delimitan familias candidatas de bounds, incluidas cotas worst-case para resultados acotados, selección (Lee solo bajo monotonicidad defendible), confusión no medida bajo restricciones explícitas, error acotado, soporte limitado y spillovers. Se establece que un bound solo es informativo si reduce el rango trivial y que incertidumbre muestral e identificación parcial se reportan por separado.
+
+**Estado:** MED-06 DOCUMENTED / PARTIALLY SPECIFIED. Rangos/valores, escalas, soporte, historia L, error, missingness, interferencia, método concreto de bounds y umbrales AN-04 siguen OPEN. Sin Design Freeze, implementación, fixtures, simulación o ejecución; scientific_execution=false; execution_authorized=false.
