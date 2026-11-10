@@ -2235,3 +2235,12 @@ Se fijan las reglas comunes de verdad binaria del DGP, observación trivalente 1
 Se explicita la frontera de roles: Generator conoce truth/potenciales/semillas; Analyzer recibe solo observables autorizados (incluida Z observada) y no truth, potenciales, asignación oculta ni etiquetas de escenario; Evaluator puntúa solo después de congelar la salida del Analyzer. La separación requiere controles técnicos y pruebas negativas; no se considera demostrada por esta especificación.
 
 **Resultado:** AB-09 DESIGN SPECIFIED / INTEGRATION RECONCILED, no DESIGN COMPLETE ni materialmente cerrado. Permanecen abiertos universo/cobertura, F*/C0/G/H_time, oráculo y cegamiento, observación/missingness, parámetros D2/C_dep, población/soporte/interferencia y criterios cuantitativos de evaluación. No se crean fixtures ni código y no se ejecuta simulación. AB sigue IN_PROGRESS / NOT DESIGN FROZEN / NOT IMPLEMENTABLE; `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 16.122 — Matriz integrada AB-01…09 y transferencia parcial a C (2026-11-10)
+
+Se incorpora la matriz de dependencias y handoff del ledger AB §16 y maestro §248. La reconciliación distingue gates semánticos/abstractos definidos de inputs materiales aún ausentes; identifica cuatro bloques de bloqueo (medición/identidad, mecanismo/primeras etapas, población/soporte/interferencia y evaluación truth/observed) y establece que la dependencia AB es parcialmente paralela, no estrictamente lineal.
+
+El paquete C §§221–229 puede continuar con contratos semánticos y simbólicos, jerarquía de estimandos, reglas de población pre-Z, roster de 16 estados C_dep*, R0–R3, trivalencia y separación Generator/Analyzer/Evaluator. Debe preservar AB-M01…M11 y cada input OPEN/UNKNOWN con su procedencia. No puede tratar como resueltos schemas físicos, identidades ejecutables, C0/G/H_time, U_G/cobertura, evidencia MD-C1/MD-C4, probabilidades D2/θ, población/q_X*/soporte, interferencia, oráculo, truth por unidad ni missingness.
+
+No se declara AB cerrado ni paquete C aprobado. §§221–229 son contratos/propuestas documentales; C-MED y C-ANALYZER mantienen cobertura parcial y la mediación causal no está identificada. Sin Design Freeze, implementación, simulación ni ejecución; scientific_execution=false; execution_authorized=false.
