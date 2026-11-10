@@ -10104,3 +10104,15 @@ En el DGP aislado D2, las condiciones no focales que DEC-C10-067 declara comunes
 La verdad DGP y las observaciones se mantienen separadas. Predicados constitutivos verdaderos: 1/0; evidencia observada: 1/0/? según cobertura y adjudicación. Una ruta solo se declara inexistente con universo finito y cobertura exhaustiva; si no, Reach/F_alt puede ser ?. Outcome y Value se miden después y con reglas independientes. No se fija aún q_X*, q_L*, población final, unidad/interferencia, F*, horizonte/ventanas, distribución conjunta de parámetros, regla Value, potencia ni tolerancias.
 
 **Dictamen:** DAG temporal específico propuesto e integrado conceptualmente con el roster documental. No demuestra que B solo afecte accesibilidad, no cierra MED-03 ni C-MED, no completa inventario por unidad/versión y no autoriza Design Freeze, implementación, fixtures, simulación ni ejecución. Se mantienen scientific_execution=false y execution_authorized=false.
+
+## 234. AB residual-input closure ledger and cross-gate reconciliation (2026-11-10)
+
+Se incorpora como instrumento operativo único `C10_S_AB_RESIDUAL_INPUT_CLOSURE_LEDGER_DRAFT_001.md`. El ledger no crea una nueva decisión ni sustituye DEC-C10-093/094: traduce sus reservas aceptadas en inputs, evidencias y reglas de cierre por AB-01…AB-09, con dependencias cruzadas y contrato de transferencia a C.
+
+**Dictamen reconciliado:** las decisiones documentales de base están resueltas en parte, pero ningún gate AB se declara materialmente cerrado por esta incorporación. AB-01/02 mantienen abiertos encoding REF/AST, esquema físico, serialización y roster IAM/cobertura; AB-03/04, identidades TID/SID/RID y evidencia por campo/ruta; AB-05, H* y validación del oráculo; AB-06/07, evento operativo y distribución conjunta D2; AB-08, algoritmo/soporte/q_X*/cluster; AB-09, universo de alternativas, truth tables, observación y adjudicación.
+
+Se explicita que DEC-C10-074 y TGCV-C10S-JCS-1 se aplican al envelope UDG-01 y no se extienden automáticamente al payload/configuración C_src/C_dst. Las referencias UDG, FKs U_G y EDGE no se contabilizan como objetos REF de configuración. Los dos operand bindings deben aparecer exactamente una vez, pero su representación física depende de reconciliar el AST/granática y el schema aplicable.
+
+El ledger fija los 11 inputs AB-M01…AB-M11, el orden de resolución y el handoff AB→C. Todo input ausente se conserva OPEN/UNKNOWN; no se inventan defaults, tasas, parámetros, unidades, ventanas ni topologías.
+
+**Estado:** AB continúa IN_PROGRESS / NOT DESIGN FROZEN / NOT IMPLEMENTABLE. Se mantienen `scientific_execution=false` y `execution_authorized=false`. No se crea código, parser, validator, fixture ejecutable, simulación ni experimento.
