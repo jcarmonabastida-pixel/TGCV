@@ -899,3 +899,14 @@ Si un campo X resulta ser una regla o predicado, reclasificarlo en C* con mappin
 Para el crosswalk con C10-D1 §27.1, ΔX* se conserva como contexto causal del DGP; sus consecuencias sobre accesibilidad se reflejan en A⁺/A⁻/A^reconf/ΔR/ΔC, sin doble conteo. Un campo que mezcle valor contextual y regla debe descomponerse o permanecer UNKNOWN. Cada campo requiere field_id, definición, unidad/frontera, tiempo, tipo, regla de diff, mapping, event_id, truth/observed, overlap y adjudicación.
 
 Esta regla no completa el roster del microdominio ni convierte el crosswalk en aprobado. MED-02c/d permanecen OPEN.
+
+
+### 3.3.3. DAG Opción A/D2 y regla de no doble mediación (2026-11-10)
+
+Aplicar el DAG integrado del maestro §233. El orden temporal es t−1 basal; t0 Z; t1 B/W_programmed/W_attempt; t2 S_install/componentes/C_dep*; t3 snapshot U*/R*/C*/X* y T_acc/A_f/ΔT_acc; t4 Reach/Π_H; t5 K/consideración; t6 selección/inicio; t7 ejecución focal F1→F2 o alternativa A1→A2; t8 Outcome; t9 Value. La observación E_T discurre en canal paralelo y no integra truth estructural.
+
+A_f,1* es predicado/proyección focal de T_acc,1 y D_f* es indicador derivado de A_f,0*/A_f,1*. No tratarlos como mediadores seriales independientes de ΔT_acc*. Para mediación secundaria, el objeto candidato es la distribución conjunta y factible de ΔT_acc*; se preservan sus dependencias y se requiere orden temporal, positividad y estrategia para confusores mediador–Outcome inducidos por B.
+
+B-M01…15 siguen siendo superficies de inspección; el DAG enumera rutas colaterales que deben auditarse, pero no afirma que estén presentes o ausentes. Si B cambia diferencialmente recursos, capacidad, permisos/seguridad, A1/A2, costes/latencia/calidad, información/incentivos, medición o condiciones comunes, el ITT sigue siendo efecto de política/paquete. No ajustar el ITT por variables post-Z. La correspondencia B→g^Af y la interpretación de ITT como θ_A(q) requieren demostrar régimen común, soporte, consistencia y exclusión.
+
+Estado: DAG candidato definido; inventario de campo, valores truth/observed, invariancia, soporte, unidad/interferencia y estimandos finales OPEN. Sin freeze ni autorización de ejecución.
