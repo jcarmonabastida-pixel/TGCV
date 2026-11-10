@@ -10198,3 +10198,20 @@ Se incorpora la especificación matemática simbólica del ledger AB §10: kerne
 Esta sección fija estructura y restricciones, no valores. No se aprueban probabilidades, ceros estructurales, independencia, estratos operativos, amplitudes de sensibilidad ni calibración. Truth_DGP y observed_state permanecen separados, así como ausencia de evento y ausencia de evidencia. Soporte e interferencia dependen de AB-08; medición y adjudicación, de AB-09. Las vías colaterales impiden afirmar aislamiento de B o efecto puro de accesibilidad sin evidencia material.
 
 **Estado:** AB-06/07 PARAMETER STRUCTURE SPECIFIED SYMBOLICALLY; NUMERICAL PARAMETERIZATION OPEN. AB continúa IN_PROGRESS. No Design Freeze, fixtures, implementación, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 244. AB-07 — justificación semántica de dependencias internas de C_dep* (2026-11-10)
+
+Se integra el ledger AB §11 como extensión de la estructura simbólica §243. La revisión distingue necesidad lógica, dependencia condicional al mecanismo y dependencia libre. No presupone independencia ni convierte asociaciones posibles en ceros estructurales.
+
+- **INSTALLATION/OPERABILITY:** O⇒I solo sería necesario si OPERABILITY se define como inicio/operación del mismo artefacto instalado, en la misma unidad, entorno y ventana. Esa definición operacional permanece OPEN; por tanto no se elimina aún ninguna celda θ por esta implicación.
+- **COMPATIBILITY/OPERABILITY:** no se impone implicación. Depende de si COMPATIBILITY cubre exactamente los modos/condiciones de la prueba de OPERABILITY o es una evaluación ex ante/de cobertura más amplia.
+- **INTEGRITY:** no implica instalación ni operación. Un artefacto puede instalarse u operar sin superar una verificación de integridad; solo un mecanismo concreto de bloqueo podría condicionar la relación.
+- **COMPATIBILITY/INSTALLATION:** tampoco hay implicación general; la instalación puede ocurrir sin prueba de compatibilidad o en entorno incompatible.
+- **INTEGRITY/COMPATIBILITY:** propiedades semánticamente distintas y libres en el DGP salvo mecanismo común explícito.
+
+La parametrización mantiene las 16 celdas y la distribución conjunta θ_{igco|z,h}. No se fija ningún cero estructural ahora. Toda restricción futura exige contrato con misma unidad/artefacto/entorno/snapshot/ventana, regla constitutiva o mecanismo versionado y distinción entre verdad DGP y ausencia de evidencia. La regla AND de C_dep* permanece intacta.
+
+La ley upstream P/R/Q/W/S/N/K no determina G/C/O; causas técnicas compartidas pueden inducir dependencia y deben conservarse en la distribución conjunta o en historia/estratos explícitos. La sensibilidad debe distinguir fallos de instalación, integridad, compatibilidad y operabilidad, y probar la robustez a imponer o retirar O⇒I cuando su definición se cierre. No se asignan magnitudes ni probabilidades.
+
+**Estado:** dependencia conceptual especificada; contratos operacionales de I/G/C/O, definición de O, alcance de C, protocolo/momento de G, unidad común, posibles ceros, θ numérica, calibración y sensibilidad permanecen OPEN. AB-07 no está cerrado materialmente. No Design Freeze, fixtures, implementación, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
