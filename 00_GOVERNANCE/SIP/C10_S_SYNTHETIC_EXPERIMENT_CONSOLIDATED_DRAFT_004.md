@@ -9942,3 +9942,67 @@ Los ejemplos de §231.2 son clases orientativas, no un roster aprobado de variab
 | MED-02d | Adjudicación de campos UNKNOWN y verificación de comparabilidad temporal | OPEN |
 
 **Dictamen:** la ambigüedad conceptual de ΔX* queda acotada por una regla de clasificación verificable. MED-02 no se cierra hasta completar el roster real y adjudicar cada campo. No se declara mapping total, identificación causal, Design Freeze ni implementabilidad.
+
+
+# 232. MED-02c — roster documental candidato de campos del microdominio Opción A (2026-11-10)
+
+**Estado:** inventario semántico documental parcial; no es roster de instancia ejecutable, no asigna valores ni truth. MED-02c/d permanecen OPEN.
+
+## 232.1. Fuentes y límite
+
+El roster se deriva exclusivamente de los contratos ya presentes: Opción A/F* y etapas F1/F2/A1/A2; contrato de instancia DEC-C10-069; matriz CMP/PAR/REF/RUL/MET y PAR/RUL; manifiesto B-M01…15/PROV-01…12; snapshots S_T*/E_T. No se inventan plataforma, productos, formatos físicos, valores, versiones de software, recursos, permisos efectivos, rutas o identidades de transformación.
+
+La instancia lógica de referencia aceptada por DEC-C10-069 es C10S-SVC-REQUEST-PROCESSOR v1.0.0, C10S-SVC-REQUEST-PROCESSOR-001 rev1, CMP-SERVICE-LOGIC-001, rol SERVICE_LOGIC, regla RUL-SVC-ENABLE-PROFILE-01. El roster contractual contiene al menos los PAR ENABLED y PROFILE; RETRY-COUNT aparece como slot candidato en la matriz, no como parámetro nuclear confirmado. REF no se presume vacío: su cardinalidad y cobertura dependen de IAM. POL queda fuera del núcleo confirmatorio mínimo conforme DEC-C10-053.
+
+## 232.2. Roster por familias y clasificación semántica primaria
+
+| Roster/familia | Campos o superficies documentados | Tipo primario propuesto | Relación con ΔT_acc* | Estado del roster |
+|---|---|---|---|---|
+| Identidad de transformaciones | F1/τ2, F2, A1, A2; TID/SID/RID, versión, función, etapa | U* | Identidad/estado estructural; ΔU* tras matching aprobado | Alias y topología definidos; TID/SID/RID y contratos concretos OPEN |
+| Dependencias e interfaces | Adaptador, runtime, librerías, endpoint/canal, llamadas/cargas/lecturas/escrituras, consumidores | R* y U* según objeto; no fusionar | ΔR* para relaciones; ΔU* si cambia una transformación identificada | Grafo lógico descrito; roster real NO INVENTARIADO |
+| Componente lógico | contract_id/version, instance_id/version, component_id/class, owner | CMP/MET (identidad), no X* por defecto | Control de matching y frontera; solo cambia ΔU*/ΔX* si cambia el estado estructural efectivo de accesibilidad | Identidad lógica DEC-C10-069 aceptada; artefactos/hash/serialización OPEN |
+| Parámetros | PAR-SVC-ENABLED (BOOL), PAR-SVC-PROFILE (ENUM STANDARD/READ_ONLY/DISABLED); RETRY-COUNT INT candidato | PAR/C* en cuanto condición configuracional; no X* por nombre | ΔC* si el cambio modifica condición de realizabilidad; cambio de valor no implica automáticamente accesibilidad | ENABLED/PROFILE aceptados conceptualmente; RETRY-COUNT no confirmatorio; valores por unidad OPEN |
+| Regla | RUL-SVC-ENABLE-PROFILE-01; condición, operandos, scope, REQUIRE, evaluación trivalente | C* (regla/predicado), referencias R* | ΔC* si cambia condición/efecto; ΔR* si cambian relaciones de operandos | Semántica lógica base aceptada; serialización y mapping físico OPEN |
+| Contexto de ejecución | runtime/imagen efectiva, versión de host/SO, modo de despliegue activo, estado efectivo de entorno origen/destino | X_CONTEXT_CONSTITUTIVE solo si se demuestra que altera accesibilidad; en otro caso OUTSIDE/UNKNOWN | ΔX* contextual; sus efectos se reflejan en ΔU*/ΔR*/ΔC* sin duplicación | Superficies B-M02/M03; valores y constitutividad NO INVENTARIADOS |
+| Recursos/capacidad | CPU, RAM, almacenamiento, I/O, slots; capacidad instalada, pool compartido, reserva, disponibilidad y consumo | C* para disponibilidad/restricción de realizabilidad; X* solo para estado contextual efectivo del pool cuando sea constitutivo | ΔC* por disponibilidad/restricción; X* puede describir estado efectivo del pool; consumo de ejecución posterior no se retrotrae | B-M07; cantidades, unidad, ventana, pool y exposición OPEN |
+| Autorización/permisos | C_auth,base funcional; ACL/credenciales/tokens/roles técnicos; alcance/expiración | C*; separar AUTH_f* de ACL técnica | ΔC* solo si cambia autorización/condición real; no confundir permiso técnico con autorización funcional basal | C_auth,base=1 basal común; cambios ACL B-M05 NO INVENTARIADOS |
+| Red/interfaz | DNS, proxy, firewall, rutas, puertos, endpoint, canal | R* para topología/conexión; C* para reglas de bloqueo/permiso | ΔR*/ΔC* según función | B-M04/M08; topología efectiva y cobertura OPEN |
+| Configuración/datos | C_src, C_dst declarado, C_dst aplicado; esquema, valores, estados, referencias y reglas | CMP/PAR/REF/RUL/C*; no X* por defecto | Diff de configuración conforme M; ΔC* solo si condición de accesibilidad cambia, no por toda diferencia de contenido | Contratos por familia y etapas aceptados documentalmente; catálogo completo y mapping físico OPEN |
+| Seguridad | políticas, certificados, sandbox, superficie de ataque | C* cuando impone condición/bloqueo; X* si es estado efectivo contextual no reducible a regla | ΔC* o ΔX* según campo descompuesto | B-M09; roster técnico y alcance OPEN |
+| Estado persistente | cachés, registros, índices, estado residual y rollback | X* si es estado efectivo constitutivo; C* si opera como precondición/bloqueo; U*/R* si representa objeto/relación | ΔX*/ΔC*/ΔU*/ΔR* según función | B-M11/M15; snapshots y diffs NO INVENTARIADOS |
+| Observabilidad/evidencia | logs, métricas, telemetría, cobertura, validez, provenance, hashes, adjudicación | E_T, nunca X* por el mero hecho de ser dato | ΔE_T paralelo; no integra ΔT_acc* | B-M10/M13; esquemas, retención, cobertura y oráculo OPEN |
+| Rendimiento | latencia, throughput, contención, prioridad | C* solo cuando constituye condición operativa de accesibilidad bajo regla predefinida; si es resultado downstream, OUTSIDE_MEDIATOR | ΔC* o fuera del mediador; nunca asignar por etiqueta | B-M12; criterio y frontera OPEN |
+| Alternativa | exportador/importador, A1/A2, dependencias y consumidores | U*/R*; condiciones de acceso en C* | ΔU*/ΔR*/ΔC*; necesario para Reach y colateralidad | A1/A2 topología y rol candidatos; identidad/mecanismo y no-afectación OPEN |
+| Oráculo F* | familias FP-01…08, versión/regla/evaluador | E_T/medición, salvo que una intervención lo modifique (vía prohibida B-M13) | ΔE_T; no ΔT_acc* | F* lógico definido; predicados atómicos/oráculo concreto OPEN |
+
+## 232.3. Regla de asignación a X* frente a C* y E_T
+
+Un campo solo entra en X* si es un estado/valor contextual efectivo de sistema-unidad-entorno-tiempo que, bajo una regla de accesibilidad declarada, cambia qué transformaciones son accesibles. Ejemplos candidatos —no valores ni variables ya aprobadas— son versión efectiva del runtime, modo de despliegue activo o estado persistente de entorno. Si el campo es una regla, ACL, cuota, restricción, precondición o bloqueo, su tipo es C*. Si informa de observación, cobertura, log, hash, validez, procedencia o adjudicación, es E_T. Si describe una transformación o relación, es U* o R*.
+
+La etiqueta B-Mxx no determina el tipo. Un mismo dominio de inspección puede contener subcampos de tipos diferentes; deben separarse. En particular:
+- B-M02 runtime: imagen/versión efectiva puede ser X*; parámetros de configuración/restricciones del runtime pueden ser C*; imagen/hash como prueba documental pertenece también a E_T.
+- B-M03 host: versión/estado efectivo del host puede ser X*; paquetes/reglas que imponen restricciones se clasifican por función; diff/log de inventario es E_T.
+- B-M04/B-M08: endpoint y topología son R*; ACL/firewall/bloqueos son C*; logs de conexión son E_T.
+- B-M05: permiso funcional efectivo es C*; credencial/ACL técnica es C* de infraestructura, no C_auth,base; registro de cambio es E_T.
+- B-M07: disponibilidad/reserva como condición de realizabilidad es C*; estado contextual del pool compartido puede ser X* si cambia accesibilidad; consumo de ejecución es downstream.
+- B-M10/B-M13: telemetría y oráculo pertenecen a E_T/medición; un cambio de observabilidad no demuestra cambio estructural.
+- B-M11/B-M15: estado residual solo es X* si sigue vigente y altera accesibilidad dentro de la frontera/horizonte; rollback/log/diff son evidencia E_T.
+- B-M12: latencia/throughput no se incorpora automáticamente a accesibilidad; requiere regla operativa preespecificada para C* o queda fuera del mediador.
+
+## 232.4. Campos y valores que no se pueden completar todavía
+
+No se han recuperado del repositorio valores reales o sintéticos aprobados para runtime/host, versión origen/destino, modo de despliegue, recursos/capacidad, cuotas, ACL, red, dependencias transitivas, cachés/estado persistente, latencia, ventanas, tiempos de vigencia ni cobertura exhaustiva. Tampoco hay TID/SID/RID canónicas para F1/F2/A1/A2. Los estados de manifiesto B-M01…15 siguen NO INVENTARIADO donde no existe evidencia; NO INVENTARIADO no equivale a ausencia ni a cero.
+
+Por tanto, el roster presente es una clasificación de superficies y campos candidatos, no una lista cerrada de variables del DGP ni una asignación de valores 1/0/?. No se puede declarar que X* tenga roster completo ni que el crosswalk sea total.
+
+## 232.5. Subgates
+
+| Gate | Criterio | Estado |
+|---|---|---|
+| MED-02c1 | Reutilización de identidades, familias y superficies ya documentadas | DOCUMENTED |
+| MED-02c2 | Tipado primario y regla de descomposición por función semántica | PROPOSED |
+| MED-02c3 | Inventario efectivo de valores/campos por unidad y versión, con truth/observed | OPEN |
+| MED-02c4 | Matching temporal de snapshots y event_id sin doble conteo | OPEN |
+| MED-02d | Adjudicación de UNKNOWN, cobertura y comparabilidad | OPEN |
+
+**Dictamen:** el roster documental de superficies queda estructurado y enlazado a contratos existentes. No cierra MED-02c/d: falta el inventario efectivo de instancia, el mapping por campo y la evidencia de comparabilidad. No Design Freeze, no implementación, no fixtures, no simulación y no ejecución.
