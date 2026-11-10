@@ -1853,3 +1853,261 @@ No se presume una forma jurídica determinada. La estructura debe responder a la
 - Se incorpora un paquete mínimo de convocatoria y un primer ciclo de movilización.
 - Se establece un límite de tres frentes activos y se prioriza formar una primera coalición antes de desplegar todas las líneas.
 - No se constituye ninguna entidad, no se solicitan ni aceptan fondos, no se ofrecen participaciones y no se contraen compromisos con terceros.
+
+
+---
+
+## 39. AFLUYA Web-as-Growth Infrastructure (AWGI) — rediseño estratégico integral v1.1
+
+**Estado:** DRAFT — propuesta estratégica integrada pendiente de validación del usuario.  
+**Fecha:** 2026-11-10  
+**Precedencia:** esta sección redefine el modelo de crecimiento, la función de la web, la arquitectura de participación y la secuencia de implantación. Sustituye, en esos aspectos, cualquier formulación anterior que sitúe la convocatoria previa, la formación de un núcleo o la captación directa como condición para empezar. Conserva las decisiones de identidad, naming, arquitectura científica, portfolio económico y salvaguardas que no contradigan esta sección.
+
+### 39.1 Decisión estratégica rectora
+
+**AFLUYA debe crecer haciendo AFLUYA.** Su infraestructura digital será la primera manifestación práctica del ecosistema: permitirá comprenderlo, explorarlo, cuestionarlo, mejorarlo y contribuir a desarrollarlo desde el primer día.
+
+AFLUYA no se plantea como una organización convencional que primero reúne equipo y financiación y después construye una presencia digital. Se plantea como un ecosistema abierto que empieza con una infraestructura pequeña pero útil y puede generar comunidad, capacidades, proyectos y recursos a medida que demuestra valor.
+
+La web no es solamente:
+- una presentación institucional;
+- un canal de marketing;
+- una convocatoria de colaboradores;
+- un catálogo de servicios;
+- un escaparate de productos futuros.
+
+Es una **infraestructura de descubrimiento, aprendizaje, contribución, conexión y evolución**. Su función es ofrecer valor antes de pedir participación y facilitar que el crecimiento ocurra de forma distribuida y acompasada a la capacidad real.
+
+**AFLUYA Web-as-Growth Infrastructure (AWGI)** es un nombre de trabajo para este principio de diseño. No es una marca, producto, unidad organizativa ni promesa tecnológica independiente.
+
+### 39.2 Cuatro principios no negociables de diseño
+
+1. **Efecto Ajá en menos de dos minutos.** Una persona no especialista debe poder explicar, tras una primera visita breve, qué es AFLUYA, qué oportunidad explora y qué puede hacer allí. Se validará con pruebas de comprensión; no se dará por conseguido por decisión editorial.
+2. **Apertura y llegada temprana.** La web debe mostrar qué existe, qué está en construcción, qué está abierto a propuestas y dónde una persona puede influir de manera constructiva. No debe fingir que existe una comunidad o estructura que todavía no existe.
+3. **Crecimiento orgánico y distribuido.** Las contribuciones deben poder proponerse y revisarse sin depender de una invitación personal del fundador. La apertura no significa edición irrestricta de la web pública: se utilizará un flujo transparente de propuesta, revisión, decisión y publicación.
+4. **Coste, riesgo y carga operativa mínimos.** No anticipar una estructura startup, contratar equipo, comprar software complejo, crear cuentas de usuario, desarrollar una red social, desplegar CRM, pagos o SaaS ni abrir líneas que no puedan mantenerse. Toda complejidad debe justificarse por uso real.
+
+### 39.3 La promesa pública y el Efecto Ajá
+
+La Home debe empezar por el propósito y la oportunidad, no por el inventario de unidades, productos o siglas.
+
+Mensaje de partida recomendado:
+
+> **AFLUYA conecta conocimiento, capacidades, personas y oportunidades para explorar nuevas posibilidades y construir valor.**
+>
+> Un ecosistema abierto en construcción. Explora lo que estamos descubriendo, utiliza lo que compartimos y ayuda a dar forma a lo que puede venir.
+
+La tagline de marca permanece: **«El potencial está dentro. Las posibilidades emergen al conectarlo».**
+
+La explicación pública debe distinguir:
+- **Qué es:** un ecosistema abierto de conocimiento, investigación, aprendizaje, experimentación y colaboración.
+- **Qué hace:** facilita descubrir potencial, conectar capacidades, explorar transformaciones y evaluar resultados en contexto.
+- **Qué ofrece ahora:** contenidos, recursos, experiencias y oportunidades de contribución que estén realmente disponibles.
+- **Qué está emergiendo:** proyectos, colaboraciones y capacidades en desarrollo, etiquetados por estado.
+- **Qué puede hacer el visitante:** explorar, aprender, proponer, corregir, colaborar, conectar o apoyar.
+
+No empezar la Home con TGCV, VALUE, ValueLabOS ni una lista de servicios. Esos elementos aparecen después, según el recorrido e interés. No afirmar que conectar capacidades genera automáticamente valor ni presentar hipótesis científicas como resultados demostrados.
+
+**Prueba de dos minutos:** pedir a personas externas que expliquen con sus propias palabras qué es AFLUYA, por qué podría importar y qué pueden hacer a continuación. Registrar comprensión correcta, confusiones, tiempo y preguntas. Revisar el mensaje cuando el test revele fallos; no convertir el objetivo temporal en una promesa garantizada.
+
+### 39.4 Arquitectura de experiencia y navegación
+
+La arquitectura se organiza por la experiencia que necesita el visitante, no por el organigrama interno. La navegación principal recomendada para la primera versión:
+
+- **Home:** propósito, oportunidad, prueba inmediata de valor y siguientes pasos.
+- **Explore:** experiencias, ejemplos, demostradores y conocimiento que permitan descubrir el potencial de AFLUYA.
+- **Community:** cómo participar, proponer, contribuir, conectar y conocer las reglas.
+- **Research:** TGCV, publicaciones, métodos, preguntas y estados de evidencia.
+- **Framework:** VALUE e Inteligencia Transformacional, explicados como marco de aplicación y concepto aplicado, sin atribuirles validación no demostrada.
+- **Roadmap:** qué existe, qué está en curso, qué está abierto, qué se ha aplazado y qué decisiones se han tomado.
+- **Work with us:** colaboración profesional, organizaciones, alianzas, patrocinio y financiación de iniciativas concretas.
+- **About:** propósito, principios, gobernanza, responsables y contacto.
+
+**Learning** será transversal en Explore, Community y Resources mientras no exista una oferta formativa recurrente real. **Lab** se mostrará como espacio de proyectos y experimentación cuando haya actividad publicable. **Resources** podrá ser una biblioteca dentro de Explore/Research, sin crear una sección vacía. **ValueLabOS** y las experiencias aún no operativas se mostrarán solo como preview o concepto, con estado explícito.
+
+La arquitectura anterior con Discover, Community, Research, Framework, Explore, Learning, Work with us y About se conserva como mapa ampliado de evolución; no obliga a publicar ocho páginas vacías en la primera versión. La navegación de lanzamiento se simplificará según el contenido y la utilidad comprobables.
+
+### 39.5 El ciclo de crecimiento integrado en la web
+
+La web debe facilitar un ciclo recurrente:
+
+1. **Descubrir AFLUYA:** comprender propósito, oportunidad y estado real.
+2. **Explorar y experimentar:** obtener valor mediante conocimiento, recursos, ejemplos y experiencias.
+3. **Encontrar un lugar:** identificar una forma de participación adecuada a intereses y disponibilidad.
+4. **Contribuir y conectar:** compartir una propuesta, corrección, conocimiento, capacidad, contacto o recurso.
+5. **Crear nuevas posibilidades:** convertir contribuciones compatibles en mejoras, proyectos, colaboraciones o iniciativas.
+6. **Compartir lo aprendido:** publicar avances, decisiones y resultados que permitan a otras personas descubrir y participar.
+
+No es un embudo comercial. Cada etapa debe tener valor por sí misma; no se exige registrarse, pagar ni facilitar datos personales para explorar el contenido público.
+
+### 39.6 Participación: vías abiertas y graduales
+
+La web ofrecerá vías distintas, sin presuponer que todo visitante quiera ser colaborador activo:
+
+- **Explorar:** acceso abierto sin registro.
+- **Aprender y reutilizar:** recursos públicos con licencia, autoría y límites claros.
+- **Proponer:** ideas, preguntas, correcciones y nuevas posibilidades mediante un canal accesible.
+- **Contribuir:** tareas pequeñas y delimitadas, con resultado esperado, responsable de revisión y reconocimiento.
+- **Colaborar:** participar en un proyecto o reto con alcance, dedicación, condiciones y salida definidos.
+- **Conectar:** presentar personas, organizaciones, capacidades y oportunidades.
+- **Aliarse:** desarrollar una colaboración institucional o de ejecución.
+- **Apoyar:** aportar recursos en especie o financiación a una iniciativa concreta, solo cuando exista una vía jurídica, fiscal y administrativa adecuada.
+- **Contratar:** acceder a servicios o proyectos profesionales claramente diferenciados de la participación comunitaria.
+
+No exigir GitHub a personas no técnicas. Ofrecer un canal web sencillo o correo de contacto para propuestas y correcciones, con instrucciones claras y recogida mínima de datos. GitHub puede servir para documentación, issues y contribuciones técnicas de quienes ya lo utilizan.
+
+### 39.7 Contribución abierta con revisión y gobernanza
+
+La apertura se materializa en un flujo:
+
+**propuesta → registro visible → clasificación → revisión → decisión motivada → incorporación/publicación → reconocimiento → seguimiento.**
+
+La primera versión puede operar con herramientas existentes y revisión humana ligera. No se construirá una plataforma propia.
+
+Cada oportunidad abierta deberá indicar, como mínimo:
+- qué se necesita y por qué;
+- estado (OPEN, IN_PROGRESS, BLOCKED, DONE o CLOSED);
+- alcance y resultado esperado;
+- tipo de contribución y dedicación estimada, si se conoce;
+- responsable o canal de revisión;
+- condiciones de autoría, licencia, datos y remuneración;
+- fecha de revisión o criterio de cierre.
+
+**Límites:** una propuesta no equivale a aceptación; la autoría se reconoce; las contribuciones no transfieren derechos automáticamente; las tareas voluntarias son acotadas y no se convierten en trabajo gratuito indefinido. Las decisiones editoriales, de seguridad, privacidad, marca y gobernanza conservan una responsabilidad identificable. La gobernanza científica de TGCV permanece separada e intacta.
+
+### 39.8 Roadmap público y transparencia de estado
+
+Roadmap no significa prometer fechas ni publicar planes irreales. Debe distinguir:
+- **Disponible:** existe y puede utilizarse.
+- **En desarrollo:** hay trabajo activo y un alcance reconocible.
+- **Abierto a contribución:** existe una necesidad concreta y una vía de participación.
+- **Exploratorio:** posibilidad aún no comprometida.
+- **Aplazado:** no se prioriza ahora y se explica brevemente por qué.
+- **Cerrado:** se completó o descartó, con una nota de resultado cuando sea útil.
+
+Mostrar cambios y decisiones relevantes, sin exponer datos personales, información confidencial o material científico interno no publicable. El roadmap debe ayudar a terceros a decidir dónde aportar y evitar que el fundador tenga que explicar individualmente el estado de cada iniciativa.
+
+### 39.9 Financiación y sostenibilidad: acompañar el valor demostrado
+
+La financiación no es condición previa para empezar; puede acelerar iniciativas que ya tengan propósito, alcance, interés y capacidad de ejecución.
+
+La web distinguirá:
+- patrocinio de una actividad;
+- financiación institucional o subvención;
+- recursos y apoyo en especie;
+- aportaciones voluntarias de personas impulsoras;
+- contratos y servicios profesionales;
+- inversión o financiación recuperable, únicamente si existe una actividad empresarial y estructura adecuadas.
+
+No llamar inversor a todo financiador. No pedir fondos para sostener una estructura abstracta. Cada propuesta de financiación deberá describir iniciativa, problema/oportunidad, presupuesto, destino, hitos, responsable, riesgos y rendición de cuentas. No recibir fondos ni habilitar donaciones/pagos sin resolver antes estructura legal, fiscal, contable y contractual.
+
+Se conserva la arquitectura económica aceptada en §§35–36: comunidad y conocimiento básico abiertos; servicios delimitados como primera vía comercial a validar; membresía y SaaS aplazados; Impact condicionado a co-diseño y financiación. Esta sección no activa ofertas, cobros ni compromisos.
+
+### 39.10 Arquitectura técnica: abierta, ligera, modular y reversible
+
+La arquitectura debe optimizar cuatro factores simultáneos: facilidad para una persona no programadora, experiencia pública profesional, contribución accesible y coste total bajo.
+
+Reglas:
+1. Separar **web de experiencia**, **fuente documental** y **mecanismo de contribución**, evitando duplicar fuentes.
+2. Mantener GitHub como fuente maestra de documentos y decisiones estratégicas, sin convertirlo en puerta obligatoria para toda la comunidad.
+3. Usar primero funciones nativas de herramientas gestionadas y canales simples; no crear cuentas de usuario, perfiles, mensajería, foro o CRM propio.
+4. Elegir plataforma web solo tras una prueba práctica de edición, formularios/propuestas, accesibilidad, exportación, SEO, dominio, coste de renovación y dependencia del proveedor.
+5. La publicación documental podrá evolucionar desde enlaces a documentos versionados hacia un portal documental ligero cuando el volumen y la necesidad lo justifiquen.
+6. La contribución técnica puede apoyarse en GitHub; las contribuciones no técnicas deben disponer de un canal de entrada comprensible.
+7. Evitar automatizaciones, analítica invasiva, cookies no esenciales y recogida de datos por defecto.
+8. Mantener contenidos y activos exportables, copias y titularidad bajo control del titular.
+9. No contratar ni comprar herramientas sin aprobación expresa; comprobar precios y condiciones vigentes en el momento de decidir.
+10. No elegir Framer, Astro/Starlight u otra herramienta por inercia: comparar el encaje real con AWGI y seleccionar la combinación mínima suficiente.
+
+### 39.11 Reducir la dependencia del fundador
+
+El diseño debe hacer posible que el ecosistema evolucione sin que el fundador sea el operador de cada tarea.
+
+Mecanismos prioritarios:
+- tareas pequeñas, autónomas y con definición de terminado;
+- instrucciones de contribución y plantillas reutilizables;
+- estados públicos y responsables de revisión;
+- registro de decisiones y preguntas frecuentes;
+- reconocimiento de autoría y contribución;
+- procesos asíncronos por defecto;
+- revisión periódica de carga y límites de capacidad;
+- delegación progresiva de mantenimiento editorial, comunidad y proyectos;
+- máximo de tres frentes activos a la vez, como regla de protección de capacidad, no como requisito de tener un equipo previo.
+
+La web debe poder recibir propuestas aunque no exista una persona disponible para ejecutarlas inmediatamente. En ese caso se informa del estado y del plazo de revisión razonable; no se simula actividad ni se promete respuesta instantánea.
+
+### 39.12 Criterios de éxito y métricas de aprendizaje
+
+La primera web no se evaluará por número de páginas, seguidores o visitas aisladas. Se utilizarán indicadores ligeros:
+
+| Dimensión | Señal a observar |
+|---|---|
+| Comprensión | Personas externas que explican correctamente AFLUYA tras una visita breve |
+| Valor inmediato | Recursos/experiencias utilizados sin registro ni pago |
+| Descubrimiento | Recorridos desde Home hacia Explore, Research o Community |
+| Participación | Propuestas, correcciones y preguntas recibidas |
+| Contribución | Contribuciones revisadas, aceptadas y publicadas |
+| Red | Conexiones entre personas, capacidades, organizaciones y proyectos |
+| Continuidad | Colaboradores que vuelven a contribuir voluntariamente |
+| Oportunidades | Proyectos, alianzas y propuestas de financiación concretas |
+| Sostenibilidad | Recursos movilizados frente a coste y carga operativa |
+| Autonomía | Tareas completadas sin intervención directa del fundador |
+
+No fijar objetivos numéricos arbitrarios antes de disponer de línea base. Medir lo mínimo necesario y respetar privacidad. Revisar señales cualitativas y cuantitativas en ciclos breves; detener funcionalidades que añadan carga sin generar utilidad.
+
+### 39.13 Alcance de la primera versión publicable
+
+La primera versión debe ser pequeña, pero incorporar el mecanismo de crecimiento desde el comienzo:
+
+1. Home con mensaje comprensible y prueba de dos minutos.
+2. Explore con al menos una experiencia o recurso sustantivo realmente disponible.
+3. Community con modalidades de participación y canal accesible para proponer/corregir.
+4. Research/Framework con profundidad y límites claros, enlazando fuentes.
+5. Roadmap público con estados honestos.
+6. Work with us con vías diferenciadas de colaboración, organizaciones y apoyo a iniciativas.
+7. Reglas básicas de contribución, autoría, licencias, privacidad y revisión.
+8. Contacto sencillo y accesible.
+
+No son requisitos de lanzamiento: comunidad alojada, login, perfiles, foro, CRM, pagos, membresía, ValueLabOS funcional, TGCV Playground completo, múltiples programas Impact, automatizaciones complejas ni una estructura societaria. Se añadirán únicamente cuando exista necesidad demostrada, responsable y autorización.
+
+### 39.14 Condiciones de evolución
+
+La evolución seguirá evidencia de uso y capacidad:
+- añadir una función solo si resuelve una fricción observada;
+- abrir un proyecto cuando haya objetivo, responsable/revisor y capacidad mínima;
+- formalizar alianzas cuando exista encaje, expectativas y condiciones claras;
+- solicitar financiación cuando exista iniciativa delimitada y vía legal;
+- contratar o pagar herramientas cuando el ahorro de tiempo, la utilidad o la reducción de riesgo justifiquen su coste;
+- ampliar el equipo cuando la carga real lo requiera, no como requisito simbólico.
+
+La infraestructura debe poder crecer por módulos sin rehacer el conjunto ni comprometer desde el inicio una plataforma propietaria.
+
+### 39.15 Reconciliación con decisiones anteriores
+
+Esta revisión:
+- **mantiene** AFLUYA como marca paraguas, tagline, jerarquía Transformación Generativa de Sistemas / Inteligencia Transformacional / TGCV, VALUE, ValueLabOS, AFLUYA Advisory e Impact;
+- **mantiene** la independencia científica de TGCV y sus estados de evidencia;
+- **mantiene** el marco económico y sus límites de autorización;
+- **mantiene** la apertura comunitaria, las salvaguardas de autoría/IP, privacidad y financiación;
+- **reinterpreta** Work with us como una vía dentro de un ciclo mayor, no como centro de la experiencia;
+- **sustituye** la convocatoria previa como cuello de botella por la web como infraestructura inicial de descubrimiento y contribución;
+- **sustituye** la movilización obligatoria previa por una construcción pública mínima que puede atraer contribuciones de forma progresiva;
+- **simplifica** la navegación de lanzamiento para no crear páginas vacías;
+- **condiciona** las herramientas a una prueba de encaje AWGI, no a decisiones previas de stack.
+
+La antigua estrategia de movilización de §37 queda como antecedente de relaciones, alianzas y financiación, pero su secuencia de convocatoria y formación de núcleo no gobierna el inicio del proyecto. Se utilizará cuando aparezcan oportunidades concretas o cuando la capacidad compartida sea necesaria.
+
+### 39.16 Control de cambios
+
+**v1.1 — 2026-11-10**
+- Se incorpora AWGI como principio rector de la estrategia digital y de crecimiento de AFLUYA.
+- Se define la web como infraestructura de descubrimiento, aprendizaje, contribución, conexión y evolución.
+- Se formalizan Efecto Ajá, llegada temprana, apertura distribuida y reducción de costes/riesgos.
+- Se define el ciclo de crecimiento y las vías graduales de participación.
+- Se incorpora el flujo de contribución con revisión, reconocimiento y salvaguardas.
+- Se redefine Roadmap como transparencia de estados y oportunidades.
+- Se alinea financiación con iniciativas delimitadas y valor demostrado.
+- Se establece una arquitectura técnica modular, reversible y no dependiente de una herramienta predeterminada.
+- Se redefine la primera versión publicable y sus criterios de éxito.
+- Se reemplaza la convocatoria previa como condición de arranque; la movilización pasa a ser consecuencia y acelerador del valor visible.
+- No se compran dominios, contratan servicios, crean cuentas, publican webs ni activan pagos.
