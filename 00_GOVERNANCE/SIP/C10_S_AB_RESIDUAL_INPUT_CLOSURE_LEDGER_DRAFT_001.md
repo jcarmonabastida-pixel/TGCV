@@ -1048,3 +1048,13 @@ Se registran amenazas separadas: confusión B–resultado y M–V, L incompleta/
 Se delimitan bounds candidatos por outcome acotado/missingness, selección (Lee solo bajo monotonicidad defendible), confusión no medida bajo restricciones explícitas, error de medición acotado, soporte limitado y spillovers. Todo bound debe declarar supuestos, target, conjunto/anchura y separar incertidumbre muestral. Solo es informativo si reduce el rango trivial; no se presume que exista bound útil.
 
 **Estado:** MED-06 DOCUMENTED / PARTIALLY SPECIFIED. Rangos, parámetros, escalas, soporte, historia L, errores, missingness, interferencia, método de bounds y AN-04 permanecen OPEN. Sin Design Freeze, implementación, fixtures, simulación o ejecución; scientific_execution=false; execution_authorized=false.
+
+## 32. C-Value — crosswalk candidato Outcome/Value para Opción A
+
+Se incorpora maestro §264, especializando §224 y reutilizando la frontera P0/P1/P2, F*, F1/F2, A1/A2 y MAP-05/06/07. Se separan F* (criterio técnico), Outcome (estado/consecuencia operativa) y Value (valoración contextual para beneficiario identificado). No se crean campos de roster ni se seleccionan dimensiones confirmatorias.
+
+Se registran familias candidatas O-MIG (estado de migración), O-CONF (conformidad destino), O-SVC (continuidad), O-REC (recuperación) y O-BUR (carga operativa). Se registran roles y dimensiones Value candidatas: propietario del servicio (continuidad/fiabilidad), operador (carga/coste), mantenedor (portabilidad/flexibilidad), usuarios si existen (continuidad/calidad percibida) y responsable de riesgo si procede (riesgo/seguridad/compliance). Son hipótesis de diseño, no actores/dimensiones confirmados. Seguridad/compliance puede ser restricción no compensatoria.
+
+Se establecen reglas anti-circularidad: no definir Value por ΔT_acc, A_f*, D_f*, Reach, trayectoria o ejecución; no equiparar telemetría con valoración; no inferir portabilidad futura de disponibilidad A1/A2; mantener pluralidad de beneficiarios y Value vectorial, sin índice/ponderaciones por defecto.
+
+**Estado:** C-Value CANDIDATE CROSSWALK DOCUMENTED / MATERIAL OPEN. Beneficiarios, indicadores, fuentes, escalas, ventanas, trade-offs, instrumentos, error, missingness, cegamiento y multiplicidad siguen OPEN. No se identifica ΔT_acc→Value ni se aprueba implementación/ejecución; scientific_execution=false; execution_authorized=false.
