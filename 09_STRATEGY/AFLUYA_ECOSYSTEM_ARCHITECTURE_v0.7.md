@@ -842,7 +842,7 @@ No se iniciará desarrollo de forma implícita por la inclusión de esta arquite
 
 1. Aprobación definitiva de la marca AFLUYA y validación registral.
 2. Arquitectura jurídica, fiscal y operativa que sostendrá la comunidad y la actividad comercial.
-3. Política de acceso, membresía, contribución, propiedad intelectual y financiación.
+3. Instrumentación operativa de la política de acceso, contribución, propiedad intelectual y financiación: la orientación económica y las salvaguardas quedan acordadas; permanecen pendientes los mecanismos jurídicos, administrativos y contractuales para aplicarlas.
 4. Validación de públicos, problema, alcance, precio y entregables del Value Discovery Sprint.
 5. Validación de demanda y posicionamiento de AFLUYA Advisory y servicios especializados.
 6. Definición funcional y validación de ValueLabOS.
@@ -1116,8 +1116,9 @@ Se priorizan encargos cerrados, con alcance, entregables, repositorio, documenta
 
 **AFLUYA Web**
 - Publicar una web institucional pequeña pero cuidada.
-- Mantener Home, Discover, Community, Research, Framework, Explore, Learning y About como arquitectura conceptual; algunas páginas podrán agruparse inicialmente sin borrar la navegación objetivo.
-- Incluir accesos claros a Advisory, Impact, ValueLabOS y recursos, sin aparentar que servicios o productos no disponibles ya están operativos.
+- Mantener Home, Discover, Community, Research, Framework, Explore, Learning, Work with us y About como arquitectura conceptual; algunas páginas podrán agruparse inicialmente sin borrar la navegación objetivo.
+- Construir Work with us como entrada a Advisory, Collaborate, For organizations e Impact partnerships, sin aparentar que servicios o productos no disponibles ya están operativos.
+- Mantener Tools/ValueLabOS, Impact y Resources como accesos secundarios o páginas enlazadas según el contenido real.
 - Priorizar claridad, diseño, responsive, accesibilidad básica, rendimiento y facilidad de edición.
 
 **Open Knowledge**
@@ -1156,13 +1157,16 @@ Se priorizan encargos cerrados, con alcance, entregables, repositorio, documenta
 
 ### 26.5 Secuencia de implantación y puertas de decisión
 
-**Fase L0 — Preparación**
+**Fase L0 — Preparación y movilización**
 - cerrar mapa de contenidos y navegación;
 - definir identidad visual mínima y mensajes;
 - priorizar documentos públicos;
-- seleccionar herramientas gestionadas y comprobar costes, privacidad y portabilidad.
+- seleccionar herramientas gestionadas y comprobar costes, privacidad y portabilidad;
+- preparar el paquete de presentación y convocatoria de AFLUYA;
+- identificar colaboradores fundadores, colaboradores por proyecto, aliados institucionales y posibles financiadores;
+- acordar un primer reparto de responsabilidades que reduzca la dependencia operativa del fundador.
 
-**Puerta L0:** no contratar herramientas que no tengan un uso concreto, responsable y criterio de salida.
+**Puerta L0:** no contratar herramientas que no tengan un uso concreto, responsable y criterio de salida; no iniciar desarrollos que dependan de capacidades que aún no existen; no solicitar ni aceptar fondos sin destino, condiciones y tratamiento jurídico-administrativo claros.
 
 **Fase L1 — Presencia pública y conocimiento**
 - publicar la web institucional;
@@ -1690,7 +1694,7 @@ Antes de añadir pagos o suscripciones se evaluarán proveedor, comisiones, impu
 6. Definir financiación y salvaguardas de AFLUYA Impact.
 7. Decidir si AFLUYA Supporter aporta valor real y puede administrarse con transparencia.
 
-No se aprueban tarifas, niveles comerciales, condiciones contractuales ni lanzamiento de suscripciones en esta versión.
+No se aprueban tarifas, niveles comerciales, condiciones contractuales ni lanzamiento de suscripciones. La orientación económica general sí queda aceptada como marco estratégico: acceso comunitario y conocimiento público abiertos; servicios delimitados como primera vía de ingresos; membresía y SaaS aplazados hasta validar demanda y capacidad; Impact mediante alianzas y financiación externa. La aceptación de este marco no equivale a validación de mercado ni autoriza cobros.
 
 ## 36. Control de cambios
 
@@ -1710,3 +1714,142 @@ No se aprueban tarifas, niveles comerciales, condiciones contractuales ni lanzam
 - Se aclara que Tools/ValueLabOS, Impact y Resources pueden permanecer como accesos secundarios según el contenido real.
 - Se alinea la navegación con el portfolio y la arquitectura económica v0.8, sin presentar ofertas no validadas como disponibles.
 - No se activan pagos, suscripciones ni contratación automática.
+
+
+## 37. Estrategia de movilización, colaboración y financiación — etapa de lanzamiento
+
+### 37.1 El cuello de botella que debe resolver la estrategia
+
+AFLUYA parte de una realidad operativa explícita: el proyecto está impulsado actualmente por una sola persona. El riesgo principal no es la falta de una arquitectura conceptual o de opciones tecnológicas, sino que la amplitud del ecosistema supere la capacidad individual para convertirlo en actividad visible, reunir participantes, sostener relaciones y ejecutar entregables.
+
+Por tanto, la primera etapa no se organizará como si ya existiera una organización con equipos y departamentos. Se organizará como una **fase de movilización y formación de una primera coalición**, que permita compartir responsabilidad y ampliar capacidad antes de desplegar todas las líneas del ecosistema.
+
+La prioridad inmediata no es construir todos los espacios, productos y servicios. Es conseguir que un pequeño grupo de personas y organizaciones quiera ayudar a hacer AFLUYA real, con compromisos proporcionados y una primera agenda común.
+
+### 37.2 Papel del fundador y principio de delegación
+
+El fundador mantiene inicialmente la responsabilidad de:
+- visión, propósito, posicionamiento y coherencia global;
+- arquitectura conceptual y relación entre AFLUYA, TGCV y VALUE Framework;
+- integridad científica y límites de comunicación de TGCV;
+- prioridades, decisiones de producto y aceptación de entregables;
+- representación inicial y relación con colaboradores estratégicos.
+
+No debe asumir en solitario y de forma permanente:
+- desarrollo y mantenimiento web;
+- gestión cotidiana de comunidad y comunicación;
+- captación y seguimiento de alianzas;
+- administración, financiación y operaciones;
+- producción de todas las experiencias, materiales y actividades.
+
+La regla es **conservar la dirección y el criterio, pero distribuir la ejecución**. Cada nueva responsabilidad recurrente debe tener una persona responsable, un alcance, tiempo disponible y una expectativa explícita.
+
+### 37.3 Primera coalición: perfiles que conviene atraer
+
+No se plantea contratar de inmediato un equipo ni constituir una estructura pesada. Se propone identificar entre tres y cinco personas iniciales, combinando colaboración voluntaria limitada, colaboración remunerada cuando exista financiación y posibles acuerdos de asociación tras conocerse mutuamente.
+
+Perfiles prioritarios:
+1. **Socio/a de impulso y operaciones:** ayuda a convertir la visión en prioridades, coordinar trabajo, abrir puertas y mantener el ritmo de ejecución. Es el perfil más importante para reducir la dependencia del fundador.
+2. **Responsable digital/producto:** experiencia en web no-code, diseño de producto, prototipado y coordinación técnica. Puede ser colaborador/a, socio/a o apoyo por entregable.
+3. **Comunidad y comunicación:** convocatoria, contenidos, relaciones con participantes, encuentros y seguimiento de colaboradores.
+4. **Alianzas y financiación:** identificación de organizaciones, patrocinadores, convocatorias y personas interesadas en apoyar; preparación de propuestas y seguimiento.
+5. **Apoyo científico, metodológico o de aplicación:** contribuciones acotadas a Research, VALUE, pilotos y evaluación, respetando la independencia y gobernanza de TGCV.
+
+Una persona puede cubrir más de un perfil. No es necesario cubrir todos antes de empezar; la primera incorporación prioritaria es alguien capaz de compartir la coordinación y la ejecución cotidiana.
+
+### 37.4 Diferenciar las formas de implicación
+
+La convocatoria debe permitir distintas formas de participar, sin confundirlas ni crear expectativas implícitas:
+
+- **Colaborador/a:** aporta conocimiento o trabajo a una tarea o proyecto delimitado, con reconocimiento, alcance, tiempos y condiciones acordados.
+- **Socio/a de ejecución:** comparte responsabilidad, decisiones y riesgo de desarrollar AFLUYA de forma continuada. La relación, dedicación, autoridad, propiedad intelectual y eventual participación económica deben acordarse expresamente antes de asumir compromisos.
+- **Aliado institucional:** aporta acceso a comunidades, conocimiento, espacios, difusión, infraestructura, proyectos o capacidad de convocatoria mediante un acuerdo claro.
+- **Patrocinador o financiador de programa:** aporta fondos para un objetivo, presupuesto, periodo y resultados de seguimiento definidos.
+- **Persona impulsora o supporter:** contribuye a dar visibilidad, conectar personas o realizar una aportación de apoyo si existe un mecanismo legal y administrativo adecuado.
+- **Cliente o entidad contratante:** paga por un servicio o proyecto con alcance, precio, entregables y condiciones definidos.
+
+No se ofrecerá participación societaria, reparto de ingresos, derechos de decisión o titularidad sobre activos por el mero hecho de expresar interés. Tampoco se considerará que una colaboración no remunerada implica cesión automática de propiedad intelectual.
+
+### 37.5 Propuesta de valor para quienes se incorporen
+
+La convocatoria no debe limitarse a pedir ayuda. Debe explicar qué pueden encontrar quienes se acerquen:
+- participar en la construcción temprana de un ecosistema abierto con propósito y recorrido potencial;
+- contribuir a una línea de investigación y aplicación diferenciada, con límites científicos transparentes;
+- desarrollar proyectos, herramientas, contenidos, servicios y experiencias junto a otras personas;
+- aportar y poner en práctica capacidades propias en un entorno de colaboración;
+- acceder a reconocimiento, autoría y visibilidad proporcionados a las contribuciones;
+- explorar, si existe encaje mutuo, una colaboración estable o una asociación de ejecución.
+
+La promesa debe ser honesta: AFLUYA está en fase de puesta en marcha; no se garantizarán ingresos, financiación, puestos, participación societaria ni resultados comerciales futuros.
+
+### 37.6 Financiación: vías separadas y transparentes
+
+La financiación se buscará por vías diferenciadas, cada una con su lógica y condiciones:
+
+1. **Recursos en especie y colaboración inicial:** tiempo acotado, conocimiento, herramientas, espacios, difusión, mentoría o infraestructura. Es la vía más ligera para empezar, pero no debe convertirse en una expectativa indefinida de trabajo gratuito.
+2. **Patrocinio y financiación de actividades concretas:** fondos vinculados a un piloto, evento, demostrador, programa de aprendizaje o iniciativa Impact, con presupuesto, periodo, destino, hitos y rendición de cuentas.
+3. **Subvenciones y convocatorias institucionales:** adecuadas para investigación, innovación, educación, emprendimiento o impacto social cuando exista elegibilidad, entidad solicitante y capacidad de gestión.
+4. **Aportaciones de personas impulsoras:** posibles contribuciones voluntarias para sostener actividades comunes, solo después de definir quién puede recibirlas legalmente, cómo se contabilizan, qué destino tienen y cómo se informa de su uso.
+5. **Inversión o financiación recuperable:** solo si se decide desarrollar una actividad empresarial con vehículo jurídico, plan económico, riesgos, derechos y condiciones de retorno definidos. No mezclar inversión con donación o patrocinio.
+
+No se solicitarán ni aceptarán fondos bajo una etiqueta ambigua. Una aportación no implica participación societaria ni retorno financiero salvo acuerdo formal específico. Antes de recaudar, recibir o comprometer fondos se verificará la forma jurídica, fiscal, contable y contractual adecuada con asesoramiento competente. No se abrirá una campaña pública de donaciones ni una oferta de inversión sin resolver previamente estos extremos.
+
+### 37.7 Paquete mínimo para convocar colaboradores y financiadores
+
+Antes de una convocatoria amplia, preparar un conjunto breve y coherente:
+1. **AFLUYA en una página:** propósito, problema/oportunidad, propuesta diferencial, relación con TGCV y VALUE, estado actual y visión.
+2. **Presentación breve:** 8–10 diapositivas para explicar el ecosistema, sus líneas, el plan por etapas y las oportunidades de participación.
+3. **Plan de primeros 90 días:** tres o cuatro resultados concretos, responsables propuestos, dependencias y criterios de éxito; es una ventana de planificación, no una promesa de calendario.
+4. **Mapa de contribuciones:** tareas reales, perfiles buscados, dedicación aproximada, modalidad de colaboración y qué recibe cada participante.
+5. **Nota de financiación:** presupuesto por hitos, recursos ya disponibles, recursos que faltan, destino de cada aportación y forma de informar sobre su uso.
+6. **Reglas iniciales de colaboración:** autoría, propiedad intelectual, confidencialidad, datos, toma de decisiones, conflictos de interés y salida de colaboradores.
+
+El paquete debe diferenciar con claridad lo que ya existe, lo que está diseñado, lo que se está construyendo y lo que aún es una aspiración.
+
+### 37.8 Primer ciclo de movilización
+
+La secuencia inicial recomendada es:
+- **Convocatoria cálida y dirigida:** comenzar por contactos relevantes, comunidades profesionales, investigadores, emprendedores y personas con afinidad demostrable; priorizar conversaciones individuales sobre una campaña genérica.
+- **Conversaciones de encaje:** conocer motivaciones, capacidades, disponibilidad, expectativas y posibles conflictos; no ofrecer asociación antes de comprobar el encaje mutuo.
+- **Primeras contribuciones acotadas:** proponer tareas pequeñas con resultado visible y fecha de revisión; observar colaboración real antes de ampliar compromisos.
+- **Núcleo de coordinación:** acordar una reunión periódica breve, responsables y un tablero simple de prioridades, con un máximo de tres frentes activos.
+- **Primera demostración pública:** mostrar una pieza concreta y comprensible del potencial de AFLUYA, no intentar lanzar todo el ecosistema a la vez.
+- **Conversación de financiación:** presentar necesidades y presupuesto vinculados a hitos concretos, una vez que el paquete de convocatoria y la ruta legal/administrativa estén preparados.
+
+La web pública será un punto de credibilidad, explicación y contacto, pero no sustituirá la labor directa de convocatoria y construcción de relaciones.
+
+### 37.9 Regla de foco y protección de capacidad
+
+Durante la movilización inicial:
+- mantener como máximo tres frentes activos: (1) convocatoria y alianzas; (2) presencia pública y conocimiento esencial; (3) un piloto o demostrador prioritario;
+- no intentar activar simultáneamente Community a escala, Research público completo, Lab, varios demostradores, membresía, SaaS y programas Impact;
+- no asumir compromisos recurrentes sin persona responsable y capacidad de entrega;
+- priorizar actividades que atraigan colaboradores, demuestren utilidad o generen financiación sostenible;
+- revisar mensualmente carga, avances y tareas que deben delegarse, aplazarse o cancelarse.
+
+**Criterio de éxito de la etapa:** AFLUYA deja de depender exclusivamente del fundador para ejecutar la actividad cotidiana y cuenta con un pequeño núcleo activo, responsabilidades compartidas, una primera prueba visible y una ruta de financiación definida. No se mide el éxito por el número de páginas, herramientas o líneas anunciadas.
+
+### 37.10 Condiciones de gobernanza antes de formalizar asociaciones o recibir fondos
+
+Antes de constituir una sociedad, asociación u otra figura, ofrecer participaciones, aceptar inversión, recibir donaciones o firmar acuerdos de patrocinio, se deberán definir con asesoramiento apropiado:
+- titularidad de la marca, dominios, repositorios, métodos y activos preexistentes;
+- titularidad y licencias de nuevas contribuciones;
+- derechos de decisión y representación;
+- remuneración, gastos, reparto de ingresos y responsabilidades;
+- tratamiento de fondos, contabilidad, impuestos y obligaciones de información;
+- independencia científica y gestión de conflictos de interés;
+- protección de datos, confidencialidad y salida de participantes.
+
+No se presume una forma jurídica determinada. La estructura debe responder a la combinación real de comunidad abierta, investigación, actividad comercial y programas de impacto.
+
+## 38. Control de cambios
+
+### v1.0 — 2026-11-10
+- Se cierra la revisión de la arquitectura económica como marco estratégico aceptado, sin aprobar tarifas ni activar ofertas.
+- Se integra Work with us como puerta de entrada a colaboración, asociación, servicios y alianzas.
+- Se convierte la limitación de capacidad del fundador en un criterio explícito de diseño y secuenciación.
+- Se añade una estrategia de movilización de colaboradores, posibles socios de ejecución, aliados y financiadores.
+- Se diferencian colaboración, asociación, patrocinio, aportación voluntaria, subvención, inversión y contratación.
+- Se incorpora un paquete mínimo de convocatoria y un primer ciclo de movilización.
+- Se establece un límite de tres frentes activos y se prioriza formar una primera coalición antes de desplegar todas las líneas.
+- No se constituye ninguna entidad, no se solicitan ni aceptan fondos, no se ofrecen participaciones y no se contraen compromisos con terceros.
