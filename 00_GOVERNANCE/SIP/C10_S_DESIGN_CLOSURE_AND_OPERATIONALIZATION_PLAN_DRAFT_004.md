@@ -2185,3 +2185,13 @@ La reconciliación final de inputs AB confirma: C0/G/F* tienen estructura acepta
 La programación D2 está definida por política; intento efectivo, recepción/cumplimiento, provisión de fondo, joint C_dep, fallos y rollback no. P*_τ2/P*_F están diferenciadas; elegibilidad, q_X*, soporte, pesos/estratos y cluster/interferencia no están materializados. Oráculo, cegamiento, adjudicación, R0–R3 truth tables y observación/missingness permanecen sin validación/evidencia.
 
 Véase ledger AB §10. Ningún valor se inventa ni se transfiere a C como si estuviera cerrado.
+
+## 16.116 — Propuesta integrada de cierre AB para aceptación (2026-11-10)
+
+Se incorpora como referencia el ledger AB §11. No se abren nueve microgates: la resolución se realizará como una única instancia sintética y DGP autocontenidos.
+
+Recomendación: resolver REF/AST y payload schema contra los contratos; completar cards sintéticas F1/F2/A1/A2; reutilizar crosswalk A_f*/matriz temporal/trivalencia; separar H_path/H_time y aplazar H_time hasta Outcome/Value; mantener eventos D2 separados; parametrizar C_dep como distribución conjunta con sensibilidad justificada; definir población/q_X* desde C0 pre-Z y soporte explícito; reutilizar R0–R3 y añadir adversariales de interferencia, vías colaterales y medición.
+
+Las decisiones que requieren aceptación del usuario son AB-03-SYN, AB-05-H, AB-08-POP, AB-09-INT y AB-06/07-PARAM. No se acepta unilateralmente ningún valor, población, topología ni parámetro. R0 puede contener invariancias estipuladas para el DGP, nunca presentadas como evidencia observada. MD-C1/MD-C4 y cobertura real permanecen probatorios.
+
+AB sigue IN_PROGRESS / NOT DESIGN FROZEN / NOT IMPLEMENTABLE. Véase ledger AB §11 para definición, límites y criterio de salida.
