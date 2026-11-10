@@ -10180,3 +10180,12 @@ El contrato de cada card fija propósito, entrada/salida lógica, pre/postcondic
 El crosswalk AB-04 define field_id semánticos para U*/R*/C*/X*/E_T, snapshots, mapping, estados de entrada/salida, observación, cobertura y adjudicación. No son columnas físicas ni implican valores 1/0/?. Truth_DGP y observed_state permanecen separados; se reutiliza la matriz temporal y PM-01…18.
 
 **Estado:** AB-03 DESIGN SPECIFIED AT ABSTRACT SYNTHETIC LEVEL; AB-04 FIELD-LEVEL SEMANTIC CROSSWALK SPECIFIED. OPEN: schema físico, mappings concretos, predicados atómicos/requiredness, tolerancias, C0, recursos, C_dep, H_time, universe/coverage, MD-C1/MD-C4, oráculo y validación. Sin fixtures, implementación, simulación ni ejecución.
+
+
+## 242. AB-01/02 — mapping semántico consolidado (2026-11-10)
+
+La reconstrucción histórica evita duplicar DEC-C10-054/068/069/071/079/080/082/083. Se integra el contrato lógico de la instancia: CMP-SERVICE-LOGIC-001; PAR-SVC-ENABLED BOOL y PAR-SVC-PROFILE ENUM; RUL-SVC-ENABLE-PROFILE-01 REQUIRE. Los PAR se conservan por identidad/tipo/dominio/estado/valor conforme a DEC-C10-083; RUL preserva owner, scope, AST, operadores, dos bindings tipados y efecto. CMP se ancla a NODE exacto por snapshot; PAR se representa como propiedad/manifiesto y COVERAGE_SCOPE; RUL como PREDICATE; REF solo como EDGE si hay relación inventariada; MET reutiliza registros existentes.
+
+Se definen mappings semánticos por etapa M_F1_sem, M_F2_sem, M_A1_sem, M_A2_sem y sus composiciones de ruta. La equivalencia semántica no demuestra independencia técnica de A respecto de B. No se crean entidades/columnas ni se extiende JCS UDG-01.
+
+Estado: AB-01 DESIGN RESOLVED semánticamente; encoding/schema/canonicalización OPEN. AB-02 SEMANTIC CROSSWALK RECONCILED; mapping_id/version, REF exhaustivo, registros por snapshot, cobertura y evidencia OPEN. Sin IAM sellado, parser, fixtures, implementación ni ejecución.
