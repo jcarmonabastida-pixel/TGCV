@@ -2139,3 +2139,12 @@ El maestro §232 consolida el roster parcial derivado de DEC-C10-069, la matriz 
 La identidad lógica de referencia es C10S-SVC-REQUEST-PROCESSOR v1.0.0 / instancia -001 rev1 / CMP-SERVICE-LOGIC-001 / SERVICE_LOGIC / RUL-SVC-ENABLE-PROFILE-01. ENABLED y PROFILE son PAR nucleares; RETRY-COUNT es candidato no confirmatorio; REF no se presume vacío. Los contextos de runtime/host, recursos, permisos, red, seguridad, estado persistente, rendimiento y alternativas se clasifican campo a campo, sin asumir que toda superficie B-M sea X*.
 
 MED-02c3/c4/d siguen OPEN: faltan valores/campos efectivos por unidad/versión, matching temporal y adjudicación de UNKNOWN. No se declara crosswalk total ni autorización de ejecución.
+
+
+## 16.111 — DAG causal específico Opción A/D2 y vías colaterales
+
+El maestro §233 integra el DAG temporal con el roster MED-02c y la precedencia DEC-C10-066/067. Se distingue la vía focal Z→B_D2→W_programmed→W_attempt→S_install→C_dep*→predicados de accesibilidad/T_acc→Reach/Π_H→K/consideración/selección→ejecución→Outcome→Value de las vías colaterales B→U/R/C/X, recursos/capacidad, permisos/seguridad, dependencias compartidas/A1-A2, coste/latencia/calidad, información/incentivos, observación y spillovers.
+
+A_f,1* es predicado/proyección focal dentro de la adjudicación de T_acc; D_f* es indicador derivado de apertura basal→post. Ninguno se trata como mediador adicional en serie con ΔT_acc*. El mediador secundario candidato es la distribución conjunta factible de ΔT_acc*. ITT_Z(D2) conserva interpretación de efecto de política/paquete si existen vías colaterales. La identificación de θ_A(q) requiere mapping B→g, régimen común, soporte y exclusión demostrados; no se presume por aleatorización.
+
+El DAG es candidato documental, no congelado. El inventario B-M01…15 sigue sin valores efectivos; MED-02c3/c4/d, unidad/interferencia, población, q*, F*, Value, DGP y estrategia de identificación permanecen abiertos. No se autoriza ejecución.
