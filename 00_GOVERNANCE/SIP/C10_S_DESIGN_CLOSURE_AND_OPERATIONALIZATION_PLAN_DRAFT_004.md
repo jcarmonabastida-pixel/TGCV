@@ -2377,3 +2377,13 @@ Se incorpora maestro §264 y ledger AB §32, especializando §224 para la migrac
 Se preserva Value como vector y se prohíbe circularidad con ΔT_acc*, A_f*, D_f*, Reach, trayectoria o ejecución. Telemetría no equivale a valoración; portabilidad futura no se infiere de disponibilidad técnica actual; seguridad/compliance puede ser restricción no compensatoria. La selección confirmatoria exige fichas completas §224 y decisión pre-resultados.
 
 **Estado:** C-Value CANDIDATE CROSSWALK DOCUMENTED / MATERIAL OPEN. Beneficiarios, indicadores, fuentes, escalas, ventanas, trade-offs, instrumentos, error, missingness, cegamiento y multiplicidad siguen OPEN. No se identifica ΔT_acc→Value ni se aprueba implementación/ejecución; scientific_execution=false; execution_authorized=false.
+
+## 16.139 — C-Value ↔ roster: crosswalk de Outcomes/Value contra §232/§233
+
+Se incorpora maestro §265 y ledger AB §33. Se especializa la instancia C10S-SVC-REQUEST-PROCESSOR v1.0.0 / instancia -001 rev1 / CMP-SERVICE-LOGIC-001. Se reutilizan el roster §232, DAG §233, F*/FP-01…08, B-M01…15 y E_T/U_G; no se crean campos ni IDs.
+
+Se mapean los cinco Outcomes candidatos: O-MIG sin campo terminal; O-CONF con anclaje conceptual parcial en F*/FP-01…08; O-SVC con superficies de observación pero sin medida de continuidad; O-REC con superficies de rollback/estado pero sin medida de recuperación; O-BUR con superficies de recursos/rendimiento pero sin coste/tiempo aprobados. Ningún O tiene ficha §224 completa. W_attempt, S_install, C_dep*, transformaciones, accesibilidad, Reach y ejecución no sustituyen Outcome.
+
+No hay beneficiarios/roles Value confirmados; CMP.owner no equivale a beneficiario. No hay instrumentos ni registros de valoración poblados. L_m y la ecuación lineal ilustrativa V=3O+4L_m+epsilon_V no se heredan como Value aceptado. No se crean field_id/event_id, snapshots, registros E_T ni fixtures.
+
+**Estado:** C-VALUE↔ROSTER CROSSWALK DOCUMENTED / MATERIAL OPEN. MED-02/03 continúan OPEN; no se identifica ΔT_acc→Value. Sin Design Freeze, implementación ni ejecución; scientific_execution=false; execution_authorized=false.
