@@ -2320,3 +2320,12 @@ La reconciliación mantiene separados:
 D2 no equivale por definición a g^Af ni a las políticas generales g1/g0. La interpretación focal exige versiones, mapping B→g^Af, q*, población/soporte, medición independiente y control de vías colaterales. A_f*/D_f* no sustituyen el mediador estructural completo; ΔE_T permanece separado y ΔX* requiere crosswalk semántico por campo. Se mantienen abiertos MED-03/05 y MAP-03…07.
 
 **Resultado:** reconciliación conceptual/documental; no identificación ni cierre material. Sin aprobación de estimando/método, Design Freeze, implementación, fixtures, simulación o ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 16.132 — MAP-03/04 y MED-03: soporte, equivalencia de versiones y clasificación longitudinal
+
+Se incorpora maestro §258 y ledger AB §26. MAP-03 formaliza la distribución inducida conjunta de M=ΔT_acc* bajo política/versiones y régimen común; distingue soporte estructural, asignación/recepción, secuencial, mediador y resultado. L postratamiento solo entra como historia pre-M en un método longitudinal explícito; no se ajusta mecánicamente como basal. MAP-04 impide agrupar versiones por etiqueta o igualdad observada de M si persisten diferencias directas/colaterales hacia V_j.
+
+MED-03 reutiliza el roster §§232/250 y crosswalk §§251–254. La clasificación campo×tiempo×V_j exige evaluar B→L, L→M y L→V_j. Solo la conjunción de las tres relaciones hace de L_k un confusor mediador–Value inducido. Se distinguen antecedente técnico, vía colateral, causa compartida, downstream y evidencia E_T. Las flechas desconocidas permanecen UNKNOWN/UNRESOLVED.
+
+**Resultado:** contratos documentales integrados; MAP-03/04 y MED-03 permanecen OPEN en lo material/identificativo. No se elige método, umbral de positividad, población, q, parámetros o potencia. Sin Design Freeze, implementación ni ejecución. scientific_execution=false; execution_authorized=false.
