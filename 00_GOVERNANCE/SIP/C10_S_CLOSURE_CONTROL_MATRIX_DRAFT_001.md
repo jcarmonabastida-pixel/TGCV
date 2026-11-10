@@ -2615,3 +2615,12 @@ PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-
 | Roster microdominio | Inventario y adjudicación campo a campo, event_id y truth/observed | OPEN |
 
 **Dictamen:** MED-02 conceptual parcialmente resuelto; MED-02c/d permanecen OPEN. No Design Freeze, implementación ni ejecución.
+
+
+## 128. MED-02c — roster de superficies del microdominio Opción A
+
+El maestro §232 contiene el roster documental parcial y su clasificación semántica. Regla: el tipo deriva de la función del subcampo, no del dominio B-M ni de su nombre. U* transformación; R* relación/topología; C* regla, permiso, recurso o condición de realizabilidad; X* estado/contexto efectivo constitutivo; E_T evidencia/observación. Un mismo dominio B-M puede contener varios tipos y debe descomponerse.
+
+Se reconocen como identidades contractuales de referencia las aceptadas por DEC-C10-069. ENABLED/PROFILE son PAR nucleares; RETRY-COUNT candidato; REF con cardinalidad/cobertura IAM pendiente. Contexto runtime/host y estado persistente son candidatos X* solo si alteran accesibilidad; logs, hashes, cobertura y oráculo son E_T; endpoint/red son R* y ACL/firewall son C*. Recursos, seguridad y rendimiento requieren regla funcional para clasificarse.
+
+**Estado:** roster documental parcial DOCUMENTED; campos/valores reales, truth/observed, event_id y matching de snapshots OPEN. MED-02 no cerrado.
