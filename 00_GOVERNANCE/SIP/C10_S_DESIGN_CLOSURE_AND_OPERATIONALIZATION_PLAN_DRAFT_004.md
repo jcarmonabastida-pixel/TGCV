@@ -2345,3 +2345,11 @@ Se incorpora maestro §260 y ledger AB §28, especializando auditoría IV §14.5
 Se añaden reglas de lectura de combinaciones (p. ej. ITT identificado con exclusión focal UNKNOWN; LATE local sin θ_A; mediación IIE_M sin identificación general), dictámenes independientes para Outcome y cada V_j y abstención del Analyzer ante target mismatch, supuestos UNKNOWN, evidencia no comparable o rutas no discriminadas. Se reutilizan §256 y P177/P178/P179/P182/P183; no se inventan umbrales ni denominadores.
 
 **Estado:** MAP-07 DOCUMENTED / MATERIAL OPEN. Contrato de adjudicación integrado; no existe validación empírica de los estimandos. MAP-01…06, MED-02…06, C-Value y AN-04 siguen pendientes. Sin Design Freeze, implementación, fixtures, simulación ni ejecución; scientific_execution=false; execution_authorized=false.
+
+## 16.135 — MED-04: contrato candidato de políticas factibles g0/g1 y régimen común q
+
+Se incorpora maestro §261 y ledger AB §29, reutilizando C-MED §§249/257 y auditoría IV §§14.1–14.5. Se define g0/g1 como políticas estocásticas factibles sobre el mediador estructural conjunto ΔT_acc*; se preserva la dependencia entre ΔU*/ΔR*/ΔC*/ΔX* y se impide confundirlas con B_g0/B_g1^D2, instalación o D_f* aislado. La expresión θ_A,j(q)=E_q[V_j^{g1}−V_j^{g0}] es notación candidata, no fórmula aprobada.
+
+Se especifica el contenido mínimo de q y una regla crítica para L post-B: no se ajusta como basal; debe permanecer invariante bajo la comparación, definirse una distribución de referencia común factible o reformularse el contraste como régimen longitudinal conjunto. Se documentan requisitos de factibilidad, soporte, versiones, interferencia, medición y separación truth/observed.
+
+**Estado:** MED-04 DOCUMENTED / PARTIALLY SPECIFIED. Definición sustantiva de g0/g1, q material, conjunto admisible M, población/H, Value/horizonte, soporte y tratamiento de L permanecen OPEN. No se aprueba fórmula final, método ni identificación. Sin Design Freeze, implementación, fixtures, simulación o ejecución; scientific_execution=false; execution_authorized=false.
