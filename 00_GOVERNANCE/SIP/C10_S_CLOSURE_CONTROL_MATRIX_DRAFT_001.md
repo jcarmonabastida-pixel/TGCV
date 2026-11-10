@@ -2744,3 +2744,16 @@ La aceptación no cierra AB, no aprueba causalidad empírica ni autoriza Design 
 | Integridad/versionado del binding | OPEN | Debe fijar clave/versión PAR del snapshot y tipo concordante |
 
 Un REF separado requiere relación constitutiva independiente. Fuente: ledger AB §13. Sin parser, constraints, fixture ni validación.
+
+## 137. Estado AB-03/04 tras especificación sintética abstracta (2026-11-10)
+
+| Subgate | Resultado | Límite |
+|---|---|---|
+| AB-03 identidad/semántica de cards | DESIGN SPECIFIED — TID/SID sintéticos F1/F2/A1/A2 | No RID/EID, producto, formato, mecanismo físico ni ejecución |
+| AB-03 contratos de card | DESIGN SPECIFIED — propósito, I/O lógico, pre/postcondiciones, APP, eventos y fallos | Mappings, valores, recursos, tolerancias, C0 y H_time OPEN |
+| AB-03 rutas | DESIGN SPECIFIED — πF=(F1,F2), πA=(A1,A2) | Substituibilidad e independencia material no demostradas |
+| AB-04 field roster | SEMANTIC CROSSWALK SPECIFIED — U*/R*/C*/X*/E_T | field_id semánticos, no columnas/schema físico |
+| AB-04 temporal/evidencia | REUSED — snapshots, 1/0/?, truth/observed, PM-01…18 | Truth tables, cobertura y evidencia material OPEN |
+| MD-C1/MD-C4 | OPEN / NONE | No se reemplazan por truth estipulada del DGP |
+
+AB-03/04 no pasan a DONE ni autorizan Design Freeze, fixtures, implementación o ejecución científica.
