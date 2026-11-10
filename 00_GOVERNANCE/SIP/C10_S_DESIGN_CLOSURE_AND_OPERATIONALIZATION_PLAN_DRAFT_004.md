@@ -2271,3 +2271,10 @@ Se añade maestro §251 y ledger AB §19, descomponiendo el roster ya existente 
 Se conserva AB-TIME-01: hasta armonización aceptada, usar nombres de eventos y timestamps/snapshots fuente, sin renumerar índices. Se mantiene separación de truth/observed/E_T y regla de no doble conteo. La clasificación de L como confusor inducido exige B→L, L→M y L→V_j por estimando/horizonte.
 
 **Resultado:** avance documental de MED-02c; no cierre material. MED-02c3/c4/d, field_id/event_id efectivos, instancia, fuentes/cobertura, matching, MD-C1/MD-C4, Outcome/Value dimensional y DAG por V_j siguen OPEN. Sin Design Freeze, implementación, fixtures ni ejecución.
+
+
+## 16.126 — MED-02d: crosswalk E_T y adjudicación sobre U_G
+
+Se incorpora maestro §252 y ledger AB §20. Se reutilizan los cinco registros U_G existentes: EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER; no se crean tablas, FK, target PAR ni taxonomía física nueva. Se separan truth_DGP, observed_state, E_T y ΔT_acc*, y se fijan clases funcionales de fuentes, dimensiones de suficiencia, cobertura por universo exacto, cegamiento y cadena de adjudicación.
+
+**Resultado:** interfaz documental E_T/U_G especificada. MED-02d continúa OPEN materialmente por falta de instancia/fuentes/snapshots, IDs efectivos, denominadores/scopes, AB-TIME-01, oráculo/fiabilidad, evaluadores/cegamiento y modelo de missingness/error diferencial. No registros, fixtures, implementación ni ejecución.
