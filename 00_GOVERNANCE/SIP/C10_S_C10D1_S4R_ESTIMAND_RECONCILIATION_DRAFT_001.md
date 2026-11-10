@@ -435,3 +435,16 @@ El mapping material B→g y las rutas colaterales de §14 de la auditoría IV so
 C-ANALYZER evaluará la recuperación solo en DGP identificables, bounds en parciales y clasificación/abstención en escenarios no identificables. Falsa identificación y falsa atribución focal se tratan como errores críticos; sus denominadores y tolerancias permanecen OPEN.
 
 **Estado:** especialización propuesta; C-MED y C-ANALYZER OPEN; no cambia estimandos aceptados, no identifica ΔT_acc→Value y no autoriza implementación/ejecución.
+
+
+## 27. Corrección de alcance causal y crosswalk C-MED/C-ANALYZER (2026-11-10)
+
+El maestro §229 corrige la ambigüedad: la pregunta C10-D1 θ_A(q) es el contraste entre políticas factibles que inducen cambios de accesibilidad bajo un régimen común; la mediación del efecto material D2 es secundaria y no equivale a esa pregunta. El ITT-Z-D2 identifica, bajo los supuestos de diseño, el efecto de asignar B; no identifica automáticamente accesibilidad ni su contribución a Value.
+
+La intervención g debe operar sobre la distribución conjunta factible de ΔT_acc, no sobre un índice abstracto. C10-D1 §27.1 ofrece la representación analítica (A⁺, A⁻, A^reconf, ΔR, ΔC). La tupla alternativa del DGP queda pendiente de crosswalk explícito, incluida la separación de ΔE_T; no se declara equivalente.
+
+El reloj DGP t−1…t9 distingue confusores mediador–Value inducidos por B antes de t3 de consecuencias posteriores (Reach, trayectorias, K, selección, ejecución y Outcome). No ajustar mecánicamente por estas últimas para el efecto total. La mediación secundaria exige estimando interventional y método longitudinal compatible; sin soporte o separación de vías, bounds/no identificación.
+
+El Analyzer se evalúa por estimando×dimensión×DGP×soporte; Generator conserva truth, Analyzer no la recibe y Evaluator adjudica después del sellado. Los denominadores de falsa identificación, falsa atribución y abstención se explicitan conceptualmente; tolerancias/umbrales permanecen OPEN.
+
+**Estado:** reconciliación metodológica propuesta; C-MED/C-ANALYZER OPEN; no se identifica ΔT_acc→Value, no se altera la jerarquía de estimandos ni se autoriza implementación/ejecución.
