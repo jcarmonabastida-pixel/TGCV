@@ -10228,3 +10228,16 @@ Una implicación X⇒Y solo podrá reducir el roster de 16 celdas si las definic
 Se formaliza la separación tripartita `truth_DGP`, `observed_state` (1/0/?) y `mechanism_trace`. La ausencia de registro no equivale a cero sin cobertura exhaustiva.
 
 **Estado:** plantilla y gate DESIGN SPECIFIED; contratos materiales, unidad/artefacto, entorno, ventanas, criterios, cobertura, adjudicación, definición de O, alcance de C, distribución conjunta y sensibilidad OPEN. AB-07 continúa materialmente OPEN. No Design Freeze, fixtures, implementación, simulación ni ejecución; scientific_execution=false; execution_authorized=false.
+
+
+## 246. AB-08 — algoritmo de elegibilidad C0, poblaciones P*_τ2/P*_F y soporte (2026-11-10)
+
+Se integra el ledger AB §13 y se reutiliza expresamente la arquitectura histórica de §§50.2–50.6 y 219.5–219.7, sin redefinirla.
+
+La secuencia de elegibilidad es pre-Z y documentalmente determinista: (1) congelar unidad, población marco, instante, C0, snapshots y protocolo; (2) adjudicar condiciones constitutivas y factibilidad de ambas políticas con estados SATISFIED/NOT_SATISFIED/UNKNOWN; (3) exigir D_f,0=0 y A_f,0*=0 independientemente y con respaldo para P*_τ2; (4) registrar F_alt,0 sin excluir por él de P*_τ2; (5) incluir en P*_F solo el subconjunto con F_alt,0=0 respaldado exhaustivamente; (6) fijar q_X* pre-Z como distribución objetivo de covariables/contextos X, separada de elegibilidad, cumplimiento y C_dep*; (7) documentar soporte de asignación, factibilidad de políticas, observación y estandarización; (8) declarar unidades de asignación, análisis e interferencia y mapa cluster/exposición cuando haya recursos o dependencias compartidas.
+
+F_alt,0=1 excluye de P*_F, no de P*_τ2; F_alt,0=UNKNOWN impide confirmar P*_F, pero no excluye de P*_τ2 si los demás criterios están satisfechos. UNKNOWN en condiciones constitutivas, D_f,0 o A_f,0* deja P*_τ2 indeterminada. La ausencia de evidencia no se convierte en cero. Toda exclusión debe quedar registrada con criterio, valor basal, fuente, tiempo, cobertura y versión.
+
+El soporte común se restringe a historias/estratos con masa en q_X* donde ambas políticas sean factibles, la asignación tenga probabilidad positiva y los resultados puedan observarse. Las regiones sin soporte no se extrapolan: se redefine la población solo mediante regla explícita pre-Z o se informa no-identificación en esa región. No se excluye por recepción, intento, instalación, C_dep*, A_f*, ΔT_acc, Reach, selección, ejecución, Outcome o Value post-Z.
+
+**Estado:** algoritmo y reglas DESIGN SPECIFIED; C0 material, unidad/población marco, protocolos y cobertura basal, X/q_X*, factibilidad y asignación por estrato, mapa de interferencia, missingness y tamaños muestrales OPEN. AB-08 no está materialmente cerrado. AB sigue IN_PROGRESS; no Design Freeze, fixtures, implementación, simulación ni ejecución; scientific_execution=false; execution_authorized=false.
