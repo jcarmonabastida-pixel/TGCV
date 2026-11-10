@@ -10138,3 +10138,13 @@ AB-04: el crosswalk causal de A_f* y la lógica trivalente ya están desarrollad
 **AB-TIME-01:** DGP temporal §2 usa t−1=baseline, t0=Z y t1=política/provisión; Path Predicate Temporal Evidence Matrix §2 usa t0=baseline y t1=asignación/oferta/recepción. El orden causal sustantivo coincide, pero los índices no. §233 sigue la convención del DGP como candidata, no como reconciliación aceptada. Hasta resolverlo se usarán nombres de evento y precedencia, no índices numéricos intercambiables.
 
 Estado: AB-03 material OPEN; AB-04 material OPEN/NONE; AB-TIME-01 OPEN. Sin implementación ni ejecución.
+
+## 237. AB-M05…M11: inputs materiales, D2 y horizonte (2026-11-10)
+
+El ledger AB §10 confirma que DEC-C10-094 define C0/G/F* y exige H* temporal común, pero H* no tiene ancla, valor ni unidad aprobados. La Path Predicate Matrix usa H=3 como profundidad máxima candidata de ruta; no debe confundirse con horizonte temporal. Se registra AB-TIME-02: separar H_path y H_time en la próxima reconciliación, sin asumir equivalencia.
+
+D2 tiene programación determinada por política (W_programmed=0 en Z=0 y 1 en Z=1), pero no están fijados cumplimiento/recepción, intento efectivo, provisión de fondo/crossover, fallos/reintentos/rollback ni la distribución conjunta numérica de C_dep*. No usar s=.80 ni .20/.80 como parámetros aprobados.
+
+P*_τ2 y P*_F permanecen distintos; algoritmo de elegibilidad, q_X*, pesos/estratos, soporte/positividad y topología de asignación/interferencia no están materializados. El oráculo, cegamiento, adjudicación, truth tables R0–R3 y proceso de observación/missingness están definidos en arquitectura, pero no validados ni poblados; cobertura de grafo permanece NONE.
+
+**Estado:** AB-05…09 mantienen inputs/evidencia OPEN. Sin defaults numéricos, freeze, implementación ni ejecución.
