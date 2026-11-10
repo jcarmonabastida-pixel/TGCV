@@ -346,3 +346,82 @@ AB-01: binding AST→PAR DESIGN RESOLVED semánticamente; encoding, schema, esca
 AB-02: crosswalk semántico reconciliado con DEC-C10-083 y U_G; mapping_id/version, mappings materiales por etapa, roster REF, snapshots/cobertura y evidencia OPEN. No se afirma REF=0 ni independencia técnica de A por igualdad semántica.
 
 No hay IAM sellado, hash, parser, fixtures, implementación, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 9. AB-06/07 — reconciliación integrada de secuencia D2 y dependencias de C_dep (2026-11-10)
+
+**Estado:** reconciliación documental asistida sobre DEC-C10-066/067/094, el contrato de provisión B y el DAG/crosswalk temporal del maestro. No añade una decisión, no parametriza el DGP y no autoriza implementación o ejecución.
+
+### 9.1 Secuencia causal y de eventos que ya está definida
+
+| Orden | Evento/objeto | Dependencia o significado confirmado | Lo que NO permite inferir |
+|---|---|---|---|
+| t0 | Z: asignación de política D2 | Determina qué política B_g^D2 queda asignada. D2 es el candidato primario; D1 permanece secundario. | Z=1 no equivale a recepción, intento ni instalación; Z=0 no demuestra ausencia de provisión de fondo. |
+| t1 | B_g^D2: política material | Control: no programa provisión focal. Tratamiento: programa provisión técnica focal de artefacto identificado/versionado. B provisiona; no ejecuta F1/F2/A1/A2 ni aplica la configuración. | B asignada/programada no demuestra que el actor reciba o inicie el intento, ni que la provisión tenga éxito. |
+| t1 | W_programmed | Registro de que la política programó el intento. Las probabilidades candidatas deterministas de programación por brazo pertenecen al contrato D2, pero no convierten el evento en intento efectivo. | No equivale a W_attempt ni a cumplimiento. |
+| t1 | Recepción / cumplimiento | Deben registrarse separadamente la recepción del artefacto/instrucción y el cumplimiento del protocolo. | No se consideran perfectos ni se derivan de Z o W_programmed. |
+| t1 | W_attempt | Intento efectivamente iniciado, con actor, momento, artefacto y versión. | No implica instalación, integridad, compatibilidad, operabilidad ni accesibilidad. |
+| t2 | S_install | Estado/evento de instalación técnica que debe quedar documentado, con versión/hash y evidencia temporal. | No es sinónimo del compuesto C_dep*, A_f*, D_f* ni éxito de la transformación funcional. |
+| t2 | C_dep* | Predicado técnico compuesto: instalación ∧ integridad ∧ compatibilidad ∧ operabilidad, evaluado con evidencia por componente. | C_dep*=1 no implica A_f*=1: faltan los demás predicados constitutivos (ID, REL, COND, AUTH, RES, DEP y BLOCK). Tampoco implica F1/F2 ejecutadas. |
+| t3 | A_f* y D_f* | A_f* evalúa la accesibilidad focal completa; D_f* es la apertura basal→post y exige inaccesibilidad focal basal. | No se infieren automáticamente de C_dep*, Z, B ni W. |
+| t3 | T_acc*, ΔT_acc* | Resultado estructural de la evaluación completa de accesibilidad y su cambio; la evidencia/cobertura epistémica se registra separadamente en E_T. | No se sustituye por instalación, éxito técnico, ejecución, logs o cambios en observabilidad. |
+
+**Regla temporal:** conservar por separado programación, recepción, intento, instalación y verificación de los cuatro componentes. Reintentos, fallos parciales, rollback, provisión de fondo, crossover y desviaciones se registran como eventos/historia, no se comprimen en un indicador binario de “éxito de B”.
+
+### 9.2 Componentes de C_dep* y dependencias internas
+
+| Componente | Contenido semántico mínimo | Evidencia material aún necesaria |
+|---|---|---|
+| INSTALLATION | El artefacto focal queda instalado en el entorno/unidad previstos y en la versión declarada. | Identidad del artefacto, actor, entorno, instante, estado final, hash/versión y registro de instalación. |
+| INTEGRITY | El artefacto recibido/instalado conserva la integridad exigida respecto de la identidad declarada. | Fuente, firma/hash o mecanismo de integridad aceptado, resultado de verificación y cobertura. |
+| COMPATIBILITY | El artefacto es compatible con el runtime, interfaz y condiciones técnicas declaradas para la unidad. | Versiones y restricciones de entorno/interfaz, matriz de compatibilidad y evidencia de comprobación. |
+| OPERABILITY | El componente instalado puede iniciarse y operar técnicamente en el ámbito previsto, sin confundirlo con ejecutar la transformación funcional F1/F2. | Prueba/registro técnico de inicio y disponibilidad, ventana, errores y criterio de operabilidad predefinido. |
+
+Las descripciones anteriores fijan el alcance semántico mínimo de los cuatro términos; no seleccionan herramientas, pruebas, umbrales, formatos, valores ni protocolos físicos. La aceptación de C_dep* como conjunción no implica que los cuatro componentes sean independientes ni que sus evidencias ya existan.
+
+### 9.3 Distribución conjunta exigida y dependencias no resueltas
+
+Para cada estrato/historia relevante h y brazo z, el DGP debe representar:
+
+P(C_dep*=1 | Z=z, H=h) = P(I=1, G=1, C=1, O=1 | Z=z, H=h),
+
+o una representación conjunta equivalente que preserve las 16 combinaciones posibles de los cuatro indicadores binarios. La distribución debe sumar uno y cada celda estar en [0,1]. Se informarán márgenes y dependencias condicionales; no se factorizará como producto de cuatro probabilidades marginales salvo que una justificación específica y verificable lo permita.
+
+| Dimensión de parametrización | Estado |
+|---|---|
+| Cuatro componentes y regla AND | DESIGN RESOLVED |
+| Unidad de condicionamiento por brazo e historia/estrato | DESIGN RESOLVED; roster concreto de estratos OPEN |
+| 16 celdas conjuntas o equivalente validado | DESIGN RESOLVED |
+| Probabilidades numéricas por celda | MATERIAL INPUT OPEN |
+| Ceros estructurales y restricciones entre componentes | OPEN; no asumir |
+| Dependencia entre recepción, intento, instalación y componentes | OPEN; requiere mecanismo/historia DGP explícitos |
+| Heterogeneidad por historia, brazo, unidad o entorno | OPEN; depende de AB-08 y del soporte |
+| Calibración empírica o estipulación sintética explícita | OPEN |
+| Rangos/escenarios de sensibilidad y criterio de cobertura | OPEN |
+| Provenance/versionado de parámetros | OPEN |
+
+No se aprueban s=0.80, tasas históricas 0.20/0.80, cumplimiento perfecto, una única oportunidad, independencia de componentes ni probabilidades marginales como sustituto de la distribución conjunta. Los valores candidatos de programación D2 no rellenan los parámetros de recepción, intento o C_dep*.
+
+### 9.4 Rutas colaterales y condiciones que deben permanecer comunes
+
+El diseño aislado exige mantener comunes C_auth,base=1, elegibilidad, recursos no focales, capacidad, información técnica basal, configuración fuente/destino, F*, oráculo y condiciones constitutivas no focales. Cualquier cambio diferencial atribuible a B debe permanecer visible como vía colateral/cointervención, incluyendo:
+
+- ACL/credenciales o autorización funcional; no confundirlas con permisos técnicos mínimos del adaptador;
+- capacidad, recursos compartidos/reservados/consumidos y contención;
+- dependencias transitivas, host, runtime, librerías, endpoint, red y seguridad;
+- datos, configuración fuente/destino, mapping, aplicación o alteración de F*;
+- estado de A1/A2, sus dependencias y su disponibilidad/equivalencia funcional;
+- coste, riesgo, latencia, calidad, rendimiento o disponibilidad;
+- información, formación, conocimiento y selección del agente;
+- logs, observabilidad, cobertura, medición y adjudicación;
+- rollback, residuos, carryover, crossover e interferencia entre unidades.
+
+B-M01…15 y PROV-01…12 son superficies/contratos de inspección, no evidencia de invariancia. ARCH-B1 sigue siendo candidata para evaluar; MD-C1 y MD-C4 siguen abiertos. Si una vía colateral cambia, el ITT de Z conserva interpretación como efecto de política/paquete; no se transforma automáticamente en efecto puro de accesibilidad ni valida LATE_f.
+
+### 9.5 Dictamen de cierre AB-06/07
+
+- **Resuelto a nivel de diseño:** política D2 y sus roles; secuencia diferenciada de eventos; definición conjuntiva de C_dep*; exigencia de distribución conjunta condicional; separación C_dep*→A_f*→D_f*; catálogo de vías colaterales y regla de no inferencia.
+- **Abierto como input material/evidencia:** actor, artefacto/hash, recepción, tiempos/ventanas, cumplimiento, reintentos, fallos parciales, rollback, provisión de fondo, evidencia por componente, estratos/historias, probabilidades conjuntas, calibración/sensibilidad, aislamiento de B y no-afectación A1/A2.
+- **Handoff a C:** secuencia/eventos versionados, distribución conjunta con su incertidumbre, historial por brazo, soporte/estratos y clasificación de vías colaterales. Todo OPEN se transfiere como OPEN/UNKNOWN; C no lo rellena por defecto.
+
+**Conclusión:** AB-06/07 quedan reconciliados en su arquitectura documental, pero no cerrados materialmente. AB continúa IN_PROGRESS; no hay Design Freeze, implementación, simulación ni ejecución autorizada.
