@@ -2687,3 +2687,17 @@ Referencia: ledger AB §8. Sin nuevo Decision Record, schema, filas IAM, snapsho
 | AB-TIME-01 índices numéricos | OPEN | DGP: baseline t−1/Z t0; Path Matrix: baseline t0/asignación t1 |
 
 Regla provisional: usar nombres de eventos y precedencia, no índices numéricos intercambiables. Fuente: ledger AB §§9.1–9.4. Sin código ni ejecución.
+
+## 133. AB-M05…M11 — inputs materiales y H_path/H_time (2026-11-10)
+
+| Subgate | Estado | Dictamen |
+|---|---|---|
+| AB-05 C0/G/F* | DESIGN RESOLVED | H* temporal ancla/valor/unidad OPEN; oráculo no validado |
+| AB-TIME-02 H | OPEN | H=3 de Path Matrix es profundidad candidata, no H_time |
+| AB-06 D2 programming | DESIGN RESOLVED | W_programmed por política; W_attempt/receipt/fondo/retries/rollback OPEN |
+| AB-07 C_dep joint | OPEN | 16 celdas/estrato o equivalente; sin probabilidades aprobadas |
+| AB-08 población/q_X*/soporte | PARTIAL/OPEN | P*_τ2 ≠ P*_F; algoritmo, distribución y common support faltan |
+| AB-08 unidad/interferencia | OPEN | Topología y exposure/cluster no materializados |
+| AB-09 oracle/R0–R3 | DESIGN RESOLVED / EVIDENCE OPEN | Truth tables, observación, cegamiento, adjudicación y firewall no validados |
+
+Referencia: ledger AB §10. No usar s=.80 ni .20/.80; no asignar H=3 como horizonte temporal.
