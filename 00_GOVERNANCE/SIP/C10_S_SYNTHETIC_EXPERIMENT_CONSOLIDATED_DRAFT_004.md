@@ -10472,3 +10472,133 @@ Permanece **AB-TIME-01 OPEN**: la matriz temporal histórica usa índices despla
 **Sigue OPEN:** field_id y event_id efectivos; instancia y valores por unidad; TID/SID/RID y snapshots; artefactos/hash; catálogo y cobertura; timestamps y AB-TIME-01; mapping U/R/C/X/E_T completo; truth/observed/adjudicación; MD-C1/MD-C4; definición dimensional de Outcome/Value (§224); y DAG causal material por V_j. MED-02c3, MED-02c4 y MED-02d no cierran.
 
 No se han creado fixtures, datos, field_id, valores, probabilidades ni eventos; no se ha implementado ni ejecutado nada. Este crosswalk es un avance documental verificable, no evidencia de instancia ni Design Freeze. scientific_execution=false; execution_authorized=false.
+
+
+## 252. MED-02d — crosswalk del plano de evidencia E_T y adjudicación (2026-11-10)
+
+**Estado:** ESPECIFICACIÓN DOCUMENTAL DE E_T / CROSSWALK PARCIAL; SIN INSTANCIA NI EVIDENCIA MATERIAL.  
+**Precedencia reutilizada:** maestro §§232, 249–251; F* Operational Property and Adjudication Matrix §§7–12 y 18–21; Path Predicate Temporal Evidence Matrix §§2, 9 y 14; IAM §19.1–19.8 y DEC-C10-064/065/070/079–083; U_G vigente. Esta sección no crea un registro, tabla, FK, enum, predicado ni oráculo nuevos.
+
+### 252.1. Frontera conceptual: qué es y qué no es E_T
+
+E_T es el proceso/plano epistémico que permite observar, documentar, cubrir y adjudicar estados del sistema. No es una coordenada constitutiva de la transformación:
+
+- S_T*=(U_t*,R_t*,C_t*,X_t*) representa estado estructural del DGP.
+- ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*) representa el cambio estructural de accesibilidad según la frontera y snapshot preespecificados.
+- E_T registra fuentes, capturas, integridad, cobertura, errores, missingness, evaluadores y adjudicaciones.
+- truth_DGP y los potenciales pertenecen al canal seguro del Generator/Evaluator; no se exponen al Analyzer.
+- observed_state es la clasificación derivada de evidencia admisible; no es truth por definición.
+- ΔE_T puede cambiar aunque el estado estructural no cambie. La mejora de cobertura puede descubrir una ruta preexistente y no constituye por sí sola ADD/DELETE ni ΔT_acc*.
+
+La evidencia puede documentar un estado real, pero no sustituye el estado ni convierte una ausencia de registro en ausencia del objeto.
+
+### 252.2. Crosswalk de registros existentes — sin duplicar U_G
+
+| Registro existente | Unidad/función en C10-S | Enlace y clave de resolución | Límite probatorio |
+|---|---|---|---|
+| EVIDENCE_REGISTER | Una fuente/evidencia identificable, con procedencia, método, versión, integridad y limitaciones | evidence_id existente; resolver fuente exacta, artefacto/snapshot, localizador y lineage | La fuente no prueba automáticamente la afirmación ni la cobertura completa |
+| CLAIM_EVIDENCE_LINK | Una relación evidencia × afirmación × target/scope | claim_evidence_id; FK y claim_target_type permitidos por U_G, con target exacto | Un vínculo válido no prueba pertinencia sustantiva ni verdad; no inventar target PAR o FK a manifiesto |
+| COVERAGE_REGISTER | Universo y denominador exactos que una fuente/observación pretende cubrir | coverage_scope_id; tupla contract/instance/snapshot/stage/route/class y universe_definition/version | COMPLETE es relativo al universo operativo versionado; no es exhaustividad ontológica |
+| EVALUATOR_ASSESSMENT | Evaluación del predicado/objeto/snapshot contra IAM, mapping y oráculo versionados | Referencias existentes a predicado, snapshot, evidencia, evaluator/oracle y scope | No sustituye la fuente primaria ni convierte truth oculta en observación |
+| ADJUDICATION_REGISTER | Resultado final y desacuerdos, con regla, evaluadores, fundamento y lineage | Identidad/relaciones exactas según U_G; conservar evaluaciones previas y resolución | No sobrescribir desacuerdos, evidencia contradictoria ni estado UNKNOWN |
+| Manifiesto C10-S | Vista documental de captura para CMP/PAR/REF/RUL/MET | manifest_record_id/revision, owner CMP, snapshot, stage_key, route/scope y coverage_scope_id según IAM | No es tabla física aprobada; no añade FK ni permite target PAR |
+
+No se altera el esquema U_G. En particular, la afirmación sobre PAR conserva el mecanismo ya reconciliado: target COVERAGE_SCOPE con scope PAR exacto y localizador textual de la fila/revisión; vínculo NODE separado solo para una afirmación propia del CMP owner. No se crea target_type=PAR, FK a manifest_record_id, tabla PAR ni tabla puente.
+
+### 252.3. Crosswalk por clase de fuente y subcampo de §251
+
+| Clase funcional de fuente (descripción, no enum nuevo) | Subcampos/afirmaciones que puede respaldar | Evidencia mínima pertinente | Qué no acredita por sí sola |
+|---|---|---|---|
+| Contrato, decisión y catálogo versionados | Identidad contractual, tipos, dominios, reglas, obligatoriedad, IAM, mapping previsto, criterios FP | Documento exacto, versión, decisión/estado, alcance y fecha de vigencia | Contenido efectivo de snapshot, aplicación, disponibilidad runtime ni ejecución |
+| Artefacto/configuración de origen o destino | CMP/PAR/REF/RUL/MET; valores declarados/aplicados; diffs y mapping | Artefacto exacto, hash si hay serialización canónica, método de extracción, versión, snapshot y lineage | Ejecución exitosa, aplicación efectiva o integridad de todo el universo si no hay cobertura |
+| Captura de snapshot/estado runtime | Estado observado en unidad/instante/entorno exactos; runtime, host, recursos, ACL, red y persistencia según scope | Snapshot exacto, objeto U_G exacto, tiempo de generación/captura, fuente, entorno y cobertura | Estado anterior/posterior fuera de su ventana ni causalidad del cambio |
+| Logs/eventos de proceso | Programación, recepción, intento, instalación, aplicación, verificación, fallo, rollback, llamadas y tiempos | Evento original, actor/proceso, reloj y sincronización, correlación de unidad, versión, secuencia y retención | Que el evento produzca por sí solo conformidad FP, accesibilidad o Outcome/Value |
+| Telemetría/métricas | Latencia, consumo, disponibilidad, throughput, errores, cobertura y exposición a recursos | Instrumento/versión, unidad, ventana, unidad física, agregación, calibración y missingness | Accesibilidad estructural salvo regla constitutiva predefinida; ni Value por sí sola |
+| Evidencia de alternativa/dependencia | Existencia, topología, endpoint, consumidores, independencia/no-afectación de A1/A2 y dependencias transitivas | Inventario del universo, extremos/relaciones exactos, versión, ventana, método de búsqueda y cobertura | Ausencia exhaustiva si fuentes/universo incompletos; independencia causal por mero nombre/hash |
+| Evaluación del oráculo/adjudicación | FP-01…FP-07, FP-08 separado, estado observado 1/0/?/NA y desacuerdo | oracle_id/version, IAM/mapping congelados, predicado atómico, evaluador, evidencia referenciada, regla y salida íntegra | Truth DGP ni validez confirmatoria del propio oráculo sin evaluación independiente |
+| Registro de verdad del DGP | truth_DGP, potenciales y parámetros generadores para evaluación del Analyzer | Registro seguro, versión de DGP, seed/configuración y acceso controlado en Generator/Evaluator | No es evidencia observada, no se incorpora a E_T observable ni se revela al Analyzer |
+
+Estas clases son agrupaciones explicativas, no una taxonomía de source_type ni nuevos IDs. Los tipos físicos admitidos siguen siendo los del registro U_G.
+
+### 252.4. Dimensiones obligatorias para evaluar suficiencia de E_T
+
+Para cada evidencia/afirmación se debe poder resolver, usando campos y relaciones existentes:
+
+1. **Identidad:** evidence_id, fuente, artefacto, versión, owner, unidad, predicado/afirmación y snapshot exactos; sin resolver por nombre, latest o hash aislado.
+2. **Procedencia:** quién/qué generó y capturó la evidencia, método, instrumento/software y versiones; cadena de transformaciones, exportaciones y revisiones.
+3. **Integridad:** preservación del original, hash solo si la serialización/artefacto permite calcularlo, control de modificación y contradicciones. Un hash prueba identidad de bytes, no equivalencia semántica.
+4. **Tiempo:** distinguir generación del evento, valid-time del estado, captura/observación, registro (recorded_at) y adjudicación. Conservar reloj/fuente y precisión. No usar timestamp como sustituto de snapshot_id; no armonizar índices t sin AB-TIME-01.
+5. **Ámbito:** unidad, transformación/ruta, objeto, predicado atómico, etapa, entorno, versión, ventana y universo cubierto. La evidencia no se transfiere entre F/A, etapas, snapshots ni versiones.
+6. **Método y validez:** directa/indirecta, procedimiento de extracción, calibración/validación pertinente, límites conocidos, sesgo posible y reproducibilidad. No inventar tolerancias.
+7. **Cobertura:** coverage_scope_id, universe_definition/version, denominador/unidad, expected/examined/valid sources, covered/excluded/opaque-or-unknown units, completion_rule y excepciones. No agregar clases ni rutas en un porcentaje común.
+8. **Cegamiento/independencia:** identidad/rol del evaluador, acceso permitido a Z/B/O/V, truth, potenciales, parámetros y claves del oráculo; momento de congelación de la salida Analyzer; conflictos y separación Generator/Analyzer/Evaluator.
+9. **Missingness/contradicción:** ausencia, censura, fallo de captura, retención, fuente inaccesible, observaciones contradictorias y desacuerdo entre evaluadores, con razón y alcance. No recodificar silenciosamente.
+10. **Adjudicación:** predicado y regla versionados, estado, rationale, evaluadores, desacuerdo, resolución, fecha y supersession/lineage.
+
+Estos son requisitos de suficiencia documental para el crosswalk, no valores, umbrales ni un schema físico nuevo.
+
+### 252.5. Reglas de adjudicación y estado observado
+
+Se reutilizan las reglas vigentes; no se introduce una escala alternativa:
+
+- 1: evidencia suficiente y concordante para todos los requisitos aplicables del predicado exacto.
+- 0: evidencia positiva de violación, o búsqueda negativa exhaustiva conforme al universo, regla y cobertura COMPLETE del predicado exacto.
+- ? / UNKNOWN: falta de fuente, observación, identidad, mapping, snapshot, cobertura, validez, ventana o adjudicación suficiente; incluye contradicción no resuelta.
+- NA: solo por inaplicabilidad ex ante declarada en IAM y justificada para esa unidad/propiedad/etapa; nunca para ocultar falta de observación.
+- NOT_COMPARABLE: versiones, unidades, mapping, universos o métodos incompatibles sin puente aprobado.
+
+Un FAIL obligatorio confirmado no se compensa con otros PASS. Si no hay FAIL pero queda un requisito obligatorio en UNKNOWN, no se declara PASS global. FP-08 se informa como gate probatorio separado y no sustituye FP-01…FP-07.
+
+**Regla especial para estados negativos:** la ausencia de fila, log o hallazgo solo permite 0 cuando el universo relevante está versionado, enumerado y cubierto conforme a la regla aplicable. COVERAGE NONE/PARTIAL o denominador UNKNOWN conserva ?. COMPLETE solo acredita el universo operativo declarado, no un universo ontológico ilimitado.
+
+### 252.6. Cadena de adjudicación por etapa y ruta
+
+Se conserva la secuencia ya establecida:
+
+1. Congelar contrato/instancia, IAM, mapping, aplicabilidad O/C/NA/?, oráculo y criterios antes de Z/B y de observar resultados.
+2. Resolver snapshot y universo exactos para C_src, F1→S2, A1→S1, C_dst declarado y C_dst aplicado, sin transferir evidencia entre rutas/etapas.
+3. Capturar fuentes originales y registrar procedencia/integridad; enlazar cada afirmación mediante CLAIM_EVIDENCE_LINK y scope exacto.
+4. Evaluar cobertura por snapshot×stage_key×ruta×clase y por las fuentes pertinentes; declarar NONE/PARTIAL/COMPLETE con denominador y excepciones.
+5. Evaluadores/oráculo clasifican predicados atómicos según IAM y reglas versionadas; conservar outputs brutos, UNKNOWN y contradicciones.
+6. Congelar outputs del Analyzer antes de liberar truth/potenciales al Evaluator.
+7. Evaluator compara Analyzer con truth_DGP y criterios de referencia; no reemplaza observación ausente por truth ni corrige retroactivamente el output.
+8. Registrar desacuerdos y adjudicación final sin borrar evaluaciones originales. FP-08 se informa por separado.
+
+C_dst_applied exige evidencia post-aplicación independiente. Un artefacto declarado, un evento de intento o un log de proceso no reemplazan el snapshot/estado efectivamente aplicado ni el post-check FP-07. FP-06 (evento de aplicación), FP-07 (estado verificado) y FP-08 (procedencia) permanecen separados.
+
+### 252.7. Riesgos E_T y falsadores de validez
+
+| Riesgo | Consecuencia | Control/resultado requerido |
+|---|---|---|
+| Captura/retención diferencial por Z/B o ruta | Missingness y error de medición diferenciales | Comparar cobertura y validez por brazo/ruta/tiempo; si no comparable, ?/sensibilidad, no imputar |
+| Fuente sin identidad o snapshot exacto | Evidencia no atribuible al estado/predicado | UNKNOWN o NOT_COMPARABLE; no resolver por nombre/timestamp aproximado |
+| Cobertura incompleta tratada como ausencia | Falso 0 y falso cierre de alternativa/REF | Exigir universo/denominador y COMPLETE para negativos exhaustivos |
+| Truth o parámetros del Generator filtrados al Analyzer | Leakage y validación inválida | Segregación de canales y pruebas negativas de acceso antes de validar |
+| Oráculo comparte código/fuente con Generator o Analyzer | Auto-certificación/correlated error | Independencia operacional, versionado y evaluación independiente de FP/FN |
+| Outcome/Value influye en F*/Reach | Circularidad y contaminación | Cegamiento; Outcome/Value fuera del oráculo F* |
+| Snapshot posterior retrotraído a t3 | Sesgo temporal y reclasificación post hoc | Valid-time/snapshot exactos; nuevo evento/snapshot para rollback/cambios posteriores |
+| Hash usado como equivalencia semántica | Falso PASS de identidad funcional | Hash solo identidad/integridad; FP-03 y mapping por separado |
+| Evaluadores discrepan y se sobrescribe una salida | Pérdida de incertidumbre y trazabilidad | Preservar E1/E2, rationale, desacuerdo y adjudicación |
+| Cambio del oráculo/IAM tras ver resultados | Sesgo post hoc | Congelar versiones; cambio requiere revisión/versionado y nueva evaluación justificada |
+
+Los casos PM-05, PM-08, PM-17 y los contratos de cegamiento/adjudicación existentes siguen siendo pruebas documentales; no se afirman ejecutados.
+
+### 252.8. Inputs que siguen OPEN y condición de cierre
+
+**Crosswalk documental cerrado en esta sección:** frontera E_T/truth/observed; función de los cinco registros U_G; relación con manifiesto y coverage scope; clases funcionales de fuente; dimensiones de suficiencia; cadena de adjudicación; controles de cegamiento, missingness, cobertura y no doble conteo.
+
+**OPEN material/contractual:**
+- instancia, artefactos, snapshots y registros reales; no hay fuentes técnicas examinadas ni unidades cubiertas;
+- roster completo, field_id/event_id existentes y resolución exacta de IDs/lineage;
+- universe_definition, denominadores, expected_sources y coverage_scope_id efectivos por clase×snapshot×etapa×ruta;
+- timestamps, sincronización y AB-TIME-01;
+- serialización canónica y hashes donde proceda;
+- oracle_id/version, implementación, independencia, fiabilidad, falsos positivos/negativos y tolerancias;
+- identidad/disponibilidad de evaluadores E1/E2, cegamiento efectivo y adjudicación;
+- modelo de missingness/censura/error diferencial y análisis de sensibilidad;
+- truth tables R0–R3 y observables permitidos por escenario;
+- Outcome/Value dimensional y relación causal por V_j.
+
+**Criterio de cierre MED-02d:** completar el binding a identificadores U_G reales sin crear otros; demostrar resolución exacta de cada evidencia/claim/scope; fijar universo y denominadores por ámbito; reconciliar tiempos/snapshots; y validar el proceso de observación/cegamiento/adjudicación con pruebas independientes autorizadas. La presente especificación no satisface esos requisitos materiales.
+
+No se crean registros, fuentes, snapshots, hashes, field_id, eventos, valores, fixtures ni código. No se implementa ni ejecuta. scientific_execution=false; execution_authorized=false; no Design Freeze.
