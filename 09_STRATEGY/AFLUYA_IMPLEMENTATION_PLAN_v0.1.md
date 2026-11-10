@@ -85,7 +85,7 @@ No se avanzará automáticamente de una fase a otra. El usuario aprueba expresam
 - Registro de decisiones y aprobaciones.
 - Lista de fases y dependencias confirmada.
 
-**Criterio de salida:** el usuario confirma el inventario y autoriza únicamente iniciar la comprobación de dominios. No se crea ninguna cuenta ni se compra nada.
+**Criterio de salida:** el usuario confirma el inventario y revisa la arquitectura económica incorporada en la sección 12 de este plan y en la sección 35 de la arquitectura estratégica. La aprobación de esta orientación no autoriza todavía la venta, la creación de membresías ni la contratación de herramientas de pago. Una vez cerrada esta decisión, podrá autorizar únicamente iniciar la comprobación de dominios. No se crea ninguna cuenta ni se compra nada.
 
 ### Fase 1 — Dominio y comprobaciones previas
 
@@ -244,8 +244,9 @@ La navegación final se confirmará con la arquitectura v0.7 y se reducirá si l
 
 Orden recomendado:
 
-1. Fase 0 — Preparación.
-2. Fase 1 — Dominio y comprobaciones jurídicas/técnicas.
+1. Fase 0 — Preparación e inventario.
+2. Cierre de la orientación económica (sección 12): clasificación del portfolio, recurrencia candidata y límites de monetización. Esta decisión estratégica precede a la Fase 1, pero no implica activar ofertas ni contratar servicios.
+3. Fase 1 — Dominio y comprobaciones jurídicas/técnicas.
 3. Fase 2 — Identidad visual mínima.
 4. Fase 3 — Web Framer.
 5. Fase 4 — Publicación documental.
@@ -307,9 +308,9 @@ El usuario aprobará cada gasto por separado. El objetivo es minimizar el coste 
 
 ## 10. Próxima operación concreta
 
-Completar el cierre de Fase 0 mediante una ficha de inventario y, a continuación, realizar la consulta técnica de los tres dominios en fuentes fiables. La consulta deberá devolver resultados con fecha y fuente, y terminar en una recomendación; no ejecutará compra ni registro.
+Completar el cierre de Fase 0 con la revisión y aceptación de la orientación económica de la sección 12, y solo después realizar la consulta técnica de los tres dominios en fuentes fiables. La consulta deberá devolver resultados con fecha y fuente, y terminar en una recomendación; no ejecutará compra ni registro.
 
-La primera operación no requiere crear cuentas nuevas, introducir datos de pago ni contratar servicios.
+La decisión económica no activa ninguna suscripción ni servicio de pago. La primera operación no requiere crear cuentas nuevas, introducir datos de pago ni contratar servicios.
 
 ## 11. Control de cambios
 
@@ -322,3 +323,101 @@ La primera operación no requiere crear cuentas nuevas, introducir datos de pago
 - Se define la revisión trimestral de herramientas y costes como mantenimiento definido pero no programado.
 - No se han creado cuentas, contratado servicios, comprado dominios ni publicado la web o documentación.
 - No se modifica `main`, ni el Core científico, RMA, Evidence→Claim Matrix, C09, C10 o las autorizaciones científicas de TGCV.
+
+
+## 12. Arquitectura económica y monetización del portfolio
+
+### 12.1 Propósito y regla general
+
+La orientación económica se incorpora desde la arquitectura estratégica AFLUYA v0.8 (sección 35). El modelo debe sostener el ecosistema sin convertir la comunidad abierta ni el conocimiento público en un embudo comercial.
+
+Regla: **acceso básico a comunidad y conocimiento abierto; pago por servicios especializados, formación estructurada y herramientas que aporten utilidad diferenciada; financiación institucional para programas de impacto.**
+
+Esta clasificación es una hipótesis estratégica para validación, no significa que las ofertas estén disponibles ni autoriza a crear cuentas, contratar plataformas, cobrar cuotas o activar pagos.
+
+### 12.2 Portfolio por modalidad de acceso e ingreso
+
+| Área / oferta | Modelo | Prioridad | Condición de activación |
+|---|---|---|---|
+| Community general | Gratuito | Permanente | No condicionar pertenencia o participación básica al pago |
+| Knowledge y publicaciones TGCV publicables | Gratuito | Permanente | Licencias, autoría, estado y restricciones claros; independencia científica |
+| TGCV Playground y VALUE Explorer básicos | Gratuito | Inicial | Etiquetar demos, prototipos y simulaciones con honestidad |
+| AFLUYA Supporter | Aportación voluntaria recurrente | Opcional | Definir destino de fondos, transparencia y administración; sin privilegios de gobernanza |
+| Cursos y talleres concretos | Pago puntual | Inicial cuando exista oferta | Programa, facilitación, resultados, costes y condiciones definidos |
+| AFLUYA Learning Membership | Suscripción mensual/anual | Posterior | Lanzar solo después de una cohorte piloto que demuestre demanda y capacidad de entrega periódica |
+| Value Discovery Sprint | Pago por proyecto | Prioridad comercial inicial | Pilotar y validar alcance, esfuerzo, entregables y disposición a pagar |
+| AI Opportunity Assessment | Pago por proyecto | Inicial secundaria | Delimitar y pilotar |
+| Proposal Excellence | Pago por proyecto/paquete | Inicial secundaria | Delimitar y pilotar |
+| Fractional CVO | Retainer mensual/trimestral | Candidato principal a recurrencia B2B inicial | Cliente y necesidad reales, dedicación, alcance, cadencia, límites y capacidad definidos |
+| Seguimiento post-Sprint | Retainer temporal opcional | Complementaria | Solo si el cliente necesita continuidad real; no imponer renovación |
+| ValueLabOS | Suscripción SaaS | Medio plazo | Flujos validados, usuarios piloto, producto operativo, seguridad, soporte y costes conocidos |
+| AFLUYA Impact | Patrocinio, financiación institucional y contratos de programa | Exploratoria | Co-diseño, protección de participantes, financiación y evaluación previas |
+| Lab / innovación aplicada | Pago por proyecto, contrato o alianza | Caso a caso | Alcance, entregables, autoría, propiedad intelectual y uso de contribuciones acordados |
+| Licencias especializadas | Licencia o suscripción | Futuro | Activo identificable, derechos, mantenimiento y soporte definidos |
+
+### 12.3 Suscripciones: tres modelos distintos
+
+1. **Retainer profesional B2B:** Fractional CVO y, cuando proceda, seguimiento post-Sprint. Se paga por acompañamiento y disponibilidad continuados, con dedicación y entregables explícitos.
+2. **Membresía de aprendizaje:** AFLUYA Learning Membership. Se paga por práctica guiada, sesiones, itinerarios, feedback y comunidad de práctica recurrentes; no basta con una biblioteca estática.
+3. **SaaS:** ValueLabOS. Se paga por uso continuado de una herramienta operativa. No construir ni vender el SaaS completo antes de observar patrones reales en Sprints y pilotos.
+
+AFLUYA Supporter, si se adopta, será una contribución voluntaria al ecosistema, no una compra de acceso o influencia.
+
+### 12.4 Secuencia comercial recomendada
+
+- **Primero:** validar servicios delimitados mediante Value Discovery Sprint y, de forma selectiva, AI Opportunity Assessment y Proposal Excellence. Explorar Fractional CVO cuando exista demanda y capacidad.
+- **Después:** probar una cohorte o itinerario de Learning; solo convertirlo en membresía si hay continuidad y disposición a pagar.
+- **Más adelante:** validar tareas recurrentes y usuarios de ValueLabOS con prototipos y proyectos reales antes de decidir desarrollo SaaS.
+- **En paralelo, condicionado:** co-diseñar y financiar AFLUYA Impact mediante alianzas, patrocinios y financiación institucional.
+
+No lanzar simultáneamente comunidad de pago, academia de suscripción, SaaS y varios programas de impacto. La capacidad operativa inicial es limitada y cada modelo recurrente exige entrega, soporte y administración continuados.
+
+### 12.5 Límites de apertura y salvaguardas
+
+- La comunidad general, la participación básica y el conocimiento público no estarán sujetos a pago.
+- No se venderá influencia sobre la gobernanza científica ni acceso privilegiado a decisiones de TGCV.
+- No se monetizará el acceso a evidencia científica pública como condición para conocer resultados publicables.
+- Los programas Impact no impondrán cuotas a beneficiarios como condición general; se priorizarán financiación externa y plazas subvencionadas.
+- Los proyectos remunerados tendrán alcance, remuneración, autoría y propiedad intelectual explícitos.
+- Ninguna oferta comercial garantiza valor, resultados de negocio o validación científica.
+
+### 12.6 Implicaciones para el plan de implantación
+
+La primera versión de la web debe poder presentar Community, Research, Explore, Learning y Work with us / Advisory, así como describir ValueLabOS e Impact con estados honestos.
+
+No se necesita para el lanzamiento inicial:
+- pasarela de pago;
+- checkout o gestión de suscripciones;
+- área privada o cuentas de usuario;
+- automatización de cobros;
+- plataforma de comunidad de pago.
+
+Se puede presentar el catálogo de servicios y recibir consultas por canales sencillos, sin prometer disponibilidad no confirmada. Cualquier cobro futuro requerirá evaluar comisiones, facturación, impuestos, privacidad, seguridad, cancelación, reembolsos, portabilidad y coste total, y aprobación expresa del usuario.
+
+### 12.7 Criterios de activación de una suscripción
+
+No activar una suscripción hasta poder responder afirmativamente:
+1. ¿Qué beneficio recurrente concreto recibe el suscriptor?
+2. ¿Qué se entrega y con qué cadencia?
+3. ¿Quién lo mantiene y cuánto tiempo requiere?
+4. ¿Existe demanda y disposición a pagar contrastadas?
+5. ¿Los costes y obligaciones de soporte, privacidad, cobro y cancelación están resueltos?
+6. ¿Se puede cancelar con claridad y sin fricciones indebidas?
+7. ¿El modelo respeta el acceso abierto, la independencia científica y las salvaguardas de AFLUYA?
+
+### 12.8 Puerta de decisión previa a Fase 1
+
+Antes de iniciar la comprobación de dominios, el usuario revisará y aprobará o modificará la orientación económica. Esta aprobación solo valida la clasificación estratégica y el orden de validación; **no autoriza** a vender, cobrar, crear membresías, desarrollar ValueLabOS, contratar proveedores ni comprar herramientas.
+
+**Estado:** propuesta v0.1 integrada; validación estratégica pendiente del usuario.
+
+## 13. Control de cambios
+
+### v0.2 — 2026-11-10
+- Se incorpora la arquitectura económica del portfolio como condición de diseño previa a la Fase 1 de dominios.
+- Se clasifican las ofertas por acceso gratuito, pago puntual, retainer, membresía, SaaS, financiación institucional y licencias.
+- Se distinguen tres mecanismos de recurrencia: retainer profesional, membresía de aprendizaje y suscripción SaaS.
+- Se establece la prioridad de validar servicios antes de lanzar membresías o desarrollar ValueLabOS.
+- Se preservan la comunidad abierta, el conocimiento científico público y la independencia de TGCV.
+- Se confirma que la primera web no requiere pagos, checkout, área privada ni gestión de suscripciones.
+- No se activa ninguna oferta, suscripción, contratación, compra ni gasto.
