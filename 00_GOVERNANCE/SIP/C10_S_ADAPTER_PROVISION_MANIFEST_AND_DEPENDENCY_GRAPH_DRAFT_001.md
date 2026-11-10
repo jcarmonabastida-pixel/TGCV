@@ -330,3 +330,28 @@ La matriz permite concluir qué debe probarse, no qué ocurrió. Por tanto:
 
 **Dictamen MAP-05:** CLASSIFICATION_DEFINED / MATERIAL_EVIDENCE_NOT_AVAILABLE. MD-C1 y MD-C4 siguen OPEN; IV-G4 sigue OPEN; exclusión no demostrada; no se declara D2 aislado. Siguiente paso admisible: completar roster de evidencia/grafo por frontera, nodo/arista, consumidor, unidad, versión y ventana. No implementación, parametrización, simulación ni ejecución.
 
+
+
+## 15. Crosswalk B-M01…15 → U*/R*/C*/X*/E_T para MED-02c (2026-11-10)
+
+Esta tabla no cambia los estados del manifiesto ni convierte NO INVENTARIADO en ausencia. Es una regla de tipado de subcampos; no una clasificación automática de la superficie completa.
+
+| Superficie | Tipo(s) primarios posibles | Regla |
+|---|---|---|
+| B-M01 artefacto/versión | U*/MET/E_T | Identidad funcional de transformación solo si es el objeto transformacional; versión/hash/provenance como MET/E_T |
+| B-M02 runtime | X*/C*/E_T | Estado/versión efectiva constitutiva X*; configuración/restricción C*; imagen/hash como evidencia MET/E_T |
+| B-M03 host | X*/C*/E_T | Estado efectivo host/OS X* si afecta accesibilidad; regla/restricción C*; diff y fuente E_T |
+| B-M04 interfaz/canal | R*/C*/E_T | Endpoint/conexión R*; ACL/bloqueo C*; log E_T |
+| B-M05 permisos | C*/E_T | Autorización/ACL efectiva C*; separar ACL técnica de C_auth,base; evidencia de cambio E_T |
+| B-M06 datos/configuración | CMP/PAR/REF/RUL/C*/E_T | Estado del paquete bajo M; condición constitutiva solo si afecta realizabilidad; snapshot/hash E_T |
+| B-M07 recursos | C*/X*/E_T | Disponibilidad/reserva C*; estado del pool X* solo si constitutivo; consumo posterior separado |
+| B-M08 red | R*/C*/E_T | Topología/ruta R*; firewall/permiso/bloqueo C*; telemetría E_T |
+| B-M09 seguridad | C*/X*/E_T | Política/restricción C*; estado contextual efectivo X* solo con regla; evidencia E_T |
+| B-M10 observabilidad | E_T | Logs, métricas, cobertura y retención; conocimiento del agente es vía informativa separada |
+| B-M11 estado persistente | X*/C*/U*/R*/E_T | Estado efectivo X* si cambia accesibilidad; precondición/bloqueo C*; objetos/relaciones U*/R*; diff E_T |
+| B-M12 rendimiento | C*/OUTSIDE_MEDIATOR/E_T | Condición operativa solo si preespecificada como accesibilidad; de otro modo resultado downstream/externo; medición E_T |
+| B-M13 oráculo | E_T/medición | No forma parte de ΔT_acc*; cambio de oráculo amenaza comparabilidad F* |
+| B-M14 alternativa | U*/R*/C*/E_T | Transformaciones, relaciones y condiciones de A1/A2; independencia requiere evidencia pre/post |
+| B-M15 rollback/residuos | X*/C*/U*/R*/E_T | Clasificar residuo por función y vigencia; rollback/diff como evidencia |
+
+El manifiesto de §3/§12.2 sigue NO INVENTARIADO donde no hay evidencia. Ningún subcampo se declara cambiado o invariante sin snapshot comparable y cobertura.
