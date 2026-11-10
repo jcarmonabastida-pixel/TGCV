@@ -2116,3 +2116,10 @@ Se concreta el reloj t−1…t9 y se distingue confusión mediador–Value induc
 El Analyzer debe evaluarse por estimando×dimensión Value×DGP×soporte, con truth sellada, bounds cuando proceda, falsa identificación/atribución y abstención correcta/falsa. Se especifican denominadores conceptuales, manteniendo thresholds, tolerancias, multiplicidad, N y réplicas OPEN.
 
 **Estado:** propuesta integrada; MED-01…06 y AN-01…04 no están cerrados; paquete C NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. Sin ejecución.
+
+
+## 16.108 — Corrección de precedencia ΔT_acc DGP/C10-D1
+
+Se corrige la lectura de §229.2: la tupla DGP vigente es (ΔU*, ΔR*, ΔC*, ΔX*) según DGP §30 y la reconciliación de snapshots; ΔValidity_e pertenece a ΔE_T, no a ΔT_acc*. La expresión anterior de DGP §3.3 queda supersedida por §30.
+
+El crosswalk con C10-D1 §27.1 debe mapear ΔU* a altas/bajas/reconfiguraciones, ΔR* a relaciones y ΔC* a condiciones/configuraciones. ΔX* requiere clasificación campo a campo; no se asigna automáticamente a ΔC ni al régimen q. MED-02 permanece OPEN hasta resolverlo. Sin freeze ni ejecución.
