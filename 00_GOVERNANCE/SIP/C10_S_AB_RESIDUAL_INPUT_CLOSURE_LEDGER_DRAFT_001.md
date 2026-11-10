@@ -910,3 +910,12 @@ Se registran rutas candidatas B→L→M→downstream→O→V, B→L→O/V, B→A
 **Regla de ficha:** reutilizar field_id existentes y registrar tiempo/valid-time, unidad/frontera, snapshot/versión, función U*/R*/C*/X*/E_T, truth/observed, papel causal relativo al estimando y V_j, relación con M y Outcome/Value, fuentes/cobertura/error, intervención, interferencia y provenance. Un mismo campo no se duplica en L y M; separar instancias temporales cuando proceda.
 
 **Estado:** registro conceptual consolidado; inventario material y clasificación campo×V_j OPEN. No identifica confusores efectivos ni demuestra ausencia de rutas. MED-03/05 y §224 siguen OPEN. Sin Design Freeze ni ejecución.
+
+
+## 19. MED-02c — crosswalk campo/subcampo del roster Opción A (2026-11-10)
+
+Se descompone el roster documental de §232 a nivel de subcampo sin crear identificadores ni datos de instancia. Se han tipado condicionalmente: F1/τ2, F2, A1/A2 y TID/SID/RID como U*/identidad; adaptadores, endpoints y llamadas como R* o U* según función; contract/instance/component IDs como CMP/MET; ENABLED/PROFILE y RUL-SVC-ENABLE-PROFILE-01 como PAR/C*; RETRY-COUNT como slot candidato no nuclear; runtime/host/deployment como X* solo si constitutivo, con reglas como C* y hashes como E_T; recursos como C* o X* según disponibilidad/contexto; C_auth,base separado de ACL técnica; DNS/proxy/rutas como R*, firewall/bloqueos como C*; configuración/datos descompuestos en CMP/PAR/REF/RUL/C*; seguridad como C* o X* según función; estado persistente como X*/C*/U*/R* según función; logs/telemetría/oráculo como E_T; rendimiento fuera de M salvo regla de accesibilidad preespecificada; alternativas A1/A2 como U*/R* con no-afectación pendiente.
+
+La tabla detallada y sus reglas quedan en maestro §251. No se han asignado field_id/event_id ni valores. Se conserva AB-TIME-01: usar nombres de eventos, timestamps fuente y snapshot, sin armonizar índices t por inferencia. NO INVENTARIADO/UNKNOWN/? no equivalen a cero. El papel de L como confusor inducido depende de B→L, L→M y L→V_j para estimando/horizonte concretos.
+
+**Dictamen:** crosswalk documental de subcampos completado parcialmente sobre el roster existente; MED-02c3/c4/d OPEN. Inputs materiales, instancia, matching, cobertura, truth/observed, MD-C1/MD-C4, Outcome/Value dimensional y DAG por V_j siguen OPEN. Sin fixtures, implementación, ejecución ni Design Freeze.
