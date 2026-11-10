@@ -1038,3 +1038,13 @@ Se incorpora maestro §262, especializando la propuesta ya existente en §249 y 
 Se precisa que L inducida por B no puede tratarse como basal ni omitirse; la distribución de L sigue el régimen de referencia b1 y G_M^b0 debe tener soporte en las historias relevantes bajo b1. Se identifican g-computation longitudinal, ponderación/densidades y TMLE longitudinal como familias candidatas, sin seleccionar una antes de conocer población, N, estructura de M, soporte y DGP. Downstream se integra para el contraste total; no se ajusta mecánicamente. Se fijan IDENTIFIED/PARTIALLY_IDENTIFIED/NOT_IDENTIFIED/INDETERMINATE y la regla de no transferencia a θ_A(q), ITT, LATE o dimensiones distintas.
 
 **Estado:** MED-05 DOCUMENTED / CANDIDATE; gates y método no validados. MED-03/04/06, §224, inputs materiales AB/MAP y AN-04 permanecen OPEN. Sin Design Freeze, implementación ni ejecución; scientific_execution=false; execution_authorized=false.
+
+## 31. MED-06 — sensibilidad, identificación parcial y bounds para C-MED
+
+Se incorpora maestro §263, especializando §225.6–225.9, §§249.5–249.7 y §262, sin duplicar taxonomías ni crear estimandos. La unidad de sensibilidad es estimando×V_j/Outcome×población/unidad×horizonte×régimen/versión×soporte; el foco es IIE_M con M=ΔT_acc* conjunto. Se prohíbe transferir resultados a θ_A(q), ITT_Z^D2, ψ_policy^D2, LATE_f o θ_Af.
+
+Se registran amenazas separadas: confusión B–resultado y M–V, L incompleta/error, error conjunto de M, error Outcome/Value, soporte cruzado, missingness/selección, interferencia/carryover, versiones/provisión de fondo y especificación/interacciones. Se exige sensibilidad univariada y conjunta cuando proceda, con tipping surfaces interpretadas frente a rangos justificados, no como prueba de plausibilidad.
+
+Se delimitan bounds candidatos por outcome acotado/missingness, selección (Lee solo bajo monotonicidad defendible), confusión no medida bajo restricciones explícitas, error de medición acotado, soporte limitado y spillovers. Todo bound debe declarar supuestos, target, conjunto/anchura y separar incertidumbre muestral. Solo es informativo si reduce el rango trivial; no se presume que exista bound útil.
+
+**Estado:** MED-06 DOCUMENTED / PARTIALLY SPECIFIED. Rangos, parámetros, escalas, soporte, historia L, errores, missingness, interferencia, método de bounds y AN-04 permanecen OPEN. Sin Design Freeze, implementación, fixtures, simulación o ejecución; scientific_execution=false; execution_authorized=false.
