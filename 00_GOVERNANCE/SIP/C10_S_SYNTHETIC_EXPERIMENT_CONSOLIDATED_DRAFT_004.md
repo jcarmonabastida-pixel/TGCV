@@ -10158,3 +10158,9 @@ La propuesta recomienda: (i) resolver los dos operand bindings una sola vez cont
 La capa R0 puede estipular invariancia/no interferencia dentro del DGP para comprobar recuperación bajo verdad conocida; no demuestra exclusión o invariancia empírica en sistemas reales. MD-C1/MD-C4 y la cobertura observada siguen siendo gates probatorios.
 
 La propuesta requiere aceptación expresa de AB-03-SYN, AB-05-H, AB-08-POP, AB-09-INT y AB-06/07-PARAM. REF/AST y schema/canonicalización son reconciliaciones técnicas contra contratos vigentes. **No aprobada ni congelada.** AB permanece IN_PROGRESS; no hay implementación, fixtures, simulación ni ejecución.
+
+## 239. Aceptación de la propuesta integrada AB y límites (2026-11-10)
+
+El usuario acepta expresamente la propuesta del ledger AB §11 como base de trabajo, manteniendo abiertos los valores numéricos y el horizonte temporal no justificado. Se aceptan como reglas de diseño: cuatro cards sintéticas F1/F2/A1/A2 sin mecanismo real (AB-03-SYN); separación H_path/H_time con H_time OPEN hasta Outcome/Value (AB-05-H); elegibilidad C0 pre-Z y separación P*_τ2/P*_F, con q_X* y soporte aún por concretar (AB-08-POP); no interferencia solo estipulada en R0 y adversariales con interferencia (AB-09-INT); método de proponer parámetros D2/C_dep mediante justificación y sensibilidad, sin aprobar cifras (AB-06/07-PARAM).
+
+REF/AST y schema/canonicalización siguen como reconciliaciones técnicas contra contratos. MD-C1/MD-C4, cobertura, verdad observada y no-afectación real permanecen OPEN. Esta aceptación no cierra AB, no aprueba identificación causal empírica ni autoriza implementación/ejecución. scientific_execution=false; execution_authorized=false.
