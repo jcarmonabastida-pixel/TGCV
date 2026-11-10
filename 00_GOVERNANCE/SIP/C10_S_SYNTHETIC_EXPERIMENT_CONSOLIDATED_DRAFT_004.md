@@ -10126,3 +10126,15 @@ Por tanto, AB-01 queda DESIGN RESOLVED en roster lógico y semántica de operand
 AB-02 queda DESIGN RESOLVED para ENABLED BOOL sin coerción y PROFILE ENUM con mapping STD→STANDARD, RO→READ_ONLY, OFF→DISABLED. DEC-C10-068 no acepta DEFAULT contractual para esos dos parámetros en la instancia confirmatoria. Namespace/schema/payload físico, serialización y canonicalización siguen OPEN. DEC-C10-074/JCS/TGCV-C10S-JCS-1 se limita a UDG-01; no se extrapola a payload C_src/C_dst/S1/S2.
 
 No se crea decisión nueva ni se modifica el alcance de las DEC aceptadas. No hay filas, snapshots, hashes ni validación técnica.
+
+## 236. Reconciliación AB-M03/M04 y discrepancia de indexación temporal (2026-11-10)
+
+El ledger AB §§9.1–9.4 contrasta las cards históricas, Opción A/F*, el crosswalk D2, MEAS-001, la matriz temporal y DEC-C10-090/091/092.
+
+AB-03: F1/τ2 dispone de una función candidata de conversión S0→S2; F2 solo tiene rol general de aplicación/verificación S2→SF; A1, exportación S0→S1; A2, importación/aplicación con etapas conceptualmente separadas. Ninguna de las cuatro tiene TID/SID/RID y contrato técnico material completo. No se inventan productos, formatos, endpoints, comandos ni versiones. MD-C1/MD-C4 impiden declarar aislamiento y no-afectación de A1/A2 sin evidencia.
+
+AB-04: el crosswalk causal de A_f* y la lógica trivalente ya están desarrollados documentalmente. No equivalen a inventario/captura de campos. B-M01…15 son superficies de inspección, U_G permanece vacío y no hay snapshots C10-S reales; por tanto no se adjudican estados materiales 1/0 ni invariancia. Los campos sin evidencia permanecen ?.
+
+**AB-TIME-01:** DGP temporal §2 usa t−1=baseline, t0=Z y t1=política/provisión; Path Predicate Temporal Evidence Matrix §2 usa t0=baseline y t1=asignación/oferta/recepción. El orden causal sustantivo coincide, pero los índices no. §233 sigue la convención del DGP como candidata, no como reconciliación aceptada. Hasta resolverlo se usarán nombres de evento y precedencia, no índices numéricos intercambiables.
+
+Estado: AB-03 material OPEN; AB-04 material OPEN/NONE; AB-TIME-01 OPEN. Sin implementación ni ejecución.
