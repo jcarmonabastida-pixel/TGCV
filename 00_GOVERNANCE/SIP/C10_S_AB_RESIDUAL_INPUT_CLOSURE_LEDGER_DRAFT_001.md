@@ -942,3 +942,13 @@ Se corrige la referencia previa de §9.3: el §2 del maestro es arquitectura cau
 Se mantienen ortogonales stage_key, SNAPSHOT.phase/timestamp, route_id, branch_id/step_k y reloj de trayectoria. Los timestamps originales y valid-time no se reescriben; no se infiere simultaneidad ni se fabrican event_id.
 
 **Dictamen:** orden semántico reconciliado; AB-TIME-01 parcialmente resuelto. La adopción formal del reloj numérico posterior y la declaración explícita de §34.1 como legado comprimido siguen OPEN. Sin instancia, event_id, snapshots, evidencia o ejecución.
+
+
+## 22. MED-02c4 — correspondencia event_key/stage_key/SNAPSHOT/E_T (2026-11-10)
+
+Se añade maestro §254. Reutiliza DEC-C10-065/070/071/072, U_G §§12–16 y 18–24, contratos de matching, E_T y reloj §253. Se fija la diferencia entre event_key semántico, source-native event ID, EID de invocación de transformación, stage_key, revisión SNAPSHOT y E_T. No se crea event_id ni tabla de eventos.
+
+El crosswalk establece la precedencia funcional de C_SRC, F1_S2, A1_S1, F2_DST_DECL, A2_DST_DECL, F2_DST_APPLIED y A2_DST_APPLIED; mantiene su independencia respecto de SNAPSHOT.phase y del reloj t−1…t9. Reutiliza la tupla C0 de nueve componentes y C10S_SCOPE_GLOBAL; dimension sigue fuera de C0. Route-specific se resuelve por route_id/route_record_id y ROUTE_STEP; la relación evento→snapshot→evidencia se documenta con provenance, timestamp_start/end_tz, CLAIM_EVIDENCE_LINK y evaluaciones existentes, sin afirmar FK inexistente.
+
+**Cerrado documentalmente:** reglas de precedencia, matching, cardinalidad, deduplicación, no retroacción y 15 casos adversariales C4-01…15.  
+**OPEN material:** fuentes/event IDs, snapshots/revisiones, tiempos sincronizados/valid-time, route records, scopes/denominadores, mapping por clase y ejecución autorizada de C0/adjudicación. MED-02c4 permanece DOCUMENTED / MATERIAL OPEN. Sin implementación, registros ni ejecución.
