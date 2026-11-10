@@ -2599,3 +2599,19 @@ PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-
 | ΔValidity_e | Validez epistémica de evidencia | ΔE_T, no ΔT_acc | DEFINED BY DGP §30 |
 
 **Precedencia:** DGP §30 gobierna sobre la expresión histórica de §3.3. MED-02 permanece OPEN; no se acepta equivalencia automática.
+
+
+## 127. MED-02 — clasificación semántica de ΔX*
+
+| Control | Regla | Estado |
+|---|---|---|
+| Precedencia | DGP §30 gobierna; ΔValidity_e pertenece a ΔE_T | DEFINED |
+| X* | Estado/contexto efectivo constitutivo de accesibilidad en el tiempo; no transformación ni regla | DEFINED AT CONCEPTUAL LEVEL |
+| Mapping C10-D1 | ΔX* se conserva como contexto DGP; sus consecuencias se reflejan en las coordenadas analíticas pertinentes, sin sumarlo dos veces | PROPOSED |
+| Campo que es predicado | Reclasificar explícitamente en C* | PROPOSED |
+| Historia no constitutiva | q solo si puede estandarizarse coherentemente y con soporte | CONDITIONAL |
+| Campo fuera de frontera | Fuera del mediador, con registro si es covariable/contexto | PROPOSED |
+| Campo no resuelto | UNKNOWN/?; no forzar equivalencia | DEFINED |
+| Roster microdominio | Inventario y adjudicación campo a campo, event_id y truth/observed | OPEN |
+
+**Dictamen:** MED-02 conceptual parcialmente resuelto; MED-02c/d permanecen OPEN. No Design Freeze, implementación ni ejecución.
