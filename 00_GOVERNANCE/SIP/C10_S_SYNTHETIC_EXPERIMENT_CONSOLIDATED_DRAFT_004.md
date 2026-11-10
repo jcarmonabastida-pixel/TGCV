@@ -11111,3 +11111,95 @@ Incluso si estas condiciones se cumplen para τ2, el resultado sería focal y no
 - MAP-07: preservar la distinción entre D_f*/LATE_f focal y θ_A(q) general.
 
 **Dictamen:** MAP-01/02 están documentados pero materialmente abiertos. La correspondencia B_D2→g^Af no está demostrada; B_D2→g general no puede presumirse. ITT_Z^D2 conserva interpretación de asignación/política; la mediación por ΔT_acc* sigue siendo candidata secundaria; θ_A(q) permanece la pregunta científica rectora y no identificada. No se aprueba estimando final, método, población, q, Value, parámetros, tolerancias o potencia. Sin Design Freeze, implementación, fixtures, simulación o ejecución. scientific_execution=false; execution_authorized=false.
+
+
+# 258. MAP-03/04 y MED-03 — distribuciones inducidas, soporte y clasificación longitudinal de L (2026-11-10)
+
+**Precedencia:** reutiliza §§229–233, 249–257; registro causal §250; crosswalk U*/R*/C*/X* y E_T §§251–252; reloj §253; matching §254; contratos MAP-01/02 en auditoría IV §§14.6–14.7; y decisiones DEC-C10-066/067. No crea un roster, estimando, predicado ni identificador alternativo. Estado de esta sección: reconciliación contractual propuesta, no aprobada ni congelada.
+
+## 258.1. MAP-03 — distribución inducida bajo historia y régimen común
+
+Para cada política material/versionada b_j, la distribución inducida de accesibilidad no es una tasa marginal de éxito ni la distribución de instalación. Se representa como:
+
+g_j^ind(m | h, l; q) = P(M=m | do(B=b_j), H=h, L_preM=l, q)
+
+donde M=ΔT_acc* completo, H es historia basal pre-Z y L_preM contiene solo la historia postasignación anterior a la medición de M que sea necesaria y temporalmente válida. La expresión es un objeto de DGP/estimando; no se calcula condicionando ingenuamente en L observado si L es afectado por B. Su identificación requiere el modelo longitudinal y supuestos de intercambio secuencial que MED-05 deberá justificar.
+
+La comparación g_0^ind/g_1^ind exige declarar conjuntamente:
+- población elegible pre-Z y unidad de asignación/análisis;
+- distribución objetivo q_X* de H basal, sin redefinirla con variables post-Z;
+- política b_j, versión, factibilidad y desviaciones/recepción;
+- régimen común q para condiciones no focales; cualquier componente post-Z debe ser una intervención/regla dinámica explícita, no un ajuste convencional;
+- historia L_preM, orden temporal, ventanas y estado de observación;
+- universo/soporte factible de M y equivalencia de versiones;
+- dimensión V_j, beneficiario, escala y horizonte para los contrastes que se pretendan interpretar.
+
+La distribución marginal inducida bajo q se obtiene integrando sobre la misma población e historia objetivo, no comparando estratos distintos creados por cada política. El condicionamiento en L solo es admisible dentro de una formulación longitudinal explícita que modele cómo B genera L y cómo L precede a M y V_j.
+
+## 258.2. MAP-03 — soporte común y positividad
+
+La positividad requerida es secuencial y relativa al régimen, historia y versiones definidos. Para cada historia con peso positivo bajo q_X* y cada etapa necesaria, las políticas/intervenciones comparadas deben ser factibles y tener probabilidad positiva de ocurrencia; las distribuciones inducidas de M deben tener soporte suficiente para el contraste objetivo. No basta con que exista solapamiento marginal de M ni con que ambos brazos tengan observaciones.
+
+Se distinguen:
+1. **soporte estructural:** la política y la configuración son físicamente/normativamente factibles para esa unidad e historia;
+2. **soporte de asignación/recepción:** la unidad podía recibir la versión asignada y se observan desviaciones/crossover;
+3. **soporte secuencial:** las historias L y estados intermedios necesarios tienen probabilidad positiva bajo las reglas comparadas;
+4. **soporte de mediador:** los valores/conjuntos de M requeridos por la intervención estocástica son factibles en las historias objetivo;
+5. **soporte de resultado:** existe seguimiento y medición válidos de V_j en el horizonte declarado.
+
+La falta de soporte no se resuelve extrapolando silenciosamente, truncando pesos sin declarar, fusionando versiones ni eliminando estratos post hoc. Si el problema se limita a una región identificable, se informa estimando restringido a esa población/soporte y se declara el cambio de población objetivo; si no puede justificarse, PARTIALLY_IDENTIFIED o NOT_IDENTIFIED. Umbrales numéricos, diagnósticos y reglas de truncamiento quedan OPEN hasta disponer de población, DGP y método.
+
+## 258.3. MAP-04 — equivalencia de versiones
+
+Dos versiones materiales no son equivalentes solo porque compartan etiqueta, artefacto nominal, éxito técnico, A_f* o un valor observado de D_f*. La equivalencia debe evaluarse respecto al estimando, población, historia, horizonte y dimensiones de M/V_j.
+
+Para agrupar versiones v y v′ se requiere:
+- identidad y procedencia versionada conforme a MAP-01/02;
+- misma regla funcional de intervención y mismas condiciones constitutivas relevantes;
+- distribuciones de M comparables bajo H/q y, para el efecto considerado, ausencia o modelado de diferencias de versión que afecten V_j por rutas no representadas en M;
+- tratamiento explícito de versiones recibidas distintas de las asignadas;
+- prueba de que la agrupación no oculta diferencias en recursos, permisos, seguridad, rendimiento, información, alternativas, costes, observación o interferencia.
+
+La igualdad de M no garantiza equivalencia causal para V_j si persisten rutas directas/colaterales. Cuando no pueda sostenerse equivalencia, conservar versiones separadas o estimar efectos de política/paquete por versión; no colapsarlas para aumentar artificialmente el soporte. MAP-04 permanece OPEN hasta contar con contratos materiales y evidencia por versión.
+
+## 258.4. MED-03 — clasificación causal de L por campo, tiempo y V_j
+
+Se reutiliza el roster de §§232/250 y el crosswalk de §§251–254. La unidad de clasificación es el campo/subcampo ya existente, con su unidad, evento, snapshot y tiempo; no la etiqueta genérica de familia. La clasificación es específica al Outcome/Value, horizonte y estimando.
+
+Para cada L_k se evalúan separadamente las relaciones:
+- B→L_k: la política material cambia el campo antes de M;
+- L_k→M: el campo contribuye causalmente a ΔT_acc* posterior;
+- L_k→V_j: el campo afecta la dimensión de Value por alguna ruta pertinente, directa o a través de downstream;
+- L_k→O: cuando Outcome y Value se distinguen y el campo afecta O;
+- precedencia temporal y evidencia/estipulación DGP de cada flecha.
+
+Reglas de clasificación:
+- **Confusor M–V inducido por B:** solo si B→L_k, L_k→M y L_k→V_j están sostenidas para el estimando/horizonte. Es postratamiento y no debe ajustarse como covariable basal.
+- **Antecedente técnico de M:** B→L_k→M, sin ruta L_k→V_j identificada/estipulada aparte de la que queda íntegramente representada por M. No llamarlo confusor automáticamente.
+- **Vía colateral de política:** B→L_k→V_j que no pasa íntegramente por M; amenaza atribución de ITT/efecto B a accesibilidad.
+- **Causa compartida no inducida:** L_k precede a M y V_j, pero B→L_k no se sostiene; su papel de confusión depende de cómo se trate la historia en el estimando y de la asignación.
+- **Consecuencia downstream:** ocurre después de M (p. ej., Reach, K/consideración, selección/inicio, ejecución, O) y no se reclasifica como L pre-M ni se ajusta mecánicamente al estimar el efecto total.
+- **Observación E_T:** logs, snapshots, hashes, cobertura y adjudicación son evidencia sobre estados; no se convierten en causas estructurales salvo que el proceso de observación cambie conducta/información, en cuyo caso se modela esa vía separadamente.
+
+La pertenencia a C*, X*, R* o U* no determina por sí sola el rol causal. Un mismo campo puede tener roles distintos por dimensión V_j, pero no puede duplicarse en varios nodos por el mero hecho de aparecer en varias descripciones. Si las flechas son desconocidas, la etiqueta es UNKNOWN/UNRESOLVED, no “confusor” por defecto.
+
+## 258.5. Aplicación al roster existente: límites actuales
+
+Las familias de §251 (instalación/dependencias, recursos/capacidad, permisos/ACL, runtime/host, red/endpoints, seguridad/estado persistente, configuración/datos, rendimiento y E_T) son candidatas para inspección, no clasificaciones empíricas cerradas. Por ejemplo:
+- C_dep*/integridad/compatibilidad/operatividad puede anteceder a A_f*/M; solo es confusor M–V si además afecta V_j por una ruta no absorbida en M.
+- recursos/capacidad, ACL, seguridad, rendimiento y costes pueden abrir rutas colaterales a O/V_j; invariancia no se presume por DEC-C10-067.
+- cambios en alternativas A1/A2 o dependencias compartidas deben mapearse por unidad y horizonte; no se declaran no afectados sin evidencia.
+- información/conocimiento solo es L si precede a M; si ocurre después, pertenece a downstream o a una ruta informacional específica.
+- E_T y missingness pueden inducir sesgo de observación diferencial aunque no sean componentes de M.
+
+No se asignan todavía flechas definitivas a cada campo: faltan field_id/event_id efectivos, snapshots, fuentes, población, ventanas y dimensión V_j (§§250–254).
+
+## 258.6. Consecuencias para identificación y gates
+
+- MED-03 no cierra hasta completar el mapping campo×tiempo×V_j y declarar qué flechas son verdad estipulada del DGP, qué se observa y qué queda desconocido.
+- MAP-03 no cierra hasta definir q_X*, población, unidad/interferencia, historia, política/versiones, soporte estructural y secuencial y reglas de positividad.
+- MAP-04 no cierra hasta justificar equivalencia de versiones o mantenerlas separadas, y evaluar diferencias directas/colaterales.
+- MED-05 debe seleccionar una estrategia longitudinal compatible con L inducido por B; no se autoriza regresión convencional ajustada por L como solución automática.
+- MAP-05/06 siguen siendo necesarios para rutas alternativas, exclusión por Outcome y Value, medición diferencial, interferencia y carryover.
+
+**Dictamen:** especificación documental integrada de MAP-03/04 y reglas de MED-03; los tres gates siguen OPEN en su dimensión material/identificativa. No se fija población, q, umbral de positividad, método, tolerancias, N, potencia ni parámetros. No hay Design Freeze, implementación, fixtures, simulación ni ejecución científica. scientific_execution=false; execution_authorized=false.
