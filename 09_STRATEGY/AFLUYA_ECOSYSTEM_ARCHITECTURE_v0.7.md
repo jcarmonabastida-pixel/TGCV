@@ -1565,3 +1565,132 @@ Cambios principales:
 - se actualizan las verificaciones previas al lanzamiento y las decisiones pendientes.
 
 **Estado:** DRAFT. Las decisiones estratégicas de arquitectura de nombres y preferencia .org quedan integradas en esta versión; la protección jurídica de la marca y la disponibilidad/registro del dominio permanecen pendientes. No se ha realizado compra ni registro. Esta actualización no modifica main, el Core científico, RMA, Evidence→Claim Matrix, C09, C10 ni las autorizaciones científicas de TGCV.
+
+
+## 35. Arquitectura económica y modelos de ingresos — propuesta v0.1
+
+### 35.1 Propósito y criterio rector
+
+La sostenibilidad económica debe permitir que AFLUYA mantenga y amplíe el ecosistema abierto, sin convertir la comunidad, el conocimiento público ni la investigación en un embudo comercial. La suscripción solo se utilizará cuando exista un beneficio recurrente, identificable y entregable de forma sostenible. No se cobrará una cuota recurrente por el mero acceso a la identidad AFLUYA o por pertenecer a su comunidad general.
+
+Esta arquitectura es una **propuesta estratégica para validación**, no un catálogo comercial aprobado, una oferta ya disponible, una tarifa ni una autorización para contratar plataformas de pago. Cada línea requiere comprobar demanda, costes de prestación, capacidad operativa, disposición a pagar y obligaciones legales/fiscales.
+
+Principio rector: **conocimiento y participación básica abiertos; especialización, acompañamiento profesional y herramientas de trabajo monetizables cuando aporten valor recurrente o delimitado.**
+
+### 35.2 Clasificación del portfolio por modelo de acceso e ingreso
+
+| Área / oferta | Modelo recomendado | Acceso / monetización | Prioridad y condición |
+|---|---|---|---|
+| Community — comunidad general | Abierto | Gratuito; sin cuota obligatoria de pertenencia | Permanente; preservar acceso no condicionado al pago |
+| AFLUYA Supporter | Aportación voluntaria recurrente | Contribución mensual/anual de apoyo, sin privilegios de gobernanza ni acceso científico exclusivo | Opcional; no tratar como ingreso principal ni lanzar hasta definir transparencia y administración |
+| Knowledge / recursos introductorios | Abierto | Gratuito | Publicar con licencias, autoría y estados claros |
+| Research / publicaciones TGCV publicables | Abierto | Gratuito; investigación independiente | No monetizar el acceso a resultados o documentación científica pública; respetar embargos, datos y derechos de terceros |
+| TGCV Playground básico y VALUE Explorer básico | Acceso abierto | Gratuito, con límites funcionales razonables si fueran necesarios por coste | No cobrar por demostradores básicos; cualquier versión profesional futura requiere utilidad diferenciada y no confundir simulación con evidencia |
+| Learning — talleres y cursos concretos | Pago puntual | Precio por taller, curso o programa | Activar cuando exista contenido, facilitación y resultado formativo definidos |
+| AFLUYA Learning Membership | Suscripción mensual/anual | Itinerarios, sesiones periódicas, práctica guiada, ejercicios y comunidad de práctica | Hipótesis de segunda etapa; solo lanzar tras piloto/cohorte que demuestre continuidad y disposición a pagar |
+| AFLUYA Advisory — Value Discovery Sprint | Pago por proyecto | Alcance, jornadas, entregables y criterios de aceptación acordados | Prioridad comercial inicial; pilotar antes de fijar tarifa, duración o promesas |
+| AI Opportunity Assessment | Pago por proyecto | Diagnóstico acotado y recomendaciones con límites explícitos | Prioridad inicial secundaria; validar alcance y demanda |
+| Proposal Excellence | Pago por proyecto o paquete | Mejora de propuestas, casos y trazabilidad de valor | Prioridad inicial secundaria; validar |
+| Fractional CVO | Retainer mensual o trimestral | Acompañamiento directivo recurrente con dedicación, entregables, disponibilidad y límites definidos | Principal candidato a ingreso recurrente B2B inicial; solo con capacidad y demanda verificadas |
+| Seguimiento post-Sprint | Retainer temporal opcional | Revisión y acompañamiento posterior cuando el cliente tenga necesidad real | Ofrecer como continuidad voluntaria y separada, no imponerlo como renovación automática |
+| ValueLabOS | Suscripción SaaS | Planes Individual / Team / Organization, solo si las diferencias de uso, colaboración, gobierno y soporte están implementadas | A medio plazo; no desarrollar ni vender SaaS completo antes de validar flujos con proyectos y Sprints reales |
+| AFLUYA Impact — NeuroTalent, Young Builders, Second Mountain | Financiación institucional, patrocinio, alianzas y contratos de programa | Acceso de beneficiarios gratuito o subvencionado cuando sea posible; financiación por terceros | Exploratorio; co-diseño, protección, evaluación, financiación y gobernanza previos |
+| Lab / innovación aplicada | Pago por proyecto, contrato o alianza | Retos, prototipos, experimentación y desarrollo con alcance y propiedad intelectual acordados | Caso a caso; no convertir colaboración comunitaria en trabajo comercial encubierto |
+| Licencias y herramientas especializadas | Licencia o suscripción | Solo para activos concretos con derechos, mantenimiento y soporte definidos | Futuro; requiere política de propiedad intelectual y validación de demanda |
+
+### 35.3 Suscripciones con encaje real
+
+Se identifican tres mecanismos de recurrencia distintos, que no deben confundirse:
+
+1. **Retainer profesional B2B — AFLUYA Advisory.** El cliente paga por disponibilidad y acompañamiento continuado, con objetivos, cadencia, dedicación, entregables, exclusiones y revisión definidos. Fractional CVO es el candidato principal. No es una membresía abierta ni un producto SaaS.
+2. **Membresía de aprendizaje — AFLUYA Learning.** El participante paga por una experiencia recurrente de aprendizaje y práctica: sesiones, itinerarios, feedback, ejercicios y comunidad de práctica. Una biblioteca estática de contenidos no basta para justificar la cuota. Debe probarse primero mediante una cohorte o programa piloto.
+3. **Suscripción de software — ValueLabOS.** El cliente paga por utilizar una herramienta operativa que mantiene utilidad a lo largo del tiempo: proyectos, mapas, hipótesis, evidencias, decisiones y seguimiento. Solo procede cuando el producto, seguridad, soporte, gestión de usuarios, exportación y continuidad estén suficientemente desarrollados y validados.
+
+La aportación voluntaria AFLUYA Supporter puede ser recurrente, pero es apoyo al ecosistema, no una suscripción que compre acceso o influencia.
+
+### 35.4 Orden recomendado de activación
+
+**Etapa A — Validación de ingresos mediante servicios.**
+- Pilotar Value Discovery Sprint.
+- Comprobar demanda para AI Opportunity Assessment y Proposal Excellence.
+- Explorar un primer retainer Fractional CVO solo si existe encaje, capacidad y cliente.
+- Registrar esfuerzo real, costes, resultados, satisfacción y disposición a pagar.
+- No fijar tarifas definitivas antes de disponer de evidencia de prestación y mercado.
+
+**Etapa B — Formación recurrente.**
+- Diseñar un itinerario de aprendizaje acotado.
+- Ejecutar una cohorte piloto o serie de talleres.
+- Medir asistencia, finalización, utilidad, continuidad y disposición a pagar.
+- Decidir si existe fundamento para una Learning Membership.
+- No lanzar una membresía hasta que se pueda sostener una cadencia real de valor.
+
+**Etapa C — Producto digital escalable.**
+- Observar tareas repetidas en Sprints y proyectos.
+- Probar flujos con herramientas existentes o prototipos no-code.
+- Identificar usuarios, datos, permisos, colaboración, soporte y requisitos de seguridad.
+- Obtener compromisos o pilotos de usuarios objetivo.
+- Solo entonces decidir si desarrollar ValueLabOS y qué niveles de suscripción tienen sentido.
+
+**Etapa D — Impact, alianzas y licencias.**
+- Co-diseñar programas con sus participantes y socios.
+- Asegurar financiación y protección de beneficiarios antes de operar.
+- Definir derechos, licencias y soporte antes de comercializar activos o herramientas.
+
+### 35.5 Salvaguardas de comunidad, conocimiento e investigación
+
+- La comunidad general, la participación básica y el acceso a conocimiento público no estarán condicionados a pagar.
+- No se crearán niveles de membresía que otorguen influencia sobre la gobernanza científica o acceso privilegiado a decisiones de TGCV.
+- Los documentos y resultados científicos publicables se ofrecerán según sus licencias y restricciones legítimas, sin convertir el pago en condición de acceso a la evidencia pública.
+- La independencia científica de TGCV queda separada de objetivos comerciales, clientes, patrocinadores y suscripciones.
+- No se presentará el pago como garantía de resultados, valor económico, validación científica ni éxito de una transformación.
+- Los proyectos colaborativos remunerados tendrán alcance, remuneración, autoría, propiedad intelectual y uso de contribuciones explícitos.
+- Los programas Impact no impondrán cuotas a beneficiarios como condición general de participación; se priorizarán financiación externa y plazas subvencionadas.
+- Se explicitarán conflictos de interés y financiación cuando afecten a contenidos, investigación o recomendaciones.
+
+### 35.6 Capacidad operativa y criterio de no lanzamiento
+
+En la fase inicial AFLUYA está impulsada por una sola persona. No se recomienda abrir simultáneamente una comunidad de pago, una academia de suscripción, un SaaS y varios programas Impact. Cada recurrencia crea obligaciones de entrega, soporte, administración, facturación, privacidad, cancelación y retención.
+
+No lanzar una suscripción si:
+- el beneficio recurrente no está definido;
+- no existe una cadencia de entrega sostenible;
+- la demanda no ha sido contrastada;
+- la carga de soporte excede la capacidad disponible;
+- los costes de plataforma, cobro, impuestos o cumplimiento no están identificados;
+- no existe un procedimiento claro de alta, baja, cancelación, reembolso y tratamiento de datos.
+
+### 35.7 Implicaciones para la web y la implantación
+
+La primera web debe poder presentar con claridad Community, Research, Explore, Learning y Work with us / Advisory, además de describir ValueLabOS e Impact como líneas en desarrollo cuando corresponda.
+
+En la primera publicación:
+- no se necesita checkout, pasarela de pago, gestión de suscripciones ni área privada;
+- no se necesita crear cuentas de usuario;
+- se puede presentar el catálogo de servicios con estado y disponibilidad honestos y habilitar contacto para consultas;
+- los talleres o servicios piloto podrán contratarse inicialmente mediante acuerdos y procesos manuales, si se decide activarlos;
+- la arquitectura debe permitir incorporar en el futuro una solución de pagos o membresías sin convertir Framer en el sistema de gestión del producto.
+
+Antes de añadir pagos o suscripciones se evaluarán proveedor, comisiones, impuestos, facturación, privacidad, seguridad, cancelación, reembolsos, portabilidad y coste total. No se elegirá ni contratará ahora ninguna plataforma de cobro.
+
+### 35.8 Decisiones pendientes de validación
+
+1. Definir público objetivo y problema prioritario de cada servicio.
+2. Pilotar Value Discovery Sprint y comprobar su alcance, esfuerzo y precio.
+3. Determinar si Fractional CVO puede prestarse de forma sostenible y con qué dedicación.
+4. Validar una cohorte de Learning antes de decidir una membresía.
+5. Obtener evidencia de uso y disposición a pagar antes de desarrollar ValueLabOS.
+6. Definir financiación y salvaguardas de AFLUYA Impact.
+7. Decidir si AFLUYA Supporter aporta valor real y puede administrarse con transparencia.
+
+No se aprueban tarifas, niveles comerciales, condiciones contractuales ni lanzamiento de suscripciones en esta versión.
+
+## 36. Control de cambios
+
+### v0.8 — 2026-11-10
+- Se incorpora una arquitectura económica explícita al portfolio de AFLUYA.
+- Se clasifican las ofertas en acceso abierto, pago puntual, retainer, membresía, SaaS, financiación institucional y licencias.
+- Se identifican Fractional CVO, AFLUYA Learning Membership y ValueLabOS como los tres candidatos principales a recurrencia, con naturaleza y condiciones diferentes.
+- Se prioriza la validación comercial mediante servicios antes de crear membresías o SaaS.
+- Se preservan el acceso comunitario abierto, el conocimiento científico público y la independencia de TGCV.
+- Se explicita que la primera web no requiere pagos, checkout, área privada ni gestión de suscripciones.
+- Las recomendaciones son propuestas pendientes de validación; no constituyen tarifas, ofertas disponibles ni autorización de contratación.
