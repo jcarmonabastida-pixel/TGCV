@@ -425,3 +425,98 @@ B-M01…15 y PROV-01…12 son superficies/contratos de inspección, no evidencia
 - **Handoff a C:** secuencia/eventos versionados, distribución conjunta con su incertidumbre, historial por brazo, soporte/estratos y clasificación de vías colaterales. Todo OPEN se transfiere como OPEN/UNKNOWN; C no lo rellena por defecto.
 
 **Conclusión:** AB-06/07 quedan reconciliados en su arquitectura documental, pero no cerrados materialmente. AB continúa IN_PROGRESS; no hay Design Freeze, implementación, simulación ni ejecución autorizada.
+
+
+## 10. AB-06/07 — estructura formal de parametrización D2 y C_dep* (2026-11-10)
+
+**Naturaleza:** especificación matemática simbólica. No asigna probabilidades, valores, ceros estructurales, estratos ni parámetros físicos. No autoriza fixtures ni ejecución.
+
+### 10.1 Secuencia D2: variables y mecanismo upstream
+
+Para unidad i, brazo z e historia preasignación h0: Z=asignación; P=programación; R=recepción; Q=cumplimiento cuando sea distinguible; W=intento efectivo; S=instalación técnica; N=reintentos; K=fallos parciales, rollback, provisión de fondo, crossover y desviaciones.
+
+La ley se representa mediante el kernel secuencial:
+
+p(P,R,Q,W,S,N,K | Z=z,h0) =
+p(P|z,h0) p(R|P,z,h0) p(Q|R,P,z,h0)
+p(W|Q,R,P,z,h0) p(S|W,Q,R,P,z,h0)
+p(N,K|S,W,Q,R,P,z,h0).
+
+Es una factorización por regla de la cadena, no una hipótesis de independencia. Si Q no es un evento separable en el protocolo final, se documentará su absorción en R o W sin duplicarlo. La programación D2 no fija recepción, cumplimiento, intento ni instalación. Se permiten conceptualmente fallos, reintentos y provisión de fondo, sujetos a mecanismo y evidencia explícitos.
+
+### 10.2 Vector C_dep* y orden canónico
+
+Cuatro indicadores binarios para la misma unidad, snapshot, artefacto y ventana: I=INSTALLATION; G=INTEGRITY; C=COMPATIBILITY; O=OPERABILITY. Orden canónico: (I,G,C,O). En verdad DGP, 1=satisfecho y 0=no satisfecho; en observación se conserva además ?. C_dep*=I∧G∧C∧O. Solo 1111 da C_dep*=1; un 0 decisivo da 0; si no hay 0 decisivo y algún componente no es adjudicable, el compuesto es ?.
+
+### 10.3 Roster de 16 celdas
+
+Para cada combinación de brazo z e historia/estrato h, θ_{igco|z,h}=Pr(I=i,G=g,C=c,O=o | Z=z,H=h), con i,g,c,o∈{0,1}.
+
+| Código | I | G | C | O | Interpretación |
+|---|---:|---:|---:|---:|---|
+| 0000 | 0 | 0 | 0 | 0 | Ninguno |
+| 0001 | 0 | 0 | 0 | 1 | Solo operabilidad |
+| 0010 | 0 | 0 | 1 | 0 | Solo compatibilidad |
+| 0011 | 0 | 0 | 1 | 1 | Compatibilidad y operabilidad |
+| 0100 | 0 | 1 | 0 | 0 | Solo integridad |
+| 0101 | 0 | 1 | 0 | 1 | Integridad y operabilidad |
+| 0110 | 0 | 1 | 1 | 0 | Integridad y compatibilidad |
+| 0111 | 0 | 1 | 1 | 1 | Todo salvo instalación |
+| 1000 | 1 | 0 | 0 | 0 | Solo instalación |
+| 1001 | 1 | 0 | 0 | 1 | Instalación y operabilidad |
+| 1010 | 1 | 0 | 1 | 0 | Instalación y compatibilidad |
+| 1011 | 1 | 0 | 1 | 1 | Todo salvo integridad |
+| 1100 | 1 | 1 | 0 | 0 | Instalación e integridad |
+| 1101 | 1 | 1 | 0 | 1 | Todo salvo compatibilidad |
+| 1110 | 1 | 1 | 1 | 0 | Todo salvo operabilidad |
+| 1111 | 1 | 1 | 1 | 1 | C_dep*=1 |
+
+Restricciones por cada z,h:
+1. θ_{igco|z,h}≥0.
+2. Σ_{i,g,c,o} θ_{igco|z,h}=1.
+3. Pr(C_dep*=1|z,h)=θ_{1111|z,h}.
+4. Pr(I=1|z,h)=Σ_{g,c,o}θ_{1gco|z,h}; los márgenes de G,C,O se obtienen análogamente.
+5. Intersecciones y dependencias se calculan sumando las celdas correspondientes; no se sustituyen por productos de márgenes.
+6. Una celda solo puede fijarse en cero con restricción constitutiva/material o estipulación sintética explícita, versionada y justificada. Falta de evidencia no crea cero estructural.
+7. Combinaciones fuera de soporte se marcan como tales; no se extrapolan silenciosamente.
+
+### 10.4 Condicionamiento y enlace upstream
+
+H debe distinguir la historia relevante de programación, recepción, cumplimiento, intento, instalación, reintentos, fallos, rollback y provisión de fondo, además de C0 y modificadores pre-Z aceptados en AB-08. El roster operativo sigue OPEN y no puede redefinir elegibilidad post-Z.
+
+La ley completa preservará la relación entre (P,R,Q,W,S,N,K) y (I,G,C,O); no se presume independencia entre intento/instalación y C_dep*. El evento S_install y el predicado I adjudicado no se igualan automáticamente: I puede depender de identidad, evidencia y ventana.
+
+### 10.5 Familias de sensibilidad sin valores
+
+- S0 referencia sintética: distribución conjunta explícita y versionada, aún sin baseline numérico aprobado.
+- S1 dependencia positiva: componentes que tienden a satisfacerse conjuntamente, sin imponer independencia.
+- S2 dependencia negativa/compensatoria: combinaciones mixtas y desacoplamiento.
+- S3 cuello de botella: fallos concentrados en un componente necesario.
+- S4 heterogeneidad: θ varía por brazo, historia, entorno o estrato dentro del soporte.
+- S5 fallos de provisión: recepción/intento ausentes, tardíos, parciales o repetidos; rollback/no instalación.
+- S6 provisión de fondo en control: intentos o instalaciones no focales registrados.
+- S7 vías colaterales: cambios en recursos, permisos, dependencias, información, A1/A2, costes o medición.
+- S8 evidencia incompleta: estados observados ?, cobertura diferencial y errores de medición/adjudicación.
+- S9 interferencia/carryover: host, recursos, estado compartido, rollback o residuos temporales.
+
+Cada escenario declarará truth DGP, parámetros modificados, invariantes, mecanismo afectado, observables y criterio de evaluación/falsificación. Las familias no presuponen identificación.
+
+### 10.6 Inputs y gates
+
+| Input | Estructura fijada | Material OPEN |
+|---|---|---|
+| P,R,Q,W,S,N,K | Kernel secuencial | Mecanismo, protocolo, probabilidades y evidencia |
+| θ conjunta C_dep* | 16 celdas por z,h; simplex | Valores, soporte, estratos, restricciones y provenance |
+| Ceros estructurales | Solo con justificación | Inventario de imposibilidades/estipulaciones |
+| Sensibilidad | Familias S0–S9 | Rangos, amplitudes y criterio de suficiencia |
+| Medición | Truth/observed y 1/0/? separados | Missingness, cobertura, oracle y adjudicación |
+| Interferencia | No asumir independencia entre unidades | Cluster y mapa de exposición AB-08 |
+| Vías colaterales | Registro obligatorio | Evidencia MD-C1/MD-C4 y no-afectación A1/A2 |
+
+### 10.7 Dictamen
+
+**Resuelto:** notación, orden de bits, 16 celdas, restricciones simplex, márgenes, kernel upstream y familias mínimas de sensibilidad.
+
+**OPEN:** ley upstream y valores θ; definición operativa de H/estratos; ceros estructurales; soporte; dependencia; amplitudes de sensibilidad; calibración; medición/adjudicación; interferencia y aislamiento material de B.
+
+No se declara parametrización numérica completa ni cierre AB-06/07. No se crean datos, fixtures ni simulaciones. scientific_execution=false; execution_authorized=false.
