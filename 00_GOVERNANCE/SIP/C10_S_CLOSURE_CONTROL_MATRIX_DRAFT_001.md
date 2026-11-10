@@ -2718,3 +2718,17 @@ Referencia: ledger AB §10. No usar s=.80 ni .20/.80; no asignar H=3 como horizo
 | MD-C1/MD-C4 | Mantener como evidencia probatoria abierta | OPEN / NONE |
 
 La propuesta completa y sus límites constan en ledger AB §11. No constituye aceptación del usuario, Design Freeze ni autorización de implementación/ejecución.
+
+## 135. Aceptación de la propuesta integrada AB (2026-11-10)
+
+| Decisión | Estado tras aceptación | Límite explícito |
+|---|---|---|
+| AB-03-SYN: cards sintéticas F1/F2/A1/A2 | ACCEPTED DESIGN RULE | IDs/versiones sintéticos; sin producto, mecanismo real ni implementación |
+| AB-05-H: H_path/H_time | ACCEPTED DESIGN RULE | H_time, ancla, valor y unidad OPEN hasta Outcome/Value |
+| AB-08-POP: C0 pre-Z y poblaciones | ACCEPTED DESIGN RULE | P*_τ2 ≠ P*_F; q_X*, soporte, pesos y estratos concretos OPEN |
+| AB-09-INT: interferencia | ACCEPTED DESIGN RULE | no interferencia solo en verdad R0; adversariales con interferencia |
+| AB-06/07-PARAM: D2/C_dep | ACCEPTED METHOD | método de justificación/sensibilidad; parámetros numéricos OPEN |
+| REF/AST y schema | TECHNICAL OPEN | reconciliar gramática y contratos; un binding, una representación |
+| MD-C1/MD-C4 y cobertura | OPEN / NONE | no se sustituye evidencia material por estipulación DGP |
+
+La aceptación no cierra AB, no aprueba causalidad empírica ni autoriza Design Freeze, implementación o ejecución. AB continúa IN_PROGRESS.
