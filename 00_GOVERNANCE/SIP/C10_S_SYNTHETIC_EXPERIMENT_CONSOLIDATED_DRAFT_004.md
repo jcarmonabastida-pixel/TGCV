@@ -10164,3 +10164,9 @@ La propuesta requiere aceptación expresa de AB-03-SYN, AB-05-H, AB-08-POP, AB-0
 El usuario acepta expresamente la propuesta del ledger AB §11 como base de trabajo, manteniendo abiertos los valores numéricos y el horizonte temporal no justificado. Se aceptan como reglas de diseño: cuatro cards sintéticas F1/F2/A1/A2 sin mecanismo real (AB-03-SYN); separación H_path/H_time con H_time OPEN hasta Outcome/Value (AB-05-H); elegibilidad C0 pre-Z y separación P*_τ2/P*_F, con q_X* y soporte aún por concretar (AB-08-POP); no interferencia solo estipulada en R0 y adversariales con interferencia (AB-09-INT); método de proponer parámetros D2/C_dep mediante justificación y sensibilidad, sin aprobar cifras (AB-06/07-PARAM).
 
 REF/AST y schema/canonicalización siguen como reconciliaciones técnicas contra contratos. MD-C1/MD-C4, cobertura, verdad observada y no-afectación real permanecen OPEN. Esta aceptación no cierra AB, no aprueba identificación causal empírica ni autoriza implementación/ejecución. scientific_execution=false; execution_authorized=false.
+
+## 240. AB-M01 — binding de operandos resuelto semánticamente (2026-11-10)
+
+La reconciliación del ledger AB §13 resuelve los dos operand bindings como referencias tipadas desde posiciones/hojas del AST RUL a las claves PAR-SVC-ENABLED (BOOL) y PAR-SVC-PROFILE (ENUM). No son objetos REF de configuración ni relaciones/dependencias constitutivas independientes. Se mantienen exactamente dos bindings, cada uno una sola vez; no se duplica en REF. Un REF futuro requeriría relación constitutiva independiente con extremos y semántica propios.
+
+La expresión de referencia sigue siendo OR(NEQ(ENABLED,true),IN(PROFILE,{STANDARD,READ_ONLY})) bajo REQUIRE. **AB-M01 semántico DESIGN RESOLVED;** encoding físico, schema/campos, serialización canónica, namespace/versionado y validación de integridad permanecen OPEN. JCS UDG-01 no se extiende al AST/payload de configuración.
