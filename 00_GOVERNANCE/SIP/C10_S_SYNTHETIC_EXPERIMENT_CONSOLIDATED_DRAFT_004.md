@@ -9699,3 +9699,144 @@ La evaluación se realiza por estimando × dimensión Value × DGP × condición
 Esta especialización no selecciona todavía un DAG concreto, el régimen q, la dimensión Value confirmatoria, un método definitivo, parámetros de sensibilidad, tolerancias, MDE, N o réplicas. Requiere inputs materiales AB y decisión/aceptación posterior. No convierte una propuesta de mediación en identificación ni un DGP sintético en evidencia empírica.
 
 Mantener scientific_execution=false; execution_authorized=false; no implementación, fixtures, parsers, validadores, simulaciones ni experimentos.
+
+
+# 229. C-MED/C-ANALYZER — reconciliación del estimando científico, mediación D2 y contrato de evaluación (2026-11-10)
+
+**Estado:** especialización metodológica integrada propuesta; corrige ambigüedades de §228. NO aceptada, NO congelada, NO implementable. No autoriza ejecución.
+
+## 229.1. Corrección de alcance: dos preguntas causales distintas
+
+La expresión «mediación de D2 por ΔT_acc*» no debe sustituir ni redefinir la pregunta científica C10. Se distinguen:
+
+**A. Pregunta científica C10 — efecto de políticas de accesibilidad.**
+
+θ_A(q; P,H,V) = E[V^{q,g1}] − E[V^{q,g0}]
+
+g1 y g0 son políticas factibles e implementables que inducen distribuciones estructuradas diferentes de cambios de accesibilidad, condicionadas por historia/estado y bajo un régimen común q. V^{q,g} incluye la evolución posterior de Reach, trayectorias factibles, selección, ejecución, Outcome y Value conforme al protocolo. No es un efecto indirecto natural ni una fracción del ITT de D2. La definición operacional de C10-D1 §§25–27 prevalece.
+
+**B. Pregunta mecanística secundaria S4-R — atribución del efecto de la política material D2.**
+
+Se pregunta si, y bajo qué condiciones, una parte del efecto de asignar/recibir B^D2 puede atribuirse a los cambios inducidos en ΔT_acc*. Esta pregunta requiere identificar la distribución de accesibilidad inducida por B, confusores mediador–Value, rutas alternativas y versiones. No queda resuelta por aleatorización de Z, por una primera etapa FS_Cdep o FS_Af, ni por el contraste ITT.
+
+Por tanto:
+- θ_A(q) es el objetivo científico primario de C10.
+- ITT_Z^D2 es el efecto de asignación a la política D2 dentro de S4-R.
+- ψ_policy^D2 conserva todas las vías de la política material.
+- Un efecto interventional indirecto/directo de B es un estimando secundario distinto, que no se declara definido ni identificado en este apartado.
+- LATE_f^D2 y θ_Af(q_X*) mantienen sus gates IV/mapping y no se convierten en sustitutos de θ_A(q).
+
+No calcular mediación como diferencia entre ITT y θ_A, entre efectos totales y efectos focales, ni mediante productos de coeficientes sin una descomposición contrafactual compatible.
+
+## 229.2. Objeto de intervención y representación de ΔT_acc
+
+La intervención científica g opera sobre la distribución conjunta de cambios estructurados de accesibilidad que son factibles bajo estado, condiciones constitutivas e historia. No asigna un escalar abstracto ni rompe arbitrariamente la dependencia entre componentes.
+
+Para la comparación temporal, C10-D1 §27.1 ofrece la representación analítica ΔT_acc=(A⁺, A⁻, A^reconf, ΔR, ΔC), cuando esas dimensiones sean pertinentes y medibles. Es una ficha analítica del cambio, no una redefinición del Core. La identidad/equivalencia de transformaciones, el universo candidato común y la separación entre cambio del sistema y cambio epistémico siguen siendo obligatorios.
+
+La tupla alternativa presente en el contrato temporal DGP (ΔU, ΔR, ΔC, ΔValidity, ΔState) no se equipara automáticamente a esa representación. Antes del freeze debe existir un crosswalk total que indique, para cada campo DGP, si representa una dimensión de A⁺/A⁻/A^reconf/ΔR/ΔC, un atributo de evidencia/validez o una variable de estado; debe prevenir doble conteo y separar ΔE_T de cambio estructural. Hasta entonces, el mapping de medición del objeto completo permanece OPEN. A_f* es una proyección focal h_f(ΔT_acc*), no el objeto completo.
+
+## 229.3. DAG longitudinal de referencia y clasificación temporal
+
+El reloj común ya documentado en el contrato DGP es la plantilla temporal, no una afirmación de que todas las rutas sean exclusivas:
+
+| Tiempo | Variables/objetos | Función causal a conservar |
+|---|---|---|
+| t−1 | X, H0, C0, L0, población elegible, A_f,base*, T_acc,base, alternativas | Basal/preasignación; define población y régimen objetivo |
+| t0 | Z | Asignación |
+| t1 | B, versión, programación/recepción/intento W | Intervención material y cumplimiento, separados |
+| t2 | instalación, integridad, compatibilidad, operatividad, C_dep*, recursos, permisos y cambios de entorno | Mecanismos y condiciones post-B anteriores a la medición de accesibilidad |
+| t3 | A_f,post*, D_f*, T_acc,post, ΔT_acc*, ΔE_T | Accesibilidad focal y cambio completo; medir antes de selección/ejecución |
+| t4 | Reach_H, Π_H y trayectorias factibles | Consecuencias del espacio accesible, no medidas sustitutas de ΔT_acc |
+| t5 | K, Consider | Conocimiento/consideración posteriores |
+| t6 | Sel, Start | Selección e inicio |
+| t7 | ejecución, interrupción, fallo, fin y cambios de estado | Trayectoria realizada; no redefine retroactivamente accesibilidad t3 |
+| t8 | Outcome | Resultado operativo independiente |
+| t9 | Value por dimensión | Valoración contextual bajo regla/beneficiario/horizonte preespecificados |
+
+**Regla de clasificación de confusores y mediadores:**
+
+1. Variables basales pre-Z pueden entrar en el conjunto de ajuste/estandarización si el estimando y el diseño lo justifican.
+2. Variables post-B y anteriores a ΔT_acc (p. ej. recepción, instalación, C_dep*, recursos o permisos modificados) pueden ser causas de accesibilidad y de Value por rutas adicionales. Si cumplen esa doble función son confusores mediador–resultado inducidos por la intervención; no se ajustan como covariables basales ordinarias ni se omiten del DAG.
+3. En ese caso, la identificación de una descomposición mediacional requiere un método longitudinal compatible con la estructura temporal (p. ej. g-formula/sequential g-computation bajo un DAG y supuestos explícitos), o debe limitarse a bounds/no identificación. La mera inclusión de esas variables en una regresión no satisface el requisito.
+4. Reach, trayectorias, K, selección, ejecución y Outcome posteriores a ΔT_acc son consecuencias/mecanismos downstream en la pregunta científica total. No se ajustan mecánicamente si se pretende incluir sus vías en el efecto total de g; intervenir sobre ellos define otro estimando.
+5. Si ejecución o cambios posteriores alteran T_acc futuro, se requiere un estimando longitudinal/dinámico con nuevos snapshots y reglas de actualización; no se retrotraen esos cambios al snapshot t3.
+
+El DAG final debe clasificar cada variable por tiempo, papel causal, posibilidad de intervención, fuente de medición y relación con cada dimensión Value. El orden temporal por sí solo no demuestra ausencia de confusión.
+
+## 229.4. Contrato mínimo para C-MED
+
+Cada registro mediacional debe fijar, antes de generar resultados: estimand_id, pregunta A o B, intervención/contraste, objeto mediador (ΔT_acc completo o A_f focal), población pre-Z, régimen q, unidad/cluster, horizonte, dimensión Value, versiones, escala, DAG versionado, confusores basales, confusores inducidos, rutas directas/alternativas, soporte, método, supuestos, missingness/medición, sensibilidad, estimador e inferencia.
+
+**Método y decisión:**
+- Para A/θ_A(q), definir g0/g1 como políticas realizables y demostrar factibilidad/soporte bajo el mismo q; identificar el contraste de Value bajo esos regímenes.
+- Para B/mediación D2, no escoger un efecto natural por defecto. Primero definir una intervención mediadora estocástica y un estimando interventional compatible con el DAG longitudinal; después justificar si el efecto indirecto/directo está identificado dadas las variables inducidas por B.
+- Si hay confusión inducida no controlable, positividad secuencial insuficiente, versiones no equivalentes o rutas colaterales no separables, declarar PARTIALLY_IDENTIFIED o NOT_IDENTIFIED; no forzar un punto.
+- No condicionar el estimando total por selección/ejecución ni usar Outcome/Value para construir el mediador.
+- Reportar por dimensión Value, población, escenario y condición de soporte; no agregar dimensiones con pesos no aprobados.
+
+## 229.5. C-ANALYZER — salida obligatoria y truth adjudicable
+
+Para cada combinación estimand × dimensión Value × DGP × estrato de soporte, el Analyzer debe devolver como mínimo: identidad/versiones del estimando; estado de identificación; población y soporte cubiertos; estimación puntual o conjunto de identificación cuando proceda; incertidumbre; supuestos/gates satisfechos, fallidos o desconocidos; razones de abstención; advertencias de vías colaterales y medición; provenance del análisis.
+
+El Generator conserva la truth y potenciales. El Analyzer recibe solo variables/evidencia permitidas, sin truth, semillas latentes ni etiquetas que revelen el escenario. El Evaluator accede a truth después de sellar la salida del Analyzer y adjudica por separado.
+
+Clases mínimas de verdad DGP:
+- identificación puntual válida;
+- identificación parcial con conjunto/bounds;
+- no identificación por confusión inducida no resuelta;
+- no identificación por rutas alternativas/exclusión o mapping B→g no defendible;
+- no identificación por soporte/positividad/versiones;
+- indeterminación por error, cobertura o missingness;
+- estimando no aplicable por regla estructural preespecificada.
+
+Métricas obligatorias:
+- recuperación puntual (sesgo, error/RMSE e intervalos/cobertura) solo donde la truth permita identificación puntual;
+- cobertura y anchura de bounds donde la truth sea parcialmente identificable;
+- falsa identificación puntual entre casos no identificables;
+- falsa atribución a ΔT_acc cuando el Analyzer etiqueta como efecto de accesibilidad un efecto de paquete/rutas ajenas al objeto;
+- abstención correcta entre casos parciales/no identificables;
+- falsa abstención entre casos identificables con soporte suficiente;
+- clasificación correcta del estado, calibración si se emite confianza, convergencia y reproducibilidad.
+
+Denominadores y reglas:
+- contar por separado DGP/estrato y réplica Monte Carlo; no usar solo promedios agregados;
+- el denominador de falsa identificación incluye las réplicas adjudicables cuya truth es parcial/no identificable;
+- el denominador de falsa abstención incluye las réplicas adjudicables cuya truth es puntualmente identificable y con soporte;
+- la falsa atribución se calcula solo en escenarios donde la truth del DGP incluye una ruta de paquete no representada por el mediador declarado;
+- fallos numéricos, no convergencia, réplicas inválidas y ausencia de salida se informan como categorías propias; no se eliminan silenciosamente del denominador;
+- una estimación numéricamente cercana a truth no compensa una declaración de identificación o atribución causal falsa.
+
+Las tolerancias, umbrales de aceptación, intervalos de confianza de las tasas de error, tratamiento de multiplicidad y mínimo de réplicas siguen OPEN; no se fijan cifras convencionales.
+
+## 229.6. Escenarios adversariales mínimos para evaluar los dos gates
+
+El inventario confirmatorio/adversarial debe incluir, sin asignar aún probabilidades:
+1. DGP limpio donde g0/g1 son factibles y el efecto de accesibilidad es identificable.
+2. Efecto de política D2 con ruta directa a Outcome/Value fuera de ΔT_acc.
+3. D2 afecta ruta alternativa A1/A2 (R2), invalidando atribución focal aunque el ITT de paquete pueda existir.
+4. Confusor mediador–Value inducido por B antes de t3.
+5. Soporte/positividad secuencial débil o violada.
+6. Efecto nulo, adverso o heterogéneo de accesibilidad, incluido efecto de paquete no nulo.
+7. Error diferencial/cobertura desigual de ΔT_acc por brazo, tiempo o versión.
+8. Interferencia, recursos compartidos, crossover o carryover.
+9. Truth parcialmente identificable o no identificable en la que la abstención es la salida correcta.
+
+Estos escenarios son clases de prueba, no frecuencias, parámetros ni resultados. Se preservan R0–R3 y los contratos adversariales ya existentes; no se crean fixtures ni nuevos IDs de prueba en esta fase.
+
+## 229.7. Gates de cierre
+
+| Gate | Condición de salida | Estado |
+|---|---|---|
+| MED-01 | Separación aceptada entre θ_A(q) y mediación de B; estimandos versionados | PROPOSED |
+| MED-02 | Crosswalk del objeto ΔT_acc DGP↔C10-D1 sin doble conteo/mezcla con ΔE_T | OPEN |
+| MED-03 | DAG longitudinal por dimensión Value y clasificación de confusores inducidos | OPEN |
+| MED-04 | Definición de g0/g1 factibles y q común para θ_A(q) | OPEN |
+| MED-05 | Estimando interventional secundario B/mediación, si procede, y método compatible | OPEN |
+| MED-06 | Soporte secuencial, rutas colaterales, interferencia, sensibilidad y bounds | OPEN |
+| AN-01 | Firewall Generator/Analyzer/Evaluator y salida versionada | PROPOSED |
+| AN-02 | Truth adjudicada por estimando×dimensión×DGP×soporte | OPEN |
+| AN-03 | Denominadores y clasificación de falsa identificación/atribución/abstención | DEFINED IN PRINCIPLE; thresholds OPEN |
+| AN-04 | Tolerancias, multiplicidad, réplicas y aceptación ex ante | OPEN |
+
+**Dictamen:** la arquitectura de evaluación queda especificada con mayor precisión, pero C-MED y C-ANALYZER siguen abiertos. Este apartado corrige la lectura de §228 sin alterar las decisiones aceptadas, no demuestra identificación ni cierra AB. Mantener scientific_execution=false; execution_authorized=false; sin código, fixtures, parsers, validadores, simulaciones ni experimentos.
