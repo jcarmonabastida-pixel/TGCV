@@ -2278,3 +2278,10 @@ Se conserva AB-TIME-01: hasta armonización aceptada, usar nombres de eventos y 
 Se incorpora maestro §252 y ledger AB §20. Se reutilizan los cinco registros U_G existentes: EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER; no se crean tablas, FK, target PAR ni taxonomía física nueva. Se separan truth_DGP, observed_state, E_T y ΔT_acc*, y se fijan clases funcionales de fuentes, dimensiones de suficiencia, cobertura por universo exacto, cegamiento y cadena de adjudicación.
 
 **Resultado:** interfaz documental E_T/U_G especificada. MED-02d continúa OPEN materialmente por falta de instancia/fuentes/snapshots, IDs efectivos, denominadores/scopes, AB-TIME-01, oráculo/fiabilidad, evaluadores/cegamiento y modelo de missingness/error diferencial. No registros, fixtures, implementación ni ejecución.
+
+
+## 16.127 — AB-TIME-01: crosswalk temporal de event_key
+
+Se añade maestro §253 y ledger AB §21. Se distinguen los tres relojes históricos, se corrige la referencia documental errónea a DGP §2 (el reloj comprimido está en §34.1), y se define la secuencia semántica BASELINE_PRE_Z…POST_HORIZON_RESIDUAL. Se identifica el colapso de ASSIGNMENT_Z y POLICY_PROVISION en Path Matrix t1 y la compresión de selección/ejecución en DGP §34.1.
+
+**Resultado:** orden semántico reconciliado; alias numéricos trazados; AB-TIME-01 PARTIALLY RESOLVED. La adopción formal del reloj posterior t−1…t9/t+1 y el tratamiento normativo del reloj §34.1 siguen OPEN. stage_key, SNAPSHOT.phase/timestamp, ruta y step_k permanecen ejes separados. Sin cambios a registros U_G, sin event_id ni timestamps inventados, sin implementación o ejecución.
