@@ -333,3 +333,16 @@ AB-03 queda especificado a nivel abstracto sintético en la §12 de la propuesta
 AB-04 queda especificado como crosswalk de field_id semánticos hacia U*/R*/C*/X*/E_T, con índice unidad×escenario×rama×paso×TID/SID×snapshot×tiempo. Incluye estado de entrada/salida, predicados ID/REL/COND/AUTH/RES/DEP/¬BLOCK, APP separado, mapping, evidencia, cobertura y adjudicación. Truth_DGP y observed_state no se mezclan; se reutiliza PM-01…18 y la regla 1/0/? vigente.
 
 **No cerrados:** schema físico y nombres de columnas; mapping M/M_A concreto; predicados FP atómicos/requiredness, tolerancias, C0, recursos y regla de reserva, C_dep conjunta, H_time, universo exhaustivo de alternativas, truth tables por escenario, MD-C1/MD-C4, evidencia, oráculo/fiabilidad/cegamiento/validación. AB sigue IN_PROGRESS; no fixtures ni ejecución.
+
+
+## 15. AB-01/02 — cierre de reconciliación semántica (2026-11-10)
+
+La reconstrucción histórica identifica trabajo ya aceptado que debe reutilizarse: DEC-C10-054 (AST 4/16/16), DEC-C10-068/069 (instancia y regla), DEC-C10-071/083 (siete stage_key y PAR), DEC-C10-079/080/081 (manifiesto/binding probatorio PAR) y DEC-C10-082 (anclaje CMP↔NODE por snapshot). No se recrean estas decisiones.
+
+Se integra el mapping semántico de CMP/PAR/RUL/MET y la composición de mappings de F/A. Los dos PAR preservan clave/tipo/dominio/estado/valor en F1/A1 y se observan por separado en F2/A2; la regla conserva AST, owner, scope, operand bindings tipados y REQUIRE. PAR se mantiene como propiedad del CMP owner/registro de manifiesto; RUL se representa mediante PREDICATE; CMP por NODE anchor; REF solo por EDGE si se inventaría relación real; MET reutiliza metadatos/evidencia existentes. No se crean entidades ni columnas.
+
+AB-01: binding AST→PAR DESIGN RESOLVED semánticamente; encoding, schema, escaping, canonicalización y constraints OPEN.
+
+AB-02: crosswalk semántico reconciliado con DEC-C10-083 y U_G; mapping_id/version, mappings materiales por etapa, roster REF, snapshots/cobertura y evidencia OPEN. No se afirma REF=0 ni independencia técnica de A por igualdad semántica.
+
+No hay IAM sellado, hash, parser, fixtures, implementación, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
