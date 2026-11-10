@@ -2337,3 +2337,11 @@ Se incorpora maestro §259 y ledger AB §27. Se reutilizan auditoría IV §§12.
 MAP-06 emite dictámenes separados EXCLUSION_O y EXCLUSION_Vj (SUPPORTED/CONTRADICTED/UNKNOWN). Una ruta directa a Value puede existir con Outcome constante. Se separan exclusión estructural, medición diferencial/oráculo e interferencia/carryover. ITT_Z^D2 puede seguir siendo efecto de asignación si diseño, consistencia, unidad/interferencia y medición son válidos; LATE_f/Wald no se interpreta causalmente si falla cualquier supuesto IV. Estos gates no identifican θ_A(q) ni la mediación por sí mismos.
 
 **Estado:** especificación contractual/documental integrada; MAP-05/06 MATERIAL OPEN. No hay dictamen empírico de exclusión para una instancia no materializada. AB-M06/M09/M10 siguen OPEN. Sin Design Freeze, implementación ni ejecución.
+
+## 16.134 — MAP-07: matriz de adjudicación y regla de no transferencia entre estimandos
+
+Se incorpora maestro §260 y ledger AB §28, especializando auditoría IV §14.5, C-MED §257 y C-ANALYZER §256. Se documenta la adjudicación por estimando × resultado/dimensión × población/unidad × horizonte × versión para ITT_Z^D2, LATE_f^D2, θ_Af(q_X*), θ_A(q) e IIE_M. Se fijan condiciones mínimas, límites de interpretación y reglas para no transferir evidencia entre objetos causales.
+
+Se añaden reglas de lectura de combinaciones (p. ej. ITT identificado con exclusión focal UNKNOWN; LATE local sin θ_A; mediación IIE_M sin identificación general), dictámenes independientes para Outcome y cada V_j y abstención del Analyzer ante target mismatch, supuestos UNKNOWN, evidencia no comparable o rutas no discriminadas. Se reutilizan §256 y P177/P178/P179/P182/P183; no se inventan umbrales ni denominadores.
+
+**Estado:** MAP-07 DOCUMENTED / MATERIAL OPEN. Contrato de adjudicación integrado; no existe validación empírica de los estimandos. MAP-01…06, MED-02…06, C-Value y AN-04 siguen pendientes. Sin Design Freeze, implementación, fixtures, simulación ni ejecución; scientific_execution=false; execution_authorized=false.
