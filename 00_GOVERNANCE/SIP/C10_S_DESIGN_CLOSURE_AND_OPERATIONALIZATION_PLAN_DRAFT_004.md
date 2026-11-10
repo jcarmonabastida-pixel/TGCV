@@ -2285,3 +2285,10 @@ Se incorpora maestro §252 y ledger AB §20. Se reutilizan los cinco registros U
 Se añade maestro §253 y ledger AB §21. Se distinguen los tres relojes históricos, se corrige la referencia documental errónea a DGP §2 (el reloj comprimido está en §34.1), y se define la secuencia semántica BASELINE_PRE_Z…POST_HORIZON_RESIDUAL. Se identifica el colapso de ASSIGNMENT_Z y POLICY_PROVISION en Path Matrix t1 y la compresión de selección/ejecución en DGP §34.1.
 
 **Resultado:** orden semántico reconciliado; alias numéricos trazados; AB-TIME-01 PARTIALLY RESOLVED. La adopción formal del reloj posterior t−1…t9/t+1 y el tratamiento normativo del reloj §34.1 siguen OPEN. stage_key, SNAPSHOT.phase/timestamp, ruta y step_k permanecen ejes separados. Sin cambios a registros U_G, sin event_id ni timestamps inventados, sin implementación o ejecución.
+
+
+## 16.128 — MED-02c4: contrato de correspondencia temporal y snapshots
+
+Se incorpora maestro §254 y ledger AB §22. Se reutilizan DEC-C10-065/070/071/072, C0, stage_key, SNAPSHOT, COVERAGE_REGISTER, EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK y evaluadores/adjudicación. Se distingue event_key semántico, source-native event ID y EID de transformación; no se crea campo/tabla de eventos.
+
+**Resultado:** MED-02c4 DOCUMENTED / MATERIAL OPEN. Quedan definidas precedencia de las siete etapas, binding C0 de nueve componentes, separación de SNAPSHOT.phase y reloj causal, trazabilidad de evento→snapshot→evidencia, matching/deduplicación y contratos C4-01…15. Faltan instancias, snapshots, event IDs, tiempos válidos/sincronizados, rutas exactas, scopes/denominadores y control C0 ejecutado bajo autorización. AB-TIME-01 continúa parcialmente resuelto por su adopción formal pendiente. Sin schema change, fixtures, implementación ni ejecución.
