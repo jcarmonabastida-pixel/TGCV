@@ -2329,3 +2329,11 @@ Se incorpora maestro §258 y ledger AB §26. MAP-03 formaliza la distribución i
 MED-03 reutiliza el roster §§232/250 y crosswalk §§251–254. La clasificación campo×tiempo×V_j exige evaluar B→L, L→M y L→V_j. Solo la conjunción de las tres relaciones hace de L_k un confusor mediador–Value inducido. Se distinguen antecedente técnico, vía colateral, causa compartida, downstream y evidencia E_T. Las flechas desconocidas permanecen UNKNOWN/UNRESOLVED.
 
 **Resultado:** contratos documentales integrados; MAP-03/04 y MED-03 permanecen OPEN en lo material/identificativo. No se elige método, umbral de positividad, población, q, parámetros o potencia. Sin Design Freeze, implementación ni ejecución. scientific_execution=false; execution_authorized=false.
+
+## 16.133 — MAP-05/06: rutas alternativas, vías colaterales y exclusión por resultado
+
+Se incorpora maestro §259 y ledger AB §27. Se reutilizan auditoría IV §§12.2–12.4 y 14.5–14.7, R0–R3 y superficies B-M existentes. MAP-05 exige cobertura del universo de rutas F/A y alternativas, dependencias compartidas, recursos, permisos, red, seguridad, rendimiento/costes, datos, conocimiento y residuos. R1 alternativa basal estable no es por sí sola violación de exclusión; R2 alternativa modificada por B sí introduce ruta no focal. La ausencia requiere universo exhaustivo y cobertura.
+
+MAP-06 emite dictámenes separados EXCLUSION_O y EXCLUSION_Vj (SUPPORTED/CONTRADICTED/UNKNOWN). Una ruta directa a Value puede existir con Outcome constante. Se separan exclusión estructural, medición diferencial/oráculo e interferencia/carryover. ITT_Z^D2 puede seguir siendo efecto de asignación si diseño, consistencia, unidad/interferencia y medición son válidos; LATE_f/Wald no se interpreta causalmente si falla cualquier supuesto IV. Estos gates no identifican θ_A(q) ni la mediación por sí mismos.
+
+**Estado:** especificación contractual/documental integrada; MAP-05/06 MATERIAL OPEN. No hay dictamen empírico de exclusión para una instancia no materializada. AB-M06/M09/M10 siguen OPEN. Sin Design Freeze, implementación ni ejecución.
