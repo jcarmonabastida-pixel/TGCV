@@ -1496,3 +1496,21 @@ Los adversariales de B-M01…15 se mantienen como dominios de inspección, no co
 - **DAG-08 (observación):** E_T y A_f/O/V observados separados de truth; falta de cobertura propaga ?.
 
 **Estado:** contratos definidos a nivel de criterio; tolerancias, adjudicación, denominadores y pruebas concretas pendientes. No se han creado fixtures ni ejecutado pruebas.
+
+
+## 81. Contrato de aceptación AB-01/02 — mapping lógico CMP/PAR/RUL entre etapas (2026-11-10)
+
+Esta sección especializa criterios existentes; no crea test IDs, fixtures ni declara pruebas ejecutadas. Reutiliza DEC-C10-054/065/071/079/080/082/083 y los contratos de preservación FP-01…FP-08.
+
+| Criterio de aceptación | Comprobación documental/técnica futura | Resultado que no debe inferirse |
+|---|---|---|
+| ABM-01 — AST bindings | Exactamente dos bindings tipados AST→PAR; claves, tipos y snapshot owner concordantes | No REF/EDGE por operand binding |
+| ABM-02 — regla RUL | Identidad, owner, scope, AST, OR/NEQ/IN, constantes, conjunto ENUM, REQUIRE y UNKNOWN preservados | No basta igualdad textual ni éxito de parser |
+| ABM-03 — parámetros | Aplicar DEC-C10-083 por siete stage_key; identidad/tipo/dominio/estado/valor preservados en F1/A1; estado aplicado observado en F2/A2 | No inferir aplicación desde DST_DECL |
+| ABM-04 — CMP anchor | Un NODE anchor exacto por CMP y snapshot; pinning exacto; continuidad por component_id contractual | No exigir igualdad de object_record_id entre snapshots |
+| ABM-05 — PAR evidence binding | Manifiesto append-only y COVERAGE_SCOPE exacto; control DEC-C10-081 | No FK PAR inexistente ni cobertura COMPLETE por mera vinculación |
+| ABM-06 — REF | Inventario y cobertura exhaustivos antes de declarar REF=0; cada REF real conserva extremos/tipo/dirección | No inferir vacío desde ausencia de filas |
+| ABM-07 — mapping de ruta | M_F1/M_F2 y M_A1/M_A2 versionados, composiciones separadas, cobertura y estados MAPPED/UNMAPPED/AMBIGUOUS/NOT_APPLICABLE | No inferir independencia A respecto de B |
+| ABM-08 — representación U_G | Reutilizar NODE, PREDICATE, manifiesto/COVERAGE_SCOPE y registros de evidencia existentes | No crear tablas/columnas ni extrapolar JCS UDG-01 |
+
+**Gate:** hasta que existan mappings versionados, snapshots exactos, roster/cobertura, evidencia y validación independiente, AB-01/02 permanecen diseño semántico reconciliado, no schema implementable. UNKNOWN/? es resultado válido; no se imputa como fallo ni como éxito sin regla/evidencia suficiente. Sin fixtures, parser, validator, implementación ni ejecución científica.
