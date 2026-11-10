@@ -2675,3 +2675,15 @@ Fuente operativa: `C10_S_AB_RESIDUAL_INPUT_CLOSURE_LEDGER_DRAFT_001.md`.
 | AB-02 DEFAULT confirmatorio | NOT_IN_BASELINE | DEC-C10-068 no acepta DEFAULT para ENABLED/PROFILE |
 
 Referencia: ledger AB §8. Sin nuevo Decision Record, schema, filas IAM, snapshots, hashes ni validación ejecutable.
+
+## 132. AB-M03/M04 y AB-TIME-01 — resultados documentales (2026-11-10)
+
+| Subgate | Estado | Dictamen |
+|---|---|---|
+| AB-03 composición de rutas | DESIGN RESOLVED | F1→F2 y A1→A2, mismo F* |
+| AB-03 TID/SID/RID y cards materiales | OPEN | Funciones de F2/A1/A2 no concretadas; identidades y versiones faltan |
+| AB-04 crosswalk A_f* y lógica trivalente | DESIGN RESOLVED / PARTIAL | Reutilizar crosswalk y MEAS-001, no duplicarlos |
+| AB-04 inventario/captura por campo | OPEN / NONE | B-M01…15 son superficies; U_G no tiene snapshots reales |
+| AB-TIME-01 índices numéricos | OPEN | DGP: baseline t−1/Z t0; Path Matrix: baseline t0/asignación t1 |
+
+Regla provisional: usar nombres de eventos y precedencia, no índices numéricos intercambiables. Fuente: ledger AB §§9.1–9.4. Sin código ni ejecución.
