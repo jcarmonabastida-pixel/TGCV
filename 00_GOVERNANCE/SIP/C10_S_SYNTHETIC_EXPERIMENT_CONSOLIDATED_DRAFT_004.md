@@ -11673,3 +11673,62 @@ Este crosswalk alimenta AB-05/F*, AB-09, MED-02/03/04/05/06, MAP-05/06/07 y AN-0
 **Dictamen:** C-Value queda **CANDIDATE CROSSWALK DOCUMENTED / MATERIAL OPEN**. Se ha especializado §224 a Opción A sin seleccionar indicadores/dimensiones confirmatorias, beneficiarios, escalas, horizonte, regla de trade-off ni estimador. No se ha demostrado que ΔT_acc* cause Value. No se aprueba índice, ponderación, parámetro, umbral, N, potencia, identificación ni Design Freeze.
 
 Sin fixtures, implementación, simulación ni ejecución científica. scientific_execution=false; execution_authorized=false.
+
+# 265. C-Value — crosswalk de candidatos contra el roster y los eventos existentes (2026-11-10)
+
+**Precedencia y corrección de alcance.** Este apartado especializa §264 contra el roster semántico de §232 y el DAG de §233; no crea otro inventario. La instancia lógica no es un «servicio software» genérico: es **C10S-SVC-REQUEST-PROCESSOR v1.0.0 / C10S-SVC-REQUEST-PROCESSOR-001 rev1 / CMP-SERVICE-LOGIC-001**, con PAR-SVC-ENABLED, PAR-SVC-PROFILE y RUL-SVC-ENABLE-PROFILE-01 según DEC-C10-068/069. La migración/adaptación entre origen y destino es el contexto de Opción A; no autoriza a suponer usuarios, operador humano, SLA, costes, métricas de negocio o instrumentos que no estén en el DGP.
+
+## 265.1. Regla del crosswalk
+
+Se contrasta cada candidato de §264 con: (a) el roster semántico de §232; (b) las etapas/eventos del DAG §233 y reloj semántico de §253; (c) las superficies B-M01…15/PROV-01…12; y (d) los canales E_T/U_G. El resultado no es un mapping físico ni asigna field_id/event_id: identifica si existe un anclaje conceptual previo y qué falta para observarlo.
+
+Las etapas W_attempt, S_install, C_dep*, F1/F2/A1/A2, A_f*, ΔT_acc*, Reach, selección y ejecución son antecedentes, mediadores, mecanismos o proceso. No se convierten en Outcome por ser eventos observables. El Outcome debe ser una consecuencia posterior, evaluada en la unidad/horizonte y separada de la accesibilidad y de la ejecución.
+
+## 265.2. Crosswalk de Outcome contra roster existente
+
+| Candidato de §264 | Anclaje ya existente | Clasificación correcta | Estado y límite |
+|---|---|---|---|
+| O-MIG — estado/resultado terminal de la migración | F1/τ2, F2, A1, A2; W_attempt, S_install, C_dep*; superficies de eventos/provisión B-M06 y estado/rollback B-M11/B-M15 | Esas etapas son proceso/implementación, no el resultado terminal. Un estado final de migración podría ser un O_i solo si se define como consecuencia post-ejecución independiente | **NO FIELD / OPEN**: no hay campo terminal, event_id, unidad de episodio ni regla de éxito/fallo aprobados. No derivarlo de W_attempt, S_install o C_dep* |
+| O-CONF — conformidad funcional del destino | F* y familias FP-01…FP-08; C_dst declarado/aplicado; evidencia de verificación/oráculo E_T (B-M10/B-M13) | F* es el criterio técnico; su resultado adjudicado puede ser una medida candidata de conformidad observada. La especificación objetivo, el estado verdadero del DGP y la evidencia observada siguen separados | **CONCEPTUAL ANCHOR / MATERIAL OPEN**: faltan predicados atómicos, mapping, tolerancias, oráculo y snapshots. Un PASS de F* no es Value ni outcome global |
+| O-SVC — continuidad/operación del servicio | Runtime/host B-M02/M03; red B-M04/B-M08; telemetría B-M10; rendimiento B-M12; estado persistente B-M11/B-M15 | Son superficies potenciales de observación o determinantes; no constituyen por sí mismas una medida de disponibilidad, continuidad o calidad del servicio | **NO MEASURE SPECIFIED / OPEN**: no hay SLI/SLO, ventana, baseline, fuente validada o unidad temporal aprobados. Latencia/throughput no sustituyen continuidad |
+| O-REC — recuperación/restauración | Estado persistente y rollback B-M11/B-M15; eventos de provisión/instalación B-M06; logs E_T | Rollback disponible, residuo y recuperación efectiva son objetos distintos. La recuperación posterior al fallo puede ser Outcome; la capacidad de rollback es condición/capacidad | **NO MEASURE SPECIFIED / OPEN**: faltan evento de fallo, evento de inicio/fin de recuperación, regla de restauración y horizonte. No inferir recuperación de rollback configurado |
+| O-BUR — carga/esfuerzo/coste operativo | Recursos/capacidad B-M07; rendimiento B-M12; eventos/logs B-M06/B-M10; superficies de coste/riesgo en auditoría colateral | Consumo y contención pueden ser medidas físicas downstream si se capturan después de ejecución; capacidad disponible es antecedente C*/X*, no coste realizado. Horas humanas y coste monetario requieren fuentes/reglas propias | **PARTIAL ANCHOR / OPEN**: no hay registro validado de tiempo humano, tarifa, coste de oportunidad, asignación de recursos ni ventana. No monetizar CPU/RAM ni inferir esfuerzo de logs |
+
+**Resultado del crosswalk:** ninguno de los cinco Outcomes dispone hoy de ficha completa §224. O-CONF es el único con anclaje conceptual más directo en F*/FP-01…08, pero ni siquiera ese anclaje equivale a medición material. O-MIG, O-SVC, O-REC y O-BUR tienen superficies de inspección o antecedentes, no indicadores observados ya definidos.
+
+## 265.3. Crosswalk de Value contra roster y roles
+
+El roster §232 es estructural/transformacional y de evidencia; no es un roster de beneficiarios ni de preferencias. Los siguientes candidatos de §264 no se encuentran identificados como campos o entidades de valoración en él:
+
+| Dimensión/rol candidato | ¿Existe en el roster? | Qué puede reutilizarse sin inferir Value | Dictamen |
+|---|---|---|---|
+| Propietario/responsable del servicio — continuidad/fiabilidad | No como beneficiario. CMP.owner es propietario del componente, no prueba que sea beneficiario del servicio | Identidad CMP/MET y potenciales observaciones O-SVC, si se definen | **UNKNOWN / OPEN**: confirmar rol, legitimidad, criterio e instrumento |
+| Operador/plataforma — carga/coste | No como actor/evaluador identificado | B-M06/B-M07/B-M10/B-M12 como superficies potenciales de registros operativos | **UNKNOWN / OPEN**: no existe timesheet, coste, tarifa ni escala aprobados |
+| Mantenedor/configurador — portabilidad/flexibilidad | No como beneficiario ni medida de flexibilidad futura | U*/R* y F1/F2/A1/A2 describen posibilidades/estructura técnica, no valor futuro | **UNKNOWN / OPEN**: una ruta técnica disponible no demuestra beneficio ni valor futuro |
+| Usuario/consumidor — continuidad/calidad percibida | No se ha establecido que haya usuarios humanos en la instancia sintética | O-SVC podría ser una medida técnica de servicio; no representa percepción | **NOT ESTABLISHED / OPEN**: no asumir participantes, experiencia, encuesta o escala |
+| Responsable de riesgo/compliance — riesgo residual | No como rol beneficiario ni adjudicador | B-M09, B-M11/B-M15 y E_T pueden aportar condiciones/evidencia de seguridad y estado | **UNKNOWN / OPEN**: faltan modelo de amenaza, criterio, tolerancia y decisión de si es dimensión o restricción no compensatoria |
+
+La presencia de CMP.owner en la identidad del componente no autoriza a inferir persona, organización, beneficiario ni autoridad de valoración. C_auth,base es autorización funcional basal, no una preferencia/objetivo del beneficiario. Los campos de recurso, ACL, seguridad, runtime y telemetría no pueden usarse como proxies automáticos de Value.
+
+## 265.4. No correspondencias y separación de fuentes
+
+1. **No hay field_id/event_id efectivos** para los Outcomes o Value; el §232 contiene superficies y tipos semánticos, no un diccionario físico material.
+2. **No hay source_id/instrument_version/adjudicator_id** materializados para Outcomes o Value. U_G describe registros y reglas, pero no existen todavía capturas o evaluaciones C10-S pobladas.
+3. **No hay beneficiario confirmado** en la instancia. La identidad CMP.owner no resuelve este vacío.
+4. **F* no debe contarse dos veces:** el criterio FP-01…08 es contrato técnico; su evidencia y adjudicación pueden sostener O-CONF, pero no crean un segundo resultado independiente ni demuestran Value.
+5. **B-M06/B-M07/B-M09/B-M11/B-M12/B-M14/B-M15** se conservan como superficies para auditoría de rutas colaterales, recursos, seguridad, estado, rendimiento, spillover y carryover. No son indicadores de Value por su etiqueta.
+6. El término L_m de la ecuación ilustrativa de §§34.6/34.8 no se reutiliza como componente de Value: la forma lineal V=3O+4L_m+epsilon_V es provisional y no aceptada; además, L puede ser historia postratamiento/confusora y su tratamiento debe seguir §§249/257/261–263. No se heredan coeficientes, pesos ni escalas.
+7. Se preserva el reloj por nombres de evento y precedencia. Los tiempos comprimidos históricos no se usan para fabricar ventanas/horizontes de Outcome o Value mientras AB-TIME-01/02 sigan abiertos.
+
+## 265.5. Cierre parcial y siguiente gate
+
+- **C-Value conceptual:** la separación Outcome/Value y la estructura de fichas §224 están definidas.
+- **Crosswalk documental contra §232/§233:** completado para los cinco candidatos y los roles de §264.
+- **Anclaje de medición:** parcial solo para O-CONF; superficies candidatas, no fuentes validadas, para O-SVC/O-REC/O-BUR; sin campo terminal para O-MIG.
+- **Value operacional:** no operacionalizado; beneficiarios, dimensiones confirmatorias, instrumentos, escalas, ventanas, trade-offs y adjudicación siguen OPEN.
+- **MED-02:** no se cierra por este crosswalk. No hay campos/snapshots/IDs efectivos.
+- **MED-03:** recibe rutas candidatas por dimensión, pero no se demuestra ningún enlace causal.
+
+**Dictamen:** C-VALUE↔ROSTER CROSSWALK DOCUMENTED / MATERIAL OPEN. El trabajo identifica qué puede reutilizarse y qué no existe, sin inventar campos ni asignar truth/observed. No selecciona Outcomes o dimensiones confirmatorias, no crea IDs, no fija parámetros y no demuestra ΔT_acc* → V_j.
+
+Sin fixtures, implementación, simulación ni ejecución científica. scientific_execution=false; execution_authorized=false.
