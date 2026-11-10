@@ -836,3 +836,89 @@ Se acepta la descomposición conceptual de N15 propuesta en §10.29: distinguir 
 Se reutilizan los siete stage_key y los contratos FP-01…FP-08 y DEC-C10-086/087/088. Los hitos internos no crean etapas ni predicados confirmatorios. F y A permanecen independientes; la evidencia no se hereda entre etapas/rutas. La ausencia de registro no demuestra ausencia de evento.
 
 **Pendiente:** implementación/protocolo A2, formato y parser reales, reglas de validación, mapping físico, destino, eventos, snapshots, cobertura y evidencia. La aceptación no adjudica N15 como CMP, no crea IDs/filas/columnas, no sella IAM ni autoriza captura, pruebas, parser, validator, implementación, Design Freeze o ejecución.
+
+
+## 11. AB-01/02 — crosswalk semántico consolidado de la instancia de servicio (2026-11-10)
+
+**Estado:** reconciliación documental reutilizando DEC-C10-054/068/069/071/079/080/082/083. No crea una nueva decisión, no sella IAM ni define schema físico.
+
+### 11.1. Precedencia y trabajo histórico reutilizado
+
+No se vuelve a definir lo ya aceptado:
+- DEC-C10-054: AST declarativo acíclico, presupuesto 4/16/16, operadores y efectos REQUIRE/FORBID; UNKNOWN no se fuerza a booleano.
+- DEC-C10-068/069: contrato funcional ENABLED/PROFILE/RUL y sus identidades/versiones.
+- DEC-C10-071/083: siete stage_key y aplicabilidad/preservación PAR por etapa.
+- DEC-C10-079/080/081: identidad append-only del manifiesto PAR, binding probatorio mediante COVERAGE_SCOPE y control independiente.
+- DEC-C10-082: anclaje CMP↔NODE 1:1 por snapshot exacto.
+
+La matriz de aplicabilidad §§18.6–18.7 ya resuelve los dos PAR en las siete etapas. Esta sección no la duplica ni modifica. Su función es integrar esas reglas con RUL, CMP, MET y la composición de mappings de las rutas.
+
+### 11.2. Contrato lógico de la instancia
+
+| Elemento | Identidad/semántica de referencia | Correspondencia lógica/U_G | Estado |
+|---|---|---|---|
+| CMP | CMP-SERVICE-LOGIC-001, clase SERVICE_LOGIC; contrato C10S-SVC-REQUEST-PROCESSOR v1.0.0; instancia C10S-SVC-REQUEST-PROCESSOR-001 rev1 | Un NODE anchor exacto por CMP y snapshot; pinning según DEC-C10-065/082 | Identidad aceptada; roster total y registros observados OPEN |
+| PAR-ENABLED | PAR-SVC-ENABLED, BOOL, {false,true}, REQUIRED | Propiedad tipada del CMP owner; manifiesto PAR y COVERAGE_SCOPE; no NODE propio | Contrato y etapas aceptados por DEC-C10-068/083 |
+| PAR-PROFILE | PAR-SVC-PROFILE, ENUM {STANDARD, READ_ONLY, DISABLED}, REQUIRED | Propiedad tipada del CMP owner; manifiesto PAR y COVERAGE_SCOPE; no NODE propio | Contrato y etapas aceptados por DEC-C10-068/083 |
+| RUL | RUL-SVC-ENABLE-PROFILE-01, REQUIRE, scope de unidad lógica | Registro PREDICATE del snapshot exacto; operand bindings a las dos claves PAR | Semántica aceptada; mapping de registros/evidencia aún no instanciado |
+| REF | Sin IDs aceptados | EDGE solo para relación constitutiva real con extremos/tipo/dirección propios | OPEN; no afirmar REF=0 ni inventar EDGE |
+| POL | Ausente por diseño en el núcleo mínimo | Sin objeto POL en el DGP base; FP-05 permanece como gate separado cuando aplique | Regla de diseño aceptada |
+| MET | Identidad contractual, versión, instancia, revisión y procedencia | Metadatos distribuidos en registros existentes, snapshots y evidencia; no tabla MET nueva | IDs/versiones aceptados; serialización/hash OPEN |
+
+### 11.3. Mapping semántico de parámetros — reutilización de DEC-C10-083
+
+Se fija como contrato semántico, no como mapping físico, la preservación de la identidad de parámetro y de su valor tipado:
+
+- PAR-SVC-ENABLED: BOOL; no coerción, no inversión y no conversión implícita.
+- PAR-SVC-PROFILE: símbolo del dominio semántico finito aceptado; no reetiquetado que cambie STANDARD/READ_ONLY/DISABLED ni ampliación del conjunto permitido por RUL.
+- En C_SRC, F2_DST_DECL y A2_DST_DECL, ambos PAR deben estar presentes como VALUE tipado. No existe DEFAULT contractual aceptado.
+- En F1_S2 y A1_S1, cada ruta preserva independientemente identidad, tipo, dominio, estado y valor. Un cambio de etiqueta/encoding físico solo es admisible si una tabla total, versionada y sin ambigüedad conserva el mismo símbolo semántico.
+- En F2_DST_APPLIED y A2_DST_APPLIED, la conformidad exige observación del estado aplicado real; no se infiere desde el destino declarado.
+- ABSENT/NULL confirmados con cobertura suficiente incumplen el contrato REQUIRED; falta de snapshot, mapping o cobertura produce UNKNOWN, nunca ABSENT/NA inferidos.
+
+No se asignan valores por unidad ni escenario. Los siete stage_key, la identidad de fila PAR, su supersession y el vínculo probatorio se rigen por DEC-C10-071/079/080/083 y sus contratos vigentes.
+
+### 11.4. Mapping semántico de RUL y AST
+
+La verdad funcional aceptada es:
+
+OR(NEQ(PAR-SVC-ENABLED,true),IN(PAR-SVC-PROFILE,{STANDARD,READ_ONLY})) bajo efecto REQUIRE.
+
+El mapping de RUL entre C_SRC, S2/S1, destinos declarados y destinos aplicados debe conservar conjuntamente:
+1. identidad RUL-SVC-ENABLE-PROFILE-01 y versión contractual;
+2. owner CMP exacto y scope de unidad lógica;
+3. operador OR, átomos NEQ e IN, constantes y conjunto ENUM;
+4. exactamente dos operand bindings tipados: ENABLED→PAR-SVC-ENABLED/BOOL; PROFILE→PAR-SVC-PROFILE/ENUM;
+5. efecto REQUIRE, semántica TRUE/FALSE/UNKNOWN y presupuesto AST 4/16/16.
+
+Los bindings son referencias tipadas desde el AST a propiedades PAR; no son objetos REF ni aristas EDGE. No se permite reordenar, simplificar, invertir ni ampliar la regla por conveniencia de serialización. Una representación física distinta solo podrá aceptarse tras demostrar que se decodifica a la misma estructura/semántica abstracta mediante mapping versionado. No se define aquí una sintaxis serializada ni un algoritmo de canonicalización.
+
+### 11.5. Composición de rutas y significado de M
+
+Se distinguen cuatro mappings de etapa y dos mappings de ruta completa:
+
+- M_F1_sem: C_SRC → F1_S2; M_F2_sem: F1_S2 → F2_DST_DECL.
+- M_A1_sem: C_SRC → A1_S1; M_A2_sem: A1_S1 → A2_DST_DECL.
+- M_F_sem = M_F2_sem ∘ M_F1_sem; M_A_sem = M_A2_sem ∘ M_A1_sem.
+
+Ambas rutas se juzgan contra la misma instancia lógica, dominio semántico, RUL y criterio F*. Que compartan invariantes semánticos no las hace el mismo mecanismo: la independencia técnica de A1/A2 respecto de B y la no-afectación se evalúan separadamente en R0–R3 y no quedan demostradas por este crosswalk.
+
+Cada mapping futuro deberá tener ID/versión, cobertura por clase/propiedad, correspondencias explícitas y estado MAPPED, UNMAPPED, AMBIGUOUS o NOT_APPLICABLE. No se asignan todavía mapping_id/version ni se declara un mapping material completo. Los estados desconocidos no se convierten en eliminación, default, NA o equivalencia.
+
+### 11.6. Reconciliación de representación sin duplicar U_G
+
+- CMP: NODE anchor exacto por snapshot conforme a DEC-C10-082.
+- PAR: propiedad del CMP owner y registro de manifiesto/coverage conforme a DEC-C10-079/080; no crear NODE por parámetro ni FK PAR inexistente.
+- RUL: PREDICATE y referencias tipadas a operandos/owner; no convertir bindings AST→PAR en EDGE.
+- REF: EDGE solo tras inventario de relación constitutiva; el roster desconocido no autoriza REF=0.
+- MET: reutilizar metadatos y registros existentes; no crear tabla MET por conveniencia.
+- Evidencia/procedencia/cobertura: reutilizar EVIDENCE_REGISTER, COVERAGE_REGISTER, CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER; respetar pinning de snapshot exacto.
+
+No se añaden columnas, tablas, FKs ni nuevos tipos U_G. JCS UDG-01 no se extiende al payload/AST de configuración.
+
+### 11.7. Dictamen AB-01/02
+
+- AB-01: binding AST→PAR semánticamente resuelto; representación física del AST, schema/encoding, escaping, canonicalización y constraints OPEN.
+- AB-02: mapping semántico de los dos PAR por siete etapas aceptado por DEC-C10-083 y reconciliado aquí con CMP/RUL/U_G; mappings versionados materiales, REF exhaustivo, registro RUL por snapshot y evidencia de destinos aplicados OPEN.
+
+No se declara IAM sellado, REF=0, schema freeze, oráculo validado ni DGP autocontenido. Sin fixtures, parser, validator, implementación, simulación ni ejecución científica. scientific_execution=false; execution_authorized=false.
