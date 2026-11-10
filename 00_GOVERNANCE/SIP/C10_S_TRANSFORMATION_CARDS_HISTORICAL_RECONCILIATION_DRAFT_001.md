@@ -153,3 +153,17 @@ La propuesta deberá compararse con los contratos ya definidos (§§47–69) y s
 La reconstrucción evita duplicar las definiciones previas de F*, accesibilidad, C_dep, evidencia y clasificación temporal. Identifica que F1 está parcialmente especificada por el contrato τ2/B, mientras F2/A1/A2 solo tienen una función topológica en el fixture. La semántica sustantiva no está disponible en el historial recuperado y no debe inventarse.
 
 **Estado de cierre:** fichas de reconciliación completadas como auditoría de huecos; fichas transformacionales sustantivas NO cerradas. AUD-004/005/007/010/011 y OPEN-C10-001/003/005/007 permanecen abiertos. No hay aprobación, freeze, implementación, fixtures ejecutables, generación de datos, simulación ni ejecución.
+
+## 11. Precedencia posterior — instancia sintética abstracta autorizada por AB-03-SYN (2026-11-10)
+
+Las conclusiones históricas §§4–10 siguen describiendo correctamente el estado documental previo: F2/A1/A2 no tenían identidad ni semántica sustantiva aprobadas, y no era admisible rellenarlas por inferencia. La aceptación expresa de AB-03-SYN autoriza ahora una **definición abstracta limitada al DGP sintético**, no una elección de mecanismo físico ni una afirmación sobre sistemas reales.
+
+La definición se encuentra en §12 de `C10_S_OPTION_A_FSTAR_AND_TRANSFORMATION_CARDS_PROPOSAL_DRAFT_001.md` y fija:
+- F1: conversión focal S0→S2;
+- F2: aplicación y verificación focal S2→SF;
+- A1: exportación alternativa basal S0→S1;
+- A2: importación/aplicación y verificación alternativa S1→SF.
+
+Se asignan TID/SID sintéticos del namespace del DGP, no RID ni EID. La asignación no crea implementación, no identifica producto/formato/plataforma, no fija mappings físicos, tolerancias, recursos, autorizaciones ni tiempos, y no prueba que A1→A2 sea funcionalmente substituible o independiente de B.
+
+Por tanto, el antiguo estado OPEN sobre la **semántica abstracta** queda resuelto por la decisión posterior; permanecen OPEN la especificación técnica, la evidencia, el universo de alternativas, la validación del oráculo y la adjudicación material. La precedencia no modifica DEC-C10-051 ni convierte la propuesta en Design Freeze.
