@@ -2201,3 +2201,9 @@ AB sigue IN_PROGRESS / NOT DESIGN FROZEN / NOT IMPLEMENTABLE. Véase ledger AB �
 El usuario acepta el ledger AB §11 como base de trabajo, con valores numéricos y horizonte temporal no justificado expresamente abiertos. Quedan aceptadas como reglas de diseño las cuatro cards sintéticas F1/F2/A1/A2 sin mecanismo real; separación H_path/H_time (H_time sigue OPEN); elegibilidad C0 pre-Z, P*_τ2/P*_F separados y q_X* sujeto a soporte; no interferencia solo estipulada en R0 con adversariales interferentes; y parametrización D2/C_dep por justificación y sensibilidad sin aprobar valores.
 
 REF/AST y schema/canonicalización se resuelven técnicamente contra contratos. MD-C1/MD-C4, cobertura y evidencia material permanecen OPEN. No hay Design Freeze, implementación ni ejecución. AB sigue IN_PROGRESS.
+
+## 16.118 — AB-M01: binding AST tipado a PAR (2026-11-10)
+
+Queda resuelta la alternativa semántica REF vs AST: los dos operandos ENABLED y PROFILE son bindings tipados de hojas/posiciones del AST RUL a PAR-SVC-ENABLED/BOOL y PAR-SVC-PROFILE/ENUM. No generan objetos REF de configuración. Se prohíbe el doble registro AST+REF del mismo binding. Un REF solo existiría para una relación/dependencia constitutiva independiente.
+
+AB-M01 pasa a DESIGN RESOLVED en semántica; encoding/schema/serialización física, namespace/versionado y constraints permanecen OPEN. No extrapolar JCS UDG-01. Véase ledger AB §13.
