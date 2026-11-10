@@ -2195,3 +2195,9 @@ Recomendación: resolver REF/AST y payload schema contra los contratos; completa
 Las decisiones que requieren aceptación del usuario son AB-03-SYN, AB-05-H, AB-08-POP, AB-09-INT y AB-06/07-PARAM. No se acepta unilateralmente ningún valor, población, topología ni parámetro. R0 puede contener invariancias estipuladas para el DGP, nunca presentadas como evidencia observada. MD-C1/MD-C4 y cobertura real permanecen probatorios.
 
 AB sigue IN_PROGRESS / NOT DESIGN FROZEN / NOT IMPLEMENTABLE. Véase ledger AB §11 para definición, límites y criterio de salida.
+
+## 16.117 — Aceptación de la propuesta integrada AB (2026-11-10)
+
+El usuario acepta el ledger AB §11 como base de trabajo, con valores numéricos y horizonte temporal no justificado expresamente abiertos. Quedan aceptadas como reglas de diseño las cuatro cards sintéticas F1/F2/A1/A2 sin mecanismo real; separación H_path/H_time (H_time sigue OPEN); elegibilidad C0 pre-Z, P*_τ2/P*_F separados y q_X* sujeto a soporte; no interferencia solo estipulada en R0 con adversariales interferentes; y parametrización D2/C_dep por justificación y sensibilidad sin aprobar valores.
+
+REF/AST y schema/canonicalización se resuelven técnicamente contra contratos. MD-C1/MD-C4, cobertura y evidencia material permanecen OPEN. No hay Design Freeze, implementación ni ejecución. AB sigue IN_PROGRESS.
