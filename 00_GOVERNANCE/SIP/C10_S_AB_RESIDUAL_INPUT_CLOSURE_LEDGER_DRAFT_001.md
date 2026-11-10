@@ -919,3 +919,15 @@ Se descompone el roster documental de §232 a nivel de subcampo sin crear identi
 La tabla detallada y sus reglas quedan en maestro §251. No se han asignado field_id/event_id ni valores. Se conserva AB-TIME-01: usar nombres de eventos, timestamps fuente y snapshot, sin armonizar índices t por inferencia. NO INVENTARIADO/UNKNOWN/? no equivalen a cero. El papel de L como confusor inducido depende de B→L, L→M y L→V_j para estimando/horizonte concretos.
 
 **Dictamen:** crosswalk documental de subcampos completado parcialmente sobre el roster existente; MED-02c3/c4/d OPEN. Inputs materiales, instancia, matching, cobertura, truth/observed, MD-C1/MD-C4, Outcome/Value dimensional y DAG por V_j siguen OPEN. Sin fixtures, implementación, ejecución ni Design Freeze.
+
+
+## 20. MED-02d — crosswalk E_T, evidencia, cobertura y adjudicación (2026-11-10)
+
+Se añade maestro §252, reutilizando EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER existentes, junto con el manifiesto documental C10-S. No se crea tabla, FK, target PAR ni registro paralelo.
+
+Quedan diferenciados: estado estructural S_T*, cambio ΔT_acc*, plano epistémico E_T, truth_DGP seguro y observed_state. Se documentan las clases funcionales de fuente (contrato/catálogo; artefacto/configuración; snapshot/runtime; logs/eventos; telemetría; alternativas/dependencias; oráculo/adjudicación; truth DGP), sin crear enum source_type.
+
+Se fija el crosswalk de registros, las dimensiones de suficiencia (identidad, procedencia, integridad, tiempo, ámbito, método, cobertura, cegamiento, missingness/contradicción y adjudicación), la cadena de evaluación por etapa/ruta y las reglas 1/0/?/NA/NOT_COMPARABLE. Se preservan los límites: evidencia de contrato no prueba estado aplicado; intento/log no sustituye FP-06/07; FP-08 no compensa FP-01…07; truth no reemplaza observación ni se revela al Analyzer.
+
+**Cerrado:** diseño documental de la interfaz E_T/U_G y controles de adjudicación.  
+**OPEN:** fuentes/instancia/snapshots reales, field_id/event_id, scopes/denominadores, AB-TIME-01, serialización/hash, oráculo independiente/fiabilidad, evaluadores/cegamiento, missingness/error diferencial, R0–R3 y Outcome/Value dimensional. MED-02d no está materialmente cerrado. Sin registros, fixtures, implementación ni ejecución.
