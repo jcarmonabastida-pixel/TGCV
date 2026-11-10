@@ -2624,3 +2624,20 @@ El maestro §232 contiene el roster documental parcial y su clasificación semá
 Se reconocen como identidades contractuales de referencia las aceptadas por DEC-C10-069. ENABLED/PROFILE son PAR nucleares; RETRY-COUNT candidato; REF con cardinalidad/cobertura IAM pendiente. Contexto runtime/host y estado persistente son candidatos X* solo si alteran accesibilidad; logs, hashes, cobertura y oráculo son E_T; endpoint/red son R* y ACL/firewall son C*. Recursos, seguridad y rendimiento requieren regla funcional para clasificarse.
 
 **Estado:** roster documental parcial DOCUMENTED; campos/valores reales, truth/observed, event_id y matching de snapshots OPEN. MED-02 no cerrado.
+
+
+## 129. DAG Opción A/D2 — control de vías colaterales y mediación
+
+| Control | Criterio de cierre | Estado |
+|---|---|---|
+| DAG-01 | Orden temporal t−1…t9 y snapshots inmutables; sin causalidad retrospectiva desde ejecución | DEFINED / CANDIDATE |
+| DAG-02 | Separación Z, B, W_programmed, W_attempt, S_install, C_dep*, A_f*, D_f*, ΔT_acc* | DEFINED / CANDIDATE |
+| DAG-03 | Aplicación campo a campo del roster U*/R*/C*/X*/E_T a B-M01…15 | PARTIAL; inventario efectivo OPEN |
+| DAG-04 | Auditoría de vías colaterales B→recursos/capacidad, permisos/seguridad, A1/A2, coste/latencia/calidad, K/selección, medición y spillovers | OPEN |
+| DAG-05 | D2 común en condiciones no focales conforme DEC-C10-067; evidencia de invariancia | OPEN |
+| DAG-06 | Mediador conjunto ΔT_acc*; A_f* predicado/proyección y D_f* derivado, sin doble mediación | DEFINED / CANDIDATE |
+| DAG-07 | Mapping B→g^Af, soporte y exclusión para interpretar ITT como θ_A(q) | OPEN |
+| DAG-08 | Confusores mediador–Outcome inducidos por B: estrategia longitudinal o conclusión limitada a paquete | OPEN |
+| DAG-09 | Truth/observed E_T separados; UNKNOWN/? no equivale a 0 | DEFINED |
+
+**Dictamen:** DAG documental incorporado como candidato en maestro §233. No cierra C-MED, MED-02 ni gates de identificación; no autoriza implementación ni ejecución.
