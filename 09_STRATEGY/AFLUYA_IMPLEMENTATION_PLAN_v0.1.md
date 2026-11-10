@@ -1,20 +1,20 @@
 # AFLUYA — Plan de implantación ejecutable
-## Versión 0.1
+## Versión 0.4
 
 **Identificador:** AFLUYA-IMPL-001  
 **Fecha:** 2026-11-10  
-**Estado:** DRAFT — plan operativo inicial, pendiente de aprobación por fases  
+**Estado:** DRAFT — plan operativo revisado; orientación económica aceptada, movilización y fases de ejecución pendientes  
 **Rama:** `strategy/afluya-ecosystem-v0.2`  
-**Documento estratégico de referencia:** `09_STRATEGY/AFLUYA_ECOSYSTEM_ARCHITECTURE_v0.7.md`  
+**Documento estratégico de referencia:** `09_STRATEGY/AFLUYA_ECOSYSTEM_ARCHITECTURE_v0.7.md` (contenido estratégico v1.0)  
 **Brief jurídico relacionado:** `09_STRATEGY/AFLUYA_TRADEMARK_CLEARANCE_BRIEF_v0.1.md`
 
 ---
 
 ## 1. Propósito y alcance
 
-Convertir la arquitectura estratégica de AFLUYA en una secuencia de implantación realizable por una sola persona sin conocimientos de programación, con asistencia paso a paso y coste inicial mínimo.
+Convertir la arquitectura estratégica de AFLUYA en una secuencia de implantación realizable desde la situación actual: una persona impulsora sin conocimientos de programación y con coste inicial mínimo, cuyo primer objetivo operativo es atraer colaboradores, posibles socios de ejecución y aliados/financiadores para compartir la carga y construir capacidad. El plan no debe perpetuar el supuesto de que el fundador ejecutará individualmente todas las líneas.
 
-El plan cubre preparación, comprobación de dominios, identidad visual mínima, web pública en Framer, publicación documental, integración, revisión previa al lanzamiento y mantenimiento.
+El plan cubre movilización y formación de un núcleo inicial, preparación del caso de colaboración/financiación, comprobación de dominios, identidad visual mínima, web pública ligera, publicación documental esencial, primera prueba visible, integración, lanzamiento y mantenimiento.
 
 No implica que se hayan contratado servicios, comprado dominios, creado cuentas, publicado contenidos ni autorizado gastos. Cada fase es una propuesta hasta que el usuario apruebe su inicio y las decisiones que impliquen compromisos.
 
@@ -30,6 +30,9 @@ No implica que se hayan contratado servicios, comprado dominios, creado cuentas,
 8. **Honestidad de estado:** distinguir concepto, diseño, prototipo, demostrador, piloto, producto operativo y evidencia. No presentar simulaciones como evidencia empírica ni claims abiertos como validados.
 9. **Propiedad y control:** las cuentas, dominios, repositorios, métodos de recuperación y activos esenciales deben permanecer bajo control del titular; activar MFA cuando proceda.
 10. **No contratar apoyo técnico por defecto:** solo considerar asistencia puntual cuando exista un bloqueo real, con alcance, coste, entregable y transferencia de control previamente aprobados.
+11. **Movilizar antes de escalar:** buscar primero un pequeño núcleo de colaboradores y aliados; no diseñar la ejecución como si ya existiera un equipo.
+12. **No confundir apoyo con inversión:** colaboración, patrocinio, subvención, aportación voluntaria, préstamo, inversión y contratación tienen condiciones distintas y no se ofrecerán ni recibirán fondos sin definir su naturaleza y tratamiento legal/administrativo.
+13. **Foco del fundador:** mantener como máximo tres frentes activos: convocatoria y alianzas; presencia pública y conocimiento esencial; un piloto o demostrador prioritario.
 
 ## 3. Estado inicial
 
@@ -77,17 +80,42 @@ No se avanzará automáticamente de una fase a otra. El usuario aprueba expresam
 2. Mantener como referencias la arquitectura v0.7 y el brief de anterioridades v0.1.
 3. Crear un registro de decisiones, costes, cuentas y activos.
 4. Confirmar que el usuario controla su cuenta GitHub y puede acceder al repositorio y a la rama estratégica.
-5. Definir los criterios de aceptación de la primera publicación: portal institucional claro, contenidos iniciales revisados, acceso a conocimiento y vía de contacto/participación.
-6. Preparar la lista de datos que se necesitarán para las siguientes fases, sin solicitarlos hasta que sean necesarios.
+5. Acordar qué debe seguir bajo responsabilidad del fundador y qué tareas deben delegarse desde el principio.
+6. Identificar los perfiles prioritarios para una primera coalición: impulso/operaciones; digital/producto; comunidad/comunicación; alianzas/financiación; apoyo científico/metodológico.
+7. Preparar el paquete de convocatoria: AFLUYA en una página, presentación breve, plan de primeros 90 días, mapa de contribuciones, nota de financiación y reglas iniciales de colaboración.
+8. Definir los criterios de aceptación de la primera publicación: portal institucional claro, contenidos iniciales revisados, acceso a conocimiento y vías visibles para colaborar, asociarse, establecer alianzas o consultar servicios.
+9. Preparar la lista de datos que se necesitarán para las siguientes fases, sin solicitarlos hasta que sean necesarios.
 
 **Entregables:**
 - Inventario inicial validado.
 - Registro de decisiones y aprobaciones.
+- Orientación económica aceptada como marco estratégico.
+- Mapa de roles y contribuciones prioritarios.
+- Paquete mínimo de convocatoria y financiación en preparación.
 - Lista de fases y dependencias confirmada.
 
-**Criterio de salida:** el usuario confirma el inventario y revisa la arquitectura económica incorporada en la sección 12 de este plan y en la sección 35 de la arquitectura estratégica. La aprobación de esta orientación no autoriza todavía la venta, la creación de membresías ni la contratación de herramientas de pago. Una vez cerrada esta decisión, podrá autorizar únicamente iniciar la comprobación de dominios. No se crea ninguna cuenta ni se compra nada.
+**Criterio de salida:** inventario inicial confirmado; orientación económica aceptada como marco estratégico; prioridades de lanzamiento acordadas; y paquete mínimo de movilización definido. La orientación económica queda cerrada: comunidad y conocimiento básico abiertos; servicios delimitados como primera vía de ingresos a validar; membresía y SaaS aplazados; Impact mediante alianzas y financiación externa. Esto no aprueba tarifas, no valida demanda y no autoriza cobros, membresías, inversión, contratación ni compra de herramientas.
 
-### Fase 1 — Dominio y comprobaciones previas
+La Fase 0 no se considera completamente cerrada hasta preparar el paquete de convocatoria descrito en la sección 12 y decidir cómo se abordará la incorporación de colaboradores y posibles financiadores. La comprobación de dominios puede avanzar como tarea técnica de bajo coste una vez aprobada expresamente su realización, pero no debe desplazar la movilización como prioridad estratégica.
+
+### Fase 1 — Movilización y formación del núcleo inicial
+
+**Objetivo:** reducir la dependencia del fundador y crear capacidad real de ejecución antes de ampliar el ecosistema.
+
+**Tareas:**
+1. Preparar una lista corta y priorizada de personas y organizaciones a contactar, empezando por relaciones cálidas y afinidad demostrable.
+2. Mantener conversaciones individuales para conocer motivaciones, capacidades, disponibilidad, expectativas y posibles conflictos.
+3. Presentar modalidades diferenciadas: colaboración acotada, socio/a de ejecución, aliado institucional, patrocinador/financiador, supporter o cliente.
+4. Proponer primeras contribuciones pequeñas, con resultado, responsable y fecha de revisión; no pedir compromisos indefinidos.
+5. Identificar una persona que pueda compartir coordinación/operaciones y asumir seguimiento cotidiano.
+6. Acordar un núcleo de coordinación ligero, una reunión breve periódica y un tablero compartido con un máximo de tres frentes activos.
+7. Documentar acuerdos de autoría, propiedad intelectual, confidencialidad, datos, remuneración y salida antes de iniciar trabajos sustantivos.
+
+**Entregable:** primer grupo de colaboradores activos o, si aún no se alcanza, registro de conversaciones, interés, objeciones y siguientes contactos; no se exige constituir una sociedad.
+
+**Puerta G1:** confirmar que existe capacidad compartida suficiente para ejecutar el siguiente bloque, o revisar alcance y secuencia antes de seguir.
+
+### Fase 2 — Dominio y comprobaciones previas
 
 **Objetivo:** comprobar la disponibilidad técnica de los dominios y separar esta comprobación de la viabilidad jurídica de la marca.
 
@@ -105,11 +133,11 @@ No se avanzará automáticamente de una fase a otra. El usuario aprueba expresam
 
 **Entregable:** ficha comparativa de dominios y recomendación de decisión.
 
-**Puerta G1:** el usuario decide si autoriza el registro de un dominio concreto, con registrador, precio, titularidad y condiciones identificados. Sin aprobación, no se compra.
+**Puerta G2:** el usuario decide si autoriza el registro de un dominio concreto, con registrador, precio, titularidad y condiciones identificados. Sin aprobación, no se compra.
 
 **Criterio de bloqueo:** conflicto jurídico material, dominio no disponible, precio premium no previsto, titularidad poco clara o condiciones desfavorables.
 
-### Fase 2 — Identidad visual mínima
+### Fase 3 — Identidad visual mínima
 
 **Objetivo:** disponer de un sistema visual suficiente para construir la primera web sin abrir un proyecto de branding costoso.
 
@@ -123,11 +151,11 @@ No se avanzará automáticamente de una fase a otra. El usuario aprueba expresam
 
 **Entregable:** kit visual mínimo aprobado para la primera versión web.
 
-**Puerta G2:** aprobación del usuario antes de encargar diseño externo, comprar recursos o adoptar definitivamente un logotipo.
+**Puerta G3:** aprobación del usuario antes de encargar diseño externo, comprar recursos o adoptar definitivamente un logotipo.
 
-### Fase 3 — Web pública en Framer
+### Fase 4 — Web pública ligera
 
-**Objetivo:** construir un portal institucional ligero, editable visualmente y adecuado a la primera publicación.
+**Objetivo:** construir un portal institucional ligero, editable visualmente y adecuado a la primera publicación. Framer es una opción candidata, no una decisión de contratación; la selección se hará tras comparar coste total, facilidad de mantenimiento, portabilidad y disponibilidad de apoyo.
 
 **Preparación antes de crear cuenta:**
 1. Verificar planes actuales de Framer, límites de páginas/CMS, dominio personalizado, formularios, analítica, ancho de banda, branding, exportación, impuestos y renovación.
@@ -167,13 +195,13 @@ La navegación final se confirmará con la arquitectura estratégica actualizada
 
 **Entregable:** web estructurada y revisable en entorno de previsualización.
 
-**Puerta G3:** aprobación de contenidos, estructura y coste antes de conectar dominio o publicar.
+**Puerta G4:** aprobación de contenidos, estructura y coste antes de conectar dominio o publicar.
 
-### Fase 4 — Publicación documental
+### Fase 5 — Publicación documental
 
 **Objetivo:** ofrecer una base de conocimiento abierta, versionada y mantenible, conservando GitHub como fuente maestra.
 
-**Arquitectura de referencia:** GitHub + Markdown/MDX + Astro/Starlight + GitHub Pages, conforme a la arquitectura v0.7.
+**Arquitectura de referencia:** GitHub como fuente maestra y una capa de publicación documental ligera (Astro/Starlight + GitHub Pages como opción de referencia), conforme a la arquitectura estratégica vigente.
 
 **Tareas:**
 1. Inventariar qué documentos son publicables, cuáles requieren adaptación y cuáles deben permanecer privados o internos.
@@ -189,9 +217,9 @@ La navegación final se confirmará con la arquitectura estratégica actualizada
 
 **Entregable:** base documental navegable y publicada o, si la puerta no se supera, lista para previsualización.
 
-**Puerta G4:** aprobación de selección documental, licencias, exposición pública y despliegue.
+**Puerta G5:** aprobación de selección documental, licencias, exposición pública y despliegue.
 
-### Fase 5 — Integración web y documentación
+### Fase 6 — Integración web y documentación
 
 **Objetivo:** que el visitante perciba un ecosistema coherente, sin duplicar fuentes ni crear dependencias innecesarias.
 
@@ -204,9 +232,9 @@ La navegación final se confirmará con la arquitectura estratégica actualizada
 
 **Entregable:** recorrido coherente entre Home, secciones institucionales y conocimiento.
 
-**Puerta G5:** aprobación de la integración y de cualquier coste adicional de dominio o plataforma.
+**Puerta G6:** aprobación de la integración y de cualquier coste adicional de dominio o plataforma.
 
-### Fase 6 — Revisión y lanzamiento
+### Fase 7 — Revisión y lanzamiento
 
 **Objetivo:** publicar solo cuando la primera versión sea clara, segura, accesible y honesta sobre su alcance.
 
@@ -228,11 +256,11 @@ La navegación final se confirmará con la arquitectura estratégica actualizada
 
 **Entregable:** versión pública mínima de AFLUYA y registro de aceptación.
 
-**Puerta G6:** autorización expresa del usuario para publicar.
+**Puerta G7:** autorización expresa del usuario para publicar.
 
 **Alcance de primera publicación:** portal institucional profesional, base de conocimiento abierta y curada, descripción transparente de las áreas y una vía sencilla de contacto/participación. No es necesario que estén operativos VALUE Explorer, TGCV Playground completo, una comunidad alojada ni ValueLabOS.
 
-### Fase 7 — Mantenimiento y revisión trimestral
+### Fase 8 — Mantenimiento y revisión trimestral
 
 **Objetivo:** evitar que precios, condiciones o dependencias queden obsoletos y mantener la web/documentación.
 
@@ -255,13 +283,14 @@ Orden recomendado:
 
 1. Fase 0 — Preparación e inventario.
 2. Cierre de la orientación económica (sección 12): clasificación del portfolio, recurrencia candidata y límites de monetización. Esta decisión estratégica precede a la Fase 1, pero no implica activar ofertas ni contratar servicios.
-3. Fase 1 — Dominio y comprobaciones jurídicas/técnicas.
-3. Fase 2 — Identidad visual mínima.
-4. Fase 3 — Web Framer.
-5. Fase 4 — Publicación documental.
-6. Fase 5 — Integración.
-7. Fase 6 — Revisión y lanzamiento.
-8. Fase 7 — Mantenimiento trimestral.
+3. Fase 1 — Movilización y formación del núcleo inicial.
+4. Fase 2 — Dominio y comprobaciones jurídicas/técnicas.
+5. Fase 3 — Identidad visual mínima.
+6. Fase 4 — Web pública ligera.
+7. Fase 5 — Publicación documental.
+8. Fase 6 — Integración.
+9. Fase 7 — Revisión y lanzamiento.
+10. Fase 8 — Mantenimiento trimestral.
 
 Las fases 3 y 4 pueden prepararse en paralelo a nivel de contenidos y diseño, pero no deben generar contratación ni publicación sin sus respectivas puertas. La decisión sobre el dominio precede a la conexión del dominio y a la publicación definitiva.
 
@@ -304,22 +333,22 @@ El usuario aprobará cada gasto por separado. El objetivo es minimizar el coste 
 
 | Fase | Estado inicial | Evidencia / condición |
 |---|---|---|
-| 0. Preparación | IN_PROGRESS | El usuario confirma que se parte de cero |
-| 1. Dominio | NOT_STARTED | Dominios NOT_VERIFIED; sin compra |
-| 2. Identidad | NOT_STARTED | Dirección visual en arquitectura; kit pendiente |
-| 3. Framer | NOT_STARTED | Herramienta recomendada, cuenta/plan no contratados |
-| 4. Documentación | NOT_STARTED | GitHub es fuente maestra; publicación por configurar |
-| 5. Integración | NOT_STARTED | Depende de fases 3 y 4 |
-| 6. Lanzamiento | NOT_STARTED | No hay publicación autorizada |
-| 7. Mantenimiento | DEFINED_NOT_SCHEDULED | Revisión trimestral definida; no existe seguimiento programado |
+| 0. Preparación y movilización | IN_PROGRESS | Orientación económica aceptada; paquete de convocatoria y mapa de roles pendientes de completar |
+| 1. Movilización | NOT_STARTED | Perfiles y paquete de convocatoria por preparar; sin compromisos con terceros |
+| 2. Dominio | NOT_STARTED | Dominios NOT_VERIFIED; sin compra |
+| 3. Identidad | NOT_STARTED | Dirección visual en arquitectura; kit pendiente |
+| 4. Web pública | NOT_STARTED | Herramienta pendiente de comparación; sin cuenta/plan contratado |
+| 5. Documentación | NOT_STARTED | GitHub es fuente maestra; publicación por configurar |
+| 6. Integración | NOT_STARTED | Depende de fases 4 y 5 |
+| 7. Lanzamiento | NOT_STARTED | No hay publicación autorizada |\n| 8. Mantenimiento | DEFINED_NOT_SCHEDULED | Revisión trimestral definida; no existe seguimiento programado |
 
 **Situación de dominio:** afluya.org — NOT_VERIFIED; afluya.com — NOT_VERIFIED; afluya.es — NOT_VERIFIED. No se ha registrado ni comprado ningún dominio.
 
 ## 10. Próxima operación concreta
 
-Completar el cierre de Fase 0 con la revisión y aceptación de la orientación económica de la sección 12, y solo después realizar la consulta técnica de los tres dominios en fuentes fiables. La consulta deberá devolver resultados con fecha y fuente, y terminar en una recomendación; no ejecutará compra ni registro.
+Completar el paquete de movilización: definir el primer núcleo de perfiles, preparar AFLUYA en una página, la presentación breve, el mapa de contribuciones y la nota de financiación por hitos. En paralelo, si el usuario lo autoriza, realizar la comprobación técnica de afluya.org, .com y .es en fuentes fiables, documentando fecha, fuente, renovación y coste; la consulta no ejecutará compra ni registro. La prioridad de esta etapa es crear capacidad compartida y una convocatoria creíble, no contratar herramientas.
 
-La decisión económica no activa ninguna suscripción ni servicio de pago. La primera operación no requiere crear cuentas nuevas, introducir datos de pago ni contratar servicios.
+La orientación económica general queda aceptada como marco estratégico. No activa ninguna suscripción ni servicio de pago, ni autoriza a solicitar/aceptar fondos, invertir, contratar, crear cuentas de pago o comprar herramientas. La ruta legal y administrativa para cualquier financiación deberá definirse antes de recaudar.
 
 ## 11. Control de cambios
 
@@ -438,3 +467,73 @@ Antes de iniciar la comprobación de dominios, el usuario revisará y aprobará 
 - Se alinean arquitectura estratégica y plan de implantación.
 - Se exige mostrar estados reales de disponibilidad y no presentar servicios no validados como contratables.
 - No se activan pagos, suscripciones ni contratación automática.
+
+
+## 12. Movilización, colaboradores y financiación
+
+### 12.1 Objetivo operativo
+
+El primer resultado organizativo de AFLUYA no es disponer de todas sus áreas operativas, sino dejar de depender exclusivamente de una persona para impulsar y ejecutar el proyecto. La prioridad es formar una pequeña coalición de colaboradores y aliados, con responsabilidades y compromisos proporcionados.
+
+### 12.2 Roles prioritarios
+
+- **Impulso y operaciones:** compartir coordinación, convertir prioridades en tareas, mantener seguimiento y ayudar a abrir puertas. Es la incorporación prioritaria.
+- **Digital/producto:** web no-code, prototipos, experiencia de usuario y coordinación técnica.
+- **Comunidad/comunicación:** convocatoria, contenidos, encuentros y cuidado de las relaciones.
+- **Alianzas/financiación:** socios institucionales, patrocinadores, convocatorias y personas impulsoras.
+- **Apoyo científico/metodológico:** contribuciones acotadas a Research, VALUE, pilotos y evaluación, sin interferir en la gobernanza científica de TGCV.
+
+No es necesario cubrir todos los roles ni constituir un equipo formal antes de empezar. Una persona puede asumir más de un ámbito y las primeras contribuciones pueden ser pequeñas.
+
+### 12.3 Modalidades de participación
+
+La comunicación de Work with us distinguirá:
+- colaboración por tarea o proyecto;
+- posible asociación de ejecución, tras comprobar encaje mutuo y acordar responsabilidades, dedicación, decisiones, propiedad intelectual y condiciones económicas;
+- alianzas institucionales;
+- patrocinio o financiación de actividades y programas;
+- apoyo voluntario de personas impulsoras, si existe una vía legal y administrativa adecuada;
+- contratación de servicios profesionales.
+
+No se prometerá participación societaria, reparto de ingresos, empleo o retorno financiero sin un acuerdo formal. Toda contribución sustantiva tendrá condiciones de autoría, IP, confidencialidad, datos, remuneración y salida definidas.
+
+### 12.4 Paquete de convocatoria
+
+Preparar antes de una convocatoria amplia:
+1. AFLUYA en una página: propósito, oportunidad, propuesta diferencial, relación con TGCV y VALUE, estado real y visión.
+2. Presentación breve de 8–10 diapositivas.
+3. Plan de primeros 90 días, con resultados verificables y sin prometer plazos imposibles.
+4. Mapa de contribuciones: tareas, perfiles, dedicación aproximada, modalidad y reconocimiento.
+5. Nota de financiación por hitos: presupuesto, destino, recursos faltantes y rendición de cuentas.
+6. Reglas iniciales de colaboración: autoría, propiedad intelectual, confidencialidad, datos, decisiones y salida.
+
+### 12.5 Vías de financiación y salvaguardas
+
+Distinguir recursos en especie, patrocinio, financiación de proyectos, subvenciones, aportaciones voluntarias y financiación de inversión/préstamo. Cada vía requiere condiciones, derechos y obligaciones diferentes. No solicitar ni aceptar fondos bajo una etiqueta ambigua. Antes de recaudar o aceptar fondos se verificará la estructura jurídica, fiscal y contable adecuada. No lanzar campañas públicas ni ofrecer retorno financiero sin estructura y asesoramiento apropiados.
+
+### 12.6 Secuencia y foco
+
+1. Convocatoria dirigida a contactos y comunidades con afinidad.
+2. Conversaciones de encaje sobre motivación, capacidad, disponibilidad y expectativas.
+3. Primeras contribuciones pequeñas y visibles.
+4. Formación de un núcleo de coordinación con responsables y revisión periódica.
+5. Primera prueba pública concreta que demuestre potencial y permita invitar a más personas.
+6. Conversaciones de financiación ligadas a hitos y presupuesto transparente.
+
+Durante esta fase se mantendrán como máximo tres frentes activos: convocatoria/alianzas; presencia pública/conocimiento esencial; un piloto o demostrador prioritario. La web será una pieza de credibilidad y contacto, no el sustituto de la captación directa.
+
+### 12.7 Criterio de salida de la etapa
+
+AFLUYA estará preparada para ampliar la implantación cuando cuente con un pequeño núcleo activo o una red inicial de colaboradores con compromisos concretos, responsabilidades compartidas, una primera prueba visible y una ruta de financiación definida. Si no se consigue, se reducirá el alcance y se revisará la propuesta antes de añadir complejidad.
+
+## 13. Control de cambios
+
+### v0.4 — 2026-11-10
+- Se cierra la revisión de la orientación económica como marco estratégico aceptado, sin aprobar tarifas ni activar ofertas.
+- Se añade una fase de movilización para formar un núcleo inicial de colaboradores y posibles socios de ejecución.
+- Se incorpora un paquete de convocatoria y financiación con roles, contribuciones, hitos y reglas de colaboración.
+- Se diferencian colaboración, asociación, alianza, patrocinio, subvención, aportación voluntaria, inversión y contratación.
+- Se reordena el plan para que la movilización preceda a la ampliación de herramientas y productos.
+- Se establece un máximo de tres frentes activos para proteger la capacidad del fundador.
+- Se mantienen las puertas de aprobación para dominios, gastos, contratación, financiación y publicación.
+- No se solicitan ni aceptan fondos, no se constituye entidad y no se ofrecen participaciones.
