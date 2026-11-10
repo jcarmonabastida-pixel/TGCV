@@ -1455,3 +1455,8 @@ Esta sección especializa contratos existentes sin crear IDs nuevos ni declarar 
 **Criterio de evaluación:** estado de identificación adjudicado por estimando×dimensión×DGP×soporte; recuperación solo en identificación puntual; bounds en parcial; falsa identificación/atribución y abstención adjudicadas con denominadores explícitos. Tolerancias y umbrales siguen OPEN.
 
 No se amplían P177/P182/P183 en esta sección; cualquier especialización contractual futura debe justificar que no duplica criterios existentes y conservar versionado/provenance.
+
+
+## 77. Precedencia corregida del crosswalk ΔT_acc (2026-11-10)
+
+La referencia correcta del DGP es §30: ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*) y ΔValidity_e pertenece a ΔE_T. La expresión anterior de §3.3 (que incluía ΔValidity y ΔState) queda supersedida. Para el cruce con C10-D1 §27.1: ΔU→A⁺/A⁻/A^reconf; ΔR→ΔR; ΔC→ΔC; ΔX queda OPEN para clasificación semántica; ΔE_T permanece separado. No se declara cierre MED-02.
