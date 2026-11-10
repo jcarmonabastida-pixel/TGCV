@@ -1030,3 +1030,11 @@ Se incorpora maestro §261, especializando C-MED §§249/257 y auditoría IV §�
 q debe fijar población/unidad, H, contexto/τ, condiciones upstream comunes, alternativas/recursos/permisos, interferencia/carryover, Outcome/Value por dimensión, horizonte y medición. L post-B no se trata como basal: debe justificarse L invariante, definir una distribución de referencia común q(L|H) factible, o reformular como régimen longitudinal conjunto. Esta elección sigue OPEN.
 
 **Estado:** MED-04 DOCUMENTED / PARTIALLY SPECIFIED. Permanecen OPEN las políticas concretas, conjunto admisible M, población/H, contenido de q, tratamiento de L, V_j/horizonte, soporte, versiones e interferencia. No se equipara D2 con g ni se identifica θ_A(q). Sin Design Freeze, implementación o ejecución; scientific_execution=false; execution_authorized=false.
+
+## 30. MED-05 — contrato de identificación del efecto interventional conjunto
+
+Se incorpora maestro §262, especializando la propuesta ya existente en §249 y ledger §17; no se crea estimando nuevo. Se conserva el IIE_M,j candidato con referencia b1 y mediador conjunto M=ΔT_acc*. Se fijan nueve gates de identificación: consistencia/versiones; historia basal; intercambiabilidad de B; intercambiabilidad secuencial M–V; soporte/positividad condicional; factibilidad de la intervención M; medición/observación; interferencia/dinámica; y especificación del método.
+
+Se precisa que L inducida por B no puede tratarse como basal ni omitirse; la distribución de L sigue el régimen de referencia b1 y G_M^b0 debe tener soporte en las historias relevantes bajo b1. Se identifican g-computation longitudinal, ponderación/densidades y TMLE longitudinal como familias candidatas, sin seleccionar una antes de conocer población, N, estructura de M, soporte y DGP. Downstream se integra para el contraste total; no se ajusta mecánicamente. Se fijan IDENTIFIED/PARTIALLY_IDENTIFIED/NOT_IDENTIFIED/INDETERMINATE y la regla de no transferencia a θ_A(q), ITT, LATE o dimensiones distintas.
+
+**Estado:** MED-05 DOCUMENTED / CANDIDATE; gates y método no validados. MED-03/04/06, §224, inputs materiales AB/MAP y AN-04 permanecen OPEN. Sin Design Freeze, implementación ni ejecución; scientific_execution=false; execution_authorized=false.
