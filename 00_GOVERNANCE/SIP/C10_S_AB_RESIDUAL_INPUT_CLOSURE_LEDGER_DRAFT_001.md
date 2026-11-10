@@ -1022,3 +1022,11 @@ El Analyzer debe rechazar target mismatch, no acceder a truth/potenciales, compr
 
 **Cerrado documentalmente:** matriz lógica de adjudicación, límites de transferencia y regla de abstención MAP-07.  
 **OPEN material/identificativo:** gates MAP-01…06, MED-02…06, C-Value, AN-04 y evidencia por resultado/dimensión. MAP-07 no identifica empíricamente ningún estimando. Sin Design Freeze, implementación ni ejecución; scientific_execution=false; execution_authorized=false.
+
+## 29. MED-04 — contrato candidato g0/g1 y régimen común q
+
+Se incorpora maestro §261, especializando C-MED §§249/257 y auditoría IV §§14.1–14.5. g0/g1 son políticas estocásticas factibles sobre el mediador conjunto M=ΔT_acc* completo, no asignaciones D2, instalaciones ni intervenciones sobre A_f*/D_f* aislados. Se preserva la dependencia de ΔU*/ΔR*/ΔC*/ΔX* y la estructura constitutiva; no se factoriza sin justificación. θ_A,j(q)=E_q[V_j^{g1}−V_j^{g0}] queda como notación candidata, no fórmula aprobada.
+
+q debe fijar población/unidad, H, contexto/τ, condiciones upstream comunes, alternativas/recursos/permisos, interferencia/carryover, Outcome/Value por dimensión, horizonte y medición. L post-B no se trata como basal: debe justificarse L invariante, definir una distribución de referencia común q(L|H) factible, o reformular como régimen longitudinal conjunto. Esta elección sigue OPEN.
+
+**Estado:** MED-04 DOCUMENTED / PARTIALLY SPECIFIED. Permanecen OPEN las políticas concretas, conjunto admisible M, población/H, contenido de q, tratamiento de L, V_j/horizonte, soporte, versiones e interferencia. No se equipara D2 con g ni se identifica θ_A(q). Sin Design Freeze, implementación o ejecución; scientific_execution=false; execution_authorized=false.
