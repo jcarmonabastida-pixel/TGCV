@@ -290,3 +290,20 @@ Las reconciliaciones REF/AST y schema/canonicalización son tareas técnicas con
 **AB solo pasará a DONE** cuando la instancia/DGP sea autocontenida y versionada, todas las cards y mappings tengan criterios de aceptación, los inputs de población/horizonte/unidad/parámetros estén aceptados o explícitamente limitados, los escenarios y truth tables estén completos, y no quede contradicción temporal/semántica conocida. La ausencia de evidencia real puede permanecer como límite declarado de un experimento sintético, pero nunca se reportará como invariancia observada.
 
 **Estado de esta propuesta:** NOT APPROVED / FOR USER ACCEPTANCE. AB permanece IN_PROGRESS; no hay Design Freeze, implementación, fixtures, validación ejecutada, simulación ni ejecución científica. scientific_execution=false; execution_authorized=false.
+
+## 12. Registro de aceptación expresa del usuario — propuesta integrada AB (2026-11-10)
+
+El usuario acepta expresamente la propuesta integrada de §11 como base de trabajo para continuar la concreción de AB, con la reserva explícita de mantener abiertos los valores numéricos y las decisiones de horizonte temporal que aún no estén justificadas.
+
+**Decisiones aceptadas como reglas de diseño del DGP:**
+- **AB-03-SYN — ACCEPTED:** completar cuatro identidades transformacionales sintéticas versionadas F1/F2/A1/A2, sin seleccionar producto, formato ni mecanismo real y sin declarar implementación.
+- **AB-05-H — ACCEPTED:** separar H_path (profundidad de ruta) de H_time (horizonte temporal). H_time, su ancla, valor y unidad quedan OPEN hasta completar Outcome/Value y justificar la ventana.
+- **AB-08-POP — ACCEPTED WITH BOUNDARY:** elegibilidad definida exclusivamente desde C0 pre-Z; mantener P*_τ2 y P*_F separados; q_X* debe ser explícito y compatible con soporte/positividad. No se aceptan todavía población numérica, pesos, estratos ni distribución objetivo concretos.
+- **AB-09-INT — ACCEPTED WITH BOUNDARY:** ausencia de interferencia solo como verdad estipulada del escenario sintético R0; incorporar escenarios adversariales con interferencia/recursos compartidos. No es supuesto general ni evidencia empírica.
+- **AB-06/07-PARAM — ACCEPTED AS METHOD, NOT VALUES:** se autoriza proponer parámetros sintéticos D2 y distribución conjunta C_dep mediante justificación y análisis de sensibilidad. No se aprueban valores numéricos ni se reutilizan s=.80 o .20/.80 como confirmatorios.
+
+**Reconciliaciones técnicas que siguen siendo tareas, no decisiones científicas:** resolver REF/AST y schema/canonicalización contra la gramática y contratos vigentes; una única representación física por binding. No se extiende JCS UDG-01 al payload de configuración.
+
+Esta aceptación no aprueba el DAG como identificación causal empírica, no satisface MD-C1/MD-C4, no demuestra cobertura, exclusión ni no-afectación real, no cierra AB y no constituye Design Freeze, autorización de implementación o autorización de ejecución.
+
+**Estado actualizado:** AB-03-SYN, AB-05-H (regla de separación), AB-08-POP (regla de elegibilidad/separación), AB-09-INT (regla de escenarios) y AB-06/07-PARAM (método de parametrización) = ACCEPTED DESIGN RULES WITH OPEN MATERIAL INPUTS. AB permanece IN_PROGRESS. H_time, población/q_X* numéricos, soporte, unidad/interferencia real, parámetros, verdad/observación y evidencia material permanecen OPEN. scientific_execution=false; execution_authorized=false.
