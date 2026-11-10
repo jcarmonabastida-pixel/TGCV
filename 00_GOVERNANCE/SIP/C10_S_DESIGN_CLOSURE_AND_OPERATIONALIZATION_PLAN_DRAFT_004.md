@@ -2215,3 +2215,12 @@ Se completa la especificación funcional abstracta de F1/F2/A1/A2 con TID/SID si
 El crosswalk semántico define field_id por identidad, composición, dependencia, condiciones, autorización, recursos, bloqueo, contexto X*, estados, mapping, snapshots, evidencia, cobertura y adjudicación; clasifica cada campo en U*/R*/C*/X*/E_T y lo enlaza con predicados y etapas. No es schema físico. Se mantiene la separación truth/observed y la regla 1/0/? de la matriz temporal.
 
 AB-03 y AB-04 pasan a DESIGN SPECIFIED AT ABSTRACT/SEMANTIC LEVEL, no DONE. Permanecen abiertos mapping concreto, requiredness FP, tolerancias, C0, recursos, C_dep, H_time, universo alternativo, cobertura material, MD-C1/MD-C4 y validación del oráculo. No hay implementación ni ejecución.
+
+
+## 16.120 — AB-01/02: crosswalk semántico CMP/PAR/RUL/MET (2026-11-10)
+
+Se reutilizan DEC-C10-054/068/069/071/079/080/082/083. El mapping semántico de la instancia queda reconciliado: CMP→NODE anchor por snapshot; PAR→propiedad tipada del CMP owner + manifiesto/COVERAGE_SCOPE; RUL→PREDICATE con AST y bindings tipados a ENABLED/PROFILE; REF→EDGE solo si existe relación inventariada; MET→metadatos/evidencia existentes. No se crean tablas/columnas ni NODE por PAR.
+
+Los dos PAR siguen DEC-C10-083 en siete etapas; la RUL conserva expresión, owner, scope, operadores, operandos, bindings y REQUIRE. Se distinguen mappings semánticos de etapa y composición para rutas F y A; la igualdad semántica no acredita independencia técnica de A respecto de B.
+
+AB-01 semántico DESIGN RESOLVED; encoding/schema/escaping/canonicalización OPEN. AB-02 SEMANTIC CROSSWALK RECONCILED; mapping_id/version, roster REF, snapshots, cobertura y evidencia OPEN. No hay IAM sellado ni autorización de implementación/ejecución.
