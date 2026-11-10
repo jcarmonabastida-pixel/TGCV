@@ -2641,3 +2641,23 @@ Se reconocen como identidades contractuales de referencia las aceptadas por DEC-
 | DAG-09 | Truth/observed E_T separados; UNKNOWN/? no equivale a 0 | DEFINED |
 
 **Dictamen:** DAG documental incorporado como candidato en maestro §233. No cierra C-MED, MED-02 ni gates de identificación; no autoriza implementación ni ejecución.
+
+## 130. AB — ledger integrado de inputs residuales (2026-11-10)
+
+Fuente operativa: `C10_S_AB_RESIDUAL_INPUT_CLOSURE_LEDGER_DRAFT_001.md`.
+
+| Input | Gate | Estado | Regla de cierre |
+|---|---|---|---|
+| AB-M01 REF/AST | AB-01 | OPEN | Reconciliar gramática AST, catálogo REF y schema; cada binding exactamente una vez |
+| AB-M02 schema/canonicalización | AB-02 | OPEN | Separar envelope UDG-01 de payload C_src/C_dst; mapping físico explícito |
+| AB-M03 TID/SID/RID/cards | AB-03 | OPEN | Cuatro cards versionadas y contratos de transición compatibles |
+| AB-M04 predicados/evidencia | AB-04 | OPEN | Crosswalk por campo, unidad, tiempo, truth, observación y cobertura |
+| AB-M05 H* | AB-05 | OPEN | Ancla, valor y unidad comunes preespecificados |
+| AB-M06 MD-C1/MD-C4 | AB-05/06 | OPEN | Manifiesto y evidencia pre/post/rollback y no-afectación A1/A2 |
+| AB-M07 D2 joint DGP | AB-06/07 | OPEN | Event model y distribución conjunta condicional justificada |
+| AB-M08 población/q_X* | AB-08 | OPEN | Algoritmo pre-Z, estratos, pesos, positividad y soporte |
+| AB-M09 unidad/interferencia | AB-08 | OPEN | Asignación/análisis/exposición y cluster coherentes con topología |
+| AB-M10 oráculo | AB-05/09 | OPEN | Independencia, versión, cegamiento y adjudicación validados |
+| AB-M11 R0–R3 | AB-09 | OPEN | Universo, truth tables, observación y missingness explícitos |
+
+**Dictamen:** diseño documental resuelto en parte; inputs materiales y evidencia OPEN. No AB DONE, Design Freeze ni readiness de implementación. `scientific_execution=false`; `execution_authorized=false`.
