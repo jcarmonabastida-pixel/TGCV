@@ -1,6 +1,6 @@
 # AFLUYA — Plan de implantación de la infraestructura abierta de crecimiento
 
-## Versión 0.5 — AWGI
+## Versión 0.6 — AWGI
 
 **Identificador:** AFLUYA-IMPL-001  
 **Fecha:** 2026-11-10  
@@ -386,7 +386,7 @@ La siguiente operación es cerrar la Fase 0 mediante la validación de esta traz
 
 ## 11. Control de cambios
 
-### v0.5 — 2026-11-10
+### v0.6 — 2026-11-10
 - Auditoría cruzada con la arquitectura integrada v1.0: se eliminan referencias heredadas a la sección §39 y a la versión AWGI v1.1.
 - Se sustituye la remisión a secciones históricas por referencias a la estructura integrada vigente.
 - Se añade una matriz de trazabilidad entre cada bloque de arquitectura, fases, entregables y puertas de aprobación.
