@@ -2586,3 +2586,16 @@ PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-
 | Parámetros de aceptación | Tolerancias, multiplicidad, N, réplicas y precisión MC | OPEN |
 
 **Dictamen:** la estructura metodológica está reconciliada documentalmente; no hay identificación ni ejecución demostradas. C-MED y C-ANALYZER permanecen OPEN. No Design Freeze ni implementación.
+
+
+## 126. Precedencia y correspondencia del objeto ΔT_acc
+
+| Campo DGP vigente | Referencia de verdad | Crosswalk C10-D1 §27.1 | Estado |
+|---|---|---|---|
+| ΔU* | Cambios en unidades/transformaciones y estado estructural | A⁺/A⁻/A^reconf mediante matching de identidad | CANDIDATE; reglas completas OPEN |
+| ΔR* | Relaciones/dependencias | ΔR | CANDIDATE; granularidad OPEN |
+| ΔC* | Condiciones/configuraciones estructurales | ΔC | CANDIDATE; clasificación constitutiva/temporal OPEN |
+| ΔX* | Estado/contexto estructural que altera accesibilidad | Sin equivalente automático; clasificar campo a campo como ΔC, historia q o fuera del mediador | OPEN |
+| ΔValidity_e | Validez epistémica de evidencia | ΔE_T, no ΔT_acc | DEFINED BY DGP §30 |
+
+**Precedencia:** DGP §30 gobierna sobre la expresión histórica de §3.3. MED-02 permanece OPEN; no se acepta equivalencia automática.
