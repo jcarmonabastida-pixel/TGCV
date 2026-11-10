@@ -10922,3 +10922,117 @@ Son contratos de diseño reutilizando PM-01…18, DEC-C10-054/068 y los gates de
 - criterios cuantitativos de recuperación, falsa identificación, falsa atribución, bounds y abstención.
 
 **Estado AB-09:** LOGICALLY SPECIFIED / DOCUMENTARY CROSSWALK COMPLETE / MATERIAL DGP AND OBSERVATION OPEN. No se declara AB DONE, Design Freeze, implementabilidad ni identificación causal. No se asignan probabilidades, valores de Outcome/Value, semillas, unidades, fixtures o resultados. scientific_execution=false; execution_authorized=false.
+
+
+## 256. C-ANALYZER — contrato de adjudicación de identificación, atribución y abstención (2026-11-10)
+
+**Estado:** CRITERIOS LÓGICOS Y DENOMINADORES DOCUMENTADOS; TOLERANCIAS, UMBRALES Y POTENCIA OPEN. Propuesta derivada de §§225.7/225.9 y 229.5–229.7; no crea un test contract paralelo ni modifica P177/P178/P179/P182/P183.
+
+### 256.1. Unidad de adjudicación y principio
+
+La unidad mínima de puntuación es la combinación exacta:
+
+**estimando × dimensión Value × DGP × estrato/condición de soporte × réplica Monte Carlo**.
+
+La clase de identificación truth es una propiedad del DGP, estimando, supuestos y soporte declarados; no se deduce de que el estimador converja, produzca un número o se aproxime a un parámetro latente. La truth se determina antes de ejecutar el Analyzer y queda reservada al Generator/Evaluator.
+
+Antes de puntuar se comprueba identidad del target: estimando, población, unidad/cluster, régimen/política, mediador, outcome/dimensión Value, horizonte, versión y escala. Una salida sobre otro target no cuenta como recuperación del estimando solicitado, aunque su número coincida.
+
+### 256.2. Matriz de clases truth y salida admisible
+
+| Clase adjudicada de truth | Salida Analyzer admisible | Evaluación de recuperación | Error crítico |
+|---|---|---|---|
+| IDENTIFIED puntual, soporte y observación suficientes | Estimación puntual con incertidumbre y supuestos/gates; puede abstenerse solo por motivo justificado | Sesgo/AE/RMSE, cobertura, calibración y criterio de recuperación ex ante | FALSE_ABSTENTION si se abstiene sin gate real; FALSE_IDENTIFICATION no aplica si la identificación es válida |
+| PARTIALLY_IDENTIFIED | Conjunto/bounds y supuestos; no presentar punto como causalmente identificado | Cobertura del conjunto, anchura y validez de bounds según target preespecificado | FALSE_IDENTIFICATION si declara identificación puntual; FALSE_BOUNDS si el conjunto no cubre la truth según regla adjudicada |
+| NOT_IDENTIFIED | Declarar no identificación/abstenerse, explicando supuesto, vía o soporte que falla; puede informar descriptivos claramente etiquetados | Correct recognition / abstención correcta | FALSE_IDENTIFICATION si afirma causalidad puntual; FALSE_ATTRIBUTION si adjudica a ΔT_acc un efecto que solo es de política/paquete |
+| INDETERMINATE por observación, cobertura, medición o adjudicación | INDETERMINATE/abstención motivada; preservar incertidumbre | Correct indeterminate classification; calidad de reason codes | Unsupported identification si afirma identificación con gate observacional crítico UNKNOWN |
+| NOT_APPLICABLE ex ante | NOT_APPLICABLE con regla y alcance | Exactitud de aplicabilidad | Estimación de un contraste no definido o NA usado para ocultar falta de observación |
+
+La tabla especializa los estados de §225.9 y las clases truth de §229.5; no introduce un enum físico ni reemplaza los estados de evidencia U_G.
+
+### 256.3. Definiciones operativas de errores y recuperaciones
+
+1. **Recuperación puntual:** solo cuenta si truth es IDENTIFIED, el Analyzer declara el mismo estimando y target, el soporte/medición satisfacen los gates, y estimación e incertidumbre cumplen los criterios preespecificados. Cercanía numérica sin validez de identificación no cuenta.
+2. **Falsa identificación (FI):** el Analyzer declara identificación causal puntual para un estimando cuya truth es PARTIALLY_IDENTIFIED o NOT_IDENTIFIED. Se informa separada de fallo numérico.
+3. **Identificación no sustentada bajo indeterminación (FI-IND):** declara punto causal cuando un gate crítico de medición/cobertura/soporte permanece INDETERMINATE. Se informa aparte de FI para no alterar el denominador fijado en §229.5.
+4. **Falsa atribución focal (FA):** la truth contiene efecto de política/paquete o una vía no representada por el mediador, pero el Analyzer atribuye el efecto a ΔT_acc* o A_f* como si el contraste fuera focal/exclusivo. Puede coexistir con FI; se registran ambos flags y su solapamiento, sin sumarlos como si fueran errores disjuntos.
+5. **Sustitución de estimando (TARGET_MISMATCH):** ITT_Z, ψ_policy, ψ_B, LATE_f, θ_Af y θ_A se intercambian, o cambia población, régimen, dimensión, horizonte, escala o versión sin mapping aceptado. No es recuperación del target solicitado. Si además hay afirmación focal falsa, también se marca FA.
+6. **Bounds incorrectos:** el Analyzer informa identificación parcial, pero el conjunto no satisface la regla de cobertura/contención preespecificada o su anchura incumple el criterio de utilidad. Se separa fallo de cobertura de bounds excesivamente anchos.
+7. **Abstención correcta:** no produce estimación causal puntual cuando truth es parcial/no identificada, o cuando la observación impide adjudicar, y declara correctamente la razón.
+8. **Falsa abstención (FAb):** se abstiene de un estimando puntualmente identificable con soporte y observación suficientes, sin un gate válido que justifique la abstención.
+9. **Fallo técnico/numérico:** no convergencia, error, salida ausente, réplica inválida o inestabilidad. Se conserva como categoría propia; no se elimina del total asignado ni se reclasifica automáticamente como abstención correcta.
+
+### 256.4. Denominadores y tasas — sin valores numéricos
+
+Se reutilizan los denominadores conceptuales de §229.5 y se separan para evitar inflar o diluir errores:
+
+- **N_PI:** réplicas adjudicables con truth puntual identificable y soporte/observación suficientes. Base de recuperación puntual y falsa abstención.
+- **N_PART:** réplicas adjudicables con truth parcialmente identificable. Base de cobertura/anchura de bounds y parte del denominador FI.
+- **N_NI:** réplicas adjudicables con truth no identificable. Base de abstención correcta y parte del denominador FI.
+- **N_IND:** réplicas cuya adjudicación es indeterminada por observación/medición/cobertura. Se reportan por separado; base de FI-IND, no se mezclan silenciosamente con N_NI.
+- **N_NA:** réplicas no aplicables según regla ex ante. Se reportan, no se incorporan a denominadores de recuperación.
+- **N_PACKAGE:** réplicas adjudicables cuya truth contiene una vía de paquete/no focal relevante para el mediador declarado. Base de FA.
+- **N_ASSIGNED:** todas las réplicas asignadas al contrato, incluidas fallidas, inválidas, no convergentes y sin salida. Permite mostrar pérdidas de ejecución sin sesgar denominadores adjudicables.
+
+Tasas mínimas:
+- FI = falsas identificaciones / (N_PART + N_NI).
+- FI-IND = identificaciones puntuales no sustentadas / N_IND.
+- FA = falsas atribuciones focales / N_PACKAGE.
+- FAb = abstenciones improcedentes / N_PI.
+- Abstención correcta = abstenciones justificadas / (N_PART + N_NI), con N_IND reportado separadamente.
+- Cobertura de bounds/intervalos y cobertura Monte Carlo se calculan sobre sus respectivas clases truth y réplicas válidas, mostrando además N_ASSIGNED y fallos técnicos.
+
+No se permite que una réplica con varios errores incremente artificialmente el denominador; se conservan flags por tipo y matriz de solapamiento. Los conteos y denominadores se presentan por estimando, dimensión Value, DGP, soporte y réplica; un promedio global solo es descriptivo y nunca sustituye los estratos.
+
+### 256.5. Registro ex ante de criterios y tolerancias
+
+Antes de observar salidas del Analyzer, cada combinación confirmatoria deberá tener una ficha de criterios que declare:
+
+- target exacto y clase truth prevista;
+- métrica y fórmula, unidad/escala y dirección de mejora;
+- denominador, unidad de réplica y tratamiento de fallos/no salida;
+- umbral/tolerancia de aceptación y justificación por coste de error y propósito científico;
+- cobertura/anchura requerida para intervalos o bounds;
+- nivel de incertidumbre y método de intervalo;
+- multiplicidad y familia de hipótesis/estimandos/dimensiones;
+- error Monte Carlo tolerable, réplicas requeridas y criterio de estabilidad;
+- regla para resultado borderline/INDETERMINATE;
+- versión, fecha de congelación y provenance de la decisión.
+
+P178-SIM-09 y SIM-10 son las referencias para métricas, parámetros y tolerancias ex ante; P178-SIM-01…05 rigen potencia/N/clúster/R/error Monte Carlo; P177-10/12, P182-11 y P183-11/12 mantienen sus alcances específicos. No se rellenan umbrales, N o réplicas en esta sección.
+
+### 256.6. Adjudicación, cegamiento y orden
+
+1. Generator crea y sella truth por estimando×dimensión×DGP×soporte y conserva potenciales/semillas.
+2. Analyzer recibe observables y contratos permitidos; declara target, estado, resultado/bounds, incertidumbre, soporte, supuestos, warnings y reason for abstention.
+3. Se congela de forma inmutable la salida Analyzer, incluidos errores y ausencia de salida.
+4. Evaluator recibe truth y salida sellada; aplica las reglas y denominadores de §§256.2–256.5.
+5. Evaluador registra discrepancias y adjudica sin editar la salida Analyzer. Si la propia truth o el DGP no son adjudicables, resultado INDETERMINATE.
+6. La etiqueta R0–R3, parámetros privados y truth no aparecen en archivos, seeds, orden, IDs o metadatos accesibles al Analyzer. Los tests de leakage de §255.6 deben preceder a la evaluación.
+
+### 256.7. Pruebas adversariales de adjudicación
+
+| Caso | Salida/condición | Dictamen |
+|---|---|---|
+| ANJ-01 | Número próximo a truth pero estimando no identificado | FALSE_IDENTIFICATION; no recuperación |
+| ANJ-02 | ITT_Z válido renombrado como θ_Af | TARGET_MISMATCH y, si afirma mediación focal, FALSE_ATTRIBUTION |
+| ANJ-03 | DGP parcial; Analyzer reporta bounds que no cubren truth | FALSE_BOUNDS |
+| ANJ-04 | DGP no identificado; Analyzer informa NOT_IDENTIFIED con razón correcta | Correct recognition / abstención correcta |
+| ANJ-05 | DGP puntual y con soporte; Analyzer se abstiene sin gate | FALSE_ABSTENTION |
+| ANJ-06 | DGP de efecto de paquete; Analyzer lo atribuye a ΔT_acc | FALSE_ATTRIBUTION, incluso si ITT de paquete está bien estimado |
+| ANJ-07 | Truth INDETERMINATE por cobertura; Analyzer declara punto causal | FI-IND |
+| ANJ-08 | Estimación puntual correcta, intervalo mal calibrado | No RECOVERED bajo el criterio de incertidumbre |
+| ANJ-09 | No convergencia excluida del denominador | Auditoría FAIL; conservar en N_ASSIGNED |
+| ANJ-10 | Analyzer recibe etiqueta R2 o truth por metadata | Leakage; evaluación inválida |
+| ANJ-11 | Bounds amplios que cubren truth pero incumplen utilidad ex ante | Coverage pass / precision-utility fail; no declarar recuperación completa |
+| ANJ-12 | Múltiples errores en una réplica | Registrar flags/solapamiento; no duplicar denominador |
+
+Son contratos de adjudicación derivados de AN-01…04 y los contratos P177/P178/P182/P183 existentes; no son pruebas ejecutadas ni nuevos test contracts registrados.
+
+### 256.8. Dictamen C-ANALYZER
+
+**Resuelto documentalmente:** matriz truth→salida admisible; FI, FI-IND, FA, TARGET_MISMATCH, FALSE_BOUNDS, abstención correcta/falsa y fallos técnicos; denominadores separados y reglas de conteo; ficha de criterios/tolerancias ex ante; secuencia Generator→Analyzer→freeze→Evaluator; y 12 casos adversariales.
+
+**OPEN:** tolerancias y umbrales numéricos; costes de error; criterios de cobertura/anchura de bounds; multiplicidad; precisión y número de réplicas Monte Carlo; N/potencia por unidad/cluster; reglas de confianza/calibración si el Analyzer emite probabilidades; y validación técnica del firewall.
+
+**Estado:** AN-03 DOCUMENTED / DENOMINATOR LOGIC SPECIFIED; AN-04 PARTIALLY SPECIFIED / NUMERIC THRESHOLDS OPEN; C-ANALYZER OPEN / NOT IMPLEMENTABLE. No se aprueban umbrales ni se declara recuperación. Sin código, fixtures, simulación o ejecución. scientific_execution=false; execution_authorized=false.
