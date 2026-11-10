@@ -520,3 +520,50 @@ Cada escenario declarará truth DGP, parámetros modificados, invariantes, mecan
 **OPEN:** ley upstream y valores θ; definición operativa de H/estratos; ceros estructurales; soporte; dependencia; amplitudes de sensibilidad; calibración; medición/adjudicación; interferencia y aislamiento material de B.
 
 No se declara parametrización numérica completa ni cierre AB-06/07. No se crean datos, fixtures ni simulaciones. scientific_execution=false; execution_authorized=false.
+
+
+## 11. AB-07 — justificación semántica de dependencias entre los cuatro componentes de C_dep* (2026-11-10)
+
+**Objeto:** reducir el espacio de parametrización solo donde la semántica y la frontera de medición impliquen restricciones lógicas. Esta sección no aprueba ceros estructurales empíricos ni una factorización probabilística.
+
+### 11.1 Regla de análisis
+
+Una dependencia solo se clasifica como **necesaria** si se deriva de las definiciones aceptadas y de compartir unidad, artefacto, entorno, snapshot y ventana. Una relación que dependa del protocolo, del entorno o de la implementación es **condicional al mecanismo**. Si ambas combinaciones son coherentes con las definiciones, la dependencia queda **libre en el DGP**. La asociación observada no basta para convertir una relación en necesidad lógica.
+
+Antes de imponer cualquier restricción se debe comprobar que los predicados no duplican la misma propiedad ni usan ventanas/unidades distintas. Un cambio de unidad, artefacto, entorno o ventana invalida la implicación lógica salvo que se vuelva a justificar.
+
+### 11.2 Dictamen por relación
+
+| Relación | Dictamen | Justificación y límite |
+|---|---|---|
+| INSTALLATION → posibilidad de OPERABILITY | **Necesaria solo bajo definición acotada** | Si O significa inicio y operación técnica del mismo artefacto ya instalado, en el mismo entorno y ventana, O=1 implica I=1. No es una verdad universal si O admite ejecución efímera, remota, desde otro artefacto o fuera de la unidad de instalación. La definición operacional de O debe cerrar esa ambigüedad antes de imponer el cero estructural O=1,I=0. |
+| COMPATIBILITY → OPERABILITY | **Condicional; no imponer implicación por defecto** | Si C es compatibilidad efectiva exhaustiva con el entorno/modos incluidos en la prueba O, O=1 puede implicar C=1. Si C es un dictamen ex ante, una matriz de soporte más amplia o una verificación independiente, puede observarse operación en un caso pese a C=0. Se requiere fijar alcance, modos y cobertura de ambas pruebas. |
+| INTEGRITY → OPERABILITY | **No necesaria** | Un artefacto alterado o no autenticado puede arrancar y operar técnicamente; G=0 no impide por lógica O=1. Integridad es una condición de confianza/identidad, no necesariamente una condición física de arranque. Solo un contrato técnico concreto que bloquee la ejecución ante fallo de integridad podría imponer una dependencia condicional. |
+| INTEGRITY → INSTALLATION | **No necesaria** | Un artefacto puede instalarse aunque su hash/firma no se verifique o falle la verificación posterior. G puede comprobarse antes, durante o después de S_install. El orden y el objeto de verificación deben fijarse; no convertir fallo de verificación en ausencia de instalación. |
+| COMPATIBILITY → INSTALLATION | **No necesaria** | La instalación puede completarse en un entorno incompatible o sin evaluación previa de compatibilidad. Una política de despliegue que bloquee la instalación ante incompatibilidad generaría una restricción del mecanismo, no una necesidad semántica general. |
+| INTEGRITY ↔ COMPATIBILITY | **Libre en el DGP** | Son propiedades distintas: identidad/conservación del artefacto y adecuación técnica al entorno. Puede existir cualquier combinación salvo restricción específica del artefacto/protocolo demostrada y versionada. |
+| Dependencias entre I,G,C,O por causa común | **Condicionales** | Artefacto, runtime, entorno, agente, proveedor, política de verificación, fallos compartidos y condiciones de red pueden inducir asociación. Deben modelarse mediante historia/estratos o variables causales explícitas; no como independencia ni como restricción lógica automática. |
+
+### 11.3 Restricciones admisibles en el roster de 16 celdas
+
+1. **No se fija ahora ningún cero estructural** en θ_{igco|z,h}. La única candidata a restricción lógica es O=1 ⇒ I=1, y solo después de adoptar explícitamente la definición acotada de OPERABILITY de §11.2 y confirmar identidad de unidad/artefacto/entorno/ventana.
+2. C=1 no se declara condición necesaria de O hasta que el contrato de COMPATIBILITY demuestre que cubre exactamente las condiciones y modos de OPERABILITY. G=1 no es condición necesaria de I ni de O por definición general.
+3. La conjunción C_dep*=I∧G∧C∧O permanece inalterada. Una restricción en celdas del roster no altera el significado de cada componente ni autoriza eliminar componentes.
+4. La factorización de θ en probabilidades condicionales podrá usarse como parametrización computacional de la distribución conjunta mediante la regla de la cadena, pero no como independencia. Cada condicional debe poder representar dependencias residuales y ceros justificados.
+5. Una celda excluida debe registrar: regla semántica exacta, scope de unidad/artefacto/entorno/tiempo, contrato que la impone, versión, y evidencia de que no es solo ausencia de observación. Si la restricción es una estipulación sintética, identificarla como tal y someterla a escenario adversarial que la retire.
+
+### 11.4 Implicaciones para el mecanismo D2 y la sensibilidad
+
+- La secuencia upstream P/R/Q/W/S/N/K no determina por sí sola G,C,O: recepción e intento no garantizan integridad, compatibilidad ni operabilidad. S_install tampoco sustituye al predicado I adjudicado.
+- La misma causa técnica puede afectar varios componentes; la distribución conjunta debe conservar esa dependencia. No se deben simular cuatro Bernoulli independientes como baseline por conveniencia.
+- Mantener escenarios que separen fallos de provisión/instalación, corrupción o identidad, incompatibilidad ambiental y fallo de arranque/operación. Añadir contraste de sensibilidad para la posible implicación O⇒I: versión restringida solo si se cierra la definición, y versión no restringida como adversarial hasta entonces.
+- No asignar magnitudes ni probabilidades a estos escenarios en esta fase. Las familias S0–S9 se conservan; la extensión solo precisa qué mecanismo altera cada escenario y qué restricción lógica se pone a prueba.
+- Si se decide modelar C como condición necesaria de O o imponer O⇒I, la decisión debe preceder a la generación de fixtures y quedar registrada en el contrato semántico, no deducirse de resultados simulados.
+
+### 11.5 Inputs que permanecen OPEN y criterio de cierre
+
+**OPEN:** definición operacional de O (instalado/local/remoto/efímero; prueba y ventana); alcance de C (versiones, interfaces, modos y cobertura); objeto/momento de verificación de G; unidad común y snapshot; mecanismos de bloqueo por política; dependencias por historia/estrato; decisión explícita sobre O⇒I; parámetros conjuntos y sensibilidad.
+
+**Cierre documental mínimo:** contratos de I/G/C/O con unidad, artefacto, entorno, snapshot, ventana, condición de verdad y evidencia; tabla de implicaciones revisada contra esos contratos; y roster θ actualizado solo con ceros demostrados o estipulaciones sintéticas identificadas. El cierre material exige además artefactos, protocolos, evidencias y cobertura; no se obtiene con esta especificación.
+
+**Dictamen:** se descarta la independencia como supuesto por defecto. G y C no generan implicaciones lógicas generales entre sí ni con I/O. O⇒I es una implicación candidata dependiente de una definición operacional aún OPEN; C⇒O/O⇒C y las dependencias con G son condicionadas o libres. AB-07 queda más especificado conceptualmente, pero continúa OPEN en contrato operacional, parámetros, evidencia y sensibilidad. No hay Design Freeze, fixtures, implementación, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
