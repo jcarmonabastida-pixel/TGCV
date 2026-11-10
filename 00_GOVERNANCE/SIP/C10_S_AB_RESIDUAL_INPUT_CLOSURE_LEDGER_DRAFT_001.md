@@ -931,3 +931,14 @@ Se fija el crosswalk de registros, las dimensiones de suficiencia (identidad, pr
 
 **Cerrado:** diseño documental de la interfaz E_T/U_G y controles de adjudicación.  
 **OPEN:** fuentes/instancia/snapshots reales, field_id/event_id, scopes/denominadores, AB-TIME-01, serialización/hash, oráculo independiente/fiabilidad, evaluadores/cegamiento, missingness/error diferencial, R0–R3 y Outcome/Value dimensional. MED-02d no está materialmente cerrado. Sin registros, fixtures, implementación ni ejecución.
+
+
+## 21. AB-TIME-01 — crosswalk temporal de event_key y alias históricos (2026-11-10)
+
+Se añade maestro §253. La reconstrucción distingue: DGP §34.1 histórico (t0 baseline…t8 Value, con selección/ejecución agrupadas); Path Predicate Matrix §2 (t0 baseline, t1 asignación+provisión agrupadas, t2 verificación, t3 snapshot, t4 Reach, t5–t9 downstream); y reloj posterior §§64.3/168/216.7/233 (t−1 baseline, t0 Z, t1 provisión, t2 verificación, t3 snapshot, t4 Reach, t5 K, t6 selección/inicio, t7 ejecución, t8 Outcome, t9 Value, t+1 residuos).
+
+Se corrige la referencia previa de §9.3: el §2 del maestro es arquitectura causal, no el contrato temporal histórico. La fuente antigua comprimida es §34.1. Se propone secuencia semántica BASELINE_PRE_Z → ASSIGNMENT_Z → POLICY_PROVISION → INSTALL_VERIFICATION → ACCESSIBILITY_SNAPSHOT → REACH_DERIVATION → KNOWLEDGE_CONSIDERATION → SELECTION_START → EXECUTION → OUTCOME → VALUE → POST_HORIZON_RESIDUAL. El t1 de Path Matrix no es unívoco porque agrupa asignación y provisión.
+
+Se mantienen ortogonales stage_key, SNAPSHOT.phase/timestamp, route_id, branch_id/step_k y reloj de trayectoria. Los timestamps originales y valid-time no se reescriben; no se infiere simultaneidad ni se fabrican event_id.
+
+**Dictamen:** orden semántico reconciliado; AB-TIME-01 parcialmente resuelto. La adopción formal del reloj numérico posterior y la declaración explícita de §34.1 como legado comprimido siguen OPEN. Sin instancia, event_id, snapshots, evidencia o ejecución.
