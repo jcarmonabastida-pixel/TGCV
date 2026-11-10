@@ -1001,3 +1001,13 @@ Se reutilizan MAP-01/02 de auditoría IV §§14.6–14.7, el roster causal de §
 **MED-03:** cada campo/subcampo existente se clasifica por unidad, evento, snapshot, precedencia y dimensión V_j. “Confusor M–V inducido” exige conjuntamente B→L_k, L_k→M y L_k→V_j. Si solo B→L→M, es antecedente técnico; si B→L→V_j sin pasar íntegramente por M, es vía colateral; si ocurre después de M, es downstream. E_T sigue siendo evidencia, salvo que el proceso de observación altere conducta/información. Las familias de §251 son candidatas de inspección, no evidencia de flechas.
 
 **Estado:** especificación documental integrada; MAP-03, MAP-04 y MED-03 continúan OPEN material/identificación. No hay umbrales, método, población, q, potencia o parámetros aprobados. Sin Design Freeze ni ejecución científica.
+
+## 27. MAP-05/06 — auditoría de rutas y exclusión por Outcome/Value
+
+Se reutilizan auditoría IV §§12.2–12.4 y 14.5–14.7, registro causal §§232/250, crosswalk §§251–254 y escenarios R0–R3/B-M. No se crean rutas ni variables paralelas.
+
+**MAP-05:** cobertura del universo F/A y alternativas, componentes compartidos, modificaciones por B, recursos/runtime, permisos, red, seguridad, rendimiento/costes, datos, conocimiento y residuos/carryover. R1 (alternativa basal estable) no viola por sí sola exclusión; R2 (alternativa modificada por B) introduce ruta no focal. La ausencia requiere universo exhaustivo y cobertura; UNKNOWN no se convierte en 0.
+
+**MAP-06:** dictámenes independientes EXCLUSION_O y EXCLUSION_Vj (SUPPORTED/CONTRADICTED/UNKNOWN). Una ruta directa a Value puede existir con Outcome constante. Se separan exclusión estructural, medición diferencial/oráculo e interferencia/carryover. ITT_Z^D2 puede conservar interpretación de asignación si diseño, consistencia, unidad/interferencia y medición son válidos; LATE_f/Wald no se interpreta causalmente si falla cualquier supuesto IV. Estos gates no identifican θ_A(q) ni mediación por sí solos.
+
+**Estado:** contratos documentales integrados; MAP-05/06 MATERIAL OPEN. No hay dictamen empírico de exclusión. AB-M06/M09/M10 siguen OPEN. Sin Design Freeze ni ejecución científica.
