@@ -92,7 +92,7 @@ El cambio completo del espacio se conserva como:
 
 [
 \Delta T_{acc,i}=T_{acc,i1}\ominus T_{acc,i0}
-=(\Delta U_i,\Delta R_i,\Delta C_i,\Delta Validity_i,\Delta State_i)
+=(\Delta U_i,\Delta R_i,\Delta C_i,\Delta X_i) — conforme a la precedencia de §30; ΔValidity_e se registra en ΔE_T y no forma parte de ΔT_acc.
 \\]
 
 [
@@ -551,7 +551,7 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
 5. ΔValidity_e no es componente de la verdad causal de ΔT_acc*. La validez semántica/operativa estructural pertenece a C*/R*.
 6. No calcular diff sin identidad, frontera, granularidad, catálogo y mapping de versiones compatibles; mapping incierto produce ?.
 7. Truth permanece oculta al analizador; observación T_acc,obs/ΔT_acc,obs conserva 1/0/? y se valida después.
-8. Esta regla propone superseder la formulación de §63.7 que incluía ΔValidity en la tupla causal; no borra el texto histórico.
+8. Esta regla supersede las formulaciones históricas de §3.3 de este contrato y del maestro §63.7 que incluían ΔValidity en la tupla causal; no borra el historial.
 9. No cierra AUD-001/004/005/007, XAUD-003/004/006 ni XSYNC-138-03/06. No autoriza freeze ni ejecución.
 
 
@@ -876,3 +876,8 @@ La notación O*/O_obs y V*/V_obs se introduce aquí como separación explícita 
 - F* técnico, oráculo de Outcome y regla de Value deben ser tres artefactos diferenciados, versionados y cegados al analizador salvo sus especificaciones públicas.
 
 **Dictamen:** crosswalk documental integrado; los escenarios siguen sin parametrizar, serializar ni ejecutar. No cierra exclusión, IV-G6, consistencia, interferencia, Value ni Design Freeze. No autoriza implementación ni ejecución.
+
+
+### 3.3.1. Nota de precedencia (2026-11-10)
+
+La tupla de verdad estructural de esta sección se interpreta conforme a §30: ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*). ΔValidity_e es epistémica y pertenece a ΔE_T. La antigua mención ΔValidity/ΔState no constituye una definición alternativa vigente. El crosswalk de ΔX* con C10-D1 §27.1 permanece pendiente; no asignar equivalencia automática.
