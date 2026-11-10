@@ -872,3 +872,20 @@ AB-09 solo podrá pasar a DESIGN COMPLETE cuando:
 AB-01…AB-09 están reconciliados a nivel de arquitectura documental en distintos grados, pero AB permanece **IN_PROGRESS / MATERIAL INPUTS OPEN / NOT DESIGN FROZEN / NOT IMPLEMENTABLE**. AB-01 semántico está resuelto; AB-02 tiene crosswalk semántico; AB-03/04 están especificados a nivel abstracto/semántico; AB-06/07 tienen estructura causal/simbólica; AB-08 tiene regla poblacional; AB-09 tiene contrato de escenarios y firewall. Ninguno equivale a evidencia material completa.
 
 El paquete C puede avanzar documentalmente sobre §§221–229, consumiendo los elementos transferibles y manteniendo los demás OPEN. No se autoriza Design Freeze, implementación, simulación ni experimento. scientific_execution=false; execution_authorized=false.
+
+
+## 17. C-MED — ficha de estimando interventional y gates de identificación (2026-11-10)
+
+Se registra la especialización candidata del maestro §249, sin cambiar la jerarquía ni declarar MED-03/05 cerrados.
+
+**Separación obligatoria:** (i) ITT de asignación Z a D2; (ii) efecto del régimen material recibido B; (iii) efecto interventional mediado por la distribución conjunta y factible M=ΔT_acc*; (iv) pregunta primaria C10-D1 θ_A(q) sobre políticas factibles bajo régimen común q. No son estimandos intercambiables. La aleatorización Z no identifica por sí sola B, M→Value ni la mediación.
+
+Se define historia basal H, confusores/estados post-B pre-M L y mediador conjunto M. Si L afecta M y Value y está inducido por B, existe confusión mediador–resultado inducida por tratamiento; requiere DAG longitudinal y método g compatible, no ajuste convencional como si L fuera basal.
+
+Estimando candidato con referencia b1:
+IIE_M,j^(b1)(b1,b0;q)=E_q[V_j^(b1,G_M^b1)−V_j^(b1,G_M^b0)],
+donde G_M^b(dm|L,H) es la distribución conjunta factible de M bajo b condicionada por la historia pre-M. La referencia y el orden forman parte del estimando; el mediador no se factoriza. El término complementario solo puede definirse con la misma q, escala, horizonte y régimen; no se llama efecto directo puro porque contiene vías restantes, incluidas L y rutas colaterales.
+
+**No identificación:** historia L incompleta, confusión M–V no medida, falta de soporte secuencial, intervención M no factible, versiones incompatibles, interferencia no modelada o medición inválida obligan a NOT_IDENTIFIED/PARTIALLY_IDENTIFIED/INDETERMINATE según lo que pueda sostenerse. Un ITT identificable no implica mediación identificada; una mediación identificada bajo D2 no identifica automáticamente θ_A(q).
+
+**Estado:** especificación candidata; MED-03 y MED-05 siguen OPEN; ningún supuesto ni estimando está validado empíricamente. Sin Design Freeze ni ejecución científica.
