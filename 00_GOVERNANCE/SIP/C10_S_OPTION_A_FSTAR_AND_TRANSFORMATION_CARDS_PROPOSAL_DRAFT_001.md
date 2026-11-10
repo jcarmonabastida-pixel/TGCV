@@ -228,3 +228,139 @@ Una regla que sobrevive textualmente pero pierde un operando, cambia scope/efect
 El maestro §232 consolida el roster parcial. La identidad contractual de referencia sigue DEC-C10-069; ENABLED/PROFILE son PAR nucleares; RETRY-COUNT es slot candidato, no confirmatorio; REF no se presume vacío hasta IAM/cobertura. Las superficies B-M01…15 se tipan por subcampo y función: runtime/host/estado persistente pueden aportar X*; reglas, ACL, cuotas y bloqueos son C*; topología/interfaz es R*; transformaciones A/F son U*; logs, hashes, cobertura y oráculo son E_T.
 
 No se fijan valores ni variables reales de contexto. El roster es documental parcial; el inventario por unidad/versión y el matching de snapshots permanecen OPEN. No se aprueban fixtures ni ejecución.
+
+## 12. Paquete integrado AB-03/04 — cuatro cards sintéticas y crosswalk de campos (2026-11-10)
+
+**Estado:** instancia de diseño sintética autorizada por la aceptación AB-03-SYN; esta sección define semántica funcional abstracta del DGP, no mecanismo técnico real, producto, formato, implementación ni evidencia observada. No modifica las decisiones canónicas de F*, IAM, identidad de servicio ni C10-D1.
+
+### 12.1. Convención de identidad sintética
+
+Se instancian cuatro TID propios del microdominio sintético, usando el esquema de identidad TID/SID ya propuesto. Las identidades son semánticas del DGP; no afirman que exista una realización técnica:
+
+| Alias | TID sintética | SID sintética | Revisión de card | RID/EID |
+|---|---|---|---|---|
+| F1 / τ2 | `tr:tgcv-c10s-syn:focal-convert` | `sp:tgcv-c10s-syn:focal-convert:1.0.0` | 1 | No asignados: no hay implementación ni ejecución |
+| F2 | `tr:tgcv-c10s-syn:focal-apply-verify` | `sp:tgcv-c10s-syn:focal-apply-verify:1.0.0` | 1 | No asignados |
+| A1 | `tr:tgcv-c10s-syn:baseline-export` | `sp:tgcv-c10s-syn:baseline-export:1.0.0` | 1 | No asignados |
+| A2 | `tr:tgcv-c10s-syn:baseline-import-apply-verify` | `sp:tgcv-c10s-syn:baseline-import-apply-verify:1.0.0` | 1 | No asignados |
+
+Los TID identifican operaciones funcionales distintas. SID versiona el contrato abstracto. RID solo podrá asignarse a una realización concreta si en una fase posterior se elige y documenta; EID solo a un intento/ejecución identificable. No codificar brazo, tiempo, unidad, resultado, Outcome o Value en los IDs.
+
+La decisión histórica de que F2/A1/A2 carecían de semántica queda preservada como diagnóstico del estado anterior. La aceptación expresa de AB-03-SYN habilita ahora esta **instanciación sintética abstracta**; no autoriza rellenar mecanismos físicos ni trasladar estas identidades al mundo real.
+
+### 12.2. Contrato común de las cuatro cards
+
+- **Objeto común:** instancia lógica de configuración `C10S-SVC-REQUEST-PROCESSOR`, contrato `1.0.0`, instancia `C10S-SVC-REQUEST-PROCESSOR-001`, revisión `1`; CMP `CMP-SERVICE-LOGIC-001`; PAR `PAR-SVC-ENABLED` (BOOL) y `PAR-SVC-PROFILE` (ENUM); RUL `RUL-SVC-ENABLE-PROFILE-01`. RETRY-COUNT queda fuera del núcleo.
+- **Dominio de entrada:** configuración fuente S0 admisible bajo su contrato y C0 pre-Z declarado. No se fijan valores de parámetros, formato físico, plataforma ni versión de software.
+- **Destino común:** contrato de destino declarado y snapshot basal del entorno destino. C_src, C_dst declarado y C_dst aplicado permanecen objetos distintos.
+- **Criterio común:** F* de ruta completa, con FP-01…FP-07 no compensatorios y FP-08 como gate probatorio separado. La regla RUL y los dos PAR deben preservarse semánticamente según mapping M; la conformidad local de una card no implica F*=1.
+- **Reloj:** estados S0/S1/S2/SF son estados lógicos del DGP. H_path es profundidad de ruta; H_time, ancla, valor y unidad siguen OPEN. No se asignan duraciones ni tolerancias.
+- **Ceguera:** truth, mappings generadores y potenciales permanecen en Generator; Analyzer recibe solo campos observables y evidencia permitida; Evaluator compara después de congelar la salida del Analyzer.
+
+### 12.3. Card F1 / τ2 — conversión focal (S0 → S2)
+
+| Campo | Especificación sintética |
+|---|---|
+| Propósito/operación | Transformar la representación declarativa de la instancia fuente S0 en una representación intermedia S2 consumible por F2, conforme al mapping M versionado |
+| Entrada | S0; contrato/versión de origen; identidad/versión de instancia; mapping M; snapshot C0 |
+| Salida | S2; referencia a S0 y M; registro de conversión y cobertura de propiedades transformadas |
+| Precondiciones de aplicabilidad | S0 dentro del dominio declarado; CMP/PAR/RUL requeridos resolubles; mapping definido para todos los campos obligatorios aplicables; ausencia de contradicción contractual no adjudicada |
+| Postcondiciones locales | S2 queda estructuralmente representado; los dos PAR y la RUL conservan sus tipos, dominios y bindings semánticos; pérdidas/transformaciones quedan declaradas; ningún estado de aplicación en destino se infiere |
+| Accesibilidad | A_f*(F1) se evalúa por ID, REL, COND, AUTH, RES, DEP y ¬BLOCK. B/C_dep no ejecutan F1 ni equivalen a A_f*=1 |
+| Evento | F1_ATTEMPT y resultado local SUCCESS/FAIL/UNKNOWN, separados de provisión, instalación y aplicación |
+| Fallos | S0 fuera de dominio; mapping incompleto/ambiguo; binding AST→PAR no resoluble; integridad de entrada no demostrada; bloqueo o recurso/autorización insuficiente; salida no conforme |
+| Límite | S2 no equivale a C_dst aplicado, F2 accesible ni F*=1 |
+
+### 12.4. Card F2 — aplicación y verificación focal (S2 → SF)
+
+| Campo | Especificación sintética |
+|---|---|
+| Propósito/operación | Aplicar en el entorno destino la representación S2 producida por F1 y verificar el estado aplicado contra el contrato destino y F* |
+| Entrada | S2 validado; contrato destino; snapshot del destino; C0; mapping M |
+| Salida | C_dst aplicado (si la aplicación tiene éxito) y resultado de verificación independiente; o estado de fallo/rollback registrado |
+| Precondiciones de aplicabilidad | S2 satisface su contrato de entrada; destino pertenece al dominio declarado; permiso de aplicación, ventana y condiciones de estado requeridas están satisfechas; no hay bloqueo impeditivo |
+| Postcondiciones locales | Estado aplicado se registra separadamente del destino declarado; verificación evalúa propiedades obligatorias aplicables, incluyendo semántica de CMP/PAR/RUL, integridad, compatibilidad, seguridad, aplicación y post-check |
+| Accesibilidad | A_f*(F2) se evalúa independientemente de F1; no se deduce de A_f*(F1), C_dep ni de la producción de S2 |
+| Evento | F2_ATTEMPT, APPLY_RESULT y VERIFY_RESULT, con orden temporal y procedencia |
+| Fallos | Destino incompatible; permiso/ventana ausente; conflicto con estado destino; aplicación parcial; rollback/residuo; verificación fallida o desconocida |
+| Límite | Un PASS local de F2 no acredita substituibilidad de la ruta A ni ausencia de vías colaterales de B |
+
+### 12.5. Card A1 — exportación alternativa basal (S0 → S1)
+
+| Campo | Especificación sintética |
+|---|---|
+| Propósito/operación | Producir desde S0 una representación de intercambio S1 mediante la capacidad alternativa declarada como disponible en baseline, sin utilizar la provisión focal B |
+| Entrada | El mismo S0, contrato/versión de origen, instancia lógica y C0 que la ruta focal |
+| Salida | S1 con referencia a la fuente, contrato de intercambio abstracto, mapping M_A y procedencia |
+| Precondiciones de aplicabilidad | Capacidad de exportación alternativa presente en el escenario; permiso de lectura; dominio y mapping de exportación declarados; recursos/ventana requeridos disponibles |
+| Postcondiciones locales | S1 cubre los campos obligatorios declarados para el intercambio; los campos omitidos, transformados o no representables se registran explícitamente; no se presume que A2 pueda importarlo |
+| Accesibilidad | A_f*(A1) independiente; baseline en R1 se estipula solo en la verdad del DGP, no se acredita como evidencia material |
+| Evento | A1_ATTEMPT y resultado local SUCCESS/FAIL/UNKNOWN |
+| Fallos | Exportación no disponible; permiso ausente; cobertura incompleta; mapping ambiguo; pérdida semántica o salida no verificable |
+| Límite | S1 no acredita aplicación, compatibilidad final, F* ni independencia material frente a B |
+
+### 12.6. Card A2 — importación, aplicación y verificación alternativa (S1 → SF)
+
+| Campo | Especificación sintética |
+|---|---|
+| Propósito/operación | Consumir S1 mediante la capacidad alternativa declarada en baseline, aplicar la configuración en el mismo destino y verificar el mismo F* |
+| Entrada | S1 producido por A1; contrato destino; snapshot del destino; C0; mapping M_A→dst |
+| Salida | C_dst aplicado y resultado de verificación, o fallo/rollback registrado |
+| Precondiciones de aplicabilidad | S1 íntegro y dentro del dominio de importación; capacidad alternativa de importación/aplicación; permiso, ventana, compatibilidad y recursos declarados |
+| Postcondiciones locales | Aplicación y verificación se registran por separado; el resultado se adjudica con las mismas propiedades obligatorias, reglas de seguridad, tolerancias y oráculo que F2 |
+| Accesibilidad | A_f*(A2) independiente de A1 y de F2; no se presume que la ruta alternativa sea funcional por su mera topología |
+| Evento | A2_ATTEMPT, APPLY_RESULT y VERIFY_RESULT |
+| Fallos | S1 no admisible; mapping incompleto; capacidad/importación no disponible; permiso/ventana ausente; aplicación parcial; rollback/residuo; verificación fallida/desconocida |
+| Límite | Alcanzar SF nominal no acredita substituibilidad; solo la evaluación común de F* permite clasificarla |
+
+### 12.7. Relaciones, rutas y límites causales
+
+- Rutas candidatas: πF=(F1,F2) y πA=(A1,A2), ambas de dos pasos; no se añade un paso artificial para consumir H_path.
+- Relaciones composicionales sintéticas: REL(F1,F2) y REL(A1,A2). Las relaciones técnicas/dependencias internas se añaden solo si el inventario sintético las declara; no se inventan REF.
+- Ambas rutas usan misma clase de S0, instancia contractual, destino, IAM, C0, G, F*, oráculo y regla de adjudicación. H_time permanece sin fijar.
+- R0: la no-afectación de A1/A2 por B es verdad estipulada del DGP aislado. R2: incluir al menos una modificación colateral de la alternativa/dependencia compartida. Ninguna estipulación equivale a evidencia observada.
+- B provisiona dependencia focal para F1; no ejecuta F1/F2 ni A1/A2. La distribución de C_dep y sus cuatro componentes sigue pendiente de parametrización.
+- La existencia sintética de πA no prueba que sea alternativa funcional: esa condición requiere truth F* y, para un sistema real, cobertura/evidencia material.
+
+### 12.8. Crosswalk field-level para las cuatro cards
+
+Los siguientes son **field_id semánticos del DGP**, no nombres de columnas ni un schema físico. Cada registro se indexará por unidad, escenario, branch_id, step_k, TID/SID, snapshot exacto, tiempo de evaluación y fuente/versión. Truth_DGP y observed_state se almacenan en canales separados.
+
+| field_id semántico | Contenido | Clase U*/R*/C*/X*/E_T | Predicado/uso | Límite |
+|---|---|---|---|---|
+| SYN-U-TID | Identidad semántica de F1/F2/A1/A2 | U* | ID | No confundir con RID/hash |
+| SYN-U-SID | Revisión contractual de la transformación | U*/MET | ID, comparabilidad | No implica implementación |
+| SYN-U-RID | Realización técnica, si llegara a existir | E_T/MET | Provenance | Actualmente NOT_ASSIGNED |
+| SYN-R-COMPOSES | Arista ordenada F1→F2 o A1→A2 | R* | REL | No crea rutas cruzadas |
+| SYN-R-DEPENDS | Dependencia/interface necesaria, solo si declarada | R* | DEP/REL | Vacío solo con roster/cobertura exhaustivos; de otro modo ? |
+| SYN-C-COND | Condición constitutiva de realizabilidad | C* | COND | No absorber App ni Outcome |
+| SYN-C-AUTH | Autorización funcional basal por actor/objeto/ventana | C* | AUTH_f* | Separada de ACL técnica de B |
+| SYN-C-RES | Oferta/capacidad ex ante reservable | C* | RES_f* | No confundir con consumo de ejecución |
+| SYN-C-DEP | Estado técnico conjunto de dependencia | C* | DEP_f*/C_dep* | Mantener install/integrity/compat/oper separados |
+| SYN-C-BLOCK | Bloqueo efectivo | C* | BLOCK_f* | Falta de evidencia no equivale a bloqueo |
+| SYN-C-APP | Precondición desde estado de entrada | C* solo si constitutiva; si state-specific, registro APP separado | APP | No entra automáticamente en A_f* |
+| SYN-X-CONTEXT | Estado efectivo runtime/host/contexto que altera accesibilidad | X* | Revisión de A_f* | Solo con regla causal/semántica; no usar como cubo residual |
+| SYN-STATE-IN | Estado lógico de entrada S0/S1/S2 | Snapshot/step | APP | No es Outcome |
+| SYN-STATE-OUT | Estado lógico de salida S1/S2/SF | Snapshot/step | Postcondición | SF nominal no equivale a F* |
+| SYN-M-MAPPING | Mapping contractual de propiedades CMP/PAR/RUL | MET/contrato; sus relaciones se tipan según contenido | FP-03, integridad | No asumir mapping total ni tolerancias |
+| SYN-E-SNAPSHOT | Snapshot exacto y versión de objeto | E_T | Matching temporal | No inferir diff sin comparabilidad |
+| SYN-E-EVIDENCE | Fuente, procedencia, método, timestamp y resultado observado | E_T | Observación/adjudicación | Nunca contiene hidden_truth para Analyzer |
+| SYN-E-COVERAGE | Universo, alcance, límites y cobertura | E_T | 1/0/? observado | Cobertura incompleta propaga ? |
+| SYN-E-ADJUDICATION | Evaluador, desacuerdo, regla y decisión | E_T | FP-08 | No sustituye evidencia primaria |
+
+### 12.9. Crosswalk por etapa y predicado
+
+| Card | ID | REL | COND | AUTH | RES | DEP | ¬BLOCK | APP desde entrada | E_T mínimo |
+|---|---|---|---|---|---|---|---|---|---|
+| F1 | TID/SID F1 y continuidad | Composición posterior F1→F2 | Dominio y condiciones de conversión | AUTH_f* focal | Oferta ex ante necesaria | C_dep focal y relaciones requeridas | Bloqueo de F1 | App(F1,S0) | snapshot S0/S2, mapping, cobertura, intento |
+| F2 | TID/SID F2 | Entrada S2 desde F1 | Compatibilidad/estado destino | Autorización de aplicación | Recursos/ventana | Dependencias propias de F2 | Bloqueo de F2 | App(F2,S2) | snapshot destino pre/post, apply y verify |
+| A1 | TID/SID A1 | Composición posterior A1→A2 | Dominio/condiciones de exportación | Permiso de lectura | Recursos/ventana | Dependencias baseline | Bloqueo de A1 | App(A1,S0) | snapshot S0/S1, mapping/cobertura, intento |
+| A2 | TID/SID A2 | Entrada S1 desde A1 | Compatibilidad/estado destino | Permiso de aplicación | Recursos/ventana | Dependencias baseline de A2 | Bloqueo de A2 | App(A2,S1) | snapshot destino pre/post, apply y verify |
+
+**Regla de adjudicación:** cada predicado conserva truth_DGP y observed_state separados. Para truth, conjunción constitutiva 0 si algún requisito necesario es 0, 1 si todos son 1, ? si no hay 0 y alguno es ?. Para observado, se requiere cobertura suficiente; ausencia de evidencia no es 0. Para Reach, 1 si existe ruta completa 1; 0 solo si todas las rutas del universo declarado son 0 y la cobertura es exhaustiva; en otro caso ?. Se reutilizan PM-01…18, no se crea una segunda lógica.
+
+### 12.10. Pendientes explícitos tras completar la definición abstracta
+
+Quedan abiertos, y no se rellenan en este bloque: encoding/schema físico; mapping M y M_A concretos; catálogo de propiedades atómicas obligatorias FP-01…07; tolerancias; valores de PAR; REF y dependencias internas; C0 detallado; recursos/demanda/regla de reserva; valores conjuntos C_dep; H_time; universo exhaustivo de alternativas; truth tables por escenario; evidencia MD-C1/MD-C4; oráculo, fiabilidad, cegamiento y validación. No se asignan estados por unidad ni se generan fixtures.
+
+**Dictamen:** AB-03 queda DESIGN SPECIFIED AT ABSTRACT SYNTHETIC LEVEL; AB-04 queda FIELD-LEVEL CROSSWALK SPECIFIED AT SEMANTIC LEVEL. Ambos siguen OPEN para schema físico, instanciación de verdad/observación, evidencia, validación y cierre AB. Sin Design Freeze, implementación, fixtures, simulación ni ejecución científica.
