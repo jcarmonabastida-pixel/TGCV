@@ -325,3 +325,11 @@ La expresión de referencia documentada es OR(NEQ(ENABLED,true),IN(PROFILE,{STAN
 **Qué queda OPEN en AB-M01/M02:** nombres físicos de campos/nodos, encoding/schema del AST, serialización canónica del AST, namespace/versionado del parameter_key, constraints físicas y validación de integridad. No se extiende JCS UDG-01 a este payload. El contrato físico debe implementar la referencia tipada y verificar destino existente, tipo concordante y cardinalidad exactamente una.
 
 **Criterio de cierre documental AB-M01:** binding AST tipado a PAR; dos operands y solo dos; no REF duplicado; referencia exacta a claves/versiones PAR del snapshot de instancia; UNKNOWN si el binding o destino no se resuelve. Estado: semántica DESIGN RESOLVED; encoding y validación técnica OPEN.
+
+## 14. Resultado integrado AB-03/04 — especificación semántica sintética (2026-11-10)
+
+AB-03 queda especificado a nivel abstracto sintético en la §12 de la propuesta de cards. Las cuatro TID/SID son DGP-locales: F1 conversión focal S0→S2; F2 aplicación/verificación S2→SF; A1 exportación alternativa S0→S1; A2 importación/aplicación/verificación S1→SF. La instancia común reutiliza IDs y versiones aceptados de servicio/CMP/PAR/RUL. No se asignan RID/EID ni mecanismo real.
+
+AB-04 queda especificado como crosswalk de field_id semánticos hacia U*/R*/C*/X*/E_T, con índice unidad×escenario×rama×paso×TID/SID×snapshot×tiempo. Incluye estado de entrada/salida, predicados ID/REL/COND/AUTH/RES/DEP/¬BLOCK, APP separado, mapping, evidencia, cobertura y adjudicación. Truth_DGP y observed_state no se mezclan; se reutiliza PM-01…18 y la regla 1/0/? vigente.
+
+**No cerrados:** schema físico y nombres de columnas; mapping M/M_A concreto; predicados FP atómicos/requiredness, tolerancias, C0, recursos y regla de reserva, C_dep conjunta, H_time, universo exhaustivo de alternativas, truth tables por escenario, MD-C1/MD-C4, evidencia, oráculo/fiabilidad/cegamiento/validación. AB sigue IN_PROGRESS; no fixtures ni ejecución.
