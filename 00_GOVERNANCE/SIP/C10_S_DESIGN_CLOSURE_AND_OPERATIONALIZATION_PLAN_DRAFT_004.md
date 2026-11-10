@@ -2207,3 +2207,11 @@ REF/AST y schema/canonicalización se resuelven técnicamente contra contratos. 
 Queda resuelta la alternativa semántica REF vs AST: los dos operandos ENABLED y PROFILE son bindings tipados de hojas/posiciones del AST RUL a PAR-SVC-ENABLED/BOOL y PAR-SVC-PROFILE/ENUM. No generan objetos REF de configuración. Se prohíbe el doble registro AST+REF del mismo binding. Un REF solo existiría para una relación/dependencia constitutiva independiente.
 
 AB-M01 pasa a DESIGN RESOLVED en semántica; encoding/schema/serialización física, namespace/versionado y constraints permanecen OPEN. No extrapolar JCS UDG-01. Véase ledger AB §13.
+
+## 16.119 — AB-03/04: cards sintéticas y crosswalk field-level (2026-11-10)
+
+Se completa la especificación funcional abstracta de F1/F2/A1/A2 con TID/SID sintéticos versionados y sin RID/EID. F1 convierte S0→S2; F2 aplica/verifica S2→SF; A1 exporta S0→S1; A2 importa/aplica/verifica S1→SF. Se vinculan a la instancia de servicio y a CMP/PAR/RUL aceptados, sin fijar valores, producto, formato ni mecanismo.
+
+El crosswalk semántico define field_id por identidad, composición, dependencia, condiciones, autorización, recursos, bloqueo, contexto X*, estados, mapping, snapshots, evidencia, cobertura y adjudicación; clasifica cada campo en U*/R*/C*/X*/E_T y lo enlaza con predicados y etapas. No es schema físico. Se mantiene la separación truth/observed y la regla 1/0/? de la matriz temporal.
+
+AB-03 y AB-04 pasan a DESIGN SPECIFIED AT ABSTRACT/SEMANTIC LEVEL, no DONE. Permanecen abiertos mapping concreto, requiredness FP, tolerancias, C0, recursos, C_dep, H_time, universo alternativo, cobertura material, MD-C1/MD-C4 y validación del oráculo. No hay implementación ni ejecución.
