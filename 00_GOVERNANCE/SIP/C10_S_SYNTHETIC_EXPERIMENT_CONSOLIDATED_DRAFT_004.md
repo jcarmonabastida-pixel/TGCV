@@ -10366,3 +10366,57 @@ Un ITT identificable puede coexistir con IIE no identificado. Un IIE identificad
 Cada ficha debe registrar: estimand_id; pregunta primaria/secundaria; dimensión Value; régimen y versiones; Z y B diferenciados; población/q; H, L y M con tiempos; definición conjunta y factibilidad de M; referencia b1 (o alternativa justificada); unidad/cluster/interferencia; Outcome/Value y escala; DAG y fuentes; confusores medidos/no medidos; método g; soporte secuencial; missingness/error; sensibilidad/bounds; regla de identificación/abstención y provenance.
 
 **Estado:** propuesta metodológica especializada para revisión, no decisión aceptada, no estimando confirmado, no identificación demostrada y no Design Freeze. Inputs materiales AB-M03…M11 y contratos C10-D1/§224 continúan OPEN en lo que corresponda. No se seleccionan método computacional final, parámetros, rangos, tolerancias, N ni réplicas. No se generan fixtures ni se implementa o ejecuta. scientific_execution=false; execution_authorized=false.
+
+
+## 250. C-MED — registro causal provisional H/L/M y rutas hacia Outcome/Value (2026-11-10)
+
+**Precedencia y no duplicación.** Este registro operacionaliza el roster ya existente en §§229.3, 233.2–233.4 y 249.2; no crea una ontología ni sustituye la matriz temporal de predicados, los contratos AB-04/05 ni el registro de campos del microdominio. Los nombres siguientes son dominios/candidatos semánticos extraídos del DAG, no field_id medidos ni prueba de que todos estén presentes. No se asignan flechas específicas a una dimensión Value todavía no definida.
+
+### 250.1. Registro por tiempo y papel causal candidato
+
+| Tiempo | Dominio/objeto ya presente en el DAG | Partición C-MED | Papel causal que debe contrastarse | Relación con M=ΔT_acc* | Estado de campo/medición |
+|---|---|---|---|---|---|
+| t−1 | X, H0, S0, C0, L0; unidad/frontera/soporte; identidades/versiones; C_auth,base; recursos0/capacidad0/información0; C_dep0; A_f,base*, T_acc,base; alternativas0; O0/V0 | H (basal) | Confusores basales, modificadores, criterios de elegibilidad o estado basal según definición concreta | No son M; fijan contexto y punto de partida | Roster conceptual; población, C0, valores, unidad, fuentes y cobertura OPEN |
+| t0 | Z | Asignación | Intervención aleatorizada si diseño y asignación se documentan; no es B ni M | No es M ni proxy de accesibilidad | Asignación/aleatorización y unidad efectiva OPEN |
+| t1 | B, versión; W_programmed, recepción/cumplimiento, W_attempt | Exposición/historia post-Z | Recepción, adherencia o exposición; potenciales causas de L y M; pueden abrir sesgo al condicionar | Anteceden a M; no son componentes de M | Secuencia/artefactos/timestamps y separación de eventos OPEN |
+| t2 | S_install; C_install*, C_integrity*, C_compat*, C_oper*; C_dep*; recursos/capacidad/permisos/ACL/dependencias/host/runtime/seguridad y cambios de entorno | L candidata (post-B, pre-M) | Confusor M–V inducido si y solo si B la afecta y causa tanto M como V_j (directa o vía downstream no contenida en M); en otro caso puede ser mediador técnico, causa de M, colateral o mero estado | Antecede a M; no se incorpora automáticamente a M. C_dep* y sus componentes siguen separados | Definiciones/contratos y valores por unidad/tiempo/snapshot OPEN; causalidad específica por V_j no adjudicada |
+| t3 | U*, R*, C*, X* efectivos; T_acc,post; A_f,post*; D_f*; ΔU*, ΔR*, ΔC*, ΔX*; ΔT_acc* | M y objetos de medición relacionados | M es mediador conjunto candidato. A_f* es proyección/predicado focal; D_f* indicador de apertura; no añadirlos como mediadores paralelos independientes sin redefinir estimando | M=ΔT_acc* según precedencia de §30; preservar dependencia conjunta y mapping/crosswalk pendiente | Mapping ΔX*, identidades, snapshots, campos, medición independiente y factibilidad OPEN |
+| Paralelo t−1…t9 | E_T, logs, hashes, SBOM, snapshots, cobertura, matching, provenance, adjudicación | Proceso de observación, no H/L/M estructural | Determina qué se conoce y con qué error/cobertura; puede ser diferencial por Z/B | No integra ni causa por sí mismo ΔT_acc*; E_T no sustituye truth estructural | Protocolo/oráculo, cobertura, missingness y error OPEN |
+| t4 | Reach_H, Π_H,cand, rutas factibles | Downstream de M | Consecuencias del espacio accesible; potenciales mediadores secuenciales posteriores si el estimando los descompone | No son componentes de M ni proxies de ΔT_acc* | Universo, cobertura y adjudicación OPEN |
+| t5–t6 | K, Consider, Sel, Start | Downstream | Conocimiento/consideración/selección/inicio; pueden mediar efecto sobre ejecución/Outcome; no ajustar mecánicamente para el efecto total | Posteriores a M | Medición y potenciales vías directas B→K/Consider/Sel OPEN |
+| t7 | Exec(F1/τ2), Exec(F2), Exec(A1/A2), interrupción/fallo/fin y cambios de estado | Downstream | Trayectoria realizada; consecuencias de selección/Reach y posibles mediadores posteriores. Cambios que alteren el sistema crean nuevo snapshot/tiempo | No redefinen retroactivamente M en t3 | Eventos, versiones, secuencia y medición OPEN |
+| t8 | Outcome O | Resultado intermedio/resultado operativo | Variable resultado o eslabón hacia V_j, según definición de Outcome/Value | No es M; no se usa para construirlo | Definición, escala, unidad y protocolo §224 OPEN |
+| t9 | Value V_j | Resultado final por dimensión | Resultado de interés; reglas de atribución/beneficiario/escala/horizonte aún por fijar | No es M | Dimensiones, escala, protocolo, pesos y adjudicación OPEN |
+
+**Regla clave:** L no equivale a “todo lo posterior a B”. Un campo solo se clasifica como confusor mediador–Value inducido por tratamiento para el estimando j cuando se sostienen ambas relaciones causales B→L_k y L_k→M, L_k→V_j (o a causas de V_j), y su tiempo precede a M. La clasificación puede variar por dimensión V_j, régimen, horizonte y versión. Un campo puede ser simultáneamente parte de una historia longitudinal y mediador de otra pregunta; el papel es relativo al estimando, no una etiqueta intrínseca.
+
+### 250.2. Rutas que el DAG obliga a inspeccionar
+
+| Ruta/camino candidato | Lectura | Consecuencia para C-MED |
+|---|---|---|
+| B→L_k→M→Reach/Π_H→K/Consider→Sel/Start→Exec→O→V_j | Camino mediado por accesibilidad y consecuencias posteriores | Compatible con contribución mediada; no ajustar downstream para el efecto total de g |
+| B→L_k→M y B→L_k→O/V_j (sin pasar por M) | Confusión mediador–resultado inducida por B | Requiere historia L suficiente y método longitudinal; si no, bounds/no identificación |
+| B→L_k→O/V_j sin pasar por M | Vía colateral no mediada por accesibilidad | El ITT/B conserva efecto de paquete; no atribuirlo íntegramente a M |
+| B→A1/A2/dependencias compartidas→Reach/Exec/O/V_j | Cambio de alternativa o ruta compartida | Auditar R2/MD-C1/MD-C4; exclusión focal no demostrada |
+| B→recursos/capacidad/ACL/seguridad/coste/latencia/calidad→O/V_j | Ruta material directa o paralela | No eliminar por ajuste rutinario; identificar como cointervención/ruta colateral |
+| Z/B→E_T/cobertura/missingness→M_obs/O_obs/V_obs | Proceso de observación diferencial | Riesgo de error/missingness diferencial; truth y observed deben permanecer separados |
+| Unidad i→recursos/host/dependencias de otras unidades→M_i/O_i/V_i | Interferencia/spillover/carryover | Unidad de exposición/cluster y estimando deben reflejar interferencia; topología OPEN |
+| Exec posterior→cambio de estado→T_acc futuro | Retroalimentación dinámica | Nuevo snapshot y estimando longitudinal; nunca reescribir M(t3) |
+
+Las flechas son rutas candidatas ya enumeradas en §233, no afirmaciones empíricas. La dimensión V_j debe permanecer indexada: sin definición de §224 no se puede decidir qué rutas alcanzan cada dimensión ni si un dominio afecta una, varias o ninguna.
+
+### 250.3. Reglas de clasificación campo a campo
+
+Para cada subcampo del roster existente, completar sin crear duplicados: field_id/referencia existente; definición y dominio; unidad/frontera; tiempo y valid-time; versión/snapshot; valor/diff y procedencia; rol semántico U*/R*/C*/X*/E_T; estado truth/observed; clasificación H/L/M/downstream/observación; mecanismo causal y justificación por estimando y V_j; relación con M; relación directa/indirecta con Outcome/Value; intervención/medición posible; cobertura/error/missingness; ruta colateral/interferencia; adjudicación y estado OPEN/UNKNOWN.
+
+No clasificar por nombre de dominio (p. ej. “recursos” o “permisos”) sin definición de subcampo y secuencia. No duplicar un campo en M y L: si el estado es parte constitutiva de ΔT_acc* en t3 pertenece al contrato de M; si es condición antecedente que produce M permanece en L; si es evidencia sobre el estado pertenece a E_T. Si el mismo concepto cambia de tiempo o función, versionar la instancia temporal, no duplicar el concepto sin trazabilidad.
+
+### 250.4. Consecuencias metodológicas y decisiones todavía OPEN
+
+- El ITT_Z no se ajusta por W, S_install, C_dep*, L, M, Reach, selección o ejecución.
+- Para C-MED, la identificación interventional requiere historia L suficiente, intervención conjunta factible G_M^b, soporte condicional en historias evaluadas, consistencia/versiones, medición independiente y tratamiento de interferencia.
+- Para θ_A(q), no se hereda automáticamente el ajuste/estimando de mediación D2; se necesitan g0/g1 factibles bajo régimen común q y mapping B→g si D2 se usa como implementación.
+- Las variables posteriores a M (Reach/Π_H, K, Consider, Sel, Start, Exec, O) forman parte de la evolución que conduce a Value en el efecto total; descomponerlas exige estimandos secuenciales distintos.
+- La falta de observación de un campo no se resuelve imputando su papel causal. Debe quedar UNKNOWN y propagarse a la identificación si es necesario.
+
+**Cierre de esta operación:** registro causal conceptual consolidado sobre el DAG existente. No es un inventario empírico por unidad, no identifica qué campos concretos son confusores de cada V_j, y no demuestra rutas ausentes. Inputs OPEN: crosswalk de campos U*/R*/C*/X*/E_T, definición de Outcome/Value por dimensión, tiempos/snapshots y fuentes, cobertura/error, DAG microdominio, topología de interferencia y evidencia MD-C1/MD-C4. Sin Design Freeze, implementación, fixtures, simulación ni ejecución; scientific_execution=false; execution_authorized=false.
