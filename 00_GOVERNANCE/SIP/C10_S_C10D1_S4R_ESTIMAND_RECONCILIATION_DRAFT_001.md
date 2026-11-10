@@ -471,3 +471,14 @@ Los campos se clasifican por función semántica: U transformación, R relación
 Se consolida el roster parcial del maestro §232: transformaciones F1/F2/A1/A2 (U*); dependencias/interfaces/topología (R*); reglas, permisos, recursos y restricciones (C*); contexto efectivo runtime/host/modo/estado persistente (X* solo cuando sea constitutivo); logs, hashes, cobertura, validez y adjudicación (E_T). CMP/PAR/REF/RUL/MET conservan sus identidades y funciones contractuales; ENABLED/PROFILE son los PAR nucleares y RETRY-COUNT permanece candidato no confirmatorio.
 
 B-M01…15 son superficies de inspección, no variables tipadas automáticamente ni evidencia de cambios. Se exige subcampo, event_id, tiempo de vigencia, frontera, mapping, truth/observed y cobertura. MED-02c3/c4/d OPEN; no declarar roster completo.
+
+
+## 31. DAG Opción A/D2: reconciliación de vías y objeto mediador (2026-11-10)
+
+El maestro §233 es la especificación candidata vigente del DAG específico y debe leerse junto con DEC-C10-066/067, el roster §232 y los contratos de provisión/snapshots. El DAG histórico de §6 se conserva como antecedente; para Opción A bajo D2 prevalece la especialización de §233.
+
+Se precisa que A_f,1* es el predicado/proyección focal de accesibilidad dentro del snapshot T_acc,1, y D_f* es el indicador derivado de apertura basal→post. No se modelan como mediadores adicionales en serie con ΔT_acc*. El mediador secundario candidato es la distribución conjunta y factible de ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*), con ΔX* conservado en el DGP y sin doble conteo analítico.
+
+D2 asigna política B; no asigna A_f*, D_f* ni ΔT_acc*. El ITT_Z(D2) es efecto de política asignada. Solo puede interpretarse como θ_Af(q*) si se demuestra correspondencia B→g^Af, régimen común, soporte, consistencia y ausencia/identificación de vías colaterales hacia Value. Recursos, permisos, seguridad, dependencias compartidas/A1-A2, coste/latencia/calidad, información/selección, observación y spillovers son rutas explícitas a auditar. Confusores mediador–Outcome inducidos por B no se ajustan rutinariamente; requieren estrategia longitudinal o limitación a efecto de paquete.
+
+No se cierra θ_A(q), mediación, LATE, población, q*, unidad/interferencia, Value ni identificación. El DAG queda DRAFT/CANDIDATE.
