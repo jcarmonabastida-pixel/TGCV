@@ -11343,3 +11343,61 @@ MAP-07 puede considerarse **DOCUMENTED** en su contrato de adjudicación cuando 
 Dependencias aún OPEN: MAP-01/02 valores, ventanas y evidencia; MAP-03 soporte/distribuciones; MAP-04 equivalencia; MAP-05/06 rutas y exclusión; MED-02 inventario/matching material; MED-03 DAG campo×tiempo×V_j; MED-04 políticas factibles g0/g1 y q común; MED-05 identificación interventional; MED-06 sensibilidad/bounds; C-Value §224; AN-04 umbrales/potencia y firewall validado.
 
 **Dictamen:** MAP-07 queda especificado documentalmente como matriz de adjudicación y regla de no transferencia; no queda validado empíricamente ni cierra la identificación de ningún estimando. Se preservan θ_A(q) como pregunta científica general, ITT_Z^D2 como efecto de asignación/política, LATE_f como estimando IV focal condicional, θ_Af(q_X*) como contraste focal distinto e IIE_M como candidato secundario. Sin Design Freeze, implementación, fixtures, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
+
+# 261. MED-04 — contrato candidato de políticas factibles g0/g1 y régimen común q (2026-11-10)
+
+**Precedencia:** especializa C-MED §§249, 257 y 260; auditoría IV §§14.1–14.5; MAP-03/04 §§258 y §260; registro H/L/M §§250/252. Reutiliza el estimando θ_A(q) de C10-D1. No modifica decisiones aceptadas ni declara cerrado el estimando.
+
+## 261.1. Objeto y frontera
+
+MED-04 debe especificar el par de políticas causales g0/g1 que actúan sobre el mediador estructural conjunto M=ΔT_acc*, y el régimen común q bajo el que se comparan. No son políticas de asignación D2, ni políticas de instalación, ni reglas sobre A_f*/D_f* aisladas. Cada g debe ser una intervención estocástica factible sobre el conjunto admisible de estados/cambios de M, respetando la estructura U*/R*/C*/X*, sus dependencias y las restricciones constitutivas del microdominio.
+
+Se preservan como objetos distintos: Z; B_g0^D2/B_g1^D2; respuestas W/receipt/S_install/C_dep*; M=ΔT_acc*; su proyección A_f* y el indicador D_f*; y las políticas abstractas g0/g1 de C10-D1. No se presume mapping B_D2→g.
+
+## 261.2. Representación candidata
+
+Para una unidad i, historia pre-M h_i y régimen común q, g_a(dm|h_i;q), a∈{0,1}, denota una distribución conjunta sobre valores admisibles de M. La intervención conserva la dependencia entre ΔU*, ΔR*, ΔC* y ΔX*; no factoriza componentes salvo que una factorización sea demostrada como estructuralmente válida y compatible con las restricciones. Las distribuciones deben asignar probabilidad cero a estados imposibles/incompatibles y no crear transformaciones, relaciones, recursos, autorizaciones o capacidades que no sean factibles en el dominio.
+
+La expresión de trabajo del contraste para cada dimensión V_j y horizonte fijado es:
+θ_A,j(q) = E_q[V_j^{g1} − V_j^{g0}].
+Es notación candidata para precisar el contraste de C10-D1, no aprobación de fórmula final, escala, población, horizonte ni identificación. La orientación g1−g0 debe confirmarse junto con el significado sustantivo de cada política; no se atribuye a mayor/menor accesibilidad sin definir sus distribuciones.
+
+## 261.3. Régimen común q: condiciones de comparabilidad
+
+q no puede funcionar como etiqueta genérica. Su contrato debe declarar, antes de comparar:
+- población objetivo, unidad/frontera y distribución basal H;
+- microdominio, versión de τ, contexto y soporte de transformaciones factibles;
+- distribución/regla de las condiciones pre-M que se mantienen comunes, incluyendo cómo se trata L cuando es postratamiento inducido por una política upstream;
+- políticas y mecanismos no focales que permanecen comunes, incluidas reglas de provisión, recursos, permisos, entorno, alternativas, información y observación;
+- interferencia, exposición de vecinos/clúster y carryover entre periodos;
+- definición de Outcome y de cada V_j, beneficiario, escala, horizonte, regla de composición y adjudicación;
+- protocolo de medición, cobertura, missingness y versión del oráculo, sin condicionar la verdad a observables posteriores.
+
+**Regla crítica sobre L:** si L es post-B y B varía entre regímenes, no se declara común por mera inclusión como covariable ni se ajusta como basal. Para θ_A(q), el protocolo debe establecer una de estas opciones con justificación: (i) L no varía bajo las políticas g comparadas porque estas intervienen directamente sobre M bajo un upstream común; (ii) una distribución de referencia común q(L|H) es definida como parte explícita del estimando y es factible; o (iii) el estimando se redefine como contraste longitudinal de regímenes que modelan conjuntamente L y M, sin llamarlo contraste aislado sobre M. La elección sigue OPEN; no se selecciona por conveniencia analítica.
+
+## 261.4. Factibilidad y soporte
+
+Cada política debe ser físicamente/funcionalmente realizable para la unidad y la historia declaradas, dentro del conjunto de transformaciones permitido por D, T, R y las restricciones constitutivas. Debe especificarse:
+1. conjunto admisible M(h,q) y reglas de exclusión de estados imposibles;
+2. soporte común de g0 y g1 por historia y población;
+3. positividad estructural y secuencial, sin inferirla de solapamiento marginal;
+4. versiones y equivalencia bajo MAP-04;
+5. recursos, dependencias compartidas, alternativas, interferencia y carryover;
+6. consistencia entre intervención asignada, intervención recibida y versión de M;
+7. mecanismo independiente de medición de M completo y separación truth/observed.
+
+No se permite extrapolación silenciosa, truncamiento que cambie el target, agrupación de versiones no equivalentes ni imputación de accesibilidad desde C_dep*, A_f*, D_f*, Reach, selección, ejecución, Outcome o Value. Si solo existe soporte para una subpoblación, se informa no identificación para el target original; un target restringido requiere definición y aprobación explícitas.
+
+## 261.5. Qué no define MED-04
+
+- No identifica θ_A(q) por sí mismo ni decide el método de identificación.
+- No convierte B_g0/B_g1 de D2 en g0/g1; MAP-01…07 siguen siendo gates del mapping.
+- No reemplaza MED-03 (clasificación de H/L/M por campo/tiempo/dimensión), MED-05 (supuestos y método de identificación), MED-06 (sensibilidad/bounds) ni C-Value.
+- No equipara θ_A(q) con ITT_Z^D2, ψ_policy^D2, LATE_f^D2, θ_Af(q_X*) o IIE_M.
+- No elige valores numéricos, distribución paramétrica, intensidad, umbrales, tamaño muestral ni potencia.
+
+## 261.6. Decisiones necesarias para cerrar MED-04
+
+Quedan explícitamente OPEN: (a) definición sustantiva y operacional de g0/g1; (b) conjunto admisible de M por instancia y restricciones entre componentes; (c) unidad, población y H; (d) contenido exacto de q y tratamiento de L post-B; (e) dimensión/es V_j, beneficiario, escala, horizonte y composición; (f) interferencia/carryover; (g) versiones y soporte; (h) si el target es una distribución estocástica conjunta general o una clase restringida de políticas factibles. La instancia Opción A aún no aporta los valores y evidencias para resolver estos puntos.
+
+**Dictamen:** MED-04 queda DOCUMENTED / PARTIALLY SPECIFIED. Se ha fijado la frontera conceptual y el contrato mínimo para g0/g1 y q; las políticas concretas, q material, factibilidad, soporte y fórmula final del estimando permanecen OPEN. No se aprueba θ_A(q), método, parámetros ni identificación. Sin Design Freeze, implementación, fixtures, simulación o ejecución. scientific_execution=false; execution_authorized=false.
