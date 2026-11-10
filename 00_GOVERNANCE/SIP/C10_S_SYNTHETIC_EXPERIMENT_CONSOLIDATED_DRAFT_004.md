@@ -9840,3 +9840,28 @@ Estos escenarios son clases de prueba, no frecuencias, parámetros ni resultados
 | AN-04 | Tolerancias, multiplicidad, réplicas y aceptación ex ante | OPEN |
 
 **Dictamen:** la arquitectura de evaluación queda especificada con mayor precisión, pero C-MED y C-ANALYZER siguen abiertos. Este apartado corrige la lectura de §228 sin alterar las decisiones aceptadas, no demuestra identificación ni cierra AB. Mantener scientific_execution=false; execution_authorized=false; sin código, fixtures, parsers, validadores, simulaciones ni experimentos.
+
+
+# 230. Corrección de precedencia del objeto ΔT_acc en C-MED (2026-11-10)
+
+**Corrección documental necesaria tras contrastar el contrato temporal DGP §§3.3 y 30 con el documento de reconciliación de snapshots.**
+
+La formulación de §229.2 que describía la tupla DGP como (ΔU, ΔR, ΔC, ΔValidity, ΔState) reproduce la expresión histórica de DGP §3.3, pero no la precedencia vigente del propio contrato. DGP §30 y C10_S_TRANSFORMATIONAL_SNAPSHOT_AND_DELTA_RECONCILIATION_DRAFT_001.md establecen:
+
+- Truth estructural: S_T*=(U*,R*,C*,X*).
+- Cambio estructural: ΔT_acc*=Diff(S_T*(t0),S_T*(t1))=(ΔU*,ΔR*,ΔC*,ΔX*).
+- Evidencia: E_T separada; ΔE_T contiene ΔSources, ΔCoverage, ΔValidity_e, ΔProvenance, ΔVersion y ΔAdjudication.
+- ΔValidity_e no pertenece a la verdad causal de ΔT_acc*. La validez estructural/operativa sí pertenece a C*/R*; la validez de evidencia pertenece a E_T.
+
+Por tanto, la tupla de §3.3 queda supersedida por §30 y se corrige su lectura. No debe aparecer ΔValidity_e como componente de ΔT_acc*, ni confundirse X* con un estado genérico sin contrato.
+
+**Crosswalk pendiente con C10-D1 §27.1:**
+- ΔU* debe descomponerse mediante matching de identidad/equivalencia en altas A⁺, bajas A⁻ y reconfiguraciones A^reconf, evitando doble conteo.
+- ΔR* corresponde a cambios de relaciones/dependencias, sujeto a la misma identidad, frontera y granularidad.
+- ΔC* corresponde a cambios de condiciones/configuraciones estructurales, sin mezclar condiciones constitutivas con variables temporales del régimen q.
+- ΔX* no tiene correspondencia automática en la ficha analítica C10-D1 §27.1. Debe clasificarse según su semántica: si modifica condiciones de realizabilidad puede mapearse a ΔC*; si es historia/contexto basal o temporal no constitutivo, puede pertenecer al régimen q/historia; si no cambia accesibilidad estructural, queda fuera del mediador. La decisión requiere definición campo a campo.
+- ΔE_T permanece separado en todos los casos.
+
+No se declara total el crosswalk hasta que cada subcampo X*, cada evento de ΔU* y cada diferencia de granularidad tenga regla explícita de correspondencia y estado 1/0/?.
+
+**Estado:** error de precedencia identificado y corregido documentalmente; MED-02 OPEN hasta crosswalk semántico completo. No se cambia el Core, no se aprueba una nueva ontología ni se autoriza ejecución.
