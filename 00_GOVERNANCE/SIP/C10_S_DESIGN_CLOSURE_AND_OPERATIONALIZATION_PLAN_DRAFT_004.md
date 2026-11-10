@@ -2130,3 +2130,12 @@ El crosswalk con C10-D1 §27.1 debe mapear ΔU* a altas/bajas/reconfiguraciones,
 El maestro §231 fija la clasificación por función semántica U/R/C/X/E. ΔX* representa el contexto efectivo constitutivo que altera accesibilidad, no una transformación ni una regla de admisibilidad. C10-D1 §27.1 no tiene una coordenada autónoma para ΔX: se conserva como contexto causal del DGP y sus consecuencias se reflejan, sin doble conteo, en A⁺/A⁻/A^reconf/ΔR/ΔC. Si el campo es un predicado se reclasifica en C; si es historia no constitutiva puede pertenecer a q bajo factibilidad; si no cambia accesibilidad queda fuera del mediador; si no se puede resolver queda UNKNOWN/?.
 
 Se define un registro de crosswalk campo a campo y gates MED-02a…d. La regla está definida/propuesta, pero el roster concreto del microdominio y la adjudicación de campos siguen OPEN. No se cierra MED-02 ni se autoriza ejecución.
+
+
+## 16.110 — Roster documental de superficies y campos del microdominio
+
+El maestro §232 consolida el roster parcial derivado de DEC-C10-069, la matriz CMP/PAR/REF/RUL/MET, las fichas F1/F2/A1/A2, B-M01…15, PROV-01…12 y el contrato de snapshots. Distingue U*/R*/C*/X*/E_T por función semántica. No asigna valores ni truth.
+
+La identidad lógica de referencia es C10S-SVC-REQUEST-PROCESSOR v1.0.0 / instancia -001 rev1 / CMP-SERVICE-LOGIC-001 / SERVICE_LOGIC / RUL-SVC-ENABLE-PROFILE-01. ENABLED y PROFILE son PAR nucleares; RETRY-COUNT es candidato no confirmatorio; REF no se presume vacío. Los contextos de runtime/host, recursos, permisos, red, seguridad, estado persistente, rendimiento y alternativas se clasifican campo a campo, sin asumir que toda superficie B-M sea X*.
+
+MED-02c3/c4/d siguen OPEN: faltan valores/campos efectivos por unidad/versión, matching temporal y adjudicación de UNKNOWN. No se declara crosswalk total ni autorización de ejecución.
