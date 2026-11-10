@@ -972,3 +972,19 @@ Se definen clases truth y salidas admisibles; errores FI, FI-IND, FA, TARGET_MIS
 
 **Cerrado documentalmente:** lógica de adjudicación, denominadores y taxonomía de error.  
 **OPEN:** umbrales/tolerancias, utilidad de bounds, multiplicidad, calibración, N/potencia, réplicas Monte Carlo y validación técnica del firewall. AN-03 DOCUMENTED / DENOMINATOR LOGIC SPECIFIED; AN-04 PARTIALLY SPECIFIED / NUMERIC THRESHOLDS OPEN; C-ANALYZER sigue OPEN. No ejecución.
+
+
+## 25. C-MED / MAP-01–02 — reconciliación D2→g y jerarquía causal (2026-11-10)
+
+Se reutilizan MAP-01/02 existentes en auditoría IV §14.6–14.7; no se crean contratos duplicados. MAP-01 ya define campos de identidad/versionado y registro de la política D2, pero sus valores materiales (actor, artefacto/hash, runtime, endpoint, ventanas, recepción, reintentos/rollback y detección de provisión de fondo) siguen abiertos. MAP-02 ya define el orden temporal y las mediciones separadas de W_programmed, W_attempt, receipt, S_install, C_dep*, A_f*, D_f* y ΔT_acc*, pero fuentes, ventanas, snapshots y evidencia siguen abiertos.
+
+Se fija la frontera causal:
+- ITT_Z^D2: efecto de asignar B_g0/B_g1; si hay vías colaterales, efecto de política/paquete.
+- θ_A(q): contraste general C10-D1 entre políticas factibles g1/g0 sobre el ΔT_acc* completo bajo régimen común q.
+- IIE_M candidato: mediación interventional secundaria por la distribución conjunta factible de M=ΔT_acc*, condicionada por H y L pre-M; no es efecto directo natural ni se obtiene por resta.
+
+D2 solo podría informar θ_Af(q*) focal si se demuestra B→g^Af, q* común, versiones, soporte y ausencia/identificación de rutas no focales. No equivale automáticamente a g sobre el espacio transformacional completo. A_f* y D_f* son predicado/indicador focal; no sustituyen M. ΔE_T permanece epistémico y fuera de M. ΔX* requiere el crosswalk semántico campo a campo de §§230–231.
+
+Se preservan los gates MAP-03…07 y MED-03/05. La clasificación de L depende de B→L, L→M y L→V_j por dimensión/horizonte. Sin población, q, soporte, interferencia, Value dimensional, fuentes y observación no se declara identificación.
+
+**Estado:** reconciliación conceptual/documental completada; MAP-01/02 MATERIAL OPEN; B_D2→g^Af no demostrado; B_D2→g general no presumible; C-MED OPEN. Sin aprobación de estimando/método, Design Freeze, implementación ni ejecución.
