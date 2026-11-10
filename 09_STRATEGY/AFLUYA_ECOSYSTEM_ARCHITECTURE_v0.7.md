@@ -1,5 +1,5 @@
 # AFLUYA — Arquitectura estratégica del ecosistema
-## Documento de concepto, posicionamiento y arquitectura v0.7
+## Documento de concepto, posicionamiento y arquitectura v1.0
 
 **Estado:** DRAFT — arquitectura estratégica y tecnológica ampliada; integra la arquitectura pública de nombres y la decisión de dominio principal, pendientes de validación registral y jurídica.  
 **Fecha:** 2026-11-10
