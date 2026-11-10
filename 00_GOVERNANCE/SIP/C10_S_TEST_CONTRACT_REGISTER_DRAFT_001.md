@@ -1475,3 +1475,10 @@ No se crea un nuevo test ID ni fixture. Esta especialización operacionaliza el 
 **Adversariales a cubrir en la especificación (sin fixtures):** cambio de versión efectiva con regla de compatibilidad constante; regla de compatibilidad que cambia sin cambiar el entorno; cambio de modo de despliegue que abre/cierra una ruta; evidencia/logs que cambian sin cambio estructural; cambio post-t3; un mismo campo documental que mezcla valor y regla.
 
 El roster y la adjudicación de estos casos siguen OPEN. No se amplían contratos P177/P182/P183 ni se afirma ejecución.
+
+
+## 79. Roster de campos y regla de clasificación para MED-02c
+
+La evaluación debe consumir el roster del maestro §232, no crear un roster alternativo. No se crean fixtures ni valores. Por cada campo real se exigirá identidad/versionado, unidad/frontera, vigencia, tipo semántico U/R/C/X/E_T, valor basal/post o diff, efecto estructural, mapping, event_id, truth y observación, evidencia/cobertura y adjudicación.
+
+Los adversariales de B-M01…15 se mantienen como dominios de inspección, no como hechos observados. No inventariar = UNKNOWN/?, no 0. Campos mixtos se descomponen o quedan UNKNOWN. E_T nunca entra en ΔT_acc*. Las rutas F y A conservan evidencia y adjudicación separadas.
