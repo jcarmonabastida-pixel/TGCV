@@ -1437,3 +1437,21 @@ Esta sección no crea IDs de prueba nuevos ni declara pruebas ejecutadas. Organi
 
 **C-MED:** requiere DAG/orden temporal, estimando e intervención mediadora, confusores inducidos, soporte secuencial, rutas colaterales, método y sensibilidad. **C-ANALYZER:** requiere denominadores, verdad de identificación por DGP, falsa identificación/atribución, abstención correcta/falsa abstención y tolerancias ex ante. Ambos gates OPEN.
 
+
+
+## 76. Especialización propuesta de contratos para C-MED/C-ANALYZER (2026-11-10)
+
+Esta sección especializa contratos existentes sin crear IDs nuevos ni declarar pruebas ejecutadas.
+
+| Contrato fuente | Uso en la especialización | Límite |
+|---|---|---|
+| P177-06 | Ajuste basal preespecificado y prohibición de ajustar ITT por variables post-Z | No identifica mediación |
+| P177-10 | Recuperación puntual donde la truth permite identificación | Debe complementarse para falsos positivos y abstención |
+| P177-12 | Efecto de política frente a atribución a accesibilidad | No define por sí solo θ_A(q) ni el efecto interventional |
+| P182-01/02/06/07 | Validez, circularidad, acuerdo y error de medición de A | No resuelve confusión mediador–Value |
+| P182-11 | Firewall Generator/Analyzer y leakage | Requiere evidencia de aislamiento y provenance |
+| P183-08/10/11/12 | Ausencia, sensibilidad, bounds y dictamen por estimando | No sustituye DAG/método mediacional |
+
+**Criterio de evaluación:** estado de identificación adjudicado por estimando×dimensión×DGP×soporte; recuperación solo en identificación puntual; bounds en parcial; falsa identificación/atribución y abstención adjudicadas con denominadores explícitos. Tolerancias y umbrales siguen OPEN.
+
+No se amplían P177/P182/P183 en esta sección; cualquier especialización contractual futura debe justificar que no duplica criterios existentes y conservar versionado/provenance.
