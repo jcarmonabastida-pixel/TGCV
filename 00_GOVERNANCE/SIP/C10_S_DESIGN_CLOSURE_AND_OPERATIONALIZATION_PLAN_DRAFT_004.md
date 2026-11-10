@@ -2262,3 +2262,12 @@ Se operacionaliza el DAG preexistente (§233) y la especificación C-MED (§249)
 La clasificación de L es relativa al estimando y dimensión V_j: solo es confusor mediador–Value inducido si B la afecta y causa tanto M como V_j por una ruta pertinente. Los dominios de recursos, permisos, dependencias, runtime, capacidad y C_dep* no se clasifican automáticamente. Las rutas B→L→M→downstream→V, B→L→V, vías A1/A2/colaterales, observación diferencial e interferencia quedan como hipótesis a auditar.
 
 Siguiente gate material: crosswalk campo a campo del roster U*/R*/C*/X*/E_T, con field_id ya existente, unidad/frontera, tiempo, snapshot, rol, fuente, cobertura, truth/observed y relación con cada V_j. No se inventan campos ni se rellenan valores. Outcome/Value (§224), microdominio, fuentes, topología de interferencia y evidencia de rutas permanecen OPEN. Sin Design Freeze, implementación, simulación ni ejecución.
+
+
+## 16.125 — MED-02c: crosswalk documental de subcampos U*/R*/C*/X*/E_T
+
+Se añade maestro §251 y ledger AB §19, descomponiendo el roster ya existente de §232 sin duplicar matrices ni crear field_id/event_id. Se explicitan los subcampos documentados de transformaciones e identidades, interfaces/dependencias, CMP/PAR/RUL, runtime/host, recursos, autorización/ACL, red, configuración/datos, seguridad, estado persistente, observabilidad/oráculo, rendimiento y alternativas A1/A2. El tipo es primario y condicional por función; las familias mixtas se descomponen, y los campos no inventariados permanecen UNKNOWN.
+
+Se conserva AB-TIME-01: hasta armonización aceptada, usar nombres de eventos y timestamps/snapshots fuente, sin renumerar índices. Se mantiene separación de truth/observed/E_T y regla de no doble conteo. La clasificación de L como confusor inducido exige B→L, L→M y L→V_j por estimando/horizonte.
+
+**Resultado:** avance documental de MED-02c; no cierre material. MED-02c3/c4/d, field_id/event_id efectivos, instancia, fuentes/cobertura, matching, MD-C1/MD-C4, Outcome/Value dimensional y DAG por V_j siguen OPEN. Sin Design Freeze, implementación, fixtures ni ejecución.
