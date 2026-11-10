@@ -398,7 +398,7 @@ Esta integración es un crosswalk documental, no una especificación ejecutable.
 
 ## 14. Crosswalk semántico AB-04 para las cards sintéticas (2026-11-10)
 
-La definición de field_id y su asignación por card está en §12.8–12.9 de `C10_S_OPTION_A_FSTAR_AND_TRANSFORMATION_CARDS_PROPOSAL_DRAFT_001.md`. Esta matriz conserva su autoridad para la clave temporal y la lógica de adjudicación: unidad×escenario×branch_id×step_k×TID/SID×SID/RID cuando exista×input_state×snapshot exacto×predicate_id×t_eval×fuente/versión; truth_DGP y observed_state separados.
+La definición de field_id y su asignación por card está en §12.8–12.9 de `C10_S_OPTION_A_FSTAR_AND_TRANSFORMATION_CARDS_PROPOSAL_DRAFT_001.md`. Esta matriz conserva su autoridad para la clave temporal y la lógica de adjudicación: unidad×escenario×branch_id×step_k×TID/SID/RID cuando exista×input_state×snapshot exacto×predicate_id×t_eval×fuente/versión; truth_DGP y observed_state separados.
 
 Reglas no alteradas:
 - ID/REL/COND/AUTH/RES/DEP/¬BLOCK determinan accesibilidad estructural; APP se evalúa desde el estado de entrada de cada paso y no se incorpora automáticamente a A_f*.
