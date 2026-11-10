@@ -2244,3 +2244,12 @@ Se incorpora la matriz de dependencias y handoff del ledger AB §16 y maestro §
 El paquete C §§221–229 puede continuar con contratos semánticos y simbólicos, jerarquía de estimandos, reglas de población pre-Z, roster de 16 estados C_dep*, R0–R3, trivalencia y separación Generator/Analyzer/Evaluator. Debe preservar AB-M01…M11 y cada input OPEN/UNKNOWN con su procedencia. No puede tratar como resueltos schemas físicos, identidades ejecutables, C0/G/H_time, U_G/cobertura, evidencia MD-C1/MD-C4, probabilidades D2/θ, población/q_X*/soporte, interferencia, oráculo, truth por unidad ni missingness.
 
 No se declara AB cerrado ni paquete C aprobado. §§221–229 son contratos/propuestas documentales; C-MED y C-ANALYZER mantienen cobertura parcial y la mediación causal no está identificada. Sin Design Freeze, implementación, simulación ni ejecución; scientific_execution=false; execution_authorized=false.
+
+
+## 16.123 — C-MED: estimando interventional, confusión inducida y reglas de identificación (2026-11-10)
+
+Se incorpora la especialización del maestro §249 y ledger AB §17. Se separan ITT de Z, efecto del régimen material B, mediación interventional por la distribución conjunta factible de ΔT_acc* y pregunta primaria C10-D1 θ_A(q). Se fija una referencia explícita b1 para el estimando interventional candidato; cualquier término complementario incluye rutas restantes y no se etiqueta como efecto directo puro.
+
+La historia post-B pre-M L puede ser confusor mediador–Value inducido por tratamiento. El análisis requiere DAG longitudinal, historia medida suficiente, método g compatible, positividad secuencial, soporte, intervención mediadora factible, consistencia/versiones, medición válida e interferencia tratada. No se resuelve con regresión convencional ni ajuste por covariables postratamiento como si fueran basales.
+
+MED-03 y MED-05 siguen OPEN; los inputs AB-M03…M11 permanecen abiertos donde corresponda. No se aprueba estimando final, método, parámetros, tolerancias ni potencia; sin Design Freeze, implementación ni ejecución.
