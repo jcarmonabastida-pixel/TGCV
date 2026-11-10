@@ -2158,3 +2158,12 @@ Quedan ordenados 11 inputs: (AB-M01) encoding REF/AST; (M02) schema físico y ca
 La canonicalización JCS aceptada por DEC-C10-074 se limita al envelope UDG-01; no se extrapola al payload de configuración. Los dos operand bindings se representan una sola vez; no se cuenta como REF de configuración una referencia UDG, FK U_G o EDGE.
 
 **Estado:** AB IN_PROGRESS; ningún gate material se cierra por esta actualización. El próximo trabajo documental se concentra en M01/M02, M03 y M04; los valores H*, D2, q_X* y topología requieren decisión o evidencia explícita. Sin implementación ni ejecución.
+
+## 16.113 — Reconciliación documental AB-M01/M02 (2026-11-10)
+
+La revisión de DEC-C10-054/068/069/074/076/077/078/093/094, el contrato abstracto, catálogo, matriz M, gramática y plantilla U_G concluye:
+
+- AB-01: roster lógico y dos operand bindings semánticos DESIGN RESOLVED; encoding físico REF/AST, IAM instanciado y cobertura OPEN. UDG refs/FKs/EDGE no son objetos REF de configuración por defecto.
+- AB-02: BOOL/ENUM y mapping semántico aceptados; namespaces, schema/payload físico, serialización y canonicalización de C_src/C_dst/M OPEN. JCS solo cubre envelope UDG-01; no se extrapola. DEFAULT no forma parte del baseline confirmatorio ENABLED/PROFILE.
+
+No se cambia ninguna decisión aceptada ni se declara cierre material. Véase ledger AB §8. La siguiente pasada documental puede abordar AB-M03/M04; los datos/valores de H*, D2, q_X* y topología no se rellenan por inferencia.
