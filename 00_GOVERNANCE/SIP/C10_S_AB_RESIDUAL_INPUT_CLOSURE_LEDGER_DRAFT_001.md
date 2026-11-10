@@ -629,3 +629,75 @@ No se adjudicará `observed_state=0` por ausencia de evento registrado si la cob
 **OPEN:** contenido material de los cuatro contratos; unidad y artefacto; entorno/snapshot; ventanas; criterios de éxito; cobertura; protocolo de evidencia/adjudicación; versiones y hashes; definición de O; alcance de C; eventual regla O⇒I; distribución conjunta y sensibilidad.
 
 **Dictamen:** AB-07 dispone ahora de una plantilla contractual y un gate de admisibilidad explícitos. Esto reduce ambigüedad documental, pero no cierra los contratos ni AB-07 materialmente. AB sigue IN_PROGRESS; no Design Freeze, fixtures, implementación, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 13. AB-08 — algoritmo documental de elegibilidad, población objetivo y soporte (2026-11-10)
+
+**Base histórica reutilizada:** maestro §§50.2–50.6 y 219.5–219.7; aceptación expresa AB-08-POP de §12; no se crea una tercera población ni se redefine q_X*. Esta sección operacionaliza el criterio aceptado sin introducir valores, pesos o tamaños muestrales.
+
+### 13.1 Objetos que deben mantenerse separados
+
+1. **P*_τ2:** población objetivo primaria para evaluar la apertura de accesibilidad de la transformación focal τ2. No exige ausencia de toda ruta funcional alternativa.
+2. **P*_F:** subconjunto de P*_τ2 para el objetivo más restrictivo de apertura exclusiva de F*. Requiere ausencia respaldada de alternativas funcionalmente substituibles en el universo, granularidad, condiciones y horizonte aplicables.
+3. **q_X*:** distribución objetivo, pre-Z y versionada de covariables/contextos X dentro de la población declarada. No es la regla de elegibilidad, no es una probabilidad de cumplimiento y no equivale a la distribución de C_dep*.
+4. **Soporte común:** subconjunto de historias/estratos donde las políticas comparadas son ambas factibles y tienen probabilidad positiva bajo el mecanismo de asignación/provisión relevante.
+5. **Muestra observada:** unidades efectivamente incorporadas y medidas. No redefine retrospectivamente P* ni q_X*.
+
+### 13.2 Secuencia determinista pre-Z
+
+El algoritmo documental de elegibilidad seguirá este orden, usando exclusivamente información disponible y congelada antes de Z y de cualquier programación B:
+
+**Paso 0 — congelación:** fijar versión del protocolo, unidad de elegibilidad, instante pre-Z, catálogo de variables C0, snapshots, unidad de análisis prevista y población marco. Cada dato tendrá source/version/provenance y estado de cobertura.
+
+**Paso 1 — condiciones constitutivas:** adjudicar cada condición constitutiva basal del sistema y la capacidad de evaluar ambas políticas. Resultado por condición: SATISFIED / NOT_SATISFIED / UNKNOWN. Una condición no satisfecha excluye según regla preespecificada; UNKNOWN no se convierte en falso ni en verdadero y deja elegibilidad indeterminada.
+
+**Paso 2 — dependencia y accesibilidad focal basales:** adjudicar por protocolos independientes D_f,0 y A_f,0*. Para P*_τ2 se requiere D_f,0=0 y A_f,0*=0, ambos respaldados antes de Z. Discordancia entre ambos, o cualquiera UNKNOWN, no se resuelve por inferencia automática: pasa a auditoría o queda como elegibilidad indeterminada.
+
+**Paso 3 — elegibilidad P*_τ2:** incluir solo unidades con condiciones constitutivas satisfechas, ambas políticas evaluables/factibles según C0, D_f,0=0 y A_f,0*=0, con evidencia/cobertura suficiente. La ruta alternativa basal F_alt,0 no es criterio de exclusión de P*_τ2; se registra como modificador/característica basal.
+
+**Paso 4 — elegibilidad P*_F:** dentro de P*_τ2, adjudicar F_alt,0 sobre universo funcional cerrado, granularidad, condiciones y horizonte definidos. Incluir en P*_F únicamente si F_alt,0=0 está respaldado exhaustivamente. F_alt,0=1 excluye de P*_F, no de P*_τ2; F_alt,0=UNKNOWN mantiene pertenencia a P*_τ2 si los demás criterios se cumplen, pero no confirma P*_F.
+
+**Paso 5 — congelación de q_X*:** definir X y la distribución objetivo q_X* sobre P*_τ2 (y, si procede, una distribución separada para P*_F), con regla y versión pre-Z. Sus pesos/proporciones requieren datos fuente o estipulación sintética expresa. No recalcular q_X* por brazo, recepción, intento, instalación, selección, ejecución, Outcome o Value.
+
+**Paso 6 — soporte y positividad:** cruzar los estratos/historias con masa positiva bajo q_X* con la factibilidad de las dos políticas, la probabilidad de asignación y la posibilidad de observar los resultados requeridos. El soporte común se declara explícitamente. Una celda fuera de soporte no se extrapola; antes de Z se puede redefinir la población objetivo mediante regla explícita, o se conserva el objetivo y se informa que el contraste no está identificado en esa región. No se permite recortar después de observar resultados.
+
+**Paso 7 — unidades e interferencia:** declarar separadamente unidad de asignación, unidad de análisis y unidad de interferencia. Si B, host, runtime, permisos, recursos o dependencias son compartidos, definir cluster o mapa de exposición/vecindad y registrar spillovers, crossover y carryover. La independencia individual no es un default.
+
+### 13.3 Tabla de clasificación y datos desconocidos
+
+| Condición basal | D_f,0 | A_f,0* | F_alt,0 | Resultado |
+|---|---:|---:|---:|---|
+| No satisfecha | cualquiera | cualquiera | cualquiera | Fuera de P*_τ2 y P*_F |
+| UNKNOWN | cualquiera | cualquiera | cualquiera | Elegibilidad indeterminada |
+| Satisfecha | 0 | 0 | 0 respaldado | P*_τ2 y P*_F |
+| Satisfecha | 0 | 0 | 1 respaldado | P*_τ2; fuera de P*_F |
+| Satisfecha | 0 | 0 | UNKNOWN | P*_τ2; P*_F no confirmado |
+| Satisfecha | 1 | cualquiera | cualquiera | Fuera de población focal basal; discordancia con A_f,0* requiere auditoría |
+| Satisfecha | cualquiera | 1 | cualquiera | Fuera de población de apertura basal; discordancia con D_f,0 requiere auditoría |
+| Satisfecha | UNKNOWN | cualquiera | cualquiera | Elegibilidad P*_τ2 indeterminada |
+| Satisfecha | cualquiera | UNKNOWN | cualquiera | Elegibilidad P*_τ2 indeterminada |
+
+La tabla no sustituye el contrato de C0 ni los protocolos de medición de D_f,0, A_f,0* y F_alt,0. No se trata UNKNOWN como 0.
+
+### 13.4 Soporte: dos niveles y límites
+
+- **Soporte de asignación:** para cada estrato/historia relevante en q_X*, la asignación comparada debe tener probabilidad positiva bajo el diseño real. Aleatorización no se presume por la mera existencia de Z.
+- **Soporte de políticas/mecanismos:** ambas políticas g0/g1 deben ser materialmente factibles y definidas en la misma historia/estrato. La disponibilidad teórica no basta si la política no puede implementarse en ese contexto.
+- **Soporte de observación:** deben existir posibilidades no diferenciales o modelables de observar elegibilidad basal, estados técnicos y resultados. La falta de medición no se convierte en ausencia del fenómeno.
+- **Soporte de transporte/estandarización:** q_X* solo puede asignar masa a estratos con soporte para el contraste que se pretende estandarizar. No se extrapola a regiones no observadas/no factibles.
+
+Si se usa un estimando estandarizado, su dominio será el soporte común explícito. Cualquier cambio de dominio cambia la población/estimando y debe versionarse; no se presenta como el mismo efecto poblacional sin justificación.
+
+### 13.5 Exclusiones, missingness y análisis
+
+Todas las exclusiones deben registrar unit_id, criterio, valor basal, fuente, momento, estado de cobertura y versión de regla. La exclusión es anterior a Z. Las unidades UNKNOWN se conservan en el flujo de elegibilidad con su razón; no se borran del denominador de flujo. El análisis de sensibilidad a clasificación y missingness se transfiere a C, sin inventar tasas en AB.
+
+No se excluye ni redefine la población por recepción, cumplimiento, intento, instalación, C_dep*, A_f, ΔT_acc, Reach, selección, ejecución, Outcome o Value post-Z. Estas variables pueden ser mediadores, resultados o mecanismos y su ajuste/exclusión requiere estimando causal explícito.
+
+### 13.6 Inputs y dictamen
+
+**Resuelto a nivel de diseño:** secuencia C0 pre-Z; criterios diferenciados P*_τ2/P*_F; rol no excluyente de F_alt,0 para P*_τ2; q_X* separado de elegibilidad y C_dep*; niveles de soporte; regla UNKNOWN; exclusión solo pre-Z; separación de unidades e interferencia.
+
+**OPEN:** catálogo y contrato material de C0; unidad y población marco; protocolos y cobertura de D_f,0/A_f,0*/F_alt,0; definición de X y q_X* numérico; factibilidad por estrato de g0/g1; probabilidades de asignación; mapa real de clusters/exposición; missingness y tamaños muestrales (transferidos a C).
+
+**Dictamen:** AB-08 tiene un algoritmo documental reproducible en principio y coherente con las reglas previamente aceptadas. No está materialmente cerrado: faltan la población y los datos/valores concretos, soporte, q_X*, topología e interferencia. AB permanece IN_PROGRESS; no Design Freeze, fixtures, implementación, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
