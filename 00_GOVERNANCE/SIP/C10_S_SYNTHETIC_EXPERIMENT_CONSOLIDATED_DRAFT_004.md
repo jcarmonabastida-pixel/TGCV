@@ -11486,3 +11486,99 @@ El Analyzer no recibe truth_DGP ni potenciales. El Evaluator adjudica la recuper
 MED-05 queda **DOCUMENTED / CANDIDATE**, no cerrado. Antes de su cierre material requieren resolución o evidencia: MED-03 (historia L campo×tiempo×V_j); MED-04 (políticas factibles y q); MED-06 (sensibilidad/bounds); §224 (Outcome/Value); MAP-01…07; AB inputs de población, versiones, soporte, snapshots, cobertura, interferencia y oráculo; AN-04 (métricas, tolerancias y abstención); y una elección justificada del método tras conocer la instancia y el DGP.
 
 No se aprueban supuestos, estimando final, método, parámetros, tamaño muestral, potencia ni umbrales. No se crean fixtures ni datos; no se implementa, valida localmente, simula o ejecuta. Sin Design Freeze. scientific_execution=false; execution_authorized=false.
+
+# 263. MED-06 — contrato de sensibilidad, identificación parcial y bounds para C-MED (2026-11-10)
+
+**Precedencia y reutilización.** Especializa §225.6 (sensibilidad, bounds y tipping points), §§225.7–225.9 (evaluación, recuperación y dictámenes), §§249.5–249.7 (identificación mediacional y no identificación), §262 (gates ID-1…ID-9) y §256 (adjudicación del Analyzer). No crea un estimando, una taxonomía paralela ni umbrales nuevos. Es una especificación de diseño para C-MED, no una aprobación de supuestos o de método.
+
+## 263.1. Alcance y unidad de sensibilidad
+
+La unidad de análisis de sensibilidad es la misma tupla de adjudicación: estimando × V_j/Outcome × población y unidad × horizonte × régimen/versión × condición de soporte. El foco de MED-06 es IIE_M,j^(b1)(b1,b0;q), con M=ΔT_acc* conjunto y referencia b1, conservando la intervención estocástica y la historia H/L de §262.
+
+Se mantienen separados:
+- θ_A(q): contraste primario C10-D1 entre políticas factibles g1/g0 bajo q;
+- ITT_Z^D2 y ψ_policy^D2: efecto de asignación/paquete;
+- IIE_M: mediación interventional secundaria bajo b0/b1 y su población/soporte;
+- LATE_f^D2 y θ_Af(q_X*): objetos focales con sus propios supuestos.
+
+Un análisis de sensibilidad del IIE_M no identifica ni acota automáticamente θ_A(q), ITT, LATE o θ_Af. Los resultados tampoco se transfieren entre dimensiones V_j, poblaciones, horizontes o versiones no equivalentes.
+
+## 263.2. Registro de amenazas y parámetros de sensibilidad
+
+Cada ficha existente de §249.7 se amplía con un registro de amenaza, sin crear un inventario de variables. Para cada amenaza debe consignar: supuesto/gate ID afectado; mecanismo causal de violación; parámetro o función de sensibilidad; escala y dirección; rango/escenarios y justificación externa o DGP; método de análisis; estimación de referencia; curva/superficie de tipping point; efecto sobre identificación y soporte; y decisión/limitación resultante.
+
+La matriz mínima de amenazas para IIE_M incluye:
+
+| Amenaza | Qué puede invalidar | Sensibilidad que debe parametrizarse | Evidencia/diagnóstico requerido |
+|---|---|---|---|
+| Confusión M–V no medida, incluida U que varía con L | ID-4 e intercambiabilidad secuencial | Asociación residual de U con M conjunto y V_j, o función de sesgo equivalente; considerar confusión dependiente de H/L | DAG por V_j, roster de causas medidas, fuentes y justificación de rangos |
+| Confusión B–historia/outcome no medida | ID-3 | Fuerza de asociación residual entre causas omitidas, B y evolución/V_j | Mecanismo real de asignación/recepción, diseño y covariables |
+| L incompleta o mal medida | ID-2/4/5 | Error de medición/cobertura de L y efecto de omitir sus componentes en la distribución de M y V_j | Crosswalk campo×tiempo×V_j, snapshots y cobertura |
+| Error de medición de M=ΔT_acc* | ID-1/6/7 | Matriz o modelo de error conjunto, sensibilidad/especificidad cuando proceda, error dependiente de versión, componente y estado | Oráculo independiente, validación y adjudicación; no sustituir M por A_f*, D_f* o Reach |
+| Error de Outcome/Value | ID-7 y validez del resultado | Error, desacuerdo, sesgo de evaluador y dependencia del cegamiento/observabilidad | Fichas §224, fuentes, instrumentos, repetición y acuerdo |
+| Positividad débil o soporte cruzado insuficiente | ID-5 | Umbral/definición de regiones de soporte, masa fuera de soporte, truncamiento solo como diagnóstico y sensibilidad a extrapolación | Soporte condicional por H,L, versión y política; tamaño efectivo |
+| Missingness/censura/selección postratamiento | ID-7 | Parámetros de selección/no respuesta, desplazamiento del resultado no observado y dependencia con historia/resultado potencial | Estado de observación §224, razones, tiempo y patrones por régimen |
+| Interferencia, recursos compartidos y carryover | ID-8 | Intensidad/alcance de spillover, exposición vecinal, dependencia compartida y persistencia temporal | Unidad de exposición, topología, clúster, secuencia y snapshots |
+| Versiones, incumplimiento y provisión de fondo | ID-1/3/5/6 | Mezcla de versiones, desviación asignada/recibida y prevalencia de provisión no registrada | Identidades/hash, event log, receipt, rollback y equivalencia MAP-04 |
+| Especificación e interacciones | ID-9 | Alternativas plausibles de forma funcional, interacción B×L×M, heterogeneidad y orden longitudinal | DGP, DAG, validación fuera de muestra cuando corresponda y diagnósticos |
+
+Los parámetros no se fijan ahora. No se asumen independencia entre amenazas ni se varía una amenaza cada vez como sustituto de escenarios conjuntos: las interacciones entre confusión, error, selección y soporte pueden ser decisivas.
+
+## 263.3. Protocolo de tipping points
+
+Para cada amenaza y para combinaciones justificadas:
+1. definir el valor de referencia bajo el conjunto de supuestos de análisis;
+2. variar el parámetro en un rango defendible, incluyendo escenarios adversariales del DGP;
+3. recalcular estimación, incertidumbre y, cuando proceda, conjunto identificado;
+4. localizar el punto/superficie en que cambia signo, cruza el umbral sustantivo preespecificado, pierde cobertura/precisión o cambia el dictamen IDENTIFIED/PARTIALLY_IDENTIFIED/NOT_IDENTIFIED/INDETERMINATE;
+5. informar si el tipping point está dentro o fuera del rango sustentado por evidencia, sin llamar plausible a un valor por el mero hecho de ser matemáticamente posible.
+
+El tipping point no demuestra la plausibilidad de la confusión omitida ni rescata identificación. Si el umbral sustantivo de V_j no está definido en §224, solo se reportan cambios de signo, magnitud y estado, no un criterio clínico/económico/normativo inventado.
+
+## 263.4. Identificación parcial y familias de bounds admisibles
+
+Los bounds se eligen según la amenaza y el estimando, y deben derivarse de restricciones explícitas. No se permite etiquetar cualquier intervalo de incertidumbre estadística como intervalo de identificación.
+
+Familias candidatas, sujetas a compatibilidad y justificación:
+- **Outcome acotado y observación incompleta:** cotas worst-case para resultados no observados cuando existen límites válidos de la escala; separar anchura debida a ausencia de la incertidumbre muestral.
+- **Selección/missingness:** cotas bajo restricciones explícitas del mecanismo de selección; bounds tipo Lee solo si la monotonicidad de selección requerida es defendible para el contraste y la población. No presumirla.
+- **Confusión no medida:** regiones de identificación/sensibilidad bajo límites explícitos a la fuerza de confusión residual o restricciones sobre causas omitidas; si no hay límites defendibles, declarar que no existe bound informativo.
+- **Error de medición:** cotas o corrección parcial usando matrices/modelos de error validados o acotados; si el error conjunto de M no puede acotarse, no declarar recuperado el IIE.
+- **Soporte limitado:** bounds/restricciones para masa fuera de soporte solo si se conocen límites del resultado y se define el target; cualquier target restringido cambia la población y requiere declaración explícita. Truncar pesos no convierte la región extrapolada en identificada.
+- **Interferencia/carryover:** bounds por exposición parcial o escenarios de spillover cuando la estructura de exposición y sus límites estén definidos; no usar SUTVA individual por defecto.
+
+Para cada bound se registran: estimando exacto; población y horizonte; supuestos que lo generan; datos/soporte utilizados; conjunto identificado [inferior, superior] o región; método de cálculo; incertidumbre muestral separada; anchura; sensibilidad a supuestos; y regla de interpretación. Un bound es **informativo** solo si reduce el conjunto compatible respecto del rango trivial permitido por la escala/definición y esa reducción no depende de supuestos ocultos. Si coincide con el rango trivial, se informa como no informativo, no como identificación parcial útil.
+
+## 263.5. Confusión mediador–resultado y L inducida por B
+
+La sensibilidad de U no medida se aplica después de especificar la historia L relevante bajo la referencia b1, según §262. No se debe ocultar confusión inducida por B mediante ajuste basal ni combinarla con una sensibilidad genérica de confusión basal. Se distinguen:
+- causas omitidas de B y resultado;
+- causas omitidas de M y V_j condicionadas por H,L;
+- error/omisión de componentes observados de L;
+- falta de soporte de G_M^b0 en historias L con peso bajo b1.
+
+Si el conjunto de historias L no está observado o no puede acotarse, la sensibilidad no transforma automáticamente el IIE puntual en identificado. Solo cabe una región parcial si se especifican límites defendibles para la distribución ausente y se deriva un conjunto finito/informativo; en otro caso, NOT_IDENTIFIED o INDETERMINATE según la causa de la falta.
+
+## 263.6. Reglas de dictamen y relación con §256/§262
+
+Se reutilizan los estados de §249.6 y §262.6; MED-06 no los renombra:
+- **IDENTIFIED:** todos los gates pertinentes superados; sensibilidad no altera la identificación bajo el rango justificado y método válido.
+- **PARTIALLY_IDENTIFIED:** se deriva un conjunto no trivial bajo restricciones explícitas; informar anchura y dependencia de supuestos.
+- **NOT_IDENTIFIED:** amenaza no acotada, soporte esencial fallido, intervención no factible o confusión no medida sin restricciones defendibles.
+- **INDETERMINATE:** falta evidencia para determinar el estado de medición, cobertura, verdad o amenaza; no convertir UNKNOWN en ausencia de amenaza.
+
+La salida del Analyzer debe incluir escenario de sensibilidad, parámetros/rangos usados, supuesto afectado, estado, estimación/conjunto, anchura, tipping point y provenance. El Evaluator contrasta contra truth del DGP sin filtrar truth al Analyzer. Se conservan métricas/denominadores y reglas de abstención de §§225.7–225.9 y §256. Un intervalo de confianza no sustituye un conjunto identificado; un bound no se puntúa como recuperación puntual; la abstención correcta ante amenaza no acotada no es fallo del Analyzer.
+
+## 263.7. Diseño adversarial mínimo para el DGP (contratos, no fixtures)
+
+Reutilizando los escenarios R0–R3 y la taxonomía adversarial de §225.6, el DGP deberá poder representar, por separado y en combinaciones justificadas: (a) confusión mediador–V_j nula/leve/fuerte con medición completa de L; (b) confusión no medida con fuerza graduada; (c) L incompleta o medida con error; (d) error diferencial de M y de V_j; (e) positividad cruzada degradada; (f) missingness dependiente de historia/resultado; (g) versiones no equivalentes y provisión de fondo; (h) spillovers/carryover; (i) especificación/interacciones adversariales; y (j) casos donde solo un bound no trivial sea recuperable frente a casos donde ningún bound informativo exista.
+
+Cada escenario debe tener truth separada, supuestos verdaderos, parámetro adversarial, soporte, potenciales y regla de salida esperada, sellados para Evaluator. El Generator no comunica etiquetas ni parámetros al Analyzer. No se asignan niveles numéricos, probabilidades, prevalencias, correlaciones, escalas o semillas hasta completar AB, §224, MED-03/04 y la justificación del DGP. No se crean todavía fixtures ni tablas de truth.
+
+## 263.8. Dependencias, cierre y límites
+
+MED-06 queda **DOCUMENTED / PARTIALLY SPECIFIED**. La estructura de amenazas, tipping points, familias candidatas de bounds, criterio de bound informativo y dictámenes queda documentada. Permanecen OPEN: rangos y parámetros de sensibilidad; escala/rango de cada V_j; datos y soporte condicional; historia L y error de M; mecanismo de missingness/censura; topología de interferencia; versiones; método de cálculo de cada bound; escenarios conjuntos; y umbrales/tolerancias AN-04.
+
+El cierre requiere: MED-03/04/05 compatibles; fichas §224; entradas materiales AB/MAP; selección justificada del método; rangos respaldados por evidencia o por diseño adversarial explícito; demostración de cobertura/anchura de bounds; criterios AN-04 ex ante; y trazabilidad a §225.6–225.9 y P177/P178/P179/P182/P183. No se aprueba identificación, bound concreto, parámetro, rango, estimador, umbral, N o potencia.
+
+Sin Design Freeze, implementación, fixtures, simulación ni ejecución científica. scientific_execution=false; execution_authorized=false.
