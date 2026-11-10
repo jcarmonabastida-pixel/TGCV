@@ -2732,3 +2732,15 @@ La propuesta completa y sus límites constan en ledger AB §11. No constituye ac
 | MD-C1/MD-C4 y cobertura | OPEN / NONE | no se sustituye evidencia material por estipulación DGP |
 
 La aceptación no cierra AB, no aprueba causalidad empírica ni autoriza Design Freeze, implementación o ejecución. AB continúa IN_PROGRESS.
+
+## 136. AB-M01 — resolución semántica REF/AST (2026-11-10)
+
+| Subgate | Estado | Resolución |
+|---|---|---|
+| Naturaleza de los dos operand bindings | DESIGN RESOLVED | Referencias tipadas AST→PAR: ENABLED BOOL y PROFILE ENUM |
+| Objetos REF por esos bindings | NOT APPLICABLE | No son relaciones/dependencias constitutivas; no duplicar |
+| Encoding/schema AST físico | OPEN | No definido por el perfil AST 4/16/16 |
+| Serialización/canonicalización | OPEN | JCS UDG-01 no se extrapola al payload |
+| Integridad/versionado del binding | OPEN | Debe fijar clave/versión PAR del snapshot y tipo concordante |
+
+Un REF separado requiere relación constitutiva independiente. Fuente: ledger AB §13. Sin parser, constraints, fixture ni validación.
