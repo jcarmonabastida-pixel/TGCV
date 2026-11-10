@@ -186,3 +186,47 @@ El orden causal sustantivo es compatible, pero los índices t−1/t0/t1 no está
 | AB-M06: aislamiento y no-afectación A1/A2 | OPEN |
 
 No se ha inventado ninguna función transformacional, TID, dato de campo, estado truth, timestamp ni cobertura.
+
+## 10. Reconciliación AB-M05…M11 y precisión sobre H (2026-11-10)
+
+### 10.1. AB-M05 — F*, C0, G, H y oráculo
+
+DEC-C10-094 acepta G como unidad lógica de servicio y roster constitutivo; C0 como snapshot basal inmutable anterior a Z y programación B, con identidad/versiones, fuente/destino, runtime/host, permisos, recursos, estados F/A, rutas de fondo, unidad/cluster, reloj/ventana y versiones M/IAM/oráculo. F* es común y no compensatorio; FP-08 es probatorio y separado.
+
+**AB-TIME-02 / H-01:** H* en DEC-C10-094 es horizonte temporal común, con ancla, valor y unidad por fijar. La Path Predicate Matrix §2 también usa H=3 como profundidad máxima candidata del grafo de transformaciones, con rutas de longitud 2. Profundidad de ruta y horizonte temporal no son el mismo objeto y no pueden compartir el símbolo/valor por inferencia. Se debe reservar, por ejemplo, H_path para profundidad y H_time para ventana temporal, sin alterar las decisiones hasta su aceptación formal.
+
+El oráculo se define como independiente de ruta y de Outcome/Value, versionado antes de fixtures, con separación Generator/Analyzer/Evaluator y cegamiento cuando sea viable. Sigue sin implementación, validación, evidencia de independencia ni adjudicación aplicada.
+
+### 10.2. AB-M06 — MD-C1/MD-C4
+
+El manifiesto B-M01…15 y los contratos PROV-01…12 definen qué inspeccionar. Las superficies siguen NO INVENTARIADO/NONE; ARCH-B1 es candidata, no implementación. MD-C1 (manifiesto completo de cambios de B) y MD-C4 (no-afectación funcional de A1/A2) permanecen OPEN. No puede afirmarse aislamiento, invariancia ni exclusión IV. Si no se demuestra, el ITT se interpreta como efecto de política/paquete.
+
+### 10.3. AB-M07 — mecanismo y distribución conjunta D2
+
+DEC-C10-067 fija las probabilidades de programación por política como reglas de diseño: P(W_programmed=1|Z=0)=0 y P(W_programmed=1|Z=1)=1. No son probabilidades de intento efectivo ni de recepción/instalación. Cumplimiento/recepción, intento efectivo, provisión de fondo/crossover, fallos parciales, retries y rollback siguen OPEN. La distribución conjunta condicional de C_install/C_integrity/C_compat/C_oper debe sumar 1 en 16 celdas por estrato relevante (o parametrización conjunta validada); no hay probabilidades numéricas aprobadas. s=.80 y .20/.80 no son valores confirmatorios.
+
+### 10.4. AB-M08/M09 — población, soporte y unidades
+
+P*_τ2 y P*_F son poblaciones distintas; la segunda exige además ausencia respaldada de ruta funcional alternativa. La elegibilidad se fija con C0 pre-Z y no puede depender de variables postratamiento. Sin embargo, el algoritmo final, los valores/estratos de q_X*, la distribución objetivo, pesos, common support y positividad no están materializados. La unidad lógica de servicio no resuelve por sí sola unidad de asignación, análisis e interferencia. La topología de host/adaptador/permisos/recursos compartidos no está inventariada; no se asume independencia individual.
+
+### 10.5. AB-M10/M11 — oráculo, escenarios y proceso de observación
+
+La separación Generator/Analyzer/Evaluator, truth/observed, R0–R3 y las reglas 1/0/? están definidas documentalmente. El universo de rutas y el grafo candidato no son exhaustivos; la cobertura actual de nodos/aristas/predicados es NONE. No existen truth tables materiales completas ni un modelo de observación/missingness calibrado. La validación del oráculo, cegamiento operativo, adjudicación y firewall del Analyzer no se han ejecutado ni demostrado.
+
+### 10.6. Disposición consolidada
+
+| Input | Estado documental | Estado material/evidencia |
+|---|---|---|
+| H* temporal (ancla, valor, unidad) | Regla común definida | OPEN |
+| H_path / profundidad | Candidato H=3 en Path Matrix | No confundir con H_time; reconciliación OPEN |
+| MD-C1/MD-C4 | Criterios documentados | OPEN / NONE |
+| Programación D2 | Regla determinista de política aceptada | DESIGN RESOLVED |
+| W_attempt/receipt/background/crossover | Variables separadas | OPEN |
+| C_dep joint distribution | Forma contractual definida | OPEN / sin probabilidades |
+| P*_τ2/P*_F y elegibilidad | Poblaciones diferenciadas | Algoritmo/valores OPEN |
+| q_X*, soporte y positividad | Régimen común basal exigido | OPEN |
+| Unidad/interferencia | Distinciones definidas | Topología/exposure OPEN |
+| Oracle/firewall/adjudication | Arquitectura definida | Validación/evidencia OPEN |
+| R0–R3 | Familias descritas | Truth tables y observación OPEN |
+
+No se asignan valores numéricos ni se promueven candidatos a parámetros aceptados.
