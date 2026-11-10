@@ -86,8 +86,8 @@ The bootstrap protocol is:
 1. Read `CHATGPT_BOOTSTRAP.md` from GitHub `main`.
 2. Resolve and read `CANONICAL_STATE.json`.
 3. Resolve and read `STATUS.md`.
-4. Resolve the current RMA, Evidence→Claim Matrix, RMA traceability and IGRT status through the canonical pointers.
-5. Apply the read-only bootstrap consistency validator when local execution is available.
+4. Resolve the current RMA, Evidence→Claim Matrix, RMA traceability, governance operating principles, scientific asset registry and validators through the canonical pointers in `CANONICAL_STATE.json`.
+5. Apply the read-only current-state and bootstrap consistency validators when local execution is available. IGRT is not an established canonical artifact or required layer; no IGRT pointer, status file or validation gate is expected.
 6. Verify that canonical versions and pointers are mutually consistent.
 7. If consistent, report the current state and continue directly from **Next operation**.
 8. If inconsistent, stop and report `BOOTSTRAP_BLOCKED_CANONICAL_INCONSISTENCY` with the conflicting artifacts/versions.
