@@ -10811,3 +10811,114 @@ Son contratos documentales, no pruebas ejecutadas. Reutilizan PM-01…18, ADV-C0
 - ejecución autorizada del control C0, matching, evaluación y adjudicación independientes.
 
 **Estado:** MED-02c4 DOCUMENTED / MATERIAL OPEN; AB-TIME-01 PARTIALLY RESOLVED / FORMAL ADOPTION OPEN. La propuesta no declara correspondencia temporal material ni comparabilidad demostrada. No crea event_id, source_event_id, tabla, FK, columna, snapshot, scope, member_ref, evidencia, fixture o código. No ejecuta control ni simulación. scientific_execution=false; execution_authorized=false; no Design Freeze.
+
+
+## 255. AB-09 — contrato de truth tables estructurales R0–R3 y observación (2026-11-10)
+
+**Estado:** MATRIZ LÓGICA DOCUMENTAL RECONCILIADA; VALORES POR UNIDAD, MECANISMO DE OBSERVACIÓN Y ORÁCULO MATERIAL OPEN.  
+**Precedencia:** DEC-C10-066/067 (D2 primario candidato, política material); DEC-C10-093/094; maestro §§233, 243–248 y 252–254; finite DGP inventory §§3–10; Path Predicate Temporal Evidence Matrix §§4–10; ledger AB §§2 y 15. Esta sección desarrolla §247 y no crea nuevos escenarios, parámetros o estimandos.
+
+### 255.1. Qué se completa y qué no
+
+§247 ya fijó R0–R3, la correspondencia general truth/observed y el firewall de roles. La brecha restante no era volver a definir los escenarios, sino convertir sus diferencias en una tabla de invariantes, condiciones y salidas derivadas sin rellenar arbitrariamente cada predicado por unidad.
+
+La truth table de este apartado es un contrato lógico de DGP. No es una tabla de datos, no asigna probabilidades, no materializa 1/0 por unidad y no sustituye la truth table completa unidad×snapshot×ruta×paso×predicado que solo podrá generar una ejecución autorizada.
+
+Se conserva D2 como política primaria candidata y D1 como secundaria. Los cuatro escenarios no comparten ITT, primeras etapas, poblaciones de cumplidores ni necesariamente soporte. No se mezclan ni se promedian.
+
+### 255.2. Reglas comunes a R0–R3
+
+1. Población elegible: C0 y reglas pre-Z; para la apertura focal, A_f,base*=0. Ninguna variable post-Z redefine elegibilidad.
+2. F1→F2 es ruta focal; A1→A2 es ruta alternativa. Cada paso se evalúa separadamente por ID/version, ACC, APP, REL, COND, AUTH, RES, DEP, BLOCK y WIN según la matriz de predicados. Accesibilidad no equivale a aplicabilidad ni a ejecución.
+3. D2 asigna la política B; Z, programación, recepción/cumplimiento, W_attempt, S_install, C_dep* y los componentes I/G/C/O son distintos. El éxito técnico conjunto no se reduce a programación o intento.
+4. C_dep*=1 solo si I=G=C=O=1. C_dep*=0 si al menos un componente constitutivo truth es 0. El valor ? pertenece a observación/adjudicación, no a truth DGP binaria.
+5. A_f*, D_f*, ΔT_acc*, F_alt y Reach se derivan de sus predicados y universo; ninguno se copia de Z, W_attempt, S_install o C_dep*.
+6. Reach=1 requiere al menos una ruta completa válida; Reach=0 requiere que todas las rutas del universo relevante estén descartadas con cobertura exhaustiva; en otro caso Reach=?.
+7. Outcome y cada V_j se generan/observan mediante funciones y reglas independientes de Value. No definen F*, A_f*, F_alt ni Reach.
+8. El reloj causal de §253 y el pipeline stage_key de §254 se conservan; las capturas y cambios posteriores no se retrotraen.
+
+### 255.3. Matriz estructural de escenarios — truth DGP
+
+| Escenario | Condición definitoria en truth DGP | A_f,base* / apertura D_f* | F_alt y ruta A | Reach funcional | Interpretación causal |
+|---|---|---|---|---|---|
+| R0 — focal exclusiva | Universo sintético cerrado; ninguna ruta alternativa substituible dentro de frontera, G, H y F*. La ausencia es una estipulación del DGP, no una inferencia de ausencia material. | A_f,base*=0. A_f,post* depende de todos los predicados focales; D_f*=1 solo si A_f,post*=1. | F_alt,base*=0 y permanece 0 bajo la estipulación aislada. | Reach_post=1 solo si F1 y F2, su relación y todas las condiciones necesarias son 1. Reach_post=0 solo con universo exhaustivo y ambas rutas descartadas; en el R0 canónico no hay ruta A. | Caso de atribución focal más limpio dentro del DGP, pero no demuestra exclusión material ni aislamiento real de B. |
+| R1 — alternativa basal estable | Existe A1→A2 funcional antes de B y la ruta no cambia bajo B en la versión canónica de R1. | A_f,base*=0; A_f,post* depende de la provisión focal. D_f* puede abrir aunque la función ya fuera alcanzable. | F_alt,base*=1 y F_alt,post*=1; identidad, versión, condiciones y F* de la alternativa se mantienen conforme al contrato del escenario. | Reach=1 antes y después por la ruta A, si la ruta completa mantiene sus predicados. La apertura focal no implica incremento de Reach. | Distingue cambio de accesibilidad focal de cambio de capacidad funcional; no pertenece automáticamente a P*_F. |
+| R2 — alternativa afectada por B | B modifica al menos una condición/relación/transformación relevante de A1/A2 o su factibilidad; la dirección del cambio debe declararse en la instancia DGP. | A_f,base*=0; A_f,post* sigue dependiendo del mecanismo focal, sin asumir que explique todo el cambio funcional. | F_alt,post* difiere de F_alt,base* en la dimensión afectada. Puede activarse, bloquearse o cambiar de forma; la variante exacta queda parametrizada/OPEN. | Reach_post es la disyunción lógica de rutas focal y alternativas completas. Puede aumentar, disminuir o permanecer estable según la variante; no se fija un signo universal. | Vía colateral explícita. ITT_Z(D2) conserva efecto de política/paquete; no se presenta como θ_Af(q*) ni LATE_f sin identificación adicional. |
+| R3 — intento efectivo fallido | W_attempt=1, pero al menos un componente I/G/C/O de C_dep* es 0 en truth DGP; en este escenario C_dep* es requisito técnico necesario para la apertura de F1. | A_f,base*=0 y F1 no se abre por ese intento; D_f*=0 para esa unidad/episodio. No se infiere el estado de otras transformaciones o componentes de ΔT_acc*. | El estado alternativo se hereda de un régimen de fondo R0 o R1 y se adjudica independientemente. La provisión de fondo/crossover, si existe, se registra como desviación y no se oculta en R3. | Si el fondo es R0, Reach depende de F2 y del universo exhaustivo; si es R1, la alternativa estable puede mantener Reach=1. | Distingue intento de éxito técnico y evita imputar accesibilidad por asignación. R3 no determina por sí solo Reach ni Value. |
+
+**Refinamiento de dimensionalidad:** R3 es una condición de fallo de provisión focal que se cruza con el régimen de alternativas de fondo (R0 o R1), no una tercera topología de rutas. Esta lectura reutiliza la tabla histórica del inventario finito, que define explícitamente “según R0/R1”; no añade un escenario R4 ni cambia el contrato de §247. Si se especifica una alternativa afectada por B, se trata de R2 y el fallo focal se registra como condición/evento adicional, no se confunden ambos mecanismos.
+
+### 255.4. Truth table lógica de derivación
+
+Para cada unidad y snapshot, el DGP debe generar los predicados atómicos; las siguientes reglas derivan los constructos sin asignar valores por conveniencia:
+
+| Salida truth | Regla lógica | Condición para declarar 0 |
+|---|---|---|
+| C_dep* | I ∧ G ∧ C ∧ O | Algún componente constitutivo es 0 |
+| Ruta F | F1 y F2 accesibles/aplicables, REL(F1,F2)=1 y todos los predicados necesarios por paso/ruta satisfechos | Algún predicado necesario de F1, F2 o relación es 0 |
+| Ruta A | A1 y A2 accesibles/aplicables, REL(A1,A2)=1 y todos los predicados necesarios por paso/ruta satisfechos | Algún predicado necesario de A1, A2 o relación es 0 |
+| F_alt | Existe al menos una ruta alternativa completa substituible bajo F*, G, H y C0 | Solo 0 tras enumeración exhaustiva de todas las alternativas del universo |
+| A_f* | Predicado focal τ2 derivado de ID/REL/COND/AUTH/RES/DEP/BLOCK y frontera/tiempo | Algún requisito constitutivo focal es 0 |
+| D_f* | I(A_f,base*=0 ∧ A_f,post*=1) | 0 si A_f,post*=0; no se evalúa como transición si el objeto focal no es comparable |
+| Reach | OR sobre rutas completas válidas dentro del universo | 0 solo si todas las rutas son 0 y el universo es exhaustivo |
+| ΔT_acc* | Diff completo entre snapshots comparables en U/R/C/X | No se sustituye por D_f*; si matching o comparabilidad falla, diff afectado UNKNOWN/NOT_COMPARABLE |
+
+La composición de rutas conserva la lógica trivalente observacional de §247: un 0 necesario puede refutar una ruta; sin cero decisivo, cualquier requisito obligatorio desconocido mantiene ?. Para alternativas, una ruta completa confirmada basta para Reach_obs=1; Reach_obs=0 requiere cobertura exhaustiva; el resto es ?.
+
+### 255.5. Matriz truth/observed y proceso de medición
+
+| Elemento | Canal truth DGP | Canal observable del Analyzer | Evaluación posterior |
+|---|---|---|---|
+| Z/B y eventos P/R/Q/W/S/N/K | Asignación y estados verdaderos del mecanismo | Solo asignación/eventos efectivamente observados y permitidos | Consistencia de asignación, recepción, intento, instalación y desviaciones |
+| I/G/C/O y C_dep* | Componentes verdaderos y conjunción | Evidencia técnica, capturas y observed_state 1/0/? | Error por componente, conjunción, falsos PASS/FAIL y UNKNOWN |
+| A_f*, D_f*, ΔT_acc* | Estado estructural y diff verdaderos | Predicados/snapshots/evidencia y diff observado | Exactitud de identidad, matching, diff y atribución focal |
+| F_alt y rutas F/A | Universo verdadero y predicados por paso | Inventario observable, scopes, fuentes y cobertura | Falsos positivos/negativos de alternativa y error de Reach |
+| Reach/Π_H | Alcanzabilidad y trayectorias candidatas verdaderas | Clasificación observada con incertidumbre | Exactitud, falsos Reach=0, falsos Reach=1 y abstención |
+| Outcome/Value | Potenciales/resultados generados bajo regla versionada | Variables observadas con missingness/censura | Error de Outcome/Value y recuperación del estimando permitido |
+
+Truth de predicados constitutivos es binaria en el DGP. Observed_state es 1/0/? y depende de E_T: fuente, identidad, snapshot, cobertura, validez y adjudicación. No se fuerza una matriz de error ni tasas de missingness sin parámetros justificados. Un 0 observado exige evidencia positiva de incumplimiento o búsqueda negativa exhaustiva; un universo incompleto mantiene ?.
+
+### 255.6. Firewall de escenarios y pruebas de fuga
+
+- El Generator recibe configuración de escenario, truth, potenciales, semilla y parámetros privados. Emite dataset observable separado del registro truth.
+- El Analyzer recibe solo el dataset observable, incluidos Z y eventos realmente observados necesarios para el estimando; no recibe etiqueta R0/R1/R2/R3, truth, potenciales, semilla, parámetros privados ni metadatos que codifiquen el escenario.
+- El Evaluator accede a la salida del Analyzer congelada y después al registro truth; calcula error, recuperación, bounds, falsa identificación/atribución y abstención. No modifica la salida original.
+- Un escenario puede ser parcialmente inferible por patrones observables; el requisito es no filtrar la etiqueta ni la truth, no hacer estadísticamente imposible toda inferencia del mecanismo.
+- Los tests negativos deben intentar recuperar etiqueta, parámetros y truth desde nombres de archivos, orden de filas, seeds, IDs, metadata, logs, paths, timestamps, schemas, mensajes de error y metadatos de cobertura. Cualquier canal que codifique la etiqueta o truth es leakage.
+- La separación textual no demuestra firewall efectivo. La prueba de acceso/leakage y la congelación inmutable del output quedan pendientes del contrato de implementación y autorización.
+
+### 255.7. Contratos adversariales AB-09
+
+| ID | Caso | Resultado exigido |
+|---|---|---|
+| AB09-T01 | R0 con cobertura de alternativas NONE/PARTIAL | Truth del DGP puede estipular universo cerrado; Analyzer no puede declarar F_alt,obs=0 ni Reach_obs=0 sin cobertura |
+| AB09-T02 | R1 con ruta A completa estable y F1 abierta post-B | D_f*=1 puede coexistir con Reach basal=1 y ΔReach=0 |
+| AB09-T03 | R2 con B que activa A1/A2 | Clasificar vía colateral y efecto de paquete; no atribución focal automática |
+| AB09-T04 | R2 con B que bloquea A1/A2 | No ocultar el daño alternativo; Reach puede caer aunque A_f aumente |
+| AB09-T05 | R3 con W_attempt=1 y un componente C_dep=0 | C_dep*=0 y F1 no se abre bajo la dependencia necesaria; no inferir que la ruta A está cerrada |
+| AB09-T06 | R3 cruzado con R1 | Ruta A estable puede mantener Reach=1 pese a fallo focal |
+| AB09-T07 | R3 cruzado con R0 y sin apertura F1 | Reach=0 solo con universo y cobertura exhaustivos; de otro modo ? |
+| AB09-T08 | Truth=1 con evidencia faltante | Observed=?; no copiar truth al Analyzer |
+| AB09-T09 | Truth=0 con cobertura parcial | Observed=? salvo evidencia positiva suficiente de incumplimiento |
+| AB09-T10 | Outcome/Value correlaciona con una ruta | No usarlo para definir F_alt, A_f, predicados o Reach |
+| AB09-T11 | Etiqueta R2 codificada en ruta/nombre/seed | Leakage; prueba de firewall FAIL |
+| AB09-T12 | Analyzer clasifica antes de congelar o Evaluator revela truth antes | Orden de roles comprometido; evaluación inválida |
+
+Son contratos de diseño reutilizando PM-01…18, DEC-C10-054/068 y los gates de evidencia existentes; no son fixtures ni pruebas ejecutadas.
+
+### 255.8. Inputs abiertos y dictamen
+
+**Resuelto documentalmente:** invariantes comunes; diferencias lógicas R0/R1/R2/R3; relación R3×fondo R0/R1; reglas de derivación C_dep*, rutas, F_alt, A_f*, D_f*, ΔT_acc* y Reach; separación truth/observed; información permitida por rol; tests adversariales y errores críticos.
+
+**OPEN material/estadístico:**
+- truth table completa por unidad×snapshot×ruta×paso×predicado;
+- mecanismo DGP numérico para eventos P/R/Q/W/S/N/K y distribución conjunta I/G/C/O por brazo/historia/estrato;
+- definición operacional de F*, G, H, ventanas y tolerancias;
+- universo y topología de alternativas, route_id/route_record_id y prueba material de no-afectación de B (MD-C1/MD-C4);
+- parámetros de medición, sensibilidad, missingness/censura y fiabilidad del oráculo;
+- población/q_X*/soporte/interferencia;
+- Outcome/Value por dimensión V_j y potenciales;
+- contrato de firewall implementado y pruebas negativas autorizadas;
+- criterios cuantitativos de recuperación, falsa identificación, falsa atribución, bounds y abstención.
+
+**Estado AB-09:** LOGICALLY SPECIFIED / DOCUMENTARY CROSSWALK COMPLETE / MATERIAL DGP AND OBSERVATION OPEN. No se declara AB DONE, Design Freeze, implementabilidad ni identificación causal. No se asignan probabilidades, valores de Outcome/Value, semillas, unidades, fixtures o resultados. scientific_execution=false; execution_authorized=false.
