@@ -10296,3 +10296,73 @@ La dependencia es parcialmente paralela, no una cadena lineal. AB-01/02 habilita
 La interfaz §221 es un contrato de transferencia, no prueba de AB cerrado. §225 sigue siendo propuesta documentada no aprobada/no congelada; §§228–229 mantienen C-MED y C-ANALYZER parcialmente especificados. La transferencia no identifica θ_A(q), θ_Af(q_X*), LATE_f ni mediación y no resuelve Outcome/Value.
 
 **Estado:** AB IN_PROGRESS / MATERIAL INPUTS OPEN / NOT DESIGN FROZEN / NOT IMPLEMENTABLE. C puede continuar documentalmente con OPEN/UNKNOWN preservados. No se autoriza implementación, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 249. C-MED — estimando interventional candidato, confusión inducida y condiciones de identificación (2026-11-10)
+
+**Alcance y precedencia.** Especializa §§225, 228–229 y 233 sin sustituirlos ni alterar decisiones aceptadas. Distingue la pregunta científica primaria C10-D1 —contribución causal de cambios de accesibilidad a Value bajo políticas factibles y régimen común q— de la pregunta secundaria de mediación bajo la política material D2. La aleatorización de Z identifica, si el diseño y seguimiento lo permiten, el ITT de asignación; no identifica por sí sola el efecto de recepción B, el efecto causal de ΔT_acc* ni su mediación.
+
+### 249.1. Tres objetos que no deben confundirse
+
+Para cada dimensión V_j, población, horizonte y versión:
+
+1. **Efecto de asignación:** ψ_ITT,j^D2 = E[V_j | do(Z=1)] − E[V_j | do(Z=0)]. Es efecto de asignar la política D2, con todas las rutas focales y colaterales activadas por la asignación.
+2. **Efecto total del régimen material:** ψ_B,j(b1,b0;q) = E_q[V_j^b1 − V_j^b0]. Es distinto del ITT si hay incumplimiento, recepción parcial, versiones o confusión de recepción. La aleatorización de Z no autoriza sustituir Z por B ni condicionar por B.
+3. **Contribución interventional mediada por accesibilidad:** contraste de resultados bajo una intervención estocástica sobre la distribución conjunta y factible de M = ΔT_acc*, conservando su dependencia interna y su orden temporal. No se define como efecto natural ni como residuo aritmético.
+
+La mediación por A_f* aislada no reemplaza la mediación por el objeto completo M. A_f* es proyección/predicado focal; D_f* es indicador de apertura; C_dep*, instalación y W son etapas previas distintas.
+
+### 249.2. Historia postratamiento y confusión inducida
+
+Se particiona la historia como H (covariables basales pre-Z), L (variables post-B y anteriores al snapshot/mediador M) y M (vector conjunto ΔT_acc* en el snapshot definido). L puede incluir recepción/cumplimiento, instalación, componentes de C_dep*, recursos, permisos, dependencias, estado runtime y otras cointervenciones que preceden a M. Cada campo debe clasificarse por función causal real: no todo lo post-B es automáticamente confusor, mediador o parte de M.
+
+Si B afecta L y L afecta tanto M como Value, L es confusor mediador–resultado inducido por tratamiento. Ajustar por L como si fuera basal, omitirlo del DAG o usar una regresión convencional M–Value no resuelve el problema y puede bloquear vías o inducir sesgo. Debe preservarse la secuencia longitudinal y modelarse mediante g-computation/sequential g-formula u otro método g que corresponda al DAG y a la intervención estocástica; si la historia relevante no se observa o no hay soporte, se declara identificación parcial/no identificación.
+
+### 249.3. Estimando interventional con referencia explícita
+
+Sea G_M^b(dm | l,h) la distribución conjunta de M observada/generada bajo el régimen material bien definido b, condicionada por H y por la historia pre-M L=l. Sea V_j^{b,G_M^{b'}} el resultado potencial bajo régimen b, con L generado longitudinalmente bajo b, y con M sustituido por una extracción estocástica de G_M^{b'}(· | L,H). La extracción debe conservar la dependencia entre componentes de M y respetar el conjunto de valores/rutas factibles.
+
+Se propone como contraste secundario, con referencia b1:
+
+IIE_M,j^(b1)(b1,b0;q) = E_q[V_j^{b1,G_M^{b1}} − V_j^{b1,G_M^{b0}}].
+
+Interpreta el cambio esperado en V_j al sustituir, manteniendo el régimen material de referencia b1 y su proceso L, la distribución conjunta de accesibilidad inducida bajo b0 por la inducida bajo b1. No es un efecto natural y no requiere emparejar dos mediadores contrafactuales de la misma unidad; sí requiere que la intervención estocástica esté definida y que exista soporte para evaluar G_M^{b0} en las historias L relevantes bajo b1.
+
+Como descomposición interventional ordenada puede definirse, solo si ambos términos son identificables bajo el mismo q, horizonte, escala y régimen:
+
+R_j^(b1)(b1,b0;q) = E_q[V_j^{b1,G_M^{b0}} − V_j^{b0,G_M^{b0}}],
+
+de modo que el contraste total del régimen se descompone por identidad en IIE_M,j^(b1) + R_j^(b1). **R no se denomina efecto directo puro**: incluye las restantes diferencias entre regímenes, incluidas vías a través de L, cointervenciones y rutas no representadas por M. La descomposición depende del régimen de referencia y del orden elegido; otra referencia puede producir otro reparto. No existe un reparto único sin una convención causal adicional explícita.
+
+Esta identidad no autoriza restar estimandos calculados con poblaciones, escalas, horizontes, versiones, pesos o supuestos incompatibles. Si no puede definirse G_M^b como intervención factible, o no se justifica su soporte condicional, no se reporta IIE puntual.
+
+### 249.4. Relación con la pregunta primaria C10-D1
+
+El IIE_M anterior responde a una pregunta de mecanismo bajo dos regímenes materiales B; no es el estimando primario de C10-D1 ni prueba por sí solo la contribución causal general de accesibilidad a Value.
+
+La pregunta primaria continúa siendo el contraste entre políticas factibles g1/g0 que inducen distribuciones diferentes de ΔT_acc* bajo un régimen común q, θ_A(q). Requiere definir esas políticas, sus versiones, factibilidad, mapping y soporte comunes, así como identificar el contraste de Value. D2 solo podrá servir como implementación de g si se demuestra el mapping B→g y se separan las rutas colaterales relevantes. El ITT de D2 sigue siendo efecto de asignación/paquete cuando esas rutas no están excluidas o identificadas separadamente.
+
+### 249.5. Condiciones de identificación por capas
+
+**Capa de asignación/ITT:** asignación Z documentada y válida; consistencia de Z y versiones; unidad de asignación/análisis/exposición; seguimiento y medición comparables; interferencia ausente o modelada; tratamiento explícito de missingness/censura. No exige ajustar por variables post-Z para estimar el ITT.
+
+**Capa de régimen B:** intervención B bien definida y versionada; consistencia; intercambiabilidad para recepción o estrategia instrumental/longitudinal válida; positividad de recepción y de las historias; ausencia de confusión no medida pertinente. La aleatorización de Z solo puede instrumentar B bajo supuestos IV adicionales, no resueltos por el ITT.
+
+**Capa mediacional M:** (a) orden temporal H→B/Z→L→M→Reach/trayectoria/ejecución→Outcome→V; (b) confusores basales y post-B relevantes medidos antes de M; (c) intercambio secuencial suficiente para L/M y resultado bajo el método elegido; (d) positividad secuencial y soporte de G_M^{b'} en historias L evaluadas; (e) consistencia/versiones y definición de intervención estocástica factible; (f) medición independiente, identidad/snapshot y error caracterizados para M y V; (g) interferencia tratada; (h) modelo longitudinal correctamente especificado o robustez del estimador; (i) sensibilidad/bounds para confusión residual, error y falta de soporte.
+
+El cumplimiento de estas condiciones no se infiere del DAG dibujado ni de un resultado favorable de simulación. Cada una requiere evidencia, estipulación DGP explícita o análisis de sensibilidad identificado.
+
+### 249.6. Reglas de no identificación y clasificación
+
+- **NOT_IDENTIFIED:** confusión M–V no medida que no pueda acotarse, historia L incompleta para el método, positividad/soporte secuencial violados, intervención mediadora no factible/no definida, versiones incompatibles, interferencia no modelada o medición no válida que impida identificar el contraste.
+- **PARTIALLY_IDENTIFIED:** algunos supuestos permiten cotas/conjuntos informativos, pero no un punto; informar conjunto y anchura, sin colapsarlo a estimación puntual.
+- **INDETERMINATE:** truth/observación, cobertura, missingness o adjudicación insuficientes para clasificar los supuestos.
+- **IDENTIFIED:** solo por combinación estimando×dimensión Value×población×horizonte×versión y tras superar todos los gates pertinentes. No hay estado global de identificación para C-MED.
+
+Un ITT identificable puede coexistir con IIE no identificado. Un IIE identificado puede coexistir con θ_A(q) no identificado. Un efecto total no nulo con IIE nulo no refuta TGCV: puede deberse a rutas no mediadas por M. Un IIE no nulo en D2 no demuestra por sí solo que todas las políticas factibles de accesibilidad causen Value.
+
+### 249.7. Registro mínimo y estado de cierre
+
+Cada ficha debe registrar: estimand_id; pregunta primaria/secundaria; dimensión Value; régimen y versiones; Z y B diferenciados; población/q; H, L y M con tiempos; definición conjunta y factibilidad de M; referencia b1 (o alternativa justificada); unidad/cluster/interferencia; Outcome/Value y escala; DAG y fuentes; confusores medidos/no medidos; método g; soporte secuencial; missingness/error; sensibilidad/bounds; regla de identificación/abstención y provenance.
+
+**Estado:** propuesta metodológica especializada para revisión, no decisión aceptada, no estimando confirmado, no identificación demostrada y no Design Freeze. Inputs materiales AB-M03…M11 y contratos C10-D1/§224 continúan OPEN en lo que corresponda. No se seleccionan método computacional final, parámetros, rangos, tolerancias, N ni réplicas. No se generan fixtures ni se implementa o ejecuta. scientific_execution=false; execution_authorized=false.
