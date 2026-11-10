@@ -222,3 +222,9 @@ La cabecera de §1 conserva texto histórico que describía Opción A como no se
 RUL forma parte del paquete P0 migrado. F1/A1 preservan significado, referencias, dominio, scope, versión y efecto en la representación intermedia; F2/A2 aplican la configuración y la regla en destino bajo el mismo contrato funcional. Para RUL-SVC-ENABLE-PROFILE-01 deben preservarse los perfiles permitidos STANDARD/READ_ONLY y el contraste violador DISABLED cuando ENABLED=true. FP-03 evalúa preservación semántica; FP-06 aplicación efectiva; FP-07 verificación post-aplicación; FP-08 trazabilidad probatoria.
 
 Una regla que sobrevive textualmente pero pierde un operando, cambia scope/efecto, queda sin aplicar o resuelve UNKNOWN como booleano puede hacer F*=0 o ?, según suficiencia y cobertura. La verdad funcional del DGP procede del contrato sintético fijado ex ante; no se infiere de resultados de ruta. La misma versión contractual se aplica a ruta focal y alternativa. Esta especificación no congela F*, mapping, tolerancias ni oráculo.
+
+## 13. Roster documental de instancia y superficies para el crosswalk X/C
+
+El maestro §232 consolida el roster parcial. La identidad contractual de referencia sigue DEC-C10-069; ENABLED/PROFILE son PAR nucleares; RETRY-COUNT es slot candidato, no confirmatorio; REF no se presume vacío hasta IAM/cobertura. Las superficies B-M01…15 se tipan por subcampo y función: runtime/host/estado persistente pueden aportar X*; reglas, ACL, cuotas y bloqueos son C*; topología/interfaz es R*; transformaciones A/F son U*; logs, hashes, cobertura y oráculo son E_T.
+
+No se fijan valores ni variables reales de contexto. El roster es documental parcial; el inventario por unidad/versión y el matching de snapshots permanecen OPEN. No se aprueban fixtures ni ejecución.
