@@ -464,3 +464,10 @@ La definición de snapshot distingue X_t* como estado/contexto efectivo constitu
 Los campos se clasifican por función semántica: U transformación, R relación, C condición/predicado, X estado/contexto efectivo, E evidencia. Un supuesto X que sea una regla se reclasifica en C; historia no constitutiva puede pertenecer a q solo si es coherente y soportada; un campo sin efecto en accesibilidad queda fuera del mediador; UNKNOWN/? se conserva como tal. Se exige descomponer campos mixtos y registrar event_id, tiempo, frontera, truth/observed y adjudicación.
 
 **Estado:** regla conceptual propuesta; roster del microdominio y mappings campo a campo OPEN. MED-02 no cerrado.
+
+
+## 30. Roster documental MED-02c y clasificación por campo
+
+Se consolida el roster parcial del maestro §232: transformaciones F1/F2/A1/A2 (U*); dependencias/interfaces/topología (R*); reglas, permisos, recursos y restricciones (C*); contexto efectivo runtime/host/modo/estado persistente (X* solo cuando sea constitutivo); logs, hashes, cobertura, validez y adjudicación (E_T). CMP/PAR/REF/RUL/MET conservan sus identidades y funciones contractuales; ENABLED/PROFILE son los PAR nucleares y RETRY-COUNT permanece candidato no confirmatorio.
+
+B-M01…15 son superficies de inspección, no variables tipadas automáticamente ni evidencia de cambios. Se exige subcampo, event_id, tiempo de vigencia, frontera, mapping, truth/observed y cobertura. MED-02c3/c4/d OPEN; no declarar roster completo.
