@@ -567,3 +567,65 @@ Antes de imponer cualquier restricción se debe comprobar que los predicados no 
 **Cierre documental mínimo:** contratos de I/G/C/O con unidad, artefacto, entorno, snapshot, ventana, condición de verdad y evidencia; tabla de implicaciones revisada contra esos contratos; y roster θ actualizado solo con ceros demostrados o estipulaciones sintéticas identificadas. El cierre material exige además artefactos, protocolos, evidencias y cobertura; no se obtiene con esta especificación.
 
 **Dictamen:** se descarta la independencia como supuesto por defecto. G y C no generan implicaciones lógicas generales entre sí ni con I/O. O⇒I es una implicación candidata dependiente de una definición operacional aún OPEN; C⇒O/O⇒C y las dependencias con G son condicionadas o libres. AB-07 queda más especificado conceptualmente, pero continúa OPEN en contrato operacional, parámetros, evidencia y sensibilidad. No hay Design Freeze, fixtures, implementación, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 12. AB-07 — contrato mínimo de adjudicación para I/G/C/O y regla de admisibilidad de restricciones (2026-11-10)
+
+**Propósito:** convertir el dictamen semántico de §11 en una plantilla verificable para cerrar los predicados sin decidir todavía un mecanismo tecnológico concreto ni asignar estados o probabilidades.
+
+### 12.1 Contrato atómico obligatorio
+
+Cada componente debe tener un contrato versionado con los siguientes campos. Un campo no aplicable debe marcarse explícitamente como N/A con justificación; no puede omitirse silenciosamente.
+
+| Campo | Pregunta que debe resolver | Riesgo que evita |
+|---|---|---|
+| predicate_id / version | ¿Qué definición exacta se adjudica? | Deriva semántica entre escenarios |
+| unit_id / unit_boundary | ¿Cuál es la unidad sobre la que se afirma 1/0? | Mezcla de unidad, agente, host o despliegue |
+| artifact_id / artifact_hash | ¿Qué artefacto concreto se evalúa? | Sustitución por versión o artefacto distinto |
+| environment_id / snapshot | ¿En qué entorno y snapshot? | Transferir resultados entre entornos |
+| scope / modes | ¿Qué interfaces, modos y operaciones quedan cubiertos? | Confundir prueba parcial con cobertura exhaustiva |
+| time_window / event_order | ¿Qué ventana y qué precedencias aplican? | Convertir orden de observación en causalidad |
+| truth_rule | ¿Qué condición constitutiva hace verdadero el predicado? | Adjudicación circular o basada en proxy |
+| evidence_rule | ¿Qué evidencia positiva y negativa basta? | Tratar ausencia de registro como 0 |
+| unknown_rule | ¿Cuándo se asigna ? | Forzar 1/0 con cobertura incompleta |
+| adjudicator / blinding | ¿Quién/qué adjudica y con qué cegamiento? | Sesgo diferencial entre brazos |
+| failure_modes | ¿Qué fallos cuentan y cuáles no? | Colapsar fallo técnico, política y falta de evidencia |
+| provenance | ¿Qué fuente, versión y hash respaldan el resultado? | Pérdida de trazabilidad |
+
+### 12.2 Requisitos específicos por componente
+
+- **I — INSTALLATION:** fijar si significa instalación material persistente del artefacto objetivo, en qué destino y bajo qué identidad. Distinguir evento S_install, estado instalado al cierre de ventana, instalación parcial, actualización, reinstalación y rollback. Un intento o evento de instalación no basta por sí solo para adjudicar I=1.
+- **G — INTEGRITY:** fijar propiedad evaluada (identidad, integridad de contenido, firma/cadena de confianza u otra), objeto exacto y momento de verificación. Separar corrupción material, autenticidad no verificada, fallo del verificador y ausencia de evidencia; no equipararlos.
+- **C — COMPATIBILITY:** fijar matriz de compatibilidad, versiones, interfaces, dependencias, modos y cobertura. Declarar si el juicio es ex ante o una prueba efectiva dentro del mismo entorno y ventana de O. Un resultado sobre una versión o modo no se extiende a otros sin regla explícita.
+- **O — OPERABILITY:** fijar operación observada o demostrada, criterio de éxito, duración/estabilidad requerida, transacciones/modos cubiertos y si se permite operación efímera/remota. Precisar si el objeto debe ser el mismo artefacto instalado de I, en la misma unidad, entorno, snapshot y ventana.
+
+### 12.3 Gate lógico antes de eliminar celdas θ
+
+Una implicación X⇒Y solo será admisible cuando se cumplan conjuntamente:
+
+1. X e Y comparten unidad, artefacto, entorno, snapshot y ventana relevantes, o el contrato demuestra formalmente cómo se enlazan;
+2. la definición de X incluye necesariamente la condición constitutiva de Y (no solo una correlación o una política frecuente);
+3. la regla de verdad y la evidencia permiten observar el caso contrario sin clasificarlo erróneamente como desconocido;
+4. no existe ruta alternativa admitida por el contrato (ejecución remota, efímera, sustitución de artefacto, entorno distinto, etc.);
+5. la implicación está escrita en el contrato versionado antes de generar fixtures y escenarios;
+6. se conserva un escenario adversarial que retire la implicación cuando sea una estipulación del DGP y no una necesidad constitutiva.
+
+**Aplicación actual:** O⇒I no pasa todavía el gate porque la definición de O y la correspondencia con I no están cerradas. C/O tampoco pasa el gate porque alcance y cobertura de C no están fijados. No se autoriza eliminar celdas del roster de 16. G no impone implicaciones generales sobre I, C u O.
+
+### 12.4 Separación entre verdad, observación y mecanismo
+
+Para cada unidad y componente se conservarán tres capas distintas:
+
+- `truth_DGP`: estado que el mecanismo generador estipula;
+- `observed_state`: 1/0/? según evidencia y cobertura;
+- `mechanism_trace`: eventos, artefactos, versiones, entorno y fallos que explican cómo se produjo el estado.
+
+No se adjudicará `observed_state=0` por ausencia de evento registrado si la cobertura no es exhaustiva. Tampoco se deducirá `truth_DGP` de un proxy observable. La concordancia truth/observed será evaluada posteriormente como parte del rendimiento del sistema de medición, no presupuesta.
+
+### 12.5 Inputs y estado
+
+**Resuelto a nivel de diseño:** campos mínimos del contrato; separación por componente; gate de implicación; separación truth/observed/mechanism; prohibición actual de ceros estructurales.
+
+**OPEN:** contenido material de los cuatro contratos; unidad y artefacto; entorno/snapshot; ventanas; criterios de éxito; cobertura; protocolo de evidencia/adjudicación; versiones y hashes; definición de O; alcance de C; eventual regla O⇒I; distribución conjunta y sensibilidad.
+
+**Dictamen:** AB-07 dispone ahora de una plantilla contractual y un gate de admisibilidad explícitos. Esto reduce ambigüedad documental, pero no cierra los contratos ni AB-07 materialmente. AB sigue IN_PROGRESS; no Design Freeze, fixtures, implementación, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
