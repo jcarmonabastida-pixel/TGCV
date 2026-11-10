@@ -10283,3 +10283,16 @@ El cegamiento no debe ocultar al Analyzer una Z observada necesaria para estimar
 **DESIGN SPECIFIED / INTEGRATION RECONCILED; MATERIAL CLOSURE OPEN.** Se han explicitado las diferencias de R0–R3, la correspondencia de truth/observed, las reglas de cobertura y el contrato de separación de roles. Siguen OPEN universo/cobertura U_G, F*/C0/G/H_time, oráculo/cegamiento, mappings y observaciones por campo, missingness, D2/C_dep numérico, población/q_X*/soporte/interferencia y criterios cuantitativos transferidos a C.
 
 No se declara AB-09 DESIGN COMPLETE, AB DONE, Design Freeze ni implementable. No se crean fixtures, código, simulaciones ni ejecuciones. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 248. AB-01…AB-09 — matriz integrada de dependencias y handoff parcial a C (2026-11-10)
+
+Se incorpora la matriz integrada del ledger AB §16 como reconciliación de estado, no como nuevo gate ni cierre. AB-01/02 tienen resolución semántica, AB-03/04 especificación abstracta/semántica, AB-06/07 estructura causal y parametrización simbólica, AB-08 regla pre-Z y distinción de poblaciones, y AB-09 contrato R0–R3 y firewall. Los once inputs AB-M01…M11 conservan estados diferenciados y no se declaran materialmente resueltos por la integración.
+
+La dependencia es parcialmente paralela, no una cadena lineal. AB-01/02 habilitan identidad/mapping; AB-03/04/05 habilitan rutas, predicados y medición; AB-06/07 habilitan mecanismo y primera etapa técnica; AB-08 habilita población/soporte/interferencia; AB-09 integra universo, verdad/observación y evaluación sellada. La materialización de AB-09 depende de inputs de los demás gates.
+
+**Handoff:** el paquete C existente §§221–229 puede continuar con contratos semánticos, jerarquía de estimandos, secuencia D2 simbólica, roster θ, elegibilidad, escenarios y reglas de trivalencia/firewall. No puede tratar como resueltos schema físico, identidades TID/SID/RID, C0/G/H_time, U_G/cobertura, MD-C1/MD-C4, probabilidades/θ, población/q_X*/soporte, interferencia, oráculo, truth por unidad ni missingness.
+
+La interfaz §221 es un contrato de transferencia, no prueba de AB cerrado. §225 sigue siendo propuesta documentada no aprobada/no congelada; §§228–229 mantienen C-MED y C-ANALYZER parcialmente especificados. La transferencia no identifica θ_A(q), θ_Af(q_X*), LATE_f ni mediación y no resuelve Outcome/Value.
+
+**Estado:** AB IN_PROGRESS / MATERIAL INPUTS OPEN / NOT DESIGN FROZEN / NOT IMPLEMENTABLE. C puede continuar documentalmente con OPEN/UNKNOWN preservados. No se autoriza implementación, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
