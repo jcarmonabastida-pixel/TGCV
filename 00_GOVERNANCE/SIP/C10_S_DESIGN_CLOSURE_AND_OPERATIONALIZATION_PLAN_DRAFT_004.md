@@ -2353,3 +2353,11 @@ Se incorpora maestro §261 y ledger AB §29, reutilizando C-MED §§249/257 y au
 Se especifica el contenido mínimo de q y una regla crítica para L post-B: no se ajusta como basal; debe permanecer invariante bajo la comparación, definirse una distribución de referencia común factible o reformularse el contraste como régimen longitudinal conjunto. Se documentan requisitos de factibilidad, soporte, versiones, interferencia, medición y separación truth/observed.
 
 **Estado:** MED-04 DOCUMENTED / PARTIALLY SPECIFIED. Definición sustantiva de g0/g1, q material, conjunto admisible M, población/H, Value/horizonte, soporte y tratamiento de L permanecen OPEN. No se aprueba fórmula final, método ni identificación. Sin Design Freeze, implementación, fixtures, simulación o ejecución; scientific_execution=false; execution_authorized=false.
+
+## 16.136 — MED-05: contrato de identificación del efecto interventional conjunto
+
+Se incorpora maestro §262 y ledger AB §30, especializando el IIE_M candidato de §249 sin crear otro estimando. Se fijan nueve gates de identificación para consistencia/versiones, historia basal, intercambiabilidad de B y M, positividad secuencial, factibilidad de M, medición, interferencia y especificación. Se detalla el tratamiento de L inducida por B bajo referencia b1 y el soporte condicional cruzado requerido para evaluar G_M^b0 en historias L relevantes bajo b1.
+
+Se delimitan g-computation longitudinal, ponderación/densidades y TMLE longitudinal como familias candidatas, sin seleccionar método. Se integra la evolución downstream hasta V_j para el contraste total y se prohíbe el ajuste convencional de L como basal o la transferencia del IIE a θ_A(q), ITT, LATE o V_j distintos. Se incorporan estados IDENTIFIED/PARTIALLY_IDENTIFIED/NOT_IDENTIFIED/INDETERMINATE y reglas de abstención.
+
+**Estado:** MED-05 DOCUMENTED / CANDIDATE; sin validación empírica. MED-03/04/06, §224, inputs AB/MAP y AN-04 siguen OPEN. Sin Design Freeze, implementación, fixtures, simulación o ejecución; scientific_execution=false; execution_authorized=false.
