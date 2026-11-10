@@ -2148,3 +2148,13 @@ El maestro §233 integra el DAG temporal con el roster MED-02c y la precedencia 
 A_f,1* es predicado/proyección focal dentro de la adjudicación de T_acc; D_f* es indicador derivado de apertura basal→post. Ninguno se trata como mediador adicional en serie con ΔT_acc*. El mediador secundario candidato es la distribución conjunta factible de ΔT_acc*. ITT_Z(D2) conserva interpretación de efecto de política/paquete si existen vías colaterales. La identificación de θ_A(q) requiere mapping B→g, régimen común, soporte y exclusión demostrados; no se presume por aleatorización.
 
 El DAG es candidato documental, no congelado. El inventario B-M01…15 sigue sin valores efectivos; MED-02c3/c4/d, unidad/interferencia, población, q*, F*, Value, DGP y estrategia de identificación permanecen abiertos. No se autoriza ejecución.
+
+## 16.112 — Ledger integrado de inputs residuales AB (2026-11-10)
+
+El ledger `C10_S_AB_RESIDUAL_INPUT_CLOSURE_LEDGER_DRAFT_001.md` consolida AB-01…AB-09 tras DEC-C10-093/094. Distingue diseño documental resuelto, input material abierto, gate de evidencia y handoff a C. No crea decisiones ni declara cierre por integración narrativa.
+
+Quedan ordenados 11 inputs: (AB-M01) encoding REF/AST; (M02) schema físico y canonicalización de C_src/C_dst/M; (M03) TID/SID/RID y cards concretas; (M04) roster de predicados y fuentes/captura; (M05) H* común; (M06) evidencia MD-C1/MD-C4; (M07) evento/probabilidades D2 y distribución conjunta C_dep; (M08) elegibilidad, q_X*, soporte y estratos; (M09) unidades y exposición/interferencia; (M10) oráculo/cegamiento/adjudicación; (M11) truth tables R0–R3 y proceso de observación/missingness.
+
+La canonicalización JCS aceptada por DEC-C10-074 se limita al envelope UDG-01; no se extrapola al payload de configuración. Los dos operand bindings se representan una sola vez; no se cuenta como REF de configuración una referencia UDG, FK U_G o EDGE.
+
+**Estado:** AB IN_PROGRESS; ningún gate material se cierra por esta actualización. El próximo trabajo documental se concentra en M01/M02, M03 y M04; los valores H*, D2, q_X* y topología requieren decisión o evidencia explícita. Sin implementación ni ejecución.
