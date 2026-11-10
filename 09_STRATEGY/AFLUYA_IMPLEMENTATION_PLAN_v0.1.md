@@ -142,15 +142,24 @@ No se avanzará automáticamente de una fase a otra. El usuario aprueba expresam
 - Framework — VALUE e Inteligencia Transformacional.
 - Explore — Playground y experiencias disponibles, claramente etiquetadas.
 - Learning.
-- Resources.
+- **Work with us** — puerta principal a servicios profesionales, colaboraciones y alianzas.
 - About / Contact.
 
-La navegación final se confirmará con la arquitectura v0.7 y se reducirá si la primera versión no tiene contenido suficiente. No crear páginas vacías solo para aparentar amplitud.
+**Estructura prevista de Work with us:**
+- Advisory — Value Discovery Sprint, AI Opportunity Assessment, Proposal Excellence y Fractional CVO, con estado real de disponibilidad.
+- Collaborate — proyectos conjuntos y contribuciones, con alcance, autoría y propiedad intelectual explícitos.
+- For organizations — contacto para empresas e instituciones.
+- Impact partnerships — patrocinio, financiación y alianzas para programas Impact.
+
+Tools / ValueLabOS, Impact y Resources podrán mostrarse como accesos secundarios o páginas enlazadas, según el contenido disponible.
+
+La navegación final se confirmará con la arquitectura estratégica actualizada y se reducirá si la primera versión no tiene contenido suficiente. No crear páginas vacías solo para aparentar amplitud.
 
 **Tareas de construcción:**
 1. Crear proyecto y seleccionar plantilla solo después de aprobar el plan y la herramienta.
 2. Configurar estilos globales, cabecera, pie, navegación y componentes reutilizables.
-3. Construir primero Home y las páginas esenciales con contenido real.
+3. Incluir **Work with us** en la navegación principal y construir su página de entrada con las cuatro rutas: Advisory, Collaborate, For organizations e Impact partnerships.
+4. Construir primero Home y las páginas esenciales con contenido real, indicando el estado de cada servicio y sin aparentar disponibilidad no confirmada.
 4. Incorporar enlaces a la base documental; no duplicar corpus científico completo en Framer.
 5. Configurar formularios solo si existe una necesidad y se ha definido qué datos se recogen, finalidad, acceso y retención.
 6. Revisar móvil y escritorio, enlaces, títulos, metadatos, rendimiento y accesibilidad.
@@ -421,3 +430,11 @@ Antes de iniciar la comprobación de dominios, el usuario revisará y aprobará 
 - Se preservan la comunidad abierta, el conocimiento científico público y la independencia de TGCV.
 - Se confirma que la primera web no requiere pagos, checkout, área privada ni gestión de suscripciones.
 - No se activa ninguna oferta, suscripción, contratación, compra ni gasto.
+
+
+### v0.3 — 2026-11-10
+- Se formaliza **Work with us** como sección de navegación principal, no como acceso secundario.
+- Se incorporan las rutas Advisory, Collaborate, For organizations e Impact partnerships.
+- Se alinean arquitectura estratégica y plan de implantación.
+- Se exige mostrar estados reales de disponibilidad y no presentar servicios no validados como contratables.
+- No se activan pagos, suscripciones ni contratación automática.
