@@ -395,3 +395,16 @@ Cualquier relación entre estado aplicado y accesibilidad/Reach requiere predica
 ### 14.7. Límites y cuestiones de cierre
 
 Esta integración es un crosswalk documental, no una especificación ejecutable. Permanecen abiertos los mappings físicos CMP/PAR/REF/RUL/MET↔U_G, route_id y ROUTE_STEP exhaustivos, universe_definition/version y C0, gramática del localizador PAR, mapping M concreto, oráculo/observación, IAM completo, cobertura y evidencias materiales. No sella IAM ni autoriza fixtures, parser, validator, implementación, Design Freeze o ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
+
+## 14. Crosswalk semántico AB-04 para las cards sintéticas (2026-11-10)
+
+La definición de field_id y su asignación por card está en §12.8–12.9 de `C10_S_OPTION_A_FSTAR_AND_TRANSFORMATION_CARDS_PROPOSAL_DRAFT_001.md`. Esta matriz conserva su autoridad para la clave temporal y la lógica de adjudicación: unidad×escenario×branch_id×step_k×TID/SID×SID/RID cuando exista×input_state×snapshot exacto×predicate_id×t_eval×fuente/versión; truth_DGP y observed_state separados.
+
+Reglas no alteradas:
+- ID/REL/COND/AUTH/RES/DEP/¬BLOCK determinan accesibilidad estructural; APP se evalúa desde el estado de entrada de cada paso y no se incorpora automáticamente a A_f*.
+- Una conjunción es 0 si algún requisito necesario es 0; 1 si todos son 1; ? si no hay 0 y queda algún desconocido.
+- Una ruta completa es 1 solo si todos sus pasos y relaciones necesarias son 1; es 0 si algún requisito necesario es 0; en otro caso ?.
+- Reach es 1 si existe una ruta completa 1; es 0 solo si todas las rutas del universo declarado son 0 y la cobertura es exhaustiva; en otro caso ?.
+- Para observed_state se exige evidencia/cobertura suficiente; ausencia de evidencia no es 0. No filtrar hidden_truth al Analyzer.
+
+Los field_id semánticos no son columnas físicas ni crean automáticamente NODE/EDGE/PREDICATE/ROUTE. La implementación futura deberá reconciliarlos con U_G y el crosswalk IAM sin duplicar matrices. No se asignan valores por unidad ni escenario y no se crean fixtures.
