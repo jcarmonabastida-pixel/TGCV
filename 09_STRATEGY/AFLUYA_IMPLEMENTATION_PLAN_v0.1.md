@@ -4,10 +4,10 @@
 
 **Identificador:** AFLUYA-IMPL-001  
 **Fecha:** 2026-11-10  
-**Estado:** DRAFT — rediseño integral alineado con la arquitectura estratégica AWGI v1.1; pendiente de aprobación de fases y gastos.  
+**Estado:** DRAFT — plan operativo alineado con la arquitectura integrada AFLUYA v1.0; pendiente de aprobación de fases, herramientas y gastos.  
 **Rama:** `strategy/afluya-ecosystem-v0.2`  
 **Documento estratégico rector:** `09_STRATEGY/AFLUYA_ECOSYSTEM_ARCHITECTURE_v1.0.md` (arquitectura integrada v1.0). El documento histórico acumulativo se conserva en `09_STRATEGY/archive/AFLUYA_ECOSYSTEM_ARCHITECTURE_HISTORICAL_v0.7_to_v1.1_2026-11-10.md` y no es referencia vigente.  
-**Antecedentes conservados:** arquitectura económica §§35–36; naming y dominio §33; arquitectura de implantación ligera §§25–31.
+**Trazabilidad:** las formulaciones y decisiones históricas se conservan en `09_STRATEGY/archive/AFLUYA_ECOSYSTEM_ARCHITECTURE_HISTORICAL_v0.7_to_v1.1_2026-11-10.md`. Las decisiones vigentes se interpretan desde la arquitectura integrada v1.0, especialmente §§1–3 (identidad y límites científicos), §§5–7 (participación, AWGI e infraestructura), §§8–10 (actividad, sostenibilidad y gobernanza) y §§12–16 (éxito, alcance, evolución y pendientes).
 
 ---
 
@@ -64,6 +64,28 @@ La secuencia operativa es:
 
 La comprobación del dominio y la identidad visual pueden avanzar en paralelo, pero no deben bloquear la validación del mensaje ni forzar compras tempranas. La formación de un núcleo de colaboradores deja de ser condición previa: se buscarán contribuciones a partir de oportunidades visibles y concretas.
 
+## 4.1 Matriz de trazabilidad entre arquitectura y plan
+
+Esta matriz evita que la arquitectura y el plan evolucionen como documentos independientes. La arquitectura define el requisito estratégico; el plan lo convierte en tareas, entregables y puertas de aprobación.
+
+| Arquitectura integrada v1.0 | Requisito que gobierna | Desarrollo en el plan | Evidencia / puerta |
+|---|---|---|---|
+| §0 y §§1–2 | Propósito, mensaje público y jerarquía de nombres | Fase 1; contenidos de Fase 2 | Texto Home y prueba de comprensión; G1 |
+| §3 | Independencia científica y afirmaciones proporcionadas | Fase 2 y revisión de Fase 7 | Contenido Research revisado; G2 y G7 |
+| §§4–5 | Espacios del ecosistema y participación abierta | Fases 2–3 | Community, oportunidades y guía de contribución; G2 y G3 |
+| §6 | AWGI, navegación, recorrido y Efecto Ajá | Fases 1–3 y construcción de Fase 5 | Recorrido Home → Explore → Community/Roadmap → propuesta; G1 y G3 |
+| §7 | Infraestructura ligera, portabilidad, no-code y privacidad | Fases 4–6 | Comparativa, prueba práctica, configuración y controles; G4–G6 |
+| §§8–9 | Portfolio, sostenibilidad y financiación condicionada | Fase 2 para presentar lo existente; activación posterior solo con demanda/capacidad | Contenido y estados honestos; G2/G7. Sin pagos ni captación de fondos autorizados |
+| §10 | Gobernanza, revisión, autoría y responsabilidades | Fases 3, 6 y 8 | Flujo de revisión, reglas, responsables y rutina; G3/G6 |
+| §11 | Identidad visual y verbal | Fase 5 | Kit visual mínimo y revisión de experiencia; G5 |
+| §§12–13 | Indicadores y alcance de primera versión | Fases 1 y 7 | Pruebas, checklist de aceptación y autorización de publicación; G1/G7 |
+| §14 | Evolución acompasada y ampliación condicionada | Fase 8 | Revisión de uso, carga, coste y decisiones de evolución |
+| §§15–17 | Relación entre documentos, pendientes y control de cambios | Todas las fases | Referencias vigentes, registro de decisiones y estados verificables |
+
+**Regla de precedencia:** la arquitectura integrada v1.0 gobierna el significado y los límites estratégicos. Este plan gobierna la secuencia operativa. Si aparece una discrepancia, se registra y resuelve antes de ejecutar la fase afectada; no se recuperan automáticamente formulaciones del archivo histórico.
+
+**Regla de secuencia:** la comprobación no vinculante de disponibilidad del dominio puede realizarse durante la preparación, pero registro, contratación, conexión del dominio y publicación quedan sujetos a sus puertas y autorizaciones expresas. La selección técnica no puede imponer funciones que la arquitectura excluye del lanzamiento mínimo.
+
 ## 5. Fases, tareas y puertas de aprobación
 
 ### Fase 0 — Reconciliación y preparación
@@ -71,8 +93,8 @@ La comprobación del dominio y la identidad visual pueden avanzar en paralelo, p
 **Objetivo:** cerrar la definición operativa mínima y eliminar contradicciones documentales antes de crear activos externos.
 
 **Tareas**
-1. Usar la arquitectura estratégica §39 como especificación rectora AWGI.
-2. Mantener decisiones previas compatibles: naming, tagline, independencia científica, marco económico y salvaguardas.
+1. Usar la arquitectura integrada v1.0 como especificación rectora; para AWGI, aplicar especialmente §§5–7 y §§12–15, sin depender de numeraciones del documento histórico.
+2. Aplicar las decisiones integradas en la arquitectura v1.0: identidad y naming (§§1–2), límites científicos (§3), participación (§5), actividad y sostenibilidad (§§8–9), gobernanza y salvaguardas (§10).
 3. Registrar qué contenidos y experiencias existen realmente, cuáles están diseñados y cuáles son aspiraciones.
 4. Seleccionar un primer recorrido de visitante: Home → Explore → Community/Roadmap → contribución.
 5. Limitar el alcance a tres frentes activos como máximo.
@@ -360,11 +382,15 @@ La decisión preferida será siempre la opción de menor coste total que cumpla 
 
 ## 10. Próxima operación
 
-La siguiente operación es completar la Fase 0 y preparar la Fase 1: **redactar y prototipar la Home de AFLUYA para probar el Efecto Ajá**, junto con el mapa del recorrido Home → Explore → Community/Roadmap → propuesta. No se necesita comprar dominio ni contratar una plataforma para realizar este trabajo.
+La siguiente operación es cerrar la Fase 0 mediante la validación de esta trazabilidad y preparar la Fase 1: **redactar y prototipar la Home de AFLUYA para probar el Efecto Ajá**, junto con el mapa del recorrido Home → Explore → Community/Roadmap → propuesta. No se necesita comprar dominio ni contratar una plataforma para realizar este trabajo.
 
 ## 11. Control de cambios
 
 ### v0.5 — 2026-11-10
+- Auditoría cruzada con la arquitectura integrada v1.0: se eliminan referencias heredadas a la sección §39 y a la versión AWGI v1.1.
+- Se sustituye la remisión a secciones históricas por referencias a la estructura integrada vigente.
+- Se añade una matriz de trazabilidad entre cada bloque de arquitectura, fases, entregables y puertas de aprobación.
+- Se aclara que la consulta de disponibilidad de dominio puede ser no vinculante, pero no autoriza registro, compra, conexión ni publicación.
 - Se actualiza la referencia rectora a la nueva arquitectura integrada `AFLUYA_ECOSYSTEM_ARCHITECTURE_v1.0.md`.
 - Se conserva el documento estratégico anterior en el directorio `archive/` exclusivamente para trazabilidad.
 - Rediseño integral del plan conforme a AFLUYA Web-as-Growth Infrastructure (AWGI).
