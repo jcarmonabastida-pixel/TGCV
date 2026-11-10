@@ -105,3 +105,17 @@ DEC-C10-068 acepta el servicio lógico sintético, los parámetros PAR-SVC-ENABL
 En DEC-C10-068, `CMP-SERVICE-LOGIC` se usó como owner/rol lógico provisional. No es por sí mismo un `component_id` único, un `instance_id` ni una versión. La propuesta `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md` separa esas entidades y somete a aceptación los candidatos `C10S-SVC-REQUEST-PROCESSOR`, `C10S-SVC-REQUEST-PROCESSOR-001` y `CMP-SERVICE-LOGIC-001`.
 
 La semántica funcional de ENABLED/PROFILE/RUL permanece aceptada por DEC-C10-068; los IDs/versiones candidatos no quedan aceptados por esa decisión. No se asigna hash hasta congelar formato canónico. El contrato no fija valores de escenario, instancia serializada ni mapping físico.
+
+
+## 11. Mapping semántico de la instancia y la regla RUL entre rutas (2026-11-10)
+
+Esta sección integra el contrato funcional aceptado por DEC-C10-068 con las decisiones posteriores DEC-C10-069/071/082/083. No redefine el dominio ni crea un formato.
+
+1. La identidad CMP es CMP-SERVICE-LOGIC-001/SERVICE_LOGIC, bajo contrato C10S-SVC-REQUEST-PROCESSOR v1.0.0 e instancia C10S-SVC-REQUEST-PROCESSOR-001 rev1. Su NODE anchor se resuelve por snapshot exacto, no por igualdad de record IDs entre snapshots.
+2. ENABLED y PROFILE mantienen sus identidades, tipos y dominios aceptados. DEC-C10-083 rige su presencia VALUE en las posiciones declarativas, preservación independiente F1/A1 y observación aplicada F2/A2.
+3. RUL-SVC-ENABLE-PROFILE-01 conserva owner, scope, AST, operadores, constantes, dos bindings tipados a PAR y efecto REQUIRE. La expresión semántica no cambia entre C_SRC, S2/S1, destino declarado y estado aplicado.
+4. Los bindings AST→PAR no son REF. REF sigue OPEN hasta inventario exhaustivo; no se presume REF=0.
+5. M_F_sem y M_A_sem son composiciones distintas de mappings de etapa. La equivalencia de contrato no demuestra independencia técnica de la ruta A respecto de B.
+6. CMP/PAR/RUL/MET reutilizan NODE, manifiesto PAR/COVERAGE_SCOPE, PREDICATE y metadatos/evidencia U_G existentes. No se añade una entidad PAR ni tabla MET.
+
+El encoding físico, mapping_id/version, canonicalización, escaping, hash, snapshots observados, evidencia de aplicación y validación del oráculo permanecen OPEN. JCS UDG-01 no se extrapola. No hay instancia serializada, parser ni ejecución.
