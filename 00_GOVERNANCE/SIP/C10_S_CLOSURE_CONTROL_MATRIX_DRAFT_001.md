@@ -2568,3 +2568,21 @@ PR #116: OPEN / DRAFT; base research/c10-d1-protocol-draft, head research/c10-s-
 | C-AN-05 | Tolerancias, métricas, réplicas inválidas y reglas de aceptación preespecificadas | OPEN |
 
 **Dictamen:** propuesta de especialización; no equivale a aceptación de los métodos, parámetros o umbrales. C-MED y C-ANALYZER no están cerrados. Sin implementación o ejecución.
+
+
+## 125. Reconciliación de estimandos, temporalidad y gates C-MED/C-ANALYZER (2026-11-10)
+
+| Control | Regla verificable | Estado |
+|---|---|---|
+| Separación θ_A(q) / mediación B-D2 | θ_A(q) es efecto de políticas factibles de accesibilidad; mediación B es secundaria y requiere estimando propio | PROPOSED |
+| Objeto ΔT_acc | Crosswalk DGP↔C10-D1 §27.1 y separación de ΔE_T | OPEN |
+| Confusión inducida | Variables post-B/pre-t3 que afectan ΔT_acc y Value deben modelarse longitudinalmente | OPEN |
+| Downstream | Reach, trayectoria, K, selección, ejecución y O no se ajustan mecánicamente para efecto total | DEFINED |
+| g0/g1 y q | Políticas implementables, factibles y con soporte común | OPEN |
+| Mediación interventional B | Estimando/método longitudinal compatible si se conserva como pregunta secundaria | OPEN |
+| Firewall | Generator truth / Analyzer observed / Evaluator truth tras sellado | PROPOSED |
+| Clasificación de Analyzer | Identificación puntual/parcial/no identificación/indeterminación | PROPOSED |
+| Falsos positivos/abstención | Denominadores conceptuales y adjudicación por DGP | DEFINED IN PRINCIPLE; thresholds OPEN |
+| Parámetros de aceptación | Tolerancias, multiplicidad, N, réplicas y precisión MC | OPEN |
+
+**Dictamen:** la estructura metodológica está reconciliada documentalmente; no hay identificación ni ejecución demostradas. C-MED y C-ANALYZER permanecen OPEN. No Design Freeze ni implementación.
