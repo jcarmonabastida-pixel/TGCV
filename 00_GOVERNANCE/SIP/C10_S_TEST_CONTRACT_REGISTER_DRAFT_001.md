@@ -1482,3 +1482,17 @@ El roster y la adjudicación de estos casos siguen OPEN. No se amplían contrato
 La evaluación debe consumir el roster del maestro §232, no crear un roster alternativo. No se crean fixtures ni valores. Por cada campo real se exigirá identidad/versionado, unidad/frontera, vigencia, tipo semántico U/R/C/X/E_T, valor basal/post o diff, efecto estructural, mapping, event_id, truth y observación, evidencia/cobertura y adjudicación.
 
 Los adversariales de B-M01…15 se mantienen como dominios de inspección, no como hechos observados. No inventariar = UNKNOWN/?, no 0. Campos mixtos se descomponen o quedan UNKNOWN. E_T nunca entra en ΔT_acc*. Las rutas F y A conservan evidencia y adjudicación separadas.
+
+
+## 80. Contratos de aceptación del DAG Opción A/D2
+
+- **DAG-01 (temporalidad):** validar reloj t−1…t9, orden causal, snapshots inmutables y eventos posteriores.
+- **DAG-02 (separación de estados):** probar que Z/B/W_programmed/W_attempt/S_install/C_dep*/A_f*/D_f*/ΔT_acc*/Reach/K/Sel/Exec/O/V no se colapsan ni imputan entre sí.
+- **DAG-03 (crosswalk):** exigir tipado U*/R*/C*/X*/E_T por subcampo, no por superficie B-M; X* no se suma como coordenada independiente ni se duplica con C*/R*/U*.
+- **DAG-04 (rutas colaterales):** inspeccionar recursos/capacidad, permisos/seguridad, dependencias compartidas y A1/A2, coste/latencia/calidad, información/incentivos, medición y spillovers.
+- **DAG-05 (invariancia D2):** verificar las condiciones comunes de DEC-C10-067; si fallan, clasificar efecto de paquete o diseñar identificación adicional.
+- **DAG-06 (mediación):** intervención sobre distribución conjunta factible de ΔT_acc*; A_f* como predicado/proyección y D_f* como indicador derivado, no mediadores seriales.
+- **DAG-07 (estimandos):** ITT_Z(D2), primeras etapas, LATE_f y θ_A(q) reportados por separado; no transferir entre escenarios ni derivar uno por resta.
+- **DAG-08 (observación):** E_T y A_f/O/V observados separados de truth; falta de cobertura propaga ?.
+
+**Estado:** contratos definidos a nivel de criterio; tolerancias, adjudicación, denominadores y pruebas concretas pendientes. No se han creado fixtures ni ejecutado pruebas.
