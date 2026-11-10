@@ -988,3 +988,16 @@ D2 solo podría informar θ_Af(q*) focal si se demuestra B→g^Af, q* común, ve
 Se preservan los gates MAP-03…07 y MED-03/05. La clasificación de L depende de B→L, L→M y L→V_j por dimensión/horizonte. Sin población, q, soporte, interferencia, Value dimensional, fuentes y observación no se declara identificación.
 
 **Estado:** reconciliación conceptual/documental completada; MAP-01/02 MATERIAL OPEN; B_D2→g^Af no demostrado; B_D2→g general no presumible; C-MED OPEN. Sin aprobación de estimando/método, Design Freeze, implementación ni ejecución.
+
+
+## 26. MAP-03/04 y MED-03 — distribución inducida, soporte y clasificación de L
+
+Se reutilizan MAP-01/02 de auditoría IV §§14.6–14.7, el roster causal de §§232/250, el crosswalk §§251–254 y la reconciliación §257. No se crean variables, field_id, event_id ni matriz paralela.
+
+**MAP-03:** g_j^ind(m|h,l;q) representa la distribución conjunta inducida de M=ΔT_acc* bajo la política/version b_j, respecto de la misma población q_X* y régimen común q. L solo se incorpora como historia pre-M en un modelo longitudinal que modele B→L; no se condiciona ingenuamente en L postratamiento. Se requiere soporte estructural, de asignación/recepción, secuencial, de mediador y de resultado. El solapamiento marginal no basta. No se extrapola, trunca ni fusiona versiones para ocultar falta de soporte. Si solo una región tiene soporte, cualquier estimando restringido debe declarar el cambio de población objetivo.
+
+**MAP-04:** versiones solo pueden agruparse si son equivalentes para el estimando, población, historia, horizonte y V_j. Igualdad de M, A_f*, D_f* o éxito técnico no prueba equivalencia si difieren rutas directas a Value, recursos, permisos, seguridad, rendimiento, información, alternativas, costes, observación o interferencia. En caso de duda se mantienen separadas o se estiman como políticas/paquetes distintos.
+
+**MED-03:** cada campo/subcampo existente se clasifica por unidad, evento, snapshot, precedencia y dimensión V_j. “Confusor M–V inducido” exige conjuntamente B→L_k, L_k→M y L_k→V_j. Si solo B→L→M, es antecedente técnico; si B→L→V_j sin pasar íntegramente por M, es vía colateral; si ocurre después de M, es downstream. E_T sigue siendo evidencia, salvo que el proceso de observación altere conducta/información. Las familias de §251 son candidatas de inspección, no evidencia de flechas.
+
+**Estado:** especificación documental integrada; MAP-03, MAP-04 y MED-03 continúan OPEN material/identificación. No hay umbrales, método, población, q, potencia o parámetros aprobados. Sin Design Freeze ni ejecución científica.
