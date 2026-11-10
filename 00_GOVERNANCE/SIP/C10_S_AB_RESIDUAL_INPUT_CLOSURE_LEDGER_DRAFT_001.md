@@ -889,3 +889,24 @@ donde G_M^b(dm|L,H) es la distribución conjunta factible de M bajo b condiciona
 **No identificación:** historia L incompleta, confusión M–V no medida, falta de soporte secuencial, intervención M no factible, versiones incompatibles, interferencia no modelada o medición inválida obligan a NOT_IDENTIFIED/PARTIALLY_IDENTIFIED/INDETERMINATE según lo que pueda sostenerse. Un ITT identificable no implica mediación identificada; una mediación identificada bajo D2 no identifica automáticamente θ_A(q).
 
 **Estado:** especificación candidata; MED-03 y MED-05 siguen OPEN; ningún supuesto ni estimando está validado empíricamente. Sin Design Freeze ni ejecución científica.
+
+
+## 18. C-MED — registro causal H/L/M y rutas a Outcome/Value (2026-11-10)
+
+Se operacionaliza el DAG existente de maestro §§229.3, 233 y 249 en un registro conceptual, sin crear una segunda matriz de predicados ni declarar inventario de campos completo.
+
+**H basal:** roster ya presente X/H0/S0/C0/L0, unidad/frontera/soporte, identidades/versiones, C_auth,base, recursos0/capacidad0/información0, C_dep0, A_f,base*, T_acc,base, alternativas0, O0/V0. Sus valores, población y medición siguen OPEN.
+
+**Z y exposición:** Z es asignación; B y su versión son régimen material; W_programmed, recepción/cumplimiento, W_attempt y S_install son eventos separados, no proxies intercambiables.
+
+**L post-B pre-M candidata:** C_install*/C_integrity*/C_compat*/C_oper*, C_dep*, recursos/capacidad/permisos/ACL/dependencias/host/runtime/seguridad y cambios de entorno. Solo es confusor M–V inducido para un estimando/dimensión si B la afecta y causa tanto M como V_j por ruta pertinente. Puede ser causa de M, mediador técnico o colateral según el DAG; no etiquetar automáticamente todo postratamiento como confusor.
+
+**M:** ΔT_acc* completo en t3, con componentes DGP y mapping/crosswalk de §30. A_f* es proyección/predicado focal y D_f* indicador; no son mediadores paralelos por defecto. E_T es canal de evidencia/observación y no parte de M.
+
+**Downstream:** Reach/Π_H, K/Consider, Sel/Start, ejecución y O preceden a V_j según el reloj existente; forman parte de la evolución del efecto total y solo se separan con estimandos secuenciales propios. Cambios posteriores que alteren accesibilidad exigen nuevo snapshot.
+
+Se registran rutas candidatas B→L→M→downstream→O→V, B→L→O/V, B→A1/A2/recursos/ACL/coste/seguridad→O/V, B/Z→E_T/missingness→observados e interferencia/carryover entre unidades. Son rutas a auditar, no flechas empíricamente demostradas. Sin definición de §224 por dimensión V_j no se adjudican efectos específicos.
+
+**Regla de ficha:** reutilizar field_id existentes y registrar tiempo/valid-time, unidad/frontera, snapshot/versión, función U*/R*/C*/X*/E_T, truth/observed, papel causal relativo al estimando y V_j, relación con M y Outcome/Value, fuentes/cobertura/error, intervención, interferencia y provenance. Un mismo campo no se duplica en L y M; separar instancias temporales cuando proceda.
+
+**Estado:** registro conceptual consolidado; inventario material y clasificación campo×V_j OPEN. No identifica confusores efectivos ni demuestra ausencia de rutas. MED-03/05 y §224 siguen OPEN. Sin Design Freeze ni ejecución.
