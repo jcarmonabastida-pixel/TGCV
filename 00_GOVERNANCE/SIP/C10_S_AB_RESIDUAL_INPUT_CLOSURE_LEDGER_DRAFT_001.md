@@ -962,3 +962,13 @@ Se especifican reglas lógicas para C_dep*, rutas F/A, F_alt, A_f*, D_f*, ΔT_ac
 
 **Cerrado documentalmente:** lógica e invariantes de escenarios, derivaciones, truth/observed, roles y tests de diseño.  
 **OPEN material/estadístico:** truth tables por unidad/snapshot/paso, parámetros D2 y distribución I/G/C/O, F*/G/H/ventanas, inventario alternativo y MD-C1/MD-C4, medición/missingness/oráculo, q_X*/soporte/interferencia, Outcome/Value V_j, firewall y criterios cuantitativos del Analyzer. AB-09 no es materialmente cerrado ni AB DONE.
+
+
+## 24. C-ANALYZER — adjudicación de identificación, atribución y abstención (2026-11-10)
+
+Se incorpora maestro §256, especializando §§225.7/225.9 y 229.5–229.7, sin duplicar P177/P178/P179/P182/P183 ni crear una batería de tests paralela.
+
+Se definen clases truth y salidas admisibles; errores FI, FI-IND, FA, TARGET_MISMATCH, FALSE_BOUNDS y FALSE_ABSTENTION; recuperación puntual y abstención correcta; denominadores N_PI/N_PART/N_NI/N_IND/N_NA/N_PACKAGE/N_ASSIGNED; reglas de solapamiento; ficha de criterios/tolerancias ex ante; y orden Generator→Analyzer→freeze→Evaluator. Se incorporan 12 casos ANJ-01…12 como contratos documentales.
+
+**Cerrado documentalmente:** lógica de adjudicación, denominadores y taxonomía de error.  
+**OPEN:** umbrales/tolerancias, utilidad de bounds, multiplicidad, calibración, N/potencia, réplicas Monte Carlo y validación técnica del firewall. AN-03 DOCUMENTED / DENOMINATOR LOGIC SPECIFIED; AN-04 PARTIALLY SPECIFIED / NUMERIC THRESHOLDS OPEN; C-ANALYZER sigue OPEN. No ejecución.
