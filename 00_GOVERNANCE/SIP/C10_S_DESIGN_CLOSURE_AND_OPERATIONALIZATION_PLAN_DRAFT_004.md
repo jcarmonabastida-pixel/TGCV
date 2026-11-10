@@ -2103,3 +2103,16 @@ El maestro §228 propone completar dos gates sin duplicar automáticamente P177/
 Se trata de especialización candidata de P177-06/10/12, P182-01/02/06/07/11 y P183-08/10/11/12. La cobertura actual es parcial; las tolerancias y los denominadores no están fijados. No se selecciona un método mediacional ni un DAG sin microdominio y entradas AB aceptadas.
 
 **Estado:** C-MED OPEN; C-ANALYZER OPEN; paquete C NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. Sin ejecución.
+
+
+## 16.107 — Reconciliación causal de C-MED y contrato de evaluación del Analyzer (2026-11-10)
+
+El maestro §229 corrige la ambigüedad de §228: θ_A(q) es el contraste científico entre políticas factibles de accesibilidad bajo q común; la mediación del efecto de asignar/proveer B^D2 es una pregunta mecanística secundaria y no se obtiene del ITT ni de restas entre estimandos incompatibles.
+
+Se adopta como referencia de medición de ΔT_acc la representación analítica de C10-D1 §27.1 (A⁺, A⁻, A^reconf, ΔR, ΔC), sin elevarla a nueva ontología del Core. La tupla del contrato DGP requiere crosswalk explícito antes del freeze y separación de ΔE_T.
+
+Se concreta el reloj t−1…t9 y se distingue confusión mediador–Value inducida por B antes de t3 de mecanismos downstream posteriores a ΔT_acc. No ajustar mecánicamente por estos últimos para el efecto total. Para mediación secundaria se requiere estimando interventional y método longitudinal compatibles con el DAG; no efecto natural ni regresión convencional por defecto.
+
+El Analyzer debe evaluarse por estimando×dimensión Value×DGP×soporte, con truth sellada, bounds cuando proceda, falsa identificación/atribución y abstención correcta/falsa. Se especifican denominadores conceptuales, manteniendo thresholds, tolerancias, multiplicidad, N y réplicas OPEN.
+
+**Estado:** propuesta integrada; MED-01…06 y AN-01…04 no están cerrados; paquete C NOT APPROVED / NOT FROZEN / NOT IMPLEMENTABLE. Sin ejecución.
