@@ -433,13 +433,19 @@ La navegación principal conserva **Explore** como una de las puertas de entrada
 - **Framework** — VALUE Framework y recursos de aplicación.
 - **Explore** — experiencias interactivas, demostradores, simuladores y casos explorables.
 - **Learning** — formación, itinerarios y recursos de aprendizaje.
+- **Work with us** — puerta principal para contratar servicios, proponer colaboraciones y establecer alianzas con AFLUYA.
 - **About** — propósito, principios, gobernanza y equipo.
 
+**Estructura de Work with us:**
+- **Advisory** — AFLUYA Advisory: Value Discovery Sprint, AI Opportunity Assessment, Proposal Excellence y Fractional CVO. Mostrar disponibilidad y estado real de cada servicio; no presentar como contratables los que aún no estén validados.
+- **Collaborate** — proyectos conjuntos, contribuciones, investigación colaborativa y oportunidades de colaboración, con reglas explícitas de alcance, autoría y propiedad intelectual.
+- **For organizations** — vía de contacto para empresas e instituciones interesadas en aplicar VALUE, explorar oportunidades o desarrollar proyectos.
+- **Impact partnerships** — patrocinio, financiación y alianzas para AFLUYA Impact, sin convertir a los beneficiarios en clientes obligados a pagar.
+
 **Accesos secundarios, no sustitutos de la navegación principal:**
-- **Apply / Work with us:** AFLUYA Advisory, Value Discovery Sprint y servicios especializados.
-- **Tools:** ValueLabOS.
-- **Impact:** AFLUYA Impact y programas asociados.
-- **Resources:** biblioteca de publicaciones, guías, materiales y recursos descargables; puede ser sección principal o subnavegación según el volumen real.
+- **Tools** — ValueLabOS, identificado como producto y con su estado de desarrollo real.
+- **Impact** — AFLUYA Impact y programas asociados; puede enlazarse desde Work with us / Impact partnerships.
+- **Resources** — biblioteca de publicaciones, guías, materiales y recursos descargables; puede ser sección principal o subnavegación según el volumen real.
 
 **Contenido de Explore:**
 - TGCV Playground.
@@ -1661,7 +1667,9 @@ No lanzar una suscripción si:
 
 ### 35.7 Implicaciones para la web y la implantación
 
-La primera web debe poder presentar con claridad Community, Research, Explore, Learning y Work with us / Advisory, además de describir ValueLabOS e Impact como líneas en desarrollo cuando corresponda.
+La primera web debe presentar una navegación principal coherente que incluya Home, Discover, Community, Research, Framework, Explore, Learning, **Work with us** y About. Work with us será una sección principal —no un simple enlace secundario— con cuatro entradas: Advisory, Collaborate, For organizations e Impact partnerships. Tools/ValueLabOS, Impact y Resources podrán mantenerse como accesos secundarios o páginas enlazadas según el contenido real.
+
+Work with us debe permitir entender cómo contratar un servicio, proponer una colaboración o establecer una alianza, sin insinuar que todas las ofertas están ya disponibles. Los servicios tendrán estado visible (por ejemplo, piloto, en preparación o disponible tras validación). La vía de contacto no implica contratación automática ni habilita pagos.
 
 En la primera publicación:
 - no se necesita checkout, pasarela de pago, gestión de suscripciones ni área privada;
@@ -1694,3 +1702,11 @@ No se aprueban tarifas, niveles comerciales, condiciones contractuales ni lanzam
 - Se preservan el acceso comunitario abierto, el conocimiento científico público y la independencia de TGCV.
 - Se explicita que la primera web no requiere pagos, checkout, área privada ni gestión de suscripciones.
 - Las recomendaciones son propuestas pendientes de validación; no constituyen tarifas, ofertas disponibles ni autorización de contratación.
+
+
+### v0.9 — 2026-11-10
+- Se eleva **Work with us** desde acceso secundario a sección de navegación principal.
+- Se define su estructura: Advisory, Collaborate, For organizations e Impact partnerships.
+- Se aclara que Tools/ValueLabOS, Impact y Resources pueden permanecer como accesos secundarios según el contenido real.
+- Se alinea la navegación con el portfolio y la arquitectura económica v0.8, sin presentar ofertas no validadas como disponibles.
+- No se activan pagos, suscripciones ni contratación automática.
