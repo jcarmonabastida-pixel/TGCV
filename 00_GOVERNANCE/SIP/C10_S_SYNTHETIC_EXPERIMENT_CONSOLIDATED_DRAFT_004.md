@@ -10685,3 +10685,129 @@ El t1 de Path Matrix no se puede traducir a un único evento: contiene asignaci�
 **Pendiente de aceptación formal:** adoptar como alias numérico operativo el reloj posterior t−1…t9/t+1… para nueva captura, declarar el reloj §34.1 como histórico/comprimido y añadir el event_key al contrato de instancia/registro sin ampliar schema U_G por inferencia. No se modifican los documentos históricos ni se cambia su contenido.
 
 **Estado:** AB-TIME-01 PARTIALLY RESOLVED / FORMAL ADOPTION OPEN. La secuencia semántica ya permite continuar el crosswalk y preparar contratos; no se declara cierre completo ni Design Freeze. Sin event_id efectivos, timestamps, snapshots, registros, fixtures, implementación o ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 254. MED-02c4 — contrato de correspondencia temporal entre event_key, stage_key, SNAPSHOT y evidencia (2026-11-10)
+
+**Estado:** CROSSWALK DOCUMENTAL / REGLAS DE RESOLUCIÓN ESPECIFICADAS; BINDING MATERIAL Y CONTROL C0 NO EJECUTADOS. MED-02c4 continúa OPEN materialmente.  
+**Precedencia:** DEC-C10-065 (pinning de revisión SNAPSHOT); DEC-C10-070 (binding C0); DEC-C10-071 (vocabulario stage_key); DEC-C10-072 (token global); DEC-C10-062 (identidad/versionado/record-time); DEC-C10-079/080 (identidad y evidencia PAR); U_G §§12–16 y 18–24; contrato de identidad/matching; maestro §§232–253. Esta sección no altera decisiones ni schema.
+
+### 254.1. Problema que resuelve y distinciones obligatorias
+
+MED-02c4 no consiste en hacer coincidir timestamps ni en convertir los siete stage_key en tiempos causales. Resuelve cómo probar que una captura de configuración, un evento causal y una afirmación observacional se refieren a la misma unidad, versión, ruta y estado.
+
+Se mantienen cinco ejes separados:
+
+1. **event_key:** etiqueta semántica propuesta en §253 para una clase de evento causal (p. ej. POLICY_PROVISION o EXECUTION). No es columna, ID físico ni registro U_G.
+2. **source_event_id:** identificador nativo del evento en el sistema/log fuente, si existe. Se conserva en el artefacto/provenance; no se crea una tabla ni columna U_G para alojarlo. Si no existe, NOT_ASSIGNED; no se sustituye por timestamp.
+3. **stage_key:** una de las siete etapas aceptadas por DEC-C10-071. Identifica la etapa del pipeline de configuración, no el evento causal ni el tipo de snapshot.
+4. **SNAPSHOT:** revisión observacional inmutable identificada por (snapshot_id, object_record_id); los registros NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP fijan la revisión exacta mediante (snapshot_id, snapshot_object_record_id) según DEC-C10-065.
+5. **E_T:** evidencia, cobertura, procedencia, observación, evaluación y adjudicación. Su record-time/capture-time no redefine el valid-time del estado.
+
+**Colisión terminológica resuelta:** el contrato de identidad §2 usa EID para una instancia/evento concreto de transformación (invocación de τ2, por ejemplo). Ese EID no es un identificador genérico para Z, B, recepción, instalación, snapshot, Outcome o Value. No se reutiliza como source_event_id salvo que la fuente identifique exactamente una invocación de transformación. Tampoco se interpreta el event_id citado en crosswalks anteriores como columna ya existente de U_G.
+
+### 254.2. Crosswalk entre los siete stage_key y los eventos de proceso
+
+Los stage_key aceptados se interpretan por el estado de configuración que documentan. La tabla fija precedencia funcional, no timestamps ni una correspondencia uno-a-uno con el reloj t−1…t9.
+
+| stage_key aceptado | Objeto/estado capturado | Ruta/alcance C0 | Relación de precedencia con eventos | Evidencia que no puede sustituirse |
+|---|---|---|---|---|
+| C_SRC | CMP/PAR/REF/RUL/MET declarados en configuración fuente | C10S_SCOPE_GLOBAL solo si el universo es realmente común/no restringido a ruta; si no, route_id exacto | Debe preceder a la transformación F1/A1 que lo consume. Solo se asocia a BASELINE_PRE_Z cuando la captura demuestra que es el estado basal sellado antes de Z; no se infiere por el nombre C_SRC | Contrato fuente no prueba valores efectivos; baseline exige snapshot y C0 pre-Z |
+| F1_S2 | Estado intermedio S2 producido por F1 | Route-specific F: route_id y route_record_id exactos | Posterior al subevento de ejecución F1 y anterior a F2; pertenece a EXECUTION como subevento de paso, no a ACCESSIBILITY_SNAPSHOT t3 | Intento/invocación no prueba S2 producido; requiere captura del estado intermedio |
+| A1_S1 | Estado intermedio S1 producido por A1 | Route-specific A: route_id y route_record_id exactos | Posterior al subevento de ejecución A1 y anterior a A2; pertenece a EXECUTION como subevento de paso | Capacidad declarada de A1 no prueba S1 producido |
+| F2_DST_DECL | Configuración destino declarada para F2, aún no aplicada | Route-specific F | Debe existir antes de la aplicación F2. El evento de declaración se enlaza a su fuente; no se inventa un event_key top-level ni se etiqueta como aplicación | Declaración/payload no prueba aplicación efectiva |
+| A2_DST_DECL | Configuración destino declarada para A2, aún no aplicada | Route-specific A | Debe existir antes de la aplicación A2. El evento de declaración se enlaza a su fuente; no se inventa un event_key top-level ni se etiqueta como aplicación | Declaración/payload no prueba aplicación efectiva |
+| F2_DST_APPLIED | Estado destino efectivamente aplicado tras F2 | Route-specific F | Posterior al subevento de aplicación F2 (EXECUTION); conservar FP-06 como evento de aplicación y FP-07 como post-check independiente | FP-06 no sustituye FP-07; artefacto declarado, intento o log de proceso no bastan |
+| A2_DST_APPLIED | Estado destino efectivamente aplicado tras A2 | Route-specific A | Posterior al subevento de aplicación A2 (EXECUTION); conservar FP-06 como evento de aplicación y FP-07 como post-check independiente | FP-06 no sustituye FP-07; artefacto declarado, intento o log de proceso no bastan |
+
+F y A en la tabla son familias funcionales auxiliares. No son valores admisibles del slot route_id de C0. Para scopes route-specific se exige route_id semántico exacto y resolución a route_record_id exacto. Para un universo no restringido a ruta se usa exclusivamente C10S_SCOPE_GLOBAL, con la regla de deduplicación de DEC-C10-072. No se usa NONE, NULL, vacío, F ni A.
+
+La correspondencia temporal se resuelve mediante precedencia del proceso y fuente concreta. No se asigna a F1_S2/A1_S1/F2_DST_DECL/A2_DST_DECL/F2_DST_APPLIED/A2_DST_APPLIED un número t universal: el reloj causal de §253 y el pipeline de configuración son ejes ortogonales.
+
+### 254.3. Relación entre stage_key, SNAPSHOT.phase y reloj causal
+
+- stage_key permanece en el binding C0 de COVERAGE_REGISTER.universe_definition/version, no en SNAPSHOT.scope, SNAPSHOT.phase ni en una columna nueva.
+- SNAPSHOT.phase conserva exclusivamente su dominio vigente (baseline/post-B/rollback/route-test) y se asigna según el significado temporal real de la captura. No se deriva automáticamente del stage_key.
+- SNAPSHOT.timestamp registra el instante de captura con zona/precisión conforme al contrato; no es el tiempo causal del evento ni una clave de matching.
+- El reloj longitudinal §253 describe asignación, provisión, verificación, accesibilidad, Reach, agente, ejecución, Outcome y Value. Una captura stage-specific puede preceder o seguir a alguno de esos eventos; se registra la relación real, no se fuerza a un índice t por nombre.
+- created_at U_G es record-time (DEC-C10-062), no valid-time. EVIDENCE_REGISTER.timestamp_start/end_tz acota el intervalo temporal de la fuente; source_provenance y el payload original conservan los tiempos de evento/validez que la fuente realmente exponga. Si la fuente no ofrece valid-time o reloj fiable, se registra UNKNOWN/limitación, no se sustituye por created_at.
+- Un snapshot t3 de accesibilidad (ACCESSIBILITY_SNAPSHOT) y un snapshot de estado aplicado F2/A2 no son intercambiables. Los segundos se producen tras ejecución y post-check; no pueden retrotraerse a t3 ni modificar la accesibilidad adjudicada antes de selección/ejecución.
+
+La etiqueta baseline de SNAPSHOT.phase solo se usa si la evidencia confirma captura basal pre-Z. post-B requiere captura después de la provisión B; rollback requiere evento/estado de rollback; route-test requiere captura vinculada a prueba/ejecución de ruta. Estas reglas no crean un mapping total phase↔stage_key.
+
+### 254.4. Binding exacto mediante C0 y U_G existente
+
+Para cada scope C10-S se reutiliza, sin añadir componentes, la tupla C0 de nueve elementos aceptada por DEC-C10-070:
+
+(contract_id, contract_version, instance_id, instance_version, snapshot_id, snapshot_object_record_id, stage_key, route_id, object_class).
+
+- stage_key usa exclusivamente los siete tokens DEC-C10-071.
+- route_id es la identidad semántica exacta o C10S_SCOPE_GLOBAL según DEC-C10-072.
+- object_class es CMP/PAR/REF/RUL/MET.
+- COVERAGE_REGISTER.dimension mantiene C10S_CONFIG_CMP/PAR/REF/RUL/MET; no se añade a la tupla C0.
+- Cada tupla y universo exactos conservan su coverage_scope_id; no se reutiliza un scope entre snapshots, etapas, rutas, clases, contratos o versiones.
+- Los registros de grafo pinnean la revisión SNAPSHOT exacta. COVERAGE_REGISTER no tiene FK directa al par SNAPSHOT: el binding escrito en universe_definition/version se verifica mediante el control C0 independiente, no se presenta como enforcement relacional ya existente.
+- universe_definition/version debe resolver universo, denominador, clase, etapa, ruta, snapshot y miembros/regla conforme al UDG aceptado. No se añade event_key ni source_event_id a la gramática UDG por esta sección. La relación con el evento fuente se mantiene en la evidencia/provenance y en el crosswalk documental de la afirmación, no en la identidad C0.
+- Para NODE/EDGE route-specific, la pertenencia se prueba mediante ROUTE_STEP con record IDs y snapshot exactos; PREDICATE resuelve a route_record_id; ROUTE por su revisión. routes_affected, texto libre o family F/A no prueban pertenencia.
+- CMP/PAR/REF/RUL/MET mantienen los mappings por clase de §§251/252 y §28 del overlay: no se crea target PAR, tabla PAR, manifest FK ni mapping nominal automático.
+
+### 254.5. Resolución del enlace evento→snapshot→evidencia
+
+La cadena de resolución usa solo superficies existentes:
+
+1. **Evento fuente:** conservar el registro/log original, source-native event ID si existe, actor, objeto, versión, secuencia, timestamp y reloj/fuente. event_key clasifica semánticamente el evento; no reemplaza su identidad.
+2. **Snapshot:** registrar snapshot_id y object_record_id exactos, unidad raíz y timestamp de captura; verificar que el contenido corresponde al estado que el evento dice producir/observar. No resolver por nearest timestamp, hash aislado o última revisión.
+3. **Objeto U_G:** NODE/EDGE/ROUTE/PREDICATE/ROUTE_STEP deben apuntar al mismo par snapshot_id + snapshot_object_record_id; sus FKs y record IDs deben resolver conforme a DEC-C10-065 y §§15.1–15.3.
+4. **Scope:** coverage_scope_id debe resolver a una única fila COVERAGE_REGISTER cuyo universe_definition/version declara la misma tupla C0; la igualdad del snapshot exacto, stage_key, route_id y object_class debe comprobarse con el control C0. Un mismatch demostrado es FAIL; mapping ausente/incompleto es UNKNOWN.
+5. **Evidencia:** EVIDENCE_REGISTER registra la fuente/version/provenance, método, custodia, integridad y ventana timestamp_start/end_tz. CLAIM_EVIDENCE_LINK apunta al target U_G tipado exacto o al COVERAGE_SCOPE según el objeto/afirmación, sin FK nueva. La afirmación y relevance_scope deben hacer inequívoca la referencia al evento fuente, snapshot, stage_key, ruta y unidad.
+6. **Evaluación/adjudicación:** EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER apuntan al target tipado exacto; conservan regla, versión, cegamiento, estado, desacuerdo y resolución. La evaluación no corrige ni reescribe el output original.
+7. **Truth DGP:** permanece en DGP_TRUTH_SECURE para Generator/Evaluator. No se introduce en evidencia observable ni en Analyzer. El Analyzer recibe la observación y su incertidumbre, no truth ni etiquetas de escenario.
+
+No existe una FK evento→SNAPSHOT ni una tabla genérica de eventos en el schema U_G vigente. La trazabilidad de esa relación es documental y probatoria mediante la fuente E_T; no debe describirse como integridad referencial ya impuesta por el esquema.
+
+### 254.6. Cardinalidades, matching y deduplicación
+
+- Un evento fuente puede producir varias evidencias y/o snapshots distintos (por ejemplo, log de aplicación y post-check); cada uno conserva identidad/alcance propio.
+- Un snapshot exacto puede respaldar varios scopes/clases solo cuando todos describen el mismo estado inmutable y cada scope tiene su propio C0/denominador. No se duplica el snapshot para simular scopes.
+- Si dos stage_key representan estados de configuración diferentes (p. ej. declarado frente a aplicado, o S2 frente a destino final), deben corresponder a capturas distintas. Reutilizar un snapshot entre etapas solo es admisible si el contenido/estado es realmente el mismo y la regla de universo lo justifica; la igualdad de hash por sí sola no lo demuestra.
+- Un objeto puede aparecer en varios scopes route-specific y globales; se conserva una identidad U_G por snapshot. La deduplicación es dentro de cada universo/scope, no mediante fusión de denominadores distintos.
+- Para NODE/EDGE, la pertenencia a ruta requiere enumeración ROUTE_STEP exhaustiva. Para REF, mapping a EDGE y endpoints exactos; para PAR, owner CMP y parameter_key/manifiesto; para RUL, AST/operandos/scope; para MET, owner/target/tiempo. Si falta mapping, UNKNOWN/NOT_COMPARABLE.
+- Los snapshots comparados deben satisfacer la frontera, unidad, granularidad G, catálogo, contrato/instancia y mapping semántico de §§8–10 del contrato ID-MATCH. Split/merge, cambio de identidad o granularidad sin mapping validado no produce diff automático.
+
+### 254.7. Contratos adversariales MED-02c4
+
+| Caso | Condición | Resultado obligatorio |
+|---|---|---|
+| C4-01 | Mismo timestamp, distinto snapshot_object_record_id | No match; revisión distinta |
+| C4-02 | Mismo snapshot_id, revisión distinta | No match directo; requiere comparación/versionado explícito |
+| C4-03 | Mismo hash, stage_key distinto | No inferir mismo estado ni colapsar scopes |
+| C4-04 | created_at posterior al evento fuente | No altera valid-time; conservar record-time separado |
+| C4-05 | C_SRC nombrado baseline sin prueba pre-Z | UNKNOWN; no asignar BASELINE_PRE_Z |
+| C4-06 | F1_S2 asociado a A route o A1_S1 a F route | FAIL si mapping contradice route_id/ROUTE_STEP; UNKNOWN si falta mapping |
+| C4-07 | DST_DECL tratado como DST_APPLIED | FAIL ante contradicción; exigir FP-06/07 para applied |
+| C4-08 | FP-06 existe y FP-07 falta | Aplicación documentada; estado aplicado verificado permanece UNKNOWN |
+| C4-09 | Un evento genera log y post-check con tiempos distintos | Dos evidencias/afirmaciones, no duplicar el evento causal ni colapsar ventanas |
+| C4-10 | Rollback posterior a t3 | Nuevo evento/snapshot; nunca reescribe ACCESSIBILITY_SNAPSHOT t3 |
+| C4-11 | route=F/A, NONE, NULL o vacío usado como route_id C0 | UNKNOWN/FAIL según conflicto; solo route_id exacto o C10S_SCOPE_GLOBAL |
+| C4-12 | Scope C0 tiene snapshot correcto pero stage_key/clase/route incorrectos | FAIL por mismatch explícito; no PASS por compartir snapshot |
+| C4-13 | Evento sin source-native event ID | NOT_ASSIGNED; no fabricar ID desde timestamp/hash |
+| C4-14 | Fuente sin valid-time o reloj sincronizado | UNKNOWN/limitación temporal; no ordenar finamente por record-time |
+| C4-15 | Ausencia de fila/log con cobertura NONE/PARTIAL | UNKNOWN; nunca 0 ni NO_MATCH |
+
+Son contratos documentales, no pruebas ejecutadas. Reutilizan PM-01…18, ADV-C0-01…15, FP-01…08 y los contratos ID-MATCH; no crean una suite ejecutable nueva.
+
+### 254.8. Dictamen y cierre de MED-02c4
+
+**Resuelto documentalmente:** distinción event_key/source_event_id/EID; precedencia funcional de los siete stage_key; separación de stage_key, SNAPSHOT.phase, reloj causal y capture/record/valid time; binding C0 de nueve componentes; resolución evento→snapshot→scope→evidencia con U_G existente; reglas de route membership, cardinalidad, deduplicación y no retroacción; y 15 contratos adversariales de diseño.
+
+**Permanece OPEN materialmente:**
+- fuente/eventos reales y source-native event IDs;
+- snapshots y revisiones exactas, timestamps con zona, precisión, sincronización y valid-time;
+- TID/SID/RID/EID efectivos y mapping de transformaciones;
+- route_id/route_record_id, ROUTE_STEP y pertenencia por clase;
+- instancias de COVERAGE_REGISTER, coverage_scope_id y universe_definition/version efectivos;
+- denominadores y fuentes esperadas por snapshot×stage_key×route×object_class;
+- binding CMP root↔CMP anchor, REF/RUL/MET y manifiesto PAR en cada snapshot;
+- ejecución autorizada del control C0, matching, evaluación y adjudicación independientes.
+
+**Estado:** MED-02c4 DOCUMENTED / MATERIAL OPEN; AB-TIME-01 PARTIALLY RESOLVED / FORMAL ADOPTION OPEN. La propuesta no declara correspondencia temporal material ni comparabilidad demostrada. No crea event_id, source_event_id, tabla, FK, columna, snapshot, scope, member_ref, evidencia, fixture o código. No ejecuta control ni simulación. scientific_execution=false; execution_authorized=false; no Design Freeze.
