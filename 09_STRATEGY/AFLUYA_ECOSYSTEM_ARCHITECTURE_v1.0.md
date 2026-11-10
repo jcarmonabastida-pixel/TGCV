@@ -6,7 +6,7 @@
 **Fecha:** 2026-11-10  
 **Estado:** DRAFT — arquitectura integrada para revisión y aprobación del usuario.  
 **Ámbito:** identidad, propósito, modelo de ecosistema, experiencia digital, participación, gobernanza, actividad, sostenibilidad y evolución de AFLUYA.  
-**Plan operativo asociado:** `09_STRATEGY/AFLUYA_IMPLEMENTATION_PLAN_v0.1.md` (versión 0.5 — AWGI).  
+**Plan operativo asociado:** `09_STRATEGY/AFLUYA_IMPLEMENTATION_PLAN_v0.1.md` (versión 0.6 — AWGI).  
 **Archivo histórico:** `09_STRATEGY/archive/AFLUYA_ECOSYSTEM_ARCHITECTURE_HISTORICAL_v0.7_to_v1.1_2026-11-10.md`.  
 **Rama de trabajo:** `strategy/afluya-ecosystem-v0.2`.  
 **Relación con TGCV:** documento estratégico de AFLUYA. No modifica ni sustituye la gobernanza científica de TGCV.
