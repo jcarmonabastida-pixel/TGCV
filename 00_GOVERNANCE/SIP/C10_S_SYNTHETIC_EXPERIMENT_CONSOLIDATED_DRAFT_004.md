@@ -9734,7 +9734,7 @@ La intervención científica g opera sobre la distribución conjunta de cambios 
 
 Para la comparación temporal, C10-D1 §27.1 ofrece la representación analítica ΔT_acc=(A⁺, A⁻, A^reconf, ΔR, ΔC), cuando esas dimensiones sean pertinentes y medibles. Es una ficha analítica del cambio, no una redefinición del Core. La identidad/equivalencia de transformaciones, el universo candidato común y la separación entre cambio del sistema y cambio epistémico siguen siendo obligatorios.
 
-La tupla alternativa presente en el contrato temporal DGP (ΔU, ΔR, ΔC, ΔValidity, ΔState) no se equipara automáticamente a esa representación. Antes del freeze debe existir un crosswalk total que indique, para cada campo DGP, si representa una dimensión de A⁺/A⁻/A^reconf/ΔR/ΔC, un atributo de evidencia/validez o una variable de estado; debe prevenir doble conteo y separar ΔE_T de cambio estructural. Hasta entonces, el mapping de medición del objeto completo permanece OPEN. A_f* es una proyección focal h_f(ΔT_acc*), no el objeto completo.
+El contrato temporal DGP conserva en §3.3 una formulación histórica (ΔU, ΔR, ΔC, ΔValidity, ΔState), pero su §30 establece la precedencia vigente: S_T*=(U*,R*,C*,X*), ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*) y ΔValidity_e pertenece a ΔE_T. La expresión histórica de §3.3 queda supersedida y se ha corregido en ese contrato. El crosswalk con C10-D1 §27.1 debe mapear ΔU* a A⁺/A⁻/A^reconf, ΔR* a ΔR y ΔC* a ΔC; ΔX* requiere clasificación campo a campo y no se equipara automáticamente a ΔC ni a q. Debe prevenir doble conteo y mantener ΔE_T separado. Hasta entonces, el mapping de medición del objeto completo permanece OPEN. A_f* es una proyección focal h_f(ΔT_acc*), no el objeto completo.
 
 ## 229.3. DAG longitudinal de referencia y clasificación temporal
 
@@ -9846,7 +9846,7 @@ Estos escenarios son clases de prueba, no frecuencias, parámetros ni resultados
 
 **Corrección documental necesaria tras contrastar el contrato temporal DGP §§3.3 y 30 con el documento de reconciliación de snapshots.**
 
-La formulación de §229.2 que describía la tupla DGP como (ΔU, ΔR, ΔC, ΔValidity, ΔState) reproduce la expresión histórica de DGP §3.3, pero no la precedencia vigente del propio contrato. DGP §30 y C10_S_TRANSFORMATIONAL_SNAPSHOT_AND_DELTA_RECONCILIATION_DRAFT_001.md establecen:
+La primera redacción de §229.2 reprodujo la expresión histórica de DGP §3.3 (ΔU, ΔR, ΔC, ΔValidity, ΔState), pero no la precedencia vigente del propio contrato. Esta versión de §229.2 queda corregida por el presente apartado y por la actualización de DGP §3.3. DGP §30 y C10_S_TRANSFORMATIONAL_SNAPSHOT_AND_DELTA_RECONCILIATION_DRAFT_001.md establecen:
 
 - Truth estructural: S_T*=(U*,R*,C*,X*).
 - Cambio estructural: ΔT_acc*=Diff(S_T*(t0),S_T*(t1))=(ΔU*,ΔR*,ΔC*,ΔX*).
