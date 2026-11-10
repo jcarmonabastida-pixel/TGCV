@@ -701,3 +701,102 @@ No se excluye ni redefine la población por recepción, cumplimiento, intento, i
 **OPEN:** catálogo y contrato material de C0; unidad y población marco; protocolos y cobertura de D_f,0/A_f,0*/F_alt,0; definición de X y q_X* numérico; factibilidad por estrato de g0/g1; probabilidades de asignación; mapa real de clusters/exposición; missingness y tamaños muestrales (transferidos a C).
 
 **Dictamen:** AB-08 tiene un algoritmo documental reproducible en principio y coherente con las reglas previamente aceptadas. No está materialmente cerrado: faltan la población y los datos/valores concretos, soporte, q_X*, topología e interferencia. AB permanece IN_PROGRESS; no Design Freeze, fixtures, implementación, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 15. AB-09 — contrato integrado de escenarios R0–R3, truth tables y separación Generator/Analyzer/Evaluator (2026-11-10)
+
+**Alcance y precedencia.** Esta sección integra, sin duplicar ni reemplazar, el contrato AB-09 de maestro §219.6, el contrato F* y alternativas de §57, la matriz temporal de predicados, las reglas trivalentes de §§1–13, la integración temporal de §14 de este ledger y el gate de generación de código del maestro §0.6. Reutiliza R0–R3, FSTAR-01…18, EXC/PM/IV, PM-01…18, B-M01…15 y PROV-01…12. No crea identificadores paralelos, no convierte escenarios candidatos en decisiones aceptadas y no acredita cobertura ni observación material.
+
+### 15.1. Unidad de generación y estructura común de cada escenario
+
+Cada réplica/unidad sintética debe declarar, antes de producir observaciones:
+
+- `scenario_id` (R0, R1, R2 o R3, más identificador adversarial cuando corresponda), `dgp_version`, `unit_id`, `cluster_id/exposure_id` si aplica y versión de la instancia.
+- Historia basal C0, brazo Z, versión de política D2, eventos P/R/Q/W/S/N/K y sus tiempos por nombre de evento. No traducir todavía estos nombres a índices temporales incompatibles: AB-TIME-01 sigue OPEN.
+- Rutas `F=(F1,F2)` y `A=(A1,A2)`, universo U_G/alternativas, granularidad G, horizonte temporal H_time (OPEN), profundidad H_path (no confundir con H_time), F*, restricciones, recursos y cobertura.
+- Truth DGP por predicado y etapa; eventos/mecanismo; proceso de observación; missingness/cobertura; y resultado que se entrega al Analyzer.
+- Regla de evaluación y falsador específico. Los valores no determinados por las DEC o por contratos aceptados permanecen como parámetros explícitos OPEN, no como defaults.
+
+La unidad de adjudicación mínima es `unit × scenario × route × step × predicate × snapshot/event`. Las tablas de escenario son reglas de verdad estipuladas por DGP, no observaciones empíricas ni probabilidades.
+
+### 15.2. Matriz integrada de verdad esperada R0–R3
+
+| Objeto/predicado | R0 — focal aislado | R1 — alternativa basal estable | R2 — vía colateral de B | R3 — intento sin C_dep* completo |
+|---|---|---|---|---|
+| `F_alt,0` | 0 solo si el universo declarado está cerrado y exhaustivamente cubierto; en otro caso ? | 1 si A satisface F* con evidencia y cobertura basales; no excluir de P*_τ2 | Baseline se adjudica pre-Z; después se registra si B altera la alternativa. No inferir estado post-Z desde el basal | Se adjudica independientemente; no se deduce del intento |
+| Relación B→A1/A2/recursos/permisos/calidad/Outcome/Value | Truth del DGP estipula no-afectación en las superficies incluidas; no equivale a prueba material MD-C1/MD-C4 | La alternativa basal permanece estable y no afectada por B en la versión canónica R1; cualquier cambio reclasifica el caso como vía colateral/adversarial | Existe al menos una vía colateral estipulada y localizada; identificar superficie, tiempo y consecuencia | No se presupone aislamiento por el hecho de que el intento falle |
+| `W_programmed`, `W_attempt`, `S_install` | Se generan conforme a la política D2 y al mecanismo de cumplimiento; no se fuerza cumplimiento perfecto | Igual que R0; la alternativa no sustituye ni determina los eventos focales | Igual, registrando además cambios de B fuera de la ruta focal | Puede haber intento efectivo; no equivale a recepción, instalación ni éxito |
+| `C_dep* = I∧G∧C∧O` | Se deriva de cuatro verdades component-wise; no se presupone que sea 1 por Z=1 | Igual; éxito técnico focal y alternativa funcional son objetos distintos | Igual; registrar dependencias inducidas por las vías colaterales | El caso definitorio incluye al menos un componente constitutivo en 0 en truth DGP para afirmar `C_dep*=0`; si solo falta evidencia, `observed_state=?`, no 0 |
+| `A_f*`, `D_f*`, `ΔT_acc*` | Se adjudican independientemente a partir de condiciones/rutas del sistema. Z, programación, intento o C_dep* no los sustituyen | La accesibilidad focal puede cambiar aunque F* ya sea alcanzable por A; no inferir que ΔT_acc*=0 ni que Reach/F* cambie | Se registran los cambios reales de estructura/accesibilidad, incluidos los causados por rutas no focales; no atribuirlos exclusivamente a la intervención focal | No inferir A_f*=0/1, D_f* ni ΔT_acc* desde el intento o desde C_dep* incompleto; adjudicar alternativas y provisión de fondo |
+| `Reach_H`, `F*`, rutas | Reach/F* se evalúan sobre universo y horizonte declarados; R0 no demuestra ausencia fuera del universo | La ruta A puede sostener F*/Reach aunque cambie la accesibilidad de τ2; identidad y substituibilidad permanecen separadas | Reach/F* incorporan la vía afectada; el efecto puede ser de paquete | Una ruta alternativa o provisión de fondo puede mantener Reach/A_f* pese al fallo técnico focal |
+| Interpretación de ITT | Efecto de asignación D2 bajo la verdad de aislamiento estipulada en R0; no demuestra exclusión empírica | ITT de política; la alternativa estable puede ser modificadora de efecto, no violación automática de exclusión | Efecto de política/paquete; no etiquetar como efecto exclusivo de ΔT_acc* | Efecto de política D2; no inferir primer estadio de accesibilidad a partir de intento/instalación |
+| Estado de identificación focal | Candidato a aislamiento en el DGP; identificación solo tras satisfacer los demás requisitos de C | No se presume exclusividad funcional; P*_F separada de P*_τ2 | Exclusión focal comprometida por construcción salvo diseño adicional que separe la vía | La primera etapa técnica incompleta no identifica el efecto mediado por accesibilidad |
+
+**Regla de consistencia:** R0–R3 no asignan por sí solos magnitudes de Outcome/Value, probabilidades de cumplimiento, θ conjunta, pesos q_X*, H_time, potencia o tasas de error. Cada uno pertenece a su contrato/gate específico. Un DGP puede fijar verdad distinta por unidad/historia; la tabla expresa únicamente las propiedades que definen cada familia.
+
+### 15.3. Estados de verdad, observación y cobertura
+
+Para cada predicado se conservarán al menos estos campos, enlazados por identificadores opacos:
+
+1. `truth_DGP ∈ {1,0}`: valor estipulado por el mecanismo generador para la unidad/etapa/versión.
+2. `observed_state ∈ {1,0,?}`: juicio derivado exclusivamente de datos observables y protocolo de adjudicación.
+3. `measurement_status`: estado del proceso de medición (incluye fallo, no aplicación, censura o adjudicación pendiente sin colapsarlos).
+4. `coverage`: alcance verificable de universo, pasos, modos, snapshots y ventana.
+5. `mechanism_trace`: eventos y dependencias que producen la verdad DGP.
+6. `adjudication_ref`: regla, versión, evaluador y evidencia que sustentan el observado.
+
+Reglas obligatorias:
+
+- Truth DGP es binaria para predicados constitutivos definidos; UNKNOWN es un estado epistémico/observacional, no un tercer valor físico añadido al DGP.
+- `observed_state=1` requiere evidencia positiva suficiente y correspondencia de identidad/unidad/versión/ventana.
+- `observed_state=0` requiere evidencia negativa y cobertura suficiente para descartar el predicado dentro del universo declarado.
+- `observed_state=?` se mantiene ante cobertura incompleta, missingness, censura, desacuerdo no resuelto, identidad/mapping inciertos o prueba insuficiente.
+- `F_alt=0` y `Reach=0` requieren universo cerrado y búsqueda/cobertura exhaustiva. “No encontrado” o una lista vacía no son prueba de inexistencia.
+- Un predicado de ruta completa es 1 solo si todos sus requisitos necesarios son 1; es 0 si algún requisito necesario es 0; en otro caso ?. Reach es 1 si existe una ruta completa respaldada; es 0 solo si todas las rutas del universo están descartadas con cobertura exhaustiva; en otro caso ?.
+- La conjunción `C_dep*=I∧G∧C∧O` conserva la regla existente: truth es 1 solo en 1111; truth es 0 si algún componente es 0; observed es ? si no hay cero observado decisivo y queda algún componente desconocido.
+- No imputar truth desde observed, ni observed desde truth; no utilizar el identificador/etiqueta del escenario como predictor observable.
+
+### 15.4. Contrato de separación Generator / Analyzer / Evaluator
+
+| Rol | Acceso permitido | Acceso prohibido | Salida/control |
+|---|---|---|---|
+| **Generator** | DGP versionado, truth, potenciales, políticas, semillas internas, mecanismo y parámetros | Ninguna restricción de acceso interno dentro de su espacio privado; no puede escribir truth en el canal observable salvo que sea una variable legítimamente observable | Emite eventos y dataset observable separado; conserva truth y provenance en almacén/canal privado |
+| **Analyzer** | Dataset observable permitido, covariables basales, Z observado cuando forme parte del diseño/dataset, historial/eventos medidos, documentación pública del protocolo y reglas analíticas | `truth_DGP`, resultados potenciales, seed/estado interno del generador, asignación oculta no observada, `scenario_id`/etiquetas que revelen la familia de verdad, parámetros generadores privados, claves o nombres que permitan reconstruirlos | Emite estimandos, clasificaciones, bounds, incertidumbre y abstenciones; congela outputs antes de cualquier acceso evaluativo |
+| **Evaluator** | Outputs congelados del Analyzer, truth sellada, potenciales y metadatos de escenario necesarios para puntuar | No puede corregir retrospectivamente el Analyzer ni cambiar el output congelado; no puede convertir un PASS de software en validación científica | Calcula recuperación, error, cobertura, falsa identificación, falsa atribución, abstención y concordancia truth/observed |
+
+El valor Z efectivamente asignado puede estar disponible al Analyzer como dato observado del diseño; lo que permanece oculto es el estado interno/semilla de aleatorización, las asignaciones potenciales/contrafactuales y cualquier etiqueta que revele truth. La distinción evita confundir el cegamiento a la verdad del DGP con ocultar una covariable observada necesaria para estimar ITT.
+
+**Firewall mínimo:** canales/artefactos separados; IDs opacos no semánticos; validación de esquema que rechace campos privados; control de acceso; hash/versionado; log de acceso; prueba negativa de no-leakage; congelación inmutable de la salida Analyzer antes de abrir truth al Evaluator. Un simple cambio de nombre de columnas no demuestra separación.
+
+### 15.5. Adversariales y falsadores reutilizados
+
+Se reutilizan, sin duplicar IDs, las familias ya registradas: provisión de fondo/crossover; recepción o cumplimiento parcial; fallos parciales/reintentos/rollback; conocimiento/formación diferencial; medición/oráculo diferencial; truth leakage; pérdida/censura; recurso/host compartido; modificación de A1/A2; vía directa a Outcome/Value; interferencia y carryover.
+
+| Familia adversarial existente | Inyección de verdad del DGP | Falsador/resultado que debe detectar el procedimiento |
+|---|---|---|
+| Provisión de fondo/crossover | Acceso focal también en control o cruce entre políticas | No atribuir la diferencia de primera etapa solo a Z; registrar exposición/versiones y degradar la interpretación focal |
+| Fallo/reintento/rollback | Secuencia parcial con reintentos o reversión | No colapsar intento, instalación, C_dep y accesibilidad; conservar orden y estado final |
+| Vía colateral (R2) | B modifica A1/A2, permisos, recursos, calidad, coste, latencia u Outcome/Value | Clasificar efecto como política/paquete o declarar no identificada la atribución focal |
+| Medición/oráculo diferencial | La observabilidad/cobertura/adjudicación varía por brazo | Detectar missingness/error diferencial; no interpretar cambio observado como cambio estructural |
+| Truth leakage | Se filtra escenario, truth, potenciales o seed al Analyzer | Fallo del firewall; salida Analyzer no admisible para evaluación confirmatoria |
+| Censura/pérdida | Resultado o ruta no observable en parte de la ventana | Propagar ?/censura; no declarar ausencia ni éxito |
+| Interferencia/carryover | Recursos/host compartidos o residuo tras rollback | Detectar unidad de exposición/cluster inadecuada; limitar el estimando individual |
+| Alternativa estable (R1) | A satisface F* antes/después sin ser afectada por B | No confundir modificación de accesibilidad focal con apertura funcional exclusiva ni declarar violación IV automática |
+| Intento sin éxito técnico (R3) | W_attempt=1 con C_dep* truth=0 | No inferir A_f*, D_f* o ΔT_acc* desde el intento |
+
+Los falsadores son condiciones de clasificación metodológica, no resultados ya observados ni tests ejecutados.
+
+### 15.6. Criterios de aceptación AB-09 y transferencia a C
+
+AB-09 solo podrá pasar a DESIGN COMPLETE cuando:
+
+1. R0–R3 tengan DGP versionado, reglas generadoras, invariantes declaradas y truth tables completas por predicado/etapa, incluyendo los campos N/A justificados.
+2. Las reglas de observación/missingness, cobertura, adjudicación y UNKNOWN estén enlazadas a los contratos existentes y no creen otra matriz paralela.
+3. F_alt, Reach, F* y C_dep respeten las reglas de universo cerrado, composición y trivalencia.
+4. El Generator/Analyzer/Evaluator firewall tenga interfaces, artefactos, controles negativos y criterios de fallo verificables; no basta una declaración textual de separación.
+5. Los adversariales reutilizados tengan un resultado esperado y un falsador inequívoco, sin asumir tasas o magnitudes.
+6. Las interfaces de C distingan ITT_Z^D2, efecto de paquete, primeras etapas C_dep/A_f/D_f/ΔT_acc, LATE_f, θ_Af(q_X*) y θ_A(q), sin convertir una en proxy de otra.
+
+**Inputs que siguen OPEN:** universo U_G realmente cerrado y cobertura; C0/F*/G/H_time; protocolo/oráculo y cegamiento; mapping y observación por campo/etapa; missingness y error de clasificación; mecanismo material D2 y distribución conjunta C_dep; población/q_X*/soporte/interferencia; parámetros de Outcome/Value; tolerancias y criterios cuantitativos de evaluación que corresponden al paquete C.
+
+**Dictamen:** R0–R3, sus propiedades distintivas y el firewall quedan reconciliados a nivel contractual/documental. AB-09 pasa a DESIGN SPECIFIED / INTEGRATION RECONCILED, pero NO a DESIGN COMPLETE ni materialmente cerrado. No se rellenan truth tables unitarias con valores no derivados, no se generan fixtures, no se implementa, simula ni ejecuta. No Design Freeze; `scientific_execution=false`; `execution_authorized=false`.
