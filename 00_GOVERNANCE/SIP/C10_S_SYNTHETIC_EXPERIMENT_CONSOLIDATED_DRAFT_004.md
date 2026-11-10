@@ -11036,3 +11036,78 @@ Son contratos de adjudicación derivados de AN-01…04 y los contratos P177/P178
 **OPEN:** tolerancias y umbrales numéricos; costes de error; criterios de cobertura/anchura de bounds; multiplicidad; precisión y número de réplicas Monte Carlo; N/potencia por unidad/cluster; reglas de confianza/calibración si el Analyzer emite probabilidades; y validación técnica del firewall.
 
 **Estado:** AN-03 DOCUMENTED / DENOMINATOR LOGIC SPECIFIED; AN-04 PARTIALLY SPECIFIED / NUMERIC THRESHOLDS OPEN; C-ANALYZER OPEN / NOT IMPLEMENTABLE. No se aprueban umbrales ni se declara recuperación. Sin código, fixtures, simulación o ejecución. scientific_execution=false; execution_authorized=false.
+
+
+# 257. C-MED / MAP-01–02 — correspondencia D2→g y frontera entre estimandos (2026-11-10)
+
+**Alcance:** reconciliación documental de contratos ya existentes. Reutiliza DEC-C10-066/067, auditoría IV §14.6–14.7 (MAP-01/02), C10-D1 §§17.7 y 27.1, y este maestro §§229–233 y 249–256. No crea un mapping alternativo ni sustituye decisiones aceptadas.
+
+## 257.1. Resultado de la reconstrucción histórica
+
+MAP-01 y MAP-02 ya estaban especificados en la auditoría IV:
+- MAP-01 define la identidad/versionado y el registro mínimo de la intervención material D2.
+- MAP-02 define la secuencia temporal y las mediciones independientes de programación, intento, recepción, instalación, C_dep*, A_f*, D_f* y ΔT_acc*.
+
+Por tanto, no se recrean ni se duplican. Su estado permanece:
+- MAP-01: CONTRACT_FIELDS_DEFINED / MATERIAL VALUES OPEN.
+- MAP-02: TEMPORAL_SCHEMA_DEFINED / WINDOWS_AND_MEASUREMENT_OPEN.
+
+DEC-C10-066/067 fijan la semántica conceptual de D2, pero no completan actores, artefactos/hash, recepción, ventanas, reintentos/rollback, detección de provisión de fondo, fuentes ni evidencia independiente. No existe todavía una intervención D2 materialmente versionada y adjudicada por unidad.
+
+## 257.2. Crosswalk causal admisible — y límites
+
+La cadena que puede sostenerse documentalmente es:
+
+Z → B_gZ^D2 → W_programmed → W_attempt / receipt → S_install → C_dep* → A_f* → D_f* y, mediante snapshots estructurales comparables, ΔT_acc* → Reach/Π_H → K/consideración → selección/inicio → ejecución → Outcome → Value.
+
+La cadena es un orden causal candidato, no una secuencia empíricamente observada ni una garantía de transición. Cada flecha posterior a la asignación requiere evidencia y adjudicación propias. En particular:
+- Z asigna la política; no asigna directamente W_attempt, receipt, C_dep*, A_f*, D_f* ni ΔT_acc*.
+- W_programmed es una característica de la política asignada; no prueba intento efectivo, recepción o instalación.
+- C_dep* acredita el estado técnico compuesto; no prueba por sí solo A_f* ni D_f*.
+- A_f* es el predicado/proyección focal dentro de T_acc; D_f* es el indicador derivado de apertura focal basal→post.
+- El mediador estructural de interés no se reduce a esos indicadores: M = ΔT_acc* = (ΔU*, ΔR*, ΔC*, ΔX*). E_T/ΔE_T permanece separado y no entra en M.
+
+D2 no ejecuta F1/F2/A1/A2 ni aplica una transformación funcional. Por ello, incluso si induce apertura de τ2, su alcance es una intervención material focal sobre una dependencia técnica; no equivale por definición a cualquier política g que modifique el espacio completo de transformaciones accesibles.
+
+## 257.3. Tres objetos que no deben identificarse entre sí
+
+**A. Pregunta científica general — θ_A(q).**
+
+θ_A(q) = E[V^{q,g1}] − E[V^{q,g0}].
+
+g1 y g0 son políticas factibles sobre el cambio estructural completo de accesibilidad, condicionadas por historia relevante y bajo el mismo régimen q de condiciones/historias no constitutivas. Deben respetar el conjunto factible, versiones, identidad/equivalencia y soporte. La representación analítica de C10-D1 §27.1 — A+, A−, A^reconf, ΔR y ΔC — requiere el crosswalk de ΔU*/ΔR*/ΔC*/ΔX* ya delimitado en §§230–231; ΔX* no se fuerza a una coordenada y ΔE_T se excluye.
+
+**B. Efecto de asignación D2 — ITT_Z^D2.**
+
+ITT_Z^D2(V_j) = E[V_j | Z=1] − E[V_j | Z=0].
+
+Bajo aleatorización, consistencia, seguimiento/medición válidos y tratamiento adecuado de interferencia, es el efecto de asignar las políticas materiales D2 sobre V_j. Si B produce rutas hacia Outcome/Value ajenas a ΔT_acc*, sigue siendo efecto de política/paquete. La aleatorización no demuestra exclusión ni convierte ITT en θ_A(q), θ_Af(q*) o efecto de mediación.
+
+**C. Mediación interventional secundaria por M=ΔT_acc*.**
+
+El candidato registrado en ledger §17 compara, bajo referencia b1 y régimen/población definidos, resultados contrafactuales al sustituir la distribución conjunta factible de M inducida por b1 por la inducida por b0, condicionada por H y la historia pre-M L. Es un estimando interventional candidato, no aprobado ni identificado. No se factoriza M en mediadores independientes ni se interpreta el término complementario como efecto directo puro: contiene las restantes rutas de política, incluidas vías por L y colaterales.
+
+Estos tres objetos responden a preguntas distintas. No se calcula mediación o residual por resta de ITT, LATE_f, θ_Af o θ_A(q) que no compartan población, régimen, horizonte, escala de Value y descomposición causal.
+
+## 257.4. Cuándo podría D2 informar una política focal g^Af
+
+La interpretación de D2 como política focal de accesibilidad (θ_Af(q*)) solo sería defendible si se acredita conjuntamente:
+1. versiones materiales B_g0/B_g1 reproducibles y consistentes;
+2. correspondencia de la intervención con políticas factibles g0^Af/g1^Af, no solo con programación o provisión;
+3. régimen q* común, población pre-Z y soporte adecuado;
+4. medición independiente y comparable de A_f*/D_f* y del cambio estructural;
+5. ausencia, invariancia o identificación separada de rutas no focales hacia Outcome y cada V_j;
+6. inventario suficiente de rutas alternativas/compartidas, recursos, permisos, rendimiento, seguridad, información, costes, rollback y spillovers;
+7. interferencia, carryover, missingness y error diferencial tratados por diseño/análisis.
+
+Incluso si estas condiciones se cumplen para τ2, el resultado sería focal y no identificaría automáticamente θ_A(q) para el espacio transformacional completo. Para llegar a θ_A(q) se requiere además que g1/g0 induzcan distribuciones coherentes sobre el ΔT_acc* completo y que el mapping de cada componente —incluido ΔX*— sea defendible.
+
+## 257.5. Implicaciones para C-MED y gates siguientes
+
+- MED-03: clasificar L campo×tiempo×V_j; solo es confusor mediador–Value inducido cuando B→L, L→M y L→V_j se sostienen para el estimando/horizonte.
+- MED-05: mantener como candidato el estimando interventional conjunto; elegir método longitudinal compatible con confusión postratamiento, sin ajuste convencional de L como basal.
+- MAP-03/04: distribución inducida g_j^ind, régimen común, soporte secuencial y equivalencia de versiones.
+- MAP-05/06: rutas alternativas/colaterales y exclusión separada por Outcome y Value, medición diferencial, interferencia y carryover.
+- MAP-07: preservar la distinción entre D_f*/LATE_f focal y θ_A(q) general.
+
+**Dictamen:** MAP-01/02 están documentados pero materialmente abiertos. La correspondencia B_D2→g^Af no está demostrada; B_D2→g general no puede presumirse. ITT_Z^D2 conserva interpretación de asignación/política; la mediación por ΔT_acc* sigue siendo candidata secundaria; θ_A(q) permanece la pregunta científica rectora y no identificada. No se aprueba estimando final, método, población, q, Value, parámetros, tolerancias o potencia. Sin Design Freeze, implementación, fixtures, simulación o ejecución. scientific_execution=false; execution_authorized=false.
