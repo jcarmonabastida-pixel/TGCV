@@ -2123,3 +2123,10 @@ El Analyzer debe evaluarse por estimando×dimensión Value×DGP×soporte, con tr
 Se corrige la lectura de §229.2: la tupla DGP vigente es (ΔU*, ΔR*, ΔC*, ΔX*) según DGP §30 y la reconciliación de snapshots; ΔValidity_e pertenece a ΔE_T, no a ΔT_acc*. La expresión anterior de DGP §3.3 queda supersedida por §30.
 
 El crosswalk con C10-D1 §27.1 debe mapear ΔU* a altas/bajas/reconfiguraciones, ΔR* a relaciones y ΔC* a condiciones/configuraciones. ΔX* requiere clasificación campo a campo; no se asigna automáticamente a ΔC ni al régimen q. MED-02 permanece OPEN hasta resolverlo. Sin freeze ni ejecución.
+
+
+## 16.109 — Regla de tipado de ΔX* y crosswalk C10-D1
+
+El maestro §231 fija la clasificación por función semántica U/R/C/X/E. ΔX* representa el contexto efectivo constitutivo que altera accesibilidad, no una transformación ni una regla de admisibilidad. C10-D1 §27.1 no tiene una coordenada autónoma para ΔX: se conserva como contexto causal del DGP y sus consecuencias se reflejan, sin doble conteo, en A⁺/A⁻/A^reconf/ΔR/ΔC. Si el campo es un predicado se reclasifica en C; si es historia no constitutiva puede pertenecer a q bajo factibilidad; si no cambia accesibilidad queda fuera del mediador; si no se puede resolver queda UNKNOWN/?.
+
+Se define un registro de crosswalk campo a campo y gates MED-02a…d. La regla está definida/propuesta, pero el roster concreto del microdominio y la adjudicación de campos siguen OPEN. No se cierra MED-02 ni se autoriza ejecución.
