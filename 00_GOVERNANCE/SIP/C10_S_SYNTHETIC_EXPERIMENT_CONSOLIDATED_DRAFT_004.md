@@ -10602,3 +10602,86 @@ Los casos PM-05, PM-08, PM-17 y los contratos de cegamiento/adjudicación existe
 **Criterio de cierre MED-02d:** completar el binding a identificadores U_G reales sin crear otros; demostrar resolución exacta de cada evidencia/claim/scope; fijar universo y denominadores por ámbito; reconciliar tiempos/snapshots; y validar el proceso de observación/cegamiento/adjudicación con pruebas independientes autorizadas. La presente especificación no satisface esos requisitos materiales.
 
 No se crean registros, fuentes, snapshots, hashes, field_id, eventos, valores, fixtures ni código. No se implementa ni ejecuta. scientific_execution=false; execution_authorized=false; no Design Freeze.
+
+
+## 253. AB-TIME-01 — crosswalk de relojes y eventos causales (2026-11-10)
+
+**Estado:** ORDEN SEMÁNTICO RECONCILIADO; ALIAS NUMÉRICOS HISTÓRICOS MAPEADOS; ADOPCIÓN FORMAL DEL RELOJ ÚNICO PENDIENTE. No se renumeran ni reescriben artefactos históricos.
+
+### 253.1. Reconstrucción histórica corregida
+
+Se contrastan tres contratos temporales que no deben confundirse:
+
+1. **DGP S4-R histórico §34.1:** t0 baseline; t1 asignación; t2 provisión/intento; t3 verificación; t4 accesibilidad; t5 Reach; t6 selección/ejecución agrupadas; t7 Outcome; t8 Value. Es un reloj anterior y comprimido: no separa conocimiento/consideración de selección/ejecución.
+2. **Path Predicate Temporal Evidence Matrix §2:** t0 baseline; t1 asignación/oferta/recepción/intento agrupados; t2 verificación; t3 snapshot postintervención; t4 Reach; t5–t9 mecanismos y resultados. Conserva el mismo t1 para más de un evento causal distinto.
+3. **Reloj longitudinal posterior:** §§64.3, 168, 216.7 y 233.1/233.2 convergen en t−1 baseline; t0 asignación Z; t1 política/provisión; t2 verificación técnica; t3 snapshot de accesibilidad; t4 Reach; t5 conocimiento/consideración; t6 selección/inicio; t7 ejecución; t8 Outcome; t9 Value; t+1… residuos/carryover.
+
+**Corrección de referencia:** la descripción previa de AB-TIME-01 en ledger §9.3 atribuía el primer reloj a «DGP §2». El §2 del maestro es la arquitectura causal y transformacional, no contiene ese reloj. La referencia histórica correcta del reloj comprimido es DGP §34.1; el reloj posterior se documenta en §§64.3/168/216.7/233. Esta nota corrige la localización documental, no cambia el contenido histórico.
+
+### 253.2. Secuencia semántica común por event_key
+
+Para nuevas especificaciones y registros se propone usar nombres de evento como eje interoperable, sin depender de índices históricos:
+
+| event_key propuesto (clave semántica, no ID físico) | Orden | Evento/salida | Tiempo del reloj longitudinal posterior |
+|---|---:|---|---|
+| BASELINE_PRE_Z | 0 | Elegibilidad, C0, identidad/versiones, estado basal, alternativas, q_X*, cobertura basal | t−1 |
+| ASSIGNMENT_Z | 1 | Asignación aleatoria Z y mecanismo/probabilidad | t0 |
+| POLICY_PROVISION | 2 | B asignada/recibida, versión, programación, recepción/cumplimiento, intento y desviaciones como subeventos distintos | t1 |
+| INSTALL_VERIFICATION | 3 | Instalación, integridad, compatibilidad, operatividad y C_dep* | t2 |
+| ACCESSIBILITY_SNAPSHOT | 4 | Snapshot estructural inmutable; A_f*, D_f*, ΔT_acc* y ΔE_T antes de conocimiento/selección/ejecución | t3 |
+| REACH_DERIVATION | 5 | Reach_H y Π_H derivadas del snapshot t3 y reglas declaradas | t4 |
+| KNOWLEDGE_CONSIDERATION | 6 | Conocimiento y consideración K | t5 |
+| SELECTION_START | 7 | Selección e inicio, registrados por separado | t6 |
+| EXECUTION | 8 | Ejecución parcial/completa, fallo, interrupción y finalización | t7 |
+| OUTCOME | 9 | Outcome independiente | t8 |
+| VALUE | 10 | Value por dimensión bajo regla/beneficiario/horizonte independientes | t9 |
+| POST_HORIZON_RESIDUAL | 11 | Rollback, residuos, persistencia y carryover; nuevos snapshots | t+1… |
+
+Los nombres son event_key de diseño, no nuevos event_id ni valores de schema. El event_id efectivo se reutiliza si existe; de lo contrario queda NOT_ASSIGNED hasta la instancia y contrato de captura.
+
+### 253.3. Crosswalk de alias numéricos históricos
+
+| Evento | DGP §34.1 histórico | Path Matrix §2 | Reloj posterior §§64.3/216.7/233 | Dictamen |
+|---|---|---|---|---|
+| BASELINE_PRE_Z | t0 | t0 | t−1 | Mismo evento, distinto alias |
+| ASSIGNMENT_Z | t1 | t1 (agrupado) | t0 | La Matrix agrupa con provisión |
+| POLICY_PROVISION | t2 | t1 (agrupado) | t1 | No hay correspondencia uno-a-uno en Path Matrix |
+| INSTALL_VERIFICATION | t3 | t2 | t2 | Correspondencia semántica |
+| ACCESSIBILITY_SNAPSHOT | t4 | t3 | t3 | Correspondencia semántica |
+| REACH_DERIVATION | t5 | t4 | t4 | Correspondencia semántica |
+| KNOWLEDGE_CONSIDERATION | No separado en el reloj §34.1 | t5 | t5 | Reloj histórico comprimido; conservar ausencia de slot separado |
+| SELECTION_START | t6 (agrupado con ejecución) | t6 | t6 | Path Matrix/posterior separan inicio y ejecución |
+| EXECUTION | t6 (agrupado con selección) | t7 | t7 | No inferir subtiempos del alias histórico |
+| OUTCOME | t7 | t8 | t8 | Mismo evento, distinto alias |
+| VALUE | t8 | t9 | t9 | Mismo evento, distinto alias |
+| POST_HORIZON_RESIDUAL | No separado | No separado | t+1… | Extensión longitudinal posterior |
+
+El t1 de Path Matrix no se puede traducir a un único evento: contiene asignación y provisión. En cualquier reconstrucción se deben recuperar los subeventos por nombre, timestamp fuente y secuencia; nunca replicar el mismo timestamp por conveniencia ni asumir simultaneidad.
+
+### 253.4. Ejes que permanecen ortogonales al reloj causal
+
+- stage_key U_G (C_SRC, F1_S2, A1_S1, F2_DST_DECL, A2_DST_DECL, F2_DST_APPLIED, A2_DST_APPLIED) identifica etapa de configuración/ruta, no momento causal. Su relación con event_key requiere evidencia y snapshot exactos.
+- SNAPSHOT.phase (baseline/post-B/rollback/route-test) describe la fase del snapshot U_G, no el índice t ni el event_key.
+- SNAPSHOT.timestamp es instante de captura; no sustituye event_id, valid-time ni orden causal.
+- route_id/route_record_id F/A identifica rama funcional; branch_id y step_k identifican rama/paso hipotético. Ninguno es reloj de estudio.
+- El tiempo de trayectoria k=1…H y las ventanas internas de RES/WIN son ejes separados. No convertir H en duración ni sumar consumos de ramas contrafactuales.
+- E_T corre en paralelo: distinguir event_time/valid-time del estado, generated_at/captured_at de evidencia, recorded_at de registro y adjudication_time. La disponibilidad tardía de una evidencia no cambia el tiempo del estado observado.
+
+### 253.5. Reglas temporales de captura y no retroacción
+
+1. BASELINE_PRE_Z se sella antes de Z; ninguna variable posterior redefine elegibilidad ni q_X*.
+2. Dentro de POLICY_PROVISION se registran por separado B asignada, programación, recepción, cumplimiento, W_attempt y desviaciones; t1 es un slot ordinal, no una afirmación de simultaneidad.
+3. INSTALL_VERIFICATION no equivale a accesibilidad: C_dep* se verifica en t2 y A_f*/ΔT_acc* se adjudican en el snapshot t3.
+4. ACCESSIBILITY_SNAPSHOT se congela antes de conocimiento, selección, inicio y ejecución. Reach se deriva en t4 del snapshot t3, no de ejecución observada.
+5. FP-06 (aplicación), FP-07 (post-check) y FP-08 (procedencia) mantienen sus propios eventos/evidencias; stage_key de configuración no permite retrotraer aplicación al snapshot t3.
+6. Cambios posteriores, ejecución, rollback y carryover crean nuevos eventos/snapshots; nunca sobrescriben ni reescriben t3.
+7. Para todo evento se preservan timestamps originales, fuente/reloj, precisión, secuencia y valid-time cuando existan. Si no hay resolución temporal suficiente, mantener UNKNOWN/NOT_COMPARABLE; no fabricar orden fino.
+8. La comparación entre documentos usa event_key y precedencia; los alias t históricos solo se conservan como provenance y no se comparan numéricamente entre relojes.
+
+### 253.6. Dictamen AB-TIME-01
+
+**Resuelto documentalmente en esta sección:** la discrepancia de orden causal se descompone en tres contratos; se corrige la referencia errónea a DGP §2; se fija una secuencia semántica común; se explica el colapso de ASSIGNMENT_Z y POLICY_PROVISION en Path Matrix t1; y se separan reloj causal, stage_key, snapshot phase, timestamp, ruta y step_k.
+
+**Pendiente de aceptación formal:** adoptar como alias numérico operativo el reloj posterior t−1…t9/t+1… para nueva captura, declarar el reloj §34.1 como histórico/comprimido y añadir el event_key al contrato de instancia/registro sin ampliar schema U_G por inferencia. No se modifican los documentos históricos ni se cambia su contenido.
+
+**Estado:** AB-TIME-01 PARTIALLY RESOLVED / FORMAL ADOPTION OPEN. La secuencia semántica ya permite continuar el crosswalk y preparar contratos; no se declara cierre completo ni Design Freeze. Sin event_id efectivos, timestamps, snapshots, registros, fixtures, implementación o ejecución. scientific_execution=false; execution_authorized=false.
