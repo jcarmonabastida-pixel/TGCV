@@ -881,3 +881,21 @@ La notación O*/O_obs y V*/V_obs se introduce aquí como separación explícita 
 ### 3.3.1. Nota de precedencia (2026-11-10)
 
 La tupla de verdad estructural de esta sección se interpreta conforme a §30: ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*). ΔValidity_e es epistémica y pertenece a ΔE_T. La antigua mención ΔValidity/ΔState no constituye una definición alternativa vigente. El crosswalk de ΔX* con C10-D1 §27.1 permanece pendiente; no asignar equivalencia automática.
+
+
+### 3.3.2. Tipado semántico de X* y precedencia de crosswalk (2026-11-10)
+
+X_t* representa el estado/contexto efectivo del sistema-unidad-entorno-tiempo que es constitutivo de la relación de accesibilidad en ese momento, excluyendo transformaciones (U*), relaciones (R*), reglas/predicados/configuraciones de realizabilidad (C*) y evidencia (E_T). Su diff ΔX* no es una transformación adicional ni una sexta coordenada analítica C10-D1.
+
+Clasificar cada campo por función semántica:
+- U*: identidad/estado de una transformación.
+- R*: relación tipada/dependencia entre objetos o transformaciones.
+- C*: condición, predicado, restricción o configuración de realizabilidad.
+- X*: valor/estado contextual efectivo constitutivo que condiciona accesibilidad, pero no es por sí mismo regla/relación/transformación.
+- E_T: evidencia, cobertura, validez epistémica, provenance y adjudicación.
+
+Si un campo X resulta ser una regla o predicado, reclasificarlo en C* con mapping explícito. Si es historia no constitutiva, evaluar su pertenencia a q según factibilidad y soporte. Si no altera accesibilidad dentro de la frontera/horizonte, queda fuera del mediador. Si no puede decidirse, estado UNKNOWN/?.
+
+Para el crosswalk con C10-D1 §27.1, ΔX* se conserva como contexto causal del DGP; sus consecuencias sobre accesibilidad se reflejan en A⁺/A⁻/A^reconf/ΔR/ΔC, sin doble conteo. Un campo que mezcle valor contextual y regla debe descomponerse o permanecer UNKNOWN. Cada campo requiere field_id, definición, unidad/frontera, tiempo, tipo, regla de diff, mapping, event_id, truth/observed, overlap y adjudicación.
+
+Esta regla no completa el roster del microdominio ni convierte el crosswalk en aprobado. MED-02c/d permanecen OPEN.
