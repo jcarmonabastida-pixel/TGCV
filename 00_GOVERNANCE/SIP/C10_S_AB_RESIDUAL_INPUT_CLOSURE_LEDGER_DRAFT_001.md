@@ -952,3 +952,13 @@ El crosswalk establece la precedencia funcional de C_SRC, F1_S2, A1_S1, F2_DST_D
 
 **Cerrado documentalmente:** reglas de precedencia, matching, cardinalidad, deduplicación, no retroacción y 15 casos adversariales C4-01…15.  
 **OPEN material:** fuentes/event IDs, snapshots/revisiones, tiempos sincronizados/valid-time, route records, scopes/denominadores, mapping por clase y ejecución autorizada de C0/adjudicación. MED-02c4 permanece DOCUMENTED / MATERIAL OPEN. Sin implementación, registros ni ejecución.
+
+
+## 23. AB-09 — truth tables estructurales R0–R3 y observación (2026-11-10)
+
+Se desarrolla maestro §255 sobre el contrato ya integrado en §247 y el inventario finito histórico. No se recrean escenarios ni matrices paralelas. Se fija la diferencia entre invariantes de R0 focal exclusivo, R1 alternativa estable, R2 vía colateral de B y R3 intento fallido; se aclara que R3 se cruza con el régimen alternativo de fondo R0/R1, conforme al inventario finito, y no introduce una topología R4.
+
+Se especifican reglas lógicas para C_dep*, rutas F/A, F_alt, A_f*, D_f*, ΔT_acc* y Reach; truth binaria del DGP frente a observed_state trivalente; y el firewall de roles sin filtrar etiquetas de escenario. Se añaden 12 contratos adversariales AB09-T01…T12. No se asignan probabilidades ni valores por unidad.
+
+**Cerrado documentalmente:** lógica e invariantes de escenarios, derivaciones, truth/observed, roles y tests de diseño.  
+**OPEN material/estadístico:** truth tables por unidad/snapshot/paso, parámetros D2 y distribución I/G/C/O, F*/G/H/ventanas, inventario alternativo y MD-C1/MD-C4, medición/missingness/oráculo, q_X*/soporte/interferencia, Outcome/Value V_j, firewall y criterios cuantitativos del Analyzer. AB-09 no es materialmente cerrado ni AB DONE.
