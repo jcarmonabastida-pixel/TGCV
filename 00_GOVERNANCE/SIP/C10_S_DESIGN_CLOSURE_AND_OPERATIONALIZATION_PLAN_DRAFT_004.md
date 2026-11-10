@@ -2299,3 +2299,10 @@ Se incorpora maestro §254 y ledger AB §22. Se reutilizan DEC-C10-065/070/071/0
 Se incorpora maestro §255 y ledger AB §23, desarrollando el contrato ya existente en §247 y el inventario finito. Se especifican invariantes lógicos por escenario, el cruce R3 con fondo R0/R1, derivaciones de C_dep*/F_alt/A_f*/D_f*/ΔT_acc*/Reach, truth binaria y observed_state trivalente, firewall de escenarios y 12 contratos adversariales.
 
 **Resultado:** AB-09 LOGICALLY SPECIFIED / DOCUMENTARY CROSSWALK COMPLETE / MATERIAL DGP AND OBSERVATION OPEN. No se repiten escenarios ni se asignan valores/probabilidades. Permanecen abiertos los parámetros y truth por unidad, alternativas y cobertura, F*/G/H, medición/missingness/oráculo, q_X*/soporte/interferencia, Outcome/Value dimensional, firewall ejecutado y métricas de recuperación. Sin fixtures, implementación, simulación ni ejecución.
+
+
+## 16.130 — C-ANALYZER: adjudicación y denominadores de recuperación/errores
+
+Se incorpora maestro §256 y ledger AB §24, reutilizando §§225.7/225.9 y 229.5–229.7, sin duplicar contratos P177/P178/P179/P182/P183. Se fijan clases truth/salida, falsas declaraciones de identificación, falsa atribución focal, sustitución de estimando, bounds incorrectos, abstención correcta/falsa, fallos técnicos, denominadores por clase y solapamiento de errores, ficha de tolerancias ex ante y orden de cegamiento/adjudicación.
+
+**Resultado:** AN-03 DOCUMENTED / DENOMINATOR LOGIC SPECIFIED; AN-04 PARTIALLY SPECIFIED / NUMERIC THRESHOLDS OPEN; C-ANALYZER OPEN. No se asignan umbrales, multiplicidad, N ni réplicas; permanecen pendientes la calibración, potencia/precisión y validación técnica del firewall. Sin fixtures, código, simulación ni ejecución.
