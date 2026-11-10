@@ -11203,3 +11203,70 @@ No se asignan todavía flechas definitivas a cada campo: faltan field_id/event_i
 - MAP-05/06 siguen siendo necesarios para rutas alternativas, exclusión por Outcome y Value, medición diferencial, interferencia y carryover.
 
 **Dictamen:** especificación documental integrada de MAP-03/04 y reglas de MED-03; los tres gates siguen OPEN en su dimensión material/identificativa. No se fija población, q, umbral de positividad, método, tolerancias, N, potencia ni parámetros. No hay Design Freeze, implementación, fixtures, simulación ni ejecución científica. scientific_execution=false; execution_authorized=false.
+
+# 259. MAP-05/06 — rutas alternativas/colaterales y exclusión separada para Outcome y Value (2026-11-10)
+
+**Precedencia:** reutiliza auditoría IV §§12.2–12.4 y 14.5–14.7; roster/crosswalk §§232, 250–254; estimandos §257; soporte/versiones y clasificación L §258; DEC-C10-066/067. Integra reglas existentes; no crea familias, variables ni estimandos nuevos.
+
+## 259.1. MAP-05 — universo de rutas y cobertura
+
+MAP-05 determina, por unidad/historia/horizonte, qué rutas completas son factibles, qué componentes comparten, cuáles modifica B y qué evidencia cubre presencia/ausencia. Se reutilizan F (F1→F2), A (A1→A2), F_alt, C_dep*, Reach y la lógica trivalente de §255:
+- Una ruta completa confirmada basta para afirmar existencia dentro del universo declarado.
+- Declarar ausencia exige enumeración exhaustiva del universo, cobertura de cada ruta y predicados necesarios.
+- Predicados obligatorios desconocidos o alternativas no cubiertas conservan estado ?, nunca 0 por falta de registro.
+- Una alternativa basal estable (R1) no es por sí misma una vía colateral inducida por B. Puede reducir el cambio de Reach/Value o modificar heterogeneidad sin invalidar automáticamente exclusión focal.
+- La modificación por B de A1/A2, dependencias, recursos o condiciones (R2/EXC-B14) sí introduce una ruta inducida no focal, salvo que se separe por diseño/modelo.
+
+La cobertura considera, según microdominio/estimando: F2 y dependencias compartidas; A1/A2 y dependencias; alternativas adicionales; recursos/runtime/host/colas; permisos/autorización; red/endpoints; seguridad/estado persistente; rendimiento/latencia; costes/consumo; datos/mappings; información/conocimiento; residuos/carryover. Es un marco de inspección de superficies B-M, no una afirmación de que todas las vías estén activas.
+
+Por superficie se documentan: campo/identidad y unidad afectada; estado antes/después y precedencia respecto de M, O y V_j; si B la modifica; efectos sobre D_f*, Reach, ejecución, O* o V_j; evidencia/cobertura/UNKNOWN; efectos en otras unidades o periodos. Se reutilizan MAP-01/02, E_T y el roster.
+
+## 259.2. Clasificación de rutas y consecuencias
+
+| Familia | Ruta candidata | Consecuencia |
+|---|---|---|
+| Focal aislada (EXC-F0) | Z→B→D_f*→Reach/Π→selección/ejecución→O/V | Control positivo; exclusión solo si los demás supuestos IV también se sostienen |
+| Alternativa basal estable (R1) | A1→A2 ya factible, sin cambio por B | No viola exclusión por sí sola; puede reducir/modificar efecto sobre Reach/Value |
+| Alternativa modificada (R2/EXC-B14) | Z→B→A1/A2/dependencias→Reach/ejecución→O/V | Ruta inducida no focal; efecto de paquete o exclusión focal no sustentada |
+| Directa a Outcome (EXC-B06) | Z→B→datos/S0/mapping/App/F*→ejecución→O | Exclusión focal para O incumplida |
+| Directa a Value (EXC-B09/B12) | Z→B→seguridad/riesgo/coste/recursos/rendimiento→V, O posiblemente constante | Exclusión focal para V incumplida aunque O no cambie |
+| Recursos compartidos | B_i→pool/runtime/latencia→resultados de i y/o j≠i | Interferencia; unidad/exposición o análisis por clúster |
+| Conocimiento diferencial (EXC-B10) | Z→B→K/consideración/selección/inicio→O/V | Ruta no focal; no ajustar K post-Z como basal |
+| Medición diferencial (EXC-B10/OBS) | Z→B→E_T/cobertura/missingness/adjudicación→O_obs/V_obs/D_f_obs | Puede sesgar observables aunque no afecte O*/V* |
+| Oráculo alterado (EXC-B13) | Z→B→F*/dataset/regla→resultado medido | Constructo no comparable; no reinterpretar como accesibilidad |
+| Residuo/carryover (EXC-B11/B15) | B_t→estado persistente→exposición/resultado t+1 u otra unidad | Consistencia temporal/interferencia comprometidas |
+| Intento fallido (R3) | Z→B→W_attempt sin C_dep*/D_f*, con posible coste/residuo | Primera etapa focal nula/débil; ITT puede no ser cero |
+
+No se declara exclusión violada por una alternativa basal invariante ni satisfecha porque no se haya observado una ruta. La ausencia exige cobertura y adjudicación independiente.
+
+## 259.3. MAP-06 — exclusión específica por resultado
+
+La exclusión focal se evalúa por separado:
+- Outcome: bajo Z y tratamiento focal D_f*, no debe existir ruta Z/B→O* que evite D_f*, salvo separación/modelado explícito bajo otro estimando.
+- Cada dimensión V_j: además se evalúan rutas Z/B→V_j* que no pasen por el tratamiento focal. Coste, seguridad, riesgo o consumo pueden afectar V_j sin cambiar O*.
+- Si V_j incorpora O, se declara la regla de composición para no contar dos veces O→V_j.
+- El dictamen de una dimensión no se transfiere a otra; constructo, beneficiario, escala y horizonte deben estar definidos.
+
+Se emiten dictámenes independientes EXCLUSION_O y EXCLUSION_Vj, cada uno SUPPORTED / CONTRADICTED / UNKNOWN. SUPPORTED requiere cobertura de superficies pertinentes y ausencia por diseño/verdad DGP o separación identificable de rutas no focales. CONTRADICTED requiere ruta no focal estipulada/demostrada. UNKNOWN corresponde a cobertura insuficiente, medición no comparable o flechas no resueltas. Son estados de adjudicación, no umbrales estadísticos.
+
+## 259.4. Separación de exclusión, medición e interferencia
+
+1. Exclusión estructural: B afecta O* o V_j* por rutas que evitan D_f*. Invalida IV/LATE focal para el resultado afectado, pero no necesariamente ITT de asignación.
+2. Medición diferencial/no comparabilidad: B cambia logs, retención, observabilidad, adjudicación, dataset u oráculo. Puede sesgar O_obs/V_obs/D_f_obs o cambiar el constructo; puede impedir incluso estimar ITT válidamente.
+3. Interferencia/carryover: B de una unidad afecta recursos, estados o resultados de otra unidad/periodo. ITT e IV requieren unidad/exposición compatibles o se declaran no identificados.
+
+E_T permanece separado del estado estructural M. Si el proceso de observación modifica conducta o conocimiento, esa modificación sí puede abrir una ruta causal.
+
+## 259.5. Consecuencias para estimandos y dictámenes
+
+- ITT_Z^D2 puede conservar interpretación causal de asignación/política aunque falle exclusión focal, siempre que asignación, consistencia de versiones, población/unidad, interferencia, seguimiento y medición sean válidos. Si falla comparabilidad, interferencia no modelada o medición, ITT también puede no identificarse.
+- LATE_f/Wald no se etiqueta como tal si exclusión, relevancia, independencia, monotonicidad, consistencia, no interferencia o medición no se sostienen. No se repara una vía colateral restándola del ITT.
+- MAP-05/06 de D2 no identifican θ_A(q): este requiere políticas factibles sobre ΔT_acc* completo, régimen q, soporte y supuestos propios.
+- Mediación por M=ΔT_acc* requiere modelo longitudinal y supuestos propios; una ruta B→L→V fuera de M forma parte de las restantes rutas de política.
+- Si los observables no distinguen EXC-F0 de una vía colateral, dictamen UNKNOWN/NOT_IDENTIFIED, nunca selección del escenario favorable.
+
+## 259.6. Inputs y estado
+
+MAP-05 requiere universo de alternativas cerrado para la instancia, snapshots/diffs por unidad, dependencias compartidas, recursos, permisos, seguridad, rendimiento/costes, datos, conocimiento, residuos, cobertura y adjudicación. MAP-06 requiere Outcome y Value por dimensión (constructo/beneficiario/escala/horizonte), dictámenes separados, fuentes comparables, mapa de interferencia/carryover y evidencia de que B no altera oráculo/medición. AB-M06, AB-M09 y AB-M10 siguen OPEN.
+
+**Dictamen:** MAP-05/06 integrados documentalmente; permanecen OPEN materialmente y para identificación. No se declara exclusión empíricamente satisfecha/violada para una instancia aún no materializada. No se aprueba LATE_f, θ_A(q), mediación, población, q, parámetros, umbrales o potencia. Sin Design Freeze, implementación, fixtures, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
