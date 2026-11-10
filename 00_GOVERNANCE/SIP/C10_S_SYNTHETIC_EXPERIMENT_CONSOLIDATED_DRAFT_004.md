@@ -11401,3 +11401,88 @@ No se permite extrapolación silenciosa, truncamiento que cambie el target, agru
 Quedan explícitamente OPEN: (a) definición sustantiva y operacional de g0/g1; (b) conjunto admisible de M por instancia y restricciones entre componentes; (c) unidad, población y H; (d) contenido exacto de q y tratamiento de L post-B; (e) dimensión/es V_j, beneficiario, escala, horizonte y composición; (f) interferencia/carryover; (g) versiones y soporte; (h) si el target es una distribución estocástica conjunta general o una clase restringida de políticas factibles. La instancia Opción A aún no aporta los valores y evidencias para resolver estos puntos.
 
 **Dictamen:** MED-04 queda DOCUMENTED / PARTIALLY SPECIFIED. Se ha fijado la frontera conceptual y el contrato mínimo para g0/g1 y q; las políticas concretas, q material, factibilidad, soporte y fórmula final del estimando permanecen OPEN. No se aprueba θ_A(q), método, parámetros ni identificación. Sin Design Freeze, implementación, fixtures, simulación o ejecución. scientific_execution=false; execution_authorized=false.
+
+# 262. MED-05 — contrato de identificación del efecto interventional conjunto (2026-11-10)
+
+**Precedencia:** especializa la propuesta del maestro §249 y ledger AB §17; consume el registro H/L/M §§250/252, la reconciliación MAP/MED §§257–261 y la definición dimensional de Outcome/Value §224. No crea un estimando adicional, no convierte la propuesta en decisión aceptada y no declara identificación.
+
+## 262.1. Estimando conservado y alcance
+
+Se conserva, sin alteración sustantiva, el estimando interventional candidato con referencia b1:
+
+IIE_M,j^(b1)(b1,b0;q) = E_q[V_j^(b1,G_M^b1) − V_j^(b1,G_M^b0)]
+
+G_M^b(dm|L,H) es una intervención estocástica sobre la distribución **conjunta** y factible de M=ΔT_acc* bajo el régimen b, condicionada por la historia pre-M declarada. La distribución no se factoriza entre ΔU*, ΔR*, ΔC* y ΔX* salvo justificación estructural independiente. La referencia b1 mantiene el régimen de resultado en b1 y contrasta la distribución mediadora inducida por b1 con la inducida por b0.
+
+La interpretación queda restringida a la población q, dimensión V_j, horizonte, versiones y soporte declarados. No es un efecto natural indirecto, no requiere definir contrafactuales individuales cruzados como si fueran observables, y no equivale a θ_A(q), ITT_Z^D2, LATE_f^D2 ni θ_Af(q_X*). Tampoco es «el porcentaje del efecto total mediado» ni autoriza una descomposición aditiva sin un contrato compatible.
+
+## 262.2. Factorización longitudinal que debe poder sostenerse
+
+La identificación requiere una secuencia compatible con el reloj causal ya reconciliado:
+
+H → asignación/exposición B y versión → L pre-M → M=ΔT_acc* → historia downstream (Reach/Π_H, K/Consider, Sel/Start, Exec, O) → V_j.
+
+La factorización operativa candidata, para cada unidad y bajo la frontera/interferencia declaradas, debe representar al menos:
+- distribución de B/versiones dado H, cuando B no sea asignado directamente;
+- distribución de L dado H y B;
+- distribución conjunta de M dado H, B y L;
+- evolución post-M hasta V_j, condicionada por la historia precedente pertinente;
+- proceso de observación, censura y missingness, separado de la verdad DGP.
+
+La expresión es un mapa de requisitos, no una afirmación de que todos los nodos o factores estén medidos, ni una licencia para condicionar sobre variables posteriores al mediador. Reach, conocimiento, selección, ejecución y Outcome se integran en la evolución hacia V_j para el contraste total interventional; no se ajustan mecánicamente como covariables basales. Si se desea descomponer alguno de esos eslabones, se requiere otro estimando secuencial.
+
+## 262.3. Supuestos de identificación — gates no intercambiables
+
+| Gate | Condición que debe justificarse | Evidencia/contrato necesario | Consecuencia si falla |
+|---|---|---|---|
+| ID-1. Definición y consistencia | b0/b1, versiones, unidad, M conjunto, intervención estocástica y resultado tienen versiones suficientemente definidas; la observación coincide con la intervención recibida según reglas explícitas | Contratos de política, versiones, snapshots, mapping y registro de desviaciones | NOT_IDENTIFIED para versiones no comparables; parcial solo si el target restringido se define |
+| ID-2. Historia basal | H contiene los antecedentes comunes necesarios de B, M y V_j; elegibilidad y q son pretratamiento | Crosswalk de §232/§251, población y medición basal | Confusión basal residual o población objetivo indeterminada |
+| ID-3. Intercambiabilidad de B | Si B no es aleatorizado, no hay causas comunes no medidas de B y la evolución posterior/V_j condicionadas por H (o existe diseño/estimador alternativo válido) | Mecanismo de asignación/recepción, DAG por dimensión, covariables y sensibilidad | No identificar contraste de regímenes B; Z no sustituye automáticamente a B |
+| ID-4. Intercambiabilidad secuencial M–V | Condicionado por H y la historia L pre-M suficiente, no quedan causas comunes no medidas de M y V_j para el régimen y dimensión estudiados | DAG campo×tiempo×V_j, medición de L, justificación DGP y análisis de confusión residual | NOT_IDENTIFIED o bounds; no basta con que el DAG dibuje las flechas |
+| ID-5. Positividad/soporte | b0/b1 factibles en historias H objetivo; para valores L con peso bajo b1 existe soporte de la distribución M bajo b0 y b1; las versiones y la evolución downstream necesarias tienen soporte | Diagnósticos condicionales/estructurales, mapas de soporte por historia y versión | PARTIALLY_IDENTIFIED si se pueden derivar cotas/target restringido explícito; de otro modo NOT_IDENTIFIED |
+| ID-6. Intervención mediadora factible | G_M^b respeta restricciones conjuntas constitutivas de U*/R*/C*/X* y no genera estados imposibles | Contrato de factibilidad del espacio M y validación independiente | No se identifica el IIE definido si la intervención es meramente matemática/no realizable |
+| ID-7. Medición y observación | M y V_j tienen medición válida, temporalmente emparejada e independiente del truth; error, cobertura, missingness y censura son conocidos/modelables | E_T/U_G, snapshots, cobertura, oráculo, adjudicación y análisis de error | INDETERMINATE si falta evidencia para juzgar; NOT_IDENTIFIED si el error impide recuperar el target |
+| ID-8. Interferencia y dinámica | La unidad de intervención/exposición y los spillovers/carryover están incorporados en el estimando o son despreciables bajo justificación | Topología de dependencias/cluster, exposición vecinal y reloj longitudinal | No identificar bajo SUTVA individual; redefinir unidad/exposición o bounds |
+| ID-9. Especificación/estimación | El método representa la secuencia y las distribuciones requeridas; se evalúan especificación, estabilidad y extrapolación | Contrato del método, diagnósticos, estimación robusta/sensibilidad | No declarar identificación empírica solo por convergencia o ajuste del modelo |
+
+Estos gates se adjudican por estimando × V_j × población/unidad × horizonte × versión. La aleatorización de Z puede sostener un ITT de asignación; no prueba por sí sola ID-3 para B, ID-4 para M, exclusión IV ni soporte de G_M.
+
+## 262.4. Tratamiento obligatorio de L inducida por B
+
+L es historia post-B y pre-M. Cuando B afecta L y L causa M y V_j, L es confusor mediador–resultado inducido por tratamiento. No se debe:
+- incluir L en una regresión como si fuera basal y presentar el coeficiente de M como efecto causal;
+- omitir L y asumir que la aleatorización de Z resuelve la confusión M–V;
+- condicionar en L sin definir qué distribución de L integra el estimando;
+- ajustar por variables downstream de M para «limpiar» el efecto mediado.
+
+Para el IIE con referencia b1, la distribución de L que pesa la esperanza corresponde al régimen de referencia declarado, y G_M^b0 debe poder evaluarse para las historias L relevantes bajo ese régimen. La positividad cruzada/condicional es, por tanto, esencial: no basta con observar M en ambos brazos marginalmente. Si la historia L necesaria no está medida, o G_M^b0 no tiene soporte en L frecuente bajo b1, el IIE puntual no queda identificado. Un método g puede modelar la secuencia B→L→M→downstream→V; no elimina por sí mismo confusión no medida ni falta de soporte.
+
+## 262.5. Familia de métodos admisible — sin selección prematura
+
+La familia de identificación/estimación debe respetar la intervención estocástica y la historia longitudinal:
+- **g-computation longitudinal / g-formula:** candidata directa para integrar la distribución de L bajo b1, la distribución conjunta de M bajo b1/b0 condicionada por H,L y la evolución downstream hasta V_j;
+- **estimación basada en ponderación o densidades:** candidata si las probabilidades/densidades secuenciales son estimables y el soporte permite pesos estables; no se presume estabilidad;
+- **TMLE longitudinal u otro estimador doblemente robusto:** candidato si se demuestra que el target, los tratamientos estocásticos, la interferencia y la estructura temporal corresponden al estimador concreto.
+
+No se elige ahora uno de ellos. La decisión requiere conocer N/población, estructura de M, densidades conjuntas, soporte, censura, dimensionalidad, topología de interferencia y DGP. Regresión convencional de V sobre B, M y L, mediación por producto de coeficientes o diferencia ITT−IIE no son sustitutos del contrato.
+
+## 262.6. Sensibilidad, bounds y reglas de dictamen
+
+- **IDENTIFIED:** solo si todos los gates necesarios están sostenidos para la tupla de adjudicación y el método identifica el estimando declarado.
+- **PARTIALLY_IDENTIFIED:** si se obtienen cotas/conjuntos informativos bajo restricciones explícitas; reportar intervalo/conjunto, anchura, población y supuestos, no un punto.
+- **NOT_IDENTIFIED:** si falta un supuesto necesario no acotable, falla soporte esencial, la intervención no es factible o la confusión residual no puede resolverse/acotarse.
+- **INDETERMINATE:** si la evidencia/cobertura/observación no permite decidir si un supuesto se cumple; no convertir UNKNOWN en PASS ni en CONTRADICTED.
+
+La sensibilidad debe considerar, según el DGP y datos que se definan: confusión M–V no medida; error de medición de M y V_j; missingness/censura diferencial; positividad débil y pesos extremos; especificación del modelo; versiones no equivalentes; interferencia/carryover; y rutas colaterales. Los bounds solo se declaran informativos cuando sus restricciones y anchura están justificadas. Umbrales, parámetros de sensibilidad y potencia permanecen OPEN bajo MED-06/AN-04.
+
+## 262.7. Contrato mínimo de salida y no transferencia
+
+Para cada tupla, el Analyzer/Evaluator debe recibir o producir: estimand_id existente; b0/b1 y versiones; referencia b1; q/población/unidad; V_j, escala y horizonte; definición conjunta/factibilidad de M; H/L y precedencia; supuestos ID-1…ID-9 con estado SUPPORTED/CONTRADICTED/UNKNOWN y evidencia; soporte y overlap condicional; método/versión; censura/missingness/error; interferencia; estimación o conjunto identificado; sensibilidad/bounds; regla de abstención y provenance.
+
+El Analyzer no recibe truth_DGP ni potenciales. El Evaluator adjudica la recuperación frente a la verdad oculta del DGP. Un resultado IIE identificado no se transfiere a θ_A(q), ITT, LATE ni a otra V_j. Si el target o la historia no coinciden, debe emitir target mismatch/UNKNOWN y abstenerse.
+
+## 262.8. Dependencias y dictamen
+
+MED-05 queda **DOCUMENTED / CANDIDATE**, no cerrado. Antes de su cierre material requieren resolución o evidencia: MED-03 (historia L campo×tiempo×V_j); MED-04 (políticas factibles y q); MED-06 (sensibilidad/bounds); §224 (Outcome/Value); MAP-01…07; AB inputs de población, versiones, soporte, snapshots, cobertura, interferencia y oráculo; AN-04 (métricas, tolerancias y abstención); y una elección justificada del método tras conocer la instancia y el DGP.
+
+No se aprueban supuestos, estimando final, método, parámetros, tamaño muestral, potencia ni umbrales. No se crean fixtures ni datos; no se implementa, valida localmente, simula o ejecuta. Sin Design Freeze. scientific_execution=false; execution_authorized=false.
