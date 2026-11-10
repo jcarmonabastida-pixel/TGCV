@@ -1,0 +1,522 @@
+# C10-S — AB residual input and closure ledger
+
+**ID:** C10-S-AB-RESIDUAL-LEDGER-001  
+**Version:** Draft 001  
+**Date:** 2026-11-10  
+**Branch:** `research/c10-s-consolidation-draft`  
+**Status:** INTEGRATED WORKING LEDGER / NOT APPROVED AS DESIGN FREEZE / NOT IMPLEMENTABLE.  
+**Authority:** DEC-C10-093 and DEC-C10-094; master C10-S §§216–233; accepted DEC-C10-068/069/071–079/090–092; D2 policy DEC-C10-066/067.  
+**Purpose:** identify, in one place, which AB requirements are resolved at the documentary-design level, which remain material inputs, what evidence would close them, and which inputs must transfer to C. This ledger does not create a new scientific decision or replace the governing contracts.
+
+## 1. Governing interpretation
+
+AB-01…AB-09 are one integrated package, not nine independent redesign exercises. DEC-C10-093 accepts the working specialization baseline; DEC-C10-094 accepts the integrated material design resolutions. These decisions settle the conceptual choices within their scope. They do **not** establish that the relevant inventories, snapshots, policies, probabilities, routes, oracle or evidence exist in a materialized instance.
+
+Use the following status vocabulary:
+
+- **DESIGN RESOLVED:** the documentary rule/architecture is accepted; no conceptual reopening absent a documented contradiction.
+- **MATERIAL INPUT OPEN:** the design specifies what must be supplied, but the actual value, instance, source or evidence is missing.
+- **EVIDENCE GATE OPEN:** a claim such as completeness, isolation, invariance, independence or correctness requires evidence not yet present.
+- **TRANSFER TO C:** the input is handed to the causal/measurement/statistical package; AB retains its source identity, version, definition and uncertainty.
+- **NOT AUTHORIZED:** no executable fixture, parser, validator, code, simulation or experiment is authorized by this ledger.
+
+A design-resolved row is not IMPLEMENTED, EXECUTED, AUDITED or ACCEPTED as an empirical result.
+
+## 2. Integrated AB-01…AB-09 disposition
+
+| Gate | Accepted documentary resolution | Remaining material input / evidence | Closure evidence and acceptance rule | Handoff |
+|---|---|---|---|---|
+| **AB-01 — CMP/PAR/REF/RUL/MET roster** | Reference identity is fixed by DEC-C10-069. Logical nucleus: one CMP, ENABLED and PROFILE PARs, one REQUIRE RUL, two semantically mandatory typed operand bindings, MET mandatory; POL outside minimal confirmatory nucleus. REF objects are not inferred from UDG references, FKs or EDGE. | Snapshot-scoped physical roster; whether the two operand bindings serialize as typed REF objects or AST links; IAM applicability/cardinality rows; exact record identities and coverage denominators. | Reconcile the governing accepted AST profile/grammar with DEC-C10-076/077/078; represent each operand relation exactly once; enumerate all applicable rows by stage, route and snapshot; prove coverage. REF=0 only if exhaustive inventory and IAM support it. | C receives frozen roster IDs, snapshot bindings, applicability and UNKNOWN/coverage status. |
+| **AB-02 — C_src/C_dst/M, states and IAM** | ENABLED is BOOL without coercion. PROFILE mapping is total/injective over the accepted finite symbols: STD→STANDARD, RO→READ_ONLY, OFF→DISABLED. Preserve ABSENT/NULL/DEFAULT/VALUE distinctions. IAM is a logical, layered applicability contract. | Physical source/destination schemas and namespaces; canonical serialization for configuration payloads; resolved DEFAULT semantics; complete IAM rows/cardinalities; actual source/destination values and mapping coverage. | Every mandatory field has an explicit typed mapping or explicit failure/NA rule; no implicit defaults, lossy collapse or orphan references. Apply JCS only within DEC-C10-074's accepted UDG-01 envelope scope; do not extend it automatically to configuration payloads. | C receives versioned M, states, mapping statuses and measurement error/unknowns. |
+| **AB-03 — F1/F2/A1/A2 and transformation identity** | Route roles and composition are accepted: F1→F2 focal, A1→A2 baseline alternative; B does not execute any route. DEC-C10-090/091/092 separate endpoint/interface/service, format/payload/events and A2 capability/implementation/execution. | Concrete transformation TID/SID/RID, versions, actors, artifacts, source/destination formats, pre/postconditions, dependencies, windows, errors, reversibility and route-specific event contracts. | Four versioned cards must be mutually compatible with the same source, destination, C0/G/H, mapping, IAM and F*. No alias or conceptual capability is treated as an observed/implemented transformation. | C receives route/version identities and any common-support or route-comparability limits. |
+| **AB-04 — ID/REL/COND/AUTH/RES/DEP/BLOCK** | Predicate families, trivalent logic and distinction between focal DEP and alternative routes are specified. C_dep is not A_f; A_f is not execution or success. Functional authorization, technical ACL/credentials and agent knowledge remain distinct. | Field-level operationalization by unit, stage, route and snapshot; actual evidence sources; resource/capacity values; endpoint/dependency topology; authorization truth; coverage and adjudication. | Each applicable predicate has a definition, unit, time, domain, truth rule, observable evidence, coverage denominator and adjudication rule. Missing evidence propagates ?; it is not 0 or NA. | C receives independently measured A_f/D_f/ΔT_acc and their observation status, not inferred values. |
+| **AB-05 — F*, C0, G, H and oracle** | F* is common and non-compensatory across both routes; FP-01…07 are functional, FP-08 is a separate evidence gate. G is the complete logical service unit/accepted roster. C0 is a pre-Z/pre-B immutable baseline with the fields enumerated in DEC-C10-094. | Atomic FP property profile and applicability; concrete C0 snapshot; H* anchor, value and unit; common tolerances/windows where relevant; oracle implementation-independent specification, validation evidence, blinding feasibility and adjudication record. | All required properties have ex-ante rules; same F* and H apply to F/A; any FP-01…07 failure yields F*=0, unresolved required property yields ?, all required properties=1 yields F*=1. FP-08 cannot alter F*. Oracle must be route/outcome-independent and versioned before fixtures. | C receives outcome-independent F* and event timing; H and measurement limitations enter estimand definitions. |
+| **AB-06 — D2 policy/event mechanism** | D2 assignment policy is accepted. Z, B assignment, programming, receipt, compliance, attempt, actor, artifact/version, installation, retries, partial failure, rollback, background provision and crossover are distinct events. B does not execute F1/F2/A1/A2. | Actual actor/role, adapter artifact/version/hash, receipt protocol, time window, retry/failure/rollback rules, background-provision detection and material event evidence. | Event log must preserve the entire sequence and deviations; Z=1 must not be equated with receipt/attempt/success; Z=0 must not be equated with no background provision. | C receives the complete assignment/receipt/attempt/install event history and policy versions. |
+| **AB-07 — joint technical distribution** | C_dep* is the conjunction of installation, integrity, compatibility and operability. A conditional joint distribution (16 cells per relevant stratum or validated equivalent) is required; independence and s=.80 are not assumed. | Numerical joint probabilities by arm/history/stratum, structural zeros if any, calibration rationale or explicit synthetic stipulation, sensitivity ranges and parameter provenance. | Distribution normalized; each cell in [0,1]; margins and conditional dependencies reported; sensitivity justified; no historical .20/.80 or s=.80 inserted as fact. | Transfer full joint distribution and sensitivity scenarios to C; retain AB source/version. |
+| **AB-08 — eligibility, q_X*, units and interference** | Eligibility uses C0 pre-Z variables only. P*_τ2, P*_F and q_X* are distinct. Assignment, analysis and interference units are separate. Shared infrastructure requires cluster/exposure modelling, not assumed independence. | Executable-in-principle eligibility algorithm (documentary first), target population and strata, q_X* distribution/weights, positivity/support table, assignment/analysis/cluster topology and exposure mapping. | Reproducible pre-Z rule; no post-Z exclusions; common support explicitly enumerated; unsupported cells not extrapolated silently; interference unit matches shared resources/dependencies. | Direct transfer to C with population, support, cluster and q_X* version. |
+| **AB-09 — alternatives, R0–R3 and truth/observed** | Alternative-route logic, finite-universe coverage rule, R0–R3 reuse, truth/observed separation and Generator/Analyzer/Evaluator separation are specified. Reach=0 requires exhaustive coverage; otherwise ?. | Material alternative universe and route inventory; scenario truth tables; measurement/missingness process; oracle validation, blinding and adjudication; Analyzer firewall proof. | Truth and observed datasets remain separate; no scenario labels or truth leak to Analyzer; each 1/0/? generated from explicit rules; no absence from missing records; R0/R1/R2/R3 classifications have declared universe and evidence. | C receives truth-sealed DGP scenario metadata only through Evaluator; Analyzer receives observed variables. |
+
+## 3. Cross-gate dependencies and no-double-counting rules
+
+1. **AB-01 ↔ AB-02:** the roster and mapping must use the same object/record identities, version and snapshot. An AST operand link is not counted again as a REF object; a UDG reference or U_G FK is not a configuration REF by default.
+2. **AB-02 ↔ AB-03:** M maps declared source/intermediate/destination semantics; it does not itself prove F1/F2/A1/A2 execution or applied state.
+3. **AB-03 ↔ AB-04:** route existence/capability does not prove predicate satisfaction. DEP is focal-route dependency, not proof that no A1/A2 route exists.
+4. **AB-04 ↔ AB-05:** A_f* is adjudicated from its necessary predicates; F* is the separate functional endpoint for the complete route. Neither is inferred from C_dep* alone.
+5. **AB-05 ↔ AB-06:** B cannot alter the oracle, F*, C0, IAM, permissions or baseline conditions under the isolated D2 design. Any observed change is a collateral path, not silently absorbed into the focal mechanism.
+6. **AB-06 ↔ AB-07:** the joint C_dep distribution is conditional on the actual event mechanism; it cannot be reduced to one “success rate” without a justified factorization.
+7. **AB-07 ↔ AB-08:** technical success and accessibility may vary with baseline history/strata; marginal probabilities do not establish positivity or transport.
+8. **AB-08 ↔ AB-09:** alternative-route truth and Reach depend on the closed universe, population, horizon and coverage. An unknown route keeps the relevant absence/Reach result unknown.
+9. **All gates ↔ C:** preserve the distinction among ITT_Z(D2), package effect, first stages, LATE_f, θ_Af(q_X*), θ_A(q), and mediation. No AB result licenses causal attribution to ΔT_acc→Value.
+
+## 4. Material input register — no invented defaults
+
+The following are the current hard blockers. Each requires a sourced value, explicit synthetic stipulation, or justified NOT_APPLICABLE decision; absence of input is not permission to choose a conventional default.
+
+| Input ID | Required input | Current status | Permitted resolution |
+|---|---|---|---|
+| AB-M01 | REF versus AST physical representation | OPEN | Grammar/schema reconciliation; choose one encoding per operand, never both |
+| AB-M02 | C_src/C_dst/M physical schema and canonicalization | OPEN | Explicit schema/encoding decision; do not extend UDG-01 JCS by assumption |
+| AB-M03 | TID/SID/RID and concrete transformation cards | OPEN | Source-backed identity/version contracts or explicitly bounded synthetic specification |
+| AB-M04 | Predicate field roster and source/capture method | OPEN | Field-by-field mapping to U/R/C/X/E_T and evidence coverage |
+| AB-M05 | H* common anchor, value and unit | OPEN | Explicit pre-specified protocol decision; same for F and A |
+| AB-M06 | MD-C1/MD-C4 isolation and A1/A2 non-affectation | OPEN | Material manifests, before/after snapshots and functional equivalence evidence |
+| AB-M07 | D2 event probabilities and joint C_dep distribution | OPEN | Calibration or explicit DGP stipulation plus sensitivity; no inherited .20/.80 or .80 |
+| AB-M08 | Eligibility algorithm, q_X*, support and strata | OPEN | C0-only algorithm and explicit population distribution/support |
+| AB-M09 | Assignment/analysis/interference units | OPEN | Topology-backed cluster/exposure definition |
+| AB-M10 | Independent oracle, blinding and adjudication | OPEN | Pre-fixture versioned specification and validation plan/evidence |
+| AB-M11 | R0–R3 truth tables and observation/missingness model | OPEN | Scenario-by-scenario truth and observation rules; keep truth sealed |
+
+## 5. Handoff contract AB → C
+
+C must consume, not recreate, the AB outputs below with their exact IDs and versions:
+
+- instance/roster/M/IAM/C0/G/H and snapshot identities;
+- transformation cards and route universe;
+- predicate definitions and independent A_f/D_f/ΔT_acc measurement contracts;
+- D2 event history and joint C_dep distribution;
+- eligibility, population, q_X*, support and interference structure;
+- R0–R3 truth/observed scenario definitions and oracle/adjudication provenance.
+
+Any unresolved AB field enters C as OPEN/UNKNOWN with its source and scope. C may perform sensitivity or partial-identification analysis around it, but may not silently fill it.
+
+## 6. Next integrated operation
+
+The next operation remains within AB and should resolve, in one coordinated pass, the highest-dependency documentary items before requesting unavailable material values:
+
+1. reconcile AB-M01/02 against the current accepted AST, REF, UDG and mapping contracts, including the limited scope of DEC-C10-074;
+2. consolidate the four transformation cards and their source/destination contracts without inventing TID/SID/RID;
+3. complete the predicate-to-field/evidence crosswalk for AB-04;
+4. prepare the exact minimal decision set for H*, MD-C1/MD-C4, D2 joint probabilities, q_X*/population and cluster topology.
+
+Only after this pass should remaining user decisions or external material inputs be requested. No implementation is implied.
+
+## 7. Authorization and status
+
+AB remains **IN_PROGRESS / DESIGN RESOLVED IN PART / MATERIAL INPUTS AND EVIDENCE OPEN**. This ledger is a documentary reconciliation, not Design Freeze, not implementation readiness and not scientific evidence.
+
+`scientific_execution=false`; `execution_authorized=false`.
+
+No code, parser, validator, executable fixture, simulation or experiment is created or authorized by this ledger.
+
+## 8. Resultado de la reconciliación documental AB-M01/M02 (2026-11-10)
+
+Esta pasada ha contrastado el catálogo atómico, contrato abstracto de instancia, gramática RUL, matriz M, plantilla U_G y DEC-C10-054/068/069/074/076/077/078/093/094.
+
+### 8.1. AB-M01 — operand bindings: conclusión acotada
+
+- DEC-C10-054 fija el perfil de AST declarativo acíclico (profundidad 4, máximo 16 átomos por regla y 16 reglas por paquete), con efectos nucleares REQUIRE/FORBID y UNKNOWN no convertido silenciosamente. No acepta una sintaxis física concreta ni un parser.
+- DEC-C10-068 fija la regla RUL-SVC-ENABLE-PROFILE-01 y sus dos referencias semánticas a PAR-SVC-ENABLED y PAR-SVC-PROFILE; la expresión aceptada es OR(NEQ(ENABLED,true),IN(PROFILE,{STANDARD,READ_ONLY})).
+- DEC-C10-094 exige que los dos operand bindings estén representados exactamente una vez, como dos REF tipados o dos enlaces AST tipados según la gramática canónica.
+- DEC-C10-076/077 regulan referencias tipadas UDG y objetos REF de configuración, respectivamente; no autorizan a confundirlos. Una FK U_G, EDGE o referencia del envelope no crea por sí misma un objeto REF.
+- La plantilla U_G es un registro de inventario/evidencia y no contiene tablas físicas dedicadas CMP/PAR/REF/RUL/MET. Sus filas son plantilla vacía; no hay snapshots C10-S materializados ni evidencia de cobertura en esa plantilla.
+
+**Conclusión AB-M01:** quedan definidos el número y significado de los dos operand bindings; no es posible seleccionar responsablemente REF físico frente a enlaces AST tipados con las fuentes actuales. El gate permanece OPEN hasta reconciliar la gramática/sintaxis AST y el modelo de serialización del objeto. No se duplicarán los operandos como REF y AST a la vez.
+
+### 8.2. AB-M02 — namespaces, mapping y canonicalización
+
+- El mapping semántico de PROFILE es total e inyectivo para el dominio aceptado: STD→STANDARD, RO→READ_ONLY, OFF→DISABLED. ENABLED conserva BOOL con igualdad exacta y sin coerción.
+- DEC-C10-068 no acepta DEFAULT contractual para ENABLED ni PROFILE. DEFAULT se mantiene como estado genérico del contrato abstracto, pero no se introduce en la instancia confirmatoria aceptada sin decisión expresa. ABSENT/NULL/DEFAULT/VALUE no se colapsan.
+- La matriz M distingue C_src, C_dst declarado y C_dst aplicado; no existe todavía schema/payload físico de estos objetos, ni namespace físico completo/versionado para cada etapa.
+- DEC-C10-074 acepta JCS únicamente para el envelope UDG-01 bajo el perfil TGCV-C10S-JCS-1. No se extiende automáticamente a payloads de configuración, S1/S2 ni C_src/C_dst. Los artefactos de intercambio/payload requieren un contrato propio o una decisión explícita de reutilización con alcance y compatibilidad justificados.
+- MET debe fijar identidades y versiones independientes de contrato, instancia, esquemas fuente/destino, mapping, IAM y oráculo. Hashes no se calculan ni interpretan como equivalencia semántica antes de fijar la serialización aplicable.
+
+**Conclusión AB-M02:** el mapping semántico BOOL/ENUM está resuelto a nivel documental; namespaces/códigos físicos, serialización, canonicalización de payload y filas IAM de instancia permanecen OPEN. No se adopta JCS para el payload por analogía ni se inventa un schema.
+
+### 8.3. Cambios de estado permitidos por esta pasada
+
+| Subgate | Estado tras reconciliación |
+|---|---|
+| AB-01: roster lógico y operandos | DESIGN RESOLVED |
+| AB-01: encoding físico REF/AST | OPEN |
+| AB-01: IAM por snapshot/etapa/ruta y cobertura | OPEN |
+| AB-02: mapping semántico BOOL/ENUM | DESIGN RESOLVED |
+| AB-02: namespaces/schema/serialización de payload | OPEN |
+| AB-02: canonicalización de C_src/C_dst/M | OPEN |
+| AB-02: DEFAULT en instancia confirmatoria | NOT_IN_BASELINE; no introducir sin decisión |
+
+No se ha creado un nuevo Decision Record ni se ha alterado el alcance de DEC-C10-074/076/077/078. No se han generado registros, snapshots, filas IAM, hashes ni observaciones.
+
+## 9. Resultado de la reconciliación documental AB-M03/M04 y hallazgo temporal (2026-11-10)
+
+### 9.1. AB-M03 — las cuatro cards no son cuatro transformaciones ya especificadas
+
+Se contrastaron la reconciliación histórica de transformation cards, la propuesta Opción A/F*, el crosswalk D2 de A_f*, DEC-C10-090/091/092 y el DAG §233.
+
+- F1/τ2 tiene función candidata más desarrollada: conversión focal S0→S2, habilitada por la dependencia provisionada. Su TID/SID/RID, formato, contrato de conversión, precondiciones, recursos y evidencia no están cerrados.
+- F2 solo tiene posición S2→SF y rol general de aplicación/verificación focal; su función técnica y contrato de aplicación concretos siguen OPEN.
+- A1 solo tiene posición S0→S1 y rol general de exportación alternativa; formato/mecanismo baseline y su contrato siguen OPEN.
+- A2 tiene la descomposición conceptual aceptada por DEC-C10-092 como importador/consumidor, con recepción, parseo, validación, mapping, aplicación, verificación y procedencia separados. Su implementación, formato, parser, mapping, eventos y evidencia siguen OPEN.
+- DEC-C10-090/091/092 refinan descomposición conceptual; no proporcionan IDs transformacionales canónicos ni demuestran existencia/operación material.
+- Las cards no deben rellenarse con un producto, formato, endpoint, versión, comando o TID inventado. Los aliases F1/F2/A1/A2 no se convierten en TID/SID/RID.
+
+**Conclusión AB-M03:** contratos funcionales de ruta y obligaciones de transición están definidos a nivel conceptual, pero no hay cuatro cards materiales completas. AB-03 permanece OPEN en identidad y especificación material de las transformaciones. No se puede declarar A1/A2 no afectadas por B sin MD-C1/MD-C4.
+
+### 9.2. AB-M04 — crosswalk causal y agregación existen; captura por campo no existe
+
+El crosswalk D2 de A_f* ya reconcilia ID/REL/COND/AUTH/RES/DEP/BLOCK y evita duplicidades; la auditoría MEAS-001 y su regla trivalente §§10–11 distinguen truth, observed_state, evidence_status, coverage_status, matching y D_f basal→post. La Path Predicate Temporal Evidence Matrix proporciona la estructura por paso/rama/tiempo.
+
+No obstante:
+- el crosswalk es semántico, no un inventario de campos efectivos;
+- B-M01…15 son superficies de inspección, no observaciones ni variables pobladas;
+- el manifiesto B marca sus superficies como NO INVENTARIADO o evidencia no disponible;
+- la plantilla U_G está vacía y sin snapshots C10-S reales;
+- no hay por unidad/version/snapshot un field_id, valor/diff, fuente, event_id, truth, observed_state, denominador de cobertura y adjudicación que permita cerrar los predicados.
+
+**Conclusión AB-M04:** definición y lógica de adjudicación documental PARTIAL/DESIGN RESOLVED; operacionalización material y evidencia NONE/OPEN. No asignar 1/0 ni afirmar invariancia; conservar ?.
+
+### 9.3. Hallazgo AB-TIME-01 — discrepancia de indexación temporal entre contratos
+
+El contrato temporal DGP §2 utiliza t−1 para baseline pre-Z, t0 para asignación Z, t1 para política/recepción/intento, t2 para instalación/verificación, t3 para snapshot de accesibilidad y t4 para Reach. La Path Predicate Temporal Evidence Matrix §2 utiliza t0 para baseline pre-Z, t1 para asignación/oferta/recepción/intento, t2 para verificación y t3 para snapshot; ambos llevan Reach en t4 y t5–t9 para mecanismos y resultados.
+
+El orden causal sustantivo es compatible, pero los índices t−1/t0/t1 no están armonizados y el contrato de la matriz comprime asignación y política en un único índice. El DAG §233 adopta la convención del DGP temporal, pero esa precedencia aún debe registrarse explícitamente en un crosswalk temporal aceptado.
+
+**Resolución provisional segura:** identificar eventos por nombre y precedencia (BASELINE_PRE_Z → ASSIGNMENT_Z → POLICY/PROVISION → INSTALL_VERIFICATION → ACCESSIBILITY_SNAPSHOT → REACH → KNOWLEDGE → SELECTION → EXECUTION → OUTCOME → VALUE), sin comparar ni reutilizar índices numéricos entre documentos hasta reconciliarlos. No se sobrescriben timestamps ni snapshots históricos.
+
+**Estado:** AB-TIME-01 OPEN; afecta AB-03/04/05/06/08 y el handoff a C. No cambia el orden causal ya definido ni autoriza implementación.
+
+### 9.4. Estado de subgates tras esta pasada
+
+| Subgate | Estado |
+|---|---|
+| AB-03: composición F1→F2/A1→A2 | DESIGN RESOLVED |
+| AB-03: identidad y cards materiales TID/SID/RID | OPEN |
+| AB-04: semántica A_f* y lógica 1/0/? | DESIGN RESOLVED / PARTIAL |
+| AB-04: inventario/captura/evidencia por campo | OPEN / NONE |
+| AB-TIME-01: índices numéricos armonizados | OPEN |
+| AB-M06: aislamiento y no-afectación A1/A2 | OPEN |
+
+No se ha inventado ninguna función transformacional, TID, dato de campo, estado truth, timestamp ni cobertura.
+
+## 10. Reconciliación AB-M05…M11 y precisión sobre H (2026-11-10)
+
+### 10.1. AB-M05 — F*, C0, G, H y oráculo
+
+DEC-C10-094 acepta G como unidad lógica de servicio y roster constitutivo; C0 como snapshot basal inmutable anterior a Z y programación B, con identidad/versiones, fuente/destino, runtime/host, permisos, recursos, estados F/A, rutas de fondo, unidad/cluster, reloj/ventana y versiones M/IAM/oráculo. F* es común y no compensatorio; FP-08 es probatorio y separado.
+
+**AB-TIME-02 / H-01:** H* en DEC-C10-094 es horizonte temporal común, con ancla, valor y unidad por fijar. La Path Predicate Matrix §2 también usa H=3 como profundidad máxima candidata del grafo de transformaciones, con rutas de longitud 2. Profundidad de ruta y horizonte temporal no son el mismo objeto y no pueden compartir el símbolo/valor por inferencia. Se debe reservar, por ejemplo, H_path para profundidad y H_time para ventana temporal, sin alterar las decisiones hasta su aceptación formal.
+
+El oráculo se define como independiente de ruta y de Outcome/Value, versionado antes de fixtures, con separación Generator/Analyzer/Evaluator y cegamiento cuando sea viable. Sigue sin implementación, validación, evidencia de independencia ni adjudicación aplicada.
+
+### 10.2. AB-M06 — MD-C1/MD-C4
+
+El manifiesto B-M01…15 y los contratos PROV-01…12 definen qué inspeccionar. Las superficies siguen NO INVENTARIADO/NONE; ARCH-B1 es candidata, no implementación. MD-C1 (manifiesto completo de cambios de B) y MD-C4 (no-afectación funcional de A1/A2) permanecen OPEN. No puede afirmarse aislamiento, invariancia ni exclusión IV. Si no se demuestra, el ITT se interpreta como efecto de política/paquete.
+
+### 10.3. AB-M07 — mecanismo y distribución conjunta D2
+
+DEC-C10-067 fija las probabilidades de programación por política como reglas de diseño: P(W_programmed=1|Z=0)=0 y P(W_programmed=1|Z=1)=1. No son probabilidades de intento efectivo ni de recepción/instalación. Cumplimiento/recepción, intento efectivo, provisión de fondo/crossover, fallos parciales, retries y rollback siguen OPEN. La distribución conjunta condicional de C_install/C_integrity/C_compat/C_oper debe sumar 1 en 16 celdas por estrato relevante (o parametrización conjunta validada); no hay probabilidades numéricas aprobadas. s=.80 y .20/.80 no son valores confirmatorios.
+
+### 10.4. AB-M08/M09 — población, soporte y unidades
+
+P*_τ2 y P*_F son poblaciones distintas; la segunda exige además ausencia respaldada de ruta funcional alternativa. La elegibilidad se fija con C0 pre-Z y no puede depender de variables postratamiento. Sin embargo, el algoritmo final, los valores/estratos de q_X*, la distribución objetivo, pesos, common support y positividad no están materializados. La unidad lógica de servicio no resuelve por sí sola unidad de asignación, análisis e interferencia. La topología de host/adaptador/permisos/recursos compartidos no está inventariada; no se asume independencia individual.
+
+### 10.5. AB-M10/M11 — oráculo, escenarios y proceso de observación
+
+La separación Generator/Analyzer/Evaluator, truth/observed, R0–R3 y las reglas 1/0/? están definidas documentalmente. El universo de rutas y el grafo candidato no son exhaustivos; la cobertura actual de nodos/aristas/predicados es NONE. No existen truth tables materiales completas ni un modelo de observación/missingness calibrado. La validación del oráculo, cegamiento operativo, adjudicación y firewall del Analyzer no se han ejecutado ni demostrado.
+
+### 10.6. Disposición consolidada
+
+| Input | Estado documental | Estado material/evidencia |
+|---|---|---|
+| H* temporal (ancla, valor, unidad) | Regla común definida | OPEN |
+| H_path / profundidad | Candidato H=3 en Path Matrix | No confundir con H_time; reconciliación OPEN |
+| MD-C1/MD-C4 | Criterios documentados | OPEN / NONE |
+| Programación D2 | Regla determinista de política aceptada | DESIGN RESOLVED |
+| W_attempt/receipt/background/crossover | Variables separadas | OPEN |
+| C_dep joint distribution | Forma contractual definida | OPEN / sin probabilidades |
+| P*_τ2/P*_F y elegibilidad | Poblaciones diferenciadas | Algoritmo/valores OPEN |
+| q_X*, soporte y positividad | Régimen común basal exigido | OPEN |
+| Unidad/interferencia | Distinciones definidas | Topología/exposure OPEN |
+| Oracle/firewall/adjudication | Arquitectura definida | Validación/evidencia OPEN |
+| R0–R3 | Familias descritas | Truth tables y observación OPEN |
+
+No se asignan valores numéricos ni se promueven candidatos a parámetros aceptados.
+
+## 11. Propuesta integrada de resolución AB-01…AB-09 — paquete para aceptación, no aprobado (2026-11-10)
+
+### 11.1. Regla de decisión
+
+Esta propuesta convierte el registro de inputs §§2–4 y las reconciliaciones §§8–10 en una ruta única de cierre. No crea DEC ni cambia DEC-C10-093/094. Separa:
+- **decisiones de diseño sintético** que pueden aceptarse sin evidencia de un sistema real;
+- **reconciliaciones técnicas documentales** que deben resolverse contra contratos ya aceptados;
+- **inputs numéricos o topológicos** que necesitan justificación explícita;
+- **evidencia material** que no puede sustituirse por una estipulación del DGP cuando el gate exige demostrar no-afectación o cobertura observada.
+
+La meta de AB es una instancia sintética internamente completa y trazable, no simular que se ha inspeccionado una plataforma real. Una estipulación de verdad del DGP no se reportará como evidencia observada ni como prueba de invariancia empírica.
+
+### 11.2. Disposición recomendada por gate
+
+| Gate | Propuesta de resolución integrada | Qué se puede cerrar por diseño | Qué no se debe fingir cerrado |
+|---|---|---|---|
+| AB-01 | Mantener exactamente dos operand bindings semánticos. Resolver su representación una sola vez contra la gramática/serialización aceptada: AST tipado si la gramática define el binding como nodo del árbol; REF tipado si el contrato define objetos de referencia independientes. No duplicar. | Cardinalidad y significado de los dos operandos ya DESIGN RESOLVED. | Encoding físico, schema y roster IAM real; no elegir REF/AST por preferencia estética. |
+| AB-02 | Conservar BOOL/ENUM y mapping ya resueltos. Definir schema y serialización específicos del payload de configuración solo después de cerrar el modelo físico; fijar canonicalización con alcance explícito y pruebas semánticas. | Mapping semántico ENABLED/PROFILE. | No extender JCS UDG-01 a C_src/C_dst/S1/S2 por analogía; no introducir DEFAULT en la instancia confirmatoria. |
+| AB-03 | Definir cuatro cards sintéticas versionadas dentro del DGP, con IDs de instancia propios y contratos de entrada/salida, pre/postcondiciones y eventos. Describir F1 como conversión, F2 como aplicación/verificación, A1 como exportación y A2 como importación/aplicación; no elegir producto, formato o mecanismo real. | Roles, topología F1→F2 y A1→A2, F* común y obligaciones FP. | No declarar identidad real, independencia A1/A2, compatibilidad o ejecución. La no-afectación en R0 se estipula en truth DGP y se contrasta con R2 adversarial; no se llama evidencia empírica. |
+| AB-04 | Reutilizar el crosswalk A_f*, la matriz temporal y la lógica 1/0/?. Añadir solo los field_id sintéticos necesarios para instanciar cada predicado y enlazarlos con U/R/C/X/E_T, snapshot, etapa y ruta. | Definiciones y regla de adjudicación trivalente. | No poblar como hechos reales B-M01…15; no asignar 0 ante cobertura ausente; no duplicar matrices. |
+| AB-05 | Mantener F* no compensatorio y común. Separar H_path (profundidad de ruta candidata) de H_time (ventana temporal de evaluación). Proponer el valor/unidad de H_time solo después de fijar el horizonte de Outcome/Value en C. | Estructura C0/G/F* y distinción H_path/H_time. | No usar H=3 como duración; no inventar ancla/valor/unidad de H_time; oráculo aún no validado. |
+| AB-06 | Especificar en el DGP el actor lógico, artefacto y versión como entidades sintéticas explícitas; conservar separados Z, B, W_programmed, W_attempt, receipt, S_install, componentes C_dep, retry y rollback. | Política D2 y secuencia de eventos conceptuales. | No atribuir recepción/éxito a programación; no declarar ausencia real de provisión de fondo ni completar hashes reales. |
+| AB-07 | Parametrizar C_dep* como distribución conjunta de los cuatro componentes, condicional a brazo e historia/estrato; reportar márgenes, dependencias y sensibilidad. La distribución debe normalizarse por celda/estrato. | Forma del objeto conjunto y restricciones de probabilidad. | No fijar s=.80 ni .20/.80 como confirmatorios; valores solo tras justificación/sensibilidad y aceptación. |
+| AB-08 | Definir elegibilidad exclusivamente desde C0 pre-Z. Mantener P*_τ2 y P*_F separados. Construir q_X* como distribución objetivo explícita y publicar soporte/positividad por estrato; no extrapolar fuera del soporte. | Regla temporal de elegibilidad y distinción de poblaciones. | No elegir población, pesos, estratos ni distribución objetivo por conveniencia; no confundir unidad lógica G con unidad de asignación/análisis. |
+| AB-09 | Reutilizar R0–R3 y la segregación Generator/Analyzer/Evaluator. Completar truth tables y proceso observado separado: R0 aislado; R1 alternativa basal preservada; R2 vía colateral sobre alternativa/dependencia; R3 fallo/no éxito de provisión. Incluir missingness/medición diferencial sin alterar truth. | Arquitectura de roles, familias y regla de cobertura. | No afirmar universo exhaustivo, independencia del oráculo, cegamiento o firewall probado sin validación. |
+
+### 11.3. Recomendación de diseño para el DGP base y los escenarios adversariales
+
+Se recomienda que el DGP sintético contenga dos capas claramente etiquetadas:
+
+1. **Base aislada R0:** D2 programa el intento según DEC-C10-067; los factores no focales requeridos por la decisión se mantienen invariantes por construcción; la única ruta causal pretendida hacia accesibilidad es la provisión técnica focal y sus componentes. Esto permite comprobar recuperación bajo una verdad conocida, pero no demuestra que un sistema real satisfaga exclusión.
+2. **Adversariales R1–R3 y extensiones:** alternativa basal; modificación colateral de A1/A2/dependencias; fallo parcial/crossover/rollback; recursos compartidos/interferencia; información/conocimiento; medición/missingness diferencial. Cada intervención adversarial cambia una familia identificable, sin colapsar el efecto de paquete con el efecto focal.
+
+La ausencia de interferencia solo puede asumirse en R0 como estipulación del DGP; debe existir al menos un escenario adversarial con interferencia/recursos compartidos para comprobar que el Analyzer no declara identificación individual cuando la verdad no la permite.
+
+### 11.4. Decisiones que requieren aceptación expresa del usuario
+
+La documentación permite recomendar, pero no aceptar unilateralmente, estas elecciones de diseño:
+
+- **AB-03-SYN:** utilizar cuatro identidades transformacionales sintéticas versionadas, sin producto ni formato real, para que las cards sean completas como especificación de DGP.
+- **AB-05-H:** reservar H_path para profundidad y H_time para horizonte; dejar H_time pendiente hasta completar Outcome/Value en C.
+- **AB-08-POP:** fijar una población objetivo sintética mediante elegibilidad C0 pre-Z y q_X* explícito, sin seleccionar todavía valores o pesos no justificados.
+- **AB-09-INT:** permitir no interferencia solo como verdad estipulada de R0 y exigir escenarios adversariales con interferencia; no convertirlo en supuesto general.
+- **AB-06/07-PARAM:** autorizar que los parámetros D2 y la distribución conjunta C_dep se propongan como parámetros sintéticos justificables mediante análisis de sensibilidad, sin reutilizar los números históricos como hechos.
+
+Las reconciliaciones REF/AST y schema/canonicalización son tareas técnicas contra contratos existentes, no elecciones científicas libres. La evidencia MD-C1/MD-C4 y la cobertura observada permanecen gates probatorios; no se cierran por esta propuesta.
+
+### 11.5. Secuencia única de cierre y criterios de salida AB
+
+1. Resolver REF/AST y payload schema/canonicalización contra la gramática y contratos vigentes, sin modificar su alcance.
+2. Completar cards sintéticas F1/F2/A1/A2 y el crosswalk field-level usando la instancia aceptada; mantener UNKNOWN donde falten observaciones.
+3. Definir C0, actor/artefacto/versiones sintéticas, H_time pendiente, población/q_X* y unidades; someter las elecciones enumeradas en §11.4 a aceptación.
+4. Definir la distribución conjunta C_dep y escenarios R0–R3 más adversariales, con verdad y observación separadas.
+5. Cerrar oráculo, adjudicación y firewall como especificación verificable, distinguiendo validación propuesta de validación ejecutada.
+6. Actualizar y releer los instrumentos existentes y realizar una reconciliación cruzada única con DEC-C10-093/094 y los contratos AB.
+
+**AB solo pasará a DONE** cuando la instancia/DGP sea autocontenida y versionada, todas las cards y mappings tengan criterios de aceptación, los inputs de población/horizonte/unidad/parámetros estén aceptados o explícitamente limitados, los escenarios y truth tables estén completos, y no quede contradicción temporal/semántica conocida. La ausencia de evidencia real puede permanecer como límite declarado de un experimento sintético, pero nunca se reportará como invariancia observada.
+
+**Estado de esta propuesta:** NOT APPROVED / FOR USER ACCEPTANCE. AB permanece IN_PROGRESS; no hay Design Freeze, implementación, fixtures, validación ejecutada, simulación ni ejecución científica. scientific_execution=false; execution_authorized=false.
+
+## 12. Registro de aceptación expresa del usuario — propuesta integrada AB (2026-11-10)
+
+El usuario acepta expresamente la propuesta integrada de §11 como base de trabajo para continuar la concreción de AB, con la reserva explícita de mantener abiertos los valores numéricos y las decisiones de horizonte temporal que aún no estén justificadas.
+
+**Decisiones aceptadas como reglas de diseño del DGP:**
+- **AB-03-SYN — ACCEPTED:** completar cuatro identidades transformacionales sintéticas versionadas F1/F2/A1/A2, sin seleccionar producto, formato ni mecanismo real y sin declarar implementación.
+- **AB-05-H — ACCEPTED:** separar H_path (profundidad de ruta) de H_time (horizonte temporal). H_time, su ancla, valor y unidad quedan OPEN hasta completar Outcome/Value y justificar la ventana.
+- **AB-08-POP — ACCEPTED WITH BOUNDARY:** elegibilidad definida exclusivamente desde C0 pre-Z; mantener P*_τ2 y P*_F separados; q_X* debe ser explícito y compatible con soporte/positividad. No se aceptan todavía población numérica, pesos, estratos ni distribución objetivo concretos.
+- **AB-09-INT — ACCEPTED WITH BOUNDARY:** ausencia de interferencia solo como verdad estipulada del escenario sintético R0; incorporar escenarios adversariales con interferencia/recursos compartidos. No es supuesto general ni evidencia empírica.
+- **AB-06/07-PARAM — ACCEPTED AS METHOD, NOT VALUES:** se autoriza proponer parámetros sintéticos D2 y distribución conjunta C_dep mediante justificación y análisis de sensibilidad. No se aprueban valores numéricos ni se reutilizan s=.80 o .20/.80 como confirmatorios.
+
+**Reconciliaciones técnicas que siguen siendo tareas, no decisiones científicas:** resolver REF/AST y schema/canonicalización contra la gramática y contratos vigentes; una única representación física por binding. No se extiende JCS UDG-01 al payload de configuración.
+
+Esta aceptación no aprueba el DAG como identificación causal empírica, no satisface MD-C1/MD-C4, no demuestra cobertura, exclusión ni no-afectación real, no cierra AB y no constituye Design Freeze, autorización de implementación o autorización de ejecución.
+
+**Estado actualizado:** AB-03-SYN, AB-05-H (regla de separación), AB-08-POP (regla de elegibilidad/separación), AB-09-INT (regla de escenarios) y AB-06/07-PARAM (método de parametrización) = ACCEPTED DESIGN RULES WITH OPEN MATERIAL INPUTS. AB permanece IN_PROGRESS. H_time, población/q_X* numéricos, soporte, unidad/interferencia real, parámetros, verdad/observación y evidencia material permanecen OPEN. scientific_execution=false; execution_authorized=false.
+
+## 13. AB-M01 — reconciliación semántica de los operand bindings (2026-11-10)
+
+**Resultado documental: AST_TYPED_PARAMETER_BINDINGS — DESIGN RESOLVED; physical serialization OPEN.**
+
+La reconciliación entre el contrato abstracto de instancia §§3.4/6, la gramática mínima §§3/9/11/12, el perfil DEC-C10-054 y la instancia RUL-SVC-ENABLE-PROFILE-01 aceptada por DEC-C10-068 permite resolver la alternativa semántica:
+
+1. Los dos operandos de la regla son referencias tipadas a claves PAR ya declaradas: ENABLED (BOOL) y PROFILE (ENUM).
+2. Su función es enlazar hojas/operand positions del AST de RUL con parámetros de la misma instancia; no representan relaciones constitutivas entre componentes ni referencias a recursos/dependencias del paquete.
+3. Por tanto, **no se crean dos objetos REF de configuración** para esos operandos. Se representan una sola vez como bindings tipados del AST a parameter_key, con tipo esperado y resolución contra el roster PAR.
+4. Se conserva la cardinalidad semántica exactamente dos; un binding no puede duplicarse simultáneamente como REF y como AST operand.
+5. Un REF de configuración solo se incorporará si el inventario revela una relación/dependencia constitutiva independiente, con sus propios extremos, tipo, dirección y cardinalidad; no por el mero hecho de que un AST consulte un parámetro.
+
+La expresión de referencia documentada es OR(NEQ(ENABLED,true),IN(PROFILE,{STANDARD,READ_ONLY})) bajo REQUIRE. El binding debe resolver ENABLED→PAR-SVC-ENABLED/BOOL y PROFILE→PAR-SVC-PROFILE/ENUM; la gramática conserva operadores y dominios finitos. Esta resolución no introduce una sintaxis serializada concreta ni parser.
+
+**Qué queda OPEN en AB-M01/M02:** nombres físicos de campos/nodos, encoding/schema del AST, serialización canónica del AST, namespace/versionado del parameter_key, constraints físicas y validación de integridad. No se extiende JCS UDG-01 a este payload. El contrato físico debe implementar la referencia tipada y verificar destino existente, tipo concordante y cardinalidad exactamente una.
+
+**Criterio de cierre documental AB-M01:** binding AST tipado a PAR; dos operands y solo dos; no REF duplicado; referencia exacta a claves/versiones PAR del snapshot de instancia; UNKNOWN si el binding o destino no se resuelve. Estado: semántica DESIGN RESOLVED; encoding y validación técnica OPEN.
+
+## 14. Resultado integrado AB-03/04 — especificación semántica sintética (2026-11-10)
+
+AB-03 queda especificado a nivel abstracto sintético en la §12 de la propuesta de cards. Las cuatro TID/SID son DGP-locales: F1 conversión focal S0→S2; F2 aplicación/verificación S2→SF; A1 exportación alternativa S0→S1; A2 importación/aplicación/verificación S1→SF. La instancia común reutiliza IDs y versiones aceptados de servicio/CMP/PAR/RUL. No se asignan RID/EID ni mecanismo real.
+
+AB-04 queda especificado como crosswalk de field_id semánticos hacia U*/R*/C*/X*/E_T, con índice unidad×escenario×rama×paso×TID/SID×snapshot×tiempo. Incluye estado de entrada/salida, predicados ID/REL/COND/AUTH/RES/DEP/¬BLOCK, APP separado, mapping, evidencia, cobertura y adjudicación. Truth_DGP y observed_state no se mezclan; se reutiliza PM-01…18 y la regla 1/0/? vigente.
+
+**No cerrados:** schema físico y nombres de columnas; mapping M/M_A concreto; predicados FP atómicos/requiredness, tolerancias, C0, recursos y regla de reserva, C_dep conjunta, H_time, universo exhaustivo de alternativas, truth tables por escenario, MD-C1/MD-C4, evidencia, oráculo/fiabilidad/cegamiento/validación. AB sigue IN_PROGRESS; no fixtures ni ejecución.
+
+
+## 15. AB-01/02 — cierre de reconciliación semántica (2026-11-10)
+
+La reconstrucción histórica identifica trabajo ya aceptado que debe reutilizarse: DEC-C10-054 (AST 4/16/16), DEC-C10-068/069 (instancia y regla), DEC-C10-071/083 (siete stage_key y PAR), DEC-C10-079/080/081 (manifiesto/binding probatorio PAR) y DEC-C10-082 (anclaje CMP↔NODE por snapshot). No se recrean estas decisiones.
+
+Se integra el mapping semántico de CMP/PAR/RUL/MET y la composición de mappings de F/A. Los dos PAR preservan clave/tipo/dominio/estado/valor en F1/A1 y se observan por separado en F2/A2; la regla conserva AST, owner, scope, operand bindings tipados y REQUIRE. PAR se mantiene como propiedad del CMP owner/registro de manifiesto; RUL se representa mediante PREDICATE; CMP por NODE anchor; REF solo por EDGE si se inventaría relación real; MET reutiliza metadatos/evidencia existentes. No se crean entidades ni columnas.
+
+AB-01: binding AST→PAR DESIGN RESOLVED semánticamente; encoding, schema, escaping, canonicalización y constraints OPEN.
+
+AB-02: crosswalk semántico reconciliado con DEC-C10-083 y U_G; mapping_id/version, mappings materiales por etapa, roster REF, snapshots/cobertura y evidencia OPEN. No se afirma REF=0 ni independencia técnica de A por igualdad semántica.
+
+No hay IAM sellado, hash, parser, fixtures, implementación, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 9. AB-06/07 — reconciliación integrada de secuencia D2 y dependencias de C_dep (2026-11-10)
+
+**Estado:** reconciliación documental asistida sobre DEC-C10-066/067/094, el contrato de provisión B y el DAG/crosswalk temporal del maestro. No añade una decisión, no parametriza el DGP y no autoriza implementación o ejecución.
+
+### 9.1 Secuencia causal y de eventos que ya está definida
+
+| Orden | Evento/objeto | Dependencia o significado confirmado | Lo que NO permite inferir |
+|---|---|---|---|
+| t0 | Z: asignación de política D2 | Determina qué política B_g^D2 queda asignada. D2 es el candidato primario; D1 permanece secundario. | Z=1 no equivale a recepción, intento ni instalación; Z=0 no demuestra ausencia de provisión de fondo. |
+| t1 | B_g^D2: política material | Control: no programa provisión focal. Tratamiento: programa provisión técnica focal de artefacto identificado/versionado. B provisiona; no ejecuta F1/F2/A1/A2 ni aplica la configuración. | B asignada/programada no demuestra que el actor reciba o inicie el intento, ni que la provisión tenga éxito. |
+| t1 | W_programmed | Registro de que la política programó el intento. Las probabilidades candidatas deterministas de programación por brazo pertenecen al contrato D2, pero no convierten el evento en intento efectivo. | No equivale a W_attempt ni a cumplimiento. |
+| t1 | Recepción / cumplimiento | Deben registrarse separadamente la recepción del artefacto/instrucción y el cumplimiento del protocolo. | No se consideran perfectos ni se derivan de Z o W_programmed. |
+| t1 | W_attempt | Intento efectivamente iniciado, con actor, momento, artefacto y versión. | No implica instalación, integridad, compatibilidad, operabilidad ni accesibilidad. |
+| t2 | S_install | Estado/evento de instalación técnica que debe quedar documentado, con versión/hash y evidencia temporal. | No es sinónimo del compuesto C_dep*, A_f*, D_f* ni éxito de la transformación funcional. |
+| t2 | C_dep* | Predicado técnico compuesto: instalación ∧ integridad ∧ compatibilidad ∧ operabilidad, evaluado con evidencia por componente. | C_dep*=1 no implica A_f*=1: faltan los demás predicados constitutivos (ID, REL, COND, AUTH, RES, DEP y BLOCK). Tampoco implica F1/F2 ejecutadas. |
+| t3 | A_f* y D_f* | A_f* evalúa la accesibilidad focal completa; D_f* es la apertura basal→post y exige inaccesibilidad focal basal. | No se infieren automáticamente de C_dep*, Z, B ni W. |
+| t3 | T_acc*, ΔT_acc* | Resultado estructural de la evaluación completa de accesibilidad y su cambio; la evidencia/cobertura epistémica se registra separadamente en E_T. | No se sustituye por instalación, éxito técnico, ejecución, logs o cambios en observabilidad. |
+
+**Regla temporal:** conservar por separado programación, recepción, intento, instalación y verificación de los cuatro componentes. Reintentos, fallos parciales, rollback, provisión de fondo, crossover y desviaciones se registran como eventos/historia, no se comprimen en un indicador binario de “éxito de B”.
+
+### 9.2 Componentes de C_dep* y dependencias internas
+
+| Componente | Contenido semántico mínimo | Evidencia material aún necesaria |
+|---|---|---|
+| INSTALLATION | El artefacto focal queda instalado en el entorno/unidad previstos y en la versión declarada. | Identidad del artefacto, actor, entorno, instante, estado final, hash/versión y registro de instalación. |
+| INTEGRITY | El artefacto recibido/instalado conserva la integridad exigida respecto de la identidad declarada. | Fuente, firma/hash o mecanismo de integridad aceptado, resultado de verificación y cobertura. |
+| COMPATIBILITY | El artefacto es compatible con el runtime, interfaz y condiciones técnicas declaradas para la unidad. | Versiones y restricciones de entorno/interfaz, matriz de compatibilidad y evidencia de comprobación. |
+| OPERABILITY | El componente instalado puede iniciarse y operar técnicamente en el ámbito previsto, sin confundirlo con ejecutar la transformación funcional F1/F2. | Prueba/registro técnico de inicio y disponibilidad, ventana, errores y criterio de operabilidad predefinido. |
+
+Las descripciones anteriores fijan el alcance semántico mínimo de los cuatro términos; no seleccionan herramientas, pruebas, umbrales, formatos, valores ni protocolos físicos. La aceptación de C_dep* como conjunción no implica que los cuatro componentes sean independientes ni que sus evidencias ya existan.
+
+### 9.3 Distribución conjunta exigida y dependencias no resueltas
+
+Para cada estrato/historia relevante h y brazo z, el DGP debe representar:
+
+P(C_dep*=1 | Z=z, H=h) = P(I=1, G=1, C=1, O=1 | Z=z, H=h),
+
+o una representación conjunta equivalente que preserve las 16 combinaciones posibles de los cuatro indicadores binarios. La distribución debe sumar uno y cada celda estar en [0,1]. Se informarán márgenes y dependencias condicionales; no se factorizará como producto de cuatro probabilidades marginales salvo que una justificación específica y verificable lo permita.
+
+| Dimensión de parametrización | Estado |
+|---|---|
+| Cuatro componentes y regla AND | DESIGN RESOLVED |
+| Unidad de condicionamiento por brazo e historia/estrato | DESIGN RESOLVED; roster concreto de estratos OPEN |
+| 16 celdas conjuntas o equivalente validado | DESIGN RESOLVED |
+| Probabilidades numéricas por celda | MATERIAL INPUT OPEN |
+| Ceros estructurales y restricciones entre componentes | OPEN; no asumir |
+| Dependencia entre recepción, intento, instalación y componentes | OPEN; requiere mecanismo/historia DGP explícitos |
+| Heterogeneidad por historia, brazo, unidad o entorno | OPEN; depende de AB-08 y del soporte |
+| Calibración empírica o estipulación sintética explícita | OPEN |
+| Rangos/escenarios de sensibilidad y criterio de cobertura | OPEN |
+| Provenance/versionado de parámetros | OPEN |
+
+No se aprueban s=0.80, tasas históricas 0.20/0.80, cumplimiento perfecto, una única oportunidad, independencia de componentes ni probabilidades marginales como sustituto de la distribución conjunta. Los valores candidatos de programación D2 no rellenan los parámetros de recepción, intento o C_dep*.
+
+### 9.4 Rutas colaterales y condiciones que deben permanecer comunes
+
+El diseño aislado exige mantener comunes C_auth,base=1, elegibilidad, recursos no focales, capacidad, información técnica basal, configuración fuente/destino, F*, oráculo y condiciones constitutivas no focales. Cualquier cambio diferencial atribuible a B debe permanecer visible como vía colateral/cointervención, incluyendo:
+
+- ACL/credenciales o autorización funcional; no confundirlas con permisos técnicos mínimos del adaptador;
+- capacidad, recursos compartidos/reservados/consumidos y contención;
+- dependencias transitivas, host, runtime, librerías, endpoint, red y seguridad;
+- datos, configuración fuente/destino, mapping, aplicación o alteración de F*;
+- estado de A1/A2, sus dependencias y su disponibilidad/equivalencia funcional;
+- coste, riesgo, latencia, calidad, rendimiento o disponibilidad;
+- información, formación, conocimiento y selección del agente;
+- logs, observabilidad, cobertura, medición y adjudicación;
+- rollback, residuos, carryover, crossover e interferencia entre unidades.
+
+B-M01…15 y PROV-01…12 son superficies/contratos de inspección, no evidencia de invariancia. ARCH-B1 sigue siendo candidata para evaluar; MD-C1 y MD-C4 siguen abiertos. Si una vía colateral cambia, el ITT de Z conserva interpretación como efecto de política/paquete; no se transforma automáticamente en efecto puro de accesibilidad ni valida LATE_f.
+
+### 9.5 Dictamen de cierre AB-06/07
+
+- **Resuelto a nivel de diseño:** política D2 y sus roles; secuencia diferenciada de eventos; definición conjuntiva de C_dep*; exigencia de distribución conjunta condicional; separación C_dep*→A_f*→D_f*; catálogo de vías colaterales y regla de no inferencia.
+- **Abierto como input material/evidencia:** actor, artefacto/hash, recepción, tiempos/ventanas, cumplimiento, reintentos, fallos parciales, rollback, provisión de fondo, evidencia por componente, estratos/historias, probabilidades conjuntas, calibración/sensibilidad, aislamiento de B y no-afectación A1/A2.
+- **Handoff a C:** secuencia/eventos versionados, distribución conjunta con su incertidumbre, historial por brazo, soporte/estratos y clasificación de vías colaterales. Todo OPEN se transfiere como OPEN/UNKNOWN; C no lo rellena por defecto.
+
+**Conclusión:** AB-06/07 quedan reconciliados en su arquitectura documental, pero no cerrados materialmente. AB continúa IN_PROGRESS; no hay Design Freeze, implementación, simulación ni ejecución autorizada.
+
+
+## 10. AB-06/07 — estructura formal de parametrización D2 y C_dep* (2026-11-10)
+
+**Naturaleza:** especificación matemática simbólica. No asigna probabilidades, valores, ceros estructurales, estratos ni parámetros físicos. No autoriza fixtures ni ejecución.
+
+### 10.1 Secuencia D2: variables y mecanismo upstream
+
+Para unidad i, brazo z e historia preasignación h0: Z=asignación; P=programación; R=recepción; Q=cumplimiento cuando sea distinguible; W=intento efectivo; S=instalación técnica; N=reintentos; K=fallos parciales, rollback, provisión de fondo, crossover y desviaciones.
+
+La ley se representa mediante el kernel secuencial:
+
+p(P,R,Q,W,S,N,K | Z=z,h0) =
+p(P|z,h0) p(R|P,z,h0) p(Q|R,P,z,h0)
+p(W|Q,R,P,z,h0) p(S|W,Q,R,P,z,h0)
+p(N,K|S,W,Q,R,P,z,h0).
+
+Es una factorización por regla de la cadena, no una hipótesis de independencia. Si Q no es un evento separable en el protocolo final, se documentará su absorción en R o W sin duplicarlo. La programación D2 no fija recepción, cumplimiento, intento ni instalación. Se permiten conceptualmente fallos, reintentos y provisión de fondo, sujetos a mecanismo y evidencia explícitos.
+
+### 10.2 Vector C_dep* y orden canónico
+
+Cuatro indicadores binarios para la misma unidad, snapshot, artefacto y ventana: I=INSTALLATION; G=INTEGRITY; C=COMPATIBILITY; O=OPERABILITY. Orden canónico: (I,G,C,O). En verdad DGP, 1=satisfecho y 0=no satisfecho; en observación se conserva además ?. C_dep*=I∧G∧C∧O. Solo 1111 da C_dep*=1; un 0 decisivo da 0; si no hay 0 decisivo y algún componente no es adjudicable, el compuesto es ?.
+
+### 10.3 Roster de 16 celdas
+
+Para cada combinación de brazo z e historia/estrato h, θ_{igco|z,h}=Pr(I=i,G=g,C=c,O=o | Z=z,H=h), con i,g,c,o∈{0,1}.
+
+| Código | I | G | C | O | Interpretación |
+|---|---:|---:|---:|---:|---|
+| 0000 | 0 | 0 | 0 | 0 | Ninguno |
+| 0001 | 0 | 0 | 0 | 1 | Solo operabilidad |
+| 0010 | 0 | 0 | 1 | 0 | Solo compatibilidad |
+| 0011 | 0 | 0 | 1 | 1 | Compatibilidad y operabilidad |
+| 0100 | 0 | 1 | 0 | 0 | Solo integridad |
+| 0101 | 0 | 1 | 0 | 1 | Integridad y operabilidad |
+| 0110 | 0 | 1 | 1 | 0 | Integridad y compatibilidad |
+| 0111 | 0 | 1 | 1 | 1 | Todo salvo instalación |
+| 1000 | 1 | 0 | 0 | 0 | Solo instalación |
+| 1001 | 1 | 0 | 0 | 1 | Instalación y operabilidad |
+| 1010 | 1 | 0 | 1 | 0 | Instalación y compatibilidad |
+| 1011 | 1 | 0 | 1 | 1 | Todo salvo integridad |
+| 1100 | 1 | 1 | 0 | 0 | Instalación e integridad |
+| 1101 | 1 | 1 | 0 | 1 | Todo salvo compatibilidad |
+| 1110 | 1 | 1 | 1 | 0 | Todo salvo operabilidad |
+| 1111 | 1 | 1 | 1 | 1 | C_dep*=1 |
+
+Restricciones por cada z,h:
+1. θ_{igco|z,h}≥0.
+2. Σ_{i,g,c,o} θ_{igco|z,h}=1.
+3. Pr(C_dep*=1|z,h)=θ_{1111|z,h}.
+4. Pr(I=1|z,h)=Σ_{g,c,o}θ_{1gco|z,h}; los márgenes de G,C,O se obtienen análogamente.
+5. Intersecciones y dependencias se calculan sumando las celdas correspondientes; no se sustituyen por productos de márgenes.
+6. Una celda solo puede fijarse en cero con restricción constitutiva/material o estipulación sintética explícita, versionada y justificada. Falta de evidencia no crea cero estructural.
+7. Combinaciones fuera de soporte se marcan como tales; no se extrapolan silenciosamente.
+
+### 10.4 Condicionamiento y enlace upstream
+
+H debe distinguir la historia relevante de programación, recepción, cumplimiento, intento, instalación, reintentos, fallos, rollback y provisión de fondo, además de C0 y modificadores pre-Z aceptados en AB-08. El roster operativo sigue OPEN y no puede redefinir elegibilidad post-Z.
+
+La ley completa preservará la relación entre (P,R,Q,W,S,N,K) y (I,G,C,O); no se presume independencia entre intento/instalación y C_dep*. El evento S_install y el predicado I adjudicado no se igualan automáticamente: I puede depender de identidad, evidencia y ventana.
+
+### 10.5 Familias de sensibilidad sin valores
+
+- S0 referencia sintética: distribución conjunta explícita y versionada, aún sin baseline numérico aprobado.
+- S1 dependencia positiva: componentes que tienden a satisfacerse conjuntamente, sin imponer independencia.
+- S2 dependencia negativa/compensatoria: combinaciones mixtas y desacoplamiento.
+- S3 cuello de botella: fallos concentrados en un componente necesario.
+- S4 heterogeneidad: θ varía por brazo, historia, entorno o estrato dentro del soporte.
+- S5 fallos de provisión: recepción/intento ausentes, tardíos, parciales o repetidos; rollback/no instalación.
+- S6 provisión de fondo en control: intentos o instalaciones no focales registrados.
+- S7 vías colaterales: cambios en recursos, permisos, dependencias, información, A1/A2, costes o medición.
+- S8 evidencia incompleta: estados observados ?, cobertura diferencial y errores de medición/adjudicación.
+- S9 interferencia/carryover: host, recursos, estado compartido, rollback o residuos temporales.
+
+Cada escenario declarará truth DGP, parámetros modificados, invariantes, mecanismo afectado, observables y criterio de evaluación/falsificación. Las familias no presuponen identificación.
+
+### 10.6 Inputs y gates
+
+| Input | Estructura fijada | Material OPEN |
+|---|---|---|
+| P,R,Q,W,S,N,K | Kernel secuencial | Mecanismo, protocolo, probabilidades y evidencia |
+| θ conjunta C_dep* | 16 celdas por z,h; simplex | Valores, soporte, estratos, restricciones y provenance |
+| Ceros estructurales | Solo con justificación | Inventario de imposibilidades/estipulaciones |
+| Sensibilidad | Familias S0–S9 | Rangos, amplitudes y criterio de suficiencia |
+| Medición | Truth/observed y 1/0/? separados | Missingness, cobertura, oracle y adjudicación |
+| Interferencia | No asumir independencia entre unidades | Cluster y mapa de exposición AB-08 |
+| Vías colaterales | Registro obligatorio | Evidencia MD-C1/MD-C4 y no-afectación A1/A2 |
+
+### 10.7 Dictamen
+
+**Resuelto:** notación, orden de bits, 16 celdas, restricciones simplex, márgenes, kernel upstream y familias mínimas de sensibilidad.
+
+**OPEN:** ley upstream y valores θ; definición operativa de H/estratos; ceros estructurales; soporte; dependencia; amplitudes de sensibilidad; calibración; medición/adjudicación; interferencia y aislamiento material de B.
+
+No se declara parametrización numérica completa ni cierre AB-06/07. No se crean datos, fixtures ni simulaciones. scientific_execution=false; execution_authorized=false.
