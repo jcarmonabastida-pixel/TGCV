@@ -263,3 +263,16 @@ Value se mantiene vectorial durante identificación y separado de Outcome. Las d
 La evaluación sintética debe comprobar tanto recuperación cuando truth identifica el estimando como abstención correcta cuando no lo identifica, con truth oculta al Analyzer y Evaluator separado. Esto valida el método dentro del DGP, no la afirmación empírica general ΔT_acc→Value.
 
 Estado: paquete C propuesto/documentado; no aprobado, no congelado, no implementable. No se modifica C10-D1 ni TGCV Core; sin simulación o ejecución.
+
+
+## 31. DAG causal Opción A bajo D2 integrado con MED-02c (2026-11-10)
+
+El DAG del maestro §233 especializa el DAG histórico de §6 para la arquitectura y decisiones vigentes. La política primaria candidata D2 queda resuelta por DEC-C10-066/067: Z asigna B_g0^D2/B_g1^D2; B_g0 no programa intento focal y B_g1 programa provisión técnica focal. La asignación no garantiza intento efectivo, instalación, C_dep*, accesibilidad ni ejecución.
+
+La vía focal es Z→B→W_programmed→W_attempt→S_install→componentes técnicos→C_dep*→predicados constitutivos/snapshot T_acc→ΔT_acc*→Reach/Π_H→K/consideración/selección→ejecución→Outcome→Value. A_f,1* es predicado/proyección focal dentro de T_acc; D_f* es indicador derivado. No introducirlos como mediadores adicionales en serie con ΔT_acc*.
+
+El roster se aplica por función semántica: U* identidades de transformación; R* relaciones/interfaces/dependencias; C* reglas/predicados/permisos/recursos/condiciones; X* estado contextual efectivo constitutivo; E_T evidencia/cobertura/provenance/adjudicación. ΔX* no es una coordenada analítica adicional; sus consecuencias se reflejan sin doble conteo en los cambios pertinentes de U/R/C. E_T no altera truth.
+
+Vías colaterales explícitas: cambios en recursos/capacidad, permisos/seguridad, dependencias compartidas y ruta A1/A2, coste/latencia/calidad, información/conocimiento/incentivos, selección, observación/missingness, rollback y spillovers. El DAG no afirma que estén presentes o ausentes: su estado se decide con el manifiesto y evidencia por unidad/versión. Si no pueden excluirse o identificarse, el ITT es efecto de política/paquete, no efecto puro de accesibilidad.
+
+La pregunta θ_A(q) permanece rectora en C10-D1; D2 no equivale automáticamente a g1/g0. LATE_f e ITT_Z(D2) permanecen estimandos distintos. La mediación secundaria requiere intervención conjunta factible sobre la distribución de ΔT_acc* y tratamiento de confusores postratamiento inducidos por B; no se obtiene por restas. No se ha cerrado población, q*, Value, soporte, unidad/interferencia, inventario real, tolerancias ni identificación. Estado DRAFT; no autoriza ejecución.
