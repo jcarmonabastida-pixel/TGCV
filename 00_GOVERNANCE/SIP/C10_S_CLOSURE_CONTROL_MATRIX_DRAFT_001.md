@@ -2701,3 +2701,20 @@ Regla provisional: usar nombres de eventos y precedencia, no índices numéricos
 | AB-09 oracle/R0–R3 | DESIGN RESOLVED / EVIDENCE OPEN | Truth tables, observación, cegamiento, adjudicación y firewall no validados |
 
 Referencia: ledger AB §10. No usar s=.80 ni .20/.80; no asignar H=3 como horizonte temporal.
+
+## 134. Propuesta integrada de resolución AB para aceptación (2026-11-10)
+
+| Bloque | Recomendación | Estado |
+|---|---|---|
+| REF/AST y payload | Reconciliar contra gramática/schema; una representación por binding; no extrapolar JCS UDG-01 | TECHNICAL OPEN |
+| Cards F1/F2/A1/A2 | Completar como identidades sintéticas versionadas, sin producto/mecanismo real | USER ACCEPTANCE REQUIRED |
+| Field roster A_f* | Reutilizar crosswalk y matriz; instanciar solo field_id sintéticos y 1/0/? | DESIGN PARTIAL / MATERIAL OPEN |
+| H | Separar H_path y H_time; H_time tras Outcome/Value | USER ACCEPTANCE REQUIRED |
+| D2 eventos | Especificar actor/artefacto/versiones sintéticas; separar programación, intento, receipt, instalación y C_dep | DESIGN PARTIAL |
+| C_dep | Distribución conjunta por brazo/estrato y sensibilidad justificada; no usar .80 ni .20/.80 heredados | USER ACCEPTANCE REQUIRED |
+| Población/q_X* | Elegibilidad C0 pre-Z, P*_τ2≠P*_F, soporte explícito | USER ACCEPTANCE REQUIRED |
+| Interferencia | No interferencia solo como verdad estipulada de R0; adversarial compartido obligatorio | USER ACCEPTANCE REQUIRED |
+| Oracle/R0–R3 | Reutilizar arquitectura y completar truth/observación, adjudicación y firewall | DESIGN PARTIAL / VALIDATION OPEN |
+| MD-C1/MD-C4 | Mantener como evidencia probatoria abierta | OPEN / NONE |
+
+La propuesta completa y sus límites constan en ledger AB §11. No constituye aceptación del usuario, Design Freeze ni autorización de implementación/ejecución.
