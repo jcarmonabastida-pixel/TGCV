@@ -2167,3 +2167,13 @@ La revisión de DEC-C10-054/068/069/074/076/077/078/093/094, el contrato abstrac
 - AB-02: BOOL/ENUM y mapping semántico aceptados; namespaces, schema/payload físico, serialización y canonicalización de C_src/C_dst/M OPEN. JCS solo cubre envelope UDG-01; no se extrapola. DEFAULT no forma parte del baseline confirmatorio ENABLED/PROFILE.
 
 No se cambia ninguna decisión aceptada ni se declara cierre material. Véase ledger AB §8. La siguiente pasada documental puede abordar AB-M03/M04; los datos/valores de H*, D2, q_X* y topología no se rellenan por inferencia.
+
+## 16.114 — Reconciliación AB-M03/M04 y AB-TIME-01 (2026-11-10)
+
+Las cards existentes no deben recrearse: F1/τ2 tiene una función candidata de conversión; F2 es aplicación/verificación; A1 exportación; A2 importación/aplicación, con descomposición conceptual posterior. Sin embargo, F2/A1/A2 no tienen mecanismo material definido y ninguna de las cuatro tiene TID/SID/RID completos. DEC-C10-090/091/092 no prueban implementación ni identidad transformacional.
+
+El crosswalk A_f* y la regla trivalente resuelven parte de la semántica AB-04, pero B-M01…15 no están pobladas y U_G no contiene snapshots C10-S reales. La captura por campo, cobertura y adjudicación sigue OPEN/NONE.
+
+Se detecta discrepancia de índices: DGP temporal usa baseline t−1, Z t0, política t1; Path Predicate Matrix usa baseline t0 y asignación/oferta t1. Se conserva el orden por nombre de evento, pero no se equiparan índices hasta reconciliación explícita.
+
+Véase ledger AB §§9.1–9.4. No se inventan identidades, mecanismos, estados ni timestamps.
