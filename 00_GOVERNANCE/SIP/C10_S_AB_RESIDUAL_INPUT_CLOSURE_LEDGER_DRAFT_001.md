@@ -135,3 +135,54 @@ Esta pasada ha contrastado el catálogo atómico, contrato abstracto de instanci
 | AB-02: DEFAULT en instancia confirmatoria | NOT_IN_BASELINE; no introducir sin decisión |
 
 No se ha creado un nuevo Decision Record ni se ha alterado el alcance de DEC-C10-074/076/077/078. No se han generado registros, snapshots, filas IAM, hashes ni observaciones.
+
+## 9. Resultado de la reconciliación documental AB-M03/M04 y hallazgo temporal (2026-11-10)
+
+### 9.1. AB-M03 — las cuatro cards no son cuatro transformaciones ya especificadas
+
+Se contrastaron la reconciliación histórica de transformation cards, la propuesta Opción A/F*, el crosswalk D2 de A_f*, DEC-C10-090/091/092 y el DAG §233.
+
+- F1/τ2 tiene función candidata más desarrollada: conversión focal S0→S2, habilitada por la dependencia provisionada. Su TID/SID/RID, formato, contrato de conversión, precondiciones, recursos y evidencia no están cerrados.
+- F2 solo tiene posición S2→SF y rol general de aplicación/verificación focal; su función técnica y contrato de aplicación concretos siguen OPEN.
+- A1 solo tiene posición S0→S1 y rol general de exportación alternativa; formato/mecanismo baseline y su contrato siguen OPEN.
+- A2 tiene la descomposición conceptual aceptada por DEC-C10-092 como importador/consumidor, con recepción, parseo, validación, mapping, aplicación, verificación y procedencia separados. Su implementación, formato, parser, mapping, eventos y evidencia siguen OPEN.
+- DEC-C10-090/091/092 refinan descomposición conceptual; no proporcionan IDs transformacionales canónicos ni demuestran existencia/operación material.
+- Las cards no deben rellenarse con un producto, formato, endpoint, versión, comando o TID inventado. Los aliases F1/F2/A1/A2 no se convierten en TID/SID/RID.
+
+**Conclusión AB-M03:** contratos funcionales de ruta y obligaciones de transición están definidos a nivel conceptual, pero no hay cuatro cards materiales completas. AB-03 permanece OPEN en identidad y especificación material de las transformaciones. No se puede declarar A1/A2 no afectadas por B sin MD-C1/MD-C4.
+
+### 9.2. AB-M04 — crosswalk causal y agregación existen; captura por campo no existe
+
+El crosswalk D2 de A_f* ya reconcilia ID/REL/COND/AUTH/RES/DEP/BLOCK y evita duplicidades; la auditoría MEAS-001 y su regla trivalente §§10–11 distinguen truth, observed_state, evidence_status, coverage_status, matching y D_f basal→post. La Path Predicate Temporal Evidence Matrix proporciona la estructura por paso/rama/tiempo.
+
+No obstante:
+- el crosswalk es semántico, no un inventario de campos efectivos;
+- B-M01…15 son superficies de inspección, no observaciones ni variables pobladas;
+- el manifiesto B marca sus superficies como NO INVENTARIADO o evidencia no disponible;
+- la plantilla U_G está vacía y sin snapshots C10-S reales;
+- no hay por unidad/version/snapshot un field_id, valor/diff, fuente, event_id, truth, observed_state, denominador de cobertura y adjudicación que permita cerrar los predicados.
+
+**Conclusión AB-M04:** definición y lógica de adjudicación documental PARTIAL/DESIGN RESOLVED; operacionalización material y evidencia NONE/OPEN. No asignar 1/0 ni afirmar invariancia; conservar ?.
+
+### 9.3. Hallazgo AB-TIME-01 — discrepancia de indexación temporal entre contratos
+
+El contrato temporal DGP §2 utiliza t−1 para baseline pre-Z, t0 para asignación Z, t1 para política/recepción/intento, t2 para instalación/verificación, t3 para snapshot de accesibilidad y t4 para Reach. La Path Predicate Temporal Evidence Matrix §2 utiliza t0 para baseline pre-Z, t1 para asignación/oferta/recepción/intento, t2 para verificación y t3 para snapshot; ambos llevan Reach en t4 y t5–t9 para mecanismos y resultados.
+
+El orden causal sustantivo es compatible, pero los índices t−1/t0/t1 no están armonizados y el contrato de la matriz comprime asignación y política en un único índice. El DAG §233 adopta la convención del DGP temporal, pero esa precedencia aún debe registrarse explícitamente en un crosswalk temporal aceptado.
+
+**Resolución provisional segura:** identificar eventos por nombre y precedencia (BASELINE_PRE_Z → ASSIGNMENT_Z → POLICY/PROVISION → INSTALL_VERIFICATION → ACCESSIBILITY_SNAPSHOT → REACH → KNOWLEDGE → SELECTION → EXECUTION → OUTCOME → VALUE), sin comparar ni reutilizar índices numéricos entre documentos hasta reconciliarlos. No se sobrescriben timestamps ni snapshots históricos.
+
+**Estado:** AB-TIME-01 OPEN; afecta AB-03/04/05/06/08 y el handoff a C. No cambia el orden causal ya definido ni autoriza implementación.
+
+### 9.4. Estado de subgates tras esta pasada
+
+| Subgate | Estado |
+|---|---|
+| AB-03: composición F1→F2/A1→A2 | DESIGN RESOLVED |
+| AB-03: identidad y cards materiales TID/SID/RID | OPEN |
+| AB-04: semántica A_f* y lógica 1/0/? | DESIGN RESOLVED / PARTIAL |
+| AB-04: inventario/captura/evidencia por campo | OPEN / NONE |
+| AB-TIME-01: índices numéricos armonizados | OPEN |
+| AB-M06: aislamiento y no-afectación A1/A2 | OPEN |
+
+No se ha inventado ninguna función transformacional, TID, dato de campo, estado truth, timestamp ni cobertura.
