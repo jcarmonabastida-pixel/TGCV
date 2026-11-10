@@ -11582,3 +11582,94 @@ MED-06 queda **DOCUMENTED / PARTIALLY SPECIFIED**. La estructura de amenazas, ti
 El cierre requiere: MED-03/04/05 compatibles; fichas §224; entradas materiales AB/MAP; selección justificada del método; rangos respaldados por evidencia o por diseño adversarial explícito; demostración de cobertura/anchura de bounds; criterios AN-04 ex ante; y trazabilidad a §225.6–225.9 y P177/P178/P179/P182/P183. No se aprueba identificación, bound concreto, parámetro, rango, estimador, umbral, N o potencia.
 
 Sin Design Freeze, implementación, fixtures, simulación ni ejecución científica. scientific_execution=false; execution_authorized=false.
+
+# 264. C-Value — crosswalk candidato Outcome/Value para Opción A (2026-11-10)
+
+**Precedencia y alcance.** Especializa las fichas de §224 y la jerarquía de §§222–223 para el microdominio ya seleccionado en Opción A: migración de configuración de una instancia lógica de servicio software entre entorno fuente y destino. Reutiliza la frontera P0/P1/P2 y las definiciones de F*, F1/F2, A1/A2, T_acc, ΔT_acc, Reach y trayectoria de §§3–4 y los contratos MAP-05/06/07 (§§259–260). No crea variables de roster, no elige dimensiones confirmatorias, no asigna escalas ni convierte candidatos en decisiones aceptadas.
+
+## 264.1. Regla de separación aplicada al microdominio
+
+Se mantienen tres niveles no intercambiables:
+- **F* / conformidad técnica:** criterio de aceptación funcional de la migración y del estado destino. Es una condición técnica de la instancia, no una dimensión Value ni un sustituto de Outcome.
+- **Outcome O:** estado o consecuencia operativa observable del proceso/servicio en la unidad y ventana declaradas. Puede describir éxito, fallo, interrupción, recuperación o carga observada, sin decidir por sí solo si la consecuencia es valiosa.
+- **Value V_j:** valoración contextual de una consecuencia para un beneficiario/observador identificado y bajo un criterio explícito. Puede ser favorable, desfavorable, nula, heterogénea o no aplicable. No se calcula contando transformaciones accesibles ni se deduce automáticamente de F*, Reach, ejecución o Outcome.
+
+Una misma observación puede ser evidencia para O o para V, pero no convierte ambos constructos en uno. Cada V_j debe declarar qué consecuencia valora y para quién. La migración técnicamente conforme puede no generar Value, generar Value desigual entre beneficiarios o imponer costes/daños compensatorios o no compensatorios.
+
+## 264.2. Crosswalk candidato de Outcome (no selección confirmatoria)
+
+La siguiente tabla identifica familias de resultados operativos que el DGP de Opción A podría necesitar representar. Son **candidatos de diseño**, no indicadores ya elegidos ni campos nuevos del roster.
+
+| Familia O candidata | Constructo observado (sin valoración) | Unidad/tiempo que deberá fijarse | Frontera que debe preservarse |
+|---|---|---|---|
+| O-MIG — estado de migración | transición completada, fallida, parcial, interrumpida o revertida | unidad lógica de servicio/migración; eventos de inicio y estado terminal | no equiparar intento, instalación, F* ni accesibilidad con migración completada |
+| O-CONF — conformidad destino | grado/estado de correspondencia del paquete destino con especificación funcional versionada | paquete/configuración y snapshot de destino; validación posterior a F2/A2 | F* define criterio técnico; el registro O documenta el resultado medido y su evidencia |
+| O-SVC — continuidad del servicio | disponibilidad/interrupción/degradación del servicio durante y después de la transición | servicio/ventana; baseline, intervalo de migración y horizonte post | no inferir continuidad a partir de que la configuración destino sea válida |
+| O-REC — recuperación | rollback, restauración, tiempo/estado hasta recuperar condición operativa | unidad lógica; evento de fallo, inicio de recuperación y estado restaurado | no confundir reversibilidad declarada con recuperación efectivamente observada |
+| O-BUR — carga operativa | tiempo de trabajo, intervención humana, consumo de recursos o incidencias del proceso | unidad de migración y recurso/actor; ventana completa | son medidas físicas/operativas; su valoración económica o humana pertenece a V_j |
+
+Ninguna familia es obligatoria por su nombre. El diseño final podrá dividir, combinar o excluir candidatos si la frontera del constructo y la evidencia lo justifican. No se suman indicadores heterogéneos para fabricar un Outcome global. Los resultados por servicio y por migración se mantienen separados si la unidad o el horizonte difieren.
+
+## 264.3. Crosswalk candidato de Value y beneficiarios posibles
+
+La arquitectura de Opción A todavía no ha adjudicado formalmente beneficiarios ni observadores legítimos. Por ello, se registran **roles candidatos**, que deben confirmarse en el microdominio y no se presumen presentes en toda instancia:
+
+| Rol beneficiario/observador candidato | Consecuencia que podría valorar | Dimensión V_j candidata | Riesgo de agregación indebida |
+|---|---|---|---|
+| Propietario/responsable del servicio | continuidad y cumplimiento de la función del servicio | continuidad/fiabilidad del servicio | confundir cumplimiento técnico del paquete con valor total para el propietario |
+| Equipo operador/plataforma | esfuerzo, coste y carga de operar, migrar, mantener o recuperar | carga/coste operativo | convertir horas o CPU directamente en valor monetario sin regla y perspectiva justificadas |
+| Organización que mantiene la configuración | capacidad de mover, adaptar o revertir configuraciones entre entornos/versiones | portabilidad y flexibilidad futura | confundir disponibilidad de una ruta técnica actual con valor futuro demostrado |
+| Usuarios/consumidores del servicio, si existen en la instancia | continuidad y calidad de la prestación durante/después de la migración | continuidad/calidad percibida del servicio | inferir percepción/impacto del usuario desde telemetría técnica sin instrumento válido |
+| Responsable de riesgo/seguridad/compliance, si el contexto lo requiere | exposición, control, cumplimiento y consecuencias de incidentes | riesgo residual/seguridad y cumplimiento | tratar el mero cumplimiento de F* como valoración completa del riesgo o compensar una violación crítica |
+
+Las dimensiones anteriores son un **espacio de candidatos para investigar**, no la lista de V_j confirmatorios. No se presume que sean independientes, exhaustivas, compensables ni igualmente legítimas. Seguridad/compliance puede funcionar como restricción no compensatoria en vez de dimensión agregable; esa clasificación depende del criterio normativo y del beneficiario. Si hay varios beneficiarios legítimos, se mantienen perfiles separados o se justifica explícitamente una regla de representación; no se promedian de forma automática.
+
+## 264.4. Matriz de separación O → V y rutas causales admisibles
+
+El crosswalk no fija que cada Outcome sea mediador o que cada Value sea consecuencia exclusiva de accesibilidad. El DAG material de MED-03 debe establecer las rutas, por dimensión y horizonte. Como hipótesis de trabajo para diseñar el DGP:
+
+- O-MIG/O-CONF pueden describir el resultado técnico de la transición; no son por definición Value.
+- O-SVC puede relacionarse con V_continuidad, pero la medida operativa de disponibilidad y la valoración de continuidad por cada beneficiario son registros distintos.
+- O-REC puede relacionarse con carga/coste operativo y riesgo percibido; rollback disponible y recuperación lograda son distintos.
+- O-BUR puede alimentar una valoración de coste/esfuerzo desde la perspectiva del operador u organización, pero requiere regla de valoración y no se identifica con Value.
+- Portabilidad/flexibilidad futura puede no observarse en una única migración exitosa; necesita un constructo y horizonte propios, escenarios de uso o evidencia adicional. No se infiere de que A1/A2 estén disponibles.
+- Seguridad/compliance exige reglas y adjudicación propias; un PASS técnico no prueba ausencia de riesgo residual.
+
+Para cada V_j, MED-03 debe distinguir causas de O, causas directas de V_j, confusores M–V_j, rutas B/L colaterales y posibles interacciones. El Analyzer no puede usar el nombre de la dimensión o su asociación con M como prueba de mecanismo.
+
+## 264.5. Reglas contra circularidad y contaminación del estimando
+
+1. Ninguna V_j se define como función de ΔT_acc*, número de transformaciones, A_f*, D_f*, Reach, longitud de trayectoria o éxito de ejecución.
+2. Ningún O_i se define como «valor creado», «accesibilidad conseguida» o «transformación disponible». Puede medir un estado operativo posterior, con regla independiente.
+3. F* y los predicados de accesibilidad pueden explicar o condicionar resultados, pero no forman parte de la fórmula de Value.
+4. La medición de O/V no puede usar la truth oculta del DGP. El Evaluator conserva truth separada.
+5. La adjudicación de Value debe estar cegada a Z y A_f* cuando sea viable; cuando no lo sea, registrar la limitación y someterla a sensibilidad conforme a §263.
+6. La evaluación de O y V se realiza por unidad, horizonte y versión comparables; no se transfiere un dictamen entre O_i y V_j.
+7. No se construye un índice escalar global ni ponderaciones antes de fijar beneficiarios, trade-offs, escalas y justificación. Se mantiene V como vector de dimensiones.
+8. El valor económico de tiempo/recursos solo puede derivarse con una perspectiva, tarifa/coste de oportunidad y regla explícitas; no se imputa por defecto.
+
+## 264.6. Inputs que faltan para convertir candidatos en fichas §224
+
+Para cada O_i/V_j finalmente seleccionado se requieren los campos ya previstos en §224, sin inventar otro esquema: definición y frontera; unidad y población; beneficiario/observador; fuente e instrumento; fórmula y unidad/escala; dirección/rango/anclas; baseline y comparabilidad; evento-ancla, ventana y horizonte; validez/error; cobertura/missingness/censura; adjudicación/cegamiento; trade-offs; versión y provenance.
+
+En Opción A siguen sin estar materialmente establecidos:
+- beneficiarios/observadores efectivos y legitimidad de su perspectiva;
+- objetivo F* completo y su relación con Outcome, sin circularidad;
+- indicadores y fuentes observables de continuidad, recuperación y carga;
+- ventana/H y baseline comparables entre entornos fuente/destino;
+- escala/rango y anclas de cada V_j;
+- instrumentos para usuarios/operadores, si tales actores forman parte de la instancia;
+- criterio para seguridad/compliance como dimensión o restricción;
+- regla de pluralidad, conflictos y no compensabilidad;
+- errores, missingness, desacuerdo, cegamiento y adjudicación;
+- multiplicidad y selección confirmatoria ex ante.
+
+La lista de roles/dimensiones candidatas no prueba que existan los actores, fuentes o instrumentos. Tampoco se fija ahora el número final de Outcomes o dimensiones Value.
+
+## 264.7. Dependencias y dictamen
+
+Este crosswalk alimenta AB-05/F*, AB-09, MED-02/03/04/05/06, MAP-05/06/07 y AN-04. En particular: MED-03 necesita rutas por V_j; MED-04 necesita V_j y horizonte para concretar θ_A(q); MED-05/06 necesitan escalas, soporte y errores; AB-09 necesita verdad separada y escenarios que distingan efecto focal, paquete y ausencia de Value.
+
+**Dictamen:** C-Value queda **CANDIDATE CROSSWALK DOCUMENTED / MATERIAL OPEN**. Se ha especializado §224 a Opción A sin seleccionar indicadores/dimensiones confirmatorias, beneficiarios, escalas, horizonte, regla de trade-off ni estimador. No se ha demostrado que ΔT_acc* cause Value. No se aprueba índice, ponderación, parámetro, umbral, N, potencia, identificación ni Design Freeze.
+
+Sin fixtures, implementación, simulación ni ejecución científica. scientific_execution=false; execution_authorized=false.
