@@ -251,3 +251,12 @@ Antes de aceptar este contrato:
 10. revisión independiente y decisión formal.
 
 No se cierra AUD-004 ni XSYNC-138-03/06. El artefacto es una propuesta de contrato, no un estándar ontológico TGCV. No hay freeze, implementación, simulación ni ejecución.
+
+
+## 14. Crosswalk semántico de estado/contexto X*
+
+El matching de snapshots debe distinguir el valor/contexto efectivo (X*) de las reglas/predicados (C*) que determinan la realizabilidad. Por ejemplo, la versión efectiva de un entorno puede ser X* mientras que la regla de compatibilidad con una versión objetivo pertenece a C*; una dependencia tipada es R* y la operación migratoria es U*. Estos ejemplos no sustituyen la ficha real del microdominio.
+
+El cambio de X* debe registrarse con tiempo de vigencia, unidad, frontera, versión y event_id. No se interpreta automáticamente como ADD/REMOVE de transformación. Solo se registra su efecto sobre A⁺/A⁻/A^reconf/ΔR/ΔC cuando la regla de accesibilidad y el matching de snapshots lo sostienen. Un cambio de X* sin efecto estructural en accesibilidad queda como contexto; un cambio de evidencia pertenece a E_T.
+
+Los campos mixtos deben descomponerse o quedar UNKNOWN/?. No se permite fuzzy matching ni equivalencia por nombre. La identidad semántica y la comparabilidad de snapshots siguen sujetas a los gates de §§8–13. El roster real y sus fixtures siguen pendientes; no se autoriza implementación ni ejecución.
