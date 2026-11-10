@@ -10241,3 +10241,45 @@ F_alt,0=1 excluye de P*_F, no de P*_τ2; F_alt,0=UNKNOWN impide confirmar P*_F, 
 El soporte común se restringe a historias/estratos con masa en q_X* donde ambas políticas sean factibles, la asignación tenga probabilidad positiva y los resultados puedan observarse. Las regiones sin soporte no se extrapolan: se redefine la población solo mediante regla explícita pre-Z o se informa no-identificación en esa región. No se excluye por recepción, intento, instalación, C_dep*, A_f*, ΔT_acc, Reach, selección, ejecución, Outcome o Value post-Z.
 
 **Estado:** algoritmo y reglas DESIGN SPECIFIED; C0 material, unidad/población marco, protocolos y cobertura basal, X/q_X*, factibilidad y asignación por estrato, mapa de interferencia, missingness y tamaños muestrales OPEN. AB-08 no está materialmente cerrado. AB sigue IN_PROGRESS; no Design Freeze, fixtures, implementación, simulación ni ejecución; scientific_execution=false; execution_authorized=false.
+
+
+## 247. AB-09 — reconciliación integrada de R0–R3, verdad/observación y firewall Generator/Analyzer/Evaluator (2026-11-10)
+
+Se integra el contrato del ledger AB §15 reutilizando maestro §§57, 219.6–219.7, matriz temporal de predicados y reglas de evidencia trivalente. No se crean escenarios ni matrices paralelos.
+
+### 247.1. Correspondencia de escenarios
+
+- **R0 — focal aislado:** ausencia de alternativa substituible basal solo puede figurar como `F_alt,0=0` cuando el universo declarado es cerrado y exhaustivamente cubierto. La no-afectación por B de las superficies incluidas es una estipulación truth del DGP, no evidencia de aislamiento material ni cierre de MD-C1/MD-C4. El ITT sigue siendo efecto de asignación a D2; no demuestra exclusión empírica.
+- **R1 — alternativa basal estable:** una ruta A satisface F* antes/después y no es afectada por B en la versión canónica del escenario. Puede cambiar la accesibilidad focal τ2 sin que cambie la capacidad funcional F*/Reach. La alternativa estable puede modificar el efecto/heterogeneidad, pero su mera existencia no viola automáticamente exclusión. P*_F se mantiene separada de P*_τ2.
+- **R2 — vía colateral de B:** B altera al menos una superficie no focal (A1/A2, recursos, permisos, calidad, coste/latencia, observabilidad o vía a Outcome/Value). La salida debe clasificar el contraste como efecto de política/paquete o reconocer no-identificación de la atribución focal; no presentar ITT como efecto exclusivo de ΔT_acc*.
+- **R3 — intento sin C_dep* completo:** existe intento efectivo, pero al menos un componente constitutivo de C_dep* es 0 en truth DGP para afirmar el fallo técnico del caso. No inferir A_f*, D_f* ni ΔT_acc* desde programación, intento o instalación. Alternativas/provisión de fondo pueden mantener accesibilidad; se adjudican independientemente.
+
+Los cuatro escenarios conservan el mecanismo D2, los eventos P/R/Q/W/S/N/K, las rutas F/A y los predicados comunes. Sus diferencias se limitan a las condiciones definitorias anteriores; no fijan probabilidades, efectos de Outcome/Value ni tamaños.
+
+### 247.2. Tabla de correspondencia truth/observed
+
+| Predicado | Truth DGP | Regla de observed_state |
+|---|---|---|
+| Componente I/G/C/O | 1 o 0 según contrato constitutivo versionado | 1/0 solo con evidencia, identidad, alcance y cobertura suficientes; en otro caso ? |
+| C_dep* | 1 solo si I=G=C=O=1; 0 si algún componente truth es 0 | Aplicar la misma conjunción a estados observados, propagando ? si no hay cero decisivo y queda desconocido |
+| A_f*, D_f*, ΔT_acc* | Se generan desde la estructura, condiciones y rutas reales del DGP | Se miden/adjudican independientemente; no se sustituyen por Z, W_attempt, S_install ni C_dep* |
+| F_alt | 1 si existe ruta alternativa substituible; 0 solo si ninguna existe dentro del universo cerrado | ? cuando universo, cobertura, recursos, precondiciones o evidencia no permiten decidir |
+| Ruta completa | 1 si todos los requisitos necesarios son 1; 0 si alguno necesario es 0 | 1/0/? según evidencia y cobertura de los requisitos |
+| Reach | 1 si existe ruta válida; 0 solo si todas las rutas del universo están descartadas exhaustivamente | ? si existe ruta indeterminada relevante o cobertura incompleta |
+| Outcome/Value | Resultado estipulado por el DGP y regla de Value independiente | Resultado observable medido según protocolo; missingness/censura se conserva |
+
+Truth DGP es binaria para predicados constitutivos; `?` es estado epistémico de observación/cobertura. No se rellena truth a partir de observed ni observed desde truth. Una tabla de escenarios no reemplaza la truth table por unidad×ruta×paso×predicado×snapshot que deberá producir el DGP autorizado.
+
+### 247.3. Separación de roles
+
+- **Generator:** acceso privado al DGP completo, truth, potenciales, semillas, asignaciones internas y parámetros. Emite un dataset observable y un registro truth separado.
+- **Analyzer:** recibe únicamente el dataset observable autorizado, incluyendo Z efectivamente observado cuando forme parte del diseño; no recibe truth, potenciales, semillas/estado interno, asignación oculta, parámetros privados ni etiquetas que revelen el escenario.
+- **Evaluator:** accede a las salidas del Analyzer ya congeladas y después a truth/potenciales/metadatos necesarios para puntuar recuperación, error, bounds, falsa identificación/atribución y abstención.
+
+El cegamiento no debe ocultar al Analyzer una Z observada necesaria para estimar ITT; sí debe impedir el acceso a la asignación oculta/contrafactual y a los metadatos que revelen truth. El firewall exige separación de canales/artefactos, IDs opacos, validación de esquema, control y log de acceso, prueba negativa de leakage y congelación inmutable del output del Analyzer antes de abrir truth al Evaluator. El diseño textual no equivale a demostración técnica.
+
+### 247.4. Estado AB-09
+
+**DESIGN SPECIFIED / INTEGRATION RECONCILED; MATERIAL CLOSURE OPEN.** Se han explicitado las diferencias de R0–R3, la correspondencia de truth/observed, las reglas de cobertura y el contrato de separación de roles. Siguen OPEN universo/cobertura U_G, F*/C0/G/H_time, oráculo/cegamiento, mappings y observaciones por campo, missingness, D2/C_dep numérico, población/q_X*/soporte/interferencia y criterios cuantitativos transferidos a C.
+
+No se declara AB-09 DESIGN COMPLETE, AB DONE, Design Freeze ni implementable. No se crean fixtures, código, simulaciones ni ejecuciones. `scientific_execution=false`; `execution_authorized=false`.
