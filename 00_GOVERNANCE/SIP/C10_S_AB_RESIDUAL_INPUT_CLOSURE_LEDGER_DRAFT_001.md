@@ -230,3 +230,63 @@ La separación Generator/Analyzer/Evaluator, truth/observed, R0–R3 y las regla
 | R0–R3 | Familias descritas | Truth tables y observación OPEN |
 
 No se asignan valores numéricos ni se promueven candidatos a parámetros aceptados.
+
+## 11. Propuesta integrada de resolución AB-01…AB-09 — paquete para aceptación, no aprobado (2026-11-10)
+
+### 11.1. Regla de decisión
+
+Esta propuesta convierte el registro de inputs §§2–4 y las reconciliaciones §§8–10 en una ruta única de cierre. No crea DEC ni cambia DEC-C10-093/094. Separa:
+- **decisiones de diseño sintético** que pueden aceptarse sin evidencia de un sistema real;
+- **reconciliaciones técnicas documentales** que deben resolverse contra contratos ya aceptados;
+- **inputs numéricos o topológicos** que necesitan justificación explícita;
+- **evidencia material** que no puede sustituirse por una estipulación del DGP cuando el gate exige demostrar no-afectación o cobertura observada.
+
+La meta de AB es una instancia sintética internamente completa y trazable, no simular que se ha inspeccionado una plataforma real. Una estipulación de verdad del DGP no se reportará como evidencia observada ni como prueba de invariancia empírica.
+
+### 11.2. Disposición recomendada por gate
+
+| Gate | Propuesta de resolución integrada | Qué se puede cerrar por diseño | Qué no se debe fingir cerrado |
+|---|---|---|---|
+| AB-01 | Mantener exactamente dos operand bindings semánticos. Resolver su representación una sola vez contra la gramática/serialización aceptada: AST tipado si la gramática define el binding como nodo del árbol; REF tipado si el contrato define objetos de referencia independientes. No duplicar. | Cardinalidad y significado de los dos operandos ya DESIGN RESOLVED. | Encoding físico, schema y roster IAM real; no elegir REF/AST por preferencia estética. |
+| AB-02 | Conservar BOOL/ENUM y mapping ya resueltos. Definir schema y serialización específicos del payload de configuración solo después de cerrar el modelo físico; fijar canonicalización con alcance explícito y pruebas semánticas. | Mapping semántico ENABLED/PROFILE. | No extender JCS UDG-01 a C_src/C_dst/S1/S2 por analogía; no introducir DEFAULT en la instancia confirmatoria. |
+| AB-03 | Definir cuatro cards sintéticas versionadas dentro del DGP, con IDs de instancia propios y contratos de entrada/salida, pre/postcondiciones y eventos. Describir F1 como conversión, F2 como aplicación/verificación, A1 como exportación y A2 como importación/aplicación; no elegir producto, formato o mecanismo real. | Roles, topología F1→F2 y A1→A2, F* común y obligaciones FP. | No declarar identidad real, independencia A1/A2, compatibilidad o ejecución. La no-afectación en R0 se estipula en truth DGP y se contrasta con R2 adversarial; no se llama evidencia empírica. |
+| AB-04 | Reutilizar el crosswalk A_f*, la matriz temporal y la lógica 1/0/?. Añadir solo los field_id sintéticos necesarios para instanciar cada predicado y enlazarlos con U/R/C/X/E_T, snapshot, etapa y ruta. | Definiciones y regla de adjudicación trivalente. | No poblar como hechos reales B-M01…15; no asignar 0 ante cobertura ausente; no duplicar matrices. |
+| AB-05 | Mantener F* no compensatorio y común. Separar H_path (profundidad de ruta candidata) de H_time (ventana temporal de evaluación). Proponer el valor/unidad de H_time solo después de fijar el horizonte de Outcome/Value en C. | Estructura C0/G/F* y distinción H_path/H_time. | No usar H=3 como duración; no inventar ancla/valor/unidad de H_time; oráculo aún no validado. |
+| AB-06 | Especificar en el DGP el actor lógico, artefacto y versión como entidades sintéticas explícitas; conservar separados Z, B, W_programmed, W_attempt, receipt, S_install, componentes C_dep, retry y rollback. | Política D2 y secuencia de eventos conceptuales. | No atribuir recepción/éxito a programación; no declarar ausencia real de provisión de fondo ni completar hashes reales. |
+| AB-07 | Parametrizar C_dep* como distribución conjunta de los cuatro componentes, condicional a brazo e historia/estrato; reportar márgenes, dependencias y sensibilidad. La distribución debe normalizarse por celda/estrato. | Forma del objeto conjunto y restricciones de probabilidad. | No fijar s=.80 ni .20/.80 como confirmatorios; valores solo tras justificación/sensibilidad y aceptación. |
+| AB-08 | Definir elegibilidad exclusivamente desde C0 pre-Z. Mantener P*_τ2 y P*_F separados. Construir q_X* como distribución objetivo explícita y publicar soporte/positividad por estrato; no extrapolar fuera del soporte. | Regla temporal de elegibilidad y distinción de poblaciones. | No elegir población, pesos, estratos ni distribución objetivo por conveniencia; no confundir unidad lógica G con unidad de asignación/análisis. |
+| AB-09 | Reutilizar R0–R3 y la segregación Generator/Analyzer/Evaluator. Completar truth tables y proceso observado separado: R0 aislado; R1 alternativa basal preservada; R2 vía colateral sobre alternativa/dependencia; R3 fallo/no éxito de provisión. Incluir missingness/medición diferencial sin alterar truth. | Arquitectura de roles, familias y regla de cobertura. | No afirmar universo exhaustivo, independencia del oráculo, cegamiento o firewall probado sin validación. |
+
+### 11.3. Recomendación de diseño para el DGP base y los escenarios adversariales
+
+Se recomienda que el DGP sintético contenga dos capas claramente etiquetadas:
+
+1. **Base aislada R0:** D2 programa el intento según DEC-C10-067; los factores no focales requeridos por la decisión se mantienen invariantes por construcción; la única ruta causal pretendida hacia accesibilidad es la provisión técnica focal y sus componentes. Esto permite comprobar recuperación bajo una verdad conocida, pero no demuestra que un sistema real satisfaga exclusión.
+2. **Adversariales R1–R3 y extensiones:** alternativa basal; modificación colateral de A1/A2/dependencias; fallo parcial/crossover/rollback; recursos compartidos/interferencia; información/conocimiento; medición/missingness diferencial. Cada intervención adversarial cambia una familia identificable, sin colapsar el efecto de paquete con el efecto focal.
+
+La ausencia de interferencia solo puede asumirse en R0 como estipulación del DGP; debe existir al menos un escenario adversarial con interferencia/recursos compartidos para comprobar que el Analyzer no declara identificación individual cuando la verdad no la permite.
+
+### 11.4. Decisiones que requieren aceptación expresa del usuario
+
+La documentación permite recomendar, pero no aceptar unilateralmente, estas elecciones de diseño:
+
+- **AB-03-SYN:** utilizar cuatro identidades transformacionales sintéticas versionadas, sin producto ni formato real, para que las cards sean completas como especificación de DGP.
+- **AB-05-H:** reservar H_path para profundidad y H_time para horizonte; dejar H_time pendiente hasta completar Outcome/Value en C.
+- **AB-08-POP:** fijar una población objetivo sintética mediante elegibilidad C0 pre-Z y q_X* explícito, sin seleccionar todavía valores o pesos no justificados.
+- **AB-09-INT:** permitir no interferencia solo como verdad estipulada de R0 y exigir escenarios adversariales con interferencia; no convertirlo en supuesto general.
+- **AB-06/07-PARAM:** autorizar que los parámetros D2 y la distribución conjunta C_dep se propongan como parámetros sintéticos justificables mediante análisis de sensibilidad, sin reutilizar los números históricos como hechos.
+
+Las reconciliaciones REF/AST y schema/canonicalización son tareas técnicas contra contratos existentes, no elecciones científicas libres. La evidencia MD-C1/MD-C4 y la cobertura observada permanecen gates probatorios; no se cierran por esta propuesta.
+
+### 11.5. Secuencia única de cierre y criterios de salida AB
+
+1. Resolver REF/AST y payload schema/canonicalización contra la gramática y contratos vigentes, sin modificar su alcance.
+2. Completar cards sintéticas F1/F2/A1/A2 y el crosswalk field-level usando la instancia aceptada; mantener UNKNOWN donde falten observaciones.
+3. Definir C0, actor/artefacto/versiones sintéticas, H_time pendiente, población/q_X* y unidades; someter las elecciones enumeradas en §11.4 a aceptación.
+4. Definir la distribución conjunta C_dep y escenarios R0–R3 más adversariales, con verdad y observación separadas.
+5. Cerrar oráculo, adjudicación y firewall como especificación verificable, distinguiendo validación propuesta de validación ejecutada.
+6. Actualizar y releer los instrumentos existentes y realizar una reconciliación cruzada única con DEC-C10-093/094 y los contratos AB.
+
+**AB solo pasará a DONE** cuando la instancia/DGP sea autocontenida y versionada, todas las cards y mappings tengan criterios de aceptación, los inputs de población/horizonte/unidad/parámetros estén aceptados o explícitamente limitados, los escenarios y truth tables estén completos, y no quede contradicción temporal/semántica conocida. La ausencia de evidencia real puede permanecer como límite declarado de un experimento sintético, pero nunca se reportará como invariancia observada.
+
+**Estado de esta propuesta:** NOT APPROVED / FOR USER ACCEPTANCE. AB permanece IN_PROGRESS; no hay Design Freeze, implementación, fixtures, validación ejecutada, simulación ni ejecución científica. scientific_execution=false; execution_authorized=false.
