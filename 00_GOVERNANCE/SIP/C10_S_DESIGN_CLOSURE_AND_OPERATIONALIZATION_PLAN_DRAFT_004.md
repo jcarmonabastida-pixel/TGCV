@@ -2224,3 +2224,14 @@ Se reutilizan DEC-C10-054/068/069/071/079/080/082/083. El mapping semántico de 
 Los dos PAR siguen DEC-C10-083 en siete etapas; la RUL conserva expresión, owner, scope, operadores, operandos, bindings y REQUIRE. Se distinguen mappings semánticos de etapa y composición para rutas F y A; la igualdad semántica no acredita independencia técnica de A respecto de B.
 
 AB-01 semántico DESIGN RESOLVED; encoding/schema/escaping/canonicalización OPEN. AB-02 SEMANTIC CROSSWALK RECONCILED; mapping_id/version, roster REF, snapshots, cobertura y evidencia OPEN. No hay IAM sellado ni autorización de implementación/ejecución.
+
+
+## 16.121 — Reconciliación AB-09: escenarios, truth/observed y firewall (2026-11-10)
+
+Se integra el contrato del ledger AB §15 y del maestro §247. R0–R3 quedan diferenciados sin crear IDs nuevos: R0 estipula aislamiento focal dentro de universo cerrado; R1 conserva alternativa basal estable; R2 incorpora vía colateral de B y obliga a interpretar ITT como efecto de política/paquete; R3 contiene intento efectivo sin C_dep* completo y prohíbe inferir accesibilidad desde intento/instalación. Se reutilizan FSTAR, EXC/PM/IV, B-M01…15, PROV-01…12 y la matriz temporal.
+
+Se fijan las reglas comunes de verdad binaria del DGP, observación trivalente 1/0/? según evidencia/cobertura, y no equivalencia entre desconocido y ausencia. F_alt=0 y Reach=0 exigen universo cerrado y cobertura exhaustiva. C_dep*, A_f*, D_f*, ΔT_acc*, F*, Outcome y Value conservan sus contratos separados.
+
+Se explicita la frontera de roles: Generator conoce truth/potenciales/semillas; Analyzer recibe solo observables autorizados (incluida Z observada) y no truth, potenciales, asignación oculta ni etiquetas de escenario; Evaluator puntúa solo después de congelar la salida del Analyzer. La separación requiere controles técnicos y pruebas negativas; no se considera demostrada por esta especificación.
+
+**Resultado:** AB-09 DESIGN SPECIFIED / INTEGRATION RECONCILED, no DESIGN COMPLETE ni materialmente cerrado. Permanecen abiertos universo/cobertura, F*/C0/G/H_time, oráculo y cegamiento, observación/missingness, parámetros D2/C_dep, población/soporte/interferencia y criterios cuantitativos de evaluación. No se crean fixtures ni código y no se ejecuta simulación. AB sigue IN_PROGRESS / NOT DESIGN FROZEN / NOT IMPLEMENTABLE; `scientific_execution=false`; `execution_authorized=false`.
