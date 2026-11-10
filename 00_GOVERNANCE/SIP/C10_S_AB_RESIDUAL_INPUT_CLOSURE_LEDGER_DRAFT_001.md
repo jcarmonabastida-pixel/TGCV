@@ -1058,3 +1058,20 @@ Se registran familias candidatas O-MIG (estado de migración), O-CONF (conformid
 Se establecen reglas anti-circularidad: no definir Value por ΔT_acc, A_f*, D_f*, Reach, trayectoria o ejecución; no equiparar telemetría con valoración; no inferir portabilidad futura de disponibilidad A1/A2; mantener pluralidad de beneficiarios y Value vectorial, sin índice/ponderaciones por defecto.
 
 **Estado:** C-Value CANDIDATE CROSSWALK DOCUMENTED / MATERIAL OPEN. Beneficiarios, indicadores, fuentes, escalas, ventanas, trade-offs, instrumentos, error, missingness, cegamiento y multiplicidad siguen OPEN. No se identifica ΔT_acc→Value ni se aprueba implementación/ejecución; scientific_execution=false; execution_authorized=false.
+
+## 33. C-Value ↔ roster: crosswalk de Outcomes/Value contra §232/§233
+
+Se incorpora maestro §265. Se acota explícitamente la instancia a C10S-SVC-REQUEST-PROCESSOR v1.0.0 / instancia -001 rev1 / CMP-SERVICE-LOGIC-001 y a Opción A; no se asume un servicio genérico, usuarios, SLA, operador humano o métricas empresariales.
+
+El crosswalk reutiliza el roster de §232, el DAG de §233, F*/FP-01…08, B-M01…15, snapshots y E_T/U_G. W_attempt, S_install, C_dep*, F1/F2/A1/A2, A_f*, ΔT_acc*, Reach y ejecución se mantienen como proceso/mecanismo, no Outcomes.
+
+Resultado por familia:
+- O-MIG: no existe campo terminal ni event_id; W_attempt/S_install/C_dep* no lo sustituyen.
+- O-CONF: anclaje conceptual parcial en F*/FP-01…08 y C_dst, pero faltan predicados, mapping, tolerancias, oráculo y snapshots.
+- O-SVC: B-M02/03/04/08/10/12/11/15 son superficies, no una medida de continuidad/calidad; no hay SLI/SLO, baseline o ventana.
+- O-REC: B-M06/11/15 y E_T pueden aportar eventos/evidencia, pero rollback disponible no es recuperación lograda; faltan eventos y tiempos.
+- O-BUR: B-M06/07/10/12 son superficies potenciales; no hay tiempo humano, coste, tarifa o ventana aprobados.
+
+Ningún O tiene ficha §224 completa. CMP.owner no demuestra beneficiario. No hay beneficiarios/roles confirmados, instrumentos, source_id, instrument_version o adjudicación poblados. El término L_m y la forma ilustrativa V=3O+4L_m+epsilon_V no se heredan como Value; no se aprueban coeficientes ni ponderaciones.
+
+**Estado:** C-VALUE↔ROSTER CROSSWALK DOCUMENTED / MATERIAL OPEN. No se crean field_id/event_id, snapshots, registros E_T, fixtures ni resultados. MED-02/03 continúan OPEN; no se identifica ΔT_acc→Value. Sin Design Freeze, implementación o ejecución; scientific_execution=false; execution_authorized=false.
