@@ -2292,3 +2292,10 @@ Se añade maestro §253 y ledger AB §21. Se distinguen los tres relojes histór
 Se incorpora maestro §254 y ledger AB §22. Se reutilizan DEC-C10-065/070/071/072, C0, stage_key, SNAPSHOT, COVERAGE_REGISTER, EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK y evaluadores/adjudicación. Se distingue event_key semántico, source-native event ID y EID de transformación; no se crea campo/tabla de eventos.
 
 **Resultado:** MED-02c4 DOCUMENTED / MATERIAL OPEN. Quedan definidas precedencia de las siete etapas, binding C0 de nueve componentes, separación de SNAPSHOT.phase y reloj causal, trazabilidad de evento→snapshot→evidencia, matching/deduplicación y contratos C4-01…15. Faltan instancias, snapshots, event IDs, tiempos válidos/sincronizados, rutas exactas, scopes/denominadores y control C0 ejecutado bajo autorización. AB-TIME-01 continúa parcialmente resuelto por su adopción formal pendiente. Sin schema change, fixtures, implementación ni ejecución.
+
+
+## 16.129 — AB-09: truth tables R0–R3 y separación Generator/Analyzer/Evaluator
+
+Se incorpora maestro §255 y ledger AB §23, desarrollando el contrato ya existente en §247 y el inventario finito. Se especifican invariantes lógicos por escenario, el cruce R3 con fondo R0/R1, derivaciones de C_dep*/F_alt/A_f*/D_f*/ΔT_acc*/Reach, truth binaria y observed_state trivalente, firewall de escenarios y 12 contratos adversariales.
+
+**Resultado:** AB-09 LOGICALLY SPECIFIED / DOCUMENTARY CROSSWALK COMPLETE / MATERIAL DGP AND OBSERVATION OPEN. No se repiten escenarios ni se asignan valores/probabilidades. Permanecen abiertos los parámetros y truth por unidad, alternativas y cobertura, F*/G/H, medición/missingness/oráculo, q_X*/soporte/interferencia, Outcome/Value dimensional, firewall ejecutado y métricas de recuperación. Sin fixtures, implementación, simulación ni ejecución.
