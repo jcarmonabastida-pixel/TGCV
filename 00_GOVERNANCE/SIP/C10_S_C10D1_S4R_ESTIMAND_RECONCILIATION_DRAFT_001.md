@@ -448,3 +448,10 @@ El reloj DGP t−1…t9 distingue confusores mediador–Value inducidos por B an
 El Analyzer se evalúa por estimando×dimensión×DGP×soporte; Generator conserva truth, Analyzer no la recibe y Evaluator adjudica después del sellado. Los denominadores de falsa identificación, falsa atribución y abstención se explicitan conceptualmente; tolerancias/umbrales permanecen OPEN.
 
 **Estado:** reconciliación metodológica propuesta; C-MED/C-ANALYZER OPEN; no se identifica ΔT_acc→Value, no se altera la jerarquía de estimandos ni se autoriza implementación/ejecución.
+
+
+## 28. Precedencia corregida de ΔT_acc y MED-02
+
+Se corrige la descripción de §27 conforme al contrato DGP §30 y al documento de snapshots: la verdad estructural usa S_T*=(U*,R*,C*,X*) y ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*). ΔValidity_e es epistémica y pertenece a ΔE_T. La formulación previa de DGP §3.3 queda supersedida.
+
+El mapping propuesto con C10-D1 §27.1 es ΔU→A⁺/A⁻/A^reconf; ΔR→ΔR; ΔC→ΔC. ΔX no se mapea sin más: requiere decidir si su contenido modifica realizabilidad (ΔC), es historia/contexto q o queda fuera del mediador. MED-02 permanece OPEN.
