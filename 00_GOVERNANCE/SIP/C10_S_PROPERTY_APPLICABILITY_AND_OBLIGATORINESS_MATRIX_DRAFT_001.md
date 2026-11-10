@@ -960,3 +960,29 @@ La tabla de §18.6 queda aceptada para `PAR-SVC-ENABLED` y `PAR-SVC-PROFILE` en 
 No hay DEFAULT contractual; ABSENT/NULL no son admisibles cuando su ausencia se demuestra con cobertura suficiente. La falta de evidencia o cobertura produce UNKNOWN, no ABSENT ni NA. `E_dst/runtime` permanece fuera de `stage_key`.
 
 Rigen los detalles y límites de DEC-C10-083. La aceptación no adjudica observaciones, no asigna valores por escenario, no sella IAM ni autoriza mappings físicos, implementación o ejecución científica.
+
+
+## 20. Reconciliación AB-01/02 con DEC-C10-083, U_G y la instancia RUL (2026-11-10)
+
+Esta sección no modifica DEC-C10-083 ni duplica su tabla de siete etapas. La matriz §§18.6–18.7 conserva autoridad para la aplicabilidad y adjudicación de PAR. Se integra con DEC-C10-079/080 (identidad y vínculo PAR), DEC-C10-082 (CMP↔NODE por snapshot) y DEC-C10-054/068 (AST/RUL).
+
+| Clase | Mapping semántico consolidado | Materialización documental existente | Límite abierto |
+|---|---|---|---|
+| CMP | Identidad contractual estable a través de snapshots | NODE anchor exacto por snapshot, 1:1 según DEC-C10-082 | Roster total, snapshots y evidencia material |
+| PAR | ENABLED/PROFILE conservan clave, tipo, dominio, estado y valor según DEC-C10-083 | Manifiesto PAR + COVERAGE_SCOPE; propietario CMP exacto; sin NODE propio | Filas, mapping_id/version, cobertura y evidencia no poblados |
+| RUL | Conservación de identidad, owner, scope, AST, operadores, operandos, bindings y REQUIRE | PREDICATE por snapshot exacto; bindings a claves PAR | Mapping/registro concreto y validación independiente |
+| REF | Solo relaciones constitutivas inventariadas | EDGE conforme a contrato U_G | Universo REF desconocido; no afirmar REF=0 |
+| POL | Ausente por diseño en núcleo confirmatorio | No materializar objeto POL | FP-05 se mantiene independiente |
+| MET | Identidad/versionado/procedencia | Metadatos, snapshots y EVIDENCE_REGISTER existentes | Serialización canónica/hash OPEN |
+
+### 20.1. Mappings de etapa y composición
+
+Se distinguen M_F1_sem, M_F2_sem, M_A1_sem, M_A2_sem, con composiciones M_F_sem=M_F2_sem∘M_F1_sem y M_A_sem=M_A2_sem∘M_A1_sem. Ambas rutas conservan la misma semántica contractual; sus mecanismos técnicos no se presumen iguales ni independientes. La no-afectación de A por B se evalúa en escenarios DGP y no queda probada por igualdad de mappings.
+
+### 20.2. Invariantes RUL
+
+La expresión aceptada OR(NEQ(PAR-SVC-ENABLED,true),IN(PAR-SVC-PROFILE,{STANDARD,READ_ONLY})) bajo REQUIRE debe mantener operadores, operandos, dominio, scope, owner, efecto y TRUE/FALSE/UNKNOWN. Los dos operand bindings son AST→PAR, no REF/EDGE. Cualquier encoding físico alternativo debe decodificarse a la misma semántica bajo mapping versionado; no se define parser ni canonicalización.
+
+### 20.3. Estado
+
+AB-01 queda DESIGN RESOLVED en semántica, encoding/schema físico OPEN. AB-02 queda SEMANTIC CROSSWALK RECONCILED con DEC-C10-083; mappings versionados y evidencia material OPEN. No se sella IAM, no se declara REF=0 ni se crea schema freeze, fixture o ejecución.
