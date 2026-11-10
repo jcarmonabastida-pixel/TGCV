@@ -188,10 +188,10 @@ La navegación final se confirmará con la arquitectura estratégica actualizada
 2. Configurar estilos globales, cabecera, pie, navegación y componentes reutilizables.
 3. Incluir **Work with us** en la navegación principal y construir su página de entrada con las cuatro rutas: Advisory, Collaborate, For organizations e Impact partnerships.
 4. Construir primero Home y las páginas esenciales con contenido real, indicando el estado de cada servicio y sin aparentar disponibilidad no confirmada.
-4. Incorporar enlaces a la base documental; no duplicar corpus científico completo en Framer.
-5. Configurar formularios solo si existe una necesidad y se ha definido qué datos se recogen, finalidad, acceso y retención.
-6. Revisar móvil y escritorio, enlaces, títulos, metadatos, rendimiento y accesibilidad.
-7. Mantener el proyecto como borrador/no publicado hasta superar la puerta de lanzamiento.
+5. Incorporar enlaces a la base documental; no duplicar corpus científico completo en la web.
+6. Configurar formularios solo si existe una necesidad y se ha definido qué datos se recogen, finalidad, acceso y retención.
+7. Revisar móvil y escritorio, enlaces, títulos, metadatos, rendimiento y accesibilidad.
+8. Mantener el proyecto como borrador/no publicado hasta superar la puerta de lanzamiento.
 
 **Entregable:** web estructurada y revisable en entorno de previsualización.
 
@@ -281,18 +281,17 @@ La navegación final se confirmará con la arquitectura estratégica actualizada
 
 Orden recomendado:
 
-1. Fase 0 — Preparación e inventario.
-2. Cierre de la orientación económica (sección 12): clasificación del portfolio, recurrencia candidata y límites de monetización. Esta decisión estratégica precede a la Fase 1, pero no implica activar ofertas ni contratar servicios.
-3. Fase 1 — Movilización y formación del núcleo inicial.
-4. Fase 2 — Dominio y comprobaciones jurídicas/técnicas.
-5. Fase 3 — Identidad visual mínima.
-6. Fase 4 — Web pública ligera.
-7. Fase 5 — Publicación documental.
-8. Fase 6 — Integración.
-9. Fase 7 — Revisión y lanzamiento.
-10. Fase 8 — Mantenimiento trimestral.
+1. Fase 0 — Preparación e inventario, con orientación económica ya aceptada.
+2. Fase 1 — Movilización y formación del núcleo inicial.
+3. Fase 2 — Dominio y comprobaciones jurídicas/técnicas.
+4. Fase 3 — Identidad visual mínima.
+5. Fase 4 — Web pública ligera.
+6. Fase 5 — Publicación documental esencial.
+7. Fase 6 — Integración.
+8. Fase 7 — Revisión y lanzamiento.
+9. Fase 8 — Mantenimiento trimestral.
 
-Las fases 3 y 4 pueden prepararse en paralelo a nivel de contenidos y diseño, pero no deben generar contratación ni publicación sin sus respectivas puertas. La decisión sobre el dominio precede a la conexión del dominio y a la publicación definitiva.
+Los contenidos de la web y la selección documental pueden prepararse en paralelo, pero no deben generar contratación ni publicación sin sus respectivas puertas. La decisión sobre el dominio precede a la conexión del dominio y a la publicación definitiva.
 
 ## 7. Reparto de responsabilidades
 
@@ -371,7 +370,7 @@ La orientación económica se incorpora desde la arquitectura estratégica AFLUY
 
 Regla: **acceso básico a comunidad y conocimiento abierto; pago por servicios especializados, formación estructurada y herramientas que aporten utilidad diferenciada; financiación institucional para programas de impacto.**
 
-Esta clasificación es una hipótesis estratégica para validación, no significa que las ofertas estén disponibles ni autoriza a crear cuentas, contratar plataformas, cobrar cuotas o activar pagos.
+El marco económico general queda aceptado como orientación estratégica. La clasificación de ofertas sigue siendo una hipótesis de mercado: no significa que estén disponibles, validadas ni autoriza a crear cuentas, contratar plataformas, cobrar cuotas o activar pagos.
 
 ### 12.2 Portfolio por modalidad de acceso e ingreso
 
@@ -421,7 +420,7 @@ No lanzar simultáneamente comunidad de pago, academia de suscripción, SaaS y v
 
 ### 12.6 Implicaciones para el plan de implantación
 
-La primera versión de la web debe poder presentar Community, Research, Explore, Learning y Work with us / Advisory, así como describir ValueLabOS e Impact con estados honestos.
+La primera versión de la web debe presentar Community, Research, Explore, Learning y Work with us, con sus cuatro vías: Advisory, Collaborate, For organizations e Impact partnerships. ValueLabOS e Impact se describirán con estados honestos y podrán enlazarse desde accesos secundarios.
 
 No se necesita para el lanzamiento inicial:
 - pasarela de pago;
@@ -443,11 +442,11 @@ No activar una suscripción hasta poder responder afirmativamente:
 6. ¿Se puede cancelar con claridad y sin fricciones indebidas?
 7. ¿El modelo respeta el acceso abierto, la independencia científica y las salvaguardas de AFLUYA?
 
-### 12.8 Puerta de decisión previa a Fase 1
+### 12.8 Decisión económica y límites de autorización
 
-Antes de iniciar la comprobación de dominios, el usuario revisará y aprobará o modificará la orientación económica. Esta aprobación solo valida la clasificación estratégica y el orden de validación; **no autoriza** a vender, cobrar, crear membresías, desarrollar ValueLabOS, contratar proveedores ni comprar herramientas.
+La orientación económica general ha sido aceptada por el usuario. Esta decisión valida el marco de acceso abierto, priorización de servicios, aplazamiento de membresía/SaaS y financiación por alianzas para Impact. **No autoriza** a vender, cobrar, crear membresías, desarrollar ValueLabOS, contratar proveedores, solicitar/aceptar fondos ni comprar herramientas.
 
-**Estado:** propuesta v0.1 integrada; validación estratégica pendiente del usuario.
+**Estado:** marco económico general ACEPTADO por el usuario el 2026-11-10. Las ofertas individuales, tarifas, condiciones contractuales y mecanismos de cobro siguen pendientes de validación y autorización.
 
 ## 13. Control de cambios
 
@@ -469,13 +468,13 @@ Antes de iniciar la comprobación de dominios, el usuario revisará y aprobará 
 - No se activan pagos, suscripciones ni contratación automática.
 
 
-## 12. Movilización, colaboradores y financiación
+## 13. Movilización, colaboradores y financiación
 
-### 12.1 Objetivo operativo
+### 13.1 Objetivo operativo
 
 El primer resultado organizativo de AFLUYA no es disponer de todas sus áreas operativas, sino dejar de depender exclusivamente de una persona para impulsar y ejecutar el proyecto. La prioridad es formar una pequeña coalición de colaboradores y aliados, con responsabilidades y compromisos proporcionados.
 
-### 12.2 Roles prioritarios
+### 13.2 Roles prioritarios
 
 - **Impulso y operaciones:** compartir coordinación, convertir prioridades en tareas, mantener seguimiento y ayudar a abrir puertas. Es la incorporación prioritaria.
 - **Digital/producto:** web no-code, prototipos, experiencia de usuario y coordinación técnica.
@@ -485,7 +484,7 @@ El primer resultado organizativo de AFLUYA no es disponer de todas sus áreas op
 
 No es necesario cubrir todos los roles ni constituir un equipo formal antes de empezar. Una persona puede asumir más de un ámbito y las primeras contribuciones pueden ser pequeñas.
 
-### 12.3 Modalidades de participación
+### 13.3 Modalidades de participación
 
 La comunicación de Work with us distinguirá:
 - colaboración por tarea o proyecto;
@@ -497,7 +496,7 @@ La comunicación de Work with us distinguirá:
 
 No se prometerá participación societaria, reparto de ingresos, empleo o retorno financiero sin un acuerdo formal. Toda contribución sustantiva tendrá condiciones de autoría, IP, confidencialidad, datos, remuneración y salida definidas.
 
-### 12.4 Paquete de convocatoria
+### 13.4 Paquete de convocatoria
 
 Preparar antes de una convocatoria amplia:
 1. AFLUYA en una página: propósito, oportunidad, propuesta diferencial, relación con TGCV y VALUE, estado real y visión.
@@ -507,11 +506,11 @@ Preparar antes de una convocatoria amplia:
 5. Nota de financiación por hitos: presupuesto, destino, recursos faltantes y rendición de cuentas.
 6. Reglas iniciales de colaboración: autoría, propiedad intelectual, confidencialidad, datos, decisiones y salida.
 
-### 12.5 Vías de financiación y salvaguardas
+### 13.5 Vías de financiación y salvaguardas
 
 Distinguir recursos en especie, patrocinio, financiación de proyectos, subvenciones, aportaciones voluntarias y financiación de inversión/préstamo. Cada vía requiere condiciones, derechos y obligaciones diferentes. No solicitar ni aceptar fondos bajo una etiqueta ambigua. Antes de recaudar o aceptar fondos se verificará la estructura jurídica, fiscal y contable adecuada. No lanzar campañas públicas ni ofrecer retorno financiero sin estructura y asesoramiento apropiados.
 
-### 12.6 Secuencia y foco
+### 13.6 Secuencia y foco
 
 1. Convocatoria dirigida a contactos y comunidades con afinidad.
 2. Conversaciones de encaje sobre motivación, capacidad, disponibilidad y expectativas.
@@ -522,11 +521,11 @@ Distinguir recursos en especie, patrocinio, financiación de proyectos, subvenci
 
 Durante esta fase se mantendrán como máximo tres frentes activos: convocatoria/alianzas; presencia pública/conocimiento esencial; un piloto o demostrador prioritario. La web será una pieza de credibilidad y contacto, no el sustituto de la captación directa.
 
-### 12.7 Criterio de salida de la etapa
+### 13.7 Criterio de salida de la etapa
 
 AFLUYA estará preparada para ampliar la implantación cuando cuente con un pequeño núcleo activo o una red inicial de colaboradores con compromisos concretos, responsabilidades compartidas, una primera prueba visible y una ruta de financiación definida. Si no se consigue, se reducirá el alcance y se revisará la propuesta antes de añadir complejidad.
 
-## 13. Control de cambios
+## 14. Control de cambios
 
 ### v0.4 — 2026-11-10
 - Se cierra la revisión de la orientación económica como marco estratégico aceptado, sin aprobar tarifas ni activar ofertas.
