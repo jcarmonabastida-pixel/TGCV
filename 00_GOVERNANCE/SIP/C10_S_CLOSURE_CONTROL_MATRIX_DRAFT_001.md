@@ -2661,3 +2661,17 @@ Fuente operativa: `C10_S_AB_RESIDUAL_INPUT_CLOSURE_LEDGER_DRAFT_001.md`.
 | AB-M11 R0–R3 | AB-09 | OPEN | Universo, truth tables, observación y missingness explícitos |
 
 **Dictamen:** diseño documental resuelto en parte; inputs materiales y evidencia OPEN. No AB DONE, Design Freeze ni readiness de implementación. `scientific_execution=false`; `execution_authorized=false`.
+
+## 131. AB-M01/M02 — resultado de reconciliación (2026-11-10)
+
+| Subgate | Estado | Dictamen |
+|---|---|---|
+| AB-01 roster lógico/operandos | DESIGN RESOLVED | DEC-C10-068/093/094 |
+| AB-01 REF vs AST físico | OPEN | AST 4/16/16 no fija serialización; dos bindings una sola vez |
+| AB-01 IAM por snapshot y cobertura | OPEN | DEC-C10-076/077/078 no instancia filas ni denominadores |
+| AB-02 mapping BOOL/ENUM | DESIGN RESOLVED | ENABLED BOOL exacto; PROFILE STD/RO/OFF total e inyectivo |
+| AB-02 schema/namespaces/payload | OPEN | No hay schema físico de configuración aceptado |
+| AB-02 canonicalización payload | OPEN | DEC-C10-074 aplica a UDG-01, no extensible por analogía |
+| AB-02 DEFAULT confirmatorio | NOT_IN_BASELINE | DEC-C10-068 no acepta DEFAULT para ENABLED/PROFILE |
+
+Referencia: ledger AB §8. Sin nuevo Decision Record, schema, filas IAM, snapshots, hashes ni validación ejecutable.
