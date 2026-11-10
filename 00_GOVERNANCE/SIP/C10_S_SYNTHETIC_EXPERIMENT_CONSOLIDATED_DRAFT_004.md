@@ -10116,3 +10116,13 @@ Se explicita que DEC-C10-074 y TGCV-C10S-JCS-1 se aplican al envelope UDG-01 y n
 El ledger fija los 11 inputs AB-M01…AB-M11, el orden de resolución y el handoff AB→C. Todo input ausente se conserva OPEN/UNKNOWN; no se inventan defaults, tasas, parámetros, unidades, ventanas ni topologías.
 
 **Estado:** AB continúa IN_PROGRESS / NOT DESIGN FROZEN / NOT IMPLEMENTABLE. Se mantienen `scientific_execution=false` y `execution_authorized=false`. No se crea código, parser, validator, fixture ejecutable, simulación ni experimento.
+
+## 235. Reconciliación AB-M01/M02: operandos, REF/AST y canonicalización de payload (2026-11-10)
+
+La pasada documental recogida en el ledger AB §8 confirma que DEC-C10-054 fija el perfil estructural AST 4/16/16, pero no la sintaxis física ni la serialización. DEC-C10-068 fija dos referencias semánticas de operandos para RUL-SVC-ENABLE-PROFILE-01; DEC-C10-094 exige que cada binding aparezca exactamente una vez, como REF tipado o enlace AST tipado. DEC-C10-076/077 distinguen referencias UDG, objetos REF de configuración y FKs/EDGE U_G. La plantilla U_G no es schema físico CMP/PAR/REF/RUL/MET y permanece sin snapshots C10-S materializados.
+
+Por tanto, AB-01 queda DESIGN RESOLVED en roster lógico y semántica de operandos, pero OPEN en encoding físico REF/AST, IAM por snapshot/etapa/ruta y cobertura. No se duplica una relación en REF y AST.
+
+AB-02 queda DESIGN RESOLVED para ENABLED BOOL sin coerción y PROFILE ENUM con mapping STD→STANDARD, RO→READ_ONLY, OFF→DISABLED. DEC-C10-068 no acepta DEFAULT contractual para esos dos parámetros en la instancia confirmatoria. Namespace/schema/payload físico, serialización y canonicalización siguen OPEN. DEC-C10-074/JCS/TGCV-C10S-JCS-1 se limita a UDG-01; no se extrapola a payload C_src/C_dst/S1/S2.
+
+No se crea decisión nueva ni se modifica el alcance de las DEC aceptadas. No hay filas, snapshots, hashes ni validación técnica.
