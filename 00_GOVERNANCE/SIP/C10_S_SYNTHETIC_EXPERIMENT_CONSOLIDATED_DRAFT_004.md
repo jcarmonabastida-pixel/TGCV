@@ -10170,3 +10170,13 @@ REF/AST y schema/canonicalización siguen como reconciliaciones técnicas contra
 La reconciliación del ledger AB §13 resuelve los dos operand bindings como referencias tipadas desde posiciones/hojas del AST RUL a las claves PAR-SVC-ENABLED (BOOL) y PAR-SVC-PROFILE (ENUM). No son objetos REF de configuración ni relaciones/dependencias constitutivas independientes. Se mantienen exactamente dos bindings, cada uno una sola vez; no se duplica en REF. Un REF futuro requeriría relación constitutiva independiente con extremos y semántica propios.
 
 La expresión de referencia sigue siendo OR(NEQ(ENABLED,true),IN(PROFILE,{STANDARD,READ_ONLY})) bajo REQUIRE. **AB-M01 semántico DESIGN RESOLVED;** encoding físico, schema/campos, serialización canónica, namespace/versionado y validación de integridad permanecen OPEN. JCS UDG-01 no se extiende al AST/payload de configuración.
+
+## 241. AB-03/04 — cards sintéticas y crosswalk semántico (2026-11-10)
+
+La aceptación AB-03-SYN permite completar las cuatro cards a nivel funcional abstracto del DGP, sin seleccionar mecanismo real: F1 conversión focal S0→S2; F2 aplicación/verificación S2→SF; A1 exportación alternativa basal S0→S1; A2 importación/aplicación/verificación S1→SF. Se asignan TID/SID sintéticos versionados; RID/EID no asignados. Las cuatro usan la misma instancia lógica C10S-SVC-REQUEST-PROCESSOR v1.0.0 / instance rev1, CMP-SERVICE-LOGIC-001, PAR ENABLED/PROFILE y RUL-SVC-ENABLE-PROFILE-01. RETRY-COUNT queda excluido.
+
+El contrato de cada card fija propósito, entrada/salida lógica, pre/postcondiciones abstractas, aplicabilidad separada de accesibilidad, eventos y fallos. Las rutas son πF=(F1,F2) y πA=(A1,A2), con el mismo F*, C0, G, destino y criterio; H_time y parámetros permanecen abiertos. R0 solo estipula no-afectación alternativa como truth del DGP; R2 introduce vía colateral adversarial.
+
+El crosswalk AB-04 define field_id semánticos para U*/R*/C*/X*/E_T, snapshots, mapping, estados de entrada/salida, observación, cobertura y adjudicación. No son columnas físicas ni implican valores 1/0/?. Truth_DGP y observed_state permanecen separados; se reutiliza la matriz temporal y PM-01…18.
+
+**Estado:** AB-03 DESIGN SPECIFIED AT ABSTRACT SYNTHETIC LEVEL; AB-04 FIELD-LEVEL SEMANTIC CROSSWALK SPECIFIED. OPEN: schema físico, mappings concretos, predicados atómicos/requiredness, tolerancias, C0, recursos, C_dep, H_time, universe/coverage, MD-C1/MD-C4, oráculo y validación. Sin fixtures, implementación, simulación ni ejecución.
