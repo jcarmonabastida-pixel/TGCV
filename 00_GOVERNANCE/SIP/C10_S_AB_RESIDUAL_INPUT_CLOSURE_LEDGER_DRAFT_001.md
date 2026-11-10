@@ -97,3 +97,41 @@ AB remains **IN_PROGRESS / DESIGN RESOLVED IN PART / MATERIAL INPUTS AND EVIDENC
 `scientific_execution=false`; `execution_authorized=false`.
 
 No code, parser, validator, executable fixture, simulation or experiment is created or authorized by this ledger.
+
+## 8. Resultado de la reconciliación documental AB-M01/M02 (2026-11-10)
+
+Esta pasada ha contrastado el catálogo atómico, contrato abstracto de instancia, gramática RUL, matriz M, plantilla U_G y DEC-C10-054/068/069/074/076/077/078/093/094.
+
+### 8.1. AB-M01 — operand bindings: conclusión acotada
+
+- DEC-C10-054 fija el perfil de AST declarativo acíclico (profundidad 4, máximo 16 átomos por regla y 16 reglas por paquete), con efectos nucleares REQUIRE/FORBID y UNKNOWN no convertido silenciosamente. No acepta una sintaxis física concreta ni un parser.
+- DEC-C10-068 fija la regla RUL-SVC-ENABLE-PROFILE-01 y sus dos referencias semánticas a PAR-SVC-ENABLED y PAR-SVC-PROFILE; la expresión aceptada es OR(NEQ(ENABLED,true),IN(PROFILE,{STANDARD,READ_ONLY})).
+- DEC-C10-094 exige que los dos operand bindings estén representados exactamente una vez, como dos REF tipados o dos enlaces AST tipados según la gramática canónica.
+- DEC-C10-076/077 regulan referencias tipadas UDG y objetos REF de configuración, respectivamente; no autorizan a confundirlos. Una FK U_G, EDGE o referencia del envelope no crea por sí misma un objeto REF.
+- La plantilla U_G es un registro de inventario/evidencia y no contiene tablas físicas dedicadas CMP/PAR/REF/RUL/MET. Sus filas son plantilla vacía; no hay snapshots C10-S materializados ni evidencia de cobertura en esa plantilla.
+
+**Conclusión AB-M01:** quedan definidos el número y significado de los dos operand bindings; no es posible seleccionar responsablemente REF físico frente a enlaces AST tipados con las fuentes actuales. El gate permanece OPEN hasta reconciliar la gramática/sintaxis AST y el modelo de serialización del objeto. No se duplicarán los operandos como REF y AST a la vez.
+
+### 8.2. AB-M02 — namespaces, mapping y canonicalización
+
+- El mapping semántico de PROFILE es total e inyectivo para el dominio aceptado: STD→STANDARD, RO→READ_ONLY, OFF→DISABLED. ENABLED conserva BOOL con igualdad exacta y sin coerción.
+- DEC-C10-068 no acepta DEFAULT contractual para ENABLED ni PROFILE. DEFAULT se mantiene como estado genérico del contrato abstracto, pero no se introduce en la instancia confirmatoria aceptada sin decisión expresa. ABSENT/NULL/DEFAULT/VALUE no se colapsan.
+- La matriz M distingue C_src, C_dst declarado y C_dst aplicado; no existe todavía schema/payload físico de estos objetos, ni namespace físico completo/versionado para cada etapa.
+- DEC-C10-074 acepta JCS únicamente para el envelope UDG-01 bajo el perfil TGCV-C10S-JCS-1. No se extiende automáticamente a payloads de configuración, S1/S2 ni C_src/C_dst. Los artefactos de intercambio/payload requieren un contrato propio o una decisión explícita de reutilización con alcance y compatibilidad justificados.
+- MET debe fijar identidades y versiones independientes de contrato, instancia, esquemas fuente/destino, mapping, IAM y oráculo. Hashes no se calculan ni interpretan como equivalencia semántica antes de fijar la serialización aplicable.
+
+**Conclusión AB-M02:** el mapping semántico BOOL/ENUM está resuelto a nivel documental; namespaces/códigos físicos, serialización, canonicalización de payload y filas IAM de instancia permanecen OPEN. No se adopta JCS para el payload por analogía ni se inventa un schema.
+
+### 8.3. Cambios de estado permitidos por esta pasada
+
+| Subgate | Estado tras reconciliación |
+|---|---|
+| AB-01: roster lógico y operandos | DESIGN RESOLVED |
+| AB-01: encoding físico REF/AST | OPEN |
+| AB-01: IAM por snapshot/etapa/ruta y cobertura | OPEN |
+| AB-02: mapping semántico BOOL/ENUM | DESIGN RESOLVED |
+| AB-02: namespaces/schema/serialización de payload | OPEN |
+| AB-02: canonicalización de C_src/C_dst/M | OPEN |
+| AB-02: DEFAULT en instancia confirmatoria | NOT_IN_BASELINE; no introducir sin decisión |
+
+No se ha creado un nuevo Decision Record ni se ha alterado el alcance de DEC-C10-074/076/077/078. No se han generado registros, snapshots, filas IAM, hashes ni observaciones.
