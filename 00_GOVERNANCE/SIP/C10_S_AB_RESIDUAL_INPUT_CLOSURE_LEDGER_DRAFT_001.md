@@ -1011,3 +1011,14 @@ Se reutilizan auditoría IV §§12.2–12.4 y 14.5–14.7, registro causal §§2
 **MAP-06:** dictámenes independientes EXCLUSION_O y EXCLUSION_Vj (SUPPORTED/CONTRADICTED/UNKNOWN). Una ruta directa a Value puede existir con Outcome constante. Se separan exclusión estructural, medición diferencial/oráculo e interferencia/carryover. ITT_Z^D2 puede conservar interpretación de asignación si diseño, consistencia, unidad/interferencia y medición son válidos; LATE_f/Wald no se interpreta causalmente si falla cualquier supuesto IV. Estos gates no identifican θ_A(q) ni mediación por sí solos.
 
 **Estado:** contratos documentales integrados; MAP-05/06 MATERIAL OPEN. No hay dictamen empírico de exclusión. AB-M06/M09/M10 siguen OPEN. Sin Design Freeze ni ejecución científica.
+
+## 28. MAP-07 — matriz de adjudicación y frontera entre estimandos
+
+Se especializan maestro §260, C-MED §257 y auditoría IV §14.5, sin crear estimandos. La adjudicación se realiza por estimando × resultado/dimensión × población/unidad × horizonte × versión.
+
+Se fijan las condiciones de admisibilidad y límites de transferencia para: ITT_Z^D2 (asignación/política), LATE_f^D2 (IV focal bajo IV-G1…G8), θ_Af(q_X*) (políticas focales), θ_A(q) (políticas sobre ΔT_acc* completo) e IIE_M (mediación interventional secundaria). Se explicita que ninguno sustituye automáticamente a otro; Outcome y cada V_j reciben dictámenes independientes; los estimandos no se suman ni se restan sin descomposición compatible previamente definida.
+
+El Analyzer debe rechazar target mismatch, no acceder a truth/potenciales, comprobar cada supuesto, mantener UNKNOWN cuando falte evidencia y abstenerse cuando no se pueda distinguir vía focal de colateral. Se reutilizan las clases/denominadores/contratos de §256 y P177/P178/P179/P182/P183; no se inventan umbrales ni métricas.
+
+**Cerrado documentalmente:** matriz lógica de adjudicación, límites de transferencia y regla de abstención MAP-07.  
+**OPEN material/identificativo:** gates MAP-01…06, MED-02…06, C-Value, AN-04 y evidencia por resultado/dimensión. MAP-07 no identifica empíricamente ningún estimando. Sin Design Freeze, implementación ni ejecución; scientific_execution=false; execution_authorized=false.
