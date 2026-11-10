@@ -2757,3 +2757,19 @@ Un REF separado requiere relación constitutiva independiente. Fuente: ledger AB
 | MD-C1/MD-C4 | OPEN / NONE | No se reemplazan por truth estipulada del DGP |
 
 AB-03/04 no pasan a DONE ni autorizan Design Freeze, fixtures, implementación o ejecución científica.
+
+
+## 138. Estado AB-01/02 tras reconciliación semántica (2026-11-10)
+
+| Subgate | Estado | Límite |
+|---|---|---|
+| AB-01 operand bindings | DESIGN RESOLVED | AST→PAR tipado, exactamente dos; no REF duplicado |
+| AB-01 encoding AST/payload | OPEN | schema, escaping, canonicalización y constraints no definidos |
+| AB-02 PAR por etapa | ACCEPTED BY DEC-C10-083 | Siete stage_key; preservación F1/A1 y observación aplicada F2/A2 |
+| AB-02 CMP | ACCEPTED BY DEC-C10-082 | Anclaje 1:1 a NODE por snapshot exacto; roster completo/evidencia OPEN |
+| AB-02 RUL | SEMANTIC CROSSWALK RECONCILED | PREDICATE, owner/scope/AST/operands/effect; mapping y validación OPEN |
+| AB-02 REF | OPEN | No declarar REF=0 sin inventario/cobertura exhaustivos |
+| AB-02 MET/POL | PARTIALLY RESOLVED | MET reutiliza registros existentes; POL ausente por diseño; hash OPEN |
+| M_F / M_A | SEMANTICALLY SPECIFIED | IDs/versiones y mappings materiales por etapa OPEN; independencia técnica no demostrada |
+
+AB-01/02 no pasan a DONE ni habilitan Design Freeze, schema freeze, fixtures, parser, implementación o ejecución científica. scientific_execution=false; execution_authorized=false.
