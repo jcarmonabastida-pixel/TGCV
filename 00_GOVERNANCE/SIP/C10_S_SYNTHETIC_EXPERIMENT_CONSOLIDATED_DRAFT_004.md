@@ -10189,3 +10189,12 @@ La reconstrucción histórica evita duplicar DEC-C10-054/068/069/071/079/080/082
 Se definen mappings semánticos por etapa M_F1_sem, M_F2_sem, M_A1_sem, M_A2_sem y sus composiciones de ruta. La equivalencia semántica no demuestra independencia técnica de A respecto de B. No se crean entidades/columnas ni se extiende JCS UDG-01.
 
 Estado: AB-01 DESIGN RESOLVED semánticamente; encoding/schema/canonicalización OPEN. AB-02 SEMANTIC CROSSWALK RECONCILED; mapping_id/version, REF exhaustivo, registros por snapshot, cobertura y evidencia OPEN. Sin IAM sellado, parser, fixtures, implementación ni ejecución.
+
+
+## 243. AB-06/07 — estructura formal simbólica de D2 y distribución conjunta C_dep* (2026-11-10)
+
+Se incorpora la especificación matemática simbólica del ledger AB §10: kernel secuencial de programación, recepción, cumplimiento, intento, instalación, reintentos y desviaciones; orden canónico (I,G,C,O) y roster de 16 celdas θ_{igco|z,h}; restricciones simplex y márgenes; regla C_dep*=1 únicamente en 1111; separación entre S_install e I adjudicado; y familias de sensibilidad S0–S9.
+
+Esta sección fija estructura y restricciones, no valores. No se aprueban probabilidades, ceros estructurales, independencia, estratos operativos, amplitudes de sensibilidad ni calibración. Truth_DGP y observed_state permanecen separados, así como ausencia de evento y ausencia de evidencia. Soporte e interferencia dependen de AB-08; medición y adjudicación, de AB-09. Las vías colaterales impiden afirmar aislamiento de B o efecto puro de accesibilidad sin evidencia material.
+
+**Estado:** AB-06/07 PARAMETER STRUCTURE SPECIFIED SYMBOLICALLY; NUMERICAL PARAMETERIZATION OPEN. AB continúa IN_PROGRESS. No Design Freeze, fixtures, implementación, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
