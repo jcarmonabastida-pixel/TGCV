@@ -10215,3 +10215,16 @@ La parametrización mantiene las 16 celdas y la distribución conjunta θ_{igco|
 La ley upstream P/R/Q/W/S/N/K no determina G/C/O; causas técnicas compartidas pueden inducir dependencia y deben conservarse en la distribución conjunta o en historia/estratos explícitos. La sensibilidad debe distinguir fallos de instalación, integridad, compatibilidad y operabilidad, y probar la robustez a imponer o retirar O⇒I cuando su definición se cierre. No se asignan magnitudes ni probabilidades.
 
 **Estado:** dependencia conceptual especificada; contratos operacionales de I/G/C/O, definición de O, alcance de C, protocolo/momento de G, unidad común, posibles ceros, θ numérica, calibración y sensibilidad permanecen OPEN. AB-07 no está cerrado materialmente. No Design Freeze, fixtures, implementación, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 245. AB-07 — plantilla contractual de I/G/C/O y gate de restricciones lógicas (2026-11-10)
+
+Se integra el ledger AB §12 como plantilla de cierre para los cuatro predicados C_dep*. Cada contrato debe versionar identidad del predicado, unidad, artefacto/hash, entorno/snapshot, scope/modos, ventana/orden de eventos, regla de verdad, evidencia positiva/negativa, regla de desconocido, adjudicación/cegamiento, modos de fallo y provenance.
+
+La especificación distingue: (I) evento S_install frente a estado de instalación persistente y rollback; (G) identidad/integridad de contenido frente a autenticidad no verificada, fallo del verificador y falta de evidencia; (C) matriz/versiones/interfaces/modos y cobertura, separando juicio ex ante de prueba efectiva; (O) criterio, duración/estabilidad, modos y admisión de operación remota o efímera. Ningún predicado se adjudica por proxy ni por ausencia de registro sin cobertura exhaustiva.
+
+Una implicación X⇒Y solo podrá reducir el roster de 16 celdas si las definiciones comparten unidad/artefacto/entorno/snapshot/ventana, X contiene constitutivamente Y, el caso contrario es observable, no existe ruta alternativa admitida y la regla está versionada antes de generar fixtures. Las estipulaciones sintéticas deberán conservar un adversarial que retire la restricción. O⇒I y C/O no superan actualmente el gate; G no impone implicaciones generales. No se elimina ninguna celda.
+
+Se formaliza la separación tripartita `truth_DGP`, `observed_state` (1/0/?) y `mechanism_trace`. La ausencia de registro no equivale a cero sin cobertura exhaustiva.
+
+**Estado:** plantilla y gate DESIGN SPECIFIED; contratos materiales, unidad/artefacto, entorno, ventanas, criterios, cobertura, adjudicación, definición de O, alcance de C, distribución conjunta y sensibilidad OPEN. AB-07 continúa materialmente OPEN. No Design Freeze, fixtures, implementación, simulación ni ejecución; scientific_execution=false; execution_authorized=false.
