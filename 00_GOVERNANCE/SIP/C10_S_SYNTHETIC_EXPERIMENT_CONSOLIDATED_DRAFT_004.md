@@ -12197,3 +12197,17 @@ Se reutilizan DEC-C10-051/095; B1 por UE; instancia de servicio por UE; una opor
 **Valoración:** perspectiva B1 como base aceptada; autoridad/regla normativa ex ante, fuentes, instrumentos, escalas, baseline, horizonte, dimensiones V_j y trade-offs siguen OPEN. No se selecciona ninguna dimensión histórica ni índice/peso. No se crean tests nuevos; se reutilizan P179/P182/P183 y MEAS/MISS.
 
 **Dictamen:** caso semántico candidato reconciliado, pero no instanciado ni medible. La siguiente decisión mínima es nombrar/aceptar la operación basal de B1. En paralelo, PB-MAT continúa bloqueado por ausencia de roster UE, IAM/C_SRC observado, snapshots, inventario/provisión y evidencia de aislamiento; se necesita fuente aprobada/material autorizada. Sin Design Freeze, schema físico, captura, fixtures, implementación, simulación, estimación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+## 278. Aceptación de la clase de propósito basal B1 y cierre estructural parcial de Need_preZ (2026-11-11)
+
+**Artefacto rector actualizado:** `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md` §12. **Estado:** PURPOSE_CLASS_ACCEPTED / CONCRETE_OPERATION_OPEN / NEED_PREZ_NOT_MATERIALIZED / CONSEQUENCE_MEASUREMENT_OPEN / NOT_DESIGN_FROZEN.
+
+Se registra la aceptación expresa de que B1 tiene un objetivo operativo basal consistente en mantener operativa una función de servicio que depende de la configuración migrada al entorno de destino. Se acepta la clase de propósito y la relación B1–configuración–función, pero no se ha nombrado la operación concreta. No se presenta como truth concreta del DGP ni se asigna automáticamente `Need_preZ=1` a todas las UE.
+
+`Need_preZ` conserva clasificación pre-Z 1/0/?: existencia del objetivo concreto ya especificado; ausencia según definición DGP; o estado no determinado. Unknown no equivale a ausencia y observed_evidence no sustituye truth_dgp. La clasificación no puede depender de Z, provisión, C_dep*, accesibilidad, Reach, oportunidad, Request_event, procesamiento, Outcome, respuesta o ejecución. La población ITT no se filtra por eventos post-Z. E_req_preZ, elegibilidad experimental, D_resource y Request_event siguen separados.
+
+La consecuencia B1 se refiere al cambio en la situación de B1 respecto de la función/operación basal concreta y permanece distinta del proceso técnico, F*, O-CONF y accesibilidad. La envolvente de consecuencias existente es analítica, no roster V_j ni outcome compuesto. Autoridad/criterio de valoración, fuentes, escalas, baseline, horizonte y dimensiones siguen OPEN. Se reutilizan §224, P179/P182/P183 y MEAS/MISS; no se crean tests ni indicadores.
+
+**Siguiente dependencia:** reconciliar el contrato funcional/servicio ya existente en el microdominio para nombrar y versionar la operación concreta sin inventarla ni equipararla a un predicado técnico de F*. Después podrá instanciarse truth_preZ y derivarse una consecuencia candidata. No se reabren B1/UE, cardinalidad, servicio por UE, oportunidad estandarizada ni D2.
+
+**Dictamen:** cierre semántico de la clase de propósito y de las reglas estructurales de Need_preZ; contenido concreto, truth por UE y consecuencia medible siguen OPEN. Sin Design Freeze, roster, schema físico, captura/materialización, fixtures, implementación, generación de datos, simulación, estimación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
