@@ -2721,3 +2721,18 @@ Se acepta como base de trabajo que B1 es la entidad sintética cuyo Need_preZ an
 Se reutilizan DEC-C10-095, B1 por UE, oportunidad estandarizada por UE, identidad/versionado de servicio y contratos §224/P179/P182/P183. O-CONF es el candidato técnico mejor anclado, no operacionalizado. P179 mantiene vector y trade-offs; no se eligen dimensiones históricas ni pesos por defecto. Cada O_k/V_j requiere ficha §224 independiente; no hay transferencia de identificación Outcome→Value ni entre dimensiones.
 
 **OPEN:** instancia/provenance material B1; contenido/medición Need_preZ; perspectiva/autoridad; consecuencia e horizonte; selección justificada de O_k/V_j; fuentes, escalas, baseline, adjudicación, error, missingness/censura; vías causales y soporte. C3/C4 permanecen no identificados en D2 material actual. No se modifica A, D2, P*τ2/P*_F, Core, RMA, Matrix, STATUS o claims. Sin Design Freeze, implementación, fixtures, simulación, estimación o ejecución.
+
+
+## 16.163. Reconciliación integrada de factibilidad confirmatoria y Design Freeze (2026-11-11)
+
+**Artefacto rector:** C10_S_INTEGRATED_CONFIRMATORY_FEASIBILITY_AND_DESIGN_FREEZE_RECONCILIATION_DRAFT_001.md. **Estado:** INTEGRATED_RECONCILIATION_COMPLETED / CONFIRMATORY_FEASIBILITY_NOT_ESTABLISHED / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+Se integran en una sola evaluación los resultados PA/C1, PB/PB-MAT, PC/C3-C4, PD/DGP, PE, identidad B1 y B2–B3. No se reinician paquetes ni se reabren decisiones aceptadas. D2 permanece escenario primario candidato y D1 secundario; P*τ2 es población primaria candidata y P*_F subpoblación secundaria; B1 y oportunidad única por UE conservan su alcance aceptado.
+
+**Dictamen conjunto:** no existe todavía un diseño confirmatorio materialmente identificado ni listo para Design Freeze. El mecanismo material de asignación D2 (ratio/probabilidades, estratos, algoritmo/semilla y desviaciones) no está especificado; q_X*/q_L*, positividad y soporte no están materializados. La unidad UE=UA depende de aislamiento que no está demostrado; si existen recursos/agentes/estado/canales compartidos debe considerarse clúster/exposición. IAM/C_SRC, roster, snapshots, inventario B, grafo transitivo, ACL/recursos, provisión/crossover y no-afectación A1/A2 siguen ausentes. Outcome carece de ficha §224 completa y Value no está instanciado; no hay Y_j confirmatorio completo.
+
+ITT de política/paquete, primeras etapas técnicas/focales, θ_A/θ_Af, LATE_f, IIE C4 y efecto directo/residual se mantienen como estimandos separados. Ninguno está identificado/evaluable con el estado material actual. No se calculan cotas numéricas porque faltan cobertura, parámetros y restricciones justificadas; cotas/sensibilidad quedan como opción futura, no como resultado actual. Outcome y Value permanecen distintos y no se impone V_j=f(Outcome) ni una vía causal exclusiva Outcome→Value.
+
+**Gates:** G-SCI, G-MAT, G-SCHEMA, G-ROLE, G-TEST y G-REPRO BLOCKED; G-AUTH NOT GRANTED. El maestro C10-S Draft 004 devolvió SHA 61d3079213558f6f74c14b60600ae3ca04c0a395 con contenido vacío en esta recuperación; no se reconstruye ni sobrescribe. La reconciliación es integrada sobre los contratos especializados recuperables, pero no certifica alineación íntegra con el maestro inaccesible.
+
+No se modifica main/Core/RMA/Matrix/STATUS/claims ni decisiones aceptadas. No Design Freeze, captura material, schema físico, fixtures, implementación, simulación, estimación o ejecución. scientific_execution=false; execution_authorized=false.
