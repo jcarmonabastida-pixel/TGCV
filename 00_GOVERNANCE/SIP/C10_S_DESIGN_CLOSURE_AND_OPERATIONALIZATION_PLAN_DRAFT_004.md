@@ -2681,3 +2681,15 @@ La cobertura adversarial mínima incluye efectos focales positivos/nulos/adverso
 **Bloqueos:** Value no instanciado por PA; Outcome no operacionalizado; falta IAM/snapshots/inventario material D2; θ_A(q), θ_Af(q_X*) y mediación siguen no identificados en D2 actual según PC; parámetros conjuntos, contrastes contrafactuales concretos, soporte, interferencia, F*/G/H/ventanas y estadística cuantitativa siguen abiertos. La recuperación del maestro C10-S está bloqueada porque fetch_file devolvió contenido vacío con SHA e791578396a9527cb3b72b1b7c2d7ff1bbe0c100. No se sobrescribe ni se declara actualizado un maestro no recuperado íntegramente.
 
 No se autoriza código, fixtures confirmatorios, generación de datos, simulación, estimación ni ejecución científica. Siguiente paquete PE; preparación conceptual de interfaces solamente, hasta cerrar los requisitos científicos y recibir autorización expresa.
+
+## 16.159. Reconciliación integrada PE — especificación técnica y contrato de implementación (2026-11-11)
+
+**Estado:** PE_RECONCILED_DOCUMENTALLY / TECHNICAL_CONTRACT_PARTIAL / IMPLEMENTATION_NOT_READY / NOT_IMPLEMENTED / NOT_EXECUTED. Artefacto rector: C10_S_PE_INTEGRATED_TECHNICAL_SPECIFICATION_AND_IMPLEMENTATION_CONTRACT_DRAFT_001.md; maestro §270.
+
+PE reutiliza DGP temporal/roles, U_G, plantilla/protocolo de evidencia, identidad/versionado/snapshot matching, snapshot/delta, manifiesto B, Decision Log y Test Contract Register. Define seis responsabilidades lógicas (Orquestador, Generator, Proyector/Sealer, Analyzer, Evaluator/Adjudicator y Artifact/Provenance Store), contratos de intercambio y firewall truth_dgp/observed_evidence/evaluation. No crea un segundo modelo de datos ni nuevos IDs de prueba. Preserva identidades TID/SID/RID/EID, object_record_id/version, snapshot exacto, request_id/trajectory_id, estados trivalentes y los ejes temporales diferenciados.
+
+DEC-C10-074/JCS solo rige el envelope U1 de UDG-01; no se generaliza a todos los registros. El esquema físico, serialización de bundles/eventos, motor, cardinalidades, almacenamiento, permisos, secretos, retención y contrato final del Analyzer siguen OPEN. U_G SR-01…20 conserva 8 PASS_STATIC, 10 CONDITIONAL y 2 NOT_ASSESSED; SR-13 sigue CONDITIONAL y SR-19/20 NOT_ASSESSED.
+
+Gates para implementación: G-SCI, G-MAT, G-SCHEMA, G-ROLE, G-TEST, G-REPRO y G-AUTH. PA–PD mantienen bloqueos de Value/Outcome, IAM/snapshots/material D2, mapping B→g^Af, colaterales, soporte/interferencia, parámetros DGP, contrastes, fixtures, N/R, potencia y tolerancias. PC no identifica θ_A(q), θ_Af(q_X*) ni mediación en el D2 material actual.
+
+**Resultado:** PE reconciliado documentalmente; contrato técnico parcial; implementación no lista, no implementada ni ejecutada. No se crea decisión científica nueva ni se autoriza código/fixtures/simulación/ejecución. scientific_execution=false; execution_authorized=false.
