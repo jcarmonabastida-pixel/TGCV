@@ -361,3 +361,10 @@ La probabilidad experimental P(Z=1 | estrato,UA), ratio, estratos, algoritmo, se
 P*τ2/P*_F se preservan. E_i y App siguen sin operacionalización; C_dep,0 y A_f,0* no se infieren entre sí. UNKNOWN pre-Z no se recodifica como 0 ni se excluye silenciosamente; el manejo analítico debe decidirse antes de Z. q_X* no es propensión de asignación y su distribución/soporte no están materializados; q_L* solo procede si se necesita régimen secuencial sobre historia post-Z con identificación longitudinal. UE=UA solo con aislamiento; de lo contrario clúster/exposición y estimando compatible.
 
 **Resultado:** contrato documental de distinciones y condiciones reconciliado; asignación, población, soporte e interferencia permanecen OPEN/BLOCKED. No se reinician C1.1–C1.4, PA ni PB. Sin Design Freeze ni autorización de captura/implementación/ejecución.
+
+
+## 17. Reconciliación de medición confirmatoria Outcome/Value (2026-11-11)
+
+Artefacto rector: `C10_S_OUTCOME_VALUE_OPERATIONALIZATION_RECONCILIATION_DRAFT_001.md`; maestro §276. Se aclara la separación F* (criterio funcional) / O-CONF (resultado adjudicado de conformidad destino) / Value (consecuencia valorada para B1). F* y O-CONF no se cuentan como endpoints independientes. O-CONF sigue candidato, sin predicados, mapping, snapshots, H, evento terminal ni oráculo validado.
+
+Value mantiene vector P179; B1/Need_preZ como base, sin autoridad/criterio/Consecuencia V_j ni dimensión seleccionada. Las medidas O/V requieren fichas §224 independientes, P182/P183 y observación/provenance. ITT_Z^D2(O-CONF) y ITT_Z^D2(V_j) no transfieren identificación entre sí. Sin resultado confirmatorio completo, no hay C1 estimable ni Design Freeze. No duplicar P179/P182/P183/MEAS/MISS ni autorizar ejecución.
