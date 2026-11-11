@@ -2790,7 +2790,7 @@ AB-01/02 no pasan a DONE ni habilitan Design Freeze, schema freeze, fixtures, pa
 | MED-02 / MED-03 | OPEN | Esta aceptación no los cierra |
 | Design Freeze / implementación / ejecución | NOT AUTHORIZED | scientific_execution=false; execution_authorized=false |
 
-**Master propagation caveat:** la ruta 00_GOVERNANCE/SIP/C10_S_SYNTHETIC_EXPERIMENT_CONSOLIDATED_DRAFT_004.md devuelve contenido vacío (longitud 0) en la lectura de GitHub, aunque tiene blob SHA registrado. No se sobrescribe ni se afirma propagación al maestro hasta recuperar y verificar su contenido real. DEC-C10-095, Decision Log, plan y matriz Value sí se registran en esta rama; la reconciliación del maestro es un subgate documental pendiente.
+**Nota histórica supersedida (2026-11-11):** la lectura Contents devolvía longitud 0, pero el blob Git se recuperó íntegramente; el maestro recibió §274. La propagación al maestro está verificada mediante fetch_blob, aunque fetch_file/Contents siga devolviendo vacío por limitación de lectura. DEC-C10-095, Decision Log, plan y matriz Value sí se registran en esta rama; la reconciliación del maestro es un subgate documental pendiente.
 
 
 ## 140. Gate B-BEN/B-VAL — C10S-B-VALUE-MIN-001 (2026-11-11)
@@ -3220,7 +3220,7 @@ No se declara Outcome/Value operacionalizado ni Design Freeze. No implementació
 | Efecto directo/residual | NOT DEFINED / NOT IDENTIFIED | No se deriva por resta ad hoc |
 | Cotas y sensibilidad | FUTURE OPTION ONLY | No hay cobertura, parámetros ni restricciones para cotas informativas actuales |
 | Design Freeze | BLOCKED | G-SCI/G-MAT/G-SCHEMA/G-ROLE/G-TEST/G-REPRO bloqueados; G-AUTH no otorgado |
-| Maestro C10-S | RECOVERY BLOCKER | SHA disponible, contenido vacío; no reconstruido ni sobrescrito |
+| Maestro C10-S | RECOVERED / §274 PROPAGATED | Blob íntegro recuperado; §§266–274 inspeccionados; la lectura Contents sigue devolviendo vacío, por lo que las verificaciones se hacen mediante blob SHA |
 
 No se autoriza captura, schema físico, fixtures, implementación, generación de datos, simulación, estimación o ejecución. scientific_execution=false; execution_authorized=false.
 
