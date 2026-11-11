@@ -154,3 +154,5 @@ jobs:
             ${{ runner.temp }}/c10s-clean-replay-provenance.json
           if-no-files-found: warn
           retention-days: 30
+
+# Replay invocation record: exact P178 primary artifact 43083651875; no Analyzer or protocol changes.
