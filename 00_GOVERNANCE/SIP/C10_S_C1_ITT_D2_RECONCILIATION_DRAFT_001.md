@@ -350,3 +350,14 @@ Un ITT de asignación D2 solo podría interpretarse bajo mecanismo de asignació
 **Estado del paquete:** reconciliado integralmente en esta iteración; no equivale a cierre científico de C1. Los bloqueos materiales se arrastran a PB (servicio/B1, snapshots y provisión), PC (soporte/estimandos de accesibilidad) y a la consolidación posterior de PA (asignación, Outcome/Value y horizonte una vez disponibles los contratos materiales). No se reinicia C1.1–C1.4 ni se vuelve a solicitar P*τ2/P*_F.
 
 No se modifica D1/D2, DEC-C10-066/067, el Core, main, RMA, Evidence→Claim Matrix ni claims. `scientific_execution=false`; `execution_authorized=false`. No Design Freeze, schemas físicos, fixtures, implementación, simulación o ejecución.
+
+
+## 16. Reconciliación integrada D2 — asignación, población y soporte (2026-11-11)
+
+**Artefacto rector:** C10_S_D2_ASSIGNMENT_POPULATION_SUPPORT_RECONCILIATION_DRAFT_001.md. Este ciclo concreta la separación entre asignación Z, programación D2, intento/recepción, éxito técnico y apertura focal; integra elegibilidad pre-Z, q_X*/q_L*, soporte y unidad/interferencia.
+
+La probabilidad experimental P(Z=1 | estrato,UA), ratio, estratos, algoritmo, semilla/hash, provenance y desviaciones siguen NOT SPECIFIED. No se confunde con las reglas D2 ya aceptadas P(W_programmed=1 | Z=0)=0 y P(W_programmed=1 | Z=1)=1. c/b (cumplimiento/intento de fondo) siguen OPEN; s=0.80 no aprobado.
+
+P*τ2/P*_F se preservan. E_i y App siguen sin operacionalización; C_dep,0 y A_f,0* no se infieren entre sí. UNKNOWN pre-Z no se recodifica como 0 ni se excluye silenciosamente; el manejo analítico debe decidirse antes de Z. q_X* no es propensión de asignación y su distribución/soporte no están materializados; q_L* solo procede si se necesita régimen secuencial sobre historia post-Z con identificación longitudinal. UE=UA solo con aislamiento; de lo contrario clúster/exposición y estimando compatible.
+
+**Resultado:** contrato documental de distinciones y condiciones reconciliado; asignación, población, soporte e interferencia permanecen OPEN/BLOCKED. No se reinician C1.1–C1.4, PA ni PB. Sin Design Freeze ni autorización de captura/implementación/ejecución.
