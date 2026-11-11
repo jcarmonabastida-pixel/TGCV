@@ -155,8 +155,10 @@ def main():
             for scenario in ("null","positive","negative"):
                 results.append(run_cell(N_REFERENCE,pi0,K,scenario,args.replications,BASE_SEED+29*idx))
                 idx+=1
+    extra_fields={"bias_mcse","bias_mcse_over_sampling_sd","rmse_mcse","rmse_mcse_over_sampling_sd","mean_ci_width_mcse","mean_ci_width_mcse_relative"}
+    main_fields=[k for k in results[0] if k not in extra_fields]
     with (args.out/"p178_reference_N700.csv").open("w",newline="",encoding="utf-8") as f:
-        w=csv.DictWriter(f,fieldnames=list(results[0])); w.writeheader(); w.writerows(results)
+        w=csv.DictWriter(f,fieldnames=main_fields); w.writeheader(); w.writerows([{k:x[k] for k in main_fields} for x in results])
     curve=[]
     if not args.reference_only:
         SCENARIOS["weak_signal"]=(1.0,0.99)
@@ -165,7 +167,11 @@ def main():
                 seed=BASE_SEED+100_000+101*n_idx+{"null":0,"positive":1,"negative":2,"weak_signal":3}[scenario]
                 curve.append(run_cell(N,0.50,10,scenario,args.replications,seed))
         with (args.out/"p178_central_N_theta_curve.csv").open("w",newline="",encoding="utf-8") as f:
-            w=csv.DictWriter(f,fieldnames=list(curve[0])); w.writeheader(); w.writerows(curve)
+            w=csv.DictWriter(f,fieldnames=main_fields); w.writeheader(); w.writerows([{k:x[k] for k in main_fields} for x in curve])
+    diagnostic_fields=["N","R","pi0","K","scenario","theta_true","bias_mcse","bias_mcse_over_sampling_sd","rmse_mcse","rmse_mcse_over_sampling_sd","mean_ci_width_mcse","mean_ci_width_mcse_relative"]
+    diagnostics=[{k:x[k] for k in diagnostic_fields} for x in results+curve]
+    with (args.out/"p178_continuous_mcse_diagnostics.csv").open("w",newline="",encoding="utf-8") as f:
+        w=csv.DictWriter(f,fieldnames=diagnostic_fields); w.writeheader(); w.writerows(diagnostics)
     script_path=Path(__file__).resolve()
     meta={
         "protocol":"TGCV-C10-S-P178-FOCAL-MC-REPRO-001",
@@ -179,7 +185,7 @@ def main():
         "central_curve_N":CURVE_NS,"central_curve_pi0":0.5,"central_curve_K":10,
         "method":"exact DP marginal pmf for Q_B1 per UE; independent sampling of Q values; Welch two-sample t CI; two-sided alpha=.05",
         "script_sha256":hashlib.sha256(script_path.read_bytes()).hexdigest(),
-        "outputs":["p178_reference_N700.csv"]+([] if args.reference_only else ["p178_central_N_theta_curve.csv"]),
+        "outputs":["p178_reference_N700.csv"]+([] if args.reference_only else ["p178_central_N_theta_curve.csv"])+["p178_continuous_mcse_diagnostics.csv"],
         "limitation":"benchmark estimator only; no TGCV Analyzer, no adversarial measurement scenarios, no confirmatory experiment"
     }
     meta_path=args.out/"p178_run_manifest.json"
