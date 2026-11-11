@@ -318,6 +318,21 @@ class Evaluator:
         contract.validate()
         if tolerance < 0.0 or result.run_id != truth.run_id:
             raise ContractError("invalid tolerance or mismatched run identity")
+        if result.estimate is None:
+            result_payload = {"run_id": result.run_id, "estimand_id": result.estimand_id,
+                              "estimand_version": result.estimand_version,
+                              "reason": result.abstention_reason, "input_sha256": result.input_sha256}
+        else:
+            result_payload = {"run_id": result.run_id, "estimand_id": result.estimand_id,
+                              "estimand_version": result.estimand_version,
+                              "package_identification": result.package_identification,
+                              "focal_identification": result.focal_identification,
+                              "estimate": result.estimate, "standard_error": result.standard_error,
+                              "interval_95": result.interval_95,
+                              "abstention_reason": result.abstention_reason,
+                              "input_sha256": result.input_sha256}
+        if _canonical_hash(result_payload) != result.output_sha256:
+            raise FirewallError("AnalyzerResult seal/hash mismatch")
         package_error = None if result.estimate is None else abs(result.estimate - truth.itt_value_truth)
         package_recovery = package_error is not None and package_error <= tolerance
         focal_error = None
