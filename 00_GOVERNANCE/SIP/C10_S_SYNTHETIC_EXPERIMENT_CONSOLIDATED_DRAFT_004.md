@@ -12033,3 +12033,32 @@ Siguen bloqueados por material o definición no disponible: asignación y probab
 **Siguiente paquete activo: PD — DGP, mecanismos C5 y evaluación adversarial.** PD deberá incorporar esta jerarquía y especificar las verdades contrafactuales, los escenarios identificados/no identificados y las aserciones de recuperación/abstención, sin reabrir PC salvo evidencia nueva o contradicción.
 
 No se modifica DEC-C10-066/067/068/069/095, el Core, main, RMA, Evidence→Claim Matrix ni claims. No se declara C3/C4 identificado, ni Value operacionalizado. Sin Design Freeze, schema físico, fixtures, parser, validator ejecutable, simulación o ejecución científica. scientific_execution=false; execution_authorized=false.
+
+
+## 269. Reconciliación integrada PD — DGP, mecanismos C5 y evaluación adversarial (2026-11-11)
+
+**Estado:** PD_RECONCILED_DOCUMENTALLY / DGP_QUANTITATIVE_SPECIFICATION_OPEN / NOT_DESIGN_FROZEN. Registro desarrollado: C10_S_PD_DGP_MECHANISM_AND_ADVERSARIAL_EVALUATION_RECONCILIATION_DRAFT_001.md. Se propaga a plan §16.158, protocolo de paquetes §11, Closure Control Matrix, inventario DGP §13, matriz temporal §14 y Test Contract Register §58.
+
+### 269.1 Reutilización y arquitectura de verdad
+
+Se reutilizan, sin duplicar IDs, la matriz temporal de predicados, inventario finito de DGP/Reach, S4R-01…18, MEAS-01…14, MISS-01…15, POL-01…10, VER, TRJ, INT, GEN, PM, SNAP, REACH, PROV, GC, U_G y P177/P178/P179/P182/P183. La arquitectura del DGP distingue: (i) truth_dgp, con estados estructurales, potenciales, mecanismos y contribuciones ocultos al Analyzer; (ii) observed_evidence, con registros, cobertura, error, versiones y ausencia disponibles al Analyzer; y (iii) evaluation/adjudication, que compara con truth solo después de sellar la salida del Analyzer. La cobertura epistémica no altera la verdad estructural.
+
+Se mantiene T_acc*=(U*,R*,C*,X*), ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*), A_f* como proyección focal, D_f* como apertura, y Reach/trayectoria/selección/ejecución/Outcome/Value como constructos diferenciados. La cadena generativa no presupone mediación exclusiva ni ausencia de vías colaterales.
+
+### 269.2 Mecanismos C5 y contrafactuales
+
+La contribución petición–trayectoria se adjudica por etapa concreta: Request_opportunity, Request_attempt, Request_received, Request_admitted/rejected, Request_processing o Request_response. Cada clase requiere contraste contrafactual y propiedad de trayectoria preespecificada; coincidencia temporal/ID, recepción, respuesta técnica o éxito no bastan. Si una etapa posterior no ocurre, el DGP registra el mecanismo de no transición sin imputar contribución de esa etapa.
+
+Se preservan las clases aceptadas NECESSARY_CONTRIBUTION, ENABLING_CONTRIBUTION y MODIFYING_CONTRIBUTION de DEC-C10S-B1-CAUSAL-ADJUDICATION-001. Pueden coexistir y no implican Outcome favorable ni Value. TEMPORAL_ASSOCIATION, TRACEABILITY_LINK y CAUSAL_CONTRIBUTION permanecen no intercambiables conforme a DEC-C10S-B1-REQUEST-TRAJECTORY-LINK-001. No se reabren estas decisiones.
+
+### 269.3 Cobertura adversarial y evaluación
+
+La cobertura requerida incluye efectos focales nulos/adversos, fallos parciales, vías directas/colaterales, interacciones, heterogeneidad, primera etapa nula/débil, defiers, exclusión violada, interferencia, alternativas, crossover/versiones, observación diferencial, contribuciones múltiples, soporte insuficiente, MCAR/MAR/MNAR, censura y selección post-Z. P177/P182/P183 se evalúan por estimando y dimensión; P178 organiza potencia, N/R, SE_MC y reproducibilidad; P179 mantiene Value contextual y multidimensional sin inventar su instancia.
+
+N=2.000, asignación 1:1, R=1.000 y s=.80 siguen siendo ilustraciones/hipótesis no aprobadas. Potencia, precisión, MDE, márgenes, N, R, tolerancias y sensibilidad deben fijarse ex ante. No significación no demuestra equivalencia; más N/R no repara falta de identificación.
+
+### 269.4 Bloqueos y límites
+
+Value no está instanciado por PA y Outcome no está operacionalizado completamente. Persisten falta de IAM/snapshots/inventario material D2, ausencia de mapping demostrado B→g^Af, soporte y vías colaterales; PC mantiene θ_A(q), θ_Af(q_X*) y mediación no identificados en el D2 material actual. También siguen abiertos parámetros conjuntos del DGP, contrastes D2 concretos, F*/G/H/ventanas, unidad/interferencia y diseño estadístico cuantitativo. No se convierten propuestas en hechos ni se asignan parámetros por conveniencia.
+
+**Dictamen:** PD reconciliado documentalmente en arquitectura, mecanismos y mapa adversarial; DGP cuantitativo abierto; no congelado, implementado ni ejecutado. No se autoriza código, fixtures confirmatorios, generación de datos, simulación, estimación ni ejecución científica. Se mantienen scientific_execution=false y execution_authorized=false. Siguiente paquete: PE — especificación técnica integrada y contrato de implementación, condicionado a los cierres científicos/materiales y autorización expresa.
