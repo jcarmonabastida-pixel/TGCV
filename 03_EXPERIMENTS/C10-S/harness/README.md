@@ -6,7 +6,7 @@
 ## Components
 
 - `focal_harness.py`: explicit scenario and analysis contracts; focal DGP; restricted truth bundle; allow-list projector; evidence sealer; Analyzer; Evaluator.
-- `test_focal_harness.py`: software-contract tests for null, positive, negative, direct-path, unknown-direct-path, truth projection and fail-closed configuration.
+- `test_focal_harness.py`: 15 software-contract tests for null, positive, negative, direct-path, unknown-direct-path, package-level abstention, Welch critical values, full-configuration run identity, truth projection and fail-closed configuration.
 
 ## Separation contract
 
@@ -43,4 +43,4 @@ From this directory, with Python 3.10+:
 python -m unittest -v
 ```
 
-This command is documented only. No test suite or scientific run is claimed as executed by this commit.
+This command is documented only. The 15 tests are persisted but have not been run as a suite; no test-suite PASS or scientific run is claimed.
