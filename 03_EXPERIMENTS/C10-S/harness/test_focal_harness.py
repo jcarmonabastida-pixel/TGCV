@@ -17,7 +17,7 @@ def config(name, alpha01=0.0, alpha10=0.0, gamma01=0.0, gamma10=0.0,
         alpha01=alpha01, alpha10=alpha10,
         gamma01=gamma01, gamma10=gamma10,
         assignment_probability=0.5, direct_path_status=direct,
-        measurement_ideal=measurement, interference_absent=interference,
+        measurement_ideal=True, interference_absent=True,
     )
 
 
@@ -27,7 +27,7 @@ def contract(direct="ABSENT", positivity=True, version_consistency=True,
         estimand_id="THETA_A_Q_B1", estimand_version="001",
         randomized_assignment=randomized, direct_path_status=direct,
         common_regime=True, positivity=positivity, version_consistency=version_consistency,
-        measurement_ideal=True, interference_absent=True,
+        measurement_ideal=measurement, interference_absent=interference,
     )
 
 
