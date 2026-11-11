@@ -5,6 +5,15 @@ on:
     branches:
       - prototype/tgcv-full-chain-001-20261014-scenario-context-recovery
   workflow_dispatch:
+    inputs:
+      profile:
+        description: "Benchmark profile: standard CI-size cases or engine scale-bound cases"
+        required: true
+        type: choice
+        default: standard
+        options:
+          - standard
+          - scale
   pull_request:
     branches:
       - main
@@ -30,23 +39,39 @@ jobs:
       - name: Run reproducible engineering benchmark
         working-directory: prototypes/collective_toy
         run: |
-          python benchmark_collective_toy_engine_001.py --repeats 7 --sizes 25 50 100 > benchmark-results.json
+          if [ "${{ github.event_name == 'workflow_dispatch' && inputs.profile == 'scale' }}" = "true" ]; then
+            python benchmark_collective_toy_engine_001.py --repeats 3 --sizes 100 250 500 > benchmark-results.json
+            EXPECTED_REPEATS=3
+          else
+            python benchmark_collective_toy_engine_001.py --repeats 7 --sizes 25 50 100 > benchmark-results.json
+            EXPECTED_REPEATS=7
+          fi
+          export EXPECTED_REPEATS
           python - <<'PY'
           import json
+          import os
           from pathlib import Path
           data = json.loads(Path("benchmark-results.json").read_text())
+          expected_repeats = int(os.environ["EXPECTED_REPEATS"])
           assert data["scientific_execution"] is False
           assert data["latency_threshold_enforced"] is False
+          assert data["resource_bounds"] == {"max_states": 500, "max_transitions": 2000}
           assert len(data["reports"]) == 9
           for row in data["reports"]:
               assert row["median_elapsed_ms"] >= 0
               assert row["peak_alloc_bytes_max"] >= 0
-              assert row["repeats"] == 7
+              assert row["repeats"] == expected_repeats
+              assert row["states"] <= data["resource_bounds"]["max_states"]
+              assert row["transitions"] <= data["resource_bounds"]["max_transitions"]
           print(json.dumps({
               "benchmark": data["benchmark"],
+              "scientific_execution": data["scientific_execution"],
+              "latency_threshold_enforced": data["latency_threshold_enforced"],
+              "resource_bounds": data["resource_bounds"],
               "cases": len(data["reports"]),
               "cases_summary": [
                   {"graph_kind": row["graph_kind"], "size": row["size"],
+                   "transitions": row["transitions"],
                    "median_elapsed_ms": row["median_elapsed_ms"],
                    "p95_elapsed_ms": row["p95_elapsed_ms"],
                    "peak_alloc_bytes_max": row["peak_alloc_bytes_max"]}
@@ -59,5 +84,70 @@ jobs:
         with:
           name: collective-toy-performance-benchmark
           path: prototypes/collective_toy/benchmark-results.json
+          if-no-files-found: error
+          retention-days: 30
+
+  scale-benchmark:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run scale-bound engineering benchmark
+        working-directory: prototypes/collective_toy
+        run: |
+          python benchmark_collective_toy_engine_001.py --repeats 3 --sizes 100 250 500 > scale-benchmark-results.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("scale-benchmark-results.json").read_text())
+          assert data["scientific_execution"] is False
+          assert data["latency_threshold_enforced"] is False
+          assert data["resource_bounds"] == {"max_states": 500, "max_transitions": 2000}
+          assert len(data["reports"]) == 9
+          assert {row["size"] for row in data["reports"]} == {100, 250, 500}
+          assert {row["graph_kind"] for row in data["reports"]} == {
+              "chain", "branching_dag", "cyclic_branching"
+          }
+          for row in data["reports"]:
+              assert row["repeats"] == 3
+              assert 2 <= row["states"] <= 500
+              assert 0 <= row["transitions"] <= 2000
+              assert row["median_elapsed_ms"] >= 0
+              assert row["p95_elapsed_ms"] >= 0
+              assert row["peak_alloc_bytes_max"] >= 0
+          print(json.dumps({
+              "benchmark": data["benchmark"],
+              "scientific_execution": data["scientific_execution"],
+              "latency_threshold_enforced": data["latency_threshold_enforced"],
+              "resource_bounds": data["resource_bounds"],
+              "cases": len(data["reports"]),
+              "cases_summary": [
+                  {
+                      "graph_kind": row["graph_kind"],
+                      "states": row["states"],
+                      "transitions": row["transitions"],
+                      "median_elapsed_ms": row["median_elapsed_ms"],
+                      "p95_elapsed_ms": row["p95_elapsed_ms"],
+                      "peak_alloc_bytes_max": row["peak_alloc_bytes_max"],
+                      "trajectories_emitted": row["samples"][-1]["trajectories_emitted"],
+                      "reachable_states": row["samples"][-1]["reachable_states"],
+                      "truncated": row["samples"][-1]["truncated"],
+                  }
+                  for row in data["reports"]
+              ],
+          }, indent=2))
+          PY
+      - name: Upload raw scale benchmark results
+        uses: actions/upload-artifact@v4
+        with:
+          name: collective-toy-scale-performance
+          path: prototypes/collective_toy/scale-benchmark-results.json
           if-no-files-found: error
           retention-days: 30
