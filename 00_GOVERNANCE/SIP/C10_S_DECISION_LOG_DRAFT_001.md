@@ -1516,3 +1516,10 @@ Dictamen: D2 no equivale a políticas g1/g0 sobre ΔT_acc*. El mapping B_D2→g^
 Value permanece vectorial y no instanciado: no hay V_j, beneficiario, perspectiva ni regla de valoración completos; O-CONF sigue candidato no operacionalizado. C3/C4 sobre Value no identificados/no evaluables en el material actual. P177/P178/P179/P182/P183 y DAG/CAUS existentes se reutilizan; C-MED PARCIAL/OPEN, sin nuevos IDs duplicados.
 
 Siguiente paquete: **PD — DGP, mecanismos C5 y evaluación adversarial**. Sin Design Freeze, implementación ni ejecución.
+
+
+## PE — registro de decisiones reutilizadas (2026-11-11)
+
+PE no crea una nueva decisión científica ni reabre decisiones aceptadas. Reutiliza, dentro de su alcance, DEC-C10-061/062/065/068/069/070/071/074–088, DEC-C10-095 y las decisiones B1 de modalidad de solicitud, oportunidad estandarizada, enlace request–trajectory y adjudicación causal. Las reglas UDG/JCS/PAR son locales a sus contratos; no constituyen aceptación global del schema físico C10-S.
+
+La arquitectura de seis responsabilidades, los bundles de rol, el pipeline V0–V8 y los gates G-SCI/G-MAT/G-SCHEMA/G-ROLE/G-TEST/G-REPRO/G-AUTH son una síntesis técnica propuesta en PE, no decisiones aprobadas ni autorizaciones. Los formatos físicos, motor, APIs, seguridad/custodia, serialización general, esquema de eventos y salida final del Analyzer permanecen OPEN y requieren revisión/decisión antes de implementarse. `scientific_execution=false`; `execution_authorized=false`.
