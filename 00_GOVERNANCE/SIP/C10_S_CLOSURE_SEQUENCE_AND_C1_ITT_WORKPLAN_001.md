@@ -816,3 +816,88 @@ No equivale a:
 No se requiere otra iteración para volver a decidir si la regla directa de objetivo único es conceptualmente admisible. Las tareas pendientes son de parametrización y contrato de medición dentro del diseño experimental ya acordado.
 
 **Estado:** VALUE_ENDPOINT_ACCEPTED_FOR_SYNTHETIC_B1 / VALUE_RULE_CONCEPTUALLY_CLOSED / Q_MEASUREMENT_CONFIGURATION_OPEN / NO_DESIGN_FREEZE / NO_IMPLEMENTATION / NO_SCIENTIFIC_EXECUTION.
+
+
+## 31. Contrato temporal y de medición de Q_B1: regla de intervalo y separación de evidencia (2026-11-11)
+
+**Estado:** Q_TEMPORAL_MEASURE_DEFINED_AT_CONTRACT_LEVEL / HORIZON_AND_OBSERVATION_PARAMETERS_OPEN / P179_SINGLE_DIMENSION_INSTANCE_JUSTIFIED / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 31.1 Reloj y horizonte
+
+Se conserva sin cambios el reloj del estudio `t−1/t0…t9`. Sus índices identifican fases y precedencias, no unidades de duración. `H=3` sigue siendo profundidad transformacional candidata, no horizonte temporal de Value.
+
+Para esta instancia, `W_B1` es un intervalo de evaluación funcional común a todas las UE y brazos:
+- comienza después de que se haya sellado el snapshot estructural postintervención y calculado Reach (`t3/t4));
+- termina antes de la adjudicación de Value (`t9));
+- tiene duración, origen exacto, discretización y regla de inclusión de límites declarados en la configuración versionada del escenario;
+- es idéntico entre brazos y escenarios comparables, salvo que un DGP adversarial declare expresamente una diferencia temporal como mecanismo causal que se desea probar.
+
+Los eventos de solicitud, selección, inicio y ejecución conservan sus propios timestamps/subledgers. No definen por sí mismos los límites de `W_B1` ni convierten `t5`, `t6` o `t7` en una duración. La duración y discretización concretas no se fijan aquí porque no existe una unidad temporal sustantiva aceptada en el contrato funcional; serán parámetros obligatorios de cada configuración, sin defaults silenciosos. Una configuración sin ellos es inválida para generar `Q_B1`.
+
+### 31.2 Truth de disponibilidad y cálculo de Q
+
+Para cada UE y cada instante/slot de `W_B1`, el DGP genera una variable verdadera:
+
+```
+A_B1*(u,t) ∈ {0,1}
+```
+
+Su significado es: la instancia lógica del servicio está efectivamente disponible y es capaz de admitir una solicitud válida conforme al contrato funcional vigente en ese instante. No basta con que `PAR-SVC-ENABLED=true`; el estado verdadero debe representar capacidad operativa efectiva de admisión.
+
+Con una partición temporal versionada en K intervalos de igual duración, la consecuencia se define como:
+
+```
+Q_B1*(W) = (1/K) · Σ[k=1..K] A_B1*(u,k)
+```
+
+Para una representación temporal continua, la misma regla corresponde a la fracción de duración del intervalo en que `A_B1*(u,t)=1`. El DGP debe elegir y versionar una de las dos representaciones; no puede mezclar discretización desigual con promedio simple. `Q_B1*` pertenece a [0,1] y expresa fracción de tiempo disponible, no número de solicitudes admitidas, tasa de respuestas, éxito técnico de una petición ni conformidad terminal.
+
+La regla de valoración aceptada se aplica después:
+
+```
+V_B1*(u) = v_B1(Q_B1*(W) | G_B1) = Q_B1*(W)
+```
+
+La función generadora de `A_B1*` puede depender causalmente de accesibilidad, vías alternativas, condiciones externas y mecanismos colaterales definidos en cada DGP. La fórmula de Q y la regla de Value no dependen de esas causas y permanecen invariantes entre escenarios.
+
+### 31.3 Evidencia observada de Q
+
+La evidencia observada debe proceder de un canal de observación temporal del estado operativo, separado de:
+- `T_acc`, `ΔT_acc`, Reach y trayectorias;
+- configuración declarativa `PAR-SVC-ENABLED/PROFILE` considerada aisladamente;
+- la oportunidad estandarizada única y sus eventos attempt/received/admitted/processing/response;
+- F*, O-CONF, selección y ejecución.
+
+El proyector de observación genera registros de estado con timestamp, unidad/servicio/versionado, cobertura del intervalo, procedencia y estado observado. Su contrato parametrizado debe declarar:
+- frecuencia o regla de muestreo y latencia;
+- sensibilidad y especificidad (o modelo de error equivalente);
+- cobertura temporal y mecanismo de pérdida de registros;
+- missingness/censura y recuperabilidad;
+- reglas para estados contradictorios, intervalos no observados y cambios de versión.
+
+La evidencia observada no se convierte automáticamente en `A_B1*`. El Analyzer calcula una medida observada o un conjunto/intervalo compatible con la evidencia y debe abstenerse o declarar identificación parcial cuando la cobertura/error no sostengan una estimación puntual. La ausencia de registro no equivale a indisponibilidad. El Evaluator, después del sellado, compara la salida con `Q_B1*` reservado.
+
+El canal de observación debe ser no intrusivo respecto del servicio y no puede modificar su disponibilidad ni generar la oportunidad de negocio evaluada. Si el DGP modela un canal intrusivo, su efecto se declara como intervención/medición adicional y no se oculta dentro del error instrumental.
+
+### 31.4 Separación respecto de Outcome y O-CONF
+
+Se fijan tres objetos distintos:
+- **Outcome de petición:** resultado técnico de la oportunidad estandarizada única, si se operacionaliza mediante su ficha propia; es puntual y no estima continuidad.
+- **O-CONF:** adjudicación técnica terminal de conformidad frente a F*; no mide disponibilidad durante `W_B1`.
+- **Q_B1:** consecuencia funcional temporal para B1, calculada a partir de la trayectoria de disponibilidad efectiva durante `W_B1`; es el objeto al que se aplica la regla normativa de Value.
+
+No se declara operacionalizado un Outcome confirmatorio ni O-CONF por esta especificación. Si un Outcome futuro reutiliza la misma serie temporal de disponibilidad para medir continuidad, deberá justificarse la separabilidad exigida por §224 y B2–B3; no se admitirá duplicar la misma medida bajo dos etiquetas como si fueran endpoints independientes. La oportunidad única no sustituye la serie temporal.
+
+### 31.5 P179 y alcance de la instancia
+
+P179 conserva Value vectorial durante la identificación general de TGCV. La presente instancia sintética es deliberadamente unidimensional (`k=1)) porque el objetivo B1 aceptado se restringe explícitamente a mantener disponible la función de admisión del servicio y el DGP estipula que ese es el único criterio normativo considerado. Esta reducción se limita a este microdominio/escenario; no elimina trade-offs potenciales de otros beneficiarios, objetivos o dominios, ni autoriza agregar dimensiones en una medida global. Si el DGP introduce otra consecuencia valorada o un criterio en conflicto, deberá representar una dimensión adicional y preservar el vector, o declarar que la instancia de objetivo único ya no es adecuada. No se asignan pesos ni se compensa una dimensión con otra.
+
+### 31.6 Parámetros obligatorios y criterio de validez
+
+Antes de generar una corrida, la configuración versionada deberá proporcionar: duración y límites de `W_B1`; unidad temporal y partición o representación continua; regla de generación de `A_B1*`; versión del contrato del servicio; modelo de observación y sus parámetros; tratamiento de cobertura, missingness y censura; y regla de cálculo/adjudicación de `Q_B1`/`V_B1`.
+
+La falta de cualquiera de estos elementos produce configuración inválida o resultado `NOT_INSTANTIATED/INDETERMINATE`, según la fase; nunca se rellena con un valor implícito. Los parámetros numéricos se justifican y fijan antes de inspeccionar resultados, y se someten a sensibilidad cuando proceda. No se crean ahora valores de K, duración, frecuencia, error, cobertura, N, repeticiones ni umbrales.
+
+**Dictamen:** queda definida la estructura temporal y matemática de la medida de consecuencia y su canal de observación. La elección numérica de horizonte y parámetros de observación pertenece a la configuración experimental versionada, no requiere reabrir el significado de Value ni crear otro paquete conceptual. La instancia de `V_B1` sigue aceptada como endpoint sintético de objetivo único, condicionada a que cada configuración cumpla este contrato.
+
+**Estado:** Q_B1_MEASUREMENT_CONTRACT_DEFINED / VALUE_RULE_CLOSED_FOR_B1_INSTANCE / SCENARIO_PARAMETERS_REQUIRED_BEFORE_GENERATION / NO_DESIGN_FREEZE / NO_IMPLEMENTATION / NO_SCIENTIFIC_EXECUTION.
