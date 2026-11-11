@@ -27,7 +27,7 @@ Se reutilizan sin recreación:
 - PE: arquitectura de responsabilidades, truth/evidence/evaluation, identidades, provenance, snapshots y gates G-SCI/G-MAT/G-SCHEMA/G-ROLE/G-TEST/G-REPRO/G-AUTH.
 - B2–B3: B1/Need_preZ, Outcome técnico, consecuencia y Value contextual; P179 vectorial y fichas §224.
 
-**Límite de recuperación:** el archivo maestro C10_S_SYNTHETIC_EXPERIMENT_CONSOLIDATED_DRAFT_004.md devuelve SHA 61d3079213558f6f74c14b60600ae3ca04c0a395 y contenido vacío en esta recuperación. No se ha reconstruido ni sobrescrito. Esta síntesis se apoya en los artefactos especializados recuperados y en los resúmenes de integración del plan; no certifica concordancia línea por línea con el maestro inaccesible. La incidencia debe resolverse antes de cualquier declaración de reconciliación total del maestro o de freeze.
+**Nota histórica corregida por §13:** la lectura Contents devolvía contenido vacío, pero el blob Git original (SHA 61d3079213558f6f74c14b60600ae3ca04c0a395) se recuperó íntegramente. Se inspeccionaron §§266–273 y se incorporó §274. La reconciliación de esta síntesis se contrastó con el maestro recuperado; no se realizó validación local ni CI. La incidencia de recuperación está resuelta y no es gate pendiente.
 
 ## 3. Asignación D2, probabilidades y soporte
 
