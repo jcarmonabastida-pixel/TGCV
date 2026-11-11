@@ -2060,7 +2060,7 @@ Permanece un límite de alcance, no un bloqueo de P178 focal: los artefactos son
 **Autorización:** autorización explícita del usuario para iniciar la implementación del harness mínimo en `research/c10-s-consolidation-draft`; alcance excluye playground, ejecución confirmatoria y cambios en `main`.
 
 **Artefactos persistidos:**
-- `03_EXPERIMENTS/C10-S/harness/focal_harness.py` — Generator, Projector, Sealer, Analyzer y Evaluator para la instancia focal B1 (`V_B1=Q_B1)); contratos tipados y parámetros obligatorios.
+- `03_EXPERIMENTS/C10-S/harness/focal_harness.py` — Generator, Projector, Sealer, Analyzer y Evaluator para la instancia focal B1 (`V_B1=Q_B1`; contratos tipados y parámetros obligatorios.
 - `03_EXPERIMENTS/C10-S/harness/test_focal_harness.py` — pruebas de contrato para nulo, positivo, negativo, vía directa, vía directa desconocida, proyección de truth y configuración fail-closed.
 - `03_EXPERIMENTS/C10-S/harness/README.md` — alcance, fronteras, limitaciones y comando local de pruebas.
 
@@ -2087,5 +2087,6 @@ Permanece un límite de alcance, no un bloqueo de P178 focal: los artefactos son
 - `67a02e02d1cc36168aeeb0dddba938e1f5cb6482` — README actualizado.
 - `8734680e8e83908fd28cc5340572087435222d88` y `353a4627588dd9c951a080f51e11cb8e77fd350e` — corrección de saltos de línea en fuentes.
 - `67b1efe84a348d5b0b88e394bad2827a29cbd6b4` — validación de parámetros finitos y soporte mínimo por brazo.
+- `177304da980f3d57962e32535cc5cb44087698df` — registro de implementación en el plan; `e0d444e5d1dee1e2bb6ffc74b4d8f7cac99bfb57` — actualización del estado de la especificación; `8718bfe711907caab4701f0a50731a128f20c9b2` y `44eeddfd635ecda540c9efdaf2ca7597fa4a0ade` — cierre de trazabilidad y hardening final.
 
 **Dictamen:** `FOCAL_HARNESS_IMPLEMENTATION_SLICE_001_PERSISTED / TESTS_NOT_RUN / FULL_HARNESS_INCOMPLETE / SCIENTIFIC_EXECUTION_FALSE / CONFIRMATORY_EXECUTION_NOT_AUTHORIZED`.
