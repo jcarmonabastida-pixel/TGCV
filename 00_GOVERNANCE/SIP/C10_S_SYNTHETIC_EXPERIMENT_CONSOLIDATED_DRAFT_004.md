@@ -12133,3 +12133,18 @@ Se reutilizan DEC-C10-095, decisiones B1 (una entidad por UE, una oportunidad es
 O-CONF conserva el mejor anclaje conceptual de Outcome, pero su ficha §224 sigue incompleta. Ningún O_k ni V_j está operacionalizado. P179 conserva Value como vector y los trade-offs; no se seleccionan dimensiones históricas ni pesos por defecto. Cada O_k/V_j requiere ficha independiente §224 y controles P182/P183. ITT sobre Outcome y Value se adjudican por separado; no se transfiere identificación entre ellos ni entre dimensiones. C3/C4 permanecen no identificados en el D2 material actual.
 
 No se modifica A, D2, P*τ2/P*_F, Core, RMA, Evidence→Claim Matrix, STATUS o claims. No se crea nueva decisión científica ni se declara Design Freeze. `scientific_execution=false`; `execution_authorized=false`. Sin implementación, fixtures, simulación, estimación o ejecución científica.
+
+
+## 274. Reconciliación integrada de factibilidad confirmatoria y condiciones de Design Freeze (2026-11-11)
+
+**Artefacto rector complementario:** `C10_S_INTEGRATED_CONFIRMATORY_FEASIBILITY_AND_DESIGN_FREEZE_RECONCILIATION_DRAFT_001.md`. **Estado:** INTEGRATED_RECONCILIATION_COMPLETED / CONFIRMATORY_FEASIBILITY_NOT_ESTABLISHED / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+Se integran PA/C1, PB/PB-MAT, PC/C3-C4, PD/DGP, PE, identidad B1 por UE y B2-B3. D2 sigue escenario primario candidato y D1 secundario; P*τ2 es población primaria candidata y P*_F subpoblación secundaria; se preservan identidad B1 por UE, oportunidad única y separación Outcome/Value. No se reinician paquetes ni se reabren decisiones aceptadas.
+
+**Corrección de recuperación documental:** el contenido completo de este maestro sí ha sido recuperado mediante su blob Git (SHA `61d3079213558f6f74c14b60600ae3ca04c0a395`, 1,134,655 caracteres). La operación de lectura de Contents devolvía contenido vacío pese a que el blob existe; no era una pérdida ni ausencia del documento. Se inspeccionaron sus §§266–273, incluidos PA, PB, PC, PD, PE, decisión B1, PB-MAT y B2-B3. Queda resuelta la incidencia de recuperación; no se reconstruyó el maestro por inferencia.
+
+**Dictamen conjunto:** no existe todavía un diseño confirmatorio materialmente identificado ni listo para Design Freeze. Asignación material D2 y probabilidades/estratos/algoritmo/semilla, q_X*/q_L* y soporte siguen abiertos. UE=UA depende de aislamiento efectivo no demostrado; IAM/C_SRC, roster, snapshots, inventario B, grafo transitivo, ACL/recursos, provisión/crossover y no-afectación A1/A2 no están materializados. Outcome carece de ficha §224 completa y Value no está instanciado; no hay Y_j confirmatorio completo.
+
+ITT de política/paquete, primeras etapas técnicas/focales, θ_A/θ_Af, LATE_f, IIE C4 y efecto directo/residual permanecen como estimandos separados y no identificados/evaluables en el estado material actual. No hay cotas numéricas defendibles sin parámetros, cobertura y restricciones justificadas. No se obtiene residual por resta ad hoc. Outcome y Value no se relacionan por definición causal exclusiva Outcome→Value.
+
+G-SCI, G-MAT, G-SCHEMA, G-ROLE, G-TEST y G-REPRO siguen BLOCKED; G-AUTH NOT GRANTED. No se modifica main/Core/RMA/Matrix/STATUS/claims ni decisiones aceptadas. No se autoriza captura material, schema físico, fixtures, implementación, generación de datos, simulación, estimación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
