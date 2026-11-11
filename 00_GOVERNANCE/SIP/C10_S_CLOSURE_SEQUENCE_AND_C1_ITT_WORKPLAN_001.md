@@ -1112,7 +1112,7 @@ Para evitar que la verdad del endpoint dependa de una simulación opaca, el DGP 
 - p01(d,g,q)=P(A_k=1 | A_(k-1)=0,d,g,q);
 - p10(d,g,q)=P(A_k=0 | A_(k-1)=1,d,g,q),
 
-donde d representa el estado/cambio de accesibilidad focal generado bajo la política g, y q mantiene constantes las condiciones externas comunes. Los parámetros pertenecen a [0,1], con restricciones declaradas para evitar combinaciones degeneradas no contempladas. La distribución inicial π_0=P(A_0=1) es explícita y común entre brazos en el DGP focal.
+donde d representa el objeto estructural completo ΔT_acc* (sus componentes y relaciones tipadas), o una firma íntegra de ese objeto en el soporte finito del DGP; no es un score escalar ni una reducción cardinal arbitraria. La política g induce una distribución sobre firmas factibles de ΔT_acc* y q mantiene constantes las condiciones externas comunes. Los parámetros pertenecen a [0,1], con restricciones declaradas para evitar combinaciones degeneradas no contempladas. La distribución inicial π_0=P(A_0=1) es explícita y común entre brazos en el DGP focal.
 
 La probabilidad de disponibilidad se obtiene recursivamente, sin Monte Carlo:
 
