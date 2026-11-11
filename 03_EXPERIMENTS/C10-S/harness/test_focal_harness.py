@@ -21,11 +21,11 @@ def config(name, alpha01=0.0, alpha10=0.0, gamma01=0.0, gamma10=0.0,
     )
 
 
-def contract(direct="ABSENT"):
+def contract(direct="ABSENT", positivity=True, version_consistency=True):
     return AnalysisContract(
         estimand_id="THETA_A_Q_B1", estimand_version="001",
         randomized_assignment=True, direct_path_status=direct,
-        common_regime=True, positivity=True, version_consistency=True,\n        measurement_ideal=True, interference_absent=True,
+        common_regime=True, positivity=positivity, version_consistency=version_consistency,\n        measurement_ideal=True, interference_absent=True,
     )
 
 
@@ -65,6 +65,13 @@ class FocalHarnessContractTests(unittest.TestCase):
     def test_unknown_direct_path_forces_indeterminate_focal_status(self):
         cfg = config("unknown-direct-path", 1.0, -1.0, 0.0, 0.0, "UNKNOWN", 20261115)
         _truth, _source, _sealed, result, report = self.run_case(cfg, contract("UNKNOWN"))
+        self.assertEqual(result.focal_identification, "INDETERMINATE")
+        self.assertTrue(report.classification_correct)
+
+    def test_missing_support_forces_focal_indeterminacy(self):
+        _truth, _source, _sealed, result, report = self.run_case(
+            config("no-support-contract"), contract(positivity=False))
+        self.assertEqual(result.package_identification, "IDENTIFIED")
         self.assertEqual(result.focal_identification, "INDETERMINATE")
         self.assertTrue(report.classification_correct)
 
