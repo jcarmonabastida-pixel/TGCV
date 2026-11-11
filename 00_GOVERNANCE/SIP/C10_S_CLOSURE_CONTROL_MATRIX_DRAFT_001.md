@@ -3264,3 +3264,19 @@ El contrato detallado está en C10_S_D2_ASSIGNMENT_POPULATION_SUPPORT_RECONCILIA
 | Design Freeze / implementation | BLOCKED / NOT AUTHORIZED | Todos los gates conjuntos y autorización expresa |
 
 Artefacto rector: `C10_S_OUTCOME_VALUE_OPERATIONALIZATION_RECONCILIATION_DRAFT_001.md`; maestro §276. No crea IDs de tests, dimensiones, escalas ni decisiones científicas.
+
+## 143. Gate de caso de valoración B1 (2026-11-11)
+
+| Control | Estado | Criterio de cierre |
+|---|---|---|
+| Caso contextual B1 | FRAMEWORK CANDIDATE / NOT INSTANTIATED | Operación basal focal nombrada y versionada; relación B1–UE–servicio explícita |
+| Need_preZ | SEMANTIC FORMULATION CANDIDATE | Contenido concreto de la operación, estados 1/0/? y evidencia pre-Z |
+| Consecuencia B1 | ENVELOPE CANDIDATE / NOT MEASURED | Consecuencia potencial definida respecto de Need_preZ, independiente de procesamiento/O-CONF |
+| Probe estandarizado | DESIGN DECISION ACCEPTED | Una oportunidad/UE post-snapshot; no confundir con demanda natural ni Value |
+| Perspectiva/autoridad | B1 BASIS ACCEPTED / AUTHORITY OPEN | Regla normativa ex ante, versionada y simétrica |
+| V_j / fichas §224 | NOT SELECTED | Solo tras justificar constructo, fuente, unidad, escala, horizonte, validez y trade-offs |
+| Horizonte | OPEN | Reconciliar con reloj t−1/t0…t9; no equiparar a H=3 |
+| Materialización PB-MAT | BLOCKED | Roster, IAM/C_SRC, snapshots, manifiesto y aislamiento con evidencia aprobada |
+| Design Freeze | BLOCKED / NOT AUTHORIZED | Cierre conjunto de G-SCI/G-MAT/G-TEST y autorización expresa |
+
+Artefacto rector: `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md`. La envolvente de consecuencias no crea dimensiones ni tests.
