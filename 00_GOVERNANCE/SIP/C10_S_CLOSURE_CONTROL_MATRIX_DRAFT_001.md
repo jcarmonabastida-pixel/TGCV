@@ -3294,3 +3294,15 @@ Artefacto rector: `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md`. La envo
 | Value V_j | NOT SELECTED / NOT INSTANTIATED | Autoridad, criterio, dimensiones, fuente, escala, baseline, horizonte y fichas §224 |
 
 Artefacto rector: `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md` §12. La aceptación no es instancia completa, no crea DEC ni autoriza roster, captura, schema, fixtures, implementación, simulación, estimación, Design Freeze o ejecución.
+
+## 145. Resultado de reconstrucción histórica del servicio B1 (2026-11-11)
+
+| Control | Resultado | Límite |
+|---|---|---|
+| Clase de servicio | RECOVERED: servicio lógico sintético de procesamiento de solicitudes (DEC-C10-068) | No define semántica de la solicitud |
+| Configuración constitutiva | ENABLED BOOL, PROFILE ENUM y RUL-SVC-ENABLE-PROFILE-01 | Define habilitación/perfil, no operación de negocio |
+| Operación concreta B1 | OPEN / NOT RECOVERED | Especificar tipo de solicitud, operación que realiza el servicio y dependencia de configuración destino |
+| Need_preZ | PURPOSE CLASS ACCEPTED / NOT INSTANTIATED | No asignar truth 1/0/? por UE hasta especificar operación |
+| Consecuencia B1 / Value | OPEN / NOT MEASURABLE | No derivar de F*, O-CONF, accesibilidad o ejecución |
+
+Fuentes: DEC-C10-068/069, maestro §§174–178 y §216.2–216.3, contratos F* y servicio. Artefacto rector actualizado: C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md §13 y maestro §279. No se inventa una operación ni se autoriza materialización o ejecución.
