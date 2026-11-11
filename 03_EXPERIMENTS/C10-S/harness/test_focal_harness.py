@@ -110,6 +110,26 @@ class FocalHarnessContractTests(unittest.TestCase):
         self.assertAlmostEqual((lower + upper) / 2.0, result.estimate, places=12)
         self.assertGreater(upper, lower)
 
+    def test_run_identity_changes_when_any_dgp_parameter_changes(self):
+        base = config("same-scenario", seed=20261121)
+        changed = config("same-scenario", alpha01=0.5, seed=20261121)
+        run_a, _truth_a, _source_a = Generator().generate(base)
+        run_b, _truth_b, _source_b = Generator().generate(changed)
+        self.assertNotEqual(run_a.run_id, run_b.run_id)
+
+    def test_evaluator_detects_false_absent_direct_path_declaration(self):
+        cfg = config("false-absence", 1.0, -1.0, 0.7, -0.4, "UNKNOWN", 20261122)
+        _truth, _source, _sealed, result, report = self.run_case(cfg, contract("ABSENT"))
+        self.assertEqual(result.focal_identification, "IDENTIFIED")
+        self.assertFalse(report.classification_correct)
+
+    def test_version_inconsistency_forces_focal_indeterminacy(self):
+        _truth, _source, _sealed, result, report = self.run_case(
+            config("version-mismatch"), contract(version_consistency=False))
+        self.assertEqual(result.package_identification, "IDENTIFIED")
+        self.assertEqual(result.focal_identification, "INDETERMINATE")
+        self.assertTrue(report.classification_correct)
+
     def test_truth_fields_are_not_projected(self):
         _manifest, truth, source = Generator().generate(config("firewall"))
         candidate = Projector().project(source)
