@@ -2216,4 +2216,6 @@ Permanece un límite de alcance, no un bloqueo de P178 focal: los artefactos son
 
 **Límites:** el workflow completo repite la simulación de 27 celdas tanto en primario como en replay; no incorpora escenarios adversariales ni señal débil. La ejecución es metodológica no confirmatoria y no valida el firewall como frontera de seguridad de proceso ni la hipótesis causal general TGCV.
 
-**Dictamen al persistir:** ANALYZER_MC_RUNNER_IMPLEMENTED / SMOKE_AND_CONTRACT_REPLAY_PASS / FULL_27_CELL_PRIMARY_PENDING / CLEAN_MC_REPLAY_PENDING / NON_CONFIRMATORY_ONLY.
+**Actualización de ejecución (2026-11-11, consulta live):** workflow run 43083651875, URL https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/43083651875, commit exacto probado 689c8f0164e0625ca536a20b1805e555cd63d5fd. El paso de ejecución primaria terminó success; como el ejecutor usa --strict-protocol y sale con código distinto de cero ante cualquier criterio fallido, esto acredita que la primaria completó 27/27 celdas y 10.000 réplicas/celda y superó todos los gates implementados. El replay de tests y Monte Carlo desde archivo fuente limpio permanece in_progress; todavía no hay artefacto cargado ni dictamen final de reproducibilidad. El branch head posterior de documentación/protocolo es 62c07f357dc43315aca02add6b11291c40350155; no se altera el commit exacto de la ejecución ya iniciada.
+
+**Dictamen actualizado:** ANALYZER_MC_PRIMARY_27_CELLS_STRICT_PASS / CLEAN_MC_REPLAY_IN_PROGRESS / ARTIFACT_PENDING / NON_CONFIRMATORY_ONLY.
