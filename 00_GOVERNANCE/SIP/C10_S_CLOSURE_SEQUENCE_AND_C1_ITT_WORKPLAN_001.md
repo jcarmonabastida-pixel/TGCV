@@ -1695,3 +1695,52 @@ Quedan formalizadas las estructuras de los dos DGP adversariales sin introducir 
 La siguiente operación, todavía analítica y sin simulación, es evaluar el oráculo bajo γ y bajo soporte límite, seleccionar una pequeña cuadrícula de sensibilidad justificada y verificar los dictámenes verdaderos para cada estimando. Solo después podrá considerarse completo el manifiesto cuantitativo adversarial y solicitarse autorización separada para P178/Monte Carlo.
 
 **Estado:** DIRECT_AND_SUPPORT_DGP_SPECIFIED / ANALYTIC_ADVERSARIAL_VALUES_NOT_YET_CALCULATED / STATISTICAL_CALIBRATION_NOT_AUTHORIZED / SCIENTIFIC_EXECUTION_FALSE / EXECUTION_AUTHORIZATION_FALSE.
+
+
+## 44. Valores analíticos de vía directa y soporte (2026-11-11)
+
+**Estado:** DIRECT_PATH_ORACLE_CALCULATED / SUPPORT_BOUNDARY_ORACLE_CHECKED / ESTIMAND_IDENTIFICATION_DISTINCTIONS_CONFIRMED / DIAGNOSTIC_VALUES_ONLY / NO_MONTE_CARLO / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 44.1 Configuración de cálculo
+
+Se aplica el oráculo de §35 a las extensiones de §43, sin generación de unidades ni observaciones. Punto de referencia: π0=0.50, K=10, λ0=0.25, λ1=0.75, b01=b10=logit(0.20), (α01,α10)=(1,−1). Para la sensibilidad directa se usan γ en {−log(2),0,+log(2)}: cambios de odds por factor 1/2 o 2. Esta escala es interpretable y simétrica; se usa como diagnóstico, no como magnitud sustantiva, parámetro confirmatorio o selección de un adversarial definitivo.
+
+En cada brazo g, las transiciones son p01(d,g)=expit[b01+α01 I(d=d1)+γ01 I(g=g1)] y p10(d,g)=expit[b10+α10 I(d=d1)+γ10 I(g=g1)]. M_g se obtiene mezclando las medias temporales μ_Q(d,g) con P_g(d1)=λ_g. El contraste total es Δ_total=M_g1−M_g0. La contribución de cambio de firmas bajo el régimen directo de g0 es θ_A^(g0)=(λ1−λ0)[μ_Q(d1,g0)−μ_Q(d0,g0)]=0.1467393122.
+
+### 44.2 Vía directa: resultados del oráculo
+
+| (γ01,γ10) | M_g0 | M_g1 | Δ_total | θ_A^(g0) | Δ_total−θ_A^(g0) |
+|---|---:|---:|---:|---:|---:|
+| (+log2, 0) | 0.573370 | 0.793489 | +0.220120 | +0.146739 | +0.073380 |
+| (−log2, 0) | 0.573370 | 0.623770 | +0.050400 | +0.146739 | −0.096339 |
+| (0, +log2) | 0.573370 | 0.625285 | +0.051916 | +0.146739 | −0.094824 |
+| (0, −log2) | 0.573370 | 0.792525 | +0.219155 | +0.146739 | +0.072416 |
+| (+log2,+log2) | 0.573370 | 0.707786 | +0.134416 | +0.146739 | −0.012323 |
+
+Los valores muestran que la vía directa puede aumentar o reducir el contraste total respecto de la contribución atribuible al cambio de firmas; incluso puede invertir la conclusión sobre la magnitud de la contribución si se atribuye erróneamente Δ_total a accesibilidad. El contraste focal de referencia permanece θ_A^(g0)=0.146739 bajo el régimen directo común g0. La columna Δ_total−θ_A^(g0) se presenta solo como diferencia algebraica bajo esta convención de referencia, no como efecto directo universal ni descomposición causal independiente de la convención. Con interacción firma×política, una atribución simétrica requeriría informar ambos órdenes o Shapley.
+
+### 44.3 Falta de soporte: verdad del DGP e identificación desde evidencia
+
+Para (α01,α10)=(1,−1), π0=0.50 y K=10:
+
+- μ_Q(d0)=0.500000;
+- μ_Q(d1)=0.793479;
+- diferencia de medias entre firmas: 0.293479.
+
+Con solapamiento focal (λ0,λ1)=(0.25,0.75), θ_A=0.146739. En el límite adversarial (λ0,λ1)=(0,1), el contraste observado de políticas es Δ_total=0.293479. La verdad completa del generador puede calcular ambos valores porque conoce las funciones de transición de ambas firmas; esa disponibilidad de truth no implica identificación desde la evidencia que recibe el Analyzer.
+
+Dictámenes que deben distinguirse:
+
+1. **ITT de asignación/política:** sigue identificado por la aleatorización de g, bajo consistencia, ausencia de interferencia no tratada y observación/medición válidas. En el límite, su verdad es 0.293479.
+2. **Atribución estandarizada a accesibilidad:** el soporte límite hace que firma y política queden perfectamente alineadas. La evidencia no contiene las combinaciones cruzadas necesarias para separar respuesta a la firma de otras respuestas específicas de política. Sin restricciones estructurales adicionales defendibles, θ_A no queda identificado no paramétricamente por esa evidencia.
+3. **Truth del Evaluator:** puede calcular el valor estructural verdadero usando el DGP completo, pero no debe usarse para reclasificar retrospectivamente como identificado lo que no lo está para el Analyzer.
+
+Como referencia graduada, (λ0,λ1)=(0.05,0.95) conserva positividad formal y produce θ_A=0.264131 para el mismo contraste de firmas. Este punto ilustra que positividad formal no garantiza por sí sola precisión adecuada; no se declara un umbral de solapamiento suficiente ni se clasifica como soporte práctico adecuado sin criterios ex ante.
+
+### 44.4 Dictamen y límites
+
+La vía directa está cuantificada en una escala interpretable y produce divergencias explícitas entre Δ_total y θ_A bajo el régimen de referencia. El soporte límite confirma que ITT y atribución a accesibilidad pueden recibir dictámenes de identificación distintos. La variante de solapamiento pequeño ilustra la diferencia entre positividad formal y soporte práctico.
+
+Estos cálculos no determinan potencia, sesgo muestral, cobertura, tasas de abstención ni el comportamiento real del Analyzer. Tampoco seleccionan coeficientes confirmatorios, un umbral mínimo de solapamiento, N, R o K operativo.
+
+**Estado:** DIRECT_PATH_AND_SUPPORT_ANALYTIC_REFERENCE_COMPLETE / DIAGNOSTIC_ONLY / OBSERVATION_DEGRADATION_SEPARATE / STATISTICAL_CALIBRATION_NOT_STARTED / SCIENTIFIC_EXECUTION_FALSE / EXECUTION_AUTHORIZATION_FALSE.
