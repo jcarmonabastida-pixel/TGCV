@@ -2810,3 +2810,20 @@ AB-01/02 no pasan a DONE ni habilitan Design Freeze, schema freeze, fixtures, pa
 | Design Freeze/implementación/ejecución | NOT AUTHORIZED | scientific_execution=false; execution_authorized=false |
 
 Véase C10S-B-VALUE-MIN-001. No modifica A, DEC-C10-068, roster A ni Core.
+
+
+## 141. Gate B1 — Entidad solicitante sintética (2026-11-11)
+
+| Elemento | Estado | Criterio |
+|---|---|---|
+| Tipo candidato B1 | ACCEPTED FOR DEVELOPMENT | Entidad solicitante sintética con necesidad/objetivo basal y consecuencia potencial valorable |
+| Instancia/cardinalidad | OPEN | No identidad ni relación concreta estipulada todavía |
+| Demanda pre-Z | OPEN | No equivale a solicitud emitida o uso |
+| Solicitud | SEMANTICALLY DISTINGUISHED | No demuestra satisfacción ni valor |
+| Consecuencia/Value | OPEN | Debe distinguirse de procesamiento técnico/O-CONF |
+| Perspectiva/dimensiones/medición | OPEN | §224, P179/P182/P183 |
+| C/D/E | IN PROGRESS / BLOCKED | C semántica; D representación tras cierre; E aceptación tras contratos |
+| MED-02/MED-03 | OPEN | No se cierran |
+| Design Freeze/implementación/ejecución | NOT AUTHORIZED | scientific_execution=false; execution_authorized=false |
+
+Véase C10S-B1-REQUESTER-CANDIDATE-001. No modifica A, DEC-C10-068 ni el roster A.
