@@ -363,3 +363,62 @@ Estas reservas no reabren PA–PE, B1, D2, población, cardinalidad, identidad d
 La especificación del **motor/harness sintético parametrizado** queda reconciliada documentalmente y se considera candidata implementable bajo contratos de configuración explícitos. Esto no significa que una instancia confirmatoria D2 esté identificada, que Outcome/Value estén operacionalizados, que se haya concedido Design Freeze, ni que el código exista o haya sido probado.
 
 **Siguiente estado de trabajo:** revisión/adjudicación de esta especificación integrada y, solo tras autorización expresa, implementación técnica del harness. La ejecución científica seguirá requiriendo autorización independiente. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 25. Reorientación del cierre: experimento sintético causal como objetivo primario y secuencia experimento→playground (2026-11-11)
+
+### 25.1 Objetivo rector
+
+Se precisa y prevalece sobre cualquier lectura expansiva de §§22–24:
+
+**El objetivo de C10-S es diseñar e implementar un experimento sintético capaz de someter a prueba una hipótesis causal sobre el puente entre accesibilidad transformacional (`ΔT_acc`) y Value.** El harness no es el fin científico; es la infraestructura experimental para generar escenarios con verdad conocida, producir evidencia observable y evaluar si el procedimiento causal recupera, limita, refuta o reconoce que no puede identificar el efecto.
+
+La especificación integrada A–B–C se conserva como base contractual reutilizable. Su estado de candidata implementable se refiere al motor/harness parametrizado, no significa que el experimento causal principal esté ya suficientemente especificado, implementado o validado. No se declarará cerrado el objetivo por completar documentos, interfaces o schemas.
+
+### 25.2 Criterio científico de suficiencia del experimento
+
+El experimento mínimo debe permitir evaluar conjuntamente:
+
+1. **Recuperación cuando existe el efecto:** en DGP donde una intervención bien definida sobre accesibilidad cambia Value, el diseño y Analyzer recuperan dirección y magnitud dentro de criterios ex ante justificados.
+2. **Control de falsos positivos:** en DGP donde no existe efecto causal de accesibilidad sobre Value, no se atribuye espuriamente un efecto.
+3. **Discriminación de mecanismos:** distinguir el efecto de asignación/política del efecto atribuible a accesibilidad, incluyendo vías directas/colaterales, mediación, interacciones y confusión inducida cuando sean parte del escenario.
+4. **Robustez y límites:** evaluar heterogeneidad, errores de medida, interferencia, selección, missingness/censura y falta de soporte; producir identificación parcial, cotas o abstención cuando corresponda, sin forzar una estimación.
+5. **Independencia semántica y de información:** generar y medir `ΔT_acc`, Reach/trayectoria, Outcome y Value como objetos diferenciados; Value se instancia explícitamente dentro del DGP sintético y no se define como función automática de accesibilidad, Outcome o éxito técnico. El Analyzer no accede a truth ni a potenciales.
+6. **Reproducibilidad y evaluación:** mantener truth conocida y sellada, evidencia observada separada y evaluación posterior; justificar parámetros, población, estimandos, potencia/precisión, repeticiones y umbrales de aceptación antes de interpretar resultados.
+
+Un resultado positivo solo demostraría recuperación bajo los DGP y supuestos ensayados; no probaría por sí mismo que el puente causal exista en sistemas reales ni que una operacionalización sintética de Value sea universal. Un resultado negativo o no identificado también es un resultado científico válido.
+
+### 25.3 Reducción de alcance y regla contra el sobrediseño
+
+No se exige completar la operacionalización de un caso real de migración para probar el método. El microdominio del servicio de migración y sus contratos ya desarrollados se reutilizan como fuente de estructura y como posible instancia sintética, pero solo se conserva en el experimento principal el detalle que sea necesario para:
+- definir intervenciones y contrafactuales;
+- generar la variación causal prevista;
+- mantener separados los mecanismos transformacionales y las vías alternativas;
+- construir una consecuencia/criterio de Value explícito, no circular y evaluable;
+- generar evidencia observable con errores y limitaciones controlables.
+
+Los detalles del caso que no afecten a esos requisitos no son gates del experimento principal. No se añaden nuevos contratos, auditorías, taxonomías o capas documentales sin demostrar qué amenaza causal o requisito de implementación resuelven. Las dimensiones y reglas de Value elegidas para un DGP son parámetros del experimento, no una definición universal de Value para TGCV.
+
+### 25.4 Secuencia de producto y desarrollo: experimento primero, playground después
+
+Se adopta como secuencia de trabajo recomendada:
+
+**(1) cerrar el diseño experimental mínimo → (2) implementar el harness/experimento sintético → (3) verificar técnicamente y ejecutar, con las autorizaciones correspondientes, los escenarios de validación → (4) evaluar y documentar qué hipótesis, estimandos y condiciones quedan recuperados, refutados o no identificados → (5) construir el playground TGCV sobre el motor y contratos ya probados.**
+
+No se construirá directamente el playground como sustituto de la implementación experimental. El playground es una capa de interacción, visualización y exploración que debe consumir un motor experimental estable; no debe decidir la semántica causal, generar sus propias reglas de Value ni convertirse en evidencia de validez por el hecho de funcionar visualmente.
+
+Durante la especificación sí se podrán registrar requisitos de interfaz/API y necesidades de visualización para evitar bloquear la futura integración, pero no se desarrollará ahora una aplicación playground paralela. La arquitectura debe permitir que el harness funcione sin interfaz gráfica y que el playground lo invoque después mediante contratos estables.
+
+### 25.5 Próxima operación y estado
+
+La siguiente operación de cierre deja de ser una revisión documental general de A–B–C. Consiste en una **revisión científica focal de suficiencia del experimento sintético mínimo**, reutilizando A–B–C y los contratos previos para responder, sin reabrir decisiones aceptadas:
+
+- cuál es la hipótesis causal primaria y qué estimando la representa;
+- qué intervención/contraste identifica el efecto de accesibilidad y cómo se distingue del ITT de política;
+- cuál es la instancia sintética mínima e independiente de Value;
+- qué conjunto mínimo de DGP permite recuperación, nulo/falsación, vías alternativas y no-identificación;
+- qué observaciones, análisis y criterios ex ante permiten juzgar recuperación, falsos positivos, precisión y abstención.
+
+La salida será un diseño experimental mínimo integrado y una lista cerrada de decisiones verdaderamente irreducibles. Solo después de su aceptación se preparará la implementación técnica. La implementación no autoriza por sí misma la ejecución científica.
+
+**Estado:** EXPERIMENT_FIRST / PLAYGROUND_AFTER_EXPERIMENTAL_ENGINE / SCIENTIFIC_EXECUTION_NOT_AUTHORIZED / NO_DESIGN_FREEZE.
