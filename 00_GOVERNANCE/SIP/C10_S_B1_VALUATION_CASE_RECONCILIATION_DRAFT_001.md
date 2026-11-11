@@ -235,3 +235,55 @@ Esto permite identificar la clase funcional general del servicio (procesamiento 
 Por tanto, la reconstrucción histórica no resuelve la operación concreta. No debe sustituirse por «instalar adaptador», «ejecutar F1/F2», «alcanzar SF» ni por una descripción inventada de la petición. El cierre sigue siendo: clase de propósito basal aceptada; clase general de servicio conocida; operación/semántica de petición pendiente. Para completar Need_preZ se necesita especificar qué operación/solicitud del servicio es la que B1 necesita mantener operativa y qué dependencia tiene de la configuración migrada.
 
 **Estado:** SERVICE_CLASS_RECOVERED / REQUEST_SEMANTICS_OPEN / CONCRETE_OPERATION_OPEN / NEED_PREZ_NOT_MATERIALIZED.
+
+
+
+## 14. Aceptación de la especialización funcional mínima del servicio B1 (2026-11-11)
+
+Se registra la aceptación expresa del usuario de la especialización funcional mínima propuesta para continuar el cierre de B1. Se integra como **contrato funcional de trabajo**, subordinado a DEC-C10-068 y sin alterar su núcleo constitutivo.
+
+### 14.1 Función aceptada a nivel de trabajo
+
+- **Entrada:** una solicitud dirigida a la instancia lógica del servicio por o en representación de B1.
+- **Operación mínima:** el servicio comprueba el estado declarativo de habilitación de la instancia en destino y, cuando está habilitado, puede aceptar solicitudes; cuando no está habilitado, no las acepta.
+- **Perfil:** el servicio expone el perfil operativo declarado por `PAR-SVC-PROFILE`. No se atribuye todavía semántica de negocio diferenciada a STANDARD frente a READ_ONLY, más allá de que ambos son perfiles compatibles con ENABLED=true según RUL-SVC-ENABLE-PROFILE-01.
+- **Salida inmediata:** estado de admisión/no admisión de la solicitud. Este evento no equivale a procesamiento completado, respuesta, operación de negocio realizada, satisfacción de Need_preZ, Beneficiary_consequence ni Value.
+
+Esta especialización concreta la clase de servicio ya aceptada —procesamiento de solicitudes— mediante una puerta mínima de admisión vinculada al estado declarativo en destino. No define el contenido de la solicitud ni el procesamiento posterior. Tampoco añade una regla constitutiva nueva ni convierte la descripción de trabajo en prueba de comportamiento implementado.
+
+### 14.2 Límites semánticos y técnicos
+
+1. `PAR-SVC-ENABLED` informa la habilitación declarada; la observación de admisión debe seguir siendo un evento distinto y requerirá evidencia propia cuando se operacionalice.
+2. `PAR-SVC-PROFILE` se expone como perfil declarado. No se inventan capacidades, permisos, efectos ni diferencias funcionales entre STANDARD y READ_ONLY.
+3. No se establece que una solicitud admitida se procese con éxito, produzca una respuesta, ejecute una transformación o alcance SF.
+4. No se establece que la operación consista en instalar adaptadores, ejecutar F1/F2, modificar la configuración ni aplicar una regla de configuración.
+5. La oportunidad estandarizada sigue siendo un probe común post-snapshot; no acredita demanda natural ni define por sí sola Need_preZ.
+6. La admisión, el procesamiento, la respuesta, O-CONF/F*, la consecuencia B1 y Value permanecen separados.
+
+### 14.3 Consecuencia para Need_preZ
+
+La clase de propósito basal aceptada se especializa así, a nivel de trabajo:
+
+> Antes de Z, B1 tiene el objetivo de mantener disponible en el entorno de destino un servicio capaz de admitir solicitudes conforme al estado declarativo de habilitación de su configuración, exponiendo el perfil operativo declarado.
+
+Esta formulación puede estructurar el contenido funcional de `Need_preZ`, pero **no asigna automáticamente `Need_preZ=1` a todas las UE**. La verdad por unidad, su versión, los criterios de pertenencia y la evidencia observada deben fijarse antes de Z. Se mantienen los estados 1/0/? y la separación truth_dgp/observed_evidence.
+
+La consecuencia basal para B1 puede ahora referirse a la disponibilidad de la capacidad de admisión que constituye su objetivo, sin equiparar admisión puntual con mantenimiento efectivo de la función ni con logro del propósito. La continuidad, interrupción, degradación, demora, recuperación y riesgo siguen siendo clases analíticas candidatas, no dimensiones V_j.
+
+### 14.4 Estado y siguiente dependencia
+
+| Elemento | Estado |
+|---|---|
+| Clase de propósito B1 | ACCEPTED |
+| Servicio lógico de procesamiento de solicitudes | ACCEPTED por DEC-C10-068 |
+| Especialización mínima: admitir según ENABLED y exponer PROFILE | ACCEPTED AS WORKING FUNCTIONAL CONTRACT |
+| Semántica diferenciada de STANDARD/READ_ONLY | OPEN |
+| Contenido y procesamiento posterior de la solicitud | OPEN |
+| Need_preZ truth por UE y adjudicación observada | OPEN |
+| Consecuencia B1 concreta, autoridad y horizonte | OPEN |
+| Dimensiones, escalas e instrumentos Value | NO SELECCIONAN |
+| DGP, implementación y ejecución | NO AUTORIZADOS |
+
+**Siguiente trabajo:** cerrar de forma integrada la ficha pre-Z por UE (verdad, evidencia, adjudicación y unknown), las consecuencias potenciales correspondientes y las reglas de separación respecto de admisión/procesamiento/Outcome. Si para ello se necesita semántica adicional de STANDARD/READ_ONLY o del procesamiento posterior, se tratará como dependencia explícita y no se inferirá.
+
+No se crea un Decision Record nuevo ni se modifica DEC-C10-068. No se autoriza roster, schema físico, fixtures, captura/materialización, implementación, generación de datos, simulación, estimación, Design Freeze o ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
