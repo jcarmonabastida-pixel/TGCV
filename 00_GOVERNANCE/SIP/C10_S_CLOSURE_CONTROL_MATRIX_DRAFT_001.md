@@ -2969,3 +2969,12 @@ Se registra la separación D2 en cinco carriles: C1 ITT/efecto total de asignaci
 **Criterio de cierre pendiente:** formalizar para cada carril población, unidad/interferencia, intervención/versiones, resultado/horizonte, contrafactual, soporte, medición, supuestos de identificación, sensibilidad y conclusión permitida; para C4 resolver confusión mediador–resultado inducida por Z; para C5 especificar propiedades relevantes y mecanismos de no transición. Esta decisión no cierra MED-02/MED-03, P177/P178/P179/P182/P183 ni los gates de Outcome/Value.
 
 No autoriza freeze, implementación, fixtures, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`. Registro autónomo: `DEC-C10S-D2-ESTIMAND-SEPARATION-001.md`.
+
+
+## 16. — Secuencia de cierre y gate activo C1 (2026-11-11)
+
+Se incorpora como referencia operativa `C10_S_CLOSURE_SEQUENCE_AND_C1_ITT_WORKPLAN_001.md`. Orden obligatorio: C1 ITT D2 → Outcome/Value → C2 primeras etapas → C3 accesibilidad → C4 mediación → C5/DGP → estadística/Analyzer → contrato integrado de implementación. La secuencia evita reabrir decisiones aceptadas y exige un entregable verificable por paquete.
+
+**Gate activo C1.1:** reconciliar población y elegibilidad pre-Z, UE/interferencia, brazos/versiones D2, Outcome/Value y horizonte, reutilizando POP-CMP-001, C10D1/S4R estimand reconciliation, DGP temporal/roles, matriz Value y contrato B. C1 es ITT por asignación a B_g0^D2/B_g1^D2, conserva vías colaterales y no se interpreta como efecto focal de accesibilidad sin C3. Resultado técnico en variante A y Value contextual en variante B no se presumen intercambiables ni ya instanciados. No excluir por eventos post-Z.
+
+**Estado:** SECUENCIA DOCUMENTADA; C1.1 OPEN. No se modifica main ni se autoriza freeze, schemas físicos, fixtures, implementación, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
