@@ -264,3 +264,12 @@ Se contrastaron §§266–274 con PA/C1, PB/PB-MAT, PC/C3-C4, PD/DGP, PE, identi
 - Se preservaron las notas históricas donde aportan trazabilidad, pero ya no operan como gates vigentes.
 
 **Límite del dictamen:** esta es una auditoría de consistencia documental y semántica. No demuestra validez causal, suficiencia de medición, aislamiento, potencia, corrección de código, schema físico, seguridad implementada ni CI. No crea decisiones científicas ni autoriza implementación, captura o ejecución.
+
+
+## 15. Resultado del ciclo D2 — asignación, población y soporte (2026-11-11)
+
+La reconciliación complementaria está desarrollada en C10_S_D2_ASSIGNMENT_POPULATION_SUPPORT_RECONCILIATION_DRAFT_001.md y propagada al maestro §275.
+
+Precisión clave: las probabilidades D2 de programación de intento (0 en control, 1 en tratamiento) son reglas de política condicionales a Z; no especifican la probabilidad experimental P(Z=1 | estrato,UA), ratio ni mecanismo de aleatorización. Tampoco deben confundirse con cumplimiento/recepción c, intento de fondo b o éxito técnico candidato s=0.80.
+
+El contrato lógico de q_X* y positividad queda aclarado, pero distribución, pesos, soporte y factibilidad por historia no están materializados. q_L* solo se incorpora si se requiere historia secuencial post-Z con confusión inducida y estrategia longitudinal. E_i/App, UNKNOWN, IAM/C_SRC, roster, snapshots y aislamiento siguen OPEN/BLOCKED. No cambia el dictamen de no Design Freeze ni las autorizaciones.
