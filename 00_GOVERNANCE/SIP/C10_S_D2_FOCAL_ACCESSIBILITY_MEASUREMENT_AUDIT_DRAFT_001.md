@@ -389,3 +389,18 @@ La suite existente cubre identidad/matching, snapshots, cambios estructurales fr
 ### 11.7. Registro canónico de subcasos
 
 Los subcasos TRI-AF/DEP/DF/OBS quedan registrados como extensiones de MEAS-01…24 en `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md`, §57. No constituyen una familia independiente ni duplican ID/SNAP. Su estado sigue siendo documental/no ejecutado.
+
+
+## 15. Reconciliación integrada PB — primera etapa C2 (2026-11-11)
+
+El maestro C10-S §267 integra la reconciliación de PB. Esta auditoría conserva su dictamen: A_f*/D_f* están conceptualmente delimitados, pero el contrato observacional y la evidencia material no están cerrados. La primera etapa debe permanecer como vector de transición:
+
+Z/política → W_programmed → W_attempt/recepción → S_install → C_install/C_integrity/C_compat/C_oper → C_dep* → A_f*(t0/t3) → D_f* → ΔT_acc* → Reach/Π.
+
+No usar W_attempt, recepción, instalación o C_dep* como proxy de apertura focal. D_f*=I(A_f*(t0)=0 ∧ A_f*(t3)=1), con la misma identidad semántica τ2 y snapshots comparables. D_f_obs permanece clasificación separada 1/0/? y no reemplaza D_f* en Wald sin modelo de error/validación. s=0.80 no está validado; no se declara primera etapa cuantitativa ni LATE.
+
+La fórmula candidata A_f* se considera conceptualmente reconciliada según §67.3 y el crosswalk D2: C_auth,base=AUTH_f*; recursos/capacidad solo dentro de RES/R_access cuando son disponibilidad ex ante necesaria y no duplicada; C_dep* dentro de DEP; C_info no autónomo; App_f, conocimiento, selección, ejecución, Outcome y Value fuera. No se vuelve a abrir la composición conceptual, pero sí mappings y evidencia material.
+
+La secuencia de snapshots es t−1 basal, t0 Z, t1 provisión/intento, t2 instalación/verificación, t3 snapshot post antes de K/Consider/Sel/Exec y t4 Reach/Π. S_T* y E_T permanecen separados; ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*) y ΔE_T se informa aparte. La oportunidad estandarizada B1 se presenta después de t3/t4 y no se mapea a t5/t6/t7.
+
+Bloqueos: IAM/C_SRC y snapshots materiales ausentes; UG-SCH-10 abierto; catálogo/cobertura de rutas, mapping, protocolo de adjudicación/cegamiento, error diferencial y missingness sin validar; aislamiento/no interferencia no verificados; B-M01…15 no inventariados. Wald/LATE bloqueado. No implementación ni ejecución.
