@@ -36,7 +36,7 @@ jobs:
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           PYTHONDONTWRITEBYTECODE: '1'
-        run: python -m py_compile focal_harness.py test_focal_harness.py test_p178_analyzer_bridge.py
+        run: python -m py_compile focal_harness.py test_focal_harness.py test_p178_analyzer_bridge.py run_p178_analyzer_monte_carlo.py test_p178_analyzer_monte_carlo.py
 
       - name: Run primary contract suite and capture stdout/stderr
         id: primary
@@ -58,7 +58,7 @@ jobs:
           set -euo pipefail
           clean_root="$RUNNER_TEMP/c10s-clean-replay"
           mkdir -p "$clean_root"
-          git archive "$GITHUB_SHA" 03_EXPERIMENTS/C10-S/harness 03_EXPERIMENTS/C10-S/calibration/p178_focal_monte_carlo.py | tar -x -C "$clean_root"
+          git archive "$GITHUB_SHA" 03_EXPERIMENTS/C10-S/harness 03_EXPERIMENTS/C10-S/calibration/p178_focal_monte_carlo.py 03_EXPERIMENTS/C10-S/calibration/p178_reference_N700.csv | tar -x -C "$clean_root"
           cd "$clean_root/03_EXPERIMENTS/C10-S/harness"
           PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v \
             > "$RUNNER_TEMP/c10s-replay-stdout.txt" \
