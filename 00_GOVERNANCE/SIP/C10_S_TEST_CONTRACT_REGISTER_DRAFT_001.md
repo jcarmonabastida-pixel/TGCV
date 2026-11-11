@@ -1514,3 +1514,18 @@ Esta sección especializa criterios existentes; no crea test IDs, fixtures ni de
 | ABM-08 — representación U_G | Reutilizar NODE, PREDICATE, manifiesto/COVERAGE_SCOPE y registros de evidencia existentes | No crear tablas/columnas ni extrapolar JCS UDG-01 |
 
 **Gate:** hasta que existan mappings versionados, snapshots exactos, roster/cobertura, evidencia y validación independiente, AB-01/02 permanecen diseño semántico reconciliado, no schema implementable. UNKNOWN/? es resultado válido; no se imputa como fallo ni como éxito sin regla/evidencia suficiente. Sin fixtures, parser, validator, implementación ni ejecución científica.
+
+
+## 81. Reconciliación PC — cobertura contractual C3/C4 (2026-11-11)
+
+La reconciliación PC se registra en el maestro C10-S §268. Esta sección no crea IDs de test ni modifica P177/P178/P179/P182/P183, CAUS-01…10 o DAG-01…08.
+
+**Cobertura reutilizada y límite:**
+- CAUS-01/03/04/05/08/09 y QX-05…10 cubren atribución focal, régimen común, soporte, mediadores post-Z, vías colaterales, escenarios y separación de estimandos.
+- DAG-01…08 cubren temporalidad, separación de estados, crosswalk, vías colaterales, invariancia D2, intervención mediadora conjunta, jerarquía y observación.
+- P177-06/12, P182-01/02/06/07/11 y P183-08/10/11/12 cubren partes de la evaluación, pero ninguno por sí solo especifica el estimando interventional ni resuelve confusión mediador–resultado inducida por Z.
+- P177-10 y P178-SIM-09/10 requieren especialización posterior para falsa identificación, falsa atribución focal, falsa abstención/abstención correcta y tolerancias por estimando×resultado×DGP.
+
+**C-MED permanece PARCIAL / OPEN.** Antes del contrato técnico deben concretarse: bloque mediador e intervención estocástica/secuencial; orden temporal y régimen; confusores post-Z y estrategia de identificación; soporte secuencial; distinción entre mediación conjunta y path-specific; criterios de descomposición y residual; resultados O_k/V_j; missingness/censura/error; y aserciones/tolerancias de recuperación y abstención. Si el DAG no permite aislar la ruta o falta soporte, la verdad esperada será NO IDENTIFIED/BOUNDS, no un efecto puntual.
+
+No se crean fixtures, no se fijan parámetros y no se ejecutan pruebas.
