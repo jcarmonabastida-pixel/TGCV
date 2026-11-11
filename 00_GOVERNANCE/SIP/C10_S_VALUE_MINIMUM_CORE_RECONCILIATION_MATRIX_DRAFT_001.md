@@ -66,7 +66,97 @@ O-CONF puede mantenerse como candidato prioritario de Outcome para el trabajo de
 
 ## 6. Núcleo confirmatorio mínimo: especificación por capas
 
-### 6.1 Núcleo metodológico que sí puede fijarse documentalmente
+### 6.1 Crosswalk de cumplimiento de §224 contra Opción A
+
+La clasificación se refiere al estado documental/material descrito en §§16.102 y 16.138–16.139 y al crosswalk §265. "Parcial" significa que existe un anclaje o superficie, no que el requisito esté satisfecho. "OPEN/UNKNOWN" no significa cero ni inexistencia.
+
+| Campo exigido por §224 | Outcome (O) en Opción A | Value (V) en Opción A | Dictamen |
+|---|---|---|---|
+| Identidad/versionado de ficha | Cinco candidatos nombrados; ninguno tiene ficha completa | Vector conceptual y dimensiones candidatas; ninguna ficha V_j completa | OPEN |
+| Constructo | O-CONF tiene anclaje parcial en F*/FP-01…08; otros O son candidatos sin criterio terminal definido | Cinco dimensiones históricas candidatas; no seleccionadas ni contextualizadas | PARCIAL / OPEN |
+| Evidencia | F*/FP-01…08 y superficies B-M disponibles como referencias; no equivalen a medición validada | No hay registros de valoración poblados; telemetría no es valoración | PARCIAL para O-CONF; OPEN para V |
+| Adjudicación/oráculo | Predicados, mapping, tolerancias, oráculo y snapshots de O-CONF pendientes; otros Outcomes sin regla terminal | No hay regla de adjudicación por dimensión V_j | OPEN |
+| Fuente de datos | Superficies y roster identificados, pero fuente probatoria por indicador no cerrada | Fuente/observador/beneficiario de valoración no confirmado | OPEN |
+| Unidad | Unidad de análisis/observación específica por Outcome no cerrada en ficha | Unidad de valoración y población de referencia no identificadas | OPEN |
+| Escala/representación | Estados, categorías y tolerancias del Outcome no fijados por ficha | Escala/unidad por dimensión no definida | OPEN |
+| Cálculo | No hay fórmula/predicado operacional completo para ningún O | No hay cálculo ni regla de valoración aceptados | OPEN |
+| Baseline | No hay baseline/snapshot contractual completo para cada O | No hay baseline por dimensión V_j | OPEN |
+| Ventana temporal/ancla | Horizonte/ventana y reglas de terminalidad pendientes | Horizonte y referencia temporal de valoración pendientes | OPEN |
+| Validez | Anclaje conceptual no demuestra validez del indicador; P182 aplicable | No hay instrumento ni evidencia de validez contextual | OPEN |
+| Error de medición | Error, tolerancias y adjudicación no determinados | Error de medición de cada V_j no determinado | OPEN |
+| Acuerdo interevaluador | No hay protocolo ni resultados de concordancia | No hay evaluadores/observadores ni protocolo de acuerdo | OPEN |
+| Ausencia/censura | Estados y mecanismo por Outcome no poblados; aplicar P183 | No observado, no aplicable, censurado, disputado y desconocido deben preservarse por dimensión; mecanismos no definidos | OPEN |
+| Cegamiento | Contrato de separación Generator/Evaluator/Analyzer propuesto; procedimiento material no demostrado | Observador/valorador, cegamiento y aislamiento no definidos | OPEN |
+| Trade-offs | No aplica como agregación de Outcomes por defecto; relaciones O–O deben declararse si afectan interpretación | P179 exige conservar el vector y no ocultar discordancias; dimensiones y trade-offs materiales aún no identificados | OPEN |
+| Provenance/trazabilidad | Roster/DAG/superficies trazados; falta provenance completa de ficha, evidencia y adjudicación | No hay registros V_j ni cadena de provenance de valoración | PARCIAL en referencias; OPEN en ficha |
+
+**Resultado del crosswalk:** no hay ninguna ficha O ni V que cumpla §224 íntegramente. O-CONF es el único Outcome con anclaje conceptual explícito relativamente desarrollado; no alcanza por ello estado operacionalizado. En Value, la arquitectura vectorial está preservada, pero no existe una dimensión materialmente instanciada.
+
+### 6.2 Crosswalk específico por Outcome
+
+| Candidato | Constructo | Evidencia | Adjudicación | Estado §224 |
+|---|---|---|---|---|
+| O-MIG | Evento de migración terminal no definido | No existe campo terminal en roster | No definida | NOT_OPERATIONALIZED |
+| O-CONF | Anclaje funcional F*/FP-01…08 | Superficies de evaluación referenciadas | Predicados, mapping, tolerancias, oráculo y snapshots pendientes | PARTIAL / NOT_OPERATIONALIZED |
+| O-SVC | Continuidad sin indicador definido | Superficies de observación disponibles | Denominador, ventana y regla pendientes | NOT_OPERATIONALIZED |
+| O-REC | Recuperación sin constructo terminal medido | Referencias a rollback/estado persistente | Evento, baseline, tiempo y criterio pendientes | NOT_OPERATIONALIZED |
+| O-BUR | Carga operativa sin unidad de esfuerzo/coste | Recursos y rendimiento observables | Actor, unidad, instrumento y regla pendientes | NOT_OPERATIONALIZED |
+
+### 6.3 Crosswalk específico de Value
+
+| Campo de instanciación V_j | Evidencia actual | Estado |
+|---|---|---|
+| Dimensión candidata | Cinco dimensiones históricas | CANDIDATE ONLY |
+| Beneficiario/observador | Ninguno confirmado en roster | OPEN |
+| Perspectiva de valoración | No determinada | OPEN |
+| Contexto de valoración | Microdominio descrito, pero sin criterio valorativo por actor | OPEN |
+| Criterio/dirección de valor | No definidos | OPEN |
+| Indicador/fuente | No hay instrumentos ni registros de valoración poblados | OPEN |
+| Unidad/escala/cálculo | No definidos | OPEN |
+| Baseline/ventana | No definidos | OPEN |
+| Validez/error/acuerdo | Contratos P182 disponibles, aplicación material pendiente | OPEN |
+| Ausencia/censura | P183 disponible, clasificación por dimensión pendiente | OPEN |
+| Trade-offs/agregación | Vector preservado; no hay dimensiones ni reglas de agregación justificadas | OPEN |
+| Adjudicación/provenance | No hay ficha ni cadena de evidencia V_j | OPEN |
+
+### 6.4 Estados de observación: regla de cumplimiento
+
+Se preservan los siete estados contractuales:
+
+- `OBSERVED_VALID`
+- `OBSERVED_INVALID`
+- `NOT_OBSERVED`
+- `NOT_APPLICABLE`
+- `CENSORED`
+- `DISPUTED`
+- `UNKNOWN`
+
+No se permite:
+- Imputar cero a una dimensión no observada.
+- Interpretar NOT_APPLICABLE como valor nulo.
+- Tratar OBSERVED_INVALID como medición válida.
+- Convertir DISPUTED en consenso.
+- Convertir UNKNOWN en ausencia demostrada.
+
+La ausencia de una ficha o de un registro de valoración se declara como bloqueo documental/material, no como observación de Value.
+
+### 6.5 Dictamen de cumplimiento
+
+| Objeto | Dictamen |
+|---|---|
+| Estructura contractual §224 | DOCUMENTED |
+| Separación constructo/evidencia/adjudicación | REQUIRED; aplicación incompleta |
+| Fichas Outcome | NONE COMPLETE |
+| Fichas Value | NONE COMPLETE |
+| Estados de observación | DEFINED CONTRACTUALLY; NOT MATERIALIZED |
+| P182/P183 | CONTRACTS AVAILABLE; APPLICATION OPEN |
+| Firewall Generator/Evaluator/Analyzer | PROPOSED; NOT VERIFIED |
+| Provenance integral | PARTIAL / OPEN |
+| Cumplimiento material global | NOT SATISFIED |
+
+Este dictamen no modifica el estado de aceptación de §224 ni declara incumplimiento empírico: constata que la instancia todavía no aporta los artefactos exigidos para demostrar cumplimiento.
+ 
+### 6.6 Núcleo metodológico que sí puede fijarse documentalmente
 
 - **A:** medida independiente de accesibilidad/ΔT_acc*, con temporalidad, versión, unidad y evidencia; no depende de O ni V.
 - **O:** Outcomes operativos definidos mediante fichas §224; seleccionar un Outcome primario solo después de justificarlo y operacionalizarlo. No hay actualmente ninguno completo.
@@ -77,7 +167,7 @@ O-CONF puede mantenerse como candidato prioritario de Outcome para el trabajo de
 - **Medición/ausencia:** P182 para validez, reproducibilidad, acuerdo, error, invariancia, sensibilidad y firewall; P183 para taxonomía/mecanismo de ausencia, selección, censura, sensibilidad, cotas y dictamen por estimando.
 - **Evaluación:** Generator, Analyzer y Evaluator separados; truth/potenciales no accesibles al Analyzer.
 
-### 6.2 Núcleo material actualmente disponible
+### 6.7 Núcleo material actualmente disponible
 
 | Componente | Estado actual | ¿Confirmatorio ejecutable? |
 |---|---|---|
