@@ -206,3 +206,7 @@ Este documento cierra la reconciliación de arquitectura de medición y de crite
 No se autoriza schema físico, captura material, fixtures, código, implementación, generación de datos, simulación, estimación o ejecución científica.
 
 `scientific_execution=false`; `execution_authorized=false`.
+
+## 12. Caso de valoración B1 — dependencia contextual pendiente (2026-11-11)
+
+El caso semántico se documenta en `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md`. El microdominio de migración está aceptado; B1 por UE, servicio por UE y una oportunidad estandarizada por UE se reutilizan. El probe no representa demanda natural ni Value. La formulación candidata de Need_preZ exige un objetivo operativo basal relacionado con sostener una operación de servicio predeclarada en destino; el contenido concreto de esa operación no está aceptado/instanciado. La consecuencia B1 permanece separada de procesamiento, respuesta, F*, O-CONF y accesibilidad. Se describen clases de consecuencia solo como envolvente, no dimensiones aprobadas. No se seleccionan V_j, autoridad, criterio, escala, instrumento u horizonte.
