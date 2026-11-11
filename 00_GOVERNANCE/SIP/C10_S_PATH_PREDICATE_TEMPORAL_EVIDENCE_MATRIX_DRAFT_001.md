@@ -457,3 +457,9 @@ Esta adjudicación es mecanística y no modifica elegibilidad, población, unida
 **OPEN:** especificación de los contrastes concretos de D2; propiedades de trayectoria causalmente relevantes; control de causas concurrentes/colaterales e interacciones; definición de intervención por etapa; positividad/soporte y versiones de tratamiento; evidencia observable y medición; reglas de atribución para contribuciones múltiples; sensibilidad a contrafactuales alternativos; relación con estimandos total, directo e indirecto y mediación.
 
 **No autorizado:** Design Freeze, implementación, fixtures, simulación o ejecución científica. Se mantienen \`scientific_execution=false\` y \`execution_authorized=false\`; \`main\` no se modifica.
+
+## 14. Integración PD: adjudicación causal y separación de verdad/evidencia (2026-11-11)
+
+Véase C10_S_PD_DGP_MECHANISM_AND_ADVERSARIAL_EVALUATION_RECONCILIATION_DRAFT_001.md. La ficha por paso/branch conserva truth_dgp y observed_state separados; el Analyzer recibe solo observed_evidence y el Evaluator compara con truth después de sellar su salida. COV/E_T sigue siendo epistémico y no altera truth estructural.
+
+La contribución petición–trayectoria se adjudica por etapa concreta (opportunity, attempt, received, admitted/rejected, processing, response) mediante contraste contrafactual y propiedad de trayectoria preespecificada. Se conservan las clases NECESSARY_CONTRIBUTION, ENABLING_CONTRIBUTION y MODIFYING_CONTRIBUTION, que pueden coexistir. TEMPORAL_ASSOCIATION, TRACEABILITY_LINK y CAUSAL_CONTRIBUTION permanecen distintos. La matriz no asigna valores 1/0/? a escenarios por conveniencia ni crea fixtures. Las vías concurrentes/colaterales, soporte, interacciones y mecanismos de no transición deben quedar explícitos en truth y evaluarse con cobertura observada.
