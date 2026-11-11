@@ -1806,3 +1806,82 @@ El proceso de observación queda especificado y sus implicaciones analíticas b�
 Los valores Se/Sp y cobertura usados son ejemplos diagnósticos transparentes, no parámetros aprobados para el DGP confirmatorio. No se han calculado potencia, sesgo Monte Carlo, cobertura de intervalos, N/R ni tasas de abstención del Analyzer.
 
 **Estado:** OBSERVATION_CHANNEL_ANALYTIC_SPECIFICATION_COMPLETE / DIAGNOSTIC_EXAMPLES_ONLY / FULL_REFERENCE_MANIFEST_REQUIRES_GOVERNED_PARAMETER_SELECTION / STATISTICAL_CALIBRATION_NOT_STARTED / SCIENTIFIC_EXECUTION_FALSE / EXECUTION_AUTHORIZATION_FALSE.
+
+
+## 46. Manifiesto integrado de parámetros y suficiencia analítica de referencia (2026-11-11)
+
+**Estado:** DIAGNOSTIC_PARAMETER_MANIFEST_CONSOLIDATED / ANALYTIC_REFERENCE_SUFFICIENT_FOR_P178_DESIGN_REVIEW / CONFIRMATORY_PARAMETERS_NOT_SELECTED / P178_APPROVAL_PENDING / NO_MONTE_CARLO / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 46.1 Dictamen de consolidación
+
+Se consolidan §§37–45 en un manifiesto único de referencia para evitar que los puntos diagnósticos de cada sección se interpreten como una sola configuración simultánea. La batería es una familia de configuraciones derivadas de un escenario focal común, con un mecanismo adversarial activado por vez, salvo que una interacción combinada se declare expresamente.
+
+La suficiencia aquí dictaminada es **analítica y de diseño**: hay parámetros y verdades deterministas suficientes para especificar las celdas de referencia, sus contrastes y los dictámenes de identificación esperados. No significa que estén elegidos los parámetros confirmatorios, que P178 esté aprobado, que el Analyzer esté validado o que el experimento esté implementado.
+
+La precedencia estructural se resuelve conforme a §37.1–37.5: las dos firmas semánticas completas d0/d1 proceden de AB-03-SYN y de la truth abstracta del DGP. No se exige mapping físico/material para esta verdad sintética. La exigencia material de §36.7 queda limitada a implementación o afirmaciones sobre migraciones reales.
+
+### 46.2 Configuración focal común de referencia
+
+| Bloque | Valor o definición de referencia | Estado |
+|---|---|---|
+| Firmas | d0 y d1, tuplas completas ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*) según §37.3 | Definición semántica cerrada para DGP abstracto |
+| Régimen | R0; A1/A2 fuera del conjunto accesible; F1/F2 definen la apertura focal | Estipulación de truth |
+| Política | λ0=0.25; λ1=0.75; soporte común {d0,d1} | Punto diagnóstico, no confirmatorio |
+| Baseline de transiciones | b01=b10=logit(0.20), p01(d0)=p10(d0)=0.20 | Punto diagnóstico |
+| Estado inicial | π0∈{0.20,0.50,0.80}; común entre brazos | Sensibilidad |
+| Resolución temporal | K∈{2,10,50} slots iguales posteriores a A0 | Sensibilidad; no equivale a H ni fija duración física |
+| Transiciones por firma | p01(d)=expit[b01+α01 I(d=d1)]; p10(d)=expit[b10+α10 I(d=d1)] | Oráculo exacto de §35 |
+| Value | V*_B1=Q*_B1(W), proporción temporal de disponibilidad funcional | Regla de medida ya aceptada; W físico parametrizable |
+| Observación de referencia | Clasificación perfecta y cobertura completa | Canal ideal para separar causalidad de medición |
+
+El núcleo focal conserva λ0<λ1 y soporte común. El contraste primario es θ_A(q;V_B1)=(λ1−λ0)[μ_Q(d1;π0,K)−μ_Q(d0;π0,K)]. El oráculo se vuelve a evaluar determinísticamente para cada configuración y es la única fuente de truth cuantitativa; las cifras tabuladas son controles de verificación, no una truth paralela codificada a mano.
+
+### 46.3 Celdas focales y controles de signo/nulidad
+
+| Celda | (α01,α10) | π0 | Dictamen esperado |
+|---|---|---|---|
+| Focal nula general | (0,0) | 0.20, 0.50, 0.80 | θ_A=0 para todo K |
+| Focal positiva | (1,−1) | 0.20, 0.50, 0.80 | θ_A>0 en los tres estados |
+| Focal negativa | (−1,1) | 0.20, 0.50, 0.80 | θ_A<0 en los tres estados |
+| Nulo condicionado | (1,1) | 0.50 | θ_A=0 solo en este π0; no es nulo general |
+| Sensibilidad de señal débil | (1,0.99) | 0.20, 0.50, 0.80 | Informar θ_A exacto; no etiquetar equivalencia/near-zero |
+| Primera etapa nula | λ0=λ1 | cualquiera declarada | No hay contraste inducido de distribución de firmas; no usar como nulo con política activa |
+
+K∈{2,10,50} se cruza con las celdas cuando la pregunta sea sensibilidad temporal. No se selecciona K maximizando |θ_A|. No se introduce δ_min ni un umbral de equivalencia sin justificación independiente.
+
+### 46.4 Extensiones adversariales separadas
+
+| Extensión | Parámetros diagnósticos | Truth/dictamen que debe recuperar el Analyzer |
+|---|---|---|
+| Vía directa a disponibilidad | γ01/γ10∈{−log2,0,+log2}, activados solo en g1; combinaciones de §44.2 | Distinguir Δ_total de θ_A^(g0); declarar régimen de referencia de atribución |
+| Sin soporte | λ0=0, λ1=1 | ITT de política identificable bajo aleatorización y supuestos; atribución estandarizada a accesibilidad no identificada no paramétricamente |
+| Soporte reducido | λ0=0.05, λ1=0.95 | Positividad formal, pero precisión/soporte práctico aún no adjudicados |
+| Error no diferencial | Se=Sp=0.90 y 0.95 | Atenuación conocida en esperanza; corrección solo si calibración admisible disponible |
+| Error diferencial | Se0=0.90, Se1=0.95, Sp0=Sp1=0.90 bajo Q* nulo=0.50 | Contraste observado espurio +0.025; no atribuirlo a accesibilidad |
+| Cobertura incompleta | c=0.80, r=0.50, clasificación perfecta | Cota Q*∈[0.40,0.60] si estados ausentes desconocidos |
+| Pérdida/censura no ignorable | Mecanismo dependiente del estado/brazo o censura temporal | No identificación puntual sin supuestos adicionales; cotas, sensibilidad o abstención |
+
+Estas extensiones no se combinan automáticamente. La batería base cambia un mecanismo cada vez para que el Evaluator pueda atribuir el fallo del Analyzer a una causa conocida. La combinación de mecanismos queda como sensibilidad secundaria y no es requisito para declarar completo el manifiesto de referencia.
+
+### 46.5 Parámetros que siguen sin selección confirmatoria
+
+No se convierten en valores confirmatorios por aparecer en una tabla diagnóstica:
+
+- política λ0/λ1 definitiva y región de efectos que se desea cubrir;
+- combinación de (α01,α10), π0 y K que representará el punto o conjunto de diseño principal;
+- γ directo definitivo y umbral de soporte práctico;
+- Se/Sp, cobertura, missingness, latencia y censura del escenario de observación;
+- duración física y discretización temporal de W_B1;
+- N, R efectivo, lotes, semillas jerárquicas y reglas de parada.
+
+Los criterios metodológicos de §39–40 permanecen **propuestos y pendientes de aprobación expresa**: α bilateral 0.05, potencia objetivo 0.80 en puntos de diseño finitos, cobertura nominal 95%, MCSE≤0.005 para tasas, y R inicial conservador de 10,000 por celda con regla adaptativa. No se inicia P178 hasta su aprobación y autorización de la operación computacional.
+
+### 46.6 Suficiencia y límites
+
+**Suficiente para:** cerrar el manifiesto analítico diagnóstico, definir la batería de referencia y someter a aprobación el protocolo P178 sin más expansión conceptual.
+
+**No suficiente para:** afirmar configuración confirmatoria congelada; seleccionar un único N/K/efecto; estimar potencia, sesgo, cobertura o abstención; validar el Analyzer; ni ejecutar el experimento causal.
+
+La próxima operación es una decisión acotada, no otra auditoría: aprobar o ajustar los criterios P178 ya formulados en §§39–40 y autorizar explícitamente la calibración estadística Monte Carlo. Si se aprueban, la búsqueda N×θ_A/R se ejecutará dentro de ese alcance; si no, no se simulará.
+
+**Estado:** ANALYTIC_REFERENCE_MANIFEST_COMPLETE / READY_FOR_P178_APPROVAL_DECISION / STATISTICAL_CALIBRATION_NOT_AUTHORIZED / SCIENTIFIC_EXECUTION_FALSE / EXECUTION_AUTHORIZATION_FALSE.
