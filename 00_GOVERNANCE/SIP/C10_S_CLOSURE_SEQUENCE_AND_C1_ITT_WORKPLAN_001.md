@@ -2219,3 +2219,26 @@ Permanece un límite de alcance, no un bloqueo de P178 focal: los artefactos son
 **Actualización de ejecución (2026-11-11, consulta live):** workflow run 43083651875, URL https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/43083651875, commit exacto probado 689c8f0164e0625ca536a20b1805e555cd63d5fd. El paso de ejecución primaria terminó success; como el ejecutor usa --strict-protocol y sale con código distinto de cero ante cualquier criterio fallido, esto acredita que la primaria completó 27/27 celdas y 10.000 réplicas/celda y superó todos los gates implementados. El replay de tests y Monte Carlo desde archivo fuente limpio permanece in_progress; todavía no hay artefacto cargado ni dictamen final de reproducibilidad. El branch head posterior de documentación/protocolo es 62c07f357dc43315aca02add6b11291c40350155; no se altera el commit exacto de la ejecución ya iniciada.
 
 **Dictamen actualizado:** ANALYZER_MC_PRIMARY_27_CELLS_STRICT_PASS / CLEAN_MC_REPLAY_IN_PROGRESS / ARTIFACT_PENDING / NON_CONFIRMATORY_ONLY.
+
+## 56. Recuperación del replay limpio tras cancelación del workflow (2026-11-11)
+
+**Incidencia y reconstrucción:** el usuario solicitó cancelar el workflow `43083651875` durante el paso 8. GitHub confirma `completed / cancelled`; no se interpreta como fallo de la simulación primaria. La inspección del artefacto `13888821660` confirma:
+- Primario: CSV y manifiesto completos, 27/27 celdas, 10.000 réplicas por celda, 270.000 invocaciones Analyzer y `acceptance.status=PASS`.
+- Hash SHA-256 del CSV primario: `e73a204b6ffc3ff4666c37d9a3e2d5ff4612a3d0602a25349cbb8bc12287914f`.
+- Manifiesto primario: hash SHA-256 `72aed4c8bbe30a20cdb20e3b1c2d27f38e046687b100349f94b99aaed9f04294`.
+- Suite de contratos del replay: 17/17 PASS.
+- Replay Monte Carlo: stdout registra 26 celdas completas; el proceso fue cancelado antes de la celda 27 y antes de escribir CSV/manifiesto de replay. Por ello no existe comparación final byte a byte y no se declara replay PASS.
+- Artefacto ZIP primario: ID `13888821660`, digest SHA-256 `0218ac9303e588f8d134f43bd73627d51ec59f4281ecac02621a3f20726b288e`; run `43083651875`, commit probado `689c8f0164e0625ca536a20b1805e555cd63d5fd`.
+
+**Acción correctiva mínima:** se añadió `.github/workflows/c10-s-analyzer-mc-replay.yml` en esta rama de investigación. Es un workflow separado que:
+1. descarga el artefacto primario ya existente del run `43083651875` (no repite la primaria);
+2. verifica su hash CSV y el manifiesto PASS/27 celdas/10.000 réplicas;
+3. reconstruye el archivo fuente limpio desde el commit exacto `689c8f0164e0625ca536a20b1805e555cd63d5fd`;
+4. vuelve a ejecutar únicamente el replay completo de 27 celdas sobre ese archivo;
+5. compara CSV y manifiesto byte a byte con el artefacto primario y carga procedencia/hashes separados.
+
+El workflow de recuperación se dispara por el push de su propio archivo en la rama research; también admite ejecución manual. Su commit de incorporación es `4b2236727bf24889e3f071f22c53dc8312ed78b5`. La ejecución de recuperación queda pendiente de resultado; la adición del workflow no equivale a PASS.
+
+**Dictamen actualizado:** `PRIMARY_ANALYZER_MC_27_CELLS_STRICT_PASS / CONTRACT_REPLAY_TESTS_17_OF_17_PASS / FULL_CLEAN_MC_REPLAY_PENDING / PRIMARY_ARTIFACT_PRESERVED / NON_CONFIRMATORY_ONLY`.
+
+**Límite:** no se amplía la cuadrícula, no se recalibran criterios, no se repite la simulación primaria y no se inicia ejecución confirmatoria. La validación Monte Carlo metodológica solo podrá cerrarse tras el PASS del replay y la comparación exacta de ambos artefactos.
