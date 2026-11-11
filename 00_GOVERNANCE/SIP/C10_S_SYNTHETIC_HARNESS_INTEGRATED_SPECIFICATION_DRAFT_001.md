@@ -3,7 +3,7 @@
 **ID:** C10-S-SYNTHETIC-HARNESS-SPEC-001  
 **Versión:** 001  
 **Fecha:** 2026-11-11  
-**Estado:** A_B_C_RECONCILED / IMPLEMENTABLE_SPECIFICATION_CANDIDATE / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED  
+**Estado:** A_B_C_RECONCILED / IMPLEMENTABLE_SPECIFICATION_CANDIDATE / FOCAL_IMPLEMENTATION_SLICE_001_PERSISTED / FULL_HARNESS_INCOMPLETE / NOT_EXECUTED  
 **Rama:** `research/c10-s-consolidation-draft` · **PR:** #116 (Draft)  
 **Precedencia:** decisiones aceptadas aplicables; PA–PE; contratos DGP temporal/roles, PD, B2–B3, operacionalización Outcome/Value, D2 assignment/population/support y U_G. Este documento integra interfaces y reglas; no sustituye las fuentes rectoras ni reabre decisiones aceptadas.
 
@@ -290,7 +290,7 @@ Estas cuestiones no se rellenan artificialmente. Se mantienen abiertas para una 
 
 Una persona técnica puede construir el motor parametrizado con los contratos de componentes, artefactos, campos lógicos, orden generativo, separación de roles, reglas de estimación/abstención y evaluación especificados aquí. Los escenarios concretos se suministran como configuraciones versionadas; los resultados no operacionalizados permanecen explícitamente no instanciados.
 
-**Estado de esta iteración:** A–B–C reconciliado documentalmente como especificación del motor/harness parametrizado. No se afirma que un escenario confirmatorio D2 esté congelado, que Value esté operacionalizado, que los efectos de accesibilidad estén identificados, ni que el harness haya sido implementado o probado.
+**Estado de esta iteración:** A–B–C permanece reconciliado documentalmente como especificación del motor/harness parametrizado. Se ha persistido una primera porción de implementación focal para la instancia sintética B1 en `03_EXPERIMENTS/C10-S/harness/`; no equivale al harness completo y sus pruebas aún no se han ejecutado. No se afirma que un escenario confirmatorio D2 esté congelado, que el Value general esté operacionalizado, que los efectos de accesibilidad estén identificados ni que exista validación técnica/científica.
 
 **No autorizado por este documento:** Design Freeze; modificación de main/Core/RMA/Matrix/STATUS/claims; creación/materialización de fixtures o datos; código/parser/validator; simulación, estimación, replay o ejecución científica. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
 
