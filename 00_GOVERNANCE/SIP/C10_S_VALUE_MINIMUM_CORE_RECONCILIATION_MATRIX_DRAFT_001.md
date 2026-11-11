@@ -259,6 +259,44 @@ No seleccionar ahora entre:
 
 Ambas son rutas de diseño posibles, pero no equivalentes. La segunda modifica el mundo sintético y exige analizar nuevas vías causales, medición, interferencia y comparabilidad. No se adopta por conveniencia de completar §224.
 
+### 8.6 Comparación de alternativas A/B y recomendación de arquitectura
+
+La comparación no trata de completar §224 por conveniencia, sino de decidir qué afirmaciones científicas puede sostener cada variante del DGP.
+
+| Criterio | A — Opción A sin extensión de Value | B — extensión explícita del DGP |
+|---|---|---|
+| Dominio | Conserva exactamente el servicio lógico aceptado | Añade un rol consumidor/beneficiario sintético y una relación explícita con el servicio |
+| Outcome | Puede estudiar Outcomes técnicos una vez operacionalizados; O-CONF es el candidato mejor anclado | Conserva esos Outcomes y añade una consecuencia experimentada/valorada por el rol sintético |
+| Value | No instanciado; no permite probar ΔT_acc→Value | Puede instanciar Value bajo preferencias/criterios estipulados ex ante |
+| Pregunta causal | Recuperación de A/ΔT_acc, Reach, trayectorias y efectos sobre O | Además, si el cambio transformacional produce consecuencias valoradas para el beneficiario sintético |
+| Validez externa | No permite inferir valor para usuarios reales | Tampoco; prueba únicamente recuperación causal dentro del mundo sintético estipulado |
+| Riesgo principal | Que el programa C10-S no llegue a probar la atribución a Value | Circularidad, utilidad diseñada para favorecer la hipótesis, confusión entre Outcome y Value, nuevas vías directas y supuestos de preferencias arbitrarios |
+| Coste de diseño | Menor; preserva el DGP aceptado | Mayor; exige ampliar unidad/relación, demanda, criterio, medición, DAG, ausencia, interferencia y contratos |
+| Uso legítimo | Banco de pruebas transformacional y de Outcome técnico | Banco de pruebas causal-transformacional con Value sintético, además de los módulos de A |
+
+**Conclusión comparativa:** A es adecuada para validar partes transformacionales y técnicas del Analyzer, pero no satisface el objetivo confirmatorio de atribución a Value. B es necesaria para probar esa capacidad dentro de un DGP sintético; no autoriza ninguna afirmación sobre valor real ni sustituye validación externa.
+
+**Recomendación de arquitectura — PROPUESTA, NO ACEPTADA:** conservar A como variante base inalterada y crear B como variante/extensión versionada separada. No reescribir el contrato funcional aceptado DEC-C10-068 ni introducir silenciosamente actores en el roster actual. Esta separación permite comparar el mismo mecanismo técnico con y sin capa de beneficiario y evita que el resultado de la extensión se presente como propiedad del dominio base.
+
+#### Requisitos mínimos para B antes de aprobarla
+
+1. **Rol beneficiario sintético:** estipular una entidad/rol consumidor que origina una demanda de servicio y recibe sus consecuencias. Su relación con la unidad experimental y el servicio debe ser explícita. No reutilizar el actor ejecutor ni al evaluador independiente.
+2. **Demanda preasignación:** definir una carga/solicitudes estandarizadas, su origen, elegibilidad, volumen, temporalidad y asignación a la unidad. Mantenerla exógena a Z, salvo que la demanda sea deliberadamente parte de otro estimando.
+3. **Perspectiva y criterio:** declarar qué consecuencias cuentan como beneficios/cargas para ese rol y en qué dirección. La preferencia es una estipulación del DGP, no una verdad sobre usuarios reales.
+4. **Separación O/V:** O registra estados/consecuencias operativas del servicio; V_j registra cómo se valoran esas consecuencias desde la perspectiva del beneficiario. Un mismo registro bruto no puede actuar como Outcome y Value sin una transformación/medición conceptualmente distinta, independiente y documentada.
+5. **Vector, no escalar por defecto:** preservar dimensiones V_j y trade-offs según P179. No definir ponderaciones ni una función agregada hasta justificar regla, unidades y sensibilidad.
+6. **Mecanismo causal:** especificar si la ruta focal es ΔT_acc→Reach→consideración/selección→ejecución→O→V_j, y declarar explícitamente las rutas directas B→V_j, provisión/instalación→V_j, coste/latencia/calidad/riesgo→V_j y cualquier vía mediada por conocimiento/selección. No imponer exclusión por definición.
+7. **Temporalidad:** mantener baseline/demanda y perspectiva antes de Z; medir A/ΔT_acc antes de selección/ejecución; medir O y V en sus ventanas preespecificadas; no condicionar el análisis a solicitudes atendidas o ejecuciones completadas si son postratamiento.
+8. **Medición §224/P182/P183:** ficha independiente por O y V_j; validez, error, acuerdo, cegamiento, invariancia, missingness/censura y dictamen por estimando. Mantener verdad DGP oculta al Analyzer.
+9. **Unidad/interferencia:** establecer si el beneficiario es exclusivo de una UE o compartido entre instancias; si comparte demanda, recursos o resultados, cambiar UA/clúster y estimandos o estipular y probar escenarios de spillover.
+10. **Contraste adversarial:** incluir al menos DGPs donde ΔT_acc aumenta sin aumentar Value, Value cambia por una vía no focal, Outcome permanece constante mientras Value cambia, y efectos/beneficios y cargas se mueven en direcciones opuestas. El Analyzer debe abstenerse cuando exclusión o identificación no estén demostradas.
+
+#### Límite decisivo
+
+B solo prueba que el Analyzer puede recuperar la relación causal codificada en un DGP transparente para el Evaluator y oculta para el Analyzer. No prueba que la perspectiva, preferencias ni dimensiones elegidas sean válidas para usuarios reales. Esa validez exigiría una investigación empírica externa y un dominio con actores/evidencia reales, fuera del alcance de esta extensión sintética.
+
+**Estado:** A/B COMPARISON DOCUMENTED / B RECOMMENDED AS SEPARATE DGP VARIANT / USER ACCEPTANCE OPEN. No se crea actor, ID, variable, regla de Value, evento, fixture ni DAG aprobado.
+
 ## 9. Bloqueos exactos para pasar de arquitectura a operacionalización
 
 1. **B1 — Perspectiva/beneficiario:** resolver si se mantiene Value no instanciado en Opción A o si se propone y acepta una extensión explícita del DGP que estipule consumidor/beneficiario sintético, su relación con la unidad y su perspectiva. No inferirlo desde CMP.owner, el actor ejecutor o el nombre del servicio.
@@ -299,7 +337,7 @@ Estas propuestas no modifican DEC-C10 existentes ni constituyen aceptación por 
 
 **Dictamen de esta matriz:** DOCUMENTARY RECONCILIATION UPDATED AGAINST RECOVERED CONTRACT REGISTER / MATERIAL OUTCOME-VALUE OPEN.
 
-Siguiente gate: decidir, mediante propuesta explícita, si Opción A permanece limitada a Outcomes técnicos con Value no instanciado o si se amplía el DGP para introducir un consumidor/beneficiario sintético. No crear identidades ni reglas de valoración hasta esa decisión. Después resolver B2–B3 (criterio V y Outcome primario) con evidencia compatible con §224.
+Siguiente gate: revisar la recomendación de conservar A como variante base y desarrollar B como variante DGP separada. Solo tras aceptación expresa se elaborará su contrato de roles, demanda, criterio y DAG; después se resolverán B2–B3 (criterio V y Outcome primario) y sus fichas §224. No crear identidades ni reglas de valoración antes de esa aceptación.
 
 No se ha modificado `main`; no se ha cerrado MED-02/MED-03; no hay Design Freeze, implementación ni ejecución científica.
 
