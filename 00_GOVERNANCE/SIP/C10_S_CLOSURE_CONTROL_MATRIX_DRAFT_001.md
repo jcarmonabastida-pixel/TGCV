@@ -2987,3 +2987,12 @@ Se incorpora como referencia operativa `C10_S_CLOSURE_SEQUENCE_AND_C1_ITT_WORKPL
 **Dictamen:** C1 OPEN. D2 como asignación a B_g0^D2/B_g1^D2 está definido por decisiones aceptadas, pero el estimando completo no está cerrado. `P*_{τ2}` permanece candidato, `P*_F` no es población primaria por defecto; UE=UA está condicionada a aislamiento/no interferencia; A carece de Outcome operacionalizado y B carece de Value instanciado; H=3 no es horizonte temporal.
 
 **Siguiente gate:** C1.2 — cerrar composición de elegibilidad basal `E_i`, predicados constitutivos y evidencia/indeterminación, y recuperar contrato de aleatorización D2. No freeze ni ejecución.
+
+
+## C1.2 — Elegibilidad basal y asignación D2 (2026-11-11)
+
+**Registro:** §12 de `C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md`.
+
+La fórmula histórica de `E_i` que agregaba `C_other` queda retirada como regla operativa; `C_auth,base=1` es común/invariante D2; `C_dep,0=0` no sustituye `A_f,0*=0); `E_req_preZ` no es elegibilidad experimental. No se ha encontrado ratio/probabilidades, estratos, algoritmo/semilla ni reglas de desviación de la asignación en los contratos revisados.
+
+**Recomendación pendiente de confirmación:** `P*_{τ2}` población primaria candidata C1; `P*_F` subpoblación secundaria. Composición `E_i`, clasificación y soporte OPEN. C1 no está cerrado.
