@@ -11775,3 +11775,117 @@ C1 no puede declararse completo/identificado con la especificación material act
 No surgió decisión nueva que requiera aprobación del usuario en este ciclo: las lagunas son materiales/documentales, no preferencias. El paquete PA queda reconciliado documentalmente; sus bloqueos se mantienen explícitos y se abordarán mediante PB y los paquetes posteriores. No se reabren DEC-C10-066/067 ni DEC-C10S-C1-POPULATION-PRECEDENCE-001.
 
 Sin Design Freeze, schemas físicos, fixtures, implementación, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+## 267. PB — reconciliación integral del material D2, servicio B1 y primera etapa C2 (2026-11-11)
+
+**Estado del ciclo:** PB_RECONCILED_DOCUMENTALLY / D2_C2_MATERIAL_BLOCKED / NOT_DESIGN_FROZEN.  
+**Fuentes rectoras reutilizadas:** DEC-C10-066/067; DEC-C10-068/069; DEC-C10-095; contrato DGP temporal/roles; manifiesto de provisión B; contrato funcional de servicio; identidad/versionado CMP; B1 requester y decisiones B1 aceptadas; crosswalk A_f; matriz de predicados temporales; auditoría de medición D_f*/A_f*; contrato snapshots/delta; auditoría IV; U_G y overlay IAM.  
+**Propagación:** plan integrado §16.156; Closure Control Matrix; manifiesto B; auditoría MEAS; contrato B1 y registro de paquetes.
+
+### 267.1. Qué queda fijado por decisiones aceptadas (reutilización, no reapertura)
+
+1. **Política experimental:** D2 es el escenario primario candidato y D1 el secundario (DEC-C10-066). Control D2 no programa ni inicia provisión focal; tratamiento D2 programa un intento de provisión de la dependencia focal requerida por τ2 (DEC-C10-067). El intento programado no garantiza intento efectivo, recepción, instalación o éxito.
+2. **Separación de eventos:** Z, B, W_programmed, W_attempt, recepción, S_install, componentes verificados, C_dep*, A_f*, D_f* y ΔT_acc* son objetos distintos. C_dep*=C_install∧C_integrity∧C_compat∧C_oper; no se asigna directamente ni se infiere de Z/W.
+3. **Límite de la provisión:** B no ejecuta F1/τ2, F2, A1 ni A2; no modifica el paquete de configuración fuente/destino, mapping, F*, esquema, oráculo, reglas de Outcome/Value ni autorización normativa funcional basal. No se altera DEC-C10-068 ni el roster A.
+4. **Servicio lógico:** DEC-C10-068 acepta C10S-SVC-REQUEST-PROCESSOR como servicio lógico sintético, PAR-SVC-ENABLED, PAR-SVC-PROFILE y RUL-SVC-ENABLE-PROFILE-01. DEC-C10-069 acepta contract_id=C10S-SVC-REQUEST-PROCESSOR, contract_version=1.0.0, instance_id=C10S-SVC-REQUEST-PROCESSOR-001, instance_version=1, component_id=CMP-SERVICE-LOGIC-001, component_class=SERVICE_LOGIC y la política de versionado. Son identidades documentales aceptadas; no hay serialización física, hash ni instancia desplegada.
+5. **B1:** una entidad solicitante-beneficiaria sintética por UE, una instancia lógica de servicio aislada/versionada por UE como requisito de diseño, y una oportunidad estandarizada por UE en el núcleo confirmatorio mínimo. La oportunidad se presenta mediante harness externo común después de snapshots t3/t4; se registra el intento aunque el servicio no reciba. El envío endógeno queda secundario/adversarial.
+6. **Enlace petición–trayectoria:** vínculo explícito, tipado y versionado, sin cardinalidad funcional 1:1. TEMPORAL_ASSOCIATION, TRACEABILITY_LINK y CAUSAL_CONTRIBUTION no son intercambiables; la última requiere contraste contrafactual en truth DGP. Los eventos de petición permanecen en subledger y no se insertan en t5/t6/t7 ni amplían H.
+7. **Parámetro de éxito:** s=0.80 es hipótesis candidata no validada. Cualquier probabilidad de C_dep* derivada de ella exige cumplimiento perfecto, una oportunidad y ausencia de provisión de fondo, además de la distribución conjunta asumida. No es tasa empírica ni primera etapa de A_f/D_f.
+
+### 267.2. Frontera causal integrada P0/P1/P2 y papel del servicio
+
+Se preservan tres perímetros:
+- **P0:** paquete declarativo de configuración del servicio (CMP/PAR/REF/RUL/MET). B no lo reescribe ni cambia sus reglas, mapping u oráculo.
+- **P1:** entorno de ejecución (runtime, binarios, adaptador/dependencia, ACL técnicas, endpoint, recursos, red, estado operativo y seguridad). La provisión D2 actúa aquí, de forma aditiva y focal, bajo versión y permisos mínimos.
+- **P2:** sistema causal completo de la UE: P0+P1, rutas alternativas, dependencias compartidas, agentes, harness, medición, selección/ejecución, Outcome y Value.
+
+El servicio lógico de procesamiento de solicitudes es la unidad funcional común del diseño B1. La dependencia/adaptador focal que D2 intenta provisionar pertenece al entorno P1 y habilita una ruta técnica requerida por τ2. La configuración funcional del servicio y sus parámetros aceptados deben permanecer invariantes entre brazos; el adaptador no debe confundirse con el CMP del servicio ni con el paquete P0. El servicio lógico no se equipara al beneficiario B1, a la UE ni al actor ejecutor.
+
+La arquitectura de menor riesgo sigue siendo adaptador y runtime aislados, artefacto/versiones fijados, permisos mínimos, cuotas explícitas y canal restringido. Es una propuesta de arquitectura, no evidencia de aislamiento. Si requiere modificar host, P0, configuración fuente/destino, autorización normativa, oráculo o dependencias compartidas, se registra vía colateral y el contraste deja de ser interpretable como intervención focal aislada.
+
+### 267.3. Crosswalk causal de accesibilidad focal: precedencia y no duplicidad
+
+Se conserva la fórmula candidata depurada del maestro §67.3:
+
+A_f*=I(ID_f*∧REL_f*∧COND_f*∧AUTH_f*∧RES_f*∧DEP_f*∧¬BLOCK_f*)
+
+- C_auth,base se corresponde con AUTH_f*; es autorización normativa funcional basal, satisfecha antes de Z e invariante postulada frente a B. ACL, credenciales, tokens y endpoint técnicos son permisos de provisión distintos. Si B cambia el permiso funcional, existe vía B→AUTH→A_f* y no se ha aislado solo la provisión técnica.
+- C_dep* se integra en DEP_f*; para la ruta focal única estipulada puede coincidir con DEP. En un modelo con alternativas, DEP representa existencia de al menos una ruta válida: C_dep*=0 no implica A_f*=0 si existe otra ruta para la misma τ2.
+- C_resource y C_capacity no son factores autónomos adicionales. Solo disponibilidad no focal, ex ante, asignada, suficiente, persistente y no duplicada puede alimentar RES_f*/R_access*. Capacidad focal añadida por B pertenece a C_dep*; capacidad consumida por ejecución, carga concreta y rendimiento se registran aparte.
+- C_info no es predicado autónomo: información técnica necesaria del sistema solo entra donde no duplique DEP/REL/COND/AUTH/RES; conocimiento del agente es mecanismo posterior; información del evaluador pertenece a E_T.
+- C_domain/D_support se asigna a identidad/tipo o COND según significado; C_other no es comodín. App_f, conocimiento, selección, ejecución, Outcome y Value no integran A_f*.
+- La fórmula es candidata conceptualmente reconciliada; mappings materiales, catálogos REL/COND/BLOCK, recursos y rutas siguen abiertos. No se acepta ni congela una ficha nueva por este crosswalk.
+
+### 267.4. Primera etapa C2: vector de medidas, no proxy único
+
+La primera etapa debe registrarse como una cadena/vector de transición y no como un único indicador de “instalación”:
+
+| Nivel | Objeto verdadero DGP | Registro/evidencia observable | Interpretación |
+|---|---|---|---|
+| Asignación | Z, política D2 asignada | Semilla/algoritmo/probabilidad y registro de brazo | ITT de política |
+| Programación/ejecución del intento | W_programmed, W_attempt | Actor, timestamps, intento, recepción, desviaciones | Cumplimiento/proceso, no éxito |
+| Instalación técnica | S_install, C_install, C_integrity, C_compat, C_oper | Artefacto/version/hash, runtime, pruebas y verificación por componente | Evidencia de instalación/dependencia |
+| Dependencia focal | C_dep* | Clasificación observada por componente y cobertura | Éxito técnico compuesto, no accesibilidad completa |
+| Accesibilidad focal | A_f*(t0/t3) | A_f^obs(t0/t3) por predicado y ruta | Conjunción de todos los predicados focales |
+| Apertura basal→post | D_f*=I(A_f*(t0)=0 ∧ A_f*(t3)=1) | D_f^obs con 1/0/? y matching | Primera etapa focal verdadera; no reemplazar por C_dep |
+| Cambio completo | ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*) | Diff estructural sobre snapshots comparables | Cambio completo del espacio accesible, no solo τ2 |
+| Evidencia | E_T, ΔE_T | Fuentes, cobertura, validez_e, provenance, versión y adjudicación | Plano epistémico separado; mejora de evidencia no crea accesibilidad |
+| Consecuencia transformacional | Reach_H, Π_H | Derivación a partir de T_acc y reglas de composición | No inferir de ejecución observada |
+
+La primera etapa instrumental relevante para un eventual LATE_f es la de D_f*, no W_attempt, S_install o C_dep*. D_f^obs no sustituye D_f* sin modelo de error/validación defendible. Wald/LATE permanece bloqueado.
+
+### 267.5. Snapshots, matching y secuencia temporal
+
+- **t−1:** identidad semántica focal τ2, unidad/frontera/contexto, versiones, mapping, IAM/cobertura, condiciones basales, autorización, recursos y alternativas; snapshot estructural basal inmutable.
+- **t0:** asignación Z, con probabilidad, estrato/bloque, algoritmo, semilla/hash y unidad de asignación registrados.
+- **t1:** política D2, versión del artefacto, actor, W_programmed, W_attempt, recepción y desviaciones.
+- **t2:** instalación/verificación separada por C_install, C_integrity, C_compat, C_oper; no inferir éxito por recepción.
+- **t3:** snapshot estructural postprovisión, antes de conocimiento/consideración, selección, inicio o ejecución; adjudicación focal A_f/D_f.
+- **t4:** Reach/Π derivado del espacio transformacional y reglas declaradas. La oportunidad estandarizada B1 se presenta después de disponer del snapshot t3/t4.
+- Ejecuciones posteriores que alteren el sistema requieren snapshots nuevos; no sobrescribir t0/t3.
+
+S_T*=(U_t*,R_t*,C_t*,X_t*) es verdad estructural; E_T=(Sources,Coverage,Validity_e,Provenance,Version,Timestamp,Adjudication) es evidencia. ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*); ΔE_T se informa por separado. La validez estructural y la validez de evidencia no se fusionan.
+
+DEC-C10-065 fija pinning de registros a snapshots, pero UG-SCH-10 y su reconciliación física continúan OPEN: la aceptación del contrato de referencia no demuestra plantilla, FK, ROUTE_STEP, cobertura ni validación técnica. Si identidad τ2, frontera, granularidad, catálogo, mapping o snapshots no son comparables, D_f^obs=?/NOT_COMPARABLE, no 0.
+
+### 267.6. Aislamiento, vías colaterales y falsadores del diseño focal
+
+El manifiesto B-M01…15 es un catálogo de inspección, no inventario. Todas las superficies permanecen NO INVENTARIADO salvo las prohibiciones explícitas B-M13 (oráculo) y B-M14 (alternativas A1/A2), que B no debe modificar. No hay artefacto real, runtime, grafo de dependencias, consumers, ACL, cuotas, red, logs, hashes, rollback ni snapshot material.
+
+La no-afectación de alternativas exige verificar identidad/versiones y funcionamiento de A1/A2, dependencias transitivas, permisos, canales, recursos, latencia, calidad, seguridad, mismo F* y rollback. PROV-05 (no reducción de disponibilidad A1/A2/F2) y PROV-09 (no modificación de dependencias críticas compartidas) siguen requisitos de auditoría, no resultados.
+
+D2-INV-AUTH-01, D2-RES-01 y D2-CAP-01 permanecen fichas candidatas no aprobadas: autorización funcional basal común; recursos no focales suficientes y no desplazados; capacidad focal dentro de C_dep y capacidad no focal sin doble cómputo. Cualquier cambio diferencial de autorización funcional, recursos compartidos, capacidad A1/A2, latencia/rendimiento, seguridad, información de agentes, alternativas, oráculo, datos fuente/destino, estado residual o medición es una vía colateral, amenaza a exclusión, interferencia o comparabilidad, según alcance. No se declara ausencia por falta de logs/inventario.
+
+La instancia de servicio por UE debe aislar recursos, agentes, información, infraestructura, estado y canales. Si no puede demostrarse, se requiere UA/clúster y mapa de exposición; no se usa inferencia individual sin ese contrato.
+
+### 267.7. Servicio B1 y protocolo de oportunidad: lo aceptado y lo que falta
+
+La modalidad primaria es una oportunidad estandarizada por UE, identidad/contenido común y versionado, presentada por harness externo después de t3/t4 en ambos brazos. El harness registra Request_attempt incluso si no hay recepción. Se conservan estados no enviado, no recibido, rechazado, pendiente, error, procesado y respuesta. No se imputa ausencia de necesidad, fallo transformacional, Outcome negativo o Value=0. El envío endógeno es secundario/adversarial.
+
+El ciclo de petición y el ciclo transformacional son subprocesos separados. La oportunidad/solicitud no es τ2, una trayectoria ni una ejecución. Los vínculos request↔trajectory son tipados/versionados; la causalidad solo se adjudica contra truth DGP contrafactual, no por timestamps, IDs, respuesta o éxito.
+
+No se ha cerrado aún: valores de PAR-SVC-ENABLED/PAR-SVC-PROFILE por escenario (deben ser idénticos entre brazos en el núcleo D2); si el instance_id aceptado por DEC-C10-069 identifica una plantilla/referencia o una sola instancia, frente a IDs únicos de instancias aisladas por UE; identidad/provenance de B1 por UE; payload/schema del probe; calendario/ventana; timeout, reintentos, idempotencia y estados terminales; admisión; protocolo de errores/pending; cardinalidades de request↔trajectory por tipo; consecuencia B1 y adjudicación. No se fijan arbitrariamente valores o umbrales.
+
+### 267.8. Dictamen PB y decisiones genuinamente pendientes
+
+| Elemento | Dictamen |
+|---|---|
+| D2 y semántica B_g0/B_g1 | ACCEPTED; no reabrir |
+| Servicio lógico y CMP/PAR/RUL de referencia | ACCEPTED conceptual/documentalmente |
+| IDs y política de versionado DEC-C10-069 | ACCEPTED; no serialización física |
+| B1 por UE y una oportunidad estandarizada/UE | ACCEPTED como arquitectura de diseño |
+| P0/P1/P2 y frontera B | Conceptualmente reconciliada; provisión material no inventariada |
+| C_dep* | Composición conceptual definida; realización/medición no observada |
+| A_f* | Fórmula candidata depurada; mapping/evidencia material parcial |
+| D_f*/D_f^obs | Distinción definida; medición, error y matching abiertos |
+| ΔT_acc*/ΔE_T | Separación conceptual definida; snapshots/grafo no materializados |
+| Aislamiento y no interferencia | Requisito; NOT_VERIFIED |
+| Primera etapa C2 cuantitativa | NOT_ESTABLISHED; s=0.80 no validado |
+| LATE/Wald | BLOCKED |
+| Implementación/ejecución | NOT_AUTHORIZED |
+
+**Una única decisión de diseño requiere aceptación explícita antes de congelar PB:** armonizar DEC-C10-069 con el aislamiento por UE: conservar contract_id/version y el CMP de referencia como plantilla común, tratar C10S-SVC-REQUEST-PROCESSOR-001 como instancia ejemplar (no como ID repetido de todas las UE), y generar un instance_id único/versionado por UE; el component_id será local a esa instancia y se resolverá mediante clave compuesta instancia+componente. La alternativa sería una sola instancia compartida, que contradice el aislamiento aceptado y obligaría a rediseñar UA/interferencia. Se recomienda la primera opción. Los valores de PAR por escenario también deben fijarse después, pero el requisito ya derivable es que sean comunes entre brazos; la elección concreta STANDARD/READ_ONLY y ENABLED queda fuera de la decisión de identidad.
+
+El resto de los pendientes son materiales o de operacionalización, no decisiones de preferencia: no existe artefacto/instalación real, IAM/snapshots completos, inventario B-M01…15, evidencia de no-afectación, valores de protocolo ni validación de medición. El paquete PB queda reconciliado documentalmente con esos bloqueos explícitos; no se declara C2 identificada ni D2 aislado.
+
+No se modifican DEC-C10-066/067, DEC-C10-068/069, DEC-C10-095, A, D1, el Core, main, RMA, Evidence→Claim Matrix o claims. Sin Design Freeze, schema físico, fixtures, parser, validator ejecutable, simulación, implementación o ejecución científica. scientific_execution=false; execution_authorized=false.
