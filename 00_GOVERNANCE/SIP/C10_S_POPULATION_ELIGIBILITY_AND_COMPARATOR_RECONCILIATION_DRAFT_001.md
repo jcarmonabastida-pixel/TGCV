@@ -216,3 +216,19 @@ La reserva de selección primaria D1/D2 incluida en el encabezado y en las formu
 Los requisitos de población y legitimidad no quedan cerrados por esa elección. D2 exige verificar C_dep,0=0, A_f,0*=0 y ausencia real de provisión focal de fondo/rutas equivalentes. La población P*_τ2 y el subobjetivo P*_F conservan sus definiciones y límites; soporte y factibilidad deben justificarse. D1 solo se conserva como contraste incremental secundario y requiere justificar el régimen ordinario .25/.20 con fuente independiente. Los estimandos y primeras etapas no se agrupan ni se transportan automáticamente.
 
 No se autoriza freeze, implementación, simulación ni ejecución.
+
+
+## 10. Reconciliación B1: necesidad del solicitante vs elegibilidad experimental P* (2026-11-11)
+
+La aceptación de B1 como tipo candidato introduce un rol de entidad solicitante-beneficiaria, pero no redefine las poblaciones técnicas ya reconstruidas en §§2–4.
+
+1. P*_{τ2} sigue siendo la población pre-Z de unidades que satisfacen condiciones constitutivas basales, tienen C_dep,0=0, A_f,0*=0 respaldada y elegibilidad experimental suficiente. Su composición constitutiva detallada permanece OPEN.
+2. P*_F sigue siendo el subconjunto funcional con F_alt,0=0 respaldada. No es población primaria automática.
+3. Need_preZ describe una necesidad/objetivo basal de la entidad solicitante B1. No es condición constitutiva de A_f*, ni componente de C_dep, ni sinónimo de E_i.
+4. E_req_preZ sería una regla separada de admisibilidad de la petición según el contrato del servicio, todavía no definido. No debe confundirse con elegibilidad experimental E_i.
+5. No se ha aprobado que la entidad solicitante sea la unidad experimental ni que exista cardinalidad 1:1. La relación y cualquier población conjunta P*×B1 quedan abiertas.
+6. No se filtra la población confirmatoria por Request_event post-Z, recepción, procesamiento, selección, ejecución, Outcome o Value. La población/estimando de Value debe definirse ex ante y preservarse bajo ITT.
+7. La ausencia de solicitud no prueba ausencia de necesidad; ausencia de evidencia de necesidad no prueba Need_preZ=0. Los estados 1/0/? y los mecanismos de ausencia deben permanecer diferenciados.
+8. La demanda de recursos/capacidad que ya aparece en el contrato DGP es una magnitud operativa del servicio, no demanda/objetivo del beneficiario.
+
+Esta reconciliación es documental y no aprueba composición de P*, instancia B1, regla de elegibilidad de solicitudes, instrumento, estimando ni parámetros. DEC-C10-066/067 y D2 primario candidato/D1 secundario permanecen sin modificación.
