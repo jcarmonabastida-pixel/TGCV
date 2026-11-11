@@ -2959,3 +2959,13 @@ Esta adjudicación es mecanística y no modifica elegibilidad, población, unida
 **OPEN:** especificación de los contrastes concretos de D2; propiedades de trayectoria causalmente relevantes; control de causas concurrentes/colaterales e interacciones; definición de intervención por etapa; positividad/soporte y versiones de tratamiento; evidencia observable y medición; reglas de atribución para contribuciones múltiples; sensibilidad a contrafactuales alternativos; relación con estimandos total, directo e indirecto y mediación.
 
 **No autorizado:** Design Freeze, implementación, fixtures, simulación o ejecución científica. Se mantienen \`scientific_execution=false\` y \`execution_authorized=false\`; \`main\` no se modifica.
+
+## DEC-C10S-D2-ESTIMAND-SEPARATION-001 — nuevo control de arquitectura de estimandos (2026-11-11)
+
+**Estado: ACCEPTED AS DESIGN DECISION; NOT DESIGN-FROZEN.**
+
+Se registra la separación D2 en cinco carriles: C1 ITT/efecto total de asignación; C2 primeras etapas independientes `C_dep*`, `A_f*`, `D_f*`, `ΔT_acc*`; C3 efecto focal de accesibilidad bajo mapping B→g, q común y soporte; C4 mediación interventional vía `ΔT_acc*` con Reach/trayectoria como mediadores secuenciales o bloque explícito; C5 contribución mecanística petición–trayectoria con contrafactuales de etapa y truth DGP segregada. No residual por resta automática; ITT incluye vías de política/paquete; no inferencia de Value desde trayectoria; no selección ITT post-Z; reloj t−1/t0…t9 y H inalterados. P179 vectorial; P182/P183 transversales OPEN.
+
+**Criterio de cierre pendiente:** formalizar para cada carril población, unidad/interferencia, intervención/versiones, resultado/horizonte, contrafactual, soporte, medición, supuestos de identificación, sensibilidad y conclusión permitida; para C4 resolver confusión mediador–resultado inducida por Z; para C5 especificar propiedades relevantes y mecanismos de no transición. Esta decisión no cierra MED-02/MED-03, P177/P178/P179/P182/P183 ni los gates de Outcome/Value.
+
+No autoriza freeze, implementación, fixtures, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`. Registro autónomo: `DEC-C10S-D2-ESTIMAND-SEPARATION-001.md`.
