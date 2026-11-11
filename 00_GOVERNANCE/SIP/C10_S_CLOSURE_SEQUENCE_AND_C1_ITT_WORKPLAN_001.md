@@ -1744,3 +1744,65 @@ La vía directa está cuantificada en una escala interpretable y produce diverge
 Estos cálculos no determinan potencia, sesgo muestral, cobertura, tasas de abstención ni el comportamiento real del Analyzer. Tampoco seleccionan coeficientes confirmatorios, un umbral mínimo de solapamiento, N, R o K operativo.
 
 **Estado:** DIRECT_PATH_AND_SUPPORT_ANALYTIC_REFERENCE_COMPLETE / DIAGNOSTIC_ONLY / OBSERVATION_DEGRADATION_SEPARATE / STATISTICAL_CALIBRATION_NOT_STARTED / SCIENTIFIC_EXECUTION_FALSE / EXECUTION_AUTHORIZATION_FALSE.
+
+
+## 45. Canal de observación de Q_B1: error, cobertura y censura (2026-11-11)
+
+**Estado:** OBSERVATION_PROCESS_FORMALIZED / ANALYTIC_MEASUREMENT_SENSITIVITY_CHECKED / DIFFERENTIAL_ERROR_FALSE_EFFECT_DEMONSTRATED / MISSINGNESS_BOUNDS_SPECIFIED / NO_MONTE_CARLO / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 45.1 Separación entre verdad y observación
+
+La variable de interés sigue siendo Q*_B1, proporción de slots del intervalo W_B1 con disponibilidad funcional verdadera A*_B1=1. El canal produce registros observados; no redefine Value ni modifica el DGP causal. Se mantienen separados:
+- truth: A*_B1(u,k), Q*_B1(u,W);
+- observación: indicador de cobertura, registro/clasificación y marca temporal;
+- Analyzer: solo evidencia observada y metadatos de medición declarados;
+- Evaluator: truth y parámetros generadores después del sellado.
+
+La ausencia de registro nunca se codifica automáticamente como A*=0.
+
+### 45.2 Error de clasificación no diferencial
+
+Para un slot cubierto, sea O el indicador observado de disponibilidad, con sensibilidad Se=P(O=1|A*=1) y especificidad Sp=P(O=0|A*=0). Entonces:
+
+E[O|A*=1]=Se; E[O|A*=0]=1−Sp
+E[O|covered]=(1−Sp)+(Se+Sp−1)Q*.
+
+Si Se y Sp son conocidos, constantes entre brazos/firmas/tiempo y Se+Sp>1, el oráculo de medición permite invertir la esperanza:
+Q*=[E(O|covered)+Sp−1]/(Se+Sp−1).
+Esto no afirma que el Analyzer conozca los valores verdaderos de Se/Sp: solo podrá corregir por ellos si son estimables o están calibrados mediante información de medición accesible y admisible. Si son desconocidos, deberá propagar incertidumbre o informar identificación parcial/sensibilidad; no usar los parámetros secretos del generador.
+
+Con Se=Sp=0.90, E(O)=0.10+0.80Q*: para Q*=0.500000 se espera 0.500000 y para Q*=0.793479 se espera 0.734783. El contraste observado esperado se atenúa por 0.80: θ_obs=0.117391 frente a θ_A verdadero 0.146739. Con Se=Sp=0.95, el factor es 0.90 y θ_obs=0.132065. Estos son puntos de sensibilidad interpretables, no parámetros confirmatorios.
+
+### 45.3 Error diferencial y falso efecto
+
+La igualdad de parámetros de medición entre brazos es una condición relevante. Bajo un nulo verdadero con Q*=0.50 en ambos brazos:
+- brazo 0: Se=0.90, Sp=0.90 ⇒ E(O)=0.500;
+- brazo 1: Se=0.95, Sp=0.90 ⇒ E(O)=0.525.
+
+El canal produce un contraste observado espurio de +0.025 aunque el contraste verdadero sea cero. Por tanto, una diferencia observada no puede atribuirse a accesibilidad si no se descarta o modela la variación diferencial del proceso de medición. La sensibilidad/especificidad podrán depender de brazo, firma o tiempo solo si esa dependencia está declarada en el DGP de observación y se evalúa como adversarial separado.
+
+### 45.4 Cobertura, pérdida y censura
+
+Si la cobertura por slot es MCAR, independiente de A*, brazo, firma y potenciales, y la clasificación es válida, la proporción entre slots observados conserva esperanza Q*, aunque la cobertura menor reduce precisión. La cobertura efectiva y el denominador temporal deben reportarse; no se imputan slots no observados como indisponibles.
+
+Si una fracción c de slots está cubierta y la tasa observada de disponibilidad entre cubiertos es r, con clasificación perfecta pero estado desconocido en los slots no cubiertos, la verdad queda acotada por:
+Q* ∈ [c·r, c·r+(1−c)].
+Ejemplo: c=0.80 y r=0.50 ⇒ Q*∈[0.40,0.60]. La cota se estrecha solo con información/assumptions adicionales justificadas.
+
+Si la pérdida depende del estado verdadero (MNAR), de la firma, de la política o de la disponibilidad, el estimador de casos observados no identifica por sí solo Q*. Debe usarse un modelo de observación justificable, análisis de sensibilidad/cotas o abstención. Censura temporal al inicio/final requiere registrar tiempo en riesgo y mecanismo de censura; no equivale a un slot indisponible. La cobertura no uniforme requiere ponderación por duración real de los slots, no simple conteo si las duraciones difieren.
+
+### 45.5 Reglas de adjudicación
+
+1. Error de clasificación no diferencial conocido/calibrado: corregir por el modelo de medición y propagar su incertidumbre; si no se puede calibrar, informar sensibilidad o identificación parcial.
+2. Error diferencial: no atribuir el contraste observado a ΔT_acc sin modelar la diferencia entre canales y demostrar soporte de calibración.
+3. Cobertura MCAR: conservar estimando temporal, reportar pérdida de precisión y cobertura.
+4. Missingness dependiente del estado o del brazo, y censura no ignorable: no declarar identificación puntual sin supuestos adicionales defendibles; informar cotas o abstenerse.
+5. Ningún registro ausente se recodifica como indisponibilidad; O-CONF y el resultado de la petición estandarizada no sustituyen el ledger temporal de Q_B1.
+
+### 45.6 Dictamen
+
+El proceso de observación queda especificado y sus implicaciones analíticas básicas verificadas: el error no diferencial atenúa el contraste; el error diferencial puede crear un falso efecto; la cobertura MCAR afecta principalmente a precisión; la pérdida no ignorable requiere supuestos, cotas o abstención. Se preserva la separación entre causalidad, medición y disponibilidad de registros.
+
+Los valores Se/Sp y cobertura usados son ejemplos diagnósticos transparentes, no parámetros aprobados para el DGP confirmatorio. No se han calculado potencia, sesgo Monte Carlo, cobertura de intervalos, N/R ni tasas de abstención del Analyzer.
+
+**Estado:** OBSERVATION_CHANNEL_ANALYTIC_SPECIFICATION_COMPLETE / DIAGNOSTIC_EXAMPLES_ONLY / FULL_REFERENCE_MANIFEST_REQUIRES_GOVERNED_PARAMETER_SELECTION / STATISTICAL_CALIBRATION_NOT_STARTED / SCIENTIFIC_EXECUTION_FALSE / EXECUTION_AUTHORIZATION_FALSE.
