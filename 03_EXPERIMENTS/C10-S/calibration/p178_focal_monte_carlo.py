@@ -116,6 +116,12 @@ def run_cell(N: int, pi0: float, K: int, scenario: str, R: int, seed: int):
     se = np.concatenate(se_all)
     widths = np.concatenate(width_all)
     phat, chat = rejections/R, covered/R
+    sampling_sd = float(est.std(ddof=1))
+    bias_mcse = float(est.std(ddof=1) / math.sqrt(R))
+    squared_error = (est - theta) ** 2
+    rmse = float(np.sqrt(np.mean(squared_error)))
+    rmse_mcse = float(squared_error.std(ddof=1) / math.sqrt(R) / (2.0 * rmse)) if rmse > 0 else 0.0
+    width_mcse = float(widths.std(ddof=1) / math.sqrt(R))
     return {
         "N": N, "R": R, "pi0": pi0, "K": K, "scenario": scenario,
         "alpha01": a01, "alpha10": a10, "lambda0": LAMBDA0, "lambda1": LAMBDA1,
@@ -126,8 +132,13 @@ def run_cell(N: int, pi0: float, K: int, scenario: str, R: int, seed: int):
         "coverage": chat, "coverage_mcse": math.sqrt(chat*(1-chat)/R),
         "coverage_wilson_low": wilson(covered,R)[0],
         "coverage_wilson_high": wilson(covered,R)[1],
-        "bias": float(est.mean()-theta), "rmse": float(np.sqrt(np.mean((est-theta)**2))),
-        "mean_ci_width": float(widths.mean()), "mean_se": float(se.mean()),
+        "bias": float(est.mean()-theta), "bias_mcse": bias_mcse,
+        "bias_mcse_over_sampling_sd": bias_mcse / sampling_sd if sampling_sd > 0 else 0.0,
+        "rmse": rmse, "rmse_mcse": rmse_mcse,
+        "rmse_mcse_over_sampling_sd": rmse_mcse / sampling_sd if sampling_sd > 0 else 0.0,
+        "mean_ci_width": float(widths.mean()), "mean_ci_width_mcse": width_mcse,
+        "mean_ci_width_mcse_relative": width_mcse / float(widths.mean()) if float(widths.mean()) > 0 else 0.0,
+        "mean_se": float(se.mean()),
         "seed": seed, "invalid_replicates": int((~np.isfinite(se) | (se<=0)).sum()),
     }
 
