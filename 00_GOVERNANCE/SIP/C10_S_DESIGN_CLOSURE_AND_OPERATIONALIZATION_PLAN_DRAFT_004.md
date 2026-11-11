@@ -2590,3 +2590,10 @@ La secuencia, los criterios y el alcance de C1 se desarrollan en `C10_S_CLOSURE_
 Se documenta en `C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md` la reconciliación de población, UE/interferencia, políticas D2, Outcome/Value y horizonte. Dictamen: C1 permanece OPEN. D2 y su contraste de asignación se reutilizan de DEC-C10-066/067; no se sustituye Z por recepción/cumplimiento ni se excluye por eventos post-Z. `P*_{τ2}` es candidato histórico, no población aprobada; `P*_F` es subpoblación de apertura funcional exclusiva. UE=UA requiere demostrar aislamiento o definir clúster/exposición. A permite Outcomes técnicos aún no operacionalizados; B es extensión independiente y Value sigue sin instanciar. H=3 es profundidad, no duración temporal.
 
 Siguiente: **C1.2**, composición de `E_i`, predicados constitutivos y evidencia/indeterminación pre-Z, junto con recuperación del contrato de aleatorización D2. No se reabre ninguna decisión aceptada ni se autoriza freeze/implementación/ejecución.
+
+
+## 16.150 — C1.2: elegibilidad basal y mecanismo de asignación (2026-11-11)
+
+La auditoría §12 de `C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md` confirma que la fórmula histórica de `E_i` con `C_other` no debe reutilizarse; `C_auth,base=1` es condición D2 común/invariante; `C_dep,0=0` no implica por sí sola `A_f,0*=0`; `E_req_preZ` es distinta de elegibilidad experimental. El contrato material de aleatorización (probabilidades/ratio, estratos, algoritmo/semilla y desviaciones) no se ha encontrado en los contratos revisados.
+
+Recomendación: mantener `P*_{τ2}` como población objetivo primaria candidata C1 y `P*_F` como subpoblación secundaria, sin declarar cerrada la composición de `E_i`. Pendiente confirmación de esa precedencia poblacional. C1 permanece OPEN; no freeze ni ejecución.
