@@ -11732,3 +11732,46 @@ La presencia de CMP.owner en la identidad del componente no autoriza a inferir p
 **Dictamen:** C-VALUE↔ROSTER CROSSWALK DOCUMENTED / MATERIAL OPEN. El trabajo identifica qué puede reutilizarse y qué no existe, sin inventar campos ni asignar truth/observed. No selecciona Outcomes o dimensiones confirmatorias, no crea IDs, no fija parámetros y no demuestra ΔT_acc* → V_j.
 
 Sin fixtures, implementación, simulación ni ejecución científica. scientific_execution=false; execution_authorized=false.
+
+
+## 266. PA — reconciliación integrada del contrato causal C1 (2026-11-11)
+
+**Estado:** `PA_RECONCILED_DOCUMENTALLY / C1_MATERIAL_BLOCKED / NOT DESIGN_FROZEN`  
+**Registro desarrollado:** `C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md`, §15.  
+**Propagación:** plan integrado §16.155; Closure Control Matrix; matriz mínima Outcome/Value; crosswalks de elegibilidad e IAM.
+
+### 266.1 Contrato causal y precedencia
+
+C1 se interpreta como efecto total de asignación a las políticas D2 aceptadas por DEC-C10-066/067: `B_g1^D2` programa un intento estandarizado de provisión focal; `B_g0^D2` no lo programa/inicia. Z no asigna directamente provisión recibida, instalación, C_dep, A_f, D_f ni ΔT_acc. Si existen vías colaterales no aisladas, C1 es efecto de política/paquete, no efecto puro de accesibilidad.
+
+C1 es una familia de ITT indexada por variante × población × resultado/dimensión × horizonte; no un escalar único. `P*_{τ2}` es la población objetivo primaria candidata y `P*_F` la subpoblación secundaria para apertura funcional exclusiva por DEC-C10S-C1-POPULATION-PRECEDENCE-001. Esta precedencia no se reabre. Eventos post-Z no redefinen la población ITT.
+
+### 266.2 Elegibilidad y estados pre-Z
+
+La fórmula candidata `E_i=E_scope∧App*(τ2,S0)` no se acepta ni congela. Se recomienda tratar E_scope como gate de alcance del universo DGP, no como filtro adicional dentro de ese universo, salvo que el DGP incluya deliberadamente unidades fuera de alcance. App*(τ2,S0) permanece como condición candidata de aplicabilidad semántica de τ2. C_dep,0=0 y A_f,0*=0 siguen siendo condiciones separadas de P*τ2; F_alt,0 solo afecta P*_F. Need_preZ y E_req_preZ no son E_i.
+
+Los estados 1/0/? y NA justificado ex ante son obligatorios. UNKNOWN no equivale a cero ni se excluye silenciosamente. La verdad basal del Generator y la clasificación observada del Analyzer se mantienen segregadas. El protocolo de elegibilidad/indeterminación debe sellarse antes de Z y no utilizar eventos post-Z.
+
+La ausencia de IAM/C_SRC, snapshots por UE y cobertura material bloquea la adjudicación de E_scope, App, C_dep, A_f, REF=0, pertenencia material a P* y soporte. No se inventan registros.
+
+### 266.3 Unidad, asignación, interferencia y horizonte
+
+UE, UA y UO permanecen diferenciadas. UE=UA solo es admisible si se verifica aislamiento; B1 por UE y una oportunidad estandarizada por UE son decisiones de diseño aceptadas, no evidencia de no interferencia. No se ha recuperado el mecanismo material de aleatorización D2 (probabilidades/ratio, estratos, algoritmo/semilla/hash, desviaciones); no se presume 1:1. q_X*, positividad y soporte no están materializados.
+
+Se conserva el reloj t−1/t0…t9. H=3 es profundidad máxima candidata, no duración. Calendario/ventana B1 y horizontes terminales de Outcome y Value siguen OPEN y deben fijarse por resultado, ex ante.
+
+### 266.4 Outcome y Value
+
+En variante A, O-CONF conserva el mejor anclaje conceptual por F*/FP-01…08, pero carece de ficha operacional completa (predicados, mapping, tolerancias, oráculo independiente/cego, snapshots, cobertura y adjudicación). O-MIG/O-SVC/O-REC/O-BUR tampoco son medidas operacionales actuales.
+
+En variante B, B1 por UE y la oportunidad estandarizada única están aceptadas en su alcance, pero no hay instancia material completa de beneficiario/servicio, consecuencia independiente, perspectiva/autoridad, dimensiones V_j, indicadores, fuentes, escalas, baseline, horizonte o adjudicación. P179 exige preservar Value como vector durante identificación y los trade-offs; no se seleccionan las cinco dimensiones candidatas por defecto ni se imponen escalar o pesos. V_j no puede ser una recodificación de A_f, ΔT_acc, Reach, selección, ejecución u Outcome técnico.
+
+No existe actualmente un Outcome ni dimensión Value operacionalizados que permitan cerrar ITT confirmatorio. Un ITT sobre Outcome técnico no sustituye el ITT sobre Value ni demuestra ΔT_acc→ΔV.
+
+### 266.5 Dictamen y continuidad
+
+C1 no puede declararse completo/identificado con la especificación material actual. La identificación de ITT requiere asignación verificable, consistencia/versiones, positividad, población pre-Z, unidad/interferencia resuelta y resultado/horizonte medidos, con missingness/censura tratados. Incluso un ITT identificado no identifica automáticamente C3, C4, LATE ni el efecto específico de accesibilidad.
+
+No surgió decisión nueva que requiera aprobación del usuario en este ciclo: las lagunas son materiales/documentales, no preferencias. El paquete PA queda reconciliado documentalmente; sus bloqueos se mantienen explícitos y se abordarán mediante PB y los paquetes posteriores. No se reabren DEC-C10-066/067 ni DEC-C10S-C1-POPULATION-PRECEDENCE-001.
+
+Sin Design Freeze, schemas físicos, fixtures, implementación, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
