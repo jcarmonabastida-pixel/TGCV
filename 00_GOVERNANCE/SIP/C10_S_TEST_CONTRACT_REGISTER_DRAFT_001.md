@@ -1579,3 +1579,21 @@ Se reutilizan P179-01…08, P182-01…12, P183-01…13 y §224; no se crean IDs 
 | §224 Value | Ficha por V_j: B1/perspectiva, consecuencia, criterio, escala, baseline, horizonte, trade-offs y provenance | Ninguna V_j instanciada |
 
 Outcome técnico y Value contextual son constructos separados. No se asume que Outcome sea la única causa de la consecuencia valorada. ITT sobre O_k y V_j se adjudican separadamente; no se transfiere identificación. La abstención/no-identificación del Analyzer sigue siendo resultado correcto. Ninguna prueba se declara implementada o ejecutada.
+
+## 61. Crosswalk de operacionalización Outcome/Value (2026-11-11)
+
+Se reutilizan contratos existentes; no se crean IDs duplicados ni se declaran pruebas ejecutadas. Artefacto rector: `C10_S_OUTCOME_VALUE_OPERATIONALIZATION_RECONCILIATION_DRAFT_001.md`, maestro §276.
+
+| Familia | Cobertura relevante | Estado |
+|---|---|---|
+| P179-01…03 | Separación A/O/V, vector, independencia de medición | Regla reconciliada; fichas materiales OPEN |
+| P179-04/05 | Perspectiva/contexto y baseline | B1/Need_preZ base; autoridad/criterio y medición basal OPEN |
+| P179-06/07/08 | Trade-offs, estimación por dimensión y agregación | Vector preservado; reglas/dimensiones no seleccionadas |
+| P182-01…12 | Validez, circularidad, reproducibilidad, acuerdo, error, invariancia, sensibilidad, firewall | Contratos existentes; oráculo/fuentes/evidencia y parámetros OPEN |
+| P183-01…13 | Ausencia, selección, MCAR/MAR/MNAR, censura, sensibilidad, cotas y dictamen | Contratos existentes; mecanismos y parámetros OPEN |
+| §224.2 | Ficha Outcome | O-CONF candidato; ficha incompleta |
+| §224.3 | Ficha por dimensión Value | Ninguna V_j instanciada |
+| §224.4 / PE | Adjudicación y canales Generator/Analyzer/Evaluator | Arquitectura definida; separación computacional no validada |
+| MEAS-01…14 / MISS-01…15 | Casos adversariales de error/ausencia | Reutilizables; no fixtures ni ejecuciones |
+
+F* se mantiene como criterio funcional y O-CONF como resultado adjudicado, no como dos endpoints independientes. FP-08 es probatorio. No se promueve ningún contrato a IMPLEMENTED/EXECUTED/PASS.
