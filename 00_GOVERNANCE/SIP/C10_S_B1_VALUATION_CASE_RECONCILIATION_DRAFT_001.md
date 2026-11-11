@@ -163,3 +163,62 @@ Este ciclo desarrolla el caso semántico de B1 sin alterar DEC-C10-095, DEC-C10-
 No autoriza captura/materialización, schema físico, fixtures, implementación, generación de datos, simulación, estimación, Design Freeze o ejecución científica.
 
 `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 12. Aceptación de la clase de propósito basal B1 y cierre parcial de Need_preZ (2026-11-11)
+
+Se registra la aceptación expresa de la siguiente formulación como **clase de propósito operativo basal** de B1:
+
+> B1 tiene un objetivo operativo basal consistente en mantener operativa una función de servicio que depende de la configuración que se migra al entorno de destino.
+
+La aceptación resuelve la objeción semántica anterior sobre la relación entre B1, la configuración migrada y el servicio: el propósito de B1 no es «instalar el adaptador», «abrir τ2» ni «completar F1/F2»; es sostener una función de servicio dependiente de la configuración en destino. No obstante, **la función/operación concreta aún no está nombrada**. Por tanto, esta formulación no es todavía una instancia completa de Need_preZ ni puede cargarse como truth concreta de un DGP confirmatorio.
+
+### 12.1 Definición estructural vigente
+
+`Need_preZ` representa la existencia, antes de Z, de ese propósito operativo basal de B1, especificado sin referencia a la asignación, provisión, accesibilidad, petición, procesamiento, Outcome o consecuencia post-Z. La unidad de referencia sigue siendo B1/UE, con una B1 por UE conforme a la decisión aceptada.
+
+- `1`: el objetivo basal concreto, una vez nombrado y versionado, forma parte de la verdad pre-Z de B1.
+- `0`: ese objetivo basal concreto no existe para B1 según la definición del DGP.
+- `?`: su existencia o clasificación no está determinada por la verdad disponible o no puede adjudicarse; no equivale a 0.
+
+La clase de propósito aceptada no autoriza a asignar automáticamente `Need_preZ=1` a todas las UE. La pertenencia de cada unidad y el roster de verdad del DGP requieren una especificación basal concreta, versionada y pre-Z. La evidencia observada sobre Need_preZ se conserva separada de truth_dgp; falta de evidencia, ausencia de Request_event o falta de procesamiento no demuestran `Need_preZ=0`.
+
+### 12.2 Regla de no circularidad y elegibilidad
+
+La clasificación de Need_preZ y cualquier regla de elegibilidad asociada se fijan antes de Z. No se permite:
+- inferir necesidad a partir de la asignación a D2, la programación o la provisión;
+- inferirla de C_dep*, A_f*, D_f*, ΔT_acc*, Reach o existencia de una ruta;
+- inferirla de la oportunidad estandarizada, Request_attempt/received/admitted, procesamiento o respuesta;
+- excluir de la población ITT unidades por no solicitar, no recibir, no procesar, no seleccionar o no ejecutar;
+- recodificar ausencia, unknown, censura o falta de evidencia como cero.
+
+`E_req_preZ`, elegibilidad experimental, demanda de recursos `D_resource` y `Request_event` siguen siendo objetos distintos. Los casos `Need_preZ=0` y `Need_preZ=?` se conservan para los análisis de límites/controles/adversariales que el diseño justifique; no se incorporan ni excluyen automáticamente del estimando de Value sin una regla poblacional ex ante.
+
+### 12.3 Consecuencias potenciales para B1: estructura, no dimensiones
+
+Para cada estado de Need_preZ, el DGP deberá poder representar la consecuencia de B1 respecto del propósito basal, separada del proceso técnico:
+
+- si `Need_preZ=1`, la consecuencia expresa si y cómo cambia la capacidad de sostener la función concreta, incluyendo no logro, interrupción, degradación o recuperación;
+- si `Need_preZ=0`, no se presume una consecuencia beneficiosa por el mero éxito técnico; el caso puede servir como control negativo/adversarial si la pregunta y el estimando lo permiten;
+- si `Need_preZ=?`, la consecuencia/valoración no se fuerza a una categoría definida: la incertidumbre basal debe propagarse conforme a las reglas de ausencia, unknown y sensibilidad.
+
+La envolvente de §5 se mantiene como repertorio analítico no exhaustivo (logro/progreso; continuidad/interrupción/degradación; demora/pérdida de oportunidad; esfuerzo de recuperación; riesgo/reversibilidad). No es una selección de V_j, un outcome compuesto, ni una escala. Cada consecuencia potencial deberá definirse respecto de la operación concreta cuando esta se especifique. El proceso de servicio, la respuesta, F*, O-CONF y la consecuencia de B1 permanecen separados; una ruta alternativa puede preservar la función aunque τ2 no sea accesible, y el éxito técnico puede no mejorar la situación de B1.
+
+### 12.4 Qué queda aceptado y qué sigue abierto
+
+| Elemento | Estado tras aceptación |
+|---|---|
+| Clase de propósito basal B1 | ACCEPTED AS WORKING SEMANTIC BASIS |
+| Relación propósito–configuración destino–función de servicio | ACCEPTED AT CLASS LEVEL |
+| Operación/función concreta | OPEN — MUST BE NAMED AND VERSIONED |
+| Need_preZ truth por UE | OPEN — no roster ni clasificación material |
+| Regla estructural 1/0/? y no circularidad | DEFINED DOCUMENTALLY; evidence/adjudication OPEN |
+| Consecuencia B1 respecto del propósito | STRUCTURE DEFINED; instance/measure OPEN |
+| Autoridad/criterio de valoración | OPEN |
+| Dimensiones V_j, escalas e instrumentos | NOT SELECTED / OPEN |
+| Horizonte de consecuencia | OPEN; no equivalencia con H=3 ni t9 |
+| C1–C4 por Value | NOT IDENTIFIED / NOT EVALUABLE ON CURRENT MATERIAL STATE |
+
+La siguiente dependencia sustantiva es identificar, a partir del contrato funcional/servicio ya existente en el microdominio, la operación concreta que hace operativa esa función. No se debe inventar ahora una operación por conveniencia narrativa ni sustituirla por un predicado técnico de F*. Después podrá cerrarse la especificación de truth_preZ y derivarse la consecuencia candidata sin seleccionar todavía V_j.
+
+Esta aceptación no crea un Decision Record nuevo, no modifica decisiones previas ni autoriza roster, schema físico, fixtures, captura/materialización, implementación, generación de datos, simulación, estimación, Design Freeze o ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
