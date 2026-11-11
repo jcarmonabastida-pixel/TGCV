@@ -1885,3 +1885,97 @@ Los criterios metodológicos de §39–40 permanecen **propuestos y pendientes d
 La próxima operación es una decisión acotada, no otra auditoría: aprobar o ajustar los criterios P178 ya formulados en §§39–40 y autorizar explícitamente la calibración estadística Monte Carlo. Si se aprueban, la búsqueda N×θ_A/R se ejecutará dentro de ese alcance; si no, no se simulará.
 
 **Estado:** ANALYTIC_REFERENCE_MANIFEST_COMPLETE / READY_FOR_P178_APPROVAL_DECISION / STATISTICAL_CALIBRATION_NOT_AUTHORIZED / SCIENTIFIC_EXECUTION_FALSE / EXECUTION_AUTHORIZATION_FALSE.
+
+
+## 47. Calibración estadística Monte Carlo P178 — primera ejecución (2026-11-11)
+
+**Autorización:** aceptación explícita del usuario en esta conversación para ejecutar la calibración estadística P178 mediante simulaciones Monte Carlo, limitada a la calibración metodológica y sin autorizar la ejecución confirmatoria del experimento.
+
+**Estado:** P178_FOCAL_MONTE_CARLO_CALIBRATION_COMPLETED / FINITE_REFERENCE_GRID_POWER_TARGET_MET / NULL_TYPE_I_COMPATIBLE / COVERAGE_NEAR_NOMINAL_WITH_ONE_HIGH_CELL / WEAK_SIGNAL_NOT_POWERED_AS_EXPECTED / ANALYZER_NOT_RUN / CONFIRMATORY_EXECUTION_NOT_AUTHORIZED.
+
+### 47.1 Alcance efectivamente ejecutado
+
+Se ejecutó la calibración del estimando primario focal θ_A(q;V_B1) definido en §§38–40. No se ejecutó el Analyzer, no se materializó el harness, no se generaron artefactos de ejecución confirmatoria y no se evaluaron claims empíricos. El procedimiento estadístico calibrado es un benchmark de estimación para el DGP focal con observación ideal, no una validación del futuro Analyzer.
+
+Se fijó para esta calibración —como convención computacional explícita y no como freeze del experimento— asignación aleatoria equilibrada 1:1, N total de unidades independientes, con N/2 por brazo cuando N es par. La unidad individual genera una firma d∈{d0,d1} según λg, estado inicial A0~Bernoulli(π0), K transiciones de Markov según p01/p10 y Q_B1 como promedio de los K estados posteriores A1…AK. El estimador es la diferencia de medias de Q_B1 entre g1 y g0. Se construyó intervalo bilateral del 95% mediante Welch con grados de libertad de Satterthwaite; se evaluaron rechazo bilateral α=0.05, cobertura, sesgo, RMSE y anchura del intervalo. La verdad se calculó separadamente con el oráculo analítico de §35.
+
+Parámetros de referencia: λ0=0.25, λ1=0.75, b01=b10=logit(0.20), observación completa y perfecta. La batería focal cruza α01/α10∈{(0,0),(1,−1),(−1,1)}, π0∈{0.20,0.50,0.80} y K∈{2,10,50}. Se usaron 10,000 réplicas independientes por celda. El generador de números aleatorios utilizó semillas deterministas por celda; para la cuadrícula N=700, seed=20261118+29·index, recorriendo K={2,10,50}, π0={0.20,0.50,0.80} y escenarios {nulo, positivo, negativo} en ese orden. No se aplicó parada adaptativa: R=10,000 se mantuvo en todas las celdas.
+
+### 47.2 Curva N×θ_A en el punto central (K=10, π0=0.50)
+
+Verdades analíticas:
+- nulo: θ_A=0;
+- positivo (α01,α10)=(1,−1): θ_A=+0.1467393122;
+- negativo (−1,1): θ_A=−0.1467393122;
+- señal débil (1,0.99): θ_A=+0.0007278840.
+
+Potencia empírica (R=10,000; Welch bilateral) por N total:
+
+| N total | Nulo | Positivo | Negativo | Señal débil |
+|---:|---:|---:|---:|---:|
+| 100 | 0.0501 | 0.7334 | 0.7250 | 0.0459 |
+| 200 | 0.0520 | 0.9552 | 0.9575 | 0.0507 |
+| 400 | 0.0457 | 0.9993 | 0.9996 | 0.0527 |
+| 800 | 0.0465 | 1.0000 | 1.0000 | 0.0504 |
+| 1,200 | 0.0484 | 1.0000 | 1.0000 | 0.0503 |
+| 1,600 | 0.0536 | 1.0000 | 1.0000 | 0.0463 |
+| 2,400 | 0.0522 | 1.0000 | 1.0000 | 0.0510 |
+| 3,200 | 0.0513 | 1.0000 | 1.0000 | 0.0470 |
+
+La señal débil permanece prácticamente en el nivel α incluso con N=3,200. No se etiqueta como nula ni como equivalente: muestra que la potencia ≥0.80 no puede exigirse para efectos arbitrariamente próximos a cero. La potencia objetivo solo se aplica a los puntos no nulos seleccionados en la cuadrícula finita de diseño, conforme a §40.2.
+
+### 47.3 Sensibilidad conjunta π0×K y referencia N=700
+
+En N=700 (350 por brazo), R=10,000 por celda, las potencias de los 18 puntos no nulos fueron:
+
+| π0 | K | θ positivo | Potencia positiva | θ negativo | Potencia negativa |
+|---:|---:|---:|---:|---:|---:|
+| 0.20 | 2 | +0.1146 | 0.9304 | −0.0865 | 0.8405 |
+| 0.50 | 2 | +0.1006 | 0.8626 | −0.1006 | 0.8625 |
+| 0.80 | 2 | +0.0865 | 0.8317 | −0.1146 | 0.9322 |
+| 0.20 | 10 | +0.1534 | 1.0000 | −0.1400 | 1.0000 |
+| 0.50 | 10 | +0.1467 | 1.0000 | −0.1467 | 1.0000 |
+| 0.80 | 10 | +0.1400 | 1.0000 | −0.1534 | 1.0000 |
+| 0.20 | 50 | +0.1618 | 1.0000 | −0.1591 | 1.0000 |
+| 0.50 | 50 | +0.1604 | 1.0000 | −0.1604 | 1.0000 |
+| 0.80 | 50 | +0.1591 | 1.0000 | −0.1618 | 1.0000 |
+
+La potencia mínima observada es 0.8317, con MCSE=0.0037 e intervalo Wilson del 95% [0.8242, 0.8389]. Por tanto, el objetivo 0.80 se supera incluso en el punto limitante de esta cuadrícula finita.
+
+En N=600, dos celdas K=2 no alcanzaron el objetivo (potencias 0.7745 y 0.7744); N=700 es el primer valor probado de la secuencia {600,700,800,1000} que lo supera en todas las celdas no nulas. No se evaluaron todos los enteros entre 600 y 700: N=700 no se declara mínimo matemático ni tamaño muestral confirmatorio.
+
+### 47.4 Error tipo I, cobertura, sesgo y precisión en N=700
+
+En las nueve celdas nulas, las tasas de falso positivo oscilaron entre 0.0462 y 0.0515; sus intervalos Wilson del 95% incluyen α=0.05. No aparece inflación sistemática del error tipo I en esta batería focal.
+
+La cobertura empírica de los intervalos Welch del 95% osciló entre 0.9465 y 0.9560. Veintiséis de las 27 celdas tienen intervalo Wilson compatible con 0.95; una celda (α positivo, π0=0.20, K=10) mostró cobertura 0.9560, ligeramente superior al nominal. Se informa esta desviación, sin ocultarla ni convertir una fluctuación aislada en un fallo general.
+
+En las 27 celdas:
+- |sesgo| máximo observado: 0.00040;
+- RMSE: 0.0104–0.0335;
+- anchura media del IC: 0.0411–0.1327;
+- MCSE máximo de tasas de rechazo/cobertura: inferior a 0.005;
+- MCSE máximo de sesgo: 0.000335;
+- MCSE máximo de RMSE: 0.000234;
+- MCSE máximo de anchura media del IC: 0.000026.
+
+Los MCSE de sesgo y RMSE quedan por debajo del 5% del error estándar de referencia en las celdas evaluadas. Se satisface así la regla de estabilidad Monte Carlo aplicada a estas métricas y a esta cuadrícula.
+
+### 47.5 Dictamen de calibración
+
+1. El benchmark de diferencia de medias recupera los efectos focales positivos y negativos con potencia ≥0.80 en la cuadrícula finita evaluada usando N=700.
+2. El control nulo mantiene tasas de falso positivo compatibles con 0.05.
+3. La cobertura está próxima al 95%, con una celda de ligera sobrecobertura que se conserva explícitamente en el informe.
+4. El sesgo es pequeño frente al error estándar de muestreo; la precisión mejora con N y K.
+5. El control de señal débil no alcanza potencia y permanece no clasificado como nulo/equivalente, tal como exige §40.3.
+6. La resolución K=2 es el caso limitante; K=10 y K=50 presentan potencias empíricas de 1.00 para los efectos no nulos de esta cuadrícula en N=700.
+
+**Conclusión acotada:** P178 queda calibrado para el benchmark estadístico del estimando focal bajo DGP conocido, asignación 1:1 y observación ideal. N=700 es un candidato conservador para cubrir todas las celdas focales ensayadas, no un N confirmatorio aprobado, no un N universal y no una recomendación para escenarios adversariales o medición degradada.
+
+### 47.6 Exclusiones y trabajo posterior
+
+Esta ejecución no calibra potencia para los escenarios de vía directa, falta de soporte, error diferencial, missingness o censura. En ellos la cuestión principal es la separación de estimandos, la identificación parcial o la abstención, no la potencia del contraste focal bajo observación ideal. Tampoco evalúa la clasificación del Analyzer: el Analyzer no está implementado ni fue ejecutado.
+
+No se ha seleccionado K operativo, duración física de W_B1, parámetros confirmatorios del canal de observación, región sustantiva de efectos ni tamaño muestral definitivo. No se ha materializado el harness ni se ha ejecutado el experimento confirmatorio. Los resultados son evidencia de calibración metodológica del benchmark sintético y no evidencia empírica para claims TGCV.
+
+**Estado:** P178_FOCAL_BENCHMARK_CALIBRATED / N700_REFERENCE_CANDIDATE_ONLY / ANALYZER_VALIDATION_OPEN / ADVERSARIAL_STATISTICAL_BEHAVIOUR_OPEN / CONFIRMATORY_DESIGN_NOT_FROZEN / SCIENTIFIC_EXECUTION_FALSE / CONFIRMATORY_EXECUTION_NOT_AUTHORIZED.
