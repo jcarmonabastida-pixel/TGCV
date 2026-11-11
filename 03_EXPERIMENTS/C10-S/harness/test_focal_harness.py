@@ -3,7 +3,7 @@ import unittest
 
 from focal_harness import (
     AnalysisContract, Analyzer, ContractError, Evaluator, Generator,
-    Projector, ScenarioConfig, Sealer,
+    Projector, ScenarioConfig, Sealer, _student_t_critical_975,
 )
 
 
@@ -17,14 +17,15 @@ def config(name, alpha01=0.0, alpha10=0.0, gamma01=0.0, gamma10=0.0,
         alpha01=alpha01, alpha10=alpha10,
         gamma01=gamma01, gamma10=gamma10,
         assignment_probability=0.5, direct_path_status=direct,
-        measurement_ideal=True, interference_absent=True,
+        measurement_ideal=measurement, interference_absent=interference,
     )
 
 
-def contract(direct="ABSENT", positivity=True, version_consistency=True):
+def contract(direct="ABSENT", positivity=True, version_consistency=True,
+             randomized=True, measurement=True, interference=True):
     return AnalysisContract(
         estimand_id="THETA_A_Q_B1", estimand_version="001",
-        randomized_assignment=True, direct_path_status=direct,
+        randomized_assignment=randomized, direct_path_status=direct,
         common_regime=True, positivity=positivity, version_consistency=version_consistency,
         measurement_ideal=True, interference_absent=True,
     )
@@ -75,6 +76,39 @@ class FocalHarnessContractTests(unittest.TestCase):
         self.assertEqual(result.package_identification, "IDENTIFIED")
         self.assertEqual(result.focal_identification, "INDETERMINATE")
         self.assertTrue(report.classification_correct)
+
+    def test_evaluator_agrees_with_measurement_abstention(self):
+        _truth, _source, _sealed, result, report = self.run_case(
+            config("measurement-degraded"), contract(measurement=False))
+        self.assertEqual(result.package_identification, "INDETERMINATE")
+        self.assertEqual(result.focal_identification, "INDETERMINATE")
+        self.assertTrue(report.classification_correct)
+
+    def test_evaluator_agrees_with_interference_abstention(self):
+        _truth, _source, _sealed, result, report = self.run_case(
+            config("interference"), contract(interference=False))
+        self.assertEqual(result.package_identification, "INDETERMINATE")
+        self.assertEqual(result.focal_identification, "INDETERMINATE")
+        self.assertTrue(report.classification_correct)
+
+    def test_evaluator_agrees_with_randomization_abstention(self):
+        _truth, _source, _sealed, result, report = self.run_case(
+            config("not-randomized"), contract(randomized=False))
+        self.assertEqual(result.package_identification, "INDETERMINATE")
+        self.assertEqual(result.focal_identification, "INDETERMINATE")
+        self.assertTrue(report.classification_correct)
+
+    def test_welch_satterthwaite_critical_values(self):
+        self.assertAlmostEqual(_student_t_critical_975(1.0), 12.706204736, places=7)
+        self.assertAlmostEqual(_student_t_critical_975(10.0), 2.228138852, places=7)
+        self.assertAlmostEqual(_student_t_critical_975(100.0), 1.983971519, places=7)
+
+    def test_analyzer_interval_is_centered_on_itt_estimate(self):
+        _truth, _source, _sealed, result, _report = self.run_case(config("welch-interval"), contract())
+        self.assertIsNotNone(result.interval_95)
+        lower, upper = result.interval_95
+        self.assertAlmostEqual((lower + upper) / 2.0, result.estimate, places=12)
+        self.assertGreater(upper, lower)
 
     def test_truth_fields_are_not_projected(self):
         _manifest, truth, source = Generator().generate(config("firewall"))
