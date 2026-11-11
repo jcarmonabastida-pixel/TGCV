@@ -2978,3 +2978,12 @@ Se incorpora como referencia operativa `C10_S_CLOSURE_SEQUENCE_AND_C1_ITT_WORKPL
 **Gate activo C1.1:** reconciliar población y elegibilidad pre-Z, UE/interferencia, brazos/versiones D2, Outcome/Value y horizonte, reutilizando POP-CMP-001, C10D1/S4R estimand reconciliation, DGP temporal/roles, matriz Value y contrato B. C1 es ITT por asignación a B_g0^D2/B_g1^D2, conserva vías colaterales y no se interpreta como efecto focal de accesibilidad sin C3. Resultado técnico en variante A y Value contextual en variante B no se presumen intercambiables ni ya instanciados. No excluir por eventos post-Z.
 
 **Estado:** SECUENCIA DOCUMENTADA; C1.1 OPEN. No se modifica main ni se autoriza freeze, schemas físicos, fixtures, implementación, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## C1.1 — Reconciliación ITT D2 (2026-11-11)
+
+**Registro:** `C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md`.
+
+**Dictamen:** C1 OPEN. D2 como asignación a B_g0^D2/B_g1^D2 está definido por decisiones aceptadas, pero el estimando completo no está cerrado. `P*_{τ2}` permanece candidato, `P*_F` no es población primaria por defecto; UE=UA está condicionada a aislamiento/no interferencia; A carece de Outcome operacionalizado y B carece de Value instanciado; H=3 no es horizonte temporal.
+
+**Siguiente gate:** C1.2 — cerrar composición de elegibilidad basal `E_i`, predicados constitutivos y evidencia/indeterminación, y recuperar contrato de aleatorización D2. No freeze ni ejecución.
