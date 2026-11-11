@@ -3220,7 +3220,7 @@ No se declara Outcome/Value operacionalizado ni Design Freeze. No implementació
 | Efecto directo/residual | NOT DEFINED / NOT IDENTIFIED | No se deriva por resta ad hoc |
 | Cotas y sensibilidad | FUTURE OPTION ONLY | No hay cobertura, parámetros ni restricciones para cotas informativas actuales |
 | Design Freeze | BLOCKED | G-SCI/G-MAT/G-SCHEMA/G-ROLE/G-TEST/G-REPRO bloqueados; G-AUTH no otorgado |
-| Maestro C10-S | RECOVERED / §274 PROPAGATED | Blob íntegro recuperado; §§266–274 inspeccionados; la lectura Contents sigue devolviendo vacío, por lo que las verificaciones se hacen mediante blob SHA |
+| Maestro C10-S | RECOVERED / §§266–274 + §274.1 PROPAGATED | Blob vigente `51dcd3b2c84d33c437292ce5883f5b70e3d9491c` verificado: 1,137,928 caracteres / 12,156 líneas; Contents devuelve vacío y no se usa para verificar |
 
 No se autoriza captura, schema físico, fixtures, implementación, generación de datos, simulación, estimación o ejecución. scientific_execution=false; execution_authorized=false.
 
