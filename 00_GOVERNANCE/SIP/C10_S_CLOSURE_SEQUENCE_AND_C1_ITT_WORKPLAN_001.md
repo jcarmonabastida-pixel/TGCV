@@ -273,3 +273,18 @@ Se incorpora `C10_S_B1_PREZ_EVIDENCE_SOURCE_INVENTORY_AND_COVERAGE_AUDIT_DRAFT_0
 **Límite de la búsqueda:** el dictamen cubre los artefactos C10-S revisados en la rama de investigación; no afirma inexistencia de documentos externos o no consultados. No se inspeccionaron sistemas reales, conectores ni runtime.
 
 **Siguiente paso documental:** precisar el catálogo de tipos de fuente y el criterio de cobertura por unidad, sin crear roster, truth, snapshots ni fixtures. Cualquier materialización o captura requiere autorización específica posterior. No se reabren decisiones B1 aceptadas ni se autoriza implementación/ejecución.
+
+## 22. Reconciliación de la frontera de implementabilidad — 2026-11-11
+
+Se incorpora el registro rector `C10_S_IMPLEMENTABILITY_BOUNDARY_AND_MINIMUM_SPEC_RECONCILIATION_DRAFT_001.md`.
+
+**Corrección operativa:** los bloqueos de factibilidad confirmatoria material D2 (roster real, IAM/C_SRC, snapshots, inventario B, aislamiento y soporte empírico) no son automáticamente bloqueos para construir el harness metodológico sintético. El Generator puede generar unidades, asignaciones, dependencias, truth y evidencia sintéticas bajo un DGP explícito y versionado. Esto no acredita que las condiciones se cumplan en D2 material ni permite transferir resultados del harness a la instancia confirmatoria.
+
+**Estado reconciliado:**
+- La arquitectura y decisiones aceptadas de PA–PE, B1, D2, población, roles y JCS se reutilizan; no se reabren.
+- El harness sintético aún no tiene especificación ejecutable completa.
+- Los bloqueos de especificación se agrupan en tres cierres integrados: (A) DGP parametrizado y estimandos/identificación; (B) observación, Outcome/Value y contratos Analyzer/Evaluator; (C) schemas físicos, interfaces, roles, pruebas y reproducibilidad.
+- Los bloqueos materiales de confirmación se conservan en un carril separado y no se usan para inflar el cierre del harness.
+- No se autoriza implementación ni ejecución.
+
+**Siguiente operación única:** reconciliación integrada A–B–C de cierre de especificación ejecutable, conforme al criterio de salida del nuevo registro. No reiniciar PA–PE ni crear paquetes independientes por cada subcomponente.
