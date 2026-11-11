@@ -16,29 +16,31 @@ Regla de no invención: ningún beneficiario, stakeholder, función de utilidad,
 
 ## 2. Fuentes y alcance recuperado
 
-| Fuente | Función que se reutiliza | Límite de esta reconciliación |
+| Fuente | Contenido contractual recuperado | Estado/limitación |
 |---|---|---|
-| P179 | Contrato de especificación/interpretación de Value y de sus reglas de agregación y sensibilidad, en el alcance que establezca su texto fuente | No se da por aprobada una fórmula escalar, vector concreto ni ponderación |
-| P182-01…12 | Validez de constructo y sensibilidad de medidas: cobertura, circularidad, especificación O, separación O/V, reproducibilidad, acuerdo, error, invariancia, sensibilidad, firewall y trazabilidad | No crea dimensiones ni define por sí solo indicadores |
-| P183-01…13 | Ausencia, selección, censura, missingness, cotas y dictamen separado por estimando | No transforma ausencia de observación en ausencia del constructo |
-| C-Value §224 | Contrato histórico Outcome/Value que debe conservar precedencia en su alcance | Requiere cotejo literal de cada campo/decisión contra el maestro |
-| C-Value §§264–265 | Candidatos y auditoría de correspondencia con roster de Opción A | El crosswalk recibido constata operacionalización incompleta |
-| §232 / §233 / B-M01…15 | Roster, DAG y superficies observables de la instancia | Una superficie observable no es todavía indicador validado ni beneficiario |
-| Registro de contratos de prueba, §§9 y 13 | POL-01…10; P182-01…12; P183-01…13 y reglas de adjudicación | Contratos propuestos; no fixtures implementados ni pruebas ejecutadas |
+| P179-01…08 (§55.3 del Test Contract Register) | Separación A/O/V; vector por dimensión; independencia Outcome/Value; observador/beneficiario/contexto/criterio; baseline; trade-offs; estimación causal por dimensión; agregación justificada | Contrato definido; operacionalización abierta. El vector multidimensional es la opción metodológica recomendada durante identificación. |
+| P182-01…12 (§13 del Test Contract Register) | Cobertura y circularidad de A; especificación O; separación O/V; reproducibilidad; acuerdo interevaluador; error en A y O/V; invariancia; sensibilidad de Value; firewall Generator/Analyzer; trazabilidad | Contratos definidos; pruebas/evidencia no ejecutadas. |
+| P183-01…13 (§13 del Test Contract Register) | Taxonomía y mecanismo de ausencia; separación A/O/V; ITT; selección; mediación; censura; sensibilidad MAR/MNAR; cotas; dictamen por estimando; trazabilidad | Contratos definidos; parámetros y mecanismos concretos abiertos. Exige dictámenes separados por estimando y dimensión. |
+| C-Value §224 (maestro; resumen en plan §16.102) | Fichas versionadas independientes para cada indicador O y dimensión V; constructo, evidencia y adjudicación; fuentes, unidades/escalas, cálculo, baseline, ventana/ancla, validez, error, acuerdo, ausencia/censura, cegamiento, trade-offs y provenance | Contrato operativo propuesto; fichas concretas e indicadores no seleccionados. |
+| C-Value §§264–265 (plan §§16.138–16.139) | Crosswalk candidato para Opción A; familias O-MIG/O-CONF/O-SVC/O-REC/O-BUR; roles/dimensiones Value candidatos; crosswalk al roster y DAG reales | Candidato documentado; materialmente abierto. Beneficiarios, indicadores, fuentes, escalas, ventanas y reglas de valoración no confirmados. |
+| §232 / §233 / B-M01…15 / E_T-U_G | Roster, DAG y superficies de observación de la instancia | Una superficie no equivale a indicador validado, beneficiario ni evidencia de valoración. |
+| C10_S_RECOVERY_165_183_SOURCE_REGISTER_DRAFT_001 | Recuperación de la recomendación vectorial P179 y del alcance de P182/P183 | Fuente auxiliar de trazabilidad; no sustituye las fichas contractuales del Test Contract Register. |
 
 ## 3. Matriz de depuración de dimensiones candidatas
 
-Las cinco filas siguientes reproducen únicamente el conjunto candidato que se ha venido manejando en C-Value; no se declaran dimensiones aprobadas por P179. Su inclusión y definición literal deberán cotejarse con el contrato fuente antes de cerrar esta matriz.
+Las cinco dimensiones que aparecen en la recuperación histórica —eficiencia, calidad, acceso de destinatarios, robustez y sostenibilidad— son **candidatas provisionales**, no una lista aprobada ni cinco obligaciones de medición. P179 recomienda mantener Value como vector durante la fase de identificación, precisamente para no ocultar trade-offs mediante agregación prematura. Por tanto, no debemos sustituir esa recomendación por un escalar ni reducir de entrada el vector a un único V1.
 
-| Dimensión candidata | Fundamento que puede conservarse | Riesgo de redundancia/circularidad | Dictamen propuesto | Condición para reconsiderarla |
-|---|---|---|---|---|
-| Eficiencia | Posible valoración de recursos/tiempo/esfuerzo para un beneficiario identificado | Recursos técnicos observados no equivalen a coste económico ni a esfuerzo; solapamiento parcial con carga operativa O | CONDITIONAL | Beneficiario, perspectiva, recurso valorado, unidad, coste/precio o proxy validado, ventana y regla de valoración |
-| Calidad | Posible valoración de propiedades del servicio/resultado | Conformidad técnica no equivale automáticamente a calidad valorada; no reutilizar el mismo indicador como O y V sin justificación | CONDITIONAL | Criterio de calidad independiente, evaluador/fuente, escala, tolerancia, población y horizonte |
-| Acceso de destinatarios | Posible valor de que destinatarios reales puedan obtener/usar el servicio | No confundir acceso del destinatario con T_acc transformacional; beneficiario/destinatario no identificado | CONDITIONAL | Identidad/rol del destinatario, unidad de acceso, necesidad, criterio de acceso y medida no derivada de T_acc |
-| Robustez | Posible valor de estabilidad ante perturbaciones | Solapamiento potencial con continuidad, recuperación, disponibilidad y resiliencia como Outcomes | CONDITIONAL | Perturbación/historia, propiedad valorada, horizonte, tolerancia y demostración de que no duplica O |
-| Sostenibilidad | Posible valoración intertemporal | Horizonte, sujeto de valoración y dimensión (económica, operativa, ambiental u otra) indeterminados | DEFER / CONDITIONAL | Dominio explícito, perspectiva, horizonte y criterio verificable; no incorporar como categoría genérica |
+| Dimensión candidata | Fundamento posible | Riesgo/laguna en Opción A | Dictamen propuesto |
+|---|---|---|---|
+| Eficiencia | Valoración de recursos, tiempo o esfuerzo desde una perspectiva identificada | Recursos/rendimiento técnicos no equivalen a coste económico ni esfuerzo de un beneficiario | CONDITIONAL |
+| Calidad | Valoración de propiedades del servicio/resultado | F* y conformidad técnica no equivalen automáticamente a calidad valorada | CONDITIONAL |
+| Acceso de destinatarios | Valor de que destinatarios reales puedan obtener/usar el servicio | No confundir acceso del destinatario con accesibilidad transformacional; destinatarios no confirmados | CONDITIONAL |
+| Robustez | Valoración de estabilidad ante perturbaciones | Posible solapamiento con continuidad, recuperación y resiliencia como Outcomes; requiere constructo diferenciado | CONDITIONAL |
+| Sostenibilidad | Valoración intertemporal | Dominio, perspectiva y horizonte no especificados | DEFER / CONDITIONAL |
 
-**Resultado:** ninguna dimensión de esta lista está actualmente habilitada como Value confirmatorio en la instancia Opción A. CONDITIONAL no significa rechazada: significa que la dimensión no entra en el núcleo confirmatorio hasta satisfacer su condición material.
+**Resolución de precedencia:** mantener la representación vectorial como orientación metodológica de P179 durante identificación. No asumir que las cinco dimensiones son confirmatorias ni exhaustivas; tampoco asumir que una sola dimensión basta. La selección del conjunto dimensional requiere fundamento contextual, observador/beneficiario y criterio registrados (P179-04), fichas §224 completas y decisión previa a resultados. Si el dominio solo sostiene una dimensión, esa reducción debe justificarse explícitamente frente a la recomendación vectorial y no presentarse como regla general.
+
+El crosswalk actual no confirma ninguna dimensión material de Value para esta instancia. Eso no invalida P179: identifica que falta la información de dominio necesaria para instanciar su contrato.
 
 ## 4. Crosswalk de Outcome: no confundir evidencia superficial con operacionalización
 
@@ -55,56 +57,60 @@ O-CONF puede mantenerse como candidato prioritario de Outcome para el trabajo de
 ## 5. Separaciones semánticas obligatorias
 
 1. **T_acc / ΔT_acc ≠ Outcome ≠ Value.** Accesibilidad, Reach y trayectoria pertenecen a la cadena transformacional/causal; no constituyen por sí mismas una valoración.
-2. **Outcome ≠ Value.** Outcome describe un resultado operacional definido; Value requiere además perspectiva/beneficiario y criterio de valoración explícitos.
-3. **CMP.owner ≠ beneficiario.** La propiedad/autoría del componente no identifica quién recibe o valora el servicio.
-4. **Recurso consumido ≠ coste económico.** Hace falta perspectiva, precio/coste o proxy validado y regla de imputación.
-5. **Disponibilidad de A1/A2 ≠ valor de portabilidad.** La existencia técnica de una ruta no prueba su utilidad ni valoración.
-6. **No ejecución ≠ inaccesibilidad.** Se preservan los estados de accesibilidad, aplicabilidad, conocimiento/consideración, selección e implementación/ejecución.
-7. **No observado ≠ cero; Value no definido ≠ Value no medido.** Aplicar P183 y la taxonomía de ausencia correspondiente.
+2. **Outcome ≠ Value.** Outcome describe un resultado o consecuencia operativa; Value expresa valoración contextual para beneficiarios identificados.
+3. **CMP.owner ≠ beneficiario.** §264 enumera roles posibles (propietario, operador, mantenedor, usuarios si existen, responsable de riesgo si procede), pero §265 confirma que el roster no permite identificar beneficiarios/roles de valoración. No convertir candidatos conceptuales en actores reales.
+4. **Recurso consumido ≠ coste económico.** Hace falta perspectiva, coste/precio o proxy validado y regla de imputación.
+5. **Disponibilidad de A1/A2 ≠ valor de portabilidad.** Capacidad técnica no acredita utilidad ni valoración.
+6. **F* ≠ Outcome ≠ Value.** F* es criterio funcional técnico; Outcome es estado/consecuencia operativa; Value es valoración contextual. Seguridad/compliance puede ser restricción no compensatoria, no necesariamente dimensión compensable de V.
+7. **No observado ≠ cero; Value no definido ≠ Value no medido.** P183-05 exige que ausencia dimensional no implique valoración nula. Preservar OBSERVED_VALID, OBSERVED_INVALID, NOT_OBSERVED, NOT_APPLICABLE, CENSORED, DISPUTED y UNKNOWN según §224.
 
 ## 6. Núcleo confirmatorio mínimo: especificación por capas
 
 ### 6.1 Núcleo metodológico que sí puede fijarse documentalmente
 
-- A: medida independiente de accesibilidad/ΔT_acc*, con temporalidad, versión, unidad y evidencia; no depende de O ni V.
-- O: como máximo un Outcome primario en el microdominio, seleccionado por justificación y operacionalizado antes de ejecución.
-- V: una dimensión primaria (V_1) solo si se identifica beneficiario/perspectiva y una regla de valoración independiente y reproducible.
-- Estimandos: adjudicación independiente para ITT de asignación/política, efecto focal solo si se sostienen sus condiciones de atribución, efecto interventional si se identifica y la pregunta general θ_A(q). No transferir conclusiones entre estimandos.
-- Medición: P182 para validez, error, invariancia y trazabilidad.
-- Ausencia/selección: P183 para missingness, censura, cotas y dictámenes.
-- Evaluación: generador, analizador y evaluador separados; el analizador no recibe truth/potenciales ni Value potencial.
+- **A:** medida independiente de accesibilidad/ΔT_acc*, con temporalidad, versión, unidad y evidencia; no depende de O ni V.
+- **O:** Outcomes operativos definidos mediante fichas §224; seleccionar un Outcome primario solo después de justificarlo y operacionalizarlo. No hay actualmente ninguno completo.
+- **V:** conservar representación vectorial durante identificación (P179-02/06/07). El conjunto de dimensiones no está aprobado: las cinco históricas son candidatas, no requisitos. No seleccionar V1 ni pesos por defecto.
+- **Agregación:** no producir índice escalar salvo que exista ponderación y regla de compensación justificadas y análisis de sensibilidad (P179-08).
+- **Fichas:** una ficha versionada por indicador O y por dimensión V, con constructo, evidencia y adjudicación; fuentes, unidades/escalas, cálculo, baseline, ventana/ancla, validez, error, acuerdo, ausencia/censura, cegamiento, trade-offs y provenance (§224).
+- **Estimandos:** dictámenes independientes para ITT sobre O, ITT por cada V_j, efecto mediado por A, LATE sobre V, efecto residual e índice agregado si se utiliza. No transferir identificación entre ellos (P179-07; P183-12).
+- **Medición/ausencia:** P182 para validez, reproducibilidad, acuerdo, error, invariancia, sensibilidad y firewall; P183 para taxonomía/mecanismo de ausencia, selección, censura, sensibilidad, cotas y dictamen por estimando.
+- **Evaluación:** Generator, Analyzer y Evaluator separados; truth/potenciales no accesibles al Analyzer.
 
 ### 6.2 Núcleo material actualmente disponible
 
 | Componente | Estado actual | ¿Confirmatorio ejecutable? |
 |---|---|---|
 | A / ΔT_acc* | Arquitectura y crosswalk semánticos parciales; inputs materiales, fuentes y medición pendientes | NO |
-| O primario | O-CONF mejor anclado, pero sin predicados/mapping/tolerancias/oráculo/snapshots completos | NO |
-| Beneficiario/perspectiva | No confirmado en roster | NO |
-| V1 / regla de valoración | No operacionalizado; sin beneficiario ni criterio confirmado | NO |
+| O primario | O-CONF mejor anclado, pero sin predicados/mapping/tolerancias/oráculo/snapshots completos; ningún O tiene ficha §224 completa | NO |
+| Beneficiarios/perspectivas | Roles candidatos en §264; ninguno confirmado en roster §265 | NO |
+| Vector V_j | Recomendación metodológica vigente, pero sin dimensiones materialmente confirmadas ni fichas pobladas | NO |
+| Regla de valoración | No operacionalizada; sin observador/beneficiario, criterio ni contexto confirmado | NO |
 | Función escalar/ponderaciones | No aceptadas; fórmula ilustrativa anterior no es decisión | NO |
 | Missingness/selección | Contratos P183 disponibles; mecanismo y parámetros concretos pendientes | NO |
 | Validez/error | Contratos P182 disponibles; instrumentos, tolerancias y validación pendientes | NO |
 
-**Conclusión:** puede definirse un núcleo confirmatorio mínimo como arquitectura de diseño, pero no hay actualmente un núcleo material A–O–V completo ejecutable. La ausencia de V1 no debe ocultarse mediante un índice sustituto ni resolverse inventando beneficiarios.
+**Conclusión:** la arquitectura metodológica debe preservar Value vectorial durante identificación. No podemos todavía instanciar un vector confirmatorio en Opción A porque faltan beneficiarios, criterios y dimensiones justificadas. Tampoco podemos sustituirlo por un V1 arbitrario. Outcome tampoco está completamente operacionalizado.
 
 ## 7. Reglas de clasificación KEEP / REDUNDANT / CONDITIONAL / NOT_GROUNDED
 
 | Objeto | Clasificación | Justificación |
 |---|---|---|
-| Separación A/O/V y no circularidad | KEEP | Requisito constitutivo de validez y atribución |
-| P182 como contrato transversal de medición | KEEP | Complementa, no duplica, la definición de constructos |
-| P183 como contrato transversal de ausencia/identificación | KEEP | Complementa, no crea dimensiones |
-| P179 como contrato de Value y agregación/sensibilidad | KEEP, sujeto a precedencia literal | Evitar reemplazarlo por taxonomía nueva |
-| Cinco dimensiones candidatas | CONDITIONAL | Mantener como catálogo histórico no obligatorio |
-| Índice escalar y ponderaciones | NOT_GROUNDED | Sin decisión, beneficiario, escalas ni pesos justificados |
-| O-CONF | CONDITIONAL | Anclaje conceptual existente, operacionalización incompleta |
+| Separación A/O/V y no circularidad | KEEP | P179-01/03; P182-02/04 |
+| Value vectorial durante identificación | KEEP | P179-02; P179-06/07; no ocultar trade-offs |
+| Cinco dimensiones históricas | CONDITIONAL | Candidatas provisionales; no son lista confirmada ni cinco obligaciones |
+| Selección contextual de dimensiones | CONDITIONAL | P179-04 y §224 requieren observador/beneficiario/contexto/criterio |
+| Índice escalar y ponderaciones | NOT_GROUNDED hasta justificación | P179-08 permite agregación solo con regla y ponderaciones justificadas |
+| P182 como contrato transversal de medición | KEEP | Validez, especificación, reproducibilidad, acuerdo, error, invariancia, sensibilidad y firewall |
+| P183 como contrato transversal de ausencia/identificación | KEEP | Ausencia, ITT, selección, mediación, censura, cotas y dictamen por estimando |
+| O-CONF | CONDITIONAL | Mejor anclaje actual, pero sin ficha §224 completa |
 | O-MIG/O-SVC/O-REC/O-BUR como medidas actuales | NOT_GROUNDED | El crosswalk no acredita indicadores completos |
-| Recursos = coste | REDUNDANT / invalid inference | No es una dimensión independiente ni inferencia válida; requiere conversión/valoración |
-| Continuidad + recuperación + robustez como un único indicador | REDUNDANT si se fusionan sin teoría | Mantener constructos separados hasta demostrar equivalencia |
+| Recursos = coste | NOT_GROUNDED | No es inferencia válida sin perspectiva y regla de valoración |
+| Continuidad + recuperación + robustez como un único indicador | REDUNDANT si se fusionan sin teoría | No fusionar constructos distintos por compartir superficies observables |
 | T_acc/Reach/trayectoria como Value | NOT_GROUNDED / circular | Son constructos de la cadena causal, no valoración |
 | CMP.owner como beneficiario | NOT_GROUNDED | No existe equivalencia semántica acreditada |
 | A1/A2 disponibles como valor de portabilidad | NOT_GROUNDED | Capacidad técnica no acredita utilidad/valor |
+| Seguridad/compliance como dimensión compensable | NOT_GROUNDED | Puede operar como restricción no compensatoria; requiere decisión contextual |
 
 ## 8. Bloqueos exactos para pasar de arquitectura a operacionalización
 
@@ -133,20 +139,20 @@ No se añaden bloqueos genéricos ni se convierten en requisitos de dimensión. 
 
 | Propuesta | Contenido | Estado |
 |---|---|---|
-| PROP-VALUE-01 | Mantener las cinco dimensiones como catálogo candidato, no como obligaciones confirmatorias | PROPUESTA |
-| PROP-VALUE-02 | No definir índice escalar ni ponderaciones sin regla de valoración justificada | PROPUESTA |
-| PROP-VALUE-03 | Mantener Outcome y Value separados; O-CONF es candidato prioritario, no cerrado | PROPUESTA |
-| PROP-VALUE-04 | Exigir beneficiario/perspectiva explícitos antes de aceptar cualquier V_j confirmatorio | PROPUESTA |
-| PROP-VALUE-05 | Permitir un solo V1 confirmatorio si y solo si tiene fundamento material suficiente; no exigir cinco dimensiones | PROPUESTA |
-| PROP-VALUE-06 | Si no se operacionaliza V1, limitar las conclusiones sintéticas a los módulos/estimandos que sí puedan evaluarse y declarar no disponible la atribución a Value | PROPUESTA |
+| PROP-VALUE-01 | Mantener Value vectorial durante identificación, conforme P179-02/06/07 | PROPUESTA DE CONFIRMACIÓN DE PRECEDENCIA |
+| PROP-VALUE-02 | Mantener las cinco dimensiones como candidatas históricas, no como obligaciones confirmatorias ni lista exhaustiva | PROPUESTA |
+| PROP-VALUE-03 | No definir índice escalar ni ponderaciones sin regla de valoración justificada y sensibilidad | PROPUESTA |
+| PROP-VALUE-04 | Exigir observador/beneficiario, contexto y criterio explícitos antes de aceptar cualquier V_j confirmatorio | PROPUESTA |
+| PROP-VALUE-05 | Seleccionar el conjunto dimensional solo tras fichas §224 y evidencia del dominio; no reducir a V1 por conveniencia analítica | PROPUESTA |
+| PROP-VALUE-06 | Si no se operacionaliza Value, limitar las conclusiones a Outcomes/estimandos realmente evaluables y declarar no disponible la atribución a Value | PROPUESTA |
 
-Estas propuestas no modifican DEC-C10 existentes ni constituyen aceptación por sí mismas. Requieren reconciliación con el texto íntegro de P179 y C-Value §224, comprobación de precedencia y registro explícito de aceptación antes de tratarlas como decisión.
+Estas propuestas no modifican DEC-C10 existentes ni constituyen aceptación por sí mismas. P179/P182/P183 y §224 conservan precedencia; la matriz solo especializa su lectura para el crosswalk de Opción A.
 
 ## 11. Estado y siguiente gate
 
-**Dictamen de esta matriz:** DOCUMENTARY RECONCILIATION PROPOSED / MATERIAL OUTCOME-VALUE OPEN.
+**Dictamen de esta matriz:** DOCUMENTARY RECONCILIATION UPDATED AGAINST RECOVERED CONTRACT REGISTER / MATERIAL OUTCOME-VALUE OPEN.
 
-Siguiente gate: cotejar fila por fila esta matriz con el texto íntegro de P179 y C-Value §224; resolver cualquier diferencia semántica/precedencia; después registrar aceptación o discrepancias. Solo entonces abordar B1–B3 (beneficiario, criterio V y Outcome primario) con evidencia del dominio, sin inferencias desde CMP.owner ni desde recursos técnicos.
+Siguiente gate: contrastar el contenido restante de las fichas §224 y la instancia contra sus fuentes documentales; registrar la decisión explícita sobre el conjunto dimensional vectorial; después resolver B1–B3 (beneficiario/perspectiva, criterio V y Outcome primario) con evidencia del dominio, sin inferencias desde CMP.owner ni desde recursos técnicos.
 
 No se ha modificado `main`; no se ha cerrado MED-02/MED-03; no hay Design Freeze, implementación ni ejecución científica.
 
