@@ -216,3 +216,14 @@ La aceptación de B1 permite especializar la semántica del campo demand_preZ de
 Se propone conservar en DGP truth los estados Need_preZ=1/0/? y separar su evidencia observada. Request_event=0 no implica Need_preZ=0; Request_event=1 no demuestra admisibilidad, procesamiento ni satisfacción. Los casos sin necesidad focal son candidatos a controles negativos/adversariales, no se mezclan automáticamente en el estimando primario de Value. No se fija todavía población B1, cardinalidad, observabilidad, instrumento, contenido de necesidad, elegibilidad de solicitud, ventana de solicitud ni estimando.
 
 Esta especialización mantiene BVAL-02/03/10, P179/P182/P183 y §224; no selecciona dimensiones ni regla de valoración.
+
+
+## 16. Reconciliación B2–B3 aceptada como base de trabajo (2026-11-11)
+
+El usuario acepta el planteamiento B2–B3 como base de trabajo, sin congelar dimensiones, escalas, indicadores o parámetros. El contrato B-BEN se especializa en B1: entidad solicitante-beneficiaria sintética, una por UE, con Need_preZ basal y consecuencia valorable propia. Se reutilizan las decisiones B1 y el contrato de identidad de servicio por UE.
+
+Outcome mide un resultado técnico del servicio/proceso; Value mide la valoración contextual de la consecuencia para B1 respecto de Need_preZ. Son constructos distintos. No se impone que Value sea función exclusiva de Outcome: la consecuencia puede depender de Outcome y de vías directas/colaterales de la política. La cadena y los mecanismos deben declararse en truth_dgp y evaluarse, no incorporarse por definición a V_j.
+
+Se mantiene P179 vectorial y trade-offs; no se eligen por defecto las cinco dimensiones históricas ni se agregan pesos. O-CONF conserva el mejor anclaje técnico, pero no está operacionalizado. Cada O_k/V_j exige ficha §224 propia y controles P182/P183. No se transfiere identificación de Outcome a Value ni entre dimensiones. Véase `C10_S_B2_B3_BENEFICIARY_OUTCOME_VALUE_RECONCILIATION_DRAFT_001.md`.
+
+**Estado:** base semántica aceptada; B-BEN/B-VAL y fichas concretas continúan DRAFT/OPEN; no Design Freeze, implementación, fixtures, simulación o ejecución.
