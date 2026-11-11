@@ -2640,3 +2640,16 @@ La fórmula `E_i=E_scope∧App*(τ2,S0)` no se acepta. Se registra como recomend
 Bloqueos materiales: asignación D2 (ratio/probabilidades, estratos, algoritmo/semilla/provenance); aislamiento UE/UA y no interferencia; q_X*/positividad/soporte; horizonte y ventanas; ficha operacional de O-CONF u Outcome alternativo; instancia B1, consecuencia y fichas V_j; medición/missingness/censura y precisión. No se han inventado valores ni se solicita decisión de preferencia al usuario en este ciclo.
 
 **Estado:** PA reconciliado documentalmente, no cierre científico de C1. Próximo paquete operativo: **PB — D2 material, servicio B1 y primera etapa C2**. PA se reabrirá solo para integrar material nuevo que levante los bloqueos, no para repetir la reconciliación. Sin freeze, implementación ni ejecución.
+
+
+## 16.156 — PB: material D2, servicio B1 y primera etapa C2 (2026-11-11)
+
+PB se resolvió en una única iteración integral. Dictamen: **PB_RECONCILED_DOCUMENTALLY / D2_C2_MATERIAL_BLOCKED / NOT_DESIGN_FROZEN**. Registro completo: maestro C10-S §267.
+
+Se reutilizan sin reabrir DEC-C10-066/067 (D2 primario, D1 secundario; política material y límites de B), DEC-C10-068/069 (servicio lógico, CMP/PAR/RUL, identidad y versionado), DEC-C10-095 (A/B), y decisiones B1 de modalidad de petición, una B1/UE, una oportunidad estandarizada/UE, enlaces request↔trajectory y adjudicación causal. La provisión D2 se delimita a P1, manteniendo P0, F*, oráculo, autorización normativa basal y rutas no focales invariantes por diseño. La frontera P0/P1/P2, el crosswalk de A_f* y la secuencia de medidas C2 quedan integrados en §267.
+
+C2 no se declara cuantitativamente establecida: W_programmed, W_attempt, S_install, C_dep*, A_f*, D_f*, ΔT_acc*, E_T/ΔE_T y Reach/Π permanecen separados. s=0.80 no está validado; D_f_obs no sustituye D_f*; Wald/LATE bloqueado. No existe inventario B-M01…15, instalación, IAM/snapshots completos, prueba de aislamiento, no-afectación A1/A2/F2 ni validación observacional.
+
+**Decisión única pendiente para armonizar identidades:** mantener contract_id/version y CMP de referencia comunes, interpretar C10S-SVC-REQUEST-PROCESSOR-001 como instancia ejemplar y asignar instance_id único/versionado por UE, con component_id local a la instancia y clave compuesta. Recomendación: sí, para respetar el aislamiento por UE ya aceptado. No se ha aplicado ni congelado hasta aceptación expresa.
+
+Siguiente paquete: **PC — atribución de accesibilidad C3 y mediación C4**. PB no se repite; se reabre solo si se acepta la decisión de identidad o aparece evidencia material nueva. Sin implementación/fixtures/simulación/ejecución; scientific_execution=false; execution_authorized=false.
