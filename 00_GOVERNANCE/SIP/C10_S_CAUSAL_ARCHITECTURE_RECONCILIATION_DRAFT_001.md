@@ -276,3 +276,18 @@ El roster se aplica por función semántica: U* identidades de transformación; 
 Vías colaterales explícitas: cambios en recursos/capacidad, permisos/seguridad, dependencias compartidas y ruta A1/A2, coste/latencia/calidad, información/conocimiento/incentivos, selección, observación/missingness, rollback y spillovers. El DAG no afirma que estén presentes o ausentes: su estado se decide con el manifiesto y evidencia por unidad/versión. Si no pueden excluirse o identificarse, el ITT es efecto de política/paquete, no efecto puro de accesibilidad.
 
 La pregunta θ_A(q) permanece rectora en C10-D1; D2 no equivale automáticamente a g1/g0. LATE_f e ITT_Z(D2) permanecen estimandos distintos. La mediación secundaria requiere intervención conjunta factible sobre la distribución de ΔT_acc* y tratamiento de confusores postratamiento inducidos por B; no se obtiene por restas. No se ha cerrado población, q*, Value, soporte, unidad/interferencia, inventario real, tolerancias ni identificación. Estado DRAFT; no autoriza ejecución.
+
+
+## 14. B1: ciclo de solicitud como proceso de servicio separado de la trayectoria transformacional (2026-11-11)
+
+La especificación B1 distingue un ciclo de petición (Request_opportunity → Request_attempt → Request_received → Request_admitted/rejected → Request_processing → Request_response) de la cadena transformacional t3–t8. No se equipara:
+- conocimiento/consideración t5 con envío de petición;
+- selección/inicio t6 con admisión de petición;
+- ejecución transformacional t7 con procesamiento del servicio;
+- respuesta técnica del servicio con Outcome O o Value V.
+
+El vínculo entre petición y trayectoria se mantiene explícito y de cardinalidad OPEN (una petición puede no desencadenar transformación, desencadenar una o varias; no se fija). Los eventos de petición pueden registrarse en subledger con timestamps e identidad, sin introducir nuevos tiempos en el reloj t−1/t0…t9. La consecuencia para B1 es una medición independiente respecto de Need_preZ, no una recodificación de O-CONF o del éxito técnico.
+
+El envío natural puede ser postratamiento y depender de conocimiento/disponibilidad; por ello nunca se filtra el ITT por Request_attempt/received/admitted/processed. Se recomienda para la comparación sintética confirmatoria una carga de oportunidades/peticiones estandarizada ex ante y presentada mediante harness idéntico entre brazos, registrando intentos incluso si el servicio no recibe. Esto fija la demanda de prueba, no demuestra demanda natural ni preferencia. Una rama de envío endógeno queda como escenario secundario/adversarial. La recomendación no está aceptada ni fija calendario, payload, cardinalidad, parámetro o estimando.
+
+Se mantienen vigentes las advertencias CA-05 sobre vías colaterales y las distinciones TE_Z/ITT_Z, θ_A(q), θ_Af(q*) y LATE_f. No se modifica DEC-C10-066/067 ni el estatus D2 primario candidato/D1 secundario.
