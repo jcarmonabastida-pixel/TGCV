@@ -1469,3 +1469,15 @@ Esta adjudicación es mecanística y no modifica elegibilidad, población, unida
 **OPEN:** especificación de los contrastes concretos de D2; propiedades de trayectoria causalmente relevantes; control de causas concurrentes/colaterales e interacciones; definición de intervención por etapa; positividad/soporte y versiones de tratamiento; evidencia observable y medición; reglas de atribución para contribuciones múltiples; sensibilidad a contrafactuales alternativos; relación con estimandos total, directo e indirecto y mediación.
 
 **No autorizado:** Design Freeze, implementación, fixtures, simulación o ejecución científica. Se mantienen \`scientific_execution=false\` y \`execution_authorized=false\`; \`main\` no se modifica.
+
+## DEC-C10S-D2-ESTIMAND-SEPARATION-001 — separación de estimandos y contrastes mecanísticos (2026-11-11)
+
+**Estado: ACCEPTED AS DESIGN DECISION; NOT DESIGN-FROZEN.**
+
+Se acepta organizar D2 en cinco bloques no intercambiables: **C1** efecto total de asignación/ITT de las políticas D2; **C2** primeras etapas separadas sobre `C_dep*`, `A_f*`, `D_f*` y `ΔT_acc*`; **C3** efecto focal de accesibilidad `θ_A(q)`/`θ_Af(q_X*)`, sujeto a mapping B→g, régimen común, soporte y separación/identificación de vías colaterales; **C4** mediación interventional vía `ΔT_acc*`, con Reach/trayectoria como mediadores secuenciales o bloque conjunto solo si se define explícitamente; **C5** contribución mecanística petición–trayectoria, contrastada contra truth segregada del DGP y no equiparada a Outcome/Value.
+
+No se define residual/directo por resta automática entre estimandos incompatibles. El ITT incluye todas las vías activadas por la política y conserva interpretación de efecto de paquete si existen vías colaterales no separadas. `C_dep*`, `A_f*`, `D_f*` y `ΔT_acc*` permanecen diferenciados; el mediador no se reduce a `A_f*` sin justificación. No condicionar ITT a eventos post-Z. No mapear ciclo de petición a t5/t6/t7 ni a Outcome t8/Value t9; reloj t−1/t0…t9 y H inalterados. P179 conserva Value vectorial y trade-offs; P182/P183 siguen transversales y no se reescriben ni cierran.
+
+**OPEN:** población/UE/interferencia; horizonte y Outcome/Value; versiones y cumplimiento; mapping B→g y q; vías colaterales/confusión/interacciones; medición A/Reach/trayectoria/O/V; identificación, precisión y reglas de abstención; contrastes concretos de etapas y propiedades de trayectoria. La decisión organiza el trabajo; no identifica efectos ni cierra jerarquía confirmatoria.
+
+No modifica DEC-C10-066/067, C10-D1, Core, main, RMA, Matrix ni claims. No autoriza Design Freeze, implementación, fixtures, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`. Registro autónomo: `DEC-C10S-D2-ESTIMAND-SEPARATION-001.md`.
