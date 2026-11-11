@@ -3245,3 +3245,22 @@ La lectura inicial del maestro mediante Contents devolvía contenido vacío, per
 | Design Freeze / execution | BLOCKED / NOT AUTHORIZED | Gates conjuntos y autorización expresa |
 
 El contrato detallado está en C10_S_D2_ASSIGNMENT_POPULATION_SUPPORT_RECONCILIATION_DRAFT_001.md. Este gate no autoriza captura, schema físico, fixtures, implementación, simulación, estimación o ejecución.
+
+
+## 142. Gate de medición confirmatoria Outcome/Value (2026-11-11)
+
+| Control | Estado | Criterio de cierre |
+|---|---|---|
+| Separación F* / O-CONF / Value | RECONCILED DOCUMENTALLY | F* criterio; O-CONF resultado adjudicado; Value consecuencia valorada B1 |
+| O-CONF | PRIORITY CANDIDATE / OPEN | Predicados FP, mapping/IAM, C0/G/H, snapshots, evento terminal, oráculo independiente y ficha §224 |
+| FP-08 | PROBATIVE GATE / OPEN | Provenance, cobertura, cegamiento, reproducibilidad; no mezclar con función |
+| B1 / Need_preZ | SEMANTIC BASIS ACCEPTED | Contenido, medida y evidencia basal material OPEN |
+| Perspectiva B1 | BASIS ACCEPTED | Autoridad y criterio de valoración en truth_dgp OPEN |
+| Value vector P179 | PRESERVED | No reducir ni agregar por defecto |
+| Dimensiones V_j / k | NOT SELECTED | Consecuencia, criterio, indicador, fuente, escala, baseline, horizonte y trade-offs por ficha §224 |
+| P182/P183; MEAS/MISS | EXISTING CONTRACTS REUSED | Evidencia, parámetros y validación no ejecutados |
+| ITT O vs ITT V | SEPARATE ESTIMANDS | No transferencia de identificación; población/asignación/soporte/medición OPEN |
+| C3/C4 per O/V | NOT IDENTIFIED | DAG, intervención, soporte, vías colaterales y confusión longitudinal |
+| Design Freeze / implementation | BLOCKED / NOT AUTHORIZED | Todos los gates conjuntos y autorización expresa |
+
+Artefacto rector: `C10_S_OUTCOME_VALUE_OPERATIONALIZATION_RECONCILIATION_DRAFT_001.md`; maestro §276. No crea IDs de tests, dimensiones, escalas ni decisiones científicas.
