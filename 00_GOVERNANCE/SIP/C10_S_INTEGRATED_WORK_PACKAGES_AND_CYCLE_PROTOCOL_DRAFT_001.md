@@ -153,3 +153,12 @@ PE completó la reconciliación documental de arquitectura técnica, contratos d
 La decisión `DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001` ha sido aceptada expresamente. Se cierra la armonización entre la unidad B1 por UE y la identidad/versionado de DEC-C10-069: contrato/plantilla funcional común; instancia única y versionada independientemente por UE; componente local con clave compuesta `(instance_id, component_id)`; instancia DEC-C10-069 conservada como ejemplar de referencia.
 
 **Efecto sobre PB:** queda cerrado el subproblema de identidad lógica. No quedan cerrados el roster y asignación concreta de IDs, el aislamiento material, IAM/ACL, recursos/estado compartido, interferencia, MET/schema físico ni evidencia ejecutable. El estado no debe describirse como cierre material completo de PB. No se autoriza implementación ni ejecución.
+
+
+## 14. Resultado del ciclo integrado PB-MAT (2026-11-11)
+
+El ciclo de reconciliación material PB se registra en `C10_S_PB_MATERIAL_D2_INSTANCE_AND_ISOLATION_RECONCILIATION_DRAFT_001.md`: **PB_MATERIAL_CONTRACT_RECONCILED_DOCUMENTALLY / MATERIAL_INVENTORY_NONE / ISOLATION_NOT_DEMONSTRATED / NOT_DESIGN_FROZEN**. Se integran DEC-C10-067, la decisión de identidad B1 por UE, IAM/U_G, B-M01…15, PROV-01…12, snapshots y rutas A1/A2. No se reabren las decisiones aceptadas ni se crea un segundo inventario.
+
+La identidad lógica queda armonizada; no hay IDs concretos por UE ni roster material. IAM/C_SRC y snapshots siguen NONE; grafo, artefacto/runtime, ACL/recursos, pruebas A1/A2 y evidencia C_dep*/A_f*/D_f* no están materializados. La operacionalización de actor, recepción, ventanas, reintentos, crossover y soporte sigue OPEN. D2 no se declara aislado; G-MAT no pasa.
+
+**Siguiente operación:** no crear otro paquete. Integrar el levantamiento de bloqueos con PA–PE cuando exista fuente material autorizada o, si se mantiene el modo documental, cerrar conjuntamente la instancia B1/Value/Outcome y la factibilidad de soporte sin inventar roster ni parámetros. No autorizado captura, implementación, fixtures, simulación o ejecución.
