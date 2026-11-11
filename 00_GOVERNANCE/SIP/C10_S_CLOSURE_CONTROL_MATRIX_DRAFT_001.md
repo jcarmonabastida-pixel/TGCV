@@ -3005,3 +3005,12 @@ La fórmula histórica de `E_i` que agregaba `C_other` queda retirada como regla
 P*τ2 se acepta como población objetivo primaria candidata C1; P*F como subpoblación secundaria para apertura funcional exclusiva. La alternativa basal no excluye de P*τ2. La pregunta de precedencia queda resuelta y no se vuelve a solicitar.
 
 **Gate activo C1.3:** reconstruir E_i desde DGP/IAM y predicados constitutivos vigentes, sin fórmula histórica C_other y sin confundir validez de instancia, aplicabilidad τ2, inaccesibilidad A_f basal, Need_preZ o E_req_preZ. OPEN: composición material, evidencia, indeterminación, soporte, medición, interferencia, asignación, horizonte y resultados.
+
+
+## C1.4 — Crosswalk material de E_i (activo)
+
+**Base documental:** `C10_S_C1_BASELINE_ELIGIBILITY_CROSSWALK_DRAFT_001.md`.
+
+C1.3 no cierra E_i. Propuesta candidata `E_scope∧App*(τ2,S0)`, no aceptada. La validez abstracta de la instancia DGP y la aplicabilidad de τ2 no son accesibilidad focal. CMP≥1/PAR≥1/RUL≥1 y roster mínimo de servicio no prueban roster completo ni pertenencia P* por UE.
+
+**Gate C1.4:** crosswalk de cada predicado/registro IAM pre-Z de `C_SRC` con App, C_dep y A_f; clasificar boundary, obligatoriedad, aplicabilidad, papel, evidencia, estado 1/0/?/NA y regla de adjudicación. Si IAM material no existe, registrar vacíos y bloqueos; no materializarlo ni declarar E_i cerrada.
