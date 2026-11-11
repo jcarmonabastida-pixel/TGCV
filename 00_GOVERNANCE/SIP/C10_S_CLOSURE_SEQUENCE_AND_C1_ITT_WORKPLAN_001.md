@@ -1093,3 +1093,70 @@ Queda especificada la familia temporal generadora, la regla normalizada de horiz
 
 No se autoriza implementación, generación de datos, simulación, estimación ni ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
 
+
+
+## 35. Reconciliación de la calibración cuantitativa: verdad analítica del DGP y búsqueda posterior de precisión (2026-11-11)
+
+**Estado:** CALIBRATION_ROUTE_RECONCILED / ANALYTIC_DGP_ORACLE_SPECIFIED_FOR_HOMOGENEOUS_REFERENCE / NUMERIC_CONFIRMATORY_CALIBRATION_NOT_RUN / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 35.1 Reutilización obligatoria de P178 y corrección de precedencia
+
+No se crea un registro de calibración paralelo. Se reutiliza el procedimiento ya establecido en C10_S_PD_DGP_MECHANISM_AND_ADVERSARIAL_EVALUATION_RECONCILIATION_DRAFT_001.md §7 y P178-SIM-01…10: búsqueda de N por potencia/precisión para cada estimando reportable; ajuste por clúster/ICC cuando proceda; selección de R por error Monte Carlo; semillas jerárquicas y hashes; métricas de sesgo, RMSE, cobertura, error tipo I, potencia, calibración, convergencia, réplicas inválidas y clasificación de identificación.
+
+La resolución de Value B1 en §33 supersede específicamente el bloqueo histórico de PD §8 que decía que Value no estaba instanciado por PA. No supersede los bloqueos independientes de Outcome técnico, mapping material D2, cumplimiento/recepción, provisión de fondo, soporte, interferencia, versiones ni exclusión. Esos límites deben reflejarse en el alcance del estimando y en los escenarios, no reabrir la semántica de Value.
+
+### 35.2 Oráculo analítico para el DGP temporal de referencia
+
+Para evitar que la verdad del endpoint dependa de una simulación opaca, el DGP de referencia homogéneo usa probabilidades de transición constantes dentro de cada régimen/política y slot:
+
+- p01(d,g,q)=P(A_k=1 | A_(k-1)=0,d,g,q);
+- p10(d,g,q)=P(A_k=0 | A_(k-1)=1,d,g,q),
+
+donde d representa el estado/cambio de accesibilidad focal generado bajo la política g, y q mantiene constantes las condiciones externas comunes. Los parámetros pertenecen a [0,1], con restricciones declaradas para evitar combinaciones degeneradas no contempladas. La distribución inicial π_0=P(A_0=1) es explícita y común entre brazos en el DGP focal.
+
+La probabilidad de disponibilidad se obtiene recursivamente, sin Monte Carlo:
+
+π_k(d,g,q) = p01(d,g,q) + [1-p01(d,g,q)-p10(d,g,q)]·π_(k-1)(d,g,q).
+
+Para K slots de igual duración, la esperanza exacta de la consecuencia/Value es:
+
+μ_Q(d,g,q;K) = (1/K)·Σ[k=1..K] π_k(d,g,q),
+
+con convención temporal de inclusión del estado inicial declarada una sola vez en la configuración (no se alterna entre escenarios). Si la política induce una distribución de accesibilidad P_g(d|q), entonces:
+
+E[V_B1^(q,g)] = Σ_d μ_Q(d,g,q;K)·P_g(d|q)
+
+para soporte discreto finito, o su integral equivalente para soporte continuo. Por tanto, la verdad del estimando primario es calculable analíticamente:
+
+θ_A(q;V_B1) = E[V_B1^(q,g1)] - E[V_B1^(q,g0)].
+
+El Generator conserva además las trayectorias individuales y potenciales para la evaluación posterior; el oráculo analítico no se entrega al Analyzer. La igualdad entre verdad analítica y esperanza Monte Carlo del generador se convierte en una comprobación de consistencia del harness, no en una estimación causal adicional.
+
+### 35.3 Contraste focal, nulo y vías alternativas
+
+- **Focal:** g1/g0 difieren en la distribución de d=ΔT_acc* dentro del soporte común; los parámetros p01/p10 dependen de d, y no existe otra vía diferencial desde g a A/Q/V. El contraste de política identifica el efecto de esas políticas factibles mediado por la diferencia de accesibilidad en este DGP aislado. No se interpreta como efecto universal por unidad de ΔT_acc.
+- **Nulo:** g1/g0 pueden inducir distribuciones distintas de d, pero p01/p10 son invariantes a d; la verdad de θ_A es cero.
+- **Vía directa/colateral:** se introduce un término separado de política/entorno en las transiciones o en los shocks. La diferencia entre políticas deja de ser atribuible exclusivamente a d; el resultado exigido es detección, estimando alternativo explícito o abstención.
+- **No-identificación:** se altera soporte, observación de d o confusión de forma que el contraste no se identifica a partir de observed_evidence. La verdad sigue conocida para Evaluator, pero Analyzer debe devolver parcial/no identificado.
+
+El signo negativo se obtiene invirtiendo el orden causal de las transiciones bajo d o haciendo que mayor accesibilidad incremente interrupción/reduzca recuperación en el DGP; no se presupone monotonicidad favorable.
+
+### 35.4 Calibración paramétrica sin números arbitrarios
+
+No se aprueba una combinación numérica única por intuición. La configuración se expresa mediante una cuadrícula versionada de: distribución basal π_0; probabilidades de transición de referencia; contraste de distribuciones de d inducidas por g0/g1; coeficientes de efecto de d sobre p01 y p10; magnitudes separadas de vías directas/colaterales; y parámetros del canal de observación.
+
+La cuadrícula debe cubrir el caso nulo y ambos signos, además de niveles crecientes de magnitud dentro del rango factible de V∈[0,1]. Se eliminan por construcción combinaciones que produzcan probabilidades fuera de [0,1], falta de soporte inadvertida o efectos no distinguibles por la resolución K. Para cada punto, θ_A se obtiene primero con el oráculo analítico. El umbral δ_min no se define como un efecto verdadero conveniente: se justifica como mínimo de recuperación que el Analyzer debe distinguir con la precisión objetivo, y se informa como parámetro de rendimiento del método, no como propiedad de TGCV.
+
+Solo después se aplica P178 para seleccionar N y R. N se busca por estimando y diseño de asignación; R se elige para que el error Monte Carlo de las métricas de evaluación quede por debajo de tolerancias preregistradas. La potencia, cobertura y error tipo I se calculan para el estimando focal; detección de colaterales y abstención se evalúan por separado. Si no existe un N/R factible que satisfaga criterios, se informa el límite de precisión/coste y no se rebajan los criterios tras observar resultados.
+
+### 35.5 Alcance de la referencia homogénea y extensiones
+
+La referencia homogénea sirve para verificar primero el oráculo y la recuperación en un DGP transparente. No sustituye las extensiones ya exigidas en §34: heterogeneidad, covariables temporales, shocks comunes/individuales, errores diferenciales, missingness, censura e interferencia. Estas extensiones se añaden después de demostrar la referencia y se mantienen como escenarios separados para identificar qué complejidad causa la pérdida de recuperación.
+
+La configuración de referencia no fija el microdominio de migración ni sustituye el DGP estructural de accesibilidad/Reach. La distribución de d debe proceder de las políticas factibles y del generador estructural de T_acc; no se genera d directamente desde Value ni se construye accesibilidad desde la trayectoria de disponibilidad.
+
+### 35.6 Dictamen y siguiente operación autorizable
+
+Se cierra el método para obtener la verdad cuantitativa y calibrar el experimento sin escoger cifras arbitrarias: oráculo analítico primero, cuadrícula causal después, y P178 para N/R/precisión. No se han elegido aún puntos numéricos confirmatorios ni se ha ejecutado la búsqueda de potencia/Monte Carlo. Esas elecciones requieren un protocolo de calibración con criterios ex ante y autorización específica para la operación computacional de calibración; no equivalen a autorizar el experimento confirmatorio.
+
+El siguiente cierre de diseño consiste en fijar el conjunto mínimo de parámetros libres y restricciones de la cuadrícula para la referencia homogénea, reutilizando los parámetros tipados y contratos existentes. No se vuelve a abrir Value, B1 ni el significado de Q. Se mantienen scientific_execution=false y execution_authorized=false.
