@@ -105,3 +105,57 @@ Permanecen OPEN: instancia y cardinalidad, demanda, consecuencia operacional, pe
 No Design Freeze, implementación, fixtures, simulación ni ejecución científica.  
 scientific_execution=false  
 execution_authorized=false
+
+
+## 10. Contrato candidato de necesidad/demanda basal B1 — reconciliación con P* y el reloj DGP (2026-11-11)
+
+### 10.1 Definición semántica
+
+Para B1, **necesidad/objetivo basal** es una condición, propósito o estado que la entidad solicitante pretende modificar y que existe en la verdad del DGP antes de la asignación Z. Su existencia no se define por haber emitido una solicitud, haber sido aceptada por el servicio, haber consumido recursos ni haber obtenido un resultado.
+
+La necesidad puede ser conocida/declarada o permanecer no expresada; la modalidad de observación se especificará por separado. La entidad solicitante-beneficiaria puede tener una necesidad basal sin enviar solicitud durante el horizonte.
+
+### 10.2 Distinciones obligatorias
+
+| Constructo | Tiempo/rol | Definición | No equivale a |
+|---|---|---|---|
+| Need_preZ | Basal, verdad DGP | Existencia de necesidad/objetivo de la entidad antes de Z | Solicitud, uso o resultado |
+| E_req_preZ | Basal, elegibilidad de solicitante | Condiciones para que una petición de esa entidad sea admisible según un contrato futuro | Elegibilidad experimental P* |
+| Request_event | Evento posterior o temporalmente asignado por contrato pendiente | Petición efectivamente formulada/registrada | Necesidad basal ni demanda total |
+| D_resource | Operación/servicio | Recursos/capacidad requeridos o demandados por procesamiento | Necesidad del beneficiario |
+| Service_processing | Operación del servicio | Aceptación, rechazo, procesamiento, fallo o estado pendiente de petición | Consecuencia final para el beneficiario |
+| Beneficiary_consequence | Resultado posterior | Cambio en la situación de la entidad respecto del objetivo basal | Éxito técnico por sí solo |
+
+E_req_preZ no se identifica con E_i ni con la pertenencia a P*_{τ2}. La reconciliación de P* define elegibilidad de la unidad para el contraste de apertura transformacional; la elegibilidad de una entidad solicitante para formular una petición pertenece al contrato funcional del servicio y no está todavía especificada.
+
+### 10.3 Relación con población experimental y unidad
+
+La necesidad B1 no modifica ni sustituye las condiciones pre-Z de P*_{τ2} o P*_F. La relación entre entidad solicitante, unidad experimental y unidad lógica de servicio sigue abierta, incluida la cardinalidad 1:1/1:N y la posibilidad de múltiples necesidades o solicitudes. No se declara todavía una población confirmatoria B1 mediante una intersección algebraica con P*.
+
+Cualquier población de Value condicionada a Need_preZ o E_req_preZ debe fijarse antes de Z y antes de observar resultados. No se define la población confirmatoria seleccionando solo entidades que enviaron una solicitud después de Z.
+
+### 10.4 Estados y evidencia
+
+La verdad del DGP debe distinguir Need_preZ=1, Need_preZ=0 y Need_preZ=?. El estado ? no se convierte en ausencia. El registro observado del Analyzer es distinto de la verdad generadora y puede contener evidencia suficiente, insuficiente, ausente o contradictoria. La regla de adjudicación y el instrumento para observar la necesidad no se seleccionan aquí.
+
+- Need_preZ=1: existe una necesidad/objetivo basal estipulado; no implica solicitud ni satisfacción.
+- Need_preZ=0: no existe la necesidad/objetivo focal definida para esa entidad/instancia; no equivale a ausencia de solicitudes por otros motivos.
+- Need_preZ=?: la verdad o su clasificación no está determinada; no imputar cero.
+- Request_event=0: no se formuló/registró solicitud en la ventana; no permite inferir Need_preZ=0.
+- Request_event=1: se formuló/registró una petición; no demuestra que sea admisible, procesada ni satisfactoria.
+
+Los escenarios sin necesidad focal pueden servir como controles negativos/adversariales para comprobar que el Analyzer no atribuye valor a una necesidad inexistente; no se incorporan automáticamente al estimando primario de Value.
+
+### 10.5 Demanda de recursos y precedencia histórica
+
+El contrato temporal DGP ya exige separar stock, disponibilidad/asignación, demanda y consumo de recursos, y separar capacidad instalada, slots, disponibilidad temporal y carga. Esa demanda es operativa del sistema/servicio; no sustituye Need_preZ del beneficiario. Los recursos requeridos por un procesamiento pueden depender de la solicitud y ser post-Z. No ajustar ITT por mediadores post-Z ni usar consumo como proxy automático de coste económico o Value.
+
+La reconciliación histórica C10-S-POP-CMP-001 mantiene P*_{τ2} y P*_F como poblaciones técnicas pre-Z, con composición de elegibilidad pendiente y fórmula histórica retirada. Esta propuesta no reabre D2 primario candidato/D1 secundario ni altera DEC-C10-066/067.
+
+### 10.6 Orden temporal y solicitud
+
+Need_preZ y, si se justifica, E_req_preZ pertenecen a la caracterización basal anterior a Z. Request_event es un evento distinto cuya ventana y posición exacta en el reloj t−1/t0…t9 aún deben reconciliarse. No se lo equipara automáticamente a conocimiento/consideración (t5), selección/inicio (t6) o ejecución (t7). No se añade un nuevo tiempo ni se cambia el DAG por esta propuesta.
+
+### 10.7 Dictamen
+
+**DISTINCIÓN SEMÁNTICA PROPUESTA; CONTRATO DE DEMANDA PARCIALMENTE ESPECIFICADO.** Queda definido qué no debe confundirse y qué temporalidad debe respetarse. Permanecen OPEN: contenido concreto del objetivo/necesidad, elegibilidad del solicitante, observabilidad, cardinalidad, ventana/posición de solicitud, relación con procesamiento y población/estimando de Value. No se asignan distribuciones, escalas, tasas, parámetros ni valores.
