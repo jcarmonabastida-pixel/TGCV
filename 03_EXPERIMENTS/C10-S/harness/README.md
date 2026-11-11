@@ -45,3 +45,18 @@ python -m unittest -v
 ```
 
 This command is documented only. The contract and bridge tests are run by the GitHub Actions workflow with pinned NumPy/SciPy dependencies. The bridge is a one-dataset software integration check, not a Monte Carlo or confirmatory scientific run.
+
+
+## P178 Analyzer Monte Carlo bridge
+
+- run_p178_analyzer_monte_carlo.py runs the Analyzer on the exact 27-cell P178 N=700 design. It preserves P178's per-cell seed rule and random-number call order, uses the P178 draw_arm sampler, and passes each replicate through Sealer and Analyzer. Evaluator receives analytic truth only after the Analyzer returns.
+- test_p178_analyzer_monte_carlo.py is a small smoke test for the complete seal → analyze → evaluate path. It is not the Monte Carlo validation.
+- ../calibration/p178_reference_N700.csv is the frozen cell-level benchmark used for paired-seed metric equivalence checks.
+
+The authorized full run is:
+
+    python run_p178_analyzer_monte_carlo.py --out ./p178_analyzer_mc_output --replications 10000 --strict-protocol
+
+The strict run evaluates 27 cells × 10,000 replications (270,000 Analyzer invocations), checking bias/RMSE, Welch interval coverage, rejection/power, Monte Carlo error, identification classification, and paired-seed agreement with the P178 reference. The dedicated GitHub Actions workflow performs a primary run and a full clean-source replay, then compares the generated CSV and manifest byte-for-byte.
+
+This remains non-confirmatory and covers only the existing focal P178 cells. It does not test weak signal, direct paths, positivity failure, degraded measurement, interference, or abstention under non-identification.
