@@ -385,3 +385,14 @@ No condicionar población ITT a eventos post-Z. No reducir `ΔT_acc*` a `A_f*`; 
 **OPEN:** población/unidad/interferencia; Outcome/Value y horizonte; versiones/cumplimiento; mapping B→g, q y soporte; vías colaterales y confusión mediador–resultado inducida por Z; operacionalización y error de A/Reach/trayectoria/O/V; identificación/sensibilidad/precisión; contrastes DGP concretos por etapa de petición. La jerarquía confirmatoria completa permanece OPEN.
 
 No modifica DEC-C10-066/067 ni C10-D1. No autoriza freeze, implementación, fixtures, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`. Registro autónomo: `DEC-C10S-D2-ESTIMAND-SEPARATION-001.md`.
+
+
+## 32. PC — integración de C3/C4 con D2 material y límites de identificación (2026-11-11)
+
+El maestro C10-S §268 es el registro rector de la reconciliación PC. Se reutilizan §§21/31 de este documento, C10-D1/S4-R §§18–20/31, DEC-C10-066/067, DEC-C10S-D2-ESTIMAND-SEPARATION-001, el DAG-01…08 y CAUS-01…10 del Test Contract Register. No se crean estimandos ni pruebas duplicados.
+
+La jerarquía se mantiene: ITT_Z^D2/ψ_policy es efecto de asignación a la política material; θ_A(q) es la pregunta general sobre políticas factibles g1/g0 que inducen distribuciones de ΔT_acc* bajo q común; θ_Af(q_X*) es focal para τ2 y exige mapping B_D2→g^Af; LATE_f es local y condicionado a IV; C4 es mediación interventional. D2 no asigna accesibilidad: B_g1 programa provisión y B_g0 no programa el intento focal. Sin mapping, soporte y separación de vías colaterales, el ITT sigue siendo efecto de paquete, no θ_Af.
+
+El objeto mediador C4 es ΔT_acc* completo; Reach/Π_H son posteriores secuenciales o bloque conjunto si se define intervención. A_f* es predicado/proyección dentro de T_acc y D_f* indicador derivado, no mediadores seriales. Confusores mediador–Value afectados por Z exigen estrategia longitudinal/interventional; no se resuelven con ajuste convencional post-Z. El residual/directo requiere una descomposición interventional compatible, nunca resta automática.
+
+C3/C4 no se identifican en el D2 material actual: mapping B→g, q_X*, soporte, inventario de vías, unidad/interferencia, medición y Value permanecen abiertos. Sin beneficiario/perspectiva/regla y fichas V_j, no hay estimando de mediación sobre Value evaluable. C-MED permanece PARCIAL/OPEN; P177/P178/P179/P182/P183 conservan sus definiciones. El dictamen completo y la matriz por estimando constan en §268.
