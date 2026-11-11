@@ -2430,3 +2430,16 @@ B no podrá aprobarse hasta especificar: rol/relación beneficiario-servicio-uni
 **Límite:** un PASS solo acredita recuperación de la relación estipulada dentro del DGP sintético. No valida preferencias ni Value de usuarios reales ni acredita la hipótesis empírica general de TGCV.
 
 **Estado:** A/B COMPARISON DOCUMENTED / B RECOMMENDED AS SEPARATE DGP VARIANT / USER ACCEPTANCE OPEN. No Design Freeze, implementación, fixtures, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 16.142 — Aceptación de arquitectura A/B para C-Value (2026-11-11; DEC-C10-095)
+
+El usuario acepta conservar A como variante DGP base inalterada y desarrollar B como extensión sintética independiente y versionada.
+
+**Consecuencias para C:** A conserva el dominio y contrato aceptados; podrá operacionalizar accesibilidad/ΔT_acc, Reach, trayectoria y Outcomes técnicos. Value contextual permanece no instanciado y no se atribuirá ΔT_acc→Value en A. B se especificará como extensión separada; todavía no se seleccionan rol beneficiario, relación con unidad/servicio, demanda pre-Z, perspectiva, criterio, dimensiones, indicadores, escalas, pesos, horizonte ni parámetros. P179 exige preservar el vector y trade-offs; P182/P183 gobiernan medición y ausencia/identificación.
+
+**Consecuencias para D:** deberá consumir contratos A/B versionados y distinguir datos observados, truth del DGP y outputs del Analyzer; ninguna verdad generadora se filtra al Analyzer. No se deriva schema físico de esta decisión.
+
+**Consecuencias para E:** integración confirmatoria solo tras cierre semántico de A/B, estimandos, contratos de medición, adjudicación y provenance. Los resultados de A y B no se agrupan ni intercambian.
+
+**Gates:** B permanece en especificación documental; MED-02/03 OPEN; no Design Freeze, implementación, fixtures, simulación o ejecución. scientific_execution=false; execution_authorized=false. Véase DEC-C10-095.
