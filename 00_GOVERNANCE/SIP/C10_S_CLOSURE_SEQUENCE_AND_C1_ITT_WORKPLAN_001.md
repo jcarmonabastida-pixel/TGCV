@@ -288,3 +288,46 @@ Se incorpora el registro rector `C10_S_IMPLEMENTABILITY_BOUNDARY_AND_MINIMUM_SPE
 - No se autoriza implementación ni ejecución.
 
 **Siguiente operación única:** reconciliación integrada A–B–C de cierre de especificación ejecutable, conforme al criterio de salida del nuevo registro. No reiniciar PA–PE ni crear paquetes independientes por cada subcomponente.
+
+## 23. Regla vinculante de cierre hacia especificación implementable (2026-11-11)
+
+Esta regla operacionaliza la reconciliación de §22 y rige las siguientes iteraciones de cierre C10-S.
+
+### Objetivo único
+
+Cerrar una **especificación ejecutable del harness metodológico sintético C10-S**. No ampliar el programa científico ni exigir que la instancia confirmatoria material D2 esté preparada para poder especificar e implementar el harness.
+
+### Método de trabajo
+
+1. Ejecutar una sola reconciliación integrada A–B–C:
+   - **A — DGP y estimandos:** reglas generativas, temporalidad, asignación sintética, potenciales, parámetros por escenario y condiciones de identificación/abstención.
+   - **B — observación y análisis:** proyección truth→evidence, cobertura/error/missingness/provenance, contratos genéricos Outcome/Value y salidas Analyzer/Evaluator.
+   - **C — contrato técnico:** schemas físicos, IDs/cardinalidades/referencias, interfaces, serialización, roles y firewall verificables, tests/oráculos/tolerancias y reproducibilidad.
+2. Reutilizar decisiones y contratos aceptados. No reabrirlos salvo contradicción material, fallo demostrado o dependencia lógica que impida cumplir un contrato.
+3. Mantener un ledger acumulativo de estados. Un elemento CLOSED no reaparece como pendiente por descomponerlo en subcomponentes; solo puede reabrirse indicando evidencia concreta que invalida su cierre.
+4. Cada cuestión abierta debe tener: decisión exacta pendiente, razón por la que impide el contrato implementable, alternativas mínimas y consecuencia de cada alternativa. No añadir requisitos de revisión externa ni nuevas auditorías exploratorias sin una necesidad contractual demostrada.
+5. Clasificar cada requisito por destino: (i) especificación del harness; (ii) confirmación material D2; (iii) implementación/prueba técnica posterior; o (iv) ejecución/validación científica posterior. Solo (i) es objeto del cierre actual.
+6. Cuando una decisión sustantiva de Outcome/Value no esté disponible, permitir contratos genéricos tipados y parametrizables únicamente si preservan semántica, procedencia, dimensiones y separación causal; no inventar constructos, indicadores, escalas, pesos ni resultados confirmatorios.
+
+### Regla de no-expansión
+
+No convertir la ausencia de materiales reales (roster, IAM/C_SRC, snapshots, inventario B, aislamiento, soporte empírico) en nuevos bloqueos para el harness sintético. El DGP debe representar sintéticamente los mecanismos y condiciones relevantes, pero sus resultados no acreditan la existencia de esas condiciones en D2 material.
+
+No convertir tareas de ejecución o validación (captura, fixtures materializados, simulación, estimación, potencia empírica, replay, auditoría de resultados) en requisitos previos de especificación, salvo que una regla de generación, observación o evaluación no pueda definirse sin ellas. La especificación de cómo se ejecutarán esas pruebas sí pertenece al contrato; ejecutarlas no.
+
+### Criterio único de terminación
+
+La especificación se considerará implementable cuando una persona técnica pueda construir el harness sin inferir semántica ni decidir por su cuenta:
+- qué genera cada componente y con qué reglas;
+- qué información recibe y no recibe cada rol;
+- cómo se representan las unidades, asignaciones, eventos, estados, verdad y evidencia;
+- qué estimandos se calculan, bajo qué condiciones se identifican y cuándo se debe abstener;
+- cómo se sellan y evalúan las salidas;
+- qué pruebas, oráculos, tolerancias y controles verifican el comportamiento;
+- cómo se reproduce un run y se conserva su provenance.
+
+El cumplimiento de este criterio no equivale a Design Freeze, autorización de implementación, identificación causal confirmatoria ni autorización de ejecución científica.
+
+### Próximo paso
+
+Continuar directamente con la reconciliación integrada A–B–C, contrastando los artefactos existentes y resolviendo los huecos dentro del mismo ciclo. No volver a presentar PA–PE ni B1/D2 como paquetes por cerrar. Si al terminar persiste una decisión irreducible, elevar solo esa decisión concreta para adjudicación; no generar una nueva lista acumulativa de pendientes.
