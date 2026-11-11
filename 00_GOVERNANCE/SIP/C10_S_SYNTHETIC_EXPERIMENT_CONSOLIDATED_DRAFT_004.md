@@ -12211,3 +12211,13 @@ La consecuencia B1 se refiere al cambio en la situación de B1 respecto de la fu
 **Siguiente dependencia:** reconciliar el contrato funcional/servicio ya existente en el microdominio para nombrar y versionar la operación concreta sin inventarla ni equipararla a un predicado técnico de F*. Después podrá instanciarse truth_preZ y derivarse una consecuencia candidata. No se reabren B1/UE, cardinalidad, servicio por UE, oportunidad estandarizada ni D2.
 
 **Dictamen:** cierre semántico de la clase de propósito y de las reglas estructurales de Need_preZ; contenido concreto, truth por UE y consecuencia medible siguen OPEN. Sin Design Freeze, roster, schema físico, captura/materialización, fixtures, implementación, generación de datos, simulación, estimación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+## 279. Reconstrucción del contrato funcional del servicio B1 — límite de especificación (2026-11-11)
+
+**Fuentes históricas reutilizadas:** DEC-C10-068/069; maestro §§174–178 y §216.2–216.3; matriz operacional F*; propuesta de fichas Opción A. **Estado:** SERVICE_CLASS_RECOVERED / REQUEST_SEMANTICS_OPEN / CONCRETE_OPERATION_OPEN.
+
+La reconstrucción confirma que el servicio lógico sintético es un servicio de procesamiento de solicitudes. El núcleo constitutivo aceptado contiene ENABLED BOOL, PROFILE ENUM {STANDARD, READ_ONLY, DISABLED} y RUL-SVC-ENABLE-PROFILE-01 (ENABLED=true implica PROFILE∈{STANDARD, READ_ONLY}). Esto define habilitación/perfil y la clase general del servicio, no el contenido de las solicitudes ni la operación funcional que B1 pretende sostener.
+
+No se recupera una especificación de qué tipo de solicitud procesa, qué hace el servicio con la configuración migrada ni qué resultado operativo importa a B1. REQUEST-PROCESSOR, ENABLED/PROFILE y F* no autorizan inferir esos elementos. Tampoco se puede equiparar la operación de B1 a F1/F2, instalación del adaptador, aplicación técnica o marcador SF. Por tanto, la clase de propósito aceptada en §278 permanece como base semántica, pero Need_preZ no está instanciado como truth concreta por UE y la consecuencia B1 no es medible.
+
+**Siguiente decisión sustantiva necesaria:** especificar qué operación/solicitud del servicio necesita mantener operativa B1 y cómo depende de la configuración migrada al destino. Hasta entonces no se seleccionan consecuencias V_j, no se crea outcome de negocio ni se completa la ficha §224. Sin Design Freeze, schema físico, fixtures, implementación, simulación, estimación o ejecución; scientific_execution=false; execution_authorized=false.
