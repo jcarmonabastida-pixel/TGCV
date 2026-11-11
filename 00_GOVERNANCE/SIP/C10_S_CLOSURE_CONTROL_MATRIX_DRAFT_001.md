@@ -3042,3 +3042,23 @@ La unidad de trabajo es el paquete completo, resuelto en una única iteración/c
 **Regla de cierre:** una iteración completa no fuerza un PASS. Ausencia de IAM, snapshots, asignación, evidencia, Outcomes o regla de Value se registra como BLOCKED/NOT_VERIFIABLE con impacto y requisito mínimo para levantarlo. Las decisiones aceptadas no se reabren salvo contradicción material documentada. No se crean nuevos documentos si basta actualizar el maestro o contrato rector.
 
 **Estado y límites:** PA activo. P*_{τ2}/P*_F ya aceptadas; no solicitar reconfirmación. El crosswalk IAM/C_SRC registra ausencia de filas IAM y snapshots observados; no clasificar unidades ni declarar REF=0. `scientific_execution=false`; `execution_authorized=false`; no código/fixtures/simulación/ejecución autorizados.
+
+
+## PA — resultado del ciclo integral (2026-11-11)
+
+**Dictamen:** `PA_RECONCILED_DOCUMENTALLY / C1_MATERIAL_BLOCKED / NOT_DESIGN_FROZEN`. Registro integrado: §15 de `C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md`; propagación en §16.155 del plan.
+
+| Subdominio | Resultado de reconciliación | Bloqueo residual |
+|---|---|---|
+| D2/C1 | Efecto total de asignación a política D2; familia de ITT por variante/resultado/horizonte | Aleatorización material y versiones/entrega |
+| Población | Precedencia P*τ2 primaria candidata y P*_F secundaria ya aceptada | E_i/IAM/snapshots y soporte |
+| Unknowns | 1/0/?/NA; truth y observado separados; no exclusión silenciosa | Protocolo confirmatorio pre-Z para indeterminados |
+| Unidad/interferencia | UE/UA/UO separados; B1 y una oportunidad/UE ya aceptadas | Aislamiento material o clúster/exposición |
+| Horizonte | H=3 profundidad, no duración; reloj t−1/t0…t9 intacto | Ventanas y horizonte por Outcome/Value |
+| Outcome A | O-CONF mejor anclado, no operacionalizado | Ficha §224, oráculo, tolerancias y evidencia |
+| Value B | Vector P179 preservado; no dimensión ni beneficiario concretos asumidos | Instancia B1, consecuencia, perspectiva, V_j y medición |
+| Identificación C1 | No adjudicable con la especificación material disponible | Asignación, consistencia, soporte, interferencia, medición y missingness |
+
+No surgió una decisión nueva que requiera aprobación del usuario: las lagunas son materiales y no preferencias. No se reabren DEC-C10-066/067 ni DEC-C10S-C1-POPULATION-PRECEDENCE-001.
+
+**Estado del control:** el ciclo PA está completado documentalmente; C1 permanece OPEN/BLOCKED en lo material. Siguiente paquete: **PB**. PA solo se reabrirá para incorporar evidencia/contratos materiales nuevos.
