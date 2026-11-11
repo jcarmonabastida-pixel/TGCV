@@ -516,3 +516,14 @@ La arquitectura de Value vectorial de P179 se mantiene. No se seleccionan las ci
 O-CONF conserva el mejor anclaje técnico candidato, pero no tiene todavía ficha §224 completa (predicados, mapping, tolerancias, oráculo, snapshots, cobertura y adjudicación). T_acc/ΔT_acc/Reach/trayectoria/F* no se reutilizan como Outcome ni Value por circularidad. Estados no observados, no aplicables, censurados, disputados y desconocidos no se convierten en cero.
 
 Para C4, el mediador es ΔT_acc* completo; Reach/Π_H pueden integrar una secuencia transformacional explícita. La mediación sobre Value no es evaluable hasta disponer de V_j y un beneficiario/observador contextual. La mediación sobre O_k solo podrá evaluarse cuando O_k tenga ficha operacional y el contrato longitudinal/identificación esté cerrado. P179, P182 y P183 se mantienen como contratos, no como evidencia ejecutada. Véase maestro §268.
+
+
+## 511. Reconciliación B2–B3 — consecuencia B1, Outcome técnico y Value contextual (2026-11-11)
+
+El planteamiento aceptado como base de trabajo queda desarrollado en `C10_S_B2_B3_BENEFICIARY_OUTCOME_VALUE_RECONCILIATION_DRAFT_001.md`. La consecuencia valorable se refiere a B1 respecto de Need_preZ; Outcome técnico y Value contextual se miden separadamente. No se presupone una relación causal exclusiva Outcome→Value ni se define V_j como función mecánica de Outcome, accesibilidad, Reach, trayectoria o ejecución. Pueden existir vías directas/colaterales de la política hacia la consecuencia y Value.
+
+Se mantienen B1 por UE, una oportunidad estandarizada por UE y las decisiones de identidad/enlace ya aceptadas. Need_preZ, Request_event, D_resource, procesamiento, Outcome, consecuencia B1 y V_j no se colapsan. Ausencia de petición/recepción/ejecución no equivale a ausencia de necesidad ni Value=0.
+
+P179 mantiene Value como vector y trade-offs; las cinco dimensiones históricas son candidatas, no una lista confirmatoria. O-CONF es el mejor anclaje técnico candidato, pero su ficha §224 está incompleta. Ningún O_k ni V_j está operacionalizado. Cada uno requiere ficha independiente §224 y controles P182/P183, incluidos error, fiabilidad, acuerdo, ausencia, censura, disputa, unknown y sensibilidad. No se transfiere identificación ITT de Outcome a Value, ni entre dimensiones; C3/C4 permanecen no identificados en el D2 material actual.
+
+**Dictamen:** B2–B3 reconciliado semánticamente; operacionalización, perspectiva, consecuencia, dimensiones, instrumentos, escalas, horizonte y adjudicación OPEN. Sin nueva decisión científica, Design Freeze o autorización de ejecución.
