@@ -171,3 +171,67 @@ C1.1 logra reconciliar las piezas existentes sin reiniciar la arquitectura. El r
 **Recomendación de continuidad:** mantener `P*_{τ2}` como candidato histórico para C1 y no reabrir `P*_F` como alternativa primaria. La siguiente operación documental debe resolver la composición de elegibilidad basal `E_i` y su evidencia/indeterminación, cotejándola con los predicados constitutivos actuales y sin inventar una fórmula nueva. En paralelo, recuperar la especificación exacta de aleatorización D2 y verificar si ya existe una regla de estratificación/semilla/versión.
 
 No se solicita una nueva decisión sobre D2, B1 por UE, una oportunidad por UE ni A/B: esas decisiones ya están aceptadas en su alcance correspondiente. C1 continúa OPEN; no hay Design Freeze ni autorización de implementación/ejecución.
+
+
+## 12. C1.2 — auditoría focal de elegibilidad y asignación
+
+### 12.1 Composición de E_i: qué puede reutilizarse
+
+La reconstrucción de POP-CMP-001 y DGP temporal/roles permite conservar estas reglas:
+- La elegibilidad experimental es basal y se determina antes de Z.
+- La fórmula histórica que agregaba `C_auth`, `C_resource`, `C_capacity`, `C_info`, `C_domain` y `C_other` se retiró como regla operativa. `C_other` no es un residual admisible.
+- Para D2, `C_auth,base=1` es condición basal común e invariante respecto de B. Se corresponde con `AUTH_f*`; no debe contarse como un segundo factor independiente.
+- `C_dep,0=0` es ausencia basal de dependencia técnica focal; no equivale por sí sola a elegibilidad ni a inaccesibilidad basal.
+- `A_f,0*=0` requiere evaluación independiente de la accesibilidad focal completa, no se deriva de `C_dep,0=0`.
+- `E_req_preZ` (elegibilidad de una petición B1) es distinta de `E_i` (elegibilidad experimental) y de pertenencia a `P*_{τ2}`/`P*_F`.
+- Need_preZ, Request_event y D_resource son objetos distintos. Ninguno de los eventos post-Z de petición altera retrospectivamente la elegibilidad C1.
+
+**No existe todavía una composición cerrada de E_i.** Las condiciones constitutivas actuales deben mapearse una a una, con identidad/versionado, predicado, evidencia y estados 1/0/?/NA justificado. No se debe recuperar por inercia la fórmula retirada ni sumar condiciones duplicadas.
+
+### 12.2 Flujo de clasificación admisible
+
+El orden documental que ya existe es coherente y se reutiliza:
+1. fijar frontera, unidad, catálogo/versiones de τ2, granularidad y reglas de composición;
+2. medir baseline y condiciones constitutivas antes de Z;
+3. verificar `C_dep,0` por protocolo común;
+4. adjudicar `A_f,0*` independientemente;
+5. evaluar `F_alt,0` solo para la población/subobjetivo `P*_F`;
+6. resolver o registrar indeterminaciones con regla pre-Z;
+7. sellar el registro basal y determinar población/estratos;
+8. asignar Z y aplicar la política D2.
+
+La verdad DGP y la clasificación observada permanecen separadas. Los indeterminados no se convierten en inaccesibilidad confirmada ni se imputan como cero. Si la clasificación observada excluye casos, cualquier estimando restringido debe etiquetarse como población observada/confirmada y no como `P*_{τ2}` verdadero sin supuestos adicionales.
+
+### 12.3 Asignación D2: contrato incompleto
+
+El DGP temporal/roles requiere registrar UA, clúster, marco/estratos, probabilidades de asignación, versión B, algoritmo/semilla/hash y relaciones de recursos/exposición. Sin embargo, en los contratos revisados no se ha encontrado una especificación material completa de:
+- mecanismo de aleatorización y nivel efectivo;
+- ratio/probabilidades de asignación;
+- estratificación/bloques y reglas de balance;
+- algoritmo, semilla, reproducibilidad y registro de asignación;
+- manejo de desviaciones, duplicados, reasignación o fallos de aplicación.
+
+No se infiere asignación 1:1 ni una semilla. La decisión D2 fija los brazos de política, pero no basta para completar el mecanismo de asignación.
+
+### 12.4 Dictamen C1.2
+
+| Elemento | Estado |
+|---|---|
+| Elegibilidad basal antes de Z | DEFINED AS REQUIREMENT |
+| Fórmula histórica E_i con C_other | SUPERSEDED / NOT TO REUSE |
+| C_auth,base=1 común e invariante D2 | ACCEPTED DESIGN CONDITION |
+| C_dep,0=0 | COMPONENT OF POPULATION CANDIDATE; NOT SUFFICIENT |
+| A_f,0*=0 | REQUIRED BY P*_τ2 CANDIDATE; OPERATIONALIZATION OPEN |
+| P*_τ2 | HISTORICAL PRIMARY CANDIDATE; NOT ACCEPTED/FROZEN |
+| P*_F | DISTINCT SUBPOPULATION; NOT PRIMARY BY DEFAULT |
+| q_X* | CANDIDATE; distribution/support/weights OPEN |
+| Randomization mechanism | NOT MATERIALIZED IN THE CONTRACTS REVIEWED |
+| Pre-Z handling of indeterminates | RULE REQUIRED; material rule OPEN |
+
+### 12.5 Recomendación y única decisión pendiente de usuario
+
+Para no reabrir el diseño innecesariamente, la recomendación es **conservar P*_τ2 como población objetivo candidata de C1**, tal como ya propone POP-CMP-001 y el DGP temporal/roles. `P*_F` quedaría como subpoblación secundaria para la afirmación de apertura funcional exclusiva. Esto no acepta aún una composición de `E_i`, ni autoriza excluir indeterminados sin regla pre-Z.
+
+La única decisión de arquitectura que conviene confirmar ahora es si se mantiene esa precedencia poblacional para C1: **P*_τ2 como población objetivo primaria candidata, con P*_F como subpoblación secundaria**, sujeta a cerrar la composición de E_i y la factibilidad/soporte. La especificación del mecanismo de aleatorización se completará documentalmente a partir del contrato existente; no requiere elegir ahora un ratio o algoritmo sin justificación.
+
+**Estado:** C1.2 RECONCILIATION DOCUMENTED / C1 OPEN. Sin Design Freeze, schemas, fixtures, implementación, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
