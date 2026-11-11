@@ -1626,3 +1626,72 @@ El manifiesto diagnóstico del núcleo focal queda delimitado y reutiliza la cua
 La siguiente operación científica, antes de Monte Carlo, es completar únicamente los parámetros de las dos extensiones que afectan a la interpretación causal —vía directa/colateral y soporte insuficiente— y mantener el canal de observación degradado como bloque separado. Una vez fijados esos DGP y sus truths analíticos, el manifiesto estará completo para solicitar autorización de calibración estadística P178. No se requiere ampliar el alcance conceptual ni crear nuevas matrices.
 
 **Estado:** DIAGNOSTIC_CORE_MANIFEST_RECORDED / ADVERSARIAL_PARAMETERS_REMAIN_OPEN / STATISTICAL_CALIBRATION_NOT_AUTHORIZED / SCIENTIFIC_EXECUTION_FALSE / EXECUTION_AUTHORIZATION_FALSE.
+
+
+## 43. Especificación analítica de vía directa y falta de soporte (2026-11-11)
+
+**Estado:** DIRECT_PATH_DGP_FORMALIZED_SYMBOLICALLY / SUPPORT_NONOVERLAP_DGP_FORMALIZED / ESTIMAND_DISTINCTIONS_EXPLICIT / NUMERIC_ADVERSARIAL_CALIBRATION_OPEN / NO_MONTE_CARLO / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 43.1 Alcance
+
+Esta sección completa la especificación causal de las dos extensiones requeridas por §42. No genera datos ni observaciones y no ejecuta simulaciones. Se limita a formular DGPs adversariales y sus verdades analíticas. Los coeficientes de sensibilidad de las extensiones no se fijan numéricamente: deberán elegirse en una calibración analítica explícita antes de cualquier Monte Carlo. No se reabre el DGP focal R0 ni se altera el estimando primario.
+
+### 43.2 Vía directa/colateral desde política a disponibilidad funcional
+
+En el DGP focal, las transiciones dependen de la firma completa d y del régimen común q, pero no de la asignación g una vez condicionada la firma. Para el escenario adversarial se introduce un término de política separado en los dos logits:
+
+p01(d,g,q)=logit⁻¹[b01+α01·I(d=d1)+γ01·I(g=g1)]
+
+p10(d,g,q)=logit⁻¹[b10+α10·I(d=d1)+γ10·I(g=g1)].
+
+γ01 y γ10 representan una vía diferencial política→disponibilidad→Q_B1 que no pasa por la firma ΔT_acc*. No se incorporan a α, ni se etiquetan como accesibilidad. La verdad de cada brazo se calcula con la misma recurrencia temporal de §35, usando las transiciones específicas de (d,g):
+
+M_g=Σ_d P_g(d|q)·μ_Q(d,g,q;π0,K),
+
+donde P_g(d1|q)=λg y P_g(d0|q)=1−λg. El contraste total de políticas es Δ_total=M_g1−M_g0.
+
+El Analyzer no puede identificar Δ_total con θ_A. Para cuantificar la atribución se calcula también el contraste de distribución de firmas bajo un régimen directo común, por ejemplo:
+
+θ_A^(g0)=Σ_d[P_g1(d|q)−P_g0(d|q)]·μ_Q(d,g0,q;π0,K).
+
+La diferencia Δ_total−θ_A^(g0) es la contribución de cambiar el régimen directo evaluada bajo la distribución de firmas de g1; con interacción firma×política esta descomposición depende del régimen de referencia. Por ello se informa el régimen usado y, si se requiere atribución simétrica, se presentan ambos órdenes de descomposición o su promedio de Shapley. No se calcula un “residual” causal por resta sin declarar esta convención.
+
+En el focal γ01=γ10=0 y se recupera la identidad de §38. En el adversarial, al menos uno de los γ es distinto de cero y el contraste total puede diferir de la contribución atribuible a la distribución de ΔT_acc*. La magnitud y signo de γ se mantendrán como parámetros versionados de sensibilidad; no se escoge una cifra para forzar un fallo del Analyzer.
+
+### 43.3 Falta de soporte: positividad y no extrapolación
+
+Se distingue el soporte común del contraste focal de una intervención de política sin solapamiento. En el escenario adversarial límite:
+
+P_g0(d0)=1, P_g0(d1)=0; P_g1(d0)=0, P_g1(d1)=1,
+
+equivalente a λ0=0 y λ1=1. Esta asignación determinista viola la positividad exigida al contraste focal de §38, aunque ambas firmas existen en el universo sintético. La truth del DGP sigue siendo calculable porque el generador conoce ambas funciones de transición; sin embargo, un Analyzer que solo recibe evidencia observada no dispone de soporte empírico para estimar respuestas contrafactuales cruzadas o un contraste estandarizado que requiera ambas firmas bajo ambos regímenes.
+
+La consecuencia correcta depende del estimando solicitado:
+
+- El efecto ITT de la asignación aleatoria g1 frente a g0 puede seguir identificado por el diseño de asignación, pues compara los resultados observados bajo dos políticas efectivamente asignadas. No debe declararse no identificado solo por ausencia de solapamiento de firmas.
+- El efecto estandarizado/atribuible a accesibilidad que requiera positividad de firmas y respuesta bajo un régimen común no se identifica no paramétricamente desde esa evidencia. El Analyzer debe devolver NOT_IDENTIFIED o PARTIALLY_IDENTIFIED según las restricciones adicionales justificadas, o abstenerse; no extrapolar silenciosamente.
+- La truth conocida del Evaluator permite medir si el Analyzer distingue correctamente ambos juicios. No se revela al Analyzer la etiqueta de escenario ni las funciones contrafactuales.
+
+Como variante graduada, pueden emplearse probabilidades de solapamiento pequeñas pero positivas; no se asignan valores todavía. El escenario límite λ0=0, λ1=1 es un control lógico de violación de positividad, no un punto de la cuadrícula focal.
+
+### 43.4 Separación respecto del canal de observación
+
+La vía directa cambia el DGP causal; la falta de soporte cambia la posibilidad de identificar el contraste a partir del diseño/evidencia; el error de medición, cobertura, latencia, missingness y censura cambian el proceso de observación. Son mecanismos diferentes y no se combinan en un único adversarial opaco.
+
+La referencia ideal mantiene observación completa de firmas y disponibilidad temporal. Un escenario de observación degradada se parametrizará por separado y no se usará para simular una violación de positividad.
+
+### 43.5 Reglas de adjudicación para Analyzer/Evaluator
+
+1. Si γ01=γ10=0, λ0<λ1 y existe soporte común, el contraste focal puede compararse con θ_A del oráculo bajo los supuestos del DGP.
+2. Si γ≠0, el Analyzer debe separar el contraste total de política de la contribución atribuible a cambios en la distribución de firmas; no debe atribuir automáticamente Δ_total a ΔT_acc*.
+3. Si λ0=0 y λ1=1, el ITT de asignación y el efecto estandarizado de accesibilidad reciben dictámenes de identificación distintos.
+4. Si la evidencia no identifica el régimen directo o las respuestas necesarias, el Analyzer debe declarar la limitación, producir cotas solo si están justificadas o abstenerse.
+5. El Evaluator compara las salidas con las verdades completas del DGP, incluidas las descomposiciones y el soporte, tras el sellado.
+
+### 43.6 Dictamen y siguiente operación
+
+Quedan formalizadas las estructuras de los dos DGP adversariales sin introducir parámetros numéricos arbitrarios. La vía directa queda representada por γ01/γ10 en las transiciones temporales; la no-identificación por violación explícita de positividad entre las dos firmas. Se preserva la distinción entre ITT de política y atribución a accesibilidad.
+
+La siguiente operación, todavía analítica y sin simulación, es evaluar el oráculo bajo γ y bajo soporte límite, seleccionar una pequeña cuadrícula de sensibilidad justificada y verificar los dictámenes verdaderos para cada estimando. Solo después podrá considerarse completo el manifiesto cuantitativo adversarial y solicitarse autorización separada para P178/Monte Carlo.
+
+**Estado:** DIRECT_AND_SUPPORT_DGP_SPECIFIED / ANALYTIC_ADVERSARIAL_VALUES_NOT_YET_CALCULATED / STATISTICAL_CALIBRATION_NOT_AUTHORIZED / SCIENTIFIC_EXECUTION_FALSE / EXECUTION_AUTHORIZATION_FALSE.
