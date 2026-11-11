@@ -249,3 +249,15 @@ La decisión no fija aún la identidad concreta/versionado final de B1 o del ser
 **Alcance:** decisión arquitectónica para continuar la especificación; no selecciona beneficiarios empíricos ni valida preferencias reales. No modifica DEC-C10-066/067, D2 primario candidato/D1 secundario, ni la separación entre main y PR #116.
 
 **No autorizado:** Design Freeze, implementación, fixtures, simulación o ejecución científica. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
+
+
+## 10. Reconciliación de decisiones posteriores sobre UE/B1 y oportunidad (2026-11-11)
+
+Las secciones anteriores reflejan el estado documental de su fecha de corte. Su mención de UE=UA como configuración candidata y de cardinalidad de oportunidades OPEN queda actualizada por decisiones posteriores:
+
+- DEC-C10S-B1-UNIT-001 acepta una entidad B1 por UE, con relación explícita/versionada a una instancia lógica de servicio; la UE sigue siendo la unidad sintética completa y la unidad de asignación no se considera cerrada hasta verificar aislamiento.
+- DEC-C10S-B1-OPPORTUNITY-CARDINALITY-001 acepta N_opportunities=1 por UE como configuración primaria candidata, con oportunidad ex ante y harness común posterior al snapshot t3/t4.
+- La aceptación de esas decisiones no prueba no interferencia, no fija la identidad/versionado material final de B1/servicio, ni cierra la población P*_τ2, la composición E_i, la distribución q_X*, el soporte o el horizonte.
+- P*_τ2 y P*_F conservan sus definiciones y límites; P*_F no se convierte en población primaria por defecto.
+
+Este addendum corrige la lectura del estado vigente sin reescribir el historial. C1 continúa OPEN; véase `C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md`.
