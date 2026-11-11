@@ -3280,3 +3280,17 @@ Artefacto rector: `C10_S_OUTCOME_VALUE_OPERATIONALIZATION_RECONCILIATION_DRAFT_0
 | Design Freeze | BLOCKED / NOT AUTHORIZED | Cierre conjunto de G-SCI/G-MAT/G-TEST y autorización expresa |
 
 Artefacto rector: `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md`. La envolvente de consecuencias no crea dimensiones ni tests.
+
+
+## 144. Actualización tras aceptación de la clase de propósito basal B1 (2026-11-11)
+
+| Control | Estado actualizado | Criterio pendiente |
+|---|---|---|
+| Propósito basal B1 | PURPOSE CLASS ACCEPTED | Nombrar y versionar la operación/función concreta dependiente de la configuración en destino |
+| Need_preZ | STRUCTURE DEFINED / NOT MATERIALIZED | Clasificación truth 1/0/? por UE y evidencia basal pre-Z; no asignación automática |
+| No circularidad | RULE DEFINED DOCUMENTALLY | Comprobar que Need_preZ no depende de Z, provisión, accesibilidad, petición, procesamiento, Outcome o ejecución |
+| Consecuencia B1 | STRUCTURE DEFINED / NOT MEASURED | Consecuencia potencial respecto de la operación concreta; separar del proceso técnico/O-CONF |
+| Población ITT | NO POST-Z FILTERING | No condicionar a oportunidad, Request_event, procesamiento, selección o ejecución |
+| Value V_j | NOT SELECTED / NOT INSTANTIATED | Autoridad, criterio, dimensiones, fuente, escala, baseline, horizonte y fichas §224 |
+
+Artefacto rector: `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md` §12. La aceptación no es instancia completa, no crea DEC ni autoriza roster, captura, schema, fixtures, implementación, simulación, estimación, Design Freeze o ejecución.
