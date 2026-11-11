@@ -1529,3 +1529,20 @@ La reconciliación PC se registra en el maestro C10-S §268. Esta sección no cr
 **C-MED permanece PARCIAL / OPEN.** Antes del contrato técnico deben concretarse: bloque mediador e intervención estocástica/secuencial; orden temporal y régimen; confusores post-Z y estrategia de identificación; soporte secuencial; distinción entre mediación conjunta y path-specific; criterios de descomposición y residual; resultados O_k/V_j; missingness/censura/error; y aserciones/tolerancias de recuperación y abstención. Si el DAG no permite aislar la ruta o falta soporte, la verdad esperada será NO IDENTIFIED/BOUNDS, no un efecto puntual.
 
 No se crean fixtures, no se fijan parámetros y no se ejecutan pruebas.
+
+
+## 58. Crosswalk de aceptación del paquete PD (2026-11-11)
+
+El contrato integrado y sus bloqueos se especifican en C10_S_PD_DGP_MECHANISM_AND_ADVERSARIAL_EVALUATION_RECONCILIATION_DRAFT_001.md. Este crosswalk no duplica IDs ni declara pruebas ejecutadas.
+
+| Familia existente | Función dentro de PD | Estado documental | Pendiente para aceptación |
+|---|---|---|---|
+| S4R-01…18 / POL-01…10 | D2, primera etapa, alternativas, vías de paquete y atribución | Registrados | Fixtures/oráculos, mapping, soporte y tolerancias |
+| MEAS-01…14 / P182-01…12 | Validez, error, invariancia, fiabilidad y cegamiento | Registrados | Parámetros de error, referencias de validación y reglas cuantitativas |
+| MISS-01…15 / P183-01…13 | MCAR/MAR/MNAR, selección, censura, cotas | Registrados | Mecanismos generativos, sensibilidad/tipping points y soporte |
+| P177-01…12 | ITT, primeras etapas, IV/LATE, recuperación y dictamen | Registrados | Estimandos finales, weak-IV, precisión, multiplicidad y tolerancias |
+| P178-SIM-01…10 | Potencia, N/R, SE_MC, reproducibilidad | IDs organizativos derivados | Objetivos cuantitativos y búsqueda en cuadrícula ex ante |
+| P179-01…08 | Value contextual y dimensiones | Registrados | Bloqueados hasta instancia PA de Value |
+| VER/TRJ/INT/GEN/PM/SNAP/REACH/PROV/GC/U_G | Versiones, trayectorias, interacciones, invariantes y evidencia | Cobertura parcial/documental | Crosswalk por escenario, truth/observed/evaluation y fixtures discriminantes |
+
+Los dictámenes deben ser por estimando y dimensión. PASS sintético solo acredita recuperación dentro del DGP y tolerancias especificados; no establece causalidad empírica real ni claim TGCV. La no-identificación correctamente detectada es resultado válido del Analyzer.
