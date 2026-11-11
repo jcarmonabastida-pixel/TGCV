@@ -3033,8 +3033,8 @@ La unidad de trabajo es el paquete completo, resuelto en una única iteración/c
 
 | Paquete | Alcance integrado | Salida exigida | Estado |
 |---|---|---|---|
-| PA | C1: población, E_i/App/E_scope/unknowns, unidad, asignación D2, ITT, comparador, interferencia/soporte, horizonte, Outcome, consecuencia B1 y Value | Contrato C1 o bloqueo material explícito y delimitado | ACTIVO — siguiente |
-| PB | D2 material, B1/servicio, provisión/instalación/dependencias, petición, request↔trajectory, C_dep/A_f/D_f/ΔT_acc y snapshots | Contrato D2/C2 o límites de factibilidad | PENDIENTE |
+| PA | C1: población, E_i/App/E_scope/unknowns, unidad, asignación D2, ITT, comparador, interferencia/soporte, horizonte, Outcome, consecuencia B1 y Value | Contrato C1 o bloqueo material explícito y delimitado | CICLO COMPLETADO DOCUMENTALMENTE; BLOQUEOS MATERIALES |
+| PB | D2 material, B1/servicio, provisión/instalación/dependencias, petición, request↔trajectory, C_dep/A_f/D_f/ΔT_acc y snapshots | Contrato D2/C2 o límites de factibilidad | SIGUIENTE PAQUETE ACTIVO |
 | PC | C3/C4: estimando de accesibilidad, q/soporte, DAG, vías alternativas/interacciones, mediación interventional, sensibilidad | Contrato de atribución/mediación e identificación/no-identificación | PENDIENTE |
 | PD | DGP truth/observed, C5, contrafactuales por etapa, alternativas/colaterales, P177–P183, medición/missingness/potencia y adversariales | DGP y contrato de evaluación trazables | PENDIENTE |
 | PE | schemas, interfaces Generator–Analyzer–Evaluator, IDs/eventos/snapshots/provenance, fixtures/oráculos/tests/manifests | Especificación técnica implementable y autorización separada | BLOQUEADO HASTA CIERRE CIENTÍFICO Y AUTORIZACIÓN |
