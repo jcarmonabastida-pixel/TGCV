@@ -1306,3 +1306,75 @@ Queda cerrada la instancia semántica mínima de dos firmas completas para el DG
 Antes de calibrar numéricamente solo se deben especificar y justificar los valores de P_g0(d0/d1|q), P_g1(d0/d1|q), p01(d0/q), p10(d0/q), p01(d1/q), p10(d1/q), π0, K y los criterios de precisión/potencia/Monte Carlo. No se añaden nuevos artefactos ni matrices.
 
 **Dictamen:** STRUCTURAL_SIGNATURE_GATE_CLOSED_FOR_ABSTRACT_SYNTHETIC_DGP / NUMERIC_CALIBRATION_READY_AS_DESIGN_TASK / MATERIAL_MAPPING_OPEN_FOR_IMPLEMENTATION_ONLY. Se mantiene scientific_execution=false, execution_authorized=false; no se generan fixtures, no se simula y no se ejecuta experimento.
+
+
+
+## 38. Cierre de la frontera R0 y parametrización mínima de políticas/transiciones (2026-11-11)
+
+**Estado:** R0_FINITE_SYNTHETIC_UNIVERSE_CLOSED_BY_STIPULATION / POLICY_AND_TRANSITION_PARAMETERIZATION_SPECIFIED / NO_ARBITRARY_NUMERIC_VALUES / P178_CALIBRATION_CRITERIA_OPEN / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 38.1 R0: ausencia alternativa por frontera sintética exhaustiva, no por inferencia
+
+Se aplica la regla de cobertura del inventario finito: no encontrar una ruta no demuestra su ausencia. Para este DGP sintético, R0 se define expresamente mediante una frontera cerrada y exhaustiva, limitada al catálogo AB-03-SYN de cuatro TID y dos relaciones permitidas: F1→F2 y A1→A2. No existen otras TID, SID ni relaciones en la verdad de este escenario. Esta es una estipulación de mundo sintético, no una afirmación sobre el microdominio real ni sobre migraciones observadas.
+
+La relación A1→A2 permanece en el catálogo, pero sus pasos no son accesibles en R0. Para A1 y A2 se estipula en baseline y post: ID=1, REL=1, AUTH=1, RES=1, DEP=1, BLOCK=0 y COND=0; por tanto, la conjunción constitutiva de accesibilidad es falsa para ambos pasos y no existe ruta alternativa accesible. El evaluador conoce la verdad y el Analyzer solo recibe la evidencia observada que corresponda. Si la frontera se amplía o aparece una quinta transformación/relación, deja de ser R0 y debe declararse otro escenario antes de generar datos.
+
+En F1/F2 se mantienen exactamente las dos firmas de §37: d0 conserva COND=0 en ambos snapshots; d1 cambia COND de 0 a 1 para ambos pasos, incorpora F1/F2 al conjunto accesible y activa la relación accesible F1→F2. La aplicabilidad, Reach, selección y ejecución siguen siendo variables distintas; la apertura de esta ruta no se usa como evidencia de que se haya ejecutado ni de que se haya alcanzado SF.
+
+### 38.2 Parámetros de política: distribución sobre firmas completas
+
+Con soporte {d0,d1}, la parametrización mínima de cada política es:
+
+- λ0 = P(d1 | g0,q);
+- λ1 = P(d1 | g1,q).
+
+Las probabilidades complementarias son P(d0|g,q)=1−λg. Para el contraste focal se exige 0<λ0<λ1<1: ambas firmas tienen soporte positivo en ambos brazos y las políticas inducen distribuciones distintas. λ0 y λ1 son parámetros de la intervención estocástica sobre firmas estructurales completas; no son probabilidades de instalación, cumplimiento, ejecución ni éxito. No se asignan valores numéricos en esta resolución.
+
+### 38.3 Parámetros de transición: tabla por firma, sin score de accesibilidad
+
+Se parametriza el mecanismo temporal mediante la tabla de transición de referencia para d0 y dos contrastes logit:
+
+- b01 = logit P(A_k=1 | A_(k−1)=0,d0,q);
+- b10 = logit P(A_k=0 | A_(k−1)=1,d0,q);
+- α01 = logit p01(d1,q) − b01;
+- α10 = logit p10(d1,q) − b10.
+
+Así, p01(d0,q)=logit⁻¹(b01), p10(d0,q)=logit⁻¹(b10), p01(d1,q)=logit⁻¹(b01+α01) y p10(d1,q)=logit⁻¹(b10+α10). Esta es una tabla de lookup entre firmas completas y transiciones; α01/α10 no son coeficientes de un score o de una magnitud escalar de ΔT_acc*. La transformación logit garantiza probabilidades estrictamente entre 0 y 1 para parámetros finitos.
+
+El escenario nulo usa α01=α10=0. Los escenarios de efecto positivo y negativo se clasifican por el signo de θ_A calculado con el oráculo analítico, no solo por el signo aislado de un α: ambos procesos de entrada/salida pueden contribuir y la dirección neta depende de la combinación y de K. Se explora una cuadrícula de α01/α10 que incluya ambos signos netos y efectos próximos a cero. No se presupone monotonicidad favorable.
+
+### 38.4 Estado inicial, régimen y resolución temporal
+
+- π0=P(A0=1) es común a las dos firmas y a ambos brazos en el contraste focal. Se explora como parámetro basal; no se permite que dependa de g o d en el escenario focal.
+- q es un régimen externo versionado, común y no diferencial entre políticas.
+- K es el número de slots de igual duración que particiona W_B1. K≥2 para que el DGP represente al menos una transición temporal; K no es H, no es una duración física y no se fija aquí. La duración normalizada de W y su discretización se declaran en la configuración. Se examina la estabilidad de μ_Q y θ_A frente a refinamiento de K; la selección final debe ser compatible con la resolución temporal que el experimento pretende representar.
+
+La esperanza de Q/V para cada firma se calcula con la recurrencia exacta de §35. El efecto de política es la mezcla por λg. Para el caso de dos firmas:
+
+E[V^(q,g)] = (1−λg)·μ_Q(d0,q;K) + λg·μ_Q(d1,q;K)
+
+y
+
+θ_A(q;V_B1) = (λ1−λ0)·[μ_Q(d1,q;K)−μ_Q(d0,q;K)].
+
+Esta identidad permite comprobar directamente el oráculo y muestra que el contraste de política es nulo si no hay primera etapa (λ1=λ0) o si la firma no modifica la disponibilidad (μ_Q(d1)=μ_Q(d0)). No implica que el efecto por unidad de ΔT_acc* esté identificado ni que sea universal.
+
+### 38.5 Vías alternativas y canal de observación
+
+El escenario focal y el nulo fijan en cero cualquier término directo/colateral diferencial por política. Los escenarios adversariales incorporan el término separado γ_direct o un mecanismo explícito equivalente, sin absorberlo en α ni atribuirlo a ΔT_acc*. La clasificación de identificación del Analyzer debe reflejar la vía alternativa.
+
+La referencia de recuperación puede usar observación ideal y completa para aislar el rendimiento del estimador bajo identificación conocida. Errores de clasificación de firmas, sensibilidad/especificidad, cobertura imperfecta, latencia, missingness y censura se introducen como escenarios separados, con truth intacta y evidencia observada degradada. La ausencia de observación nunca se codifica como A=0 ni como indisponibilidad.
+
+### 38.6 P178: regla de calibración y límite de lo que puede fijarse ahora
+
+Se reutiliza P178-SIM-01…10 y §7 de PD. No se importan N=2.000, asignación 1:1 ni R=1.000 como defaults. La cuadrícula analítica produce θ_A verdadero para cada combinación factible de λ0, λ1, b01, b10, α01, α10, π0 y K. Se descartan combinaciones con soporte inválido o parámetros fuera del dominio.
+
+Para este estudio de rendimiento metodológico, el MDE se informará como resultado de la curva potencia/precisión en función de N, bajo criterios de error tipo I, potencia y precisión fijados antes de observar las simulaciones; no se inventará un δ_min sustantivo de Value ni se usará un efecto elegido para hacer que el Analyzer pase. La recuperación de estimación continua se evalúa además mediante sesgo, RMSE y cobertura frente a la verdad analítica. Si se requiere una afirmación de relevancia sustantiva, su umbral necesita una justificación externa al DGP y no se deriva de TGCV.
+
+La búsqueda de N y R es una operación computacional de calibración todavía no autorizada. Antes de ejecutarla deben quedar aprobados los criterios ex ante de error tipo I, potencia, cobertura/precisión y tolerancia SE_MC, así como el coste/alcance de la cuadrícula. Esta resolución no selecciona esos valores ni inicia dicha búsqueda.
+
+### 38.7 Dictamen
+
+Se cierra la frontera sintética R0, la asignación de políticas a las dos firmas, la parametrización de transiciones, el papel de π0/K y la descomposición exacta de θ_A. No se han asignado cifras arbitrarias ni se ha confundido H=3 con el horizonte temporal.
+
+El trabajo restante para la calibración numérica ya no es una dependencia estructural o semántica: es una decisión metodológica acotada sobre criterios ex ante de rendimiento y coste de calibración P178. Value, Q_B1, las firmas d0/d1 y la frontera R0 no se reabren. Se mantienen scientific_execution=false y execution_authorized=false; no se generan fixtures, no se simula y no se ejecuta experimento.
