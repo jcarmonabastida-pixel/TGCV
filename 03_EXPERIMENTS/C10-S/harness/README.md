@@ -14,7 +14,8 @@
 2. Projector emits only `unit_id`, randomized assignment, observed `Q_B1`, and observation status.
 3. Sealer validates the allow-list and hashes the observed bundle.
 4. Analyzer accepts only `SealedEvidence` plus a public `AnalysisContract`; its API has no truth, potential-outcome, signature, seed or generator-parameter argument. Run identity hashes the complete declared scenario configuration, including its parameters and seed.
-5. Evaluator receives truth only after Analyzer has returned its result and checks run identity.
+5. Analyzer reports package ITT and focal-attribution outputs in separate fields. The package ITT estimate/interval remain available when focal attribution is not identified; focal estimate/interval are populated only when all focal identification gates pass.
+6. Evaluator receives truth only after Analyzer has returned its result and checks run identity and output seal.
 
 This is an application-level boundary, not a demonstrated security boundary. It does not replace the PE threat model, process/storage separation, effective ACLs, side-channel tests or G-ROLE acceptance.
 
@@ -32,7 +33,7 @@ The realized assignment contrast is separately retained as the package ITT truth
 
 - This slice instantiates only the B1 scalar valuation case (V_{B1}=Q_{B1}); it does not instantiate general vector Value or a general (\Delta T_{acc}\to Value) claim.
 - It is not the complete D2 material scenario, full transformation graph/Reach/trajectory reconstruction, full event ledger, missingness/censoring engine, cluster/interference engine, or general U_G store.
-- The Analyzer now reports a Welch–Satterthwaite two-sided 95% interval for the difference in arm means. The implementation is covered by deterministic critical-value contract tests, but it has not yet been executed or validated against P178's benchmark data; P178 remains a separate reference benchmark.
+- The Analyzer reports a Welch–Satterthwaite two-sided 95% interval for the package ITT difference in arm means. When focal identification gates pass, the same estimate and interval are also explicitly exposed as focal outputs; otherwise focal outputs are null. The implementation is covered by deterministic critical-value contract tests, but it has not yet been executed or validated against P178's benchmark data; P178 remains a separate reference benchmark.
 - The software tests are not Monte Carlo calibration, scientific execution, confirmatory execution, or evidence for a TGCV claim.
 
 ## Local software check
