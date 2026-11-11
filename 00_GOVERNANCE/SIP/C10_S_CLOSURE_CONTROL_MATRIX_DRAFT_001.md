@@ -2790,7 +2790,7 @@ AB-01/02 no pasan a DONE ni habilitan Design Freeze, schema freeze, fixtures, pa
 | MED-02 / MED-03 | OPEN | Esta aceptación no los cierra |
 | Design Freeze / implementación / ejecución | NOT AUTHORIZED | scientific_execution=false; execution_authorized=false |
 
-**Nota histórica supersedida (2026-11-11):** la lectura Contents devolvía longitud 0, pero el blob Git se recuperó íntegramente; el maestro recibió §274. La propagación al maestro está verificada mediante fetch_blob, aunque fetch_file/Contents siga devolviendo vacío por limitación de lectura. DEC-C10-095, Decision Log, plan y matriz Value sí se registran en esta rama; la reconciliación del maestro es un subgate documental pendiente.
+**Nota histórica supersedida (2026-11-11):** la lectura Contents devolvía longitud 0, pero el blob Git se recuperó íntegramente; el maestro recibió §274. La propagación al maestro está verificada mediante fetch_blob, aunque fetch_file/Contents siga devolviendo vacío por limitación de lectura. Nota histórica supersedida: DEC-C10-095, Decision Log, plan, matriz Value y reconciliación §§266–274 constan en esta rama; el maestro se verificó mediante blob Git, no mediante Contents.
 
 
 ## 140. Gate B-BEN/B-VAL — C10S-B-VALUE-MIN-001 (2026-11-11)
