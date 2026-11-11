@@ -3157,3 +3157,23 @@ No se crea una decisión científica nueva. No se autoriza implementación, fixt
 | Aislamiento | Requisito lógico explícito | IAM/ACL, estado, recursos, infraestructura y pruebas siguen OPEN |
 
 El cierre es de identidad lógica/documental. No demuestra aislamiento real, ausencia de interferencia ni independencia de recursos. No autoriza implementación o ejecución.
+
+
+## PB-MAT — reconciliación material D2 e identidad B1 (2026-11-11)
+
+**Artefacto rector:** `C10_S_PB_MATERIAL_D2_INSTANCE_AND_ISOLATION_RECONCILIATION_DRAFT_001.md`. **Dictamen:** PB_MATERIAL_CONTRACT_RECONCILED_DOCUMENTALLY / MATERIAL_INVENTORY_NONE / ISOLATION_NOT_DEMONSTRATED.
+
+| Control | Resultado documental | Estado material |
+|---|---|---|
+| Identidad de servicio | Contrato/plantilla común; instancia única por UE; adaptador P1 separado | IDs/roster por UE OPEN |
+| P0/P1/P2 | D2 focal en P1; P0 y alternativas invariantes por requisito; P2 transversal | Requiere snapshots y evidencia |
+| IAM/C_SRC | Reutiliza U_G, boundary_class y FKs exactas | NONE; C1.4 bloqueado |
+| B-M01…15 | Catálogo y vías tipadas reutilizados | M01–12/M15 no inventariados; M13/M14 prohibidos como cambios |
+| Grafo/dependencias | Directas, transitivas, consumidores y externos requeridos | No materializado |
+| Recursos/ACL | No reducción de alternativas; ACL técnicas no alteran C_auth | No medido/probado |
+| A1/A2 | No-afectación funcional con margen ex ante | No probado; PROV-05/09 OPEN |
+| C_dep/A_f/D_f | Constructos separados y evidencia independiente | No observados; C2 material bloqueado |
+| D2 operativo | Actor, artefacto, recepción, ventana, reintentos, crossover | OPEN según DEC-C10-067 |
+| Interferencia/soporte | UE/UA/UO, clúster y exposición a recursos compartidos | OPEN |
+
+No se declara MD-C1/MD-C4, G-MAT, aislamiento, primera etapa focal ni IV. No captura, implementación o ejecución autorizada.
