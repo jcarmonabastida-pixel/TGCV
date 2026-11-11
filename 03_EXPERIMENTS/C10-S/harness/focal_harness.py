@@ -286,8 +286,10 @@ class Analyzer:
         se = math.sqrt(var0 + var1)
         interval = (estimate - 1.96 * se, estimate + 1.96 * se)
         package_ok = contract.measurement_ideal and contract.interference_absent
-        package_status: Identification = "IDENTIFIED" if package_ok else "INDETERMINATE"
-        focal_ok = (package_ok and contract.direct_path_status == "ABSENT" and contract.common_regime)
+        if not package_ok:
+            return self._abstain(evidence, contract, "PACKAGE_ITT_ASSUMPTIONS_OR_MEASUREMENT_NOT_ESTABLISHED")
+        package_status: Identification = "IDENTIFIED"
+        focal_ok = (contract.direct_path_status == "ABSENT" and contract.common_regime)
         focal_status: Identification = "IDENTIFIED" if focal_ok else (
             "NOT_IDENTIFIED" if contract.direct_path_status == "PRESENT" else "INDETERMINATE")
         reason = None if focal_ok else "FOCAL_ATTRIBUTION_REQUIRES_NO_DIRECT_PATH_AND_COMMON_REGIME"
@@ -311,7 +313,9 @@ class Analyzer:
 
 class Evaluator:
     """Truth access begins only here, after AnalyzerResult has been produced and sealed."""
-    def evaluate(self, truth: TruthBundle, result: AnalyzerResult, tolerance: float) -> EvaluationReport:
+    def evaluate(self, truth: TruthBundle, result: AnalyzerResult,
+                 contract: AnalysisContract, tolerance: float) -> EvaluationReport:
+        contract.validate()
         if tolerance < 0.0 or result.run_id != truth.run_id:
             raise ContractError("invalid tolerance or mismatched run identity")
         package_error = None if result.estimate is None else abs(result.estimate - truth.itt_value_truth)
@@ -321,7 +325,12 @@ class Evaluator:
         if result.focal_identification == "IDENTIFIED" and result.estimate is not None:
             focal_error = abs(result.estimate - truth.theta_access_truth)
             focal_recovery = focal_error <= tolerance
-        expected_focal_status = "NOT_IDENTIFIED" if truth.direct_path_truth else "IDENTIFIED"
+        if contract.direct_path_status == "PRESENT":
+            expected_focal_status = "NOT_IDENTIFIED"
+        elif contract.direct_path_status == "UNKNOWN":
+            expected_focal_status = "INDETERMINATE"
+        else:
+            expected_focal_status = "IDENTIFIED" if not truth.direct_path_truth else "NOT_IDENTIFIED"
         classification_correct = result.focal_identification == expected_focal_status
         notes = ("Analyzer input contains observed Q_B1 and randomized assignment only.",
                  "Finite-sample recovery is not a confirmatory result.",
