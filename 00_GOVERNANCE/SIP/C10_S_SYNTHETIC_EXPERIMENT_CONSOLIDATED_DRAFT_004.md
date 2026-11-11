@@ -12120,3 +12120,16 @@ Se integran DEC-C10-067, DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001, IAM/U_G, B-M
 No hay roster/IDs concretos por UE, IAM/C_SRC, snapshots, grafo material, artefacto/runtime, ACL/recursos medidos ni pruebas de no-afectación. B-M01…12/M15 siguen NO INVENTARIADO donde falta evidencia; B-M13/F* y B-M14/A1/A2 son superficies prohibidas de modificación por B. UNKNOWN/NONE/PARTIAL no equivalen a cero.
 
 C_dep*, A_f*, D_f* y ΔT_acc* siguen separados; D2 no se declara aislado ni primera etapa focal/IV válido. MD-C1/MD-C4 y G-MAT permanecen abiertos. No se modifica Opción A, Core, RMA, Evidence→Claim Matrix, STATUS o claims. No captura, implementación, fixtures, simulación, estimación o ejecución autorizada. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 273. B2–B3 — reconciliación de beneficiario, Outcome técnico y Value contextual (2026-11-11)
+
+**Artefacto rector:** `00_GOVERNANCE/SIP/C10_S_B2_B3_BENEFICIARY_OUTCOME_VALUE_RECONCILIATION_DRAFT_001.md`. **Estado:** B2_B3_WORKING_BASIS_ACCEPTED / SEMANTIC_RECONCILIATION_DOCUMENTED / OUTCOME_NOT_OPERATIONALIZED / VALUE_NOT_INSTANTIATED / NOT_DESIGN_FROZEN.
+
+Se acepta como base de trabajo que B1 es el referente sintético de Need_preZ y de la consecuencia valorable; Outcome mide un resultado técnico del servicio/proceso; Value mide la valoración contextual de la consecuencia para B1 respecto de su objetivo basal, desde perspectiva/autoridad ex ante. Outcome y Value son constructos distintos, pero no se impone relación causal exclusiva Outcome→Value ni V_j=f(Outcome): la consecuencia puede depender del Outcome y de vías directas/colaterales de la política.
+
+Se reutilizan DEC-C10-095, decisiones B1 (una entidad por UE, una oportunidad estandarizada, identidad de servicio por UE y enlaces tipados), §224 y P179/P182/P183. Need_preZ, E_req_preZ, Request_event, D_resource, procesamiento, Outcome, consecuencia B1 y V_j permanecen separados. No solicitud/recepción/ejecución no equivale a ausencia de necesidad ni Value=0.
+
+O-CONF conserva el mejor anclaje conceptual de Outcome, pero su ficha §224 sigue incompleta. Ningún O_k ni V_j está operacionalizado. P179 conserva Value como vector y los trade-offs; no se seleccionan dimensiones históricas ni pesos por defecto. Cada O_k/V_j requiere ficha independiente §224 y controles P182/P183. ITT sobre Outcome y Value se adjudican por separado; no se transfiere identificación entre ellos ni entre dimensiones. C3/C4 permanecen no identificados en el D2 material actual.
+
+No se modifica A, D2, P*τ2/P*_F, Core, RMA, Evidence→Claim Matrix, STATUS o claims. No se crea nueva decisión científica ni se declara Design Freeze. `scientific_execution=false`; `execution_authorized=false`. Sin implementación, fixtures, simulación, estimación o ejecución científica.
