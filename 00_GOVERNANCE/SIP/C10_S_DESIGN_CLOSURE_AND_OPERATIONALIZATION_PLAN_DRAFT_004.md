@@ -2736,3 +2736,7 @@ ITT de política/paquete, primeras etapas técnicas/focales, θ_A/θ_Af, LATE_f,
 **Gates:** G-SCI, G-MAT, G-SCHEMA, G-ROLE, G-TEST y G-REPRO BLOCKED; G-AUTH NOT GRANTED. El maestro C10-S Draft 004 devolvió SHA 61d3079213558f6f74c14b60600ae3ca04c0a395 con contenido vacío en esta recuperación; no se reconstruye ni sobrescribe. La reconciliación es integrada sobre los contratos especializados recuperables, pero no certifica alineación íntegra con el maestro inaccesible.
 
 No se modifica main/Core/RMA/Matrix/STATUS/claims ni decisiones aceptadas. No Design Freeze, captura material, schema físico, fixtures, implementación, simulación, estimación o ejecución. scientific_execution=false; execution_authorized=false.
+
+## Corrección de recuperación del maestro C10-S — 2026-11-11
+
+La lectura inicial del maestro mediante Contents devolvía contenido vacío, pero el blob Git fue recuperado íntegramente (1,134,655 caracteres / 12,136 líneas) e inspeccionados sus §§266–273. La incidencia está **RESUELTA**; el documento no estaba perdido. Se ha añadido §274 al maestro con la reconciliación integrada de factibilidad y Design Freeze. No queda pendiente recuperar el maestro; permanecen los bloqueos científicos/materiales y los gates indicados en el artefacto rector. La limitación de concordancia línea por línea por inaccesibilidad del maestro queda superada para el contenido recuperado; no equivale a validación local ni CI.
