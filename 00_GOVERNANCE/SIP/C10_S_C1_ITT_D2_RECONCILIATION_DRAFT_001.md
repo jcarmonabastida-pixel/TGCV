@@ -258,3 +258,95 @@ Se propone, no se acepta todavía, `E_i=E_scope,i ∧ App*(τ2,S0_i)`. El contra
 El crosswalk queda documentado en `C10_S_C1_PREZ_IAM_CROSSWALK_C10S_001.md`. Se especifican las clases CMP/PAR/REF/RUL/MET y su papel potencial en `E_scope`, así como la separación de App, C_dep, A_f, F_alt, Need_preZ y E_req_preZ. El overlay IAM/U_G confirma que no existen snapshots C10-S observados ni captura material de C_SRC; los scopes 7×5 son etiquetas lógicas de planificación, no filas físicas. El roster de servicio conocido es mínimo, no exhaustivo.
 
 **Dictamen C1.4: PARTIAL / MATERIAL BLOCKED BY ABSENT IAM AND SNAPSHOTS.** No es posible clasificar unidades ni cerrar E_i sin inventar registros/truth. La propuesta `E_i=E_scope∧App*(τ2,S0)` permanece NO ACEPTADA. Siguiente C1.5: cerrar definición/medición de App y su frontera con A_f; decidir rol de E_scope y selección; regla pre-Z para unknowns; y recuperar mecanismo de asignación D2. No se necesita nueva aprobación de P*τ2/P*F.
+
+
+## 15. PA — resolución integrada del paquete C1 (2026-11-11)
+
+**Dictamen del ciclo:** `PA_RECONCILED_DOCUMENTALLY / C1_MATERIAL_BLOCKED / NOT_DESIGN_FROZEN`. Se ha realizado una reconciliación integrada de población, elegibilidad, asignación, unidad/interferencia, estimando, horizonte, Outcome y Value. No se abre una secuencia de subgates ni se solicita una decisión de preferencia al usuario: los elementos que impiden cerrar C1 son ausencias materiales verificables.
+
+### 15.1 Contrato causal que sí queda fijado
+
+1. **Tratamiento/contraste:** se conserva D2 conforme a DEC-C10-066/067. `Z` asigna a `B_g1^D2` (programar un intento estandarizado de provisión focal) o `B_g0^D2` (no programar/iniciar intento focal). La asignación no equivale a provisión recibida, instalación, dependencia, accesibilidad ni cambio de `T_acc`.
+2. **Estimando:** C1 es el efecto total de asignación a la política D2. Incluye las vías que active el paquete; si hay vías colaterales no aisladas, la interpretación es efecto de política/paquete, no efecto puro de accesibilidad.
+3. **Familia, no escalar:** C1 se define por combinación de variante × población × resultado/dimensión × horizonte. No existe un único `Y` ya operacionalizado para todo C10-S.
+4. **Población:** `P*_{τ2}` queda como población objetivo primaria candidata por DEC-C10S-C1-POPULATION-PRECEDENCE-001; `P*_F` queda como subpoblación secundaria de apertura funcional exclusiva. La alternativa funcional basal no excluye de `P*_{τ2}`; solo afecta a `P*_F` cuando está respaldada. Esta precedencia no se reabre.
+5. **No condicionamiento post-Z:** intento, recepción, admisión, procesamiento, instalación, accesibilidad postratamiento, trayectoria, selección, ejecución, Outcome y Value no redefinen retrospectivamente la población ITT.
+6. **A/B:** variante A puede evaluar Outcomes técnicos; variante B es la extensión separada para instanciar Value contextual. No se transfieren automáticamente poblaciones, resultados ni efectos entre variantes.
+
+La notación conceptual compatible es `ITT^{D2}_{Y_j}(P,h)=E[Y_j(Z=1;D2,h)-Y_j(Z=0;D2,h) | i∈P]`. No se declara estimando completo/identificado hasta que `P`, `Y_j`, `h`, asignación, versiones, interferencia y medición estén especificados para la combinación correspondiente.
+
+### 15.2 Elegibilidad basal: reconciliación y límite
+
+Se mantienen separadas:
+- `E_scope`: admisibilidad/alcance de la instancia y su configuración basal dentro del universo DGP, según contrato constitutivo e IAM;
+- `App*(τ2,S0)`: aplicabilidad semántica de la transformación focal desde el estado basal;
+- `C_dep,0=0`: ausencia basal de dependencia técnica focal;
+- `A_f,0*=0`: inaccesibilidad basal verdadera de τ2 según la conjunción completa de predicados;
+- `F_alt,0`: existencia/ausencia de ruta alternativa, relevante para `P*_F` y no para excluir de `P*_{τ2}`;
+- `Need_preZ` y `E_req_preZ`: necesidad del solicitante y admisión de petición, distintas de la elegibilidad experimental.
+
+**Dictamen sobre `E_i`:** la fórmula candidata `E_i=E_scope∧App*(τ2,S0)` no se acepta ni se congela. Se recomienda tratar `E_scope` primariamente como gate de pertenencia al universo/alcance válido del DGP, no como filtro adicional de selección dentro de ese universo, salvo que el generador incluya deliberadamente unidades fuera de alcance en el marco candidato. `App*(τ2,S0)` es una condición candidata de aplicabilidad de τ2 para definir el objetivo focal. Esta recomendación no sustituye el contrato faltante ni permite adjudicar unidades sin IAM/snapshots. `C_dep,0=0` y `A_f,0*=0` siguen siendo condiciones separadas de `P*_{τ2}`, no componentes que puedan inferirse entre sí.
+
+El crosswalk C1.4 confirma ausencia de snapshots `C_SRC`, filas IAM por UE y cobertura material. Por ello no se puede cerrar el roster de condiciones, declarar `REF=0`, calcular pertenencia material a `P*_{τ2}` ni estimar su tamaño/soporte.
+
+### 15.3 Regla de indeterminación pre-Z
+
+Queda fijado como requisito metodológico:
+- usar estados trivalentes `1/0/?`; `NA` solo por no aplicabilidad justificada ex ante;
+- ausencia de evidencia, cobertura incompleta o mapping ambiguo no equivalen a `0`;
+- truth basal del Generator y clasificación observada del Analyzer deben permanecer segregadas;
+- la clasificación de elegibilidad usada para la asignación debe estar sellada antes de `Z` y no puede depender de eventos post-Z.
+
+**Regla de análisis aún no congelada:** si una unidad permanece `?` antes de Z, no se la excluirá silenciosamente ni se la recodificará como inelegible. Debe conservarse en el registro de cribado. El protocolo confirmatorio tendrá que optar, antes de asignar, entre resolver la indeterminación, definir un marco observable más amplio con estimando explícito y análisis de cotas/sensibilidad, o restringir el estimando a una población pre-Z confirmada y reconocer que no representa automáticamente la población verdadera `P*_{τ2}`. En C10-S el Evaluator podrá comparar contra truth DGP segregada; esa truth no se entrega al Analyzer ni se usa como si fuera observación disponible.
+
+### 15.4 Unidad, asignación e interferencia
+
+- UE es la instancia sintética completa; UA es la entidad a la que se asigna `Z`; UO son observaciones longitudinales/anidadas y no aumentan el número de unidades independientes.
+- UE=UA continúa siendo candidato condicionado a aislamiento efectivo.
+- Una entidad B1 por UE y una oportunidad estandarizada por UE son decisiones de diseño aceptadas en su alcance; no demuestran aislamiento ni ausencia de interferencia.
+- La instancia de servicio debe ser aislada respecto de otras UE en recursos, agentes, información, infraestructura, estado y canales. Si no se sostiene, habrá que especificar clúster/exposición y un estimando compatible antes de interpretar el ITT.
+- No se ha recuperado un contrato material de aleatorización D2 con probabilidades/ratio, estratos/bloques, nivel de asignación, algoritmo, semilla/hash, reproducibilidad ni tratamiento de desviaciones. No se presupone 1:1.
+- La legitimidad material de D2 requiere verificar ausencia de provisión focal de fondo en control y condiciones basales; la aceptación de la política no prueba esos hechos.
+- `q_X*`, `q_L*`, positividad y soporte no están materializados.
+
+### 15.5 Horizonte
+
+Se conserva el reloj lógico `t−1/t0…t9` y la distinción entre profundidad de ruta y tiempo. `H=3` es profundidad máxima candidata, no duración ni horizonte de seguimiento. El calendario/ventana de la oportunidad B1, duración de seguimiento y horizonte terminal de Outcome y Value deben fijarse por separado y ex ante. No se asignan eventos de petición a `t5/t6/t7` ni se amplía H.
+
+### 15.6 Outcome y Value
+
+**Variante A — Outcome técnico.**
+- `O-CONF` es el candidato con mejor anclaje conceptual en `F*`/FP-01…08, pero no tiene ficha operacional completa.
+- Faltan predicados, mapping, tolerancias justificadas, oráculo independiente/cego, snapshots, cobertura y regla de adjudicación.
+- `O-MIG/O-SVC/O-REC/O-BUR` tampoco constituyen medidas operacionales actuales.
+- Por tanto, C1 sobre Outcome técnico es una familia de estimandos candidata, todavía sin `Y_j` confirmatorio cerrado.
+
+**Variante B — Value contextual.**
+- B1 por UE, su rol candidato solicitante-beneficiario y la oportunidad estandarizada única están aceptados como decisiones de diseño; no existe aún una instancia material B1/servicio-beneficiario completa.
+- Faltan identidad/tipo y relación B1–UE–servicio, `Need_preZ`, consecuencia independiente, perspectiva y autoridad de valoración, dimensiones `V_j`, indicadores, fuentes, unidades/escalas, baseline, horizonte y adjudicación.
+- P179 exige preservar Value como vector durante identificación y mantener trade-offs; no se eligen por defecto las cinco dimensiones históricas, no se reduce a un escalar ni se introducen pesos.
+- `V_j` no puede ser una recodificación de accesibilidad, Reach, ejecución u Outcome técnico ni incorporar mecánicamente `ΔT_acc`, lo que haría circular la atribución.
+- Las decisiones de petición y enlace petición–trayectoria no crean por sí mismas consecuencia valorable ni Value.
+
+En consecuencia, **no existe actualmente un Outcome ni una dimensión Value operacionalizados que permitan cerrar un ITT confirmatorio completo**. Un ITT sobre Outcome técnico no sustituye el ITT sobre Value ni prueba la relación causal `ΔT_acc→ΔV`.
+
+### 15.7 Identificación y dictamen final del paquete
+
+Un ITT de asignación D2 solo podría interpretarse bajo mecanismo de asignación verificable, consistencia/versiones, positividad, población pre-Z definida, unidad/interferencia resuelta y medición válida del resultado/horizonte, con tratamiento explícito de missingness/censura. Aun si C1 fuese identificado, no identificaría automáticamente C3, C4, LATE ni el efecto específico de accesibilidad.
+
+| Componente | Dictamen PA |
+|---|---|
+| D2 y políticas asignadas | ACCEPTED AS DESIGN ARCHITECTURE; material delivery/control checks OPEN |
+| Precedencia P*τ2/P*_F | ACCEPTED; no reabrir |
+| E_i / IAM / App / unknowns | PARTIAL; MATERIAL BLOCKED |
+| UE/UA / interferencia | CONDITIONAL; isolation unverified |
+| Aleatorización / positivity / q_X* | NOT MATERIALIZED / OPEN |
+| Horizonte temporal | OPEN; H no es duración |
+| Outcome A | NOT OPERATIONALIZED |
+| Value B | NOT INSTANTIATED |
+| ITT C1 completo/identificado | NOT YET IDENTIFIABLE FROM CURRENT SPECIFICATION |
+| Decisiones nuevas del usuario requeridas en este ciclo | NONE: las lagunas actuales son materiales/documentales, no elecciones de preferencia |
+
+**Estado del paquete:** reconciliado integralmente en esta iteración; no equivale a cierre científico de C1. Los bloqueos materiales se arrastran a PB (servicio/B1, snapshots y provisión), PC (soporte/estimandos de accesibilidad) y a la consolidación posterior de PA (asignación, Outcome/Value y horizonte una vez disponibles los contratos materiales). No se reinicia C1.1–C1.4 ni se vuelve a solicitar P*τ2/P*_F.
+
+No se modifica D1/D2, DEC-C10-066/067, el Core, main, RMA, Evidence→Claim Matrix ni claims. `scientific_execution=false`; `execution_authorized=false`. No Design Freeze, schemas físicos, fixtures, implementación, simulación o ejecución.
