@@ -901,3 +901,50 @@ La falta de cualquiera de estos elementos produce configuración inválida o res
 **Dictamen:** queda definida la estructura temporal y matemática de la medida de consecuencia y su canal de observación. La elección numérica de horizonte y parámetros de observación pertenece a la configuración experimental versionada, no requiere reabrir el significado de Value ni crear otro paquete conceptual. La instancia de `V_B1` sigue aceptada como endpoint sintético de objetivo único, condicionada a que cada configuración cumpla este contrato.
 
 **Estado:** Q_B1_MEASUREMENT_CONTRACT_DEFINED / VALUE_RULE_CLOSED_FOR_B1_INSTANCE / SCENARIO_PARAMETERS_REQUIRED_BEFORE_GENERATION / NO_DESIGN_FREEZE / NO_IMPLEMENTATION / NO_SCIENTIFIC_EXECUTION.
+
+
+## 32. Reconciliación crítica: disponibilidad técnica Q_B1 y consecuencia experimentada por B1 (2026-11-11)
+
+**Estado:** Q_B1_TECHNICAL_AVAILABILITY_MEASURE_DEFINED / BENEFICIARY_CONSEQUENCE_BRIDGE_NOT_ESTABLISHED / VALUE_ENDPOINT_ADMISSIBILITY_CONDITIONAL / NO_DESIGN_FREEZE / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 32.1 Discrepancia identificada
+
+La §31 define de forma útil y no circular respecto de accesibilidad la trayectoria verdadera de disponibilidad efectiva del servicio y su medida temporal:
+
+`A_B1^*(u,t)` y `Q_B1^*(W)`.
+
+Sin embargo, esa definición describe primariamente una propiedad funcional/operativa del servicio: que su instancia esté disponible y sea capaz de admitir solicitudes válidas. No demuestra por sí sola que `Q_B1` mida una consecuencia experimentada por la entidad beneficiaria B1. La atribución de la perspectiva B1 y la regla `V_B1=Q_B1` no resuelven esta diferencia semántica mediante renombrado.
+
+B2–B3 exige que Outcome técnico, consecuencia de B1 y Value permanezcan diferenciados; admite compartir fuentes solo si la separabilidad conceptual y operacional queda justificada. La ficha histórica de B1 también distingue la disponibilidad/capacidad del servicio, la petición puntual, el resultado técnico y el cambio en la situación de B1 respecto de Need_preZ.
+
+Por tanto, la §30 debe leerse con el límite siguiente: aceptó la regla normativa de objetivo único como forma posible de valoración, pero no basta para probar que el objeto actualmente medido por Q sea ya una consecuencia de B1. La §31 cierra la medición de disponibilidad técnica, no automáticamente el puente beneficiario→consecuencia.
+
+### 32.2 Qué queda conservado
+
+No se reabre ni se descarta:
+- el propósito basal B1 previamente aceptado;
+- la regla normativa de objetivo único como candidata admisible;
+- la definición temporal y matemática de disponibilidad de §31;
+- la separación entre verdad, evidencia observada y evaluación;
+- la independencia de la medida respecto de `T_acc`, Reach, trayectoria, O-CONF y la petición puntual.
+
+`Q_B1` queda conservada como medida de disponibilidad funcional del servicio. Puede ser antecedente o componente de una consecuencia para B1, pero no se etiquetará como consecuencia beneficiaria confirmatoria sin el mapping justificativo.
+
+### 32.3 Criterio mínimo para resolver el puente sin ampliar el microdominio
+
+Solo hay dos resultados admisibles:
+
+1. **Puente defendible:** demostrar, a partir del propósito B1 ya aceptado y sin inventar una operación de negocio, que la disponibilidad medida representa directamente una capacidad/condición de servicio que constituye la consecuencia para B1; especificar la relación B1↔servicio y por qué esa condición es el objeto de interés de B1, distinguiéndola de una mera propiedad técnica del proveedor. Debe poder observarse/adjudicarse sin reconstruirla desde accesibilidad, Reach, O-CONF o el éxito de la oportunidad estandarizada. Si el mapping requiere un indicador distinto, debe definirse y justificarse, no presumirse.
+
+2. **Puente no defendible con el contrato disponible:** conservar `Q_B1` como medida técnica/funcional y declarar `VALUE_NOT_INSTANTIATED` para esta instancia. El experimento podrá probar efectos sobre accesibilidad y resultados/medidas técnicas que estén operacionalizados, pero no afirmará haber probado `ΔT_acc → Value`.
+
+No se introducirán solicitudes naturales, tasas de demanda, satisfacción, utilidad, costes, pesos ni dimensiones nuevas para forzar el primer resultado. La oportunidad estandarizada única no se convierte en medida de continuidad ni de consecuencia.
+
+### 32.4 Dictamen de cierre y siguiente operación
+
+La regla normativa `v_B1` no necesita otra discusión abstracta. La única cuestión abierta es si el objeto de §31 puede justificarse como consecuencia de B1 bajo B2–B3. Esta comprobación debe resolverse usando los contratos existentes, no mediante otra matriz ni auditoría general.
+
+**Siguiente operación activa:** emitir un dictamen binario y trazable sobre el mapping `Q_B1 → consequence_B1`. Si es defendible, incorporar la justificación mínima al contrato integrado del DGP y pasar a parametrizar W/modelo de observación. Si no lo es, declarar `VALUE_NOT_INSTANTIATED` para B1 y continuar el experimento sin atribución a Value. No se abre una cadena adicional de subpaquetes.
+
+No se autoriza implementación, generación de datos, simulación ni ejecución científica.
+
