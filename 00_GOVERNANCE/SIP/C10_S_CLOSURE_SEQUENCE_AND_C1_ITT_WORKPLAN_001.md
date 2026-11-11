@@ -2086,5 +2086,6 @@ Permanece un límite de alcance, no un bloqueo de P178 focal: los artefactos son
 - `382ced8bec53d935f0928bf9e383f676036a21c5` y `fa17121b2aa3f2998443cac1187b205d3f7116e3` — pruebas de abstención y adjudicación.
 - `67a02e02d1cc36168aeeb0dddba938e1f5cb6482` — README actualizado.
 - `8734680e8e83908fd28cc5340572087435222d88` y `353a4627588dd9c951a080f51e11cb8e77fd350e` — corrección de saltos de línea en fuentes.
+- `67b1efe84a348d5b0b88e394bad2827a29cbd6b4` — validación de parámetros finitos y soporte mínimo por brazo.
 
 **Dictamen:** `FOCAL_HARNESS_IMPLEMENTATION_SLICE_001_PERSISTED / TESTS_NOT_RUN / FULL_HARNESS_INCOMPLETE / SCIENTIFIC_EXECUTION_FALSE / CONFIRMATORY_EXECUTION_NOT_AUTHORIZED`.
