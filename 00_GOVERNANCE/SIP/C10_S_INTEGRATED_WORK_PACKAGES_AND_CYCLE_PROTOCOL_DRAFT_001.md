@@ -125,3 +125,8 @@ Este protocolo queda adoptado como método de trabajo para el cierre documental 
 ## 8. Estado tras el ciclo PA (2026-11-11)
 
 PA ha completado su ciclo integral: `PA_RECONCILED_DOCUMENTALLY / C1_MATERIAL_BLOCKED / NOT_DESIGN_FROZEN`. El resultado y los bloqueos están registrados en la reconciliación C1 §15, el plan §16.155 y la Closure Control Matrix. El siguiente paquete activo es **PB**. PA no se repite; solo se reabre para integrar material nuevo que levante bloqueos.
+
+
+## 9. Estado tras el ciclo PB (2026-11-11)
+
+PB completó la reconciliación integral: PB_RECONCILED_DOCUMENTALLY / D2_C2_MATERIAL_BLOCKED / NOT_DESIGN_FROZEN. Véase maestro C10-S §267 y plan §16.156. La única decisión explícita pendiente es la armonización de identidad de instancia de servicio por UE con DEC-C10-069. No repetir PB ni reabrir DEC-C10-066/067/068/069/095 ni las decisiones B1 aceptadas. Siguiente paquete activo: **PC — C3 atribución de accesibilidad y C4 mediación**. PB solo se reabre por aceptación de esa decisión o evidencia material nueva.
