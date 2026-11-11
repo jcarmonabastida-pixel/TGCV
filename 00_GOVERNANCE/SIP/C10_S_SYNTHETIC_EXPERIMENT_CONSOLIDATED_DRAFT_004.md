@@ -11889,3 +11889,147 @@ No se ha cerrado aún: valores de PAR-SVC-ENABLED/PAR-SVC-PROFILE por escenario 
 El resto de los pendientes son materiales o de operacionalización, no decisiones de preferencia: no existe artefacto/instalación real, IAM/snapshots completos, inventario B-M01…15, evidencia de no-afectación, valores de protocolo ni validación de medición. El paquete PB queda reconciliado documentalmente con esos bloqueos explícitos; no se declara C2 identificada ni D2 aislado.
 
 No se modifican DEC-C10-066/067, DEC-C10-068/069, DEC-C10-095, A, D1, el Core, main, RMA, Evidence→Claim Matrix o claims. Sin Design Freeze, schema físico, fixtures, parser, validator ejecutable, simulación, implementación o ejecución científica. scientific_execution=false; execution_authorized=false.
+
+
+## 268. PC — reconciliación integral de atribución de accesibilidad C3 y mediación C4 (2026-11-11)
+
+**Estado del paquete:** PC_RECONCILED_DOCUMENTALLY / C3_C4_NOT_IDENTIFIED_IN_CURRENT_D2_MATERIAL / NOT_DESIGN_FROZEN.  
+**Precedencia:** DEC-C10-066/067; DEC-C10S-D2-ESTIMAND-SEPARATION-001; población P*_{τ2}/P*_F aceptada; PA y PB; C10-D1/S4-R §§18–20; arquitectura causal §21 y DAG D2/MED-02c §31; contrato de mediación §225.3 y DAG-01…08 del Test Contract Register; P177/P178/P179/P182/P183.  
+**Regla de reutilización:** no se crean estimandos paralelos ni nuevos IDs de test por duplicación. Se corrigen/precisan los crosswalks existentes. El dictamen no es una aprobación de estimación ni una ejecución.
+
+### 268.1. Hallazgo integrador y jerarquía no intercambiable
+
+La documentación previa ya contenía la arquitectura esencial de PC. El cierre de este ciclo consiste en integrarla con la precedencia vigente de población y D2, y delimitar con precisión qué pregunta responde cada contraste:
+
+1. **C1 — ITT_Z^D2 / ψ_policy^D2:** efecto total de asignar las políticas materiales D2. Bajo asignación válida, consistencia, unidad/interferencia y observación tratadas correctamente, es el efecto de la política/paquete asignado. No es por defecto efecto de accesibilidad.
+2. **C3 general — θ_A(q):** pregunta científica C10-D1 sobre dos políticas factibles g1/g0 que inducen distribuciones distintas de cambio estructural de accesibilidad ΔT_acc bajo un régimen común q. D2 focalizado en τ2 no la sustituye ni la identifica por sí solo.
+3. **C3 focal — θ_Af(q_X*):** contraste poblacional focal sobre la apertura de τ2 y su correspondencia con políticas de accesibilidad g^Af. Requiere mapping B_D2→g^Af, población, versiones, q_X*, soporte y separación/identificación de vías colaterales. Ese mapping sigue CONDICIONAL / NO DEMOSTRADO.
+4. **LATE_f^D2:** efecto local entre compliers para D_f*, secundario y condicionado a supuestos IV. No es ATE, θ_Af ni θ_A(q). Sigue bloqueado para Wald.
+5. **C4 — mediación interventional:** efecto atribuible a una intervención explícita sobre la distribución del cambio estructural ΔT_acc* y sus consecuencias transformacionales. Es distinto de C1, C3 y LATE. No está identificado ni formalizado como estimando estadístico congelado.
+
+No se permite transportar identificación, población, soporte, escala, horizonte o interpretación de uno a otro.
+
+### 268.2. Contrato C3: efecto de accesibilidad bajo régimen común
+
+La pregunta general conserva la forma:
+
+θ_A(q) = E[V^{q,g1}] − E[V^{q,g0}]
+
+Aquí g1 y g0 son políticas factibles sobre la distribución de cambios estructurados de accesibilidad; no son sinónimos de asignar Z ni de programar B. El contraste requiere:
+- intervención definida sobre el vector estructural ΔT_acc* y sus versiones, no solo sobre A_f* o C_dep*;
+- población y unidad pre-Z, contexto e historia basal definidos;
+- régimen común q, con q_X* como candidato basal y q_L* solo si una variable post-Z indispensable requiere una regla secuencial explícita;
+- factibilidad de ambas políticas por historia con masa positiva, positividad de asignación y soporte común; no extrapolar a historias sin soporte;
+- consistencia de versiones, ausencia de interferencia no modelada y medición independiente de ΔT_acc*;
+- regla de Outcome/Value independiente de q y de la definición de accesibilidad;
+- ausencia de vías paralelas hacia el resultado o una estrategia válida para separarlas/identificarlas.
+
+Para D2, el estimando focal θ_Af(q_X*) exige reconstruir, por historia basal y versión, la distribución conjunta inducida de C_dep*, A_f*, D_f*, ΔT_acc* y rutas alternativas bajo B_g0^D2/B_g1^D2. La política B_g1 programa un intento de provisión; no asigna ΔT_acc* ni garantiza apertura. La política B_g0 no programa el intento focal, pero la ausencia material de provisión de fondo aún requiere evidencia. Por tanto, B_D2→g^Af no se obtiene de DEC-C10-067, de la tasa de intento ni de C_dep*.
+
+**Condición de atribución:** el ITT_Z^D2 solo podría reinterpretarse como θ_Af(q_X*) si se demuestra que las políticas inducen el contraste g^Af bajo el mismo régimen y que no difieren por vías propias hacia O/V fuera de la ruta transformacional definida. Si hay vías directas o colaterales, el ITT conserva su significado de efecto de política/paquete; no se corrige llamándolo efecto puro de accesibilidad.
+
+La cuestión de autorización funcional basal para D2 ya está resuelta por DEC-C10-067: C_auth,base=1 e invariancia. Esto no demuestra que recursos/capacidad, ACL técnicas, dependencias compartidas, coste, latencia, calidad, seguridad, información/conocimiento, alternativas, medición, rollback o spillovers sean invariantes. El inventario PB permanece materialmente ausente.
+
+### 268.3. DAG y vías paralelas: interpretación causal
+
+Se conserva el DAG vigente §233/§31, con la vía transformacional focal:
+
+Z → B → W_programmed → W_attempt → S_install/componentes → C_dep* → T_acc / ΔT_acc* → Reach/Π_H → K/Consider → Sel/Start → Exec → Outcome → Value.
+
+A_f,1* es un predicado/proyección focal dentro de T_acc; D_f* es un indicador derivado de apertura basal→post. No son mediadores adicionales en serie con ΔT_acc*. C_dep* es un estado técnico previo y no un sustituto del mediador transformacional.
+
+Las vías paralelas/colaterales que el DGP y la evaluación deben distinguir incluyen:
+- recursos, capacidad y desplazamiento de recursos compartidos;
+- ACL/permisos técnicos, seguridad y cambios de autorización funcional no previstos;
+- dependencias compartidas, alternativas A1/A2/F2 y rutas de fondo;
+- coste, latencia, rendimiento, calidad y fiabilidad;
+- información, conocimiento, incentivos y comportamiento de agentes;
+- cambios en selección, exposición a oportunidades o intensidad de uso;
+- observación, cobertura, error diferencial, missingness y censura;
+- rollback, persistencia/carryover y spillovers entre UE.
+
+El DAG es una especificación de mecanismos posibles, no prueba de presencia o ausencia. PB no encontró evidencia material que permita declarar estas vías ausentes. Mientras no se inventaríen y verifiquen, no se atribuye el ITT a accesibilidad. Una vía colateral conocida puede dejar identificable el ITT del paquete y, a la vez, invalidar la atribución focal o el IV simple.
+
+Las interacciones Z×ΔT_acc*, modificadores basales (incluidas rutas alternativas y condiciones constitutivas) y heterogeneidad por historia no se presumen aditivas. Solo se estiman con hipótesis preespecificadas, soporte por estrato y ponderación explícita; no se promedian historias sin positividad.
+
+### 268.4. Contrato C4: mediación interventional y cambio transformacional completo
+
+El mediador de interés no es A_f* aislado ni D_f*. Es el cambio estructural completo ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*), con ΔE_T separado como plano de evidencia. Reach_H y Π_H pueden ser mediadores secuenciales posteriores o formar parte de un bloque transformacional conjunto si se define su intervención y su orden temporal. K/Consider, selección, ejecución y Outcome son descendientes posteriores; su inclusión en la ruta mediada debe quedar explícita según la pregunta de Value. No se agregan mecánicamente como mediadores ni se confunden con ΔT_acc*.
+
+La opción metodológica preferida para estudiar C4 es un **efecto indirecto interventional** basado en una intervención estocástica factible sobre la distribución conjunta/secuencial del bloque transformacional, con una definición explícita de:
+- bloque mediador: ΔT_acc* y, si el objetivo incluye sus consecuencias, Reach_H y Π_H en secuencia;
+- historia basal q_X* y reglas secuenciales post-Z que sean indispensables;
+- población, versiones, resultado/dimensión, escala y horizonte comunes;
+- distribución de referencia y distribución intervenida del bloque;
+- tratamiento de las vías no transformacionales y de los confusores mediador–resultado afectados por Z;
+- soporte secuencial y positividad para cada intervención mediadora.
+
+No se adopta un efecto indirecto natural ni se presume independencia cross-world. Tampoco se declara una fórmula puntual cerrada mientras no se decida si el objetivo es el bloque transformacional conjunto o un efecto path-specific exclusivo de ΔT_acc*.
+
+**Confusión inducida por Z:** si Z/B modifica L (p. ej., recursos, coste, latencia, información, seguridad o exposición) y L afecta tanto al mediador como a Value, L es un confusor mediador–resultado postratamiento afectado por tratamiento. El ajuste convencional por L no resuelve el problema y puede bloquear vías o introducir sesgo. Se necesita un modelo longitudinal/g-formula con orden temporal y régimen explícitos, una intervención conjunta sobre el bloque relevante o una identificación path-specific defendible. Si las variables necesarias no se observan, su soporte falla o el grafo contiene un recanting witness que impide aislar la ruta, el efecto mediado específico no queda identificado; se informa efecto conjunto/paquete o límites, no una atribución puntual.
+
+Un residual/directo solo puede definirse como el segundo componente de una descomposición interventional formal, con la misma población, escala, horizonte y reglas de intervención. No es automáticamente TE−IIE en cualquier combinación de estimandos, y nunca se obtiene restando ITT, LATE, θ_Af y θ_A incompatibles.
+
+### 268.5. Value, Outcome y población de evaluación
+
+La evaluación debe emitir dictámenes separados por resultado:
+- Outcome técnico O_k, solo cuando exista ficha operacional completa;
+- cada dimensión Value V_j, solo cuando beneficiario/observador, perspectiva, criterio, fuente, escala, baseline, horizonte y regla de valoración estén definidos;
+- mediación por el bloque transformacional, por Outcome y por cada V_j, sin transferir identificación entre resultados.
+
+La variante A puede sostener Outcomes técnicos cuando sus fichas se completen; no contiene actualmente Value contextual instanciado. La variante B mantiene la arquitectura de beneficiario/Value como extensión sintética separada, pero no existe todavía instancia material validada de beneficiario ni fichas V_j completas. Las cinco dimensiones históricas (eficiencia, calidad, acceso de destinatarios, robustez y sostenibilidad) siguen siendo candidatas, no dimensiones aprobadas. No se elige V1, pesos, índice ni regla de compensación por conveniencia.
+
+O-CONF conserva el mejor anclaje técnico candidato, pero carece aún de predicados/mapping/tolerancias/oráculo/snapshots completos; no se declara Outcome operacionalizado. T_acc, ΔT_acc, Reach, trayectoria y F* no se usan como Value ni como Outcome por defecto. No observado, no aplicable, censurado, disputado y desconocido no se convierten en cero.
+
+La población primaria candidata P*_{τ2} y la precedencia secundaria de P*_F se conservan. q_X* sigue siendo distribución basal objetivo candidata; su composición, soporte, pesos y probabilidades por historia no están materializados. La decisión de precedencia poblacional no resuelve por sí sola E_i, IAM, unidad de asignación ni interferencia. Si el aislamiento por UE no se demuestra, debe determinarse UA/clúster y un estimando de exposición compatible antes de inferencia individual.
+
+### 268.6. Dictamen de identificación por estimando
+
+| Estimando/objeto | Dictamen PC | Razón decisiva |
+|---|---|---|
+| ITT_Z^D2 sobre O | CONDITIONAL / NO ESTIMABLE ACTUALMENTE | Requiere asignación/probabilidades, unidad efectiva, Outcome operacional, seguimiento y observación |
+| ITT_Z^D2 por V_j | NOT IDENTIFIED / NOT EVALUABLE | No hay beneficiario/perspectiva ni fichas V_j materiales |
+| θ_A(q) general | NOT IDENTIFIED BY CURRENT D2 | Requiere políticas g1/g0 sobre ΔT_acc* y régimen común q; D2 focal no las implementa por equivalencia demostrada |
+| θ_Af(q_X*) focal | NOT IDENTIFIED | B_D2→g^Af no demostrado; soporte, rutas, aislamiento y medición material abiertos |
+| LATE_f^D2 | BLOCKED | D_f* first stage no establecida; exclusión, monotonicidad, medición e interferencia no verificadas |
+| IIE_T por ΔT_acc*/Reach/Π | NOT IDENTIFIED | Intervención mediadora, confusión post-Z, soporte secuencial y resultado contextual no cerrados |
+| Path-specific effect solo vía ΔT_acc* | NOT IDENTIFIED / MAY BE NON-IDENTIFIABLE | Requiere edge intervention y condiciones del DAG; posibles confusores inducidos/recanting witnesses |
+| Residual/directo | NOT DEFINED AS A SEPARATE CAUSAL ESTIMAND | No hay descomposición interventional completa y armonizada |
+| Efecto de paquete | Conceptualmente definido; materialmente condicionado | Puede seguir siendo el alcance correcto si hay vías colaterales, sujeto a C1 |
+
+Los estados anteriores son dictámenes de diseño/documentación, no estimaciones empíricas. El estado de identificación deberá volver a adjudicarse por DGP×estimando×resultado/dimensión×población/soporte.
+
+### 268.7. Evaluación adversarial y uso de P177/P178/P179/P182/P183
+
+Se reutilizan los contratos existentes sin reescribirlos:
+- P177-01/02/03/04/05/06/07/08/09/10/12 para estimación por asignación, primeras etapas, IV, instrumentos débiles, separación O/V, ajuste basal, heterogeneidad, multiplicidad, recuperación y diferencia entre política/atribución;
+- P178-SIM-01…10 para potencia separada, N, clúster, réplicas, error Monte Carlo, semillas, reproducibilidad, pérdidas, métricas y parámetros ex ante;
+- P179-01…08 para separación A/O/V, Value vectorial, contexto, baseline, trade-offs, estimación por dimensión y agregación justificada;
+- P182-01…12 para validez/cobertura/circularidad, especificación O, reproducibilidad, acuerdo, error, invariancia, sensibilidad, firewall y trazabilidad;
+- P183-01…13 para taxonomía/mecanismo de ausencia, ITT, selección, mediación, censura, MAR/MNAR, cotas y dictamen por estimando.
+
+DAG-01…08 y CAUS-01…10 ya cubren temporalidad, estados separados, crosswalk, vías colaterales, invariancia, intervención mediadora, jerarquía de estimandos y observación. Se reutilizan; no se crean IDs duplicados. La cobertura C-MED continúa PARCIAL / OPEN: P177-12 no define por sí solo un estimando interventional; P177-06 prohíbe ajuste post-Z en ITT, pero no identifica mediación; P182 no resuelve confusión mediador–resultado; P183-08/10/11/12 no sustituyen intervención, DAG ni soporte longitudinal.
+
+El futuro DGP debe contener, al menos, un escenario aislado en el que truth permita identificar el efecto mediado y escenarios adversariales con: vía directa B→O/V; confusor L inducido por Z; interacción; soporte/positividad secuencial fallida; versiones inconsistentes; error diferencial de mediador/outcome; missingness MAR/MNAR y censura; y spillover/interferencia. El Analyzer debe recuperar solo cuando truth y supuestos permiten identificación, informar bounds cuando proceda y abstenerse ante no-identificación. Truth permanece oculta y el Evaluator compara recuperación, falsa identificación, falsa atribución focal, falsa abstención y abstención correcta con denominadores explícitos.
+
+No se fijan todavía N, potencia, réplicas, δ/ε, tolerancias, MDE, pesos o umbrales; deben derivarse de resultados/dimensiones y precisión una vez operacionalizados, no inventarse en PC.
+
+### 268.8. Cierre del paquete PC y bloqueos residuales
+
+**Resultado:** PC_RECONCILED_DOCUMENTALLY / C3_C4_NOT_IDENTIFIED_IN_CURRENT_D2_MATERIAL / NOT_DESIGN_FROZEN.
+
+Queda reconciliado documentalmente:
+- jerarquía C1/C3/C4/LATE y límites de cada estimando;
+- diferencia entre θ_A(q) general, θ_Af(q_X*) focal y efecto de asignación D2;
+- requisitos del mapping B_D2→g^Af, q_X*, soporte y positividad;
+- DAG de la vía transformacional y catálogo de vías paralelas;
+- mediador estructural completo ΔT_acc*, con Reach/Π secuenciales o en bloque explícito;
+- confusión mediador–resultado inducida por Z y prohibición de ajuste convencional post-Z;
+- distinción entre efecto indirecto interventional, path-specific, efecto de paquete y residual;
+- dictámenes por O/V_j y reutilización de P177/P178/P179/P182/P183 y DAG/CAUS existentes.
+
+Siguen bloqueados por material o definición no disponible: asignación y probabilidades; unidad de asignación/interferencia real; IAM/snapshots y medición completa de ΔT_acc; inventario y evidencia de vías colaterales; distribución q_X* y soporte por historia; correspondencia B_D2→g^Af; fichas O y V_j, beneficiario/perspectiva/regla Value; intervención mediadora y soporte longitudinal; parámetros estadísticos y sensibilidad. Estos vacíos no se resuelven con una pregunta de preferencia ni con supuestos no documentados.
+
+**Siguiente paquete activo: PD — DGP, mecanismos C5 y evaluación adversarial.** PD deberá incorporar esta jerarquía y especificar las verdades contrafactuales, los escenarios identificados/no identificados y las aserciones de recuperación/abstención, sin reabrir PC salvo evidencia nueva o contradicción.
+
+No se modifica DEC-C10-066/067/068/069/095, el Core, main, RMA, Evidence→Claim Matrix ni claims. No se declara C3/C4 identificado, ni Value operacionalizado. Sin Design Freeze, schema físico, fixtures, parser, validator ejecutable, simulación o ejecución científica. scientific_execution=false; execution_authorized=false.
