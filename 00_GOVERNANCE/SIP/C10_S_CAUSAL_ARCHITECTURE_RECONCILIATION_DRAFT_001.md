@@ -371,3 +371,17 @@ Esta adjudicación es mecanística y no modifica elegibilidad, población, unida
 **OPEN:** especificación de los contrastes concretos de D2; propiedades de trayectoria causalmente relevantes; control de causas concurrentes/colaterales e interacciones; definición de intervención por etapa; positividad/soporte y versiones de tratamiento; evidencia observable y medición; reglas de atribución para contribuciones múltiples; sensibilidad a contrafactuales alternativos; relación con estimandos total, directo e indirecto y mediación.
 
 **No autorizado:** Design Freeze, implementación, fixtures, simulación o ejecución científica. Se mantienen \`scientific_execution=false\` y \`execution_authorized=false\`; \`main\` no se modifica.
+
+## 15. DEC-C10S-D2-ESTIMAND-SEPARATION-001 — arquitectura aceptada de estimandos (2026-11-11)
+
+**Estado: ACCEPTED AS DESIGN DECISION; NOT DESIGN-FROZEN.**
+
+Se acepta la separación en cinco bloques: C1 `ITT_Z^D2` como efecto total de asignación a las políticas materiales D2 sobre un resultado aún por definir; C2 primeras etapas separadas de `C_dep*`, `A_f*`, `D_f*` y `ΔT_acc*`; C3 efecto focal de accesibilidad `θ_A(q)`/`θ_Af(q_X*)` sujeto al mapping B→g, régimen común, soporte y vías colaterales; C4 mediación interventional vía el cambio estructural completo `ΔT_acc*`, con Reach/trayectoria como mediadores secuenciales o bloque conjunto solo si se define; C5 contribución mecanística petición–trayectoria basada en contrastes contrafactuales DGP y truth segregada.
+
+La decisión conserva la jerarquía conceptual C10-D1/DEC-C10-066/067: D2 primario candidato y D1 secundario; `θ_A(q)` sigue siendo pregunta general, `ITT_Z^D2` efecto de asignación, `LATE_f^D2` local y condicionado a IV, y `θ_Af(q_X*)` focal condicionado a mapping/soporte. No se agrupan ni intercambian. No se define residual/directo como resta automática entre estimandos no necesariamente aditivos o comparables. Si existen vías colaterales, ITT es efecto de política/paquete salvo identificación adicional.
+
+No condicionar población ITT a eventos post-Z. No reducir `ΔT_acc*` a `A_f*`; no inferir Value de una contribución mecanística; no equiparar ciclo de petición con t5/t6/t7 ni Outcome t8/Value t9. P179 conserva Value vectorial/trade-offs; P182/P183 siguen como contratos transversales, no reescritos ni cerrados. No se congela estimando estadístico ni se eligen Outcome, Value, población, horizonte, parámetros o método de estimación.
+
+**OPEN:** población/unidad/interferencia; Outcome/Value y horizonte; versiones/cumplimiento; mapping B→g, q y soporte; vías colaterales y confusión mediador–resultado inducida por Z; operacionalización y error de A/Reach/trayectoria/O/V; identificación/sensibilidad/precisión; contrastes DGP concretos por etapa de petición. La jerarquía confirmatoria completa permanece OPEN.
+
+No modifica DEC-C10-066/067 ni C10-D1. No autoriza freeze, implementación, fixtures, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`. Registro autónomo: `DEC-C10S-D2-ESTIMAND-SEPARATION-001.md`.
