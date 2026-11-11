@@ -1,0 +1,208 @@
+# C10-S — Reconciliación integrada de operacionalización confirmatoria de Outcome y Value
+
+**ID:** C10-S-OV-OPERATIONALIZATION-001  
+**Fecha:** 2026-11-11  
+**Estado:** MEASUREMENT_ARCHITECTURE_RECONCILED / O-CONF_CANDIDATE_NOT_FROZEN / VALUE_VECTOR_PRESERVED_NOT_INSTANTIATED / NO_CONFIRMATORY_Y / NOT_DESIGN_FROZEN  
+**Rama:** `research/c10-s-consolidation-draft` · **PR:** #116 (Draft)
+
+## 1. Objeto, precedencia y reutilización
+
+Este ciclo integra la operacionalización confirmatoria de Outcome y Value. Reutiliza, sin duplicar ni reemplazar:
+- maestro C10-S §§222–225, 232–233, 253–266 y 273–275;
+- C10_S_B2_B3_BENEFICIARY_OUTCOME_VALUE_RECONCILIATION_DRAFT_001.md;
+- C10_S_FSTAR_OPERATIONAL_PROPERTY_AND_ADJUDICATION_MATRIX_DRAFT_001.md y fichas Opción A;
+- C-Value §264 y crosswalk de roster/eventos §265;
+- PA/C1, PB/PB-MAT, PC/C3-C4, PD/DGP, PE/roles y el ciclo D2 de asignación/población/soporte;
+- contratos existentes P179-01…08, P182-01…12, P183-01…13, §224 y familias MEAS/MISS existentes.
+
+No crea Decision Record, dimensiones, instrumentos, campos, eventos, escalas, pesos, umbrales, ventanas, parámetros, N/R ni fixtures. No reabre B1, D2, P*τ2/P*_F ni decisiones aceptadas.
+
+## 2. Regla central: tres objetos distintos
+
+Se mantienen tres capas no intercambiables:
+
+1. **Criterio funcional F*:** especificación técnica versionada que define cuándo una ruta completa satisface los requisitos funcionales obligatorios aplicables. FP-01…FP-07 describen propiedades funcionales; FP-08 es gate probatorio independiente.
+2. **Outcome O-CONF:** resultado adjudicado del estado de conformidad funcional del destino en la instancia/horizonte evaluados. El criterio F* y el resultado O-CONF no son dos resultados técnicos independientes. O-CONF puede usar la adjudicación F* como su anclaje de medida, sin duplicar F* como otro endpoint, covariable o mediador.
+3. **Value V:** valoración contextual de una o más consecuencias para B1 respecto de Need_preZ, bajo perspectiva, autoridad y criterio de valoración estipulados ex ante. No es el resultado técnico ni la evidencia usada para medirlo.
+
+La especificación objetivo, la verdad generada, la observación y la adjudicación deben seguir separadas. Un F*=1/O-CONF favorable no implica Value positivo; un fallo funcional no determina por sí solo el valor contextual.
+
+## 3. O-CONF: candidato prioritario, no selección confirmatoria
+
+### 3.1 Constructo y unidad
+
+Se conserva O-CONF —conformidad funcional del destino— como candidato con mejor anclaje conceptual entre los Outcomes históricos. Su objeto es el estado realmente aplicado en el destino, evaluado frente a la especificación funcional versionada y al contrato F* común. No mide intento, recepción, instalación, C_dep*, A_f*, D_f*, ΔT_acc*, Reach, selección, ejecución ni satisfacción de B1.
+
+La unidad de medida debe ser la instancia lógica de servicio/UE y su estado terminal evaluable en una ventana común. No se ha aceptado aún la identidad material/roster, el evento terminal, H, la ventana ni la granularidad definitiva; por tanto, esta unidad es una condición de la ficha, no un mapping físico ya establecido.
+
+### 3.2 Regla de resultado sin inventar escala
+
+La regla vigente de F* es no compensatoria y trivalente sobre FP-01…FP-07 aplicables:
+- 1: todos los requisitos funcionales obligatorios aplicables están demostrados;
+- 0: al menos una violación obligatoria está demostrada;
+- ?: no hay violación demostrada, pero al menos un requisito pertinente permanece desconocido/contradictorio.
+
+FP-08 determina validez probatoria, procedencia y reproducibilidad; no es propiedad funcional ni se suma a F*. Si la evidencia FP-08 no permite aceptar la adjudicación, O-CONF observado debe conservar estado no válido/indeterminado según el contrato de evidencia, sin cambiar la verdad funcional del DGP.
+
+No se convierte ? en 0, ni NA en ausencia, ni se inventa puntuación continua/porcentual. No se presupone ordinalidad entre 0/1/? ni se define un modelo estadístico para esas categorías en este ciclo. Si en el futuro se desea una magnitud graduada de conformidad, deberá justificarse como constructo/indicador adicional, con unidades, reglas y validez; no se deriva de sumar FP ni de tolerancias arbitrarias.
+
+### 3.3 Ficha O-CONF — campos exigidos y estado
+
+| Campo §224 | Requisito para cierre | Estado |
+|---|---|---|
+| ID/versión/constructo/frontera | Identidad versionada de O-CONF y relación explícita con F* | Candidato conceptual; ficha no congelada |
+| Unidad/población | UE/instancia de servicio, relación con P*τ2 y asignación | Unidad lógica aceptada; roster/materialización OPEN |
+| Especificación de referencia | F* y contrato fuente/destino versionados, propiedades obligatorias/condicionales/NA | Familias FP aceptadas; predicados/IAM no cerrados |
+| Mapping | C_src→M→C_dst_decl→C_dst_applied y predicados atómicos | OPEN |
+| Evento/estado terminal | Snapshot de destino aplicado y punto de adjudicación común | OPEN; sin event_id/snapshot material |
+| Fuente primaria/corroboración | Evidencia E_T independiente, trazable y con cobertura suficiente | Arquitectura definida; fuente/oráculo no implementados ni validados |
+| Regla de cálculo/dirección | Adjudicación no compensatoria 1/0/?; FP-08 separado | Lógica documental disponible; instancia no evaluable |
+| Baseline/comparabilidad | C0 pre-Z, misma versión de F*, G y contexto comparable | C0/G/H y snapshots OPEN |
+| Ventana/horizonte | Ancla y H común preespecificado | OPEN; AB-TIME-01/02 |
+| Validez/error/reproducibilidad | Falsos positivos/negativos, acuerdo, error, invariancia y validación del oráculo | OPEN; P182 y MEAS reutilizables |
+| Ausencia/censura | Estados observacionales diferenciados y mecanismos por brazo/historia | Contrato P183/MISS definido; parámetros y aplicación OPEN |
+| Cegamiento/provenance | Adjudicador ciego a Z/B y downstream cuando sea viable; versionado inmutable | Requisito definido; no demostrado |
+
+**Dictamen O-CONF:** candidato prioritario de Outcome técnico; no está operacionalizado ni puede incorporarse todavía como Y confirmatorio completo. No se seleccionan O-MIG/O-SVC/O-REC/O-BUR: sus vacíos históricos permanecen, sin reabrirlos ni promoverlos.
+
+## 4. Value: admisibilidad de dimensiones, sin selección artificial
+
+### 4.1 Referente y criterio de admisibilidad
+
+B1 es la entidad sintética solicitante-beneficiaria estipulada, una por UE. Need_preZ es el objetivo/necesidad focal existente en truth antes de Z; no se infiere de Request_event, procesamiento, uso o resultado. El contenido de Need_preZ y su evidencia/medición material permanecen OPEN.
+
+Una dimensión V_j solo es admisible si:
+1. expresa una consecuencia identificable para B1 respecto de Need_preZ;
+2. declara perspectiva y autoridad de valoración ex ante, coherentes con el mundo sintético y representativas del interés de B1;
+3. define criterio y frontera semántica frente a Outcome, accesibilidad, trayectoria, ejecución, recursos y otras V_k;
+4. puede medirse independientemente con fuente/instrumento, unidad/escala y baseline/post/horizonte definidos;
+5. conserva dirección, interpretación, ausencia, error, validez y regla de adjudicación;
+6. declara si es compensable/no compensable y sus trade-offs con otras dimensiones, sin ponderación por defecto.
+
+El Evaluator aplica una regla de valoración estipulada; no se convierte en beneficiario ni valida preferencias reales. La regla no se infiere de CMP.owner, operador, mantenedor, ejecutor, disponibilidad de recursos o telemetría.
+
+### 4.2 Perspectiva y autoridad
+
+La perspectiva primaria es la de B1 por estipulación del modelo. La autoridad que define el criterio valorativo debe quedar expresamente incorporada a truth_dgp, con identidad, versión, justificación y simetría entre brazos. Esto es una regla normativa interna del DGP, no una afirmación de preferencia empírica real.
+
+No se inventa un representante humano, usuario, propietario de servicio ni encuesta. Si se introduce más de una perspectiva legítima, se conserva la pluralidad o se justifica una regla de representación; no se promedian valoraciones heterogéneas por defecto.
+
+### 4.3 Vector y dimensiones no seleccionadas
+
+Se preserva P179: Value se mantiene como vector (V=(V_1,ldots,V_k)) durante identificación. k, la selección de dimensiones y sus indicadores siguen OPEN. Las cinco dimensiones históricas (eficiencia, calidad, acceso de destinatarios, robustez y sostenibilidad) son candidatas de referencia, no un roster aprobado ni exhaustivo.
+
+En particular:
+- ΔT_acc*, A_f*, Reach y trayectoria no son Value ni proxies automáticos de V_j.
+- Una dimensión de acceso/posibilidad solo podría incorporarse si mide una consecuencia valorada para B1, distinta de la accesibilidad estructural del sistema y justificada en el DGP.
+- Consumo de CPU/RAM, capacidad disponible, logs, costes monetarios o esfuerzo humano no se convierten en valor sin fuente, unidad, perspectiva y criterio propios.
+- El Outcome técnico no se reutiliza como Value sin una justificación de constructo y medición que evite circularidad.
+- No se fija índice escalar, peso, normalización, compensabilidad ni regla de trade-off global.
+
+### 4.4 Ficha V_j — campos exigidos y estado
+
+| Campo §224 | Requisito para cierre | Estado |
+|---|---|---|
+| Identidad/definición | value_dimension_id, constructo y frontera | No existe V_j seleccionada |
+| Beneficiario/contexto | B1, UE, Need_preZ y contexto versionados | Tipo/relación aceptados; instancia/Need OPEN |
+| Perspectiva/autoridad | Regla ex ante y legitimidad interna del DGP | Perspectiva B1 como base; autoridad concreta OPEN |
+| Criterio de valoración | Relación entre consecuencia y objetivo basal | OPEN |
+| Indicador/fuente/instrumento | Medición directa o proxy validado, provenance | OPEN |
+| Unidad/escala/dirección | Rango, anclas y significado | OPEN |
+| Baseline/post/horizonte | Medida basal y ventana común preespecificada | Need_preZ conceptual; medición/tiempo OPEN |
+| Procedimiento/adjudicador | Aplicación simétrica, ciega a Z cuando viable | OPEN |
+| Validez/fiabilidad/error | P182, acuerdo, invariancia y sensibilidad | Contratos existentes; evidencia/parámetros OPEN |
+| Ausencia/censura/desacuerdo | P183 y estados separados | Contratos existentes; mecanismos/valores OPEN |
+| Trade-offs | Compensable/no compensable y relaciones V_j | OPEN; sin pesos |
+| Selección confirmatoria | Antes de generar/observar resultados y versionada | No realizada |
+
+**Dictamen Value:** arquitectura vectorial y reglas de admisibilidad reconciliadas; ninguna dimensión, escala, instrumento, regla valorativa o endpoint V_j está instanciado. No existe todavía un resultado Value confirmatorio.
+
+## 5. Separación causal y consecuencias para C1–C4
+
+El DGP debe representar por separado las rutas:
+- Z/política → proceso técnico → O-CONF;
+- Z/política → ΔT_acc*/Reach/trayectoria/ejecución → consecuencia B1 → V_j;
+- Z/política → vías directas/colaterales → consecuencia B1 → V_j;
+- O-CONF → consecuencia B1 → V_j, solo si el DGP lo estipula y lo identifica como mecanismo.
+
+Estas rutas son posibilidades del diseño, no flechas empíricas aprobadas. Outcome no es causa exclusiva por definición y Value no es función mecánica de Outcome.
+
+Para cada población, versión, dimensión y horizonte:
+- ITT_Z^D2(O-CONF) y ITT_Z^D2(V_j) son estimandos separados.
+- La identificación del ITT de Outcome no se transfiere a Value, ni entre dimensiones.
+- C3/θ_A o θ_Af sobre V_j requiere intervención de accesibilidad, mapping, soporte, régimen común y control/identificación de vías colaterales.
+- C4 requiere intervención mediadora, orden temporal, tratamiento de confusión mediador–resultado inducida por Z y soporte longitudinal.
+- Un efecto de paquete puede ser identificable sin atribución exclusiva a accesibilidad.
+- Si las rutas causales o medición no permiten identificación puntual, la salida correcta es CONDITIONAL, BOUNDS (solo con restricciones justificadas), NOT_IDENTIFIED o INDETERMINATE_MEASUREMENT.
+
+No se calcula efecto directo/residual por resta entre estimandos incompatibles. No se promueve un resultado técnico favorable a afirmación de creación de Value.
+
+## 6. Verdad, observación y evaluación
+
+- **truth_dgp:** Need_preZ, perspectiva/autoridad, criterio valorativo, consecuencias potenciales, O-CONF verdadero, V_j verdadero, mecanismos, interacciones y versiones.
+- **observed_evidence:** snapshots, logs, instrumentos, fuentes, adjudicaciones y medidas permitidas al Analyzer, con cobertura, error, missingness y provenance. No contiene contrafactuales ni truth reservado.
+- **evaluation/adjudication:** el Evaluator compara la salida sellada del Analyzer con truth después de congelar esa salida. No corrige retrospectivamente observaciones ni revela truth al Analyzer.
+
+P182/P183 y las familias MEAS/MISS existentes se reutilizan por constructo y dimensión. No se crean nuevos IDs de prueba. Las tolerancias, umbrales de error, criterios de abstención y parámetros de sensibilidad siguen OPEN hasta su justificación.
+
+## 7. Crosswalk de contratos existentes y cobertura
+
+| Requisito | Contrato existente | Resultado de esta reconciliación |
+|---|---|---|
+| Separación A/O/V | P179-01…03 | Semántica reconciliada; fichas materiales OPEN |
+| Vector y resultados por dimensión | P179-02 | Regla preservada; dimensiones no seleccionadas |
+| Perspectiva/contexto | P179-04 | B1 como referente; autoridad/criterio OPEN |
+| Baseline | P179-05 | Need_preZ conceptual; medidas basales OPEN |
+| Trade-offs | P179-06 | No agregación prematura; regla por dimensión OPEN |
+| ITT/estimación por dimensión | P179-07 | No estimable hasta diseño, medida y soporte |
+| Agregación | P179-08 | Sin índice/pesos por defecto |
+| Validez/error/cegamiento/invariancia | P182-01…12; MEAS-01…14 | Reutilizados; no ejecutados ni materializados |
+| Ausencia/selección/censura/bounds | P183-01…13; MISS-01…15 | Reutilizados; mecanismos y parámetros OPEN |
+| Ficha de Outcome | §224.2 | O-CONF candidato; ficha incompleta |
+| Ficha Value | §224.3 | Ninguna V_j instanciada |
+| Adjudicación/canales | §224.4 y PD/PE | Arquitectura definida; separación computacional no validada |
+
+No se duplican pruebas. La presencia de un ID en el registro no implica fixture, implementación, ejecución ni PASS.
+
+## 8. Dictamen integrado
+
+| Elemento | Estado |
+|---|---|
+| Distinción F* / O-CONF / Value | RECONCILED DOCUMENTALLY |
+| O-CONF | PRIORITY CANDIDATE / NOT CONFIRMATORY / NOT OPERATIONALIZED |
+| FP-01…07 | Familias aceptadas; predicados/IAM/oráculo incompletos |
+| FP-08 | Gate probatorio separado; evidencia material no disponible |
+| B1/Need_preZ | Base semántica aceptada; contenido/medida material OPEN |
+| Perspectiva B1 | Base aceptada |
+| Autoridad y criterio de valoración | OPEN |
+| Vector P179 | PRESERVED |
+| Dimensiones V_j / k | NOT SELECTED / OPEN |
+| Indicadores, instrumentos, escalas, baseline, horizonte | OPEN |
+| P182/P183 | Contratos existentes reutilizados; evidencia/parámetros no cerrados |
+| ITT por O/V | Familias separadas; no confirmatorias ni identificadas actualmente |
+| C3/C4 por O/V | NOT IDENTIFIED IN CURRENT MATERIAL DESIGN |
+| Design Freeze / implementation / execution | BLOCKED / NOT AUTHORIZED |
+
+## 9. Condiciones para cerrar la medición y el Design Freeze
+
+Antes de cerrar G-SCI/G-MAT/G-TEST deben existir:
+1. DGP/instancia y roster B1/UE versionados, con Need_preZ y evidencia basal;
+2. F* con predicados atómicos, mapping, IAM, obligatoriedad/NA, C0/G/H y snapshots;
+3. O-CONF con evento terminal, fuente/oráculo independiente validado, regla, error, cobertura, cegamiento y ficha §224 completa;
+4. decisión justificada de si O-CONF es el único Outcome confirmatorio o si otro O_k tiene una razón científica independiente; no se añade por disponibilidad de datos;
+5. criterio de Value y autoridad de valoración estipulados en truth_dgp;
+6. selección ex ante y justificada de al menos el conjunto de dimensiones V_j que se pretenda estudiar; cada ficha §224 completa;
+7. fuentes/instrumentos y validación P182, missingness/censura P183 y regla de trade-offs;
+8. DAG y estimandos por resultado/dimensión/horizonte, con vías colaterales e interacciones;
+9. asignación D2, población, soporte, unidad/interferencia y horizonte reconciliados con el ciclo previo;
+10. separación efectiva Generator/Analyzer/Evaluator y criterios de recuperación/abstención P177/P178.
+
+Si estos requisitos no pueden satisfacerse, se reduce explícitamente el alcance confirmatorio o se mantiene NOT_IDENTIFIED/INDETERMINATE; no se completa con supuestos favorables.
+
+## 10. Autorización y no-regresión
+
+Este documento cierra la reconciliación de arquitectura de medición y de criterios de admisibilidad; no operacionaliza O-CONF ni instancia Value. No crea decisión científica, no cambia DEC-C10-095, D2, población, B1, Opción A, TGCV Core, RMA, Evidence→Claim Matrix, STATUS o claims.
+
+No se autoriza schema físico, captura material, fixtures, código, implementación, generación de datos, simulación, estimación o ejecución científica.
+
+`scientific_execution=false`; `execution_authorized=false`.
