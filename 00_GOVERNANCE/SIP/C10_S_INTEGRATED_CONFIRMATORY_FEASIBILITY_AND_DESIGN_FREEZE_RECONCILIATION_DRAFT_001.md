@@ -273,3 +273,12 @@ La reconciliación complementaria está desarrollada en C10_S_D2_ASSIGNMENT_POPU
 Precisión clave: las probabilidades D2 de programación de intento (0 en control, 1 en tratamiento) son reglas de política condicionales a Z; no especifican la probabilidad experimental P(Z=1 | estrato,UA), ratio ni mecanismo de aleatorización. Tampoco deben confundirse con cumplimiento/recepción c, intento de fondo b o éxito técnico candidato s=0.80.
 
 El contrato lógico de q_X* y positividad queda aclarado, pero distribución, pesos, soporte y factibilidad por historia no están materializados. q_L* solo se incorpora si se requiere historia secuencial post-Z con confusión inducida y estrategia longitudinal. E_i/App, UNKNOWN, IAM/C_SRC, roster, snapshots y aislamiento siguen OPEN/BLOCKED. No cambia el dictamen de no Design Freeze ni las autorizaciones.
+
+
+## 16. Reconciliación de operacionalización confirmatoria Outcome/Value (2026-11-11)
+
+Artefacto rector: `C10_S_OUTCOME_VALUE_OPERATIONALIZATION_RECONCILIATION_DRAFT_001.md`, maestro §276.
+
+El dictamen de factibilidad se mantiene. Se aclara que F* es el criterio funcional de ruta completa y O-CONF el resultado adjudicado de conformidad del destino; no se contabilizan como dos endpoints independientes. O-CONF sigue candidato prioritario, sin predicados atómicos, mapping/IAM, C0/G/H, snapshots, evento terminal ni oráculo independiente validado. FP-08 es gate probatorio separado.
+
+Value conserva vector P179; B1/Need_preZ y perspectiva B1 son la base, pero autoridad/criterio, consecuencia, dimensiones V_j/k, instrumentos, escalas, baseline y horizonte siguen abiertos. No hay ningún Y_j confirmatorio completo. ITT por O/V separados; C3/C4 siguen no identificados en diseño material actual. G-SCI/G-MAT/G-TEST permanecen bloqueados; no cambia la autorización.
