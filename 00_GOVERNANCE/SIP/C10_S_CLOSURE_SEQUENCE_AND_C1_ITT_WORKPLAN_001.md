@@ -331,3 +331,35 @@ El cumplimiento de este criterio no equivale a Design Freeze, autorización de i
 ### Próximo paso
 
 Continuar directamente con la reconciliación integrada A–B–C, contrastando los artefactos existentes y resolviendo los huecos dentro del mismo ciclo. No volver a presentar PA–PE ni B1/D2 como paquetes por cerrar. Si al terminar persiste una decisión irreducible, elevar solo esa decisión concreta para adjudicación; no generar una nueva lista acumulativa de pendientes.
+
+## 24. Ejecución de la reconciliación integrada A–B–C — 2026-11-11
+
+**Artefacto rector:** `C10_S_SYNTHETIC_HARNESS_INTEGRATED_SPECIFICATION_DRAFT_001.md`.
+
+**Resultado:** `A_B_C_RECONCILED / IMPLEMENTABLE_SPECIFICATION_CANDIDATE / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED`.
+
+Se ha realizado la reconciliación integrada en un único artefacto, reutilizando DGP temporal/roles, base DGP, inventario finito/Reach, D2 assignment/population/support, PD, B1-PREZ, B2–B3, operacionalización Outcome/Value, PE y U_G. No se han reabierto decisiones aceptadas ni creado familias paralelas de datos o pruebas.
+
+### A — DGP y estimandos
+
+Quedan integrados el roster sintético y la unidad de asignación condicional a aislamiento, calendario t−1/t0…t9 y subledger de petición, configuración obligatoria de escenarios, secuencia generativa, separación programación/intento/provisión/C_dep/A_f*/D_f*/ΔT_acc*/Reach/trayectoria, potenciales, estimandos ITT/primeras etapas/θ_Af/LATE_f/C4 y reglas de identificación/abstención. Los parámetros sin decisión aprobada son inputs obligatorios de configuración; no reciben defaults. Los valores históricos .20/.80/s=.80 no se elevan a parámetros confirmatorios.
+
+### B — observación y análisis
+
+Quedan integrados truth_dgp / observed_evidence / evaluation_adjudication, proyección de evidencia con cobertura/error/missingness/censura, contenedor genérico de resultados OUTCOME_TECHNICAL y VALUE_CONTEXTUAL sin inventar V_j, contrato de salida por estimando×resultado×población×horizonte y evaluación posterior contra truth. O-CONF y Value conservan su estado no operacionalizado/no instanciado; un resultado no instanciado no se convierte en cero ni en missing ordinario. La no-identificación y abstención son salidas válidas.
+
+### C — datos, interfaces y controles
+
+Quedan definidos nueve tipos lógicos de artefacto, interfaces y precondiciones fail-closed de los seis componentes, identidades y referencias reutilizadas, reglas temporales/trivalentes, serialización por perfil de objeto, firewall por rol, manifiestos y criterios de prueba/reproducibilidad. JCS sigue limitado a UDG-01/U1. El contrato no selecciona tecnología de despliegue ni altera los contratos U_G existentes.
+
+### Frontera y pendientes no bloqueantes del harness genérico
+
+Se mantienen fuera de la especificación genérica, para la futura instancia confirmatoria material o escenarios sustantivos específicos: operación concreta de B1/Need_preZ por UE; ficha O-CONF; perspectiva/autoridad y dimensiones V_j; roster/IAM/snapshots/inventario/aislamiento/soporte D2 material; valores numéricos por escenario, N/R/tolerancias; y perfil físico/stack de despliegue. Los parámetros de escenario y métodos/tolerancias se proporcionan mediante configuración versionada. Si un estimando carece de semántica suficiente, el Analyzer devuelve NOT_IDENTIFIED/NOT_INSTANTIATED/INDETERMINATE en vez de inventarla.
+
+Estas reservas no reabren PA–PE, B1, D2, población, cardinalidad, identidad de servicio ni decisiones JCS. No se añaden paquetes de cierre separados.
+
+### Dictamen
+
+La especificación del **motor/harness sintético parametrizado** queda reconciliada documentalmente y se considera candidata implementable bajo contratos de configuración explícitos. Esto no significa que una instancia confirmatoria D2 esté identificada, que Outcome/Value estén operacionalizados, que se haya concedido Design Freeze, ni que el código exista o haya sido probado.
+
+**Siguiente estado de trabajo:** revisión/adjudicación de esta especificación integrada y, solo tras autorización expresa, implementación técnica del harness. La ejecución científica seguirá requiriendo autorización independiente. `scientific_execution=false`; `execution_authorized=false`.
