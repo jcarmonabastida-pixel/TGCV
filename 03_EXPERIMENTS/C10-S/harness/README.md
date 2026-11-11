@@ -26,7 +26,7 @@ The focal truth is the analytical contrast under the common direct-path regime (
 [
 \theta_A=(\lambda_1-\lambda_0)\{\mu_Q(d1)-\mu_Q(d0)\}.
 ]
-The realized assignment contrast is separately retained as the package ITT truth. A declared direct path blocks focal attribution; an unknown direct-path status forces indeterminacy.
+The realized assignment contrast is separately retained as the package ITT truth. Focal attribution is emitted only when the direct path is declared absent, the common regime is established, positivity and version consistency are established, measurement is ideal, and interference is absent. A declared direct path blocks focal attribution; an unknown direct-path status or a failed focal gate forces indeterminacy.
 
 ## Explicit limitations
 
