@@ -1542,3 +1542,12 @@ La arquitectura de seis responsabilidades, los bundles de rol, el pipeline V0–
 | Autorización | No autoriza implementación, fixtures, simulación, estimación ni ejecución |
 
 Fuente normativa: `00_GOVERNANCE/SIP/DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001.md`. DEC-C10-069 se conserva dentro de su alcance original; la presente decisión añade la regla de instanciación por UE.
+
+
+## PB-MAT — reconciliación documental sin nueva decisión científica (2026-11-11)
+
+Se registra `C10_S_PB_MATERIAL_D2_INSTANCE_AND_ISOLATION_RECONCILIATION_DRAFT_001.md` como reconciliación del contrato material, no como nueva decisión científica. Reutiliza DEC-C10-066/067, DEC-C10-068/069, DEC-C10-065/076, DEC-C10-079…083, DEC-C10S-B1-UNIT-001 y DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001. No reabre ni amplía su alcance.
+
+**Dictamen:** contrato/plantilla funcional común e instancia lógica única por UE armonizados; adaptador/dependencia P1 separado; P0, F*/oráculo, mapping, autorización basal y A1/A2 invariantes por requisito. El requisito no demuestra invariancia. Roster/IDs, IAM/C_SRC, snapshots, grafo, artefacto/runtime, ACL/recursos, actor/recepción/ventanas/reintentos, soporte/interferencia y pruebas permanecen OPEN/BLOCKED. B-M13/M14 no pueden ser modificados por B.
+
+No se aprueba ningún parámetro operativo nuevo, schema físico, fixture, valor DGP ni estimando. No se autoriza captura, implementación, simulación, estimación o ejecución.
