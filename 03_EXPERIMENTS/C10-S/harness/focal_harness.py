@@ -68,6 +68,9 @@ class ScenarioConfig:
             raise ContractError("baseline transition probabilities must be strictly between 0 and 1")
         if self.direct_path_status not in ("ABSENT", "PRESENT", "UNKNOWN"):
             raise ContractError("direct_path_status must be ABSENT, PRESENT or UNKNOWN")
+        if not all(math.isfinite(value) for value in
+                   (self.alpha01, self.alpha10, self.gamma01, self.gamma10)):
+            raise ContractError("transition effects must be finite numbers")
         if self.direct_path_status == "ABSENT" and (self.gamma01 != 0.0 or self.gamma10 != 0.0):
             raise ContractError("cannot declare direct paths ABSENT when gamma is non-zero")
 
@@ -280,7 +283,7 @@ class Analyzer:
             raise FirewallError("Analyzer received a non-conforming evidence schema")
         arm0 = [r["q_b1_observed"] for r in evidence.rows if r["assignment_z"] == 0]
         arm1 = [r["q_b1_observed"] for r in evidence.rows if r["assignment_z"] == 1]
-        if not contract.randomized_assignment or not arm0 or not arm1:
+        if not contract.randomized_assignment or len(arm0) < 2 or len(arm1) < 2:
             return self._abstain(evidence, contract, "RANDOMIZATION_OR_ARM_SUPPORT_NOT_ESTABLISHED")
         estimate = mean(arm1) - mean(arm0)
         var0 = variance(arm0) / len(arm0) if len(arm0) > 1 else math.inf
