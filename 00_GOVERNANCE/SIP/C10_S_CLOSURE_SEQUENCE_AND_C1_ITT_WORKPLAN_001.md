@@ -2173,3 +2173,23 @@ Permanece un límite de alcance, no un bloqueo de P178 focal: los artefactos son
 **Dictamen:** `P178_SINGLE_SAMPLE_ANALYZER_EQUIVALENCE_PASS / 16_CONTRACT_AND_BRIDGE_TESTS_PASS / CLEAN_REPLAY_PASS / ANALYZER_MONTE_CARLO_VALIDATION_OPEN / CONFIRMATORY_EXECUTION_FALSE`.
 
 **Siguiente paso acotado:** convertir el puente en evaluación Monte Carlo del Analyzer solo si se autoriza expresamente como una ejecución metodológica no confirmatoria y se especifican de antemano las métricas de recuperación, cobertura, error de clasificación/abstención y criterios de aceptación. No ampliar la cuadrícula P178 ni presentar este puente de una muestra como calibración.
+
+## 54. Protocolo de validación Monte Carlo del Analyzer frente a P178 (2026-11-11)
+
+**Autorización:** el usuario autorizó expresamente la ejecución no confirmatoria en GitHub Actions, limitada a la cuadrícula P178 existente. Esta autorización no cubre ampliaciones de cuadrícula ni ejecución confirmatoria.
+
+**Reconstrucción de referencia:** el script `03_EXPERIMENTS/C10-S/calibration/p178_focal_monte_carlo.py` define exactamente 27 celdas: K={2,10,50}, pi0={0.20,0.50,0.80} y escenarios `null`, `positive`, `negative`. Cada celda usa N=700 (350 por brazo), R=10.000, lambda0=0.25, lambda1=0.75, transiciones basales 0.2/0.2 y la regla de semilla `20261118 + 29*index`, con el orden K, pi0, escenario definido en el script. No se incluyen la curva N×efecto ni los diagnósticos adversariales.
+
+**Diseño de evaluación:** cada réplica se genera con el mismo DGP y mecanismo de muestreo de P178 (`draw_arm`, secuencia de llamadas y semilla de celda), se convierte únicamente asignación y Q_B1 observado en evidencia admitida, se sella y pasa por Analyzer. La verdad analítica theta_A se calcula independientemente con `oracle_theta`; no se entrega al Analyzer. La comparación con la verdad ocurre después de producirse la salida del Analyzer. No se usa el Generator del harness como sustituto del DGP P178: sus potenciales y acoplamiento no reproducen el muestreo P178.
+
+**Métricas por celda:** estimación media y sesgo frente a theta_A; desviación estándar y RMSE; error estándar medio; cobertura del IC95%; tasa de rechazo bilateral; MCSE y Wilson 95% de cobertura/rechazo; réplicas inválidas; proporción de resultados con identificación focal correcta; diferencias respecto a las métricas de referencia P178. Se conserva la salida ITT de paquete y focal por separado. El Analyzer no se recalibra a partir de los resultados.
+
+**Criterios fijados antes de observar resultados:** (i) 10.000 réplicas válidas por celda; (ii) cero discrepancias de clasificación en las 27 celdas bajo los supuestos declarados; (iii) cobertura nominal 95% compatible con 0.95 según su intervalo Wilson Monte Carlo por celda; (iv) para los nueve nulos, tasa de rechazo compatible con 0.05 según Wilson; (v) para las 18 celdas no nulas, potencia mínima objetivo 0.80, evaluada con el límite inferior Wilson; (vi) MCSE de proporciones <=0.005; (vii) MCSE/sd del sesgo <=0.05 y MCSE relativo del RMSE <=0.05. Una celda que no cumpla se informa como fallo/indeterminación de calibración, sin cambiar umbrales retrospectivamente. La señal débil no forma parte de estas 27 celdas.
+
+**Límite de identificación y abstención:** las 27 celdas son escenarios focales identificables, con vía directa ausente, régimen común, positividad, consistencia, medición ideal y sin interferencia. Por tanto, esta validación no estima la capacidad de abstenerse ante falta de identificación. Esa conducta permanece cubierta únicamente por las pruebas de contrato existentes; no se atribuirá al Monte Carlo.
+
+**Separación de evidencia:** P178 original es el benchmark de referencia del estimador; esta ejecución mide el comportamiento del Analyzer sobre réplicas P178. El puente determinista de §53 es solo equivalencia en una muestra. Ni el benchmark ni esta validación constituyen ejecución confirmatoria o validación causal del programa TGCV.
+
+**Proveniencia y ejecución:** ejecutar en GitHub Actions sobre el commit exacto de la rama de investigación; guardar por celda métricas agregadas, parámetros, semillas, versiones, hashes, stdout/stderr y manifest. No persistir filas individuales salvo necesidad diagnóstica justificada. La ejecución solo se considerará completada tras PASS de integridad, auditoría de resultados y replay reproducible conforme al workflow técnico. El disparador debe ser explícito y acotado; no se usará un push accidental.
+
+**Dictamen previo:** `ANALYZER_MONTE_CARLO_PROTOCOL_DEFINED / 27_P178_CELLS_ONLY / NON_CONFIRMATORY_AUTHORIZED / EXECUTION_AND_AUDIT_PENDING`.
