@@ -258,3 +258,18 @@ El contrato integrado queda registrado en `C10_S_B1_PREZ_ADJUDICATION_AND_CONSEQ
 **Límite material:** no existe aún roster truth por UE ni evidencia observada con cobertura demostrada. Por tanto, la regla está cerrada documentalmente, pero la adjudicación unidad por unidad permanece OPEN/BLOCKED. STANDARD/READ_ONLY y procesamiento posterior siguen abiertos, sin bloquear la definición basal mínima aceptada.
 
 **Siguiente operación:** comprobar el inventario real de fuentes pre-Z admisibles y su cobertura por B1/UE, usando solo material ya disponible/autorizado. Si falta, registrar el vacío y mantener ?. No generar roster, snapshots ni fixtures. No reabrir decisiones aceptadas ni autorizar implementación/ejecución.
+
+
+## 21. Resultado del paquete B1-PREZ-SOURCE-INVENTORY — auditoría de fuentes y cobertura (2026-11-11)
+
+Se incorpora `C10_S_B1_PREZ_EVIDENCE_SOURCE_INVENTORY_AND_COVERAGE_AUDIT_DRAFT_001.md`.
+
+**Dictamen:** se revisaron los artefactos de diseño C10-S y el protocolo S1–S8. Existen contratos y especificaciones que respaldan la definición conceptual de B1, el servicio lógico, la separación Need/Request/Outcome/Value y las reglas de provenance/adjudicación. No se localizaron fuentes materiales pre-Z vinculadas a unidades B1/UE concretas, roster material, declaraciones basales por unidad, snapshots IAM/configuración, expedientes EVIDENCE_REGISTER/CLAIM_EVIDENCE_LINK poblados ni adjudicaciones E1/E2.
+
+**Cobertura:** NONE para identidad material, binding B1–UE–service_instance, objetivo basal individual, configuración/IAM pre-Z, snapshots, provenance de fuentes concretas, cobertura negativa y truth DGP por unidad. El contrato genérico ENABLED/PROFILE está definido parcialmente como plantilla, pero no hay mapping ni evidencia por instancia. NONE no significa ausencia del objeto.
+
+**Adjudicabilidad:** no se emiten filas ni etiquetas para unidades no materializadas. Con las fuentes revisadas, no se puede sostener observed Need_preZ=1 ni 0; el resultado procedimental sería ?/BLOCKED. No se infiere Need=0 de ausencia de solicitudes, logs o documentos sin universo cerrado. Truth DGP permanece NOT MATERIALIZED y segregada.
+
+**Límite de la búsqueda:** el dictamen cubre los artefactos C10-S revisados en la rama de investigación; no afirma inexistencia de documentos externos o no consultados. No se inspeccionaron sistemas reales, conectores ni runtime.
+
+**Siguiente paso documental:** precisar el catálogo de tipos de fuente y el criterio de cobertura por unidad, sin crear roster, truth, snapshots ni fixtures. Cualquier materialización o captura requiere autorización específica posterior. No se reabren decisiones B1 aceptadas ni se autoriza implementación/ejecución.
