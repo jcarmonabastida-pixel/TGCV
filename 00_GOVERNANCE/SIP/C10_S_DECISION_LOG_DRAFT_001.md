@@ -1523,3 +1523,22 @@ Siguiente paquete: **PD — DGP, mecanismos C5 y evaluación adversarial**. Sin 
 PE no crea una nueva decisión científica ni reabre decisiones aceptadas. Reutiliza, dentro de su alcance, DEC-C10-061/062/065/068/069/070/071/074–088, DEC-C10-095 y las decisiones B1 de modalidad de solicitud, oportunidad estandarizada, enlace request–trajectory y adjudicación causal. Las reglas UDG/JCS/PAR son locales a sus contratos; no constituyen aceptación global del schema físico C10-S.
 
 La arquitectura de seis responsabilidades, los bundles de rol, el pipeline V0–V8 y los gates G-SCI/G-MAT/G-SCHEMA/G-ROLE/G-TEST/G-REPRO/G-AUTH son una síntesis técnica propuesta en PE, no decisiones aprobadas ni autorizaciones. Los formatos físicos, motor, APIs, seguridad/custodia, serialización general, esquema de eventos y salida final del Analyzer permanecen OPEN y requieren revisión/decisión antes de implementarse. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001 — 2026-11-11
+
+| Campo | Registro |
+|---|---|
+| Decisión | Armonizar la identidad del servicio B1 por UE con DEC-C10-069 |
+| Estado | **ACEPTADA** por aprobación expresa del responsable científico |
+| Contrato | `C10S-SVC-REQUEST-PROCESSOR`, versión común `1.0.0` |
+| Plantilla | Definición CMP/PAR/RUL común y versionada por contrato |
+| Instancia | `instance_id` único por UE; `instance_version` monotónica e independiente |
+| Componente | `component_id` local; clave compuesta `(instance_id, component_id)` |
+| Referencia | `C10S-SVC-REQUEST-PROCESSOR-001` permanece como instancia ejemplar DEC-C10-069 |
+| Justificación | Evitar colapsar instancias aisladas por UE sin duplicar el contrato funcional |
+| Dependencias abiertas | Roster e IDs concretos, IAM/ACL, evidencia de aislamiento, MET/schema físico |
+| Alcance | C10-S / PB / B1; no altera A, Core, RMA, Matrix, STATUS ni claims |
+| Autorización | No autoriza implementación, fixtures, simulación, estimación ni ejecución |
+
+Fuente normativa: `00_GOVERNANCE/SIP/DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001.md`. DEC-C10-069 se conserva dentro de su alcance original; la presente decisión añade la regla de instanciación por UE.
