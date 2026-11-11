@@ -492,3 +492,16 @@ Las secciones anteriores conservan fielmente el estado de la matriz al redactars
 **Consecuencia para Outcome/Value:** las decisiones B1 y A/B resuelven el tipo candidato y ciertas cardinalidades de diseño, pero no crean por sí mismas una consecuencia valorable ni una dimensión V_j. B1 sigue sin instancia material completa: demanda/Need_preZ, relación concreta, consecuencia, perspectiva/autoridad, dimensiones, indicadores, fuentes, escalas, horizonte y reglas de valoración permanecen OPEN. O-CONF sigue siendo el Outcome con mejor anclaje conceptual en A, pero su ficha §224 continúa incompleta. No se declara ninguna ficha O/V operacionalizada.
 
 **Regla de mantenimiento:** no volver a listar como OPEN la decisión ya aceptada de N_opportunities=1 o la modalidad estandarizada; listar únicamente los detalles materiales aún abiertos. Mantener el texto histórico y esta reconciliación como addendum, sin borrar trazabilidad. Véase también `C10_S_CLOSURE_SEQUENCE_AND_C1_ITT_WORKPLAN_001.md`.
+
+
+## 10. Reconciliación PA — estado vigente de Outcome y Value (2026-11-11)
+
+El paquete PA confirma que la arquitectura A/B debe preservarse sin transferencia de resultados:
+
+- **A / Outcome técnico:** O-CONF conserva el mejor anclaje conceptual disponible por F*/FP-01…08, pero no es una medida operacional confirmatoria. Predicados, mapping, tolerancias, oráculo ciego/independiente, snapshots, cobertura y adjudicación siguen pendientes. O-MIG/O-SVC/O-REC/O-BUR tampoco están operacionalizados.
+- **B / Value:** B1 por UE, modalidad de oportunidad estandarizada y N=1 por UE permanecen como decisiones de diseño aceptadas en su alcance. No hay instancia material completa del beneficiario/servicio ni consecuencia independiente, perspectiva/autoridad, dimensiones V_j, indicadores, fuentes, escalas, baseline, horizonte o regla de adjudicación.
+- **P179:** se mantiene Value como vector durante identificación y se preservan trade-offs. No se seleccionan por defecto las cinco dimensiones candidatas, no se impone un escalar y no se introducen pesos.
+- **No circularidad:** ningún V_j se define como recodificación de A_f, ΔT_acc, Reach, selección, ejecución u Outcome técnico; si se desea valorar uno de esos constructos, debe reformularse explícitamente la pregunta causal.
+- **ITT:** C1 es una familia de contrastes por variante × población × resultado/dimensión × horizonte. Un ITT sobre O_k no identifica ITT sobre V_j ni demuestra ΔT_acc→ΔV. La especificación actual no permite un ITT confirmatorio completo para A ni para B.
+
+**Dictamen:** `OUTCOME_NOT_OPERATIONALIZED / VALUE_NOT_INSTANTIATED`. No se inventa un beneficiario, una consecuencia, una dimensión, un indicador ni una regla de agregación. El detalle integrado está en §15 de `C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md`. Sin freeze, implementación o ejecución.
