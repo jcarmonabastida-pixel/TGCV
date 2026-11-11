@@ -178,9 +178,9 @@ Se completa la reconciliación integrada en C10_S_INTEGRATED_CONFIRMATORY_FEASIB
 
 **Dictamen:** CONFIRMATORY_FEASIBILITY_NOT_ESTABLISHED / NOT_DESIGN_FROZEN. No se reinician PA–PE ni se reabren D2 primario, P*τ2 primaria, B1 por UE, oportunidad única ni la base semántica B2–B3. La asignación material D2 y soporte no están especificados; IAM/snapshots/provisión e aislamiento no están materializados; Outcome no está operacionalizado y Value no está instanciado. C1 ITT no es estimando confirmatorio completo; C2 no tiene primeras etapas materiales; C3/θ_A y θ_Af, LATE_f y C4/IIE permanecen no identificados/no evaluables. No hay cotas numéricas defendibles actualmente.
 
-Se preserva la distinción entre ITT de política/paquete, efecto de accesibilidad, mediación y residual. No se obtiene residual por resta ad hoc. Outcome y Value no se relacionan por definición causal exclusiva. El maestro Draft 004 continúa con incidencia de recuperación (SHA conocido, contenido vacío); no se reconstruye por inferencia.
+Se preserva la distinción entre ITT de política/paquete, efecto de accesibilidad, mediación y residual. No se obtiene residual por resta ad hoc. Outcome y Value no se relacionan por definición causal exclusiva. Nota histórica supersedida (2026-11-11): el maestro Draft 004 se recuperó íntegramente mediante blob Git y §274 quedó incorporado. La incidencia era del método Contents, no del contenido del documento.
 
-**Siguiente operación:** resolver la integridad del maestro y preparar, bajo autorización específica, el levantamiento de los bloqueos materiales y de medición descritos en el artefacto rector. Ningún gate de Design Freeze pasa. No se autoriza captura, schema físico, fixtures, implementación, generación de datos, simulación, estimación o ejecución.
+**Siguiente operación:** completar el crosswalk de consistencia entre §§266–274 y los contratos especializados, eliminar estados históricos obsoletos y verificar referencias/alcances. Después, preparar el levantamiento de bloqueos materiales y de medición únicamente bajo autorización específica. Ningún gate de Design Freeze pasa. No se autoriza captura, schema físico, fixtures, implementación, generación de datos, simulación, estimación o ejecución.
 
 ## Corrección de recuperación del maestro C10-S — 2026-11-11
 
