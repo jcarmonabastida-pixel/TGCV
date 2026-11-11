@@ -915,3 +915,18 @@ Estado: DAG candidato definido; inventario de campo, valores truth/observed, inv
 ## 13. Especialización propuesta de t9 para la variante B — C10S-B-VALUE-MIN-001 (2026-11-11)
 
 El evento t9 (Value) mantiene su contrato genérico: V_i, regla/versión, beneficiario, horizonte y R_V,i; Value se evalúa bajo regla fija e independiente. Para B, C10S-B-VALUE-MIN-001 propone requisitos previos de admisibilidad: identidad/tipo sintético versionado; relación con unidad de servicio y unidad experimental; elegibilidad y demanda pre-Z; consecuencia valorada; perspectiva/autoridad; población/horizonte, cardinalidad y provenance. Se mantienen separados unidad experimental, unidad lógica de servicio, beneficiario, actor ejecutor y evaluador. No inferir beneficiario de CMP.owner, CMP-SERVICE-LOGIC-001, LOGICAL_SERVICE_UNIT ni actor. Demanda basal no equivale a selección/uso/ejecución. V_j no puede recodificar A_f/ΔT_acc, Reach ni Outcome técnico ni incorporar circularmente el efecto que se quiere estimar. Vías alternativas B→consecuencia/Value deben permanecer explícitas; si existen, ITT_Z se interpreta como efecto de política/paquete salvo identificación adicional. El vector P179, §224, P182/P183 y el firewall Generator/Analyzer/Evaluator se preservan. Esta sección es propuesta documental para B: no selecciona beneficiario, demanda, perspectiva, dimensión, regla, escala ni parámetro; no altera A ni aprueba el contrato integrado.
+
+
+## 14. Reconciliación temporal propuesta de necesidad B1 y solicitud (2026-11-11)
+
+La aceptación del tipo B1 añade un constructo basal del beneficiario sin sustituir el reloj ni los eventos ya definidos en §2 y §§17–22.
+
+- Need_preZ (verdad DGP) y cualquier E_req_preZ se estipulan/clasifican en t−1, antes de Z. Son distintos de la elegibilidad experimental P* y de las condiciones constitutivas de accesibilidad.
+- La solicitud efectivamente formulada/registrada (Request_event) es un evento distinto de la necesidad basal. Su ventana y posición temporal exactas siguen OPEN.
+- No se asigna por conveniencia Request_event a t5 Knowledge/Consider, t6 Selection/Start o t7 Execution. La relación semántica con esos eventos debe reconciliarse antes de extender el DAG o el esquema temporal.
+- D_resource permanece la demanda operativa de recursos/capacidad del servicio, diferenciada de Need_preZ. Separar stock, disponibilidad/asignación, demanda operativa y consumo, como ya requiere el contrato.
+- La operación/aceptación/rechazo/procesamiento de la solicitud, el estado técnico del servicio y la consecuencia del beneficiario son eventos/constructos distintos. No inferir satisfacción de la necesidad desde procesamiento correcto.
+- Truth del Generator, evidencia observada del Analyzer y adjudicación del Evaluator siguen separados. Need_preZ=? o evidencia insuficiente no se imputa a 0. No se condiciona ITT a Request_event ni a variables post-Z.
+- No se altera la secuencia t−1/t0…t9, el DAG aprobado/candidato, DEC-C10-066/067, D2/D1, ni se introduce un tiempo, variable física, fixture o parámetro.
+
+Estado: propuesta documental de especialización B1; solicitud y su posición en el reloj OPEN; no implementación ni ejecución.
