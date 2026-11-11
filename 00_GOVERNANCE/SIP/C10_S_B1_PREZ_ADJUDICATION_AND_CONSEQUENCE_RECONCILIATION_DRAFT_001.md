@@ -166,3 +166,14 @@ Estas son condiciones de diseño/adversariales; no son resultados empíricos ni 
 Se ha cerrado la arquitectura documental de Need_preZ y la estructura de adjudicación, no la clasificación material de unidades ni una instancia confirmatoria completa. El siguiente paso útil, sin reabrir el contrato funcional, es un crosswalk de fuentes pre-Z disponibles por B1/UE que permita determinar si hay evidencia admisible y cobertura cerrada. Si no existe material autorizado, el resultado debe seguir siendo ?/BLOCKED; no se fabrican filas ni snapshots. En paralelo, puede detallarse la semántica de perfiles o procesamiento solo si se demuestra que es necesaria para definir el objetivo basal, no para adornar el DGP.
 
 No se seleccionan dimensiones de Value ni se establece horizonte. No se autoriza roster material, schema físico, fixtures, captura/materialización, implementación, generación de datos, simulación, estimación, Design Freeze o ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 11. Resultado de la auditoría material de fuentes pre-Z (2026-11-11)
+
+El inventario y dictamen de cobertura se documentan en `C10_S_B1_PREZ_EVIDENCE_SOURCE_INVENTORY_AND_COVERAGE_AUDIT_DRAFT_001.md`. Ese artefacto distingue documentos de diseño, truth del DGP, evidencia observada pre-Z y evidencia técnica del servicio/configuración.
+
+La revisión confirma que los documentos existentes respaldan el contrato conceptual y las reglas de adjudicación, pero no constituyen evidencia observada por unidad. No se localizó roster material B1/UE, declaración basal individual, vínculo material B1–UE–service_instance, snapshot IAM/configuración pre-Z, expediente de evidencia poblado ni evaluación E1/E2. La plantilla U_G y el registro de cobertura permanecen vacíos; la cobertura efectiva de estas dimensiones es NONE.
+
+Por tanto, no se adjudica ninguna unidad ni se genera roster. Con el material revisado, observed Need_preZ=1 y 0 no son sostenibles; el resultado procedimental sería ?/BLOCKED. Truth DGP permanece NOT MATERIALIZED. Este resultado no implica que no existan fuentes fuera del conjunto C10-S revisado.
+
+La auditoría no altera la definición funcional aceptada, no selecciona dimensiones de Value y no autoriza materialización, captura, implementación o ejecución.
