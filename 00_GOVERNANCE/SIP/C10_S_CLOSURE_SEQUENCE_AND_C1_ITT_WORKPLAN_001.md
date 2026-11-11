@@ -948,3 +948,57 @@ La regla normativa `v_B1` no necesita otra discusión abstracta. La única cuest
 
 No se autoriza implementación, generación de datos, simulación ni ejecución científica.
 
+
+
+## 33. Dictamen del puente Q_B1 → consecuencia B1: defendible con frontera funcional explícita (2026-11-11)
+
+**Estado:** BENEFICIARY_CONSEQUENCE_BRIDGE_DEFENDED_FOR_SYNTHETIC_B1 / Q_B1_ADMISSIBLE_AS_SINGLE_GOAL_CONSEQUENCE_MEASURE / VALUE_RULE_CONSISTENT / SCENARIO_PARAMETERS_OPEN / NO_DESIGN_FREEZE / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 33.1 Reconstrucción determinante
+
+La revisión de la fuente histórica B1 permite resolver la cuestión planteada en §32 sin introducir una operación de negocio adicional. La §14.3 de `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md` establece expresamente que la consecuencia basal para B1 puede referirse a la **disponibilidad de la capacidad de admisión** que constituye su objetivo, y advierte que no debe confundirse una admisión puntual con el mantenimiento efectivo de la función ni con el logro completo del propósito.
+
+La §14.1 define la función mínima de trabajo: una instancia lógica de servicio recibe solicitudes por o en representación de B1, comprueba la habilitación declarada en destino y puede admitirlas cuando `PAR-SVC-ENABLED=true`; expone el perfil declarado. La §14.2 mantiene separados admisión, procesamiento, respuesta, O-CONF/F*, consecuencia B1 y Value.
+
+La ficha B1 de adjudicación pre-Z, §6, define la consecuencia inmediata como el cambio post-Z en la situación de B1 respecto de su objetivo basal: si puede contar con la función de servicio que pretende mantener disponible. Incluye disponibilidad funcional y continuidad entre las clases de consecuencia, sin convertirlas automáticamente en dimensiones o índices.
+
+Por tanto, la relación no se infiere solo del nombre del servicio ni de la perspectiva asignada al evaluador: está respaldada por el propósito basal aceptado, la relación B1↔instancia lógica de servicio por UE y la especialización funcional mínima aceptada.
+
+### 33.2 Correspondencia admisible y límite
+
+Se acepta el siguiente mapping para esta instancia sintética de objetivo único:
+
+- `A_B1^*(u,t)`: estado verdadero de disponibilidad efectiva de la capacidad de admisión del servicio en el entorno de destino.
+- `Q_B1^*(W)`: fracción del horizonte común durante la que B1 puede contar con esa capacidad funcional disponible.
+- `consequence_B1^*(W)`: grado de mantenimiento/disponibilidad de la función que constituye el objetivo basal de B1, representado por `Q_B1^*(W)`.
+- `V_B1^*(W)=v_B1(Q_B1^*(W)\mid G_B1)=Q_B1^*(W)`: valoración estipulada del cumplimiento del objetivo único.
+
+La identidad numérica entre consecuencia y Value es admisible en este DGP porque la regla normativa sintética declara que el único criterio valorativo considerado es el cumplimiento temporal del objetivo de disponibilidad funcional. La consecuencia conserva su interpretación descriptiva/funcional; Value es su valoración bajo esa regla. No se afirma que sean constructos universalmente idénticos ni se modifica P179.
+
+Este mapping **no** afirma que B1 haya formulado una solicitud natural, que una solicitud concreta haya sido admitida, procesada o respondida, que se haya satisfecho una necesidad de negocio posterior, que O-CONF sea conforme, ni que el beneficiario haya experimentado satisfacción/utilidad humana. Es una instancia sintética de beneficiario y objetivo funcional, no una afirmación empírica sobre usuarios reales.
+
+### 33.3 Condiciones de validez conservadas de §31
+
+La admisibilidad del endpoint queda condicionada a cumplir íntegramente §31:
+- horizonte común y duración/discretización explícitos;
+- truth temporal de disponibilidad generada sin derivarla de `T_acc`, Reach, ejecución u O-CONF;
+- canal de observación independiente, con cobertura, error, latencia, missingness y censura declarados;
+- no equivalencia entre ENABLED declarativo y disponibilidad efectiva;
+- no equivalencia entre probe puntual y continuidad;
+- separación truth_dgp / observed_evidence / evaluation;
+- regla normativa invariante entre DGP positivo, nulo, negativo y adversarial.
+
+Si el escenario introduce procesamiento posterior, respuesta, satisfacción, demora, recuperación, riesgo u otra consecuencia distinta, `Q_B1` no la representa por sí sola. Esa extensión exigiría otra consecuencia/dimensión justificada; no se incorpora al núcleo mínimo actual.
+
+### 33.4 Corrección de precedencia respecto de §32
+
+El dictamen provisional de §32, `BENEFICIARY_CONSEQUENCE_BRIDGE_NOT_ESTABLISHED`, queda **SUPERSEDED** por esta reconstrucción histórica y el dictamen de §33. Se conserva §32 como registro de la objeción y del control de no circularidad que motivaron la comprobación; no constituye ya el estado vigente.
+
+No se requiere una nueva decisión del usuario para reabrir el significado de Value: el puente se deriva de contratos de trabajo previamente aceptados. Tampoco se reabre la regla normativa de §30 ni la medida temporal de §31.
+
+### 33.5 Siguiente cierre operativo
+
+El endpoint sintético B1 queda semánticamente admisible. La siguiente operación es cerrar, en una sola especificación de escenario, los parámetros obligatorios de §31 y su justificación: horizonte/duración y discretización, proceso generador de disponibilidad, canal/modelo de observación, cobertura/error/missingness/censura y criterios de precisión/sensibilidad. No se fijan valores numéricos sin justificación y no se amplía el conjunto de consecuencias.
+
+Después se integra `V_B1` en los escenarios de recuperación, nulo, vías alternativas/adversariales y no-identificación para evaluar si el Analyzer recupera o limita el efecto causal previsto. Esto no autoriza implementación, generación de datos, simulación ni ejecución científica.
+
