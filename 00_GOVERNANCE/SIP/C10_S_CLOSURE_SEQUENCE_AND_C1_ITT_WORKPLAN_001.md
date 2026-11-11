@@ -187,7 +187,7 @@ La reconciliación conjunta queda registrada en C10_S_INTEGRATED_CONFIRMATORY_FE
 
 C1 ITT, C2 primeras etapas, C3 efecto de accesibilidad/θ_A/θ_Af, LATE_f y C4 IIE no están identificados/evaluables con el estado actual. No hay cotas numéricas justificadas. ITT de política/paquete no se equipara al efecto de accesibilidad; el efecto mediado no se obtiene por ajuste convencional; el residual no se calcula por resta ad hoc. Outcome y Value son constructos distintos, sin imponer relación causal exclusiva Outcome→Value.
 
-**Siguiente operación:** recuperar íntegramente el maestro C10-S Draft 004 (actualmente fetch con SHA y contenido vacío), resolver la consistencia documental y después abordar los bloqueos materiales/medición únicamente bajo autorización específica. No Design Freeze, implementación ni ejecución autorizadas.
+**Nota de secuencia supersedida (2026-11-11):** la recuperación íntegra del maestro se completó mediante blob Git y se añadió §274. La siguiente operación es reconciliar consistencia entre §§266–274 y los contratos especializados, corregir referencias cruzadas obsoletas y después abordar bloqueos materiales/medición bajo autorización específica. No Design Freeze, implementación ni ejecución autorizadas.
 
 ## Corrección de recuperación del maestro C10-S — 2026-11-11
 
