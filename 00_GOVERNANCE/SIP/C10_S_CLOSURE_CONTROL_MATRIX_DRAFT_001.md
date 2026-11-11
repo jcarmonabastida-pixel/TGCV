@@ -3177,3 +3177,21 @@ El cierre es de identidad lógica/documental. No demuestra aislamiento real, aus
 | Interferencia/soporte | UE/UA/UO, clúster y exposición a recursos compartidos | OPEN |
 
 No se declara MD-C1/MD-C4, G-MAT, aislamiento, primera etapa focal ni IV. No captura, implementación o ejecución autorizada.
+
+## B2–B3 — reconciliación de beneficiario, Outcome y Value (2026-11-11)
+
+**Artefacto rector:** `C10_S_B2_B3_BENEFICIARY_OUTCOME_VALUE_RECONCILIATION_DRAFT_001.md`. **Dictamen:** B2_B3_WORKING_BASIS_ACCEPTED / SEMANTIC_RECONCILIATION_DOCUMENTED / OUTCOME_NOT_OPERATIONALIZED / VALUE_NOT_INSTANTIATED.
+
+| Control | Resultado documental | Estado pendiente |
+|---|---|---|
+| B1/Need_preZ | B1 como entidad solicitante-beneficiaria; Need_preZ basal separado de uso/solicitud | Contenido, observabilidad y ficha material OPEN |
+| Identidad B1 | Una B1 por UE; servicio lógico único/versionado por UE | Roster/IDs y aislamiento material OPEN |
+| Outcome | Resultado técnico separado de proceso/accesibilidad/Value | O-CONF mejor anclado; ficha §224 incompleta; otros O_k OPEN |
+| Consecuencia B1 | Cambio respecto de Need_preZ | Constructo/horizonte sin operacionalizar |
+| Value | Valoración contextual de consecuencia desde perspectiva B1 | Perspectiva/autoridad y V_j no instanciadas |
+| Causalidad | Outcome puede contribuir, no es causa exclusiva impuesta | Vías colaterales y DAG por resultado OPEN |
+| Dimensionalidad | Vector P179 y trade-offs preservados | No dimensiones/pesos confirmatorios seleccionados |
+| Medición | Fichas separadas por O_k y V_j; P182/P183 | Fuentes, escalas, error, ausencia/censura OPEN |
+| Identificación | ITT Outcome y ITT Value separados | No transferencia; C3/C4 no identificados en D2 material actual |
+
+No se declara Outcome/Value operacionalizado ni Design Freeze. No implementación, fixtures, simulación o ejecución autorizada.
