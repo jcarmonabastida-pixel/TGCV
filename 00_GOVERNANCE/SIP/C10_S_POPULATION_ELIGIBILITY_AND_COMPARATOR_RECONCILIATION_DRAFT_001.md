@@ -270,3 +270,10 @@ Se acepta `P*_{τ2}` como población objetivo primaria candidata de C1 ITT D2 y 
 La composición de `E_i`, evidencia y estados de indeterminación, `τ2)/frontera/mapping/snapshots, error de clasificación, cobertura de F_alt, soporte `q_X*`, interferencia, aleatorización, horizonte y Outcome/Value permanecen OPEN. Se mantiene la distinción entre `E_i`, `Need_preZ` y `E_req_preZ`, así como entre truth `A_f,0*` y clasificación observada. No se excluye por eventos post-Z.
 
 La decisión completa y sus límites constan en `DEC-C10S-C1-POPULATION-PRECEDENCE-001.md`. Los estados históricos de §§8–9 no se reescriben: su propuesta de aprobación pendiente queda resuelta únicamente en la precedencia P*τ2/P*F; los restantes criterios siguen abiertos.
+
+
+## 12. Precisión sobre E_i tras C1.3 (2026-11-11)
+
+El crosswalk `C10_S_C1_BASELINE_ELIGIBILITY_CROSSWALK_DRAFT_001.md` propone como hipótesis de composición mínima `E_i=E_scope,i∧App*(τ2,S0_i)`. No es una definición aceptada ni congelada. La definición de E_scope debe derivarse del IAM pre-Z del snapshot fuente y del contrato constitutivo por unidad; App debe tener su predicado y evidencia propios. La cardinalidad abstracta CMP/PAR/RUL y el roster mínimo del servicio no bastan para declarar pertenencia P*.
+
+Esta precisión no altera la definición de P*τ2/P*F ni las condiciones separadas C_dep,0=0 y A_f,0*=0. Próximo trabajo: crosswalk de registros IAM C_SRC y sus mappings con App/C_dep/A_f; no recuperar la fórmula histórica con C_other.
