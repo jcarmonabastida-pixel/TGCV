@@ -3103,3 +3103,21 @@ PB completado documentalmente; siguiente paquete activo **PC**. No implementaci�
 | Identificación actual | C3/C4 Value NOT IDENTIFIED/NOT EVALUABLE | Faltan contratos y evidencia material |
 
 PC queda completado documentalmente; no se declara θ_A, θ_Af, IIE ni Value identificados. Siguiente paquete activo: **PD — DGP, mecanismos C5 y evaluación adversarial**. No implementación ni ejecución autorizadas.
+
+
+## PD — resultado del ciclo integral (2026-11-11)
+
+**Dictamen:** PD_RECONCILED_DOCUMENTALLY / DGP_QUANTITATIVE_SPECIFICATION_OPEN / NOT_DESIGN_FROZEN. Registro rector: C10_S_PD_DGP_MECHANISM_AND_ADVERSARIAL_EVALUATION_RECONCILIATION_DRAFT_001.md; plan §16.158; protocolo de paquetes §11.
+
+| Subdominio | Resultado | Bloqueo decisivo |
+|---|---|---|
+| DGP integrado | Cadena temporal, potenciales, estados estructurales y consecuencias separados | Distribuciones conjuntas, parámetros, reglas y versiones no cerrados |
+| Mecanismos C5 | Contrafactuales por etapa y clases necessary/enabling/modifying preservadas | Contrastes D2 concretos, propiedad relevante, soporte y causas concurrentes abiertos |
+| Enlaces petición–trayectoria | Temporal, trazabilidad y contribución causal no intercambiables | Cardinalidades secundarias y evidencia observable por escenario abiertas |
+| Truth/evidence/evaluation | Tres planos segregados; Analyzer sin truth; Evaluator compara tras sellado | Contrato técnico/roles y verificación computacional pendientes |
+| Escenarios adversariales | Nulo, adverso, vías directas/colaterales, interacción, heterogeneidad, IV, interferencia, alternativas, medición, missingness y censura cubiertos documentalmente | Fixtures, parámetros y tolerancias no implementados |
+| P177/P178/P179/P182/P183 | Reutilizados sin duplicar IDs | N/R, potencia, precisión, SE_MC y Value requieren cierre cuantitativo/material |
+| Value/Outcome | Límites de PA preservados | Value no instanciado; Outcome no operacionalizado |
+| Estado | Reconciliación documental cerrada | Maestro C10-S no recuperado íntegramente en esta sesión; no se declara propagación al maestro |
+
+PD no está congelado, implementado ni ejecutado. No se autoriza código, fixtures confirmatorios, simulación, estimación ni ejecución científica. Siguiente paquete: **PE**, con preparación conceptual solamente y condicionado a los bloqueos científicos/materiales y a la recuperación del maestro. No se modifica main.
