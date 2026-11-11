@@ -344,7 +344,8 @@ class Evaluator:
             focal_recovery = focal_error <= tolerance
         if contract.direct_path_status == "PRESENT":
             expected_focal_status = "NOT_IDENTIFIED"
-        elif contract.direct_path_status == "UNKNOWN":
+        elif (contract.direct_path_status == "UNKNOWN" or not contract.common_regime
+              or not contract.positivity or not contract.version_consistency):
             expected_focal_status = "INDETERMINATE"
         else:
             expected_focal_status = "IDENTIFIED" if not truth.direct_path_truth else "NOT_IDENTIFIED"
