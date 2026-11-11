@@ -2128,3 +2128,26 @@ Permanece un límite de alcance, no un bloqueo de P178 focal: los artefactos son
 **Commits:** `2a76634f783e12cb9a4ec757db1f1e9b06e2eb98` (campos separados); `751ec420c6bf8bd07910aa6e46d3b5b70f35188f` (payload de abstención y hash); `0e4487185502ccf141a096193c9373661c634b34` (pruebas de salidas separadas); `fef48e05bedf5d844b0c52ff84c6d7d75404aeef` (README); `09e44c4b98654117c256ad2745950bb4b1fb762a` (aserciones explícitas adicionales).
 
 **Dictamen:** `PACKAGE_ITT_AND_FOCAL_OUTPUTS_SEPARATED / 15_CONTRACT_TESTS_PERSISTED_NOT_RUN / LOCAL_EXECUTION_BLOCKED_BY_ENVIRONMENT / SCIENTIFIC_EXECUTION_FALSE`.
+
+
+## 52. Ejecución técnica de la suite del harness en GitHub Actions (2026-11-11)
+
+**Autorización y alcance:** ejecución de pruebas unitarias/contrato de software del harness focal. No es ejecución científica del DGP, no genera resultados Monte Carlo ni valida empíricamente el Analyzer frente a P178. Se utiliza un runner limpio de GitHub Actions porque la coordinación se realizó desde móvil y no había checkout local disponible; el código probado es el commit exacto de la rama de investigación.
+
+**Workflow añadido:** `.github/workflows/c10-s-focal-harness-tests.yml`. Se activa en push a `research/c10-s-consolidation-draft` cuando cambian el harness o el propio workflow, y admite `workflow_dispatch`. Ejecuta compilación Python, suite primaria, replay desde `git archive` limpio solo después del PASS primario, y carga capturas stdout/stderr y manifiesto como artefacto.
+
+**Ejecución observada:**
+- Workflow run: `43079423179`, conclusión `success`.
+- URL: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/43079423179
+- Commit exacto probado: `e8dd7f06ebd459a7e13f417c3b92961aadb8b586`.
+- Runner: Ubuntu GitHub-hosted; Python 3.12.16.
+- Compilación de `focal_harness.py` y `test_focal_harness.py`: PASS.
+- Suite primaria: **15/15 PASS**, 0 fallos, 0 errores; 0.112 s.
+- Replay desde archivo fuente limpio del mismo commit: **15/15 PASS**, 0 fallos, 0 errores; 0.110 s.
+- Job completo: PASS; artefacto de ejecución subido correctamente.
+
+**Artefacto y digest:** artifact ID `13884480082`, nombre `c10s-focal-harness-e8dd7f06ebd459a7e13f417c3b92961aadb8b586-43079423179-1`; SHA-256 del ZIP `f2e93bc43b68dff2d5707f94498d8e9934508b71c38702ecb4597c0d0ff8e613`; retención declarada 30 días. Contiene capturas primarias y replay, stdout/stderr y manifiesto con commit/run/ref.
+
+**Dictamen:** `SOFTWARE_CONTRACT_SUITE_PASS_15_OF_15 / CLEAN_ARCHIVE_REPLAY_PASS / EXECUTION_PROVENANCE_ARTIFACTED / SCIENTIFIC_EXECUTION_FALSE`. El resultado acredita la compilación y el comportamiento cubierto por las 15 pruebas de contrato; no acredita identificación causal fuera de los supuestos codificados, no valida los canales degradados no incluidos, no demuestra la seguridad efectiva del firewall y no constituye aceptación científica ni cierre de C10-S.
+
+**Siguiente paso acotado:** contrastar el Analyzer implementado contra el benchmark focal P178 ya persistido, separando recuperación del estimador, cobertura/inferencia y comportamiento de abstención. No ampliar la cuadrícula de calibración ni iniciar una ejecución confirmatoria en este paso.
