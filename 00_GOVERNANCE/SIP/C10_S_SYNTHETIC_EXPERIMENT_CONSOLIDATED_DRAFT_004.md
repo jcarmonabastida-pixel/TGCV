@@ -12089,3 +12089,23 @@ Se define el pipeline futuro V0–V8: consistencia estática; schema/serializaci
 La implementación confirmatoria requiere G-SCI, G-MAT, G-SCHEMA, G-ROLE, G-TEST, G-REPRO y G-AUTH. PA–PD siguen imponiendo bloqueos científicos/materiales: Value y Outcome, IAM/snapshots, mapping B→g^Af, vías colaterales, soporte/interferencia, parámetros DGP, contrastes, fixtures, N/R, potencia y tolerancias. PC mantiene θ_A(q), θ_Af(q_X*) y mediación no identificados en el D2 material actual.
 
 **Dictamen:** PE reconciliado documentalmente; contrato técnico parcial; implementación no lista, no implementada ni ejecutada. No se crea una decisión científica nueva. No se modifica main, Core, RMA, Matrix, STATUS ni claims. Se mantienen scientific_execution=false y execution_authorized=false.
+
+
+## 271. Decisión aceptada — identidad y versionado de instancia B1 por UE (2026-11-11)
+
+**Decisión:** `DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001` — ACCEPTED por aprobación expresa. Documento normativo: `00_GOVERNANCE/SIP/DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001.md`.
+
+### 271.1 Regla aceptada
+
+- `contract_id=C10S-SVC-REQUEST-PROCESSOR` y `contract_version=1.0.0` son comunes a las UE mientras conserven la misma semántica contractual.
+- La definición CMP/PAR/RUL constituye una plantilla funcional común, versionada por contrato; no implica compartir instancia ni estado mutable.
+- Cada UE dispone de `instance_id` único en el roster C10-S y de `instance_version` monotónica e independiente.
+- `component_id` es local a la instancia; la clave inequívoca es `(instance_id, component_id)`.
+- `C10S-SVC-REQUEST-PROCESSOR-001` permanece como instancia ejemplar de referencia de DEC-C10-069, no como ID compartido de todas las UE.
+- Se conserva la política MAJOR.MINOR.PATCH contractual y se separa del versionado de instancia.
+
+### 271.2 Alcance y límites
+
+La decisión armoniza DEC-C10S-B1-UNIT-001 con DEC-C10-069 sin alterar sus alcances originales. Cierra la identidad lógica/documental, pero no demuestra aislamiento material ni ausencia de interferencia. El roster y asignación concreta de IDs, IAM/ACL, recursos/estado/credenciales/colas/infraestructura, MET/schema físico, mapping y pruebas siguen abiertos.
+
+No modifica Opción A, Core, RMA, Evidence→Claim Matrix, STATUS ni claims. No autoriza implementación, fixtures, simulación, estimación o ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
