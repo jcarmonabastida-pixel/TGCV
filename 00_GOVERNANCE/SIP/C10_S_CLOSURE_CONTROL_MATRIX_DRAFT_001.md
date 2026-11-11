@@ -3084,3 +3084,22 @@ No surgió una decisión nueva que requiera aprobación del usuario: las lagunas
 **Decisión pendiente:** instancia lógica de servicio única/versionada por UE, compartiendo contrato/versión y plantilla CMP; la ID DEC-C10-069 se conserva como instancia ejemplar, no se replica como ID de todas las UE. Recomendación favorable para mantener aislamiento aceptado. Requiere aceptación expresa antes de congelar. El resto son bloqueos materiales o de operacionalización.
 
 PB completado documentalmente; siguiente paquete activo **PC**. No implementación ni ejecución autorizadas.
+
+
+## PC — resultado del ciclo integral (2026-11-11)
+
+**Dictamen:** PC_RECONCILED_DOCUMENTALLY / C3_C4_NOT_IDENTIFIED_IN_CURRENT_D2_MATERIAL / NOT_DESIGN_FROZEN. Registro rector: maestro C10-S §268; plan §16.157.
+
+| Subdominio | Resultado | Bloqueo decisivo |
+|---|---|---|
+| Jerarquía estimandos | C1/ITT, θ_A(q), θ_Af(q_X*), LATE_f y C4 separados | No transferir identificación entre ellos |
+| C3 general | Pregunta g1/g0 sobre ΔT_acc* bajo q común | D2 focal no implementa ni identifica g1/g0 |
+| C3 focal | θ_Af(q_X*) definido como objetivo candidato | Mapping B_D2→g^Af, q_X*, soporte y vías colaterales abiertos |
+| DAG | Vía transformacional y vías paralelas integradas | Inventario material B-M01…15 y aislamiento ausentes |
+| C4 | Mediación interventional sobre ΔT_acc*; Reach/Π secuenciales o bloque explícito | Intervención mediadora, confusión post-Z y soporte longitudinal no cerrados |
+| Outcome/Value | O-CONF candidato; Value vectorial preservado | Sin ficha O completa, V_j, beneficiario, perspectiva ni regla |
+| Residual/directo | No se deriva por resta | Descomposición formal no definida |
+| P177/P178/P179/P182/P183 | Reutilizados; DAG/CAUS existentes no duplicados | C-MED PARCIAL/OPEN; fixtures/tolerancias no ejecutados |
+| Identificación actual | C3/C4 Value NOT IDENTIFIED/NOT EVALUABLE | Faltan contratos y evidencia material |
+
+PC queda completado documentalmente; no se declara θ_A, θ_Af, IIE ni Value identificados. Siguiente paquete activo: **PD — DGP, mecanismos C5 y evaluación adversarial**. No implementación ni ejecución autorizadas.
