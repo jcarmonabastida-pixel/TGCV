@@ -79,6 +79,8 @@ class AnalysisContract:
     randomized_assignment: bool
     direct_path_status: DirectPathStatus
     common_regime: bool
+    positivity: bool
+    version_consistency: bool
     measurement_ideal: bool
     interference_absent: bool
 
@@ -289,7 +291,7 @@ class Analyzer:
         if not package_ok:
             return self._abstain(evidence, contract, "PACKAGE_ITT_ASSUMPTIONS_OR_MEASUREMENT_NOT_ESTABLISHED")
         package_status: Identification = "IDENTIFIED"
-        focal_ok = (contract.direct_path_status == "ABSENT" and contract.common_regime)
+        focal_ok = (contract.direct_path_status == "ABSENT" and contract.common_regime\n                    and contract.positivity and contract.version_consistency)
         focal_status: Identification = "IDENTIFIED" if focal_ok else (
             "NOT_IDENTIFIED" if contract.direct_path_status == "PRESENT" else "INDETERMINATE")
         reason = None if focal_ok else "FOCAL_ATTRIBUTION_REQUIRES_NO_DIRECT_PATH_AND_COMMON_REGIME"
