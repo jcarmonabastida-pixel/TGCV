@@ -2791,3 +2791,22 @@ AB-01/02 no pasan a DONE ni habilitan Design Freeze, schema freeze, fixtures, pa
 | Design Freeze / implementación / ejecución | NOT AUTHORIZED | scientific_execution=false; execution_authorized=false |
 
 **Master propagation caveat:** la ruta 00_GOVERNANCE/SIP/C10_S_SYNTHETIC_EXPERIMENT_CONSOLIDATED_DRAFT_004.md devuelve contenido vacío (longitud 0) en la lectura de GitHub, aunque tiene blob SHA registrado. No se sobrescribe ni se afirma propagación al maestro hasta recuperar y verificar su contenido real. DEC-C10-095, Decision Log, plan y matriz Value sí se registran en esta rama; la reconciliación del maestro es un subgate documental pendiente.
+
+
+## 140. Gate B-BEN/B-VAL — C10S-B-VALUE-MIN-001 (2026-11-11)
+
+| Elemento | Estado | Criterio |
+|---|---|---|
+| Contrato mínimo beneficiario/Value B | DRAFT / DOCUMENTARY | Requisitos de admisibilidad definidos; ninguna identidad o regla seleccionada |
+| Tipo/identidad beneficiario | OPEN | Requiere estipulación versionada y relación explícita con unidad/servicio |
+| Demanda/eligibilidad pre-Z | OPEN | Basal, ex ante y no equivalente a uso/selección |
+| Consecuencia/perspectiva/autoridad | OPEN | Debe ser distinta de A/Reach/O técnico y fijada ex ante |
+| Dimensiones/fichas V_j | OPEN | P179 vectorial; §224; P182/P183; no pesos por defecto |
+| DAG/estimandos B | CANDIDATE | Vías alternativas y efecto paquete separados; no aprobación causal |
+| Paquete C | IN PROGRESS | Cerrar semántica antes de indicadores |
+| Paquete D | BLOCKED ON SEMANTIC CONTRACT | No schema físico/fixtures hasta cierre |
+| Paquete E | BLOCKED ON C/D | Verificar invariantes y abstención/no identificación |
+| MED-02/MED-03 | OPEN | No se cierran |
+| Design Freeze/implementación/ejecución | NOT AUTHORIZED | scientific_execution=false; execution_authorized=false |
+
+Véase C10S-B-VALUE-MIN-001. No modifica A, DEC-C10-068, roster A ni Core.
