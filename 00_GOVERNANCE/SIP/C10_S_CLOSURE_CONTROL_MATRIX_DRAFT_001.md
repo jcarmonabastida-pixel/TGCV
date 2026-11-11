@@ -3195,3 +3195,31 @@ No se declara MD-C1/MD-C4, G-MAT, aislamiento, primera etapa focal ni IV. No cap
 | Identificación | ITT Outcome y ITT Value separados | No transferencia; C3/C4 no identificados en D2 material actual |
 
 No se declara Outcome/Value operacionalizado ni Design Freeze. No implementación, fixtures, simulación o ejecución autorizada.
+
+
+## Reconciliación integrada de factibilidad confirmatoria — 2026-11-11
+
+**Artefacto rector:** C10_S_INTEGRATED_CONFIRMATORY_FEASIBILITY_AND_DESIGN_FREEZE_RECONCILIATION_DRAFT_001.md.
+
+| Control integrado | Dictamen | Evidencia/bloqueo decisivo |
+|---|---|---|
+| Asignación D2 | ARCHITECTURE ACCEPTED / MATERIAL OPEN | Faltan ratio/probabilidades, estratos, algoritmo/semilla, desviaciones y provenance |
+| q_X*/q_L*, positividad y soporte | OPEN / NOT ASSESSED | No materializados por política, historia, población y resultado |
+| UE/UA/UO | CONDITIONAL | UE=UA depende de aislamiento; UO no aumenta N independiente |
+| Interferencia | NOT DEMONSTRATED | Roster, IAM, recursos/agentes/canales y grafo transitivo ausentes |
+| IAM/C_SRC y snapshots | BLOCKED | NONE / no capturados; E_i y predicados basales no adjudicables |
+| Provisión B / C_dep* | BLOCKED | B-M01…15 sin inventario; actor/artefacto/recepción/ventana/rollback OPEN |
+| A_f*/D_f*/ΔT_acc* | NOT IDENTIFIED / NOT EVALUABLE | Sin evidencia material independiente ni snapshots comparables |
+| Outcome O_k | NOT OPERATIONALIZED | O-CONF candidato; ninguna ficha §224 completa |
+| Value V_j | NOT INSTANTIATED | B1/Need_preZ, perspectiva/autoridad, consecuencia, dimensiones y fichas incompletas |
+| C1 ITT | NOT CONFIRMATORY / NOT IDENTIFIABLE NOW | Asignación, población material, Y_j y horizonte no cerrados |
+| C2 primeras etapas | NOT ESTIMABLE NOW | No confundir C_dep* o s=.80 con apertura focal D_f* |
+| C3 θ_A/θ_Af | NOT IDENTIFIED | Mapping D2→g^Af, q común, soporte y vías colaterales abiertos |
+| LATE_f | NOT IDENTIFIED | IV/exclusión/monotonicidad/relevancia/no interferencia no demostrados |
+| C4 IIE | NOT IDENTIFIED / NOT EVALUABLE | Intervención mediadora, confusión post-Z y soporte secuencial abiertos |
+| Efecto directo/residual | NOT DEFINED / NOT IDENTIFIED | No se deriva por resta ad hoc |
+| Cotas y sensibilidad | FUTURE OPTION ONLY | No hay cobertura, parámetros ni restricciones para cotas informativas actuales |
+| Design Freeze | BLOCKED | G-SCI/G-MAT/G-SCHEMA/G-ROLE/G-TEST/G-REPRO bloqueados; G-AUTH no otorgado |
+| Maestro C10-S | RECOVERY BLOCKER | SHA disponible, contenido vacío; no reconstruido ni sobrescrito |
+
+No se autoriza captura, schema físico, fixtures, implementación, generación de datos, simulación, estimación o ejecución. scientific_execution=false; execution_authorized=false.
