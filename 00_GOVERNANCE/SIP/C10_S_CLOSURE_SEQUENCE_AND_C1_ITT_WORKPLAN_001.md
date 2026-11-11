@@ -1438,3 +1438,43 @@ Quedan especificados los criterios metodológicos recomendados: α bilateral 0.0
 Una vez aprobados, la calibración podrá calcular N/R y los parámetros numéricos concretos de la cuadrícula. La calibración no es ejecución científica confirmatoria, pero sí es trabajo computacional/simulación y por tanto no se inicia con el estado actual de autorización. La siguiente transición tras la aprobación será producir el manifiesto cuantitativo y ejecutar únicamente la calibración autorizada; la ejecución confirmatoria seguirá siendo una autorización separada.
 
 Se mantiene scientific_execution=false y execution_authorized=false. No se han generado datos, fixtures, simulaciones ni resultados.
+
+
+
+## 40. Auditoría de precisión Monte Carlo y alcance factible de la potencia P178 (2026-11-11)
+
+**Estado:** MCSE_VS_CONFIDENCE_HALF_WIDTH_DISAMBIGUATED / POWER_TARGET_RESTRICTED_TO_FINITE_DESIGN_GRID / NO_SINGLE_N_WITHOUT_EFFECT_REGION / §39_CLARIFIED / CALIBRATION_NOT_AUTHORIZED / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 40.1 Corrección explícita: SE Monte Carlo no es semiamplitud del intervalo
+
+La frase de §39.4 que agrupaba “semiamplitud/SE_MC ≤0.005” mezcla dos criterios distintos y queda precisada así:
+
+- **Criterio adoptado:** error estándar Monte Carlo (MCSE) de una proporción ≤0.005. Como MCSE=sqrt[p(1−p)/R] y p(1−p)≤0.25, R=10,000 por celda garantiza MCSE≤0.005 en el peor caso, para réplicas independientes.
+- **Informe obligatorio:** además del MCSE, informar el intervalo binomial de incertidumbre Monte Carlo (Wilson o exacto) y su semiamplitud observada. Con R=10,000, la semiamplitud normal aproximada del 95% en el peor caso es 1.96×0.005=0.0098, no 0.005.
+- **Si se exigiera semiamplitud del 95% ≤0.005:** el límite conservador normal requeriría R≥(1.96×0.5/0.005)^2≈38,416 por celda; el valor final se verificaría con el intervalo binomial elegido. Este no es el criterio base aprobado en §39 y no debe atribuirse a R=10,000.
+
+Para sesgo/RMSE y otras métricas continuas se mantiene la regla adaptativa de §39.4, con tolerancia absoluta preregistrada cuando el criterio relativo no sea estable o esté indefinido. La unidad de parada es cada métrica y celda relevante, no un R común impuesto sin diagnóstico.
+
+### 40.2 Potencia: solo puede exigirse en una cuadrícula finita de diseño
+
+La potencia ≥0.80 se evalúa en los puntos no nulos explícitamente incluidos en una cuadrícula finita y versionada de diseño. No se interpreta como garantía para todo θ_A≠0: para efectos arbitrariamente próximos a cero ningún N finito puede garantizar potencia ≥0.80 con α fijo.
+
+La cuadrícula debe derivarse de combinaciones admisibles de λ0/λ1, b01/b10, α01/α10, π0 y K de §§38 y 35, y sus valores verdaderos θ_A se calculan antes con el oráculo. Se incluyen puntos positivos y negativos, un punto nulo exacto y una banda próxima a cero. La inclusión en la cuadrícula no convierte el punto en MDE sustantivo ni en efecto relevante universal.
+
+El producto correcto es la curva N(θ_A) o la tabla N×θ_A para los puntos evaluados, con potencia, cobertura, sesgo/RMSE, anchura de intervalos y MCSE. Sin selección justificada de una región de efectos que deba cubrirse, no se declara un N operativo único ni “el N requerido” del experimento. El MDE solo puede informarse como lectura de la curva bajo N dado; no se usa para seleccionar retroactivamente puntos que hagan superar al Analyzer.
+
+### 40.3 Relación con PD §7 y alcance de las afirmaciones
+
+La exigencia histórica de PD §7 de fijar un efecto mínimo relevante y márgenes de equivalencia se limita aquí de forma explícita: este DGP es una prueba de rendimiento metodológico con verdad conocida, no un ensayo empírico confirmatorio sobre relevancia sustantiva de Value. Por tanto:
+- no se fija δ_min normativo ni margen de equivalencia;
+- no significación no se interpreta como equivalencia ni como evidencia de ausencia de efecto;
+- la banda próxima a cero se informa con incertidumbre y posible falta de potencia, sin clasificarla automáticamente como nula;
+- si en una fase posterior se pretende afirmar equivalencia o relevancia sustantiva, será necesaria una justificación externa y un margen preregistrado distinto del criterio de rendimiento del Analyzer.
+
+Esta limitación es de alcance, no una modificación de P178 ni una afirmación de que se hayan satisfecho todos sus requisitos para cualquier estimando de C10.
+
+### 40.4 Dictamen operativo
+
+La §39 queda aclarada sin alterar sus criterios base: α=0.05 bilateral, potencia objetivo 0.80 en puntos de diseño finitos, cobertura nominal 95%, MCSE≤0.005 para tasas y regla adaptativa para métricas continuas. R=10,000 es el límite conservador inicial para MCSE de proporciones, no una garantía de semiamplitud 95%≤0.005.
+
+Queda preparado el protocolo para generar, cuando exista autorización, una cuadrícula analítica y curvas de calibración; no existe todavía un N único ni un conjunto numérico aprobado de puntos. La calibración computacional sigue pendiente de aprobación explícita. No se han generado parámetros numéricos, fixtures, datos ni simulaciones.
