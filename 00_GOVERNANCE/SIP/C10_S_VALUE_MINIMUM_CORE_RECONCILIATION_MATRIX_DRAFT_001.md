@@ -202,9 +202,66 @@ Este dictamen no modifica el estado de aceptación de §224 ni declara incumplim
 | A1/A2 disponibles como valor de portabilidad | NOT_GROUNDED | Capacidad técnica no acredita utilidad/valor |
 | Seguridad/compliance como dimensión compensable | NOT_GROUNDED | Puede operar como restricción no compensatoria; requiere decisión contextual |
 
-## 8. Bloqueos exactos para pasar de arquitectura a operacionalización
+## 8. Auditoría de roles y beneficiarios en el dominio sintético
 
-1. **B1 — Perspectiva/beneficiario:** identificar en el dominio quién recibe, usa o valora el servicio; distinguir owner, operador, usuario, cliente y beneficiario sin presumir equivalencia.
+### 8.1 Fuentes históricas y precedencia
+
+Se contrastan los contratos y decisiones ya existentes, sin crear roles ni entidades:
+
+- DEC-C10-068 y `C10_S_SYNTHETIC_LOGICAL_SERVICE_FUNCTIONAL_CONTRACT_DRAFT_001.md`: servicio lógico sintético de procesamiento de solicitudes, con función abstracta de aceptar solicitudes cuando está habilitado y exponer un perfil operativo declarado. No selecciona producto, proveedor, plataforma ni servicio real; tampoco identifica consumidor, usuario, cliente o beneficiario concreto.
+- DEC-C10-069 y `C10_S_SERVICE_CMP_INSTANCE_IDENTITY_VERSIONING_PROPOSAL_DRAFT_001.md`: fija la identidad contractual, de instancia y CMP. `CMP-SERVICE-LOGIC-001` es un componente lógico de clase SERVICE_LOGIC; `CMP-SERVICE-LOGIC` es etiqueta provisional de owner lógico de regla/rol, no identidad de propietario del servicio ni beneficiario.
+- DEC-C10-089: acepta `LOGICAL_SERVICE_UNIT` como NODE raíz conceptual, pero deja sin adjudicar su relación de identidad con `CMP-SERVICE-LOGIC-001`. No autoriza inferir que sean el mismo objeto o dos entidades distintas.
+- `C10_S_DGP_TEMPORAL_AND_ROLE_CONTRACT_DRAFT_001.md`: t6 registra `actor` como campo de selección/inicio; t9 exige beneficiario, regla/version, horizonte y observación de Value. DGP-13 exige beneficiario, criterio, escala y horizonte fijados ex ante. El contrato sigue DRAFT / NO APROBADO / NO IMPLEMENTADO; los campos indican requisitos, no entidades materializadas.
+- §264 / plan §16.138: propietario del servicio, operador, mantenedor, usuarios (si existen) y responsable de riesgo (si procede) se proponen expresamente como roles candidatos, sin seleccionar.
+- §265 / plan §16.139: el roster no confirma beneficiarios/roles Value; no hay instrumentos ni registros de valoración poblados.
+
+### 8.2 Crosswalk de rol candidato a evidencia del dominio
+
+| Rol candidato de §264 | Evidencia concreta existente | Qué no demuestra | Dictamen |
+|---|---|---|---|
+| Propietario del servicio | Owner lógico provisional `CMP-SERVICE-LOGIC` para RUL; CMP concreto `CMP-SERVICE-LOGIC-001` | Propiedad organizativa, responsabilidad sobre el servicio, recepción de beneficios o autoridad para valorar | NOT_GROUNDED |
+| Operador | El DGP contempla un actor que inicia/ejecuta el intento; DEC-C10-068 define una función lógica de servicio | Identidad, función organizativa, responsabilidad operativa o beneficio del actor | NOT_GROUNDED |
+| Mantenedor | Ningún componente, parámetro, regla o decisión asigna mantenimiento | Existencia de equipo/persona/función de mantenimiento | NOT_GROUNDED |
+| Usuario/destinatario/solicitante | La definición funcional dice que el servicio acepta solicitudes; la definición genérica de servicio lógico alude a consumidor o sistema | No hay entidad solicitante, población de usuarios, relación de consumo, registro de solicitudes ni perspectiva de valoración | NOT_GROUNDED |
+| Responsable de riesgo | Seguridad/compliance aparecen como posibles restricciones y vías a considerar en P2 | No hay rol de riesgo identificado, mandato, criterio de tolerancia ni decisión de valoración | NOT_GROUNDED |
+| Evaluador independiente | Rol metodológico del contrato Generator/Analyzer/Evaluator | No es usuario, beneficiario ni stakeholder del servicio; su función es adjudicar evidencia | EXCLUIDO COMO BENEFICIARIO POR FUNCIÓN |
+| LOGICAL_SERVICE_UNIT | NODE raíz aceptado por DEC-C10-089 | No identifica persona/organización beneficiaria; su relación con CMP sigue sin adjudicar | NO ES ROL DE BENEFICIARIO |
+
+**Resultado:** ninguno de los cinco roles candidatos de §264 puede derivarse como actor materialmente existente a partir del contrato funcional, las decisiones aceptadas o el roster descrito en §265. Los campos `actor` y `beneficiario` del DGP son requisitos de registro, no evidencia de que exista una identidad asociada.
+
+### 8.3 Qué sí puede sostener el microdominio
+
+1. **Objeto funcional sintético:** una instancia lógica de servicio software de procesamiento de solicitudes, con comportamiento declarado por ENABLED/PROFILE y RUL. Es un objeto del mundo sintético estipulado, no un servicio real ni una población de usuarios.
+2. **Criterio técnico:** F*/FP-01…08 permite evaluar propiedades funcionales/de conformidad del paquete y de la ruta de migración, sujeto a predicados, mapping, tolerancias, oráculo y snapshots pendientes. Esto puede sostener un Outcome técnico cuando se operacionalice; no identifica por sí solo a quién beneficia ni cómo valora el resultado.
+3. **Actor ejecutor:** el DGP necesita registrar quién inicia/ejecuta B/W_attempt y eventos posteriores. El rol ejecutor puede especificarse para reproducir el mecanismo técnico, pero no debe reutilizarse automáticamente como operador del servicio, consumidor o beneficiario.
+4. **Consumidor abstracto:** la referencia semántica a un consumidor/sistema en la definición general de servicio lógico permite describir la finalidad funcional, pero no crea una entidad, población, preferencia ni medida de valor en esta instancia.
+5. **Restricciones:** seguridad/compliance pueden permanecer como predicados o restricciones no compensatorias si el contrato lo justifica; no se convierten automáticamente en una dimensión de Value ni requieren inventar un responsable de riesgo.
+
+### 8.4 Dictamen sobre posibilidad de instanciar Value
+
+El microdominio actual puede sostener el diseño de Outcomes técnicos relacionados con la conformidad funcional y la migración, una vez completadas sus fichas §224. No sostiene actualmente Value contextual porque faltan, conjuntamente:
+
+- identidad/rol real o sintético explícitamente estipulado del beneficiario/observador;
+- relación de ese actor con el servicio y la unidad experimental;
+- perspectiva desde la que valora;
+- criterio y dirección de valoración;
+- evidencia/indicador independiente del Outcome y de A/ΔT_acc;
+- escala, baseline y horizonte;
+- regla de adjudicación y provenance.
+
+No se concluye que Value sea imposible en este microdominio. Se concluye que **no está definido por el dominio aceptado hasta ahora**. Añadir un solicitante, operador o beneficiario sintético sería una extensión sustantiva del DGP, que requeriría una propuesta y decisión explícitas, no una inferencia desde el nombre del servicio.
+
+### 8.5 Decisión de diseño que no debe anticiparse
+
+No seleccionar ahora entre:
+- mantener Opción A solo como banco de pruebas de accesibilidad, conformidad y Outcomes técnicos, declarando Value no instanciado; o
+- ampliar explícitamente el DGP para estipular un actor consumidor/beneficiario sintético, su relación con la unidad, su perspectiva y regla de valoración.
+
+Ambas son rutas de diseño posibles, pero no equivalentes. La segunda modifica el mundo sintético y exige analizar nuevas vías causales, medición, interferencia y comparabilidad. No se adopta por conveniencia de completar §224.
+
+## 9. Bloqueos exactos para pasar de arquitectura a operacionalización
+
+1. **B1 — Perspectiva/beneficiario:** resolver si se mantiene Value no instanciado en Opción A o si se propone y acepta una extensión explícita del DGP que estipule consumidor/beneficiario sintético, su relación con la unidad y su perspectiva. No inferirlo desde CMP.owner, el actor ejecutor o el nombre del servicio.
 2. **B2 — Criterio V:** documentar qué resultado se valora, por quién, en qué dirección y bajo qué regla; justificar si V es vectorial o si se requiere agregación.
 3. **B3 — Outcome primario:** decidir si O-CONF es el Outcome primario y completar predicados, mapping, tolerancias, oráculo, snapshots y cobertura.
 4. **B4 — Independencia A/O/V:** demostrar fuentes, tiempos, evaluadores y reglas que impiden circularidad y leakage.
@@ -216,7 +273,7 @@ Este dictamen no modifica el estado de aceptación de §224 ni declara incumplim
 
 No se añaden bloqueos genéricos ni se convierten en requisitos de dimensión. Cada bloqueo debe cerrarse con evidencia concreta o declararse no identificable/no disponible.
 
-## 9. Consecuencias para los paquetes C/D/E y gates
+## 10. Consecuencias para los paquetes C/D/E y gates
 
 - **C / C-Value:** puede avanzar en reconciliación documental y definición de criterios; permanece OPEN materialmente mientras B1–B6 no se resuelvan.
 - **D:** debe consumir la especificación mínima y los estados OPEN/UNKNOWN sin inventar schema, indicador o regla de valoración.
@@ -225,7 +282,7 @@ No se añaden bloqueos genéricos ni se convierten en requisitos de dimensión. 
 - **Design Freeze:** no procede.
 - **Implementación/ejecución:** no autorizadas.
 
-## 10. Decisiones propuestas para revisión
+## 11. Decisiones propuestas para revisión
 
 | Propuesta | Contenido | Estado |
 |---|---|---|
@@ -238,11 +295,11 @@ No se añaden bloqueos genéricos ni se convierten en requisitos de dimensión. 
 
 Estas propuestas no modifican DEC-C10 existentes ni constituyen aceptación por sí mismas. P179/P182/P183 y §224 conservan precedencia; la matriz solo especializa su lectura para el crosswalk de Opción A.
 
-## 11. Estado y siguiente gate
+## 12. Estado y siguiente gate
 
 **Dictamen de esta matriz:** DOCUMENTARY RECONCILIATION UPDATED AGAINST RECOVERED CONTRACT REGISTER / MATERIAL OUTCOME-VALUE OPEN.
 
-Siguiente gate: contrastar el contenido restante de las fichas §224 y la instancia contra sus fuentes documentales; registrar la decisión explícita sobre el conjunto dimensional vectorial; después resolver B1–B3 (beneficiario/perspectiva, criterio V y Outcome primario) con evidencia del dominio, sin inferencias desde CMP.owner ni desde recursos técnicos.
+Siguiente gate: decidir, mediante propuesta explícita, si Opción A permanece limitada a Outcomes técnicos con Value no instanciado o si se amplía el DGP para introducir un consumidor/beneficiario sintético. No crear identidades ni reglas de valoración hasta esa decisión. Después resolver B2–B3 (criterio V y Outcome primario) con evidencia compatible con §224.
 
 No se ha modificado `main`; no se ha cerrado MED-02/MED-03; no hay Design Freeze, implementación ni ejecución científica.
 
