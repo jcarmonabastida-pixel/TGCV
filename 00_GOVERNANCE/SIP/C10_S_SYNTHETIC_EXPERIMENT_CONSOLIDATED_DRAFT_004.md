@@ -12153,3 +12153,18 @@ G-SCI, G-MAT, G-SCHEMA, G-ROLE, G-TEST y G-REPRO siguen BLOCKED; G-AUTH NOT GRAN
 ### 274.1. Precisión de trazabilidad de la recuperación
 
 La referencia SHA `61d3079213558f6f74c14b60600ae3ca04c0a395` y el tamaño de 1,134,655 caracteres corresponden al blob íntegro **anterior** a la adición de §274, no al blob actual. Se recuperó esa versión histórica íntegra, se inspeccionaron §§266–273 y sobre ese contenido se añadió §274; el documento no fue reconstruido. La versión resultante incluye §274 y esta aclaración. La lectura Contents/fetch_file continúa devolviendo contenido vacío en este entorno; la lectura verificable del maestro se realiza mediante el blob Git y su SHA vigente, registrado en el artefacto rector de trazabilidad. No se debe copiar el SHA histórico como si identificara la versión actual.
+
+
+## 275. Reconciliación integrada del contrato de asignación D2, población y soporte (2026-11-11)
+
+**Artefacto rector:** `C10_S_D2_ASSIGNMENT_POPULATION_SUPPORT_RECONCILIATION_DRAFT_001.md`. **Estado:** DESIGN_CONTRACT_RECONCILED_PARTIALLY / RANDOMIZATION_NOT_SPECIFIED / POPULATION_NOT_MATERIALIZED / SUPPORT_NOT_ESTABLISHED / NOT_DESIGN_FROZEN.
+
+Se reutilizan PA/C1, C1.3–C1.4, PB-MAT, DEC-C10-066/067, precedencia P*τ2/P*_F, separación de estimandos y DGP temporal/roles. No se reabren decisiones aceptadas ni se crea un diseño numérico.
+
+Se distinguen explícitamente: (i) probabilidad experimental de asignación (P(Z=1\mid estrato,UA)), aún no especificada; (ii) probabilidades de programación D2 condicionales a Z, ya aceptadas (0 en control, 1 en tratamiento); (iii) intento efectivo/recepción y provisión de fondo, con cumplimiento y contaminación abiertos; y (iv) éxito técnico candidato s=0.80, no aprobado ni equivalente a apertura A_f*/D_f*. No se presume ratio 1:1.
+
+P*τ2 conserva precedencia primaria candidata y P*_F secundaria. E_i=E_scope∧App*(τ2,S0) sigue propuesta no aceptada. E_scope como gate de alcance DGP, App como aplicabilidad semántica, C_dep,0=0 y A_f,0*=0 se mantienen separados. Unknown pre-Z no equivale a cero ni se excluye silenciosamente; la regla de análisis para ? debe elegirse antes de Z. No se adjudica población por falta de IAM/C_SRC/snapshots.
+
+q_X* es distribución objetivo de historias basales, no probabilidad de asignación. El soporte exige ambas políticas factibles y probabilidad positiva de ambos brazos en cada historia con masa positiva; distribución, pesos, cobertura y positividad no están materializados. q_L* solo se requiere si se incorpora historia longitudinal con confusión variable en el tiempo inducida por Z; no se usa ajuste marginal automático. UE=UA permanece condicionada a aislamiento; si no, clúster/exposición y estimando compatible.
+
+**Dictamen:** contrato de distinciones y condiciones reconciliado documentalmente; mecanismo de aleatorización, E_i/App, soporte q_X*, posible q_L*, interferencia, roster/IAM/snapshots y resultados siguen OPEN/BLOCKED. C1/C2/C3/C4 no pasan a identificados. No Design Freeze, captura, schema físico, fixtures, implementación, simulación, estimación ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
