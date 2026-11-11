@@ -2773,3 +2773,21 @@ AB-03/04 no pasan a DONE ni autorizan Design Freeze, fixtures, implementación o
 | M_F / M_A | SEMANTICALLY SPECIFIED | IDs/versiones y mappings materiales por etapa OPEN; independencia técnica no demostrada |
 
 AB-01/02 no pasan a DONE ni habilitan Design Freeze, schema freeze, fixtures, parser, implementación o ejecución científica. scientific_execution=false; execution_authorized=false.
+
+
+## 139. Gate de arquitectura A/B para C-Value — DEC-C10-095 (2026-11-11)
+
+| Área | Estado | Criterio / límite |
+|---|---|---|
+| Arquitectura A/B | ACCEPTED — DESIGN ARCHITECTURE | A permanece base inalterada; B autorizada como extensión DGP separada y versionada |
+| A / Value | NOT INSTANTIATED | No atribuir ΔT_acc→Value en A; no inferir beneficiario, preferencias ni medidas |
+| B / especificación | OPEN — DOCUMENTARY DESIGN | Rol, relación servicio-unidad, demanda pre-Z, perspectiva, criterio, vector, DAG, medición, horizonte, interferencia y parámetros requieren especificación/aceptación |
+| P179 | KEEP | Value vectorial y trade-offs; sin escalar/pesos por defecto |
+| P182/P183 | KEEP | Contratos transversales de medición, error, invariancia, ausencia, censura e identificación |
+| Paquete C | IN PROGRESS | Separar Outcome técnico A de Value sintético B; §224 pendiente |
+| Paquete D | BLOCKED ON SEMANTIC CONTRACTS | Consumir A/B versionados; separar truth del generador, evidencia observada y salida Analyzer; no schema inferido |
+| Paquete E | BLOCKED ON C/D ACCEPTANCE | No integración confirmatoria hasta contratos, estimandos, medición y provenance cerrados |
+| MED-02 / MED-03 | OPEN | Esta aceptación no los cierra |
+| Design Freeze / implementación / ejecución | NOT AUTHORIZED | scientific_execution=false; execution_authorized=false |
+
+**Master propagation caveat:** la ruta 00_GOVERNANCE/SIP/C10_S_SYNTHETIC_EXPERIMENT_CONSOLIDATED_DRAFT_004.md devuelve contenido vacío (longitud 0) en la lectura de GitHub, aunque tiene blob SHA registrado. No se sobrescribe ni se afirma propagación al maestro hasta recuperar y verificar su contenido real. DEC-C10-095, Decision Log, plan y matriz Value sí se registran en esta rama; la reconciliación del maestro es un subgate documental pendiente.
