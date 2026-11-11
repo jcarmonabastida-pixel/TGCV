@@ -3223,3 +3223,7 @@ No se declara Outcome/Value operacionalizado ni Design Freeze. No implementació
 | Maestro C10-S | RECOVERY BLOCKER | SHA disponible, contenido vacío; no reconstruido ni sobrescrito |
 
 No se autoriza captura, schema físico, fixtures, implementación, generación de datos, simulación, estimación o ejecución. scientific_execution=false; execution_authorized=false.
+
+## Corrección de recuperación del maestro C10-S — 2026-11-11
+
+La lectura inicial del maestro mediante Contents devolvía contenido vacío, pero el blob Git fue recuperado íntegramente (1,134,655 caracteres / 12,136 líneas) e inspeccionados sus §§266–273. La incidencia está **RESUELTA**; el documento no estaba perdido. Se ha añadido §274 al maestro con la reconciliación integrada de factibilidad y Design Freeze. No queda pendiente recuperar el maestro; permanecen los bloqueos científicos/materiales y los gates indicados en el artefacto rector. La limitación de concordancia línea por línea por inaccesibilidad del maestro queda superada para el contenido recuperado; no equivale a validación local ni CI.
