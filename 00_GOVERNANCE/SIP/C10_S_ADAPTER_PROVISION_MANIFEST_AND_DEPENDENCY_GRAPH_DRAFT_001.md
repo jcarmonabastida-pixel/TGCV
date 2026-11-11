@@ -368,3 +368,12 @@ La arquitectura aislada (runtime separado, artefacto/versiones fijados, cuotas y
 C_dep*=C_install∧C_integrity∧C_compat∧C_oper es éxito técnico de la dependencia, no A_f* completa ni D_f*. A_f* conserva la fórmula candidata depurada del maestro §67.3; DEP puede coincidir con C_dep solo bajo ruta única estipulada. C2 debe medir separadamente W_programmed, W_attempt, S_install/componentes, C_dep*, A_f*, D_f*, ΔT_acc*, evidencia E_T/ΔE_T y Reach/Π. La primera etapa IV relevante sería D_f*, no C_dep ni intento; D_f_obs no sustituye truth D_f*. s=0.80 sigue sin validar.
 
 No hay instalación, runtime, grafo, artefacto, hash, IAM/snapshot material, prueba de no-afectación ni ejecución. No se declara MD-C1/MD-C4 cerrado ni D2 aislado. Sin implementación/fixtures/ejecución.
+
+
+## 16. Reconciliación material PB con identidad B1 por UE (2026-11-11)
+
+Se integra el resultado de `C10_S_PB_MATERIAL_D2_INSTANCE_AND_ISOLATION_RECONCILIATION_DRAFT_001.md` como reconciliación vigente del contrato material D2. DEC-C10-067 conserva su alcance: B_g0 no programa provisión focal y B_g1 programa un intento, sin garantizar recepción/éxito. Se armoniza con `DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001`: contrato/plantilla CMP común, instance_id único y versionado por UE; el adaptador/dependencia P1 es un objeto distinto de la instancia lógica del servicio CMP.
+
+B-M01…12 y B-M15 permanecen NO INVENTARIADO donde no existe evidencia; B-M13 (F*/oráculo) y B-M14 (A1/A2) son superficies prohibidas de modificación por B. Se mantienen P0 invariante como requisito, P1 como superficie focal de provisión y P2 como perímetro causal transversal. La arquitectura sidecar sigue recomendada para evaluación, no aprobada ni probada.
+
+No hay roster/IDs concretos por UE, IAM/C_SRC, snapshots, grafo material, artefacto/runtime, ACL/recursos medidos ni pruebas de no-afectación. PROV-05/09, MD-C1/MD-C4 y G-MAT siguen OPEN/BLOCKED. C_dep*, A_f*, D_f* y ΔT_acc* no se infieren unos de otros. No se declara D2 aislado ni se autoriza captura, implementación o ejecución.
