@@ -1241,3 +1241,68 @@ Se cierra la partición mínima de parámetros, el roster de servicio que puede 
 La calibración numérica sigue bloqueada por una dependencia concreta, no por una nueva lista abierta indefinidamente: instanciar al menos dos firmas completas ΔT_acc* a partir de C_src/C_dst_applied/M y del inventario de transformaciones, con su evidencia/oráculo de preservación y mapping. La matriz abstracta y el inventario actual reconocen expresamente que esos dominios, mappings y F*/Reach no están cerrados. Sin esas firmas no pueden definirse con significado las distribuciones P_g(d_j|q) ni los efectos de transición por firma.
 
 El siguiente trabajo se limita a resolver esa instanciación estructural mínima reutilizando el roster BOOL/ENUM/RUL aceptado y el fixture finito existente. No se reabre Value, Q_B1, el horizonte ni el método P178. No se implementa, no se generan fixtures/datos, no se simula y no se ejecuta el experimento. scientific_execution=false; execution_authorized=false.
+
+
+
+## 37. Instanciación de dos firmas semánticas completas de ΔT_acc* a partir de AB-03-SYN (2026-11-11)
+
+**Estado:** TWO_ABSTRACT_STRUCTURAL_SIGNATURES_SPECIFIED / AB03_SYN_REUSED / R0_FOCAL_REFERENCE / PHYSICAL_MAPPING_NOT_REQUIRED_FOR_SYNTHETIC_TRUTH / NUMERIC_CALIBRATION_NEXT / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 37.1 Corrección de precedencia: no exigir mapping físico para la verdad del DGP sintético
+
+La §36.7 identificó correctamente la necesidad de dos firmas completas, pero formuló como requisito previo que procedieran de C_src/C_dst_applied/M y de evidencia/oráculo de preservación material. Esa exigencia es excesiva para el objetivo acordado de C10-S: probar un método causal dentro de un DGP sintético cuya verdad se estipula y sella antes del análisis.
+
+AB-03-SYN ya autorizó la instanciación semántica abstracta de las cuatro cards F1/F2/A1/A2 y sus TID/SID sintéticas. DEC-C10-068, DEC-C10-084…087 y el crosswalk de cards fijan sus funciones, invariantes y etapas a nivel lógico. Por tanto, las firmas de verdad del DGP pueden definirse sobre esos objetos semánticos y sus predicados de accesibilidad, sin fingir una realización física, mapping material observado, aplicación real o evidencia externa.
+
+Se corrige la precedencia: C_src/C_dst_applied/M, IAM físico, mapping material y evidencia/oráculo de preservación siguen siendo necesarios para una implementación material o una afirmación empírica sobre migraciones reales; no son precondición para instanciar la truth semántica abstracta del experimento sintético. Esta sección no adjudica ni declara PASS de ningún mapping físico.
+
+### 37.2 Frontera del DGP focal de referencia
+
+Se reutiliza el catálogo semántico AB-03-SYN:
+- F1 = tr:tgcv-c10s-syn:0001, conversión focal S0→S2;
+- F2 = tr:tgcv-c10s-syn:0002, aplicación/verificación focal S2→SF;
+- A1 = tr:tgcv-c10s-syn:0003, exportación alternativa S0→S1;
+- A2 = tr:tgcv-c10s-syn:0004, importación/aplicación alternativa S1→SF;
+- relaciones composicionales catalogadas F1→F2 y A1→A2, sin aristas cruzadas.
+
+El DGP focal de referencia usa el régimen R0: la ruta alternativa A1→A2 está ausente/inaccesible en baseline y post, estipulado en la truth del generador dentro del catálogo finito declarado. No se afirma ausencia en sistemas reales. Los escenarios R1/R2 y las vías colaterales se conservan como escenarios separados; no se mezclan con el contraste focal aislado.
+
+### 37.3 Dos firmas completas
+
+Se define el objeto de firma como la tupla vectorial íntegra d=(ΔU*,ΔR*,ΔC*,ΔX*). Los nombres de las cuatro TID y sus relaciones proceden de AB-03-SYN; los estados siguientes son estipulaciones explícitas de la truth del DGP, no observaciones.
+
+**Firma d0 — sin apertura focal (referencia nula de accesibilidad):**
+- ΔU*=∅: F1 y F2 no se incorporan al conjunto de transformaciones accesibles; A1/A2 permanecen fuera del conjunto accesible conforme al régimen R0.
+- ΔR*=∅: no aparece ninguna relación nueva en el subgrafo de transformaciones accesibles.
+- ΔC*: para F1 y F2, los predicados de accesibilidad conservan ID=1, REL=1, AUTH=1, RES=1, DEP=1, BLOCK=0, pero COND=0; la conjunción constitutiva de accesibilidad es falsa. Los predicados de aplicabilidad desde S0/S2 se mantienen separados y no se infieren.
+- ΔX*=∅: no cambia el contexto externo ni el estado ambiental entre snapshots.
+
+**Firma d1 — apertura de la ruta focal completa:**
+- ΔU*={F1,F2}: ambas TID se incorporan al conjunto de transformaciones accesibles.
+- ΔR*={F1→F2}: la relación composicional catalogada queda incorporada al subgrafo accesible; la definición de la relación en el catálogo no cambia.
+- ΔC*: para F1 y F2, COND cambia 0→1; ID=1, REL=1, AUTH=1, RES=1, DEP=1 y BLOCK=0 permanecen constantes. La accesibilidad de cada transformación resulta de la conjunción completa de sus predicados, no de una etiqueta de apertura asignada directamente.
+- ΔX*=∅: contexto externo y estado ambiental constantes.
+
+En ambas firmas, A1/A2 permanecen inaccesibles bajo R0 y el universo transformacional declarado es el mismo. d0 y d1 son distintos en el objeto vectorial completo; no son un score ni un binario sustitutivo de ΔT_acc*. A_f* y D_f* se derivan de los predicados y snapshots; no reemplazan la firma.
+
+### 37.4 Contraste de políticas y mecanismo de Value
+
+Las políticas factibles g0/g1 inducen distribuciones distintas sobre el soporte común {d0,d1}. Se exige positividad en ambas firmas para el contraste focal y desigualdad entre las distribuciones; no se fijan todavía probabilidades numéricas. No se asigna abstractamente A ni se identifica la política con una etiqueta de instalación.
+
+El Generator aplica después el mecanismo temporal de §35: las probabilidades de transición de disponibilidad p01(d,q) y p10(d,q) pueden diferir entre d0 y d1; el régimen externo q, la distribución inicial y la convención temporal son comunes. En el DGP focal, la firma de accesibilidad es la única vía diferencial entre política y disponibilidad/Value. La relación funcional entre firma y transiciones es una estipulación causal explícita del DGP que el Analyzer debe recuperar a partir de evidencia observada; no es un resultado empírico ni una afirmación universal de TGCV.
+
+La truth del estimando se calcula con el oráculo analítico de §35, integrando sobre P_g(d|q). La cuadrícula incluirá:
+- efecto: p01/p10 difieren entre d0 y d1, con signos/magnitudes a calibrar;
+- nulo: las transiciones son invariantes entre firmas, aunque g0/g1 induzcan distribuciones distintas;
+- adversarial: una vía directa/colateral se activa en un escenario separado, invalidando la atribución exclusiva;
+- no identificación: se degrada soporte u observación en escenario separado, con truth conocida solo por Evaluator.
+
+La hipótesis no presupone signo positivo. La calibración de parámetros de transición, distribuciones de política, K, N y R se realiza después, con P178 y criterios ex ante.
+
+### 37.5 Alcance de la resolución y pendientes residuales
+
+Queda cerrada la instancia semántica mínima de dos firmas completas para el DGP focal. Ya no bloquean la calibración los detalles de formato físico, nombres de plataforma, mapping material observado, serialización, IAM físico ni aplicación real: pertenecen a implementación/validación material y no a la truth sintética.
+
+Antes de calibrar numéricamente solo se deben especificar y justificar los valores de P_g0(d0/d1|q), P_g1(d0/d1|q), p01(d0/q), p10(d0/q), p01(d1/q), p10(d1/q), π0, K y los criterios de precisión/potencia/Monte Carlo. No se añaden nuevos artefactos ni matrices.
+
+**Dictamen:** STRUCTURAL_SIGNATURE_GATE_CLOSED_FOR_ABSTRACT_SYNTHETIC_DGP / NUMERIC_CALIBRATION_READY_AS_DESIGN_TASK / MATERIAL_MAPPING_OPEN_FOR_IMPLEMENTATION_ONLY. Se mantiene scientific_execution=false, execution_authorized=false; no se generan fixtures, no se simula y no se ejecuta experimento.
