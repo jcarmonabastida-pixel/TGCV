@@ -2618,3 +2618,12 @@ Siguiente: **C1.4**, crosswalk de predicados/filas IAM pre-Z en `C_SRC` contra A
 `C10_S_C1_PREZ_IAM_CROSSWALK_C10S_001.md` establece el crosswalk lógico por CMP/PAR/REF/RUL/MET y separa E_scope, App, C_dep, A_f, F_alt, Need_preZ y E_req_preZ. No existen snapshots C10-S observados ni filas IAM/coverage materiales; las etiquetas 7×5 son planificación, no registros. Dictamen **PARTIAL / MATERIAL BLOCKED BY ABSENT IAM AND SNAPSHOTS**. No se puede clasificar población ni declarar REF=0.
 
 `E_i=E_scope∧App*(τ2,S0)` continúa como propuesta no aceptada. Siguiente: **C1.5**, cerrar App y su frontera con A_f, rol de E_scope, regla pre-Z para unknowns, asignación D2 y soporte. Sin freeze ni ejecución.
+
+
+## 16.154 — Protocolo de cinco paquetes integrados y resolución en ciclo único (2026-11-11)
+
+Se adopta como método operativo `C10_S_INTEGRATED_WORK_PACKAGES_AND_CYCLE_PROTOCOL_DRAFT_001.md`. El cierre se organiza en cinco paquetes: **PA** contrato causal C1/población/Outcome/Value; **PB** material D2/servicio B1/primera etapa C2; **PC** atribución de accesibilidad C3/mediación C4; **PD** DGP/mecanismos C5/evaluación adversarial; **PE** especificación técnica integrada e implementación autorizable.
+
+Cada paquete debe resolverse integralmente en una única iteración o conversación, con reconstrucción histórica, reconciliación de todas sus dimensiones, síntesis única, clasificación de decisiones y bloqueos, persistencia cruzada y relectura/verificación de todos los artefactos modificados. No se fragmentará en micro-preguntas. Solo se consultarán decisiones científicas genuinamente no derivables; la falta de evidencia se registrará como bloqueo, no como preferencia ni supuesto.
+
+Orden: PA → PB → PC → PD → PE. El paquete activo es PA. La precedencia P*_{τ2}/P*_F está aceptada y no se reabre. El crosswalk IAM/C_SRC ya documenta ausencia de IAM y snapshots materiales; debe reutilizarse como bloqueo vigente. Esta organización no implica freeze ni autoriza código, fixtures, simulación o ejecución: `scientific_execution=false`, `execution_authorized=false`.
