@@ -1083,7 +1083,7 @@ Los valores finales deben ser concretos, versionados y cerrados antes de la ejec
 
 ### 34.6 Observación, análisis y evaluación
 
-El Generator produce `A_B1^*`, `Q_B1^*`, `V_B1^*), regímenes, potenciales y truth reservada. El proyector produce exclusivamente la evidencia observada según el canal configurado. El Analyzer recibe evidencia, políticas asignadas y variables permitidas, pero no verdad, potenciales ni semillas secretas. El Sealer sella su salida. Solo entonces el Evaluator contrasta estimaciones, intervalos, clasificación y abstención con truth.
+El Generator produce `A_B1^*`, `Q_B1^*`, `V_B1^*`, regímenes, potenciales y truth reservada. El proyector produce exclusivamente la evidencia observada según el canal configurado. El Analyzer recibe evidencia, políticas asignadas y variables permitidas, pero no verdad, potenciales ni semillas secretas. El Sealer sella su salida. Solo entonces el Evaluator contrasta estimaciones, intervalos, clasificación y abstención con truth.
 
 Las métricas mínimas de evaluación incluyen sesgo, RMSE, cobertura de intervalos, error tipo I en el nulo, potencia/clasificación del efecto no nulo, detección de vías alternativas, tasa de abstención apropiada y falsos reclamos de identificación en escenarios no identificados. La evaluación de recuperación de `θ_A` se informa separada de ITT total de asignación y de cualquier estimando de mediación.
 
