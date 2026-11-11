@@ -265,8 +265,9 @@ class Generator:
     def generate(self, config: ScenarioConfig) -> tuple[RunManifest, TruthBundle, GeneratedSource]:
         config.validate()
         rng = random.Random(config.seed)
-        run_id = _canonical_hash({"scenario": config.scenario_id, "version": config.scenario_version,
-                                  "seed": config.seed, "n": config.n_units})[:24]
+        # Include every declared DGP parameter in the run identity; scenario labels alone
+        # are not sufficient provenance when a parameter changes.
+        run_id = _canonical_hash(asdict(config))[:24]
         base01, base10 = _logit(config.p01_base), _logit(config.p10_base)
         potential: list[tuple[float, float]] = []
         signatures: list[tuple[int, int]] = []
@@ -435,13 +436,13 @@ class Evaluator:
         expected_package_status = "IDENTIFIED" if package_conditions else "INDETERMINATE"
         if expected_package_status == "INDETERMINATE":
             expected_focal_status = "INDETERMINATE"
-        elif contract.direct_path_status == "PRESENT" or truth.direct_path_truth:
+        elif contract.direct_path_status == "PRESENT":
             expected_focal_status = "NOT_IDENTIFIED"
         elif (contract.direct_path_status == "UNKNOWN" or not contract.common_regime
               or not contract.positivity or not contract.version_consistency):
             expected_focal_status = "INDETERMINATE"
         else:
-            expected_focal_status = "IDENTIFIED"
+            expected_focal_status = "NOT_IDENTIFIED" if truth.direct_path_truth else "IDENTIFIED"
         classification_correct = (
             result.package_identification == expected_package_status
             and result.focal_identification == expected_focal_status
