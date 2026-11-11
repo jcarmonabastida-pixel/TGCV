@@ -422,3 +422,102 @@ La siguiente operación de cierre deja de ser una revisión documental general d
 La salida será un diseño experimental mínimo integrado y una lista cerrada de decisiones verdaderamente irreducibles. Solo después de su aceptación se preparará la implementación técnica. La implementación no autoriza por sí misma la ejecución científica.
 
 **Estado:** EXPERIMENT_FIRST / PLAYGROUND_AFTER_EXPERIMENTAL_ENGINE / SCIENTIFIC_EXECUTION_NOT_AUTHORIZED / NO_DESIGN_FREEZE.
+
+
+## 26. Primera resolución de diseño: objeto causal primario del experimento sintético (2026-11-11)
+
+**Estado:** WORKING DESIGN DIRECTION / PROPOSAL FOR INTEGRATED SPECIFICATION / NOT ACCEPTED AS DESIGN FREEZE / NOT IMPLEMENTED / NOT EXECUTED.
+
+### 26.1 Distinción que gobierna el diseño
+
+Se recupera y aplica la jerarquía del protocolo C10-D1 §§5 y 17 y de la reconciliación C10-S↔C10-D1:
+
+- `θ_A(q)` es la pregunta científica de atribución específica a políticas factibles de accesibilidad bajo un régimen común.
+- `ITT_Z^{D2}` es el efecto total de asignar las políticas materiales de provisión D2. No equivale por sí mismo a `θ_A(q)`, porque D2 puede activar vías directas/colaterales hacia Value.
+- `LATE_f^{D2}` es un efecto local condicionado a supuestos IV; no es el efecto poblacional general de accesibilidad.
+- El contraste focal de apertura de `τ2` no debe presentarse como efecto de todo `ΔT_acc`.
+
+**Consecuencia para C10-S:** el experimento sintético principal debe estar diseñado alrededor de `θ_A(q)`, no alrededor de `ITT_Z^{D2}`. D2 se conserva como escenario secundario de mecanismo/política y como prueba de que el Analyzer no confunde un efecto de paquete con atribución específica a accesibilidad.
+
+### 26.2 Tratamiento causal primario: políticas factibles de accesibilidad
+
+No se asignará abstractamente un valor a `A` ni se tratará `ΔT_acc` como una variable binaria intercambiable con instalación, provisión o éxito técnico.
+
+El tratamiento será un contraste entre dos políticas estocásticas/versionadas `g_1` y `g_0` que, dadas historias y condiciones relevantes, inducen distribuciones distintas de cambios estructurales de accesibilidad. Cada política:
+- solo puede producir configuraciones pertenecientes al conjunto factible `A_fact(h)`;
+- conserva identidad/versionado y reglas de transformación explícitas;
+- actúa bajo un régimen común `q` de condiciones/historias compatible con ambas políticas;
+- permite observar el cambio estructural de `T_acc` independientemente de Reach, trayectoria, ejecución, Outcome y Value;
+- no introduce, en el escenario primario aislado, vías diferenciales directas a Value ajenas a la accesibilidad.
+
+La intervención se define sobre políticas realizables que generan cambios de accesibilidad; no por fijación matemática de una variable que pueda producir estados imposibles.
+
+### 26.3 Hipótesis y estimando primarios
+
+La hipótesis primaria se formula para una dimensión sintética de Value `V_1`, seleccionada y operacionalizada exclusivamente como instancia explícita del DGP:
+
+```
+H0: θ_A(q; V1) = 0
+H1: θ_A(q; V1) ≠ 0
+θ_A(q; V1) = E[V1^(q,g1)] − E[V1^(q,g0)]
+```
+
+La alternativa es bilateral: TGCV no presupone que todo aumento de accesibilidad produzca necesariamente valor positivo. Los DGP de signo positivo y negativo permiten comprobar que el método recupera el signo verdadero; el DGP nulo permite comprobar que no fabrica un efecto.
+
+Si una instancia posterior incluye varias dimensiones `V_j`, se reportarán efectos separados por dimensión. No se construirá un índice global ni se agregará el vector sin una regla de valoración independiente y justificada. El primer `V_1` no se elevará a definición universal de Value ni a dimensión obligatoria de TGCV.
+
+El estimando es una diferencia entre resultados potenciales bajo dos políticas factibles de accesibilidad y el mismo régimen `q`. No es un efecto indirecto natural ni se obtiene sustituyendo `g_1/g_0` por distribuciones observadas condicionadas por D2.
+
+### 26.4 Separación de asignación y atribución
+
+Si las políticas `g_1/g_0` se asignan aleatoriamente y se implementan según sus versiones especificadas, el contraste por asignación identifica el efecto de esas políticas bajo consistencia, soporte e interferencia tratados por el diseño. No se necesita usar D2 como instrumento para el estimando primario.
+
+El experimento incluirá, además, escenarios en los que:
+- la política cambia accesibilidad y también una vía directa/colateral hacia Value;
+- las políticas no tienen soporte común o no son factibles bajo ciertas historias;
+- hay interferencia o exposición compartida;
+- la medición de accesibilidad o Value es imperfecta/diferencial.
+
+En esos escenarios el Analyzer debe distinguir el efecto de política/paquete del efecto atribuible a accesibilidad y, cuando proceda, declarar `PARTIALLY_IDENTIFIED`, `NOT_IDENTIFIED` o `INDETERMINATE`. La aleatorización de la política no autoriza por sí sola una etiqueta de efecto puro de accesibilidad.
+
+### 26.5 Conjunto mínimo inicial de DGP para probar la hipótesis
+
+La primera batería no será un factorial exhaustivo. Debe contener, como mínimo, estos contrastes lógicos:
+
+1. **Focal con efecto no nulo:** `g_1/g_0` generan cambios diferentes de accesibilidad y `V_1` responde causalmente; sin vías diferenciales ajenas a accesibilidad. Prueba de recuperación de dirección, magnitud e incertidumbre.
+2. **Nulo causal:** las políticas pueden variar accesibilidad, pero `V_1` no responde a esa variación. Prueba de control de falsos positivos.
+3. **Vía directa/colateral:** la política afecta `V_1` por otra ruta además de accesibilidad. Prueba de no atribución espuria; el resultado admisible puede ser efecto de paquete/no identificación focal.
+4. **No identificación:** falta de soporte/positividad, interferencia no resuelta o confusión relevante incompatible con el estimando. Prueba de abstención o límites en lugar de estimación forzada.
+
+Los escenarios de signo contrario, heterogeneidad/interacción, error diferencial, missingness/censura y mediación se incorporarán como extensiones de robustez en la misma batería, reutilizando PD, P177/P178/P182/P183 y los IDs existentes. No se abrirán familias paralelas de tests.
+
+### 26.6 Instancia sintética de Value: alcance y límite
+
+La instancia primaria necesitará un `V_1` concreto con B1 como referente, `Need_preZ` basal, consecuencia para B1, perspectiva/autoridad, regla de valoración, unidad/escala, baseline y horizonte. Su regla se declarará en la configuración del DGP antes de generar los datos y será independiente de `ΔT_acc`, Reach, trayectoria, ejecución y O-CONF.
+
+La regla sintética debe permitir que, manteniendo la misma accesibilidad, la consecuencia/Value pueda variar por otros mecanismos en los escenarios adversariales; y que, manteniendo constantes las vías ajenas, variar accesibilidad pueda producir efecto nulo, positivo o negativo según la verdad del DGP. Así se evita incorporar la hipótesis en la definición de Value.
+
+La selección de la consecuencia y su regla concreta es una decisión de diseño pendiente del siguiente subpaso. No se rellenará el vacío con las cinco dimensiones históricas ni se presentará una escala sintética como operacionalización universal de TGCV.
+
+### 26.7 Qué queda resuelto y qué no
+
+**Resuelto como dirección de diseño:**
+- estimando científico principal: `θ_A(q;V_1)`, dentro del alcance de una instancia sintética delimitada;
+- intervención: políticas factibles/versionadas `g_1/g_0) sobre accesibilidad bajo régimen común `q);
+- D2 ITT: efecto de política/paquete secundario, no sustituto de atribución a accesibilidad;
+- hipótesis bilateral y escenarios mínimos de efecto, nulo, vía alternativa y no-identificación;
+- Value sintético explícito, independiente y no universal.
+
+**Sigue abierto para el cierre integrado mínimo:**
+- definición concreta de la consecuencia B1 y ficha de `V_1);
+- población/historias y régimen común `q) con soporte de ambas políticas;
+- versiones realizables de `g_1/g_0) y regla de generación de `ΔT_acc);
+- parámetros DGP y criterios ex ante de recuperación/error/abstención.
+
+Estos cuatro puntos son las decisiones de especificación que hacen falta para instanciar y evaluar el experimento principal; no justifican reabrir toda la arquitectura B1/D2 ni completar el caso real de migración.
+
+### 26.8 Próximo subpaso
+
+Resolver en una única integración la instancia sintética mínima de B1/`V_1` y su vínculo causal con las políticas `g_1/g_0), comprobando no circularidad y posibilidad de efectos positivo, nulo y negativo. Después se fijarán el soporte/régimen común y los parámetros necesarios para los DGP mínimos.
+
+**Estado:** PRIMARY_ESTIMAND_DIRECTION_SET / VALUE_INSTANCE_OPEN / ACCESS_POLICY_INSTANCE_OPEN / NO_DESIGN_FREEZE / NO_IMPLEMENTATION / NO_SCIENTIFIC_EXECUTION.
