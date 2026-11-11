@@ -119,3 +119,12 @@ Esta sección integra el contrato funcional aceptado por DEC-C10-068 con las dec
 6. CMP/PAR/RUL/MET reutilizan NODE, manifiesto PAR/COVERAGE_SCOPE, PREDICATE y metadatos/evidencia U_G existentes. No se añade una entidad PAR ni tabla MET.
 
 El encoding físico, mapping_id/version, canonicalización, escaping, hash, snapshots observados, evidencia de aplicación y validación del oráculo permanecen OPEN. JCS UDG-01 no se extrapola. No hay instancia serializada, parser ni ejecución.
+
+
+## 12. Límite del contrato funcional respecto del ciclo de petición B1 (2026-11-11)
+
+El contrato funcional define que la unidad lógica de servicio procesa solicitudes cuando está habilitada y expone el perfil operativo declarado. No define por sí solo un protocolo de petición completo. Para evitar sobreinterpretación, se distinguen como conceptos de integración aún no especificados: oportunidad de petición, intento externo, recepción en frontera de ingreso, admisión/rechazo funcional, procesamiento, respuesta y consecuencia para la entidad solicitante.
+
+La regla RUL-SVC-ENABLE-PROFILE-01 y los parámetros PAR-SVC-ENABLED/PAR-SVC-PROFILE conservan exactamente su semántica aceptada. No se infiere de este addendum un payload, esquema, cola, política de reintentos, timeout, SLA, idempotencia, concurrencia, prioridad ni contrato de errores. Tampoco se equipara el estado de admisión o procesamiento con F1/F2, ejecución transformacional, O-CONF o Value.
+
+La especificación B1 §11 es un crosswalk conceptual de ciclo de vida, no una extensión normativa de la interfaz ni un contrato físico. Su recomendación de carga estandarizada requiere aceptación y posterior especificación antes de cualquier implementación.
