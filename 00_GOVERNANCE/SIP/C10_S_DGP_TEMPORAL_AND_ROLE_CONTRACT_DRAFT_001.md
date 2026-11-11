@@ -1043,3 +1043,13 @@ Esta adjudicación es mecanística y no modifica elegibilidad, población, unida
 **OPEN:** especificación de los contrastes concretos de D2; propiedades de trayectoria causalmente relevantes; control de causas concurrentes/colaterales e interacciones; definición de intervención por etapa; positividad/soporte y versiones de tratamiento; evidencia observable y medición; reglas de atribución para contribuciones múltiples; sensibilidad a contrafactuales alternativos; relación con estimandos total, directo e indirecto y mediación.
 
 **No autorizado:** Design Freeze, implementación, fixtures, simulación o ejecución científica. Se mantienen \`scientific_execution=false\` y \`execution_authorized=false\`; \`main\` no se modifica.
+
+## 16. Crosswalk PE — contratos de intercambio y firewall técnico (2026-11-11)
+
+La arquitectura lógica PE se especifica en C10_S_PE_INTEGRATED_TECHNICAL_SPECIFICATION_AND_IMPLEMENTATION_CONTRACT_DRAFT_001.md y maestro §270. Se mantienen separados Generator, Proyector/Sealer, Analyzer, Evaluator/Adjudicator, Orquestador y Artifact/Provenance Store. La descomposición en responsabilidades no implica despliegue físico ni seguridad efectiva.
+
+El Generator conserva truth_dgp y potenciales; el Analyzer recibe exclusivamente observed_evidence y contratos visibles permitidos; el Evaluator accede a truth solo tras sellar la salida inmutable del Analyzer. El Proyector/Sealer aplica la proyección de observación, sin modificar truth ni adjudicar. La separación debe abarcar metadatos, IDs, nombres de escenario, orden, semillas, logs, errores, exports, APIs y canales laterales; una ausencia de columna truth no demuestra aislamiento.
+
+Se reutilizan U_G, EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER. Los registros de evaluación E1/E2 permanecen separados. Se preservan identidades TID/SID/RID/EID, object_record_id/version, snapshot_id + snapshot_object_record_id, request_id/trajectory_id y relaciones tipadas. No se define schema físico, motor, API, formato de evento, serialización general, ACL ni retención.
+
+DEC-C10-074/JCS conserva su alcance UDG-01/U1; no es perfil global. El pipeline V0–V8 es una organización futura de validación, no una declaración de tests ejecutados. SR-13 permanece CONDITIONAL; SR-19 y SR-20 NOT_ASSESSED. No se autoriza implementación, fixtures, parser, simulación o ejecución.
