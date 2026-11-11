@@ -162,3 +162,11 @@ El ciclo de reconciliación material PB se registra en `C10_S_PB_MATERIAL_D2_INS
 La identidad lógica queda armonizada; no hay IDs concretos por UE ni roster material. IAM/C_SRC y snapshots siguen NONE; grafo, artefacto/runtime, ACL/recursos, pruebas A1/A2 y evidencia C_dep*/A_f*/D_f* no están materializados. La operacionalización de actor, recepción, ventanas, reintentos, crossover y soporte sigue OPEN. D2 no se declara aislado; G-MAT no pasa.
 
 **Siguiente operación:** no crear otro paquete. Integrar el levantamiento de bloqueos con PA–PE cuando exista fuente material autorizada o, si se mantiene el modo documental, cerrar conjuntamente la instancia B1/Value/Outcome y la factibilidad de soporte sin inventar roster ni parámetros. No autorizado captura, implementación, fixtures, simulación o ejecución.
+
+## 15. Resultado del ciclo integrado B2–B3 (2026-11-11)
+
+El planteamiento B2–B3 se acepta como base de trabajo y se reconcilia en `C10_S_B2_B3_BENEFICIARY_OUTCOME_VALUE_RECONCILIATION_DRAFT_001.md`: B1 es el referente de Need_preZ y consecuencia valorable; Outcome mide resultado técnico; Value valora la consecuencia para B1. No se presupone relación exclusiva Outcome→Value ni V_j=f(Outcome), porque pueden existir vías directas/colaterales.
+
+Se reutilizan las decisiones B1 y A/B aceptadas, §224 y P179/P182/P183. Need_preZ, solicitud, demanda operativa, procesamiento, Outcome, consecuencia y Value quedan separados. P179 vectorial se conserva; dimensiones, escalas, perspectiva, autoridad, consecuencia, horizonte, fuentes y adjudicación siguen OPEN. O-CONF es candidato con mejor anclaje, no medida operacionalizada. No se crean IDs de test ni decisiones científicas nuevos.
+
+**Dictamen:** B2–B3_RECONCILED_DOCUMENTALLY / OUTCOME_NOT_OPERATIONALIZED / VALUE_NOT_INSTANTIATED / NOT_DESIGN_FROZEN. No se autoriza schema físico, fixtures, implementación, generación de datos, simulación, estimación o ejecución.
