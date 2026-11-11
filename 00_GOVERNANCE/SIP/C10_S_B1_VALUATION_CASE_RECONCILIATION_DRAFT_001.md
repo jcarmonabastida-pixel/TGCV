@@ -287,3 +287,12 @@ La consecuencia basal para B1 puede ahora referirse a la disponibilidad de la ca
 **Siguiente trabajo:** cerrar de forma integrada la ficha pre-Z por UE (verdad, evidencia, adjudicación y unknown), las consecuencias potenciales correspondientes y las reglas de separación respecto de admisión/procesamiento/Outcome. Si para ello se necesita semántica adicional de STANDARD/READ_ONLY o del procesamiento posterior, se tratará como dependencia explícita y no se inferirá.
 
 No se crea un Decision Record nuevo ni se modifica DEC-C10-068. No se autoriza roster, schema físico, fixtures, captura/materialización, implementación, generación de datos, simulación, estimación, Design Freeze o ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 15. Reconciliación integrada de Need_preZ y consecuencias B1 (2026-11-11)
+
+La definición funcional de trabajo, las reglas de adjudicación 1/0/? y la envolvente de consecuencias se desarrollan de forma integrada en `C10_S_B1_PREZ_ADJUDICATION_AND_CONSEQUENCE_RECONCILIATION_DRAFT_001.md`.
+
+Este artefacto tiene precedencia para la especificación documental de Need_preZ y sus reglas de evidencia. Actualiza la lectura de §13: la operación mínima de servicio ya no permanece completamente abierta, pues el usuario aceptó como contrato de trabajo la admisión conforme a ENABLED y la exposición de PROFILE. Siguen abiertos el contenido de la solicitud, el procesamiento posterior y la semántica diferenciada de STANDARD/READ_ONLY.
+
+El cierre es documental, no material: no hay roster ni evidencia observada por UE con cobertura demostrada. La consecuencia B1 está estructurada, pero no medida ni valorada. No se seleccionan dimensiones V_j ni horizonte. No se modifica DEC-C10-068, no se congela el DGP ni se autoriza implementación o ejecución.
