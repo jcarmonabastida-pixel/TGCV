@@ -250,3 +250,14 @@ Se reutilizan §224, P179-01…08, P182-01…12, P183-01…13 y MEAS/MISS existe
 ## 14. Caso de valoración B1 y consecuencia contextual (2026-11-11)
 
 El caso semántico se desarrolla en `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md`. Reutiliza las decisiones aceptadas de B1/UE, servicio por UE y una oportunidad estandarizada por UE. Se aclara que el probe no representa demanda natural ni constituye Value. Need_preZ se formula como objetivo operativo basal relacionado con sostener una operación de servicio predeclarada en el entorno destino, pero la operación concreta sigue OPEN; no se fija truth ni se crea decisión. La consecuencia B1 es un cambio respecto de ese objetivo y se mantiene distinta del procesamiento, respuesta, F*, O-CONF y accesibilidad. La envolvente de consecuencias es analítica, no selección de V_j. Perspectiva B1 aceptada como base; autoridad, criterio, medidas, horizonte y dimensiones OPEN.
+
+
+## 15. Aceptación de la clase de propósito basal B1 (2026-11-11)
+
+Se acepta como base semántica de trabajo que B1 tiene un objetivo operativo basal consistente en mantener operativa una función de servicio que depende de la configuración migrada al entorno de destino. La aceptación fija la clase de propósito y su relación con B1/configuración/servicio, pero no nombra la operación concreta. En consecuencia, Need_preZ no está todavía instanciado como truth por UE ni la población de Value puede clasificarse materialmente.
+
+Se conserva la definición pre-Z y la distinción 1/0/?: 1 cuando existe el objetivo concreto ya especificado; 0 cuando no existe según la definición del DGP; ? cuando no puede determinarse. La clase aceptada no asigna 1 automáticamente a todas las UE. La falta de Request_event/evidencia/procesamiento no demuestra 0. La clasificación no puede depender de Z, provisión, accesibilidad, Reach, oportunidad, petición, Outcome o ejecución; tampoco puede filtrarse la población ITT por eventos post-Z.
+
+La consecuencia de B1 se define respecto del propósito basal concreto y permanece distinta del proceso técnico y O-CONF. La envolvente de consecuencias existente es analítica, no roster de V_j. Autoridad normativa, criterio, dimensión, fuente, instrumento, escala, baseline y horizonte siguen OPEN. No se selecciona Value confirmatorio ni se modifica la separación Outcome/Value.
+
+Artefacto rector: `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md` §12. Estado: PURPOSE_CLASS_ACCEPTED / CONCRETE_OPERATION_OPEN / NEED_PREZ_NOT_MATERIALIZED / CONSEQUENCE_MEASUREMENT_OPEN. No Design Freeze ni autorización de implementación/ejecución.
