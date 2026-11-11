@@ -2597,3 +2597,10 @@ Siguiente: **C1.2**, composición de `E_i`, predicados constitutivos y evidencia
 La auditoría §12 de `C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md` confirma que la fórmula histórica de `E_i` con `C_other` no debe reutilizarse; `C_auth,base=1` es condición D2 común/invariante; `C_dep,0=0` no implica por sí sola `A_f,0*=0`; `E_req_preZ` es distinta de elegibilidad experimental. El contrato material de aleatorización (probabilidades/ratio, estratos, algoritmo/semilla y desviaciones) no se ha encontrado en los contratos revisados.
 
 Recomendación: mantener `P*_{τ2}` como población objetivo primaria candidata C1 y `P*_F` como subpoblación secundaria, sin declarar cerrada la composición de `E_i`. Pendiente confirmación de esa precedencia poblacional. C1 permanece OPEN; no freeze ni ejecución.
+
+
+## 16.151 — Decisión aceptada de precedencia poblacional C1 (2026-11-11)
+
+`DEC-C10S-C1-POPULATION-PRECEDENCE-001` acepta `P*_{τ2}` como población objetivo primaria candidata del ITT C1-D2 y `P*_F` como subpoblación secundaria de apertura funcional exclusiva. La alternativa funcional basal no excluye de P*τ2; solo excluye de P*F cuando está respaldada. Esta decisión resuelve la confirmación de precedencia y no vuelve a abrirse sin contradicción material.
+
+Composición de `E_i`, predicados/evidencia/indeterminación, soporte, truth/medición, interferencia, aleatorización, horizonte y resultados permanecen OPEN. Siguiente: **C1.3**, reconstruir E_i desde DGP/IAM y predicados constitutivos vigentes, distinguiendo validez de instancia, aplicabilidad de τ2, A_f basal, Need_preZ y E_req_preZ. No inventar una lista ni recuperar `C_other`; si la especificación material no permite cierre, declarar límite.
