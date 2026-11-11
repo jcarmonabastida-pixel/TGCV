@@ -1,0 +1,6 @@
+{
+  "cells_reference": 27,
+  "cells_curve": 32,
+  "out": "/tmp/tgcv-p178/final_audited",
+  "manifest": "/tmp/tgcv-p178/final_audited/p178_run_manifest.json"
+}
