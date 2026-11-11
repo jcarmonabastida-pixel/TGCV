@@ -2110,3 +2110,21 @@ Permanece un límite de alcance, no un bloqueo de P178 focal: los artefactos son
 **Commits:** `2db2adc3df026040e60090df4b73261f31bc3558` (Welch y adjudicación); `d17ac72bf98296b8f655dd1e02e796ca7e5e44ee` (tests iniciales); `d28a2ee9f8511c8eeb7194c039474acc4b442d5d` (run identity y verdad); `6690f0f49ccc85992704c7e1a5f660e445c2edfc` (README); `da925158f464ff0569080da29e13a61ff318c39e` (tests adicionales); `67bb9c8981eddfc8b54b69637a521fe43e48c054` (corrección de fixtures); `9fafb27351025b6c66d98c09fa8c4f68f4c5cb63` (inventario de tests).
 
 **Dictamen:** `WELCH_INTERVAL_AND_EVALUATOR_GATES_IMPLEMENTED / 15_CONTRACT_TESTS_PERSISTED_NOT_RUN / ANALYZER_VALIDATION_OPEN / SCIENTIFIC_EXECUTION_FALSE`.
+
+
+## 51. Separación explícita entre estimando ITT de paquete y estimando focal (2026-11-11)
+
+**Hallazgo de revisión estática:** la primera versión de `AnalyzerResult` exponía una sola propiedad `estimate` y un solo intervalo, aunque el cálculo era el contraste observado ITT de paquete y el contrato identificaba `THETA_A_Q_B1`. Bajo los gates focales ambos coinciden en esperanza; fuera de ellos el ITT de paquete puede seguir identificado mientras la atribución focal no lo está. Un único campo podía inducir a interpretar indebidamente el ITT como estimación focal.
+
+**Corrección persistida:**
+- `package_itt_estimate`, `package_itt_standard_error`, `package_itt_interval_95` informan el ITT del paquete.
+- `focal_estimate`, `focal_standard_error`, `focal_interval_95` solo se rellenan cuando se satisfacen todos los gates de atribución focal; en otro caso son `None`.
+- El Evaluator compara cada estimación con su verdad DGP correspondiente y verifica el hash del payload ampliado.
+- Las pruebas verifican coincidencia de ambos estimadores cuando la atribución focal está identificada, y ausencia de salida focal cuando existe una vía directa o el Analyzer se abstiene.
+- README y contrato de resultados actualizados. Se mantiene la batería de 15 pruebas.
+
+**Verificación y límites:** revisión estática de los usos de campos antiguos en los dos archivos; no quedan referencias a `result.estimate` ni `result.interval_95`. No se ha ejecutado la suite. El entorno de coordinación no dispone del checkout local ni de conectividad de terminal a GitHub; el conector GitHub es de lectura/escritura documental y no ejecuta Python. No se ha creado un workflow CI nuevo para evitar ampliar el alcance sin necesidad. Por tanto, no se afirma PASS técnico. La ejecución pendiente es exactamente `python -m unittest -v` desde `03_EXPERIMENTS/C10-S/harness/` en el checkout de la rama.
+
+**Commits:** `2a76634f783e12cb9a4ec757db1f1e9b06e2eb98` (campos separados); `751ec420c6bf8bd07910aa6e46d3b5b70f35188f` (payload de abstención y hash); `0e4487185502ccf141a096193c9373661c634b34` (pruebas de salidas separadas); `fef48e05bedf5d844b0c52ff84c6d7d75404aeef` (README); `09e44c4b98654117c256ad2745950bb4b1fb762a` (aserciones explícitas adicionales).
+
+**Dictamen:** `PACKAGE_ITT_AND_FOCAL_OUTPUTS_SEPARATED / 15_CONTRACT_TESTS_PERSISTED_NOT_RUN / LOCAL_EXECUTION_BLOCKED_BY_ENVIRONMENT / SCIENTIFIC_EXECUTION_FALSE`.
