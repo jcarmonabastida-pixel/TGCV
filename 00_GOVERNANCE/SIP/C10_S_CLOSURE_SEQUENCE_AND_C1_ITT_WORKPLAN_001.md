@@ -609,3 +609,56 @@ Para la primera prueba causal no es necesario completar:
 Sí es necesario fijar en el siguiente cierre, conjuntamente, W y su discretización, la definición observable/verdadera de disponibilidad funcional, y cómo se mide Q_B1 independientemente de la reconstrucción de `T_acc` y del snapshot O-CONF.
 
 **Estado:** CANDIDATE_V1_DEFINED / CONFIRMATORY_ADMISSIBILITY_PENDING / NO_DESIGN_FREEZE / NO_IMPLEMENTATION / NO_SCIENTIFIC_EXECUTION.
+
+
+## 28. Dictamen de admisibilidad de V1=Q_B1(W): consecuencia retenida, Value confirmatorio no aceptado (2026-11-11)
+
+**Estado:** Q_B1_RETAINED_AS_BENEFICIARY_CONSEQUENCE / V1_NOT_ADMISSIBLE_AS_CURRENTLY_DEFINED / VALUE_ENDPOINT_STILL_OPEN / NO_DESIGN_FREEZE / NO_IMPLEMENTATION / NO_SCIENTIFIC_EXECUTION.
+
+### 28.1 Dictamen
+
+La propuesta de §27 permite definir la continuidad temporal de la función de servicio como consecuencia relevante para B1. Sin embargo, la igualdad `V1=Q_B1(W)` no establece todavía una separación de constructo suficiente entre consecuencia/resultado funcional y Value.
+
+El problema no es que una consecuencia funcional nunca pueda ser valorada. Es que, en la propuesta actual, la medida de Value coincide numéricamente y operacionalmente con la medida de disponibilidad/continuidad. La perspectiva B1 y la estipulación de que B1 valora esa continuidad aportan interpretación normativa, pero no especifican una regla de valoración diferenciada que permita comprobar qué añade Value respecto de la consecuencia funcional.
+
+Por tanto:
+- `Q_B1(W)` se conserva como **consecuencia contextual para B1** y variable intermedia potencial del DGP;
+- `Q_B1(W)` no se acepta, en su formulación actual, como `V1` confirmatorio;
+- no se declara operacionalizado Value ni se crea un resultado confirmatorio `Y_Value`;
+- no se descarta la clase de consecuencia ni se reabre la arquitectura B1, Outcome/Value o P179.
+
+### 28.2 Razón metodológica
+
+La regla genérica de Value exige una valoración de consecuencias para B1 bajo perspectiva, autoridad y criterio ex ante, diferenciada de Outcome técnico, accesibilidad, trayectoria y ejecución. Una identidad `V1=Q_B1(W)` solo sería suficiente si el DGP justificara explícitamente que la propia continuidad es, por estipulación normativa, la magnitud valorada y además estableciera cómo se distingue su medida valorativa de la medida técnica de la consecuencia. Esa justificación y esa distinción no están presentes todavía.
+
+No se resolverá la dificultad añadiendo un peso, coste o penalización arbitrarios. Una función de utilidad con varios componentes solo será admisible si sus componentes y trade-offs responden a una regla normativa explícita del mundo sintético, son independientes de la hipótesis causal y permiten pruebas de sensibilidad. No se introducen ahora tales componentes.
+
+### 28.3 Consecuencia para el reloj y la medición
+
+No se fija todavía una ventana W ni una granularidad. Hacerlo antes de saber qué resultado valorativo se medirá fijaría un instrumento temporal para una variable que no ha superado la distinción de constructo.
+
+Se conserva el reloj existente t−1/t0…t9:
+- la consecuencia funcional se genera/observa después de la apertura de accesibilidad y de los estados de Reach/posibilidades relevantes;
+- la valoración contextual, si se especifica, se adjudica en el punto de consecuencia/Value ya previsto en t9;
+- no se crea un segundo reloj ni se equipara la profundidad transformacional H con una duración temporal.
+
+La disponibilidad verdadera y la evidencia observada deberán permanecer separadas. Una única oportunidad estandarizada por UE no permite estimar por sí sola continuidad durante un intervalo; si se conserva una medida temporal, su evidencia requerirá una fuente de estado/telemetría con cobertura y error explícitos, independiente de la reconstrucción de `T_acc` y de O-CONF. La falta de registro no se recodificará como indisponibilidad.
+
+### 28.4 Próxima resolución sustantiva, acotada
+
+El siguiente cierre debe decidir si existe una regla valorativa sintética mínima y no arbitraria para la consecuencia `Q_B1`, con:
+1. autoridad normativa explícita del mundo sintético desde la perspectiva de B1;
+2. regla de valoración diferenciada de la medida técnica de continuidad;
+3. invariancia de la regla entre DGP nulo, positivo, negativo y adversarial;
+4. independencia de la regla respecto de `ΔT_acc`, Reach, O-CONF y de los resultados observados;
+5. capacidad de representar que una misma continuidad pueda recibir distinta valoración por un atributo contextual estipulado, y que una continuidad distinta pueda recibir igual valoración cuando la regla así lo determine.
+
+Si no puede formularse sin inventar preferencias, pesos o trade-offs, se declarará `VALUE_NOT_INSTANTIATED` para esta instancia y el experimento podrá probar consecuencias/Outcome, pero no afirmar que ha probado `ΔT_acc → Value`. No se sustituirá silenciosamente Value por O-CONF ni por Q_B1.
+
+### 28.5 Reducción de alcance y estado
+
+Esta decisión cierra la evaluación de la propuesta actual: **Q_B1 se retiene como consecuencia; V1=Q_B1 se rechaza como endpoint confirmatorio en su forma actual**. No se requiere otra auditoría de los contratos ya reconciliados.
+
+No se fijan W, granularidad, telemetría, instrumentos ni parámetros hasta resolver el criterio de valoración. No hay autorización para implementación, generación de datos, simulación o ejecución científica.
+
+**Estado:** CONSEQUENCE_CANDIDATE_RETAINED / CURRENT_VALUE_IDENTITY_REJECTED / VALUE_RULE_OPEN / NO_DESIGN_FREEZE / NO_IMPLEMENTATION / NO_SCIENTIFIC_EXECUTION.
