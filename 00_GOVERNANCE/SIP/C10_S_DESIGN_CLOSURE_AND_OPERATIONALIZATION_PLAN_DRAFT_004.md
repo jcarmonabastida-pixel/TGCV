@@ -2583,3 +2583,10 @@ Se activa **C1.1 — reconciliación de población, UE/interferencia, brazos D2 
 La aceptación A/B de DEC-C10-095 impide tratar Value como ya instanciado en A: A puede sostener Outcome(s) técnicos cuando se completen sus fichas; B es extensión separada para Value contextual y B1 sigue siendo tipo candidato, no instancia completa. Por ello C1 deberá dictaminar por separado resultados técnicos de A y dimensiones V_j de B cuando sean admisibles; no inventar dimensiones, indicadores, escalas, pesos ni escalar.
 
 La secuencia, los criterios y el alcance de C1 se desarrollan en `C10_S_CLOSURE_SEQUENCE_AND_C1_ITT_WORKPLAN_001.md`. Este registro no modifica decisiones anteriores, no declara cerrado C1 ni autoriza Design Freeze, schemas físicos, fixtures, implementación, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 16.149 — C1.1: reconciliación del ITT D2 (2026-11-11)
+
+Se documenta en `C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md` la reconciliación de población, UE/interferencia, políticas D2, Outcome/Value y horizonte. Dictamen: C1 permanece OPEN. D2 y su contraste de asignación se reutilizan de DEC-C10-066/067; no se sustituye Z por recepción/cumplimiento ni se excluye por eventos post-Z. `P*_{τ2}` es candidato histórico, no población aprobada; `P*_F` es subpoblación de apertura funcional exclusiva. UE=UA requiere demostrar aislamiento o definir clúster/exposición. A permite Outcomes técnicos aún no operacionalizados; B es extensión independiente y Value sigue sin instanciar. H=3 es profundidad, no duración temporal.
+
+Siguiente: **C1.2**, composición de `E_i`, predicados constitutivos y evidencia/indeterminación pre-Z, junto con recuperación del contrato de aleatorización D2. No se reabre ninguna decisión aceptada ni se autoriza freeze/implementación/ejecución.
