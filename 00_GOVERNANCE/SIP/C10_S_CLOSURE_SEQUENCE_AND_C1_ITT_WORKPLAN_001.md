@@ -188,3 +188,7 @@ La reconciliación conjunta queda registrada en C10_S_INTEGRATED_CONFIRMATORY_FE
 C1 ITT, C2 primeras etapas, C3 efecto de accesibilidad/θ_A/θ_Af, LATE_f y C4 IIE no están identificados/evaluables con el estado actual. No hay cotas numéricas justificadas. ITT de política/paquete no se equipara al efecto de accesibilidad; el efecto mediado no se obtiene por ajuste convencional; el residual no se calcula por resta ad hoc. Outcome y Value son constructos distintos, sin imponer relación causal exclusiva Outcome→Value.
 
 **Siguiente operación:** recuperar íntegramente el maestro C10-S Draft 004 (actualmente fetch con SHA y contenido vacío), resolver la consistencia documental y después abordar los bloqueos materiales/medición únicamente bajo autorización específica. No Design Freeze, implementación ni ejecución autorizadas.
+
+## Corrección de recuperación del maestro C10-S — 2026-11-11
+
+La lectura inicial del maestro mediante Contents devolvía contenido vacío, pero el blob Git fue recuperado íntegramente (1,134,655 caracteres / 12,136 líneas) e inspeccionados sus §§266–273. La incidencia está **RESUELTA**; el documento no estaba perdido. Se ha añadido §274 al maestro con la reconciliación integrada de factibilidad y Design Freeze. No queda pendiente recuperar el maestro; permanecen los bloqueos científicos/materiales y los gates indicados en el artefacto rector. La limitación de concordancia línea por línea por inaccesibilidad del maestro queda superada para el contenido recuperado; no equivale a validación local ni CI.
