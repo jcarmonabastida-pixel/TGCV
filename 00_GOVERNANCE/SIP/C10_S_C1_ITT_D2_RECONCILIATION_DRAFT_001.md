@@ -242,3 +242,12 @@ La única decisión de arquitectura que conviene confirmar ahora es si se mantie
 Por `DEC-C10S-C1-POPULATION-PRECEDENCE-001`, se acepta `P*_{τ2}` como población objetivo primaria candidata C1 y `P*_F` como subpoblación secundaria para apertura funcional exclusiva. No se acepta todavía la composición de `E_i`, la regla de indeterminados, el soporte, la medición observada, la ausencia exhaustiva de alternativas, la unidad efectiva bajo interferencia, el mecanismo de asignación, el horizonte ni los resultados.
 
 Esta decisión resuelve la pregunta de precedencia planteada al final de §12.5. No debe volver a solicitarse confirmación de P*τ2/P*F. La siguiente operación C1.3 debe trabajar directamente sobre la composición de `E_i` y la evidencia pre-Z usando los contratos vigentes del DGP/IAM y los predicados constitutivos ya aceptados; no puede inventar una nueva lista ni recuperar la fórmula histórica con `C_other`. Debe distinguir validez/admisibilidad de la instancia DGP, aplicabilidad de la transformación `τ2`, accesibilidad basal y elegibilidad de petición B1.
+
+
+## 14. C1.3 — resultado del crosswalk de E_i
+
+El análisis se registra en `C10_S_C1_BASELINE_ELIGIBILITY_CROSSWALK_DRAFT_001.md`. La documentación permite distinguir admisibilidad de la instancia DGP (`E_scope`) y aplicabilidad semántica de `τ2` desde `S0` (`App*(τ2,S0)`), separadas de `C_dep,0=0` y `A_f,0*=0). El inventario finito ya describe S0 como elegible y requiere `App*(τ2,S0)=1` para el paso focal F1, pero sigue siendo candidato no aprobado.
+
+Se propone, no se acepta todavía, `E_i=E_scope,i ∧ App*(τ2,S0_i)`. El contrato abstracto de configuración (CMP≥1, PAR≥1, RUL≥1, REF=0 solo con cobertura exhaustiva, MET obligatorio, POL ausente por diseño) define el alcance de la instancia, pero no es por sí solo una regla de pertenencia P*. El roster mínimo de servicio CMP/PAR/RUL tampoco es inventario exhaustivo de cada UE. El IAM por snapshot fuente, sus mappings P0/P1 y evidencia material no están sellados.
+
+**Siguiente C1.4:** crosswalk por predicado/registro IAM pre-Z del snapshot `C_SRC`, cruzado con `App*(τ2,S0)`, `C_dep,0` y términos de `A_f,0*`; identificar duplicidades y unknowns. No crear IAM ficticio ni declarar E_i cerrada.
