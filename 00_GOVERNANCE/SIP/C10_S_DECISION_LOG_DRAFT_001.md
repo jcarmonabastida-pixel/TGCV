@@ -1490,3 +1490,16 @@ No modifica DEC-C10-066/067, C10-D1, Core, main, RMA, Matrix ni claims. No autor
 Se acepta `P*_{τ2}` como población objetivo primaria candidata del ITT C1-D2 y `P*_F` como subpoblación secundaria de apertura funcional exclusiva. La alternativa funcional basal no excluye de P*τ2; excluye de P*F cuando su existencia está respaldada. No se reabre la selección D2/D1 ni se altera DEC-C10-066/067.
 
 La decisión no cierra composición de `E_i`, predicados/evidencia/indeterminación, clasificación observada frente a truth, soporte `q_X*`, unidad/interferencia, aleatorización, horizonte ni resultados. `Need_preZ` y `E_req_preZ` son distintos de `E_i`. No se excluye por eventos post-Z. Registro completo: `DEC-C10S-C1-POPULATION-PRECEDENCE-001.md`.
+
+
+## PB — reconciliación integral D2/B1/C2 (2026-11-11)
+
+**Registro rector:** maestro C10-S §267. **Estado:** PB_RECONCILED_DOCUMENTALLY / D2_C2_MATERIAL_BLOCKED / NOT_DESIGN_FROZEN.
+
+No se crean nuevas decisiones aceptadas ni se reabren las existentes. Se consolidan por reutilización DEC-C10-066/067, DEC-C10-068/069, DEC-C10-095 y las decisiones B1 de modalidad de petición, unidad, cardinalidad de oportunidad, enlace petición–trayectoria y adjudicación causal.
+
+**Dictamen:** frontera P0/P1/P2 reconciliada conceptualmente; provisión D2 se limita a P1 y no modifica P0, F*, oráculo, autorización normativa basal ni rutas A1/A2. C_dep*, A_f*, D_f*, ΔT_acc*, E_T/ΔE_T y Reach/Π se mantienen separados. C2 cuantitativa no establecida; s=0.80 no validado; no inventario B-M01…15, instalación, IAM/snapshots, pruebas de aislamiento o no-afectación. D_f_obs no sustituye D_f*; Wald/LATE bloqueado.
+
+**Única decisión nueva requerida:** armonización DEC-C10-069 con aislamiento por UE: mantener contrato/plantilla CMP común, tratar C10S-SVC-REQUEST-PROCESSOR-001 como instancia ejemplar y asignar instance_id único/versionado por UE (component_id local, clave compuesta). Recomendación favorable; pendiente de aceptación expresa. No se modifica DEC-C10-069 hasta entonces.
+
+Siguiente paquete: PC — C3 atribución de accesibilidad y C4 mediación. Sin Design Freeze, implementación ni ejecución.
