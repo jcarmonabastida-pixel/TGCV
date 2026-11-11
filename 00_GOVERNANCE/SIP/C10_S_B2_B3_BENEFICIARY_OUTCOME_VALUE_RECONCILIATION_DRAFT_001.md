@@ -237,3 +237,12 @@ Se acepta B1 como referente de la necesidad y consecuencia valorable; Outcome t�
 No se modifica DEC-C10-095, D2, población P*τ2/P*_F, A, Opción A, TGCV Core, RMA, Evidence→Claim Matrix, STATUS ni claims. No se crea una decisión científica nueva ni se declara Outcome/Value operacionalizado, C3/C4 identificado o Design Freeze.
 
 `scientific_execution=false`; `execution_authorized=false`. No schema físico, fixtures, implementación, generación de datos, simulación, estimación o ejecución científica.
+
+
+## 13. Reconciliación de operacionalización confirmatoria Outcome/Value (2026-11-11)
+
+La operacionalización integrada se desarrolla en `C10_S_OUTCOME_VALUE_OPERATIONALIZATION_RECONCILIATION_DRAFT_001.md` y se incorpora al maestro §276. Se precisa que F* es criterio funcional y O-CONF el resultado adjudicado de conformidad del destino; no son dos endpoints técnicos independientes. O-CONF sigue candidato prioritario, no seleccionado ni operacionalizado: predicados, mapping/IAM, C0/G/H, snapshots, evento terminal y oráculo independiente validado siguen OPEN.
+
+Value conserva vector P179. B1 es el referente y Need_preZ es basal; perspectiva B1 se mantiene como base aceptada, pero autoridad/criterio de valoración y consecuencia no están instanciados. No se seleccionan dimensiones, k, indicadores, escalas, pesos o agregación. Las cinco dimensiones históricas siguen siendo candidatas no exhaustivas; no se infiere Value desde Outcome, ΔT_acc*, accesibilidad, ejecución, telemetría o recursos.
+
+Se reutilizan §224, P179-01…08, P182-01…12, P183-01…13 y MEAS/MISS existentes sin duplicar tests. ITT Outcome y Value permanecen separados; C3/C4 no identificados en diseño material actual. No Design Freeze ni autorización de captura/implementación/ejecución.
