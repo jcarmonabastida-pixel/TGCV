@@ -2193,3 +2193,27 @@ Permanece un límite de alcance, no un bloqueo de P178 focal: los artefactos son
 **Proveniencia y ejecución:** ejecutar en GitHub Actions sobre el commit exacto de la rama de investigación; guardar por celda métricas agregadas, parámetros, semillas, versiones, hashes, stdout/stderr y manifest. No persistir filas individuales salvo necesidad diagnóstica justificada. La ejecución solo se considerará completada tras PASS de integridad, auditoría de resultados y replay reproducible conforme al workflow técnico. El disparador debe ser explícito y acotado; no se usará un push accidental.
 
 **Dictamen previo:** `ANALYZER_MONTE_CARLO_PROTOCOL_DEFINED / 27_P178_CELLS_ONLY / NON_CONFIRMATORY_AUTHORIZED / EXECUTION_AND_AUDIT_PENDING`.
+
+
+## 55. Implementación del ejecutor Monte Carlo P178 → Analyzer (2026-11-11)
+
+**Ajuste previo del criterio:** se corrigió el criterio de cobertura de §54 antes de observar resultados del Analyzer. El benchmark P178 congelado en §48 tiene 26/27 intervalos Wilson que incluyen 0.95 y una celda con sobrecobertura leve. Se exige ahora compatibilidad Wilson en al menos 26/27 celdas y desviación absoluta de cobertura <=0.005 en todas. No se modifica ningún criterio a partir de resultados del Analyzer.
+
+**Implementación persistida en research/c10-s-consolidation-draft:**
+- 03_EXPERIMENTS/C10-S/harness/run_p178_analyzer_monte_carlo.py: ejecutor de 27 celdas × 10.000 réplicas.
+- 03_EXPERIMENTS/C10-S/harness/test_p178_analyzer_monte_carlo.py: prueba smoke del recorrido completo Sealer → Analyzer → Evaluator.
+- 03_EXPERIMENTS/C10-S/harness/README.md: documentación del puente y del comando estricto.
+- .github/workflows/c10-s-analyzer-monte-carlo.yml: workflow acotado a la rama research, con push filtrado por los artefactos del ejecutor y workflow_dispatch; ejecuta suite, simulación primaria, replay Monte Carlo desde archivo fuente limpio y comparación byte a byte de CSV/manifiesto.
+- .github/workflows/c10-s-focal-harness-tests.yml: replay de la suite actualizado para incluir el CSV de referencia y compilar los nuevos módulos.
+
+**Fidelidad y separación:** el ejecutor conserva el orden de celdas, la regla de semillas y el orden de llamadas RNG de P178 (draw_arm control y después tratamiento en cada batch). No usa el Generator del harness como sustituto del DGP P178. Cada réplica se convierte en evidencia observada, se sella y se entrega al Analyzer; solo después el Evaluator recibe la verdad analítica calculada por oracle_theta y comprueba el sello de salida y la clasificación. Se informan por separado estimación ITT de paquete y focal. La referencia P178 se compara con semillas pareadas y tolerancia absoluta 1e-9 en tasas, sesgo, RMSE, anchura media e IC/error estándar medio.
+
+**Verificación técnica preliminar:**
+- Workflow de contratos 43083890396 (e34c6702...): suite primaria y replay limpio PASS tras incluir el CSV de referencia.
+- Workflow Monte Carlo 43083651875, commit probado 689c8f0164e0625ca536a20b1805e555cd63d5fd: checkout, instalación, compilación y suite de contratos + smoke PASS. La ejecución primaria de 270.000 invocaciones Analyzer estaba en curso al registrar esta sección; no se declara resultado Monte Carlo.
+- Primer intento del workflow MC 43083568084 falló antes de ejecutar código porque la expresión github.sha quedó escapada literalmente en el YAML. Se corrigió en el commit 689c8f0164e0625ca536a20b1805e555cd63d5fd; el intento fallido no contiene evidencia científica.
+- El replay de la suite 43083418722 falló porque el archivo limpio no incluía el CSV de referencia; se corrigió en .github/workflows/c10-s-focal-harness-tests.yml, y el replay posterior 43083890396 pasó.
+
+**Límites:** el workflow completo repite la simulación de 27 celdas tanto en primario como en replay; no incorpora escenarios adversariales ni señal débil. La ejecución es metodológica no confirmatoria y no valida el firewall como frontera de seguridad de proceso ni la hipótesis causal general TGCV.
+
+**Dictamen al persistir:** ANALYZER_MC_RUNNER_IMPLEMENTED / SMOKE_AND_CONTRACT_REPLAY_PASS / FULL_27_CELL_PRIMARY_PENDING / CLEAN_MC_REPLAY_PENDING / NON_CONFIRMATORY_ONLY.
