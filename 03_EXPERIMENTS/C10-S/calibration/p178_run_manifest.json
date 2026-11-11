@@ -1,0 +1,37 @@
+{
+  "R_per_cell": 10000,
+  "assignment": "balanced 1:1, independent UE; N total even",
+  "central_curve_K": 10,
+  "central_curve_N": [100, 200, 400, 800, 1200, 1600, 2400, 3200],
+  "central_curve_pi0": 0.5,
+  "limitation": "benchmark estimator only; no TGCV Analyzer, no adversarial measurement scenarios, no confirmatory experiment",
+  "method": "exact DP marginal pmf for Q_B1 per UE; independent sampling of Q values; Welch two-sample t CI; two-sided alpha=.05",
+  "numpy": "2.3.5",
+  "outputs": ["p178_reference_N700.csv", "p178_central_N_theta_curve.csv"],
+  "parameters": {
+    "K_grid": [2, 10, 50],
+    "b01": -1.3862943611198906,
+    "b10": -1.3862943611198906,
+    "baseline_transition_p01": 0.2,
+    "baseline_transition_p10": 0.2,
+    "lambda0": 0.25,
+    "lambda1": 0.75,
+    "pi0_grid": [0.2, 0.5, 0.8],
+    "scenarios": {
+      "negative": [-1.0, 1.0],
+      "null": [0.0, 0.0],
+      "positive": [1.0, -1.0],
+      "weak_signal": [1.0, 0.99]
+    }
+  },
+  "protocol": "TGCV-C10-S-P178-FOCAL-MC-REPRO-001",
+  "python": "3.13.5",
+  "reference_seed_rule": "20261118 + 29*index; index order K={2,10,50}, pi0={.2,.5,.8}, scenario={null,positive,negative}",
+  "rng": "numpy.random.default_rng / PCG64",
+  "scipy": "1.17.0",
+  "script_sha256": "6ae7d84984d952cac2ca2700ff396899948beeabc3e9ea482689d5360b834cb0",
+  "sha256": {
+    "p178_central_N_theta_curve.csv": "ef9515d2880719729800bdd99463b2db867ed619598640b75fbd929874a3be45",
+    "p178_reference_N700.csv": "280dbb4f979fa4936feffe3ff22ecde55abdd9ec8b7abfaf5a9208366e7cb155"
+  }
+}
