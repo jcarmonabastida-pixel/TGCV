@@ -355,3 +355,16 @@ Esta tabla no cambia los estados del manifiesto ni convierte NO INVENTARIADO en 
 | B-M15 rollback/residuos | X*/C*/U*/R*/E_T | Clasificar residuo por función y vigencia; rollback/diff como evidencia |
 
 El manifiesto de §3/§12.2 sigue NO INVENTARIADO donde no hay evidencia. Ningún subcampo se declara cambiado o invariante sin snapshot comparable y cobertura.
+
+
+## 14. Reconciliación integral PB — uso vigente del manifiesto (2026-11-11)
+
+La lectura integrada PB queda registrada en el maestro C10-S §267. Este manifiesto sigue siendo una arquitectura candidata y un catálogo de inspección, no un inventario material. B-M01…15 no se rellenan por inferencia; NO INVENTARIADO conserva su significado. B-M13 (oráculo/F*) y B-M14 (alternativas A1/A2) continúan prohibidos como superficies modificadas por B.
+
+Se precisa el límite de intervención: D2 actúa en P1 mediante provisión aditiva de dependencia/adaptador focal. No modifica P0 (paquete declarativo CMP/PAR/REF/RUL/MET), F*, mapping, datos fuente/destino, autorización normativa funcional basal ni alternativas. El servicio lógico C10S-SVC-REQUEST-PROCESSOR y el adaptador/dependencia focal son objetos distintos: el primero conserva su contrato funcional; el segundo es el elemento técnico que la política intenta provisionar. Permisos técnicos mínimos/ACL/endpoints no equivalen a cambiar C_auth,base.
+
+La arquitectura aislada (runtime separado, artefacto/versiones fijados, cuotas y permisos mínimos, canal restringido) es la opción de menor riesgo, pero no demuestra aislamiento ni ausencia de vías colaterales. Se requieren snapshots/diffs y pruebas de comportamiento A1/A2, recursos, dependencias transitivas, seguridad, latencia, rollback y consumidores. PROV-05/09 siguen abiertos.
+
+C_dep*=C_install∧C_integrity∧C_compat∧C_oper es éxito técnico de la dependencia, no A_f* completa ni D_f*. A_f* conserva la fórmula candidata depurada del maestro §67.3; DEP puede coincidir con C_dep solo bajo ruta única estipulada. C2 debe medir separadamente W_programmed, W_attempt, S_install/componentes, C_dep*, A_f*, D_f*, ΔT_acc*, evidencia E_T/ΔE_T y Reach/Π. La primera etapa IV relevante sería D_f*, no C_dep ni intento; D_f_obs no sustituye truth D_f*. s=0.80 sigue sin validar.
+
+No hay instalación, runtime, grafo, artefacto, hash, IAM/snapshot material, prueba de no-afectación ni ejecución. No se declara MD-C1/MD-C4 cerrado ni D2 aislado. Sin implementación/fixtures/ejecución.
