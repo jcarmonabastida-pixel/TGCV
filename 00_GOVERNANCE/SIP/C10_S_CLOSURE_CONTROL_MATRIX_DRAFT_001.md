@@ -3023,3 +3023,22 @@ C1.3 no cierra E_i. Propuesta candidata `E_scope∧App*(τ2,S0)`, no aceptada. L
 C1.4: PARTIAL / MATERIAL BLOCKED BY ABSENT IAM AND SNAPSHOTS. No hay snapshots C10-S observados ni IAM/coverage por UE. `E_i=E_scope∧App*(τ2,S0)` sigue propuesta no aceptada; no clasificar unidades ni declarar REF=0.
 
 **Gate C1.5:** cerrar definición de `App*(τ2,S0)` y frontera con A_f; decidir rol de E_scope (alcance DGP vs elegibilidad confirmatoria) y selección; regla pre-Z de unknowns; recuperar asignación D2 y dictaminar soporte/factibilidad. P*τ2/P*F ya aceptadas en precedencia; no pedir reconfirmación.
+
+
+## PAQUETES INTEGRADOS — control de ciclo único (2026-11-11)
+
+**Protocolo rector:** `C10_S_INTEGRATED_WORK_PACKAGES_AND_CYCLE_PROTOCOL_DRAFT_001.md`.
+
+La unidad de trabajo es el paquete completo, resuelto en una única iteración/conversación. No se abrirán subgates conversacionales ni se solicitarán confirmaciones redundantes. Cada ciclo debe reconciliar fuentes y decisiones históricas, producir síntesis integrada, clasificar decisiones/bloqueos, persistir cambios coherentes y releer/verificar los artefactos modificados.
+
+| Paquete | Alcance integrado | Salida exigida | Estado |
+|---|---|---|---|
+| PA | C1: población, E_i/App/E_scope/unknowns, unidad, asignación D2, ITT, comparador, interferencia/soporte, horizonte, Outcome, consecuencia B1 y Value | Contrato C1 o bloqueo material explícito y delimitado | ACTIVO — siguiente |
+| PB | D2 material, B1/servicio, provisión/instalación/dependencias, petición, request↔trajectory, C_dep/A_f/D_f/ΔT_acc y snapshots | Contrato D2/C2 o límites de factibilidad | PENDIENTE |
+| PC | C3/C4: estimando de accesibilidad, q/soporte, DAG, vías alternativas/interacciones, mediación interventional, sensibilidad | Contrato de atribución/mediación e identificación/no-identificación | PENDIENTE |
+| PD | DGP truth/observed, C5, contrafactuales por etapa, alternativas/colaterales, P177–P183, medición/missingness/potencia y adversariales | DGP y contrato de evaluación trazables | PENDIENTE |
+| PE | schemas, interfaces Generator–Analyzer–Evaluator, IDs/eventos/snapshots/provenance, fixtures/oráculos/tests/manifests | Especificación técnica implementable y autorización separada | BLOQUEADO HASTA CIERRE CIENTÍFICO Y AUTORIZACIÓN |
+
+**Regla de cierre:** una iteración completa no fuerza un PASS. Ausencia de IAM, snapshots, asignación, evidencia, Outcomes o regla de Value se registra como BLOCKED/NOT_VERIFIABLE con impacto y requisito mínimo para levantarlo. Las decisiones aceptadas no se reabren salvo contradicción material documentada. No se crean nuevos documentos si basta actualizar el maestro o contrato rector.
+
+**Estado y límites:** PA activo. P*_{τ2}/P*_F ya aceptadas; no solicitar reconfirmación. El crosswalk IAM/C_SRC registra ausencia de filas IAM y snapshots observados; no clasificar unidades ni declarar REF=0. `scientific_execution=false`; `execution_authorized=false`; no código/fixtures/simulación/ejecución autorizados.
