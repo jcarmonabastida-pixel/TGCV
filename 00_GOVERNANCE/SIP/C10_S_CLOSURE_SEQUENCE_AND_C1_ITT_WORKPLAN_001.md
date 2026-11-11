@@ -2006,8 +2006,8 @@ Se persistió el script:
 
 03_EXPERIMENTS/C10-S/calibration/p178_focal_monte_carlo.py
 
-- SHA-256 del script: 6ae7d84984d952cac2ca2700ff396899948beeabc3e9ea482689d5360b834cb0.
-- Git blob SHA: 43ca22c40dcf506ca037b3c1f756d859f0d6a627.
+- SHA-256 del script: 712deedba154561a2f02df2d7c6bbd5a3a108e9a58d8782cb4ac3cb736e8a290.
+- Git blob SHA: 6a1467883299248cc629c02f7de1c13556e9c2fd.
 - Entorno: Python 3.13.5; NumPy 2.3.5; SciPy 1.17.0; default_rng/PCG64.
 - Parámetros: λ0=0.25, λ1=0.75; b01=b10=logit(0.20); π0={0.20,0.50,0.80}; K={2,10,50}; α01/α10 nulo (0,0), positivo (1,−1), negativo (−1,1).
 - R=10.000 por celda; asignación individual equilibrada 1:1; N=700 en la cuadrícula de 27 celdas.
@@ -2048,11 +2048,8 @@ El manifiesto registra SHA-256 de los archivos originales de ejecución y Git bl
 
 **PASS de identidad/reproducibilidad del benchmark:** el script ejecutado localmente es byte-idéntico al artefacto canónico recuperado de GitHub (Git blob SHA coincidente); el rerun reproduce exactamente los dos CSV; las PMF de Q_B1 pasan la comprobación contra el oráculo de esperanza; no hubo réplicas inválidas.
 
-**No se declara todavía cierre técnico integral de P178**, por tres límites concretos:
-1. El script informa MCSE de proporciones, sesgo, RMSE y anchura de IC, pero no implementa la regla adaptativa completa de MCSE para métricas continuas de §39.4. Por tanto, no se declara satisfecho ese criterio continuo.
-2. Los artefactos persistidos son resúmenes por celda y curva, no un archivo de cada réplica individual ni capturas separadas de stdout/stderr. La identidad del código, semillas y resúmenes permite el rerun determinista, pero la captura primaria de ejecución no está completa según el workflow técnico.
-3. La calibración cubre el estimador benchmark bajo observación ideal. No prueba el Analyzer, no calibra las extensiones adversariales y no materializa el harness con truth/evidence/firewall.
+**Cierre técnico del benchmark focal P178:** la regla de MCSE de métricas continuas de §39.4 queda satisfecha en la cuadrícula ejecutada. La razón máxima MCSE(bias)/SD(estimator) es 0.0100; MCSE(RMSE)/SD(estimator) máxima es 0.00730; MCSE de anchura media relativa máxima es 0.000615. Todas quedan por debajo del límite de 0.05. Las tasas conservan MCSE≤0.005. La captura primaria stdout está persistida y stderr fue un archivo vacío (0 bytes); no hubo réplicas inválidas.
 
-La acción mínima pendiente para P178 será completar el registro/captura de ejecución y, si se exige aplicar literalmente §39.4 a métricas continuas, añadir sus MCSE al script y repetir esta misma cuadrícula sin cambiar DGP ni criterios. Esto no justifica abrir nuevas dimensiones ni escenarios.
+Permanece un límite de alcance, no un bloqueo de P178 focal: los artefactos son resúmenes por celda, no cada réplica individual; el benchmark no prueba el Analyzer, no calibra las extensiones adversariales y no materializa el harness con truth/evidence/firewall. Estos son gates posteriores y separados.
 
-**Dictamen:** P178_FOCAL_BENCHMARK_REPRODUCIBLE / N700_DIAGNOSTIC_CANDIDATE_SUPPORTED_FOR_FINITE_GRID / CONTINUOUS_METRIC_MCSE_AND_PRIMARY_CAPTURE_OPEN / ANALYZER_VALIDATION_OPEN / ADVERSARIAL_CALIBRATION_OPEN / CONFIRMATORY_EXECUTION_NOT_AUTHORIZED.
+**Dictamen:** P178_FOCAL_BENCHMARK_REPRODUCIBLE_AND_AUDITED / FOCAL_RATE_AND_CONTINUOUS_MCSE_CRITERIA_MET / N700_DIAGNOSTIC_CANDIDATE_SUPPORTED_FOR_FINITE_GRID / ANALYZER_VALIDATION_OPEN / ADVERSARIAL_CALIBRATION_OPEN / CONFIRMATORY_EXECUTION_NOT_AUTHORIZED.
