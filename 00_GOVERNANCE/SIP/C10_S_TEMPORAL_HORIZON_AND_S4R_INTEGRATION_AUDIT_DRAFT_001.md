@@ -48,3 +48,9 @@ Se añaden dos dimensiones a las ocho ya propuestas: (9) semántica de horizonte
 Pendiente: ratificar H como profundidad o definir duración científica; fijar ventanas y reglas de recursos; formalizar actualizaciones de ramas; definir F* y objetivo; validar cobertura de alternativas; elegir D1/D2; construir oráculos y revisar independientemente. AUD-005 y AUD-007 siguen abiertos; tampoco se cierran AUD-004 ni OPEN-C10-001/003/005/007.
 
 **Dictamen:** se propone separar reloj del estudio, profundidad y tiempo de factibilidad. No hay fixtures ejecutables, generación de datos, simulación ni ejecución.
+
+## 7. Solicitudes B1: subledger temporal y no equivalencia con profundidad H (2026-11-11)
+
+El ciclo de solicitud B1 se registra como eventos del servicio con timestamps y referencias a snapshots, no como pasos adicionales de profundidad transformacional H. La profundidad H cuenta pasos de una ruta transformacional admisible; no cuenta intentos, recepción, admisión o procesamiento de peticiones. No se asigna un evento de solicitud a t5/t6/t7 por analogía nominal. El enlace request↔trajectory y su cardinalidad permanecen OPEN.
+
+Una carga de peticiones estandarizada puede presentarse en una ventana de evaluación fijada ex ante y común a brazos, después del snapshot de accesibilidad t3/t4, registrando el intento en el harness aunque no haya recepción. La oportunidad/carga no equivale a demanda natural ni cambia H. La ventana, calendario, relación con selección y ejecución, y horizonte de consecuencia siguen OPEN. No se altera el análisis de factibilidad por rama, reservas o recursos de las transformaciones.
