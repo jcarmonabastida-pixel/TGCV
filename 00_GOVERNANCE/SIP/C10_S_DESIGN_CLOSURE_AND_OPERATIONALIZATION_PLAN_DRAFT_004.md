@@ -2740,3 +2740,14 @@ No se modifica main/Core/RMA/Matrix/STATUS/claims ni decisiones aceptadas. No De
 ## Corrección de recuperación del maestro C10-S — 2026-11-11
 
 La lectura inicial del maestro mediante Contents devolvía contenido vacío, pero el blob Git fue recuperado íntegramente (1,134,655 caracteres / 12,136 líneas) e inspeccionados sus §§266–273. La incidencia está **RESUELTA**; el documento no estaba perdido. Se ha añadido §274 al maestro con la reconciliación integrada de factibilidad y Design Freeze. No queda pendiente recuperar el maestro; permanecen los bloqueos científicos/materiales y los gates indicados en el artefacto rector. La limitación de concordancia línea por línea por inaccesibilidad del maestro queda superada para el contenido recuperado; no equivale a validación local ni CI.
+
+
+## 16.164. Reconciliación integrada D2 — asignación, población y soporte (2026-11-11)
+
+**Artefacto rector:** C10_S_D2_ASSIGNMENT_POPULATION_SUPPORT_RECONCILIATION_DRAFT_001.md.
+
+Se cierra la reconciliación documental de las distinciones del contrato D2: P(Z=1 | estrato,UA) es asignación experimental y permanece sin mecanismo/ratio/estratos/algoritmo/semilla; las reglas W_programmed D2 condicionales a Z (0/1) son política aceptada y no asignación. Cumplimiento/recepción, provisión de fondo y s=0.80 siguen abiertos/no aprobados.
+
+Se preservan P*τ2/P*_F y los límites de E_i/App, C_dep,0/A_f,0*, estados UNKNOWN pre-Z, q_X* como distribución basal objetivo, q_L* solo si se requiere régimen secuencial, y UE=UA condicionado a aislamiento. No se calculan población, positividad ni soporte sin IAM/C_SRC/snapshots/roster y truth/evidence por UE.
+
+**Estado:** DESIGN_CONTRACT_RECONCILED_PARTIALLY / RANDOMIZATION_NOT_SPECIFIED / SUPPORT_NOT_ESTABLISHED / NOT_DESIGN_FROZEN. No nuevas decisiones ni autorización. scientific_execution=false; execution_authorized=false.
