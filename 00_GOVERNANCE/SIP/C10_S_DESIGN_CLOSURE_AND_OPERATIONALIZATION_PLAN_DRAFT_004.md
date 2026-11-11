@@ -2653,3 +2653,16 @@ C2 no se declara cuantitativamente establecida: W_programmed, W_attempt, S_insta
 **Decisión única pendiente para armonizar identidades:** mantener contract_id/version y CMP de referencia comunes, interpretar C10S-SVC-REQUEST-PROCESSOR-001 como instancia ejemplar y asignar instance_id único/versionado por UE, con component_id local a la instancia y clave compuesta. Recomendación: sí, para respetar el aislamiento por UE ya aceptado. No se ha aplicado ni congelado hasta aceptación expresa.
 
 Siguiente paquete: **PC — atribución de accesibilidad C3 y mediación C4**. PB no se repite; se reabre solo si se acepta la decisión de identidad o aparece evidencia material nueva. Sin implementación/fixtures/simulación/ejecución; scientific_execution=false; execution_authorized=false.
+
+
+## 16.157 — PC: atribución C3 y mediación C4 (2026-11-11)
+
+PC completó una reconciliación integral en una iteración. Dictamen: **PC_RECONCILED_DOCUMENTALLY / C3_C4_NOT_IDENTIFIED_IN_CURRENT_D2_MATERIAL / NOT_DESIGN_FROZEN**. Registro rector: maestro C10-S §268.
+
+Se conserva la jerarquía no intercambiable C1 ITT_Z^D2/efecto de política, C3 general θ_A(q), C3 focal θ_Af(q_X*), LATE_f^D2 y C4 mediación interventional. D2 no equivale a g^Af: B asigna una política material de provisión, no ΔT_acc*. El mapping B_D2→g^Af, q_X*, soporte/positividad por historia, ausencia/separación de vías colaterales, aislamiento y medición siguen sin demostración. El ITT permanece efecto de política/paquete si hay vías paralelas.
+
+El mediador C4 es ΔT_acc* completo; Reach_H/Π_H son mediadores secuenciales posteriores o bloque conjunto solo con intervención y orden definidos. A_f* es proyección/predicado dentro de T_acc y D_f* indicador derivado, no mediadores seriales. Si Z induce confusores postratamiento del vínculo mediador–Value, el ajuste convencional no identifica mediación; se requiere estrategia longitudinal/interventional o dictamen de no-identificación. No se define residual por resta automática.
+
+No hay Value contextual instanciado: ninguna dimensión V_j ni beneficiario/perspectiva/regla de valoración está materialmente definida; O-CONF sigue candidato no operacionalizado. Los dictámenes C3/C4 para Value son NOT IDENTIFIED/NOT EVALUABLE en el estado actual. P177/P178/P179/P182/P183 y DAG/CAUS existentes se reutilizan; C-MED permanece PARCIAL/OPEN, sin crear IDs duplicados.
+
+Siguiente paquete: **PD — DGP, mecanismos C5 y evaluación adversarial**. No reabrir PC salvo evidencia nueva o contradicción material. Sin Design Freeze, fixtures, código, simulación ni ejecución; scientific_execution=false; execution_authorized=false.
