@@ -1503,3 +1503,16 @@ No se crean nuevas decisiones aceptadas ni se reabren las existentes. Se consoli
 **Única decisión nueva requerida:** armonización DEC-C10-069 con aislamiento por UE: mantener contrato/plantilla CMP común, tratar C10S-SVC-REQUEST-PROCESSOR-001 como instancia ejemplar y asignar instance_id único/versionado por UE (component_id local, clave compuesta). Recomendación favorable; pendiente de aceptación expresa. No se modifica DEC-C10-069 hasta entonces.
 
 Siguiente paquete: PC — C3 atribución de accesibilidad y C4 mediación. Sin Design Freeze, implementación ni ejecución.
+
+
+## PC — reconciliación integral de C3/C4 (2026-11-11)
+
+**Registro rector:** maestro C10-S §268. **Estado:** PC_RECONCILED_DOCUMENTALLY / C3_C4_NOT_IDENTIFIED_IN_CURRENT_D2_MATERIAL / NOT_DESIGN_FROZEN.
+
+No se crea una nueva decisión aceptada ni se reabre DEC-C10-066/067 o DEC-C10S-D2-ESTIMAND-SEPARATION-001. Se conserva la jerarquía C1 ITT_Z^D2/efecto de política, C3 θ_A(q), C3 focal θ_Af(q_X*), LATE_f^D2 y C4 mediación interventional.
+
+Dictamen: D2 no equivale a políticas g1/g0 sobre ΔT_acc*. El mapping B_D2→g^Af, q_X*, soporte, vías colaterales, unidad/interferencia y medición no están demostrados. C4 requiere intervención mediadora explícita y estrategia longitudinal ante confusores mediador–resultado inducidos por Z; no ajuste convencional post-Z. El mediador es ΔT_acc* completo; Reach/Π_H son secuenciales o bloque explícito. No se obtiene residual por resta automática.
+
+Value permanece vectorial y no instanciado: no hay V_j, beneficiario, perspectiva ni regla de valoración completos; O-CONF sigue candidato no operacionalizado. C3/C4 sobre Value no identificados/no evaluables en el material actual. P177/P178/P179/P182/P183 y DAG/CAUS existentes se reutilizan; C-MED PARCIAL/OPEN, sin nuevos IDs duplicados.
+
+Siguiente paquete: **PD — DGP, mecanismos C5 y evaluación adversarial**. Sin Design Freeze, implementación ni ejecución.
