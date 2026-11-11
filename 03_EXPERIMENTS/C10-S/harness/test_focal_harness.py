@@ -25,7 +25,8 @@ def contract(direct="ABSENT", positivity=True, version_consistency=True):
     return AnalysisContract(
         estimand_id="THETA_A_Q_B1", estimand_version="001",
         randomized_assignment=True, direct_path_status=direct,
-        common_regime=True, positivity=positivity, version_consistency=version_consistency,\n        measurement_ideal=True, interference_absent=True,
+        common_regime=True, positivity=positivity, version_consistency=version_consistency,
+        measurement_ideal=True, interference_absent=True,
     )
 
 
