@@ -12109,3 +12109,14 @@ La implementación confirmatoria requiere G-SCI, G-MAT, G-SCHEMA, G-ROLE, G-TEST
 La decisión armoniza DEC-C10S-B1-UNIT-001 con DEC-C10-069 sin alterar sus alcances originales. Cierra la identidad lógica/documental, pero no demuestra aislamiento material ni ausencia de interferencia. El roster y asignación concreta de IDs, IAM/ACL, recursos/estado/credenciales/colas/infraestructura, MET/schema físico, mapping y pruebas siguen abiertos.
 
 No modifica Opción A, Core, RMA, Evidence→Claim Matrix, STATUS ni claims. No autoriza implementación, fixtures, simulación, estimación o ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 272. PB-MAT — reconciliación material D2 e identidad B1 por UE (2026-11-11)
+
+**Artefacto rector:** `00_GOVERNANCE/SIP/C10_S_PB_MATERIAL_D2_INSTANCE_AND_ISOLATION_RECONCILIATION_DRAFT_001.md`. **Estado:** PB_MATERIAL_CONTRACT_RECONCILED_DOCUMENTALLY / MATERIAL_INVENTORY_NONE / ISOLATION_NOT_DEMONSTRATED / NOT_DESIGN_FROZEN.
+
+Se integran DEC-C10-067, DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001, IAM/U_G, B-M01…15, PROV-01…12, snapshots exactos, grafo de dependencias y rutas A1/A2. Contrato/plantilla CMP/PAR/RUL comunes; instance_id único y versionado por UE; adaptador/dependencia focal P1 separado del servicio lógico CMP. D2 actúa en P1; P0, F*/oráculo, mapping semántico, autorización normativa basal y alternativas permanecen invariantes por requisito, no por evidencia.
+
+No hay roster/IDs concretos por UE, IAM/C_SRC, snapshots, grafo material, artefacto/runtime, ACL/recursos medidos ni pruebas de no-afectación. B-M01…12/M15 siguen NO INVENTARIADO donde falta evidencia; B-M13/F* y B-M14/A1/A2 son superficies prohibidas de modificación por B. UNKNOWN/NONE/PARTIAL no equivalen a cero.
+
+C_dep*, A_f*, D_f* y ΔT_acc* siguen separados; D2 no se declara aislado ni primera etapa focal/IV válido. MD-C1/MD-C4 y G-MAT permanecen abiertos. No se modifica Opción A, Core, RMA, Evidence→Claim Matrix, STATUS o claims. No captura, implementación, fixtures, simulación, estimación o ejecución autorizada. `scientific_execution=false`; `execution_authorized=false`.
