@@ -2711,3 +2711,13 @@ Se integra DEC-C10-067 con la decisión aceptada de identidad B1 por UE, el over
 **No materializado:** roster e IDs por UE; IAM/C_SRC; snapshots; inventario de dependencias/consumidores; artefacto/runtime/version/hash; actor y recepción; ventanas/reintentos/rollback; ACL y recursos; no-afectación A1/A2; evidencia C_dep*/A_f*/D_f*/ΔT_acc*; soporte/interferencia. B-M13/F* y B-M14/A1-A2 permanecen prohibidos como superficies modificadas por B. NO INVENTARIADO/UNKNOWN no equivale a ausencia.
 
 **Dictamen:** reconciliación documental del contrato material completada; PB material y G-MAT siguen bloqueados. No se declara D2 aislado, primera etapa focal ni IV válido. No se autoriza captura, implementación, fixtures, simulación, estimación o ejecución.
+
+## 16.162. B2–B3 — reconciliación de B1, Outcome técnico y Value contextual (2026-11-11)
+
+**Artefacto rector:** `C10_S_B2_B3_BENEFICIARY_OUTCOME_VALUE_RECONCILIATION_DRAFT_001.md`. **Estado:** B2_B3_WORKING_BASIS_ACCEPTED / SEMANTIC_RECONCILIATION_DOCUMENTED / OUTCOME_NOT_OPERATIONALIZED / VALUE_NOT_INSTANTIATED / NOT_DESIGN_FROZEN.
+
+Se acepta como base de trabajo que B1 es la entidad sintética cuyo Need_preZ antecede a Z; Outcome mide un resultado técnico del servicio/proceso; Value valora la consecuencia para B1 respecto de Need_preZ desde perspectiva/autoridad ex ante. La consecuencia puede depender de Outcome y de otras vías; no se impone Outcome→Value exclusivo ni V_j=f(Outcome). Se mantienen separados Need_preZ, Request_event, D_resource, procesamiento, Outcome, consecuencia y Value.
+
+Se reutilizan DEC-C10-095, B1 por UE, oportunidad estandarizada por UE, identidad/versionado de servicio y contratos §224/P179/P182/P183. O-CONF es el candidato técnico mejor anclado, no operacionalizado. P179 mantiene vector y trade-offs; no se eligen dimensiones históricas ni pesos por defecto. Cada O_k/V_j requiere ficha §224 independiente; no hay transferencia de identificación Outcome→Value ni entre dimensiones.
+
+**OPEN:** instancia/provenance material B1; contenido/medición Need_preZ; perspectiva/autoridad; consecuencia e horizonte; selección justificada de O_k/V_j; fuentes, escalas, baseline, adjudicación, error, missingness/censura; vías causales y soporte. C3/C4 permanecen no identificados en D2 material actual. No se modifica A, D2, P*τ2/P*_F, Core, RMA, Matrix, STATUS o claims. Sin Design Freeze, implementación, fixtures, simulación, estimación o ejecución.
