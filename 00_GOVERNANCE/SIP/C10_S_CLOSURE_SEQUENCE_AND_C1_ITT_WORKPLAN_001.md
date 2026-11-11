@@ -741,3 +741,78 @@ Esta propuesta resuelve la objeción conceptual sin añadir dimensiones, costes,
 El siguiente cierre se limita a esa comprobación de compatibilidad y a declarar si la instancia de objetivo único puede aceptarse como endpoint sintético. Si es admisible, se fijarán entonces horizonte y medición. Si no, se conservará `VALUE_NOT_INSTANTIATED` y no se afirmará haber probado `ΔT_acc → Value`.
 
 **Estado:** SINGLE_GOAL_VALUE_RULE_FORMULATED / SEMANTICALLY_NONCIRCULAR_IF_DGP_CONTRACTED / CONFIRMATORY_ADMISSIBILITY_PENDING / NO_DESIGN_FREEZE / NO_IMPLEMENTATION / NO_SCIENTIFIC_EXECUTION.
+
+
+## 30. Compatibilidad de Value de objetivo único con el contrato B1: admisibilidad conceptual aceptada (2026-11-11)
+
+**Estado:** B1_FUNCTIONAL_TARGET_COMPATIBLE / SINGLE_GOAL_VALUE_ADMISSIBLE_AS_SYNTHETIC_ENDPOINT / MEASUREMENT_MODEL_PARAMETERIZED_OPEN / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 30.1 Contraste con el contrato funcional aceptado
+
+La especialización funcional B1 ya aceptada define un servicio lógico que:
+- recibe solicitudes dirigidas a su instancia;
+- comprueba el estado declarativo de habilitación en destino;
+- puede admitir solicitudes cuando `PAR-SVC-ENABLED=true` y no las admite cuando está deshabilitado;
+- expone `PAR-SVC-PROFILE`, sin atribuir semántica de negocio diferenciada a STANDARD y READ_ONLY.
+
+Esto sí permite nombrar la función mínima que B1 pretende mantener operativa: **la disponibilidad operativa del servicio para admitir solicitudes conforme a su estado declarativo de habilitación**. No requiere inventar el contenido de la solicitud ni una operación de negocio posterior a la admisión.
+
+La función valorada no es «tener ENABLED=true» como mero estado declarativo. Es que el servicio esté efectivamente disponible/capaz de admitir solicitudes durante el horizonte pertinente. El parámetro ENABLED es una condición contractual de configuración; no demuestra por sí solo disponibilidad operativa efectiva, admisión real, procesamiento, respuesta ni conformidad O-CONF.
+
+### 30.2 Dictamen sobre la regla de valoración
+
+Se acepta la regla de objetivo único de §29 como **admisible para la instancia sintética B1**, con esta precisión del objeto valorado:
+
+- `G_B1`: mantener disponible la función de admisión de solicitudes del servicio B1 en destino;
+- `Q_B1(W)`: proporción del horizonte común `W` durante la cual la función está efectivamente disponible/capaz de admitir solicitudes conforme al contrato funcional;
+- `V_B1=v_B1(Q_B1mid G_B1)=Q_B1`: valoración normativa de cumplimiento del objetivo único, por estipulación ex ante del DGP.
+
+La igualdad numérica es admisible porque la regla normativa del mundo sintético declara que el cumplimiento de este único objetivo constituye todo el criterio de valoración de B1 en esta instancia. La distinción entre consecuencia y valoración se conserva en sus definiciones, roles, provenance y adjudicación; no se exige añadir un segundo atributo numérico artificial.
+
+Este dictamen no convierte ENABLED, una solicitud admitida, O-CONF, F*, Reach, trayectoria ni `ΔT_acc` en Value. Tampoco afirma que la regla represente preferencias humanas reales o una definición general de Value.
+
+### 30.3 Contrato mínimo de verdad y observación de Q_B1
+
+Para que la instancia sea evaluable en el experimento sintético:
+
+1. **Truth:** el DGP genera el estado verdadero de disponibilidad operativa de la función de admisión a lo largo de `W`; `Q_B1(W)` se deriva de esa trayectoria de estado con una regla temporal versionada.
+2. **Observed evidence:** el mecanismo de observación proyecta evidencia de disponibilidad con cobertura, error, latencia, ausencia y censura explícitos. La ausencia de registro no equivale a indisponibilidad.
+3. **Independencia:** la evidencia de Q no se reconstruye desde `T_acc`, Reach, trayectoria, asignación, O-CONF, estado declarativo ENABLED aislado ni desde el éxito de una única petición.
+4. **Separación:** O-CONF continúa adjudicando conformidad funcional terminal; Q mide disponibilidad efectiva durante W; V aplica la regla normativa de objetivo único a Q.
+5. **Cegamiento y firewall:** Analyzer recibe solo evidencia observada y contratos/versiones permitidos; no recibe truth, potenciales ni parámetros secretos. Evaluator adjudica después del sellado.
+6. **Simetría:** definición, regla de valoración y mecanismo de medición se fijan antes de asignar las políticas y se mantienen invariantes entre brazos y DGP, salvo que un escenario adversarial declare explícitamente error diferencial como mecanismo de prueba.
+
+El harness puede generar la trayectoria verdadera y su evidencia observada sintética sin materializar fuentes reales ni ejecutar probes de negocio adicionales. La forma concreta del proyector de observación y sus parámetros será una configuración versionada del experimento, no una nueva dimensión de Value ni un nuevo contrato conceptual.
+
+### 30.4 Qué queda cerrado y qué no
+
+**Cerrado en el nivel conceptual de esta instancia:**
+- función basal B1 nombrada a partir del contrato funcional aceptado;
+- objetivo `G_B1` compatible con el contrato de admisión;
+- regla normativa de objetivo único `V_B1=Q_B1(W)`;
+- separación conceptual entre configuración declarativa, disponibilidad operativa, admisión puntual, O-CONF, consecuencia y valoración;
+- independencia lógica de la regla respecto de la hipótesis causal y posibilidad de DGP positivo, nulo, negativo y adversarial.
+
+**Permanece como parametrización necesaria del DGP/medición, no como bloqueo de la regla de Value:**
+- duración y discretización de `W`;
+- unidad temporal y regla exacta de cálculo de Q;
+- modelo de observación, cobertura, error, latencia, missingness y censura;
+- parámetros de DGP y criterios de precisión/sensibilidad;
+- configuración de población/soporte y versiones concretas de las políticas `g_1/g_0`.
+
+Estos parámetros deben declararse explícitamente antes de generar resultados. No reciben defaults ni se fijan retrospectivamente. Si una configuración no aporta lo necesario para generar truth y observed evidence válidas, el resultado de esa corrida será `NOT_INSTANTIATED`/`INDETERMINATE`, no una imputación arbitraria.
+
+### 30.5 Dictamen final de este cierre
+
+**Se acepta `V_B1` como endpoint sintético contextual de objetivo único para el experimento C10-S**, sujeto a la configuración explícita del horizonte y del modelo de observación descritos arriba. Esto cierra la objeción conceptual de Value para esta instancia y permite continuar con el cierre del DGP/estimando y la especificación parametrizada de la medición.
+
+No equivale a:
+- operacionalización universal de Value en TGCV;
+- selección de un índice agregado P179;
+- operacionalización de Outcome O-CONF;
+- identificación causal demostrada de `ΔT_acc → Value`;
+- Design Freeze, implementación, generación de datos, simulación o ejecución científica.
+
+No se requiere otra iteración para volver a decidir si la regla directa de objetivo único es conceptualmente admisible. Las tareas pendientes son de parametrización y contrato de medición dentro del diseño experimental ya acordado.
+
+**Estado:** VALUE_ENDPOINT_ACCEPTED_FOR_SYNTHETIC_B1 / VALUE_RULE_CONCEPTUALLY_CLOSED / Q_MEASUREMENT_CONFIGURATION_OPEN / NO_DESIGN_FREEZE / NO_IMPLEMENTATION / NO_SCIENTIFIC_EXECUTION.
