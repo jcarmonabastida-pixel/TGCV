@@ -3014,3 +3014,12 @@ P*τ2 se acepta como población objetivo primaria candidata C1; P*F como subpobl
 C1.3 no cierra E_i. Propuesta candidata `E_scope∧App*(τ2,S0)`, no aceptada. La validez abstracta de la instancia DGP y la aplicabilidad de τ2 no son accesibilidad focal. CMP≥1/PAR≥1/RUL≥1 y roster mínimo de servicio no prueban roster completo ni pertenencia P* por UE.
 
 **Gate C1.4:** crosswalk de cada predicado/registro IAM pre-Z de `C_SRC` con App, C_dep y A_f; clasificar boundary, obligatoriedad, aplicabilidad, papel, evidencia, estado 1/0/?/NA y regla de adjudicación. Si IAM material no existe, registrar vacíos y bloqueos; no materializarlo ni declarar E_i cerrada.
+
+
+## C1.5 — Aplicabilidad, E_scope y asignación (activo)
+
+**Registro:** `C10_S_C1_PREZ_IAM_CROSSWALK_C10S_001.md`.
+
+C1.4: PARTIAL / MATERIAL BLOCKED BY ABSENT IAM AND SNAPSHOTS. No hay snapshots C10-S observados ni IAM/coverage por UE. `E_i=E_scope∧App*(τ2,S0)` sigue propuesta no aceptada; no clasificar unidades ni declarar REF=0.
+
+**Gate C1.5:** cerrar definición de `App*(τ2,S0)` y frontera con A_f; decidir rol de E_scope (alcance DGP vs elegibilidad confirmatoria) y selección; regla pre-Z de unknowns; recuperar asignación D2 y dictaminar soporte/factibilidad. P*τ2/P*F ya aceptadas en precedencia; no pedir reconfirmación.
