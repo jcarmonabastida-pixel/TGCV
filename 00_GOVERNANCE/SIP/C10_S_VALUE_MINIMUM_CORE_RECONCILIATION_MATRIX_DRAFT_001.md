@@ -343,3 +343,16 @@ No se ha modificado `main`; no se ha cerrado MED-02/MED-03; no hay Design Freeze
 
 `scientific_execution=false`  
 `execution_authorized=false`
+
+
+## 13. Aceptación de arquitectura A/B — DEC-C10-095 (2026-11-11)
+
+El usuario acepta A como variante base inalterada y B como extensión sintética independiente/versionada. Esta aceptación resuelve la elección arquitectónica, no la especificación material de B.
+
+- **A:** conserva contrato, roster y dominio aceptados. No se añade beneficiario ni Value contextual por inferencia. Puede estudiar accesibilidad/ΔT_acc, Reach, trayectorias y Outcomes técnicos una vez operacionalizados; no permite atribución confirmatoria a Value mientras este no esté instanciado.
+- **B:** queda autorizada para diseño documental separado. Su rol beneficiario, relación servicio-unidad, demanda pre-Z, perspectiva/criterio, vector de dimensiones, DAG, medición, horizonte, interferencia y parámetros siguen OPEN y requieren propuestas y aceptación explícitas.
+- P179 mantiene Value vectorial y trade-offs; no hay escalar ni ponderaciones por defecto. P182/P183 siguen transversales.
+- B solo permitirá evaluar recuperación de la relación causal estipulada en su DGP, sin inferencia sobre usuarios reales ni validez externa.
+- C/D/E deben mantener separados el alcance de A y B y su provenance. MED-02/03 OPEN.
+
+No se modifica DEC-C10-068, no se altera el roster de A y no se crean roles, indicadores, reglas, fixtures o parámetros. No Design Freeze, implementación ni ejecución. Véase DEC-C10-095.
