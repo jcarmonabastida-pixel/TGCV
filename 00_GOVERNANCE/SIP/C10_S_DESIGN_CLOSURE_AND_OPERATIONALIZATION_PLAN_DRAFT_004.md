@@ -2693,3 +2693,10 @@ DEC-C10-074/JCS solo rige el envelope U1 de UDG-01; no se generaliza a todos los
 Gates para implementación: G-SCI, G-MAT, G-SCHEMA, G-ROLE, G-TEST, G-REPRO y G-AUTH. PA–PD mantienen bloqueos de Value/Outcome, IAM/snapshots/material D2, mapping B→g^Af, colaterales, soporte/interferencia, parámetros DGP, contrastes, fixtures, N/R, potencia y tolerancias. PC no identifica θ_A(q), θ_Af(q_X*) ni mediación en el D2 material actual.
 
 **Resultado:** PE reconciliado documentalmente; contrato técnico parcial; implementación no lista, no implementada ni ejecutada. No se crea decisión científica nueva ni se autoriza código/fixtures/simulación/ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 16.160. Decisión aceptada de identidad de instancia B1 por UE (2026-11-11)
+
+Se acepta `DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001`. El contrato funcional `C10S-SVC-REQUEST-PROCESSOR` v`1.0.0` y la plantilla CMP/PAR/RUL son comunes; cada UE tendrá `instance_id` único y `instance_version` independiente. `component_id` es local a la instancia y su clave inequívoca es `(instance_id, component_id)`. El ID `C10S-SVC-REQUEST-PROCESSOR-001` queda como instancia ejemplar de referencia DEC-C10-069.
+
+Queda resuelta la identidad lógica/documental, no el aislamiento material. Siguen abiertos el roster final y asignación de IDs por UE, IAM/ACL, recursos/estado compartido, evidencia de no interferencia, MET/schema físico y pruebas. No se altera A ni DEC-C10-069 en su alcance original. No se autoriza implementación ni ejecución.
