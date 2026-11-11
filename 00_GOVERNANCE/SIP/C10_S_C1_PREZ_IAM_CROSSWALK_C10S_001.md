@@ -115,3 +115,10 @@ No se necesita otra confirmación de precedencia P*τ2/P*F. La propuesta de comp
 El paquete PA (§15 de `C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md`) reutiliza este crosswalk sin reiniciarlo. `E_scope` se recomienda como gate de alcance del universo DGP, no como filtro de selección adicional dentro de ese universo, salvo que se generen deliberadamente unidades fuera de alcance. `App*(τ2,S0)` sigue como condición candidata de aplicabilidad; la fórmula `E_i=E_scope∧App` no se acepta ni se congela.
 
 La ausencia material de IAM/C_SRC/snapshots continúa bloqueando la clasificación por unidad, la cobertura exhaustiva, `REF=0`, la adjudicación de truth observada y el soporte. UNKNOWN no se recodifica como cero ni se excluye sin regla pre-Z; truth DGP y evidencia observada siguen segregadas. El siguiente paquete es PB, no un gate conversacional C1.5 independiente.
+
+
+## 10. Integración con identidad B1 por UE y PB material (2026-11-11)
+
+La decisión `DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001` fija contract/plantilla común e instancia única/versionada por UE. Esta regla no materializa roster ni IAM: `instance_id` concretos deben resolverse desde el roster aprobado y quedar vinculados a SNAPSHOT exacto/provenance. El servicio CMP lógico y el adaptador/dependencia focal P1 son objetos distintos.
+
+El ciclo PB material integrado se registra en `C10_S_PB_MATERIAL_D2_INSTANCE_AND_ISOLATION_RECONCILIATION_DRAFT_001.md`. C_SRC/C1.4 sigue MATERIAL BLOCKED BY ABSENT IAM AND SNAPSHOTS; no se afirma cobertura COMPLETE, REF=0, población materializada ni soporte. boundary_class y las FKs exactas se aplican conforme a DEC-C10-059/065/082 y a U_G, sin añadir tablas ni columnas por esta reconciliación.
