@@ -1075,3 +1075,22 @@ Resultado por familia:
 Ningún O tiene ficha §224 completa. CMP.owner no demuestra beneficiario. No hay beneficiarios/roles confirmados, instrumentos, source_id, instrument_version o adjudicación poblados. El término L_m y la forma ilustrativa V=3O+4L_m+epsilon_V no se heredan como Value; no se aprueban coeficientes ni ponderaciones.
 
 **Estado:** C-VALUE↔ROSTER CROSSWALK DOCUMENTED / MATERIAL OPEN. No se crean field_id/event_id, snapshots, registros E_T, fixtures ni resultados. MED-02/03 continúan OPEN; no se identifica ΔT_acc→Value. Sin Design Freeze, implementación o ejecución; scientific_execution=false; execution_authorized=false.
+
+ 
+## 34. C-Value — auditoría de roles/beneficiarios del dominio sintético
+
+Se incorpora la auditoría de roles contra DEC-C10-068/069/089, el contrato funcional del servicio, el DGP temporal/roles y los crosswalks §§264–265. La función de referencia de `C10S-SVC-REQUEST-PROCESSOR v1.0.0` (aceptar solicitudes cuando está habilitado y exponer un perfil declarado) no instancia por sí sola solicitantes, consumidores, usuarios, propietario del servicio ni beneficiarios.
+
+Se distingue `CMP-SERVICE-LOGIC-001` (componente lógico) del owner lógico provisional `CMP-SERVICE-LOGIC` de la RUL; ninguno demuestra propiedad organizativa ni beneficio. El actor de t6/ejecución es un campo/rol del DGP, no una identidad ni un beneficiario. El consumidor/sistema de la definición genérica de servicio lógico es una referencia conceptual, no una población observada. DEC-C10-089 mantiene sin adjudicar la relación NODE raíz `LOGICAL_SERVICE_UNIT`↔CMP.
+
+Dictamen de los roles candidatos §264:
+- propietario del servicio: NOT_GROUNDED;
+- operador: NOT_GROUNDED;
+- mantenedor: NOT_GROUNDED;
+- usuario/destinatario: NOT_GROUNDED;
+- responsable de riesgo: NOT_GROUNDED.
+El evaluador independiente queda excluido como beneficiario por su función metodológica.
+
+El DGP temporal incluye beneficiario/regla/horizonte en t9 y DGP-13 exige beneficiario, criterio, escala y horizonte ex ante, pero esos campos son requisitos pendientes, no evidencia de entidades materializadas. El microdominio sí sostiene el contrato funcional sintético y puede sostener Outcomes técnicos tras completar §224; no sostiene actualmente Value contextual. No se concluye imposibilidad: cualquier consumidor/beneficiario sintético deberá introducirse mediante extensión explícita y decisión del DGP, no por inferencia desde el nombre del servicio, CMP.owner o actor ejecutor.
+
+**Estado:** ROLE/BENEFICIARY AUDIT DOCUMENTED / NO BENEFICIARY GROUNDED / VALUE MATERIAL OPEN. No se crean entidades, IDs, fields, eventos, snapshots ni instrumentos. Sin Design Freeze, implementación ni ejecución; scientific_execution=false; execution_authorized=false.
