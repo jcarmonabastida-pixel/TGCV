@@ -2151,3 +2151,25 @@ Permanece un límite de alcance, no un bloqueo de P178 focal: los artefactos son
 **Dictamen:** `SOFTWARE_CONTRACT_SUITE_PASS_15_OF_15 / CLEAN_ARCHIVE_REPLAY_PASS / EXECUTION_PROVENANCE_ARTIFACTED / SCIENTIFIC_EXECUTION_FALSE`. El resultado acredita la compilación y el comportamiento cubierto por las 15 pruebas de contrato; no acredita identificación causal fuera de los supuestos codificados, no valida los canales degradados no incluidos, no demuestra la seguridad efectiva del firewall y no constituye aceptación científica ni cierre de C10-S.
 
 **Siguiente paso acotado:** contrastar el Analyzer implementado contra el benchmark focal P178 ya persistido, separando recuperación del estimador, cobertura/inferencia y comportamiento de abstención. No ampliar la cuadrícula de calibración ni iniciar una ejecución confirmatoria en este paso.
+
+
+## 53. Puente determinista P178 → Analyzer (2026-11-11)
+
+**Hallazgo previo:** los CSV P178 persistidos contienen resúmenes por celda/réplica, no filas individuales aptas para el Analyzer. Además, el Generator del harness y P178 no comparten el mismo mecanismo de muestreo/asignación: no es válido comparar directamente sus ejecuciones como si fueran el mismo dataset.
+
+**Puente mínimo implementado:** `03_EXPERIMENTS/C10-S/harness/test_p178_analyzer_bridge.py`. Construye una única muestra finita con el generador P178 persistido (`draw_arm`), celda positiva `N=700, pi0=.5, K=10`, asignación equilibrada 350/350 y semilla de la regla P178 (`20261495`). La proyecta al esquema observado admitido, la sella y la pasa al Analyzer. Compara estimación ITT, error estándar e IC95% con un cálculo Welch independiente mediante NumPy/SciPy.
+
+**Workflow:** `.github/workflows/c10-s-focal-harness-tests.yml` instala NumPy 2.3.5 y SciPy 1.17.0, compila los tres módulos y ejecuta la suite. El replay limpia ahora incluye tanto el harness como el script P178 de referencia; solo se ejecuta tras PASS primario.
+
+**Ejecuciones observadas:**
+- Run inicial `43080068070`, commit `7cd37e4841465e359a570f922c73744d904e68d4`: FAIL por dependencia NumPy ausente. El push del test y la actualización del workflow ocurrieron en commits consecutivos; el primer runner tomó la versión anterior del workflow. No se interpreta como fallo del Analyzer.
+- Run `43080087334`, commit `80fd9b06dd9b4c9fbfe57e6796de157d5ade29fa`: suite primaria 16/16 PASS; replay FAIL porque el archivo fuente P178 no se había incluido en el archivo limpio.
+- Run final `43080205257`, commit probado `aba70f2c6ba6b033890e2c03ad62c097bf005dd1`: workflow SUCCESS. Suite primaria **16/16 PASS** (0.118 s); replay limpio **16/16 PASS** (0.117 s); compilación PASS; artifact upload PASS.
+- URL: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/43080205257
+- Artifact ID `13884500886`, nombre `c10s-focal-harness-aba70f2c6ba6b033890e2c03ad62c097bf005dd1-43080205257-1`, SHA-256 ZIP `6b2e5e67eacade18548d4f86f3a208f9dff3399b0f9c0fc7d90620399a147101`, retención 30 días.
+
+**Alcance de la evidencia:** confirma que, sobre una muestra finita P178 concreta, el Analyzer reproduce la diferencia de medias, SE Welch e IC95% del cálculo independiente. No valida potencia/cobertura en 10.000 réplicas del Analyzer, ni todas las celdas P178, ni escenarios directos/de soporte insuficiente/observación degradada. No constituye calibración Monte Carlo del Analyzer ni ejecución confirmatoria. El benchmark P178 original sigue siendo una referencia del estimador, no una validación de todas las propiedades del Analyzer.
+
+**Dictamen:** `P178_SINGLE_SAMPLE_ANALYZER_EQUIVALENCE_PASS / 16_CONTRACT_AND_BRIDGE_TESTS_PASS / CLEAN_REPLAY_PASS / ANALYZER_MONTE_CARLO_VALIDATION_OPEN / CONFIRMATORY_EXECUTION_FALSE`.
+
+**Siguiente paso acotado:** convertir el puente en evaluación Monte Carlo del Analyzer solo si se autoriza expresamente como una ejecución metodológica no confirmatoria y se especifican de antemano las métricas de recuperación, cobertura, error de clasificación/abstención y criterios de aceptación. No ampliar la cuadrícula P178 ni presentar este puente de una muestra como calibración.
