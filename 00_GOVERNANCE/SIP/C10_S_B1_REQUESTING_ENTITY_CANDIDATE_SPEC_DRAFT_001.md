@@ -286,3 +286,10 @@ El servicio lógico de procesamiento de solicitudes (DEC-C10-068) y la dependenc
 **Identidad de instancia pendiente de armonización:** DEC-C10-069 fija una instancia de referencia C10S-SVC-REQUEST-PROCESSOR-001, mientras DEC-C10S-B1-UNIT-001 requiere aislamiento de servicio por UE. La recomendación del paquete PB es mantener contract_id/version y definición CMP como plantilla compartida; usar el ID aceptado como instancia ejemplar y asignar instance_id único/versionado por UE; component_id local a instancia, con clave compuesta. No se cambia DEC-C10-069 sin aceptación expresa. Esta decisión no altera la cardinalidad aceptada B1/UE ni la oportunidad/UE.
 
 Continúan abiertos: identidad/provenance concreta de B1 por UE; valores comunes por brazo de PAR-SVC-ENABLED/PROFILE; payload/protocolo del probe; ventana/calendario; timeout, reintentos, idempotencia, admisión y errores/pending; consecuencia B1, perspectiva y adjudicación. No se fijan parámetros arbitrarios ni schema físico. Sin freeze/implementación/fixtures/ejecución.
+
+
+## 14. Crosswalk de identidad de servicio por UE (2026-11-11)
+
+La identidad de la unidad lógica B1 y su servicio asociado se interpreta conforme a `DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001`: una entidad solicitante-beneficiaria B1 por UE se vincula a un `instance_id` único de servicio en el roster C10-S, con versionado independiente. El contrato funcional y su plantilla CMP/PAR/RUL pueden ser comunes; esto no implica compartir instancia, estado o recursos. La instancia de referencia de DEC-C10-069 no se reutiliza como ID de todas las UE.
+
+La decisión no altera la unidad experimental, no cierra la cardinalidad de solicitudes/trajectorias ni demuestra aislamiento material. Los IDs concretos por UE dependen del roster final y deben persistirse con provenance. Se mantienen separados entidad B1, UE, instancia de servicio, solicitud y trayectoria.
