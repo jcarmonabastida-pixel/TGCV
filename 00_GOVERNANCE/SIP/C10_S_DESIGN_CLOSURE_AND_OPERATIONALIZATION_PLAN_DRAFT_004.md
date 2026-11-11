@@ -2560,3 +2560,15 @@ Esta adjudicación es mecanística y no modifica elegibilidad, población, unida
 **OPEN:** especificación de los contrastes concretos de D2; propiedades de trayectoria causalmente relevantes; control de causas concurrentes/colaterales e interacciones; definición de intervención por etapa; positividad/soporte y versiones de tratamiento; evidencia observable y medición; reglas de atribución para contribuciones múltiples; sensibilidad a contrafactuales alternativos; relación con estimandos total, directo e indirecto y mediación.
 
 **No autorizado:** Design Freeze, implementación, fixtures, simulación o ejecución científica. Se mantienen \`scientific_execution=false\` y \`execution_authorized=false\`; \`main\` no se modifica.
+
+## DEC-C10S-D2-ESTIMAND-SEPARATION-001 — propagación al plan (2026-11-11)
+
+**Estado: ACCEPTED AS DESIGN DECISION; NOT DESIGN-FROZEN.**
+
+El plan adopta cinco carriles de trabajo separados para D2: **C1** efecto total de asignación/ITT; **C2** primeras etapas separadas para `C_dep*`, `A_f*`, `D_f*`, `ΔT_acc*`; **C3** efecto focal de accesibilidad bajo mapping B→g y régimen común; **C4** mediación interventional vía `ΔT_acc*`, tratando Reach/trayectoria secuencialmente o como bloque conjunto explícito; **C5** contribución mecanística petición–trayectoria por contrastes contrafactuales específicos de etapa y propiedades de trayectoria predefinidas.
+
+Reglas: no derivar residual por resta automática; no llamar efecto puro de accesibilidad al ITT si B abre vías colaterales; no sustituir primeras etapas entre eslabones; no reducir mediador estructural completo a `A_f*`; no filtrar ITT por eventos post-Z; no convertir contribución a trayectoria en Outcome/Value; mantener reloj t−1/t0…t9 y H sin cambios. P179 mantiene Value vectorial/trade-offs y P182/P183 permanecen como contratos transversales, no cerrados por esta decisión.
+
+**Dependencias OPEN para cierre de los carriles:** población, unidad/interferencia, horizonte, Outcome y Value; versiones y cumplimiento de políticas; mapping B→g, q y soporte; vías colaterales, confusión mediador–resultado e interacciones; medición independiente y error de accesibilidad/Reach/trayectoria/Outcome/Value; identificación, sensibilidad, precisión y abstención; propiedades de trayectoria y contrastes DGP de las etapas de petición. No se selecciona método estadístico definitivo ni se declara ningún efecto identificado.
+
+La decisión no autoriza Design Freeze, implementación, fixtures, simulación o ejecución científica. `scientific_execution=false`; `execution_authorized=false`. Registro: `DEC-C10S-D2-ESTIMAND-SEPARATION-001.md`.
