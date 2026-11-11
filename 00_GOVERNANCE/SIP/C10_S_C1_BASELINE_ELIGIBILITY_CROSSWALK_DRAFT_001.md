@@ -130,3 +130,14 @@ No se debe incorporar automáticamente a E_i todo recurso, capacidad, permiso, e
 **Siguiente operación C1.4:** construir el crosswalk por predicado/registro del IAM pre-Z para el snapshot `C_SRC`, y cruzarlo con `App*(τ2,S0)`, `C_dep,0` y cada término de `A_f,0*`. El entregable debe identificar por cada condición: ID/version, objeto/campo, boundary_class, etapa/tiempo, obligatoriedad/aplicabilidad, papel causal (E_scope/App/C_dep/A_f/colateral/epistémico), evidencia, estados 1/0/?/NA y regla de adjudicación. Si los registros IAM no están materializados, el resultado será un crosswalk lógico de vacíos, no un IAM ficticio.
 
 No se necesita reabrir la precedencia P*τ2/P*F. La única cuestión de aprobación posterior será si se acepta esta composición mínima E_scope∧App como contrato conceptual de E_i una vez completado el crosswalk y descartadas duplicidades. No hay Design Freeze ni autorización de implementación/ejecución.
+
+
+## 10. Precedencia del ciclo PA — alcance DGP frente a elegibilidad experimental (2026-11-11)
+
+La reconciliación integral PA (§15 de `C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md`) precisa la lectura de la propuesta de §6: `E_i=E_scope∧App*(τ2,S0)` permanece **NO ACEPTADA**. Se recomienda interpretar `E_scope` primariamente como gate de alcance/validez del universo DGP y no como filtro de selección adicional dentro de ese universo, salvo que el DGP incluya deliberadamente unidades fuera de alcance en el marco candidato. `App*(τ2,S0)` sigue siendo condición candidata de aplicabilidad semántica de τ2.
+
+Esta precisión no cierra la composición de E_i ni permite clasificar unidades: IAM, C_SRC y snapshots materiales siguen ausentes. Se mantienen separadas `C_dep,0=0` y `A_f,0*=0` como condiciones de `P*_{τ2}`; `F_alt,0` solo afecta `P*_F`. No se recupera `C_other` ni se duplican términos de accesibilidad.
+
+Para los estados pre-Z, `1/0/?` y `NA` justificado ex ante son obligatorios. UNKNOWN no equivale a cero ni puede excluirse silenciosamente; truth del Generator y clasificación observada del Analyzer permanecen separadas. La regla de estimación para unidades indeterminadas debe estar preespecificada antes de Z, y no puede usar información post-Z.
+
+El siguiente paquete operativo es PB; no se abre una conversación C1.5 separada.
