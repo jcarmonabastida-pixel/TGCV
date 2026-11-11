@@ -1988,3 +1988,71 @@ La operación numérica se ejecutó en el entorno Python de esta sesión (Python
 Antes de tratar P178 como gate técnicamente cerrado, debe persistirse el script exacto y su entorno/dependencias, repetirse la calibración desde ese artefacto identificado y conservarse las salidas primarias necesarias para auditoría. Esta repetición es una verificación de procedencia de los resultados ya obtenidos, no una nueva ampliación científica ni una nueva selección de escenarios. Hasta entonces, N=700 conserva el estatus de candidato diagnóstico provisional.
 
 **Estado actualizado:** EXPLORATORY_MONTE_CARLO_RESULTS_RECORDED / EXECUTION_PROVENANCE_AUDIT_OPEN / P178_TECHNICAL_CLOSURE_PENDING_REPRODUCIBLE_RERUN / ANALYZER_VALIDATION_OPEN / CONFIRMATORY_EXECUTION_NOT_AUTHORIZED.
+
+
+## 48. P178 — ejecución reproducible desde artefacto canónico y auditoría de resultados (2026-11-11)
+
+**Estado:** CANONICAL_SCRIPT_PERSISTED / HASH_IDENTITY_VERIFIED / REPRODUCIBLE_BENCHMARK_RERUN_COMPLETED / PRIMARY_SUMMARY_OUTPUTS_PERSISTED / FOCAL_RATE_CRITERIA_MET / CONTINUOUS_METRIC_MCSE_RULE_NOT_FULLY_AUDITED / ANALYZER_NOT_RUN / CONFIRMATORY_EXECUTION_NOT_AUTHORIZED.
+
+### 48.1 Reconstrucción histórica y alcance
+
+Se consultaron el workflow de reconstrucción histórica, el protocolo PD integrado y las §§35–40. El PD integrado confirma que P178 se refiere aquí al benchmark focal de θ_A(q;V_B1), no a LATE/IV ni a mediación C4. No se encontró un script P178 canónico anterior ni un protocolo P178 independiente con implementación ejecutable; por tanto, se reutilizaron el oráculo y los criterios ya definidos, sin crear un segundo método ni ampliar la cuadrícula.
+
+La autorización explícita del usuario cubre esta calibración metodológica Monte Carlo. No autoriza el experimento confirmatorio, el Analyzer ni la promoción a main.
+
+### 48.2 Artefacto ejecutable y método
+
+Se persistió el script:
+
+03_EXPERIMENTS/C10-S/calibration/p178_focal_monte_carlo.py
+
+- SHA-256 del script: 6ae7d84984d952cac2ca2700ff396899948beeabc3e9ea482689d5360b834cb0.
+- Git blob SHA: 43ca22c40dcf506ca037b3c1f756d859f0d6a627.
+- Entorno: Python 3.13.5; NumPy 2.3.5; SciPy 1.17.0; default_rng/PCG64.
+- Parámetros: λ0=0.25, λ1=0.75; b01=b10=logit(0.20); π0={0.20,0.50,0.80}; K={2,10,50}; α01/α10 nulo (0,0), positivo (1,−1), negativo (−1,1).
+- R=10.000 por celda; asignación individual equilibrada 1:1; N=700 en la cuadrícula de 27 celdas.
+- Curva adicional central: K=10, π0=0.50, N={100,200,400,800,1200,1600,2400,3200}, con nulo, positivo, negativo y señal débil (1,0.99).
+
+El muestreador usa programación dinámica para obtener la distribución marginal exacta del número de slots disponibles por UE, condicionada a cada firma, y después muestrea Q_B1 de esa distribución. Es equivalente en distribución para Q_B1 al proceso Markov de §35, y cada PMF se contrasta internamente con la esperanza de la recurrencia analítica. No genera ni conserva las trayectorias slot-a-slot ni los ledgers del harness; esta reducción es válida para calibrar el estimador de Q_B1, pero no sustituye la implementación del generador experimental completo.
+
+### 48.3 Resultados reproducibles
+
+La repetición desde el artefacto canónico produjo los mismos CSV que el primer run con ese script; se verificaron los hashes locales de salida contra el manifiesto de ejecución.
+
+En N=700, las 18 celdas no nulas presentan potencia entre **0.8283 y 1.0000**. La mínima es 0.8283 (K=2, π0=0.80, efecto verdadero +0.086502), con intervalo Wilson 95% [0.8208, 0.8356]. La mínima potencia negativa es 0.8332 (K=2, π0=0.20, efecto −0.086502), con intervalo Wilson [0.8258, 0.8404]. Ambas superan 0.80 incluso por el límite inferior del intervalo Monte Carlo.
+
+En las nueve celdas nulas, la tasa de rechazo va de 0.0466 a 0.0525; los nueve intervalos Wilson incluyen 0.05. La cobertura de los IC nominales del 95% va de 0.9468 a 0.9547; 26 de 27 intervalos Wilson incluyen 0.95. La celda restante presenta sobrecobertura leve y se conserva en el resultado, no se oculta.
+
+En las 27 celdas:
+- sesgo absoluto máximo: 0.000512;
+- RMSE: 0.01039–0.03376;
+- anchura media del IC: 0.04107–0.13274;
+- réplicas inválidas: 0;
+- MCSE de las tasas de rechazo/cobertura: calculado por celda y menor de 0.005.
+
+La curva central confirma que, para |θ_A|=0.146739, la potencia es 0.7305/0.7365 con N=100, 0.9595/0.9568 con N=200 y ≥0.9992 con N=400. La señal débil θ_A=0.0007279 permanece entre 0.0488 y 0.0532 para N=100…3200; no se interpreta como nulo ni como equivalencia.
+
+Estos resultados sustituyen las cifras exploratorias de §§47.2–47.5 allí donde difieran. La diferencia pequeña entre ambas series se debe a que §47 registró la primera exploración sin script canónico, mientras §48 fija los resultados del artefacto versionado y sus semillas.
+
+### 48.4 Artefactos de salida y hashes
+
+Se persistieron en el mismo directorio:
+
+- p178_reference_N700.csv — 27 celdas, Git blob SHA e8f4a58303e831c26e78f67931d7d337f9d5ef51.
+- p178_central_N_theta_curve.csv — 32 celdas, Git blob SHA 3f8e14851cfd02bea0f2f407fed4aa106d6459c9.
+- p178_run_manifest.json — entorno, parámetros, semillas, método y checksums.
+
+El manifiesto registra SHA-256 de los archivos originales de ejecución y Git blob SHA-1 de los textos persistidos. Los CSV se escriben localmente con terminadores CRLF; la API de contenidos de GitHub conserva la misma tabla numérica como texto UTF-8 con LF y sin salto final, por lo que el hash de bytes de ambas representaciones difiere. Se registran ambas identidades para evitar atribuir una divergencia de serialización a una divergencia numérica.
+
+### 48.5 Auditoría y límites residuales
+
+**PASS de identidad/reproducibilidad del benchmark:** el script ejecutado localmente es byte-idéntico al artefacto canónico recuperado de GitHub (Git blob SHA coincidente); el rerun reproduce exactamente los dos CSV; las PMF de Q_B1 pasan la comprobación contra el oráculo de esperanza; no hubo réplicas inválidas.
+
+**No se declara todavía cierre técnico integral de P178**, por tres límites concretos:
+1. El script informa MCSE de proporciones, sesgo, RMSE y anchura de IC, pero no implementa la regla adaptativa completa de MCSE para métricas continuas de §39.4. Por tanto, no se declara satisfecho ese criterio continuo.
+2. Los artefactos persistidos son resúmenes por celda y curva, no un archivo de cada réplica individual ni capturas separadas de stdout/stderr. La identidad del código, semillas y resúmenes permite el rerun determinista, pero la captura primaria de ejecución no está completa según el workflow técnico.
+3. La calibración cubre el estimador benchmark bajo observación ideal. No prueba el Analyzer, no calibra las extensiones adversariales y no materializa el harness con truth/evidence/firewall.
+
+La acción mínima pendiente para P178 será completar el registro/captura de ejecución y, si se exige aplicar literalmente §39.4 a métricas continuas, añadir sus MCSE al script y repetir esta misma cuadrícula sin cambiar DGP ni criterios. Esto no justifica abrir nuevas dimensiones ni escenarios.
+
+**Dictamen:** P178_FOCAL_BENCHMARK_REPRODUCIBLE / N700_DIAGNOSTIC_CANDIDATE_SUPPORTED_FOR_FINITE_GRID / CONTINUOUS_METRIC_MCSE_AND_PRIMARY_CAPTURE_OPEN / ANALYZER_VALIDATION_OPEN / ADVERSARIAL_CALIBRATION_OPEN / CONFIRMATORY_EXECUTION_NOT_AUTHORIZED.
