@@ -159,3 +159,51 @@ Need_preZ y, si se justifica, E_req_preZ pertenecen a la caracterización basal 
 ### 10.7 Dictamen
 
 **DISTINCIÓN SEMÁNTICA PROPUESTA; CONTRATO DE DEMANDA PARCIALMENTE ESPECIFICADO.** Queda definido qué no debe confundirse y qué temporalidad debe respetarse. Permanecen OPEN: contenido concreto del objetivo/necesidad, elegibilidad del solicitante, observabilidad, cardinalidad, ventana/posición de solicitud, relación con procesamiento y población/estimando de Value. No se asignan distribuciones, escalas, tasas, parámetros ni valores.
+
+
+## 11. Ciclo de vida de solicitud y separación del proceso transformacional — propuesta (2026-11-11)
+
+### 11.1 Dos procesos, no una cadena única
+
+B1 requiere distinguir el ciclo de vida de una petición al servicio del ciclo transformacional de migración de configuración. El primero describe interacción con C10S-SVC-REQUEST-PROCESSOR; el segundo conserva Z → provisión → C_dep → A_f* → ΔT_acc → Reach/Π_H → selección/inicio → ejecución → Outcome → Value. La solicitud no es por sí misma una transformación, y su recepción/admisión/procesamiento no se equipara a accesibilidad, selección, ejecución, Outcome ni Value.
+
+### 11.2 Eventos candidatos del ciclo de solicitud
+
+| Evento | Significado | Evidencia mínima a distinguir |
+|---|---|---|
+| Request_opportunity | Oportunidad/elemento de demanda previamente definido para la entidad | Identidad y elegibilidad basal; no implica envío |
+| Request_attempt | Intento externo de transmitir una petición | Registro del emisor/harness y timestamp, incluso si el servicio no responde |
+| Request_received | Petición efectivamente recibida en la frontera de ingreso del servicio | Acuse/registro de ingreso; no implica admisión |
+| Request_admitted / rejected | Decisión funcional del servicio según contrato y estado aplicable | Decisión y motivo; rechazo no equivale a fallo de procesamiento |
+| Request_processing | Trabajo iniciado sobre una petición admitida | Estado de procesamiento separado de admisión |
+| Request_response | Respuesta terminal o no terminal al solicitante | Resultado técnico, estado y motivo |
+| Beneficiary_consequence | Cambio respecto de Need_preZ | Medición/adjudicación independiente, no inferida del estado del servicio |
+
+Estos nombres son etiquetas semánticas candidatas, no un schema ni una enumeración cerrada. Estados pending, timeout, duplicate, cancelled o unknown requerirán contrato explícito si se incorporan; no se imputan como rechazo, fallo o cero.
+
+### 11.3 Relación con el contrato funcional ya aceptado
+
+El contrato funcional de referencia establece la función lógica del servicio, los parámetros PAR-SVC-ENABLED y PAR-SVC-PROFILE, y la regla RUL-SVC-ENABLE-PROFILE-01. Por tanto, la admisión/aceptación debe respetar el estado funcional declarado y la regla vigente, sin inferir comportamiento adicional a partir de etiquetas de perfil. El contrato funcional no define todavía un protocolo completo de petición, payload, cola, respuesta, errores, SLA ni semántica de reintentos. Este addendum no los inventa.
+
+Request_received no equivale a Request_admitted; Request_admitted no equivale a Request_processing; Request_processing no equivale a Request_response satisfactoria; y ninguna de ellas prueba Beneficiary_consequence.
+
+### 11.4 Relación con t5–t7 sin forzar correspondencia
+
+No se asigna una correspondencia uno-a-uno entre estos eventos y el reloj transformacional:
+- t5 K/Consider describe conocimiento/consideración de posibilidades transformacionales; no es automáticamente el envío de una petición al servicio.
+- t6 Sel/Start describe selección/inicio de una transformación o trayectoria; no es automáticamente la admisión de una petición.
+- t7 Exec describe ejecución transformacional; no es automáticamente el procesamiento interno de una petición.
+
+Una petición puede preceder, acompañar, desencadenar, agrupar o no desencadenar actividad transformacional; la cardinalidad y el enlace request↔transformación quedan OPEN. Se necesita una relación explícita por identidad y timestamp antes de extender el DAG o añadir eventos al reloj.
+
+### 11.5 Protección frente a selección postratamiento
+
+La conducta natural de enviar una petición puede depender de disponibilidad percibida, información, expectativas o tratamiento. Por ello Request_attempt, Request_received y Request_admitted no deben definir la población ITT ni ser criterios de inclusión post-Z. Los no enviados, no recibidos, rechazados, pendientes y no procesados permanecen visibles en el flujo/denominador que corresponda; no se codifican automáticamente como ausencia de necesidad ni Value=0.
+
+Para una comparación sintética confirmatoria, se propone estudiar como opción primaria de control una carga de oportunidades/peticiones estandarizada ex ante, definida antes de Z y presentada mediante un mecanismo externo idéntico en ambos brazos después del snapshot de accesibilidad. El harness debe registrar el intento aunque el servicio no reciba la petición. Esta carga es un estímulo/probe experimental, no evidencia de demanda natural ni de preferencia real del beneficiario. La respuesta y la consecuencia se observan separadamente. Una rama con envío endógeno puede conservarse como escenario secundario/adversarial, sin condicionar el ITT al envío.
+
+Esta recomendación no selecciona todavía el calendario, cardinalidad, payload, mecanismo de entrega, población, parámetro ni estimando.
+
+### 11.6 Dictamen
+
+CICLO DE SOLICITUD DESCOMPUESTO SEMÁNTICAMENTE; ENLACE TEMPORAL Y FUNCIONAL OPEN. Se distinguen oportunidad, intento, recepción, admisión/rechazo, procesamiento, respuesta y consecuencia. No se añade un tiempo al reloj t−1…t9, no se equipara la solicitud con t5/t6/t7 y no se cierra el contrato de petición. La carga estandarizada ex ante es una recomendación de diseño para proteger comparabilidad y evitar selección post-Z, pendiente de aceptación explícita.
