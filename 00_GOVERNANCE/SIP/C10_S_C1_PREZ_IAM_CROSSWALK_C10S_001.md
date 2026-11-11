@@ -108,3 +108,10 @@ Siguiente trabajo C1.5:
 5. emitir dictamen de factibilidad/soporte; sin IAM/snapshots reales del DGP, no declarar una población materializada ni simular su distribución.
 
 No se necesita otra confirmación de precedencia P*τ2/P*F. La propuesta de composición E_i no se acepta en este documento. Sin Design Freeze ni autorización de implementación/ejecución.
+
+
+## 9. Precedencia de la reconciliación integrada PA (2026-11-11)
+
+El paquete PA (§15 de `C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md`) reutiliza este crosswalk sin reiniciarlo. `E_scope` se recomienda como gate de alcance del universo DGP, no como filtro de selección adicional dentro de ese universo, salvo que se generen deliberadamente unidades fuera de alcance. `App*(τ2,S0)` sigue como condición candidata de aplicabilidad; la fórmula `E_i=E_scope∧App` no se acepta ni se congela.
+
+La ausencia material de IAM/C_SRC/snapshots continúa bloqueando la clasificación por unidad, la cobertura exhaustiva, `REF=0`, la adjudicación de truth observada y el soporte. UNKNOWN no se recodifica como cero ni se excluye sin regla pre-Z; truth DGP y evidencia observada siguen segregadas. El siguiente paquete es PB, no un gate conversacional C1.5 independiente.
