@@ -2443,3 +2443,8 @@ El usuario acepta conservar A como variante DGP base inalterada y desarrollar B 
 **Consecuencias para E:** integración confirmatoria solo tras cierre semántico de A/B, estimandos, contratos de medición, adjudicación y provenance. Los resultados de A y B no se agrupan ni intercambian.
 
 **Gates:** B permanece en especificación documental; MED-02/03 OPEN; no Design Freeze, implementación, fixtures, simulación o ejecución. scientific_execution=false; execution_authorized=false. Véase DEC-C10-095.
+
+
+## 16.143 — Contrato mínimo de beneficiario y Value para B (2026-11-11)
+
+Se crea C10S-B-VALUE-MIN-001 como contrato de admisibilidad documental para la variante B. Establece requisitos, no una instancia: identidad/tipo de beneficiario, relación con servicio y unidad experimental, elegibilidad y demanda pre-Z, consecuencia, perspectiva/autoridad de valoración, población/horizonte, cardinalidad y provenance. Distingue unidad experimental, unidad lógica de servicio, beneficiario, actor ejecutor y evaluador. Prohíbe inferir beneficiario desde CMP.owner/actor/LOGICAL_SERVICE_UNIT; demanda no equivale a uso/selección/ejecución; V_j no puede recodificar ΔT_acc, Reach u Outcome técnico ni contener circularmente la hipótesis. Mantiene vector P179 y trade-offs, P182/P183, §224, estimandos por dimensión y vías alternativas. No selecciona tipo de beneficiario, demanda, consecuencia, dimensión, escala, regla, horizonte ni parámetros. C: resolver semántica antes de fichas; D: representar relaciones/temporalidad/truth-observed sin schema físico; E: probar invariantes y abstención/no identificación. B-BEN/B-VAL DRAFT; instancia B OPEN; MED-02/03 OPEN; sin freeze/implementación/ejecución. Véase C10S-B-VALUE-MIN-001.
