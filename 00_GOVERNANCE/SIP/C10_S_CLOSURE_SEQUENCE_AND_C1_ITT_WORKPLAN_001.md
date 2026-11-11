@@ -1272,15 +1272,15 @@ El DGP focal de referencia usa el régimen R0: la ruta alternativa A1→A2 está
 Se define el objeto de firma como la tupla vectorial íntegra d=(ΔU*,ΔR*,ΔC*,ΔX*). Los nombres de las cuatro TID y sus relaciones proceden de AB-03-SYN; los estados siguientes son estipulaciones explícitas de la truth del DGP, no observaciones.
 
 **Firma d0 — sin apertura focal (referencia nula de accesibilidad):**
-- ΔU*=∅: F1 y F2 no se incorporan al conjunto de transformaciones accesibles; A1/A2 permanecen fuera del conjunto accesible conforme al régimen R0.
-- ΔR*=∅: no aparece ninguna relación nueva en el subgrafo de transformaciones accesibles.
-- ΔC*: para F1 y F2, los predicados de accesibilidad conservan ID=1, REL=1, AUTH=1, RES=1, DEP=1, BLOCK=0, pero COND=0; la conjunción constitutiva de accesibilidad es falsa. Los predicados de aplicabilidad desde S0/S2 se mantienen separados y no se infieren.
+- U*_baseline=U*_post: F1/F2 no pertenecen al conjunto accesible y A1/A2 permanecen fuera del conjunto accesible conforme al régimen R0; por tanto ΔU*=∅.
+- R*_baseline=R*_post: no existe arista en el subgrafo accesible; por tanto ΔR*=∅.
+- C*_baseline=C*_post: para F1 y F2, ID=1, REL=1, COND=0, AUTH=1, RES=1, DEP=1 y BLOCK=0. La conjunción constitutiva de accesibilidad es falsa y no hay cambio de condiciones, por tanto ΔC*=∅. Los predicados de aplicabilidad desde S0/S2 se mantienen separados y no se infieren.
 - ΔX*=∅: no cambia el contexto externo ni el estado ambiental entre snapshots.
 
 **Firma d1 — apertura de la ruta focal completa:**
-- ΔU*={F1,F2}: ambas TID se incorporan al conjunto de transformaciones accesibles.
-- ΔR*={F1→F2}: la relación composicional catalogada queda incorporada al subgrafo accesible; la definición de la relación en el catálogo no cambia.
-- ΔC*: para F1 y F2, COND cambia 0→1; ID=1, REL=1, AUTH=1, RES=1, DEP=1 y BLOCK=0 permanecen constantes. La accesibilidad de cada transformación resulta de la conjunción completa de sus predicados, no de una etiqueta de apertura asignada directamente.
+- U*_baseline=∅ y U*_post={F1,F2}: ambas TID se incorporan al conjunto de transformaciones accesibles; por tanto ΔU*={F1,F2}.
+- R*_baseline=∅ y R*_post={F1→F2}: la relación composicional catalogada queda incorporada al subgrafo accesible; la definición de la relación en el catálogo no cambia y ΔR*={F1→F2}.
+- C*_baseline mantiene COND=0 y C*_post tiene COND=1 para F1 y F2; ID=1, REL=1, AUTH=1, RES=1, DEP=1 y BLOCK=0 permanecen constantes. Por tanto ΔC* registra exclusivamente COND: 0→1. La accesibilidad de cada transformación resulta de la conjunción completa de sus predicados, no de una etiqueta de apertura asignada directamente.
 - ΔX*=∅: contexto externo y estado ambiental constantes.
 
 En ambas firmas, A1/A2 permanecen inaccesibles bajo R0 y el universo transformacional declarado es el mismo. d0 y d1 son distintos en el objeto vectorial completo; no son un score ni un binario sustitutivo de ΔT_acc*. A_f* y D_f* se derivan de los predicados y snapshots; no reemplazan la firma.
