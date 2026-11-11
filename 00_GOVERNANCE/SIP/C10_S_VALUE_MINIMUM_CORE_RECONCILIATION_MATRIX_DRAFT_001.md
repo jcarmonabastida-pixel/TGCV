@@ -356,3 +356,8 @@ El usuario acepta A como variante base inalterada y B como extensión sintética
 - C/D/E deben mantener separados el alcance de A y B y su provenance. MED-02/03 OPEN.
 
 No se modifica DEC-C10-068, no se altera el roster de A y no se crean roles, indicadores, reglas, fixtures o parámetros. No Design Freeze, implementación ni ejecución. Véase DEC-C10-095.
+
+
+## 14. Contrato mínimo B-BEN/B-VAL — C10S-B-VALUE-MIN-001 (2026-11-11)
+
+La variante B dispone ahora de un contrato de admisibilidad documental, no de una instancia de beneficiario. Requisitos OPEN: identidad/tipo sintético versionado; relación con servicio y unidad experimental; elegibilidad y demanda basal pre-Z; consecuencia valorada; perspectiva/autoridad; cardinalidad; población/horizonte; provenance. La unidad experimental, unidad lógica de servicio, beneficiario, actor ejecutor y evaluador son roles distintos hasta que una relación explícita justifique coincidencia. No inferir beneficiario de CMP.owner, CMP-SERVICE-LOGIC-001, LOGICAL_SERVICE_UNIT ni actor. Demanda no equivale a uso/selección/ejecución. V_j debe medir consecuencia para beneficiario, no ser recodificación de ΔT_acc, Reach o Outcome técnico. Regla de valoración estable entre brazos; vector y trade-offs P179 preservados; §224 y P182/P183 aplicables. No se elige tipo de entidad, dimensión, escala, regla, demanda ni parámetro. Véase C10S-B-VALUE-MIN-001. Estado: DRAFT; no aceptación de instancia B.
