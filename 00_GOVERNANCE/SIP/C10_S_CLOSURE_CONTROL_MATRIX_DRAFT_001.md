@@ -2996,3 +2996,12 @@ Se incorpora como referencia operativa `C10_S_CLOSURE_SEQUENCE_AND_C1_ITT_WORKPL
 La fórmula histórica de `E_i` que agregaba `C_other` queda retirada como regla operativa; `C_auth,base=1` es común/invariante D2; `C_dep,0=0` no sustituye `A_f,0*=0); `E_req_preZ` no es elegibilidad experimental. No se ha encontrado ratio/probabilidades, estratos, algoritmo/semilla ni reglas de desviación de la asignación en los contratos revisados.
 
 **Recomendación pendiente de confirmación:** `P*_{τ2}` población primaria candidata C1; `P*_F` subpoblación secundaria. Composición `E_i`, clasificación y soporte OPEN. C1 no está cerrado.
+
+
+## C1.3 — Precedencia poblacional aceptada; composición E_i activa (2026-11-11)
+
+**Decisión:** `DEC-C10S-C1-POPULATION-PRECEDENCE-001` — ACCEPTED AS DESIGN-ARCHITECTURE DECISION / NOT DESIGN-FROZEN.
+
+P*τ2 se acepta como población objetivo primaria candidata C1; P*F como subpoblación secundaria para apertura funcional exclusiva. La alternativa basal no excluye de P*τ2. La pregunta de precedencia queda resuelta y no se vuelve a solicitar.
+
+**Gate activo C1.3:** reconstruir E_i desde DGP/IAM y predicados constitutivos vigentes, sin fórmula histórica C_other y sin confundir validez de instancia, aplicabilidad τ2, inaccesibilidad A_f basal, Need_preZ o E_req_preZ. OPEN: composición material, evidencia, indeterminación, soporte, medición, interferencia, asignación, horizonte y resultados.
