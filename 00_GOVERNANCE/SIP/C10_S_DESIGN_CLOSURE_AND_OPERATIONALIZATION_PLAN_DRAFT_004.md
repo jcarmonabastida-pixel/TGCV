@@ -2387,3 +2387,30 @@ Se mapean los cinco Outcomes candidatos: O-MIG sin campo terminal; O-CONF con an
 No hay beneficiarios/roles Value confirmados; CMP.owner no equivale a beneficiario. No hay instrumentos ni registros de valoración poblados. L_m y la ecuación lineal ilustrativa V=3O+4L_m+epsilon_V no se heredan como Value aceptado. No se crean field_id/event_id, snapshots, registros E_T ni fixtures.
 
 **Estado:** C-VALUE↔ROSTER CROSSWALK DOCUMENTED / MATERIAL OPEN. MED-02/03 continúan OPEN; no se identifica ΔT_acc→Value. Sin Design Freeze, implementación ni ejecución; scientific_execution=false; execution_authorized=false.
+
+ 
+## 16.140 — C-Value: auditoría de roles y beneficiarios del dominio sintético (2026-11-11)
+
+Se incorpora al expediente C-Value la auditoría de los roles candidatos de §264 contra DEC-C10-068/069/089, el contrato funcional de referencia, el DGP temporal/roles y el crosswalk §265.
+
+La instancia `C10S-SVC-REQUEST-PROCESSOR v1.0.0` define una unidad lógica sintética que acepta solicitudes cuando está habilitada y expone un perfil operativo declarado. No identifica solicitante, consumidor, usuario, cliente, propietario organizativo del servicio ni beneficiario. La referencia genérica a consumidor/sistema en la definición de servicio lógico no materializa una entidad ni una población.
+
+Se preservan estas distinciones:
+- `CMP-SERVICE-LOGIC-001` es el CMP lógico de referencia; `CMP-SERVICE-LOGIC` es owner/rol lógico provisional de la RUL, no propietario organizativo ni beneficiario.
+- El campo `actor` en t6 y el rol ejecutor sintético registran quién inicia/ejecuta el intento; no demuestran que sea operador del servicio, consumidor o beneficiario.
+- `LOGICAL_SERVICE_UNIT` es NODE raíz aceptado; DEC-C10-089 deja sin adjudicar su identidad/relación con CMP-SERVICE-LOGIC-001.
+- El evaluador independiente es un rol metodológico de adjudicación, no un beneficiario.
+
+| Rol candidato §264 | Resultado del cotejo | Estado |
+|---|---|---|
+| Propietario del servicio | Owner lógico de componente/regla no acredita propiedad organizativa del servicio | NOT_GROUNDED |
+| Operador | Actor ejecutor previsto, sin identidad/responsabilidad operativa materializada | NOT_GROUNDED |
+| Mantenedor | No existe función de mantenimiento instanciada | NOT_GROUNDED |
+| Usuario/destinatario | Servicio acepta solicitudes, pero no hay solicitante, población ni relación de consumo instanciados | NOT_GROUNDED |
+| Responsable de riesgo | Seguridad/compliance son restricciones candidatas, sin actor ni mandato de valoración | NOT_GROUNDED |
+
+El DGP incluye beneficiario, regla/version y horizonte en t9 y DGP-13 exige beneficiario, criterio, escala y horizonte fijados ex ante. Son requisitos todavía no satisfechos, no prueba de que los roles existan. F*/FP-01…08 puede sostener Outcome técnico de conformidad cuando se complete su ficha §224; no demuestra valoración contextual ni beneficiario.
+
+**Conclusión:** Opción A puede seguir desarrollándose para accesibilidad, conformidad y Outcomes técnicos. El dominio aceptado no permite actualmente instanciar Value contextual. No se concluye que sea imposible: introducir un consumidor/beneficiario sintético sería una extensión sustantiva del DGP que requiere propuesta, decisión explícita y revisión de sus consecuencias causales, temporales, de medición e interferencia. No se infiere desde el nombre del servicio, CMP.owner, actor ejecutor ni telemetría.
+
+**Estado:** ROLE/BENEFICIARY AUDIT DOCUMENTED / NO BENEFICIARY GROUNDED / VALUE MATERIAL OPEN. No se crean entidades, IDs, campos, eventos, snapshots, instrumentos ni fixtures. MED-02/03 siguen OPEN; no Design Freeze, implementación ni ejecución; scientific_execution=false; execution_authorized=false.
