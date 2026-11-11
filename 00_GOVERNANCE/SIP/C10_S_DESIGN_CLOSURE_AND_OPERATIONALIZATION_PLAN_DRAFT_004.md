@@ -2751,3 +2751,14 @@ Se cierra la reconciliación documental de las distinciones del contrato D2: P(Z
 Se preservan P*τ2/P*_F y los límites de E_i/App, C_dep,0/A_f,0*, estados UNKNOWN pre-Z, q_X* como distribución basal objetivo, q_L* solo si se requiere régimen secuencial, y UE=UA condicionado a aislamiento. No se calculan población, positividad ni soporte sin IAM/C_SRC/snapshots/roster y truth/evidence por UE.
 
 **Estado:** DESIGN_CONTRACT_RECONCILED_PARTIALLY / RANDOMIZATION_NOT_SPECIFIED / SUPPORT_NOT_ESTABLISHED / NOT_DESIGN_FROZEN. No nuevas decisiones ni autorización. scientific_execution=false; execution_authorized=false.
+
+
+## 16.165. Reconciliación de operacionalización confirmatoria Outcome/Value (2026-11-11)
+
+**Artefacto rector:** `C10_S_OUTCOME_VALUE_OPERATIONALIZATION_RECONCILIATION_DRAFT_001.md`; maestro §276.
+
+F* se conserva como criterio funcional de ruta completa; O-CONF como resultado adjudicado del estado de conformidad del destino, sin duplicar F* como segundo endpoint. O-CONF es candidato prioritario, no confirmado/operacionalizado: predicados atómicos, mapping/IAM, C0/G/H, snapshots, evento terminal y oráculo independiente validado siguen OPEN. FP-08 permanece gate probatorio separado.
+
+Value se mantiene vectorial P179. B1/Need_preZ y perspectiva B1 son base semántica; autoridad/criterio y consecuencia, dimensiones k/V_j, fuentes, escalas, baseline y horizonte siguen OPEN. No se seleccionan dimensiones históricas, pesos ni agregación por defecto. P179/P182/P183, §224 y MEAS/MISS se reutilizan sin nuevos IDs.
+
+**Estado:** MEASUREMENT_ARCHITECTURE_RECONCILED / NO_CONFIRMATORY_Y / NOT_DESIGN_FROZEN. ITT por O/V separados; C3/C4 no identificados. Sin captura, schema, fixtures, implementación, simulación o ejecución.
