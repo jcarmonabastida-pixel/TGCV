@@ -1357,3 +1357,8 @@ La aceptación cierra solo la descomposición conceptual. Permanecen abiertos pr
 ## Nota de seguimiento — C10S-B-VALUE-MIN-001 (2026-11-11)
 
 Se registra como propuesta documental derivada de DEC-C10-095, no como decisión sustantiva aceptada. C10S-B-VALUE-MIN-001 define condiciones mínimas de admisibilidad del beneficiario sintético y Value en B; deja OPEN tipo/identidad, relación, cardinalidad, demanda pre-Z, consecuencia, perspectiva/autoridad, dimensiones, regla, escala, horizonte y parámetros. Mantiene separados unidad experimental, unidad de servicio, beneficiario, actor ejecutor y evaluador; impide inferir beneficiario desde CMP.owner/actor. Demanda no es uso; V_j no recodifica A/Reach/O técnico ni introduce circularidad. C/D/E reciben consecuencias documentales, sin schema físico ni implementación. No se acepta todavía ninguna instancia B ni se seleccionan dimensiones o reglas. Véase el contrato en C10S-B-VALUE-MIN-001.
+
+
+## Nota de seguimiento — aceptación de B1 como tipo candidato (2026-11-11)
+
+El usuario acepta B1 —entidad solicitante sintética del servicio— como tipo candidato para desarrollar la variante B. No es aceptación de instancia cerrada ni de dimensiones/reglas/medidas. Necesidad/objetivo pre-Z, solicitud, procesamiento técnico y consecuencia valorada permanecen separados. Solicitante y beneficiario coinciden solo por estipulación explícita en B1. No solicitud/no ejecución no implica ausencia de demanda ni Value cero; procesamiento correcto/O-CONF no equivale a Value. Véase C10S-B1-REQUESTER-CANDIDATE-001.
