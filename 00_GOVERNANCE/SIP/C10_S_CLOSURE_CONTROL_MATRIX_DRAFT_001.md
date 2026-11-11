@@ -3227,3 +3227,21 @@ No se autoriza captura, schema físico, fixtures, implementación, generación d
 ## Corrección de recuperación del maestro C10-S — 2026-11-11
 
 La lectura inicial del maestro mediante Contents devolvía contenido vacío, pero el blob Git fue recuperado íntegramente (1,134,655 caracteres / 12,136 líneas) e inspeccionados sus §§266–273. La incidencia está **RESUELTA**; el documento no estaba perdido. Se ha añadido §274 al maestro con la reconciliación integrada de factibilidad y Design Freeze. No queda pendiente recuperar el maestro; permanecen los bloqueos científicos/materiales y los gates indicados en el artefacto rector. La limitación de concordancia línea por línea por inaccesibilidad del maestro queda superada para el contenido recuperado; no equivale a validación local ni CI.
+
+
+## 141. Gate D2 — asignación, población y soporte (2026-11-11)
+
+| Elemento | Estado | Criterio de cierre |
+|---|---|---|
+| Política D2 y programación W_programmed | ACCEPTED | DEC-C10-066/067; 0/1 condicional a Z |
+| Aleatorización Z | OPEN / NOT SPECIFIED | UA, ratio, p_i por estrato, algoritmo, semilla/hash, provenance, desviaciones |
+| Población P*τ2/P*_F | PRECEDENCE ACCEPTED | No reabrir; composición E_i y clasificación por unidad OPEN |
+| App/E_scope/E_i | PARTIAL / OPEN | Mapping y truth pre-Z completos; no confundir con A_f/C_dep |
+| UNKNOWN pre-Z | REQUIREMENT DEFINED / ANALYSIS OPEN | Resolver antes de Z o definir estimando observable/cotas/restricción ex ante |
+| q_X* / positivity | OPEN / NOT MATERIALIZED | Distribución basal, pesos, cobertura y soporte de ambas políticas por historia |
+| q_L* | CONDITIONAL / OPEN | Solo si historia secuencial post-Z es necesaria y está identificada |
+| UE=UA / interference | CONDITIONAL / BLOCKED | Aislamiento demostrado o cluster/exposure model y estimando compatible |
+| IAM/C_SRC/roster/snapshots | NONE / BLOCKED | Fuente aprobada, cobertura, versionado y provenance |
+| Design Freeze / execution | BLOCKED / NOT AUTHORIZED | Gates conjuntos y autorización expresa |
+
+El contrato detallado está en C10_S_D2_ASSIGNMENT_POPULATION_SUPPORT_RECONCILIATION_DRAFT_001.md. Este gate no autoriza captura, schema físico, fixtures, implementación, simulación, estimación o ejecución.
