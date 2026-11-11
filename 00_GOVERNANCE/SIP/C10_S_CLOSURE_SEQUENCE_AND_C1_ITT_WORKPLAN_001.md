@@ -1561,3 +1561,68 @@ La cuadrícula demuestra que el oráculo analítico distingue efectos positivos,
 No queda autorizado por ello el cálculo Monte Carlo, la búsqueda de N/R, la selección de un K confirmatorio ni la ejecución científica. Tampoco se declara validado el Analyzer: todavía no se ha contrastado su recuperación frente a estos valores verdaderos.
 
 **Estado:** ANALYTIC_REFERENCE_GRID_COMPLETE / DIAGNOSTIC_ONLY / STATISTICAL_CALIBRATION_NOT_STARTED / SCIENTIFIC_EXECUTION_FALSE / EXECUTION_AUTHORIZATION_FALSE.
+
+
+## 42. Manifiesto diagnóstico de referencia para la cuadrícula causal (2026-11-11)
+
+**Estado:** DIAGNOSTIC_GRID_MANIFEST_DEFINED / CORE_SIGN_AND_NULL_CONTROLS_SELECTED / CONDITIONAL_NULL_LABELLED / WEAK_SIGNAL_UNCLASSIFIED / ADVERSARIAL_DGP_PARAMETERS_OPEN / NO_MONTE_CARLO / NO_STATISTICAL_CALIBRATION / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 42.1 Propósito y límites
+
+Esta sección convierte los resultados analíticos de §41 en un manifiesto diagnóstico reutilizable para la futura evaluación del Analyzer. No constituye una configuración confirmatoria ni selecciona N, R, K operativo, MDE, umbrales de equivalencia o parámetros de observación. No autoriza generación de unidades, simulación, calibración Monte Carlo ni ejecución científica.
+
+Se reutiliza la parametrización y el oráculo de §§35, 38 y 41. No se crea un nuevo artefacto ni se reabre la semántica de B1, Q_B1, Value, las firmas d0/d1 o el estimando θ_A.
+
+### 42.2 Núcleo diagnóstico seleccionado
+
+Se conserva como punto de referencia numérico:
+
+- λ0=0.25 y λ1=0.75, con soporte común sobre d0/d1;
+- p01(d0)=p10(d0)=0.20, equivalentes a b01=b10=logit(0.20);
+- π0 ∈ {0.20, 0.50, 0.80};
+- K ∈ {2, 10, 50};
+- contrastes focales de transición (α01,α10) ∈ {(0,0),(1,−1),(−1,1)}.
+
+La cuadrícula resultante incluye un nulo estructural y efectos positivos y negativos en los tres estados iniciales examinados. Los valores verdaderos son los calculados en §41 y se deben obtener de nuevo por el oráculo determinista al materializar una configuración; no se copian como truth independiente del código generador.
+
+### 42.3 Controles diferenciados
+
+Se conservan además, fuera del conjunto focal principal:
+
+1. **Nulo condicionado de dinámica:** (α01,α10)=(1,1), π0=0.50. Es nulo únicamente bajo ese estado inicial; con π0=0.20 o 0.80 el efecto no es cero. Se etiqueta CONDITIONAL_NULL, nunca GENERAL_NULL.
+2. **Contraste de señal débil:** (1,0.99), informado mediante θ_A exacto para cada π0 y K. No se etiqueta NEAR_ZERO ni equivalente: no existe todavía margen ex ante justificado y el efecto cambia de signo según π0.
+3. **Primera etapa nula:** λ0=λ1, conservando las transiciones. Se etiqueta NO_POLICY_FIRST_STAGE / NON_IDENTIFICATION_CONTROL y queda fuera del estimando focal identificable λ1>λ0. No se presenta como evidencia de θ_A=0 bajo un contraste de política activo.
+
+### 42.4 Resolución temporal
+
+K ∈ {2,10,50} se mantiene como sensibilidad de resolución/horizonte, no como selección de duración real ni como parámetro transformacional H. El resultado depende de K; por tanto, no se elige K por maximizar |θ_A|. La futura selección operativa deberá corresponder a una interpretación temporal defendible de W_B1 y a la medición disponible, no a conveniencia estadística.
+
+### 42.5 Escenarios adversariales aún no parametrizados
+
+El núcleo focal anterior no basta por sí solo para probar discriminación de mecanismos ni reconocimiento de no-identificación. Siguen siendo necesarios, como extensiones distintas y explícitas:
+
+- vía directa/colateral a V_B1, con γ_direct diferencial y truth conocida;
+- soporte insuficiente/no solapamiento que impida identificar el contraste;
+- canal de observación degradado (error, cobertura, missingness/censura) manteniendo separado el DGP de la evidencia observada.
+
+No se asignan coeficientes numéricos a estas extensiones en esta sección: el contrato disponible determina su función causal, pero no contiene todavía una calibración cuantitativa justificada para esos parámetros. No se deben simular como si estuvieran definidos. La instancia focal R0 permanece aislada de esas vías.
+
+### 42.6 Contrato mínimo de salida esperado del Analyzer/Evaluator
+
+Para cada punto materializado, el manifiesto deberá permitir comparar:
+
+- estimando solicitado y población/horizonte;
+- θ_A verdadero calculado por el oráculo, accesible solo al Evaluator;
+- clasificación verdadera del escenario (focal positivo, focal negativo, general nulo, nulo condicionado, señal débil no clasificada o control sin primera etapa);
+- estado de soporte e identificación que corresponde al DGP;
+- estimación, intervalo, sesgo/RMSE, cobertura, potencia/tasa de falso positivo y abstención cuando el diseño estadístico esté autorizado.
+
+El Analyzer no recibe θ_A verdadero, parámetros secretos ni etiquetas reveladoras de escenario. La etiqueta y el truth se conservan exclusivamente en TruthBundle/Evaluator conforme al firewall de §§A–C.
+
+### 42.7 Dictamen y siguiente operación
+
+El manifiesto diagnóstico del núcleo focal queda delimitado y reutiliza la cuadrícula calculada. No se afirma todavía que la batería completa de escenarios adversariales esté cuantitativamente especificada ni que el Analyzer haya sido validado.
+
+La siguiente operación científica, antes de Monte Carlo, es completar únicamente los parámetros de las dos extensiones que afectan a la interpretación causal —vía directa/colateral y soporte insuficiente— y mantener el canal de observación degradado como bloque separado. Una vez fijados esos DGP y sus truths analíticos, el manifiesto estará completo para solicitar autorización de calibración estadística P178. No se requiere ampliar el alcance conceptual ni crear nuevas matrices.
+
+**Estado:** DIAGNOSTIC_CORE_MANIFEST_RECORDED / ADVERSARIAL_PARAMETERS_REMAIN_OPEN / STATISTICAL_CALIBRATION_NOT_AUTHORIZED / SCIENTIFIC_EXECUTION_FALSE / EXECUTION_AUTHORIZATION_FALSE.
