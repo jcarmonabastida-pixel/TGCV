@@ -122,3 +122,9 @@ La ausencia material de IAM/C_SRC/snapshots continúa bloqueando la clasificaci�
 La decisión `DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001` fija contract/plantilla común e instancia única/versionada por UE. Esta regla no materializa roster ni IAM: `instance_id` concretos deben resolverse desde el roster aprobado y quedar vinculados a SNAPSHOT exacto/provenance. El servicio CMP lógico y el adaptador/dependencia focal P1 son objetos distintos.
 
 El ciclo PB material integrado se registra en `C10_S_PB_MATERIAL_D2_INSTANCE_AND_ISOLATION_RECONCILIATION_DRAFT_001.md`. C_SRC/C1.4 sigue MATERIAL BLOCKED BY ABSENT IAM AND SNAPSHOTS; no se afirma cobertura COMPLETE, REF=0, población materializada ni soporte. boundary_class y las FKs exactas se aplican conforme a DEC-C10-059/065/082 y a U_G, sin añadir tablas ni columnas por esta reconciliación.
+
+## 11. Integración del ciclo D2 asignación/población/soporte (2026-11-11)
+
+El contrato C1.5/D2 se complementa con C10_S_D2_ASSIGNMENT_POPULATION_SUPPORT_RECONCILIATION_DRAFT_001.md. El crosswalk C1.4 conserva su dictamen: sin IAM/C_SRC/snapshots y coverage material no se clasifica E_scope ni se estima E_i/q_X*. No se recrean filas ni se convierte la matriz 7×5 en inventario físico.
+
+Se aclara que App*(τ2,S0) es aplicabilidad semántica, no accesibilidad; la propuesta E_i=E_scope∧App sigue NO ACEPTADA. La regla UNKNOWN y la asignación Z deben quedar selladas pre-Z; no se confunde Pr(Z=1) con las probabilidades de programación D2 0/1 condicionales a Z. Sin fuente material aprobada no hay soporte ni positividad verificables.
