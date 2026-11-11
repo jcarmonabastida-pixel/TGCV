@@ -261,3 +261,12 @@ Las secciones anteriores reflejan el estado documental de su fecha de corte. Su 
 - P*_τ2 y P*_F conservan sus definiciones y límites; P*_F no se convierte en población primaria por defecto.
 
 Este addendum corrige la lectura del estado vigente sin reescribir el historial. C1 continúa OPEN; véase `C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md`.
+
+
+## 11. Precedencia poblacional aceptada para C1 (DEC-C10S-C1-POPULATION-PRECEDENCE-001, 2026-11-11)
+
+Se acepta `P*_{τ2}` como población objetivo primaria candidata de C1 ITT D2 y `P*_F` como subpoblación secundaria para apertura funcional exclusiva. La alternativa funcional basal no excluye de P*_{τ2}; solo excluye de P*_F cuando está respaldada. La aceptación fija precedencia, no operacionaliza ni congela P*.
+
+La composición de `E_i`, evidencia y estados de indeterminación, `τ2)/frontera/mapping/snapshots, error de clasificación, cobertura de F_alt, soporte `q_X*`, interferencia, aleatorización, horizonte y Outcome/Value permanecen OPEN. Se mantiene la distinción entre `E_i`, `Need_preZ` y `E_req_preZ`, así como entre truth `A_f,0*` y clasificación observada. No se excluye por eventos post-Z.
+
+La decisión completa y sus límites constan en `DEC-C10S-C1-POPULATION-PRECEDENCE-001.md`. Los estados históricos de §§8–9 no se reescriben: su propuesta de aprobación pendiente queda resuelta únicamente en la precedencia P*τ2/P*F; los restantes criterios siguen abiertos.
