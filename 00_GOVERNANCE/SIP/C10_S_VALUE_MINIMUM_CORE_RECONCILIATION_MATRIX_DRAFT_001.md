@@ -473,3 +473,22 @@ Esta adjudicación es mecanística y no modifica elegibilidad, población, unida
 **OPEN:** especificación de los contrastes concretos de D2; propiedades de trayectoria causalmente relevantes; control de causas concurrentes/colaterales e interacciones; definición de intervención por etapa; positividad/soporte y versiones de tratamiento; evidencia observable y medición; reglas de atribución para contribuciones múltiples; sensibilidad a contrafactuales alternativos; relación con estimandos total, directo e indirecto y mediación.
 
 **No autorizado:** Design Freeze, implementación, fixtures, simulación o ejecución científica. Se mantienen \`scientific_execution=false\` y \`execution_authorized=false\`; \`main\` no se modifica.
+
+## 9. Reconciliación de estados históricos tras decisiones B1 y arquitectura A/B (2026-11-11)
+
+Las secciones anteriores conservan fielmente el estado de la matriz al redactarse. Las menciones allí a cardinalidad de oportunidades, modalidad estandarizada, identidad de B1 o existencia de beneficiario como OPEN deben interpretarse ahora con la precedencia temporal de las decisiones posteriores, no como estado vigente sin reconciliar.
+
+| Tema | Referencia histórica de esta matriz | Decisión posterior vigente | Estado actualizado |
+|---|---|---|---|
+| Arquitectura A/B | Value no instanciado en Opción A; alcance de B aún no seleccionado | DEC-C10-095 acepta A como base y B como extensión sintética separada | ACCEPTED AS DESIGN ARCHITECTURE; B instance OPEN |
+| Tipo B1 | Beneficiario no confirmado; no inferible desde CMP.owner/roster A | B1 aceptada como tipo candidato de entidad solicitante-beneficiaria | ACCEPTED AS CANDIDATE TYPE; not a materialized instance |
+| Entidad B1 por UE | Cardinalidad/relación OPEN | DEC-C10S-B1-UNIT-001 acepta una B1 por UE y vínculo versionado a servicio lógico aislado | ACCEPTED AS DESIGN DECISION; isolation and concrete identities OPEN |
+| Modalidad de petición | Harness estandarizado era recomendación aún no aceptada | DEC-C10S-B1-REQUEST-MODE-001 acepta modalidad estandarizada primaria candidata y envío endógeno secundario/adversarial | ACCEPTED AS DESIGN DECISION; not protocol-frozen |
+| Cardinalidad | Número de oportunidades OPEN | DEC-C10S-B1-OPPORTUNITY-CARDINALITY-001 acepta N_opportunities=1 por UE como candidato primario | ACCEPTED AS DESIGN DECISION; window/payload/protocol OPEN |
+| Enlace petición–trayectoria | Cardinalidad/tipos OPEN | DEC-C10S-B1-REQUEST-TRAJECTORY-LINK-001 acepta asociación temporal, trazabilidad y contribución causal como tipos distintos | ACCEPTED CONCEPTUALLY; material rules OPEN |
+| Adjudicación causal petición–trayectoria | Contrastes y contribuciones OPEN | DEC-C10S-B1-CAUSAL-ADJUDICATION-001 exige contraste contrafactual por etapa y verdad DGP segregada | ACCEPTED AS DESIGN CONTRACT; D2-specific contrasts OPEN |
+| Estimandos D2 | ITT/efecto focal/mediación no reconciliados en esta matriz | DEC-C10S-D2-ESTIMAND-SEPARATION-001 organiza C1–C5 | ACCEPTED AS DESIGN ARCHITECTURE; estimands and identification OPEN |
+
+**Consecuencia para Outcome/Value:** las decisiones B1 y A/B resuelven el tipo candidato y ciertas cardinalidades de diseño, pero no crean por sí mismas una consecuencia valorable ni una dimensión V_j. B1 sigue sin instancia material completa: demanda/Need_preZ, relación concreta, consecuencia, perspectiva/autoridad, dimensiones, indicadores, fuentes, escalas, horizonte y reglas de valoración permanecen OPEN. O-CONF sigue siendo el Outcome con mejor anclaje conceptual en A, pero su ficha §224 continúa incompleta. No se declara ninguna ficha O/V operacionalizada.
+
+**Regla de mantenimiento:** no volver a listar como OPEN la decisión ya aceptada de N_opportunities=1 o la modalidad estandarizada; listar únicamente los detalles materiales aún abiertos. Mantener el texto histórico y esta reconciliación como addendum, sin borrar trazabilidad. Véase también `C10_S_CLOSURE_SEQUENCE_AND_C1_ITT_WORKPLAN_001.md`.
