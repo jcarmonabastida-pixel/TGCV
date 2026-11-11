@@ -1891,7 +1891,7 @@ La próxima operación es una decisión acotada, no otra auditoría: aprobar o a
 
 **Autorización:** aceptación explícita del usuario en esta conversación para ejecutar la calibración estadística P178 mediante simulaciones Monte Carlo, limitada a la calibración metodológica y sin autorizar la ejecución confirmatoria del experimento.
 
-**Estado:** P178_FOCAL_MONTE_CARLO_CALIBRATION_COMPLETED / FINITE_REFERENCE_GRID_POWER_TARGET_MET / NULL_TYPE_I_COMPATIBLE / COVERAGE_NEAR_NOMINAL_WITH_ONE_HIGH_CELL / WEAK_SIGNAL_NOT_POWERED_AS_EXPECTED / ANALYZER_NOT_RUN / CONFIRMATORY_EXECUTION_NOT_AUTHORIZED.
+**Estado:** P178_EXPLORATORY_MONTE_CARLO_CALIBRATION_PERFORMED / FINITE_REFERENCE_GRID_POWER_TARGET_MET / NULL_TYPE_I_COMPATIBLE / COVERAGE_NEAR_NOMINAL_WITH_ONE_HIGH_CELL / WEAK_SIGNAL_NOT_POWERED_AS_EXPECTED / ANALYZER_NOT_RUN / CONFIRMATORY_EXECUTION_NOT_AUTHORIZED.
 
 ### 47.1 Alcance efectivamente ejecutado
 
@@ -1978,4 +1978,13 @@ Esta ejecución no calibra potencia para los escenarios de vía directa, falta d
 
 No se ha seleccionado K operativo, duración física de W_B1, parámetros confirmatorios del canal de observación, región sustantiva de efectos ni tamaño muestral definitivo. No se ha materializado el harness ni se ha ejecutado el experimento confirmatorio. Los resultados son evidencia de calibración metodológica del benchmark sintético y no evidencia empírica para claims TGCV.
 
-**Estado:** P178_FOCAL_BENCHMARK_CALIBRATED / N700_REFERENCE_CANDIDATE_ONLY / ANALYZER_VALIDATION_OPEN / ADVERSARIAL_STATISTICAL_BEHAVIOUR_OPEN / CONFIRMATORY_DESIGN_NOT_FROZEN / SCIENTIFIC_EXECUTION_FALSE / CONFIRMATORY_EXECUTION_NOT_AUTHORIZED.
+**Estado:** P178_EXPLORATORY_BENCHMARK_RESULTS_RECORDED / N700_REFERENCE_CANDIDATE_ONLY / ANALYZER_VALIDATION_OPEN / ADVERSARIAL_STATISTICAL_BEHAVIOUR_OPEN / CONFIRMATORY_DESIGN_NOT_FROZEN / SCIENTIFIC_EXECUTION_FALSE / CONFIRMATORY_EXECUTION_NOT_AUTHORIZED.
+
+
+### 47.7 Límite de procedencia y auditoría
+
+La operación numérica se ejecutó en el entorno Python de esta sesión (Python 3.13.5, NumPy 2.3.5, SciPy 1.17.0; generador NumPy default_rng, PCG64). Se conservaron las semillas deterministas y los resultados agregados por celda en esta sección. Sin embargo, no se persistió todavía un script ejecutable canónico, un manifiesto de dependencias ni capturas/raw outputs por réplica. Por ello, los resultados son **calibración exploratoria reproducible a nivel de especificación y semilla, pero no ejecución técnica auditada conforme al workflow canónico**.
+
+Antes de tratar P178 como gate técnicamente cerrado, debe persistirse el script exacto y su entorno/dependencias, repetirse la calibración desde ese artefacto identificado y conservarse las salidas primarias necesarias para auditoría. Esta repetición es una verificación de procedencia de los resultados ya obtenidos, no una nueva ampliación científica ni una nueva selección de escenarios. Hasta entonces, N=700 conserva el estatus de candidato diagnóstico provisional.
+
+**Estado actualizado:** EXPLORATORY_MONTE_CARLO_RESULTS_RECORDED / EXECUTION_PROVENANCE_AUDIT_OPEN / P178_TECHNICAL_CLOSURE_PENDING_REPRODUCIBLE_RERUN / ANALYZER_VALIDATION_OPEN / CONFIRMATORY_EXECUTION_NOT_AUTHORIZED.
