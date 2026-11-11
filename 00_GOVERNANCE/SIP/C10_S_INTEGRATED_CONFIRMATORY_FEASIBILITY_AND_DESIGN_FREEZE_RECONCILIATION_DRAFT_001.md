@@ -233,3 +233,34 @@ Esta reconciliación:
 ## 13. Corrección de recuperación del maestro C10-S (2026-11-11)
 
 La lectura inicial mediante Contents devolvía contenido vacío, pero el blob Git asociado al SHA `61d3079213558f6f74c14b60600ae3ca04c0a395` se recuperó íntegramente mediante fetch_blob: 1,134,655 caracteres / 12,136 líneas. Se inspeccionaron los §§266–273 y se confirmó la incorporación de PA, PB, PC, PD, PE, identidad B1 por UE, PB-MAT y B2-B3. Por tanto, **la incidencia de recuperación está RESUELTA**; no existía evidencia de pérdida del maestro. Se ha añadido §274 a ese mismo maestro con el dictamen integrado de factibilidad. La limitación de concordancia línea por línea indicada en §2 queda superada para el contenido recuperado, aunque no equivale a validación local de repositorio ni de CI.
+
+
+## 14. Auditoría de consistencia cruzada y trazabilidad del maestro (2026-11-11)
+
+### 14.1 Identidad de la versión recuperada
+
+- Blob histórico recuperado antes de §274: `61d3079213558f6f74c14b60600ae3ca04c0a395` (1,134,655 caracteres; 12,136 líneas), que contiene §§266–273.
+- Blob vigente tras §274 y §274.1: `51dcd3b2c84d33c437292ce5883f5b70e3d9491c` (1,137,928 caracteres; 12,156 líneas). Recuperado y verificado mediante fetch_blob; incluye §§266–274 y la aclaración §274.1.
+- fetch_file/Contents continúa devolviendo longitud 0 para el maestro pese al blob vigente; no utilizar esa respuesta vacía como evidencia de pérdida. No existe validación local ni CI en esta sesión.
+
+### 14.2 Crosswalk de consistencia
+
+Se contrastaron §§266–274 con PA/C1, PB/PB-MAT, PC/C3-C4, PD/DGP, PE, identidad B1 por UE, B2–B3, auditoría focal A_f*/D_f*, auditoría IV, matriz mínima Outcome/Value, plan, secuencia, protocolo de paquetes y Closure Control Matrix.
+
+**Resultado: consistencia sustantiva confirmada en los siguientes invariantes:**
+1. D2 primario candidato / D1 secundario; no se presume asignación 1:1 ni se trata 0.80 como tasa observada o primera etapa focal.
+2. P*_{τ2} primaria y P*_F secundaria; eventos post-Z no redefinen elegibilidad ITT; estados 1/0/? y NA justificado se mantienen.
+3. UE/UA/UO diferenciadas; UE=UA condicionado a aislamiento. Una B1 y una oportunidad por UE no prueban no interferencia.
+4. B, W_attempt/recepción, instalación, C_dep*, A_f*, D_f* y ΔT_acc* no son proxies intercambiables. A_f* y D_f* siguen medidas candidatas con mapping/evidencia material abiertos.
+5. C1 ITT de política/paquete, θ_A general, θ_Af focal, LATE_f y C4 interventional siguen siendo estimandos distintos; no hay transferencia de identificación ni residual por resta ad hoc.
+6. Outcome técnico y Value contextual son constructos separados; Outcome no es causa exclusiva por definición ni V_j=f(Outcome). Ningún O_k/V_j está operacionalizado; P179 conserva vector y trade-offs.
+7. truth_dgp, observed_evidence y evaluation/adjudication siguen segregados; DGP cuantitativo, N/R, potencia y tolerancias permanecen abiertos.
+8. G-SCI/G-MAT/G-SCHEMA/G-ROLE/G-TEST/G-REPRO permanecen BLOCKED y G-AUTH NOT GRANTED. No implementación ni ejecución autorizadas.
+
+### 14.3 Discrepancias documentales corregidas
+
+- Se corrigió la referencia de recuperación: el SHA 61d307… identifica el blob histórico pre-§274, no la versión vigente; la precisión quedó registrada en §274.1.
+- Se sustituyeron en plan, secuencia, protocolo y Closure Control Matrix los estados activos obsoletos de “maestro inaccesible/RECOVERY BLOCKER” por notas históricas supersedidas y estado recuperado.
+- Se preservaron las notas históricas donde aportan trazabilidad, pero ya no operan como gates vigentes.
+
+**Límite del dictamen:** esta es una auditoría de consistencia documental y semántica. No demuestra validez causal, suficiencia de medición, aislamiento, potencia, corrección de código, schema físico, seguridad implementada ni CI. No crea decisiones científicas ni autoriza implementación, captura o ejecución.
