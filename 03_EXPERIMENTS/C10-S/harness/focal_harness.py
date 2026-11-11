@@ -143,9 +143,12 @@ class AnalyzerResult:
     estimand_version: str
     package_identification: Identification
     focal_identification: Identification
-    estimate: float | None
-    standard_error: float | None
-    interval_95: tuple[float, float] | None
+    package_itt_estimate: float | None
+    package_itt_standard_error: float | None
+    package_itt_interval_95: tuple[float, float] | None
+    focal_estimate: float | None
+    focal_standard_error: float | None
+    focal_interval_95: tuple[float, float] | None
     abstention_reason: str | None
     input_sha256: str
     output_sha256: str
@@ -384,21 +387,31 @@ class Analyzer:
         focal_status: Identification = "IDENTIFIED" if focal_ok else (
             "NOT_IDENTIFIED" if contract.direct_path_status == "PRESENT" else "INDETERMINATE")
         reason = None if focal_ok else "FOCAL_ATTRIBUTION_REQUIRES_NO_DIRECT_PATH_AND_COMMON_REGIME"
+        focal_estimate = estimate if focal_ok else None
+        focal_se = se if focal_ok else None
+        focal_interval = interval if focal_ok else None
         result_payload = {"run_id": evidence.run_id, "estimand_id": contract.estimand_id,
                           "estimand_version": contract.estimand_version,
                           "package_identification": package_status, "focal_identification": focal_status,
-                          "estimate": estimate, "standard_error": se, "interval_95": interval,
+                          "package_itt_estimate": estimate, "package_itt_standard_error": se,
+                          "package_itt_interval_95": interval, "focal_estimate": focal_estimate,
+                          "focal_standard_error": focal_se, "focal_interval_95": focal_interval,
                           "abstention_reason": reason, "input_sha256": evidence.sha256}
         return AnalyzerResult(evidence.run_id, contract.estimand_id, contract.estimand_version,
-                              package_status, focal_status, estimate, se, interval, reason,
+                              package_status, focal_status, estimate, se, interval,
+                              focal_estimate, focal_se, focal_interval, reason,
                               evidence.sha256, _canonical_hash(result_payload))
 
     def _abstain(self, evidence: SealedEvidence, contract: AnalysisContract, reason: str) -> AnalyzerResult:
         payload = {"run_id": evidence.run_id, "estimand_id": contract.estimand_id,
-                   "estimand_version": contract.estimand_version, "reason": reason,
-                   "input_sha256": evidence.sha256}
+                   "estimand_version": contract.estimand_version,
+                   "package_itt_estimate": None, "package_itt_standard_error": None,
+                   "package_itt_interval_95": None, "focal_estimate": None,
+                   "focal_standard_error": None, "focal_interval_95": None,
+                   "reason": reason, "input_sha256": evidence.sha256}
         return AnalyzerResult(evidence.run_id, contract.estimand_id, contract.estimand_version,
-                              "INDETERMINATE", "INDETERMINATE", None, None, None, reason,
+                              "INDETERMINATE", "INDETERMINATE",
+                              None, None, None, None, None, None, reason,
                               evidence.sha256, _canonical_hash(payload))
 
 
@@ -409,30 +422,30 @@ class Evaluator:
         contract.validate()
         if tolerance < 0.0 or result.run_id != truth.run_id:
             raise ContractError("invalid tolerance or mismatched run identity")
-        if result.estimate is None:
-            result_payload = {"run_id": result.run_id, "estimand_id": result.estimand_id,
-                              "estimand_version": result.estimand_version,
-                              "reason": result.abstention_reason, "input_sha256": result.input_sha256}
-        else:
-            result_payload = {"run_id": result.run_id, "estimand_id": result.estimand_id,
-                              "estimand_version": result.estimand_version,
-                              "package_identification": result.package_identification,
-                              "focal_identification": result.focal_identification,
-                              "estimate": result.estimate, "standard_error": result.standard_error,
-                              "interval_95": result.interval_95,
-                              "abstention_reason": result.abstention_reason,
-                              "input_sha256": result.input_sha256}
+        result_payload = {"run_id": result.run_id, "estimand_id": result.estimand_id,
+                          "estimand_version": result.estimand_version,
+                          "package_identification": result.package_identification,
+                          "focal_identification": result.focal_identification,
+                          "package_itt_estimate": result.package_itt_estimate,
+                          "package_itt_standard_error": result.package_itt_standard_error,
+                          "package_itt_interval_95": result.package_itt_interval_95,
+                          "focal_estimate": result.focal_estimate,
+                          "focal_standard_error": result.focal_standard_error,
+                          "focal_interval_95": result.focal_interval_95,
+                          "abstention_reason": result.abstention_reason,
+                          "input_sha256": result.input_sha256}
         if _canonical_hash(result_payload) != result.output_sha256:
             raise FirewallError("AnalyzerResult seal/hash mismatch")
-        package_error = None if result.estimate is None else abs(result.estimate - truth.itt_value_truth)
+        package_error = (None if result.package_itt_estimate is None else
+                         abs(result.package_itt_estimate - truth.itt_value_truth))
         package_recovery = package_error is not None and package_error <= tolerance
         focal_error = None
         focal_recovery: bool | None = None
-        if result.focal_identification == "IDENTIFIED" and result.estimate is not None:
-            focal_error = abs(result.estimate - truth.theta_access_truth)
+        if result.focal_identification == "IDENTIFIED" and result.focal_estimate is not None:
+            focal_error = abs(result.focal_estimate - truth.theta_access_truth)
             focal_recovery = focal_error <= tolerance
         package_conditions = (contract.randomized_assignment and contract.measurement_ideal
-                              and contract.interference_absent and result.estimate is not None)
+                              and contract.interference_absent and result.package_itt_estimate is not None)
         expected_package_status = "IDENTIFIED" if package_conditions else "INDETERMINATE"
         if expected_package_status == "INDETERMINATE":
             expected_focal_status = "INDETERMINATE"
