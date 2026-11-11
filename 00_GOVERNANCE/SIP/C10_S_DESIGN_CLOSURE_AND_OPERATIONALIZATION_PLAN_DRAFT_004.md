@@ -2700,3 +2700,14 @@ Gates para implementación: G-SCI, G-MAT, G-SCHEMA, G-ROLE, G-TEST, G-REPRO y G-
 Se acepta `DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001`. El contrato funcional `C10S-SVC-REQUEST-PROCESSOR` v`1.0.0` y la plantilla CMP/PAR/RUL son comunes; cada UE tendrá `instance_id` único y `instance_version` independiente. `component_id` es local a la instancia y su clave inequívoca es `(instance_id, component_id)`. El ID `C10S-SVC-REQUEST-PROCESSOR-001` queda como instancia ejemplar de referencia DEC-C10-069.
 
 Queda resuelta la identidad lógica/documental, no el aislamiento material. Siguen abiertos el roster final y asignación de IDs por UE, IAM/ACL, recursos/estado compartido, evidencia de no interferencia, MET/schema físico y pruebas. No se altera A ni DEC-C10-069 en su alcance original. No se autoriza implementación ni ejecución.
+
+
+## 16.161. Reconciliación material PB — identidad B1 por UE y aislamiento D2 (2026-11-11)
+
+**Artefacto rector:** `C10_S_PB_MATERIAL_D2_INSTANCE_AND_ISOLATION_RECONCILIATION_DRAFT_001.md`. **Estado:** PB_MATERIAL_CONTRACT_RECONCILED_DOCUMENTALLY / MATERIAL_INVENTORY_NONE / ISOLATION_NOT_DEMONSTRATED / NOT_DESIGN_FROZEN.
+
+Se integra DEC-C10-067 con la decisión aceptada de identidad B1 por UE, el overlay IAM/U_G, B-M01…15, PROV-01…12, snapshots exactos y rutas A1/A2. Se cierra la armonización lógica entre contrato/plantilla CMP común e instancia única/versionada por UE. El adaptador/dependencia focal P1 se mantiene distinto del servicio lógico CMP. D2 opera en P1; P0, F*, oráculo, mapping semántico, autorización normativa basal y alternativas deben permanecer invariantes por diseño, sujetas a evidencia.
+
+**No materializado:** roster e IDs por UE; IAM/C_SRC; snapshots; inventario de dependencias/consumidores; artefacto/runtime/version/hash; actor y recepción; ventanas/reintentos/rollback; ACL y recursos; no-afectación A1/A2; evidencia C_dep*/A_f*/D_f*/ΔT_acc*; soporte/interferencia. B-M13/F* y B-M14/A1-A2 permanecen prohibidos como superficies modificadas por B. NO INVENTARIADO/UNKNOWN no equivale a ausencia.
+
+**Dictamen:** reconciliación documental del contrato material completada; PB material y G-MAT siguen bloqueados. No se declara D2 aislado, primera etapa focal ni IV válido. No se autoriza captura, implementación, fixtures, simulación, estimación o ejecución.
