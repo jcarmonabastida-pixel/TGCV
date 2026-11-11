@@ -12062,3 +12062,30 @@ N=2.000, asignación 1:1, R=1.000 y s=.80 siguen siendo ilustraciones/hipótesis
 Value no está instanciado por PA y Outcome no está operacionalizado completamente. Persisten falta de IAM/snapshots/inventario material D2, ausencia de mapping demostrado B→g^Af, soporte y vías colaterales; PC mantiene θ_A(q), θ_Af(q_X*) y mediación no identificados en el D2 material actual. También siguen abiertos parámetros conjuntos del DGP, contrastes D2 concretos, F*/G/H/ventanas, unidad/interferencia y diseño estadístico cuantitativo. No se convierten propuestas en hechos ni se asignan parámetros por conveniencia.
 
 **Dictamen:** PD reconciliado documentalmente en arquitectura, mecanismos y mapa adversarial; DGP cuantitativo abierto; no congelado, implementado ni ejecutado. No se autoriza código, fixtures confirmatorios, generación de datos, simulación, estimación ni ejecución científica. Se mantienen scientific_execution=false y execution_authorized=false. Siguiente paquete: PE — especificación técnica integrada y contrato de implementación, condicionado a los cierres científicos/materiales y autorización expresa.
+
+
+## 270. Reconciliación integrada PE — especificación técnica y contrato de implementación (2026-11-11)
+
+**Estado:** PE_RECONCILED_DOCUMENTALLY / TECHNICAL_CONTRACT_PARTIAL / IMPLEMENTATION_NOT_READY / NOT_IMPLEMENTED / NOT_EXECUTED. Artefacto rector: C10_S_PE_INTEGRATED_TECHNICAL_SPECIFICATION_AND_IMPLEMENTATION_CONTRACT_DRAFT_001.md. Se propaga al plan §16.159, protocolo de paquetes §12, Closure Control Matrix, Test Contract Register §59, contrato DGP temporal/roles §16 y Decision Log como registro de reutilización sin nueva decisión científica.
+
+### 270.1 Reutilización histórica
+
+PE no crea un segundo modelo de datos. Reutiliza el contrato DGP temporal/roles, U_G y su plantilla/protocolo de evidencia, identidad/versionado/snapshot matching, snapshot/delta, manifiesto B/grafo de dependencias, registro de pruebas y decisiones aceptadas DEC-C10-061/062/065/068/069/070/071/074–088, DEC-C10-095 y decisiones B1 de oportunidad/enlace/adjudicación. Las aceptaciones documentales no se reinterpretan como schema físico, implementación o validación técnica.
+
+### 270.2 Arquitectura lógica
+
+Se distinguen seis responsabilidades: Orquestador, Generator, Proyector/Sealer de evidencia, Analyzer, Evaluator/Adjudicator y Artifact/Provenance Store. Generator conserva truth_dgp; el Analyzer recibe únicamente observed_evidence; el Evaluator accede a truth tras sellar la salida del Analyzer. El Sealer no modifica truth ni adjudica. Los controles reales de permisos, almacenamiento y canales laterales requieren implementación y pruebas de seguridad.
+
+### 270.3 Contratos y trazabilidad
+
+Se preservan TID/SID/RID/EID; identidades de servicio DEC-C10-069; object_record_id/object_version/supersession; snapshot_id + snapshot_object_record_id; request_id/trajectory_id y sus tres enlaces no intercambiables; U_G y sus registros de evidencia/cobertura/evaluación/adjudicación. Los ejes t−1/t0…t9, stage_key, SNAPSHOT.phase y step_k/H siguen separados. Los estados observed_state, evidence_status, coverage_status y adjudicación no se colapsan.
+
+JCS DEC-C10-074 se aplica solo al envelope U1 de UDG-01; no se declara canonicalización global. Formatos físicos, esquema de eventos, motor, cardinalidades, serialización de bundles, almacenamiento, ACL, secretos, retención y contrato final de salida Analyzer permanecen OPEN.
+
+### 270.4 Validación y gates
+
+Se define el pipeline futuro V0–V8: consistencia estática; schema/serialización; integridad referencial; temporalidad; firewall/seguridad de roles; reconstrucción semántica; recuperación causal/estadística; reproducibilidad; operabilidad. No se ejecuta ninguna capa. La autoauditoría U_G conserva 8 PASS_STATIC, 10 CONDITIONAL y 2 NOT_ASSESSED; SR-13 CONDITIONAL, SR-19 y SR-20 NOT_ASSESSED, sin aceptación global.
+
+La implementación confirmatoria requiere G-SCI, G-MAT, G-SCHEMA, G-ROLE, G-TEST, G-REPRO y G-AUTH. PA–PD siguen imponiendo bloqueos científicos/materiales: Value y Outcome, IAM/snapshots, mapping B→g^Af, vías colaterales, soporte/interferencia, parámetros DGP, contrastes, fixtures, N/R, potencia y tolerancias. PC mantiene θ_A(q), θ_Af(q_X*) y mediación no identificados en el D2 material actual.
+
+**Dictamen:** PE reconciliado documentalmente; contrato técnico parcial; implementación no lista, no implementada ni ejecutada. No se crea una decisión científica nueva. No se modifica main, Core, RMA, Matrix, STATUS ni claims. Se mantienen scientific_execution=false y execution_authorized=false.
