@@ -293,3 +293,12 @@ Continúan abiertos: identidad/provenance concreta de B1 por UE; valores comunes
 La identidad de la unidad lógica B1 y su servicio asociado se interpreta conforme a `DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001`: una entidad solicitante-beneficiaria B1 por UE se vincula a un `instance_id` único de servicio en el roster C10-S, con versionado independiente. El contrato funcional y su plantilla CMP/PAR/RUL pueden ser comunes; esto no implica compartir instancia, estado o recursos. La instancia de referencia de DEC-C10-069 no se reutiliza como ID de todas las UE.
 
 La decisión no altera la unidad experimental, no cierra la cardinalidad de solicitudes/trajectorias ni demuestra aislamiento material. Los IDs concretos por UE dependen del roster final y deben persistirse con provenance. Se mantienen separados entidad B1, UE, instancia de servicio, solicitud y trayectoria.
+
+
+## 15. Reconciliación B2–B3 — B1, Outcome técnico y Value contextual (2026-11-11)
+
+Se registra en `C10_S_B2_B3_BENEFICIARY_OUTCOME_VALUE_RECONCILIATION_DRAFT_001.md` la aceptación del planteamiento B2–B3 como base de trabajo. B1 sigue siendo el referente sintético de Need_preZ y de la consecuencia valorable. Outcome técnico y Value son constructos distintos: el primero mide un resultado del servicio/proceso; el segundo valora una consecuencia para B1 respecto de su objetivo basal, desde perspectiva/autoridad ex ante.
+
+**Precisión:** no se impone Outcome→Value como relación exclusiva ni Value=f(Outcome). La consecuencia B1 puede depender del Outcome y de vías directas/colaterales de la política. Need_preZ, E_req_preZ, Request_event, D_resource, Service_processing, Technical Outcome, Beneficiary_consequence y V_j permanecen diferenciados. La no solicitud/no recepción/no ejecución no implica necesidad ausente ni Value=0.
+
+B1 por UE, una oportunidad estandarizada por UE y las decisiones de identidad/enlace ya aceptadas no se reabren. Perspectiva, autoridad, consecuencia operacional, dimensión V_j, ficha §224, fuentes, escalas, horizonte y adjudicación siguen OPEN. No se seleccionan dimensiones ni parámetros y no se autoriza implementación o ejecución. Véase el artefacto rector B2–B3.
