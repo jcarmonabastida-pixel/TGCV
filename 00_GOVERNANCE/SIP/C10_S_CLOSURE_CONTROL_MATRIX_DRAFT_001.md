@@ -3140,3 +3140,20 @@ PD no está congelado, implementado ni ejecutado. No se autoriza código, fixtur
 | Autorización | No otorgada | G-SCI/G-MAT/G-SCHEMA/G-ROLE/G-TEST/G-REPRO/G-AUTH pendientes |
 
 No se crea una decisión científica nueva. No se autoriza implementación, fixtures confirmatorios, datos, simulación, estimación ni ejecución. main/Core/RMA/Matrix/STATUS/claims permanecen fuera de alcance.
+
+
+## Decisión PB aceptada — identidad de servicio por UE (2026-11-11)
+
+**Decisión:** `DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001` — ACCEPTED.
+
+| Elemento | Regla aceptada | Pendiente residual |
+|---|---|---|
+| Contrato funcional | `C10S-SVC-REQUEST-PROCESSOR` v`1.0.0`, común | Cambios semánticos futuros y versionado contractual |
+| Plantilla CMP/PAR/RUL | Común, versionada por contrato | Roster/manifest concreto |
+| Instancia | `instance_id` único por UE | Asignación al roster final |
+| Versión de instancia | Monotónica e independiente por `instance_id` | Registro material de revisiones |
+| Componente | `component_id` local; clave `(instance_id, component_id)` | Constraints y referencias ejecutables |
+| Instancia DEC-C10-069 | Referencia ejemplar preservada | No reutilizar como ID común de UE |
+| Aislamiento | Requisito lógico explícito | IAM/ACL, estado, recursos, infraestructura y pruebas siguen OPEN |
+
+El cierre es de identidad lógica/documental. No demuestra aislamiento real, ausencia de interferencia ni independencia de recursos. No autoriza implementación o ejecución.
