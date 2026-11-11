@@ -1564,3 +1564,18 @@ La especificación integrada se encuentra en C10_S_PE_INTEGRATED_TECHNICAL_SPECI
 | V8 Operabilidad | U_G SR-20 | NOT_ASSESSED | Prueba ciclo completo de captura, consulta, reconstrucción y auditoría |
 
 **Regla de alcance:** JCS DEC-C10-074 solo se aplica a UDG-01/U1. No se generaliza a todos los registros. PASS_STATIC no equivale a validación ejecutable; test registrado no equivale a test implementado/ejecutado. La salida correcta del Analyzer puede ser abstención, efecto de paquete o no-identificación.
+
+
+## 60. Crosswalk B2–B3 — medición independiente Outcome/Value y evaluación causal (2026-11-11)
+
+Se reutilizan P179-01…08, P182-01…12, P183-01…13 y §224; no se crean IDs duplicados. El artefacto integrador es `C10_S_B2_B3_BENEFICIARY_OUTCOME_VALUE_RECONCILIATION_DRAFT_001.md`.
+
+| Familia | Aplicación en B2–B3 | Estado |
+|---|---|---|
+| P179 | Vector V_j, perspectiva/criterio contextual, trade-offs y no agregación prematura | Regla metodológica conservada; dimensiones no seleccionadas |
+| P182 | Validez, fiabilidad, reproducibilidad, error, acuerdo interevaluador, invariancia, sensibilidad y firewall | Contrato definido; fichas y evidencia no ejecutadas |
+| P183 | Ausencia, selección, MCAR/MAR/MNAR, censura, cotas, sensibilidad y dictamen por estimando/dimensión | Contrato definido; mecanismos/valores abiertos |
+| §224 Outcome | Ficha por O_k: constructo, criterio, fuente, unidad, baseline, horizonte, adjudicación, error y provenance | O-CONF candidato; no operacionalizado |
+| §224 Value | Ficha por V_j: B1/perspectiva, consecuencia, criterio, escala, baseline, horizonte, trade-offs y provenance | Ninguna V_j instanciada |
+
+Outcome técnico y Value contextual son constructos separados. No se asume que Outcome sea la única causa de la consecuencia valorada. ITT sobre O_k y V_j se adjudican separadamente; no se transfiere identificación. La abstención/no-identificación del Analyzer sigue siendo resultado correcto. Ninguna prueba se declara implementada o ejecutada.
