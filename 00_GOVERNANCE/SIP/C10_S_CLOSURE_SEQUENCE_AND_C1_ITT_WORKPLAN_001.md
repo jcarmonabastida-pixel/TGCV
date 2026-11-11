@@ -1160,3 +1160,84 @@ La configuración de referencia no fija el microdominio de migración ni sustitu
 Se cierra el método para obtener la verdad cuantitativa y calibrar el experimento sin escoger cifras arbitrarias: oráculo analítico primero, cuadrícula causal después, y P178 para N/R/precisión. No se han elegido aún puntos numéricos confirmatorios ni se ha ejecutado la búsqueda de potencia/Monte Carlo. Esas elecciones requieren un protocolo de calibración con criterios ex ante y autorización específica para la operación computacional de calibración; no equivalen a autorizar el experimento confirmatorio.
 
 El siguiente cierre de diseño consiste en fijar el conjunto mínimo de parámetros libres y restricciones de la cuadrícula para la referencia homogénea, reutilizando los parámetros tipados y contratos existentes. No se vuelve a abrir Value, B1 ni el significado de Q. Se mantienen scientific_execution=false y execution_authorized=false.
+
+
+
+## 36. Contrato mínimo de parámetros del DGP estructural y enlace con Q_B1 (2026-11-11)
+
+**Estado:** MINIMUM_PARAMETER_PARTITION_SPECIFIED / REUSE_OF_ACCEPTED_SERVICE_ROSTER / VECTOR_PRESERVATION_REQUIRED / STRUCTURAL_SIGNATURE_MAPPING_OPEN / NUMERIC_CALIBRATION_BLOCKED_PENDING_SIGNATURES / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 36.1 Regla de parsimonia y precedencia
+
+Esta sección no crea una nueva taxonomía ni reemplaza los contratos existentes. Especializa para el DGP de referencia las decisiones aceptadas DEC-C10-053, DEC-C10-054 y DEC-C10-068, el contrato abstracto C_src/C_dst/M, el inventario finito y la separación FP-01…FP-08. Se excluyen del núcleo confirmatorio inicial POL, políticas de seguridad, múltiples servicios, múltiples unidades lógicas por UE y extensiones de mapping split/merge. Su exclusión debe declararse en la configuración antes de generar el DGP; no se generaliza a escenarios adversariales.
+
+### 36.2 Roster estructural mínimo reutilizable
+
+El paquete funcional mínimo de referencia reutiliza la instancia de servicio ya aceptada:
+- un CMP: una instancia lógica de servicio por UE, con identidad, clase/rol funcional y versión contractual;
+- PAR BOOL PAR-SVC-ENABLED ∈ {false,true};
+- PAR ENUM PAR-SVC-PROFILE ∈ {STANDARD, READ_ONLY, DISABLED};
+- una RUL constitutiva RUL-SVC-ENABLE-PROFILE-01, con la expresión aceptada por DEC-C10-068: OR(NEQ(ENABLED,true),IN(PROFILE,{STANDARD,READ_ONLY})), efecto REQUIRE, AST acíclico dentro del límite 4/16/16;
+- REF: universo declarado y cardinalidad explícita. En el fixture mínimo no se presupone ninguna referencia intercomponente; se registra REF_COUNT=0 solo si la frontera confirma que no existen relaciones funcionales internas necesarias. Si se identifica una relación necesaria, el fixture deja de ser esta instancia mínima y el extremo/tipo/dirección/multiplicidad se debe declarar antes de calibrar;
+- MET: identidad de UE/servicio, versiones de C_src/C_dst/M, versión de regla y procedencia obligatorias.
+
+El estado ENABLED=true, PROFILE=DISABLED es violación conocida de RUL; los estados ENABLED=true con perfiles STANDARD o READ_ONLY son permitidos por la regla. Un valor ausente/conflictivo mantiene UNKNOWN. Esta regla no se usa para definir Outcome, Q_B1 o Value.
+
+Este roster reutiliza un contrato sintético ya aceptado; no afirma que el contrato completo de migración ni el mapping destino estén cerrados.
+
+### 36.3 Parámetros estructurales y de transformación
+
+La configuración debe declarar, sin defaults silenciosos:
+
+1. C_src: identidad/versionado y tupla completa de componentes, parámetros (incluidos estados), referencias y reglas.
+2. C_dst_decl y C_dst_applied: representaciones declarada y realmente aplicada, separadas.
+3. M: correspondencias tipadas de CMP/PAR/REF/RUL/MET, conversión, pérdida permitida y cobertura.
+4. ΔT_acc*=(ΔU,ΔR,ΔC,ΔX): delta vectorial completo entre snapshots basales y post, con identidad/versiones, altas, bajas, cambios, relaciones, configuraciones y estados indeterminados según el contrato vigente.
+5. A_f* y D_f*: predicados focales derivados de sus condiciones constitutivas; no se asignan como sustitutos de ΔT_acc*.
+6. Reach_H y trayectoria: derivados del catálogo, relaciones, condiciones, recursos, autorizaciones y cobertura del inventario; no se deducen de Q_B1.
+
+Los parámetros de catálogo, dominios por clave, conversiones y mappings no se rellenan con valores inventados. La instancia BOOL/ENUM/RUL anterior cubre expresividad mínima del servicio, pero no resuelve por sí sola REF, C_dst_applied, F*, Reach ni el oráculo completo de preservación funcional.
+
+### 36.4 Firma estructural completa y no reducción escalar
+
+El soporte de accesibilidad que recibe el mecanismo de Q se define como un conjunto finito de firmas completas d_j, cada una identificando una realización tipada de ΔT_acc* (componentes, parámetros, relaciones, configuraciones, versiones y estados de evidencia relevantes). La firma es una clave de lookup del DGP, no una nueva variable causal ni un índice de magnitud.
+
+Las políticas g0/g1 inducen distribuciones P_g(d_j|q) sobre esas firmas. Las transiciones p01(d_j,q) y p10(d_j,q) se parametrizan por firma completa y régimen común q. No se permite reemplazar d_j por una puntuación, una etiqueta binaria de instalación o un escalar de nivel de accesibilidad. Una reducción o agrupación de firmas solo se admite si preserva explícitamente todas las distinciones causales y transformacionales necesarias y se documenta antes del análisis.
+
+El DGP focal de referencia exige como mínimo dos firmas completas distintas dentro del soporte común de g0/g1, de forma que el contraste no sea una mera comparación de etiquetas de política. Las firmas concretas deben proceder del contrato C_src/C_dst/M y del generador de T_acc; no se inventan en esta sección.
+
+### 36.5 Partición mínima de parámetros generativos
+
+Una vez resueltas las firmas, la configuración numérica se limita a estos bloques:
+
+| Bloque | Parámetros mínimos | Restricción |
+|---|---|---|
+| Soporte estructural | firmas completas d_j; correspondencia con snapshots y ΔT_acc* | finito, versionado, tipado y derivado de C_src/C_dst/M |
+| Política | P_g0(d_j|q), P_g1(d_j|q) | suma 1; soporte común para el contraste focal |
+| Estado inicial | π_0=P(A_0=1) | común entre brazos en el DGP focal; especificar inclusión temporal |
+| Disponibilidad | p01(d_j,q), p10(d_j,q) por firma | en [0,1]; no degeneradas salvo escenario que lo declare |
+| Vía colateral | parámetro/tabla separada γ_direct o mecanismo equivalente | exactamente ausente/nulo en focal y nulo; activado solo en escenario adversarial |
+| Horizonte | K slots iguales en W normalizado | común por UE/brazo; selección por convergencia |
+| Observación | sensibilidad, especificidad, cobertura, latencia, missingness y censura | ideal perfecto en referencia; parámetros explícitos en cada estrés |
+
+q se fija como régimen común versionado de condiciones externas; no se estima ni modifica diferencialmente entre g0/g1 en el escenario focal. No se añade un coeficiente lineal sobre un score de ΔT_acc. El lookup por firma completa es la forma mínima compatible con la estructura vectorial.
+
+### 36.6 Restricciones cruzadas y pruebas de coherencia
+
+Antes de aceptar cualquier punto de la cuadrícula:
+- toda firma d_j debe corresponder a un par de snapshots y mapping adjudicable; una firma sin soporte material no puede recibir probabilidad positiva;
+- P_g debe tener soporte común para identificar el contraste focal; violaciones se reservan para escenario explícito de no-identificación;
+- los valores p01/p10 deben pertenecer a [0,1] y generar Q_B1 ∈ [0,1];
+- la distribución inicial y la convención de slots deben ser idénticas entre brazos focales;
+- γ_direct=0 en el escenario focal y nulo; su activación no puede confundirse con el efecto de ΔT_acc*;
+- la verdad analítica de §35 y la esperanza del generador deben concordar dentro del error Monte Carlo preregistrado;
+- el canal ideal no añade error ni altera disponibilidad; ausencia de observación en estrés no se codifica como indisponibilidad;
+- ninguna regla estructural, Reach, Outcome o Value usa la truth de otro bloque como definición.
+
+### 36.7 Dictamen: qué se ha cerrado y qué bloquea la calibración
+
+Se cierra la partición mínima de parámetros, el roster de servicio que puede reutilizarse, la forma de representar el soporte vectorial de accesibilidad y la lista completa de bloques generativos necesarios. Se evita inventar una magnitud escalar o valores numéricos.
+
+La calibración numérica sigue bloqueada por una dependencia concreta, no por una nueva lista abierta indefinidamente: instanciar al menos dos firmas completas ΔT_acc* a partir de C_src/C_dst_applied/M y del inventario de transformaciones, con su evidencia/oráculo de preservación y mapping. La matriz abstracta y el inventario actual reconocen expresamente que esos dominios, mappings y F*/Reach no están cerrados. Sin esas firmas no pueden definirse con significado las distribuciones P_g(d_j|q) ni los efectos de transición por firma.
+
+El siguiente trabajo se limita a resolver esa instanciación estructural mínima reutilizando el roster BOOL/ENUM/RUL aceptado y el fixture finito existente. No se reabre Value, Q_B1, el horizonte ni el método P178. No se implementa, no se generan fixtures/datos, no se simula y no se ejecuta el experimento. scientific_execution=false; execution_authorized=false.
