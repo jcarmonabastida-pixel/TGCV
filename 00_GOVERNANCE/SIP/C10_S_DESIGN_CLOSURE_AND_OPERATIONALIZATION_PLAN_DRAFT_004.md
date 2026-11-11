@@ -2611,3 +2611,10 @@ Composición de `E_i`, predicados/evidencia/indeterminación, soporte, truth/med
 El crosswalk `C10_S_C1_BASELINE_ELIGIBILITY_CROSSWALK_DRAFT_001.md` separa admisibilidad de instancia basal (`E_scope`) y aplicabilidad semántica de `τ2` desde `S0` (`App*(τ2,S0)`), sin confundirlas con `C_dep,0=0` ni `A_f,0*=0`. La propuesta `E_i=E_scope∧App*(τ2,S0)` queda como candidata NO aceptada. Las cardinalidades de clases CMP/PAR/RUL y el roster mínimo de servicio no bastan para definir pertenencia P* por UE. IAM y evidencia material no están sellados.
 
 Siguiente: **C1.4**, crosswalk de predicados/filas IAM pre-Z en `C_SRC` contra App, C_dep y A_f, con boundary P0/P1/DUAL, obligatoriedad, estados y evidencia. Sin IAM ficticio, freeze ni ejecución.
+
+
+## 16.153 — C1.4: crosswalk IAM/C_SRC y bloqueo material (2026-11-11)
+
+`C10_S_C1_PREZ_IAM_CROSSWALK_C10S_001.md` establece el crosswalk lógico por CMP/PAR/REF/RUL/MET y separa E_scope, App, C_dep, A_f, F_alt, Need_preZ y E_req_preZ. No existen snapshots C10-S observados ni filas IAM/coverage materiales; las etiquetas 7×5 son planificación, no registros. Dictamen **PARTIAL / MATERIAL BLOCKED BY ABSENT IAM AND SNAPSHOTS**. No se puede clasificar población ni declarar REF=0.
+
+`E_i=E_scope∧App*(τ2,S0)` continúa como propuesta no aceptada. Siguiente: **C1.5**, cerrar App y su frontera con A_f, rol de E_scope, regla pre-Z para unknowns, asignación D2 y soporte. Sin freeze ni ejecución.
