@@ -12148,3 +12148,8 @@ Se integran PA/C1, PB/PB-MAT, PC/C3-C4, PD/DGP, PE, identidad B1 por UE y B2-B3.
 ITT de política/paquete, primeras etapas técnicas/focales, θ_A/θ_Af, LATE_f, IIE C4 y efecto directo/residual permanecen como estimandos separados y no identificados/evaluables en el estado material actual. No hay cotas numéricas defendibles sin parámetros, cobertura y restricciones justificadas. No se obtiene residual por resta ad hoc. Outcome y Value no se relacionan por definición causal exclusiva Outcome→Value.
 
 G-SCI, G-MAT, G-SCHEMA, G-ROLE, G-TEST y G-REPRO siguen BLOCKED; G-AUTH NOT GRANTED. No se modifica main/Core/RMA/Matrix/STATUS/claims ni decisiones aceptadas. No se autoriza captura material, schema físico, fixtures, implementación, generación de datos, simulación, estimación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+### 274.1. Precisión de trazabilidad de la recuperación
+
+La referencia SHA `61d3079213558f6f74c14b60600ae3ca04c0a395` y el tamaño de 1,134,655 caracteres corresponden al blob íntegro **anterior** a la adición de §274, no al blob actual. Se recuperó esa versión histórica íntegra, se inspeccionaron §§266–273 y sobre ese contenido se añadió §274; el documento no fue reconstruido. La versión resultante incluye §274 y esta aclaración. La lectura Contents/fetch_file continúa devolviendo contenido vacío en este entorno; la lectura verificable del maestro se realiza mediante el blob Git y su SHA vigente, registrado en el artefacto rector de trazabilidad. No se debe copiar el SHA histórico como si identificara la versión actual.
