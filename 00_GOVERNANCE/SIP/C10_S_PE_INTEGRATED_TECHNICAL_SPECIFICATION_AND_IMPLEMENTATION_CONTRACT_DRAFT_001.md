@@ -256,3 +256,11 @@ PE se considera reconciliado documentalmente porque:
 **Dictamen final:** `PE_RECONCILED_DOCUMENTALLY / TECHNICAL_CONTRACT_PARTIAL / IMPLEMENTATION_NOT_READY / NOT_IMPLEMENTED / NOT_EXECUTED`.
 
 No se ha modificado `main`, Core, RMA, Evidence→Claim Matrix, STATUS, claims ni autorizaciones. No se ha escrito código ni creado fixture/dato alguno.
+
+## 15. Cross-reference PB — identidad material, IAM y aislamiento D2
+
+La reconciliación de identidad B1 por UE y el contrato material D2 se integra en `C10_S_PB_MATERIAL_D2_INSTANCE_AND_ISOLATION_RECONCILIATION_DRAFT_001.md`. La arquitectura técnica PE debe consumir ese contrato sin crear un modelo IAM paralelo: U_G y sus registros tipados permanecen como inventario/procedencia; contract_id/contract_version son comunes; instance_id/instance_version son propios de cada UE; el adaptador P1 se identifica separadamente.
+
+La ausencia de roster, IAM/C_SRC, snapshots, grafo de dependencias, artefacto/runtime y evidencia de aislamiento impide declarar G-MAT satisfecho. B-M01…15 y PROV-01…12 son requisitos de inventario/verificación, no resultados. B-M13/oráculo y B-M14/A1-A2 no pueden ser modificados por B. El firewall lógico PE no prueba permisos/custodia efectivos ni aislamiento material.
+
+No se aprueba schema físico, formato, motor, API, ACL, parser, fixtures ni captura. G-MAT/G-SCHEMA/G-ROLE permanecen abiertos; no implementación ni ejecución.
