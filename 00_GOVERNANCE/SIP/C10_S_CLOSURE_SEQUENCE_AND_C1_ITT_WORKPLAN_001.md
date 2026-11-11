@@ -1378,3 +1378,63 @@ La búsqueda de N y R es una operación computacional de calibración todavía n
 Se cierra la frontera sintética R0, la asignación de políticas a las dos firmas, la parametrización de transiciones, el papel de π0/K y la descomposición exacta de θ_A. No se han asignado cifras arbitrarias ni se ha confundido H=3 con el horizonte temporal.
 
 El trabajo restante para la calibración numérica ya no es una dependencia estructural o semántica: es una decisión metodológica acotada sobre criterios ex ante de rendimiento y coste de calibración P178. Value, Q_B1, las firmas d0/d1 y la frontera R0 no se reabren. Se mantienen scientific_execution=false y execution_authorized=false; no se generan fixtures, no se simula y no se ejecuta experimento.
+
+
+
+## 39. Criterios ex ante P178 para evaluar recuperación causal y calibrar N/R (2026-11-11)
+
+**Estado:** PRIMARY_METHOD_PERFORMANCE_CRITERIA_PROPOSED / NO_SUBSTANTIVE_MDE_ASSUMED / REPLICATION_RULE_DERIVED_FROM_MCSE / N_AS_POWER_PRECISION_CURVE / AWAITING_EXPLICIT_APPROVAL_BEFORE_CALIBRATION / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 39.1 Alcance: no importar al DGP sintético todos los estimandos del protocolo material
+
+El experimento de referencia definido en §§35–38 tiene un único estimando causal primario: θ_A(q;V_B1), efecto de las políticas estocásticas g1/g0 sobre V_B1 a través de las dos firmas completas de ΔT_acc*. No es el D2 material y no pretende identificar ITT-V, LATE, mediación C4 ni efectos en poblaciones empíricas. Las métricas de primera etapa y la clasificación de escenarios adversariales se reportan como diagnósticos del diseño; no se elevan a estimandos confirmatorios adicionales.
+
+Esta delimitación resuelve la tensión entre la lista genérica de PD §7 y la instancia sintética focal: la búsqueda primaria de N se refiere a θ_A; no se exige potencia para LATE/IV ni mediación que no forman parte de este DGP.
+
+### 39.2 Criterios de error, potencia y cobertura
+
+Se proponen, como convenciones metodológicas ex ante para evaluar rendimiento del procedimiento —no como constantes de TGCV ni umbrales sustantivos de Value—:
+- nivel nominal bilateral α=0.05 para H0: θ_A=0;
+- potencia objetivo ≥0.80 en cada punto no nulo de la cuadrícula de efectos que se etiquete como punto de diseño evaluable;
+- cobertura nominal de 95% para los intervalos de confianza de θ_A;
+- control del falso positivo en el DGP nulo: tasa empírica compatible con α=0.05 dentro de su incertidumbre Monte Carlo, sin declarar control solo porque la estimación puntual sea ≤0.05;
+- sesgo y RMSE informados en escala original de V_B1, junto con error de calibración y frecuencia de intervalos no finitos/abstención.
+
+No se introduce δ_min sustantivo ni se selecciona un efecto para hacer pasar el Analyzer. La cuadrícula incluye θ_A=0, valores no nulos positivos y negativos y una banda próxima a cero; se informa la curva potencia/precisión como función de θ_A y N. El MDE es una lectura derivada de esa curva para cada N, no un input normativo. No se resume la cuadrícula en un único N confirmatorio si no existe una justificación sustantiva para seleccionar un punto de efecto.
+
+### 39.3 Precisión y selección de N
+
+Para cada punto de la cuadrícula se informa:
+1. potencia y su intervalo Monte Carlo;
+2. sesgo, RMSE y cobertura de θ_A;
+3. anchura media/mediana del intervalo de confianza y distribución de anchuras;
+4. probabilidad de identificación correcta, identificación parcial y abstención;
+5. N efectivo y, solo si la unidad de asignación/observación lo requiere, ICC, efecto de diseño y número de clústeres.
+
+La salida de calibración será una curva/tabla N×θ_A, con el menor N que alcance potencia objetivo para cada punto, siempre que cobertura y precisión no fallen. La precisión se presenta mediante anchura de intervalo en la escala de V_B1; no se inventa un margen relativo de relevancia. La elección de un N operativo único requiere declarar qué zona de efectos de la cuadrícula debe cubrirse y justificar esa selección. Hasta entonces no hay un N universalmente recomendado para el experimento.
+
+### 39.4 Réplicas R y tolerancia de error Monte Carlo
+
+Se fija como criterio de estabilidad de las tasas de error tipo I, potencia, cobertura y clasificación una semiamplitud/SE Monte Carlo objetivo no superior a 0.005 en escala de proporción, comprobada por lote y con intervalo binomial. Para una proporción desconocida, el límite conservador de varianza p(1−p)≤0.25 implica R≥10,000 réplicas independientes por celda para SE_MC≤0.005. Si se usa un intervalo binomial exacto o Wilson, se informa su anchura y se mantiene la misma tolerancia objetivo; no se interpreta R=10,000 como cifra universal si el cálculo secuencial demuestra antes que el criterio está satisfecho.
+
+Para sesgo y RMSE, R se incrementa por lotes hasta que el error Monte Carlo de la métrica sea ≤5% de su error estándar de referencia o, cuando esa razón no esté definida/cercana a cero, hasta una tolerancia absoluta preregistrada en unidades de V_B1. La regla de parada, el tamaño de lote, la semilla jerárquica y el tratamiento de réplicas inválidas se fijan en el manifiesto antes de calibrar. No se reemplazan fallos de convergencia por réplicas nuevas sin contabilizarlos.
+
+### 39.5 Cuadrícula mínima y clasificación de escenarios
+
+La cuadrícula se construye sobre parámetros ya definidos en §38, no sobre nuevas variables:
+- política: λ0, λ1 con soporte común y λ1>λ0;
+- proceso: b01, b10, α01, α10, π0 y K;
+- verdad: θ_A calculado exactamente por el oráculo;
+- observación: referencia ideal completa y, separadamente, estrés de clasificación/cobertura/missingness/censura;
+- mecanismo alternativo: γ_direct=0 en focal/nulo y distinto de cero en el escenario adversarial;
+- soporte: común en focal/efecto/nulo y degradado de forma declarada en no-identificación.
+
+La clasificación positiva/negativa/nula se hace por θ_A exacto, no por el signo de α aislados. La cuadrícula debe contener casos de θ_A exactamente nulo por α01=α10=0 y controles de primera etapa nula cuando λ1=λ0, estos últimos fuera del contraste focal identificable y etiquetados como control de no-identificación del efecto de política. No se mezcla una vía directa con el escenario focal.
+
+### 39.6 Dictamen y condición de avance
+
+Quedan especificados los criterios metodológicos recomendados: α bilateral 0.05, potencia objetivo 0.80, cobertura nominal 95%, tolerancia SE_MC 0.005 para tasas, regla adaptativa de R y salida N×θ_A en vez de un N arbitrario. Son decisiones de diseño propuestas y justificadas, no valores de verdad de TGCV. Requieren aprobación explícita antes de iniciar la calibración computacional P178.
+
+Una vez aprobados, la calibración podrá calcular N/R y los parámetros numéricos concretos de la cuadrícula. La calibración no es ejecución científica confirmatoria, pero sí es trabajo computacional/simulación y por tanto no se inicia con el estado actual de autorización. La siguiente transición tras la aprobación será producir el manifiesto cuantitativo y ejecutar únicamente la calibración autorizada; la ejecución confirmatoria seguirá siendo una autorización separada.
+
+Se mantiene scientific_execution=false y execution_authorized=false. No se han generado datos, fixtures, simulaciones ni resultados.
