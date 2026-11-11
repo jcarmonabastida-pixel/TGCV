@@ -1,0 +1,98 @@
+name: C10-S focal harness contract tests
+
+on:
+  push:
+    branches:
+      - research/c10-s-consolidation-draft
+    paths:
+      - '03_EXPERIMENTS/C10-S/harness/**'
+      - '.github/workflows/c10-s-focal-harness-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  focal-harness-contract-tests:
+    name: Compile and run focal harness contract suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact research-branch commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile harness and tests
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: python -m py_compile focal_harness.py test_focal_harness.py
+
+      - name: Run primary contract suite and capture stdout/stderr
+        id: primary
+        shell: bash
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: |
+          set +e
+          PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v > "$RUNNER_TEMP/c10s-primary-stdout.txt" 2> "$RUNNER_TEMP/c10s-primary-stderr.txt"
+          status=$?
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+          cat "$RUNNER_TEMP/c10s-primary-stdout.txt"
+          cat "$RUNNER_TEMP/c10s-primary-stderr.txt" >&2
+          exit "$status"
+
+      - name: Replay suite from clean source archive after primary PASS
+        if: steps.primary.outputs.exit_code == '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          clean_root="$RUNNER_TEMP/c10s-clean-replay"
+          mkdir -p "$clean_root"
+          git archive "$GITHUB_SHA" 03_EXPERIMENTS/C10-S/harness | tar -x -C "$clean_root"
+          cd "$clean_root/03_EXPERIMENTS/C10-S/harness"
+          PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v \
+            > "$RUNNER_TEMP/c10s-replay-stdout.txt" \
+            2> "$RUNNER_TEMP/c10s-replay-stderr.txt"
+          cat "$RUNNER_TEMP/c10s-replay-stdout.txt"
+          cat "$RUNNER_TEMP/c10s-replay-stderr.txt" >&2
+
+      - name: Record execution provenance
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p = Path(os.environ["RUNNER_TEMP"])
+          manifest = {
+              "workflow": "c10-s-focal-harness-tests",
+              "tested_commit": os.environ["GITHUB_SHA"],
+              "workflow_run_id": os.environ["GITHUB_RUN_ID"],
+              "run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+              "event": os.environ["GITHUB_EVENT_NAME"],
+              "ref": os.environ["GITHUB_REF"],
+          }
+          (p / "c10s-execution-manifest.json").write_text(
+              json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
+          )
+          PY
+
+      - name: Upload execution captures and manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: c10s-focal-harness-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/c10s-primary-stdout.txt
+            ${{ runner.temp }}/c10s-primary-stderr.txt
+            ${{ runner.temp }}/c10s-replay-stdout.txt
+            ${{ runner.temp }}/c10s-replay-stderr.txt
+            ${{ runner.temp }}/c10s-execution-manifest.json
+          if-no-files-found: warn
+          retention-days: 30
