@@ -1478,3 +1478,86 @@ Esta limitación es de alcance, no una modificación de P178 ni una afirmación 
 La §39 queda aclarada sin alterar sus criterios base: α=0.05 bilateral, potencia objetivo 0.80 en puntos de diseño finitos, cobertura nominal 95%, MCSE≤0.005 para tasas y regla adaptativa para métricas continuas. R=10,000 es el límite conservador inicial para MCSE de proporciones, no una garantía de semiamplitud 95%≤0.005.
 
 Queda preparado el protocolo para generar, cuando exista autorización, una cuadrícula analítica y curvas de calibración; no existe todavía un N único ni un conjunto numérico aprobado de puntos. La calibración computacional sigue pendiente de aprobación explícita. No se han generado parámetros numéricos, fixtures, datos ni simulaciones.
+
+
+## 41. Primera cuadrícula analítica de referencia y sensibilidad a estado inicial/resolución (2026-11-11)
+
+**Estado:** ANALYTIC_GRID_COMPUTED / ORACLE_CHECKED / INITIAL_STATE_AND_K_SENSITIVITY_REPORTED / DIAGNOSTIC_POINTS_ONLY / NO_MONTE_CARLO / NO_STATISTICAL_CALIBRATION / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 41.1 Alcance y bootstrap
+
+Se ejecuta exclusivamente la primera operación autorizada por el usuario: construcción de una cuadrícula finita diagnóstica y cálculo analítico de los valores verdaderos de θ_A. No se generan unidades sintéticas, observaciones, fixtures, semillas de ejecución, réplicas Monte Carlo ni estimaciones de potencia, cobertura, sesgo, RMSE, N o R.
+
+La recuperación del RMA v3.38 se completa usando la ruta canónica declarada por CANONICAL_STATE, el puntero estable y la traza de versiones. El artefacto 00_GOVERNANCE/rma/TGCV_RMA_v3.38.md existe y se recupera íntegramente; el 404 anterior procedía de la operación de recuperación utilizada, no de ausencia del artefacto. Se retira por tanto el diagnóstico anterior de inconsistencia RMA. Se confirma asimismo Matrix v1.47, STATUS, README, bootstrap, rama de investigación y PR #116 Draft. No se modifican artefactos de main. Los validadores locales no se ejecutan en esta operación.
+
+### 41.2 Punto de referencia diagnóstico
+
+Se utiliza, únicamente para comprobar el oráculo y la sensibilidad, el siguiente punto numérico explícito:
+
+- λ0=0.25, λ1=0.75;
+- b01=b10=logit(0.20), por lo que p01(d0)=p10(d0)=0.20;
+- π0 ∈ {0.20, 0.50, 0.80};
+- K ∈ {2, 10, 50};
+- contrastes (α01,α10): (0,0), (1,−1), (−1,1), (1,0.99) y (1,1).
+
+Estos valores son puntos de cálculo diagnósticos elegidos para probar signos, nulidad y sensibilidad. No son parámetros sustantivos aprobados, configuración confirmatoria ni valores recomendados para la futura simulación. Se conserva la restricción 0<λ0<λ1<1 y soporte común de las dos firmas.
+
+### 41.3 Cálculo del oráculo
+
+Para cada firma d, con p01,d y p10,d constantes en los slots y estado inicial común:
+
+π(d,k)=p01,d+[1−p01,d−p10,d]π(d,k−1),
+μQ(d;π0,K)=K⁻¹ Σ(k=1…K) π(d,k).
+
+La mezcla por política y el estimando son:
+
+E[V(q,g)]=(1−λg)μQ(d0)+λg μQ(d1),
+θA=(λ1−λ0)[μQ(d1)−μQ(d0)].
+
+Se comprobó el cálculo mediante iteración directa de la recurrencia, sin muestreo. El promedio incluye los K slots posteriores a A0; A0 es condición inicial y no un slot adicional de W.
+
+### 41.4 Resultados para K=10 y sensibilidad a π0
+
+Con λ1−λ0=0.50, los efectos verdaderos son:
+
+| Escenario diagnóstico | π0=0.20 | π0=0.50 | π0=0.80 |
+|---|---:|---:|---:|
+| (α01,α10)=(0,0) | 0 | 0 | 0 |
+| (1,−1) | +0.153437 | +0.146739 | +0.140042 |
+| (−1,1) | −0.140042 | −0.146739 | −0.153437 |
+| (1,0.99) | +0.019500 | +0.000728 | −0.018044 |
+| (1,1) | +0.018828 | 0 | −0.018828 |
+
+La nulidad del escenario (1,1) solo se produce en π0=0.50. Fuera de ese estado inicial el efecto no es nulo e incluso cambia de signo. Por tanto, no es un nulo general y debe etiquetarse como nulo condicionado al estado inicial.
+
+El punto (1,0.99) tampoco constituye una banda próxima a cero robusta a π0: el efecto cambia de signo y aumenta en valor absoluto al alejarse de 0.50. Sin un umbral de equivalencia o relevancia previamente justificado, se informa su valor exacto y no se clasifica normativamente como próximo a cero.
+
+### 41.5 Sensibilidad a K
+
+Para π0=0.50:
+
+| Escenario | K=2 | K=10 | K=50 |
+|---|---:|---:|---:|
+| Nulo estructural (0,0) | 0 | 0 | 0 |
+| Positivo (1,−1) | +0.100568 | +0.146739 | +0.160425 |
+| Negativo (−1,1) | −0.100568 | −0.146739 | −0.160425 |
+| Nulo condicionado (1,1) | 0 | 0 | 0 |
+| (1,0.99) | +0.000660 | +0.000728 | +0.000742 |
+
+El efecto de K no es un detalle numérico: modifica el promedio temporal de disponibilidad y, por tanto, el estimando operacionalizado sobre W. K debe permanecer como parámetro de resolución del horizonte, no confundirse con H ni seleccionarse por maximizar el efecto.
+
+### 41.6 Consecuencias para la cuadrícula
+
+1. Nulo general de referencia: α01=α10=0, que mantiene iguales las transiciones de ambas firmas para cualquier π0 y K.
+2. Efectos de ambos signos: los puntos (1,−1) y (−1,1) producen efectos de signos opuestos en todos los estados iniciales examinados.
+3. Nulo condicionado: (1,1) con π0=0.50 es un control de dinámica distinta y valor esperado igual, pero no debe presentarse como nulo invariante.
+4. Puntos de señal débil: no se fija aún una etiqueta de próximo a cero. La cuadrícula puede incluir contrastes logit de menor magnitud como puntos diagnósticos, pero su clasificación requerirá una regla ex ante de banda/tolerancia o se informarán solo los valores exactos.
+5. Los escenarios de vía directa/colateral y no-identificación siguen siendo escenarios separados; no se simulan ni se adjudican en esta operación.
+
+### 41.7 Dictamen
+
+La cuadrícula demuestra que el oráculo analítico distingue efectos positivos, negativos y nulos, y que la clasificación de algunos controles depende de π0 y K. La primera operación autorizada queda completada en su alcance diagnóstico.
+
+No queda autorizado por ello el cálculo Monte Carlo, la búsqueda de N/R, la selección de un K confirmatorio ni la ejecución científica. Tampoco se declara validado el Analyzer: todavía no se ha contrastado su recuperación frente a estos valores verdaderos.
+
+**Estado:** ANALYTIC_REFERENCE_GRID_COMPLETE / DIAGNOSTIC_ONLY / STATISTICAL_CALIBRATION_NOT_STARTED / SCIENTIFIC_EXECUTION_FALSE / EXECUTION_AUTHORIZATION_FALSE.
