@@ -6,6 +6,7 @@ on:
       - research/c10-s-consolidation-draft
     paths:
       - '03_EXPERIMENTS/C10-S/harness/**'
+      - '03_EXPERIMENTS/C10-S/calibration/p178_focal_monte_carlo.py'
       - '.github/workflows/c10-s-focal-harness-tests.yml'
   workflow_dispatch:
 
@@ -28,11 +29,14 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install pinned P178 reference dependencies
+        run: python -m pip install numpy==2.3.5 scipy==1.17.0
+
       - name: Compile harness and tests
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           PYTHONDONTWRITEBYTECODE: '1'
-        run: python -m py_compile focal_harness.py test_focal_harness.py
+        run: python -m py_compile focal_harness.py test_focal_harness.py test_p178_analyzer_bridge.py
 
       - name: Run primary contract suite and capture stdout/stderr
         id: primary
