@@ -1362,3 +1362,8 @@ Se registra como propuesta documental derivada de DEC-C10-095, no como decisión
 ## Nota de seguimiento — aceptación de B1 como tipo candidato (2026-11-11)
 
 El usuario acepta B1 —entidad solicitante sintética del servicio— como tipo candidato para desarrollar la variante B. No es aceptación de instancia cerrada ni de dimensiones/reglas/medidas. Necesidad/objetivo pre-Z, solicitud, procesamiento técnico y consecuencia valorada permanecen separados. Solicitante y beneficiario coinciden solo por estipulación explícita en B1. No solicitud/no ejecución no implica ausencia de demanda ni Value cero; procesamiento correcto/O-CONF no equivale a Value. Véase C10S-B1-REQUESTER-CANDIDATE-001.
+
+
+## Nota de seguimiento — reconciliación de demanda basal B1 (2026-11-11)
+
+Se registra una distinción semántica propuesta, no una instancia confirmatoria ni un cambio de estimando. Need_preZ es la necesidad/objetivo focal de la entidad solicitante-beneficiaria en truth antes de Z; E_req_preZ es elegibilidad de petición aún OPEN; Request_event es la petición registrada con ventana temporal OPEN; D_resource es demanda operativa de recursos/capacidad ya existente en DGP y no representa necesidad del beneficiario. Need_preZ no equivale a E_i/P*_tau2/P*_F; no solicitud no implica ausencia de necesidad; truth 1/0/? y evidencia observada permanecen separadas. No filtrar ITT por Request_event y no asignarlo a t5/t6/t7 sin reconciliar reloj/DAG. P*_tau2/P*_F, D2 primario candidato/D1 secundario y DEC-C10-066/067 permanecen intactos. Véanse B1 spec §10, POP-CMP §10, DGP temporal §14 y matriz C-Value §16.
