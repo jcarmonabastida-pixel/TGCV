@@ -662,3 +662,82 @@ Esta decisión cierra la evaluación de la propuesta actual: **Q_B1 se retiene c
 No se fijan W, granularidad, telemetría, instrumentos ni parámetros hasta resolver el criterio de valoración. No hay autorización para implementación, generación de datos, simulación o ejecución científica.
 
 **Estado:** CONSEQUENCE_CANDIDATE_RETAINED / CURRENT_VALUE_IDENTITY_REJECTED / VALUE_RULE_OPEN / NO_DESIGN_FREEZE / NO_IMPLEMENTATION / NO_SCIENTIFIC_EXECUTION.
+
+
+## 29. Regla candidata de valoración directa del objetivo B1: Value de objetivo único (2026-11-11)
+
+**Estado:** DIRECT_GOAL_VALUATION_PROPOSED / CONCEPTUAL_SEPARATION_CLARIFIED / VALUE_INSTANCE_NOT_YET_ACCEPTED / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 29.1 Corrección del criterio de separación
+
+La distinción entre Outcome, consecuencia B1 y Value es una distinción de constructo, función y autoridad; no exige que toda instancia de Value sea una segunda magnitud numérica independiente de la consecuencia valorada.
+
+Una regla de valoración puede asignar directamente valor al grado de cumplimiento de un objetivo basal cuando:
+- el objetivo y su titular están definidos antes de la intervención;
+- la autoridad normativa del mundo sintético estipula que ese objetivo es el único criterio de valoración en la instancia focal;
+- la regla se fija ex ante y se mantiene invariante entre brazos y DGP;
+- la consecuencia se genera y mide sin usar accesibilidad, Reach, trayectoria, Outcome adjudicado ni la salida del Analyzer como sustitutos;
+- se conserva la separación de objetos y provenance entre consecuencia observada y adjudicación de Value.
+
+Por tanto, el requisito de §28.4.5 —que una misma consecuencia pueda recibir valores distintos por un atributo contextual, y consecuencias distintas puedan recibir el mismo valor— **no es un requisito general para toda instancia de Value**. Es pertinente cuando la instancia incluye varios criterios, preferencias o trade-offs. No debe imponerse a una instancia sintética deliberadamente unidimensional, pues forzaría a introducir atributos o ponderaciones que no forman parte del objetivo B1 aceptado.
+
+### 29.2 Regla candidata
+
+Se reutiliza el propósito basal aceptado de B1: mantener operativa una función de servicio dependiente de la configuración migrada al entorno destino.
+
+Se propone una instancia de **valor de objetivo único**:
+- `Q_B1`: grado de continuidad/disponibilidad de la función de servicio para B1 durante el horizonte común, generado como consecuencia verdadera y medido mediante evidencia propia;
+- `G_B1): objetivo basal versionado de mantener operativa esa función;
+- `V_B1): valoración del grado de cumplimiento de `G_B1` desde la perspectiva de B1, conforme a la autoridad normativa estipulada en el DGP.
+
+Si el DGP normaliza `Q_B1` como grado de cumplimiento en [0,1] y estipula que la totalidad del criterio de valoración de B1 en esta instancia es el cumplimiento de `G_B1`, la regla directa es:
+
+```
+V_B1 = v_B1(Q_B1 | G_B1) = Q_B1
+```
+
+La igualdad numérica no elimina la distinción semántica:
+- `Q_B1` es la consecuencia funcional verdadera/observada;
+- `V_B1` es la valoración normativa de esa consecuencia por aplicación de una regla explícita;
+- `O-CONF` continúa siendo la adjudicación técnica de conformidad terminal frente a F*, no la medida de continuidad ni la valoración de B1.
+
+La regla no añade pesos, utilidad monetaria, costes ni preferencias ficticias. La autoridad normativa del DGP estipula que, para esta instancia y solo para ella, B1 tiene un objetivo focal no compensatorio: mayor cumplimiento de la continuidad funcional es preferido a menor cumplimiento. No se afirma que esta regla describa preferencias humanas reales ni que sea una definición universal de Value.
+
+### 29.3 Independencia y no circularidad
+
+La regla `v_B1` queda fijada antes de asignar `g_1/g_0` y no contiene `ΔT_acc`, Reach, trayectoria, selección, ejecución, O-CONF, Z ni parámetros reveladores de truth. La regla es idéntica en todos los DGP focales.
+
+Los DGP pueden variar la relación causal entre accesibilidad y `Q_B1`:
+- efecto positivo: mayor accesibilidad produce mayor continuidad;
+- efecto nulo: cambia accesibilidad, pero la continuidad no responde;
+- efecto negativo: una vía generativa adversa asociada a la política de accesibilidad reduce continuidad;
+- vía alternativa: una condición no atribuible a accesibilidad cambia continuidad y, por la misma regla, cambia Value;
+- no identificación: soporte o medición insuficientes impiden atribuir el cambio a la intervención de accesibilidad.
+
+Así, el efecto sobre Value no está incorporado en la definición: lo determina el mecanismo causal del DGP. La regla de valoración permanece fija mientras la verdad causal cambia.
+
+### 29.4 Relación con la población y Need_preZ
+
+La instancia focal debe declarar el estado basal de `Need_preZ` en su configuración antes de generar datos. Si el DGP focal restringe por construcción todas las unidades a un mismo objetivo basal B1, ello define el universo sintético de esa instancia; no autoriza a filtrar unidades según eventos post-Z ni a redefinir Need a partir de resultados.
+
+Los estados `Need_preZ=0` y `?` no se recodifican como `V_B1=0`. Se conservan para escenarios de extensión, límites o no-instanciación cuando el objetivo focal no exista o no pueda adjudicarse. La población y el estimando de cada escenario deben declararse; no se presenta una estimación condicionada a Need=1 como ITT de una población más amplia.
+
+### 29.5 Admisibilidad y límites
+
+La regla directa sería admisible como **una instancia sintética de Value contextual de objetivo único**, no como operacionalización universal de Value, si la configuración del DGP contiene:
+1. identidad/versionado del objetivo `G_B1` y su titular B1;
+2. autoridad normativa explícita que estipula el criterio único;
+3. definición de `Q_B1`, horizonte y unidad, con truth y evidencia separadas;
+4. adjudicación `V_B1` mediante la regla directa, con provenance y cegamiento a la asignación cuando corresponda;
+5. invariancia de la regla entre los DGP de efecto, nulo, signo contrario y adversariales;
+6. demostración de que `Q_B1` no es reconstruido desde `T_acc`, Reach, O-CONF ni eventos de petición aislados.
+
+La igualdad numérica `V_B1=Q_B1` debe declararse como una propiedad de la regla normativa del escenario, no como evidencia de que Value y Outcome sean el mismo constructo. Si el DGP no puede sostener esta estipulación de objetivo único o la medición independiente de Q, la instancia se marca `VALUE_NOT_INSTANTIATED`.
+
+### 29.6 Dictamen y siguiente cierre
+
+Esta propuesta resuelve la objeción conceptual sin añadir dimensiones, costes, pesos ni trade-offs arbitrarios. **No se acepta todavía como endpoint confirmatorio**, porque falta verificar contra el contrato B1 que la función concreta de servicio y su continuidad pueden instanciarse en el DGP sin inventar semántica funcional, y especificar la medición de `Q_B1` con separación de truth/evidence.
+
+El siguiente cierre se limita a esa comprobación de compatibilidad y a declarar si la instancia de objetivo único puede aceptarse como endpoint sintético. Si es admisible, se fijarán entonces horizonte y medición. Si no, se conservará `VALUE_NOT_INSTANTIATED` y no se afirmará haber probado `ΔT_acc → Value`.
+
+**Estado:** SINGLE_GOAL_VALUE_RULE_FORMULATED / SEMANTICALLY_NONCIRCULAR_IF_DGP_CONTRACTED / CONFIRMATORY_ADMISSIBILITY_PENDING / NO_DESIGN_FREEZE / NO_IMPLEMENTATION / NO_SCIENTIFIC_EXECUTION.
