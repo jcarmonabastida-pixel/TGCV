@@ -2572,3 +2572,14 @@ Reglas: no derivar residual por resta automática; no llamar efecto puro de acce
 **Dependencias OPEN para cierre de los carriles:** población, unidad/interferencia, horizonte, Outcome y Value; versiones y cumplimiento de políticas; mapping B→g, q y soporte; vías colaterales, confusión mediador–resultado e interacciones; medición independiente y error de accesibilidad/Reach/trayectoria/Outcome/Value; identificación, sensibilidad, precisión y abstención; propiedades de trayectoria y contrastes DGP de las etapas de petición. No se selecciona método estadístico definitivo ni se declara ningún efecto identificado.
 
 La decisión no autoriza Design Freeze, implementación, fixtures, simulación o ejecución científica. `scientific_execution=false`; `execution_authorized=false`. Registro: `DEC-C10S-D2-ESTIMAND-SEPARATION-001.md`.
+
+
+## 16.148 — Secuencia estable de cierre y activación de C1 (2026-11-11)
+
+Se adopta como control operativo la secuencia de ocho paquetes: (1) C1 ITT D2; (2) Outcome/Value; (3) C2 primeras etapas; (4) C3 efecto de accesibilidad; (5) C4 mediación; (6) C5 + DGP; (7) estadística/Analyzer; (8) contrato integrado de implementación. Cada paquete debe reutilizar decisiones y contratos existentes, producir un entregable verificable y distinguir cierre documental de identificación empírica. No se reabren decisiones aceptadas salvo contradicción o dependencia material demostrada. No se congelan schemas ni fixtures antes de cerrar dependencias científicas.
+
+Se activa **C1.1 — reconciliación de población, UE/interferencia, brazos D2 y resultados Outcome/Value**. C1 es ITT por asignación a B_g0^D2 frente a B_g1^D2, no por provisión recibida, instalación, accesibilidad, petición, selección o ejecución. El ITT incluye las vías que active la política y se interpreta como efecto de paquete si existen vías colaterales no separadas. No se define residual por resta automática.
+
+La aceptación A/B de DEC-C10-095 impide tratar Value como ya instanciado en A: A puede sostener Outcome(s) técnicos cuando se completen sus fichas; B es extensión separada para Value contextual y B1 sigue siendo tipo candidato, no instancia completa. Por ello C1 deberá dictaminar por separado resultados técnicos de A y dimensiones V_j de B cuando sean admisibles; no inventar dimensiones, indicadores, escalas, pesos ni escalar.
+
+La secuencia, los criterios y el alcance de C1 se desarrollan en `C10_S_CLOSURE_SEQUENCE_AND_C1_ITT_WORKPLAN_001.md`. Este registro no modifica decisiones anteriores, no declara cerrado C1 ni autoriza Design Freeze, schemas físicos, fixtures, implementación, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
