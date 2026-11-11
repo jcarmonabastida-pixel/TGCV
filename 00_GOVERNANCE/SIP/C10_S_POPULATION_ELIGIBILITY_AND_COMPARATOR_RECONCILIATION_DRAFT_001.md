@@ -277,3 +277,10 @@ La decisión completa y sus límites constan en `DEC-C10S-C1-POPULATION-PRECEDEN
 El crosswalk `C10_S_C1_BASELINE_ELIGIBILITY_CROSSWALK_DRAFT_001.md` propone como hipótesis de composición mínima `E_i=E_scope,i∧App*(τ2,S0_i)`. No es una definición aceptada ni congelada. La definición de E_scope debe derivarse del IAM pre-Z del snapshot fuente y del contrato constitutivo por unidad; App debe tener su predicado y evidencia propios. La cardinalidad abstracta CMP/PAR/RUL y el roster mínimo del servicio no bastan para declarar pertenencia P*.
 
 Esta precisión no altera la definición de P*τ2/P*F ni las condiciones separadas C_dep,0=0 y A_f,0*=0. Próximo trabajo: crosswalk de registros IAM C_SRC y sus mappings con App/C_dep/A_f; no recuperar la fórmula histórica con C_other.
+
+
+## 13. Integración del ciclo D2 asignación/población/soporte (2026-11-11)
+
+La precedencia P*τ2/P*_F se conserva. El nuevo contrato C10_S_D2_ASSIGNMENT_POPULATION_SUPPORT_RECONCILIATION_DRAFT_001.md precisa que E_i=E_scope∧App sigue propuesta no aceptada; C_dep,0=0 y A_f,0*=0 son condiciones separadas; F_alt,0 solo afecta P*_F. UNKNOWN pre-Z no puede excluirse silenciosamente ni convertirse en 0.
+
+Las probabilidades de programación D2 (0/1 condicionales a Z) no son probabilidades de asignación experimental. La aleatorización Z, q_X*, positividad y soporte siguen no especificados/no materializados. UE=UA permanece condicionado a aislamiento. No se reabre la precedencia aceptada ni se declara población materializada.
