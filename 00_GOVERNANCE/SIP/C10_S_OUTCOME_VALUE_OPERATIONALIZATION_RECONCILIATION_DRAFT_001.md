@@ -210,3 +210,10 @@ No se autoriza schema físico, captura material, fixtures, código, implementaci
 ## 12. Caso de valoración B1 — dependencia contextual pendiente (2026-11-11)
 
 El caso semántico se documenta en `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md`. El microdominio de migración está aceptado; B1 por UE, servicio por UE y una oportunidad estandarizada por UE se reutilizan. El probe no representa demanda natural ni Value. La formulación candidata de Need_preZ exige un objetivo operativo basal relacionado con sostener una operación de servicio predeclarada en destino; el contenido concreto de esa operación no está aceptado/instanciado. La consecuencia B1 permanece separada de procesamiento, respuesta, F*, O-CONF y accesibilidad. Se describen clases de consecuencia solo como envolvente, no dimensiones aprobadas. No se seleccionan V_j, autoridad, criterio, escala, instrumento u horizonte.
+
+
+## 14. Dependencia de Need_preZ tras aceptación de la clase de propósito B1 (2026-11-11)
+
+Se acepta como base semántica que B1 pretende mantener operativa una función de servicio dependiente de la configuración migrada al entorno destino. La operación concreta permanece OPEN; por tanto, esta aceptación no completa el constructo ni la truth por UE. La ficha de cualquier V_j deberá referir la consecuencia al objetivo basal concreto una vez nombrado/versionado, no a una formulación genérica ni al éxito técnico de la migración.
+
+La clase aceptada no autoriza asignar `Need_preZ=1` a todas las unidades. Se conserva 1/0/? pre-Z, con unknown distinto de ausencia y truth_dgp distinto de observed_evidence. Request_event, procesamiento, O-CONF, accesibilidad, Reach y ejecución no adjudican Need_preZ ni permiten selección post-Z de la población ITT. La consecuencia B1 sigue siendo un objeto separado de F*/O-CONF y de la valoración V_j. No cambia el estado: O-CONF candidato no congelado; Value vectorial preservado pero no instanciado; sin Y confirmatorio completo ni Design Freeze.
