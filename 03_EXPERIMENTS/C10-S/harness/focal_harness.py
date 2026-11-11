@@ -171,6 +171,80 @@ def _expit(x: float) -> float:
     return 1.0 / (1.0 + math.exp(-x))
 
 
+
+def _beta_continued_fraction(a: float, b: float, x: float) -> float:
+    """Numerically stable continued fraction for the incomplete beta function."""
+    max_iter, eps, tiny = 300, 3.0e-14, 1.0e-300
+    qab, qap, qam = a + b, a + 1.0, a - 1.0
+    c, d = 1.0, 1.0 - qab * x / qap
+    if abs(d) < tiny:
+        d = tiny
+    d = 1.0 / d
+    h = d
+    for m in range(1, max_iter + 1):
+        m2 = 2 * m
+        aa = m * (b - m) * x / ((qam + m2) * (a + m2))
+        d = 1.0 + aa * d
+        if abs(d) < tiny:
+            d = tiny
+        c = 1.0 + aa / c
+        if abs(c) < tiny:
+            c = tiny
+        d = 1.0 / d
+        h *= d * c
+        aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))
+        d = 1.0 + aa * d
+        if abs(d) < tiny:
+            d = tiny
+        c = 1.0 + aa / c
+        if abs(c) < tiny:
+            c = tiny
+        d = 1.0 / d
+        delta = d * c
+        h *= delta
+        if abs(delta - 1.0) < eps:
+            return h
+    raise ArithmeticError("incomplete-beta continued fraction did not converge")
+
+
+def _regularized_beta(x: float, a: float, b: float) -> float:
+    if x <= 0.0:
+        return 0.0
+    if x >= 1.0:
+        return 1.0
+    factor = math.exp(math.lgamma(a + b) - math.lgamma(a) - math.lgamma(b)
+                      + a * math.log(x) + b * math.log1p(-x))
+    if x < (a + 1.0) / (a + b + 2.0):
+        return factor * _beta_continued_fraction(a, b, x) / a
+    return 1.0 - factor * _beta_continued_fraction(b, a, 1.0 - x) / b
+
+
+def _student_t_cdf(value: float, degrees_freedom: float) -> float:
+    if degrees_freedom <= 0.0:
+        raise ValueError("degrees of freedom must be positive")
+    if value == 0.0:
+        return 0.5
+    x = degrees_freedom / (degrees_freedom + value * value)
+    tail = 0.5 * _regularized_beta(x, degrees_freedom / 2.0, 0.5)
+    return 1.0 - tail if value > 0.0 else tail
+
+
+def _student_t_critical_975(degrees_freedom: float) -> float:
+    """Two-sided 95% Student-t critical value, found by monotone bisection."""
+    if degrees_freedom <= 0.0:
+        raise ValueError("degrees of freedom must be positive")
+    low, high = 0.0, 2.0
+    while _student_t_cdf(high, degrees_freedom) < 0.975:
+        high *= 2.0
+    for _ in range(100):
+        mid = (low + high) / 2.0
+        if _student_t_cdf(mid, degrees_freedom) < 0.975:
+            low = mid
+        else:
+            high = mid
+    return (low + high) / 2.0
+
+
 def _mean_q(pi0: float, k: int, p01: float, p10: float) -> float:
     state_probability = pi0
     total = 0.0
@@ -286,10 +360,20 @@ class Analyzer:
         if not contract.randomized_assignment or len(arm0) < 2 or len(arm1) < 2:
             return self._abstain(evidence, contract, "RANDOMIZATION_OR_ARM_SUPPORT_NOT_ESTABLISHED")
         estimate = mean(arm1) - mean(arm0)
-        var0 = variance(arm0) / len(arm0) if len(arm0) > 1 else math.inf
-        var1 = variance(arm1) / len(arm1) if len(arm1) > 1 else math.inf
+        var0 = variance(arm0) / len(arm0)
+        var1 = variance(arm1) / len(arm1)
         se = math.sqrt(var0 + var1)
-        interval = (estimate - 1.96 * se, estimate + 1.96 * se)
+        denominator = (var0 * var0 / (len(arm0) - 1)
+                       + var1 * var1 / (len(arm1) - 1))
+        if se == 0.0:
+            degrees_freedom = math.inf
+            critical = 1.959963984540054
+        else:
+            degrees_freedom = ((var0 + var1) ** 2 / denominator
+                               if denominator > 0.0 else math.inf)
+            critical = (1.959963984540054 if math.isinf(degrees_freedom)
+                        else _student_t_critical_975(degrees_freedom))
+        interval = (estimate - critical * se, estimate + critical * se)
         package_ok = contract.measurement_ideal and contract.interference_absent
         if not package_ok:
             return self._abstain(evidence, contract, "PACKAGE_ITT_ASSUMPTIONS_OR_MEASUREMENT_NOT_ESTABLISHED")
@@ -346,14 +430,22 @@ class Evaluator:
         if result.focal_identification == "IDENTIFIED" and result.estimate is not None:
             focal_error = abs(result.estimate - truth.theta_access_truth)
             focal_recovery = focal_error <= tolerance
-        if contract.direct_path_status == "PRESENT":
+        package_conditions = (contract.randomized_assignment and contract.measurement_ideal
+                              and contract.interference_absent and result.estimate is not None)
+        expected_package_status = "IDENTIFIED" if package_conditions else "INDETERMINATE"
+        if expected_package_status == "INDETERMINATE":
+            expected_focal_status = "INDETERMINATE"
+        elif contract.direct_path_status == "PRESENT" or truth.direct_path_truth:
             expected_focal_status = "NOT_IDENTIFIED"
         elif (contract.direct_path_status == "UNKNOWN" or not contract.common_regime
               or not contract.positivity or not contract.version_consistency):
             expected_focal_status = "INDETERMINATE"
         else:
-            expected_focal_status = "IDENTIFIED" if not truth.direct_path_truth else "NOT_IDENTIFIED"
-        classification_correct = result.focal_identification == expected_focal_status
+            expected_focal_status = "IDENTIFIED"
+        classification_correct = (
+            result.package_identification == expected_package_status
+            and result.focal_identification == expected_focal_status
+        )
         notes = ("Analyzer input contains observed Q_B1 and randomized assignment only.",
                  "Finite-sample recovery is not a confirmatory result.",
                  "Focal truth is defined under the common direct-path regime gamma=0.")
