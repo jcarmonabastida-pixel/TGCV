@@ -930,3 +930,19 @@ La aceptación del tipo B1 añade un constructo basal del beneficiario sin susti
 - No se altera la secuencia t−1/t0…t9, el DAG aprobado/candidato, DEC-C10-066/067, D2/D1, ni se introduce un tiempo, variable física, fixture o parámetro.
 
 Estado: propuesta documental de especialización B1; solicitud y su posición en el reloj OPEN; no implementación ni ejecución.
+
+
+## 15. Ciclo de solicitud B1 como subregistro de eventos, sin ampliar el reloj DGP (2026-11-11)
+
+La propuesta B1 §11 descompone el ciclo de solicitud en Request_opportunity, Request_attempt, Request_received, Request_admitted/rejected, Request_processing, Request_response y Beneficiary_consequence. Son eventos/estados del servicio y del beneficiario, no nuevas etapas transformacionales.
+
+1. Se conserva el reloj basal t−1 y t0…t9. No se añade t5a/t6a/t7a ni se reinterpreta t5/t6/t7.
+2. t5 K/Consider no equivale al intento de envío; t6 Sel/Start no equivale a admisión de la petición; t7 Exec transformacional no equivale a procesamiento del servicio.
+3. El enlace entre request_id y transformación/trajectory_id puede ser 0:1, 1:1 o 1:N según contrato aún OPEN. No se presupone que cada petición desencadene transformación ni que una transformación corresponda a una sola petición.
+4. Los eventos pueden registrarse en un subledger temporal con timestamps y referencias a snapshots existentes, preservando identidad/versionado y orden parcial. No se establece schema físico ni regla de orden total.
+5. El contrato funcional aceptado de ENABLED/PROFILE/RUL orienta la admisión, pero no proporciona protocolo completo de recepción, payload, colas, errores, respuesta o SLA. No añadir semántica no aprobada.
+6. En el primario sintético se recomienda evaluar una carga de oportunidades/peticiones estandarizada ex ante, presentada mediante harness externo idéntico después del snapshot de accesibilidad. El intento se registra aun cuando no exista recepción. Es un probe de carga, no demanda natural ni preferencia validada. Una rama de envío endógeno puede ser adversarial/secundaria.
+7. No condicionar ITT ni población a intento, recepción, admisión, procesamiento o respuesta post-Z. No tratar no recepción como ausencia de necesidad ni respuesta técnica como Value.
+8. La consecuencia del beneficiario se mantiene distinta de O técnico y de estado del servicio; regla y horizonte permanecen abiertos.
+
+Estado: propuesta de subregistro de eventos; no cambia DAG, reloj, estimandos, parámetros, políticas ni autorización.
