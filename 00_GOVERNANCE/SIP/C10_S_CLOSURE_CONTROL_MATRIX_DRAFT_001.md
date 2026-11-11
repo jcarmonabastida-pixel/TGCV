@@ -2845,3 +2845,20 @@ Véase C10S-B1-REQUESTER-CANDIDATE-001. No modifica A, DEC-C10-068 ni el roster 
 | Freeze/implementación/ejecución | NOT AUTHORIZED | scientific_execution=false; execution_authorized=false |
 
 Véanse C10S-B1-REQUESTER-CANDIDATE-001 §10, C10-S-POP-CMP-001 §10 y contrato temporal §14.
+
+
+## 143. Gate B1 — ciclo de solicitud y relación con trayectoria (2026-11-11)
+
+| Elemento | Estado | Criterio / límite |
+|---|---|---|
+| Request_opportunity / attempt / received | SEMANTICALLY DISTINGUISHED | Oportunidad, intento externo y recepción en servicio son eventos distintos |
+| Admitted/rejected / processing / response | SEMANTICALLY DISTINGUISHED | Admisión, procesamiento y respuesta no son equivalentes |
+| Request ↔ trajectory | OPEN | Cardinalidad y causalidad 0:1/1:1/1:N no decididas |
+| Relación con t5/t6/t7 | NOT EQUIVALENT | Consideración, selección/inicio y ejecución transformacional no son estados de petición |
+| Subledger / timestamps | PROPOSED | Sin nuevo reloj ni profundidad H |
+| Carga estandarizada por harness | RECOMMENDED / NOT ACCEPTED | Probe de carga, no demanda natural; aceptación pendiente |
+| Envío endógeno | ADVERSARIAL / SECONDARY CANDIDATE | No condicionar ITT ni población por envío post-Z |
+| Consecuencia / Value | OPEN | No inferir desde respuesta técnica |
+| Design Freeze / implementación / ejecución | NOT AUTHORIZED | scientific_execution=false; execution_authorized=false |
+
+Véanse B1 spec §11, DGP temporal §15, arquitectura causal §14 y contrato funcional §12.
