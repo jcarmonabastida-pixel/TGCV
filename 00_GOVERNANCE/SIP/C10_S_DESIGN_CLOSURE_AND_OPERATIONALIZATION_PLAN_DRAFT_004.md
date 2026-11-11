@@ -2627,3 +2627,16 @@ Se adopta como método operativo `C10_S_INTEGRATED_WORK_PACKAGES_AND_CYCLE_PROTO
 Cada paquete debe resolverse integralmente en una única iteración o conversación, con reconstrucción histórica, reconciliación de todas sus dimensiones, síntesis única, clasificación de decisiones y bloqueos, persistencia cruzada y relectura/verificación de todos los artefactos modificados. No se fragmentará en micro-preguntas. Solo se consultarán decisiones científicas genuinamente no derivables; la falta de evidencia se registrará como bloqueo, no como preferencia ni supuesto.
 
 Orden: PA → PB → PC → PD → PE. El paquete activo es PA. La precedencia P*_{τ2}/P*_F está aceptada y no se reabre. El crosswalk IAM/C_SRC ya documenta ausencia de IAM y snapshots materiales; debe reutilizarse como bloqueo vigente. Esta organización no implica freeze ni autoriza código, fixtures, simulación o ejecución: `scientific_execution=false`, `execution_authorized=false`.
+
+
+## 16.155 — PA: reconciliación integral de C1 (2026-11-11)
+
+El paquete PA se resolvió en una única iteración y queda desarrollado en §15 de `C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md`. Dictamen: **PA_RECONCILED_DOCUMENTALLY / C1_MATERIAL_BLOCKED / NOT_DESIGN_FROZEN**.
+
+Se consolidan como contrato de trabajo: D2 sigue siendo el contraste de asignación aceptado; C1 es efecto total de política/paquete y familia de ITT por variante × población × resultado/dimensión × horizonte; P*_{τ2} es población objetivo primaria candidata y P*_F subpoblación secundaria ya aceptadas; eventos post-Z no redefinen inclusión; Outcome técnico A y Value contextual B permanecen separados; Value conserva vector P179 sin escalar/pesos arbitrarios; H=3 es profundidad, no duración; truth DGP y clasificación observada permanecen segregadas.
+
+La fórmula `E_i=E_scope∧App*(τ2,S0)` no se acepta. Se registra como recomendación de trabajo distinguir E_scope como gate de alcance del universo DGP y App como aplicabilidad semántica focal, manteniendo C_dep,0=0 y A_f,0*=0 como condiciones separadas de P*τ2. Sin IAM/C_SRC y snapshots materiales no se adjudica E_i ni se estima la población/soporte. UNKNOWN pre-Z no se recodifica como cero ni se excluye silenciosamente; debe resolverse antes de Z o conservarse en un marco observable con estimando/cotas explícitos.
+
+Bloqueos materiales: asignación D2 (ratio/probabilidades, estratos, algoritmo/semilla/provenance); aislamiento UE/UA y no interferencia; q_X*/positividad/soporte; horizonte y ventanas; ficha operacional de O-CONF u Outcome alternativo; instancia B1, consecuencia y fichas V_j; medición/missingness/censura y precisión. No se han inventado valores ni se solicita decisión de preferencia al usuario en este ciclo.
+
+**Estado:** PA reconciliado documentalmente, no cierre científico de C1. Próximo paquete operativo: **PB — D2 material, servicio B1 y primera etapa C2**. PA se reabrirá solo para integrar material nuevo que levante los bloqueos, no para repetir la reconciliación. Sin freeze, implementación ni ejecución.
