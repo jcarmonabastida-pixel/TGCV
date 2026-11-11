@@ -126,3 +126,10 @@ La propuesta concreta el hueco entre el contrato abstracto de instancia y el ser
 ## 10. Estado tras DEC-C10-069
 
 Los valores de §3 y la política de §4 quedan ACCEPTED por `00_GOVERNANCE/decisions/DEC-C10-069_SERVICE_CMP_IDENTITY_AND_VERSIONING_ACCEPTANCE.md`. No se acepta por extensión un formato físico, hash, IAM sellado, mapping implementado ni oráculo validado. No Design Freeze ni autorización de implementación/ejecución.
+
+
+## 11. Reconciliación PB — identidad de instancia frente a aislamiento por UE (2026-11-11)
+
+DEC-C10-069 acepta C10S-SVC-REQUEST-PROCESSOR-001 como instancia lógica de referencia. DEC-C10S-B1-UNIT-001 establece como requisito una instancia de servicio aislada/versionada por UE. Para evitar reutilizar un mismo instance_id en varias instancias aisladas, PB recomienda interpretar el ID de DEC-C10-069 como instancia ejemplar de referencia y mantener contract_id/version + definición CMP como plantilla común; cada UE recibirá un instance_id único/versionado. component_id será local a la instancia y su clave de referencia será compuesta por instance_id + component_id. La regla de versionado aceptada por DEC-C10-069 se conserva para cada instancia.
+
+**Estado:** propuesta de armonización pendiente de aceptación expresa. No modifica por sí sola DEC-C10-069 ni genera IDs por UE. No hay serialización física, MET material, IAM sellado, hash, parser, fixture ni implementación. La decisión de identidad no autoriza ejecución.
