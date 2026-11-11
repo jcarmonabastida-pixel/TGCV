@@ -163,3 +163,12 @@ El analizador no recibe truth_dgp. El evaluador independiente accede a la verdad
 AUD-005 y AUD-007 permanecen abiertos. También siguen abiertos AUD-004, OPEN-C10-001/003/005/007 y XSYNC-138-03/06 según sus contratos.
 
 No se ha implementado, generado datos, simulado, ejecutado, congelado ni autorizado el experimento.
+
+
+## 13. Integración PD: truth, evidencia y mecanismos de contribución (2026-11-11)
+
+La especificación integrada PD se encuentra en C10_S_PD_DGP_MECHANISM_AND_ADVERSARIAL_EVALUATION_RECONCILIATION_DRAFT_001.md. Este inventario debe leerse con tres planos segregados: truth_dgp (verdad estructural y potenciales ocultos), observed_evidence (evidencia y cobertura disponibles al Analyzer) y evaluation/adjudication (comparación posterior con truth tras sellar la salida). El Analyzer no recibe truth_dgp.
+
+Las contribuciones petición–trayectoria se adjudican por etapa concreta del ciclo y contraste contrafactual, no por coincidencia temporal/ID, recepción o éxito técnico. Se preservan NECESSARY_CONTRIBUTION, ENABLING_CONTRIBUTION y MODIFYING_CONTRIBUTION; pueden concurrir y no implican Outcome favorable ni Value. TEMPORAL_ASSOCIATION, TRACEABILITY_LINK y CAUSAL_CONTRIBUTION no son intercambiables.
+
+La cobertura adversarial incorpora efectos focales nulos/adversos, vías directas/colaterales, interacciones, heterogeneidad, weak/null IV, defiers, interferencia, alternativas, versiones/crossover, observación diferencial, soporte insuficiente, missingness, censura y selección. Los parámetros, probabilidades y reglas concretas no se completan por inferencia; siguen abiertos hasta reconciliar Value/Outcome, material D2 y soporte. No se generan fixtures ni datos en este addendum.
