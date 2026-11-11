@@ -46,6 +46,8 @@ class FocalHarnessContractTests(unittest.TestCase):
         truth, source, sealed, result, report = self.run_case(config("null"), contract())
         self.assertAlmostEqual(truth.theta_access_truth, 0.0, places=12)
         self.assertEqual(result.focal_identification, "IDENTIFIED")
+        self.assertIsNotNone(result.focal_estimate)
+        self.assertAlmostEqual(result.focal_estimate, result.package_itt_estimate)
         self.assertTrue(report.classification_correct)
         self.assertTrue(all(set(row) == set(Projector.ALLOWED) for row in sealed.rows))
 
@@ -61,6 +63,9 @@ class FocalHarnessContractTests(unittest.TestCase):
         self.assertTrue(truth.direct_path_truth)
         self.assertEqual(result.package_identification, "IDENTIFIED")
         self.assertEqual(result.focal_identification, "NOT_IDENTIFIED")
+        self.assertIsNotNone(result.package_itt_estimate)
+        self.assertIsNone(result.focal_estimate)
+        self.assertIsNone(result.focal_interval_95)
         self.assertIsNone(report.focal_abs_error)
         self.assertTrue(report.classification_correct)
 
@@ -105,9 +110,9 @@ class FocalHarnessContractTests(unittest.TestCase):
 
     def test_analyzer_interval_is_centered_on_itt_estimate(self):
         _truth, _source, _sealed, result, _report = self.run_case(config("welch-interval"), contract())
-        self.assertIsNotNone(result.interval_95)
-        lower, upper = result.interval_95
-        self.assertAlmostEqual((lower + upper) / 2.0, result.estimate, places=12)
+        self.assertIsNotNone(result.package_itt_interval_95)
+        lower, upper = result.package_itt_interval_95
+        self.assertAlmostEqual((lower + upper) / 2.0, result.package_itt_estimate, places=12)
         self.assertGreater(upper, lower)
 
     def test_run_identity_changes_when_any_dgp_parameter_changes(self):
