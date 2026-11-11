@@ -3062,3 +3062,25 @@ La unidad de trabajo es el paquete completo, resuelto en una única iteración/c
 No surgió una decisión nueva que requiera aprobación del usuario: las lagunas son materiales y no preferencias. No se reabren DEC-C10-066/067 ni DEC-C10S-C1-POPULATION-PRECEDENCE-001.
 
 **Estado del control:** el ciclo PA está completado documentalmente; C1 permanece OPEN/BLOCKED en lo material. Siguiente paquete: **PB**. PA solo se reabrirá para incorporar evidencia/contratos materiales nuevos.
+
+
+## PB — resultado del ciclo integral (2026-11-11)
+
+**Dictamen:** PB_RECONCILED_DOCUMENTALLY / D2_C2_MATERIAL_BLOCKED / NOT_DESIGN_FROZEN. Registro: maestro C10-S §267.
+
+| Subdominio | Resultado | Bloqueo |
+|---|---|---|
+| D2 B_g0/B_g1 | Contrato conceptual aceptado; no reabrir | Entrega material, versiones, actor, crossover y provisión de fondo |
+| Servicio lógico B1 | DEC-C10-068/069 aceptadas | Identidad de instancia por UE vs instancia ejemplar |
+| P0/P1/P2 | Frontera conceptual reconciliada; B focal en P1 | Inventario material B-M01…15 ausente |
+| C_dep* | C_install∧C_integrity∧C_compat∧C_oper | Sin instalación ni verificación material |
+| A_f* | Fórmula candidata depurada §67.3; sin duplicidad conceptual | Mapping y evidencia de REL/COND/AUTH/RES/DEP/BLOCK y alternativas |
+| C2 | Vector W_programmed/W_attempt/S_install/C_dep/A_f/D_f/ΔT_acc | Primera etapa no establecida; s=.80 no validado |
+| Snapshots | t−1/t0…t4 y S_T*/E_T/ΔT_T separados | IAM, snapshots materiales y UG-SCH-10 no cerrados |
+| Aislamiento | Requisito explícito por UE | No verificado; recursos/servicios compartidos y carryover sin inventario |
+| Petición B1 | Una oportunidad/UE después de t3/t4 | Payload, calendario, timeout/retries, estados y adjudicación |
+| IV | D_f* verdadero distinto de D_f_obs | Medición/error/missingness abiertos; Wald/LATE bloqueado |
+
+**Decisión pendiente:** instancia lógica de servicio única/versionada por UE, compartiendo contrato/versión y plantilla CMP; la ID DEC-C10-069 se conserva como instancia ejemplar, no se replica como ID de todas las UE. Recomendación favorable para mantener aislamiento aceptado. Requiere aceptación expresa antes de congelar. El resto son bloqueos materiales o de operacionalización.
+
+PB completado documentalmente; siguiente paquete activo **PC**. No implementación ni ejecución autorizadas.
