@@ -1551,3 +1551,11 @@ Se registra `C10_S_PB_MATERIAL_D2_INSTANCE_AND_ISOLATION_RECONCILIATION_DRAFT_00
 **Dictamen:** contrato/plantilla funcional común e instancia lógica única por UE armonizados; adaptador/dependencia P1 separado; P0, F*/oráculo, mapping, autorización basal y A1/A2 invariantes por requisito. El requisito no demuestra invariancia. Roster/IDs, IAM/C_SRC, snapshots, grafo, artefacto/runtime, ACL/recursos, actor/recepción/ventanas/reintentos, soporte/interferencia y pruebas permanecen OPEN/BLOCKED. B-M13/M14 no pueden ser modificados por B.
 
 No se aprueba ningún parámetro operativo nuevo, schema físico, fixture, valor DGP ni estimando. No se autoriza captura, implementación, simulación, estimación o ejecución.
+
+## B2–B3 — aceptación de base de trabajo, sin nueva decisión científica (2026-11-11)
+
+El usuario acepta como base de trabajo que B1 es la entidad sintética con Need_preZ basal; Outcome mide resultado técnico; Value valora la consecuencia para B1 respecto de su objetivo basal desde perspectiva/autoridad ex ante.
+
+La reconciliación añade una precisión causal: Outcome y Value son constructos distintos, pero no se presupone que Outcome sea la causa exclusiva de Value ni que V_j=f(Outcome). La consecuencia puede depender de Outcome y de vías directas/colaterales de la política. Se mantienen P179 vectorial, fichas independientes §224 y controles P182/P183. No se eligen dimensiones, escalas, pesos, horizontes o parámetros.
+
+Este registro documenta la aceptación de una base de trabajo; **no crea una DEC nueva ni cambia una decisión científica**. Artefacto integrador: `C10_S_B2_B3_BENEFICIARY_OUTCOME_VALUE_RECONCILIATION_DRAFT_001.md`; maestro §273. Outcome no operacionalizado; Value no instanciado; no Design Freeze ni ejecución autorizada.
