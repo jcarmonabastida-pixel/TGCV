@@ -30,6 +30,12 @@
   "rng": "numpy.random.default_rng / PCG64",
   "scipy": "1.17.0",
   "script_sha256": "6ae7d84984d952cac2ca2700ff396899948beeabc3e9ea482689d5360b834cb0",
+  "repository_text_representation": "GitHub Contents API stores these UTF-8 CSVs with LF line endings; runtime SHA-256 values below refer to the original local execution files (CSV writer CRLF). Git blob SHA-1 values identify the exact canonical repository text.",
+  "git_blob_sha1": {
+    "p178_focal_monte_carlo.py": "43ca22c40dcf506ca037b3c1f756d859f0d6a627",
+    "p178_reference_N700.csv": "e8f4a58303e831c26e78f67931d7d337f9d5ef51",
+    "p178_central_N_theta_curve.csv": "3f8e14851cfd02bea0f2f407fed4aa106d6459c9"
+  },
   "sha256": {
     "p178_central_N_theta_curve.csv": "ef9515d2880719729800bdd99463b2db867ed619598640b75fbd929874a3be45",
     "p178_reference_N700.csv": "280dbb4f979fa4936feffe3ff22ecde55abdd9ec8b7abfaf5a9208366e7cb155"
