@@ -2053,3 +2053,33 @@ El manifiesto registra SHA-256 de los archivos originales de ejecución y Git bl
 Permanece un límite de alcance, no un bloqueo de P178 focal: los artefactos son resúmenes por celda, no cada réplica individual; el benchmark no prueba el Analyzer, no calibra las extensiones adversariales y no materializa el harness con truth/evidence/firewall. Estos son gates posteriores y separados.
 
 **Dictamen:** P178_FOCAL_BENCHMARK_REPRODUCIBLE_AND_AUDITED / FOCAL_RATE_AND_CONTINUOUS_MCSE_CRITERIA_MET / N700_DIAGNOSTIC_CANDIDATE_SUPPORTED_FOR_FINITE_GRID / ANALYZER_VALIDATION_OPEN / ADVERSARIAL_CALIBRATION_OPEN / CONFIRMATORY_EXECUTION_NOT_AUTHORIZED.
+
+
+## 49. Primera implementación focal del harness C10-S (2026-11-11)
+
+**Autorización:** autorización explícita del usuario para iniciar la implementación del harness mínimo en `research/c10-s-consolidation-draft`; alcance excluye playground, ejecución confirmatoria y cambios en `main`.
+
+**Artefactos persistidos:**
+- `03_EXPERIMENTS/C10-S/harness/focal_harness.py` — Generator, Projector, Sealer, Analyzer y Evaluator para la instancia focal B1 (`V_B1=Q_B1)); contratos tipados y parámetros obligatorios.
+- `03_EXPERIMENTS/C10-S/harness/test_focal_harness.py` — pruebas de contrato para nulo, positivo, negativo, vía directa, vía directa desconocida, proyección de truth y configuración fail-closed.
+- `03_EXPERIMENTS/C10-S/harness/README.md` — alcance, fronteras, limitaciones y comando local de pruebas.
+
+**Comportamiento implementado en esta primera porción:**
+1. Generator produce potenciales `Q_B1(z=0)` y `Q_B1(z=1)`, firmas potenciales, ITT de Value y verdad focal bajo régimen común sin vía directa.
+2. Projector aplica allow-list y separa `observed_evidence` de `truth_dgp`.
+3. Sealer valida el esquema observado y calcula hash del bundle.
+4. Analyzer recibe solo evidencia sellada y contrato público; estima el contraste ITT y atribuye el contraste focal únicamente si la vía directa está declarada ausente, el régimen es común, la medición es ideal y no hay interferencia. Ante vía presente devuelve `NOT_IDENTIFIED`; ante estado desconocido, `INDETERMINATE`.
+5. Evaluator comprueba run identity y hash de salida del Analyzer antes de comparar con truth.
+
+**Límites explícitos:** esta porción implementa solo el DGP focal Markov de dos firmas y la instancia escalar B1. No implementa el grafo transformacional completo `T_acc/ΔT_acc`, Reach/trayectorias, D2 material, Value vectorial, missingness/censura, interferencia por clúster, almacén U_G ni firewall de seguridad a nivel de proceso/ACL. La separación es de API/esquema y no constituye una prueba de seguridad. El intervalo normal del Analyzer es provisional y no sustituye la calibración Welch P178.
+
+**Verificación:** los archivos de pruebas quedaron persistidos, pero no se han ejecutado. No se afirma PASS técnico ni científico. No se ha ejecutado simulación Monte Carlo, Analyzer, replay ni experimento confirmatorio. `scientific_execution=false`; `confirmatory_execution=false`.
+
+**Commits de implementación (misma rama):**
+- `5879d5543aca5174b11ff10cdb173df4844028dc` — núcleo inicial.
+- `dc76f8d42348a6412a2d6b4d0c658cb1605d43fb` — abstención y adjudicación.
+- `34a1255dc32485bafbfbadcf981cdb483f5b381c` — pruebas de contrato.
+- `f43b5a57d4143b60302b3c138b9cd0b69031b1ac` — README de implementación.
+- `23151e4fbe87a1caecf6e2334c6e740648122c99` — integridad del resultado sellado.
+
+**Dictamen:** `FOCAL_HARNESS_IMPLEMENTATION_SLICE_001_PERSISTED / TESTS_NOT_RUN / FULL_HARNESS_INCOMPLETE / SCIENTIFIC_EXECUTION_FALSE / CONFIRMATORY_EXECUTION_NOT_AUTHORIZED`.
