@@ -2827,3 +2827,21 @@ Véase C10S-B-VALUE-MIN-001. No modifica A, DEC-C10-068, roster A ni Core.
 | Design Freeze/implementación/ejecución | NOT AUTHORIZED | scientific_execution=false; execution_authorized=false |
 
 Véase C10S-B1-REQUESTER-CANDIDATE-001. No modifica A, DEC-C10-068 ni el roster A.
+
+
+## 142. Gate B1 — necesidad basal, elegibilidad de petición y solicitud (2026-11-11)
+
+| Elemento | Estado | Criterio / límite |
+|---|---|---|
+| Need_preZ | SEMANTICALLY DISTINGUISHED / MEASUREMENT OPEN | Necesidad/objetivo del beneficiario en truth pre-Z; no se define por solicitud ni resultado |
+| E_req_preZ | OPEN | Elegibilidad de petición; no equivale a E_i/P*_tau2 |
+| Request_event | OPEN | Evento de petición; ventana/posición en reloj no resuelta |
+| D_resource | EXISTING DGP CONSTRUCT | Demanda operativa de recursos/capacidad, distinta de necesidad del beneficiario |
+| P*_tau2 / P*_F | PRESERVED | Poblaciones técnicas pre-Z; no se redefinen por B1 |
+| Observación/missingness | OPEN | Truth 1/0/? separada de evidencia observada; no imputar ? a 0 |
+| ITT/population | DESIGN RULE | No filtrar por Request_event ni otras variables post-Z |
+| DGP clock/DAG | UNCHANGED | No ubicar petición en t5/t6/t7 sin reconciliación explícita |
+| C/D/E, MED-02/03 | OPEN / IN PROGRESS | No se cierran por esta distinción |
+| Freeze/implementación/ejecución | NOT AUTHORIZED | scientific_execution=false; execution_authorized=false |
+
+Véanse C10S-B1-REQUESTER-CANDIDATE-001 §10, C10-S-POP-CMP-001 §10 y contrato temporal §14.
