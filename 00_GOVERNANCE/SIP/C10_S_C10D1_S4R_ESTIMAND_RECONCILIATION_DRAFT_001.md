@@ -482,3 +482,14 @@ Se precisa que A_f,1* es el predicado/proyección focal de accesibilidad dentro 
 D2 asigna política B; no asigna A_f*, D_f* ni ΔT_acc*. El ITT_Z(D2) es efecto de política asignada. Solo puede interpretarse como θ_Af(q*) si se demuestra correspondencia B→g^Af, régimen común, soporte, consistencia y ausencia/identificación de vías colaterales hacia Value. Recursos, permisos, seguridad, dependencias compartidas/A1-A2, coste/latencia/calidad, información/selección, observación y spillovers son rutas explícitas a auditar. Confusores mediador–Outcome inducidos por B no se ajustan rutinariamente; requieren estrategia longitudinal o limitación a efecto de paquete.
 
 No se cierra θ_A(q), mediación, LATE, población, q*, unidad/interferencia, Value ni identificación. El DAG queda DRAFT/CANDIDATE.
+
+
+## 32. PC — dictamen integrado C3/C4 tras PA/PB (2026-11-11)
+
+Prevalece la reconciliación integrada del maestro C10-S §268. Se preserva θ_A(q) como pregunta general C10-D1; θ_Af(q_X*) como contraste focal que requiere correspondencia B_D2→g^Af; ITT_Z^D2 como efecto de asignación/paquete; LATE_f^D2 como local y condicionado a IV; y C4 como mediación interventional separada. Ninguno sustituye a otro.
+
+El estimando θ_A(q) requiere políticas factibles g1/g0 sobre la distribución de ΔT_acc* bajo régimen común q y soporte por historia. D2 no es esa intervención: asigna políticas materiales de provisión. La equivalencia interpretativa ITT_Z^D2=θ_Af(q_X*) solo sería defendible con mapping, consistencia/versiones, régimen común, soporte, medición y exclusión/identificación de todas las vías diferenciales. El inventario PB no permite declarar ausentes las vías colaterales; por tanto, no se atribuye el ITT a accesibilidad.
+
+Para C4, el mediador no se reduce a A_f* o D_f*: es ΔT_acc* completo, con Reach/Π_H como mediadores secuenciales o bloque conjunto explícito. La mediación interventional requiere intervención factible sobre su distribución y estrategia longitudinal para confusores mediador–resultado inducidos por Z. El ajuste convencional post-Z no es válido como sustituto. No se adopta efecto indirecto natural ni se define residual por resta.
+
+Estado: θ_A(q), θ_Af(q_X*) e IIE_T no identificados en el D2 material actual; Value no evaluable por falta de V_j/beneficiario/perspectiva/regla; LATE sigue bloqueado. P177/P178/P179/P182/P183 y DAG-01…08/CAUS-01…10 se reutilizan; C-MED PARCIAL/OPEN. Sin freeze/implementación/ejecución.
