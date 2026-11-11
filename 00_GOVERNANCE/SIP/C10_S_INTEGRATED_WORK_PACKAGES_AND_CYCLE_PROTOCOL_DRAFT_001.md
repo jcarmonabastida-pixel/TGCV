@@ -181,3 +181,7 @@ Se completa la reconciliación integrada en C10_S_INTEGRATED_CONFIRMATORY_FEASIB
 Se preserva la distinción entre ITT de política/paquete, efecto de accesibilidad, mediación y residual. No se obtiene residual por resta ad hoc. Outcome y Value no se relacionan por definición causal exclusiva. El maestro Draft 004 continúa con incidencia de recuperación (SHA conocido, contenido vacío); no se reconstruye por inferencia.
 
 **Siguiente operación:** resolver la integridad del maestro y preparar, bajo autorización específica, el levantamiento de los bloqueos materiales y de medición descritos en el artefacto rector. Ningún gate de Design Freeze pasa. No se autoriza captura, schema físico, fixtures, implementación, generación de datos, simulación, estimación o ejecución.
+
+## Corrección de recuperación del maestro C10-S — 2026-11-11
+
+La lectura inicial del maestro mediante Contents devolvía contenido vacío, pero el blob Git fue recuperado íntegramente (1,134,655 caracteres / 12,136 líneas) e inspeccionados sus §§266–273. La incidencia está **RESUELTA**; el documento no estaba perdido. Se ha añadido §274 al maestro con la reconciliación integrada de factibilidad y Design Freeze. No queda pendiente recuperar el maestro; permanecen los bloqueos científicos/materiales y los gates indicados en el artefacto rector. La limitación de concordancia línea por línea por inaccesibilidad del maestro queda superada para el contenido recuperado; no equivale a validación local ni CI.
