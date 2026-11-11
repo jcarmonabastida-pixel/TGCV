@@ -146,3 +146,10 @@ PD completó la reconciliación documental de arquitectura del DGP, mecanismos C
 ## 12. Estado tras el ciclo PE (2026-11-11)
 
 PE completó la reconciliación documental de arquitectura técnica, contratos de intercambio, identidades/versionado, temporalidad, firewall de roles, validación y gates: **PE_RECONCILED_DOCUMENTALLY / TECHNICAL_CONTRACT_PARTIAL / IMPLEMENTATION_NOT_READY / NOT_IMPLEMENTED / NOT_EXECUTED**. Véase maestro §270 y C10_S_PE_INTEGRATED_TECHNICAL_SPECIFICATION_AND_IMPLEMENTATION_CONTRACT_DRAFT_001.md. Se reutilizan DGP temporal/roles, U_G, contratos de identidad/snapshots/evidencia, DEC-C10-061/062/065/068–071/074–088, DEC-C10-095, decisiones B1 y P177–P183; no se crean esquemas o IDs paralelos. JCS permanece limitado a UDG-01/U1. El modelo físico, serialización general, almacenamiento/ACL, seguridad, contrato final del Analyzer y pruebas ejecutables siguen abiertos. Los gates G-SCI/G-MAT/G-SCHEMA/G-ROLE/G-TEST/G-REPRO/G-AUTH no están satisfechos. No autorizado código, fixtures confirmatorios, generación de datos, simulación, estimación ni ejecución científica. La secuencia PA–PE queda reconciliada documentalmente; implementación no lista. scientific_execution=false; execution_authorized=false.
+
+
+## 13. Resolución de decisión pendiente PB — identidad B1 por UE (2026-11-11)
+
+La decisión `DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001` ha sido aceptada expresamente. Se cierra la armonización entre la unidad B1 por UE y la identidad/versionado de DEC-C10-069: contrato/plantilla funcional común; instancia única y versionada independientemente por UE; componente local con clave compuesta `(instance_id, component_id)`; instancia DEC-C10-069 conservada como ejemplar de referencia.
+
+**Efecto sobre PB:** queda cerrado el subproblema de identidad lógica. No quedan cerrados el roster y asignación concreta de IDs, el aislamiento material, IAM/ACL, recursos/estado compartido, interferencia, MET/schema físico ni evidencia ejecutable. El estado no debe describirse como cierre material completo de PB. No se autoriza implementación ni ejecución.
