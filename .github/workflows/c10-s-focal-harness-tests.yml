@@ -58,7 +58,7 @@ jobs:
           set -euo pipefail
           clean_root="$RUNNER_TEMP/c10s-clean-replay"
           mkdir -p "$clean_root"
-          git archive "$GITHUB_SHA" 03_EXPERIMENTS/C10-S/harness | tar -x -C "$clean_root"
+          git archive "$GITHUB_SHA" 03_EXPERIMENTS/C10-S/harness 03_EXPERIMENTS/C10-S/calibration/p178_focal_monte_carlo.py | tar -x -C "$clean_root"
           cd "$clean_root/03_EXPERIMENTS/C10-S/harness"
           PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v \
             > "$RUNNER_TEMP/c10s-replay-stdout.txt" \
