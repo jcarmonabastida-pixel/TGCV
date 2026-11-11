@@ -87,6 +87,8 @@ class FocalHarnessContractTests(unittest.TestCase):
             config("measurement-degraded"), contract(measurement=False))
         self.assertEqual(result.package_identification, "INDETERMINATE")
         self.assertEqual(result.focal_identification, "INDETERMINATE")
+        self.assertIsNone(result.package_itt_estimate)
+        self.assertIsNone(result.focal_estimate)
         self.assertTrue(report.classification_correct)
 
     def test_evaluator_agrees_with_interference_abstention(self):
