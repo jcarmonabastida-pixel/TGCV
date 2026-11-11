@@ -235,3 +235,10 @@ Para no reabrir el diseño innecesariamente, la recomendación es **conservar P*
 La única decisión de arquitectura que conviene confirmar ahora es si se mantiene esa precedencia poblacional para C1: **P*_τ2 como población objetivo primaria candidata, con P*_F como subpoblación secundaria**, sujeta a cerrar la composición de E_i y la factibilidad/soporte. La especificación del mecanismo de aleatorización se completará documentalmente a partir del contrato existente; no requiere elegir ahora un ratio o algoritmo sin justificación.
 
 **Estado:** C1.2 RECONCILIATION DOCUMENTED / C1 OPEN. Sin Design Freeze, schemas, fixtures, implementación, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 13. Decisión de precedencia poblacional aceptada
+
+Por `DEC-C10S-C1-POPULATION-PRECEDENCE-001`, se acepta `P*_{τ2}` como población objetivo primaria candidata C1 y `P*_F` como subpoblación secundaria para apertura funcional exclusiva. No se acepta todavía la composición de `E_i`, la regla de indeterminados, el soporte, la medición observada, la ausencia exhaustiva de alternativas, la unidad efectiva bajo interferencia, el mecanismo de asignación, el horizonte ni los resultados.
+
+Esta decisión resuelve la pregunta de precedencia planteada al final de §12.5. No debe volver a solicitarse confirmación de P*τ2/P*F. La siguiente operación C1.3 debe trabajar directamente sobre la composición de `E_i` y la evidencia pre-Z usando los contratos vigentes del DGP/IAM y los predicados constitutivos ya aceptados; no puede inventar una nueva lista ni recuperar la fórmula histórica con `C_other`. Debe distinguir validez/admisibilidad de la instancia DGP, aplicabilidad de la transformación `τ2`, accesibilidad basal y elegibilidad de petición B1.
