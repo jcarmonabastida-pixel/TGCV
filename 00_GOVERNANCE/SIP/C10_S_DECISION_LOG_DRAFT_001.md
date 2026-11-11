@@ -1372,3 +1372,20 @@ Se registra una distinción semántica propuesta, no una instancia confirmatoria
 ## Nota de seguimiento — ciclo de vida de solicitud B1 (2026-11-11)
 
 Se registra como propuesta documental la separación entre Request_opportunity, Request_attempt, Request_received, Request_admitted/rejected, Request_processing, Request_response y Beneficiary_consequence. No son equivalentes a t5/t6/t7 ni a Outcome/Value. La cardinalidad request↔trajectory y el protocolo de servicio siguen OPEN. Se recomienda, sin aceptación aún, una carga de oportunidades/peticiones estandarizada ex ante mediante harness idéntico entre brazos; esto es probe de carga, no demanda natural. La rama de envío endógeno queda como adversarial/secundaria. No filtrar ITT por eventos post-Z. No cambia D2 primario candidato/D1 secundario, DEC-C10-066/067, reloj ni autorización. Véanse B1 spec §11 y documentos crosswalk relacionados.
+
+
+## DEC-C10S-B1-REQUEST-MODE-001 — decisión aceptada
+
+## Decisión DEC-C10S-B1-REQUEST-MODE-001 — modalidad de oportunidades estandarizadas y envío endógeno (2026-11-11)
+
+**Estado: ACCEPTED AS DESIGN DECISION; NOT DESIGN-FROZEN.**
+
+Se acepta la arquitectura de dos modalidades para C10-S:
+1. **Modalidad primaria candidata:** oportunidades/peticiones estandarizadas, definidas ex ante antes de Z y presentadas mediante harness externo idéntico entre brazos después del snapshot de accesibilidad t3/t4. El harness registra Request_attempt aunque el servicio no reciba la petición. Esta modalidad permite comparar respuesta/capacidad bajo una carga de prueba común.
+2. **Modalidad secundaria/adversarial:** envío endógeno de solicitudes, cuya ocurrencia puede depender de conocimiento, expectativas, accesibilidad percibida y otros estados post-Z. Se conserva para estudiar selección y vías causales, no para definir la población primaria ni filtrar el ITT.
+
+**Límites de la aceptación.** La carga estandarizada es un probe experimental de servicio; no representa por sí sola demanda natural, preferencia revelada, beneficiario confirmado ni Value. Se mantienen separados intento, recepción, admisión/rechazo, procesamiento, respuesta, consecuencia del beneficiario, Outcome técnico y Value. Los eventos post-Z no se usan como criterio de inclusión o exclusión del ITT. Se conserva el reloj t−1/t0…t9 y no se equiparan eventos de petición con t5/t6/t7 ni con H.
+
+**Pendiente de especificación:** calendario y ventana de presentación; unidad y cardinalidad de oportunidades; identidad y vínculo request_id↔trajectory_id; payload y reglas de admisión; repetición, timeout y errores; tratamiento de solicitudes no recibidas/pendientes; outcome técnico de respuesta; medida independiente de consecuencia B1 y su horizonte; población y soporte; relación exacta con los estimandos ITT/mediación. La modalidad secundaria no recibe estimando confirmatorio por esta decisión.
+
+**No autorizado:** Design Freeze, implementación, fixtures, simulación o ejecución científica. Se mantienen scientific_execution=false y execution_authorized=false. No altera DEC-C10-066/067, D2 primario candidato/D1 secundario ni la rama base de PR #116.
