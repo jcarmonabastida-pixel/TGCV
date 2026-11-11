@@ -12183,3 +12183,17 @@ Se reutilizan §§222–225, 232–233, 253–266 y 273–275; B2–B3; F* y sus
 **Causalidad y medición:** ITT_Z^D2(O-CONF) y cada ITT_Z^D2(V_j) son estimandos separados; no se transfiere identificación. C3/C4 por resultado/dimensión siguen sujetos a intervención, soporte, DAG, vías colaterales y confusión longitudinal. truth_dgp, observed_evidence y evaluation mantienen firewall. P179-01…08, P182-01…12, P183-01…13, §224, MEAS/MISS existentes se reutilizan; no están ejecutados.
 
 **Dictamen:** arquitectura y admisibilidad reconciliadas documentalmente; ningún O_k ni V_j está operacionalizado/instanciado. Sin Y confirmatorio completo, Design Freeze, schema físico, captura, fixtures, implementación, simulación, estimación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+## 277. Reconciliación del caso de valoración B1 en el microdominio de migración de configuración (2026-11-11)
+
+**Artefacto rector:** `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md`. **Estado:** CASE_FRAMEWORK_RECONCILED / NEED_CONTENT_OPEN / CONSEQUENCE_ENVELOPE_CANDIDATE / NO_VJ_SELECTED / NOT_DESIGN_FROZEN.
+
+Se reutilizan DEC-C10-051/095; B1 por UE; instancia de servicio por UE; una oportunidad estandarizada por UE; modalidad endógena secundaria; F*, F1/F2/A1/A2, B2–B3, P179/P182/P183 y §224. La oportunidad es un probe común post-snapshot, no demanda natural, preferencia revelada ni Value.
+
+**Need_preZ candidata:** objetivo operativo focal basal relacionado con disponer de configuración utilizable en destino para sostener una operación de servicio previamente declarada. La operación concreta no está nombrada ni aceptada y no se incorpora como truth. Need_preZ no se infiere de Request_event, procesamiento, O-CONF, accesibilidad o ejecución.
+
+**Consecuencia:** cambio en situación de B1 respecto del objetivo basal. Se propone una envolvente analítica (progreso/logro; continuidad/interrupción/degradación; demora/pérdida de oportunidad; esfuerzo de recuperación; riesgo/reversibilidad), no un roster de dimensiones ni indicadores. Outcome técnico/O-CONF, respuesta del servicio y consecuencia B1 siguen separados. Se mantienen rutas mediadas, directas y colaterales; O-CONF favorable no implica Value positivo.
+
+**Valoración:** perspectiva B1 como base aceptada; autoridad/regla normativa ex ante, fuentes, instrumentos, escalas, baseline, horizonte, dimensiones V_j y trade-offs siguen OPEN. No se selecciona ninguna dimensión histórica ni índice/peso. No se crean tests nuevos; se reutilizan P179/P182/P183 y MEAS/MISS.
+
+**Dictamen:** caso semántico candidato reconciliado, pero no instanciado ni medible. La siguiente decisión mínima es nombrar/aceptar la operación basal de B1. En paralelo, PB-MAT continúa bloqueado por ausencia de roster UE, IAM/C_SRC observado, snapshots, inventario/provisión y evidencia de aislamiento; se necesita fuente aprobada/material autorizada. Sin Design Freeze, schema físico, captura, fixtures, implementación, simulación, estimación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
