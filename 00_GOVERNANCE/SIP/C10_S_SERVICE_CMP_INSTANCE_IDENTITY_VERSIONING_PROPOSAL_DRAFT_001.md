@@ -133,3 +133,17 @@ Los valores de §3 y la política de §4 quedan ACCEPTED por `00_GOVERNANCE/deci
 DEC-C10-069 acepta C10S-SVC-REQUEST-PROCESSOR-001 como instancia lógica de referencia. DEC-C10S-B1-UNIT-001 establece como requisito una instancia de servicio aislada/versionada por UE. Para evitar reutilizar un mismo instance_id en varias instancias aisladas, PB recomienda interpretar el ID de DEC-C10-069 como instancia ejemplar de referencia y mantener contract_id/version + definición CMP como plantilla común; cada UE recibirá un instance_id único/versionado. component_id será local a la instancia y su clave de referencia será compuesta por instance_id + component_id. La regla de versionado aceptada por DEC-C10-069 se conserva para cada instancia.
 
 **Estado:** propuesta de armonización pendiente de aceptación expresa. No modifica por sí sola DEC-C10-069 ni genera IDs por UE. No hay serialización física, MET material, IAM sellado, hash, parser, fixture ni implementación. La decisión de identidad no autoriza ejecución.
+
+
+## 12. Decisión aceptada — armonización de instancia única por UE (2026-11-11)
+
+La propuesta de §11 queda **ACCEPTED** mediante `DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001`, con aprobación expresa del responsable científico.
+
+- `contract_id=C10S-SVC-REQUEST-PROCESSOR` y `contract_version=1.0.0` son comunes a las UE mientras compartan semántica contractual.
+- La definición CMP/PAR/RUL se reutiliza como plantilla funcional común versionada por contrato; no implica estado mutable compartido.
+- Cada UE dispone de `instance_id` único en el roster C10-S y de `instance_version` monotónica e independiente.
+- `component_id` es local a la instancia; toda referencia inequívoca usa la clave compuesta `(instance_id, component_id)`.
+- `C10S-SVC-REQUEST-PROCESSOR-001` se conserva como instancia ejemplar de referencia DEC-C10-069, no como ID común de todas las UE.
+- Se conserva la política de versionado MAJOR.MINOR.PATCH del contrato y el versionado independiente de instancia.
+
+La decisión resuelve identidad lógica/documental. No prueba aislamiento material, independencia de recursos/estado/credenciales/colas/infraestructura, ni define roster/IDs concretos por UE, serialización MET, schema físico, IAM/ACL o pruebas. Esos cierres siguen abiertos en PB/PE. No autoriza implementación ni ejecución.
