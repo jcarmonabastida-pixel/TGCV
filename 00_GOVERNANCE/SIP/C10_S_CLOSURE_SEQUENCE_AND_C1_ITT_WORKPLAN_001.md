@@ -1002,3 +1002,94 @@ El endpoint sintético B1 queda semánticamente admisible. La siguiente operaci�
 
 Después se integra `V_B1` en los escenarios de recuperación, nulo, vías alternativas/adversariales y no-identificación para evaluar si el Analyzer recupera o limita el efecto causal previsto. Esto no autoriza implementación, generación de datos, simulación ni ejecución científica.
 
+
+
+## 34. Especificación integrada del DGP temporal de disponibilidad y medición de Q_B1 (2026-11-11)
+
+**Estado:** TEMPORAL_DGP_FAMILY_SPECIFIED / IDEAL_MEASUREMENT_REFERENCE_SPECIFIED / ROBUSTNESS_MEASUREMENT_DESIGN_SPECIFIED / NUMERIC_CALIBRATION_PENDING / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 34.1 Horizonte común sin introducir tiempo sustantivo ficticio
+
+Se adopta una representación discreta normalizada del horizonte:
+- `W_B1=[0,1]` como escala interna adimensional del intervalo, no como una unidad de tiempo real.
+- `K` slots consecutivos de igual duración, con `K` explícito y común a todas las UE y brazos dentro de una configuración.
+- `A_B1^*(u,k)` se evalúa una vez por slot y `Q_B1^*(u)=K^{-1}\sum_{k=1}^{K}A_B1^*(u,k)`.
+- El origen operativo de W es posterior al snapshot estructural y al cálculo de Reach (t3/t4); su cierre precede a la adjudicación de t9. Los timestamps de eventos siguen siendo propios y no determinan por sí mismos la escala normalizada.
+
+Esta normalización permite especificar continuidad sin inventar minutos, horas o días que el contrato no proporciona. K no se fija por analogía con H=3 ni por conveniencia computacional. La selección de K debe cumplir una prueba de convergencia de discretización: aumentar la resolución no debe cambiar materialmente el valor verdadero de Q ni la clasificación del estimando más allá de la tolerancia numérica/Monte Carlo preregistrada. La tolerancia y la regla de selección de K se registran antes de generar corridas confirmatorias. No se mezclan slots desiguales con promedio simple.
+
+### 34.2 Proceso generador de disponibilidad verdadera
+
+El núcleo temporal utiliza un proceso binario de dos estados con dependencia temporal de primer orden (Markov de primer orden), explícito y falsable:
+- estado 1: capacidad funcional efectiva de admisión disponible;
+- estado 0: capacidad no disponible;
+- estado inicial generado desde una distribución basal común, independiente de la asignación futura salvo que un DGP adversarial declare y parametrice expresamente otra vía.
+
+Para cada slot posterior, el DGP genera transición `A_{k-1}→A_k` mediante dos probabilidades distintas:
+- `p_01(k)=P(A_k=1 | A_{k-1}=0, H_k)`: recuperación/disponibilidad tras estado no disponible;
+- `p_10(k)=P(A_k=0 | A_{k-1}=1, H_k)`: interrupción desde estado disponible.
+
+`H_k` contiene exclusivamente covariables basales, shocks exógenos versionados, régimen de política asignado y la exposición focal definida en el DGP. El enlace de accesibilidad se especifica en términos de `ΔT_acc^*` medido independientemente; no se deriva A de Reach, trayectoria, ejecución, O-CONF, petición ni Value.
+
+La familia funcional (p. ej., enlace logístico para p_01 y p_10) y sus coeficientes se parametrizan/versionan. El signo y magnitud de la contribución focal no se fijan como verdad universal: se configuran por escenario y el DGP reserva explícitamente coeficientes nulos, positivos y negativos. El proceso permite persistencia, interrupciones y recuperación sin equiparar una disponibilidad instantánea con continuidad del horizonte.
+
+### 34.3 DGP mínimos para la prueba causal
+
+Se reutilizan los escenarios de §26 y la arquitectura de mecanismos existente; no se crean familias paralelas:
+
+1. **Focal no nulo:** políticas estocásticas versionadas `g1/g0` inducen distribuciones distintas de `ΔT_acc^*`; el mecanismo de disponibilidad depende de esa exposición bajo régimen externo común `q`; no hay vía directa diferencial desde la política a Q/Value. Se evalúa `θ_A(q;V_B1)=E[V_B1^{g1,q}]-E[V_B1^{g0,q}]`.
+2. **Nulo:** las políticas pueden cambiar `ΔT_acc^*`, pero los coeficientes focales del proceso de disponibilidad son cero; `θ_A=0`. Es el control de falsos positivos.
+3. **Vía directa/colateral:** se activa un mecanismo adicional de política/entorno que afecta disponibilidad o sus shocks sin pasar por la exposición focal. El contraste de política ya no se atribuye íntegramente a accesibilidad; el Analyzer debe detectar la violación, identificar solo bajo un estimando/ajuste justificable o abstenerse.
+4. **No-identificación/soporte:** se configuran falta de positividad/solapamiento, exposición no observada o confusión no resuelta. El resultado correcto es parcial/no identificado, no una estimación causal forzada.
+
+El DGP puede incluir heterogeneidad e interacciones como extensiones de estrés; no son requisitos para que el núcleo de cuatro escenarios exista. La verdad potencial de Q/Value se genera para los regímenes necesarios y se mantiene reservada en `truth_dgp`.
+
+### 34.4 Canal de observación: referencia ideal y extensiones de estrés
+
+La medición se separa en dos niveles para distinguir validez causal de degradación epistémica:
+
+**Referencia ideal (primera prueba de recuperación):**
+- cobertura temporal completa;
+- observación sincronizada con los K slots;
+- sensibilidad y especificidad iguales a 1;
+- sin missingness ni censura;
+- el canal no altera el estado del servicio.
+
+Esta referencia no se presenta como supuesto realista ni como resultado empírico: es el control de referencia necesario para comprobar si el Analyzer recupera la verdad causal cuando la evidencia mide correctamente el objeto.
+
+**Extensiones de medición (pruebas de robustez):**
+- error de clasificación (sensibilidad/especificidad);
+- cobertura incompleta y muestreo menos frecuente;
+- latencia de registro;
+- missingness MCAR, MAR y MNAR en escenarios diferenciados;
+- censura temporal y pérdida de tramos;
+- error diferencial por brazo/exposición como escenario adversarial.
+
+Cada extensión declara su mecanismo generador, parámetros y si son conocidos por el Analyzer, estimables a partir de evidencia independiente o deliberadamente desconocidos. El Analyzer no recibe truth ni parámetros secretos. La ausencia de registro nunca se recodifica automáticamente como A=0. Si la cobertura/error no permiten recuperar Q puntualmente, debe producir intervalo compatible, identificación parcial o abstención.
+
+### 34.5 Selección de parámetros, N y réplicas sin cifras arbitrarias
+
+No se heredan como defaults los valores históricos ilustrativos (incluidos `.20/.80`, `N=2.000` o `R=1.000`). Tampoco se asignan valores numéricos por intuición.
+
+La configuración numérica se obtiene mediante un procedimiento ex ante, versionado y reproducible:
+1. definir el conjunto de mecanismos y rangos admisibles para transiciones, efecto focal, shocks, heterogeneidad y medición;
+2. justificar el efecto mínimo relevante `δ_min` como umbral de recuperación del método, distinguiéndolo del valor verdadero de cada DGP;
+3. seleccionar K mediante convergencia de discretización de Q y del estimando;
+4. seleccionar N y número de réplicas R mediante error Monte Carlo, precisión de sesgo/RMSE/cobertura, error tipo I y potencia/clasificación, considerando clústeres si existe interferencia;
+5. seleccionar niveles de error/cobertura/missingness mediante un rango de estrés explícito y justificar los puntos de evaluación;
+6. preregistrar tolerancias, criterios de recuperación, abstención y clasificación antes de consultar resultados de las corridas confirmatorias.
+
+Los valores finales deben ser concretos, versionados y cerrados antes de la ejecución confirmatoria. La configuración es inválida si omite cualquiera de esos parámetros o criterios. Un resultado no significativo no demuestra equivalencia ni ausencia de efecto; baja precisión no refuta la hipótesis.
+
+### 34.6 Observación, análisis y evaluación
+
+El Generator produce `A_B1^*`, `Q_B1^*`, `V_B1^*), regímenes, potenciales y truth reservada. El proyector produce exclusivamente la evidencia observada según el canal configurado. El Analyzer recibe evidencia, políticas asignadas y variables permitidas, pero no verdad, potenciales ni semillas secretas. El Sealer sella su salida. Solo entonces el Evaluator contrasta estimaciones, intervalos, clasificación y abstención con truth.
+
+Las métricas mínimas de evaluación incluyen sesgo, RMSE, cobertura de intervalos, error tipo I en el nulo, potencia/clasificación del efecto no nulo, detección de vías alternativas, tasa de abstención apropiada y falsos reclamos de identificación en escenarios no identificados. La evaluación de recuperación de `θ_A` se informa separada de ITT total de asignación y de cualquier estimando de mediación.
+
+### 34.7 Dictamen y límite de cierre
+
+Queda especificada la familia temporal generadora, la regla normalizada de horizonte, el canal ideal de referencia, las clases de degradación de observación y el procedimiento de calibración numérica. **No queda aprobada todavía una configuración numérica ejecutable ni se declara el experimento implementable/frozen.** El siguiente y único cierre de diseño es completar el registro de calibración con valores concretos y sus justificaciones a partir de los criterios de esta sección, integrándolo en la configuración del experimento; no se reabre el significado de B1, Q ni Value.
+
+No se autoriza implementación, generación de datos, simulación, estimación ni ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
+
