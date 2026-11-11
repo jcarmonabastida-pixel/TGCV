@@ -1546,3 +1546,21 @@ El contrato integrado y sus bloqueos se especifican en C10_S_PD_DGP_MECHANISM_AN
 | VER/TRJ/INT/GEN/PM/SNAP/REACH/PROV/GC/U_G | Versiones, trayectorias, interacciones, invariantes y evidencia | Cobertura parcial/documental | Crosswalk por escenario, truth/observed/evaluation y fixtures discriminantes |
 
 Los dictámenes deben ser por estimando y dimensión. PASS sintético solo acredita recuperación dentro del DGP y tolerancias especificados; no establece causalidad empírica real ni claim TGCV. La no-identificación correctamente detectada es resultado válido del Analyzer.
+
+## 59. Crosswalk PE — validación técnica y gates de implementación (2026-11-11)
+
+La especificación integrada se encuentra en C10_S_PE_INTEGRATED_TECHNICAL_SPECIFICATION_AND_IMPLEMENTATION_CONTRACT_DRAFT_001.md. Esta sección no crea familias de pruebas ni declara tests ejecutados.
+
+| Capa PE | Contratos/fuentes reutilizados | Estado | Aceptación futura requerida |
+|---|---|---|---|
+| V0 Consistencia estática | DEC-C10-071/074–088, U_G, vocabularios y crosswalks | Documental parcial | Informe estático versionado y sin contradicciones |
+| V1 Schema/serialización | U_G §§12.9–12.10; DEC-C10-074 solo UDG-01/U1 | No implementado | Parser/validator, tipos, dominios y canonicalización por objeto |
+| V2 Integridad referencial | DEC-C10-061/062/065/076/079–082; contratos U_G | Documental | Constraints/FKs exactas, supersession y ausencia de huérfanos/ciclos |
+| V3 Temporalidad | t−1/t0…t9, DEC-C10-071, SNAP/DELTA, subledger B1 | Documental parcial | Casos de orden parcial, simultaneidad, snapshots y no retrocausalidad |
+| V4 Firewall/seguridad | DGP roles §§6/45–47; U_G SR-12/13/19 | Condicional/no evaluado | Threat model, ACL, logs, prueba de no fuga y custodia |
+| V5 Reconstrucción semántica | S4R, MEAS, POL, VER/TRJ/INT/GEN/PM/SNAP/REACH/PROV/GC/U_G | Documental | Fixtures/oráculos y aserciones discriminantes |
+| V6 Recuperación causal | P177/P179/P182/P183 | Documental parcial | Estimandos, supuestos, tolerancias y escenarios identificados/no identificados |
+| V7 Reproducibilidad | test_id/version, fixture_id/hash, semillas, manifiestos y workflow de ejecución | Especificado conceptualmente | Entorno/inputs/comandos/hashes fijados y replay autorizado |
+| V8 Operabilidad | U_G SR-20 | NOT_ASSESSED | Prueba ciclo completo de captura, consulta, reconstrucción y auditoría |
+
+**Regla de alcance:** JCS DEC-C10-074 solo se aplica a UDG-01/U1. No se generaliza a todos los registros. PASS_STATIC no equivale a validación ejecutable; test registrado no equivale a test implementado/ejecutado. La salida correcta del Analyzer puede ser abstención, efecto de paquete o no-identificación.
