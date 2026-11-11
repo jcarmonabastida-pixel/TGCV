@@ -2068,7 +2068,7 @@ Permanece un límite de alcance, no un bloqueo de P178 focal: los artefactos son
 1. Generator produce potenciales `Q_B1(z=0)` y `Q_B1(z=1)`, firmas potenciales, ITT de Value y verdad focal bajo régimen común sin vía directa.
 2. Projector aplica allow-list y separa `observed_evidence` de `truth_dgp`.
 3. Sealer valida el esquema observado y calcula hash del bundle.
-4. Analyzer recibe solo evidencia sellada y contrato público; estima el contraste ITT y atribuye el contraste focal únicamente si la vía directa está declarada ausente, el régimen es común, la medición es ideal y no hay interferencia. Ante vía presente devuelve `NOT_IDENTIFIED`; ante estado desconocido, `INDETERMINATE`.
+4. Analyzer recibe solo evidencia sellada y contrato público; estima el contraste ITT y atribuye el contraste focal únicamente si la vía directa está declarada ausente, el régimen es común, positividad y consistencia de versión están establecidas, la medición es ideal y no hay interferencia. Ante vía presente devuelve `NOT_IDENTIFIED`; ante estado desconocido, `INDETERMINATE`.
 5. Evaluator comprueba run identity y hash de salida del Analyzer antes de comparar con truth.
 
 **Límites explícitos:** esta porción implementa solo el DGP focal Markov de dos firmas y la instancia escalar B1. No implementa el grafo transformacional completo `T_acc/ΔT_acc`, Reach/trayectorias, D2 material, Value vectorial, missingness/censura, interferencia por clúster, almacén U_G ni firewall de seguridad a nivel de proceso/ACL. La separación es de API/esquema y no constituye una prueba de seguridad. El intervalo normal del Analyzer es provisional y no sustituye la calibración Welch P178.
