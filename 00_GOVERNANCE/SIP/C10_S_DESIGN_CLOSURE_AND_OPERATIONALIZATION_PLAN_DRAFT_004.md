@@ -2666,3 +2666,18 @@ El mediador C4 es ΔT_acc* completo; Reach_H/Π_H son mediadores secuenciales po
 No hay Value contextual instanciado: ninguna dimensión V_j ni beneficiario/perspectiva/regla de valoración está materialmente definida; O-CONF sigue candidato no operacionalizado. Los dictámenes C3/C4 para Value son NOT IDENTIFIED/NOT EVALUABLE en el estado actual. P177/P178/P179/P182/P183 y DAG/CAUS existentes se reutilizan; C-MED permanece PARCIAL/OPEN, sin crear IDs duplicados.
 
 Siguiente paquete: **PD — DGP, mecanismos C5 y evaluación adversarial**. No reabrir PC salvo evidencia nueva o contradicción material. Sin Design Freeze, fixtures, código, simulación ni ejecución; scientific_execution=false; execution_authorized=false.
+
+
+## 16.158. Reconciliación integrada PD — DGP, mecanismos C5 y evaluación adversarial (2026-11-11)
+
+**Estado:** PD_RECONCILED_DOCUMENTALLY / DGP_QUANTITATIVE_SPECIFICATION_OPEN / NOT_DESIGN_FROZEN. Referencia rectora del paquete: C10_S_PD_DGP_MECHANISM_AND_ADVERSARIAL_EVALUATION_RECONCILIATION_DRAFT_001.md.
+
+La reconciliación reutiliza la matriz temporal de predicados, inventario finito de DGP/Reach, contratos S4R, MEAS, MISS, POL, VER, TRJ, INT, GEN, PM, SNAP, REACH, PROV, GC y U_G, y P177/P178/P179/P182/P183. No crea familias duplicadas. Integra tres planos computacionales: truth_dgp (potenciales, estados, mecanismos y contribuciones verdaderas, ocultos al Analyzer), observed_evidence (registros/cobertura/error/missingness disponibles al Analyzer) y evaluation/adjudication (comparación posterior con truth tras sellar la salida). La cobertura epistémica no altera la verdad estructural.
+
+C5 se adjudica por etapa concreta del ciclo de petición —opportunity, attempt, received, admitted/rejected, processing, response— mediante contraste contrafactual explícito y propiedad de trayectoria preespecificada. Se preservan NECESSARY_CONTRIBUTION, ENABLING_CONTRIBUTION y MODIFYING_CONTRIBUTION conforme a DEC-C10S-B1-CAUSAL-ADJUDICATION-001; pueden coexistir y no implican Outcome favorable ni Value. TEMPORAL_ASSOCIATION, TRACEABILITY_LINK y CAUSAL_CONTRIBUTION permanecen distintos conforme a DEC-C10S-B1-REQUEST-TRAJECTORY-LINK-001.
+
+La cobertura adversarial mínima incluye efectos focales positivos/nulos/adversos, fallos parciales, vías directas y colaterales, interacciones, heterogeneidad, weak/null IV, defiers, interferencia, alternativas, crossover/versiones, observación diferencial, peticiones/contribuciones múltiples, falta de soporte, missingness MCAR/MAR/MNAR, censura y selección post-Z. P177–P183 se evalúan por estimando y dimensión; N/R, potencia, precisión y SE_MC requieren especificación ex ante. N=2.000, 1:1 y R=1.000 son ilustrativos, no aprobados.
+
+**Bloqueos:** Value no instanciado por PA; Outcome no operacionalizado; falta IAM/snapshots/inventario material D2; θ_A(q), θ_Af(q_X*) y mediación siguen no identificados en D2 actual según PC; parámetros conjuntos, contrastes contrafactuales concretos, soporte, interferencia, F*/G/H/ventanas y estadística cuantitativa siguen abiertos. La recuperación del maestro C10-S está bloqueada porque fetch_file devolvió contenido vacío con SHA e791578396a9527cb3b72b1b7c2d7ff1bbe0c100. No se sobrescribe ni se declara actualizado un maestro no recuperado íntegramente.
+
+No se autoriza código, fixtures confirmatorios, generación de datos, simulación, estimación ni ejecución científica. Siguiente paquete PE; preparación conceptual de interfaces solamente, hasta cerrar los requisitos científicos y recibir autorización expresa.
