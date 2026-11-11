@@ -222,3 +222,16 @@ La envolvente de §5 se mantiene como repertorio analítico no exhaustivo (logro
 La siguiente dependencia sustantiva es identificar, a partir del contrato funcional/servicio ya existente en el microdominio, la operación concreta que hace operativa esa función. No se debe inventar ahora una operación por conveniencia narrativa ni sustituirla por un predicado técnico de F*. Después podrá cerrarse la especificación de truth_preZ y derivarse la consecuencia candidata sin seleccionar todavía V_j.
 
 Esta aceptación no crea un Decision Record nuevo, no modifica decisiones previas ni autoriza roster, schema físico, fixtures, captura/materialización, implementación, generación de datos, simulación, estimación, Design Freeze o ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
+
+## 13. Resultado de la reconstrucción del contrato de servicio — operación concreta aún no determinada (2026-11-11)
+
+La comprobación histórica del maestro (§§174–178 y §216.2–216.3), DEC-C10-068/069 y el contrato funcional vigente confirma que el servicio sintético se define como **servicio lógico de procesamiento de solicitudes**. Su núcleo aceptado se limita a:
+- PAR-SVC-ENABLED: BOOL requerido;
+- PAR-SVC-PROFILE: ENUM {STANDARD, READ_ONLY, DISABLED} requerido;
+- RUL-SVC-ENABLE-PROFILE-01: ENABLED=true implica PROFILE∈{STANDARD, READ_ONLY}; no se establece la implicación inversa.
+
+Esto permite identificar la clase funcional general del servicio (procesamiento de solicitudes) y su habilitación/perfil. **No especifica qué solicitud se procesa, qué operación realiza sobre la configuración migrada, qué resultado operativo espera B1 ni qué parte de esa operación depende de la configuración de destino.** El nombre REQUEST-PROCESSOR y los parámetros ENABLED/PROFILE no autorizan inferir semántica de negocio, tipo de petición, efecto ni consecuencia para B1.
+
+Por tanto, la reconstrucción histórica no resuelve la operación concreta. No debe sustituirse por «instalar adaptador», «ejecutar F1/F2», «alcanzar SF» ni por una descripción inventada de la petición. El cierre sigue siendo: clase de propósito basal aceptada; clase general de servicio conocida; operación/semántica de petición pendiente. Para completar Need_preZ se necesita especificar qué operación/solicitud del servicio es la que B1 necesita mantener operativa y qué dependencia tiene de la configuración migrada.
+
+**Estado:** SERVICE_CLASS_RECOVERED / REQUEST_SEMANTICS_OPEN / CONCRETE_OPERATION_OPEN / NEED_PREZ_NOT_MATERIALIZED.
