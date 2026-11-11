@@ -184,7 +184,7 @@ def main():
     }
     meta_path=args.out/"p178_run_manifest.json"
     meta_path.write_text(json.dumps(meta,indent=2,sort_keys=True)+"\n",encoding="utf-8")
-    meta["sha256"]={path.name:hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(args.out.iterdir()) if path.is_file() and path.name != meta_path.name}
+    meta["sha256"]={name:hashlib.sha256((args.out/name).read_bytes()).hexdigest() for name in meta["outputs"]}
     meta_path.write_text(json.dumps(meta,indent=2,sort_keys=True)+"\n",encoding="utf-8")
     print(json.dumps({"cells_reference":len(results),"cells_curve":len(curve),"out":str(args.out),"manifest":str(meta_path)},indent=2))
 
