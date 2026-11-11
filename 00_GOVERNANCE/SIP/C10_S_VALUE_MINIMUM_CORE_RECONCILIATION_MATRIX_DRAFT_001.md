@@ -505,3 +505,14 @@ El paquete PA confirma que la arquitectura A/B debe preservarse sin transferenci
 - **ITT:** C1 es una familia de contrastes por variante × población × resultado/dimensión × horizonte. Un ITT sobre O_k no identifica ITT sobre V_j ni demuestra ΔT_acc→ΔV. La especificación actual no permite un ITT confirmatorio completo para A ni para B.
 
 **Dictamen:** `OUTCOME_NOT_OPERATIONALIZED / VALUE_NOT_INSTANTIATED`. No se inventa un beneficiario, una consecuencia, una dimensión, un indicador ni una regla de agregación. El detalle integrado está en §15 de `C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md`. Sin freeze, implementación o ejecución.
+
+
+## 9. Reconciliación PC — alcance de Outcome/Value para C3/C4 (2026-11-11)
+
+La reconciliación PC del maestro C10-S §268 confirma que los estimandos C3/C4 deben adjudicarse por resultado: cada Outcome técnico O_k y cada dimensión contextual V_j requieren dictamen propio. No se transfiere identificación de ITT sobre O a ITT sobre V_j ni a mediación sobre V_j.
+
+La arquitectura de Value vectorial de P179 se mantiene. No se seleccionan las cinco dimensiones históricas ni se reduce a V1; no se inventan beneficiario, perspectiva, escala, regla, horizonte, pesos o agregación. La variante A puede sostener Outcomes técnicos cuando sus fichas se completen; no contiene Value contextual instanciado. La variante B sigue siendo extensión sintética separada, pero no dispone aún de beneficiario/perspectiva ni fichas V_j completas.
+
+O-CONF conserva el mejor anclaje técnico candidato, pero no tiene todavía ficha §224 completa (predicados, mapping, tolerancias, oráculo, snapshots, cobertura y adjudicación). T_acc/ΔT_acc/Reach/trayectoria/F* no se reutilizan como Outcome ni Value por circularidad. Estados no observados, no aplicables, censurados, disputados y desconocidos no se convierten en cero.
+
+Para C4, el mediador es ΔT_acc* completo; Reach/Π_H pueden integrar una secuencia transformacional explícita. La mediación sobre Value no es evaluable hasta disponer de V_j y un beneficiario/observador contextual. La mediación sobre O_k solo podrá evaluarse cuando O_k tenga ficha operacional y el contrato longitudinal/identificación esté cerrado. P179, P182 y P183 se mantienen como contratos, no como evidencia ejecutada. Véase maestro §268.
