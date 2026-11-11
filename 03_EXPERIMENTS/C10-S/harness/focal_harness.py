@@ -408,7 +408,9 @@ class Analyzer:
                    "package_itt_estimate": None, "package_itt_standard_error": None,
                    "package_itt_interval_95": None, "focal_estimate": None,
                    "focal_standard_error": None, "focal_interval_95": None,
-                   "reason": reason, "input_sha256": evidence.sha256}
+                   "package_identification": "INDETERMINATE",
+                   "focal_identification": "INDETERMINATE",
+                   "abstention_reason": reason, "input_sha256": evidence.sha256}
         return AnalyzerResult(evidence.run_id, contract.estimand_id, contract.estimand_version,
                               "INDETERMINATE", "INDETERMINATE",
                               None, None, None, None, None, None, reason,
