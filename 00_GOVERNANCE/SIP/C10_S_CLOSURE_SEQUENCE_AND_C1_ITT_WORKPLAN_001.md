@@ -2090,3 +2090,23 @@ Permanece un límite de alcance, no un bloqueo de P178 focal: los artefactos son
 - `177304da980f3d57962e32535cc5cb44087698df` — registro de implementación en el plan; `e0d444e5d1dee1e2bb6ffc74b4d8f7cac99bfb57` — actualización del estado de la especificación; `8718bfe711907caab4701f0a50731a128f20c9b2` y `44eeddfd635ecda540c9efdaf2ca7597fa4a0ade` — cierre de trazabilidad y hardening final.
 
 **Dictamen:** `FOCAL_HARNESS_IMPLEMENTATION_SLICE_001_PERSISTED / TESTS_NOT_RUN / FULL_HARNESS_INCOMPLETE / SCIENTIFIC_EXECUTION_FALSE / CONFIRMATORY_EXECUTION_NOT_AUTHORIZED`.
+
+
+## 50. Corrección de inferencia y adjudicación del Analyzer (2026-11-11)
+
+**Motivo:** la revisión de la primera porción implementada encontró que el Evaluator no reproducía todos los gates de abstención del Analyzer. Además, el intervalo normal fijo de 1.96 era menos coherente con el benchmark Welch de P178 que un intervalo t de Welch–Satterthwaite.
+
+**Cambios persistidos:**
+1. El Analyzer calcula el error estándar de la diferencia de medias y los grados de libertad de Welch–Satterthwaite, y usa el crítico t bilateral del 95%. El crítico se calcula mediante beta incompleta regularizada y búsqueda por bisección, sin añadir dependencia externa.
+2. El Evaluator comprueba primero los gates de identificación del ITT de paquete (asignación aleatoria, medición ideal, ausencia de interferencia y estimación disponible); después adjudica la atribución focal según vía directa declarada, régimen común, positividad, consistencia de versión y verdad DGP. La abstención por medición/interferencia/asignación no se etiqueta como error del Analyzer.
+3. Se comprueba la integridad hash del resultado antes de adjudicarlo, como ya exigía el contrato.
+4. `run_id` incorpora el hash de la configuración DGP completa, incluidos parámetros y semilla; cambiar un parámetro cambia la identidad de ejecución.
+5. Se amplía la batería a 15 pruebas de contrato: abstención por medición, interferencia y falta de aleatorización; valores críticos t conocidos; intervalo centrado; identidad de configuración; declaración falsa de ausencia de vía directa; y consistencia de versión, además de los casos anteriores.
+
+**Artefactos:** `03_EXPERIMENTS/C10-S/harness/focal_harness.py`, `test_focal_harness.py`, `README.md`.
+
+**Verificación:** se comprobaron numéricamente los críticos t de referencia para 1, 10 y 100 grados de libertad (12.706204736, 2.228138852 y 1.983971519) mediante una comprobación independiente de la fórmula. No se ejecutó el módulo ni la suite de 15 pruebas; no se afirma PASS de software. Tampoco se ejecutó Analyzer sobre un experimento, calibración Monte Carlo, replay ni ejecución confirmatoria. La sustitución de intervalo es coherencia de método, no validación empírica del Analyzer frente a P178.
+
+**Commits:** `2db2adc3df026040e60090df4b73261f31bc3558` (Welch y adjudicación); `d17ac72bf98296b8f655dd1e02e796ca7e5e44ee` (tests iniciales); `d28a2ee9f8511c8eeb7194c039474acc4b442d5d` (run identity y verdad); `6690f0f49ccc85992704c7e1a5f660e445c2edfc` (README); `da925158f464ff0569080da29e13a61ff318c39e` (tests adicionales); `67bb9c8981eddfc8b54b69637a521fe43e48c054` (corrección de fixtures); `9fafb27351025b6c66d98c09fa8c4f68f4c5cb63` (inventario de tests).
+
+**Dictamen:** `WELCH_INTERVAL_AND_EVALUATOR_GATES_IMPLEMENTED / 15_CONTRACT_TESTS_PERSISTED_NOT_RUN / ANALYZER_VALIDATION_OPEN / SCIENTIFIC_EXECUTION_FALSE`.
