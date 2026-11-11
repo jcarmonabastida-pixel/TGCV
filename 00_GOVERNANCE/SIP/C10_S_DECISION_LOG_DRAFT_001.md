@@ -1481,3 +1481,12 @@ No se define residual/directo por resta automática entre estimandos incompatibl
 **OPEN:** población/UE/interferencia; horizonte y Outcome/Value; versiones y cumplimiento; mapping B→g y q; vías colaterales/confusión/interacciones; medición A/Reach/trayectoria/O/V; identificación, precisión y reglas de abstención; contrastes concretos de etapas y propiedades de trayectoria. La decisión organiza el trabajo; no identifica efectos ni cierra jerarquía confirmatoria.
 
 No modifica DEC-C10-066/067, C10-D1, Core, main, RMA, Matrix ni claims. No autoriza Design Freeze, implementación, fixtures, simulación o ejecución. `scientific_execution=false`; `execution_authorized=false`. Registro autónomo: `DEC-C10S-D2-ESTIMAND-SEPARATION-001.md`.
+
+
+## DEC-C10S-C1-POPULATION-PRECEDENCE-001 — Precedencia poblacional C1 (2026-11-11)
+
+**Estado:** ACCEPTED AS DESIGN-ARCHITECTURE DECISION / NOT DESIGN-FROZEN.
+
+Se acepta `P*_{τ2}` como población objetivo primaria candidata del ITT C1-D2 y `P*_F` como subpoblación secundaria de apertura funcional exclusiva. La alternativa funcional basal no excluye de P*τ2; excluye de P*F cuando su existencia está respaldada. No se reabre la selección D2/D1 ni se altera DEC-C10-066/067.
+
+La decisión no cierra composición de `E_i`, predicados/evidencia/indeterminación, clasificación observada frente a truth, soporte `q_X*`, unidad/interferencia, aleatorización, horizonte ni resultados. `Need_preZ` y `E_req_preZ` son distintos de `E_i`. No se excluye por eventos post-Z. Registro completo: `DEC-C10S-C1-POPULATION-PRECEDENCE-001.md`.
