@@ -521,3 +521,91 @@ Estos cuatro puntos son las decisiones de especificación que hacen falta para i
 Resolver en una única integración la instancia sintética mínima de B1/`V_1` y su vínculo causal con las políticas `g_1/g_0), comprobando no circularidad y posibilidad de efectos positivo, nulo y negativo. Después se fijarán el soporte/régimen común y los parámetros necesarios para los DGP mínimos.
 
 **Estado:** PRIMARY_ESTIMAND_DIRECTION_SET / VALUE_INSTANCE_OPEN / ACCESS_POLICY_INSTANCE_OPEN / NO_DESIGN_FREEZE / NO_IMPLEMENTATION / NO_SCIENTIFIC_EXECUTION.
+
+
+## 27. Instancia candidata mínima de consecuencia B1 y Value sintético (2026-11-11)
+
+**Estado:** VALUE_INSTANCE_CANDIDATE / SEMANTIC_BOUNDARY_TESTED / NOT_ACCEPTED_AS_CONFIRMATORY_ENDPOINT / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+### 27.1 Reutilización de la función B1 ya aceptada
+
+Se parte exclusivamente del contrato funcional aceptado:
+- B1 pretende mantener disponible en destino un servicio capaz de admitir solicitudes conforme a `PAR-SVC-ENABLED`;
+- el servicio expone el perfil declarado `PAR-SVC-PROFILE`;
+- la admisión de una solicitud es distinta de procesamiento, respuesta, consecuencia B1 y Value;
+- el contenido de la solicitud y la semántica diferenciada de STANDARD/READ_ONLY no se inventan.
+
+No se amplía el servicio con una operación de negocio nueva.
+
+### 27.2 Consecuencia candidata: continuidad funcional experimentada por B1
+
+La consecuencia candidata es **la continuidad temporal de la función de servicio que B1 pretende mantener disponible**. No se define como el éxito de una petición concreta, sino como la proporción del intervalo de observación en que la función de admisión del servicio está efectivamente disponible para B1.
+
+Sea (W) el intervalo común de valoración, fijado en el DGP antes de generar resultados, y sea (I_B(t)) el estado verdadero de disponibilidad de la función para B1 en el instante (t), definido por el contrato funcional aplicable. La consecuencia puede representarse como:
+
+```
+Q_B1(W) = (1 / |W|) ∫_W I_B(t) dt
+```
+
+En una implementación discreta, la integral se sustituye por la proporción de unidades temporales predefinidas en las que la función está disponible. El horizonte y la granularidad no se fijan aquí: serán parámetros explícitos y comunes del DGP, no valores escogidos tras observar resultados.
+
+Esta variable describe continuidad funcional a lo largo de un intervalo; no es:
+- el estado declarativo `ENABLED`;
+- una única decisión `Request_admitted`;
+- el procesamiento o respuesta de una solicitud;
+- el snapshot terminal O-CONF/F*;
+- accesibilidad, Reach, trayectoria o ejecución.
+
+O-CONF sigue siendo una adjudicación técnica del estado de conformidad en su ancla/snapshot. `Q_B1(W)` caracteriza la continuidad de la función para B1 a lo largo del intervalo. La relación entre ambos puede ser imperfecta: un snapshot conforme no garantiza continuidad durante todo W, y una interrupción transitoria no determina por sí sola la conformidad terminal.
+
+### 27.3 Regla valorativa candidata V1
+
+Como primera instancia sintética acotada, se propone que B1 valore la continuidad de esa función, sin introducir una agregación de dimensiones ni pesos:
+
+```
+V1 = Q_B1(W)
+```
+
+- **Referente:** B1, una entidad sintética por UE.
+- **Perspectiva:** interés funcional de B1, conforme a la perspectiva ya aceptada en B2–B3.
+- **Autoridad:** regla normativa explícita del DGP; no se afirma que represente preferencias humanas observadas.
+- **Interpretación:** proporción del intervalo común en que B1 dispone de la función que pretende mantener.
+- **Escala:** [0,1], con 0 = función no disponible durante W y 1 = disponible durante todo W.
+- **Dirección:** mayor valor representa mayor continuidad funcional.
+- **Baseline:** estado/continuidad basal pre-Z, registrado separadamente si el estimando se expresa como cambio respecto del baseline. No se sustituye la definición del estimando `θ_A(q;V1)` por una diferencia de diferencias no especificada.
+- **Horizonte:** W, común y versionado; duración y discretización pendientes de fijación en el DGP.
+- **Agregación:** ninguna. V1 es una única dimensión contextual para este experimento sintético, no un escalar universal de Value ni una reducción del vector P179 para TGCV.
+
+La regla es deliberadamente mínima: valora una consecuencia para B1 y no la accesibilidad estructural que podría contribuir a ella. La política de accesibilidad puede mejorar, no cambiar o empeorar Q_B1 según los mecanismos y condiciones del DGP. Por ello permite DGP de efecto positivo, nulo y negativo sin cambiar la definición de V1 entre escenarios.
+
+### 27.4 Pruebas de no circularidad y discriminación
+
+La instancia solo será admisible si el DGP puede producir y el diseño conserva, como mínimo, estos desacoplamientos:
+
+1. **Accesibilidad mayor, continuidad igual:** `ΔT_acc` cambia, pero Reach o los mecanismos de servicio impiden que cambie Q_B1.
+2. **Accesibilidad mayor, continuidad menor:** una vía adversa (p. ej. inestabilidad temporal o interrupciones inducidas) reduce Q_B1 pese a la expansión del espacio accesible.
+3. **Misma accesibilidad, continuidad distinta:** una condición externa o vía colateral altera Q_B1 sin cambiar `T_acc`.
+4. **Mismo O-CONF, continuidad distinta:** estados terminales equivalentes pueden tener historias temporales de disponibilidad diferentes.
+5. **Continuidad igual, O-CONF distinto:** una ruta alternativa puede mantener la función durante W aunque el snapshot terminal difiera, si el contrato de conformidad así lo permite.
+6. **Probe no equivalente a Value:** la oportunidad estandarizada sigue siendo un único estímulo/probe por UE; su admisión/no admisión no sustituye la medida temporal de Q_B1.
+
+Estas son propiedades que debe permitir el DGP, no afirmaciones de que ocurran necesariamente en toda instancia.
+
+### 27.5 Límite de validez y decisión pendiente
+
+Esta propuesta hace explícita una regla sintética de valoración, pero su admisibilidad depende de una distinción que no debe ocultarse: continuidad funcional puede considerarse Value contextual para B1 solo bajo la estipulación normativa del DGP de que B1 valora disponer de esa función durante W. No demuestra que continuidad sea una dimensión universal, ni resuelve preferencias, costes, riesgos o trade-offs de un sistema real.
+
+**Dictamen provisional:** `V1=Q_B1(W)` es una instancia mínima plausible para probar si el método recupera una contribución causal sobre una consecuencia valorada independiente de accesibilidad y de O-CONF. No se eleva todavía a endpoint confirmatorio: primero debe comprobarse que la ficha distingue suficientemente la consecuencia para B1 de un Outcome técnico y que la medición temporal es compatible con el reloj y la observación del harness. Si no supera esa comprobación, se descarta sin reabrir la arquitectura general de Value.
+
+### 27.6 Qué se ha reducido
+
+Para la primera prueba causal no es necesario completar:
+- contenido de solicitudes de negocio ni semántica de STANDARD/READ_ONLY;
+- roster material o evidencia real por UE;
+- todas las dimensiones V_j o un índice global;
+- operacionalización real de costes, riesgo, esfuerzo o satisfacción;
+- un caso de migración completo.
+
+Sí es necesario fijar en el siguiente cierre, conjuntamente, W y su discretización, la definición observable/verdadera de disponibilidad funcional, y cómo se mide Q_B1 independientemente de la reconstrucción de `T_acc` y del snapshot O-CONF.
+
+**Estado:** CANDIDATE_V1_DEFINED / CONFIRMATORY_ADMISSIBILITY_PENDING / NO_DESIGN_FREEZE / NO_IMPLEMENTATION / NO_SCIENTIFIC_EXECUTION.
