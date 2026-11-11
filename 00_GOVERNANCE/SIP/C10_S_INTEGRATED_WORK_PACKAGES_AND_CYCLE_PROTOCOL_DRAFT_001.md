@@ -130,3 +130,10 @@ PA ha completado su ciclo integral: `PA_RECONCILED_DOCUMENTALLY / C1_MATERIAL_BL
 ## 9. Estado tras el ciclo PB (2026-11-11)
 
 PB completó la reconciliación integral: PB_RECONCILED_DOCUMENTALLY / D2_C2_MATERIAL_BLOCKED / NOT_DESIGN_FROZEN. Véase maestro C10-S §267 y plan §16.156. La única decisión explícita pendiente es la armonización de identidad de instancia de servicio por UE con DEC-C10-069. No repetir PB ni reabrir DEC-C10-066/067/068/069/095 ni las decisiones B1 aceptadas. Siguiente paquete activo: **PC — C3 atribución de accesibilidad y C4 mediación**. PB solo se reabre por aceptación de esa decisión o evidencia material nueva.
+
+
+## 10. Estado tras el ciclo PC (2026-11-11)
+
+PC completó la reconciliación integral: **PC_RECONCILED_DOCUMENTALLY / C3_C4_NOT_IDENTIFIED_IN_CURRENT_D2_MATERIAL / NOT_DESIGN_FROZEN**. Véase maestro C10-S §268 y plan §16.157. Se mantiene la jerarquía C1/ITT, θ_A(q), θ_Af(q_X*), LATE_f y C4; D2→g^Af no demostrado; q/soporte y vías colaterales abiertos; mediación interventional no identificada por ausencia de intervención mediadora/estrategia longitudinal y Value contextual no instanciado. P177/P178/P179/P182/P183 y DAG/CAUS existentes se reutilizan, sin IDs duplicados.
+
+No repetir PC ni reabrir la jerarquía aceptada. Siguiente paquete activo: **PD — DGP, mecanismos C5 y evaluación adversarial**. PC solo se reabre ante evidencia material nueva o contradicción.
