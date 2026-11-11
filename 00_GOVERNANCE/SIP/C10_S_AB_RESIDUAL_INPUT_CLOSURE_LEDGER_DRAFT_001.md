@@ -1094,3 +1094,14 @@ El evaluador independiente queda excluido como beneficiario por su función meto
 El DGP temporal incluye beneficiario/regla/horizonte en t9 y DGP-13 exige beneficiario, criterio, escala y horizonte ex ante, pero esos campos son requisitos pendientes, no evidencia de entidades materializadas. El microdominio sí sostiene el contrato funcional sintético y puede sostener Outcomes técnicos tras completar §224; no sostiene actualmente Value contextual. No se concluye imposibilidad: cualquier consumidor/beneficiario sintético deberá introducirse mediante extensión explícita y decisión del DGP, no por inferencia desde el nombre del servicio, CMP.owner o actor ejecutor.
 
 **Estado:** ROLE/BENEFICIARY AUDIT DOCUMENTED / NO BENEFICIARY GROUNDED / VALUE MATERIAL OPEN. No se crean entidades, IDs, fields, eventos, snapshots ni instrumentos. Sin Design Freeze, implementación ni ejecución; scientific_execution=false; execution_authorized=false.
+
+ 
+## 35. C-Value — comparación A/B y recomendación de extensión sintética separada
+
+Se compara mantener Opción A sin Value instanciado frente a extender el DGP con un rol consumidor/beneficiario sintético. A preserva el dominio aceptado y permite pruebas transformacionales y Outcomes técnicos, pero no prueba ΔT_acc→Value. B podría probar recuperación causal de Value dentro de un mundo sintético estipulado, pero no valida preferencias/valor de usuarios reales y añade riesgos de circularidad, vías directas, confusión O/V, demanda postratamiento e interferencia.
+
+**Recomendación propuesta:** mantener A como variante base inalterada y desarrollar B como variante DGP separada/versionada, no como modificación silenciosa del contrato funcional DEC-C10-068 ni del roster de Opción A. Requisitos de B: rol/relación beneficiario-servicio-unidad; demanda pre-Z; perspectiva/criterio; separación Outcome/Value; vector V_j y trade-offs conforme P179 sin escalar por defecto; DAG con rutas focales y directas; temporalidad; fichas independientes §224 y controles P182/P183; unidad/interferencia; truth oculta al Analyzer y adversariales que refuten asociaciones automáticas ΔT_acc→Value.
+
+No se crea entidad, ID, variable, evento, regla, fixture ni estimando nuevo. La propuesta no está aceptada; no modifica DEC-C10 ni cierra MED-02/MED-03, C-Value o AB.
+
+**Estado:** A/B COMPARISON DOCUMENTED / B RECOMMENDED AS SEPARATE DGP VARIANT / USER ACCEPTANCE OPEN. Sin Design Freeze, implementación, fixtures, simulación ni ejecución; scientific_execution=false; execution_authorized=false.
