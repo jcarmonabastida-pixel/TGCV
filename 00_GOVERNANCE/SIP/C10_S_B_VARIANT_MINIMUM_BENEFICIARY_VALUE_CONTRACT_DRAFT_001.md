@@ -201,3 +201,18 @@ execution_authorized=false
 ## 13. B1 — Entidad solicitante sintética aceptada como tipo candidato (2026-11-11)
 
 Se acepta B1 como tipo candidato para desarrollo, no como instancia B cerrada. La entidad solicitante-beneficiaria es una entidad lógica sintética con necesidad/objetivo pre-Z, relación explícita con C10S-SVC-REQUEST-PROCESSOR, posibilidad de originar solicitud y consecuencia posterior valorable desde perspectiva ex ante. Solicitante y beneficiario pueden coincidir por estipulación explícita en B1, nunca por inferencia sobre A. Se distinguen necesidad/demanda, solicitud, procesamiento técnico y consecuencia para entidad. Procesamiento correcto/O-CONF no equivale a Value; solicitud enviada no demuestra satisfacción; no solicitud/no ejecución no implica demanda ausente ni Value=0. Se mantienen OPEN instancia, cardinalidad, demanda, consecuencia operacional, perspectiva, dimensiones, medición, DAG y estimandos. Véase C10S-B1-REQUESTER-CANDIDATE-001.
+
+
+## 15. Reconciliación B1 de necesidad basal, solicitud y demanda operativa (2026-11-11)
+
+La aceptación de B1 permite especializar la semántica del campo demand_preZ del contrato mínimo, pero no autoriza a confundirlo con demanda operativa de recursos.
+
+- Need_preZ: necesidad/objetivo focal de la entidad solicitante-beneficiaria, existente en la verdad DGP antes de Z.
+- E_req_preZ: elegibilidad basal de la entidad/petición conforme a un contrato de servicio aún OPEN; no equivale a elegibilidad experimental E_i ni a P*_{τ2}.
+- Request_event: petición efectivamente formulada/registrada; no equivale a la necesidad y su ventana/posición en el reloj permanece OPEN.
+- D_resource: demanda de recursos/capacidad del servicio; se separa de stock, disponibilidad/asignación y consumo según el contrato temporal DGP.
+- Procesamiento del servicio y consecuencia para el beneficiario son distintos; el primero no demuestra satisfacción ni Value.
+
+Se propone conservar en DGP truth los estados Need_preZ=1/0/? y separar su evidencia observada. Request_event=0 no implica Need_preZ=0; Request_event=1 no demuestra admisibilidad, procesamiento ni satisfacción. Los casos sin necesidad focal son candidatos a controles negativos/adversariales, no se mezclan automáticamente en el estimando primario de Value. No se fija todavía población B1, cardinalidad, observabilidad, instrumento, contenido de necesidad, elegibilidad de solicitud, ventana de solicitud ni estimando.
+
+Esta especialización mantiene BVAL-02/03/10, P179/P182/P183 y §224; no selecciona dimensiones ni regla de valoración.
