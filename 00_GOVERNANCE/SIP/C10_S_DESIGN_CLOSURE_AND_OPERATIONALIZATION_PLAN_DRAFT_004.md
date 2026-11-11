@@ -2414,3 +2414,19 @@ El DGP incluye beneficiario, regla/version y horizonte en t9 y DGP-13 exige bene
 **Conclusión:** Opción A puede seguir desarrollándose para accesibilidad, conformidad y Outcomes técnicos. El dominio aceptado no permite actualmente instanciar Value contextual. No se concluye que sea imposible: introducir un consumidor/beneficiario sintético sería una extensión sustantiva del DGP que requiere propuesta, decisión explícita y revisión de sus consecuencias causales, temporales, de medición e interferencia. No se infiere desde el nombre del servicio, CMP.owner, actor ejecutor ni telemetría.
 
 **Estado:** ROLE/BENEFICIARY AUDIT DOCUMENTED / NO BENEFICIARY GROUNDED / VALUE MATERIAL OPEN. No se crean entidades, IDs, campos, eventos, snapshots, instrumentos ni fixtures. MED-02/03 siguen OPEN; no Design Freeze, implementación ni ejecución; scientific_execution=false; execution_authorized=false.
+
+ 
+## 16.141 — Comparación de alcance Value A/B y recomendación de variante DGP (2026-11-11)
+
+Se incorpora a C-Value la comparación de dos alcances, sin alterar DEC-C10-068 ni el contrato funcional aceptado de Opción A.
+
+- **A — base sin extensión:** conserva el microdominio aceptado. Puede validar accesibilidad/ΔT_acc, Reach, trayectoria y Outcomes técnicos una vez operacionalizados. Value contextual permanece no instanciado; por tanto, A no permite probar la atribución causal ΔT_acc→Value.
+- **B — extensión sintética explícita:** añade un rol consumidor/beneficiario y una relación con el servicio, demanda pre-Z y criterio de valoración ex ante. Puede probar si el Analyzer recupera la contribución causal a Value dentro del DGP estipulado; no aporta validez externa sobre usuarios reales.
+
+**Recomendación propuesta:** mantener A intacta como variante base y desarrollar B como variante DGP separada/versionada. Esta opción preserva la trazabilidad del dominio aceptado, permite comparar resultados con y sin capa de beneficiario y evita presentar una ampliación como si ya perteneciera al roster de Opción A. La recomendación no está aceptada y no crea roles ni variables.
+
+B no podrá aprobarse hasta especificar: rol/relación beneficiario-servicio-unidad; demanda y población pre-Z; perspectiva y criterio; separación O/V; vector Value y trade-offs sin agregación por defecto (P179); DAG con vías directas y mediadas; temporalidad; medición independiente §224/P182/P183; unidad/interferencia; y DGPs adversariales que distingan efecto focal, vías directas, Outcome constante/Value cambiante y trade-offs. El Analyzer no recibe truth ni potenciales; el Evaluator conserva el DGP verdadero.
+
+**Límite:** un PASS solo acredita recuperación de la relación estipulada dentro del DGP sintético. No valida preferencias ni Value de usuarios reales ni acredita la hipótesis empírica general de TGCV.
+
+**Estado:** A/B COMPARISON DOCUMENTED / B RECOMMENDED AS SEPARATE DGP VARIANT / USER ACCEPTANCE OPEN. No Design Freeze, implementación, fixtures, simulación ni ejecución. scientific_execution=false; execution_authorized=false.
