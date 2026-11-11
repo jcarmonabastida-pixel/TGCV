@@ -251,3 +251,10 @@ El análisis se registra en `C10_S_C1_BASELINE_ELIGIBILITY_CROSSWALK_DRAFT_001.m
 Se propone, no se acepta todavía, `E_i=E_scope,i ∧ App*(τ2,S0_i)`. El contrato abstracto de configuración (CMP≥1, PAR≥1, RUL≥1, REF=0 solo con cobertura exhaustiva, MET obligatorio, POL ausente por diseño) define el alcance de la instancia, pero no es por sí solo una regla de pertenencia P*. El roster mínimo de servicio CMP/PAR/RUL tampoco es inventario exhaustivo de cada UE. El IAM por snapshot fuente, sus mappings P0/P1 y evidencia material no están sellados.
 
 **Siguiente C1.4:** crosswalk por predicado/registro IAM pre-Z del snapshot `C_SRC`, cruzado con `App*(τ2,S0)`, `C_dep,0` y términos de `A_f,0*`; identificar duplicidades y unknowns. No crear IAM ficticio ni declarar E_i cerrada.
+
+
+## 15. C1.4 — crosswalk IAM/C_SRC: resultado y límite material
+
+El crosswalk queda documentado en `C10_S_C1_PREZ_IAM_CROSSWALK_C10S_001.md`. Se especifican las clases CMP/PAR/REF/RUL/MET y su papel potencial en `E_scope`, así como la separación de App, C_dep, A_f, F_alt, Need_preZ y E_req_preZ. El overlay IAM/U_G confirma que no existen snapshots C10-S observados ni captura material de C_SRC; los scopes 7×5 son etiquetas lógicas de planificación, no filas físicas. El roster de servicio conocido es mínimo, no exhaustivo.
+
+**Dictamen C1.4: PARTIAL / MATERIAL BLOCKED BY ABSENT IAM AND SNAPSHOTS.** No es posible clasificar unidades ni cerrar E_i sin inventar registros/truth. La propuesta `E_i=E_scope∧App*(τ2,S0)` permanece NO ACEPTADA. Siguiente C1.5: cerrar definición/medición de App y su frontera con A_f; decidir rol de E_scope y selección; regla pre-Z para unknowns; y recuperar mecanismo de asignación D2. No se necesita nueva aprobación de P*τ2/P*F.
