@@ -197,3 +197,7 @@ Se fija qué debe existir para que Value contextual sea admisible, sin inventar 
 **Estado:** A/B architecture accepted (DEC-C10-095); B-BEN/B-VAL contract DRAFT; beneficiary instance OPEN; dimensions/indicators OPEN; DGP parameters OPEN; MED-02/MED-03 OPEN; no Design Freeze, implementation, fixtures, simulation or scientific execution.  
 scientific_execution=false  
 execution_authorized=false
+
+## 13. B1 — Entidad solicitante sintética aceptada como tipo candidato (2026-11-11)
+
+Se acepta B1 como tipo candidato para desarrollo, no como instancia B cerrada. La entidad solicitante-beneficiaria es una entidad lógica sintética con necesidad/objetivo pre-Z, relación explícita con C10S-SVC-REQUEST-PROCESSOR, posibilidad de originar solicitud y consecuencia posterior valorable desde perspectiva ex ante. Solicitante y beneficiario pueden coincidir por estipulación explícita en B1, nunca por inferencia sobre A. Se distinguen necesidad/demanda, solicitud, procesamiento técnico y consecuencia para entidad. Procesamiento correcto/O-CONF no equivale a Value; solicitud enviada no demuestra satisfacción; no solicitud/no ejecución no implica demanda ausente ni Value=0. Se mantienen OPEN instancia, cardinalidad, demanda, consecuencia operacional, perspectiva, dimensiones, medición, DAG y estimandos. Véase C10S-B1-REQUESTER-CANDIDATE-001.
