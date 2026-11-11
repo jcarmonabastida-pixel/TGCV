@@ -2604,3 +2604,10 @@ Recomendación: mantener `P*_{τ2}` como población objetivo primaria candidata 
 `DEC-C10S-C1-POPULATION-PRECEDENCE-001` acepta `P*_{τ2}` como población objetivo primaria candidata del ITT C1-D2 y `P*_F` como subpoblación secundaria de apertura funcional exclusiva. La alternativa funcional basal no excluye de P*τ2; solo excluye de P*F cuando está respaldada. Esta decisión resuelve la confirmación de precedencia y no vuelve a abrirse sin contradicción material.
 
 Composición de `E_i`, predicados/evidencia/indeterminación, soporte, truth/medición, interferencia, aleatorización, horizonte y resultados permanecen OPEN. Siguiente: **C1.3**, reconstruir E_i desde DGP/IAM y predicados constitutivos vigentes, distinguiendo validez de instancia, aplicabilidad de τ2, A_f basal, Need_preZ y E_req_preZ. No inventar una lista ni recuperar `C_other`; si la especificación material no permite cierre, declarar límite.
+
+
+## 16.152 — C1.3: composición candidata de E_i y C1.4
+
+El crosswalk `C10_S_C1_BASELINE_ELIGIBILITY_CROSSWALK_DRAFT_001.md` separa admisibilidad de instancia basal (`E_scope`) y aplicabilidad semántica de `τ2` desde `S0` (`App*(τ2,S0)`), sin confundirlas con `C_dep,0=0` ni `A_f,0*=0`. La propuesta `E_i=E_scope∧App*(τ2,S0)` queda como candidata NO aceptada. Las cardinalidades de clases CMP/PAR/RUL y el roster mínimo de servicio no bastan para definir pertenencia P* por UE. IAM y evidencia material no están sellados.
+
+Siguiente: **C1.4**, crosswalk de predicados/filas IAM pre-Z en `C_SRC` contra App, C_dep y A_f, con boundary P0/P1/DUAL, obligatoriedad, estados y evidencia. Sin IAM ficticio, freeze ni ejecución.
