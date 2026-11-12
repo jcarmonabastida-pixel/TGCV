@@ -5594,3 +5594,19 @@ Se fija la convención `[b_k,b_{k+1})`: frontera interna asignada al intervalo q
 **Abierto:** modo confirmatorio, parámetros y soporte de cada modo, p*, nivel de confianza, falso positivo tolerable, tolerancia temporal, cobertura mínima, soporte de lag, τ_follow, unidad, Δ y K. No hay calibración ni valores aprobados.
 
 **Dictamen:** `S3_DETECTABILITY_EVALUATION_CONTRACT_CLOSED_STRUCTURALLY / CURVE_FIRST / NUMERIC_CALIBRATION_OPEN / DELTA_K_OPEN / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN`.
+
+## 16.217. Comparación emparejada de modos S3 y criterio de recuperación causal (2026-11-12)
+
+Se desarrolla §16.216 mediante §18 de `C10_S_TEMPORAL_HORIZON_AND_S4R_INTEGRATION_AUDIT_DRAFT_001.md`.
+
+**Decisión estructural:** no se selecciona snapshots, logs ni híbrido como ganador a priori. Los tres modos existentes se proyectan como observaciones alternativas sobre las mismas historias truth B1, unidades, mundos, brazos, ventanas y rejillas. Se comparan emparejadamente; no se presume independencia entre modos ni entre componentes híbridos. El Analyzer no recibe etiquetas de truth, mundo, parámetros reservados ni semillas.
+
+**Separación de objetivos:** S3 es exclusivamente medición runtime post-Z de V_cont; no se usa para Need_preZ, cuya observación basal conserva el canal S7 y DEC-C10-097/098.
+
+**Evaluación en tres niveles:** (1) detección/lag/cobertura/error de episodios e intervalos; (2) recuperación/bounds de V_cont frente a truth; (3) recuperación causal por estimando frente a potenciales DGP, incluyendo falsa atribución en nulos/vías directas/colaterales y abstención correcta/incorrecta. No se admite un score agregado que oculte falsas atribuciones; no significación no equivale a equivalencia.
+
+**Regla de calibración:** se cruzan los tres modos con canal calibrado por diseño (parámetros accesibles al Analyzer) y no calibrado/ambiguo (bounds/abstención). El Evaluator conserva truth y parámetros reservados. Cualquier selección/calibración de método debe separarse de la evaluación que pretende validar recuperación.
+
+**Abierto:** p*, nivel de confianza, tolerancias de precisión/error, cobertura inferencial, tasas admisibles de falsa recuperación y abstención excesiva, parámetros/soporte por modo y selección posterior de un modo confirmatorio si fuese necesaria. Hasta entonces solo curvas/distribuciones; no PASS/FAIL confirmatorio.
+
+**Dictamen:** `S3_PAIRED_MODE_COMPARISON_DEFINED / CAUSAL_RECOVERY_AND_ABSTENTION_CRITERIA_DEFINED / NO_A_PRIORI_WINNER / NUMERIC_ACCEPTANCE_THRESHOLDS_OPEN / NO_CALIBRATION / NO_EXECUTION / NOT_DESIGN_FROZEN`.
