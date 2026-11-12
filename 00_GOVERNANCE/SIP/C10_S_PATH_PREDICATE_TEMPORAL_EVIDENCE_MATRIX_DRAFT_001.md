@@ -177,7 +177,7 @@ No se han generado datos, implementado fixtures, simulado ni ejecutado el experi
 2. **Permisos técnicos de provisión:** ACL, credenciales, tokens o acceso al endpoint del adaptador; pueden formar parte de B bajo alcance mínimo, sin ampliar la autorización funcional.
 3. **Conocimiento o consideración del agente:** mecanismo posterior; no equivale a autorización ni a accesibilidad estructural.
 
-Si B amplía el permiso funcional para ejecutar `τ2`, aparece la vía `B→C_auth→A_f*`; el contraste deja de aislar únicamente la provisión técnica. La ficha es compatible conceptualmente con B-M05/PROV-06. **Abierto:** fuente normativa, titular competente, alcance exacto y regla de vigencia/adjudicación de `C_auth,base` (véase maestro §59.6). No declarar ficha verificada hasta resolverlo.
+Si B amplía el permiso funcional para ejecutar `τ2`, aparece la vía `B→C_auth→A_f*`; el contraste deja de aislar únicamente la provisión técnica. La ficha es compatible conceptualmente con B-M05/PROV-06. **Precedencia reconciliada:** DEC-C10-067 fija conceptualmente `C_auth,base=1` como condición basal común no modificada por B; el maestro §67.3 y el crosswalk D2 la corresponden con `AUTH_f*`, no como factor independiente ni duplicado en `C_dep*`. Por tanto, la correspondencia conceptual está RESOLVED_BY_PRECEDENCE. **Permanece abierto materialmente:** fuente normativa, titular competente, objeto/alcance, vigencia, regla de adjudicación, registros y evidencia independiente. La ficha no está verificada ni la invariancia material demostrada.
 
 ### 13.2. Ficha D2-RES-01 — recursos no focales
 
