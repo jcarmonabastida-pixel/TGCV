@@ -1058,3 +1058,20 @@ El Generator conserva truth_dgp y potenciales; el Analyzer recibe exclusivamente
 Se reutilizan U_G, EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER. Los registros de evaluación E1/E2 permanecen separados. Se preservan identidades TID/SID/RID/EID, object_record_id/version, snapshot_id + snapshot_object_record_id, request_id/trajectory_id y relaciones tipadas. No se define schema físico, motor, API, formato de evento, serialización general, ACL ni retención.
 
 DEC-C10-074/JCS conserva su alcance UDG-01/U1; no es perfil global. El pipeline V0–V8 es una organización futura de validación, no una declaración de tests ejecutados. SR-13 permanece CONDITIONAL; SR-19 y SR-20 NOT_ASSESSED. No se autoriza implementación, fixtures, parser, simulación o ejecución.
+
+
+
+## 14.4 Reconciliación del rol emisor de declaraciones B1/Need_preZ (2026-11-12)
+
+La especialización S7_B1_BASELINE_OBJECTIVE_ATTESTATION de los contratos B1 requiere precisar el rol emisor sin confundirlo con los roles PE existentes.
+
+- El Generator conserva la estipulación truth reservada y la provenance generadora.
+- El emisor es una función/actor sintético observable cuya competencia deriva de una regla explícita, versionada y fijada ex ante en el catálogo de roles del DGP. La regla atribuye ámbito declarativo B1–instancia de servicio; no se deduce de propiedad técnica, IAM, custodia, operación ni del hecho de que el Generator pueda escribir el artefacto.
+- El proceso de fuente representa la emisión bajo ese mandato. Autoridad/autenticidad, integridad y corrección semántica se evalúan por separado: una fuente auténtica puede equivocarse y una fuente sin competencia no se vuelve admisible por coincidir con truth.
+- La asignación del mandato no depende de truth, Z/D2, accesibilidad, resultados, observabilidad ni adjudicación. Su cardinalidad (un rol común, varios roles o asignación por ámbito) y reglas de concurrencia/delegación quedan OPEN; no se inventa una clase de actor ni se añade una entidad física.
+- El Generator no debe mapear directamente el valor truth a la proposición observable. Entre ambos debe existir un proceso de información/declaración especificado como parte del modelo observacional. Puede representarse mediante estado informativo del emisor o canal equivalente; no se exige independencia de truth, pero sí mediación explícita, ausencia de filtración de etiquetas/metadatos y posibilidad de error/ambigüedad/omisión según escenarios justificados.
+- E1/E2 reciben solo el artefacto y los metadatos públicos de autoridad/provenance; no reciben el estado informativo interno, truth, truth_basis_ref, semilla ni flags del Generator.
+
+La matriz de roles §6 actual es de acceso a bloques de información Generator/Analyzer/Evaluator y no identifica por sí sola una autoridad declarativa. Esta sección la especializa sin cambiar el firewall general. No crea un quinto rol PE ni equipara emisor con Evaluator, Analyzer o adjudicadores.
+
+**OPEN:** nombre/tipo canónico del rol emisor, fundamento de su competencia en el microdominio, regla de asignación por B1/UE/servicio, delegación/conflicto, proceso de información del emisor, mecanismos de error y parámetros. No se materializa roster, emisor ni declaración; no se implementa ni ejecuta.
