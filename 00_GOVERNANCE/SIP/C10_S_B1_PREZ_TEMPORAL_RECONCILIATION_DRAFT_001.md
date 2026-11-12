@@ -194,3 +194,18 @@ La interpretación recomendada del contrato “mantener disponible” es estrict
 Esta lectura no introduce periodo de gracia ni duración mínima de interrupción. Si se desea tolerar transitorios de duración hasta δ, será necesaria una decisión normativa explícita y una justificación de δ. No se diluyen fallos confirmados mediante promedios de señales. S3 debe tener resolución/cobertura suficiente para detectar los eventos estipulados; si no, Analyzer produce bounds/abstención.
 
 **Estado:** STRICT_WITHIN_INTERVAL_RECOMMENDED / TRANSIENT_TOLERANCE_NOT_APPROVED / K_DEPENDS_ON_EVENT_SCALE_AND_S3_RESOLUTION.
+
+
+## 11. DEC-C10-102: continuidad estricta por intervalo y consecuencia temporal (2026-11-12)
+
+El usuario acepta la continuidad estricta dentro de cada intervalo, sin periodo de gracia para interrupciones funcionales confirmadas.
+
+A_B1(i,k)=1 si ENABLED/PROFILE se cumple durante todo el intervalo; A_B1(i,k)=0 si ocurre al menos un incumplimiento funcional confirmado en cualquier instante; A_B1(i,k)=? solo si la truth funcional no queda determinada por el Generator. La falta de S3 es incertidumbre observacional, no UNKNOWN de truth.
+
+No se introduce duración mínima de fallo, periodo de gracia ni cuota tolerada. Los eventos exactamente en una frontera se asignarán de forma determinista y versionada a un único intervalo. La resolución de truth del Generator debe poder representar los eventos que el DGP declare relevantes. Si S3 no puede detectarlos, Analyzer informa bounds/abstención; no afirma detección exhaustiva.
+
+La ventana comienza en t0 (DEC-C10-101) y termina en T* común, cubriendo provisión/instalación y seguimiento hasta el último evento causal capaz de modificar el cumplimiento dentro del estimando. t0…t9 es orden causal, no duración física. Se recomienda reloj explícito de tiempo transcurrido con unidad normalizada declarada, eventos fechados y rejilla regular. No se asigna duración igual por etapa ni se usa el número de etapas como K.
+
+K=(T*−t0)/Δ con Δ constante; si no hay divisibilidad exacta, se ajusta T* antes de generar, sin intervalo residual desigual. Unidad, eventos relevantes, duración mínima representable, T*, Δ, K, regla de cierre y calibración S3 siguen OPEN.
+
+**Estado:** STRICT_INTERVAL_CONTINUITY_ACCEPTED / NO_GRACE_PERIOD / EVENT_CLOCK_AND_GRID_SPECIFIED_AS_DESIGN_ROUTE / TSTAR_DELTA_K_OPEN / NOT_DESIGN_FROZEN / NO_EXECUTION_AUTHORIZED.
