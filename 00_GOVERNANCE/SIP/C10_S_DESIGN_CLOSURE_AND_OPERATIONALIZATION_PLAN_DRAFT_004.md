@@ -2939,3 +2939,38 @@ No se pide al usuario que vuelva a definir B1, Need_preZ, la función del servic
 **Pasada 1 A+B:** DOCUMENTARY_RECONCILIATION_COMPLETE / VALUE_ENDPOINT_PROPOSAL_PENDING_USER_ACCEPTANCE / D2_TO_ACCESSIBILITY_MAPPING_NOT_DEMONSTRATED / CAUSAL_IDENTIFICATION_NOT_CLOSED / NOT_DESIGN_FROZEN.
 
 Esta entrada registra auditoría y propuesta, no acepta por sí misma `V_cont`, no cambia P179 ni selecciona una dimensión confirmatoria. No cambia D1/D2, población P*τ2/P*_F, decisiones B1, estimandos vigentes, DAG, Core, claims, RMA, Evidence→Claim Matrix o STATUS. No autoriza schema físico, roster/captura, fixtures, implementación, generación de datos, simulación, estimación ni ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 16.174. Aceptación de V_cont y aclaración de precedencia documental (2026-11-12)
+
+El usuario acepta la propuesta de utilizar `V_cont` como dimensión única mínima de Value para el núcleo confirmatorio inicial, con carácter **provisional y sujeto a los gates de medición e identificación** de las pasadas C/D/E. Se registra la aceptación para evitar volver a solicitarla.
+
+### 16.174.1. Reconciliación con el trabajo previo
+
+La auditoría histórica confirma que varios elementos sustantivos ya estaban cerrados y no debieron presentarse como si fueran nuevos:
+- clase de propósito basal B1 y relación con configuración destino/función de servicio;
+- especialización funcional mínima del servicio: admitir solicitudes conforme a ENABLED y exponer PROFILE;
+- separación entre admisión, procesamiento, respuesta, consecuencia B1, Outcome técnico y Value;
+- envolvente de consecuencias potenciales que ya incluía continuidad/interrupción/degradación;
+- perspectiva B1 como referente y Value vectorial P179 sin índice ni pesos;
+- arquitectura y jerarquía de estimandos C1–C4.
+
+La precisión documental es que los artefactos rectores anteriores registraban explícitamente `NO_VJ_SELECTED` / `VALUE_NOT_INSTANTIATED`: la continuidad estaba contemplada como clase de consecuencia, pero no constaba formalmente seleccionada como dimensión confirmatoria V_j. Por tanto, no se reabre el caso ni se afirma que la selección formal ya estuviera registrada: se documenta ahora la aceptación expresa de `V_cont`, apoyada en el trabajo previo.
+
+### 16.174.2. Alcance exacto de la aceptación
+
+- Se acepta `V_cont` como única dimensión inicial propuesta: continuidad temporal de la capacidad efectiva del servicio que B1 pretende mantener disponible conforme al contrato funcional basal.
+- Se conserva `V=(V_cont)) como vector unitario, sin escalar compuesto, pesos ni compensación con otras dimensiones.
+- `V_cont` no es el valor del flag ENABLED, una configuración terminal, una admisión puntual, una respuesta técnica, O-CONF/F*, ni una recodificación de `T_acc`, Reach o trayectoria.
+- Debe expresar una consecuencia temporal para B1 durante un horizonte común, con baseline y regla de valoración sintética ex ante.
+- La medición debe ser independiente de las medidas de accesibilidad/Reach/trayectoria y del Outcome técnico; la disponibilidad técnica puede ser evidencia o mecanismo, pero no sustituye automáticamente la valoración contextual.
+- La perspectiva B1 queda como referente aceptado; la autoridad/regla normativa del DGP, indicador/fuente, unidad/escala, baseline, horizonte, adjudicación, error y validez se completarán en C/D/E.
+- La aceptación no presupone que el constructo sea finalmente identificable/medible. Si no supera la prueba de discriminación frente a O-CONF y la prueba de independencia de medición, el dictamen será BLOCKED/NOT_CONFIRMATORY; no se sustituirá silenciosamente por otra dimensión.
+
+### 16.174.3. No-regresión y estado
+
+No se reabren B1, Need_preZ, ENABLED/PROFILE, cardinalidad de una oportunidad estandarizada, la envolvente de consecuencias ni la jerarquía de estimandos. No se solicita al usuario otra decisión sobre `V_cont`.
+
+**Estado:** `V_CONT_ACCEPTED_PROVISIONALLY / SINGLE_DIMENSION_CONFIRMATORY_CANDIDATE / MEASUREMENT_AND_IDENTIFICATION_GATES_OPEN / NOT_DESIGN_FROZEN`.
+
+Esta aceptación no altera P179, no crea un índice escalar, no modifica decisiones previas ni claims, y no autoriza roster/materialización, schema físico, implementación, generación de datos, simulación, estimación o ejecución científica. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
