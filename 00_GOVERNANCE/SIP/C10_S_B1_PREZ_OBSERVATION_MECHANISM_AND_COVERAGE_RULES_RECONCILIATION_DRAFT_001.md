@@ -173,3 +173,26 @@ La truth puede influir en la probabilidad y el contenido de la declaración a tr
 Una S7 focal puede expresar inclusión o exclusión; no se necesitan clases diferentes para cada polaridad ni fuentes duplicadas que simulen corroboración. Las copias/derivados comparten lineage. La suficiencia de cobertura y la admisibilidad se evalúan por oportunidad/unidad×dimensión bajo el alcance ex ante.
 
 No se fijan cardinalidad de oportunidades, dependencias, tasas, parámetros ni fuente concreta del microdominio. No se crean IDs de prueba ni se declara ejecución.
+
+
+
+## 13. Mecanismo mínimo de oportunidad y emisión S7 tras DEC-C10-098
+
+DEC-C10-098 cierra el marco esperado: una oportunidad lógica S7 por UE del censo B1/Need aprobado. La unidad de enumeración es UE × dimensión Need_preZ; no se enumeran múltiples fuentes semánticas para simular corroboración.
+
+El proceso de observación se especifica conceptualmente en etapas separadas, sin fijar todavía una distribución ni parámetros:
+
+1. **Oportunidad:** slot S7 esperado, identificado y sellado ex ante para la UE/B1/instancia de servicio y dimensión focal. Su existencia no depende de truth, Z/D2, evidencia encontrada o resultados.
+2. **Mandato y alcance:** atribución preespecificada de autodeclaración de B1 sobre su propio objetivo focal; autoridad limitada a ese objeto y versión. No implica autoridad técnica sobre el servicio o configuración.
+3. **Resultado de emisión/contenido:** el canal de medición produce uno de los estados semánticos compatibles con el contrato: inclusión afirmativa, exclusión focal afirmativa, ambigüedad/conflicto o no emisión. La relación con truth debe estar mediada por una regla explícita del canal; no se permite la copia directa de la etiqueta.
+4. **Captura/retención:** el artefacto emitido puede ser capturado, retenido, perdido o quedar fuera de alcance. La pérdida no altera el contenido original ni convierte ausencia en exclusión.
+5. **Admisibilidad/cobertura:** se aplican controles de autoridad, binding, event_time pre-Z, integridad, lineage y cierre del universo. COMPLETE significa examen de la oportunidad y superficies incluidas, no resultado negativo.
+6. **Adjudicación:** E1/E2 reciben solo el expediente permitido; sus salidas independientes se sellan antes de abrir truth para evaluación.
+
+Una declaración puede ser auténtica (origen/mandato/provenance válidos) y semánticamente errónea. Por ello la exactitud no se deduce de la firma ni de la autoridad. La evaluación debe distinguir errores de polaridad (falso positivo/falso negativo) de abstención, ambigüedad, pérdida y bloqueos técnicos.
+
+No se impone independencia entre etapas ni se asignan probabilidades. En particular, la enumeración ex ante de la oportunidad es independiente de truth y de tratamiento, pero el contenido del canal puede depender del estado basal mediante un mecanismo explícito. Los parámetros, soporte de escenarios y sensibilidad permanecen OPEN.
+
+La oportunidad única reduce la necesidad de modelar dependencias entre múltiples declaraciones S7, pero no elimina dependencia entre unidades si comparten proceso, plantilla, canal, versión o causa de error; esa posibilidad deberá declararse en el DGP.
+
+**Estado:** cardinalidad lógica aceptada; mecanismo conceptual de etapas especificado; parámetros, dependencias, escenarios y materialización OPEN. No ejecución.
