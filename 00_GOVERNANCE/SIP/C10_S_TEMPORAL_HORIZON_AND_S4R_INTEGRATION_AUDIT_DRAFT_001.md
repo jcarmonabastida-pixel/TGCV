@@ -179,3 +179,70 @@ Si el soporte de recuperación tiene máximo defendible, τ_follow debe cubrirlo
 Se incorpora el registro del plan §16.198: inicio/fin de episodios, familia causal, soporte DGP, recurrencia, recuperación, horizonte común, rejilla, cadencia/fase/cobertura S3, emisión/captura, lag, pérdida, error y dependencia conjunta. No se asignan leyes ni cifras por defecto. La parametrización es condicional al escenario y versión; el canal híbrido conserva la dependencia conjunta.
 
 Se corrige la interpretación: V_cont_truth es proporción de intervalos completamente conformes, no fracción exacta de tiempo disponible. Un incumplimiento confirmado afecta a cada intervalo que intersecta; la medida depende de Δ y de la alineación. DEC-C10-100/102 se conservan sin modificación. No se crean pruebas ni se ejecuta calibración.
+
+
+## 17. Contrato de detectabilidad temporal S3 y evaluación de error (2026-11-12)
+
+**Objeto:** cerrar la semántica y el protocolo de evaluación del canal runtime pasivo S3 reutilizando §§11–16, DEC-C10-100/101/102 y los contratos P182/P183/MEAS/MISS existentes. No se crea una fuente activa, una solicitud adicional, un test ID ni una batería factorial.
+
+### 17.1 Firewall de resolución
+
+- Generator conserva truth temporal exacta: episodios, familia CFG/PROC/INGRESS/DEP/CAP, inicio, fin, recurrencia, estado previo/posterior, recuperación, versión y unidad. Deriva A_B1 por intersección con intervalos usando continuidad estricta.
+- S3 genera solo evidencia pasiva condicionada por el mecanismo observacional versionado. Su reloj, resolución, cobertura, lag y error son distintos del reloj de truth y de la rejilla Δ.
+- Analyzer recibe evidencia S3 sellada y diagnósticos permitidos del contrato, nunca episodios, tiempos verdaderos, parámetros, semillas ni etiquetas del Generator. Evaluator abre truth después del sello.
+- La ausencia de snapshot, log o evento capturado no constituye evidencia negativa de funcionamiento ni de recuperación. Una declaración de cobertura completa solo puede respaldar ausencia si el contrato de observación demuestra sensibilidad y alcance suficientes para esa familia/ventana.
+
+### 17.2 Modos S3 comparables
+
+Se conservan los tres modos candidatos como configuraciones versionadas del mismo canal pasivo, no como tecnologías reales ni como supuestos simultáneos:
+
+1. `SNAPSHOT_METRIC`: capturas de estado/métricas con fase, cadencia, cobertura y lag.
+2. `LOG_TRACE_EVENT`: logs/trazas/eventos runtime con emisión, captura, pérdida, duplicación, desorden, timestamp y validez.
+3. `HYBRID_PASSIVE`: combinación de los anteriores con dependencia conjunta explícita.
+
+No se declara un modo ganador ni se presupone que híbrido sea superior. Cada modo debe evaluarse sobre las mismas historias truth emparejadas. Si un modo no puede observar una familia causal, esa limitación se conserva; no se sustituye por una señal inventada ni se extrapola desde otra familia.
+
+### 17.3 Objetos de evaluación de detectabilidad
+
+Para cada modo/versionado, familia causal, duración, fase, estado, unidad y ventana, el Evaluator calcula separadamente:
+
+- **Detección de episodio:** proporción de episodios truth positivos con al menos una señal válida, correctamente vinculada y temporalmente compatible.
+- **Falso positivo:** señal de fallo sin transición funcional truth correspondiente, informada por unidad/ventana y familia aparente.
+- **Localización temporal:** distribución del retardo `capture_time−event_time`, error de localización y proporción de señales fuera de tolerancia; no se reemplaza event_time por capture_time.
+- **Cobertura/observabilidad:** oportunidad de captura, cobertura válida, pérdida, invalidez, opacidad y censura, sin colapsarlas en una tasa única.
+- **Detección de recuperación:** sensibilidad y retardo para reconocer recuperación truth; silencio o desaparición de señales no prueba recuperación.
+- **Clasificación de intervalo:** errores de clasificación de A_B1 por intervalo y su propagación a V_cont; se informa por separado de la detección de episodios.
+
+Las métricas se estratifican como mínimo por familia causal, `r_c=d_e/c_j`, `r_Δ=d_e/Δ`, fase respecto a captura/frontera, modo/versionado, brazo y condición de pérdida/retardo. Se preservan las combinaciones y dependencias conjuntas; no se multiplican sensibilidades ni se supone independencia entre snapshots, logs, componentes o unidades.
+
+### 17.4 Curva de detectabilidad y significado de δ_det
+
+El resultado primario de caracterización es la curva de detección condicionada por familia, duración, fase, modo y versión, acompañada de falsos positivos, lag, cobertura y error. La curva se informa incluso cuando no existe un umbral escalar admisible.
+
+`δ_det` no es un mínimo funcional ni una tolerancia del servicio. Es un resumen derivado del canal: para un umbral de rendimiento `p*` aprobado ex ante, `δ_det(familia, modo, versión, fase)` es la menor duración del dominio evaluado para la que el límite inferior del criterio de detección preespecificado alcanza `p*`, manteniendo el criterio de falso positivo y cobertura. Si la curva no es monótona, hay huecos de soporte o el criterio no se alcanza, se informa el conjunto de duraciones identificables/no identificables; no se fuerza un único δ_det.
+
+`p*`, nivel de confianza, criterio de falso positivo, tolerancia de localización y mínimo de cobertura son decisiones normativas/metrológicas todavía OPEN. No se asignan valores. Hasta que se aprueben, no existe un δ_det escalar confirmatorio: se conservan curvas y bounds.
+
+### 17.5 Reglas de Analyzer
+
+- Evidencia positiva válida puede respaldar una transición solo dentro de su familia, unidad, versión y tolerancia temporal calibradas.
+- Evidencia negativa sobre un episodio requiere cobertura/observabilidad demostrada para el periodo, familia y modo; no equivale a ausencia de registro.
+- Si la detección es insuficiente, diferencial, no calibrada o fuera del soporte, el Analyzer devuelve `?`, bounds o `INDETERMINATE_MEASUREMENT`/`NOT_IDENTIFIED` según el estimando; nunca convierte silencio en 1 ni en recuperación.
+- El ITT de paquete puede conservar identificación si su resultado y medición la permiten, aunque la atribución focal de ΔT_acc o la clasificación de V_cont quede indeterminada. No se transfiere identificación entre estimandos.
+- La regla estricta truth de DEC-C10-102 no se relaja por limitaciones de S3: cualquier violación funcional truth afecta a todos los intervalos que intersecta, incluso si S3 no la detecta.
+
+### 17.6 Relación con horizonte y rejilla
+
+- `t_c,max` cubre la última transición causal posible, incluida recuperación final; `τ_follow` cubre la cola necesaria para capturar/adjudicar ese estado terminal según el soporte de lag/captura S3. Si el lag no tiene cota defendible, el horizonte puntual queda abierto y se informa censura/bounds.
+- La cadencia/fase S3 no define Δ. Δ define la agregación normativa de V_cont; la captura S3 define qué verdad puede observar Analyzer.
+- Se adopta la convención determinista `[b_k,b_{k+1})` para intervalos internos: un evento exactamente en frontera pertenece al intervalo que comienza allí. `T*` pertenece al último intervalo. No hay solapamiento ni hueco de frontera.
+- Un episodio truth breve puede hacer no conforme un intervalo completo aunque S3 no lo detecte. Eso es error/limitación de observación, no permiso para introducir duración mínima funcional.
+- La selección de Δ/K requiere después criterios aprobados de precisión/estabilidad de V_cont y sensibilidad de fase; no se deduce de δ_det ni de la cadencia.
+
+### 17.7 Dictamen del gate
+
+**CERRADO ESTRUCTURALMENTE:** firewall truth/S3/Analyzer/Evaluator; tres modos pasivos comparables; métricas separadas de detección, falsos positivos, localización, cobertura, recuperación y clasificación de intervalo; estratificación por familia/duración/fase; definición no normativa de curva y δ_det condicional a p*; reglas de abstención; convención de fronteras.
+
+**ABIERTO NORMATIVAMENTE/NUMÉRICAMENTE:** selección de modo confirmatorio, soporte y parámetros de cada modo, p*, nivel de confianza, error falso positivo tolerable, tolerancia temporal, cobertura mínima, unidad, soporte de lag, τ_follow, Δ y K. No se eligen cifras ni modo por conveniencia.
+
+**Dictamen:** `S3_DETECTABILITY_EVALUATION_CONTRACT_CLOSED_STRUCTURALLY / CURVE_FIRST / DELTA_DET_CONDITIONAL_ON_PSTAR / NUMERIC_CALIBRATION_OPEN / NO_DATA / NO_CALIBRATION / NO_EXECUTION / NOT_DESIGN_FROZEN`.
