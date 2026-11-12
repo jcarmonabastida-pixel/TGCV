@@ -2362,3 +2362,23 @@ Se completa el siguiente gate de §62 mediante §18 de `C10_S_TEMPORAL_HORIZON_A
 **Siguiente gate:** cerrar la regla de suficiencia/precisión que determinará cuándo una recuperación causal sintética cuenta como satisfactoria, cuándo es falsa recuperación y cuándo el Analyzer debe abstenerse. Debe derivarse de los estimandos y del roster de falsadores existentes, no de un p* aislado ni de un umbral arbitrario. Después se podrán justificar los rangos de sensibilidad y el tamaño computacional; sin ejecución científica todavía.
 
 Se mantienen `scientific_execution=false`, `execution_authorized=false`, `NOT_DESIGN_FROZEN`; PR #116 Draft; sin cambios en main.
+
+## 64. Regla de suficiencia para recuperación causal — cierre estructural (2026-11-12)
+
+Se desarrolla el gate indicado en §63 mediante §16.218 del plan integrado.
+
+**Cierre documental:**
+- La adjudicación se realiza por estimando × resultado × población × horizonte × escenario × régimen de observación; no por score global.
+- ITT-D2, efecto de accesibilidad θ_A, C4, LATE_f y primeras etapas C2 quedan separados. Ninguna primera etapa sustituye a un efecto causal de Value.
+- La recuperación válida exige identificación correcta, estimando correcto, inferencia calibrada, precisión/error admisibles y ausencia de falsa atribución.
+- Falsa recuperación, abstención correcta y abstención excesiva se clasifican separadamente. Una falsa atribución focal en un mundo no identificado es un fallo crítico no compensable.
+- El nulo se evalúa por error tipo I; no significación no demuestra equivalencia. Los efectos negativos deben conservar su signo. Los mundos directos, colaterales, sin soporte, con interferencia o medición adversarial deben producir la salida que dicta su identificación.
+- La calibración y la evaluación final usan configuraciones/réplicas separadas; las métricas se presentan por estimando y celda, sin agregación compensatoria.
+
+**Brecha técnica confirmada por revisión estática del módulo integrado:** no contempla PARTIALLY_IDENTIFIED/bounds, ni el conjunto de métricas Monte Carlo y de falsa atribución/abstención exigido; tampoco implementa C4 ni LATE_f completos. La suite previa no acredita estos comportamientos.
+
+**Límite cuantitativo:** los criterios P178 de α=0.05, potencia≥0.80, cobertura nominal 95% y MCSE≤0.005 siguen siendo propuestas dentro de su ámbito focal original; no se trasladan automáticamente a todos los estimandos del experimento integrado. MDE, precisión/anchura, equivalencia y tasas tolerables de falsa atribución/abstención requieren decisión cuantitativa consolidada. No se inventan valores.
+
+**Dictamen:** CAUSAL_RECOVERY_SUFFICIENCY_RULE_CLOSED_STRUCTURALLY / NUMERIC_ACCEPTANCE_THRESHOLDS_OPEN / INTEGRATED_HARNESS_GAP_CONFIRMED_STATICALLY / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** una única decisión cuantitativa consolidada para el benchmark integrado, con recomendación trazable y sin iniciar calibración hasta autorización expresa. Se mantienen scientific_execution=false, execution_authorized=false; PR #116 Draft; main intacta.
