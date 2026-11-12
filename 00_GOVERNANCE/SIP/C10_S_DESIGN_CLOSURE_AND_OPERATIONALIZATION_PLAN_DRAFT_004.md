@@ -5610,3 +5610,97 @@ Se desarrolla §16.216 mediante §18 de `C10_S_TEMPORAL_HORIZON_AND_S4R_INTEGRAT
 **Abierto:** p*, nivel de confianza, tolerancias de precisión/error, cobertura inferencial, tasas admisibles de falsa recuperación y abstención excesiva, parámetros/soporte por modo y selección posterior de un modo confirmatorio si fuese necesaria. Hasta entonces solo curvas/distribuciones; no PASS/FAIL confirmatorio.
 
 **Dictamen:** `S3_PAIRED_MODE_COMPARISON_DEFINED / CAUSAL_RECOVERY_AND_ABSTENTION_CRITERIA_DEFINED / NO_A_PRIORI_WINNER / NUMERIC_ACCEPTANCE_THRESHOLDS_OPEN / NO_CALIBRATION / NO_EXECUTION / NOT_DESIGN_FROZEN`.
+
+## 16.218. Regla integrada de suficiencia para recuperación causal y abstención (2026-11-12)
+
+**Objeto:** desarrollar el gate siguiente a §16.217. Define cuándo el harness sintético recupera correctamente una contribución causal conocida, cuándo incurre en falsa atribución y cuándo debe abstenerse. No aprueba todavía umbrales numéricos ni autoriza calibración o ejecución.
+
+### 16.218.1. Unidad de adjudicación y oráculo
+
+La unidad de evaluación no es un único score del experimento. Es cada combinación:
+
+estimando × resultado/dimensión × población × horizonte × escenario/mundo × régimen de observación/calibración.
+
+El Generator conserva los potenciales y la verdad exacta de cada combinación. El Analyzer declara primero el estado de identificación y después, solo si procede, la estimación o los bounds. El Evaluator compara la salida sellada con el oráculo sin retroalimentar truth ni parámetros reservados al Analyzer.
+
+La clasificación de identificación del oráculo se determina por las condiciones del estimando y la información observable autorizada al Analyzer, no por el hecho de que el Generator conozca el efecto verdadero.
+
+### 16.218.2. Separación obligatoria por estimando
+
+| Objeto | Qué debe recuperar | Qué no puede sustituirlo |
+|---|---|---|
+| ITT_Z^D2 sobre V_cont | Efecto total de asignación D2, incluyendo vías directas, colaterales e interacciones | Efecto focal de accesibilidad, LATE o mediación |
+| θ_A(q_X*, r_common; V_cont) | Contraste de políticas factibles g_A sobre el vector completo ΔT_acc*, bajo historia basal y régimen no focal común | ITT_Z^D2, C_dep*, A_f*, D_f* aislados o una coordenada de ΔT_acc* |
+| C4 interventional | Efecto mediado bajo intervención longitudinal definida y condiciones de identificación secuencial | ITT−θ_A, ajuste convencional del mediador o residual algebraico |
+| LATE_f^D2 | Efecto local solo si relevancia, independencia, exclusión, monotonicidad, consistencia/versiones, no interferencia y medición son defendibles | Wald automático por existir una primera etapa |
+| Primeras etapas C2 | Contrastes separados de asignación sobre C_dep*, A_f*, D_f* y cada coordenada ΔT_acc* | Outcome causal ni prueba suficiente de mediación |
+
+La evaluación se realiza por separado para cada objeto. No se transfiere identificación, precisión, signo ni cobertura entre estimandos, resultados o poblaciones.
+
+### 16.218.3. Regla conjuntiva de recuperación válida
+
+Una salida cuenta como **recuperación válida** únicamente cuando se cumplen conjuntamente:
+
+1. **Identificación correcta:** el estado declarado por Analyzer coincide con el oráculo (IDENTIFIED, PARTIALLY_IDENTIFIED, NOT_IDENTIFIED o INDETERMINATE).
+2. **Objeto correcto:** el estimador corresponde al estimando, resultado, población, horizonte y régimen declarados; no cambia de etiqueta ni de escala.
+3. **Inferencia calibrada:** cuando el punto está identificado, el intervalo/procedimiento tiene cobertura y error tipo I compatibles con los criterios aprobados, y la precisión/potencia alcanza el objetivo ex ante aplicable.
+4. **Magnitud y dirección:** signo, sesgo, RMSE y error se evalúan frente al valor exacto del oráculo en la escala de V_cont; no basta acertar el signo ni que un intervalo contenga el truth por azar en una réplica.
+5. **Observación admisible:** la medición S3, cobertura, pérdida, censura, dependencia y calibración permiten el dictamen emitido. El Analyzer no puede usar parámetros reservados ni completar datos por conveniencia.
+6. **No falsa atribución:** ITT, efecto focal, LATE y mediación permanecen separados; las vías directas/colaterales no se etiquetan como efecto de accesibilidad.
+
+La recuperación estadística se juzga sobre réplicas independientes y métricas de operación, no por una sola ejecución ni por la coincidencia puntual de una estimación con el oráculo.
+
+### 16.218.4. Falsa recuperación, abstención correcta y abstención excesiva
+
+- **Falsa recuperación:** Analyzer emite una estimación puntual o atribución focal cuando el oráculo es NOT_IDENTIFIED/INDETERMINATE; confunde ITT con θ_A/LATE/C4; ignora falta de soporte, vía directa/colateral no separada, interferencia o error de medición; o presenta como recuperado un efecto cuya precisión/error incumple el criterio aprobado.
+- **Abstención correcta:** Analyzer devuelve NOT_IDENTIFIED cuando no hay identificación; INDETERMINATE cuando la evidencia/medición no permite decidir; o PARTIALLY_IDENTIFIED con bounds cuando las restricciones disponibles solo sostienen identificación parcial. Los bounds deben cubrir la verdad DGP bajo el procedimiento y supuestos declarados.
+- **Abstención excesiva:** Analyzer no recupera un estimando que el oráculo considera identificado y para el que el canal entrega información/calibración suficiente. Se mide separadamente en el núcleo limpio y en cada escenario identificable.
+- **Fallo de clasificación:** una salida puede tener un valor numérico cercano al truth y aun así fallar si su estado de identificación o etiqueta causal es incorrecto.
+
+Cualquier falsa atribución focal en un mundo no identificado se informa como fallo crítico independiente. No puede compensarse con menor RMSE, buena detección S3, potencia o cobertura en otros mundos.
+
+### 16.218.5. Nulo, adversariales y significado de refutar
+
+El roster existente debe contener, sin expansión factorial innecesaria, al menos las clases ya definidas: efecto focal positivo, nulo general, nulo condicionado, adverso/negativo, señal débil, primera etapa nula/débil, vía directa, vía colateral/alternativa, interacción/heterogeneidad, soporte fallido, medición diferencial/degradada, pérdida/censura e interferencia.
+
+- En el nulo, se evalúa control del error tipo I; no rechazar H0 no demuestra equivalencia ni efecto exactamente cero.
+- Una afirmación de equivalencia requiere margen de equivalencia justificado y aprobado ex ante; no se inventa.
+- En el efecto negativo/adverso, la recuperación debe preservar signo y estimando, no forzar positividad.
+- En los mundos directos/colaterales o sin soporte, la salida debe distinguir el ITT de paquete de la atribución focal; cuando esta última no está identificada, no se acepta estimación puntual.
+- El experimento puede demostrar que el método recupera una contribución conocida dentro de las condiciones estipuladas, o refutar su suficiencia mostrando falsa atribución, mala cobertura, sesgo, falta de potencia o abstención excesiva. No demuestra por sí mismo el efecto en una migración real ni una afirmación TGCV universal.
+
+### 16.218.6. Métricas no compensatorias y separación calibración/evaluación
+
+El informe conservará, por estimando y celda, al menos: error de identificación; falsa recuperación; abstención correcta/excesiva; sesgo; RMSE; cobertura y anchura de intervalos; error tipo I; potencia/curva de recuperación; cobertura de bounds; error de signo; error de medición y cobertura S3; MCSE de cada métrica.
+
+No se permite un score agregado que oculte falsas atribuciones o abstenciones incorrectas. Se informan curvas y distribuciones por escenario/modo y también el peor comportamiento entre falsadores prioritarios.
+
+Los datos/configuraciones usados para seleccionar o calibrar Analyzer, método, canal o parámetros se separan de las réplicas/configuraciones de evaluación final. La evaluación no puede retroalimentar el ajuste y volver a computarse como PASS sobre los mismos casos.
+
+### 16.218.7. Reutilización de criterios cuantitativos existentes y límites
+
+Los criterios de §39 (α bilateral 0.05, potencia objetivo ≥0.80, cobertura nominal 95% y MCSE objetivo ≤0.005 para tasas) permanecen **propuestas previas**, no decisiones aprobadas en este gate. Su ámbito original es el benchmark focal θ_A de P178; no se transfieren automáticamente a ITT_Z^D2, C4, LATE_f ni al harness integrado. El replay P178 ya cerrado no se repite ni se presenta como validación del Analyzer integrado.
+
+No existe todavía margen de precisión/anchura, MDE/relevancia, equivalencia, tasa admisible de falsa recuperación ni abstención excesiva aprobado para el experimento integrado. La escala V_cont∈[0,1] permite reportar errores y anchuras en escala original, pero no determina por sí sola qué error es científicamente aceptable.
+
+Por tanto, se cierra la **regla lógica y estadística de adjudicación**, no los umbrales numéricos. No se emite PASS/FAIL confirmatorio hasta que los criterios aplicables estén aprobados y calibrados.
+
+### 16.218.8. Auditoría de suficiencia del módulo integrado actual
+
+La revisión estática de vcont_integrated_harness.py confirma que el módulo todavía no implementa este contrato completo:
+- su tipo de identificación no incluye PARTIALLY_IDENTIFIED ni una salida de bounds;
+- el Evaluator compara errores puntuales y una regla limitada de abstención, pero no evalúa cobertura de bounds, error tipo I, potencia, sesgo/RMSE Monte Carlo ni tasas de falsa recuperación/abstención excesiva por estimando;
+- la salida focal y el ITT de paquete están separados, pero el módulo no implementa C4 ni un contrato completo de LATE_f;
+- el módulo no es aún el DGP integrado completo de D2, Reach/trayectoria, O-CONF y Value general; V_cont es la instancia escalar seleccionada provisionalmente.
+
+Estas son brechas de implementación contra el contrato, no resultados de una ejecución. La suite de contratos previa no las cierra por el mero hecho de pasar.
+
+### 16.218.9. Dictamen y siguiente operación
+
+**CERRADO DOCUMENTALMENTE:** regla conjuntiva de recuperación; clasificación de falsa recuperación/abstención; evaluación separada por estimando; tratamiento de nulos y adversariales; métricas no compensatorias; separación calibración/evaluación.
+
+**ABIERTO:** aprobación de umbrales cuantitativos de operación; criterios de precisión/MDE/equivalencia y coste de error; extensión del harness a PARTIALLY_IDENTIFIED/bounds y métricas Monte Carlo; implementación y validación integrada.
+
+**Dictamen:** CAUSAL_RECOVERY_SUFFICIENCY_RULE_CLOSED_STRUCTURALLY / NUMERIC_ACCEPTANCE_THRESHOLDS_OPEN / INTEGRATED_HARNESS_GAP_CONFIRMED_STATICALLY / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** consolidar en una sola decisión los criterios cuantitativos para el benchmark integrado, separando lo reutilizable de P178 de lo que requiere justificación adicional. La recomendación deberá proponer un punto de partida para α/cobertura/MCSE y una regla de selección de precisión/potencia sin inventar MDE, además de un límite explícito de falsa atribución y abstención. No iniciar calibración hasta autorización expresa.
