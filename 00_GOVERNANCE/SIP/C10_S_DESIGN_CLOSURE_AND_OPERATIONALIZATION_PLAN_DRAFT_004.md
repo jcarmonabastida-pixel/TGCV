@@ -5408,3 +5408,92 @@ Se reutiliza el roster dirigido de §16.208.2 y los perfiles R0–R3 del inventa
 **Dictamen:** FINITE_WORLD_TOPOLOGY_AND_FALSIFIER_MAPPING_RECONCILED_CANDIDATE / F_STAR_AND_REACH_ORACLE_OPEN / H_TIME_OPEN / COVERAGE_NOT_VERIFIED / NOT_DESIGN_FROZEN / NO_DATA / NO_IMPLEMENTATION / NO_EXECUTION.
 
 La siguiente operación del mismo cierre integrado es reconciliar las funciones generadoras por bloque causal y sus dependencias contrafactuales con este mapping, sin asignar distribuciones ni parámetros numéricos. Debe quedar explícito qué función genera cada variable, qué exógenas comparte, qué invariantes preserva y qué ramas directas/colaterales/interferentes activa cada clase de mundo.
+
+## 16.212. Reconciliación de funciones generadoras y dependencias contrafactuales por bloque causal (2026-11-12)
+
+**Tipo:** cierre documental de la siguiente operación de §58, sobre §16.199–16.211 y los contratos DGP A–B–C. No es una nueva familia de mundos ni una parametrización. No genera datos, no estima potenciales y no habilita implementación o ejecución.
+**Objetivo:** hacer explícitos, para cada bloque del universo finito, la función generadora, sus entradas y salidas, las exógenas que deben conservarse entre contrafactuales, las invariantes del mundo y las ramas no focales que pueden activarse.
+
+### 16.212.1. Convención contrafactual común
+
+1. Para cada UE (o UA/clúster cuando corresponda) el Generator define una historia basal y un vector de exógenas latentes versionado, U_i. U_i puede descomponerse en componentes por mecanismo (asignación, cumplimiento, recepción, instalación, transformación, trayectoria, resultado y observación), pero su distribución conjunta y sus dependencias no se presuponen independientes.
+2. Los potenciales bajo asignaciones, políticas o intervenciones distintas se obtienen aplicando las funciones estructurales declaradas a la misma historia basal y al mismo vector de tipo/exógenas de la unidad, salvo que el escenario declare una intervención sobre el propio mecanismo exógeno. No se vuelve a sortear una unidad latente distinta para cada brazo contrafactual. Esta convención conserva la identidad de la unidad y hace comparables sus potenciales; no identifica por sí sola la cópula ni la distribución de U_i.
+3. Las exógenas específicas de un evento pueden ser compartidas entre regímenes o tener componentes régimen-específicos solo si la regla se declara en la configuración. La correlación entre componentes, la independencia y la monotonicidad quedan sin imponer. Una asignación aleatoria usa una exógena U_Z separada e independiente de los potenciales solo cuando el diseño del mundo estipula esa aleatorización; no se presume en mundos observacionales o adversariales.
+4. Las funciones son tipadas, versionadas y temporales. Cada salida conserva estado {1,0,?} cuando el contrato es trivalente, identidad/unidad, versión, tiempo y provenance. Un argumento desconocido no se sustituye por cero. Las funciones deterministas por definición (p. ej., W_programmed(z)=z) no se convierten en distribuciones.
+5. Se distingue entre (a) potenciales bajo asignación D2, (b) potenciales bajo políticas factibles g_A0/g_A1 para ΔT_acc*, y (c) intervenciones mediadoras longitudinales C4 si el escenario las declara. No se identifica una familia de potenciales con otra ni se obtiene C4 por resta.
+
+### 16.212.2. Tabla integrada de funciones, exógenas, invariantes y potenciales
+
+| Bloque | Función generadora y entradas permitidas | Exógenas/dependencias contrafactuales | Invariantes y salidas |
+|---|---|---|---|
+| Basal y población | X_i,H0_i,C_c,i,E_i,App_i,C_dep,i0*, predicados A_f,i0*,F_alt,i0* = f_base(U_base,i; regla del mundo) | U_base,i compartida en todos los regímenes de la misma UE; no incorpora variables post-Z. Las dependencias entre campos basales se declaran conjuntamente, no se presumen independientes | P*_{τ2} se determina pre-Z según definición vigente; C_auth,base=1 común en D2 y corresponde a AUTH_f, no es un factor aleatorio adicional. C_dep,0*=0 no implica A_f,0*=0. Need_preZ no filtra la cohorte |
+| Asignación | Z_i = f_Z(UA_i,strata_i,π_h,U_Z,i) | U_Z independiente de U potencial solo en los mundos aleatorizados que así lo estipulen; U_Z compartida entre el registro de asignación y su provenance, no se vuelve a sortear por resultado | UA=UE solo en mundo aislado; si hay interferencia, UA/clúster o mapa de exposición. Probabilidades/ratio/semilla permanecen como configuración, no como valores fijados |
+| Política/programación | W_prog,i(z)=z para D2; policy_i(z)=f_policy(z,version,history) | U_policy,i puede compartirse con cumplimiento si el mecanismo causal así lo declara; no se infiere cumplimiento de programación | La regla de programación D2 es invariante; D1 y g_A no se sustituyen por D2 |
+| Intento/recepción | W_att,i(z)=f_att(W_prog,z,X,H0,version,U_att); Rec_i(z)=f_rec(W_att,policy,version,logistics,environment,U_rec) | U_att/U_rec pueden depender de historia y compartir causas latentes; la dependencia conjunta se declara. Intento de fondo tiene mecanismo explícito | W_att, receipt y programación son variables distintas; potenciales por z preservados. Sin parámetros, tasas ni independencia inventados |
+| Instalación y C_dep | S_inst,i(z)=f_inst(Rec,version,environment,U_inst); C_dep,i(z)=I(C_install∧C_integrity∧C_compat∧C_oper) según contratos | U_inst puede compartir causas con recepción y dependencias; vector de cuatro componentes se genera conjuntamente, no por marginales independientes salvo justificación | Instalación no equivale a C_dep; C_dep no equivale a A_f ni ΔT_acc. Fallos parciales y rollback permanecen distintos |
+| A_f y D_f | A_f,i(t)=h_f(ID,REL,COND,AUTH,RES,DEP,¬BLOCK; estado/snapshot); D_f,i=I(A_f,i0=0 ∧ A_f,i1=1) | U_access puede compartir causas con provisión, recursos, entorno y dependencias; cualquier vía Z/B→AUTH, RES, capacidad, información o dominio se declara como colateral | Se aplica la lógica trivalente y la conjunción completa. C_auth,base=1 es invariante común en D2 limpio por DEC-C10-067; su cambio en mundo adversarial es desviación explícita, no ruido inadvertido |
+| T_acc y ΔT_acc | S_T,i*(t)=f_T(historia, identidad, versión, frontera, U_T); ΔT_acc=Diff_G,M(S_pre,S_post) | U_T puede compartir causas con U_access y recursos; el mismo vector exógeno de unidad se conserva entre potenciales. La función puede generar ΔU,ΔR,ΔC,ΔX correlacionados | Se conservan las cuatro coordenadas; ΔE_T queda fuera. Matching no comparable produce UNKNOWN, no diff cero. A_f/D_f son proyecciones focales, no sustitutos del vector |
+| Reach y rutas | (Reach_i,Π_i)=f_reach(T_acc,G,H,preconditions,resources,windows,blocks,alternatives,U_reach) | U_reach puede compartir causas con accesibilidad, alternativas y recursos; rutas focal y alternativa se evalúan bajo la misma historia/contexto, sin transferir estados entre rutas | Reach=0 exige universo exhaustivo; Reach=1 al menos una ruta completa verdadera; resto ?. πF y πA conservan sus dos pasos candidatos; G/H global y H_time no congelados |
+| Trayectoria downstream | (K,Consider,Selection,Start,Exec)=f_path(Reach,Π,knowledge,actors,history,U_path) | U_knowledge/U_path pueden compartir causas con X,H0, oportunidad y outcomes; selección puede ser post-Z y no se usa para filtrar ITT | Etapas separadas y potenciales coherentes; ejecución no reconstruye retrospectivamente accesibilidad ni Reach |
+| Outcome técnico | O_i(z,g)=f_O(ΔT_acc,Reach,Π,trajectory,D_i,C_i,history,U_O; regla de resultado del escenario) | U_O puede compartir causas con U_path y U_value. D_i/C_i son mecanismos explícitos, no residuales. Las ramas directas/colaterales pueden activarse por mundo | Outcome no es O-CONF ni Value automáticamente. Se declara unidad, dimensión, escala y horizonte; no se infiere causalidad focal por temporalidad |
+| Value contextual | V_i(z,g)=f_V(B1,Need_preZ,consecuencia,autoridad/perspectiva,ΔT_acc,Reach,trajectory,O,D_i,C_i,history,U_V; contrato V1 del mundo) | U_V puede compartir causas con U_O y U_path; la dependencia debe declararse. La función y sus argumentos pueden omitir mediadores o añadir vías independientes si el mundo lo define | V1 se especifica como consecuencia contextual no circular, independiente de una definición automática por accesibilidad/éxito técnico. Sin contrato completo, VALUE=NOT_INSTANTIATED; no se inventa escala ni pesos |
+| Interferencia | Exposure_i=f_G(Z_-i,shared_resources,network,U_G); Y_i=f_Y(...,Exposure_i) | Exógenas compartidas y asignaciones de vecinos/clúster determinan potenciales; mapa G_i(Z_-i) o unidad cluster debe ser explícito | No SUTVA/ITT individual por defecto. Sin mapa o clúster suficiente, salida NOT_IDENTIFIED/INDETERMINATE |
+| Observación | E_i,obs = f_obs(truth_i,coverage,error,lag,missingness,censoring,U_obs) | U_obs puede depender de brazo, estado, versión, resultado o unidad; no se presume MCAR/MAR ni independencia del truth. Su mecanismo no altera truth | Analyzer recibe solo evidencia permitida y Z; Generator/Evaluator conservan truth. Missing/UNKNOWN no se convierte en cero; Evaluator abre truth tras sellado |
+
+Esta tabla concreta y amplía el ledger de §16.200 y el crosswalk de §16.199; no cambia sus objetos ni ratifica las propuestas que permanecen abiertas. La correspondencia basal de C_auth,base se interpreta conforme a DEC-C10-067 y §16.202/16.210, que prevalecen sobre la mención histórica de §16.200.1 que la describía como disputa abierta.
+
+### 16.212.3. Contrafactuales que deben coexistir sin confundirse
+
+| Familia | Intervención/contraste | Potenciales que conserva | Interpretación admisible |
+|---|---|---|---|
+| D2 paquete | Z=1 frente a Z=0, con W_prog(z)=z | S_i(z), incluyendo todas las etapas y ramas activadas por el paquete | ITT total de asignación a D2; no atribución focal automática |
+| Accesibilidad focal/general | g_A1 frente a g_A0 bajo q_X* común y régimen no focal r_common declarado | Y_i(g_A1,r_common) y Y_i(g_A0,r_common), con ΔT_acc completo y soporte factible | θ_A(q_X*;Y) solo para el resultado/versión/población/horizonte definidos y si los gates de soporte/consistencia/medición se cumplen |
+| Mediación interventional | intervención secuencial sobre mediador/historia L bajo C4 | Potenciales longitudinales con orden temporal y confusores inducidos por Z explícitos | Efecto interventional solo con estrategia de identificación longitudinal; nunca ITT−θ_A |
+| Interferencia | asignación de UA/clúster o exposición G_i(Z_-i) | Y_i(z_i,g_i) o potenciales de clúster declarados | Efecto bajo régimen de exposición definido; sin mapa suficiente, no identificado |
+| Observación | mismo truth bajo canales observacionales distintos | Truth invariante y E_obs potencial por canal/brazo/estado | Robustez de medición/Analyzer; no confundir cambio de evidencia con ΔT_acc |
+
+Los potenciales de una misma UE deben respetar consistencia: el valor realizado coincide con el potencial correspondiente al régimen efectivamente asignado/aplicado; los potenciales no observados permanecen en truth_dgp. Los cruces entre familias solo se realizan si el DGP declara una intervención conjunta coherente y sus restricciones de soporte. No se reconstruye un contrafactual mezclando etapas observadas de brazos incompatibles.
+
+### 16.212.4. Matriz de ramas por clase de mundo ya inventariada
+
+| Clase de mundo de §16.211 | Bloques que varían/activan | Invariantes que deben conservarse | Contraste y salida de control |
+|---|---|---|---|
+| Focal limpio | g_A/ΔT_acc cambia; ramas directas, colaterales e interferencia desactivadas por construcción | q_X común, r_common fijo, C_auth,base=1, unidad aislada, soporte y medición declarados | Recuperar θ_A para V1 si está instanciado; D2 ITT se reporta aparte |
+| Nulo | Primera etapa nula o respuesta V1 nula, según la definición exacta del nulo | No alterar otros bloques sin declararlo; distinguir nulo de accesibilidad y nulo de resultado | Analyzer no fabrica efecto; resultado por estimando, con precisión/abstención apropiada |
+| Fallo por etapas | Mecanismo de intento, recepción, instalación o componente de C_dep falla | Mantener separados W_prog, W_att, receipt, S_inst, C_dep y A_f | ITT/primeras etapas separadas; nunca imputar ΔT_acc desde el éxito previo |
+| Focal adverso | g_A induce cambio adverso en coordenada(s) declarada(s) de ΔT_acc, Reach o V1 | Misma historia basal y potenciales coherentes; no imponer monotonicidad positiva | Recuperar signo o informar límites/no identificación |
+| Alternativa basal (R1) | πA está disponible y estable; πF puede abrirse | Misma entrada, destino/contexto y F* común por ruta; alternativas no se excluyen de población primaria | Distinguir apertura focal de Reach/resultado; no inferir exclusividad |
+| Alternativa afectada/colateral (R2) | B/Z modifica A1/A2, dependencias, recursos o rutas compartidas | Registrar cambio no focal separado de ΔT_acc focal; mantener verdad de cada ruta | ITT paquete; abstenerse de atribución focal si no se separa |
+| Vía directa | D_i(z) afecta Outcome/Value sin pasar por ΔT_acc | Mantener explícito el bloque focal y r_common; no absorber D_i como error | ITT de paquete frente a θ_A; no atribución focal espuria |
+| Interacción/heterogeneidad | Funciones dependen de X,H0,C_c, versión, recurso o exposición | Exógenas basales compartidas entre potenciales; soporte condicional explícito | Efectos condicionales/estandarización solo con soporte; no transportar LATE |
+| IV adversarial | Primera etapa nula/débil, defiers o exclusión/monotonicidad violadas | La verdad del mundo conserva la violación; no se repara desde el Analyzer | Rechazar Wald inválido; bounds/NOT_IDENTIFIED/INDETERMINATE |
+| Interferencia | U_G y exposición/recursos compartidos activos | Identidad de clúster/mapa y potenciales de exposición completos | Inferencia por UA/clúster; sin mapa, abstención |
+| Observación adversarial | Error, pérdida, lag, cobertura o sesgo diferencial por Z/estado/versión | Truth estructural idéntica al canal de referencia; canal separado | Recuperación solo si canal identifica; si no, bounds/abstención |
+| Soporte/ausencia/censura | Positividad fallida, historia imposible, ausencia estructural o censura | No modificar ex post la cohorte ni imputar masas/valores | Restringir estimando ex ante con justificación o declarar falta de soporte/no identificación |
+
+Esta matriz es un cruce de las clases existentes, no un factorial. Una clase puede combinarse con otra únicamente cuando el roster dirigido ya contempla la combinación y el mecanismo conjunto se declara; no se crean nuevos IDs ni nuevas familias de mundos.
+
+### 16.212.5. Separación de ITT, atribución focal y Value
+
+1. El ITT-D2 es el efecto total de Z sobre cada resultado efectivamente instanciado. Incluye las rutas de política que el mundo active: provisión, accesibilidad, vía directa, colateral, interacción e interferencia según corresponda.
+2. θ_A(q_X*;V1) contrasta políticas factibles g_A1/g_A0 sobre ΔT_acc* completo bajo historia basal común y régimen no focal r_common explícito. No se identifica sustituyendo g_A por Z ni interpretando el ITT como mediación.
+3. La atribución focal requiere que la intervención sobre accesibilidad esté definida, tenga soporte/consistencia/versiones, medición suficiente y que las vías no focales estén fijadas, separadas o identificadas. Si no, la salida admisible es efecto de paquete, bounds o NOT_IDENTIFIED.
+4. Value no se define como función automática de ΔT_acc, Reach, trayectoria, ejecución u Outcome. El DGP debe declarar una consecuencia contextual V1 y su regla antes de generar datos; la función puede contener vías adicionales o interacción si la clase de mundo lo requiere. Si falta perspectiva/autoridad, regla, unidad/escala, baseline u horizonte, el estado es NOT_INSTANTIATED y no se calibra θ_A sobre Value.
+5. P178 permanece como benchmark focal ideal no confirmatorio. Su replay no valida estas funciones, la separación causal ni la recuperación de las clases adversariales de §16.211.
+
+### 16.212.6. Gate de suficiencia y decisiones todavía abiertas
+
+| Requisito del contrato | Estado tras esta reconciliación | Qué falta sin bloquear la definición lógica |
+|---|---|---|
+| Bloques/orden causal y función mínima por variable | RECONCILED SYMBOLICALLY sobre §16.199–16.200 y A–B–C | Dominio/codominio y parámetros concretos de cada configuración de escenario |
+| Exógenas compartidas y coherencia contrafactual | RECONCILED AS DESIGN RULE; distribución/cópula no asumida | Elegir acoplamiento/distribución por escenario y justificarlo antes de calibración |
+| Invariantes basales D2 | C_auth,base=1 común y AUTH_f correspondiente; W_prog(z)=z; separación de etapas | Desviaciones adversariales deben etiquetarse y versionarse por mundo |
+| Ramas directas/colaterales/interacción | ROSTER MAPPED; magnitudes y funciones por escenario OPEN | Especificar activación y función exacta en cada configuración |
+| Alternativas/Reach/interferencia | RUTAS Y CLASES MAPEADAS; G/H/F*/O-CONF y mapas concretos OPEN | Exhaustividad, oráculo, horizonte y exposición donde aplique |
+| Outcome/Value | CONTRATO GENÉRICO REUTILIZADO; V1 NO INSTANTIATED | Selección explícita de consecuencia, perspectiva/autoridad, regla, unidad/escala, baseline y horizonte |
+| Observación y firewall | SEPARACIÓN LÓGICA REUTILIZADA | Modelo de canal, parámetros, calibración y seguridad técnica del firewall |
+| Estimandos y abstención | ITT/g_A/C4 separados; salidas de no-identificación preservadas | Factibilidad, soporte, métodos, sensibilidad, precisión y criterios ex ante |
+
+**Resultado del gate:** CAUSAL_GENERATING_FUNCTIONS_AND_COUNTERFACTUAL_DEPENDENCIES_RECONCILED_SYMBOLICALLY / FINITE_WORLD_ROSTER_REUSED / NUMERIC_DISTRIBUTIONS_NOT_ASSIGNED / VALUE_V1_NOT_INSTANTIATED / F_STAR_REACH_ORACLE_AND_H_TIME_OPEN / NO_DATA / NO_IMPLEMENTATION / NO_SCIENTIFIC_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate del paquete integrado:** adjudicar el contrato mínimo de la instancia sintética V1 (consecuencia B1, perspectiva/autoridad, regla no circular, unidad/escala, baseline y horizonte) y verificar que el DGP puede producir efecto positivo, nulo y negativo sin definir Value por accesibilidad. En paralelo, cerrar únicamente las decisiones lógicas imprescindibles de factibilidad/soporte de g_A y r_common; no pasar aún a distribuciones numéricas, potencia ni calibración. La selección V1 no se presume aprobada por esta sección.
