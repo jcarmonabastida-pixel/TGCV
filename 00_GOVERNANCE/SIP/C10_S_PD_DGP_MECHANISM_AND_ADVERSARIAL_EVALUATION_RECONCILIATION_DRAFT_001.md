@@ -171,3 +171,18 @@ Se integra el plan §16.200. Cada etapa D2 tiene función y potencial propio: pr
 q_X* contiene solo historia basal admisible y común: X/H0, C_c con mapping, F_alt,0 como modificador, y otros campos solo si su papel basal se justifica. E/App definen marco; en núcleo limpio C_dep,0=A_f,0*=0 son estipulaciones de diseño. L_m,0 requiere justificación; q_L* es exclusivamente secuencial post-Z cuando C4 lo exige. Need_preZ/S7 no filtra ni genera la cohorte.
 
 ΔT_acc* preserva ΔU*/ΔR*/ΔC*/ΔX*; ΔE_T permanece epistémico. El mapping ΔX* es campo a campo según la función semántica; los campos no adjudicables quedan ?. Se conservan directos, colaterales, interacciones, heterogeneidad y spillovers. No valores numéricos, no nuevos tests, no ejecución.
+
+
+## 15. Especificación del universo generativo: perfiles estructurales y mecanismos de prueba (2026-11-12)
+
+Para evitar duplicar escenarios, R0–R3 del inventario son la dimensión de **perfil estructural** (focal exclusiva, alternativa basal, alternativa afectada, fallo de provisión). Las familias de PD §4 son la dimensión de **mecanismo causal/adversarial**. Cada mundo sintético se selecciona como combinación justificada de perfil y mecanismo(s), no como producto cartesiano obligatorio.
+
+El contraste de cada mundo debe especificar: régimen comparado (D2 principal candidato; D1 secundario), unidad/exposición, historia basal, variables potenciales, función generadora, mecanismo activado, estimando que se pretende recuperar o declarar no identificado, evidencia observada permitida y salida esperada del Analyzer. El Evaluator conserva el estimando/efecto verdadero y las reglas de adjudicación selladas.
+
+Los controles positivos y negativos son indispensables: efecto de accesibilidad conocido y recuperable bajo soporte/supuestos estipulados; efecto nulo; signo adverso; cambio de `ΔT_acc*` sin cambio de resultado; cambio de resultado por vía directa sin `ΔT_acc*`; alternativa que compensa; y escenarios donde el mismo efecto no es identificable por weak/null IV, exclusión violada, falta de soporte, interferencia o medición diferencial. Se reutiliza la taxonomía existente; no se asignan IDs nuevos ni probabilidades.
+
+**Límite científico:** el objetivo no es demostrar que el microdominio de configuración/migración funciona ni que el Analyzer clasifica correctamente un objeto. El objetivo es comprobar si el diseño causal-transformacional puede atribuir, recuperar, refutar o abstenerse correctamente respecto de la contribución de `ΔT_acc*` al resultado/Value. La reconstrucción de T_acc*/Reach es necesaria para validar el mediador, pero no suficiente para demostrar su efecto causal.
+
+Value permanece separado de O-CONF y V_cont y bloqueado hasta la regla PA aprobada. Mientras ese gate siga abierto, solo puede cerrarse la arquitectura generativa y los contrastes para variables ya operacionalizadas; no declarar cerrado el experimento confirmatorio sobre Value.
+
+**Estado:** GENERATIVE_UNIVERSE_RECONCILED / STRUCTURAL_PROFILE × CAUSAL_MECHANISM / POSITIVE_NEGATIVE_CONTROLS_REQUIRED / VALUE_PA_BLOCK / NO_EXECUTION.
