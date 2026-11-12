@@ -2,7 +2,7 @@
 
 **ID:** C10-S-B1-PREZ-VALIDATION-POPULATION-CROSSWALK-001  
 **Versión:** Draft 001 · **Fecha:** 2026-11-12  
-**Estado:** DOCUMENTARY_RECONCILIATION / DEC-C10-095_COMPOSITION_CONSTRAINT_ACCEPTED / COHORT_CENSUS_SCOPE_RECOMMENDATION / E1_E2_NEED_TASK_ONLY / ROSTER_AND_COHORT_NOT_APPROVED / NOT_MATERIALIZED / NOT_EXECUTED  
+**Estado:** DOCUMENTARY_RECONCILIATION / DEC-C10-095_COMPOSITION_CONSTRAINT_ACCEPTED / DEC-C10-096_COHORT_CENSUS_SCOPE_ACCEPTED / E1_E2_NEED_TASK_ONLY / ROSTER_NOT_APPROVED / NOT_MATERIALIZED / NOT_EXECUTED  
 **Rama:** `research/c10-s-consolidation-draft` · **PR:** #116 (Draft)
 
 ## 1. Pregunta de reconciliación
@@ -39,7 +39,7 @@ Estos conjuntos no se presumen idénticos ni intercambiables.
 
 La cohorte de validación Need debe definirse ex ante a partir del roster DGP B1/UE, antes de Z, con identidad y binding válidos, y sin seleccionarla por el valor de Need, por Z, por tratamiento recibido, por elegibilidad P*, por accesibilidad o por resultados posteriores.
 
-**Alcance recomendado, sujeto a aprobación del roster:** usar como cohorte el censo de todas las UE del roster DGP/paquete B1 aprobado al que aplique el paquete Need, sin subcohorte ni selección por Need; evaluar el soporte 1/0 sobre ese marco completo. La pertenencia se resuelve por identidad/binding y versión del roster antes de truth, evidencia y Z. Si los rosters A/B permanecen separados, se toma el roster exacto del paquete B1; no se presupone un roster conjunto. Si falta una clase, el diseño queda bloqueado, sin reparación post hoc. El flujo debe distinguir explícitamente:
+**Alcance aceptado por DEC-C10-096, sujeto todavía a aprobación del roster material:** usar como cohorte el censo de todas las UE del roster DGP/paquete B1 aprobado al que aplique el paquete Need, sin subcohorte ni selección por Need; evaluar el soporte 1/0 sobre ese marco completo. La pertenencia se resuelve por identidad/binding y versión del roster antes de truth, evidencia y Z. Si los rosters A/B permanecen separados, se toma el roster exacto del paquete B1; no se presupone un roster conjunto. Si falta una clase, el diseño queda bloqueado, sin reparación post hoc. El flujo debe distinguir explícitamente:
 - unidades roster elegibles para el paquete por identidad/binding;
 - unidades con estipulación truth íntegra 1/0/?;
 - unidades bloqueadas por defectos de integridad/materialización;
@@ -93,6 +93,6 @@ No se requiere volver a decidir la precedencia P*_{τ2}/P*_F ni crear una nueva 
 
 El soporte truth 1/0 propuesto en el documento de composición es un requisito para evaluar la clasificación del constructo Need en su propia cohorte de validación. No es una condición de elegibilidad causal ni prueba positividad/soporte para D2, q_X*, C1, C3 o C4. La recomendación es definir la cohorte como censo del roster DGP/paquete B1 aprobado, sin selección por Need, Z, observabilidad o resultados, y conservar un flujo transparente de bloqueos y estados indeterminados. La evaluación de Need se limita a E1/E2; Analyzer PE mantiene su evaluación separada.
 
-Este crosswalk sigue siendo una propuesta de alcance poblacional; las reglas de composición y soporte de Need quedan subordinadas a DEC-C10-095, sin que ello apruebe todavía el roster ni la cohorte. No modifica DEC-C10S-C1-POPULATION-PRECEDENCE-001, P*_{τ2}, P*_F, estimandos, asignación, RMA, Evidence→Claim Matrix, STATUS ni main. No crea roster, truth, evidencia, cobertura, schema físico, fixtures o código. No ejecuta validadores, DGP, simulación, replay o análisis estadístico.
+Este crosswalk incorpora el alcance de cohorte aceptado por DEC-C10-096 y las reglas de composición/soporte de DEC-C10-095; no aprueba todavía el roster material ni autoriza materialización. No modifica DEC-C10S-C1-POPULATION-PRECEDENCE-001, P*_{τ2}, P*_F, estimandos, asignación, RMA, Evidence→Claim Matrix, STATUS ni main. No crea roster, truth, evidencia, cobertura, schema físico, fixtures o código. No ejecuta validadores, DGP, simulación, replay o análisis estadístico.
 
 `scientific_execution=false`; `execution_authorized=false`.
