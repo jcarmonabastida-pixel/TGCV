@@ -333,13 +333,17 @@ class Sealer:
         if not candidate.rows:
             raise ContractError("empty evidence")
         allowed = {"unit_id", "cluster_id", "assignment_z", "assignment_g",
-                   "s3_interval", "s3_status", "profile", "version"}
+                   "s3_enabled", "s3_profile_match", "s3_enabled_status",
+                   "s3_profile_status", "profile", "version"}
         for row in candidate.rows:
             if set(row) != allowed:
                 raise FirewallError("reserved/missing evidence fields")
-            if len(row["s3_interval"]) != len(row["s3_status"]):
+            lengths = {len(row[k]) for k in ("s3_enabled", "s3_profile_match",
+                       "s3_enabled_status", "s3_profile_status")}
+            if len(lengths) != 1:
                 raise ContractError("S3 interval/status cardinality mismatch")
-            if any(v not in (0, 1, None) for v in row["s3_interval"]):
+            if any(v not in (0, 1, None) for k in ("s3_enabled", "s3_profile_match")
+                   for v in row[k]):
                 raise ContractError("invalid S3 value")
         manifest = {"run_id": candidate.run_id, "schema": "C10S-VCONT-S3-001",
                     "row_count": len(candidate.rows), "sealer_version": "0.1"}
