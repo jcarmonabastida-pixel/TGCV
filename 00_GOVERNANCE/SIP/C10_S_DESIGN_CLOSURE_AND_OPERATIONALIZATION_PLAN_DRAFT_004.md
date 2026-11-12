@@ -3728,3 +3728,15 @@ No se redefinirá F* ni se debilitará V_cont para fabricar esos contrastes. Si 
 **Resultado:** `N16_RECONCILED_DOCUMENTARILY / FSTAR_CRITERION_DEFINED_AT_FAMILY_LEVEL / OCONF_FICHE_224_PARTIAL / ORACLE_NOT_IMPLEMENTED_NOT_VALIDATED / DISCRIMINATION_CONDITIONAL / DESIGN_FREEZE_NOT_READY / EXECUTION_NOT_AUTHORIZED`.
 
 No se autoriza implementación, validación ejecutable, generación de datos, simulación, estimación ni ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
+
+
+### 16.184.9. Siguiente operación vinculante — integración C+D sin reabrir N16
+
+El siguiente trabajo es retomar la pasada C+D ya documentada en §16.175, no abrir otra auditoría de F*. Debe integrar:
+1. la truth de O-CONF por predicado/ruta definida en §16.184 y la truth temporal B1 de V_cont definida en §§16.182/179;
+2. las funciones estructurales y tablas de potenciales para D2 y g_A, manteniendo ITT de paquete, efecto de accesibilidad y mediación C4 separados;
+3. las rutas directas/colaterales y escenarios adversariales existentes, sin añadir escenarios/IDs por duplicado;
+4. población, soporte, unidad/interferencia y asignación reproducible, dejando sin cifras los parámetros que dependan de criterios aún abiertos;
+5. los contratos P177–P183 para identificación, recuperación, error, missingness, abstención, sensibilidad y precisión por resultado.
+
+La salida será un único crosswalk de variables/potenciales/observación/estimandos y una lista mínima de parámetros derivables frente a decisiones no deducibles. No se calcularán N, probabilidades, réplicas, MDE o tolerancias hasta que estén cerradas las funciones de medida y los criterios de aceptación. No se vuelve a pedir aprobación de Opción A, F*, familias FP, contrato B1, PAR/RUL, V_cont como dimensión ni secuencia de cierre. Sin implementación ni ejecución.
