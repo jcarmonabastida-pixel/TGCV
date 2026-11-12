@@ -2304,3 +2304,14 @@ Se completa la operación que §58 dejó activa en el plan integrado Draft 004, 
 **Pendiente que gobierna el siguiente gate:** instancia sintética V1 no circular con consecuencia B1, perspectiva/autoridad, regla de valoración, unidad/escala, baseline y horizonte; junto con las condiciones mínimas de factibilidad/soporte de g_A y definición de r_common. F*, Reach/O-CONF, G/H_time, distribución de q_X*, acoplamiento de exógenas, funciones/valores por escenario, canal de observación, parámetros y criterios de precisión permanecen abiertos según §16.212. No pasar a distribución numérica, potencia, calibración, implementación o ejecución sin cerrar sus gates y autorización correspondiente.
 
 Se mantiene: `scientific_execution=false`; `execution_authorized=false`; `NOT_DESIGN_FROZEN`; PR #116 Draft; ninguna promoción a main.
+
+## 60. Precedencia de V_cont y siguiente gate temporal integrado (2026-11-12)
+
+**Corrección de continuidad de §59:** no corresponde abrir una instancia genérica V1. DEC-C10-099 ya seleccionó provisionalmente V_cont como dimensión mínima de Value para la extensión sintética B. Se reutilizan DEC-C10-100/101/102 y los contratos B1/Outcome/Value. §16.213 del plan Draft 004 registra la reconciliación.
+
+- V_cont es provisionalmente seleccionada, pero no está materialmente instanciada ni validada como endpoint confirmatorio. P179 continúa vectorial en el marco general.
+- Se mantienen las decisiones aceptadas: ventana desde t0 incluyendo provisión/instalación; intervalos iguales; continuidad estricta en cada intervalo; proporción de intervalos completamente conformes; desconocidos a bounds; truth B1 basada en ENABLED/PROFILE/capacidad funcional; S3 pasivo e imperfecto.
+- O-CONF/F* es adjudicación terminal por ruta, distinta de V_cont temporal. La discriminación entre ambos sigue CONDITIONAL/NOT_VERIFIABLE por falta de oráculo/evento terminal y validación.
+- El siguiente gate es completar el ledger de estados/eventos funcionales B1 y dependencias temporales por mundo R0–R3, clasificando cada parámetro como regla fijada, dominio derivable, sensibilidad con soporte pendiente o decisión normativa. Después se resuelven T*/cola, unidad temporal, K/Δ/fronteras y mecanismo S3; no se inventan números.
+
+**Límites:** no abrir V1 ni otra dimensión; no generar episodios/datos; no parametrizar ni calibrar; no implementación ni ejecución. Permanecen abiertos q_X*/soporte, g_A/r_common, F*/oráculo O-CONF, modelo S3 y precisión. `scientific_execution=false`; `execution_authorized=false`; `NOT_DESIGN_FROZEN`; PR #116 Draft; no promoción a main.
