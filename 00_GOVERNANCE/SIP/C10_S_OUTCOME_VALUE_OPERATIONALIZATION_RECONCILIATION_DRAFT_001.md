@@ -257,3 +257,15 @@ La reconciliación integrada del plan §16.184 y la matriz F* §22 completa la f
 - **Cegamiento/provenance:** Generator conserva truth; Analyzer no recibe truth/potenciales/semillas; su salida se sella antes de Evaluator. Los requisitos son documentales; firewall, custodia y ACL no están probados materialmente.
 
 **Dictamen §224:** O_CONF_FICHE_PARTIAL / NOT_OPERATIONALIZED / NOT_CONFIRMATORY / ORACLE_NOT_IMPLEMENTED_NOT_VALIDATED. No se selecciona O-CONF como Outcome confirmatorio final por mera disponibilidad de su anclaje. La decisión de su papel confirmatorio requiere ficha completa y justificación científica, no solo completar campos.
+
+
+
+## 20. E+F — precisión de V_cont, P178 y estado confirmatorio (2026-11-12)
+
+La precedencia de medición es el plan §16.182 y su integración §16.186. La verdad V_cont es la secuencia latente A_B1(i,k) por UE e intervalo, estipulada por el Generator conforme a ENABLED/PROFILE. S3 es un vector pasivo de señales imperfectas; no es verificador directo, no se reduce por AND/OR/score arbitrario y su media/proporción observada no sustituye a la verdad. El Analyzer no recibe la secuencia latente ni parámetros reservados. Sin modelo de medición identificable con información permitida, la salida es bounds justificadas o NOT_IDENTIFIED/INDETERMINATE_MEASUREMENT.
+
+La agregación no ponderada K^-1 sum A_B1(i,k) sigue CANDIDATE/OPEN y solo sería interpretable como fracción temporal si los intervalos tienen igual duración y la ventana/rejilla es común y ex ante. K, frecuencia, baseline, inicio/fin y transitorios permanecen OPEN. La decisión provisional de V_cont como dimensión no equivale a aceptar esta escala/indicador.
+
+El P178 clean replay audit 001 cierra la reproducibilidad computacional de un benchmark metodológico acotado (27 celdas, N=700, R=10.000/celda, 270.000 invocaciones, 17/17 tests, artefactos primario/replay byte-idénticos). No es el DGP confirmatorio C10-S, no es validación general del Analyzer y no cubre medición adversarial/no-identificación/interferencia/soporte fallido/rutas directas. Sus N, ratio, R y parámetros no se transfieren. No se repite el replay.
+
+O-CONF permanece ficha §224 parcial, oráculo no implementado/no validado y selección confirmatoria no resuelta. La discriminación V_cont/O-CONF no está verificada. No se declara Outcome ni Value confirmatorio; no Design Freeze, implementación o ejecución.
