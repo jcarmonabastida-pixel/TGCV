@@ -316,3 +316,13 @@ La reconciliación E+F se desarrolla en el plan §16.186 y no modifica decisione
 5. PE tiene contrato lógico de roles e interfaces; la tecnología física sigue abierta. ACL/custodia/sealer/firewall, esquema/serialización y reproducibilidad requieren pruebas técnicas efectivas.
 
 **Gates:** G-SCI, G-MAT, G-SCHEMA, G-ROLE, G-TEST y G-REPRO permanecen BLOCKED; G-AUTH NOT GRANTED. No Design Freeze. El alcance de un experimento sintético metodológico no requiere afirmar materialización D2; cualquier afirmación sobre D2 real, validez externa o identificación material sí exige sus gates materiales. No captura, implementación, generación, simulación ni ejecución científica autorizada.
+
+
+
+## 21. Frontera de alcance — núcleo sintético frente a materialización D2 (2026-11-12)
+
+El objetivo vigente de C10-S es un experimento causal sintético que compruebe si el diseño y el Analyzer recuperan, refutan o reconocen como no identificable una contribución conocida de ΔT_acc* a Value bajo DGPs versionados. No requiere una migración informática real ni materializar D2 en infraestructura operativa.
+
+Por tanto, el gate de materialización real G-MAT (roster/IAM/C_SRC/instalación/ACL/recursos reales) queda OUT_OF_SCOPE_FOR_SYNTHETIC_CORE, no como bloqueo que fuerce a construir el entorno real. El núcleo sintético sí debe cerrar una cohorte finita generada/versionada, unidad/UA/UO, asignación reproducible, distribución basal/soporte, interferencia estipulada o aislamiento por construcción, verdad por etapa, parámetros y potenciales. Los escenarios de provisión, dependencias o fallos materiales pueden ser estipulados adversarialmente, sin presentarlos como observaciones reales.
+
+No se harán claims sobre provisión real, validez externa o identificación material. Los gates G-SCI, G-SCHEMA, G-ROLE, G-TEST y G-REPRO siguen sujetos a sus condiciones; G-AUTH sigue NOT GRANTED. Esta precisión no autoriza generación, simulación, implementación ni ejecución.
