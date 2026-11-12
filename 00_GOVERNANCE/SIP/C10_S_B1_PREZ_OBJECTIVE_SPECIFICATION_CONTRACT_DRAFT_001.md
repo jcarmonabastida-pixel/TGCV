@@ -224,3 +224,84 @@ El siguiente gate no es generar unidades ni fuentes. Es cerrar el alcance semán
 Este documento no modifica main, RMA, Evidence→Claim Matrix, STATUS, decisiones aceptadas, población, estimandos ni el DGP ejecutable. No crea roster, IDs, truth, fuentes, cobertura, fixtures o código. No ejecuta validadores, DGP, simulación ni replay.
 
 `scientific_execution=false`; `execution_authorized=false`.
+
+
+
+## 7.6 Autoridad declarativa sintética, asignación de competencia y no equivalencia Generator=emisor
+
+Esta sección desarrolla el requisito de competencia de §7.3. Es una propuesta documental, no una decisión aceptada ni un Design Freeze.
+
+### A. Separación de funciones
+
+Se distinguen cuatro funciones lógicas, aunque una implementación futura pueda alojarlas en el mismo proceso técnico:
+
+1. **Generator / truth custodian:** estipula y conserva la truth reservada conforme a DEC-C10-095. No actúa automáticamente como emisor visible ni puede exportar la estipulación como declaración.
+2. **Role/authority specification:** define ex ante qué clase de actor sintético tiene competencia declarativa sobre el objetivo basal de B1, el alcance de esa competencia, su vigencia y las unidades a las que puede aplicarse.
+3. **Issuer/source process:** representa el acto declarativo observable emitido bajo esa competencia. Su identidad, rol, mandato y versión son visibles al adjudicador; su contenido procede del proceso observacional, no de una copia de la etiqueta truth.
+4. **E1/E2:** valoran la evidencia visible y adjudican independientemente. No consultan truth, metadatos reservados ni el proceso interno del Generator.
+
+La separación es semántica y de acceso; no presupone microservicios, actores reales, firma criptográfica ni despliegue físico.
+
+### B. Regla de atribución de competencia
+
+La competencia no se deduce de que el actor sea propietario técnico, administrador IAM, custodio de infraestructura, proveedor, operador o Generator. Debe existir una regla pública/versionada del DGP que atribuya expresamente al rol emisor la facultad de declarar el objetivo basal de B1 en el ámbito B1–instancia de servicio.
+
+La regla debe resolver antes de observar contenido:
+- fundamento del mandato declarativo dentro del microdominio sintético;
+- clase/identidad de rol competente y versión;
+- alcance funcional y unidades cubiertas;
+- inicio/fin de vigencia, sustitución y revocación;
+- delegación, concurrencia o conflicto de competencias;
+- cómo se verifica la competencia sin revelar truth.
+
+No se selecciona aquí una clase concreta de actor ni se inventa un cargo. El nombre canónico del rol, su cardinalidad y el mecanismo de asignación quedan OPEN hasta reconciliar el catálogo de actores/roles del DGP y el contrato B1. La autoridad debe ser una propiedad del mandato preespecificado, no un atributo derivado del contenido que el actor emite.
+
+### C. Asignación de la competencia
+
+La asignación del mandato se determina ex ante mediante identidad, ámbito y regla de rol versionados. No puede asignarse o retirarse en función de:
+- need_truth_state o truth_basis_ref;
+- contenido emitido, capturado, perdido o adjudicado;
+- Z, D2, instalación, accesibilidad, Reach, trayectoria, Outcome o Value;
+- éxito esperado de E1/E2 o rendimiento del Analyzer.
+
+La asignación puede ser común a todas las UE o variar por unidades/ámbitos si el contrato de actores lo justifica; no se presupone ninguna de las dos configuraciones. La variación, si existe, debe estar fijada antes de generar evidencia y su soporte debe ser auditable. No se exige un emisor distinto por UE ni se presupone independencia entre emisores.
+
+### D. Autoridad no implica veracidad
+
+Una declaración puede ser auténtica, emitida por un rol competente y correctamente vinculada, pero contener una afirmación semánticamente errónea, ambigua, incompleta o contradictoria. Por tanto:
+- autenticidad/autoridad y corrección semántica son dimensiones distintas;
+- la competencia no garantiza que el contenido coincida con truth;
+- la firma/digest prueba integridad/origen según el mecanismo, no verdad semántica;
+- las declaraciones de inclusión/exclusión se evalúan por contenido y admisibilidad, no por presunción de infalibilidad del emisor.
+
+Este requisito es esencial para que la evaluación de E1/E2 no se reduzca a copiar una etiqueta infalible.
+
+### E. Firewall contra la reproducción trivial de truth
+
+El Generator conoce la truth por definición, pero el proceso que genera el artefacto observable no debe implementar una asignación directa del tipo need_truth_state → mismo valor en declaration.content. Debe existir un proceso observacional intermedio explícito que determine qué información llega al emisor/proceso de fuente y qué proposición acaba declarada.
+
+Ese proceso podrá modelarse como canal de información, estado informativo/creencia del emisor o mecanismo equivalente, siempre que:
+- sea distinto del registro reservado de truth;
+- sus reglas y dependencias estén declaradas en el DGP;
+- pueda producir omisión, ambigüedad, conflicto o error semántico cuando el escenario lo contemple;
+- no introduzca tasas, probabilidades ni correlaciones sin parametrización justificada;
+- no revele la etiqueta truth ni metadatos reconstructivos al expediente;
+- preserve la posibilidad de una declaración auténtica pero errónea.
+
+No se exige que la declaración sea independiente de truth: eso destruiría la función de una fuente que pretende informar sobre el objetivo. Se exige que la relación truth→información disponible→declaración sea explícita, mediada y evaluable, y que no sea una copia perfecta por construcción. Tampoco se presume que todo escenario deba contener errores; el catálogo de escenarios de observación y sus parámetros sigue OPEN.
+
+### F. Pruebas de contrato requeridas (no ejecutadas)
+
+Antes de implementación deberán poder verificarse, al menos:
+- el emisor observable tiene competencia atribuida por una regla versionada;
+- modificar truth sin cambiar la regla de rol no cambia automáticamente quién posee competencia;
+- modificar Z/post-Z no cambia el mandato basal ni el contenido pre-Z ya fijado;
+- el Generator no exporta truth, basis_ref, seed, flags o codificación lateral al expediente;
+- un emisor competente puede producir contenido semánticamente erróneo sin perder por ello la autenticidad de origen;
+- una fuente sin competencia no se convierte en directa por contenido coincidente con truth;
+- copias y derivados conservan lineage y no simulan corroboración independiente;
+- E1/E2 no acceden al registro truth ni al estado informativo interno del proceso de fuente.
+
+Estas son obligaciones de diseño y futuras pruebas de contrato; no se crean IDs de prueba ni se declaran ejecutadas.
+
+**Dictamen:** autoridad declarativa y proceso de emisión definidos a nivel de requisitos; rol concreto, regla de asignación, mecanismo de información del emisor y parametrización observacional permanecen OPEN. No se aprueba todavía la declaración S7 como implementable ni se autoriza materialización.
