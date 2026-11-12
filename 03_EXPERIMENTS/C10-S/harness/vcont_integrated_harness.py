@@ -375,18 +375,28 @@ class Analyzer:
         if not contract.version_consistency:
             package_reasons.append("VERSION_INCONSISTENCY")
             focal_reasons.append("VERSION_INCONSISTENCY")
-        complete = all(all(v in (0, 1) for v in row["s3_interval"]) for row in evidence.rows)
+        complete = all(
+            all(v in (0, 1) for k in ("s3_enabled", "s3_profile_match") for v in row[k])
+            for row in evidence.rows
+        )
         if not complete:
             package_reasons.append("S3_MISSINGNESS_REQUIRES_BOUNDS_OR_MODEL")
             focal_reasons.append("S3_MISSINGNESS_REQUIRES_BOUNDS_OR_MODEL")
-        ideal = all(all(s == "OBSERVED" for s in row["s3_status"]) for row in evidence.rows)
+        ideal = all(
+            all(s == "OBSERVED" for k in ("s3_enabled_status", "s3_profile_status") for s in row[k])
+            for row in evidence.rows
+        )
         if not ideal:
             package_reasons.append("S3_COVERAGE_INCOMPLETE")
             focal_reasons.append("S3_COVERAGE_INCOMPLETE")
 
         observed_v = None
         if not package_reasons:
-            observed_v = [mean(row["s3_interval"]) for row in evidence.rows]
+            # S3 truth rule is conjunctive; a signal alone cannot certify B1.
+            observed_v = [
+                mean(int(en and pr) for en, pr in zip(row["s3_enabled"], row["s3_profile_match"]))
+                for row in evidence.rows
+            ]
             z0 = [observed_v[i] for i, row in enumerate(evidence.rows) if row["assignment_z"] == 0]
             z1 = [observed_v[i] for i, row in enumerate(evidence.rows) if row["assignment_z"] == 1]
             package, package_se = _mean_se(z0, z1)
