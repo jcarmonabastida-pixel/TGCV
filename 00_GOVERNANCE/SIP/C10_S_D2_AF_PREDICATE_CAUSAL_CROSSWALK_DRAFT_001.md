@@ -124,3 +124,25 @@ Esta regla desarrolla sin ampliar la fórmula de §1 y sin aprobar mappings fís
 Regla de clasificación: asignar cada campo por su referente y función primaria; descomponer campos mixtos; si la función no es adjudicable, conservar UNKNOWN/? sin asignación múltiple. `C_other` sigue excluido como comodín; `C_info` no es autónomo; cobertura/VALID/E_T no entra en truth.
 
 **Límite:** se cierra la regla conceptual de separación y no duplicidad, no el catálogo material por τ₂, la exhaustividad de rutas, el inventario, las evidencias ni la validación. No autoriza implementación ni ejecución.
+
+## 9. Mapping de clases P0/P1 frente a A_f* — frontera de no equivalencia (2026-11-12)
+
+Este mapping se deriva de la fórmula §67.3 y de las decisiones de roster/instancia aceptadas; no amplía A_f* ni adjudica observaciones:
+
+| Elemento | Uso correcto | No equivale a |
+|---|---|---|
+| CMP `contract/instance/component_id` | Identidad del paquete/instancia/componente de configuración | `ID_f*` de la transformación τ₂ |
+| PAR ENABLED/PROFILE | Propiedades P0 del objeto configuracional | Predicados de accesibilidad por sí solas |
+| RUL AST y operand bindings | Regla declarativa y enlaces AST→PAR | `REL_f*`, REF funcional o ruta `DEP_f*` |
+| REF | Relación de configuración con identidad/extremos tipados | EDGE/FK U_G, relación TGCV R*, dependencia ambiental o `DEP_f*` automáticamente |
+| POL | Ausente del núcleo mínimo | `AUTH_f*` o permiso efectivo |
+| MET/E_T | Identidad, versión, procedencia, observación y matching | Truth estructural A_f* o ΔT_acc* |
+| P1 `C_dep*` | Éxito técnico de la dependencia provisionada; candidato de ruta única para DEP | A_f* completa o exhaustividad de rutas |
+| `C_auth,base` | Autorización normativa basal común | ACL/credenciales/endpoints técnicos de provisión |
+| Recursos/capacidad | Disponibilidad ex ante en RES solo si necesaria y no duplicada | Consumo, carga o capacidad provisionada sin distinción |
+
+En consecuencia, `ID_f*` requiere identidad/versión propias de τ₂; `REL_f*` requiere inventario de relaciones/interfaces necesarias; `COND_f*` condiciones constitutivas independientes de S0; `DEP_f*` rutas técnicas completas y alternativas; `BLOCK_f*` bloqueos efectivos globales o por ruta con scope. Los registros P0 actuales no sustituyen esos inventarios.
+
+El roster mínimo aceptado no declara REF L3; no obstante, REF=0 exige cobertura exhaustiva pre-Z/B por snapshot×etapa×ruta×scope. Hasta entonces REF permanece UNKNOWN. Los operand bindings de RUL no generan REF. P1 ambiental/técnico no se fuerza al paquete P0.
+
+**Estado:** mapping conceptual de clases RESOLVED; mapping físico y roster de fuentes de τ₂/P1 OPEN; no se declara cobertura, REF=0, IAM sellado ni autorización de ejecución.
