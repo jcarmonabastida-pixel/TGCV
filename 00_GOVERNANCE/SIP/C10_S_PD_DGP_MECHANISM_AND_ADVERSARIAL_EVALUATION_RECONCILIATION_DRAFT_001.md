@@ -119,3 +119,13 @@ La integración posterior del plan §16.185 es la referencia rectora para relaci
 - La tabla de escenarios y crosswalk P177/P178/P179/P182/P183 se especifica en plan §16.185. Se reutilizan los IDs existentes; no se crean pruebas ni parámetros.
 
 **Estado:** PD_CAUSAL_CROSSWALK_INTEGRATED / DGP_QUANTITATIVE_SPECIFICATION_OPEN / SUPPORT_AND_POPULATION_NOT_MATERIALIZED / NOT_DESIGN_FROZEN / NO_EXECUTION_AUTHORIZED.
+
+
+
+## 11. DEC-C10-100 — escala V_cont y calibración por superficie de recuperación (2026-11-12)
+
+La truth de V_cont se agrega como fracción temporal de A_B1(i,k) en intervalos de igual duración dentro de una ventana post-Z común preespecificada. UNKNOWN permanece como intervalo no determinado y se propaga a bounds; no se imputa cero ni se elimina del denominador. El Analyzer solo observa S3 y cobertura/tiempo/identidad permitidos, nunca truth ni parámetros reservados.
+
+La calibración PD no fija un MDE arbitrario. Debe evaluar una superficie de recuperación para magnitudes verdaderas admisibles de V_cont en [0,1], con efecto nulo/positivo/negativo/heterogéneo, vías directas/colaterales, interacciones, medición calibrada/no calibrada, pérdida/censura, soporte e interferencia. Métricas P177/P178/P179/P182/P183 se informan por estimando y escenario: sesgo, RMSE, cobertura, error tipo I, potencia/curvas de detección, signo, magnitud, bounds coverage, abstención y clasificación de identificación. N/π_h/estratos/unidad-clúster/R se seleccionan después de cerrar soporte y criterios de operación; R se determina por SE_MC. No transferir N=700/R=10.000 de P178.
+
+Ventana, K, parámetros conjuntos, rangos/probabilidades, α, potencia mínima, precisión, equivalencia, MDE normativo y tolerancia SE_MC permanecen abiertos. La superficie permite un benchmark sintético de recuperación; un punto confirmatorio requiere criterios ex ante explícitos. DEC-C10-100 no autoriza calibración computacional ni ejecución.
