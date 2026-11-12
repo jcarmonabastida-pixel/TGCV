@@ -5081,3 +5081,111 @@ Las clases de fuente del roster §16.205 son tipos abstractos de registros gener
 **Siguiente gate:** formalizar las funciones generadoras por bloque causal y la matriz selectiva `perfil R0–R3 × mecanismo PD × contraste/estimando × salida esperada`, sin asignar probabilidades ni ejecutar. La identificación y el soporte se evalúan antes de dimensionar/calibrar.
 
 **Dictamen:** FINITE_SYNTHETIC_WORLD_ARCHITECTURE_SPECIFIED_CANDIDATE / R0_R3_REUSED_NOT_FROZEN / MECHANISM_OVERLAYS_SELECTIVE / VALUE_OPERATIONALIZATION_BLOCKED_BY_PA / NO_NUMERIC_PARAMETERS / NO_EXECUTION.
+
+
+## 16.208. Paquete integrado del universo finito, mecanismos generadores y verdad causal (2026-11-12)
+
+**Estado:** especificación integrada candidata derivada de §§16.188–16.207 y contratos finitos, DGP temporal/roles y PD. DRAFT / NO APROBADA / NO CONGELADA. No crea nuevas familias de tests ni parámetros numéricos. Hace operativa documentalmente la arquitectura ya definida, evitando abrir otro inventario paralelo.
+
+### 16.208.1. Significado y límite del universo finito
+
+El universo confirmatorio candidato no es el producto cartesiano de todos los factores. Es un roster finito y dirigido de clases de mundos. Cada mundo es una instancia sintética finita, versionada y reproducible de un mecanismo; cada clase activa solo los ejes necesarios para un contraste o falsador. Los perfiles R0–R3 describen topología, alternativas y provisión; los mecanismos PD describen la verdad causal adversarial. Ninguno de los dos, aislado, constituye un mundo completo.
+
+La ontología mínima reutiliza, sin ratificar aún sus cardinalidades: unidad(es) UE y unidad(es) de asignación UA; historia basal; política D2; estados S0/S1/S2/SF; transformaciones F1/F2/A1/A2; relaciones F1→F2 y A1→A2; predicados ID/REL/COND/AUTH/RES/DEP/BLOCK; snapshots y versiones; rutas y trayectorias potenciales; resultados O-CONF y V_cont separados; y procesos de evidencia. H=3, cuatro transformaciones y dos rutas siguen siendo candidatos. Cada mundo declara frontera, G, H, estructura de unidades, asignación, alternativas incluidas y criterio de exhaustividad. No se admite «ausencia de alternativa» sin roster exhaustivo.
+
+### 16.208.2. Roster mínimo dirigido de clases de mundo
+
+La tabla materializa la matriz §16.188.4 + PD §4 sobre R0–R3. Los nombres son etiquetas descriptivas, no nuevos IDs de test. No se exige cruzar cada clase con todos los perfiles.
+
+| Clase de mundo | Perfil/topología base | Mecanismo generador activado | Verdad causal estipulada | Salida exigida al Analyzer |
+|---|---|---|---|---|
+| Focal limpio | R0 | D2 modifica provisión focal; resto invariante; sin vía directa/colateral; soporte y mapping estipulados | Contribución focal conocida solo en el contraste y régimen que realmente la identifican | ITT-D2 por resultado; atribución focal solo si mapping, soporte, medición y supuestos se satisfacen |
+| Nulo | R0 o R3 | Z no modifica la cadena focal relevante, o una transición posterior neutraliza la primera etapa | Efecto nulo para el resultado/estimando designado; no se fuerza nulo para otros resultados | Recuperar nulo dentro de precisión; no fabricar primera etapa ni causalidad |
+| Fallo por etapas | R3 | Fallos separados en intento, recepción, instalación, integridad, compatibilidad, operatividad o dependencia | Cada etapa conserva su potencial; el éxito anterior no determina el posterior | ITT por Z; primeras etapas separadas; no imputar C_dep*, A_f* o D_f* |
+| Focal adverso | R0 | La intervención deteriora una coordenada ΔU/ΔR/ΔC/ΔX, Reach o resultado | Signo adverso conocido; sin monotonicidad positiva impuesta | Recuperar dirección o declarar límites/no identificación |
+| Alternativa basal | R1 | A1→A2 disponible y estable mientras puede abrirse F1→F2 | Apertura focal no implica incremento de Reach ni exclusividad funcional | Distinguir D_f* de Reach; no atribuir resultado a τ2 por mera apertura |
+| Alternativa afectada/colateral | R2 | B modifica A1/A2, dependencias, recursos u otra ruta | Existe vía no focal; exclusión focal falla salvo prueba contraria | Efecto de paquete; no interpretar automáticamente D2 como instrumento focal |
+| Vía directa | R0–R3 según soporte | B afecta O-CONF o V_cont por camino que no atraviesa ΔT_acc* | Efecto directo/paquete conocido, sin mediación focal exclusiva | Identificar ITT de paquete; atribución a ΔT_acc* solo si separable |
+| Interacción/heterogeneidad | R0–R2 | Funciones dependen de historia basal, alternativa, recursos, versión o unidad | Efectos condicionales y composición de respuesta conocidos por construcción | Recuperar interacción/heterogeneidad; no transportar LATE ni mezclar D1/D2 |
+| IV adversarial | R0–R3 | Primera etapa nula/débil, defiers, exclusión o monotonicidad violadas | Supuesto IV violado de forma conocida | No aplicar Wald inválido; weak-IV, bounds o NOT_IDENTIFIED |
+| Interferencia | Perfil con exposición compartida | Recursos, pool, canal o clúster conectan unidades | Potenciales dependen de asignación/exposición de otras unidades | Definir UA y mapa de exposición; si no, abstenerse de SUTVA |
+| Observación adversarial | Cualquier perfil compatible | Error, pérdida, lag, cobertura o sesgo diferencial; dependencia entre señales | Truth estructural no cambia por cambiar la evidencia | Recuperar si identificable; si no, bounds/abstención; no convertir falta en cero |
+| Soporte/ausencia/censura | Cualquier perfil compatible | Historia imposible, positividad fallida, missingness MCAR/MAR/MNAR o censura | Estimando identificado, acotado o no identificado según mecanismo | Dictamen por estimando con supuestos; no extrapolar fuera de soporte |
+
+La cobertura mínima exige un control negativo apropiado, un mundo con contribución conocida recuperable bajo supuestos explícitos y mundos que obliguen a distinguir efecto de paquete, vía focal, alternativa y no-identificación. La selección final debe demostrar qué fila cubre cada contraste/falsador de §16.188.4; las filas no cubiertas quedan como brecha explícita, no se declaran superadas por analogía.
+
+### 16.208.3. Contrato generador común: funciones, potenciales y dependencia
+
+Para cada mundo w, unidad i y régimen z, Generator define una única colección versionada de funciones estructurales y exógenas comunes U_i (o U_c cuando asignación/exposición sea por clúster). Los potenciales de todos los regímenes se derivan de esas mismas funciones y exógenas; queda prohibido generar por separado tablas potenciales incompatibles o asignar independientemente etapas cuya dependencia esté definida.
+
+La forma funcional mínima, sin imponer distribuciones ni independencia, es:
+
+1. **Basal:** X_i, H_i0, C_i, F_alt,i0 y snapshots basales admisibles se generan conjuntamente desde q_X*. E/App definen marco/aplicabilidad según su contrato. En núcleo limpio se estipula C_dep,0*=0 y A_f,0*=0; en estrés, cualquier desviación o UNKNOWN se declara antes de generar resultados.
+2. **Asignación:** Z_i o Z_c se genera conforme al mecanismo que finalmente se especifique. En D2, W_programmed_i(z)=z por definición de política; ello no fija W_attempt ni cumplimiento.
+3. **Provisión:** W_attempt=f_att(W_programmed,Z,X,H0,version,U_att); receipt=f_rec(W_attempt,policy,version,logistics,environment,U_rec); S_install=f_inst(receipt,version,integrity,compatibility,operability,U_inst); C_dep*=f_dep(W_attempt,receipt,S_install,componentes,grafo,U_dep). Las funciones mantienen fallos parciales y dependencias conjuntas.
+4. **Acceso/transformación:** cada predicado ID/REL/COND/AUTH/RES/DEP/¬BLOCK se genera por su mecanismo y momento; A_f* aplica la lógica trivalente vigente; D_f*=I(A_f,base*=0 ∧ A_f,post*=1) cuando snapshots sean comparables. T_acc* se representa por snapshots completos y ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*); ΔE_T queda fuera. No se infiere ΔT_acc* desde D_f*.
+5. **Reach/trayectoria:** Reach y Π se derivan del catálogo finito, relaciones, aplicabilidad, predicados de ruta, recursos, versiones y horizonte declarados; no desde ejecución observada. K/Consider, Sel, Start y Exec se generan como etapas distintas, con no-transiciones explícitas.
+6. **Resultados:** O-CONF_truth se deriva del oráculo F* terminal conforme a su contrato; V_cont_truth se deriva de A_B1 por intervalos conforme DEC-C10-100/102 y ventana común t0…T*. No son sustitutos entre sí. Value general no se genera ni estima hasta que PA lo instancie; queda NOT_INSTANTIATED.
+7. **Vías no focales:** cada mundo declara si B/Z tiene efectos directos sobre O/V, efectos sobre rutas alternativas, recursos, costes u otros mediadores, y las interacciones. La ausencia de esas vías solo puede estipularse en el mundo focal limpio con invariantes explícitos; no se presume globalmente.
+
+Los argumentos U_* pueden compartir componentes o depender entre sí. Toda independencia, monotonicidad, exclusión, mediación serial, positividad y ausencia de interferencia es una propiedad del mundo que debe declararse y probarse, nunca un default del generador. La especificación final debe indicar para cada función dominio/codominio, orden temporal, estados 1/0/?, versión, argumentos activos, soporte y procedencia.
+
+### 16.208.4. Verdad causal que conserva cada mundo
+
+Cada mundo contiene potenciales coherentes para todas las etapas bajo las asignaciones/régimen pertinentes y una ficha de verdad que declara: (1) población/unidad y unidad de asignación; (2) intervención concreta y versiones; (3) historia basal y soporte factible; (4) potenciales por etapa, no solo resultado terminal; (5) cambios verdaderos en A_f*, D_f*, ΔT_acc*, Reach y trayectoria; (6) contribuciones necesarias, habilitadoras o modificadoras, incluidas redundancia, antagonismo y compensación cuando proceda; (7) efectos directos, colaterales e interacciones; (8) O-CONF_truth y V_cont_truth separados, Value solo si PA lo define; (9) estimandos identificados por construcción, los que requieren supuestos y los no identificables; y (10) causa de cualquier bounds, censura o abstención esperada.
+
+La ficha no entrega esos potenciales al Analyzer. Evaluator conserva la verdad y calcula los contrastes verdaderos únicamente después del sellado del análisis.
+
+### 16.208.5. Canal de observación y separación de roles
+
+La observación es una segunda función, condicionada a truth pero no idéntica a ella. Para cada bloque j, Generator produce E_j mediante un mecanismo M_j(T_j*,version,arm,time,U_obs,j), con parámetros y dependencias declarados. El contrato registra sensibilidad/falsos negativos, especificidad/falsos positivos, cobertura, pérdida, lag, error de clasificación, validez, invariancia y missingness según el tipo de variable. No se supone que señales S3 sean independientes ni que el canal sea igual entre brazos/versiones.
+
+- **Generator:** crea mundo, funciones, potenciales, truth, evidencia observada y metadatos reproducibles; separa internamente truth_dgp de observed_evidence.
+- **Analyzer:** recibe solo asignación y observed_evidence permitidas; no recibe U_i, parámetros ocultos, potenciales, etiquetas de escenario que revelen la verdad, oráculo F* ni claves de desenmascaramiento. Produce estimandos, supuestos, diagnósticos, bounds y estados de identificación por resultado.
+- **Evaluator:** tras sellado inmutable de Analyzer, abre truth_dgp, calcula estimandos verdaderos, compara recuperación y clasifica errores/abstenciones. No modifica la salida del Analyzer ni retroalimenta truth antes del sellado.
+
+Si el Analyzer necesita un dato que el canal no identifica, su salida correcta es bounds/abstención/NOT_IDENTIFIED, no reconstrucción por intuición. La evaluación separa error de reconstrucción, error de estimación, error de clasificación de identificación y filtración de truth.
+
+### 16.208.6. Correspondencia mundo–estimando–criterio
+
+- **ITT-D2:** efecto total de asignación al paquete por cada resultado definido; no equivale a efecto focal.
+- **Primeras etapas:** contrastes separados de W_attempt, receipt, S_install, C_dep*, A_f*, D_f* y ΔT_acc*.
+- **g_A:** contraste entre intervenciones estocásticas sobre distribuciones factibles del ΔT_acc* completo bajo q_X* y régimen no focal común; no se deriva del ITT-D2 y requiere mapping/soporte.
+- **C4:** efecto indirecto interventional sobre cambio estructural completo; requiere identificación longitudinal y control de confusión post-Z; nunca ITT menos efecto mediado.
+- **LATE:** solo si se sostienen relevancia, independencia, exclusión, monotonicidad, consistencia/versiones y no interferencia; si no, no Wald.
+- **O-CONF y V_cont:** evaluados por separado. La selección de V_cont no completa su validez de medición ni la discriminación frente a O-CONF.
+- **Value general:** bloqueado por PA; no reemplazar por O-CONF ni V_cont.
+
+El criterio de éxito metodológico no es que Analyzer siempre produzca un número. Es que recupere el estimando cuando la identificación está construida y las condiciones se cumplen, y que clasifique correctamente bounds, debilidad, no-identificación o no-instanciación cuando no se cumplen. Métricas y tolerancias cuantitativas permanecen abiertas a la fase normativa posterior.
+
+### 16.208.7. Trazabilidad y brechas de cierre
+
+| Elemento | Fuente rectora existente | Estado tras esta integración documental |
+|---|---|---|
+| Topología S0/S1/S2/SF; F1/F2/A1/A2; R0–R3 | Inventario finito §2–8; plan §§16.207.1–.2 | CANDIDATE_REUSED; frontera/G/H y exhaustividad abiertas |
+| Clases de mecanismos adversariales | PD §4; plan §16.188.4 | ROSTER_INTEGRATED; combinaciones finales y cobertura demostrada abiertas |
+| Funciones/potenciales y exógenas comunes | DGP temporal/roles §§2–4; plan §§16.199–.200 | CONTRACT_RECONCILED; funciones concretas, dependencias y soporte abiertos |
+| Truth/observed/evaluation | PD §2; DGP temporal/roles §6; plan §16.207.5 | ROLE_SEPARATION_DEFINED; firewall efectivo y schemas abiertos |
+| A_f*/D_f*/ΔT_acc* | Plan §16.201; crosswalk D2; inventario finito §6–9 | LOGIC_DEFINED_CANDIDATE; atomización/mapping material abiertos |
+| Reach y alternativas | Inventario finito §3–8; contrato Reach | TOPOLOGY_CANDIDATE; F*, catálogo completo y cobertura semántica abiertos |
+| O-CONF | Plan §16.184; matriz F* §22; DEC-C10-083…088 | PARTIAL / NOT_VERIFIABLE |
+| V_cont | DEC-C10-099…102; plan §§16.182, 16.189–.198 | AGGREGATION_RULE_DEFINED; K, ventana numérica, S3 calibration y discriminación abiertos |
+| Value general | PA / DEC-C10-095, 099 | NOT_INSTANTIATED; bloqueado |
+| Unidad, clúster, q_X*, soporte e interferencia | D2 population/support; plan §16.200 | OPEN |
+| Parámetros, distribuciones, dependencias, sensibilidad | PD; P177–P183; plan §§16.198–.200 | OPEN; no valores ni calibración |
+| Criterios normativos MDE/α/potencia/precisión/error | P177/P178/P182/P183 | OPEN; no dimensionamiento |
+
+La pregunta «¿está definido el universo finito y sus mecanismos generadores?» recibe dos respuestas: **sí**, existe una arquitectura finita candidata y queda integrada como roster de clases de mundo y contrato generador; **no**, no existe todavía un universo confirmatorio cerrado ni un DGP cuantitativo implementable. No se puede declarar completado el gate B de §16.188.6 mientras unidad/asignación, q_X*, soporte, funciones, dependencias e interferencia sigan abiertos.
+
+### 16.208.8. Secuencia restante única
+
+1. Adjudicar el núcleo basal y la unidad: UE/UA/clúster, q_X*, C_c, C_auth,base y soporte; distinguir estipulaciones del núcleo limpio de mundos de estrés.
+2. Completar mapping finito: frontera, G/H, catálogo F*/alternativas, rutas y snapshots; resolver qué combinaciones R0–R3 son exhaustivas y comparables.
+3. Cerrar funciones estructurales: intento→recepción→instalación→C_dep*; predicados A_f*; diff ΔT_acc*; Reach/Π; trayectorias y resultados, con potenciales coherentes y exógenas compartidas.
+4. Cerrar observación y evaluación: mecanismo por bloque, errores/dependencias/cobertura/ausencia, firewall Generator–Analyzer–Evaluator y métricas/tolerancias normativas.
+5. Congelar el roster dirigido: verificar cobertura de cada contraste/falsador de §16.188.4 y PD §4 sin factorial completo; registrar exclusiones justificadas.
+6. Solo después: diseño cuantitativo, parámetros, N/R, calibración y gates de implementación/ejecución conforme §16.188.6.
+
+No se reabre D2 primario candidato/D1 secundario ni DEC-C10-066/067, 099–102. No se generan mundos/datos, no se programa ni ejecuta, no se ejecutan validadores, no se calcula potencia ni se declara Design Freeze. scientific_execution=false; execution_authorized=false.
+
+**Dictamen:** FINITE_WORLD_ROSTER_AND_GENERATOR_CONTRACT_INTEGRATED_CANDIDATE / QUANTITATIVE_DGP_NOT_CLOSED / DESIGN_FREEZE_NOT_READY / NO_IMPLEMENTATION / NO_EXECUTION.
