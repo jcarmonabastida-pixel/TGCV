@@ -1202,3 +1202,23 @@ Las decisiones posteriores sobre V_cont especializan el reloj general de §2 sin
 La recomendación de reloj/rejilla es una ruta de diseño, no una selección numérica. Unidad, anclaje, eventos relevantes, duración mínima representable, T*, Δ, K, regla de cierre, frontera, resolución/cobertura/error/calibración S3 siguen OPEN. No se materializan eventos ni intervalos, no se implementa schema y no se ejecuta generación, simulación o calibración.
 
 **Estado:** START_T0_ACCEPTED / STRICT_INTERVAL_RULE_ACCEPTED / ELAPSED_TIME_GRID_RECOMMENDED / NUMERIC_TEMPORAL_PARAMETERS_OPEN / NO_DESIGN_FREEZE / NO_EXECUTION_AUTHORIZED.
+
+## 49. Inventario temporal B1 y relojes de truth/observación/agregación (2026-11-12)
+
+Se integra el inventario derivado de los contratos B1 sin añadir un nuevo reloj causal ni alterar t−1/t0…t9.
+
+- **Provisión e instalación:** programación, intento, recepción/disponibilidad, aplicación, verificación, integridad, compatibilidad, operabilidad y rollback. Son antecedentes/eventos causales; no determinan truth por su etiqueta.
+- **Configuración funcional:** transiciones efectivas de ENABLED y PROFILE, más identidad/versión de instancia y configuración para mantener binding.
+- **Runtime:** proceso/módulo, listener/socket/superficie de recepción, dependencias y capacidad/recursos cuando sean constitutivos de la admisión; caída, reinicio y recuperación. Pueden impedir/restaurar capacidad, pero sus señales S3 no sustituyen truth.
+- **Solicitudes:** oportunidad, intento, recepción, admisión/rechazo, procesamiento/respuesta. Son eventos discretos; la oportunidad única no es monitor continuo y la ausencia de solicitud no implica fallo.
+- **Transformación/valor:** Reach, selección, ejecución, F*, O-CONF, Outcome y Value no son componentes de A_B1.
+
+La regla funcional sigue siendo admitir cuando ENABLED=true, no admitir cuando ENABLED=false y exponer PROFILE declarado; STANDARD/READ_ONLY no reciben semántica adicional. Generator conserva la secuencia del estado funcional efectivo y sus event_time.
+
+Se separan tres escalas: (1) reloj de truth/event_time; (2) rejilla de agregación [t0,T*] con K intervalos; (3) reloj de observación S3 (captura, lag, cobertura, pérdida). Δ no es por definición la frecuencia S3; no se añaden probes activos. S3 conserva los componentes pasivos ya definidos: proceso/módulo, listener/socket/superficie, dependencias, capacidad/recursos cuando estén definidos y perfil runtime. Sin identificación de detección/cobertura, Analyzer entrega bounds o abstención.
+
+**Consecuencia matemática:** DEC-C10-100/102 define V_cont como proporción de intervalos enteramente conformes, no fracción exacta de tiempo de uptime. Cualquier incumplimiento confirmado, por breve que sea, hace A_B1=0 en cada intervalo afectado. La métrica depende de Δ y alineación; no se reescribe la fórmula ni se modifica la decisión aceptada. Una fracción exacta de uptime sería otra operacionalización y requeriría aprobación.
+
+Convención de frontera recomendada: intervalos internos [b_k,b_{k+1}); un evento en frontera interna pertenece al intervalo que comienza en ella; el último intervalo incluye T*. Episodios que cruzan fronteras afectan cada intervalo intersectado. La convención se versionará antes de materializar.
+
+T* debe extenderse desde t0 hasta después del último evento causal capaz de modificar A_B1, con cola común τ_follow para observar persistencia/recuperación: T*=t_last+τ_follow. Catálogo finito, mínimo episodio, unidad normalizada, τ_follow, T*, Δ, K y calibración/cobertura S3 permanecen OPEN. No se asignan parámetros ni se ejecuta el DGP.
