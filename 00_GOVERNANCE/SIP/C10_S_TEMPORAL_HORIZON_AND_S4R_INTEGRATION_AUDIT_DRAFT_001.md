@@ -134,3 +134,16 @@ No se presupone el mecanismo de captura S3 (periódico, continuo o event-driven)
 t_last es la última transición causal capaz de cambiar A_B1, incluida la recuperación final. T*=t_last+τ_follow, con τ_follow común preespecificado. Un episodio activo en T* se conserva como terminal/censurado y no se recodifica como recuperado. τ_follow, δ_det, Δ, T* y K se derivarán conjuntamente tras fijar unidad normalizada y catálogo de escenarios.
 
 **Dictamen:** EVENT_DOMAIN_BOUNDED / NO_GRACE / DETECTION_NOT_TRUTH / TERMINAL_CENSORING_EXPLICIT / TEMPORAL_PARAMETERS_OPEN.
+
+
+## 12. Reloj adimensional y cierre temporal S3 (2026-11-12)
+
+La escala de tiempo se normaliza sin atribución física: W_c=t_c,max−t0 cubre el soporte común de transiciones causales del DGP; x=(t−t0)/W_c, t0=0 y t_c,max=1. No se identifica con t9, H ni una duración real. La cola ρ_follow=τ_follow/W_c permanece abierta; T*=1+ρ_follow, común y preespecificado.
+
+Las duraciones de episodios d_e=δ_event/W_c son positivas y se exploran en un soporte sintético declarado. Cualquier d_min,DGP limita solo ese benchmark y no introduce periodo de gracia ni mínimo funcional. DEC-C10-102 sigue adjudicando como 0 todo intervalo intersectado por un incumplimiento confirmado.
+
+El canal S3 pasivo existente se evalúa bajo tres mecanismos: snapshots/métricas, logs/trazas/eventos runtime e híbrido. No se presupone captura event-driven, periodicidad, completitud ni independencia. Se estiman curvas conjuntas de detección por duración/fase/familia/versión, incluyendo lag, pérdida, cobertura, falsos positivos/negativos y dependencia. δ_det escalar requiere un umbral p* aprobado; antes se informa la curva y bounds/abstención.
+
+Δ, cadencia S3, duración del episodio y cola de seguimiento no se identifican entre sí. K es entero y Δ=(1+ρ_follow)/K; K/Δ se eligen por recuperación de truth y análisis de aliasing, y ρ_follow por soporte de persistencia/recuperación. La regla de frontera [b_k,b_{k+1}) queda recomendada, pendiente de versionado previo a materialización.
+
+**Estado:** NORMALIZED_COORDINATE_ONLY / NO_PHYSICAL_TIME_CLAIM / STRICT_TRUTH / S3_MODES_NOT_CALIBRATED / TEMPORAL_PARAMETERS_OPEN.
