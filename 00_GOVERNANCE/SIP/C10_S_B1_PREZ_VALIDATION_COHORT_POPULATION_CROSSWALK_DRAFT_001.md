@@ -2,7 +2,7 @@
 
 **ID:** C10-S-B1-PREZ-VALIDATION-POPULATION-CROSSWALK-001  
 **Versión:** Draft 001 · **Fecha:** 2026-11-12  
-**Estado:** DOCUMENTARY_RECONCILIATION / COHORT_CROSSWALK_PROPOSAL / DEC-C10-095_COMPOSITION_CONSTRAINT_ACCEPTED / ROSTER_AND_COHORT_NOT_APPROVED / NOT_MATERIALIZED / NOT_EXECUTED  
+**Estado:** DOCUMENTARY_RECONCILIATION / DEC-C10-095_COMPOSITION_CONSTRAINT_ACCEPTED / COHORT_CENSUS_SCOPE_RECOMMENDATION / E1_E2_NEED_TASK_ONLY / ROSTER_AND_COHORT_NOT_APPROVED / NOT_MATERIALIZED / NOT_EXECUTED  
 **Rama:** `research/c10-s-consolidation-draft` · **PR:** #116 (Draft)
 
 ## 1. Pregunta de reconciliación
@@ -39,7 +39,7 @@ Estos conjuntos no se presumen idénticos ni intercambiables.
 
 La cohorte de validación Need debe definirse ex ante a partir del roster DGP B1/UE, antes de Z, con identidad y binding válidos, y sin seleccionarla por el valor de Need, por Z, por tratamiento recibido, por elegibilidad P*, por accesibilidad o por resultados posteriores.
 
-**Propuesta de mínimo impacto, sujeta a DEC-C10-095:** usar como marco de validación el conjunto de unidades B1/UE del roster aprobado para las que el paquete analítico Need sea aplicable, sin seleccionar ni formar una subcohorte según Need; evaluar el soporte 1/0 sobre ese marco completo. Si falta una clase, el diseño queda bloqueado, sin reparación post hoc. El flujo debe distinguir explícitamente:
+**Alcance recomendado, sujeto a aprobación del roster:** usar como cohorte el censo de todas las UE del roster DGP/paquete B1 aprobado al que aplique el paquete Need, sin subcohorte ni selección por Need; evaluar el soporte 1/0 sobre ese marco completo. La pertenencia se resuelve por identidad/binding y versión del roster antes de truth, evidencia y Z. Si los rosters A/B permanecen separados, se toma el roster exacto del paquete B1; no se presupone un roster conjunto. Si falta una clase, el diseño queda bloqueado, sin reparación post hoc. El flujo debe distinguir explícitamente:
 - unidades roster elegibles para el paquete por identidad/binding;
 - unidades con estipulación truth íntegra 1/0/?;
 - unidades bloqueadas por defectos de integridad/materialización;
@@ -77,12 +77,13 @@ Las métricas binarias se limitan a truth=1/0 y deben acompañarse de denominado
 Antes de aprobar este crosswalk se requiere:
 
 1. recuperar y fijar el alcance del roster DGP B1/UE y su relación con la población experimental, sin inventar unidades;
-2. definir el objetivo exacto de validación Need: adjudicación E1/E2, Analyzer automático o ambos, y sus denominadores;
+2. el objetivo de validación Need queda delimitado a adjudicación E1/E2 por el crosswalk Generator/Analyzer/Evaluator existente; Analyzer PE no se convierte en clasificador Need. Definir los denominadores E1/E2;
 3. decidir si la cohorte de validación es el roster B1 completo aplicable o una subcohorte pre-Z justificada; DEC-C10-095 exige que cualquier subcohorte tenga regla aprobada independiente de Need, Z, observabilidad y resultado, y que el soporte 1/0 se compruebe sin reparación post hoc;
 4. cruzar los denominadores con C1 y las variantes A/B sin alterar P*_{τ2}/P*_F;
 5. reconciliar las reglas de exclusión/bloqueo con el paquete de seis artefactos, el protocolo E1/E2 y las pruebas PKG/PREZ ya existentes;
 6. especificar cómo se reportará rendimiento Need fuera del soporte observado, incluyendo límites de generalización;
 7. mantener abiertos el soporte de q_X*, la positividad D2, la asignación y la interferencia; el soporte de clases Need no los demuestra.
+8. mantener la evaluación PE del Analyzer separada, contra oráculos DGP por constructo/estimando; no usar el consenso E1/E2 como verdad de referencia ni inyectar las adjudicaciones en Analyzer por defecto.
 
 No se requiere volver a decidir la precedencia P*_{τ2}/P*_F ni crear una nueva matriz de población.
 
@@ -90,7 +91,7 @@ No se requiere volver a decidir la precedencia P*_{τ2}/P*_F ni crear una nueva 
 
 **NO CONFLATION: NEED-VALIDATION COHORT ≠ P*_{τ2} ≠ P*_F ≠ ITT DENOMINATOR.**
 
-El soporte truth 1/0 propuesto en el documento de composición es un requisito para evaluar la clasificación del constructo Need en su propia cohorte de validación. No es una condición de elegibilidad causal ni prueba positividad/soporte para D2, q_X*, C1, C3 o C4. La recomendación de mínimo impacto es definir la cohorte desde el roster B1/UE pre-Z, sin selección por Need, Z, observabilidad o resultados, y conservar un flujo transparente de bloqueos y estados indeterminados.
+El soporte truth 1/0 propuesto en el documento de composición es un requisito para evaluar la clasificación del constructo Need en su propia cohorte de validación. No es una condición de elegibilidad causal ni prueba positividad/soporte para D2, q_X*, C1, C3 o C4. La recomendación es definir la cohorte como censo del roster DGP/paquete B1 aprobado, sin selección por Need, Z, observabilidad o resultados, y conservar un flujo transparente de bloqueos y estados indeterminados. La evaluación de Need se limita a E1/E2; Analyzer PE mantiene su evaluación separada.
 
 Este crosswalk sigue siendo una propuesta de alcance poblacional; las reglas de composición y soporte de Need quedan subordinadas a DEC-C10-095, sin que ello apruebe todavía el roster ni la cohorte. No modifica DEC-C10S-C1-POPULATION-PRECEDENCE-001, P*_{τ2}, P*_F, estimandos, asignación, RMA, Evidence→Claim Matrix, STATUS ni main. No crea roster, truth, evidencia, cobertura, schema físico, fixtures o código. No ejecuta validadores, DGP, simulación, replay o análisis estadístico.
 
