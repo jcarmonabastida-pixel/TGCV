@@ -279,3 +279,19 @@ Tras DEC-C10-099 (selección de dimensión), se acepta expresamente la regla ini
 La decisión cierra la regla de agregación, no K, frecuencia, duración, inicio/fin, transitorios, baseline, MDE ni canal. El estimando es nivel post-Z; baseline no se resta automáticamente. S3 permanece vector de señales imperfectas y no se promedia para sustituir truth. Estimación puntual exige modelo de medición identificable con información permitida al Analyzer; en otro caso, bounds/abstención.
 
 DEC-C10-100 está registrada en 00_GOVERNANCE/decisions/DEC-C10-100_V_CONT_EQUAL_INTERVAL_TEMPORAL_AGGREGATION_ACCEPTANCE.md. La validez de medición, discriminación O-CONF/F*, identificación y calibración continúan abiertas. No se declara V_cont endpoint confirmatorio validado ni Design Freeze. No autoriza implementación, generación, simulación o ejecución.
+
+
+## 23. DEC-C10-101/102 — cierre semántico temporal de V_cont (2026-11-12)
+
+Esta sección actualiza la lectura temporal de §§20 y 22 conforme a las decisiones posteriores DEC-C10-100, DEC-C10-101 y DEC-C10-102. No reabre la selección de V_cont ni su regla de agregación.
+
+- La ventana post-Z empieza inmediatamente después de Z en t0 e incluye provisión e instalación; no se condiciona a recepción, instalación, C_dep, accesibilidad, Reach, selección o ejecución.
+- La truth por intervalo es estricta: A_B1(i,k)=1 solo si ENABLED/PROFILE se cumple durante todo el intervalo; A_B1(i,k)=0 si ocurre un incumplimiento funcional confirmado en cualquier instante; A_B1(i,k)=? solo si el Generator no determina la truth. No existe periodo de gracia ni tolerancia implícita.
+- Se mantiene V_cont_truth=(1/K)Σ A_B1(i,k) con intervalos de igual duración; UNKNOWN se propaga a bounds y no se imputa ni se elimina del denominador.
+- S3 sigue siendo un vector pasivo e imperfecto. Falta, pérdida, lag o cobertura insuficiente son estados observacionales, no truth. Sin identificación del canal, Analyzer produce bounds o abstención.
+- T* deberá cubrir el periodo de provisión/instalación y el seguimiento hasta el último evento causal que pueda modificar el cumplimiento B1 dentro del estimando. El orden t0…t9 no fija duración física ni determina T*.
+- Se recomienda un reloj explícito de tiempo transcurrido, unidad normalizada declarada, eventos fechados y rejilla regular. K=(T*−t0)/Δ con Δ constante y divisibilidad exacta. No se admiten intervalos residuales desiguales.
+
+**Permanecen OPEN:** unidad y anclaje de tiempo normalizado; catálogo de eventos funcionalmente relevantes; mínima duración representable; T*, Δ, K; regla de cierre; frontera exacta; resolución, cobertura, error y calibración S3; validez y discriminación frente a O-CONF. Por tanto, DEC-C10-101/102 cierran inicio y semántica de intervalo, no la parametrización temporal ni el gate confirmatorio.
+
+**Estado:** WINDOW_START_ACCEPTED / STRICT_INTERVAL_TRUTH_ACCEPTED / EQUAL_INTERVAL_AGGREGATION_ACCEPTED / NUMERIC_GRID_OPEN / MEASUREMENT_VALIDITY_OPEN / NOT_DESIGN_FROZEN.
