@@ -2,16 +2,16 @@
 
 **ID:** C10-S-B1-PREZ-COHORT-SCOPE-DENOMINATORS-001  
 **Versión:** Draft 001 · **Fecha:** 2026-11-12  
-**Estado:** DOCUMENTARY_RECONCILIATION / PROPOSED_SCOPE / NOT_APPROVED / NOT_MATERIALIZED / NOT_EXECUTED  
+**Estado:** DOCUMENTARY_RECONCILIATION / COHORT_CENSUS_SCOPE_RECOMMENDATION / ALIGNED_WITH_DEC-C10-095 / E1_E2_ONLY_FOR_NEED_ADJUDICATION / NOT_APPROVED / NOT_MATERIALIZED / NOT_EXECUTED  
 **Rama:** `research/c10-s-consolidation-draft` · **PR:** #116 (Draft)
 
 ## 1. Pregunta y resultado de la reconciliación
 
-Se resuelve la alternativa entre (a) tomar todas las unidades del roster aplicable o (b) seleccionar una subcohorte pre-Z: **la cohorte objetivo de validación Need_preZ será el censo de UE incluidas en el roster aprobado de la variante B1 que materialice el paquete analítico B1/Need**. No se recomienda una subcohorte adicional.
+Se recomienda cerrar la alternativa entre (a) censo del roster al que aplica el paquete y (b) subcohorte pre-Z: **la cohorte objetivo de validación Need_preZ será el censo de todas las UE incluidas en la versión aprobada del roster DGP/paquete B1 para la que se materialice el paquete analítico B1/Need**. No se recomienda una subcohorte adicional.
 
-Esta formulación es deliberadamente precisa: no equivale a afirmar que la cohorte abarque cualquier roster de C10-S, la variante A, toda P*_{τ2}, P*_F ni el denominador ITT. La arquitectura A/B define B como extensión sintética separada y versionada; el marco pertinente es, por tanto, el roster de UE de esa instancia/versión B1. Si el futuro diseño aprueba un único roster conjunto A/B, el crosswalk deberá reflejarlo; no se presume ahora.
+La pertenencia se determina por identidad, binding y alcance del roster antes de generar/abrir truth, evidencia o Z. La cardinalidad aceptada de una B1 por UE y una instancia lógica de servicio propia/versionada por UE fundamenta la aplicabilidad del paquete; no se usa Need ni observabilidad para decidirla. Si el diseño mantiene rosters A/B separados, se toma el roster exacto de la instancia DGP/paquete B1 aprobada; si aprueba un roster conjunto, se incluyen todas las UE a las que aplique el paquete. No se debe usar la expresión ambigua «variante B1» como sustituto de la identidad/versionado del roster.
 
-La decisión es una recomendación documental de mínimo impacto, no una aceptación de roster, una población causal nueva ni una autorización de materialización.
+Esta cohorte no equivale a cualquier roster C10-S, toda P*_{τ2}, P*_F ni al denominador ITT. La propuesta no aprueba roster, población causal nueva ni materialización.
 
 ## 2. Por qué censo del roster B1 y no subcohorte
 
@@ -23,7 +23,7 @@ La decisión es una recomendación documental de mínimo impacto, no una aceptac
 
 ## 3. Definición operacional de pertenencia y flujo
 
-La cohorte objetivo comprende todas las UE del roster B1 aprobado para la versión del paquete. La pertenencia se determina por roster/versionado, antes de generar o abrir truth y antes de Z. La regla no depende del estado de Need.
+La cohorte objetivo comprende todas las UE del roster DGP/paquete B1 aprobado para la versión del paquete. La pertenencia se determina por roster/versionado, identidad y binding, antes de generar o abrir truth/evidencia y antes de Z. La regla no depende del estado de Need, la disponibilidad de fuentes ni los resultados de adjudicación.
 
 Cada unidad debe permanecer visible en el flujo del paquete, con uno de estos estados de proceso (no son estados de truth):
 
@@ -35,23 +35,23 @@ Cada unidad debe permanecer visible en el flujo del paquete, con uno de estos es
 - salida del Analyzer registrada, incluida abstención, error o ausencia de salida;
 - evaluación abierta/sellada o no evaluable, con motivo explícito.
 
-Un fallo de identidad o integridad no se recodifica como truth=?, no se elimina silenciosamente del roster y no se convierte en error de clasificación. Se reporta como fallo de materialización/cobertura del paquete. La ausencia o insuficiencia de evidencia tampoco excluye la unidad: es una condición que el procedimiento debe afrontar y registrar.
+Un fallo de identidad, binding o integridad no se recodifica como truth=?, no se elimina silenciosamente del roster y no se convierte en error de clasificación. Se reporta como bloqueo del paquete/unidad; mientras no se resuelva, no puede declararse completada la evaluación confirmatoria censal. La ausencia o insuficiencia de evidencia tampoco excluye la unidad: es una condición que E1/E2 deben afrontar y registrar, normalmente como observed=? según el protocolo.
 
 ## 4. Tres objetos de evaluación, tres resultados separados
 
 El objetivo de evaluación debe descomponerse en tareas que no se confundan:
 
-### 4.1 Adjudicación humana/protocolaria E1 y E2
+### 4.1 Adjudicación B1/Need E1 y E2 — objetivo de esta cohorte
 
-E1 y E2 reciben evidencia y metadatos permitidos, sin acceso a TRUTH_LEDGER ni a metadatos reconstructivos. Cada salida se conserva y evalúa individualmente contra truth DGP. La concordancia E1–E2 es un resultado adicional de fiabilidad, no un sustituto de exactitud respecto de truth.
+E1 y E2 reciben el mismo expediente observable autorizado y metadatos permitidos, sin acceso a TRUTH_LEDGER ni a metadatos reconstructivos, y sin ver la salida del otro. Cada salida se conserva y evalúa individualmente contra Need_truth DGP. La concordancia E1–E2 es un resultado adicional de fiabilidad, no un sustituto de exactitud respecto de truth.
 
-### 4.2 Analyzer automático
+### 4.2 Analyzer PE — fuera del objetivo de clasificación Need
 
-La salida del Analyzer se registra y evalúa como procedimiento distinto. No se presume que Analyzer sea idéntico a E1/E2, que consuma sus decisiones, ni que un consenso E1/E2 constituya su etiqueta de referencia. Su interfaz y tarea exactas deben corresponder al contrato Generator/Analyzer/Evaluator vigente antes de implementación.
+El Analyzer PE no forma parte de la evaluación de clasificación Need ni se le atribuye una salida `need_observed_state`. El crosswalk de interfaz existente recomienda mantener su tarea de reconstrucción/estimación por constructo y estimando separada. Puede consumir una variable observada B1/Need únicamente cuando un contrato de estimando lo requiera explícitamente; eso no convierte a Analyzer en adjudicador Need ni incorpora E1/E2 como etiqueta de entrada por defecto.
 
-### 4.3 Evaluación por el Evaluator
+### 4.3 Evaluación por el Evaluator B1/Need
 
-El Evaluator accede a truth reservada solo después de que las salidas requeridas estén selladas. Compara, por separado, cada salida E1, E2 y Analyzer contra truth. Debe preservar desacuerdos, abstenciones, errores y casos no evaluables; no reemplaza las salidas originales por consenso.
+El Evaluator B1/Need abre truth reservada solo después de que E1 y E2 hayan sellado sus salidas. Compara E1 y E2 por separado contra truth y conserva desacuerdos, abstenciones, errores y casos no evaluables. No reemplaza las salidas originales por consenso. La evaluación del Analyzer PE permanece bajo el Evaluator PE y sus propios oráculos por estimando/constructo.
 
 No se introduce un séptimo artefacto: las salidas E1/E2 permanecen en ADJUDICATION_LEDGER, la salida del Analyzer se registra en el componente/registro de salida previsto por el contrato de interfaz, y la comparación se conserva en EVALUATION_LEDGER. La ubicación exacta del resultado Analyzer debe cerrarse mediante crosswalk de interfaz, no mediante una nueva entidad lógica.
 
@@ -64,13 +64,15 @@ Se deben informar al menos cuatro cantidades/flujo, sin colapsarlas:
 3. **N truth binaria:** unidades evaluables con truth=1 o truth=0. Este es el marco de cálculo de métricas binarias, condicionado a que ambas clases tengan soporte.
 4. **N truth indeterminada:** unidades evaluables con truth=?; se informan por separado y no se imputan a 0/1.
 
-Para cada procedimiento (E1, E2, Analyzer) informar:
+Para cada adjudicador (E1 y E2) informar:
 - cobertura/salida disponible respecto de N roster y N integridad evaluable;
 - matriz de clasificación 1/0/? contra truth binaria;
 - sensibilidad, especificidad y errores pertinentes con denominadores explícitos, si los contratos estadísticos fijan que son métricas aplicables;
 - abstención, observed=?, error técnico y ausencia de salida como resultados diferenciados;
 - comportamiento frente a truth=? por separado, sin medirlo como falso positivo/negativo binario;
-- flujo de exclusiones técnicas/bloqueos y análisis de límites de generalización.
+- flujo de bloqueos técnicos y análisis de límites de generalización.
+
+La evaluación del Analyzer PE no se incorpora a estos denominadores: conserva su salida PE y evaluación propia contra oráculos DGP por constructo/estimando.
 
 No se calcularán métricas binarias únicamente sobre los casos en que el Analyzer produjo una clasificación 1/0 sin informar las abstenciones y fallos de salida: hacerlo ocultaría el rendimiento operativo real. El rendimiento condicional a una clasificación emitida puede presentarse como análisis complementario, con su denominador y tasa de cobertura claramente indicados.
 
@@ -124,7 +126,7 @@ Gates todavía abiertos:
 
 ## 9. Dictamen
 
-**RECOMENDACIÓN:** censo de todas las UE del roster aprobado de la variante B1 como cohorte de validación Need_preZ; ninguna subcohorte por conveniencia. E1, E2 y Analyzer se evalúan separadamente contra truth DGP; truth=? y bloqueos permanecen visibles; P* e ITT no se alteran.
+**RECOMENDACIÓN:** censo de todas las UE del roster DGP/paquete B1 aprobado y aplicable como cohorte de validación Need_preZ; ninguna subcohorte por conveniencia. E1 y E2 se evalúan separadamente contra Need_truth DGP; Analyzer PE permanece fuera de la clasificación Need. Truth=?, evidencia insuficiente y bloqueos permanecen visibles; P* e ITT no se alteran.
 
 Este documento es una reconciliación documental propuesta, no una decisión aceptada, contrato congelado ni especificación física. No materializa roster, unidades, truth, evidencia, adjudicaciones, salidas Analyzer, fixtures ni código. No ejecuta validadores, DGP, simulación, replay o análisis estadístico.
 
