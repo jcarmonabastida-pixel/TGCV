@@ -2816,3 +2816,21 @@ La revisión de `EVIDENCE_TO_CLAIM_MATRIX_v1.47.md` confirma que la matriz regis
 Combinado con DEC-C10-061 (targets U_G cerrados), el camino de menor impacto es mantener truth/evidencia/adjudicación Need como paquete analítico local del DGP, fuera de U_G y de la Matrix global, versionado y con IDs/hashes/provenance propios. No se implementa ni se materializa todavía; su contrato de campos debe someterse a revisión antes de fixtures. Solo una evidencia futura que afecte una afirmación científica existente activará el proceso de impacto habitual.
 
 **Estado:** NEED_LOCAL_DGP_CONSTRUCT / NO_GLOBAL_CLAIM / U_G_TARGET_CLOSED / SIDE-PACKAGE_ROUTE_PREFERRED / NOT_APPROVED / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+
+## 16.171. Continuidad de C10-S y aplazamiento del playground (2026-11-12)
+
+**Origen:** conversación de continuidad del 2026-11-12; orientación explícita del usuario: guardar esta aclaración en GitHub y centrar ahora el trabajo en el experimento causal sintético.
+
+**Aclaración de alcance:**
+- C10-S conserva su naturaleza de experimento causal sintético. No se ampliará para convertirlo en una simulación exhaustiva o realista de una migración informática.
+- El caso de migración de configuración entre entornos sigue siendo un microdominio instrumental del DGP; su detalle operativo solo se añadirá cuando sea necesario para definir una intervención, mecanismo causal, medición, amenaza a identificación o criterio falsable.
+- El playground TGCV, cuando se retome, probablemente requerirá un escenario operativo más desarrollado y una simulación interactiva que permita explorar estados, transformaciones, restricciones, rutas, trayectorias, resultados y valor contextual. Ese nivel de detalle pertenece a la línea de playground, no al núcleo confirmatorio de C10-S.
+- No se presupone que el motor experimental C10-S sea por sí solo el motor operativo completo del playground. Se evaluará la reutilización de componentes compatibles (p. ej., representación de estados/transformaciones, trazabilidad, ejecución de escenarios y registro de resultados) y, si procede, se construirá una capa operativa diferenciada. La arquitectura compartida se decidirá por compatibilidad real, no por anticipación.
+- No se iniciarán ahora diseño detallado, implementación ni simulación del playground. La línea queda aparcada para retomarla expresamente más adelante.
+
+**Regla de contención para C10-S:** no incorporar complejidad contextual por realismo narrativo. Un componente solo se añade si es necesario para la verdad del DGP, intervención, estimando, observación/medición o evaluación; resuelve una amenaza causal/metrológica concreta; y tiene consecuencia falsable o criterio explícito de bloqueo. Las extensiones que no superen ese filtro quedan fuera del núcleo mínimo o se reservan como sensibilidad/extensión justificada.
+
+**Continuidad inmediata:** reanudar la auditoría integrada de suficiencia del diseño causal mínimo C10-S sobre los contratos existentes, reutilizando el trabajo histórico y sin recrear artefactos. Revisar D2 primario/D1 secundario, asignación e intervención, población/unidad/soporte/interferencia, separación T_acc–Reach–trayectoria–ejecución–Outcome–Value, ITT y atribución focal/mediación, vías directas/alternativas, DGP truth frente a evidencia observada, estimadores/oráculos, sensibilidad y condiciones de no-identificación. B1/Need_preZ/S7 se mantendrán solo en la medida en que resuelvan una necesidad real del diseño o de su medición; no se expandirán por realismo del microdominio.
+
+**Límites y estado:** esta entrada registra una orientación de continuidad, no una nueva decisión causal aceptada, no congela el diseño ni cambia estimandos, parámetros, DGP, contratos normativos, claims, Core, RMA, Matrix o STATUS. No autoriza implementación, simulación, validadores ni ejecución científica. scientific_execution=false; execution_authorized=false.
