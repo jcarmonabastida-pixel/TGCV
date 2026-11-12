@@ -261,3 +261,12 @@ Se conserva la definición pre-Z y la distinción 1/0/?: 1 cuando existe el obje
 La consecuencia de B1 se define respecto del propósito basal concreto y permanece distinta del proceso técnico y O-CONF. La envolvente de consecuencias existente es analítica, no roster de V_j. Autoridad normativa, criterio, dimensión, fuente, instrumento, escala, baseline y horizonte siguen OPEN. No se selecciona Value confirmatorio ni se modifica la separación Outcome/Value.
 
 Artefacto rector: `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md` §12. Estado: PURPOSE_CLASS_ACCEPTED / CONCRETE_OPERATION_OPEN / NEED_PREZ_NOT_MATERIALIZED / CONSEQUENCE_MEASUREMENT_OPEN. No Design Freeze ni autorización de implementación/ejecución.
+
+
+## 16. Precedencia posterior: DEC-C10-099 y contrato sintético de V_cont (2026-11-12)
+
+Las declaraciones históricas de §§13–15 que indicaban que no se seleccionaba ninguna dimensión V_j reflejan el estado anterior a la aceptación posterior registrada en DEC-C10-099. Para la extensión sintética B, V_cont queda seleccionada provisionalmente como dimensión mínima única, sin alterar la regla vectorial P179 ni las decisiones de A. Esa selección no instancia materialmente Value ni cierra la consecuencia/medición en el mundo real.
+
+La especificación sintética de truth temporal y canal S3 se desarrolla en el plan C10-S §16.182. El Generator estipula la capacidad operativa por intervalo; S3 aporta indicadores runtime pasivos e imperfectos, no prueba funcional directa. La recuperación puntual requiere calibración/identificación accesible al Analyzer; de otro modo corresponde bounds o NOT_IDENTIFIED. No se aprueba una agregación, ventana, K, frecuencia, baseline, instrumento empírico ni regla de valoración final. O-CONF/F* sigue sin operacionalización terminal validada y la discriminación permanece CONDITIONAL/NOT_VERIFIABLE.
+
+Estado reconciliado: `V_CONT_SELECTED_PROVISIONALLY / SYNTHETIC_MEASUREMENT_SPECIFIED_CONDITIONALLY / MATERIAL_VALUE_NOT_INSTANTIATED / O_CONF_NOT_OPERATIONALIZED / NO_DESIGN_FREEZE / NO_EXECUTION_AUTHORIZED`.
