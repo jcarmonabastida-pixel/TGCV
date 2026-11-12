@@ -66,3 +66,10 @@ Analyzer solo produce punto si la observación identifica; en otro caso bounds/a
 Se adopta la cobertura dirigida del plan §16.197, sin factorial completo ni IDs nuevos. Los ejes son r_c=d_e/c_j, r_Δ=d_e/Δ, fase de captura y r_f=τ_follow/τ_recovery,max cuando exista soporte. Se cubren relaciones menores/iguales/mayores que 1, aliasing, cruce de fronteras, pérdida/lag diferencial, errores correlacionados, recuperación, censura y discriminación O-CONF/V_cont, reutilizando perfiles §16.188.4 y P182/P183/MEAS/MISS.
 
 τ_follow cubre el soporte de recuperación solo si existe límite defendible; de otro modo se preserva censura. K/Δ se seleccionan por recuperación, aliasing, sensibilidad a fase y estabilidad al refinar K, no por conveniencia. No se fijan valores ni se ejecuta calibración.
+
+
+## 287. Registro paramétrico temporal integrado
+
+Se integra el ledger §16.198: inicio normalizado, familia causal, duración/soporte DGP, recurrencia, recuperación, cadencia/fase/cobertura S3, emisión/captura, lag, pérdida, error y dependencia conjunta. No se fijan valores ni leyes por defecto. Generator crea truth y estados; A_B1 se deriva por DEC-C10-102; S3 se genera después; Analyzer recibe evidencia sellada y Evaluator abre truth tras sellado.
+
+V_cont_truth es proporción de intervalos completamente conformes, no uptime exacto. Un incumplimiento confirmado afecta a todos los intervalos que intersecta; d_min,DGP no es tolerancia funcional. p*, δ_det, Δ, K, ρ_follow y distribuciones siguen OPEN. No se crean tests ni se ejecuta calibración.
