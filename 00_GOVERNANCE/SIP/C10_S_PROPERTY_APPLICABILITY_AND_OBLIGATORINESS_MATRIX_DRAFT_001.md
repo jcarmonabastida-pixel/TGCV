@@ -986,3 +986,19 @@ La expresión aceptada OR(NEQ(PAR-SVC-ENABLED,true),IN(PAR-SVC-PROFILE,{STANDARD
 ### 20.3. Estado
 
 AB-01 queda DESIGN RESOLVED en semántica, encoding/schema físico OPEN. AB-02 queda SEMANTIC CROSSWALK RECONCILED con DEC-C10-083; mappings versionados y evidencia material OPEN. No se sella IAM, no se declara REF=0 ni se crea schema freeze, fixture o ejecución.
+
+
+## 20.4. Mapping P0/P1 a predicados de accesibilidad: resultado de frontera (2026-11-12)
+
+Se incorpora el resultado del crosswalk D2 §9 sin duplicar la matriz IAM ni convertir el catálogo atómico en truth de accesibilidad:
+
+- CMP IDs identifican contrato/instancia/componente del paquete; no identifican τ₂ ni satisfacen `ID_f*`.
+- PAR-SVC-ENABLED y PAR-SVC-PROFILE son propiedades P0 REQUIRED; no prueban por sí solas ningún predicado de A_f*.
+- RUL-SVC-ENABLE-PROFILE-01 y sus operand bindings son regla/AST→PAR; no crean REF ni `REL_f*`/`DEP_f*`.
+- REF puede alimentar `REL_f*` únicamente si una relación declarada concreta es necesaria para τ₂. El roster mínimo no exige REF, pero REF=0 sigue prohibido sin cobertura exhaustiva por snapshot×etapa×ruta×scope; estado actual UNKNOWN.
+- POL está ausente por diseño; no inferir autorización desde esa ausencia. `C_auth,base` es un contrato P1 distinto, conceptualmente alineado con `AUTH_f*`.
+- `C_dep*` es éxito técnico de la dependencia provisionada y solo coincide con DEP bajo la hipótesis explícita de ruta única; no es A_f* completa.
+- Recursos disponibles ex ante pueden alimentar RES si son necesarios y no duplicados. Consumo, carga y contención se separan como ejecución/colateral.
+- MET/E_T y snapshots soportan identidad, procedencia y observación, no truth estructural ni ΔT_acc*.
+
+El roster de τ₂, las interfaces, condiciones constitutivas, rutas completas/alternativas y bloqueos efectivos no están materialmente inventariados. No se rellena esa ausencia por inferencia desde el paquete P0. `scientific_execution=false`; `execution_authorized=false`.
