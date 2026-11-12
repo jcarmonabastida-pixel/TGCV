@@ -182,3 +182,15 @@ El alcance de cohorte y la frontera E1/E2 vs Analyzer PE quedan aceptados por DE
 Este documento no crea nuevos artefactos lógicos, entidades U_G, claims, decisiones, tests ni parámetros. No modifica RMA, Evidence→Claim Matrix, STATUS, P*, ITT, D2 ni el contrato PE. No materializa roster, truth, fuentes, bundles, salidas, fixtures, schema físico, APIs, permisos ni código.
 
 `scientific_execution=false`; `execution_authorized=false`.
+
+
+
+## 11. Incorporación de la estructura lógica S7 (referencia §14)
+
+La estructura lógica de emisión/contenido/captura y sus estados no colapsables se especifica en §14 de C10_S_B1_PREZ_OBSERVATION_MECHANISM_AND_COVERAGE_RULES_RECONCILIATION_DRAFT_001.md. Este crosswalk la adopta como referencia conceptual para evitar que la proyección PE reduzca todo a availability_status.
+
+El bundle PE, cuando un estimando justifique incluir alguna observación B1/Need, solo podrá recibir campos observables autorizados: contenido declarativo visible si fue emitido y capturado, estado de captura/ausencia pertinente, provenance/autoridad no sensible, integridad, tiempo, binding, alcance y cobertura. Nunca recibe el estado interno del canal, truth, truth_basis_ref, la regla reservada de composición, semillas reconstructivas o salidas E1/E2 por defecto.
+
+La secuencia lógica no implica que todas las etapas sean variables independientes. El DGP podrá definir dependencias conjuntas, pero deberá declararlas explícitamente y evitar canales laterales. La enumeración EXPECTED de la oportunidad no equivale a emisión ni captura.
+
+Esta referencia no aprueba la proyección PE pendiente ni incorpora Need automáticamente al bundle. La decisión de incluirlo sigue siendo específica del estimando. No se añaden artefactos, roles, variables causales ni pruebas.
