@@ -396,3 +396,18 @@ La jerarquía se mantiene: ITT_Z^D2/ψ_policy es efecto de asignación a la pol�
 El objeto mediador C4 es ΔT_acc* completo; Reach/Π_H son posteriores secuenciales o bloque conjunto si se define intervención. A_f* es predicado/proyección dentro de T_acc y D_f* indicador derivado, no mediadores seriales. Confusores mediador–Value afectados por Z exigen estrategia longitudinal/interventional; no se resuelven con ajuste convencional post-Z. El residual/directo requiere una descomposición interventional compatible, nunca resta automática.
 
 C3/C4 no se identifican en el D2 material actual: mapping B→g, q_X*, soporte, inventario de vías, unidad/interferencia, medición y Value permanecen abiertos. Sin beneficiario/perspectiva/regla y fichas V_j, no hay estimando de mediación sobre Value evaluable. C-MED permanece PARCIAL/OPEN; P177/P178/P179/P182/P183 conservan sus definiciones. El dictamen completo y la matriz por estimando constan en §268.
+
+
+
+## 33. C+D — crosswalk causal integrado posterior (2026-11-12)
+
+El plan §16.185 es la referencia integrada para el cruce D2/g_A/C4 con truth de O-CONF/V_cont, población, soporte y observación. No altera DEC-C10-066/067 ni DEC-C10S-D2-ESTIMAND-SEPARATION-001.
+
+1. D2/Z_B conserva ITT total de política/paquete por resultado. La historia potencial distingue programación, intento, recepción, instalación, C_dep*, T_acc*, A_f*, D_f*, ΔT_acc*, Reach/Π y procesos downstream. No asigna Z a accesibilidad.
+2. θ_A(q) compara g_A1/g_A0 factibles sobre la distribución conjunta del ΔT_acc* completo, bajo q basal común y régimen común explícito para vías no focales. θ_Af(q_X*) requiere mapping B_D2→g_Af, población, soporte y vías colaterales; no está demostrado.
+3. C4 mantiene ΔT_acc* como objeto mediador; confusión mediador–resultado inducida por Z exige estrategia longitudinal/interventional. No usar resta ITT−θ_A ni ajuste convencional post-Z para definir residual/directo.
+4. O-CONF_r es outcome técnico terminal por ruta frente a F*; V_cont es candidato de Value temporal B1. Sus truths, medidas, estimandos y evaluación son independientes. ITT sobre uno no valida ni identifica el otro.
+5. Directas/colaterales e interacciones permanecen en el DGP; si no se separan, interpretar efecto de paquete o no identificación.
+6. P*τ2/P*_F, q_X*, asignación, soporte, interferencia y condiciones de UNKNOWN siguen el contrato D2; no se reabren ni se convierten en materializados.
+
+Estado: CAUSAL_CROSSWALK_INTEGRATED / C3_C4_NOT_IDENTIFIED_IN_MATERIAL_D2 / DGP_QUANTITATIVE_OPEN / NO_DESIGN_FREEZE / NO_EXECUTION_AUTHORIZED.
