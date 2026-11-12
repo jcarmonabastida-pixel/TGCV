@@ -1,0 +1,155 @@
+# C10-S — Reconciliación operativa del modelo de observación y cobertura B1/Need_preZ
+
+**ID:** C10-S-B1-PREZ-OBSERVATION-COVERAGE-RECON-001  
+**Versión:** Draft 001 · **Fecha:** 2026-11-12  
+**Estado:** DOCUMENTARY_RECONCILIATION / PROPOSED_OPERATIONAL_RULES / ALIGNED_WITH_DEC-C10-095_AND_DEC-C10-096 / NOT_APPROVED / NOT_IMPLEMENTED / NOT_MATERIALIZED / NOT_EXECUTED  
+**Rama:** `research/c10-s-consolidation-draft` · **PR:** #116 (Draft)
+
+## 1. Objeto y resultado de la revisión
+
+Operacionalizar sin duplicar el modelo de observación ya definido en `C10_S_B1_PREZ_ANALYTICAL_PACKAGE_CONTRACT_DRAFT_001.md` §6–§10, el inventario de fuentes y el crosswalk PE.
+
+El roster/cohorte queda delimitado por DEC-C10-096: censo de todas las UE del roster DGP/paquete aprobado al que aplica B1/Need. E1 y E2 son los adjudicadores Need; Analyzer PE queda fuera de la clasificación Need.
+
+La revisión identifica el cierre que falta: separar de forma explícita (a) el marco de oportunidades de fuente declarado por el DGP, (b) el proceso de emisión/captura, (c) el contenido semántico de cada fuente, (d) su admisibilidad e integridad y (e) la decisión E1/E2. No se fija número de fuentes, distribución, tasa, prevalencia ni parámetro.
+
+Este documento es una reconciliación propuesta de reglas; no modifica ni reemplaza el contrato del paquete.
+
+## 2. Marco de fuentes: alcance antes de observación
+
+Para cada UE y cada dimensión de afirmación pertinente al objetivo B1, el DGP deberá declarar ex ante el alcance documental/sintético que pretende representar. El alcance se identifica por unidad, dimensión, versión y regla de enumeración. No se presume que exista un catálogo universal de fuentes reales ni que todas las clases candidatas del inventario estén presentes en cada UE.
+
+El marco de fuentes distingue:
+- **fuentes esperadas dentro del alcance:** oportunidades de registro que el escenario declara pertinentes y enumerables;
+- **fuentes examinadas:** registros efectivamente inspeccionados por el proceso de adjudicación;
+- **fuentes disponibles y válidas:** registros capturados, íntegros, identificables, temporales y semánticamente admisibles;
+- **fuentes excluidas:** registros localizados pero inadmisibles, con motivo;
+- **fuentes opacas/no enumerables:** superficies que el alcance no permite inspeccionar o cerrar;
+- **fuentes no emitidas o perdidas:** eventos del proceso de observación, distintos de una declaración negativa.
+
+No se define un denominador de cobertura a partir de registros encontrados. El universo esperado procede del alcance ex ante; si no puede enumerarse, la cobertura no puede declararse COMPLETE.
+
+## 3. Separación de mecanismos generativos
+
+El modelo de observación debe conservar mecanismos lógicamente distintos. No se presume que sean independientes:
+
+1. **Emisión:** si una oportunidad de fuente produce una declaración.
+2. **Captura/retención:** si una fuente emitida llega al expediente accesible.
+3. **Contenido semántico:** si la declaración es fiel, errónea, ambigua o contradictoria respecto del objetivo focal.
+4. **Autoridad/vigencia:** si emisor, rol, alcance y versión permiten que la fuente respalde la afirmación.
+5. **Integridad:** si el artefacto conserva identidad, contenido y digest verificables.
+6. **Temporalidad:** si el event_time es pre-Z; capture_time posterior solo se admite cuando se acredita una copia íntegra de un registro fijado pre-Z.
+7. **Vinculación:** si la fuente corresponde a la B1/UE/instancia/versionado correctos.
+8. **Enumeración/cobertura:** si el universo pertinente fue cerrado y examinado conforme a la regla de alcance.
+
+La truth puede influir en la probabilidad y contenido de una declaración auténtica. La observabilidad puede depender de propiedades basales de la fuente/canal/custodio si se especifican ex ante. Ningún mecanismo puede depender de Z, política D2, tratamiento recibido, accesibilidad post-Z, Reach, trayectoria, ejecución, Outcome, Value o adjudicaciones.
+
+No se asignan probabilidades ni dependencias numéricas en este documento. La generación explícita de Need truth se mantiene separada y determinista conforme a DEC-C10-095.
+
+## 4. Estados de fuente y transición al expediente observable
+
+Los siguientes estados describen el proceso de observación, no el valor de Need:
+
+| Estado de proceso | Interpretación | Consecuencia inicial |
+|---|---|---|
+| NOT_IN_SCOPE | La clase de fuente no pertenece al alcance declarado de esa unidad/dimensión | No se cuenta como fuente esperada; no demuestra ausencia del objetivo |
+| NOT_ISSUED | Existía oportunidad de emisión, pero no se emitió declaración | Ausencia; no es afirmación negativa |
+| ISSUED_NOT_CAPTURED / LOST | Fuente emitida pero no retenida/capturada | Pérdida; no es afirmación negativa |
+| CAPTURED_OPAQUE | Registro localizado pero contenido/universo no inspeccionable | Cobertura parcial/opaca |
+| CAPTURED_INVALID | Integridad, identidad, versión o temporalidad no verificables | Excluida de evidencia admisible; motivo preservado |
+| CAPTURED_AMBIGUOUS | Contenido genuino pero semánticamente insuficiente para inclusión/exclusión focal | Puede contribuir a observed=? |
+| CAPTURED_CONFLICTING | Afirmaciones incompatibles sin regla de autoridad/precedencia que las resuelva | observed=? hasta resolución válida |
+| CAPTURED_VALID_POSITIVE | Afirmación afirmativa del objetivo focal, admisible y vinculada | Candidata a observed=1 |
+| CAPTURED_VALID_NEGATIVE | Exclusión focal afirmativa, admisible y dentro del alcance cerrado B1–servicio | Candidata a observed=0 |
+
+Estos estados no deben colapsarse en un único campo de disponibilidad. El contrato físico futuro deberá conservar estado de emisión/captura, integridad, admisibilidad y contenido por separado dentro de los artefactos existentes; no se añade un séptimo artefacto lógico.
+
+## 5. Reglas de adjudicación E1/E2
+
+Cada adjudicador recibe el mismo expediente observable autorizado y el alcance de fuentes no sensible, nunca truth ni metadatos reconstructivos.
+
+- **Observed=1:** al menos una afirmación positiva semánticamente alineada, pre-Z, íntegra, autorizada, vigente y vinculada a B1/UE/servicio; no basta ENABLED/PROFILE, IAM, snapshot técnico ni contrato genérico sin adopción por B1.
+- **Observed=0:** afirmación explícita de exclusión focal, íntegra, autorizada, vigente y vinculada, dentro del alcance B1–servicio cerrado. No se requiere enumerar todos los objetivos de B1; se aplica la exclusión focal aceptada. La mera ausencia de declaración, búsqueda sin resultados o cobertura COMPLETE sin afirmación negativa no basta.
+- **Observed=?:** no existe evidencia afirmativa suficiente para 1 o 0; hay omisión/pérdida, ambigüedad, conflicto no resuelto, opacidad, cobertura insuficiente o fuentes no admisibles.
+- **Error técnico/bloqueo:** fallo de identidad, binding, digest, schema o integridad que impide procesar el caso; no se disfraza como observed=? ni se convierte en resultado de clasificación.
+
+E1 y E2 conservan salidas independientes, rationales, evidencia usada, motivos de unknown/abstention, sellos y errores. La concordancia no sustituye exactitud contra truth.
+
+## 6. Falsos positivos, falsos negativos y abstención
+
+Distinguir el error semántico del silencio:
+
+- Truth=1 + declaración positiva errónea ausente/ambigua/perdida → normalmente observed=? (abstención), no falso negativo binario.
+- Truth=1 + afirmación negativa explícita, admisible pero semánticamente errónea → observed=0; se cuenta como falso negativo.
+- Truth=0 + ausencia de declaración positiva → observed=?; no es verdadero negativo.
+- Truth=0 + afirmación positiva explícita, admisible pero semánticamente errónea → observed=1; se cuenta como falso positivo.
+- Truth=? → se conserva fuera de la matriz binaria; la conducta E1/E2 se informa separadamente.
+- Registro corrupto, identidad incorrecta o fuente post-Z no acreditada como copia pre-Z → inadmisible/bloqueo según la clase de fallo, no evidencia afirmativa para clasificar.
+
+La distinción es esencial: la cobertura y la tasa de abstención son resultados del procedimiento, no se eliminan del denominador para mejorar sensibilidad/especificidad. Los denominadores de cada métrica deben mostrarse por E1 y E2.
+
+## 7. Cobertura y denominadores
+
+El censo de UE aprobado por DEC-C10-096 fija el denominador de unidades. Dentro de cada unidad, el marco de fuentes/dimensiones declarado ex ante fija el universo pertinente para cobertura. Se informan por separado:
+
+- N roster;
+- N con identidad/binding/truth-integrity válidos;
+- N truth=1, N truth=0 y N truth=?;
+- por unidad×dimensión: N fuentes esperadas, examinadas, válidas, excluidas, opacas, no emitidas y perdidas, cuando esos conteos tengan significado en el alcance declarado;
+- estados NONE/PARTIAL/COMPLETE por unidad×dimensión;
+- por E1 y E2: salida 1, 0, ?, abstención, error técnico y ausencia de salida;
+- matriz de clasificación sobre truth=1/0 y denominadores por clase;
+- bloqueos/no evaluables con causa.
+
+No se promedia cobertura entre dimensiones para producir un porcentaje global que oculte huecos. No se declara COMPLETE porque se hayan inspeccionado todas las fuentes encontradas: se requiere que el universo declarado sea enumerado/cerrado y que todas las superficies pertinentes se hayan examinado conforme a la regla. COMPLETE no implica observed=0; para observed=0 sigue siendo necesaria la afirmación negativa focal.
+
+## 8. Dependencia entre fuentes y errores
+
+No se presupone independencia condicional de fuentes. Si varias declaraciones comparten emisor, custodio, plantilla, canal, sistema, regla de generación o proceso de captura, la dependencia debe estar representada o reconocida como limitación. Repetir una misma declaración por varios artefactos derivados no crea corroboración independiente.
+
+Los errores se separan:
+- error semántico de la afirmación;
+- pérdida/no emisión;
+- error de identidad/vinculación;
+- error temporal;
+- corrupción/integridad;
+- error de autoridad/vigencia;
+- ambigüedad/conflicto.
+
+No se asignan tasas ni probabilidades hasta que el DGP maestro defina la estructura causal de observación, sus dependencias, soporte, parámetros justificados y análisis de sensibilidad. Si el DGP no identifica un mecanismo, se mantiene OPEN; no se inventa MCAR/MAR/MNAR ni independencia.
+
+## 9. Crosswalk con contratos existentes (sin IDs nuevos)
+
+| Regla/escenario | Contratos existentes reutilizables |
+|---|---|
+| Separación de truth y evidencia; export sin truth | PKG-05, PKG-07, PKG-13, PKG-14; P182-11 |
+| Silencio/omisión no es observed=0 | PKG-08; MEAS-11 como control de no recodificar ? a 0 |
+| Exclusión focal afirmativa y cobertura negativa | PKG-09; protocolo U_G de evidencia/provenance/cobertura |
+| Estado técnico no prueba objetivo Need | PKG-10 |
+| Conflicto, ambigüedad, identidad/temporalidad/versiones | PKG-11; MEAS-12 cuando aplique contaminación temporal |
+| Independencia E1/E2 y desacuerdo preservado | PKG-12; P182-06 |
+| Evaluación solo tras sellado | PKG-13 |
+| Integridad, lineage, cardinalidades, versiones y digests | PKG-14 |
+| Pérdida/captura diferencial y selección | MEAS-13, MISS-10/13/15, sin trasladar mecánicamente sus parámetros a Need |
+| Cobertura por dimensión y limitación de generalización | P182-03/05/08 y P183 según el estimando de medición |
+
+Este crosswalk es una propuesta de reutilización; no afirma que esos contratos estén implementados o ejecutados. No se crean IDs PREZ nuevos. Si una regla no queda cubierta por el contrato existente, se registra el gap antes de ampliar el registro.
+
+## 10. Gates pendientes
+
+1. Aceptación de estas reglas operativas de fuente/observación/cobertura.
+2. Crosswalk detallado de cada regla con PKG-01…14 y pruebas existentes, comprobando si algún criterio necesita especialización versionada sin duplicar IDs.
+3. Determinar el catálogo mínimo de clases de fuente que necesita el microdominio; las clases candidatas del inventario no se convierten automáticamente en fuentes presentes.
+4. Especificar el grafo de dependencias del proceso de observación y el soporte de sus mecanismos en el DGP maestro.
+5. Definir el universo de fuentes por unidad×dimensión y sus reglas de enumeración/cierre.
+6. Justificar tamaños, precisión, potencia y cualquier parámetro de error antes de ejecución.
+7. Verificar técnicamente el firewall y canales laterales.
+8. Aprobar por separado implementación y ejecución.
+
+## 11. Dictamen
+
+La especificación existente ya contiene los mecanismos generales. Esta reconciliación propone reglas operativas para no confundir ausencia con exclusión, fuente técnica con afirmación semántica, error con abstención ni cobertura de hallazgos con cierre del universo.
+
+No se aprueba todavía el modelo completo de observación ni se eligen fuentes concretas, probabilidades, tasas, parámetros, roster, schema físico, fixtures o código. No se materializa ningún dato ni se ejecuta ninguna prueba, DGP, simulación o replay.
+
+`scientific_execution=false`; `execution_authorized=false`.
