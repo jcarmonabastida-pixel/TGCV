@@ -1154,3 +1154,20 @@ El futuro contrato ejecutable deberá demostrar:
 **OPEN:** contenido concreto de la señal pre-Z; si la función emisora se representa como actor sintético o proceso de fuente; nombre/versión del mandato; reglas de autoridad y delegación; modelo de información y error; dependencias entre fuentes; parámetros y escenarios. Ninguno se rellena por conveniencia.
 
 **Dictamen:** la partición de información y la frontera con el contrato PE quedan reconciliadas documentalmente. El rol emisor concreto y el mecanismo de señal siguen OPEN. No hay materialización, implementación ni ejecución autorizada.
+
+
+
+## 14.6 Reconciliación de señal declarativa con DEC-C10-097
+
+La revisión conjunta de la estipulación basal, el diagnóstico de fuentes y el modelo de observación/cobertura corrige una posible sobreinterpretación de §14.5:
+
+1. No hay una señal basal independiente ya aprobada que un actor emisor pueda recibir para conocer el objetivo B1. Los candidatos técnicos y operativos ya descartados como proxies de Need no pueden reintroducirse bajo el nombre de «señal del emisor».
+2. El contrato de observación aceptado por DEC-C10-097 permite que truth influya en la probabilidad y contenido de una declaración auténtica, pero mantiene separados emisión, captura, contenido semántico, autoridad, integridad, temporalidad, vinculación y cobertura. Esta mediación constituye el canal de medición; no exige un actor con cognición/creencias simuladas.
+3. Por tanto, el emisor S7 se mantiene como función de origen/provenance y mandato declarativo atribuible ex ante. El artefacto es producido por el proceso observacional. No se añade un actor PE, un semantic_role U_G, una variable de señal, un evento causal ni una entidad del paquete analítico.
+4. I_source_internal de §14.5 se interpreta como estado técnico interno del proceso de observación (si existe), no como conocimiento privado de un emisor. No es accesible a E1/E2/Analyzer ni se exporta.
+5. La autenticidad del origen/mandato no garantiza corrección semántica. El canal debe poder representar declaraciones positivas/negativas correctas o erróneas, ambigüedad, conflicto, no emisión y pérdida según escenarios explícitos, sin imponer tasas ni independencia.
+6. La estipulación basal reservada sigue siendo el único generador de need_truth_state; la generación de evidencia sigue siendo un proceso separado. La no copia mecánica se verifica sobre contenido, metadatos, IDs, orden, timestamps, semillas, lineage y demás canales laterales.
+
+**OPEN:** fuente/clase S7 concreta y alcance por unidad×dimensión; regla de autoridad/mandato; estructura condicional del canal; dependencias; soporte de escenarios; parámetros y sensibilidad. No se inventa una señal basal ni un actor cognitivo para rellenar esos vacíos.
+
+**Dictamen:** para el diseño mínimo actual, modelar S7 como artefacto de un canal observacional con atribución de autoridad/provenance, no como declaración de un agente que recibe una señal independiente. La alternativa de actor cognitivo queda aplazada hasta que exista una base microdominio verificable. No se materializa, implementa ni ejecuta.
