@@ -4133,3 +4133,43 @@ La calibración numérica no comienza mientras A–E estén abiertos. Si B1 no p
 **Estado:** DGP_STRUCTURAL_SKELETON_RECONCILED / PARAMETER_LEDGER_DEFINED_BUT_UNPOPULATED / ADVERSARIAL_SCENARIO_SET_SPECIFIED_NOT_INSTANTIATED / VCONT_WINDOW_K_BLOCKED_BY_B1_OPERATIONAL_SEMANTICS / SUPPORT_AND_RANDOMIZATION_OPEN / CALIBRATION_NOT_RUN / DESIGN_FREEZE_NOT_READY / NO_EXECUTION_AUTHORIZED.
 
 No se ha creado código, schema físico, fixture, truth, roster, dato ni resultado. No se han ejecutado validadores, generación, simulación, estimación o calibración computacional. scientific_execution=false; execution_authorized=false.
+
+
+## 16.189. Precedencia funcional B1 y especificación temporal de V_cont (2026-11-12)
+
+**Reconciliación correctiva de §16.188.1 y §16.188.3.** La frase que declara no especificada la operación funcional B1 queda supersedida: la función de referencia ya está definida como contrato funcional de trabajo en `C10_S_B1_PREZ_ADJUDICATION_AND_CONSEQUENCE_RECONCILIATION_DRAFT_001.md` §2, `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md` §13 y DEC-C10-068. No se reabre ni amplía.
+
+### 16.189.1. Función B1 vigente
+
+Para cada intervalo post-Z, el constructo latente `A_B1(i,k)` representa conformidad con la función mínima del servicio lógico vinculado a B1:
+
+1. **Regla de admisión:** cuando PAR-SVC-ENABLED=true, el servicio tiene capacidad funcional de admitir solicitudes dirigidas a él; cuando es false, no las admite. La ausencia de solicitudes durante un intervalo no equivale a incumplimiento ni a cumplimiento observado.
+2. **Exposición de perfil:** el servicio expone el PAR-SVC-PROFILE declarado para la instancia/versión aplicable. STANDARD y READ_ONLY siguen siendo perfiles diferenciados por etiqueta, sin atribuirles capacidades de negocio adicionales.
+3. **Conformidad conjunta:** el estado funcional del intervalo es 1 cuando ambos requisitos aplicables se cumplen; 0 ante incumplimiento funcional estipulado y suficientemente determinado; ? cuando la truth del intervalo no puede determinarse. La falta de señal S3 es un problema de observación, no una conversión automática de truth a ?.
+
+La definición es de capacidad/regla funcional latente, no de conteo de peticiones, tasa de respuestas, éxito de procesamiento, ejecución F*, Outcome o Value. Una petición observada puede aportar evidencia de admisión, pero no sustituye el estado funcional del intervalo. No se añade payload, SLA, timeout, retry, carga, concurrencia ni semántica de negocio.
+
+### 16.189.2. Separaciones temporales obligatorias
+
+- `t−1/t0…t9` es el reloj de etapas causales del estudio, no una rejilla de intervalos de igual duración.
+- `k=1…K` indexa intervalos iguales de la ventana de V_cont; K no se deduce del número de etapas t ni de H=3.
+- H=3 es profundidad transformacional candidata, no horizonte temporal.
+- La oportunidad lógica S7 única por UE (DEC-C10-098) pertenece al canal declarativo pre-Z de Need_preZ; no es una repetición de probes ni determina K.
+- La oportunidad estandarizada post-snapshot pertenece a su contrato propio; no se multiplica ni reutiliza como observación repetida de continuidad.
+- S3 sigue siendo observación pasiva imperfecta; no se convierte en verificador directo ni en verdad.
+
+### 16.189.3. Ventana: recomendación y decisión pendiente
+
+Para que V_cont represente continuidad y no solo estado terminal, la recomendación de diseño es que la ventana post-Z comience en t0 (asignación), de modo que no se excluya por definición una posible interrupción durante provisión/instalación. Su extremo final debe ser un horizonte de seguimiento fijo, común y preespecificado, expresado en tiempo de estudio y no en número de etapas causales.
+
+Esta elección es una recomendación derivada del constructo, no una decisión aceptada. Permanecen sin fijar: duración del horizonte, unidad temporal, resolución mínima defendible, K y regla para eventos/transitorios en fronteras de intervalo. No se usarán t9, H=3 ni la cardinalidad S7 como sustitutos de esos parámetros. Si se decide otra ancla inicial, deberá justificarse por qué la continuidad durante la provisión queda fuera del resultado.
+
+### 16.189.4. Agregación ya aceptada
+
+DEC-C10-100 permanece vigente: con K intervalos iguales, V_cont_truth es la fracción temporal de intervalos conformes. UNKNOWN se propaga a cotas; no se imputa cero ni se elimina del denominador. Esta sección no altera la escala, no fija K y no valida S3.
+
+### 16.189.5. Estado y siguiente operación
+
+**FUNCTIONAL_REFERENCE_SPECIFIED / INTERVAL_TRUTH_CONTRACT_RECONCILED / WINDOW_START_T0_RECOMMENDED_NOT_APPROVED / HORIZON_RESOLUTION_K_OPEN / S3_CALIBRATION_OPEN / NO_DESIGN_FREEZE.**
+
+La siguiente operación es cerrar la ventana y resolución temporal con el reloj causal y el objetivo de continuidad, después especificar el canal S3 por intervalo. No se materializan intervalos, señales, truth, roster, fixtures ni datos. No se ejecuta código, calibración ni simulación. `scientific_execution=false`; `execution_authorized=false`.
