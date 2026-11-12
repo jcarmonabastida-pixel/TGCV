@@ -2,7 +2,7 @@
 
 **ID:** C10-S-B1-PREZ-STIPULATION-MECHANISM-COMPARISON-001  
 **Versión:** Draft 001 · **Fecha:** 2026-11-12  
-**Estado:** HISTORICAL_RECONCILIATION / DESIGN_COMPARISON / RECOMMENDATION_ONLY / NOT_APPROVED / NOT_IMPLEMENTED / NOT_MATERIALIZED / NOT_EXECUTED  
+**Estado:** HISTORICAL_RECONCILIATION / DESIGN_COMPARISON / RECOMMENDATION_ACCEPTED_BY_USER / DEC-C10-095_ACCEPTED_WORKING_DESIGN / NOT_IMPLEMENTED / NOT_MATERIALIZED / NOT_EXECUTED  
 **Rama:** `research/c10-s-consolidation-draft` · **PR:** #116 (Draft)
 
 ## 1. Pregunta y conclusión ejecutiva
@@ -129,9 +129,13 @@ No se asignan valores, proporciones, prevalencias, unidades, IDs, parámetros ni
 
 **RECOMMENDATION:** configuración explícita, versionada y reservada por B1/UE como fuente de estipulación; derivación determinista de truth desde esa estipulación; ningún generador estocástico de Need en el núcleo confirmatorio actual; soporte 1/0 comprobado como gate sobre la cohorte definida ex ante, con bloqueo si falta una clase.
 
-La configuración explícita no es una decisión ya aceptada ni una autorización para materializar. Requiere aceptación expresa antes de actualizar contratos rectores o construir el roster.
+La recomendación fue aceptada expresamente por el usuario y registrada en DEC-C10-095. La aceptación no autoriza materialización, construcción del roster, implementación ni ejecución.
 
-## 9. Estado de ejecución
+## 9. Estado de decisión y ejecución
+
+La alternativa recomendada ha sido aceptada y propagada a los contratos B1 rectores mediante DEC-C10-095. Las alternativas determinista-generadora y estocástica quedan descartadas para la asignación de Need en el núcleo confirmatorio; el mapping determinista desde la estipulación sí queda adoptado.
+
+
 
 Este documento es una comparación y recomendación. No modifica el contrato de objetivo, el paquete analítico, el mapa temporal maestro, población/estimandos, RMA, Evidence→Claim Matrix, STATUS, decisiones aceptadas ni main. No crea roster, estipulaciones, truth, fuentes, fixtures, parámetros, schema físico o código.
 
