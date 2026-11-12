@@ -6092,3 +6092,61 @@ El roster es **suficiente como roster conceptual dirigido** para los falsadores 
 **Dictamen:** EXISTING_ROSTER_CONCEPTUALLY_SUFFICIENT_FOR_C1_C3 / EFFECTIVE_CELL_COVERAGE_NOT_VERIFIED / POSITIVE_CONTROLS_NOT_MATERIALIZED / ESTIMAND_SPECIFIC_NULL_AND_SIGN_CELLS_OPEN / DIRECT_COLLATERAL_DECOUPLING_CELLS_OPEN / BOUNDS_ANALYZER_IMPLEMENTATION_GAP_RETAINED / NO_ROSTER_EXPANSION / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** especificar las celdas mínimas obligatorias —sin cifras— para C1 y C3: control positivo, nulo por estimando, efecto negativo, vía directa/colateral desacoplada, heterogeneidad con signos opuestos y control de no-identificación/abstención. Reutilizar §§16.211–16.223 sin duplicar sus mecanismos/campos.
+
+
+## 16.225. Gate 71 — especificación de celdas mínimas obligatorias C1/C3 (2026-11-12)
+
+**Precedencia:** §§16.208–16.224, especialmente roster §16.211.3, identificación/soporte y cuadrículas §16.222, ledger/r_common §16.223 y auditoría de cobertura §16.224. Este gate define roles de celda y contrastes mínimos; no crea nuevas clases de mundo, no asigna cifras, no materializa parámetros ni modifica código. No reabre Value, B1, V_cont, S3/S7, la ventana temporal ni C4/LATE.
+
+### 16.225.1. Regla de construcción
+
+Las celdas son **roles de contraste del ledger**, no nuevos mundos ni nuevas familias. Cada celda referencia una clase/mecanismo del roster §16.211.3 y hereda del ledger §16.223 sus campos de población, asignación, intervención, soporte, r_common, interferencia, observación, verdad y firewall. Una misma configuración puede cubrir dos roles solo si las verdades y condiciones de identificación requeridas son simultáneamente compatibles y quedan registradas por separado; no se permite contar una celda dos veces por su etiqueta.
+
+La matriz es mínima en cobertura lógica, no un factorial. Los signos, magnitudes, historias, perfiles S3 y parámetros se fijarán después dentro de la cuadrícula ya prevista; no se crean valores de efecto ni márgenes numéricos en este gate.
+
+### 16.225.2. Celdas obligatorias C1 — ITT-D2
+
+| Rol de celda | Clase existente | Verdad DGP exigida | Condición de identificación/salida exigida |
+|---|---|---|---|
+| C1-POS | Focal limpio R0 | ITT-D2 no nulo positivo | Z aleatorizado en UA, positividad por estrato, consistencia/versiones, interferencia resuelta y observación compatible; Analyzer recupera ITT total con incertidumbre |
+| C1-NULL | Nulo | ITT-D2 exactamente nulo, aunque las primeras etapas o θ_A puedan ser no nulas | No imponer nulos a C2/C3; Analyzer no debe fabricar efecto y debe distinguir estimación compatible con cero de falta de precisión |
+| C1-NEG | Focal adverso o vía directa/colateral con signo adverso | ITT-D2 no nulo negativo | Mismas condiciones de identificación que C1-POS; recuperar dirección y magnitud con incertidumbre |
+| C1-DECOUPLED | Vía directa D2→resultado y/o R2 colateral | ITT-D2 no nulo mientras θ_A sea nulo o no identificable, según verdad separada | El ITT conserva el efecto total del paquete; queda prohibido presentarlo como efecto focal. Si la rama colateral viola r_common, C3 debe abstenerse/bounds |
+| C1-HET | Interacción/heterogeneidad | Efectos condicionales de ITT con signos opuestos en historias con masa positiva; registrar también el ITT marginal, que puede ser nulo o de signo distinto | q_X*/P_w y soporte condicional predeclarados; informar marginal y condicionales sin transportar fuera del soporte |
+| C1-ABSTAIN | Interferencia, soporte/ausencia/censura u observación adversarial | Al menos una condición necesaria de identificación de C1 ausente o no verificable | Analyzer no emite ITT puntual identificado; salida NOT_IDENTIFIED/INDETERMINATE o bounds solo si el contrato de bounds está disponible |
+
+### 16.225.3. Celdas obligatorias C3 — efecto focal sobre ΔT_acc*
+
+| Rol de celda | Clase existente | Verdad DGP exigida | Condición de identificación/salida exigida |
+|---|---|---|---|
+| C3-POS | Focal limpio R0 | θ_A no nulo positivo bajo g_A1/g_A0 sobre el vector completo ΔT_acc* | Ambas políticas factibles y con soporte en cada historia con masa; q_X* común; r_common acreditado; fuente de asignación/intervención visible al Analyzer; estimación focal con incertidumbre |
+| C3-NULL | Nulo focal | θ_A exactamente nulo, sin imponer ITT-D2=0 ni primera etapa nula | Analyzer distingue cero verdadero de imprecisión y no usa ITT como sustituto |
+| C3-NEG | Focal adverso | θ_A no nulo negativo | Mismas condiciones de soporte, régimen común y observabilidad que C3-POS |
+| C3-DECOUPLED | Vía directa D2→resultado y R2 colateral | Contrastes separados: (a) ITT no nulo con θ_A nulo; (b) rama no focal diferencial bajo g_A con θ_A no identificable. No colapsarlos | En (a), recuperar/abstenerse según fuente focal realmente disponible; en (b), abstención o bounds. Nunca atribuir a ΔT_acc* la vía directa/colateral |
+| C3-HET | Interacción/heterogeneidad | Efectos focales condicionales de signos opuestos sobre historias con masa positiva; conservar el efecto marginal y su relación con la composición de q_X* | Soporte de ambas g_A en cada estrato/historia relevante; informar heterogeneidad y marginal sin extrapolación |
+| C3-ABSTAIN | Soporte/factibilidad fallida, r_common diferencial no separado, interferencia o canal no identificante | θ_A no identificable o parcialmente identificable por construcción | No emitir estimación puntual identificada. PARTIALLY_IDENTIFIED/bounds solo cuando exista contrato y Analyzer implementado; de lo contrario, abstención explícita |
+
+### 16.225.4. Separaciones cruzadas que no se pueden omitir
+
+1. **Nulo de outcome ≠ nulo de primera etapa.** C1-NULL, C3-NULL y primera etapa nula son verdades separadas. Debe existir al menos un desacoplamiento con primera etapa ΔT_acc* nula y ITT-D2 no nulo por vía directa, si se mantiene dentro del rango factible del DGP.
+2. **ITT-D2 ≠ θ_A.** C1-DECOUPLED debe contener una verdad donde el paquete tenga efecto y el efecto focal sea nulo o no identificable. El Evaluator adjudica ambos por separado.
+3. **Asignación G ≠ intervención focal identificada por definición.** La diferencia observada por G solo representa θ_A cuando G implementa el contraste sobre el vector completo ΔT_acc* y no abre vías directas/colaterales diferenciales; de otro modo es un contraste de asignación/manipulación y no acredita el efecto focal. La truth de θ_A debe definirse por el régimen g_A, no copiarse automáticamente del contraste empírico G.
+4. **Heterogeneidad ≠ promedio.** Las verdades condicionales, sus masas q_X* y el efecto marginal se conservan; un promedio nulo no demuestra ausencia de efectos condicionales.
+5. **Abstención ≠ error de recuperación.** La abstención es correcta si falta identificación; es excesiva si se produce en un control positivo identificable con canal y soporte suficientes. La auditoría debe puntuar ambos por estimando.
+6. **C4 y LATE_f no se aprueban con estas celdas.** Sus celdas y condiciones permanecen sujetas a contratos independientes.
+
+### 16.225.5. Compatibilidad con el harness existente y límite de implementación
+
+La inspección estática del artefacto existente 03_EXPERIMENTS/C10-S/harness/vcont_integrated_harness.py (blob SHA 2dafb9cdc4a6e0b5b6d686acc74bdecc71dbead4) muestra que ya contiene asignaciones separadas Z/G, potenciales cruzados [unidad][z][g], cuatro coordenadas observadas de ΔT_acc*, perfiles R0–R3 y escenarios candidatos de positivo, nulo, adverso, vía directa, alternativa, colateral, fallo de provisión, medición, interferencia, soporte y heterogeneidad. Esto es **cobertura de código candidato**, no cierre de las celdas ni autorización de ejecución.
+
+Se detecta una precisión semántica obligatoria antes de cualquier futura implementación/aceptación: el campo actual theta_access_truth se calcula como contraste potencial de G sobre V_cont bajo Z=0. Ese contraste solo coincide con θ_A si G manipula el vector ΔT_acc* y no tiene vía directa/colateral diferencial. El escenario focal_direct_effect demuestra por qué no puede tratarse automáticamente como verdad de θ_A. La futura truth del Evaluator debe conservar por separado (i) contraste ITT de Z, (ii) contraste de asignación G y (iii) θ_A definido por el régimen g_A sobre ΔT_acc*. No se modifica el código en este gate.
+
+La misma inspección confirma que el Analyzer actual solo emite IDENTIFIED/NOT_IDENTIFIED/INDETERMINATE, no implementa PARTIALLY_IDENTIFIED/bounds y no calcula métricas de cobertura/calibración por familia; §16.218.8 sigue vigente. La lista benchmark_scenarios es candidata y no acredita por sí sola que todos los roles C1/C3 estén cubiertos: en particular, el desacoplamiento de primera etapa nula con ITT no nulo y la heterogeneidad con signos condicionales opuestos no están demostrados por el inventario nominal de escenarios.
+
+### 16.225.6. Dictamen
+
+Queda cerrada la **especificación lógica de roles mínimos C1/C3**, reutilizando las clases existentes y sin expansión del roster. Quedan abiertos: materialización de cada rol en el ledger; parámetros/masas y soporte; separación formal de truth ITT, contraste G y θ_A; verificación de compatibilidad de las celdas; implementación de bounds/abstención y métricas; y cualquier calibración/dimensionamiento posterior.
+
+**Dictamen:** MINIMUM_C1_C3_CELL_ROLES_SPECIFIED / EXISTING_WORLD_ROSTER_REUSED / CELL_LEVEL_CONFIGURATION_OPEN / ITT_G_ASSIGNMENT_AND_THETA_A_TRUTH_SEPARATION_REQUIRED / BOUNDS_ANALYZER_GAP_OPEN / NO_CODE_CHANGE / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** auditar la coherencia del contrato de verdad del Generator/Evaluator con los tres objetos ITT-D2, contraste G y θ_A(g_A), y definir su representación sin fugas al Analyzer. Reutilizar TruthBundle/AnalyzerResult/Evaluator existentes como artefactos a revisar; no implementar código todavía.
