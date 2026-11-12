@@ -85,6 +85,12 @@ class ScenarioConfig:
             raise ContractError("benchmark requires randomized Z and randomized g_A")
         if not self.version_consistency:
             raise ContractError("scenario generator requires explicit version consistency")
+        if self.measurement_identified and not (
+            self.measurement_sensitivity == 1.0 and
+            self.measurement_specificity == 1.0 and
+            self.missing_probability == 0.0
+        ):
+            raise ContractError("point identification currently requires perfect, complete S3; calibrated-error correction is not implemented")
 
 
 @dataclass(frozen=True)
@@ -215,15 +221,20 @@ class Generator:
             u_provision = rng.random()
             u_alt = rng.random()
             u_trajectory = rng.random()
-            u_intervals = [rng.random() for _ in range(cfg.n_intervals)]
+            u_enabled = [rng.random() for _ in range(cfg.n_intervals)]
+            u_profile = [rng.random() for _ in range(cfg.n_intervals)]
             cluster = i // 4
             # Synthetic exposure is based on the other units' assigned Z in
             # the same four-unit cluster; it is inert in no-interference worlds.
             unit_potentials = []
             unit_intervals = []
+            unit_enabled = []
+            unit_profile = []
             for z in (0, 1):
                 z_potentials = []
                 z_intervals = []
+                z_enabled = []
+                z_profile = []
                 for g in (0, 1):
                     provision_p = cfg.provision_probability
                     if cfg.profile == "R3":
