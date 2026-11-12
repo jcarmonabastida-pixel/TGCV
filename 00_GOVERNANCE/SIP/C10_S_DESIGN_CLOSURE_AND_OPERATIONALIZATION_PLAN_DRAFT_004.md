@@ -3971,8 +3971,19 @@ El gate G-ROLE requiere pruebas de permisos efectivos y ataques negativos, no so
 | G-REPRO | P178 benchmark acotado reproducido; reproducción del DGP integrado y manifests de todos los roles no definidos | BLOCKED |
 | G-AUTH | autorización de Design Freeze/implementación/ejecución ausente | NOT GRANTED |
 
-**Decisiones no deducibles antes del freeze:** (i) regla normativa de agregación de V_cont; (ii) selección/alcance de Outcome confirmatorio — O-CONF no se convierte en primario por estar más desarrollado; (iii) relevancia/MDE y riesgo de error de decisión; (iv) horizonte/rejilla/criterio de disponibilidad; (v) si el alcance se limita al experimento sintético de recuperación o pretende además materializar D2. La factibilidad material D2 no es requisito para un benchmark sintético puro, pero sí para claims sobre provisión real, validez externa o identificación material.
+**Decisiones no deducibles antes del freeze:** (i) regla normativa de agregación de V_cont; (ii) selección/alcance de Outcome confirmatorio — O-CONF no se convierte en primario por estar más desarrollado; (iii) relevancia/MDE y riesgo de error de decisión; (iv) horizonte/rejilla/criterio de disponibilidad. El alcance de este trabajo es el experimento causal sintético de recuperación, no la materialización de una migración/D2 real; esa frontera ya está decidida y no se vuelve a consultar. G-MAT material real queda fuera del gate del experimento sintético, aunque sus condiciones puedan inspirar escenarios adversariales estipulados. No se harán claims de provisión real, validez externa ni identificación material.
 
 **Dictamen E+F:** MEASUREMENT_CONTRACT_RECONCILED_CONDITIONALLY / VCONT_AGGREGATION_DECISION_OPEN / OCONF_NOT_OPERATIONALIZED / P178_BOUNDED_REPLAY_CLOSED / CONFIRMATORY_CALIBRATION_NOT_DERIVED / PE_TECHNICAL_BOUNDARIES_SPECIFIED_NOT_IMPLEMENTED / ALL_FREEZE_GATES_BLOCKED / NO_AUTHORIZATION.
 
 No ejecución de código, pruebas, validadores, generación, simulación, estimación, captura material ni implementación. scientific_execution=false; execution_authorized=false.
+
+
+### 16.186.6. Corrección de alcance del gate material
+
+El alcance científico vigente es el experimento causal sintético. La materialización real de D2, IAM/roster operativo, instalación real o migración informática no es prerequisito ni entregable de este experimento. En consecuencia:
+- G-MAT material se marca OUT_OF_SCOPE_FOR_SYNTHETIC_CORE, no como bloqueo que obligue a construir un entorno real.
+- Sí son obligatorios en el núcleo sintético: cohorte finita generada y versionada; unidad/UA/UO; asignación reproducible; distribución basal y soporte; interferencia estipulada o aislamiento por construcción; verdad por etapa; parámetros y potenciales versionados.
+- Las condiciones de materialización real solo pueden aparecer como escenarios sintéticos adversariales claramente estipulados, nunca como evidencia material observada.
+- No se derivarán claims de validez externa, factibilidad operativa o efecto de D2 real.
+
+Esta corrección no relaja G-SCI/G-SCHEMA/G-ROLE/G-TEST/G-REPRO ni autoriza ejecución.
