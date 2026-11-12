@@ -3412,3 +3412,37 @@ La siguiente operación integrada será:
 No se solicita de nuevo aceptar V_cont como dimensión. No se declara aceptada la regla de agregación ni superados los gates de medición/discriminación. No se crean tests, IDs, fixtures, schemas físicos ni nuevos roles; no se ejecuta código, validadores, generación, simulación o estimación. Se mantienen scientific_execution=false y execution_authorized=false.
 
 **Estado actualizado:** V_CONT_CONSTRUCT_ACCEPTED_PROVISIONALLY / TEMPORAL_AGGREGATION_PROPOSAL_OPEN / MONITOR_VALIDITY_OPEN / DISCRIMINANT_VALIDITY_OPEN / CALIBRATION_NOT_RUN / DESIGN_FREEZE_NOT_READY / EXECUTION_NOT_AUTHORIZED.
+
+## 16.180. Crosswalk de fuentes U_G/PE para la observación de V_cont (2026-11-12)
+
+**Objeto:** determinar si las fuentes ya admitidas por U_G/PE pueden sustentar la observación temporal de la capacidad operativa B1 sin crear una fuente, interfaz o rol nuevo.
+
+### 16.180.1. Reutilización de clases existentes
+
+El protocolo U_G ya distingue, entre otras, estas familias relevantes:
+- **S3 — observación runtime:** procesos, módulos cargados, llamadas, trazas, sockets, logs y métricas. Puede aportar evidencia temporal de actividad/estado operativo, pero su cobertura está limitada por muestreo, rutas no activadas y eventos raros.
+- **S4 — snapshots e integridad:** snapshots inmutables, hashes, diffs y estados pre/post/rollback. Acredita identidad y estado capturado, pero no demuestra por sí solo capacidad operativa durante intervalos.
+- **S5 — contratos/interfaz:** API, schema, documentación y contratos existentes. Acredita semántica declarada, pero el contrato declarado no prueba comportamiento runtime.
+- **EVIDENCE_REGISTER / CLAIM_EVIDENCE_LINK / COVERAGE_REGISTER:** conservan procedencia, vínculo a afirmaciones y universo/cobertura exactos; no son fuentes de capacidad por sí mismos.
+
+### 16.180.2. Dictamen del crosswalk
+
+1. S4 puede fijar identidad, versión y estado estructural de la instancia en el ancla temporal; no sustituye una observación temporal de disponibilidad.
+2. S5 fija el comportamiento esperado ENABLED/PROFILE; no demuestra que la instancia pueda realizarlo.
+3. S3 es la única familia existente con alcance temporal runtime compatible como **candidato** para la observación no-mutante de V_cont. No obstante, su inclusión en U_G no acredita automáticamente que un conjunto concreto de procesos/métricas/logs mida capacidad efectiva de admisión.
+4. No se ha encontrado en los contratos recuperados un mapping aprobado de señales S3 a la capacidad latente de admitir una solicitud conforme al estado ENABLED y exponer PROFILE, ni un instrumento validado, una cobertura temporal o un modelo de error específico para V_cont.
+5. Por tanto, el monitor no-mutante puede representarse como una regla de observación sintética sobre S3 dentro del DGP, pero su semántica y sus indicadores concretos siguen CONDITIONAL/OPEN. No se crea una nueva clase de fuente, actor, tabla, ledger, rol o interfaz.
+
+### 16.180.3. Condiciones para cerrar la medición
+
+La ficha podrá cerrarse documentalmente solo cuando el contrato identifique, sin inventar campos físicos:
+- qué estado operativo latente define la capacidad B1 por intervalo;
+- qué evidencia S3 observable sería compatible con ese estado y qué no puede inferirse de ella;
+- cómo se generan sensibilidad, especificidad/errores, cobertura, pérdida y censura sin asumir tasas no justificadas;
+- cómo el Analyzer recibe evidencia S3 versionada y sellada sin truth, potenciales ni metadatos reveladores;
+- cómo se demuestra discriminación frente a O-CONF terminal y frente al mero valor declarativo ENABLED/PROFILE;
+- qué dictamen se emite cuando S3 no cubre una ventana o no permite inferir capacidad.
+
+No se fijan nombres de métricas, endpoints, payloads, intervalos, tasas, campos, API ni tecnologías. No se ejecutan capturas ni se inspeccionan sistemas reales.
+
+**Estado:** S3_RUNTIME_OBSERVATION_REUSED_AS_CANDIDATE / S4_S5_LIMITS_RECONCILED / V_CONT_SIGNAL_MAPPING_NOT_ESTABLISHED / MONITOR_VALIDITY_CONDITIONAL / NO_NEW_SOURCE_OR_ROLE / EXECUTION_NOT_AUTHORIZED.
