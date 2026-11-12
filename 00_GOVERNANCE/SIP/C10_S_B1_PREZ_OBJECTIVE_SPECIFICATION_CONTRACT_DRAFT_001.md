@@ -348,3 +348,19 @@ Una declaración positiva falsa o una exclusión focal falsa puede ser auténtic
 Solo si una futura especificación del microdominio identifica un proceso basal concreto que produce información declarativa (con semántica, autoridad, tiempo y provenance propios) podrá modelarse un emisor como actor con acceso a esa señal. Ese diseño deberá demostrar que la señal no es ENABLED/PROFILE, una proxy técnica, una copia de truth ni una variable post-Z. No es requisito del diseño mínimo actual.
 
 **Dictamen:** no se requiere una señal basal independiente ni un emisor cognitivo para representar una observación imperfecta. Se recomienda conservar S7 como artefacto declarativo generado por el canal observacional, con autoridad/provenance asignada ex ante y contenido imperfecto modelado explícitamente. El catálogo de fuentes y el canal siguen pendientes de especificación y parámetros; no se autoriza materialización.
+
+
+
+## 7.8 Mandato de autodeclaración S7 y canal sintético — DEC-C10-098
+
+DEC-C10-098 acepta una oportunidad lógica S7 por UE y atribuye la declaración focal a B1 en modalidad de autodeclaración limitada a su propio objetivo operativo basal. Esta aceptación resuelve la hipótesis de mandato de §10.9.3 del inventario: no queda abierta la pregunta de si B1 puede declarar su propio objetivo dentro de ese alcance; sí quedan abiertos la identidad/representación concreta, versión y evidencia técnica del mandato.
+
+La expresión «canal de observación» de §7.7 no debe interpretarse como un agente oculto ni como una señal privada que conoce truth. Es un mecanismo sintético de medición que genera el resultado observable a partir del estado basal mediante reglas explícitas, mediadas y auditables. Debe distinguir, al menos, oportunidad esperada, resultado de emisión/contenido, captura/retención y admisibilidad. No se fija aquí ninguna probabilidad ni se presupone independencia.
+
+La enumeración de una oportunidad por UE se realiza ex ante y es independiente de truth, tratamiento y resultados. El contenido observable puede estar relacionado con el estado basal; de otro modo no mediría Need. Esa relación no puede ser una copia determinista de need_truth_state al campo declarativo ni una filtración por IDs, timestamps, orden, semillas, lineage o metadatos. El DGP deberá especificar el mecanismo de forma que permita errores semánticos, ambigüedad y no emisión en los escenarios que se definan y justifiquen.
+
+La declaración auténtica pero errónea sigue siendo admisible como evidencia de lo que se declaró, no como verdad del objetivo. E1/E2 la clasifican según su contenido y criterios de admisibilidad; la evaluación posterior contra truth identifica el error. Autoridad no equivale a veracidad.
+
+Esta sección especializa y armoniza §§7.4–7.7 y los requisitos A–F precedentes. Donde los textos anteriores parezcan exigir que un actor reciba una señal basal, prevalece esta interpretación de canal de medición sin actor cognitivo, salvo futura decisión explícita que incorpore una fuente/actor realista con base microdominio independiente.
+
+**OPEN:** estructura matemática/causal del canal, estados conjuntos, parámetros, dependencias, escenarios, soporte, sensibilidad y verificación técnica del firewall. No se autoriza materialización, implementación ni ejecución.
