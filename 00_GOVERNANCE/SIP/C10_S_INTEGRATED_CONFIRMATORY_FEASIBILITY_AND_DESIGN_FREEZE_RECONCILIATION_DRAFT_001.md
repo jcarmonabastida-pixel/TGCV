@@ -302,3 +302,17 @@ El gate Value no pasa a PASS: permanecen abiertos agregación normativa, K/frecu
 El contrato B1 §2 ya define la función del servicio (admitir solicitudes según ENABLED y exponer PROFILE); los textos previos que la describían como operación concreta abierta se superan solo en ese aspecto. El contenido de negocio de solicitudes/perfiles, roster y materialización siguen abiertos. V_cont representa cumplimiento temporal de esa función; F*/O-CONF representan conformidad terminal de la ruta/estado aplicado.
 
 El plan §16.183 documenta contrastes discriminantes lógicos, pero la validación final no es verificable hasta completar F* (predicados/mapping/C0/G/H) y O-CONF (evento terminal/oráculo/ficha §224). No se altera el estado de G-MAT, G-SCI, G-TEST, G-SCHEMA, G-ROLE, G-REPRO ni G-AUTH. No Design Freeze, implementación o ejecución.
+
+
+
+## 20. E+F — actualización integrada de medición, calibración y contrato PE (2026-11-12)
+
+La reconciliación E+F se desarrolla en el plan §16.186 y no modifica decisiones científicas aceptadas.
+
+1. V_cont truth se define como secuencia latente por intervalos de cumplimiento de la función B1; S3 es canal pasivo vectorial imperfecto. Agregación no ponderada, K, rejilla, ventana, baseline y calibración del canal siguen abiertos. La selección provisional de V_cont no cierra su escala.
+2. O-CONF permanece ficha parcial y no confirmatoria; F*/IAM/oráculo/snapshot/evento/medición y discriminación frente a V_cont no están validados.
+3. P178 tiene clean replay computacional PASS en el benchmark metodológico acotado; no proporciona N/R/ratio ni calibración para el DGP confirmatorio integrado. No se repite.
+4. El procedimiento de calibración conjunta está especificado; los criterios normativos de relevancia/error y los parámetros DGP no se deducen de los contratos ni del benchmark.
+5. PE tiene contrato lógico de roles e interfaces; la tecnología física sigue abierta. ACL/custodia/sealer/firewall, esquema/serialización y reproducibilidad requieren pruebas técnicas efectivas.
+
+**Gates:** G-SCI, G-MAT, G-SCHEMA, G-ROLE, G-TEST y G-REPRO permanecen BLOCKED; G-AUTH NOT GRANTED. No Design Freeze. El alcance de un experimento sintético metodológico no requiere afirmar materialización D2; cualquier afirmación sobre D2 real, validez externa o identificación material sí exige sus gates materiales. No captura, implementación, generación, simulación ni ejecución científica autorizada.
