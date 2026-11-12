@@ -1171,3 +1171,19 @@ La revisión conjunta de la estipulación basal, el diagnóstico de fuentes y el
 **OPEN:** fuente/clase S7 concreta y alcance por unidad×dimensión; regla de autoridad/mandato; estructura condicional del canal; dependencias; soporte de escenarios; parámetros y sensibilidad. No se inventa una señal basal ni un actor cognitivo para rellenar esos vacíos.
 
 **Dictamen:** para el diseño mínimo actual, modelar S7 como artefacto de un canal observacional con atribución de autoridad/provenance, no como declaración de un agente que recibe una señal independiente. La alternativa de actor cognitivo queda aplazada hasta que exista una base microdominio verificable. No se materializa, implementa ni ejecuta.
+
+
+
+## 14.7 Mandato S7 y oportunidad única por UE — DEC-C10-098
+
+DEC-C10-098 acepta una oportunidad lógica S7 por UE del censo B1/Need aprobado. La oportunidad es un slot esperado, enumerado y sellado ex ante, no una declaración garantizada ni una nueva entidad analítica.
+
+La atribución declarativa propuesta es B1 autodeclarando exclusivamente su propio objetivo operativo focal en t−1, dentro del alcance B1–UE–service_instance versionado. No se extiende a configuración técnica, IAM, servicio ejecutor ni objetivos de terceros. El rol/mandato concreto y su evidencia de autoridad/provenance deben ser preespecificados y verificables antes de implementar.
+
+Para resolver la aparente contradicción entre §§14.5–14.6: el proceso observacional no entrega una señal privada a un emisor cognitivo. La relación entre estado basal y artefacto S7 se modela como un canal de medición/declaración sintético explícito. Su mecanismo puede depender del estado basal y producir contenido correcto o erróneo, pero nunca copia directamente need_truth_state ni exporta truth_basis_ref, semillas, flags o metadatos reconstructivos. No se presume un agente, una creencia, una fuente documental real ni independencia estadística.
+
+El universo de oportunidad se fija antes de los resultados del canal, emisión, captura y adjudicación, y no depende de Z, D2, accesibilidad, Reach, trayectoria, ejecución, Outcome, Value ni salidas E1/E2. El event_time es t−1; una captura posterior solo puede preservar un registro pre-Z inmutable y verificable.
+
+La aceptación cierra cardinalidad lógica (una oportunidad por UE), pero no la estructura condicional del canal, sus estados/errores, dependencias, probabilidades, parámetros, formato físico o autoridad técnica. No crea rol PE, semantic_role U_G, evento causal ni séptimo artefacto del paquete.
+
+scientific_execution=false; execution_authorized=false.
