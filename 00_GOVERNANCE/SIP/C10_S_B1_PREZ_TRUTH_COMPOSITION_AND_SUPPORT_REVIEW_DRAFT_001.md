@@ -2,7 +2,7 @@
 
 **ID:** C10-S-B1-PREZ-TRUTH-COMPOSITION-REVIEW-001  
 **Versión:** Draft 001 · **Fecha:** 2026-11-12  
-**Estado:** DOCUMENTARY_DESIGN_REVIEW / PROPOSED_RULES / NOT_APPROVED / NOT_IMPLEMENTED / NOT_MATERIALIZED / NOT_EXECUTED  
+**Estado:** DOCUMENTARY_DESIGN_REVIEW / CORE_COMPOSITION_RULES_ACCEPTED_BY_DEC-C10-095 / REMAINING_GATES_OPEN / NOT_IMPLEMENTED / NOT_MATERIALIZED / NOT_EXECUTED  
 **Rama:** `research/c10-s-consolidation-draft` · **PR:** #116 (Draft)
 
 ## 1. Objeto y alcance
@@ -16,7 +16,7 @@ Se apoya en:
 - `C10_S_B1_PREZ_ANALYTICAL_PACKAGE_CONTRACT_DRAFT_001.md`;
 - `C10_S_DGP_TEMPORAL_AND_ROLE_CONTRACT_DRAFT_001.md`.
 
-No sustituye estos contratos ni congela el DGP. No define una distribución, prevalencia, proporción, tamaño muestral, estrato, parámetro, semilla, algoritmo aleatorio ni roster.
+No sustituye estos contratos ni congela el DGP. DEC-C10-095 acepta configuración explícita versionada por B1/UE y mapping determinista; no define una distribución, prevalencia, proporción, tamaño muestral, estrato, parámetro, semilla ni roster.
 
 ## 2. Principio de composición: estipulación explícita por unidad, no imputación
 
@@ -89,7 +89,7 @@ El orden mínimo de diseño es:
 5. Generar por separado las fuentes observables mediante el modelo de observación que se especifique y apruebe posteriormente.
 6. Sellar las salidas E1/E2/Analyzer antes de permitir al Evaluator abrir truth y calcular resultados.
 
-Este orden no decide si las estipulaciones se introducen manualmente como configuración del DGP, se derivan de un generador sintético determinista o se obtienen de un mecanismo estocástico. Esa elección requiere una especificación posterior y no debe confundirse con la asignación aleatoria de Z. Cualquier mecanismo elegido debe producir estipulaciones explícitas auditables y satisfacer las invariantes anteriores.
+DEC-C10-095 resuelve este punto: las estipulaciones se introducen como configuración explícita, versionada y reservada por B1/UE; una regla determinista las traduce a 1/0/?; no se usa un mecanismo estocástico para asignar Need en el núcleo confirmatorio. Esto no modifica ni sustituye la asignación aleatoria de Z. El modelo de observación puede contener mecanismos estocásticos propios, sujetos a especificación separada.
 
 ## 7. Gates y pruebas estáticas propuestas
 
@@ -114,7 +114,7 @@ Son pruebas propuestas, no ejecutadas. Su mapeo final con PKG-01…14 y PREZ-T01
 
 | Cuestión | Estado |
 |---|---|
-| Mecanismo concreto para producir las estipulaciones por unidad (configurado, determinista o estocástico) | OPEN |
+| Mecanismo para producir estipulaciones por unidad | ACCEPTED BY DEC-C10-095: configuración explícita versionada; mapping determinista; no stochastic Need generator |
 | Población y cohorte exacta de validación, denominadores y relación con ITT | OPEN |
 | Alcance de cualquier soporte adicional por brazo/estrato | OPEN; no requerido por este mínimo |
 | Inclusión o no de casos truth=? en el escenario confirmatorio y objetivo de generalización | OPEN |
@@ -126,7 +126,7 @@ Son pruebas propuestas, no ejecutadas. Su mapeo final con PKG-01…14 y PREZ-T01
 
 ## 9. Dictamen
 
-**REGLA LÓGICA DE COMPOSICIÓN PROPUESTA / SOPORTE BINARIO MÍNIMO DEFINIDO / MECANISMO DE GENERACIÓN Y POBLACIÓN DE VALIDACIÓN OPEN.**
+**COMPOSITION RULE ACCEPTED BY DEC-C10-095 / EXPLICIT PER-UNIT CONFIGURATION + DETERMINISTIC MAPPING / BINARY SUPPORT GATE ACCEPTED / POPULATION AND ROSTER REMAIN OPEN.**
 
 El cierre alcanzado evita tanto asignar Need=1 a todas las unidades como fabricar una prevalencia o balance arbitrario. Exige estipulaciones válidas y soporte real de ambas clases en la cohorte confirmatoria, pero convierte la falta de soporte en un bloqueo explícito, no en una licencia para sintetizar casos adicionales.
 
