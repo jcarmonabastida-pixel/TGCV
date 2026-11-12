@@ -3740,3 +3740,159 @@ El siguiente trabajo es retomar la pasada C+D ya documentada en §16.175, no abr
 5. los contratos P177–P183 para identificación, recuperación, error, missingness, abstención, sensibilidad y precisión por resultado.
 
 La salida será un único crosswalk de variables/potenciales/observación/estimandos y una lista mínima de parámetros derivables frente a decisiones no deducibles. No se calcularán N, probabilidades, réplicas, MDE o tolerancias hasta que estén cerradas las funciones de medida y los criterios de aceptación. No se vuelve a pedir aprobación de Opción A, F*, familias FP, contrato B1, PAR/RUL, V_cont como dimensión ni secuencia de cierre. Sin implementación ni ejecución.
+
+
+
+
+## 16.185. Pasada C+D — crosswalk causal único de DGP, potenciales, observación, estimandos y población (2026-11-12)
+
+**Tipo:** integración y depuración de contratos existentes; no nueva decisión científica ni Design Freeze.  
+**Precedencia:** §§16.175–16.176 y 16.184; DEC-C10-066/067 y DEC-C10S-D2-ESTIMAND-SEPARATION-001; maestro §268; PC §32; C1 §16; contratos D2 población/asignación/soporte, PD, matriz A_f*, medición V_cont y ficha O-CONF §224.  
+**Propósito:** un único mapa de objetos, potenciales, estimandos, observaciones y salidas del Analyzer. No duplicar tests, IDs, clases, schemas ni arquitectura PE.
+
+### 16.185.1. Contrato de precedencia y alcance
+
+Se mantienen sin reabrir:
+- D2 como escenario primario candidato y D1 secundario; políticas materiales D2 según DEC-C10-066/067.
+- P*_{τ2} como población primaria candidata y P*_F secundaria, sin filtrar la primera por la segunda.
+- Fórmula candidata de A_f* del crosswalk vigente; A_f* es proyección focal de T_acc*, D_f* compara estado basal/post y C_dep* es solo un componente de DEP.
+- Cadena temporal t−1 basal; t0 Z; t1 política/intento; t2 recepción/instalación/dependencias; t3 snapshots/T_acc/A_f/ΔT_acc; t4 Reach/Π; t5 consideración; t6 selección/inicio; t7 ejecución; t8 Outcome; t9 Value. Los subeventos B1/Request permanecen separados y no redefinen elegibilidad.
+- Separación de truth_dgp, observed_evidence y evaluation/adjudication; Generator retiene truth y potenciales, Analyzer recibe evidencia permitida, Evaluator compara después del sellado.
+- O-CONF = adjudicación terminal de F* por instancia×ruta, no un Outcome adicional a F*. V_cont = medida temporal candidata de continuidad de la capacidad de servicio B1; no se deriva de O-CONF, A_f*, Reach, trayectoria ni de un flag ENABLED/PROFILE.
+
+El presente crosswalk es un contrato de estructura causal y medición lógica. No convierte en aceptados los elementos marcados como candidatos en DEC-C10-066/067, PC, PA/PB/PD, ni completa IAM, DGP numérico o la factibilidad material.
+
+### 16.185.2. Diccionario causal integrado y plano de verdad
+
+| Objeto | Papel en el DGP | Relación/derivación permitida | No equivale a |
+|---|---|---|---|
+| X_i, H0_i, Cc_i | Historia basal conjunta de la UE | Muestreo conjunto q_X* dentro del marco objetivo | Z, propensión de asignación o q_L* |
+| E_i, App_i, C_dep,i0, A_f,i0* | Elegibilidad/aplicabilidad/condiciones basales distintas | P*_{τ2} candidata exige los criterios aceptados; E_i/App siguen con límites de operacionalización documentados | Need_preZ, evidencia observada o variables post-Z |
+| Z_i | Asignación experimental a la política D2 | Aleatorización por UA/clúster según diseño futuro | W_programmed, recepción, instalación, A_f o ΔT_acc |
+| W_programmed,i | Estado prescrito por la política | D2: 0 si Z=0 y 1 si Z=1 | Probabilidad de aleatorización |
+| W_attempt, receipt, S_install, C_dep* | Etapas de cumplimiento y provisión técnica | Funciones estructurales condicionales a Z e historia; separadas entre sí | Accesibilidad final |
+| T_acc,i,t=(U*,R*,C*,X*) | Estado estructural del espacio accesible | Snapshot versionado por tiempo/ruta | Evidencia E_T o estado de observabilidad |
+| A_f,i,t* | Predicado focal de accesibilidad | Conjunción depurada ID/REL/COND/AUTH/RES/DEP/¬BLOCK y regla trivalente | C_dep*, D_f* o ΔT_acc completo |
+| D_f,i* | Indicador derivado de apertura focal desde basal | I(A_f,i0*=0 y A_f,i1*=1), bajo matching y predicados comparables | Asignación, cumplimiento o mediador serial adicional |
+| ΔT_acc,i* | Cambio estructural completo (ΔU*, ΔR*, ΔC*, ΔX*) | Diferencia entre snapshots comparables; mediador focal de C4 | Solo A_f*, Reach o evidencia de cambio |
+| Reach_i / Π_H,i | Factibilidad de ruta y conjunto/trayectoria alcanzable posterior | Se conserva orden posterior a T_acc; intervención conjunta solo si se define explícitamente | Accesibilidad estructural ni ejecución |
+| K, Request, Consider, Selection, Start, Exec | Procesos/etapas downstream y contribuciones por etapa | Contrastes contrafactuales por etapa conforme a DEC-C10S-B1-CAUSAL-ADJUDICATION-001 | Elegibilidad, accesibilidad o Value |
+| O-CONF_i,r | Outcome técnico terminal por ruta r | Oráculo aplica F* al estado post-aplicación/post-check de esa ruta; truth y observación separadas | F* como endpoint duplicado, V_cont o Value |
+| V_cont,i | Dimensión de Value candidata para B1 | Truth temporal de disponibilidad efectiva durante ventana común; medición independiente y discriminación pendientes | ENABLED/PROFILE, O-CONF, A_f, ΔT_acc o una petición aislada |
+| E_T / observed_evidence | Canal epistémico | Proceso observacional con error, cobertura, autoridad, versiones, pérdida y censura | Truth estructural o resultado causal |
+| evaluation/adjudication | Comparación posterior | Evaluator compara salida sellada con truth por unidad, ruta, escenario y estimando | Insumo del Analyzer o mecanismo causal |
+
+La unidad experimental UE, unidad de asignación UA y unidad de observación UO siguen distintas. UO repetidas no incrementan N. UE=UA solo bajo aislamiento íntegro por construcción; si hay recursos, agentes, estado, información, infraestructura o canales compartidos, se requiere clúster o mapa de exposición y potenciales compatibles.
+
+### 16.185.3. Estructura de potenciales: dos intervenciones, resultados separados
+
+**A. Política material D2 (Z_B).** Para cada UE i se conserva una historia estructural potencial bajo z:
+`S_i(z) = (W_programmed_i(z), W_attempt_i(z), receipt_i(z), S_install_i(z), C_dep_i(z), T_acc_i(z), A_f_i(z), D_f_i(z), ΔT_acc_i(z), Reach_i(z), Π_i(z), K_i(z), Request_i(z), Selection_i(z), Exec_i(z))`.
+La notación es un vector de estados potenciales, no una afirmación de que todos los elementos estén medidos o identificados. La verdad de O-CONF y V_cont se genera separadamente a partir de los estados/funciones correspondientes:
+- O_CONF_truth_i,r(z): conformidad terminal de la ruta r bajo F* versionado, con ancla F2_DST_APPLIED o A2_DST_APPLIED.
+- V_cont_truth_i(z): continuidad temporal de la capacidad que B1 pretende mantener, conforme a la regla y ventana comunes que se cierren en E.
+
+El ITT_Z^D2 se define por resultado y horizonte. En particular, ITT_Z^D2(O-CONF_r) y ITT_Z^D2(V_cont) son contrastes distintos; ninguno transfiere identificación ni validez de medida al otro. ITT sobre V_cont solo pasa a confirmatorio si la medición y discriminación de V_cont superan sus gates. Con vías directas/colaterales, ITT sigue siendo efecto total de asignación al paquete D2.
+
+**B. Intervenciones de accesibilidad g_A.** Para θ_A(q) / θ_Af(q_X*) se comparan dos políticas estocásticas factibles g_A1 y g_A0 que inducen distribuciones del vector completo ΔT_acc* condicionado a una historia basal común. No se asigna Z a A_f/D_f ni se fija accesibilidad a 1/0. El contraste formal conserva la estructura:
+`θ_A(q;Y) = E_{X~q, ΔT~g_A1, R~r_common}[Y(ΔT,R)] − E_{X~q, ΔT~g_A0, R~r_common}[Y(ΔT,R)]`,
+donde Y debe ser un resultado ya definido (para esta extensión, V_cont es candidato); r_common representa un régimen explícito y común para las vías no focales. Esta expresión es un esqueleto de estimando, no su identificación ni una especificación ejecutable: q, g_A1/g_A0, r_common, consistencia, soporte y Y deben estar cerrados. Para el objetivo focal τ2 se exige además el mapping B_D2→g_Af; actualmente no demostrado.
+
+**C. Mediación C4.** El objeto mediador es ΔT_acc* completo. Reach/Π_H y trayectoria pueden ser posteriores secuenciales o un bloque conjunto solo si se define intervención/estimando propio. Confusores mediador–resultado inducidos por Z exigen una estrategia longitudinal/interventional con historia, soporte y régimen definidos. No se introduce ajuste convencional post-Z como solución automática. No se obtiene C4 restando θ_A del ITT ni restando estimandos de población/escala/horizonte diferentes.
+
+**D. Directo/colateral/residual.** Se conservan rutas D_i(z) para efectos de B sobre resultado sin pasar por ΔT_acc*, incluidas alternativas, recursos, dependencias, coste, seguridad, calidad, latencia, información y cambios del canal de observación. Se preservan efectos concurrentes, redundantes, antagonistas, compensatorios e interacciones. El residual/directo solo puede calcularse bajo una descomposición interventional formal, compatible e identificada; nunca como diferencia aritmética automática. Si no se pueden separar vías, la conclusión correcta es efecto de paquete o no identificación.
+
+### 16.185.4. Matriz de estimandos y salidas del Analyzer
+
+| Bloque existente | Pregunta/contraste | Resultado(s) | Condiciones de interpretación | Salida si falla |
+|---|---|---|---|---|
+| C1 | ITT_Z^D2 por asignación a política material | O-CONF_r; V_cont solo tras gate; cualquier V_j aprobado | Z aleatorizado; población/UA/interferencia; consistencia/versiones; medición/seguimiento; missingness/censura tratados | BOUNDS_ONLY o NOT_IDENTIFIED; no condicionar post-Z |
+| C2 | Primeras etapas separadas de Z | W_programmed, W_attempt, receipt, S_install, C_dep*, A_f*, D_f*, ΔT_acc* | Matching/medición/tiempo válidos; cada etapa mantiene su propia escala | No transferir primera etapa técnica a accesibilidad |
+| C3 focal / θ_Af(q_X*) | Efecto de políticas de accesibilidad focales en τ2 | ΔT_acc* y V_cont candidato | Mapping B_D2→g_Af; q_X* común; soporte; versiones; régimen común; rutas colaterales separadas | BOUNDS_ONLY / NOT_IDENTIFIED |
+| C3 general / θ_A(q) | Efecto de g_A1 vs g_A0 en distribución completa ΔT_acc* | Resultado Y definido, aquí V_cont candidato | Intervenciones factibles, q común, soporte, consistencia, régimen de otras vías | No transportar resultado focal a general |
+| LATE_f^D2 | Efecto local de D_f* inducido por Z | Outcome/Value definidos | IV: relevancia, independencia, exclusión, monotonicidad, consistencia/versiones, interferencia, error de medida y robustez weak-IV | No Wald causal; weak-IV / NOT_IDENTIFIED |
+| C4 | Mediación interventional por ΔT_acc* | V_cont o V_j aprobado; Reach/Π/trajectory según estimando | Intervención mediadora, orden temporal, confusión inducida por Z, soporte longitudinal y régimen | BOUNDS_ONLY / NOT_IDENTIFIED |
+| C5 | Contribución por etapa de Request a trayectoria | Propiedad de trayectoria preespecificada | Contrafactual por etapa, historia/versiones y causas concurrentes; clases NECESSARY/ENABLING/MODIFYING | No atribuir por temporalidad/trazabilidad |
+
+La jerarquía aceptada por DEC-C10S-D2-ESTIMAND-SEPARATION-001 y PC §32 se mantiene. θ_A(q), θ_Af(q_X*), ITT_Z^D2, LATE_f y C4 no se agrupan. La inferencia sobre O-CONF no prueba Value; la inferencia sobre V_cont no valida automáticamente O-CONF.
+
+### 16.185.5. Población, asignación, soporte e interferencia
+
+1. **Marco:** P*_{τ2} sigue como población primaria candidata, generada como cohorte finita desde q_X* versionada; P*_F es análisis secundario. La regla E_i = E_scope ∧ App*(τ2,S0) sigue NO ACEPTADA/no operacionalizada. El núcleo sintético limpio descrito en §16.175 estipula C_dep,0=0 y A_f,0*=0 por unidad dentro del marco; esto no resuelve la elegibilidad externa ni sustituye el crosswalk basal.
+2. **Need_preZ:** no es elegibilidad ni filtro de asignación. La cohorte se fija sin examinar truth Need, evidencia, Z ni resultados; los seis artefactos B1 conservan su separación.
+3. **Asignación:** Z se aleatoriza en la unidad realmente asignada, con probabilidad positiva en cada estrato elegible. π_h, algoritmo, ratio, semilla, hash, estratos y N siguen abiertos. W_programmed=D2 condicional a Z no es π_h. c/b (cumplimiento e intento de fondo) y éxito técnico s permanecen sin fijar; s=.80 no aprobado.
+4. **q_X* y soporte:** q_X* es distribución basal objetivo, no propensión Z. No está materializada. Ambas políticas comparadas deben ser factibles y tener soporte común en las historias con masa para el estimando. Si no, restricción ex ante de población/estimando con justificación o NOT_IDENTIFIED; no extrapolación.
+5. **q_L*:** no se introduce como ajuste marginal automático. Solo se especifica si se necesita intervención secuencial sobre historia post-Z/confusores mediador–resultado inducidos, con soporte e identificación longitudinal. Si no puede definirse, C4 queda no identificado.
+6. **Interferencia:** UE=UA solo bajo aislamiento total por construcción. Con pools, recursos, agentes, estado, información o canales compartidos se asigna por clúster o se modela G_i(Z_-i) y Y_i(z_i,g_i). Si el mapa de exposición no es conocido, no ITT individual/SUTVA ni Wald individual.
+7. **UNKNOWN pre-Z:** no es 0 ni exclusión silenciosa. La ruta para resolverlo/restringir marco observable/usar cotas debe preespecificarse antes de Z. El Analyzer no recibe truth.
+
+### 16.185.6. Truth, observación y evaluación: crosswalk por resultado
+
+| Constructo | Truth reservada del Generator | Observación admisible del Analyzer | Evaluación posterior |
+|---|---|---|---|
+| A_f*/D_f*/ΔT_acc* | Predicados estructurales, snapshots y diff verdaderos por tiempo/ruta | Evidencia MEAS/SNAP/PROV con matching, cobertura y error | MEAS/MISS/PM/P177–P183 según aplicabilidad; error de clasificación y recuperación |
+| Reach/Π/trajectory | Grafo/estados/rutas potenciales y realizadas | Registros de ruta/estado permitidos, sin potenciales | REACH/TRJ/GEN y contratos causales existentes |
+| O-CONF | Predicados F* por ruta, aplicabilidad IAM, verdad terminal | Evidencia post-aplicación y post-check; oráculo observado versionado, sin truth | Comparación O_CONF_obs vs O_CONF_truth después del sellado; P182/P183 y familias F*/SNAP/PROV |
+| V_cont | Serie temporal verdadera de disponibilidad efectiva por intervalos de la ventana común | Monitor sintético no-mutante independiente; intervalos observados, no observados, inválidos y timestamps diferenciados | Comparación de medida observada con verdad temporal; error/cobertura/fiabilidad/sensibilidad; discriminación frente a O-CONF |
+| Need_preZ | Estipulación explícita basal B1/UE en TRUTH_LEDGER | Evidencia S7 visible, separada de truth, adjudicaciones E1/E2 | Evaluación posterior B1; no Analyzer PE ni elegibilidad |
+| Outcome/Value adicionales | Potenciales y reglas versionados por DGP | Solo medidas independientes definidas y autorizadas | P177/P179/P182/P183 por resultado/dimensión, no traslado de identificación |
+
+La truth O-CONF se indexa por instancia×ruta; V_cont por UE y ventana temporal. Los intervalos UO repetidos no son unidades independientes para asignación. El canal observacional puede depender de Z, estado o resultado; su dependencia debe representarse y someterse a sensibilidad, no asumirse MCAR/MAR/MNAR ni independencia de fuentes. Ausencia, pérdida, no emisión, opacidad o cobertura incompleta no se imputan a cero.
+
+### 16.185.7. Suite mínima de escenarios reutilizados
+
+Se seleccionan de PD §§3–6 y contratos existentes solo las familias necesarias para probar recuperación/refutación/no-identificación; no se crea una batería factorial nueva:
+
+| Contraste DGP | Verdad conocida que debe variar | Dictamen exigido |
+|---|---|---|
+| Recuperación focal positiva / nula / adversa | ΔT_acc* y V_cont con signo/ausencia de contribución estipulados | Recuperar signo/magnitud dentro de tolerancia futura o abstenerse |
+| Ruta directa/colateral | Z/B cambia O-CONF o V_cont sin cambiar ΔT_acc* | Informar ITT de paquete; no atribuir a accesibilidad |
+| Mixto/interacción | ΔT_acc* y vía paralela actúan conjuntamente | Recuperar interacción preespecificada; no asumir aditividad |
+| Primera etapa débil/nula/fallo parcial | Z→intento/recepción/instalación/C_dep/A_f/D_f/ΔT_acc se desacopla | Mantener etapas; no fabricar mecanismo ni LATE |
+| Soporte/positividad fallidos | g_A o régimen no factible en parte de q_X* | Restringir estimando ex ante o BOUNDS_ONLY/NOT_IDENTIFIED |
+| Confusión mediador–resultado inducida por Z | L post-Z común a mediador y resultado | C4 solo con estrategia longitudinal válida; si no, abstención |
+| Interferencia | Pools/recursos/agentes/canales compartidos | Clúster/exposición o no interpretar efecto individual |
+| Error/ausencia diferencial | Z modifica emisión/captura/retención/medición | Separar cambio estructural de epistémico; P183/sensibilidad/cotas |
+| Versionado/crossover/alternativas | Asignado, recibido y aplicado difieren; rutas alternativas o compartidas | Preservar versiones/rutas; no colapsar por ΔT |
+| Discriminación O-CONF/V_cont | Estado terminal conforme con interrupciones recuperadas y/o continuidad parcial con fallo terminal independiente | Solo declarar dimensiones diferenciadas si predicados y contrastes son admisibles sin redefinir F* ni V_cont |
+
+Los escenarios de heterogeneidad, defiers, MNAR, censura, crossover y múltiples peticiones se conservan como sensibilidades/escenarios ya inventariados cuando afecten a supuestos concretos. Se reutilizan los IDs y oráculos existentes; no se crean tests nuevos. Los contrastes de discriminación O-CONF/V_cont siguen siendo candidatos lógicos hasta cerrar F*, ventana y predicados de disponibilidad; no se declaran superados por esta tabla.
+
+### 16.185.8. Mapa de contratos P177–P183 y familias existentes
+
+| Contrato | Uso en el crosswalk | Cierre pendiente |
+|---|---|---|
+| P177 | Definición/recuperación de ITT, primeras etapas, IV/LATE, separación O/V, ajuste basal, heterogeneidad, multiplicidad, equivalencia y dictamen causal | Estimandos Outcome/Value, fixtures/oráculos y tolerancias |
+| P178 | Potencia, N, clústeres, réplicas, SE_MC, semillas, reproducibilidad y pérdidas | Función objetivo, parámetros y criterios de precisión |
+| P179 | Value contextual/vectorial, dimensiones, trade-offs y agregación | Regla/beneficiario/perspectiva de V_cont y cualquier V_j; no pesos/índice arbitrario |
+| P182 | Validez, circularidad, especificación O/V, reproducibilidad, acuerdo, error, invariancia, sensibilidad, roles y trazabilidad | IAM/oráculos/medición/criterios materiales |
+| P183 | Ausencia, selección, ITT, mediación, censura, sensibilidad, cotas y dictamen por estimando | Mecanismos y parámetros de ausencia; análisis por estimando |
+| S4R/MEAS/MISS/POL/VER/TRJ/INT/GEN/PM/SNAP/REACH/PROV/GC/U_G | Generación, predicados, estados, rutas, observación, cobertura, identidad y procedencia según alcance | Mapping concreto a fixtures, evidencia, oráculos y tolerancias |
+
+El contrato B1 de seis artefactos se reutiliza sin séptimo artefacto. Los IDs P178-SIM organizativos no se presentan como tests originales. El crosswalk no declara PASS por la mera existencia documental de un contrato.
+
+### 16.185.9. Parámetros derivables, no derivables y gates
+
+**Derivable por regla una vez cerradas las medidas:** fórmulas de contraste ITT por brazo y resultado; separación de primeras etapas; regla de agregación temporal de V_cont una vez aprobada la ventana/resolución/criterio de disponibilidad; métricas de recuperación P177/P182/P183; algoritmo de búsqueda de N/π_h/R/SE_MC conforme a potencia/precisión y coste; estimación del error Monte Carlo; tamaños efectivos según clústeres; límites por positividad/soporte.
+
+**No deducible del material actual sin una decisión o evidencia nueva:**
+- función estructural concreta/tablas de potenciales y distribución conjunta q_X*;
+- parámetros de cumplimiento, recepción, intento de fondo, instalación, transiciones, heterogeneidad, interacción, efectos directos/colaterales y ruido;
+- mapping material B_D2→g_Af, definiciones operativas de g_A1/g_A0 y régimen común r;
+- roster/IAM/C_SRC/snapshots, composición material E_i, estratos, mecanismo π_h, unidad real de asignación e interferencia;
+- regla final de disponibilidad efectiva B1, ventana/horizonte, resolución, baseline, monitor/canal, cobertura/error y prueba discriminante O-CONF/V_cont;
+- magnitud mínima científicamente relevante, MDE, márgenes de equivalencia, α/potencia/precisión, tolerancias por estimando, multiplicidad, δ/γ, R y límite SE_MC;
+- formato físico/equivalente, almacenamiento, ACL, sealer/firewall, custodia, threat model, logs, hashes de artefactos y validación técnica.
+
+**Regla de calibración conjunta:** no dimensionar N/R ni seleccionar π_h hasta que existan (i) resultado y escala definidos, (ii) estimando y población/soporte identificables, (iii) magnitud mínima relevante/margen y tolerancias aprobadas, (iv) escenarios nulos/adversos y función de pérdida/objetivo de precisión. Después buscar conjuntamente N, asignación, estratos y R para satisfacer potencia, precisión y SE_MC por estimando; informar cuando no exista solución factible. Más N/R no corrige falta de identificación, constructo inválido o soporte.
+
+### 16.185.10. Dictamen integrado C+D
+
+- **PASS_STATIC:** precedencia D2/D1, jerarquía C1–C5, cadena temporal, distinción Z/política/cumplimiento/accesibilidad, roles truth/observed/evaluation, unidad lógica y reglas de no transferencia; arquitectura de población/soporte/interferencia como contrato condicional.
+- **CONDITIONAL:** estructura potencial D2/g_A; V_cont como resultado candidato; O-CONF por ruta; escenarios mínimos; crosswalk P177–P183; reglas de estimación y calibración.
+- **NOT_VERIFIABLE:** verdad material de D2, mapping B→g_Af, q_X*/soporte, aislamiento real, oráculo/monitor, independencia de medición, discriminación O-CONF/V_cont, identificación C3/C4 y firewall técnico.
+- **OPEN/BLOCKED:** parámetros y tablas del DGP; materialización de población/asignación; resultados y horizonte confirmatorios; calibración cuantitativa; contratos físicos y gates técnicos.
+
+**Resultado:** `C_DGP_CAUSAL_SKELETON_RECONCILED / D2_ITT_SEPARATE_FROM_ACCESSIBILITY / g_A_NOT_MAPPED_TO_D2 / C4_NOT_IDENTIFIED / OCONF_AND_VCONT_TRUTH_SEPARATED / POPULATION_SUPPORT_NOT_MATERIALIZED / QUANTITATIVE_CALIBRATION_BLOCKED / NOT_DESIGN_FROZEN`.
+
+No se modifica main/Core/RMA/Evidence→Claim/STATUS/claims ni decisiones aceptadas. No se crean tests/IDs ni schema físico. No implementación, generación de datos, simulación, estimación, validación ejecutable ni ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
