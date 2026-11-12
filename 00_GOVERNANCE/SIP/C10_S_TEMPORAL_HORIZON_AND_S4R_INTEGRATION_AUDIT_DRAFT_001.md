@@ -108,3 +108,17 @@ Se conserva el inicio t0 aceptado en DEC-C10-101. Se recomienda un reloj explíc
 K=(T*−t0)/Δ, Δ constante y divisibilidad exacta preespecificada. Unidad, T*, Δ, K, mínimo evento relevante, regla de cierre y capacidad/cobertura S3 siguen OPEN; no se inventan valores.
 
 **Dictamen:** STRICT_INTERVAL_RULE_ACCEPTED / ELAPSED_TIME_GRID_RECOMMENDED / NUMERIC_TEMPORAL_PARAMETERS_OPEN / NO_DESIGN_FREEZE / NO_EXECUTION_AUTHORIZED.
+
+## 10. Inventario de eventos y corrección de escala (2026-11-12)
+
+La función B1 se conserva: admitir solicitudes si ENABLED=true, no admitir si ENABLED=false y exponer PROFILE declarado. El inventario se clasifica así:
+
+- Provisión/instalación (programación, intento, recepción, aplicación, verificación, integridad, compatibilidad, operabilidad, rollback): antecedentes que pueden cambiar el estado efectivo, no truth por sí mismos.
+- Configuración (ENABLED/PROFILE efectivos, identidad/versión): determinantes funcionales o de binding.
+- Runtime (proceso/módulo, listener/socket/superficie, dependencias, capacidad/recursos cuando afecten admisión, caída/reinicio/recuperación): posibles cambios de capacidad funcional, observados imperfectamente por S3.
+- Peticiones (oportunidad, intento, recepción, admisión/rechazo, procesamiento/respuesta): eventos discretos; no son monitor continuo. La ausencia de petición no implica fallo.
+- Reach/selección/ejecución/F*/O-CONF/Outcome/Value: no son indicadores de A_B1.
+
+Se distinguen event_time de truth, intervalos de agregación V_cont y timestamps/cobertura S3. Δ no es frecuencia S3. La rejilla estricta mide proporción de intervalos completamente conformes, no fracción exacta de uptime; depende de Δ y alineación. Se conserva DEC-C10-100/102 sin alterar sus fórmulas.
+
+Convención recomendada: intervalos internos [b_k,b_{k+1}); frontera asignada al intervalo que comienza allí; T* incluido en el último intervalo. T* debe seguir al último evento causal por un seguimiento común τ_follow: T*=t_last+τ_follow. Catálogo finito, duración mínima representada, τ_follow, T*, Δ, K y capacidad/cobertura S3 permanecen OPEN. No se ejecuta ni materializa.
