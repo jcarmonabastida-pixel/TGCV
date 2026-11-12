@@ -92,16 +92,21 @@ No se introduce un nuevo nodo temporal ni se cambia el orden de la cadena causal
 
 ## 7. Roles y segregación de información
 
-| Objeto | Generador | Analyzer/adjudicadores E1/E2 | Evaluador |
-|---|---|---|---|
-| Especificación basal del objetivo y truth Need_preZ | Crear y sellar | Sin acceso | Acceso tras sellado de adjudicación |
-| Modelo de observación y semillas/parámetros reservados | Crear y sellar | Sin acceso a truth ni parámetros que revelen la etiqueta | Acceso tras sellado |
-| Fuentes/evidencias observables pre-Z | Generar | Acceso al paquete observable permitido | Acceso |
-| Reglas públicas de adjudicación y cobertura | Versionar | Acceso | Acceso |
-| Adjudicación E1/E2 | No participa en adjudicación | Producir independientemente y sellar | Acceso tras sellado |
-| Comparación truth/observed | No reescribe | Sin acceso durante adjudicación | Ejecutar tras sellado |
+| Objeto | Generator | Proyector/Sealer | Adjudicador E1 | Adjudicador E2 | Analyzer PE | Evaluator B1/Need | Evaluator PE |
+|---|---|---|---|---|---|---|---|
+| Especificación basal del objetivo y `need_truth_state` | Crear y sellar en ámbito reservado | Sin acceso a la base reservada | Sin acceso | Sin acceso | Sin acceso | Acceso tras sellado E1/E2 | Sin acceso salvo que el contrato de evaluación PE lo requiera expresamente |
+| Modelo de observación y parámetros/semillas reservados | Crear y sellar | Acceso solo a reglas de proyección autorizadas, no a secretos reconstructivos | Sin acceso a truth ni secretos | Sin acceso a truth ni secretos | Sin acceso a parámetros/semillas que revelen truth o escenario | Acceso tras sellado | Acceso tras sellado, conforme al contrato PE |
+| Fuentes/evidencias observables pre-Z | Generar por mecanismo separado | Proyectar y sellar subconjunto autorizado | Acceso a expediente B1 permitido y cobertura | Acceso independiente al mismo expediente autorizado y cobertura | Solo proyección necesaria y autorizada por estimando | Acceso tras sellado, conforme a evaluación | Acceso conforme al contrato PE |
+| Reglas públicas de adjudicación y cobertura | Versionar | Publicar versión autorizada | Acceso | Acceso | Solo contratos/documentación analítica permitidos | Acceso | Acceso conforme al contrato PE |
+| Adjudicación E1 | No participa | No adjudica | Producir y sellar sin ver E2 | Sin acceso antes de sellar | Sin acceso por defecto | Acceso tras sellado | Sin acceso por defecto |
+| Adjudicación E2 | No participa | No adjudica | Sin acceso antes de sellar | Producir y sellar sin ver E1 | Sin acceso por defecto | Acceso tras sellado | Sin acceso por defecto |
+| Output Analyzer PE | No consulta ni modifica | No adjudica | Sin acceso por defecto | Sin acceso por defecto | Producir y sellar output estructurado por estimando | Sin acceso, salvo referencia necesaria para evaluar tarea B1 | Evaluar tras sellado contra oráculos DGP |
+| Comparación truth/observed Need | No reescribe | No evalúa | Sin acceso durante adjudicación | Sin acceso durante adjudicación | Sin acceso | Comparar E1 y E2 por separado con truth tras sellado | No aplica |
+| Comparación output PE/truth DGP | No reescribe | No evalúa | No aplica | No aplica | Sin acceso a truth | No aplica | Comparar output PE sellado con oráculos por estimando |
 
-E1/E2 no reciben truth ni la salida del otro antes de sellar. La apertura de truth para evaluación no puede preceder al sellado inmutable de las salidas que se evalúan.
+E1 y E2 no reciben truth, la estipulación reservada ni la salida del otro antes de sellar. El Analyzer PE no recibe truth, potenciales, parámetros/semillas reservados ni outputs E1/E2 por defecto; solo consume observaciones expresamente permitidas por el contrato del estimando. El Evaluator B1/Need compara E1 y E2 por separado con truth. El Evaluator PE evalúa la salida PE sellada contra los oráculos DGP por constructo/estimando. La apertura de truth para cada evaluación no puede preceder al sellado inmutable de la salida que se evalúa.
+
+La separación describe responsabilidades lógicas; no afirma que existan servicios físicos independientes ni que el firewall esté técnicamente implementado o verificado.
 
 ## 8. Relación con población y análisis causal
 
@@ -133,7 +138,7 @@ Estas son pruebas contractuales propuestas; no se han ejecutado.
 | Pendiente | Estado |
 |---|---|
 | Regla concreta que genera la especificación basal por unidad | OPEN |
-| Atributos basales que pueden alimentar esa regla | OPEN; requieren fuente en maestro/decisiones |
+| Atributos causales basales que pueden alimentar esa regla | Ninguno autorizado por los contratos revisados; X/H/C/L y variables técnicas no son proxies ni generadores automáticos |
 | Soporte de truth=1/0 y eventual truth=? | OPEN; sin prevalencias ni proporciones |
 | Universo cerrado que permite representar exclusión afirmativa | OPEN |
 | Catálogo de fuentes semánticamente admisibles | OPEN |
@@ -144,7 +149,7 @@ Estas son pruebas contractuales propuestas; no se han ejecutado.
 
 ## 11. Dictamen
 
-**TEMPORAL/ROLE RECONCILIATION PROPOSED; BASELINE TRUTH-GENERATION RULE AND OBSERVATION MODEL STILL OPEN.**
+**TEMPORAL/ROLE RECONCILIATION PROPOSED; ROLE SPLIT RECONCILED; BASELINE STIPULATION MECHANISM AND OBSERVATION MODEL STILL OPEN.**
 
 La reconciliación inserta Need_preZ en el baseline t−1 como objetivo basal de B1, mantiene separadas truth y evidencia, y asigna permisos coherentes con generador, Analyzer y evaluador. No resuelve qué regla concreta produce heterogeneidad entre unidades ni cómo se generan las fuentes; hacerlo requiere volver a la especificación maestra del DGP y a las decisiones basales pertinentes.
 
