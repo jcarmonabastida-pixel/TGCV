@@ -153,3 +153,23 @@ La especificación existente ya contiene los mecanismos generales. Esta reconcil
 El modelo operativo general de observación/cobertura queda aceptado como diseño de trabajo por DEC-C10-097. No se aprueban todavía fuentes concretas, probabilidades, tasas, parámetros, roster, schema físico, fixtures o código. No se materializa ningún dato ni se ejecuta ninguna prueba, DGP, simulación o replay.
 
 `scientific_execution=false`; `execution_authorized=false`.
+
+
+
+## 12. Reconciliación de señal y función emisora S7 (2026-11-12)
+
+La clase semántica mínima del inventario B1/Need es S7: declaración focal de inclusión/exclusión. No se introduce una señal basal independiente ni un actor cognitivo porque los contratos revisados no identifican tal señal ni un modelo aprobado de conocimiento del emisor.
+
+La función emisora se representa como atribución ex ante de autoridad/provenance asociada al artefacto S7. El artefacto es generado por el canal de observación, que mantiene separados:
+- estipulación reservada y truth determinista;
+- oportunidad y emisión;
+- contenido semántico (correcto, erróneo, ambiguo o conflictivo);
+- captura/retención/pérdida;
+- autoridad/vigencia, integridad, temporalidad y binding;
+- adjudicación E1/E2 y evaluación posterior.
+
+La truth puede influir en la probabilidad y el contenido de la declaración a través de ese canal, conforme a DEC-C10-097. Esto no equivale a copiar la etiqueta truth: deben evitarse filtraciones por contenido, IDs, orden, timestamps, semillas, lineage, errores o metadatos. El estado interno del canal no se entrega al expediente.
+
+Una S7 focal puede expresar inclusión o exclusión; no se necesitan clases diferentes para cada polaridad ni fuentes duplicadas que simulen corroboración. Las copias/derivados comparten lineage. La suficiencia de cobertura y la admisibilidad se evalúan por oportunidad/unidad×dimensión bajo el alcance ex ante.
+
+No se fijan cardinalidad de oportunidades, dependencias, tasas, parámetros ni fuente concreta del microdominio. No se crean IDs de prueba ni se declara ejecución.
