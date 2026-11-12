@@ -86,3 +86,12 @@ Las oportunidades repetidas o cargas de mayor intensidad quedan reservadas a esc
 Se mantienen abiertos: ventana/calendario exacto; definición final del payload y protocolo; identidad/versionado de B1 y servicio; cardinalidad request_id↔trajectory_id; tratamiento técnico de timeout, errores y pendientes; outcome técnico de respuesta; consecuencia independiente de B1 y horizonte; perspectiva/autoridad de valoración; población/soporte e integración exacta con ITT y mediación. No se equiparan eventos de petición con t5/t6/t7, ejecución transformacional, Outcome o Value, ni se amplía el reloj t−1/t0…t9.
 
 **No autorizado:** Design Freeze, implementación, fixtures, simulación o ejecución científica. Se mantienen scientific_execution=false y execution_authorized=false. No altera DEC-C10-066/067, D2 primario candidato/D1 secundario, ni la separación main/PR #116.
+## 8. Aceptación del ancla V_cont en t0 y separación del horizonte (2026-11-12)
+
+Se acepta el inicio de la ventana de continuidad inmediatamente después de Z en t0, incluyendo toda la provisión e instalación. Esto no modifica el reloj causal ni la profundidad H: los eventos t0…t9 siguen siendo etapas ordenadas; H=3 sigue siendo profundidad máxima candidata; la rejilla V_cont es un tercer eje de K intervalos iguales.
+
+La ventana se representa [t0,T*], con T* común, fijo y preespecificado. No se equipara automáticamente con t9, porque el reloj causal no aporta duración física. K, unidad temporal, resolución, duración mínima relevante y eventos/transitorios en fronteras siguen abiertos. La regla DEC-C10-100 de igual peso por intervalo permanece aplicable.
+
+S3 es el canal runtime pasivo candidato y no añade probes/solicitudes. S4 conserva identidad/versionado/snapshot; S5 define el contrato ENABLED/PROFILE; S3 aporta evidencia temporal imperfecta. El ciclo de petición B1 permanece en su cardinalidad y contrato propios; no se usa como monitor repetido. Las observaciones temporales se anidan en UE/cluster, no aumentan N experimental.
+
+**Dictamen:** START_T0_ACCEPTED / TEMPORAL_HORIZON_NOT_FIXED / K_NOT_DERIVED / S3_PASSIVE_CANDIDATE / NO_DESIGN_FREEZE / NO_EXECUTION_AUTHORIZED.
