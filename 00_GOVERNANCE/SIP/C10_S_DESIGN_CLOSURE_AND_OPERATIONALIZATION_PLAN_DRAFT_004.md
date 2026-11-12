@@ -5978,3 +5978,66 @@ No se usa significación aislada como criterio de recuperación, ni se agrega el
 **Dictamen:** ITT_AND_THETA_A_IDENTIFICATION_SUPPORT_CONTRACT_CLOSED_STRUCTURALLY / SEPARATE_EFFECT_GRIDS_DEFINED / NUMERIC_GRID_AND_SUPPORT_OPEN / D2_TO_GA_MAPPING_NOT_DEMONSTRATED / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** completar el ledger paramétrico mínimo de cada celda de la cuadrícula (masas q_X*, asignación/UA, κ y funciones activas) y el r_common por clase, todavía sin asignar valores numéricos. Después se podrá preparar la decisión cuantitativa de parametrización, sin ejecutar calibración.
+
+
+## 16.223. Gate 69 — ledger paramétrico mínimo y régimen común por mundo (2026-11-12)
+
+**Precedencia:** §§16.208–16.218 y 16.221–16.222; crosswalk basal §16.210; mapping finito §16.211; funciones generadoras/contrafactuales §16.212; contratos D2 y C1. Este gate no reabre Value, B1, V_cont, S3/S7 ni el roster. Traduce los contratos existentes a un esquema único de configuración por celda.
+
+### 16.223.1. Separación de objetos
+
+Cada celda distingue obligatoriamente: (a) P_w, cohorte finita pre-Z del ITT-D2; (b) q_X*, distribución de historias basales para C3; (c) Z y pi_h, mecanismo de asignación en UA para C1; (d) g_A0/g_A1, intervenciones directas sobre el vector completo DeltaT_acc* para C3. No se identifica ninguno de estos objetos con otro. W_programmed(z)=z es regla de política, no aleatorización. La truth contrafactual calculada por Generator bajo g_A tampoco implica que Analyzer tenga una fuente de identificación disponible.
+
+### 16.223.2. Ledger obligatorio por celda del roster existente
+
+| Campo | Registro requerido | Regla de admisión |
+|---|---|---|
+| world_id/version | Clase y modificador ya existente en §16.211 | Identidad estable; no multiplicar clases por combinatoria |
+| estimand_id | C1, C2, C3, C4 o LATE_f | Estado de identificación independiente por estimando |
+| population_id | P_w o q_X* y regla basal | Cohorte/soporte pre-Z; UNKNOWN no se convierte en exclusión |
+| assignment_id | UA, estratos y pi_h, si aplica | pi_h positiva para ambos brazos por estrato con masa; no asumir ratio |
+| intervention_id | Política D2 o g_A0/g_A1, versión y factibilidad | D2 no equivale a g_A sin mapping demostrado |
+| effect_cell | Estimando, signo, κ, media basal y truth/conjunto truth | G_ITT y G_A separados; efecto factible en la escala de V_cont ya fijada |
+| active_functions | Funciones generadoras que cambian en la celda | Variar solo mecanismos necesarios para el falsador |
+| held_fixed | Historia, exógenas pareadas, versiones y funciones no focales | Declaración explícita; no inferir invariancia por omisión |
+| r_common_status | COMMON_FIXED / DIFFERENTIAL_IDENTIFIED / DIFFERENTIAL_UNRESOLVED / NOT_APPLICABLE | Solo COMMON_FIXED sustenta el contraste focal controlado sin ajuste adicional |
+| support_status | Soporte de Z y, por separado, de ambas g_A en cada historia con masa | Fallo: restringir ex ante con nuevo estimando, bounds o no identificación; nunca extrapolar |
+| interference_status | Aislamiento UA=UE, clúster o mapa de exposición | Sin estructura compatible, no ITT individual |
+| observation_profile | Modo S3 y propiedades de cobertura/error/lag/pérdida | Truth constante al comparar canales; S7 sigue siendo basal |
+| oracle_identification | IDENTIFIED / PARTIALLY_IDENTIFIED / NOT_IDENTIFIED / INDETERMINATE | Lo adjudica Evaluator con truth completa |
+| analyzer_information | Campos y parámetros visibles realmente | No exponer potenciales, truth ni secretos del Generator |
+| acceptance_target | Criterio aplicable por estimando/familia | Reutilizar §16.219; no extender a C4/LATE sin contrato propio |
+
+q_X* es una distribución finita de historias con masas positivas en el soporte declarado y suma unitaria. pi_h son probabilidades de asignación, no masas basales. Los pesos de familias del benchmark son un tercer objeto distinto. No se fijan número de historias, masas ni probabilidades en este gate.
+
+### 16.223.3. Matriz de mecanismos activos y r_common por clases existentes
+
+| Clase existente | Mecanismo activo o variado | r_common / invariantes | Uso y salida esperada |
+|---|---|---|---|
+| Focal limpio R0 | g_A altera DeltaT_acc*; outcome focal responde según G_A | Misma historia, exógenas pareadas, q_X*, versiones y mecanismos no focales; sin interferencia por construcción | Control positivo C3 si Analyzer tiene identificación; C1 solo con Z/UA/pi_h propios |
+| Nulo focal | DeltaT_acc* puede variar, pero el mecanismo de outcome no responde a su componente focal | Todo lo no focal permanece idéntico entre g_A0/g_A1 | Truth focal cero; medir error tipo I y falsa recuperación |
+| Nulo de primera etapa D2 | Z no induce el cambio de accesibilidad definido | No alterar por ello la definición de ITT ni confundir first-stage con outcome | C2 nulo; ITT puede tener otras vías; no habilita LATE |
+| Fallo de etapa R3 | Se activa solo la función de intento/recepción/instalación/C_dep que corresponda | Mantener separados programación, intento, receipt, instalación, C_dep*, A_f*, D_f* y DeltaT_acc* | No propagar automáticamente un fallo upstream a V_cont o accesibilidad |
+| Focal adverso | g_A cambia DeltaT_acc* en dirección adversa | Misma historia, exógenas, q_X*, r_common y canal | Recuperar signo adverso o bounds/abstención |
+| Alternativa basal R1 | Se activa ruta alternativa basal pi_A | Alternativa y outcome permanecen iguales bajo g_A salvo interacción declarada | No equiparar apertura focal a incremento de Reach ni exclusividad |
+| Alternativa afectada/colateral R2 | Cambia A1/A2 o dependencia/recurso compartido | Si la rama es igual bajo ambos g_A, es común aunque esté activa; si difiere, marcar diferencial | ITT puede incluirla; theta_A puntual solo si se separa/identifica |
+| Vía directa D2→outcome | Z/paquete afecta V_cont sin pasar por DeltaT_acc* | No es parte de r_common si varía entre brazos D2; para C3 debe mantenerse fija o identificarse aparte | ITT total incluye la vía; atribuirla a accesibilidad es falso positivo focal |
+| Interacción/heterogeneidad | Outcome depende de X/H0/C_c, versión o exposición | Misma q_X* y exógenas pareadas; declarar r_common condicional a historia | Informar efecto marginal y heterogeneidad con soporte; no extrapolar |
+| IV adversarial | Se viola la condición IV designada (exclusión, monotonicidad o relevancia) | Mantener invariantes las demás funciones salvo interacción prevista | ITT sigue separado; no Wald/LATE automático |
+| Interferencia | Se activa recurso/agente/estado/canal compartido | Mapa G_i o clúster forma parte del régimen; no fingir invariancia individual | Estimando de clúster/exposición o NOT_IDENTIFIED |
+| Observación adversarial | Cambia solo S3: modo, error, cobertura, lag, pérdida o censura | Misma truth, potenciales, asignación y funciones | Comparar detección, V_cont y efecto causal; bounds/abstención si el canal no identifica |
+| Soporte/ausencia/censura | Se retira positividad, factibilidad, historia o seguimiento | No sustituir historias ni cambiar población a posteriori | NOT_IDENTIFIED o bounds; población restringida solo como estimando nuevo predeclarado |
+
+La matriz es un mapping de mecanismos, no una expansión factorial. Una rama no focal puede estar activa y ser COMMON_FIXED si función, versión y exógenas se mantienen iguales entre los regímenes comparados. Si cambia diferencialmente y su contribución no se identifica, r_common_status=Differential_Unresolved y no procede atribución puntual focal.
+
+### 16.223.4. Acoplamiento contrafactual
+
+Los potenciales g_A0/g_A1 se construyen sobre la misma historia basal y las mismas exógenas de UE, conservando sus dependencias conjuntas. No se resortea una unidad por régimen ni se presume independencia entre componentes. Las funciones no focales, recursos, alternativas, entorno, capacidad, información, interferencia y proceso de outcome se fijan explícitamente; solo cambia lo que define el régimen o el falsador. Las comparaciones emparejadas de canales S3 cambian el canal y mantienen truth constante. Ninguna variable post-intervención se ajusta como si fuera basal cuando forma parte del mecanismo causal.
+
+### 16.223.5. Estado del ledger y criterios de coherencia
+
+El esquema y la matriz de activación quedan cerrados estructuralmente. La materialización celda a celda, masas q_X*, pi_h/UA, kernels g_A, κ, medias basales, funciones/exógenas, mapas de interferencia, parámetros S3 y dimensionamiento permanecen abiertos. Se conservan los criterios cuantitativos aceptados en §16.219; no se recalibran ni se trasladan a C4/LATE. La coherencia del ledger debe verificar que pi_h no se use como q_j; q_X* no sea peso de escenarios; κ no sea probabilidad; r_common no se deduzca de nombres iguales; y NOT_APPLICABLE no se convierta en efecto nulo.
+
+**Dictamen:** PARAMETER_LEDGER_SCHEMA_AND_R_COMMON_RULES_CLOSED_STRUCTURALLY / EXISTING_WORLD_ROSTER_REUSED / CELL_LEVEL_MATERIALIZATION_OPEN / NUMERIC_PARAMETERS_OPEN / D2_TO_GA_MAPPING_NOT_DEMONSTRATED / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** auditar la cobertura mínima del roster existente por estimando C1 y C3: controles positivos identificables, nulos identificables, falsadores de falsa atribución, escenarios que exigen bounds/abstención y huecos de representación. Reutilizar §16.211; no ampliar el roster por defecto.
