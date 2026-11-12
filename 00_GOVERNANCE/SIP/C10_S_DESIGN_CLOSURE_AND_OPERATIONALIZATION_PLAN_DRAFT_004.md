@@ -3896,3 +3896,83 @@ El contrato B1 de seis artefactos se reutiliza sin séptimo artefacto. Los IDs P
 **Resultado:** `C_DGP_CAUSAL_SKELETON_RECONCILED / D2_ITT_SEPARATE_FROM_ACCESSIBILITY / g_A_NOT_MAPPED_TO_D2 / C4_NOT_IDENTIFIED / OCONF_AND_VCONT_TRUTH_SEPARATED / POPULATION_SUPPORT_NOT_MATERIALIZED / QUANTITATIVE_CALIBRATION_BLOCKED / NOT_DESIGN_FROZEN`.
 
 No se modifica main/Core/RMA/Evidence→Claim/STATUS/claims ni decisiones aceptadas. No se crean tests/IDs ni schema físico. No implementación, generación de datos, simulación, estimación, validación ejecutable ni ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
+
+
+
+## 16.186. Pasada E+F — cierre integrado de medición, calibración y contrato técnico (2026-11-12)
+
+**Tipo:** reconciliación documental derivada; no aceptación normativa de la agregación V_cont, no Design Freeze, no autorización.  
+**Fuentes:** §§16.176–16.185; contrato V_cont §16.182; ficha O-CONF §16.184/§224; Outcome/Value §§16–19; factibilidad §§18–19; PE §§1–15; P178 clean replay closure audit 001 y artefactos primarios; contratos P177/P178/P179/P182/P183.  
+**Objetivo:** cerrar lo deducible, reutilizar evidencia existente y aislar la decisión normativa que no se puede inferir del material.
+
+### 16.186.1. Corrección de precedencia — medición V_cont
+
+La fuente rectora es §16.182, no la simplificación conversacional de §16.178 ni la descripción abreviada de §16.185. Se ratifican estas distinciones:
+
+1. La truth reservada es la secuencia latente A_B1(i,k): para cada UE e intervalo, 1 si la instancia satisface la condición funcional B1 aplicable al modo ENABLED/PROFILE; 0 solo ante incumplimiento funcional positivamente estipulado. Un intervalo no determinado por el DGP queda indefinido/bounds, nunca se imputa como 0.
+2. S3 es un canal pasivo no-mutante y vectorial de indicadores imperfectos (proceso/módulo, superficie de recepción, dependencias, capacidad definida y perfil runtime). Ninguna señal aislada ni su conjunción no validada demuestra admisión/perfil correctos. No se añade petición, actor, clase U_G, ledger ni oportunidad.
+3. S5 declara semántica esperada; S3 observa runtime; S4 fija identidad/versionado/snapshot; S6 y la oportunidad única no se reutilizan como monitor longitudinal.
+4. Analyzer no recibe A_B1, V_cont_truth, potenciales ni parámetros reservados. Solo recibe observación S3, cobertura, tiempos, identidad y protocolo público permitido. Media de señales, complete cases o proporción de intervalos observados no sustituyen a V_cont.
+5. Estimación puntual requiere modelo de medición identificable con información permitida (p. ej. calibración independiente y disponible al Analyzer). Si no, bounds justificadas o NOT_IDENTIFIED/INDETERMINATE_MEASUREMENT.
+6. O-CONF sigue siendo adjudicación terminal por instancia×ruta frente a F*. Los contrastes de discriminación no se declaran validados hasta completar F*/IAM/oráculo/snapshot/evento y el canal S3.
+
+**Única decisión normativa pendiente de este subbloque:** si se acepta como escala inicial de V_cont la media no ponderada de A_B1(i,k), con intervalos de igual duración en una rejilla común ex ante, V_cont_truth(i)=K^-1 sum_k A_B1(i,k). En ese caso equivale a la fracción temporal de la ventana en estado funcional. Si no se acepta, se preserva la secuencia temporal como resultado vectorial y no se fabrica un escalar. K, frecuencia, inicio/fin, baseline y transitorios no se fijan aquí. Recomendación: aceptar la media solo bajo intervalos de igual duración y una ventana común preespecificada; no usar ponderaciones no justificadas.
+
+### 16.186.2. Reutilización P178 — cierre computacional previo, no calibración confirmatoria
+
+El artefacto 03_EXPERIMENTS/C10-S/harness/P178_CLEAN_REPLAY_CLOSURE_AUDIT_001.md acredita:
+- run primario 43083651875 y replay limpio 43120303588;
+- 27 celdas, K={2,10,50}, π0={0.2,0.5,0.8}, null/positive/negative; N=700 equilibrado 350/350, R=10.000/celda; 270.000 invocaciones;
+- 17/17 tests de contrato PASS; los 27 contrastes de referencia concordaron; los CSV y manifest primario/replay fueron byte-idénticos;
+- cierre COMPUTATIONAL REPRODUCIBILITY PASS / NON-CONFIRMATORY METHODOLOGICAL CALIBRATION.
+
+La auditoría de clean replay posterior prevalece sobre el diagnóstico de replay incompleto anterior; no se repite el replay. Límite expreso: benchmark de estimador acotado, no Analyzer TGCV completo ni DGP confirmatorio C10-S; no cubre canales adversariales, falta de identificación, rutas directas, soporte fallido, medición degradada o interferencia. Por ello N=700, 1:1, R=10.000, K/π0, efectos y escenarios del benchmark no se transfieren al DGP integrado. Tampoco se abre otra ejecución P178.
+
+### 16.186.3. Calibración conjunta — procedimiento cerrado, valores no deducibles
+
+La calibración confirmatoria se realizará en una única búsqueda conjunta, después de aprobar la escala de V_cont, Outcome(s), estimandos, población, soporte y escenarios. Orden vinculante:
+
+1. **Congelar target por estimando:** población/estrato, unidad de asignación, horizonte, resultado/escala, contraste, versión y dictamen admisible.
+2. **Parametrizar DGP:** distribuciones conjuntas y ecuaciones/funciones de transición por etapa; efectos focales positivos/nulos/adversos; vías directas/colaterales e interacciones; heterogeneidad; error/cobertura diferencial S3; missingness/censura; interferencia/clúster cuando aplique. Cada parámetro debe tener origen (decisión normativa, restricción lógica, evidencia previa o rango de sensibilidad); no rellenar vacíos por conveniencia.
+3. **Fijar criterios ex ante:** α/error tipo I, potencia mínima, precisión/anchura máxima, cobertura, magnitud mínima relevante/MDE, margen de equivalencia, tolerancias de sesgo/RMSE/recuperación, error de clasificación y coste de falsa atribución/no-identificación. La escala y el objetivo de B1 justifican relevancia; P177–P183 justifican métricas, pero no suministran automáticamente valores.
+4. **Buscar conjuntamente diseño:** N, π_h/ratio/estratos, unidad/clúster, réplicas R y semillas deterministas. Minimizar N/coste sujeto a todas las restricciones por estimando y escenario prioritario, sin sacrificar clasificación de no-identificación ni falsadores adversariales.
+5. **Calibrar R aparte de N:** aumentar R hasta que SE_MC de sesgo, RMSE, cobertura, error tipo I, potencia y tasas de clasificación quede por debajo de tolerancias aprobadas. Reportar incertidumbre Monte Carlo y réplicas inválidas.
+6. **Evaluar sensibilidad:** δ/γ, error de medida, pérdida/censura, soporte e interferencia dentro de rangos justificados. Si no hay parámetros defendibles, mostrar frontera de sensibilidad y dejar no identificado; no inventar cotas.
+7. **Elegir solución o declarar inviabilidad:** seleccionar el menor diseño factible que cumpla todos los criterios. Si no existe, reducir ex ante el alcance confirmatorio o mantener BOUNDS_ONLY/NOT_IDENTIFIED/INDETERMINATE; no relajar tolerancias después de ver resultados.
+
+No se aprueban valores α, potencia, MDE, márgenes, tolerancias, δ/γ, N, π_h, R, SE_MC, parámetros del canal ni semillas en este addendum. N=700/R=10.000/1:1 pertenecen al benchmark P178 citado, no a esta calibración.
+
+### 16.186.4. Contrato técnico PE — perfil agnóstico a tecnología
+
+Se conserva PE como arquitectura lógica; no se crea una segunda arquitectura ni un esquema físico. El contrato mínimo que cualquier implementación o equivalente debe demostrar:
+
+| Frontera | Invariante obligatorio | Evidencia técnica de aceptación futura |
+|---|---|---|
+| Generator | Truth, potenciales, parámetros y semillas reservados; proyección observacional derivada sin copiado de etiquetas | manifiesto/hash separado; tests de no filtración |
+| Proyector/Sealer | única vía autorizada de liberación; validación de identidad, versión, cobertura, timestamps, integridad y campos permitidos; bundle inmutable | allowlist/denylist versionada; hash; tests de manipulación/replay |
+| Analyzer | acceso solo a bundle liberado y contratos públicos; sin credenciales, rutas, logs o metadatos que permitan resolver truth | matriz efectiva de permisos; pruebas negativas de acceso/exfiltración; logs |
+| Evaluator | truth solo después del sello de salida Analyzer; no modifica salida ni evidencia | orden de estados y hashes verificables; prueba de apertura posterior |
+| Artifact/provenance store | separación de dominios, referencias exactas, versionado append-only según contrato, retención y reconstrucción | manifiestos, lineage, integridad referencial, backup/restore y audit trail |
+| Orquestador | autorización y versiones fijadas antes de ejecutar; no canal de truth; run envelope reproducible | verificación de autorización, versiones y hashes |
+
+**No se elige tecnología.** El diseño físico/equivalente debe decidir y documentar: serialización/canonicalización por objeto (JCS solo donde ya se aceptó); modelo lógico/físico y cardinalidades; timestamps/orden parcial; almacenes y fronteras de confianza; identidad/autenticación/autorización; custodia de secretos/semillas; ACL de mínimo privilegio y denegación por defecto; sealer; logs/retención/backups; amenaza de fuga por contenido, nombres, tamaños, tiempos, orden, errores, hashes o metadatos. No colocar truth/secretos en GitHub ni exponerlos al Analyzer.
+
+El gate G-ROLE requiere pruebas de permisos efectivos y ataques negativos, no solo módulos separados. G-SCHEMA requiere validación de estructura/serialización/referencias sobre fixtures no confirmatorios. G-REPRO requiere replay y hashes bajo versiones/inputs/entorno fijados. Ninguna de esas pruebas se ejecuta aquí.
+
+### 16.186.5. Matriz de salida E+F y Design Freeze
+
+| Gate | Salida documental actual | Estado |
+|---|---|---|
+| G-SCI | D2/g_A/C4 y resultados separados reconciliados; V_cont escala normativa y medición aún incompletas; O-CONF ficha/oráculo incompletos | BLOCKED |
+| G-MAT | roster/IAM/C_SRC/snapshots/provisión/aislamiento/soporte material ausentes; captura no autorizada | BLOCKED |
+| G-SCHEMA | contrato lógico PE suficiente como frontera; perfil físico/equivalente, estructura y validadores no elegidos/probados | BLOCKED |
+| G-ROLE | segregación conceptual definida; ACL/custodia/sealer/firewall efectivo no probado | BLOCKED |
+| G-TEST | P177–P183 y familias existentes mapeados; O/V, oráculos, fixtures y tolerancias incompletos | BLOCKED |
+| G-REPRO | P178 benchmark acotado reproducido; reproducción del DGP integrado y manifests de todos los roles no definidos | BLOCKED |
+| G-AUTH | autorización de Design Freeze/implementación/ejecución ausente | NOT GRANTED |
+
+**Decisiones no deducibles antes del freeze:** (i) regla normativa de agregación de V_cont; (ii) selección/alcance de Outcome confirmatorio — O-CONF no se convierte en primario por estar más desarrollado; (iii) relevancia/MDE y riesgo de error de decisión; (iv) horizonte/rejilla/criterio de disponibilidad; (v) si el alcance se limita al experimento sintético de recuperación o pretende además materializar D2. La factibilidad material D2 no es requisito para un benchmark sintético puro, pero sí para claims sobre provisión real, validez externa o identificación material.
+
+**Dictamen E+F:** MEASUREMENT_CONTRACT_RECONCILED_CONDITIONALLY / VCONT_AGGREGATION_DECISION_OPEN / OCONF_NOT_OPERATIONALIZED / P178_BOUNDED_REPLAY_CLOSED / CONFIRMATORY_CALIBRATION_NOT_DERIVED / PE_TECHNICAL_BOUNDARIES_SPECIFIED_NOT_IMPLEMENTED / ALL_FREEZE_GATES_BLOCKED / NO_AUTHORIZATION.
+
+No ejecución de código, pruebas, validadores, generación, simulación, estimación, captura material ni implementación. scientific_execution=false; execution_authorized=false.
