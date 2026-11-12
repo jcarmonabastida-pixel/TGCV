@@ -122,3 +122,15 @@ La función B1 se conserva: admitir solicitudes si ENABLED=true, no admitir si E
 Se distinguen event_time de truth, intervalos de agregación V_cont y timestamps/cobertura S3. Δ no es frecuencia S3. La rejilla estricta mide proporción de intervalos completamente conformes, no fracción exacta de uptime; depende de Δ y alineación. Se conserva DEC-C10-100/102 sin alterar sus fórmulas.
 
 Convención recomendada: intervalos internos [b_k,b_{k+1}); frontera asignada al intervalo que comienza allí; T* incluido en el último intervalo. T* debe seguir al último evento causal por un seguimiento común τ_follow: T*=t_last+τ_follow. Catálogo finito, duración mínima representada, τ_follow, T*, Δ, K y capacidad/cobertura S3 permanecen OPEN. No se ejecuta ni materializa.
+
+## 11. Dominio de episodios, detectabilidad y cierre terminal (2026-11-12)
+
+Se reutilizan las cinco familias causales del contrato B1: (1) ENABLED/PROFILE efectivos; (2) proceso/módulo; (3) listener/socket/superficie de ingreso; (4) dependencias solo cuando impiden/restauran admisión; (5) capacidad/recursos solo cuando impiden/restauran admisión. Provisión, instalación, verificación, rollback y reinicio no son fallos automáticos. La adjudicación se basa en la función B1 efectiva, no en el nombre técnico.
+
+No existe duración mínima funcional ni gracia: DEC-C10-102 hace que cualquier incumplimiento confirmado afecte a los intervalos que intersecte. δ_det es distinto: dominio de duración para el que S3 pueda demostrar detección tras calibración; no modifica truth. Para episodios inferiores o no cubiertos, Analyzer debe producir bounds/abstención si no hay otra evidencia pasiva identificable.
+
+No se presupone el mecanismo de captura S3 (periódico, continuo o event-driven), ni independencia, cobertura completa o tasa de detección. Se deben especificar/cuantificar captura, resolución, lag, pérdida, cobertura y dependencia por componente. Δ es la rejilla de adjudicación, no la cadencia S3.
+
+t_last es la última transición causal capaz de cambiar A_B1, incluida la recuperación final. T*=t_last+τ_follow, con τ_follow común preespecificado. Un episodio activo en T* se conserva como terminal/censurado y no se recodifica como recuperado. τ_follow, δ_det, Δ, T* y K se derivarán conjuntamente tras fijar unidad normalizada y catálogo de escenarios.
+
+**Dictamen:** EVENT_DOMAIN_BOUNDED / NO_GRACE / DETECTION_NOT_TRUTH / TERMINAL_CENSORING_EXPLICIT / TEMPORAL_PARAMETERS_OPEN.
