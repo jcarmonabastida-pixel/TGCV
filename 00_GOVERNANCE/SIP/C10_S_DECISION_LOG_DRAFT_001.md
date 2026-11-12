@@ -1574,3 +1574,16 @@ Se formaliza la aceptación expresa ya registrada en el plan §16.174: para la e
 **Estado:** ACCEPTED — PROVISIONAL OPERATIONALIZATION DECISION; MEASUREMENT/IDENTIFICATION/DISCRIMINATION GATES OPEN.
 
 Se acepta V_cont_truth(i)=(1/K)Σ A_B1(i,k), con intervalos de igual duración en rejilla/ventana post-Z común preespecificada. UNKNOWN se conserva y produce bounds [n1/K,(n1+n?)/K]; no se imputa cero ni se elimina del denominador. El estimando es nivel post-Z, no cambio pre/post. S3 sigue siendo un canal pasivo vectorial imperfecto, no truth ni verificador directo. K, frecuencia, duración, ventana, baseline/transitorios, MDE, parámetros del canal y criterios cuantitativos siguen abiertos. La validez de medida, discriminación frente a O-CONF/F* y recuperación puntual requieren gates P182/P183/MEAS/MISS existentes. DEC-C10-099 selecciona V_cont; DEC-C10-100 acepta su regla de escala inicial. Registro autónomo: 00_GOVERNANCE/decisions/DEC-C10-100_V_CONT_EQUAL_INTERVAL_TEMPORAL_AGGREGATION_ACCEPTANCE.md. No Design Freeze ni autorización de implementación/ejecución.
+
+
+## DEC-C10-101 — Aceptación del inicio de la ventana post-Z de V_cont en t0 (2026-11-12)
+
+**Estado:** ACCEPTED WORKING DESIGN DECISION — NOT DESIGN FREEZE.
+
+Se acepta iniciar la ventana de V_cont inmediatamente después de la asignación Z en t0, incluyendo provisión e instalación. La ventana no queda condicionada a intento, recepción, instalación, verificación, C_dep, A_f, Reach, selección o ejecución. Se aplica simétricamente a los brazos comparados.
+
+La ventana se representa [t0,T*], donde T* será un horizonte post-Z común, fijo y preespecificado. La decisión no fija duración, unidad temporal, K, resolución, duración mínima de interrupción ni regla para transitorios/fronteras. No se identifica T* automáticamente con t9, pues t0…t9 es un reloj de etapas causales y no una duración física; H=3 tampoco es horizonte temporal.
+
+Se mantiene DEC-C10-100: K intervalos de igual duración y agregación no ponderada, con UNKNOWN propagado a bounds. S3 continúa como canal runtime pasivo, vectorial e imperfecto; no añade peticiones ni muta el sistema. La separación truth/observed/evaluation y el firewall PE permanecen obligatorios.
+
+Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-101_V_CONT_POST_Z_WINDOW_START_T0_ACCEPTANCE.md`. Plan integrado §16.190; reconciliación B1/Need_preZ temporal §9; auditoría temporal/S4R §8. No Design Freeze ni autorización de implementación/ejecución.
