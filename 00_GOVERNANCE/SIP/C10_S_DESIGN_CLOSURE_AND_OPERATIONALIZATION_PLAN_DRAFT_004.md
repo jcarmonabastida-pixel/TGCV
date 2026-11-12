@@ -2798,3 +2798,12 @@ La separación conceptual truth/evidencia/adjudicación, la procedencia EVIDENCE
 El reloj t−1→t0 aporta precedencia temporal, pero Need no figura expresamente en el diccionario variable×tiempo×rol. El contrato Need deberá vincularse a t−1 y separar Need_truth reservada, Need_evidence y Need_observed. El target de claim/evaluator/adjudication y la cobertura específica del objetivo B1 requieren decisión de representación antes de schema o fixtures.
 
 **Estado:** PARTIAL_COMPATIBILITY / U_G_TARGET_TYPE_GAP_OPEN / NO_SCHEMA_CHANGE / NOT_IMPLEMENTED / NOT_EXECUTED. Se prohíbe añadir enums/tablas/FK o asignar IDs sin decisión; no se selecciona todavía entre claim extension, registro B1 separado o artefacto analítico externo. La siguiente dependencia es inspeccionar el contrato canónico de claims y las decisiones U_G de tipos de target.
+
+
+## 16.169. DEC-C10-061 y destino de adjudicación Need_preZ (2026-11-12)
+
+La revisión de `C10_S_UG_TYPED_TARGET_REFERENTIAL_INTEGRITY_CONTRACT_PROPOSAL_DRAFT_001.md` y DEC-C10-061 confirma que los seis destinos U_G son un enum cerrado aceptado documentalmente. CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER no admiten B1/UE/Need; EVIDENCE_REGISTER es fuente de soporte, no target. Reutilizar PREDICATE o COVERAGE_SCOPE sería semánticamente incorrecto; ampliar targets reabriría DEC-C10-061.
+
+**Orientación provisional:** estudiar un paquete analítico B1/Need separado de U_G, versionado, con procedencia/cobertura y separación truth/observed propias, sin añadir clase de grafo ni cambiar enums. Antes de fijar su representación se debe comprobar el contrato canónico de claims y si requiere vínculo de matriz adicional. No se aprueba todavía la opción ni se crea schema/fixture. El contrato temporal sigue Draft y Need no está aún incorporado expresamente al diccionario variable×tiempo×rol.
+
+**Estado:** U_G_TARGET_ENUM_CLOSED / NEED_TARGET_NOT_SUPPORTED / SEPARATE_ANALYTIC_PACKAGE_PREFERRED_FOR_REVIEW / NO_SCHEMA_CHANGE / NOT_IMPLEMENTED / NOT_EXECUTED.
