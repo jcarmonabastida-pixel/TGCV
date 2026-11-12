@@ -4173,3 +4173,62 @@ DEC-C10-100 permanece vigente: con K intervalos iguales, V_cont_truth es la frac
 **FUNCTIONAL_REFERENCE_SPECIFIED / INTERVAL_TRUTH_CONTRACT_RECONCILED / WINDOW_START_T0_RECOMMENDED_NOT_APPROVED / HORIZON_RESOLUTION_K_OPEN / S3_CALIBRATION_OPEN / NO_DESIGN_FREEZE.**
 
 La siguiente operación es cerrar la ventana y resolución temporal con el reloj causal y el objetivo de continuidad, después especificar el canal S3 por intervalo. No se materializan intervalos, señales, truth, roster, fixtures ni datos. No se ejecuta código, calibración ni simulación. `scientific_execution=false`; `execution_authorized=false`.
+
+## 16.190. Aceptación del inicio t0 y cierre del contrato temporal observable de V_cont (2026-11-12)
+
+**Tipo:** aceptación expresa del usuario para el ancla inicial + reconciliación metodológica derivada; no fija horizonte ni resolución por inferencia.  
+**Precedencia:** DEC-C10-068 (función B1), DEC-C10-099 (selección V_cont), DEC-C10-100 (agregación igualitaria), §§16.180–16.183, §16.187, §16.189, auditoría temporal/S4R y contratos U_G/PE, P182/P183/MEAS/MISS.
+
+### 16.190.1. Decisión temporal aceptada
+
+Se acepta iniciar la ventana de V_cont en **t0, inmediatamente después de la asignación Z**, incluyendo provisión, intento, recepción, instalación, verificación y el resto de la trayectoria causal posterior que quede dentro del horizonte de seguimiento. La ventana inicial no se condiciona a recepción, instalación, C_dep, A_f, Reach, selección o ejecución. Así se evita excluir del resultado precisamente las interrupciones que la política asignada pudiera producir durante la provisión.
+
+La regla se aplica simétricamente a los brazos D2 y a la población/versión declaradas. El estimando continúa siendo el nivel post-Z en la ventana común, no un cambio pre/post. El baseline pre-Z conserva función descriptiva y solo podrá utilizarse como ajuste si queda preespecificado.
+
+### 16.190.2. Ventana y relojes
+
+La ventana queda representada como W_V=[t0,T*], donde T* es un horizonte final post-Z común, fijo y preespecificado. La aceptación de t0 **no** determina la duración ni autoriza identificar T* con t9: t0…t9 es un orden de etapas causales, no un reloj físico de duración conocida. Tampoco se deriva T* de H=3, de la oportunidad S6/S7 ni de la cardinalidad de solicitudes.
+
+Se mantienen tres ejes:
+- reloj causal del estudio t−1,t0…t9;
+- rejilla de continuidad k=1…K, con intervalos de igual duración sobre [t0,T*];
+- profundidad transformacional h=0…H y ventanas de factibilidad por paso.
+
+T*, unidad temporal, K, duración de intervalo, tolerancia de alineación de timestamps y regla de adjudicación de eventos que cruzan fronteras siguen OPEN. La elección de T* deberá cubrir el periodo causal cuya continuidad se pretende valorar y permitir observar recuperación/persistencia sin seleccionar el horizonte tras ver los resultados.
+
+### 16.190.3. Regla temporal de truth y eventos
+
+Se conserva A_B1(i,k) como truth funcional latente del intervalo, determinada por Generator conforme al contrato ENABLED/PROFILE versionado. No se convierte en una variable derivada de telemetría. Los intervalos tienen igual duración y denominador K fijo. Si el DGP no determina el estado de un intervalo, se conserva como desconocido y el Evaluator calcula bounds conforme DEC-C10-100.
+
+No se ha aprobado aún si un fallo breve dentro de un intervalo hace que todo el intervalo sea 0, ni una duración mínima de interrupción relevante, regla de continuidad en fronteras o tratamiento de transitorios. Estos elementos deben derivarse conjuntamente de la semántica temporal del objetivo y de la resolución de observación. No se asigna una tolerancia de gracia ni se ignoran eventos por conveniencia.
+
+### 16.190.4. S3: contrato de observación por intervalo reutilizando U_G
+
+Se reutiliza exclusivamente S3 como familia temporal runtime candidata, con el apoyo contextual de S4 (identidad/versión/integridad) y S5 (contrato ENABLED/PROFILE). S4 y S5 no sustituyen observación runtime. No se crea clase de fuente, actor, interfaz, ledger, artefacto, endpoint ni oportunidad adicional.
+
+El vector conceptual S3 por UE×intervalo conserva, cuando estén en alcance y sean observables, cinco familias no colapsadas:
+1. proceso/módulo runtime;
+2. superficie de recepción (listener/socket y estado asociado);
+3. dependencias runtime necesarias;
+4. capacidad/recursos/cola, solo si el DGP define su significado y unidad;
+5. perfil runtime asociado al PROFILE versionado.
+
+Cada componente puede ser 1/0/? conforme a evidencia afirmativa válida, silencio/captura ausente, invalidez, contradicción, censura o falta de cobertura. Un 0 de componente requiere evidencia positiva de incumplimiento de ese componente; ausencia de traza no es 0. Ningún componente individual ni su conjunción automática, score o media se declara equivalente a A_B1. No se envían solicitudes de negocio ni se activa una ruta para observar; S3 permanece pasivo y no mutante.
+
+El Generator define la truth latente y genera separadamente el proceso observacional conjunto P(O_S3(i,k) | A_B1(i,k), M(i,k)). M solo contendrá mecanismos explícitos de emisión, captura/retención/pérdida, cobertura, validez, temporalidad, error semántico, censura y dependencias entre señales. No se presume independencia condicional, sensibilidad/especificidad constantes, MCAR/MAR/MNAR ni invariancia entre brazos/versiones. Los mecanismos que por diseño deban ser pre-Z/invariantes no pueden depender de Z, D2 ni variables downstream; los mecanismos de monitorización post-Z se especifican como proceso de medición del resultado, con diferencialidad explícita si la política puede afectarlos.
+
+El Analyzer recibe únicamente S3 observado, identidad/versionado, timestamps, cobertura/provenance y la información de calibración permitida y preespecificada. No recibe A_B1, V_cont_truth, potenciales, semillas ni parámetros reservados. El Evaluator accede a truth solo después del sellado. Sin modelo identificable y calibración accesible: bounds justificados o NOT_IDENTIFIED/INDETERMINATE_MEASUREMENT, nunca una media bruta de señales ni complete-case.
+
+### 16.190.5. Cobertura y alineación temporal
+
+La cobertura se informa por UE×intervalo×componente S3 y para la ventana completa, manteniendo separados: oportunidad de observación prevista, emisión, captura, validez, disponibilidad, pérdida, censura y evidencia admisible. No se declara cobertura completa por haber encontrado todas las señales disponibles. Los timestamps se vinculan a la identidad y versión de la instancia; desalineación, lag, muestreo, rutas no activadas y eventos raros se mantienen como mecanismos explícitos. No se interpola un estado 1/0 a través de huecos sin regla validada.
+
+S3 no aumenta el número de unidades experimentales ni las oportunidades de petición. Las observaciones repetidas se anidan en UE; la inferencia causal respeta UE/UA/clúster y posible dependencia intr unidad.
+
+### 16.190.6. Dictamen y siguiente cierre
+
+**ACCEPTED:** inicio de ventana en t0, inclusión de provisión/instalación, horizonte común por brazo, rejilla de igual duración y agregación DEC-C10-100.  
+**SPECIFIED_DOCUMENTALLY:** separación de relojes; estructura vectorial S3; proceso conjunto de medición; estados de cobertura/error; firewall y reglas de abstención.  
+**OPEN:** T*, unidad temporal, K, duración mínima relevante, semántica de fallo breve/transitorios/fronteras, indicadores S3 concretos, dependencia/correlación, error, cobertura, calibración, sensibilidad y discriminación O-CONF.
+
+Siguiente cierre integrado: (i) decidir si el constructo exige continuidad estricta o tolera interrupciones de duración acotada; (ii) derivar unidad y resolución de intervalo desde esa regla y las capacidades de observación S3; (iii) elegir T* en relación con la última consecuencia causal incluida, sin equipararlo automáticamente a t9; (iv) poblar rangos/sensibilidades del canal solo con procedencia explícita. No se crean parámetros, fixtures, roster, truth, señales, schema físico o código. No se ejecutan validadores, generación, simulación, estimación ni calibración. scientific_execution=false; execution_authorized=false.
