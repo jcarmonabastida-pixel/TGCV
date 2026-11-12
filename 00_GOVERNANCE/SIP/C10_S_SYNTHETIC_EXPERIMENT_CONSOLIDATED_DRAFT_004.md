@@ -50,3 +50,12 @@ K/Δ se derivan por recuperación/aliasing y divisibilidad exacta; ρ_follow por
 ## 284. Horizonte común y precedencia de t_last (2026-11-12)
 
 Se aclara que t_last,i es la última transición efectiva de cada UE, mientras t_last^max=t_c,max es el límite superior común ex ante del soporte de transiciones causales posibles en todos los brazos/escenarios. T*=t_last^max+τ_follow (normalizado: 1+ρ_follow) mantiene una ventana común; no se calcula t_last,i+τ_follow por unidad tras observar resultados. Episodios activos en T* son terminales/censurados. Si el soporte no puede acotarse ex ante, T* permanece OPEN.
+
+
+## 285. Crosswalk temporal integrado de escenarios y contratos (2026-11-12)
+
+Se reutilizan los perfiles DGP de §16.188.4 y los contratos P182/P183/MEAS/MISS; no se crean escenarios ni tests nuevos. Los contrastes temporales se integran en control de truth estable/señal espuria, fallo por etapas, interrupción B1 funcional, medición adversarial, pérdida diferencial, soporte/interferencia/versionado y discriminación O/V.
+
+S3 permanece un único canal lógico pasivo, contrastado bajo snapshots/métricas, logs/trazas/eventos e híbrido. Se preservan fase, lag, pérdida, cobertura, validez, falsos positivos/negativos y dependencia conjunta. P182-07/08/11/12, P183-01/02/04/07/09/10/11 y P182-04/10 gobiernan error, firewall, trazabilidad, ausencia, censura, bounds y discriminación. No hay nuevos IDs.
+
+Analyzer solo produce punto si la observación identifica; en otro caso bounds/abstención. Evaluator abre truth tras sellado. No ejecución ni PASS técnico.
