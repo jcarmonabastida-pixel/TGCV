@@ -108,3 +108,19 @@ Se conserva D_f*=I(A_f,base*=0 ∧ A_f,post*=1), con regla derivada: D_f*=1 si b
 ΔT_acc*=Diff(S_T*(t0),S_T*(t1))=(ΔU*,ΔR*,ΔC*,ΔX*) solo para snapshots estructurales comparables. Los campos no comparables, ambiguos o mixtos sin descomposición quedan UNKNOWN/? y no se imputan como cero. ΔX* no se asigna automáticamente a ΔC* o ΔR*. ΔE_T es cambio epistémico separado; variaciones de cobertura, logs o evidencia no constituyen por sí mismas cambios en ΔT_acc*. D_f*=1 no implica que el resto del espacio accesible permanezca constante ni que se haya capturado todo ΔT_acc*.
 
 **Límite:** reglas lógicas de adjudicación en estado DRAFT; no resuelven inventarios, mappings físicos, fuentes, calibración, error de medición ni validación del oráculo. No crean nuevos IDs de test ni autorizan implementación/ejecución.
+
+
+## 8. Regla de separación REL_f* / DEP_f* / BLOCK_f* y clasificación C_domain (2026-11-12)
+
+Esta regla desarrolla sin ampliar la fórmula de §1 y sin aprobar mappings físicos:
+
+1. **ID_f***: identidad semántica, tipo/clase y versión contractual de τ₂. Hash/build/record ID son identidad técnica o evidencia, no prueba autónoma de identidad semántica.
+2. **REL_f***: relaciones/interfaces tipadas necesarias para invocar o componer τ₂ (extremos, dirección, tipo/rol y scope). Una relación declarada no demuestra que exista una ruta técnica completa.
+3. **COND_f***: condiciones constitutivas de realizabilidad independientes de precondiciones particulares de S0. `C_domain`/`D_support*` se asigna a ID cuando define el tipo/dominio del objeto focal y a COND cuando es compatibilidad externa necesaria para realizarlo. `D_support*` no es factor adicional.
+4. **DEP_f***: existencia de al menos una ruta técnica completa admisible que realice las relaciones necesarias. REL expresa el requisito relacional; DEP comprueba su realización en la ruta. La misma arista/condición/fallo no se cuenta dos veces.
+5. **BLOCK_f***: bloqueo efectivo con alcance y ventana explícitos. Un bloqueo local invalida la ruta afectada; `BLOCK_f*=1` a nivel de τ₂ solo si el bloqueo es universal o alcanza todas las rutas admisibles. Si existe otra ruta válida, el bloqueo de una ruta no hace `A_f*=0` por sí solo.
+6. **App_f***: las precondiciones particulares de S0 permanecen fuera de A_f* y se evalúan desde el estado de entrada de cada paso.
+
+Regla de clasificación: asignar cada campo por su referente y función primaria; descomponer campos mixtos; si la función no es adjudicable, conservar UNKNOWN/? sin asignación múltiple. `C_other` sigue excluido como comodín; `C_info` no es autónomo; cobertura/VALID/E_T no entra en truth.
+
+**Límite:** se cierra la regla conceptual de separación y no duplicidad, no el catálogo material por τ₂, la exhaustividad de rutas, el inventario, las evidencias ni la validación. No autoriza implementación ni ejecución.
