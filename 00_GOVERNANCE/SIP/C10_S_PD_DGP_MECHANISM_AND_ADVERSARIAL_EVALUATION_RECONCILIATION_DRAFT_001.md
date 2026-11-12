@@ -151,3 +151,14 @@ Referencia rectora: plan integrado DRAFT004 §16.188. Este addendum propaga su r
 Se incorpora el ledger temporal del plan §16.198 sin modificar el esqueleto causal PD ni cerrar parámetros no justificados. El soporte de episodios, inicio, duración, recurrencia, recuperación, fase/cadencia S3, emisión/captura, lag, pérdida, error y dependencia conjunta se declara por escenario y versión. El Generator crea truth de estados/transiciones; A_B1 se deriva con DEC-C10-102; S3 se genera después como observación imperfecta; Analyzer permanece cegado y Evaluator compara tras sellado.
 
 La verdad de V_cont es la proporción de intervalos completamente conformes, no la fracción exacta de tiempo disponible. La duración mínima del soporte DGP no es una tolerancia funcional. p*, δ_det, Δ, K, ρ_follow, distribuciones, N, asignación y criterios de error permanecen OPEN. Se reutilizan perfiles y P177/P178/P179/P182/P183; no se crean tests ni se ejecuta calibración.
+
+
+## 14. Crosswalk de potenciales y vías estructurales (2026-11-12)
+
+Se incorpora el plan §16.199 como referencia única del crosswalk estructural. Los potenciales D2 se mantienen separados por etapa: programación, intento, recepción, instalación, C_dep*, A_f*, D_f*, snapshots T_acc*, ΔT_acc*, Reach/Π, etapas de trayectoria y resultados O-CONF/V_cont. No se deriva éxito de una etapa a partir de la anterior ni se asigna marginalmente C_dep*.
+
+El mediador de accesibilidad conserva las cuatro coordenadas ΔU*, ΔR*, ΔC*, ΔX*. La evidencia/cobertura ΔE_T no forma parte de truth estructural. ΔX* requiere mapping semántico campo a campo. q_X* es distribución basal común; q_L* solo se incorpora si la estrategia C4 longitudinal lo requiere.
+
+g_A1/g_A0 son intervenciones estocásticas separadas de Z_D2 sobre distribuciones factibles del cambio estructural completo, con r_common explícito. El ITT D2 es efecto total de política/paquete y no identifica por sí mismo θ_A; C4 no se obtiene por resta. Se preservan caminos directos, colaterales, alternativas, recursos, interacciones y spillovers como mecanismos generativos explícitos.
+
+El escenario base no presume independencia, monotonicidad, exclusión, soporte ni ausencia de interferencia. Los perfiles §16.188.4 y contratos existentes se reutilizan; no se crean IDs. Las funciones, distribuciones, magnitudes y mapping D2→g_A siguen OPEN. No ejecución ni Design Freeze.
