@@ -5580,3 +5580,17 @@ Se desarrolla el gate temporal siguiente a §16.214 mediante la sección 15 de `
 **Dictamen:** `FINITE_TEMPORAL_SUPPORT_RULE_CLOSED / COMMON_HORIZON_CONSTRUCTION_DEFINED / NUMERIC_SUPPORT_AND_S3_CALIBRATION_OPEN / DELTA_K_OPEN / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN`.
 
 El siguiente paso es resolver la sensibilidad temporal que el DGP debe cubrir y el dominio de detectabilidad S3 en conjunto; después seleccionar Δ/K. No se asignan cifras ni se ejecuta calibración.
+
+## 16.216. Cierre estructural del contrato de detectabilidad temporal S3 (2026-11-12)
+
+Se completa el gate metodológico de detectabilidad mediante §17 de `C10_S_TEMPORAL_HORIZON_AND_S4R_INTEGRATION_AUDIT_DRAFT_001.md`.
+
+**Cierre:** Generator conserva truth temporal exacta; S3 produce evidencia pasiva imperfecta; Analyzer recibe solo evidencia sellada; Evaluator abre truth después. Los tres modos `SNAPSHOT_METRIC`, `LOG_TRACE_EVENT` y `HYBRID_PASSIVE` quedan definidos como configuraciones comparables, sin seleccionar uno como ganador. Se fijan métricas separadas de sensibilidad de episodio, falsos positivos, localización/lag, cobertura/pérdida, detección de recuperación y error de clasificación por intervalo; estratificación por familia, duración relativa, fase, modo y versión; no se presupone independencia.
+
+`δ_det` queda definido como resumen condicional de la curva de detección, no como mínimo funcional. Solo puede derivarse tras aprobar `p*`, criterio de falsos positivos, cobertura y tolerancia temporal; antes se reportan curvas y bounds. La ausencia de señal no prueba funcionamiento ni recuperación. La verdad estricta DEC-C10-102 no se relaja por limitaciones S3.
+
+Se fija la convención `[b_k,b_{k+1})`: frontera interna asignada al intervalo que comienza allí; T* incluido en el último intervalo. La cadencia S3 y Δ permanecen distintos.
+
+**Abierto:** modo confirmatorio, parámetros y soporte de cada modo, p*, nivel de confianza, falso positivo tolerable, tolerancia temporal, cobertura mínima, soporte de lag, τ_follow, unidad, Δ y K. No hay calibración ni valores aprobados.
+
+**Dictamen:** `S3_DETECTABILITY_EVALUATION_CONTRACT_CLOSED_STRUCTURALLY / CURVE_FIRST / NUMERIC_CALIBRATION_OPEN / DELTA_K_OPEN / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN`.
