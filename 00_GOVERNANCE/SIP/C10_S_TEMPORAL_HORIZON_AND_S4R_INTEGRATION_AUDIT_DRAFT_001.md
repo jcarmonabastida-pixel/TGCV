@@ -95,3 +95,16 @@ La ventana se representa [t0,T*], con T* común, fijo y preespecificado. No se e
 S3 es el canal runtime pasivo candidato y no añade probes/solicitudes. S4 conserva identidad/versionado/snapshot; S5 define el contrato ENABLED/PROFILE; S3 aporta evidencia temporal imperfecta. El ciclo de petición B1 permanece en su cardinalidad y contrato propios; no se usa como monitor repetido. Las observaciones temporales se anidan en UE/cluster, no aumentan N experimental.
 
 **Dictamen:** START_T0_ACCEPTED / TEMPORAL_HORIZON_NOT_FIXED / K_NOT_DERIVED / S3_PASSIVE_CANDIDATE / NO_DESIGN_FREEZE / NO_EXECUTION_AUTHORIZED.
+
+
+## 9. DEC-C10-102: continuidad estricta y derivación del reloj de V_cont (2026-11-12)
+
+Se acepta continuidad estricta dentro de cada intervalo: el servicio debe cumplir ENABLED/PROFILE durante todo el intervalo para truth=1; cualquier incumplimiento funcional confirmado produce truth=0 para ese intervalo; truth=? se reserva a indeterminación generadora. No hay periodo de gracia ni duración mínima de fallo aprobada. Ausencia/pérdida de S3 no es truth=0 ni truth=1.
+
+La truth del Generator y la observación S3 deben mantener resoluciones distintas y explícitas. Si S3 no puede detectar el evento relevante, el Analyzer produce bounds/abstención. Los timestamps exactamente en frontera requieren asignación determinista a un único intervalo.
+
+Se conserva el inicio t0 aceptado en DEC-C10-101. Se recomienda un reloj explícito de tiempo transcurrido, con unidad normalizada, eventos fechados y rejilla regular. t0…t9 es orden causal, no tiempo físico; H=3 es profundidad transformacional; S6/S7 no definen la frecuencia de monitorización. T* debe cubrir provisión/instalación y seguimiento hasta el último evento causal que pueda modificar el cumplimiento B1 dentro del estimando.
+
+K=(T*−t0)/Δ, Δ constante y divisibilidad exacta preespecificada. Unidad, T*, Δ, K, mínimo evento relevante, regla de cierre y capacidad/cobertura S3 siguen OPEN; no se inventan valores.
+
+**Dictamen:** STRICT_INTERVAL_RULE_ACCEPTED / ELAPSED_TIME_GRID_RECOMMENDED / NUMERIC_TEMPORAL_PARAMETERS_OPEN / NO_DESIGN_FREEZE / NO_EXECUTION_AUTHORIZED.
