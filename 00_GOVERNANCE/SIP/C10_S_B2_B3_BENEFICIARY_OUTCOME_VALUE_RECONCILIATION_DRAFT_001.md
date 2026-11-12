@@ -270,3 +270,12 @@ Las declaraciones históricas de §§13–15 que indicaban que no se seleccionab
 La especificación sintética de truth temporal y canal S3 se desarrolla en el plan C10-S §16.182. El Generator estipula la capacidad operativa por intervalo; S3 aporta indicadores runtime pasivos e imperfectos, no prueba funcional directa. La recuperación puntual requiere calibración/identificación accesible al Analyzer; de otro modo corresponde bounds o NOT_IDENTIFIED. No se aprueba una agregación, ventana, K, frecuencia, baseline, instrumento empírico ni regla de valoración final. O-CONF/F* sigue sin operacionalización terminal validada y la discriminación permanece CONDITIONAL/NOT_VERIFIABLE.
 
 Estado reconciliado: `V_CONT_SELECTED_PROVISIONALLY / SYNTHETIC_MEASUREMENT_SPECIFIED_CONDITIONALLY / MATERIAL_VALUE_NOT_INSTANTIATED / O_CONF_NOT_OPERATIONALIZED / NO_DESIGN_FREEZE / NO_EXECUTION_AUTHORIZED`.
+
+
+## 17. Precedencia funcional B1 y frontera temporal/terminal (2026-11-12)
+
+La formulación histórica de §§14–15 que mantenía abierta la operación concreta queda precisada por el contrato funcional B1 §2: el objetivo es mantener disponible en destino un servicio capaz de admitir solicitudes conforme a ENABLED y exponer PROFILE. La función del servicio está especificada a nivel del contrato; el contenido material de solicitudes/perfiles puede seguir abstracto en el DGP sintético. No se solicita una nueva definición al usuario.
+
+V_cont representa cumplimiento temporal de esa función, no Need_preZ ni el resultado de la oportunidad única. F* juzga la conformidad de la ruta/estado terminal aplicado; O-CONF es su adjudicación 1/0/? y no incluye actualmente una regla temporal para toda la ventana. Los contrastes candidatos y sus límites se documentan en el plan §16.183. La discriminación final sigue NOT_VERIFIABLE hasta cerrar predicados F*, evento terminal y oráculo O-CONF.
+
+Estado: `B1_FUNCTIONAL_REFERENCE_SPECIFIED / V_CONT_TEMPORAL_SCOPE / O_CONF_TERMINAL_SCOPE / DISCRIMINATION_CONDITIONAL / NO_DESIGN_FREEZE`.
