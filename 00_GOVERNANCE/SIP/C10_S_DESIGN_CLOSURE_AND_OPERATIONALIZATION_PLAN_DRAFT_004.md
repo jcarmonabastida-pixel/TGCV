@@ -5704,3 +5704,62 @@ Estas son brechas de implementación contra el contrato, no resultados de una ej
 **Dictamen:** CAUSAL_RECOVERY_SUFFICIENCY_RULE_CLOSED_STRUCTURALLY / NUMERIC_ACCEPTANCE_THRESHOLDS_OPEN / INTEGRATED_HARNESS_GAP_CONFIRMED_STATICALLY / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** consolidar en una sola decisión los criterios cuantitativos para el benchmark integrado, separando lo reutilizable de P178 de lo que requiere justificación adicional. La recomendación deberá proponer un punto de partida para α/cobertura/MCSE y una regla de selección de precisión/potencia sin inventar MDE, además de un límite explícito de falsa atribución y abstención. No iniciar calibración hasta autorización expresa.
+
+
+## 16.219. Decisión cuantitativa de partida para el benchmark integrado (2026-11-12)
+
+**Estado de decisión:** ACEPTADA por el usuario como propuesta cuantitativa de partida. Esta aceptación fija objetivos de diseño para su operacionalización; no constituye calibración, ejecución, Design Freeze ni evidencia de que el harness actual los satisfaga.
+
+### 16.219.1. Parámetros estadísticos de partida
+
+Se adoptan para el benchmark integrado, sujetos a verificación de adecuación por estimando y procedimiento:
+
+| Parámetro | Decisión de partida | Aplicación |
+|---|---:|---|
+| Error tipo I | α bilateral = 0,05 | Por estimando confirmatorio y contraste preespecificado; se deberá controlar multiplicidad en la familia confirmatoria |
+| Cobertura de intervalos | 95 % nominal | Procedimientos de intervalo para estimandos identificados |
+| Potencia | ≥ 0,80 | En cada estimando/escenario identificable para el efecto mínimo relevante que se declare antes de dimensionar |
+| Precisión Monte Carlo de tasas | MCSE ≤ 0,005 | Para tasas de error tipo I, cobertura, potencia, falsa recuperación y abstención; justificar el número de réplicas |
+| Falsa atribución | ≤ 0,05 | Tasa en cada familia de mundos no identificados/adversariales, con límite superior unilateral de incertidumbre Monte Carlo ≤ 0,05 |
+| Abstención excesiva | ≤ 0,05 | Tasa en cada familia de mundos identificables y con observación suficiente, con límite superior unilateral de incertidumbre Monte Carlo ≤ 0,05 |
+
+Los dos últimos límites son umbrales de aceptación de diseño, no tolerancias que permitan ocultar errores críticos: cada falsa atribución focal se registra y audita como evento crítico, se informa por separado y no se compensa con resultados favorables de otras celdas. La regla del límite superior evita aprobar una tasa solo porque su estimación puntual sea inferior al 5% con incertidumbre amplia.
+
+### 16.219.2. Aplicación por estimando y multiplicidad
+
+Los objetivos no se agregan en una única métrica. Se reportan separadamente para ITT-D2, θ_A de accesibilidad y cualquier estimando C4 o LATE_f que llegue a quedar formalmente especificado e identificado. Las primeras etapas C2 se tratan como diagnósticos de mecanismo, no como efectos sobre V_cont.
+
+α=0,05 se aplica a cada contraste confirmatorio conforme a un plan de multiplicidad preespecificado. Antes de calibrar debe fijarse la familia confirmatoria, la jerarquía de hipótesis y el procedimiento de control familiar (por ejemplo, gatekeeping jerárquico o Holm); no se elegirá retrospectivamente el procedimiento que produzca el resultado más favorable. Si no se aprueba una familia, no se presenta una afirmación confirmatoria conjunta.
+
+La cobertura nominal del 95% se evalúa empíricamente sobre réplicas, por estimando y celda identificable, junto con anchura, sesgo y error. La potencia ≥0,80 no se interpreta como permiso para elegir a posteriori el efecto mínimo que el diseño puede detectar.
+
+### 16.219.3. Regla de precisión, relevancia y dimensionamiento sin MDE inventado
+
+No se asigna ahora un MDE numérico. Antes de dimensionar N y R, el protocolo deberá declarar para cada estimando:
+
+1. **δ_min,e:** menor efecto en escala V_cont que tendría relevancia científica para ese estimando, justificado sustantivamente y sin derivarlo de la potencia observada.
+2. **w_max,e:** máxima anchura admisible del intervalo (o precisión equivalente) para permitir la decisión prevista, justificada por la resolución científica requerida.
+3. **Familia de escenarios:** condiciones identificables y adversariales en las que se exige recuperación, con distribución/ponderación explícita y análisis separado de peores casos.
+4. **Pérdida de información:** medición, calibración, censura, falta de soporte, heterogeneidad e interferencia que forman parte del objetivo de evaluación.
+
+Después, seleccionar N y R mediante búsqueda de diseño sobre la cuadrícula preespecificada, eligiendo la menor combinación que cumpla simultáneamente potencia ≥0,80 para δ_min,e, anchura ≤w_max,e, cobertura nominal, MCSE y límites de falsa atribución/abstención en todas las celdas obligatorias. Si no existe combinación factible dentro de recursos declarados, el resultado es INFEASIBLE/REDESIGN, no relajación post hoc de los umbrales.
+
+Para estimandos parcialmente identificados, no se fuerza un punto ni se aplica la regla de anchura de intervalos puntuales: se evalúan cobertura y anchura de bounds frente a la verdad y a la resolución decisional que se apruebe para ellos. Para estimandos no identificados, el criterio es clasificación/abstención correcta, no potencia.
+
+### 16.219.4. Alcance y salvaguardas
+
+- Los parámetros α, cobertura, potencia y MCSE proceden de la propuesta previa P178, pero esta decisión los adopta como objetivos de partida del benchmark integrado; no convierte el replay P178 en validación del harness integrado.
+- Los límites de 5% para falsa atribución y abstención excesiva se aceptan como criterios de diseño por familia de escenarios, no como permiso para una tasa de errores críticos no auditada.
+- No se aprueba margen de equivalencia, δ_min,e, w_max,e, familia confirmatoria/multiplicidad, distribución de escenarios, N ni R. Deben justificarse y aprobarse antes de calibración.
+- Las tasas y su MCSE deben reportarse por estimando y familia; el agregado global nunca puede ocultar una familia que incumple.
+- El objetivo de 95% de cobertura se aplica a procedimientos identificados y a bounds con cobertura declarada; no convierte una salida no identificada en identificada.
+
+### 16.219.5. Dictamen y siguiente gate
+
+**DECISIÓN CERRADA COMO BASE DE DISEÑO:** α bilateral 0,05; cobertura nominal 95%; potencia mínima 0,80; MCSE de tasas ≤0,005; falsa atribución ≤0,05 por familia no identificada/adversarial con límite superior unilateral ≤0,05; abstención excesiva ≤0,05 por familia identificable con límite superior unilateral ≤0,05.
+
+**ABIERTO ANTES DE CALIBRACIÓN:** δ_min,e; w_max,e; familia confirmatoria y multiplicidad; definición/ponderación de familias de escenarios; tamaño N y réplicas R; presupuesto computacional; procedimiento exacto de incertidumbre Monte Carlo para límites de tasas; implementación de bounds y métricas en Analyzer/Evaluator.
+
+**Dictamen:** QUANTITATIVE_STARTING_CRITERIA_ACCEPTED / PRECISION_AND_RELEVANCE_MARGINS_OPEN / MULTIPLICITY_PLAN_OPEN / HARNESS_IMPLEMENTATION_GAP_OPEN / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** fijar δ_min,e y w_max,e por estimando, a partir de justificación científica y resolución de decisión, y cerrar la familia confirmatoria/multiplicidad. No dimensionar N/R ni calibrar antes de ello y de la autorización de ejecución correspondiente.
