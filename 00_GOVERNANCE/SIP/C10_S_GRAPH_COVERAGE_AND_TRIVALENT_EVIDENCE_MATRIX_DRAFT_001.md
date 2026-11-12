@@ -213,3 +213,22 @@ La decisión metodológica correcta es mantener Reach=?, F_alt,0=?, A_f*=? y MD-
 **Reconciliación histórica:** el contrato de frontera y granularidad C10_S_SYSTEM_BOUNDARY_AND_GRAPH_GRANULARITY_CONTRACT_DRAFT_001.md gobierna la instanciación del universo. El mapping de esta sección fue aplicado a la plantilla U_G en C10_S_UG_INVENTORY_REGISTER_TEMPLATE_DRAFT_001.md, §17. La auditoría cruzada de consistencia entre esta matriz §9, la matriz de cierre §31, la plantilla §§10–17, el manifiesto §12 y las fichas temporales §13 se completó el 2026-11-06; el resultado y las correcciones de mapping quedan registrados en el plan de cierre §16.5. La siguiente operación es auditar la trazabilidad causal individual de las fichas de invariantes hacia predicados, contratos PROV, dominios B-M, U_G, vías y estimandos. No volver a crear el contrato ni repetir la aplicación del mapping. Los estados observados permanecen sin inventar y sujetos a evidencia.
 
 **Límites:** N01–N23 y E01–E23 siguen siendo roles y aristas candidatas; existencia, relaciones, dependencias transitivas, consumidores, cobertura y no-afectación reales continúan indeterminados. Reach=?, F_alt,0=? y A_f*=?; MD-C1/MD-C2/MD-C4 y AUD-005/AUD-007 siguen abiertos. No hay implementación ni autorización de ejecución.
+
+
+## 10. Roster de fuentes por predicado — vínculo con U_G y B-M01…15 (2026-11-12)
+
+Esta sección operacionaliza las fuentes requeridas por §3 sin crear nuevas entidades del grafo. Los N/E citados son roles/aristas candidatos de §§2–4, no instancias observadas.
+
+| Predicado | Fuente mínima | U_G candidato | Evidencia y cobertura exigida |
+|---|---|---|---|
+| ID-τ2 | Contrato F1/τ₂, TID/SID/RID, tipo/clase, versión y mapping semántico del artefacto | N04/N10; E02–E04 | Contrato y versionado; SBOM/hash/build como evidencia técnica complementaria, nunca identidad semántica única |
+| REL-τ2 | API/schema, endpoints, interfaces tipadas, extremos/dirección/rol/scope y canal | N07/N17/N20/N21; E05/E18–E20 | ACL técnica separada de AUTH funcional; endpoint no prueba totalidad de relaciones |
+| COND-τ2 | Contrato de realizabilidad F1, restricciones ambientales y compatibilidad externa independiente de S0 | N01/N19/N20/N21; E19–E21 | `App` desde S0 separado; declarar scope, versión y ventana |
+| AUTH-τ2 | Fuente normativa/titular, roles, alcance, vigencia y diffs pre/post B | N17; E18; B-M05/B-M08 | DEC-C10-067 no acredita materialización/invariancia; ACL técnica no sustituye autorización funcional |
+| RES-τ2 | Capacidad utilizable, cuotas/reservas, demanda, consumidores, colas y contención | N18/N05/N13/N15; E16–E17 | Capacidad instalada/reservada/disponible/consumida separadas; vía colateral si B desplaza alternativas |
+| DEP-τ2 | SBOM/manifiesto, runtime, dependencias transitivas, servicios, llamadas/cargas/recursos compartidos y versiones | N04–N07/N20–N21/N13–N15; E02–E06/E11–E14/E19–E20 | Rutas alternativas/compartidas/externas incluidas; `C_dep` no representa universo de rutas |
+| BLOCK-τ2 | Políticas de seguridad, firewall/red, certificados, permisos y restricciones efectivas con vigencia/scope | N07/N17–N21; E18–E21; B-M08/B-M09 | Bloqueo local vs universal; sin cobertura exhaustiva no declarar ausencia de bloqueo |
+
+**Campos mínimos por fuente:** ID de origen, clase/locator, owner, unidad y versión, snapshot/record exactos, objeto/record, semantic_role, hash/procedencia, vigencia y captura, observador/cegamiento, método, scope/cobertura, limitaciones, mapping a predicado y N/E, separación `truth_dgp` / `observed_evidence` / adjudicación. No inventar source_id ni convertir UNKNOWN/MISSING/NONE en 0.
+
+**Estado:** contrato de roster definido; fuentes no materializadas; U_G permanece candidato/no exhaustivo; todos los predicados y rutas siguen `?`/NONE en el corte actual. Las superficies B-M13/B-M14 permanecen prohibidas para modificación; ello no acredita cumplimiento. No se autoriza implementación ni ejecución.
