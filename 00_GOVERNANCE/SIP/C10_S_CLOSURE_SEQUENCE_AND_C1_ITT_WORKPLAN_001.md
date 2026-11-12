@@ -2331,3 +2331,19 @@ Se completa la regla estructural ordenada en §60 mediante el contrato §15 de `
 **Siguiente gate:** resolver dominio temporal de episodios y detectabilidad S3 conjuntamente; después elegir unidad, Δ y K con justificación. Los límites numéricos no están en los contratos actuales y no se inventan.
 
 Se mantienen `scientific_execution=false`, `execution_authorized=false`, `NOT_DESIGN_FROZEN`; PR #116 Draft; sin cambios en main ni generación/ejecución.
+
+## 62. Cierre estructural de detectabilidad S3 y siguiente gate (2026-11-12)
+
+Se completa el gate posterior a §61 mediante §17 de `C10_S_TEMPORAL_HORIZON_AND_S4R_INTEGRATION_AUDIT_DRAFT_001.md` y §16.216 del plan integrado.
+
+- Se separan truth temporal exacta, evidencia S3 pasiva, salida Analyzer sellada y evaluación posterior.
+- Se formalizan tres modos observacionales comparables (snapshots/métricas, logs/trazas/eventos, híbrido) sin seleccionar ganador ni asumir independencia.
+- Se fijan métricas separadas para detección de episodios, falsos positivos, localización/lag, cobertura/pérdida, recuperación y clasificación de intervalos; se estratifican por familia, duración, fase, modo y versión.
+- `δ_det` es resumen condicional de la curva de detección, no mínimo funcional; requiere p* y criterios normativos aprobados. Mientras no existan, se conservan curvas y bounds y el Analyzer se abstiene cuando la evidencia no cubre el soporte.
+- Se fija `[b_k,b_{k+1})` con frontera en el intervalo que comienza; T* se incluye en el último intervalo. Δ no es cadencia S3 y la truth estricta DEC-C10-102 permanece intacta.
+
+**Dictamen:** `S3_DETECTABILITY_EVALUATION_CONTRACT_CLOSED_STRUCTURALLY / NUMERIC_CALIBRATION_OPEN / DELTA_K_OPEN`.
+
+**Siguiente gate:** seleccionar y justificar el perfil observacional que servirá de referencia para el experimento sintético y aprobar criterios normativos de detección/cobertura/falso positivo (p* y tolerancias). Después se podrá fijar el dominio numérico de sensibilidad, soporte de lag/τ_follow y finalmente Δ/K. No ejecutar calibración ni generar datos hasta autorización expresa.
+
+Se mantienen `scientific_execution=false`, `execution_authorized=false`, `NOT_DESIGN_FROZEN`; PR #116 Draft; sin cambios en main.
