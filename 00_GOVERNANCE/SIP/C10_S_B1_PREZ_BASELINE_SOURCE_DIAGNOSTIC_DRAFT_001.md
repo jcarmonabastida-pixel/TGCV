@@ -125,3 +125,19 @@ No se deben generar unidades ni fuentes hasta cerrar este contrato.
 Este diagnóstico no modifica el maestro, las decisiones aceptadas, la RMA, la Evidence→Claim Matrix, STATUS, la población, los estimandos ni el DGP ejecutable. No materializa truth, roster, fuentes, fixtures o código. No ejecuta validadores, simulaciones ni replay.
 
 `scientific_execution=false`; `execution_authorized=false`.
+
+
+
+## 8. Reconciliación específica: covariables basales y condicionamiento del canal S7
+
+La revisión de §2 y del contrato temporal confirma que no hay una covariable basal autorizada para generar Need ni para condicionar la declaración S7. El resultado se especializa ahora para el proceso observacional:
+
+- X, H₀, C_c, L_m no entran en el canal S7 base mientras no exista definición semántica, rol causal y evidencia específica por variable.
+- C_dep, A_f*, T_acc, F_alt, instalación, Reach, peticiones, ejecución, Outcome y Value no pueden usarse como sustitutos de Need ni como predictores del canal basal: no acreditan el objetivo y varios son técnicos, posteriores o potencialmente circulares.
+- CMP/PAR/REF/RUL y ENABLED/PROFILE describen configuración/estado del servicio; no establecen el objetivo de B1 ni el mandato declarativo.
+- La única dependencia constructiva que el canal necesita representar es la relación de medición entre la estipulación Need reservada y el resultado observable, mediante un mecanismo explícito con errores posibles y firewall. La oportunidad y la versión/mandato son condiciones de diseño fijadas ex ante, no covariables estimadas.
+- Esto no supone independencia estadística entre Need y las características basales ni entre unidades. Simplemente deja esas relaciones fuera del DGP base por falta de especificación y evidencia.
+
+Cualquier futura inclusión de covariable debe superar los requisitos de §15.4 del contrato de observación. No se crean variables, mappings, parámetros ni escenarios por conveniencia.
+
+**Estado:** X₀=∅ como conjunto de covariables admitidas en el canal base, por insuficiencia de fundamento contractual; no es un hallazgo empírico ni una afirmación de independencia. No materialización/ejecución.
