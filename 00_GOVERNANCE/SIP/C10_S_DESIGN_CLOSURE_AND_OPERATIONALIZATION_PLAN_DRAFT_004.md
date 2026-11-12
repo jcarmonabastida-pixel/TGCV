@@ -2807,3 +2807,12 @@ La revisión de `C10_S_UG_TYPED_TARGET_REFERENTIAL_INTEGRITY_CONTRACT_PROPOSAL_D
 **Orientación provisional:** estudiar un paquete analítico B1/Need separado de U_G, versionado, con procedencia/cobertura y separación truth/observed propias, sin añadir clase de grafo ni cambiar enums. Antes de fijar su representación se debe comprobar el contrato canónico de claims y si requiere vínculo de matriz adicional. No se aprueba todavía la opción ni se crea schema/fixture. El contrato temporal sigue Draft y Need no está aún incorporado expresamente al diccionario variable×tiempo×rol.
 
 **Estado:** U_G_TARGET_ENUM_CLOSED / NEED_TARGET_NOT_SUPPORTED / SEPARATE_ANALYTIC_PACKAGE_PREFERRED_FOR_REVIEW / NO_SCHEMA_CHANGE / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+
+## 16.170. Need_preZ: límite de Evidence→Claim Matrix y representación analítica local (2026-11-12)
+
+La revisión de `EVIDENCE_TO_CLAIM_MATRIX_v1.47.md` confirma que la matriz registra claims científicos C01–C16, no adjudicaciones de variables por unidad; `Need_preZ` no figura como claim. Need es constructo basal del diseño C10-S, no una nueva afirmación teórica TGCV. No se crea C17 ni se modifica la Matrix por este trabajo, ni se propaga evidencia a C10.
+
+Combinado con DEC-C10-061 (targets U_G cerrados), el camino de menor impacto es mantener truth/evidencia/adjudicación Need como paquete analítico local del DGP, fuera de U_G y de la Matrix global, versionado y con IDs/hashes/provenance propios. No se implementa ni se materializa todavía; su contrato de campos debe someterse a revisión antes de fixtures. Solo una evidencia futura que afecte una afirmación científica existente activará el proceso de impacto habitual.
+
+**Estado:** NEED_LOCAL_DGP_CONSTRUCT / NO_GLOBAL_CLAIM / U_G_TARGET_CLOSED / SIDE-PACKAGE_ROUTE_PREFERRED / NOT_APPROVED / NOT_IMPLEMENTED / NOT_EXECUTED.
