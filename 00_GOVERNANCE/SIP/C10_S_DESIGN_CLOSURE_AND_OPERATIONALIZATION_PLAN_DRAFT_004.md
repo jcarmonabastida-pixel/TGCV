@@ -2787,3 +2787,14 @@ Se especifica la separación por unidad entre (i) truth Need_preZ reservada al g
 Se prohíbe inferir Need desde configuración técnica, ausencia de documento/solicitud, oportunidad estandarizada, Request_event, C_dep, A_f, Reach, Outcome o Value. En particular, observed=0 requiere evidencia afirmativa y cobertura negativa suficiente; un universo de documentos sin declaración no prueba por sí solo ausencia del objetivo. No se asigna Need=1 por defecto. Truth=?, missingness y observed=? permanecen diferenciados.
 
 **Estado:** DOCUMENTARY_SPECIFICATION / NOT_APPROVED / NOT_IMPLEMENTED / NOT_MATERIALIZED / NOT_EXECUTED. Prevalencia, mecanismo generador de truth, modelo de observación/error/missingness, fuentes concretas, roster, denominador y cobertura siguen OPEN/NONE. Se reutilizan EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_REGISTER y ADJUDICATION_REGISTER; no se crea tabla U_G ni clase de objeto. No se implementa ni ejecuta DGP; no se autoriza fixture, captura, simulación o Design Freeze. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 16.168. Auditoría de compatibilidad Need_preZ ↔ DGP temporal/U_G (2026-11-12)
+
+**Artefacto rector:** `C10_S_B1_PREZ_DGP_U_G_COMPATIBILITY_AUDIT_DRAFT_001.md`.
+
+La separación conceptual truth/evidencia/adjudicación, la procedencia EVIDENCE_REGISTER, el almacenamiento segregado DGP_TRUTH_SECURE y la regla trivalente son compatibles en principio. Se identifica un bloqueo de representación: CLAIM_EVIDENCE_LINK, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER solo admiten targets NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT/COVERAGE_SCOPE. Need_preZ es una afirmación basal sobre B1/UE y no debe forzarse a PREDICATE (predicado de ruta) ni a COVERAGE_SCOPE (universo/denominador). Los scopes C10S_CONFIG_* cubren configuración técnica, no el objetivo B1.
+
+El reloj t−1→t0 aporta precedencia temporal, pero Need no figura expresamente en el diccionario variable×tiempo×rol. El contrato Need deberá vincularse a t−1 y separar Need_truth reservada, Need_evidence y Need_observed. El target de claim/evaluator/adjudication y la cobertura específica del objetivo B1 requieren decisión de representación antes de schema o fixtures.
+
+**Estado:** PARTIAL_COMPATIBILITY / U_G_TARGET_TYPE_GAP_OPEN / NO_SCHEMA_CHANGE / NOT_IMPLEMENTED / NOT_EXECUTED. Se prohíbe añadir enums/tablas/FK o asignar IDs sin decisión; no se selecciona todavía entre claim extension, registro B1 separado o artefacto analítico externo. La siguiente dependencia es inspeccionar el contrato canónico de claims y las decisiones U_G de tipos de target.
