@@ -135,3 +135,18 @@ La siguiente dependencia material es una fuente aprobada que permita fijar roste
 Este artefacto cierra la reconciliación documental de las distinciones y condiciones del contrato; no cierra los parámetros ni la factibilidad material. No crea Decision Record, no cambia decisiones aceptadas, no altera main/Core/RMA/Matrix/STATUS/claims y no autoriza captura, schema físico, fixtures, implementación, generación de datos, simulación, estimación o ejecución científica.
 
 `scientific_execution=false`; `execution_authorized=false`.
+
+
+
+## 10. Integración con el crosswalk causal C+D (2026-11-12)
+
+El plan §16.185 integra este contrato con los estimandos y los resultados sin alterar las condiciones aquí establecidas:
+
+- P*τ2 primaria candidata y P*_F secundaria; la composición material E_i/App no se declara cerrada. Need_preZ no es elegibilidad.
+- q_X* es distribución basal común objetivo, no probabilidad de Z. Su distribución, pesos y soporte no están materializados. q_L* solo procede si se necesita una intervención secuencial longitudinal para confusión mediador–resultado inducida por Z.
+- Z se asigna en UA; UE=UA solo bajo aislamiento completo. UO repetidas no incrementan N. Sin mapa de exposición/cluster cuando existe interferencia, no se interpreta ITT individual.
+- π_h, estratos, ratio, algoritmo, semilla/hash, N y mecanismo de asignación siguen OPEN. W_programmed bajo D2 es regla de política condicional a Z, no aleatorización; c/b y éxito técnico no se fijan.
+- ITT_Z^D2 se mantiene como efecto total del paquete por resultado. θ_A/θ_Af requiere g_A, régimen común y soporte; C4 requiere intervención mediadora longitudinal. No se transfieren ni se restan estimandos.
+- O-CONF_r y V_cont son resultados separados; su verdad no resuelve elegibilidad ni asignación. Los requisitos de observación y missingness permanecen independientes.
+
+**Estado:** contrato de distinciones integrado; roster/IAM, E_i, q_X*, soporte, asignación y no interferencia material siguen OPEN/BLOCKED. No se materializa ni autoriza captura, schema, fixtures o ejecución.
