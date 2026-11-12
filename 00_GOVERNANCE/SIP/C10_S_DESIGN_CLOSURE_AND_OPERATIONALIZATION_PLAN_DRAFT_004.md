@@ -5497,3 +5497,49 @@ Esta matriz es un cruce de las clases existentes, no un factorial. Una clase pue
 **Resultado del gate:** CAUSAL_GENERATING_FUNCTIONS_AND_COUNTERFACTUAL_DEPENDENCIES_RECONCILED_SYMBOLICALLY / FINITE_WORLD_ROSTER_REUSED / NUMERIC_DISTRIBUTIONS_NOT_ASSIGNED / VALUE_V1_NOT_INSTANTIATED / F_STAR_REACH_ORACLE_AND_H_TIME_OPEN / NO_DATA / NO_IMPLEMENTATION / NO_SCIENTIFIC_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate del paquete integrado:** adjudicar el contrato mínimo de la instancia sintética V1 (consecuencia B1, perspectiva/autoridad, regla no circular, unidad/escala, baseline y horizonte) y verificar que el DGP puede producir efecto positivo, nulo y negativo sin definir Value por accesibilidad. En paralelo, cerrar únicamente las decisiones lógicas imprescindibles de factibilidad/soporte de g_A y r_common; no pasar aún a distribuciones numéricas, potencia ni calibración. La selección V1 no se presume aprobada por esta sección.
+
+## 16.213. Precedencia del resultado sintético B1: V_cont provisional, O-CONF terminal y contrafactuales (2026-11-12)
+
+**Tipo:** corrección de continuidad y reconciliación de precedencia; reutiliza decisiones y contratos existentes. No crea dimensión, indicador, regla de valoración, test ni escenario nuevo.
+**Precedencia:** DEC-C10-099/100/101/102; DEC-C10-068; B1 pre-Z §2 y §17; B2–B3 §§5–6 y 16–18; operacionalización Outcome/Value §§3–5 y 16–18; plan §§16.182–16.198 y 16.199–16.212.
+
+### 16.213.1. Corrección obligatoria del siguiente gate
+
+La propuesta de §16.212 de adjudicar una instancia genérica V1 no es el siguiente paso vigente y queda supersedida en ese punto por la precedencia posterior ya aceptada. DEC-C10-099 seleccionó provisionalmente V_cont como dimensión mínima de Value para la extensión sintética B. La selección no equivale a Value materialmente instanciado ni a endpoint confirmado, pero sí impide reabrir la selección como si no existiera. La operación pendiente es cerrar la especificación sintética de V_cont y su integración con el universo finito, no inventar una V1 paralela ni solicitar una nueva elección de dimensión.
+
+### 16.213.2. Contrato de resultado vigente y fronteras
+
+| Objeto | Definición vigente | No equivale a |
+|---|---|---|
+| B1 / Need_preZ | Beneficiario sintético por UE; objetivo basal pre-Z, adjudicado 1/0/? sin inferencia desde eventos post-Z | UE, servicio, solicitud, admisión o resultado |
+| A_B1(i,k) | Truth funcional latente del intervalo: capacidad de admitir solicitudes cuando ENABLED=true (no admitir cuando false) y exponer el PROFILE declarado | Conteo de peticiones, procesamiento, respuesta, éxito técnico o telemetría S3 |
+| V_cont_truth | Proporción de intervalos completamente conformes en la ventana común iniciada en t0, con intervalos iguales y regla DEC-C10-102 | Fracción exacta de tiempo en uptime, score de señales S3 o V1 genérica |
+| F* / O-CONF | F* es criterio funcional técnico versionado; O-CONF adjudica conformidad terminal de cada ruta tras aplicación/check | Continuidad durante toda la ventana ni Value contextual |
+| Outcome / consecuencia B1 | Resultado técnico y cambio de situación del beneficiario, separados de la valoración | V_cont automáticamente, accesibilidad o Value |
+| Value | V_cont es la única dimensión mínima provisional seleccionada para esta extensión B; P179 vectorial sigue vigente en el marco general | Valor material validado, preferencia real o índice escalar global |
+
+DEC-C10-100/102 fijan la agregación como proporción de intervalos completamente conformes: cualquier incumplimiento funcional confirmado hace que el intervalo intersectado sea 0; el intervalo solo vale 1 si cumple durante todo él; UNKNOWN se propaga a cotas y no se imputa cero ni se elimina del denominador. No describir V_cont como porcentaje exacto del tiempo disponible. La regla es estricta, sin gracia ni duración mínima de fallo. DEC-C10-101 fija el inicio en t0 e incluye provisión e instalación.
+
+### 16.213.3. Función generadora de V_cont y potenciales
+
+Para cada UE i, régimen z/política g y mundo m, el Generator genera la historia latente de estado funcional efectivo ENABLED_eff(i,z,m,t), PROFILE_eff(i,z,m,t), capacidad de admisión y sus transiciones versionadas. La verdad por intervalo se deriva de esa historia según la regla B1/DEC-C10-102; después se agrega sobre la rejilla común [t0,T*]. La misma historia basal y exógenas compartidas de §16.212 se conservan entre potenciales compatibles. No se vuelve a sortear la unidad por brazo.
+
+El contrato no autoriza a inferir A_B1 desde W_programmed, W_attempt, receipt, S_install, C_dep*, A_f*, ΔT_acc*, Reach, ejecución o una señal individual S3. Estos pueden ser causas, antecedentes o evidencia imperfecta; el estado funcional efectivo es el que determina truth. La ausencia de peticiones no es fallo funcional. Los cambios de ENABLED/PROFILE y las interrupciones de capacidad se fechan en truth; la provisión/instalación entra en la ventana por comenzar en t0.
+
+Los potenciales V_cont_i(z) y V_cont_i(g_A) se conservan separados. ITT-D2 compara V_cont bajo asignación z y contiene todas las vías del paquete. θ_A compara políticas g_A1/g_A0 sobre ΔT_acc* completo bajo q_X* común y r_common explícito; solo es interpretable si la intervención, soporte, medición y régimen están definidos. La verdad de V_cont puede cambiar por vía directa/colateral sin cambio de ΔT_acc*, o permanecer constante pese a cambio estructural. C4 sigue siendo mediación interventional distinta. No se calcula efecto directo por ITT−θ_A.
+
+### 16.213.4. Canal S3, O-CONF y límites de identificación
+
+S3 permanece canal pasivo imperfecto separado de truth; conserva emisión, captura, cobertura, lag, pérdida, validez, error, dependencia y censura por UE×intervalo×componente. No se adopta AND/OR/score ni independencia de señales por defecto. Analyzer recibe solo observación permitida y parámetros de calibración accesibles; truth, potenciales y exógenas reservadas quedan en Generator/Evaluator hasta sellado. Si S3 no identifica la secuencia o agregado, salida bounds o NOT_IDENTIFIED/INDETERMINATE_MEASUREMENT.
+
+O-CONF se adjudica terminalmente por ruta frente a F*, con su propio snapshot, evento y oráculo. La discriminación V_cont/O-CONF exige contrastes cruzados: mismo O-CONF con secuencias V_cont distintas y mismo V_cont con O-CONF distinto, siempre que la definición y el soporte de los mundos lo permitan. La arquitectura de contraste está definida, pero F*, oracle, evento terminal, H, snapshots y validez siguen abiertos; por ello la discriminación continúa CONDITIONAL/NOT_VERIFIABLE. No se fusionan endpoints para cerrar esa brecha.
+
+### 16.213.5. Decisiones temporales abiertas y gate real
+
+Ya están aceptados: inicio t0; inclusión de provisión/instalación; intervalos de igual duración; continuidad estricta dentro de cada intervalo; agregación por proporción de intervalos completamente conformes; unknown→bounds; regla semántica ENABLED/PROFILE; y separación del canal S3. No reabrir ni volver a solicitar estas decisiones.
+
+Siguen abiertos y requieren justificación documental antes de cualquier parametrización: T* y cola de seguimiento según soporte de recuperación; unidad temporal de coordenada; K/Δ y convención de fronteras versionada; soporte de episodios/recuperación; familias y dependencia del proceso de estado funcional; configuración/cadencia/cobertura y modelo conjunto S3; criterio normativo de error/precisión; oráculo y horizonte terminal O-CONF; factibilidad/soporte de g_A y definición de r_common; distribución q_X*. Los valores no se derivan de t0…t9, H, S7, P178 ni de conveniencia.
+
+**Siguiente operación integrada:** completar el ledger finito de estados/eventos funcionales B1 y sus dependencias temporales por mundo (qué puede cambiar ENABLED_eff, PROFILE_eff y capacidad de admisión, cuándo, con qué persistencia/recuperación y qué potenciales afecta), enlazándolo con los perfiles R0–R3 y mecanismos adversariales existentes. En la misma pasada, marcar los parámetros temporales como identidad de contrato, dominio derivable, sensibilidad que requiere soporte o decisión normativa. No abrir otra dimensión Value, no generar episodios/datos, no fijar números ni ejecutar calibración.
+
+**Dictamen:** V_CONT_PROVISIONAL_SELECTION_REUSED / B1_TEMPORAL_TRUTH_AND_AGGREGATION_RECONCILED / O_CONF_TERMINAL_SEPARATE / S3_IMPERFECT_OBSERVATION_FIREWALL_PRESERVED / T_STAR_K_S3_SUPPORT_AND_G_A_OPEN / NO_NUMERIC_PARAMETERS / NO_DATA / NO_IMPLEMENTATION / NO_EXECUTION / NOT_DESIGN_FROZEN.
