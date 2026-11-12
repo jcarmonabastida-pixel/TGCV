@@ -123,3 +123,8 @@ Este dictamen está limitado a los artefactos C10-S revisados en la rama indicad
 No se cambia main, RMA, Evidence→Claim Matrix, STATUS, claims, DEC-C10-068/069 ni las decisiones B1 aceptadas. No se crea verdad por unidad, roster, snapshot, fixture, dataset ni fuente. No se ejecuta búsqueda en sistemas reales, inspección runtime, captura, simulación, estimación o experimento. No Design Freeze ni autorización de implementación/ejecución.
 
 scientific_execution=false; execution_authorized=false.
+
+
+## 9. Incorporación del modelo operativo de observación (DEC-C10-097)
+
+DEC-C10-097 acepta las reglas de diseño para marco de fuentes, emisión, captura, contenido, admisibilidad, integridad, temporalidad, vinculación, adjudicación E1/E2 y cobertura por unidad×dimensión. Esta aceptación es normativa/documental: **no cambia el resultado material de esta auditoría**. La cobertura por unidad continúa siendo NONE en el conjunto de artefactos revisados; no hay roster, fuentes, truth, snapshots ni adjudicaciones materializados. No se convierte la aceptación del modelo en evidencia observada ni en PASS de adjudicabilidad.
