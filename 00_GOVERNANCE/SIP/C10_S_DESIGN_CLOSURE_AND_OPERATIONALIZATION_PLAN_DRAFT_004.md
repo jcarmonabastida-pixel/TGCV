@@ -4460,3 +4460,8 @@ No se abre otra ronda conceptual. La siguiente pasada integrada debe: (1) poblar
 **Dictamen:** NORMALIZED_CLOCK_COORDINATE_DEFINED / NO_PHYSICAL_TIME_INFERENCE / STRICT_TRUTH_PRESERVED / S3_CAPTURE_MODES_BOUNDED_TO_EXISTING_SOURCE / DETECTABILITY_CURVE_BEFORE_THRESHOLD / TEMPORAL_PARAMETERS_NOT_NUMERICALLY_CALIBRATED.
 
 No se materializan escenarios, intervalos, truth, señales ni fixtures. No se ejecuta código, simulación, estimación, calibración ni validación. scientific_execution=false; execution_authorized=false.
+
+
+## 16.195.8. Precedencia del último evento y horizonte común
+
+Para reconciliar la notación anterior: t_last,i es la última transición efectiva de la unidad i; t_last^max=t_c,max es el límite superior común del soporte de transiciones posibles sobre todas las unidades, brazos y escenarios. El horizonte confirmatorio no se fija retrospectivamente como t_last,i+τ_follow para cada unidad, porque produciría ventanas distintas y potencialmente dependientes del resultado. Se fija ex ante como T*=t_last^max+τ_follow, equivalente a 1+ρ_follow en coordenadas normalizadas. Para cada unidad, el tramo desde su última transición efectiva hasta T* forma parte del seguimiento común; si el estado sigue incumpliendo al cierre, se conserva como terminal/censurado. Si el soporte de transiciones no puede acotarse ex ante, T* permanece OPEN y no se afirma cierre completo.
