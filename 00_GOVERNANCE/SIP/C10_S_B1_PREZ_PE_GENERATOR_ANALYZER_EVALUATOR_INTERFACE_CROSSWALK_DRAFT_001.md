@@ -125,3 +125,18 @@ Se deben mantener dominios diferentes:
 Documento documental propuesto, no decisión aceptada ni interfaz congelada. No se materializan datos, outputs, fixtures, schema físico, APIs, código ni permisos. No se ejecutan validadores, DGP, simulación, replay ni análisis.
 
 `scientific_execution=false`; `execution_authorized=false`.
+
+
+
+## 10. Alineación con el canal S7 y preservación de la frontera de tareas
+
+La estructura lógica de estados del canal S7 queda descrita en §14 de C10_S_B1_PREZ_OBSERVATION_MECHANISM_AND_COVERAGE_RULES_RECONCILIATION_DRAFT_001.md. Se mantiene la frontera ya establecida en §§1–9 de este crosswalk:
+
+- E1/E2 adjudican Need_preZ a partir del expediente observable autorizado y producen sus propios need_observed_state.
+- El Analyzer PE no es un tercer adjudicador Need ni recibe los estados internos del canal o la truth.
+- El Evaluator B1 abre TRUTH_LEDGER solo después del sellado de E1/E2.
+- El Evaluator PE evalúa el Analyzer contra sus propios oráculos por constructo/estimando y solo después del sellado PE.
+
+La separación lógica entre emisión, contenido, captura, admisibilidad y cobertura no crea una tarea adicional ni un nuevo output PE. La inclusión de observaciones B1/Need en el bundle PE sigue condicionada a que un estimando la requiera expresamente, conforme al crosswalk de bundle; no se inyectan E1/E2 ni su consenso por defecto.
+
+No se crean artefactos, test IDs ni autorizaciones. Esta alineación documental no resuelve los gates estadísticos ni técnicos.
