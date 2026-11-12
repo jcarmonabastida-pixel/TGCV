@@ -1075,3 +1075,82 @@ La especialización S7_B1_BASELINE_OBJECTIVE_ATTESTATION de los contratos B1 req
 La matriz de roles §6 actual es de acceso a bloques de información Generator/Analyzer/Evaluator y no identifica por sí sola una autoridad declarativa. Esta sección la especializa sin cambiar el firewall general. No crea un quinto rol PE ni equipara emisor con Evaluator, Analyzer o adjudicadores.
 
 **OPEN:** nombre/tipo canónico del rol emisor, fundamento de su competencia en el microdominio, regla de asignación por B1/UE/servicio, delegación/conflicto, proceso de información del emisor, mecanismos de error y parámetros. No se materializa roster, emisor ni declaración; no se implementa ni ejecuta.
+
+
+## 14.5 Reconciliación del emisor B1 con el contrato de información y cegamiento PE
+
+Esta sección concreta el límite de información del emisor S7 sin crear un quinto rol PE ni alterar el reparto de §6.
+
+### 14.5.1 Naturaleza del emisor
+
+El «emisor» de `S7_B1_BASELINE_OBJECTIVE_ATTESTATION` se define por ahora como **función de origen declarativo dentro del modelo de observación**, no como nuevo rol PE, nuevo actor causal de la cadena B→W_attempt→S_install→C_dep* ni entidad U_G. Puede representarse mediante un actor sintético si el DGP de actores lo requiere, pero esa decisión de representación queda abierta.
+
+Por tanto:
+- Generator sigue siendo el rol técnico que estipula truth y ejecuta el DGP.
+- La función emisora genera un artefacto observable bajo un mandato declarativo versionado.
+- Analyzer recibe el expediente observable y produce clasificación.
+- Evaluator conserva acceso a truth para evaluar después del sellado, sin editar la adjudicación.
+
+La separación emisor/Generator es una separación funcional, de datos y de permisos; no implica independencia organizativa o computacional ni presupone que el emisor sea un actor humano simulado.
+
+### 14.5.2 Partición de información
+
+Se establecen tres conjuntos de información:
+
+**I_source_public (visible en expediente):**
+- identidad/rol declarativo y versión del mandato;
+- alcance B1–UE–service_instance y versiones;
+- proposición declarada y su event_time;
+- provenance, integridad, lineage, capture_time y estado de cobertura;
+- información contextual mínima necesaria para interpretar el alcance.
+
+**I_source_internal (estado de proceso, no exportable):**
+- señal o contexto que el proceso observacional pone a disposición de la función emisora;
+- regla de interpretación/declaración y estado informativo interno, si se modela;
+- dependencias y condiciones del proceso de emisión;
+- estados de emisión, omisión, conflicto, degradación o error.
+
+**I_truth_reserved (solo Generator y Evaluator bajo el orden de apertura):**
+- `need_truth_state`, `truth_basis_ref`, estipulación basal reservada;
+- semillas, flags, índices o parámetros que revelen la estipulación;
+- metadatos internos cuya combinación permita reconstruir truth directamente.
+
+La función emisora puede depender de información derivada de la realidad basal, pero no recibe ni exporta `I_truth_reserved` como etiqueta o referencia. La relación entre verdad basal, señal disponible y contenido declarado se especificará en el modelo observacional. No se presume una señal perfecta, una distribución de creencias ni un nivel de ruido.
+
+### 14.5.3 Flujo de información permitido
+
+El flujo conceptual es:
+
+`truth reservada → mecanismo de observación/señal → I_source_internal → declaración S7 → I_source_public → Analyzer/E1/E2`
+
+El flujo prohibido es:
+
+`truth reservada → copia directa de need_truth_state → contenido/metadata visible`
+
+El Generator puede implementar técnicamente ambos procesos, pero debe mantener una frontera de datos verificable entre ellos. La generación del documento no puede incorporar, ni directa ni indirectamente, claves, ordenamientos, nombres de archivo, IDs, timestamps, patrones de omisión u otros canales laterales que codifiquen truth.
+
+La información pública de autoridad acredita quién podía declarar y dentro de qué ámbito; no revela el estado interno del emisor ni certifica la verdad semántica de la proposición.
+
+### 14.5.4 No contaminación temporal y causal
+
+La declaración se refiere a t−1 y debe quedar fijada antes de Z en t0. Ningún dato post-Z, política asignada, provisión, accesibilidad, Reach, trayectoria, ejecución, Outcome, Value o adjudicación puede modificar retrospectivamente:
+- la autoridad del emisor;
+- la información basal que recibió;
+- el contenido/event_time de la declaración ya emitida.
+
+Una captura o recuperación posterior puede añadir capture_time y estado de retención, nunca reescribir event_time ni contenido original sin dejar una nueva versión y lineage explícito.
+
+### 14.5.5 Obligaciones verificables previas a implementación
+
+El futuro contrato ejecutable deberá demostrar:
+1. Analyzer/E1/E2 no pueden leer `I_source_internal` ni `I_truth_reserved`.
+2. Evaluator accede a truth solo después de congelar Analyzer y E1/E2, según el protocolo de evaluación aplicable.
+3. La función emisora no recibe `need_truth_state`, `truth_basis_ref`, semilla ni flags equivalentes.
+4. Cambiar truth no modifica mecánicamente el mandato/identidad del emisor.
+5. La declaración puede ser auténtica y errónea sin que se alteren retrospectivamente su autoridad o integridad.
+6. Las señales, errores, omisiones y dependencias tienen una especificación explícita; no se presuponen tasas ni independencia.
+7. No existe codificación lateral de truth en el expediente, metadatos, lineage o estructura del paquete.
+
+**OPEN:** contenido concreto de la señal pre-Z; si la función emisora se representa como actor sintético o proceso de fuente; nombre/versión del mandato; reglas de autoridad y delegación; modelo de información y error; dependencias entre fuentes; parámetros y escenarios. Ninguno se rellena por conveniencia.
+
+**Dictamen:** la partición de información y la frontera con el contrato PE quedan reconciliadas documentalmente. El rol emisor concreto y el mecanismo de señal siguen OPEN. No hay materialización, implementación ni ejecución autorizada.
