@@ -3360,3 +3360,55 @@ La selección de lenguaje, base de datos, serialización y despliegue no está f
 **Estado:** CLOSURE_ROUTE_PERSISTED / V_CONT_OPERATIONALIZATION_RECOMMENDED / DGP_STRUCTURAL_RULES_SPECIFIED_NONNUMERICALLY / ESTIMAND_ORACLES_SPECIFIED / CALIBRATION_RULE_DEFINED_BUT_NOT_RUN / PE_PHYSICAL_CONTRACT_PARTIAL / DESIGN_FREEZE_NOT_READY / EXECUTION_NOT_AUTHORIZED.
 
 No se crean Decision Records, tests, IDs, fixtures ni schemas físicos. No se actualizan main, RMA, Evidence→Claim Matrix, Core, claims o STATUS. Se mantienen scientific_execution=false y execution_authorized=false.
+
+## 16.179. Auditoría de consistencia y precisión operacional de V_cont (2026-11-12)
+
+**Propósito:** reconciliar la aceptación registrada en §16.174 con el desarrollo posterior §16.178 y resolver ambigüedades de medición antes de calibrar. Esta sección prevalece sobre cualquier estado pendiente de aceptación de la dimensión V_cont que permanezca por arrastre en §§16.173/16.178. No convierte en aceptada la regla operacional concreta propuesta en §16.178.2.
+
+### 16.179.1. Estado de decisión y precedencia
+
+- **V_cont como dimensión única provisional:** ACCEPTED, según §16.174. No volver a solicitar esta decisión.
+- **Perspectiva B1 y semántica basal ENABLED/PROFILE:** reutilizadas de los contratos aceptados; no se reabren.
+- **Regla temporal de agregación propuesta en §16.178.2:** PROPOSED / NOT YET ACCEPTED. La aceptación de la dimensión no implica aceptación automática de su indicador, rejilla, horizonte ni regla de agregación.
+- **Distinción frente a O-CONF/F*:** requisito de validez obligatorio; no se declara superado hasta que los escenarios de separación se puedan generar sin contradicción con el contrato funcional.
+- **Medición independiente y validez del monitor:** OPEN; la descripción de un monitor no-mutante no demuestra por sí sola que mida capacidad operativa.
+
+Por tanto, las frases de §16.178.8 que presentan como pendiente la aceptación de V_cont quedan corregidas: lo pendiente es la operacionalización de medida, no la selección provisional de la dimensión.
+
+### 16.179.2. Separación obligatoria entre estado verdadero y observación
+
+La ficha de §16.178.2 mezcla parcialmente el estado verdadero del DGP con el estado de observación trivalente. Para preservar el firewall Generator/Analyzer/Evaluator y la regla de que ausencia no equivale a cero, se establece esta distinción para la siguiente versión integrada:
+
+1. **Estado verdadero por intervalo:** el Generator debe estipular para cada intervalo programado el estado de capacidad operativa B1 conforme al contrato funcional aplicable. En escenarios plenamente especificados será binario (cumple/no cumple). Un estado desconocido en truth solo será admisible si el propio DGP deja genuinamente indefinido el estado; ese intervalo no podrá tratarse como un 0 ni producir una verdad puntual completa de V_cont.
+2. **Observación del monitor:** el canal observado puede emitir 1, 0 o desconocido (incluyendo no observado, inválido o censurado, según los contratos existentes). Este estado epistémico/observacional nunca se copia como truth.
+3. **Agregación de truth:** la fórmula de media sobre K intervalos solo tiene verdad puntual si los K estados verdaderos están definidos y la regla de ponderación igual por intervalo se acepta ex ante. Si hay estados verdaderos genuinamente indefinidos, se informa indeterminación o bounds justificados; no se fuerza una media puntual.
+4. **Estimación desde observaciones:** no se usa por defecto la media de casos completos ni se sustituye ausencia por cero. Error del monitor, cobertura, censura y missingness se tratan con P182/P183 y MEAS/MISS existentes; sin supuestos defendibles, la salida es bounds o NOT_IDENTIFIED/INDETERMINATE_MEASUREMENT.
+
+Esta separación es una corrección metodológica de consistencia; no añade ledger, rol, clase U_G, test ID ni artefacto lógico.
+
+### 16.179.3. Alcance y límite del monitor no-mutante
+
+El monitor no-mutante no envía solicitudes de negocio, no crea Request_attempt y no incrementa la cardinalidad de una oportunidad estandarizada por UE. Su objeto no puede ser el mero valor declarativo ENABLED/PROFILE: leer un flag no demuestra que la capacidad funcional exista.
+
+Para ser admisible, el DGP debe definir el estado latente por intervalo como la capacidad efectiva de la instancia para admitir una solicitud conforme al estado ENABLED y exponer el PROFILE aplicable, y debe especificar qué evidencia sintética independiente permite al monitor observar esa capacidad sin ejecutar la oportunidad de servicio. El canal puede tener error y pérdida, y el Analyzer recibe solo la evidencia proyectada, no el estado latente ni la truth.
+
+La fuente concreta, su semántica observacional y su error no están todavía demostrados por los contratos recuperados. Si no puede especificarse una observación no-mutante que discrimine capacidad efectiva del mero estado declarativo, V_cont no supera el gate de medición y no será endpoint confirmatorio. No se inventa una API, telemetría real, protocolo de health-check ni nueva fuente por conveniencia.
+
+### 16.179.4. Regla de valoración y discriminación
+
+La media no ponderada de intervalos implica que cada intervalo programado tiene el mismo peso en la valoración sintética de B1. Esto debe declararse como regla normativa interna del DGP, no como preferencia observada ni como propiedad universal. K, frecuencia, ancla y horizonte siguen sin fijarse y deben ser comunes, ex ante y compatibles con el reloj temporal C10-S.
+
+O-CONF/F* permanece como adjudicación técnica del estado terminal; V_cont pretende representar continuidad temporal de la capacidad funcional. Los casos de separación de §16.178.2 son controles de discriminación, no evidencia de que la separación ya haya sido demostrada. Si el contrato F* y el modelo de servicio impiden producir alguno de esos casos sin contradicción, debe revisarse la validez discriminante antes de aceptar V_cont como endpoint confirmatorio; no se altera F* ni el contrato funcional para fabricar contraste.
+
+### 16.179.5. Ruta inmediata sin nueva ronda conceptual
+
+La siguiente operación integrada será:
+1. cruzar la fuente/semántica del monitor con PE, U_G, snapshots y contratos de observación ya existentes;
+2. cerrar el contrato de estado verdadero por intervalo y el mapping observado sin añadir una fuente o interfaz no justificada;
+3. verificar que la regla de agregación temporal y la discriminación O-CONF/V_cont son coherentes con B1, F* y el reloj t−1/t0…t9;
+4. derivar K, frecuencia, baseline, ventana y criterio de relevancia solo después de fijar la semántica de observación;
+5. integrar esa ficha con los estimandos C1–C4 y después continuar la calibración conjunta N, asignación, réplicas y tolerancias.
+
+No se solicita de nuevo aceptar V_cont como dimensión. No se declara aceptada la regla de agregación ni superados los gates de medición/discriminación. No se crean tests, IDs, fixtures, schemas físicos ni nuevos roles; no se ejecuta código, validadores, generación, simulación o estimación. Se mantienen scientific_execution=false y execution_authorized=false.
+
+**Estado actualizado:** V_CONT_CONSTRUCT_ACCEPTED_PROVISIONALLY / TEMPORAL_AGGREGATION_PROPOSAL_OPEN / MONITOR_VALIDITY_OPEN / DISCRIMINANT_VALIDITY_OPEN / CALIBRATION_NOT_RUN / DESIGN_FREEZE_NOT_READY / EXECUTION_NOT_AUTHORIZED.
