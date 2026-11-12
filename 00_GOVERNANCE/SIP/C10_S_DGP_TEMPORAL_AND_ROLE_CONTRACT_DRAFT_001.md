@@ -1298,3 +1298,16 @@ S3 snapshots: c_j/W_c, fase φ_j, cobertura, lag, pérdida, invalidez y error. L
 Orden de generación: Generator produce estados/transiciones truth y deriva A_B1 por intervalos con continuidad estricta; después genera observaciones S3 condicionadas a familia, estado, Z, versión y tiempo. Analyzer recibe evidencia sellada sin truth; Evaluator abre truth después. Truth estable/señal espuria y truth cambiante/señal estable son controles adversariales obligatorios.
 
 V_cont_truth es la proporción de intervalos completamente conformes, no fracción exacta de uptime. Un fallo confirmado en cualquier instante pone a cero cada intervalo intersectado. El valor depende de Δ y alineación; no se interpreta como integral temporal. No se fijan leyes, parámetros, p*, K, Δ ni τ_follow. No ejecución.
+
+
+## 56. Crosswalk estructural D2, ΔT_acc* y g_A (2026-11-12)
+
+Referencia rectora: plan integrado §16.199. Se conserva para cada UE la historia potencial bajo Z: W_programmed → W_attempt → receipt → S_install → C_dep* → A_f*/D_f* → T_acc*/ΔT_acc* → Reach/Π → etapas downstream; O-CONF y V_cont generan truth separada. La secuencia expresa dependencias posibles, no determinismo ni mediación serial obligatoria.
+
+W_programmed es prescripción D2, no asignación ni cumplimiento. W_attempt, receipt, S_install y C_dep* son etapas distintas; ninguna se fuerza a éxito por la anterior. C_dep* deriva del intento/recepción/instalación y del éxito técnico conjunto. A_f* conserva sus predicados constitutivos; C_auth,base no se colapsa con C_dep*. D_f* solo es apertura basal→post bajo matching comparable.
+
+ΔT_acc* permanece como (ΔU*,ΔR*,ΔC*,ΔX*). ΔValidity_e y la cobertura pertenecen a ΔE_T. ΔX* exige mapping campo a campo; no se equipara a q_X* ni a ΔC* automáticamente.
+
+q_X* es historia basal conjunta común y pre-Z; Need_preZ no filtra cohorte. q_L* solo entra si se necesita una estrategia longitudinal para C4. g_A1/g_A0 intervienen sobre distribuciones factibles del ΔT_acc* completo bajo la misma q_X* y un r_common explícito. D2 ITT es efecto total del paquete; D2→g_A no está demostrado. C4 no es ITT−θ_A. Las vías directas, colaterales, alternativas, interacciones e interferencia se declaran por escenario, no se asumen ausentes.
+
+Las funciones y distribuciones de cumplimiento, recepción, instalación, dependencias, q_X*, g_A, r_common, ΔX*, vías colaterales y soporte permanecen OPEN. No se asignan tasas históricas (.25/.80, s=.80), no se importan parámetros P178, no se ejecuta ni se congela.
