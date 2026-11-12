@@ -3225,3 +3225,138 @@ Cada bloque se clasificará como:
 - **NOT_IN_SCOPE:** materialización real o validación empírica externa al experimento sintético.
 
 El paquete solo se declarará completo documentalmente cuando no existan contradicciones entre el plan, maestro y contratos rectores, y cada estimando tenga salida identificable/condicional/bounds/no-identificado. Si queda una decisión humana inevitable, se presentará una única pregunta consolidada. No se cambia main ni se promueve PR #116; no se crean IDs o tests nuevos; se mantienen `scientific_execution=false` y `execution_authorized=false`.
+
+## 16.178. Desarrollo integrado del paquete — ficha V_cont y especificación DGP no numérica (2026-11-12)
+
+Esta sección ejecuta los pasos 1–4 de §16.177 a nivel documental. Distingue decisiones ya aceptadas, operacionalización recomendada aún no aceptada y parámetros que no pueden fijarse sin criterio científico explícito. No constituye Design Freeze.
+
+### 16.178.1. Precedencia y no-regresión
+
+Se aplican las siguientes precedencias:
+- B1/Need_preZ se rige por el contrato funcional basal y sus decisiones posteriores: objetivo de mantener disponible en destino un servicio capaz de admitir solicitudes conforme a ENABLED y exponer PROFILE; truth explícita pre-Z por B1/UE; separación Need, Request_event, admisión, procesamiento, consecuencia y Value.
+- Una B1 por UE, una instancia lógica de servicio versionada por UE y una oportunidad estandarizada por UE son decisiones aceptadas. La observación longitudinal de V_cont no crea oportunidades adicionales ni peticiones de servicio.
+- D2 sigue siendo política de provisión asignada; W_programmed=Z no sustituye la asignación aleatoria ni asigna accesibilidad. D1 sigue secundario.
+- P*τ2 es la población primaria candidata de trabajo de C1 según precedencia aceptada; P*_F es secundaria. No se afirma que la elegibilidad material o el soporte estén demostrados.
+- Value se conserva como vector P179; para este experimento se acepta provisionalmente una única dimensión candidata V_cont, sin pesos ni agregación. Esta selección no se propaga retroactivamente como si los documentos anteriores ya la hubieran congelado. Los estados históricos VALUE_NOT_INSTANTIATED permanecen como registro temporal y quedan superados solo en cuanto a selección provisional, no en cuanto a operacionalización.
+
+### 16.178.2. Ficha de constructo recomendada para V_cont
+
+**Nombre:** V_cont — continuidad de la disponibilidad operativa del servicio para el objetivo basal B1.
+
+**Constructo:** grado temporal en que la instancia de servicio vinculada a B1 mantiene la capacidad de responder conforme a su contrato funcional basal: cuando ENABLED=true, admitir la solicitud de prueba común; cuando ENABLED=false, no admitirla; en ambos casos, exponer el PROFILE declarado. No se atribuye semántica adicional a STANDARD/READ_ONLY ni se equipara admisión con procesamiento o respuesta de negocio.
+
+**Perspectiva y autoridad:** perspectiva B1, ya aceptada como base. La autoridad valorativa es una regla normativa interna y explícita del DGP que representa el objetivo basal de B1; se versiona antes de generar resultados y se aplica simétricamente entre brazos. No se presenta como preferencia humana observada ni como validación externa. El Evaluator aplica la regla, pero no es el beneficiario.
+
+**Unidad:** B1/UE vinculada a una instancia lógica de servicio única y versionada. La unidad estadística continúa siendo UE; las observaciones temporales son repetidas y anidadas.
+
+**Indicador de verdad propuesto:** secuencia temporal binaria/trivalente de disponibilidad conforme al contrato B1 en una rejilla de observación preespecificada dentro de una ventana común post-Z:
+- 1: evidencia generada por el DGP de que la instancia cumple la condición operativa aplicable a ENABLED y expone el PROFILE declarado;
+- 0: evidencia positiva de incumplimiento de esa condición;
+- ?: la verdad de ese intervalo no puede determinarse conforme a la regla del DGP.
+
+La verdad agregada candidata es la proporción de intervalos programados en los que la condición se cumple:
+V_cont,i = K^(-1) × Σ(k=1…K) A^B1_ik,
+donde K y la rejilla se fijan ex ante, A^B1 es el estado de cumplimiento de la función basal en el intervalo y el vector temporal completo se conserva para evaluación. Es una única dimensión con escala normalizada [0,1], no un índice compuesto ni una suma de Outcome, accesibilidad o trayectorias. La proporción no autoriza ponderaciones temporales diferenciales.
+
+**Observación independiente:** un monitor sintético no-mutante, separado del harness de la única oportunidad estandarizada y del ciclo Request_event, registra en los instantes programados la capacidad de la instancia para comportarse conforme a ENABLED/PROFILE. No envía solicitudes de negocio ni modifica estado. Su fuente, versión, cobertura, timestamps, error y provenance se proyectan al Analyzer sin truth, potenciales ni metadatos reservados. El Generator conserva la secuencia verdadera; el Evaluator compara después del sellado. La existencia de este monitor es una regla de medición del DGP, no una nueva clase U_G, actor cognitivo ni séptimo artefacto B1.
+
+**Ausencia y cobertura:** la ausencia de lectura, pérdida, fallo del monitor, fuente inválida, censura o intervalo no evaluable no equivale a 0. Se registra como no observado/invalid/censored/unknown según el contrato existente. El Analyzer debe informar cobertura y mecanismo; estimación puntual requiere supuestos de observación defendibles, de lo contrario sensibilidad/bounds o NOT_IDENTIFIED. No se calcula una proporción de casos completos como estimación confirmatoria por defecto.
+
+**Baseline y horizonte:** se requiere una medición basal pre-Z con la misma definición y fuente para describir el estado inicial y, si procede, ajuste preespecificado. El endpoint confirmatorio es el nivel temporal post-Z en una ventana común iniciada en el ancla de asignación/intervención definida por el DGP; no se sustituye por una diferencia post-baseline no aceptada. La longitud K, frecuencia de observación y fin de ventana no están fijados: deben cubrir la transición y un tramo de persistencia que haga que “continuidad” sea distinguible de una lectura terminal. Se fijan antes de generación y no a partir de resultados.
+
+**Discriminación frente a O-CONF/F*:** O-CONF es una adjudicación de conformidad funcional del estado terminal del destino frente a F*, con lógica 1/0/? no compensatoria. V_cont es una trayectoria temporal de disponibilidad operativa durante una ventana, bajo el objetivo basal B1. Pueden correlacionar causalmente, pero no son equivalentes: O-CONF no mide continuidad temporal y V_cont no adjudica conformidad terminal completa del destino. El DGP incluirá los casos de separación ya contemplados por PD: configuración terminal conforme con interrupciones durante la ventana; y configuración terminal no conforme con disponibilidad temporal parcial según el contrato operacional. Si el modelo funcional no permite esos estados sin contradicción, o si la medida solo replica O-CONF, la discriminación falla y V_cont no será endpoint confirmatorio.
+
+**No circularidad:** V_cont no se calcula desde A_f*, D_f*, ΔT_acc*, Reach, Π, trayectoria, selección, ejecución, F* ni O-CONF. Esos constructos pueden causar, explicar o correlacionarse con la secuencia de disponibilidad, pero la medida se obtiene del monitor independiente y de la regla B1. No se presume que la accesibilidad sea la única vía hacia V_cont.
+
+**Estado:** V_CONT_CONSTRUCT_SELECTED_PROVISIONALLY / OPERATIONAL_RULE_RECOMMENDED_NOT_YET_ACCEPTED / TEMPORAL_MEASURE_AND_DISCRIMINATION_GATE_OPEN.
+
+### 16.178.3. DGP causal integrado: reglas estructurales y potenciales
+
+El DGP confirmatorio se define como un sistema finito de transiciones versionadas sobre UE y sus instancias, con truth conocida por el Evaluator. No se impone regresión lineal, normalidad, monotonicidad ni efecto positivo.
+
+Para cada UE i:
+1. Se genera una historia basal X_i desde q_X* versionada, junto con B1, servicio, objetivo Need_preZ y snapshots basales. La verdad de inclusión/exclusión/unknown se genera explícitamente conforme al contrato Need_preZ; no se infiere desde variables técnicas.
+2. Se asigna Z_i mediante aleatorización reproducible dentro de estratos basales pre-Z, con π_h conocido y 0<π_h<1. La política D2 programa W_programmed=Z_i; intento, recepción, instalación, dependencia, predicados de accesibilidad, snapshots y ΔT_acc* son transiciones distintas.
+3. Se conserva el vector completo ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*), su estado de observación E_T y la proyección A_f*/D_f* según los contratos existentes. No se asigna Z ni g_A directamente a A_f*=1/0.
+4. Se genera Reach/Π y trayectoria a partir del estado transformacional y las condiciones de la historia; selección/ejecución se mantienen como etapas posteriores y separadas.
+5. Se genera O-CONF verdadero por la regla F* cuando esa rama de escenario se incluya. Se genera por separado la secuencia A^B1_i(t_k) de disponibilidad operativa y V_cont,i conforme a §16.178.2. Las rutas desde Z, ΔT_acc*, Reach/trayectoria, Outcome y condiciones colaterales hacia V_cont se especifican explícitamente por escenario.
+6. Se genera observed_evidence mediante los canales de observación versionados; se permite error, pérdida, ausencia, opacidad y medición diferencial conforme a familias ya registradas. Truth y potenciales no se filtran.
+7. El Analyzer recibe solo la proyección sellada. El Evaluator conserva potenciales y compara salidas después del sellado.
+
+**Potenciales de política D2:** para cada i se generan estados y resultados potenciales bajo z∈{0,1}, incluyendo V_cont,i(z), ΔT_acc,i(z), O-CONF_i(z) y etapas intermedias. El ITT primario por resultado se define como contraste medio de potenciales bajo asignación Z=1 frente a Z=0 en la población sintética objetivo; para V_cont:
+ITT_Z^D2(V_cont)=E_{P*τ2}[V_cont(1)-V_cont(0)].
+La aleatorización identifica este efecto de asignación dentro del DGP si la asignación, consistencia, interferencia, observación y población cumplen sus condiciones; las vías directas/colaterales permanecen incluidas.
+
+**Potenciales bajo intervención de accesibilidad:** para θ_A(q;V_cont), el DGP genera resultados potenciales bajo políticas estocásticas g_A1 y g_A0 que intervienen sobre la distribución conjunta factible del cambio completo ΔT_acc*, condicionadas por una misma q_X* y un régimen común explícito para las demás vías. La intervención no fija A_f*, D_f* ni Z. El estimando es el contraste de medias potenciales bajo g_A1 frente a g_A0. Solo es identificable si las políticas son consistentes y factibles, existe soporte común por historia, el régimen común está definido y las rutas alternativas/confusores están controlados por el diseño estructural o por una estrategia de identificación válida. De lo contrario, el oráculo exige BOUNDS_ONLY con restricciones justificadas o NOT_IDENTIFIED.
+
+**C4:** el efecto mediado interventional permanece distinto de θ_A. Si Z induce L postratamiento que confunde mediador–V_cont, el DGP incluye L y la identificación usa una estrategia longitudinal/interventional con soporte secuencial; el ajuste convencional no se acepta. Si el contrato existente no permite una intervención secuencial factible, C4 se declara NOT_IDENTIFIED en ese escenario.
+
+**Efecto residual/directo:** se obtiene solo bajo un estimando propio con intervención/régimen explícitos. Nunca se calcula restando ITT y θ_A ni combinando estimandos con poblaciones, escalas u horizontes distintos.
+
+### 16.178.4. Escenarios mínimos de recuperación y falsación
+
+Se seleccionan de PD y de los contratos existentes, sin crear IDs:
+- focal positivo, focal nulo y focal adverso sobre ΔT_acc*/V_cont;
+- efecto de paquete D2 sobre V_cont por vía directa/colateral sin cambio de ΔT_acc*;
+- combinación de vía de accesibilidad y vía paralela/interacción;
+- fallo de provisión por etapas y primera etapa focal nula/débil;
+- falta de soporte/positividad para g_A, con salida NOT_IDENTIFIED;
+- confusión mediador–resultado inducida por Z para C4, con recuperación solo si el diseño longitudinal la identifica;
+- interferencia por recurso/pool compartido, con unidad/exposición compatible o abstención;
+- observación diferencial, pérdida/censura y error de monitor, separando error de canal de error del Analyzer.
+
+Cada escenario debe fijar truth, potenciales, mecanismo alterado, estimando, supuestos, observables y salida oráculo antes de cualquier ejecución. No se exige factorial completo; no se añaden pruebas ni IDs.
+
+### 16.178.5. Calibración estadística: algoritmo de cierre, sin cifras inventadas
+
+La calibración se realizará después de aceptar la ficha V_cont y de versionar las reglas estructurales. Para cada escenario:
+- elegir primero el estimando evaluable y la población/soporte;
+- definir escala de efecto y una rejilla de efectos DGP positivos/nulos/adversos; los niveles no representan evidencia empírica, sino desafíos de recuperación conocidos;
+- derivar la magnitud mínima de recuperación (MDE) a partir de la resolución del indicador, la relevancia de la consecuencia para el objetivo B1 y el criterio de error de decisión del experimento;
+- seleccionar N y π_h mediante búsqueda reproducible que satisfaga simultáneamente potencia, precisión y positividad para el estimando; el ratio no se presupone 1:1;
+- seleccionar R para que el error Monte Carlo de sesgo, RMSE, cobertura, error tipo I, potencia y clasificación de identificación sea inferior a la tolerancia fijada;
+- seleccionar K y la frecuencia temporal para distinguir continuidad de estado terminal sin convertir la observación en nuevas oportunidades de servicio;
+- seleccionar parámetros de error, missingness, censura, sensibilidad δ/γ y tolerancias de recuperación conforme a falsadores de los contratos MEAS/MISS/P177–P183;
+- fijar semillas jerárquicas y hashes del DGP, asignación, observación y Analyzer antes de generar resultados.
+
+No se adoptan cifras ilustrativas de N, R, asignación, tasas, efectos, tolerancias o ventanas. Si la magnitud mínima relevante y el riesgo de error aceptable no pueden derivarse del contrato B1 ni de criterios científicos existentes, constituyen una sola decisión metodológica consolidada, no múltiples consultas.
+
+### 16.178.6. Crosswalk de aceptación y salida del Analyzer
+
+Para cada combinación estimando × escenario × resultado, el Evaluator debe comparar la salida del Analyzer con el oráculo oculto en:
+- signo y orden de magnitud del efecto;
+- sesgo/RMSE y cobertura de intervalos cuando haya estimación puntual identificada;
+- error tipo I/potencia y equivalencia en escenarios nulos, solo con margen preespecificado;
+- clasificación correcta de IDENTIFIED / CONDITIONAL / BOUNDS_ONLY / NOT_IDENTIFIED / INDETERMINATE_MEASUREMENT;
+- recuperación de primera etapa y distinción entre ITT de paquete y atribución a accesibilidad;
+- detección de vía directa/colateral e interacción;
+- abstención correcta ante falta de soporte, IV débil/inválido, confusión longitudinal no resuelta, interferencia incompatible y medición no evaluable;
+- cobertura, missingness, censura, error diferencial y calibración de incertidumbre;
+- no filtración de truth, potenciales, semillas o metadata reservada.
+
+Se reutilizan P177/P178/P179/P182/P183 y MEAS/MISS/PROV/SNAP/REACH/U_G. Los IDs no se reinterpretan como PASS: cada prueba mantiene su scope y requiere fixture/oráculo/criterio de aceptación existente. La matriz final debe indicar para cada fila el test existente que la cubre; cualquier hueco real se informa como gap, sin crear automáticamente otro test.
+
+### 16.178.7. Contrato técnico: límite de lo que puede cerrarse sin implementación
+
+Se reutiliza PE: Orquestador, Generator, Proyector/Sealer, Analyzer, Evaluator/Adjudicator y Artifact/Provenance Store; seis artefactos lógicos B1; interfaces, manifiestos, capas V0–V8, identidad/versionado, snapshots, timestamps y estados trivalentes. No se crea otro rol ni otro ledger.
+
+Antes de implementación se requiere un perfil físico/equivalente que detalle:
+- serialización de registros y bundles sin extender automáticamente JCS/U1 a objetos fuera de su alcance;
+- claves, cardinalidades, referencias, restricciones y validación;
+- representación de eventos y orden temporal;
+- almacenamiento separado de truth, observed y evaluation;
+- ACL, secretos, custodia, logs, threat model y firewall/sealer;
+- hashes/versiones de DGP, Generator, Analyzer, Evaluator, dependencias, entorno, configuración y entradas;
+- preflight de integridad, reproducibilidad y aceptación técnica.
+
+La selección de lenguaje, base de datos, serialización y despliegue no está fijada por las fuentes inspeccionadas. No se elige una tecnología por conveniencia del chat. Puede cerrarse documentalmente un perfil neutral de interfaces y requisitos; la elección física se deriva de la implementación autorizada y debe preservar los contratos PE/U_G. G-SCHEMA y G-ROLE siguen BLOCKED hasta que exista evidencia verificable de diseño y controles efectivos.
+
+### 16.178.8. Dictamen del paquete integrado en este corte
+
+**Cerrado documentalmente en este corte:** ruta óptima §16.177; precedencia de decisiones aceptadas; recomendación operacional de V_cont; estructura de potenciales D2 y g_A; separación ITT/θ_A/C4/residual; escenarios mínimos reutilizados; algoritmo de calibración; criterios de salida del Analyzer; requisitos técnicos derivados de PE.
+
+**No cerrado / bloqueos genuinos:** aceptación de la regla operacional concreta de V_cont; definición numérica de horizonte K/frecuencia y baseline; MDE y riesgo de error aceptable; calibración de N/π_h/R/SE_MC y parámetros; soporte cuantificado; identidad/roster y elegibilidad material; estructura física/equivalente, ACL/firewall y validación técnica. Estos no se convierten en falsos PASS por describir sus requisitos.
+
+**Estado:** CLOSURE_ROUTE_PERSISTED / V_CONT_OPERATIONALIZATION_RECOMMENDED / DGP_STRUCTURAL_RULES_SPECIFIED_NONNUMERICALLY / ESTIMAND_ORACLES_SPECIFIED / CALIBRATION_RULE_DEFINED_BUT_NOT_RUN / PE_PHYSICAL_CONTRACT_PARTIAL / DESIGN_FREEZE_NOT_READY / EXECUTION_NOT_AUTHORIZED.
+
+No se crean Decision Records, tests, IDs, fixtures ni schemas físicos. No se actualizan main, RMA, Evidence→Claim Matrix, Core, claims o STATUS. Se mantienen scientific_execution=false y execution_authorized=false.
