@@ -85,3 +85,26 @@ Reconciliar la regla trivalente de agregación para:
 - diferencia entre truth DGP y salida del analizador.
 
 La regla deberá conservar los casos ya especificados en DGP §§67.5–67.6 y matriz de cobertura; no se autoriza algoritmo/implementación/ejecución.
+
+
+## 7. Regla trivalente integrada — A_f*, DEP_f* y D_f*
+
+Esta sección operacionaliza lógicamente la agenda del §6; no aprueba ni congela la fórmula candidata.
+
+### 7.1. Conjunción de predicados de A_f*
+
+Para ID/REL/COND/AUTH/RES/DEP/¬BLOCK con estados {1,0,?}: A_f*=1 solo si todos son 1; A_f*=0 si al menos uno es 0 adjudicado; A_f*=? si ninguno es 0 concluyente y al menos uno permanece ?. Evidencia ausente, cobertura parcial, conflicto no resuelto o matching ambiguo no equivalen a 0. Truth_DGP y estado observado se mantienen separados.
+
+### 7.2. Existencia de ruta en DEP_f*
+
+Cada ruta se evalúa con la misma lógica conjuntiva. DEP_f*=1 si al menos una ruta admisible es 1. DEP_f*=0 solo si el inventario relevante es exhaustivo y todas las rutas son 0. DEP_f*=? si no hay ruta válida demostrada y persiste incertidumbre sobre rutas, cobertura o requisitos. Una ruta desconocida no invalida una ruta ya demostrada válida; tampoco la ausencia de rutas observadas demuestra ausencia estructural. Las rutas compartidas/externas/alternativas no reciben estado por su etiqueta, sino por sus predicados.
+
+### 7.3. Apertura focal basal→post
+
+Se conserva D_f*=I(A_f,base*=0 ∧ A_f,post*=1), con regla derivada: D_f*=1 si basal=0 y post=1; D_f*=0 si basal=1 o post=0; D_f*=? en los restantes casos no concluyentes. Se exige matching comparable de unidad, τ2, frontera, versión y snapshots. D_f* no se infiere de asignación, provisión, intento o instalación.
+
+### 7.4. Límite de ΔT_acc* y ΔE_T
+
+ΔT_acc*=Diff(S_T*(t0),S_T*(t1))=(ΔU*,ΔR*,ΔC*,ΔX*) solo para snapshots estructurales comparables. Los campos no comparables, ambiguos o mixtos sin descomposición quedan UNKNOWN/? y no se imputan como cero. ΔX* no se asigna automáticamente a ΔC* o ΔR*. ΔE_T es cambio epistémico separado; variaciones de cobertura, logs o evidencia no constituyen por sí mismas cambios en ΔT_acc*. D_f*=1 no implica que el resto del espacio accesible permanezca constante ni que se haya capturado todo ΔT_acc*.
+
+**Límite:** reglas lógicas de adjudicación en estado DRAFT; no resuelven inventarios, mappings físicos, fuentes, calibración, error de medición ni validación del oráculo. No crean nuevos IDs de test ni autorizan implementación/ejecución.
