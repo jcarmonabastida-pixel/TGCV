@@ -59,3 +59,10 @@ Se reutilizan los perfiles DGP de §16.188.4 y los contratos P182/P183/MEAS/MISS
 S3 permanece un único canal lógico pasivo, contrastado bajo snapshots/métricas, logs/trazas/eventos e híbrido. Se preservan fase, lag, pérdida, cobertura, validez, falsos positivos/negativos y dependencia conjunta. P182-07/08/11/12, P183-01/02/04/07/09/10/11 y P182-04/10 gobiernan error, firewall, trazabilidad, ausencia, censura, bounds y discriminación. No hay nuevos IDs.
 
 Analyzer solo produce punto si la observación identifica; en otro caso bounds/abstención. Evaluator abre truth tras sellado. No ejecución ni PASS técnico.
+
+
+## 286. Matriz temporal adimensional y selección de K (2026-11-12)
+
+Se adopta la cobertura dirigida del plan §16.197, sin factorial completo ni IDs nuevos. Los ejes son r_c=d_e/c_j, r_Δ=d_e/Δ, fase de captura y r_f=τ_follow/τ_recovery,max cuando exista soporte. Se cubren relaciones menores/iguales/mayores que 1, aliasing, cruce de fronteras, pérdida/lag diferencial, errores correlacionados, recuperación, censura y discriminación O-CONF/V_cont, reutilizando perfiles §16.188.4 y P182/P183/MEAS/MISS.
+
+τ_follow cubre el soporte de recuperación solo si existe límite defendible; de otro modo se preserva censura. K/Δ se seleccionan por recuperación, aliasing, sensibilidad a fase y estabilidad al refinar K, no por conveniencia. No se fijan valores ni se ejecuta calibración.
