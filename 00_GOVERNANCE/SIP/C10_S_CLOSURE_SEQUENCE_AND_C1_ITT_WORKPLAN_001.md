@@ -2347,3 +2347,18 @@ Se completa el gate posterior a §61 mediante §17 de `C10_S_TEMPORAL_HORIZON_AN
 **Siguiente gate:** seleccionar y justificar el perfil observacional que servirá de referencia para el experimento sintético y aprobar criterios normativos de detección/cobertura/falso positivo (p* y tolerancias). Después se podrá fijar el dominio numérico de sensibilidad, soporte de lag/τ_follow y finalmente Δ/K. No ejecutar calibración ni generar datos hasta autorización expresa.
 
 Se mantienen `scientific_execution=false`, `execution_authorized=false`, `NOT_DESIGN_FROZEN`; PR #116 Draft; sin cambios en main.
+
+## 63. Cierre estructural de comparación S3 y recuperación causal (2026-11-12)
+
+Se completa el siguiente gate de §62 mediante §18 de `C10_S_TEMPORAL_HORIZON_AND_S4R_INTEGRATION_AUDIT_DRAFT_001.md` y §16.217 del plan integrado.
+
+- No se elige un modo S3 ganador por presunción. `SNAPSHOT_METRIC`, `LOG_TRACE_EVENT` y `HYBRID_PASSIVE` se comparan sobre las mismas historias truth, por emparejamiento de unidad/mundo/régimen/ventana/rejilla; sin asumir independencia entre modos ni componentes.
+- S3 queda explícitamente limitado a medición runtime post-Z de V_cont. La observación basal de Need_preZ usa S7 conforme DEC-C10-097/098; no se mezclan.
+- La evaluación separa desempeño del canal, recuperación de V_cont y recuperación causal por estimando. Distingue falsa recuperación, abstención correcta y abstención excesiva; prohíbe scores agregados que oculten falsa atribución.
+- Se cruzan modos calibrados por diseño y no calibrados/ambiguos; el Analyzer solo recibe parámetros permitidos y el Evaluator conserva truth/secretos. La calibración/selección debe separarse de la evaluación de recuperación.
+
+**Dictamen:** `S3_PAIRED_MODE_COMPARISON_DEFINED / CAUSAL_RECOVERY_AND_ABSTENTION_CRITERIA_DEFINED / NUMERIC_ACCEPTANCE_THRESHOLDS_OPEN`.
+
+**Siguiente gate:** cerrar la regla de suficiencia/precisión que determinará cuándo una recuperación causal sintética cuenta como satisfactoria, cuándo es falsa recuperación y cuándo el Analyzer debe abstenerse. Debe derivarse de los estimandos y del roster de falsadores existentes, no de un p* aislado ni de un umbral arbitrario. Después se podrán justificar los rangos de sensibilidad y el tamaño computacional; sin ejecución científica todavía.
+
+Se mantienen `scientific_execution=false`, `execution_authorized=false`, `NOT_DESIGN_FROZEN`; PR #116 Draft; sin cambios en main.
