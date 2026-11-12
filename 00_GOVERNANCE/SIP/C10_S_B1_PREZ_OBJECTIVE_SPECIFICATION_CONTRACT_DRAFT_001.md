@@ -114,7 +114,56 @@ Este requisito de soporte no fija:
 
 La composición del roster y el soporte binario se rigen por DEC-C10-095: el roster/cohorte se define ex ante por identidad/binding y reglas de población, sin selección por Need, observabilidad o resultados; después se comprueba soporte 1 y 0 sobre la cohorte completa. Si falta una clase, el diseño queda bloqueado, sin reparación post hoc. No se exige balance ni soporte por brazo/estrato. No se crearán unidades para satisfacer el requisito antes de aprobar roster y población.
 
-## 7. Separación de truth y observación
+## 7. Contrato de la declaración observable del objetivo basal
+
+La truth se deriva de la estipulación explícita reservada conforme a DEC-C10-095. La declaración observable es un artefacto distinto, producido por el modelo de observación; no es la estipulación ni una exportación de TRUTH_LEDGER.
+
+### 7.1 Tipo y función
+
+Tipo lógico candidato: S7_B1_BASELINE_OBJECTIVE_ATTESTATION. Pertenece a la clase S7 ya existente y representa un acto declarativo original, controlado y específico sobre la pertenencia del objetivo focal a los objetivos basales declarados de una B1 respecto de su instancia de servicio en t−1. No crea una nueva clase de fuente, entidad U_G, tabla, prueba ni schema físico.
+
+La fuente es directa para esta afirmación declarativa únicamente si el DGP define quién tiene competencia para emitirla y el artefacto conserva autoridad, referente, alcance, temporalidad e integridad. La clasificación S7 no confiere autoridad por sí sola. Manuales, entrevistas, tickets y diagramas genéricos siguen siendo fuentes de contexto/descubrimiento salvo que satisfagan de manera independiente el contrato de declaración original.
+
+### 7.2 Contenido semántico admisible
+
+El contenido observable debe expresar inequívocamente una de estas proposiciones focales:
+- **Inclusión declarada:** el objetivo funcional definido en §2 forma parte de los objetivos basales de esta B1 respecto de la instancia de servicio vinculada.
+- **Exclusión declarada:** ese objetivo focal no forma parte de los objetivos basales de esta B1 respecto de esa instancia.
+
+La declaración no afirma el estado de cumplimiento del objetivo ni demanda, uso, déficit, solicitud, instalación, accesibilidad o resultado. La exclusión no pretende enumerar todos los objetivos posibles de B1.
+
+Una declaración ambigua, genérica o sin proposición focal no soporta observed=1/0. La ausencia de declaración, la pérdida, la opacidad o la falta de cobertura tampoco equivalen a exclusión.
+
+### 7.3 Condiciones de admisibilidad
+
+Para ser candidata a evidencia directa, la declaración debe cumplir conjuntamente:
+
+1. emisor/rol identificable y versionado;
+2. competencia declarativa atribuida explícitamente por el DGP para la B1 pertinente;
+3. binding inequívoco a B1, UE, instancia de servicio y versiones;
+4. event_time fijado en t−1; capture_time separado si la copia se captura después;
+5. alcance B1–servicio y versión de la definición funcional focal;
+6. integridad verificable (digest/firma/control equivalente), custodia y lineage;
+7. origen original identificable; copias/transcripciones/exports conservan la misma raíz y no cuentan como corroboración independiente;
+8. ausencia de truth, truth_basis_ref, claves, semillas o metadatos que revelen/reconstruyan la estipulación reservada.
+
+El hecho de que una persona sea custodio técnico, admin IAM o proveedor del servicio no le atribuye automáticamente autoridad para declarar el objetivo basal de B1. Esa competencia debe formar parte del contrato de roles del DGP.
+
+### 7.4 Separación del proceso de observación
+
+El modelo de observación gobierna si la oportunidad declarativa existe, si se emite, captura/retiene y qué contenido llega al expediente. Puede producir omisión, pérdida, ambigüedad, conflicto, corrupción o error semántico; los mecanismos y dependencias deben justificarse en el DGP maestro, sin tasas inventadas.
+
+La declaración visible no se construye copiando el estado truth. El generador debe preservar dos procesos lógicos:
+- estipulación reservada → truth determinista;
+- proceso observacional → artefacto declarativo visible, con sus posibles errores y pérdidas.
+
+La truth puede ser causa del contenido de una declaración auténtica dentro del modelo observacional, pero no se transmite su etiqueta ni metadatos internos. El firewall debe comprobar también canales laterales y lineage, no solo ausencia de una columna.
+
+### 7.5 Consecuencia para E1/E2
+
+E1 y E2 reciben el mismo expediente observable permitido, de forma independiente. observed=1 requiere una declaración de inclusión admisible; observed=0 requiere una declaración de exclusión focal admisible y cobertura conforme al alcance. Si falta la declaración o no satisface los requisitos, observed=? o bloqueo técnico según la naturaleza del defecto. No se promueven snapshots S2/S4, contratos S5 genéricos, logs S3/S6/S8 ni entrevistas/documentos secundarios a evidencia directa de Need por mera disponibilidad.
+
+## 8. Separación de truth y observación
 
 La estipulación basal y la truth derivada permanecen reservadas al generador y al evaluador tras el sellado de adjudicaciones. El modelo de observación será un mecanismo separado que producirá fuentes sintéticas visibles con provenance, temporalidad, autoridad, alcance y cobertura.
 
