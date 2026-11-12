@@ -125,8 +125,9 @@ class RunManifest:
 class TruthBundle:
     run_id: str
     potential_v: tuple[tuple[tuple[float, float], tuple[float, float]], ...]
-    potential_interval_truth: tuple[tuple[tuple[tuple[int, ...], tuple[int, ...]],
-                                          tuple[tuple[int, ...], tuple[int, ...]]], ...]
+    potential_interval_truth: tuple[Any, ...]
+    potential_enabled_truth: tuple[Any, ...]
+    potential_profile_truth: tuple[Any, ...]
     itt_package_truth: float
     theta_access_truth: float
     seed: int
@@ -212,8 +213,8 @@ class Generator:
         rows: list[dict[str, Any]] = []
         v_truth = []
         interval_truth = []
-        potential_package_by_g: list[list[float]] = [[], []]
-        potential_focal_by_z: list[list[float]] = [[], []]
+        enabled_truth = []
+        profile_truth = []
 
         for i in range(cfg.n_units):
             x = rng.random()
@@ -272,14 +273,14 @@ class Generator:
                     z_intervals.append(states)
                     z_enabled.append(enabled_states)
                     z_profile.append(profile_states)
-                    potential_package_by_g[g].append(v)
-                    potential_focal_by_z[z].append(v)
                 unit_potentials.append(tuple(z_potentials))
                 unit_intervals.append(tuple(z_intervals))
                 unit_enabled.append(tuple(z_enabled))
                 unit_profile.append(tuple(z_profile))
             v_truth.append(tuple(unit_potentials))
             interval_truth.append(tuple(unit_intervals))
+            enabled_truth.append(tuple(unit_enabled))
+            profile_truth.append(tuple(unit_profile))
 
             z, g = z_assign[i], g_assign[i]
             true_enabled = unit_enabled[z][g]
@@ -324,7 +325,8 @@ class Generator:
         theta = mean(unit[0][1] - unit[0][0] for unit in v_truth)
         manifest = RunManifest(run_id, cfg.scenario_id, cfg.version,
                                cfg.n_units, cfg.n_intervals, self.version)
-        truth = TruthBundle(run_id, tuple(v_truth), tuple(interval_truth), itt, theta, cfg.seed)
+        truth = TruthBundle(run_id, tuple(v_truth), tuple(interval_truth),
+                            tuple(enabled_truth), tuple(profile_truth), itt, theta, cfg.seed)
         return manifest, truth, EvidenceCandidate(run_id, tuple(rows))
 
 
