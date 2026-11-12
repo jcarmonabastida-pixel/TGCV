@@ -246,3 +246,50 @@ El resultado primario de caracterización es la curva de detección condicionada
 **ABIERTO NORMATIVAMENTE/NUMÉRICAMENTE:** selección de modo confirmatorio, soporte y parámetros de cada modo, p*, nivel de confianza, error falso positivo tolerable, tolerancia temporal, cobertura mínima, unidad, soporte de lag, τ_follow, Δ y K. No se eligen cifras ni modo por conveniencia.
 
 **Dictamen:** `S3_DETECTABILITY_EVALUATION_CONTRACT_CLOSED_STRUCTURALLY / CURVE_FIRST / DELTA_DET_CONDITIONAL_ON_PSTAR / NUMERIC_CALIBRATION_OPEN / NO_DATA / NO_CALIBRATION / NO_EXECUTION / NOT_DESIGN_FROZEN`.
+## 18. Protocolo comparativo S3: mismos mundos truth, tres canales, sin ganador a priori (2026-11-12)
+
+**Objeto:** resolver la selección prematura de un perfil S3. La decisión metodológica es evaluar los tres modos existentes como mecanismos observacionales alternativos sobre las mismas historias truth; no elegir un ganador por conveniencia ni introducir un cuarto modo/oráculo.
+
+### 18.1 Unidad de comparación y emparejamiento
+
+- Cada historia `UE × mundo × régimen × versión` generada por el DGP conserva una única truth temporal B1 y sus potenciales coherentes. Sobre esa misma historia se proyectan `SNAPSHOT_METRIC`, `LOG_TRACE_EVENT` y `HYBRID_PASSIVE` como canales alternativos.
+- La comparación es emparejada por identidad de historia truth, ventana, rejilla y escenario. Las realizaciones de captura/error de cada modo son procesos observacionales versionados; el emparejamiento no implica independencia entre modos ni obliga a compartir sus exógenas de observación.
+- El modo híbrido conserva la dependencia conjunta entre sus componentes; no se obtiene multiplicando sensibilidad/especificidad ni sumando evidencias como si fueran independientes.
+- Los modos no se presentan al Analyzer como etiquetas que revelen truth o clase adversarial. Solo recibe el protocolo y los campos que ese modo liberaría en una aplicación sintética.
+- No se usa `S3` para Need_preZ. S3 aquí es exclusivamente el canal runtime post-Z de medición temporal de A_B1/V_cont; la evidencia basal de Need_preZ conserva su contrato S7 y DEC-C10-097/098.
+
+### 18.2 Criterios de comparación que no requieren un p* arbitrario
+
+Se informan curvas y distribuciones por modo, familia, duración, fase, versión, brazo y mundo. No se impone un umbral escalar de detectabilidad para ocultar zonas de fallo. La comparación cubre:
+
+1. **Canal:** detección de episodios, falsos positivos, localización/lag, cobertura/pérdida, recuperación y error de clasificación de A_B1 por intervalo.
+2. **Agregado:** error y bounds de V_cont respecto de su truth, cobertura de intervalos de incertidumbre y frecuencia de salida puntual incorrecta.
+3. **Causal:** error del estimador frente al efecto potencial conocido, cobertura inferencial, recuperación de signo/dirección cuando esté definida, falsa atribución en mundos nulos/directos/colaterales y reconocimiento de no-identificación.
+4. **Decisión del Analyzer:** proporción de identificaciones correctas, identificaciones falsas, abstenciones correctas y abstenciones innecesarias, separadas por estimando.
+
+Los resultados se muestran por celda/mecanismo y en curvas de sensibilidad; no se agregan en un score global que permita compensar una falsa atribución causal con buena detección de episodios. La no significación no es equivalencia ni recuperación del nulo.
+
+### 18.3 Regla de recuperación causal
+
+El Evaluator clasifica cada salida respecto de la verdad DGP y de las condiciones de identificación declaradas:
+
+- **Recuperación válida:** el Analyzer declara el estado de identificación correcto, estima el estimando correcto y su error/incertidumbre satisface el criterio de precisión que se haya aprobado para esa evaluación.
+- **Falsa recuperación:** entrega una estimación puntual/atribución focal cuando el estimando no está identificado, usa una vía directa/colateral como efecto de accesibilidad, confunde ITT con θ_A/LATE/C4, o presenta como recuperado un efecto cuyo error excede el criterio aprobado.
+- **Abstención correcta:** informa bounds/NOT_IDENTIFIED/INDETERMINATE_MEASUREMENT cuando soporte, exclusión, medición, interferencia o régimen común no permiten identificación.
+- **Abstención excesiva:** no recupera un efecto identificado bajo el escenario limpio y la información observada/calibración permitida.
+
+Los límites numéricos de precisión, cobertura inferencial y tasas admisibles de falsa recuperación/abstención excesiva siguen siendo criterios normativos pendientes. Hasta su aprobación, se informan métricas y curvas sin dictamen PASS/FAIL confirmatorio ni elección de modo ganador.
+
+### 18.4 Regla de calibración y acceso del Analyzer
+
+Se conservan las dos condiciones ya definidas en §16.182.4: (a) canal calibrado por diseño, con parámetros conocidos por protocolo y accesibles al Analyzer; (b) canal no calibrado/ambiguo, donde el Analyzer no recibe información suficiente y debe producir bounds o abstenerse. Se cruzan con los tres modos sin revelar truth, semillas, potenciales ni parámetros reservados.
+
+El Evaluator conoce parámetros y truth para calcular error; esa información no puede retroalimentar al Analyzer en el mismo conjunto evaluado. Si se usa un conjunto/configuración para calibrar o seleccionar métodos, debe estar separado del conjunto de evaluación de recuperación; no se reutiliza el resultado evaluado para ajustar y volver a declarar PASS.
+
+### 18.5 Dictamen del gate
+
+**CERRADO ESTRUCTURALMENTE:** no hay perfil ganador por presunción; los tres modos existentes se comparan sobre las mismas historias truth; se fijan niveles de evaluación de canal, V_cont y recuperación causal; se separan falsa recuperación, abstención correcta y abstención excesiva; se mantienen canales calibrados/no calibrados y el firewall Generator–Analyzer–Evaluator; S3 runtime se separa de S7 Need_preZ.
+
+**ABIERTO:** selección eventual de modo confirmatorio si el protocolo lo requiere; p*, nivel de confianza, precisión tolerable, cobertura inferencial, falsos positivos/negativos tolerables, tasa admisible de falsa recuperación, tasa de abstención excesiva, parámetros/soporte de cada modo y cualquier decisión de calibración. No se fijan valores por conveniencia.
+
+**Dictamen:** `S3_PAIRED_MODE_COMPARISON_DEFINED / CAUSAL_RECOVERY_AND_ABSTENTION_CRITERIA_DEFINED / NO_A_PRIORI_WINNER / NUMERIC_ACCEPTANCE_THRESHOLDS_OPEN / NO_CALIBRATION / NO_EXECUTION / NOT_DESIGN_FROZEN`.
