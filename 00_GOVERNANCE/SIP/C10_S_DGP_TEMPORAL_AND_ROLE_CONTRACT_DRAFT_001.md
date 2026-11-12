@@ -1187,3 +1187,18 @@ El universo de oportunidad se fija antes de los resultados del canal, emisión, 
 La aceptación cierra cardinalidad lógica (una oportunidad por UE), pero no la estructura condicional del canal, sus estados/errores, dependencias, probabilidades, parámetros, formato físico o autoridad técnica. No crea rol PE, semantic_role U_G, evento causal ni séptimo artefacto del paquete.
 
 scientific_execution=false; execution_authorized=false.
+
+
+## 48. Integración de DEC-C10-101/102 en el reloj DGP (2026-11-12)
+
+Las decisiones posteriores sobre V_cont especializan el reloj general de §2 sin sustituirlo ni crear etapas causales nuevas:
+
+1. La ventana de continuidad post-Z comienza inmediatamente después de la asignación en t0 e incluye provisión/instalación (DEC-C10-101).
+2. La truth B1 se evalúa estrictamente dentro de cada intervalo: cumplimiento ENABLED/PROFILE durante todo el intervalo → 1; cualquier incumplimiento funcional confirmado → 0; ? solo por indeterminación generadora (DEC-C10-102).
+3. S3 es observación pasiva imperfecta; ausencia/pérdida/lag no equivale a truth=0 ni a truth=1. La verdad la conserva Generator; Analyzer no accede a truth ni a potenciales; Evaluator accede después del sellado.
+4. t0…t9 conserva su función de orden causal. H=3 conserva su función de profundidad de trayectoria. Ninguno define duración física, T*, Δ o K. El subledger de solicitudes B1 sigue separado y no se transforma en frecuencia de monitorización.
+5. Se recomienda reloj explícito de tiempo transcurrido, unidad normalizada declarada, eventos fechados y rejilla regular común. T* cubre provisión/instalación y seguimiento hasta el último evento causal que pueda modificar el cumplimiento dentro del estimando. K=(T*−t0)/Δ, Δ constante y divisibilidad exacta; no se admite intervalo residual desigual.
+
+La recomendación de reloj/rejilla es una ruta de diseño, no una selección numérica. Unidad, anclaje, eventos relevantes, duración mínima representable, T*, Δ, K, regla de cierre, frontera, resolución/cobertura/error/calibración S3 siguen OPEN. No se materializan eventos ni intervalos, no se implementa schema y no se ejecuta generación, simulación o calibración.
+
+**Estado:** START_T0_ACCEPTED / STRICT_INTERVAL_RULE_ACCEPTED / ELAPSED_TIME_GRID_RECOMMENDED / NUMERIC_TEMPORAL_PARAMETERS_OPEN / NO_DESIGN_FREEZE / NO_EXECUTION_AUTHORIZED.
