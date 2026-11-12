@@ -5763,3 +5763,52 @@ Para estimandos parcialmente identificados, no se fuerza un punto ni se aplica l
 **Dictamen:** QUANTITATIVE_STARTING_CRITERIA_ACCEPTED / PRECISION_AND_RELEVANCE_MARGINS_OPEN / MULTIPLICITY_PLAN_OPEN / HARNESS_IMPLEMENTATION_GAP_OPEN / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** fijar δ_min,e y w_max,e por estimando, a partir de justificación científica y resolución de decisión, y cerrar la familia confirmatoria/multiplicidad. No dimensionar N/R ni calibrar antes de ello y de la autorización de ejecución correspondiente.
+
+
+## 16.220. Paquete C — auditoría integrada de justificabilidad de relevancia y precisión por estimando (2026-11-12)
+
+**Objeto:** ejecutar el siguiente tramo del paquete C bajo la regla agrupada de §16.93. Se contrasta la decisión cuantitativa §16.219 con la instancia, el endpoint y la identificación que constan realmente en el expediente. No se asignan δ_min,e ni w_max,e por conveniencia.
+
+### 16.220.1. Resultado de la auditoría de fundamento
+
+La evidencia documental disponible no sostiene todavía un margen sustantivo numérico para ningún estimando del benchmark integrado:
+
+- **V_cont:** DEC-C10-099…102 lo selecciona provisionalmente como dimensión operativa mínima de Value y define una fracción de intervalos conformes B1 en una rejilla común. No están cerrados la rejilla/cadencia, K, duración efectiva de intervalo, calibración basal, ni el punto operativo que permitiría interpretar qué cambio de esa fracción sería material. La escala [0,1] fija límites matemáticos, no relevancia científica.
+- **Value contextual:** el crosswalk C-Value y la auditoría de roles §16.140 no encuentran beneficiario, población de valoración, instrumento ni dimensión de Outcome/Value materializados. CMP owner, actor ejecutor y evaluador metodológico no son beneficiarios. Por tanto V_cont no puede presentarse como una medida general ya validada de Value.
+- **ITT_Z^D2:** es el efecto total de asignación al paquete D2 sobre V_cont, si diseño, consistencia, interferencia y observación lo permiten. Puede tener un δ_min propio solo después de justificar la consecuencia operativa de cambiar V_cont; no representa por sí mismo el efecto causal de accesibilidad.
+- **θ_A / θ_Af:** la correspondencia B_g^D2→g^Af no está demostrada; θ_Af(q_X*) sigue no identificado y θ_A(q) general no queda resuelto por D2. No es metodológicamente admisible fijar un δ_min confirmatorio para una intervención focal cuya versión, población/régimen y estado de identificación aún no están cerrados.
+- **C4/IIE_M y LATE_f:** permanecen condicionados a contratos y supuestos de identificación longitudinal/IV. No se fijan márgenes confirmatorios mientras no estén especificados e identificados por resultado.
+
+### 16.220.2. Contrato de definición de márgenes — sin cifras inventadas
+
+Cuando las dependencias anteriores estén resueltas, cada estimando e deberá tener una ficha de margen con:
+
+1. **Objeto y escala:** estimando exacto, resultado/dimensión, población/unidad, horizonte, versiones y régimen común; unidad de medida y rango.
+2. **Ancla sustantiva:** consecuencia operacional/contextual que cambiaría una decisión real del dominio sintético, quién recibe el beneficio/coste y qué regla de decisión se altera. Para V_cont, la justificación debe volver a duración y significado de los intervalos B1, no solo a una diferencia abstracta de proporciones.
+3. **δ_min,e:** menor diferencia que cambia la decisión sustantiva, argumentada antes de observar resultados y separada del efecto que el diseño tenga potencia para detectar. No se deriva de N, potencia observada, coeficientes diagnósticos P178 ni de maximizar recuperación.
+4. **w_max,e:** máxima anchura admisible del intervalo/bounds para la decisión concreta. Se deriva de cuánto error de localización tolera esa decisión; no se fija automáticamente como múltiplo de δ_min,e.
+5. **Zona de inconclusión:** resultados cuya incertidumbre no permite ni afirmar efecto relevante ni descartarlo; se especifica antes del análisis. Equivalencia solo con margen propio justificado y procedimiento adecuado.
+6. **Vínculo con identificación:** si el estimando es PARTIALLY_IDENTIFIED, se define una resolución para bounds y no un MDE de estimación puntual; si NOT_IDENTIFIED, el gate es abstención correcta y no se define potencia de efecto.
+
+Las fichas se aprueban por separado para ITT_Z^D2 y θ_A/θ_Af aunque compartan V_cont. No se transfiere un δ entre estimandos por compartir escala.
+
+### 16.220.3. Jerarquía confirmatoria y multiplicidad — estado
+
+No se declara todavía una familia confirmatoria cerrada. La arquitectura estadística debe preservar como objetos separados ITT_Z^D2 y θ_A; C4/IIE_M y LATE_f quedan condicionales/secundarios mientras sus contratos no se completen. Antes de cualquier calibración se deberá resolver:
+
+- si ITT_Z^D2 sobre V_cont se formula como objetivo confirmatorio de efecto de paquete, sin atribución a accesibilidad;
+- si θ_A/θ_Af llega a satisfacer correspondencia de políticas, soporte e identificación suficientes para entrar en la familia confirmatoria;
+- cuál es la familia exacta de contrastes, resultados y poblaciones que controla α, y si se usa gatekeeping jerárquico, Holm u otro procedimiento justificado;
+- cómo se conserva el carácter separado de los dictámenes cuando un estimando es identificable y otro no.
+
+No se permite que la selección del estimando confirmatorio dependa de qué resultado sea significativo o más favorable. Tampoco se excluye silenciosamente θ_A del informe principal por no ser identificable: su no-identificación es un resultado central del experimento.
+
+### 16.220.4. Consecuencia para dimensionamiento y estado del paquete C
+
+No es posible elegir N/R de forma defendible a partir de los umbrales §16.219 sin δ_min,e, w_max,e, familia de escenarios y endpoint calibrado. N=700 de P178 es solo candidato del benchmark focal bajo DGP y observación ideales; no es trasladable a D2, V_cont runtime, S3, adversariales, ITT ni al Analyzer integrado. Tampoco se reutilizan automáticamente los tamaños históricos N=2.000/R=1.000.
+
+**Resultado:** el procedimiento de justificación de márgenes queda definido; su contenido sustantivo permanece BLOCKED por falta de endpoint/beneficiario/regla operativa y por falta de correspondencia/identificación del estimando focal. La jerarquía confirmatoria/multiplicidad queda OPEN.
+
+**Dictamen:** MARGIN_JUSTIFICATION_CONTRACT_DEFINED / NUMERIC_MARGINS_NOT_JUSTIFIABLE_FROM_CURRENT_SPECIFICATION / VALUE_ENDPOINT_MATERIALIZATION_OPEN / THETA_A_MAPPING_AND_IDENTIFICATION_OPEN / CONFIRMATORY_FAMILY_OPEN / NO_N_R_SELECTION / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente operación agrupada del paquete C:** completar sobre la misma instancia B1 la materialización mínima de V_cont/Outcome/Value y la ficha de identificación de ITT-D2 y θ_A, incluyendo las decisiones que permitan o impidan que cada uno entre en la familia confirmatoria. Después se fijan δ_min,e, w_max,e y multiplicidad en una sola pasada. No abrir nuevos documentos ni iniciar calibración.
