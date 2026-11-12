@@ -1276,3 +1276,14 @@ Se reutilizan P182-07/08 para error de medición, P182-11/12 para firewall y tra
 El Analyzer emite estimación puntual solo si el canal identifica; en otro caso bounds o abstención. Evaluator abre truth después del sellado. Ninguna cobertura documental es PASS técnico.
 
 **Estado:** EXISTING_SCENARIOS_REUSED / P182_P183_MAPPED / S3_CHANNEL_VARIANTS_NOT_CALIBRATED / NO_NEW_TESTS / NOT_EXECUTED.
+
+
+## 54. Matriz de cobertura temporal adimensional (2026-11-12)
+
+El dominio de calibración utiliza razones sin unidad: r_c=d_e/c_j (duración de episodio frente a captura S3), r_Δ=d_e/Δ (duración frente a intervalo V_cont), fase φ_j respecto de snapshots y r_f=τ_follow/τ_recovery,max cuando exista soporte acotado. Se cubren r_c y r_Δ menores, iguales y mayores que 1; snapshots alineados, desfavorables y aleatorios; logs/trazas capturados, perdidos/no emitidos y retrasados; e híbridos con dependencia conjunta.
+
+La cobertura dirigida reutiliza los perfiles §16.188.4: truth estable, señal espuria, episodio breve entre capturas, frontera r_c=1, episodio más largo que captura, episodio breve dentro de un bloque, cruce de frontera de rejilla, pérdida/lag diferencial, error correlacionado, recuperación y censura terminal, y contraste O-CONF/V_cont. No es factorial completo ni crea IDs de escenario o prueba.
+
+Si τ_recovery,max tiene soporte defendible, τ_follow≥τ_recovery,max cubre la cola; si no, se preserva censura. K entero y Δ=(1+ρ_follow)/K se eligen por recuperación, aliasing, estabilidad al refinar K, error/cobertura y coste condicionado a criterios aprobados. No se asignan valores ni se ejecuta calibración.
+
+**Estado:** DIMENSIONLESS_TEMPORAL_COVERAGE_DEFINED / TARGETED_MATRIX / PARAMETER_SUPPORT_AND_THRESHOLDS_OPEN / NO_EXECUTION.
