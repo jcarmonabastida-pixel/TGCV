@@ -297,15 +297,14 @@ La composición de truth permanece explícita, versionada y reservada por B1/UE 
 
 ### 15.2 Regla provisional de admisibilidad
 
-En el diseño base actualmente documentado, **no se admite ninguna covariable basal X₀ como predictor/condicionante del canal S7**. Esto no afirma que las características basales sean estadísticamente independientes de Need, ni que jamás afecten a emisión/captura en otro modelo. Significa que no hay fichas semánticas, roles causales, medición ni evidencia suficiente para incluirlas en este DGP confirmatorio sin inventar estructura.
+En el diseño base actualmente documentado, **no se admite ninguna covariable basal del roster causal (X, H₀, C_c, L_m, C_dep, A_f*, T_acc, F_alt) como predictor/condicionante de la emisión o del contenido S7**. Esto no afirma independencia estadística entre esas variables y Need, ni niega que propiedades basales de fuente/canal/custodio puedan afectar a la observabilidad. Significa que no existe justificación contractual por variable para introducir aquellas covariables en el mecanismo de medición.
 
-El conjunto mínimo de entradas conceptuales queda limitado a:
-- la oportunidad S7 ya fijada;
-- el mandato/alcance y la versión de canal preespecificados;
-- la estipulación basal reservada Need_preZ como estado latente que el canal intenta medir;
-- el mecanismo conjunto de emisión, contenido y captura que se defina explícitamente.
+Deben distinguirse tres clases:
+- **Estado objetivo reservado:** la estipulación explícita Need_preZ puede determinar semánticamente el contenido que intenta expresar S7, a través del mecanismo de medición; nunca se copia como etiqueta.
+- **Condiciones de protocolo fijadas ex ante:** oportunidad, mandato, alcance, versión S7 y regla de emisión. No son covariables aleatorias.
+- **Propiedades operativas del proceso observacional:** emisión, retención/captura, integridad, autoridad y custodia. DEC-C10-097 permite que propiedades basales de fuente/canal/custodio condicionen la observabilidad si se especifican y justifican ex ante. No están todavía identificadas ni parametrizadas para este microdominio.
 
-La truth no es un campo del artefacto visible ni se entrega al emisor como una etiqueta. Es argumento interno del mecanismo generador de medición, formalizado como dependencia condicional y protegido por el firewall. No se introduce un agente cognitivo, creencia, predictor ni covariable nueva.
+La truth no es un campo del artefacto visible ni se entrega al emisor como etiqueta. Es el estado de referencia reservado que el canal de medición intenta representar, protegido por el firewall. No se introduce un agente cognitivo, creencia, predictor ni covariable causal nueva.
 
 ### 15.3 Qué dependencias se permiten conceptualmente
 
@@ -314,8 +313,10 @@ La truth no es un campo del artefacto visible ni se entrega al emisor como una e
 | Truth basal → emisión/contenido S7 a través del canal de medición | Permitida y necesaria para que la declaración mida el constructo; mecanismo no especificado |
 | Versión/mandato S7 → reglas de emisión y formato | Permitida como condición de diseño fijada ex ante |
 | Contenido emitido → captura/retención | Permitida como dependencia del proceso de captura; mecanismo no especificado |
-| Características basales X/H/C_c/L_m → emisión/contenido/captura | No admitida en el DGP base actual; requeriría justificación por variable |
-| C_dep/A_f/T_acc/Reach/instalación/solicitudes/ejecución/Outcome/Value → canal basal | Excluida por diferencia semántica, temporalidad o circularidad |
+| Covariables del roster causal X/H₀/C_c/L_m/C_dep/A_f*/T_acc/F_alt → emisión/contenido/captura | No admitidas en el DGP base; requieren mapping semántico y justificación específica por etapa |
+| Propiedades propias del canal/custodio (p. ej., regla de retención o integridad) → captura/admisibilidad | Conceptualmente admisibles bajo DEC-C10-097; todavía no identificadas, definidas ni parametrizadas |
+| ENABLED/PROFILE, configuración CMP/PAR/REF/RUL → contenido S7 | No acreditan el objetivo B1 ni son sustitutos de la estipulación |
+| Reach/instalación/solicitudes/ejecución/Outcome/Value → canal basal | Excluidas por diferencia semántica, temporalidad o circularidad |
 | Z/D2/asignación/cumplimiento/post-Z → oportunidad o contenido basal | Prohibida |
 | Salidas E1/E2/Analyzer → canal | Prohibida (retroalimentación/filtración) |
 
@@ -341,4 +342,65 @@ Hasta que se justifique una covariable, el DGP no asignará probabilidades condi
 
 La dependencia entre UE por plantilla, canal compartido, versión, lote o causa común de error sigue OPEN: una oportunidad por UE no demuestra independencia entre unidades. No se introducen latentes compartidas ni se fijan tasas/probabilidades sin justificación.
 
-**Dictamen provisional:** el conjunto de covariables basales admisibles para el canal S7 en el DGP base es vacío (X₀ = ∅) por falta de justificación contractual, no por una afirmación empírica de ausencia de asociación. Se conserva la dependencia de medición entre Need basal y contenido observable como mecanismo a especificar. No se materializa ni ejecuta.
+**Dictamen provisional corregido:** ninguna covariable del roster causal está admitida como predictor del canal S7. No se concluye que todas las propiedades basales del proceso de observación sean irrelevantes: su admisión queda abierta bajo la distinción anterior y los requisitos de §15.4. La relación de medición entre Need basal y contenido observable debe permanecer explícita. No se materializa ni ejecuta.
+
+
+## 16. Taxonomía cualitativa de modos de error S7 y contrastes de validación (propuesta, no freeze)
+
+### 16.1 Dos niveles que no deben confundirse
+
+El canal produce un artefacto y un estado de proceso; E1/E2 producen una adjudicación observed. Por tanto:
+- **Error del canal:** el contenido emitido no representa correctamente la estipulación focal, o el proceso impide que una declaración pertinente llegue íntegra al expediente.
+- **Error de adjudicación:** E1/E2 interpretan incorrectamente un expediente observable válido, o difieren/no pueden resolverlo.
+- **Error de clasificación evaluado:** solo se establece después del sellado, comparando observed=1/0 con truth=1/0. La discordancia del artefacto por sí sola no basta para declarar un falso positivo/negativo del adjudicador.
+
+### 16.2 Modos de error diferenciados
+
+| Modo | Manifestación S7 | Consecuencia esperada según contratos | Qué permite evaluar |
+|---|---|---|---|
+| Inversión semántica positiva | Truth=1 y contenido afirmativo de exclusión | Si admisible y adjudicado 0, falso negativo de clasificación | Sensibilidad ante error de polaridad |
+| Inversión semántica negativa | Truth=0 y contenido afirmativo de inclusión | Si admisible y adjudicado 1, falso positivo de clasificación | Especificidad ante error de polaridad |
+| Ambigüedad genuina | Contenido emitido que no resuelve inclusión/exclusión | observed=? salvo resolución fundada en el propio expediente | Abstención y preservación de incertidumbre |
+| No emisión | Oportunidad EXPECTED sin declaración emitida | No es exclusión; normalmente observed=? | Robustez ante silencio |
+| Pérdida de captura/retención | Declaración emitida, pero no llega al expediente | No es exclusión; normalmente observed=? | Robustez ante pérdida |
+| Opacidad/cobertura parcial | Artefacto o superficie no inspeccionable | observed=? o cobertura PARTIAL | Sensibilidad a cobertura insuficiente |
+| Defecto de identidad/binding | Declaración asociada a B1/UE/servicio equivocado o no verificable | Inadmisibilidad o bloqueo según contrato; nunca evidencia focal positiva/negativa | Integridad del vínculo |
+| Defecto temporal | Contenido creado después de Z presentado como basal | Inadmisible/bloqueo; no se rescata por timestamp retroactivo | Protección pre-Z |
+| Defecto de autoridad/vigencia | Emisión auténtica en origen, pero sin mandato/alcance/versionado suficiente | No admisible para afirmar Need | Separación autenticidad/autoridad |
+| Corrupción/integridad | Contenido o digest no verificable | Bloqueo/inadmisibilidad según contrato | Integridad del paquete |
+| Conflicto interno | Afirmaciones incompatibles dentro del mismo acto S7 sin regla de resolución | observed=? mientras no se resuelva | Preservación de conflicto |
+| Filtración lateral | ID, orden, metadata, semilla o lineage permite reconstruir truth | Incumplimiento crítico del firewall; invalida la evaluación ciega | Validez de la separación truth/evidence |
+
+La tabla no asigna frecuencias, severidades numéricas ni obliga a que todos los modos ocurran en el escenario confirmatorio. No añade nuevas clases de fuente: todos son estados o defectos del único acto S7 y de su proceso de observación.
+
+### 16.3 Contrastes mínimos a preservar en la futura especificación de escenarios
+
+La matriz de escenarios deberá distinguir, como mínimo, las siguientes condiciones cualitativas, sin fijar tasas ni parámetros:
+
+1. **Canal semánticamente concordante:** contenido afirmativo correcto y expediente íntegro/admisible. Es referencia de funcionamiento, no supuesto de perfección universal.
+2. **Polaridad errónea:** contenido afirmativo opuesto a la estipulación; debe permitir evaluar FP/FN una vez adjudicado.
+3. **Abstención semántica:** contenido ambiguo, sin contenido suficiente para 1/0.
+4. **Silencio de emisión:** oportunidad existente pero no emitida.
+5. **Pérdida de captura:** emitida pero no capturada/retendida.
+6. **No evaluabilidad documental:** opacidad, cobertura incompleta o defecto de autoridad/identidad/tiempo/integridad, manteniendo separados los bloqueos técnicos de observed=?
+7. **Prueba de firewall:** ninguna salida visible permite reconstruir truth ni acceder a truth_basis_ref o estado interno del generador.
+
+Estos contrastes son una taxonomía de mecanismos y resultados, no un diseño factorial aprobado. No se exige combinarlos todos ni repetirlos por cada truth state. El soporte real de cada contraste, su asignación a unidades, posibles interacciones y el orden de ejecución siguen OPEN.
+
+### 16.4 Regla contra el canal perfecto y contra errores artificiales
+
+El contrato requiere que el diseño pueda evaluar errores semánticos y abstenciones; no exige que cada ejecución contenga necesariamente errores, ni autoriza imponer una tasa positiva arbitraria. Tampoco permite declarar el canal perfecto por construcción si el objetivo experimental es validar su capacidad para recuperar una truth bajo observación imperfecta.
+
+Antes de elegir el mecanismo confirmatorio deberá justificarse qué contrastes pertenecen al DGP base, cuáles son escenarios adversariales de sensibilidad y cuáles son simples fallos técnicos. La selección no puede depender de resultados del Analyzer ni de métricas observadas.
+
+### 16.5 OPEN explícitos
+
+Permanecen sin decidir:
+- si emisión, contenido y captura son deterministas, probabilísticos o mixtos;
+- qué propiedades operativas basales de canal/custodio están presentes en el microdominio;
+- si existen causas comunes entre unidades y cómo representarlas;
+- qué modos de error forman parte del escenario confirmatorio y cuáles de sensibilidad;
+- parámetros, rangos, tasas, soporte, tamaños, precisión y potencia;
+- cómo verificar técnicamente el firewall y el sellado.
+
+No se fijan probabilidades, prevalencias, tasas de error ni nuevas pruebas/IDs. No se crea un artefacto lógico, clase de fuente, variable causal o schema físico adicional. No se materializa ni ejecuta.
