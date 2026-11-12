@@ -537,7 +537,7 @@ No se debe presentar esa comprobación como:
 - evidencia de rendimiento confirmatorio conjunto;
 - fuente adicional S7 ni segunda oportunidad por UE.
 
-Su diseño, ubicación dentro del catálogo existente, independencia de los expedientes confirmatorios y posible reutilización de contratos de prueba MEAS/P182 quedan OPEN. No se crean ahora fixtures, IDs, casos materiales ni una nueva familia de tests.
+Su diseño, ubicación dentro del catálogo existente e independencia de los expedientes confirmatorios quedan OPEN. La revisión posterior del catálogo ha precisado que MEAS/P182 se refieren a medición de accesibilidad y constructos O/V, no a la adjudicación Need; por tanto, no deben citarse como cobertura directa de esta tarea. Los controles genéricos FCM de independencia, desacuerdo, cegamiento, vínculos y cobertura sí son reutilizables para sus respectivos objetivos, sin cubrir por sí solos la interpretación semántica de las dos polaridades. No se crean ahora fixtures, IDs, casos materiales ni una nueva familia de tests.
 
 ### 18.6 Dictamen provisional y gates pendientes
 
@@ -550,3 +550,60 @@ Su diseño, ubicación dentro del catálogo existente, independencia de los expe
 - No se materializa ni ejecuta.
 
 **Dictamen provisional:** FOUR_CELL_SEMANTIC_CROSSWALK_DEFINED / CONFIRMATORY_SUPPORT_EMPIRICAL_TO_ROSTER / NO_POST_HOC_CELL_FILLING / CONTROLLED_INTERPRETATION_TESTING_OPEN / PARAMETERIZATION_OPEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+
+## 19. Auditoría de reutilización del catálogo para E1/E2 y polaridades S7
+
+### 19.1 Alcance de la revisión
+
+Se revisó el registro C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md en la rama de investigación y los contratos B1 de adjudicación, paquete analítico, materialización mínima e inventario de fuentes. La pregunta fue si algún contrato existente prueba directamente que E1 y E2 interpretan inclusión y exclusión focal de S7 para Need_preZ, sin acceso a truth.
+
+**Resultado:** cobertura parcial por composición de controles; no se localizó una prueba contractual directa de interpretación de ambas polaridades para B1/Need. Esta conclusión es documental y no equivale a ejecución ni a auditoría del código.
+
+### 19.2 Contratos existentes reutilizables, con alcance limitado
+
+| Contrato existente | Reutilización legítima en B1/Need | Lo que no demuestra |
+|---|---|---|
+| FCM-04 | Detectar que E1/E2 compartan clasificación antes de registrar; preservar independencia | Que interpreten correctamente inclusión/exclusión |
+| FCM-05 | Preservar desacuerdo 1 vs 0, opinión minoritaria y escalado según regla | Exactitud frente a truth ni interpretación de cada polaridad |
+| FCM-06 | Verificar que truth DGP no sea accesible al analizador/adjudicadores | Ausencia técnica real de filtraciones en implementación |
+| FCM-12 / FCM-17 | Exigir una fila/registro separado por evaluación y evaluador | Validez semántica de las salidas |
+| FCM-18 | Exigir vínculo entre evidencia revisada, evaluador y adjudicación | Suficiencia o corrección de la interpretación |
+| FCM-02 | Controlar unidad, versión y temporalidad de evidencia | Comprensión del contenido declarativo |
+| FCM-03 / FCM-14 | Rechazar COMPLETE sin denominador o cobertura no resuelta | Cobertura semántica suficiente por polaridad por sí sola |
+| UG-SR-A01-T06/T07 | Impedir observed=1/0 sin vínculo probatorio; observed=0 requiere además evidencia afirmativa y cobertura negativa suficiente | Que la exclusión focal se haya interpretado correctamente |
+| PKG-05…PKG-13 (contratos B1 del paquete) | Separación truth/evidencia, independencia E1/E2, ausencia≠0, evidencia afirmativa para 0 y evaluación posterior al sellado | Contraste controlado de comprensión de inclusión/exclusión ni recuperación de error de polaridad del canal |
+
+Los IDs FCM y UG-SR-A01 son controles del esquema/procedimiento de evidencia; PKG-05…13 son requisitos del contrato B1. Su estado sigue siendo documental: no se declara implementación, ejecución ni PASS.
+
+### 19.3 Contratos que no deben reutilizarse como si fueran B1/Need
+
+- **MEAS-01…24:** miden A_f, D_f, T_acc y sus errores/estados; la presencia de falsos positivos/negativos o tres estados en ese dominio no convierte esas pruebas en adjudicación de Need_preZ.
+- **P182-06:** acuerdo interevaluador genérico dentro del bloque de validez de medidas; puede orientar el reporte de acuerdo, pero no es un contrato de interpretación de S7.
+- **P182-07:** evalúa falsos positivos/negativos en la medida A; no es exactitud de E1/E2 sobre Need.
+- **P183-01…13 / MISS-01…15:** cubren ausencia, selección, censura y sensibilidad del análisis causal/medición. Pueden informar el tratamiento de pérdida y cobertura, pero no validan la semántica de inclusión/exclusión S7.
+- **P182-11 / MEAS-06 y controles de cegamiento:** son precedentes para separar información, no evidencia de que el firewall de B1 esté implementado ni de que los adjudicadores comprendan el contenido.
+
+### 19.4 Gap preciso y decisión de diseño pendiente
+
+Queda sin cobertura contractual directa la siguiente pregunta:
+
+> Dado un expediente S7 afirmativo, admisible, correctamente vinculado y pre-Z, ¿E1 y E2 aplican la regla funcional de Need de forma correcta y separada cuando el contenido expresa inclusión focal y cuando expresa exclusión focal?
+
+Para responderla sin contaminar la estimación del canal se deben distinguir dos dimensiones:
+
+1. **Interpretación por polaridad:** desempeño de E1 y E2 sobre contenido afirmativo de inclusión y exclusión, evaluado contra una clave de contenido visible preespecificada y segregada de truth Need. Esto comprueba lectura/regla semántica, no concordancia del canal con la truth basal.
+2. **Validez de Need observada:** comparación posterior de need_observed_state con need_truth_state en EVALUATION_LEDGER, que combina el mecanismo S7 y la adjudicación. No atribuye automáticamente un desacuerdo al adjudicador.
+
+Un benchmark controlado de interpretación, si se aprueba, no debe revelar truth ni la etiqueta de concordancia/discordancia a E1/E2. La clave de contenido visible es distinta de TRUTH_LEDGER; su custodia, sellado y apertura posterior deben definirse para que el benchmark no filtre la truth por metadatos, nombres, orden o logs. Los casos de interpretación deben quedar separados del censo confirmatorio y no presentarse como una segunda oportunidad S7 por UE.
+
+### 19.5 Recomendación operativa
+
+- Reutilizar FCM-02/03/04/05/06/12/14/17/18 y UG-SR-A01-T06/T07 para los controles que ya cubren.
+- Reutilizar PKG-05…13 para la arquitectura de separación y evaluación B1, respetando sus límites.
+- No reutilizar MEAS/P182/P183 como evidencia directa de interpretación Need.
+- No crear ahora un nuevo test ID, fixture, benchmark ni clave materializada.
+- Antes de proponer una ficha adicional, comprobar si el contrato B1 de adjudicación puede incorporar una regla de interpretación observable y si el catálogo admite una especialización sin duplicar FCM/PKG.
+- Mantener como preguntas abiertas el número/variedad de casos controlados, la clave de contenido, la independencia entre benchmark y cohorte confirmatoria, la regla de scoring, el tratamiento de ambigüedad y la evaluación por adjudicador.
+
+**Dictamen provisional:** EXISTING_CONTRACTS_PARTIALLY_REUSABLE / NO_DIRECT_B1_POLARITY_INTERPRETATION_TEST_FOUND / MEAS-P182-P183_NOT_DIRECT_COVERAGE / NO_NEW_TEST_ID / INTERPRETATION_BENCHMARK_DESIGN_OPEN / NOT_IMPLEMENTED / NOT_EXECUTED.
