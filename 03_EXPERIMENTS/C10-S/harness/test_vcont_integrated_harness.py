@@ -85,6 +85,23 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         self.assertEqual(result3.package_status, "IDENTIFIED")
         self.assertGreater(result3.first_stage_delta_t_acc[0], 0.0)
 
+    def test_structural_support_failure_removes_high_stratum_g1(self):
+        _, _, sealed, result, _ = self.execute_world(self.worlds()["R0_SUPPORT_FAILURE"])
+        high = [row for row in sealed.rows if row["baseline_stratum"] == "HIGH"]
+        self.assertTrue(high)
+        self.assertTrue(all(row["assignment_g"] == 0 for row in high))
+        self.assertEqual(result.focal_status, "NOT_IDENTIFIED")
+
+    def test_follow_up_freezes_state_after_last_transition_support(self):
+        _, truth, _, _, _ = self.execute_world(self.worlds()["R0_FOCAL_POSITIVE"])
+        for i in range(len(truth.potential_enabled_truth)):
+            for z in (0, 1):
+                for g in (0, 1):
+                    enabled = truth.potential_enabled_truth[i][z][g]
+                    profile = truth.potential_profile_truth[i][z][g]
+                    self.assertEqual(enabled[16:], (enabled[15],) * 4)
+                    self.assertEqual(profile[16:], (profile[15],) * 4)
+
     def test_manifest_uses_equal_intervals_over_common_window(self):
         manifest, _, _, _, _ = self.execute_world(self.worlds()["R0_FOCAL_POSITIVE"])
         self.assertAlmostEqual(manifest.window_start, 0.0)
