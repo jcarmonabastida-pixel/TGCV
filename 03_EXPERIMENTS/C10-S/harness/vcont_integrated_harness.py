@@ -94,6 +94,10 @@ class ScenarioConfig:
                 math.isfinite(self.follow_up) and
                 self.window_start < self.last_transition_support and self.follow_up > 0.0):
             raise ContractError("temporal support and positive follow-up must be explicit")
+        total_width = (self.last_transition_support + self.follow_up - self.window_start) / self.n_intervals
+        transition_slots = (self.last_transition_support - self.window_start) / total_width
+        if abs(transition_slots - round(transition_slots)) > 1e-9 or round(transition_slots) >= self.n_intervals:
+            raise ContractError("transition support must end on an interval boundary before follow-up")
         if self.measurement_identified and not (
             self.measurement_sensitivity == 1.0 and
             self.measurement_specificity == 1.0 and
@@ -215,6 +219,12 @@ class Generator:
         run_id = _hash(asdict(cfg))[:24]
         z_assign = _balanced_binary(cfg.n_units, rng)
         g_assign = _balanced_binary(cfg.n_units, rng)
+        baseline_x = [rng.random() for _ in range(cfg.n_units)]
+        if not cfg.positivity:
+            # Deliberate structural positivity failure: G=1 is unavailable in
+            # the high-baseline stratum, not merely flagged in metadata.
+            g_assign = [0 if baseline_x[i] >= 0.5 else g_assign[i]
+                        for i in range(cfg.n_units)]
         # Shared exogenous variables: same unit/interval uniforms are reused
         # across all four potential regimes (z,g).
         rows: list[dict[str, Any]] = []
@@ -225,7 +235,7 @@ class Generator:
         delta_truth = []
 
         for i in range(cfg.n_units):
-            x = rng.random()
+            x = baseline_x[i]
             u_access = rng.random()
             u_relation = rng.random()
             u_context = rng.random()
@@ -287,8 +297,17 @@ class Generator:
                     profile_match_p = max(0.0, min(1.0, profile_match_p))
                     # B1 is conjunctive: ENABLED and the declared PROFILE must
                     # both hold throughout an interval. Components stay separate.
-                    enabled_states = tuple(int(u < cfg.enabled_probability) for u in u_enabled)
-                    profile_states = tuple(int(u < profile_match_p) for u in u_profile)
+                    enabled_raw = [int(u < cfg.enabled_probability) for u in u_enabled]
+                    profile_raw = [int(u < profile_match_p) for u in u_profile]
+                    transition_slots = int(round(
+                        (cfg.last_transition_support - cfg.window_start) /
+                        ((cfg.last_transition_support + cfg.follow_up - cfg.window_start) / cfg.n_intervals)
+                    ))
+                    for slot in range(transition_slots, cfg.n_intervals):
+                        enabled_raw[slot] = enabled_raw[transition_slots - 1]
+                        profile_raw[slot] = profile_raw[transition_slots - 1]
+                    enabled_states = tuple(enabled_raw)
+                    profile_states = tuple(profile_raw)
                     states = tuple(int(en and pr) for en, pr in zip(enabled_states, profile_states))
                     v = sum(states) / cfg.n_intervals
                     z_potentials.append(v)
@@ -334,6 +353,7 @@ class Generator:
                 "cluster_id": f"CL-{cluster:05d}",
                 "assignment_z": z,
                 "assignment_g": g,
+                "baseline_stratum": "HIGH" if x >= 0.5 else "LOW",
                 "s3_enabled": observed_enabled,
                 "s3_profile_match": observed_profile,
                 "s3_enabled_status": status_enabled,
@@ -365,7 +385,7 @@ class Sealer:
         if not candidate.rows:
             raise ContractError("empty evidence")
         allowed = {"unit_id", "cluster_id", "assignment_z", "assignment_g",
-                   "s3_enabled", "s3_profile_match", "s3_enabled_status",
+                   "baseline_stratum", "s3_enabled", "s3_profile_match", "s3_enabled_status",
                    "s3_profile_status", "delta_t_acc_observed", "profile", "version"}
         for row in candidate.rows:
             if set(row) != allowed:
