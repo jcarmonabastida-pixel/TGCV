@@ -339,3 +339,10 @@ La recuperación de V_cont reutiliza los escenarios temporales del plan §16.196
 V_cont_truth sigue siendo la proporción de intervalos completamente conformes bajo DEC-C10-100/102. Las variantes snapshot/métrica, logs/trazas y híbrida son mecanismos dentro de S3, no Outcomes ni fuentes nuevas. Una señal S3 no demuestra por sí sola capacidad B1; si la curva conjunta de observación no identifica la secuencia, se informan bounds o NOT_IDENTIFIED. O-CONF/F* permanece como adjudicación terminal independiente. No se infiere Value contextual ni se eleva ningún claim.
 
 **Estado:** V_CONT_MEASUREMENT_TEST_CROSSWALK_DEFINED / CHANNEL_VALIDITY_OPEN / O_CONF_DISCRIMINATION_NOT_VERIFIED / NO_DESIGN_FREEZE.
+
+
+## 28. Corrección semántica y límite de interpretación de V_cont (2026-11-12)
+
+DEC-C10-100/102 operacionalizan V_cont_truth como la proporción de intervalos completamente conformes. Dado que cualquier incumplimiento confirmado pone a cero el intervalo completo, esta medida no equivale a la fracción exacta de tiempo disponible ni a uptime integral; depende de Δ y de la alineación de la rejilla. Se conserva la regla aceptada y no se modifica la fórmula. Las salidas no podrán describirse como porcentaje exacto de tiempo en servicio.
+
+Se mantiene separada la validez de la medición S3: el Generator estipula A_B1; Analyzer solo recupera lo identificable desde evidencia sellada; de otro modo produce bounds/abstención. O-CONF sigue siendo un Outcome terminal independiente. La interpretación de V_cont como medida de intervalos completos debe preservarse en estimandos, informes y claims, sin extrapolar a continuidad temporal exacta.
