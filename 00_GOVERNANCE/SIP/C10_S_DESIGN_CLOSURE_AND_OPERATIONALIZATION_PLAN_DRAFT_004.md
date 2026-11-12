@@ -5566,3 +5566,17 @@ Se completa el siguiente gate ordenado en §16.213.5 mediante la sección 14 de 
 **Dictamen:** `B1_FINITE_FUNCTIONAL_STATE_EVENT_UNIVERSE_CLOSED_DOCUMENTARILY / R0_R3_TEMPORAL_CROSSWALK_CLOSED / TEMPORAL_PARAMETER_AND_S3_CALIBRATION_GATES_OPEN`.
 
 Este cierre no declara cerrada la temporalización cuantitativa ni la identificación causal. No crea escenarios, IDs, fixtures, parámetros ni datos; no autoriza implementación, generación, simulación, calibración, estimación o ejecución. `scientific_execution=false`; `execution_authorized=false`; `NOT_DESIGN_FROZEN`; PR #116 permanece Draft; no se modifica main.
+
+## 16.215. Contrato de soporte temporal finito y construcción del horizonte común (2026-11-12)
+
+Se desarrolla el gate temporal siguiente a §16.214 mediante la sección 15 de `C10_S_B1_PREZ_TEMPORAL_RECONCILIATION_DRAFT_001.md`.
+
+**Cierre estructural:** cada configuración R0–R3 y modificador adversarial aplicable debe declarar soporte superior finito para inicio tardío, número de recurrencias, duración, recuperación y toda transición causal B1; el soporte de truth se separa del lag/captura S3. `t_c,max(m,z)` es la cota de la última transición causal permitida, incluida recuperación; `t_c,max` global es el máximo sobre brazos y mundos del estimando. `T*=t_c,max+τ_follow`, con cola suficiente para capturar el estado terminal según el modelo S3. Se prohíbe truncar silenciosamente episodios, inferir recuperación desde silencio o usar horizontes distintos por brazo.
+
+**Regla de admisión:** una configuración sin soporte acotado, recurrencia finita declarada o comparabilidad temporal no entra en un contraste puntual finito; se trata como sensibilidad/horizonte distinto, censura/bounds o abstención. La rejilla se elige después del soporte y de la cota de captura: Δ debe representar los eventos admitidos; K=(T*−t0)/Δ debe ser entero y común. Δ no altera truth ni tolera transitorios.
+
+**No cerrado numéricamente:** cotas por familia/mundo, máximo de recurrencias, duración/recuperación, lag/captura S3, τ_follow, unidad, Δ y K. No se derivan de t0…t9, H, S3 cadence ni conveniencia.
+
+**Dictamen:** `FINITE_TEMPORAL_SUPPORT_RULE_CLOSED / COMMON_HORIZON_CONSTRUCTION_DEFINED / NUMERIC_SUPPORT_AND_S3_CALIBRATION_OPEN / DELTA_K_OPEN / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN`.
+
+El siguiente paso es resolver la sensibilidad temporal que el DGP debe cubrir y el dominio de detectabilidad S3 en conjunto; después seleccionar Δ/K. No se asignan cifras ni se ejecuta calibración.
