@@ -1287,3 +1287,14 @@ La cobertura dirigida reutiliza los perfiles §16.188.4: truth estable, señal e
 Si τ_recovery,max tiene soporte defendible, τ_follow≥τ_recovery,max cubre la cola; si no, se preserva censura. K entero y Δ=(1+ρ_follow)/K se eligen por recuperación, aliasing, estabilidad al refinar K, error/cobertura y coste condicionado a criterios aprobados. No se asignan valores ni se ejecuta calibración.
 
 **Estado:** DIMENSIONLESS_TEMPORAL_COVERAGE_DEFINED / TARGETED_MATRIX / PARAMETER_SUPPORT_AND_THRESHOLDS_OPEN / NO_EXECUTION.
+
+
+## 55. Registro paramétrico temporal y orden de generación (2026-11-12)
+
+Se especializa el ledger global §16.188.3 sin asignar valores. Para cada episodio se registran inicio normalizado x_on∈[0,1], familia causal (cinco clases de §16.194), duración d_e=δ_event/W_c, recurrencia/solapamiento, estado previo/posterior, versión y recuperación τ_recovery/W_c. d_min,DGP y d_max,DGP son límites del soporte del benchmark, no tolerancia funcional. El horizonte es T*=1+ρ_follow, con cola común tras el límite superior de transiciones; K entero y Δ=(1+ρ_follow)/K, con divisibilidad exacta.
+
+S3 snapshots: c_j/W_c, fase φ_j, cobertura, lag, pérdida, invalidez y error. Logs/trazas: emisión, captura condicionada, retardo, pérdida, duplicación, desorden y validez. Híbrido: distribución conjunta y dependencia explícita; no multiplicar tasas ni asumir independencia. En todos se conserva el vector por componente y ventana.
+
+Orden de generación: Generator produce estados/transiciones truth y deriva A_B1 por intervalos con continuidad estricta; después genera observaciones S3 condicionadas a familia, estado, Z, versión y tiempo. Analyzer recibe evidencia sellada sin truth; Evaluator abre truth después. Truth estable/señal espuria y truth cambiante/señal estable son controles adversariales obligatorios.
+
+V_cont_truth es la proporción de intervalos completamente conformes, no fracción exacta de uptime. Un fallo confirmado en cualquier instante pone a cero cada intervalo intersectado. El valor depende de Δ y alineación; no se interpreta como integral temporal. No se fijan leyes, parámetros, p*, K, Δ ni τ_follow. No ejecución.
