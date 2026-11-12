@@ -2,7 +2,7 @@
 
 **ID:** C10-S-B1-PREZ-OBSERVATION-PE-BUNDLE-001  
 **Versión:** Draft 001 · **Fecha:** 2026-11-12  
-**Estado:** DOCUMENTARY_RECONCILIATION / PE_BUNDLE_BOUNDARY_PROPOSED / COHORT_SCOPE_ACCEPTED_BY_DEC-C10-096 / OBSERVATION_OPERATIONAL_RULES_PROPOSED_SEPARATELY / NOT_APPROVED / NOT_IMPLEMENTED / NOT_EXECUTED  
+**Estado:** DOCUMENTARY_RECONCILIATION / PE_BUNDLE_BOUNDARY_PROPOSED / COHORT_SCOPE_ACCEPTED_BY_DEC-C10-096 / OBSERVATION_OPERATIONAL_RULES_ACCEPTED_BY_DEC-C10-097 / PE_BUNDLE_MAPPING_NOT_APPROVED / NOT_IMPLEMENTED / NOT_EXECUTED  
 **Rama:** `research/c10-s-consolidation-draft` · **PR:** #116 (Draft)
 
 ## 1. Propósito y resultado
@@ -28,7 +28,7 @@ Se reutilizan:
 - `C10_S_PE_INTEGRATED_TECHNICAL_SPECIFICATION_AND_IMPLEMENTATION_CONTRACT_DRAFT_001.md` §§3–4 y §5: interfaces Generator→Proyector/Sealer→Analyzer→Evaluator y Artifact/Provenance Store.
 - `C10_S_DGP_TEMPORAL_AND_ROLE_CONTRACT_DRAFT_001.md`: reloj t−1/t0…, separación de truth/observed y roles.
 
-La auditoría de fuentes sigue teniendo el estado `UNIT_LEVEL_PREZ_EVIDENCE_NOT_FOUND_IN_REVIEWED_ARTIFACTS / COVERAGE_NONE`. DEC-C10-096 acepta el censo del roster aplicable y la tarea E1/E2, pero no cambia ese estado. Las reglas operativas propuestas de emisión, captura, contenido, admisibilidad y cobertura se detallan en `C10_S_B1_PREZ_OBSERVATION_MECHANISM_AND_COVERAGE_RULES_RECONCILIATION_DRAFT_001.md`. El presente crosswalk sigue definiendo la proyección sintética, no afirma que exista evidencia.
+La auditoría de fuentes sigue teniendo el estado `UNIT_LEVEL_PREZ_EVIDENCE_NOT_FOUND_IN_REVIEWED_ARTIFACTS / COVERAGE_NONE`. DEC-C10-096 acepta el censo del roster aplicable y la tarea E1/E2, pero no cambia ese estado. Las reglas operativas de emisión, captura, contenido, admisibilidad y cobertura han sido aceptadas como diseño de trabajo por DEC-C10-097 y se detallan en `C10_S_B1_PREZ_OBSERVATION_MECHANISM_AND_COVERAGE_RULES_RECONCILIATION_DRAFT_001.md`. El presente crosswalk sigue definiendo la proyección sintética, no afirma que exista evidencia.
 
 ## 3. Capas y objetos: no colapsar
 
@@ -173,7 +173,7 @@ Estos casos prueban el contrato de observación y el firewall. No deben converti
 8. Aprobar población/roster y suficiencia estadística antes de cualquier evaluación confirmatoria.
 9. Obtener aprobación de implementación y autorización de ejecución por separado.
 
-El alcance de cohorte y la frontera E1/E2 vs Analyzer PE quedan aceptados por DEC-C10-096. La aprobación del modelo operativo de observación y de esta proyección PE sigue pendiente; no se consideran aceptados por extensión.
+El alcance de cohorte y la frontera E1/E2 vs Analyzer PE quedan aceptados por DEC-C10-096. El modelo operativo de observación/cobertura está aceptado por DEC-C10-097; la aprobación de esta proyección PE sigue pendiente y no se considera aceptada por extensión.
 
 ## 10. Dictamen
 
