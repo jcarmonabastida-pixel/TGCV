@@ -172,3 +172,15 @@ La especificación integrada PD se encuentra en C10_S_PD_DGP_MECHANISM_AND_ADVER
 Las contribuciones petición–trayectoria se adjudican por etapa concreta del ciclo y contraste contrafactual, no por coincidencia temporal/ID, recepción o éxito técnico. Se preservan NECESSARY_CONTRIBUTION, ENABLING_CONTRIBUTION y MODIFYING_CONTRIBUTION; pueden concurrir y no implican Outcome favorable ni Value. TEMPORAL_ASSOCIATION, TRACEABILITY_LINK y CAUSAL_CONTRIBUTION no son intercambiables.
 
 La cobertura adversarial incorpora efectos focales nulos/adversos, vías directas/colaterales, interacciones, heterogeneidad, weak/null IV, defiers, interferencia, alternativas, versiones/crossover, observación diferencial, soporte insuficiente, missingness, censura y selección. Los parámetros, probabilidades y reglas concretas no se completan por inferencia; siguen abiertos hasta reconciliar Value/Outcome, material D2 y soporte. No se generan fixtures ni datos en este addendum.
+
+## 14. Alcance sintético del inventario y función de sus fuentes (2026-11-12)
+
+Este inventario describe mundos generados, no un caso real de migración. DEC-C10-051/052 se conserva como selección del microdominio lógico/gramática del benchmark; no exige plataforma, paquete, servicio, entorno fuente/destino ni datos reales. S0/SF, F1/F2/A1/A2, CMP/PAR/REF/RUL, relaciones, recursos, autorizaciones, dependencias y bloqueos son elementos abstractos del fixture.
+
+Las fuentes E1…E4 y los registros de B-M01…15 deben entenderse como tipos de evidencia sintética que Generator crea o deriva conforme a reglas del mundo; observed_evidence es la proyección imperfecta que recibe Analyzer. No hay fase de recuperación de SBOM, APIs, runtimes, ACL, métricas, logs ni snapshots externos. Los campos de procedencia, versión, hash, owner, locator y timestamp se simulan de forma consistente cuando son necesarios para probar matching, trazabilidad, error o versionado.
+
+El roster de fuentes del plan §16.205 y la matriz U_G son esquemas de modelado/observación. Sus estados `NONE`, `?` y `NO INVENTARIADO` significan que el universo sintético y sus reglas aún no han sido instanciados en el borrador; no significan que falten datos reales por recopilar. El Generator asigna truth; Analyzer no recibe truth ni parámetros ocultos; Evaluator compara después del sellado.
+
+Las superficies P1 se incorporan solo si representan una causa, condición, alternativa, interacción, interferencia o canal de observación relevante para un escenario. No se añaden para imitar infraestructura productiva. El inventario finito debe ser mínimo suficiente para discriminar la contribución causal de ΔT_acc* al Outcome/Value y los límites de atribución.
+
+**Estado:** SYNTHETIC_WORLD_INVENTORY / NO_FIELDWORK / FINITE_UNIVERSE_AND_GENERATIVE_RULES_OPEN / NOT_IMPLEMENTED / NOT_EXECUTED.
