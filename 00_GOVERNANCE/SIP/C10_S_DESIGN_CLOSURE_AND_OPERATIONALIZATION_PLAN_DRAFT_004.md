@@ -4232,3 +4232,22 @@ S3 no aumenta el número de unidades experimentales ni las oportunidades de peti
 **OPEN:** T*, unidad temporal, K, duración mínima relevante, semántica de fallo breve/transitorios/fronteras, indicadores S3 concretos, dependencia/correlación, error, cobertura, calibración, sensibilidad y discriminación O-CONF.
 
 Siguiente cierre integrado: (i) decidir si el constructo exige continuidad estricta o tolera interrupciones de duración acotada; (ii) derivar unidad y resolución de intervalo desde esa regla y las capacidades de observación S3; (iii) elegir T* en relación con la última consecuencia causal incluida, sin equipararlo automáticamente a t9; (iv) poblar rangos/sensibilidades del canal solo con procedencia explícita. No se crean parámetros, fixtures, roster, truth, señales, schema físico o código. No se ejecutan validadores, generación, simulación, estimación ni calibración. scientific_execution=false; execution_authorized=false.
+
+
+## 16.191. Criterio candidato de continuidad estricta dentro de cada intervalo (2026-11-12)
+
+**Estado:** DERIVACIÓN SEMÁNTICA RECOMENDADA / NO ACEPTADA COMO DECISIÓN NORMATIVA.
+
+El contrato B1 habla de mantener disponible la capacidad funcional, no de alcanzar una tasa media de disponibilidad ni de tolerar una cuota de interrupciones. La interpretación más fiel para la truth binaria por intervalo ya aceptada es:
+
+- A_B1(i,k)=1 si la regla ENABLED/PROFILE se cumple durante todo el intervalo k.
+- A_B1(i,k)=0 si existe al menos un incumplimiento funcional positivo y suficientemente determinado dentro del intervalo.
+- A_B1(i,k)=? solo si el Generator no puede determinar la truth funcional del intervalo; la falta de S3 es incertidumbre observacional y no modifica la truth reservada.
+
+Esta lectura implica continuidad estricta dentro del intervalo: no se introduce un periodo de gracia ni una duración mínima de fallo que el contrato B1 no haya definido. Un fallo breve confirmado cuenta como incumplimiento del intervalo. La resolución temporal y la sensibilidad del canal S3 deben ser capaces de detectar los eventos que el DGP estipule; si no, el Analyzer deberá abstenerse o producir bounds, no reinterpretar el silencio como continuidad.
+
+La regla es una derivación semántica candidata, no una decisión aceptada. La alternativa —permitir transitorios de hasta una duración δ— exigiría una regla normativa nueva, definir δ y justificarla desde el objetivo de B1; no se inventará.
+
+**Consecuencia para K:** K no se elige para diluir interrupciones ni por conveniencia estadística. Debe ser compatible con la escala temporal de eventos que el DGP pretende representar y con la capacidad de observación S3. Mientras no se apruebe la semántica de transitorios y no se determine el alcance temporal de eventos detectables, K permanece OPEN.
+
+**Siguiente gate:** aceptación o rechazo expreso de la continuidad estricta por intervalo. No se solicita aún una cifra de δ, frecuencia, K o T*.
