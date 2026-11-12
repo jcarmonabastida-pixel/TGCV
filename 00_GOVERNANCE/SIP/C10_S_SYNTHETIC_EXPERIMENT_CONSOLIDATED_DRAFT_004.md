@@ -45,3 +45,8 @@ Se incorpora la derivación rectora del plan §16.195. El reloj es adimensional:
 Las duraciones de episodio d_e, la resolución/cadencia S3, Δ de adjudicación y la cola de seguimiento son magnitudes separadas. S3 conserva cinco componentes pasivos y se modela bajo snapshots/métricas, logs/trazas/eventos e híbrido, sin presuponer periodicidad, completitud, captura event-driven o independencia. La detectabilidad se representa primero como curva conjunta por duración, fase, familia y versión; δ_det puntual requiere umbral p* aprobado. d_min,DGP es límite del soporte del benchmark, nunca mínimo funcional ni gracia. DEC-C10-102 sigue aplicándose sin excepción; falta de detección implica bounds/abstención, no continuidad.
 
 K/Δ se derivan por recuperación/aliasing y divisibilidad exacta; ρ_follow por soporte de recuperación/persistencia. No se fijan parámetros numéricos ni se ejecuta calibración. No Design Freeze; scientific_execution=false; execution_authorized=false.
+
+
+## 284. Horizonte común y precedencia de t_last (2026-11-12)
+
+Se aclara que t_last,i es la última transición efectiva de cada UE, mientras t_last^max=t_c,max es el límite superior común ex ante del soporte de transiciones causales posibles en todos los brazos/escenarios. T*=t_last^max+τ_follow (normalizado: 1+ρ_follow) mantiene una ventana común; no se calcula t_last,i+τ_follow por unidad tras observar resultados. Episodios activos en T* son terminales/censurados. Si el soporte no puede acotarse ex ante, T* permanece OPEN.
