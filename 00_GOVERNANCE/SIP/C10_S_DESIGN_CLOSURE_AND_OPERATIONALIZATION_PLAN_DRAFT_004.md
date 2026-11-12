@@ -6267,3 +6267,129 @@ No se añaden celdas ni clases. Se precisan las verdades que deben figurar en la
 **Dictamen:** THREE_TRUTH_OBJECTS_SEMANTICALLY_SEPARATED / THETA_A_DEFINED_AS_FULL_VECTOR_INTERVENTION / CURRENT_G_CONTRAST_NOT_EQUIVALENT_BY_DEFAULT / GENERATOR_EVALUATOR_REPRESENTATION_SPECIFIED / CELL_PARAMETERIZATION_OPEN / BOUNDS_OPEN / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** Gate 74 — traducir estas definiciones a un contrato de potenciales y estimadores verificable por escenario: especificar qué observaciones/variación identifican cada uno de ITT-Z, ITT-G|Z=0 y θ_A; qué condiciones se verifican con evidencia observable; y cuándo la salida obligatoria es abstención. No implementar todavía el estimador ni ampliar el roster.
+
+
+---
+
+## 16.227. Gate 74 — contrato de identificación observable, supuestos y abstención por estimando (2026-11-12)
+
+**Precedencia:** §§16.211, 16.218, 16.223, 16.225–16.226; contrato DGP temporal/roles §§2, 6–8; reconciliación D2 de población/asignación/soporte. Reutiliza clases, ledger, Generator, Projector, Sealer, Analyzer y Evaluator existentes. No añade mundos, no reabre Value/V_cont, no implementa estimadores/bounds y no autoriza ejecución.
+
+### 16.227.1. Regla epistemológica
+
+Una condición de identificación declarada en AnalysisContract no constituye evidencia de que se haya cumplido. El Analyzer solo puede utilizar evidencia observada/proyectada y sellada, un contrato público versionado y certificados/registros de diseño verificables incluidos en el canal permitido. No puede recibir truth del Generator, parámetros estructurales ocultos, potenciales, semilla del Generator ni etiquetas de celda.
+
+El Evaluator puede contrastar después los supuestos verdaderos del DGP con los certificados/evidencia que vio el Analyzer, puntuando falsa identificación, abstención correcta y abstención excesiva.
+
+Cada condición se clasifica como:
+- **OBSERVABLE/VERIFICABLE:** comprobable con el registro disponible, dentro de su alcance.
+- **DECLARADA, NO VERIFICADA:** aparece en el contrato sin certificado/evidencia suficiente.
+- **SUPUESTO NO TESTABLE DESDE LOS DATOS:** requiere garantía del diseño/DGP o sensibilidad.
+- **FALLIDA:** evidencia válida contradice la condición.
+- **DESCONOCIDA:** no existe evidencia suficiente para decidir.
+
+DESCONOCIDA nunca se convierte en cumplida. Un hash acredita integridad del artefacto sellado, no aleatorización, ausencia de interferencia ni validez causal.
+
+### 16.227.2. ITT-Z — efecto total de asignación D2
+
+**Objeto:** ITT_Z de §16.226.2.A, con régimen de G marginal/condicional expresamente versionado.
+
+**Identificación puntual requiere:** asignación Z válida en la UA declarada; positividad de Z por estrato/historia de la población objetivo; consistencia de política/versiones; interferencia ausente o estimando de exposición compatible; Outcome y seguimiento medidos en el horizonte; mecanismo de ausencia identificado si hay missingness; población, UA, pesos y distribución de G fijados ex ante.
+
+**Verificable por Analyzer:** presencia/dominio de Z; conteos por brazo y estrato; probabilidades registradas; bloques cuando el protocolo los exige; versiones/desviaciones; cobertura de Outcome/seguimiento; clusters y mapa de exposición si se suministran; integridad del sello.
+
+**No demostrado por los datos por sí solos:** balance basal no prueba aleatorización; probabilidades registradas no prueban ejecución correcta del algoritmo; no detectar spillovers no prueba ausencia de interferencia; completitud observada no prueba que la ausencia sea ignorable.
+
+**Estimador candidato:** diferencia de medias por Z para aleatorización individual simple; estimador ponderado conforme al mecanismo en diseños estratificados/bloqueados; inferencia al nivel de UA si la asignación es por cluster. El régimen G marginal debe coincidir con el objetivo declarado; no se supone 50/50 salvo contrato explícito.
+
+**Abstención:** NOT_IDENTIFIED si el diseño/evidencia contradice una condición necesaria (p. ej., positividad estructural fallida o asignación no aleatoria para el estimando causal propuesto); INDETERMINATE si aleatorización, interferencia, Outcome, seguimiento o ausencia quedan declarados pero no verificables, o la información es insuficiente. No etiquetar como ITT identificado una mera diferencia de medias.
+
+### 16.227.3. ITT-G|Z=0 — efecto de asignación G bajo Z=0
+
+**Objeto:** ITT_G|Z=0 de §16.226.2.B; no es θ_A.
+
+**Identificación puntual requiere:** asignación G aleatoria/condicionalmente aleatoria dentro de Z=0 conforme al protocolo; positividad de G por historia objetivo dentro de Z=0; consistencia/versiones de G; interferencia ausente o exposición compatible; Outcome/seguimiento medidos; población y estandarización declaradas.
+
+**Verificable por Analyzer:** G observado y válido; conteos G=0/1 dentro de Z=0 y por estrato; probabilidades/protocolo registrados; celdas vacías; versiones, cumplimiento y contaminación documentados; Outcome y ausencia por brazo.
+
+**No demostrado:** diferencias del vector focal no prueban aleatorización G; primera etapa no prueba exclusión; balance basal no prueba ausencia de confusión; no observar vía directa no prueba que no exista.
+
+**Estimador candidato:** contraste de Outcome entre G=1 y G=0 restringido a Z=0, respetando estratos/bloques y población objetivo. Si G se asigna por cluster o hay interferencia, se requiere estimando e inferencia compatibles. La primera etapa se informa por separado para cada coordenada y para el vector completo; no se sustituye por W_attempt o C_dep*.
+
+**Abstención:** NOT_IDENTIFIED ante asignación G no aleatoria para el contraste causal, positividad estructural fallida o versiones incompatibles; INDETERMINATE ante protocolo no verificable, interferencia no resuelta, Outcome/missingness no identificado o soporte muestral insuficiente. El contraste descriptivo puede informarse como tal, sin etiqueta causal.
+
+### 16.227.4. θ_A — intervención sobre el vector completo ΔT_acc*
+
+**Objeto:** θ_A(g_A;q*,r_common) de §16.226.2.C. Su identificación no se hereda de ITT-Z ni de ITT-G.
+
+**Rutas admisibles, a elegir y especificar antes de analizar:**
+
+- **A — intervención focal aleatorizada directamente:** asignación que implementa g_A1/g_A0 sobre el vector completo, con versiones/consistencia, soporte por historia, q* y r_common comunes, Outcome medido y ausencia/interferencia resueltas. La intervención manipula el vector definido; no es solo ofrecer una provisión que puede fallar.
+- **B — G como instrumento/encouragement:** requiere contrato IV separado: tratamiento focal, primera etapa pertinente, independencia, exclusión, monotonicidad cuando proceda, consistencia, interferencia y población estimanda local. No identifica automáticamente el ATE poblacional θ_A; podría identificar otro efecto local.
+- **C — identificación observacional/secuencial:** requiere historia suficiente, intercambiabilidad condicional secuencial, medición de confusores mediador–Outcome, positividad y método longitudinal preespecificado. No está disponible por defecto.
+
+**Verificable por Analyzer:** existencia de asignación/intervención focal observada; distribución y soporte empírico del vector por historia; positividad muestral; versiones; medición de coordenadas/cobertura; q* y r_common públicos/versionados; balance según diseño; primera etapa vectorial estimable; ruta declarada y certificados disponibles.
+
+**No verificable solo con datos observados:** exclusión de vías directas G→Outcome; ausencia de rutas colaterales ocultas; ausencia de confusión no medida; equivalencia causal G=g_A; régimen no focal realmente común en contrafactuales; ausencia de interferencia no medida. Requieren garantía del diseño/DGP, auditoría del mecanismo o sensibilidad. No se satisfacen por flags booleanos.
+
+**Estado del harness actual:** G cambia probabilísticamente las coordenadas de ΔT_acc* mediante provisión/umbrales; no garantiza asignación directa del vector completo. El Analyzer estima un contraste G bajo Z=0 y lo etiqueta focal mediante flags de exclusión/régimen común. Según Gate 73, eso es ITT_G|Z=0, no θ_A por defecto. No hay ruta implementada de intervención directa g_A ni contrato IV completo. El Analyzer actual no puede emitir IDENTIFIED para θ_A con la evidencia/contrato presentes; debe abstenerse de la atribución focal e informar ITT_G como estimando separado cuando sus condiciones propias estén acreditadas.
+
+### 16.227.5. Soporte, positividad y población objetivo
+
+La positividad se evalúa respecto de la intervención y unidad correctas:
+- ITT-Z: probabilidad positiva de ambos brazos Z en cada estrato/historia con masa positiva.
+- ITT-G|Z=0: probabilidad positiva de ambos brazos G dentro de Z=0 y cada estrato relevante.
+- θ_A: factibilidad/soporte de g_A1 y g_A0 sobre el vector completo para cada historia con masa positiva bajo q*.
+
+Distinguir:
+1. **Fallo estructural:** brazo/intervención imposible en una historia; falla identificación del estimando original.
+2. **Soporte observado vacío/escaso:** puede ser insuficiencia muestral o señal de violación; no se declara fallo estructural sin conocer el mecanismo, pero no se extrapola.
+3. **Soporte desconocido:** abstención o bounds solo si están formalizados.
+
+No se restringe silenciosamente q* a la intersección observada. Una población de solapamiento define otro estimando y debe declararse ex ante.
+
+### 16.227.6. Ausencia, medición e inferencia
+
+- Missingness de Outcome/covariables: registrar completitud, censura, motivo y brazo; nunca recodificar como cero. MAR/MCAR u otro mecanismo requiere declaración y justificación; los datos no prueban el supuesto por sí solos.
+- Error de medida de ΔT_acc*: requiere matriz de error/calibración identificada o medición ideal respaldada por protocolo. Sin ello, no sustituir vector verdadero por proxy observado ni declarar θ_A identificado.
+- Incertidumbre: estimación puntual no equivale a recuperación. Reportar error estándar/intervalo compatible con diseño; inferencia por cluster si UA es cluster y varianza que respete estratos/bloques. Cobertura/calibración se evalúan sobre repeticiones del benchmark, no en un único run.
+- N pequeño, celdas vacías o grados de libertad insuficientes producen INDETERMINATE, no intervalos artificialmente precisos.
+
+### 16.227.7. Taxonomía obligatoria de salida
+
+Por estimando:
+- **IDENTIFIED:** ruta preespecificada y evidencia/protocolo suficiente; estimación e incertidumbre compatibles con diseño.
+- **PARTIALLY_IDENTIFIED:** solo con conjunto identificado/bounds, supuestos, fórmula, cobertura y algoritmo implementados y validados. No disponible en el harness integrado actual.
+- **NOT_IDENTIFIED:** evidencia/diseño contradice una condición necesaria o demuestra violación estructural.
+- **INDETERMINATE:** no puede decidirse si las condiciones se cumplen; soporte, medición, seguimiento o certificados insuficientes.
+- **DESCRIPTIVE_ONLY:** contraste calculable sin garantías causales; etiqueta descriptiva, nunca efecto identificado.
+
+Puntuación separada:
+- abstención correcta cuando falta identificación;
+- falsa identificación cuando se emite IDENTIFIED y falla la ruta causal;
+- abstención excesiva en control positivo identificable;
+- falsa atribución focal al etiquetar ITT-G como θ_A;
+- bounds improcedentes sin conjunto identificado formal y validación.
+
+### 16.227.8. Diagnóstico del código existente y brechas
+
+La inspección estática de vcont_integrated_harness.py (blob 2dafb9cdc4a6e0b5b6d686acc74bdecc71dbead4) muestra:
+- AnalysisContract transporta booleanos (randomized_z/g, positivity, no_interference, measurement_identified, version_consistency, focal_direct_path_absent, common_nonfocal_regime) que el Analyzer trata como condiciones satisfechas sin verificar procedencia/certificado.
+- Los registros observados incluyen Z/G, estrato, cluster, S3, vector focal observado y versión; no incluyen protocolo completo de asignación, probabilidades individuales, bloques/semillas de asignación, certificados de consistencia ni mapa completo de exposición.
+- El Analyzer calcula ITT-Z por diferencia de medias por Z y contraste G dentro de Z=0; el segundo se etiqueta focal si pasan los flags.
+- positivity es global; no se comprueba por historia/estrato ni para el vector completo.
+- Se usan errores estándar de medias independientes; no se adapta inferencia a clusters/estratos. Interferencia no resuelta causa abstención, pero no existe estimador cluster/exposición.
+- El Outcome S3 es un proxy sintético del harness; estas reglas no acreditan Outcome/Value general TGCV.
+- Truth conserva potenciales Z×G, pero no potenciales separados bajo g_A1/g_A0. Evaluator compara el resultado focal con theta_access_truth, que Gate 73 identifica como ITT_G|Z=0.
+
+**Brecha:** el contrato de entrada confunde declaración con verificación y no separa condiciones observables, certificadas, asumidas y desconocidas. No se corrige en este gate.
+
+### 16.227.9. Dictamen y dependencias
+
+**Cerrado:** reglas de identificación por estimando; separación entre verificaciones observables, garantías de diseño y supuestos no testables; soporte por población/intervención; taxonomía de abstención; diagnóstico de insuficiencia del AnalysisContract actual.
+
+**Abierto antes de implementar:** (a) protocolo/certificados de asignación y unidad/estratos/interferencia; (b) observación/sellado de Outcome, vector focal, ausencia y versiones; (c) ruta de identificación de θ_A —intervención directa g_A o contrato IV/longitudinal independiente—; (d) q*, r_common y soporte por historia; (e) estimadores/varianzas por UA/estrato; (f) bounds antes de habilitar PARTIALLY_IDENTIFIED; (g) mapping de roles Gate 71 a condiciones/salidas sin ampliar roster.
+
+**Dictamen:** ESTIMAND_SPECIFIC_IDENTIFICATION_RULES_DEFINED / CONTRACT_FLAGS_NOT_EVIDENCE / ITT_Z_AND_ITT_G_REQUIRE_DESIGN_CERTIFICATION / THETA_A_NOT_IDENTIFIED_BY_CURRENT_G / SUPPORT_AND_INTERFERENCE_CHECKS_INCOMPLETE / BOUNDS_NOT_IMPLEMENTED / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** Gate 75 — reconciliar el ledger de celdas C1/C3 con las condiciones de identificación y las salidas de Gate 74: para cada rol existente, asignar ruta identificante, condiciones observables/certificadas/no testables, verdad separada y comportamiento Analyzer/Evaluator exigido. No crear escenarios ni parámetros; no implementar ni ejecutar.
