@@ -77,7 +77,7 @@ V_cont_truth es proporción de intervalos completamente conformes, no uptime exa
 
 ## 288. Crosswalk estructural D2–ΔT_acc*–g_A
 
-Referencia rectora: plan §16.199. La política D2 conserva potenciales separados W_programmed, W_attempt, receipt, S_install, C_dep*, A_f*, D_f*, T_acc*/ΔT_Tacc*, Reach/Π y etapas downstream. O-CONF y V_cont tienen truth separada. Ninguna etapa se presume exitosa por la anterior.
+Referencia rectora: plan §16.199. La política D2 conserva potenciales separados W_programmed, W_attempt, receipt, S_install, C_dep*, A_f*, D_f*, T_acc*/ΔT_acc*, Reach/Π y etapas downstream. O-CONF y V_cont tienen truth separada. Ninguna etapa se presume exitosa por la anterior.
 
 ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*); ΔE_T es epistémico. q_X* es historia basal común; q_L* solo si C4 exige intervención longitudinal. g_A1/g_A0 actúan sobre distribuciones factibles del cambio completo bajo q_X* y r_common explícito. No se equiparan a Z_D2: el ITT D2 es efecto total del paquete y el mapping D2→g_A no está demostrado. C4 no es una resta del ITT.
 
