@@ -424,6 +424,17 @@ class Analyzer:
             package, package_se = None, None
             package_status = "INDETERMINATE"
 
+        first_stage = None
+        if observed_v is not None:
+            focal_assign_rows = [row for row in evidence.rows if row["assignment_z"] == 0]
+            first_stage_values = []
+            for coordinate in range(4):
+                g0_d = [row["delta_t_acc_observed"][coordinate] for row in focal_assign_rows
+                        if row["assignment_g"] == 0]
+                g1_d = [row["delta_t_acc_observed"][coordinate] for row in focal_assign_rows
+                        if row["assignment_g"] == 1]
+                first_stage_values.append(mean(g1_d) - mean(g0_d))
+            first_stage = tuple(first_stage_values)
         if not contract.focal_direct_path_absent or not contract.common_nonfocal_regime:
             focal_reasons.append("FOCAL_EXCLUSION_OR_COMMON_REGIME_NOT_ESTABLISHED")
         if not focal_reasons and observed_v is not None:
@@ -445,10 +456,11 @@ class Analyzer:
         payload = {"run_id": evidence.run_id, "estimand_id": contract.estimand_id,
                    "package_status": package_status, "focal_status": focal_status,
                    "package_itt": package, "focal_effect": focal,
+                   "first_stage_delta_t_acc": first_stage,
                    "package_se": package_se, "focal_se": focal_se,
                    "reasons": list(reasons), "input_sha256": evidence.sha256}
         return AnalyzerResult(evidence.run_id, contract.estimand_id,
-            package_status, focal_status, package, focal, package_se, focal_se,
+            package_status, focal_status, package, focal, first_stage, package_se, focal_se,
             reasons, evidence.sha256, _hash(payload))
 
 
@@ -461,6 +473,7 @@ class Evaluator:
             "run_id": result.run_id, "estimand_id": result.estimand_id,
             "package_status": result.package_status, "focal_status": result.focal_status,
             "package_itt": result.package_itt, "focal_effect": result.focal_effect,
+            "first_stage_delta_t_acc": result.first_stage_delta_t_acc,
             "package_se": result.package_se, "focal_se": result.focal_se,
             "reasons": list(result.abstention_reasons), "input_sha256": result.input_sha256,
         }
