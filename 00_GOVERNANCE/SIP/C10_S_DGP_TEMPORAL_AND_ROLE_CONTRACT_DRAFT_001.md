@@ -1263,3 +1263,16 @@ Para cada mecanismo se modelan fase, lag, pérdida, cobertura, falsos positivos/
 ## 52. Horizonte común y última transición causal (2026-11-12)
 
 t_last,i denota la última transición efectiva de cada UE; t_last^max=t_c,max es el límite superior común del soporte de transiciones causales posibles entre brazos/escenarios. Para preservar una ventana común y ex ante, T*=t_last^max+τ_follow, no t_last,i+τ_follow calculado retrospectivamente por unidad. El seguimiento desde la última transición de cada UE hasta T* permite observar persistencia; los episodios activos al cierre quedan terminales/censurados. Si no se puede acotar el soporte de transiciones, T* no se considera cerrado.
+
+
+## 53. Crosswalk temporal con perfiles DGP y P182/P183 (2026-11-12)
+
+El dominio temporal no crea escenarios nuevos: se instancia dentro de los perfiles ya definidos en el ledger maestro (§16.188.4). Los controles de truth estable, nulo/primera etapa nula y señal espuria prueban que Analyzer no invente variación; fallo por etapas separa provisión/instalación de incumplimiento B1 efectivo; focal adverso introduce interrupción funcional; medición adversarial varía duración, fase, captura, lag, pérdida, error correlacionado y diferencial; soporte/interferencia/versionado prueba canales compartidos y timestamps; O/V no discriminables contrasta trayectorias temporales con estado terminal equivalente y viceversa.
+
+S3 se parametriza como snapshots/métricas, logs/trazas/eventos runtime o híbrido, siempre dentro del mismo canal lógico pasivo. No se presupone periodicidad, captura event-driven, independencia ni completitud. Las variantes se contrastan como configuraciones del mecanismo, no como fuentes independientes.
+
+Se reutilizan P182-07/08 para error de medición, P182-11/12 para firewall y trazabilidad, P183-01/02 para taxonomía/mecanismo de ausencia, P183-04 para no observado≠cero, P183-07/10 para selección/pérdida diferencial y sensibilidad, P183-09/11 para censura/bounds, y P182-04/10 para discriminación Outcome/Value. No se crean IDs de pruebas.
+
+El Analyzer emite estimación puntual solo si el canal identifica; en otro caso bounds o abstención. Evaluator abre truth después del sellado. Ninguna cobertura documental es PASS técnico.
+
+**Estado:** EXISTING_SCENARIOS_REUSED / P182_P183_MAPPED / S3_CHANNEL_VARIANTS_NOT_CALIBRATED / NO_NEW_TESTS / NOT_EXECUTED.
