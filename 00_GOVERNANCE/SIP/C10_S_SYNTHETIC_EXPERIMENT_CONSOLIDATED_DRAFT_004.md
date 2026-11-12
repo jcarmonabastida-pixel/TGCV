@@ -36,3 +36,12 @@ El DGP acota cinco familias causales: ENABLED/PROFILE efectivos; proceso/módulo
 Se separa δ_det, dominio mínimo de duración para el que S3 demuestre detección tras calibración, de cualquier duración funcional: δ_det no cambia truth ni crea tolerancia. Para episodios no detectables o cobertura insuficiente, Analyzer debe producir bounds/abstención. Δ, cadencia/resolución S3 y δ_det son distintos. t_last es la última transición causal, incluida recuperación final; T*=t_last+τ_follow. Episodio activo en T* queda terminal/censurado, no recuperado por imputación.
 
 Unidad normalizada, δ_det, Δ, τ_follow, T* y K permanecen abiertos para derivación conjunta. No se generan datos ni se ejecuta código, simulación, calibración o validación. No Design Freeze; scientific_execution=false; execution_authorized=false.
+
+
+## 283. Reconciliación temporal integrada: reloj normalizado y captura S3 (2026-11-12)
+
+Se incorpora la derivación rectora del plan §16.195. El reloj es adimensional: W_c=t_c,max−t0 representa el soporte común de transiciones causales; x=(t−t0)/W_c, t0=0 y t_c,max=1. No equivale a una duración física ni a t9/H. La cola común ρ_follow=τ_follow/W_c sigue OPEN y T*=1+ρ_follow.
+
+Las duraciones de episodio d_e, la resolución/cadencia S3, Δ de adjudicación y la cola de seguimiento son magnitudes separadas. S3 conserva cinco componentes pasivos y se modela bajo snapshots/métricas, logs/trazas/eventos e híbrido, sin presuponer periodicidad, completitud, captura event-driven o independencia. La detectabilidad se representa primero como curva conjunta por duración, fase, familia y versión; δ_det puntual requiere umbral p* aprobado. d_min,DGP es límite del soporte del benchmark, nunca mínimo funcional ni gracia. DEC-C10-102 sigue aplicándose sin excepción; falta de detección implica bounds/abstención, no continuidad.
+
+K/Δ se derivan por recuperación/aliasing y divisibilidad exacta; ρ_follow por soporte de recuperación/persistencia. No se fijan parámetros numéricos ni se ejecuta calibración. No Design Freeze; scientific_execution=false; execution_authorized=false.
