@@ -1311,3 +1311,14 @@ W_programmed es prescripción D2, no asignación ni cumplimiento. W_attempt, rec
 q_X* es historia basal conjunta común y pre-Z; Need_preZ no filtra cohorte. q_L* solo entra si se necesita una estrategia longitudinal para C4. g_A1/g_A0 intervienen sobre distribuciones factibles del ΔT_acc* completo bajo la misma q_X* y un r_common explícito. D2 ITT es efecto total del paquete; D2→g_A no está demostrado. C4 no es ITT−θ_A. Las vías directas, colaterales, alternativas, interacciones e interferencia se declaran por escenario, no se asumen ausentes.
 
 Las funciones y distribuciones de cumplimiento, recepción, instalación, dependencias, q_X*, g_A, r_common, ΔX*, vías colaterales y soporte permanecen OPEN. No se asignan tasas históricas (.25/.80, s=.80), no se importan parámetros P178, no se ejecuta ni se congela.
+
+
+## 57. Funciones estructurales, baseline q_X* y mapping ΔX* (2026-11-12)
+
+Referencia rectora: plan integrado §16.200. La tabla funcional conserva Z→W_programmed→W_attempt→receipt→S_install→C_dep*→A_f*/D_f*→T_acc*/ΔT_acc*→Reach/Π→trayectoria; O-CONF y V_cont tienen truth separada. Para D2, W_programmed(z)=z; W_attempt, recepción, instalación y éxito técnico conjunto son funciones distintas, sin independencia ni valores por defecto. C_dep* se deriva de los componentes técnicos vigentes. A_f* conserva sus predicados constitutivos; C_auth,base no se colapsa con C_dep* ni se incorpora a q_X* mientras su invariante no esté adjudicado.
+
+q_X* es historia basal conjunta común. X/H0 son núcleo candidato; C_c solo con mapping; F_alt,0 modifica P*_F sin excluir P*_τ2; E/App son condiciones de marco; C_dep,0=A_f,0*=0 son estipulaciones del núcleo limpio, no distribución externa. L_m,0 solo entra si su papel basal se justifica. Need_preZ/S7 no genera ni filtra q_X*. Variables post-Z quedan fuera.
+
+ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*); ΔE_T es epistémico. ΔX* se adjudica campo a campo: U/R/C si transformación/relación/regla; X solo para contexto efectivo constitutivo restante; E_T si es evidencia. Campos mixtos se descomponen y los irresolubles quedan ?. No se aprueba aún un listado físico de campos ΔX*.
+
+Las funciones estructurales y distribuciones permanecen sin parámetros numéricos. No se crea schema físico ni se ejecuta.
