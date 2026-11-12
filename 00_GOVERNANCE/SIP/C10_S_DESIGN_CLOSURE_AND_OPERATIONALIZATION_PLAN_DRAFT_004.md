@@ -5189,3 +5189,81 @@ La pregunta «¿está definido el universo finito y sus mecanismos generadores?�
 No se reabre D2 primario candidato/D1 secundario ni DEC-C10-066/067, 099–102. No se generan mundos/datos, no se programa ni ejecuta, no se ejecutan validadores, no se calcula potencia ni se declara Design Freeze. scientific_execution=false; execution_authorized=false.
 
 **Dictamen:** FINITE_WORLD_ROSTER_AND_GENERATOR_CONTRACT_INTEGRATED_CANDIDATE / QUANTITATIVE_DGP_NOT_CLOSED / DESIGN_FREEZE_NOT_READY / NO_IMPLEMENTATION / NO_EXECUTION.
+
+
+## 16.209. Adjudicación integrada del núcleo basal, unidad experimental y soporte D2 (2026-11-12)
+
+**Estado:** reconciliación de arquitectura y contrato candidato; no aprobación de parámetros, no materialización, no Design Freeze. Precedencia: DEC-C10-066/067, DEC-C10S-C1-POPULATION-PRECEDENCE-001, crosswalk C1.3 §§6–10, reconciliación D2 asignación/población/soporte §§3–10, contrato DGP §§26, 57 y 59, y reconciliación PB material/isolation. Este apartado consolida decisiones ya existentes y precisa el diseño sintético; no crea otra secuencia C1 ni otro inventario.
+
+### 16.209.1. Núcleo basal: lo fijado y lo que no debe reabrirse
+
+| Elemento | Adjudicación para el DGP C10-S | Estado |
+|---|---|---|
+| Población objetivo C1 | P*_{τ2} primaria candidata; P*_F secundaria para apertura funcional exclusiva | PRECEDENCIA ACCEPTED; composición OPEN |
+| Autorización normativa basal | C_auth,base=1 común, pre-Z e invariante bajo D2; corresponde a AUTH_f* y no es un segundo factor | ACCEPTED DESIGN CONDITION; no reabrir |
+| Dependencia técnica basal | C_dep,0=0 como condición separada de P*_{τ2}; no implica por sí sola A_f,0*=0 | REQUIREMENT DEFINED; truth por unidad OPEN |
+| Accesibilidad focal basal | A_f,0*=0, adjudicada con la conjunción completa ID/REL/COND/AUTH/RES/DEP/¬BLOCK | REQUIREMENT DEFINED; truth/mapping por unidad OPEN |
+| Aplicabilidad | App*(τ2,S0) es distinta de accesibilidad y de ruta realizable | CANDIDATE COMPONENT OF E_i; NOT ACCEPTED |
+| E_scope | Gate de alcance/validez del universo DGP; no filtro adicional dentro del universo si todas las unidades se generan dentro de alcance | INTERPRETATION RECONCILED; roster/IAM OPEN |
+| Alternativas basales | F_alt,0 solo determina pertenencia a P*_F; no excluye de P*_{τ2} | ACCEPTED PRECEDENCE |
+| Need_preZ / E_req_preZ | Necesidad B1 y admisión de petición, respectivamente; no son elegibilidad experimental | SEPARATION REQUIRED |
+| C_other | No se recupera ni se introduce como comodín | SUPERSEDED / EXCLUDED |
+
+La composición E_i=E_scope,i ∧ App*(τ2,S0_i) continúa siendo propuesta no aceptada. En mundos sintéticos cuya frontera se define íntegramente dentro del dominio, E_scope=1 puede fijarse por construcción como condición del marco, pero esto no ratifica la composición universal de E_i ni autoriza a clasificar unidades reales. App debe permanecer explícita y separada de A_f*. La población objetivo sigue siendo la definición aceptada P*_{τ2}={i:E_i=1,C_dep,i0=0,A_f,i0*=0} hasta que se resuelva formalmente E_i.
+
+**Regla basal que evita una falsa equivalencia:** en cada mundo se debe declarar qué predicado o mecanismo hace verdadera la inaccesibilidad focal basal. No se deduce A_f,0*=0 de C_dep,0=0; tampoco se deduce desde ausencia de evidencia, Need_preZ, fallo de instalación o ausencia de ruta observada. En el mundo focal limpio puede estipularse ruta técnica única y predicados no técnicos invariantes, de modo que DEP_f,0*=0 explique la inaccesibilidad; esa estipulación no se transporta a R1/R2 ni a los mundos adversariales.
+
+### 16.209.2. q_X*: definición funcional sin inventar distribución
+
+Se conserva q_X* como distribución conjunta objetivo de la historia basal pre-Z dentro de P*_{τ2}, no como probabilidad de asignación ni como intervención mediadora:
+
+q_X* = Law(X,H0,C_c | i ∈ P*_{τ2}).
+
+- X,H0 son el núcleo candidato de historia basal.
+- C_c es el vector de condiciones basales no focales que el DGP necesita para definir factibilidad, heterogeneidad, soporte y potenciales. Cada campo se incorpora una sola vez, con ID, tiempo, versión y papel causal/medición declarado; no se agregan comodines ni duplicidades.
+- C_auth,base=1 se trata como condición de diseño común fijada, no como variable aleatoria que se muestrea en q_X*. AUTH_f* sigue siendo término de A_f* y toma el valor común estipulado en el DGP aislado. Si un mundo adversarial cambia autorización, debe identificarse expresamente como intervención/violación de invariancia, no como variación inadvertida de q_X*.
+- Recursos, capacidad, información, dominio y otras condiciones pueden aparecer en la historia basal si son necesarias; su representación en q_X* no crea predicados adicionales ni permite doble contabilización entre E_i, C_dep, A_f*, C_c y vías colaterales.
+- F_alt,0 se conserva para definir P*_F y heterogeneidad; no condiciona q_X* de la población primaria P*_{τ2}, salvo que un estimando secundario se defina expresamente en P*_F.
+- Variables post-Z, incluida L_m inducida por Z, no entran en q_X*. q_L* solo se introduce para C4 si la estrategia longitudinal lo exige.
+
+La expresión anterior define el objeto estadístico, no su distribución empírica/sintética material. Siguen OPEN su soporte, masa, dependencias, pesos, estratos y cobertura. No se asignan valores ni distribuciones paramétricas en este paso.
+
+### 16.209.3. Unidad y asignación: regla para mundos limpios y adversariales
+
+Se fija la siguiente arquitectura de unidades, compatible con UE/UA/UO:
+
+1. **UE:** instancia sintética completa, con identidad y versión propias.
+2. **UA:** entidad a la que el mecanismo asigna Z; se declara por mundo, no se infiere de B1.
+3. **UO:** observaciones repetidas de una UE a través de t−1…t9; no son unidades independientes ni incrementan N.
+4. **Mundo focal limpio/aislado:** candidato de diseño UA=UE, asignación individual a nivel de instancia, con no-interferencia estipulada por construcción: sin recursos, agentes, estado, información, infraestructura, canales compartidos ni carryover entre UE. Esta estipulación pertenece a la verdad del mundo sintético y debe ser comprobable por Generator/Evaluator; no se presenta como evidencia de aislamiento material PB.
+5. **Mundos de interferencia:** UA será el clúster o se declarará un mapa de exposición G_i(Z_{-i}) y potenciales Y_i(z_i,g_i). El Analyzer no recibirá supuestos SUTVA por defecto. Si no se especifica clúster/mapa suficiente, el estimando individual será NOT_IDENTIFIED/INDETERMINATE.
+6. **Asignación:** el Generator implementará una regla de asignación coherente con UA y estratos pre-Z. Para el contraste ITT-D2, ambos brazos deben tener probabilidad positiva en cada estrato/historia incluida (0 < p_i < 1, o el análogo por clúster). La aleatorización, cuando se use, será independiente de los potenciales según el diseño declarado. Ratio, p_i concretos, algoritmo, semilla, bloques, N y provenance quedan abiertos hasta cerrar roster y soporte.
+
+Esta arquitectura permite probar por separado recuperación bajo aislamiento y abstención/robustez bajo interferencia, sin convertir la unidad observacional en unidad experimental ni imponer factorial completo.
+
+### 16.209.4. Soporte y factibilidad de D2
+
+Para cada historia con masa positiva bajo q_X*, ambas políticas B_g0^D2 y B_g1^D2 deben ser materialmente factibles y el mecanismo de asignación debe permitir ambos brazos en la UA correspondiente. La regla de política ya aceptada es W_programmed(z)=z; no fija W_attempt, recepción, instalación, C_dep*, A_f*, D_f* ni éxito técnico.
+
+Si una historia no admite una de las políticas, no se fuerza una asignación imposible: se restringe ex ante la población/soporte con nuevo estimando justificado o se declara el contraste no identificado para esa región. No se extrapola fuera del soporte común. El cumplimiento, intento de fondo y éxito técnico se mantienen como mecanismos separados; no se introducen tasas históricas ni parámetros P178.
+
+### 16.209.5. Puerta de cierre material y estado de los subproblemas
+
+| Subproblema | Dictamen |
+|---|---|
+| Precedencia P*_{τ2}/P*_F | CLOSED AT ARCHITECTURE LEVEL; no reabrir |
+| C_auth,base / AUTH_f* | CLOSED AS COMMON D2 DESIGN INVARIANT; no reabrir |
+| Separación E_i / App / C_dep,0 / A_f,0* / F_alt,0 / Need_preZ | CLOSED SEMANTICALLY; E_i composition remains NOT ACCEPTED |
+| q_X* object and role | DEFINED SYMBOLICALLY; distribution/support NOT MATERIALIZED |
+| UE/UA/UO semantics | RECONCILED |
+| UA=UE in isolated synthetic world | DESIGN CANDIDATE BY CONSTRUCTION; not material PB evidence |
+| Cluster/exposure in adversarial worlds | REQUIRED WHEN INTERFERENCE IS PRESENT; concrete map OPEN |
+| Randomization and positivity | REQUIREMENTS DEFINED; probabilities/algorithm/seed/strata/N OPEN |
+| Baseline truth/evidence and IAM snapshots | NOT MATERIALIZED; no unit-level adjudication |
+| D2 common support/factibility | OPEN; no identification claim |
+
+La única operación siguiente dentro de este núcleo no es volver a discutir C_auth, la precedencia poblacional ni la semántica UE/UA/UO. Es completar el crosswalk lógico de E_i/App/C_dep,0/A_f,0* con el IAM/C_SRC sintético por unidad y después declarar el soporte de q_X* por mundo. Si el roster/IAM no existe todavía, el resultado válido es una matriz de campos y estados pendientes, no datos ficticios ni un supuesto de cobertura.
+
+No se captura ni sella IAM real, no se crean schemas físicos ni fixtures, no se generan mundos/datos, no se programa, simula, estima ni ejecuta. No se eligen N, ratio, α, potencia, R, pesos, probabilidades o parámetros. scientific_execution=false; execution_authorized=false.
+
+**Dictamen:** BASELINE_AND_UNIT_ARCHITECTURE_RECONCILED / C_AUTH_INVARIANT_REUSED / Q_X_SYMBOLIC_ONLY / UE_UA_CONDITIONAL_DESIGN_SPECIFIED / SUPPORT_AND_E_I_MATERIALIZATION_OPEN / NOT_DESIGN_FROZEN / NO_IMPLEMENTATION / NO_EXECUTION.
