@@ -296,3 +296,12 @@ La definición funcional de trabajo, las reglas de adjudicación 1/0/? y la envo
 Este artefacto tiene precedencia para la especificación documental de Need_preZ y sus reglas de evidencia. Actualiza la lectura de §13: la operación mínima de servicio ya no permanece completamente abierta, pues el usuario aceptó como contrato de trabajo la admisión conforme a ENABLED y la exposición de PROFILE. Siguen abiertos el contenido de la solicitud, el procesamiento posterior y la semántica diferenciada de STANDARD/READ_ONLY.
 
 El cierre es documental, no material: no hay roster ni evidencia observada por UE con cobertura demostrada. La consecuencia B1 está estructurada, pero no medida ni valorada. No se seleccionan dimensiones V_j ni horizonte. No se modifica DEC-C10-068, no se congela el DGP ni se autoriza implementación o ejecución.
+
+
+## 13. Precedencia del contrato funcional B1 y su relación con V_cont (2026-11-12)
+
+La formulación de §4 que describía la operación concreta como todavía no identificada queda precisada por el contrato B1 de Need_preZ, versión vigente, §2: el objetivo es mantener disponible en destino un servicio capaz de admitir solicitudes conforme al estado declarativo ENABLED y exponer el PROFILE operativo declarado. La función del servicio, por tanto, sí está definida a nivel del contrato sintético. Puede permanecer abstracto el contenido de negocio de la solicitud o el contenido específico del perfil; no se añade otra operación para cerrar el constructo.
+
+La truth de V_cont se refiere al cumplimiento temporal de esa función (admisión cuando ENABLED=true, no admisión cuando ENABLED=false, y exposición del PROFILE aplicable), no a la existencia de Need_preZ, la ocurrencia de la oportunidad estandarizada ni su resultado. La selección provisional de V_cont se rige por DEC-C10-099. Su medición S3 y los límites de identificación se rigen por el plan §16.182; la frontera y los contrastes frente a F*/O-CONF se rigen por §16.183.
+
+Esta precisión supera el estado histórico NEED_CONTENT_OPEN solo en cuanto a la función de servicio definida. No instancia perfiles materiales, roster, solicitud de negocio, instrumento, agregación, ventana, O-CONF ni criterio final de valoración. Se mantiene `V_CONT_SELECTED_PROVISIONALLY / FUNCTIONAL_REFERENCE_SPECIFIED / MEASUREMENT_CONDITIONAL / O_CONF_NOT_OPERATIONALIZED / NO_DESIGN_FREEZE`.
