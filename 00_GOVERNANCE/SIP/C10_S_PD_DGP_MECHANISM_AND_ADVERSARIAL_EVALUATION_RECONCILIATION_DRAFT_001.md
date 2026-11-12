@@ -144,3 +144,10 @@ Referencia rectora: plan integrado DRAFT004 §16.188. Este addendum propaga su r
 7. Orden de cierre: semántica B1/reloj; soporte/unidad/asignación/interferencia; funciones estructurales y observación; escenarios/contrastes; criterios normativos; y solo después calibración conjunta N–asignación–clúster–R–SE_MC.
 
 **Dictamen:** DGP_STRUCTURAL_SKELETON_RECONCILED / PARAMETER_LEDGER_UNPOPULATED / SCENARIOS_SPECIFIED_NOT_INSTANTIATED / VCONT_WINDOW_K_BLOCKED_BY_B1_SEMANTICS / CALIBRATION_NOT_RUN / NOT_DESIGN_FROZEN. No implementación, fixtures, generación, simulación, estimación ni ejecución autorizadas. scientific_execution=false; execution_authorized=false.
+
+
+## 13. Registro paramétrico temporal integrado (2026-11-12)
+
+Se incorpora el ledger temporal del plan §16.198 sin modificar el esqueleto causal PD ni cerrar parámetros no justificados. El soporte de episodios, inicio, duración, recurrencia, recuperación, fase/cadencia S3, emisión/captura, lag, pérdida, error y dependencia conjunta se declara por escenario y versión. El Generator crea truth de estados/transiciones; A_B1 se deriva con DEC-C10-102; S3 se genera después como observación imperfecta; Analyzer permanece cegado y Evaluator compara tras sellado.
+
+La verdad de V_cont es la proporción de intervalos completamente conformes, no la fracción exacta de tiempo disponible. La duración mínima del soporte DGP no es una tolerancia funcional. p*, δ_det, Δ, K, ρ_follow, distribuciones, N, asignación y criterios de error permanecen OPEN. Se reutilizan perfiles y P177/P178/P179/P182/P183; no se crean tests ni se ejecuta calibración.
