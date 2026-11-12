@@ -2437,3 +2437,18 @@ La revisión histórica de §§16.141–16.147, 16.160–16.165, 16.173–16.174
 **Dictamen:** GATE66_CORRECTED_HISTORICAL_PRECEDENCE / B1_BENEFICIARY_AND_VCONT_RULE_REUSED / VALUE_SEMANTICS_NOT_REOPENED / TEMPORAL_S3_AND_CAUSAL_IDENTIFICATION_GAPS_RETAINED / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** cerrar conjuntamente la cuadrícula de efectos del DGP y el contrato de identificación/soporte ITT-D2/θ_A, reutilizando C1/C-MED/MAP; no reabrir Value, B1 ni V_cont. Se mantienen scientific_execution=false y execution_authorized=false.
+
+
+## 68. Gate 68 — identificación/soporte C1–C3 y estructura de cuadrículas (2026-11-12)
+
+Se cierra estructuralmente el gate ordenado por §67 mediante el plan integrado §16.222 y su propagación a C1 §19.
+
+- **C1 ITT-D2(V_cont):** cada mundo sintético define la cohorte finita pre-Z por truth basal; el mundo limpio puede estipular sus unidades dentro de la población candidata P*τ2 sin ratificar una fórmula universal E_i. Identificación exige aleatorización en UA, positividad por estrato/historia, consistencia/versiones, interferencia resuelta y observación compatible. Es efecto total del paquete.
+- **C3 θ_A:** se prueba directamente mediante g_A1/g_A0 sobre ΔT_acc* completo, bajo q_X* común y r_common explícito. Requiere factibilidad/soporte de ambas políticas en cada historia con masa positiva. No se deduce de ITT ni se presupone mapping D2→g_A.
+- **Cuadrículas:** se separan G_ITT y G_A. Incluyen nulo, signos positivo/negativo, señal débil, niveles más amplios, heterogeneidad y desacoplamiento entre efecto de paquete y focal. Se parametrizan sobre el rango factible de V_cont; κ y valores exactos permanecen abiertos.
+- **No identificación:** falta de soporte, vía no focal diferencial no separada, interferencia no mapeada o canal insuficiente llevan a bounds/abstención, nunca a extrapolación o atribución automática.
+- **C4/LATE_f** conservan contratos independientes; C2 son primeras etapas, no efectos de Value.
+
+**Dictamen:** ITT_AND_THETA_A_IDENTIFICATION_SUPPORT_CONTRACT_CLOSED_STRUCTURALLY / SEPARATE_EFFECT_GRIDS_DEFINED / NUMERIC_GRID_AND_SUPPORT_OPEN / D2_TO_GA_MAPPING_NOT_DEMONSTRATED / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** ledger paramétrico mínimo de las celdas ya definidas y r_common por clase de mundo, reutilizando el inventario existente. No abrir nuevos documentos ni reabrir Value/V_cont. Se mantienen scientific_execution=false, execution_authorized=false; PR #116 Draft; main intacta.
