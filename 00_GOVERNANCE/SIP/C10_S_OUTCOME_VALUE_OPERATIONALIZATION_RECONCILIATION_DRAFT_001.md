@@ -269,3 +269,13 @@ La agregación no ponderada K^-1 sum A_B1(i,k) sigue CANDIDATE/OPEN y solo serí
 El P178 clean replay audit 001 cierra la reproducibilidad computacional de un benchmark metodológico acotado (27 celdas, N=700, R=10.000/celda, 270.000 invocaciones, 17/17 tests, artefactos primario/replay byte-idénticos). No es el DGP confirmatorio C10-S, no es validación general del Analyzer y no cubre medición adversarial/no-identificación/interferencia/soporte fallido/rutas directas. Sus N, ratio, R y parámetros no se transfieren. No se repite el replay.
 
 O-CONF permanece ficha §224 parcial, oráculo no implementado/no validado y selección confirmatoria no resuelta. La discriminación V_cont/O-CONF no está verificada. No se declara Outcome ni Value confirmatorio; no Design Freeze, implementación o ejecución.
+
+
+
+## 22. DEC-C10-100 — aceptación provisional de escala temporal V_cont (2026-11-12)
+
+Tras DEC-C10-099 (selección de dimensión), se acepta expresamente la regla inicial de agregación de la truth sintética: V_cont_truth(i)=(1/K)Σ_k A_B1(i,k), con K intervalos de igual duración en una rejilla/ventana post-Z común preespecificada. A_B1(i,k)=1/0 por estipulación funcional positiva; ? permanece desconocido. Con intervalos ?, Evaluator conserva bounds [n1/K,(n1+n?)/K], sin imputación a cero ni eliminación del denominador.
+
+La decisión cierra la regla de agregación, no K, frecuencia, duración, inicio/fin, transitorios, baseline, MDE ni canal. El estimando es nivel post-Z; baseline no se resta automáticamente. S3 permanece vector de señales imperfectas y no se promedia para sustituir truth. Estimación puntual exige modelo de medición identificable con información permitida al Analyzer; en otro caso, bounds/abstención.
+
+DEC-C10-100 está registrada en 00_GOVERNANCE/decisions/DEC-C10-100_V_CONT_EQUAL_INTERVAL_TEMPORAL_AGGREGATION_ACCEPTANCE.md. La validez de medición, discriminación O-CONF/F*, identificación y calibración continúan abiertas. No se declara V_cont endpoint confirmatorio validado ni Design Freeze. No autoriza implementación, generación, simulación o ejecución.
