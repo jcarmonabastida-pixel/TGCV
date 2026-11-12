@@ -2452,3 +2452,18 @@ Se cierra estructuralmente el gate ordenado por §67 mediante el plan integrado 
 **Dictamen:** ITT_AND_THETA_A_IDENTIFICATION_SUPPORT_CONTRACT_CLOSED_STRUCTURALLY / SEPARATE_EFFECT_GRIDS_DEFINED / NUMERIC_GRID_AND_SUPPORT_OPEN / D2_TO_GA_MAPPING_NOT_DEMONSTRATED / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** ledger paramétrico mínimo de las celdas ya definidas y r_common por clase de mundo, reutilizando el inventario existente. No abrir nuevos documentos ni reabrir Value/V_cont. Se mantienen scientific_execution=false, execution_authorized=false; PR #116 Draft; main intacta.
+
+
+## 69. Gate 69 — ledger paramétrico mínimo y régimen común por mundo (2026-11-12)
+
+Se cierra estructuralmente el esquema del ledger previsto en §68 y desarrollado en el plan integrado §16.223. No se reabren Value, B1, V_cont, S3/S7 ni los contratos temporales.
+
+- Se distinguen P_w (cohorte C1), q_X* (historias basales C3), Z/pi_h (asignación en UA) y g_A0/g_A1 (intervenciones directas sobre DeltaT_acc*). No se igualan ni se presupone mapping D2→g_A.
+- Se establece un ledger por celda con identidad/versionado, estimando, población, asignación, intervención, cuadrícula de efecto, funciones activas, invariantes, estado r_common, soporte, interferencia, perfil S3, identificación del oráculo, información del Analyzer y criterio de aceptación.
+- Se declara r_common por clase del roster existente: focal limpio, nulos, fallo de etapas, focal adverso, alternativas R1/R2, vía directa, heterogeneidad, IV adversarial, interferencia, observación adversarial y soporte/censura. Una vía no focal puede estar activa y ser común; si cambia diferencialmente sin identificación separada, no hay atribución focal puntual.
+- Los potenciales focales comparten historia y exógenas pareadas; no se resortea unidad ni se presume independencia. Los canales S3 se comparan con truth constante.
+- Quedan abiertos los valores de q_X*, pi_h, kernels g_A, κ, funciones/exógenas, mapas de interferencia, parámetros S3 y N/R. No se inventan cifras ni se inicia calibración.
+
+**Dictamen:** PARAMETER_LEDGER_SCHEMA_AND_R_COMMON_RULES_CLOSED_STRUCTURALLY / EXISTING_WORLD_ROSTER_REUSED / CELL_LEVEL_MATERIALIZATION_OPEN / NUMERIC_PARAMETERS_OPEN / D2_TO_GA_MAPPING_NOT_DEMONSTRATED / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** auditoría de cobertura mínima del roster existente por C1/C3: positivos identificables, nulos, falsadores de falsa atribución, bounds/abstención y huecos. Reutilizar §16.211, sin ampliar el roster por defecto. `scientific_execution=false`; `execution_authorized=false`; PR #116 Draft; main intacta.
