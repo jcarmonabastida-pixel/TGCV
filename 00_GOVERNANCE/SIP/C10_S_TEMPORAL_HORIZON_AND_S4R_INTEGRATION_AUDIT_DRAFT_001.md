@@ -152,3 +152,14 @@ El canal S3 pasivo existente se evalúa bajo tres mecanismos: snapshots/métrica
 ## 13. Horizonte común y reconciliación de t_last (2026-11-12)
 
 Se distingue t_last,i (última transición efectiva de una unidad) de t_last^max=t_c,max (límite superior ex ante del soporte de transiciones posibles en todos los brazos/escenarios). La ventana confirmatoria común termina en T*=t_last^max+τ_follow, no en un extremo retrospectivo específico de cada unidad. Esto conserva seguimiento comparable y evita que el horizonte dependa de eventos post-Z observados. Un episodio activo en T* permanece terminal/censurado; si el soporte de transiciones no puede acotarse ex ante, T* sigue OPEN.
+
+
+## 14. Crosswalk de escenarios temporales y contratos de medición (2026-11-12)
+
+Los episodios temporales se alojan en los perfiles DGP ya existentes (§16.188.4), sin abrir una batería nueva: control de truth estable/señal espuria; fallo por etapas de provisión/instalación; interrupción B1 funcional; vía colateral de observabilidad diferencial; interacción por fase/duración/cobertura; medición adversarial con pérdida y dependencia; soporte/interferencia/versionado; y discriminación entre secuencia V_cont y O-CONF terminal.
+
+S3 se contrasta bajo snapshots/métricas, logs/trazas/eventos e híbrido como mecanismos del mismo canal pasivo. Se conservan fase, retardo, pérdida, cobertura, validez, error y dependencia conjunta. No se presume independencia ni completitud.
+
+Se reutilizan P182-07/08/11/12, P183-01/02/04/07/09/10/11 y P182-04/10, junto con MEAS/MISS existentes. No se crean IDs ni se afirma implementación/ejecución. La salida es estimación solo si identificada; si no, bounds o abstención. La verdad se abre únicamente tras sellado del Analyzer.
+
+**Estado:** TEMPORAL_SCENARIOS_MAPPED_TO_EXISTING_PROFILES / NO_NEW_TESTS / NOT_EXECUTED.
