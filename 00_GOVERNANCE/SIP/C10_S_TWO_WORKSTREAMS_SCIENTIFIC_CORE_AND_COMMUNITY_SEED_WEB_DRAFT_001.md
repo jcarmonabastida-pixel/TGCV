@@ -83,7 +83,7 @@ La lista no es un alcance aprobado. La interacción debe subordinarse a la exact
 
 ### Coherencia científica
 
-El playground debe derivarse de los mismos contratos, variables, reglas y escenarios de C10-S. No debe crear una capa semántica persistida paralela, simplificar constructos ni introducir un motor de decisión distinto. Debe mantener las distinciones entre sistema/estado y espacio transformacional; accesibilidad/aplicabilidad/Reach/selección/ejecución; estados 1/0/?; snapshots, identidad, versiones y dependencias; Outcome y Value. Cada elemento visual debe corresponder a una definición y versión identificables.
+El playground debe respetar los contratos, variables y distinciones semánticas de TGCV/C10-S, pero no se presupone que el motor experimental sintético sea suficiente como motor operativo completo. Podrá reutilizar componentes compatibles del núcleo y requerir una capa operativa diferenciada para escenarios más desarrollados, simulación interactiva y exploración de trayectorias. No debe crear definiciones semánticas contradictorias ni presentar una demo como evidencia causal. Debe mantener las distinciones entre sistema/estado y espacio transformacional; accesibilidad/aplicabilidad/Reach/selección/ejecución; estados 1/0/?; snapshots, identidad, versiones y dependencias; Outcome y Value. Cada elemento visual debe corresponder a una definición y versión identificables.
 
 El playground mostrará consecuencias de escenarios modelados: la visualización no demuestra que el modelo sea verdadero ni acredita causalidad en sistemas reales.
 
