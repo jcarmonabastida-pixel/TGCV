@@ -214,3 +214,18 @@ El conjunto debe discriminar: efecto de paquete D2; contribución causal conocid
 O-CONF, V_cont y Value no se intercambian. Value queda pendiente de PA; por tanto, no se declara cerrado el DGP confirmatorio de Value ni se sustituye por O-CONF/V_cont. H, G, cardinalidades, topologías definitivas, distribuciones y parámetros continúan abiertos.
 
 **Estado:** MINIMAL_SYNTHETIC_ONTOLOGY_CANDIDATE / R0_R3_REUSED / SELECTIVE_ADVERSARIAL_OVERLAYS / NO_NEW_SCENARIO_IDS / VALUE_PA_BLOCK / NO_EXECUTION.
+
+
+## 13. Integración con el paquete generador del plan (2026-11-12)
+
+La arquitectura de este inventario se integra en el plan rector C10-S §16.208. La lectura conjunta obligatoria es:
+
+- §§2–4 de este inventario: ontología/topología candidata (S0/S1/S2/SF; F1/F2/A1/A2; F1→F2 y A1→A2).
+- §5: perfiles R0–R3 de topología, alternativas y provisión; no son DGP completos ni resultados.
+- §§6–9: adjudicación trivalente, cobertura, recursos, truth y evidencia.
+- Plan §16.208.2: roster dirigido de clases de mundo al combinar selectivamente perfiles R0–R3 con mecanismos PD; no factorial completo ni IDs de tests nuevos.
+- Plan §16.208.3–.6: funciones generadoras, potenciales coherentes, verdad causal, canal de observación, separación Generator/Analyzer/Evaluator y correspondencia con estimandos.
+
+**Estado actualizado:** TOPOLOGÍA FINITA CANDIDATA REUTILIZADA / ROSTER DE CLASES DE MUNDO INTEGRADO EN PLAN / NO UNIVERSO CONFIRMATORIO CERRADO. Este inventario no debe ampliarse en paralelo ni convertirse en una lista de fuentes reales: §16.206 establece que el microdominio y su roster son sintéticos. H=3, G, cardinalidades, exhaustividad F*, unidad/cluster, soporte, funciones, dependencias y parámetros continúan abiertos en los términos del plan §16.208.7–.8.
+
+Esta integración es documental. No aprueba el inventario, no congela el DGP, no crea fixtures ni datos, no autoriza implementación o ejecución.
