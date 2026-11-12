@@ -5812,3 +5812,65 @@ No es posible elegir N/R de forma defendible a partir de los umbrales §16.219 s
 **Dictamen:** MARGIN_JUSTIFICATION_CONTRACT_DEFINED / NUMERIC_MARGINS_NOT_JUSTIFIABLE_FROM_CURRENT_SPECIFICATION / VALUE_ENDPOINT_MATERIALIZATION_OPEN / THETA_A_MAPPING_AND_IDENTIFICATION_OPEN / CONFIRMATORY_FAMILY_OPEN / NO_N_R_SELECTION / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente operación agrupada del paquete C:** completar sobre la misma instancia B1 la materialización mínima de V_cont/Outcome/Value y la ficha de identificación de ITT-D2 y θ_A, incluyendo las decisiones que permitan o impidan que cada uno entre en la familia confirmatoria. Después se fijan δ_min,e, w_max,e y multiplicidad en una sola pasada. No abrir nuevos documentos ni iniciar calibración.
+
+
+## 16.221. Corrección de precedencia histórica de Value/V_cont y rectificación del Gate 66 (2026-11-12)
+
+**Motivo:** la auditoría §16.220 reabrió indebidamente asuntos ya resueltos y describió como ausente la instancia sintética B1. Esta sección reconstruye la precedencia del propio expediente y supersede expresamente las afirmaciones incompatibles de §16.220. No borra el registro histórico del error.
+
+### 16.221.1. Decisiones y contratos ya aceptados — no reabrir
+
+La reconstrucción de §§16.141–16.147, 16.160–16.165, 16.173–16.174 y 16.182–16.217 establece:
+
+1. **Variante B:** DEC-C10-095 acepta A como variante base y B como extensión sintética independiente/versionada para estudiar la relación causal con Value. No se está usando la variante A sin beneficiario.
+2. **Beneficiario:** B1 es la entidad solicitante/beneficiaria sintética vinculada por UE al servicio lógico y a su Need_preZ basal. B1 por UE y la oportunidad estandarizada única por UE tienen decisiones/contratos previos. No es una persona real ni una muestra de usuarios reales.
+3. **Perspectiva y objetivo:** la perspectiva de valoración es B1; el objetivo basal es mantener disponible la capacidad funcional del servicio, definida mediante ENABLED/PROFILE. Need_preZ es basal y se observa por S7; no se infiere de logs post-Z.
+4. **Outcome/Value:** F* es criterio técnico; O-CONF es adjudicación terminal de conformidad y sigue como Outcome técnico candidato con partes materiales abiertas; consecuencia B1 y Value son objetos distintos. La instancia B selecciona V_cont como dimensión mínima unitaria provisional de Value, sin índice, pesos ni compensación, conforme a DEC-C10-099…102 y aceptación §16.174.
+5. **Truth de V_cont:** por UE e intervalo, A_B1 vale 1 si se cumple durante todo el intervalo la regla funcional aplicable (admisión/no-admisión según ENABLED efectivo y exposición del PROFILE declarado), 0 ante incumplimiento funcional confirmado y ? si la verdad no queda determinada. V_cont_truth es la proporción no ponderada de intervalos completamente conformes en la rejilla común. UNKNOWN se propaga a bounds; no se imputa como cero ni se elimina del denominador. No es porcentaje exacto de uptime.
+6. **Ventana:** comienza en t0 e incluye provisión e instalación; intervalos de igual duración; continuidad estricta sin gracia. La truth se genera desde estados funcionales efectivos, no desde ENABLED declarativo aislado, W_attempt, S_install, C_dep, A_f, ΔT_acc, Reach, trayectoria, petición ni señal individual S3.
+7. **Observación:** S3 es canal pasivo runtime post-Z, imperfecto y separado de truth. Snapshot, log y modo híbrido se comparan emparejadamente sobre las mismas historias sintéticas. S7 conserva Need_preZ basal. No se mezclan.
+8. **Discriminación:** V_cont no es O-CONF/F*, ni una recodificación de accesibilidad/Reach/trayectoria. La arquitectura de contrastes cruzados V_cont/O-CONF está definida; su comprobación sigue CONDITIONAL/NOT_VERIFIABLE mientras F*, oráculo, evento terminal, snapshots y soporte no permitan demostrar los contrastes.
+
+Estas decisiones no convierten V_cont en medida general/universal de Value, ni en evidencia de preferencias reales. Sí constituyen una instancia sintética B1 definida por estipulación normativa ex ante, suficiente como objeto de prueba metodológica si los gates pendientes de horizonte, observación e identificación se satisfacen.
+
+### 16.221.2. Rectificación explícita de §16.220
+
+Quedan **RETIRADAS/SUPERSEDIDAS** las siguientes afirmaciones de §16.220:
+- que no existe beneficiario/población valorativa para la instancia: B1 por UE, Need_preZ, perspectiva B1 y modalidad de oportunidad estandarizada están definidos/aceptados para la variante B;
+- que Value sigue sin instanciarse en esta variante: V_cont está seleccionado y su regla semántica/funcional y agregación están especificadas documentalmente;
+- que es necesario volver a materializar V_cont/Outcome/Value como si el paquete A+B no se hubiera completado;
+- que la ausencia de una decisión de relevancia de una aplicación real impide evaluar el benchmark sintético.
+
+La auditoría §16.140 sobre roles de la variante A conserva su validez dentro de su alcance; no puede utilizarse para invalidar B1 de la variante B. La secuencia correcta es A (sin beneficiario materializado) frente a B (extensión B1 explícita). La decisión §16.142/DEC-C10-095 y la aceptación posterior de B1/V_cont prevalecen para el experimento actual.
+
+### 16.221.3. Qué permanece realmente abierto
+
+No se reabre la semántica de Value ni la selección de V_cont. Los bloqueos remanentes son de especificación/calibración y de identificación:
+
+- **Tiempo y soporte:** t_c,max, τ_follow, T*, unidad temporal, Δ, K y soporte finito de recurrencia/duración/recuperación, dentro de las reglas ya fijadas en §§16.214–16.215.
+- **S3:** parámetros/cadencia, cobertura, lag, pérdida, error, dependencia, calibración y criterios de detectabilidad/recuperación; comparación emparejada de modos sigue vigente.
+- **Discriminación V_cont/O-CONF:** sigue CONDITIONAL/NOT_VERIFIABLE hasta completar el oráculo/evento terminal F* y los contrastes cruzados factibles. No bloquea reabrir la semántica de V_cont; sí limita el estatus confirmatorio si no se demuestra validez discriminante.
+- **D2 y estimandos:** ITT-D2(V_cont) es efecto de asignación al paquete, condicionado a unidad/asignación, soporte, interferencia y observación. No es efecto puro de accesibilidad. θ_Af/θ_A requieren correspondencia de políticas, régimen común, soporte y separación de vías colaterales; siguen sin identificación demostrada. C4 y LATE_f permanecen condicionales a sus contratos propios.
+- **Analyzer/Evaluator:** la brecha de implementación identificada en §16.218.8 (bounds/identificación parcial, métricas por estimando, tasas de falsa recuperación/abstención, Monte Carlo, C4/LATE) permanece real y no queda resuelta por los cierres semánticos de Value.
+
+### 16.221.4. Relectura correcta de δ_min,e y w_max,e para un experimento sintético
+
+El objetivo C10-S actual es un **benchmark metodológico sintético de verdad conocida**, no una evaluación de la importancia de una variación de Value para usuarios reales ni una decisión empresarial real. Por ello:
+
+- No se exige inventar un MDE sustantivo de una aplicación real para probar la recuperación causal del Analyzer.
+- La magnitud verdadera del efecto se conoce por construcción en cada DGP. La evaluación debe recorrer una cuadrícula preespecificada de efectos focales positivos, nulos y adversos, junto con vías directas/colaterales y escenarios no identificados.
+- El análogo pertinente de δ_min,e es el menor efecto de la cuadrícula de benchmark para el que se exige una operación/potencia determinada; es un punto de prueba del método, no un umbral de Value universal ni una afirmación de relevancia humana. La cuadrícula debe justificarse por rango factible del DGP y resolución de recuperación, no elegirse después de ver resultados.
+- w_max,e es una meta de resolución inferencial del benchmark, justificada por la separación que se quiere discriminar entre valores de la cuadrícula y por la cobertura requerida; no un margen de decisión real. Se reportarán además curvas potencia/precisión, sesgo, RMSE y cobertura a lo largo de la cuadrícula.
+- Si se decide incluir una afirmación de relevancia sustantiva, deberá quedar explícitamente fuera del alcance de este benchmark y requerirá otra instancia/perspectiva; no se importará a posteriori.
+
+Por tanto, la sección §16.219 se conserva como base cuantitativa ya aceptada, pero su lectura se especializa: potencia y precisión se evalúan frente a efectos de prueba conocidos del DGP; no se bloquea el experimento por ausencia de un MDE de usuario real. La selección exacta de cuadrícula, resolución y N/R pertenece a calibración posterior y no se ejecuta en este gate.
+
+### 16.221.5. Dictamen corregido
+
+**CERRADO / REUTILIZAR:** instancia sintética B1; perspectiva/objetivo basal; separación Need_preZ-S7 y runtime V_cont-S3; selección provisional V_cont; regla funcional A_B1 y agregación por intervalos; truth/observed/evaluation; comienzo t0 e inclusión de provisión/instalación; igualdad de intervalos; unknown→bounds; separación conceptual O-CONF/V_cont; arquitectura de estimandos C1–C4.
+
+**ABIERTO:** soporte temporal numérico, Δ/K/T*, parámetros/calibración S3, validez discriminante material V_cont/O-CONF, identificación específica de ITT-D2/θ_A/C4/LATE y extensión técnica Analyzer/Evaluator; cuadrícula de efectos y precisión/N/R, sin MDE sustantivo real.
+
+**Dictamen:** GATE66_CORRECTED_HISTORICAL_PRECEDENCE / B1_BENEFICIARY_AND_VCONT_RULE_REUSED / VALUE_SEMANTICS_NOT_REOPENED / TEMPORAL_S3_AND_CAUSAL_IDENTIFICATION_GAPS_RETAINED / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** cerrar de forma conjunta la definición de la cuadrícula de efectos del DGP y el contrato de identificación/soporte de ITT-D2 y θ_A, reutilizando las fichas C1/C-MED/MAP ya existentes. No reabrir Value, B1 ni la fórmula de V_cont. No crear una nueva matriz o subpaquete.
