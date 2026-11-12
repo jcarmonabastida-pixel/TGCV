@@ -2288,3 +2288,19 @@ Se completan las dos operaciones documentales que §57 dejó activas, directamen
 Conforme al orden único de §16.208.8, corresponde reconciliar las **funciones estructurales generadoras y sus dependencias contrafactuales** por bloque: basal; asignación/política; intento/recepción/provisión; C_dep; A_f/D_f/ΔT_acc; Reach/trayectoria; resultados; ramas directas/colaterales/interferencia; observación. Debe hacerse sobre el roster dirigido ya definido, reutilizando los contratos DGP/PD, sin nuevos mundos ni factorial completo.
 
 Para cada función se registrarán argumentos, codominio/estados, exógenas compartidas, dependencias, invariantes por brazo, momento causal, potenciales coherentes y regla de abstención. Los parámetros/distribuciones numéricos permanecen abiertos y no se inventan. No generar datos, implementar, simular, estimar, ejecutar ni declarar Design Freeze; scientific_execution=false y execution_authorized=false.
+
+## 59. Reconciliación simbólica de funciones generadoras y contrafactuales (2026-11-12)
+
+Se completa la operación que §58 dejó activa en el plan integrado Draft 004, §16.212, sobre la base de §16.199–16.211 y de la especificación A–B–C:
+
+- Se integra una convención contrafactual común por UE/UA: misma historia basal y mismo vector de tipo/exógenas latentes entre regímenes potenciales de una unidad; dependencias/cópula no presumidas; independencia de la exógena de asignación solo en los mundos que estipulan aleatorización.
+- Se reconcilian simbólicamente las funciones de baseline/población, asignación, programación, intento/recepción, instalación/C_dep, A_f/D_f, snapshots/ΔT_acc, Reach/rutas, trayectoria, Outcome, Value, interferencia y observación.
+- Se preservan invariantes aceptadas: W_prog(z)=z para D2; C_auth,base=1 común e identificada con AUTH_f según DEC-C10-067; separación entre C_dep, A_f, D_f, ΔT_acc, Reach, trayectoria, Outcome y Value; truth/evidence/evaluation con firewall.
+- Se cruzan las clases de mundo ya existentes de §16.211 con ramas focales, nulas, adversariales, directas, colaterales, alternativas, heterogéneas, IV, interferencia, observación y soporte. No se crea factorial ni IDs nuevos.
+- Se mantiene la distinción ITT-D2 (efecto total de paquete), θ_A bajo g_A y q_X/r_common comunes (atribución focal), y C4 (mediación interventional). Value no se define automáticamente por accesibilidad ni por éxito técnico.
+
+**Dictamen:** CAUSAL_GENERATING_FUNCTIONS_AND_COUNTERFACTUAL_DEPENDENCIES_RECONCILED_SYMBOLICALLY. El plan es una reconciliación lógica, no una especificación cuantitativa completa ni un DGP ejecutable.
+
+**Pendiente que gobierna el siguiente gate:** instancia sintética V1 no circular con consecuencia B1, perspectiva/autoridad, regla de valoración, unidad/escala, baseline y horizonte; junto con las condiciones mínimas de factibilidad/soporte de g_A y definición de r_common. F*, Reach/O-CONF, G/H_time, distribución de q_X*, acoplamiento de exógenas, funciones/valores por escenario, canal de observación, parámetros y criterios de precisión permanecen abiertos según §16.212. No pasar a distribución numérica, potencia, calibración, implementación o ejecución sin cerrar sus gates y autorización correspondiente.
+
+Se mantiene: `scientific_execution=false`; `execution_authorized=false`; `NOT_DESIGN_FROZEN`; PR #116 Draft; ninguna promoción a main.
