@@ -72,3 +72,16 @@ Antes de aprobación:
 El contrato de materialización Need_preZ queda como propuesta documental pendiente de reconciliación de representación. No se crean tablas, clases, enums, FK, columnas, registros, IDs ni fixtures. No se ejecuta validación técnica, simulación o experimento. `scientific_execution=false`; `execution_authorized=false`.
 
 **Siguiente dependencia:** inspeccionar el contrato canónico de claims y las decisiones U_G de tipos de target para determinar si existe una representación admitida sin ampliar el esquema. Solo después debe elegirse la alternativa y, si procede, actualizar el contrato Need.
+
+
+## 7. Resultado de inspección de DEC-C10-061 — cierre del espacio de opciones U_G
+
+La inspección de `C10_S_UG_TYPED_TARGET_REFERENTIAL_INTEGRITY_CONTRACT_PROPOSAL_DRAFT_001.md` y DEC-C10-061 confirma que el conjunto de seis destinos (NODE, EDGE, ROUTE, PREDICATE, SNAPSHOT, COVERAGE_SCOPE) es **enum cerrado aceptado documentalmente**. EVIDENCE_REGISTER es fuente probatoria, no claim target. El mismo patrón de seis FKs tipadas se aplica a EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER. La decisión se aceptó para evitar referencias polimórficas sin integridad referencial y no contempla B1/UE como target.
+
+Consecuencias:
+- La alternativa 1 de §4 no es una extensión inocua: reabriría DEC-C10-061 y el contrato de integridad tipada. No se puede introducir implícitamente.
+- No hay base para reinterpretar COVERAGE_SCOPE como entidad beneficiaria ni PREDICATE como Need.
+- Mantener la adjudicación Need dentro de U_G exigiría una nueva decisión explícita y una revisión de impacto del esquema, no solo añadir una etiqueta.
+- La vía de menor impacto es estudiar un **paquete analítico B1/Need separado de U_G**, versionado y con referencias a evidencias/provenance, sin incorporarlo como clase de grafo ni alterar los enums U_G. Debe quedar claro si E1/E2 y adjudicación se representan en ese paquete o se enlazan externamente; no se presume que los registros U_G actuales puedan hacerlo.
+
+**Recomendación provisional:** preferir el artefacto analítico B1/Need separado (no tabla U_G) para conservar el target cerrado aceptado. Antes de especificar sus campos definitivos, comprobar si el Evidence→Claim Matrix / claim governance exige un vínculo canónico adicional para afirmaciones unitarias. No crear aún el artefacto de datos ni modificar DEC-C10-061.
