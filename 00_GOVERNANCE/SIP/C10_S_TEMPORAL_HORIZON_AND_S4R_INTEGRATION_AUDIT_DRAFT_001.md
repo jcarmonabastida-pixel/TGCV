@@ -172,3 +172,10 @@ La matriz de episodios usa r_c=d_e/c_j y r_Δ=d_e/Δ, con estratos menores/igual
 Se incluyen controles truth estable/señal espuria, episodio breve entre capturas, frontera de captura, episodio largo, fallo breve que afecta el bloque entero, cruce de frontera de rejilla, pérdida diferencial, errores correlacionados, recuperación y censura en T*, y discriminación O-CONF/V_cont.
 
 Si el soporte de recuperación tiene máximo defendible, τ_follow debe cubrirlo; de lo contrario se informa censura. K/Δ se seleccionan por recuperación de truth, aliasing, fase, estabilidad al refinar K y criterios de error/cobertura aún pendientes. No se fija parámetro numérico ni se ejecuta.
+
+
+## 16. Registro paramétrico temporal y corrección de V_cont (2026-11-12)
+
+Se incorpora el registro del plan §16.198: inicio/fin de episodios, familia causal, soporte DGP, recurrencia, recuperación, horizonte común, rejilla, cadencia/fase/cobertura S3, emisión/captura, lag, pérdida, error y dependencia conjunta. No se asignan leyes ni cifras por defecto. La parametrización es condicional al escenario y versión; el canal híbrido conserva la dependencia conjunta.
+
+Se corrige la interpretación: V_cont_truth es proporción de intervalos completamente conformes, no fracción exacta de tiempo disponible. Un incumplimiento confirmado afecta a cada intervalo que intersecta; la medida depende de Δ y de la alineación. DEC-C10-100/102 se conservan sin modificación. No se crean pruebas ni se ejecuta calibración.
