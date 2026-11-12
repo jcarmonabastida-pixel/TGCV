@@ -4984,3 +4984,37 @@ Para cada campo/condición material, identificar primero su referente y scope; d
 El mapping semántico de clase queda RESOLVED: no existe equivalencia automática P0↔predicados A_f*. Se resuelve también la ubicación funcional de los elementos conocidos (AUTH, C_dep, recursos, E_T). El mapping material de cada interfaz, condición, ruta y bloqueo permanece OPEN. REF permanece UNKNOWN, no 0. No se crean filas IAM, snapshots, IDs físicos, fixtures ni valores de DGP. Antes de especificar distribuciones conjuntas debe existir roster de τ₂ y de superficies P1 por unidad/versión, con cobertura y fuentes identificadas.
 
 **Dictamen:** CLASS_BOUNDARY_RESOLVED / PREDICATE_SOURCE_ROSTER_OPEN / REF_NOT_ADJUDICATED / NO_DESIGN_FREEZE / NO_EXECUTION.
+
+## 16.205. Roster de fuentes de verdad para A_f* y superficies P1 — contrato de captura sin inventario ficticio (2026-11-12)
+
+**Base:** U_G y predicados de `C10_S_GRAPH_COVERAGE_AND_TRIVALENT_EVIDENCE_MATRIX_DRAFT_001.md` §§2–7; B-M01…15 y PROV-01…12 del manifiesto; crosswalk de clases §16.204; identidad/versionado y snapshots DEC-C10-062/065/069/079/082/089. Esta sección operacionaliza el roster en el artefacto existente; no crea IDs ni declara fuentes presentes.
+
+### 16.205.1. Campos obligatorios de cada registro de fuente
+
+Cada fuente material que se incorpore al roster debe registrar: `source_record_id` (ID exacto de origen; no inventar), `source_class` (contract/API/schema/SBOM/package_manifest/runtime_config/ACL_policy/resource_quota/network_policy/security_policy/state_snapshot/external_service/functional_test/oracle/evidence_log), `source_owner`, `source_locator`, `unit_id` + `unit_object_record_id`, `snapshot_id` + `snapshot_object_record_id` cuando aplique, `object_id` + `object_record_id`, `semantic_role`, `version`, `hash` o razón de no aplicabilidad, `valid_from/to`, `capture_time`, `observer`, `blinding/access_class`, `coverage_scope`, `method`, `error/limitations`, `predicate_mapping`, `U_G node/edge mapping`, `truth_dgp` (solo Generator/Evaluator), `observed_evidence_status` (Analyzer), y `adjudication_status`. No se registra ningún secreto; ACL/tokens se representan mediante alcance/identificadores y evidencia redactada.
+
+### 16.205.2. Roster por predicado y fuentes mínimas que deben localizarse
+
+| Predicado | Fuentes primarias a recuperar/crear solo cuando existan | Nodos/aristas U_G candidatos | Límite de adjudicación |
+|---|---|---|---|
+| `ID_f*` | Contrato funcional de τ₂/F1; TID/SID/RID; clase/tipo, versión contractual y mapping de identidad del artefacto/runtime focal | N04, N10; E02–E04 | CMP ID, hash/build o nombre no sustituyen identidad semántica de τ₂; sin contrato/versionado → `?` |
+| `REL_f*` | API/schema; endpoints; interfaces tipadas, extremos, dirección, roles, scope; ACL de canal separada de autorización funcional | N07, N17, N20–N21; E05, E18–E20 | Endpoint aislado no prueba todas las relaciones necesarias ni su disponibilidad; REF declarativo no equivale a canal técnico |
+| `COND_f*` | Contrato de realizabilidad F1; restricciones ambientales externas a S0; requisitos de compatibilidad y condiciones constitutivas con scope/ventana | N01, N19–N21; E19–E21 | Precondiciones dependientes de S0 son `App_f*`; no duplicarlas como COND |
+| `AUTH_f*` | Fuente normativa/titular de autorización basal; roles/alcance/vigencia; diffs pre/post B; ACL/credenciales técnicas por separado | N17; E18; B-M05/B-M08 | DEC-C10-067 fija invariancia conceptual, no demuestra estado material ni invariancia observada; sin fuente/titular/evidencia → `?` |
+| `RES_f*` | Capacidad utilizable ex ante, cuotas/reservas, demanda concurrente, consumidores, colas y medición por unidad/ventana | N18, N05, N13, N15; E16–E17 | Separar capacidad instalada, reserva, disponibilidad y consumo; contención es vía colateral/interferencia, no RES basal automáticamente |
+| `DEP_f*` | SBOM/manifiesto de artefactos; runtime/imagen; librerías transitivas; servicios/API; relaciones calls/loads/reads/writes/authenticates/shares_resource; versiones y consumidores | N04–N07, N20–N21, N13–N15; E02–E06, E11–E14, E19–E20 | `C_dep*` solo caracteriza la dependencia provisionada; incluir rutas directas, transitivas, alternativas, compartidas, externas y dinámicas; cobertura incompleta → `?` |
+| `BLOCK_f*` | Políticas de seguridad, firewall/red, certificados, permisos, restricciones de runtime, bloqueos de servicio y vigencia/alcance | N07, N17–N21; E18–E21; B-M08/B-M09 | Bloqueo local invalida una ruta; bloqueo de transformación solo con universalidad/cobertura de todas las rutas; ausencia de logs no prueba ausencia |
+
+### 16.205.3. Roster de superficies P1 y control de colaterales
+
+El manifiesto B-M01…15 se usa como índice de superficies, no como fuente observada. Para cada unidad y versión se enlazan B-M01 artefacto/SBOM; B-M02 runtime; B-M03 host; B-M04 interfaz; B-M05 permisos; B-M06 datos/estado; B-M07 recursos; B-M08 red; B-M09 seguridad; B-M10 observabilidad; B-M11 estado persistente; B-M12 rendimiento; B-M13 oráculo (prohibido modificar); B-M14 alternativa A1/A2 (prohibido modificar); B-M15 rollback/residuos. Cada fila exige evidencia pre-B/post-B/rollback, consumidores, ventana y cobertura; la prohibición de modificación no prueba cumplimiento.
+
+Snapshots requeridos se mantienen en el contrato existente: `S_preB`, `S_postB`, `S_rollback` y `S_routeA`, con pinning exacto DEC-C10-065. No se crea un snapshot nuevo ni se presume que exista. La cobertura debe ser explícita por unidad×snapshot×componente/relación×ruta×ventana×versión; si una dimensión no está inspeccionada, la cobertura global no puede marcarse COMPLETE.
+
+### 16.205.4. Estado de cierre del roster
+
+El roster queda **especificado como contrato de captura**, pero **no materializado**: no hay fuentes reales recuperadas, SBOM, runtime, APIs, ACL, recursos medidos, grafo transitivo ni snapshots observados. Los N01–N23/E01–E23 siguen roles/aristas candidatos con existencia `?` y cobertura `NONE`; B-M01…12/B-M15 permanecen `NO INVENTARIADO`; B-M13/B-M14 son superficies contractualmente prohibidas, cuyo cumplimiento material sigue `?`. `REF=UNKNOWN`; `Reach=?`; `A_f*=?`; `D_f*` no adjudicable.
+
+**Gate para el siguiente bloque:** no especificar distribuciones conjuntas de `ID/REL/COND/AUTH/RES/DEP/BLOCK` como si fueran empíricas hasta (a) declarar el universo finito de fuentes/unidades/versiones por construcción del DGP, (b) asignar verdad sintética en Generator a partir de reglas explícitas, (c) definir observación imperfecta separada para Analyzer y (d) fijar cobertura/adjudicación en Evaluator. El DGP puede estipular mundos sintéticos; no puede presentarlos como inventario real del microdominio.
+
+**Dictamen:** SOURCE_ROSTER_SCHEMA_SPECIFIED / SOURCE_INVENTORY_NOT_MATERIALIZED / U_G_COVERAGE_NONE / NO_NUMERIC_PARAMETERS / NO_DESIGN_FREEZE / NO_EXECUTION.
