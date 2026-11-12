@@ -3490,3 +3490,88 @@ V_cont sería una propiedad temporal por intervalos; O-CONF/F* es una adjudicaci
 ### 16.181.6. Precedencia y propagación de la selección de V_cont
 
 La selección provisional de la dimensión ya no depende solo del plan derivado §16.174: queda formalizada en **DEC-C10-099**, incorporada al Decision Log C10-S y propagada al maestro consolidado §277 y al addendum de Outcome/Value. Esta decisión complementa DEC-C10-095 para la extensión B, sin alterar A ni P179. Los estados históricos `NO_VJ_SELECTED / VALUE_NOT_INSTANTIATED` se interpretan ahora como anteriores a DEC-C10-099; siguen siendo correctos respecto de la falta de instancia material/operacionalización, pero no respecto de la selección del constructo. La selección de V_cont no cierra el indicador, el canal S3, la medición ni la identificación.
+
+
+## 16.182. Contrato semántico de medición sintética de V_cont y límites de identificación (2026-11-12)
+
+**Objeto:** cerrar documentalmente qué representa la truth temporal, qué puede observar el canal S3 no-mutante y qué inferencias quedan permitidas. Esta sección especifica el modelo de medición sintético; no afirma validez empírica de telemetría real ni supera por sí sola el gate O-CONF.
+
+### 16.182.1. Referente funcional y estado verdadero
+
+Se conserva el contrato basal B1: mantener disponible en destino una instancia de servicio capaz de comportarse conforme al estado declarativo versionado ENABLED/PROFILE. La condición funcional se interpreta de forma condicional al modo:
+- ENABLED=true: la instancia debe mantener capacidad operativa de admisión conforme al contrato y exponer el PROFILE aplicable.
+- ENABLED=false: la instancia debe respetar la no-admisión prevista por el contrato y exponer el PROFILE aplicable.
+
+Para cada UE i e intervalo k de la rejilla DGP, el Generator estipula una truth binaria (A^{B1}_{ik}): 1 si la instancia satisface la condición funcional aplicable durante el intervalo; 0 si existe incumplimiento funcional positivo estipulado. La truth no se deriva de señales S3, de una petición, de la etiqueta ENABLED aislada ni de O-CONF. En el núcleo plenamente especificado no se usa ? como valor ordinario de truth: si el DGP no determina el estado, el intervalo queda fuera de una verdad puntual y se informa como indefinido/bounds, nunca como 0.
+
+La secuencia completa (A^{B1}_{i1},...,A^{B1}_{iK}) es la truth temporal. La dimensión de Value se mantiene como continuidad temporal conforme al objetivo B1; la selección provisional de V_cont no determina aún que la media no ponderada sea la regla normativa final.
+
+### 16.182.2. Canal de observación S3 no-mutante
+
+El canal S3 es pasivo: observa estado runtime y no envía solicitudes, no activa rutas de negocio, no muta configuración/estado y no añade oportunidades. Por intervalo puede producir un vector de evidencia, sin imponer nombres de campos físicos:
+
+| Componente conceptual S3 | Evidencia candidata | Límite inferencial |
+|---|---|---|
+| Proceso/módulo | proceso y módulo runtime presentes | no prueba admisión ni perfil correcto |
+| Superficie de recepción | listener/socket y estado runtime asociado | no prueba ruta completa ni aceptación de una solicitud válida |
+| Dependencias | procesos/llamadas/trazas de dependencias necesarias | presencia observada no prueba suficiencia funcional conjunta |
+| Capacidad | estado de cola/recursos/capacidad cuando el DGP lo haya definido | no hay umbral suficiente sin unidad, regla y relación estructural explícitas |
+| Perfil runtime | módulo/estado runtime asociado al PROFILE versionado | no prueba semántica correcta sin correspondencia contractual |
+
+Cada componente observado puede tomar 1/0/?; ? incluye no capturado, inválido, censurado, contradictorio o fuera de cobertura, según los contratos U_G/P182/P183. Un 0 observado requiere evidencia afirmativa válida de incumplimiento de ese componente; silencio o ausencia de traza no lo demuestra.
+
+El vector S3 no se reduce por una regla AND/OR, puntuación ponderada o umbral arbitrario. Es un conjunto de indicadores imperfectos del estado latente (A^{B1}_{ik}). El DGP debe especificar la distribución conjunta del canal (P(O^{S3}_{ik}mid A^{B1}_{ik},M_{ik})), donde (M) representa solo los mecanismos de captura/error/missingness que se definan explícitamente. No se presupone independencia condicional entre señales, ni sensibilidad/especificidad constantes, ni missingness MCAR/MAR/MNAR. La dependencia, error diferencial y pérdida se estipulan por escenario y se evalúan con P182/P183/MEAS/MISS existentes.
+
+### 16.182.3. Separación de funciones y de fuentes
+
+- **S3:** canal longitudinal candidato para la medición observacional de V_cont; proxy imperfecto, no prueba funcional directa.
+- **S4:** identidad, versión e integridad de snapshots; no mide continuidad.
+- **S5:** contrato semántico ENABLED/PROFILE; define lo esperado, no demuestra runtime.
+- **S6:** evidencia funcional independiente autorizada puede respaldar F*/O-CONF o la oportunidad estandarizada existente; no se convierte en monitor temporal ni se añade una segunda petición. La oportunidad única por UE conserva su cardinalidad y su estimando propio.
+- **S7/S8:** contexto o inferencia; no sustituyen evidencia runtime directa ni se convierten en señal de Need/Value por disponibilidad.
+
+No se crea una nueva clase U_G, actor, interfaz, ledger, rol o artefacto lógico. La observación temporal no se confunde con la oportunidad estandarizada ni con la evaluación de Need_preZ.
+
+### 16.182.4. Identificación de V_cont desde evidencia observada
+
+La truth de la dimensión y la estimación desde observaciones son objetos distintos:
+
+[
+V^{truth}_{cont,i}=K^{-1}sum_{k=1}^{K}A^{B1}_{ik}
+]
+
+La expresión es una definición candidata de agregación, válida solo si: (a) K intervalos están definidos; (b) la rejilla y ventana son comunes y fijadas ex ante; y (c) se acepta normativamente igual peso por intervalo desde la perspectiva B1. Si cualquiera falla, se conserva la secuencia o se informan bounds; no se fuerza un escalar.
+
+El Analyzer no observa (A^{B1}_{ik}), V_truth, potenciales ni parámetros reservados. Recibe solo el vector S3 observado, cobertura, tiempos, identidad/versionado y el protocolo público de medición permitido. No puede usar la media de señales S3 ni la proporción de intervalos observados como sustituto automático de V_cont.
+
+La recuperación de un estimando puntual requiere que el modelo de medición sea identificable con información disponible al Analyzer: por ejemplo, parámetros de canal calibrados de forma independiente y accesibles bajo el protocolo, o una estrategia de identificación justificada en el diseño. En ausencia de calibración/identificación, el resultado correcto es bounds bajo restricciones defendibles o NOT_IDENTIFIED/INDETERMINATE_MEASUREMENT. El hecho de que el Evaluator conozca la truth del DGP no habilita al Analyzer ni valida externamente el instrumento.
+
+Se distinguen explícitamente dos condiciones de evaluación sintética:
+1. **Canal calibrado por diseño:** parámetros del canal se estipulan antes de generación y su disponibilidad al Analyzer queda fijada en el protocolo. Permite evaluar recuperación bajo medición calibrada, sin afirmar que los parámetros procedan de evidencia empírica.
+2. **Canal no calibrado/ambiguo:** el Analyzer no recibe información suficiente para identificar la relación truth–señal. Debe abstenerse o producir bounds; una estimación puntual se considera falsa recuperación.
+
+Estas condiciones reutilizan los escenarios de error, observación diferencial, pérdida/censura y abstención ya previstos; no crean tests ni IDs.
+
+### 16.182.5. Regla de baseline, ventana y agregación
+
+El baseline pre-Z utiliza la misma definición conceptual y el mismo protocolo de observación para describir el estado inicial y permitir ajuste solo si está preespecificado. El estimando principal continúa siendo el nivel post-Z en una ventana común anclada al reloj causal DGP; no se transforma en diferencia respecto de baseline sin decisión previa.
+
+K, frecuencia, inicio/fin y tratamiento de transitorios siguen sin fijarse. Deben ser comunes, ex ante y suficientemente densos para distinguir continuidad temporal de una lectura terminal, sin aumentar N_opportunities. La agregación igual por intervalo sigue propuesta y no se declara aceptada en esta sección. No se asignan cifras sin calibración.
+
+### 16.182.6. Discriminación frente a O-CONF/F*
+
+La distinción conceptual se mantiene:
+- V_cont: secuencia temporal de cumplimiento operativo del objetivo B1 durante la ventana.
+- O-CONF: adjudicación terminal de conformidad del destino frente a F*.
+
+El DGP puede especificar casos de separación solo cuando F* y la regla terminal O-CONF permitan estipularlos sin contradicción: (a) destino terminal conforme con una o más interrupciones durante la ventana; (b) destino terminal no conforme, pero con cumplimiento operativo parcial durante intervalos previos. Estos casos prueban discriminación dentro del DGP, no validez empírica del instrumento. O-CONF sigue sin ficha §224 completa; por tanto, el gate de discriminación permanece CONDITIONAL/NOT_VERIFIABLE hasta cerrar F*, el evento terminal, el oráculo y su observación. No se redefine F* para fabricar contraste.
+
+### 16.182.7. Dictamen de cierre
+
+- **SPECIFIED:** truth temporal latente, canal S3 pasivo como vector de indicadores imperfectos, separación truth/observed/evaluation, límites de inferencia y regla de abstención.
+- **CONDITIONAL:** relación de medición S3–capacidad B1, calibración del canal, validez del proxy y recuperación puntual.
+- **NOT_VERIFIABLE:** validez empírica de señales S3 concretas y discriminación final frente a O-CONF mientras §224/F* sigan incompletos.
+- **OPEN:** aceptación de la regla de agregación no ponderada; K/frecuencia/baseline/ventana; parámetros del canal; MDE y calibración conjunta.
+- **NO AUTHORIZATION:** no se crean fuentes/interfaces/campos físicos ni tests/IDs; no hay captura, implementación, generación, simulación o ejecución.
+
+**Estado:** `V_CONT_TRUTH_SEMANTICS_SPECIFIED / S3_OBSERVATION_MODEL_SPECIFIED_CONDITIONALLY / MEASUREMENT_IDENTIFICATION_CONDITIONAL / AGGREGATION_RULE_OPEN / O_CONF_DISCRIMINATION_NOT_VERIFIABLE / CALIBRATION_NOT_RUN / DESIGN_FREEZE_NOT_READY / EXECUTION_NOT_AUTHORIZED`.
