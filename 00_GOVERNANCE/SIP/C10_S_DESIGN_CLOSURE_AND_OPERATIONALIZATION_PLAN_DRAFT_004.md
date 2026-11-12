@@ -3446,3 +3446,42 @@ La ficha podrá cerrarse documentalmente solo cuando el contrato identifique, si
 No se fijan nombres de métricas, endpoints, payloads, intervalos, tasas, campos, API ni tecnologías. No se ejecutan capturas ni se inspeccionan sistemas reales.
 
 **Estado:** S3_RUNTIME_OBSERVATION_REUSED_AS_CANDIDATE / S4_S5_LIMITS_RECONCILED / V_CONT_SIGNAL_MAPPING_NOT_ESTABLISHED / MONITOR_VALIDITY_CONDITIONAL / NO_NEW_SOURCE_OR_ROLE / EXECUTION_NOT_AUTHORIZED.
+
+
+## 16.181. Crosswalk semántico S3 y límites de inferencia para V_cont (2026-11-12)
+
+### 16.181.1. Qué autoriza realmente S3
+
+El protocolo U_G §3 define S3 como observación runtime mediante procesos, módulos cargados, llamadas, trazas, sockets, logs y métricas; su alcance es carga/uso/relaciones observadas en una ventana. Declara expresamente como límites el muestreo, las rutas no activadas y los eventos raros. Por tanto, S3 aporta una familia temporal de evidencia potencial, no una medida ya validada de disponibilidad/capacidad del servicio.
+
+### 16.181.2. Mapping conceptual candidato (sin campos físicos)
+
+Para el contrato funcional B1 —admitir solicitudes conforme a ENABLED y exponer PROFILE— el mapping conceptual que puede evaluarse dentro de un DGP sintético es:
+
+| Dimensión latente por intervalo | Familia S3 candidata | Qué podría apoyar | Qué no demuestra por sí sola |
+|---|---|---|---|
+| Proceso/instancia activa | Estado de proceso y módulo cargado | Que el componente está vivo/cargado en la ventana | Que admita una solicitud o exponga el PROFILE correcto |
+| Superficie de admisión disponible | Socket/listener y trazas de estado del endpoint | Que la superficie de recepción esté activa | Que la ruta completa acepte/adjudique solicitudes válidas |
+| Dependencias runtime necesarias | Estado/llamadas/trazas de dependencias relevantes | Que dependencias requeridas estén presentes/activas | Que el conjunto satisfaga el contrato funcional de extremo a extremo |
+| Capacidad disponible | Métricas de cola, capacidad o recursos, si el DGP las define | Que no se observe una saturación/barrera cuantificada según regla ex ante | Que la capacidad sea suficiente sin umbral, unidad y relación causal justificados |
+| Perfil servido | Módulo/estado/traza runtime que identifique el perfil activo | Que existe evidencia de exposición del perfil esperado | Que el contenido/semántica sea correcto sin contrastarlo con S5 y el contrato versionado |
+
+Este mapping es una hipótesis de medición para someter a diseño adversarial, no un mapping aceptado ni un catálogo de campos. S5 aporta el contrato semántico de ENABLED/PROFILE; S4 fija identidad/versión/snapshot; S3 aporta observación runtime. Ninguna familia aislada sustituye las otras.
+
+### 16.181.3. Regla de adjudicación y límite de inferencia
+
+La verdad del Generator debe fijar por intervalo la capacidad efectiva latente de la instancia, bajo el contrato funcional y versión aplicables. El canal S3 genera observaciones con error/cobertura/censura conforme a un modelo explícito, manteniendo la truth segregada. El Analyzer recibe solo la evidencia observable y su provenance/cobertura. El Evaluator compara después de sellar la salida con la truth reservada.
+
+La conjunción de señales de proceso, listener, dependencias, capacidad y perfil puede ser un indicador de readiness operacional, pero no equivale automáticamente a éxito funcional extremo a extremo. No se enviará una segunda solicitud de negocio para medirlo: se preserva N_opportunities=1 por UE. Tampoco se inventa health endpoint, API, payload, protocolo de prueba, campo físico, telemetría concreta o tecnología. Si el DGP no puede definir señales observables que discriminen capacidad efectiva de mera configuración declarada, la medición queda NOT_IDENTIFIED y V_cont no pasa a endpoint confirmatorio.
+
+### 16.181.4. Discriminación respecto de O-CONF
+
+V_cont sería una propiedad temporal por intervalos; O-CONF/F* es una adjudicación técnica terminal del destino. La diferencia conceptual no basta para probar validez discriminante. El DGP debe poder producir escenarios temporalmente distintos con estado terminal equivalente y escenarios terminalmente distintos con trayectorias temporales compatibles, sin violar el contrato funcional ni redefinir F*. O-CONF continúa sin ficha §224 completa; por ello, el gate de discriminación sigue CONDITIONAL/NOT_VERIFIABLE, no PASS.
+
+### 16.181.5. Dictamen de cierre de esta operación
+
+- S3 queda identificado como familia observacional temporal reutilizable, con mapping conceptual candidato y límites explícitos.
+- No existe mapping de señales concreto aprobado ni evidencia de validez del monitor; no se declara cerrado el instrumento.
+- No se fija K, frecuencia, baseline, ventana, umbral de capacidad, error, cobertura, MDE o N; se derivarán solo tras cerrar el contrato de medida.
+- No se crean clases U_G, fuentes, roles, tests, IDs, fixtures, schemas físicos ni interfaces nuevas.
+- Estado: `S3_CANDIDATE_MAPPING_DOCUMENTED / SIGNAL_VALIDITY_OPEN / O_CONF_DISCRIMINATION_NOT_VERIFIED / V_CONT_SELECTION_ACCEPTED_PROVISIONALLY / MEASUREMENT_NOT_OPERATIONALIZED / NO_EXECUTION_AUTHORIZED`.
