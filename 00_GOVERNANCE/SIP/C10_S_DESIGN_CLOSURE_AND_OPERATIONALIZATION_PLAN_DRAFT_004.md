@@ -3064,3 +3064,100 @@ La ausencia de material externo real deja de bloquear el experimento sintético 
 La pasada C+D queda cerrada a nivel de arquitectura estructural y contrato de población/asignación sintéticos, sujeto a la calibración ex ante de E. No se declara identificado ningún efecto empírico ni se afirma que D2→g_A esté demostrado en el mundo real. Los parámetros y criterios numéricos se resolverán junto con la evaluación, no mediante elecciones arbitrarias.
 
 No se reabren las decisiones existentes ni se modifican D1/D2, P*τ2/P*_F, DEC-C10-066/067, P179, estimandos C1–C4, DAG, claims, Core, RMA, Evidence→Claim Matrix o STATUS. No se crea documento, test ID o fixture nuevo. No se autoriza implementación, generación de datos, simulación, estimación, validadores ni ejecución científica. Se mantienen scientific_execution=false y execution_authorized=false.
+
+
+## 16.176. Pasada 3 E+F — auditoría final de suficiencia, medición, calibración y contrato técnico (2026-11-12)
+
+**Fuentes reconstruidas:** gobernanza main (README, bootstrap, regla de reconstrucción histórica); plan §§7–12 y 16.173–16.175; C10_S_PE_INTEGRATED_TECHNICAL_SPECIFICATION_AND_IMPLEMENTATION_CONTRACT_DRAFT_001.md §§1–15; C10_S_INTEGRATED_CONFIRMATORY_FEASIBILITY_AND_DESIGN_FREEZE_RECONCILIATION_DRAFT_001.md §§6–12 y 16–17; C10_S_PD_DGP_MECHANISM_AND_ADVERSARIAL_EVALUATION_RECONCILIATION_DRAFT_001.md §§1–9; matriz Value mínimo §§9–10; contratos B1/Need y modelo de observación S7. No se ha ejecutado validador, DGP, Analyzer, simulación ni prueba técnica.
+
+### 16.176.1. Lo que ya está definido y no debe volver a diseñarse
+
+- Separación de roles Generator → Proyector/Sealer → Analyzer → Evaluator/Adjudicator y almacén de procedencia; Analyzer sin truth/potenciales/semillas secretas; Evaluator solo después del sellado.
+- Separación de `truth_dgp`, `observed_evidence` y `evaluation/adjudication`; separación de identidad/versiones, relojes, snapshots, estados trivalentes y ausencias.
+- Arquitectura lógica de los seis artefactos B1 ya aceptados; no se crea un séptimo ni un segundo modelo universal.
+- Reglas B1/Need_preZ, S7, adjudicación E1/E2, cobertura, ausencia≠0, comparación observada-vs-polaridad y observada-vs-truth en sus alcances documentados.
+- Contrato de salida del Analyzer por estimando/constructo y dimensión, con estimación/incertidumbre cuando proceda y abstención correcta cuando no exista identificación.
+- Familias de métricas y controles P177/P178/P179/P182/P183: sesgo, RMSE, cobertura, error tipo I, potencia, calibración, convergencia, réplicas inválidas, clasificación de identificación/no-identificación, missingness/censura, weak-IV, sensibilidad y error Monte Carlo.
+- La arquitectura estadística existe; no se debe volver a describir como ausente. Lo que falta es su instanciación cuantitativa coherente con los estimandos y el DGP.
+- El contrato PE existe como arquitectura lógica e interfaces; no se debe recrear. Su propio dictamen es `TECHNICAL_CONTRACT_PARTIAL / IMPLEMENTATION_NOT_READY`.
+
+### 16.176.2. E — medición de V_cont: aceptación de constructo no equivale a operacionalización validada
+
+La aceptación de §16.174 selecciona provisionalmente `V_cont` como única dimensión inicial candidata. §16.175.2 propuso como verdad candidata una fracción temporal normalizada de la ventana común durante la que está disponible la capacidad de servicio. Esa propuesta es una hipótesis de operacionalización, no un indicador ya validado ni un contrato congelado.
+
+Siguen abiertos y deben resolverse juntos, no mediante nuevas preguntas parciales:
+
+1. **Objeto valorado y regla normativa:** qué estado observable cuenta como capacidad efectivamente disponible para el objetivo basal B1, qué estados no cuentan y cómo se valora su continuidad desde la perspectiva B1. No inferir valor desde ENABLED, una respuesta aislada o la mera existencia de un endpoint.
+2. **Discriminación de constructo:** demostrar que `V_cont` no es O-CONF/F*, ni un duplicado del Outcome técnico, ni una recodificación de `A_f^*`, `ΔT_acc^*`, Reach o trayectoria. La disponibilidad técnica puede ser parte del mecanismo o evidencia, pero no acredita por sí sola una consecuencia valorada distinta.
+3. **Medición independiente:** fuente/observador, regla de captura, resolución temporal, cobertura, error, fiabilidad y adjudicación. El Generator conserva truth temporal; el Analyzer solo recibe la proyección observada permitida.
+4. **Baseline y horizonte:** definir baseline, inicio/fin y tratamiento de estados transitorios, interrupciones, degradación, censura y ausencia. No se elige una ventana por conveniencia ni después de ver efectos.
+5. **Escala y estimando:** decidir si el valor normalizado de continuidad es una proporción temporal, una secuencia o una representación vectorial temporal; especificar el contraste causal sin colapsar incertidumbre de medición y variabilidad entre unidades.
+
+La recomendación de parsimonia sigue vigente: una sola dimensión, sin pesos, índice compuesto ni sustitución silenciosa. Si no se supera la discriminación frente a O-CONF, `V_cont` no pasa a endpoint confirmatorio y no se fuerza otra dimensión. O-CONF sigue siendo Outcome técnico candidato no operacionalizado; no se declara resuelto por este plan.
+
+### 16.176.3. E — calibración estadística conjunta pendiente
+
+La documentación existente fija el procedimiento, no los valores. No se han aprobado:
+- magnitud mínima científicamente relevante y MDE, margen de equivalencia y tolerancias por estimando;
+- forma funcional/tablas estructurales definitivas y parámetros de los mecanismos, potenciales, heterogeneidad, dependencia e interacciones;
+- distribución conjunta `q_X^*`, estratos, soporte común de las intervenciones y restricciones de población;
+- probabilidades de asignación por estrato `π_h`, ratio, N, algoritmo y semillas;
+- número de réplicas R y límite de error Monte Carlo (SE_MC);
+- multiplicidad/jerarquía inferencial y reglas de decisión/inconclusión;
+- rangos de sensibilidad `δ/γ`, error diferencial, missingness y censura, ni tolerancias de recuperación del Analyzer.
+
+Estos elementos se derivarán en un único procedimiento de calibración, no por elección independiente. La función objetivo debe equilibrar potencia y precisión de ITT, primeras etapas y estimandos de accesibilidad que sean identificables por construcción; control de error y recuperación de escenarios nulos/adversos; clasificación correcta de no-identificación; y SE_MC para métricas de evaluación. No se dimensionará un estimando que carezca de definición/soporte. No se adoptarán N=2.000, 1:1, R=1.000 ni s=.80 como parámetros aprobados.
+
+### 16.176.4. F — suficiencia del contrato técnico
+
+PE ya define arquitectura de seis roles, interfaces conceptuales, dominios de datos, trazabilidad, manifiestos, capas V0–V8 y formato lógico de salida. No falta otra arquitectura conceptual.
+
+Bloqueos concretos de implementación confirmatoria que PE declara abiertos:
+- perfil físico de serialización/canonicalización para registros y bundles fuera del alcance JCS/U1 ya aceptado;
+- schema físico o estructura equivalente, cardinalidades, restricciones, referencias, migraciones y validación ejecutable;
+- formato de eventos, timestamps y orden parcial material;
+- almacenamiento, separación de dominios, custodia de truth/semillas, permisos ACL efectivos, threat model, logs y controles de acceso;
+- sealer/firewall probado, incluida evidencia de que Analyzer no puede recuperar truth ni metadatos reveladores;
+- crosswalk final de P177/P178/P179/P182/P183 a estimandos, escenarios, entradas/salidas, oráculos, tolerancias y abstenciones;
+- identidad/versionado/hash de Generator, Analyzer, Evaluator, reglas, configuración, inputs, entorno y artefactos;
+- preflight de integridad y reproducibilidad, pruebas estáticas/técnicas y evidencia de aceptación.
+
+No se debe imponer DDL/U_G si una implementación equivalente preserva todos los contratos de identidad, snapshots, observación y procedencia; tampoco se puede omitir esa infraestructura si es necesaria para reconstruirlos. La elección física debe derivarse del crosswalk, no precederlo.
+
+### 16.176.5. Bloqueos heredados que no desaparecen con el DGP sintético
+
+La pasada C+D define un marco sintético provisional y puede evaluar recuperación bajo verdades estipuladas. No resuelve:
+- la factibilidad material de D2 en un entorno real (IAM, roster, snapshots, provisión basal, dependencias, ACL, alternativas, aislamiento e interferencia);
+- que D2 material identifique `g_A`, `θ_A(q)`, `θ_{Af}(q_X^*)` o C4;
+- la validez empírica de las reglas estructurales del DGP fuera de los escenarios estipulados;
+- la validez de constructo/medición de `V_cont` hasta completar §16.176.2.
+
+La falta de D2 material no invalida el alcance metodológico sintético, siempre que las conclusiones se limiten a recuperación bajo DGPs versionados. Sí impide claims de implementación real, validez externa o identificación empírica de D2.
+
+### 16.176.6. Estado real de gates y corrección de la secuencia
+
+La reconciliación integrada de factibilidad mantiene `G-SCI`, `G-MAT`, `G-SCHEMA`, `G-ROLE`, `G-TEST` y `G-REPRO` en `BLOCKED`, y `G-AUTH` en `NOT GRANTED`. Por tanto, no hay Design Freeze ni implementación autorizada.
+
+La aceptación provisional de `V_cont` registrada en §16.174 prevalece como decisión de trabajo posterior a los documentos PA/PD que aún dicen `VALUE_NOT_INSTANTIATED`; esos estados históricos no se borran, pero deben quedar marcados como anteriores a la selección provisional. No equivalen a que PA/PD, P179 o el maestro completo hayan sido propagados y reconciliados. La presente auditoría no modifica directamente esos artefactos ni los declara actualizados.
+
+También se limita la fuerza de §16.175: sus expresiones sobre cohorte sintética, aislamiento, baseline, función de potenciales e intervención `g_A` son **propuestas estructurales del DGP**, no hechos materiales verificados ni parámetros cerrados. `V_cont` como fracción temporal sigue siendo propuesta operacional que debe superar los gates de §16.176.2. La designación C+D como “especificada provisionalmente” no equivale a DGP cuantitativo cerrado ni a diseño confirmatorio congelado.
+
+### 16.176.7. Paquete único mínimo para completar cierre documental antes de pedir autorización
+
+Para reducir iteraciones, el trabajo pendiente se agrupa en un solo paquete integrado, con dependencias internas explícitas:
+
+1. **Reconciliación de precedencia:** propagar la aceptación provisional de `V_cont` y los límites C+D al maestro C10-S y a PA/PD/PE/estimandos/P179, manteniendo trazabilidad de los estados históricos.
+2. **Ficha mínima V_cont:** decidir y justificar objeto valorado, regla B1, baseline, horizonte, indicador, fuente independiente, error/cobertura/adjudicación y discriminación frente a O-CONF. Si no supera el test de constructo, dejar Value fuera del núcleo confirmatorio y no sustituirlo automáticamente.
+3. **DGP confirmatorio versionado:** convertir las propuestas estructurales C+D en reglas/funciones o tablas de potenciales concretas, fijar intervenciones factibles D2 y `g_A`, historias, vías colaterales, escenarios y verdad reservada; distinguir explícitamente escenarios identificables y no identificables.
+4. **Calibración cuantitativa conjunta:** derivar q_X*, soporte, estratos, π_h, N, efectos, δ/γ, tolerancias, multiplicidad, R, SE_MC y semillas conforme a criterios aprobados, sin valores ilustrativos.
+5. **Crosswalk final de aceptación:** P177/P178/P179/P182/P183 y pruebas ya existentes ↔ estimandos ↔ escenarios ↔ datos observables ↔ oráculos ↔ métricas/tolerancias ↔ salida esperada/abstención.
+6. **Contrato técnico final:** cerrar estructura física o equivalente, serialización, manifests/hashes, aislamiento de roles, almacenamiento/custodia, permisos, interfaces y validadores requeridos; emitir matriz de preparación por gate con evidencia verificable.
+7. **Autoauditoría documental de no-regresión:** comprobar maestro, decisiones, test register, closure matrix, U_G, RMA/Evidence y ramas; clasificar PASS_STATIC / CONDITIONAL / NOT_VERIFIABLE y registrar riesgos residuales. No presentar esta autoauditoría como revisión independiente.
+
+La salida del paquete será una de dos: (a) especificación científica y técnica completa para someter a Design Freeze y solicitar autorización de implementación; o (b) un conjunto mínimo de bloqueos restantes con la razón objetiva y la consecuencia de cada uno. No se abrirán subpaquetes ni consultas intermedias salvo una decisión científica no derivable o una autorización explícita que solo el usuario pueda otorgar.
+
+### 16.176.8. Dictamen final de la pasada E+F
+
+**Estado:** `E_F_ARCHITECTURE_RECONCILED / V_CONT_MEASUREMENT_NOT_CLOSED / QUANTITATIVE_CALIBRATION_OPEN / PE_TECHNICAL_CONTRACT_PARTIAL / G_SCI_G_MAT_G_SCHEMA_G_ROLE_G_TEST_G_REPRO_BLOCKED / G_AUTH_NOT_GRANTED / NOT_DESIGN_FROZEN / NOT_IMPLEMENTATION_READY`.
+
+La pasada E+F se cierra como auditoría de suficiencia y localización de bloqueos, no como cierre de diseño confirmatorio. No se declara completo el experimento causal sintético, no se autoriza implementación ni ejecución y no se modifica `main`, Core, claims, RMA, Evidence→Claim Matrix o STATUS. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
