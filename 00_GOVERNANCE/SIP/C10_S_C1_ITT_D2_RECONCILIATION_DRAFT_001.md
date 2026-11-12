@@ -383,3 +383,34 @@ El plan §16.185 integra C1 con la jerarquía C2–C5 y con los contratos Outcom
 - C5 sigue como contraste de contribución por etapa petición–trayectoria; no redefine elegibilidad ni Value.
 
 P*τ2/P*_F, UNKNOWN pre-Z, unidad/interferencia y asignación conservan los límites del contrato D2. O-CONF es outcome técnico terminal; V_cont es candidata de Value temporal B1, con discriminación todavía pendiente. Estado: C1_CONTRACT_RECONCILED / OUTCOME_VALUE_MEASUREMENT_CONDITIONAL / CAUSAL_IDENTIFICATION_NOT_ESTABLISHED / NO_EXECUTION_AUTHORIZED.
+
+
+## 19. Gate 68 — contrato sintético de identificación y soporte C1/C3 (2026-11-12)
+
+Esta sección complementa §§15–18 y prevalece sobre los pasajes históricos que describían Value de la variante B como no instanciado. La precedencia vigente de B1/V_cont está en el plan integrado §§16.221–16.222 y DEC-C10-095/099–102.
+
+### 19.1. C1 — ITT-D2 sobre V_cont
+
+En el benchmark sintético, cada mundo versionado define una cohorte finita P_w por truth basal pre-Z. El mundo limpio puede estipular por construcción que sus unidades satisfacen las condiciones de la población objetivo candidata P*_{τ2}; E_scope y App*(τ2,S0) se conservan como predicados separados y no se ratifica la fórmula universal E_i=E_scope∧App. Esta construcción sintética no materializa IAM real ni autoriza transportar la población.
+
+El estimando es el efecto total de asignación D2 sobre V_cont en la ventana común T*. Su identificación exige asignación aleatoria en la unidad UA, probabilidad positiva de ambos brazos por estrato/historia objetivo, consistencia/versiones, cohorte sellada pre-Z, tratamiento de interferencia y observación/missingness compatibles. UA=UE solo en mundos aislados; los mundos con spillovers requieren clúster o mapa de exposición. La recepción, instalación, C_dep*, A_f*, D_f* y ΔT_acc* no sustituyen Z ni filtran el ITT.
+
+Si la evidencia pre-Z no permite clasificar pertenencia o el canal S3 no identifica V_cont, el Analyzer debe producir bounds/INDETERMINATE/NOT_IDENTIFIED conforme al mecanismo; el conocimiento de Generator no se transfiere al Analyzer.
+
+### 19.2. C3 — θ_A sobre ΔT_acc* completo
+
+θ_A(q_X*,r_common;V_cont) se evalúa mediante intervenciones g_A1/g_A0 directas y factibles sobre el vector completo (ΔU*,ΔR*,ΔC*,ΔX*), estandarizadas a la misma distribución basal finita q_X*. Para cada historia con masa positiva ambas políticas deben ser factibles y tener soporte; r_common fija explícitamente los mecanismos no focales. Una vía directa/colateral diferencial no separada, soporte fallido o versión inconsistente impide atribución puntual.
+
+El contraste g_A se genera y evalúa directamente; no se deduce del ITT-D2. El mapping B_g^D2→g_A sigue no demostrado. Solo se probará en mundos que estipulen y verifiquen esa correspondencia, sin generalizarla.
+
+### 19.3. Cuadrículas separadas
+
+G_ITT y G_A son cuadrículas distintas. Ambas incluyen nulo, signo positivo y negativo, señal débil y efectos más amplios dentro del rango factible de V_cont∈[0,1]; incluyen heterogeneidad con efectos condicionales de signos opuestos y mundos donde el ITT del paquete difiere del efecto focal. Los niveles se parametrizan relativamente a la media basal y al rango disponible, con κ predeclarado. Los valores de κ, masas de q_X*, pesos, parámetros y N/R siguen abiertos y no se inventan.
+
+No se exige un MDE sustantivo de usuarios reales. δ_min,e será el primer nivel no nulo de la cuadrícula para el que se exige potencia; w_max,e será una meta de resolución inferencial del benchmark, ambos por estimando y fijados antes de calibrar.
+
+### 19.4. Dictamen
+
+ITT_AND_THETA_A_IDENTIFICATION_SUPPORT_CONTRACT_CLOSED_STRUCTURALLY / SEPARATE_EFFECT_GRIDS_DEFINED / NUMERIC_GRID_AND_SUPPORT_OPEN / D2_TO_GA_MAPPING_NOT_DEMONSTRATED / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+La identificación material sigue condicionada a la parametrización, al mecanismo de asignación, al soporte y a la observación de cada celda. C4 y LATE_f permanecen en sus contratos separados y no quedan cerrados por esta sección.
