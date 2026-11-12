@@ -3161,3 +3161,67 @@ La salida del paquete será una de dos: (a) especificación científica y técni
 **Estado:** `E_F_ARCHITECTURE_RECONCILED / V_CONT_MEASUREMENT_NOT_CLOSED / QUANTITATIVE_CALIBRATION_OPEN / PE_TECHNICAL_CONTRACT_PARTIAL / G_SCI_G_MAT_G_SCHEMA_G_ROLE_G_TEST_G_REPRO_BLOCKED / G_AUTH_NOT_GRANTED / NOT_DESIGN_FROZEN / NOT_IMPLEMENTATION_READY`.
 
 La pasada E+F se cierra como auditoría de suficiencia y localización de bloqueos, no como cierre de diseño confirmatorio. No se declara completo el experimento causal sintético, no se autoriza implementación ni ejecución y no se modifica `main`, Core, claims, RMA, Evidence→Claim Matrix o STATUS. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
+
+
+## 16.177. Ruta óptima vinculante y paquete integrado único de cierre (2026-11-12)
+
+**Solicitud del usuario:** persistir la ruta óptima y el paquete integrado de cierre y completarlo con el mínimo número de interacciones.
+
+### 16.177.1. Regla de ejecución documental
+
+Esta sección convierte §16.176.7 en el plan operativo vigente. No abre un nuevo ciclo PA–PE ni una nueva arquitectura. Se trabaja por reconciliación de precedencia, reutilización de contratos y cierre integrado. No se preguntarán al usuario decisiones que ya estén aceptadas ni se fragmentará el trabajo en aprobaciones de cada campo.
+
+La salida buscada es una especificación científica y técnica sintética coherente, versionada y trazable, lista para una evaluación formal de Design Freeze **o** un dictamen cerrado de bloqueos objetivos. No implica autorización para implementar, generar datos, simular, estimar ni ejecutar.
+
+### 16.177.2. Orden único de trabajo y dependencias
+
+| Orden | Trabajo integrado | Fuentes rectoras que se reutilizan | Salida necesaria |
+|---|---|---|---|
+| 1 | Precedencia y no-regresión | Maestro C10-S, plan §16.174–176, B2–B3, PA–PE, P179 | Crosswalk de estados vigentes; decisiones posteriores prevalecen sin borrar estados históricos |
+| 2 | Ficha confirmatoria mínima V_cont | B1 Need_preZ, contrato funcional B1, B2–B3, §224, P179/P182/P183, Outcome/Value operationalization | Definición, criterio B1, perspectiva/autoridad sintética, truth temporal, observación independiente, baseline/horizonte, estados ausentes, discriminación O-CONF y dictamen |
+| 3 | DGP contrafactual completo | PD, D2 assignment/population/support, C1, C-MED/MAP-01…07, B1/S7, P177–P183 | Funciones/tablas estructurales versionadas por escenario; potenciales de D2 y g_A; rutas directas/colaterales; truth y observación separadas |
+| 4 | Identificación y evaluación | C1–C4, C-MED, P177/P178/P179/P182/P183 y tests existentes | Estimando por resultado/dimensión; supuestos; soporte; métricas; abstenciones; falsadores; crosswalk completo sin IDs nuevos |
+| 5 | Calibración conjunta | PD §7, contratos P178 y DGP cerrado | Algoritmo de búsqueda para q_X*, estratos, π_h, N, parámetros de efectos, sensibilidad, R, SE_MC y semillas; valores solo si se derivan de criterios trazables |
+| 6 | Contrato técnico final | PE §§3–15, U_G, U1/JCS, manifests, roles y provenance | Estructura física o equivalente, interfaces, serialización, custodia, ACL, sealer/firewall, hashes, preflight y aceptación |
+| 7 | Propagación y autoauditoría | Maestro C10-S, PA/PD/PE, estimandos, P179, matrices y test register en rama research | Referencias cruzadas reconciliadas, estados PASS_STATIC / CONDITIONAL / NOT_VERIFIABLE, riesgos residuales y dictamen de gates |
+
+Dependencias no invertibles: la ficha V_cont precede a su calibración; el DGP precede a potencia/N/R; el crosswalk precede a la elección física de schemas; la verificación de firewall precede a cualquier implementación confirmatoria. El trabajo 1–7 se integra en un solo ciclo documental y no se solicitarán microaceptaciones.
+
+### 16.177.3. Criterios para aceptar V_cont sin circularidad
+
+La dimensión se conserva solo si expresa una consecuencia valorada para B1 respecto de su objetivo basal, y no una recodificación de estado transformacional, predicado A_f*, Reach, trayectoria, ejecución ni O-CONF. La propuesta de fracción temporal de disponibilidad es candidata y deberá separar:
+- verdad funcional de la capacidad del servicio a lo largo de una ventana común;
+- observación independiente de esa capacidad, con resolución temporal y estados de ausencia;
+- regla de valoración ex ante atribuible a B1;
+- O-CONF como adjudicación terminal de conformidad del destino frente a F*, sin reutilizarla como medida de continuidad.
+
+La observación de continuidad no podrá depender de la única oportunidad estandarizada por UE ni aumentar la cardinalidad N_opportunities=1: se distinguirá un canal de observación no-mutante del ciclo de petición. Si no es posible demostrar discriminación y medición independiente con las fuentes ya previstas, V_cont queda fuera del endpoint confirmatorio; no se inventa otra dimensión ni se fuerza la aceptación.
+
+### 16.177.4. Regla de calibración y no invención
+
+No se insertarán cifras convencionales (N, R, ratio, MDE, potencia, tolerancias, horizonte, frecuencia, tasas o parámetros) por parecer razonables. Cada valor numérico deberá:
+1. tener definición y unidad;
+2. estar ligado a un estimando, escenario y criterio de aceptación;
+3. derivarse de una regla de diseño reproducible o de una estipulación explícita del DGP;
+4. superar una comprobación de sensibilidad;
+5. quedar registrado antes de observar resultados del Analyzer.
+
+Si un parámetro no puede derivarse sin una preferencia científica, se agrupa en una sola decisión residual, con recomendación única y consecuencias. No se abrirá una conversación por parámetro.
+
+### 16.177.5. Alcance de materialización
+
+El objetivo es el experimento causal **sintético** de recuperación metodológica. La identidad/instancia, estados, snapshots, eventos, fuentes, canales y errores pueden ser generados con verdad conocida y provenance. No se requiere una migración informática real para ese objetivo. Los bloqueos de D2 material y validez externa se mantienen como límites de claims, no como prerequisitos del DGP sintético.
+
+La especificación técnica puede definirse documentalmente; no se ejecutarán validadores, código, generación de datos, simulación, estimación, replay ni pruebas de seguridad hasta autorización expresa conforme a la gobernanza.
+
+### 16.177.6. Control de avance y salida única
+
+Cada bloque se clasificará como:
+- **REUSED/CLOSED:** contrato existente suficiente, sin modificación;
+- **RECONCILED:** conflicto de precedencia corregido en el documento rector;
+- **SPECIFIED:** regla concreta versionada, aún no ejecutada;
+- **CONDITIONAL:** depende de supuesto o validación posterior;
+- **BLOCKED:** falta dato/decisión/autoridad no derivable;
+- **NOT_IN_SCOPE:** materialización real o validación empírica externa al experimento sintético.
+
+El paquete solo se declarará completo documentalmente cuando no existan contradicciones entre el plan, maestro y contratos rectores, y cada estimando tenga salida identificable/condicional/bounds/no-identificado. Si queda una decisión humana inevitable, se presentará una única pregunta consolidada. No se cambia main ni se promueve PR #116; no se crean IDs o tests nuevos; se mantienen `scientific_execution=false` y `execution_authorized=false`.
