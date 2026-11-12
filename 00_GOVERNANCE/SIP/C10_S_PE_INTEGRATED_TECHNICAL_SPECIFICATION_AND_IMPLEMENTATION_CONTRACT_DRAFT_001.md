@@ -281,3 +281,19 @@ Cualquier implementación física o equivalente debe justificar serialización p
 Evidencia futura mínima: matriz de roles/permisos efectivos; pruebas negativas de acceso y exfiltración; allowlist/denylist de proyección; prueba de no filtración; integridad/hash/referencias; orden temporal y replay; backup/restore y audit trail. G-SCHEMA, G-ROLE y G-REPRO siguen BLOCKED hasta evidencia verificable. La separación nominal de módulos no constituye firewall probado.
 
 No se añade schema, campo, clase U_G, test, fixture ni ejecución. scientific_execution=false; execution_authorized=false.
+
+## 17. Contrato PE para verdad temporal B1 y cobertura S3 (2026-11-12)
+
+La implementación futura debe preservar la distinción entre:
+- verdad reservada del Generator: estado funcional efectivo B1 por UE×intervalo y sus transiciones con event_time;
+- evidencia S3 proyectada: señales pasivas, timestamps de captura, cobertura, lag, pérdida, binding y provenance por UE×intervalo×componente;
+- salida del Analyzer: estimación, bounds o abstención por intervalo y V_cont;
+- Evaluator: comparación con truth únicamente después del sellado del output.
+
+El contrato de datos debe poder representar la familia causal de transición (ENABLED/PROFILE; proceso/módulo; ingreso/listener/socket; dependencia funcional; capacidad/recursos funcionalmente limitantes), sin convertir la causa técnica en truth. Provisión/instalación/reinicio se conservan como antecedentes. Una ausencia de señal nunca se interpreta como continuidad.
+
+δ_det debe figurar como límite de dominio de medición calibrado, no como tolerancia del servicio. Δ, cadencia/resolución S3 y δ_det deben conservar campos/roles conceptualmente distintos si posteriormente se materializan. No se prescribe aquí un schema físico ni se autoriza implementación. Sin cobertura/detección identificada, la salida será bounds/abstención.
+
+Los episodios que sigan activos en T* se registran como terminales/censurados; no se imputan como recuperados. El firewall debe impedir que Analyzer acceda a truth, potenciales, parámetros/semillas reservados o metadata que reconstruya estados.
+
+**Estado:** TEMPORAL_TRUTH_OBSERVATION_SPLIT_DEFINED / PHYSICAL_SCHEMA_OPEN / FIREWALL_NOT_IMPLEMENTED / NO_EXECUTION_AUTHORIZED.
