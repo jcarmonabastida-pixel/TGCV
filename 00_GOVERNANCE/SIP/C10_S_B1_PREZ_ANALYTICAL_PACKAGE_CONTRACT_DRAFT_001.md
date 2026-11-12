@@ -188,3 +188,19 @@ Las pruebas siguientes son requisitos de diseño, no pruebas ejecutadas:
 El contrato propone una arquitectura de expediente que conserva la integridad tipada U_G y hace verificable la separación truth/evidencia/adjudicación. No prueba que Need sea adjudicable con las fuentes actualmente disponibles ni selecciona parámetros para el DGP. No autoriza materialización, implementación, simulación, estimación, ejecución ni Design Freeze.
 
 **Decisiones aplicables:** DEC-C10-095 acepta el mecanismo de estipulación y el gate de soporte binario; DEC-C10-096 acepta el censo de validación y la frontera E1/E2 vs Analyzer PE; DEC-C10-097 acepta las reglas operativas de observación/cobertura. Ninguna aprueba roster ni materialización. **Autorización:** `scientific_execution=false`; `execution_authorized=false`.
+
+
+
+### 6.1 Especialización lógica del canal S7 tras DEC-C10-098
+
+El modelo de observación se interpreta conforme a la estructura lógica propuesta en §14 de C10_S_B1_PREZ_OBSERVATION_MECHANISM_AND_COVERAGE_RULES_RECONCILIATION_DRAFT_001.md. En particular, el campo agregado availability_status descrito en §6 no puede sustituir ni colapsar emisión, contenido semántico, captura/retención, integridad, autoridad, temporalidad, binding y cobertura. Su eventual codificación física deberá preservar esos estados diferenciados dentro de los artefactos lógicos ya definidos.
+
+Para la oportunidad única S7 por UE:
+- la oportunidad esperada es ex ante y no garantiza emisión;
+- el contenido, cuando existe emisión, expresa inclusión, exclusión focal, ambigüedad o contradicción interna;
+- la no emisión y la pérdida de una emisión no son exclusión;
+- la autenticidad del mandato B1 no implica exactitud del contenido;
+- truth=? no obliga a producir contenido ambiguo y permanece fuera de métricas binarias de exactitud;
+- E1/E2 adjudican Need por separado; Analyzer PE conserva su tarea analítica distinta.
+
+La factorización condicional que se utilice en el DGP debe preservar dependencias posibles; ninguna independencia se infiere de la separación conceptual de etapas. No se fijan parámetros, probabilidades ni schema físico. Esta especialización es una reconciliación de diseño, no una aprobación de representación física, materialización o ejecución.
