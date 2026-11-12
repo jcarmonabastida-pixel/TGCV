@@ -295,3 +295,10 @@ La selección provisional de V_cont para la extensión sintética B está formal
 El plan integrado §16.182 especifica truth temporal latente B1 y un canal S3 pasivo de indicadores imperfectos, separando truth, observación y evaluación. La especificación permite ensayar recuperación con canal calibrado por diseño y exige abstención/bounds con canal no calibrado. No es validación empírica de telemetría ni prueba de validez externa.
 
 El gate Value no pasa a PASS: permanecen abiertos agregación normativa, K/frecuencia/baseline/ventana, parámetros del canal, relevancia/MDE y calibración. O-CONF sigue sin ficha §224 completa y su discriminación frente a V_cont es NOT_VERIFIABLE/CONDITIONAL. Se mantienen G-SCI/G-MAT/G-TEST bloqueados, Design Freeze no alcanzado y autorización de ejecución no concedida.
+
+
+## 19. Actualización de B1 funcional y discriminación Outcome/Value (2026-11-12)
+
+El contrato B1 §2 ya define la función del servicio (admitir solicitudes según ENABLED y exponer PROFILE); los textos previos que la describían como operación concreta abierta se superan solo en ese aspecto. El contenido de negocio de solicitudes/perfiles, roster y materialización siguen abiertos. V_cont representa cumplimiento temporal de esa función; F*/O-CONF representan conformidad terminal de la ruta/estado aplicado.
+
+El plan §16.183 documenta contrastes discriminantes lógicos, pero la validación final no es verificable hasta completar F* (predicados/mapping/C0/G/H) y O-CONF (evento terminal/oráculo/ficha §224). No se altera el estado de G-MAT, G-SCI, G-TEST, G-SCHEMA, G-ROLE, G-REPRO ni G-AUTH. No Design Freeze, implementación o ejecución.
