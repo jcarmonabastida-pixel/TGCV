@@ -330,3 +330,12 @@ Las duraciones d_e=δ_event/W_c, la cadencia/resolución S3 c_j/W_c, la anchura 
 d_min,DGP limita solo el soporte del benchmark sintético, nunca introduce una tolerancia o periodo de gracia. Cualquier incumplimiento confirmado sigue afectando cada intervalo intersectado. Si S3 no identifica la truth puntual, se reportan bounds o abstención.
 
 **Estado:** V_CONT_SCALE_SEMANTICS_PRESERVED / NORMALIZED_CLOCK_ONLY / DETECTION_THRESHOLD_OPEN / NO_DESIGN_FREEZE.
+
+
+## 27. Crosswalk temporal de V_cont con P182/P183 (2026-11-12)
+
+La recuperación de V_cont reutiliza los escenarios temporales del plan §16.196 y P182/P183/MEAS/MISS; no crea una prueba ni un estimando nuevo. Los errores de S3 se evalúan con P182-07/08; la separación Analyzer–truth y trazabilidad con P182-11/12; ausencia y mecanismo con P183-01/02; no observado≠cero con P183-04; pérdida diferencial/selección con P183-07/10 y MEAS/MISS existentes; censura y bounds con P183-09/11; discriminación temporal-terminal con P182-04/10.
+
+V_cont_truth sigue siendo la proporción de intervalos completamente conformes bajo DEC-C10-100/102. Las variantes snapshot/métrica, logs/trazas y híbrida son mecanismos dentro de S3, no Outcomes ni fuentes nuevas. Una señal S3 no demuestra por sí sola capacidad B1; si la curva conjunta de observación no identifica la secuencia, se informan bounds o NOT_IDENTIFIED. O-CONF/F* permanece como adjudicación terminal independiente. No se infiere Value contextual ni se eleva ningún claim.
+
+**Estado:** V_CONT_MEASUREMENT_TEST_CROSSWALK_DEFINED / CHANNEL_VALIDITY_OPEN / O_CONF_DISCRIMINATION_NOT_VERIFIED / NO_DESIGN_FREEZE.
