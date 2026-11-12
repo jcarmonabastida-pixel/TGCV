@@ -5267,3 +5267,73 @@ La única operación siguiente dentro de este núcleo no es volver a discutir C_
 No se captura ni sella IAM real, no se crean schemas físicos ni fixtures, no se generan mundos/datos, no se programa, simula, estima ni ejecuta. No se eligen N, ratio, α, potencia, R, pesos, probabilidades o parámetros. scientific_execution=false; execution_authorized=false.
 
 **Dictamen:** BASELINE_AND_UNIT_ARCHITECTURE_RECONCILED / C_AUTH_INVARIANT_REUSED / Q_X_SYMBOLIC_ONLY / UE_UA_CONDITIONAL_DESIGN_SPECIFIED / SUPPORT_AND_E_I_MATERIALIZATION_OPEN / NOT_DESIGN_FROZEN / NO_IMPLEMENTATION / NO_EXECUTION.
+
+## 16.210. Crosswalk basal sintético por UE y soporte simbólico por mundo (2026-11-12)
+
+**Precedencia:** §16.206 (DGP abstracto), §16.207–16.209, contratos DGP temporal/roles, D2 assignment/population/support, PB-MAT y U_G. Esta sección ejecuta la siguiente operación ya prescrita en §16.209.5; no abre otro paquete ni crea un inventario paralelo.
+
+### 16.210.1. Frontera del crosswalk
+
+El crosswalk es un contrato lógico para que Generator instancie verdad basal y evidencia sintética por UE. **No es IAM/C_SRC real, no representa una migración real y no requiere fuentes, sistemas, ACL, snapshots ni infraestructura externos.** Se reutilizan los tipos lógicos NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT y las referencias/provenance sintéticas ya definidas en U_G y PE. No se crean familias nuevas de objetos.
+
+Cada registro sintético se vincula, como mínimo, a world_id/version, UE_id/version, predicate_id o transformation_id, timepoint, boundary/version y source_class sintética. La verdad generada y la evidencia observada tienen identidades y almacenes separados; el Analyzer solo recibe la segunda y los campos de asignación permitidos. El Evaluator conserva la primera y adjudica después del sellado.
+
+### 16.210.2. Crosswalk basal
+
+| Elemento | Truth que genera Generator por UE | Representación/evidencia sintética admisible | Regla de adjudicación y límite |
+|---|---|---|---|
+| E_i | Estado pre-Z de pertenencia al marco/población del mundo, con regla versionada propia del escenario | Registro PREDICATE/CLAIM sintético, con cobertura, provenance y tiempo pre-Z | No se deriva universalmente de E_scope∧App. Esa composición continúa NO ACEPTADA. En el mundo limpio puede fijarse E_i=1 por construcción; esto es una estipulación local del mundo, no una definición universal |
+| E_scope | Pertenencia al dominio abstracto estipulado para ese mundo | Metadato de configuración del mundo, no una fuente material | Puede fijarse 1 por construcción cuando Generator solo crea unidades dentro de la frontera. No añade un filtro individual ni ratifica la fórmula de E_i |
+| App*(τ2,S0) | Aplicabilidad de τ2 desde S0, independiente de accesibilidad y de E_i | PREDICATE sintético enlazado a S0, τ2 y versión | Se genera explícitamente como 1/0/?; no se infiere de C_dep, A_f, Reach ni de la asignación |
+| C_dep,0* | Estado técnico basal de la dependencia focal, con componentes y regla conjunta versionados | NODE/EDGE/ROUTE y SNAPSHOT sintéticos pre-Z; evidencia por componente y cobertura | Se adjudica por su contrato propio. C_dep,0*=0 no implica A_f,0*=0 ni DEP_f,0*=0 |
+| ID_f,0 / REL_f,0 / COND_f,0 | Verdad basal de identidad, relaciones necesarias y condiciones constitutivas | PREDICATE y EDGE sintéticos con referencias exactas a objeto, relación, condición y versión | Cada predicado se adjudica por separado en 1/0/?; REL y DEP no se fusionan |
+| AUTH_f,0 | Autorización normativa basal | PREDICATE sintético con scope/holder/validity estipulados en el mundo | En el núcleo D2 limpio vale 1 por DEC-C10-067; no se introduce como factor aleatorio ni se confunde con ACL técnica |
+| RES_f,0 / DEP_f,0 / BLOCK_f,0 | Disponibilidad ex ante de recursos, existencia de ruta técnica completa y bloqueo efectivo | NODE/EDGE/ROUTE/PREDICATE y snapshots sintéticos | RES no es consumo/capacidad provisionada; DEP=1 si existe al menos una ruta válida; DEP=0 exige inventario exhaustivo; BLOCK=1 requiere bloqueo efectivo de todas las rutas admisibles |
+| A_f,0* | Resultado de la conjunción completa ID∧REL∧COND∧AUTH∧RES∧DEP∧¬BLOCK | Salida derivada del Generator, no una etiqueta observada autónoma | 1 solo si todos los términos son 1; 0 si algún término requerido es 0; ? si no hay 0 concluyente y queda algún ? |
+| P*_{τ2} | Pertenencia según la definición de población vigente: E_i=1, C_dep,0*=0 y A_f,0*=0 | Cohorte truth reservada y su proyección observada, si el mundo incluye error de clasificación | No condicionar por variables post-Z. Los casos ? no se recodifican como 0 ni se excluyen silenciosamente; el mundo debe declarar cómo trata la indeterminación pre-Z |
+| F_alt,0* | Disponibilidad basal de alternativa | ROUTE/EDGE/PREDICATE sintéticos para A1→A2 u otras alternativas declaradas | Define la subpoblación secundaria P*_F cuando corresponda; no excluye por sí sola de P*_{τ2} |
+
+### 16.210.3. Estipulaciones del mundo limpio y mundos adversariales
+
+Para el mundo focal limpio aislado, el Generator puede estipular explícitamente, por construcción y antes de Z: E_scope=1, E_i=1, App*(τ2,S0)=1, C_dep,0*=0 y A_f,0*=0. La última condición debe resultar de la conjunción completa; por ejemplo, DEP_f,0*=0 con el resto de predicados constitutivos en 1. C_dep,0*=0 y DEP_f,0*=0 se registran como verdades separadas, aunque el mundo pueda hacerlas coincidir. No se permite inferir una de la otra.
+
+En los mundos R1/R2/R3 y PD adversariales, E_i, App, C_dep,0*, predicados de A_f,0* y F_alt,0* se generan conforme al mecanismo específico que el mundo pretende probar. No se transportan las estipulaciones del mundo limpio. La truth de elegibilidad y la evidencia observada de elegibilidad se conservan separadas; un mundo con error de clasificación debe permitir que difieran sin alterar retrospectivamente la asignación.
+
+### 16.210.4. q_X* y soporte común por mundo
+
+Para cada mundo w se declara un conjunto finito simbólico de historias basales admisibles H_w dentro de P*_{τ2,w}, con q_{X,w}*(h)>0 para cada historia que se incluya en su soporte. Cada h conserva X, H0 y los componentes pertinentes de C_c, sin duplicidad y con tiempo/versión/papel causal declarados. Esta definición fija el objeto y la regla de soporte; **no asigna valores, pesos, probabilidades ni una distribución paramétrica**.
+
+Por cada h del soporte declarado, el contrato del mundo debe indicar separadamente:
+
+- factibilidad de B_g0^D2 y B_g1^D2;
+- positividad del mecanismo de asignación en la UA correspondiente para ambos brazos;
+- unidad UA (UE en el mundo aislado; clúster/mapa de exposición en mundos con interferencia);
+- invariantes y vías no focales activas;
+- estimandos habilitados y supuestos que los identifican.
+
+Si una política no es factible, la historia no se fuerza dentro del contraste común: se restringe ex ante con estimando explícito o se informa falta de soporte/no-identificación. Si la unidad/exposición no está definida, no se invoca SUTVA ni se calcula un ITT individual como si las unidades fueran independientes. Las masas, pesos, probabilidades de asignación, algoritmo, semilla, estratos y N quedan como configuración pendiente de la fase cuantitativa; no se importan cifras de P178.
+
+### 16.210.5. Reglas de observación, asignación y evaluación
+
+1. Generator conoce y conserva E_i, App, C_dep,0*, predicados basales, pertenencia truth a P*_{τ2}, H_w y potenciales.
+2. El mecanismo de asignación del mundo se aplica a la UA declarada y se registra con su probabilidad y provenance. La elegibilidad usada para formar la población experimental se fija pre-Z conforme al mecanismo explícito del mundo; no se reconstruye desde variables post-Z.
+3. Analyzer recibe Z y la evidencia sintética permitida, incluida su cobertura/error/missingness. No recibe truth, potenciales, parámetros ocultos, semillas secretas ni etiquetas que revelen la clase causal.
+4. Evaluator abre truth tras el sellado del Analyzer y compara por separado clasificación basal, ITT de paquete, primeras etapas, atribución focal, soporte y abstención.
+5. UNKNOWN, evidencia ausente, cobertura parcial o mapping ambiguo permanecen ?. No se transforman en 0, no se imputan por conveniencia y no se ocultan en el denominador.
+
+### 16.210.6. Estado de cierre del gate
+
+| Componente | Estado tras este crosswalk |
+|---|---|
+| Separación E_i / E_scope / App | CLOSED AT LOGICAL CONTRACT LEVEL; fórmula universal E_i=E_scope∧App NOT ACCEPTED |
+| C_dep,0* frente a DEP_f,0* y A_f,0* | CLOSED AS DISTINCT CONSTRUCTS; truth por mundo se estipula explícitamente |
+| Predicados basales y conjunción A_f,0* | LOGIC CLOSED; mapping sintético tipado definido; escenarios aún no instanciados |
+| Cohorte truth P*_{τ2} | DEFINITION REUSED; pertenencia generada por mundo, no materializada como datos |
+| q_X* | FINITE SUPPORT CONTRACT DEFINED SYMBOLICALLY; masses/weights OPEN |
+| Soporte D2 | CONDITIONS DEFINED; factibilidad/positividad por historia aún requieren configuración por mundo |
+| Asignación UE/UA/interferencia | RULE RECONCILED; probabilidades/algoritmo/semillas y mapas concretos OPEN |
+| Evidencia/roles | LOGICAL FIREWALL CONTRACT REUSED; seguridad técnica efectiva y schemas físicos OPEN |
+
+**Gate result:** BASELINE_SYNTHETIC_CROSSWALK_LOGICALLY_CLOSED / Q_X_SUPPORT_CONTRACT_DEFINED_SYMBOLICALLY / WORLD_CONFIGURATION_AND_FINITE_MAPPING_OPEN / NO_REAL_MIGRATION / NO_DATA_GENERATED / NO_IMPLEMENTATION / NO_SCIENTIFIC_EXECUTION.
+
+La operación siguiente se limita a completar el mapping finito ya previsto en §16.208.8: frontera, G/H, catálogo F*/alternativas, rutas y snapshots por clase de mundo, demostrando qué contraste/falsador cubre cada clase. No se amplía el factorial, no se generan unidades/datos, no se eligen parámetros numéricos y no se ejecutan pruebas científicas.
