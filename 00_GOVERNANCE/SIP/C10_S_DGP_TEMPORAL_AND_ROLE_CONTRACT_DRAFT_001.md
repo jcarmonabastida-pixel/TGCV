@@ -1322,3 +1322,16 @@ q_X* es historia basal conjunta común. X/H0 son núcleo candidato; C_c solo con
 ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*); ΔE_T es epistémico. ΔX* se adjudica campo a campo: U/R/C si transformación/relación/regla; X solo para contexto efectivo constitutivo restante; E_T si es evidencia. Campos mixtos se descomponen y los irresolubles quedan ?. No se aprueba aún un listado físico de campos ΔX*.
 
 Las funciones estructurales y distribuciones permanecen sin parámetros numéricos. No se crea schema físico ni se ejecuta.
+
+
+## 58. Dominio sintético abstracto y separación del caso real (2026-11-12)
+
+C10-S utiliza el microdominio lógico de configuración/migración aceptado como **lenguaje de representación**, no como caso real de migración. No se modela una plataforma concreta, producto, formato, servicio desplegado, organización, entorno productivo ni procedimiento industrial real. Las referencias a CMP/PAR/REF/RUL/MET, P0/P1/P2, F1/F2/A1/A2, dependencias, permisos, recursos y snapshots son tipos/roles abstractos que Generator puede instanciar en mundos sintéticos.
+
+El objetivo del experimento es evaluar la capacidad del diseño y del Analyzer para reconstruir constructos, identificar lo identificable, recuperar efectos causales conocidos y abstenerse/refutar cuando la truth DGP contiene nulos, vías alternativas/directas/colaterales, interacciones, heterogeneidad, adversidad, interferencia, falta de soporte o medición imperfecta. No se evalúa la calidad de una migración ni la validez externa de una herramienta de migración.
+
+El roster §16.205 del plan es un esquema de tipos de fuente/registro sintético. `source_id`, locator, owner, snapshot, hash, timestamp, coverage y error son campos del fixture o del proceso generador/observacional; no requieren sistemas reales ni recopilación externa. Los elementos P1 representan variables abstractas del mundo cuando son causalmente necesarios. El Generator conoce truth; el Analyzer recibe solo evidencia observada sellada; Evaluator accede a truth tras el sellado.
+
+Solo se incorporan entidades y mecanismos necesarios para poner a prueba un contraste, supuesto, falsador, vía causal, interacción o fallo de identificación. La complejidad y el realismo operativo no son objetivos autónomos. Se mantiene el universo finito, las cardinalidades y los parámetros numéricos abiertos hasta justificar su necesidad y cobertura.
+
+**Estado:** ABSTRACT_DOMAIN_ONLY / NO_REAL_MIGRATION_CASE / SYNTHETIC_SOURCE_SCHEMA / GENERATOR_ANALYZER_EVALUATOR_SEPARATION_REQUIRED / NO_EXECUTION.
