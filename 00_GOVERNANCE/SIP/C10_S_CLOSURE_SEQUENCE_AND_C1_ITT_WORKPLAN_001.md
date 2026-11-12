@@ -2242,3 +2242,34 @@ El workflow de recuperación se dispara por el push de su propio archivo en la r
 **Dictamen actualizado:** `PRIMARY_ANALYZER_MC_27_CELLS_STRICT_PASS / CONTRACT_REPLAY_TESTS_17_OF_17_PASS / FULL_CLEAN_MC_REPLAY_PENDING / PRIMARY_ARTIFACT_PRESERVED / NON_CONFIRMATORY_ONLY`.
 
 **Límite:** no se amplía la cuadrícula, no se recalibran criterios, no se repite la simulación primaria y no se inicia ejecución confirmatoria. La validación Monte Carlo metodológica solo podrá cerrarse tras el PASS del replay y la comparación exacta de ambos artefactos.
+
+## 57. Cierre del replay limpio P178 y reanudación del gate sintético (2026-11-12)
+
+**Actualización de estado:** la espera de replay registrada en §56 queda resuelta por la auditoría persistida en `03_EXPERIMENTS/C10-S/harness/P178_CLEAN_REPLAY_CLOSURE_AUDIT_001.md`. No se reabre ni se repite el benchmark.
+
+### 57.1. Evidencia verificada
+
+- Ejecución primaria no confirmatoria: run `43083651875`, commit de código probado `689c8f0164e0625ca536a20b1805e555cd63d5fd`; artefacto primario ID `13888821660`.
+- Replay limpio completo: run `43120303588`, workflow commit `fc0839f53d3d09ae2764909bbf13a6ef896042a1`; conclusión GitHub Actions `success`.
+- Suite de contratos del replay: 17/17 PASS.
+- Replay: 27/27 celdas, 10.000 réplicas por celda, 270.000 invocaciones; las 27 comparaciones de referencia informan `reference_match=True`.
+- CSV primario y replay: SHA-256 idéntico `e73a204b6ffc3ff4666c37d9a3e2d5ff4612a3d0602a25349cbb8bc12287914f`.
+- Manifiesto primario y replay: SHA-256 idéntico `72aed4c8bbe30a20cdb20e3b1c2d27f38e046687b100349f94b99aaed9f04294`.
+- Artefacto replay ID `13901876197`; SHA-256 ZIP `a72922ca51dc5afb713edcb35932dc1598d535f77abe9af6aaa8f3ed1b83e4de`.
+- La auditoría de cierre fue añadida en el commit `3d31d0095446b31ba0684fed690f7b2beabb2e91`.
+
+**Dictamen:** `P178_ANALYZER_MC_27_CELLS_STRICT_PASS / CLEAN_REPLAY_BYTE_IDENTICAL_PASS / COMPUTATIONAL_REPRODUCIBILITY_CLOSED / NON_CONFIRMATORY_ONLY`.
+
+### 57.2. Alcance exacto del cierre
+
+Este PASS cierra exclusivamente la reproducibilidad computacional del benchmark metodológico P178 en sus 27 celdas y bajo sus supuestos de identificación focal. No valida abstención bajo no-identificación, vías directas/colaterales, alternativas, interferencia, falta de soporte, señal débil ni canales de observación degradados. No valida la hipótesis causal general de TGCV, no acredita factibilidad confirmatoria D2 y no cambia los gates G-SCI/G-SCHEMA/G-ROLE/G-TEST/G-REPRO ni G-AUTH. G-MAT real permanece fuera del núcleo sintético, conforme al plan §16.206 y a la reconciliación integrada §21.
+
+La sección §56 se conserva como historial de la espera y de la recuperación; su estado PENDING queda supersedido por esta evidencia. No se amplía la cuadrícula P178 ni se autoriza otra ejecución Monte Carlo.
+
+### 57.3. Gate activo y continuidad
+
+La reconciliación basal de §16.209 se ha desarrollado en el plan integrado §16.210: crosswalk lógico sintético por UE para E_i, E_scope, App, C_dep,0*, predicados de A_f,0*, cohorte P*_{τ2} y soporte simbólico q_X*. Se preservan como no aceptadas la composición universal E_i=E_scope∧App y cualquier materialización real IAM/C_SRC.
+
+**Siguiente gate activo:** completar el mapping finito por clase de mundo, ya ordenado en plan §16.208.8: frontera, G/H, catálogo F*/alternativas, rutas y snapshots. La salida debe demostrar la cobertura de cada contraste/falsador del roster dirigido, sin factorial completo ni cardinalidades asumidas.
+
+La operación se realizará en el plan integrado y contratos existentes, no mediante otro paquete. No generar mundos/datos, no fijar parámetros numéricos, no implementar, no ejecutar ni declarar Design Freeze. `scientific_execution=false`; `execution_authorized=false`.
