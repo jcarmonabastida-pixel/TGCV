@@ -128,3 +128,84 @@ scientific_execution=false; execution_authorized=false.
 ## 9. Incorporación del modelo operativo de observación (DEC-C10-097)
 
 DEC-C10-097 acepta las reglas de diseño para marco de fuentes, emisión, captura, contenido, admisibilidad, integridad, temporalidad, vinculación, adjudicación E1/E2 y cobertura por unidad×dimensión. Esta aceptación es normativa/documental: **no cambia el resultado material de esta auditoría**. La cobertura por unidad continúa siendo NONE en el conjunto de artefactos revisados; no hay roster, fuentes, truth, snapshots ni adjudicaciones materializados. No se convierte la aceptación del modelo en evidencia observada ni en PASS de adjudicabilidad.
+
+
+## 10. Cierre propuesto del conjunto mínimo de clases de fuente y del universo esperado (2026-11-12)
+
+### 10.1 Resultado de la reconstrucción histórica
+
+La revisión conjunta de este inventario, del contrato del paquete analítico §6–§10 y de la reconciliación operativa DEC-C10-097 §2–§9 muestra que el problema no es la ausencia de una taxonomía general: ya existen las clases S1–S8 y las dimensiones del proceso de observación. Tampoco procede convertir cada candidato del inventario en una fuente obligatoria.
+
+El cierre necesario es identificar qué clases cumplen una función indispensable para adjudicar el objetivo focal y cuáles solo aportan contexto técnico. Se conserva la taxonomía existente; esta sección no crea clases S nuevas ni sustituye U_G.
+
+### 10.2 Clases funcionales mínimas
+
+Se propone el siguiente perfil mínimo lógico, condicionado a que cada elemento exista y sea admisible en la instancia sintética:
+
+| Función | Clase existente | Necesidad | Alcance probatorio y límite |
+|---|---|---|---|
+| Identidad y binding B1–UE–service instance | S1/S5/S7, según el tipo de registro | Obligatoria como control de referencia | Identifica el referente y su versión; no prueba Need |
+| Declaración focal del objetivo basal | S7 | Obligatoria como oportunidad de evidencia semántica | Debe poder contener inclusión focal o exclusión focal explícita, con emisor/autoridad, alcance y vigencia pre-Z. Su contenido observado no es la truth reservada |
+| Contexto funcional del servicio/objetivo | S5/S7 | Condicional, solo cuando sea necesario para interpretar alcance o correspondencia | Aclara qué servicio y función se declaran; no demuestra por sí mismo que B1 tenga el objetivo |
+| Provenance, integridad y temporalidad de cada artefacto | Metadatos de control del EVIDENCE_LEDGER y protocolo existente | Obligatoria para admisibilidad, no una fuente semántica adicional | Autoría, versión, digest, event_time, capture_time, custodio y cadena de captura |
+| Marco de fuentes esperadas y cierre de cobertura | COVERAGE_REGISTER / alcance declarado ex ante | Obligatorio para declarar cobertura | Define qué oportunidades pertenecen al alcance y cómo se enumeran; no constituye evidencia de Need |
+| Snapshot técnico/IAM/configuración | S2/S4 | No obligatorio para adjudicar Need | Puede respaldar ENABLED/PROFILE, ACL, configuración o estado técnico. No sustituye la declaración focal |
+| Logs, métricas, pruebas de operación, solicitudes y trazas | S3/S6/S7/S8 según origen | No obligatorios y, en general, no probatorios de Need_preZ | Informan operación, uso, capacidad o ejecución; no se promueven a evidencia del objetivo basal |
+
+La configuración mínima no exige que todas las unidades tengan el mismo número de artefactos ni que se materialicen todas las clases técnicas. Exige que el alcance declarado para cada unidad/dimensión sea explícito, enumerable y evaluable. La clase S7 focal es la única clase semántica candidata indispensable para observar inclusión/exclusión de Need; identidad, provenance y cobertura son controles transversales de admisibilidad, no tres fuentes probatorias independientes.
+
+### 10.3 Dos rutas probatorias, no una falsa simetría
+
+El modelo debe poder representar al menos dos contenidos semánticos distintos en la clase focal:
+
+- **Declaración de inclusión:** afirma el objetivo funcional basal aceptado para B1–servicio.
+- **Declaración de exclusión:** niega explícitamente ese objetivo focal, dentro de un alcance y autoridad válidos.
+
+No se exige que ambas declaraciones existan para cada unidad. La truth se genera por configuración explícita reservada conforme a DEC-C10-095; el mecanismo de observación genera, omite, pierde, captura, altera o vuelve ambiguo el artefacto observable conforme al modelo aprobado. No se copia la etiqueta truth ni se transforma la configuración reservada en el documento visible.
+
+Una declaración no localizada, no emitida, perdida, opaca o no admisible produce insuficiencia/abstención; no una declaración de exclusión. La cobertura COMPLETE tampoco sustituye la afirmación negativa focal.
+
+### 10.4 Cierre del universo esperado por unidad y dimensión
+
+El universo esperado no será «todos los documentos que podrían existir» ni «todos los documentos encontrados». Se define como el conjunto versionado de oportunidades de fuente que el escenario DGP declara dentro del alcance para la afirmación focal de esa UE.
+
+La unidad mínima de enumeración es:
+
+`(package_version, UE_id, B1_id, service_instance_id, claim_dimension, source_opportunity_id, scope_version)`
+
+Esta tupla es una clave lógica de control, no un schema físico aprobado. Cada oportunidad debe tener una regla reproducible de pertenencia al alcance. El universo se cierra antes de generar resultados de emisión/captura y antes de adjudicar; no puede ampliarse o reducirse después de observar qué fuentes favorecen una clasificación.
+
+Se distinguen:
+- `IN_SCOPE`: oportunidad incluida en el universo esperado;
+- `OUT_OF_SCOPE`: excluida por regla ex ante, con motivo;
+- `UNENUMERABLE/OPAQUE_SCOPE`: no se puede cerrar la superficie; impide COMPLETE;
+- `ENUMERATED_CLOSED`: universo de oportunidades enumerado y sellado.
+
+La emisión, captura, pérdida, contenido y admisibilidad son estados posteriores de cada oportunidad `IN_SCOPE`; no alteran retroactivamente su pertenencia. El denominador de cobertura se obtiene del universo `IN_SCOPE` sellado, nunca del número de artefactos encontrados.
+
+No se fija cardinalidad de oportunidades ni se inventan source_opportunity_id. Su cardinalidad y regla de enumeración deberán derivarse del contrato de fuente que se apruebe para el microdominio; no se presupone una oportunidad por cada tipo S ni una fuente por cada UE.
+
+### 10.5 Reglas de no redundancia y no contaminación
+
+1. Un artefacto derivado, copia, export o representación de la misma declaración no cuenta como corroboración independiente.
+2. Varios registros del mismo emisor/canal/plantilla pueden ser dependientes; la dependencia se conserva, no se infiere independencia por multiplicidad.
+3. Los registros de identidad, servicio, IAM, snapshot y cobertura no se cuentan como fuentes semánticas de Need.
+4. La truth ledger y cualquier referencia reservada permanecen fuera del expediente observable.
+5. La selección y enumeración del marco no dependen de truth, emisión observada, Z, D2, instalación, accesibilidad, Reach, trayectoria, ejecución, Outcome, Value ni decisiones E1/E2.
+6. La generación del contenido de una declaración sí puede depender de truth a través del modelo de observación aprobado; esto no autoriza a revelar la etiqueta o sus metadatos reconstructivos.
+7. No se exige enumeración exhaustiva de todos los objetivos de B1: se conserva la exclusión focal explícita aceptada por DEC-C10-095.
+
+### 10.6 Dictamen y estado
+
+**RECOMMENDED MINIMUM PROFILE — DOCUMENTARY / NOT FROZEN.**
+
+- Taxonomía S1–S8: reutilizada, sin ampliación.
+- Clase semántica focal mínima: S7, con inclusión/exclusión focal explícita.
+- Identidad/binding, provenance/integridad/tiempo y marco de cobertura: controles obligatorios de referencia/admisibilidad; no evidencia semántica independiente.
+- S5 funcional: condicional al contexto interpretativo.
+- S2/S4 técnicos y S3/S6/S8 operativos: opcionales/no sustitutivos para Need.
+- Universo esperado: oportunidades IN_SCOPE enumeradas y selladas ex ante por UE×dimensión; su cardinalidad y regla concreta siguen OPEN.
+- Cobertura material: permanece NONE; no hay roster, oportunidades, fuentes ni adjudicaciones por unidad.
+- No se han materializado registros, fijado parámetros/probabilidades, ejecutado pruebas, DGP, Analyzer, simulaciones o replay.
+
+La propuesta requiere reconciliación final con el contrato fuente S1–S8 y con la representación lógica del COVERAGE_REGISTER antes de considerarse lista para implementación. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
