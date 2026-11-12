@@ -82,3 +82,12 @@ Referencia rectora: plan §16.199. La política D2 conserva potenciales separado
 ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*); ΔE_T es epistémico. q_X* es historia basal común; q_L* solo si C4 exige intervención longitudinal. g_A1/g_A0 actúan sobre distribuciones factibles del cambio completo bajo q_X* y r_common explícito. No se equiparan a Z_D2: el ITT D2 es efecto total del paquete y el mapping D2→g_A no está demostrado. C4 no es una resta del ITT.
 
 Se preservan vías directas, colaterales, alternativas, interacciones y spillovers. Las distribuciones, funciones estructurales, q_X*, soporte, r_common y mapping ΔX* permanecen OPEN. No se importan tasas históricas ni parámetros P178. No se crean tests, no se ejecuta ni se declara Design Freeze.
+
+
+## 289. Funciones estructurales, q_X* y ΔX*
+
+Referencia rectora: plan §16.200. D2 conserva funciones/potenciales separados para programación, intento, recepción, instalación, C_dep*, A_f*/D_f*, T_acc*/ΔT_acc*, Reach/Π, trayectoria y O-CONF/V_cont. Solo W_programmed(z)=z está fijado para la política D2; las demás funciones no heredan éxito ni tasas por defecto.
+
+q_X* es historia basal común: X/H0 y C_c con mapping; F_alt,0 modifica análisis P*_F; E/App son marco; C_dep,0=A_f,0*=0 son estipulaciones del núcleo limpio. L_m,0 solo con justificación. Need_preZ/S7 no entra como filtro ni predictor; variables post-Z excluidas.
+
+ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*), con ΔE_T separado. ΔX* se clasifica campo a campo; campos no resueltos quedan ?. Funciones, distribuciones, soporte y parámetros OPEN. No se crean tests ni se ejecuta calibración.
