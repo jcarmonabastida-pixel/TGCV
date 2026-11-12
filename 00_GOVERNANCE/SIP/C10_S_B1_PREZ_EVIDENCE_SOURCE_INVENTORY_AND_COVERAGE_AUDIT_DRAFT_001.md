@@ -303,3 +303,17 @@ El soporte de truth=1 y truth=0 continúa siendo un gate sobre el censo aprobado
 **Recomendación sometida a aceptación:** adoptar una oportunidad lógica S7 de autodeclaración basal B1 por UE como universo mínimo cerrado, distinguiéndola expresamente de la oportunidad estandarizada de petición post-Z. Mantener abierta la aceptación del mandato de autodeclaración de B1 y la especificación del canal observacional.
 
 **Estado:** propuesta de diseño; NO DECISION ACCEPTED / NO DESIGN FREEZE / NO MATERIALIZATION / NO EXECUTION.
+
+
+
+### 10.10 Estado de §10.9 tras DEC-C10-098
+
+La recomendación de §10.9 queda aceptada como diseño de trabajo por DEC-C10-098: una oportunidad lógica S7 por cada UE del censo B1/Need aprobado y versionado. Se retira la condición «recomendación sometida a aceptación» y la cardinalidad lógica deja de estar OPEN.
+
+La aceptación no convierte la oportunidad esperada en documento emitido, fuente material, captura, evidencia admisible ni adjudicación. La cobertura material continúa NONE mientras no exista roster ni materialización autorizada.
+
+El mandato se acota a autodeclaración de B1 sobre su propio objetivo operativo focal y su vínculo con UE/instancia lógica de servicio. No atribuye autoridad sobre configuración técnica, IAM, servicio ejecutor ni objetivos de terceros. Identidad concreta, versión de mandato y prueba de autoridad/provenance permanecen como requisitos de implementación.
+
+Quedan OPEN: el mecanismo condicional de emisión/contenido, sus estados de error y dependencia, captura/pérdida, escenarios de sensibilidad, formato físico y parámetros justificados. La oportunidad se enumera antes de verdad observacional, emisión/captura y adjudicación; no se condiciona a Z, D2, resultados o evidencia encontrada.
+
+**Estado:** cardinalidad lógica ACCEPTED WORKING DESIGN (DEC-C10-098); fuente material NONE; NO DESIGN FREEZE / NO MATERIALIZATION / NO EXECUTION.
