@@ -1243,3 +1243,18 @@ Cada transición de truth lleva unidad/instancia/version, event_time, estado fun
 Δ de agregación, resolución/cadencia S3 y δ_det son diferentes. t_last es la última transición causal capaz de cambiar A_B1 (incluida recuperación final); T*=t_last+τ_follow. Un episodio activo al cierre queda terminal/censurado según contrato, nunca como recuperado por defecto.
 
 **Estado:** EVENT_FAMILIES_BOUNDED / STRICT_TRUTH_NO_GRACE / S3_DETECTION_DOMAIN_UNCALIBRATED / TSTAR_DELTA_K_OPEN / NOT_EXECUTED.
+
+
+## 51. Reloj adimensional y contrato del canal S3 (2026-11-12)
+
+Se define un reloj de coordenadas, no una unidad física: W_c=t_c,max−t0 es el tramo común hasta el límite superior de soporte de cualquier transición causal que pueda cambiar A_B1; x=(t−t0)/W_c, de modo que t0=0 y t_c,max=1. No se equipara a t9, H, fases de provisión ni a una duración real. La cola común ρ_follow=τ_follow/W_c queda abierta y T*=1+ρ_follow.
+
+Las duraciones de episodios se expresan d_e=δ_event/W_c. d_min,DGP, si se usa para acotar una matriz finita, es límite del soporte del benchmark, nunca mínimo funcional ni gracia. La regla DEC-C10-102 permanece estricta: todo incumplimiento confirmado afecta cada intervalo que intersecta.
+
+S3 sigue siendo un único canal lógico pasivo, vectorial y no-mutante, con componentes proceso/módulo, listener/socket/superficie, dependencias, capacidad/recursos definidos y perfil runtime. Dentro de la fuente S3 existente se pueden contrastar snapshots/métricas, logs/trazas/eventos runtime e híbridos; no se presume mecanismo, frecuencia, completitud ni independencia. S4 fija identidad/versiones/snapshots y S5 el contrato ENABLED/PROFILE.
+
+Para cada mecanismo se modelan fase, lag, pérdida, cobertura, falsos positivos/negativos y dependencia conjunta. δ_det se obtiene de la curva P_det_joint(d_e|θ_S3,familia,versión,fase), no de una cifra asumida. Un escalar δ_det(p*;θ) requiere umbral p* aprobado; sin ello se reporta curva y bounds/abstención.
+
+Δ de adjudicación, cadencia/resolución S3, duración de episodio y cola de seguimiento son magnitudes distintas. K entero satisface Δ=(1+ρ_follow)/K en el reloj normalizado; K y ρ_follow se derivan por recuperación/aliasing y soporte de recuperación, no por H o t0…t9. Episodio activo en T* es terminal/censurado.
+
+**Estado:** NORMALIZED_COORDINATE_ONLY / STRICT_TRUTH / S3_CAPTURE_MODEL_OPEN / DETECTION_CURVE_OPEN / K_DELTA_TSTAR_OPEN / NO_EXECUTION.
