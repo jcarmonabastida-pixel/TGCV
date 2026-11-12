@@ -4640,3 +4640,126 @@ La calibración temporal numérica sigue BLOCKED hasta disponer de (i) soporte d
 La siguiente integración no es otra ronda de decisiones aisladas: reconciliar este registro con el ledger global §16.188.3, los potenciales de D2, soporte/interferencia y los estimandos P177–P183; después identificar qué parámetros quedan estructuralmente identificados por diseño, cuáles son escenarios de sensibilidad y cuáles exigen aprobación. Solo entonces podrá prepararse una calibración autorizable.
 
 **Dictamen:** TEMPORAL_PARAMETER_FAMILIES_AND_DEPENDENCIES_SPECIFIED / V_CONT_SEMANTIC_INTERPRETATION_CORRECTED / NO_NUMERIC_VALUES_INVENTED / NO_NEW_TEST_IDS / CALIBRATION_BLOCKED_BY_SUPPORT_AND_NORMATIVE_CRITERIA / NO_EXECUTION.
+
+
+## 16.199. Crosswalk estructural único: D2, accesibilidad g_A, vías no focales y soporte (2026-11-12)
+
+**Tipo:** integración de contratos y ledger estructural; no nueva decisión científica, no parametrización numérica, no Design Freeze.  
+**Precedencia:** §§16.175–16.185, 16.188.3–16.188.6, 16.198; contrato DGP temporal/roles §§3, 30–31; PD y contratos D2/PC/C1; DEC-C10-066/067 y DEC-C10S-D2-ESTIMAND-SEPARATION-001.  
+**Objeto:** una sola representación estructural que conecte la política D2, sus etapas de provisión, el cambio completo ΔT_acc*, las intervenciones g_A, los caminos directos/colaterales y los resultados O-CONF/V_cont, sin equiparar etapas ni estimandos.
+
+### 16.199.1. Orden estructural y potenciales bajo D2
+
+Para cada unidad experimental i y asignación z∈{0,1}, el Generator conserva la historia potencial versionada:
+
+`S_i(z)=[W_programmed_i(z),W_attempt_i(z),receipt_i(z),S_install_i(z),C_dep_i(z),A_f_i(z),D_f_i(z),T_acc_i(z),ΔT_acc_i(z),Reach_i(z),Π_i(z),K_i(z),Request_i(z),Selection_i(z),Start_i(z),Exec_i(z),O-CONF_i(z),V_cont_i(z)]`.
+
+La secuencia causal de referencia es:
+
+`Z → W_programmed → W_attempt → receipt → S_install → C_dep* → A_f* → D_f*/T_acc* → ΔT_acc* → Reach/Π → consideración/selección/inicio/ejecución → O-CONF/V_cont`.
+
+Es un orden de dependencias posibles, no una cadena determinista ni una mediación serial obligatoria. Se permiten antecedentes basales, causas comunes, rutas paralelas, retroalimentación temporal legítima y fallos en cada etapa, siempre que se fechen y se declaren por escenario. No se infiere que una etapa posterior ocurra por el mero éxito de la anterior.
+
+- **W_programmed:** estado prescrito por la política; para D2, 0 bajo Z=0 y 1 bajo Z=1, conforme a la regla de política ya aceptada. No es π_h ni cumplimiento.
+- **W_attempt:** intento efectivo, condicionado por programación, historia y mecanismo de cumplimiento; se registra por separado cualquier intento de fondo bajo W_programmed=0. No equivale a recepción.
+- **receipt:** recepción/disponibilidad efectiva del paquete o componentes previstos. No equivale a instalación.
+- **S_install:** aplicación/instalación y sus estados separados de integridad, compatibilidad, operabilidad y verificación. No equivale a C_dep* ni a accesibilidad.
+- **C_dep*:** estado derivado del intento/recepción/instalación y del éxito técnico conjunto de las dependencias constitutivas vigentes. No se asigna como marginal independiente ni se fuerza a 1 cuando W_programmed=1.
+- **A_f*:** predicado focal de accesibilidad estructural, con la conjunción y lógica trivalente de su contrato vigente. Se conserva como candidato la dependencia de C_dep* y de las condiciones constitutivas AUTH/RES/CAP/INFO/DOMAIN/OTHER; la atomización y el estatus basal independiente de C_auth,base siguen sujetos a sus invariantes abiertos. No se colapsan C_auth,base y C_dep* ni se los trata como equivalentes.
+- **D_f*:** apertura basal→post, derivada solo cuando snapshots/predicados comparables permiten establecer A_f,0*=0 y A_f,1*=1. No sustituye A_f,1* ni representa asignación.
+- **T_acc* y ΔT_acc*:** snapshots estructurales verdaderos y su diferencia comparable; no se sustituyen por A_f* ni por C_dep*.
+
+Cada etapa mantiene su propio potencial bajo z. Las funciones estructurales pueden depender de historia basal, versión, estado previo, política, etapa precedente, recursos y causas compartidas justificadas. No se fijan probabilidades, independencia, monotonicidad ni éxito técnico por defecto. Los valores históricos .25/.80, s=.80 y cualquier idealización de cumplimiento perfecto no se elevan a parámetros confirmatorios.
+
+### 16.199.2. Crosswalk del cambio estructural completo
+
+Los snapshots verdaderos son S_T*(t)=(U_t*,R_t*,C_t*,X_t*) y:
+
+`ΔT_acc*=Diff_{G,M}(S_T*(t_pre),S_T*(t_post))=(ΔU*,ΔR*,ΔC*,ΔX*)`.
+
+| Componente | Significado vigente | Papel causal y regla de modelado |
+|---|---|---|
+| ΔU* | Cambios en identidades/estados de transformaciones accesibles | Altas, bajas, reconfiguraciones y cambios de estado, con identidad/versionado comparable |
+| ΔR* | Cambios en relaciones tipadas, dependencias y composición | Aristas añadidas, eliminadas o modificadas; preservar dirección, tipo y dependencia transitiva |
+| ΔC* | Cambios en condiciones, predicados, restricciones y configuraciones de realizabilidad | Cambios constitutivos que habilitan/restringen transformaciones o relaciones; no mezclar evidencia epistémica |
+| ΔX* | Cambios del contexto/estado efectivo constitutivo que condiciona accesibilidad | Clasificar campo a campo; no convertirlo automáticamente en C*, U*, covariable basal q_X ni sexta coordenada |
+
+ΔValidity_e, cobertura, procedencia, timestamp y calidad de observación pertenecen a ΔE_T, no a ΔT_acc*. Un cambio de evidencia sin cambio estructural no produce ΔT_acc*. Un diff no comparable por identidad, frontera, granularidad o mapping de versiones se conserva como ?; no se fuerza a cero.
+
+ΔX* requiere mapping semántico por campo. Si el campo es realmente un predicado/regla se clasifica en C*; si es contexto basal no intervenido y no constitutivo del cambio, puede pertenecer a q_X*; si es contexto post-Z constitutivo, permanece en ΔX*; si no afecta accesibilidad queda fuera del mediador; si no se resuelve, UNKNOWN/?. No hay equivalencia automática ΔX*↔q_X*.
+
+### 16.199.3. q_X*, q_L* y soporte
+
+q_X* es la distribución conjunta basal objetivo, definida antes de Z sobre la historia pertinente (incluidos X, H0, Cc y demás campos basales que el crosswalk acepte). No es la propensión de asignación π_h, no es una distribución post-Z y no se estima a partir de resultados. El roster se fija sin usar Need_preZ, S7, Z ni outcomes como filtro; Need_preZ no es elegibilidad.
+
+La misma q_X* debe estandarizar las dos políticas g_A y los contrastes que pretendan compararse. Deben declararse dominio, soporte, masas, restricciones de factibilidad, versiones y reglas de truncamiento. Si una política no es factible para una historia con masa en q_X*, se restringe la población/estimando ex ante con justificación o se declara falta de identificación; no se extrapola silenciosamente.
+
+q_L* no se añade como ajuste basal ni como covariable automática. Solo procede si la identificación de C4 requiere una intervención longitudinal sobre historia/confusores mediador–resultado post-Z inducidos por Z. En tal caso debe especificarse como distribución/regla secuencial, con orden temporal, soporte y régimen común. Si no se puede definir/identificar, C4 permanece BOUNDS_ONLY o NOT_IDENTIFIED.
+
+La unidad UE, UA y UO permanece diferenciada. UE=UA requiere aislamiento completo por construcción. Si hay recursos, dependencias, pools, agentes o canales compartidos, se asigna por clúster o se declara un mapa de exposición G_i(Z_-i); sin mapa/soporte no se declara SUTVA ni ITT individual identificados.
+
+### 16.199.4. Intervenciones g_A y régimen no focal
+
+g_A1 y g_A0 son políticas estocásticas factibles sobre la distribución conjunta del vector completo ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*), condicionadas por la misma q_X*. No asignan Z a accesibilidad, no fijan A_f* a 1/0 y no intervienen en una sola coordenada aislada salvo que el estimando se redefina expresamente.
+
+Para cada régimen deben declararse: mecanismo generador de la distribución de ΔT_acc*, versiones/estados admisibles, probabilidades o reglas de asignación, restricciones de factibilidad, soporte común, consistencia y tratamiento de desconocidos. El contraste conserva la forma ya aceptada:
+
+`θ_A(q_X*;Y)=E_{X~q_X*,ΔT~g_A1,R~r_common}[Y(ΔT,R)]−E_{X~q_X*,ΔT~g_A0,R~r_common}[Y(ΔT,R)]`.
+
+r_common fija explícitamente las vías no focales que se mantienen comunes; no es una etiqueta residual ni una suposición tácita de ausencia de efectos. El resultado Y se declara por separado; V_cont es el candidato vigente, pero su uso confirmatorio depende de la medición S3, soporte y discriminación frente a O-CONF.
+
+El mapping D2→g_A no está demostrado. El ITT_Z^D2 identifica, bajo sus condiciones, el efecto total de asignar el paquete D2; no identifica θ_A ni permite atribuir el ITT a ΔT_acc*. La recuperación de θ_A debe probarse directamente bajo g_A en el DGP sintético. C4 es mediación interventional distinta y no se calcula como ITT−θ_A.
+
+### 16.199.5. Vías directas, colaterales e interacciones
+
+Se conserva un bloque explícito D_i(z) para las vías que pueden afectar Y sin pasar por ΔT_acc*, y un bloque C_i(z) para cambios colaterales que pueden alterar otras rutas, recursos o condiciones. No son residuos calculados por resta: son mecanismos generativos declarados.
+
+| Vía | Ejemplos ya presentes en contratos | Regla |
+|---|---|---|
+| Directa a O/V | efecto de política sobre outcome/value sin mediación por ΔT_acc* | Debe activarse en perfiles adversariales; ITT sigue siendo efecto de paquete |
+| Colateral de recursos/dependencias | RES_f*, capacidad no focal, dependencias críticas compartidas, consumo/desplazamiento | Preservar PROV-05/09 y contratos D2-RES/CAP; no asumir ausencia ni doble contabilizar C_dep* |
+| Alternativas/otras rutas | A1/A2/F2, Reach/Π, seguridad, latencia, coste, información y calidad | Mantener resultados y rutas propios; no absorber automáticamente en ΔT_acc* |
+| Medición/observación | S3 diferencial por Z, versión, familia, estado o tiempo | No tratarlo como vía funcional ni ajustar mecánicamente por observación post-Z |
+| Interacción/heterogeneidad | política×ΔT_acc*, estado basal×política, recursos×versión, unidad×exposición | Declarar potenciales y escenarios; no imponer aditividad ni monotonicidad |
+| Interferencia | recursos/pools/canales compartidos entre UE | Clúster/mapa de exposición; si no se conoce, límites de identificación |
+
+La distribución conjunta puede factorizarse solo cuando el diseño o el escenario lo justifique. La ausencia de una arista en el diagrama no prueba independencia ni exclusión. Los efectos directos, colaterales, redundantes, antagonistas y compensatorios pueden coexistir. Si no se separan con soporte/identificación, el dictamen es efecto de paquete o BOUNDS_ONLY/NOT_IDENTIFIED, no atribución focal.
+
+### 16.199.6. Ledger global de parámetros: familias, dependencias y estado
+
+| Bloque | Parámetros/reglas a registrar | Dependencias/potenciales afectados | Estado de cierre |
+|---|---|---|---|
+| Baseline/población | q_X*, roster, estratos, E/App, versiones y soporte | Historia basal conjunta; todos los potenciales posteriores | Estructura conocida; distribución/soporte OPEN |
+| Asignación D2 | π_h, UA/clúster, ratio, algoritmo, semilla, exposición | Z y todos los potenciales bajo z | Política D2 definida; diseño de asignación OPEN |
+| Programación/intento | W_programmed, regla de intento, cumplimiento, intentos de fondo | Z, historia, versión → W_attempt | Regla de programación D2 definida; mecanismo de cumplimiento OPEN |
+| Recepción | receipt, disponibilidad, integridad de recepción | W_attempt, logística/versión → receipt | Función OPEN |
+| Instalación | S_install, aplicación, integridad, compatibilidad, operabilidad, verificación, rollback | receipt, estado previo, versión, entorno → S_install | Estados definidos; leyes/soporte OPEN |
+| Dependencias | componentes de C_dep*, éxito técnico conjunto, fallback/alternativas admisibles | intento/recepción/instalación, dependencias transitivas → C_dep* | Derivación estructural; parámetros OPEN |
+| Accesibilidad focal | C_auth,base, RES_f*, C_capacity, C_info, C_domain, C_other, predicados ID/REL/COND/AUTH/RES/DEP/¬BLOCK | C_dep*, historia, snapshots → A_f* | Crosswalk parcial; atomización/invariantes abiertos |
+| Cambio estructural | ΔU*, ΔR*, ΔC*, ΔX*, matching y Diff_{G,M} | T_acc basal/post, identidad/versionado → ΔT_acc* | Tipado definido; mapping/catálogos/soporte OPEN |
+| Reach/Trayectoria | grafo G, horizonte H, ventanas, recursos, bloqueos, rutas alternativas | T_acc*, reglas de composición → Reach/Π y etapas posteriores | Estructura parcial; dominio/exhaustividad OPEN |
+| Outcome/Value | F*/O-CONF por ruta; A_B1/V_cont por intervalos | estados post-aplicación y trayectoria temporal; observación separada | reglas semánticas definidas; oráculos/canal y validez OPEN |
+| Observación | S3, E_T, errores, pérdida, lag, cobertura, dependencia, missingness/censura | truth → observed_evidence; potencialmente diferencial por Z/estado/versión | mecanismo estructural; distribución conjunta OPEN |
+| Vías no focales | D_i(z), C_i(z), r_common, interacciones y heterogeneidad | Z, ΔT_acc*, recursos/alternativas → Y | Deben declararse por escenario; magnitudes OPEN |
+| Interferencia | UA/cluster, pools, G_i(Z_-i), exposición | potenciales de otras unidades → resultados propios | Aislamiento o mapa OPEN |
+| g_A | g_A1/g_A0, soporte, consistencia, versiones y régimen común | q_X*, ΔT_acc*, r_common → Y | Estimando definido; políticas/soporte OPEN |
+| C4/q_L | historia longitudinal, confusores inducidos, intervención mediadora | Z → L → ΔT_acc*/Y | Necesidad y estrategia OPEN; no ajustar automáticamente |
+| Calibración | distribuciones, parámetros, α, potencia, precisión, relevancia, equivalencia, N, π_h, R, error MC | recuperación por estimando/escenario | Bloqueada hasta soporte y criterios |
+
+Cada entrada numérica futura debe incluir definición, unidad/escala, dominio, nivel (UE/UA/clúster/etapa/intervalo), tiempo, potenciales afectados, función/distribución, dependencias, procedencia, estado de aprobación, rango de sensibilidad, versión y restricción de soporte. Sin ello, no se materializa.
+
+### 16.199.7. Clasificación de parámetros y decisiones pendientes
+
+**Derivable sin aprobación adicional:** orden de estados/potenciales ya aceptado; identidades de programación D2; fórmulas de primeras etapas una vez definidos sus eventos; composición de A_f*/D_f* conforme a contratos vigentes; Diff estructural de cuatro componentes; estandarización formal a q_X* común; separación ITT/g_A/C4; métricas de recuperación y reglas de abstención.
+
+**Requiere soporte empírico/sintético justificado:** distribuciones de cumplimiento, recepción, instalación y éxito técnico; dependencias transitivas; q_X* y soporte; leyes de cambio de U/R/C/X; distribución de g_A; vías directas/colaterales e interacciones; distribución de S3; interferencia/exposición; horizonte, rejilla y error de medición.
+
+**Requiere decisión normativa explícita:** población/soporte confirmatorios; criterio de factibilidad de g_A; régimen r_common; relevancia científica/MDE; α, potencia, precisión y equivalencia; tolerancias de medición; reglas de exclusión/restricción de soporte; unidad/clúster cuando el aislamiento no sea demostrable.
+
+No se importan N=700, R=10.000, asignación 1:1 ni parámetros del replay P178 como confirmatorios. Tampoco se elevan .25/.80 o s=.80 históricos a tasas aprobadas.
+
+### 16.199.8. Gate y siguiente paso
+
+La matriz estructural integrada queda especificada, pero no poblada numéricamente. Antes de calibrar se debe producir una tabla finita de funciones estructurales por etapa y potencial afectado, junto con un inventario de campos basales para q_X* y un mapping adjudicable de ΔX*. Después se puede declarar, parámetro por parámetro, si se fija por construcción, se varía como sensibilidad o exige decisión normativa. Los escenarios existentes §16.188.4 son el marco de cobertura; no se crea factorial completo ni nuevos IDs.
+
+**Dictamen:** D2_STAGE_CROSSWALK_SPECIFIED / FULL_ΔT_ACC_COORDINATES_PRESERVED / q_X_AND_SUPPORT_OPEN / g_A_SEPARATE_FROM_D2_ITT / DIRECT_COLLATERAL_PATHS_EXPLICIT / NO_NEW_TEST_IDS / NO_NUMERIC_PARAMETERS_INVENTED / CALIBRATION_BLOCKED / NO_EXECUTION.
