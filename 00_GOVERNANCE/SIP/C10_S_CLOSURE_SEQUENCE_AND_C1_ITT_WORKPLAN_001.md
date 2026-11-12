@@ -2484,3 +2484,18 @@ Se audita el roster de §16.211.3–§16.211.5 frente a C1/C3 y el ledger §16.2
 **Dictamen:** EXISTING_ROSTER_CONCEPTUALLY_SUFFICIENT_FOR_C1_C3 / EFFECTIVE_CELL_COVERAGE_NOT_VERIFIED / POSITIVE_CONTROLS_NOT_MATERIALIZED / ESTIMAND_SPECIFIC_NULL_AND_SIGN_CELLS_OPEN / DIRECT_COLLATERAL_DECOUPLING_CELLS_OPEN / BOUNDS_ANALYZER_IMPLEMENTATION_GAP_RETAINED / NO_ROSTER_EXPANSION / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** especificar celdas mínimas obligatorias C1/C3 sin cifras: positivo, nulo por estimando, negativo, vía directa/colateral desacoplada, heterogeneidad de signos opuestos y control de no-identificación/abstención. Se mantienen scientific_execution=false, execution_authorized=false; PR #116 Draft; main intacta.
+
+
+## 71. Gate 71 — celdas mínimas obligatorias C1/C3 (2026-11-12)
+
+Se especifican en el plan integrado §16.225 los roles mínimos de celda por estimando, sin ampliar el roster ni asignar cifras:
+
+- **C1 ITT-D2:** control positivo, nulo propio, negativo, desacoplamiento paquete/focal, heterogeneidad con signos condicionales opuestos y abstención/no-identificación.
+- **C3 θ_A:** control positivo y nulo focal propios, negativo, dos contrastes desacoplados (ITT no nulo con θ_A nulo; vía no focal diferencial que impide θ_A puntual), heterogeneidad focal de signos opuestos y abstención/no-identificación.
+- Se separan explícitamente nulo de outcome y nulo de primera etapa; ITT-D2 y θ_A no se identifican entre sí; el promedio no sustituye efectos condicionales; abstención correcta y excesiva se puntúan por separado.
+- Se añade una precisión crítica sobre el harness existente: el contraste observado/potencial de G no es automáticamente θ_A. Solo coincide si G manipula el vector completo ΔT_acc* sin vías directas/colaterales diferenciales. El Generator/Evaluator deberán mantener separadas las verdades ITT(Z), contraste G y θ_A(g_A).
+- El harness existente contiene escenarios candidatos, pero no demuestra todavía todas las celdas; el desacoplamiento de primera etapa nula con ITT no nulo y la heterogeneidad condicional de signos opuestos no están acreditados. Bounds/PARTIALLY_IDENTIFIED continúa sin implementar según §16.218.8.
+
+**Dictamen:** MINIMUM_C1_C3_CELL_ROLES_SPECIFIED / EXISTING_WORLD_ROSTER_REUSED / CELL_LEVEL_CONFIGURATION_OPEN / ITT_G_ASSIGNMENT_AND_THETA_A_TRUTH_SEPARATION_REQUIRED / BOUNDS_ANALYZER_GAP_OPEN / NO_CODE_CHANGE / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** auditar la coherencia de truth entre Generator/Evaluator para ITT-D2, contraste G y θ_A(g_A), con separación del firewall del Analyzer. Se mantienen scientific_execution=false, execution_authorized=false; PR #116 Draft; main intacta.
