@@ -4951,3 +4951,36 @@ Para cada campo/condición material, identificar primero su referente y scope; d
 - La clasificación conceptual queda fijada; permanecen abiertos el roster material de campos/condiciones, las rutas y dependencias reales, las fuentes, cobertura, versiones, umbrales y adjudicación independiente. `NO INVENTARIADO`/`?` no se recodifica como 0.
 
 **Dictamen:** SEMANTIC_BOUNDARIES_RESOLVED_BY_PRECEDENCE / FIELD_LEVEL_MAPPING_AND_INVENTORY_OPEN / NO_NUMERIC_PARAMETERS / NO_DESIGN_FREEZE / NO_EXECUTION.
+
+## 16.204. Mapping negativo/positivo entre roster P0 y predicados de accesibilidad (2026-11-12)
+
+**Objetivo:** resolver qué elementos del DGP de configuración actual pueden alimentar los predicados de A_f* y cuáles no, sin equiparar el objeto configuracional con el espacio transformacional. Se reutilizan DEC-C10-053/056/068/069/077/082/083, la matriz IAM §§18–20, el contrato abstracto y el manifiesto P1.
+
+### A. Resultado de mapping por clase
+
+| Clase/elemento aceptado | Función e identidad ya fijadas | Mapping admisible a A_f* | Dictamen |
+|---|---|---|---|
+| `contract_id/version`, `instance_id/version`, `component_id/class` (CMP) | Identidad contractual/instancia/componente del paquete de servicio | Evidencia del objeto/contexto configuracional; no es identidad semántica de τ₂ (`ID_f*`) | No equivalencia; ID_f* requiere contrato/versión propios de τ₂ |
+| `PAR-SVC-ENABLED`, `PAR-SVC-PROFILE` | Propiedades P0 REQUIRED del CMP; BOOL/ENUM, dominios aceptados por DEC-C10-068/083 | Pueden integrar el objeto/configuración sobre el que opera τ₂; no prueban por sí mismas `ID`, `REL`, `COND`, `DEP`, `AUTH`, `RES` ni ausencia de `BLOCK` | Fuera de los predicados de acceso salvo regla explícita del contrato de τ₂; no usar como proxy |
+| `RUL-SVC-ENABLE-PROFILE-01` y AST→PAR bindings | Regla constitutiva P0 REQUIRE con operandos tipados | Sus bindings son referencias sintácticas de AST a PAR; no son relaciones de dominio `REL_f*`, REF funcional ni rutas técnicas `DEP_f*` | Excluir de REL/DEP por mera existencia del AST |
+| `REF` declarativo | Clase de relación de configuración con identidad propia, extremos tipados y mapping explícito a EDGE si procede | Solo podría contribuir a `REL_f*` si el contrato de τ₂ declara que esa relación concreta es necesaria para invocarlo/componerlo. No prueba la ruta técnica completa (`DEP_f*`) | Roster mínimo no exige REF; REF=0 no adjudicado; mantener `?` hasta inventario COMPLETE por snapshot/etapa/ruta/scope |
+| `POL` | Ausente por diseño del núcleo confirmatorio mínimo | No aporta `AUTH_f*`; la autorización normativa basal y ACL/credenciales técnicas pertenecen a contratos/superficies diferentes | No crear POL ni inferir AUTH desde su ausencia |
+| `MET` / snapshots / E_T | Identidad, versión, procedencia y evidencia | Habilita matching y clasificación observada; no es componente de truth A_f* ni de ΔT_acc* | Epistémico; separar `E_T`/`ΔE_T` |
+| P1: `C_install`, `C_integrity`, `C_compat`, `C_oper`, `C_dep*` | Éxito técnico de la dependencia provisionada | Puede operacionalizar una ruta focal dentro de `DEP_f*` solo bajo la ruta única estipulada; no sustituye A_f* completa ni otras rutas | Mantener componentes y alternativas separados |
+| P1: `C_auth,base` / `AUTH_f*` | Autorización normativa funcional basal común, no modificada por B según DEC-C10-067 | Correspondencia conceptual directa con `AUTH_f*` | Materialización, fuente, titular, vigencia y evidencia siguen OPEN |
+| P1: recursos/capacidad | Disponibilidad ex ante necesaria y no duplicada; separar capacidad provisionada y consumo | Solo la disponibilidad no focal que habilita oferta puede integrar `RES_f*`; consumo/contención inducida por B es vía colateral/interferencia | Mapping condicional; inventario/umbral/cobertura OPEN |
+| P1: interfaces, servicios externos y relaciones técnicas | Grafo técnico versionado y cierre transitivo de rutas | Interfaz/relación requerida puede alimentar REL; ruta técnica completa y sus dependencias alimentan DEP; condiciones ambientales independientes de S0 alimentan COND; bloqueos efectivos alimentan BLOCK | Clasificación campo a campo; fuentes reales no inventariadas |
+
+### B. Campos de A_f* que no están representados aún por el roster P0
+
+1. `ID_f*`: identificador semántico estable de τ₂, tipo, contrato y versión; no derivarlo de `component_id` CMP ni del hash del paquete.
+2. `REL_f*`: inventario de interfaces/relaciones funcionalmente necesarias para τ₂; no derivarlo de AST operand bindings ni de FK/EDGE por nombre.
+3. `COND_f*`: condiciones constitutivas externas a la identidad, relaciones y rutas, independientes de S0; cada candidato debe probar su necesidad y scope.
+4. `DEP_f*`: inventario de rutas completas, directas, transitivas, alternativas, compartidas, externas y dinámicas; `C_dep*` solo cubre la ruta provisionada estipulada, no el universo por defecto.
+5. `BLOCK_f*`: registro de prohibiciones/bloqueos efectivos con alcance y ventana; no se obtiene por ausencia de ruta observada ni por cobertura parcial.
+
+### C. Consecuencia y gate
+
+El mapping semántico de clase queda RESOLVED: no existe equivalencia automática P0↔predicados A_f*. Se resuelve también la ubicación funcional de los elementos conocidos (AUTH, C_dep, recursos, E_T). El mapping material de cada interfaz, condición, ruta y bloqueo permanece OPEN. REF permanece UNKNOWN, no 0. No se crean filas IAM, snapshots, IDs físicos, fixtures ni valores de DGP. Antes de especificar distribuciones conjuntas debe existir roster de τ₂ y de superficies P1 por unidad/versión, con cobertura y fuentes identificadas.
+
+**Dictamen:** CLASS_BOUNDARY_RESOLVED / PREDICATE_SOURCE_ROSTER_OPEN / REF_NOT_ADJUDICATED / NO_DESIGN_FREEZE / NO_EXECUTION.
