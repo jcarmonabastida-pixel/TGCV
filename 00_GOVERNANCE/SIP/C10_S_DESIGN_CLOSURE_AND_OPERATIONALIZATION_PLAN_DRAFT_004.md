@@ -2762,3 +2762,17 @@ F* se conserva como criterio funcional de ruta completa; O-CONF como resultado a
 Value se mantiene vectorial P179. B1/Need_preZ y perspectiva B1 son base semántica; autoridad/criterio y consecuencia, dimensiones k/V_j, fuentes, escalas, baseline y horizonte siguen OPEN. No se seleccionan dimensiones históricas, pesos ni agregación por defecto. P179/P182/P183, §224 y MEAS/MISS se reutilizan sin nuevos IDs.
 
 **Estado:** MEASUREMENT_ARCHITECTURE_RECONCILED / NO_CONFIRMATORY_Y / NOT_DESIGN_FROZEN. ITT por O/V separados; C3/C4 no identificados. Sin captura, schema, fixtures, implementación, simulación o ejecución.
+
+
+
+## 16.166. P178 Analyzer Monte Carlo — cierre de replay limpio (2026-11-12)
+
+**Artefacto rector:** `03_EXPERIMENTS/C10-S/harness/P178_CLEAN_REPLAY_CLOSURE_AUDIT_001.md`. **Estado:** COMPUTATIONAL_REPRODUCIBILITY_CLOSED / PASS / NON_CONFIRMATORY.
+
+El replay limpio `43120303588` completó las 27 celdas × 10.000 réplicas (270.000 invocaciones), usando el commit fuente primario exacto `689c8f0164e0625ca536a20b1805e555cd63d5fd`, Python 3.12.16, NumPy 2.3.5 y SciPy 1.17.0. Las 17 pruebas de contrato pasaron; las 27 celdas reprodujeron la referencia; no hubo réplicas inválidas, errores de clasificación ni abstenciones focales inesperadas.
+
+El CSV y el manifiesto del replay son byte-identical a los del primario: SHA-256 CSV `e73a204b6ffc3ff4666c37d9a3e2d5ff4612a3d0602a25349cbb8bc12287914f`; SHA-256 manifiesto `72aed4c8bbe30a20cdb20e3b1c2d27f38e046687b100349f94b99aaed9f04294`. El workflow emitió `CLEAN_REPLAY_BYTE_IDENTICAL=PASS`; duración del job 23 min 25 s. Artefacto replay ID `13901876197`, SHA-256 ZIP `a72922ca51dc5afb713edcb35932dc1598d535f77abe9af6aaa8f3ed1b83e4de`.
+
+**Consecuencia:** se cierra la reproducibilidad computacional del benchmark P178 acotado. No se amplía su dominio de validez: siguen fuera weak-signal, vías directas, fallo de positividad, medición degradada, interferencia y abstención bajo no-identificación. No se valida la afirmación causal/value general ni la factibilidad confirmatoria C10-S. No se modifica el Analyzer; el probe de caché exacta permanece NO-GO. No se modifica `main`, RMA, Matrix, STATUS, Core ni claims; no se concede autorización adicional de ejecución.
+
+**Siguiente continuidad científica:** reanudar el cierre documental de Need_preZ sin recrear artefactos ya existentes. El protocolo U_G §3–7 ya define S1–S8, provenance, cobertura por dimensión/denominador y reglas 1/0/?; el inventario Need_preZ ya contiene el crosswalk de fuentes candidatas y el dictamen COVERAGE_NONE / observed ? / BLOCKED. Por tanto, no procede duplicar un catálogo genérico. La brecha residual es material: roster B1/UE/instancia, objetivo basal individual pre-Z, fuentes admisibles versionadas y cobertura por unidad. Su captura/materialización requiere un alcance y autorización específicos; no se infiere de este cierre P178.
