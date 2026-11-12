@@ -4763,3 +4763,83 @@ No se importan N=700, R=10.000, asignación 1:1 ni parámetros del replay P178 c
 La matriz estructural integrada queda especificada, pero no poblada numéricamente. Antes de calibrar se debe producir una tabla finita de funciones estructurales por etapa y potencial afectado, junto con un inventario de campos basales para q_X* y un mapping adjudicable de ΔX*. Después se puede declarar, parámetro por parámetro, si se fija por construcción, se varía como sensibilidad o exige decisión normativa. Los escenarios existentes §16.188.4 son el marco de cobertura; no se crea factorial completo ni nuevos IDs.
 
 **Dictamen:** D2_STAGE_CROSSWALK_SPECIFIED / FULL_ΔT_ACC_COORDINATES_PRESERVED / q_X_AND_SUPPORT_OPEN / g_A_SEPARATE_FROM_D2_ITT / DIRECT_COLLATERAL_PATHS_EXPLICIT / NO_NEW_TEST_IDS / NO_NUMERIC_PARAMETERS_INVENTED / CALIBRATION_BLOCKED / NO_EXECUTION.
+
+
+## 16.200. Tabla de funciones estructurales, inventario basal q_X* y mapping de ΔX* (2026-11-12)
+
+**Tipo:** especificación de funciones y clasificación de campos derivada de contratos existentes; no asigna parámetros numéricos ni acepta variables basales aún discutidas.  
+**Precedencia:** §§16.175.2/4, 16.185, 16.188.3–.6, 16.199; DGP §§3.1–3.4, 30–31; contratos de snapshots, C_dep*, A_f* y población.  
+**Propósito:** convertir el crosswalk en una tabla adjudicable de funciones/potenciales, separando lo fijado por definición, lo que requiere función estructural y lo que permanece sin mapping.
+
+### 16.200.1. Tabla mínima de funciones estructurales por etapa
+
+La notación (f_j) representa una función estructural versionada; no presupone linealidad, independencia, distribución paramétrica ni ruido aditivo. Los argumentos listados son dependencias permitidas por los contratos, no una afirmación de que todas deban estar activas en el escenario base.
+
+| Etapa/objeto | Función estructural mínima | Potenciales/objetos afectados | Qué queda abierto |
+|---|---|---|---|
+| Asignación | (Z_isim Assign(UA_i,strata_i,pi_h,seed)) | Z y toda la historia potencial posterior | UA/cluster, estratos, π_h, algoritmo, semilla, N |
+| Programación D2 | (W_{prog,i}(z)=z) | W_programmed_i(z) | Versión/payload del paquete y elegibilidad material |
+| Intento efectivo | (W_{att,i}(z)=f_{att}(W_{prog},z,X_i,H0_i,version,epsilon_{att})) | W_attempt_i(z) | Cumplimiento (c_{z,D}(X,H)), intento de fondo (b_{z,D}(X,H)), oportunidad y dependencias |
+| Recepción | (Rec_i(z)=f_{rec}(W_{att},policy,version,logistics,environment,epsilon_{rec})) | receipt_i(z) | Disponibilidad, pérdida, compatibilidad y tiempos de recepción |
+| Instalación/verificación | (S_{inst,i}(z)=f_{inst}(Rec,version,environment,integrity,compatibility,operability,epsilon_{inst})) | aplicación, integridad, compatibilidad, operabilidad, verificación y rollback | Funciones conjuntas, orden, fallos parciales y recuperación |
+| Dependencias técnicas | (C_{dep,i1}^*=f_{dep}(W_{att},Rec,S_{inst},C_{install},C_{integrity},C_{compat},C_{oper},dependency_graph)) | C_dep* y potenciales de dependencias | Catálogo transitivo, condiciones constitutivas y soporte; no marginal independiente |
+| Accesibilidad focal | (A_{f,i1}^*=h_f(C_{dep},C_{auth,base},C_{resource},C_{capacity},C_{info},C_{domain},C_{other})) | A_f,post* | Atomización/mappings y estatus separado de C_auth,base; lógica 1/0/? |
+| Apertura focal | (D_{f,i}=I(A_{f,i0}^*=0land A_{f,i1}^*=1)) | D_f* | Matching basal/post, predicados comparables; no se calcula si hay ? o identidad no comparable |
+| Snapshot estructural | (S_{T,i}^*(t)=f_T(history_i(t),identity,version,boundary)) | U*, R*, C*, X* por tiempo | Catálogo, identidad, granularidad, frontera y mapping |
+| Cambio completo | (Delta T_{acc,i}^*=Diff_{G,M}(S_T^*(t_{pre}),S_T^*(t_{post}))) | ΔU*, ΔR*, ΔC*, ΔX* | Matching y mapping; UNKNOWN si diff no comparable |
+| Reach/posibilidades | (Reach_i,Pi_i=f_{reach}(T_{acc}^*,G,H,preconditions,resources,windows,blocks)) | Reach*, Π_H* | G, H, exhaustividad, ventanas, reglas y recursos |
+| Trayectoria downstream | (K,Consider,Selection,Start,Exec=f_{path}(Reach,Pi,knowledge,actors,history)) | Potenciales por etapa de trayectoria | Funciones por etapa; no se reconstruye acceso desde ejecución |
+| Continuidad B1 | (A_{B1,i}(t)=f_{B1}(ENABLED_{eff},PROFILE_{eff},admission_capacity)); (V_{cont,i}^{truth}=K^{-1}sum_k A_{B1}(i,k)) | Serie funcional y V_cont_truth | Parámetros temporales y S3; truth estricta por intervalo conforme DEC-C10-102 |
+| Conformidad terminal | (O_{CONF,i,r}^{truth}=F^*(state_{postapply,postcheck,r})) | O-CONF por ruta | IAM, predicados, oráculo y validación de §224 |
+
+Para D2, (W_{prog}(z)=z) expresa únicamente la regla de programación ya definida. No autoriza sustituir (W_{att}), receipt, (S_{inst}), (C_{dep}^*) o (A_f^*) por Z. La conjunción técnica de (C_{dep}^*) conserva la fórmula vigente del DGP; no se presume independencia entre sus componentes. La función (h_f) conserva el contrato focal vigente, sin resolver por esta tabla la disputa/invariante abierta sobre C_auth,base.
+
+### 16.200.2. Inventario basal para q_X*: admisión, exclusión y estado
+
+q_X* debe contener solo historia/condiciones medidas o estipuladas antes de Z que sean necesarias para definir la población objetivo, factibilidad y heterogeneidad de las intervenciones. La tabla no convierte todos los campos candidatos en covariables ni los declara independientes.
+
+| Campo basal candidato | Papel documentado | Tratamiento para q_X* |
+|---|---|---|
+| X, H0 | Historia/contexto basal conjunto de la UE | Núcleo de q_X*, pendiente de schema, dominio y distribución conjunta |
+| C_c | Condiciones constitutivas para factibilidad de τ2 | Incluir solo componentes con mapping semántico y soporte; no confundir con outcomes |
+| F_alt,0 | Alternativa funcional basal | Modificador basal; define P*_F para análisis secundario, no excluye automáticamente de P*_τ2 |
+| E_i / App_i | Alcance y aplicabilidad de la unidad a τ2 | Condiciones de marco/selección; regla externa E_i pendiente. En núcleo sintético τ2 aplicable por construcción |
+| C_dep,i0* / A_f,i0* | Estado estructural basal | En núcleo limpio, C_dep,0=0 y A_f,0*=0 por construcción; en estrés, estados/UNKNOWN se declaran explícitamente. No convertirlos en filtros post-Z |
+| L_m,0 | Condiciones temporales basales | Solo si se demuestra papel basal y mapping; no confundir con q_L* post-Z ni ajustar mecánicamente por mediadores |
+| T_acc,i0* | Snapshot basal de accesibilidad | Puede ser parte de historia basal solo con identidad, frontera y catálogo; no duplicar sus campos en X/H0/C_c |
+| C_auth,base | Autorización funcional basal | Mapping y condición de independencia respecto de C_dep* siguen abiertos; no fijar inclusión en q_X* ni colapsarlo |
+| Need_preZ / S7 / truth B1 | Constructo objetivo y canal declarativo pre-Z | No usar como covariable predictora, filtro de elegibilidad ni variable para generar q_X*; mantener reserva y reglas DEC-C10-095/097/098 |
+| Z, W_attempt, receipt, S_install, C_dep,post, A_f,post, ΔT_acc, Reach, trayectoria, O, V | Variables post-Z | Excluidas de q_X*; no usar para construir baseline ni selección basal |
+
+**Regla de construcción:** primero fijar el marco sintético P*τ2 y el roster por condiciones de diseño; después generar conjuntamente los campos basales admisibles desde q_X*. El núcleo limpio estipula aplicabilidad τ2 y los estados basales C_dep,0=0/A_f,0*=0 por construcción, sin afirmar que esta sea una distribución externa representativa. F_alt,0 modifica el análisis secundario P*_F, no la cohorte primaria. Need_preZ nunca determina la composición de la cohorte.
+
+### 16.200.3. Mapping adjudicable de X* y ΔX*
+
+El mapping se hace por campo y por función semántica, no por nombre de columna:
+
+| Clase | Regla de clasificación | Ejemplos de función (no mapping aprobado de campos concretos) |
+|---|---|---|
+| U* | Identidad/estado de una transformación | Transformación añadida, retirada, reconfigurada o con estado efectivo distinto |
+| R* | Relación tipada/dirigida entre objetos/transformaciones | Dependencia, interfaz, composición, conexión o arista modificada |
+| C* | Regla, predicado, restricción o configuración de realizabilidad | Autorización, precondición, cuota/recurso como restricción, bloqueo, condición de invocación |
+| X* | Estado/contexto efectivo constitutivo que condiciona accesibilidad y no es U/R/C | Contexto material de ejecución/entorno que cambia y altera factibilidad, una vez excluidas reglas y relaciones |
+| E_T / ΔE_T | Evidencia y conocimiento sobre la estructura | Fuentes, cobertura, validez epistémica, provenance, hashes, logs, timestamps y adjudicación |
+
+**Procedimiento de adjudicación por campo:** (1) identificar referente y unidad; (2) fijar momento basal/post y versión; (3) preguntar si el campo es una transformación, relación o regla/condición; si sí, clasificar U/R/C; (4) si no, determinar si es estado/contexto efectivo constitutivo de accesibilidad; solo entonces X; (5) si solo describe qué se conoce, clasificar E_T; (6) si mezcla funciones, descomponer; (7) si no se puede decidir sin inferencia, UNKNOWN/? y no entra al diff puntuable.
+
+No se aprueba todavía un listado físico de campos ΔX*. El contrato de snapshots exige clasificación campo a campo; el mapping con C10-D1 §27.1 tampoco permite asignar ΔX* automáticamente a A⁺/A⁻/A^reconf, ΔR o ΔC. Sus consecuencias pueden reflejarse en esas clases solo tras adjudicación semántica y sin doble conteo.
+
+### 16.200.4. Parámetros estructurales: clasificación por estado epistemológico
+
+1. **Fijados por contrato/decisión:** regla D2 de programación (W_{prog}=Z); separación de etapas; conjunción de C_dep* según sus componentes vigentes; cuatro coordenadas ΔT_acc*; función A_f*/D_f* en su alcance; B1/ENABLED/PROFILE; inicio t0, intervalos iguales y continuidad estricta de DEC-C10-100/101/102; F* y anclas terminales de O-CONF.
+2. **Funciones estructurales por especificar, sin valores:** intento/cumplimiento, recepción, instalación, éxito conjunto, predicados de A_f, snapshots/diff, Reach/Π y etapas downstream. Deben definirse por estado/versión y potencial afectado.
+3. **Distribuciones/soporte por justificar:** q_X*, heterogeneidad basal, dependencias transitivas, fallos/recuperación, políticas g_A, r_common, caminos directos/colaterales, interferencia y observación S3.
+4. **Decisiones normativas pendientes:** población/soporte confirmatorios, admisibilidad de historias, mapping C_auth,base, relevancia/MDE, α, potencia, precisión, equivalencia y tolerancias de medición.
+
+Una fórmula simbólica no equivale a una función implementable: cada (f_j) necesita dominio/codominio, estados 1/0/?, versión, soporte, orden temporal, parámetros y procedencia. No se asignan valores por defecto.
+
+### 16.200.5. Regla de salida y siguiente integración
+
+El ledger queda preparado para una adjudicación por filas: cada función se clasificará como (a) identidad fijada por contrato, (b) función estructural pendiente de especificación, (c) distribución/soporte pendiente de justificación o (d) decisión normativa. La siguiente pasada debe resolver en conjunto las funciones de intento→recepción→instalación→C_dep*, la atomización de A_f*/C_auth,base y el inventario de campos ΔX* que pueda adjudicarse sin materialización. Lo que no tenga mapping defendible queda UNKNOWN/?; no se fuerza una decisión para acelerar la simulación.
+
+**Dictamen:** STRUCTURAL_FUNCTION_TABLE_DRAFTED / q_X_BASELINE_INVENTORY_CLASSIFIED / ΔX_FIELD_MAPPING_RULE_DEFINED_NOT_MATERIALIZED / NO_NUMERIC_PARAMETERS / NO_NEW_TEST_IDS / CALIBRATION_BLOCKED / NO_EXECUTION.
