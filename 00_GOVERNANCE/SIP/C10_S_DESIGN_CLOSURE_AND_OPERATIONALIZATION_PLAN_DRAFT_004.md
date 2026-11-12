@@ -3485,3 +3485,8 @@ V_cont sería una propiedad temporal por intervalos; O-CONF/F* es una adjudicaci
 - No se fija K, frecuencia, baseline, ventana, umbral de capacidad, error, cobertura, MDE o N; se derivarán solo tras cerrar el contrato de medida.
 - No se crean clases U_G, fuentes, roles, tests, IDs, fixtures, schemas físicos ni interfaces nuevas.
 - Estado: `S3_CANDIDATE_MAPPING_DOCUMENTED / SIGNAL_VALIDITY_OPEN / O_CONF_DISCRIMINATION_NOT_VERIFIED / V_CONT_SELECTION_ACCEPTED_PROVISIONALLY / MEASUREMENT_NOT_OPERATIONALIZED / NO_EXECUTION_AUTHORIZED`.
+
+
+### 16.181.6. Precedencia y propagación de la selección de V_cont
+
+La selección provisional de la dimensión ya no depende solo del plan derivado §16.174: queda formalizada en **DEC-C10-099**, incorporada al Decision Log C10-S y propagada al maestro consolidado §277 y al addendum de Outcome/Value. Esta decisión complementa DEC-C10-095 para la extensión B, sin alterar A ni P179. Los estados históricos `NO_VJ_SELECTED / VALUE_NOT_INSTANTIATED` se interpretan ahora como anteriores a DEC-C10-099; siguen siendo correctos respecto de la falta de instancia material/operacionalización, pero no respecto de la selección del constructo. La selección de V_cont no cierra el indicador, el canal S3, la medición ni la identificación.
