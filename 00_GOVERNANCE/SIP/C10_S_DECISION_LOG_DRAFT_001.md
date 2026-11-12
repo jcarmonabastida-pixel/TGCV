@@ -1566,3 +1566,11 @@ Este registro documenta la aceptación de una base de trabajo; **no crea una DEC
 **Estado:** ACCEPTED — PROVISIONAL DESIGN DECISION; MEASUREMENT/IDENTIFICATION GATES OPEN.
 
 Se formaliza la aceptación expresa ya registrada en el plan §16.174: para la extensión sintética B, V_cont se selecciona provisionalmente como única dimensión mínima de Value del núcleo confirmatorio candidato; V=(V_cont), vector unitario sin índice ni pesos. La selección no aprueba todavía indicador, fórmula, ventana, resolución, baseline, horizonte, fuente, escala o agregación. La medición debe ser independiente de ΔT_acc*/Reach/trayectoria y Outcome técnico; debe superar los gates P182/P183/MEAS/MISS, validez discriminante frente a O-CONF/F* e identificación. Si no los supera, no será endpoint confirmatorio y no se sustituirá silenciosamente. DEC-C10-095 permanece vigente para A/B en su alcance, con esta decisión posterior específica para B. No Design Freeze ni autorización de implementación/ejecución. Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-099_V_CONT_PROVISIONAL_SELECTION_ACCEPTANCE.md`.
+
+
+
+## DEC-C10-100 — Aceptación provisional de agregación temporal igualitaria de V_cont (2026-11-12)
+
+**Estado:** ACCEPTED — PROVISIONAL OPERATIONALIZATION DECISION; MEASUREMENT/IDENTIFICATION/DISCRIMINATION GATES OPEN.
+
+Se acepta V_cont_truth(i)=(1/K)Σ A_B1(i,k), con intervalos de igual duración en rejilla/ventana post-Z común preespecificada. UNKNOWN se conserva y produce bounds [n1/K,(n1+n?)/K]; no se imputa cero ni se elimina del denominador. El estimando es nivel post-Z, no cambio pre/post. S3 sigue siendo un canal pasivo vectorial imperfecto, no truth ni verificador directo. K, frecuencia, duración, ventana, baseline/transitorios, MDE, parámetros del canal y criterios cuantitativos siguen abiertos. La validez de medida, discriminación frente a O-CONF/F* y recuperación puntual requieren gates P182/P183/MEAS/MISS existentes. DEC-C10-099 selecciona V_cont; DEC-C10-100 acepta su regla de escala inicial. Registro autónomo: 00_GOVERNANCE/decisions/DEC-C10-100_V_CONT_EQUAL_INTERVAL_TEMPORAL_AGGREGATION_ACCEPTANCE.md. No Design Freeze ni autorización de implementación/ejecución.
