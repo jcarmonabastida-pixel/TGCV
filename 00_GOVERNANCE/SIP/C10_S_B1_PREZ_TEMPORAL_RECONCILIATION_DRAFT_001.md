@@ -156,3 +156,16 @@ La reconciliación inserta Need_preZ en el baseline t−1 como objetivo basal de
 No se crean roster, IDs, truth, fuentes, cobertura, adjudicaciones, código ni fixtures. No se ejecutan validadores, DGP, replay, simulación ni análisis. No se modifica main, RMA, Evidence→Claim Matrix, STATUS, decisiones aceptadas ni estimandos.
 
 `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 8. Reconciliación funcional B1/V_cont y límite de derivación temporal (2026-11-12)
+
+La función de servicio no permanece abierta. Prevalecen el contrato funcional de adjudicación B1 §2, la reconciliación de valoración §13 y DEC-C10-068: admitir solicitudes cuando ENABLED=true, no admitirlas cuando ENABLED=false y exponer PROFILE declarado. STANDARD/READ_ONLY no reciben semántica de negocio adicional.
+
+Para V_cont, la verdad latente por intervalo representa conformidad con esa regla de capacidad/admisión y exposición de perfil. No es el número de solicitudes, el éxito de procesamiento ni una respuesta. La ausencia de solicitud en un intervalo no es fallo. La falta de señal observacional tampoco cambia truth; se trata en S3 y en sus cotas de identificación.
+
+El reloj t−1/t0…t9 es un orden de etapas causales y no define intervalos iguales. H=3 es profundidad de trayectoria; S7 (una oportunidad declarativa pre-Z por UE) es parte del paquete Need_preZ; ninguna de estas cantidades determina K ni la ventana de V_cont. La agregación igualitaria DEC-C10-100 sigue aceptada.
+
+Como recomendación aún no aprobada, se propone iniciar la ventana en t0 para incluir posibles interrupciones durante provisión/instalación y cerrarla en un horizonte post-Z fijo y común. Duración, unidad temporal, resolución, K y tratamiento de transitorios permanecen OPEN; no se derivan de t9 ni se inventan. El inicio t0 es recomendación, no decisión normativa.
+
+**Estado:** FUNCTIONAL_REFERENCE_REUSED / INTERVAL_TRUTH_DEFINED_AT_CONSTRUCT_LEVEL / WINDOW_AND_GRID_OPEN / NO_MATERIALIZATION / NO_EXECUTION_AUTHORIZED.
