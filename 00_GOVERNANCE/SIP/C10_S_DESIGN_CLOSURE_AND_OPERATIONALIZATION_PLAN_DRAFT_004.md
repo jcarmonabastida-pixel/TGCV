@@ -6041,3 +6041,54 @@ El esquema y la matriz de activación quedan cerrados estructuralmente. La mater
 **Dictamen:** PARAMETER_LEDGER_SCHEMA_AND_R_COMMON_RULES_CLOSED_STRUCTURALLY / EXISTING_WORLD_ROSTER_REUSED / CELL_LEVEL_MATERIALIZATION_OPEN / NUMERIC_PARAMETERS_OPEN / D2_TO_GA_MAPPING_NOT_DEMONSTRATED / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** auditar la cobertura mínima del roster existente por estimando C1 y C3: controles positivos identificables, nulos identificables, falsadores de falsa atribución, escenarios que exigen bounds/abstención y huecos de representación. Reutilizar §16.211; no ampliar el roster por defecto.
+
+
+## 16.224. Gate 70 — auditoría de cobertura mínima del roster por estimando C1/C3 (2026-11-12)
+
+**Precedencia:** §§16.208–16.223, en particular mapping finito §16.211, funciones generadoras §16.212, B1/V_cont §§16.213–16.221 y contratos C1/C3 y ledger §§16.222–16.223. Esta auditoría no reabre Value, B1, V_cont, S3/S7, semántica temporal ni roster. Comprueba qué cubre realmente el roster documental y qué no puede afirmarse todavía.
+
+### 16.224.1. Regla de lectura de cobertura
+
+Se distinguen cuatro estados: **MAPPED** (clase/mecanismo y salida previstos); **IDENTIFICATION-CONDITIONED** (control positivo solo si se materializan las condiciones del estimando y la información del Analyzer); **ABSTENTION-ONLY** (prueba bounds/abstención/no-identificación, no recuperación puntual); **NOT-MATERIALIZED** (mecanismo mencionado, pero sin celda versionada con truth, soporte, asignación/intervención y observación).
+
+Una clase MAPPED no equivale a cobertura ejecutable ni a test implementado. No se cuentan menciones documentales como celdas. La base es exclusivamente el roster §16.211.3 y el mapping §16.211.4.
+
+### 16.224.2. Matriz de cobertura por estimando
+
+| Clase existente §16.211 | C1: ITT-D2 sobre V_cont | C3: θ_A sobre ΔT_acc* | Cobertura y limitación |
+|---|---|---|---|
+| Focal limpio R0 | IDENTIFICATION-CONDITIONED | IDENTIFICATION-CONDITIONED | Único candidato positivo principal. C1 necesita Z/UA/π_h materializados; C3 necesita g_A directo factible, q_X*, r_common y fuente de identificación visible al Analyzer. La truth del Generator no basta |
+| Nulo | MAPPED, NOT-MATERIALIZED | MAPPED, NOT-MATERIALIZED | Deben existir nulos separados ITT=0 y θ_A=0; nulo de outcome no implica primera etapa nula |
+| Fallo por etapas R3 | IDENTIFICATION-CONDITIONED | No positivo; puede ser ABSTENTION-ONLY | Separa programación/intento/recepción/instalación/C_dep; no implica por sí mismo fallo B1 ni efecto focal |
+| Focal adverso | IDENTIFICATION-CONDITIONED | IDENTIFICATION-CONDITIONED | Candidato negativo; función, contraste y soporte aún no materializados |
+| Alternativa basal R1 | IDENTIFICATION-CONDITIONED para ITT total | IDENTIFICATION-CONDITIONED o ABSTENTION-ONLY según r_common | No equivale a exclusividad ni a efecto focal; punto focal solo si la alternativa permanece común o se identifica |
+| Alternativa afectada/colateral R2 | IDENTIFICATION-CONDITIONED para ITT total | ABSTENTION-ONLY si diferencial no identificada; identificable si se separa | Falsador crítico; función colateral no parametrizada |
+| Vía directa D2→resultado | IDENTIFICATION-CONDITIONED para ITT total | ABSTENTION-ONLY si no se separa | ITT recoge la vía; no se rebautiza como θ_A |
+| Interacción/heterogeneidad | IDENTIFICATION-CONDITIONED | IDENTIFICATION-CONDITIONED solo con soporte condicional | Cobertura conceptual; faltan masas, estratos, funciones y celdas condicionales |
+| IV adversarial | ITT puede seguir IDENTIFICABLE por asignación | No identifica θ_A; ABSTENTION-ONLY para LATE inválido | Controla el rechazo de Wald/LATE automático |
+| Interferencia | ABSTENTION-ONLY hasta definir UA/clúster/mapa | ABSTENTION-ONLY hasta definir exposición/política | Sin mapa concreto no se admite ITT individual por defecto |
+| Observación adversarial S3 | IDENTIFICATION-CONDITIONED o ABSTENTION-ONLY según canal | Igual, con gate focal adicional | Truth emparejada; calibración, error, pérdida y dependencia abiertos |
+| Soporte/ausencia/censura | ABSTENTION-ONLY o bounds salvo región identificable predeclarada | ABSTENTION-ONLY o bounds si falta soporte de alguna g_A | Prohibida la extrapolación y el cambio post hoc de población |
+
+### 16.224.3. Cobertura conceptual existente
+
+El roster contiene clases para: control focal limpio; nulo; primera etapa nula/débil; fallo por etapas; efecto adverso; alternativa basal y alternativa afectada/colateral; vía directa; interacción/heterogeneidad; IV adversarial; interferencia; observación degradada/diferencial; falta de soporte, ausencia y censura. Esta cobertura dirigida es suficiente conceptualmente para los falsadores principales C1/C3. No se justifica añadir nuevas clases por ahora.
+
+### 16.224.4. Huecos efectivos
+
+1. No hay controles positivos identificables materializados para C1 ni C3. R0 es candidato: faltan asignación Z/UA/π_h para C1; fuente de identificación de g_A, kernels y soporte para C3.
+2. El nulo no está desdoblado por estimando: faltan celdas independientes ITT-D2=0, θ_A=0 y primera etapa ΔT_acc*=0, incluyendo desacoplamientos (primera etapa nula con vía directa ITT no nula).
+3. No se ha verificado celda a celda el cruce signo×estimando: positivos, negativos y niveles débiles de G_ITT y G_A siguen estructurales, no materializados. No se presupone coincidencia de signos.
+4. Vía directa/colateral existe como clase, no como verdad de celdas: faltan pares ITT no nulo con θ_A nulo/no identificado y casos donde ambos difieran en signo o magnitud.
+5. R1/R2 no prueban cobertura de Reach/F*: F*, M/M_A, exhaustividad de alternativas y O-CONF siguen abiertos; no sustituyen C1/C3.
+6. Heterogeneidad está solo mapeada: faltan masas por historia, soporte condicional y celdas de signos opuestos con media marginal potencialmente nula.
+7. Interferencia, observación adversarial y censura son controles de bounds/abstención mientras no se materialicen mapas/modelos y condiciones de identificación.
+8. La capacidad del Analyzer para PARTIALLY_IDENTIFIED/bounds, cobertura de bounds y métricas por familia sigue siendo una brecha de implementación ya registrada en §16.218.8.
+
+### 16.224.5. Dictamen y siguiente dependencia
+
+El roster es **suficiente como roster conceptual dirigido** para los falsadores principales de C1/C3; su cobertura efectiva es **NOT_VERIFIED**. No se amplía el roster. La clasificación anterior es contrato de cobertura, no evidencia de ejecución. No se crean nuevas clases por cada combinación signo×modo S3×familia; esas combinaciones serán atributos de celdas cuando la parametrización las justifique. C4/LATE conservan sus contratos separados.
+
+**Dictamen:** EXISTING_ROSTER_CONCEPTUALLY_SUFFICIENT_FOR_C1_C3 / EFFECTIVE_CELL_COVERAGE_NOT_VERIFIED / POSITIVE_CONTROLS_NOT_MATERIALIZED / ESTIMAND_SPECIFIC_NULL_AND_SIGN_CELLS_OPEN / DIRECT_COLLATERAL_DECOUPLING_CELLS_OPEN / BOUNDS_ANALYZER_IMPLEMENTATION_GAP_RETAINED / NO_ROSTER_EXPANSION / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** especificar las celdas mínimas obligatorias —sin cifras— para C1 y C3: control positivo, nulo por estimando, efecto negativo, vía directa/colateral desacoplada, heterogeneidad con signos opuestos y control de no-identificación/abstención. Reutilizar §§16.211–16.223 sin duplicar sus mecanismos/campos.
