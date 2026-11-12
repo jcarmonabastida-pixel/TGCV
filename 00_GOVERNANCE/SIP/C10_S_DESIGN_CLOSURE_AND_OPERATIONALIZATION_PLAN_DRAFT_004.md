@@ -2974,3 +2974,93 @@ No se reabren B1, Need_preZ, ENABLED/PROFILE, cardinalidad de una oportunidad es
 **Estado:** `V_CONT_ACCEPTED_PROVISIONALLY / SINGLE_DIMENSION_CONFIRMATORY_CANDIDATE / MEASUREMENT_AND_IDENTIFICATION_GATES_OPEN / NOT_DESIGN_FROZEN`.
 
 Esta aceptación no altera P179, no crea un índice escalar, no modifica decisiones previas ni claims, y no autoriza roster/materialización, schema físico, implementación, generación de datos, simulación, estimación o ejecución científica. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
+
+
+## 16.175. Pasada 2 C+D — especificación estructural del DGP y diseño de población/asignación sintéticos (2026-11-12)
+
+**Artefactos rectores inspeccionados:** §§3–8 del presente plan; §16.158 y el artefacto C10_S_PD_DGP_MECHANISM_AND_ADVERSARIAL_EVALUATION_RECONCILIATION_DRAFT_001.md §§1–9; C10_S_D2_ASSIGNMENT_POPULATION_SUPPORT_RECONCILIATION_DRAFT_001.md §§1–9; C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md §§15–17; C10_S_PB_MATERIAL_D2_INSTANCE_AND_ISOLATION_RECONCILIATION_DRAFT_001.md §§1–13; C10_S_INTEGRATED_CONFIRMATORY_FEASIBILITY_AND_DESIGN_FREEZE_RECONCILIATION_DRAFT_001.md; C-MED/MAP-01…07/MED-02…06; S4R, SNAP, REACH, PROV, MEAS, MISS, POL, VER, TRJ, INT, GEN, PM y P177/P178/P179/P182/P183.
+
+### 16.175.1. Requisitos ya definidos — no reabrir
+
+- Microdominio Opción A, frontera P0/P1/P2, F1/F2/A1/A2, D2 primario candidato y D1 secundario: se reutilizan dentro de su alcance. No se amplía el caso por realismo.
+- Cadena temporal Z → política B → intento/recepción/instalación/verificación → C_dep* → A_f* → D_f* → ΔT_acc* → Reach/Π → selección/ejecución → Outcome/Value. Los estados no se imputan unos desde otros.
+- Snapshot estructural S_T*=(U*,R*,C*,X*), ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*) completo y plano epistémico E_T separado. ΔX* no se cuenta dos veces ni se sustituye por validez/cobertura de evidencia.
+- Predicado focal A_f* según la conjunción ID/REL/COND/AUTH/RES/DEP/¬BLOCK; C_dep* es solo parte de DEP y no basta para declarar accesibilidad. App_f*, D_f* y ΔT_acc* conservan sus distinciones.
+- Reglas D2: W_programmed=0 bajo Z=0 y W_programmed=1 bajo Z=1. Son reglas de política, no probabilidades de asignación. W_attempt, recepción, instalación, C_dep*, A_f*, D_f* y ΔT_acc* siguen separados. s=0.80 no está aprobado.
+- P*τ2 es la población primaria candidata; P*_F es secundaria y no se impone como filtro de P*τ2. E_scope, aplicabilidad, C_dep,0 y A_f,0* no se infieren unos de otros. Need_preZ no es elegibilidad.
+- UE/UA/UO y la condición UE=UA solo bajo aislamiento; UO repetidas no aumentan N. Truth_dgp, observed_evidence y evaluation/adjudication se segregan. El Analyzer no recibe truth.
+- Familias adversariales ya inventariadas en PD y sus contratos P177/P178/P179/P182/P183 se reutilizan. No se crean escenarios, pruebas ni IDs redundantes.
+
+### 16.175.2. C — modelo estructural causal mínimo recomendado
+
+Se propone un DGP finito y versionado, definido por reglas estructurales y tablas de potenciales sobre estados factibles, no por una simulación narrativa de migración ni por una regresión lineal impuesta a priori.
+
+**Marco basal.** El Generator construye una cohorte sintética finita desde una distribución conjunta versionada q_X* de historias/condiciones basales. Para el núcleo limpio, el marco generador se restringe por construcción a instancias dentro del alcance y con τ2 aplicable; C_dep,0=0 y A_f,0*=0 se estipulan como verdad basal por unidad. Así, la cohorte generada representa P*τ2 dentro de ese universo sintético. Esto no acepta la fórmula pendiente de E_i para un universo externo más amplio ni permite generalizar fuera del marco estipulado. F_alt,0 puede variar como modificador basal y define P*_F solo para análisis secundario; no excluye unidades de P*τ2.
+
+**Política D2 y estados técnicos.** Para cada unidad i, Z_i asigna la política D2 y W_programmed,i=Z_i. El intento efectivo, recepción, instalación y cada predicado técnico se generan separadamente mediante reglas estructurales versionadas y parámetros de cumplimiento/fallo. El control puede incluir un escenario explícito de contaminación/provisión de fondo, sin alterar la regla normativa W_programmed=0. C_dep* se adjudica por sus componentes; A_f* se deriva de todos los predicados aplicables; D_f* compara verdad basal y post; ΔT_acc* se obtiene del diff completo de snapshots. No se asigna Z directamente a accesibilidad ni se fija s=.80.
+
+**Resultado de valor.** Para cada unidad y régimen se genera una trayectoria temporal de disponibilidad de la capacidad que B1 pretende mantener. La verdad candidata de V_cont es la fracción de la ventana común de valoración en la que esa capacidad está efectivamente disponible conforme al objetivo basal B1; formalmente, una medida temporal normalizada de disponibilidad, no el flag ENABLED, una petición aislada, el snapshot terminal O-CONF ni una recodificación de ΔT_acc*. El horizonte y la observación se fijan ex ante en la pasada E; la independencia de medición y la discriminación frente a O-CONF se someten al gate E. El estimando compara potenciales V_cont entre regímenes; no requiere definir ΔV como diferencia mecánica respecto de una configuración terminal.
+
+**Estructura de potenciales y rutas.** El DGP conserva una función estructural versionada:
+V_cont,i(z,g)=f_V(X_i, ΔT_acc,i(g), L_i(z), D_i(z), ε_i; θ_V),
+donde L_i representa condiciones post-Z que puedan afectar mediador y resultado; D_i representa rutas directas/colaterales; y ε_i causas residuales explícitas del mundo sintético. La forma concreta de f_V se implementa como regla/tabla finita sobre estados y transiciones factibles, sin imponer linealidad, aditividad ni monotonicidad. Los parámetros θ_V y las tablas de verdad se fijan antes de generar resultados y quedan reservados al Evaluator.
+
+### 16.175.3. Separación necesaria de las dos intervenciones
+
+Se formalizan dos experimentos contrafactuales dentro del mismo marco sintético, sin confundirlos:
+
+1. **Intervención D2, Z_B:** asigna la política material de provisión. Su ITT sobre V_cont es el efecto total del paquete, incluyendo toda vía activada por la política. No demuestra por sí mismo que ΔT_acc* causó el cambio.
+2. **Intervención de accesibilidad, g_A:** compara dos políticas estocásticas factibles g_A1 y g_A0 sobre la distribución conjunta completa de ΔT_acc*, condicionadas por la misma historia basal q_X*. No fija A_f*=1/0 ni asigna Z a accesibilidad. Es una intervención causal distinta, necesaria para evaluar θ_A(q;V_cont), y debe respetar estados factibles, consistencia y soporte común.
+
+El estimando de accesibilidad se expresa como contraste de medias potenciales bajo g_A1 frente a g_A0, estandarizado a la misma q_X* y a un régimen común explícito para las demás vías. El ITT_Z^D2(V_cont) se estima separadamente. La mediación interventional C4 conserva su propio estimando y exige tratamiento longitudinal de L si Z induce confusión mediador–resultado. No se calcula efecto directo/residual por resta de ITT y efecto de accesibilidad. Si no hay soporte, régimen común o control/identificación de vías alternativas, el Analyzer debe emitir BOUNDS_ONLY o NOT_IDENTIFIED según supuestos disponibles.
+
+Esta separación no cambia la precedencia documental D2/D1 ni afirma que D2 identifique g_A. Permite que el experimento sintético pruebe directamente la recuperación de la contribución de accesibilidad, a la vez que prueba la correcta interpretación del efecto de paquete D2.
+
+### 16.175.4. D — población, unidad y asignación del experimento sintético
+
+**Población.** La cohorte finita es generada por el DGP dentro del marco sintético P*τ2 descrito en §16.175.2. El Generator conserva el roster y la elegibilidad verdaderos; el Analyzer recibe solo los campos observables sellados. En el escenario base, la evidencia pre-Z de elegibilidad es suficiente para que la asignación sea auditable. Los escenarios de error, ausencia o UNKNOWN pre-Z se mantienen como estrés de medición y selección; no se recodifican como inelegibilidad ni se excluyen silenciosamente. P*_F se conserva como análisis secundario condicionado a F_alt,0 respaldado.
+
+**Unidad e interferencia.** En el núcleo limpio, cada UE constituye su propia UA y sus recursos, servicio, estado, agentes y canales son aislados por construcción del DGP. UO son medidas repetidas anidadas. Esta estipulación es verdad del escenario sintético, no evidencia de aislamiento en una instalación real. Un escenario adversarial introduce recursos/pools/canales compartidos; el Analyzer debe reconocer clúster/exposición o abstenerse de interpretar un ITT individual bajo SUTVA.
+
+**Asignación.** Z_B se asigna mediante aleatorización reproducible dentro de estratos basales preespecificados, con probabilidad π_h conocida y estrictamente entre 0 y 1 en cada estrato elegible. El algoritmo, la semilla y el hash quedan fijados en el manifiesto del experimento antes de generación. No se presume 1:1: la asignación, N y los tamaños por estrato se seleccionarán conjuntamente en E mediante búsqueda de potencia/precisión para los estimandos confirmatorios, sujeto a positividad y coste. Las reglas W_programmed=D2 condicionales a Z no sustituyen a π_h.
+
+**Soporte.** q_X* es una distribución conjunta basal común, explícita y versionada; ambas intervenciones comparadas deben ser factibles en su soporte para el estimando correspondiente. El escenario base garantiza soporte por construcción y lo documenta; escenarios adversariales retiran soporte en historias identificables y exigen restricción explícita del estimando o NOT_IDENTIFIED. q_L* no forma parte del núcleo base: se activa solo en el escenario longitudinal con confusión post-Z inducida, si existe una intervención secuencial implementable y soporte; de lo contrario, se exige abstención para C4.
+
+### 16.175.5. Suite mínima de escenarios: selección de existentes, no expansión
+
+La batería no será factorial completo. Se seleccionan de las familias ya definidas en PD los contrastes mínimos siguientes:
+
+- **Recuperación identificable:** contribución de accesibilidad positiva, nula y adversa, con verdad conocida.
+- **Separación de rutas:** efecto directo/colateral de D2 sobre V_cont sin cambio de ΔT_acc*; y escenario mixto con accesibilidad más vía paralela/interacción.
+- **Mecanismo D2:** fallo parcial/contaminación y primera etapa focal débil o nula; distinguir W_attempt, C_dep*, A_f*, D_f* y ΔT_acc*.
+- **Identificación:** soporte/positividad insuficiente y confusión mediador–resultado inducida por Z; comprobar bounds o abstención correcta.
+- **Robustez de diseño:** error/ausencia diferencial de medición y un escenario de interferencia por recursos compartidos.
+
+Los contrastes de heterogeneidad, alternativas, defiers, crossover, MNAR y censura se conservan como extensiones/sensibilidad cuando afecten a un supuesto concreto; no se convierten todos en factores cruzados del núcleo confirmatorio. Cada escenario debe declarar truth, mecanismo alterado, estimando afectado y salida esperada. Se reutilizan los IDs de PD/P177–P183; no se crean pruebas nuevas.
+
+### 16.175.6. Parámetros y elecciones que se derivan, no se inventan
+
+No se fijan en esta pasada N, R, π_h numérico, semilla concreta, pesos/prevalencias de q_X*, tasas de cumplimiento/éxito, parámetros de transición, magnitudes de efecto, varianzas, ventanas temporales ni tolerancias. No se adoptan los ilustrativos 1:1, N=2.000, R=1.000 o s=.80.
+
+En la pasada E se derivarán en una única optimización conjunta:
+- magnitudes positivas/nulas/adversas y efectos directos/interacciones a partir de la escala de V_cont, el efecto mínimo relevante y la precisión objetivo;
+- q_X* y estratos a partir del soporte requerido y de los contrastes que deben recuperarse;
+- π_h, N y asignación por estrato mediante búsqueda de potencia y precisión, sin perder positividad;
+- R y semillas jerárquicas según el error Monte Carlo admisible y la reproducibilidad;
+- horizontes, observación, error y missingness de acuerdo con la definición de V_cont y los escenarios que deben discriminarse.
+
+Si la elección requiere una preferencia científica no derivable de estos criterios, se presentará una única recomendación con alternativas y consecuencias; no se solicitarán decisiones parciales sucesivas.
+
+### 16.175.7. Separación entre experimento sintético y materialización operativa real
+
+El experimento de recuperación metodológica no necesita capturar IAM, snapshots, artefactos, runtime ni telemetría de una migración informática real. El propio Generator puede crear cohortes, identidades/versiones, estados, snapshots, evidencia y errores sintéticos con provenance y verdad conocida, conforme a los contratos existentes. Esto no equivale a declarar G-MAT satisfecho para una futura prueba de material D2 real, ni demuestra que el mecanismo D2 sea implementable o aislado en infraestructura real.
+
+La ausencia de material externo real deja de bloquear el experimento sintético si el alcance se declara como recuperación bajo DGPs estipulados. Sí bloquea cualquier afirmación sobre factibilidad/efecto de una implementación real de D2 y cualquier transferencia empírica fuera del marco sintético.
+
+### 16.175.8. Dictamen y salida de la pasada
+
+**Estado:** C_STRUCTURAL_DGP_SPECIFIED_PROVISIONALLY / D_SYNTHETIC_POPULATION_AND_ASSIGNMENT_SPECIFIED_PROVISIONALLY / NUMERICAL_CALIBRATION_DEFERRED_TO_E / REAL_D2_MATERIALIZATION_OUT_OF_SYNTHETIC_SCOPE / NOT_DESIGN_FROZEN.
+
+La pasada C+D queda cerrada a nivel de arquitectura estructural y contrato de población/asignación sintéticos, sujeto a la calibración ex ante de E. No se declara identificado ningún efecto empírico ni se afirma que D2→g_A esté demostrado en el mundo real. Los parámetros y criterios numéricos se resolverán junto con la evaluación, no mediante elecciones arbitrarias.
+
+No se reabren las decisiones existentes ni se modifican D1/D2, P*τ2/P*_F, DEC-C10-066/067, P179, estimandos C1–C4, DAG, claims, Core, RMA, Evidence→Claim Matrix o STATUS. No se crea documento, test ID o fixture nuevo. No se autoriza implementación, generación de datos, simulación, estimación, validadores ni ejecución científica. Se mantienen scientific_execution=false y execution_authorized=false.
