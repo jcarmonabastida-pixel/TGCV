@@ -558,7 +558,7 @@ Su diseño, ubicación dentro del catálogo existente e independencia de los exp
 
 Se revisó el registro C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md en la rama de investigación y los contratos B1 de adjudicación, paquete analítico, materialización mínima e inventario de fuentes. La pregunta fue si algún contrato existente prueba directamente que E1 y E2 interpretan inclusión y exclusión focal de S7 para Need_preZ, sin acceso a truth.
 
-**Resultado:** cobertura parcial por composición de controles; no se localizó una prueba contractual directa de interpretación de ambas polaridades para B1/Need. Esta conclusión es documental y no equivale a ejecución ni a auditoría del código.
+**Resultado:** el contrato B1 sí contiene reglas normativas operativas para las dos polaridades (contrato de objetivo §7.2–7.5 y nueva regla secuencial §7.6), pero el catálogo no contiene una prueba que aísle directamente la interpretación semántica de inclusión y exclusión por E1/E2 frente a una clave de contenido, independientemente de la truth basal. Los controles PKG/FCM y el crosswalk aceptado por DEC-C10-097 cubren requisitos relacionados (admisibilidad, evidencia negativa, cobertura, independencia y sellado), no ese contraste aislado. Esta conclusión es documental y no equivale a ejecución ni a auditoría del código.
 
 ### 19.2 Contratos existentes reutilizables, con alcance limitado
 
@@ -572,21 +572,22 @@ Se revisó el registro C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md en la rama de i
 | FCM-02 | Controlar unidad, versión y temporalidad de evidencia | Comprensión del contenido declarativo |
 | FCM-03 / FCM-14 | Rechazar COMPLETE sin denominador o cobertura no resuelta | Cobertura semántica suficiente por polaridad por sí sola |
 | UG-SR-A01-T06/T07 | Impedir observed=1/0 sin vínculo probatorio; observed=0 requiere además evidencia afirmativa y cobertura negativa suficiente | Que la exclusión focal se haya interpretado correctamente |
-| PKG-05…PKG-13 (contratos B1 del paquete) | Separación truth/evidencia, independencia E1/E2, ausencia≠0, evidencia afirmativa para 0 y evaluación posterior al sellado | Contraste controlado de comprensión de inclusión/exclusión ni recuperación de error de polaridad del canal |
+| PKG-05…PKG-13 (contratos B1 del paquete) | Separación truth/evidencia, independencia E1/E2, ausencia≠0, evidencia afirmativa para 0 y evaluación posterior al sellado | Contraste aislado de interpretación de cada polaridad frente a una clave de contenido visible |
 
 Los IDs FCM y UG-SR-A01 son controles del esquema/procedimiento de evidencia; PKG-05…13 son requisitos del contrato B1. Su estado sigue siendo documental: no se declara implementación, ejecución ni PASS.
 
 ### 19.3 Contratos que no deben reutilizarse como si fueran B1/Need
 
 - **MEAS-01…24:** miden A_f, D_f, T_acc y sus errores/estados; la presencia de falsos positivos/negativos o tres estados en ese dominio no convierte esas pruebas en adjudicación de Need_preZ.
-- **P182-06:** acuerdo interevaluador genérico dentro del bloque de validez de medidas; puede orientar el reporte de acuerdo, pero no es un contrato de interpretación de S7.
-- **P182-07:** evalúa falsos positivos/negativos en la medida A; no es exactitud de E1/E2 sobre Need.
-- **P183-01…13 / MISS-01…15:** cubren ausencia, selección, censura y sensibilidad del análisis causal/medición. Pueden informar el tratamiento de pérdida y cobertura, pero no validan la semántica de inclusión/exclusión S7.
-- **P182-11 / MEAS-06 y controles de cegamiento:** son precedentes para separar información, no evidencia de que el firewall de B1 esté implementado ni de que los adjudicadores comprendan el contenido.
+- **P182-01/03/05 y P183-13:** DEC-C10-097 los cruza con PKG-09 para apoyar requisitos de evidencia negativa afirmativa, alcance/cobertura y límites de observación. No son, por ello, una prueba aislada de comprensión semántica de la declaración por E1/E2.
+- **P182-06/11/12:** DEC-C10-097 los reutiliza junto con PKG-12/13 para independencia, desacuerdo, cegamiento y sellado. No demuestran exactitud por polaridad frente a una clave de contenido.
+- **P182-07, MEAS-01…24 y MEAS-13:** mantienen su alcance propio de medición de A_f/D_f/T_acc u observación/missingness; no son exactitud de E1/E2 sobre Need.
+- **P183-01…13 / MISS-01…15:** cubren ausencia, selección, censura y sensibilidad del análisis causal/medición. Pueden informar el tratamiento de pérdida y cobertura, pero no validan por sí solos la interpretación semántica S7.
+- El crosswalk de DEC-C10-097 es una decisión aceptada de reutilización documental; no demuestra que los contratos estén implementados o ejecutados.
 
 ### 19.4 Gap preciso y decisión de diseño pendiente
 
-Queda sin cobertura contractual directa la siguiente pregunta:
+La regla normativa de adjudicación ya está definida en el contrato B1 y se ha operacionalizado en su §7.6. Lo que queda sin prueba directa aislada en el catálogo es la siguiente pregunta:
 
 > Dado un expediente S7 afirmativo, admisible, correctamente vinculado y pre-Z, ¿E1 y E2 aplican la regla funcional de Need de forma correcta y separada cuando el contenido expresa inclusión focal y cuando expresa exclusión focal?
 
@@ -600,9 +601,9 @@ Un benchmark controlado de interpretación, si se aprueba, no debe revelar truth
 ### 19.5 Recomendación operativa
 
 - Reutilizar FCM-02/03/04/05/06/12/14/17/18 y UG-SR-A01-T06/T07 para los controles que ya cubren.
-- Reutilizar PKG-05…13 para la arquitectura de separación y evaluación B1, respetando sus límites.
-- No reutilizar MEAS/P182/P183 como evidencia directa de interpretación Need.
-- No crear ahora un nuevo test ID, fixture, benchmark ni clave materializada.
+- Reutilizar PKG-05…13 y el crosswalk específico de DEC-C10-097 (incluidos P182-01/03/05/06/11/12 y P183-13 en sus alcances respectivos) para separación, admisibilidad, cobertura, independencia y sellado.
+- No presentar esos contratos como prueba aislada de comprensión semántica por polaridad.
+- No crear ahora un nuevo test ID, fixture, benchmark ni clave materializada. Solo si se necesita atribuir por separado un error al adjudicador y no al canal deberá justificarse una comprobación controlada independiente.
 - Antes de proponer una ficha adicional, comprobar si el contrato B1 de adjudicación puede incorporar una regla de interpretación observable y si el catálogo admite una especialización sin duplicar FCM/PKG.
 - Mantener como preguntas abiertas el número/variedad de casos controlados, la clave de contenido, la independencia entre benchmark y cohorte confirmatoria, la regla de scoring, el tratamiento de ambigüedad y la evaluación por adjudicador.
 
