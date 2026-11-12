@@ -128,6 +128,7 @@ class TruthBundle:
     potential_interval_truth: tuple[Any, ...]
     potential_enabled_truth: tuple[Any, ...]
     potential_profile_truth: tuple[Any, ...]
+    potential_delta_t_acc: tuple[Any, ...]
     itt_package_truth: float
     theta_access_truth: float
     seed: int
@@ -208,10 +209,14 @@ class Generator:
         interval_truth = []
         enabled_truth = []
         profile_truth = []
+        delta_truth = []
 
         for i in range(cfg.n_units):
             x = rng.random()
             u_access = rng.random()
+            u_relation = rng.random()
+            u_context = rng.random()
+            u_mapping = rng.random()
             u_provision = rng.random()
             u_alt = rng.random()
             u_trajectory = rng.random()
@@ -224,17 +229,25 @@ class Generator:
             unit_intervals = []
             unit_enabled = []
             unit_profile = []
+            unit_delta = []
             for z in (0, 1):
                 z_potentials = []
                 z_intervals = []
                 z_enabled = []
                 z_profile = []
+                z_delta = []
                 for g in (0, 1):
                     provision_p = cfg.provision_probability
                     if cfg.profile == "R3":
                         provision_p = max(0.0, min(1.0, provision_p - 0.20 * z))
                     provision_ok = int(u_provision < provision_p)
-                    focal_access = int(g == 1 and provision_ok and u_access < 0.95)
+                    delta_vector = (
+                        int(g == 1 and provision_ok and u_access < 0.95),
+                        int(g == 1 and provision_ok and u_relation < 0.95),
+                        int(g == 1 and provision_ok and u_context < 0.95),
+                        int(g == 1 and provision_ok and u_mapping < 0.95),
+                    )
+                    focal_access = int(all(delta_vector))
                     if cfg.profile == "R1":
                         alternative = 1
                     elif cfg.profile == "R2":
@@ -269,14 +282,17 @@ class Generator:
                     z_intervals.append(states)
                     z_enabled.append(enabled_states)
                     z_profile.append(profile_states)
+                    z_delta.append(delta_vector)
                 unit_potentials.append(tuple(z_potentials))
                 unit_intervals.append(tuple(z_intervals))
                 unit_enabled.append(tuple(z_enabled))
                 unit_profile.append(tuple(z_profile))
+                unit_delta.append(tuple(z_delta))
             v_truth.append(tuple(unit_potentials))
             interval_truth.append(tuple(unit_intervals))
             enabled_truth.append(tuple(unit_enabled))
             profile_truth.append(tuple(unit_profile))
+            delta_truth.append(tuple(unit_delta))
 
             z, g = z_assign[i], g_assign[i]
             true_enabled = unit_enabled[z][g]
@@ -309,6 +325,7 @@ class Generator:
                 "s3_profile_match": observed_profile,
                 "s3_enabled_status": status_enabled,
                 "s3_profile_status": status_profile,
+                "delta_t_acc_observed": unit_delta[z][g],
                 "profile": cfg.profile,
                 "version": cfg.version,
             })
@@ -322,7 +339,8 @@ class Generator:
         manifest = RunManifest(run_id, cfg.scenario_id, cfg.version,
                                cfg.n_units, cfg.n_intervals, self.version)
         truth = TruthBundle(run_id, tuple(v_truth), tuple(interval_truth),
-                            tuple(enabled_truth), tuple(profile_truth), itt, theta, cfg.seed)
+                            tuple(enabled_truth), tuple(profile_truth), tuple(delta_truth),
+                            itt, theta, cfg.seed)
         return manifest, truth, EvidenceCandidate(run_id, tuple(rows))
 
 
