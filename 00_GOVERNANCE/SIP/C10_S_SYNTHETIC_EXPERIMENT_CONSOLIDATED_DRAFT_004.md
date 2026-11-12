@@ -26,3 +26,13 @@ Referencia rectora: plan §16.185; complementa §268 PC, §276–279 y contratos
 ## 281. DEC-C10-100 — V_cont: agregación temporal igualitaria aceptada (2026-11-12)
 
 Se incorpora DEC-C10-100: la verdad sintética V_cont_truth(i) es la fracción temporal de cumplimiento funcional B1, calculada como media no ponderada de A_B1(i,k) en K intervalos de igual duración dentro de una ventana/rejilla post-Z común preespecificada. UNKNOWN permanece y se propaga a bounds [n1/K,(n1+n?)/K]; no se imputa cero ni se elimina del denominador. El estimando es nivel post-Z, no cambio pre/post. S3 sigue siendo vector de señales imperfectas y no se promedia para sustituir truth. K, frecuencia, ventana, baseline/transitorios, canal, MDE y criterios cuantitativos permanecen abiertos. La calibración se evalúa como superficie de recuperación [0,1] por estimando/escenario, sin inventar un MDE ni transferir N/R de P178. Validez de medición, discriminación O-CONF/F*, identificación y punto de operación confirmatorio siguen abiertos. No Design Freeze, implementación ni ejecución.
+
+## 282. DEC-C10-101/102 — ventana t0, continuidad estricta y dominio de observación S3 (2026-11-12)
+
+La ventana de V_cont comienza en t0 e incluye provisión/instalación; la continuidad B1 se adjudica estrictamente por intervalos iguales, sin gracia ni duración mínima funcional. Cualquier incumplimiento confirmado hace A_B1=0 en cada intervalo afectado. V_cont es la proporción de bloques plenamente conformes, no uptime exacto.
+
+El DGP acota cinco familias causales: ENABLED/PROFILE efectivos; proceso/módulo; listener/socket/superficie de ingreso; dependencias solo cuando alteran admisión; capacidad/recursos solo cuando alteran admisión. Provisión, instalación, verificación, rollback y reinicio son antecedentes/transiciones, no fallos automáticos. El estado funcional efectivo determina truth.
+
+Se separa δ_det, dominio mínimo de duración para el que S3 demuestre detección tras calibración, de cualquier duración funcional: δ_det no cambia truth ni crea tolerancia. Para episodios no detectables o cobertura insuficiente, Analyzer debe producir bounds/abstención. Δ, cadencia/resolución S3 y δ_det son distintos. t_last es la última transición causal, incluida recuperación final; T*=t_last+τ_follow. Episodio activo en T* queda terminal/censurado, no recuperado por imputación.
+
+Unidad normalizada, δ_det, Δ, τ_follow, T* y K permanecen abiertos para derivación conjunta. No se generan datos ni se ejecuta código, simulación, calibración o validación. No Design Freeze; scientific_execution=false; execution_authorized=false.
