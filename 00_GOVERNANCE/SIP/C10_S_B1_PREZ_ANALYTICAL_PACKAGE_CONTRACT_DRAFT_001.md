@@ -68,9 +68,9 @@ Cada unidad tiene exactamente un registro de truth basal por versión de paquete
 
 La regla debe estipular el objetivo funcional de B1 antes de Z. No puede usar Z, política D2, provisión, instalación, C_dep, A_f, ΔT_acc, Reach, petición, admisión, procesamiento, ejecución, Outcome o Value.
 
-**No-default:** el generador no puede asignar `1` a todas las unidades por definición, por pertenecer al microdominio, por compartir el servicio lógico o por recibir una oportunidad estandarizada. Tampoco puede asignar `0` por ausencia de petición, evidencia o actividad. El mecanismo de generación de truth debe estar explícito, versionado y ser reproducible.
+**No-default:** el generador no puede asignar `1` a todas las unidades por definición, por pertenecer al microdominio, por compartir el servicio lógico o por recibir una oportunidad estandarizada. Tampoco puede asignar `0` por ausencia de petición, evidencia o actividad. El mecanismo de generación de truth se rige por DEC-C10-095: estipulación explícita, versionada y reservada por B1/UE, con derivación determinista reproducible a partir de esa estipulación; no se emplea generador estocástico de Need en el núcleo confirmatorio.
 
-Para evaluar clasificación binaria y sus errores, el diseño de escenarios deberá permitir unidades con truth=1 y truth=0; las proporciones, estratos, prevalencia y cualquier escenario con truth=? quedan abiertos y requieren justificación separada. No se fija aquí ninguna tasa ni distribución. `?` solo expresa indeterminación estipulada por la propia definición generadora, no falta de evidencia observacional.
+Para evaluar clasificación binaria y sus errores, la cohorte de validación definida ex ante debe contener truth=1 y truth=0. DEC-C10-095 establece que, si falta una clase, se declara SUPPORT_FAILURE / DESIGN_BLOCKED, sin reparación post hoc. No se fija balance, proporción, prevalencia, soporte por brazo/estrato ni representatividad poblacional. Truth=? conserva su significado de indeterminación semántica genuina y se informa separadamente. No se fija aquí ninguna tasa ni distribución. `?` solo expresa indeterminación estipulada por la propia definición generadora, no falta de evidencia observacional.
 
 ## 6. Evidencia observacional: EVIDENCE_LEDGER
 
@@ -172,7 +172,7 @@ Las pruebas siguientes son requisitos de diseño, no pruebas ejecutadas:
 | Regla funcional de Need_preZ | Definida documentalmente en contrato B1 |
 | Unidad B1/UE y servicio por UE | Decisiones de diseño aceptadas; roster/IDs no materializados |
 | Representación separada del paquete | Propuesta de este documento; requiere aceptación |
-| Truth por unidad y mecanismo de asignación | OPEN; no parametrizado |
+| Mecanismo de truth por unidad | ACCEPTED BY DEC-C10-095: reserved explicit stipulation per B1/UE + deterministic mapping; no stochastic Need generation |
 | Modelo de observación y contenido de fuentes | OPEN; no parametrizado |
 | Fuentes sintéticas y cobertura por unidad | No materializadas; cobertura NONE |
 | Reglas/roles E1/E2 | Definidos documentalmente; ninguna adjudicación realizada |
@@ -186,4 +186,4 @@ Las pruebas siguientes son requisitos de diseño, no pruebas ejecutadas:
 
 El contrato propone una arquitectura de expediente que conserva la integridad tipada U_G y hace verificable la separación truth/evidencia/adjudicación. No prueba que Need sea adjudicable con las fuentes actualmente disponibles ni selecciona parámetros para el DGP. No autoriza materialización, implementación, simulación, estimación, ejecución ni Design Freeze.
 
-**Autorización:** `scientific_execution=false`; `execution_authorized=false`.
+**Decisión aplicable:** DEC-C10-095 acepta el mecanismo de estipulación y el gate de soporte binario, sin aprobar roster ni materialización. **Autorización:** `scientific_execution=false`; `execution_authorized=false`.
