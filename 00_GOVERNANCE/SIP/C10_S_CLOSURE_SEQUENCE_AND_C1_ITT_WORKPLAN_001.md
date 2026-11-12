@@ -2382,3 +2382,20 @@ Se desarrolla el gate indicado en §63 mediante §16.218 del plan integrado.
 **Dictamen:** CAUSAL_RECOVERY_SUFFICIENCY_RULE_CLOSED_STRUCTURALLY / NUMERIC_ACCEPTANCE_THRESHOLDS_OPEN / INTEGRATED_HARNESS_GAP_CONFIRMED_STATICALLY / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** una única decisión cuantitativa consolidada para el benchmark integrado, con recomendación trazable y sin iniciar calibración hasta autorización expresa. Se mantienen scientific_execution=false, execution_authorized=false; PR #116 Draft; main intacta.
+
+
+## 65. Criterios cuantitativos de partida aceptados (2026-11-12)
+
+El usuario acepta la propuesta cuantitativa de partida, desarrollada en §16.219 del plan integrado.
+
+**Decisión:** α bilateral=0,05; cobertura nominal=95%; potencia≥0,80; MCSE≤0,005 para tasas; falsa atribución≤0,05 por familia de mundos no identificados/adversariales y abstención excesiva≤0,05 por familia identificable con observación suficiente. Para los dos últimos límites se exige que el límite superior unilateral de incertidumbre Monte Carlo no exceda 0,05. Cada falsa atribución focal se audita como evento crítico y no se compensa mediante promedios de otras familias.
+
+Los objetivos se evalúan por separado para ITT-D2 y θ_A; C4/LATE_f solo cuando sus contratos estén especificados e identificados. C2 son primeras etapas, no efectos de Value. α=0,05 exige fijar antes de calibrar la familia confirmatoria y su control de multiplicidad.
+
+**No se inventa MDE:** δ_min,e y anchura máxima w_max,e quedan abiertas por estimando y requieren justificación sustantiva. N y R se elegirán mediante búsqueda de diseño y solo si cumplen simultáneamente potencia, precisión, cobertura, MCSE y límites de falsa atribución/abstención. La inviabilidad lleva a rediseño, no a relajar criterios post hoc.
+
+**Pendiente antes de calibración:** δ_min,e, w_max,e, familia confirmatoria/multiplicidad, definición y ponderación de escenarios, N/R, presupuesto y método de incertidumbre Monte Carlo. No hay calibración, datos ni ejecución.
+
+**Dictamen:** QUANTITATIVE_STARTING_CRITERIA_ACCEPTED / PRECISION_AND_RELEVANCE_MARGINS_OPEN / MULTIPLICITY_PLAN_OPEN / HARNESS_IMPLEMENTATION_GAP_OPEN / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** fijar márgenes de relevancia y precisión por estimando y familia confirmatoria. Se mantienen scientific_execution=false y execution_authorized=false; PR #116 Draft; main intacta.
