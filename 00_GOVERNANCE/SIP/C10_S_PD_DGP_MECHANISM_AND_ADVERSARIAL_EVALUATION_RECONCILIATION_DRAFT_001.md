@@ -105,3 +105,17 @@ PD solo podrá pasar a PE cuando truth/potenciales y reglas generativas estén v
 **Dictamen:** PD_RECONCILED_DOCUMENTALLY / DGP_QUANTITATIVE_SPECIFICATION_OPEN / NOT_DESIGN_FROZEN. No autorizado código, fixtures confirmatorios, generación de datos, simulación, estimación ni ejecución científica. Se mantienen scientific_execution=false y execution_authorized=false.
 
 **Siguiente:** PE — especificación técnica integrada y contrato de implementación, condicionado a cierres científicos y materiales. Se pueden preparar interfaces conceptuales; no código ejecutable ni fixtures confirmatorios sin gates y autorización expresa.
+
+
+## 10. Crosswalk C+D integrado — referencia rectora (2026-11-12)
+
+La integración posterior del plan §16.185 es la referencia rectora para relacionar DGP, potenciales, estimandos, población, observación y evaluación. Este addendum no sustituye PD §§1–9 ni convierte el DGP en cuantitativo/frozen.
+
+- Se mantiene la separación truth_dgp / observed_evidence / evaluation-adjudication. O-CONF truth se indexa por instancia×ruta y deriva de F* en el estado terminal aplicado; V_cont truth es temporal por UE/ventana. Son constructos/Outcomes separados, con observación y evaluación independientes.
+- D2/Z_B genera la historia potencial de programación, intento, recepción, instalación, C_dep*, T_acc*, A_f*, D_f*, ΔT_acc*, Reach/Π y etapas downstream. ITT_Z^D2 es efecto total de asignación al paquete por resultado; O-CONF_r y V_cont no transfieren identificación entre sí.
+- g_A1/g_A0 es una intervención estocástica distinta sobre la distribución conjunta factible del ΔT_acc* completo bajo q común y régimen común de vías no focales. El mapping B_D2→g_Af, q_X*, soporte y régimen común siguen sin demostrar. C4 conserva ΔT_acc* como objeto mediador; no se obtiene por resta del ITT ni por ajuste convencional de confusores post-Z.
+- D_i(z) conserva rutas directas/colaterales e interacciones. Si no se separan, ITT se interpreta como efecto de paquete; si falta soporte/identificación, Analyzer informa bounds o abstención.
+- P*τ2 primaria candidata, P*_F secundaria; E_i/App, q_X*, asignación π_h, estratos, N, UA, aislamiento y mapa de exposición permanecen abiertos según el contrato D2. Need_preZ no es elegibilidad.
+- La tabla de escenarios y crosswalk P177/P178/P179/P182/P183 se especifica en plan §16.185. Se reutilizan los IDs existentes; no se crean pruebas ni parámetros.
+
+**Estado:** PD_CAUSAL_CROSSWALK_INTEGRATED / DGP_QUANTITATIVE_SPECIFICATION_OPEN / SUPPORT_AND_POPULATION_NOT_MATERIALIZED / NOT_DESIGN_FROZEN / NO_EXECUTION_AUTHORIZED.
