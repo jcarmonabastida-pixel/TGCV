@@ -4251,3 +4251,40 @@ La regla es una derivación semántica candidata, no una decisión aceptada. La 
 **Consecuencia para K:** K no se elige para diluir interrupciones ni por conveniencia estadística. Debe ser compatible con la escala temporal de eventos que el DGP pretende representar y con la capacidad de observación S3. Mientras no se apruebe la semántica de transitorios y no se determine el alcance temporal de eventos detectables, K permanece OPEN.
 
 **Siguiente gate:** aceptación o rechazo expreso de la continuidad estricta por intervalo. No se solicita aún una cifra de δ, frecuencia, K o T*.
+
+
+## 16.192. Aceptación de continuidad estricta por intervalo para V_cont (2026-11-12)
+
+**Decisión:** DEC-C10-102 · **Estado:** ACCEPTED WORKING DESIGN DECISION · NOT DESIGN FREEZE.
+**Precedencia:** DEC-C10-068, DEC-C10-099, DEC-C10-100, DEC-C10-101; contrato B1 ENABLED/PROFILE; §§16.190–16.191.
+
+El usuario acepta la interpretación estricta de continuidad dentro de cada intervalo, sin periodo de gracia para interrupciones funcionales confirmadas.
+
+Para cada UE i e intervalo k:
+- A_B1(i,k)=1 si la regla funcional ENABLED/PROFILE se cumple durante todo el intervalo.
+- A_B1(i,k)=0 si se produce al menos un incumplimiento funcional confirmado en cualquier instante del intervalo.
+- A_B1(i,k)=? solo cuando la truth funcional del intervalo no queda determinada por el Generator. UNKNOWN de truth no se usa para representar falta de S3, pérdida, lag o cobertura observacional: esos son estados del canal observado.
+
+No se introduce duración mínima de fallo, periodo de gracia, cuota tolerada de interrupciones ni promedio intraintervalo. Un fallo breve pero confirmado cuenta como incumplimiento del intervalo. La frontera temporal se adjudica por el intervalo al que pertenece el instante del evento según la rejilla común; el tratamiento de timestamps exactamente en frontera deberá ser determinista, único y versionado antes de materializar.
+
+### 16.192.1. Consecuencias para la medición y el diseño
+
+La truth la estipula el Generator con resolución suficiente para determinar los eventos del DGP; S3 es un canal de observación imperfecto y no define truth. El Analyzer no puede declarar continuidad por ausencia de señal ni inferir que la falta de detección equivale a ausencia de interrupción. Si la resolución/cobertura del canal no soporta la clasificación puntual, se producen bounds o abstención y se informa la limitación.
+
+La decisión no fija por sí sola una frecuencia física de S3, duración del intervalo, K o T*. La resolución deberá permitir representar los eventos más breves que el DGP incluya como funcionalmente relevantes; si no existe un límite mínimo justificable para esos eventos, no se podrá alegar detección exhaustiva de cualquier interrupción arbitrariamente breve. Esta limitación se reflejará en el dominio de validez del estimando de medición.
+
+### 16.192.2. Derivación del horizonte y rejilla: dictamen
+
+El horizonte V_cont empieza en t0 (DEC-C10-101) y termina en un T* post-Z común que debe cubrir el periodo de provisión/instalación y el seguimiento funcional hasta el último evento causal que pueda modificar el cumplimiento B1 dentro del estimando. El mapa t0…t9 es un orden de etapas; no proporciona duraciones ni permite asignar automáticamente intervalos iguales a etapas. Por ello, T* no se fija como t9 sin un contrato de reloj/event_time y una regla de cierre.
+
+La opción metodológicamente preferida para el DGP sintético es un reloj explícito de tiempo transcurrido (unidad normalizada declarada) con eventos fechados, ventana común [t0,T*] y rejilla regular. Los eventos causales se insertan en ese reloj mediante offsets/duraciones generados por reglas versionadas; no se asigna una duración igual por etapa ni se usa el número de etapas como K. La duración/unidad del tick y el horizonte deberán derivarse de las duraciones funcionales que el escenario pretende representar y de la resolución alcanzable por S3.
+
+K se deriva de K=(T*−t0)/Δ, con Δ constante y una regla de divisibilidad preespecificada; si la duración no es múltiplo exacto de Δ, se ajusta el horizonte antes de generar, no se crea un intervalo residual de distinta duración. Δ debe ser suficientemente fino para el mínimo evento funcional incluido y observable; no se elige para diluir fallos ni se infiere de H, t0…t9 o S6/S7.
+
+Permanecen OPEN: unidad normalizada y su anclaje semántico, conjunto de eventos funcionalmente relevantes y su mínima duración representada, T*, Δ, K, timestamps exactos, regla de cierre/fin de seguimiento, distribución de duraciones, resolución de captura S3, cobertura y calibración. La recomendación de reloj transcurrido y rejilla regular queda SPECIFIED AS DESIGN ROUTE, no como parámetros numéricos aceptados.
+
+### 16.192.3. Próxima operación vinculante
+
+Reconciliar el reloj transcurrido con el contrato B1 y los eventos existentes, sin crear un segundo reloj ni una nueva clase de fuente: (i) inventariar eventos/estados que pueden cambiar A_B1 durante provisión, instalación y seguimiento; (ii) determinar cuáles son funcionalmente relevantes y qué duración mínima puede justificarse; (iii) definir la relación de sus event_time con S3 y S4/S5; (iv) derivar conjuntamente Δ, T* y K; (v) actualizar el modelo de observación, los potenciales V_cont y el crosswalk PE. Solo entonces parametrizar el canal y calibrar.
+
+No se asignan números arbitrarios, no se materializan eventos/intervalos/truth/señales, y no se ejecutan validadores, generación, simulación, estimación o calibración. scientific_execution=false; execution_authorized=false.
