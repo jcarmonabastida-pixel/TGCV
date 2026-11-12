@@ -185,3 +185,12 @@ El proceso de observación se separa de truth: P(O_S3|A_B1,M), con M explícito 
 Cobertura por UE×intervalo×componente. Silencio, no captura, lag, muestreo o ruta no activada no equivalen a señal 0. Las observaciones repetidas se anidan en UE y no aumentan N experimental.
 
 **Estado:** WINDOW_START_T0_ACCEPTED / TSTAR_AND_K_OPEN / S3_VECTOR_MODEL_RECONCILED / SIGNAL_VALIDITY_AND_CALIBRATION_OPEN / NO_EXECUTION_AUTHORIZED.
+
+
+## 10. Criterio candidato para truth de continuidad dentro de cada intervalo (2026-11-12)
+
+La interpretación recomendada del contrato “mantener disponible” es estricta dentro de cada intervalo: A_B1=1 si ENABLED/PROFILE se cumple durante todo el intervalo; A_B1=0 si existe un incumplimiento funcional positivo confirmado en cualquier momento del intervalo; A_B1=? solo si el Generator no puede determinar la truth funcional. La falta de S3 es incertidumbre observacional, no UNKNOWN de truth.
+
+Esta lectura no introduce periodo de gracia ni duración mínima de interrupción. Si se desea tolerar transitorios de duración hasta δ, será necesaria una decisión normativa explícita y una justificación de δ. No se diluyen fallos confirmados mediante promedios de señales. S3 debe tener resolución/cobertura suficiente para detectar los eventos estipulados; si no, Analyzer produce bounds/abstención.
+
+**Estado:** STRICT_WITHIN_INTERVAL_RECOMMENDED / TRANSIENT_TOLERANCE_NOT_APPROVED / K_DEPENDS_ON_EVENT_SCALE_AND_S3_RESOLUTION.
