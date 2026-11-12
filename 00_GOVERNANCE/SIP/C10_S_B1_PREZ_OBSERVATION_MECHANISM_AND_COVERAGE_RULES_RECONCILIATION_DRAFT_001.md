@@ -607,3 +607,77 @@ Un benchmark controlado de interpretación, si se aprueba, no debe revelar truth
 - Mantener como preguntas abiertas el número/variedad de casos controlados, la clave de contenido, la independencia entre benchmark y cohorte confirmatoria, la regla de scoring, el tratamiento de ambigüedad y la evaluación por adjudicador.
 
 **Dictamen provisional:** EXISTING_CONTRACTS_PARTIALLY_REUSABLE / NO_DIRECT_B1_POLARITY_INTERPRETATION_TEST_FOUND / MEAS-P182-P183_NOT_DIRECT_COVERAGE / NO_NEW_TEST_ID / INTERPRETATION_BENCHMARK_DESIGN_OPEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+
+## 20. Auditoría de suficiencia operativa de la regla de adjudicación B1 para S7
+
+### 20.1 Resultado de la reconstrucción contractual
+
+La revisión conjunta de:
+- C10_S_B1_PREZ_ADJUDICATION_AND_CONSEQUENCE_RECONCILIATION_DRAFT_001.md, §§3–4;
+- C10_S_B1_PREZ_OBJECTIVE_SPECIFICATION_CONTRACT_DRAFT_001.md, §§7.4–7.5 y 8;
+- C10_S_B1_PREZ_EXCLUSION_RECONCILIATION_DRAFT_001.md, §§1–4;
+- C10_S_B1_PREZ_ANALYTICAL_PACKAGE_CONTRACT_DRAFT_001.md, §§7–11;
+- las reglas S7 y la taxonomía de observación de este documento;
+
+permite corregir la conclusión de §19.4: **la regla semántica básica para interpretar las dos polaridades ya está definida documentalmente**. No falta decidir qué significa una declaración afirmativa de inclusión o exclusión.
+
+La regla existente es:
+- declaración S7 afirmativa de inclusión focal, admisible y alineada con el objetivo funcional versionado → observed=1;
+- declaración S7 afirmativa de exclusión focal, admisible, con alcance y cobertura negativa suficientes → observed=0;
+- ausencia/no emisión/pérdida, ambigüedad no resuelta, conflicto no resuelto, binding o temporalidad inciertos, autoridad insuficiente, integridad fallida u otra insuficiencia → observed=? o bloqueo técnico, según la naturaleza del defecto.
+
+Esta regla se aplica a lo que la fuente declara, no a lo que el adjudicador cree que debería declarar según la truth. Una declaración auténtica, admisible y semánticamente explícita puede ser errónea respecto de need_truth_state; no debe corregirse silenciosamente por E1/E2.
+
+### 20.2 Matriz correcta para evaluar por separado canal y adjudicador
+
+La matriz truth–contenido de §18 debe ampliarse analíticamente con la salida del adjudicador. La salida esperada de E1/E2, para un expediente afirmativo admisible, sigue la polaridad visible de S7:
+
+| Truth reservada | Contenido S7 visible | Salida correcta de E1/E2 según contenido | Diagnóstico posterior |
+|---|---|---|---|
+| 1 | Inclusión | observed=1 | Canal concordante; adjudicación alineada |
+| 1 | Exclusión | observed=0 | Canal discordante; adjudicación puede estar correctamente alineada con la fuente |
+| 0 | Inclusión | observed=1 | Canal discordante; adjudicación puede estar correctamente alineada con la fuente |
+| 0 | Exclusión | observed=0 | Canal concordante; adjudicación alineada |
+
+Por tanto, **E1/E2 no deben adjudicar directamente la truth**. Deben clasificar la evidencia observable aplicando la regla pública. Si truth=1 y S7 declara exclusión, la respuesta correcta de E1/E2 es observed=0, aunque posteriormente difiera de truth. De otro modo se convertiría al adjudicador en un corrector omnisciente del canal y se destruiría la separación de funciones.
+
+La evaluación debe conservar dos comparaciones distintas, sin confundirlas:
+1. **Interpretación:** salida E1/E2 frente a la polaridad afirmativa efectivamente expresada en el contenido S7 admisible.
+2. **Validez de la observación:** contenido S7 frente a need_truth_state, abierta solo después del sellado.
+
+La comparación observed frente a truth sigue siendo necesaria para evaluar el paquete completo, pero no identifica por sí sola el origen del desacuerdo.
+
+### 20.3 Suficiencia y límites del contrato actual
+
+| Elemento | Estado reconstruido |
+|---|---|
+| Definición funcional focal que debe reconocerse | Definida en contrato B1 §3 |
+| Regla de truth 1/0/? | Definida y gobernada por DEC-C10-095 |
+| Regla semántica observed=1 por inclusión | Definida en Objective Specification §7.5 y adjudicación §4.2 |
+| Regla semántica observed=0 por exclusión focal | Definida en los mismos contratos, con evidencia afirmativa y cobertura |
+| Separación de truth y evidencia | Definida documentalmente; control técnico no implementado |
+| Requisitos de identidad, versión, temporalidad, autoridad, integridad y binding | Definidos como criterios de admisibilidad |
+| Tratamiento de ausencia, ambigüedad, conflicto y evidencia insuficiente | Definido a nivel de estados y reglas generales |
+| Procedimiento explícito de evaluación observed-vs-contenido, separado de truth | No especificado de forma expresa |
+| Formato del rationale de E1/E2 y registro de la polaridad interpretada | No cerrado como esquema físico |
+| Implementación de permisos, cegamiento y sellado | No implementada |
+
+El gap residual no justifica un nuevo benchmark ni una nueva familia de pruebas por ahora. Es, en primer lugar, una cuestión de **trazabilidad evaluativa**: el expediente ya contiene el contenido visible y las salidas individuales; el flujo de evaluación debe poder verificar si cada salida sigue la polaridad de ese contenido antes de compararla con truth.
+
+### 20.4 Recomendación mínima de reconciliación, pendiente de aceptación
+
+Se recomienda conservar los seis artefactos lógicos y no crear un séptimo:
+- EVIDENCE_LEDGER conserva el contenido S7 capturado, su polaridad semántica visible (cuando sea afirmativa y admisible), binding, provenance y estado de admisibilidad.
+- ADJUDICATION_LEDGER conserva para E1 y E2 por separado observed_state, la evidencia referenciada y un rationale que identifique la regla de inclusión/exclusión aplicada o el motivo de ?/bloqueo.
+- EVALUATION_LEDGER realiza, después de sellar adjudicaciones, dos diagnósticos diferenciados: (a) concordancia de observed_state con la polaridad visible admisible del S7 referenciado; (b) concordancia de observed_state con need_truth_state. La apertura de truth solo se usa para (b), nunca para retrocorregir (a).
+
+La polaridad visible no es una segunda truth ni una clave secreta: es una propiedad derivable del contenido observable. Su clasificación evaluativa debe poder reconstruirse desde la evidencia sellada. Si se conserva como campo derivado, se documenta su regla/versionado y no se exporta metadata reservada. Los casos sin contenido afirmativo admisible no entran en la comparación binaria de interpretación; se informan como abstención, no evaluabilidad o bloqueo según corresponda.
+
+Esta reconciliación puede incorporarse en los contratos B1 existentes y en los campos lógicos de EVALUATION_LEDGER, sin crear test ID, fixture, fuente, oportunidad S7, artefacto lógico ni benchmark separado. No modifica las decisiones aceptadas ni autoriza materialización, implementación o ejecución.
+
+### 20.5 Dictamen y próximo gate
+
+**Dictamen:** POLARITY_INTERPRETATION_RULE_DEFINED / NO_NEW_SEMANTIC_TEST_REQUIRED_AT_THIS_STAGE / EVALUATION_TRACEABILITY_GAP_OPEN / TWO_COMPARISONS_REQUIRED / CONTRACT_PROPAGATION_PENDING_USER_ACCEPTANCE / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+El siguiente gate, si se acepta esta reconciliación, es propagar la distinción de las dos comparaciones a los contratos B1 de adjudicación y paquete analítico, comprobar consistencia con el maestro DGP y revisar que los seis artefactos lógicos pueden registrarla sin alterar su cardinalidad. Solo después se decidirá si hace falta una prueba contractual específica para verificar la regla; no se presupone ni se crea ahora.
