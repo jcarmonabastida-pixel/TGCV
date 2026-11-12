@@ -4635,7 +4635,7 @@ Los candidatos numéricos históricos (.25/.80, N=2.000, 1:1, R=1.000, y paráme
 
 ### 16.198.7. Gate de parada y siguiente integración
 
-La calibración temporal numérica sigue BLOCKED hasta disponer de (i) soporte de episodios/recuperación y distribuciones justificadas; (ii) especificación factible del mecanismo S3 pasivo; (iii) criterio normativo p* y criterios de error/coverage; y (iv) decisión sobre la escala confirmatoria de V_cont como proporción de intervalos completos, reconociendo su dependencia de Δ. No se selecciona K por conveniencia ni se simulan cifras ilustrativas como si fueran evidencia.
+La calibración temporal numérica sigue BLOCKED hasta disponer de (i) soporte de episodios/recuperación y distribuciones justificadas; (ii) especificación factible del mecanismo S3 pasivo; (iii) criterio normativo p* y criterios de error/coverage; y (iv) mantener la escala ya aceptada por DEC-C10-100/102 como proporción de intervalos completos, reconociendo su dependencia de Δ. Solo si se pretende recuperar la fracción exacta de tiempo disponible —constructo distinto— deberá abrirse una decisión explícita; no se presume ni se sustituye la escala vigente. No se selecciona K por conveniencia ni se simulan cifras ilustrativas como si fueran evidencia.
 
 La siguiente integración no es otra ronda de decisiones aisladas: reconciliar este registro con el ledger global §16.188.3, los potenciales de D2, soporte/interferencia y los estimandos P177–P183; después identificar qué parámetros quedan estructuralmente identificados por diseño, cuáles son escenarios de sensibilidad y cuáles exigen aprobación. Solo entonces podrá prepararse una calibración autorizable.
 
