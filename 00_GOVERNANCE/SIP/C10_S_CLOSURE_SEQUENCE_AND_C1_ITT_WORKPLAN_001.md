@@ -2399,3 +2399,21 @@ Los objetivos se evalúan por separado para ITT-D2 y θ_A; C4/LATE_f solo cuando
 **Dictamen:** QUANTITATIVE_STARTING_CRITERIA_ACCEPTED / PRECISION_AND_RELEVANCE_MARGINS_OPEN / MULTIPLICITY_PLAN_OPEN / HARNESS_IMPLEMENTATION_GAP_OPEN / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** fijar márgenes de relevancia y precisión por estimando y familia confirmatoria. Se mantienen scientific_execution=false y execution_authorized=false; PR #116 Draft; main intacta.
+
+
+## 66. Paquete C — márgenes de relevancia/precisión y familia confirmatoria: auditoría de fundamento (2026-11-12)
+
+Se ejecuta la auditoría integrada del siguiente gate conforme al paquete C agrupado de §16.93 y se desarrolla en §16.220 del plan.
+
+**Resultado sustantivo:** no hay base documental para asignar cifras defendibles a δ_min,e o w_max,e. V_cont está seleccionado provisionalmente como dimensión operativa, pero su rejilla/cadencia, K, duración efectiva y punto operativo no están cerrados. El crosswalk C-Value no materializa beneficiarios, población de valoración, instrumento ni Outcome/Value general. Por ello, la escala [0,1] no basta para declarar relevancia.
+
+- ITT_Z^D2 puede medir el efecto total del paquete sobre V_cont si se sostienen sus condiciones, pero no es efecto de accesibilidad.
+- θ_A/θ_Af requiere correspondencia B_g^D2→g^Af, régimen/población/soporte e identificación; θ_Af(q_X*) continúa no identificado.
+- C4/IIE_M y LATE_f siguen condicionales a contratos/supuestos propios.
+- Los márgenes deben ser independientes por estimando aunque compartan escala; no se derivan de potencia, N ni valores diagnósticos P178.
+
+Se define en §16.220.2 la ficha obligatoria de justificación para δ_min,e, w_max,e, zona inconclusa y relación con identificación. No se fija multiplicidad hasta determinar qué estimandos pueden entrar en la familia confirmatoria sin selección post hoc.
+
+**Dictamen:** MARGIN_JUSTIFICATION_CONTRACT_DEFINED / NUMERIC_MARGINS_NOT_JUSTIFIABLE_FROM_CURRENT_SPECIFICATION / VALUE_ENDPOINT_MATERIALIZATION_OPEN / THETA_A_MAPPING_AND_IDENTIFICATION_OPEN / CONFIRMATORY_FAMILY_OPEN / NO_N_R_SELECTION / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente operación:** completar conjuntamente la materialización de V_cont/Outcome/Value y la ficha de identificación ITT-D2/θ_A sobre la misma instancia. Se mantienen scientific_execution=false y execution_authorized=false; PR #116 Draft; main intacta.
