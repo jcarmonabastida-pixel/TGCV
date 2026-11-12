@@ -4388,3 +4388,75 @@ t_last se define como el tiempo de la última transición causal del DGP que pue
 Siguiente derivación única: definir unidad normalizada y escala de episodios mediante el catálogo de escenarios ya aceptado; caracterizar el canal S3 que realmente puede implementarse pasivamente; y derivar δ_det, Δ, τ_follow, T* y K en una sola tabla de calibración. No se eligen valores sin anclaje semántico ni evidencia de recuperación.
 
 No se generan transiciones, truth, señales ni fixtures; no se ejecuta código, simulación, calibración ni validación. scientific_execution=false; execution_authorized=false.
+
+
+## 16.195. Reloj normalizado, dominio de episodios y frontera de detectabilidad S3 (2026-11-12)
+
+**Tipo:** derivación de escala y diseño de calibración; no introduce duraciones físicas, tolerancias funcionales ni parámetros numéricos aceptados. Reutiliza §§16.180–16.194, el catálogo finito de cinco familias, DEC-C10-068/099/100/101/102, S3/U_G, S4/S5 y los contratos P182/P183/MEAS/MISS.
+
+### 16.195.1. Normalización sin fingir una unidad física
+
+Se adopta como representación de trabajo un reloj adimensional de tiempo transcurrido. Sea W_c=t_c,max−t0, donde t_c,max es el límite superior común y preespecificado del soporte temporal de cualquier transición causal del DGP que pueda cambiar A_B1, considerando todos los brazos y escenarios. Se define x=(t−t0)/W_c, por lo que t0=0 y t_c,max=1 en coordenadas normalizadas.
+
+Esta transformación fija únicamente una unidad de coordenada: **no afirma que W_c equivalga a segundos, horas, días ni a una duración operativa real**. Las distribuciones y decisiones temporales se expresarán mediante razones adimensionales; cualquier conversión a tiempo físico requeriría una fuente externa y una decisión separada. No se identifica W_c con t9, H, una fase de provisión ni un intervalo de rejilla.
+
+La cola común se expresa ρ_follow=τ_follow/W_c, todavía OPEN. El horizonte común resulta T*=1+ρ_follow en coordenadas normalizadas. t_c,max es el último instante posible de transición causal dentro del soporte del DGP, no el último evento observado retrospectivamente en cada unidad. Esto permite mantener T* común y preespecificado. Un episodio que siga activo en T* queda terminal/censurado.
+
+### 16.195.2. Dominio de episodios sin periodo de gracia
+
+Cada episodio funcional tiene inicio, fin, familia causal, unidad/versión y estados efectivos antes/después. Su duración se expresa d_e=δ_event/W_c. Se conservan cinco familias (§16.194); provisión/instalación son antecedentes salvo que el estado B1 efectivo incumpla.
+
+No existe mínimo funcional ni gracia: cualquier incumplimiento confirmado afecta a todos los intervalos que intersecte, conforme DEC-C10-102. El límite inferior que eventualmente se use para una matriz finita de escenarios será exclusivamente el **límite de soporte del benchmark sintético** (d_min,DGP), no una tolerancia del servicio ni una regla que convierta episodios menores en conformes. El informe deberá declarar explícitamente que no generaliza la detectabilidad fuera del soporte temporal ensayado. Los escenarios deben incluir episodios situados a ambos lados de la frontera de captura S3 y variación de fase respecto de la captura.
+
+### 16.195.3. Canal S3 pasivo compatible con U_G
+
+Se conserva un único canal lógico S3, vectorial y no-mutante, sin añadir fuente, actor, probe, endpoint o solicitud. Sus componentes conceptuales siguen siendo: proceso/módulo; listener/socket/superficie de ingreso; dependencias necesarias; capacidad/recursos cuando estén definidos; perfil runtime. S4 aporta identidad/versión/snapshot y S5 el contrato ENABLED/PROFILE, sin sustituir S3.
+
+El modelo de observación debe poder representar, como mecanismos alternativos o combinados dentro de S3 ya existente:
+- captura por snapshots/métricas en ventanas;
+- registros pasivos de logs/trazas/eventos runtime;
+- canal híbrido con ambos mecanismos.
+
+No se declara que el sistema real disponga de captura event-driven, muestreo periódico, cobertura completa ni independencia. Cada componente conserva observación 1/0/?; ausencia, pérdida, lag, invalidez o falta de cobertura no equivalen a 0 funcional. La dependencia entre componentes y entre capturas puede ser arbitraria dentro de los escenarios declarados; no se impone independencia condicional.
+
+Para una captura periódica ideal, instantánea y sin pérdida, con fase uniforme, P(detección|d_e,c)=min(1,d_e/c), donde c es el periodo de captura. Esta expresión es solo un límite de referencia geométrico para ese mecanismo ideal; no es tasa asumida ni se extrapola a logs/trazas, canales híbridos, capturas perdidas o señales dependientes. La calibración debe estimar/recuperar la curva conjunta P_det_joint(d_e|θ_S3,familia,versión,fase), incluyendo lag, pérdida, cobertura, falsos positivos/negativos y dependencia.
+
+### 16.195.4. δ_det como curva, no como cifra arbitraria
+
+Hasta que exista un umbral normativo de detección p*, no se fija un único δ_det. Se conserva primero la curva de detectabilidad. Condicionalmente a un umbral aprobado, podrá definirse:
+δ_det(p*;θ_S3)=inf{d_e:P_det_joint(d_e|θ_S3)≥p*}.
+p*, θ_S3, los dominios por familia/componente y los criterios de error permanecen OPEN. Si no existe un tramo de soporte en el que se alcance el criterio, el canal no identifica la truth puntual en ese dominio y el Analyzer debe emitir bounds/abstención. δ_det nunca altera A_B1 ni la regla estricta.
+
+### 16.195.5. Derivación conjunta de Δ, K, τ_follow y T*
+
+Se distinguen cuatro razones/objetos:
+- d_e: duración de episodio funcional relativa a W_c;
+- c_j/W_c: periodo/resolución de cada mecanismo de captura S3;
+- Δ/W_c: anchura de los intervalos de adjudicación;
+- ρ_follow: cola común posterior al último evento causal posible.
+
+La rejilla se define sobre [0,1+ρ_follow], con K entero y Δ=(1+ρ_follow)/K. Δ no se iguala a la cadencia S3 ni a δ_det. La selección de K/Δ se obtiene mediante una frontera de recuperación y aliasing: variar K y las fases de evento/captura, comprobar la adjudicación estricta de todos los episodios del soporte y medir la recuperación de V_cont_truth. No se acepta un K que diluya episodios o cuya recuperación dependa de alineación favorable.
+
+ρ_follow se somete a sensibilidad sobre la persistencia/recuperación posterior a la última transición posible. Se fija solo cuando el soporte de retrasos de recuperación de los escenarios queda declarado y el seguimiento permite distinguir recuperación, persistencia y censura. Entonces T*=1+ρ_follow; si no hay cota defendible de recuperación, se conserva el estado terminal/censurado y no se afirma recuperación completa.
+
+### 16.195.6. Tabla única de parámetros y criterios de cierre
+
+| Parámetro | Definición/escala | Regla de cierre | Estado |
+|---|---|---|---|
+| W_c | escala de coordenada hasta última transición causal posible | normalización W_c=1; sin unidad física | COORDINATE_ONLY |
+| d_e / d_min,DGP | duración de episodio / límite inferior del soporte sintético | dominio de escenarios y sensibilidad, no tolerancia | OPEN |
+| c_j/W_c | resolución/cadencia por componente S3 | mecanismo de captura especificado y curva de recuperación | OPEN |
+| P_det_joint | detectabilidad conjunta por duración, fase, familia y versión | P182/P183/MEAS/MISS; dependencia y errores explícitos | OPEN |
+| p*, δ_det | criterio de detección y duración que lo alcanza | requiere aprobación normativa de p*; primero curva | OPEN |
+| Δ/W_c, K | anchura de intervalo y número entero de bloques | búsqueda de recuperación/aliasing con divisibilidad exacta | OPEN |
+| ρ_follow, T* | cola común y horizonte final | soporte de recuperación/persistencia; T* común ex ante | OPEN |
+| frontera temporal | pertenencia de evento exactamente en frontera | conservar regla recomendada [b_k,b_{k+1}); versionar antes de materializar | PENDING_PREMATERIALIZATION |
+| criterio de error/coverage | falsos positivos/negativos, cobertura, bounds y abstención | criterios normativos y curvas por escenario/estimando | OPEN |
+
+### 16.195.7. Secuencia mínima restante
+
+No se abre otra ronda conceptual. La siguiente pasada integrada debe: (1) poblar el dominio/rangos adimensionales de episodios a partir de los escenarios adversariales ya inventariados en §16.188.4; (2) instanciar los tres mecanismos S3 (snapshot, log/trace, híbrido) con parámetros simbólicos y dependencia explícita; (3) definir la matriz de recuperación por duración/fase/componente; (4) obtener curvas condicionales de δ_det y la frontera K–Δ–ρ_follow; (5) identificar los umbrales normativos que requieren aprobación expresa; y (6) pasar a la parametrización estructural conjunta del DGP. No se repiten P178 ni los cierres semánticos previos.
+
+**Dictamen:** NORMALIZED_CLOCK_COORDINATE_DEFINED / NO_PHYSICAL_TIME_INFERENCE / STRICT_TRUTH_PRESERVED / S3_CAPTURE_MODES_BOUNDED_TO_EXISTING_SOURCE / DETECTABILITY_CURVE_BEFORE_THRESHOLD / TEMPORAL_PARAMETERS_NOT_NUMERICALLY_CALIBRATED.
+
+No se materializan escenarios, intervalos, truth, señales ni fixtures. No se ejecuta código, simulación, estimación, calibración ni validación. scientific_execution=false; execution_authorized=false.
