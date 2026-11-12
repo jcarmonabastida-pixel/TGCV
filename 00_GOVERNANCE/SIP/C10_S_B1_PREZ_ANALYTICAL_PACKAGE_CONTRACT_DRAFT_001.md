@@ -2,7 +2,7 @@
 
 **ID:** C10-S-B1-PREZ-ANALYTICAL-PACKAGE-001  
 **Versión:** Draft 001 · **Fecha:** 2026-11-12  
-**Estado:** DOCUMENTARY_SPECIFICATION / NOT_APPROVED / NOT_IMPLEMENTED / NOT_MATERIALIZED / NOT_EXECUTED  
+**Estado:** DOCUMENTARY_SPECIFICATION / PACKAGE_REPRESENTATION_NOT_APPROVED / OBSERVATION_RULES_ACCEPTED_BY_DEC-C10-097 / SOURCE_CLASSES_AND_PARAMETERS_OPEN / NOT_IMPLEMENTED / NOT_MATERIALIZED / NOT_EXECUTED  
 **Rama:** `research/c10-s-consolidation-draft` · **PR:** #116 (Draft)  
 **Precedencia:** DEC-C10-095 (truth/exclusion composition); DEC-C10-096 (validation census/task boundary); DEC-C10-097 (observation/coverage model); DEC-C10S-B1-UNIT-001; DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001; DEC-C10S-B1-OPPORTUNITY-CARDINALITY-001; DEC-C10-061/068/069; `C10_S_B1_PREZ_MINIMUM_DGP_MATERIALIZATION_CONTRACT_DRAFT_001.md`; `C10_S_B1_PREZ_DGP_U_G_COMPATIBILITY_AUDIT_DRAFT_001.md`; protocolo U_G de evidencia/procedencia/adjudicación.
 
@@ -173,7 +173,8 @@ Las pruebas siguientes son requisitos de diseño, no pruebas ejecutadas:
 | Unidad B1/UE y servicio por UE | Decisiones de diseño aceptadas; roster/IDs no materializados |
 | Representación separada del paquete | Propuesta de este documento; requiere aceptación |
 | Mecanismo de truth por unidad | ACCEPTED BY DEC-C10-095: reserved explicit stipulation per B1/UE + deterministic mapping; no stochastic Need generation |
-| Modelo de observación y contenido de fuentes | OPEN; no parametrizado |
+| Reglas operativas generales de observación/cobertura | ACCEPTED BY DEC-C10-097; no parametrizadas |
+| Clases concretas de fuentes, universo esperado y dependencias de observación | OPEN; no materializados ni parametrizados |
 | Fuentes sintéticas y cobertura por unidad | No materializadas; cobertura NONE |
 | Reglas/roles E1/E2 | Definidos documentalmente; ninguna adjudicación realizada |
 | Seguridad técnica y control de acceso | Requisitos definidos; no implementados |
@@ -182,7 +183,7 @@ Las pruebas siguientes son requisitos de diseño, no pruebas ejecutadas:
 
 ## 13. Dictamen
 
-`B1_NEED_ANALYTICAL_PACKAGE_SPECIFIED / SEPARATE_FROM_UG / NO_NEW_UG_TARGET / TRUTH_AND_OBSERVATION_MECHANISMS_OPEN / NO_ROSTER / NO_RECORDS / NOT_IMPLEMENTED / NOT_EXECUTED`.
+`B1_NEED_ANALYTICAL_PACKAGE_SPECIFIED / SEPARATE_FROM_UG / NO_NEW_UG_TARGET / TRUTH_RULE_ACCEPTED / OBSERVATION_OPERATIONAL_RULES_ACCEPTED / SOURCE_CLASSES_AND_PARAMETERS_OPEN / NO_ROSTER / NO_RECORDS / NOT_IMPLEMENTED / NOT_EXECUTED`.
 
 El contrato propone una arquitectura de expediente que conserva la integridad tipada U_G y hace verificable la separación truth/evidencia/adjudicación. No prueba que Need sea adjudicable con las fuentes actualmente disponibles ni selecciona parámetros para el DGP. No autoriza materialización, implementación, simulación, estimación, ejecución ni Design Freeze.
 
