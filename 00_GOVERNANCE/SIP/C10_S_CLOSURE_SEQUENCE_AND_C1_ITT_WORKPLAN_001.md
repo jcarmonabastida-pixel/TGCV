@@ -2273,3 +2273,18 @@ La reconciliación basal de §16.209 se ha desarrollado en el plan integrado §1
 **Siguiente gate activo:** completar el mapping finito por clase de mundo, ya ordenado en plan §16.208.8: frontera, G/H, catálogo F*/alternativas, rutas y snapshots. La salida debe demostrar la cobertura de cada contraste/falsador del roster dirigido, sin factorial completo ni cardinalidades asumidas.
 
 La operación se realizará en el plan integrado y contratos existentes, no mediante otro paquete. No generar mundos/datos, no fijar parámetros numéricos, no implementar, no ejecutar ni declarar Design Freeze. `scientific_execution=false`; `execution_authorized=false`.
+
+## 58. Reconciliación del crosswalk basal y mapping finito (2026-11-12)
+
+Se completan las dos operaciones documentales que §57 dejó activas, directamente en el plan integrado Draft 004:
+
+- **Plan §16.210:** crosswalk lógico sintético por UE de E_i, E_scope, App, C_dep,0*, predicados constitutivos de A_f,0*, P*_{τ2} y q_X*. Se preserva como NO ACEPTADA la fórmula universal E_i=E_scope∧App. No se materializan IAM/C_SRC reales ni datos.
+- **Plan §16.211:** mapping de frontera/clases, granularidad candidata, cuatro cards F1/F2/A1/A2, rutas πF/πA, estados/snapshots y clases de mundo frente a mecanismos, contrastes y salidas Analyzer. Se explicita que H_path de las dos rutas definidas es dos pasos; H=3 continúa como candidato no ratificado y H_time sigue abierto. F*, oráculo O-CONF, mapping/tolerancias y cobertura efectiva no se declaran cerrados.
+
+**Dictamen documental:** BASELINE_CROSSWALK_LOGICALLY_RECONCILED / FINITE_WORLD_MAPPING_RECONCILED_CANDIDATE. Esto no acredita cobertura científica completa, no congela G/H ni F*, no crea fixtures y no habilita un DGP cuantitativo ejecutable.
+
+### Gate activo siguiente
+
+Conforme al orden único de §16.208.8, corresponde reconciliar las **funciones estructurales generadoras y sus dependencias contrafactuales** por bloque: basal; asignación/política; intento/recepción/provisión; C_dep; A_f/D_f/ΔT_acc; Reach/trayectoria; resultados; ramas directas/colaterales/interferencia; observación. Debe hacerse sobre el roster dirigido ya definido, reutilizando los contratos DGP/PD, sin nuevos mundos ni factorial completo.
+
+Para cada función se registrarán argumentos, codominio/estados, exógenas compartidas, dependencias, invariantes por brazo, momento causal, potenciales coherentes y regla de abstención. Los parámetros/distribuciones numéricos permanecen abiertos y no se inventan. No generar datos, implementar, simular, estimar, ejecutar ni declarar Design Freeze; scientific_execution=false y execution_authorized=false.
