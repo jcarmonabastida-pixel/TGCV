@@ -250,7 +250,7 @@ class Generator:
                         alternative = int(u_alt < cfg.alternative_probability)
                     reach = int(bool(focal_access or alternative))
                     trajectory = int(reach and u_trajectory < 0.95)
-                    conformity_p = (
+                    profile_match_p = (
                         cfg.baseline_conformity
                         + cfg.focal_access_effect * trajectory
                         + cfg.package_direct_effect * z
@@ -259,18 +259,25 @@ class Generator:
                         + cfg.heterogeneity * (x - 0.5) * trajectory
                     )
                     if not cfg.no_interference:
-                        # Cluster-level assignment: the whole cluster shares z,
-                        # so counterfactual exposure is coherent under each regime.
-                        conformity_p += cfg.interference_effect * z
-                    conformity_p = max(0.0, min(1.0, conformity_p))
-                    states = tuple(int(u < conformity_p) for u in u_intervals)
+                        # Cluster-level assignment makes the exposure counterfactual coherent.
+                        profile_match_p += cfg.interference_effect * z
+                    profile_match_p = max(0.0, min(1.0, profile_match_p))
+                    # B1 is conjunctive: ENABLED and the declared PROFILE must
+                    # both hold throughout an interval. Components stay separate.
+                    enabled_states = tuple(int(u < 0.98) for u in u_enabled)
+                    profile_states = tuple(int(u < profile_match_p) for u in u_profile)
+                    states = tuple(int(en and pr) for en, pr in zip(enabled_states, profile_states))
                     v = sum(states) / cfg.n_intervals
                     z_potentials.append(v)
                     z_intervals.append(states)
+                    z_enabled.append(enabled_states)
+                    z_profile.append(profile_states)
                     potential_package_by_g[g].append(v)
                     potential_focal_by_z[z].append(v)
                 unit_potentials.append(tuple(z_potentials))
                 unit_intervals.append(tuple(z_intervals))
+                unit_enabled.append(tuple(z_enabled))
+                unit_profile.append(tuple(z_profile))
             v_truth.append(tuple(unit_potentials))
             interval_truth.append(tuple(unit_intervals))
 
