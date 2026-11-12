@@ -1222,3 +1222,24 @@ Se separan tres escalas: (1) reloj de truth/event_time; (2) rejilla de agregaci�
 Convención de frontera recomendada: intervalos internos [b_k,b_{k+1}); un evento en frontera interna pertenece al intervalo que comienza en ella; el último intervalo incluye T*. Episodios que cruzan fronteras afectan cada intervalo intersectado. La convención se versionará antes de materializar.
 
 T* debe extenderse desde t0 hasta después del último evento causal capaz de modificar A_B1, con cola común τ_follow para observar persistencia/recuperación: T*=t_last+τ_follow. Catálogo finito, mínimo episodio, unidad normalizada, τ_follow, T*, Δ, K y calibración/cobertura S3 permanecen OPEN. No se asignan parámetros ni se ejecuta el DGP.
+
+## 50. Catálogo finito de transiciones B1 y límite de detección S3 (2026-11-12)
+
+Se deriva del contrato de trabajo B1 §2 y DEC-C10-068/101/102, sin añadir estados de negocio ni alterar el reloj t−1/t0…t9.
+
+**Familias de transición del DGP:**
+1. cambios efectivos ENABLED/PROFILE;
+2. pérdida/recuperación de proceso/módulo;
+3. pérdida/recuperación de listener/socket/superficie de ingreso;
+4. pérdida/recuperación de dependencia únicamente si cambia la capacidad funcional de admisión;
+5. insuficiencia/restauración de capacidad/recursos únicamente si cambia la capacidad funcional de admisión.
+
+Provisión, instalación, verificación, rollback y reinicio se registran como antecedentes o transiciones. No constituyen por sí mismos incumplimiento. A_B1 se calcula desde la función efectiva: admitir con ENABLED=true, no admitir con ENABLED=false y exponer PROFILE declarado; STANDARD/READ_ONLY no se diferencian semánticamente. RUL-SVC-ENABLE-PROFILE-01 permanece implicación declarativa, no equivalencia.
+
+Cada transición de truth lleva unidad/instancia/version, event_time, estado funcional antes/después, familia causal y provenance reservada. El ciclo de solicitud es discreto y no se reutiliza como monitor continuo.
+
+**Truth y detectabilidad:** DEC-C10-102 mantiene cero periodo de gracia y ninguna duración mínima funcional. Cualquier incumplimiento confirmado hace A_B1=0 en los intervalos afectados. δ_event es la duración real estipulada del episodio; δ_det es el dominio mínimo para el que S3 pueda demostrar detección tras calibración. δ_det limita la recuperación observacional, nunca truth. Para episodios no detectables, Analyzer emite bounds/abstención, salvo otra evidencia pasiva identificable. No se presume que S3 sea periódico, continuo, event-driven ni completo.
+
+Δ de agregación, resolución/cadencia S3 y δ_det son diferentes. t_last es la última transición causal capaz de cambiar A_B1 (incluida recuperación final); T*=t_last+τ_follow. Un episodio activo al cierre queda terminal/censurado según contrato, nunca como recuperado por defecto.
+
+**Estado:** EVENT_FAMILIES_BOUNDED / STRICT_TRUTH_NO_GRACE / S3_DETECTION_DOMAIN_UNCALIBRATED / TSTAR_DELTA_K_OPEN / NOT_EXECUTED.
