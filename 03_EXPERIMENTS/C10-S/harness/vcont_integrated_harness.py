@@ -156,6 +156,7 @@ class AnalyzerResult:
     focal_status: Identification
     package_itt: float | None
     focal_effect: float | None
+    first_stage_delta_t_acc: tuple[float, float, float, float] | None
     package_se: float | None
     focal_se: float | None
     abstention_reasons: tuple[str, ...]
@@ -350,7 +351,7 @@ class Sealer:
             raise ContractError("empty evidence")
         allowed = {"unit_id", "cluster_id", "assignment_z", "assignment_g",
                    "s3_enabled", "s3_profile_match", "s3_enabled_status",
-                   "s3_profile_status", "profile", "version"}
+                   "s3_profile_status", "delta_t_acc_observed", "profile", "version"}
         for row in candidate.rows:
             if set(row) != allowed:
                 raise FirewallError("reserved/missing evidence fields")
@@ -361,6 +362,8 @@ class Sealer:
             if any(v not in (0, 1, None) for k in ("s3_enabled", "s3_profile_match")
                    for v in row[k]):
                 raise ContractError("invalid S3 value")
+            if len(row["delta_t_acc_observed"]) != 4 or any(v not in (0, 1) for v in row["delta_t_acc_observed"]):
+                raise ContractError("Delta T_acc must contain four binary coordinates")
         manifest = {"run_id": candidate.run_id, "schema": "C10S-VCONT-S3-001",
                     "row_count": len(candidate.rows), "sealer_version": "0.1"}
         digest = _hash({"manifest": manifest, "rows": candidate.rows})
