@@ -286,3 +286,12 @@ Value conserva vector P179; B1/Need_preZ y perspectiva B1 son la base, pero auto
 ## 17. Caso B1: reconciliación semántica y bloqueo material (2026-11-11)
 
 El caso de valoración se documenta en `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md`. B1 por UE, servicio versionado por UE y una oportunidad estandarizada por UE se reutilizan. La oportunidad es un probe, no demanda natural ni Value. Need_preZ se formula como objetivo operativo focal relacionado con sostener una operación de servicio predeclarada en destino, pero la operación concreta sigue OPEN. La consecuencia B1 no se infiere de procesamiento, respuesta, F* ni O-CONF. No se seleccionan dimensiones V_j ni instrumentos. Esto no levanta el bloqueo PB-MAT: roster, IAM/C_SRC, snapshots, provisión, grafo, aislamiento, asignación y soporte siguen no demostrados. G-SCI/G-MAT/G-TEST siguen bloqueados.
+
+
+## 18. Actualización del gate Outcome/Value tras DEC-C10-099 y §16.182 (2026-11-12)
+
+La selección provisional de V_cont para la extensión sintética B está formalizada por DEC-C10-099; por ello, el estado histórico «no se seleccionan dimensiones V_j» de §16 debe leerse como anterior a esa decisión y no como estado vigente de selección. No se elimina el registro histórico ni se altera P179/DEC-C10-095.
+
+El plan integrado §16.182 especifica truth temporal latente B1 y un canal S3 pasivo de indicadores imperfectos, separando truth, observación y evaluación. La especificación permite ensayar recuperación con canal calibrado por diseño y exige abstención/bounds con canal no calibrado. No es validación empírica de telemetría ni prueba de validez externa.
+
+El gate Value no pasa a PASS: permanecen abiertos agregación normativa, K/frecuencia/baseline/ventana, parámetros del canal, relevancia/MDE y calibración. O-CONF sigue sin ficha §224 completa y su discriminación frente a V_cont es NOT_VERIFIABLE/CONDITIONAL. Se mantienen G-SCI/G-MAT/G-TEST bloqueados, Design Freeze no alcanzado y autorización de ejecución no concedida.
