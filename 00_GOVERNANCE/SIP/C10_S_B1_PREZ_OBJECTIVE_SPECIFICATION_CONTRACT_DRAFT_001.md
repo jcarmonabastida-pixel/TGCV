@@ -102,7 +102,7 @@ La especificación es un mecanismo de definición/estipulación del objeto medid
 
 ## 6. Soporte de diseño sin parametrización prematura
 
-El diseño confirmatorio del Analyzer deberá disponer de unidades con estipulación explícita de inclusión y de exclusión para evaluar su capacidad de distinguir truth=1 de truth=0. La posibilidad de truth=? se conserva para indeterminación real de la estipulación.
+La validación confirmatoria de E1 y E2 como adjudicadores de Need_preZ deberá disponer de unidades con estipulación explícita de inclusión y de exclusión para evaluar su capacidad de distinguir truth=1 de truth=0. Analyzer PE no es clasificador de Need y queda fuera de esta cohorte y de sus denominadores, conforme a DEC-C10-096. La posibilidad de truth=? se conserva para indeterminación real de la estipulación.
 
 Este requisito de soporte no fija:
 - prevalencia ni proporción de estados;
@@ -364,3 +364,21 @@ La declaración auténtica pero errónea sigue siendo admisible como evidencia d
 Esta sección especializa y armoniza §§7.4–7.7 y los requisitos A–F precedentes. Donde los textos anteriores parezcan exigir que un actor reciba una señal basal, prevalece esta interpretación de canal de medición sin actor cognitivo, salvo futura decisión explícita que incorpore una fuente/actor realista con base microdominio independiente.
 
 **OPEN:** estructura matemática/causal del canal, estados conjuntos, parámetros, dependencias, escenarios, soporte, sensibilidad y verificación técnica del firewall. No se autoriza materialización, implementación ni ejecución.
+
+
+### 7.6 Regla operativa de adjudicación para E1/E2
+
+Esta regla operacionaliza §§7.2–7.5 y la definición de observed_evidence(Need_preZ) de C10_S_B1_PREZ_ADJUDICATION_AND_CONSEQUENCE_RECONCILIATION_DRAFT_001.md §4.2–4.3. No crea un nuevo rol, artefacto lógico, test ID ni schema físico.
+
+E1 y E2 reciben por separado el mismo bundle observable autorizado y aplican, sin acceso a truth ni al resultado del otro, la siguiente secuencia:
+
+1. **Integridad y binding:** comprobar que el expediente y sus referencias permiten resolver B1–UE–instancia de servicio, versiones, event_time pre-Z, lineage e integridad. Un defecto de identidad/binding/schema/digest/truth-integrity que impida evaluar bloquea la unidad/paquete conforme a DEC-C10-097; no se convierte en observed=? ni se elimina del censo.
+2. **Admisibilidad de la declaración:** comprobar mandato/competencia declarativa, alcance focal, temporalidad, provenance y correspondencia con la definición funcional versionada. Una fuente no admisible sin defecto técnico bloqueante no sustenta polaridad y conduce a observed=?
+3. **Inclusión focal inequívoca:** si una declaración S7 admisible afirma que el objetivo focal pertenece a los objetivos basales de esa B1 respecto del servicio vinculado, adjudicar observed=1.
+4. **Exclusión focal inequívoca:** si una declaración S7 admisible afirma que el objetivo focal no pertenece a esos objetivos, adjudicar observed=0 solo cuando la cobertura del alcance B1–servicio sea suficiente y esté demostrada. No se exige enumerar todos los objetivos posibles de B1; la exclusión focal explícita es la afirmación negativa mínima aceptada por DEC-C10-095/097.
+5. **Indeterminación observacional:** asignar observed=? cuando no hay declaración por no emisión/pérdida, el contenido es ambiguo o contradictorio, el alcance/versionado no se puede resolver sin constituir un bloqueo técnico, la fuente carece de autoridad admisible, o la cobertura requerida para sostener una exclusión es incompleta/opaca.
+6. **Sellado y evaluación:** conservar las salidas individuales y su justificación/evidencia; sellar ambas antes de cualquier comparación con need_truth_state. El desacuerdo E1/E2 no se resuelve por consenso implícito ni se borra; se reporta separadamente de la exactitud de cada adjudicador frente a truth.
+
+La prioridad es **bloqueo técnico de integridad/binding** cuando impide identificar o validar la unidad; en los demás casos de insuficiencia de contenido o evidencia se conserva observed=?. Una declaración afirmativa de inclusión no requiere inferir déficit, solicitud, uso o incumplimiento del servicio. Una exclusión afirmativa no puede derivarse de silencio, búsqueda fallida ni ausencia de actividad.
+
+**Límite de inferencia:** esta regla hace operativa la interpretación normativa de inclusión/exclusión y la abstención. No demuestra que E1/E2 la ejecuten correctamente. La concordancia interevaluador, la exactitud de cada uno frente a truth y la atribución de errores al canal o al adjudicador son evaluaciones distintas. Para aislar empíricamente la interpretación del contenido de la discordancia truth–contenido se necesitaría una comprobación controlada separada, que permanece OPEN y no se crea aquí.
