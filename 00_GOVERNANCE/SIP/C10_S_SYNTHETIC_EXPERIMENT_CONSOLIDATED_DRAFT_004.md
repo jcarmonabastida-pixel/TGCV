@@ -20,3 +20,9 @@ La especificación rectora está en el plan §16.184 y la matriz F* §22. F* es 
 ## 280. C+D — crosswalk causal integrado (2026-11-12)
 
 Referencia rectora: plan §16.185; complementa §268 PC, §276–279 y contratos D2/PD/C1. D2/Z_B genera potenciales separados por etapa y su ITT es efecto total del paquete por resultado. g_A1/g_A0 interviene sobre distribuciones factibles del ΔT_acc* completo bajo q basal y régimen común; su mapping a D2 no está demostrado. C4 es mediación interventional y no resta del ITT. O-CONF_r (terminal F*) y V_cont (temporal B1) conservan truth/observación/estimandos independientes. P*τ2/P*_F, q_X*, soporte, π_h, unidad/interferencia y parámetros siguen abiertos. P177–P183 y familias existentes se reutilizan; no nuevos tests. No Design Freeze, implementación ni ejecución.
+
+
+
+## 281. DEC-C10-100 — V_cont: agregación temporal igualitaria aceptada (2026-11-12)
+
+Se incorpora DEC-C10-100: la verdad sintética V_cont_truth(i) es la fracción temporal de cumplimiento funcional B1, calculada como media no ponderada de A_B1(i,k) en K intervalos de igual duración dentro de una ventana/rejilla post-Z común preespecificada. UNKNOWN permanece y se propaga a bounds [n1/K,(n1+n?)/K]; no se imputa cero ni se elimina del denominador. El estimando es nivel post-Z, no cambio pre/post. S3 sigue siendo vector de señales imperfectas y no se promedia para sustituir truth. K, frecuencia, ventana, baseline/transitorios, canal, MDE y criterios cuantitativos permanecen abiertos. La calibración se evalúa como superficie de recuperación [0,1] por estimando/escenario, sin inventar un MDE ni transferir N/R de P178. Validez de medición, discriminación O-CONF/F*, identificación y punto de operación confirmatorio siguen abiertos. No Design Freeze, implementación ni ejecución.
