@@ -32,7 +32,7 @@ Cada unidad debe permanecer visible en el flujo del paquete, con uno de estos es
 - truth válida 1/0/? sellada;
 - evidencia observable NONE/PARTIAL/COMPLETE conforme al alcance aplicable;
 - adjudicaciones E1 y E2 selladas, por separado;
-- salida del Analyzer registrada, incluida abstención, error o ausencia de salida;
+- referencia al output PE del Analyzer solo si existe un estimando que lo requiera, conservada y evaluada fuera de la clasificación Need; no es un resultado del paquete de adjudicación B1/Need;
 - evaluación abierta/sellada o no evaluable, con motivo explícito.
 
 Un fallo de identidad, binding o integridad no se recodifica como truth=?, no se elimina silenciosamente del roster y no se convierte en error de clasificación. Se reporta como bloqueo del paquete/unidad; mientras no se resuelva, no puede declararse completada la evaluación confirmatoria censal. La ausencia o insuficiencia de evidencia tampoco excluye la unidad: es una condición que E1/E2 deben afrontar y registrar, normalmente como observed=? según el protocolo.
@@ -53,13 +53,13 @@ El Analyzer PE no forma parte de la evaluación de clasificación Need ni se le 
 
 El Evaluator B1/Need abre truth reservada solo después de que E1 y E2 hayan sellado sus salidas. Compara E1 y E2 por separado contra truth y conserva desacuerdos, abstenciones, errores y casos no evaluables. No reemplaza las salidas originales por consenso. La evaluación del Analyzer PE permanece bajo el Evaluator PE y sus propios oráculos por estimando/constructo.
 
-No se introduce un séptimo artefacto: las salidas E1/E2 permanecen en ADJUDICATION_LEDGER, la salida del Analyzer se registra en el componente/registro de salida previsto por el contrato de interfaz, y la comparación se conserva en EVALUATION_LEDGER. La ubicación exacta del resultado Analyzer debe cerrarse mediante crosswalk de interfaz, no mediante una nueva entidad lógica.
+No se introduce un séptimo artefacto: las salidas E1/E2 permanecen en ADJUDICATION_LEDGER y sus comparaciones con Need_truth en EVALUATION_LEDGER. El output Analyzer PE permanece en su objeto de salida/Artifact-Provenance Store PE, fuera de los seis artefactos B1/Need; solo podrá existir una referencia cruzada externa si un contrato de estimando la requiere.
 
 ## 5. Denominadores y reporting
 
 Se deben informar al menos cuatro cantidades/flujo, sin colapsarlas:
 
-1. **N roster B1:** todas las UE del roster aprobado de la variante B1.
+1. **N roster B1:** todas las UE del roster DGP/paquete aprobado al que aplica B1/Need; no presupone que el roster se denomine «variante B1» ni que sea conjunto A/B.
 2. **N integridad evaluable:** unidades con identidad, binding, baseline y truth ledger íntegros. Los bloqueos se informan aparte, con causa.
 3. **N truth binaria:** unidades evaluables con truth=1 o truth=0. Este es el marco de cálculo de métricas binarias, condicionado a que ambas clases tengan soporte.
 4. **N truth indeterminada:** unidades evaluables con truth=?; se informan por separado y no se imputan a 0/1.
@@ -74,7 +74,7 @@ Para cada adjudicador (E1 y E2) informar:
 
 La evaluación del Analyzer PE no se incorpora a estos denominadores: conserva su salida PE y evaluación propia contra oráculos DGP por constructo/estimando.
 
-No se calcularán métricas binarias únicamente sobre los casos en que el Analyzer produjo una clasificación 1/0 sin informar las abstenciones y fallos de salida: hacerlo ocultaría el rendimiento operativo real. El rendimiento condicional a una clasificación emitida puede presentarse como análisis complementario, con su denominador y tasa de cobertura claramente indicados.
+No se calcularán métricas binarias únicamente sobre los casos en que E1/E2 emitieron 1/0 sin informar observed=?, ausencia de salida, fallo técnico y cobertura: hacerlo ocultaría el rendimiento operativo real. El rendimiento condicional a una clasificación emitida puede presentarse como análisis complementario, con su denominador y tasa de cobertura claramente indicados.
 
 ## 6. Relación con las poblaciones causales y con la asignación
 
@@ -86,7 +86,7 @@ Este alcance no modifica:
 - unidad de asignación UA, unidad experimental UE, interferencia ni el mecanismo Z;
 - las condiciones constitutivas de elegibilidad experimental.
 
-Need_preZ no es criterio de pertenencia a P*_{τ2}, P*_F ni al denominador ITT. Tampoco se exige soporte truth=1/0 en cada brazo, estrato o población causal. Si se desea afirmar que la validez del Analyzer se transporta a P*_{τ2}, P*_F o a otra población, habrá que informar el solapamiento, soporte y cobertura en esa población y justificar la transportabilidad; el resultado de la cohorte B1 no lo demuestra automáticamente.
+Need_preZ no es criterio de pertenencia a P*_{τ2}, P*_F ni al denominador ITT. Tampoco se exige soporte truth=1/0 en cada brazo, estrato o población causal. Si se desea afirmar que la validez de la adjudicación E1/E2 se transporta a P*_{τ2}, P*_F o a otra población, habrá que informar el solapamiento, soporte y cobertura en esa población y justificar la transportabilidad; el resultado de la cohorte B1 no lo demuestra automáticamente. La transportabilidad del Analyzer PE se evalúa por separado conforme a sus estimandos y oráculos.
 
 La truth se fija en t−1. Z, política D2, provisión, instalación, accesibilidad, Reach, trayectoria, ejecución, Outcome y Value no pueden determinar la pertenencia a la cohorte ni modificar truth.
 
@@ -94,12 +94,12 @@ La truth se fija en t−1. Z, política D2, provisión, instalación, accesibili
 
 Antes de una evaluación confirmatoria:
 
-- el roster B1 debe estar aprobado, versionado y cerrado;
+- el roster DGP/paquete al que aplica B1/Need debe estar aprobado, versionado y cerrado;
 - la cohorte se congela como censo de ese roster antes de truth/evidencia/Z;
 - deben existir casos válidos truth=1 y truth=0 en N integridad evaluable;
 - ambas clases deben permanecer representadas en el denominador binario, sin reequilibrio posterior;
 - truth=? se conserva y reporta separadamente;
-- las salidas E1/E2/Analyzer deben estar selladas antes de abrir truth;
+- las salidas E1 y E2 deben estar selladas antes de abrir Need_truth; el Analyzer PE no forma parte de esta evaluación;
 - la segregación de roles y el acceso del Evaluator deben estar verificados.
 
 Si falta una clase binaria, el dictamen es SUPPORT_FAILURE / CONFIRMATORY_CLASSIFICATION_BLOCKED. No se crea una subcohorte de conveniencia, no se cambia truth, no se generan unidades ad hoc y no se fuerza balance. La suficiencia de N, precisión, potencia y estabilidad de métricas sigue pendiente del paquete estadístico P177/P178/P179/P182/P183; el soporte lógico de una unidad por clase no acredita suficiencia estadística.
@@ -116,17 +116,17 @@ Se reutilizan, sin sustituirlos:
 - `C10_S_CLOSURE_SEQUENCE_AND_C1_ITT_WORKPLAN_001.md` — orden de cierre de paquetes: C1, Outcome/Value, C2, C3, C4, C5+DGP, estadística/Analyzer e implementación.
 
 Gates todavía abiertos:
-1. aprobación del roster de la variante B1 y su identidad/versionado;
-2. crosswalk exacto de la salida Analyzer con los seis artefactos, sin crear séptimo artefacto;
-3. especificación del objetivo de Analyzer (clasificación Need, reconstrucción de evidencia o ambas) y de su abstención;
-4. correspondencia final con PKG/PREZ tests existentes, evitando IDs duplicados;
-5. suficiencia estadística, potencia y precisión;
-6. verificación computacional del firewall Generator/Analyzer/Evaluator;
-7. generalización/transportabilidad a poblaciones causales, si se pretende.
+1. aprobación del roster DGP/paquete al que aplica B1/Need, con decisión explícita de si los rosters A/B son separados o conjuntos, identidad/versionado y cierre;
+2. confirmación de que el paquete B1/Need cubre todas las UE de ese roster conforme a la cardinalidad B1/UE ya aceptada;
+3. correspondencia final con PKG/PREZ tests existentes, evitando IDs duplicados;
+4. suficiencia estadística, potencia y precisión para E1/E2;
+5. verificación computacional del firewall Generator/Proyector/E1/E2/Evaluator B1;
+6. generalización/transportabilidad de la adjudicación E1/E2 a poblaciones causales, solo si se pretende;
+7. evaluación PE del Analyzer contra sus propios oráculos, independiente de la cohorte de clasificación Need.
 
 ## 9. Dictamen
 
-**RECOMENDACIÓN:** censo de todas las UE del roster DGP/paquete B1 aprobado y aplicable como cohorte de validación Need_preZ; ninguna subcohorte por conveniencia. E1 y E2 se evalúan separadamente contra Need_truth DGP; Analyzer PE permanece fuera de la clasificación Need. Truth=?, evidencia insuficiente y bloqueos permanecen visibles; P* e ITT no se alteran.
+**RECOMENDACIÓN:** censo de todas las UE del roster DGP/paquete aprobado al que aplica B1/Need como cohorte de validación; ninguna subcohorte por conveniencia. E1 y E2 se evalúan separadamente contra Need_truth DGP; Analyzer PE permanece fuera de la clasificación Need. Truth=?, evidencia insuficiente y bloqueos permanecen visibles. Los bloqueos de identidad/truth-integrity impiden declarar completa la evaluación censal hasta resolverse; no se eliminan unidades. P* e ITT no se alteran.
 
 Este documento es una reconciliación documental propuesta, no una decisión aceptada, contrato congelado ni especificación física. No materializa roster, unidades, truth, evidencia, adjudicaciones, salidas Analyzer, fixtures ni código. No ejecuta validadores, DGP, simulación, replay o análisis estadístico.
 
