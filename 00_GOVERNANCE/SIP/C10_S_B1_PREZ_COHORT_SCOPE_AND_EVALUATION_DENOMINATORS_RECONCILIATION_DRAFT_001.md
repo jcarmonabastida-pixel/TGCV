@@ -2,16 +2,16 @@
 
 **ID:** C10-S-B1-PREZ-COHORT-SCOPE-DENOMINATORS-001  
 **Versión:** Draft 001 · **Fecha:** 2026-11-12  
-**Estado:** DOCUMENTARY_RECONCILIATION / COHORT_CENSUS_SCOPE_RECOMMENDATION / ALIGNED_WITH_DEC-C10-095 / E1_E2_ONLY_FOR_NEED_ADJUDICATION / NOT_APPROVED / NOT_MATERIALIZED / NOT_EXECUTED  
+**Estado:** DOCUMENTARY_RECONCILIATION / COHORT_CENSUS_SCOPE_ACCEPTED_BY_DEC-C10-096 / ALIGNED_WITH_DEC-C10-095 / E1_E2_ONLY_FOR_NEED_ADJUDICATION / ROSTER_NOT_APPROVED / NOT_MATERIALIZED / NOT_EXECUTED  
 **Rama:** `research/c10-s-consolidation-draft` · **PR:** #116 (Draft)
 
 ## 1. Pregunta y resultado de la reconciliación
 
-Se recomienda cerrar la alternativa entre (a) censo del roster al que aplica el paquete y (b) subcohorte pre-Z: **la cohorte objetivo de validación Need_preZ será el censo de todas las UE incluidas en la versión aprobada del roster DGP/paquete B1 para la que se materialice el paquete analítico B1/Need**. No se recomienda una subcohorte adicional.
+DEC-C10-096 acepta cerrar la alternativa entre (a) censo del roster al que aplica el paquete y (b) subcohorte pre-Z: **la cohorte objetivo de validación Need_preZ será el censo de todas las UE incluidas en la versión aprobada del roster DGP/paquete B1 para la que se materialice el paquete analítico B1/Need**. No se selecciona una subcohorte adicional.
 
 La pertenencia se determina por identidad, binding y alcance del roster antes de generar/abrir truth, evidencia o Z. La cardinalidad aceptada de una B1 por UE y una instancia lógica de servicio propia/versionada por UE fundamenta la aplicabilidad del paquete; no se usa Need ni observabilidad para decidirla. Si el diseño mantiene rosters A/B separados, se toma el roster exacto de la instancia DGP/paquete B1 aprobada; si aprueba un roster conjunto, se incluyen todas las UE a las que aplique el paquete. No se debe usar la expresión ambigua «variante B1» como sustituto de la identidad/versionado del roster.
 
-Esta cohorte no equivale a cualquier roster C10-S, toda P*_{τ2}, P*_F ni al denominador ITT. La propuesta no aprueba roster, población causal nueva ni materialización.
+Esta cohorte no equivale a cualquier roster C10-S, toda P*_{τ2}, P*_F ni al denominador ITT. La decisión no aprueba todavía el roster, no crea una población causal nueva ni autoriza materialización.
 
 ## 2. Por qué censo del roster B1 y no subcohorte
 
@@ -126,8 +126,8 @@ Gates todavía abiertos:
 
 ## 9. Dictamen
 
-**RECOMENDACIÓN:** censo de todas las UE del roster DGP/paquete aprobado al que aplica B1/Need como cohorte de validación; ninguna subcohorte por conveniencia. E1 y E2 se evalúan separadamente contra Need_truth DGP; Analyzer PE permanece fuera de la clasificación Need. Truth=?, evidencia insuficiente y bloqueos permanecen visibles. Los bloqueos de identidad/truth-integrity impiden declarar completa la evaluación censal hasta resolverse; no se eliminan unidades. P* e ITT no se alteran.
+**DECISIÓN ACEPTADA (DEC-C10-096):** censo de todas las UE del roster DGP/paquete aprobado al que aplica B1/Need como cohorte de validación; ninguna subcohorte por conveniencia. E1 y E2 se evalúan separadamente contra Need_truth DGP; Analyzer PE permanece fuera de la clasificación Need. Truth=?, evidencia insuficiente y bloqueos permanecen visibles. Los bloqueos de identidad/truth-integrity impiden declarar completa la evaluación censal hasta resolverse; no se eliminan unidades. P* e ITT no se alteran.
 
-Este documento es una reconciliación documental propuesta, no una decisión aceptada, contrato congelado ni especificación física. No materializa roster, unidades, truth, evidencia, adjudicaciones, salidas Analyzer, fixtures ni código. No ejecuta validadores, DGP, simulación, replay o análisis estadístico.
+Este documento incorpora la decisión de alcance aceptada en DEC-C10-096; sigue siendo una reconciliación documental, no un contrato congelado ni una especificación física. No materializa roster, unidades, truth, evidencia, adjudicaciones, salidas Analyzer, fixtures ni código. No ejecuta validadores, DGP, simulación, replay o análisis estadístico.
 
 `scientific_execution=false`; `execution_authorized=false`.
