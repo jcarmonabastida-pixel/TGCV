@@ -326,3 +326,13 @@ El objetivo vigente de C10-S es un experimento causal sintético que compruebe s
 Por tanto, el gate de materialización real G-MAT (roster/IAM/C_SRC/instalación/ACL/recursos reales) queda OUT_OF_SCOPE_FOR_SYNTHETIC_CORE, no como bloqueo que fuerce a construir el entorno real. El núcleo sintético sí debe cerrar una cohorte finita generada/versionada, unidad/UA/UO, asignación reproducible, distribución basal/soporte, interferencia estipulada o aislamiento por construcción, verdad por etapa, parámetros y potenciales. Los escenarios de provisión, dependencias o fallos materiales pueden ser estipulados adversarialmente, sin presentarlos como observaciones reales.
 
 No se harán claims sobre provisión real, validez externa o identificación material. Los gates G-SCI, G-SCHEMA, G-ROLE, G-TEST y G-REPRO siguen sujetos a sus condiciones; G-AUTH sigue NOT GRANTED. Esta precisión no autoriza generación, simulación, implementación ni ejecución.
+
+
+
+## 22. DEC-C10-100 — escala V_cont aceptada y estado de factibilidad (2026-11-12)
+
+La escala inicial de V_cont queda aceptada provisionalmente como fracción temporal de cumplimiento funcional B1: media no ponderada de A_B1(i,k) sobre intervalos de igual duración en ventana/rejilla post-Z común ex ante. UNKNOWN produce bounds, no cero ni exclusión del denominador. El baseline no se resta automáticamente. DEC-C10-100 cierra agregación de truth, no K, ventana, frecuencia, MDE, canal S3, parámetros ni criterios de error.
+
+La calibración confirmatoria se organizará como superficie de recuperación a lo largo de magnitudes verdaderas [0,1], con escenarios nulos, positivos, negativos, heterogéneos, directos/colaterales y de medición degradada. No se inventa un MDE: curvas de recuperación/abstención y frontera Pareto N–asignación–R–SE_MC se obtendrán cuando soporte, distribuciones conjuntas y criterios de operación estén justificados. No se transfieren cifras P178.
+
+**Estado:** VCONT_AGGREGATION_ACCEPTED_PROVISIONALLY / MEASUREMENT_VALIDITY_CONDITIONAL / OCONF_DISCRIMINATION_NOT_VERIFIED / QUANTITATIVE_OPERATING_POINT_OPEN / G-SCI/G-SCHEMA/G-ROLE/G-TEST/G-REPRO BLOCKED / G-AUTH NOT GRANTED. No ejecución.
