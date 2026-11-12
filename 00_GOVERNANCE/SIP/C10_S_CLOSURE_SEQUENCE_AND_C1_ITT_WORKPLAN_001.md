@@ -2467,3 +2467,20 @@ Se cierra estructuralmente el esquema del ledger previsto en §68 y desarrollado
 **Dictamen:** PARAMETER_LEDGER_SCHEMA_AND_R_COMMON_RULES_CLOSED_STRUCTURALLY / EXISTING_WORLD_ROSTER_REUSED / CELL_LEVEL_MATERIALIZATION_OPEN / NUMERIC_PARAMETERS_OPEN / D2_TO_GA_MAPPING_NOT_DEMONSTRATED / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** auditoría de cobertura mínima del roster existente por C1/C3: positivos identificables, nulos, falsadores de falsa atribución, bounds/abstención y huecos. Reutilizar §16.211, sin ampliar el roster por defecto. `scientific_execution=false`; `execution_authorized=false`; PR #116 Draft; main intacta.
+
+
+## 70. Gate 70 — auditoría de cobertura mínima C1/C3 del roster existente (2026-11-12)
+
+Se audita el roster de §16.211.3–§16.211.5 frente a C1/C3 y el ledger §16.223, sin reabrir Value, B1, V_cont, S3/S7 ni ampliar el roster.
+
+**Resultado:** el roster es suficiente como cobertura conceptual dirigida: focal limpio, nulo, fallo por etapas, focal adverso, alternativa basal R1, alternativa afectada/colateral R2, vía directa, heterogeneidad, IV adversarial, interferencia, observación adversarial y soporte/ausencia/censura. Cobertura efectiva NOT_VERIFIED: las clases no están materializadas como celdas versionadas con truth, soporte, asignación/intervención y observación.
+
+- **C1 ITT-D2:** R0 es candidato positivo condicionado a Z/UA/π_h. Los nulos/adversariales pueden evaluar ITT total si conservan diseño y observación. La vía directa/colateral pertenece al ITT y permite detectar su confusión con θ_A.
+- **C3 θ_A:** R0 y focal adverso son candidatos condicionados a g_A directo, q_X* común, soporte y fuente de identificación visible al Analyzer. Nulo focal debe ser celda propia. R1/R2 permiten punto focal solo si la rama no focal queda común o se identifica aparte; de otro modo, bounds/abstención.
+- Faltan controles positivos identificables materializados, nulos separados por estimando, celdas signo×estimando, desacoplamientos directo/colateral y heterogeneidad con signos opuestos.
+- Interferencia, observación adversarial y censura son ahora controles de abstención/bounds, no controles positivos de recuperación puntual.
+- La brecha Analyzer PARTIALLY_IDENTIFIED/bounds y sus métricas sigue abierta según §16.218.8.
+
+**Dictamen:** EXISTING_ROSTER_CONCEPTUALLY_SUFFICIENT_FOR_C1_C3 / EFFECTIVE_CELL_COVERAGE_NOT_VERIFIED / POSITIVE_CONTROLS_NOT_MATERIALIZED / ESTIMAND_SPECIFIC_NULL_AND_SIGN_CELLS_OPEN / DIRECT_COLLATERAL_DECOUPLING_CELLS_OPEN / BOUNDS_ANALYZER_IMPLEMENTATION_GAP_RETAINED / NO_ROSTER_EXPANSION / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** especificar celdas mínimas obligatorias C1/C3 sin cifras: positivo, nulo por estimando, negativo, vía directa/colateral desacoplada, heterogeneidad de signos opuestos y control de no-identificación/abstención. Se mantienen scientific_execution=false, execution_authorized=false; PR #116 Draft; main intacta.
