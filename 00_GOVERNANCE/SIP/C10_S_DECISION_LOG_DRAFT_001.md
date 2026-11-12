@@ -1559,3 +1559,10 @@ El usuario acepta como base de trabajo que B1 es la entidad sintética con Need_
 La reconciliación añade una precisión causal: Outcome y Value son constructos distintos, pero no se presupone que Outcome sea la causa exclusiva de Value ni que V_j=f(Outcome). La consecuencia puede depender de Outcome y de vías directas/colaterales de la política. Se mantienen P179 vectorial, fichas independientes §224 y controles P182/P183. No se eligen dimensiones, escalas, pesos, horizontes o parámetros.
 
 Este registro documenta la aceptación de una base de trabajo; **no crea una DEC nueva ni cambia una decisión científica**. Artefacto integrador: `C10_S_B2_B3_BENEFICIARY_OUTCOME_VALUE_RECONCILIATION_DRAFT_001.md`; maestro §273. Outcome no operacionalizado; Value no instanciado; no Design Freeze ni ejecución autorizada.
+
+
+## DEC-C10-099 — Selección provisional de V_cont como dimensión mínima de Value (2026-11-12)
+
+**Estado:** ACCEPTED — PROVISIONAL DESIGN DECISION; MEASUREMENT/IDENTIFICATION GATES OPEN.
+
+Se formaliza la aceptación expresa ya registrada en el plan §16.174: para la extensión sintética B, V_cont se selecciona provisionalmente como única dimensión mínima de Value del núcleo confirmatorio candidato; V=(V_cont), vector unitario sin índice ni pesos. La selección no aprueba todavía indicador, fórmula, ventana, resolución, baseline, horizonte, fuente, escala o agregación. La medición debe ser independiente de ΔT_acc*/Reach/trayectoria y Outcome técnico; debe superar los gates P182/P183/MEAS/MISS, validez discriminante frente a O-CONF/F* e identificación. Si no los supera, no será endpoint confirmatorio y no se sustituirá silenciosamente. DEC-C10-095 permanece vigente para A/B en su alcance, con esta decisión posterior específica para B. No Design Freeze ni autorización de implementación/ejecución. Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-099_V_CONT_PROVISIONAL_SELECTION_ACCEPTANCE.md`.
