@@ -5543,3 +5543,26 @@ Siguen abiertos y requieren justificación documental antes de cualquier paramet
 **Siguiente operación integrada:** completar el ledger finito de estados/eventos funcionales B1 y sus dependencias temporales por mundo (qué puede cambiar ENABLED_eff, PROFILE_eff y capacidad de admisión, cuándo, con qué persistencia/recuperación y qué potenciales afecta), enlazándolo con los perfiles R0–R3 y mecanismos adversariales existentes. En la misma pasada, marcar los parámetros temporales como identidad de contrato, dominio derivable, sensibilidad que requiere soporte o decisión normativa. No abrir otra dimensión Value, no generar episodios/datos, no fijar números ni ejecutar calibración.
 
 **Dictamen:** V_CONT_PROVISIONAL_SELECTION_REUSED / B1_TEMPORAL_TRUTH_AND_AGGREGATION_RECONCILED / O_CONF_TERMINAL_SEPARATE / S3_IMPERFECT_OBSERVATION_FIREWALL_PRESERVED / T_STAR_K_S3_SUPPORT_AND_G_A_OPEN / NO_NUMERIC_PARAMETERS / NO_DATA / NO_IMPLEMENTATION / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+
+## 16.214. Cierre documental del universo finito funcional B1 y crosswalk temporal R0–R3 (2026-11-12)
+
+Se completa el siguiente gate ordenado en §16.213.5 mediante la sección 14 de `C10_S_B1_PREZ_TEMPORAL_RECONCILIATION_DRAFT_001.md`, persistida en esta misma rama.
+
+**Cierre documental alcanzado:**
+- Estado funcional finito por UE×B1×versión×intervalo: ENABLED efectivo; PROFILE efectivo frente al declarado; proceso/módulo; superficie de ingreso; dependencias requeridas; capacidad/recursos funcionalmente suficientes. Estados no adjudicables permanecen `?`; componentes no requeridos no se convierten en requisitos.
+- Regla A_B1 completa: admitir cuando ENABLED=true, no admitir cuando ENABLED=false y exponer PROFILE declarado. `ENABLED=false` no es fallo por sí mismo. Cualquier incumplimiento funcional confirmado produce A_B1=0 en los intervalos intersectados; ausencia de solicitud no es fallo.
+- Cinco familias exhaustivas de transición al nivel funcional B1: CFG, PROC, INGRESS, DEP y CAP. Provisión, instalación, rollback, reinicio, peticiones y señales S3 quedan clasificados como antecedentes, interacciones discretas u observación, no como truth automática.
+- Dependencias temporales: transiciones fechadas y versionadas, recurrencia/recuperación permitidas, truth/event_time separado de rejilla V_cont y reloj S3; episodio activo en T* queda censurado, no recuperado.
+- Correspondencia explícita con R0–R3: R1 alternativa basal no modifica B1 por sí sola; R2 solo altera B1 si existe componente funcional compartido y cambia efectivamente; R3 fallo de etapa no equivale automáticamente a fallo funcional; R0 no fuerza efecto.
+
+**Clasificación de lo no cerrado:**
+- Reglas aceptadas: t0/inclusión provisión-instalación; intervalos iguales; agregación no ponderada; continuidad estricta sin gracia.
+- Derivación estructural cerrada: universo finito de estados/eventos funcionales y cinco familias causales.
+- Sensibilidad pendiente: persistencia, recurrencia, duración/fase de episodios y recuperación.
+- Decisiones temporales pendientes: t_c,max, τ_follow, T*, unidad, Δ, K y convención exacta de frontera versionada.
+- Medición pendiente: mecanismo S3, cadencia, cobertura, lag, pérdida, error, dependencia, δ_det y umbral p*.
+
+**Dictamen:** `B1_FINITE_FUNCTIONAL_STATE_EVENT_UNIVERSE_CLOSED_DOCUMENTARILY / R0_R3_TEMPORAL_CROSSWALK_CLOSED / TEMPORAL_PARAMETER_AND_S3_CALIBRATION_GATES_OPEN`.
+
+Este cierre no declara cerrada la temporalización cuantitativa ni la identificación causal. No crea escenarios, IDs, fixtures, parámetros ni datos; no autoriza implementación, generación, simulación, calibración, estimación o ejecución. `scientific_execution=false`; `execution_authorized=false`; `NOT_DESIGN_FROZEN`; PR #116 permanece Draft; no se modifica main.
