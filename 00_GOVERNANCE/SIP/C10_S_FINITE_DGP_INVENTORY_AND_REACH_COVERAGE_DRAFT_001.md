@@ -184,3 +184,33 @@ El roster de fuentes del plan §16.205 y la matriz U_G son esquemas de modelado/
 Las superficies P1 se incorporan solo si representan una causa, condición, alternativa, interacción, interferencia o canal de observación relevante para un escenario. No se añaden para imitar infraestructura productiva. El inventario finito debe ser mínimo suficiente para discriminar la contribución causal de ΔT_acc* al Outcome/Value y los límites de atribución.
 
 **Estado:** SYNTHETIC_WORLD_INVENTORY / NO_FIELDWORK / FINITE_UNIVERSE_AND_GENERATIVE_RULES_OPEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+## 15. Ontología mínima del mundo sintético y perfiles de escenario (2026-11-12)
+
+Esta sección organiza el inventario ya propuesto; no aprueba su cardinalidad ni añade un caso de migración real.
+
+### 15.1. Esqueleto de mundo
+
+Un mundo es una instancia finita `w` con historia basal, unidad(es), asignación/política, catálogo de transformaciones, relaciones, predicados, estado estructural, trayectorias potenciales, resultados y canal de observación. Las unidades pueden aislarse o compartir exposición; la independencia UE=UA/SUTVA solo vale si las funciones excluyen explícitamente interferencia.
+
+El esqueleto local candidato sigue siendo `S0/S1/S2/SF`, `F1/F2/A1/A2`, `F1→F2` y `A1→A2`. Sus cuatro transformaciones y `H=3` son opciones del fixture en evaluación, no cardinalidades aprobadas. El catálogo es abstracto y se amplía únicamente si un contraste o falsador existente lo exige.
+
+### 15.2. Perfiles de topología y provisión
+
+R0–R3 se mantienen como perfiles de base, no como DGP completos: R0 focal exclusiva dentro de universo cerrado; R1 alternativa basal no afectada; R2 alternativa modificada por B; R3 fallo de provisión por etapas. Los perfiles no determinan por sí solos Outcome, Value, estimando ni signo del efecto.
+
+Los mecanismos adversariales de PD §4 se superponen de forma selectiva a estos perfiles. No se requiere factorial completo: cada mundo incluido debe identificar qué mecanismo, contraste y falsador cubre, y por qué no queda cubierto por otro mundo ya incluido. No crear IDs de escenarios o pruebas nuevos mientras se reutilicen R0–R3 y la taxonomía PD existente.
+
+### 15.3. Secuencia generativa y potenciales
+
+Generator define funciones estructurales comunes y exógenas compartidas para derivar todos los potenciales de cada unidad bajo D2 (principal candidato) y D1 (secundario). Conserva separadas asignación, programación, intento, recepción, instalación, C_dep*, A_f*/D_f*, ΔT_acc*, Reach/Π, conocimiento/consideración, selección/inicio, ejecución, O-CONF, V_cont y Value. No fuerza el éxito de una etapa por otra ni presupone independencia, monotonicidad, exclusión, soporte o ausencia de vías directas/colaterales.
+
+El canal observado se genera después de truth, con error, cobertura, pérdida, lag, versiones y dependencia estipulados. Analyzer no ve truth; Evaluator compara tras sellado. Las fuentes E1…E4 y B-M01…15 son tipos de evidencia sintética, no activos reales por recuperar.
+
+### 15.4. Suficiencia y límites
+
+El conjunto debe discriminar: efecto de paquete D2; contribución causal conocida de ΔT_acc*; efecto nulo/adverso; alternativa que conserva Reach; vías directas/colaterales; interacción/heterogeneidad; weak/null IV; interferencia; observación diferencial; soporte y missingness. Se evalúa recuperación o refutación y abstención correcta, no realismo operativo.
+
+O-CONF, V_cont y Value no se intercambian. Value queda pendiente de PA; por tanto, no se declara cerrado el DGP confirmatorio de Value ni se sustituye por O-CONF/V_cont. H, G, cardinalidades, topologías definitivas, distribuciones y parámetros continúan abiertos.
+
+**Estado:** MINIMAL_SYNTHETIC_ONTOLOGY_CANDIDATE / R0_R3_REUSED / SELECTIVE_ADVERSARIAL_OVERLAYS / NO_NEW_SCENARIO_IDS / VALUE_PA_BLOCK / NO_EXECUTION.
