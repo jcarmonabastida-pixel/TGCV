@@ -2879,3 +2879,63 @@ Cada pasada debe consultar de forma exhaustiva los artefactos rectores y auxilia
 - Los estados de diseño, implementación, ejecución, auditoría y aceptación se mantendrán separados. No declarar Design Freeze ni PASS científico por completar esta secuencia documental.
 
 **Estado al registrar:** secuencia y método de trabajo aceptados como orientación operativa para el cierre documental; A–F no se declaran cerrados por esta entrada. No cambia ningún estimando, decisión causal, claim, Core, RMA, Evidence→Claim Matrix o STATUS. No se autoriza implementación, captura, validadores locales, generación de datos, simulación, estimación ni ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 16.173. Pasada 1 A+B — auditoría integrada Outcome/Value e intervención/estimandos (2026-11-12)
+
+**Artefactos rectores inspeccionados:** `C10_S_OUTCOME_VALUE_OPERATIONALIZATION_RECONCILIATION_DRAFT_001.md` §§2–10 y 12/14; `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md` §§5–9 y 14–15; `C10_S_B1_PREZ_ADJUDICATION_AND_CONSEQUENCE_RECONCILIATION_DRAFT_001.md` §§2, 7–11; `C10_S_B1_PREZ_OBJECTIVE_SPECIFICATION_CONTRACT_DRAFT_001.md` §§2–8; `C10_S_B2_B3_BENEFICIARY_OUTCOME_VALUE_RECONCILIATION_DRAFT_001.md` §§3–12; `C10_S_VALUE_MINIMUM_CORE_RECONCILIATION_MATRIX_DRAFT_001.md` §§497–529; `C10_S_C10D1_S4R_ESTIMAND_RECONCILIATION_DRAFT_001.md` §§18–32; `C10_S_C1_ITT_D2_RECONCILIATION_DRAFT_001.md` §§15–17; `C10_S_D2_ASSIGNMENT_POPULATION_SUPPORT_RECONCILIATION_DRAFT_001.md` §§2–9. Se reutilizan P179, P182, P183, §224, P177/P178, C-MED y C-ANALYZER.
+
+### 16.173.1. Requisitos ya cerrados — no reabrir
+
+- B1 por UE, identidad lógica y relación con servicio por UE, una oportunidad estandarizada por UE y distinción Need_preZ / Request_event / admisión / procesamiento / respuesta / consecuencia / Value: contratos y decisiones existentes.
+- Objetivo basal de B1 y función mínima de servicio: mantener disponible en destino un servicio capaz de admitir solicitudes según ENABLED y exponer PROFILE. La truth de Need_preZ se estipula explícitamente por unidad y se mantiene separada de la configuración técnica, covariables, evidencia observada y eventos post-Z.
+- Outcome técnico, consecuencia de B1 y Value son tres objetos distintos. F* es criterio funcional; O-CONF es resultado adjudicado de conformidad del destino y no un segundo endpoint duplicado de F*; Value es valoración contextual de consecuencias para B1.
+- Value conserva P179 como vector y no se impone índice escalar, peso, agregación ni las cinco dimensiones históricas. La perspectiva primaria B1 está aceptada como base; autoridad/regla valorativa debe ser estipulada ex ante en el mundo sintético.
+- ITT de asignación D2, primeras etapas, efecto de paquete, LATE focal, contraste poblacional de accesibilidad y mediación interventional son estimandos distintos. D2 asigna políticas materiales, no accesibilidad. No se transfiere identificación entre Outcome y Value, ni desde ITT a C3/C4.
+- C4 utiliza como objeto mediador la distribución conjunta factible de ΔT_acc*; no se reduce a A_f* o D_f*, ni se obtiene por ajuste convencional post-Z o resta de estimandos.
+- D2→g^Af permanece no demostrado; vías colaterales no están excluidas. Por tanto, el ITT D2 conserva interpretación de efecto de política/paquete y no puede atribuirse automáticamente a accesibilidad.
+
+### 16.173.2. Gaps materiales reales de A — Outcome/Value
+
+**A1. O-CONF:** sigue siendo candidato prioritario, no endpoint confirmatorio cerrado. Faltan mapping/predicados atómicos completos, snapshots y estado terminal común, evento/horizonte, oráculo/fuente independiente y validación de error/cobertura/cegamiento. F* y O-CONF no deben contarse como dos Outcomes. O-CONF puede conservarse como medida técnica secundaria/diagnóstica mientras no se cierre su ficha; no debe bloquear la especificación del endpoint de Value si este puede definirse y medirse independientemente.
+
+**A2. Value:** el bloqueo central no es volver a definir B1 ni inventar una operación de negocio. La clase funcional basal está suficientemente especificada para formular un candidato mínimo de consecuencia: continuidad temporal de la disponibilidad de la capacidad que B1 declara como objetivo (servicio habilitado para admitir solicitudes y exponer el perfil declarado). Sin embargo, ninguna dimensión V_j está aprobada/instanciada y siguen pendientes la regla normativa de valoración, su unidad/escala, baseline, horizonte, indicador/fuente y adjudicación. No se puede declarar un Value confirmatorio solo con la definición funcional.
+
+**A3. Propuesta mínima de cierre, pendiente de aceptación científica:** estudiar un único componente confirmatorio `V_cont` —continuidad de la disponibilidad efectiva de la capacidad de servicio que constituye el objetivo basal de B1 durante una ventana común— como vector unitario `V=(V_cont)`, sin índice compuesto ni pesos. Debe medir la consecuencia para B1 a lo largo del horizonte, no la configuración terminal ni la mera admisión de una única solicitud. La regla valorativa sería una estipulación ex ante de truth_dgp desde la perspectiva B1. La medición deberá ser independiente de ΔT_acc*/Reach/trayectoria y no podrá definirse como su recodificación. La observación repetida de disponibilidad, su unidad/escala, baseline y ventana no se fijan en esta propuesta; deberán derivarse en C/D/E, no inventarse aquí.
+
+Esta propuesta explota la semántica ya aceptada de “mantener disponible” y minimiza dimensiones sin ampliar el caso operativo. La separación que deberá respetarse es:
+- F*/O-CONF: conformidad funcional del estado de destino en el punto terminal adjudicado;
+- `V_cont`: continuidad efectiva, en el tiempo, de la capacidad de servicio que B1 pretende mantener;
+- ΔT_acc*/Reach/trayectoria: mecanismo/estados transformacionales, no medidas de Value.
+
+Si la continuidad no puede medirse sin circularidad, o no representa una consecuencia valorable distinta de O-CONF, no se fuerza: el dictamen será que el Value confirmatorio sigue bloqueado y habrá que reducir/replantear el alcance antes de C/D. No se selecciona una segunda dimensión por completitud.
+
+### 16.173.3. Resultado B — intervención y estimandos
+
+La jerarquía causal documental está suficientemente reconciliada; no requiere otra ronda conceptual. La materialización/identificación permanece abierta:
+
+| Estimando | Objeto | Dictamen vigente y regla de cierre |
+|---|---|---|
+| `ITT_Z^D2(V_cont)` | Efecto de asignar las políticas materiales D2 sobre Value | Candidato primario de asignación; requiere roster/población, mecanismo Z, unidad/interferencia, horizonte y medida V_cont válidos. Es efecto de paquete, no efecto puro de accesibilidad. |
+| `FS_{Cdep}, FS_{Af}, FS_{Df}, FS_{ΔTacc}` | Primeras etapas separadas | Deben medirse por separado; ninguna sustituye a otra. |
+| `LATE_f^D2` | Efecto local sobre apertura focal D_f* | Secundario; no identificado/no listo para Wald hasta resolver todos los supuestos IV y error de medida. |
+| `θ_{Af}(q_X^*;V_cont)` | Contraste poblacional focal de accesibilidad | No identificado: mapping D2→g^Af, régimen común, soporte y vías colaterales siguen sin demostrarse. No inferirlo desde ITT ni LATE. |
+| `θ_A(q;V_cont)` | Pregunta general C10-D1 entre políticas factibles de accesibilidad bajo q común | Pregunta científica general; requiere intervención g0/g1 propia, distribución factible de ΔT_acc*, soporte y medida V_cont. D2 no la identifica por sí solo. |
+| `IIE_{ΔTacc^*}(V_cont)` | Mediación interventional por distribución conjunta de ΔT_acc* | No identificado; exige intervención mediadora factible, orden temporal, soporte secuencial y estrategia para confusión mediador–resultado inducida por Z. |
+| Efecto directo/residual | Rutas no mediadas | Solo si se define una descomposición compatible e identificada; nunca por resta entre ITT y θ_A/IIE no armonizados. |
+
+La salida de Analyzer por estimando/escenario será IDENTIFIED, BOUNDS_ONLY (solo con restricciones justificadas), NOT_IDENTIFIED o BLOCKED/INDETERMINATE_MEASUREMENT. El DGP debe contener escenarios identificables y deliberadamente no identificables para probar tanto recuperación como abstención. La verdad del DGP evalúa al Analyzer; no constituye evidencia empírica de la teoría.
+
+### 16.173.4. Decisión única pendiente para completar A+B
+
+La arquitectura y jerarquía de estimandos no requieren más decisiones del usuario. La única decisión científica no delegable para cerrar el endpoint mínimo es aceptar o rechazar la propuesta de `V_cont` como única dimensión confirmatoria inicial.
+
+**Recomendación:** aceptar provisionalmente `V_cont` como vector unitario confirmatorio, sujeto a que la pasada C/D/E demuestre distinción de constructo, medición independiente y factibilidad de identificación. O-CONF queda como Outcome técnico secundario/diagnóstico, no como sustituto de Value. Si `V_cont` no supera esos gates, no se declara Value confirmatorio ni se fuerza otra dimensión.
+
+No se pide al usuario que vuelva a definir B1, Need_preZ, la función del servicio, la oportunidad estandarizada o la jerarquía de estimandos; todo ello está ya documentado. La decisión pendiente se limita a la dimensión valorativa propuesta.
+
+### 16.173.5. Estado y límites
+
+**Pasada 1 A+B:** DOCUMENTARY_RECONCILIATION_COMPLETE / VALUE_ENDPOINT_PROPOSAL_PENDING_USER_ACCEPTANCE / D2_TO_ACCESSIBILITY_MAPPING_NOT_DEMONSTRATED / CAUSAL_IDENTIFICATION_NOT_CLOSED / NOT_DESIGN_FROZEN.
+
+Esta entrada registra auditoría y propuesta, no acepta por sí misma `V_cont`, no cambia P179 ni selecciona una dimensión confirmatoria. No cambia D1/D2, población P*τ2/P*_F, decisiones B1, estimandos vigentes, DAG, Core, claims, RMA, Evidence→Claim Matrix o STATUS. No autoriza schema físico, roster/captura, fixtures, implementación, generación de datos, simulación, estimación ni ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
