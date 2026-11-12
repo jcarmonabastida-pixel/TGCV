@@ -169,3 +169,19 @@ El reloj t−1/t0…t9 es un orden de etapas causales y no define intervalos igu
 Como recomendación aún no aprobada, se propone iniciar la ventana en t0 para incluir posibles interrupciones durante provisión/instalación y cerrarla en un horizonte post-Z fijo y común. Duración, unidad temporal, resolución, K y tratamiento de transitorios permanecen OPEN; no se derivan de t9 ni se inventan. El inicio t0 es recomendación, no decisión normativa.
 
 **Estado:** FUNCTIONAL_REFERENCE_REUSED / INTERVAL_TRUTH_DEFINED_AT_CONSTRUCT_LEVEL / WINDOW_AND_GRID_OPEN / NO_MATERIALIZATION / NO_EXECUTION_AUTHORIZED.
+
+## 9. Aceptación de t0 y contrato temporal S3 de V_cont (2026-11-12)
+
+El usuario acepta iniciar la ventana post-Z de V_cont en t0, inmediatamente después de la asignación, incluyendo provisión e instalación. La ventana no queda condicionada a intento, recepción, instalación, C_dep, A_f, Reach, selección o ejecución. Se aplica simétricamente a los brazos comparados.
+
+Se representa W_V=[t0,T*]. T* es un horizonte final común y preespecificado, todavía OPEN. No se identifica automáticamente con t9: t0…t9 ordena etapas causales y no define duración física. H=3 es profundidad transformacional; S6/S7 son oportunidades de petición/declaración con cardinalidad propia; ninguno determina K.
+
+La rejilla contiene K intervalos de igual duración y conserva la agregación DEC-C10-100. Permanecen OPEN duración, unidad temporal, K, tolerancia de timestamps y tratamiento de eventos que cruzan fronteras. No se fija una duración mínima de interrupción ni se concede tolerancia de gracia por defecto.
+
+Para la observación se reutiliza S3 pasivo y no mutante: proceso/módulo, listener/socket/superficie de recepción, dependencias, capacidad/recursos si están definidos, y perfil runtime. Es un vector de señales imperfectas, no un verificador. S4 fija identidad/versión/integridad y S5 aporta el contrato ENABLED/PROFILE, sin sustituir S3. No se envían solicitudes adicionales ni se activan rutas para observar.
+
+El proceso de observación se separa de truth: P(O_S3|A_B1,M), con M explícito para emisión, captura/pérdida, cobertura, validez, error, censura, alineación temporal y dependencia entre señales. No se presume independencia, tasas constantes ni MCAR/MAR/MNAR. El Analyzer recibe solo señales observadas, tiempos, cobertura/provenance y calibración permitida; nunca truth, potenciales o secretos. Sin identificación, bounds o abstención.
+
+Cobertura por UE×intervalo×componente. Silencio, no captura, lag, muestreo o ruta no activada no equivalen a señal 0. Las observaciones repetidas se anidan en UE y no aumentan N experimental.
+
+**Estado:** WINDOW_START_T0_ACCEPTED / TSTAR_AND_K_OPEN / S3_VECTOR_MODEL_RECONCILED / SIGNAL_VALIDITY_AND_CALIBRATION_OPEN / NO_EXECUTION_AUTHORIZED.
