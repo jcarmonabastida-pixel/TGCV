@@ -248,3 +248,58 @@ La lectura conjunta de §§10.2–10.7 con el contrato de observación/cobertura
 Esto no cierra el tipo concreto de fuente del microdominio ni la regla de autoridad, cardinalidad de oportunidades o sus parámetros. La selección del microdominio sigue rigiendo qué artefacto declarativo puede tener semántica plausible; no se inventa una fuente realista antes de esa decisión.
 
 **Estado:** reconciliación documental; perfil mínimo recomendado, no congelado. Sin fuentes, roster ni oportunidades materializadas; sin implementación o ejecución.
+
+
+### 10.9 Propuesta de enumeración mínima de oportunidades S7 por UE (2026-11-12)
+
+Esta propuesta cierra el análisis de alternativas para el universo esperado, sin aceptar todavía un mandato emisor ni autorizar materialización.
+
+#### 10.9.1 Restricciones históricas aplicables
+
+La reconstrucción conjunta establece que:
+- DEC-C10-051 selecciona Opción A (migración de configuración entre dos entornos software) como microdominio de trabajo, y adopta F* solo como contrato funcional candidato.
+- La definición funcional B1/Need_preZ está aceptada documentalmente; su truth por unidad procede de estipulación reservada conforme a DEC-C10-095.
+- DEC-C10-096 fija la cohorte de validación como censo de todas las UE del roster DGP/paquete B1 aprobado, no una subcohorte.
+- DEC-C10-097 exige un marco de oportunidades enumerable ex ante por UE×dimensión, y prohíbe que COMPLETE equivalga automáticamente a observed=0.
+- La oportunidad estandarizada de petición N_opportunities=1 pertenece al probe post-snapshot t3/t4. No es una oportunidad de fuente S7, no ocurre en t−1 y no puede reutilizarse para adjudicar Need_preZ.
+- El inventario §10.2–10.8 identifica S7 como única clase semántica mínima para la declaración focal de inclusión/exclusión. S1/S5/S7 de identidad, binding y provenance son controles transversales; no son fuentes semánticas adicionales.
+
+#### 10.9.2 Alternativas de enumeración
+
+| Alternativa | Descripción | Evaluación |
+|---|---|---|
+| A. Una oportunidad S7 focal por UE | Un slot lógico versionado para una declaración basal de B1 sobre inclusión o exclusión del objetivo focal; puede emitirse, omitirse, perderse, resultar ambiguo o contener error | **Mínima y parsimoniosa**; permite ambas polaridades sin multiplicar fuentes |
+| B. Varias oportunidades S7 por UE | Declaraciones separadas de B1, aprobación, requisito y/o registro histórico | No justificada aún; exige autoridades, dependencias, lineage y reglas de conflicto que no están especificadas |
+| C. Fuente global compartida | Un contrato general del servicio común a todas las UE | No identifica por sí solo el objetivo basal de una B1 concreta; no sustituye la declaración individual |
+| D. Petición estandarizada post-Z | El probe común de servicio ya aceptado | Inadmisible para Need_preZ: es posterior a Z y no prueba el objetivo basal |
+
+#### 10.9.3 Perfil mínimo recomendado
+
+Se recomienda que el universo esperado contenga **una oportunidad lógica S7 por cada UE incluida en el censo B1/Need**, con estas propiedades:
+
+1. La oportunidad representa la posibilidad de producir una declaración focal basal atribuida a B1 sobre si el objetivo funcional aceptado forma parte de sus objetivos en t−1.
+2. Su clave lógica se vincula a package_version, UE_id, B1_id, service_instance_id, claim_dimension=Need_preZ, source_opportunity_id y scope_version, conforme a la tupla lógica ya propuesta en §10.4. No se crean IDs concretos ni schema físico.
+3. La oportunidad y su alcance se enumeran y sellan ex ante para todas las UE del roster aprobado, antes de generar el estado de emisión/contenido y antes de adjudicar. No se condiciona su existencia a need_truth_state, Z, evidencia encontrada o resultados.
+4. La oportunidad puede producir una declaración de inclusión, una declaración de exclusión focal, una declaración ambigua/conflictiva o ninguna declaración capturada. La ausencia de emisión/captura produce insuficiencia, no exclusión.
+5. observed=0 requiere que el artefacto contenga una exclusión focal afirmativa y admisible; que el universo de oportunidades esté COMPLETE no sustituye ese contenido.
+6. Una copia o derivado de la misma declaración no constituye una segunda oportunidad ni corroboración independiente; conserva el mismo lineage.
+7. El emisor propuesto es B1 como declarante de su propio objetivo basal, mediante una atribución ex ante de autodeclaración limitada a su propósito y alcance. Esto es una hipótesis de mandato, no una autoridad ya aceptada: B1 no adquiere competencia sobre configuración técnica, IAM, servicio ni objetivos de terceros. La autenticidad de origen no garantiza exactitud semántica.
+8. El canal observacional, no una cognición simulada del emisor, genera el artefacto visible y puede introducir errores, ambigüedad, omisión o pérdida según escenarios y parámetros que deberán justificarse después. No se copia need_truth_state ni se exportan secretos o canales laterales.
+
+#### 10.9.4 Qué resuelve y qué no
+
+Si se acepta, esta propuesta cerraría únicamente la cardinalidad lógica mínima del marco de oportunidades: una oportunidad S7 por UE. No fijaría:
+- roster, número de UE ni IDs;
+- prevalencia o proporción de truth 1/0/?;
+- probabilidad de emisión, error, ambigüedad o pérdida;
+- dependencia entre oportunidades (la configuración mínima no presupone múltiples oportunidades);
+- formato del artefacto, contenido físico, firma, almacenamiento o schema;
+- parámetros del canal ni su estructura estadística;
+- suficiencia estadística, potencia o precisión;
+- autorización de materialización, implementación o ejecución.
+
+El soporte de truth=1 y truth=0 continúa siendo un gate sobre el censo aprobado. La presencia de una oportunidad S7 por UE no garantiza soporte de clases ni una declaración observable en cada unidad.
+
+**Recomendación sometida a aceptación:** adoptar una oportunidad lógica S7 de autodeclaración basal B1 por UE como universo mínimo cerrado, distinguiéndola expresamente de la oportunidad estandarizada de petición post-Z. Mantener abierta la aceptación del mandato de autodeclaración de B1 y la especificación del canal observacional.
+
+**Estado:** propuesta de diseño; NO DECISION ACCEPTED / NO DESIGN FREEZE / NO MATERIALIZATION / NO EXECUTION.
