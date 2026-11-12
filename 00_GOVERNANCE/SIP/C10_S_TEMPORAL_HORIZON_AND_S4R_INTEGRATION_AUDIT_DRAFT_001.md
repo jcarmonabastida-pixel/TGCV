@@ -163,3 +163,12 @@ S3 se contrasta bajo snapshots/métricas, logs/trazas/eventos e híbrido como me
 Se reutilizan P182-07/08/11/12, P183-01/02/04/07/09/10/11 y P182-04/10, junto con MEAS/MISS existentes. No se crean IDs ni se afirma implementación/ejecución. La salida es estimación solo si identificada; si no, bounds o abstención. La verdad se abre únicamente tras sellado del Analyzer.
 
 **Estado:** TEMPORAL_SCENARIOS_MAPPED_TO_EXISTING_PROFILES / NO_NEW_TESTS / NOT_EXECUTED.
+
+
+## 15. Matriz adimensional de cobertura y selección temporal (2026-11-12)
+
+La matriz de episodios usa r_c=d_e/c_j y r_Δ=d_e/Δ, con estratos menores/iguales/mayores que 1; fase alineada, desfavorable y aleatoria para snapshots; y captura, pérdida/no emisión o retardo para logs/trazas. Los canales híbridos conservan dependencia. La cobertura es dirigida, no factorial completa, y reutiliza los escenarios y P182/P183 ya existentes.
+
+Se incluyen controles truth estable/señal espuria, episodio breve entre capturas, frontera de captura, episodio largo, fallo breve que afecta el bloque entero, cruce de frontera de rejilla, pérdida diferencial, errores correlacionados, recuperación y censura en T*, y discriminación O-CONF/V_cont.
+
+Si el soporte de recuperación tiene máximo defendible, τ_follow debe cubrirlo; de lo contrario se informa censura. K/Δ se seleccionan por recuperación de truth, aliasing, fase, estabilidad al refinar K y criterios de error/cobertura aún pendientes. No se fija parámetro numérico ni se ejecuta.
