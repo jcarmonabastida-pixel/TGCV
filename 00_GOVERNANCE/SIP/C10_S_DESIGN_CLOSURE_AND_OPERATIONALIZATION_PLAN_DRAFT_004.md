@@ -4336,3 +4336,55 @@ T* no se equipara a t9. Para no censurar la duración de un evento terminal, el 
 La siguiente operación debe cerrar el catálogo finito de transiciones que el DGP permite, el mínimo episodio funcional que el escenario pretende representar, la capacidad realista de S3 para capturarlo y el seguimiento terminal. Después se derivan conjuntamente unidad normalizada, τ_follow, T*, Δ y K. No se fijan cifras por analogía ni por conveniencia estadística.
 
 No se generan eventos, intervalos, truth, señales ni fixtures. No se ejecuta código, simulación, estimación, calibración ni validación. scientific_execution=false; execution_authorized=false.
+
+## 16.194. Catálogo funcional finito y separación entre verdad de fallo y detectabilidad S3 (2026-11-12)
+
+**Alcance:** derivación documental de DEC-C10-068/100/101/102 y del contrato de trabajo B1 §2; no añade una tolerancia ni una nueva decisión normativa.
+
+### 16.194.1. Estado funcional que adjudica V_cont
+
+Se reutiliza el contrato de trabajo B1: cuando ENABLED=true, el servicio debe admitir solicitudes; cuando ENABLED=false, no debe admitirlas; debe exponer el PROFILE declarado. STANDARD y READ_ONLY no reciben semántica de negocio diferenciada. La regla RUL de DEC-C10-068 sigue siendo una implicación declarativa y no se amplía a una equivalencia.
+
+La truth A_B1 se determina por el cumplimiento conjunto de esa función durante el intervalo. El catálogo causal se limita a cinco familias finitas de transición:
+1. **Configuración efectiva:** cambios de ENABLED o PROFILE, incluida una configuración declarativa incompatible con RUL.
+2. **Proceso/módulo:** pérdida y recuperación de la capacidad runtime necesaria para admitir.
+3. **Frontera de ingreso:** listener/socket/superficie de recepción que deja de estar disponible o se recupera.
+4. **Dependencias:** pérdida/recuperación de una dependencia solo cuando impide/restaura la admisión funcional.
+5. **Capacidad/recursos:** insuficiencia/restauración solo cuando impide/restaura la admisión funcional.
+
+Provisión, recepción de componentes, instalación, verificación, rollback y reinicio son eventos antecedentes o de transición entre estados; no se etiquetan automáticamente como fallo. Solo cambian A_B1 si el estado funcional efectivo resultante incumple o vuelve a cumplir la regla. No se agregan causas técnicas nuevas por separado.
+
+### 16.194.2. Separación de estados y eventos
+
+Para cada transición el Generator conserva unidad/instancia, versión, event_time, estado funcional efectivo anterior y posterior, familia causal y referencia de provenance. El registro de transición no sustituye la verdad adjudicada del intervalo.
+
+- **Incumplimiento funcional:** ENABLED=true sin capacidad de admisión; ENABLED=false con admisión; PROFILE declarado no expuesto conforme al contrato; o estado declarativo incompatible con la regla constitutiva aceptada.
+- **Restitución:** transición que devuelve el servicio a conformidad; no borra el incumplimiento anterior del intervalo.
+- **No-evento:** ausencia de una solicitud o de una señal no prueba conformidad ni incumplimiento.
+- **Solicitud:** la oportunidad estandarizada única por UE y sus eventos attempt/received/admitted/rejected/processing/response permanecen como eventos discretos; no se convierten en monitor repetido ni sustituyen S3.
+
+La función de servicio, no el nombre de la causa técnica, determina A_B1. STANDARD/READ_ONLY siguen sin semántica diferenciada.
+
+### 16.194.3. Duración funcional y límite de observación
+
+DEC-C10-102 no establece duración mínima funcional ni periodo de gracia: cualquier incumplimiento confirmado, por breve que sea, hace A_B1=0 en cada intervalo afectado. Esto no exige afirmar que S3 detecta cualquier episodio arbitrariamente breve.
+
+Se introduce una distinción de diseño, no una nueva tolerancia:
+- δ_event: duración efectiva del episodio estipulado por Generator; puede ser positiva y breve, sin cambiar la regla truth.
+- δ_det: dominio mínimo de duración para el que el canal S3 pueda demostrar una capacidad de detección bajo un modelo de captura/cobertura calibrado. Es una frontera de validez de medición, no un filtro de truth ni un periodo de gracia.
+
+Para episodios inferiores a δ_det, truth conserva su valor (incluido A_B1=0 si hubo incumplimiento), pero Analyzer no puede afirmar recuperación puntual salvo que otro componente pasivo autorizado lo identifique. Debe producir bounds o abstención. No se fija δ_det ni se presupone que S3 sea event-driven, periódico, continuo, independiente o completo. La función de detección, lag, pérdida, cobertura, dependencia entre señales y sensibilidad quedan para especificación/calibración.
+
+### 16.194.4. Relación de escalas y cierre terminal
+
+Δ define la anchura de los bloques de adjudicación; no es la cadencia S3 ni δ_det. La elección futura debe satisfacer conjuntamente: (i) representar los episodios que el DGP declara en su dominio; (ii) permitir adjudicar cada bloque sin ocultar incumplimientos entre capturas; y (iii) conservar K=(T*−t0)/Δ entero, con bloques iguales. Si no se demuestra la condición de observabilidad, el resultado se acota o no se identifica; no se relaja DEC-C10-102.
+
+t_last se define como el tiempo de la última transición causal del DGP que pueda cambiar A_B1, incluida la recuperación final si ocurre. τ_follow es el seguimiento común posterior a esa transición para observar persistencia y cerrar el registro. T*=t_last+τ_follow. Un episodio aún activo al final del horizonte no se codifica como recuperado: debe quedar como estado terminal/censura explícita según contrato, sin imputación.
+
+### 16.194.5. Dictamen
+
+**FINITE_CAUSAL_FAMILIES_BOUNDED / NO_MINIMUM_FUNCTIONAL_FAILURE_DURATION / DETECTION_DOMAIN_SEPARATE_FROM_TRUTH / S3_DETECTABILITY_UNCALIBRATED / TSTAR_DELTA_K_OPEN.**
+
+Siguiente derivación única: definir unidad normalizada y escala de episodios mediante el catálogo de escenarios ya aceptado; caracterizar el canal S3 que realmente puede implementarse pasivamente; y derivar δ_det, Δ, τ_follow, T* y K en una sola tabla de calibración. No se eligen valores sin anclaje semántico ni evidencia de recuperación.
+
+No se generan transiciones, truth, señales ni fixtures; no se ejecuta código, simulación, calibración ni validación. scientific_execution=false; execution_authorized=false.
