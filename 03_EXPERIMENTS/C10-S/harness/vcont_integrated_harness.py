@@ -192,7 +192,14 @@ class Generator:
         cfg.validate()
         rng = random.Random(cfg.seed)
         run_id = _hash(asdict(cfg))[:24]
-        z_assign = _balanced_binary(cfg.n_units, rng)
+        if not cfg.no_interference:
+            n_clusters = cfg.n_units // 4
+            if n_clusters % 2:
+                raise ContractError("cluster-interference benchmark requires an even number of four-unit clusters")
+            cluster_z_assign = _balanced_binary(n_clusters, rng)
+            z_assign = [cluster_z_assign[i // 4] for i in range(cfg.n_units)]
+        else:
+            z_assign = _balanced_binary(cfg.n_units, rng)
         g_assign = _balanced_binary(cfg.n_units, rng)
         # Shared exogenous variables: same unit/interval uniforms are reused
         # across all four potential regimes (z,g).
@@ -241,10 +248,9 @@ class Generator:
                         + cfg.heterogeneity * (x - 0.5) * trajectory
                     )
                     if not cfg.no_interference:
-                        # Shared-cluster exposure contribution; Analyzer must abstain
-                        # from individual-level effects without an exposure model.
-                        cluster_z = sum(z_assign[j] for j in range(max(0, cluster * 4), min(cfg.n_units, cluster * 4 + 4)) if j != i) / 3
-                        conformity_p += cfg.interference_effect * cluster_z
+                        # Cluster-level assignment: the whole cluster shares z,
+                        # so counterfactual exposure is coherent under each regime.
+                        conformity_p += cfg.interference_effect * z
                     conformity_p = max(0.0, min(1.0, conformity_p))
                     states = tuple(int(u < conformity_p) for u in u_intervals)
                     v = sum(states) / cfg.n_intervals
@@ -322,57 +328,69 @@ class Analyzer:
         contract.validate()
         if _hash({"manifest": evidence.manifest, "rows": evidence.rows}) != evidence.sha256:
             raise FirewallError("sealed evidence integrity failure")
-        reasons = []
-        if not contract.randomized_z or not contract.randomized_g:
-            reasons.append("RANDOMIZATION_NOT_ESTABLISHED")
+        package_reasons = []
+        focal_reasons = []
+        if not contract.randomized_z:
+            package_reasons.append("PACKAGE_RANDOMIZATION_NOT_ESTABLISHED")
+        if not contract.randomized_g:
+            focal_reasons.append("FOCAL_RANDOMIZATION_NOT_ESTABLISHED")
         if not contract.positivity:
-            reasons.append("COMMON_SUPPORT_FAILURE")
+            focal_reasons.append("COMMON_SUPPORT_FAILURE")
         if not contract.no_interference:
-            reasons.append("INTERFERENCE_REQUIRES_EXPOSURE_LEVEL_ESTIMAND")
+            package_reasons.append("INTERFERENCE_REQUIRES_CLUSTER_EXPOSURE_ESTIMAND")
+            focal_reasons.append("INTERFERENCE_REQUIRES_CLUSTER_EXPOSURE_ESTIMAND")
         if not contract.measurement_identified:
-            reasons.append("S3_MEASUREMENT_NOT_IDENTIFIED")
+            package_reasons.append("S3_MEASUREMENT_NOT_IDENTIFIED")
+            focal_reasons.append("S3_MEASUREMENT_NOT_IDENTIFIED")
         if not contract.version_consistency:
-            reasons.append("VERSION_INCONSISTENCY")
-        # This first integrated Analyzer version uses the conservative complete,
-        # ideal S3 channel. It never substitutes a raw signal score for truth.
+            package_reasons.append("VERSION_INCONSISTENCY")
+            focal_reasons.append("VERSION_INCONSISTENCY")
         complete = all(all(v in (0, 1) for v in row["s3_interval"]) for row in evidence.rows)
         if not complete:
-            reasons.append("S3_MISSINGNESS_REQUIRES_BOUNDS_OR_MODEL")
+            package_reasons.append("S3_MISSINGNESS_REQUIRES_BOUNDS_OR_MODEL")
+            focal_reasons.append("S3_MISSINGNESS_REQUIRES_BOUNDS_OR_MODEL")
         ideal = all(all(s == "OBSERVED" for s in row["s3_status"]) for row in evidence.rows)
         if not ideal:
-            reasons.append("S3_COVERAGE_INCOMPLETE")
-        if reasons:
-            payload = {"run_id": evidence.run_id, "estimand_id": contract.estimand_id,
-                       "package_status": "INDETERMINATE", "focal_status": "INDETERMINATE",
-                       "reasons": reasons, "input_sha256": evidence.sha256}
-            return AnalyzerResult(evidence.run_id, contract.estimand_id,
-                "INDETERMINATE", "INDETERMINATE", None, None, None, None,
-                tuple(reasons), evidence.sha256, _hash(payload))
+            package_reasons.append("S3_COVERAGE_INCOMPLETE")
+            focal_reasons.append("S3_COVERAGE_INCOMPLETE")
 
-        observed_v = [mean(row["s3_interval"]) for row in evidence.rows]
-        z0 = [observed_v[i] for i, row in enumerate(evidence.rows) if row["assignment_z"] == 0]
-        z1 = [observed_v[i] for i, row in enumerate(evidence.rows) if row["assignment_z"] == 1]
-        package, package_se = _mean_se(z0, z1)
-        focal_rows = [(observed_v[i], row) for i, row in enumerate(evidence.rows)
-                      if row["assignment_z"] == 0]
-        g0 = [v for v, row in focal_rows if row["assignment_g"] == 0]
-        g1 = [v for v, row in focal_rows if row["assignment_g"] == 1]
-        focal, focal_se = _mean_se(g0, g1)
-        package_status: Identification = "IDENTIFIED"
-        focal_ok = (contract.focal_direct_path_absent and contract.common_nonfocal_regime)
-        focal_status: Identification = "IDENTIFIED" if focal_ok else "NOT_IDENTIFIED"
-        if not focal_ok:
-            reasons.append("FOCAL_EXCLUSION_OR_COMMON_REGIME_NOT_ESTABLISHED")
-            focal = None
-            focal_se = None
+        observed_v = None
+        if not package_reasons:
+            observed_v = [mean(row["s3_interval"]) for row in evidence.rows]
+            z0 = [observed_v[i] for i, row in enumerate(evidence.rows) if row["assignment_z"] == 0]
+            z1 = [observed_v[i] for i, row in enumerate(evidence.rows) if row["assignment_z"] == 1]
+            package, package_se = _mean_se(z0, z1)
+            package_status: Identification = "IDENTIFIED"
+        else:
+            package, package_se = None, None
+            package_status = "INDETERMINATE"
+
+        if not contract.focal_direct_path_absent or not contract.common_nonfocal_regime:
+            focal_reasons.append("FOCAL_EXCLUSION_OR_COMMON_REGIME_NOT_ESTABLISHED")
+        if not focal_reasons and observed_v is not None:
+            focal_rows = [(observed_v[i], row) for i, row in enumerate(evidence.rows)
+                          if row["assignment_z"] == 0]
+            g0 = [v for v, row in focal_rows if row["assignment_g"] == 0]
+            g1 = [v for v, row in focal_rows if row["assignment_g"] == 1]
+            focal, focal_se = _mean_se(g0, g1)
+            focal_status: Identification = "IDENTIFIED"
+        else:
+            focal, focal_se = None, None
+            focal_status = "NOT_IDENTIFIED" if (
+                "FOCAL_EXCLUSION_OR_COMMON_REGIME_NOT_ESTABLISHED" in focal_reasons or
+                "COMMON_SUPPORT_FAILURE" in focal_reasons or
+                "FOCAL_RANDOMIZATION_NOT_ESTABLISHED" in focal_reasons
+            ) else "INDETERMINATE"
+
+        reasons = tuple(dict.fromkeys(package_reasons + focal_reasons))
         payload = {"run_id": evidence.run_id, "estimand_id": contract.estimand_id,
                    "package_status": package_status, "focal_status": focal_status,
                    "package_itt": package, "focal_effect": focal,
                    "package_se": package_se, "focal_se": focal_se,
-                   "reasons": reasons, "input_sha256": evidence.sha256}
+                   "reasons": list(reasons), "input_sha256": evidence.sha256}
         return AnalyzerResult(evidence.run_id, contract.estimand_id,
             package_status, focal_status, package, focal, package_se, focal_se,
-            tuple(reasons), evidence.sha256, _hash(payload))
+            reasons, evidence.sha256, _hash(payload))
 
 
 class Evaluator:
@@ -394,12 +412,13 @@ class Evaluator:
         package_ok = None if package_error is None else package_error <= tolerance
         focal_ok = None if focal_error is None else focal_error <= tolerance
         expected_abstention = (
-            (not contract.positivity or not contract.no_interference or
-             not contract.measurement_identified or not contract.version_consistency)
-            and result.package_status == "INDETERMINATE"
+            (not contract.no_interference or not contract.measurement_identified or
+             not contract.version_consistency) and
+            result.package_status == "INDETERMINATE"
         ) or (
-            (not contract.focal_direct_path_absent or not contract.common_nonfocal_regime)
-            and result.focal_status == "NOT_IDENTIFIED"
+            (not contract.positivity or not contract.randomized_g or
+             not contract.focal_direct_path_absent or not contract.common_nonfocal_regime)
+            and result.focal_status in ("NOT_IDENTIFIED", "INDETERMINATE")
         )
         notes = []
         if result.package_status == "IDENTIFIED" and package_ok is False:
