@@ -305,3 +305,46 @@ Antes de implementación deberán poder verificarse, al menos:
 Estas son obligaciones de diseño y futuras pruebas de contrato; no se crean IDs de prueba ni se declaran ejecutadas.
 
 **Dictamen:** autoridad declarativa y proceso de emisión definidos a nivel de requisitos; rol concreto, regla de asignación, mecanismo de información del emisor y parametrización observacional permanecen OPEN. No se aprueba todavía la declaración S7 como implementable ni se autoriza materialización.
+
+
+
+## 7.7 Reconciliación de señal del emisor: no introducir un agente cognitivo sin base DGP
+
+Esta sección reconcilia §§7.4–7.6 con DEC-C10-095 y DEC-C10-097 y con el contrato operativo de observación/cobertura. Es una aclaración de diseño; no constituye aceptación de un nuevo mecanismo ni Design Freeze.
+
+### 7.7.1 Resultado de la reconstrucción
+
+No se ha identificado en los contratos basales una variable, registro o evento pre-Z que sea una señal independiente autorizada sobre la pertenencia del objetivo focal a B1. El diagnóstico de fuentes descarta expresamente como generadores o proxies automáticos X/H/C/L, ENABLED/PROFILE, IAM, snapshots técnicos, instalación, accesibilidad, solicitudes, logs y operación. Reutilizarlos como «información que conoce el emisor» no los convierte en evidencia semántica de Need.
+
+Tampoco existe una especificación aprobada de un actor sintético con estado cognitivo, creencias o acceso a una fuente documental realista. No se inventa tal actor ni una señal adicional.
+
+### 7.7.2 Solución mínima compatible con los contratos aceptados
+
+La solución mínima es tratar la emisión de S7 como un **proceso de medición/declaración sintético del modelo de observación**, no como la acción de un agente cognitivo al que se entrega una señal basal independiente.
+
+- La estipulación explícita reservada por B1/UE sigue siendo la única fuente de need_truth_state, derivado determinísticamente conforme a DEC-C10-095.
+- El proceso de observación genera por separado la oportunidad, emisión, contenido semántico, captura/retención, autoridad, integridad, temporalidad y vinculación del artefacto.
+- La identidad/rol/mandato del emisor, si el contrato de fuentes lo exige, es metadata de provenance y autoridad preespecificada ex ante; no prueba por sí misma la verdad ni exige simular una mente o un conocimiento privado.
+- El contenido visible se produce mediante el canal de observación condicionado por el estado basal relevante y por los mecanismos aprobados. El canal puede producir declaración correcta, afirmación errónea, ambigüedad, conflicto, omisión o pérdida conforme al escenario; no se asignan probabilidades ni parámetros aquí.
+- El proceso interno del canal puede conservar estado técnico para reproducibilidad, pero ese estado no se interpreta como conocimiento de un actor ni se exporta al expediente.
+
+Esta solución es compatible con la regla ya aceptada de que la truth puede influir en la probabilidad y contenido de una declaración auténtica, siempre que no se copie mecánicamente la etiqueta ni se filtren claves o metadata reconstructiva. La mediación requerida es el mecanismo explícito de observación, no necesariamente un agente intermediario.
+
+### 7.7.3 Qué significa «declaración auténtica pero errónea»
+
+Autenticidad significa que el artefacto procede del proceso/rol sintético atribuido, dentro de su mandato y con lineage e integridad verificables. No significa que su proposición sea semánticamente correcta respecto de need_truth_state.
+
+Por ello el DGP debe separar:
+1. atribución ex ante de autoridad y alcance;
+2. generación del contenido observable por el canal;
+3. admisibilidad/integridad de lo capturado;
+4. adjudicación E1/E2;
+5. comparación con truth tras el sellado.
+
+Una declaración positiva falsa o una exclusión focal falsa puede ser auténtica en origen y admisible, y contar como error de clasificación. Un artefacto fabricado por una fuente no autorizada no se vuelve admisible porque coincida con truth.
+
+### 7.7.4 Alternativa aplazada
+
+Solo si una futura especificación del microdominio identifica un proceso basal concreto que produce información declarativa (con semántica, autoridad, tiempo y provenance propios) podrá modelarse un emisor como actor con acceso a esa señal. Ese diseño deberá demostrar que la señal no es ENABLED/PROFILE, una proxy técnica, una copia de truth ni una variable post-Z. No es requisito del diseño mínimo actual.
+
+**Dictamen:** no se requiere una señal basal independiente ni un emisor cognitivo para representar una observación imperfecta. Se recomienda conservar S7 como artefacto declarativo generado por el canal observacional, con autoridad/provenance asignada ex ante y contenido imperfecto modelado explícitamente. El catálogo de fuentes y el canal siguen pendientes de especificación y parámetros; no se autoriza materialización.
