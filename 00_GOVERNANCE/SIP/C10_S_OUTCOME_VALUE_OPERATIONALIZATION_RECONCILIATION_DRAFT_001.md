@@ -295,3 +295,17 @@ Esta sección actualiza la lectura temporal de §§20 y 22 conforme a las decisi
 **Permanecen OPEN:** unidad y anclaje de tiempo normalizado; catálogo de eventos funcionalmente relevantes; mínima duración representable; T*, Δ, K; regla de cierre; frontera exacta; resolución, cobertura, error y calibración S3; validez y discriminación frente a O-CONF. Por tanto, DEC-C10-101/102 cierran inicio y semántica de intervalo, no la parametrización temporal ni el gate confirmatorio.
 
 **Estado:** WINDOW_START_ACCEPTED / STRICT_INTERVAL_TRUTH_ACCEPTED / EQUAL_INTERVAL_AGGREGATION_ACCEPTED / NUMERIC_GRID_OPEN / MEASUREMENT_VALIDITY_OPEN / NOT_DESIGN_FROZEN.
+
+## 24. Corrección de interpretación matemática de V_cont tras DEC-C10-102 (2026-11-12)
+
+Esta sección aclara una consecuencia necesaria de combinar la agregación igualitaria DEC-C10-100 con la continuidad estricta por intervalo DEC-C10-102. No altera ni revoca ninguna de las dos decisiones.
+
+Se mantiene V_cont_truth(i)=(1/K)Σ_k A_B1(i,k), y A_B1(i,k)=1 solo si ENABLED/PROFILE cumple durante todo el intervalo; cualquier incumplimiento funcional confirmado en cualquier instante produce 0 para ese intervalo.
+
+Por ello, V_cont es la **proporción de intervalos completamente conformes**. No es matemáticamente la fracción exacta de tiempo transcurrido en uptime ni una integral de disponibilidad. Un episodio breve confirmado convierte en 0 el intervalo entero afectado; el valor depende de Δ y de la alineación de la rejilla. La expresión anterior “fracción temporal de cumplimiento” debe entenderse en el sentido de proporción de bloques temporales plenamente conformes, no como porcentaje exacto de uptime.
+
+La falta de determinación de truth sigue propagándose a bounds conforme a DEC-C10-100; ausencia/pérdida/lag S3 es incertidumbre observacional y no se recodifica como truth=?/0/1.
+
+Si el objetivo científico exigiera medir el porcentaje exacto de uptime, habría que sustituir la regla binaria estricta por una medida basada en duración de estados (integral/tiempo ponderado), con una decisión nueva. No se adopta esa alternativa ni se reabre ahora la escala aceptada.
+
+**Estado:** EQUAL_INTERVAL_AGGREGATION_PRESERVED / STRICT_BLOCK_COMPLIANCE_SHARE / NOT_EXACT_UPTIME / Δ_AND_GRID_ALIGNMENT_MATERIALLY_DEFINE_SCALE / NO_DESIGN_FREEZE.
