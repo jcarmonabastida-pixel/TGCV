@@ -4898,3 +4898,30 @@ Cada campo requiere identidad/matching, tipo, versión, unidad, frontera y mappi
 Esta adjudicación fija reglas lógicas de propagación, no inventario exhaustivo, evidencia, probabilidades, parámetros, mappings físicos, tolerancias ni distribución de q_X*. No cierra RES/REL/COND/BLOCK, el universo de rutas, el contrato de snapshots, la medición observada ni la validez del oráculo. Tampoco autoriza implementación o ejecución. Los casos de conflicto, cobertura parcial y no comparabilidad deben conservarse en los escenarios adversariales existentes, sin crear nuevos IDs de prueba por esta integración.
 
 **Dictamen:** TRI-STATE_LOGIC_SPECIFIED_AS_DRAFT / ROUTE_EXISTENCE_RULE_SPECIFIED_AS_DRAFT / D_F_BASELINE_POST_RULE_SPECIFIED_AS_DRAFT / ΔT_ACC_SNAPSHOT_DIFF_BOUNDARY_SPECIFIED_AS_DRAFT / NO_NUMERIC_PARAMETERS / NO_EXECUTION.
+
+
+## 16.202. Reconciliación AUTH_f* y contrato de snapshots (2026-11-12)
+
+Esta sección cierra la divergencia documental entre el maestro, DEC-C10-067, la ficha D2-INV-AUTH-01 y los contratos de identidad/snapshot. No crea una decisión nueva ni convierte las propuestas operacionales en contratos aprobados.
+
+### A. Correspondencia de autorización
+
+1. **Regla conceptual fijada por precedencia:** DEC-C10-067 exige que la autorización normativa funcional basal para τ₂ sea común (C_auth,base=1) y que B_g0^D2/B_g1^D2 no la modifiquen. El maestro §67.3 y el crosswalk D2 establecen que C_auth,base se corresponde con el predicado AUTH_f*; no se añade como factor independiente ni se duplica dentro de C_dep*.
+2. **Distinción de dominios:** autorización normativa funcional para realizar τ₂ = AUTH_f*; ACL/credenciales/tokens/endpoints técnicos necesarios para provisionar = superficie técnica de B y/o relaciones/dependencias según su función; conocimiento/consideración del agente = mecanismo downstream. No son intercambiables.
+3. **Vía de desviación:** si B cambia la autorización normativa funcional, se materializa la vía B → AUTH_f* → A_f*. Debe registrarse como desviación/cointervención y el ITT conserva interpretación de efecto del paquete; no se atribuye automáticamente a accesibilidad técnica aislada.
+4. **Qué queda abierto:** identificar titular competente, fuente normativa, objeto y alcance autorizado, versión, vigencia, regla de adjudicación, registros basales y post, cobertura y evidencia independiente. Sin ello, el valor observado/analizado no se presume 1: la truth del DGP se estipula según el diseño y el Analyzer conserva ? cuando la evidencia no identifica.
+5. **Estado:** correspondencia conceptual RESOLVED_BY_PRECEDENCE; materialización, evidencia y prueba de invariancia NOT_VERIFIABLE / OPEN. D2 sigue sin acreditación material de aislamiento.
+
+### B. Contrato de snapshots reutilizado, sin duplicación
+
+1. El objeto estructural sigue siendo S_T*(i,b,c,t)=(U_t*,R_t*,C_t*,X_t*); el paquete epistémico E_T permanece separado. ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*); ΔE_T recoge cambios de fuentes, cobertura, validez de evidencia, procedencia, versión y adjudicación.
+2. La comparación basal/post exige misma unidad lógica, frontera y versión de frontera, contexto declarado, granularidad G, catálogo/vocabulario y reglas de composición/mapping compatibles. Si no hay comparabilidad directa, solo se aplica mapping explícito y trazable a granularidad común; en caso contrario, diff afectado = UNKNOWN/? o DIFF_NOT_COMPARABLE, sin imputar cero.
+3. Se conserva la jerarquía de identidad/matching del contrato C10-S-ID-MATCH-001: ID canónico exacto; alias registrado; continuidad de versión con firma semántica; candidato semántico sujeto a adjudicación; split/merge explícitos; no-match solo con cobertura suficiente. Hash, nombre, similitud textual o proximidad temporal no bastan para identidad.
+4. DEC-C10-065 obliga a fijar (snapshot_id, snapshot_object_record_id) con FK compuesta exacta en NODE, EDGE, ROUTE, PREDICATE y ROUTE_STEP. No se resuelve por timestamp, última versión, orden de inserción ni fallback. La aceptación arquitectónica no equivale a validación técnica de esquema/constraints.
+5. Cada diff debe conservar valores basal/post, IDs y versiones, regla de matching, frontera/unidad/G, vigencia/evento, evidencia/cobertura y adjudicación. Los cambios de X* no se convierten automáticamente en ADD/REMOVE; campos mixtos se descomponen o quedan ?.
+
+### C. Dependencias de cierre integradas
+
+No abrir otro contrato. Completar en los artefactos ya existentes: (i) roster material de autorización y de objetos U/R/C/X; (ii) mapping de cada campo de X* y de condiciones REL/COND/RES/DEP/BLOCK sin doble contabilización; (iii) snapshots y cobertura pre-B/post-B/rollback con pinning exacto; (iv) adjudicación ciega y separación Generator/Analyzer/Evaluator; (v) pruebas de invariancia/no-afectación y registro de colaterales. Los inventarios marcados NO INVENTARIADO no equivalen a ausencia.
+
+**Límite:** esta reconciliación documental no cierra los predicados materiales, no valida el oráculo ni la medición, no fija distribuciones/parametría, no alcanza Design Freeze y no autoriza implementación, simulación, estimación, calibración ni ejecución. scientific_execution=false; execution_authorized=false.
