@@ -368,3 +368,18 @@ P*τ2/P*_F se preservan. E_i y App siguen sin operacionalización; C_dep,0 y A_f
 Artefacto rector: `C10_S_OUTCOME_VALUE_OPERATIONALIZATION_RECONCILIATION_DRAFT_001.md`; maestro §276. Se aclara la separación F* (criterio funcional) / O-CONF (resultado adjudicado de conformidad destino) / Value (consecuencia valorada para B1). F* y O-CONF no se cuentan como endpoints independientes. O-CONF sigue candidato, sin predicados, mapping, snapshots, H, evento terminal ni oráculo validado.
 
 Value mantiene vector P179; B1/Need_preZ como base, sin autoridad/criterio/Consecuencia V_j ni dimensión seleccionada. Las medidas O/V requieren fichas §224 independientes, P182/P183 y observación/provenance. ITT_Z^D2(O-CONF) y ITT_Z^D2(V_j) no transfieren identificación entre sí. Sin resultado confirmatorio completo, no hay C1 estimable ni Design Freeze. No duplicar P179/P182/P183/MEAS/MISS ni autorizar ejecución.
+
+
+
+## 18. Crosswalk C1–C+D y separación de resultados (2026-11-12)
+
+El plan §16.185 integra C1 con la jerarquía C2–C5 y con los contratos Outcome/Value. Se preserva:
+
+- C1 ITT_Z^D2 por asignación a política material, estimado separadamente para O-CONF_r y V_cont solo si cada resultado supera su propia ficha de medida/validez. No transferir identificación entre resultados.
+- C2 primeras etapas separadas para programación, intento, recepción, instalación, C_dep*, A_f*, D_f* y ΔT_acc*. Ninguna sustituye a otra.
+- C3 θ_A(q)/θ_Af(q_X*) requiere políticas g_A factibles, distribución basal común, mapping cuando se invoque D2, régimen común, soporte y control/identificación de vías colaterales.
+- LATE_f sigue secundario y condicionado a IV válido para D_f*, no a W_attempt ni C_dep*. No calcular Wald causal sin sus supuestos.
+- C4 es mediación interventional por ΔT_acc* completo, con estrategia para confusión post-Z y soporte longitudinal. No es ITT menos efecto focal.
+- C5 sigue como contraste de contribución por etapa petición–trayectoria; no redefine elegibilidad ni Value.
+
+P*τ2/P*_F, UNKNOWN pre-Z, unidad/interferencia y asignación conservan los límites del contrato D2. O-CONF es outcome técnico terminal; V_cont es candidata de Value temporal B1, con discriminación todavía pendiente. Estado: C1_CONTRACT_RECONCILED / OUTCOME_VALUE_MEASUREMENT_CONDITIONAL / CAUSAL_IDENTIFICATION_NOT_ESTABLISHED / NO_EXECUTION_AUTHORIZED.
