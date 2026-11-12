@@ -35,6 +35,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         self.assertEqual(result.focal_status, "IDENTIFIED")
         self.assertIsNotNone(report.package_recovered)
         self.assertIsNotNone(report.focal_recovered)
+        self.assertTrue(all(x > 0.80 for x in result.first_stage_delta_t_acc))
 
     def test_null_and_adverse_truth_signs_are_preserved(self):
         worlds = self.worlds()
@@ -60,6 +61,35 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         _, truth, _, result, _ = self.execute_world(self.worlds()["R1_ALTERNATIVE_BASELINE"])
         self.assertAlmostEqual(truth.theta_access_truth, 0.0, delta=0.02)
         self.assertEqual(result.focal_status, "IDENTIFIED")
+
+    def test_b1_truth_is_conjunction_of_enabled_and_profile(self):
+        _, truth, _, _, _ = self.execute_world(self.worlds()["R0_FOCAL_POSITIVE"])
+        for i, unit in enumerate(truth.potential_interval_truth):
+            for z in (0, 1):
+                for g in (0, 1):
+                    derived = tuple(
+                        int(en and pr)
+                        for en, pr in zip(
+                            truth.potential_enabled_truth[i][z][g],
+                            truth.potential_profile_truth[i][z][g],
+                        )
+                    )
+                    self.assertEqual(derived, unit[z][g])
+
+    def test_r2_collateral_alternative_and_r3_provision_are_separate(self):
+        _, truth2, _, result2, _ = self.execute_world(self.worlds()["R2_ALTERNATIVE_AFFECTED"])
+        _, truth3, _, result3, _ = self.execute_world(self.worlds()["R3_PROVISION_FAILURE"])
+        self.assertEqual(result2.package_status, "IDENTIFIED")
+        self.assertEqual(result2.focal_status, "IDENTIFIED")
+        self.assertLess(truth3.itt_package_truth, 0.0)
+        self.assertEqual(result3.package_status, "IDENTIFIED")
+        self.assertGreater(result3.first_stage_delta_t_acc[0], 0.0)
+
+    def test_manifest_uses_equal_intervals_over_common_window(self):
+        manifest, _, _, _, _ = self.execute_world(self.worlds()["R0_FOCAL_POSITIVE"])
+        self.assertAlmostEqual(manifest.window_start, 0.0)
+        self.assertAlmostEqual(manifest.window_end, 1.0)
+        self.assertAlmostEqual(manifest.interval_width * manifest.n_intervals, 1.0)
 
     def test_measurement_adversity_requires_abstention(self):
         _, _, _, result, report = self.execute_world(self.worlds()["R0_MEASUREMENT_ADVERSE"])
