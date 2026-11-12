@@ -5337,3 +5337,74 @@ Si una política no es factible, la historia no se fuerza dentro del contraste c
 **Gate result:** BASELINE_SYNTHETIC_CROSSWALK_LOGICALLY_CLOSED / Q_X_SUPPORT_CONTRACT_DEFINED_SYMBOLICALLY / WORLD_CONFIGURATION_AND_FINITE_MAPPING_OPEN / NO_REAL_MIGRATION / NO_DATA_GENERATED / NO_IMPLEMENTATION / NO_SCIENTIFIC_EXECUTION.
 
 La operación siguiente se limita a completar el mapping finito ya previsto en §16.208.8: frontera, G/H, catálogo F*/alternativas, rutas y snapshots por clase de mundo, demostrando qué contraste/falsador cubre cada clase. No se amplía el factorial, no se generan unidades/datos, no se eligen parámetros numéricos y no se ejecutan pruebas científicas.
+
+## 16.211. Mapping finito de frontera, rutas, snapshots y falsadores por mundo (2026-11-12)
+
+**Precedencia:** §16.206–16.210; inventario finito §2–14; cuatro cards sintéticas AB-03/04 §12; contratos de frontera/granularidad, identidad/versionado, snapshots/diff, Reach y U_G. Este mapping integra lo ya definido; no ratifica propuestas abiertas ni crea escenarios, IDs de test o familias de artefactos nuevas.
+
+### 16.211.1. Frontera y granularidad del universo
+
+| Dimensión | Mapping reutilizado | Estado y límite |
+|---|---|---|
+| Unidad lógica | Una instancia sintética de servicio B1 por UE; UE/UA/UO según §16.209.3 | Semántica reconciliada; UA=UE solo en mundos aislados por construcción |
+| Perímetro | P0_CONFIG, P1_ENVIRONMENT, DUAL_P0_P1 y NA según DEC-C10-059; P2 es frontera causal transversal | Taxonomía aceptada; objetos exactos por mundo son abstractos y se declaran en su configuración |
+| Microdominio | Gramática sintética de configuración declarativa, entorno, adaptador/dependencia y rutas | No es caso real de migración; no hay adquisición de fuentes externas |
+| G | Una transformación TID/card como unidad atómica candidata; relaciones de composición se registran aparte | Granularidad lógica propuesta; no congelada globalmente |
+| Catálogo | F1/τ2, F2, A1 y A2 con TID/SID sintéticas ya asignadas en las cards AB-03/04 | Identidades semánticas abstractas definidas; RID/EID no asignados ni necesarios en esta fase |
+| Rutas | πF=(F1,F2), πA=(A1,A2), ambas de dos pasos y con mismo S0, destino, C0, F* y oráculo | Topología candidata definida; no se añaden pasos artificiales |
+| H_path | Profundidad de las dos rutas definidas: 2 transformaciones | Descripción de estas rutas, no freeze del horizonte global |
+| H=3 | Candidato histórico del inventario finito | No ratificado; no se impone a las cards ni justifica añadir un tercer paso |
+| H_time | Duración, ventanas, caducidad, concurrencia y anclaje temporal | OPEN; no se deduce de t0–t9 ni de H_path |
+| Ciclos | Excluidos del fixture base; adversariales solo con regla de visita/terminación | Candidato de diseño; exhaustividad no demostrada |
+
+La frontera causal P2 debe incluir únicamente los elementos sintéticos que representen intervención, condición, dependencia, alternativa, recurso compartido, interacción, interferencia o canal de observación pertinente al mundo. No se crea un inventario productivo ni se presupone que cada clase abstracta tenga equivalente real.
+
+### 16.211.2. Mapping de cards, estados y snapshots
+
+| Etapa lógica | Ruta focal | Ruta alternativa | Snapshot/estado que debe conservarse | Límite |
+|---|---|---|---|---|
+| Basal pre-Z | S0 común | S0 común | Snapshot estructural basal exacto, versión de instancia/contrato, frontera, G y catálogo | Debe permitir adjudicar E_i, App, C_dep,0*, A_f,0* y F_alt,0* sin usar información post-Z |
+| Política/provisión | B intenta provisionar la dependencia focal; no ejecuta F1/F2 | Mismo contexto y destino; B no ejecuta A1/A2 | Snapshot post-política/provisión, separado del basal y previo a la transformación | No inferir accesibilidad desde intento, instalación o C_dep |
+| Primer paso | F1: S0→S2 | A1: S0→S1 | Snapshot de salida de F1 o A1 con TID/SID, mapping, campos cubiertos y estado 1/0/? | Éxito local no demuestra F* ni Reach(SF) |
+| Segundo paso | F2: S2→SF | A2: S1→SF | Snapshot terminal aplicado/verificado, con versión y correspondencia al mismo criterio F* | No equiparar SF nominal con conformidad funcional |
+| Evaluación | F* común por ruta | F* común por ruta | Registro de adjudicación O-CONF por instancia/ruta, independiente de V_cont y Value | F* y oráculo completos siguen abiertos; O-CONF no está validado |
+
+Los nombres S0/S1/S2/SF son estados lógicos, no tiempos t0/t1/t2. El reloj causal t−1/t0…t9 se conserva separado. Los snapshots estructurales S_T* son verdad del DGP; E_T/observed_evidence es un canal distinto. Cada comparación requiere matching exacto de identidad/versiones y compatibilidad de frontera, G, catálogo y mapping; en otro caso el diff afectado es UNKNOWN/DIFF_NOT_COMPARABLE.
+
+### 16.211.3. Matriz finita mundo–mecanismo–contraste–salida
+
+Se reutiliza el roster dirigido de §16.208.2 y los perfiles R0–R3 del inventario. La matriz no es factorial: cada mundo activa solo el mecanismo necesario para el contraste/falsador.
+
+| Clase de mundo | Perfil y rutas relevantes | Contraste/verdad que debe preservar | Salida exigida al Analyzer | Cobertura actual |
+|---|---|---|---|---|
+| Focal limpio | R0; πF abierta por D2; πA ausente solo si exhaustividad se estipula | Contribución focal conocida bajo régimen común, soporte, mapping y ausencia de vías no focales | ITT-D2; atribución focal solo si todos sus gates se cumplen | Arquitectura candidata; F* y parámetros no cerrados |
+| Nulo | R0/R3; primera etapa nula o efecto terminal nulo según el mundo | Nulo específico por estimando, sin forzar nulos en otras etapas/resultados | Recuperar nulo o declarar precisión insuficiente | Mecanismo mapeado; verdad numérica no configurada |
+| Fallo por etapas | R3; πF no se abre o falla en una etapa declarada | W_attempt, receipt, S_install y componentes C_dep* con potenciales separados | ITT y primeras etapas separadas; no imputar accesibilidad | Etapas mapeadas; funciones conjuntas abiertas |
+| Focal adverso | R0; deterioro de coordenada U/R/C/X, Reach o resultado | Signo adverso conocido por construcción | Recuperar dirección o declarar límites/no-identificación | Clase mapeada; coordenada/función concreta abierta |
+| Alternativa basal | R1; πA disponible y estable junto a πF | Apertura focal no implica aumento de Reach ni exclusividad | Distinguir D_f*, Reach y resultado; no inferir exclusividad | Cards y perfil definidos; equivalencia F* no adjudicada |
+| Alternativa afectada/colateral | R2; B modifica A1/A2 o dependencia compartida | Vía no focal que invalida exclusión focal salvo separación | Efecto de paquete; abstenerse de atribución focal automática | Mecanismo mapeado; función colateral concreta abierta |
+| Vía directa | R0–R3 según soporte; B/Z afecta Outcome/Value fuera de ΔT_acc* | Efecto directo/paquete conocido | ITT de paquete separado de efecto focal/mediación | Clase mapeada; Value general no instanciado |
+| Interacción/heterogeneidad | R0–R2; funciones dependen de X/H0/C_c, versión o exposición | Efectos condicionales y composición por historia | Estimandos condicionales; no transportar LATE sin supuestos | Clase mapeada; soporte y funciones abiertas |
+| IV adversarial | R0–R3; primera etapa nula/débil, defiers o exclusión/monotonicidad violadas | Supuesto IV deliberadamente incumplido | No usar Wald inválido; bounds/weak-IV/NOT_IDENTIFIED | Falsadores definidos en PD; parámetros y pruebas abiertos |
+| Interferencia | Perfil con recursos/estado/canales compartidos | Potenciales dependen de clúster o exposición | UA/clúster o mapa de exposición; si falta, NOT_IDENTIFIED | Regla de unidad definida; mapa por mundo abierto |
+| Observación adversarial | Cualquier perfil; error, pérdida, lag, cobertura o sesgo diferencial | Truth invariante bajo degradación del canal | Recuperar si identificable; en otro caso bounds/abstención | Canal lógico definido; calibración y dependencias abiertas |
+| Soporte/ausencia/censura | Cualquier perfil; positividad fallida, historia imposible, missingness o censura | Identificación/acotación/no-identificación según soporte y canal | No extrapolar; dictamen por estimando | Reglas definidas; soporte/configuración por mundo abierta |
+
+### 16.211.4. Gate F* / Reach: qué está y qué no está cerrado
+
+1. Las cuatro cards abstractas y las dos composiciones πF/πA están definidas documentalmente; el mismo F* debe aplicarse a ambas rutas desde la misma entrada y contexto.
+2. FP-01…FP-07 se plantean como criterios no compensatorios de conformidad de ruta; FP-08 es un gate probatorio/provenance separado. No se han cerrado todavía los predicados atómicos obligatorios, mapping M/M_A, tolerancias, reglas de equivalencia, oráculo ni cobertura funcional.
+3. SF es un marcador de estado objetivo, no una prueba de F*. Una ruta alcanza funcionalmente SF solo si todos los pasos son admisibles y el criterio común F* queda adjudicado.
+4. O-CONF es el resultado terminal adjudicado por instancia/ruta; V_cont mide continuidad funcional B1 por intervalos. No son duplicados ni sustitutos. La ficha/oráculo O-CONF y su discriminación validada frente a V_cont siguen pendientes.
+5. Reach_H*=1 requiere al menos una ruta completa verdadera; Reach_H*=0 requiere universo exhaustivo y todas las rutas refutadas; en otro caso ?. La existencia de πA o su ausencia no se infiere de los perfiles R0/R1 sin estipulación y cobertura del universo del mundo.
+6. La verdad de Generator, la evidencia observada de Analyzer y la adjudicación de Evaluator se mantienen separadas en todos los pasos/snapshots.
+
+### 16.211.5. Resultado y límite del mapping
+
+**Cerrado a nivel de mapping lógico:** correspondencia de frontera/clases, G candidato, cuatro cards sintéticas, rutas focal/alternativa, estados, roles de snapshots y roster dirigido de mecanismos frente a contrastes y salidas esperadas.
+
+**No cerrado:** frontera exacta por mundo, ratificación de G/H, H_time, exhaustividad semántica de alternativas, F*, mapping M/M_A, tolerancias, oráculo O-CONF, snapshots/fixtures materializados, cobertura efectiva del canal y parámetros/soporte. Por tanto, el mapping no demuestra todavía que todos los falsadores estén cubiertos ni habilita un DGP cuantitativo ejecutable.
+
+**Dictamen:** FINITE_WORLD_TOPOLOGY_AND_FALSIFIER_MAPPING_RECONCILED_CANDIDATE / F_STAR_AND_REACH_ORACLE_OPEN / H_TIME_OPEN / COVERAGE_NOT_VERIFIED / NOT_DESIGN_FROZEN / NO_DATA / NO_IMPLEMENTATION / NO_EXECUTION.
+
+La siguiente operación del mismo cierre integrado es reconciliar las funciones generadoras por bloque causal y sus dependencias contrafactuales con este mapping, sin asignar distribuciones ni parámetros numéricos. Debe quedar explícito qué función genera cada variable, qué exógenas comparte, qué invariantes preserva y qué ramas directas/colaterales/interferentes activa cada clase de mundo.
