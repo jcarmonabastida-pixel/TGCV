@@ -4465,3 +4465,57 @@ No se materializan escenarios, intervalos, truth, señales ni fixtures. No se ej
 ## 16.195.8. Precedencia del último evento y horizonte común
 
 Para reconciliar la notación anterior: t_last,i es la última transición efectiva de la unidad i; t_last^max=t_c,max es el límite superior común del soporte de transiciones posibles sobre todas las unidades, brazos y escenarios. El horizonte confirmatorio no se fija retrospectivamente como t_last,i+τ_follow para cada unidad, porque produciría ventanas distintas y potencialmente dependientes del resultado. Se fija ex ante como T*=t_last^max+τ_follow, equivalente a 1+ρ_follow en coordenadas normalizadas. Para cada unidad, el tramo desde su última transición efectiva hasta T* forma parte del seguimiento común; si el estado sigue incumpliendo al cierre, se conserva como terminal/censurado. Si el soporte de transiciones no puede acotarse ex ante, T* permanece OPEN y no se afirma cierre completo.
+
+
+## 16.196. Crosswalk de escenarios temporales y contratos de medición existentes (2026-11-12)
+
+**Objeto:** poblar la matriz temporal usando únicamente los perfiles DGP ya definidos en §16.188.4 y los contratos P182/P183, MEAS/MISS y PE. No se crean IDs de escenarios ni pruebas nuevas.
+
+### 16.196.1. Mecanismos S3 a contrastar
+
+| Variante dentro de S3 | Parámetros simbólicos | Riesgo que debe poder revelar |
+|---|---|---|
+| Snapshots/métricas | periodo c_j, fase φ_j, cobertura, lag, pérdida, validez | episodios entre capturas, aliasing, falsos negativos |
+| Logs/trazas/eventos runtime | probabilidad de emisión/captura, retardo, duplicación, orden, pérdida | eventos no emitidos/perdidos, retraso, registros espurios |
+| Híbrido | parámetros de ambos y distribución conjunta | dependencia entre fuentes, falsa sensación de cobertura por redundancia |
+
+Las tres son configuraciones del canal S3 ya existente. No se convierten en tres fuentes independientes, no se asume independencia condicional y no se suman señales por una regla AND/OR no validada.
+
+### 16.196.2. Reutilización de perfiles DGP ya aceptados
+
+| Perfil existente §16.188.4 | Instanciación temporal/observacional reutilizada | Dictamen que debe recuperar Analyzer |
+|---|---|---|
+| Focal aislado | continuidad sin fallo y episodios funcionales bajo soporte declarado | recuperar V_cont cuando el canal identifica; separar ITT-paquete de atribución focal |
+| Nulo/primera etapa nula | truth sin cambio funcional bajo Z | no fabricar cambio de V_cont |
+| Fallo por etapas | retraso/fallo de provisión o instalación; solo cuenta si cambia A_B1 efectivo | no etiquetar antecedente técnico como fallo funcional |
+| Focal adverso | interrupción B1 causada por cualquiera de las cinco familias | recuperar signo adverso o abstenerse si la medida no lo identifica |
+| Vía directa/colateral | cambio de señal/captura por Z sin cambio de truth, y viceversa | no confundir cambio de observabilidad con cambio funcional |
+| Interacción/heterogeneidad | fase, duración, cobertura o error distintos por estrato/versión | informar heterogeneidad; no promediar ocultando celdas fallidas |
+| Medición adversarial | episodios breves/largos, fase de captura, pérdida, lag, errores correlacionados/diferenciales y cobertura incompleta | estimación, bounds o abstención según identificación |
+| Soporte/interferencia/versionado | canal/host compartido, spillover, versión distinta, timestamps inconsistentes | no asumir independencia/unidad aislada; declarar soporte/versión inválidos |
+| O/V no discriminables | misma conformidad terminal con secuencias V_cont distintas y secuencias compatibles con O-CONF distinto | no declarar validez discriminante sin recuperación de ambos sentidos |
+
+Los perfiles temporales son subcasos de los escenarios existentes, no una batería factorial nueva. La matriz debe cubrir controles negativos de truth estable y de señal espuria, cambios de fase, episodios que cruzan fronteras, recurrencia, captura diferencial por brazo/versión y episodios activos al cierre.
+
+### 16.196.3. Crosswalk con contratos existentes
+
+| Riesgo/afirmación | Contrato reutilizado | Salida/criterio |
+|---|---|---|
+| error de medida temporal, falsos positivos/negativos | P182-07/08 | tasas y curvas por familia/duración/fase; no score agregado único |
+| independencia del Analyzer respecto de truth | P182-11 + PROV-02/03/11 | firewall y sellado; cualquier fuga invalida la evaluación |
+| versión y reconstrucción | P182-05/12 | trazabilidad por canal, señal, regla y resultado |
+| taxonomía y mecanismo de ausencia | P183-01/02 + MEAS/MISS existentes | distinguir no emitido, no capturado, perdido, inválido, censurado y fuera de cobertura |
+| no observado ≠ cero | P183-04 | desconocido observacional no se recodifica como fallo funcional ni continuidad |
+| pérdida diferencial/selección | P183-07/10 + MEAS-13/MISS-10/13/15 | sensibilidad MAR/MNAR y dictamen por estimando |
+| censura y seguimiento terminal | P183-09/11 | distinguir censura administrativa/informativa; bounds cuando proceda |
+| discriminación Outcome/Value | P182-04/10 + contrato O-CONF/V_cont | mantener O-CONF terminal y V_cont temporal; no inferir uno del otro |
+
+No se abren nuevos IDs. Si un contrato existente no cubre una aserción concreta, se registra el gap antes de proponer cualquier extensión. La cobertura de un contrato no equivale a implementación, ejecución o PASS.
+
+### 16.196.4. Salidas mínimas del canal y regla de parada
+
+El canal S3 debe conservar por componente y ventana: estado 1/0/?; mecanismo de captura; timestamp/intervalo de captura; cobertura; lag; pérdida; validez; versión; unidad/instancia; provenance y relación de dependencia declarada. Son requisitos semánticos, no nombres de columnas físicas.
+
+El Analyzer recibe únicamente la proyección permitida y debe emitir, por intervalo y para V_cont: estimación puntual solo si la curva de observación identifica; bounds si el conjunto identificado es no trivial; abstención/NOT_IDENTIFIED cuando la pérdida, fase, dependencia o soporte impidan recuperar. La ausencia de evidencia nunca se interpreta como continuidad. El Evaluator compara con truth únicamente después del sellado.
+
+**Dictamen:** EXISTING_DGP_PROFILES_REUSED / P182_P183_MEAS_MISS_CROSSWALKED / NO_NEW_TEST_IDS / TEMPORAL_OBSERVATION_MATRIX_SPECIFIED_NOT_INSTANTIATED / NO_EXECUTION.
