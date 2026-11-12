@@ -4,7 +4,7 @@
 **Versión:** Draft 001 · **Fecha:** 2026-11-12  
 **Estado:** DOCUMENTARY_SPECIFICATION / NOT_APPROVED / NOT_IMPLEMENTED / NOT_MATERIALIZED / NOT_EXECUTED  
 **Rama:** `research/c10-s-consolidation-draft` · **PR:** #116 (Draft)  
-**Precedencia:** DEC-C10S-B1-UNIT-001; DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001; DEC-C10S-B1-OPPORTUNITY-CARDINALITY-001; DEC-C10-061/068/069; `C10_S_B1_PREZ_MINIMUM_DGP_MATERIALIZATION_CONTRACT_DRAFT_001.md`; `C10_S_B1_PREZ_DGP_U_G_COMPATIBILITY_AUDIT_DRAFT_001.md`; protocolo U_G de evidencia/procedencia/adjudicación.
+**Precedencia:** DEC-C10-095 (truth/exclusion composition); DEC-C10-096 (validation census/task boundary); DEC-C10-097 (observation/coverage model); DEC-C10S-B1-UNIT-001; DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001; DEC-C10S-B1-OPPORTUNITY-CARDINALITY-001; DEC-C10-061/068/069; `C10_S_B1_PREZ_MINIMUM_DGP_MATERIALIZATION_CONTRACT_DRAFT_001.md`; `C10_S_B1_PREZ_DGP_U_G_COMPATIBILITY_AUDIT_DRAFT_001.md`; protocolo U_G de evidencia/procedencia/adjudicación.
 
 ## 1. Objeto y decisión de representación propuesta
 
@@ -186,4 +186,4 @@ Las pruebas siguientes son requisitos de diseño, no pruebas ejecutadas:
 
 El contrato propone una arquitectura de expediente que conserva la integridad tipada U_G y hace verificable la separación truth/evidencia/adjudicación. No prueba que Need sea adjudicable con las fuentes actualmente disponibles ni selecciona parámetros para el DGP. No autoriza materialización, implementación, simulación, estimación, ejecución ni Design Freeze.
 
-**Decisión aplicable:** DEC-C10-095 acepta el mecanismo de estipulación y el gate de soporte binario, sin aprobar roster ni materialización. **Autorización:** `scientific_execution=false`; `execution_authorized=false`.
+**Decisiones aplicables:** DEC-C10-095 acepta el mecanismo de estipulación y el gate de soporte binario; DEC-C10-096 acepta el censo de validación y la frontera E1/E2 vs Analyzer PE; DEC-C10-097 acepta las reglas operativas de observación/cobertura. Ninguna aprueba roster ni materialización. **Autorización:** `scientific_execution=false`; `execution_authorized=false`.
