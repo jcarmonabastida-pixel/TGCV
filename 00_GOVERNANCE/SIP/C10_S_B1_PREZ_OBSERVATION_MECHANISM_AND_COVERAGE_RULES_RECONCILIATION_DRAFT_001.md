@@ -2,7 +2,7 @@
 
 **ID:** C10-S-B1-PREZ-OBSERVATION-COVERAGE-RECON-001  
 **Versión:** Draft 001 · **Fecha:** 2026-11-12  
-**Estado:** DOCUMENTARY_RECONCILIATION / PROPOSED_OPERATIONAL_RULES / ALIGNED_WITH_DEC-C10-095_AND_DEC-C10-096 / NOT_APPROVED / NOT_IMPLEMENTED / NOT_MATERIALIZED / NOT_EXECUTED  
+**Estado:** DOCUMENTARY_RECONCILIATION / OPERATIONAL_RULES_ACCEPTED_BY_DEC-C10-097 / ALIGNED_WITH_DEC-C10-095_AND_DEC-C10-096 / NOT_IMPLEMENTED / NOT_MATERIALIZED / NOT_EXECUTED  
 **Rama:** `research/c10-s-consolidation-draft` · **PR:** #116 (Draft)
 
 ## 1. Objeto y resultado de la revisión
@@ -13,7 +13,7 @@ El roster/cohorte queda delimitado por DEC-C10-096: censo de todas las UE del ro
 
 La revisión identifica el cierre que falta: separar de forma explícita (a) el marco de oportunidades de fuente declarado por el DGP, (b) el proceso de emisión/captura, (c) el contenido semántico de cada fuente, (d) su admisibilidad e integridad y (e) la decisión E1/E2. No se fija número de fuentes, distribución, tasa, prevalencia ni parámetro.
 
-Este documento es una reconciliación propuesta de reglas; no modifica ni reemplaza el contrato del paquete.
+Las reglas operativas de este documento han sido aceptadas como diseño de trabajo por DEC-C10-097. Este documento especializa, pero no reemplaza ni modifica silenciosamente, el contrato del paquete.
 
 ## 2. Marco de fuentes: alcance antes de observación
 
@@ -150,6 +150,6 @@ Este crosswalk es una propuesta de reutilización; no afirma que esos contratos 
 
 La especificación existente ya contiene los mecanismos generales. Esta reconciliación propone reglas operativas para no confundir ausencia con exclusión, fuente técnica con afirmación semántica, error con abstención ni cobertura de hallazgos con cierre del universo.
 
-No se aprueba todavía el modelo completo de observación ni se eligen fuentes concretas, probabilidades, tasas, parámetros, roster, schema físico, fixtures o código. No se materializa ningún dato ni se ejecuta ninguna prueba, DGP, simulación o replay.
+El modelo operativo general de observación/cobertura queda aceptado como diseño de trabajo por DEC-C10-097. No se aprueban todavía fuentes concretas, probabilidades, tasas, parámetros, roster, schema físico, fixtures o código. No se materializa ningún dato ni se ejecuta ninguna prueba, DGP, simulación o replay.
 
 `scientific_execution=false`; `execution_authorized=false`.
