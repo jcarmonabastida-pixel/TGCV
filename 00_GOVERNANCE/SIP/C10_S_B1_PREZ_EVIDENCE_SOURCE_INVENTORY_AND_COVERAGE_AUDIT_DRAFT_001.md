@@ -232,3 +232,19 @@ Esta especialización no altera la taxonomía S1–S8 ni las reglas generales de
 - No se han materializado registros, fijado parámetros/probabilidades, ejecutado pruebas, DGP, Analyzer, simulaciones o replay.
 
 La propuesta requiere reconciliación final con el contrato fuente S1–S8 y con la representación lógica del COVERAGE_REGISTER antes de considerarse lista para implementación. Se mantienen `scientific_execution=false` y `execution_authorized=false`.
+
+
+
+### 10.8 Reconciliación de señal y función emisora (DEC-C10-097)
+
+La lectura conjunta de §§10.2–10.7 con el contrato de observación/cobertura y las secciones 7.7/14.6 de los contratos B1 resuelve la ambigüedad entre «emisor» y «señal»:
+
+- La única clase semántica mínima sigue siendo S7: declaración focal original de inclusión o exclusión. S1/S5/S7 de identidad, provenance y binding son controles de referencia; S5 funcional contextual es condicional; S2/S4 y fuentes operativas no sustituyen Need.
+- No se ha identificado una señal basal independiente que un actor deba recibir. Los candidatos técnicos ya descartados no pueden reintroducirse como conocimiento del emisor.
+- El artefacto S7 lo produce el canal de observación. La autoridad/rol/mandato del emisor es atribución de provenance ex ante, no un modelo cognitivo ni un quinto rol PE. El estado interno del canal, si existe, no se exporta.
+- El canal puede generar contenidos correctos o erróneos, ambiguos, conflictivos, omitidos o perdidos; no se fijan tasas ni parámetros. La truth influye a través del mecanismo de observación ya aceptado por DEC-C10-097, nunca por copia literal ni filtración lateral.
+- Una sola clase S7 puede soportar las dos proposiciones focales (inclusión/exclusión); no se requieren dos clases distintas ni corroboración múltiple. La suficiencia real dependerá del alcance, integridad, autoridad, temporalidad y cobertura de cada oportunidad.
+
+Esto no cierra el tipo concreto de fuente del microdominio ni la regla de autoridad, cardinalidad de oportunidades o sus parámetros. La selección del microdominio sigue rigiendo qué artefacto declarativo puede tener semántica plausible; no se inventa una fuente realista antes de esa decisión.
+
+**Estado:** reconciliación documental; perfil mínimo recomendado, no congelado. Sin fuentes, roster ni oportunidades materializadas; sin implementación o ejecución.
