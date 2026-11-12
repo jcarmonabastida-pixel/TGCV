@@ -85,3 +85,12 @@ Consecuencias:
 - La vía de menor impacto es estudiar un **paquete analítico B1/Need separado de U_G**, versionado y con referencias a evidencias/provenance, sin incorporarlo como clase de grafo ni alterar los enums U_G. Debe quedar claro si E1/E2 y adjudicación se representan en ese paquete o se enlazan externamente; no se presume que los registros U_G actuales puedan hacerlo.
 
 **Recomendación provisional:** preferir el artefacto analítico B1/Need separado (no tabla U_G) para conservar el target cerrado aceptado. Antes de especificar sus campos definitivos, comprobar si el Evidence→Claim Matrix / claim governance exige un vínculo canónico adicional para afirmaciones unitarias. No crear aún el artefacto de datos ni modificar DEC-C10-061.
+
+
+## 8. Contraste con Evidence→Claim Matrix v1.47
+
+Se revisó la matriz canónica `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.47.md` en `main`. Su estructura registra afirmaciones científicas del programa (C01–C16) y evidencia que puede afectar su estatus/nivel. No define un registro de observaciones unitarias ni un destino relacional para adjudicaciones sintéticas B1/UE. La búsqueda de `Need_preZ` no devuelve una afirmación/claim de la matriz.
+
+**Consecuencia:** Need_preZ es un constructo/variable basal del diseño C10-S, no una nueva afirmación teórica TGCV. No procede añadir una fila C17, propagar evidencia a C10 ni modificar la matriz por la mera definición/materialización de Need. Solo una evidencia futura que cambie legítimamente el soporte de una afirmación existente se sometería al proceso normal de impacto; este contrato no produce tal evidencia.
+
+Esto refuerza la opción de mantener el paquete de truth/evidencia/adjudicación Need como artefacto analítico local del DGP, separado tanto del grafo U_G como de la matriz global de claims. La interoperabilidad debe ser por IDs y hashes de artefactos/evidencias, no mediante una falsa FK a un claim científico global.
