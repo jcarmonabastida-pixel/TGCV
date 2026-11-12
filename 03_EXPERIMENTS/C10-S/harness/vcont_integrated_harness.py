@@ -465,8 +465,8 @@ def benchmark_scenarios(n_units: int = 400, n_intervals: int = 20,
     for sid, profile, mechanism, overrides in specs:
         values = dict(common)
         values.update(overrides)
-        result.append(ScenarioConfig(sid, profile=profile, mechanism=mechanism,
-                                     scenario_id=sid, **values))
+        result.append(ScenarioConfig(scenario_id=sid, profile=profile, mechanism=mechanism,
+                                     **values))
     return tuple(result)
 
 
