@@ -2315,3 +2315,19 @@ Se mantiene: `scientific_execution=false`; `execution_authorized=false`; `NOT_DE
 - El siguiente gate es completar el ledger de estados/eventos funcionales B1 y dependencias temporales por mundo R0–R3, clasificando cada parámetro como regla fijada, dominio derivable, sensibilidad con soporte pendiente o decisión normativa. Después se resuelven T*/cola, unidad temporal, K/Δ/fronteras y mecanismo S3; no se inventan números.
 
 **Límites:** no abrir V1 ni otra dimensión; no generar episodios/datos; no parametrizar ni calibrar; no implementación ni ejecución. Permanecen abiertos q_X*/soporte, g_A/r_common, F*/oráculo O-CONF, modelo S3 y precisión. `scientific_execution=false`; `execution_authorized=false`; `NOT_DESIGN_FROZEN`; PR #116 Draft; no promoción a main.
+
+
+## 61. Cierre estructural del soporte temporal finito B1 (2026-11-12)
+
+Se completa la regla estructural ordenada en §60 mediante el contrato §15 de `C10_S_B1_PREZ_TEMPORAL_RECONCILIATION_DRAFT_001.md` y la reconciliación integrada §16.215.
+
+- El universo funcional B1 ya cerrado exige soporte superior finito por configuración para onset tardío, recurrencias, duración, recuperación y toda transición causal que pueda alterar A_B1.
+- `t_c,max` se define como la cota superior común de la última transición causal permitida, incluida recuperación, sobre todos los brazos y mundos del estimando; `T*=t_c,max+τ_follow` añade cola de observación terminal determinada por S3.
+- Se prohíbe recortar selectivamente por brazo, truncar recurrencias sin declararlo o interpretar silencio como recuperación. Los mundos sin soporte acotable se preservan como sensibilidad/censura/bounds/abstención, no como contraste puntual finito.
+- El orden de diseño queda fijado: soporte → cota común → lag/captura S3 y τ_follow → T* → resolución interna → Δ → K entero común.
+
+**Dictamen:** `FINITE_TEMPORAL_SUPPORT_RULE_CLOSED / NUMERIC_TEMPORAL_SUPPORT_OPEN / S3_CALIBRATION_OPEN / DELTA_K_OPEN`.
+
+**Siguiente gate:** resolver dominio temporal de episodios y detectabilidad S3 conjuntamente; después elegir unidad, Δ y K con justificación. Los límites numéricos no están en los contratos actuales y no se inventan.
+
+Se mantienen `scientific_execution=false`, `execution_authorized=false`, `NOT_DESIGN_FROZEN`; PR #116 Draft; sin cambios en main ni generación/ejecución.
