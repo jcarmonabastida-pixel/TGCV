@@ -3575,3 +3575,41 @@ El DGP puede especificar casos de separación solo cuando F* y la regla terminal
 - **NO AUTHORIZATION:** no se crean fuentes/interfaces/campos físicos ni tests/IDs; no hay captura, implementación, generación, simulación o ejecución.
 
 **Estado:** `V_CONT_TRUTH_SEMANTICS_SPECIFIED / S3_OBSERVATION_MODEL_SPECIFIED_CONDITIONALLY / MEASUREMENT_IDENTIFICATION_CONDITIONAL / AGGREGATION_RULE_OPEN / O_CONF_DISCRIMINATION_NOT_VERIFIABLE / CALIBRATION_NOT_RUN / DESIGN_FREEZE_NOT_READY / EXECUTION_NOT_AUTHORIZED`.
+
+
+## 16.183. Auditoría de frontera B1–F*–O-CONF–V_cont y discriminación lógica (2026-11-12)
+
+### 16.183.1. Reconciliación del referente B1
+
+La definición funcional aceptada y versionada en el contrato B1 §2 es:
+
+> Antes de Z, B1 tiene el objetivo operativo de mantener disponible en el entorno de destino un servicio capaz de admitir solicitudes conforme al estado declarativo de habilitación de su configuración, exponiendo el perfil operativo declarado.
+
+Por tanto, la función de servicio no permanece genéricamente abierta. Lo que puede seguir abstracto en el DGP es el contenido de negocio de las solicitudes o del PROFILE, siempre que se conserve un contrato sintético común y versionado. No se vuelve a pedir al usuario que nombre una operación adicional. Las formulaciones históricas de B2–B3 y del caso de valoración que decían que la operación concreta seguía OPEN se entienden superadas en cuanto a la función de servicio; no se consideran cerrados el roster material, el contenido de cada perfil, el instrumento ni la valoración.
+
+La truth temporal de V_cont debe seguir esa función: cumplimiento del modo ENABLED (admisión cuando está habilitado; no admisión cuando está deshabilitado) y exposición del PROFILE aplicable. La truth mide cumplimiento funcional por intervalo, no la pertenencia de Need_preZ ni el hecho de que una solicitud se haya producido.
+
+### 16.183.2. Frontera de F* y O-CONF
+
+La matriz F* define conformidad de la ruta completa y del estado destino aplicado/verificado. FP-01…FP-07 cubren propiedades estructurales, semánticas, compatibilidad, seguridad, aplicación y verificación post-aplicación; FP-08 es validez probatoria/provenance y no propiedad funcional. F* no contiene actualmente una regla de continuidad temporal ni una rejilla runtime común a la ventana de V_cont.
+
+O-CONF es la adjudicación terminal 1/0/? frente a F*, no un resumen de la trayectoria runtime. La separación temporal/terminal es conceptualmente coherente con los contratos disponibles, pero no está todavía demostrada en un instrumento ejecutable: faltan predicados atómicos, mapping, C0/G/H, snapshot/evento terminal, fuente/oráculo independiente y cierre de §224.
+
+### 16.183.3. Contrastes discriminantes admisibles como candidatos
+
+El DGP debe intentar generar, sin alterar F* ni V_cont, al menos estos contrastes lógicos:
+
+1. **O-CONF=1 y V_cont<1:** el destino satisface F* en el estado terminal, pero la instancia sufrió una interrupción o degradación en uno o más intervalos anteriores y se recuperó antes de la adjudicación terminal.
+2. **O-CONF=0 y V_cont>0:** el servicio cumple la función B1 durante parte de la ventana, pero el estado terminal incumple una propiedad F* distinta de la continuidad de servicio (por ejemplo, una propiedad estructural, semántica o de seguridad que no impida necesariamente la operación observada). Este contraste solo es admisible si el predicado concreto y su independencia funcional quedan justificados por el F* versionado.
+
+Estos son candidatos de separación, no fixtures ni pruebas ejecutadas. Si el cierre posterior de F* muestra que la conformidad terminal incorpora necesariamente continuidad de servicio durante toda la ventana, el primer contraste dejaría de ser admisible y V_cont podría quedar subsumida por O-CONF. Si no existe una propiedad terminal independiente que permita el segundo contraste, no se fuerza ese caso: se informa la limitación y se evalúa si queda suficiente discriminación para el alcance confirmatorio.
+
+### 16.183.4. Dictamen
+
+- **PASS_STATIC:** frontera conceptual B1 (función de servicio) / F* (conformidad completa terminal) / O-CONF (adjudicación terminal) / V_cont (cumplimiento temporal) diferenciada en los contratos documentales recuperados.
+- **CONDITIONAL:** existencia de los contrastes O-CONF/V_cont, dependiente del cierre de predicados F*, evento terminal y regla de O-CONF.
+- **NOT_VERIFIABLE:** validez discriminante final, porque O-CONF y su oráculo no están operacionalizados ni validados.
+- **OPEN:** contenido sintético de perfiles/solicitudes cuando sea necesario, regla normativa de agregación V_cont, rejilla/ventana y parámetros de medición.
+- **No se añaden:** nuevos tests, IDs, fuentes, roles, oportunidades, schemas físicos ni interfaces. No se ejecuta nada.
+
+**Estado:** `B1_SERVICE_FUNCTION_RECONCILED / FSTAR_TERMINAL_SCOPE_RECONCILED / V_CONT_TEMPORAL_SCOPE_DISTINCT_CONDITIONALLY / O_CONF_DISCRIMINATION_NOT_VERIFIED / NO_NEW_TESTS / EXECUTION_NOT_AUTHORIZED`.
