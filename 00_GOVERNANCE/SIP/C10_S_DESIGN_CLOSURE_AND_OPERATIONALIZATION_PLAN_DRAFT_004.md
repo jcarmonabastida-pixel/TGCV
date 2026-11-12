@@ -3987,3 +3987,63 @@ El alcance científico vigente es el experimento causal sintético. La materiali
 - No se derivarán claims de validez externa, factibilidad operativa o efecto de D2 real.
 
 Esta corrección no relaja G-SCI/G-SCHEMA/G-ROLE/G-TEST/G-REPRO ni autoriza ejecución.
+
+
+
+
+## 16.187. DEC-C10-100 — escala temporal V_cont aceptada y calibración conjunta consolidada (2026-11-12)
+
+**Tipo:** decisión expresa del usuario + derivación metodológica integrada.  
+**Registro autónomo:** `00_GOVERNANCE/decisions/DEC-C10-100_V_CONT_EQUAL_INTERVAL_TEMPORAL_AGGREGATION_ACCEPTANCE.md`.  
+**Complementa:** DEC-C10-099; §§16.182, 16.186; P179/P182/P183 y MEAS/MISS existentes.
+
+### 16.187.1. Decisión aceptada
+
+Se acepta provisionalmente como escala inicial de la verdad sintética de V_cont la fracción temporal de cumplimiento funcional B1 en una ventana post-Z común:
+
+`V_cont_truth(i) = (1/K) Σ A_B1(i,k)`
+
+Los K intervalos tienen igual duración y pertenecen a una rejilla común definida ex ante. A_B1(i,k)=1/0 solo por estipulación funcional positiva del DGP; ? permanece desconocido. Si existen intervalos ?, Evaluator conserva bounds [n1/K, (n1+n?)/K]; no elimina intervalos del denominador, no imputa cero y no usa complete cases para fabricar punto. El baseline describe el estado inicial; el estimando primario es el nivel post-Z en la ventana común, no un cambio pre/post.
+
+Esta decisión cierra la regla de agregación de la truth, no K, duración, frecuencia, inicio/fin, transitorios, MDE ni el canal de observación. DEC-C10-099 sigue siendo la selección de la dimensión; DEC-C10-100 acepta su escala temporal inicial.
+
+### 16.187.2. Consecuencias de escala para la calibración
+
+1. V_cont truth pertenece a [0,1]; diferencias y efectos en esta escala también son acotados por construcción. Los bounds de intervalos ? se propagan al resultado y a los contrastes, sin colapsarlos.
+2. La resolución K debe ser suficiente para representar interrupciones de duración relevante, pero no se elige por conveniencia estadística: se deriva de la semántica de continuidad, de los transitorios que deban distinguirse y del coste/precisión de observación. Ventana y K se fijan antes de observar resultados.
+3. La rejilla temporal común no aumenta N_opportunities ni sustituye la oportunidad estandarizada única S6. S3 sigue siendo vector de señales imperfectas; no se promedia ni se interpreta directamente como A_B1.
+4. La calibración del canal debe separar como mínimo: sensibilidad a estado 1, especificidad a estado 0, dependencia temporal de errores, cobertura/loss por intervalo, error diferencial por Z/versión y observación no ignorable. No se asignan tasas ni se presupone independencia.
+5. Si el Analyzer no recibe información de calibración suficiente para identificar A_B1/V_cont, su salida correcta es bounds o abstención. La capacidad del Evaluator de calcular truth no autoriza revelar el modelo generador al Analyzer.
+
+### 16.187.3. Diseño de calibración — superficie de recuperación, no MDE inventado
+
+Para evitar fijar un único MDE sin criterio sustantivo, la calibración sintética debe evaluar una superficie de recuperación por estimando y por magnitud de contribución conocida:
+
+- Incluir efecto focal nulo, positivo, negativo y heterogéneo; vías directas/colaterales e interacciones se varían separadamente de la contribución mediada por ΔT_acc*.
+- Barrer una malla de magnitudes verdaderas de V_cont dentro del rango admisible [0,1], restringida por las distribuciones basales y los potenciales válidos. La malla y su resolución se derivan después de fijar K y el soporte; no se confunde con un MDE normativo.
+- Para cada celda, reportar sesgo, RMSE, cobertura, error tipo I, potencia/curvas de detección, clasificación de signo, recuperación de magnitud, bounds coverage y tasas de abstención/no-identificación. Informar resultados por ITT_Z^D2, θ_A/θ_Af y C4 por separado, solo donde el estimando sea identificable.
+- Incluir escenarios de medición calibrada por diseño y no calibrada/ambigua; S3 diferencial, pérdida/censura, UNKNOWN, soporte fallido, interferencia, vías colaterales, efecto directo, nulo y adversarial. Los escenarios deben conservar el truth conocido en el Generator y la información realmente permitida al Analyzer.
+- Elegir N/π_h/estratos/unidad/clúster y R conjuntamente contra las restricciones aprobadas. La búsqueda produce curvas y una frontera Pareto de coste–precisión–recuperación; no se declara un único N confirmatorio mientras no exista un punto de operación con α, potencia, precisión y coste aceptados.
+- R se incrementa hasta controlar SE_MC de las métricas de evaluación; no se confunde número de réplicas DGP con número de unidades experimentales N.
+
+Esta estrategia permite evaluar falsabilidad y capacidad de recuperación en un rango completo sin inventar MDE. Para una afirmación confirmatoria puntual todavía habrá que escoger, ex ante, un punto de operación y sus criterios de error.
+
+### 16.187.4. Parámetros: derivables frente a decisiones no deducibles
+
+**Derivables por lógica/contrato:** rango [0,1] de V_cont; fórmula de igual peso por intervalo; propagación de UNKNOWN a bounds; separación de truth/observed; necesidad de estimandos por resultado; clasificación de escenarios nulo/positivo/negativo/colateral/medición degradada; uso de curvas de recuperación y SE_MC; exclusión de P178 como fuente de N/R confirmatorios.
+
+**No derivables sin criterio científico explícito o especificación de soporte:** ventana y K; duración mínima de interrupción relevante; baseline/transitorios; MDE sustantivo; α, potencia y precisión exigidas; márgenes de equivalencia; rangos/probabilidades de parámetros DGP; dependencia temporal/correlación de señales; prevalencia de escenarios; N/ratio/estratos/clúster; R/tolerancia SE_MC; coste aceptable. No se rellenan con valores convencionales por defecto ni se importan cifras de P178.
+
+### 16.187.5. Próxima consolidación mínima y gates
+
+La próxima pasada no abrirá subpaquetes. Integrará en una sola ficha de calibración:
+1. ventana/K derivadas del contrato funcional y de la escala temporal;
+2. soporte y distribuciones conjuntas del DGP por etapa;
+3. escenarios y rangos paramétricos con procedencia explícita;
+4. curvas de recuperación/abstención por estimando;
+5. frontera N–asignación–R–SE_MC;
+6. punto de operación confirmatorio, si puede justificarse, o declaración de benchmark de recuperación sin claim confirmatorio puntual.
+
+**Estado:** VCONT_SCALE_RULE_ACCEPTED_PROVISIONALLY / VCONT_MEASUREMENT_VALIDITY_CONDITIONAL / OCONF_DISCRIMINATION_NOT_VERIFIED / CALIBRATION_SURFACE_SPECIFIED_NOT_RUN / QUANTITATIVE_OPERATING_POINT_OPEN / DESIGN_FREEZE_NOT_READY / NO_EXECUTION_AUTHORIZED.
+
+No se ejecuta código, validador, generación, simulación, estimación ni calibración computacional. `scientific_execution=false`; `execution_authorized=false`.
