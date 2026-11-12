@@ -2,14 +2,14 @@
 
 **ID:** C10-S-B1-PREZ-OBSERVATION-PE-BUNDLE-001  
 **Versión:** Draft 001 · **Fecha:** 2026-11-12  
-**Estado:** DOCUMENTARY_RECONCILIATION / PROPOSED_MAPPING / NOT_APPROVED / NOT_IMPLEMENTED / NOT_EXECUTED  
+**Estado:** DOCUMENTARY_RECONCILIATION / PE_BUNDLE_BOUNDARY_PROPOSED / COHORT_SCOPE_ACCEPTED_BY_DEC-C10-096 / OBSERVATION_OPERATIONAL_RULES_PROPOSED_SEPARATELY / NOT_APPROVED / NOT_IMPLEMENTED / NOT_EXECUTED  
 **Rama:** `research/c10-s-consolidation-draft` · **PR:** #116 (Draft)
 
 ## 1. Propósito y resultado
 
 Este documento cierra la siguiente frontera documental: cómo se relaciona la evidencia sintética B1/Need_preZ con el bundle observable que recibe el Analyzer PE, sin fusionar tareas, filtrar truth ni duplicar ledgers.
 
-La reconciliación de los contratos existentes conduce a cuatro conclusiones:
+La reconciliación de los contratos existentes y DEC-C10-096 conduce a cuatro conclusiones:
 
 1. El modelo de observación B1/Need ya está definido en lo esencial en `C10_S_B1_PREZ_ANALYTICAL_PACKAGE_CONTRACT_DRAFT_001.md` §6. No se crea otro modelo ni se vuelven a definir sus mecanismos.
 2. El Analyzer PE recibe el bundle observable autorizado por el contrato PE y el estimando. El conjunto B1/Need no se añade automáticamente como entrada universal.
@@ -28,7 +28,7 @@ Se reutilizan:
 - `C10_S_PE_INTEGRATED_TECHNICAL_SPECIFICATION_AND_IMPLEMENTATION_CONTRACT_DRAFT_001.md` §§3–4 y §5: interfaces Generator→Proyector/Sealer→Analyzer→Evaluator y Artifact/Provenance Store.
 - `C10_S_DGP_TEMPORAL_AND_ROLE_CONTRACT_DRAFT_001.md`: reloj t−1/t0…, separación de truth/observed y roles.
 
-La auditoría de fuentes sigue teniendo el estado `UNIT_LEVEL_PREZ_EVIDENCE_NOT_FOUND_IN_REVIEWED_ARTIFACTS / COVERAGE_NONE`. El presente crosswalk no lo cambia: define cómo deberá funcionar la futura proyección sintética, no afirma que exista evidencia.
+La auditoría de fuentes sigue teniendo el estado `UNIT_LEVEL_PREZ_EVIDENCE_NOT_FOUND_IN_REVIEWED_ARTIFACTS / COVERAGE_NONE`. DEC-C10-096 acepta el censo del roster aplicable y la tarea E1/E2, pero no cambia ese estado. Las reglas operativas propuestas de emisión, captura, contenido, admisibilidad y cobertura se detallan en `C10_S_B1_PREZ_OBSERVATION_MECHANISM_AND_COVERAGE_RULES_RECONCILIATION_DRAFT_001.md`. El presente crosswalk sigue definiendo la proyección sintética, no afirma que exista evidencia.
 
 ## 3. Capas y objetos: no colapsar
 
@@ -172,6 +172,8 @@ Estos casos prueban el contrato de observación y el firewall. No deben converti
 7. Confirmar que los contratos de test existentes cubren los casos adversariales; si falta alguno, documentar el gap antes de crear IDs.
 8. Aprobar población/roster y suficiencia estadística antes de cualquier evaluación confirmatoria.
 9. Obtener aprobación de implementación y autorización de ejecución por separado.
+
+El alcance de cohorte y la frontera E1/E2 vs Analyzer PE quedan aceptados por DEC-C10-096. La aprobación del modelo operativo de observación y de esta proyección PE sigue pendiente; no se consideran aceptados por extensión.
 
 ## 10. Dictamen
 
