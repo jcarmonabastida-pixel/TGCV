@@ -527,3 +527,16 @@ Se mantienen B1 por UE, una oportunidad estandarizada por UE y las decisiones de
 P179 mantiene Value como vector y trade-offs; las cinco dimensiones históricas son candidatas, no una lista confirmatoria. O-CONF es el mejor anclaje técnico candidato, pero su ficha §224 está incompleta. Ningún O_k ni V_j está operacionalizado. Cada uno requiere ficha independiente §224 y controles P182/P183, incluidos error, fiabilidad, acuerdo, ausencia, censura, disputa, unknown y sensibilidad. No se transfiere identificación ITT de Outcome a Value, ni entre dimensiones; C3/C4 permanecen no identificados en el D2 material actual.
 
 **Dictamen:** B2–B3 reconciliado semánticamente; operacionalización, perspectiva, consecuencia, dimensiones, instrumentos, escalas, horizonte y adjudicación OPEN. Sin nueva decisión científica, Design Freeze o autorización de ejecución.
+
+
+## 12. Actualización §224 — ficha O-CONF y separación de V_cont (2026-11-12)
+
+La sección histórica §10 y los estados PA §§9–11 describen la ficha O-CONF antes del cierre documental N16. Se mantienen como registro histórico; la especificación posterior es el plan §16.184 y la matriz F* §22.
+
+O-CONF queda especificado parcialmente como resultado terminal de adjudicar una instancia de configuración × ruta completa contra F*. F* es el criterio, no un Outcome duplicado. El ancla lógica son los estados post-aplicación/post-check F2_DST_APPLIED y A2_DST_APPLIED; no se han materializado snapshots, evento ni timestamp. Su escala lógica es 1/0/? con SCOPE_ERROR/NOT_EVALUABLE separado; FP-01…07 se agregan sin compensación bajo IAM y FP-08 permanece como gate probatorio separado. Los contratos PAR/RUL aceptados no completan el catálogo atómico global ni los predicados FP-04/05.
+
+La ficha §224 sigue incompleta: fuente/oráculo implementado y validado, IAM poblado, predicados/mappings/tolerancias restantes, C0 ambiental, G/H, unidad material, cobertura, error, acuerdo, missingness, cegamiento efectivo y provenance material permanecen abiertos. O-CONF no está operacionalizado ni se selecciona como Outcome confirmatorio final.
+
+La extensión B conserva la selección provisional de V_cont por DEC-C10-099. V_cont mide cumplimiento temporal de la función B1; O-CONF mide conformidad terminal de ruta. La distinción conceptual y los contrastes candidatos se documentan en §§16.183–16.184; validez discriminante aún CONDITIONAL/NOT_VERIFIABLE. No se transfieren resultados/identificación entre O-CONF y V_cont ni entre Outcome y Value.
+
+Estado: O_CONF_FICHE_PARTIAL / O_CONF_NOT_OPERATIONALIZED / V_CONT_SELECTED_PROVISIONALLY / DISCRIMINATION_NOT_VERIFIED / NO_DESIGN_FREEZE / NO_EXECUTION_AUTHORIZED.
