@@ -4925,3 +4925,29 @@ Esta sección cierra la divergencia documental entre el maestro, DEC-C10-067, la
 No abrir otro contrato. Completar en los artefactos ya existentes: (i) roster material de autorización y de objetos U/R/C/X; (ii) mapping de cada campo de X* y de condiciones REL/COND/RES/DEP/BLOCK sin doble contabilización; (iii) snapshots y cobertura pre-B/post-B/rollback con pinning exacto; (iv) adjudicación ciega y separación Generator/Analyzer/Evaluator; (v) pruebas de invariancia/no-afectación y registro de colaterales. Los inventarios marcados NO INVENTARIADO no equivalen a ausencia.
 
 **Límite:** esta reconciliación documental no cierra los predicados materiales, no valida el oráculo ni la medición, no fija distribuciones/parametría, no alcanza Design Freeze y no autoriza implementación, simulación, estimación, calibración ni ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 16.203. Regla de separación y no duplicidad para ID_f*, REL_f*, COND_f*, DEP_f* y BLOCK_f* (2026-11-12)
+
+**Tipo:** adjudicación semántica derivada de la fórmula candidata §67.3 y de los contratos de frontera, grafo, provisión, instancia y snapshots. No constituye decisión normativa nueva, no asigna valores ni cierra inventarios.
+
+### 16.203.1. Asignación primaria por función material
+
+1. **ID_f*** responde a qué transformación focal es: identidad semántica, clase/tipo y versión contractual de τ₂. El hash/build y el identificador de registro son evidencia/identidad técnica versionada, no sustitutos automáticos de identidad semántica.
+2. **REL_f*** responde qué relaciones/interfaces tipadas son constitutivamente necesarias para invocar o componer τ₂: extremos, dirección, tipo/rol, alcance y condiciones de relación. Su existencia declarada no demuestra que haya una ruta técnica completa operativa.
+3. **COND_f*** recoge condiciones constitutivas de realizabilidad que no son identidad del objeto ni relaciones ni dependencias de una ruta y que son independientes de las precondiciones particulares del estado de entrada S0. La compatibilidad del dominio/tipo se asigna a ID_f* cuando define el tipo admisible de τ₂; se asigna a COND_f* cuando es una condición externa de realizabilidad. `D_support*` queda como descriptor histórico, no como factor adicional.
+4. **DEP_f*** responde si existe al menos una ruta técnica completa admisible que realiza las relaciones necesarias y satisface sus requisitos. Se evalúa por rutas y con la regla OR/trivalente ya fijada en §16.201. REL especifica requisitos relacionales; DEP evalúa su realización en una ruta concreta. No se duplican la misma arista/condición ni el mismo fallo en ambos términos.
+5. **BLOCK_f*** representa una prohibición/bloqueo efectivo, vigente y aplicable a τ₂, con alcance y ventana explícitos. Un bloqueo de una ruta concreta invalida esa ruta; solo un bloqueo universal o que cubra todas las rutas admisibles puede hacer `BLOCK_f*=1` para la transformación en conjunto. La mera ausencia de evidencia, una ruta no inventariada o un bloqueo focal con alternativa válida no prueban bloqueo global.
+6. **App_f*** permanece separado: precondiciones dependientes del estado concreto S0 se evalúan al aplicar τ₂ desde ese estado; no se introducen como COND_f* por conveniencia.
+
+### 16.203.2. Regla de precedencia para clasificar cada campo
+
+Para cada campo/condición material, identificar primero su referente y scope; después aplicar en orden: (a) identidad/tipo del objeto → ID; (b) relación tipada entre objetos → REL; (c) dependencia/ruta técnica de realización → DEP; (d) condición constitutiva externa e independiente de S0 → COND; (e) prohibición efectiva → BLOCK; (f) precondición del estado de entrada → App; (g) dato sobre conocimiento/observabilidad → mecanismo downstream o E_T. Si un campo mezcla funciones, descomponerlo; si no puede descomponerse o clasificarse, conservar UNKNOWN/? y no duplicarlo en dos términos.
+
+### 16.203.3. Consecuencias para la agregación
+
+- La fórmula A_f* de §67.3 se conserva sin añadir `C_domain`, `D_support*`, `C_other`, `App_f*` ni `C_info` como factores adicionales.
+- `DEP_f*` se adjudica por existencia de ruta válida; por tanto, `BLOCK_f*` debe referirse a bloqueo de la transformación en conjunto, no al fallo de una única ruta si otra admisible permanece válida.
+- La clasificación conceptual queda fijada; permanecen abiertos el roster material de campos/condiciones, las rutas y dependencias reales, las fuentes, cobertura, versiones, umbrales y adjudicación independiente. `NO INVENTARIADO`/`?` no se recodifica como 0.
+
+**Dictamen:** SEMANTIC_BOUNDARIES_RESOLVED_BY_PRECEDENCE / FIELD_LEVEL_MAPPING_AND_INVENTORY_OPEN / NO_NUMERIC_PARAMETERS / NO_DESIGN_FREEZE / NO_EXECUTION.
