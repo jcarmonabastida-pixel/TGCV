@@ -238,3 +238,22 @@ S6 y la oportunidad estandarizada única no se reutilizan como monitor temporal 
 El contrato funcional B1 §2 define la función de servicio: admitir solicitudes según ENABLED y exponer PROFILE. Las referencias históricas a una operación concreta pendiente se interpretan como ausencia de payload/perfil material, no como ausencia de definición funcional. V_cont mide cumplimiento temporal de esa función; O-CONF adjudica conformidad terminal de la ruta frente a F*. F* no contiene actualmente una regla de continuidad temporal durante toda la ventana.
 
 Se documentan en el plan §16.183 dos contrastes DGP candidatos: terminal conforme tras interrupciones temporales recuperadas; y servicio parcialmente operativo durante la ventana pese a fallo terminal de una propiedad F* independiente. Su admisibilidad depende del cierre de predicados F*, alcance de la verificación y oráculo terminal. No se declaran generados ni validados. O-CONF permanece candidato no operacionalizado; discriminación final CONDITIONAL/NOT_VERIFIABLE.
+
+
+
+## 19. Ficha §224 de O-CONF — operacionalización parcial (2026-11-12)
+
+La reconciliación integrada del plan §16.184 y la matriz F* §22 completa la frontera conceptual sin declarar O-CONF operacionalizado.
+
+- **Constructo:** adjudicación terminal de conformidad de una ruta completa de migración frente al criterio funcional F* versionado. F* es el criterio, O-CONF su resultado; no son dos Outcomes distintos.
+- **Unidad:** instancia exacta de configuración × ruta (F1→F2 o A1→A2), con binding a UE/B1 cuando el DGP B lo requiera. Los resultados por ruta no se promedian ni se transfieren.
+- **Escala:** 1/0/? y SCOPE_ERROR/NOT_EVALUABLE separado. FP-08 es gate probatorio separado, no dimensión funcional compensable.
+- **Regla:** todos los predicados obligatorios aplicables FP-01…07 deben ser 1 para O-CONF=1; un 0 obligatorio demostrado da O-CONF=0; ausencia de fallo confirmado con algún obligatorio desconocido da ?; conjunto vacío/cardinalidad constitutiva incumplida bloquea como SCOPE_ERROR. NA solo por IAM ex ante. FP-08 inválido puede dejar O_CONF_obs no evaluable, pero no transforma la truth funcional en 0.
+- **Ancla:** post-aplicación/post-check en F2_DST_APPLIED o A2_DST_APPLIED, conforme DEC-C10-071/087. Snapshot, evento y timestamp exactos permanecen OPEN.
+- **Fuente:** oráculo independiente/versionado que aplica criterios y mappings a evidencia de fuente, destino, mapping, aplicación y snapshot. Su arquitectura está definida; implementación, versión/hash, error y validación no existen todavía.
+- **Contexto/baseline:** C_src y snapshot basal del destino vinculados bajo C0. DEC-C10-070 acepta C0 como binding lógico de cobertura, no fija valores del entorno ni resuelve integridad física.
+- **Horizonte:** ruta completa hasta aplicación y verificación dentro de H; H y su relación con el reloj DGP no están fijados.
+- **Cobertura/error/acuerdo:** se reutilizan P182/P183; error, falsos positivos/negativos, fiabilidad, acuerdo, missingness, censura, sensibilidad y criterios de abstención siguen abiertos y sin resultados.
+- **Cegamiento/provenance:** Generator conserva truth; Analyzer no recibe truth/potenciales/semillas; su salida se sella antes de Evaluator. Los requisitos son documentales; firewall, custodia y ACL no están probados materialmente.
+
+**Dictamen §224:** O_CONF_FICHE_PARTIAL / NOT_OPERATIONALIZED / NOT_CONFIRMATORY / ORACLE_NOT_IMPLEMENTED_NOT_VALIDATED. No se selecciona O-CONF como Outcome confirmatorio final por mera disponibilidad de su anclaje. La decisión de su papel confirmatorio requiere ficha completa y justificación científica, no solo completar campos.
