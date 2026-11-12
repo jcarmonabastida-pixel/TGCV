@@ -4519,3 +4519,52 @@ El canal S3 debe conservar por componente y ventana: estado 1/0/?; mecanismo de 
 El Analyzer recibe únicamente la proyección permitida y debe emitir, por intervalo y para V_cont: estimación puntual solo si la curva de observación identifica; bounds si el conjunto identificado es no trivial; abstención/NOT_IDENTIFIED cuando la pérdida, fase, dependencia o soporte impidan recuperar. La ausencia de evidencia nunca se interpreta como continuidad. El Evaluator compara con truth únicamente después del sellado.
 
 **Dictamen:** EXISTING_DGP_PROFILES_REUSED / P182_P183_MEAS_MISS_CROSSWALKED / NO_NEW_TEST_IDS / TEMPORAL_OBSERVATION_MATRIX_SPECIFIED_NOT_INSTANTIATED / NO_EXECUTION.
+
+
+## 16.197. Matriz adimensional de cobertura temporal y regla de selección de K (2026-11-12)
+
+Esta sección convierte §§16.195–16.196 en una matriz finita de cobertura, sin fijar valores ni abrir escenarios/tests nuevos. Los cortes 1 son relaciones geométricas entre magnitudes ya definidas, no umbrales empíricos o normativos.
+
+### 16.197.1. Ejes adimensionales
+
+Para cada episodio funcional:
+- r_c=d_e/c_j: duración del episodio frente al periodo/resolución del componente S3.
+- r_Δ=d_e/Δ: duración frente a la anchura del intervalo V_cont.
+- φ_j: fase del episodio respecto a la captura snapshot; para logs/trazas se sustituye por retardo/orden del evento.
+- r_f=τ_follow/τ_recovery,max: seguimiento frente al máximo retraso de recuperación declarado en el soporte del DGP, cuando dicho máximo exista.
+
+La matriz cubre r_c<1, r_c=1 y r_c>1; r_Δ<1, r_Δ=1 y r_Δ>1; y fases alineada, desfavorable (episodio entre capturas) y aleatoria para snapshots. Para logs/trazas se cubren evento capturado, evento no emitido/perdido y evento retrasado/desordenado. El canal híbrido conserva dependencia conjunta, no independencia supuesta. Estos son estratos de cobertura; no implican ejecutar el producto cartesiano completo.
+
+### 16.197.2. Cobertura dirigida, no factorial completa
+
+La matriz mínima debe incluir:
+1. truth estable + señal estable (control negativo de error);
+2. truth estable + señal espuria (falso positivo);
+3. episodio truth breve con r_c<1 y fase desfavorable (riesgo de falso negativo/aliasing);
+4. episodio con r_c=1 (frontera de captura);
+5. episodio con r_c>1 (captura potencial repetida);
+6. episodio breve con r_Δ<1 (un fallo puede poner a cero el bloque completo);
+7. episodio que cruza una frontera de rejilla y afecta ambos intervalos;
+8. pérdida/lag/captura diferencial por brazo, versión o componente;
+9. canal híbrido con errores correlacionados y sin redundancia efectiva;
+10. episodio recuperado antes de T* y episodio aún activo/censurado en T*;
+11. mismo O-CONF terminal con secuencias V_cont distintas y contraste inverso para el gate discriminante.
+
+Cada celda se vincula a los perfiles existentes §16.188.4 y a P182/P183/MEAS/MISS conforme §16.196. No se asignan nuevos IDs ni se cruzan indiscriminadamente todos los ejes. Se documenta qué combinaciones no se cubren y por qué.
+
+### 16.197.3. Regla de horizonte y seguimiento
+
+Sea τ_recovery,max el límite superior del soporte de retrasos de recuperación tras la última transición causal posible. Si existe y está justificado, se requiere τ_follow≥τ_recovery,max para observar el soporte completo; si se elige una cola menor, la fracción no cubierta queda explícitamente censurada. Si no existe un límite superior defendible, no se afirma recuperación completa y se mantienen bounds/censura. La cola es común a brazos y escenarios.
+
+### 16.197.4. Regla de selección de Δ y K
+
+K no se selecciona para minimizar el número de intervalos ni para maximizar artificialmente V_cont. Para cada candidato K entero, Δ=(1+ρ_follow)/K y se evalúa:
+- recuperación de la secuencia A_B1 por intervalo y de V_cont_truth;
+- sensibilidad a fase de eventos/capturas y a eventos que cruzan fronteras;
+- falsos positivos/negativos, bounds, abstención y cobertura;
+- estabilidad de la estimación al refinar K;
+- error Monte Carlo y coste solo después de fijar criterios de aceptación.
+
+Se conserva la regla de intervalo semiabierto [b_k,b_{k+1}) con evento en frontera asignado al intervalo que comienza allí; T* pertenece al extremo terminal del último bloque. La regla debe versionarse antes de materializar.
+
+**Dictamen:** DIMENSIONLESS_COVERAGE_GRID_DEFINED / TARGETED_NOT_FULL_FACTORIAL / K_SELECTION_BY_RECOVERY_AND_ALIASING / FOLLOWUP_BY_RECOVERY_SUPPORT / NUMERIC_PARAMETERS_AND_ACCEPTANCE_THRESHOLDS_OPEN / NO_EXECUTION.
