@@ -2,7 +2,7 @@
 
 **ID:** C10-S-B1-PREZ-OBJECTIVE-SPECIFICATION-CONTRACT-001  
 **Versión:** Draft 001 · **Fecha:** 2026-11-12  
-**Estado:** USER_ACCEPTED_DESIGN_PRINCIPLE / CONTRACT_DRAFT / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_MATERIALIZED / NOT_EXECUTED  
+**Estado:** USER_ACCEPTED_DESIGN_PRINCIPLE / DEC-C10-095_ACCEPTED_WORKING_DESIGN / CONTRACT_DRAFT / NOT_DESIGN_FROZEN / NOT_IMPLEMENTED / NOT_MATERIALIZED / NOT_EXECUTED  
 **Rama:** `research/c10-s-consolidation-draft` · **PR:** #116 (Draft)
 
 ## 1. Autoridad, alcance y antecedentes
@@ -17,7 +17,7 @@ Se subordina a:
 - `C10_S_B1_PREZ_BASELINE_SOURCE_DIAGNOSTIC_DRAFT_001.md`.
 - Contrato temporal/roles DGP y decisiones aceptadas B1/UE/servicio.
 
-No sustituye ni reabre la definición funcional aceptada de Need_preZ, la cardinalidad B1–UE, la identidad de instancia de servicio, DEC-C10-061, la composición de población ITT ni los estimandos. La aceptación del principio no equivale a aprobación de este contrato completo ni a diseño congelado.
+No sustituye ni reabre la definición funcional aceptada de Need_preZ, la cardinalidad B1–UE, la identidad de instancia de servicio, DEC-C10-061, la composición de población ITT ni los estimandos. El mecanismo de composición queda aceptado por DEC-C10-095: estipulación explícita, versionada y reservada por B1/UE; derivación determinista; sin generación estocástica de Need en el núcleo confirmatorio. La aceptación de ese mecanismo no equivale a aprobación del contrato completo ni a Design Freeze.
 
 ## 2. Constructo cuya truth se estipula
 
@@ -33,7 +33,7 @@ La truth se refiere a la existencia/pertenencia del objetivo basal, no a su esta
 
 ## 3. Objeto generador: especificación basal del objetivo
 
-El generador deberá disponer, en el espacio reservado del DGP, de una estipulación semántica explícita y versionada para cada unidad B1/UE del roster que se autorice en el futuro.
+El generador deberá disponer, en el espacio reservado del DGP, de una estipulación semántica explícita, versionada y configurada por unidad para cada B1/UE del roster que se autorice en el futuro. Esta decisión adopta configuración explícita como fuente de la estipulación; no se infiere desde covariables ni se genera mediante una distribución estocástica de Need.
 
 Esta estipulación es la **especificación basal del objetivo B1**. Su función es determinar la truth del constructo; no es una covariable causal, una fuente observada ni una declaración accesible al adjudicador.
 
@@ -112,7 +112,7 @@ Este requisito de soporte no fija:
 - distribución, semilla, generador aleatorio ni parámetros;
 - tamaño muestral o potencia.
 
-La composición del roster y el soporte por subgrupo deberán resolverse en el contrato de diseño/población correspondiente. No se crearán unidades para satisfacer este requisito antes de su aprobación.
+La composición del roster y el soporte binario se rigen por DEC-C10-095: el roster/cohorte se define ex ante por identidad/binding y reglas de población, sin selección por Need, observabilidad o resultados; después se comprueba soporte 1 y 0 sobre la cohorte completa. Si falta una clase, el diseño queda bloqueado, sin reparación post hoc. No se exige balance ni soporte por brazo/estrato. No se crearán unidades para satisfacer el requisito antes de aprobar roster y población.
 
 ## 7. Separación de truth y observación
 
@@ -156,10 +156,10 @@ Son condiciones de diseño propuestas; no se han ejecutado pruebas ni validadore
 | Cuestión | Estado |
 |---|---|
 | Definición funcional del objetivo focal | Definida en contrato de adjudicación B1 |
-| Principio de especificación basal explícita por B1 | Aceptado por el usuario; pendiente de incorporación formal al conjunto de decisiones |
+| Principio y mecanismo de especificación basal explícita por B1/UE | ACCEPTED BY USER AND DEC-C10-095 |
 | Alcance semántico cerrado para afirmar exclusión | OPEN |
 | Codificación/representación técnica de la estipulación | OPEN |
-| Regla concreta de composición de estados 1/0/? en el roster | OPEN; sin parámetros |
+| Mecanismo de estipulación y derivación de truth | ACCEPTED BY DEC-C10-095: configuración explícita versionada + mapping determinista; sin generador estocástico de Need |
 | Relación con covariables si se contempla dependencia estadística | OPEN; no autorizada por este contrato |
 | Modelo de observación y fuentes | OPEN |
 | Cobertura, mecanismos de error y parámetros de observación | OPEN |
@@ -168,9 +168,9 @@ Son condiciones de diseño propuestas; no se han ejecutado pruebas ni validadore
 
 ## 11. Dictamen y siguiente gate
 
-**DESIGN PRINCIPLE ACCEPTED BY USER / OBJECTIVE-STIPULATION CONTRACT PROPOSED / EXCLUSION SCOPE AND REPRESENTATION OPEN / NO MATERIALIZATION OR EXECUTION AUTHORIZED.**
+**DEC-C10-095 ACCEPTED WORKING DESIGN / EXPLICIT PER-UNIT STIPULATION + DETERMINISTIC TRUTH MAPPING / EXCLUSION SCOPE AND REPRESENTATION GATES TRACKED SEPARATELY / NO MATERIALIZATION OR EXECUTION AUTHORIZED.**
 
-El siguiente gate no es generar unidades ni fuentes. Es cerrar el alcance semántico que permite una exclusión afirmativa (truth=0) y reconciliar la representación de la estipulación con el maestro DGP y el contrato del paquete analítico. Solo después podrá especificarse el mecanismo de asignación de estados y, en una etapa posterior, el modelo de observación.
+El siguiente gate no es generar unidades ni fuentes. Es cerrar el alcance semántico que permite una exclusión afirmativa (truth=0) y reconciliar la representación de la estipulación con el maestro DGP y el contrato del paquete analítico. El mecanismo de estipulación ya queda resuelto por DEC-C10-095. Permanecen como gates separados la representación técnica, la población/roster y el modelo de observación.
 
 Este documento no modifica main, RMA, Evidence→Claim Matrix, STATUS, decisiones aceptadas, población, estimandos ni el DGP ejecutable. No crea roster, IDs, truth, fuentes, cobertura, fixtures o código. No ejecuta validadores, DGP, simulación ni replay.
 
