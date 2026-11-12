@@ -6150,3 +6150,120 @@ Queda cerrada la **especificación lógica de roles mínimos C1/C3**, reutilizan
 **Dictamen:** MINIMUM_C1_C3_CELL_ROLES_SPECIFIED / EXISTING_WORLD_ROSTER_REUSED / CELL_LEVEL_CONFIGURATION_OPEN / ITT_G_ASSIGNMENT_AND_THETA_A_TRUTH_SEPARATION_REQUIRED / BOUNDS_ANALYZER_GAP_OPEN / NO_CODE_CHANGE / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** auditar la coherencia del contrato de verdad del Generator/Evaluator con los tres objetos ITT-D2, contraste G y θ_A(g_A), y definir su representación sin fugas al Analyzer. Reutilizar TruthBundle/AnalyzerResult/Evaluator existentes como artefactos a revisar; no implementar código todavía.
+
+
+---
+
+## 16.226. Gate 73 — contrato formal de los tres objetos de verdad y de la intervención focal g_A (2026-11-12)
+
+**Precedencia:** §§16.211, 16.223, 16.225 y contrato DGP temporal/roles §§3–6. Reutiliza roster, clases de mundo, ledger y objetos de intercambio existentes. No crea mundos, no redefine Outcome/Value/V_cont, no modifica estimandos generales C10-D1 y no implementa código.
+
+### 16.226.1. Decisión central
+
+Se distinguen tres objetos causales, que no pueden compartir un único campo de truth ni ser intercambiados:
+
+1. **ITT-D2 / ITT-Z:** efecto total de asignar la política D2.
+2. **Contraste de asignación G bajo Z=0:** efecto de asignar G dentro del régimen Z=0. Se denomina **ITT_G|Z=0**; no se denomina efecto de accesibilidad.
+3. **Efecto focal θ_A(g_A):** contraste entre dos intervenciones explícitas g_A1 y g_A0 sobre el vector completo ΔT_acc*, bajo una misma población objetivo y un mismo régimen no focal q*.
+
+El Generator produce las tres verdades desde el mismo DGP y exógenos coherentes. El Evaluator las conserva y adjudica por separado. El Analyzer no recibe ninguna.
+
+### 16.226.2. Definiciones contrafactuales
+
+Sea Y_i el resultado del estimando correspondiente.
+
+**A. Efecto total de asignación Z**
+
+ITT_Z = E[Y_i(Z=1)] − E[Y_i(Z=0)].
+
+Es el contraste marginal de asignación a las políticas D2, promediado sobre la distribución de G que defina el diseño factorial o sobre el régimen de G expresamente fijado. La elección debe constar en el contrato; no queda implícita. Conserva las vías causales que formen parte del paquete asignado.
+
+**B. Contraste de asignación G dentro de Z=0**
+
+ITT_G|Z=0 = E[Y_i(Z=0,G=1)] − E[Y_i(Z=0,G=0)].
+
+Es un efecto de asignación/manipulación G bajo Z=0. Incluye todas las consecuencias de G: cambios efectivos en el vector, fallos de provisión, cambios en otras variables y cualquier vía directa o colateral permitida por el DGP. Su identificación por aleatorización de G requiere positividad, consistencia, ausencia de interferencia (o estimando de exposición compatible), medición y asignación válidas dentro de Z=0.
+
+**C. Efecto focal de la intervención sobre el vector completo**
+
+Sea A_i = ΔT_acc,i* el vector focal completo, sin reducirlo a una coordenada, a un indicador de éxito ni a la asignación G. Sean g_A1(a|h) y g_A0(a|h) dos intervenciones explícitas sobre ese vector, condicionadas por la historia basal admisible h. Sea q* la distribución objetivo común de esas historias y sea r_common el régimen no focal común que fija las condiciones no focales pertinentes.
+
+θ_A(g_A;q*,r_common) = E_{H~q*}[ E{Y_i^{g_A1,r_common} | H} − E{Y_i^{g_A0,r_common} | H} ].
+
+Las dos intervenciones deben especificarse como reglas sobre el vector completo, incluida su distribución conjunta, factibilidad y soporte. r_common debe ser idéntico en ambos brazos contrafactuales; no puede ocultar cambios colaterales inducidos diferencialmente. El resultado incluye los mecanismos downstream que el DGP defina como consecuencia de la accesibilidad intervenida, pero no vías ajenas al vector focal que se atribuyan indebidamente a él.
+
+La ecuación define un estimando; no afirma que esté identificado por el diseño actual. q*, g_A1, g_A0 y r_common deben recibir identidades/versiones y definición de soporte antes de materializar una celda confirmatoria.
+
+### 16.226.3. Relación entre ITT_G y θ_A: criterio de equivalencia
+
+ITT_G|Z=0 = θ_A(g_A;q*,r_common) solo puede sostenerse si se acreditan conjuntamente:
+
+- G implementa exactamente la comparación g_A1 frente a g_A0 sobre el vector completo ΔT_acc*, o existe una identificación válida que transporte del mecanismo G a esas intervenciones;
+- no hay vía directa G→Y que no opere a través del vector focal intervenido;
+- G no altera diferencialmente condiciones no focales ni abre vías colaterales fuera de r_common;
+- el régimen no focal y la distribución objetivo son comunes y coherentes;
+- existe soporte/factibilidad de ambas intervenciones en toda historia con masa positiva bajo q*;
+- consistencia, versiones, medición, asignación e interferencia están resueltas.
+
+Si cualquiera de estas condiciones falla o no puede verificarse, el contraste G conserva su identidad como ITT_G|Z=0, pero no se renombra ni se utiliza como θ_A. La salida focal será NOT_IDENTIFIED/INDETERMINATE, o PARTIALLY_IDENTIFIED únicamente cuando exista un contrato de bounds implementado y validado.
+
+No se calcula θ_A mediante una división automática por la primera etapa de G. Un estimando local tipo Wald requeriría un contrato IV distinto, con unidad de cumplimiento, tratamiento focal, monotonicidad, exclusión, relevancia, independencia, interferencia y población local explícitos. C3/θ_A no se convierte por defecto en LATE_f.
+
+### 16.226.4. Auditoría del Generator existente
+
+La inspección estática de 03_EXPERIMENTS/C10-S/harness/vcont_integrated_harness.py (blob SHA 2dafb9cdc4a6e0b5b6d686acc74bdecc71dbead4) confirma:
+
+- potential_v está indexado como [unit][z][g];
+- potential_delta_t_acc conserva cuatro coordenadas por unidad y régimen [z][g];
+- itt_package_truth se calcula como contraste Z promediado sobre G;
+- theta_access_truth se calcula como contraste G bajo Z=0;
+- cada coordenada de delta_vector depende de g, provision_ok y umbrales exógenos; G no fuerza necesariamente un vector completo fijo;
+- focal_direct_effect permite una vía directa G→resultado; R2 puede introducir una alternativa cuyo mecanismo depende de Z.
+
+Consecuencia: el objeto actualmente denominado theta_access_truth es semánticamente ITT_G|Z=0. El nombre induce una equivalencia que el DGP no garantiza. El contraste de G puede ser válido como efecto de asignación, pero no es por ello la verdad de θ_A.
+
+El arreglo futuro no consiste en renombrar solamente el campo. El Generator debe construir, usando el mismo DGP y exógenos comunes, la verdad contrafactual bajo g_A1 y g_A0 con r_common, además del contraste G. El mecanismo de intervención debe actuar sobre el vector completo y recomputar sus consecuencias downstream conforme a las ecuaciones del DGP. No se inventa una familia de mundos nueva: se evalúan intervenciones contrafactuales dentro de las clases existentes.
+
+### 16.226.5. Representación lógica de los artefactos (sin implementación)
+
+**TruthBundle** debe conservar campos semánticamente separados:
+
+- itt_z_truth + definición del régimen G marginal/condicional y población;
+- itt_g_z0_truth + definición de la asignación G y régimen Z=0;
+- theta_a_truth + IDs/versiones de g_A1, g_A0, q*, r_common, vector focal, horizonte y población;
+- potenciales o referencias reproducibles suficientes para auditar cada contraste, incluyendo resultados bajo las intervenciones focales;
+- provenance, DGP/config/version y vínculo con el mismo run_id.
+
+Los nombres actuales itt_package_truth y theta_access_truth no se aceptan como contrato final sin esta desambiguación. La migración/aliasado será explícita y versionada; no se sobrescriben silenciosamente significados históricos.
+
+**AnalyzerResult** debe separar, por estimando:
+
+- itt_z_estimate/status/uncertainty;
+- itt_g_z0_estimate/status/uncertainty;
+- theta_a_estimate/status/uncertainty, solo si evidencia y contrato permiten identificarlo;
+- razones de abstención y soporte por estimando, sin derivar el estado de uno a partir de otro.
+
+El Analyzer no recibe TruthBundle, potenciales, parámetros ocultos, semillas ni etiquetas de celda. Que el contrato visible describa g_A no le revela la verdad del DGP.
+
+**Evaluator** abre truth únicamente después del sellado del AnalyzerResult y compara cada salida con su propia verdad, sin sustituir una por otra. Debe detectar la atribución falsa ITT_G|Z=0 → θ_A, la estimación puntual focal sin identificación y la abstención indebida en controles positivos identificables.
+
+### 16.226.6. Consecuencias para las celdas Gate 71
+
+No se añaden celdas ni clases. Se precisan las verdades que deben figurar en las celdas ya definidas:
+
+- C1-POS/NULL/NEG/HET/ABSTAIN se adjudican contra itt_z_truth.
+- C3-POS/NULL/NEG/HET/ABSTAIN se adjudican contra theta_a_truth, nunca contra itt_g_z0_truth por defecto.
+- C1-DECOUPLED debe mantener itt_z_truth no nulo y theta_a_truth nulo o no identificable, con itt_g_z0_truth registrado aparte.
+- Debe conservarse al menos un contraste en que la primera etapa de G sobre el vector focal sea nula y el ITT-Z no nulo por una vía de paquete no focal, si la clase existente y sus rangos admitidos lo permiten.
+- Una vía directa de G o una modificación diferencial de la rama no focal debe producir desacoplamiento/no-identificación focal, no una θ_A espuria.
+- La heterogeneidad se conserva por historia/estrato y como efecto marginal bajo q*; no se valida solo por el promedio.
+
+### 16.226.7. Dictamen y límites
+
+**Cerrado en este gate:** contrato semántico de los tres objetos de verdad; definición contrafactual de θ_A sobre el vector completo; criterio de equivalencia entre ITT_G y θ_A; diagnóstico del campo mal denominado en el harness; representación lógica mínima y reglas de firewall.
+
+**Sigue abierto:** elección/versionado de g_A1/g_A0, q* y r_common; materialización de potenciales focales en TruthBundle; definición de estimadores y condiciones observables de identificación; bounds/identificación parcial; soporte por historia; mapping de celdas a parámetros; pruebas de Analyzer/Evaluator. No se declara identificación ni diseño congelado.
+
+**Dictamen:** THREE_TRUTH_OBJECTS_SEMANTICALLY_SEPARATED / THETA_A_DEFINED_AS_FULL_VECTOR_INTERVENTION / CURRENT_G_CONTRAST_NOT_EQUIVALENT_BY_DEFAULT / GENERATOR_EVALUATOR_REPRESENTATION_SPECIFIED / CELL_PARAMETERIZATION_OPEN / BOUNDS_OPEN / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** Gate 74 — traducir estas definiciones a un contrato de potenciales y estimadores verificable por escenario: especificar qué observaciones/variación identifican cada uno de ITT-Z, ITT-G|Z=0 y θ_A; qué condiciones se verifican con evidencia observable; y cuándo la salida obligatoria es abstención. No implementar todavía el estimador ni ampliar el roster.
