@@ -1335,3 +1335,21 @@ El roster §16.205 del plan es un esquema de tipos de fuente/registro sintético
 Solo se incorporan entidades y mecanismos necesarios para poner a prueba un contraste, supuesto, falsador, vía causal, interacción o fallo de identificación. La complejidad y el realismo operativo no son objetivos autónomos. Se mantiene el universo finito, las cardinalidades y los parámetros numéricos abiertos hasta justificar su necesidad y cobertura.
 
 **Estado:** ABSTRACT_DOMAIN_ONLY / NO_REAL_MIGRATION_CASE / SYNTHETIC_SOURCE_SCHEMA / GENERATOR_ANALYZER_EVALUATOR_SEPARATION_REQUIRED / NO_EXECUTION.
+
+## 59. Universo finito de mundos y coherencia de las funciones generadoras (2026-11-12)
+
+El universo del benchmark se define como un conjunto finito de **mundos causales sintéticos** `w`, cada uno con versión, unidad(es), régimen, funciones estructurales, exógenas compartidas, soporte y reglas de observación. No representa una migración real ni requiere correspondencia con plataformas, datos o infraestructura externa.
+
+**Ontología mínima candidata, heredada del inventario:** `S0/S1/S2/SF`; `F1/F2/A1/A2`; `F1→F2` y `A1→A2`; predicados `ID/REL/COND/AUTH/RES/DEP/BLOCK`, `App`, `A_f*`, `D_f*`; `T_acc*`, `ΔT_acc*`, Reach/Π; etapas D2; trayectoria, O-CONF, `V_cont` y Value (este último bloqueado hasta PA). Las cardinalidades, G, H, rutas extra y versiones no se fijan por este contrato. H=3 y cuatro transformaciones siguen candidatos, no freeze.
+
+R0–R3 del inventario definen perfiles de topología/alternativas/provisión. No sustituyen la taxonomía causal PD §4: los mecanismos focales nulos/adversos, directos, colaterales, interacciones, IV adversarial, interferencia, observación diferencial, soporte y missingness se superponen selectivamente, sin factorial completo ni IDs nuevos. Cada mundo debe indicar perfil base, mecanismo(s) activado(s), contraste y falsador que cubre.
+
+Para cada unidad se definen funciones estructurales versionadas sobre una historia basal conjunta y exógenas compartidas `U_i` (o `U_c` en asignación/exposición de clúster). Todos los potenciales bajo regímenes alternativos se derivan de esas mismas funciones; no se generan potenciales independientes sin restricciones de coherencia. La dependencia entre asignación, programación, intento, receipt, instalación, `C_dep*`, predicados de accesibilidad, cambio completo `ΔT_acc*`, Reach, trayectorias y resultados se declara por mecanismo. No se asumen independencia, monotonicidad, exclusión, soporte, no interferencia ni mediación serial.
+
+Generator primero produce truth estructural y potenciales; después produce evidencia sintética imperfecta condicionada por truth, régimen, unidad, tiempo y versión. Analyzer recibe únicamente evidencia observada permitida y sellada, nunca truth ni parámetros ocultos. Evaluator accede a truth tras el sellado. Los identificadores, hashes, timestamps, owners, locators y snapshots del roster son metadatos sintéticos reproducibles cuando sean necesarios; no se recopilan fuentes externas.
+
+Los mundos de control deben permitir recuperación de efectos conocidos; los adversariales deben probar nulo, signo adverso, vías directas/colaterales, alternativas, interacción, heterogeneidad, IV débil/nulo, interferencia, falta de soporte, error diferencial y no-identificación. La suficiencia se juzga por la capacidad de recuperar/refutar la contribución causal de `ΔT_acc*` al resultado de interés, no por realismo de migración ni solo por reconstrucción de objetos.
+
+O-CONF, `V_cont` y Value se generan y adjudican separadamente. Value no se sustituye por Outcome ni por continuidad; su DGP y estimandos permanecen bloqueados hasta que PA proporcione la regla aprobada. No se asignan distribuciones, tasas, cardinalidades, N, R, α, MDE ni parámetros numéricos en esta sección.
+
+**Estado:** FINITE_WORLDS_SCHEMA / COMMON_EXOGENOUS_POTENTIALS_REQUIRED / SELECTIVE_MECHANISM_COVERAGE / VALUE_PA_GATE / NOT_IMPLEMENTED / NOT_EXECUTED.
