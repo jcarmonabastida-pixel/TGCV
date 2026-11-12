@@ -297,3 +297,14 @@ El contrato de datos debe poder representar la familia causal de transición (EN
 Los episodios que sigan activos en T* se registran como terminales/censurados; no se imputan como recuperados. El firewall debe impedir que Analyzer acceda a truth, potenciales, parámetros/semillas reservados o metadata que reconstruya estados.
 
 **Estado:** TEMPORAL_TRUTH_OBSERVATION_SPLIT_DEFINED / PHYSICAL_SCHEMA_OPEN / FIREWALL_NOT_IMPLEMENTED / NO_EXECUTION_AUTHORIZED.
+
+
+## 18. Contrato de normalización temporal y captura S3 (2026-11-12)
+
+El schema lógico futuro debe poder expresar, sin imponer aún campos físicos: (a) reloj de truth/event_time; (b) coordenada adimensional x=(t−t0)/W_c con t0=0, t_c,max=1; (c) episodios y familia causal; (d) rejilla V_cont [0,1+ρ_follow], K y Δ; (e) captura S3 por componente, mecanismo, timestamp, fase, cobertura, lag, pérdida y provenance; (f) estados observados 1/0/?; y (g) terminal/censura.
+
+S3 permanece pasivo y separado de truth. Los mecanismos snapshots/métricas, logs/trazas/eventos e híbrido son variantes de captura dentro de S3 existente, no fuentes nuevas. No se presume independencia entre componentes ni completitud. Analyzer solo recibe la proyección S3 permitida; no recibe W_c físico, truth, potenciales, semillas ni parámetros reservados que permitan reconstrucción.
+
+El contrato debe preservar d_min,DGP como frontera del soporte sintético, nunca tolerancia funcional; δ_det como curva condicionada al canal y umbral p*; y Δ/cadencia S3/τ_follow como parámetros separados. Sin umbral aprobado o canal identificable, salida bounds/abstención. No se fija schema físico, tecnología, tasa, K ni frecuencia, y no se autoriza implementación.
+
+**Estado:** LOGICAL_TIME_SCHEMA_DEFINED / PHYSICAL_SCHEMA_OPEN / S3_CHANNEL_UNCALIBRATED / FIREWALL_NOT_IMPLEMENTED / NO_EXECUTION_AUTHORIZED.
