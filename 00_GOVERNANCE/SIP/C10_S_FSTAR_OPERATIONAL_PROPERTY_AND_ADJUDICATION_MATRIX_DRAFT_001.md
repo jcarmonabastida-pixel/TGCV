@@ -225,3 +225,36 @@ El Generator conserva hidden_truth y potenciales. El Analyzer no recibe hidden_t
 FP-01…FP-07 son dimensiones funcionales no compensatorias; FP-08 es un gate probatorio separado. UNKNOWN por falta de evidencia/cobertura no se convierte en 0 ni NA; NA requiere inaplicabilidad ex ante en IAM. Un PASS de una etapa local no equivale a F*=1 de ruta completa.
 
 **Estado:** arquitectura del criterio definida y familias aceptadas; reconciliación atómica, requiredness por instancia, C0/G/H, mappings, tolerancias, oráculo, validación y evidencia siguen OPEN. Esta matriz no afirma implementación, validación ni ejecución.
+
+
+
+## 22. N16 — integración terminal F*/O-CONF y ficha §224 (2026-11-12)
+
+La reconciliación vigente del plan C10-S §16.184 precisa la aplicación de esta matriz sin sustituirla ni convertirla en oráculo implementado.
+
+### 22.1. Criterio, resultado y evidencia
+
+F* es el criterio común de ruta completa; O-CONF es el resultado terminal de adjudicar una instancia/ruta exacta contra ese criterio. No se cuentan como dos Outcomes. FP-01…FP-07 son dimensiones funcionales no compensatorias. FP-08 es gate de validez probatoria separado: su fallo no cambia la truth funcional, pero puede dejar la adjudicación observada no válida/no evaluable.
+
+### 22.2. Unidad y ancla terminal
+
+La unidad lógica es instancia de configuración × ruta. La ruta F se ancla en F2_DST_APPLIED; la ruta A, en A2_DST_APPLIED, usando el snapshot post-aplicación/post-check exigido por DEC-C10-087. No se infiere aplicación desde *_DST_DECL, artefacto preparado, exit code o log aislado. Snapshot, evento terminal, timestamp, route_id y mapping al reloj DGP siguen abiertos.
+
+### 22.3. Regla de O-CONF
+
+- 1: todos los predicados obligatorios aplicables FP-01…07 son 1 y el conjunto no está vacío.
+- 0: al menos un predicado obligatorio aplicable es 0, demostrado con evidencia/cobertura suficiente.
+- ?: sin fallo obligatorio confirmado, al menos un predicado obligatorio aplicable es desconocido/no comparable/insuficientemente cubierto.
+- SCOPE_ERROR/NOT_EVALUABLE: conjunto obligatorio vacío o cardinalidad constitutiva incumplida.
+
+NA requiere IAM pre-Z/B justificado. La falta de observación no demuestra 0 ni NA. FP-08 se reporta aparte; cuando impide validar evidencia, la salida observada es no válida/no evaluable sin recodificar la truth como 0. Se preservan vectores por predicado y la regla anti-doble-conteo FP-01…05/FP-07.
+
+### 22.4. Alcance aceptado frente a pendiente
+
+PAR-SVC-ENABLED/PROFILE y RUL-SVC-ENABLE-PROFILE-01 tienen contratos semánticos aceptados dentro de su alcance (DEC-C10-083…086); FP-06/07/08 y las etapas aplicadas se rigen por DEC-C10-087/088. La reconciliación SM-01…SM-10↔FP global sigue propuesta; no se extrapola la aceptación PAR/RUL a todo CMP/REF/MET ni a FP-04/05. C0 aceptado es binding lógico de cobertura, no C0 ambiental material. G/H, IAM poblado, mappings, tolerancias, oráculo, snapshots, error y cobertura siguen OPEN.
+
+### 22.5. Oráculo y PE
+
+El oráculo debe ser independiente, versionado/inmutable y aplicar criterios públicos a evidencia permitida; no lee truth ni potenciales y no cambia por Z/B/Outcome/Value. Generator mantiene truth; Analyzer recibe observaciones y, si el contrato lo requiere, O-CONF observado; Evaluator compara después del sellado. No existe implementación ni validación del oráculo; el firewall lógico no acredita ACL/custodia material.
+
+**Estado:** N16_RECONCILED_DOCUMENTARILY / OCONF_RULE_DEFINED_LOGICALLY / ORACLE_NOT_IMPLEMENTED_NOT_VALIDATED / IAM_AND_ATOMICS_PARTIAL / NO_EXECUTION_AUTHORIZED.
