@@ -1258,3 +1258,8 @@ Para cada mecanismo se modelan fase, lag, pérdida, cobertura, falsos positivos/
 Δ de adjudicación, cadencia/resolución S3, duración de episodio y cola de seguimiento son magnitudes distintas. K entero satisface Δ=(1+ρ_follow)/K en el reloj normalizado; K y ρ_follow se derivan por recuperación/aliasing y soporte de recuperación, no por H o t0…t9. Episodio activo en T* es terminal/censurado.
 
 **Estado:** NORMALIZED_COORDINATE_ONLY / STRICT_TRUTH / S3_CAPTURE_MODEL_OPEN / DETECTION_CURVE_OPEN / K_DELTA_TSTAR_OPEN / NO_EXECUTION.
+
+
+## 52. Horizonte común y última transición causal (2026-11-12)
+
+t_last,i denota la última transición efectiva de cada UE; t_last^max=t_c,max es el límite superior común del soporte de transiciones causales posibles entre brazos/escenarios. Para preservar una ventana común y ex ante, T*=t_last^max+τ_follow, no t_last,i+τ_follow calculado retrospectivamente por unidad. El seguimiento desde la última transición de cada UE hasta T* permite observar persistencia; los episodios activos al cierre quedan terminales/censurados. Si no se puede acotar el soporte de transiciones, T* no se considera cerrado.
