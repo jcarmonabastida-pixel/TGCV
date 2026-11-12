@@ -94,3 +94,11 @@ Accepted working design decision on the research branch; not Design Freeze, impl
 - Adjudication contract: `C10_S_B1_PREZ_ADJUDICATION_AND_CONSEQUENCE_RECONCILIATION_DRAFT_001.md`.
 - Cohort acceptance: DEC-C10-096.
 - Truth composition/exclusion acceptance: DEC-C10-095 and the B1/Need exclusion decision record.
+
+
+
+## 9. Specialization by DEC-C10-098 — expected S7 opportunity frame
+
+DEC-C10-098 subsequently closes the second open gate in §6 for the focal B1/Need_preZ semantic declaration: the expected-source universe contains one logical S7 opportunity per UE in the approved B1/Need validation census. The opportunity is enumerated and sealed ex ante; its existence is not conditional on truth, Z/D2, evidence discovery, emission, capture or adjudication.
+
+This specialization does not close the observation dependency graph, emission/content/capture parameters, scenario support, statistical adequacy, physical source format or implementation gates. It does not alter any rule in §§1–8. All source-opportunity, evidence, coverage and adjudication semantics remain subject to DEC-C10-097.
