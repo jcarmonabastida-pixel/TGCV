@@ -5018,3 +5018,25 @@ El roster queda **especificado como contrato de captura**, pero **no materializa
 **Gate para el siguiente bloque:** no especificar distribuciones conjuntas de `ID/REL/COND/AUTH/RES/DEP/BLOCK` como si fueran empíricas hasta (a) declarar el universo finito de fuentes/unidades/versiones por construcción del DGP, (b) asignar verdad sintética en Generator a partir de reglas explícitas, (c) definir observación imperfecta separada para Analyzer y (d) fijar cobertura/adjudicación en Evaluator. El DGP puede estipular mundos sintéticos; no puede presentarlos como inventario real del microdominio.
 
 **Dictamen:** SOURCE_ROSTER_SCHEMA_SPECIFIED / SOURCE_INVENTORY_NOT_MATERIALIZED / U_G_COVERAGE_NONE / NO_NUMERIC_PARAMETERS / NO_DESIGN_FREEZE / NO_EXECUTION.
+
+## 16.206. Corrección de alcance: DGP abstracto, no caso real de migración (2026-11-12)
+
+**Precedencia interpretativa:** se preservan DEC-C10-051/052 y la selección del microdominio lógico de configuración/migración como andamiaje semántico del benchmark. La aclaración expresa del usuario es que C10-S **no es un caso real de migración** ni pretende representar, reconstruir o validar una migración de producción. El microdominio es una gramática de juguete controlada para generar mundos sintéticos; no un objeto de estudio empírico ni una especificación de despliegue real.
+
+### 16.206.1. Consecuencias obligatorias
+
+1. No buscar ni recopilar SBOM, runtimes, APIs, ACL, hosts, servicios externos, cuotas, logs, snapshots o infraestructura reales. No exigir acceso a plataformas, software, entornos, proveedores ni expertos de migración.
+2. Los términos CMP/PAR/REF/RUL/MET, P0/P1/P2, F1/F2/A1/A2, B-M01…15, N/E y S_preB/S_postB/S_rollback/S_routeA designan clases, roles y registros **sintéticos** dentro del DGP, salvo que un artefacto se identifique explícitamente como metadato del propio experimento. No presuponen que exista un sistema real correspondiente.
+3. El roster §16.205 se reinterpreta como **esquema de entidades y fuentes sintéticas que Generator instancia** y como contrato de evidencia sintética que Analyzer recibe; no como inventario de fuentes reales pendientes de recuperar. `source_locator`, `owner`, `capture_time` y `hash` se sustituyen/representan con identificadores y procedencia sintéticos reproducibles cuando no exista una fuente externa real.
+4. Las superficies P1 son variables abstractas del entorno causal (dependencias, autorización, recursos, interfaces, bloqueos, observabilidad, etc.). Solo se incluyen cuando sirven para representar una vía causal, alternativa, colateral, interacción o mecanismo de observación que el experimento deba probar.
+5. La complejidad no se añade para ganar realismo operativo. Cada entidad, relación, condición o dimensión debe justificar qué hipótesis, estimando, mecanismo, falsador o fallo de identificación permite probar. El núcleo mínimo debe mantenerse finito y parsimonioso.
+6. El Generator asigna la truth estructural y potencial por reglas explícitas; produce después evidencia observada con cobertura/error/missingness controlados. Analyzer no ve truth ni parámetros causales ocultos. Evaluator abre truth tras sellar la salida del Analyzer.
+7. El benchmark debe contener mundos de control donde el método deba recuperar efectos conocidos y mundos adversariales donde deba detectar nulos, signos adversos, vías directas/colaterales, alternativas, interacciones, heterogeneidad, interferencia, weak/null IV, falta de soporte, error y no-identificación. La migración no es el resultado a medir: lo es la capacidad metodológica de reconstrucción e inferencia causal-transformacional.
+
+### 16.206.2. Relectura del estado del roster
+
+Se retira la interpretación de §16.205.4 como necesidad de recuperar fuentes reales. El roster está **definido como contrato de modelado**, pero falta instanciar el universo sintético finito y sus reglas de generación. `NONE`/`?` describen ausencia de una instancia/verdad/evidencia definida en el borrador actual, no una deficiencia de recopilación de datos reales. B-M13 (oráculo) y B-M14 (alternativa) son roles sintéticos protegidos contra contaminación del Analyzer/Generator según el contrato de roles; su separación se verifica en el diseño, no inspeccionando sistemas externos.
+
+**Gate correcto:** especificar la ontología finita del mundo sintético, los mecanismos generadores y los canales de observación/adjudicación. No abrir una fase de trabajo de campo ni exigir fuentes reales. No fijar todavía cardinalidades o parámetros numéricos no justificados.
+
+**Dictamen:** ABSTRACT_SYNTHETIC_BENCHMARK_SCOPE_CLARIFIED / REAL_MIGRATION_CASE_NOT_IN_SCOPE / SYNTHETIC_ROSTER_INSTANTIATION_OPEN / NO_EXECUTION.
