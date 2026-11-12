@@ -471,3 +471,82 @@ El filtro de expediente admisible no modifica retrospectivamente la pertenencia 
 - No se modifican DEC-C10-095/096/097/098 ni se crea una nueva decisión aceptada. Esta asignación es una propuesta para revisión, no un freeze ni autorización de materialización/ejecución.
 
 **Dictamen provisional:** ERROR_MODES_CLASSIFIED_BY_EVALUATION_PURPOSE / CONFIRMATORY_DOMAIN_PROPOSED / SENSITIVITY_AND_ADVERSARIAL_SEPARATED / SUPPORT_AND_PARAMETERIZATION_OPEN / NOT_IMPLEMENTED / NOT_EXECUTED.
+
+
+## 18. Soporte de las combinaciones truth–contenido S7 y alcance de los contrastes (propuesta)
+
+### 18.1 Matriz semántica de cuatro combinaciones
+
+La relación entre truth reservada y contenido declarativo debe examinarse como una matriz cruzada, sin confundir el contenido de la fuente con la adjudicación E1/E2:
+
+| Truth reservada | Contenido S7 afirmativo de inclusión | Contenido S7 afirmativo de exclusión |
+|---|---|---|
+| Need_truth=1 | Concordancia semántica | Inversión positiva (discordancia) |
+| Need_truth=0 | Inversión negativa (discordancia) | Concordancia semántica |
+
+La matriz tiene cuatro celdas lógicas. No representa cuatro fuentes ni cuatro oportunidades por UE: DEC-C10-098 mantiene una única oportunidad S7 por UE. Tampoco representa cuatro estados de salida del adjudicador. E1 y E2 reciben el contenido visible y producen cada uno su propia salida observed=1/0/?; solo después del sellado se compara con truth.
+
+Las declaraciones ambiguas, no emitidas, perdidas o inadmisibles no pertenecen a ninguna de las dos columnas afirmativas. Deben conservar sus estados propios y no imputarse a inclusión o exclusión.
+
+### 18.2 Tres preguntas científicas diferentes
+
+La matriz permite distinguir tres objetos que no deben colapsarse:
+
+1. **Mecanismo de observación S7:** qué contenido produce el canal para cada estado basal y bajo qué condiciones de emisión/captura. La discordancia truth–contenido es un error semántico del canal, no todavía un error de E1/E2.
+2. **Interpretación de E1/E2:** si cada adjudicador interpreta correctamente una declaración afirmativa admisible de inclusión o exclusión. La evaluación de esta capacidad requiere que ambas polaridades sean observables en los expedientes que se le presentan.
+3. **Clasificación Need respecto de truth:** si la salida observada de cada adjudicador coincide con truth. Depende conjuntamente del canal y de la adjudicación; no identifica por sí sola cuál de ambos produjo la discordancia.
+
+Un adjudicador puede interpretar correctamente una declaración de exclusión y aun así discrepar de truth=1 porque S7 produjo una declaración errónea. Inversamente, una declaración concordante no prueba por sí sola que el adjudicador haya aplicado correctamente las reglas: se debe conservar su salida individual y rationale.
+
+### 18.3 Regla para el escenario confirmatorio censal
+
+El escenario confirmatorio conserva el censo completo del roster B1/UE aprobado y una oportunidad S7 por UE. No se seleccionan unidades ni se altera la estipulación para llenar celdas.
+
+El mecanismo generador podrá producir contenido concordante o discordante conforme a un modelo de observación explícito y justificado. La dependencia del contenido respecto de truth solo podrá operar a través del mecanismo S7 especificado; queda prohibido copiar directamente need_truth_state, exponer truth_basis_ref o utilizar metadatos que revelen la etiqueta reservada. No se presupone independencia estadística del canal respecto de truth ni se fija una tasa de error.
+
+Después de generar y sellar el expediente, se informa el soporte realmente observado en las cuatro celdas, junto con:
+- unidades truth=1 y truth=0 del censo;
+- oportunidades S7 esperadas, emitidas y capturadas;
+- contenido afirmativo de inclusión y de exclusión;
+- expedientes admisibles, ambiguos, parciales, perdidos y bloqueados;
+- salidas E1 y E2 por separado, incluyendo observed=? y ausencia de salida.
+
+La ausencia de una celda se declara **CELL_SUPPORT_MISSING** para el contraste correspondiente. No se corrige añadiendo unidades, reetiquetando truth, reasignando contenido después de observar resultados, duplicando documentos ni seleccionando una subcohorte. El censo y el ITT permanecen intactos.
+
+### 18.4 Qué soporte es necesario para cada afirmación
+
+| Afirmación o contraste | Soporte mínimo que debe verificarse | Consecuencia si falta |
+|---|---|---|
+| E1/E2 interpretan inclusión | Expedientes admisibles con contenido afirmativo de inclusión | No evaluable para esa polaridad |
+| E1/E2 interpretan exclusión | Expedientes admisibles con contenido afirmativo de exclusión | No evaluable para esa polaridad |
+| El canal puede producir discordancia cuando truth=1 | Celda truth=1 / exclusión | No se evalúa inversión positiva en el confirmatorio |
+| El canal puede producir discordancia cuando truth=0 | Celda truth=0 / inclusión | No se evalúa inversión negativa en el confirmatorio |
+| Rendimiento binario E1/E2 frente a truth | Truth 1 y 0, salidas observed 1/0 y cobertura/abstención informadas | Bloqueo de métricas binarias si falta una clase; límites explícitos si faltan otras celdas |
+| Recuperación conjunta del canal y adjudicador | Soporte de las cuatro celdas y trazabilidad separada de contenido y salidas | No atribuir la fuente de error ni afirmar recuperación completa |
+
+La presencia de ambas polaridades permite estudiar la interpretación de contenido, pero no garantiza por sí sola soporte para las dos inversiones semánticas. A su vez, el soporte de las cuatro celdas no demuestra suficiencia estadística, potencia, precisión ni representatividad. Esos gates continúan bajo los contratos estadísticos existentes (P177/P178/P182/P183).
+
+### 18.5 Pruebas controladas de interpretación: alcance y límites
+
+Si el roster confirmatorio no contiene las cuatro celdas, puede considerarse en una fase posterior una comprobación controlada de interpretación semántica con casos de prueba explícitamente etiquetados por contenido visible, sin acceso del adjudicador a truth. Esa comprobación tendría un objetivo limitado: verificar que E1/E2 aplican correctamente la regla de inclusión/exclusión a expedientes válidos.
+
+No se debe presentar esa comprobación como:
+- soporte de prevalencia o frecuencia de errores del canal;
+- estimación de sensibilidad/especificidad poblacional;
+- sustituto del censo de validación B1/UE;
+- evidencia de rendimiento confirmatorio conjunto;
+- fuente adicional S7 ni segunda oportunidad por UE.
+
+Su diseño, ubicación dentro del catálogo existente, independencia de los expedientes confirmatorios y posible reutilización de contratos de prueba MEAS/P182 quedan OPEN. No se crean ahora fixtures, IDs, casos materiales ni una nueva familia de tests.
+
+### 18.6 Dictamen provisional y gates pendientes
+
+- La matriz de cuatro combinaciones queda definida como marco de diagnóstico semántico.
+- El escenario confirmatorio no está obligado a contener artificialmente las cuatro celdas; debe reportar el soporte que efectivamente produzca el mecanismo justificado sobre el censo congelado.
+- La falta de soporte bloquea únicamente la afirmación/contraste que requiere esa celda; no autoriza alterar roster, truth o contenido.
+- Las pruebas controladas de interpretación, si se justifican, permanecen separadas de la estimación confirmatoria del canal y del rendimiento conjunto.
+- No se fijan prevalencias, tasas, probabilidades, asignaciones, dependencias ni tamaños.
+- No se modifica DEC-C10-095/096/097/098, la definición de cohorte, la oportunidad S7, los seis artefactos lógicos ni el catálogo de pruebas.
+- No se materializa ni ejecuta.
+
+**Dictamen provisional:** FOUR_CELL_SEMANTIC_CROSSWALK_DEFINED / CONFIRMATORY_SUPPORT_EMPIRICAL_TO_ROSTER / NO_POST_HOC_CELL_FILLING / CONTROLLED_INTERPRETATION_TESTING_OPEN / PARAMETERIZATION_OPEN / NOT_IMPLEMENTED / NOT_EXECUTED.
