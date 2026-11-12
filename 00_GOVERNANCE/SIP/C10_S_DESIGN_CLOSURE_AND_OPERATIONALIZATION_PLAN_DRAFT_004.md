@@ -2776,3 +2776,14 @@ El CSV y el manifiesto del replay son byte-identical a los del primario: SHA-256
 **Consecuencia:** se cierra la reproducibilidad computacional del benchmark P178 acotado. No se amplía su dominio de validez: siguen fuera weak-signal, vías directas, fallo de positividad, medición degradada, interferencia y abstención bajo no-identificación. No se valida la afirmación causal/value general ni la factibilidad confirmatoria C10-S. No se modifica el Analyzer; el probe de caché exacta permanece NO-GO. No se modifica `main`, RMA, Matrix, STATUS, Core ni claims; no se concede autorización adicional de ejecución.
 
 **Siguiente continuidad científica:** reanudar el cierre documental de Need_preZ sin recrear artefactos ya existentes. El protocolo U_G §3–7 ya define S1–S8, provenance, cobertura por dimensión/denominador y reglas 1/0/?; el inventario Need_preZ ya contiene el crosswalk de fuentes candidatas y el dictamen COVERAGE_NONE / observed ? / BLOCKED. Por tanto, no procede duplicar un catálogo genérico. La brecha residual es material: roster B1/UE/instancia, objetivo basal individual pre-Z, fuentes admisibles versionadas y cobertura por unidad. Su captura/materialización requiere un alcance y autorización específicos; no se infiere de este cierre P178.
+
+
+## 16.167. Contrato mínimo de materialización DGP de Need_preZ (2026-11-12)
+
+**Artefacto rector:** `C10_S_B1_PREZ_MINIMUM_DGP_MATERIALIZATION_CONTRACT_DRAFT_001.md`.
+
+Se especifica la separación por unidad entre (i) truth Need_preZ reservada al generador, (ii) fuentes/evidencia pre-Z accesibles al adjudicador y (iii) clasificación observada 1/0/?. Se fija el binding lógico UE↔B1↔service instance versionado, sin asignar IDs ni crear roster. Se establecen requisitos de ancla temporal pre-Z, fuente semánticamente pertinente al objetivo B1, manifiesto de fuentes/cobertura, provenance, E1/E2 y evaluación truth-vs-observed solo después de sellar la salida observada.
+
+Se prohíbe inferir Need desde configuración técnica, ausencia de documento/solicitud, oportunidad estandarizada, Request_event, C_dep, A_f, Reach, Outcome o Value. En particular, observed=0 requiere evidencia afirmativa y cobertura negativa suficiente; un universo de documentos sin declaración no prueba por sí solo ausencia del objetivo. No se asigna Need=1 por defecto. Truth=?, missingness y observed=? permanecen diferenciados.
+
+**Estado:** DOCUMENTARY_SPECIFICATION / NOT_APPROVED / NOT_IMPLEMENTED / NOT_MATERIALIZED / NOT_EXECUTED. Prevalencia, mecanismo generador de truth, modelo de observación/error/missingness, fuentes concretas, roster, denominador y cobertura siguen OPEN/NONE. Se reutilizan EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_REGISTER y ADJUDICATION_REGISTER; no se crea tabla U_G ni clase de objeto. No se implementa ni ejecuta DGP; no se autoriza fixture, captura, simulación o Design Freeze. `scientific_execution=false`; `execution_authorized=false`.
