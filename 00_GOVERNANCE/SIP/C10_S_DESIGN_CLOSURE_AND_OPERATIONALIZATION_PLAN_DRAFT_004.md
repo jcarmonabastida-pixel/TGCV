@@ -3613,3 +3613,118 @@ Estos son candidatos de separación, no fixtures ni pruebas ejecutadas. Si el ci
 - **No se añaden:** nuevos tests, IDs, fuentes, roles, oportunidades, schemas físicos ni interfaces. No se ejecuta nada.
 
 **Estado:** `B1_SERVICE_FUNCTION_RECONCILED / FSTAR_TERMINAL_SCOPE_RECONCILED / V_CONT_TEMPORAL_SCOPE_DISTINCT_CONDITIONALLY / O_CONF_DISCRIMINATION_NOT_VERIFIED / NO_NEW_TESTS / EXECUTION_NOT_AUTHORIZED`.
+
+
+## 16.184. N16 — cierre documental integrado de F* y ficha §224 de O-CONF (2026-11-12)
+
+**Tipo:** reconciliación histórica y operacionalización documental; autoauditoría asistida, no independiente.  
+**Alcance:** F* común a F1→F2 y A1→A2; oráculo; adjudicación terminal O-CONF; relación discriminante con V_cont.  
+**No alcance:** aceptar el IAM material, inventar parámetros/predicados, implementar/validar oráculo, generar fixtures, ejecutar pruebas o autorizar Design Freeze.
+
+### 16.184.1. Precedencia histórica — reutilizar, no recrear
+
+Se recuperaron y cotejaron: DEC-C10-051/055/056/068–071/078/082–088; las fichas Opción A; matriz F* §§1–21; reconciliación SM-01…SM-10↔FP; IAM; decisiones de adjudicación PAR/RUL por etapa; PE Generator–Analyzer–Evaluator; C-Value §224 y su crosswalk actualizado en la matriz de Value. No se encontró una decisión posterior que sustituya el contrato común F* ni un oráculo implementado/validado.
+
+Quedan como precedencia:
+- Opción A y F* son el microdominio y criterio funcional de trabajo seleccionados; no reabrir esa elección.
+- FP-01…FP-08 son familias aceptadas como arquitectura. FP-01…FP-07 son dimensiones funcionales no compensatorias; FP-08 es validez probatoria/provenance separada.
+- Cardinalidad de clase base: CMP≥1, PAR≥1, RUL≥1; REF=0 solo con IAM pre-Z/B y cobertura exhaustiva; POL ausente por diseño en el núcleo mínimo; MET obligatorio para identidad/versionado/procedencia.
+- C0 está aceptado como binding lógico de cobertura a snapshot, no como integridad física ni como valores del contexto ambiental. Los siete stage_key son vocabulario cerrado y no equivalen al reloj DGP ni a SNAPSHOT.phase.
+- PAR-SVC-ENABLED y PAR-SVC-PROFILE, sus estados/valores y mappings semánticos, y RUL-SVC-ENABLE-PROFILE-01 están aceptados documentalmente dentro de su alcance. Las adjudicaciones F1/A1, destino declarado, aplicación efectiva y post-check se rigen por DEC-C10-085…088.
+- F* y O-CONF no son dos Outcomes técnicos distintos: F* es el criterio; O-CONF es el estado adjudicado al aplicar ese criterio a una ruta/instancia terminal exacta. No sumar ni duplicar ambos como endpoints.
+- La regla de adjudicación no compensatoria y los estados 1/0/?/NA se reutilizan sin cambio.
+
+### 16.184.2. Unidad, ruta y ancla terminal
+
+La unidad lógica de adjudicación O-CONF es una **instancia de configuración × ruta completa**. Se emite un resultado independiente para F1→F2 y para A1→A2; no se promedian ni se transfieren estados entre rutas. El binding a UE/B1/servicio se conserva cuando la instancia B lo requiera, sin colapsar UE, servicio lógico, CMP, snapshot y ruta.
+
+El ancla terminal documental disponible es:
+- ruta F: `F2_DST_APPLIED`;
+- ruta A: `A2_DST_APPLIED`.
+
+Ambas son etapas aceptadas por DEC-C10-071. DEC-C10-087 exige evidencia del evento de aplicación y snapshot/registro post-aplicación exacto, con FP-06, FP-07 y FP-08 diferenciados. La adjudicación terminal se realiza sobre el estado aplicado observado en el post-check, no sobre `*_DST_DECL`, un artefacto preparado, un exit code o un log aislado.
+
+No se inventa un stage ni se interpreta stage_key como instante. Permanecen por fijar el snapshot_id/object_record_id real, route_id/route_record_id, el evento terminal y timestamp, su mapping al reloj DGP y la relación exacta con H. La ventana máxima H no está cuantificada ni aprobada.
+
+### 16.184.3. Regla integrada de O-CONF
+
+Para cada ruta e instancia, el oráculo aplica el IAM sellado ex ante y adjudica cada predicado obligatorio aplicable de FP-01…FP-07:
+
+- **O-CONF=1:** todos los predicados obligatorios aplicables de FP-01…FP-07 están en 1 y el conjunto no está vacío.
+- **O-CONF=0:** al menos un predicado obligatorio aplicable está en 0 con evidencia/cobertura suficiente.
+- **O-CONF=?:** no hay fallo obligatorio confirmado, pero al menos un predicado obligatorio aplicable es desconocido, no observable, no comparable o insuficientemente cubierto, según la regla específica.
+- **SCOPE_ERROR / NOT_EVALUABLE:** el conjunto obligatorio aplicable queda vacío o se incumple la cardinalidad constitutiva; no se fuerza PASS ni NA para salvar la instancia.
+
+NA solo procede por no aplicabilidad declarada y justificada en IAM antes de Z/B. La falta de observación no demuestra 0 ni NA. Un FAIL obligatorio no se compensa con PASS de otra familia. El vector por predicado/familia se conserva junto al resultado agregado.
+
+**FP-08 se informa separadamente.** Su fallo no convierte la verdad funcional en O-CONF=0. Si impide acreditar identidad, cobertura, integridad o procedencia de la adjudicación, el resultado observado queda no válido/no evaluable (normalmente `O_CONF_obs=?`), mientras la truth funcional del DGP permanece separada. FP-06 acredita aplicación; FP-07 verifica el estado efectivamente aplicado mediante FP-01…05; FP-08 acredita la cadena probatoria. No se duplican fallos de FP-01…05 por volver a observarlos en FP-07.
+
+### 16.184.4. Crosswalk atómico disponible — alcance y límites
+
+| Elemento | Familia primaria / función | Estado de aceptación |
+|---|---|---|
+| PAR-SVC-ENABLED BOOL | FP-01 para tipo/estado formal; FP-03 para equivalencia semántica exacta | Contrato aceptado; observaciones y mappings físicos no materializados |
+| PAR-SVC-PROFILE ENUM | FP-01 para validez formal; FP-03 para biyección semántica total/versionada | Contrato aceptado; observaciones y mappings físicos no materializados |
+| RUL-SVC-ENABLE-PROFILE-01 | FP-03 para preservación de lógica, scope, operandos y efecto REQUIRE; FP-01 para forma AST | Semántica aceptada; mapping/registro físico y evaluación material abiertos |
+| CMP / identidad de componente | FP-01 cobertura/forma y FP-03 identidad/significado; anclaje NODE por snapshot bajo DEC-C10-082 | Contrato de identidad aceptado; roster/snapshots y evidencia material abiertos |
+| REF / integridad y significado de relaciones | FP-02 integridad; FP-03 semántica; FP-04 disponibilidad de dependencias cuando aplique | Catálogo/mapping propuesto; universo y cobertura material abiertos |
+| FP-04 compatibilidad destino | Admisibilidad con capacidades/versión/interfaz del entorno | Familia aceptada; predicados, C0 material y evidencia abiertos |
+| FP-05 seguridad efectiva | Requisitos de seguridad declarados independientemente de POL | Familia aceptada; perfil/amenazas/controles/evidencia abiertos |
+| FP-06 / FP-07 | Aplicación efectiva / verificación post-aplicación | Contrato lógico aceptado por DEC-C10-087; eventos y snapshots no observados |
+| FP-08 | Identidad, provenance, cobertura y reproducibilidad probatoria | Gate separado; enforcement/validez material no demostrados |
+
+La reconciliación SM-01…SM-10↔FP-01…FP-07 sigue propuesta como catálogo global; no se eleva a aceptación confirmatoria por analogía con las decisiones PAR/RUL. No se inventa obligatoriedad de CMP/REF/MET atómicos, propiedades de seguridad, tolerancias ni mapping M. La instancia IAM completa debe resolver O/C/NA/? por objeto, predicado, etapa, ruta y snapshot.
+
+### 16.184.5. Ficha §224 de O-CONF — lo que puede fijarse ahora
+
+| Campo de ficha | Especificación documental alcanzable | Estado |
+|---|---|---|
+| Identidad/constructo | O-CONF = adjudicación terminal de conformidad de la ruta completa frente al criterio F* versionado | DEFINED |
+| Relación con F* | F* es criterio; O-CONF es su salida terminal. No son dos Outcomes | DEFINED |
+| Unidad | Instancia de configuración × ruta exacta; vínculo a UE/B1 cuando proceda | DEFINED AT LOGICAL LEVEL |
+| Escala | 1/0/?; SCOPE_ERROR/NOT_EVALUABLE separado; FP-08 como gate probatorio | DEFINED AT LOGICAL LEVEL |
+| Regla de cálculo | Agregación no compensatoria de predicados obligatorios FP-01…07 bajo IAM | DEFINED AT LOGICAL LEVEL; IAM NOT MATERIALIZED |
+| Ancla/evento | Post-aplicación y post-check en F2_DST_APPLIED o A2_DST_APPLIED | PARTIAL; snapshot/evento/timestamp exactos OPEN |
+| Fuente | Oráculo independiente/versionado que aplica criterios públicos a evidencia de fuente, destino, mapping, aplicación y snapshot | ARCHITECTURE DEFINED; IMPLEMENTATION NOT EXISTENT/NOT VALIDATED |
+| Baseline/contexto | C_src y estado basal del destino identificados bajo C0 | PARTIAL; snapshots y C0 material OPEN |
+| Horizonte/ventana | Ruta completa hasta aplicación/verificación dentro de H | H OPEN; no fijar duración |
+| Cobertura/ausencia | Evidencia suficiente por predicado; ausencia y falta de cobertura → ? salvo regla positiva exhaustiva | LOGIC DEFINED; coverage NONE/MATERIAL OPEN |
+| Error/fiabilidad/acuerdo | Evaluación de falsos positivos/negativos, error, repetibilidad y desacuerdo conforme a P182 | OPEN; no hay estimaciones |
+| Cegamiento/provenance | Generator conserva truth; Analyzer no recibe truth/potenciales; salida Analyzer sellada antes de Evaluator; oráculo no se modifica por Z/B ni Outcome/Value | REQUIRED DOCUMENTALLY; firewall/material enforcement NOT VERIFIED |
+| P183 | Ausencia, selección, censura y sensibilidad se informan por estimando; no convertir missing en cero | CONTRACT REUSED; mechanisms/parameters OPEN |
+
+La ficha queda **PARTIAL / NOT_OPERATIONALIZED**: cumple parte de la estructura conceptual de §224, pero no la ficha confirmatoria completa. No se inventa fuente concreta, escala distinta, ventana, tolerancia, fiabilidad, acuerdo ni error.
+
+### 16.184.6. Separación Generator–oráculo–Analyzer–Evaluator
+
+1. Generator estipula `O_CONF_truth` y la verdad de cada predicado, con potenciales/parámetros reservados.
+2. El canal de evidencia genera observaciones separadas; el oráculo independiente adjudica `O_CONF_obs` a partir de evidencia permitida, criterios e IAM versionados, sin leer truth ni usar Z/B, Outcome o Value para cambiar reglas.
+3. Analyzer recibe solo el bundle observable y, si el contrato analítico lo requiere, la adjudicación observada `O_CONF_obs` con identidad/versionado/provenance. Nunca recibe `O_CONF_truth`, potenciales, semilla ni parámetros reveladores.
+4. Analyzer sella su salida inmutable antes de abrir truth.
+5. Evaluator accede a truth y parámetros después del sellado, compara por ruta/instancia/escenario y clasifica recuperación, error, sesgo, cobertura y abstención.
+
+La independencia del oráculo y el firewall son requisitos documentales, no hechos técnicos probados. La implementación del oráculo, ACL/custodia, threat model y pruebas de no filtración permanecen sin cerrar.
+
+### 16.184.7. Discriminación respecto de V_cont
+
+Se mantiene la distinción de constructos:
+- O-CONF: estado terminal de conformidad técnica de la ruta aplicada frente a F*.
+- V_cont: continuidad temporal del cumplimiento de la función basal B1 durante una ventana.
+
+Los dos contrastes ya propuestos en §16.183 siguen siendo **candidatos lógicos**, no casos admisibles ya demostrados:
+1. O-CONF=1 con V_cont<1, si existe interrupción temporal recuperada antes del snapshot terminal y F* no exige continuidad durante toda la ventana.
+2. O-CONF=0 con V_cont>0, si falla una propiedad terminal F* independiente que no impide el servicio durante intervalos anteriores.
+
+No se redefinirá F* ni se debilitará V_cont para fabricar esos contrastes. Si el cierre de predicados/alcance F* impide ambos contrastes o muestra que los constructos se subsumen en el DGP elegido, la discriminación no pasa y V_cont no se declarará confirmatoria por separado.
+
+### 16.184.8. Dictamen de N16 y siguiente cierre
+
+- **PASS_STATIC:** precedencia histórica; criterio común F*; familias FP; regla no compensatoria; estados trivalentes; frontera F*/O-CONF; etapas terminales disponibles; responsabilidades lógicas Generator/Analyzer/Evaluator.
+- **CONDITIONAL:** crosswalk atómico global; aplicabilidad IAM; C0/G/H; mapping/tolerancias; fuente/oráculo; cobertura, error, acuerdo y cegamiento; existencia de contrastes discriminantes.
+- **NOT_VERIFIABLE:** implementación/independencia/validación del oráculo; adjudicación material por ruta; validez de O-CONF como Outcome confirmatorio; discriminación empírica/sintética ejecutada frente a V_cont.
+- **OPEN:** completar instancia IAM y C_src/C_dst/M; predicados FP-04/05 y restantes atomics; snapshot/evento terminal; H; calibración/validación P182/P183; controles técnicos de custodia/firewall.
+- **No-regresión:** no se reabren Opción A, contrato B1, PAR/RUL aceptados, stage_key ni familias FP; no se crean tests, IDs, clases, fuentes, interfaces, fixtures o schema físico.
+
+**Resultado:** `N16_RECONCILED_DOCUMENTARILY / FSTAR_CRITERION_DEFINED_AT_FAMILY_LEVEL / OCONF_FICHE_224_PARTIAL / ORACLE_NOT_IMPLEMENTED_NOT_VALIDATED / DISCRIMINATION_CONDITIONAL / DESIGN_FREEZE_NOT_READY / EXECUTION_NOT_AUTHORIZED`.
+
+No se autoriza implementación, validación ejecutable, generación de datos, simulación, estimación ni ejecución científica. `scientific_execution=false`; `execution_authorized=false`.
