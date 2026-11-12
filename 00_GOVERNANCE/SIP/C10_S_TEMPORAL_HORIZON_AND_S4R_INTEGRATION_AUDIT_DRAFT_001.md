@@ -147,3 +147,8 @@ El canal S3 pasivo existente se evalúa bajo tres mecanismos: snapshots/métrica
 Δ, cadencia S3, duración del episodio y cola de seguimiento no se identifican entre sí. K es entero y Δ=(1+ρ_follow)/K; K/Δ se eligen por recuperación de truth y análisis de aliasing, y ρ_follow por soporte de persistencia/recuperación. La regla de frontera [b_k,b_{k+1}) queda recomendada, pendiente de versionado previo a materialización.
 
 **Estado:** NORMALIZED_COORDINATE_ONLY / NO_PHYSICAL_TIME_CLAIM / STRICT_TRUTH / S3_MODES_NOT_CALIBRATED / TEMPORAL_PARAMETERS_OPEN.
+
+
+## 13. Horizonte común y reconciliación de t_last (2026-11-12)
+
+Se distingue t_last,i (última transición efectiva de una unidad) de t_last^max=t_c,max (límite superior ex ante del soporte de transiciones posibles en todos los brazos/escenarios). La ventana confirmatoria común termina en T*=t_last^max+τ_follow, no en un extremo retrospectivo específico de cada unidad. Esto conserva seguimiento comparable y evita que el horizonte dependa de eventos post-Z observados. Un episodio activo en T* permanece terminal/censurado; si el soporte de transiciones no puede acotarse ex ante, T* sigue OPEN.
