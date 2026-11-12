@@ -246,3 +246,15 @@ Convención recomendada: intervalos internos [b_k,b_{k+1}); un evento exactament
 T* debe incluir provisión/instalación y un seguimiento común posterior al último evento causal capaz de modificar A_B1. Puede expresarse T*=t_last+τ_follow. No se fija τ_follow, T*, Δ ni K hasta cerrar catálogo de eventos, mínimo episodio representado y capacidad de captura S3.
 
 **Dictamen:** EVENT_INVENTORY_RECONCILED / TRUTH_GRID_AND_S3_CLOCK_SEPARATED / V_CONT_IS_FULLY_COMPLIANT_BLOCK_SHARE / TSTAR_DELTA_K_OPEN / NOT_DESIGN_FROZEN.
+
+## 13. Catálogo funcional B1 y dominio de detección S3 (2026-11-12)
+
+El contrato de trabajo B1 §2 determina la función que se evalúa: admitir cuando ENABLED=true, no admitir cuando ENABLED=false y exponer PROFILE declarado. STANDARD/READ_ONLY no reciben semántica diferenciada. RUL-SVC-ENABLE-PROFILE-01 conserva su alcance declarativo como implicación; no se transforma en equivalencia.
+
+Las transiciones causales se agrupan en cinco familias finitas: (1) cambios efectivos ENABLED/PROFILE; (2) pérdida/recuperación de proceso o módulo; (3) pérdida/recuperación de listener/socket/superficie de ingreso; (4) pérdida/recuperación de dependencias solo si impiden/restauran admisión; (5) insuficiencia/restauración de capacidad/recursos solo si impiden/restauran admisión. Provisión, instalación, verificación, rollback y reinicio son antecedentes/transiciones, no fallos automáticos. El resultado funcional efectivo, no la etiqueta técnica, determina A_B1.
+
+La regla DEC-C10-102 no admite duración mínima de fallo ni gracia: cualquier incumplimiento confirmado afecta a todos los intervalos que intersecte. Se separa de ello δ_det, duración mínima de episodio para la que S3 demuestre detectabilidad bajo su modelo de captura/cobertura calibrado. δ_det no modifica truth ni excusa episodios menores; delimita cuándo Analyzer puede recuperar puntualmente la verdad. Por debajo de ese dominio, bounds o abstención, salvo evidencia pasiva adicional identificable.
+
+Δ (rejilla de agregación), cadencia/resolución/cobertura S3 y δ_det son magnitudes distintas. No se presume telemetría event-driven ni polling regular. t_last es la última transición causal que pueda cambiar A_B1, incluida la recuperación final; T*=t_last+τ_follow con cola común. Si el episodio sigue activo al cierre, no se imputa recuperación.
+
+**Dictamen:** FINITE_CAUSAL_FAMILIES_BOUNDED / TRUTH_STRICT / DETECTION_DOMAIN_SEPARATE / S3_UNCALIBRATED / TSTAR_DELTA_K_OPEN.
