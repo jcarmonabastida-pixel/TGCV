@@ -4288,3 +4288,51 @@ Permanecen OPEN: unidad normalizada y su anclaje semántico, conjunto de eventos
 Reconciliar el reloj transcurrido con el contrato B1 y los eventos existentes, sin crear un segundo reloj ni una nueva clase de fuente: (i) inventariar eventos/estados que pueden cambiar A_B1 durante provisión, instalación y seguimiento; (ii) determinar cuáles son funcionalmente relevantes y qué duración mínima puede justificarse; (iii) definir la relación de sus event_time con S3 y S4/S5; (iv) derivar conjuntamente Δ, T* y K; (v) actualizar el modelo de observación, los potenciales V_cont y el crosswalk PE. Solo entonces parametrizar el canal y calibrar.
 
 No se asignan números arbitrarios, no se materializan eventos/intervalos/truth/señales, y no se ejecutan validadores, generación, simulación, estimación o calibración. scientific_execution=false; execution_authorized=false.
+
+## 16.193. Inventario de eventos B1 y reconciliación de la escala temporal V_cont (2026-11-12)
+
+**Alcance:** derivación documental de DEC-C10-068/100/101/102; no crea una nueva decisión normativa ni autoriza ejecución.
+
+### 16.193.1. Inventario funcional y causal
+
+Se reutiliza el contrato B1 §2 y la reconciliación temporal §8–10. La conformidad funcional exige: (a) admitir solicitudes cuando el estado efectivo ENABLED=true; (b) no admitirlas cuando ENABLED=false; y (c) exponer el PROFILE declarado. STANDARD y READ_ONLY no reciben semántica adicional.
+
+| Clase | Eventos/estados que deben representarse | Papel respecto de A_B1 |
+|---|---|---|
+| Provisión | programación, intento, recepción/disponibilidad de componentes | Antecedentes causales; no son por sí mismos conformidad ni fallo |
+| Instalación | aplicación, verificación, integridad, compatibilidad, operabilidad, rollback | Pueden modificar el estado efectivo; se adjudica el resultado funcional, no la etiqueta de instalación |
+| Configuración funcional | cambio efectivo ENABLED; cambio efectivo PROFILE; versión/identidad de instancia y configuración | Determinantes directos o de binding de la regla B1 |
+| Operación runtime | proceso/módulo disponible o detenido; listener/socket/superficie de recepción; pérdida/recuperación de dependencia; capacidad/recursos cuando sean constitutivos de la admisión; reinicio, caída y recuperación | Estados/eventos que pueden impedir o restituir la capacidad funcional; la señal observada no sustituye a truth |
+| Solicitud | oportunidad, intento, recepción, admisión/rechazo, procesamiento y respuesta | Interacción discreta. Una oportunidad estandarizada no es monitor continuo; la ausencia de solicitud no es fallo y la respuesta no define por sí sola continuidad |
+| Transformación/valor | Reach, selección, inicio, ejecución, F*, O-CONF, Outcome y Value | No son indicadores constitutivos de A_B1 ni sustitutos de S3 |
+
+La verdad del Generator debe registrar el estado funcional efectivo y sus transiciones con event_time suficiente para determinar si hubo algún incumplimiento dentro de cada intervalo. Provisión, instalación, reinicio o dependencia son antecedentes/eventos explicativos: solo afectan A_B1 cuando el estado funcional resultante incumple la regla. S4 conserva identidad/versionado/snapshot; S5 fija la semántica declarativa ENABLED/PROFILE; S3 observa pasivamente proceso/módulo, listener/socket/superficie, dependencias, capacidad/recursos si están definidos y perfil runtime.
+
+### 16.193.2. Reconciliación de reloj, rejilla y observación
+
+Se distingue formalmente:
+- **Reloj de truth:** event_time de cambios del estado funcional efectivo estipulados por Generator.
+- **Rejilla de agregación:** partición común de [t0,T*] en K intervalos iguales, sobre la que se aplica la regla estricta DEC-C10-102.
+- **Reloj de observación S3:** timestamps de emisión/captura, cobertura, lag y pérdida del canal pasivo. Su frecuencia/resolución no se iguala por definición a Δ.
+
+Por tanto, Δ no es automáticamente la frecuencia de polling S3. El Generator puede determinar truth a partir de su historial de eventos; S3 solo permite recuperarla si su modelo de observación y cobertura lo identifican. Un canal basado únicamente en snapshots espaciados no garantiza detectar interrupciones breves entre snapshots. No se añaden probes ni solicitudes activas para resolverlo.
+
+### 16.193.3. Consecuencia matemática que debe corregirse en la interpretación de V_cont
+
+La combinación aceptada DEC-C10-100 + DEC-C10-102 implica V_cont_truth(i)=(1/K)Σ_k A_B1(i,k), donde A_B1 vale 1 solo si todo el intervalo cumple y 0 si existe cualquier incumplimiento confirmado.
+
+Esta cantidad es la **proporción de intervalos completamente conformes**, no la fracción exacta del tiempo transcurrido en conformidad. Una interrupción breve confirmada convierte en 0 el intervalo completo; por ello, el resultado depende de Δ y de la alineación de la rejilla. No se debe describir como integral temporal ni como porcentaje exacto de uptime. Se preservan la fórmula y las decisiones aceptadas; se corrige únicamente la interpretación semántica derivada. Si el objetivo científico fuese medir la fracción exacta de tiempo disponible, requeriría otra operacionalización y una decisión explícita, que no se introduce aquí.
+
+### 16.193.4. Fronteras y cierre
+
+Para una rejilla futura con b_k=t0+kΔ, la convención determinista recomendada es [b_k,b_{k+1}) para intervalos internos: un evento exactamente en una frontera interna pertenece al intervalo que comienza en esa frontera. El último intervalo incluye T* como extremo terminal. Un episodio que se extienda a través de una frontera afecta a cada intervalo cuyo interior intersecte el periodo de incumplimiento. La convención deberá versionarse antes de materializar.
+
+T* no se equipara a t9. Para no censurar la duración de un evento terminal, el contrato de cierre deberá identificar el último evento causal del DGP capaz de modificar A_B1 y un seguimiento común posterior suficiente para observar persistencia/recuperación. Puede expresarse como T*=t_last+τ_follow, con τ_follow fijado ex ante; tanto el evento terminal como τ_follow siguen OPEN hasta definir el catálogo de escenarios y su escala temporal.
+
+### 16.193.5. Dictamen y siguiente operación
+
+**EVENT_INVENTORY_RECONCILED / TRUTH_CLOCK_SEPARATED_FROM_S3_CADENCE / STRICT_BLOCK_SCORE_NOT_ELAPSED_TIME_FRACTION / BOUNDARY_RULE_RECOMMENDED / TSTAR_DELTA_K_OPEN.**
+
+La siguiente operación debe cerrar el catálogo finito de transiciones que el DGP permite, el mínimo episodio funcional que el escenario pretende representar, la capacidad realista de S3 para capturarlo y el seguimiento terminal. Después se derivan conjuntamente unidad normalizada, τ_follow, T*, Δ y K. No se fijan cifras por analogía ni por conveniencia estadística.
+
+No se generan eventos, intervalos, truth, señales ni fixtures. No se ejecuta código, simulación, estimación, calibración ni validación. scientific_execution=false; execution_authorized=false.
