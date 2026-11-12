@@ -343,3 +343,63 @@ Las clases directas, heterogéneas, de interferencia, observación adversarial y
 **OPEN:** soporte de episodios/persistencia/recuperación; horizonte común T*; τ_follow; unidad temporal; Δ/K y versionado exacto de fronteras; modelo/calibración S3 y δ_det/p*; factibilidad/soporte de g_A y r_common; q_X*; F*/oráculo O-CONF. Estos pendientes no reabren el universo funcional cerrado; son gates posteriores de temporalización, medición e identificación.
 
 **No autorizado:** instanciar episodios, seleccionar distribuciones, generar datos, ejecutar calibración/simulación/estimación, implementar código o declarar Design Freeze. `scientific_execution=false`; `execution_authorized=false`.
+## 15. Contrato de soporte temporal finito y horizonte común T* (2026-11-12)
+
+**Objeto:** resolver la estructura del soporte temporal exigible al DGP sin asignar duraciones, tasas, distribuciones ni números. Se aplica al universo cerrado de §14 y a los mundos R0–R3 existentes; no añade clases de mundo.
+
+### 15.1 Contrato de soporte por configuración de mundo
+
+Cada configuración ejecutable deberá declarar, antes de generar truth, un soporte temporal acotado y versionado para todos los procesos que puedan producir transiciones CFG/PROC/INGRESS/DEP/CAP:
+
+- límite superior de inicio/delayed onset de episodios;
+- límite superior de número de episodios/transiciones recurrentes por UE e instancia B1;
+- límite superior de duración de cada estado no funcional y de cada episodio;
+- límite superior de latencia hasta recuperación funcional, si la recuperación está permitida;
+- límite superior de cualquier transición tardía inducida por Z, provisión, instalación, rollback, dependencia, capacidad, interacción o vía directa/colateral que pueda afectar B1;
+- límite superior de lag/captura del canal S3, separado del soporte de truth;
+- régimen de dependencia entre episodios y componentes; no se presume independencia ni renovación.
+
+Los límites son de soporte, no medias, percentiles ni valores típicos. No se aceptan límites derivados de t0…t9, H, K, cadencia S3 o de la duración de etapas causales. La configuración falla cerrada si algún proceso causal carece de cota o si la cota no es común/comparable entre brazos.
+
+### 15.2 Definición de t_c,max y T*
+
+Para cada mundo/configuración m y brazo/regímen z, `t_c,max(m,z)` es la cota superior del tiempo transcurrido desde t0 en que puede ocurrir la última transición causal permitida capaz de cambiar A_B1, incluyendo la transición de recuperación final. Se calcula como el máximo de las cotas declaradas para todas las familias y vías aplicables, no como el último evento observado en una realización.
+
+`t_c,max = max_{m,z} t_c,max(m,z)` sobre el roster confirmatorio y los brazos que pertenecen al mismo estimando. El horizonte común queda definido estructuralmente como `T* = t_c,max + τ_follow`.
+
+`τ_follow` no es un periodo de gracia ni tolerancia funcional. Es una cola posterior al último cambio causal permitido, necesaria para cubrir el estado terminal y el retraso máximo del canal de observación. Debe ser al menos tan largo como la cota conjunta necesaria para que el S3 declarado pueda capturar/fechar el estado terminal después de `t_c,max`; la regla concreta depende del modelo de captura/lag y permanece pendiente de calibración. La ausencia de señal no demuestra recuperación.
+
+Todos los brazos, escenarios confirmatorios y unidades comparadas usan la misma ventana `[t0,T*]`, la misma rejilla y el mismo criterio de cierre. Si un escenario de sensibilidad requiere soporte más largo, se amplía T* para todo el contraste o se informa como estimando/horizonte distinto preespecificado; nunca se recorta selectivamente por brazo.
+
+### 15.3 Episodios, recurrencia y terminalidad
+
+- La generación primaria debe tener número finito y acotado de transiciones por unidad dentro de `[t0,t_c,max]`; la cota se declara por configuración y cubre recurrencias, no solo el primer fallo.
+- Se permite más de un episodio y recuperación parcial/total. Cada transición se ordena por `event_time`; empates y eventos en frontera se resuelven por regla determinista versionada, sin depender del orden de iteración del código.
+- Después de `t_c,max` no puede existir una nueva transición causal de truth en esa configuración. La trayectoria funcional permanece en el estado alcanzado al final de la última transición; la cola `τ_follow` observa ese estado, no introduce nuevas oportunidades de intervención.
+- Si el mecanismo teórico que se quiere representar no admite una cota superior defendible (p. ej. recurrencia sin límite o hazard con soporte no acotado), no se fuerza un T* artificial: ese mundo no pertenece al contraste finito puntual. Se conserva como análisis de horizonte/censura o como límite de identificación, y el Analyzer debe abstenerse o informar bounds cuando el horizonte no captura el resultado definido.
+- Un episodio que sigue activo al final de T* no se clasifica como recuperado. La truth terminal se conserva, y la observación incompleta produce censura/bounds, no imputación.
+
+### 15.4 Regla de construcción de Δ y K una vez cerrado el soporte
+
+El orden de decisión queda fijado: (1) soporte de transiciones por configuración; (2) máximo común `t_c,max`; (3) modelo/cota de captura S3 y `τ_follow`; (4) `T*`; (5) resolución temporal mínima necesaria para representar los eventos admitidos y el dominio de detección S3; (6) elección de `Δ` compatible; (7) `K=(T*−t0)/Δ` entero. No se elige Δ para hacer cómodo K ni se elige K para ocultar eventos que la regla estricta exige representar.
+
+Un Δ más grueso no altera truth funcional ni convierte episodios cortos en conformes: cambia qué intervalos de la agregación estricta quedan afectados y, por tanto, el estimando operativo V_cont. Por eso Δ/K deben quedar congelados antes de generar potenciales. La resolución interna del Generator debe representar los tiempos de evento con precisión suficiente respecto de Δ y del soporte declarado; no se presume que coincida con S3.
+
+### 15.5 Criterios de admisión y salida fail-closed
+
+| Comprobación previa | Aceptación | Fallo/abstención requerida |
+|---|---|---|
+| Soporte de cada familia causal aplicable | Cota superior explícita, versionada y trazable a la regla generadora | Configuración inválida; no generar |
+| Recurrencia y número de transiciones | Cota finita que incluye todos los episodios permitidos | Excluir del contraste puntual finito o clasificar como sensibilidad/censura; nunca truncar silenciosamente |
+| Comparabilidad entre brazos/mundos | T* común cubre la unión de soportes del estimando | No comparar V_cont como si compartiera horizonte |
+| Recuperación y terminalidad | Última transición posible, incluida recuperación, dentro de t_c,max | Estado terminal desconocido/censurado; bounds o abstención |
+| S3 | Cota de lag/captura y cobertura definida para el estado terminal | No inferir recuperación por silencio; bounds/NOT_IDENTIFIED/INDETERMINATE_MEASUREMENT |
+| Δ/K | Rejilla común, intervalos iguales y resolución suficiente para el soporte declarado | No materializar la configuración ni generar datos |
+
+### 15.6 Estado del gate temporal
+
+**CERRADO COMO REGLA ESTRUCTURAL:** soporte por configuración explícito y acotado; recurrencia incluida en la cota; máximo común sobre brazos/mundos; `T*=t_c,max+τ_follow`; separación entre transición causal final, cola de observación, rejilla V_cont y reloj S3; tratamiento fail-closed de soporte no acotado.
+
+**NO CERRADO NUMÉRICAMENTE:** valores de las cotas por familia/mundo, máximo de recurrencias, duración/recuperación, cota S3, `τ_follow`, unidad, Δ y K. No existe base documental autorizada para asignarlos sin una elección de sensibilidad/precisión y calibración. El siguiente paso no es escoger cifras arbitrarias: es resolver conjuntamente el dominio temporal de episodios que el DGP pretende representar y la capacidad de detección S3, y después seleccionar Δ/K.
+
+**Dictamen:** `FINITE_TEMPORAL_SUPPORT_RULE_CLOSED / COMMON_HORIZON_CONSTRUCTION_DEFINED / NUMERIC_SUPPORT_AND_S3_CALIBRATION_OPEN / DELTA_K_OPEN / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN`.
