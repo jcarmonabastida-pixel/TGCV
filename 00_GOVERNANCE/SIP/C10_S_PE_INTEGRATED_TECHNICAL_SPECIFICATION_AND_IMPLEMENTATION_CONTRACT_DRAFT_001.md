@@ -264,3 +264,20 @@ La reconciliación de identidad B1 por UE y el contrato material D2 se integra e
 La ausencia de roster, IAM/C_SRC, snapshots, grafo de dependencias, artefacto/runtime y evidencia de aislamiento impide declarar G-MAT satisfecho. B-M01…15 y PROV-01…12 son requisitos de inventario/verificación, no resultados. B-M13/oráculo y B-M14/A1-A2 no pueden ser modificados por B. El firewall lógico PE no prueba permisos/custodia efectivos ni aislamiento material.
 
 No se aprueba schema físico, formato, motor, API, ACL, parser, fixtures ni captura. G-MAT/G-SCHEMA/G-ROLE permanecen abiertos; no implementación ni ejecución.
+
+
+## 16. E+F — perfil técnico agnóstico y gates efectivos (2026-11-12)
+
+Referencia rectora: plan C10-S §16.186. PE permanece TECHNICAL_CONTRACT_PARTIAL / IMPLEMENTATION_NOT_READY. Esta integración precisa evidencia de aceptación futura sin seleccionar tecnología ni añadir arquitectura:
+
+- Generator conserva truth/potenciales/parámetros/semillas en dominio restringido y genera la proyección observacional sin copiar etiquetas reservadas.
+- Proyector/Sealer es la única frontera de liberación; valida identidad, versión, timestamps, cobertura, integridad y campos permitidos; produce bundle observable inmutable y manifiesto/hash.
+- Analyzer recibe solo bundle liberado y contratos públicos; no tiene credenciales, rutas, logs o metadatos que permitan reconstruir truth.
+- Evaluator accede a truth solo tras el sellado inmutable de la salida Analyzer y no altera retroactivamente salida/evidencia.
+- Store conserva separación de dominios, referencias exactas, versionado, retención y trazabilidad; Orquestador valida autorización y versiones y no es canal de truth.
+
+Cualquier implementación física o equivalente debe justificar serialización por objeto (JCS solo en el alcance previamente aceptado), estructura/cardinalidades, reloj y orden parcial, fronteras de confianza, autenticación/autorización, custodia de secretos, ACL de mínimo privilegio/deny-by-default, sealer, logs, retención/backups y threat model que incluya fugas por contenido, nombres, tamaños, tiempos, orden, errores, hashes y metadatos. No se elige motor, nube, lenguaje, base de datos ni formato.
+
+Evidencia futura mínima: matriz de roles/permisos efectivos; pruebas negativas de acceso y exfiltración; allowlist/denylist de proyección; prueba de no filtración; integridad/hash/referencias; orden temporal y replay; backup/restore y audit trail. G-SCHEMA, G-ROLE y G-REPRO siguen BLOCKED hasta evidencia verificable. La separación nominal de módulos no constituye firewall probado.
+
+No se añade schema, campo, clase U_G, test, fixture ni ejecución. scientific_execution=false; execution_authorized=false.
