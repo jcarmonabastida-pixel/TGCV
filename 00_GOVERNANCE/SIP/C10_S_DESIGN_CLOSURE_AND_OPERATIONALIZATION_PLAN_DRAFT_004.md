@@ -4843,3 +4843,58 @@ Una fórmula simbólica no equivale a una función implementable: cada (f_j) nec
 El ledger queda preparado para una adjudicación por filas: cada función se clasificará como (a) identidad fijada por contrato, (b) función estructural pendiente de especificación, (c) distribución/soporte pendiente de justificación o (d) decisión normativa. La siguiente pasada debe resolver en conjunto las funciones de intento→recepción→instalación→C_dep*, la atomización de A_f*/C_auth,base y el inventario de campos ΔX* que pueda adjudicarse sin materialización. Lo que no tenga mapping defendible queda UNKNOWN/?; no se fuerza una decisión para acelerar la simulación.
 
 **Dictamen:** STRUCTURAL_FUNCTION_TABLE_DRAFTED / q_X_BASELINE_INVENTORY_CLASSIFIED / ΔX_FIELD_MAPPING_RULE_DEFINED_NOT_MATERIALIZED / NO_NUMERIC_PARAMETERS / NO_NEW_TEST_IDS / CALIBRATION_BLOCKED / NO_EXECUTION.
+
+
+### 16.201. Adjudicación trivalente integrada de A_f*, D_f* y ΔT_acc*
+
+**Estado:** especificación documental propuesta; no aprobada, no congelada, no implementada ni ejecutada. Se reconcilia con la fórmula candidata del maestro §67.3, el crosswalk D2 y los contratos de snapshots/evidencia. No crea una nueva definición sustantiva de accesibilidad.
+
+#### 16.201.1. Lógica de conjunción para A_f*
+
+Cada predicado constitutivo aplicable (ID, REL, COND, AUTH, RES, DEP y ¬BLOCK) conserva truth en {1,0,?}:
+
+- A_f*=1 únicamente si todos los predicados requeridos son 1.
+- A_f*=0 si al menos un predicado requerido es 0 con truth adjudicada.
+- A_f*=? si no existe un 0 concluyente y al menos un predicado requerido permanece ? o no adjudicable.
+
+La falta de evidencia, cobertura insuficiente, conflicto no resuelto, matching ambiguo o snapshot no comparable no se convierten en 0. La verdad del DGP y el estado observado del Analyzer se almacenan por separado; la regla anterior se aplica primero a truth y luego, con evidencia permitida, a la clasificación observada.
+
+#### 16.201.2. Agregación de rutas dentro de DEP_f*
+
+Cada ruta candidata se adjudica por separado, conservando identidad, versión, unidad, frontera y ventana:
+
+- Ruta=1 si todos sus requisitos constitutivos son 1.
+- Ruta=0 si al menos un requisito necesario es 0.
+- Ruta=? en los demás casos no resueltos.
+
+DEP_f*=1 si existe al menos una ruta admisible con estado 1, aunque otras rutas sean desconocidas. DEP_f*=0 solo si el universo de rutas admisibles relevante está declarado exhaustivo y todas las rutas son 0. DEP_f*=? si no se ha demostrado una ruta válida y permanece alguna ruta potencial o cobertura/inventario desconocido. Una ruta compartida, externa o alternativa no se presume válida ni inválida por su etiqueta topológica: se evalúa con el mismo contrato. La ausencia de inventario exhaustivo impide adjudicar 0 por mera ausencia de rutas observadas.
+
+#### 16.201.3. Derivación de D_f* basal→post
+
+Se conserva la definición:
+
+D_f*=I(A_f,base*=0 ∧ A_f,post*=1).
+
+Su regla trivalente derivada es:
+
+- D_f*=1 si A_f,base*=0 y A_f,post*=1.
+- D_f*=0 si A_f,base*=1 o A_f,post*=0.
+- D_f*=? en cualquier otro caso, incluidos los casos en que un estado necesario sea ? y no exista ya una condición concluyente para 0.
+
+La apertura exige snapshots basales y post comparables en unidad, transformación, frontera, versión y regla de adjudicación. No se infiere D_f*=1 desde Z, B, W_attempt, receipt, S_install o C_dep*. D_f* no sustituye A_f*(t), ni representa todos los cambios de T_acc*.
+
+#### 16.201.4. ΔT_acc* y separación epistémica
+
+ΔT_acc* se deriva exclusivamente de la comparación de snapshots estructurales truth comparables:
+
+ΔT_acc*=Diff(S_T*(t0),S_T*(t1))=(ΔU*,ΔR*,ΔC*,ΔX*).
+
+Cada campo requiere identidad/matching, tipo, versión, unidad, frontera y mapping semántico adjudicables. Si alguno no puede compararse o clasificarse, su estado permanece ?/UNKNOWN y se excluye de cualquier suma o puntuación que requiera valor determinado; no se imputa cero. Un campo mixto se descompone antes del diff; si no puede descomponerse, queda UNKNOWN. No se asigna ΔX* automáticamente a ΔC*, ΔR* ni a contexto basal.
+
+ΔE_T registra cambios de fuentes, cobertura, validez, procedencia, versión, timestamp y adjudicación. ΔE_T no es componente de ΔT_acc* y una mejora de observabilidad no prueba cambio estructural. La apertura focal D_f*=1 puede coexistir con cambios adicionales, ausencia de otros cambios o incertidumbre en otras coordenadas; por tanto no equivale a ΔT_acc* completo.
+
+#### 16.201.5. Límites de uso
+
+Esta adjudicación fija reglas lógicas de propagación, no inventario exhaustivo, evidencia, probabilidades, parámetros, mappings físicos, tolerancias ni distribución de q_X*. No cierra RES/REL/COND/BLOCK, el universo de rutas, el contrato de snapshots, la medición observada ni la validez del oráculo. Tampoco autoriza implementación o ejecución. Los casos de conflicto, cobertura parcial y no comparabilidad deben conservarse en los escenarios adversariales existentes, sin crear nuevos IDs de prueba por esta integración.
+
+**Dictamen:** TRI-STATE_LOGIC_SPECIFIED_AS_DRAFT / ROUTE_EXISTENCE_RULE_SPECIFIED_AS_DRAFT / D_F_BASELINE_POST_RULE_SPECIFIED_AS_DRAFT / ΔT_ACC_SNAPSHOT_DIFF_BOUNDARY_SPECIFIED_AS_DRAFT / NO_NUMERIC_PARAMETERS / NO_EXECUTION.
