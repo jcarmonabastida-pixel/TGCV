@@ -258,3 +258,88 @@ La regla DEC-C10-102 no admite duración mínima de fallo ni gracia: cualquier i
 Δ (rejilla de agregación), cadencia/resolución/cobertura S3 y δ_det son magnitudes distintas. No se presume telemetría event-driven ni polling regular. t_last es la última transición causal que pueda cambiar A_B1, incluida la recuperación final; T*=t_last+τ_follow con cola común. Si el episodio sigue activo al cierre, no se imputa recuperación.
 
 **Dictamen:** FINITE_CAUSAL_FAMILIES_BOUNDED / TRUTH_STRICT / DETECTION_DOMAIN_SEPARATE / S3_UNCALIBRATED / TSTAR_DELTA_K_OPEN.
+
+## 14. Cierre del universo finito de estados y eventos funcionales B1 por mundo (2026-11-12)
+
+**Alcance:** cierre documental del universo funcional que puede alterar A_B1/V_cont; reutiliza DEC-C10-068/100/101/102 y las familias de §13. No materializa estados por UE, episodios, distribuciones, parámetros, fixtures ni observaciones. No añade escenarios ni IDs de prueba.
+
+### 14.1 Estado funcional finito
+
+La unidad de adjudicación es UE×instancia B1×versión×intervalo. La truth se deriva del estado funcional efectivo, nunca del nombre de un evento técnico. El estado suficiente queda representado por el vector:
+
+- `ENABLED_eff ∈ {true,false,?}`;
+- `PROFILE_eff` y `PROFILE_declared`, comparados por identidad/versión exacta: `MATCH`, `MISMATCH` o `UNKNOWN` (se conserva el valor enumerado original; no se colapsan perfiles);
+- estado de proceso/módulo, superficie de ingreso, dependencias requeridas y capacidad: `FUNCTIONAL`, `NONFUNCTIONAL` o `UNKNOWN`, solo para componentes aplicables y cuya relación con la función B1 esté declarada en la versión del servicio.
+
+Un componente no requerido no se convierte en fallo ni se introduce como requisito por defecto. Si su aplicabilidad no está determinada, no se trata como no requerido: se propaga `UNKNOWN`.
+
+**Regla funcional:**
+
+1. `A_B1=1` cuando se cumple la regla B1 completa: si `ENABLED_eff=true`, la función admite solicitudes; si `ENABLED_eff=false`, no las admite; y en ambos casos expone el `PROFILE` declarado, con la cadena runtime y los componentes requeridos funcionales.
+2. `A_B1=0` cuando existe al menos una violación funcional positiva confirmada: admisión/rechazo contrario a ENABLED, PROFILE no expuesto o distinto del declarado, o pérdida de un componente requerido que impide la función.
+3. `A_B1=?` cuando no hay violación positiva confirmada pero uno o más elementos necesarios no pueden adjudicarse. `ENABLED=false` por sí solo no es fallo: el rechazo de solicitudes es el comportamiento requerido.
+4. La ausencia de solicitudes no permite inferir ni admisión ni fallo. No se añaden sondas activas; la truth la produce el Generator a partir de estados y transiciones estipulados.
+
+### 14.2 Universo finito de transiciones causales
+
+| Familia | Evento de transición | Condición para afectar A_B1 | Lo que no basta |
+|---|---|---|---|
+| CFG | Cambio efectivo de ENABLED; cambio efectivo de PROFILE; divergencia entre declarado y efectivo | El cambio altera la regla esperada, su exposición o el comportamiento de admisión | Programación o escritura de configuración sin cambio efectivo |
+| PROC | Proceso/módulo deja de funcionar; vuelve a funcionar; reinicio con estado resultante | La pérdida/recuperación impide/restaura la función B1 | Reinicio o instalación por sí solos |
+| INGRESS | Listener/socket/superficie de recepción cae o se restaura | La transición impide/restaura recibir y admitir/rechazar conforme a ENABLED | Cambio de endpoint sin efecto funcional demostrado |
+| DEP | Dependencia requerida deja de funcionar o se recupera | Solo si la dependencia pertenece al conjunto requerido versionado y su estado impide/restaura la función | Cambio de dependencia no requerida o mera modificación de manifiesto |
+| CAP | Capacidad/recurso cruza el umbral funcional de suficiencia y se recupera | Solo si la insuficiencia impide/restaura la admisión conforme a la regla B1 | Variación de uso/carga sin efecto funcional |
+
+Estas cinco familias son exhaustivas para el nivel de abstracción funcional del servicio definido en el contrato B1. Nuevas clases de transición requieren revisión explícita del contrato funcional; no se incorporan silenciosamente al DGP.
+
+### 14.3 Eventos antecedentes, observacionales y no constitutivos
+
+| Clase | Eventos | Tratamiento |
+|---|---|---|
+| Antecedentes de política/provisión | asignación Z, programación, intento, recepción, disponibilidad de artefactos/componentes | Causas potenciales; no alteran truth hasta que produzcan una transición funcional efectiva |
+| Aplicación/recuperación | instalación, verificación, rollback, reinicio | Se registran con tiempo y versión; solo afectan A_B1 por el estado funcional resultante |
+| Interacción de servicio | oportunidad, solicitud, intento, recepción, admisión/rechazo, procesamiento/respuesta | Evidencia discreta de comportamiento; ausencia de solicitud no es fallo y una solicitud aislada no sustituye la continuidad temporal |
+| Transformacional/resultado | C_dep, A_f, D_f, ΔT_acc, Reach, trayectoria, selección, ejecución, F*, O-CONF, Outcome | Constructos/resultados separados; no definen A_B1 ni V_cont |
+| Observación | emisión/captura S3, snapshot, log, lag, pérdida, censura, cobertura | Cambian evidencia observada, nunca la truth funcional |
+
+### 14.4 Dependencias temporales y orden de eventos
+
+- Cada transición de truth tiene `event_time`, identidad de unidad/instancia, versión antes/después, familia causal, estado anterior y posterior, y vínculo causal explícito al régimen/política cuando corresponda.
+- Se permiten recurrencia y recuperación: `FUNCTIONAL→NONFUNCTIONAL→FUNCTIONAL`; también cambio de configuración sin caída runtime y cambio runtime sin modificación de configuración. No se presume que las familias sean independientes.
+- Un episodio que cruza una frontera afecta a cada intervalo cuyo interior intersecta el episodio. La continuidad es estricta: cualquier incumplimiento confirmado hace `A_B1=0` en el intervalo afectado, sin gracia ni duración mínima.
+- La observación S3 tiene reloj separado (captura/lag/cobertura); no se usa para crear, fechar retrospectivamente ni eliminar transiciones de truth.
+- El cierre temporal es común y ex ante: `T* = t_c,max + τ_follow`, donde `t_c,max` es el límite superior del soporte de transiciones posibles declarado para el conjunto de mundos/ambos brazos. Si ese soporte no puede acotarse, T* no queda cerrado y el episodio activo al final se trata como terminal/censurado, nunca como recuperado.
+- La rejilla V_cont conserva K intervalos iguales y `K=(T*−t0)/Δ`; T* se ajusta antes de generación para evitar un intervalo residual desigual. Δ no es la cadencia S3 ni la duración mínima funcional.
+
+### 14.5 Crosswalk por mundos ya existentes R0–R3
+
+| Mundo | Mecanismo relevante para B1 | Regla de no atribución / contraste |
+|---|---|---|
+| R0 — focal limpio | Las transiciones B1 solo pueden ocurrir por el mecanismo focal declarado y sus consecuencias funcionales efectivas. El mundo puede estipular estabilidad o interrupción; no se fuerza una respuesta por construcción. | El efecto de Z sobre V_cont es ITT de paquete. La atribución a ΔT_acc exige que el mecanismo funcional esté mediado por la intervención focal identificable, no por la mera secuencia de provisión. |
+| R1 — alternativa basal estable | La ruta alternativa permanece estable en el bloque transformacional. Su existencia no cambia por sí misma ENABLED/PROFILE ni el runtime B1. | No imputar a B1 ni a ΔT_acc focal efectos de la alternativa. La alternativa puede mantener Reach aunque la ruta focal no cambie; Reach y V_cont siguen separados. |
+| R2 — alternativa afectada/colateral | Z puede alterar A1/A2 o recursos/dependencias compartidos. Solo genera transición B1 si el componente compartido pertenece efectivamente a la cadena funcional B1 y cambia su estado. | Si el cambio afecta solo la alternativa, se registra como vía colateral transformacional, no como fallo/beneficio B1. Si afecta B1 por componente compartido, es vía no focal explícita y bloquea atribución focal no separada. |
+| R3 — fallo por etapas | Intento, recepción, instalación o rollback pueden fallar. B1 solo cambia si el resultado produce una transición CFG/PROC/INGRESS/DEP/CAP efectiva. | Fallo de intento/recepción/instalación no equivale automáticamente a A_B1=0; un servicio previo puede seguir funcional. C_dep, A_f y V_cont permanecen separados. |
+
+Las clases directas, heterogéneas, de interferencia, observación adversarial y soporte del roster existente se aplican como modificadores de esos mundos, no como mundos nuevos: una vía directa solo altera V_cont si tiene una función generadora explícita sobre estados B1; la interferencia requiere exposición/recursos compartidos definidos; la observación adversarial altera E_S3 pero no truth.
+
+### 14.6 Clasificación de parámetros y decisiones temporales
+
+| Elemento | Clase | Estado de cierre |
+|---|---|---|
+| Inicio t0 e inclusión de provisión/instalación | Regla normativa aceptada | CERRADO (DEC-C10-101) |
+| Igual duración de intervalos y media no ponderada de A_B1∈{1,0,?} | Regla de agregación aceptada | CERRADO (DEC-C10-100) |
+| Continuidad estricta; sin gracia ni mínimo funcional; frontera determinista | Regla normativa aceptada; asignación a intervalo inicial en frontera interna según contrato temporal | CERRADO en semántica; convención exacta [b_k,b_{k+1}) debe versionarse antes de materializar |
+| ENABLED/PROFILE y cinco familias causales | Dominio funcional finito derivado del contrato | CERRADO documentalmente para este nivel de abstracción |
+| Recurrente, persistencia, recuperación, duración/fase de episodios | Dominio de sensibilidad con soporte por mundo pendiente | OPEN; no fijar distribuciones ni cifras |
+| t_c,max, τ_follow y T* común | Decisión de soporte/horizonte | OPEN; debe justificarse ex ante y ser común |
+| Unidad de tiempo normalizada, Δ y K | Decisión de diseño/precisión temporal | OPEN; K entero, sin residuo desigual; no derivar de t0…t9 ni H |
+| Cadencia, cobertura, lag, pérdida, error y dependencia S3; snapshots/logs/híbrido | Modelo de observación y calibración | OPEN; δ_det es detectabilidad, no mínimo funcional |
+| Umbral p* para resumir detectabilidad y criterio de error/precisión | Decisión normativa/metrológica | OPEN; no inventar |
+
+### 14.7 Dictamen del subgate
+
+**CLOSED_DOCUMENTARILY:** universo finito de estados funcionales, cinco familias de transición causal, eventos antecedentes/no constitutivos, reglas de propagación de truth y correspondencia R0–R3. El cierre es semántico y de alcance; no afirma que los estados o transiciones hayan sido materializados ni observados.
+
+**OPEN:** soporte de episodios/persistencia/recuperación; horizonte común T*; τ_follow; unidad temporal; Δ/K y versionado exacto de fronteras; modelo/calibración S3 y δ_det/p*; factibilidad/soporte de g_A y r_common; q_X*; F*/oráculo O-CONF. Estos pendientes no reabren el universo funcional cerrado; son gates posteriores de temporalización, medición e identificación.
+
+**No autorizado:** instanciar episodios, seleccionar distribuciones, generar datos, ejecutar calibración/simulación/estimación, implementar código o declarar Design Freeze. `scientific_execution=false`; `execution_authorized=false`.
