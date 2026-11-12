@@ -447,7 +447,7 @@ La comparación de adjudicación binaria se realiza solo en unidades con truth 1
 
 La exactitud condicionada a los casos adjudicables no puede presentarse sola como rendimiento global. Sensibilidad, especificidad y tasas de abstención deben acompañarse de cobertura y de los denominadores que las definen. No se derivan valores predictivos poblacionales de una composición de truth configurada para validación sin justificar representatividad.
 
-La presencia de contenido concordante y discordante en el dominio del DGP es una exigencia de soporte cualitativo para probar interpretación y error semántico, no una instrucción para fijar proporciones, balance, prevalencias ni asignación por brazo. La forma de garantizar soporte por cada clase de truth y polaridad permanece OPEN y deberá reconciliarse con el roster censal y DEC-C10-095; si no existe soporte, se declara SUPPORT_FAILURE/DESIGN_BLOCKED, sin añadir unidades post hoc.
+El dominio del DGP debe especificar concordancia y permitir discordancia semántica como posibilidades del canal, pero no exige que las cuatro combinaciones truth–contenido aparezcan forzosamente en el censo realizado. La truth 1/0 debe tener soporte en la cohorte conforme a DEC-C10-095; el soporte de cada celda cruzada se informa y se exige solo para la afirmación/contraste que la necesita, conforme a §18. Esto no autoriza fijar proporciones, balance, prevalencias ni asignación por brazo. Si falta soporte, se limita o bloquea el contraste correspondiente, sin añadir unidades post hoc.
 
 ### 17.4 Separación de denominadores y dictámenes
 
