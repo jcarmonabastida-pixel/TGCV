@@ -231,3 +231,10 @@ El contrato integrado queda desarrollado en el plan C10-S §16.182. Se fija una 
 La agregación (V^{truth}_{cont}=K^{-1}sum A^{B1}_{ik}) sigue siendo candidata y requiere K definido, ventana/rejilla común y aceptación normativa del peso igual por intervalo. El Analyzer solo puede estimar puntualmente si el canal es identificable con calibración accesible bajo el protocolo; sin ello debe emitir bounds o NOT_IDENTIFIED/INDETERMINATE_MEASUREMENT. No se admite usar la media bruta de señales o casos completos como sustituto.
 
 S6 y la oportunidad estandarizada única no se reutilizan como monitor temporal ni se añaden peticiones. O-CONF/F* sigue sin ficha terminal validada; la discriminación V_cont/O-CONF queda CONDITIONAL/NOT_VERIFIABLE. Esta especificación sintética no es validación empírica de señales S3 reales ni instancia Value completa. No altera P179, DEC-C10-095 ni la decisión específica DEC-C10-099; no autoriza implementación/ejecución.
+
+
+## 18. Reconciliación de la frontera B1–F*–O-CONF–V_cont (2026-11-12)
+
+El contrato funcional B1 §2 define la función de servicio: admitir solicitudes según ENABLED y exponer PROFILE. Las referencias históricas a una operación concreta pendiente se interpretan como ausencia de payload/perfil material, no como ausencia de definición funcional. V_cont mide cumplimiento temporal de esa función; O-CONF adjudica conformidad terminal de la ruta frente a F*. F* no contiene actualmente una regla de continuidad temporal durante toda la ventana.
+
+Se documentan en el plan §16.183 dos contrastes DGP candidatos: terminal conforme tras interrupciones temporales recuperadas; y servicio parcialmente operativo durante la ventana pese a fallo terminal de una propiedad F* independiente. Su admisibilidad depende del cierre de predicados F*, alcance de la verificación y oráculo terminal. No se declaran generados ni validados. O-CONF permanece candidato no operacionalizado; discriminación final CONDITIONAL/NOT_VERIFIABLE.
