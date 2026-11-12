@@ -1587,3 +1587,21 @@ La ventana se representa [t0,T*], donde T* será un horizonte post-Z común, fij
 Se mantiene DEC-C10-100: K intervalos de igual duración y agregación no ponderada, con UNKNOWN propagado a bounds. S3 continúa como canal runtime pasivo, vectorial e imperfecto; no añade peticiones ni muta el sistema. La separación truth/observed/evaluation y el firewall PE permanecen obligatorios.
 
 Registro autónomo: `00_GOVERNANCE/decisions/DEC-C10-101_V_CONT_POST_Z_WINDOW_START_T0_ACCEPTANCE.md`. Plan integrado §16.190; reconciliación B1/Need_preZ temporal §9; auditoría temporal/S4R §8. No Design Freeze ni autorización de implementación/ejecución.
+
+
+## DEC-C10-102 — Aceptación de continuidad estricta por intervalo para V_cont (2026-11-12)
+
+**Estado:** ACCEPTED WORKING DESIGN DECISION — NOT DESIGN FREEZE.
+
+El usuario acepta que la truth funcional B1 se evalúe estrictamente dentro de cada intervalo, sin periodo de gracia ni tolerancia implícita para interrupciones confirmadas:
+- truth=1 solo si ENABLED/PROFILE se cumple durante todo el intervalo;
+- truth=0 si ocurre al menos un incumplimiento funcional confirmado en cualquier instante;
+- truth=? solo si la truth funcional no queda determinada por el Generator.
+
+La ausencia, pérdida, lag o cobertura insuficiente de S3 es incertidumbre del canal de observación, no UNKNOWN ni cumplimiento/incumplimiento de truth. No se promedian señales ni se diluyen fallos. Eventos exactamente en frontera requieren asignación determinista y versionada a un único intervalo. Si S3 no puede detectar el mínimo evento relevante del DGP, Analyzer debe abstenerse o producir bounds.
+
+La ventana empieza en t0 conforme DEC-C10-101. Se recomienda un reloj explícito de tiempo transcurrido, unidad normalizada declarada, eventos fechados y rejilla regular. t0…t9 es orden causal y no duración física; H=3 es profundidad transformacional. T* debe cubrir provisión/instalación y el seguimiento hasta el último evento causal que pueda modificar el cumplimiento B1 dentro del estimando. K=(T*−t0)/Δ con Δ constante y divisibilidad exacta; no se admiten intervalos residuales desiguales.
+
+Unidad, eventos relevantes, duración mínima representable, T*, Δ, K, regla de cierre y calibración S3 siguen OPEN. Esta decisión no autoriza implementación, materialización, generación, simulación, estimación, calibración ni Design Freeze.
+
+Registro autónomo: 00_GOVERNANCE/decisions/DEC-C10-102_V_CONT_STRICT_INTERVAL_CONTINUITY_ACCEPTANCE.md. Plan integrado §16.192; reconciliación B1/Need_preZ temporal §11; auditoría temporal/S4R §9. scientific_execution=false; execution_authorized=false.
