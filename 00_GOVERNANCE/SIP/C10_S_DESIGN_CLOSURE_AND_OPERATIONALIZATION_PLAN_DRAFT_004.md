@@ -5040,3 +5040,44 @@ Se retira la interpretación de §16.205.4 como necesidad de recuperar fuentes r
 **Gate correcto:** especificar la ontología finita del mundo sintético, los mecanismos generadores y los canales de observación/adjudicación. No abrir una fase de trabajo de campo ni exigir fuentes reales. No fijar todavía cardinalidades o parámetros numéricos no justificados.
 
 **Dictamen:** ABSTRACT_SYNTHETIC_BENCHMARK_SCOPE_CLARIFIED / REAL_MIGRATION_CASE_NOT_IN_SCOPE / SYNTHETIC_ROSTER_INSTANTIATION_OPEN / NO_EXECUTION.
+
+## 16.207. Especificación del universo sintético finito y arquitectura de escenarios (2026-11-12)
+
+**Precedencia:** esta sección operacionaliza §§16.188–16.206 y los contratos DGP/PD/inventario. No crea una nueva familia de escenarios ni aprueba cardinalidades, parámetros, H, estimandos o Design Freeze.
+
+### 16.207.1. Unidad lógica de mundo y ontología mínima candidata
+
+Un mundo sintético `w` es una instancia finita y versionada de un mecanismo causal-transformacional, con una o más unidades `i`, historia basal `X_i/H_i0`, asignación `Z_i`, régimen/política `B`, estados estructurales, catálogo finito de transformaciones, relaciones de composición, condiciones de aplicabilidad, rutas, trayectorias potenciales y procesos separados de observación/evaluación. La unidad de asignación puede coincidir con UE solo bajo aislamiento; si hay exposición compartida, el mundo debe definir clúster/mapa de exposición antes de invocar SUTVA.
+
+Como **esqueleto candidato reutilizado**, no como cardinalidad confirmatoria: estados `S0/S1/S2/SF`; transformaciones `F1/F2/A1/A2`; ruta focal `F1→F2`; ruta alternativa `A1→A2`; horizonte `H` y granularidad `G` parametrizables. `H=3`, las cuatro transformaciones y las dos rutas permanecen candidatos del inventario, no decisiones ratificadas. No añadir TID, estados o rutas adicionales salvo que discriminen una hipótesis/falsador no cubierto.
+
+### 16.207.2. Arquitectura de escenarios sin factorial completo
+
+R0–R3 del inventario son **perfiles de topología/alternativas y provisión**, no cuatro DGP completos ni cuatro resultados. Se reutilizan como base:
+
+- R0: focal exclusiva solo dentro del universo sintético exhaustivamente estipulado.
+- R1: alternativa basal estable; apertura focal no equivale a apertura funcional exclusiva.
+- R2: alternativa afectada; vía colateral que impide interpretar automáticamente D2 como instrumento focal.
+- R3: fallo de provisión por etapas; no imputar `C_dep*`, `A_f*` o `D_f*` desde Z o intento.
+
+Sobre estos perfiles se instancian selectivamente los mecanismos adversariales ya enumerados en PD §4 y el ledger §16.188.4: focal aislado, nulo, fallo parcial, adverso, vía directa, colateral, interacción/heterogeneidad, IV débil/nulo/defiers/exclusión, interferencia, versionado/crossover, observación diferencial, soporte fallido y datos incompletos/censura. No se exige producto cartesiano ni se crean IDs nuevos. Cada mundo seleccionado debe cubrir un contraste o falsador concreto y declarar qué perfiles/mecanismos combina.
+
+### 16.207.3. Funciones generadoras y coherencia contrafactual
+
+Para cada mundo se definen funciones estructurales versionadas y un vector de exógenas comunes `U_i` (o `U_c` si la asignación/exposición es por clúster). Los potenciales bajo cada régimen se derivan de las mismas funciones y exógenas compartidas; no se generan como tablas independientes incompatibles. La dependencia entre programación, intento, recepción, instalación, `C_dep*`, predicados `A_f*`, `D_f*`, `ΔT_acc*`, Reach/Π, trayectorias y resultados se estipula explícitamente, sin asumir independencia, monotonicidad, exclusión, positividad o mediación serial.
+
+Se preservan las etapas: `Z → W_programmed → W_attempt → receipt → S_install → C_dep* → A_f*/D_f* → ΔT_acc* → Reach/Π → K/Consider → Sel/Start → Exec → O/V`. Es una lista de variables con dependencias posibles, no una cadena determinista. Se añaden ramas directas y colaterales en la propia función generadora cuando el mundo deba probarlas.
+
+### 16.207.4. Condición de suficiencia científica
+
+El conjunto de mundos es suficiente solo si permite: (a) recuperar una contribución conocida de `ΔT_acc*` cuando el diseño y los supuestos la hacen identificable; (b) recuperar nulo o signo adverso cuando esa sea la truth; (c) distinguir efecto total D2/paquete de efecto atribuible a accesibilidad; (d) detectar alternativas, vías directas/colaterales e interacciones; y (e) producir bounds/abstención/no-identificación cuando falte soporte, medición o identificación. La exactitud del analizador reconstructivo no sustituye la prueba de atribución causal.
+
+O-CONF, `V_cont` y Value siguen siendo variables/constructos distintos. `O-CONF_truth` se deriva del criterio terminal F*; `V_cont_truth` de B1 por intervalos; Value requiere la regla PA aprobada. Mientras Value no esté instanciado, el bloque de estimandos/resultados sobre Value permanece explícitamente bloqueado: no sustituirlo por O-CONF ni por `V_cont`.
+
+### 16.207.5. Evidencia sintética y cierre de roles
+
+Las clases de fuente del roster §16.205 son tipos abstractos de registros generados, no fuentes físicas requeridas. El Generator produce truth estructural, potenciales y metadatos sintéticos; genera después `observed_evidence` mediante un canal con cobertura, error, pérdida, lag y sesgo estipulados. Analyzer recibe solo evidencia permitida y sellada. Evaluator conserva truth independiente y compara después del sellado. El oráculo/verdad de evaluación no se expone al Analyzer; la alternativa A1/A2 solo se modifica cuando el mecanismo R2 lo estipula, no por accidente de generación.
+
+**Siguiente gate:** formalizar las funciones generadoras por bloque causal y la matriz selectiva `perfil R0–R3 × mecanismo PD × contraste/estimando × salida esperada`, sin asignar probabilidades ni ejecutar. La identificación y el soporte se evalúan antes de dimensionar/calibrar.
+
+**Dictamen:** FINITE_SYNTHETIC_WORLD_ARCHITECTURE_SPECIFIED_CANDIDATE / R0_R3_REUSED_NOT_FROZEN / MECHANISM_OVERLAYS_SELECTIVE / VALUE_OPERATIONALIZATION_BLOCKED_BY_PA / NO_NUMERIC_PARAMETERS / NO_EXECUTION.
