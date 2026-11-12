@@ -199,6 +199,29 @@ No se fija cardinalidad de oportunidades ni se inventan source_opportunity_id. S
 
 **RECOMMENDED MINIMUM PROFILE — DOCUMENTARY / NOT FROZEN.**
 
+### 10.7 Corrección de autoridad probatoria S7 y contrato de declaración focal
+
+La asignación de una fuente a S7 no la convierte por sí sola en evidencia primaria. Conforme al protocolo U_G §3, la jerarquía depende de la afirmación. Manuales, tickets, diagramas y entrevistas de custodios se tratan como fuentes de descubrimiento/contexto y no bastan por defecto para adjudicar el objetivo basal.
+
+Para la afirmación específica «el objetivo focal forma/no forma parte de los objetivos basales declarados de esta B1 respecto de esta instancia de servicio en t−1», se admite como candidata directa una **declaración basal original y controlada**. Su admisibilidad depende del acto declarativo y de su autoridad, no de la etiqueta S7. La declaración deberá cumplir conjuntamente:
+
+1. **Emisor identificable:** persona/rol o autoridad sintética emisora, con identidad y versión trazables; el generador no puede inventar autoridad implícita.
+2. **Competencia declarativa:** regla explícita del DGP que atribuye al emisor autoridad para declarar el objetivo basal de la B1; ser custodio técnico del servicio no confiere por sí solo esa competencia.
+3. **Referente inequívoco:** B1, UE, instancia lógica de servicio y versiones exactas, sin binding por proximidad o nombre libre.
+4. **Tiempo:** declaración fijada en t−1; una captura posterior solo puede ser copia íntegra de un artefacto fijado antes de Z, con event_time y capture_time diferenciados.
+5. **Proposición focal explícita:** inclusión o exclusión del objetivo funcional definido en el contrato B1; no basta una descripción general, una configuración ENABLED/PROFILE ni una inferencia del adjudicador.
+6. **Alcance:** relación B1–servicio y ámbito al que se refiere la afirmación; la exclusión es focal, no una afirmación sobre todos los objetivos posibles de B1.
+7. **Integridad/provenance:** versión, digest o control equivalente, custodio/canal de captura, lineage y evidencia de que el artefacto no es una copia derivada presentada como corroboración independiente.
+8. **Accesibilidad observacional:** el expediente visible no contiene truth, truth_basis_ref, etiquetas internas, claves, semillas ni metadatos que permitan reconstruir directamente la estipulación reservada.
+
+Se define el tipo lógico candidato S7_B1_BASELINE_OBJECTIVE_ATTESTATION para identificar este tipo de acto/artefacto dentro de S7. Es un nombre de tipo, no una nueva clase S, entidad U_G, tabla física, ID de prueba ni afirmación de que exista una fuente materializada.
+
+**Contenido observable permitido:** la declaración expresa la proposición focal como afirmación de inclusión o exclusión, junto con referente, alcance, emisor/autoridad, vigencia y provenance. No contiene el campo interno need_truth_state ni referencias al registro reservado. La observación puede emitir, omitir, perder, capturar, volver ambigua o corromper la declaración, y puede generar contenido semánticamente erróneo según el modelo aprobado; no se fija aquí ninguna tasa. La salida observable no se obtiene copiando una fila de TRUTH_LEDGER.
+
+**Independencia y corroboración:** copias, exports, transcripciones o documentos derivados de la misma declaración comparten un lineage y cuentan como una sola raíz probatoria. Fuentes S5/S7 adicionales solo corroboran si son genuinamente distintas en origen y autoridad; no se presupone independencia. Si no hay una declaración original admisible, E1/E2 no pueden inferir observed=1/0 a partir de snapshots técnicos, logs, solicitudes, ausencia de documentos o manuales genéricos: corresponde abstención/observed=? o bloqueo de integridad según el defecto.
+
+Esta especialización no altera la taxonomía S1–S8 ni las reglas generales de evidencia negativa U_G. El tipo focal S7 no elimina la necesidad de cobertura: para observed=0 se requiere la exclusión focal afirmativa admisible; COMPLETE sin ella no basta.
+
 - Taxonomía S1–S8: reutilizada, sin ampliación.
 - Clase semántica focal mínima: S7, con inclusión/exclusión focal explícita.
 - Identidad/binding, provenance/integridad/tiempo y marco de cobertura: controles obligatorios de referencia/admisibilidad; no evidencia semántica independiente.
