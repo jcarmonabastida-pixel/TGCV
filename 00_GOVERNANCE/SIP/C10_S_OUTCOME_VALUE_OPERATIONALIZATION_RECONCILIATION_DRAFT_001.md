@@ -309,3 +309,13 @@ La falta de determinación de truth sigue propagándose a bounds conforme a DEC-
 Si el objetivo científico exigiera medir el porcentaje exacto de uptime, habría que sustituir la regla binaria estricta por una medida basada en duración de estados (integral/tiempo ponderado), con una decisión nueva. No se adopta esa alternativa ni se reabre ahora la escala aceptada.
 
 **Estado:** EQUAL_INTERVAL_AGGREGATION_PRESERVED / STRICT_BLOCK_COMPLIANCE_SHARE / NOT_EXACT_UPTIME / Δ_AND_GRID_ALIGNMENT_MATERIALLY_DEFINE_SCALE / NO_DESIGN_FREEZE.
+
+## 25. Consecuencia de DEC-C10-102: dominio de medición separado de truth funcional (2026-11-12)
+
+V_cont conserva la proporción de intervalos completamente conformes. No hay periodo de gracia ni duración mínima funcional: un incumplimiento confirmado, por breve que sea, hace A_B1=0 en cada intervalo afectado.
+
+La detectabilidad de S3 es un problema separado. δ_det designa el dominio mínimo de duración para el que el canal pasivo, una vez especificado y calibrado, puede demostrar capacidad de detección bajo sus condiciones de captura/cobertura. No es una tolerancia funcional, no cambia A_B1 y no permite recodificar episodios más breves como conformes. Si un episodio puede afectar truth pero no es observable con fiabilidad, Analyzer debe producir bounds o abstenerse.
+
+Δ de la rejilla V_cont, resolución/cadencia/cobertura S3 y δ_det no son equivalentes. No se afirma recuperación puntual de V_cont sin demostrar que el canal cubre los eventos que determinan cada bloque. Se mantienen separados truth, observación y evaluación.
+
+**Estado:** STRICT_TRUTH_PRESERVED / S3_DETECTION_DOMAIN_NOT_CALIBRATED / V_CONT_RECOVERY_CONDITIONAL / NO_DESIGN_FREEZE.
