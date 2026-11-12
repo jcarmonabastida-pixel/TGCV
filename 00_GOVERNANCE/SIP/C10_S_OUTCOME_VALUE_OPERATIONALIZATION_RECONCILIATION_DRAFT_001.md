@@ -319,3 +319,14 @@ La detectabilidad de S3 es un problema separado. δ_det designa el dominio míni
 Δ de la rejilla V_cont, resolución/cadencia/cobertura S3 y δ_det no son equivalentes. No se afirma recuperación puntual de V_cont sin demostrar que el canal cubre los eventos que determinan cada bloque. Se mantienen separados truth, observación y evaluación.
 
 **Estado:** STRICT_TRUTH_PRESERVED / S3_DETECTION_DOMAIN_NOT_CALIBRATED / V_CONT_RECOVERY_CONDITIONAL / NO_DESIGN_FREEZE.
+
+
+## 26. Reloj normalizado y límite de interpretación de V_cont (2026-11-12)
+
+V_cont mantiene la proporción de intervalos completamente conformes; no es fracción exacta de uptime. Se representa el tiempo mediante W_c, tramo común de soporte causal desde t0 hasta t_c,max, y x=(t−t0)/W_c, sin unidad física ni conversión a segundos/horas. El horizonte común es T*=1+ρ_follow, con ρ_follow=τ_follow/W_c pendiente.
+
+Las duraciones d_e=δ_event/W_c, la cadencia/resolución S3 c_j/W_c, la anchura Δ y la cola ρ_follow son distintas. El canal S3 se contrasta en modos snapshots/métricas, logs/trazas/eventos e híbrido, sin asumir periodicidad, completitud o independencia. δ_det se informa inicialmente como curva conjunta de detección por duración, fase, familia y versión; un valor puntual requiere umbral p* aprobado.
+
+d_min,DGP limita solo el soporte del benchmark sintético, nunca introduce una tolerancia o periodo de gracia. Cualquier incumplimiento confirmado sigue afectando cada intervalo intersectado. Si S3 no identifica la truth puntual, se reportan bounds o abstención.
+
+**Estado:** V_CONT_SCALE_SEMANTICS_PRESERVED / NORMALIZED_CLOCK_ONLY / DETECTION_THRESHOLD_OPEN / NO_DESIGN_FREEZE.
