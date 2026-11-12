@@ -5874,3 +5874,107 @@ Por tanto, la sección §16.219 se conserva como base cuantitativa ya aceptada, 
 **Dictamen:** GATE66_CORRECTED_HISTORICAL_PRECEDENCE / B1_BENEFICIARY_AND_VCONT_RULE_REUSED / VALUE_SEMANTICS_NOT_REOPENED / TEMPORAL_S3_AND_CAUSAL_IDENTIFICATION_GAPS_RETAINED / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** cerrar de forma conjunta la definición de la cuadrícula de efectos del DGP y el contrato de identificación/soporte de ITT-D2 y θ_A, reutilizando las fichas C1/C-MED/MAP ya existentes. No reabrir Value, B1 ni la fórmula de V_cont. No crear una nueva matriz o subpaquete.
+
+
+## 16.222. Gate 68 — contrato estructural de identificación/soporte y cuadrícula de efectos (2026-11-12)
+
+**Precedencia:** §§16.199–16.212, 16.218–16.221; C1 §§15–18; D2 assignment/population/support §§3–10; C10-D1/S4R §§18–20 y 23–27; P177–P183. Esta sección cierra la arquitectura de los contrastes sintéticos y la lógica de su cuadrícula. No cierra todavía sus parámetros numéricos ni la identificación material de una instancia no generada.
+
+### 16.222.1. Regla de no reapertura y alcance
+
+Se reutilizan B1/variante B y V_cont conforme a DEC-C10-095/099–102, §16.174 y corrección §16.221. No se reabre Value, su perspectiva B1, la semántica de V_cont, la regla por intervalos ni la separación S3/S7/O-CONF. La auditoría A de falta de beneficiario no invalida la variante B.
+
+El objeto de este gate es el benchmark sintético de verdad conocida. La pertenencia a la población, las historias basales, la asignación y los mecanismos se estipulan dentro de cada mundo versionado. Esa estipulación local no ratifica una fórmula universal de E_i, no crea evidencia IAM real y no autoriza transportar los parámetros a una población empírica.
+
+### 16.222.2. Contraste C1: ITT total de asignación D2 sobre V_cont
+
+Para cada mundo w, se define antes de generar resultados una cohorte finita P_w cuya pertenencia verdadera se establece en el Generator mediante los predicados basales del mundo. En el mundo limpio, las unidades incluidas satisfacen por construcción las condiciones de la población objetivo candidata P*_{τ2} (incluidos C_dep,0*=0 y A_f,0*=0); E_scope y App*(τ2,S0) se declaran separadamente, sin elevar E_i=E_scope∧App a regla universal aceptada. Los mundos con pertenencia ambigua conservan ? y no se reclasifican como excluidos.
+
+El contraste es:
+\[
+ITT^{D2}_{V_{cont}}(P_w,T^*) =
+E_{i\in P_w}[V_{cont,i}(Z=1;D2,T^*)-V_{cont,i}(Z=0;D2,T^*)].
+\]
+
+Contrato de identificación para que el oráculo clasifique el contraste como IDENTIFIED:
+- Z se asigna aleatoriamente en la unidad UA conforme a probabilidades de diseño versionadas; en cada estrato/historia con masa objetivo, 0<π_h<1. No se presupone ratio 1:1, algoritmo, semilla ni tamaño.
+- La aleatorización es independiente de los potenciales bajo el diseño declarado; las desviaciones, crossover y versiones se registran y no se sustituyen por recepción/cumplimiento.
+- UA=UE solo en mundos aislados por construcción. Si hay exposición compartida, el mundo define clúster/UA o G_i(Z_{-i}) y potenciales compatibles. Sin ese mapa, el ITT individual no es IDENTIFIED.
+- La cohorte y su regla basal se fijan antes de Z. El Analyzer recibe evidencia pre-Z suficiente para la pertenencia en las celdas identificables; si la evidencia de elegibilidad es incompleta/diferencial, el oráculo exige bounds o INDETERMINATE/NOT_IDENTIFIED según el mecanismo. El Generator no filtra a posteriori por variables post-Z.
+- La distribución basal finita tiene soporte explícito. El estimando se refiere a P_w y al horizonte común T*; no se transporta a otra población/horizonte.
+- V_cont tiene truth por unidad y ventana conforme a DEC-C10-100/102. La salida observada procede de S3. Si el canal, pérdida/censura o missingness no permite identificar el resultado bajo los supuestos declarados, no se aprueba un punto por el mero hecho de que Generator conozca la truth.
+
+Con estas condiciones, el objeto recuperable es el efecto total del paquete D2 sobre V_cont, incluidas todas las vías activadas por D2. Nunca se renombra como efecto focal de accesibilidad. El estimador debe respetar probabilidades de asignación/estratos y la unidad realmente aleatorizada; el estimador concreto se fija junto al mecanismo de asignación antes de calibración.
+
+### 16.222.3. Contraste focal C3: θ_A bajo intervención directa g_A
+
+\[
+\theta_A(q_X^*,r_{common};V_{cont}) =
+E_{X\sim q_X^*,\,\Delta T\sim g_{A1},\,R\sim r_{common}}[V_{cont}]
+-
+E_{X\sim q_X^*,\,\Delta T\sim g_{A0},\,R\sim r_{common}}[V_{cont}].
+\]
+
+- q_X* es una distribución basal finita y versionada, con masas q_j>0 sobre sus historias x_j; excluye Z, Need_preZ como filtro y variables post-Z. Las mismas historias, masas y pesos se usan para g_A1 y g_A0.
+- g_A1 y g_A0 son intervenciones estocásticas factibles sobre el vector completo ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*), no sobre D_f* ni una coordenada aislada. Para cada historia con masa positiva, ambas políticas deben tener soporte/positividad y versiones admisibles. Si no, el contraste sobre esa q_X* no está identificado; solo cabe restringir la población ex ante y redefinir el estimando, o informar bounds/no identificación.
+- r_common fija por contrato los mecanismos no focales compartidos entre ambos regímenes. No significa que las vías directas/colaterales sean inexistentes. Si una vía afecta diferencialmente a V_cont y no puede mantenerse común, separarse o identificarse, el efecto focal puntual no está identificado.
+- Los potenciales bajo g_A1/g_A0 comparten la misma historia basal y exógenas de unidad según §16.212; no se generan como muestras independientes de unidades distintas.
+- La comparación se prueba directamente en el DGP bajo g_A; no se infiere desde Z, W_programmed, provisión, C_dep*, A_f*, D_f* ni desde ITT_Z^D2.
+
+El mapping B_g^D2→g_A permanece NOT_DEMONSTRATED. Solo un mundo específico que lo estipule y demuestre distribución inducida equivalente, versiones, régimen común, soporte y ausencia/separación de vías diferenciales podrá probar una correspondencia. La existencia de ese mundo no autoriza generalizar la equivalencia a R1/R2 ni a todo D2.
+
+### 16.222.4. Matriz de identificación por clase de mundo
+
+| Clase ya existente | ITT-D2(V_cont) | θ_A(V_cont) | Dictamen/uso |
+|---|---|---|---|
+| Focal limpio, asignación D2 aleatoria, aislamiento, medición suficiente | Identificado como efecto total de paquete | Identificado solo en su contraste g_A directo; no por D2 sin mapping probado | Control positivo por estimando |
+| Nulo general/condicionado | Identificado si conserva asignación/soporte/canal | Identificado si ambas g_A son factibles y el canal lo permite | Debe recuperar cero dentro del criterio; no confundir no-rechazo con equivalencia |
+| Vía directa o colateral D2→V_cont | ITT identificado si se mantienen las condiciones C1 | No identificado como focal si no se mantiene/separa la vía mediante r_common | Control de falsa atribución focal |
+| Alternativa basal R1 | ITT identificado bajo diseño | θ_A solo sobre q_X* común y factibilidad de ambas políticas | No confundir apertura focal con incremento de Reach |
+| Alternativa afectada R2 / interacción | ITT total puede identificarse por diseño; heterogeneidad exige soporte por estrato | Identificación depende de soporte condicional y régimen común | Sin soporte, bounds/abstención |
+| Primera etapa nula/débil o IV adversarial | ITT no queda invalidado por ello | No habilita atribución IV; LATE_f no se presume | No Wald automático |
+| Falta de positividad o historia fuera de soporte | No identificado para la población/historia sin soporte; posible estimando restringido solo ex ante | No identificado en la masa sin soporte | No extrapolar |
+| Interferencia | Identificado solo para UA/clúster/exposición definido | Requiere política/exposición y soporte compatibles | Sin mapa, no efecto individual |
+| S3 diferencial, pérdida/censura o medición degradada | Según modelo de observación: identificado, bounds o indeterminado | Igual, con identificación focal adicional | Truth no sustituye observación |
+
+C4/IIE_M y LATE_f no se declaran cerrados en este gate: conservan sus contratos y supuestos propios. Las primeras etapas C2 siguen siendo diagnósticos de mecanismo, no sustitutos de C1 o C3.
+
+### 16.222.5. Cuadrícula de efectos: estructura cerrada, valores numéricos abiertos
+
+Se fijan dos cuadrículas separadas: G_ITT para el contraste verdadero ITT^{D2}_{V_cont} y G_A para θ_A. Ningún valor de una se transfiere a la otra. En cada mundo y estimando, el Evaluator calcula la truth exacta (o conjunto de truth si el oráculo es parcial) después del sellado del Analyzer.
+
+Como V_cont∈[0,1], la cuadrícula se construye desde la media de referencia μ_0 y el rango factible, no desde valores arbitrarios:
+- efecto nulo: δ=0;
+- efectos positivos: δ^+_e(κ)=κ(1−μ_{0,e});
+- efectos negativos: δ^-_e(κ)=−κ μ_{0,e};
+- κ toma niveles ordenados desde señal débil hasta efecto amplio, predeclarados y comunes dentro de cada familia comparable. Sus valores concretos quedan pendientes de justificación por resolución del benchmark.
+- Para exigir ambos signos sin degeneración de techo/suelo, las celdas bidireccionales usan una condición basal interior 0<μ_{0,e}<1. Si la media está en frontera, solo se incluye la dirección factible y se registra la limitación; no se fabrica un efecto imposible.
+- Los efectos heterogéneos pueden combinar signos opuestos por estrato y producir media marginal nula; estas celdas comprueban que el Analyzer no confunda nulo marginal con ausencia de efectos condicionales.
+- Las familias directas/colaterales cruzan el efecto total ITT con un efecto focal nulo, débil o de signo distinto; no se imponen relaciones algebraicas entre ITT y θ_A.
+- Los mundos de no-identificación, soporte fallido, interferencia no mapeada y observación insuficiente no reciben un efecto puntual exigible: se evalúa clasificación, bounds y abstención.
+
+La cuadrícula se genera dentro del roster dirigido de §§16.208/16.211; no es factorial completo. Cada celda declara estimando, población, horizonte, mundo, signo, nivel κ, mecanismo focal/no focal, estado de identificación del oráculo y régimen de observación. Las configuraciones de calibración y evaluación final permanecen separadas conforme §16.218.6.
+
+δ_min,e se interpretará como el primer nivel no nulo de la cuadrícula para el que se exige potencia objetivo; w_max,e como la resolución inferencial requerida para distinguir los niveles pertinentes, siempre en la escala V_cont y por estimando. Los valores de κ, δ_min,e, w_max,e, masas q_j, pesos de familias, parámetros y N/R siguen abiertos; no se seleccionan retrospectivamente ni se derivan de P178.
+
+### 16.222.6. Criterios de aceptación y salidas del Analyzer
+
+Se reutilizan sin modificación los objetivos aceptados en §16.219: α bilateral 0,05, cobertura nominal 95%, potencia ≥0,80 en celdas identificables al efecto mínimo predeclarado, MCSE≤0,005 y límites de falsa atribución/abstención por familia con su incertidumbre Monte Carlo. No se ejecutan ni se extienden automáticamente a C4/LATE.
+
+- IDENTIFIED: estimación e intervalo según el diseño/contraste y cobertura aplicables.
+- PARTIALLY_IDENTIFIED: bounds que cubren el conjunto de verdad bajo las restricciones declaradas; no punto forzado.
+- NOT_IDENTIFIED: falta de identificación estructural (p. ej. no soporte, vía no separada, interferencia no mapeada).
+- INDETERMINATE: la evidencia/canal no permite decidir entre estados/valores.
+- Cualquier punto focal emitido en un mundo cuyo oráculo sea NOT_IDENTIFIED/INDETERMINATE es falsa atribución crítica, incluso si numéricamente parece próximo a la truth.
+
+No se usa significación aislada como criterio de recuperación, ni se agrega el rendimiento de estimandos/familias para compensar fallos.
+
+### 16.222.7. Estado y siguiente dependencia
+
+**CERRADO ESTRUCTURALMENTE:** definición separada de C1 y C3 en el benchmark; condiciones de identificación y soporte por estimando; separación D2/g_A; construcción factible de cuadrículas distintas; relación entre cuadrícula, δ_min y w_max; roster dirigido de controles positivos, nulos y adversariales.
+
+**ABIERTO:** valores de κ, composición/masas numéricas de q_X*, probabilidades/estratos de asignación, parámetros de las funciones generadoras, régimen r_common por escenario, mapping D2→g_A si se quiere probar, parámetros S3, δ_min,e, w_max,e, pesos/orden de familias, multiplicidad, N/R y capacidad técnica del Analyzer para bounds y métricas. La identificación efectiva de cualquier instancia depende de que esas condiciones se materialicen y se verifiquen.
+
+**Dictamen:** ITT_AND_THETA_A_IDENTIFICATION_SUPPORT_CONTRACT_CLOSED_STRUCTURALLY / SEPARATE_EFFECT_GRIDS_DEFINED / NUMERIC_GRID_AND_SUPPORT_OPEN / D2_TO_GA_MAPPING_NOT_DEMONSTRATED / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** completar el ledger paramétrico mínimo de cada celda de la cuadrícula (masas q_X*, asignación/UA, κ y funciones activas) y el r_common por clase, todavía sin asignar valores numéricos. Después se podrá preparar la decisión cuantitativa de parametrización, sin ejecutar calibración.
