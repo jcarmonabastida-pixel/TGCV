@@ -79,7 +79,7 @@ E1 y E2 conservan salidas independientes, rationales, evidencia usada, motivos d
 
 Distinguir el error semántico del silencio:
 
-- Truth=1 + declaración positiva errónea ausente/ambigua/perdida → normalmente observed=? (abstención), no falso negativo binario.
+- Truth=1 + ausencia, ambigüedad o pérdida de declaración positiva → normalmente observed=? (abstención), no falso negativo binario.
 - Truth=1 + afirmación negativa explícita, admisible pero semánticamente errónea → observed=0; se cuenta como falso negativo.
 - Truth=0 + ausencia de declaración positiva → observed=?; no es verdadero negativo.
 - Truth=0 + afirmación positiva explícita, admisible pero semánticamente errónea → observed=1; se cuenta como falso positivo.
