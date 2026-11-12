@@ -3964,7 +3964,7 @@ El gate G-ROLE requiere pruebas de permisos efectivos y ataques negativos, no so
 | Gate | Salida documental actual | Estado |
 |---|---|---|
 | G-SCI | D2/g_A/C4 y resultados separados reconciliados; V_cont escala normativa y medición aún incompletas; O-CONF ficha/oráculo incompletos | BLOCKED |
-| G-MAT | roster/IAM/C_SRC/snapshots/provisión/aislamiento/soporte material ausentes; captura no autorizada | BLOCKED |
+| G-MAT | materialización D2 real no requerida por el alcance sintético; cohorte/soporte sintéticos siguen dentro de G-SCI/G-REPRO | OUT_OF_SCOPE_FOR_SYNTHETIC_CORE |
 | G-SCHEMA | contrato lógico PE suficiente como frontera; perfil físico/equivalente, estructura y validadores no elegidos/probados | BLOCKED |
 | G-ROLE | segregación conceptual definida; ACL/custodia/sealer/firewall efectivo no probado | BLOCKED |
 | G-TEST | P177–P183 y familias existentes mapeados; O/V, oráculos, fixtures y tolerancias incompletos | BLOCKED |
@@ -3973,7 +3973,7 @@ El gate G-ROLE requiere pruebas de permisos efectivos y ataques negativos, no so
 
 **Decisiones no deducibles antes del freeze:** (i) regla normativa de agregación de V_cont; (ii) selección/alcance de Outcome confirmatorio — O-CONF no se convierte en primario por estar más desarrollado; (iii) relevancia/MDE y riesgo de error de decisión; (iv) horizonte/rejilla/criterio de disponibilidad. El alcance de este trabajo es el experimento causal sintético de recuperación, no la materialización de una migración/D2 real; esa frontera ya está decidida y no se vuelve a consultar. G-MAT material real queda fuera del gate del experimento sintético, aunque sus condiciones puedan inspirar escenarios adversariales estipulados. No se harán claims de provisión real, validez externa ni identificación material.
 
-**Dictamen E+F:** MEASUREMENT_CONTRACT_RECONCILED_CONDITIONALLY / VCONT_AGGREGATION_DECISION_OPEN / OCONF_NOT_OPERATIONALIZED / P178_BOUNDED_REPLAY_CLOSED / CONFIRMATORY_CALIBRATION_NOT_DERIVED / PE_TECHNICAL_BOUNDARIES_SPECIFIED_NOT_IMPLEMENTED / ALL_FREEZE_GATES_BLOCKED / NO_AUTHORIZATION.
+**Dictamen E+F:** MEASUREMENT_CONTRACT_RECONCILED_CONDITIONALLY / VCONT_AGGREGATION_DECISION_OPEN / OCONF_NOT_OPERATIONALIZED / P178_BOUNDED_REPLAY_CLOSED / CONFIRMATORY_CALIBRATION_NOT_DERIVED / PE_TECHNICAL_BOUNDARIES_SPECIFIED_NOT_IMPLEMENTED / G_SCI_SCHEMA_ROLE_TEST_REPRO_BLOCKED / G_MAT_OUT_OF_SCOPE_FOR_SYNTHETIC_CORE / NO_AUTHORIZATION.
 
 No ejecución de código, pruebas, validadores, generación, simulación, estimación, captura material ni implementación. scientific_execution=false; execution_authorized=false.
 
