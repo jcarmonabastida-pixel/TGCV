@@ -199,14 +199,7 @@ class Generator:
         cfg.validate()
         rng = random.Random(cfg.seed)
         run_id = _hash(asdict(cfg))[:24]
-        if not cfg.no_interference:
-            n_clusters = cfg.n_units // 4
-            if n_clusters % 2:
-                raise ContractError("cluster-interference benchmark requires an even number of four-unit clusters")
-            cluster_z_assign = _balanced_binary(n_clusters, rng)
-            z_assign = [cluster_z_assign[i // 4] for i in range(cfg.n_units)]
-        else:
-            z_assign = _balanced_binary(cfg.n_units, rng)
+        z_assign = _balanced_binary(cfg.n_units, rng)
         g_assign = _balanced_binary(cfg.n_units, rng)
         # Shared exogenous variables: same unit/interval uniforms are reused
         # across all four potential regimes (z,g).
@@ -260,8 +253,11 @@ class Generator:
                         + cfg.heterogeneity * (x - 0.5) * trajectory
                     )
                     if not cfg.no_interference:
-                        # Cluster-level assignment makes the exposure counterfactual coherent.
-                        profile_match_p += cfg.interference_effect * z
+                        # Partial-interference potential: hold the realized assignments
+                        # of the other three cluster members fixed while intervening on i.
+                        peers = [j for j in range(cluster * 4, cluster * 4 + 4) if j != i]
+                        peer_exposure = mean(z_assign[j] for j in peers)
+                        profile_match_p += cfg.interference_effect * peer_exposure
                     profile_match_p = max(0.0, min(1.0, profile_match_p))
                     # B1 is conjunctive: ENABLED and the declared PROFILE must
                     # both hold throughout an interval. Components stay separate.
