@@ -40,6 +40,10 @@ class ScenarioConfig:
     n_units: int
     n_intervals: int
     seed: int
+    window_start: float
+    last_transition_support: float
+    follow_up: float
+    enabled_probability: float
     baseline_conformity: float
     focal_access_effect: float
     package_direct_effect: float
@@ -69,7 +73,7 @@ class ScenarioConfig:
         if self.n_intervals < 2:
             raise ContractError("at least two equal V_cont intervals required")
         probs = (
-            self.baseline_conformity, self.provision_probability,
+            self.enabled_probability, self.baseline_conformity, self.provision_probability,
             self.alternative_probability, self.measurement_sensitivity,
             self.measurement_specificity, self.missing_probability,
         )
@@ -85,6 +89,11 @@ class ScenarioConfig:
             raise ContractError("benchmark requires randomized Z and randomized g_A")
         if not self.version_consistency:
             raise ContractError("scenario generator requires explicit version consistency")
+        if not (math.isfinite(self.window_start) and
+                math.isfinite(self.last_transition_support) and
+                math.isfinite(self.follow_up) and
+                self.window_start < self.last_transition_support and self.follow_up > 0.0):
+            raise ContractError("temporal support and positive follow-up must be explicit")
         if self.measurement_identified and not (
             self.measurement_sensitivity == 1.0 and
             self.measurement_specificity == 1.0 and
@@ -118,6 +127,9 @@ class RunManifest:
     version: str
     n_units: int
     n_intervals: int
+    window_start: float
+    window_end: float
+    interval_width: float
     generator_version: str
 
 
@@ -275,7 +287,7 @@ class Generator:
                     profile_match_p = max(0.0, min(1.0, profile_match_p))
                     # B1 is conjunctive: ENABLED and the declared PROFILE must
                     # both hold throughout an interval. Components stay separate.
-                    enabled_states = tuple(int(u < 0.98) for u in u_enabled)
+                    enabled_states = tuple(int(u < cfg.enabled_probability) for u in u_enabled)
                     profile_states = tuple(int(u < profile_match_p) for u in u_profile)
                     states = tuple(int(en and pr) for en, pr in zip(enabled_states, profile_states))
                     v = sum(states) / cfg.n_intervals
@@ -337,8 +349,11 @@ class Generator:
             for unit in v_truth
         )
         theta = mean(unit[0][1] - unit[0][0] for unit in v_truth)
+        window_end = cfg.last_transition_support + cfg.follow_up
+        interval_width = (window_end - cfg.window_start) / cfg.n_intervals
         manifest = RunManifest(run_id, cfg.scenario_id, cfg.version,
-                               cfg.n_units, cfg.n_intervals, self.version)
+                               cfg.n_units, cfg.n_intervals, cfg.window_start,
+                               window_end, interval_width, self.version)
         truth = TruthBundle(run_id, tuple(v_truth), tuple(interval_truth),
                             tuple(enabled_truth), tuple(profile_truth), tuple(delta_truth),
                             itt, theta, cfg.seed)
@@ -506,7 +521,8 @@ def benchmark_scenarios(n_units: int = 400, n_intervals: int = 20,
     """Explicit candidate design points; not empirical rates or confirmatory defaults."""
     common = dict(
         version="VCONT-SYNTH-001", n_units=n_units, n_intervals=n_intervals,
-        seed=seed, baseline_conformity=0.55, focal_access_effect=0.20,
+        seed=seed, window_start=0.0, last_transition_support=0.8, follow_up=0.2,
+        enabled_probability=0.98, baseline_conformity=0.55, focal_access_effect=0.20,
         package_direct_effect=0.0, focal_direct_effect=0.0, collateral_effect=0.0,
         provision_probability=1.0, alternative_probability=0.0, heterogeneity=0.0,
         interference_effect=0.0, measurement_sensitivity=1.0,
