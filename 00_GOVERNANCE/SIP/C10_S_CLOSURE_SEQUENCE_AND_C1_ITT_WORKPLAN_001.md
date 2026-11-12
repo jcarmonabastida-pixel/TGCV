@@ -2417,3 +2417,23 @@ Se define en §16.220.2 la ficha obligatoria de justificación para δ_min,e, w_
 **Dictamen:** MARGIN_JUSTIFICATION_CONTRACT_DEFINED / NUMERIC_MARGINS_NOT_JUSTIFIABLE_FROM_CURRENT_SPECIFICATION / VALUE_ENDPOINT_MATERIALIZATION_OPEN / THETA_A_MAPPING_AND_IDENTIFICATION_OPEN / CONFIRMATORY_FAMILY_OPEN / NO_N_R_SELECTION / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente operación:** completar conjuntamente la materialización de V_cont/Outcome/Value y la ficha de identificación ITT-D2/θ_A sobre la misma instancia. Se mantienen scientific_execution=false y execution_authorized=false; PR #116 Draft; main intacta.
+
+
+## 67. Rectificación del Gate 66: reutilización de B1/V_cont y corrección de precedencia (2026-11-12)
+
+La revisión histórica de §§16.141–16.147, 16.160–16.165, 16.173–16.174, 16.182–16.217 y DEC-C10-095/099–102 demuestra que el Gate 66 reabrió indebidamente decisiones ya tratadas y describió erróneamente la instancia sintética como no materializada.
+
+**Corrección:**
+- La variante B con B1 sintético por UE, Need_preZ basal, perspectiva B1 y oportunidad estandarizada está aceptada como extensión independiente de A.
+- V_cont es la dimensión mínima unitaria provisional aceptada para B. La regla funcional por intervalo y la agregación como proporción no ponderada de intervalos completamente conformes están especificadas; UNKNOWN pasa a bounds. La ventana inicia en t0 e incluye provisión/instalación.
+- S3 observa runtime post-Z y no define truth; S7 observa Need_preZ basal. Snapshot, log e híbrido se comparan sobre las mismas historias. No hay ganador a priori.
+- O-CONF/F* es distinto de V_cont. La discriminación material sigue CONDITIONAL/NOT_VERIFIABLE; no se reabre la definición de V_cont.
+- La auditoría §16.140 de falta de beneficiario en A no invalida la variante B ni las decisiones posteriores B1/DEC-C10-095.
+
+**Se retiran como errores de §16.220:** ausencia de beneficiario B1; Value no instanciado en B; necesidad de volver a materializar semánticamente V_cont/Value. §16.220 se conserva como registro histórico, pero §16.221 prevalece en estas materias.
+
+**Precisión para el benchmark sintético:** no se exige MDE sustantivo de usuarios reales. δ_min,e se interpreta como menor efecto de la cuadrícula de verdad conocida para el que se exige rendimiento; w_max,e como resolución inferencial del benchmark. Se fijarán ex ante desde el rango factible y la resolución de recuperación, no desde resultados ni preferencias humanas. Se mantiene pendiente la cuadrícula exacta y el dimensionamiento.
+
+**Dictamen:** GATE66_CORRECTED_HISTORICAL_PRECEDENCE / B1_BENEFICIARY_AND_VCONT_RULE_REUSED / VALUE_SEMANTICS_NOT_REOPENED / TEMPORAL_S3_AND_CAUSAL_IDENTIFICATION_GAPS_RETAINED / NO_CALIBRATION / NO_DATA / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** cerrar conjuntamente la cuadrícula de efectos del DGP y el contrato de identificación/soporte ITT-D2/θ_A, reutilizando C1/C-MED/MAP; no reabrir Value, B1 ni V_cont. Se mantienen scientific_execution=false y execution_authorized=false.
