@@ -404,3 +404,70 @@ Permanecen sin decidir:
 - cómo verificar técnicamente el firewall y el sellado.
 
 No se fijan probabilidades, prevalencias, tasas de error ni nuevas pruebas/IDs. No se crea un artefacto lógico, clase de fuente, variable causal o schema físico adicional. No se materializa ni ejecuta.
+
+
+## 17. Asignación de modos de error: núcleo confirmatorio, sensibilidad y pruebas adversariales (propuesta)
+
+### 17.1 Criterio de separación
+
+La asignación no se realiza por conveniencia ni por la frecuencia esperada de un modo, sino por la pregunta que permite responder y por si el expediente resultante sigue siendo admisible para adjudicar Need.
+
+Se distinguen tres familias:
+
+- **Núcleo confirmatorio de medición:** casos en los que existe una oportunidad S7 emitida, capturada, íntegra, correctamente vinculada, pre-Z y con autoridad/alcance suficientes. El contenido puede ser semánticamente concordante o contener una inversión de polaridad. En ambos casos E1/E2 reciben un expediente formalmente admisible y su capacidad de interpretación puede evaluarse contra truth tras el sellado.
+- **Sensibilidad de observación/cobertura:** casos en los que la información no llega, llega incompleta o no permite una decisión semántica. Evalúan cobertura, abstención y robustez del procedimiento; no deben mezclarse con la matriz binaria de clasificación como si fueran errores 1/0.
+- **Pruebas adversariales de integridad y cegamiento:** casos con identidad, tiempo, autoridad, integridad o metadata defectuosos. Evalúan si el sistema detecta y bloquea evidencia inadmisible o filtraciones; no son observaciones válidas para estimar exactitud ordinaria de E1/E2.
+
+### 17.2 Asignación recomendada de los doce modos
+
+| Modo | Ubicación recomendada | Tratamiento confirmatorio |
+|---|---|---|
+| Declaración concordante | Núcleo confirmatorio | Incluir como referencia de adjudicación sobre evidencia válida; no asumir que agota el escenario |
+| Inversión semántica positiva/negativa | Núcleo confirmatorio, como contraste de error semántico | Incluir como posibilidad explícita del mecanismo de medición, sin imponer frecuencia ni tasa |
+| Ambigüedad genuina | Sensibilidad de observación/abstención | Informar observed=?, cobertura y abstención; no puntuar como FP/FN binario |
+| No emisión | Sensibilidad de observación/cobertura | Oportunidad esperada sin artefacto; no es observed=0 |
+| Pérdida de captura/retención | Sensibilidad de observación/cobertura | Distinguir de no emisión; no es observed=0 |
+| Opacidad/cobertura parcial | Sensibilidad de observación/cobertura | Estado PARTIAL/no evaluable según alcance; no convertirlo en clasificación negativa |
+| Defecto de identidad/binding | Prueba adversarial de integridad | Rechazar o bloquear el caso afectado; no adjudicar contenido como si fuera de la UE focal |
+| Defecto temporal | Prueba adversarial de integridad | Rechazar contenido no acreditado como pre-Z; no retrofecharlo |
+| Autoridad/vigencia insuficiente | Prueba adversarial de admisibilidad | Excluir la declaración como evidencia afirmativa; preservar el motivo |
+| Corrupción/integridad | Prueba adversarial de integridad | Bloquear/excluir según contrato y conservar diagnóstico |
+| Conflicto interno | Sensibilidad semántica, con prueba adversarial si se manipula la estructura | observed=? si el conflicto es genuino y no resoluble; corrupción o manipulación estructural se bloquea |
+| Filtración lateral | Prueba adversarial crítica de firewall | Cualquier filtración invalida el cegamiento del paquete afectado; no se informa como simple error de clasificación |
+
+### 17.3 Qué significa «núcleo confirmatorio»
+
+El núcleo confirmatorio no es un canal perfecto ni presupone una tasa de error. Su dominio de evaluación se limita a expedientes S7 admisibles y contiene, como clases de contraste, contenido concordante y la posibilidad de polaridad semántica errónea para truth=1 y truth=0.
+
+La comparación de adjudicación binaria se realiza solo en unidades con truth 1/0 y salida observed 1/0. Se informan además, sin ocultarlos:
+- unidades truth 1/0 con observed=?;
+- unidades sin salida o con error técnico;
+- cobertura y estado de la oportunidad S7;
+- denominadores por clase y por E1/E2.
+
+La exactitud condicionada a los casos adjudicables no puede presentarse sola como rendimiento global. Sensibilidad, especificidad y tasas de abstención deben acompañarse de cobertura y de los denominadores que las definen. No se derivan valores predictivos poblacionales de una composición de truth configurada para validación sin justificar representatividad.
+
+La presencia de contenido concordante y discordante en el dominio del DGP es una exigencia de soporte cualitativo para probar interpretación y error semántico, no una instrucción para fijar proporciones, balance, prevalencias ni asignación por brazo. La forma de garantizar soporte por cada clase de truth y polaridad permanece OPEN y deberá reconciliarse con el roster censal y DEC-C10-095; si no existe soporte, se declara SUPPORT_FAILURE/DESIGN_BLOCKED, sin añadir unidades post hoc.
+
+### 17.4 Separación de denominadores y dictámenes
+
+No se utilizará un único denominador para todas las preguntas:
+
+1. **Censo de unidades B1/UE:** todas las unidades del roster aprobado al que aplica B1/Need, conforme a DEC-C10-096.
+2. **Oportunidades S7 esperadas:** una por UE, conforme a DEC-C10-098; este es el marco para emisión/captura/cobertura.
+3. **Casos con expediente admisible:** subconjunto con fuente válida para adjudicación; se informa su cobertura respecto del censo, sin redefinir la cohorte.
+4. **Casos binariamente evaluables:** truth 1/0 y observed 1/0; denominador de métricas de clasificación, siempre acompañado de abstenciones y no evaluables.
+5. **Casos de prueba adversarial:** paquetes/casos designados para verificar rechazo, bloqueo y firewall; no se mezclan con el estimador de exactitud confirmatoria.
+
+El filtro de expediente admisible no modifica retrospectivamente la pertenencia al censo ni al ITT. La pérdida diferencial o la selección de casos adjudicables puede sesgar métricas condicionadas; deberá describirse y analizarse, no corregirse con una suposición automática de MCAR/MAR/MNAR.
+
+### 17.5 Restricciones y cuestiones no resueltas
+
+- La taxonomía asigna funciones a los modos; no define aún un factorial, secuencia, N, repetición, parámetro ni tasa.
+- No se presupone que los errores semánticos sean independientes de truth, canal o unidades. El mecanismo conjunto y cualquier causa común deben justificarse en el DGP.
+- La única oportunidad S7 por UE limita la corroboración dentro de la unidad; copias/derivados no aumentan el número de fuentes independientes.
+- Los fallos adversariales deben estar aislados del flujo confirmatorio y etiquetados por el protocolo de prueba, sin que esa etiqueta revele truth a E1/E2.
+- El firewall se evalúa antes de interpretar métricas de clasificación; si hay filtración, la evaluación ciega afectada queda INVALID.
+- No se modifican DEC-C10-095/096/097/098 ni se crea una nueva decisión aceptada. Esta asignación es una propuesta para revisión, no un freeze ni autorización de materialización/ejecución.
+
+**Dictamen provisional:** ERROR_MODES_CLASSIFIED_BY_EVALUATION_PURPOSE / CONFIRMATORY_DOMAIN_PROPOSED / SENSITIVITY_AND_ADVERSARIAL_SEPARATED / SUPPORT_AND_PARAMETERIZATION_OPEN / NOT_IMPLEMENTED / NOT_EXECUTED.
