@@ -284,3 +284,61 @@ El Analyzer PE no es un tercer adjudicador de Need ni recibe truth, contenido in
 **OPEN:** si el mecanismo es determinista, probabilístico o mixto; variables basales autorizadas X₀; dependencia entre unidades por canal/plantilla/versión; soporte de escenarios; parámetros y rangos; tasas de emisión/error/ambigüedad/pérdida; calibración/sensibilidad; precisión/potencia; implementación y pruebas técnicas del firewall.
 
 No se crea un nuevo artefacto lógico, una nueva clase de fuente, un rol PE, una variable causal, un test ID ni una tabla física. No se materializa ni ejecuta.
+
+
+
+## 15. Admisibilidad de variables basales como condicionantes del canal S7 (propuesta, no freeze)
+
+### 15.1 Hallazgo de reconstrucción histórica
+
+El diagnóstico basal existente (§§2–7 de C10_S_B1_PREZ_BASELINE_SOURCE_DIAGNOSTIC_DRAFT_001.md) ya examinó las variables t−1 disponibles: X, H₀, C_c, L_m, C_dep, A_f*, T_acc y F_alt, además de CMP/PAR/REF/RUL, ENABLED/PROFILE y eventos de petición. Ninguna tiene un mapping semántico aprobado que justifique definir Need o condicionar la declaración S7. No se debe reabrir ese diagnóstico ni convertir la mera disponibilidad de una variable en autorización causal.
+
+La composición de truth permanece explícita, versionada y reservada por B1/UE (DEC-C10-095). No se deriva de covariables. La oportunidad S7 es fija ex ante (DEC-C10-098). El contenido observable puede depender del estado basal oculto mediante un canal de medición explícito (DEC-C10-097/098), pero no copia la etiqueta.
+
+### 15.2 Regla provisional de admisibilidad
+
+En el diseño base actualmente documentado, **no se admite ninguna covariable basal X₀ como predictor/condicionante del canal S7**. Esto no afirma que las características basales sean estadísticamente independientes de Need, ni que jamás afecten a emisión/captura en otro modelo. Significa que no hay fichas semánticas, roles causales, medición ni evidencia suficiente para incluirlas en este DGP confirmatorio sin inventar estructura.
+
+El conjunto mínimo de entradas conceptuales queda limitado a:
+- la oportunidad S7 ya fijada;
+- el mandato/alcance y la versión de canal preespecificados;
+- la estipulación basal reservada Need_preZ como estado latente que el canal intenta medir;
+- el mecanismo conjunto de emisión, contenido y captura que se defina explícitamente.
+
+La truth no es un campo del artefacto visible ni se entrega al emisor como una etiqueta. Es argumento interno del mecanismo generador de medición, formalizado como dependencia condicional y protegido por el firewall. No se introduce un agente cognitivo, creencia, predictor ni covariable nueva.
+
+### 15.3 Qué dependencias se permiten conceptualmente
+
+| Relación | Estado de diseño |
+|---|---|
+| Truth basal → emisión/contenido S7 a través del canal de medición | Permitida y necesaria para que la declaración mida el constructo; mecanismo no especificado |
+| Versión/mandato S7 → reglas de emisión y formato | Permitida como condición de diseño fijada ex ante |
+| Contenido emitido → captura/retención | Permitida como dependencia del proceso de captura; mecanismo no especificado |
+| Características basales X/H/C_c/L_m → emisión/contenido/captura | No admitida en el DGP base actual; requeriría justificación por variable |
+| C_dep/A_f/T_acc/Reach/instalación/solicitudes/ejecución/Outcome/Value → canal basal | Excluida por diferencia semántica, temporalidad o circularidad |
+| Z/D2/asignación/cumplimiento/post-Z → oportunidad o contenido basal | Prohibida |
+| Salidas E1/E2/Analyzer → canal | Prohibida (retroalimentación/filtración) |
+
+La tabla es un límite de diseño, no una afirmación de independencia estadística universal. Las relaciones no admitidas quedan fuera del modelo base hasta que exista una decisión explícita y evidencia de que la variable es un determinante legítimo del proceso de medición, no un proxy del constructo.
+
+### 15.4 Requisitos para admitir una covariable en una versión futura
+
+Cada candidata deberá aportar, antes de incorporarse:
+1. definición semántica exacta y referente (B1, UE, servicio, declarador o canal);
+2. momento de medición y prueba de que existe en t−1;
+3. mecanismo plausible que explique por qué afecta a emisión, contenido o captura, identificando cuál etapa;
+4. distinción entre determinante del proceso de medición y determinante del propio Need;
+5. evidencia de que no es consecuencia de Z, D2, accesibilidad, resultados ni decisiones de E1/E2;
+6. regla de medición, missingness, integridad, versión y provenance;
+7. consecuencias para dependencia entre unidades y para el estimando de validación;
+8. análisis de sensibilidad o contraste adversarial que permita comprobar si su inclusión cambia el rendimiento/errores de forma relevante.
+
+No basta una correlación, disponibilidad técnica, comodidad de programación ni mejorar artificialmente la dificultad del Analyzer. La incorporación requiere actualización del contrato y decisión de diseño; no se añade una lista abierta de covariables por defecto.
+
+### 15.5 Implicación para la especificación estadística
+
+Hasta que se justifique una covariable, el DGP no asignará probabilidades condicionales a X₀ ni supondrá independencia marginal de X₀. El canal se describirá mediante un mecanismo conjunto condicional al estado basal reservado y a la versión/mandato S7. La factorización de emisión, contenido y captura es una identidad de distribución conjunta, no un supuesto de independencia.
+
+La dependencia entre UE por plantilla, canal compartido, versión, lote o causa común de error sigue OPEN: una oportunidad por UE no demuestra independencia entre unidades. No se introducen latentes compartidas ni se fijan tasas/probabilidades sin justificación.
+
+**Dictamen provisional:** el conjunto de covariables basales admisibles para el canal S7 en el DGP base es vacío (X₀ = ∅) por falta de justificación contractual, no por una afirmación empírica de ausencia de asociación. Se conserva la dependencia de medición entre Need basal y contenido observable como mecanismo a especificar. No se materializa ni ejecuta.
