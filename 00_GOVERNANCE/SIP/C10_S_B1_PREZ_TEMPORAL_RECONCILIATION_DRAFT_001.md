@@ -209,3 +209,40 @@ La ventana comienza en t0 (DEC-C10-101) y termina en T* común, cubriendo provis
 K=(T*−t0)/Δ con Δ constante; si no hay divisibilidad exacta, se ajusta T* antes de generar, sin intervalo residual desigual. Unidad, eventos relevantes, duración mínima representable, T*, Δ, K, regla de cierre y calibración S3 siguen OPEN.
 
 **Estado:** STRICT_INTERVAL_CONTINUITY_ACCEPTED / NO_GRACE_PERIOD / EVENT_CLOCK_AND_GRID_SPECIFIED_AS_DESIGN_ROUTE / TSTAR_DELTA_K_OPEN / NOT_DESIGN_FROZEN / NO_EXECUTION_AUTHORIZED.
+
+## 12. Inventario funcional de eventos y separación de relojes (2026-11-12)
+
+La función de servicio se reutiliza sin ampliación: ENABLED=true implica admitir solicitudes; ENABLED=false implica no admitirlas; PROFILE debe exponerse conforme a su valor declarado. STANDARD/READ_ONLY no adquieren semántica adicional.
+
+### 12.1 Eventos/estados del DGP
+
+| Grupo | Elementos | Relación con V_cont |
+|---|---|---|
+| Provisión | programación, intento, recepción/disponibilidad de componentes | Antecedentes causales, no truth funcional por sí mismos |
+| Instalación | aplicación, verificación, integridad, compatibilidad, operabilidad, rollback | Pueden cambiar el estado efectivo del servicio |
+| Configuración | ENABLED efectivo, PROFILE efectivo, versión/identidad de instancia/configuración | Determinantes directos o de binding de la regla |
+| Runtime | proceso/módulo, listener/socket/superficie de recepción, dependencias, capacidad/recursos cuando afecten admisión, caída/reinicio/recuperación | Pueden impedir/restaurar la capacidad funcional; S3 solo los observa imperfectamente |
+| Petición | oportunidad, intento, recepción, admisión/rechazo, procesamiento/respuesta | Evento discreto; no monitor continuo. Ausencia de petición no es fallo |
+| Transformación/valor | Reach, selección, ejecución, F*, O-CONF, Outcome, Value | No definen A_B1 ni sustituyen S3 |
+
+La truth se genera a partir del estado funcional efectivo y de sus transiciones. Un evento de provisión/instalación o runtime solo determina A_B1 cuando el estado funcional resultante incumple o restituye la regla B1. La solicitud estandarizada única por UE no se reutiliza como sonda repetida.
+
+### 12.2 Tres relojes distintos
+
+1. **Truth/event_time:** momento en que cambia el estado funcional efectivo en el Generator.
+2. **Rejilla V_cont:** partición común de [t0,T*] en K intervalos iguales para aplicar la regla estricta.
+3. **Observación S3:** timestamps de captura, lag, cobertura y pérdida del canal pasivo.
+
+Δ no equivale a la frecuencia S3. S3 reutiliza los componentes ya definidos (proceso/módulo, listener/socket/superficie, dependencias, capacidad/recursos cuando estén definidos y perfil runtime). No se añaden probes activos. Snapshots periódicos aislados no garantizan detección de episodios breves; sin identificación del canal se conservan bounds o abstención.
+
+### 12.3 Interpretación correcta de la agregación aceptada
+
+La combinación DEC-C10-100/102 hace que V_cont_truth sea la proporción de intervalos completamente conformes, no la fracción exacta de tiempo de uptime. Cualquier incumplimiento confirmado, por breve que sea, convierte el intervalo afectado en 0. El valor depende de Δ y de la alineación de la rejilla. Se preservan fórmula y decisiones aceptadas; no se altera el endpoint por inferencia. Medir la fracción exacta de tiempo requeriría una operacionalización distinta y aprobación expresa.
+
+### 12.4 Fronteras y T*
+
+Convención recomendada: intervalos internos [b_k,b_{k+1}); un evento exactamente en frontera interna pertenece al intervalo que comienza allí; el último intervalo incluye T*. Un episodio que cruza una frontera afecta a cada intervalo cuyo interior intersecta el episodio. La regla se versionará antes de materializar.
+
+T* debe incluir provisión/instalación y un seguimiento común posterior al último evento causal capaz de modificar A_B1. Puede expresarse T*=t_last+τ_follow. No se fija τ_follow, T*, Δ ni K hasta cerrar catálogo de eventos, mínimo episodio representado y capacidad de captura S3.
+
+**Dictamen:** EVENT_INVENTORY_RECONCILED / TRUTH_GRID_AND_S3_CLOCK_SEPARATED / V_CONT_IS_FULLY_COMPLIANT_BLOCK_SHARE / TSTAR_DELTA_K_OPEN / NOT_DESIGN_FROZEN.
