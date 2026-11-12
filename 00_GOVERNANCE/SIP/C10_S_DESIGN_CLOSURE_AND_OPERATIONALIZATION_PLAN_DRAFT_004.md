@@ -4047,3 +4047,89 @@ La próxima pasada no abrirá subpaquetes. Integrará en una sola ficha de calib
 **Estado:** VCONT_SCALE_RULE_ACCEPTED_PROVISIONALLY / VCONT_MEASUREMENT_VALIDITY_CONDITIONAL / OCONF_DISCRIMINATION_NOT_VERIFIED / CALIBRATION_SURFACE_SPECIFIED_NOT_RUN / QUANTITATIVE_OPERATING_POINT_OPEN / DESIGN_FREEZE_NOT_READY / NO_EXECUTION_AUTHORIZED.
 
 No se ejecuta código, validador, generación, simulación, estimación ni calibración computacional. `scientific_execution=false`; `execution_authorized=false`.
+
+## 16.188. Cierre estructural del DGP y ledger integrado de parámetros (2026-11-12)
+
+**Tipo:** reconciliación derivada de contratos existentes; no crea decisiones científicas ni parámetros numéricos.  
+**Fuentes:** §§16.185–16.187; DEC-C10-053, 066, 067, 095–100; contratos DGP base, D2 población/soporte, causal architecture, PD, inventario finito, temporal B1, Outcome/Value y PE; S4R, MEAS, MISS, P177/P178/P179/P182/P183.
+
+### 16.188.1. Precedencia y bloqueos heredados
+
+1. §16.187 y DEC-C10-100 superseden las frases de §16.186 que presentaban abierta la decisión de agregación de V_cont. La escala está aceptada provisionalmente; validez de medición, ventana y K continúan abiertas.
+2. El reloj del estudio t−1/t0…t9, la profundidad transformacional H y la duración/ventana de factibilidad son magnitudes distintas. H=3 permanece como profundidad máxima candidata, no como duración ni como fuente para fijar K.
+3. La oportunidad estandarizada única por UE no es un intervalo de monitorización ni determina la rejilla V_cont.
+4. El contrato B1 aún no especifica la operación funcional concreta que depende de ENABLED/PROFILE ni su criterio temporal de cumplimiento. No es lícito derivar duración de interrupción relevante, inicio/fin de ventana, frecuencia ni K. Este bloqueo afecta a la parametrización temporal sustantiva de V_cont, no al cierre del resto de la estructura generativa.
+5. O-CONF/F* conserva su oráculo parcial y no se selecciona automáticamente como Outcome confirmatorio. Value general y sus dimensiones tampoco se completan por inferencia desde V_cont.
+
+### 16.188.2. Esqueleto estructural único del DGP
+
+Para cada unidad i, régimen z y etapa t, Generator construye una historia potencial versionada:
+
+- **Basal pre-Z:** X_i, elegibilidad E_i, unidad de asignación UA_i/cluster_i, condiciones constitutivas C_i, frontera y versiones. Need_preZ y su evidencia permanecen en sus contratos y no son elegibilidad automática.
+- **Asignación/política:** Z_i (o Z_cluster), probabilidad π_i/π_h y política D2 versionada. D2 es el contraste primario candidato; D1 es secundario y separado.
+- **Provisión:** B_i(z) → W_attempt_i(z) → W_received_i(z) → S_install_i(z) → C_dep_i(z), conservando programación, intento, recepción, instalación, integridad, compatibilidad y operatividad como estados distintos. Ninguna etapa se copia automáticamente desde Z.
+- **Estado transformacional:** T_cap, T_acc_i(z,t) y snapshots S_T,i(z,t). A_f_i(z,t) deriva de los predicados aplicables ID/REL/COND/AUTH/RES/DEP/¬BLOCK; App_f se evalúa desde el estado de entrada; D_f y ΔT_acc=(ΔU,ΔR,ΔC,ΔX) son objetos separados.
+- **Grafo/rutas:** F1→F2 y A1→A2 son rutas candidatas del fixture finito, con R0–R3/S4R-A…D como escenarios de referencia. Cada paso requiere accesibilidad, aplicabilidad, composición, recursos, autorización, ventanas y bloqueos. Reach_H y Π_H se derivan del snapshot y universo cubierto, antes de selección/ejecución. H no es reloj.
+- **Etapas posteriores:** conocimiento/consideración, selección, inicio y ejecución se generan por separado y después de Reach/Π; no se infieren desde accesibilidad ni redefinen población ITT.
+- **Resultados:** O-CONF truth se adjudica por instancia×ruta en el estado terminal aplicado conforme F*. V_cont truth es la fracción temporal post-Z de A_B1 en rejilla común, con UNKNOWN propagado a bounds. Ningún resultado define otro.
+- **Observación/evaluación:** observaciones, validez, cobertura, error, missingness, censura y adjudicación son procesos distintos de truth. Analyzer recibe solo la proyección sellada permitida; Evaluator abre truth tras sellar la salida.
+
+Esto define orden y dependencias, no distribuciones paramétricas. Los potenciales por régimen reutilizan condiciones basales/versiones y reglas estructurales; solo cambian variables que la política puede afectar. Las dependencias comunes, directas, colaterales e interacciones se declaran expresamente, nunca se suponen ausentes por omisión.
+
+### 16.188.3. Ledger de parámetros: fuente, estado y regla de cierre
+
+| Bloque | Parámetros/objetos del contrato versionado | Estado y regla |
+|---|---|---|
+| Población basal | N, roster sintético, q_X, E_i, composición por estrato, UE/UA/cluster | OPEN. Soporte y unidad preceden al dimensionamiento; Need_preZ no filtra ITT. |
+| Aleatorización | π_h, ratio, estratos, algoritmo, semilla, desviaciones | OPEN; no asumir 1:1. |
+| Política D2/D1 | policy_id/version, reglas por Z, régimen control/tratamiento | Precedencia D2/D1 ACCEPTED; valores históricos .25/.80 no son tasas confirmatorias. |
+| Provisión | reglas/probabilidades de intento, recepción, instalación, integridad, compatibilidad, operatividad | OPEN. Transiciones separadas; sin independencia ni tasas por defecto. |
+| Dependencias/accesibilidad | C_dep componentes, predicados A_f, App, D_f, T_acc y sus cuatro deltas | Estructura parcial; dominios, soporte y dependencias paramétricas OPEN. |
+| Rutas/Reach | catálogo cubierto, relaciones, G, H, recursos, ventanas, bloqueos, alternativas | F1/F2/A1/A2 y R0–R3 son fixture candidato; H=3 solo profundidad candidata; F*/G/ventanas y exhaustividad OPEN. |
+| Outcome O | predicados FP, IAM/mapping, snapshots, evento terminal, oráculo y error | O-CONF parcial; no endpoint confirmatorio congelado. |
+| V_cont | operación B1, A_B1, ventana, K, duración mínima relevante, baseline/transitorios | Escala DEC-C10-100 ACCEPTED; operación y reloj funcional incompletos; ventana/K OPEN. |
+| Canal S3 | vector de señales, sensibilidad/especificidad, error temporal, correlación, cobertura/loss, diferencialidad por Z/versión | Estructura pasiva aceptada; tasas y modelo OPEN; sin independencia asumida. |
+| Observación general | MCAR/MAR/MNAR, pérdida, censura, selección, validez/invariancia | Taxonomía existente; parámetros/escenarios OPEN. |
+| Interferencia | exposición, recursos/pools compartidos, cluster, spillovers | OPEN; aislamiento por construcción o modelo de exposición explícito. |
+| Causalidad | efectos focales, directos, colaterales, interacciones, heterogeneidad, defiers y monotonicidad | Variar como escenarios conocidos; rangos/distribuciones OPEN. |
+| Calibración | α, potencia, precisión, MDE/relevancia, equivalencia, tolerancias, N, R, SE_MC y coste | Normativo/operativo OPEN; ningún valor importado de P178. |
+
+Cada parámetro debe tener ID, definición, unidad/escala, dominio, nivel (unidad/cluster/etapa/intervalo), momento, papel causal, distribución/regla estructural, dependencias, potenciales afectados, procedencia, estado de aprobación, rango de sensibilidad, versión y restricciones de soporte. Un parámetro sin procedencia o dominio explícito invalida la configuración; no recibe default silencioso.
+
+### 16.188.4. Matriz finita mínima de escenarios sin factorial completo
+
+La selección se organiza por falsador/contraste y no por el producto cartesiano de todos los factores. Perfiles mínimos:
+
+1. **Focal aislado:** D2 cambia provisión focal; sin vía directa/colateral, con soporte y medición estipulados. Evalúa ITT-paquete y, solo bajo mapping/régimen identificados, atribución focal.
+2. **Nulo/primera etapa nula:** Z no cambia cadena focal; impide fabricar efecto o primera etapa.
+3. **Fallo por etapas:** intento/recepción/instalación ocurren, pero C_dep o A_f no se abren.
+4. **Focal adverso:** la política deteriora una dimensión de ΔT_acc, Reach o V_cont; no imponer monotonicidad positiva.
+5. **Vía directa:** B afecta O/V sin pasar por ΔT_acc; clasificar efecto de paquete/no atribución focal.
+6. **Vía colateral/alternativa:** B altera A1/A2, dependencias, recursos, seguridad, latencia, información o coste; exclusión focal no se presume.
+7. **Interacción/heterogeneidad:** efecto dependiente de condiciones basales, alternativa, recursos o unidad; no transportar LATE entre D1/D2.
+8. **IV adversarial:** instrumento nulo/débil, defiers, exclusión o monotonicidad violadas; no usar Wald cuando no procede.
+9. **Medición adversarial:** S3 diferencial, temporalmente correlacionado, con cobertura incompleta o no ignorable; bounds/abstención cuando corresponda.
+10. **Soporte/interferencia/versionado:** positividad fallida, historia imposible, spillover/cluster, crossover o versiones asignada/recibida/aplicada divergentes.
+11. **O/V no discriminables:** interrupción temporal y conformidad terminal no separables con observación/oráculo disponible; abstenerse de afirmar discriminación.
+
+No se requiere cruzar todos los perfiles con todos los parámetros. Cada contraste causal, interacción crítica y falsador debe tener escenario positivo y control negativo apropiado; las combinaciones omitidas requieren justificación. Métricas por estimando, resultado y escenario, nunca un promedio global que oculte fallos.
+
+### 16.188.5. Estimandos y reglas de salida del Analyzer
+
+- **ITT-D2 por resultado:** contraste de resultados potenciales bajo asignación D2 en población/unidad declaradas. Interpreta efecto total del paquete; requiere asignación, población, consistencia, soporte e interferencia especificados.
+- **Primeras etapas:** estimandos separados para intento, recepción, instalación, C_dep, A_f, D_f y ΔT_acc.
+- **Accesibilidad g_A:** intervención estocástica sobre distribuciones factibles del ΔT_acc completo bajo q basal común y régimen no focal común. No se identifica por el ITT-D2; requiere mapping, soporte y régimen común.
+- **C4 interventional:** contribución mediada por el cambio estructural completo; requiere intervención longitudinal, control de confusión post-Z y positividad secuencial. Nunca se calcula por resta ITT−θ_A.
+- **LATE:** solo con relevancia, independencia, exclusión, monotonicidad, consistencia/versiones y no interferencia; si no, weak-IV, bounds o NOT_IDENTIFIED.
+- **O-CONF y V_cont:** estimandos separados con medición/error propios. Identificación de ITT-O no valida ITT-V ni viceversa.
+- **Salida obligatoria:** por estimando, IDENTIFIED, CONDITIONALLY_IDENTIFIED, BOUNDS_ONLY, NOT_IDENTIFIED, NOT_INSTANTIATED o INDETERMINATE_MEASUREMENT, con razones/supuestos visibles. No convertir no significación en equivalencia ni ausencia de evidencia en cero.
+
+### 16.188.6. Orden de cierre cuantitativo y regla de parada
+
+Secuencia única: (A) cerrar semántica funcional B1 y reloj/ventana; (B) cerrar soporte basal, unidad de asignación/interferencia y distribuciones estructurales; (C) cerrar funciones de transición/potenciales y parámetros de observación; (D) congelar matriz finita de escenarios y contrastes; (E) aprobar criterios normativos de error/relevancia/precisión; (F) buscar conjuntamente N, asignación, clúster y R y derivar frontera coste–precisión–recuperación.
+
+La calibración numérica no comienza mientras A–E estén abiertos. Si B1 no permite derivar una duración funcionalmente relevante, V_cont se conserva como resultado temporal vectorial/bounds y no se inventa K. Si C3/C4 no satisfacen identificación/soporte, el benchmark evalúa abstención/recuperación de no-identificación; no se les asigna potencia como si fueran estimandos identificados.
+
+**Estado:** DGP_STRUCTURAL_SKELETON_RECONCILED / PARAMETER_LEDGER_DEFINED_BUT_UNPOPULATED / ADVERSARIAL_SCENARIO_SET_SPECIFIED_NOT_INSTANTIATED / VCONT_WINDOW_K_BLOCKED_BY_B1_OPERATIONAL_SEMANTICS / SUPPORT_AND_RANDOMIZATION_OPEN / CALIBRATION_NOT_RUN / DESIGN_FREEZE_NOT_READY / NO_EXECUTION_AUTHORIZED.
+
+No se ha creado código, schema físico, fixture, truth, roster, dato ni resultado. No se han ejecutado validadores, generación, simulación, estimación o calibración computacional. scientific_execution=false; execution_authorized=false.
