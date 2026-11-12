@@ -162,3 +162,12 @@ El mediador de accesibilidad conserva las cuatro coordenadas ΔU*, ΔR*, ΔC*, �
 g_A1/g_A0 son intervenciones estocásticas separadas de Z_D2 sobre distribuciones factibles del cambio estructural completo, con r_common explícito. El ITT D2 es efecto total de política/paquete y no identifica por sí mismo θ_A; C4 no se obtiene por resta. Se preservan caminos directos, colaterales, alternativas, recursos, interacciones y spillovers como mecanismos generativos explícitos.
 
 El escenario base no presume independencia, monotonicidad, exclusión, soporte ni ausencia de interferencia. Los perfiles §16.188.4 y contratos existentes se reutilizan; no se crean IDs. Las funciones, distribuciones, magnitudes y mapping D2→g_A siguen OPEN. No ejecución ni Design Freeze.
+
+
+## 15. Funciones estructurales, soporte y clasificación basal (2026-11-12)
+
+Se integra el plan §16.200. Cada etapa D2 tiene función y potencial propio: programación (W_{prog}(z)=z); intento; recepción; instalación/verificación; C_dep*; A_f*/D_f*; snapshot/diff completo; Reach/Π; trayectoria; O-CONF/V_cont separados. El éxito no se transfiere de una etapa a la siguiente. Las funciones de intento, recepción, instalación, predicados focales, snapshots y Reach quedan OPEN en dominio, parámetros y soporte.
+
+q_X* contiene solo historia basal admisible y común: X/H0, C_c con mapping, F_alt,0 como modificador, y otros campos solo si su papel basal se justifica. E/App definen marco; en núcleo limpio C_dep,0=A_f,0*=0 son estipulaciones de diseño. L_m,0 requiere justificación; q_L* es exclusivamente secuencial post-Z cuando C4 lo exige. Need_preZ/S7 no filtra ni genera la cohorte.
+
+ΔT_acc* preserva ΔU*/ΔR*/ΔC*/ΔX*; ΔE_T permanece epistémico. El mapping ΔX* es campo a campo según la función semántica; los campos no adjudicables quedan ?. Se conservan directos, colaterales, interacciones, heterogeneidad y spillovers. No valores numéricos, no nuevos tests, no ejecución.
