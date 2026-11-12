@@ -308,3 +308,14 @@ S3 permanece pasivo y separado de truth. Los mecanismos snapshots/métricas, log
 El contrato debe preservar d_min,DGP como frontera del soporte sintético, nunca tolerancia funcional; δ_det como curva condicionada al canal y umbral p*; y Δ/cadencia S3/τ_follow como parámetros separados. Sin umbral aprobado o canal identificable, salida bounds/abstención. No se fija schema físico, tecnología, tasa, K ni frecuencia, y no se autoriza implementación.
 
 **Estado:** LOGICAL_TIME_SCHEMA_DEFINED / PHYSICAL_SCHEMA_OPEN / S3_CHANNEL_UNCALIBRATED / FIREWALL_NOT_IMPLEMENTED / NO_EXECUTION_AUTHORIZED.
+
+
+## 19. Crosswalk PE de captura temporal y recuperación (2026-11-12)
+
+El contrato PE reutiliza el canal S3 existente y las aserciones P182/P183/MEAS/MISS; no crea fuente, actor, endpoint, probe, rol ni prueba nueva. La proyección de S3 conserva por componente mecanismo (snapshot/métrica, log/traza/evento o híbrido), timestamp/fase, cobertura, lag, pérdida, validez, versión, unidad/instancia, provenance y dependencia. Los estados observados 1/0/? no se confunden con A_B1 truth.
+
+El Generator mantiene en zona reservada eventos/estados funcionales; el Sealer libera solo la evidencia S3 permitida; Analyzer no recibe truth, potenciales, semillas, parámetros reservados ni metadatos reconstruibles; Evaluator compara después del sellado. P182-11/12 gobiernan separación y trazabilidad; P183-01/02/04/07/09/10/11 gobiernan ausencia, mecanismo, no observado≠cero, pérdida diferencial, censura y bounds; P182-07/08/04/10 cubren error y discriminación.
+
+La salida por intervalo y V_cont será puntual solo con identificación del canal; de otro modo bounds/abstención. Los mecanismos híbridos deben conservar dependencia entre componentes; no se asume independencia ni se agregan señales con reglas no validadas.
+
+**Estado:** PE_TEMPORAL_CAPTURE_CROSSWALK_DEFINED / PHYSICAL_SCHEMA_OPEN / FIREWALL_NOT_IMPLEMENTED / NO_EXECUTION_AUTHORIZED.
