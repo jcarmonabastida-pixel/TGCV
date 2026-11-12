@@ -4,7 +4,7 @@
 **Versión:** Draft 001 · **Fecha:** 2026-11-11  
 **Estado:** FUNCTIONAL_WORKING_CONTRACT_ACCEPTED / PREZ_RULES_DEFINED_DOCUMENTALLY / UNIT_TRUTH_AND_EVIDENCE_MATERIAL_OPEN / CONSEQUENCE_STRUCTURE_RECONCILED / NO_VJ_SELECTED / NOT_DESIGN_FROZEN  
 **Rama:** `research/c10-s-consolidation-draft` · **PR:** #116 (Draft)  
-**Autoridad y precedencia:** DEC-C10-068/069; aceptación del propósito basal B1; aceptación de la especialización funcional mínima (§14 de `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md`); contratos B1/UE, oportunidad estandarizada, DGP temporal/roles, B2–B3, PC, P179/P182/P183 y §224.
+**Autoridad y precedencia:** DEC-C10-095/096/097; DEC-C10-068/069; aceptación del propósito basal B1; aceptación de la especialización funcional mínima (§14 de `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md`); contratos B1/UE, oportunidad estandarizada, DGP temporal/roles, B2–B3, PC, P179/P182/P183 y §224.
 
 ## 1. Objeto y alcance
 
