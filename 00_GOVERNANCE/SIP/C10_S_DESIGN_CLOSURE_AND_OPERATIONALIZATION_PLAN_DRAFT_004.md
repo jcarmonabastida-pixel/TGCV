@@ -4568,3 +4568,75 @@ K no se selecciona para minimizar el número de intervalos ni para maximizar art
 Se conserva la regla de intervalo semiabierto [b_k,b_{k+1}) con evento en frontera asignado al intervalo que comienza allí; T* pertenece al extremo terminal del último bloque. La regla debe versionarse antes de materializar.
 
 **Dictamen:** DIMENSIONLESS_COVERAGE_GRID_DEFINED / TARGETED_NOT_FULL_FACTORIAL / K_SELECTION_BY_RECOVERY_AND_ALIASING / FOLLOWUP_BY_RECOVERY_SUPPORT / NUMERIC_PARAMETERS_AND_ACCEPTANCE_THRESHOLDS_OPEN / NO_EXECUTION.
+
+
+## 16.198. Registro paramétrico temporal integrado y dependencias (2026-11-12)
+
+**Objeto:** convertir §§16.188.3 y 16.193–16.197 en un registro paramétrico único para la siguiente calibración. Es una especificación de familias, dominios y dependencias; no asigna valores, distribuciones numéricas, umbrales ni priors. Reutiliza el catálogo de cinco familias y los perfiles de §16.188.4; no crea escenarios, variables científicas, fuentes ni IDs de prueba.
+
+### 16.198.1. Corrección semántica obligatoria de V_cont
+
+La combinación DEC-C10-100 + DEC-C10-102 define V_cont_truth como la **proporción de intervalos completamente conformes**, no como la fracción exacta de tiempo en servicio ni como uptime integral. Un incumplimiento funcional confirmado en cualquier instante hace A_B1(i,k)=0 para cada intervalo que intersecte; no hay gracia ni duración mínima funcional. Por tanto, el valor depende de Δ y de la alineación de la rejilla. Las curvas y resultados deben denominarlo proporción de intervalos completamente conformes; queda prohibido describirlo como porcentaje exacto de tiempo disponible. Esta corrección no altera las decisiones aceptadas ni su fórmula.
+
+### 16.198.2. Registro de parámetros de tiempo y episodios
+
+| Familia | Parámetros simbólicos y dominio | Restricciones/dependencias obligatorias | Estado |
+|---|---|---|---|
+| Reloj | W_c; x=(t−t0)/W_c; t0=0; t_c,max=1 | W_c es escala de coordenada, no unidad física; soporte común a brazos/escenarios | Coordinate-only |
+| Inicio/causa | x_on,e∈[0,1]; family_e∈{configuración, proceso, ingreso, dependencia, capacidad}; unit/version | El cambio de A_B1 depende del estado funcional resultante, no de la etiqueta técnica | Estructura definida; leyes OPEN |
+| Duración | d_e=δ_event/W_c; soporte sintético [d_min,DGP,d_max,DGP]⊂(0,∞) | d_min,DGP es límite del benchmark, nunca tolerancia funcional; episodios pueden cruzar rejilla y capturas | Soporte OPEN |
+| Recurrencia | número/orden de episodios, separación entre episodios y solapamiento por unidad | No independencia por defecto; solapamiento resuelto por estado funcional efectivo | OPEN |
+| Recuperación | τ_recovery/W_c y estado funcional tras cada transición | Distribución condicional a familia, estado, versión y escenario; límite superior solo si defendible | OPEN |
+| Horizonte | ρ_follow=τ_follow/W_c; T*=1+ρ_follow | Cola común tras t_c,max; si soporte de recuperación no acotado, conservar censura | Regla definida; valor OPEN |
+| Rejilla | K∈ℕ+, Δ=(1+ρ_follow)/K | K y Δ comunes; divisibilidad exacta; intervalos iguales; no derivar de t0…t9 ni H | OPEN |
+| Fronteras | convención semiabierta [b_k,b_{k+1}) | Evento en frontera se asigna al intervalo que comienza allí; regla versionada antes de materializar | Pendiente de versionado |
+| Detección | δ_det(p*;θ_S3), P_det_joint(d_e|θ_S3,familia,versión,fase) | Primero curva; p* requiere aprobación normativa; δ_det no modifica truth | OPEN |
+
+### 16.198.3. Registro del canal S3 y modelo conjunto
+
+**Snapshots/métricas:** para cada componente j, c_j/W_c, fase φ_j, cobertura temporal/espacial, probabilidad o regla de captura, lag, pérdida, invalidez y errores de clasificación. La fase se trata como parámetro o estrato explícito; no se asume uniforme salvo que un escenario lo estipule.
+
+**Logs/trazas/eventos pasivos:** probabilidad/regla de emisión, captura condicionada a emisión, retardo/lag, pérdida, duplicación, desorden, validez y errores semánticos. Emisión y captura son procesos distintos; ausencia de registro no se convierte en evento negativo.
+
+**Híbrido:** distribución conjunta de todos los componentes y sus dependencias condicionales a familia, unidad, versión, brazo, tiempo y estado. No se multiplican sensibilidades/especificidades de fuentes como si fueran independientes ni se aplica una regla AND/OR no validada.
+
+En las tres configuraciones se conservan por componente y ventana: cobertura, estado observado 1/0/?, timestamp, lag, validez, pérdida, versión, unidad, provenance y dependencia. El vector S3 no se reduce a una señal promedio.
+
+### 16.198.4. Modelo generativo de eventos y dependencias
+
+El Generator produce primero, en truth reservada, una historia de estados funcionales efectivos y transiciones. La secuencia mínima por episodio es (estado previo, evento/causa, event_time, estado posterior, versión, provenance); A_B1 se deriva después sobre cada intervalo mediante DEC-C10-102. La provisión/instalación puede anteceder a una transición, pero no determina A_B1 por sí misma.
+
+La familia causal, el estado basal, la política Z, la etapa de provisión/instalación, versión, disponibilidad de dependencias/recursos y episodios previos pueden condicionar inicio, duración y recuperación. Se deben especificar las dependencias y potenciales afectados por escenario; no se factoriza la distribución conjunta ni se presume independencia temporal, entre componentes S3, entre unidades o entre brazos. Si hay recursos/canales compartidos, se usa unidad de asignación por clúster o mapa de exposición; de otro modo, aislamiento explícito por construcción.
+
+S3 se genera después como mecanismo de observación de esa historia, pudiendo depender de Z, versión, estado, familia y tiempo. Este orden permite escenarios con cambio de truth sin cambio de señal y cambio de señal sin cambio de truth. Analyzer recibe solo evidencia observada sellada; Evaluator abre truth después.
+
+### 16.198.5. Matriz de recuperación derivable, sin números ni factorial completo
+
+La matriz dirigida combina los perfiles ya aceptados con los estratos temporales de §16.197:
+- control estable sin episodio y control estable con señal espuria;
+- episodios de cada familia causal, con duración por debajo, en y por encima de las fronteras d_e/c_j y d_e/Δ;
+- fases favorables/desfavorables y variación de fase;
+- episodio aislado, recurrente y solapado;
+- captura correcta, no emisión, pérdida, lag, duplicación y desorden;
+- S3 diferencial por Z/versión y errores correlacionados en híbrido;
+- recuperación antes de T* y persistencia/censura en T*;
+- truth cambiante con señal estable y truth estable con señal cambiante;
+- O-CONF terminal equivalente con secuencias V_cont distintas y contraste inverso.
+
+No es un producto cartesiano. Cada escenario debe declarar qué dimensiones activa, qué contraste falsifica, qué control negativo lo acompaña y qué soporte deja fuera. Las curvas P_det_joint se informan por familia/duración/fase/versión/configuración S3; falsos positivos, falsos negativos, cobertura, bounds y abstención no se agregan en un score global.
+
+### 16.198.6. Qué se puede derivar y qué requiere decisión/soporte
+
+**Derivable por construcción:** identidades de normalización; relación T*=1+ρ_follow; K=(1+ρ_follow)/Δ cuando la divisibilidad es exacta; asignación de eventos a intervalos; generación de truth por estado funcional; fórmulas de detección condicionadas al mecanismo; métricas de recuperación, error, cobertura, bounds y abstención; error Monte Carlo tras fijar estimando y tolerancia.
+
+**No deducible sin soporte/decisión:** d_min,DGP/d_max,DGP; leyes de inicio/duración/recurrencia/recuperación; dependencia entre familias, unidades y brazos; configuración material pasiva S3; fase y cadencia reales; distribución conjunta de pérdida/lag/error; p*; δ_det; K/Δ/ρ_follow numéricos; relevancia científica, α, potencia mínima, precisión, equivalencia, MDE y tolerancias; N, π_h, clústeres y R.
+
+Los candidatos numéricos históricos (.25/.80, N=2.000, 1:1, R=1.000, y parámetros de P178) no se importan como confirmatorios. Un valor solo entra al ledger con procedencia, justificación, dominio, estado de aprobación y análisis de sensibilidad. Ningún default silencioso.
+
+### 16.198.7. Gate de parada y siguiente integración
+
+La calibración temporal numérica sigue BLOCKED hasta disponer de (i) soporte de episodios/recuperación y distribuciones justificadas; (ii) especificación factible del mecanismo S3 pasivo; (iii) criterio normativo p* y criterios de error/coverage; y (iv) decisión sobre la escala confirmatoria de V_cont como proporción de intervalos completos, reconociendo su dependencia de Δ. No se selecciona K por conveniencia ni se simulan cifras ilustrativas como si fueran evidencia.
+
+La siguiente integración no es otra ronda de decisiones aisladas: reconciliar este registro con el ledger global §16.188.3, los potenciales de D2, soporte/interferencia y los estimandos P177–P183; después identificar qué parámetros quedan estructuralmente identificados por diseño, cuáles son escenarios de sensibilidad y cuáles exigen aprobación. Solo entonces podrá prepararse una calibración autorizable.
+
+**Dictamen:** TEMPORAL_PARAMETER_FAMILIES_AND_DEPENDENCIES_SPECIFIED / V_CONT_SEMANTIC_INTERPRETATION_CORRECTED / NO_NUMERIC_VALUES_INVENTED / NO_NEW_TEST_IDS / CALIBRATION_BLOCKED_BY_SUPPORT_AND_NORMATIVE_CRITERIA / NO_EXECUTION.
