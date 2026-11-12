@@ -282,28 +282,36 @@ class Generator:
             interval_truth.append(tuple(unit_intervals))
 
             z, g = z_assign[i], g_assign[i]
-            true_states = unit_intervals[z][g]
-            observed = []
-            statuses = []
-            for state in true_states:
+            true_enabled = unit_enabled[z][g]
+            true_profile = unit_profile[z][g]
+            observed_enabled, observed_profile = [], []
+            status_enabled, status_profile = [], []
+            for en_state, pr_state in zip(true_enabled, true_profile):
                 if rng.random() < cfg.missing_probability:
-                    observed.append(None)
-                    statuses.append("MISSING")
+                    observed_enabled.append(None)
+                    status_enabled.append("MISSING")
                 else:
                     flip = rng.random()
-                    if state == 1:
-                        obs = int(flip < cfg.measurement_sensitivity)
-                    else:
-                        obs = int(flip >= cfg.measurement_specificity)
-                    observed.append(obs)
-                    statuses.append("OBSERVED")
+                    observed_enabled.append(int(flip < cfg.measurement_sensitivity) if en_state
+                                            else int(flip >= cfg.measurement_specificity))
+                    status_enabled.append("OBSERVED")
+                if rng.random() < cfg.missing_probability:
+                    observed_profile.append(None)
+                    status_profile.append("MISSING")
+                else:
+                    flip = rng.random()
+                    observed_profile.append(int(flip < cfg.measurement_sensitivity) if pr_state
+                                             else int(flip >= cfg.measurement_specificity))
+                    status_profile.append("OBSERVED")
             rows.append({
                 "unit_id": f"UE-{i + 1:06d}",
                 "cluster_id": f"CL-{cluster:05d}",
                 "assignment_z": z,
                 "assignment_g": g,
-                "s3_interval": observed,
-                "s3_status": statuses,
+                "s3_enabled": observed_enabled,
+                "s3_profile_match": observed_profile,
+                "s3_enabled_status": status_enabled,
+                "s3_profile_status": status_profile,
                 "profile": cfg.profile,
                 "version": cfg.version,
             })
