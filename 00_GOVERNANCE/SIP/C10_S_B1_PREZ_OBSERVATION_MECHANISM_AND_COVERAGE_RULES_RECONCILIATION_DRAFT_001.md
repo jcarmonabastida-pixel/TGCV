@@ -196,3 +196,91 @@ No se impone independencia entre etapas ni se asignan probabilidades. En particu
 La oportunidad única reduce la necesidad de modelar dependencias entre múltiples declaraciones S7, pero no elimina dependencia entre unidades si comparten proceso, plantilla, canal, versión o causa de error; esa posibilidad deberá declararse en el DGP.
 
 **Estado:** cardinalidad lógica aceptada; mecanismo conceptual de etapas especificado; parámetros, dependencias, escenarios y materialización OPEN. No ejecución.
+
+
+## 14. Estructura lógica del canal S7: estados, orden y fronteras (propuesta 2026-11-12)
+
+**Estado:** propuesta de especificación lógica derivada de DEC-C10-097/098; no constituye aceptación de parámetros, distribución, grafo estadístico congelado ni autorización de implementación.
+
+### 14.1 Principio: oportunidad fija, resultado observacional variable
+
+La oportunidad S7 por UE es un elemento del marco esperado, enumerado ex ante. No es el resultado de emisión. Por tanto, el canal no debe representarse con un único campo agregado de disponibilidad que mezcle fenómenos distintos.
+
+La secuencia lógica mínima es:
+
+OPPORTUNITY_FIXED → EMISSION_OUTCOME → SEMANTIC_CONTENT (si emitida) → CAPTURE_OUTCOME → ADMISSIBILITY_AND_BINDING → E1/E2_ADJUDICATION → SEALED_EVALUATION
+
+La secuencia define dependencias temporales y de disponibilidad; no presupone independencia estadística entre etapas.
+
+### 14.2 Estados conceptuales separados
+
+| Capa | Estados lógicos mínimos | Interpretación |
+|---|---|---|
+| Oportunidad | EXPECTED | La oportunidad S7 existe en el marco ex ante para UE × Need_preZ |
+| Emisión | ISSUED, NOT_ISSUED | Se produjo o no una declaración atribuible al mandato B1 |
+| Contenido (solo si ISSUED) | ASSERT_INCLUDE, ASSERT_EXCLUDE, AMBIGUOUS, INTERNALLY_CONFLICTING | Proposición visible de inclusión/exclusión focal, ambigüedad o contradicción dentro del propio artefacto |
+| Captura/retención (solo si ISSUED) | CAPTURED, NOT_CAPTURED_OR_LOST | Si el artefacto emitido llegó al expediente accesible |
+| Integridad/identidad/temporalidad/binding | VALID, INVALID_OR_UNVERIFIABLE por dimensión | Controles de admisibilidad, no resultados semánticos |
+| Alcance/cobertura | NONE, PARTIAL, COMPLETE | Grado de examen del universo y superficies declaradas |
+| Adjudicación por evaluador | 1, 0, ?, TECHNICAL_BLOCK | Dictamen E1 o E2 bajo reglas existentes; no es estado de la fuente |
+
+NOT_ISSUED no tiene contenido ni captura; NOT_CAPTURED_OR_LOST solo puede ocurrir si hubo emisión. Los estados de integridad y cobertura no deben convertirse en contenido ni confundirse con ? de truth. TECHNICAL_BLOCK se mantiene fuera de la clasificación semántica observada.
+
+### 14.3 Relación entre truth y contenido: matriz semántica, no etiqueta copiada
+
+El canal puede producir contenido condicionado por la estipulación basal, pero el artefacto visible debe expresar una proposición declarativa y su alcance, nunca un campo/flag que revele need_truth_state.
+
+| Truth reservada | ASSERT_INCLUDE | ASSERT_EXCLUDE | AMBIGUOUS / no emisión / pérdida |
+|---|---|---|---|
+| 1 | Declaración semánticamente concordante | Declaración semánticamente errónea (candidata a falso negativo si es admisible) | Abstención/insuficiencia; no falso negativo binario |
+| 0 | Declaración semánticamente errónea (candidata a falso positivo si es admisible) | Declaración semánticamente concordante | Abstención/insuficiencia; no verdadero negativo binario |
+| ? | Afirmación observable sin clase gold binaria para puntuar exactitud | Afirmación observable sin clase gold binaria para puntuar exactitud | Resultado no binario; se informa según su naturaleza |
+
+La tabla describe concordancia semántica para evaluación posterior. No ordena que el canal produzca ambos contenidos en cada estado truth ni fija probabilidades, tasas o prevalencias. Para truth ?, no se fuerza ambigüedad del artefacto: ? es indeterminación de la estipulación de referencia, no una instrucción al canal ni un resultado de observación.
+
+Una declaración positiva/negativa solo cuenta como error de clasificación cuando fue emitida, capturada, admisible, vinculada y adjudicada como 1/0. Una declaración errónea pero auténtica puede ser admisible; su error solo se conoce al abrir truth tras el sellado.
+
+### 14.4 Factorización lógica sin supuesto de independencia
+
+Para diseñar el DGP, la distribución conjunta puede describirse por una factorización condicional de cadena, por ejemplo:
+
+P(E,C,K | T,X₀,V_ch) = P(E | T,X₀,V_ch) · P(C | E,T,X₀,V_ch) · P(K | E,C,T,X₀,V_ch)
+
+donde E es emisión, C contenido, K captura/retención, T estipulación basal reservada, X₀ solo covariables/contexto basal explícitamente autorizados y V_ch la versión del canal. Esta escritura es una identidad de factorización conjunta, no tres hipótesis de independencia. Si el DGP finalmente usa mecanismos deterministas o variables latentes explícitas, deberá documentarlo de forma equivalente.
+
+La enumeración de la oportunidad no entra como resultado aleatorio: EXPECTED queda fijado para cada UE del censo. La integridad, autoridad, temporalidad y binding se evalúan como atributos/controles de artefacto y de contrato; no se deben esconder dentro de una tasa agregada de observabilidad.
+
+### 14.5 Mandato, autenticidad y conflicto con una única oportunidad
+
+La atribución de B1 como declarante queda limitada al objetivo propio y a la versión B1–UE–service_instance en t−1. La autenticidad del origen/mandato no implica corrección semántica.
+
+Con una sola oportunidad semántica S7 por UE:
+- INTERNALLY_CONFLICTING solo describe contradicciones dentro del mismo artefacto/acto declarativo;
+- copias, exports y transformaciones conservan el mismo lineage y no son nuevas declaraciones;
+- un desacuerdo E1/E2 es desacuerdo entre adjudicadores, no conflicto entre fuentes;
+- no se presupone una segunda fuente independiente que corrobore o contradiga S7;
+- si un futuro microdominio exige múltiples actos declarativos independientes, deberá revisarse DEC-C10-098 mediante decisión explícita, no multiplicar oportunidades silenciosamente.
+
+La autoridad/mandato se preespecifica ex ante y se comprueba por provenance. Una falla de autoridad, binding o versión conduce a inadmisibilidad/bloqueo según la regla aplicable, no a una declaración semántica negativa.
+
+### 14.6 Reglas de no filtración y temporalidad
+
+El canal y sus artefactos no pueden revelar truth mediante etiqueta o código directamente equivalente a 1/0/?, contenido auxiliar, nombre de archivo, ID, orden de filas, secuencia de emisión, timestamps, semillas, digests, lineage o patrones de error que permitan reconstrucción trivial. Tampoco se exportan truth_basis_ref, flags internos, estado del generador o variables de evaluación.
+
+La truth puede ser una causa oculta del mecanismo de contenido/emisión, pero la implementación debe probar que el expediente observable no contiene un canal lateral determinista. Las claves técnicas para replay, si pudieran revelar truth, permanecen segregadas del bundle adjudicable.
+
+El contenido declarativo se refiere a t−1. Una captura posterior solo se admite si preserva un artefacto inmutable creado antes de Z y su temporalidad puede verificarse. Un texto generado después de Z no se convierte en evidencia pre-Z por asignarle un event_time anterior.
+
+### 14.7 Consecuencia para E1/E2 y Analyzer PE
+
+E1 y E2 reciben el mismo expediente visible autorizado y realizan adjudicaciones Need independientes. La evaluación de su exactitud se efectúa tras sellado contra TRUTH_LEDGER.
+
+El Analyzer PE no es un tercer adjudicador de Need ni recibe truth, contenido interno del canal, probabilidades generadoras o resultados E1/E2 antes de su propio sellado. Su evaluación de constructos/estimandos PE sigue su contrato separado y sus oráculos DGP. No se computa una métrica de exactitud Need para Analyzer PE salvo decisión futura que cambie explícitamente esa frontera.
+
+### 14.8 Qué queda especificado y qué no
+
+**Especificado como estructura lógica propuesta:** orden de etapas; estados no colapsables; relación semántica truth-contenido; distinción entre error y abstención; alcance de autodeclaración; unicidad S7; conflicto interno vs desacuerdo E1/E2; controles de firewall.
+
+**OPEN:** si el mecanismo es determinista, probabilístico o mixto; variables basales autorizadas X₀; dependencia entre unidades por canal/plantilla/versión; soporte de escenarios; parámetros y rangos; tasas de emisión/error/ambigüedad/pérdida; calibración/sensibilidad; precisión/potencia; implementación y pruebas técnicas del firewall.
+
+No se crea un nuevo artefacto lógico, una nueva clase de fuente, un rol PE, una variable causal, un test ID ni una tabla física. No se materializa ni ejecuta.
