@@ -319,3 +319,12 @@ El Generator mantiene en zona reservada eventos/estados funcionales; el Sealer l
 La salida por intervalo y V_cont será puntual solo con identificación del canal; de otro modo bounds/abstención. Los mecanismos híbridos deben conservar dependencia entre componentes; no se asume independencia ni se agregan señales con reglas no validadas.
 
 **Estado:** PE_TEMPORAL_CAPTURE_CROSSWALK_DEFINED / PHYSICAL_SCHEMA_OPEN / FIREWALL_NOT_IMPLEMENTED / NO_EXECUTION_AUTHORIZED.
+
+
+## 20. Matriz PE de cobertura temporal y seguimiento (2026-11-12)
+
+El contrato lógico conserva r_c=d_e/c_j, r_Δ=d_e/Δ, fase de captura, lag y r_f=τ_follow/τ_recovery,max. Se deben poder reconstruir los estratos menor/igual/mayor que 1 y los estados capturado, no emitido/perdido, retrasado, válido, inválido y censurado. La matriz dirigida cubre controles negativos, aliasing, cruce de fronteras, errores diferenciales/correlacionados, recuperación y terminalidad, reutilizando perfiles DGP y P182/P183 existentes.
+
+El Sealer preserva la evidencia y cobertura; Analyzer no recibe verdad ni parámetros reservados. K/Δ no se codifican como cadencia S3. Un horizonte sin soporte acotado de recuperación debe preservar censura. No se materializa schema físico ni se autoriza ejecución.
+
+**Estado:** TEMPORAL_COVERAGE_LOGICAL_CONTRACT_DEFINED / PHYSICAL_SCHEMA_OPEN / FIREWALL_NOT_IMPLEMENTED / NO_EXECUTION_AUTHORIZED.
