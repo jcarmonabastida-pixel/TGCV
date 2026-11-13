@@ -281,12 +281,12 @@ class VContIntegratedHarnessTests(unittest.TestCase):
     def test_outer_replicate_identity_propagates_and_separates_worlds(self):
         cfg = self.worlds()["R0_FOCAL_POSITIVE"]
         common = dict(world_seed=991, outer_replicate_id="outer-000001")
-        run_cfg = replace(cfg, **common, assignment_role="RUN",
+        run_cfg = replace(cfg, **common, assignment_role="RUN", assignment_index=-1,
                           z_assignment_seed=11, g_assignment_seed=21, replicate_id="designated-run")
         repeat_cfg = replace(cfg, **common, assignment_role="REPEATED_ASSIGNMENT",
                              z_assignment_seed=12, g_assignment_seed=22, replicate_id="r0")
         other_world_cfg = replace(cfg, world_seed=992, outer_replicate_id="outer-000002",
-                                  assignment_role="RUN", z_assignment_seed=13,
+                                  assignment_role="RUN", assignment_index=-1, z_assignment_seed=13,
                                   g_assignment_seed=23, replicate_id="designated-run-2")
         run_manifest, run_truth, run_candidate = self.generator.generate(run_cfg)
         repeat_manifest, repeat_truth, _ = self.generator.generate(repeat_cfg)
