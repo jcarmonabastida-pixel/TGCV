@@ -438,3 +438,15 @@ The TruthBundle export is limited to the exact truth fields used by the current 
 The contract distinguishes producer execution claims from GitHub-resolved metadata and technical test runs from scientific benchmark runs. Calibration/evaluation disjointness must be recomputed from actual materialized or immutably retrievable manifests; hashes alone are insufficient.
 
 **Gate 166 status:** INTERFACE CONTRACT DEFINED / IMPLEMENTATION OPEN. No code/tests/workflows/CI changes or execution were performed. Next: Gate 167 source-boundary mapping and compatibility audit.
+
+
+## 26. Gate 167 — evidence-export source-boundary audit
+
+Gate 167's static audit is persisted in:
+`00_GOVERNANCE/SIP/C10_S_VCONT_EVIDENCE_EXPORT_SOURCE_BOUNDARY_AUDIT_GATE_167_DRAFT_001.md`.
+
+The audit confirms that Generator, Sealer, Analyzer and Evaluator construct the required source objects, but the current Monte Carlo aggregation interface transports only `(TruthBundle, AnalyzerResult, AnalysisContract, RunManifest)`. It omits ScenarioConfig, SeedAssignment and SealedEvidence. Gate 166 export must therefore capture a typed RunEvidenceBundle at the orchestration boundary before reduction; it cannot reconstruct omitted records from the aggregate Evaluator output.
+
+SealedEvidence retains rows and manifest in memory, so its existing digest can be recomputed at capture. Independent later verification after raw-row minimization requires an immutable retrievable canonical evidence object; no such durable locator/store is currently implemented.
+
+**Gate 167:** AUDITED — CONDITIONAL. **Gate 168:** freeze RunEvidenceBundle and sealed-evidence retention/retrieval contract. No code/tests/CI changes, runtime verification, calibration, seed generation or scientific execution were performed.
