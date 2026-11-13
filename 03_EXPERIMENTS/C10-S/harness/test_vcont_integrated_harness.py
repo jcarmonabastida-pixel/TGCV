@@ -201,7 +201,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
 
     def test_adversarial_support_failure_zg_interaction_blocks_reference_regime(self):
         cfg = self.worlds()["R2_SUPPORT_FAILURE_ZG_INTERACTION"]
-        _, truth, sealed, result, _ = self.execute_world(cfg)
+        _, truth, sealed, result, report = self.execute_world(cfg)
         high = [r for r in sealed.rows if r["baseline_stratum"] == "HIGH"]
         self.assertTrue(high)
         self.assertTrue(all(r["assignment_g"] == 0 for r in high))
@@ -209,6 +209,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         self.assertEqual(result.package_status, "IDENTIFIED")
         self.assertEqual(result.reference_regime_status, "NOT_IDENTIFIED")
         self.assertEqual(result.g_assignment_status, "NOT_IDENTIFIED")
+        self.assertTrue(report.reference_regime_status_correct)
 
     def test_evaluator_rejects_target_regime_mismatch(self):
         cfg = self.worlds()["R0_FOCAL_POSITIVE"]
