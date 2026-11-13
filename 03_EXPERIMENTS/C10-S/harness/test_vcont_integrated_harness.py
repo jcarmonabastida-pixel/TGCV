@@ -405,8 +405,23 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         run_manifest, run_truth, run_candidate = self.generator.generate(run_cfg)
         repeat_manifest, repeat_truth, _ = self.generator.generate(repeat_cfg)
         other_manifest, _, _ = self.generator.generate(other_world_cfg)
+
+        # Assignment role/index and assignment seeds are run-level identity,
+        # not part of the exogenous world identity.
+        role_only_cfg = replace(run_cfg, assignment_role="REPEATED_ASSIGNMENT",
+                                assignment_index=0, replicate_id="designated-run")
+        role_only_manifest, _, _ = self.generator.generate(role_only_cfg)
         self.assertEqual(run_manifest.world_id, repeat_manifest.world_id)
+        self.assertEqual(run_manifest.world_id, role_only_manifest.world_id)
+        self.assertNotEqual(run_manifest.run_id, role_only_manifest.run_id)
+
+        # M/world seed and DGP-defining configuration remain bound to world_id.
         self.assertNotEqual(run_manifest.world_id, other_manifest.world_id)
+        self.assertNotEqual(run_manifest.world_seed, other_manifest.world_seed)
+        changed_dgp_cfg = replace(run_cfg, focal_access_effect=run_cfg.focal_access_effect + 0.01)
+        changed_dgp_manifest, _, _ = self.generator.generate(changed_dgp_cfg)
+        self.assertNotEqual(run_manifest.world_id, changed_dgp_manifest.world_id)
+
         self.assertEqual(run_truth.outer_replicate_id, "outer-000001")
         self.assertEqual(repeat_truth.assignment_role, "REPEATED_ASSIGNMENT")
         sealed = self.sealer.seal(run_candidate)
