@@ -1011,7 +1011,8 @@ class Evaluator:
             "repeated_assignment_report": repeated,
         }
 
-    def evaluate_monte_carlo(self, outer_runs, tolerance: float, matrix=None):
+    def evaluate_monte_carlo(self, outer_runs, tolerance: float, *,
+                             target_mcse_by_metric: dict[str, float], matrix=None):
         """Aggregate benchmark metrics across M independent outer worlds.
 
         outer_runs maps outer_replicate_id to the runs generated within that world:
@@ -1022,8 +1023,9 @@ class Evaluator:
             ProtocolError, build_scenario_estimand_matrix, summarize_binary,
             summarize_monte_carlo,
         )
-        if not isinstance(outer_runs, dict) or len(outer_runs) < 2 or tolerance < 0:
-            raise ContractError("Monte Carlo evaluation requires at least two named outer worlds and nonnegative tolerance")
+        if (not isinstance(outer_runs, dict) or len(outer_runs) < 2 or tolerance < 0
+                or not target_mcse_by_metric):
+            raise ContractError("Monte Carlo evaluation requires at least two named outer worlds, metric targets and nonnegative tolerance")
         scenario_versions = set()
         sample_sizes = set()
         world_ids = set()
@@ -1036,7 +1038,7 @@ class Evaluator:
                 raise ContractError("run outer-replicate identity does not match its enclosing M group")
             run_rows = [item for item in runs if item[3].assignment_role == "RUN"]
             repeated_rows = [item for item in runs if item[3].assignment_role == "REPEATED_ASSIGNMENT"]
-            if len(run_rows) != 1 or len(run_rows[0][3].world_id for _ in [0]) != 1:
+            if len(run_rows) != 1:
                 raise ContractError("each outer world must contain exactly one designated RUN")
             all_world_ids = {item[3].world_id for item in runs}
             if len(all_world_ids) != 1:
@@ -1071,12 +1073,20 @@ class Evaluator:
             raise ProtocolError("Monte Carlo aggregation requires the four authoritative matrix pairs")
         m = len(per_outer)
 
-        def continuous_metric(values):
+        required_metric_targets = {
+            "run_conditional.absolute_error_mean",
+            "g_assignment_z0.absolute_error_mean",
+            "mechanism_marginal.absolute_error_mean",
+            "reference_regime.absolute_error_mean",
+        }
+        if set(target_mcse_by_metric) != required_metric_targets:
+            raise ContractError("predeclared MCSE targets must cover exactly the four numeric M-level metrics")
+        def continuous_metric(values, metric_name):
             if len(values) != m or any(value is None for value in values):
                 return None
             return summarize_monte_carlo(
                 [(row["outer_replicate_id"], value) for row, value in zip(per_outer, values)],
-                expected_m=m, target_mcse=float("inf") if False else 1.0e308,
+                expected_m=m, target_mcse=target_mcse_by_metric[metric_name],
             )
 
         def binary_metric(values):
@@ -1125,21 +1135,21 @@ class Evaluator:
                 "reference_regime_identification_status": sum(value is not None for value in reference_identified),
             },
             "run_conditional": {
-                "absolute_error_mean": continuous_metric(run_errors),
+                "absolute_error_mean": continuous_metric(run_errors, "run_conditional.absolute_error_mean"),
                 "recovery_rate": binary_metric(run_recovered),
                 "identification_rate": binary_metric(run_identified),
             },
             "g_assignment_z0": {
-                "absolute_error_mean": continuous_metric(g_errors),
+                "absolute_error_mean": continuous_metric(g_errors, "g_assignment_z0.absolute_error_mean"),
                 "recovery_rate": binary_metric(g_recovered),
                 "identification_rate": binary_metric(g_identified),
             },
             "mechanism_marginal": {
-                "absolute_error_mean": continuous_metric(mechanism_errors),
+                "absolute_error_mean": continuous_metric(mechanism_errors, "mechanism_marginal.absolute_error_mean"),
                 "recovery_rate": binary_metric(mechanism_recovered),
             },
             "reference_regime": {
-                "absolute_error_mean": continuous_metric(reference_errors),
+                "absolute_error_mean": continuous_metric(reference_errors, "reference_regime.absolute_error_mean"),
                 "identification_rate": binary_metric(reference_identified),
                 "recovery_rate": binary_metric(reference_recovered),
             },
