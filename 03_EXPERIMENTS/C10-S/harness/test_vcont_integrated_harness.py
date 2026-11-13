@@ -525,6 +525,11 @@ class VContIntegratedHarnessTests(unittest.TestCase):
                       {record.key.estimand_id for record in repeated_records})
         self.assertIn("ITT_Z_REFERENCE_REGIME_VCONT",
                       {record.key.estimand_id for record in run_records})
+        reference_run_records = [record for record in run_records
+                                 if record.key.estimand_id == "ITT_Z_REFERENCE_REGIME_VCONT"]
+        self.assertTrue(all(record.evaluation_class == "STATUS_ONLY"
+                            and record.analyzer_output is None and record.dgp_truth is None
+                            for record in reference_run_records))
         self.assertIn("ITT_Z_REFERENCE_REGIME_VCONT",
                       {record.key.estimand_id for record in repeated_records})
 
