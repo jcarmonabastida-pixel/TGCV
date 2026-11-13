@@ -272,5 +272,32 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         with self.assertRaises(ContractError):
             self.evaluator.evaluate(truth, result, wrong, tolerance=0.10)
 
+
+    def test_evaluator_rejects_run_and_estimand_mismatch(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        _, truth, _, result, _ = self.execute_world(cfg)
+        with self.assertRaises(ContractError):
+            self.evaluator.evaluate(replace(truth, run_id="other-run"), result,
+                                    contract_for(cfg), tolerance=0.10)
+        wrong_estimand = replace(contract_for(cfg), estimand_id="OTHER_ESTIMAND")
+        with self.assertRaises(ContractError):
+            self.evaluator.evaluate(truth, result, wrong_estimand, tolerance=0.10)
+
+    def test_evaluator_rejects_transportability_scope_mismatch(self):
+        cfg = self.worlds()["R0_SUPPORT_FAILURE"]
+        _, truth, _, result, _ = self.execute_world(cfg)
+        wrong_scope = replace(contract_for(cfg), transportability_scope="LOW")
+        with self.assertRaises(ContractError):
+            self.evaluator.evaluate(truth, result, wrong_scope, tolerance=0.10)
+
+    def test_version_inconsistency_causes_indeterminate_adjudication(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        _, _, candidate = self.generator.generate(cfg)
+        sealed = self.sealer.seal(candidate)
+        inconsistent = replace(contract_for(cfg), version_consistency=False)
+        result = self.analyzer.analyze(sealed, inconsistent)
+        self.assertEqual(result.package_status, "INDETERMINATE")
+        self.assertEqual(result.g_assignment_status, "INDETERMINATE")
+
 if __name__ == "__main__":
     unittest.main()
