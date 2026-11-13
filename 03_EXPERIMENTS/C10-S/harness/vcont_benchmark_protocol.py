@@ -157,20 +157,22 @@ class SeedAssignment:
     world_seed: int
     z_assignment_seed: int
     g_assignment_seed: int
+    scenario_version: str = "UNVERSIONED"
 
 
 def _derive_seed(bank: str, scenario_id: str, n_units: int, replicate: int,
-                 stream: str, namespace: str) -> int:
+                 stream: str, namespace: str, scenario_version: str = "UNVERSIONED") -> int:
     if bank not in ("calibration", "evaluation"):
         raise ProtocolError("bank must be calibration or evaluation")
     if stream not in ("world", "z", "g"):
         raise ProtocolError("stream must be world, z or g")
-    payload = f"TGCV-C10S-VCONT-SEED-v1|{namespace}|{bank}|{scenario_id}|{n_units}|{replicate}|{stream}"
+    payload = f"TGCV-C10S-VCONT-SEED-v2|{namespace}|{bank}|{scenario_id}|{scenario_version}|{n_units}|{replicate}|{stream}"
     return int.from_bytes(hashlib.sha256(payload.encode("utf-8")).digest()[:8], "big")
 
 
 def build_seed_bank(bank: str, scenarios: Iterable[str], n_grid: Iterable[int],
-                    replicates: int, namespace: str) -> tuple[SeedAssignment, ...]:
+                    replicates: int, namespace: str,
+                    scenario_versions: dict[str, str] | None = None) -> tuple[SeedAssignment, ...]:
     """Create deterministic, bank-separated seeds; each scenario/N has one fixed world.
 
     World seed is constant across assignment replicates for a scenario/N.
@@ -189,15 +191,20 @@ def build_seed_bank(bank: str, scenarios: Iterable[str], n_grid: Iterable[int],
         raise ProtocolError("N grid must contain unique sizes >=16 divisible by four")
     if replicates < 1:
         raise ProtocolError("replicates must be >=1")
+    versions = scenario_versions or {sid: "UNVERSIONED" for sid in scenario_ids}
+    if set(versions) != set(scenario_ids) or any(not str(v).strip() for v in versions.values()):
+        raise ProtocolError("scenario_versions must provide one nonempty version per scenario")
     plan = []
     for scenario_id in scenario_ids:
+        scenario_version = versions[scenario_id]
         for n in sizes:
-            world = _derive_seed(bank, scenario_id, n, 0, "world", namespace)
+            world = _derive_seed(bank, scenario_id, n, 0, "world", namespace, scenario_version)
             for r in range(replicates):
                 plan.append(SeedAssignment(
                     bank, scenario_id, n, r, world,
-                    _derive_seed(bank, scenario_id, n, r, "z", namespace),
-                    _derive_seed(bank, scenario_id, n, r, "g", namespace),
+                    _derive_seed(bank, scenario_id, n, r, "z", namespace, scenario_version),
+                    _derive_seed(bank, scenario_id, n, r, "g", namespace, scenario_version),
+                    scenario_version,
                 ))
     if bank == "calibration":
         validate_seed_banks(plan, ())
@@ -224,7 +231,7 @@ def validate_seed_banks(calibration: Iterable[SeedAssignment],
     for rows in (cal, ev):
         world_by_design = {}
         for row in rows:
-            key = (row.scenario_id, row.n_units)
+            key = (row.scenario_id, row.scenario_version, row.n_units)
             if key in world_by_design and world_by_design[key] != row.world_seed:
                 raise ProtocolError("world seed must remain fixed across assignment replicates within scenario/N")
             world_by_design[key] = row.world_seed
@@ -261,7 +268,7 @@ def seed_bank_fingerprint(assignments: Iterable[SeedAssignment]) -> str:
     if len(banks) != 1:
         raise ProtocolError("a seed-bank fingerprint must contain exactly one bank")
     payload = [
-        {"bank": row.bank, "scenario_id": row.scenario_id, "n_units": row.n_units,
+        {"bank": row.bank, "scenario_id": row.scenario_id, "scenario_version": row.scenario_version, "n_units": row.n_units,
          "replicate": row.replicate, "world_seed": row.world_seed,
          "z_assignment_seed": row.z_assignment_seed,
          "g_assignment_seed": row.g_assignment_seed}
@@ -389,8 +396,8 @@ def validate_evaluation_observation(spec: ScenarioEstimandSpec, *, dgp_truth: fl
         if adjudication not in ("PASS", "FAIL"):
             raise ProtocolError("EVALUABLE pair requires numeric recovery adjudication")
     elif spec.evaluation_class in ("STATUS_ONLY", "NOT_IDENTIFIABLE"):
-        if adjudication == "PASS" or analyzer_output is not None:
-            raise ProtocolError("non-numeric pair cannot receive numeric recovery PASS or numeric scoring")
+        if adjudication not in ("STATUS_PASS", "STATUS_FAIL") or analyzer_output is not None:
+            raise ProtocolError("status-only pair requires status adjudication and no numeric scoring")
     elif spec.evaluation_class == "NOT_EVALUABLE":
         if adjudication == "PASS":
             raise ProtocolError("NOT_EVALUABLE cannot be presented as PASS")
