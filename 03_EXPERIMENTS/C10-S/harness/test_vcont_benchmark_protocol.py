@@ -111,20 +111,20 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
 
     def test_pairwise_n_selection_requires_complete_coverage_and_mcse(self):
         matrix = build_scenario_estimand_matrix()
-        required = [row.key for row in matrix]
         numeric = [row.key for row in matrix if row.evaluation_class == "EVALUABLE"]
         targets, observed = {key: 0.1 for key in numeric}, {key: 0.05 for key in numeric}
-        self.assertEqual(select_minimum_n_by_estimand({100: observed}, targets, required, numeric, {100: required}), 100)
+        required = [row.key for row in matrix]
+        self.assertEqual(select_minimum_n_by_estimand({100: observed}, targets, matrix, {100: required}), 100)
         with self.assertRaises(ProtocolError):
-            select_minimum_n_by_estimand({100: observed}, targets, required, numeric, {100: required[:-1]})
+            select_minimum_n_by_estimand({100: observed}, targets, matrix, {100: required[:-1]})
 
     def test_pairwise_selection_rejects_missing_numeric_pair(self):
         matrix = build_scenario_estimand_matrix()
-        required = [row.key for row in matrix]
         numeric = [row.key for row in matrix if row.evaluation_class == "EVALUABLE"]
+        required = [row.key for row in matrix]
         with self.assertRaises(ProtocolError):
             select_minimum_n_by_estimand({100: {key: 0.05 for key in numeric[:-1]}},
-                {key: 0.1 for key in numeric}, required, numeric, {100: required})
+                {key: 0.1 for key in numeric}, matrix, {100: required})
 
     def test_non_numeric_classes_cannot_receive_numeric_pass(self):
         matrix = build_scenario_estimand_matrix()
@@ -161,8 +161,9 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
         self.assertNotEqual(seed_bank_fingerprint(v1), seed_bank_fingerprint(v2))
 
     def test_r_dimensioning_is_estimand_specific(self):
-        keys = [row.key for row in build_scenario_estimand_matrix() if row.evaluation_class == "EVALUABLE"][:2]
-        result = required_replicates_by_estimand({keys[0]: 2.0, keys[1]: 1.0}, {keys[0]: 0.1, keys[1]: 0.1})
+        specs = [row for row in build_scenario_estimand_matrix() if row.evaluation_class == "EVALUABLE"][:2]
+        keys = [row.key for row in specs]
+        result = required_replicates_by_estimand({keys[0]: 2.0, keys[1]: 1.0}, {keys[0]: 0.1, keys[1]: 0.1}, specs)
         self.assertEqual(result, {keys[0]: 400, keys[1]: 100})
 
 if __name__ == "__main__":
