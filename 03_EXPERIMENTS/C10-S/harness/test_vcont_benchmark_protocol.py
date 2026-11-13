@@ -94,5 +94,11 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
         with self.assertRaises(ProtocolError):
             select_minimum_n({100: {"R0": 0.2}}, {"R0": 0.1})
 
-if __name__ == "__main__":
+
+    def test_seed_bank_fingerprint_is_stable_and_bank_specific(self):
+        cal = build_seed_bank("calibration", ["R0"], [100], 2, "protocol-v1")
+        ev = build_seed_bank("evaluation", ["R0"], [100], 2, "protocol-v1")
+        self.assertEqual(seed_bank_fingerprint(cal), seed_bank_fingerprint(tuple(cal)))
+        self.assertNotEqual(seed_bank_fingerprint(cal), seed_bank_fingerprint(ev))
+\nif __name__ == "__main__":
     unittest.main()
