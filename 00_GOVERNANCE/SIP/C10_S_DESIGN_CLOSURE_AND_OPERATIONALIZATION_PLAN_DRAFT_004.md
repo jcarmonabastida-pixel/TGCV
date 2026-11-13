@@ -6460,3 +6460,76 @@ Gate 75 queda cerrado como reconciliación documental cuando las doce filas, sus
 **Dictamen:** C1_C3_TWELVE_ROLE_LEDGER_MAPPING_CLOSED / THREE_TRUTH_ADJUDICATION_PRESERVED / EXISTING_ROSTER_ONLY / CELL_RECORDS_NOT_MATERIALIZED / THETA_A_DIRECT_IDENTIFICATION_ROUTE_MISSING / HETEROGENEITY_AND_DECOUPLING_FEASIBILITY_UNVERIFIED / BOUNDS_NOT_ENABLED / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** Gate 76 — comprobar la factibilidad lógica de las doce celdas contra las funciones generadoras y rangos admitidos del roster §§16.211–16.212, usando la cuadrícula y los mecanismos ya existentes. Resolver contradicciones e imposibilidades; no asignar cifras ni crear clases nuevas. No implementar ni ejecutar.
+
+
+---
+
+## 16.229. Gate 76 — auditoría de factibilidad lógica de las doce celdas frente al Generator existente (2026-11-13)
+
+**Precedencia:** §§16.211–16.212, 16.223–16.228 y código 03_EXPERIMENTS/C10-S/harness/vcont_integrated_harness.py, blob 2dafb9cdc4a6e0b5b6d686acc74bdecc71dbead4. Este gate es una auditoría estática de representabilidad algebraica/estructural. No ejecuta el Generator, no asigna parámetros, no crea clases ni escenarios, no modifica código y no autoriza simulación. No reabre Value/V_cont ni C4/LATE_f.
+
+### 16.229.1. Criterio de factibilidad
+
+Se distinguen cuatro resultados que no deben colapsarse:
+
+- **REPRESENTABLE:** las variables y la intervención requeridas existen en el modelo generador y la estructura permite construir la verdad solicitada.
+- **REPRESENTABLE_CONDITIONALLY:** la estructura contiene una ruta candidata, pero su signo, soporte, no saturación, masas o compatibilidad requieren una configuración admisible aún no especificada.
+- **NOT_REPRESENTABLE:** falta una variable/intervención/potencial indispensable o la función generadora actual impone una restricción incompatible.
+- **NOT_DEMONSTRATED:** la función permite una hipótesis plausible, pero no se ha demostrado que alcance el patrón requerido dentro de los dominios y restricciones vigentes.
+
+REPRESENTABLE no significa materializada, identificada por Analyzer, estadísticamente recuperable ni ejecutada. La inspección no usa simulación ni selecciona cifras.
+
+### 16.229.2. Hallazgos estructurales del código
+
+La inspección estática confirma:
+
+1. ScenarioConfig contiene randomized_z, randomized_g, positivity, no_interference, perfiles R0–R3 y coeficientes para efecto focal, directo de paquete, directo de G, colateral, heterogeneidad y provisión.
+2. El Generator construye z_assign y g_assign balanceados; randomized_z/randomized_g se validan como booleanos requeridos, pero no contienen por sí mismos un protocolo/certificado de asignación ni probabilidades por estrato.
+3. Los potenciales de Outcome están indexados exclusivamente [unit][z][g]. Las cuatro coordenadas de potential_delta_t_acc también se indexan por (z,g).
+4. delta_vector se activa mediante G y provision_ok; no existe una función de asignación directa g_A1/g_A0 sobre el vector completo ni potenciales separados Y(g_A1,r_common) / Y(g_A0,r_common).
+5. theta_access_truth se calcula como media de V(z=0,g=1)-V(z=0,g=0). Es ITT_G|Z=0, no θ_A. El nombre del campo no cambia el estimando.
+6. itt_package_truth promedia para cada Z los potenciales G=0 y G=1 con peso 1/2. El régimen marginal G=50/50 queda así implícito en el código de verdad, sin un g_regime_id/peso versionado explícito en ScenarioConfig/manifest. No se debe generalizar ese ITT a otro régimen G sin corregir y versionar el contrato.
+7. focal_access_effect opera sobre trajectory; package_direct_effect sobre Z; focal_direct_effect sobre G; collateral_effect sobre Z × alternative; heterogeneity modula el efecto de trajectory según x. El resultado profile_match_p se trunca a [0,1], restricción que puede saturar y alterar los signos/magnitudes efectivos.
+8. En R3, la provisión cambia con Z mediante una regla fija de reducción; R2 cambia la probabilidad de alternativa con Z; R1 fija la alternativa. La asignación de peers entra cuando se activa interferencia.
+9. La validación exige randomized_g=True para todo benchmark, aunque C1/ITT-Z no requiere por definición que G sea aleatorizado si el régimen marginal de G está fijado de otra forma. El harness actual no representa esa flexibilidad; su requisito no debe confundirse con una necesidad causal universal de C1.
+
+### 16.229.3. Matriz de factibilidad por celda
+
+| Celda | Verdad requerida | Dictamen frente al Generator actual | Motivo y límite |
+|---|---|---|---|
+| C1-POS | ITT-Z positivo | **REPRESENTABLE_CONDITIONALLY** | package_direct_effect, R3/provisión o R2/colateral pueden abrir rutas Z→V_cont. Falta fijar una configuración admisible no saturada, el régimen G explícito y verificar signo/soporte. |
+| C1-NULL | ITT-Z exactamente cero, sin imponer θ_A ni primera etapa nulos | **REPRESENTABLE_CONDITIONALLY** | R0 con ramas Z no focales inactivas permite ausencia estructural de efecto Z sobre V_cont mientras G/ΔT_acc puede variar. La igualdad exacta de la verdad poblacional debe comprobarse algebraicamente/configurarse; una muestra con diferencia cero no basta. |
+| C1-NEG | ITT-Z negativo | **REPRESENTABLE_CONDITIONALLY** | La función admite coeficientes directos de paquete con signo adverso y rutas R2/R3. El signo efectivo depende de la suma de vías y del truncamiento [0,1]; no está demostrado con los dominios configurados. |
+| C1-DECOUPLED | ITT-Z no nulo y θ_A nulo o no identificado | **REPRESENTABLE_CONDITIONALLY para el desacoplamiento de paquete; NO REPRESENTABLE como verdad θ_A completa** | La vía directa Z→V_cont puede separarse de la ruta G/ΔT. Pero el Generator no dispone de potenciales θ_A; solo puede registrar ITT_G|Z=0. No puede adjudicar que θ_A sea cero. |
+| C1-HET | Efectos ITT-Z condicionales de signos opuestos por historia | **NOT_DEMONSTRATED** | heterogeneity modula trajectory, pero no introduce directamente una interacción Z×H. R3 puede hacer que Z cambie provisión/trajectory y activar una diferencia condicional por x; la inversión de signos requiere demostrarse dentro de los límites y sin saturación. No contar el parámetro nominal como cobertura. |
+| C1-ABSTAIN | Condición ITT-Z necesaria ausente/no verificable | **REPRESENTABLE_CONDITIONALLY** | Interferencia activa y medición incompleta permiten escenarios de abstención/indeterminación. La positividad implementada afecta G, no acredita fallo estructural de positividad Z. La razón exacta de abstención debe corresponder a la condición efectivamente activada. |
+| C3-POS | θ_A positivo bajo g_A1/g_A0 sobre vector completo | **NOT_REPRESENTABLE** | No existen asignaciones/intervenciones g_A ni potenciales separados. El contraste G positivo no satisface el requisito. |
+| C3-NULL | θ_A exactamente cero, sin imponer ITT-Z/primera etapa nulos | **NOT_REPRESENTABLE** | Se puede anular el contraste G o el efecto de trayectoria, pero no establecer la verdad del estimando θ_A definido por intervención directa. |
+| C3-NEG | θ_A negativo bajo g_A1/g_A0 | **NOT_REPRESENTABLE** | Un focal_access_effect negativo cambia el resultado vía trayectoria bajo G; no crea el contraste contrafactual g_A. |
+| C3-DECOUPLED | ITT-Z no nulo con θ_A nulo, o θ_A no identificable por vía diferencial | **NOT_REPRESENTABLE como verdad C3** | El componente directo Z y los canales G/colaterales permiten desacoplar ITT-Z de ITT_G|Z=0. No permiten declarar el valor/estado de θ_A sin potenciales g_A. |
+| C3-HET | θ_A condicional con signos opuestos y promedio bajo q* | **NOT_REPRESENTABLE** | El término heterogeneity puede modular el contraste G por x, pero no existen g_A potenciales, q* ni r_common materializados. No es una celda C3 aunque produzca heterogeneidad de ITT_G. |
+| C3-ABSTAIN | θ_A no identificado/indeterminado por falta de ruta/soporte/evidencia | **REPRESENTABLE como prueba de abstención requerida; comportamiento actual NO ACREDITADO** | El contrato Gate 74 exige abstención focal porque G no acredita θ_A. Los flags actuales del Analyzer pueden tratar declaraciones como condiciones satisfechas; la abstención correcta requiere corrección y prueba posterior, no se da por implementada. |
+
+### 16.229.4. Contradicciones y correcciones de contrato que quedan fijadas
+
+**A. Tres verdades no equivalentes.** El campo histórico theta_access_truth del harness contiene ITT_G|Z=0. Debe considerarse nombre/semántica legacy incorrecta respecto de C3; no se copia a theta_a_truth. En una futura revisión de código se mantendrán campos independientes itt_z_truth, itt_g_z0_truth y theta_a_truth, este último solo cuando se implementen los potenciales g_A.
+
+**B. Régimen marginal de G en ITT-Z.** El truth ITT actual usa peso fijo 1/2 sobre G=0/1. Es una definición implícita de ITT-Z bajo régimen G 50/50, no un ITT marginal genérico. Antes de materializar C1 se debe declarar/versionar ese régimen o sustituirlo por el régimen G objetivo del ledger. No se elige ahora un régimen distinto ni se inventan probabilidades.
+
+**C. Asignación versus intervención.** La asignación aleatoria G no equivale a la intervención sobre ΔT_acc*. La primera etapa vectorial inducida por G, incluso si es positiva, no demuestra que G implemente g_A ni que no existan vías directas/colaterales.
+
+**D. Heterogeneidad.** La presencia del coeficiente heterogeneity no prueba heterogeneidad del estimando de interés. C1-HET exige heterogeneidad de ITT-Z; C3-HET exige heterogeneidad de θ_A. Deben comprobarse efectos condicionales y masas sobre la población correspondiente, no solo variación de profile_match_p.
+
+**E. Interferencia y positividad.** El modo de interferencia actual utiliza asignaciones observadas de peers para construir potenciales; sin mapa de exposición/estimando de cluster completo no acredita ITT individual. La opción positivity=False retira G=1 en estrato alto; no prueba falta de positividad Z ni positividad de g_A.
+
+**F. Truncamiento.** El clipping de profile_match_p a [0,1] hace que los coeficientes configurados no sean iguales a los efectos causales realizados. Los signos y contrastes deben adjudicarse desde potenciales generados, nunca desde el signo nominal de un coeficiente.
+
+### 16.229.5. Dictamen y alcance de cierre
+
+**Cerrado:** auditoría estática de las doce celdas; separación de representabilidad algebraica y cobertura científica; detección de la ausencia de g_A; identificación del régimen G 50/50 implícito; delimitación de lo que el parámetro heterogeneity y el indicador positivity realmente representan; reutilización del roster existente.
+
+**Abierto y no bloqueable por documentación:** (1) ruta de intervención directa g_A y potenciales propios; (2) régimen G explícito para ITT-Z; (3) configuración factible de C1 con signos/nulo y ausencia de saturación; (4) demostración de signos condicionales opuestos para C1-HET; (5) certificados/diseño y verificación del Analyzer; (6) estimación/varianza compatible con unidad/estratos/interferencia; (7) materialización de registros del ledger. Ninguna de estas brechas se resuelve asignando nombres o flags.
+
+**Dictamen:** TWELVE_CELL_LOGICAL_FEASIBILITY_AUDITED / C1_PARTIALLY_REPRESENTABLE_NOT_MATERIALIZED / C1_HETEROGENEITY_NOT_DEMONSTRATED / C3_POINT_TRUTH_NOT_REPRESENTABLE_WITH_CURRENT_ZG_POTENTIALS / LEGACY_THETA_ACCESS_TRUTH_EQUALS_ITT_G_Z0 / ITT_Z_IMPLICIT_G_50_50_REGIME / NO_ROSTER_EXPANSION / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** Gate 77 — resolver, dentro del contrato ya aprobado, la mínima representación contrafactual de g_A sobre el vector completo y el régimen G explícito de ITT-Z, sin crear nuevas clases ni cambiar estimandos. La decisión debe especificar qué se mantiene fijo, qué cambia bajo g_A, cómo se conserva el acoplamiento de exógenas y qué truth queda en Generator/Evaluator; el Analyzer seguirá ciego a esa truth. No asignar parámetros numéricos ni ejecutar.
