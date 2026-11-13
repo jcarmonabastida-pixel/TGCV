@@ -7208,3 +7208,91 @@ No se ha implementado la intervención estructural conjunta g_A0/g_A1, ni θ_A, 
 ### 16.237.6. Siguiente gate — 88
 
 **Gate 88 — auditoría estática de integridad de la migración y del contrato Analyzer/Evaluator.** Comprobar consumidores, serialización/hash del AnalyzerResult, informes, contratos y tests para detectar referencias obsoletas o incompatibilidades; confirmar que el contraste G se identifica solo como ITT-G|Z=0 y que θ_A no puede aparecer como identificado por ningún alias, campo o reporte. Corregir únicamente residuos de esta migración. No implementar θ_A, no modificar el DGP ni ejecutar tests. La ejecución de la suite queda sujeta a autorización técnica explícita separada y no es ejecución científica.
+
+
+---
+
+## 16.238. Gate 88 — auditoría de integridad de migración y condiciones de identificación separadas (2026-11-13)
+
+**Precedencia:** §§16.236–16.237 y Technical Execution Workflow v0.1. Alcance: auditoría estática de la migración ITT-Z / ITT-G|Z=0 / θ_A en el harness integrado, consumidores del PR, sellado del resultado y separación del harness P178 histórico. No implementar θ_A ni modificar DGP, P178, políticas g_A, q_X*, roster, masas o bounds.
+
+### 16.238.1. Auditoría del contrato AnalyzerResult / hash / Evaluator
+
+La recuperación completa de `vcont_integrated_harness.py` confirma que el payload sellado por Analyzer y el payload reconstruido por Evaluator utilizan el mismo contrato de salida:
+- `package_status`, `g_assignment_status`;
+- `package_itt`, `g_assignment_effect`;
+- `first_stage_delta_t_acc`;
+- `package_se`, `g_assignment_se`;
+- `reasons`, `input_sha256`.
+
+El digest de salida se calcula sobre ese payload y Evaluator reconstruye los mismos campos antes de comparar con las verdades respectivas. No se encontró un campo de θ_A en AnalyzerResult ni una ruta por la que Evaluator compare `g_assignment_effect` con `theta_a_truth`.
+
+La migración integrada no conserva referencias a `theta_access_truth`, `focal_status` o `focal_effect` en el contrato de salida. El alias `itt_package_truth` solo apunta a `itt_z_truth`; no existe alias focal equivalente.
+
+### 16.238.2. Incidencia corregida: dependencia indebida de Z para estimar G
+
+La auditoría encontró que el Analyzer condicionaba la construcción de `observed_v` a que no existieran motivos de abstención de ITT-Z. Eso acoplaba indebidamente el contraste de G dentro de Z=0 a la aleatorización de Z.
+
+Se corrigió separando:
+- requisitos compartidos de evidencia/resultado (no interferencia, medición, versión, completitud y cobertura);
+- requisitos propios de ITT-Z (aleatorización Z);
+- requisitos propios de ITT-G|Z=0 (aleatorización G y soporte).
+
+El resultado observado se construye cuando se satisfacen los requisitos compartidos. Después, cada estimando se adjudica contra sus condiciones propias. Una falta de aleatorización Z deja ITT-Z como `NOT_IDENTIFIED`, pero no bloquea por sí sola ITT-G|Z=0 si G está aleatorizado y el soporte dentro de Z=0 es suficiente.
+
+Se añadió el test `test_g_assignment_does_not_require_z_randomization`, que también comprueba que Evaluator registra correctamente la abstención de ITT-Z y conserva la recuperación del contraste G.
+
+### 16.238.3. Separación del harness integrado y el harness histórico P178
+
+La revisión de los 175 ficheros del PR #116 y de los consumidores relevantes confirma dos implementaciones distintas:
+- `vcont_integrated_harness.py` / `test_vcont_integrated_harness.py`: harness integrado al que se aplica Gate 87–88.
+- `focal_harness.py`, sus tests y los puentes P178: harness anterior e independiente. Sus campos históricos `theta_access_truth` y `focal_*` no se han migrado ni se deben reinterpretar como el θ_A conjunto de la especificación integrada.
+
+Se actualizó `03_EXPERIMENTS/C10-S/harness/README.md` para dejar explícita esta frontera. P178 y sus artefactos permanecen intactos. La búsqueda de referencias en la rama de investigación debe entenderse dentro de esta separación; no se declara que todo el repositorio haya eliminado vocabulario focal histórico.
+
+### 16.238.4. Ejecución CI automática no prevista y resultado observado
+
+El push documental que actualizó el README coincidió con el filtro `paths: 03_EXPERIMENTS/C10-S/harness/**` del workflow `.github/workflows/c10-s-focal-harness-tests.yml`. GitHub Actions lanzó automáticamente el workflow, sin que se hubiera solicitado una ejecución manual ni se pretendiera autorizarla mediante este gate.
+
+Registro observado:
+- Workflow run: `43411488324`.
+- Commit probado: `dd886afd1bc68de231f5675e5364602914088453`.
+- Evento: `push`.
+- Job: `131838734939`.
+- Resultado: `FAILURE`.
+- Suite: 33 tests; 32 PASS y 1 FAIL.
+- Compilación declarada por el workflow: PASS.
+- Replay: SKIPPED al fallar la ejecución primaria.
+
+El único fallo fue `test_structural_support_failure_removes_high_stratum_g1` (línea 123 en el blob probado), que espera `g_assignment_status == IDENTIFIED`. El test `test_support_failure_blocks_g_assignment_but_not_package` espera para el mismo escenario `NOT_IDENTIFIED`. La configuración de escenario declara fallo de positividad/soporte; por tanto, la segunda expectativa es la coherente con el contrato y la primera es una expectativa obsoleta contradictoria.
+
+El test añadido de independencia respecto a la aleatorización Z pasó en ese run, así como los tests de separación de verdades, hash/seal, y los tests del harness P178 histórico. No se ejecutó replay. El run automático no equivale a una ejecución confirmatoria ni al benchmark científico C10-S; sí es una ejecución técnica real de la suite y queda registrada como no prevista. No se debe describir Gate 88 como “tests no ejecutados”.
+
+No se ha solicitado ni iniciado un rerun. La ejecución primaria automática no estaba expresamente autorizada; queda registrada como desviación operativa, sin ocultarla ni atribuirle autorización retroactiva.
+
+### 16.238.5. Estado de los artefactos y dictamen
+
+Blobs recuperados en la rama `research/c10-s-consolidation-draft`:
+| Artefacto | Blob |
+|---|---|
+| `vcont_integrated_harness.py` | `ba0b588051cad1b7f5cf91af19200fdfaaa77f20` |
+| `test_vcont_integrated_harness.py` | `e48009753df7fe498213564bb9cf1e701e22a8fb` |
+| `README.md` del harness | `aa4480e4133aec46c9bf725f7d285485699e6979` |
+
+Comprobaciones estáticas recuperadas después de los cambios:
+- ausencia de alias focal obsoleto dentro del harness integrado;
+- nombres de salida y payload de hash alineados;
+- ITT-Z, ITT-G y θ_A no materializado permanecen separados;
+- condiciones de aleatorización Z/G separadas;
+- 16 tests declarados, incluido el nuevo test de independencia;
+- README distingue el harness integrado del P178 histórico.
+
+**Dictamen:** GATE_88_STATIC_MIGRATION_AUDIT_PASS / G_ASSIGNMENT_NO_LONGER_DEPENDS_ON_Z_RANDOMIZATION / ANALYZER_RESULT_SEAL_FIELDS_ALIGNED / LEGACY_P178_SCOPE_PRESERVED / AUTO_CI_UNAUTHORIZED_RUN_RECORDED / CI_PRIMARY_FAIL_32_OF_33 / REPLAY_SKIPPED / SOFTWARE_ACCEPTANCE_BLOCKED / NO_SCIENTIFIC_BENCHMARK / NO_DESIGN_FREEZE.
+
+El gate queda cerrado como auditoría y corrección estática, pero la aceptación técnica de la migración permanece bloqueada por el test contradictorio y el run CI fallido.
+
+### 16.238.6. Siguiente gate — 89
+
+**Gate 89 — reconciliar el contrato de positividad de R0_SUPPORT_FAILURE y corregir la expectativa obsoleta sin cambiar el DGP.** No ampliar el universo de escenarios ni relajar el criterio de soporte. La corrección esperada es alinear el test `test_structural_support_failure_removes_high_stratum_g1` con el dictamen `NOT_IDENTIFIED`, y verificar que no haya otro test que contradiga el mismo contrato.
+
+La actualización de código/tests volvería a activar el workflow por su filtro de paths. Por tanto, antes de cualquier nuevo push que pueda disparar CI, se requiere autorización explícita del usuario para ejecutar la suite técnica. No se debe lanzar benchmark P178 ni experimento científico. `scientific_execution=false`; la suite técnica requiere autorización expresa.
