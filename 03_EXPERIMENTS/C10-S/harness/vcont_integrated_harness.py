@@ -525,10 +525,17 @@ class Sealer:
                 raise ContractError("invalid S3 value")
             if len(row["delta_t_acc_observed"]) != 4 or any(v not in (0, 1) for v in row["delta_t_acc_observed"]):
                 raise ContractError("Delta T_acc must contain four binary coordinates")
-        if not candidate.provenance or candidate.provenance.get("run_id") != candidate.run_id:
-            raise ContractError("observable provenance envelope missing or run mismatch")
+        provenance_allowed = {"run_id", "scenario_id", "scenario_version", "world_id", "world_version",
+            "replicate_id", "g_assignment_mechanism_id", "g_assignment_mechanism_version",
+            "g_assignment_mechanism_hash", "z_assignment_mechanism_id", "z_assignment_mechanism_version",
+            "z_assignment_mechanism_hash", "g_reference_regime_id", "g_reference_regime_version",
+            "z_assignment_vector_hash", "g_assignment_vector_hash", "g_assignment_probability_by_stratum"}
+        if not candidate.provenance or set(candidate.provenance) != provenance_allowed or candidate.provenance.get("run_id") != candidate.run_id:
+            raise FirewallError("provenance envelope contains reserved/missing fields or run mismatch")
         if _hash([row["assignment_z"] for row in candidate.rows]) != candidate.provenance.get("z_assignment_vector_hash") or _hash([row["assignment_g"] for row in candidate.rows]) != candidate.provenance.get("g_assignment_vector_hash"):
             raise ContractError("assignment vectors do not match provenance hashes")
+        if candidate.provenance.get("g_assignment_probability_by_stratum") not in ((("LOW", 0.5), ("HIGH", 0.5)), (("LOW", 0.5), ("HIGH", 0.0))):
+            raise ContractError("unsupported G assignment probability declaration")
         manifest = {"run_id": candidate.run_id, "schema": "C10S-VCONT-S3-001",
                     "row_count": len(candidate.rows), "sealer_version": "0.2",
                     "provenance": candidate.provenance, "provenance_sha256": _hash(candidate.provenance)}
