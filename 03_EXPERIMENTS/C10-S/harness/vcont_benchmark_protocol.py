@@ -437,6 +437,8 @@ class PairEvaluationRecord:
     identification_status: str
     abstained: bool
     adjudication: str
+    absolute_error: float | None
+    recovered: bool | None
 
 
 class PairEvaluationAdapter:
@@ -456,7 +458,9 @@ class PairEvaluationAdapter:
         if (observed_id, observed_version) != (spec.key.estimand_id, spec.key.estimand_version):
             raise ProtocolError("Analyzer/repeated output estimand identity/version does not match matrix")
 
-    def adapt_run(self, spec: ScenarioEstimandSpec, truth, analyzer, manifest) -> PairEvaluationRecord:
+    def adapt_run(self, spec: ScenarioEstimandSpec, truth, analyzer, manifest, tolerance: float) -> PairEvaluationRecord:
+        if not isfinite(float(tolerance)) or tolerance < 0:
+            raise ProtocolError("pair recovery tolerance must be finite and nonnegative")
         estimand = spec.key.estimand_id
         if estimand == "ITT_Z_MECHANISM_MARGINAL_VCONT":
             raise ProtocolError("mechanism-marginal estimand requires repeated assignments, not a single run")
@@ -477,9 +481,12 @@ class PairEvaluationAdapter:
             output = getattr(analyzer, output_field, None)
             if output is None or not isfinite(float(output)) or status != "IDENTIFIED":
                 raise ProtocolError("matrix EVALUABLE pair requires an identified finite Analyzer output")
-            adjudication, abstained = "PASS", False
+            absolute_error = abs(float(output) - float(raw_truth))
+            recovered = absolute_error <= tolerance
+            adjudication, abstained = ("PASS" if recovered else "FAIL"), False
         else:
             output_field, output = None, None
+            absolute_error, recovered = None, None
             abstained = status != "IDENTIFIED"
             adjudication = "STATUS_PASS" if (status == spec.identification_expectation and abstained is spec.abstention_expectation) else "STATUS_FAIL"
         validate_evaluation_observation(spec, observed_key=spec.key, analyzer_output_field=output_field,
@@ -487,9 +494,12 @@ class PairEvaluationAdapter:
             observed_identification_status=status, observed_abstained=abstained)
         return PairEvaluationRecord(spec.key, "RUN", analyzer.run_id, spec.truth_field,
             None if raw_truth is None else float(raw_truth), output_field,
-            None if output is None else float(output), status, abstained, adjudication)
+            None if output is None else float(output), status, abstained, adjudication,
+            absolute_error, recovered)
 
-    def adapt_repeated(self, spec: ScenarioEstimandSpec, report, manifest) -> PairEvaluationRecord:
+    def adapt_repeated(self, spec: ScenarioEstimandSpec, report, manifest, tolerance: float) -> PairEvaluationRecord:
+        if not isfinite(float(tolerance)) or tolerance < 0:
+            raise ProtocolError("pair recovery tolerance must be finite and nonnegative")
         estimand = spec.key.estimand_id
         if estimand == "ITT_Z_MECHANISM_MARGINAL_VCONT":
             observed_id, observed_version = report.mechanism_marginal_estimand_id, report.mechanism_marginal_estimand_version
@@ -531,6 +541,8 @@ def summarize_estimand(spec: ScenarioEstimandSpec, *, estimates: Iterable[float]
         if estimates is None or truth is None:
             raise ProtocolError("EVALUABLE pair requires estimates and DGP truth")
         estimate = summarize_continuous(estimates, truth, tolerance)
+        if mcse_target is not None and (not isfinite(float(mcse_target)) or mcse_target <= 0):
+            raise ProtocolError("mcse_target must be finite and >0 when supplied")
         precision = (
             "NOT_EVALUABLE" if estimate.mcse_mean is None or mcse_target is None
             else "PASS" if estimate.mcse_mean <= mcse_target
