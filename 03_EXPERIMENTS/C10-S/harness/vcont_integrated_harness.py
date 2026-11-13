@@ -480,7 +480,8 @@ class Generator:
         invariant_truth = all(abs((v_truth[i][1][1]-v_truth[i][0][1]) - (v_truth[i][1][0]-v_truth[i][0][0])) < 1e-12 for i in unsupported_high) if unsupported_high else True
         window_end = cfg.last_transition_support + cfg.follow_up
         interval_width = (window_end - cfg.window_start) / cfg.n_intervals
-        gh = _hash({"algorithm": "balanced_binary_then_zero_HIGH_if_support_failure", "positivity": cfg.positivity, "n": cfg.n_units})
+        g_probabilities = (("LOW", 0.5), ("HIGH", 0.0 if not cfg.positivity else 0.5))
+        gh = _hash({"algorithm": "balanced_binary_then_zero_HIGH_if_support_failure", "positivity": cfg.positivity, "n": cfg.n_units, "probability_by_stratum": g_probabilities})
         zh = _hash({"algorithm": "balanced_binary_complete_randomization", "n": cfg.n_units})
         manifest = RunManifest(run_id, cfg.scenario_id, cfg.version, cfg.n_units, cfg.n_intervals,
             cfg.window_start, window_end, interval_width, self.version,
@@ -503,8 +504,7 @@ class Generator:
             "g_reference_regime_id": manifest.g_reference_regime_id,
             "g_reference_regime_version": manifest.g_reference_regime_version,
             "z_assignment_vector_hash": manifest.z_assignment_vector_hash,
-            "g_assignment_vector_hash": manifest.g_assignment_vector_hash,
-            "g_assignment_probability_by_stratum": manifest.g_assignment_probability_by_stratum}
+            "g_assignment_vector_hash": manifest.g_assignment_vector_hash}
         return manifest, truth, EvidenceCandidate(run_id, tuple(rows), provenance)
 
 
@@ -531,13 +531,11 @@ class Sealer:
             "replicate_id", "g_assignment_mechanism_id", "g_assignment_mechanism_version",
             "g_assignment_mechanism_hash", "z_assignment_mechanism_id", "z_assignment_mechanism_version",
             "z_assignment_mechanism_hash", "g_reference_regime_id", "g_reference_regime_version",
-            "z_assignment_vector_hash", "g_assignment_vector_hash", "g_assignment_probability_by_stratum"}
+            "z_assignment_vector_hash", "g_assignment_vector_hash"}
         if not candidate.provenance or set(candidate.provenance) != provenance_allowed or candidate.provenance.get("run_id") != candidate.run_id:
             raise FirewallError("provenance envelope contains reserved/missing fields or run mismatch")
         if _hash([row["assignment_z"] for row in candidate.rows]) != candidate.provenance.get("z_assignment_vector_hash") or _hash([row["assignment_g"] for row in candidate.rows]) != candidate.provenance.get("g_assignment_vector_hash"):
             raise ContractError("assignment vectors do not match provenance hashes")
-        if candidate.provenance.get("g_assignment_probability_by_stratum") not in ((("LOW", 0.5), ("HIGH", 0.5)), (("LOW", 0.5), ("HIGH", 0.0))):
-            raise ContractError("unsupported G assignment probability declaration")
         manifest = {"run_id": candidate.run_id, "schema": "C10S-VCONT-S3-001",
                     "row_count": len(candidate.rows), "sealer_version": "0.2",
                     "provenance": candidate.provenance, "provenance_sha256": _hash(candidate.provenance)}
@@ -746,8 +744,11 @@ class Evaluator:
             "g_reference_regime_id": manifest.g_reference_regime_id,
             "g_reference_regime_version": manifest.g_reference_regime_version,
             "z_assignment_vector_hash": manifest.z_assignment_vector_hash,
-            "g_assignment_vector_hash": manifest.g_assignment_vector_hash,
-            "g_assignment_probability_by_stratum": manifest.g_assignment_probability_by_stratum}
+            "g_assignment_vector_hash": manifest.g_assignment_vector_hash}
+        expected_g_probabilities = (("LOW", 0.5), ("HIGH", 0.0 if not contract.positivity else 0.5))
+        expected_g_hash = _hash({"algorithm": "balanced_binary_then_zero_HIGH_if_support_failure", "positivity": contract.positivity, "n": manifest.n_units, "probability_by_stratum": expected_g_probabilities})
+        if manifest.g_assignment_probability_by_stratum != expected_g_probabilities or manifest.g_assignment_mechanism_hash != expected_g_hash:
+            raise ContractError("RunManifest G assignment probabilities do not match the declared mechanism")
         if (result.estimand_id != contract.estimand_id or result.estimand_version != contract.estimand_version or
             result.target_regime_id != contract.target_regime_id or result.target_regime_version != contract.target_regime_version or
             result.outcome_id != contract.outcome_id or result.outcome_version != contract.outcome_version or
@@ -901,6 +902,6 @@ def contract_for(cfg: ScenarioConfig) -> AnalysisContract:
         g_assignment_mechanism_id=("G_BALANCED_WITH_STRATUM_SUPPORT" if not cfg.positivity else "G_BALANCED"),
         g_assignment_mechanism_version="001", z_assignment_mechanism_id="Z_BALANCED_INDEPENDENT",
         z_assignment_mechanism_version="001", reference_regime_id="G_REFERENCE_50_50", reference_regime_version="001",
-        g_assignment_mechanism_hash=_hash({"algorithm": "balanced_binary_then_zero_HIGH_if_support_failure", "positivity": cfg.positivity, "n": cfg.n_units}),
+        g_assignment_mechanism_hash=_hash({"algorithm": "balanced_binary_then_zero_HIGH_if_support_failure", "positivity": cfg.positivity, "n": cfg.n_units, "probability_by_stratum": (("LOW", 0.5), ("HIGH", 0.0 if not cfg.positivity else 0.5))}),
         z_assignment_mechanism_hash=_hash({"algorithm": "balanced_binary_complete_randomization", "n": cfg.n_units}),
     )
