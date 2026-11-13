@@ -243,3 +243,11 @@ The source objects required by this contract are constructed by Generator, Seale
 **SealedEvidence clarification:** SealedEvidence currently retains canonical rows and manifest in memory, and Sealer computes its digest over both. The digest is therefore recalculable at capture time. If raw rows are excluded from the package, RECONCILED status additionally requires an immutable, independently retrievable canonical evidence object and verified locator. The current code does not provide that durable retrieval abstraction. Without it, digest status remains UNVERIFIABLE.
 
 The Gate 166 schema remains DEFINED. Implementation is conditional on Gate 168 freezing RunEvidenceBundle and sealed-evidence retention/retrieval. This qualification does not imply code or test execution.
+
+## 13. Gate 168 amendment — SealedEvidence retention and world identity
+
+Gate 168 is persisted in `00_GOVERNANCE/SIP/C10_S_VCONT_RUN_EVIDENCE_BUNDLE_AND_SEALED_EVIDENCE_RETENTION_CONTRACT_GATE_168_DRAFT_001.md`.
+
+For the v1.0.0 export implementation, the default exclusion of raw SealedEvidence rows is amended: the complete canonical manifest and rows are retained inline. The current repository has no immutable independently retrievable evidence store; a digest-only export would therefore be UNVERIFIABLE after capture. The legacy Sealer digest remains unchanged and is recomputed from its exact legacy canonical payload. The package-level JCS representation and digest remain separate.
+
+Gate 168 also defines the frozen RunEvidenceBundle and OuterWorldEvidenceBundle. Implementation acceptance is blocked pending correction of the Generator world-identity projection: current `world_spec` retains `assignment_role` and `assignment_index`, so role/index changes alter `world_id` despite Gate 154 requiring RUN and R to share one world. See Gate 168 §7. This is a source-level finding; no runtime test was run in Gate 168.
