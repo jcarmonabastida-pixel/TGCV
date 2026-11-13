@@ -561,3 +561,21 @@ The protocol now defines:
 **Numeric freeze intentionally remains open:** candidate N grid, target MCSE by primary scenario/estimand, minimum relevant effect or absolute precision scale, calibration stopping rule, required scenario/estimand set, and any scientific recovery tolerance require explicit pre-execution approval. The test fixture values and harness default N=400 are not scientific decisions.
 
 No calibration bank or evaluation bank has been generated. No benchmark or scientific execution is authorized.
+
+
+### 14.11 Gate 130 — CI verification of calibration protocol scaffold — 2026-11-13
+
+GitHub Actions Run #92 completed successfully on commit `225629deb829556a03dbcbc4e8e9802dd93e65d4`.
+
+- Primary suite: 70 tests, PASS.
+- Clean-source-archive replay: 70 tests, PASS.
+- Explicit compilation: PASS.
+- Complete workflow/job: SUCCESS.
+- Artifact: `14059659425`.
+- Run: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/43470449394
+
+The run validates source-level behavior for seed-bank construction/validation, bank fingerprinting, N selection and existing C10-S harness contracts. It does not execute a calibration bank or the V_cont benchmark.
+
+**Transparent correction history:** earlier CI attempts during this integration exposed test import wiring, evaluation-bank self-validation, a test-file newline, and a missing JSON import in fingerprint generation. Each was corrected; the final tested commit above includes the corrections. Failed attempts were not relabeled as PASS.
+
+The calibration/evaluation protocol scaffold is now technically validated. Its scientific numeric parameters remain OPEN as specified in `C10_S_VCONT_CALIBRATION_AND_SEED_BANK_PROTOCOL_DRAFT_001.md`. No calibration, benchmark or scientific execution was run or authorized.
