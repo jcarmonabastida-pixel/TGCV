@@ -167,6 +167,9 @@ class RunManifest:
     z_assignment_vector_hash: str = ""
     g_assignment_vector_hash: str = ""
     g_assignment_probability_by_stratum: tuple[tuple[str, float], ...] = ()
+    world_seed: int = 0
+    z_assignment_seed: int = 0
+    g_assignment_seed: int = 0
 
 
 @dataclass(frozen=True)
@@ -280,7 +283,11 @@ class Generator:
         world_rng = random.Random(world_seed)
         z_rng = random.Random(z_seed)
         g_rng = random.Random(g_seed)
-        run_id = _hash({"config": asdict(cfg), "replicate_id": cfg.replicate_id, "world_seed": world_seed, "z_seed": z_seed, "g_seed": g_seed})[:24]
+        world_spec = asdict(cfg)
+        for key in ("seed", "world_seed", "z_assignment_seed", "g_assignment_seed", "replicate_id"):
+            world_spec.pop(key, None)
+        world_id = _hash({"world_seed": world_seed, "world_spec": world_spec})
+        run_id = _hash({"config": asdict(cfg), "replicate_id": cfg.replicate_id, "world_id": world_id, "z_seed": z_seed, "g_seed": g_seed})[:24]
         z_assign = _balanced_binary(cfg.n_units, z_rng)
         g_assign = _balanced_binary(cfg.n_units, g_rng)
         baseline_x = [world_rng.random() for _ in range(cfg.n_units)]
@@ -438,14 +445,15 @@ class Generator:
         invariant_truth = all(abs((v_truth[i][1][1]-v_truth[i][0][1]) - (v_truth[i][1][0]-v_truth[i][0][0])) < 1e-12 for i in unsupported_high) if unsupported_high else True
         window_end = cfg.last_transition_support + cfg.follow_up
         interval_width = (window_end - cfg.window_start) / cfg.n_intervals
-        gh = _hash({"g_seed": g_seed, "positivity": cfg.positivity, "n": cfg.n_units})
-        zh = _hash({"z_seed": z_seed, "n": cfg.n_units})
+        gh = _hash({"algorithm": "balanced_binary_then_zero_HIGH_if_support_failure", "positivity": cfg.positivity, "n": cfg.n_units})
+        zh = _hash({"algorithm": "balanced_binary_complete_randomization", "n": cfg.n_units})
         manifest = RunManifest(run_id, cfg.scenario_id, cfg.version, cfg.n_units, cfg.n_intervals,
             cfg.window_start, window_end, interval_width, self.version,
-            _hash({"world_seed": world_seed, "scenario": cfg.scenario_id}), cfg.version, cfg.replicate_id,
+            world_id, cfg.version, cfg.replicate_id,
             "G_BALANCED_WITH_STRATUM_SUPPORT" if not cfg.positivity else "G_BALANCED", "001", gh,
             "Z_BALANCED_INDEPENDENT", "001", zh, "G_REFERENCE_50_50", "001",
-            _hash(z_assign), _hash(g_assign), (("LOW", 0.5), ("HIGH", 0.0 if not cfg.positivity else 0.5)))
+            _hash(z_assign), _hash(g_assign), (("LOW", 0.5), ("HIGH", 0.0 if not cfg.positivity else 0.5)),
+            world_seed, z_seed, g_seed)
         truth = TruthBundle(run_id, tuple(v_truth), tuple(interval_truth), tuple(enabled_truth), tuple(profile_truth), tuple(delta_truth),
             itt_reference, itt_g_z0, None, cfg.seed, itt_run, itt_mechanism, itt_reference, invariant_truth,
             "HIGH" if unsupported_high else "ALL", "G_REFERENCE_50_50", "001", gh, zh)
@@ -701,6 +709,6 @@ def contract_for(cfg: ScenarioConfig) -> AnalysisContract:
         transportability_version=("001" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else None),
         transportability_scope=("HIGH" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else None),
         transportability_evidence_status=("STRUCTURALLY_VERIFIED" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else "NOT_ESTABLISHED"),
-        g_assignment_mechanism_hash=_hash({"g_seed": cfg.seed + 200003 if cfg.g_assignment_seed is None else cfg.g_assignment_seed, "positivity": cfg.positivity, "n": cfg.n_units}),
-        z_assignment_mechanism_hash=_hash({"z_seed": cfg.seed + 100003 if cfg.z_assignment_seed is None else cfg.z_assignment_seed, "n": cfg.n_units}),
+        g_assignment_mechanism_hash=_hash({"algorithm": "balanced_binary_then_zero_HIGH_if_support_failure", "positivity": cfg.positivity, "n": cfg.n_units}),
+        z_assignment_mechanism_hash=_hash({"algorithm": "balanced_binary_complete_randomization", "n": cfg.n_units}),
     )
