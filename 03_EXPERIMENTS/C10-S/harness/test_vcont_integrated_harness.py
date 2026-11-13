@@ -24,7 +24,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         sealed = self.sealer.seal(candidate)
         contract = contract_for(cfg)
         result = self.analyzer.analyze(sealed, contract)
-        report = self.evaluator.evaluate(truth, result, contract, tolerance=0.10)
+        report = self.evaluator.evaluate(truth, result, contract, tolerance=0.10, manifest=manifest)
         return manifest, truth, sealed, result, report
 
     def worlds(self):
@@ -64,11 +64,11 @@ class VContIntegratedHarnessTests(unittest.TestCase):
 
     def test_g_assignment_does_not_require_z_randomization(self):
         cfg = self.worlds()["R0_FOCAL_POSITIVE"]
-        _, truth, candidate = self.generator.generate(cfg)
+        manifest, truth, candidate = self.generator.generate(cfg)
         sealed = self.sealer.seal(candidate)
         contract = replace(contract_for(cfg), randomized_z=False)
         result = self.analyzer.analyze(sealed, contract)
-        report = self.evaluator.evaluate(truth, result, contract, tolerance=0.10)
+        report = self.evaluator.evaluate(truth, result, contract, tolerance=0.10, manifest=manifest)
         self.assertEqual(result.package_status, "NOT_IDENTIFIED")
         self.assertEqual(result.g_assignment_status, "IDENTIFIED")
         self.assertIsNotNone(result.g_assignment_effect)
@@ -216,7 +216,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         _, truth, _, result, _ = self.execute_world(cfg)
         bad_contract = replace(contract_for(cfg), target_regime_id="G_REFERENCE_50_50")
         with self.assertRaises(ContractError):
-            self.evaluator.evaluate(truth, result, bad_contract, tolerance=0.10)
+            self.evaluator.evaluate(truth, result, bad_contract, tolerance=0.10, manifest=manifest)
 
 
     def test_assignment_mechanism_probabilities_and_hashes_are_recorded(self):
@@ -271,25 +271,25 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         _, truth, _, result, _ = self.execute_world(cfg)
         wrong = replace(contract_for(cfg), g_assignment_mechanism_hash="0"*64)
         with self.assertRaises(ContractError):
-            self.evaluator.evaluate(truth, result, wrong, tolerance=0.10)
+            self.evaluator.evaluate(truth, result, wrong, tolerance=0.10, manifest=manifest)
 
 
     def test_evaluator_rejects_run_and_estimand_mismatch(self):
         cfg = self.worlds()["R0_FOCAL_POSITIVE"]
-        _, truth, _, result, _ = self.execute_world(cfg)
+        manifest, truth, _, result, _ = self.execute_world(cfg)
         with self.assertRaises(ContractError):
             self.evaluator.evaluate(replace(truth, run_id="other-run"), result,
-                                    contract_for(cfg), tolerance=0.10)
+                                    contract_for(cfg), tolerance=0.10, manifest=manifest)
         wrong_estimand = replace(contract_for(cfg), estimand_id="OTHER_ESTIMAND")
         with self.assertRaises(ContractError):
-            self.evaluator.evaluate(truth, result, wrong_estimand, tolerance=0.10)
+            self.evaluator.evaluate(truth, result, wrong_estimand, tolerance=0.10, manifest=manifest)
 
     def test_evaluator_rejects_transportability_scope_mismatch(self):
         cfg = self.worlds()["R0_SUPPORT_FAILURE"]
-        _, truth, _, result, _ = self.execute_world(cfg)
+        manifest, truth, _, result, _ = self.execute_world(cfg)
         wrong_scope = replace(contract_for(cfg), transportability_scope="LOW")
         with self.assertRaises(ContractError):
-            self.evaluator.evaluate(truth, result, wrong_scope, tolerance=0.10)
+            self.evaluator.evaluate(truth, result, wrong_scope, tolerance=0.10, manifest=manifest)
 
     def test_version_inconsistency_causes_indeterminate_adjudication(self):
         cfg = self.worlds()["R0_FOCAL_POSITIVE"]
@@ -303,13 +303,13 @@ class VContIntegratedHarnessTests(unittest.TestCase):
 
     def test_evaluator_rejects_outcome_and_z_mechanism_mismatch(self):
         cfg = self.worlds()["R0_FOCAL_POSITIVE"]
-        _, truth, _, result, _ = self.execute_world(cfg)
+        manifest, truth, _, result, _ = self.execute_world(cfg)
         wrong_outcome = replace(contract_for(cfg), outcome_version="002")
         with self.assertRaises(ContractError):
-            self.evaluator.evaluate(truth, result, wrong_outcome, tolerance=0.10)
+            self.evaluator.evaluate(truth, result, wrong_outcome, tolerance=0.10, manifest=manifest)
         wrong_z = replace(contract_for(cfg), z_assignment_mechanism_hash="f"*64)
         with self.assertRaises(ContractError):
-            self.evaluator.evaluate(truth, result, wrong_z, tolerance=0.10)
+            self.evaluator.evaluate(truth, result, wrong_z, tolerance=0.10, manifest=manifest)
 
 if __name__ == "__main__":
     unittest.main()
