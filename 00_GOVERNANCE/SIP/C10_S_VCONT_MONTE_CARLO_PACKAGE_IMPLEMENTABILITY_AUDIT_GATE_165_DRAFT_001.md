@@ -136,3 +136,13 @@ Absent or external: calibration manifest, SealedEvidence/EvaluationReport per-ru
 ## 8. Next gate
 
 **Gate 166 — freeze the typed evidence-export interface and source-of-record cardinalities.** Specify the exact immutable per-run record, benchmark-level envelope, join keys, data-minimization boundary and provenance split required to make every Gate 164 package field available without reconstruction. Do this before implementing the packager or trusted attestor.
+
+
+## 9. Gate 166 disposition
+
+Gate 166 subsequently froze the typed evidence-export interface in:
+`00_GOVERNANCE/SIP/C10_S_VCONT_TYPED_EVIDENCE_EXPORT_CONTRACT_GATE_166_DRAFT_001.md`.
+
+The Gate 165 recommendation to define the benchmark envelope, immutable per-run record, cardinalities, join keys, data-minimization boundary and provenance split is therefore **ADDRESSED AT CONTRACT LEVEL**. It is not implemented or runtime-verified. The Gate 165 finding remains valid: the current Evaluator output alone is insufficient for Gate 164.
+
+**Next operation:** Gate 167 — map the Gate 166 fields to the exact source construction points and assess the minimum typed carrier changes and compatibility impact. No code change is implied.
