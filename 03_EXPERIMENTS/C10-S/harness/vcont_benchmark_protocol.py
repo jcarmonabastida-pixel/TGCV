@@ -144,3 +144,97 @@ def summarize_scenario(
     return ScenarioSummary(scenario_id, estimate_summary, identified_rate,
                            abstention_rate, coverage_rate, type_i_rate,
                            power_rate, tuple(notes))
+
+
+@dataclass(frozen=True)
+class SeedAssignment:
+    bank: str
+    scenario_id: str
+    n_units: int
+    replicate: int
+    world_seed: int
+    z_assignment_seed: int
+    g_assignment_seed: int
+
+
+def _derive_seed(bank: str, scenario_id: str, n_units: int, replicate: int,
+                 stream: str, namespace: str) -> int:
+    if bank not in ("calibration", "evaluation"):
+        raise ProtocolError("bank must be calibration or evaluation")
+    if stream not in ("world", "z", "g"):
+        raise ProtocolError("stream must be world, z or g")
+    payload = f"TGCV-C10S-VCONT-SEED-v1|{namespace}|{bank}|{scenario_id}|{n_units}|{replicate}|{stream}"
+    return int.from_bytes(__import__("hashlib").sha256(payload.encode("utf-8")).digest()[:8], "big")
+
+
+def build_seed_bank(bank: str, scenarios: Iterable[str], n_grid: Iterable[int],
+                    replicates: int, namespace: str) -> tuple[SeedAssignment, ...]:
+    """Create deterministic, bank-separated seeds; each scenario/N has one fixed world.
+
+    World seed is constant across assignment replicates for a scenario/N.
+    Z and G assignment seeds vary independently by replicate and stream.
+    Calibration and evaluation banks are cryptographically domain-separated.
+    """
+    scenario_ids = tuple(scenarios)
+    sizes = tuple(n_grid)
+    if bank not in ("calibration", "evaluation") or not namespace.strip():
+        raise ProtocolError("valid bank and nonempty namespace required")
+    if not scenario_ids or len(set(scenario_ids)) != len(scenario_ids):
+        raise ProtocolError("scenario IDs must be nonempty and unique")
+    if any(not x.strip() for x in scenario_ids):
+        raise ProtocolError("scenario IDs must be nonempty")
+    if not sizes or any(n < 16 or n % 4 for n in sizes) or len(set(sizes)) != len(sizes):
+        raise ProtocolError("N grid must contain unique sizes >=16 divisible by four")
+    if replicates < 1:
+        raise ProtocolError("replicates must be >=1")
+    plan = []
+    for scenario_id in scenario_ids:
+        for n in sizes:
+            world = _derive_seed(bank, scenario_id, n, 0, "world", namespace)
+            for r in range(replicates):
+                plan.append(SeedAssignment(
+                    bank, scenario_id, n, r, world,
+                    _derive_seed(bank, scenario_id, n, r, "z", namespace),
+                    _derive_seed(bank, scenario_id, n, r, "g", namespace),
+                ))
+    validate_seed_banks(plan, ())
+    return tuple(plan)
+
+
+def validate_seed_banks(calibration: Iterable[SeedAssignment],
+                        evaluation: Iterable[SeedAssignment]) -> None:
+    """Reject cross-bank seed reuse and within-record Z/G stream collisions."""
+    cal = tuple(calibration)
+    ev = tuple(evaluation)
+    if any(x.bank != "calibration" for x in cal) or any(x.bank != "evaluation" for x in ev):
+        raise ProtocolError("seed assignments are stored under the wrong bank label")
+    def streams(rows):
+        return {seed for row in rows for seed in
+                (row.world_seed, row.z_assignment_seed, row.g_assignment_seed)}
+    if streams(cal) & streams(ev):
+        raise ProtocolError("calibration and evaluation banks share one or more seeds")
+    for row in cal + ev:
+        if row.z_assignment_seed == row.g_assignment_seed:
+            raise ProtocolError("Z and G assignment streams must use distinct seeds")
+
+
+def select_minimum_n(mcse_by_n: dict[int, dict[str, float]],
+                     target_mcse_by_scenario: dict[str, float]) -> int:
+    """Choose the smallest candidate N meeting every predeclared scenario MCSE target.
+
+    This is a calibration rule only. Targets and the candidate N grid must be
+    supplied before evaluation-bank outcomes are inspected.
+    """
+    if not mcse_by_n or not target_mcse_by_scenario:
+        raise ProtocolError("candidate MCSE results and predeclared targets are required")
+    if any(not isfinite(float(v)) or v <= 0 for v in target_mcse_by_scenario.values()):
+        raise ProtocolError("all target MCSE values must be finite and >0")
+    for n in sorted(mcse_by_n):
+        observed = mcse_by_n[n]
+        if set(observed) != set(target_mcse_by_scenario):
+            continue
+        if all(isfinite(float(observed[s])) and observed[s] >= 0
+               and observed[s] <= target_mcse_by_scenario[s]
+               for s in target_mcse_by_scenario):
+            return n
+    raise ProtocolError("NO_CANDIDATE_N_MEETS_ALL_PREDECLARED_MCSE_TARGETS")
