@@ -56,8 +56,8 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         worlds = self.worlds()
         _, truth0, _, result0, _ = self.execute_world(worlds["R0_FOCAL_NULL"])
         _, truthn, _, resultn, _ = self.execute_world(worlds["R0_FOCAL_ADVERSE"])
-        self.assertAlmostEqual(truth0.theta_access_truth, 0.0, delta=0.02)
-        self.assertLess(truthn.theta_access_truth, 0.0)
+        self.assertAlmostEqual(truth0.itt_g_z0_truth, 0.0, delta=0.02)
+        self.assertLess(truthn.itt_g_z0_truth, 0.0)
         self.assertEqual(result0.focal_status, "IDENTIFIED")
         self.assertEqual(resultn.focal_status, "IDENTIFIED")
 
