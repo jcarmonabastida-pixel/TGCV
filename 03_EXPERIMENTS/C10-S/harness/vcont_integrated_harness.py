@@ -597,6 +597,8 @@ class Analyzer:
             z1 = [observed_v[i] for i, row in enumerate(evidence.rows) if row["assignment_z"] == 1]
             package, package_se = _mean_se(z0, z1)
             package_status: Identification = "IDENTIFIED" if package is not None else "INDETERMINATE"
+            if package is None:
+                package_reasons.append("Z_REALIZED_ARM_SUPPORT_INSUFFICIENT")
         else:
             package, package_se = None, None
             package_status = "NOT_IDENTIFIED" if "PACKAGE_RANDOMIZATION_NOT_ESTABLISHED" in package_reasons else "INDETERMINATE"
@@ -623,6 +625,8 @@ class Analyzer:
             g1 = [v for v, row in z0_focal_rows if row["assignment_g"] == 1]
             g_assignment_estimate, g_assignment_se = _mean_se(g0, g1)
             g_assignment_status: Identification = "IDENTIFIED" if g_assignment_estimate is not None else "INDETERMINATE"
+            if g_assignment_estimate is None:
+                g_assignment_reasons.append("G_REALIZED_ARM_SUPPORT_INSUFFICIENT")
         else:
             g_assignment_estimate, g_assignment_se = None, None
             g_assignment_status = "NOT_IDENTIFIED" if (
@@ -758,6 +762,8 @@ class Evaluator:
         expected_abstention = (
             ((not contract.randomized_z or not contract.no_interference or not contract.measurement_identified or not contract.version_consistency) and result.package_status in ("NOT_IDENTIFIED", "INDETERMINATE"))
             or ((not contract.positivity or not contract.randomized_g) and result.g_assignment_status in ("NOT_IDENTIFIED", "INDETERMINATE"))
+            or ("Z_REALIZED_ARM_SUPPORT_INSUFFICIENT" in result.abstention_reasons and result.package_status == "INDETERMINATE")
+            or ("G_REALIZED_ARM_SUPPORT_INSUFFICIENT" in result.abstention_reasons and result.g_assignment_status == "INDETERMINATE")
             or (expected_reference_status != "IDENTIFIED" and reference_status_correct)
         )
         notes = []
