@@ -145,9 +145,18 @@ class TruthBundle:
     potential_enabled_truth: tuple[Any, ...]
     potential_profile_truth: tuple[Any, ...]
     potential_delta_t_acc: tuple[Any, ...]
-    itt_package_truth: float
-    theta_access_truth: float
+    # Truths are kept distinct: Z package ITT, G assignment contrast, and
+    # focal accessibility intervention truth. theta_a_truth remains absent
+    # until the approved joint g_A policies and q_X* are materialized.
+    itt_z_truth: float
+    itt_g_z0_truth: float
+    theta_a_truth: float | None
     seed: int
+
+    @property
+    def itt_package_truth(self) -> float:
+        """Explicit legacy alias for the unchanged ITT-Z target."""
+        return self.itt_z_truth
 
 
 @dataclass(frozen=True)
@@ -368,7 +377,8 @@ class Generator:
             (unit[1][0] + unit[1][1]) / 2 - (unit[0][0] + unit[0][1]) / 2
             for unit in v_truth
         )
-        theta = mean(unit[0][1] - unit[0][0] for unit in v_truth)
+        # This is the total G-assignment contrast under Z=0, not theta_A.
+        itt_g_z0 = mean(unit[0][1] - unit[0][0] for unit in v_truth)
         window_end = cfg.last_transition_support + cfg.follow_up
         interval_width = (window_end - cfg.window_start) / cfg.n_intervals
         manifest = RunManifest(run_id, cfg.scenario_id, cfg.version,
@@ -376,7 +386,7 @@ class Generator:
                                window_end, interval_width, self.version)
         truth = TruthBundle(run_id, tuple(v_truth), tuple(interval_truth),
                             tuple(enabled_truth), tuple(profile_truth), tuple(delta_truth),
-                            itt, theta, cfg.seed)
+                            itt, itt_g_z0, None, cfg.seed)
         return manifest, truth, EvidenceCandidate(run_id, tuple(rows))
 
 
@@ -515,9 +525,17 @@ class Evaluator:
         if _hash(payload) != result.output_sha256:
             raise FirewallError("Analyzer output seal invalid")
         package_error = None if result.package_itt is None else abs(result.package_itt - truth.itt_package_truth)
-        focal_error = None if result.focal_effect is None else abs(result.focal_effect - truth.theta_access_truth)
+        # Analyzer's legacy focal_effect is the observed G contrast. It is
+        # adjudicated against the G-assignment truth, never against theta_A.
+        g_assignment_error = (
+            None if result.focal_effect is None
+            else abs(result.focal_effect - truth.itt_g_z0_truth)
+        )
         package_ok = None if package_error is None else package_error <= tolerance
-        focal_ok = None if focal_error is None else focal_error <= tolerance
+        g_assignment_ok = (
+            None if g_assignment_error is None
+            else g_assignment_error <= tolerance
+        )
         expected_abstention = (
             (not contract.no_interference or not contract.measurement_identified or
              not contract.version_consistency) and
@@ -530,10 +548,10 @@ class Evaluator:
         notes = []
         if result.package_status == "IDENTIFIED" and package_ok is False:
             notes.append("PACKAGE_ESTIMATE_OUTSIDE_TOLERANCE")
-        if result.focal_status == "IDENTIFIED" and focal_ok is False:
-            notes.append("FOCAL_ESTIMATE_OUTSIDE_TOLERANCE")
-        return EvaluationReport(truth.run_id, package_error, focal_error,
-                                package_ok, focal_ok, expected_abstention, tuple(notes))
+        if result.focal_status == "IDENTIFIED" and g_assignment_ok is False:
+            notes.append("G_ASSIGNMENT_ESTIMATE_OUTSIDE_TOLERANCE")
+        return EvaluationReport(truth.run_id, package_error, g_assignment_error,
+                                package_ok, g_assignment_ok, expected_abstention, tuple(notes))
 
 
 def benchmark_scenarios(n_units: int = 400, n_intervals: int = 20,
