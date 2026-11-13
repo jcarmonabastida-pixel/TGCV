@@ -333,3 +333,17 @@ The Gate 159 preflight has been extended to distinguish declared provenance, det
 Seed-bank, RunManifest and effective-configuration reconciliation may proceed independently, but those checks establish consistency only, not execution-origin authenticity.
 
 **Current Gate 159 status:** seed/configuration/manifest reconciliation OPEN; external attestation trust mechanism ARCHITECTURE DECISION REQUIRED / BLOCKED; authenticated provenance status BLOCKED. No code, tests, CI, calibration, seed-bank generation, sizing or scientific execution is claimed by this addendum.
+
+
+## 19. Gate 160 — external execution-attestation architecture
+
+**Architecture decision:** select GitHub Artifact Attestations (`actions/attest@v4`, Sigstore/OIDC) for signing the finalized Monte Carlo report package, with verification through `gh attestation verify`, subject to a read-only repository visibility/plan availability preflight and a pinned trusted-builder workflow.
+
+Canonical decision:
+`00_GOVERNANCE/SIP/C10_S_VCONT_MONTE_CARLO_ATTESTATION_ARCHITECTURE_DECISION_GATE_160_DRAFT_001.md`.
+
+The attested subject is the final immutable report package digest. Its internal manifest binds the report, canonical seed manifests and fingerprints, effective configuration fingerprint, M/R/RunManifest reconciliation ledger, source identity and validation results. The verifier must pin repository identity, signer workflow/revision, OIDC issuer, predicate type and source identity. A caller-supplied environment variable, SHA string or `attested=true` cannot elevate provenance status.
+
+**Availability condition:** artifact attestations are available for public repositories on current GitHub plans; private/internal repositories require GitHub Enterprise Cloud. Repository visibility and entitlement are not yet verified. If unavailable, stop and return to architecture decision; do not fall back to unsigned/self-asserted metadata.
+
+Gate 160 selects architecture only. It does not authorize workflow/code changes, CI, calibration, seed-bank generation, N/R/M sizing, Monte Carlo benchmark or scientific execution. Gate 159 reconciliation and external-verifier implementation remain OPEN.
