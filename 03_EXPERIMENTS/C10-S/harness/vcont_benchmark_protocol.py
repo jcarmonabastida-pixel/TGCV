@@ -390,7 +390,9 @@ def build_scenario_estimand_matrix(scenario_versions: dict[str, str] | None = No
 
 def validate_evaluation_observation(spec: ScenarioEstimandSpec, *, observed_key: EvaluationKey,
                                     analyzer_output_field: str | None, dgp_truth: float | None,
-                                    analyzer_output: float | None, adjudication: str) -> None:
+                                    analyzer_output: float | None, adjudication: str,
+                                    observed_identification_status: str | None,
+                                    observed_abstained: bool | None) -> None:
     spec.key.validate()
     observed_key.validate()
     if observed_key != spec.key:
@@ -404,9 +406,17 @@ def validate_evaluation_observation(spec: ScenarioEstimandSpec, *, observed_key:
             raise ProtocolError("EVALUABLE pair requires matching finite Analyzer output")
         if adjudication not in ("PASS", "FAIL"):
             raise ProtocolError("EVALUABLE pair requires numeric recovery adjudication")
+        if adjudication == "PASS" and (observed_identification_status != "IDENTIFIED" or observed_abstained is not False):
+            raise ProtocolError("numeric PASS requires the expected identified/non-abstaining state")
     elif spec.evaluation_class in ("STATUS_ONLY", "NOT_IDENTIFIABLE"):
-        if analyzer_output_field is not None or adjudication not in ("STATUS_PASS", "STATUS_FAIL") or analyzer_output is not None:
-            raise ProtocolError("status-only pair requires status adjudication and no numeric scoring")
+        if analyzer_output_field is not None or analyzer_output is not None:
+            raise ProtocolError("status-only pair cannot be numerically scored")
+        if observed_identification_status is None or observed_abstained is None:
+            raise ProtocolError("status-only pair requires observed identification and abstention states")
+        if adjudication not in ("STATUS_PASS", "STATUS_FAIL"):
+            raise ProtocolError("status-only pair requires status adjudication")
+        if adjudication == "STATUS_PASS" and (observed_identification_status != spec.identification_expectation or observed_abstained is not spec.abstention_expectation):
+            raise ProtocolError("status PASS does not match the declared identification/abstention expectation")
     elif spec.evaluation_class == "NOT_EVALUABLE":
         if analyzer_output_field is not None or analyzer_output is not None or adjudication == "PASS":
             raise ProtocolError("NOT_EVALUABLE cannot receive numeric scoring or PASS")
