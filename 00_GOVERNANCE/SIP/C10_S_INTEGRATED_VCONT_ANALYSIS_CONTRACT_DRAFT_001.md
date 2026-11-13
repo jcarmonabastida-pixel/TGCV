@@ -630,6 +630,9 @@ The workflow was triggered automatically by the research-branch push; it was not
 The V_cont benchmark protocol now provides a Pair Evaluation Adapter that resolves the exact scenario/estimand key against the manifest, TruthBundle and Analyzer/repeated-assignment outputs. It rejects scenario-version and estimand-version mismatches. The integrated Evaluator exposes `evaluate_matrix_pairs()`, which consumes the matrix, preserves per-run EvaluationReports, and returns pair-keyed records plus the repeated-assignment report.
 
 The temporal contract is enforced in the adapter:
+- Run-level records are emitted for ITT-Z run-conditional, ITT-Z reference-regime identification status and ITT-G with Z=0.
+- The legacy per-run `reference_regime_itt` is only an alias of `package_itt`; it is not an independent estimator of the marginal reference target. The adapter therefore records reference identification/abstention at run level without numeric truth comparison.
+- Numeric reference-regime recovery is evaluated only at the repeated-assignment level through `reference_estimate_mean` against `itt_z_reference_truth`.
 - Run-level records are emitted for ITT-Z run-conditional, ITT-Z reference-regime and ITT-G with Z=0.
 - ITT-Z mechanism-marginal is never emitted from a single run; it is emitted only from the repeated-assignment aggregate.
 - ITT-Z reference-regime is represented at both run and repeated-assignment levels, with the latter retaining its separate aggregate output field and identification status.
