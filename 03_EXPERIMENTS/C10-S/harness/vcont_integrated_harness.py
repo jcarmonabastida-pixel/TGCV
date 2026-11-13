@@ -1343,7 +1343,10 @@ class Evaluator:
                         run_status = analyzer.reference_regime_status
                     else:
                         run_status = status
-                    numeric = (estimate is not None and true_value is not None
+                    numeric_allowed = (spec.run_evaluation_class == "EVALUABLE"
+                                       if temporal_source == "RUN"
+                                       else spec.repeated_evaluation_class == "EVALUABLE")
+                    numeric = (numeric_allowed and estimate is not None and true_value is not None
                                and math.isfinite(float(estimate)) and math.isfinite(float(true_value)))
                     signed_error = float(estimate) - float(true_value) if numeric else None
                     contribution = {
@@ -1370,6 +1373,10 @@ class Evaluator:
                         "absolute_error": abs(signed_error) if signed_error is not None else None,
                         "squared_error": signed_error * signed_error if signed_error is not None else None,
                         "contribution_state": "NUMERIC" if numeric else (
+                            "STATUS_ONLY" if (spec.run_evaluation_class == "STATUS_ONLY"
+                                and spec.repeated_evaluation_class != "EVALUABLE") else
+                            "NOT_IDENTIFIABLE" if spec.repeated_evaluation_class == "NOT_IDENTIFIABLE"
+                                or spec.run_evaluation_class == "NOT_IDENTIFIABLE" else
                             "NOT_IDENTIFIED" if status == "NOT_IDENTIFIED" else
                             "INDETERMINATE" if status == "INDETERMINATE" else
                             "ABSTAINED" if abstained else "INVALID_OR_MISSING"),
@@ -1401,13 +1408,17 @@ class Evaluator:
                 else:
                     summaries = {"bias": None, "mae": None, "rmse": None}
                 statuses = [x["identification_status"] for x in contributions]
+                run_statuses = [x["run_status"] for x in contributions]
                 abstentions = [x["abstained"] for x in contributions]
-                status_rates = {
-                    "identified": summarize_binary([x == "IDENTIFIED" for x in statuses]),
-                    "not_identified": summarize_binary([x == "NOT_IDENTIFIED" for x in statuses]),
-                    "indeterminate": summarize_binary([x == "INDETERMINATE" for x in statuses]),
-                    "abstained": summarize_binary(abstentions),
-                }
+                def status_rate_block(values):
+                    return {
+                        "identified": summarize_binary([x == "IDENTIFIED" for x in values]),
+                        "not_identified": summarize_binary([x == "NOT_IDENTIFIED" for x in values]),
+                        "indeterminate": summarize_binary([x == "INDETERMINATE" for x in values]),
+                    }
+                status_rates = status_rate_block(statuses)
+                run_status_rates = status_rate_block(run_statuses)
+                status_rates["abstained"] = summarize_binary(abstentions)
                 pair_ledger.append({
                     "key": (spec.key.scenario_id, spec.key.scenario_version,
                             spec.key.estimand_id, spec.key.estimand_version, "MONTE_CARLO"),
@@ -1422,6 +1433,7 @@ class Evaluator:
                     "identification_correct_count": sum(x["identification_correct"] for x in contributions),
                     "abstention_correct_count": sum(x["abstention_correct"] for x in contributions),
                     "identification_rates": status_rates,
+                    "run_identification_rates": run_status_rates,
                     "metrics": summaries,
                     "precision_status": ("NOT_EVALUABLE" if expected_class != "EVALUABLE"
                                          or len(numeric_rows) != design.outer_replicates else
