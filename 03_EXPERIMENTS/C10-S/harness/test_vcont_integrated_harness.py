@@ -10,6 +10,7 @@ from vcont_integrated_harness import (
     Analyzer, Evaluator, Generator, Sealer, benchmark_scenarios, contract_for,
     FirewallError, ContractError,
 )
+from vcont_benchmark_protocol import ProtocolError
 
 
 class VContIntegratedHarnessTests(unittest.TestCase):
@@ -532,7 +533,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         manifest, truth, candidate = self.generator.generate(cfg)
         result = self.analyzer.analyze(self.sealer.seal(candidate), contract_for(cfg))
         altered_manifest = replace(manifest, version="OTHER-DGP-VERSION")
-        with self.assertRaises(Exception):
+        with self.assertRaises(ProtocolError):
             self.evaluator.evaluate_matrix_pairs(
                 [(truth, result, contract_for(cfg), altered_manifest)], tolerance=0.10)
 
