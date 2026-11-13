@@ -1441,7 +1441,7 @@ class Evaluator:
             "matrix_fingerprint": design.matrix_fingerprint,
             "pair_ledger": pair_ledger,
         }
-        fingerprint = _hash(manifest_payload)
+        fingerprint = _hash(json.loads(json.dumps(manifest_payload, default=asdict, sort_keys=True)))
         return {
             "design": design, "pair_ledger": tuple(pair_ledger),
             "scenario_reports": scenario_reports,
