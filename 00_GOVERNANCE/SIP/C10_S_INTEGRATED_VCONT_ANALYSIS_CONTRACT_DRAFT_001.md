@@ -627,7 +627,7 @@ The workflow was triggered automatically by the research-branch push; it was not
 
 **Status:** IMPLEMENTED ON RESEARCH BRANCH — technical verification pending.
 
-The V_cont benchmark protocol now provides a Pair Evaluation Adapter that resolves the exact scenario/estimand key against the manifest, TruthBundle and Analyzer/repeated-assignment outputs. It rejects scenario-version and estimand-version mismatches. The integrated Evaluator exposes `evaluate_matrix_pairs()`, which consumes the matrix, preserves per-run EvaluationReports, and returns pair-keyed records plus the repeated-assignment report.
+The V_cont benchmark protocol now provides a Pair Evaluation Adapter that resolves the exact scenario/estimand key against the manifest, TruthBundle and Analyzer/repeated-assignment outputs. It rejects scenario-version and estimand-version mismatches. The versioned matrix now declares separate run-level and repeated-assignment evaluation classes; the adapter consumes these declarations rather than independently inferring which temporal level is scoreable. The integrated Evaluator exposes `evaluate_matrix_pairs()`, which consumes the matrix, preserves per-run EvaluationReports, and returns pair-keyed records plus the repeated-assignment report.
 
 The temporal contract is enforced in the adapter:
 - Run-level records are emitted for ITT-Z run-conditional, ITT-Z reference-regime identification status and ITT-G with Z=0.
