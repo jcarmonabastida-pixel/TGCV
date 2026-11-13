@@ -29,12 +29,27 @@ class VContIntegratedHarnessTests(unittest.TestCase):
     def worlds(self):
         return {cfg.scenario_id: cfg for cfg in benchmark_scenarios(n_units=400, n_intervals=20)}
 
+
+    def test_truth_bundle_separates_g_assignment_from_unmaterialized_theta_a(self):
+        worlds = self.worlds()
+        _, clean_truth, _ = self.generator.generate(worlds["R0_FOCAL_POSITIVE"])
+        _, direct_truth, _ = self.generator.generate(worlds["R0_DIRECT_G"])
+        self.assertIsNotNone(clean_truth.itt_g_z0_truth)
+        self.assertIsNotNone(direct_truth.itt_g_z0_truth)
+        self.assertIsNone(clean_truth.theta_a_truth)
+        self.assertIsNone(direct_truth.theta_a_truth)
+        # Same seed/exogenous draws; the direct G -> outcome path changes
+        # the total G-assignment truth and is not mislabelled as theta_A.
+        self.assertNotAlmostEqual(
+            clean_truth.itt_g_z0_truth, direct_truth.itt_g_z0_truth, delta=0.01
+        )
+
     def test_clean_positive_recovers_package_and_focal(self):
         _, _, _, result, report = self.execute_world(self.worlds()["R0_FOCAL_POSITIVE"])
         self.assertEqual(result.package_status, "IDENTIFIED")
         self.assertEqual(result.focal_status, "IDENTIFIED")
         self.assertIsNotNone(report.package_recovered)
-        self.assertIsNotNone(report.focal_recovered)
+        self.assertIsNotNone(report.g_assignment_recovered)
         self.assertTrue(all(x > 0.80 for x in result.first_stage_delta_t_acc))
 
     def test_null_and_adverse_truth_signs_are_preserved(self):
@@ -59,7 +74,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
 
     def test_alternative_baseline_blocks_focal_first_stage(self):
         _, truth, _, result, _ = self.execute_world(self.worlds()["R1_ALTERNATIVE_BASELINE"])
-        self.assertAlmostEqual(truth.theta_access_truth, 0.0, delta=0.02)
+        self.assertAlmostEqual(truth.itt_g_z0_truth, 0.0, delta=0.02)
         self.assertEqual(result.focal_status, "IDENTIFIED")
 
     def test_b1_truth_is_conjunction_of_enabled_and_profile(self):
