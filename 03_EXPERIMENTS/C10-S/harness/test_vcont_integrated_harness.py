@@ -231,6 +231,66 @@ class VContIntegratedHarnessTests(unittest.TestCase):
             self.evaluator.evaluate(truth, replace(result, assignment_role="RUN"),
                                     contract_for(cfg), tolerance=0.10, manifest=manifest)
 
+
+    def test_monte_carlo_aggregates_one_run_and_r_within_each_independent_world(self):
+        cfg = replace(self.worlds()["R0_FOCAL_POSITIVE"], n_units=16)
+        outer_runs = {}
+        for m in range(2):
+            outer_id = f"outer-{m:06d}"
+            world_seed = 4000 + m
+            rows = []
+            run_cfg = replace(cfg, outer_replicate_id=outer_id, assignment_role="RUN",
+                              world_seed=world_seed, z_assignment_seed=5000+m,
+                              g_assignment_seed=6000+m, replicate_id=f"{outer_id}-RUN")
+            manifest, truth, candidate = self.generator.generate(run_cfg)
+            sealed = self.sealer.seal(candidate)
+            contract = contract_for(run_cfg)
+            result = self.analyzer.analyze(sealed, contract)
+            rows = [(truth, result, contract, manifest)]
+            for r in range(2):
+                rep_cfg = replace(cfg, outer_replicate_id=outer_id,
+                                  assignment_role="REPEATED_ASSIGNMENT",
+                                  world_seed=world_seed, z_assignment_seed=7000+m*10+r,
+                                  g_assignment_seed=8000+m*10+r, replicate_id=f"{outer_id}-R{r}")
+                rep_manifest, rep_truth, rep_candidate = self.generator.generate(rep_cfg)
+                rep_result = self.analyzer.analyze(self.sealer.seal(rep_candidate), contract_for(rep_cfg))
+                rows.append((rep_truth, rep_result, contract_for(rep_cfg), rep_manifest))
+            outer_runs[outer_id] = rows
+        summary = self.evaluator.evaluate_monte_carlo(
+            outer_runs, tolerance=0.20,
+            target_mcse_by_metric={
+                "run_conditional.absolute_error_mean": 1.0,
+                "g_assignment_z0.absolute_error_mean": 1.0,
+                "mechanism_marginal.absolute_error_mean": 1.0,
+                "reference_regime.absolute_error_mean": 1.0,
+            })
+        self.assertEqual(summary["outer_replicate_count"], 2)
+        self.assertEqual(summary["coverage"]["run_conditional_numeric"], 2)
+        self.assertIsNotNone(summary["run_conditional"]["absolute_error_mean"])
+        self.assertIsNotNone(summary["mechanism_marginal"]["absolute_error_mean"])
+
+    def test_monte_carlo_rejects_shared_world_identity_across_outer_replicates(self):
+        cfg = replace(self.worlds()["R0_FOCAL_POSITIVE"], n_units=16)
+        outer_runs = {}
+        for m in range(2):
+            outer_id = f"outer-shared-{m}"
+            run_cfg = replace(cfg, outer_replicate_id=outer_id, assignment_role="RUN",
+                              world_seed=9000, z_assignment_seed=9100+m,
+                              g_assignment_seed=9200+m, replicate_id=f"{outer_id}-RUN")
+            manifest, truth, candidate = self.generator.generate(run_cfg)
+            contract = contract_for(run_cfg)
+            result = self.analyzer.analyze(self.sealer.seal(candidate), contract)
+            outer_runs[outer_id] = [(truth, result, contract, manifest)]
+        with self.assertRaises(ContractError):
+            self.evaluator.evaluate_monte_carlo(
+                outer_runs, tolerance=0.20,
+                target_mcse_by_metric={
+                    "run_conditional.absolute_error_mean": 1.0,
+                    "g_assignment_z0.absolute_error_mean": 1.0,
+                    "mechanism_marginal.absolute_error_mean": 1.0,
+                    "reference_regime.absolute_error_mean": 1.0,
+                })
+
     def test_support_failure_transportability_is_separate_from_run_level_itt_z(self):
         cfg = self.worlds()["R0_SUPPORT_FAILURE"]
         _, truth, _, result, _ = self.execute_world(cfg)
