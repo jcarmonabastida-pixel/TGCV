@@ -231,3 +231,15 @@ Package manifest/archive digests are constructed only after export validation an
 ## 11. Next gate
 
 **Gate 167 — source-boundary implementation design and compatibility impact audit.** Map each Gate 166 field to its exact construction point in Generator → Sealer → Analyzer → Evaluator orchestration; identify the smallest typed carrier changes and compatibility/version consequences. Resolve whether canonical SealedEvidence rows are retrievable for digest recomputation. No code changes until explicitly authorized.
+
+
+## 12. Gate 167 source-boundary audit qualification
+
+Gate 167's static source-boundary audit is recorded in:
+`00_GOVERNANCE/SIP/C10_S_VCONT_EVIDENCE_EXPORT_SOURCE_BOUNDARY_AUDIT_GATE_167_DRAFT_001.md`.
+
+The source objects required by this contract are constructed by Generator, Sealer, Analyzer and Evaluator, but the existing Monte Carlo interface reduces each run to `(TruthBundle, AnalyzerResult, AnalysisContract, RunManifest)`. It therefore does not retain ScenarioConfig, SeedAssignment or SealedEvidence. The export must be captured by a typed RunEvidenceBundle at the orchestration boundary before that reduction; the Evaluator report must not be used to reconstruct omitted source objects.
+
+**SealedEvidence clarification:** SealedEvidence currently retains canonical rows and manifest in memory, and Sealer computes its digest over both. The digest is therefore recalculable at capture time. If raw rows are excluded from the package, RECONCILED status additionally requires an immutable, independently retrievable canonical evidence object and verified locator. The current code does not provide that durable retrieval abstraction. Without it, digest status remains UNVERIFIABLE.
+
+The Gate 166 schema remains DEFINED. Implementation is conditional on Gate 168 freezing RunEvidenceBundle and sealed-evidence retention/retrieval. This qualification does not imply code or test execution.
