@@ -261,6 +261,8 @@ class AnalyzerResult:
     z_assignment_mechanism_id: str = "Z_BALANCED_INDEPENDENT"
     z_assignment_mechanism_version: str = "001"
     provenance_sha256: str = ""
+    transportability_outcome_id: str | None = None
+    transportability_basis: str | None = None
 
 
 @dataclass(frozen=True)
@@ -679,7 +681,9 @@ class Analyzer:
                    "z_assignment_mechanism_version": contract.z_assignment_mechanism_version,
                    "reference_regime_id": contract.reference_regime_id,
                    "reference_regime_version": contract.reference_regime_version,
-                   "provenance_sha256": evidence.manifest["provenance_sha256"]}
+                   "provenance_sha256": evidence.manifest["provenance_sha256"],
+                   "transportability_outcome_id": contract.transportability_outcome_id,
+                   "transportability_basis": contract.transportability_basis}
         return AnalyzerResult(evidence.run_id, contract.estimand_id, package_status, g_assignment_status,
             package, g_assignment_estimate, first_stage, package_se, g_assignment_se, reasons, evidence.sha256,
             _hash(payload), contract.target_regime_id, contract.target_regime_version, contract.outcome_id, contract.outcome_version,
@@ -689,7 +693,8 @@ class Analyzer:
             contract.transportability_scope, contract.transportability_evidence_status,
             contract.estimand_version, contract.g_assignment_mechanism_id, contract.g_assignment_mechanism_version,
             contract.z_assignment_mechanism_id, contract.z_assignment_mechanism_version,
-            evidence.manifest["provenance_sha256"])
+            evidence.manifest["provenance_sha256"], contract.transportability_outcome_id,
+            contract.transportability_basis)
 
 
 class Evaluator:
@@ -724,6 +729,8 @@ class Evaluator:
             "reference_regime_id": result.reference_regime_id,
             "reference_regime_version": result.reference_regime_version,
             "provenance_sha256": result.provenance_sha256,
+            "transportability_outcome_id": result.transportability_outcome_id,
+            "transportability_basis": result.transportability_basis,
         }
         if _hash(payload) != result.output_sha256:
             raise FirewallError("Analyzer output seal invalid")
@@ -748,6 +755,7 @@ class Evaluator:
             result.g_assignment_mechanism_id != manifest.g_assignment_mechanism_id or result.g_assignment_mechanism_version != manifest.g_assignment_mechanism_version or
             result.z_assignment_mechanism_id != manifest.z_assignment_mechanism_id or result.z_assignment_mechanism_version != manifest.z_assignment_mechanism_version or
             result.g_assignment_mechanism_hash != manifest.g_assignment_mechanism_hash or result.z_assignment_mechanism_hash != manifest.z_assignment_mechanism_hash or
+            result.g_assignment_mechanism_hash != contract.g_assignment_mechanism_hash or result.z_assignment_mechanism_hash != contract.z_assignment_mechanism_hash or
             truth.g_assignment_mechanism_hash != manifest.g_assignment_mechanism_hash or truth.z_assignment_mechanism_hash != manifest.z_assignment_mechanism_hash or
             truth.g_reference_regime_id != manifest.g_reference_regime_id or truth.g_reference_regime_version != manifest.g_reference_regime_version or
             result.provenance_sha256 != _hash(manifest_provenance) or
@@ -755,7 +763,8 @@ class Evaluator:
             result.z_assignment_mechanism_id != contract.z_assignment_mechanism_id or result.z_assignment_mechanism_version != contract.z_assignment_mechanism_version or
             result.reference_regime_id != contract.reference_regime_id or result.reference_regime_version != contract.reference_regime_version or
             result.transportability_id != contract.transportability_id or result.transportability_version != contract.transportability_version or
-            result.transportability_scope != contract.transportability_scope or result.transportability_evidence_status != contract.transportability_evidence_status):
+            result.transportability_scope != contract.transportability_scope or result.transportability_evidence_status != contract.transportability_evidence_status or
+            result.transportability_outcome_id != contract.transportability_outcome_id or result.transportability_basis != contract.transportability_basis):
             raise ContractError("run, scenario, estimand, regime, mechanism, provenance, transportability or outcome identity mismatch")
         if contract.z_effect_invariant_across_g and (truth.transportability_invariant_truth is not True or truth.transportability_scope_truth != contract.transportability_scope or contract.transportability_outcome_id != contract.outcome_id):
             raise ContractError("declared transportability is not supported for the declared scope/outcome by DGP truth")
