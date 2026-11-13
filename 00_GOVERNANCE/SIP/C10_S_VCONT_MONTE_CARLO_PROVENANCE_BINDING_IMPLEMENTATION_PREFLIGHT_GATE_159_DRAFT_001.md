@@ -151,3 +151,34 @@ This gate does not authorize:
 - Scientific execution: NOT AUTHORIZED.
 - Calibration / seed-bank generation: NOT AUTHORIZED / NOT EXECUTED.
 - `main`: unchanged; PR #116 remains Draft on its existing base branch.
+
+
+## 8. Implementation blocker found during Gate 159 continuation
+
+A further integrity boundary must be resolved before implementing a provenance-verified acceptance status.
+
+A Python process cannot authenticate its own source commit merely by receiving `GITHUB_SHA`, `GITHUB_RUN_ID`, a repository string, a source digest, or an `attested=true` field. Those values are process inputs and can be caller-supplied or modified. Comparing them with another caller-supplied design field only proves internal consistency, not origin authenticity.
+
+Accordingly, Gate 159 must distinguish three levels:
+- **PROVENANCE_DECLARED:** caller-provided metadata is syntactically valid.
+- **PROVENANCE_RECONCILED:** seed rows, RunManifests, effective configuration and report inputs have been deterministically recomputed and matched.
+- **PROVENANCE_AUTHENTICATED:** execution identity is supported by a trust mechanism external to the evaluated Python process, with a verifiable binding to repository, immutable commit/source digest, workflow run and produced report.
+
+The current repository evidence inspected for this continuation does not establish an existing signed execution-attestation trust root or verifier. Therefore, a Python-only attestation dataclass or environment-variable comparison would be insufficient and must not be implemented or reported as authentication.
+
+**Required architecture decision before code can claim authenticated provenance:**
+1. Select and govern the external attestation mechanism and trust root (for example, GitHub artifact attestations with a pinned/verified issuer and repository/workflow identity, or an explicitly governed signing key and verification procedure).
+2. Define the signed subject: source archive/tree digest and final report artifact digest, bound to repository, commit, workflow/run identity and attestation schema.
+3. Define the verifier and fail-closed behavior for absent, invalid, expired/revoked or mismatched attestations.
+4. Decide whether local/unattested technical runs may produce only `PROVENANCE_DECLARED` or `PROVENANCE_RECONCILED` reports, never `PROVENANCE_AUTHENTICATED`.
+5. Only then implement the external verification adapter and adversarial tests.
+
+This does not block deterministic implementation of seed-bank fingerprint recomputation, calibration/evaluation bank separation, canonical SeedAssignment-to-RunManifest one-to-one joins, or effective configuration fingerprint reconstruction. Those can be implemented as **reconciliation**, but must not be conflated with authentication.
+
+### Gate 159 status update
+
+- Seed/configuration/manifest reconciliation: implementation OPEN.
+- External execution-attestation trust mechanism: ARCHITECTURE DECISION REQUIRED / BLOCKED.
+- Provenance-authenticated report status: BLOCKED until the trust root and verifier are governed.
+- Gate 159 as a whole: OPEN; no authenticated provenance claim is permitted.
+- No code, tests, CI, seed-bank generation, calibration, N/R/M sizing, Monte Carlo benchmark or scientific execution was performed in this continuation.
