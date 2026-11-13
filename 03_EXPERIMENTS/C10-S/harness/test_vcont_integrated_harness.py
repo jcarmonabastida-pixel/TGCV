@@ -44,7 +44,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
             clean_truth.itt_g_z0_truth, direct_truth.itt_g_z0_truth, delta=0.01
         )
 
-    def test_clean_positive_recovers_package_and_G assignment(self):
+    def test_clean_positive_recovers_package_and_g_assignment(self):
         _, _, _, result, report = self.execute_world(self.worlds()["R0_FOCAL_POSITIVE"])
         self.assertEqual(result.package_status, "IDENTIFIED")
         self.assertEqual(result.g_assignment_status, "IDENTIFIED")
@@ -61,7 +61,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         self.assertEqual(result0.g_assignment_status, "IDENTIFIED")
         self.assertEqual(resultn.g_assignment_status, "IDENTIFIED")
 
-    def test_direct_G assignment_path_blocks_G assignment_attribution_not_package_itt(self):
+    def test_direct_g_path_does_not_contaminate_g_assignment_truth(self):
         _, _, _, result, _ = self.execute_world(self.worlds()["R0_DIRECT_G"])
         self.assertEqual(result.package_status, "IDENTIFIED")
         self.assertEqual(result.g_assignment_status, "IDENTIFIED")
@@ -72,7 +72,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         self.assertEqual(result.package_status, "IDENTIFIED")
         self.assertEqual(result.g_assignment_status, "IDENTIFIED")
 
-    def test_alternative_baseline_blocks_G assignment_first_stage(self):
+    def test_alternative_baseline_has_null_g_assignment_contrast(self):
         _, truth, _, result, _ = self.execute_world(self.worlds()["R1_ALTERNATIVE_BASELINE"])
         self.assertAlmostEqual(truth.itt_g_z0_truth, 0.0, delta=0.02)
         self.assertEqual(result.g_assignment_status, "IDENTIFIED")
@@ -96,7 +96,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         _, truth3, _, result3, _ = self.execute_world(self.worlds()["R3_PROVISION_FAILURE"])
         self.assertEqual(result2.package_status, "IDENTIFIED")
         self.assertEqual(result2.g_assignment_status, "IDENTIFIED")
-        self.assertLess(truth3.itt_package_truth, 0.0)
+        self.assertLess(truth3.itt_z_truth, 0.0)
         self.assertEqual(result3.package_status, "IDENTIFIED")
         self.assertGreater(result3.first_stage_delta_t_acc[0], 0.0)
 
@@ -135,10 +135,10 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         self.assertEqual(result.g_assignment_status, "INDETERMINATE")
         self.assertTrue(report.expected_abstention_respected)
 
-    def test_support_failure_blocks_G assignment_but_not_package(self):
+    def test_support_failure_blocks_g_assignment_but_not_package(self):
         _, _, _, result, report = self.execute_world(self.worlds()["R0_SUPPORT_FAILURE"])
         self.assertEqual(result.package_status, "IDENTIFIED")
-        self.assertEqual(result.g_assignment_status, "IDENTIFIED")
+        self.assertEqual(result.g_assignment_status, "NOT_IDENTIFIED")
         self.assertTrue(report.expected_abstention_respected)
 
     def test_sealed_evidence_tampering_is_detected(self):
