@@ -6533,3 +6533,93 @@ La inspección estática confirma:
 **Dictamen:** TWELVE_CELL_LOGICAL_FEASIBILITY_AUDITED / C1_PARTIALLY_REPRESENTABLE_NOT_MATERIALIZED / C1_HETEROGENEITY_NOT_DEMONSTRATED / C3_POINT_TRUTH_NOT_REPRESENTABLE_WITH_CURRENT_ZG_POTENTIALS / LEGACY_THETA_ACCESS_TRUTH_EQUALS_ITT_G_Z0 / ITT_Z_IMPLICIT_G_50_50_REGIME / NO_ROSTER_EXPANSION / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** Gate 77 — resolver, dentro del contrato ya aprobado, la mínima representación contrafactual de g_A sobre el vector completo y el régimen G explícito de ITT-Z, sin crear nuevas clases ni cambiar estimandos. La decisión debe especificar qué se mantiene fijo, qué cambia bajo g_A, cómo se conserva el acoplamiento de exógenas y qué truth queda en Generator/Evaluator; el Analyzer seguirá ciego a esa truth. No asignar parámetros numéricos ni ejecutar.
+
+
+---
+
+## 16.230. Gate 77 — contrato mínimo de intervención g_A y régimen G de ITT-Z (2026-11-13)
+
+**Precedencia:** §§16.226–16.229, en especial definición contrafactual §16.226.2, equivalencia §16.226.3, ruta A/B/C §16.227.4 y matriz de celdas §16.228.2. Reutiliza el vector ΔT_acc* de cuatro coordenadas, las historias/exógenas, los mecanismos downstream y el roster actual. No crea mundos ni estimandos, no reabre Value/V_cont, no implementa código ni ejecuta.
+
+### 16.230.1. Corrección de precisión al Gate 76
+
+La inspección de código confirma que el harness ya incluye una **asignación G aleatorizada que modifica las cuatro coordenadas** de delta_vector, y el encabezado del módulo la describe como intervención sintética focal. Por ello, no es correcto afirmar que el código carece de toda operación sobre el vector o que G solo modifica una coordenada.
+
+La limitación es más precisa y coincide con §§16.226–16.227: G no fuerza directamente un vector completo bajo dos políticas focales especificadas. En el código, cada coordenada depende de G, provision_ok y su umbral exógeno; la provisión puede fallar y la distribución conjunta resultante del vector no está definida como dos kernels g_A1(a|h) y g_A0(a|h) con soporte/versiones propios. G sigue siendo una asignación cuyo efecto incluye fallos de provisión y cualquier vía directa/colateral permitida. El encabezado descriptivo no prevalece sobre el estimando formal.
+
+Por tanto:
+- Existe ITT_G|Z=0 y su potencial contrafactual [Z=0,G=0/1].
+- Existe una primera etapa vectorial de G sobre las cuatro coordenadas.
+- No existe todavía una ruta A materializada que intervenga directamente sobre el vector completo según el contrato de §16.226.2.C.
+- La afirmación de Gate 76 “no existe función de asignación sobre el vector” se corrige por la formulación anterior. Su conclusión sustantiva —el contraste G no es θ_A por defecto— permanece válida.
+
+### 16.230.2. Definición mínima de las políticas focales
+
+Se fija el objeto estructural de intervención, sin asignar parámetros probabilísticos ni alterar el DGP:
+
+- A_i = ΔT_acc,i* = (A_i1,A_i2,A_i3,A_i4), con las cuatro coordenadas preservadas y en el orden canónico del contrato.
+- g_A0: intervención directa que fija el vector completo en el estado focal de referencia sin cambios, a0 = (0,0,0,0).
+- g_A1: intervención directa que fija el vector completo en el estado focal de cambio en las cuatro coordenadas, a1 = (1,1,1,1).
+
+Son dos políticas deterministas sobre el vector conjunto, no cuatro intervenciones independientes ni una intervención sobre un indicador agregado. El contraste no se define como G=1 frente a G=0. La factibilidad de ambos vectores en las historias de q* debe acreditarse; si alguno no es factible en una historia con masa positiva, no se extrapola y la celda C3 correspondiente no obtiene identificación puntual para el q* completo.
+
+Esta elección define un contraste sintético extremo y reproducible para probar recuperación causal de accesibilidad completa. No afirma que sea el único contraste sustantivamente relevante ni que describa toda intervención realista. Si la especificación maestra ya contiene un par de políticas g_A con identidad y versión aprobadas, ese par prevalece; esta definición no lo sustituye ni lo duplica.
+
+### 16.230.3. Construcción contrafactual y acoplamiento
+
+Para cada unidad/historia H_i, el Generator debe construir las dos ramas Y_i^(g_A0,r_common) y Y_i^(g_A1,r_common) con:
+
+1. La misma historia basal H_i, la misma pertenencia a q* y la misma versión de Outcome/horizonte.
+2. El vector completo fijado por cada política; no se vuelve a pasar por provision_ok, u_access, u_relation, u_context o u_mapping para decidir si la intervención focal “se instaló”. Esas variables describen el mecanismo natural/de asignación G y permanecen en la rama ITT-G; no pueden convertir la intervención directa g_A en un encouragement.
+3. Los mismos valores exógenos acoplados para todos los mecanismos downstream y no focales que deban permanecer comunes: trayectoria, ENABLED, PROFILE y cualquier ruido de Outcome/medición, según el DGP vigente. El acoplamiento no cambia las distribuciones marginales de cada rama; permite comparar potenciales bajo las mismas condiciones exógenas.
+4. El mismo r_common en ambos brazos: alternativas/ramas colaterales, régimen de paquete, contexto, versiones y demás condiciones no focales se fijan según la definición aprobada. No se permite que Z, G, provisión u otra rama cambie diferencialmente entre los dos potenciales focales.
+5. El recálculo completo de los descendientes causales de A: Reach, trayectoria y Outcome se derivan otra vez desde el vector intervenido y los mecanismos downstream ya existentes. No se reemplaza Outcome por una fórmula lineal paralela ni se copia el resultado de las ramas Z/G.
+6. La verdad focal por unidad es Y_i^(g_A1,r_common) − Y_i^(g_A0,r_common); theta_a_truth es su promedio sobre la distribución q* predeclarada. Se conservan además ambos potenciales, el vector aplicado, q*, r_common, soporte y provenance para auditoría del Evaluator.
+
+El Generator puede conservar potential_v[unit][z][g] para las asignaciones Z/G y añadir una familia contrafactual separada para las dos políticas g_A. No se sobrescribe ni reinterpreta ningún potencial histórico. La representación es una dimensión contrafactual del mismo DGP y de las mismas unidades/exógenas, no un roster nuevo.
+
+### 16.230.4. Régimen explícito de G para ITT-Z
+
+El cálculo vigente de itt_package_truth promedia los potenciales G=0 y G=1 con pesos iguales bajo cada Z. Para no alterar retrospectivamente el estimando ni dejar el régimen implícito, se fija como identidad de régimen legacy:
+
+G_REGIME_MARGINAL_50_50_V1
+
+Definición: distribución marginal objetivo de asignación G con pesos P(G=0)=P(G=1)=1/2, aplicada de igual forma a ambos brazos Z para el ITT-Z. La verdad se expresa como:
+
+ITT_Z^(G 1/2) = 1/2 E[Y(1,0)+Y(1,1)] − 1/2 E[Y(0,0)+Y(0,1)].
+
+El régimen se declara/versiona en el contrato y manifest; el Analyzer debe conocerlo como parte del estimando, no inferirlo de un promedio interno oculto. Esta decisión conserva exactamente la convención de verdad que ya usa el Generator; no declara que 50/50 sea óptimo ni universal. Cualquier otro régimen sería otro estimando/versionado y requeriría decisión expresa, no un cambio silencioso.
+
+### 16.230.5. Tres objetos y firewall resultantes
+
+El contrato mínimo mantiene separados:
+
+| Objeto | Definición / potenciales | Uso |
+|---|---|---|
+| itt_z_truth | ITT-Z bajo G_REGIME_MARGINAL_50_50_V1 | Verdad C1 |
+| itt_g_z0_truth | E[Y(0,1)-Y(0,0)] bajo asignación G | Verdad auxiliar de asignación; nunca proxy automático de C3 |
+| theta_a_truth | E_{H~q*}[Y^(g_A1,r_common)-Y^(g_A0,r_common)] | Verdad C3 |
+
+El Generator/Evaluator conserva las tres verdades, potenciales y metadatos. El Analyzer recibe observaciones selladas, asignaciones/protocolos y el contrato público de estimandos/régimen. No recibe los vectores contrafactuales no observados, semillas, parámetros, etiquetas de celda ni TruthBundle.
+
+La ruta A solo puede declararse identificante si el diseño/protocolo realmente implementa la intervención directa del vector o si la evidencia permite verificar su aplicación, con soporte/factibilidad en q*, Outcome medido, consistencia, r_common y ausencia/interferencia resueltas. La asignación G actual no se convierte retroactivamente en esa ruta por cambiar el nombre de un campo.
+
+### 16.230.6. Consecuencias para las doce celdas y límites
+
+- C1 mantiene sus seis roles y se adjudica bajo el régimen G 50/50 explícito, salvo que una celda preexistente defina legítimamente una población/régimen distinto y lo identifique como estimando separado.
+- C3-POS/NULL/NEG se construyen variando únicamente la función downstream focal ya existente y se adjudican frente a theta_a_truth, una vez demostrada la factibilidad de ambos vectores bajo q*. No se asignan ahora coeficientes ni signos nominales.
+- C3-DECOUPLED conserva el subcaso de theta_A nulo con ITT-Z no nulo mediante una vía de paquete no focal ya existente, y el subcaso de ruta focal no identificable por condiciones no focales diferenciales. El segundo no se etiqueta como theta_A puntual identificado.
+- C1-HET y C3-HET siguen sin estar acreditadas: el acoplamiento por unidad no crea por sí solo historias con signos condicionales opuestos ni masas q* positivas. Deben demostrarse dentro de las clases y rangos existentes.
+- C3-ABSTAIN debe seguir absteniéndose en el harness actual cuando solo disponga de G como encouragement y no exista ruta A acreditada.
+- PARTIALLY_IDENTIFIED continúa deshabilitado hasta contrato, algoritmo y validación de bounds.
+- No se añade clase de mundo, mecanismo causal, estimando, Outcome, coordenada focal ni parámetro numérico.
+
+### 16.230.7. Criterio de cierre y dictamen
+
+**Cerrado:** distinción exacta entre asignación G y política directa g_A; definición mínima conjunta de g_A0/g_A1; reglas de acoplamiento exógeno y propagación downstream; r_common y q* como condiciones compartidas; régimen G 50/50 explicitado sin cambiar el ITT-Z legacy; separación de las tres verdades y firewall; corrección de precisión del Gate 76.
+
+**Abierto:** identidad/versionado definitivo de q* y r_common desde el ledger; verificación de factibilidad/soporte de los vectores extremos en cada historia; construcción de potenciales g_A en TruthBundle; certificados de implementación de la intervención para Analyzer; factibilidad de signos/nulos/heterogeneidad en el roster; estimadores/varianzas y pruebas Analyzer/Evaluator. No se declara cobertura ni identificación implementada.
+
+**Dictamen:** GATE_77_CONTRAST_AND_REGIME_CONTRACT_DEFINED / G_ASSIGNMENT_NOT_EQUIVALENT_TO_DIRECT_VECTOR_INTERVENTION / G_A0_AND_G_A1_FULL_VECTOR_POLICIES_SPECIFIED / SHARED_EXOGENOUS_COUPLING_REQUIRED / ITT_Z_G_50_50_REGIME_EXPLICIT / THREE_TRUTHS_PRESERVED / GATE_76_WORDING_CORRECTED / NO_NEW_WORLDS_OR_ESTIMANDS / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** Gate 78 — reconciliar estas políticas deterministas con las restricciones de factibilidad y soporte del roster y del ledger existente. Comprobar, sin simulación ni parámetros nuevos, si los cuatro componentes de a0 y a1 son admisibles en las historias con masa q* y qué clases existentes permiten una comparación focal limpia con r_common. Si los extremos no son factibles, no suavizarlos ni reemplazarlos en silencio: registrar la limitación y volver a la especificación maestra para resolver la política admisible. No implementar ni ejecutar.
