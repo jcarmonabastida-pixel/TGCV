@@ -7,6 +7,8 @@ from vcont_benchmark_protocol import (
     seed_bank_fingerprint, validate_seed_banks, build_scenario_estimand_matrix, summarize_monte_carlo,
     select_minimum_n_by_estimand, required_replicates_by_estimand,
     validate_evaluation_observation, EvaluationKey, summarize_estimand,
+    MonteCarloBenchmarkDesign, scenario_matrix_fingerprint,
+    validate_monte_carlo_benchmark_design, SCENARIO_IDS,
 )
 
 
@@ -230,6 +232,40 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
         self.assertEqual(specs["ITT_Z_REFERENCE_REGIME_VCONT"].repeated_evaluation_class, "EVALUABLE")
         self.assertEqual(specs["ITT_G_Z0_VCONT"].run_evaluation_class, "EVALUABLE")
         self.assertIsNone(specs["ITT_G_Z0_VCONT"].repeated_evaluation_class)
+    def test_seed_assignment_exposes_typed_r_index(self):
+        bank = build_seed_bank("evaluation", [SCENARIO_IDS[0]], [400], 3,
+                               "gate157-test", outer_replicates=2)
+        run_rows = [row for row in bank if row.assignment_role == "RUN"]
+        repeated = [row for row in bank if row.assignment_role == "REPEATED_ASSIGNMENT"]
+        self.assertEqual(len(run_rows), 2)
+        self.assertTrue(all(row.assignment_index == -1 for row in run_rows))
+        self.assertEqual(sorted(row.assignment_index for row in repeated), [0, 1, 2, 0, 1, 2])
+
+    def test_monte_carlo_design_requires_exact_52_pair_matrix_and_targets(self):
+        matrix = build_scenario_estimand_matrix()
+        targets = []
+        for spec in matrix:
+            temporal = (spec.run_evaluation_class
+                        if spec.key.estimand_id in ("ITT_Z_RUN_CONDITIONAL_VCONT", "ITT_G_Z0_VCONT")
+                        else spec.repeated_evaluation_class)
+            if temporal == "EVALUABLE":
+                for metric in ("bias", "mae", "rmse"):
+                    targets.append((spec.key.scenario_id, spec.key.scenario_version,
+                                    spec.key.estimand_id, spec.key.estimand_version, metric, 0.05))
+        design = MonteCarloBenchmarkDesign(
+            scenario_versions=tuple((sid, "VCONT-SYNTH-001") for sid in SCENARIO_IDS),
+            n_units=400, outer_replicates=2, repeated_assignments=3,
+            matrix_fingerprint=scenario_matrix_fingerprint(matrix),
+            metric_targets=tuple(targets),
+        )
+        self.assertEqual(len(validate_monte_carlo_benchmark_design(design, matrix)), 52)
+        with self.assertRaises(ProtocolError):
+            validate_monte_carlo_benchmark_design(
+                replace(design, scenario_versions=design.scenario_versions[:-1]), matrix)
+        with self.assertRaises(ProtocolError):
+            validate_monte_carlo_benchmark_design(
+                replace(design, metric_targets=design.metric_targets[:-1]), matrix)
+
     def test_mcse_precision_distinguishes_fail_from_not_evaluable(self):
         spec = next(row for row in build_scenario_estimand_matrix()
                     if row.evaluation_class == "EVALUABLE")
