@@ -178,6 +178,9 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         self.assertAlmostEqual(truth.itt_z_reference_truth, truth.itt_z_truth)
         self.assertEqual(manifest.g_reference_regime_id, "G_REFERENCE_50_50")
         self.assertEqual(result.target_regime_id, "G_REALIZED_VECTOR")
+        self.assertEqual(result.run_conditional_estimand_id, "ITT_Z_RUN_CONDITIONAL_VCONT")
+        self.assertEqual(result.reference_regime_estimand_id, "ITT_Z_REFERENCE_REGIME_VCONT")
+        self.assertEqual(result.g_assignment_estimand_id, "ITT_G_Z0_VCONT")
         self.assertIsNotNone(report.package_abs_error)
 
     def test_fixed_world_uses_independent_assignment_streams(self):
@@ -472,6 +475,15 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         self.assertEqual(aggregate.reference_identification_status, "IDENTIFIED")
         self.assertIsNotNone(aggregate.reference_estimate_mean)
         self.assertIsNotNone(aggregate.reference_abs_error)
+        self.assertEqual(aggregate.mechanism_marginal_estimand_id, "ITT_Z_MECHANISM_MARGINAL_VCONT")
+        self.assertEqual(aggregate.reference_regime_estimand_id, "ITT_Z_REFERENCE_REGIME_VCONT")
+
+    def test_evaluator_rejects_assignment_estimand_version_mismatch(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        manifest, truth, sealed, result, _ = self.execute_world(cfg)
+        bad_contract = replace(contract_for(cfg), run_conditional_estimand_version="999")
+        with self.assertRaises(ContractError):
+            self.evaluator.evaluate(truth, result, bad_contract, tolerance=0.10, manifest=manifest)
 
     def test_repeated_assignment_does_not_score_unidentified_reference_target(self):
         cfg = self.worlds()["R2_SUPPORT_FAILURE_ZG_INTERACTION"]
