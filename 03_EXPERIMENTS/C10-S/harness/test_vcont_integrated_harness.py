@@ -299,5 +299,16 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         self.assertEqual(result.package_status, "INDETERMINATE")
         self.assertEqual(result.g_assignment_status, "INDETERMINATE")
 
+
+    def test_evaluator_rejects_outcome_and_z_mechanism_mismatch(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        _, truth, _, result, _ = self.execute_world(cfg)
+        wrong_outcome = replace(contract_for(cfg), outcome_version="002")
+        with self.assertRaises(ContractError):
+            self.evaluator.evaluate(truth, result, wrong_outcome, tolerance=0.10)
+        wrong_z = replace(contract_for(cfg), z_assignment_mechanism_hash="f"*64)
+        with self.assertRaises(ContractError):
+            self.evaluator.evaluate(truth, result, wrong_z, tolerance=0.10)
+
 if __name__ == "__main__":
     unittest.main()
