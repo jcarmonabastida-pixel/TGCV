@@ -6393,3 +6393,70 @@ La inspección estática de vcont_integrated_harness.py (blob 2dafb9cdc4a6e0b5b6
 **Dictamen:** ESTIMAND_SPECIFIC_IDENTIFICATION_RULES_DEFINED / CONTRACT_FLAGS_NOT_EVIDENCE / ITT_Z_AND_ITT_G_REQUIRE_DESIGN_CERTIFICATION / THETA_A_NOT_IDENTIFIED_BY_CURRENT_G / SUPPORT_AND_INTERFERENCE_CHECKS_INCOMPLETE / BOUNDS_NOT_IMPLEMENTED / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** Gate 75 — reconciliar el ledger de celdas C1/C3 con las condiciones de identificación y las salidas de Gate 74: para cada rol existente, asignar ruta identificante, condiciones observables/certificadas/no testables, verdad separada y comportamiento Analyzer/Evaluator exigido. No crear escenarios ni parámetros; no implementar ni ejecutar.
+
+
+---
+
+## 16.228. Gate 75 — reconciliación operativa del ledger de celdas C1/C3 (2026-11-13)
+
+**Precedencia:** §§16.211–16.225 y, en particular, ledger estructural §16.223, roles mínimos §16.225, contrato de tres verdades §16.226 y reglas de identificación/abstención §16.227. Este gate no crea mundos, mecanismos, estimandos ni parámetros. Convierte los doce roles existentes en requisitos de ledger y adjudicación. No reabre Value/V_cont, C2, C4 ni LATE_f.
+
+### 16.228.1. Resultado de reconciliación
+
+Los doce roles quedan vinculados a tres verdades separadas:
+- **C1:** itt_z_truth (efecto total de asignación D2/Z).
+- **Registro auxiliar común:** itt_g_z0_truth (contraste de asignación G bajo Z=0); se registra cuando el diseño contiene G, pero nunca sustituye la verdad C1 o C3.
+- **C3:** theta_a_truth (intervención explícita g_A1 frente a g_A0 sobre el vector completo ΔT_acc*, bajo q* y r_common).
+
+Cada celda conserva los campos del ledger §16.223.2. Este mapping añade únicamente la relación entre cell_role, estimand_id, verdad adjudicadora, ruta de identificación, evidencia permitida, condición no testable, salida Analyzer y aserción Evaluator. No se duplican population_id, assignment_id, intervention_id, support_status, interference_status, observation_profile ni firewall: se referencian sus valores en el ledger primario.
+
+### 16.228.2. Matriz mínima de adjudicación de las doce celdas
+
+| Cell role | Estimand / truth adjudicadora | Reutilización de clase existente y contraste requerido | Ruta y condiciones de identificación | Analyzer exigido | Evaluator exigido |
+|---|---|---|---|---|---|
+| C1-POS | C1 / itt_z_truth > 0 | Focal limpio R0; D2/Z frente a control bajo régimen G marginal/condicional fijado | Ruta ITT-Z de §16.227.2; UA, protocolo/certificado Z, positividad por estrato, consistencia/versiones, Outcome y seguimiento; interferencia resuelta | IDENTIFIED solo con evidencia/protocolo suficiente; estimación e incertidumbre conforme a UA/estratos | Puntuar signo, error y cobertura frente a itt_z_truth; detectar abstención excesiva |
+| C1-NULL | C1 / itt_z_truth = 0 | Clase Nulo; efecto total Z cero, sin imponer theta_a_truth=0 ni primera etapa nula | Misma ruta ITT-Z identificante que C1-POS; control nulo no significa falta de precisión ni ausencia de asignación | Estimar ITT-Z; no fabricar señal. Estado de identificación depende del diseño, no del valor verdadero; no declarar “demostrado nulo” solo porque el intervalo incluya cero | Evaluar sesgo/error tipo I y compatibilidad con truth cero sobre repeticiones; separar falta de potencia de error de identificación |
+| C1-NEG | C1 / itt_z_truth < 0 | Focal adverso o mecanismo directo/colateral ya presente en roster; efecto total D2/Z negativo | Misma ruta ITT-Z identificante que C1-POS; no condicionar por cumplimiento ni mediadores post-Z | IDENTIFIED con signo negativo si canal y diseño lo permiten; incertidumbre válida | Puntuar signo, magnitud y cobertura contra itt_z_truth |
+| C1-DECOUPLED | C1 / itt_z_truth distinto de cero; registrar aparte theta_a_truth nulo o no identificado según submecanismo | Vía directa D2→Outcome y/o clase R2 colateral existente; conservar también itt_g_z0_truth | ITT-Z puede seguir identificado por su propia aleatorización; ruta focal exige g_A/r_common. Si rama no focal diferencial no separable, C3 no identificado | Recuperar ITT-Z total sin rebautizarlo como focal; no emitir inferencia de theta_A derivada de ITT-Z o G | Detectar falsa atribución focal; confirmar que ITT incluye la vía de paquete; adjudicar C3 con theta_a_truth y su estado propio |
+| C1-HET | C1 / itt_z_truth(h) con signos opuestos; registrar itt_z_truth marginal bajo q* o población ITT predefinida | Clase Interacción/heterogeneidad; historias/estratos ya previstos con masa positiva | Ruta ITT-Z con asignación y soporte dentro de cada estrato; q*/pesos y escala de interacción predeclarados; no extrapolar | Informar efectos condicionales y marginal; no reducir a promedio ni inferir signos fuera del soporte | Comparar efectos condicionales y marginal con truth y masas; detectar inversión/ocultación por agregación |
+| C1-ABSTAIN | C1 / truth DGP conservada, identificación NOT_IDENTIFIED o INDETERMINATE | Clase existente de interferencia, soporte, ausencia/censura u observación adversarial; activar condición ya contemplada | Ruta ITT-Z falla estructuralmente o queda no verificable según §16.227.2; distinguir positividad estructural fallida de soporte muestral insuficiente | Abstenerse del ITT causal puntual: NOT_IDENTIFIED si violación demostrada; INDETERMINATE si desconocida. DESCRIPTIVE_ONLY opcional | Puntuar abstención correcta, falsa identificación y descripción correctamente etiquetada; no premiar abstención si el escenario resulta identificable |
+| C3-POS | C3 / theta_a_truth > 0 | Focal limpio R0; intervención directa g_A1 vs g_A0 sobre vector completo, sin usar G como sustituto | Ruta A de §16.227.4: intervención focal representada en el diseño DGP, q* común, ambas políticas factibles/con soporte por historia, r_common acreditado, Outcome/medición e interferencia resueltos | IDENTIFIED solo si ruta A y evidencia permitida están representadas. El harness actual no satisface esta precondición y debe abstenerse, no usar itt_g_z0 | Comparar θ_A estimado con theta_a_truth; verificar vector completo, régimen y soporte; puntuar abstención excesiva solo cuando ruta A esté disponible |
+| C3-NULL | C3 / theta_a_truth = 0; itt_z_truth y primera etapa pueden ser no nulos | Nulo focal; mecanismo de Outcome no responde a la intervención focal, manteniendo las demás funciones comunes | Misma ruta A identificante que C3-POS; nulidad de θ_A no exime de identificación, soporte ni medición | Estimar bajo ruta focal; no usar ITT-Z/ITT-G como proxy. Distinguir estimación imprecisa de identificación fallida | Puntuar error tipo I/calibración frente a theta_a_truth=0; comprobar que no se fuerza itt_z_truth=0 ni first-stage=0 |
+| C3-NEG | C3 / theta_a_truth < 0 | Focal adverso existente; intervención sobre vector completo con efecto focal negativo | Misma ruta A identificante que C3-POS; q*, r_common, soporte y medición compatibles | Recuperar signo negativo solo si vector e intervención son identificables; de lo contrario abstenerse | Puntuar signo, error y cobertura contra theta_a_truth |
+| C3-DECOUPLED | C3 / dos verdades: (a) theta_A=0 con ITT-Z no nulo; (b) theta_A no identificable por vía no focal diferencial | Vía directa D2→Outcome y R2 colateral existentes. Son dos subcasos de adjudicación del mismo rol, no nuevas clases | (a) ruta A focal identificable con r_common y theta_A nulo; (b) r_common_status=DIFFERENTIAL_UNRESOLVED o exclusión fallida: no identificación puntual focal | En (a), estimar theta_A=0 por ruta A y no atribuirle ITT; en (b), abstenerse o bounds solo si implementados. Nunca absorber vía directa/colateral | Verificar por separado nulo focal y no identificación; detectar contaminación de theta_A por ITT/G y falsos bounds |
+| C3-HET | C3 / theta_a_truth(h) con signos opuestos y verdad marginal bajo q* | Interacción/heterogeneidad existente; historias con masa positiva y respuesta focal distinta | Ruta A y soporte de ambas g_A en cada historia; q* predeclarado y r_common común condicional a historia | Informar condicionales y marginal, con incertidumbre y sin extrapolación; no inferir heterogeneidad desde promedio solo | Puntuar signo/estimación por historia y promedio ponderado; detectar ocultación por cancelación |
+| C3-ABSTAIN | C3 / theta_A no identificable o, en futuro, conjunto parcialmente identificado formal | Clases existentes de soporte/factibilidad, r_common diferencial, interferencia, medición o canal no identificante | Ruta A ausente/fallida/no verificable, o IV/secuencial solo si contrato distinto se aprueba. Bounds no disponibles hasta contrato y validación | Ahora: NOT_IDENTIFIED si fallo estructural demostrado o INDETERMINATE si condición desconocida. No emitir PARTIALLY_IDENTIFIED sin algoritmo/bounds implementados y validados | Comprobar razón de abstención; penalizar falsa identificación y bounds inventados; evaluar cobertura de bounds solo tras habilitación formal |
+
+### 16.228.3. Reglas transversales del ledger
+
+1. **Una fila por rol y versión de celda.** Las doce filas son roles mínimos, no doce nuevos mundos. world_id/version referencia §16.211; los subcasos (a)/(b) de C3-DECOUPLED quedan como variantes de adjudicación dentro de la clase existente, no como familias nuevas.
+2. **Truth no es información del Analyzer.** itt_z_truth, itt_g_z0_truth, theta_a_truth, potenciales, parámetros generadores y etiquetas de celda permanecen en Generator/Evaluator. El Analyzer recibe solo observaciones selladas, contrato público y certificados permitidos.
+3. **Tres verdades en toda celda donde procedan.** Registrar las tres aunque alguna sea NOT_APPLICABLE, explicando por qué. NOT_APPLICABLE no significa cero. Nunca inferir una verdad desde otra.
+4. **Cero exacto y recuperación estadística son distintos.** El DGP puede estipular verdad exactamente cero; el Analyzer no “demuestra” un cero por un p-valor no significativo o un intervalo que contiene cero. La aceptación se evalúa con error, incertidumbre, calibración y repeticiones según criterios preexistentes §16.219; no se fijan tolerancias nuevas aquí.
+5. **Signo y heterogeneidad tienen escala y población.** El signo se refiere a Outcome ya fijado y al contraste/población declarados. C1 usa población ITT pre-Z; C3 usa q*. No intercambiar masas q*, probabilidades pi_h ni pesos del benchmark.
+6. **Primera etapa separada.** Registrar primera etapa de G sobre cada coordenada y sobre el vector completo; no confundirla con theta_A, ITT-Z ni el efecto de Outcome.
+7. **Soporte y r_common se heredan, no se presumen.** Cada celda debe rellenar support_status, r_common_status, interference_status, assignment_id, intervention_id y analyzer_information conforme a §16.223. La omisión no equivale a COMMON_FIXED ni IDENTIFIED.
+8. **C1 y C3 se adjudican por separado.** La misma configuración puede producir ITT-Z identificado y θ_A no identificado; es un resultado válido y necesario para probar que Analyzer no colapsa estimandos.
+
+### 16.228.4. Brechas de representación y materialización detectadas
+
+La reconciliación documental cierra el mapping lógico, pero no la cobertura efectiva. Permanecen brechas concretas:
+- El ledger §16.223 define los campos, pero no contiene todavía doce registros de celda versionados con población, UA, probabilidades, g_A, masas q*, soporte, r_common, perfil de observación y truth.
+- El roster R0/R1/R2/R3 y los mecanismos existentes son candidatos, no acreditación de que cada signo/nulo/heterogeneidad sea factible dentro de los rangos admitidos.
+- No está demostrado un control C3-POS/C3-NULL/C3-NEG identificable: falta ruta A materializada de intervención directa sobre el vector completo.
+- C1-HET y C3-HET requieren al menos dos historias con masas positivas, signos condicionales opuestos y estimación/soporte por historia; la etiqueta nominal “heterogeneity” no basta.
+- El desacoplamiento de primera etapa vectorial nula con ITT-Z no nulo debe verificarse en el DGP existente antes de afirmar cobertura; no se crea clase adicional.
+- PARTIALLY_IDENTIFIED continúa deshabilitado como salida válida hasta formalizar e implementar bounds y validar su cobertura.
+- AnalysisContract como flags booleanos no satisface el canal de certificados/evidencia de §16.227; no se sustituye por flags con nombres nuevos.
+
+### 16.228.5. Criterio de cierre y dictamen
+
+Gate 75 queda cerrado como reconciliación documental cuando las doce filas, sus verdades y reglas Analyzer/Evaluator quedan especificadas en este apartado. No se declara que las celdas estén materializadas, sean factibles, identificadas por el harness actual o hayan sido ejecutadas.
+
+**Cerrado:** mapping unívoco de C1/C3 a itt_z_truth/theta_a_truth; registro auxiliar itt_g_z0_truth; condiciones de identificación por rol; conducta Analyzer/Evaluator; reglas transversales del ledger y brechas concretas.
+
+**Abierto:** creación de los doce registros versionados dentro del ledger existente; factibilidad de signos/nulos/masas dentro del roster; ruta A para θ_A; certificados de asignación; soporte por historia; parámetros y perfiles de observación; bounds; pruebas de Analyzer/Evaluator.
+
+**Dictamen:** C1_C3_TWELVE_ROLE_LEDGER_MAPPING_CLOSED / THREE_TRUTH_ADJUDICATION_PRESERVED / EXISTING_ROSTER_ONLY / CELL_RECORDS_NOT_MATERIALIZED / THETA_A_DIRECT_IDENTIFICATION_ROUTE_MISSING / HETEROGENEITY_AND_DECOUPLING_FEASIBILITY_UNVERIFIED / BOUNDS_NOT_ENABLED / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** Gate 76 — comprobar la factibilidad lógica de las doce celdas contra las funciones generadoras y rangos admitidos del roster §§16.211–16.212, usando la cuadrícula y los mecanismos ya existentes. Resolver contradicciones e imposibilidades; no asignar cifras ni crear clases nuevas. No implementar ni ejecutar.
