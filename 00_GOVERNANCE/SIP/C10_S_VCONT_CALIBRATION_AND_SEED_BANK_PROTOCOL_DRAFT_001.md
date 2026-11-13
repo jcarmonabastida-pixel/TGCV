@@ -310,3 +310,17 @@ Audit verdict: **AUDITED — CONDITIONAL / PROVENANCE BINDING NOT IMPLEMENTED**.
 The report fingerprint currently binds the report payload internally, but the declared seed-bank fingerprint, executable commit and configuration fingerprint are only syntax-checked caller inputs. The Evaluator does not recompute or compare them against the actual SeedAssignment bank, runtime/source commit and canonical run configuration. The Evaluator also does not invoke the separate seed-bank validator or fully reconcile each RunManifest to its canonical SeedAssignment row.
 
 Required next step: implement the Gate 158 provenance-binding layer and adversarial tests listed in the audit before claiming verified provenance. This is a technical integrity requirement; it does not authorize calibration, seed-bank generation, N/R/M sizing, benchmark execution or scientific execution.
+
+## 18. Gate 159 — provenance-binding implementation preflight
+
+Gate 159 implementation preflight is persisted in:
+
+`00_GOVERNANCE/SIP/C10_S_VCONT_MONTE_CARLO_PROVENANCE_BINDING_IMPLEMENTATION_PREFLIGHT_GATE_159_DRAFT_001.md`.
+
+The preflight reuses the existing canonical seed-bank fingerprint and bank-separation validator, and defines the missing binding between the exact evaluation SeedAssignment manifest, calibration/evaluation separation, runtime execution attestation, effective Generator/Analyzer configuration, and each evaluated RunManifest. It requires fail-closed one-to-one reconciliation of every run to its canonical seed row before the 52-pair report is accepted.
+
+The executable identity must be attested at the execution boundary; a caller-supplied SHA string or report self-fingerprint is not evidence of the source commit that actually ran. Configuration identity must be recomputed from the effective versioned DGP and Analyzer objects. Provenance failures are integrity/contract failures and must not be relabelled as Analyzer abstentions or estimand outcomes.
+
+**Gate 159 status:** PREFLIGHT COMPLETED / PERSISTED; CODE IMPLEMENTATION OPEN; ADVERSARIAL REGRESSION OPEN.
+
+This preflight authorizes no calibration/evaluation seed-bank generation, N/R/M sizing, Monte Carlo benchmark execution or scientific execution. `main` remains unchanged; PR #116 remains Draft on its existing base branch.
