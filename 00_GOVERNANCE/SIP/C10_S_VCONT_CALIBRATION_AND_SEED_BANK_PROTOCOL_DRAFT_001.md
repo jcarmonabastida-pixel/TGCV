@@ -225,3 +225,16 @@ Technical tests and CI may verify implementation conformance when separately aut
 - Gate 152: joint design and sufficiency contract — DEFINED; numeric design choices OPEN.
 - Existing calibration protocol scaffold: IMPLEMENTED as previously recorded; it does not yet implement M.
 - This addendum: DOCUMENTARY PERSISTENCE ONLY; no code, tests, CI or scientific execution changed or ran.
+
+
+## 11. Gate 154 — outer Monte Carlo replication contract
+
+The explicit outer-replication identity, world-seed variation across M, designated RUN assignment, within-world R repeated assignments, stream roles, manifest provenance and two-stage aggregation contract are governed by:
+
+`00_GOVERNANCE/SIP/C10_S_VCONT_MONTE_CARLO_OUTER_REPLICATION_CONTRACT_DRAFT_001.md`.
+
+This contract supersedes any ambiguous interpretation of the legacy `SeedAssignment.replicate`: that field represents assignment repetition R only and is not an outer Monte Carlo replicate. The current implementation remains without explicit M and must not be described as providing independent outer-world replication.
+
+The existing `required_replicates(calibration_sd, target_mcse)` continues to size R only. M requires its own predeclared sizing and calibration-uncertainty procedure. No numerical M, new seed bank, calibration, Monte Carlo or scientific execution is authorized by this cross-reference.
+
+**Gate 154 status:** DEFINED and cross-referenced; implementation OPEN.
