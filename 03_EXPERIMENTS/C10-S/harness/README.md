@@ -60,3 +60,12 @@ The authorized full run is:
 The strict run evaluates 27 cells × 10,000 replications (270,000 Analyzer invocations), checking bias/RMSE, Welch interval coverage, rejection/power, Monte Carlo error, identification classification, and paired-seed agreement with the P178 reference. The dedicated GitHub Actions workflow performs a primary run and a full clean-source replay, then compares the generated CSV and manifest byte-for-byte.
 
 This remains non-confirmatory and covers only the existing focal P178 cells. It does not test weak signal, direct paths, positivity failure, degraded measurement, interference, or abstention under non-identification.
+
+## Integrated V_cont harness — separate migration boundary (Gate 87–88)
+
+The repository currently contains two distinct harness implementations; do not treat their similarly named focal concepts as interchangeable:
+
+- vcont_integrated_harness.py with test_vcont_integrated_harness.py is the integrated C10-S V_cont harness. Its current assignment truths are ITT-Z (itt_z_truth) and ITT-G under Z=0 (itt_g_z0_truth). The focal intervention truth theta_a_truth is explicitly unmaterialized (None) until the joint g_A policies and q_X* are operationally specified and supported. Analyzer output names the G-assignment contrast; it does not estimate theta_A.
+- focal_harness.py, test_focal_harness.py, and the P178 bridge/Monte Carlo scripts are the earlier, separate P178 focal harness. Their historical theta_access_truth and focal-attribution fields belong to that legacy P178 contract and were not migrated by Gates 87–88. P178 artifacts/results are preserved and must not be silently reinterpreted as validation of the integrated theta_A estimand.
+
+The integrated test module is included by Python unittest discovery (python -m unittest -v) but has not been run as part of Gates 87–88. Its current contract suite contains 16 tests. Static authoring/review is not a test PASS or scientific execution.
