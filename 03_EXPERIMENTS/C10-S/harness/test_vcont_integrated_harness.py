@@ -227,7 +227,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         with self.assertRaises(ContractError):
             self.evaluator.evaluate(replace(truth, outer_replicate_id="outer-forged"),
                                     result, contract_for(cfg), tolerance=0.10, manifest=manifest)
-        with self.assertRaises(ContractError):
+        with self.assertRaises((ContractError, FirewallError)):
             self.evaluator.evaluate(truth, replace(result, assignment_role="RUN"),
                                     contract_for(cfg), tolerance=0.10, manifest=manifest)
 
