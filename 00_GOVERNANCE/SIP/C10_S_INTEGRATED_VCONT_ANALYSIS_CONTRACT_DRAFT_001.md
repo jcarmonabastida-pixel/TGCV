@@ -621,3 +621,23 @@ The push-triggered GitHub Actions workflow completed successfully on the integra
 - Artifact ID: 14062479568.
 
 The workflow was triggered automatically by the research-branch push; it was not manually dispatched. This is technical conformance evidence only. It does not run the calibration bank, Monte Carlo benchmark or scientific experiment and does not establish causal identification, recovery of the focal accessibility effect, or the TGCV accessibility-to-Value claim. Numeric N/R/MCSE/recovery thresholds remain OPEN. The documentation-only update that records this result is subsequent to the tested commit; no executable or test source changed after the tested commit.
+
+
+### 15.5 Gate 148 — matrix-to-Evaluator integration implementation
+
+**Status:** IMPLEMENTED ON RESEARCH BRANCH — technical verification pending.
+
+The V_cont benchmark protocol now provides a Pair Evaluation Adapter that resolves the exact scenario/estimand key against the manifest, TruthBundle and Analyzer/repeated-assignment outputs. It rejects scenario-version and estimand-version mismatches. The integrated Evaluator exposes `evaluate_matrix_pairs()`, which consumes the matrix, preserves per-run EvaluationReports, and returns pair-keyed records plus the repeated-assignment report.
+
+The temporal contract is enforced in the adapter:
+- Run-level records are emitted for ITT-Z run-conditional, ITT-Z reference-regime and ITT-G with Z=0.
+- ITT-Z mechanism-marginal is never emitted from a single run; it is emitted only from the repeated-assignment aggregate.
+- ITT-Z reference-regime is represented at both run and repeated-assignment levels, with the latter retaining its separate aggregate output field and identification status.
+- Numeric pairs require finite truth from the declared TruthBundle field and the declared Analyzer output; status-only and non-identifiable pairs cannot receive numeric scoring.
+- Matrix coverage is checked for all four distinct estimand keys before returning the integrated report.
+
+The precision verdict now distinguishes a known MCSE above its predeclared target (`FAIL`) from missing MCSE or missing target (`NOT_EVALUABLE`). A passing MCSE remains `PASS`.
+
+Three integrated harness tests cover run/repeated temporal separation, scenario-version mismatch rejection and preservation of non-identified reference-regime status. The protocol test covers PASS / FAIL / NOT_EVALUABLE precision states.
+
+This change does not alter the DGPs, estimands, truth definitions, identification assumptions, numeric tolerances, N/R choices or scientific claims. It does not materialize or score theta_A. No calibration bank, Monte Carlo benchmark or scientific experiment is authorized or run. `main` remains unchanged and PR #116 remains Draft.
