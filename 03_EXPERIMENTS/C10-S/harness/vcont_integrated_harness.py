@@ -69,12 +69,16 @@ class ScenarioConfig:
     replicate_id: str = "replicate-000"
     outer_replicate_id: str = "outer-000000"
     assignment_role: str = "REPEATED_ASSIGNMENT"
+    assignment_index: int = -1
 
     def validate(self) -> None:
         if not self.scenario_id or not self.version or not self.outer_replicate_id:
             raise ContractError("scenario, version and outer-replicate identity required")
         if self.assignment_role not in ("RUN", "REPEATED_ASSIGNMENT"):
             raise ContractError("assignment_role must be RUN or REPEATED_ASSIGNMENT")
+        if ((self.assignment_role == "RUN" and self.assignment_index != -1)
+                or (self.assignment_role == "REPEATED_ASSIGNMENT" and self.assignment_index < 0)):
+            raise ContractError("assignment_index must be -1 for RUN and nonnegative for repeated assignments")
         if self.profile not in ("R0", "R1", "R2", "R3"):
             raise ContractError("profile must be R0/R1/R2/R3")
         if self.n_units < 16 or self.n_units % 4:
@@ -208,6 +212,7 @@ class RunManifest:
     g_assignment_seed: int = 0
     outer_replicate_id: str = "outer-000000"
     assignment_role: str = "REPEATED_ASSIGNMENT"
+    assignment_index: int = -1
 
 
 @dataclass(frozen=True)
@@ -236,6 +241,7 @@ class TruthBundle:
     z_assignment_mechanism_hash: str = ""
     outer_replicate_id: str = "outer-000000"
     assignment_role: str = "REPEATED_ASSIGNMENT"
+    assignment_index: int = -1
 
     @property
     def itt_package_truth(self) -> float:
@@ -302,6 +308,7 @@ class AnalyzerResult:
     g_assignment_estimand_version: str = "001"
     outer_replicate_id: str = "outer-000000"
     assignment_role: str = "REPEATED_ASSIGNMENT"
+    assignment_index: int = -1
 
 
 @dataclass(frozen=True)
@@ -369,7 +376,7 @@ class Generator:
         g_rng = random.Random(g_seed)
         world_spec = asdict(cfg)
         for key in ("seed", "world_seed", "z_assignment_seed", "g_assignment_seed",
-                    "replicate_id", "assignment_role"):
+                    "replicate_id", "assignment_role", "assignment_index"):
             world_spec.pop(key, None)
         world_id = _hash({"world_seed": world_seed, "outer_replicate_id": cfg.outer_replicate_id,
                           "world_spec": world_spec})
@@ -543,14 +550,15 @@ class Generator:
             "G_BALANCED_WITH_STRATUM_SUPPORT" if not cfg.positivity else "G_BALANCED", "001", gh,
             "Z_BALANCED_INDEPENDENT", "001", zh, "G_REFERENCE_50_50", "001",
             _hash(z_assign), _hash(g_assign), (("LOW", 0.5), ("HIGH", 0.0 if not cfg.positivity else 0.5)),
-            world_seed, z_seed, g_seed, cfg.outer_replicate_id, cfg.assignment_role)
+            world_seed, z_seed, g_seed, cfg.outer_replicate_id, cfg.assignment_role, cfg.assignment_index)
         truth = TruthBundle(run_id, tuple(v_truth), tuple(interval_truth), tuple(enabled_truth), tuple(profile_truth), tuple(delta_truth),
             itt_reference, itt_g_z0, None, cfg.seed, itt_run, itt_mechanism, itt_reference, invariant_truth,
             "HIGH" if unsupported_high else "ALL", "G_REFERENCE_50_50", "001", gh, zh,
-            cfg.outer_replicate_id, cfg.assignment_role)
+            cfg.outer_replicate_id, cfg.assignment_role, cfg.assignment_index)
         provenance = {"run_id": run_id, "scenario_id": cfg.scenario_id, "scenario_version": cfg.version,
             "world_id": world_id, "world_version": cfg.version, "replicate_id": cfg.replicate_id,
             "outer_replicate_id": cfg.outer_replicate_id, "assignment_role": cfg.assignment_role,
+            "assignment_index": cfg.assignment_index,
             "g_assignment_mechanism_id": manifest.g_assignment_mechanism_id,
             "g_assignment_mechanism_version": manifest.g_assignment_mechanism_version,
             "g_assignment_mechanism_hash": gh,
@@ -749,7 +757,8 @@ class Analyzer:
                    "g_assignment_estimand_id": contract.g_assignment_estimand_id,
                    "g_assignment_estimand_version": contract.g_assignment_estimand_version,
                    "outer_replicate_id": provenance["outer_replicate_id"],
-                   "assignment_role": provenance["assignment_role"]}
+                   "assignment_role": provenance["assignment_role"],
+                   "assignment_index": provenance["assignment_index"]}
         reference_regime_itt = package if reference_regime_status == "IDENTIFIED" and package_status == "IDENTIFIED" else None
         return AnalyzerResult(evidence.run_id, contract.estimand_id, package_status, g_assignment_status,
             package, g_assignment_estimate, first_stage, package_se, g_assignment_se, reasons, evidence.sha256,
@@ -765,7 +774,7 @@ class Analyzer:
             contract.run_conditional_estimand_id, contract.run_conditional_estimand_version,
             contract.reference_regime_estimand_id, contract.reference_regime_estimand_version,
             contract.g_assignment_estimand_id, contract.g_assignment_estimand_version,
-            provenance["outer_replicate_id"], provenance["assignment_role"])
+            provenance["outer_replicate_id"], provenance["assignment_role"], provenance["assignment_index"])
 
 
 class Evaluator:
@@ -811,6 +820,7 @@ class Evaluator:
             "g_assignment_estimand_version": result.g_assignment_estimand_version,
             "outer_replicate_id": result.outer_replicate_id,
             "assignment_role": result.assignment_role,
+            "assignment_index": result.assignment_index,
         }
         if _hash(payload) != result.output_sha256:
             raise FirewallError("Analyzer output seal invalid")
