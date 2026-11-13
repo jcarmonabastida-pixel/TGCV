@@ -134,12 +134,22 @@ class AnalysisContract:
     transportability_evidence_status: str = "NOT_ESTABLISHED"
     g_assignment_mechanism_hash: str = ""
     z_assignment_mechanism_hash: str = ""
+    g_assignment_mechanism_id: str = "G_BALANCED"
+    g_assignment_mechanism_version: str = "001"
+    z_assignment_mechanism_id: str = "Z_BALANCED_INDEPENDENT"
+    z_assignment_mechanism_version: str = "001"
+    reference_regime_id: str = "G_REFERENCE_50_50"
+    reference_regime_version: str = "001"
+    transportability_outcome_id: str | None = None
+    transportability_basis: str | None = None
 
     def validate(self) -> None:
         if not self.estimand_id or not self.estimand_version or not self.target_regime_id or not self.target_regime_version:
             raise ContractError("estimand and target-regime identity/version required")
-        if self.z_effect_invariant_across_g and not (self.transportability_id and self.transportability_version and self.transportability_scope and self.transportability_evidence_status == "STRUCTURALLY_VERIFIED"):
-            raise ContractError("transportability declaration requires ID, version, scope and structural verification")
+        if self.z_effect_invariant_across_g and not (self.transportability_id and self.transportability_version and self.transportability_scope and self.transportability_evidence_status == "STRUCTURALLY_VERIFIED" and self.transportability_outcome_id == self.outcome_id and self.transportability_basis):
+            raise ContractError("transportability declaration requires ID, version, scope, matching outcome, basis and structural verification")
+        if not all((self.g_assignment_mechanism_id, self.g_assignment_mechanism_version, self.z_assignment_mechanism_id, self.z_assignment_mechanism_version, self.reference_regime_id, self.reference_regime_version)):
+            raise ContractError("assignment mechanism and reference regime identities/versions required")
 
 
 @dataclass(frozen=True)
@@ -207,6 +217,7 @@ class TruthBundle:
 class EvidenceCandidate:
     run_id: str
     rows: tuple[dict[str, Any], ...]
+    provenance: dict[str, Any] | None = None
 
 
 @dataclass(frozen=True)
@@ -244,6 +255,14 @@ class AnalyzerResult:
     transportability_version: str | None = None
     transportability_scope: str | None = None
     transportability_evidence_status: str = "NOT_ESTABLISHED"
+    estimand_version: str = "002"
+    g_assignment_mechanism_id: str = "G_BALANCED"
+    g_assignment_mechanism_version: str = "001"
+    z_assignment_mechanism_id: str = "Z_BALANCED_INDEPENDENT"
+    z_assignment_mechanism_version: str = "001"
+    reference_regime_id: str = "G_REFERENCE_50_50"
+    reference_regime_version: str = "001"
+    provenance_sha256: str = ""
 
 
 @dataclass(frozen=True)
@@ -269,9 +288,9 @@ def _balanced_binary(n: int, rng: random.Random) -> list[int]:
     return values
 
 
-def _mean_se(a: list[float], b: list[float]) -> tuple[float, float]:
+def _mean_se(a: list[float], b: list[float]) -> tuple[float | None, float | None]:
     if len(a) < 2 or len(b) < 2:
-        raise ContractError("both randomized arms need at least two units")
+        return None, None
     estimate = mean(b) - mean(a)
     se = math.sqrt(variance(a) / len(a) + variance(b) / len(b))
     return estimate, se
@@ -484,8 +503,11 @@ class Sealer:
                 raise ContractError("invalid S3 value")
             if len(row["delta_t_acc_observed"]) != 4 or any(v not in (0, 1) for v in row["delta_t_acc_observed"]):
                 raise ContractError("Delta T_acc must contain four binary coordinates")
+        if not candidate.provenance or candidate.provenance.get("run_id") != candidate.run_id:
+            raise ContractError("observable provenance envelope missing or run mismatch")
         manifest = {"run_id": candidate.run_id, "schema": "C10S-VCONT-S3-001",
-                    "row_count": len(candidate.rows), "sealer_version": "0.1"}
+                    "row_count": len(candidate.rows), "sealer_version": "0.2",
+                    "provenance": candidate.provenance, "provenance_sha256": _hash(candidate.provenance)}
         digest = _hash({"manifest": manifest, "rows": candidate.rows})
         return SealedEvidence(candidate.run_id, candidate.rows, manifest, digest)
 
@@ -553,7 +575,7 @@ class Analyzer:
             z0 = [observed_v[i] for i, row in enumerate(evidence.rows) if row["assignment_z"] == 0]
             z1 = [observed_v[i] for i, row in enumerate(evidence.rows) if row["assignment_z"] == 1]
             package, package_se = _mean_se(z0, z1)
-            package_status: Identification = "IDENTIFIED"
+            package_status: Identification = "IDENTIFIED" if package is not None else "INDETERMINATE"
         else:
             package, package_se = None, None
             package_status = "NOT_IDENTIFIED" if "PACKAGE_RANDOMIZATION_NOT_ESTABLISHED" in package_reasons else "INDETERMINATE"
@@ -568,7 +590,7 @@ class Analyzer:
                 g1_d = [row["delta_t_acc_observed"][coordinate] for row in focal_assign_rows
                         if row["assignment_g"] == 1]
                 first_stage_values.append(mean(g1_d) - mean(g0_d))
-            first_stage = tuple(first_stage_values)
+            first_stage = tuple(first_stage_values) if len(first_stage_values) == 4 else None
 
         if not g_assignment_reasons and observed_v is not None:
             z0_focal_rows = [(observed_v[i], row) for i, row in enumerate(evidence.rows)
@@ -576,7 +598,7 @@ class Analyzer:
             g0 = [v for v, row in z0_focal_rows if row["assignment_g"] == 0]
             g1 = [v for v, row in z0_focal_rows if row["assignment_g"] == 1]
             g_assignment_estimate, g_assignment_se = _mean_se(g0, g1)
-            g_assignment_status: Identification = "IDENTIFIED"
+            g_assignment_status: Identification = "IDENTIFIED" if g_assignment_estimate is not None else "INDETERMINATE"
         else:
             g_assignment_estimate, g_assignment_se = None, None
             g_assignment_status = "NOT_IDENTIFIED" if (
