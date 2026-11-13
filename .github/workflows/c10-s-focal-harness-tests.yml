@@ -36,7 +36,7 @@ jobs:
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           PYTHONDONTWRITEBYTECODE: '1'
-        run: python -m py_compile focal_harness.py test_focal_harness.py test_p178_analyzer_bridge.py run_p178_analyzer_monte_carlo.py test_p178_analyzer_monte_carlo.py
+        run: python -m py_compile focal_harness.py test_focal_harness.py test_p178_analyzer_bridge.py run_p178_analyzer_monte_carlo.py test_p178_analyzer_monte_carlo.py vcont_integrated_harness.py test_vcont_integrated_harness.py
 
       - name: Run primary contract suite and capture stdout/stderr
         id: primary
