@@ -404,3 +404,21 @@ The package preserves M as independent outer worlds, R as within-world repeated 
 The current design carries declared seed-bank, executable-commit and configuration fingerprints; Gate 158/159 findings remain binding: these declarations cannot be promoted to reconciled provenance until actual seed rows, effective configuration payloads and source execution identity are independently bound. Calibration seed disjointness cannot be recomputed from a fingerprint alone; the actual calibration manifest or an immutable retrievable manifest is required.
 
 **Gate 164 status:** PACKAGE CONTRACT DEFINED / PERSISTED; PACKAGER IMPLEMENTATION OPEN; report-schema alignment OPEN; Gate 159 reconciliation OPEN; calibration manifest availability OPEN; adversarial tests OPEN. No code/tests/workflows/CI were changed or executed. No calibration, seed-bank generation, N/R/M sizing, Monte Carlo benchmark or scientific execution was performed or authorized.
+
+
+## 24. Gate 165 — implementability audit of the canonical Monte Carlo package
+
+Gate 165 static audit is persisted in:
+`00_GOVERNANCE/SIP/C10_S_VCONT_MONTE_CARLO_PACKAGE_IMPLEMENTABILITY_AUDIT_GATE_165_DRAFT_001.md`.
+
+**Verdict: AUDITED — CONDITIONAL / NOT IMPLEMENTABLE AS WRITTEN FROM CURRENT AGGREGATOR OUTPUT.**
+
+The current Evaluator can supply the 52-pair ledger, M-level contributions, coverage, denominators, reduced temporal manifest, benchmark design claims and existing report fingerprint. The exact matrix is derivable only if the same matrix object used by the Evaluator is retained.
+
+The current aggregation boundary does not preserve the full evidence needed by Gate 164. ScenarioConfig is not returned; AnalysisContract is transient in the input tuple; exact SeedAssignment rows and bank/namespace identity are not passed; temporal_manifest is a reduced projection rather than a complete RunManifest; SealedEvidence and per-run EvaluationReport are absent from the aggregation tuple/return; calibration assignments are not an input; effective configuration payloads, Gate 159 reconciliation results and GitHub-resolved workflow/artifact metadata are absent. Existing seed/report fingerprints use their own legacy serialization and must not be relabelled as JCS.
+
+The current code statically contains separate TRUTH_MISSING and INVALID_OUTPUT contribution classifications and counts. For Gate 165 these are classified **STATICALLY PRESENT / RUNTIME UNVERIFIED**; no tests were run.
+
+Before the packager, freeze a typed immutable evidence-export boundary carrying exact per-run ScenarioConfig, SeedAssignment, RunManifest, matrix-relevant TruthBundle fields, SealedEvidence digest/manifest, AnalyzerResult, AnalysisContract and EvaluationReport; plus benchmark-level design, exact matrix, calibration manifest, source-execution reference and reconciliation/test evidence references. Do not reconstruct missing evidence from reduced report rows or promote producer assertions to authenticated provenance.
+
+**Next:** Gate 166 — freeze typed evidence-export interface, cardinalities, join keys, data-minimization boundary and provenance split. No code/tests/workflows/CI changes or execution were performed.
