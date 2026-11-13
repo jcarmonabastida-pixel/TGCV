@@ -113,8 +113,15 @@ class VContIntegratedHarnessTests(unittest.TestCase):
             "required_pairs": 52, "observed_pairs": 52, "scenario_count": 13})
         self.assertEqual(len(report["pair_ledger"]), 52)
         self.assertEqual(len({row["key"] for row in report["pair_ledger"]}), 52)
+        self.assertEqual(len(report["temporal_manifest"]), 13 * 2 * 3)
         self.assertEqual(len(report["report_fingerprint"]), 64)
         self.assertTrue(all(row["observed_M"] == 2 for row in report["pair_ledger"]))
+        status_only = next(row for row in report["pair_ledger"]
+                           if row["key"][0] == "R0_MEASUREMENT_ADVERSE"
+                           and row["key"][2] == "ITT_Z_RUN_CONDITIONAL_VCONT")
+        self.assertEqual(status_only["evaluation_class"], "STATUS_ONLY")
+        self.assertEqual(status_only["numeric_denominator"], 0)
+        self.assertIsNone(status_only["metrics"]["mae"])
 
     def test_truth_bundle_separates_g_assignment_from_unmaterialized_theta_a(self):
         worlds = self.worlds()
