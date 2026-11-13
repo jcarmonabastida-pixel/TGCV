@@ -1021,7 +1021,7 @@ class Evaluator:
         """
         from vcont_benchmark_protocol import (
             ProtocolError, build_scenario_estimand_matrix, summarize_binary,
-            summarize_monte_carlo,
+            summarize_monte_carlo, summarize_monte_carlo_rmse,
         )
         if (not isinstance(outer_runs, dict) or len(outer_runs) < 2 or tolerance < 0
                 or target_mcse_by_metric is None):
@@ -1079,28 +1079,37 @@ class Evaluator:
             raise ProtocolError("Monte Carlo aggregation requires the four authoritative matrix pairs")
         m = len(per_outer)
 
-        metric_name_by_estimand = {
-            "ITT_Z_RUN_CONDITIONAL_VCONT": "run_conditional.absolute_error_mean",
-            "ITT_G_Z0_VCONT": "g_assignment_z0.absolute_error_mean",
-            "ITT_Z_MECHANISM_MARGINAL_VCONT": "mechanism_marginal.absolute_error_mean",
-            "ITT_Z_REFERENCE_REGIME_VCONT": "reference_regime.absolute_error_mean",
+        metric_prefix_by_estimand = {
+            "ITT_Z_RUN_CONDITIONAL_VCONT": "run_conditional",
+            "ITT_G_Z0_VCONT": "g_assignment_z0",
+            "ITT_Z_MECHANISM_MARGINAL_VCONT": "mechanism_marginal",
+            "ITT_Z_REFERENCE_REGIME_VCONT": "reference_regime",
         }
         required_metric_targets = set()
         for spec in selected:
-            if spec.key.estimand_id == "ITT_Z_RUN_CONDITIONAL_VCONT" and spec.run_evaluation_class == "EVALUABLE":
-                required_metric_targets.add(metric_name_by_estimand[spec.key.estimand_id])
-            if spec.key.estimand_id == "ITT_G_Z0_VCONT" and spec.run_evaluation_class == "EVALUABLE":
-                required_metric_targets.add(metric_name_by_estimand[spec.key.estimand_id])
-            if spec.key.estimand_id == "ITT_Z_MECHANISM_MARGINAL_VCONT" and spec.repeated_evaluation_class == "EVALUABLE":
-                required_metric_targets.add(metric_name_by_estimand[spec.key.estimand_id])
-            if spec.key.estimand_id == "ITT_Z_REFERENCE_REGIME_VCONT" and spec.repeated_evaluation_class == "EVALUABLE":
-                required_metric_targets.add(metric_name_by_estimand[spec.key.estimand_id])
+            eligible = (
+                spec.run_evaluation_class == "EVALUABLE"
+                if spec.key.estimand_id in ("ITT_Z_RUN_CONDITIONAL_VCONT", "ITT_G_Z0_VCONT")
+                else spec.repeated_evaluation_class == "EVALUABLE"
+            )
+            if eligible:
+                prefix = metric_prefix_by_estimand[spec.key.estimand_id]
+                required_metric_targets.update(
+                    f"{prefix}.{metric}" for metric in ("bias", "mae", "rmse")
+                )
         if set(target_mcse_by_metric) != required_metric_targets:
-            raise ContractError("MCSE targets must cover exactly the numeric EVALUABLE M-level metrics in the authoritative matrix")
+            raise ContractError("MCSE targets must cover exactly bias, MAE and RMSE for numeric EVALUABLE M-level metrics")
         def continuous_metric(values, metric_name):
             if metric_name not in target_mcse_by_metric or len(values) != m or any(value is None for value in values):
                 return None
             return summarize_monte_carlo(
+                [(row["outer_replicate_id"], value) for row, value in zip(per_outer, values)],
+                expected_m=m, target_mcse=target_mcse_by_metric[metric_name],
+            )
+        def rmse_metric(values, metric_name):
+            if metric_name not in target_mcse_by_metric or len(values) != m or any(value is None for value in values):
+                return None
+            return summarize_monte_carlo_rmse(
                 [(row["outer_replicate_id"], value) for row, value in zip(per_outer, values)],
                 expected_m=m, target_mcse=target_mcse_by_metric[metric_name],
             )
@@ -1110,24 +1119,44 @@ class Evaluator:
                 return None
             return summarize_binary(values, "outer-replicate status outcomes")
 
-        run_errors = [row["run_report"].package_abs_error for row in per_outer]
-        run_recovered = [row["run_report"].package_recovered for row in per_outer]
-        run_identified = [row["run"][1].package_status == "IDENTIFIED" for row in per_outer]
-        g_errors = [row["run_report"].g_assignment_abs_error for row in per_outer]
-        g_recovered = [row["run_report"].g_assignment_recovered for row in per_outer]
-        g_identified = [row["run"][1].g_assignment_status == "IDENTIFIED" for row in per_outer]
-        mechanism_errors = [
-            None if row["repeated_report"] is None else row["repeated_report"].marginal_abs_error
+        run_signed_errors = [
+            None if row["run"][1].package_itt is None or row["run"][0].itt_z_run_truth is None
+            else row["run"][1].package_itt - row["run"][0].itt_z_run_truth
             for row in per_outer
         ]
+        run_errors = [None if value is None else abs(value) for value in run_signed_errors]
+        run_squared_errors = [None if value is None else value * value for value in run_signed_errors]
+        run_recovered = [row["run_report"].package_recovered for row in per_outer]
+        run_identified = [row["run"][1].package_status == "IDENTIFIED" for row in per_outer]
+        g_signed_errors = [
+            None if row["run"][1].g_assignment_effect is None
+            else row["run"][1].g_assignment_effect - row["run"][0].itt_g_z0_truth
+            for row in per_outer
+        ]
+        g_errors = [None if value is None else abs(value) for value in g_signed_errors]
+        g_squared_errors = [None if value is None else value * value for value in g_signed_errors]
+        g_recovered = [row["run_report"].g_assignment_recovered for row in per_outer]
+        g_identified = [row["run"][1].g_assignment_status == "IDENTIFIED" for row in per_outer]
+        mechanism_signed_errors = [
+            None if row["repeated_report"] is None or row["repeated_report"].mean_run_estimate is None
+            else row["repeated_report"].mean_run_estimate - row["repeated_report"].mechanism_truth
+            for row in per_outer
+        ]
+        mechanism_errors = [None if value is None else abs(value) for value in mechanism_signed_errors]
+        mechanism_squared_errors = [None if value is None else value * value for value in mechanism_signed_errors]
         mechanism_recovered = [
             None if row["repeated_report"] is None else row["repeated_report"].marginal_recovered
             for row in per_outer
         ]
-        reference_errors = [
-            None if row["repeated_report"] is None else row["repeated_report"].reference_abs_error
+        reference_signed_errors = [
+            None if row["repeated_report"] is None
+            or row["repeated_report"].reference_estimate_mean is None
+            or row["repeated_report"].reference_truth is None
+            else row["repeated_report"].reference_estimate_mean - row["repeated_report"].reference_truth
             for row in per_outer
         ]
+        reference_errors = [None if value is None else abs(value) for value in reference_signed_errors]
+        reference_squared_errors = [None if value is None else value * value for value in reference_signed_errors]
         reference_identified = [
             None if row["repeated_report"] is None else
             row["repeated_report"].reference_identification_status == "IDENTIFIED"
@@ -1151,21 +1180,29 @@ class Evaluator:
                 "reference_regime_identification_status": sum(value is not None for value in reference_identified),
             },
             "run_conditional": {
-                "absolute_error_mean": continuous_metric(run_errors, "run_conditional.absolute_error_mean"),
+                "bias": continuous_metric(run_signed_errors, "run_conditional.bias"),
+                "mae": continuous_metric(run_errors, "run_conditional.mae"),
+                "rmse": rmse_metric(run_squared_errors, "run_conditional.rmse"),
                 "recovery_rate": binary_metric(run_recovered),
                 "identification_rate": binary_metric(run_identified),
             },
             "g_assignment_z0": {
-                "absolute_error_mean": continuous_metric(g_errors, "g_assignment_z0.absolute_error_mean"),
+                "bias": continuous_metric(g_signed_errors, "g_assignment_z0.bias"),
+                "mae": continuous_metric(g_errors, "g_assignment_z0.mae"),
+                "rmse": rmse_metric(g_squared_errors, "g_assignment_z0.rmse"),
                 "recovery_rate": binary_metric(g_recovered),
                 "identification_rate": binary_metric(g_identified),
             },
             "mechanism_marginal": {
-                "absolute_error_mean": continuous_metric(mechanism_errors, "mechanism_marginal.absolute_error_mean"),
+                "bias": continuous_metric(mechanism_signed_errors, "mechanism_marginal.bias"),
+                "mae": continuous_metric(mechanism_errors, "mechanism_marginal.mae"),
+                "rmse": rmse_metric(mechanism_squared_errors, "mechanism_marginal.rmse"),
                 "recovery_rate": binary_metric(mechanism_recovered),
             },
             "reference_regime": {
-                "absolute_error_mean": continuous_metric(reference_errors, "reference_regime.absolute_error_mean"),
+                "bias": continuous_metric(reference_signed_errors, "reference_regime.bias"),
+                "mae": continuous_metric(reference_errors, "reference_regime.mae"),
+                "rmse": rmse_metric(reference_squared_errors, "reference_regime.rmse"),
                 "identification_rate": binary_metric(reference_identified),
                 "recovery_rate": binary_metric(reference_recovered),
             },
