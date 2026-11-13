@@ -611,6 +611,8 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         report = self.evaluator.evaluate_matrix_pairs(runs, tolerance=0.10)
         records = report["pair_records"]
         self.assertEqual(len({record.key for record in records}), 4)
+        self.assertEqual({record.outer_replicate_id for record in records}, {"outer-000000"})
+        self.assertTrue(all(record.assignment_role == "REPEATED_ASSIGNMENT" for record in records))
         run_records = [record for record in records if record.evaluation_level == "RUN"]
         repeated_records = [record for record in records if record.evaluation_level == "REPEATED_ASSIGNMENT"]
         self.assertEqual(len(run_records), 3 * 3)
