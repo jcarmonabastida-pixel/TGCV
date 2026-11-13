@@ -1,6 +1,6 @@
 # C10-S V_cont — Gate 155: Outer Monte Carlo Replication Implementation
 
-**Status:** IMPLEMENTED — TECHNICAL VERIFICATION PENDING FOR CURRENT HEAD  
+**Status:** IMPLEMENTED — TECHNICALLY VERIFIED  
 **Branch:** `research/c10-s-consolidation-draft`  
 **Scope:** C10-S synthetic V_cont harness and calibration/evaluation seed protocol  
 **Scientific execution:** NOT AUTHORIZED  
@@ -95,6 +95,12 @@ MCSE targets are supplied by the caller and must match exactly the numeric EVALU
 
 ## 6. Verification and execution boundary
 
+**Successful technical verification:**
+- Tested commit: `3159ab10566e61eff97cb6d0a10bfc3801a6291b`
+- Workflow run: `43490700407`
+- Result: compilation PASS; primary suite 94/94 PASS; clean source-archive replay 94/94 PASS.
+- Artifact: `14069950102` (SHA-256 `cc70b24cbf7774a6b58a51ca42de4b6ecea60c721e98cd698bf495f78e8e6b6a`).
+
 Technical verification is performed by the existing `c10-s-focal-harness-tests.yml` workflow: Python compilation, the full harness contract suite, and clean source-archive replay. The current implementation must not be marked technically verified until a successful run tests the exact final implementation commit.
 
 This workflow exercises deterministic unit/contract fixtures. It does not generate calibration or evaluation seed banks, run Monte Carlo sizing, run the benchmark, or conduct scientific execution.
@@ -109,6 +115,6 @@ This workflow exercises deterministic unit/contract fixtures. It does not genera
 
 ## 8. Gate 155 status
 
-**IMPLEMENTED — TECHNICAL VERIFICATION PENDING FOR THE FINAL CODE/TEST COMMIT.**
+**IMPLEMENTED — TECHNICALLY VERIFIED** at the exact commit and workflow run recorded in §6.
 
 No calibration, seed-bank generation, Monte Carlo sizing, benchmark execution or scientific execution has been performed.
