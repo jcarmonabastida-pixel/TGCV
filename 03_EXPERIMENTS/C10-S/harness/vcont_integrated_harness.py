@@ -592,7 +592,7 @@ class Sealer:
             if len(row["delta_t_acc_observed"]) != 4 or any(v not in (0, 1) for v in row["delta_t_acc_observed"]):
                 raise ContractError("Delta T_acc must contain four binary coordinates")
         provenance_allowed = {"run_id", "scenario_id", "scenario_version", "world_id", "world_version",
-            "replicate_id", "outer_replicate_id", "assignment_role",
+            "replicate_id", "outer_replicate_id", "assignment_role", "assignment_index",
             "g_assignment_mechanism_id", "g_assignment_mechanism_version",
             "g_assignment_mechanism_hash", "z_assignment_mechanism_id", "z_assignment_mechanism_version",
             "z_assignment_mechanism_hash", "g_reference_regime_id", "g_reference_regime_version",
@@ -605,6 +605,7 @@ class Sealer:
                     "row_count": len(candidate.rows), "sealer_version": "0.2",
                     "outer_replicate_id": candidate.provenance["outer_replicate_id"],
                     "assignment_role": candidate.provenance["assignment_role"],
+                    "assignment_index": candidate.provenance["assignment_index"],
                     "provenance": candidate.provenance, "provenance_sha256": _hash(candidate.provenance)}
         digest = _hash({"manifest": manifest, "rows": candidate.rows})
         return SealedEvidence(candidate.run_id, candidate.rows, manifest, digest)
@@ -829,6 +830,7 @@ class Evaluator:
             "world_version": manifest.world_version, "replicate_id": manifest.replicate_id,
             "outer_replicate_id": manifest.outer_replicate_id,
             "assignment_role": manifest.assignment_role,
+            "assignment_index": manifest.assignment_index,
             "g_assignment_mechanism_id": manifest.g_assignment_mechanism_id,
             "g_assignment_mechanism_version": manifest.g_assignment_mechanism_version,
             "g_assignment_mechanism_hash": manifest.g_assignment_mechanism_hash,
@@ -858,8 +860,10 @@ class Evaluator:
             truth.g_reference_regime_id != manifest.g_reference_regime_id or truth.g_reference_regime_version != manifest.g_reference_regime_version or
             result.outer_replicate_id != manifest.outer_replicate_id or
             result.assignment_role != manifest.assignment_role or
+            result.assignment_index != manifest.assignment_index or
             truth.outer_replicate_id != manifest.outer_replicate_id or
             truth.assignment_role != manifest.assignment_role or
+            truth.assignment_index != manifest.assignment_index or
             result.provenance_sha256 != _hash(manifest_provenance) or
             result.g_assignment_mechanism_id != contract.g_assignment_mechanism_id or result.g_assignment_mechanism_version != contract.g_assignment_mechanism_version or
             result.z_assignment_mechanism_id != contract.z_assignment_mechanism_id or result.z_assignment_mechanism_version != contract.z_assignment_mechanism_version or
