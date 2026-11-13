@@ -67,10 +67,14 @@ class ScenarioConfig:
     z_assignment_seed: int | None = None
     g_assignment_seed: int | None = None
     replicate_id: str = "replicate-000"
+    outer_replicate_id: str = "outer-000000"
+    assignment_role: str = "REPEATED_ASSIGNMENT"
 
-    def validate(self) -> None:
-        if not self.scenario_id or not self.version:
-            raise ContractError("scenario identity/version required")
+    def validate(self) -> None;
+        if not self.scenario_id or not self.version or not self.outer_replicate_id:
+            raise ContractError("scenario, version and outer-replicate identity required")
+        if self.assignment_role not in ("RUN", "REPEATED_ASSIGNMENT"):
+            raise ContractError("assignment_role must be RUN or REPEATED_ASSIGNMENT")
         if self.profile not in ("R0", "R1", "R2", "R3"):
             raise ContractError("profile must be R0/R1/R2/R3")
         if self.n_units < 16 or self.n_units % 4:
@@ -202,6 +206,8 @@ class RunManifest:
     world_seed: int = 0
     z_assignment_seed: int = 0
     g_assignment_seed: int = 0
+    outer_replicate_id: str = "outer-000000"
+    assignment_role: str = "REPEATED_ASSIGNMENT"
 
 
 @dataclass(frozen=True)
@@ -228,6 +234,8 @@ class TruthBundle:
     g_reference_regime_version: str = "001"
     g_assignment_mechanism_hash: str = ""
     z_assignment_mechanism_hash: str = ""
+    outer_replicate_id: str = "outer-000000"
+    assignment_role: str = "REPEATED_ASSIGNMENT"
 
     @property
     def itt_package_truth(self) -> float:
@@ -292,6 +300,8 @@ class AnalyzerResult:
     reference_regime_estimand_version: str = "001"
     g_assignment_estimand_id: str = "ITT_G_Z0_VCONT"
     g_assignment_estimand_version: str = "001"
+    outer_replicate_id: str = "outer-000000"
+    assignment_role: str = "REPEATED_ASSIGNMENT"
 
 
 @dataclass(frozen=True)
@@ -358,10 +368,15 @@ class Generator:
         z_rng = random.Random(z_seed)
         g_rng = random.Random(g_seed)
         world_spec = asdict(cfg)
-        for key in ("seed", "world_seed", "z_assignment_seed", "g_assignment_seed", "replicate_id"):
+        for key in ("seed", "world_seed", "z_assignment_seed", "g_assignment_seed",
+                    "replicate_id", "assignment_role"):
             world_spec.pop(key, None)
-        world_id = _hash({"world_seed": world_seed, "world_spec": world_spec})
-        run_id = _hash({"config": asdict(cfg), "replicate_id": cfg.replicate_id, "world_id": world_id, "z_seed": z_seed, "g_seed": g_seed})[:24]
+        world_id = _hash({"world_seed": world_seed, "outer_replicate_id": cfg.outer_replicate_id,
+                          "world_spec": world_spec})
+        run_id = _hash({"config": asdict(cfg), "replicate_id": cfg.replicate_id,
+                        "outer_replicate_id": cfg.outer_replicate_id,
+                        "assignment_role": cfg.assignment_role, "world_id": world_id,
+                        "z_seed": z_seed, "g_seed": g_seed})[:24]
         z_assign = _balanced_binary(cfg.n_units, z_rng)
         g_assign = _balanced_binary(cfg.n_units, g_rng)
         baseline_x = [world_rng.random() for _ in range(cfg.n_units)]
@@ -528,12 +543,14 @@ class Generator:
             "G_BALANCED_WITH_STRATUM_SUPPORT" if not cfg.positivity else "G_BALANCED", "001", gh,
             "Z_BALANCED_INDEPENDENT", "001", zh, "G_REFERENCE_50_50", "001",
             _hash(z_assign), _hash(g_assign), (("LOW", 0.5), ("HIGH", 0.0 if not cfg.positivity else 0.5)),
-            world_seed, z_seed, g_seed)
+            world_seed, z_seed, g_seed, cfg.outer_replicate_id, cfg.assignment_role)
         truth = TruthBundle(run_id, tuple(v_truth), tuple(interval_truth), tuple(enabled_truth), tuple(profile_truth), tuple(delta_truth),
             itt_reference, itt_g_z0, None, cfg.seed, itt_run, itt_mechanism, itt_reference, invariant_truth,
-            "HIGH" if unsupported_high else "ALL", "G_REFERENCE_50_50", "001", gh, zh)
+            "HIGH" if unsupported_high else "ALL", "G_REFERENCE_50_50", "001", gh, zh,
+            cfg.outer_replicate_id, cfg.assignment_role)
         provenance = {"run_id": run_id, "scenario_id": cfg.scenario_id, "scenario_version": cfg.version,
             "world_id": world_id, "world_version": cfg.version, "replicate_id": cfg.replicate_id,
+            "outer_replicate_id": cfg.outer_replicate_id, "assignment_role": cfg.assignment_role,
             "g_assignment_mechanism_id": manifest.g_assignment_mechanism_id,
             "g_assignment_mechanism_version": manifest.g_assignment_mechanism_version,
             "g_assignment_mechanism_hash": gh,
@@ -567,7 +584,8 @@ class Sealer:
             if len(row["delta_t_acc_observed"]) != 4 or any(v not in (0, 1) for v in row["delta_t_acc_observed"]):
                 raise ContractError("Delta T_acc must contain four binary coordinates")
         provenance_allowed = {"run_id", "scenario_id", "scenario_version", "world_id", "world_version",
-            "replicate_id", "g_assignment_mechanism_id", "g_assignment_mechanism_version",
+            "replicate_id", "outer_replicate_id", "assignment_role",
+            "g_assignment_mechanism_id", "g_assignment_mechanism_version",
             "g_assignment_mechanism_hash", "z_assignment_mechanism_id", "z_assignment_mechanism_version",
             "z_assignment_mechanism_hash", "g_reference_regime_id", "g_reference_regime_version",
             "z_assignment_vector_hash", "g_assignment_vector_hash"}
@@ -577,6 +595,8 @@ class Sealer:
             raise ContractError("assignment vectors do not match provenance hashes")
         manifest = {"run_id": candidate.run_id, "schema": "C10S-VCONT-S3-001",
                     "row_count": len(candidate.rows), "sealer_version": "0.2",
+                    "outer_replicate_id": candidate.provenance["outer_replicate_id"],
+                    "assignment_role": candidate.provenance["assignment_role"],
                     "provenance": candidate.provenance, "provenance_sha256": _hash(candidate.provenance)}
         digest = _hash({"manifest": manifest, "rows": candidate.rows})
         return SealedEvidence(candidate.run_id, candidate.rows, manifest, digest)
@@ -727,7 +747,9 @@ class Analyzer:
                    "reference_regime_estimand_id": contract.reference_regime_estimand_id,
                    "reference_regime_estimand_version": contract.reference_regime_estimand_version,
                    "g_assignment_estimand_id": contract.g_assignment_estimand_id,
-                   "g_assignment_estimand_version": contract.g_assignment_estimand_version}
+                   "g_assignment_estimand_version": contract.g_assignment_estimand_version,
+                   "outer_replicate_id": provenance["outer_replicate_id"],
+                   "assignment_role": provenance["assignment_role"]}
         reference_regime_itt = package if reference_regime_status == "IDENTIFIED" and package_status == "IDENTIFIED" else None
         return AnalyzerResult(evidence.run_id, contract.estimand_id, package_status, g_assignment_status,
             package, g_assignment_estimate, first_stage, package_se, g_assignment_se, reasons, evidence.sha256,
@@ -742,7 +764,8 @@ class Analyzer:
             contract.transportability_basis, reference_regime_itt,
             contract.run_conditional_estimand_id, contract.run_conditional_estimand_version,
             contract.reference_regime_estimand_id, contract.reference_regime_estimand_version,
-            contract.g_assignment_estimand_id, contract.g_assignment_estimand_version)
+            contract.g_assignment_estimand_id, contract.g_assignment_estimand_version,
+            provenance["outer_replicate_id"], provenance["assignment_role"])
 
 
 class Evaluator:
@@ -786,12 +809,16 @@ class Evaluator:
             "reference_regime_estimand_version": result.reference_regime_estimand_version,
             "g_assignment_estimand_id": result.g_assignment_estimand_id,
             "g_assignment_estimand_version": result.g_assignment_estimand_version,
+            "outer_replicate_id": result.outer_replicate_id,
+            "assignment_role": result.assignment_role,
         }
         if _hash(payload) != result.output_sha256:
             raise FirewallError("Analyzer output seal invalid")
         manifest_provenance = {"run_id": manifest.run_id, "scenario_id": manifest.scenario_id,
             "scenario_version": manifest.version, "world_id": manifest.world_id,
             "world_version": manifest.world_version, "replicate_id": manifest.replicate_id,
+            "outer_replicate_id": manifest.outer_replicate_id,
+            "assignment_role": manifest.assignment_role,
             "g_assignment_mechanism_id": manifest.g_assignment_mechanism_id,
             "g_assignment_mechanism_version": manifest.g_assignment_mechanism_version,
             "g_assignment_mechanism_hash": manifest.g_assignment_mechanism_hash,
@@ -819,6 +846,10 @@ class Evaluator:
             result.g_assignment_mechanism_hash != contract.g_assignment_mechanism_hash or result.z_assignment_mechanism_hash != contract.z_assignment_mechanism_hash or
             truth.g_assignment_mechanism_hash != manifest.g_assignment_mechanism_hash or truth.z_assignment_mechanism_hash != manifest.z_assignment_mechanism_hash or
             truth.g_reference_regime_id != manifest.g_reference_regime_id or truth.g_reference_regime_version != manifest.g_reference_regime_version or
+            result.outer_replicate_id != manifest.outer_replicate_id or
+            result.assignment_role != manifest.assignment_role or
+            truth.outer_replicate_id != manifest.outer_replicate_id or
+            truth.assignment_role != manifest.assignment_role or
             result.provenance_sha256 != _hash(manifest_provenance) or
             result.g_assignment_mechanism_id != contract.g_assignment_mechanism_id or result.g_assignment_mechanism_version != contract.g_assignment_mechanism_version or
             result.z_assignment_mechanism_id != contract.z_assignment_mechanism_id or result.z_assignment_mechanism_version != contract.z_assignment_mechanism_version or
@@ -880,6 +911,8 @@ class Evaluator:
         if not runs or tolerance < 0:
             raise ContractError("nonempty repeated-assignment runs and nonnegative tolerance required")
         world_ids = {run[3].world_id for run in runs}
+        outer_ids = {run[3].outer_replicate_id for run in runs}
+        roles = {run[3].assignment_role for run in runs}
         mechanism_truths = {run[0].itt_z_mechanism_truth for run in runs}
         reference_truths = {run[0].itt_z_reference_truth for run in runs}
         reference_statuses = {run[1].reference_regime_status for run in runs}
@@ -890,12 +923,13 @@ class Evaluator:
                             run[3].g_reference_regime_version) for run in runs}
         z_mechanism_ids = {(run[3].z_assignment_mechanism_id, run[3].z_assignment_mechanism_version,
                             run[3].z_assignment_mechanism_hash) for run in runs}
-        if (len(world_ids) != 1 or len(mechanism_truths) != 1
+        if (len(world_ids) != 1 or len(outer_ids) != 1 or roles != {"REPEATED_ASSIGNMENT"}
+                or len(mechanism_truths) != 1
                 or len(g_mechanism_ids) != 1 or len(z_mechanism_ids) != 1
                 or len(reference_truths) != 1 or len(reference_statuses) != 1
                 or len(mechanism_estimand_ids) != 1 or len(reference_estimand_ids) != 1
                 or None in mechanism_truths or None in reference_truths):
-            raise ContractError("repeated-assignment evaluation requires one fixed world, homogeneous G/Z mechanisms and one defined mechanism/reference truth and identification status")
+            raise ContractError("repeated-assignment evaluation requires one outer identity/world, R-only assignment roles, homogeneous G/Z mechanisms and defined truths/status")
         reports = tuple(self.evaluate(truth, result, contract, tolerance, manifest)
                         for truth, result, contract, manifest in runs)
         estimates = [result.package_itt for _, result, _, _ in runs]
@@ -939,8 +973,10 @@ class Evaluator:
             raise ContractError("matrix evaluation requires at least one run")
         scenario_versions = {(item[3].scenario_id, item[3].version) for item in runs}
         world_ids = {item[3].world_id for item in runs}
-        if len(scenario_versions) != 1 or len(world_ids) != 1:
-            raise ContractError("matrix repeated evaluation requires one scenario/version and one fixed world")
+        outer_ids = {item[3].outer_replicate_id for item in runs}
+        roles = {item[3].assignment_role for item in runs}
+        if len(scenario_versions) != 1 or len(world_ids) != 1 or len(outer_ids) != 1 or roles != {"REPEATED_ASSIGNMENT"}:
+            raise ContractError("matrix repeated evaluation requires one scenario/version, one outer world and R-only assignment roles")
         scenario_id, scenario_version = next(iter(scenario_versions))
         specs = tuple(matrix) if matrix is not None else build_scenario_estimand_matrix()
         selected = tuple(spec for spec in specs if spec.key.scenario_id == scenario_id)
