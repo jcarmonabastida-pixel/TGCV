@@ -273,3 +273,17 @@ Canonical preflight record:
 `00_GOVERNANCE/SIP/C10_S_VCONT_MONTE_CARLO_GATE_157_IMPLEMENTATION_PREFLIGHT_DRAFT_001.md`.
 
 No code/test change, seed-bank generation, calibration, Monte Carlo sizing, benchmark or scientific execution was performed in this preflight.
+
+
+## 15. Gate 157 — benchmark-level MONTE_CARLO aggregation
+
+**Status:** IMPLEMENTED / TECHNICALLY VERIFIED.
+
+Canonical implementation record:
+`00_GOVERNANCE/SIP/C10_S_VCONT_MONTE_CARLO_BENCHMARK_AGGREGATION_IMPLEMENTATION_GATE_157_DRAFT_001.md`.
+
+Gate 157 completes the Gate 156 benchmark-level integration. The typed R assignment index now propagates through Generator, sealed provenance, TruthBundle, AnalyzerResult and Evaluator; each M requires one RUN with index -1 and exactly the declared contiguous R indices. The benchmark aggregator composes all 13 scenarios and 52 matrix pairs, emits the full temporal manifest and per-M contribution ledger, applies matrix-authoritative temporal/status classes, preserves separate denominators and emits a report fingerprint bound to design, targets, temporal manifest and ledger.
+
+**Technical verification:** commit `0afb77fb45308a7d1573d0ab644a9d6f69e7302d`, workflow run `43494346461`; compile PASS, primary suite 99/99 PASS, clean source-archive replay 99/99 PASS. Artifact `14070228979`, SHA-256 `c9cb24f9d4504f609abbf8d7eaa8ce0ad839279cbc0b2ddc0c2768b8b1a556c7`.
+
+This verification is deterministic software testing only. No calibration/evaluation seed bank was generated; no numeric N/R/M sizing, calibration, benchmark study or scientific execution was performed or authorized. The caller must supply canonical seed-bank, executable and configuration provenance; this implementation does not select those values.
