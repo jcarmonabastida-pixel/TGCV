@@ -379,5 +379,62 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         self.assertEqual(result.g_assignment_status, "INDETERMINATE")
         self.assertIn("G_REALIZED_ARM_SUPPORT_INSUFFICIENT", result.abstention_reasons)
 
+
+    def test_evaluator_rejects_remaining_transportability_and_identity_mismatches(self):
+        cfg = self.worlds()["R0_SUPPORT_FAILURE"]
+        manifest, truth, _, result, _ = self.execute_world(cfg)
+        bad_contracts = (
+            replace(contract_for(cfg), transportability_id="OTHER_RESTRICTION"),
+            replace(contract_for(cfg), transportability_version="999"),
+            replace(contract_for(cfg), outcome_id="OTHER_OUTCOME"),
+            replace(contract_for(cfg), z_assignment_mechanism_version="999"),
+            replace(contract_for(cfg), reference_regime_id="OTHER_REGIME"),
+        )
+        for bad_contract in bad_contracts:
+            with self.subTest(contract=bad_contract):
+                with self.assertRaises(ContractError):
+                    self.evaluator.evaluate(truth, result, bad_contract, tolerance=0.10, manifest=manifest)
+        with self.assertRaises(ContractError):
+            self.evaluator.evaluate(truth, result, contract_for(cfg), tolerance=0.10,
+                                    manifest=replace(manifest, version="999"))
+
+    def test_evaluator_adjudicates_version_inconsistency_as_expected_abstention(self):
+        cfg = replace(self.worlds()["R0_FOCAL_POSITIVE"], version_consistency=False)
+        manifest, truth, _, result, _ = self.execute_world(cfg)
+        report = self.evaluator.evaluate(truth, result, contract_for(cfg),
+                                         tolerance=0.10, manifest=manifest)
+        self.assertEqual(result.package_status, "INDETERMINATE")
+        self.assertEqual(result.g_assignment_status, "INDETERMINATE")
+        self.assertEqual(result.reference_regime_status, "INDETERMINATE")
+        self.assertTrue(report.expected_abstention_respected)
+        self.assertTrue(report.reference_regime_status_correct)
+        self.assertNotIn("REFERENCE_REGIME_IDENTIFICATION_STATUS_MISMATCH", report.notes)
+
+    def test_assignment_streams_are_independently_reproducible(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        base = replace(cfg, world_seed=771, z_assignment_seed=881,
+                       g_assignment_seed=991, replicate_id="seed-check")
+        same = replace(base, replicate_id="same-seeds")
+        z_changed = replace(base, z_assignment_seed=882, replicate_id="z-changed")
+        g_changed = replace(base, g_assignment_seed=992, replicate_id="g-changed")
+        m0, t0, e0 = self.generator.generate(base)
+        ms, ts, es = self.generator.generate(same)
+        mz, tz, ez = self.generator.generate(z_changed)
+        mg, tg, eg = self.generator.generate(g_changed)
+        z0 = [row["assignment_z"] for row in e0.rows]
+        g0 = [row["assignment_g"] for row in e0.rows]
+        self.assertEqual(z0, [row["assignment_z"] for row in es.rows])
+        self.assertEqual(g0, [row["assignment_g"] for row in es.rows])
+        self.assertEqual(z0, [row["assignment_z"] for row in ez.rows])
+        self.assertEqual(g0, [row["assignment_g"] for row in eg.rows])
+        self.assertNotEqual(z0, [row["assignment_z"] for row in ez.rows])
+        self.assertNotEqual(g0, [row["assignment_g"] for row in eg.rows])
+        for truth in (ts, tz, tg):
+            self.assertEqual(t0.potential_v, truth.potential_v)
+            self.assertEqual(t0.potential_delta_t_acc, truth.potential_delta_t_acc)
+        self.assertEqual(m0.world_id, ms.world_id)
+        self.assertEqual(m0.world_id, mz.world_id)
+        self.assertEqual(m0.world_id, mg.world_id)
+
 if __name__ == "__main__":
     unittest.main()
