@@ -272,7 +272,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
             outer_id = f"outer-{m:06d}"
             world_seed = 4000 + m
             rows = []
-            run_cfg = replace(cfg, outer_replicate_id=outer_id, assignment_role="RUN",
+            run_cfg = replace(cfg, outer_replicate_id=outer_id, assignment_role="RUN", assignment_index=-1,
                               world_seed=world_seed, z_assignment_seed=5000+m,
                               g_assignment_seed=6000+m, replicate_id=f"{outer_id}-RUN")
             manifest, truth, candidate = self.generator.generate(run_cfg)
@@ -282,7 +282,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
             rows = [(truth, result, contract, manifest)]
             for r in range(2):
                 rep_cfg = replace(cfg, outer_replicate_id=outer_id,
-                                  assignment_role="REPEATED_ASSIGNMENT",
+                                  assignment_role="REPEATED_ASSIGNMENT", assignment_index=r,
                                   world_seed=world_seed, z_assignment_seed=7000+m*10+r,
                                   g_assignment_seed=8000+m*10+r, replicate_id=f"{outer_id}-R{r}")
                 rep_manifest, rep_truth, rep_candidate = self.generator.generate(rep_cfg)
@@ -307,7 +307,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         outer_runs = {}
         for m in range(2):
             outer_id = f"outer-shared-{m}"
-            run_cfg = replace(cfg, outer_replicate_id=outer_id, assignment_role="RUN",
+            run_cfg = replace(cfg, outer_replicate_id=outer_id, assignment_role="RUN", assignment_index=-1,
                               world_seed=9000, z_assignment_seed=9100+m,
                               g_assignment_seed=9200+m, replicate_id=f"{outer_id}-RUN")
             manifest, truth, candidate = self.generator.generate(run_cfg)
