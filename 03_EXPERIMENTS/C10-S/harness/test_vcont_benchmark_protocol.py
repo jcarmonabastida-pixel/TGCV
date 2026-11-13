@@ -3,7 +3,7 @@ import unittest
 from dataclasses import replace
 
 from vcont_benchmark_protocol import (
-    ProtocolError, build_seed_bank, required_replicates, select_minimum_n,
+    ProtocolError, build_seed_bank, SeedAssignment, required_replicates, select_minimum_n,
     summarize_binary, summarize_continuous, summarize_scenario, summarize_monte_carlo_rmse,
     seed_bank_fingerprint, validate_seed_banks, build_scenario_estimand_matrix, summarize_monte_carlo,
     select_minimum_n_by_estimand, required_replicates_by_estimand,
@@ -234,13 +234,13 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
         self.assertEqual(specs["ITT_G_Z0_VCONT"].run_evaluation_class, "EVALUABLE")
         self.assertIsNone(specs["ITT_G_Z0_VCONT"].repeated_evaluation_class)
     def test_seed_assignment_exposes_typed_r_index(self):
-        bank = build_seed_bank("evaluation", [SCENARIO_IDS[0]], [400], 3,
-                               "gate157-test", outer_replicates=2)
-        run_rows = [row for row in bank if row.assignment_role == "RUN"]
-        repeated = [row for row in bank if row.assignment_role == "REPEATED_ASSIGNMENT"]
-        self.assertEqual(len(run_rows), 2)
-        self.assertTrue(all(row.assignment_index == -1 for row in run_rows))
-        self.assertEqual(sorted(row.assignment_index for row in repeated), [0, 0, 1, 1, 2, 2])
+        run = SeedAssignment("evaluation", SCENARIO_IDS[0], 400, -1, 101, 201, 301,
+                             scenario_version="VCONT-SYNTH-001", outer_replicate_id="M0",
+                             assignment_role="RUN")
+        repeated = SeedAssignment("evaluation", SCENARIO_IDS[0], 400, 2, 101, 203, 303,
+                                  scenario_version="VCONT-SYNTH-001", outer_replicate_id="M0")
+        self.assertEqual(run.assignment_index, -1)
+        self.assertEqual(repeated.assignment_index, 2)
 
     def test_monte_carlo_design_requires_exact_52_pair_matrix_and_targets(self):
         matrix = build_scenario_estimand_matrix()
