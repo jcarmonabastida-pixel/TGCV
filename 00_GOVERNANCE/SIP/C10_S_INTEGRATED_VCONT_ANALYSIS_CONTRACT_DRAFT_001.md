@@ -408,3 +408,37 @@ The integrated V_cont analysis contract is **closed for coordinated implementati
 This closure is not a claim that the contract is implemented, tested, scientifically validated or accepted as a C10-S Design Freeze. Implementation, static audit and separately authorized technical execution remain pending.
 
 **Execution flags:** `scientific_execution=false`; `execution_authorized=false`.
+
+## 14. Implementation alignment record — 2026-11-13
+
+The coordinated implementation pass has begun in the research branch. The following changes are present in the current harness and test source; they have **not** been executed.
+
+### 14.1 Implemented in source (static presence only)
+
+- ScenarioConfig now separates world, Z-assignment and G-assignment seeds and carries a replicate ID plus a finite zg_interaction_effect parameter.
+- Generator uses independent random streams for the fixed synthetic world and the two assignment vectors.
+- TruthBundle distinguishes run-conditional ITT-Z, mechanism-marginal ITT-Z and reference-regime ITT-Z; legacy itt_z_truth remains an alias for the 50/50 reference truth. theta_a_truth remains None.
+- RunManifest records world/replicate identity, assignment mechanism IDs/versions/hashes, realized assignment-vector hashes, reference-regime identity and stratum-level G assignment probabilities.
+- Analyzer reports run-conditional ITT-Z separately from reference-regime identification. Lack of G support does not by itself invalidate the run-conditional target; the 50/50 reference target is separately NOT_IDENTIFIED unless the total-Z-effect transportability declaration covers the unsupported HIGH stratum.
+- Evaluator checks estimand, target-regime, outcome and assignment-mechanism hash correspondence before scoring. Run-level ITT-Z is compared with its matching run-conditional truth, not the marginal reference truth.
+- The scenario roster now contains R2_SUPPORT_FAILURE_ZG_INTERACTION, with a structural G support failure and a nonzero Z×G interaction parameter.
+- Existing and new tests cover separated truths, independent random streams, support/transportability adjudication, mechanism provenance, firewall rejection and evaluator mismatch rejection.
+
+### 14.2 Test coverage status
+
+The existing suite has been retained and ten additional tests have been added. The coverage mapping is partial:
+- Covered in source tests: AC-01…AC-10, AC-12, AC-14…AC-16.
+- Partially covered: AC-11 (target-regime and assignment-mechanism hash mismatch are tested; every required mismatch class is not yet individually tested).
+- Partially covered: AC-13 (interference and measurement adversity are tested; version-mismatch adjudication still needs a dedicated assertion).
+
+These are test definitions only. No test has been run in this implementation pass, so no PASS, CI success, benchmark recovery or scientific validation is claimed.
+
+### 14.3 Remaining static work before execution authorization
+
+1. Complete AC-11 mismatch coverage and AC-13 version-consistency coverage.
+2. Audit the exact DGP-derived transportability declaration against every potential-outcome pathway and its scope.
+3. Verify that repeated-assignment tests assess mechanism-level recovery without implying confirmatory inference.
+4. Reconcile code/test schemas and this record against the current branch diff.
+5. Preserve the execution gate: no test suite, CI, Monte Carlo benchmark or scientific execution until separately authorized.
+
+State: source changes present; test definitions present; static review incomplete; execution not performed; scientific_execution=false; execution_authorized=false.
