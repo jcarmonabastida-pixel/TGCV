@@ -100,5 +100,6 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
         ev = build_seed_bank("evaluation", ["R0"], [100], 2, "protocol-v1")
         self.assertEqual(seed_bank_fingerprint(cal), seed_bank_fingerprint(tuple(cal)))
         self.assertNotEqual(seed_bank_fingerprint(cal), seed_bank_fingerprint(ev))
-\nif __name__ == "__main__":
+
+if __name__ == "__main__":
     unittest.main()
