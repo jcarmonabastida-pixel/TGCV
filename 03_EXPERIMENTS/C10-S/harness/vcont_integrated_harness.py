@@ -115,6 +115,14 @@ class ScenarioConfig:
 class AnalysisContract:
     estimand_id: str
     estimand_version: str
+    run_conditional_estimand_id: str = "ITT_Z_RUN_CONDITIONAL_VCONT"
+    run_conditional_estimand_version: str = "001"
+    mechanism_marginal_estimand_id: str = "ITT_Z_MECHANISM_MARGINAL_VCONT"
+    mechanism_marginal_estimand_version: str = "001"
+    reference_regime_estimand_id: str = "ITT_Z_REFERENCE_REGIME_VCONT"
+    reference_regime_estimand_version: str = "001"
+    g_assignment_estimand_id: str = "ITT_G_Z0_VCONT"
+    g_assignment_estimand_version: str = "001"
     randomized_z: bool
     randomized_g: bool
     positivity: bool
@@ -146,6 +154,11 @@ class AnalysisContract:
     def validate(self) -> None:
         if not self.estimand_id or not self.estimand_version or not self.target_regime_id or not self.target_regime_version:
             raise ContractError("estimand and target-regime identity/version required")
+        if not all((self.run_conditional_estimand_id, self.run_conditional_estimand_version,
+                    self.mechanism_marginal_estimand_id, self.mechanism_marginal_estimand_version,
+                    self.reference_regime_estimand_id, self.reference_regime_estimand_version,
+                    self.g_assignment_estimand_id, self.g_assignment_estimand_version)):
+            raise ContractError("all four assignment-estimand identities and versions are required")
         if self.z_effect_invariant_across_g and not (self.transportability_id and self.transportability_version and self.transportability_scope and self.transportability_evidence_status == "STRUCTURALLY_VERIFIED" and self.transportability_outcome_id == self.outcome_id and self.transportability_basis):
             raise ContractError("transportability declaration requires ID, version, scope, matching outcome, basis and structural verification")
         if not all((self.g_assignment_mechanism_id, self.g_assignment_mechanism_version, self.z_assignment_mechanism_id, self.z_assignment_mechanism_version, self.reference_regime_id, self.reference_regime_version)):
@@ -264,6 +277,12 @@ class AnalyzerResult:
     transportability_outcome_id: str | None = None
     transportability_basis: str | None = None
     reference_regime_itt: float | None = None
+    run_conditional_estimand_id: str = "ITT_Z_RUN_CONDITIONAL_VCONT"
+    run_conditional_estimand_version: str = "001"
+    reference_regime_estimand_id: str = "ITT_Z_REFERENCE_REGIME_VCONT"
+    reference_regime_estimand_version: str = "001"
+    g_assignment_estimand_id: str = "ITT_G_Z0_VCONT"
+    g_assignment_estimand_version: str = "001"
 
 
 @dataclass(frozen=True)
@@ -293,6 +312,10 @@ class RepeatedAssignmentReport:
     reference_abs_error: float | None = None
     reference_recovered: bool | None = None
     reference_identification_status: Identification = "INDETERMINATE"
+    mechanism_marginal_estimand_id: str = "ITT_Z_MECHANISM_MARGINAL_VCONT"
+    mechanism_marginal_estimand_version: str = "001"
+    reference_regime_estimand_id: str = "ITT_Z_REFERENCE_REGIME_VCONT"
+    reference_regime_estimand_version: str = "001"
 
 
 def _hash(obj: Any) -> str:
@@ -689,7 +712,13 @@ class Analyzer:
                    "provenance_sha256": evidence.manifest["provenance_sha256"],
                    "transportability_outcome_id": contract.transportability_outcome_id,
                    "transportability_basis": contract.transportability_basis,
-                   "reference_regime_itt": (package if reference_regime_status == "IDENTIFIED" and package_status == "IDENTIFIED" else None)}
+                   "reference_regime_itt": (package if reference_regime_status == "IDENTIFIED" and package_status == "IDENTIFIED" else None),
+                   "run_conditional_estimand_id": contract.run_conditional_estimand_id,
+                   "run_conditional_estimand_version": contract.run_conditional_estimand_version,
+                   "reference_regime_estimand_id": contract.reference_regime_estimand_id,
+                   "reference_regime_estimand_version": contract.reference_regime_estimand_version,
+                   "g_assignment_estimand_id": contract.g_assignment_estimand_id,
+                   "g_assignment_estimand_version": contract.g_assignment_estimand_version}
         reference_regime_itt = package if reference_regime_status == "IDENTIFIED" and package_status == "IDENTIFIED" else None
         return AnalyzerResult(evidence.run_id, contract.estimand_id, package_status, g_assignment_status,
             package, g_assignment_estimate, first_stage, package_se, g_assignment_se, reasons, evidence.sha256,
@@ -701,7 +730,10 @@ class Analyzer:
             contract.estimand_version, contract.g_assignment_mechanism_id, contract.g_assignment_mechanism_version,
             contract.z_assignment_mechanism_id, contract.z_assignment_mechanism_version,
             evidence.manifest["provenance_sha256"], contract.transportability_outcome_id,
-            contract.transportability_basis, reference_regime_itt)
+            contract.transportability_basis, reference_regime_itt,
+            contract.run_conditional_estimand_id, contract.run_conditional_estimand_version,
+            contract.reference_regime_estimand_id, contract.reference_regime_estimand_version,
+            contract.g_assignment_estimand_id, contract.g_assignment_estimand_version)
 
 
 class Evaluator:
@@ -739,6 +771,12 @@ class Evaluator:
             "transportability_outcome_id": result.transportability_outcome_id,
             "transportability_basis": result.transportability_basis,
             "reference_regime_itt": result.reference_regime_itt,
+            "run_conditional_estimand_id": result.run_conditional_estimand_id,
+            "run_conditional_estimand_version": result.run_conditional_estimand_version,
+            "reference_regime_estimand_id": result.reference_regime_estimand_id,
+            "reference_regime_estimand_version": result.reference_regime_estimand_version,
+            "g_assignment_estimand_id": result.g_assignment_estimand_id,
+            "g_assignment_estimand_version": result.g_assignment_estimand_version,
         }
         if _hash(payload) != result.output_sha256:
             raise FirewallError("Analyzer output seal invalid")
@@ -760,6 +798,9 @@ class Evaluator:
         if manifest.g_assignment_probability_by_stratum != expected_g_probabilities or manifest.g_assignment_mechanism_hash != expected_g_hash:
             raise ContractError("RunManifest G assignment probabilities do not match the declared mechanism")
         if (result.estimand_id != contract.estimand_id or result.estimand_version != contract.estimand_version or
+            result.run_conditional_estimand_id != contract.run_conditional_estimand_id or result.run_conditional_estimand_version != contract.run_conditional_estimand_version or
+            result.reference_regime_estimand_id != contract.reference_regime_estimand_id or result.reference_regime_estimand_version != contract.reference_regime_estimand_version or
+            result.g_assignment_estimand_id != contract.g_assignment_estimand_id or result.g_assignment_estimand_version != contract.g_assignment_estimand_version or
             result.target_regime_id != contract.target_regime_id or result.target_regime_version != contract.target_regime_version or
             result.outcome_id != contract.outcome_id or result.outcome_version != contract.outcome_version or
             result.reference_regime_id != manifest.g_reference_regime_id or result.reference_regime_version != manifest.g_reference_regime_version or
@@ -833,6 +874,8 @@ class Evaluator:
         mechanism_truths = {run[0].itt_z_mechanism_truth for run in runs}
         reference_truths = {run[0].itt_z_reference_truth for run in runs}
         reference_statuses = {run[1].reference_regime_status for run in runs}
+        mechanism_estimand_ids = {(run[2].mechanism_marginal_estimand_id, run[2].mechanism_marginal_estimand_version) for run in runs}
+        reference_estimand_ids = {(run[2].reference_regime_estimand_id, run[2].reference_regime_estimand_version) for run in runs}
         g_mechanism_ids = {(run[3].g_assignment_mechanism_id, run[3].g_assignment_mechanism_version,
                             run[3].g_assignment_mechanism_hash, run[3].g_reference_regime_id,
                             run[3].g_reference_regime_version) for run in runs}
@@ -841,6 +884,7 @@ class Evaluator:
         if (len(world_ids) != 1 or len(mechanism_truths) != 1
                 or len(g_mechanism_ids) != 1 or len(z_mechanism_ids) != 1
                 or len(reference_truths) != 1 or len(reference_statuses) != 1
+                or len(mechanism_estimand_ids) != 1 or len(reference_estimand_ids) != 1
                 or None in mechanism_truths or None in reference_truths):
             raise ContractError("repeated-assignment evaluation requires one fixed world, homogeneous G/Z mechanisms and one defined mechanism/reference truth and identification status")
         reports = tuple(self.evaluate(truth, result, contract, tolerance, manifest)
@@ -867,7 +911,9 @@ class Evaluator:
         return RepeatedAssignmentReport(next(iter(world_ids)), len(runs), marginal_estimate,
             next(iter(mechanism_truths)), marginal_error, recovered, reports,
             next(iter(reference_truths)), reference_mean, reference_error,
-            reference_recovered, reference_status)
+            reference_recovered, reference_status,
+            next(iter(mechanism_estimand_ids))[0], next(iter(mechanism_estimand_ids))[1],
+            next(iter(reference_estimand_ids))[0], next(iter(reference_estimand_ids))[1])
 
 
 def benchmark_scenarios(n_units: int = 400, n_intervals: int = 20,
