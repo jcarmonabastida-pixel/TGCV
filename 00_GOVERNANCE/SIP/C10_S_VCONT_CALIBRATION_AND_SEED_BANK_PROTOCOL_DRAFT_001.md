@@ -298,3 +298,15 @@ The benchmark-level MONTE_CARLO implementation and targeted classification verif
 The dedicated regression distinguishes `TRUTH_MISSING` from `INVALID_OUTPUT` and asserts their counters and denominators. Verified commit: `a399c5810fa988b31390e2957671f6bf134836b7`; GitHub Actions run `43496381997`; compile PASS, primary suite 100/100 PASS, clean source-archive replay 100/100 PASS. Artifact `14070369862`, SHA-256 `c9a3050c8081bb48099b57ad123cd2e955c31f88791529016c2943252b5f9ffd`.
 
 This closes the narrow software regression only. No calibration, seed-bank generation, N/R/M sizing, benchmark study or scientific execution was performed or authorized.
+
+## 17. Gate 158 — Monte Carlo report provenance audit
+
+Gate 158 static audit is persisted in:
+
+`C10_S_VCONT_MONTE_CARLO_PROVENANCE_AUDIT_GATE_158_DRAFT_001.md`.
+
+Audit verdict: **AUDITED — CONDITIONAL / PROVENANCE BINDING NOT IMPLEMENTED**.
+
+The report fingerprint currently binds the report payload internally, but the declared seed-bank fingerprint, executable commit and configuration fingerprint are only syntax-checked caller inputs. The Evaluator does not recompute or compare them against the actual SeedAssignment bank, runtime/source commit and canonical run configuration. The Evaluator also does not invoke the separate seed-bank validator or fully reconcile each RunManifest to its canonical SeedAssignment row.
+
+Required next step: implement the Gate 158 provenance-binding layer and adversarial tests listed in the audit before claiming verified provenance. This is a technical integrity requirement; it does not authorize calibration, seed-bank generation, N/R/M sizing, benchmark execution or scientific execution.
