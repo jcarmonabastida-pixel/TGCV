@@ -275,6 +275,17 @@ class EvaluationReport:
     reference_regime_status_correct: bool = False
 
 
+@dataclass(frozen=True)
+class RepeatedAssignmentReport:
+    world_id: str
+    replicate_count: int
+    mean_run_estimate: float | None
+    mechanism_truth: float
+    marginal_abs_error: float | None
+    marginal_recovered: bool | None
+    per_run_reports: tuple[EvaluationReport, ...]
+
+
 def _hash(obj: Any) -> str:
     payload = json.dumps(obj, sort_keys=True, separators=(",", ":"), allow_nan=False)
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
@@ -758,6 +769,29 @@ class Evaluator:
             notes.append("REFERENCE_REGIME_IDENTIFICATION_STATUS_MISMATCH")
         return EvaluationReport(truth.run_id, package_error, g_assignment_error,
                                 package_ok, g_assignment_ok, expected_abstention, tuple(notes), reference_status_correct)
+
+    def evaluate_repeated_assignment(self, runs: list[tuple[TruthBundle, AnalyzerResult, AnalysisContract, RunManifest]], tolerance: float) -> RepeatedAssignmentReport:
+        if not runs or tolerance < 0:
+            raise ContractError("nonempty repeated-assignment runs and nonnegative tolerance required")
+        world_ids = {run[3].world_id for run in runs}
+        mechanism_truths = {run[0].itt_z_mechanism_truth for run in runs}
+        if len(world_ids) != 1 or len(mechanism_truths) != 1 or None in mechanism_truths:
+            raise ContractError("repeated-assignment evaluation requires one fixed world and one defined mechanism truth")
+        reports = tuple(self.evaluate(truth, result, contract, tolerance, manifest)
+                        for truth, result, contract, manifest in runs)
+        estimates = [result.package_itt for _, result, _, _ in runs]
+        if any(value is None or result.package_status != "IDENTIFIED"
+               for value, (_, result, _, _) in zip(estimates, runs)):
+            marginal_estimate = None
+            marginal_error = None
+            recovered = None
+        else:
+            marginal_estimate = mean(estimates)
+            target = next(iter(mechanism_truths))
+            marginal_error = abs(marginal_estimate - target)
+            recovered = marginal_error <= tolerance
+        return RepeatedAssignmentReport(next(iter(world_ids)), len(runs), marginal_estimate,
+            next(iter(mechanism_truths)), marginal_error, recovered, reports)
 
 
 def benchmark_scenarios(n_units: int = 400, n_intervals: int = 20,
