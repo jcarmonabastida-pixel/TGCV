@@ -517,9 +517,12 @@ class PairEvaluationAdapter:
                 raise ProtocolError("repeated EVALUABLE pair requires finite repeated DGP truth")
             if output is None or not isfinite(float(output)) or status != "IDENTIFIED":
                 raise ProtocolError("repeated EVALUABLE pair requires an identified finite aggregate")
-            adjudication, abstained = "PASS", False
+            absolute_error = abs(float(output) - float(raw_truth))
+            recovered = absolute_error <= tolerance
+            adjudication, abstained = ("PASS" if recovered else "FAIL"), False
         else:
             output_field, output = None, None
+            absolute_error, recovered = None, None
             abstained = status != "IDENTIFIED"
             adjudication = "STATUS_PASS" if (status == spec.identification_expectation and abstained is spec.abstention_expectation) else "STATUS_FAIL"
         validate_evaluation_observation(spec, observed_key=spec.key, analyzer_output_field=output_field,
@@ -527,7 +530,8 @@ class PairEvaluationAdapter:
             observed_identification_status=status, observed_abstained=abstained)
         return PairEvaluationRecord(spec.key, "REPEATED_ASSIGNMENT", None, spec.truth_field,
             None if raw_truth is None else float(raw_truth), output_field,
-            None if output is None else float(output), status, abstained, adjudication)
+            None if output is None else float(output), status, abstained, adjudication,
+            absolute_error, recovered)
 
 
 def summarize_estimand(spec: ScenarioEstimandSpec, *, estimates: Iterable[float] | None = None,
