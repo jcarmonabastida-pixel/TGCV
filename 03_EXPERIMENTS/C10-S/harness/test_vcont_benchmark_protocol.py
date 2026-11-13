@@ -131,15 +131,15 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
         for cls in ("STATUS_ONLY", "NOT_IDENTIFIABLE"):
             spec = next(row for row in matrix if row.evaluation_class == cls)
             with self.assertRaises(ProtocolError):
-                validate_evaluation_observation(spec, observed_key=spec.key, analyzer_output_field=None, dgp_truth=1.0, analyzer_output=1.0, adjudication="PASS")
-            validate_evaluation_observation(spec, observed_key=spec.key, analyzer_output_field=None, dgp_truth=1.0, analyzer_output=None, adjudication="STATUS_PASS")
+                validate_evaluation_observation(spec, observed_key=spec.key, analyzer_output_field=None, dgp_truth=1.0, analyzer_output=1.0, adjudication="PASS", observed_identification_status="IDENTIFIED", observed_abstained=False)
+            validate_evaluation_observation(spec, observed_key=spec.key, analyzer_output_field=None, dgp_truth=1.0, analyzer_output=None, adjudication="STATUS_PASS", observed_identification_status=spec.identification_expectation, observed_abstained=spec.abstention_expectation)
 
     def test_evaluable_pair_rejects_null_truth_and_missing_output(self):
         spec = next(row for row in build_scenario_estimand_matrix() if row.evaluation_class == "EVALUABLE")
         with self.assertRaises(ProtocolError):
-            validate_evaluation_observation(spec, observed_key=spec.key, analyzer_output_field=spec.analyzer_output_field, dgp_truth=None, analyzer_output=1.0, adjudication="PASS")
+            validate_evaluation_observation(spec, observed_key=spec.key, analyzer_output_field=spec.analyzer_output_field, dgp_truth=None, analyzer_output=1.0, adjudication="PASS", observed_identification_status="IDENTIFIED", observed_abstained=False)
         with self.assertRaises(ProtocolError):
-            validate_evaluation_observation(spec, observed_key=spec.key, analyzer_output_field=spec.analyzer_output_field, dgp_truth=1.0, analyzer_output=None, adjudication="PASS")
+            validate_evaluation_observation(spec, observed_key=spec.key, analyzer_output_field=spec.analyzer_output_field, dgp_truth=1.0, analyzer_output=None, adjudication="PASS", observed_identification_status="IDENTIFIED", observed_abstained=False)
 
     def test_pair_validator_rejects_mismatched_estimand_or_version(self):
         spec = next(row for row in build_scenario_estimand_matrix() if row.evaluation_class == "EVALUABLE")
@@ -148,11 +148,11 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
         with self.assertRaises(ProtocolError):
             validate_evaluation_observation(spec, observed_key=wrong_key,
                 analyzer_output_field=spec.analyzer_output_field, dgp_truth=1.0,
-                analyzer_output=1.0, adjudication="PASS")
+                analyzer_output=1.0, adjudication="PASS", observed_identification_status="IDENTIFIED", observed_abstained=False)
         with self.assertRaises(ProtocolError):
             validate_evaluation_observation(spec, observed_key=spec.key,
                 analyzer_output_field="g_assignment_effect", dgp_truth=1.0,
-                analyzer_output=1.0, adjudication="PASS")
+                analyzer_output=1.0, adjudication="PASS", observed_identification_status="IDENTIFIED", observed_abstained=False)
 
     def test_seed_bank_identity_includes_scenario_version(self):
         v1 = build_seed_bank("calibration", ["R0"], [100], 2, "protocol-v2", {"R0": "DGP-001"})
