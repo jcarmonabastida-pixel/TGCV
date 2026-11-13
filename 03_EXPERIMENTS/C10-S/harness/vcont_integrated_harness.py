@@ -223,6 +223,9 @@ class AnalyzerResult:
     target_regime_version: str = "001"
     outcome_id: str = "V_CONT"
     outcome_version: str = "001"
+    reference_regime_status: Identification = "INDETERMINATE"
+    reference_regime_id: str = "G_REFERENCE_50_50"
+    reference_regime_version: str = "001"
 
 
 @dataclass(frozen=True)
@@ -478,10 +481,13 @@ class Analyzer:
             package_reasons.append("PACKAGE_RANDOMIZATION_NOT_ESTABLISHED")
         if not contract.randomized_g:
             g_assignment_reasons.append("G_RANDOMIZATION_NOT_ESTABLISHED")
+        reference_regime_status: Identification = "IDENTIFIED"
         if not contract.positivity:
             g_assignment_reasons.append("COMMON_SUPPORT_FAILURE")
             if not contract.z_effect_invariant_across_g:
-                package_reasons.append("REFERENCE_REGIME_NOT_IDENTIFIED_WITHOUT_TOTAL_EFFECT_TRANSPORTABILITY")
+                reference_regime_status = "NOT_IDENTIFIED"
+            elif contract.transportability_scope != "HIGH":
+                reference_regime_status = "INDETERMINATE"
         if not contract.no_interference:
             shared_reasons.append("INTERFERENCE_REQUIRES_CLUSTER_EXPOSURE_ESTIMAND")
         if not contract.measurement_identified:
@@ -556,10 +562,13 @@ class Analyzer:
                    "package_se": package_se, "g_assignment_se": g_assignment_se,
                    "reasons": list(reasons), "input_sha256": evidence.sha256,
                    "target_regime_id": contract.target_regime_id, "target_regime_version": contract.target_regime_version,
-                   "outcome_id": contract.outcome_id, "outcome_version": contract.outcome_version}
+                   "outcome_id": contract.outcome_id, "outcome_version": contract.outcome_version,
+                   "reference_regime_status": reference_regime_status,
+                   "reference_regime_id": "G_REFERENCE_50_50", "reference_regime_version": "001"}
         return AnalyzerResult(evidence.run_id, contract.estimand_id, package_status, g_assignment_status,
             package, g_assignment_estimate, first_stage, package_se, g_assignment_se, reasons, evidence.sha256,
-            _hash(payload), contract.target_regime_id, contract.target_regime_version, contract.outcome_id, contract.outcome_version)
+            _hash(payload), contract.target_regime_id, contract.target_regime_version, contract.outcome_id, contract.outcome_version,
+            reference_regime_status, "G_REFERENCE_50_50", "001")
 
 
 class Evaluator:
@@ -576,10 +585,13 @@ class Evaluator:
             "reasons": list(result.abstention_reasons), "input_sha256": result.input_sha256,
             "target_regime_id": result.target_regime_id, "target_regime_version": result.target_regime_version,
             "outcome_id": result.outcome_id, "outcome_version": result.outcome_version,
+            "reference_regime_status": result.reference_regime_status,
+            "reference_regime_id": result.reference_regime_id,
+            "reference_regime_version": result.reference_regime_version,
         }
         if _hash(payload) != result.output_sha256:
             raise FirewallError("Analyzer output seal invalid")
-        if (result.estimand_id != contract.estimand_id or result.target_regime_id != contract.target_regime_id or result.target_regime_version != contract.target_regime_version or result.outcome_id != contract.outcome_id or result.outcome_version != contract.outcome_version):
+        if (result.estimand_id != contract.estimand_id or result.target_regime_id != contract.target_regime_id or result.target_regime_version != contract.target_regime_version or result.outcome_id != contract.outcome_id or result.outcome_version != contract.outcome_version or result.reference_regime_id != "G_REFERENCE_50_50" or result.reference_regime_version != "001"):
             raise ContractError("estimand, target regime or outcome identity mismatch")
         package_target = truth.itt_z_run_truth
         package_error = None if result.package_itt is None or package_target is None else abs(result.package_itt - package_target)
