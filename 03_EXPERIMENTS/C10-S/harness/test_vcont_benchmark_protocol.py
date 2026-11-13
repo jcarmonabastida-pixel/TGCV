@@ -240,7 +240,7 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
         repeated = [row for row in bank if row.assignment_role == "REPEATED_ASSIGNMENT"]
         self.assertEqual(len(run_rows), 2)
         self.assertTrue(all(row.assignment_index == -1 for row in run_rows))
-        self.assertEqual(sorted(row.assignment_index for row in repeated), [0, 1, 2, 0, 1, 2])
+        self.assertEqual(sorted(row.assignment_index for row in repeated), [0, 0, 1, 1, 2, 2])
 
     def test_monte_carlo_design_requires_exact_52_pair_matrix_and_targets(self):
         matrix = build_scenario_estimand_matrix()
