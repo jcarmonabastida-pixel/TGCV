@@ -1024,11 +1024,12 @@ class Evaluator:
             summarize_monte_carlo,
         )
         if (not isinstance(outer_runs, dict) or len(outer_runs) < 2 or tolerance < 0
-                or not target_mcse_by_metric):
+                or target_mcse_by_metric is None):
             raise ContractError("Monte Carlo evaluation requires at least two named outer worlds, metric targets and nonnegative tolerance")
         scenario_versions = set()
         sample_sizes = set()
         world_ids = set()
+        world_seeds = set()
         per_outer = []
         for outer_id, runs in outer_runs.items():
             runs = tuple(runs)
@@ -1044,9 +1045,14 @@ class Evaluator:
             if len(all_world_ids) != 1:
                 raise ContractError("RUN and R assignments must share one fixed world within each M")
             world_id = next(iter(all_world_ids))
-            if world_id in world_ids:
-                raise ContractError("outer Monte Carlo replicates must have independent world identities")
+            world_seed_values = {item[3].world_seed for item in runs}
+            if len(world_seed_values) != 1:
+                raise ContractError("RUN and R assignments must share one world seed within each M")
+            world_seed = next(iter(world_seed_values))
+            if world_id in world_ids or world_seed in world_seeds:
+                raise ContractError("outer Monte Carlo replicates must have distinct world identities and world seeds")
             world_ids.add(world_id)
+            world_seeds.add(world_seed)
             identities = {(item[3].scenario_id, item[3].version) for item in runs}
             if len(identities) != 1:
                 raise ContractError("scenario/version must remain fixed across runs within an outer world")
