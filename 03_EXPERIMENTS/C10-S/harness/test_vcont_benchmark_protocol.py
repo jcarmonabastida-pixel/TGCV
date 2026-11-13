@@ -4,7 +4,7 @@ import unittest
 from vcont_benchmark_protocol import (
     ProtocolError, build_seed_bank, required_replicates, select_minimum_n,
     summarize_binary, summarize_continuous, summarize_scenario,
-    seed_bank_fingerprint, validate_seed_banks, build_scenario_estimand_matrix,
+    seed_bank_fingerprint, validate_seed_banks, build_scenario_estimand_matrix, summarize_monte_carlo,
     select_minimum_n_by_estimand, required_replicates_by_estimand,
     validate_evaluation_observation, EvaluationKey, summarize_estimand,
 )
@@ -82,6 +82,46 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
     def test_seed_bank_rejects_invalid_n_grid(self):
         with self.assertRaises(ProtocolError):
             build_seed_bank("calibration", ["R0"], [99], 2, "protocol-v1")
+
+
+    def test_outer_m_seed_bank_has_independent_worlds_and_designated_run(self):
+        rows = build_seed_bank("calibration", ["R0"], [100], 3, "m-protocol",
+                               {"R0": "DGP-001"}, outer_replicates=4)
+        self.assertEqual(len(rows), 4 * (1 + 3))
+        worlds = {}
+        for row in rows:
+            worlds.setdefault(row.outer_replicate_id, set()).add(row.world_seed)
+        self.assertEqual(len(worlds), 4)
+        self.assertTrue(all(len(seeds) == 1 for seeds in worlds.values()))
+        self.assertEqual(len({next(iter(seeds)) for seeds in worlds.values()}), 4)
+        for outer_id in worlds:
+            group = [row for row in rows if row.outer_replicate_id == outer_id]
+            self.assertEqual(sum(row.assignment_role == "RUN" for row in group), 1)
+            self.assertEqual(sum(row.assignment_role == "REPEATED_ASSIGNMENT" for row in group), 3)
+        validate_seed_banks(rows, ())
+
+    def test_outer_m_fingerprint_includes_outer_identity_and_role(self):
+        rows = build_seed_bank("calibration", ["R0"], [100], 2, "m-fingerprint",
+                               outer_replicates=2)
+        self.assertEqual(seed_bank_fingerprint(rows), seed_bank_fingerprint(tuple(rows)))
+        altered = list(rows)
+        altered[0] = __import__("dataclasses").replace(
+            altered[0], outer_replicate_id="outer-altered")
+        self.assertNotEqual(seed_bank_fingerprint(rows), seed_bank_fingerprint(altered))
+
+    def test_monte_carlo_aggregator_requires_unique_complete_outer_contributions(self):
+        summary = summarize_monte_carlo(
+            [("m0", 1.0), ("m1", 1.2), ("m2", 0.8)],
+            expected_m=3, target_mcse=0.2)
+        self.assertEqual(summary.outer_replicates, 3)
+        self.assertAlmostEqual(summary.metric_mean, 1.0)
+        self.assertEqual(summary.precision_status, "PASS")
+        with self.assertRaises(ProtocolError):
+            summarize_monte_carlo([("m0", 1.0), ("m0", 1.2), ("m2", 0.8)],
+                                  expected_m=3, target_mcse=0.2)
+        with self.assertRaises(ProtocolError):
+            summarize_monte_carlo([("m0", 1.0), ("m1", 1.2)],
+                                  expected_m=3, target_mcse=0.2)
 
     def test_minimum_n_selection_requires_all_scenario_targets(self):
         observed = {
