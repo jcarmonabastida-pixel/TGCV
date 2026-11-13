@@ -153,31 +153,36 @@ class SeedAssignment:
     bank: str
     scenario_id: str
     n_units: int
-    replicate: int
+    replicate: int  # legacy field: R assignment repetition; -1 denotes designated RUN
     world_seed: int
     z_assignment_seed: int
     g_assignment_seed: int
     scenario_version: str = "UNVERSIONED"
+    outer_replicate_id: str = "outer-000000"
+    assignment_role: str = "REPEATED_ASSIGNMENT"
 
 
 def _derive_seed(bank: str, scenario_id: str, n_units: int, replicate: int,
-                 stream: str, namespace: str, scenario_version: str = "UNVERSIONED") -> int:
+                 stream: str, namespace: str, scenario_version: str = "UNVERSIONED",
+                 outer_replicate_id: str = "outer-000000",
+                 assignment_role: str = "REPEATED_ASSIGNMENT") -> int:
     if bank not in ("calibration", "evaluation"):
         raise ProtocolError("bank must be calibration or evaluation")
     if stream not in ("world", "z", "g"):
         raise ProtocolError("stream must be world, z or g")
-    payload = f"TGCV-C10S-VCONT-SEED-v2|{namespace}|{bank}|{scenario_id}|{scenario_version}|{n_units}|{replicate}|{stream}"
+    payload = (f"TGCV-C10S-VCONT-SEED-v3|{namespace}|{bank}|{scenario_id}|"
+               f"{scenario_version}|{n_units}|{outer_replicate_id}|{assignment_role}|{replicate}|{stream}")
     return int.from_bytes(hashlib.sha256(payload.encode("utf-8")).digest()[:8], "big")
 
 
 def build_seed_bank(bank: str, scenarios: Iterable[str], n_grid: Iterable[int],
                     replicates: int, namespace: str,
-                    scenario_versions: dict[str, str] | None = None) -> tuple[SeedAssignment, ...]:
-    """Create deterministic, bank-separated seeds; each scenario/N has one fixed world.
+                    scenario_versions: dict[str, str] | None = None,
+                    outer_replicates: int = 1) -> tuple[SeedAssignment, ...]:
+    """Build M independent worlds, each with one designated RUN and R assignments.
 
-    World seed is constant across assignment replicates for a scenario/N.
-    Z and G assignment seeds vary independently by replicate and stream.
-    Calibration and evaluation banks are cryptographically domain-separated.
+    The legacy replicates argument remains R. The explicit outer dimension is M.
+    A RUN row uses replicate=-1 and assignment_role=RUN; R rows use 0..R-1.
     """
     scenario_ids = tuple(scenarios)
     sizes = tuple(n_grid)
@@ -189,8 +194,8 @@ def build_seed_bank(bank: str, scenarios: Iterable[str], n_grid: Iterable[int],
         raise ProtocolError("scenario IDs must be nonempty")
     if not sizes or any(n < 16 or n % 4 for n in sizes) or len(set(sizes)) != len(sizes):
         raise ProtocolError("N grid must contain unique sizes >=16 divisible by four")
-    if replicates < 1:
-        raise ProtocolError("replicates must be >=1")
+    if replicates < 1 or outer_replicates < 1:
+        raise ProtocolError("R and M must both be >=1")
     versions = scenario_versions or {sid: "UNVERSIONED" for sid in scenario_ids}
     if set(versions) != set(scenario_ids) or any(not str(v).strip() for v in versions.values()):
         raise ProtocolError("scenario_versions must provide one nonempty version per scenario")
@@ -198,14 +203,23 @@ def build_seed_bank(bank: str, scenarios: Iterable[str], n_grid: Iterable[int],
     for scenario_id in scenario_ids:
         scenario_version = versions[scenario_id]
         for n in sizes:
-            world = _derive_seed(bank, scenario_id, n, 0, "world", namespace, scenario_version)
-            for r in range(replicates):
+            for m in range(outer_replicates):
+                outer_id = f"outer-{m:06d}"
+                world = _derive_seed(bank, scenario_id, n, -1, "world", namespace,
+                                     scenario_version, outer_id, "RUN")
                 plan.append(SeedAssignment(
-                    bank, scenario_id, n, r, world,
-                    _derive_seed(bank, scenario_id, n, r, "z", namespace, scenario_version),
-                    _derive_seed(bank, scenario_id, n, r, "g", namespace, scenario_version),
-                    scenario_version,
+                    bank, scenario_id, n, -1, world,
+                    _derive_seed(bank, scenario_id, n, -1, "z", namespace, scenario_version, outer_id, "RUN"),
+                    _derive_seed(bank, scenario_id, n, -1, "g", namespace, scenario_version, outer_id, "RUN"),
+                    scenario_version, outer_id, "RUN",
                 ))
+                for r in range(replicates):
+                    plan.append(SeedAssignment(
+                        bank, scenario_id, n, r, world,
+                        _derive_seed(bank, scenario_id, n, r, "z", namespace, scenario_version, outer_id),
+                        _derive_seed(bank, scenario_id, n, r, "g", namespace, scenario_version, outer_id),
+                        scenario_version, outer_id, "REPEATED_ASSIGNMENT",
+                    ))
     if bank == "calibration":
         validate_seed_banks(plan, ())
     else:
@@ -215,7 +229,7 @@ def build_seed_bank(bank: str, scenarios: Iterable[str], n_grid: Iterable[int],
 
 def validate_seed_banks(calibration: Iterable[SeedAssignment],
                         evaluation: Iterable[SeedAssignment]) -> None:
-    """Reject cross-bank seed reuse and within-record Z/G stream collisions."""
+    """Validate bank separation, M-world independence and within-world R identity."""
     cal = tuple(calibration)
     ev = tuple(evaluation)
     if any(x.bank != "calibration" for x in cal) or any(x.bank != "evaluation" for x in ev):
@@ -226,15 +240,37 @@ def validate_seed_banks(calibration: Iterable[SeedAssignment],
     if streams(cal) & streams(ev):
         raise ProtocolError("calibration and evaluation banks share one or more seeds")
     for row in cal + ev:
+        if row.assignment_role not in ("RUN", "REPEATED_ASSIGNMENT"):
+            raise ProtocolError("unknown assignment role")
+        if row.assignment_role == "RUN" and row.replicate != -1:
+            raise ProtocolError("designated RUN must use replicate=-1")
+        if row.assignment_role == "REPEATED_ASSIGNMENT" and row.replicate < 0:
+            raise ProtocolError("R assignment replicate must be nonnegative")
+        if not row.outer_replicate_id:
+            raise ProtocolError("outer replicate identity is required")
         if len({row.world_seed, row.z_assignment_seed, row.g_assignment_seed}) != 3:
             raise ProtocolError("world, Z and G streams must use distinct seeds within each assignment record")
     for rows in (cal, ev):
-        world_by_design = {}
+        worlds = {}
         for row in rows:
-            key = (row.scenario_id, row.scenario_version, row.n_units)
-            if key in world_by_design and world_by_design[key] != row.world_seed:
-                raise ProtocolError("world seed must remain fixed across assignment replicates within scenario/N")
-            world_by_design[key] = row.world_seed
+            key = (row.scenario_id, row.scenario_version, row.n_units, row.outer_replicate_id)
+            if key in worlds and worlds[key] != row.world_seed:
+                raise ProtocolError("world seed must remain fixed within one outer replicate across RUN and R")
+            worlds[key] = row.world_seed
+        by_design = {}
+        for key, seed in worlds.items():
+            by_design.setdefault(key[:3], {})[key[3]] = seed
+        for outer_worlds in by_design.values():
+            if len(set(outer_worlds.values())) != len(outer_worlds):
+                raise ProtocolError("independent outer replicates must have distinct world seeds")
+        for key in worlds:
+            matching = [row for row in rows if
+                        (row.scenario_id, row.scenario_version, row.n_units, row.outer_replicate_id) == key]
+            if sum(row.assignment_role == "RUN" for row in matching) != 1:
+                raise ProtocolError("each outer replicate must have exactly one designated RUN")
+            repeated_ids = [row.replicate for row in matching if row.assignment_role == "REPEATED_ASSIGNMENT"]
+            if len(repeated_ids) != len(set(repeated_ids)):
+                raise ProtocolError("duplicate R assignment identity within outer replicate")
 
 
 def select_minimum_n(mcse_by_n: dict[int, dict[str, float]],
@@ -268,9 +304,10 @@ def seed_bank_fingerprint(assignments: Iterable[SeedAssignment]) -> str:
     if len(banks) != 1:
         raise ProtocolError("a seed-bank fingerprint must contain exactly one bank")
     payload = [
-        {"bank": row.bank, "scenario_id": row.scenario_id, "scenario_version": row.scenario_version, "n_units": row.n_units,
-         "replicate": row.replicate, "world_seed": row.world_seed,
-         "z_assignment_seed": row.z_assignment_seed,
+        {"bank": row.bank, "scenario_id": row.scenario_id, "scenario_version": row.scenario_version,
+         "n_units": row.n_units, "outer_replicate_id": row.outer_replicate_id,
+         "assignment_role": row.assignment_role, "replicate": row.replicate,
+         "world_seed": row.world_seed, "z_assignment_seed": row.z_assignment_seed,
          "g_assignment_seed": row.g_assignment_seed}
         for row in rows
     ]
