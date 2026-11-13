@@ -260,8 +260,6 @@ class AnalyzerResult:
     g_assignment_mechanism_version: str = "001"
     z_assignment_mechanism_id: str = "Z_BALANCED_INDEPENDENT"
     z_assignment_mechanism_version: str = "001"
-    reference_regime_id: str = "G_REFERENCE_50_50"
-    reference_regime_version: str = "001"
     provenance_sha256: str = ""
 
 
@@ -601,6 +599,9 @@ class Analyzer:
                         if row["assignment_g"] == 0]
                 g1_d = [row["delta_t_acc_observed"][coordinate] for row in focal_assign_rows
                         if row["assignment_g"] == 1]
+                if not g0_d or not g1_d:
+                    first_stage_values = []
+                    break
                 first_stage_values.append(mean(g1_d) - mean(g0_d))
             first_stage = tuple(first_stage_values) if len(first_stage_values) == 4 else None
 
@@ -628,7 +629,7 @@ class Analyzer:
                    "target_regime_id": contract.target_regime_id, "target_regime_version": contract.target_regime_version,
                    "outcome_id": contract.outcome_id, "outcome_version": contract.outcome_version,
                    "reference_regime_status": reference_regime_status,
-                   "reference_regime_id": "G_REFERENCE_50_50", "reference_regime_version": "001",
+                   "reference_regime_id": contract.reference_regime_id, "reference_regime_version": contract.reference_regime_version,
                    "g_assignment_mechanism_hash": contract.g_assignment_mechanism_hash,
                    "z_assignment_mechanism_hash": contract.z_assignment_mechanism_hash,
                    "transportability_id": contract.transportability_id,
@@ -646,13 +647,13 @@ class Analyzer:
         return AnalyzerResult(evidence.run_id, contract.estimand_id, package_status, g_assignment_status,
             package, g_assignment_estimate, first_stage, package_se, g_assignment_se, reasons, evidence.sha256,
             _hash(payload), contract.target_regime_id, contract.target_regime_version, contract.outcome_id, contract.outcome_version,
-            reference_regime_status, "G_REFERENCE_50_50", "001",
+            reference_regime_status, contract.reference_regime_id, contract.reference_regime_version,
             contract.g_assignment_mechanism_hash, contract.z_assignment_mechanism_hash,
             contract.transportability_id, contract.transportability_version,
             contract.transportability_scope, contract.transportability_evidence_status,
             contract.estimand_version, contract.g_assignment_mechanism_id, contract.g_assignment_mechanism_version,
             contract.z_assignment_mechanism_id, contract.z_assignment_mechanism_version,
-            contract.reference_regime_id, contract.reference_regime_version, evidence.manifest["provenance_sha256"])
+            evidence.manifest["provenance_sha256"])
 
 
 class Evaluator:
@@ -738,7 +739,7 @@ class Evaluator:
             expected_reference_status = "NOT_IDENTIFIED"
         elif (not contract.no_interference or not contract.measurement_identified or not contract.version_consistency):
             expected_reference_status = "INDETERMINATE"
-        elif not contract.positivity and truth.transportability_invariant_truth is not True:
+        elif not contract.positivity and (truth.transportability_invariant_truth is not True or truth.transportability_scope_truth != contract.transportability_scope or contract.transportability_evidence_status != "STRUCTURALLY_VERIFIED"):
             expected_reference_status = "INDETERMINATE"
         else:
             expected_reference_status = "IDENTIFIED"
@@ -826,4 +827,9 @@ def contract_for(cfg: ScenarioConfig) -> AnalysisContract:
         z_assignment_mechanism_version="001", reference_regime_id="G_REFERENCE_50_50", reference_regime_version="001",
         g_assignment_mechanism_hash=_hash({"algorithm": "balanced_binary_then_zero_HIGH_if_support_failure", "positivity": cfg.positivity, "n": cfg.n_units}),
         z_assignment_mechanism_hash=_hash({"algorithm": "balanced_binary_complete_randomization", "n": cfg.n_units}),
+        g_assignment_mechanism_id=("G_BALANCED_WITH_STRATUM_SUPPORT" if not cfg.positivity else "G_BALANCED"),
+        g_assignment_mechanism_version="001", z_assignment_mechanism_id="Z_BALANCED_INDEPENDENT",
+        z_assignment_mechanism_version="001", reference_regime_id="G_REFERENCE_50_50", reference_regime_version="001",
+        transportability_outcome_id=("V_CONT" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else None),
+        transportability_basis=("Complete DGP potential-outcome invariance: all Z-dependent terms are absent and shared exogenous draws are reused" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else None),
     )
