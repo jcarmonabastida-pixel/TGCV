@@ -507,7 +507,7 @@ class PairEvaluationAdapter:
         level_class = spec.run_evaluation_class
         if level_class is None:
             raise ProtocolError("matrix does not declare a run-level evaluation for this estimand")
-        raw_truth = getattr(truth, spec.truth_field, None)
+        raw_truth = getattr(truth, spec.dgp_truth_field, None)
         if level_class == "EVALUABLE":
             if raw_truth is None or not isfinite(float(raw_truth)):
                 raise ProtocolError("matrix EVALUABLE pair has no finite DGP TruthBundle value")
@@ -569,7 +569,7 @@ class PairEvaluationAdapter:
         validate_evaluation_observation(repeated_spec, observed_key=spec.key, analyzer_output_field=output_field,
             dgp_truth=raw_truth, analyzer_output=output, adjudication=adjudication,
             observed_identification_status=status, observed_abstained=abstained)
-        return PairEvaluationRecord(spec.key, "REPEATED_ASSIGNMENT", level_class, None, spec.truth_field,
+        return PairEvaluationRecord(spec.key, "REPEATED_ASSIGNMENT", level_class, None, spec.dgp_truth_field,
             None if raw_truth is None else float(raw_truth), output_field,
             None if output is None else float(output), status, abstained, adjudication,
             absolute_error, recovered)
