@@ -317,6 +317,8 @@ class ScenarioEstimandSpec:
     abstention_expectation: bool
     tolerance_id: str | None
     reason: str
+    run_evaluation_class: str | None = None
+    repeated_evaluation_class: str | None = None
 
 
 @dataclass(frozen=True)
