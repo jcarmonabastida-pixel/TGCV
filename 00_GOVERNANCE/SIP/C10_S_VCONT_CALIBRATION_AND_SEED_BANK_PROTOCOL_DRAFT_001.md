@@ -450,3 +450,19 @@ The audit confirms that Generator, Sealer, Analyzer and Evaluator construct the 
 SealedEvidence retains rows and manifest in memory, so its existing digest can be recomputed at capture. Independent later verification after raw-row minimization requires an immutable retrievable canonical evidence object; no such durable locator/store is currently implemented.
 
 **Gate 167:** AUDITED — CONDITIONAL. **Gate 168:** freeze RunEvidenceBundle and sealed-evidence retention/retrieval contract. No code/tests/CI changes, runtime verification, calibration, seed generation or scientific execution were performed.
+
+## 27. Gate 168 — RunEvidenceBundle and SealedEvidence retention
+
+Gate 168 is persisted in:
+
+`00_GOVERNANCE/SIP/C10_S_VCONT_RUN_EVIDENCE_BUNDLE_AND_SEALED_EVIDENCE_RETENTION_CONTRACT_GATE_168_DRAFT_001.md`.
+
+The gate defines the immutable per-execution `RunEvidenceBundle` and the per-M `OuterWorldEvidenceBundle`, with exact Gate 166 join keys and cardinalities. Capture occurs in the orchestration boundary after Evaluator returns and before source objects leave scope; no source object is reconstructed from aggregate report output. Nested mutable payloads must be snapshotted into immutable canonical bytes or an equivalently deeply immutable representation.
+
+**SealedEvidence retention decision:** for package schema v1.0.0, retain the complete canonical SealedEvidence manifest and rows inline. The current source has no independently retrievable immutable evidence store; excluding rows would make later digest recomputation impossible. Preserve the existing legacy Sealer digest algorithm and verify it from its exact canonical payload. RFC 8785 JCS package serialization remains a separate digest layer. This explicitly amends Gate 166's default raw-row exclusion for this implementation.
+
+**Critical source correction required:** static reinspection found that Generator's current `world_spec` projection still includes `assignment_role` and `assignment_index`. Since both fields participate in the `world_id` hash, RUN and R assignments can receive different world IDs despite sharing the intended M/world seed. This contradicts Gate 154's fixed-world-within-M invariant and corrects Gate 167's earlier incomplete description. The versioned world-identity projection must exclude role/index while preserving those fields in run identity/manifests; deterministic regressions must prove shared world identity within M, distinct worlds across M and unique run IDs.
+
+**Gate 168 status:** bundle/retention contract DEFINED and PERSISTED; world-identity source invariant BLOCKED pending correction; export implementation OPEN; tests NOT RUN. No code, tests, workflow or CI changes were made in this gate. No calibration, seed-bank generation, N/R/M sizing, Monte Carlo or scientific execution was authorized or performed. `main` remains unchanged; PR #116 remains Draft on its existing base.
+
+**Next:** prepare and implement the minimal versioned world-identity correction with compatibility tests, then implement RunEvidenceBundle capture and export. Do not treat the Gate 155 historical PASS as proof that this newly identified identity invariant is satisfied by the current source.
