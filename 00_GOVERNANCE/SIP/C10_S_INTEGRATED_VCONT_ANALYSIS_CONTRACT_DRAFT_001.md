@@ -471,3 +471,13 @@ Following the 52/52 primary and clean-replay CI pass, the Gate 125 audit identif
 The integrated harness test module now contains 38 test definitions (35 prior + 3 added in Gate 125). These are source-level additions only until the next Actions run completes.
 
 **Execution boundary:** this correction does not authorize or start Monte Carlo, benchmark or scientific execution. The next authorized technical check is the C10-S focal harness GitHub Actions workflow on this research-branch push. `main` remains unchanged; PR #116 remains Draft.
+
+
+### 14.6 Gate 126 — correction after first Gate 125 CI attempt — 2026-11-13
+
+The first Actions run after Gate 125 source changes compiled successfully but the primary suite failed: 55 tests ran, with one failure and one error. Both failures were in the newly added tests, not in the harness implementation:
+
+- The AC-13 test attempted to set `ScenarioConfig.version_consistency=False`, which the Generator correctly rejects before world generation. The test now generates a valid world and injects the version inconsistency only into `AnalysisContract`, then checks Analyzer and Evaluator abstention adjudication end-to-end.
+- The AC-15 test had two reversed vector comparisons. It now verifies that changing only the Z seed leaves G unchanged and changes Z, while changing only the G seed leaves Z unchanged and changes G.
+
+The corrected tests remain at 38 definitions. The next Actions run must establish whether these corrections pass. No benchmark, Monte Carlo or scientific execution has been started.
