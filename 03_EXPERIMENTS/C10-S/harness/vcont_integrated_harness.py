@@ -1026,7 +1026,8 @@ class Evaluator:
         }
 
     def evaluate_monte_carlo(self, outer_runs, tolerance: float, *,
-                             target_mcse_by_metric: dict[str, float], matrix=None):
+                             target_mcse_by_metric: dict[str, float], matrix=None,
+                             expected_repeated_assignments: int | None = None):
         """Aggregate benchmark metrics across M independent outer worlds.
 
         outer_runs maps outer_replicate_id to the runs generated within that world:
@@ -1055,6 +1056,15 @@ class Evaluator:
             repeated_rows = [item for item in runs if item[3].assignment_role == "REPEATED_ASSIGNMENT"]
             if len(run_rows) != 1:
                 raise ContractError("each outer world must contain exactly one designated RUN")
+            if run_rows[0][3].assignment_index != -1:
+                raise ContractError("designated RUN must carry assignment_index=-1")
+            repeated_indices = [item[3].assignment_index for item in repeated_rows]
+            if any(index < 0 for index in repeated_indices) or len(set(repeated_indices)) != len(repeated_indices):
+                raise ContractError("repeated assignments require unique nonnegative typed R indices")
+            if expected_repeated_assignments is not None:
+                expected_indices = list(range(expected_repeated_assignments))
+                if sorted(repeated_indices) != expected_indices:
+                    raise ContractError("each M must contain exactly the declared contiguous R indices")
             all_world_ids = {item[3].world_id for item in runs}
             if len(all_world_ids) != 1:
                 raise ContractError("RUN and R assignments must share one fixed world within each M")
@@ -1070,6 +1080,8 @@ class Evaluator:
             identities = {(item[3].scenario_id, item[3].version) for item in runs}
             if len(identities) != 1:
                 raise ContractError("scenario/version must remain fixed across runs within an outer world")
+            if any(item[3].n_units != next(iter({row[3].n_units for row in runs})) for item in runs):
+                raise ContractError("N must remain fixed within each outer world")
             scenario_versions.update(identities)
             sample_sizes.update(item[3].n_units for item in runs)
             run_tuple = run_rows[0]
