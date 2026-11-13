@@ -657,8 +657,8 @@ class Analyzer:
 
 class Evaluator:
     def evaluate(self, truth: TruthBundle, result: AnalyzerResult,
-                 contract: AnalysisContract, tolerance: float) -> EvaluationReport:
-        if tolerance < 0 or truth.run_id != result.run_id:
+                 contract: AnalysisContract, tolerance: float, manifest: RunManifest) -> EvaluationReport:
+        if tolerance < 0 or truth.run_id != result.run_id or manifest.run_id != truth.run_id:
             raise ContractError("invalid tolerance or run mismatch")
         payload = {
             "run_id": result.run_id, "estimand_id": result.estimand_id,
@@ -689,16 +689,42 @@ class Evaluator:
         }
         if _hash(payload) != result.output_sha256:
             raise FirewallError("Analyzer output seal invalid")
-        if (result.estimand_id != contract.estimand_id or result.target_regime_id != contract.target_regime_id or result.target_regime_version != contract.target_regime_version or result.outcome_id != contract.outcome_id or result.outcome_version != contract.outcome_version or result.reference_regime_id != truth.g_reference_regime_id or result.reference_regime_version != truth.g_reference_regime_version or result.g_assignment_mechanism_hash != contract.g_assignment_mechanism_hash or result.z_assignment_mechanism_hash != contract.z_assignment_mechanism_hash or truth.g_assignment_mechanism_hash != contract.g_assignment_mechanism_hash or truth.z_assignment_mechanism_hash != contract.z_assignment_mechanism_hash or result.transportability_id != contract.transportability_id or result.transportability_version != contract.transportability_version or result.transportability_scope != contract.transportability_scope or result.transportability_evidence_status != contract.transportability_evidence_status):
-            raise ContractError("estimand, target regime, mechanism provenance, transportability or outcome identity mismatch")
-        if contract.z_effect_invariant_across_g and truth.transportability_invariant_truth is not True:
-            raise ContractError("declared transportability is not supported by the DGP truth bundle")
+        manifest_provenance = {"run_id": manifest.run_id, "scenario_id": manifest.scenario_id,
+            "scenario_version": manifest.version, "world_id": manifest.world_id,
+            "world_version": manifest.world_version, "replicate_id": manifest.replicate_id,
+            "g_assignment_mechanism_id": manifest.g_assignment_mechanism_id,
+            "g_assignment_mechanism_version": manifest.g_assignment_mechanism_version,
+            "g_assignment_mechanism_hash": manifest.g_assignment_mechanism_hash,
+            "z_assignment_mechanism_id": manifest.z_assignment_mechanism_id,
+            "z_assignment_mechanism_version": manifest.z_assignment_mechanism_version,
+            "z_assignment_mechanism_hash": manifest.z_assignment_mechanism_hash,
+            "g_reference_regime_id": manifest.g_reference_regime_id,
+            "g_reference_regime_version": manifest.g_reference_regime_version,
+            "z_assignment_vector_hash": manifest.z_assignment_vector_hash,
+            "g_assignment_vector_hash": manifest.g_assignment_vector_hash}
+        if (result.estimand_id != contract.estimand_id or result.estimand_version != contract.estimand_version or
+            result.target_regime_id != contract.target_regime_id or result.target_regime_version != contract.target_regime_version or
+            result.outcome_id != contract.outcome_id or result.outcome_version != contract.outcome_version or
+            result.reference_regime_id != manifest.g_reference_regime_id or result.reference_regime_version != manifest.g_reference_regime_version or
+            result.g_assignment_mechanism_id != manifest.g_assignment_mechanism_id or result.g_assignment_mechanism_version != manifest.g_assignment_mechanism_version or
+            result.z_assignment_mechanism_id != manifest.z_assignment_mechanism_id or result.z_assignment_mechanism_version != manifest.z_assignment_mechanism_version or
+            result.g_assignment_mechanism_hash != manifest.g_assignment_mechanism_hash or result.z_assignment_mechanism_hash != manifest.z_assignment_mechanism_hash or
+            truth.g_assignment_mechanism_hash != manifest.g_assignment_mechanism_hash or truth.z_assignment_mechanism_hash != manifest.z_assignment_mechanism_hash or
+            result.provenance_sha256 != _hash(manifest_provenance) or
+            result.g_assignment_mechanism_id != contract.g_assignment_mechanism_id or result.g_assignment_mechanism_version != contract.g_assignment_mechanism_version or
+            result.z_assignment_mechanism_id != contract.z_assignment_mechanism_id or result.z_assignment_mechanism_version != contract.z_assignment_mechanism_version or
+            result.reference_regime_id != contract.reference_regime_id or result.reference_regime_version != contract.reference_regime_version or
+            result.transportability_id != contract.transportability_id or result.transportability_version != contract.transportability_version or
+            result.transportability_scope != contract.transportability_scope or result.transportability_evidence_status != contract.transportability_evidence_status):
+            raise ContractError("run, scenario, estimand, regime, mechanism, provenance, transportability or outcome identity mismatch")
+        if contract.z_effect_invariant_across_g and (truth.transportability_invariant_truth is not True or truth.transportability_scope_truth != contract.transportability_scope or contract.transportability_outcome_id != contract.outcome_id):
+            raise ContractError("declared transportability is not supported for the declared scope/outcome by DGP truth")
         package_target = truth.itt_z_run_truth
         package_error = None if result.package_itt is None or package_target is None else abs(result.package_itt - package_target)
         # Analyzer's G-assignment estimate is adjudicated against its matching
         # assignment truth, never against theta_A.
         g_assignment_error = (
-            None if result.g_assignment_effect is None
+            None if result.g_assignment_effect is None or result.g_assignment_status != "IDENTIFIED"
             else abs(result.g_assignment_effect - truth.itt_g_z0_truth)
         )
         package_ok = None if package_error is None else package_error <= tolerance
@@ -793,6 +819,11 @@ def contract_for(cfg: ScenarioConfig) -> AnalysisContract:
         transportability_version=("001" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else None),
         transportability_scope=("HIGH" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else None),
         transportability_evidence_status=("STRUCTURALLY_VERIFIED" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else "NOT_ESTABLISHED"),
+        transportability_outcome_id=("V_CONT" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else None),
+        transportability_basis=("Complete DGP potential-outcome invariance: all Z-dependent terms are absent and shared exogenous draws are reused" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else None),
+        g_assignment_mechanism_id=("G_BALANCED_WITH_STRATUM_SUPPORT" if not cfg.positivity else "G_BALANCED"),
+        g_assignment_mechanism_version="001", z_assignment_mechanism_id="Z_BALANCED_INDEPENDENT",
+        z_assignment_mechanism_version="001", reference_regime_id="G_REFERENCE_50_50", reference_regime_version="001",
         g_assignment_mechanism_hash=_hash({"algorithm": "balanced_binary_then_zero_HIGH_if_support_failure", "positivity": cfg.positivity, "n": cfg.n_units}),
         z_assignment_mechanism_hash=_hash({"algorithm": "balanced_binary_complete_randomization", "n": cfg.n_units}),
     )
