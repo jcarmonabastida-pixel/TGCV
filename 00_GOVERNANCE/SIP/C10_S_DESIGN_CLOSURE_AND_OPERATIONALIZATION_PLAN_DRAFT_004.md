@@ -7136,3 +7136,75 @@ Puede congelarse esta regla semántica ahora, pero no emitir certificados COMMON
 5. preservar el firewall: ninguna verdad, potencial contrafactual o parámetro oculto pasa al Analyzer.
 
 La intervención no debe tocar el estimador θ_A, q_X*, políticas g_A, roster B1/UE, masas, bounds, R0–R3 ni resultados P178. Primero se comprobarán permisos/workflow y el alcance exacto de la edición; solo se modificará código si la autorización aplicable lo permite. No ejecutar benchmark ni simulación científica. scientific_execution=false; execution_authorized=false.
+
+
+---
+
+## 16.237. Gate 87 — separación implementada de ITT-Z, ITT-G|Z=0 y θ_A no materializado (2026-11-13)
+
+**Precedencia:** §16.235 (matriz integrada), §16.236 (G no equivale a g_A), §§16.226.3–16.226.5 y §16.234 (auditoría del Generator). Alcance: corrección acotada de semántica en Generator/TruthBundle/AnalyzerResult/Evaluator y tests de contrato. No modifica el DGP, mecanismos R0–R3, asignaciones, exógenas, estimandos congelados, roster, políticas g_A, q_X*, masas, bounds, Projector, Sealer ni P178. No ejecuta pruebas ni benchmark.
+
+### 16.237.1. Corrección del contrato de verdad
+
+Se elimina el campo ambiguo `theta_access_truth`. TruthBundle distingue ahora:
+
+- `itt_z_truth`: contraste Z promediado sobre G según el régimen marginal 50/50 ya implementado;
+- `itt_g_z0_truth`: contraste total V(0,1)−V(0,0), incluidas las vías directas/colaterales que el DGP haga operar bajo G;
+- `theta_a_truth`: `None` / NOT_MATERIALIZED. No se calcula ni se aproxima mediante G.
+
+Se conserva `itt_package_truth` únicamente como propiedad alias de compatibilidad explícita hacia `itt_z_truth`; no existe alias equivalente de `theta_access_truth`, porque perpetuaría la falsa identidad semántica.
+
+### 16.237.2. Corrección del contrato de salida y evaluación
+
+AnalyzerResult deja de etiquetar el contraste estimado de G como `focal_effect`; sus campos son `g_assignment_status`, `g_assignment_effect` y `g_assignment_se`. El Analyzer sigue recibiendo exclusivamente SealedEvidence y AnalysisContract: no recibe TruthBundle, potenciales, parámetros del Generator ni `theta_a_truth`.
+
+El contraste G es un efecto de asignación aleatorizada. Una vía directa G→Outcome no invalida su interpretación como ITT-G|Z=0; sí impide identificarlo con θ_A. En consecuencia, el Analyzer ya no se abstiene del contraste de asignación G únicamente por la presencia de una vía directa G ni por el requisito de régimen no focal común que pertenece a la atribución de θ_A. Mantiene las condiciones de aleatorización G, soporte, medición, versión e interferencia que sí afectan a la estimación del contraste G bajo el contrato implementado.
+
+Evaluator compara:
+- `package_itt` con `itt_z_truth`;
+- `g_assignment_effect` con `itt_g_z0_truth`;
+- nunca compara una estimación G con θ_A.
+
+Los campos del informe pasan a `g_assignment_abs_error` y `g_assignment_recovered`. La evaluación de θ_A queda expresamente fuera de alcance hasta que existan políticas conjuntas factibles, q_X* y r_common certificables.
+
+### 16.237.3. Pruebas añadidas/actualizadas
+
+La suite de contrato contiene 15 tests declarados. Se añade una prueba que verifica:
+- `theta_a_truth is None` tanto en R0 focal limpio como en R0 con vía directa G;
+- `itt_g_z0_truth` se conserva en ambos casos;
+- manteniendo el mismo seed/exógenas, la vía directa G modifica el contraste total G, demostrando que este incorpora dicha vía y no debe etiquetarse como θ_A.
+
+Los tests previos se migran a los nombres semánticos ITT-Z y asignación G. El test de vía directa comprueba que el Analyzer puede estimar el ITT-G cuando las condiciones de identificación de esa asignación se cumplen; el test de fallo de soporte mantiene la abstención. Los tests no se han ejecutado en este gate.
+
+### 16.237.4. Verificación estática y procedencia
+
+Cambios en la rama `research/c10-s-consolidation-draft`:
+
+| Artefacto | Blob final |
+|---|---|
+| `vcont_integrated_harness.py` | `74e530028721b6f91312c852931fea425e8b3493` |
+| `test_vcont_integrated_harness.py` | `83e47323ddd50437cc436ab0a341479ea6ec9ac4` |
+
+Comprobaciones estáticas tras recuperar los blobs finales:
+- no quedan referencias a `theta_access_truth`;
+- no quedan campos `focal_status/focal_effect/focal_se` en el contrato de salida;
+- `theta_a_truth` está declarado como opcional y se materializa como `None`;
+- Evaluator compara la salida G exclusivamente con `itt_g_z0_truth`;
+- 15 funciones de test presentes y nombres sintácticamente válidos;
+- Projector, Sealer y su whitelist no se han modificado.
+
+Estas comprobaciones no equivalen a compilación, ejecución de tests ni validación estadística.
+
+### 16.237.5. Dictamen y límites
+
+**Gate 87 cerrado como corrección semántica implementada y estáticamente verificada; aceptación de software pendiente de ejecución autorizada.**
+
+Se ha eliminado la contaminación de verdad del Evaluator: el contraste G ya no se presenta como θ_A. Se ha corregido también la salida del Analyzer para identificar el estimando que efectivamente estima. La presencia de una vía directa G cambia el ITT-G, pero no lo convierte en efecto focal de accesibilidad.
+
+No se ha implementado la intervención estructural conjunta g_A0/g_A1, ni θ_A, ni sus potenciales, ni el soporte por historia, ni bounds. No se afirma recuperación causal de ΔT_acc*. La corrección no añade mundos, parámetros, unidades, distribuciones ni valores DGP. No se ha ejecutado ningún test, simulación o benchmark.
+
+**Dictamen:** GATE_87_TRUTH_SEPARATION_IMPLEMENTED / ITT_Z_AND_ITT_G_Z0_DISTINCT / THETA_A_NOT_MATERIALIZED / ANALYZER_FIREWALL_PRESERVED_BY_STATIC_CONTRACT / EVALUATOR_NO_LONGER_ADJUDICATES_G_AS_THETA_A / STATIC_CHECKS_PASS / TESTS_NOT_RUN / NO_SCIENTIFIC_EXECUTION / NO_DESIGN_FREEZE.
+
+### 16.237.6. Siguiente gate — 88
+
+**Gate 88 — auditoría estática de integridad de la migración y del contrato Analyzer/Evaluator.** Comprobar consumidores, serialización/hash del AnalyzerResult, informes, contratos y tests para detectar referencias obsoletas o incompatibilidades; confirmar que el contraste G se identifica solo como ITT-G|Z=0 y que θ_A no puede aparecer como identificado por ningún alias, campo o reporte. Corregir únicamente residuos de esta migración. No implementar θ_A, no modificar el DGP ni ejecutar tests. La ejecución de la suite queda sujeta a autorización técnica explícita separada y no es ejecución científica.
