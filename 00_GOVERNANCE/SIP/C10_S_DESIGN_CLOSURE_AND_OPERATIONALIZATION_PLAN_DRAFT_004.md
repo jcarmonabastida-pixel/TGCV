@@ -6822,3 +6822,59 @@ No se crean filas vacías como si fueran historias, ni se inventan IDs de ejempl
 **Dictamen:** GATE_80_ROSTER_CAPABILITY_AUDIT_CLOSED / B1_UNIT_AND_INSTANCE_KEYS_DEFINED / DEC_C10_096_CENSUS_SCOPE_REUSED / ROSTER_NOT_APPROVED / NO_UNIT_ROWS_OR_BASELINES / X_H0_CC_NOT_MATERIALIZED / Q_X_MASSES_NOT_DERIVABLE / NEED_COHORT_NOT_CAUSAL_POPULATION / MATERIALIZATION_AUTHORIZATION_ABSENT / Q_X_DEPENDENCY_BLOCKED / NO_NEW_UNITS_OR_WORLDS / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** Gate 81 — auditoría de suficiencia del contrato de asignación ITT-Z: distinguir flags internos del harness de un protocolo de aleatorización verificable; identificar qué datos/certificados puede recibir el Analyzer, qué truth queda reservada al Generator/Evaluator y qué estados deben conducir a identificación, descripción o abstención. Reutilizar §§16.226–16.227, el contrato DGP y el código actual; no fijar probabilidades, estratos, semillas, UA/clúster ni tamaño muestral, no modificar el estimando C1, no ejecutar ni implementar.
+
+
+---
+
+## 16.233. Gate 80 — capacidad del roster B1/UE para materializar historias basales de q_X* (2026-11-13)
+
+**Precedencia:** §§16.208, 16.211–16.212, 16.223, 16.226, 16.232; C10_S_FINITE_DGP_INVENTORY_AND_REACH_COVERAGE_DRAFT_001.md; contratos B1/Need de materialización, paquete analítico y crosswalk de cohorte; contrato DGP temporal/roles. Gate de auditoría documental y de dependencias. No crea unidades/historias, no aprueba roster, no asigna truth o masas, no implementa ni ejecuta.
+
+### 16.233.1. Pregunta y evidencia revisada
+
+Pregunta: ¿puede el roster B1/UE ya previsto proporcionar, sin ampliarlo, las historias basales h que requiere q_X* y los anclajes de history_ref definidos en §16.232?
+
+Se inspeccionan:
+- C10_S_FINITE_DGP_INVENTORY_AND_REACH_COVERAGE_DRAFT_001.md;
+- C10_S_B1_PREZ_VALIDATION_COHORT_POPULATION_CROSSWALK_DRAFT_001.md;
+- C10_S_B1_PREZ_COHORT_SCOPE_AND_EVALUATION_DENOMINATORS_RECONCILIATION_DRAFT_001.md;
+- C10_S_B1_PREZ_MINIMUM_DGP_MATERIALIZATION_CONTRACT_DRAFT_001.md;
+- C10_S_B1_PREZ_ANALYTICAL_PACKAGE_CONTRACT_DRAFT_001.md;
+- C10_S_D2_ASSIGNMENT_POPULATION_SUPPORT_RECONCILIATION_DRAFT_001.md;
+- C10_S_DGP_TEMPORAL_AND_ROLE_CONTRACT_DRAFT_001.md;
+- harness integrado vcont_integrated_harness.py (blob 2dafb9cdc4a6e0b5b6d686acc74bdecc71dbead4).
+
+### 16.233.2. Hallazgo: universo de clases no equivale a roster de unidades
+
+El inventario finito sí contiene una gramática de mundos candidata: estados S0/S1/S2/SF; aliases F1/F2/A1/A2 y relaciones permitidas; perfiles R0–R3 (focal exclusiva, alternativa basal, alternativa afectada y fallo de provisión); y una matriz de ruta/predicado/tiempo/evidencia/cobertura. Pero el propio inventario declara no aprobados catálogo canónico, F*, G, H, recursos, comparador, escenario primario y cobertura de alternativas. Sus aliases y perfiles son clases/mecanismos del fixture, no identidades UE ni historias basales enumeradas.
+
+Los contratos B1 fijan la cardinalidad de una B1 por UE y una instancia lógica de servicio propia/versionada por UE. El paquete define claves ue_id, b1_id, instance_id/version, baseline_record_id y z_event_id, pero declara que no se asignan valores hasta disponer de un roster cerrado y versionado. El contrato mínimo de materialización figura NOT_APPROVED / NOT_IMPLEMENTED / NOT_MATERIALIZED / NOT_EXECUTED; el crosswalk de cohorte acepta el censo del roster B1 aprobado, pero dice expresamente que esa decisión no aprueba ni materializa el roster.
+
+El contrato temporal define X, H0 y C_c como objetos basales y q_X* como distribución objetivo candidata, pero deja abiertos su distribución concreta, población, pesos, unidad/interferencia, inventario y soporte. No contiene valores X/H0/C_c por UE ni snapshots basales enlazados. La relación UE=UA sigue condicionada a aislamiento no demostrado.
+
+El harness actual genera n_units, asignaciones Z/G y un baseline_x escalar aleatorio por unidad. No contiene ue_id/b1_id/instance_id, baseline_record_id, snapshots completos X/H0/C_c, versión de q_X*, masa por historia ni registro de soporte conjunto g_A. baseline_x y la semilla no se convierten en historias basales ni en q_X*.
+
+### 16.233.3. Matriz de capacidad de materialización
+
+| Requisito de §16.232 | Fuente reutilizable | Dictamen |
+|---|---|---|
+| Universo de clases/mecanismos | Inventario finito R0–R3 y F1/F2/A1/A2 | EXISTE COMO PROPUESTA; NO ES ROSTER |
+| Censo de UE/B1 | Crosswalk DEC-C10-096 y cardinalidad B1/UE | REGLA ACEPTADA; ROSTER NO APROBADO NI MATERIALIZADO |
+| Identidad de instancia/versiones | Contratos B1 y servicio | CAMPOS DEFINIDOS; VALORES AUSENTES |
+| Baseline inmutable por UE | Contratos B1/paquete | CAMPO DEFINIDO; REGISTROS AUSENTES |
+| X, H0, C_c y elegibilidad basal | Contrato temporal y D2 | SEMÁNTICA CANDIDATA; VALORES/VERDAD POR UE AUSENTES |
+| q_X* y masas | Contrato temporal/D2 | DEFINICIÓN CANDIDATA; DISTRIBUCIÓN Y MASAS AUSENTES |
+| Vector basal/post y schema ΔT_acc* por historia | Contrato de snapshots y harness | REPRESENTACIÓN PARCIAL EN CÓDIGO; SNAPSHOTS/HISTORIAS NO MATERIALIZADOS |
+| Soporte conjunto g_A0/g_A1 y r_common | §§16.226, 16.232 | REQUISITOS DEFINIDOS; NO HAY REGISTROS POR HISTORIA |
+
+### 16.233.4. Dictamen y consecuencia operativa
+
+**Gate 80 cerrado:** el roster B1/UE, en su estado documental actual, no puede materializar q_X* ni las historias basales requeridas. No existe fuente aprobada de la que derivar identidades UE, snapshots X/H0/C_c, elegibilidad basal, masas o soporte conjunto. No se asignan valores, no se generan IDs y no se promueve el inventario de clases a roster. Need_preZ conserva su cohorte propia y no se reutiliza como población causal.
+
+La dependencia q_X*/history-level ledger queda BLOCKED_ON_ROSTER_APPROVAL_AND_BASELINE_MATERIALIZATION, sin bloquear todo el cierre de C10-S. No se repite la petición de materializar el roster en gates narrativos sucesivos.
+
+**Dictamen:** GATE_80_ROSTER_CAPABILITY_AUDIT_CLOSED / FINITE_CLASS_GRAMMAR_EXISTS_AS_DRAFT / B1_UE_ROSTER_NOT_APPROVED / UNIT_IDENTITIES_NOT_MATERIALIZED / BASELINE_X_H0_CC_NOT_MATERIALIZED / Q_X_MASSES_ABSENT / NO_SYNTHETIC_UNIT_CREATION / NO_MASS_ASSIGNMENT / Q_X_DEPENDENCY_BLOCKED / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+### 16.233.5. Siguiente gate independiente
+
+**Gate 81 — auditoría de correspondencia entre las clases/mecanismos R0–R3 y los potenciales del harness integrado.** Sin depender del roster B1 ni de q_X*, determinar qué roles científicos de las celdas obligatorias C1/C3 están realmente representados por las funciones y parámetros ya implementados, cuáles son solo etiquetas/perillas disponibles y cuáles no pueden producirse o distinguirse con el DGP actual. Revisar en particular el contraste G frente a la intervención focal g_A, los potenciales por (Z,G), las vías directas/colaterales, signos, nulos, heterogeneidad, interferencia y abstención. No crear escenarios, no fijar valores de parámetros, no cambiar código ni ejecutar. El resultado debe ser una matriz de cobertura implementada/parametrizable/ausente y los bloqueos exactos, no otra propuesta de roster.
