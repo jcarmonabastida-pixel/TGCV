@@ -6756,3 +6756,69 @@ La intervención g_A es una regla conjunta sobre ΔT_acc* completo, condicionada
 **Dictamen:** GATE_79_HISTORY_LEVEL_LEDGER_SCHEMA_CLOSED / EXISTING_ARTIFACTS_RECONCILED / Q_X_HISTORY_ROWS_NOT_MATERIALIZED / Q_X_MASSES_NOT_DEFINED / JOINT_G_A_SUPPORT_NOT_ESTABLISHED / STRUCTURAL_FEASIBILITY_SEPARATED_FROM_ANALYZER_IDENTIFICATION / NEED_PREZ_NOT_A_Q_X_PROXY / NO_NEW_HISTORIES_OR_WORLDS / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** Gate 80 — comprobar si el roster B1/UE cuya aprobación ya está prevista puede proporcionar, sin ampliar sus unidades, el universo basal requerido por q_X*. Reconciliar sus identidades y snapshots con history_ref, y determinar si las historias X/H0/C_c y sus masas pueden derivarse de los registros ya definidos o si requieren una decisión de diseño explícita. No usar la cohorte Need_preZ como sustituto de q_X*, no crear unidades para conseguir soporte y no asignar masas. Si el roster sigue sin aprobarse/materializarse, dejar la dependencia bloqueada y pasar al siguiente componente de cierre que no dependa de ella; no abrir otra ronda de documentación narrativa. No implementar ni ejecutar.
+
+
+---
+
+## 16.233. Gate 80 — capacidad del roster B1/UE para materializar el universo basal de q_X* (2026-11-13)
+
+**Precedencia:** §§16.208–16.212, 16.223, 16.226–16.232; DEC-C10S-B1-UNIT-001, DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001, DEC-C10S-B1-OPPORTUNITY-CARDINALITY-001, DEC-C10-095 y DEC-C10-096; crosswalk B1/Need, contrato de materialización B1 y reconciliación D2. Este gate comprueba capacidad documental y estado de aprobación. No aprueba el roster, no materializa unidades ni snapshots, no asigna masas, no modifica la precedencia P* ni ejecuta.
+
+### 16.233.1. Dictamen sobre el alcance ya decidido
+
+DEC-C10-096 ya resolvió la cuestión de alcance de la cohorte de validación Need: será el censo de todas las UE del roster DGP/paquete B1 aprobado al que aplique el paquete. DEC-C10-095 fija la composición truth Need 1/0/? y sus controles. Por tanto, no queda pendiente elegir entre censo y subcohorte para Need.
+
+Lo que sigue pendiente es anterior: **no existe todavía una versión de roster B1/UE aprobada y materializada a la que aplicar ese censo**. El crosswalk de población y el documento de denominadores declaran expresamente ROSTER_NOT_APPROVED / NOT_MATERIALIZED; el contrato mínimo de materialización especifica qué claves deberá contener cada unidad, pero no asigna IDs concretos ni aporta filas. La decisión de censo no crea por sí misma el censo.
+
+### 16.233.2. Qué puede proporcionar el paquete B1 y qué no
+
+| Artefacto/decisión existente | Capacidad acreditada | Límite para q_X* |
+|---|---|---|
+| DEC-C10S-B1-UNIT-001 y decisiones de cardinalidad | Una B1 vinculada unívocamente a cada UE del paquete; cardinalidad lógica definida | No identifica ninguna UE concreta ni define el marco total de historias |
+| DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001 | Cada UE tendrá una instancia lógica de servicio propia, única y versionada | No proporciona instance_id/version ni snapshot real/materializado por unidad |
+| Contrato mínimo B1/Need | Define ue_id, b1_id, contract_id/version, instance_id/version, baseline_record_id y z_event_id, y separa truth, evidencia y adjudicación | Declara que los IDs se generan solo desde un roster cerrado/versionado; no contiene valores ni registros |
+| DEC-C10-095 / DEC-C10-096 y crosswalk de cohorte | Regla de truth Need y censo de la cohorte B1 aplicable, sin selección por Need, Z u observabilidad | La cohorte es de validación de Need; no es P*_{τ2}, P*_F, q_X* ni denominador ITT |
+| Contrato DGP temporal/roles y D2 | Define simbólicamente X, H0, C_c, elegibilidad pre-Z, q_X* y sus relaciones | No asigna valores basales conjuntos, versiones por unidad, roster causal ni distribución/masas |
+| Harness actual | n_units, seed, Z/G y baseline_x escalar sintético | No implementa roster B1, UE/B1/instancia/baseline IDs, X/H0/C_c conjuntos ni q_X* |
+
+**Resultado:** B1/UE es una arquitectura válida para anclar historias cuando exista el roster, pero no puede suministrar ahora el universo basal. Las claves contractuales son un esquema lógico, no unidades existentes. baseline_x del harness no puede completar las claves ni sustituir X/H0/C_c.
+
+### 16.233.3. Reconciliación de los tres universos
+
+Se mantienen separados:
+
+1. **Roster DGP/paquete B1:** marco censal al que aplicará la validación Need cuando sea aprobado y versionado.
+2. **Población causal P*_{τ2} / P*_F:** definida por sus propios criterios basales y de ruta; no se deriva del soporte truth 1/0 de Need.
+3. **Población objetivo q_X* de C3:** distribución conjunta sobre historias basales admisibles (X,H0,C_c y campos aceptados), con masas y soporte de g_A; no se deriva automáticamente del censo B1 ni de sus frecuencias.
+
+La eventual reutilización de una misma UE entre estos marcos exige un crosswalk de identidad y una regla explícita de inclusión. La igualdad de rosters, si se decidiera, no implica igualdad de poblaciones ni igualdad de pesos. Un censo de unidades tampoco determina por sí mismo si q_X* será empírica, uniforme, ponderada o una distribución objetivo distinta: esa decisión debe estar especificada, justificada y versionada, no inferida del orden de filas ni de la semilla.
+
+### 16.233.4. Matriz de materialización
+
+| Requisito | Estado actual | Dictamen |
+|---|---|---|
+| Regla de cardinalidad B1/UE | Decidida | DEFINED |
+| Identidad lógica de instancia por UE | Decidida | DEFINED |
+| Alcance censal de cohorte Need | DEC-C10-096 aceptado | DEFINED / ROSTER-DEPENDENT |
+| Roster UE/B1 aprobado, cerrado y versionado | No existe en los artefactos inspeccionados | BLOCKED |
+| Filas ue_id/b1_id/instance_id/version/baseline_record_id | No materializadas | NONE |
+| Snapshots y valores conjuntos pre-Z de X/H0/C_c | No materializados por UE | NONE |
+| Elegibilidad y predicados basales por unidad | Reglas simbólicas; adjudicación material ausente | NOT MATERIALIZED |
+| q_X* y masas por historia | Definición simbólica; sin distribución ni pesos | OPEN / NOT MATERIALIZED |
+| Correspondencia roster B1 ↔ P*_{τ2}/q_X* | No establecida | OPEN |
+| Soporte conjunto de g_A0/g_A1 y r_common por historia | No evaluable sin las filas basales y las políticas | BLOCKED |
+
+No se crean filas vacías como si fueran historias, ni se inventan IDs de ejemplo para aparentar materialización. Los estados NONE, OPEN y BLOCKED se conservan diferenciados.
+
+### 16.233.5. Decisión operativa y cierre
+
+1. Se reutiliza DEC-C10-096: no se reabre el alcance censal Need ni se propone subcohorte.
+2. Se reutiliza el contrato de materialización B1: no se vuelve a diseñar la identidad B1/UE/instancia.
+3. No se puede aprobar ni completar el roster con los artefactos disponibles; falta la fuente/decisión autorizada que enumere las UE y sus baselines. La reconciliación D2 indica además que la autorización para capturar/materializar roster, IAM/C_SRC y snapshots no existe en este ciclo.
+4. No se asignan masas q_X* a partir de frecuencias del harness, tamaño n_units, orden de unidades o pesos de benchmark.
+5. La dependencia de q_X* queda **BLOCKED por ausencia de roster/baselines y de autorización de materialización**, no por falta de otra especificación narrativa.
+6. Se pasa al siguiente componente de cierre que no depende de q_X*: auditoría del contrato de asignación ITT-Z y de la evidencia/certificados que el Analyzer necesita para verificarlo. Esto no elimina los bloqueos de población C1 ni habilita estimación; solo permite cerrar de forma independiente qué debe observarse y qué no puede presumirse sobre la asignación.
+
+**Dictamen:** GATE_80_ROSTER_CAPABILITY_AUDIT_CLOSED / B1_UNIT_AND_INSTANCE_KEYS_DEFINED / DEC_C10_096_CENSUS_SCOPE_REUSED / ROSTER_NOT_APPROVED / NO_UNIT_ROWS_OR_BASELINES / X_H0_CC_NOT_MATERIALIZED / Q_X_MASSES_NOT_DERIVABLE / NEED_COHORT_NOT_CAUSAL_POPULATION / MATERIALIZATION_AUTHORIZATION_ABSENT / Q_X_DEPENDENCY_BLOCKED / NO_NEW_UNITS_OR_WORLDS / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** Gate 81 — auditoría de suficiencia del contrato de asignación ITT-Z: distinguir flags internos del harness de un protocolo de aleatorización verificable; identificar qué datos/certificados puede recibir el Analyzer, qué truth queda reservada al Generator/Evaluator y qué estados deben conducir a identificación, descripción o abstención. Reutilizar §§16.226–16.227, el contrato DGP y el código actual; no fijar probabilidades, estratos, semillas, UA/clúster ni tamaño muestral, no modificar el estimando C1, no ejecutar ni implementar.
