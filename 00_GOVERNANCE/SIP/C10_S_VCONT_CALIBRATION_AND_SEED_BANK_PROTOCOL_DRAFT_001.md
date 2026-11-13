@@ -238,3 +238,14 @@ This contract supersedes any ambiguous interpretation of the legacy `SeedAssignm
 The existing `required_replicates(calibration_sd, target_mcse)` continues to size R only. M requires its own predeclared sizing and calibration-uncertainty procedure. No numerical M, new seed bank, calibration, Monte Carlo or scientific execution is authorized by this cross-reference.
 
 **Gate 154 status:** DEFINED and cross-referenced; implementation OPEN.
+
+
+## 12. Gate 155 — outer M implementation
+
+**Implementation record:** `00_GOVERNANCE/SIP/C10_S_VCONT_MONTE_CARLO_OUTER_REPLICATION_IMPLEMENTATION_GATE_155_DRAFT_001.md`.
+
+The seed-bank and harness implementation now carries `outer_replicate_id` and `assignment_role`, preserves one designated RUN and R repeated assignments within each outer world, derives distinct world seeds across M, and provides a two-stage Evaluator aggregation over within-world R followed by across-world M. Bias, MAE, RMSE (delta-method MCSE), recovery and identification metrics are aggregated only when the authoritative matrix marks the corresponding temporal pair EVALUABLE.
+
+The legacy `replicate` remains the R assignment index; `replicate=-1` plus `assignment_role=RUN` denotes the designated run. Seed-bank fingerprints include M identity and role. The existing `required_replicates` continues to size R only; no numeric M sizing rule or target is inferred here.
+
+**Gate 155:** implementation persisted; technical verification status is governed by the exact tested commit and workflow record in the Gate 155 implementation document. No calibration or evaluation seed bank was generated. No Monte Carlo sizing, benchmark or scientific execution is authorized or recorded.
