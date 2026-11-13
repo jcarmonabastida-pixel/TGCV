@@ -1,5 +1,6 @@
 """Tests for descriptive C10-S benchmark statistics; no simulation is run."""
 import unittest
+from dataclasses import replace
 
 from vcont_benchmark_protocol import (
     ProtocolError, build_seed_bank, required_replicates, select_minimum_n,
