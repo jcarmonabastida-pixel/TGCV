@@ -6683,3 +6683,76 @@ Se conserva la definición de §16.230.1 que separa asignación G de intervenci�
 **Dictamen:** GATE_78_SUPPORT_AUDIT_COMPLETE / G_A_EXTREME_VECTORS_UNVALIDATED / MASTER_POLICY_FORM_REMAINS_JOINT_HISTORY_CONDITIONAL_DISTRIBUTIONS / FOCAL_CLEAN_R0_IS_CANDIDATE_NOT_CERTIFIED / R1_R2_R3_RETAIN_EXISTING_ROLES / Q_X_SUPPORT_NOT_MATERIALIZED / R_COMMON_NOT_CERTIFIED_PER_CELL / NO_ROSTER_EXPANSION / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** Gate 79 — convertir el requisito ya existente de §16.223.2 en el registro mínimo por historia de q_X* y de soporte conjunto de g_A0/g_A1, reutilizando exclusivamente las historias/clases ya contenidas en el universo finito. Resolver qué información ya existe en las cards/ledger y qué campo concreto falta; no inventar historias, masas, políticas ni parámetros. Si el universo actual no permite ese registro, elevar la limitación al contrato maestro en lugar de fabricar soporte. No implementar ni ejecutar.
+
+
+---
+
+## 16.232. Gate 79 — registro mínimo por historia de q_X* y soporte conjunto de g_A (2026-11-13)
+
+**Precedencia:** §§16.208.3–16.208.8, 16.211–16.212, 16.223.1–16.223.5, 16.226.2.C–16.226.6 y 16.231. Este gate convierte el ledger estructural ya existente en un registro hijo por historia. No crea historias, unidades, clases, masas, políticas, parámetros ni estimandos; no materializa filas sin fuente; no implementa ni ejecuta.
+
+### 16.232.1. Qué existe realmente y qué no
+
+La reconstrucción de los artefactos existentes produce este inventario:
+
+| Fuente existente | Información reutilizable | Lo que no acredita para q_X* / g_A |
+|---|---|---|
+| Inventario finito §16.208 y C10_S_FINITE_DGP_INVENTORY_AND_REACH_COVERAGE_DRAFT_001.md | UE/UA candidatas, perfiles R0–R3, topologías, rutas y clases de mecanismos | No enumera historias basales h ni asigna masas q_X*(h); UE=UA es solo candidata bajo aislamiento |
+| Mapping finito §16.211 y cards AB-03/AB-04 | Identidades/roles abstractos F1/F2/A1/A2, predicados, snapshots requeridos y condiciones por ruta | Son fichas de transformaciones/predicados, no registros de historia ni distribuciones conjuntas admisibles de ΔT_acc* |
+| Contrato DGP temporal y de roles | X, H0, C_c, q_X*, secuencia temporal, variables y separación Generator/Analyzer/Evaluator | Define objetos y dependencias, pero no aporta valores basales por UE, soporte conjunto ni pesos |
+| Contrato D2 población/soporte | Define q_X* como distribución objetivo condicionada por elegibilidad basal y distingue P*, q_X*, π_h y pesos del benchmark | Declara roster, q_X*, pesos, soporte común y positividad no materializados |
+| Paquete B1/Need y crosswalk de cohorte | Claves que podrán anclar una unidad: ue_id, b1_id, instance_id/version, baseline_record_id; composición Need explícita y reservada | El roster B1/UE sigue no aprobado/no materializado. Need_preZ y su soporte 1/0 no son q_X*, elegibilidad C3 ni soporte de g_A |
+| Revisión de composición Need_preZ | Regla de truth 1/0/? y soporte binario mínimo de su cohorte propia | No permite inferir X, H0, C_c, masas q_X* ni soporte causal focal |
+| Harness integrado actual (blob 2dafb9cdc4a6e0b5b6d686acc74bdecc71dbead4) | n_units, seed, asignaciones Z/G y un baseline_x escalar aleatorio por unidad; exógenas comunes para potenciales Z/G | No contiene objeto/versión q_X*, roster de historias, history_id, masas, X/H0/C_c conjuntos, snapshot basal completo ni kernels g_A. baseline_x no es una historia basal y la asignación balanceada Z/G no es una distribución q_X* |
+
+**Resultado:** existe un contrato que exige q_X* y soporte, pero no existe en los artefactos inspeccionados una tabla materializada de historias basales C3 ni una distribución objetivo con masas. No se puede rellenar el ledger por analogía a partir de las cards, perfiles R0–R3, Need_preZ, baseline_x, n_units o la semilla.
+
+### 16.232.2. Registro hijo mínimo, sin duplicar el ledger de celda
+
+Se conserva §16.223.2 como ledger padre por celda. Para cada celda C3 se define un registro hijo por cada historia h que tenga masa positiva en q_X*. No se crea otro ledger paralelo: cada fila hija referencia world_id/version, cell_id, estimand_id=C3, population_id=q_X* e intervention_id del registro padre.
+
+| Campo del registro hijo | Contenido mínimo exigido |
+|---|---|
+| history_ref | Referencia compuesta y estable a la UE/instancia y baseline existentes: ue_id, instance_id/version, baseline_record_id y snapshot basal/version. No inventar un ID de historia separado si esas identidades ya resuelven la unidad/historia |
+| q_X_version / q_X_mass | Versión de la distribución y masa basal positiva de esa historia; las masas de todas las historias del q_X* declarado deben sumar 1 |
+| baseline_history_ref | Referencias versionadas a X, H0 y C_c, elegibilidad basal y predicados necesarios (incluidos C_dep,0* y A_f,0*) que definen la historia admisible; UNKNOWN conserva su estado y no se recodifica |
+| delta_t_acc_schema_ref | Orden, semántica, dominio y versión de las cuatro coordenadas ΔU*/ΔR*/ΔC*/ΔX*, derivadas de snapshots estructurales completos; no tratarlas como cuatro tratamientos independientes |
+| g_A0_ref | Identidad/versión de la regla conjunta g_A0(ΔT_acc*|h), su distribución sobre vectores completos y la referencia a la política/soporte declarados |
+| g_A1_ref | Identidad/versión de la regla conjunta g_A1(ΔT_acc*|h), su distribución sobre vectores completos y la referencia a la política/soporte declarados |
+| g_A0_support / g_A1_support | Dictamen separado por política y por historia: factibilidad estructural del vector/conjunto de vectores, evaluación contrafactual posible bajo el DGP y soporte observacional necesario para la ruta de identificación del Analyzer |
+| joint_support_status | Resultado de soporte conjunto de la distribución vectorial completa bajo cada g_Ak; no se deriva multiplicando cuatro soportes marginales ni suponiendo independencia entre coordenadas |
+| r_common_ref/status | Referencias a las versiones/valores no focales y exógenas que se mantienen comunes, con COMMON_FIXED, DIFFERENTIAL_IDENTIFIED, DIFFERENTIAL_UNRESOLVED o NOT_APPLICABLE; COMMON_FIXED requiere evidencia/referencia, no mera igualdad de nombres o semillas |
+| support_evidence_ref | Evidencia o regla generadora que permite adjudicar factibilidad, soporte, cobertura y cualquier UNKNOWN, con provenance y versión |
+
+Los campos history_ref, q_X_mass, g_A0/1_support, joint_support_status y r_common_ref son la desagregación mínima de population_id, intervention_id, support_status, held_fixed y r_common_status ya exigidos por §16.223.2; no crean estimandos ni requisitos poblacionales distintos.
+
+### 16.232.3. Tres estados de soporte que no deben colapsarse
+
+Para evitar que Generator y Analyzer parezcan acreditar lo mismo, el support_status del ledger se informa con tres componentes distintos:
+
+1. **Factibilidad estructural:** la política conjunta g_Ak es admisible para esa historia según dominio, restricciones entre coordenadas, snapshots, identidad/versionado y condiciones basales. Si no puede decidirse, UNKNOWN; no se interpreta como vector cero.
+2. **Evaluabilidad contrafactual del Generator:** las funciones estructurales del DGP permiten calcular Y bajo g_Ak, con las dependencias y exógenas compartidas requeridas. Que Generator pueda calcular un potencial no prueba soporte observacional ni identificación.
+3. **Soporte de identificación del Analyzer:** el diseño y la evidencia observada ofrecen la variación/positividad necesaria para identificar el contraste definido, en esa historia y población, bajo los supuestos declarados. La ausencia de soporte no se repara extrapolando desde otras historias.
+
+La intervención g_A es una regla conjunta sobre ΔT_acc* completo, condicionada por h. La positividad/soporte relevante debe evaluarse para el vector conjunto que la política asigna, no solo para cada coordenada por separado. No se declara ahora que g_A0/g_A1 sean deterministas ni se valida el par extremo propuesto en §16.230.2; sigue prevaleciendo la forma general de §16.226.2.C y el dictamen de §16.231.4.
+
+### 16.232.4. Reglas de materialización y controles de integridad
+
+- El conjunto de filas hijas debe ser exactamente el soporte finito declarado de q_X*, sin historias añadidas por conveniencia ni omisiones silenciosas.
+- Cada masa q_X*(h) debe ser positiva y la suma de masas debe ser 1. No se fijan cardinalidad ni valores de masa en este gate.
+- q_X* no se sustituye por π_h, pesos de escenarios/benchmark, asignaciones balanceadas Z/G, prevalencia Need_preZ ni frecuencia accidental de valores en una muestra simulada.
+- X, H0 y C_c se anclan en baseline pre-Z y en sus versiones. Variables post-Z, instalación, observación o Outcome no pueden definir retrospectivamente h.
+- Los cuatro componentes de ΔT_acc* se conservan como vector estructural conjunto derivado de snapshots; la proyección focal A_f* o el indicador all(delta_vector) no sustituye al vector.
+- Para cada historia se registra el soporte de ambas políticas. Una política no factible en una historia de masa positiva bloquea el contraste puntual sobre el q_X* completo; no se recorta la población ni se cambia q_X* en este gate.
+- r_common se acredita mediante referencias a funciones, parámetros, versiones, alternativas, recursos, entorno y exógenas fijadas. Si una vía cambia diferencialmente, se registra como diferencial y se adjudica según §16.226.3; el acoplamiento exógeno por sí solo no la neutraliza.
+- Los registros de Generator/Evaluator con truth y potenciales permanecen separados de la información efectivamente disponible al Analyzer, conforme al firewall de §16.208.5 y §16.226.5.
+
+### 16.232.5. Dictamen: qué se cierra y qué bloquea
+
+**Cerrado por Gate 79:** fuentes históricas reutilizables identificadas; distinción entre cards de transformación, historias basales, composición Need y población q_X*; registro hijo mínimo definido dentro del ledger de §16.223; separación de factibilidad estructural, evaluabilidad contrafactual y soporte de identificación; controles de masa, soporte vectorial conjunto y r_common especificados.
+
+**No materializable todavía:** no hay roster DGP/B1 aprobado con UE/instancias/baselines enumerados; no hay filas de historias X/H0/C_c versionadas; no hay q_X* con masas; no hay dominio/soporte conjunto por historia para g_A0/g_A1; no hay evidencia por historia de r_common. No se rellena ninguna fila ni se declara soporte.
+
+**Dictamen:** GATE_79_HISTORY_LEVEL_LEDGER_SCHEMA_CLOSED / EXISTING_ARTIFACTS_RECONCILED / Q_X_HISTORY_ROWS_NOT_MATERIALIZED / Q_X_MASSES_NOT_DEFINED / JOINT_G_A_SUPPORT_NOT_ESTABLISHED / STRUCTURAL_FEASIBILITY_SEPARATED_FROM_ANALYZER_IDENTIFICATION / NEED_PREZ_NOT_A_Q_X_PROXY / NO_NEW_HISTORIES_OR_WORLDS / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** Gate 80 — comprobar si el roster B1/UE cuya aprobación ya está prevista puede proporcionar, sin ampliar sus unidades, el universo basal requerido por q_X*. Reconciliar sus identidades y snapshots con history_ref, y determinar si las historias X/H0/C_c y sus masas pueden derivarse de los registros ya definidos o si requieren una decisión de diseño explícita. No usar la cohorte Need_preZ como sustituto de q_X*, no crear unidades para conseguir soporte y no asignar masas. Si el roster sigue sin aprobarse/materializarse, dejar la dependencia bloqueada y pasar al siguiente componente de cierre que no dependa de ella; no abrir otra ronda de documentación narrativa. No implementar ni ejecutar.
