@@ -1011,6 +1011,142 @@ class Evaluator:
             "repeated_assignment_report": repeated,
         }
 
+    def evaluate_monte_carlo(self, outer_runs, tolerance: float, matrix=None):
+        """Aggregate benchmark metrics across M independent outer worlds.
+
+        outer_runs maps outer_replicate_id to the runs generated within that world:
+        exactly one designated RUN plus zero or more REPEATED_ASSIGNMENT rows.
+        R is aggregated within each world before any metric is aggregated across M.
+        """
+        from vcont_benchmark_protocol import (
+            ProtocolError, build_scenario_estimand_matrix, summarize_binary,
+            summarize_monte_carlo,
+        )
+        if not isinstance(outer_runs, dict) or len(outer_runs) < 2 or tolerance < 0:
+            raise ContractError("Monte Carlo evaluation requires at least two named outer worlds and nonnegative tolerance")
+        scenario_versions = set()
+        sample_sizes = set()
+        world_ids = set()
+        per_outer = []
+        for outer_id, runs in outer_runs.items():
+            runs = tuple(runs)
+            if not outer_id or not runs:
+                raise ContractError("each outer replicate requires an identity and at least one run")
+            if any(item[3].outer_replicate_id != outer_id for item in runs):
+                raise ContractError("run outer-replicate identity does not match its enclosing M group")
+            run_rows = [item for item in runs if item[3].assignment_role == "RUN"]
+            repeated_rows = [item for item in runs if item[3].assignment_role == "REPEATED_ASSIGNMENT"]
+            if len(run_rows) != 1 or len(run_rows[0][3].world_id for _ in [0]) != 1:
+                raise ContractError("each outer world must contain exactly one designated RUN")
+            all_world_ids = {item[3].world_id for item in runs}
+            if len(all_world_ids) != 1:
+                raise ContractError("RUN and R assignments must share one fixed world within each M")
+            world_id = next(iter(all_world_ids))
+            if world_id in world_ids:
+                raise ContractError("outer Monte Carlo replicates must have independent world identities")
+            world_ids.add(world_id)
+            identities = {(item[3].scenario_id, item[3].version) for item in runs}
+            if len(identities) != 1:
+                raise ContractError("scenario/version must remain fixed across runs within an outer world")
+            scenario_versions.update(identities)
+            sample_sizes.update(item[3].n_units for item in runs)
+            run_tuple = run_rows[0]
+            run_report = self.evaluate(*run_tuple[:3], tolerance=tolerance, manifest=run_tuple[3])
+            repeated_report = None
+            if repeated_rows:
+                repeated_report = self.evaluate_repeated_assignment(repeated_rows, tolerance)
+            per_outer.append({
+                "outer_replicate_id": outer_id,
+                "run": run_tuple,
+                "run_report": run_report,
+                "repeated_report": repeated_report,
+            })
+        if len(scenario_versions) != 1 or len(sample_sizes) != 1:
+            raise ContractError("Monte Carlo aggregation cannot pool scenario versions or N values")
+        scenario_id, scenario_version = next(iter(scenario_versions))
+        specs = tuple(matrix) if matrix is not None else build_scenario_estimand_matrix()
+        selected = tuple(spec for spec in specs if spec.key.scenario_id == scenario_id
+                         and spec.key.scenario_version == scenario_version)
+        if len(selected) != 4 or len({spec.key for spec in selected}) != 4:
+            raise ProtocolError("Monte Carlo aggregation requires the four authoritative matrix pairs")
+        m = len(per_outer)
+
+        def continuous_metric(values):
+            if len(values) != m or any(value is None for value in values):
+                return None
+            return summarize_monte_carlo(
+                [(row["outer_replicate_id"], value) for row, value in zip(per_outer, values)],
+                expected_m=m, target_mcse=float("inf") if False else 1.0e308,
+            )
+
+        def binary_metric(values):
+            if len(values) != m or any(value is None for value in values):
+                return None
+            return summarize_binary(values, "outer-replicate status outcomes")
+
+        run_errors = [row["run_report"].package_abs_error for row in per_outer]
+        run_recovered = [row["run_report"].package_recovered for row in per_outer]
+        run_identified = [row["run"][1].package_status == "IDENTIFIED" for row in per_outer]
+        g_errors = [row["run_report"].g_assignment_abs_error for row in per_outer]
+        g_recovered = [row["run_report"].g_assignment_recovered for row in per_outer]
+        g_identified = [row["run"][1].g_assignment_status == "IDENTIFIED" for row in per_outer]
+        mechanism_errors = [
+            None if row["repeated_report"] is None else row["repeated_report"].marginal_abs_error
+            for row in per_outer
+        ]
+        mechanism_recovered = [
+            None if row["repeated_report"] is None else row["repeated_report"].marginal_recovered
+            for row in per_outer
+        ]
+        reference_errors = [
+            None if row["repeated_report"] is None else row["repeated_report"].reference_abs_error
+            for row in per_outer
+        ]
+        reference_identified = [
+            None if row["repeated_report"] is None else
+            row["repeated_report"].reference_identification_status == "IDENTIFIED"
+            for row in per_outer
+        ]
+        reference_recovered = [
+            None if row["repeated_report"] is None else row["repeated_report"].reference_recovered
+            for row in per_outer
+        ]
+        return {
+            "scenario_id": scenario_id,
+            "scenario_version": scenario_version,
+            "n_units": next(iter(sample_sizes)),
+            "outer_replicate_count": m,
+            "coverage": {
+                "required_pairs": len(selected),
+                "run_conditional_numeric": sum(value is not None for value in run_errors),
+                "g_assignment_numeric": sum(value is not None for value in g_errors),
+                "mechanism_marginal_numeric": sum(value is not None for value in mechanism_errors),
+                "reference_regime_numeric": sum(value is not None for value in reference_errors),
+                "reference_regime_identification_status": sum(value is not None for value in reference_identified),
+            },
+            "run_conditional": {
+                "absolute_error_mean": continuous_metric(run_errors),
+                "recovery_rate": binary_metric(run_recovered),
+                "identification_rate": binary_metric(run_identified),
+            },
+            "g_assignment_z0": {
+                "absolute_error_mean": continuous_metric(g_errors),
+                "recovery_rate": binary_metric(g_recovered),
+                "identification_rate": binary_metric(g_identified),
+            },
+            "mechanism_marginal": {
+                "absolute_error_mean": continuous_metric(mechanism_errors),
+                "recovery_rate": binary_metric(mechanism_recovered),
+            },
+            "reference_regime": {
+                "absolute_error_mean": continuous_metric(reference_errors),
+                "identification_rate": binary_metric(reference_identified),
+                "recovery_rate": binary_metric(reference_recovered),
+            },
+            "per_outer_replicate": tuple(per_outer),
+        }
+
+
 def benchmark_scenarios(n_units: int = 400, n_intervals: int = 20,
                         seed: int = 20261112) -> tuple[ScenarioConfig, ...]:
     """Explicit candidate design points; not empirical rates or confirmatory defaults."""
