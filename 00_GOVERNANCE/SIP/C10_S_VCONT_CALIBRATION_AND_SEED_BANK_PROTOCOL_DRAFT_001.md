@@ -361,3 +361,16 @@ The assumed path `.github/workflows/c10-s-vcont-benchmark.yml` returned NOT_FOUN
 The verifier contract requires exact artifact digest, repository and signer-workflow identity, OIDC issuer, SLSA predicate, source identity and structured verification result. Numeric repository ID is an additional policy value and must not be called cryptographically verified unless the verifier exposes a cryptographically bound field for it. The pinned `actions/attest` revision's actual minimum permissions must be checked; its current README lists `id-token: write`, `attestations: write`, and `artifact-metadata: write`, while GitHub's basic documentation example also includes `contents: read`.
 
 **Gate 161 status:** PUBLIC REPOSITORY AVAILABILITY CONFIRMED; TRUSTED WORKFLOW IDENTITY OPEN; VERIFIER IMPLEMENTATION OPEN. No workflow/code change, CI, attestation generation, calibration, seed-bank generation, N/R/M sizing, Monte Carlo benchmark or scientific execution was performed or authorized.
+
+
+## 21. Gate 162 — workflow inventory and trusted-builder suitability audit
+
+The complete `.github/workflows/` directory was recovered from GitHub at both `main` and `research/c10-s-consolidation-draft`: 50 files on main and 55 on the research branch. The research branch contains five additional C10-S workflows and no same-named workflow modifications relative to main. Their exact paths, blob SHAs, relevant path-specific commit history and security review are recorded in:
+
+`00_GOVERNANCE/SIP/C10_S_VCONT_MONTE_CARLO_TRUSTED_WORKFLOW_INVENTORY_AUDIT_GATE_162_DRAFT_001.md`.
+
+The five C10-S workflows are the P178 performance diagnostic, clean replay, Monte Carlo runner, exact-cache probe and focal harness contract tests. The assumed `c10-s-vcont-benchmark.yml` path does not exist. The existing C10-S workflows grant only `contents: read`, do not create Artifact Attestations, do not declare OIDC/attestation permissions, and use mutable action tags. They are execution/replay/test workflows, not trusted signers.
+
+The focal harness test workflow is the closest existing unprivileged test job: its history records explicit compilation of the Vcont integrated harness and benchmark protocol. It remains unsuitable as a signer. A dedicated trusted builder/attestor is required and must consume an already finalized report package; it must not rerun scientific or Monte Carlo work merely to sign.
+
+**Gate 162 status:** INVENTORY RECOVERED; BRANCH DELTA AUDITED; EXISTING SIGNER CANDIDATES REJECTED AS-IS; DEDICATED TRUSTED BUILDER DESIGN OPEN. No workflow was modified, no signing permissions were added, and no CI, attestation generation, calibration, seed-bank generation, sizing or scientific execution was performed.
