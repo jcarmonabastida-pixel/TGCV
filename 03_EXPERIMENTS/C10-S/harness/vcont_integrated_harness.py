@@ -162,6 +162,9 @@ class RunManifest:
     z_assignment_mechanism_hash: str = ""
     g_reference_regime_id: str = "G_REFERENCE_50_50"
     g_reference_regime_version: str = "001"
+    z_assignment_vector_hash: str = ""
+    g_assignment_vector_hash: str = ""
+    g_assignment_probability_by_stratum: tuple[tuple[str, float], ...] = ()
 
 
 @dataclass(frozen=True)
@@ -184,6 +187,10 @@ class TruthBundle:
     itt_z_reference_truth: float | None = None
     transportability_invariant_truth: bool | None = None
     transportability_scope_truth: str | None = None
+    g_reference_regime_id: str = "G_REFERENCE_50_50"
+    g_reference_regime_version: str = "001"
+    g_assignment_mechanism_hash: str = ""
+    z_assignment_mechanism_hash: str = ""
 
     @property
     def itt_package_truth(self) -> float:
@@ -433,9 +440,11 @@ class Generator:
             cfg.window_start, window_end, interval_width, self.version,
             _hash({"world_seed": world_seed, "scenario": cfg.scenario_id}), cfg.version, cfg.replicate_id,
             "G_BALANCED_WITH_STRATUM_SUPPORT" if not cfg.positivity else "G_BALANCED", "001", gh,
-            "Z_BALANCED_INDEPENDENT", "001", zh, "G_REFERENCE_50_50", "001")
+            "Z_BALANCED_INDEPENDENT", "001", zh, "G_REFERENCE_50_50", "001",
+            _hash(z_assign), _hash(g_assign), (("LOW", 0.5), ("HIGH", 0.0 if not cfg.positivity else 0.5)))
         truth = TruthBundle(run_id, tuple(v_truth), tuple(interval_truth), tuple(enabled_truth), tuple(profile_truth), tuple(delta_truth),
-            itt_reference, itt_g_z0, None, cfg.seed, itt_run, itt_mechanism, itt_reference, invariant_truth, "HIGH" if unsupported_high else "ALL")
+            itt_reference, itt_g_z0, None, cfg.seed, itt_run, itt_mechanism, itt_reference, invariant_truth,
+            "HIGH" if unsupported_high else "ALL", "G_REFERENCE_50_50", "001", gh, zh)
         return manifest, truth, EvidenceCandidate(run_id, tuple(rows))
 
 
@@ -591,8 +600,8 @@ class Evaluator:
         }
         if _hash(payload) != result.output_sha256:
             raise FirewallError("Analyzer output seal invalid")
-        if (result.estimand_id != contract.estimand_id or result.target_regime_id != contract.target_regime_id or result.target_regime_version != contract.target_regime_version or result.outcome_id != contract.outcome_id or result.outcome_version != contract.outcome_version or result.reference_regime_id != "G_REFERENCE_50_50" or result.reference_regime_version != "001"):
-            raise ContractError("estimand, target regime or outcome identity mismatch")
+        if (result.estimand_id != contract.estimand_id or result.target_regime_id != contract.target_regime_id or result.target_regime_version != contract.target_regime_version or result.outcome_id != contract.outcome_id or result.outcome_version != contract.outcome_version or result.reference_regime_id != truth.g_reference_regime_id or result.reference_regime_version != truth.g_reference_regime_version or truth.g_assignment_mechanism_hash == "" or truth.z_assignment_mechanism_hash == ""):
+            raise ContractError("estimand, target regime, mechanism provenance or outcome identity mismatch")
         package_target = truth.itt_z_run_truth
         package_error = None if result.package_itt is None or package_target is None else abs(result.package_itt - package_target)
         # Analyzer's G-assignment estimate is adjudicated against its matching
