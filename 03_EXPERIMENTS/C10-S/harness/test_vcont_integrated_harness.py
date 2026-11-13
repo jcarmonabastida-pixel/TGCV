@@ -195,6 +195,42 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         self.assertNotEqual([r["assignment_z"] for r in candidate_a.rows],
                             [r["assignment_z"] for r in candidate_b.rows])
 
+
+    def test_outer_replicate_identity_propagates_and_separates_worlds(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        common = dict(world_seed=991, outer_replicate_id="outer-000001")
+        run_cfg = replace(cfg, **common, assignment_role="RUN",
+                          z_assignment_seed=11, g_assignment_seed=21, replicate_id="designated-run")
+        repeat_cfg = replace(cfg, **common, assignment_role="REPEATED_ASSIGNMENT",
+                             z_assignment_seed=12, g_assignment_seed=22, replicate_id="r0")
+        other_world_cfg = replace(cfg, world_seed=992, outer_replicate_id="outer-000002",
+                                  assignment_role="RUN", z_assignment_seed=13,
+                                  g_assignment_seed=23, replicate_id="designated-run-2")
+        run_manifest, run_truth, run_candidate = self.generator.generate(run_cfg)
+        repeat_manifest, repeat_truth, _ = self.generator.generate(repeat_cfg)
+        other_manifest, _, _ = self.generator.generate(other_world_cfg)
+        self.assertEqual(run_manifest.world_id, repeat_manifest.world_id)
+        self.assertNotEqual(run_manifest.world_id, other_manifest.world_id)
+        self.assertEqual(run_truth.outer_replicate_id, "outer-000001")
+        self.assertEqual(repeat_truth.assignment_role, "REPEATED_ASSIGNMENT")
+        sealed = self.sealer.seal(run_candidate)
+        result = self.analyzer.analyze(sealed, contract_for(run_cfg))
+        report = self.evaluator.evaluate(run_truth, result, contract_for(run_cfg),
+                                         tolerance=0.10, manifest=run_manifest)
+        self.assertEqual(result.outer_replicate_id, run_manifest.outer_replicate_id)
+        self.assertEqual(result.assignment_role, "RUN")
+        self.assertIsNotNone(report)
+
+    def test_evaluator_rejects_outer_identity_mismatch(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        manifest, truth, _, result, _ = self.execute_world(cfg)
+        with self.assertRaises(ContractError):
+            self.evaluator.evaluate(replace(truth, outer_replicate_id="outer-forged"),
+                                    result, contract_for(cfg), tolerance=0.10, manifest=manifest)
+        with self.assertRaises(ContractError):
+            self.evaluator.evaluate(truth, replace(result, assignment_role="RUN"),
+                                    contract_for(cfg), tolerance=0.10, manifest=manifest)
+
     def test_support_failure_transportability_is_separate_from_run_level_itt_z(self):
         cfg = self.worlds()["R0_SUPPORT_FAILURE"]
         _, truth, _, result, _ = self.execute_world(cfg)
