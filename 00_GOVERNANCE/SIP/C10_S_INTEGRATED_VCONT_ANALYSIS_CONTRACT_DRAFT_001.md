@@ -527,3 +527,20 @@ It provides:
 6. No numeric acceptance thresholds have been silently adopted. Those remain a pre-execution gate decision.
 
 **Execution boundary:** these are source, test and workflow changes only. No tests, GitHub Actions run, calibration simulation, Monte Carlo benchmark or scientific execution is claimed by this record. `scientific_execution=false`; `execution_authorized=false`. `main` is untouched; PR #116 remains Draft.
+
+
+### 14.9 Gate 129 — technical CI result — 2026-11-13
+
+The push-triggered GitHub Actions workflow completed successfully after the Gate 129 source and test changes.
+
+- Workflow run: [#82](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/43469122602)
+- Tested commit: `a8aa731ab16370b2066906cb172ca3d19a560808`
+- Primary suite: 65 tests, PASS.
+- Clean-source-archive replay: 65 tests, PASS.
+- Explicit compilation step: completed successfully.
+- Job and workflow conclusion: SUCCESS.
+- Artifact ID: `14059693079`.
+
+The 65 tests comprise the 39 integrated V_cont harness test definitions, 9 new quantitative protocol tests, and 17 existing focal/P178 tests. The workflow compiled both new protocol files explicitly. The final branch HEAD after this run is `a19ed5769933630e381fcf73f916f9ac6a0363f0`; its only change after the tested commit is this contract document, with no executable, test or workflow source changes.
+
+**Interpretation:** this is technical conformance evidence for the current source/test/workflow changes. It does not establish benchmark recovery, calibration, coverage, type-I error, power, confirmatory validity or scientific identification. No Monte Carlo benchmark or scientific execution was run.
