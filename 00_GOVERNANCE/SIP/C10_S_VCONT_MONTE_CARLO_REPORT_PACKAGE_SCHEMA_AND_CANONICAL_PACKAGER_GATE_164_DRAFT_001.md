@@ -248,3 +248,15 @@ The schema in this document remains the target package contract, but it is **not
 Before packager implementation, Gate 166 must freeze a typed evidence-export interface and its cardinalities, join keys, data-minimization boundary and provenance split. The package schema's effective configuration and analysis-contract cardinalities must also be clarified. Existing report and seed-bank fingerprints retain their legacy serialization semantics; package JCS digests are computed separately.
 
 **Gate 164 state after Gate 165:** TARGET SCHEMA DEFINED / IMPLEMENTATION BLOCKED PENDING EVIDENCE-EXPORT CONTRACT. No implementation or execution authorization is implied.
+
+
+## 14. Gate 166 — typed source evidence interface
+
+Gate 166 has frozen the typed source interface in:
+`00_GOVERNANCE/SIP/C10_S_VCONT_TYPED_EVIDENCE_EXPORT_CONTRACT_GATE_166_DRAFT_001.md`.
+
+The package builder must consume the Gate 166 benchmark envelope and RunEvidenceRecords, not reconstruct records from the Evaluator's reduced report. The export retains complete SeedAssignment and RunManifest identities, exact per-run ScenarioConfig bindings plus structural projections, AnalysisContract references, matrix-relevant TruthBundle fields, SealedEvidence manifest/digest, AnalyzerResult and EvaluationReport, and one repeated aggregate report per M.
+
+Two deliberate data-minimization constraints apply: full potential-outcome arrays are not included by default; raw SealedEvidence rows are not included by default. The latter digest is independently recomputable only if its canonical source representation is retrievable. Otherwise it remains UNVERIFIABLE and blocks RECONCILED provenance.
+
+Gate 164 remains the target package format. Its implementation remains OPEN pending Gate 166 export implementation and Gate 159 reconciliation. No code or execution authorization is implied.
