@@ -636,6 +636,8 @@ The temporal contract is enforced in the adapter:
 - Numeric pairs require finite truth from the declared TruthBundle field and the declared Analyzer output; status-only and non-identifiable pairs cannot receive numeric scoring.
 - Matrix coverage is checked for all four distinct estimand keys before returning the integrated report.
 
+Each EVALUABLE pair record also carries its absolute error and tolerance-based recovery verdict; non-numeric status pairs retain null error/recovery fields. The adapter rejects invalid recovery tolerances and invalid supplied MCSE targets.
+
 The precision verdict now distinguishes a known MCSE above its predeclared target (`FAIL`) from missing MCSE or missing target (`NOT_EVALUABLE`). A passing MCSE remains `PASS`.
 
 Three integrated harness tests cover run/repeated temporal separation, scenario-version mismatch rejection and preservation of non-identified reference-regime status. The protocol test covers PASS / FAIL / NOT_EVALUABLE precision states.
