@@ -633,9 +633,7 @@ The temporal contract is enforced in the adapter:
 - Run-level records are emitted for ITT-Z run-conditional, ITT-Z reference-regime identification status and ITT-G with Z=0.
 - The legacy per-run `reference_regime_itt` is only an alias of `package_itt`; it is not an independent estimator of the marginal reference target. The adapter therefore records reference identification/abstention at run level without numeric truth comparison.
 - Numeric reference-regime recovery is evaluated only at the repeated-assignment level through `reference_estimate_mean` against `itt_z_reference_truth`.
-- Run-level records are emitted for ITT-Z run-conditional, ITT-Z reference-regime and ITT-G with Z=0.
 - ITT-Z mechanism-marginal is never emitted from a single run; it is emitted only from the repeated-assignment aggregate.
-- ITT-Z reference-regime is represented at both run and repeated-assignment levels, with the latter retaining its separate aggregate output field and identification status.
 - Numeric pairs require finite truth from the declared TruthBundle field and the declared Analyzer output; status-only and non-identifiable pairs cannot receive numeric scoring.
 - Matrix coverage is checked for all four distinct estimand keys before returning the integrated report.
 
