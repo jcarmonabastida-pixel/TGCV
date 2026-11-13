@@ -3,7 +3,7 @@ import unittest
 
 from vcont_benchmark_protocol import (
     ProtocolError, build_seed_bank, required_replicates, select_minimum_n,
-    summarize_binary, summarize_continuous, summarize_scenario,
+    summarize_binary, summarize_continuous, summarize_scenario, summarize_monte_carlo_rmse,
     seed_bank_fingerprint, validate_seed_banks, build_scenario_estimand_matrix, summarize_monte_carlo,
     select_minimum_n_by_estimand, required_replicates_by_estimand,
     validate_evaluation_observation, EvaluationKey, summarize_estimand,
@@ -122,6 +122,19 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
         with self.assertRaises(ProtocolError):
             summarize_monte_carlo([("m0", 1.0), ("m1", 1.2)],
                                   expected_m=3, target_mcse=0.2)
+
+
+    def test_monte_carlo_rmse_uses_outer_squared_error_contributions(self):
+        summary = summarize_monte_carlo_rmse(
+            [("m0", 1.0), ("m1", 4.0), ("m2", 0.0)],
+            expected_m=3, target_mcse=1.0)
+        self.assertAlmostEqual(summary.mean_squared_error, 5.0/3.0)
+        self.assertAlmostEqual(summary.rmse, (5.0/3.0)**0.5)
+        self.assertIsNotNone(summary.mcse_rmse_delta)
+        self.assertIn(summary.precision_status, ("PASS", "FAIL"))
+        with self.assertRaises(ProtocolError):
+            summarize_monte_carlo_rmse(
+                [("m0", -1.0), ("m1", 0.0)], expected_m=2, target_mcse=1.0)
 
     def test_minimum_n_selection_requires_all_scenario_targets(self):
         observed = {
