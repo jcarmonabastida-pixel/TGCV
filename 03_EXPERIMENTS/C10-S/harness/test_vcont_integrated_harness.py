@@ -399,9 +399,12 @@ class VContIntegratedHarnessTests(unittest.TestCase):
                                     manifest=replace(manifest, version="999"))
 
     def test_evaluator_adjudicates_version_inconsistency_as_expected_abstention(self):
-        cfg = replace(self.worlds()["R0_FOCAL_POSITIVE"], version_consistency=False)
-        manifest, truth, _, result, _ = self.execute_world(cfg)
-        report = self.evaluator.evaluate(truth, result, contract_for(cfg),
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        manifest, truth, candidate = self.generator.generate(cfg)
+        sealed = self.sealer.seal(candidate)
+        inconsistent = replace(contract_for(cfg), version_consistency=False)
+        result = self.analyzer.analyze(sealed, inconsistent)
+        report = self.evaluator.evaluate(truth, result, inconsistent,
                                          tolerance=0.10, manifest=manifest)
         self.assertEqual(result.package_status, "INDETERMINATE")
         self.assertEqual(result.g_assignment_status, "INDETERMINATE")
@@ -425,8 +428,8 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         g0 = [row["assignment_g"] for row in e0.rows]
         self.assertEqual(z0, [row["assignment_z"] for row in es.rows])
         self.assertEqual(g0, [row["assignment_g"] for row in es.rows])
-        self.assertEqual(z0, [row["assignment_z"] for row in ez.rows])
-        self.assertEqual(g0, [row["assignment_g"] for row in eg.rows])
+        self.assertEqual(g0, [row["assignment_g"] for row in ez.rows])
+        self.assertEqual(z0, [row["assignment_z"] for row in eg.rows])
         self.assertNotEqual(z0, [row["assignment_z"] for row in ez.rows])
         self.assertNotEqual(g0, [row["assignment_g"] for row in eg.rows])
         for truth in (ts, tz, tg):
