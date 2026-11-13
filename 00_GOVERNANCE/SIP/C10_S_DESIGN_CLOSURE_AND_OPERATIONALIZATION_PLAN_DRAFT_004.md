@@ -6954,3 +6954,101 @@ Bloqueo principal: theta_access_truth representa actualmente el efecto total de 
 ### 16.234.6. Siguiente gate
 
 **Gate 82 — contrato de verdad causal independiente del Generator/Evaluator.** Resolver, reutilizando los potenciales existentes y sin modificar todavía código, las definiciones operativas separadas de ITT_D2, theta_G y theta_A; especificar la intervención conjunta sobre ΔT_acc* completo, la exclusión de vías directas de G, las condiciones no focales mantenidas, la relación entre el par g_A0/g_A1 y el mecanismo actual G, y qué debe comparar exactamente el Evaluator en mundos limpios, directos, colaterales y no identificados. El gate debe terminar con ecuaciones de verdad y criterios de adjudicación que puedan traducirse después al harness sin cambiar el estimando por conveniencia. No volver a diseñar Value/V_cont, no crear mundos ni parámetros, no implementar ni ejecutar.
+
+
+---
+
+## 16.235. Gate 85 — matriz integrada de reconciliación e implementación C10-S (2026-11-13)
+
+**Precedencia:** §§16.223–16.234; contrato DGP temporal/roles; inventario finito R0–R3; harness integrado `03_EXPERIMENTS/C10-S/harness/vcont_integrated_harness.py` (blob `2dafb9cdc4a6e0b5b6d686acc74bdecc71dbead4`); tests `test_vcont_integrated_harness.py` (blob `791530c34f154bc11a4360a676af54db8fd4c8ce`); P178 clean replay closure audit 001 (blob `f8b52ed0be4e7d74a8a5bfc226f7cd32d4d138d4`); P178 replay performance diagnostic 001 (blob `a8b29379339a3ddcb6374530742e1b9d5b9684d8`). Gate de reconciliación estática y secuenciación de implementación. No modifica código, estimandos congelados, roster, parámetros, mundos, tamaños muestrales ni protocolo de ejecución.
+
+### 16.235.1. Reconciliación canónica y reconstrucción histórica
+
+La lectura de `00_GOVERNANCE/README.md`, `CHATGPT_BOOTSTRAP.md`, `CANONICAL_STATE.json`, `STATUS.md`, punteros RMA/matriz y traceability en `main` confirma una cadena consistente: RMA v3.38, Evidence→Claim Matrix v1.47, RMA traceability v3.38 y Governance Operating Principles v0.1. La discrepancia RMA 3.37/3.38 comunicada en una revisión conversacional anterior no está presente en los artefactos actuales consultados; se considera resuelta por el estado canónico actual, no por inferencia ni edición local. No se modifica `main`.
+
+La rama `research/c10-s-consolidation-draft` contiene el plan integrado en `00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_AND_OPERATIONALIZATION_PLAN_DRAFT_004.md`. Se conserva su historial y se añade esta reconciliación sin reescribir gates previos. El encabezado/siguiente operación histórico del documento todavía apunta a Gate 81; ese texto queda reconocido como routing histórico obsoleto frente a las secciones de gates ya añadidas. No se reescribe en este gate para evitar una edición amplia y no necesaria; la continuidad posterior debe seguir el último gate secuencial registrado.
+
+### 16.235.2. Evidencia histórica que se reutiliza — P178
+
+P178 no es un experimento causal integrado de Generator/Projector/Analyzer/Evaluator. Es un benchmark Monte Carlo metodológico del Analyzer y se reutiliza únicamente para lo que acredita.
+
+La auditoría `P178_CLEAN_REPLAY_CLOSURE_AUDIT_001.md` registra:
+- 27 celdas (K=2,10,50 × π0=0.2,0.5,0.8 × nulo/positivo/negativo);
+- N=700 por celda, R=10.000, 270.000 invocaciones;
+- 17 pruebas de contrato PASS;
+- replay limpio completo, 27/27 comparaciones `reference_match=True`;
+- CSV y manifiesto byte-idénticos;
+- cierre: COMPUTATIONAL REPRODUCIBILITY PASS / NON-CONFIRMATORY METHODOLOGICAL CALIBRATION.
+
+El diagnóstico de rendimiento conserva la historia de intentos de replay incompletos anteriores; su cierre posterior documenta el replay completo y byte-idéntico. No se interpreta el diagnóstico de rendimiento como sustituto ni como revocación de la auditoría final. P178 no cubre las verdades θ_Z/θ_G/θ_A del DGP integrado, vías directas/colaterales, soporte conjunto de intervenciones focales, heterogeneidad focal por estratos, interferencia ni identificación parcial. No se repite P178 ni se usa su PASS como evidencia causal C10-S.
+
+### 16.235.3. Matriz única de implementación integrada
+
+Estados: **EXISTE** = función/campo/camino implementado en el harness; **PARCIAL** = mecanismo parametrizable o representación presente, sin contrato/cobertura suficiente; **AUSENTE** = capacidad necesaria no implementada; **REUTILIZAR** = evidencia previa válida dentro de su alcance, sin duplicarla.
+
+| Bloque | Estado actual verificado | Brecha exacta | Acción mínima de implementación posterior | Aceptación exigida |
+|---|---|---|---|---|
+| Generator: potenciales (Z,G) | EXISTE: V_i(z,g), cuatro regímenes, exógenos compartidos | G se documenta como intervención sobre g_A, pero no existe una familia de potenciales que intervenga separadamente sobre el vector A bajo r_common y permita adjudicar θ_A sin el término directo de G | Añadir la evaluación estructural focal requerida por el contrato congelado, reutilizando mecanismos y exógenos existentes; no crear perfiles nuevos | Identidad de potenciales y consistencia; contraste focal invariante a la vía directa de G; tests de acoplamiento |
+| Generator: θ_Z | EXISTE: `itt_package_truth`, promedio 50/50 sobre G | El estimando depende del régimen G marginal definido; estimador por asignación observada y verdad estandarizada no son algebraicamente idénticos en cada muestra | Mantener la definición ITT vigente y documentar el régimen/estimador compatible; no redefinir C1 por conveniencia | Verdad y estimador comparan el mismo target; incertidumbre/calibración conforme al diseño |
+| Generator: θ_G | PARCIAL: contraste V(0,1)-V(0,0) computable desde potenciales | No hay campo/identidad separado en TruthBundle; actualmente se etiqueta como `theta_access_truth` | Exponer `theta_g_truth` como verdad total de asignación G, incluidas vías directas | En R0 limpio, θ_G coincide con el contraste focal solo bajo condiciones de equivalencia; con vía directa difiere |
+| Generator: θ_A | AUSENTE como verdad independiente | No existe potencial focal bajo intervención conjunta A/r_common; θ actual hereda el efecto total G | Incorporar potenciales/verdad focales independientes conforme a §16.234 y al contrato de políticas factibles; no fijar aquí valores ni extremos nuevos | El Evaluator recupera θ_A independiente; activar efecto directo de G no altera θ_A cuando A y r_common se mantienen |
+| TruthBundle | PARCIAL: guarda potenciales (Z,G), intervalos, enabled/profile, ΔT_acc, ITT y theta_access | No publica θ_G y θ_A separados, políticas/versión, r_common, soporte o verdades estratificadas | Extender el bundle con identidades de estimando/política, verdades separadas, soporte y descomposición por estrato necesaria | Esquema versionado, completo, reproducible y sin fuga al Analyzer |
+| Projector | EXISTE: evidencia observada S3, Z/G, coordenadas observadas, unidad/clúster, estrato | Publica las cuatro coordenadas sin error/missingness; el first stage descriptivo no estima la respuesta causal a A; no acredita por sí mismo r_common/soporte | Mantener la frontera de información; publicar solo variables autorizadas por el contrato y estados reales de observación/medición | Pruebas negativas de ausencia de truth, potenciales, parámetros DGP y flags privados |
+| Sealer | EXISTE: whitelist de campos, hash e integridad | Whitelist y schema actual no llevan contrato auditable de política/soporte común | Versionar schema y sellar metadatos observables de diseño necesarios, sin incorporar truth | Tampering detectado; schema exacto; procedencia/versiones preservadas |
+| Analyzer: ITT | EXISTE: diferencia observada V_cont por Z y SE | El target observado debe alinearse explícitamente con la verdad estandarizada sobre G | Conservar estimador o justificar ajuste compatible con el estimando ya congelado; no cambiar estimando | Recuperación/calibración para positivos, nulos y negativos ITT, con incertidumbre |
+| Analyzer: efecto G | EXISTE: contraste G en Z=0 | No está presentado como θ_G separado de θ_A en salida/contrato | Identificarlo explícitamente como efecto de asignación G y no como estimador focal por defecto | Recupera θ_G cuando sus supuestos de asignación/medición/soporte se cumplen |
+| Analyzer: θ_A | AUSENTE | No estima intervención general/conjunta sobre A ni respuesta focal independiente; usa contraste G condicionado a flags | Implementar estimador focal solo tras fijar identificación, soporte, política, régimen común y evidencia admisible | Recuperación focal independiente; abstención cuando supuestos no identificados; no confundir first stage con efecto |
+| Analyzer: heterogeneidad | AUSENTE como inferencia focal por estrato | Solo existe modificador DGP por baseline_x; no publica truth/estimación focal condicional | Añadir estimación/diagnóstico por estratos predefinidos en contrato existente, sin escoger cortes post hoc | Recuperación de efectos condicionales y detección de signos opuestos; agregado compatible con verdad |
+| Analyzer: bounds | AUSENTE | Abstención puntual, sin conjunto identificado ni bounds | Diseñar bounds solo para fuentes de no-identificación donde el contrato y evidencia los permitan; si no, abstención explícita | Cobertura/validez de bounds y abstención correcta; no reportar punto identificado |
+| Evaluator | PARCIAL: compara package/focal con TruthBundle y verifica abstención | Focal se compara con verdad G contaminada; no adjudica tres verdades ni estratos, falsos positivos ni bounds | Comparar separadamente θ_Z, θ_G y θ_A; adjudicar falsos positivos de atribución, heterogeneidad y estados no identificados | Adjudicación independiente y exhaustiva por rol de celda; no leer truth antes del sellado |
+| Ledger C1/C3 | PARCIAL: benchmark_scenarios tiene 12 configuraciones candidatas R0–R3 | No coincide con las doce celdas obligatorias del Gate 71: son escenarios/mecanismos, no ledger de roles con criterios de aceptación | Mapear clases existentes a los seis roles C1 y seis C3; una clase puede cumplir varios roles si cada verdad/mecanismo se demuestra; no crear mundos por correspondencia nominal | Cada celda tiene scenario_ref existente, truth target, evidencia, criterio, resultado y estado |
+| Tests adversariales | PARCIAL: tests de positivo, directo, alternativa, R2/R3, soporte, missingness, interferencia, integridad | Faltan tests independientes de θ_G/θ_A, desacoplamiento de signos, nulo propio, heterogeneidad focal de signos opuestos y adjudicación de bounds | Añadir únicamente pruebas faltantes sobre las funciones existentes | Cinco contrastes adversariales y doce roles C1/C3 superados; negativos de firewall |
+| P178 | REUTILIZAR | No es cobertura causal del harness integrado | No modificar ni repetir; citarlo como calibración/reproducibilidad metodológica del Analyzer | Preservar su alcance no confirmatorio y sus límites |
+
+### 16.235.4. Mapeo de las doce celdas C1/C3 a clases existentes
+
+El roster finito de escenarios del harness contiene R0_FOCAL_POSITIVE, R0_FOCAL_NULL, R0_FOCAL_ADVERSE, R0_DIRECT_G, R0_DIRECT_Z, R1_ALTERNATIVE_BASELINE, R2_ALTERNATIVE_AFFECTED, R3_PROVISION_FAILURE, R0_MEASUREMENT_ADVERSE, R0_INTERFERENCE, R0_SUPPORT_FAILURE y R0_HETEROGENEITY. Este inventario se reutiliza; no se crea ningún mundo adicional.
+
+| Celda | Clase/escenario existente candidato | Estado actual | Condición de acreditación |
+|---|---|---|---|
+| C1-1 ITT positivo | R0_DIRECT_Z / R2 / R3, según truth efectiva | PARCIAL | θ_Z>0 y recuperación ITT |
+| C1-2 ITT nulo propio | R0_FOCAL_POSITIVE u otra configuración existente con Z sin vía causal | PARCIAL | θ_Z=0 por mecanismo nulo propio, no cancelación accidental; recuperación/IC compatible |
+| C1-3 ITT negativo | R3_PROVISION_FAILURE o R0_DIRECT_Z con mecanismo existente | PARCIAL | θ_Z<0 en verdad DGP y recuperación ITT |
+| C1-4 Desacoplamiento ITT/focal | R0_DIRECT_Z / R2 / R3 | PARCIAL | θ_Z y θ_A con relación/signos adversariales preespecificados y ambos targets recuperados |
+| C1-5 Heterogeneidad de signos opuestos | R0_HETEROGENEITY | AUSENTE analíticamente | θ_A(x) con signos opuestos, estimación por estrato y agregado adjudicados |
+| C1-6 No-identificación/abstención | R0_SUPPORT_FAILURE / R0_MEASUREMENT_ADVERSE / R0_INTERFERENCE | PARCIAL | Analyzer se abstiene por diagnóstico respaldado en evidencia; no solo flag no verificado |
+| C3-1 Focal positivo | R0_FOCAL_POSITIVE | PARCIAL | θ_A independiente >0 y recuperación |
+| C3-2 Focal nulo propio | R0_FOCAL_NULL | PARCIAL | θ_A=0 estructuralmente, distinguido de saturación R1 y cancelación |
+| C3-3 Focal negativo | R0_FOCAL_ADVERSE | PARCIAL | θ_A independiente <0 y recuperación |
+| C3-4 Vía directa/colateral impeditiva | R0_DIRECT_G / R2_ALTERNATIVE_AFFECTED / R3_PROVISION_FAILURE | PARCIAL | θ_G≠θ_A cuando corresponde; no atribución falsa; abstención o estimando alternativo válido |
+| C3-5 Heterogeneidad focal de signos opuestos | R0_HETEROGENEITY | AUSENTE analíticamente | Efectos focales condicionales de signos opuestos, estimados y adjudicados |
+| C3-6 No-identificación/abstención | R0_SUPPORT_FAILURE / R0_MEASUREMENT_ADVERSE / R0_INTERFERENCE | PARCIAL | Estado correcto IDENTIFIED/NOT_IDENTIFIED/INDETERMINATE; bounds solo si válidos |
+
+Las etiquetas de escenario no constituyen por sí mismas la verdad ni acreditan la celda. Los signos y ceros se comprobarán sobre las verdades generadas, no se inferirán de los nombres ni del signo aislado de un parámetro.
+
+### 16.235.5. Orden mínimo de implementación posterior
+
+La implementación debe realizarse como una única reconciliación integrada, manteniendo la separación Generator → Projector → Sealer → Analyzer → Evaluator:
+
+1. **Congelar el contrato de estimandos/políticas** usando §§16.226, 16.231 y 16.234: θ_Z, θ_G, θ_A; relación G↔A; régimen no focal común; soporte/factibilidad y población aplicable. No se codifica una elección no resuelta como si estuviera aprobada.
+2. **Extender Generator/TruthBundle** para producir verdades independientes y descomposición por estrato, reutilizando los mecanismos R0–R3 y exógenos existentes.
+3. **Ajustar Projector/Sealer** solo para transportar evidencia observable y metadatos de política/diseño necesarios; mantener truth y parámetros privados fuera del Analyzer.
+4. **Implementar Analyzer** en este orden: ITT target-compatible; contraste θ_G identificado como tal; estimación θ_A solo bajo condiciones verificables; análisis por estrato; bounds donde procedan y abstención en lo demás.
+5. **Rehacer Evaluator** para tres verdades independientes, recuperación, falsos positivos de atribución, heterogeneidad y abstención/bounds.
+6. **Materializar el ledger** de doce roles mediante referencias a escenarios existentes y criterios explícitos; no añadir mundos para rellenar celdas.
+7. **Añadir tests adversariales faltantes** y ejecutar primero pruebas unitarias/software autorizadas por el workflow, separadas de cualquier ejecución científica. P178 no se repite.
+8. **Preflight y autorización científica independiente** antes de cualquier benchmark confirmatorio o ejecución del experimento.
+
+No se debe implementar el estimador θ_A antes de resolver el par de políticas factibles y su régimen común. La ausencia del roster B1/UE y q_X* sigue siendo una dependencia separada: no se rellena con el baseline_x aleatorio del harness. Esta dependencia bloquea la materialización de la población causal por historia, pero no justifica inventar unidades ni impide completar tareas de software que sean válidas sin reclamar evidencia poblacional.
+
+### 16.235.6. Dictamen del Gate 85
+
+**Gate 85 cerrado como matriz integrada de reconciliación y secuencia de implementación; no es Design Freeze ni autorización de código/ejecución.**
+
+Se ha identificado una ruta de implementación única y reutilizable. P178 queda preservado dentro de su alcance real. Los bloqueos de θ_A, estimación por estratos, validación de soporte/régimen común, bounds y materialización de q_X* permanecen explícitos. No se crean escenarios, parámetros, unidades, masas, estimandos ni valores de resultado. No se reabre Value ni V_cont.
+
+**Dictamen:** GATE_85_INTEGRATED_IMPLEMENTATION_MATRIX_CLOSED / CANONICAL_BOOTSTRAP_CONSISTENT / P178_REPLAY_REPRODUCIBILITY_REUSED_WITH_BOUNDED_SCOPE / GENERATOR_TRUTH_SEPARATION_REQUIRED / THETA_A_ESTIMATOR_ABSENT / STRATIFIED_HETEROGENEITY_ANALYSIS_ABSENT / PARTIAL_IDENTIFICATION_BOUNDS_ABSENT / C1_C3_LEDGER_NOT_YET_MATERIALIZED / NO_NEW_WORLDS / NO_CODE_CHANGE / NO_EXECUTION / DESIGN_FREEZE_NOT_GRANTED.
+
+### 16.235.7. Siguiente gate — 86
+
+**Gate 86 — resolver el contrato de intervención focal G↔A y el estimando θ_A a partir de las decisiones congeladas existentes.** Antes de implementar el Generator/TruthBundle, inspeccionar §§16.208, 16.211–16.212, 16.226, 16.231 y los Decision Records D2; establecer si el mecanismo G actual puede reutilizarse como política estocástica focal o si el contrato exige políticas distintas, qué significa mantener r_common y cómo se acredita factibilidad/soporte sin inventar extremos ni depender de q_X* no materializado. El resultado debe ser una decisión operativa derivada de los contratos existentes o una lista cerrada de dependencias bloqueantes. No modificar código, no crear políticas/valores nuevos, no ejecutar.
