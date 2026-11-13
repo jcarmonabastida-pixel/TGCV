@@ -7,6 +7,7 @@ generated calibration/evaluation bank supplied by the caller.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import hashlib
 from math import ceil, isfinite, sqrt
 from statistics import mean, stdev
 from typing import Iterable
@@ -164,7 +165,7 @@ def _derive_seed(bank: str, scenario_id: str, n_units: int, replicate: int,
     if stream not in ("world", "z", "g"):
         raise ProtocolError("stream must be world, z or g")
     payload = f"TGCV-C10S-VCONT-SEED-v1|{namespace}|{bank}|{scenario_id}|{n_units}|{replicate}|{stream}"
-    return int.from_bytes(__import__("hashlib").sha256(payload.encode("utf-8")).digest()[:8], "big")
+    return int.from_bytes(hashlib.sha256(payload.encode("utf-8")).digest()[:8], "big")
 
 
 def build_seed_bank(bank: str, scenarios: Iterable[str], n_grid: Iterable[int],
@@ -214,8 +215,15 @@ def validate_seed_banks(calibration: Iterable[SeedAssignment],
     if streams(cal) & streams(ev):
         raise ProtocolError("calibration and evaluation banks share one or more seeds")
     for row in cal + ev:
-        if row.z_assignment_seed == row.g_assignment_seed:
-            raise ProtocolError("Z and G assignment streams must use distinct seeds")
+        if len({row.world_seed, row.z_assignment_seed, row.g_assignment_seed}) != 3:
+            raise ProtocolError("world, Z and G streams must use distinct seeds within each assignment record")
+    for rows in (cal, ev):
+        world_by_design = {}
+        for row in rows:
+            key = (row.scenario_id, row.n_units)
+            if key in world_by_design and world_by_design[key] != row.world_seed:
+                raise ProtocolError("world seed must remain fixed across assignment replicates within scenario/N")
+            world_by_design[key] = row.world_seed
 
 
 def select_minimum_n(mcse_by_n: dict[int, dict[str, float]],
