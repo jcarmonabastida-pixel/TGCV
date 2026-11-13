@@ -179,11 +179,11 @@ Tests must use deterministic fixtures only. They must not generate calibration/e
 
 ## 10. State and authorization
 
-**Gate 156: DEFINED / PERSISTED. Implementation remains OPEN.**
+**Gate 156: IMPLEMENTED / TECHNICALLY VERIFIED through Gate 157.**
 
 - Gate 154: M/R identity and temporal separation contract — DEFINED / PERSISTED.
 - Gate 155: M/R seed identity and per-scenario aggregation — IMPLEMENTED / TECHNICALLY VERIFIED at the recorded commit/run.
-- Gate 156: benchmark-level 52-pair coverage, per-pair denominators and reconstructable contribution ledger — DEFINED / PERSISTED; implementation OPEN.
+- Gate 156: benchmark-level 52-pair coverage, per-pair denominators and reconstructable contribution ledger — IMPLEMENTED / TECHNICALLY VERIFIED; implementation record: `C10_S_VCONT_MONTE_CARLO_BENCHMARK_AGGREGATION_IMPLEMENTATION_GATE_157_DRAFT_001.md`.
 - Numeric N/R/M, MCSE targets, calibration budget and scientific acceptance thresholds remain OPEN.
 - `scientific_execution=false`; `execution_authorized=false`.
 - No calibration/evaluation seed bank, Monte Carlo sizing, benchmark or scientific execution is authorized or recorded.
