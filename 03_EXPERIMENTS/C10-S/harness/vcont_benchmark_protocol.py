@@ -449,12 +449,14 @@ def summarize_estimand(spec: ScenarioEstimandSpec, *, estimates: Iterable[float]
 
 def select_minimum_n_by_estimand(mcse_by_n: dict[int, dict[EvaluationKey, float]],
                                  target_mcse_by_estimand: dict[EvaluationKey, float],
-                                 required_keys: Iterable[EvaluationKey], numeric_keys: Iterable[EvaluationKey],
+                                 required_specs: Iterable[ScenarioEstimandSpec],
                                  coverage_by_n: dict[int, Iterable[EvaluationKey]]) -> int:
-    """Select smallest N with complete coverage and all numeric MCSE targets met."""
-    required, numeric = set(required_keys), set(numeric_keys)
-    if not required or not numeric or not numeric.issubset(required):
-        raise ProtocolError("required coverage and numeric estimand key sets are invalid")
+    """Select smallest N using EVALUABLE specs for numeric MCSE and all specs for coverage."""
+    specs = tuple(required_specs)
+    required = {spec.key for spec in specs}
+    numeric = {spec.key for spec in specs if spec.evaluation_class == "EVALUABLE"}
+    if not required or not numeric:
+        raise ProtocolError("required coverage must include at least one EVALUABLE pair")
     if set(target_mcse_by_estimand) != numeric or set(mcse_by_n) != set(coverage_by_n):
         raise ProtocolError("MCSE targets/candidate coverage do not match the declared key sets")
     for key, target in target_mcse_by_estimand.items():
@@ -471,8 +473,10 @@ def select_minimum_n_by_estimand(mcse_by_n: dict[int, dict[EvaluationKey, float]
 
 
 def required_replicates_by_estimand(calibration_sd_by_estimand: dict[EvaluationKey, float],
-                                    target_mcse_by_estimand: dict[EvaluationKey, float]) -> dict[EvaluationKey, int]:
-    if not calibration_sd_by_estimand or set(calibration_sd_by_estimand) != set(target_mcse_by_estimand):
-        raise ProtocolError("calibration SDs and MCSE targets need identical nonempty keys")
+                                    target_mcse_by_estimand: dict[EvaluationKey, float],
+                                    evaluable_specs: Iterable[ScenarioEstimandSpec]) -> dict[EvaluationKey, int]:
+    evaluable_keys = {spec.key for spec in evaluable_specs if spec.evaluation_class == "EVALUABLE"}
+    if not evaluable_keys or set(calibration_sd_by_estimand) != evaluable_keys or set(target_mcse_by_estimand) != evaluable_keys:
+        raise ProtocolError("calibration SDs and MCSE targets must match exactly the EVALUABLE pair keys")
     return {key: required_replicates(float(calibration_sd_by_estimand[key]), float(target_mcse_by_estimand[key]))
             for key in calibration_sd_by_estimand}
