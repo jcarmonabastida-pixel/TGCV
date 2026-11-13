@@ -70,7 +70,7 @@ class ScenarioConfig:
     outer_replicate_id: str = "outer-000000"
     assignment_role: str = "REPEATED_ASSIGNMENT"
 
-    def validate(self) -> None;
+    def validate(self) -> None:
         if not self.scenario_id or not self.version or not self.outer_replicate_id:
             raise ContractError("scenario, version and outer-replicate identity required")
         if self.assignment_role not in ("RUN", "REPEATED_ASSIGNMENT"):
