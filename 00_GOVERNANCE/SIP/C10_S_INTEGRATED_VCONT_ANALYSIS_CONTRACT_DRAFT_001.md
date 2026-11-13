@@ -426,9 +426,9 @@ The coordinated implementation pass has begun in the research branch. The follow
 
 ### 14.2 Test coverage status
 
-The existing suite has been retained and fourteen additional tests have been added. The coverage mapping is partial:
-- Covered in source tests: AC-01…AC-10, AC-12…AC-16.
-- Partially covered: AC-11 (run, estimand, target regime, outcome, assignment-mechanism hashes and transportability scope have mismatch assertions; the full identity/version cross-product is not exhaustively tested).
+The existing suite has been retained and nineteen additional tests have been added (35 test definitions in total). The coverage mapping is partial:
+- Source-level assertions now cover AC-01…AC-16, including RunManifest scenario/world/vector mismatches, estimand and mechanism version mismatches, transportability scope/outcome checks, provenance injection, sparse realized-arm abstention, and explicit repeated-assignment marginal scoring.
+- This is a static coverage mapping only. It does not establish that the tests pass or that all boundary combinations are exhaustively enumerated.
 
 These are test definitions only. No test has been run in this implementation pass, so no PASS, CI success, benchmark recovery or scientific validation is claimed.
 
@@ -441,3 +441,19 @@ These are test definitions only. No test has been run in this implementation pas
 5. Preserve the execution gate: no test suite, CI, Monte Carlo benchmark or scientific execution until separately authorized.
 
 State: source changes present; test definitions present; static review incomplete; execution not performed; scientific_execution=false; execution_authorized=false.
+
+### 14.4 Gate 124 corrective alignment — 2026-11-13
+
+The Gate 124 static audit identified a missing RunManifest handoff, incomplete estimand/mechanism version binding, absent aggregate marginal-recovery scoring, insufficient transportability-scope verification and an uncontrolled sparse-arm exception. The following corrective changes have now been persisted in the research branch:
+
+1. **Evaluator / RunManifest:** Evaluator.evaluate now requires the RunManifest. It validates run, scenario, DGP version, world, replicate, reference regime, assignment mechanism IDs/versions/hashes and realized assignment-vector hashes before scoring.
+2. **Evidence provenance:** EvidenceCandidate carries a restricted provenance envelope. Sealer enforces a closed key allowlist, verifies assignment-vector hashes against the observed assignment columns, checks the declared G stratum probabilities, and seals the provenance digest with the evidence. The envelope contains no TruthBundle, potential outcomes or DGP truth.
+3. **AnalyzerResult:** result output seal now includes estimand version, assignment mechanism IDs/versions, reference regime ID/version and evidence provenance digest.
+4. **Transportability:** AnalysisContract requires a structural basis and matching outcome for a positive transportability declaration. Evaluator checks DGP truth status and scope against the declared scope and outcome.
+5. **Repeated assignments:** Evaluator.evaluate_repeated_assignment now evaluates each run against its run-conditional truth and separately compares the replicate-average estimate with the mechanism-marginal truth, requiring a common fixed world and common mechanism truth.
+6. **Sparse realized arms:** insufficient realized arm sizes return INDETERMINATE with explicit abstention reasons instead of raising an uncaught ContractError. First-stage summaries remain absent where the required observed arms are empty.
+7. **Tests:** five additional tests have been added since the Gate 124 audit, bringing the suite to 35 test definitions (16 pre-existing + 19 added). They include manifest identity/vector mismatches, estimand/mechanism version mismatches, scope/outcome truth mismatch, provenance firewall and sparse-arm abstention. All AC-01…AC-16 have source-level test assertions.
+
+**Important boundary:** these changes have not been executed. No test, CI, benchmark, Monte Carlo run or scientific execution has been started. Static source presence and contract alignment are not PASS evidence.
+
+**Updated state:** Gate 124 corrective source changes persisted; static review of the final diff remains to be completed; test execution remains unauthorized (scientific_execution=false; execution_authorized=false).
