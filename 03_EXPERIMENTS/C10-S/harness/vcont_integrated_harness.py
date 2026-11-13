@@ -255,6 +255,7 @@ class EvaluationReport:
     g_assignment_recovered: bool | None
     expected_abstention_respected: bool
     notes: tuple[str, ...]
+    reference_regime_status_correct: bool = False
 
 
 def _hash(obj: Any) -> str:
@@ -532,6 +533,8 @@ class Analyzer:
         )
         if not ideal:
             shared_reasons.append("S3_COVERAGE_INCOMPLETE")
+        if shared_reasons and reference_regime_status == "IDENTIFIED":
+            reference_regime_status = "INDETERMINATE"
 
         package_reasons.extend(shared_reasons)
         g_assignment_reasons.extend(shared_reasons)
@@ -551,7 +554,7 @@ class Analyzer:
             package_status: Identification = "IDENTIFIED"
         else:
             package, package_se = None, None
-            package_status = "NOT_IDENTIFIED" if any(x in package_reasons for x in ("PACKAGE_RANDOMIZATION_NOT_ESTABLISHED", "REFERENCE_REGIME_NOT_IDENTIFIED_WITHOUT_TOTAL_EFFECT_TRANSPORTABILITY")) else "INDETERMINATE"
+            package_status = "NOT_IDENTIFIED" if "PACKAGE_RANDOMIZATION_NOT_ESTABLISHED" in package_reasons else "INDETERMINATE"
 
         first_stage = None
         if observed_v is not None:
@@ -648,21 +651,29 @@ class Evaluator:
             None if g_assignment_error is None
             else g_assignment_error <= tolerance
         )
+        if not contract.positivity and truth.transportability_invariant_truth is False:
+            expected_reference_status: Identification = "NOT_IDENTIFIED"
+        elif (not contract.no_interference or not contract.measurement_identified or not contract.version_consistency):
+            expected_reference_status = "INDETERMINATE"
+        elif not contract.positivity and truth.transportability_invariant_truth is not True:
+            expected_reference_status = "INDETERMINATE"
+        else:
+            expected_reference_status = "IDENTIFIED"
+        reference_status_correct = result.reference_regime_status == expected_reference_status
         expected_abstention = (
-            (not contract.randomized_z or not contract.no_interference or
-             not contract.measurement_identified or not contract.version_consistency) and
-            result.package_status in ("NOT_IDENTIFIED", "INDETERMINATE")
-        ) or (
-            (not contract.positivity or not contract.randomized_g)
-            and result.g_assignment_status in ("NOT_IDENTIFIED", "INDETERMINATE")
+            ((not contract.randomized_z or not contract.no_interference or not contract.measurement_identified or not contract.version_consistency) and result.package_status in ("NOT_IDENTIFIED", "INDETERMINATE"))
+            or ((not contract.positivity or not contract.randomized_g) and result.g_assignment_status in ("NOT_IDENTIFIED", "INDETERMINATE"))
+            or (expected_reference_status != "IDENTIFIED" and reference_status_correct)
         )
         notes = []
         if result.package_status == "IDENTIFIED" and package_ok is False:
             notes.append("PACKAGE_ESTIMATE_OUTSIDE_TOLERANCE")
         if result.g_assignment_status == "IDENTIFIED" and g_assignment_ok is False:
             notes.append("G_ASSIGNMENT_ESTIMATE_OUTSIDE_TOLERANCE")
+        if not reference_status_correct:
+            notes.append("REFERENCE_REGIME_IDENTIFICATION_STATUS_MISMATCH")
         return EvaluationReport(truth.run_id, package_error, g_assignment_error,
-                                package_ok, g_assignment_ok, expected_abstention, tuple(notes))
+                                package_ok, g_assignment_ok, expected_abstention, tuple(notes), reference_status_correct)
 
 
 def benchmark_scenarios(n_units: int = 400, n_intervals: int = 20,
