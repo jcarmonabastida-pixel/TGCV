@@ -203,3 +203,8 @@ The Gate 167 source audit's description of the Generator world-identity projecti
 This means a designated RUN and repeated assignments with the same intended M/world seed can receive different world IDs solely because their role/index differ. That conflicts with Gate 154's fixed-world-within-M contract. The earlier Gate 167 statement implying role/index were removed is corrected; no historical record is erased.
 
 Gate 168 defines the required versioned correction and deterministic regression. Until it is implemented and verified, shared world identity is a BLOCKER for evidence-bundle acceptance. This is a static source finding, not a runtime test result.
+## 12. Gate 169 correction — current world identity projection
+
+The Gate 167 audit did not establish a correct basis for the later Gate 168 claim that `assignment_role` and `assignment_index` remained in the world-identity projection. Gate 169 re-read the current branch source and confirmed that both fields are removed from `world_spec` before `world_id` is calculated. The Gate 168 source finding is withdrawn; Gate 169 records the exact current projection and the strengthened regression source.
+
+The previous §11 statement that both fields remained in the current projection is superseded for the branch state audited by Gate 169. This does not erase the historical audit trail; it explicitly corrects its disposition. The strengthened regression was persisted but not run. See Gate 169 for scope and limitations.
