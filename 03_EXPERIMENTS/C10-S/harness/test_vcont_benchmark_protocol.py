@@ -166,6 +166,17 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
         result = required_replicates_by_estimand({keys[0]: 2.0, keys[1]: 1.0}, {keys[0]: 0.1, keys[1]: 0.1}, specs)
         self.assertEqual(result, {keys[0]: 400, keys[1]: 100})
 
+    def test_matrix_declares_distinct_temporal_evaluation_classes(self):
+        specs = {row.key.estimand_id: row for row in build_scenario_estimand_matrix()
+                 if row.key.scenario_id == "R0_FOCAL_POSITIVE"}
+        self.assertEqual(specs["ITT_Z_RUN_CONDITIONAL_VCONT"].run_evaluation_class, "EVALUABLE")
+        self.assertIsNone(specs["ITT_Z_RUN_CONDITIONAL_VCONT"].repeated_evaluation_class)
+        self.assertIsNone(specs["ITT_Z_MECHANISM_MARGINAL_VCONT"].run_evaluation_class)
+        self.assertEqual(specs["ITT_Z_MECHANISM_MARGINAL_VCONT"].repeated_evaluation_class, "EVALUABLE")
+        self.assertEqual(specs["ITT_Z_REFERENCE_REGIME_VCONT"].run_evaluation_class, "STATUS_ONLY")
+        self.assertEqual(specs["ITT_Z_REFERENCE_REGIME_VCONT"].repeated_evaluation_class, "EVALUABLE")
+        self.assertEqual(specs["ITT_G_Z0_VCONT"].run_evaluation_class, "EVALUABLE")
+        self.assertIsNone(specs["ITT_G_Z0_VCONT"].repeated_evaluation_class)
     def test_mcse_precision_distinguishes_fail_from_not_evaluable(self):
         spec = next(row for row in build_scenario_estimand_matrix()
                     if row.evaluation_class == "EVALUABLE")
