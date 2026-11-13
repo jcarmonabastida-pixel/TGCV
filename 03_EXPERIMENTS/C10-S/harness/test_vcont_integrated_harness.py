@@ -439,5 +439,21 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         self.assertEqual(m0.world_id, mz.world_id)
         self.assertEqual(m0.world_id, mg.world_id)
 
+
+    def test_repeated_assignment_rejects_z_mechanism_identity_version_or_hash_mismatch(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        runs = []
+        for replicate in range(2):
+            rep_cfg = replace(cfg, world_seed=8181, z_assignment_seed=500+replicate,
+                              g_assignment_seed=700+replicate, replicate_id=f"z-check-{replicate}")
+            manifest, truth, candidate = self.generator.generate(rep_cfg)
+            contract = contract_for(rep_cfg)
+            result = self.analyzer.analyze(self.sealer.seal(candidate), contract)
+            runs.append((truth, result, contract, manifest))
+        altered_manifest = replace(runs[1][3], z_assignment_mechanism_version="999")
+        bad_runs = [runs[0], (runs[1][0], runs[1][1], runs[1][2], altered_manifest)]
+        with self.assertRaises(ContractError):
+            self.evaluator.evaluate_repeated_assignment(bad_runs, tolerance=0.10)
+
 if __name__ == "__main__":
     unittest.main()
