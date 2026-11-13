@@ -240,6 +240,10 @@ class AnalyzerResult:
     reference_regime_version: str = "001"
     g_assignment_mechanism_hash: str = ""
     z_assignment_mechanism_hash: str = ""
+    transportability_id: str | None = None
+    transportability_version: str | None = None
+    transportability_scope: str | None = None
+    transportability_evidence_status: str = "NOT_ESTABLISHED"
 
 
 @dataclass(frozen=True)
@@ -587,12 +591,18 @@ class Analyzer:
                    "reference_regime_status": reference_regime_status,
                    "reference_regime_id": "G_REFERENCE_50_50", "reference_regime_version": "001",
                    "g_assignment_mechanism_hash": contract.g_assignment_mechanism_hash,
-                   "z_assignment_mechanism_hash": contract.z_assignment_mechanism_hash}
+                   "z_assignment_mechanism_hash": contract.z_assignment_mechanism_hash,
+                   "transportability_id": contract.transportability_id,
+                   "transportability_version": contract.transportability_version,
+                   "transportability_scope": contract.transportability_scope,
+                   "transportability_evidence_status": contract.transportability_evidence_status}
         return AnalyzerResult(evidence.run_id, contract.estimand_id, package_status, g_assignment_status,
             package, g_assignment_estimate, first_stage, package_se, g_assignment_se, reasons, evidence.sha256,
             _hash(payload), contract.target_regime_id, contract.target_regime_version, contract.outcome_id, contract.outcome_version,
             reference_regime_status, "G_REFERENCE_50_50", "001",
-            contract.g_assignment_mechanism_hash, contract.z_assignment_mechanism_hash)
+            contract.g_assignment_mechanism_hash, contract.z_assignment_mechanism_hash,
+            contract.transportability_id, contract.transportability_version,
+            contract.transportability_scope, contract.transportability_evidence_status)
 
 
 class Evaluator:
@@ -614,11 +624,17 @@ class Evaluator:
             "reference_regime_version": result.reference_regime_version,
             "g_assignment_mechanism_hash": result.g_assignment_mechanism_hash,
             "z_assignment_mechanism_hash": result.z_assignment_mechanism_hash,
+            "transportability_id": result.transportability_id,
+            "transportability_version": result.transportability_version,
+            "transportability_scope": result.transportability_scope,
+            "transportability_evidence_status": result.transportability_evidence_status,
         }
         if _hash(payload) != result.output_sha256:
             raise FirewallError("Analyzer output seal invalid")
-        if (result.estimand_id != contract.estimand_id or result.target_regime_id != contract.target_regime_id or result.target_regime_version != contract.target_regime_version or result.outcome_id != contract.outcome_id or result.outcome_version != contract.outcome_version or result.reference_regime_id != truth.g_reference_regime_id or result.reference_regime_version != truth.g_reference_regime_version or result.g_assignment_mechanism_hash != contract.g_assignment_mechanism_hash or result.z_assignment_mechanism_hash != contract.z_assignment_mechanism_hash or truth.g_assignment_mechanism_hash != contract.g_assignment_mechanism_hash or truth.z_assignment_mechanism_hash != contract.z_assignment_mechanism_hash):
-            raise ContractError("estimand, target regime, mechanism provenance or outcome identity mismatch")
+        if (result.estimand_id != contract.estimand_id or result.target_regime_id != contract.target_regime_id or result.target_regime_version != contract.target_regime_version or result.outcome_id != contract.outcome_id or result.outcome_version != contract.outcome_version or result.reference_regime_id != truth.g_reference_regime_id or result.reference_regime_version != truth.g_reference_regime_version or result.g_assignment_mechanism_hash != contract.g_assignment_mechanism_hash or result.z_assignment_mechanism_hash != contract.z_assignment_mechanism_hash or truth.g_assignment_mechanism_hash != contract.g_assignment_mechanism_hash or truth.z_assignment_mechanism_hash != contract.z_assignment_mechanism_hash or result.transportability_id != contract.transportability_id or result.transportability_version != contract.transportability_version or result.transportability_scope != contract.transportability_scope or result.transportability_evidence_status != contract.transportability_evidence_status):
+            raise ContractError("estimand, target regime, mechanism provenance, transportability or outcome identity mismatch")
+        if contract.z_effect_invariant_across_g and truth.transportability_invariant_truth is not True:
+            raise ContractError("declared transportability is not supported by the DGP truth bundle")
         package_target = truth.itt_z_run_truth
         package_error = None if result.package_itt is None or package_target is None else abs(result.package_itt - package_target)
         # Analyzer's G-assignment estimate is adjudicated against its matching
