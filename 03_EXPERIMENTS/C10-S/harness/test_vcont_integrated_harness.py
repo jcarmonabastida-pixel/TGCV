@@ -8,7 +8,7 @@ from dataclasses import replace
 
 from vcont_integrated_harness import (
     Analyzer, Evaluator, Generator, Sealer, benchmark_scenarios, contract_for,
-    FirewallError,
+    FirewallError, ContractError,
 )
 
 
@@ -167,6 +167,55 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         with self.assertRaises(FirewallError):
             self.analyzer.analyze(tampered, contract_for(cfg))
 
+
+
+    def test_itt_z_truths_are_separated_and_run_estimate_uses_matching_truth(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        manifest, truth, sealed, result, report = self.execute_world(cfg)
+        self.assertIsNotNone(truth.itt_z_run_truth)
+        self.assertIsNotNone(truth.itt_z_mechanism_truth)
+        self.assertIsNotNone(truth.itt_z_reference_truth)
+        self.assertAlmostEqual(truth.itt_z_reference_truth, truth.itt_z_truth)
+        self.assertEqual(manifest.g_reference_regime_id, "G_REFERENCE_50_50")
+        self.assertEqual(result.target_regime_id, "G_REALIZED_VECTOR")
+        self.assertIsNotNone(report.package_abs_error)
+
+    def test_fixed_world_uses_independent_assignment_streams(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        cfg_a = replace(cfg, world_seed=991, z_assignment_seed=11, g_assignment_seed=21, replicate_id="r1")
+        cfg_b = replace(cfg, world_seed=991, z_assignment_seed=12, g_assignment_seed=22, replicate_id="r2")
+        manifest_a, truth_a, candidate_a = self.generator.generate(cfg_a)
+        manifest_b, truth_b, candidate_b = self.generator.generate(cfg_b)
+        self.assertEqual(truth_a.potential_v, truth_b.potential_v)
+        self.assertEqual(manifest_a.world_id, manifest_b.world_id)
+        self.assertNotEqual([r["assignment_z"] for r in candidate_a.rows],
+                            [r["assignment_z"] for r in candidate_b.rows])
+
+    def test_support_failure_transportability_is_separate_from_run_level_itt_z(self):
+        cfg = self.worlds()["R0_SUPPORT_FAILURE"]
+        _, truth, _, result, _ = self.execute_world(cfg)
+        self.assertTrue(truth.transportability_invariant_truth)
+        self.assertEqual(result.package_status, "IDENTIFIED")
+        self.assertEqual(result.reference_regime_status, "IDENTIFIED")
+        self.assertEqual(result.g_assignment_status, "NOT_IDENTIFIED")
+
+    def test_adversarial_support_failure_zg_interaction_blocks_reference_regime(self):
+        cfg = self.worlds()["R2_SUPPORT_FAILURE_ZG_INTERACTION"]
+        _, truth, sealed, result, _ = self.execute_world(cfg)
+        high = [r for r in sealed.rows if r["baseline_stratum"] == "HIGH"]
+        self.assertTrue(high)
+        self.assertTrue(all(r["assignment_g"] == 0 for r in high))
+        self.assertFalse(truth.transportability_invariant_truth)
+        self.assertEqual(result.package_status, "IDENTIFIED")
+        self.assertEqual(result.reference_regime_status, "NOT_IDENTIFIED")
+        self.assertEqual(result.g_assignment_status, "NOT_IDENTIFIED")
+
+    def test_evaluator_rejects_target_regime_mismatch(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        _, truth, _, result, _ = self.execute_world(cfg)
+        bad_contract = replace(contract_for(cfg), target_regime_id="G_REFERENCE_50_50")
+        with self.assertRaises(ContractError):
+            self.evaluator.evaluate(truth, result, bad_contract, tolerance=0.10)
 
 if __name__ == "__main__":
     unittest.main()
