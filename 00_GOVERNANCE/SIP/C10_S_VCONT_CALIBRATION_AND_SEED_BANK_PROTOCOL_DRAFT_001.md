@@ -422,3 +422,19 @@ The current code statically contains separate TRUTH_MISSING and INVALID_OUTPUT c
 Before the packager, freeze a typed immutable evidence-export boundary carrying exact per-run ScenarioConfig, SeedAssignment, RunManifest, matrix-relevant TruthBundle fields, SealedEvidence digest/manifest, AnalyzerResult, AnalysisContract and EvaluationReport; plus benchmark-level design, exact matrix, calibration manifest, source-execution reference and reconciliation/test evidence references. Do not reconstruct missing evidence from reduced report rows or promote producer assertions to authenticated provenance.
 
 **Next:** Gate 166 — freeze typed evidence-export interface, cardinalities, join keys, data-minimization boundary and provenance split. No code/tests/workflows/CI changes or execution were performed.
+
+
+## 25. Gate 166 — typed evidence-export contract
+
+Gate 166 is persisted in:
+`00_GOVERNANCE/SIP/C10_S_VCONT_TYPED_EVIDENCE_EXPORT_CONTRACT_GATE_166_DRAFT_001.md`.
+
+Schema: `TGCV-C10S-VCONT-EVIDENCE-EXPORT` v1.0.0. It freezes the benchmark envelope and one immutable RunEvidenceRecord per scenario/version/N/M/role/R-index/run. For the current 13-scenario design at one N, the required count is exactly 13 × M × (1+R), with one RUN (-1) and R rows (0..R-1) per scenario/M. The exact 52-row matrix is retained.
+
+Each record binds the exact SeedAssignment, complete RunManifest, full per-run ScenarioConfig, structural ScenarioConfig projection, AnalysisContract, matrix-relevant TruthBundle fields, SealedEvidence manifest/digest, AnalyzerResult and EvaluationReport. AnalysisContracts may be deduplicated by content digest, but every run must reference its exact contract. One RepeatedAssignmentReport is retained per M; the designated RUN EvaluationReport remains distinct.
+
+The TruthBundle export is limited to the exact truth fields used by the current matrix; full potential-outcome arrays are excluded by default. `theta_a_truth` remains explicit null/value and is not made scoreable by inclusion. Raw SealedEvidence rows are excluded by default; digest recomputation is RECONCILED only if the canonical sealed representation is retrievable. A digest alone remains DECLARED/UNVERIFIABLE.
+
+The contract distinguishes producer execution claims from GitHub-resolved metadata and technical test runs from scientific benchmark runs. Calibration/evaluation disjointness must be recomputed from actual materialized or immutably retrievable manifests; hashes alone are insufficient.
+
+**Gate 166 status:** INTERFACE CONTRACT DEFINED / IMPLEMENTATION OPEN. No code/tests/workflows/CI changes or execution were performed. Next: Gate 167 source-boundary mapping and compatibility audit.
