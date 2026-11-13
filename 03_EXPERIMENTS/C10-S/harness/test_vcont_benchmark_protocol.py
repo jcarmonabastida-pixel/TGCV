@@ -6,7 +6,7 @@ from vcont_benchmark_protocol import (
     summarize_binary, summarize_continuous, summarize_scenario,
     seed_bank_fingerprint, validate_seed_banks, build_scenario_estimand_matrix,
     select_minimum_n_by_estimand, required_replicates_by_estimand,
-    validate_evaluation_observation, ProtocolError,
+    validate_evaluation_observation,
 )
 
 
@@ -132,6 +132,7 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
             spec = next(row for row in matrix if row.evaluation_class == cls)
             with self.assertRaises(ProtocolError):
                 validate_evaluation_observation(spec, dgp_truth=1.0, analyzer_output=1.0, adjudication="PASS")
+            validate_evaluation_observation(spec, dgp_truth=1.0, analyzer_output=None, adjudication="STATUS_PASS")
 
     def test_evaluable_pair_rejects_null_truth_and_missing_output(self):
         spec = next(row for row in build_scenario_estimand_matrix() if row.evaluation_class == "EVALUABLE")
@@ -139,6 +140,12 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
             validate_evaluation_observation(spec, dgp_truth=None, analyzer_output=1.0, adjudication="PASS")
         with self.assertRaises(ProtocolError):
             validate_evaluation_observation(spec, dgp_truth=1.0, analyzer_output=None, adjudication="PASS")
+
+    def test_seed_bank_identity_includes_scenario_version(self):
+        v1 = build_seed_bank("calibration", ["R0"], [100], 2, "protocol-v2", {"R0": "DGP-001"})
+        v2 = build_seed_bank("calibration", ["R0"], [100], 2, "protocol-v2", {"R0": "DGP-002"})
+        self.assertNotEqual(v1[0].world_seed, v2[0].world_seed)
+        self.assertNotEqual(seed_bank_fingerprint(v1), seed_bank_fingerprint(v2))
 
     def test_r_dimensioning_is_estimand_specific(self):
         keys = [row.key for row in build_scenario_estimand_matrix() if row.evaluation_class == "EVALUABLE"][:2]
