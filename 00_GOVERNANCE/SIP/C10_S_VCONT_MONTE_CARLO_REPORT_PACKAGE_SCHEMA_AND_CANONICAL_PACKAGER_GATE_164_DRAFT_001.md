@@ -236,3 +236,15 @@ Existing Gate 157 regression requirements remain mandatory, including all 52 pai
 - Code/tests/workflows/CI changes: NOT PERFORMED.
 - Calibration, seed-bank generation, sizing, Monte Carlo and scientific execution: NOT AUTHORIZED / NOT EXECUTED.
 - main: unchanged; PR #116 remains Draft on its existing base.
+
+
+## 13. Gate 165 implementability-audit qualification
+
+Gate 165 static audit is recorded in:
+`00_GOVERNANCE/SIP/C10_S_VCONT_MONTE_CARLO_PACKAGE_IMPLEMENTABILITY_AUDIT_GATE_165_DRAFT_001.md`.
+
+The schema in this document remains the target package contract, but it is **not currently implementable from the existing Evaluator return object alone**. The aggregation boundary omits or reduces several required source records: effective ScenarioConfig payloads, complete AnalysisContract/SeedAssignment/RunManifest identities, SealedEvidence and per-run EvaluationReport records, calibration assignments, independent Gate 159 reconciliation and GitHub-resolved producer workflow/artifact metadata. A packager must not reconstruct or invent these fields from the reduced report.
+
+Before packager implementation, Gate 166 must freeze a typed evidence-export interface and its cardinalities, join keys, data-minimization boundary and provenance split. The package schema's effective configuration and analysis-contract cardinalities must also be clarified. Existing report and seed-bank fingerprints retain their legacy serialization semantics; package JCS digests are computed separately.
+
+**Gate 164 state after Gate 165:** TARGET SCHEMA DEFINED / IMPLEMENTATION BLOCKED PENDING EVIDENCE-EXPORT CONTRACT. No implementation or execution authorization is implied.
