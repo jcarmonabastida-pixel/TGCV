@@ -120,7 +120,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         high = [row for row in sealed.rows if row["baseline_stratum"] == "HIGH"]
         self.assertTrue(high)
         self.assertTrue(all(row["assignment_g"] == 0 for row in high))
-        self.assertEqual(result.g_assignment_status, "IDENTIFIED")
+        self.assertEqual(result.g_assignment_status, "NOT_IDENTIFIED")
 
     def test_follow_up_freezes_state_after_last_transition_support(self):
         _, truth, _, _, _ = self.execute_world(self.worlds()["R0_FOCAL_POSITIVE"])
