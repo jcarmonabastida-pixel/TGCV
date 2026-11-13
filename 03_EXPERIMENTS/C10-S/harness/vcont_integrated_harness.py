@@ -115,14 +115,6 @@ class ScenarioConfig:
 class AnalysisContract:
     estimand_id: str
     estimand_version: str
-    run_conditional_estimand_id: str = "ITT_Z_RUN_CONDITIONAL_VCONT"
-    run_conditional_estimand_version: str = "001"
-    mechanism_marginal_estimand_id: str = "ITT_Z_MECHANISM_MARGINAL_VCONT"
-    mechanism_marginal_estimand_version: str = "001"
-    reference_regime_estimand_id: str = "ITT_Z_REFERENCE_REGIME_VCONT"
-    reference_regime_estimand_version: str = "001"
-    g_assignment_estimand_id: str = "ITT_G_Z0_VCONT"
-    g_assignment_estimand_version: str = "001"
     randomized_z: bool
     randomized_g: bool
     positivity: bool
@@ -150,6 +142,14 @@ class AnalysisContract:
     reference_regime_version: str = "001"
     transportability_outcome_id: str | None = None
     transportability_basis: str | None = None
+    run_conditional_estimand_id: str = "ITT_Z_RUN_CONDITIONAL_VCONT"
+    run_conditional_estimand_version: str = "001"
+    mechanism_marginal_estimand_id: str = "ITT_Z_MECHANISM_MARGINAL_VCONT"
+    mechanism_marginal_estimand_version: str = "001"
+    reference_regime_estimand_id: str = "ITT_Z_REFERENCE_REGIME_VCONT"
+    reference_regime_estimand_version: str = "001"
+    g_assignment_estimand_id: str = "ITT_G_Z0_VCONT"
+    g_assignment_estimand_version: str = "001"
 
     def validate(self) -> None:
         if not self.estimand_id or not self.estimand_version or not self.target_regime_id or not self.target_regime_version:
