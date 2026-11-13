@@ -1236,6 +1236,209 @@ class Evaluator:
         }
 
 
+    def evaluate_monte_carlo_benchmark(self, scenario_outer_runs, design, tolerance: float, matrix=None):
+        """Compose all 13 scenario M-blocks into a matrix-authoritative 52-pair ledger."""
+        from vcont_benchmark_protocol import (
+            ProtocolError, build_scenario_estimand_matrix, validate_monte_carlo_benchmark_design,
+            summarize_binary, summarize_monte_carlo, summarize_monte_carlo_rmse,
+        )
+        specs = tuple(matrix) if matrix is not None else build_scenario_estimand_matrix(
+            dict(design.scenario_versions))
+        specs = validate_monte_carlo_benchmark_design(design, specs)
+        if not isinstance(scenario_outer_runs, dict) or set(scenario_outer_runs) != set(
+                dict(design.scenario_versions)):
+            raise ContractError("benchmark input must contain exactly the 13 declared scenario blocks")
+        target_lookup = {
+            (sid, sv, eid, ev, metric): float(target)
+            for sid, sv, eid, ev, metric, target in design.metric_targets
+        }
+        metric_prefix = {
+            "ITT_Z_RUN_CONDITIONAL_VCONT": "run_conditional",
+            "ITT_G_Z0_VCONT": "g_assignment_z0",
+            "ITT_Z_MECHANISM_MARGINAL_VCONT": "mechanism_marginal",
+            "ITT_Z_REFERENCE_REGIME_VCONT": "reference_regime",
+        }
+        pair_ledger = []
+        scenario_reports = {}
+        for scenario_id in dict(design.scenario_versions):
+            outer_runs = scenario_outer_runs[scenario_id]
+            if not isinstance(outer_runs, dict) or len(outer_runs) != design.outer_replicates:
+                raise ContractError("each scenario must contain exactly the declared M outer worlds")
+            versions = {item[3].version for rows in outer_runs.values() for item in rows}
+            sizes = {item[3].n_units for rows in outer_runs.values() for item in rows}
+            if versions != {dict(design.scenario_versions)[scenario_id]} or sizes != {design.n_units}:
+                raise ContractError("scenario version or N differs from the declared benchmark design")
+            for outer_id, rows in outer_runs.items():
+                rows = tuple(rows)
+                if len(rows) != design.repeated_assignments + 1:
+                    raise ContractError("each M must contain exactly one RUN plus declared R assignments")
+                run_rows = [x for x in rows if x[3].assignment_role == "RUN"]
+                repeated_rows = [x for x in rows if x[3].assignment_role == "REPEATED_ASSIGNMENT"]
+                if len(run_rows) != 1 or run_rows[0][3].assignment_index != -1:
+                    raise ContractError("each M requires exactly one RUN with assignment_index=-1")
+                if sorted(x[3].assignment_index for x in repeated_rows) != list(range(design.repeated_assignments)):
+                    raise ContractError("each M requires unique contiguous R indices 0..R-1")
+                if len(repeated_rows) != design.repeated_assignments:
+                    raise ContractError("each M has missing or duplicate repeated assignment rows")
+            pair_targets = {}
+            for spec in specs:
+                if spec.key.scenario_id != scenario_id:
+                    continue
+                prefix = metric_prefix[spec.key.estimand_id]
+                for metric in ("bias", "mae", "rmse"):
+                    key = (scenario_id, spec.key.scenario_version, spec.key.estimand_id,
+                           spec.key.estimand_version, metric)
+                    if key in target_lookup:
+                        pair_targets[f"{prefix}.{metric}"] = target_lookup[key]
+            result = self.evaluate_monte_carlo(
+                outer_runs, tolerance, target_mcse_by_metric=pair_targets,
+                matrix=specs, expected_repeated_assignments=design.repeated_assignments)
+            scenario_reports[scenario_id] = result
+            per_outer = {row["outer_replicate_id"]: row for row in result["per_outer_replicate"]}
+            for spec in specs:
+                if spec.key.scenario_id != scenario_id:
+                    continue
+                eid = spec.key.estimand_id
+                prefix = metric_prefix[eid]
+                contributions = []
+                for outer_id in sorted(per_outer):
+                    row = per_outer[outer_id]
+                    run = row["run"]
+                    truth, analyzer, report, manifest = run[0], run[1], row["run_report"], run[3]
+                    repeated = row["repeated_report"]
+                    if eid == "ITT_Z_RUN_CONDITIONAL_VCONT":
+                        estimate, true_value = analyzer.package_itt, truth.itt_z_run_truth
+                        status = analyzer.package_status
+                        abstained = status != "IDENTIFIED"
+                        reasons = analyzer.abstention_reasons
+                        temporal_source = "RUN"
+                    elif eid == "ITT_G_Z0_VCONT":
+                        estimate, true_value = analyzer.g_assignment_effect, truth.itt_g_z0_truth
+                        status = analyzer.g_assignment_status
+                        abstained = status != "IDENTIFIED"
+                        reasons = analyzer.abstention_reasons
+                        temporal_source = "RUN"
+                    elif eid == "ITT_Z_MECHANISM_MARGINAL_VCONT":
+                        estimate = None if repeated is None else repeated.mean_run_estimate
+                        true_value = None if repeated is None else repeated.mechanism_truth
+                        status = "IDENTIFIED" if estimate is not None else "INDETERMINATE"
+                        abstained = estimate is None
+                        reasons = tuple(reason for item in (() if repeated is None else repeated.per_run_reports)
+                                        for reason in item.notes)
+                        temporal_source = "REPEATED_ASSIGNMENT"
+                    else:
+                        estimate = None if repeated is None else repeated.reference_estimate_mean
+                        true_value = None if repeated is None else repeated.reference_truth
+                        status = ("INDETERMINATE" if repeated is None
+                                  else repeated.reference_identification_status)
+                        abstained = status != "IDENTIFIED"
+                        reasons = analyzer.abstention_reasons
+                        temporal_source = "REPEATED_ASSIGNMENT_WITH_RUN_STATUS"
+                    if spec.run_evaluation_class == "STATUS_ONLY" and eid in (
+                            "ITT_Z_REFERENCE_REGIME_VCONT",):
+                        run_status = analyzer.reference_regime_status
+                    else:
+                        run_status = status
+                    numeric = (estimate is not None and true_value is not None
+                               and math.isfinite(float(estimate)) and math.isfinite(float(true_value)))
+                    signed_error = float(estimate) - float(true_value) if numeric else None
+                    contribution = {
+                        "outer_replicate_id": outer_id,
+                        "world_id": manifest.world_id,
+                        "world_seed": manifest.world_seed,
+                        "run_id": manifest.run_id,
+                        "temporal_source": temporal_source,
+                        "evaluation_class": (spec.run_evaluation_class
+                            if temporal_source == "RUN" else spec.repeated_evaluation_class),
+                        "run_status": run_status,
+                        "identification_status": status,
+                        "abstained": bool(abstained),
+                        "abstention_reasons": tuple(reasons),
+                        "estimate": float(estimate) if numeric else None,
+                        "truth": float(true_value) if numeric else None,
+                        "signed_error": signed_error,
+                        "absolute_error": abs(signed_error) if signed_error is not None else None,
+                        "squared_error": signed_error * signed_error if signed_error is not None else None,
+                        "contribution_state": "NUMERIC" if numeric else (
+                            "NOT_IDENTIFIED" if status == "NOT_IDENTIFIED" else
+                            "INDETERMINATE" if status == "INDETERMINATE" else
+                            "ABSTAINED" if abstained else "INVALID_OR_MISSING"),
+                    }
+                    contributions.append(contribution)
+                numeric_rows = [x for x in contributions if x["signed_error"] is not None]
+                expected_class = (spec.run_evaluation_class if eid in (
+                    "ITT_Z_RUN_CONDITIONAL_VCONT", "ITT_G_Z0_VCONT")
+                    else spec.repeated_evaluation_class)
+                summaries = {}
+                precision_states = []
+                if expected_class == "EVALUABLE" and len(numeric_rows) == design.outer_replicates:
+                    signed = [(x["outer_replicate_id"], x["signed_error"]) for x in numeric_rows]
+                    absolute = [(x["outer_replicate_id"], x["absolute_error"]) for x in numeric_rows]
+                    squared = [(x["outer_replicate_id"], x["squared_error"]) for x in numeric_rows]
+                    for metric, values in (("bias", signed), ("mae", absolute)):
+                        target = target_lookup[(scenario_id, spec.key.scenario_version, eid,
+                                                 spec.key.estimand_version, metric)]
+                        summary = summarize_monte_carlo(values, expected_m=design.outer_replicates,
+                                                         target_mcse=target)
+                        summaries[metric] = summary
+                        precision_states.append(summary.precision_status)
+                    target = target_lookup[(scenario_id, spec.key.scenario_version, eid,
+                                             spec.key.estimand_version, "rmse")]
+                    rmse = summarize_monte_carlo_rmse(squared, expected_m=design.outer_replicates,
+                                                       target_mcse=target)
+                    summaries["rmse"] = rmse
+                    precision_states.append(rmse.precision_status)
+                else:
+                    summaries = {"bias": None, "mae": None, "rmse": None}
+                statuses = [x["identification_status"] for x in contributions]
+                abstentions = [x["abstained"] for x in contributions]
+                status_rates = {
+                    "identified": summarize_binary([x == "IDENTIFIED" for x in statuses]),
+                    "not_identified": summarize_binary([x == "NOT_IDENTIFIED" for x in statuses]),
+                    "indeterminate": summarize_binary([x == "INDETERMINATE" for x in statuses]),
+                    "abstained": summarize_binary(abstentions),
+                }
+                pair_ledger.append({
+                    "key": (spec.key.scenario_id, spec.key.scenario_version,
+                            spec.key.estimand_id, spec.key.estimand_version, "MONTE_CARLO"),
+                    "evaluation_class": expected_class,
+                    "truth_status": spec.truth_status,
+                    "expected_M": design.outer_replicates,
+                    "observed_M": len(contributions),
+                    "numeric_denominator": len(numeric_rows),
+                    "status_denominator": len(contributions),
+                    "missing_count": sum(x["contribution_state"] == "INVALID_OR_MISSING" for x in contributions),
+                    "abstention_count": sum(x["abstained"] for x in contributions),
+                    "identification_rates": status_rates,
+                    "metrics": summaries,
+                    "precision_status": ("NOT_EVALUABLE" if expected_class != "EVALUABLE"
+                                         or len(numeric_rows) != design.outer_replicates else
+                                         "FAIL_PRECISION" if "FAIL" in precision_states else
+                                         "PASS_PRECISION"),
+                    "contributions": tuple(contributions),
+                })
+        keys = [row["key"] for row in pair_ledger]
+        if len(pair_ledger) != 52 or len(set(keys)) != 52:
+            raise ContractError("benchmark ledger must contain exactly 52 unique matrix pair keys")
+        if any(row["observed_M"] != design.outer_replicates
+               or row["status_denominator"] != design.outer_replicates for row in pair_ledger):
+            raise ContractError("every matrix pair must retain exactly one status contribution per M")
+        manifest_payload = {
+            "scenario_versions": design.scenario_versions, "N": design.n_units,
+            "M": design.outer_replicates, "R": design.repeated_assignments,
+            "matrix_fingerprint": design.matrix_fingerprint,
+            "pair_ledger": pair_ledger,
+        }
+        fingerprint = _hash(manifest_payload)
+        return {
+            "design": design, "pair_ledger": tuple(pair_ledger),
+            "scenario_reports": scenario_reports,
+            "coverage": {"required_pairs": 52, "observed_pairs": len(pair_ledger),
+                         "scenario_count": len(scenario_reports)},
+            "report_fingerprint": fingerprint,
+        }
+
+
 def benchmark_scenarios(n_units: int = 400, n_intervals: int = 20,
                         seed: int = 20261112) -> tuple[ScenarioConfig, ...]:
     """Explicit candidate design points; not empirical rates or confirmatory defaults."""
