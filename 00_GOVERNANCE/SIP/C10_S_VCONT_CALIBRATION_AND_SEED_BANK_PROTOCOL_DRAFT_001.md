@@ -261,3 +261,15 @@ Canonical contract:
 `00_GOVERNANCE/SIP/C10_S_VCONT_MONTE_CARLO_MATRIX_COVERAGE_CONTRACT_GATE_156_DRAFT_001.md`.
 
 This is a contract/persistence update only. Gate 156 implementation is OPEN. No seed bank has been generated; no calibration, Monte Carlo sizing, benchmark or scientific execution has been performed or authorized. Numeric N/R/M and MCSE targets remain OPEN.
+
+
+## 14. Gate 157 — implementation preflight
+
+**Status:** PREFLIGHT COMPLETED / PERSISTED — CODE IMPLEMENTATION OPEN.
+
+The Gate 157 preflight confirms that Gate 155's per-scenario M evaluator is reusable, but the full 52-pair benchmark aggregator, declared design object, pair-keyed metric targets, exact R completeness and reconstructable per-M ledger remain unimplemented. It also identifies a typed R-index propagation gap: `SeedAssignment.replicate` exists, but the runtime chain does not yet carry a dedicated assignment index through ScenarioConfig, RunManifest, TruthBundle and AnalyzerResult.
+
+Canonical preflight record:
+`00_GOVERNANCE/SIP/C10_S_VCONT_MONTE_CARLO_GATE_157_IMPLEMENTATION_PREFLIGHT_DRAFT_001.md`.
+
+No code/test change, seed-bank generation, calibration, Monte Carlo sizing, benchmark or scientific execution was performed in this preflight.
