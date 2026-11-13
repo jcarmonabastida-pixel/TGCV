@@ -6,7 +6,7 @@ from vcont_benchmark_protocol import (
     summarize_binary, summarize_continuous, summarize_scenario,
     seed_bank_fingerprint, validate_seed_banks, build_scenario_estimand_matrix,
     select_minimum_n_by_estimand, required_replicates_by_estimand,
-    validate_evaluation_observation,
+    validate_evaluation_observation, EvaluationKey,
 )
 
 
