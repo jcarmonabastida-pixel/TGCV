@@ -6,7 +6,7 @@ generated calibration/evaluation bank supplied by the caller.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 import hashlib
 import json
 from math import ceil, isfinite, sqrt
@@ -429,6 +429,7 @@ class PairEvaluationRecord:
     """One matrix-keyed observation at its correct temporal evaluation level."""
     key: EvaluationKey
     evaluation_level: str
+    evaluation_class: str
     run_id: str | None
     truth_source: str
     dgp_truth: float | None
@@ -468,6 +469,22 @@ class PairEvaluationAdapter:
             observed_id, observed_version, status = analyzer.run_conditional_estimand_id, analyzer.run_conditional_estimand_version, analyzer.package_status
         elif estimand == "ITT_Z_REFERENCE_REGIME_VCONT":
             observed_id, observed_version, status = analyzer.reference_regime_estimand_id, analyzer.reference_regime_estimand_version, analyzer.reference_regime_status
+            self._validate_identity(spec, manifest, observed_id, observed_version)
+            # The legacy per-run field is an alias of package_itt, not a
+            # run-level estimator of the marginal reference regime.
+            status_spec = replace(spec, evaluation_class="STATUS_ONLY", analyzer_output_field=None)
+            abstained = status != "IDENTIFIED"
+            adjudication = "STATUS_PASS" if (
+                status == status_spec.identification_expectation and
+                abstained is status_spec.abstention_expectation
+            ) else "STATUS_FAIL"
+            validate_evaluation_observation(
+                status_spec, observed_key=spec.key, analyzer_output_field=None,
+                dgp_truth=None, analyzer_output=None, adjudication=adjudication,
+                observed_identification_status=status, observed_abstained=abstained)
+            return PairEvaluationRecord(spec.key, "RUN", "STATUS_ONLY", analyzer.run_id,
+                "REFERENCE_REGIME_IDENTIFICATION_STATUS", None, None, None,
+                status, abstained, adjudication, None, None)
         elif estimand == "ITT_G_Z0_VCONT":
             observed_id, observed_version, status = analyzer.g_assignment_estimand_id, analyzer.g_assignment_estimand_version, analyzer.g_assignment_status
         else:
@@ -492,7 +509,7 @@ class PairEvaluationAdapter:
         validate_evaluation_observation(spec, observed_key=spec.key, analyzer_output_field=output_field,
             dgp_truth=raw_truth, analyzer_output=output, adjudication=adjudication,
             observed_identification_status=status, observed_abstained=abstained)
-        return PairEvaluationRecord(spec.key, "RUN", analyzer.run_id, spec.truth_field,
+        return PairEvaluationRecord(spec.key, "RUN", spec.evaluation_class, analyzer.run_id,
             None if raw_truth is None else float(raw_truth), output_field,
             None if output is None else float(output), status, abstained, adjudication,
             absolute_error, recovered)
@@ -528,7 +545,7 @@ class PairEvaluationAdapter:
         validate_evaluation_observation(spec, observed_key=spec.key, analyzer_output_field=output_field,
             dgp_truth=raw_truth, analyzer_output=output, adjudication=adjudication,
             observed_identification_status=status, observed_abstained=abstained)
-        return PairEvaluationRecord(spec.key, "REPEATED_ASSIGNMENT", None, spec.truth_field,
+        return PairEvaluationRecord(spec.key, "REPEATED_ASSIGNMENT", spec.evaluation_class, None, spec.truth_field,
             None if raw_truth is None else float(raw_truth), output_field,
             None if output is None else float(output), status, abstained, adjudication,
             absolute_error, recovered)
