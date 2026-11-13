@@ -259,15 +259,15 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         summary = self.evaluator.evaluate_monte_carlo(
             outer_runs, tolerance=0.20,
             target_mcse_by_metric={
-                "run_conditional.absolute_error_mean": 1.0,
-                "g_assignment_z0.absolute_error_mean": 1.0,
-                "mechanism_marginal.absolute_error_mean": 1.0,
-                "reference_regime.absolute_error_mean": 1.0,
+                "run_conditional.bias": 1.0, "run_conditional.mae": 1.0, "run_conditional.rmse": 1.0,
+                "g_assignment_z0.bias": 1.0, "g_assignment_z0.mae": 1.0, "g_assignment_z0.rmse": 1.0,
+                "mechanism_marginal.bias": 1.0, "mechanism_marginal.mae": 1.0, "mechanism_marginal.rmse": 1.0,
+                "reference_regime.bias": 1.0, "reference_regime.mae": 1.0, "reference_regime.rmse": 1.0,
             })
         self.assertEqual(summary["outer_replicate_count"], 2)
         self.assertEqual(summary["coverage"]["run_conditional_numeric"], 2)
-        self.assertIsNotNone(summary["run_conditional"]["absolute_error_mean"])
-        self.assertIsNotNone(summary["mechanism_marginal"]["absolute_error_mean"])
+        self.assertIsNotNone(summary["run_conditional"]["mae"])
+        self.assertIsNotNone(summary["mechanism_marginal"]["mae"])
 
     def test_monte_carlo_rejects_shared_world_identity_across_outer_replicates(self):
         cfg = replace(self.worlds()["R0_FOCAL_POSITIVE"], n_units=16)
@@ -285,10 +285,10 @@ class VContIntegratedHarnessTests(unittest.TestCase):
             self.evaluator.evaluate_monte_carlo(
                 outer_runs, tolerance=0.20,
                 target_mcse_by_metric={
-                    "run_conditional.absolute_error_mean": 1.0,
-                    "g_assignment_z0.absolute_error_mean": 1.0,
-                    "mechanism_marginal.absolute_error_mean": 1.0,
-                    "reference_regime.absolute_error_mean": 1.0,
+                    "run_conditional.bias": 1.0, "run_conditional.mae": 1.0, "run_conditional.rmse": 1.0,
+                    "g_assignment_z0.bias": 1.0, "g_assignment_z0.mae": 1.0, "g_assignment_z0.rmse": 1.0,
+                    "mechanism_marginal.bias": 1.0, "mechanism_marginal.mae": 1.0, "mechanism_marginal.rmse": 1.0,
+                    "reference_regime.bias": 1.0, "reference_regime.mae": 1.0, "reference_regime.rmse": 1.0,
                 })
 
     def test_support_failure_transportability_is_separate_from_run_level_itt_z(self):
