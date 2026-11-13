@@ -6623,3 +6623,63 @@ La ruta A solo puede declararse identificante si el diseño/protocolo realmente 
 **Dictamen:** GATE_77_CONTRAST_AND_REGIME_CONTRACT_DEFINED / G_ASSIGNMENT_NOT_EQUIVALENT_TO_DIRECT_VECTOR_INTERVENTION / G_A0_AND_G_A1_FULL_VECTOR_POLICIES_SPECIFIED / SHARED_EXOGENOUS_COUPLING_REQUIRED / ITT_Z_G_50_50_REGIME_EXPLICIT / THREE_TRUTHS_PRESERVED / GATE_76_WORDING_CORRECTED / NO_NEW_WORLDS_OR_ESTIMANDS / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
 
 **Siguiente gate:** Gate 78 — reconciliar estas políticas deterministas con las restricciones de factibilidad y soporte del roster y del ledger existente. Comprobar, sin simulación ni parámetros nuevos, si los cuatro componentes de a0 y a1 son admisibles en las historias con masa q* y qué clases existentes permiten una comparación focal limpia con r_common. Si los extremos no son factibles, no suavizarlos ni reemplazarlos en silencio: registrar la limitación y volver a la especificación maestra para resolver la política admisible. No implementar ni ejecutar.
+
+
+---
+
+## 16.231. Gate 78 — auditoría de factibilidad y soporte de g_A frente al roster y al contrato maestro (2026-11-13)
+
+**Precedencia:** §§16.208.2–16.208.6, 16.211.1–16.211.5, 16.212.1–16.212.3, 16.223.1–16.223.3, 16.226.2.C–16.226.6 y 16.230. Este gate audita soporte lógico/documental; no genera historias, no asigna masas/probabilidades/parámetros, no ejecuta y no cambia el roster. No reabre Value/V_cont.
+
+### 16.231.1. Regla maestra de admisibilidad
+
+La definición rectora es §16.226.2.C: g_A0 y g_A1 son intervenciones explícitas sobre la distribución conjunta del vector completo ΔT_acc*, condicionadas por historia basal admisible h; q_X* es la distribución objetivo común y r_common fija las condiciones no focales pertinentes. Las intervenciones deben tener identidad/versión, distribución conjunta, factibilidad y soporte. §16.208.6 confirma que el contraste se formula sobre distribuciones factibles del vector completo.
+
+Por consiguiente, los vectores deterministas (0,0,0,0) y (1,1,1,1) introducidos como candidatos en §16.230.2 no quedan aprobados por este gate. Son un caso particular posible solo si la semántica de cada coordenada, el dominio, las restricciones conjuntas y el soporte por historia permiten ambas asignaciones. El hecho de que el harness represente actualmente cada coordenada como entero binario no demuestra que esos extremos sean las políticas maestras ni que sean factibles en q_X*.
+
+### 16.231.2. Auditoría de semántica y representación
+
+1. La especificación de §16.212 define ΔT_acc* como diferencia entre snapshots estructurales completos, con cuatro coordenadas ΔU/ΔR/ΔC/ΔX potencialmente correlacionadas; ΔE_T queda fuera. No presupone que cada coordenada sea un tratamiento binario independiente ni que cualquier combinación cartesiana sea admisible.
+2. El roster §16.208.2 es un conjunto de clases/mecanismos, no una tabla de historias basales con soporte enumerado. Las clases Focal limpio, Nulo, Focal adverso, Alternativa basal, Alternativa afectada/colateral, Vía directa, Heterogeneidad, Interferencia, Observación adversarial y Soporte/ausencia/censura no proporcionan por sí solas el dominio conjunto de ΔT_acc* ni las masas de q_X*.
+3. El ledger §16.223.2 exige population_id/q_X*, intervention_id, active_functions, held_fixed, r_common_status y support_status por celda. El propio contrato indica que no se fijan número de historias ni masas en esa especificación. No hay base para adjudicar soporte puntual por historia a partir del nombre del perfil.
+4. El harness actual usa un vector de cuatro indicadores binarios en el que cada componente depende de G, provision_ok y su exógena/umbral; la provisión puede fallar y las coordenadas pueden no alcanzar conjuntamente el vector completo. Esto acredita una primera etapa vectorial bajo asignación G, no la factibilidad de intervenciones directas deterministas ni el soporte de sus políticas en q_X*.
+5. El comentario de cabecera del harness que denomina G una intervención sintética sobre el cambio focal no prevalece sobre el contrato formal de §§16.226.2.C–16.226.3: la semántica se adjudica por potenciales, mecanismo y equivalencia, no por etiqueta del código.
+
+### 16.231.3. Matriz de soporte que puede acreditarse sin inventar datos
+
+| Clase existente | Condición para un contraste C3 limpio | Estado de factibilidad/soporte hoy |
+|---|---|---|
+| Focal limpio (R0) | q_X* definido; ambas políticas g_A factibles en cada historia con masa; mismo r_common; sin vías directas/colaterales diferenciales; mapping/medición/versiones válidos | **CANDIDATO ESTRUCTURAL; SOPORTE NO ACREDITADO.** Es la única clase del roster orientada expresamente a control positivo focal limpio, pero §16.211 advierte que πA ausente solo puede estipularse con exhaustividad. |
+| Nulo (R0/R3) | La política puede modificar ΔT_acc*, mientras la función de Outcome focal es nula, o una etapa posterior neutraliza el resultado según el rol | **CONDICIONAL; NO MATERIALIZADO.** El roster permite la distinción conceptual, pero no contiene historias, masas ni función concreta de Outcome adjudicadas. |
+| Focal adverso (R0) | Ambas políticas factibles y una función existente deteriora una coordenada/resultado con dirección adversa conocida | **CONDICIONAL; NO MATERIALIZADO.** No se puede inferir signo efectivo de la etiqueta ni de un coeficiente nominal. |
+| Alternativa basal (R1) | La misma ruta alternativa permanece bajo ambos brazos y r_common; la interpretación distingue apertura focal de Reach | **NO ACREDITA EXCLUSIVIDAD FOCAL.** Puede servir como falsador de Reach/exclusividad, no como control positivo limpio sin una definición adicional del resultado y contraste. |
+| Alternativa afectada/colateral (R2) | La política no focal que altera A1/A2/dependencias se mantiene común o se identifica explícitamente como diferencial | **NO COMMON_FIXED POR DEFECTO.** Si la alternativa cambia diferencialmente, el contraste focal limpio falla; la salida es efecto de paquete/no identificación según contrato. |
+| Fallo por etapas / provisión (R3) | g_A debe fijar directamente el vector sin volver a pasar por provisión natural; los fallos de provisión permanecen en ITT-G/Z | **NO ES PRUEBA DE SOPORTE g_A.** R3 es útil para separar intento/recepción/instalación/provisión de accesibilidad intervenida. |
+| Vía directa | Las vías directas deben mantenerse comunes o separarse mediante un contrato identificante | **NO COMMON_FIXED SI ES DIFERENCIAL.** No atribuir a θ_A el efecto total del paquete. |
+| Heterogeneidad | q_X* incluye estratos/historias con masa positiva y ambas políticas tienen soporte en cada estrato relevante | **NO DEMOSTRADA.** No hay distribución de historias ni masas/soporte condicionales cerrados. |
+| Interferencia | UA/clúster o mapa de exposición definido y compatible con ambas políticas | **NO ACREDITADA.** La estructura de peers del harness no sustituye el mapa/estimando de exposición del contrato maestro. |
+| Observación adversarial / soporte, ausencia o censura | La verdad estructural y soporte se distinguen del canal observado; missingness/censura no se recodifican como vector cero | **NO ACREDITA SOPORTE.** Puede forzar bounds/abstención, pero no crear factibilidad estructural. |
+
+### 16.231.4. Dictamen sobre los extremos propuestos en Gate 77
+
+- a0=(0,0,0,0) y a1=(1,1,1,1) permanecen como **candidatos deterministas no validados**, no como políticas confirmatorias congeladas.
+- No se puede concluir que sean imposibles: el contrato no aporta una restricción que los refute universalmente.
+- Tampoco se puede concluir que sean factibles: faltan dominio semántico por coordenada, historias de q_X*, restricciones conjuntas, soporte y compatibilidad con snapshots/versiones.
+- No se sustituyen por políticas estocásticas inventadas ni se suavizan sus extremos para forzar positividad.
+- Si el soporte no cubre ambas políticas en toda historia de q_X* con masa positiva, no se extrapola. Cualquier restricción a subpoblación, nuevo q_X* o bounds exige estimando/decisión explícitos y no se hace en este gate.
+- r_common_status=COMMON_FIXED debe demostrarse por cada celda; no se deduce del perfil R0–R3 ni de que el Generator reutilice la misma semilla. Acoplar exógenas no elimina una vía estructural diferencial.
+- La factibilidad de política y la identificación por Analyzer son preguntas distintas: un potencial puede existir en Generator sin que el diseño/evidencia permita identificarlo.
+
+### 16.231.5. Corrección y reconciliación de Gate 77
+
+Se conserva la definición de §16.230.1 que separa asignación G de intervención directa g_A y la exigencia de acoplamiento/descendencia causal. Se limita §16.230.2: los dos vectores binarios son una propuesta de política determinista para someter a soporte, no una decisión aprobada por la especificación maestra. La forma general de las políticas sigue siendo la de §16.226.2.C: distribuciones conjuntas explícitas sobre el vector completo, condicionadas por h. El régimen G_REGIME_MARGINAL_50_50_V1 conserva la convención legacy de ITT-Z, pero no aporta evidencia sobre q_X* ni sobre soporte de g_A.
+
+### 16.231.6. Dictamen y siguiente dependencia
+
+**Cerrado:** reconciliación normativa entre el contrato general de g_A y la propuesta extrema de Gate 77; auditoría de qué clases del roster pueden servir como candidatos, falsadores o adversariales; separación de soporte, r_common, primera etapa G e identificación; constatación de que el roster no materializa q_X* ni soporte por historia.
+
+**Bloqueado por especificación/ledger, no por falta de más documentación narrativa:** no es posible emitir una matriz afirmativa de soporte ni seleccionar políticas confirmatorias sin los registros por historia que §16.223 exige. No se añaden mundos, distribuciones, parámetros, masas ni IDs.
+
+**Dictamen:** GATE_78_SUPPORT_AUDIT_COMPLETE / G_A_EXTREME_VECTORS_UNVALIDATED / MASTER_POLICY_FORM_REMAINS_JOINT_HISTORY_CONDITIONAL_DISTRIBUTIONS / FOCAL_CLEAN_R0_IS_CANDIDATE_NOT_CERTIFIED / R1_R2_R3_RETAIN_EXISTING_ROLES / Q_X_SUPPORT_NOT_MATERIALIZED / R_COMMON_NOT_CERTIFIED_PER_CELL / NO_ROSTER_EXPANSION / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+**Siguiente gate:** Gate 79 — convertir el requisito ya existente de §16.223.2 en el registro mínimo por historia de q_X* y de soporte conjunto de g_A0/g_A1, reutilizando exclusivamente las historias/clases ya contenidas en el universo finito. Resolver qué información ya existe en las cards/ledger y qué campo concreto falta; no inventar historias, masas, políticas ni parámetros. Si el universo actual no permite ese registro, elevar la limitación al contrato maestro en lugar de fabricar soporte. No implementar ni ejecutar.
