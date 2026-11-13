@@ -312,6 +312,7 @@ class ScenarioEstimandSpec:
     truth_status: str
     dgp_truth_field: str
     analyzer_output_field: str | None
+    aggregation_field: str | None
     identification_expectation: str
     abstention_expectation: bool
     tolerance_id: str | None
@@ -333,10 +334,10 @@ class EstimandSummary:
 
 
 ESTIMAND_SPECS = (
-    ("ITT_Z_RUN_CONDITIONAL_VCONT", "itt_z_run_truth", "package_itt"),
-    ("ITT_Z_MECHANISM_MARGINAL_VCONT", "itt_z_mechanism_truth", "mean_package_itt"),
-    ("ITT_Z_REFERENCE_REGIME_VCONT", "itt_z_reference_truth", "reference_regime_itt"),
-    ("ITT_G_Z0_VCONT", "itt_g_z0_truth", "g_assignment_effect"),
+    ("ITT_Z_RUN_CONDITIONAL_VCONT", "itt_z_run_truth", "package_itt", None),
+    ("ITT_Z_MECHANISM_MARGINAL_VCONT", "itt_z_mechanism_truth", "package_itt", "mean_run_estimate"),
+    ("ITT_Z_REFERENCE_REGIME_VCONT", "itt_z_reference_truth", "reference_regime_itt", "reference_estimate_mean"),
+    ("ITT_G_Z0_VCONT", "itt_g_z0_truth", "g_assignment_effect", None),
 )
 SCENARIO_IDS = (
     "R0_FOCAL_POSITIVE", "R0_FOCAL_NULL", "R0_FOCAL_ADVERSE",
@@ -354,7 +355,7 @@ def build_scenario_estimand_matrix(scenario_versions: dict[str, str] | None = No
         raise ProtocolError("scenario_versions must provide one nonempty version for every benchmark scenario")
     result = []
     for sid in SCENARIO_IDS:
-        for estimand_id, truth_field, output_field in ESTIMAND_SPECS:
+        for estimand_id, truth_field, output_field, aggregation_field in ESTIMAND_SPECS:
             status_only = sid in ("R0_MEASUREMENT_ADVERSE", "R0_INTERFERENCE")
             not_identifiable = (
                 (sid == "R2_SUPPORT_FAILURE_ZG_INTERACTION" and estimand_id in ("ITT_Z_REFERENCE_REGIME_VCONT", "ITT_G_Z0_VCONT"))
@@ -380,7 +381,9 @@ def build_scenario_estimand_matrix(scenario_versions: dict[str, str] | None = No
                     reason = "Z_RANDOMIZED_G_MECHANISM"
             key = EvaluationKey(sid, versions[sid], estimand_id, "001")
             result.append(ScenarioEstimandSpec(key, cls, "DEFINED", truth_field,
-                output_field if cls == "EVALUABLE" else None, identification, abstain,
+                output_field if cls == "EVALUABLE" else None,
+                aggregation_field if cls == "EVALUABLE" else None,
+                identification, abstain,
                 "OPEN_UNASSIGNED" if cls == "EVALUABLE" else None, reason))
     return tuple(result)
 
