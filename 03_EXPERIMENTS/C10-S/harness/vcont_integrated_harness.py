@@ -1379,7 +1379,8 @@ class Evaluator:
                                 or spec.run_evaluation_class == "NOT_IDENTIFIABLE" else
                             "NOT_IDENTIFIED" if status == "NOT_IDENTIFIED" else
                             "INDETERMINATE" if status == "INDETERMINATE" else
-                            "ABSTAINED" if abstained else "INVALID_OR_MISSING"),
+                            "ABSTAINED" if abstained else
+                            "TRUTH_MISSING" if true_value is None else "INVALID_OUTPUT"),
                     }
                     contributions.append(contribution)
                 numeric_rows = [x for x in contributions if x["signed_error"] is not None]
@@ -1428,7 +1429,9 @@ class Evaluator:
                     "observed_M": len(contributions),
                     "numeric_denominator": len(numeric_rows),
                     "status_denominator": len(contributions),
-                    "missing_count": sum(x["contribution_state"] == "INVALID_OR_MISSING" for x in contributions),
+                    "missing_contribution_count": 0,
+                    "truth_missing_count": sum(x["contribution_state"] == "TRUTH_MISSING" for x in contributions),
+                    "invalid_output_count": sum(x["contribution_state"] == "INVALID_OUTPUT" for x in contributions),
                     "abstention_count": sum(x["abstained"] for x in contributions),
                     "identification_correct_count": sum(x["identification_correct"] for x in contributions),
                     "abstention_correct_count": sum(x["abstention_correct"] for x in contributions),
