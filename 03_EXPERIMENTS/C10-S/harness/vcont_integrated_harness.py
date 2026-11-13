@@ -1264,6 +1264,7 @@ class Evaluator:
         }
         pair_ledger = []
         scenario_reports = {}
+        temporal_manifest = []
         for scenario_id in dict(design.scenario_versions):
             outer_runs = scenario_outer_runs[scenario_id]
             if not isinstance(outer_runs, dict) or len(outer_runs) != design.outer_replicates:
@@ -1284,6 +1285,20 @@ class Evaluator:
                     raise ContractError("each M requires unique contiguous R indices 0..R-1")
                 if len(repeated_rows) != design.repeated_assignments:
                     raise ContractError("each M has missing or duplicate repeated assignment rows")
+                for truth_item, result_item, contract_item, manifest_item in rows:
+                    temporal_manifest.append({
+                        "scenario_id": manifest_item.scenario_id,
+                        "scenario_version": manifest_item.version,
+                        "N": manifest_item.n_units,
+                        "outer_replicate_id": manifest_item.outer_replicate_id,
+                        "assignment_role": manifest_item.assignment_role,
+                        "assignment_index": manifest_item.assignment_index,
+                        "run_id": manifest_item.run_id,
+                        "world_id": manifest_item.world_id,
+                        "world_seed": manifest_item.world_seed,
+                        "z_assignment_seed": manifest_item.z_assignment_seed,
+                        "g_assignment_seed": manifest_item.g_assignment_seed,
+                    })
             pair_targets = {}
             for spec in specs:
                 if spec.key.scenario_id != scenario_id:
@@ -1450,15 +1465,27 @@ class Evaluator:
         if any(row["observed_M"] != design.outer_replicates
                or row["status_denominator"] != design.outer_replicates for row in pair_ledger):
             raise ContractError("every matrix pair must retain exactly one status contribution per M")
+        expected_manifest_rows = 13 * design.outer_replicates * (1 + design.repeated_assignments)
+        manifest_keys = [(row["scenario_id"], row["scenario_version"], row["outer_replicate_id"],
+                          row["assignment_role"], row["assignment_index"]) for row in temporal_manifest]
+        if len(temporal_manifest) != expected_manifest_rows or len(set(manifest_keys)) != expected_manifest_rows:
+            raise ContractError("temporal manifest is incomplete or contains duplicate assignment identities")
         manifest_payload = {
             "scenario_versions": design.scenario_versions, "N": design.n_units,
             "M": design.outer_replicates, "R": design.repeated_assignments,
             "matrix_fingerprint": design.matrix_fingerprint,
+            "seed_bank_label": design.seed_bank_label,
+            "seed_bank_fingerprint": design.seed_bank_fingerprint,
+            "executable_commit": design.executable_commit,
+            "configuration_fingerprint": design.configuration_fingerprint,
+            "metric_targets": design.metric_targets,
+            "temporal_manifest": temporal_manifest,
             "pair_ledger": pair_ledger,
         }
         fingerprint = _hash(json.loads(json.dumps(manifest_payload, default=asdict, sort_keys=True)))
         return {
-            "design": design, "pair_ledger": tuple(pair_ledger),
+            "design": design, "temporal_manifest": tuple(temporal_manifest),
+            "pair_ledger": tuple(pair_ledger), "manifest": manifest_payload,
             "scenario_reports": scenario_reports,
             "coverage": {"required_pairs": 52, "observed_pairs": len(pair_ledger),
                          "scenario_count": len(scenario_reports)},
