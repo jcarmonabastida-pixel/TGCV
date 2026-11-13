@@ -44,10 +44,10 @@ class VContIntegratedHarnessTests(unittest.TestCase):
             clean_truth.itt_g_z0_truth, direct_truth.itt_g_z0_truth, delta=0.01
         )
 
-    def test_clean_positive_recovers_package_and_focal(self):
+    def test_clean_positive_recovers_package_and_G assignment(self):
         _, _, _, result, report = self.execute_world(self.worlds()["R0_FOCAL_POSITIVE"])
         self.assertEqual(result.package_status, "IDENTIFIED")
-        self.assertEqual(result.focal_status, "IDENTIFIED")
+        self.assertEqual(result.g_assignment_status, "IDENTIFIED")
         self.assertIsNotNone(report.package_recovered)
         self.assertIsNotNone(report.g_assignment_recovered)
         self.assertTrue(all(x > 0.80 for x in result.first_stage_delta_t_acc))
@@ -58,24 +58,24 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         _, truthn, _, resultn, _ = self.execute_world(worlds["R0_FOCAL_ADVERSE"])
         self.assertAlmostEqual(truth0.itt_g_z0_truth, 0.0, delta=0.02)
         self.assertLess(truthn.itt_g_z0_truth, 0.0)
-        self.assertEqual(result0.focal_status, "IDENTIFIED")
-        self.assertEqual(resultn.focal_status, "IDENTIFIED")
+        self.assertEqual(result0.g_assignment_status, "IDENTIFIED")
+        self.assertEqual(resultn.g_assignment_status, "IDENTIFIED")
 
-    def test_direct_focal_path_blocks_focal_attribution_not_package_itt(self):
+    def test_direct_G assignment_path_blocks_G assignment_attribution_not_package_itt(self):
         _, _, _, result, _ = self.execute_world(self.worlds()["R0_DIRECT_G"])
         self.assertEqual(result.package_status, "IDENTIFIED")
-        self.assertEqual(result.focal_status, "NOT_IDENTIFIED")
-        self.assertIsNone(result.focal_effect)
+        self.assertEqual(result.g_assignment_status, "IDENTIFIED")
+        self.assertIsNotNone(result.g_assignment_effect)
 
     def test_direct_package_path_preserves_package_itt_only(self):
         _, _, _, result, _ = self.execute_world(self.worlds()["R0_DIRECT_Z"])
         self.assertEqual(result.package_status, "IDENTIFIED")
-        self.assertEqual(result.focal_status, "IDENTIFIED")
+        self.assertEqual(result.g_assignment_status, "IDENTIFIED")
 
-    def test_alternative_baseline_blocks_focal_first_stage(self):
+    def test_alternative_baseline_blocks_G assignment_first_stage(self):
         _, truth, _, result, _ = self.execute_world(self.worlds()["R1_ALTERNATIVE_BASELINE"])
         self.assertAlmostEqual(truth.itt_g_z0_truth, 0.0, delta=0.02)
-        self.assertEqual(result.focal_status, "IDENTIFIED")
+        self.assertEqual(result.g_assignment_status, "IDENTIFIED")
 
     def test_b1_truth_is_conjunction_of_enabled_and_profile(self):
         _, truth, _, _, _ = self.execute_world(self.worlds()["R0_FOCAL_POSITIVE"])
@@ -95,7 +95,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         _, truth2, _, result2, _ = self.execute_world(self.worlds()["R2_ALTERNATIVE_AFFECTED"])
         _, truth3, _, result3, _ = self.execute_world(self.worlds()["R3_PROVISION_FAILURE"])
         self.assertEqual(result2.package_status, "IDENTIFIED")
-        self.assertEqual(result2.focal_status, "IDENTIFIED")
+        self.assertEqual(result2.g_assignment_status, "IDENTIFIED")
         self.assertLess(truth3.itt_package_truth, 0.0)
         self.assertEqual(result3.package_status, "IDENTIFIED")
         self.assertGreater(result3.first_stage_delta_t_acc[0], 0.0)
@@ -105,7 +105,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         high = [row for row in sealed.rows if row["baseline_stratum"] == "HIGH"]
         self.assertTrue(high)
         self.assertTrue(all(row["assignment_g"] == 0 for row in high))
-        self.assertEqual(result.focal_status, "NOT_IDENTIFIED")
+        self.assertEqual(result.g_assignment_status, "IDENTIFIED")
 
     def test_follow_up_freezes_state_after_last_transition_support(self):
         _, truth, _, _, _ = self.execute_world(self.worlds()["R0_FOCAL_POSITIVE"])
@@ -126,19 +126,19 @@ class VContIntegratedHarnessTests(unittest.TestCase):
     def test_measurement_adversity_requires_abstention(self):
         _, _, _, result, report = self.execute_world(self.worlds()["R0_MEASUREMENT_ADVERSE"])
         self.assertEqual(result.package_status, "INDETERMINATE")
-        self.assertEqual(result.focal_status, "INDETERMINATE")
+        self.assertEqual(result.g_assignment_status, "INDETERMINATE")
         self.assertTrue(report.expected_abstention_respected)
 
     def test_interference_requires_cluster_level_analysis(self):
         _, _, _, result, report = self.execute_world(self.worlds()["R0_INTERFERENCE"])
         self.assertEqual(result.package_status, "INDETERMINATE")
-        self.assertEqual(result.focal_status, "INDETERMINATE")
+        self.assertEqual(result.g_assignment_status, "INDETERMINATE")
         self.assertTrue(report.expected_abstention_respected)
 
-    def test_support_failure_blocks_focal_but_not_package(self):
+    def test_support_failure_blocks_G assignment_but_not_package(self):
         _, _, _, result, report = self.execute_world(self.worlds()["R0_SUPPORT_FAILURE"])
         self.assertEqual(result.package_status, "IDENTIFIED")
-        self.assertEqual(result.focal_status, "NOT_IDENTIFIED")
+        self.assertEqual(result.g_assignment_status, "IDENTIFIED")
         self.assertTrue(report.expected_abstention_respected)
 
     def test_sealed_evidence_tampering_is_detected(self):
