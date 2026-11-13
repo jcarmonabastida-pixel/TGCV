@@ -524,9 +524,9 @@ class Evaluator:
         }
         if _hash(payload) != result.output_sha256:
             raise FirewallError("Analyzer output seal invalid")
-        package_error = None if result.package_itt is None else abs(result.package_itt - truth.itt_package_truth)
-        # Analyzer's legacy g_assignment_effect is the observed G contrast. It is
-        # adjudicated against the G-assignment truth, never against theta_A.
+        package_error = None if result.package_itt is None else abs(result.package_itt - truth.itt_z_truth)
+        # Analyzer's G-assignment estimate is adjudicated against its matching
+        # assignment truth, never against theta_A.
         g_assignment_error = (
             None if result.g_assignment_effect is None
             else abs(result.g_assignment_effect - truth.itt_g_z0_truth)
@@ -541,8 +541,7 @@ class Evaluator:
              not contract.version_consistency) and
             result.package_status == "INDETERMINATE"
         ) or (
-            (not contract.positivity or not contract.randomized_g or
-             not contract.focal_direct_path_absent or not contract.common_nonfocal_regime)
+            (not contract.positivity or not contract.randomized_g)
             and result.g_assignment_status in ("NOT_IDENTIFIED", "INDETERMINATE")
         )
         notes = []
