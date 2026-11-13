@@ -7052,3 +7052,87 @@ Se ha identificado una ruta de implementación única y reutilizable. P178 queda
 ### 16.235.7. Siguiente gate — 86
 
 **Gate 86 — resolver el contrato de intervención focal G↔A y el estimando θ_A a partir de las decisiones congeladas existentes.** Antes de implementar el Generator/TruthBundle, inspeccionar §§16.208, 16.211–16.212, 16.226, 16.231 y los Decision Records D2; establecer si el mecanismo G actual puede reutilizarse como política estocástica focal o si el contrato exige políticas distintas, qué significa mantener r_common y cómo se acredita factibilidad/soporte sin inventar extremos ni depender de q_X* no materializado. El resultado debe ser una decisión operativa derivada de los contratos existentes o una lista cerrada de dependencias bloqueantes. No modificar código, no crear políticas/valores nuevos, no ejecutar.
+
+
+---
+
+## 16.236. Gate 86 — adjudicación del contrato G↔g_A, q_X* y r_common (2026-11-13)
+
+**Precedencia:** §§16.208.3–16.208.8, 16.209–16.212, 16.223, 16.226.2–16.226.6, 16.230–16.233 y matriz integrada §16.235. Este gate adjudica únicamente lo que puede resolverse desde decisiones y contratos existentes. No crea políticas, historias, masas, mundos, parámetros ni estimandos; no modifica código ni ejecuta.
+
+### 16.236.1. Decisión sobre reutilización de G
+
+**G no puede reutilizarse como g_A ni su contraste como θ_A.** Esta decisión se desprende de §16.226.3 y queda confirmada por la auditoría de implementación de §16.231:
+
+- G es una asignación/encouragement aleatorizado con potenciales V(z,g); sus efectos incluyen fallo de provisión y cualquier vía directa o colateral que el DGP permita.
+- El vector ΔT_acc* observado bajo G es una primera etapa vectorial aleatoria y potencialmente incompleta: cada coordenada depende de G, provisión y exógenas. No es la aplicación de una regla de intervención focal conjunta especificada.
+- Por tanto, ITT_G|Z=0 conserva su identidad de efecto de asignación. No es θ_A y no se usa como sustituto, ni se convierte en θ_A por renombrado, ajuste por primera etapa o acoplamiento exógeno.
+- La igualdad ITT_G|Z=0=θ_A solo sería admisible si se demostraran todas las condiciones de equivalencia de §16.226.3. El harness y el ledger actuales no las acreditan.
+
+Se mantiene el contrato de tres verdades: ITT_Z bajo G_REGIME_MARGINAL_50_50_V1; ITT_G|Z=0 como efecto de asignación auxiliar; θ_A como efecto de intervención focal sobre el vector completo.
+
+### 16.236.2. Decisión sobre la forma de g_A0/g_A1
+
+Prevalece la forma general congelada en §16.226.2.C y precisada en §16.231.1:
+
+- dos reglas explícitas/versionadas sobre la **distribución conjunta** del vector completo ΔT_acc*;
+- condicionadas por historia basal h;
+- definidas sobre una misma población q_X*;
+- factibles y con soporte conjunto en las historias con masa positiva;
+- evaluadas bajo el mismo r_common.
+
+No se ratifican como políticas confirmatorias los extremos deterministas (0,0,0,0) y (1,1,1,1) propuestos en §16.230.2: §16.231.4 los deja como candidatos no validados. Tampoco se sustituyen por kernels estocásticos alternativos, distribuciones suavizadas ni políticas elegidas para producir positividad. No existe en las decisiones congeladas otro par versionado de políticas que pueda reemplazarlos.
+
+**Resultado:** la forma del estimando está definida; la identidad operativa de g_A0/g_A1 no puede seleccionarse con el expediente actual. Queda bloqueada por ausencia de dominio semántico conjunto, historias q_X*, masas y soporte por historia, no por una necesidad de crear más alternativas teóricas.
+
+### 16.236.3. q_X*: qué está fijado y qué falta
+
+Se conserva la definición funcional de §16.209.2:
+
+q_X* = Law(X, H0, C_c | i ∈ P*_{τ2}).
+
+La población primaria candidata y sus criterios basales mantienen la precedencia ya adjudicada. q_X* es una distribución objetivo conjunta de historias pre-Z; no es la asignación Z/G, la frecuencia de baseline_x, el roster de clases R0–R3, la cohorte Need_preZ ni el número de unidades del harness.
+
+Los contratos §§16.232–16.233 establecen que:
+- el registro hijo por historia y sus campos están definidos;
+- no existe roster B1/UE aprobado/materializado;
+- no hay filas versionadas X/H0/C_c ni snapshots basales por unidad;
+- no hay masas q_X* ni soporte conjunto de las dos políticas;
+- no hay autorización de materialización en este ciclo.
+
+Por tanto, q_X* está definido simbólicamente, pero no materializado. No se derivan pesos de frecuencias sintéticas, ni se restringe la población para acomodar políticas no soportadas.
+
+### 16.236.4. r_common: significado operativo y límite de acreditación
+
+r_common significa mantener idénticos, en ambos potenciales focales, el régimen y las condiciones no focales relevantes: política/paquete Z y G según el régimen declarado, alternativas y rutas colaterales, recursos, contexto, versiones, horizonte y mecanismos/exógenas no focales. Solo se recalculan los descendientes causales de la intervención sobre ΔT_acc*.
+
+El mismo identificador de semilla o el acoplamiento de exógenas no basta para declarar COMMON_FIXED: debe acreditarse que las funciones estructurales no focales y sus versiones son invariantes entre ambos brazos contrafactuales y que ninguna vía colateral cambia diferencialmente. Si una vía cambia, se registra como DIFFERENTIAL_IDENTIFIED o DIFFERENTIAL_UNRESOLVED; no se atribuye a θ_A.
+
+Puede congelarse esta regla semántica ahora, pero no emitir certificados COMMON_FIXED por historia/celda porque no existen las filas q_X* ni el soporte materializado. En mundos R1/R2/R3 la invariancia se evalúa según el mecanismo concreto; no se presume por perfil.
+
+### 16.236.5. Dictamen y dependencias bloqueantes
+
+| Cuestión | Dictamen |
+|---|---|
+| ¿G equivale a g_A? | NO; asignación/primera etapa distinta de intervención focal |
+| ¿ITT_G|Z=0 es θ_A? | NO, salvo equivalencia completa demostrada; hoy no acreditada |
+| Forma de g_A | Reglas conjuntas condicionadas por historia sobre ΔT_acc* completo |
+| Par de políticas operativo | BLOCKED; extremos de §16.230 no validados y no hay alternativa congelada |
+| q_X* | Definido simbólicamente; roster, historias, masas y soporte no materializados |
+| r_common | Regla semántica definida; invariancia estructural y certificados por historia no acreditados |
+| Nuevas políticas/mundos/parámetros | PROHIBIDOS en este gate |
+
+**Gate 86 cerrado como adjudicación de dependencias, no como selección de políticas ni identificación de θ_A.** No queda una decisión documental adicional que pueda resolver la ausencia de roster, historias, masas y soporte. No se abre otro inventario narrativo ni se solicita repetir el mismo trabajo.
+
+**Dictamen:** GATE_86_G_NOT_EQ_G_A / ITT_G_Z0_NOT_THETA_A / JOINT_HISTORY_CONDITIONAL_POLICY_FORM_RETAINED / EXTREME_POLICIES_UNVALIDATED / Q_X_MATERIALIZATION_BLOCKED / R_COMMON_SEMANTIC_RULE_CLOSED_BUT_PER_HISTORY_CERTIFICATION_BLOCKED / NO_NEW_POLICIES_OR_WORLDS / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+### 16.236.6. Siguiente operación — Gate 87
+
+**Gate 87 — separar e implementar únicamente el contrato de verdades ya identificable en el harness, sin fingir que θ_A está resuelto.** Antes de modificar código, preparar una intervención técnica acotada y reversible sobre Generator/TruthBundle/Evaluator para:
+1. conservar itt_package_truth bajo el régimen G_REGIME_MARGINAL_50_50_V1 como ITT_Z;
+2. exponer el contraste actual V(0,1)-V(0,0) como itt_g_z0_truth, con migración/alias explícitos y sin llamarlo θ_A;
+3. dejar θ_A explícitamente NOT_MATERIALIZED/no disponible, sin estimador ni truth ficticia;
+4. añadir pruebas de no-equivalencia cuando la vía directa de G esté activa y de equivalencia únicamente bajo condiciones de control positivo que el DGP existente permita demostrar;
+5. preservar el firewall: ninguna verdad, potencial contrafactual o parámetro oculto pasa al Analyzer.
+
+La intervención no debe tocar el estimador θ_A, q_X*, políticas g_A, roster B1/UE, masas, bounds, R0–R3 ni resultados P178. Primero se comprobarán permisos/workflow y el alcance exacto de la edición; solo se modificará código si la autorización aplicable lo permite. No ejecutar benchmark ni simulación científica. scientific_execution=false; execution_authorized=false.
