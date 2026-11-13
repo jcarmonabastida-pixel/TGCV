@@ -424,6 +424,102 @@ def validate_evaluation_observation(spec: ScenarioEstimandSpec, *, observed_key:
         raise ProtocolError("unsupported evaluation class")
 
 
+@dataclass(frozen=True)
+class PairEvaluationRecord:
+    """One matrix-keyed observation at its correct temporal evaluation level."""
+    key: EvaluationKey
+    evaluation_level: str
+    run_id: str | None
+    truth_source: str
+    dgp_truth: float | None
+    analyzer_output_field: str | None
+    analyzer_output: float | None
+    identification_status: str
+    abstained: bool
+    adjudication: str
+
+
+class PairEvaluationAdapter:
+    """Connect versioned matrix pairs to sealed Analyzer outputs and DGP truth.
+
+    Run-level records exclude the mechanism-marginal estimand. That target is
+    emitted only from a repeated-assignment report with a fixed world.
+    """
+
+    @staticmethod
+    def _validate_identity(spec: ScenarioEstimandSpec, manifest, observed_id: str,
+                           observed_version: str) -> None:
+        if manifest.scenario_id != spec.key.scenario_id:
+            raise ProtocolError("manifest scenario_id does not match evaluation matrix")
+        if manifest.version != spec.key.scenario_version:
+            raise ProtocolError("ScenarioConfig/manifest version does not match EvaluationKey")
+        if (observed_id, observed_version) != (spec.key.estimand_id, spec.key.estimand_version):
+            raise ProtocolError("Analyzer/repeated output estimand identity/version does not match matrix")
+
+    def adapt_run(self, spec: ScenarioEstimandSpec, truth, analyzer, manifest) -> PairEvaluationRecord:
+        estimand = spec.key.estimand_id
+        if estimand == "ITT_Z_MECHANISM_MARGINAL_VCONT":
+            raise ProtocolError("mechanism-marginal estimand requires repeated assignments, not a single run")
+        if estimand == "ITT_Z_RUN_CONDITIONAL_VCONT":
+            observed_id, observed_version, status = analyzer.run_conditional_estimand_id, analyzer.run_conditional_estimand_version, analyzer.package_status
+        elif estimand == "ITT_Z_REFERENCE_REGIME_VCONT":
+            observed_id, observed_version, status = analyzer.reference_regime_estimand_id, analyzer.reference_regime_estimand_version, analyzer.reference_regime_status
+        elif estimand == "ITT_G_Z0_VCONT":
+            observed_id, observed_version, status = analyzer.g_assignment_estimand_id, analyzer.g_assignment_estimand_version, analyzer.g_assignment_status
+        else:
+            raise ProtocolError("unsupported matrix estimand")
+        self._validate_identity(spec, manifest, observed_id, observed_version)
+        raw_truth = getattr(truth, spec.truth_field, None)
+        if spec.evaluation_class == "EVALUABLE":
+            if raw_truth is None or not isfinite(float(raw_truth)):
+                raise ProtocolError("matrix EVALUABLE pair has no finite DGP TruthBundle value")
+            output_field = spec.analyzer_output_field
+            output = getattr(analyzer, output_field, None)
+            if output is None or not isfinite(float(output)) or status != "IDENTIFIED":
+                raise ProtocolError("matrix EVALUABLE pair requires an identified finite Analyzer output")
+            adjudication, abstained = "PASS", False
+        else:
+            output_field, output = None, None
+            abstained = status != "IDENTIFIED"
+            adjudication = "STATUS_PASS" if (status == spec.identification_expectation and abstained is spec.abstention_expectation) else "STATUS_FAIL"
+        validate_evaluation_observation(spec, observed_key=spec.key, analyzer_output_field=output_field,
+            dgp_truth=raw_truth, analyzer_output=output, adjudication=adjudication,
+            observed_identification_status=status, observed_abstained=abstained)
+        return PairEvaluationRecord(spec.key, "RUN", analyzer.run_id, spec.truth_field,
+            None if raw_truth is None else float(raw_truth), output_field,
+            None if output is None else float(output), status, abstained, adjudication)
+
+    def adapt_repeated(self, spec: ScenarioEstimandSpec, report, manifest) -> PairEvaluationRecord:
+        estimand = spec.key.estimand_id
+        if estimand == "ITT_Z_MECHANISM_MARGINAL_VCONT":
+            observed_id, observed_version = report.mechanism_marginal_estimand_id, report.mechanism_marginal_estimand_version
+            raw_truth, output, output_field = report.mechanism_truth, report.mean_run_estimate, spec.aggregation_field
+            status = "IDENTIFIED" if output is not None else "INDETERMINATE"
+        elif estimand == "ITT_Z_REFERENCE_REGIME_VCONT":
+            observed_id, observed_version = report.reference_regime_estimand_id, report.reference_regime_estimand_version
+            raw_truth, output, output_field = report.reference_truth, report.reference_estimate_mean, spec.aggregation_field
+            status = report.reference_identification_status
+        else:
+            raise ProtocolError("only mechanism-marginal and reference-regime estimands have repeated-level records")
+        self._validate_identity(spec, manifest, observed_id, observed_version)
+        if spec.evaluation_class == "EVALUABLE":
+            if raw_truth is None or not isfinite(float(raw_truth)):
+                raise ProtocolError("repeated EVALUABLE pair requires finite repeated DGP truth")
+            if output is None or not isfinite(float(output)) or status != "IDENTIFIED":
+                raise ProtocolError("repeated EVALUABLE pair requires an identified finite aggregate")
+            adjudication, abstained = "PASS", False
+        else:
+            output_field, output = None, None
+            abstained = status != "IDENTIFIED"
+            adjudication = "STATUS_PASS" if (status == spec.identification_expectation and abstained is spec.abstention_expectation) else "STATUS_FAIL"
+        validate_evaluation_observation(spec, observed_key=spec.key, analyzer_output_field=output_field,
+            dgp_truth=raw_truth, analyzer_output=output, adjudication=adjudication,
+            observed_identification_status=status, observed_abstained=abstained)
+        return PairEvaluationRecord(spec.key, "REPEATED_ASSIGNMENT", None, spec.truth_field,
+            None if raw_truth is None else float(raw_truth), output_field,
+            None if output is None else float(output), status, abstained, adjudication)
+
+
 def summarize_estimand(spec: ScenarioEstimandSpec, *, estimates: Iterable[float] | None = None,
                        truth: float | None = None, tolerance: float | None = None,
                        identified: Iterable[bool] | None = None,
@@ -435,7 +531,11 @@ def summarize_estimand(spec: ScenarioEstimandSpec, *, estimates: Iterable[float]
         if estimates is None or truth is None:
             raise ProtocolError("EVALUABLE pair requires estimates and DGP truth")
         estimate = summarize_continuous(estimates, truth, tolerance)
-        precision = ("PASS" if estimate.mcse_mean is not None and mcse_target is not None and estimate.mcse_mean <= mcse_target else "NOT_EVALUABLE")
+        precision = (
+            "NOT_EVALUABLE" if estimate.mcse_mean is None or mcse_target is None
+            else "PASS" if estimate.mcse_mean <= mcse_target
+            else "FAIL"
+        )
         recovery = "PASS" if estimate.recovered_within_tolerance is True else "FAIL" if estimate.recovered_within_tolerance is False else "NOT_EVALUABLE"
     else:
         if estimates is not None or truth is not None:
