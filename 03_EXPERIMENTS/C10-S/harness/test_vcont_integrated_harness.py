@@ -32,6 +32,39 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         return {cfg.scenario_id: cfg for cfg in benchmark_scenarios(n_units=400, n_intervals=20)}
 
 
+    def test_typed_assignment_index_is_sealed_and_propagated(self):
+        cfg = replace(self.worlds()["R0_FOCAL_POSITIVE"], assignment_role="RUN",
+                      assignment_index=-1, replicate_id="gate157-designated-run")
+        manifest, truth, sealed, result, _ = self.execute_world(cfg)
+        self.assertEqual(manifest.assignment_index, -1)
+        self.assertEqual(truth.assignment_index, -1)
+        self.assertEqual(sealed.manifest["provenance"]["assignment_index"], -1)
+        self.assertEqual(result.assignment_index, -1)
+
+    def test_monte_carlo_rejects_incomplete_declared_r_index_set(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        outer_runs = {}
+        for m in range(2):
+            outer_id = f"gate157-outer-{m}"
+            rows = []
+            for role, index in (("RUN", -1), ("REPEATED_ASSIGNMENT", 0),
+                                ("REPEATED_ASSIGNMENT", 1)):
+                rep_cfg = replace(
+                    cfg, outer_replicate_id=outer_id, assignment_role=role,
+                    assignment_index=index, replicate_id=f"{outer_id}-{role}-{index}",
+                    world_seed=9000 + m, z_assignment_seed=10000 + 10*m + index + 2,
+                    g_assignment_seed=11000 + 10*m + index + 2,
+                )
+                manifest, truth, candidate = self.generator.generate(rep_cfg)
+                contract = contract_for(rep_cfg)
+                result = self.analyzer.analyze(self.sealer.seal(candidate), contract)
+                rows.append((truth, result, contract, manifest))
+            outer_runs[outer_id] = rows
+        with self.assertRaises(ContractError):
+            self.evaluator.evaluate_monte_carlo(
+                outer_runs, tolerance=0.10, target_mcse_by_metric={},
+                expected_repeated_assignments=3)
+
     def test_truth_bundle_separates_g_assignment_from_unmaterialized_theta_a(self):
         worlds = self.worlds()
         _, clean_truth, _ = self.generator.generate(worlds["R0_FOCAL_POSITIVE"])
