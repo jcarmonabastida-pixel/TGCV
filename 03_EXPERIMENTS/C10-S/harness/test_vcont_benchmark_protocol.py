@@ -257,7 +257,9 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
             scenario_versions=tuple((sid, "VCONT-SYNTH-001") for sid in SCENARIO_IDS),
             n_units=400, outer_replicates=2, repeated_assignments=3,
             matrix_fingerprint=scenario_matrix_fingerprint(matrix),
-            metric_targets=tuple(targets),
+            metric_targets=tuple(targets), seed_bank_label="DETERMINISTIC_TEST_FIXTURE",
+            seed_bank_fingerprint="a"*64, executable_commit="c"*40,
+            configuration_fingerprint="b"*64,
         )
         self.assertEqual(len(validate_monte_carlo_benchmark_design(design, matrix)), 52)
         with self.assertRaises(ProtocolError):
