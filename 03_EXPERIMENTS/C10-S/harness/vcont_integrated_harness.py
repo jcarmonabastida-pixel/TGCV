@@ -193,9 +193,9 @@ class AnalyzerResult:
 class EvaluationReport:
     run_id: str
     package_abs_error: float | None
-    focal_abs_error: float | None
+    g_assignment_abs_error: float | None
     package_recovered: bool | None
-    focal_recovered: bool | None
+    g_assignment_recovered: bool | None
     expected_abstention_respected: bool
     notes: tuple[str, ...]
 
