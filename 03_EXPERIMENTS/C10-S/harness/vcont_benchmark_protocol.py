@@ -385,22 +385,28 @@ def build_scenario_estimand_matrix(scenario_versions: dict[str, str] | None = No
     return tuple(result)
 
 
-def validate_evaluation_observation(spec: ScenarioEstimandSpec, *, dgp_truth: float | None,
+def validate_evaluation_observation(spec: ScenarioEstimandSpec, *, observed_key: EvaluationKey,
+                                    analyzer_output_field: str | None, dgp_truth: float | None,
                                     analyzer_output: float | None, adjudication: str) -> None:
     spec.key.validate()
+    observed_key.validate()
+    if observed_key != spec.key:
+        raise ProtocolError("observed scenario-estimand identity/version does not match the declared pair")
     if spec.evaluation_class == "EVALUABLE":
-        if dgp_truth is None or not isfinite(float(dgp_truth)):
-            raise ProtocolError("EVALUABLE pair requires finite numeric DGP truth")
-        if not spec.analyzer_output_field or analyzer_output is None or not isfinite(float(analyzer_output)):
+        if spec.truth_status != "DEFINED" or dgp_truth is None or not isfinite(float(dgp_truth)):
+            raise ProtocolError("EVALUABLE pair requires DEFINED finite numeric DGP truth")
+        if analyzer_output_field != spec.analyzer_output_field or not analyzer_output_field:
+            raise ProtocolError("Analyzer output field does not match the declared estimand")
+        if analyzer_output is None or not isfinite(float(analyzer_output)):
             raise ProtocolError("EVALUABLE pair requires matching finite Analyzer output")
         if adjudication not in ("PASS", "FAIL"):
             raise ProtocolError("EVALUABLE pair requires numeric recovery adjudication")
     elif spec.evaluation_class in ("STATUS_ONLY", "NOT_IDENTIFIABLE"):
-        if adjudication not in ("STATUS_PASS", "STATUS_FAIL") or analyzer_output is not None:
+        if analyzer_output_field is not None or adjudication not in ("STATUS_PASS", "STATUS_FAIL") or analyzer_output is not None:
             raise ProtocolError("status-only pair requires status adjudication and no numeric scoring")
     elif spec.evaluation_class == "NOT_EVALUABLE":
-        if adjudication == "PASS":
-            raise ProtocolError("NOT_EVALUABLE cannot be presented as PASS")
+        if analyzer_output_field is not None or analyzer_output is not None or adjudication == "PASS":
+            raise ProtocolError("NOT_EVALUABLE cannot receive numeric scoring or PASS")
     else:
         raise ProtocolError("unsupported evaluation class")
 
