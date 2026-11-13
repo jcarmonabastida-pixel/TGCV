@@ -501,7 +501,8 @@ class Generator:
             "g_reference_regime_id": manifest.g_reference_regime_id,
             "g_reference_regime_version": manifest.g_reference_regime_version,
             "z_assignment_vector_hash": manifest.z_assignment_vector_hash,
-            "g_assignment_vector_hash": manifest.g_assignment_vector_hash}
+            "g_assignment_vector_hash": manifest.g_assignment_vector_hash,
+            "g_assignment_probability_by_stratum": manifest.g_assignment_probability_by_stratum}
         return manifest, truth, EvidenceCandidate(run_id, tuple(rows), provenance)
 
 
@@ -526,6 +527,8 @@ class Sealer:
                 raise ContractError("Delta T_acc must contain four binary coordinates")
         if not candidate.provenance or candidate.provenance.get("run_id") != candidate.run_id:
             raise ContractError("observable provenance envelope missing or run mismatch")
+        if _hash([row["assignment_z"] for row in candidate.rows]) != candidate.provenance.get("z_assignment_vector_hash") or _hash([row["assignment_g"] for row in candidate.rows]) != candidate.provenance.get("g_assignment_vector_hash"):
+            raise ContractError("assignment vectors do not match provenance hashes")
         manifest = {"run_id": candidate.run_id, "schema": "C10S-VCONT-S3-001",
                     "row_count": len(candidate.rows), "sealer_version": "0.2",
                     "provenance": candidate.provenance, "provenance_sha256": _hash(candidate.provenance)}
@@ -717,7 +720,8 @@ class Evaluator:
             "g_reference_regime_id": manifest.g_reference_regime_id,
             "g_reference_regime_version": manifest.g_reference_regime_version,
             "z_assignment_vector_hash": manifest.z_assignment_vector_hash,
-            "g_assignment_vector_hash": manifest.g_assignment_vector_hash}
+            "g_assignment_vector_hash": manifest.g_assignment_vector_hash,
+            "g_assignment_probability_by_stratum": manifest.g_assignment_probability_by_stratum}
         if (result.estimand_id != contract.estimand_id or result.estimand_version != contract.estimand_version or
             result.target_regime_id != contract.target_regime_id or result.target_regime_version != contract.target_regime_version or
             result.outcome_id != contract.outcome_id or result.outcome_version != contract.outcome_version or
