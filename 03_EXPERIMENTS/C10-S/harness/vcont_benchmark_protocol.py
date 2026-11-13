@@ -410,6 +410,76 @@ class EvaluationKey:
 
 
 @dataclass(frozen=True)
+class MonteCarloBenchmarkDesign:
+    """Predeclared identity and dimensions for one complete 13-scenario benchmark."""
+    scenario_versions: tuple[tuple[str, str], ...]
+    n_units: int
+    outer_replicates: int
+    repeated_assignments: int
+    matrix_fingerprint: str
+    metric_targets: tuple[tuple[str, str, str, str, str, float], ...]
+
+
+def scenario_matrix_fingerprint(matrix: Iterable["ScenarioEstimandSpec"]) -> str:
+    rows = sorted(
+        (spec.key.scenario_id, spec.key.scenario_version, spec.key.estimand_id,
+         spec.key.estimand_version, spec.evaluation_class, spec.run_evaluation_class,
+         spec.repeated_evaluation_class, spec.truth_status, spec.dgp_truth_field,
+         spec.analyzer_output_field, spec.aggregation_field,
+         spec.identification_expectation, spec.abstention_expectation, spec.reason)
+        for spec in matrix
+    )
+    return hashlib.sha256(json.dumps(rows, separators=(",", ":"), sort_keys=False).encode()).hexdigest()
+
+
+def validate_monte_carlo_benchmark_design(design: MonteCarloBenchmarkDesign,
+                                          matrix: Iterable["ScenarioEstimandSpec"]) -> tuple["ScenarioEstimandSpec", ...]:
+    specs = tuple(matrix)
+    if not isinstance(design, MonteCarloBenchmarkDesign):
+        raise ProtocolError("benchmark aggregation requires a declared MonteCarloBenchmarkDesign")
+    if design.n_units < 1 or design.outer_replicates < 2 or design.repeated_assignments < 1:
+        raise ProtocolError("design requires N>=1, M>=2 and R>=1")
+    versions = dict(design.scenario_versions)
+    if len(versions) != len(design.scenario_versions) or set(versions) != set(SCENARIO_IDS):
+        raise ProtocolError("design must declare exactly one version for each of the 13 authoritative scenarios")
+    if any(not isinstance(v, str) or not v.strip() for v in versions.values()):
+        raise ProtocolError("scenario versions must be nonempty strings")
+    if len(specs) != 52 or len({spec.key for spec in specs}) != 52:
+        raise ProtocolError("authoritative matrix must contain exactly 52 unique scenario-estimand pairs")
+    expected = {(sid, versions[sid]) for sid in SCENARIO_IDS}
+    observed = {(spec.key.scenario_id, spec.key.scenario_version) for spec in specs}
+    if observed != expected or any(spec.key.estimand_version != "001" for spec in specs):
+        raise ProtocolError("matrix scenario or estimand versions do not match the declared benchmark design")
+    if scenario_matrix_fingerprint(specs) != design.matrix_fingerprint:
+        raise ProtocolError("design matrix fingerprint does not match the authoritative matrix")
+    required_targets = set()
+    for spec in specs:
+        temporal_class = (
+            spec.run_evaluation_class
+            if spec.key.estimand_id in ("ITT_Z_RUN_CONDITIONAL_VCONT", "ITT_G_Z0_VCONT")
+            else spec.repeated_evaluation_class
+        )
+        if temporal_class == "EVALUABLE":
+            for metric in ("bias", "mae", "rmse"):
+                required_targets.add((spec.key.scenario_id, spec.key.scenario_version,
+                                      spec.key.estimand_id, spec.key.estimand_version, metric))
+    supplied = set()
+    for row in design.metric_targets:
+        if len(row) != 6:
+            raise ProtocolError("each pair-keyed MCSE target must contain the full pair identity, metric and value")
+        sid, sv, eid, ev, metric, target = row
+        key = (sid, sv, eid, ev, metric)
+        if key in supplied:
+            raise ProtocolError("duplicate pair-keyed MCSE target")
+        if metric not in ("bias", "mae", "rmse") or not isfinite(float(target)) or target <= 0:
+            raise ProtocolError("MCSE target metric/value is invalid")
+        supplied.add(key)
+    if supplied != required_targets:
+        raise ProtocolError("pair-keyed MCSE target set must exactly match all numeric EVALUABLE matrix pairs")
+    return specs
+
+
+@dataclass(frozen=True)
 class ScenarioEstimandSpec:
     key: EvaluationKey
     evaluation_class: str
