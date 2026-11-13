@@ -51,6 +51,39 @@ class MonteCarloMetricSummary:
     precision_status: str
 
 
+@dataclass(frozen=True)
+class MonteCarloRMSESummary:
+    outer_replicates: int
+    rmse: float
+    mean_squared_error: float
+    mcse_rmse_delta: float | None
+    target_mcse: float
+    precision_status: str
+
+
+def summarize_monte_carlo_rmse(values: Iterable[tuple[str, float]], *,
+                               expected_m: int, target_mcse: float) -> MonteCarloRMSESummary:
+    """Estimate RMSE across M; MCSE uses the first-order delta method."""
+    rows = tuple(values)
+    if expected_m < 2 or len(rows) != expected_m:
+        raise ProtocolError("MONTE_CARLO RMSE requires exactly expected_m>=2 contributions")
+    if not isfinite(float(target_mcse)) or target_mcse <= 0:
+        raise ProtocolError("target_mcse must be finite and >0")
+    ids = [row[0] for row in rows]
+    if any(not isinstance(value, str) or not value.strip() for value in ids) or len(set(ids)) != len(ids):
+        raise ProtocolError("RMSE contributions require unique nonempty outer identities")
+    squared = _finite_values((row[1] for row in rows), "squared-error contributions")
+    if any(value < 0 for value in squared):
+        raise ProtocolError("squared-error contributions must be nonnegative")
+    mse = mean(squared)
+    rmse = sqrt(mse)
+    mcse_mse = stdev(squared) / sqrt(expected_m)
+    mcse_rmse = (mcse_mse / (2.0 * rmse)) if rmse > 0 else (0.0 if mcse_mse == 0 else None)
+    status = "NOT_EVALUABLE" if mcse_rmse is None else "PASS" if mcse_rmse <= target_mcse else "FAIL"
+    return MonteCarloRMSESummary(expected_m, rmse, mse, mcse_rmse,
+                                 float(target_mcse), status)
+
+
 def summarize_monte_carlo(values: Iterable[tuple[str, float]], *,
                           expected_m: int, target_mcse: float) -> MonteCarloMetricSummary:
     """Aggregate one scalar metric contribution per independent outer world M."""
