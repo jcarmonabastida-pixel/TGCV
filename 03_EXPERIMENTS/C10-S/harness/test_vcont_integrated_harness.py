@@ -502,5 +502,57 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         self.assertIsNone(aggregate.reference_abs_error)
         self.assertIsNone(aggregate.reference_recovered)
 
+    def test_matrix_adapter_uses_run_and_repeated_assignment_levels(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        runs = []
+        for replicate in range(3):
+            rep_cfg = replace(cfg, world_seed=4242, z_assignment_seed=5100+replicate,
+                              g_assignment_seed=6100+replicate, replicate_id=f"matrix-{replicate}")
+            manifest, truth, candidate = self.generator.generate(rep_cfg)
+            result = self.analyzer.analyze(self.sealer.seal(candidate), contract_for(rep_cfg))
+            runs.append((truth, result, contract_for(rep_cfg), manifest))
+        report = self.evaluator.evaluate_matrix_pairs(runs, tolerance=0.10)
+        records = report["pair_records"]
+        self.assertEqual(len({record.key for record in records}), 4)
+        run_records = [record for record in records if record.evaluation_level == "RUN"]
+        repeated_records = [record for record in records if record.evaluation_level == "REPEATED_ASSIGNMENT"]
+        self.assertEqual(len(run_records), 3 * 3)
+        self.assertEqual(len(repeated_records), 2)
+        self.assertNotIn("ITT_Z_MECHANISM_MARGINAL_VCONT",
+                         {record.key.estimand_id for record in run_records})
+        self.assertIn("ITT_Z_MECHANISM_MARGINAL_VCONT",
+                      {record.key.estimand_id for record in repeated_records})
+        self.assertIn("ITT_Z_REFERENCE_REGIME_VCONT",
+                      {record.key.estimand_id for record in run_records})
+        self.assertIn("ITT_Z_REFERENCE_REGIME_VCONT",
+                      {record.key.estimand_id for record in repeated_records})
+
+    def test_matrix_adapter_rejects_scenario_version_mismatch(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        manifest, truth, candidate = self.generator.generate(cfg)
+        result = self.analyzer.analyze(self.sealer.seal(candidate), contract_for(cfg))
+        altered_manifest = replace(manifest, version="OTHER-DGP-VERSION")
+        with self.assertRaises(Exception):
+            self.evaluator.evaluate_matrix_pairs(
+                [(truth, result, contract_for(cfg), altered_manifest)], tolerance=0.10)
+
+    def test_matrix_adapter_preserves_nonidentified_reference_as_status(self):
+        cfg = self.worlds()["R2_SUPPORT_FAILURE_ZG_INTERACTION"]
+        runs = []
+        for replicate in range(2):
+            rep_cfg = replace(cfg, world_seed=8282, z_assignment_seed=7200+replicate,
+                              g_assignment_seed=8200+replicate, replicate_id=f"matrix-ni-{replicate}")
+            manifest, truth, candidate = self.generator.generate(rep_cfg)
+            contract = contract_for(rep_cfg)
+            result = self.analyzer.analyze(self.sealer.seal(candidate), contract)
+            runs.append((truth, result, contract, manifest))
+        report = self.evaluator.evaluate_matrix_pairs(runs, tolerance=0.10)
+        reference = [record for record in report["pair_records"]
+                     if record.key.estimand_id == "ITT_Z_REFERENCE_REGIME_VCONT"]
+        self.assertEqual(len(reference), 3)
+        self.assertTrue(all(record.identification_status == "NOT_IDENTIFIED" and record.abstained
+                            for record in reference))
+        self.assertTrue(all(record.analyzer_output is None for record in reference))
+
 if __name__ == "__main__":
     unittest.main()
