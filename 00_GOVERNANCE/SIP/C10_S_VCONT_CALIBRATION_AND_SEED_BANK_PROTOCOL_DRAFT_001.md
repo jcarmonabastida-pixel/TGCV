@@ -347,3 +347,17 @@ The attested subject is the final immutable report package digest. Its internal 
 **Availability condition:** artifact attestations are available for public repositories on current GitHub plans; private/internal repositories require GitHub Enterprise Cloud. Repository visibility and entitlement are not yet verified. If unavailable, stop and return to architecture decision; do not fall back to unsigned/self-asserted metadata.
 
 Gate 160 selects architecture only. It does not authorize workflow/code changes, CI, calibration, seed-bank generation, N/R/M sizing, Monte Carlo benchmark or scientific execution. Gate 159 reconciliation and external-verifier implementation remain OPEN.
+
+
+## 20. Gate 161 — attestation availability and trusted-builder preflight
+
+Gate 161 preflight is persisted in:
+`00_GOVERNANCE/SIP/C10_S_VCONT_MONTE_CARLO_ATTESTATION_AVAILABILITY_AND_TRUSTED_BUILDER_PREFLIGHT_GATE_161_DRAFT_001.md`.
+
+GitHub repository metadata confirms TGCV is public (repository ID `1348691577`). Public visibility satisfies the documented Artifact Attestations plan-class availability condition. The preflight does **not** establish that a trusted signer workflow already exists or is correctly configured.
+
+The assumed path `.github/workflows/c10-s-vcont-benchmark.yml` returned NOT_FOUND. No complete workflow inventory or exact signer workflow identity has yet been established; no workflow path or revision is invented. Trusted-builder selection and immutable revision remain OPEN.
+
+The verifier contract requires exact artifact digest, repository and signer-workflow identity, OIDC issuer, SLSA predicate, source identity and structured verification result. Numeric repository ID is an additional policy value and must not be called cryptographically verified unless the verifier exposes a cryptographically bound field for it. The pinned `actions/attest` revision's actual minimum permissions must be checked; its current README lists `id-token: write`, `attestations: write`, and `artifact-metadata: write`, while GitHub's basic documentation example also includes `contents: read`.
+
+**Gate 161 status:** PUBLIC REPOSITORY AVAILABILITY CONFIRMED; TRUSTED WORKFLOW IDENTITY OPEN; VERIFIER IMPLEMENTATION OPEN. No workflow/code change, CI, attestation generation, calibration, seed-bank generation, N/R/M sizing, Monte Carlo benchmark or scientific execution was performed or authorized.
