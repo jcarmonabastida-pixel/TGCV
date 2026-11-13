@@ -289,12 +289,12 @@ Gate 157 completes the Gate 156 benchmark-level integration. The typed R assignm
 This verification is deterministic software testing only. No calibration/evaluation seed bank was generated; no numeric N/R/M sizing, calibration, benchmark study or scientific execution was performed or authorized. The caller must supply canonical seed-bank, executable and configuration provenance; this implementation does not select those values.
 
 
-## 16. Gate 157 post-verification qualification
+## 16. Gate 157 targeted classification regression — CLOSED
 
-The benchmark-level MONTE_CARLO implementation and its general deterministic CI result are recorded in:
+The benchmark-level MONTE_CARLO implementation and targeted classification verification are recorded in:
 
 `C10_S_VCONT_MONTE_CARLO_BENCHMARK_AGGREGATION_IMPLEMENTATION_GATE_157_DRAFT_001.md`.
 
-A subsequent audit found that the final `TRUTH_MISSING` / `INVALID_OUTPUT` classification branches were present in the verified implementation commit, but were not directly exercised by regression assertions in that commit's test suite. Their targeted behavior is therefore **NOT VERIFIED / CONDITIONAL / OPEN**, notwithstanding the general 99/99 + 99/99 suite result.
+The dedicated regression distinguishes `TRUTH_MISSING` from `INVALID_OUTPUT` and asserts their counters and denominators. Verified commit: `a399c5810fa988b31390e2957671f6bf134836b7`; GitHub Actions run `43496381997`; compile PASS, primary suite 100/100 PASS, clean source-archive replay 100/100 PASS. Artifact `14070369862`, SHA-256 `c9a3050c8081bb48099b57ad123cd2e955c31f88791529016c2943252b5f9ffd`.
 
-No calibration, seed-bank generation, N/R/M sizing or scientific execution is authorized by this qualification.
+This closes the narrow software regression only. No calibration, seed-bank generation, N/R/M sizing, benchmark study or scientific execution was performed or authorized.
