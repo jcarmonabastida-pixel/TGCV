@@ -386,3 +386,21 @@ The selected design separates the existing unprivileged producer/test workflow f
 The threat model treats every producer artifact field and archive entry as attacker-controlled, including path traversal, symlinks, malformed/oversized archives, forged source metadata, replay and workflow-run privilege escalation. It requires strict schema/size/path checks, no executable deserialization, no shell interpolation of artifact fields, full-SHA action pins, least privilege, event/ref restrictions and fail-closed verification. A cryptographic attestation cannot replace Gate 159's deterministic seed/configuration/manifest reconciliation or establish scientific validity.
 
 **Gate 163 status:** DESIGN DEFINED / PERSISTED; report package schema and canonical packager OPEN; Gate 159 reconciliation OPEN; attestor workflow implementation OPEN and requires separate explicit authorization; verifier and adversarial tests OPEN. No code/workflow change, CI, attestation generation, calibration, seed-bank generation, sizing or scientific execution was performed or authorized.
+
+
+## 23. Gate 164 — Monte Carlo report-package schema and canonical packager
+
+Gate 164 package schema v1.0.0 is persisted in:
+`00_GOVERNANCE/SIP/C10_S_VCONT_MONTE_CARLO_REPORT_PACKAGE_SCHEMA_AND_CANONICAL_PACKAGER_GATE_164_DRAFT_001.md`.
+
+The schema defines one immutable attestation subject and an allowlisted package layout covering the complete report/52-pair ledger, benchmark design and matrix, effective scenario and analysis configurations, evaluation and calibration seed manifests, temporal/run records, source-execution provenance, configuration fingerprints, reconciliation results and technical test evidence.
+
+Canonical serialization is RFC 8785 JCS; the archive profile is uncompressed deterministic POSIX tar with normalized metadata. The digest graph is non-circular: per-file SHA-256 values feed manifest.json; its digest determines package identity; the exact final archive SHA-256 is the external attestation subject and is not embedded inside the package. The existing report fingerprint remains a distinct report-level integrity value.
+
+The package preserves M as independent outer worlds, R as within-world repeated assignments and the designated RUN separately. It requires 13 scenarios, 52 unique scenario-estimand pairs, one RUN plus R rows per scenario/M, complete one-to-one SeedAssignment/RunManifest reconciliation, explicit denominators and distinct TRUTH_MISSING / INVALID_OUTPUT classifications. Null is not zero; missing/invalid outputs are not abstentions. Marginal estimands are aggregated within M before any between-M summary.
+
+**Implementation-relevant code boundary recovered:** the current Evaluator already returns design, temporal_manifest, pair_ledger, report manifest, scenario_reports, coverage and report_fingerprint. Its temporal_manifest currently carries the reduced scenario/version/N/M/role/R/run/world/seed fields; the package contract additionally requires the complete canonical RunManifest and run-level TruthBundle/AnalyzerResult/contract/evaluation records. The current report fingerprint uses the existing internal JSON hash path; it is not JCS and must remain a distinct legacy report digest unless a separately versioned report protocol changes it. The packager must create JCS canonical package files without silently redefining that existing fingerprint.
+
+The current design carries declared seed-bank, executable-commit and configuration fingerprints; Gate 158/159 findings remain binding: these declarations cannot be promoted to reconciled provenance until actual seed rows, effective configuration payloads and source execution identity are independently bound. Calibration seed disjointness cannot be recomputed from a fingerprint alone; the actual calibration manifest or an immutable retrievable manifest is required.
+
+**Gate 164 status:** PACKAGE CONTRACT DEFINED / PERSISTED; PACKAGER IMPLEMENTATION OPEN; report-schema alignment OPEN; Gate 159 reconciliation OPEN; calibration manifest availability OPEN; adversarial tests OPEN. No code/tests/workflows/CI were changed or executed. No calibration, seed-bank generation, N/R/M sizing, Monte Carlo benchmark or scientific execution was performed or authorized.
