@@ -374,3 +374,15 @@ The five C10-S workflows are the P178 performance diagnostic, clean replay, Mont
 The focal harness test workflow is the closest existing unprivileged test job: its history records explicit compilation of the Vcont integrated harness and benchmark protocol. It remains unsuitable as a signer. A dedicated trusted builder/attestor is required and must consume an already finalized report package; it must not rerun scientific or Monte Carlo work merely to sign.
 
 **Gate 162 status:** INVENTORY RECOVERED; BRANCH DELTA AUDITED; EXISTING SIGNER CANDIDATES REJECTED AS-IS; DEDICATED TRUSTED BUILDER DESIGN OPEN. No workflow was modified, no signing permissions were added, and no CI, attestation generation, calibration, seed-bank generation, sizing or scientific execution was performed.
+
+
+## 22. Gate 163 — dedicated trusted-builder design and threat model
+
+Gate 163 architecture and threat model are persisted in:
+`00_GOVERNANCE/SIP/C10_S_VCONT_MONTE_CARLO_TRUSTED_BUILDER_DESIGN_GATE_163_DRAFT_001.md`.
+
+The selected design separates the existing unprivileged producer/test workflow from a dedicated attestor stored on canonical `main`. The attestor must never check out or execute producer source/artifact content; it resolves the exact producer run/artifact through GitHub metadata, validates allowlisted metadata and recomputed package digests, and attests only the finalized immutable package. It must not rerun Monte Carlo or scientific work.
+
+The threat model treats every producer artifact field and archive entry as attacker-controlled, including path traversal, symlinks, malformed/oversized archives, forged source metadata, replay and workflow-run privilege escalation. It requires strict schema/size/path checks, no executable deserialization, no shell interpolation of artifact fields, full-SHA action pins, least privilege, event/ref restrictions and fail-closed verification. A cryptographic attestation cannot replace Gate 159's deterministic seed/configuration/manifest reconciliation or establish scientific validity.
+
+**Gate 163 status:** DESIGN DEFINED / PERSISTED; report package schema and canonical packager OPEN; Gate 159 reconciliation OPEN; attestor workflow implementation OPEN and requires separate explicit authorization; verifier and adversarial tests OPEN. No code/workflow change, CI, attestation generation, calibration, seed-bank generation, sizing or scientific execution was performed or authorized.
