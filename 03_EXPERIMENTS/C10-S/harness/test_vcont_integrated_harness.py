@@ -217,5 +217,60 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         with self.assertRaises(ContractError):
             self.evaluator.evaluate(truth, result, bad_contract, tolerance=0.10)
 
+
+    def test_assignment_mechanism_probabilities_and_hashes_are_recorded(self):
+        worlds = self.worlds()
+        ordinary_manifest, _, _ = self.generator.generate(worlds["R0_FOCAL_POSITIVE"])
+        support_manifest, _, _ = self.generator.generate(worlds["R0_SUPPORT_FAILURE"])
+        self.assertEqual(ordinary_manifest.g_assignment_probability_by_stratum,
+                         (("LOW", 0.5), ("HIGH", 0.5)))
+        self.assertEqual(support_manifest.g_assignment_probability_by_stratum,
+                         (("LOW", 0.5), ("HIGH", 0.0)))
+        self.assertTrue(ordinary_manifest.g_assignment_vector_hash)
+        self.assertTrue(ordinary_manifest.z_assignment_vector_hash)
+        self.assertTrue(ordinary_manifest.g_assignment_mechanism_hash)
+
+    def test_repeated_assignment_average_targets_mechanism_marginal_truth(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        estimates = []
+        target = None
+        for replicate in range(12):
+            rep_cfg = replace(cfg, world_seed=8181, z_assignment_seed=300+replicate,
+                              g_assignment_seed=900+replicate, replicate_id=f"r{replicate}")
+            _, truth, candidate = self.generator.generate(rep_cfg)
+            sealed = self.sealer.seal(candidate)
+            result = self.analyzer.analyze(sealed, contract_for(rep_cfg))
+            self.assertEqual(result.package_status, "IDENTIFIED")
+            estimates.append(result.package_itt)
+            target = truth.itt_z_mechanism_truth
+        self.assertAlmostEqual(sum(estimates)/len(estimates), target, delta=0.12)
+
+    def test_sealer_rejects_generator_truth_metadata(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        _, _, candidate = self.generator.generate(cfg)
+        rows = [dict(row) for row in candidate.rows]
+        rows[0]["potential_outcome_truth"] = 0.5
+        from dataclasses import replace
+        with self.assertRaises(FirewallError):
+            self.sealer.seal(replace(candidate, rows=tuple(rows)))
+
+    def test_transportability_cannot_be_inferred_from_absent_direct_path(self):
+        cfg = self.worlds()["R0_SUPPORT_FAILURE"]
+        invalid = replace(contract_for(cfg), z_effect_invariant_across_g=True,
+                          transportability_id=None, transportability_version=None,
+                          transportability_scope=None,
+                          transportability_evidence_status="NOT_ESTABLISHED")
+        _, _, candidate = self.generator.generate(cfg)
+        sealed = self.sealer.seal(candidate)
+        with self.assertRaises(ContractError):
+            self.analyzer.analyze(sealed, invalid)
+
+    def test_evaluator_rejects_assignment_mechanism_hash_mismatch(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        _, truth, _, result, _ = self.execute_world(cfg)
+        wrong = replace(contract_for(cfg), g_assignment_mechanism_hash="0"*64)
+        with self.assertRaises(ContractError):
+            self.evaluator.evaluate(truth, result, wrong, tolerance=0.10)
+
 if __name__ == "__main__":
     unittest.main()
