@@ -426,10 +426,9 @@ The coordinated implementation pass has begun in the research branch. The follow
 
 ### 14.2 Test coverage status
 
-The existing suite has been retained and ten additional tests have been added. The coverage mapping is partial:
-- Covered in source tests: AC-01…AC-10, AC-12, AC-14…AC-16.
-- Partially covered: AC-11 (target-regime and assignment-mechanism hash mismatch are tested; every required mismatch class is not yet individually tested).
-- Partially covered: AC-13 (interference and measurement adversity are tested; version-mismatch adjudication still needs a dedicated assertion).
+The existing suite has been retained and fourteen additional tests have been added. The coverage mapping is partial:
+- Covered in source tests: AC-01…AC-10, AC-12…AC-16.
+- Partially covered: AC-11 (run, estimand, target regime, outcome, assignment-mechanism hashes and transportability scope have mismatch assertions; the full identity/version cross-product is not exhaustively tested).
 
 These are test definitions only. No test has been run in this implementation pass, so no PASS, CI success, benchmark recovery or scientific validation is claimed.
 
