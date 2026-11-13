@@ -4,7 +4,7 @@ import unittest
 from vcont_benchmark_protocol import (
     ProtocolError, build_seed_bank, required_replicates, select_minimum_n,
     summarize_binary, summarize_continuous, summarize_scenario,
-    validate_seed_banks,
+    seed_bank_fingerprint, validate_seed_banks,
 )
 
 
