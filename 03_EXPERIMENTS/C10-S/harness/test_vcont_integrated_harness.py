@@ -10,7 +10,10 @@ from vcont_integrated_harness import (
     Analyzer, Evaluator, Generator, Sealer, benchmark_scenarios, contract_for,
     FirewallError, ContractError,
 )
-from vcont_benchmark_protocol import ProtocolError
+from vcont_benchmark_protocol import (
+    ProtocolError, MonteCarloBenchmarkDesign, build_scenario_estimand_matrix,
+    scenario_matrix_fingerprint, SCENARIO_IDS,
+)
 
 
 class VContIntegratedHarnessTests(unittest.TestCase):
@@ -64,6 +67,52 @@ class VContIntegratedHarnessTests(unittest.TestCase):
             self.evaluator.evaluate_monte_carlo(
                 outer_runs, tolerance=0.10, target_mcse_by_metric={},
                 expected_repeated_assignments=3)
+
+    def test_benchmark_aggregator_returns_reconstructable_52_pair_ledger(self):
+        scenarios = benchmark_scenarios(n_units=16, n_intervals=20)
+        versions = tuple((cfg.scenario_id, cfg.version) for cfg in scenarios)
+        version_map = dict(versions)
+        matrix = build_scenario_estimand_matrix(version_map)
+        targets = []
+        for spec in matrix:
+            temporal = (spec.run_evaluation_class
+                        if spec.key.estimand_id in ("ITT_Z_RUN_CONDITIONAL_VCONT", "ITT_G_Z0_VCONT")
+                        else spec.repeated_evaluation_class)
+            if temporal == "EVALUABLE":
+                for metric in ("bias", "mae", "rmse"):
+                    targets.append((spec.key.scenario_id, spec.key.scenario_version,
+                                    spec.key.estimand_id, spec.key.estimand_version, metric, 10.0))
+        design = MonteCarloBenchmarkDesign(
+            scenario_versions=versions, n_units=16, outer_replicates=2,
+            repeated_assignments=2, matrix_fingerprint=scenario_matrix_fingerprint(matrix),
+            metric_targets=tuple(targets))
+        scenario_outer_runs = {}
+        for cfg in scenarios:
+            scenario_outer_runs[cfg.scenario_id] = {}
+            for m in range(2):
+                outer_id = f"{cfg.scenario_id}-M{m}"
+                rows = []
+                for role, index in (("RUN", -1), ("REPEATED_ASSIGNMENT", 0),
+                                    ("REPEATED_ASSIGNMENT", 1)):
+                    rep_cfg = replace(
+                        cfg, outer_replicate_id=outer_id, assignment_role=role,
+                        assignment_index=index, world_seed=30000 + m,
+                        z_assignment_seed=40000 + m*10 + index + 2,
+                        g_assignment_seed=50000 + m*10 + index + 2,
+                        replicate_id=f"{outer_id}-{role}-{index}")
+                    manifest, truth, candidate = self.generator.generate(rep_cfg)
+                    contract = contract_for(rep_cfg)
+                    result = self.analyzer.analyze(self.sealer.seal(candidate), contract)
+                    rows.append((truth, result, contract, manifest))
+                scenario_outer_runs[cfg.scenario_id][outer_id] = rows
+        report = self.evaluator.evaluate_monte_carlo_benchmark(
+            scenario_outer_runs, design, tolerance=0.20, matrix=matrix)
+        self.assertEqual(report["coverage"], {
+            "required_pairs": 52, "observed_pairs": 52, "scenario_count": 13})
+        self.assertEqual(len(report["pair_ledger"]), 52)
+        self.assertEqual(len({row["key"] for row in report["pair_ledger"]}), 52)
+        self.assertEqual(len(report["report_fingerprint"]), 64)
+        self.assertTrue(all(row["observed_M"] == 2 for row in report["pair_ledger"]))
 
     def test_truth_bundle_separates_g_assignment_from_unmaterialized_theta_a(self):
         worlds = self.worlds()
