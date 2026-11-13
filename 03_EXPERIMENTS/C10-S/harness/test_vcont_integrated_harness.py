@@ -272,6 +272,9 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         cfg = self.worlds()["R0_FOCAL_POSITIVE"]
         manifest, truth, _, result, _ = self.execute_world(cfg)
         wrong = replace(contract_for(cfg), g_assignment_mechanism_hash="0"*64)
+        _, _, candidate = self.generator.generate(cfg)
+        with self.assertRaises(ContractError):
+            self.analyzer.analyze(self.sealer.seal(candidate), wrong)
         with self.assertRaises(ContractError):
             self.evaluator.evaluate(truth, result, wrong, tolerance=0.10, manifest=manifest)
 
@@ -343,6 +346,9 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         altered_contract = replace(contract_for(cfg), transportability_outcome_id="OTHER_OUTCOME")
         with self.assertRaises(ContractError):
             self.evaluator.evaluate(truth, result, altered_contract, tolerance=0.10, manifest=manifest)
+        altered_basis = replace(contract_for(cfg), transportability_basis="unsupported alternate basis")
+        with self.assertRaises(ContractError):
+            self.evaluator.evaluate(truth, result, altered_basis, tolerance=0.10, manifest=manifest)
 
 
     def test_sealer_rejects_provenance_truth_injection_and_assignment_hash_mismatch(self):
