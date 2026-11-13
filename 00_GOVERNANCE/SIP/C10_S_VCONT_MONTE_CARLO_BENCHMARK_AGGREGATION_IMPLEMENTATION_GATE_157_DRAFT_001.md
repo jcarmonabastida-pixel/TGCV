@@ -1,6 +1,6 @@
 # C10-S V_cont — Gate 157: MONTE_CARLO Benchmark Aggregation Implementation
 
-**Status:** IMPLEMENTED / TECHNICALLY VERIFIED  
+**Status:** IMPLEMENTED / TECHNICALLY VERIFIED — CLASSIFICATION REGRESSION CONDITIONAL  
 **Branch:** `research/c10-s-consolidation-draft`  
 **Governing contract:** `C10_S_VCONT_MONTE_CARLO_MATRIX_COVERAGE_CONTRACT_GATE_156_DRAFT_001.md`  
 **Preflight:** `C10_S_VCONT_MONTE_CARLO_GATE_157_IMPLEMENTATION_PREFLIGHT_DRAFT_001.md`  
@@ -85,10 +85,25 @@ This is deterministic technical verification only. It is not scientific, causal,
 - No Monte Carlo sizing, calibration, benchmark run or scientific execution was performed or authorized.
 - `scientific_execution=false`; `execution_authorized=false`.
 
+## 4.1 Post-verification audit — invalid-output classification
+
+A post-closure audit checked the final classification change against the exact verified commit `0afb77fb45308a7d1573d0ab644a9d6f69e7302d`.
+
+The implementation contains distinct `TRUTH_MISSING` and `INVALID_OUTPUT` branches and separate counters. However, the test file at that exact commit contains no assertions exercising either branch or their denominators. The successful 99/99 primary suite and 99/99 clean replay therefore verify the suite as a whole, but **do not specifically verify this final classification correction**.
+
+Corrected status:
+- Classification code: IMPLEMENTED.
+- General technical suite at the verified commit: PASS (99/99 + 99/99 replay).
+- Targeted regression coverage for `TRUTH_MISSING` vs `INVALID_OUTPUT`: NOT VERIFIED.
+- Gate 157 overall: IMPLEMENTED / TECHNICALLY VERIFIED, with this narrow regression item CONDITIONAL / OPEN.
+- No claim is made that the targeted classification behavior has passed tests.
+
+The targeted regression test and a new CI run must be completed before this narrow item can be closed. This audit does not authorize calibration, seed-bank generation or scientific execution.
+
 ## 5. Gate status
 
 - Gate 154: M/R separation contract — DEFINED / PERSISTED.
 - Gate 155: outer M and per-scenario aggregation — IMPLEMENTED / TECHNICALLY VERIFIED.
 - Gate 156: 52-pair matrix coverage contract — IMPLEMENTED / TECHNICALLY VERIFIED through Gate 157.
-- Gate 157: benchmark-level aggregation and typed R identity — IMPLEMENTED / TECHNICALLY VERIFIED.
+- Gate 157: benchmark-level aggregation and typed R identity — IMPLEMENTED / TECHNICALLY VERIFIED; targeted invalid-output classification regression remains CONDITIONAL / OPEN.
 - `main` unchanged; PR #116 remains Draft on its original base branch.
