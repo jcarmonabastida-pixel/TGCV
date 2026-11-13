@@ -958,12 +958,12 @@ class Evaluator:
             for spec in selected:
                 if spec.key.estimand_id == "ITT_Z_MECHANISM_MARGINAL_VCONT":
                     continue
-                records.append(adapter.adapt_run(spec, truth, result, manifest))
+                records.append(adapter.adapt_run(spec, truth, result, manifest, tolerance))
         repeated = self.evaluate_repeated_assignment(list(runs), tolerance)
         representative_manifest = runs[0][3]
         for spec in selected:
             if spec.key.estimand_id in ("ITT_Z_MECHANISM_MARGINAL_VCONT", "ITT_Z_REFERENCE_REGIME_VCONT"):
-                records.append(adapter.adapt_repeated(spec, repeated, representative_manifest))
+                records.append(adapter.adapt_repeated(spec, repeated, representative_manifest, tolerance))
         expected = {spec.key for spec in selected}
         if {record.key for record in records} != expected:
             raise ProtocolError("matrix adapter did not produce all four required estimand keys")
