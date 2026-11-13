@@ -213,7 +213,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
 
     def test_evaluator_rejects_target_regime_mismatch(self):
         cfg = self.worlds()["R0_FOCAL_POSITIVE"]
-        _, truth, _, result, _ = self.execute_world(cfg)
+        manifest, truth, _, result, _ = self.execute_world(cfg)
         bad_contract = replace(contract_for(cfg), target_regime_id="G_REFERENCE_50_50")
         with self.assertRaises(ContractError):
             self.evaluator.evaluate(truth, result, bad_contract, tolerance=0.10, manifest=manifest)
@@ -268,7 +268,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
 
     def test_evaluator_rejects_assignment_mechanism_hash_mismatch(self):
         cfg = self.worlds()["R0_FOCAL_POSITIVE"]
-        _, truth, _, result, _ = self.execute_world(cfg)
+        manifest, truth, _, result, _ = self.execute_world(cfg)
         wrong = replace(contract_for(cfg), g_assignment_mechanism_hash="0"*64)
         with self.assertRaises(ContractError):
             self.evaluator.evaluate(truth, result, wrong, tolerance=0.10, manifest=manifest)
