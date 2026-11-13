@@ -154,11 +154,20 @@ class AnalysisContract:
     def validate(self) -> None:
         if not self.estimand_id or not self.estimand_version or not self.target_regime_id or not self.target_regime_version:
             raise ContractError("estimand and target-regime identity/version required")
-        if not all((self.run_conditional_estimand_id, self.run_conditional_estimand_version,
-                    self.mechanism_marginal_estimand_id, self.mechanism_marginal_estimand_version,
-                    self.reference_regime_estimand_id, self.reference_regime_estimand_version,
-                    self.g_assignment_estimand_id, self.g_assignment_estimand_version)):
-            raise ContractError("all four assignment-estimand identities and versions are required")
+        expected_estimands = (
+            ("ITT_Z_RUN_CONDITIONAL_VCONT", "001"),
+            ("ITT_Z_MECHANISM_MARGINAL_VCONT", "001"),
+            ("ITT_Z_REFERENCE_REGIME_VCONT", "001"),
+            ("ITT_G_Z0_VCONT", "001"),
+        )
+        declared_estimands = (
+            (self.run_conditional_estimand_id, self.run_conditional_estimand_version),
+            (self.mechanism_marginal_estimand_id, self.mechanism_marginal_estimand_version),
+            (self.reference_regime_estimand_id, self.reference_regime_estimand_version),
+            (self.g_assignment_estimand_id, self.g_assignment_estimand_version),
+        )
+        if declared_estimands != expected_estimands:
+            raise ContractError("assignment-estimand identities/versions do not match the registered V_cont contract")
         if self.z_effect_invariant_across_g and not (self.transportability_id and self.transportability_version and self.transportability_scope and self.transportability_evidence_status == "STRUCTURALLY_VERIFIED" and self.transportability_outcome_id == self.outcome_id and self.transportability_basis):
             raise ContractError("transportability declaration requires ID, version, scope, matching outcome, basis and structural verification")
         if not all((self.g_assignment_mechanism_id, self.g_assignment_mechanism_version, self.z_assignment_mechanism_id, self.z_assignment_mechanism_version, self.reference_regime_id, self.reference_regime_version)):
