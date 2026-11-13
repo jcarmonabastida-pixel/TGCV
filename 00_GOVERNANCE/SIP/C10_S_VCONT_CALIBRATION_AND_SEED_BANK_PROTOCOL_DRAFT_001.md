@@ -249,3 +249,15 @@ The seed-bank and harness implementation now carries `outer_replicate_id` and `a
 The legacy `replicate` remains the R assignment index; `replicate=-1` plus `assignment_role=RUN` denotes the designated run. Seed-bank fingerprints include M identity and role. The existing `required_replicates` continues to size R only; no numeric M sizing rule or target is inferred here.
 
 **Gate 155:** IMPLEMENTED and TECHNICALLY VERIFIED — commit `3159ab10566e61eff97cb6d0a10bfc3801a6291b`, workflow run `43490700407` (compile PASS; primary 94/94 PASS; clean replay 94/94 PASS). Full implementation record: `C10_S_VCONT_MONTE_CARLO_OUTER_REPLICATION_IMPLEMENTATION_GATE_155_DRAFT_001.md`. No calibration or evaluation seed bank was generated. No Monte Carlo sizing, benchmark or scientific execution is authorized or recorded.
+
+
+## 13. Gate 156 — MONTE_CARLO matrix coverage and temporal manifest
+
+**Status:** DEFINED / PERSISTED — IMPLEMENTATION OPEN.
+
+The Gate 155 Evaluator currently aggregates the four estimand pairs for one scenario/version at a time. Gate 156 defines the remaining benchmark-level integration: compose the 13 scenario blocks into the authoritative 52-pair ledger, enforce declared M and R completeness, retain one per-M contribution for every pair at its matrix-authorized temporal level, adjudicate statuses and denominators against the matrix, and preserve reconstruction fingerprints.
+
+Canonical contract:
+`00_GOVERNANCE/SIP/C10_S_VCONT_MONTE_CARLO_MATRIX_COVERAGE_CONTRACT_GATE_156_DRAFT_001.md`.
+
+This is a contract/persistence update only. Gate 156 implementation is OPEN. No seed bank has been generated; no calibration, Monte Carlo sizing, benchmark or scientific execution has been performed or authorized. Numeric N/R/M and MCSE targets remain OPEN.
