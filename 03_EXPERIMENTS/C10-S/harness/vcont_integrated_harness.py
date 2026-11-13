@@ -69,7 +69,7 @@ class ScenarioConfig:
     replicate_id: str = "replicate-000"
     outer_replicate_id: str = "outer-000000"
     assignment_role: str = "REPEATED_ASSIGNMENT"
-    assignment_index: int = -1
+    assignment_index: int = 0
 
     def validate(self) -> None:
         if not self.scenario_id or not self.version or not self.outer_replicate_id:
@@ -212,7 +212,7 @@ class RunManifest:
     g_assignment_seed: int = 0
     outer_replicate_id: str = "outer-000000"
     assignment_role: str = "REPEATED_ASSIGNMENT"
-    assignment_index: int = -1
+    assignment_index: int = 0
 
 
 @dataclass(frozen=True)
@@ -241,7 +241,7 @@ class TruthBundle:
     z_assignment_mechanism_hash: str = ""
     outer_replicate_id: str = "outer-000000"
     assignment_role: str = "REPEATED_ASSIGNMENT"
-    assignment_index: int = -1
+    assignment_index: int = 0
 
     @property
     def itt_package_truth(self) -> float:
@@ -308,7 +308,7 @@ class AnalyzerResult:
     g_assignment_estimand_version: str = "001"
     outer_replicate_id: str = "outer-000000"
     assignment_role: str = "REPEATED_ASSIGNMENT"
-    assignment_index: int = -1
+    assignment_index: int = 0
 
 
 @dataclass(frozen=True)
