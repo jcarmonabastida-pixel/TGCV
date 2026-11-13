@@ -344,5 +344,34 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         with self.assertRaises(ContractError):
             self.evaluator.evaluate(truth, result, altered_contract, tolerance=0.10, manifest=manifest)
 
+
+    def test_sealer_rejects_provenance_truth_injection_and_assignment_hash_mismatch(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        _, _, candidate = self.generator.generate(cfg)
+        injected = dict(candidate.provenance)
+        injected["potential_outcome_truth"] = "forbidden"
+        with self.assertRaises(FirewallError):
+            self.sealer.seal(replace(candidate, provenance=injected))
+        altered = dict(candidate.provenance)
+        altered["g_assignment_vector_hash"] = "0"*64
+        with self.assertRaises(ContractError):
+            self.sealer.seal(replace(candidate, provenance=altered))
+
+    def test_realized_arm_support_shortfall_abstains_without_exception(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        _, _, candidate = self.generator.generate(cfg)
+        rows = [dict(row) for row in candidate.rows]
+        z0_ids = [i for i, row in enumerate(rows) if row["assignment_z"] == 0]
+        for i in z0_ids:
+            rows[i]["assignment_g"] = 0
+        from vcont_integrated_harness import _hash
+        provenance = dict(candidate.provenance)
+        provenance["g_assignment_vector_hash"] = _hash([row["assignment_g"] for row in rows])
+        sparse = replace(candidate, rows=tuple(rows), provenance=provenance)
+        sealed = self.sealer.seal(sparse)
+        result = self.analyzer.analyze(sealed, contract_for(cfg))
+        self.assertEqual(result.g_assignment_status, "INDETERMINATE")
+        self.assertIn("G_REALIZED_ARM_SUPPORT_INSUFFICIENT", result.abstention_reasons)
+
 if __name__ == "__main__":
     unittest.main()
