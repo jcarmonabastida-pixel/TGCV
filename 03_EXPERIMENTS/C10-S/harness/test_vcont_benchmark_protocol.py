@@ -6,7 +6,7 @@ from vcont_benchmark_protocol import (
     summarize_binary, summarize_continuous, summarize_scenario,
     seed_bank_fingerprint, validate_seed_banks, build_scenario_estimand_matrix,
     select_minimum_n_by_estimand, required_replicates_by_estimand,
-    validate_evaluation_observation, EvaluationKey,
+    validate_evaluation_observation, EvaluationKey, summarize_estimand,
 )
 
 
@@ -165,6 +165,16 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
         keys = [row.key for row in specs]
         result = required_replicates_by_estimand({keys[0]: 2.0, keys[1]: 1.0}, {keys[0]: 0.1, keys[1]: 0.1}, specs)
         self.assertEqual(result, {keys[0]: 400, keys[1]: 100})
+
+    def test_mcse_precision_distinguishes_fail_from_not_evaluable(self):
+        spec = next(row for row in build_scenario_estimand_matrix()
+                    if row.evaluation_class == "EVALUABLE")
+        failed = summarize_estimand(spec, estimates=[0.0, 2.0], truth=1.0, mcse_target=0.1)
+        self.assertEqual(failed.precision_status, "FAIL")
+        unavailable = summarize_estimand(spec, estimates=[1.0], truth=1.0, mcse_target=0.1)
+        self.assertEqual(unavailable.precision_status, "NOT_EVALUABLE")
+        passed = summarize_estimand(spec, estimates=[1.0, 1.0, 1.0], truth=1.0, mcse_target=0.1)
+        self.assertEqual(passed.precision_status, "PASS")
 
 if __name__ == "__main__":
     unittest.main()
