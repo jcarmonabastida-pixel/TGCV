@@ -69,3 +69,12 @@ No numeric M/R/N, MCSE target, recovery threshold or scientific acceptance thres
 - No tests have been run for this preflight.
 - No seed bank, calibration, Monte Carlo sizing, benchmark or scientific execution has been generated or performed.
 - `main` unchanged; PR #116 remains Draft on its existing base branch.
+
+
+## 7. Supersession by completed implementation
+
+This preflight is retained as the historical authorization boundary and diagnosis record. Its former statement that code implementation was OPEN is superseded by the completed implementation record:
+
+`00_GOVERNANCE/SIP/C10_S_VCONT_MONTE_CARLO_BENCHMARK_AGGREGATION_IMPLEMENTATION_GATE_157_DRAFT_001.md`.
+
+Gate 157 is now IMPLEMENTED / TECHNICALLY VERIFIED at commit `0afb77fb45308a7d1573d0ab644a9d6f69e7302d`, workflow run `43494346461` (compile PASS; primary 99/99 PASS; clean replay 99/99 PASS). No seed bank, calibration, Monte Carlo sizing, benchmark study or scientific execution was generated or performed.
