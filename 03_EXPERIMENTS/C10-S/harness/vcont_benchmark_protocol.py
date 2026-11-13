@@ -42,6 +42,40 @@ class BinaryRateSummary:
 
 
 @dataclass(frozen=True)
+class MonteCarloMetricSummary:
+    outer_replicates: int
+    metric_mean: float
+    metric_sd: float
+    mcse: float
+    target_mcse: float
+    precision_status: str
+
+
+def summarize_monte_carlo(values: Iterable[tuple[str, float]], *,
+                          expected_m: int, target_mcse: float) -> MonteCarloMetricSummary:
+    """Aggregate one scalar metric contribution per independent outer world M."""
+    rows = tuple(values)
+    if expected_m < 2 or len(rows) != expected_m:
+        raise ProtocolError("MONTE_CARLO aggregation requires exactly expected_m>=2 contributions")
+    if not isfinite(float(target_mcse)) or target_mcse <= 0:
+        raise ProtocolError("target_mcse must be finite and >0")
+    ids = [row[0] for row in rows]
+    if any(not isinstance(value, str) or not value.strip() for value in ids):
+        raise ProtocolError("every Monte Carlo contribution requires an outer_replicate_id")
+    if len(set(ids)) != len(ids):
+        raise ProtocolError("duplicate outer_replicate_id in Monte Carlo aggregation")
+    xs = _finite_values((row[1] for row in rows), "outer-replicate metric contributions")
+    if len(xs) != expected_m:
+        raise ProtocolError("one finite metric contribution is required from every outer replicate")
+    sd = stdev(xs)
+    mcse = sd / sqrt(expected_m)
+    return MonteCarloMetricSummary(
+        expected_m, mean(xs), sd, mcse, float(target_mcse),
+        "PASS" if mcse <= target_mcse else "FAIL",
+    )
+
+
+@dataclass(frozen=True)
 class ScenarioSummary:
     scenario_id: str
     estimate: ContinuousSummary | None
