@@ -466,3 +466,14 @@ The gate defines the immutable per-execution `RunEvidenceBundle` and the per-M `
 **Gate 168 status:** bundle/retention contract DEFINED and PERSISTED; world-identity source invariant BLOCKED pending correction; export implementation OPEN; tests NOT RUN. No code, tests, workflow or CI changes were made in this gate. No calibration, seed-bank generation, N/R/M sizing, Monte Carlo or scientific execution was authorized or performed. `main` remains unchanged; PR #116 remains Draft on its existing base.
 
 **Next:** prepare and implement the minimal versioned world-identity correction with compatibility tests, then implement RunEvidenceBundle capture and export. Do not treat the Gate 155 historical PASS as proof that this newly identified identity invariant is satisfied by the current source.
+## 28. Gate 169 — world identity invariance audit
+
+Gate 169 is persisted in `00_GOVERNANCE/SIP/C10_S_VCONT_WORLD_IDENTITY_INVARIANCE_AUDIT_GATE_169_DRAFT_001.md`.
+
+The Gate 168 source-level blocker is withdrawn: reinspection of the current `Generator.generate()` confirms that `assignment_role` and `assignment_index` are excluded from `world_spec` before `world_id` is computed. The current projection binds `world_seed`, `outer_replicate_id` and the remaining DGP-defining ScenarioConfig fields. The per-run identity separately binds the complete config, assignment role, world identity and assignment streams.
+
+The existing RUN/R shared-world and cross-M separation test was strengthened to isolate role/index-only changes (same world ID, different run ID), DGP-parameter changes (different world ID), and different world seeds across M. The updated test source is persisted but has NOT been executed. No runtime PASS, CI result, independent-world guarantee from seed declarations alone, or Gate 159 provenance reconciliation is claimed.
+
+**Disposition:** world-identity source contract STATICALLY CONSISTENT; regression STRENGTHENED / NOT EXECUTED; Gate 168 bundle contract remains DEFINED; RunEvidenceBundle implementation OPEN. No Generator source change, calibration, seed-bank generation, Monte Carlo, benchmark or scientific execution was performed. `main` remains unchanged and PR #116 remains Draft.
+
+**Next:** Gate 170 — implement the Gate 168 capture boundary and deeply immutable RunEvidenceBundle snapshots, retaining full SealedEvidence rows and manifests.
