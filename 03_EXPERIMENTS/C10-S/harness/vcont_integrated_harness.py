@@ -599,6 +599,10 @@ class Sealer:
             "z_assignment_vector_hash", "g_assignment_vector_hash"}
         if not candidate.provenance or set(candidate.provenance) != provenance_allowed or candidate.provenance.get("run_id") != candidate.run_id:
             raise FirewallError("provenance envelope contains reserved/missing fields or run mismatch")
+        role, index = candidate.provenance["assignment_role"], candidate.provenance["assignment_index"]
+        if ((role == "RUN" and index != -1)
+                or (role == "REPEATED_ASSIGNMENT" and (not isinstance(index, int) or index < 0))):
+            raise ContractError("sealed provenance requires RUN index -1 or a nonnegative repeated R index")
         if _hash([row["assignment_z"] for row in candidate.rows]) != candidate.provenance.get("z_assignment_vector_hash") or _hash([row["assignment_g"] for row in candidate.rows]) != candidate.provenance.get("g_assignment_vector_hash"):
             raise ContractError("assignment vectors do not match provenance hashes")
         manifest = {"run_id": candidate.run_id, "schema": "C10S-VCONT-S3-001",
@@ -1352,6 +1356,12 @@ class Evaluator:
                             if temporal_source == "RUN" else spec.repeated_evaluation_class),
                         "run_status": run_status,
                         "identification_status": status,
+                        "identification_expected": spec.identification_expectation,
+                        "abstention_expected": spec.abstention_expectation,
+                        "adjudicated_status": (run_status if spec.run_evaluation_class == "STATUS_ONLY" else status),
+                        "identification_correct": ((run_status if spec.run_evaluation_class == "STATUS_ONLY" else status)
+                                                   == spec.identification_expectation),
+                        "abstention_correct": bool(abstained) == spec.abstention_expectation,
                         "abstained": bool(abstained),
                         "abstention_reasons": tuple(reasons),
                         "estimate": float(estimate) if numeric else None,
@@ -1409,6 +1419,8 @@ class Evaluator:
                     "status_denominator": len(contributions),
                     "missing_count": sum(x["contribution_state"] == "INVALID_OR_MISSING" for x in contributions),
                     "abstention_count": sum(x["abstained"] for x in contributions),
+                    "identification_correct_count": sum(x["identification_correct"] for x in contributions),
+                    "abstention_correct_count": sum(x["abstention_correct"] for x in contributions),
                     "identification_rates": status_rates,
                     "metrics": summaries,
                     "precision_status": ("NOT_EVALUABLE" if expected_class != "EVALUABLE"
