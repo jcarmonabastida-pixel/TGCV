@@ -508,6 +508,8 @@ class Analyzer:
         if not contract.randomized_g:
             g_assignment_reasons.append("G_RANDOMIZATION_NOT_ESTABLISHED")
         reference_regime_status: Identification = "IDENTIFIED"
+        if not contract.randomized_z or not contract.randomized_g:
+            reference_regime_status = "NOT_IDENTIFIED"
         if not contract.positivity:
             g_assignment_reasons.append("COMMON_SUPPORT_FAILURE")
             if not contract.z_effect_invariant_across_g:
@@ -651,8 +653,10 @@ class Evaluator:
             None if g_assignment_error is None
             else g_assignment_error <= tolerance
         )
-        if not contract.positivity and truth.transportability_invariant_truth is False:
+        if not contract.randomized_z or not contract.randomized_g:
             expected_reference_status: Identification = "NOT_IDENTIFIED"
+        elif not contract.positivity and truth.transportability_invariant_truth is False:
+            expected_reference_status = "NOT_IDENTIFIED"
         elif (not contract.no_interference or not contract.measurement_identified or not contract.version_consistency):
             expected_reference_status = "INDETERMINATE"
         elif not contract.positivity and truth.transportability_invariant_truth is not True:
