@@ -233,18 +233,20 @@ class VContIntegratedHarnessTests(unittest.TestCase):
 
     def test_repeated_assignment_average_targets_mechanism_marginal_truth(self):
         cfg = self.worlds()["R0_FOCAL_POSITIVE"]
-        estimates = []
-        target = None
+        runs = []
         for replicate in range(12):
             rep_cfg = replace(cfg, world_seed=8181, z_assignment_seed=300+replicate,
                               g_assignment_seed=900+replicate, replicate_id=f"r{replicate}")
-            _, truth, candidate = self.generator.generate(rep_cfg)
+            manifest, truth, candidate = self.generator.generate(rep_cfg)
             sealed = self.sealer.seal(candidate)
-            result = self.analyzer.analyze(sealed, contract_for(rep_cfg))
+            contract = contract_for(rep_cfg)
+            result = self.analyzer.analyze(sealed, contract)
             self.assertEqual(result.package_status, "IDENTIFIED")
-            estimates.append(result.package_itt)
-            target = truth.itt_z_mechanism_truth
-        self.assertAlmostEqual(sum(estimates)/len(estimates), target, delta=0.12)
+            runs.append((truth, result, contract, manifest))
+        aggregate = self.evaluator.evaluate_repeated_assignment(runs, tolerance=0.12)
+        self.assertEqual(aggregate.replicate_count, 12)
+        self.assertIsNotNone(aggregate.marginal_abs_error)
+        self.assertTrue(aggregate.marginal_recovered)
 
     def test_sealer_rejects_generator_truth_metadata(self):
         cfg = self.worlds()["R0_FOCAL_POSITIVE"]
@@ -310,6 +312,37 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         wrong_z = replace(contract_for(cfg), z_assignment_mechanism_hash="f"*64)
         with self.assertRaises(ContractError):
             self.evaluator.evaluate(truth, result, wrong_z, tolerance=0.10, manifest=manifest)
+
+
+    def test_evaluator_rejects_manifest_scenario_world_and_vector_mismatch(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        manifest, truth, _, result, _ = self.execute_world(cfg)
+        for altered in (replace(manifest, scenario_id="OTHER_SCENARIO"),
+                        replace(manifest, world_id="OTHER_WORLD"),
+                        replace(manifest, z_assignment_vector_hash="0"*64),
+                        replace(manifest, g_assignment_mechanism_version="999")):
+            with self.assertRaises(ContractError):
+                self.evaluator.evaluate(truth, result, contract_for(cfg), tolerance=0.10, manifest=altered)
+
+    def test_evaluator_rejects_estimand_and_mechanism_version_mismatch(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        manifest, truth, _, result, _ = self.execute_world(cfg)
+        for altered in (replace(contract_for(cfg), estimand_version="999"),
+                        replace(contract_for(cfg), g_assignment_mechanism_version="999"),
+                        replace(contract_for(cfg), z_assignment_mechanism_id="OTHER_Z"),
+                        replace(contract_for(cfg), reference_regime_version="999")):
+            with self.assertRaises(ContractError):
+                self.evaluator.evaluate(truth, result, altered, tolerance=0.10, manifest=manifest)
+
+    def test_transportability_scope_and_outcome_are_checked_against_truth(self):
+        cfg = self.worlds()["R0_SUPPORT_FAILURE"]
+        manifest, truth, _, result, _ = self.execute_world(cfg)
+        altered_truth = replace(truth, transportability_scope_truth="LOW")
+        with self.assertRaises(ContractError):
+            self.evaluator.evaluate(altered_truth, result, contract_for(cfg), tolerance=0.10, manifest=manifest)
+        altered_contract = replace(contract_for(cfg), transportability_outcome_id="OTHER_OUTCOME")
+        with self.assertRaises(ContractError):
+            self.evaluator.evaluate(truth, result, altered_contract, tolerance=0.10, manifest=manifest)
 
 if __name__ == "__main__":
     unittest.main()
