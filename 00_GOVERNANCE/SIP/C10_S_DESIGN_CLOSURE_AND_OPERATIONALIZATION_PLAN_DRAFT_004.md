@@ -7296,3 +7296,77 @@ El gate queda cerrado como auditoría y corrección estática, pero la aceptaci�
 **Gate 89 — reconciliar el contrato de positividad de R0_SUPPORT_FAILURE y corregir la expectativa obsoleta sin cambiar el DGP.** No ampliar el universo de escenarios ni relajar el criterio de soporte. La corrección esperada es alinear el test `test_structural_support_failure_removes_high_stratum_g1` con el dictamen `NOT_IDENTIFIED`, y verificar que no haya otro test que contradiga el mismo contrato.
 
 La actualización de código/tests volvería a activar el workflow por su filtro de paths. Por tanto, antes de cualquier nuevo push que pueda disparar CI, se requiere autorización explícita del usuario para ejecutar la suite técnica. No se debe lanzar benchmark P178 ni experimento científico. `scientific_execution=false`; la suite técnica requiere autorización expresa.
+
+
+---
+
+## 16.239. Gate 89 — reconciliación de positividad y suite técnica primaria + replay PASS (2026-11-13)
+
+**Precedencia:** §§16.237–16.238 y Technical Execution Workflow v0.1. Alcance: corregir la expectativa obsoleta del escenario sintético `R0_SUPPORT_FAILURE` y ejecutar la suite técnica automatizada autorizada por el usuario. No modificar el DGP, roster, políticas, estimandos, Generator, Analyzer, Evaluator, harness P178 ni criterios de soporte. No ejecutar benchmark Monte Carlo ni experimento científico confirmatorio.
+
+### 16.239.1. Corrección mínima del contrato de test
+
+En `03_EXPERIMENTS/C10-S/harness/test_vcont_integrated_harness.py`, el test `test_structural_support_failure_removes_high_stratum_g1` verificaba correctamente que no existía asignación G=1 en el estrato HIGH, pero esperaba erróneamente `g_assignment_status == IDENTIFIED`.
+
+Se cambia únicamente esa expectativa a `NOT_IDENTIFIED`, alineándola con:
+- el contrato de positividad/soporte común;
+- la abstención del Analyzer cuando `contract.positivity == False`;
+- el test complementario `test_support_failure_blocks_g_assignment_but_not_package`, que conserva ITT-Z identificado y bloquea ITT-G.
+
+No se altera el escenario ni se elimina ninguna observación para hacer pasar la suite. El cambio es una reconciliación de una expectativa contradictoria, no un ajuste del mecanismo generador.
+
+### 16.239.2. Autorización y ejecución técnica
+
+El usuario autorizó explícitamente la corrección y la ejecución automática de la suite técnica. El push en la rama de investigación activó el workflow existente `.github/workflows/c10-s-focal-harness-tests.yml`.
+
+Registro:
+- Workflow: `c10-s-focal-harness-tests`.
+- Run ID: `43412059150`.
+- Job ID: `131840643599`.
+- Commit probado: `244896092e6414ccd92bd31a19776dcf71266c15`.
+- Evento: `push`.
+- Resultado del run: `SUCCESS`.
+
+Secuencia observada:
+1. Checkout del commit exacto: PASS.
+2. Python 3.12 setup: PASS.
+3. Instalación de dependencias fijadas `numpy==2.3.5`, `scipy==1.17.0`: PASS.
+4. Compilación de harness y tests: PASS.
+5. Suite primaria: PASS, 33 tests en 0.630 s.
+6. Replay desde clean source archive, después del PASS primario: PASS, 33 tests en 0.637 s.
+7. Manifiesto de ejecución y subida de capturas: PASS.
+
+No se registraron fallos de tests en la ejecución primaria ni en el replay. Los tests integrados relevantes pasaron, incluidos:
+- `test_structural_support_failure_removes_high_stratum_g1`;
+- `test_support_failure_blocks_g_assignment_but_not_package`;
+- `test_g_assignment_does_not_require_z_randomization`;
+- `test_direct_g_path_does_not_contaminate_g_assignment_truth`;
+- `test_truth_bundle_separates_g_assignment_from_unmaterialized_theta_a`.
+
+La suite completa incluye también los contratos del harness focal histórico P178. Su PASS acredita los tests técnicos cubiertos por esta suite, no una migración semántica del harness P178 ni validación de θ_A integrado.
+
+### 16.239.3. Artefacto y procedencia
+
+- Artefacto CI: `c10s-focal-harness-244896092e6414ccd92bd31a19776dcf71266c15-43412059150-1`.
+- Artifact ID: `14029179772`.
+- SHA-256 del ZIP de artefactos: `1ab1879cc39787bb43f252b83fc3482a8c352052c86e6cc95a494a6053685fd3`.
+- URL: `https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/43412059150/artifacts/14029179772`.
+- Run: `https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/43412059150`.
+
+El artefacto contiene capturas stdout/stderr de ejecución primaria y replay, y manifiesto con commit, run, intento, evento y ref. Retención declarada por workflow: 30 días.
+
+Blob final del test corregido:
+`b4fd8ea192ab145d990bee3e1087ebc12b665502`.
+
+### 16.239.4. Dictamen y límites
+
+**Gate 89 cerrado.** La contradicción de positividad está resuelta mediante una modificación mínima; compilación, suite primaria y replay han pasado en el commit exacto.
+
+Dictamen:
+`GATE_89_SUPPORT_CONTRACT_RECONCILED / STRUCTURAL_POSITIVITY_FAILURE_ABSTENTION_CORRECT / PACKAGE_ITT_REMAINS_IDENTIFIED / G_ASSIGNMENT_NOT_IDENTIFIED_WITHOUT_COMMON_SUPPORT / COMPILE_PASS / PRIMARY_33_OF_33_PASS / REPLAY_33_OF_33_PASS / CI_SUCCESS / EXECUTION_ARTIFACT_PRESERVED / TECHNICAL_SUITE_AUTHORIZED_AND_COMPLETED / NO_MONTE_CARLO_BENCHMARK / NO_SCIENTIFIC_CONFIRMATORY_EXECUTION / NO_THETA_A_VALIDATION / NO_DESIGN_FREEZE`.
+
+La suite técnica no demuestra recuperación causal de θ_A ni atribución del efecto de ΔT_acc*. θ_A sigue sin materializarse. El PASS no convierte ITT-G en efecto focal, no resuelve identificación parcial/bounds, no acredita todas las celdas C1/C3 del Gate 71 y no cierra C10-S globalmente.
+
+### 16.239.5. Siguiente gate — 90
+
+**Gate 90 — cerrar el inventario de cobertura científica C1/C3 contra el roster finito existente, sin crear mundos nuevos.** Cruzar las clases y configuraciones ya presentes con los seis roles de C1 y los seis roles de C3 definidos en Gate 71; distinguir cobertura implementada, cobertura ejecutada por tests, y cobertura todavía no representada. Para cada celda no cubierta, identificar si falta un escenario, una verdad de referencia, un estimador, una regla de abstención o un test. No inferir cobertura científica a partir del PASS de la suite de 33 tests. No ampliar el roster salvo que la auditoría demuestre una ausencia irreducible y se justifique antes como discrepancia científica. No ejecutar benchmark ni experimento confirmatorio sin autorización separada.
