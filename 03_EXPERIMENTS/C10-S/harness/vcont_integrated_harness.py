@@ -550,6 +550,17 @@ class Analyzer:
         contract.validate()
         if _hash({"manifest": evidence.manifest, "rows": evidence.rows}) != evidence.sha256:
             raise FirewallError("sealed evidence integrity failure")
+        provenance = evidence.manifest.get("provenance", {})
+        if (provenance.get("run_id") != evidence.run_id or
+            provenance.get("g_assignment_mechanism_id") != contract.g_assignment_mechanism_id or
+            provenance.get("g_assignment_mechanism_version") != contract.g_assignment_mechanism_version or
+            provenance.get("g_assignment_mechanism_hash") != contract.g_assignment_mechanism_hash or
+            provenance.get("z_assignment_mechanism_id") != contract.z_assignment_mechanism_id or
+            provenance.get("z_assignment_mechanism_version") != contract.z_assignment_mechanism_version or
+            provenance.get("z_assignment_mechanism_hash") != contract.z_assignment_mechanism_hash or
+            provenance.get("g_reference_regime_id") != contract.reference_regime_id or
+            provenance.get("g_reference_regime_version") != contract.reference_regime_version):
+            raise ContractError("analysis contract does not match sealed assignment provenance")
         # Keep the two assignment estimands' identification conditions separate.
         # Shared outcome/evidence requirements are common; Z randomization is
         # not a prerequisite for the within-Z=0 randomized G contrast.
@@ -684,6 +695,7 @@ class Analyzer:
 class Evaluator:
     def evaluate(self, truth: TruthBundle, result: AnalyzerResult,
                  contract: AnalysisContract, tolerance: float, manifest: RunManifest) -> EvaluationReport:
+        contract.validate()
         if tolerance < 0 or truth.run_id != result.run_id or manifest.run_id != truth.run_id:
             raise ContractError("invalid tolerance or run mismatch")
         payload = {
@@ -737,6 +749,7 @@ class Evaluator:
             result.z_assignment_mechanism_id != manifest.z_assignment_mechanism_id or result.z_assignment_mechanism_version != manifest.z_assignment_mechanism_version or
             result.g_assignment_mechanism_hash != manifest.g_assignment_mechanism_hash or result.z_assignment_mechanism_hash != manifest.z_assignment_mechanism_hash or
             truth.g_assignment_mechanism_hash != manifest.g_assignment_mechanism_hash or truth.z_assignment_mechanism_hash != manifest.z_assignment_mechanism_hash or
+            truth.g_reference_regime_id != manifest.g_reference_regime_id or truth.g_reference_regime_version != manifest.g_reference_regime_version or
             result.provenance_sha256 != _hash(manifest_provenance) or
             result.g_assignment_mechanism_id != contract.g_assignment_mechanism_id or result.g_assignment_mechanism_version != contract.g_assignment_mechanism_version or
             result.z_assignment_mechanism_id != contract.z_assignment_mechanism_id or result.z_assignment_mechanism_version != contract.z_assignment_mechanism_version or
