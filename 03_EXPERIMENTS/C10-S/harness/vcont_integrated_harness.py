@@ -178,12 +178,12 @@ class AnalyzerResult:
     run_id: str
     estimand_id: str
     package_status: Identification
-    focal_status: Identification
+    g_assignment_status: Identification
     package_itt: float | None
-    focal_effect: float | None
+    g_assignment_effect: float | None
     first_stage_delta_t_acc: tuple[float, float, float, float] | None
     package_se: float | None
-    focal_se: float | None
+    g_assignment_se: float | None
     abstention_reasons: tuple[str, ...]
     input_sha256: str
     output_sha256: str
@@ -423,36 +423,36 @@ class Analyzer:
         if _hash({"manifest": evidence.manifest, "rows": evidence.rows}) != evidence.sha256:
             raise FirewallError("sealed evidence integrity failure")
         package_reasons = []
-        focal_reasons = []
+        g_assignment_reasons = []
         if not contract.randomized_z:
             package_reasons.append("PACKAGE_RANDOMIZATION_NOT_ESTABLISHED")
         if not contract.randomized_g:
-            focal_reasons.append("FOCAL_RANDOMIZATION_NOT_ESTABLISHED")
+            g_assignment_reasons.append("G_RANDOMIZATION_NOT_ESTABLISHED")
         if not contract.positivity:
-            focal_reasons.append("COMMON_SUPPORT_FAILURE")
+            g_assignment_reasons.append("COMMON_SUPPORT_FAILURE")
         if not contract.no_interference:
             package_reasons.append("INTERFERENCE_REQUIRES_CLUSTER_EXPOSURE_ESTIMAND")
-            focal_reasons.append("INTERFERENCE_REQUIRES_CLUSTER_EXPOSURE_ESTIMAND")
+            g_assignment_reasons.append("INTERFERENCE_REQUIRES_CLUSTER_EXPOSURE_ESTIMAND")
         if not contract.measurement_identified:
             package_reasons.append("S3_MEASUREMENT_NOT_IDENTIFIED")
-            focal_reasons.append("S3_MEASUREMENT_NOT_IDENTIFIED")
+            g_assignment_reasons.append("S3_MEASUREMENT_NOT_IDENTIFIED")
         if not contract.version_consistency:
             package_reasons.append("VERSION_INCONSISTENCY")
-            focal_reasons.append("VERSION_INCONSISTENCY")
+            g_assignment_reasons.append("VERSION_INCONSISTENCY")
         complete = all(
             all(v in (0, 1) for k in ("s3_enabled", "s3_profile_match") for v in row[k])
             for row in evidence.rows
         )
         if not complete:
             package_reasons.append("S3_MISSINGNESS_REQUIRES_BOUNDS_OR_MODEL")
-            focal_reasons.append("S3_MISSINGNESS_REQUIRES_BOUNDS_OR_MODEL")
+            g_assignment_reasons.append("S3_MISSINGNESS_REQUIRES_BOUNDS_OR_MODEL")
         ideal = all(
             all(s == "OBSERVED" for k in ("s3_enabled_status", "s3_profile_status") for s in row[k])
             for row in evidence.rows
         )
         if not ideal:
             package_reasons.append("S3_COVERAGE_INCOMPLETE")
-            focal_reasons.append("S3_COVERAGE_INCOMPLETE")
+            g_assignment_reasons.append("S3_COVERAGE_INCOMPLETE")
 
         observed_v = None
         if not package_reasons:
@@ -480,32 +480,32 @@ class Analyzer:
                         if row["assignment_g"] == 1]
                 first_stage_values.append(mean(g1_d) - mean(g0_d))
             first_stage = tuple(first_stage_values)
-        if not contract.focal_direct_path_absent or not contract.common_nonfocal_regime:
-            focal_reasons.append("FOCAL_EXCLUSION_OR_COMMON_REGIME_NOT_ESTABLISHED")
-        if not focal_reasons and observed_v is not None:
+        # Direct G paths do not invalidate the randomized G-assignment ITT.
+        # They only prevent interpreting that contrast as the focal theta_A.
+        if not g_assignment_reasons and observed_v is not None:
             focal_rows = [(observed_v[i], row) for i, row in enumerate(evidence.rows)
                           if row["assignment_z"] == 0]
             g0 = [v for v, row in focal_rows if row["assignment_g"] == 0]
             g1 = [v for v, row in focal_rows if row["assignment_g"] == 1]
-            focal, focal_se = _mean_se(g0, g1)
-            focal_status: Identification = "IDENTIFIED"
+            focal, g_assignment_se = _mean_se(g0, g1)
+            g_assignment_status: Identification = "IDENTIFIED"
         else:
-            focal, focal_se = None, None
-            focal_status = "NOT_IDENTIFIED" if (
-                "FOCAL_EXCLUSION_OR_COMMON_REGIME_NOT_ESTABLISHED" in focal_reasons or
-                "COMMON_SUPPORT_FAILURE" in focal_reasons or
-                "FOCAL_RANDOMIZATION_NOT_ESTABLISHED" in focal_reasons
+            focal, g_assignment_se = None, None
+            g_assignment_status = "NOT_IDENTIFIED" if (
+                "G_ASSIGNMENT_IS_NOT_THETA_A" in g_assignment_reasons or
+                "COMMON_SUPPORT_FAILURE" in g_assignment_reasons or
+                "G_RANDOMIZATION_NOT_ESTABLISHED" in g_assignment_reasons
             ) else "INDETERMINATE"
 
-        reasons = tuple(dict.fromkeys(package_reasons + focal_reasons))
+        reasons = tuple(dict.fromkeys(package_reasons + g_assignment_reasons))
         payload = {"run_id": evidence.run_id, "estimand_id": contract.estimand_id,
-                   "package_status": package_status, "focal_status": focal_status,
-                   "package_itt": package, "focal_effect": focal,
+                   "package_status": package_status, "g_assignment_status": g_assignment_status,
+                   "package_itt": package, "g_assignment_effect": focal,
                    "first_stage_delta_t_acc": first_stage,
-                   "package_se": package_se, "focal_se": focal_se,
+                   "package_se": package_se, "g_assignment_se": g_assignment_se,
                    "reasons": list(reasons), "input_sha256": evidence.sha256}
         return AnalyzerResult(evidence.run_id, contract.estimand_id,
-            package_status, focal_status, package, focal, first_stage, package_se, focal_se,
+            package_status, g_assignment_status, package, focal, first_stage, package_se, g_assignment_se,
             reasons, evidence.sha256, _hash(payload))
 
 
@@ -516,20 +516,20 @@ class Evaluator:
             raise ContractError("invalid tolerance or run mismatch")
         payload = {
             "run_id": result.run_id, "estimand_id": result.estimand_id,
-            "package_status": result.package_status, "focal_status": result.focal_status,
-            "package_itt": result.package_itt, "focal_effect": result.focal_effect,
+            "package_status": result.package_status, "g_assignment_status": result.g_assignment_status,
+            "package_itt": result.package_itt, "g_assignment_effect": result.g_assignment_effect,
             "first_stage_delta_t_acc": result.first_stage_delta_t_acc,
-            "package_se": result.package_se, "focal_se": result.focal_se,
+            "package_se": result.package_se, "g_assignment_se": result.g_assignment_se,
             "reasons": list(result.abstention_reasons), "input_sha256": result.input_sha256,
         }
         if _hash(payload) != result.output_sha256:
             raise FirewallError("Analyzer output seal invalid")
         package_error = None if result.package_itt is None else abs(result.package_itt - truth.itt_package_truth)
-        # Analyzer's legacy focal_effect is the observed G contrast. It is
+        # Analyzer's legacy g_assignment_effect is the observed G contrast. It is
         # adjudicated against the G-assignment truth, never against theta_A.
         g_assignment_error = (
-            None if result.focal_effect is None
-            else abs(result.focal_effect - truth.itt_g_z0_truth)
+            None if result.g_assignment_effect is None
+            else abs(result.g_assignment_effect - truth.itt_g_z0_truth)
         )
         package_ok = None if package_error is None else package_error <= tolerance
         g_assignment_ok = (
@@ -543,12 +543,12 @@ class Evaluator:
         ) or (
             (not contract.positivity or not contract.randomized_g or
              not contract.focal_direct_path_absent or not contract.common_nonfocal_regime)
-            and result.focal_status in ("NOT_IDENTIFIED", "INDETERMINATE")
+            and result.g_assignment_status in ("NOT_IDENTIFIED", "INDETERMINATE")
         )
         notes = []
         if result.package_status == "IDENTIFIED" and package_ok is False:
             notes.append("PACKAGE_ESTIMATE_OUTSIDE_TOLERANCE")
-        if result.focal_status == "IDENTIFIED" and g_assignment_ok is False:
+        if result.g_assignment_status == "IDENTIFIED" and g_assignment_ok is False:
             notes.append("G_ASSIGNMENT_ESTIMATE_OUTSIDE_TOLERANCE")
         return EvaluationReport(truth.run_id, package_error, g_assignment_error,
                                 package_ok, g_assignment_ok, expected_abstention, tuple(notes))
