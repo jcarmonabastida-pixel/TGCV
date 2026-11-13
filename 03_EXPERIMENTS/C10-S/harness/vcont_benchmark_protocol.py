@@ -249,3 +249,21 @@ def select_minimum_n(mcse_by_n: dict[int, dict[str, float]],
                for s in target_mcse_by_scenario):
             return n
     raise ProtocolError("NO_CANDIDATE_N_MEETS_ALL_PREDECLARED_MCSE_TARGETS")
+
+
+def seed_bank_fingerprint(assignments: Iterable[SeedAssignment]) -> str:
+    """Stable SHA-256 fingerprint for a fully materialized seed-bank manifest."""
+    rows = tuple(assignments)
+    if not rows:
+        raise ProtocolError("cannot fingerprint an empty seed bank")
+    banks = {row.bank for row in rows}
+    if len(banks) != 1:
+        raise ProtocolError("a seed-bank fingerprint must contain exactly one bank")
+    payload = [
+        {"bank": row.bank, "scenario_id": row.scenario_id, "n_units": row.n_units,
+         "replicate": row.replicate, "world_seed": row.world_seed,
+         "z_assignment_seed": row.z_assignment_seed,
+         "g_assignment_seed": row.g_assignment_seed}
+        for row in rows
+    ]
+    return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
