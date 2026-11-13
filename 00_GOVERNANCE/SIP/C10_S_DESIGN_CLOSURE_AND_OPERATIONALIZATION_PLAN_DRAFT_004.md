@@ -6878,3 +6878,79 @@ La dependencia q_X*/history-level ledger queda BLOCKED_ON_ROSTER_APPROVAL_AND_BA
 ### 16.233.5. Siguiente gate independiente
 
 **Gate 81 — auditoría de correspondencia entre las clases/mecanismos R0–R3 y los potenciales del harness integrado.** Sin depender del roster B1 ni de q_X*, determinar qué roles científicos de las celdas obligatorias C1/C3 están realmente representados por las funciones y parámetros ya implementados, cuáles son solo etiquetas/perillas disponibles y cuáles no pueden producirse o distinguirse con el DGP actual. Revisar en particular el contraste G frente a la intervención focal g_A, los potenciales por (Z,G), las vías directas/colaterales, signos, nulos, heterogeneidad, interferencia y abstención. No crear escenarios, no fijar valores de parámetros, no cambiar código ni ejecutar. El resultado debe ser una matriz de cobertura implementada/parametrizable/ausente y los bloqueos exactos, no otra propuesta de roster.
+
+
+---
+
+## 16.234. Gate 81 — correspondencia entre clases R0–R3, potenciales y cobertura científica del harness (2026-11-13)
+
+**Precedencia:** §§16.223, 16.226, 16.231–16.233; harness 03_EXPERIMENTS/C10-S/harness/vcont_integrated_harness.py, blob auditado 2dafb9cdc4a6e0b5b6d686acc74bdecc71dbead4. Auditoría estática del contrato y del código existente. No se ejecuta el harness, no se modifican funciones ni parámetros y no se crean escenarios.
+
+### 16.234.1. Contrato efectivo del Generator
+
+El Generator materializa potenciales V_i(z,g) indexados por unidad y por los cuatro regímenes (Z,G). Reutiliza las mismas exógenas de unidad entre regímenes, incluidas u_access, u_relation, u_context, u_mapping, u_provision, u_alt, u_trajectory y las secuencias temporales. G=0 produce el vector focal nulo; G=1 intenta habilitar conjuntamente las cuatro coordenadas, condicionado por provisión y por umbrales exógenos. El predicado focal es conjuntivo (all(delta_vector)), y Reach admite además la vía alternativa.
+
+El resultado B1/V_cont se genera como conjunción temporal de ENABLED y PROFILE. La asignación Z modifica el resultado mediante mecanismos que ya existen en el código: package_direct_effect, reducción de provisión en R3 y modificación de la probabilidad de alternativa en R2; collateral_effect añade una vía Z × alternative. G puede afectar el resultado por el mecanismo focal de accesibilidad y, separadamente, por focal_direct_effect.
+
+El Generator sí calcula los cuatro potenciales bajo (Z,G), pero el diseño de G no es una parametrización general de cualquier par de políticas conjuntas g_A0/g_A1: actualmente es una única regla binaria concreta, con vector cero para G=0 y una regla estocástica compartida de provisión/umbrales para G=1. No se declara soporte general para otras distribuciones vectoriales.
+
+### 16.234.2. Hallazgo crítico: la verdad focal está definida como efecto de G, no separada de G
+
+El código define:
+
+- itt_package_truth como el promedio unitario de la diferencia Z=1 frente a Z=0, promediando los dos valores de G;
+- theta_access_truth como el promedio de V_i(0,1) − V_i(0,0).
+
+El segundo objeto es, por construcción, el efecto total de la asignación G bajo Z=0. Sin embargo, el mecanismo de resultado incluye focal_direct_effect × G. Cuando ese parámetro es distinto de cero, theta_access_truth incorpora una vía G→Outcome que no está mediada por ΔT_acc*. El contrato del Analyzer detecta la violación y se abstiene, pero el Evaluator sigue comparando cualquier resultado focal con una verdad que contiene esa vía directa.
+
+Por ello, el actual theta_access_truth no es una verdad independiente del estimando focal causal θ_A. El problema no se resuelve renombrando la variable ni excluyendo del Analyzer las configuraciones directas: el Generator/Evaluator deben poder distinguir siempre el contraste de asignación G de la intervención causal sobre el vector ΔT_acc*.
+
+La reparación conceptual requerida, sin decidir todavía su implementación, es conservar por separado:
+1. theta_G_truth: contraste total de la asignación G bajo Z=0, incluidas sus vías directas;
+2. theta_A_truth: contraste de las políticas conjuntas declaradas sobre el vector ΔT_acc*, con las vías directas de G excluidas del estimando y con las condiciones no focales fijadas según el contrato;
+3. itt_package_truth: efecto total de Z bajo la política/distribución de G que defina el estimando ITT.
+
+theta_A_truth debe derivarse mediante una intervención estructural sobre ΔT_acc* completo, no mediante la etiqueta G ni por el mero hecho de que G sea aleatorio. El par de políticas y su soporte siguen sujetos al contrato general de §§16.226 y 16.232; este gate no declara que el actual mecanismo G satisfaga por sí solo todas sus condiciones.
+
+### 16.234.3. Matriz de cobertura de las celdas C1/C3
+
+Estados: **I** = implementado como mecanismo/contraste; **P** = parametrizable en Generator, pero no cubierto/acreditado como celda del benchmark o del Analyzer; **A** = ausente como capacidad analítica o de verdad independiente.
+
+| Rol obligatorio | Evidencia en código | Estado y límite |
+|---|---|---|
+| C1 ITT positivo | package_direct_effect; R2/R3 también pueden alterar Z→Outcome por vías alternativas/provisión | **I/P**: el mecanismo existe y el benchmark incluye R0_DIRECT_Z; falta una batería explícita que acredite la celda ITT positiva como verdad y recuperación |
+| C1 ITT nulo propio | Configuración sin efecto Z; el benchmark contiene mundos sin efecto de paquete | **P**: el cero puede resultar por configuración o cancelación; no hay celda propia de nulo ITT identificada y protegida frente a cancelaciones accidentales |
+| C1 ITT negativo | Efecto Z negativo parametrizable; R3 reduce provisión y R2 puede reducir alternativa | **P**: no hay una celda negativa explícita en benchmark_scenarios ni acreditación de su signo |
+| C1 desacoplamiento ITT/focal | Efectos Z y G separados; R0 focal sin efecto Z y R2/R3 con vías Z diferenciadas | **I/P**: la estructura permite desacoplar; no está acreditado un par de contrastes de signos/valores preespecificados y recuperados |
+| C1 heterogeneidad con signos opuestos | heterogeneity × (baseline_x−0.5) × trajectory | **P/A**: un coeficiente suficientemente grande puede generar signos condicionales opuestos, pero el benchmark actual (0.20 con efecto focal 0.20) no los genera; TruthBundle no publica el truth por estrato y Analyzer solo estima el efecto agregado |
+| C1 no-identificación/abstención | Controles de interferencia, medición, versiones y asignación | **I/P**: hay abstención por condiciones declaradas; la cobertura depende de flags del contrato y no de diagnóstico completo de los datos |
+| C3 focal positivo | focal_access_effect positivo y política G sobre las cuatro coordenadas | **I/P**: mecanismo presente; la verdad focal actual es el contraste G y no está separada de θ_A |
+| C3 nulo propio | focal_access_effect=0 o vía alternativa que hace redundante la ruta focal (R1) | **P**: generable, pero no se distingue aún un nulo causal propio de un nulo por saturación/alternativa sin una descomposición de verdad |
+| C3 negativo | focal_access_effect negativo | **I/P**: parámetro y candidato R0_FOCAL_ADVERSE presentes; recuperación frente a θ_A independiente no acreditada |
+| C3 vía directa/colateral impeditiva | focal_direct_effect, package_direct_effect, collateral_effect, perfiles R1/R2/R3 | **I**: mecanismos presentes; el rechazo focal por vía directa G está codificado, pero la verdad del Evaluator queda contaminada como se documenta en §16.234.2 |
+| C3 heterogeneidad focal con signos opuestos | Modificador por baseline_x en la ecuación de PROFILE | **P/A**: generable solo con valores adecuados; no hay truth ni estimación focal estratificados ni evaluación de recuperación por estrato |
+| C3 no-identificación/abstención | Positividad, aleatorización G, exclusión focal, régimen común, medición e interferencia | **I/P**: abstención puntual implementada; no existen bounds ni identificación parcial |
+
+### 16.234.4. Límites del Analyzer y del Evaluator
+
+- El Analyzer estima ITT mediante diferencias de V_cont observado por Z y estima el contraste G mediante diferencias de V_cont entre G=1 y G=0 restringidas a Z=0. No estima una intervención general sobre ΔT_acc* ni una función de respuesta por vector.
+- Las cuatro coordenadas delta_t_acc_observed se publican sin error ni missingness en el registro, aunque S3 sí puede tener error/missingness. El Analyzer usa esas coordenadas para un first stage descriptivo, pero no las usa para reconstruir o estimar θ_A. Por tanto, el first stage no convierte el contraste G en efecto causal del vector.
+- contract_for deriva focal_direct_path_absent de que focal_direct_effect == 0, pero fija common_nonfocal_regime=True de forma constante. La condición común no se audita a partir de un registro explícito de políticas, versiones y vías mantenidas fijas.
+- La positividad y otras condiciones llegan al Analyzer como declaraciones del contrato. El Analyzer no reconstruye por sí mismo el soporte conjunto de los vectores ni valida la verdad de las declaraciones contra el Generator.
+- Para falta de medición, interferencia o problemas de identificación, el Analyzer se abstiene; no calcula bounds, conjuntos identificados, sensibilidad ni efectos parciales.
+- La interferencia está incorporada como exposición de los otros miembros del clúster condicionada a sus asignaciones Z realizadas. El Analyzer rechaza la estimación individual bajo no_interference=False, pero no estima un contraste de exposición por clúster.
+- La verdad ITT se calcula con ponderación 50/50 de G; la estimación observada compara los brazos Z con la mezcla G realizada. Con asignaciones marginalmente balanceadas pero sin balance factorial exacto garantizado, el estimador no es algebraicamente el mismo contraste estandarizado en cada muestra; su interpretación requiere el diseño aleatorio y la incertidumbre correspondientes.
+
+### 16.234.5. Dictamen
+
+**Gate 81 cerrado como auditoría estática de cobertura, no como validación de recuperación.**
+
+Queda acreditado que el harness existente contiene potenciales (Z,G), cuatro coordenadas de ΔT_acc*, mecanismos focales, directos, alternativos, de provisión e interferencia, y un firewall Generator/Analyzer/Evaluator. También queda acreditado que varios roles son parametrizables. No queda acreditado que las doce celdas C1/C3 estén configuradas y recuperadas por el Analyzer.
+
+Bloqueo principal: theta_access_truth representa actualmente el efecto total de G bajo Z=0, no una verdad causal θ_A separada de las vías directas de G. Bloqueos adicionales: ausencia de estimación/evaluación por estratos para heterogeneidad de signos opuestos; ausencia de bounds/identificación parcial; soporte conjunto y régimen común no validados desde registros de política; y cobertura de celdas positivas/nulas/negativas ITT no materializada como batería confirmatoria.
+
+**Dictamen:** GATE_81_STATIC_HARNESS_COVERAGE_AUDIT_CLOSED / ZG_POTENTIALS_IMPLEMENTED / FOUR_COORDINATE_DELTA_TACC_IMPLEMENTED / DIRECT_ALTERNATIVE_PROVISION_INTERFERENCE_MECHANISMS_PRESENT / THETA_G_AND_THETA_A_TRUTH_CONFLATED / ITT_AND_FOCAL_ROLE_COVERAGE_PARTIAL / SIGN_OPPOSED_HETEROGENEITY_NOT_ANALYZED / PARTIAL_IDENTIFICATION_BOUNDS_ABSENT / NO_CODE_CHANGE / NO_EXECUTION / NOT_DESIGN_FROZEN.
+
+### 16.234.6. Siguiente gate
+
+**Gate 82 — contrato de verdad causal independiente del Generator/Evaluator.** Resolver, reutilizando los potenciales existentes y sin modificar todavía código, las definiciones operativas separadas de ITT_D2, theta_G y theta_A; especificar la intervención conjunta sobre ΔT_acc* completo, la exclusión de vías directas de G, las condiciones no focales mantenidas, la relación entre el par g_A0/g_A1 y el mecanismo actual G, y qué debe comparar exactamente el Evaluator en mundos limpios, directos, colaterales y no identificados. El gate debe terminar con ecuaciones de verdad y criterios de adjudicación que puedan traducirse después al harness sin cambiar el estimando por conveniencia. No volver a diseñar Value/V_cont, no crear mundos ni parámetros, no implementar ni ejecutar.
