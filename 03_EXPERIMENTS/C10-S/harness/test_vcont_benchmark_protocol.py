@@ -4,7 +4,9 @@ import unittest
 from vcont_benchmark_protocol import (
     ProtocolError, build_seed_bank, required_replicates, select_minimum_n,
     summarize_binary, summarize_continuous, summarize_scenario,
-    seed_bank_fingerprint, validate_seed_banks,
+    seed_bank_fingerprint, validate_seed_banks, build_scenario_estimand_matrix,
+    select_minimum_n_by_estimand, required_replicates_by_estimand,
+    validate_evaluation_observation, ProtocolError,
 )
 
 
@@ -100,6 +102,48 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
         ev = build_seed_bank("evaluation", ["R0"], [100], 2, "protocol-v1")
         self.assertEqual(seed_bank_fingerprint(cal), seed_bank_fingerprint(tuple(cal)))
         self.assertNotEqual(seed_bank_fingerprint(cal), seed_bank_fingerprint(ev))
+
+    def test_scenario_estimand_matrix_has_52_versioned_records(self):
+        matrix = build_scenario_estimand_matrix()
+        self.assertEqual(len(matrix), 52)
+        self.assertEqual(len({row.key for row in matrix}), 52)
+        self.assertEqual({row.key.scenario_version for row in matrix}, {"VCONT-SYNTH-001"})
+
+    def test_pairwise_n_selection_requires_complete_coverage_and_mcse(self):
+        matrix = build_scenario_estimand_matrix()
+        required = [row.key for row in matrix]
+        numeric = [row.key for row in matrix if row.evaluation_class == "EVALUABLE"]
+        targets, observed = {key: 0.1 for key in numeric}, {key: 0.05 for key in numeric}
+        self.assertEqual(select_minimum_n_by_estimand({100: observed}, targets, required, numeric, {100: required}), 100)
+        with self.assertRaises(ProtocolError):
+            select_minimum_n_by_estimand({100: observed}, targets, required, numeric, {100: required[:-1]})
+
+    def test_pairwise_selection_rejects_missing_numeric_pair(self):
+        matrix = build_scenario_estimand_matrix()
+        required = [row.key for row in matrix]
+        numeric = [row.key for row in matrix if row.evaluation_class == "EVALUABLE"]
+        with self.assertRaises(ProtocolError):
+            select_minimum_n_by_estimand({100: {key: 0.05 for key in numeric[:-1]}},
+                {key: 0.1 for key in numeric}, required, numeric, {100: required})
+
+    def test_non_numeric_classes_cannot_receive_numeric_pass(self):
+        matrix = build_scenario_estimand_matrix()
+        for cls in ("STATUS_ONLY", "NOT_IDENTIFIABLE"):
+            spec = next(row for row in matrix if row.evaluation_class == cls)
+            with self.assertRaises(ProtocolError):
+                validate_evaluation_observation(spec, dgp_truth=1.0, analyzer_output=1.0, adjudication="PASS")
+
+    def test_evaluable_pair_rejects_null_truth_and_missing_output(self):
+        spec = next(row for row in build_scenario_estimand_matrix() if row.evaluation_class == "EVALUABLE")
+        with self.assertRaises(ProtocolError):
+            validate_evaluation_observation(spec, dgp_truth=None, analyzer_output=1.0, adjudication="PASS")
+        with self.assertRaises(ProtocolError):
+            validate_evaluation_observation(spec, dgp_truth=1.0, analyzer_output=None, adjudication="PASS")
+
+    def test_r_dimensioning_is_estimand_specific(self):
+        keys = [row.key for row in build_scenario_estimand_matrix() if row.evaluation_class == "EVALUABLE"][:2]
+        result = required_replicates_by_estimand({keys[0]: 2.0, keys[1]: 1.0}, {keys[0]: 0.1, keys[1]: 0.1})
+        self.assertEqual(result, {keys[0]: 400, keys[1]: 100})
 
 if __name__ == "__main__":
     unittest.main()

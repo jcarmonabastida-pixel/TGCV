@@ -579,3 +579,30 @@ The run validates source-level behavior for seed-bank construction/validation, b
 **Transparent correction history:** earlier CI attempts during this integration exposed test import wiring, evaluation-bank self-validation, a test-file newline, and a missing JSON import in fingerprint generation. Each was corrected; the final tested commit above includes the corrections. Failed attempts were not relabeled as PASS.
 
 The calibration/evaluation protocol scaffold is now technically validated. Its scientific numeric parameters remain OPEN as specified in `C10_S_VCONT_CALIBRATION_AND_SEED_BANK_PROTOCOL_DRAFT_001.md`. No calibration, benchmark or scientific execution was run or authorized.
+
+
+## 15. Gate 143–144 integrated scenario–estimand coverage correction
+
+**Status:** source and contract change persisted on research branch; static review pending; test execution not performed.
+
+### 15.1 Versioned pair identity and coverage
+
+The benchmark coverage unit is the immutable tuple (scenario_id, scenario_version, estimand_id, estimand_version). The protocol module now defines four assignment-estimand IDs and generates the 13 × 4 = 52 coverage records. This is a coverage obligation, not a claim that every pair yields a numeric estimate. theta_A remains outside this V_cont assignment-contrast matrix and unmaterialized.
+
+Each record identifies its DGP truth field, matching Analyzer output field where numeric evaluation is permitted, evaluation class, expected identification state, expected abstention, tolerance reference and reason. Numeric tolerances remain OPEN_UNASSIGNED; no fixture value is promoted to a scientific threshold.
+
+### 15.2 Fail-closed scoring and selection
+
+EVALUABLE pairs require finite DGP truth and corresponding finite Analyzer output. STATUS_ONLY and NOT_IDENTIFIABLE pairs are adjudicated by identification/abstention state and cannot receive numeric recovery PASS. NOT_EVALUABLE cannot receive PASS. Null is never coerced to zero. DGP truth is sourced from the TruthBundle field named by the matrix; it is not inferred from Analyzer output.
+
+The new pair-keyed selector requires complete predeclared coverage at each candidate N and MCSE values for every numeric pair. It excludes nonnumeric classes from MCSE calculations but does not drop them from coverage. Pair-specific R sizing is available; no N/R grid, MCSE target, recovery tolerance or required scientific subset is frozen by this change. The legacy scenario-only API remains for historical compatibility and must not be used as evidence of pairwise selection.
+
+### 15.3 Reference-regime repeated-assignment evaluation
+
+The Analyzer now seals an explicit reference_regime_itt output when the reference target is identified and package evidence is identified. The Evaluator verifies its presence against reference identification status. evaluate_repeated_assignment separately reports the mean run-conditional estimate against mechanism-marginal truth and the mean reference-regime estimator against reference truth. If the reference target is not identified, its numeric aggregate/error/recovery fields remain null while identification status is retained.
+
+This repeated-assignment mean evaluates the marginal reference target; no single run is labelled as having recovered the marginal target. Existing run-conditional and mechanism-marginal results remain intact. ITT-G remains distinct from theta_A.
+
+### 15.4 Execution and governance boundary
+
+This change persists source, tests and documentary alignment only. It does not execute tests or GitHub Actions, generate seed banks, run calibration, run Monte Carlo, or authorize scientific execution. scientific_execution=false; execution_authorized=false. main is unchanged and PR #116 remains Draft.

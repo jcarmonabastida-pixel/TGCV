@@ -455,5 +455,40 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         with self.assertRaises(ContractError):
             self.evaluator.evaluate_repeated_assignment(bad_runs, tolerance=0.10)
 
+    def test_repeated_assignment_reports_reference_and_mechanism_marginals_separately(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        runs = []
+        for replicate in range(12):
+            rep_cfg = replace(cfg, world_seed=1818, z_assignment_seed=500+replicate,
+                              g_assignment_seed=1500+replicate, replicate_id=f"ref-{replicate}")
+            manifest, truth, candidate = self.generator.generate(rep_cfg)
+            sealed = self.sealer.seal(candidate)
+            contract = contract_for(rep_cfg)
+            result = self.analyzer.analyze(sealed, contract)
+            runs.append((truth, result, contract, manifest))
+        aggregate = self.evaluator.evaluate_repeated_assignment(runs, tolerance=0.12)
+        self.assertIsNotNone(aggregate.mechanism_truth)
+        self.assertIsNotNone(aggregate.reference_truth)
+        self.assertEqual(aggregate.reference_identification_status, "IDENTIFIED")
+        self.assertIsNotNone(aggregate.reference_estimate_mean)
+        self.assertIsNotNone(aggregate.reference_abs_error)
+
+    def test_repeated_assignment_does_not_score_unidentified_reference_target(self):
+        cfg = self.worlds()["R2_SUPPORT_FAILURE_ZG_INTERACTION"]
+        runs = []
+        for replicate in range(3):
+            rep_cfg = replace(cfg, world_seed=2828, z_assignment_seed=700+replicate,
+                              g_assignment_seed=1700+replicate, replicate_id=f"ni-{replicate}")
+            manifest, truth, candidate = self.generator.generate(rep_cfg)
+            sealed = self.sealer.seal(candidate)
+            contract = contract_for(rep_cfg)
+            result = self.analyzer.analyze(sealed, contract)
+            runs.append((truth, result, contract, manifest))
+        aggregate = self.evaluator.evaluate_repeated_assignment(runs, tolerance=0.12)
+        self.assertEqual(aggregate.reference_identification_status, "NOT_IDENTIFIED")
+        self.assertIsNone(aggregate.reference_estimate_mean)
+        self.assertIsNone(aggregate.reference_abs_error)
+        self.assertIsNone(aggregate.reference_recovered)
+
 if __name__ == "__main__":
     unittest.main()

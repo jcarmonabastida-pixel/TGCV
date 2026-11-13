@@ -268,3 +268,185 @@ def seed_bank_fingerprint(assignments: Iterable[SeedAssignment]) -> str:
         for row in rows
     ]
     return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+
+
+from enum import Enum
+
+
+class EvaluationClass(str, Enum):
+    EVALUABLE = "EVALUABLE"
+    STATUS_ONLY = "STATUS_ONLY"
+    NOT_IDENTIFIABLE = "NOT_IDENTIFIABLE"
+    NOT_EVALUABLE = "NOT_EVALUABLE"
+
+
+class TruthStatus(str, Enum):
+    DEFINED = "DEFINED"
+    UNDEFINED = "UNDEFINED"
+    NOT_MATERIALIZED = "NOT_MATERIALIZED"
+
+
+@dataclass(frozen=True, order=True)
+class EvaluationKey:
+    scenario_id: str
+    scenario_version: str
+    estimand_id: str
+    estimand_version: str
+
+    def validate(self) -> None:
+        if not all((self.scenario_id, self.scenario_version, self.estimand_id, self.estimand_version)):
+            raise ProtocolError("scenario and estimand IDs/versions are required")
+
+
+@dataclass(frozen=True)
+class ScenarioEstimandSpec:
+    key: EvaluationKey
+    evaluation_class: str
+    truth_status: str
+    dgp_truth_field: str
+    analyzer_output_field: str | None
+    identification_expectation: str
+    abstention_expectation: bool
+    tolerance_id: str | None
+    reason: str
+
+
+@dataclass(frozen=True)
+class EstimandSummary:
+    key: EvaluationKey
+    evaluation_class: str
+    truth_status: str
+    estimate: ContinuousSummary | None
+    identification_rate: BinaryRateSummary | None
+    not_identified_rate: BinaryRateSummary | None
+    indeterminate_rate: BinaryRateSummary | None
+    abstention_rate: BinaryRateSummary | None
+    precision_status: str
+    recovery_status: str
+
+
+ESTIMAND_SPECS = (
+    ("ITT_Z_RUN_CONDITIONAL_VCONT", "itt_z_run_truth", "package_itt"),
+    ("ITT_Z_MECHANISM_MARGINAL_VCONT", "itt_z_mechanism_truth", "mean_package_itt"),
+    ("ITT_Z_REFERENCE_REGIME_VCONT", "itt_z_reference_truth", "reference_regime_itt"),
+    ("ITT_G_Z0_VCONT", "itt_g_z0_truth", "g_assignment_effect"),
+)
+SCENARIO_IDS = (
+    "R0_FOCAL_POSITIVE", "R0_FOCAL_NULL", "R0_FOCAL_ADVERSE",
+    "R0_DIRECT_G", "R0_DIRECT_Z", "R1_ALTERNATIVE_BASELINE",
+    "R2_ALTERNATIVE_AFFECTED", "R3_PROVISION_FAILURE",
+    "R0_MEASUREMENT_ADVERSE", "R0_INTERFERENCE", "R0_SUPPORT_FAILURE",
+    "R0_HETEROGENEITY", "R2_SUPPORT_FAILURE_ZG_INTERACTION",
+)
+
+
+def build_scenario_estimand_matrix(scenario_versions: dict[str, str] | None = None) -> tuple[ScenarioEstimandSpec, ...]:
+    """Build all 52 coverage records; DGP truth is never inferred from Analyzer output."""
+    versions = scenario_versions or {sid: "VCONT-SYNTH-001" for sid in SCENARIO_IDS}
+    if set(versions) != set(SCENARIO_IDS) or any(not str(v).strip() for v in versions.values()):
+        raise ProtocolError("scenario_versions must provide one nonempty version for every benchmark scenario")
+    result = []
+    for sid in SCENARIO_IDS:
+        for estimand_id, truth_field, output_field in ESTIMAND_SPECS:
+            status_only = sid in ("R0_MEASUREMENT_ADVERSE", "R0_INTERFERENCE")
+            not_identifiable = (
+                (sid == "R2_SUPPORT_FAILURE_ZG_INTERACTION" and estimand_id in ("ITT_Z_REFERENCE_REGIME_VCONT", "ITT_G_Z0_VCONT"))
+                or (sid == "R0_SUPPORT_FAILURE" and estimand_id == "ITT_G_Z0_VCONT")
+            )
+            if not_identifiable:
+                cls, identification, abstain = "NOT_IDENTIFIABLE", "NOT_IDENTIFIED", True
+                reason = "REFERENCE_NO_TRANSPORTABILITY" if estimand_id == "ITT_Z_REFERENCE_REGIME_VCONT" else "G_NO_COMMON_SUPPORT"
+            elif status_only:
+                cls, identification, abstain = "STATUS_ONLY", "INDETERMINATE", True
+                reason = "MEASUREMENT_NOT_IDENTIFIED" if sid == "R0_MEASUREMENT_ADVERSE" else "UNIT_INTERFERENCE"
+            else:
+                cls, identification, abstain = "EVALUABLE", "IDENTIFIED", False
+                if sid == "R0_SUPPORT_FAILURE" and estimand_id == "ITT_Z_REFERENCE_REGIME_VCONT":
+                    reason = "REFERENCE_TRANSPORTABILITY_R0"
+                elif estimand_id == "ITT_Z_REFERENCE_REGIME_VCONT":
+                    reason = "REFERENCE_COMMON_SUPPORT"
+                elif estimand_id == "ITT_G_Z0_VCONT":
+                    reason = "G_COMMON_SUPPORT"
+                elif estimand_id == "ITT_Z_RUN_CONDITIONAL_VCONT":
+                    reason = "Z_RANDOMIZED_G_REALIZED"
+                else:
+                    reason = "Z_RANDOMIZED_G_MECHANISM"
+            key = EvaluationKey(sid, versions[sid], estimand_id, "001")
+            result.append(ScenarioEstimandSpec(key, cls, "DEFINED", truth_field,
+                output_field if cls == "EVALUABLE" else None, identification, abstain,
+                "OPEN_UNASSIGNED" if cls == "EVALUABLE" else None, reason))
+    return tuple(result)
+
+
+def validate_evaluation_observation(spec: ScenarioEstimandSpec, *, dgp_truth: float | None,
+                                    analyzer_output: float | None, adjudication: str) -> None:
+    spec.key.validate()
+    if spec.evaluation_class == "EVALUABLE":
+        if dgp_truth is None or not isfinite(float(dgp_truth)):
+            raise ProtocolError("EVALUABLE pair requires finite numeric DGP truth")
+        if not spec.analyzer_output_field or analyzer_output is None or not isfinite(float(analyzer_output)):
+            raise ProtocolError("EVALUABLE pair requires matching finite Analyzer output")
+        if adjudication not in ("PASS", "FAIL"):
+            raise ProtocolError("EVALUABLE pair requires numeric recovery adjudication")
+    elif spec.evaluation_class in ("STATUS_ONLY", "NOT_IDENTIFIABLE"):
+        if adjudication == "PASS" or analyzer_output is not None:
+            raise ProtocolError("non-numeric pair cannot receive numeric recovery PASS or numeric scoring")
+    elif spec.evaluation_class == "NOT_EVALUABLE":
+        if adjudication == "PASS":
+            raise ProtocolError("NOT_EVALUABLE cannot be presented as PASS")
+    else:
+        raise ProtocolError("unsupported evaluation class")
+
+
+def summarize_estimand(spec: ScenarioEstimandSpec, *, estimates: Iterable[float] | None = None,
+                       truth: float | None = None, tolerance: float | None = None,
+                       identified: Iterable[bool] | None = None,
+                       not_identified: Iterable[bool] | None = None,
+                       indeterminate: Iterable[bool] | None = None,
+                       abstained: Iterable[bool] | None = None,
+                       mcse_target: float | None = None) -> EstimandSummary:
+    if spec.evaluation_class == "EVALUABLE":
+        if estimates is None or truth is None:
+            raise ProtocolError("EVALUABLE pair requires estimates and DGP truth")
+        estimate = summarize_continuous(estimates, truth, tolerance)
+        precision = ("PASS" if estimate.mcse_mean is not None and mcse_target is not None and estimate.mcse_mean <= mcse_target else "NOT_EVALUABLE")
+        recovery = "PASS" if estimate.recovered_within_tolerance is True else "FAIL" if estimate.recovered_within_tolerance is False else "NOT_EVALUABLE"
+    else:
+        if estimates is not None or truth is not None:
+            raise ProtocolError("non-numeric evaluation classes cannot receive numeric scoring")
+        estimate, precision, recovery = None, "NOT_APPLICABLE", "NOT_APPLICABLE"
+    rate = lambda values, name: None if values is None else summarize_binary(values, name)
+    return EstimandSummary(spec.key, spec.evaluation_class, spec.truth_status, estimate,
+        rate(identified, "identified"), rate(not_identified, "not identified"),
+        rate(indeterminate, "indeterminate"), rate(abstained, "abstained"), precision, recovery)
+
+
+def select_minimum_n_by_estimand(mcse_by_n: dict[int, dict[EvaluationKey, float]],
+                                 target_mcse_by_estimand: dict[EvaluationKey, float],
+                                 required_keys: Iterable[EvaluationKey], numeric_keys: Iterable[EvaluationKey],
+                                 coverage_by_n: dict[int, Iterable[EvaluationKey]]) -> int:
+    """Select smallest N with complete coverage and all numeric MCSE targets met."""
+    required, numeric = set(required_keys), set(numeric_keys)
+    if not required or not numeric or not numeric.issubset(required):
+        raise ProtocolError("required coverage and numeric estimand key sets are invalid")
+    if set(target_mcse_by_estimand) != numeric or set(mcse_by_n) != set(coverage_by_n):
+        raise ProtocolError("MCSE targets/candidate coverage do not match the declared key sets")
+    for key, target in target_mcse_by_estimand.items():
+        key.validate()
+        if not isfinite(float(target)) or target <= 0:
+            raise ProtocolError("MCSE targets must be finite and >0")
+    for n in sorted(mcse_by_n):
+        observed, covered = mcse_by_n[n], set(coverage_by_n[n])
+        if not required.issubset(covered) or not numeric.issubset(observed):
+            continue
+        if all(isfinite(float(observed[k])) and observed[k] >= 0 and observed[k] <= target_mcse_by_estimand[k] for k in numeric):
+            return n
+    raise ProtocolError("NO_CANDIDATE_N_MEETS_ALL_PREDECLARED_ESTIMAND_MCSE_TARGETS_AND_COVERAGE")
+
+
+def required_replicates_by_estimand(calibration_sd_by_estimand: dict[EvaluationKey, float],
+                                    target_mcse_by_estimand: dict[EvaluationKey, float]) -> dict[EvaluationKey, int]:
+    if not calibration_sd_by_estimand or set(calibration_sd_by_estimand) != set(target_mcse_by_estimand):
+        raise ProtocolError("calibration SDs and MCSE targets need identical nonempty keys")
+    return {key: required_replicates(float(calibration_sd_by_estimand[key]), float(target_mcse_by_estimand[key]))
+            for key in calibration_sd_by_estimand}

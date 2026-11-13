@@ -263,6 +263,7 @@ class AnalyzerResult:
     provenance_sha256: str = ""
     transportability_outcome_id: str | None = None
     transportability_basis: str | None = None
+    reference_regime_itt: float | None = None
 
 
 @dataclass(frozen=True)
@@ -275,6 +276,7 @@ class EvaluationReport:
     expected_abstention_respected: bool
     notes: tuple[str, ...]
     reference_regime_status_correct: bool = False
+    reference_regime_estimate_present: bool = False
 
 
 @dataclass(frozen=True)
@@ -286,6 +288,11 @@ class RepeatedAssignmentReport:
     marginal_abs_error: float | None
     marginal_recovered: bool | None
     per_run_reports: tuple[EvaluationReport, ...]
+    reference_truth: float | None = None
+    reference_estimate_mean: float | None = None
+    reference_abs_error: float | None = None
+    reference_recovered: bool | None = None
+    reference_identification_status: Identification = "INDETERMINATE"
 
 
 def _hash(obj: Any) -> str:
@@ -681,7 +688,9 @@ class Analyzer:
                    "reference_regime_version": contract.reference_regime_version,
                    "provenance_sha256": evidence.manifest["provenance_sha256"],
                    "transportability_outcome_id": contract.transportability_outcome_id,
-                   "transportability_basis": contract.transportability_basis}
+                   "transportability_basis": contract.transportability_basis,
+                   "reference_regime_itt": (package if reference_regime_status == "IDENTIFIED" and package_status == "IDENTIFIED" else None)}
+        reference_regime_itt = package if reference_regime_status == "IDENTIFIED" and package_status == "IDENTIFIED" else None
         return AnalyzerResult(evidence.run_id, contract.estimand_id, package_status, g_assignment_status,
             package, g_assignment_estimate, first_stage, package_se, g_assignment_se, reasons, evidence.sha256,
             _hash(payload), contract.target_regime_id, contract.target_regime_version, contract.outcome_id, contract.outcome_version,
@@ -692,7 +701,7 @@ class Analyzer:
             contract.estimand_version, contract.g_assignment_mechanism_id, contract.g_assignment_mechanism_version,
             contract.z_assignment_mechanism_id, contract.z_assignment_mechanism_version,
             evidence.manifest["provenance_sha256"], contract.transportability_outcome_id,
-            contract.transportability_basis)
+            contract.transportability_basis, reference_regime_itt)
 
 
 class Evaluator:
@@ -729,6 +738,7 @@ class Evaluator:
             "provenance_sha256": result.provenance_sha256,
             "transportability_outcome_id": result.transportability_outcome_id,
             "transportability_basis": result.transportability_basis,
+            "reference_regime_itt": result.reference_regime_itt,
         }
         if _hash(payload) != result.output_sha256:
             raise FirewallError("Analyzer output seal invalid")
@@ -793,6 +803,11 @@ class Evaluator:
         else:
             expected_reference_status = "IDENTIFIED"
         reference_status_correct = result.reference_regime_status == expected_reference_status
+        reference_estimate_present = result.reference_regime_itt is not None
+        if expected_reference_status == "IDENTIFIED" and reference_estimate_present != (result.package_status == "IDENTIFIED"):
+            raise ContractError("reference-regime estimator presence must match identified package evidence")
+        if expected_reference_status != "IDENTIFIED" and reference_estimate_present:
+            raise ContractError("reference-regime estimator must be absent when reference target is not identified")
         expected_abstention = (
             ((not contract.randomized_z or not contract.no_interference or not contract.measurement_identified or not contract.version_consistency) and result.package_status in ("NOT_IDENTIFIED", "INDETERMINATE"))
             or ((not contract.positivity or not contract.randomized_g) and result.g_assignment_status in ("NOT_IDENTIFIED", "INDETERMINATE"))
@@ -808,13 +823,16 @@ class Evaluator:
         if not reference_status_correct:
             notes.append("REFERENCE_REGIME_IDENTIFICATION_STATUS_MISMATCH")
         return EvaluationReport(truth.run_id, package_error, g_assignment_error,
-                                package_ok, g_assignment_ok, expected_abstention, tuple(notes), reference_status_correct)
+                                package_ok, g_assignment_ok, expected_abstention, tuple(notes),
+                                reference_status_correct, reference_estimate_present)
 
     def evaluate_repeated_assignment(self, runs: list[tuple[TruthBundle, AnalyzerResult, AnalysisContract, RunManifest]], tolerance: float) -> RepeatedAssignmentReport:
         if not runs or tolerance < 0:
             raise ContractError("nonempty repeated-assignment runs and nonnegative tolerance required")
         world_ids = {run[3].world_id for run in runs}
         mechanism_truths = {run[0].itt_z_mechanism_truth for run in runs}
+        reference_truths = {run[0].itt_z_reference_truth for run in runs}
+        reference_statuses = {run[1].reference_regime_status for run in runs}
         g_mechanism_ids = {(run[3].g_assignment_mechanism_id, run[3].g_assignment_mechanism_version,
                             run[3].g_assignment_mechanism_hash, run[3].g_reference_regime_id,
                             run[3].g_reference_regime_version) for run in runs}
@@ -822,8 +840,9 @@ class Evaluator:
                             run[3].z_assignment_mechanism_hash) for run in runs}
         if (len(world_ids) != 1 or len(mechanism_truths) != 1
                 or len(g_mechanism_ids) != 1 or len(z_mechanism_ids) != 1
-                or None in mechanism_truths):
-            raise ContractError("repeated-assignment evaluation requires one fixed world, one G and Z assignment mechanism identity/version/hash, and one defined mechanism truth")
+                or len(reference_truths) != 1 or len(reference_statuses) != 1
+                or None in mechanism_truths or None in reference_truths):
+            raise ContractError("repeated-assignment evaluation requires one fixed world, homogeneous G/Z mechanisms and one defined mechanism/reference truth and identification status")
         reports = tuple(self.evaluate(truth, result, contract, tolerance, manifest)
                         for truth, result, contract, manifest in runs)
         estimates = [result.package_itt for _, result, _, _ in runs]
@@ -837,8 +856,18 @@ class Evaluator:
             target = next(iter(mechanism_truths))
             marginal_error = abs(marginal_estimate - target)
             recovered = marginal_error <= tolerance
+        reference_status = next(iter(reference_statuses))
+        reference_values = [result.reference_regime_itt for _, result, _, _ in runs]
+        if reference_status != "IDENTIFIED" or any(value is None for value in reference_values):
+            reference_mean = reference_error = reference_recovered = None
+        else:
+            reference_mean = mean(reference_values)
+            reference_error = abs(reference_mean - next(iter(reference_truths)))
+            reference_recovered = reference_error <= tolerance
         return RepeatedAssignmentReport(next(iter(world_ids)), len(runs), marginal_estimate,
-            next(iter(mechanism_truths)), marginal_error, recovered, reports)
+            next(iter(mechanism_truths)), marginal_error, recovered, reports,
+            next(iter(reference_truths)), reference_mean, reference_error,
+            reference_recovered, reference_status)
 
 
 def benchmark_scenarios(n_units: int = 400, n_intervals: int = 20,
