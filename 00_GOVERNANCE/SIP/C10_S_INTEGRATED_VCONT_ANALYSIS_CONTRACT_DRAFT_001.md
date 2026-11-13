@@ -544,3 +544,20 @@ The push-triggered GitHub Actions workflow completed successfully after the Gate
 The 65 tests comprise the 39 integrated V_cont harness test definitions, 9 new quantitative protocol tests, and 17 existing focal/P178 tests. The workflow compiled both new protocol files explicitly. The final branch HEAD after this run is `a19ed5769933630e381fcf73f916f9ac6a0363f0`; its only change after the tested commit is this contract document, with no executable, test or workflow source changes.
 
 **Interpretation:** this is technical conformance evidence for the current source/test/workflow changes. It does not establish benchmark recovery, calibration, coverage, type-I error, power, confirmatory validity or scientific identification. No Monte Carlo benchmark or scientific execution was run.
+
+
+### 14.10 Gate 130 — calibration and seed-bank protocol scaffold — 2026-11-13
+
+Added `00_GOVERNANCE/SIP/C10_S_VCONT_CALIBRATION_AND_SEED_BANK_PROTOCOL_DRAFT_001.md` and extended `vcont_benchmark_protocol.py`.
+
+The protocol now defines:
+- Separate deterministic calibration and evaluation seed banks, domain-separated by bank label.
+- A fixed world seed across assignment replicates within each scenario/N, with independently varying Z and G assignment streams.
+- Validation that calibration/evaluation seeds are disjoint and world/Z/G seeds do not collide within a run.
+- A predeclared candidate-N grid and a fail-closed rule selecting the smallest N meeting every scenario/estimand-specific MCSE target.
+- R dimensioning from calibration SD and a predeclared target MCSE.
+- Explicit reporting of identification/abstention denominators and inference metrics as NOT_EVALUATED when no approved inferential procedure supplies them.
+
+**Numeric freeze intentionally remains open:** candidate N grid, target MCSE by primary scenario/estimand, minimum relevant effect or absolute precision scale, calibration stopping rule, required scenario/estimand set, and any scientific recovery tolerance require explicit pre-execution approval. The test fixture values and harness default N=400 are not scientific decisions.
+
+No calibration bank or evaluation bank has been generated. No benchmark or scientific execution is authorized.
