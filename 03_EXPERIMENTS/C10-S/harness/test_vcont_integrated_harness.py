@@ -123,6 +123,111 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         self.assertEqual(status_only["numeric_denominator"], 0)
         self.assertIsNone(status_only["metrics"]["mae"])
 
+    def test_monte_carlo_classifies_truth_missing_and_invalid_output_separately(self):
+        from vcont_integrated_harness import _hash
+
+        scenarios = benchmark_scenarios(n_units=16, n_intervals=20)
+        versions = tuple((cfg.scenario_id, cfg.version) for cfg in scenarios)
+        matrix = build_scenario_estimand_matrix(dict(versions))
+        targets = []
+        for spec in matrix:
+            temporal = (spec.run_evaluation_class
+                        if spec.key.estimand_id in ("ITT_Z_RUN_CONDITIONAL_VCONT", "ITT_G_Z0_VCONT")
+                        else spec.repeated_evaluation_class)
+            if temporal == "EVALUABLE":
+                for metric in ("bias", "mae", "rmse"):
+                    targets.append((spec.key.scenario_id, spec.key.scenario_version,
+                                    spec.key.estimand_id, spec.key.estimand_version, metric, 10.0))
+        design = MonteCarloBenchmarkDesign(
+            scenario_versions=versions, n_units=16, outer_replicates=2,
+            repeated_assignments=2, matrix_fingerprint=scenario_matrix_fingerprint(matrix),
+            metric_targets=tuple(targets), seed_bank_label="DETERMINISTIC_TEST_FIXTURE",
+            seed_bank_fingerprint="a"*64, executable_commit="c"*40,
+            configuration_fingerprint="b"*64)
+
+        scenario_outer_runs = {}
+        target_scenario = "R0_FOCAL_POSITIVE"
+        for cfg in scenarios:
+            scenario_outer_runs[cfg.scenario_id] = {}
+            for m in range(2):
+                outer_id = f"{cfg.scenario_id}-classification-M{m}"
+                rows = []
+                for role, index in (("RUN", -1), ("REPEATED_ASSIGNMENT", 0),
+                                    ("REPEATED_ASSIGNMENT", 1)):
+                    rep_cfg = replace(
+                        cfg, outer_replicate_id=outer_id, assignment_role=role,
+                        assignment_index=index, world_seed=61000 + m,
+                        z_assignment_seed=62000 + m*10 + index + 2,
+                        g_assignment_seed=63000 + m*10 + index + 2,
+                        replicate_id=f"{outer_id}-{role}-{index}")
+                    manifest, truth, candidate = self.generator.generate(rep_cfg)
+                    contract = contract_for(rep_cfg)
+                    result = self.analyzer.analyze(self.sealer.seal(candidate), contract)
+                    if cfg.scenario_id == target_scenario and role == "RUN":
+                        if m == 0:
+                            truth = replace(truth, itt_z_run_truth=None)
+                        else:
+                            result = replace(result, package_itt=float("nan"))
+                            output_payload = {
+                                "run_id": result.run_id, "estimand_id": result.estimand_id,
+                                "package_status": result.package_status,
+                                "g_assignment_status": result.g_assignment_status,
+                                "package_itt": result.package_itt,
+                                "g_assignment_effect": result.g_assignment_effect,
+                                "first_stage_delta_t_acc": result.first_stage_delta_t_acc,
+                                "package_se": result.package_se, "g_assignment_se": result.g_assignment_se,
+                                "reasons": list(result.abstention_reasons),
+                                "input_sha256": result.input_sha256,
+                                "target_regime_id": result.target_regime_id,
+                                "target_regime_version": result.target_regime_version,
+                                "outcome_id": result.outcome_id, "outcome_version": result.outcome_version,
+                                "reference_regime_status": result.reference_regime_status,
+                                "reference_regime_id": result.reference_regime_id,
+                                "reference_regime_version": result.reference_regime_version,
+                                "g_assignment_mechanism_hash": result.g_assignment_mechanism_hash,
+                                "z_assignment_mechanism_hash": result.z_assignment_mechanism_hash,
+                                "transportability_id": result.transportability_id,
+                                "transportability_version": result.transportability_version,
+                                "transportability_scope": result.transportability_scope,
+                                "transportability_evidence_status": result.transportability_evidence_status,
+                                "estimand_version": result.estimand_version,
+                                "g_assignment_mechanism_id": result.g_assignment_mechanism_id,
+                                "g_assignment_mechanism_version": result.g_assignment_mechanism_version,
+                                "z_assignment_mechanism_id": result.z_assignment_mechanism_id,
+                                "z_assignment_mechanism_version": result.z_assignment_mechanism_version,
+                                "provenance_sha256": result.provenance_sha256,
+                                "transportability_outcome_id": result.transportability_outcome_id,
+                                "transportability_basis": result.transportability_basis,
+                                "reference_regime_itt": result.reference_regime_itt,
+                                "run_conditional_estimand_id": result.run_conditional_estimand_id,
+                                "run_conditional_estimand_version": result.run_conditional_estimand_version,
+                                "reference_regime_estimand_id": result.reference_regime_estimand_id,
+                                "reference_regime_estimand_version": result.reference_regime_estimand_version,
+                                "g_assignment_estimand_id": result.g_assignment_estimand_id,
+                                "g_assignment_estimand_version": result.g_assignment_estimand_version,
+                                "outer_replicate_id": result.outer_replicate_id,
+                                "assignment_role": result.assignment_role,
+                                "assignment_index": result.assignment_index,
+                            }
+                            result = replace(result, output_sha256=_hash(output_payload))
+                    rows.append((truth, result, contract, manifest))
+                scenario_outer_runs[cfg.scenario_id][outer_id] = rows
+
+        report = self.evaluator.evaluate_monte_carlo_benchmark(
+            scenario_outer_runs, design, tolerance=0.20, matrix=matrix)
+        pair = next(row for row in report["pair_ledger"]
+                    if row["key"][0] == target_scenario
+                    and row["key"][2] == "ITT_Z_RUN_CONDITIONAL_VCONT")
+        states = {item["contribution_state"] for item in pair["contributions"]}
+        self.assertEqual(states, {"TRUTH_MISSING", "INVALID_OUTPUT"})
+        self.assertEqual(pair["truth_missing_count"], 1)
+        self.assertEqual(pair["invalid_output_count"], 1)
+        self.assertEqual(pair["missing_contribution_count"], 0)
+        self.assertEqual(pair["status_denominator"], 2)
+        self.assertEqual(pair["numeric_denominator"], 0)
+        self.assertEqual(pair["abstention_count"], 0)
+        self.assertEqual(pair["observed_M"], pair["expected_M"])
+
     def test_truth_bundle_separates_g_assignment_from_unmaterialized_theta_a(self):
         worlds = self.worlds()
         _, clean_truth, _ = self.generator.generate(worlds["R0_FOCAL_POSITIVE"])
