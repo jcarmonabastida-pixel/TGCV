@@ -540,9 +540,9 @@ class Evaluator:
             else g_assignment_error <= tolerance
         )
         expected_abstention = (
-            (not contract.no_interference or not contract.measurement_identified or
-             not contract.version_consistency) and
-            result.package_status == "INDETERMINATE"
+            (not contract.randomized_z or not contract.no_interference or
+             not contract.measurement_identified or not contract.version_consistency) and
+            result.package_status in ("NOT_IDENTIFIED", "INDETERMINATE")
         ) or (
             (not contract.positivity or not contract.randomized_g)
             and result.g_assignment_status in ("NOT_IDENTIFIED", "INDETERMINATE")
