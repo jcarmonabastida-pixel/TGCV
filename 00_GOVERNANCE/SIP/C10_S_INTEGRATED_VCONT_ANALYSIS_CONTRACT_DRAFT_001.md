@@ -625,7 +625,7 @@ The workflow was triggered automatically by the research-branch push; it was not
 
 ### 15.5 Gate 148 — matrix-to-Evaluator integration implementation
 
-**Status:** IMPLEMENTED ON RESEARCH BRANCH — technical verification pending.
+**Status:** IMPLEMENTED ON RESEARCH BRANCH — TECHNICAL VERIFICATION PASS (86/86 primary + 86/86 clean replay).
 
 The V_cont benchmark protocol now provides a Pair Evaluation Adapter that resolves the exact scenario/estimand key against the manifest, TruthBundle and Analyzer/repeated-assignment outputs. It rejects scenario-version and estimand-version mismatches. The versioned matrix now declares separate run-level and repeated-assignment evaluation classes; the adapter consumes these declarations rather than independently inferring which temporal level is scoreable. The integrated Evaluator exposes `evaluate_matrix_pairs()`, which consumes the matrix, preserves per-run EvaluationReports, and returns pair-keyed records plus the repeated-assignment report.
 
@@ -642,5 +642,17 @@ Each EVALUABLE pair record also carries its absolute error and tolerance-based r
 The precision verdict now distinguishes a known MCSE above its predeclared target (`FAIL`) from missing MCSE or missing target (`NOT_EVALUABLE`). A passing MCSE remains `PASS`.
 
 Three integrated harness tests cover run/repeated temporal separation, scenario-version mismatch rejection and preservation of non-identified reference-regime status. Protocol tests cover the matrix-declared temporal classes and PASS / FAIL / NOT_EVALUABLE precision states.
+
+**Gate 148 technical verification record**
+- GitHub Actions workflow: `c10-s-focal-harness-tests.yml`
+- Run ID: `43485068380` — `SUCCESS`
+- Tested commit: `79402db0369a4e2adde4ce504de173ce5b3cf47f`
+- Python compilation: PASS
+- Primary contract suite: 86 tests, PASS
+- Clean source-archive replay: 86 tests, PASS
+- Execution artifact: `14067011792`
+- Workflow URL: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/43485068380
+
+The earlier run `43484514058` exposed the missing `truth_source` positional field in the new run-level pair record. The constructor was corrected on the research branch; the successful primary and clean replay above test the corrected commit. No Monte Carlo calibration, seed-bank generation, benchmark sizing or scientific experiment was run.
 
 This change does not alter the DGPs, estimands, truth definitions, identification assumptions, numeric tolerances, N/R choices or scientific claims. It does not materialize or score theta_A. No calibration bank, Monte Carlo benchmark or scientific experiment is authorized or run. `main` remains unchanged and PR #116 remains Draft.
