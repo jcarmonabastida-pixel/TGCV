@@ -481,3 +481,22 @@ The first Actions run after Gate 125 source changes compiled successfully but th
 - The AC-15 test had two reversed vector comparisons. It now verifies that changing only the Z seed leaves G unchanged and changes Z, while changing only the G seed leaves Z unchanged and changes G.
 
 The corrected tests remain at 38 definitions. The next Actions run must establish whether these corrections pass. No benchmark, Monte Carlo or scientific execution has been started.
+
+
+### 14.7 Gate 127 — post-correction CI result — 2026-11-13
+
+The corrected Gate 126 test source was executed by GitHub Actions workflow run #77 against commit `4d7917540e44597891288456628fc444acf7c47f` on `research/c10-s-consolidation-draft`.
+
+- Explicit Python compilation: PASS.
+- Primary suite: 55 tests, PASS.
+- Clean-source-archive replay: 55 tests, PASS.
+- Workflow job and run: SUCCESS.
+- The 38 definitions in `test_vcont_integrated_harness.py` are included in the 55-test repository suite; the other 17 tests are in the pre-existing harness/P178 modules.
+
+Evidence: [GitHub Actions run #77](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/43466471003); artifact ID `14058772124`.
+
+The run's tested commit contains the corrected harness test source. The subsequent branch HEAD `d612663c0cc73ee2e2d97423984cf0d30c68ff85` adds only this contract record; no executable or workflow file changed after the tested commit.
+
+**Interpretation:** this is a technical suite PASS, not a benchmark result, Monte Carlo result, confirmatory statistical result or scientific identification claim. AC-11, AC-13 and AC-15 now have explicit additional test definitions and the expanded suite passes; this does not establish exhaustive coverage of every conceivable identity/version combination.
+
+**Governance boundary:** `main` remains untouched. PR #116 remains Draft and currently targets `research/c10-d1-protocol-draft`, not `main`; no base change or merge is authorized or performed here. Global C10-S Design Freeze and benchmark authorization remain OPEN.
