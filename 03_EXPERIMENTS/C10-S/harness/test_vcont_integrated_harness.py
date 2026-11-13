@@ -85,7 +85,9 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         design = MonteCarloBenchmarkDesign(
             scenario_versions=versions, n_units=16, outer_replicates=2,
             repeated_assignments=2, matrix_fingerprint=scenario_matrix_fingerprint(matrix),
-            metric_targets=tuple(targets))
+            metric_targets=tuple(targets), seed_bank_label="DETERMINISTIC_TEST_FIXTURE",
+            seed_bank_fingerprint="a"*64, executable_commit="c"*40,
+            configuration_fingerprint="b"*64)
         scenario_outer_runs = {}
         for cfg in scenarios:
             scenario_outer_runs[cfg.scenario_id] = {}
