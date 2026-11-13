@@ -422,6 +422,10 @@ class Analyzer:
         contract.validate()
         if _hash({"manifest": evidence.manifest, "rows": evidence.rows}) != evidence.sha256:
             raise FirewallError("sealed evidence integrity failure")
+        # Keep the two assignment estimands' identification conditions separate.
+        # Shared outcome/evidence requirements are common; Z randomization is
+        # not a prerequisite for the within-Z=0 randomized G contrast.
+        shared_reasons = []
         package_reasons = []
         g_assignment_reasons = []
         if not contract.randomized_z:
@@ -431,43 +435,44 @@ class Analyzer:
         if not contract.positivity:
             g_assignment_reasons.append("COMMON_SUPPORT_FAILURE")
         if not contract.no_interference:
-            package_reasons.append("INTERFERENCE_REQUIRES_CLUSTER_EXPOSURE_ESTIMAND")
-            g_assignment_reasons.append("INTERFERENCE_REQUIRES_CLUSTER_EXPOSURE_ESTIMAND")
+            shared_reasons.append("INTERFERENCE_REQUIRES_CLUSTER_EXPOSURE_ESTIMAND")
         if not contract.measurement_identified:
-            package_reasons.append("S3_MEASUREMENT_NOT_IDENTIFIED")
-            g_assignment_reasons.append("S3_MEASUREMENT_NOT_IDENTIFIED")
+            shared_reasons.append("S3_MEASUREMENT_NOT_IDENTIFIED")
         if not contract.version_consistency:
-            package_reasons.append("VERSION_INCONSISTENCY")
-            g_assignment_reasons.append("VERSION_INCONSISTENCY")
+            shared_reasons.append("VERSION_INCONSISTENCY")
+
         complete = all(
             all(v in (0, 1) for k in ("s3_enabled", "s3_profile_match") for v in row[k])
             for row in evidence.rows
         )
         if not complete:
-            package_reasons.append("S3_MISSINGNESS_REQUIRES_BOUNDS_OR_MODEL")
-            g_assignment_reasons.append("S3_MISSINGNESS_REQUIRES_BOUNDS_OR_MODEL")
+            shared_reasons.append("S3_MISSINGNESS_REQUIRES_BOUNDS_OR_MODEL")
         ideal = all(
             all(s == "OBSERVED" for k in ("s3_enabled_status", "s3_profile_status") for s in row[k])
             for row in evidence.rows
         )
         if not ideal:
-            package_reasons.append("S3_COVERAGE_INCOMPLETE")
-            g_assignment_reasons.append("S3_COVERAGE_INCOMPLETE")
+            shared_reasons.append("S3_COVERAGE_INCOMPLETE")
 
+        package_reasons.extend(shared_reasons)
+        g_assignment_reasons.extend(shared_reasons)
         observed_v = None
-        if not package_reasons:
-            # S3 truth rule is conjunctive; a signal alone cannot certify B1.
+        if not shared_reasons:
+            # Outcome construction is shared; each estimand is adjudicated
+            # independently against its own assignment and support conditions.
             observed_v = [
                 mean(int(en and pr) for en, pr in zip(row["s3_enabled"], row["s3_profile_match"]))
                 for row in evidence.rows
             ]
+
+        if not package_reasons and observed_v is not None:
             z0 = [observed_v[i] for i, row in enumerate(evidence.rows) if row["assignment_z"] == 0]
             z1 = [observed_v[i] for i, row in enumerate(evidence.rows) if row["assignment_z"] == 1]
             package, package_se = _mean_se(z0, z1)
             package_status: Identification = "IDENTIFIED"
         else:
             package, package_se = None, None
-            package_status = "INDETERMINATE"
+            package_status = "NOT_IDENTIFIED" if "PACKAGE_RANDOMIZATION_NOT_ESTABLISHED" in package_reasons else "INDETERMINATE"
 
         first_stage = None
         if observed_v is not None:
@@ -480,19 +485,17 @@ class Analyzer:
                         if row["assignment_g"] == 1]
                 first_stage_values.append(mean(g1_d) - mean(g0_d))
             first_stage = tuple(first_stage_values)
-        # Direct G paths do not invalidate the randomized G-assignment ITT.
-        # They only prevent interpreting that contrast as the focal theta_A.
+
         if not g_assignment_reasons and observed_v is not None:
-            focal_rows = [(observed_v[i], row) for i, row in enumerate(evidence.rows)
-                          if row["assignment_z"] == 0]
-            g0 = [v for v, row in focal_rows if row["assignment_g"] == 0]
-            g1 = [v for v, row in focal_rows if row["assignment_g"] == 1]
-            focal, g_assignment_se = _mean_se(g0, g1)
+            z0_focal_rows = [(observed_v[i], row) for i, row in enumerate(evidence.rows)
+                             if row["assignment_z"] == 0]
+            g0 = [v for v, row in z0_focal_rows if row["assignment_g"] == 0]
+            g1 = [v for v, row in z0_focal_rows if row["assignment_g"] == 1]
+            g_assignment_estimate, g_assignment_se = _mean_se(g0, g1)
             g_assignment_status: Identification = "IDENTIFIED"
         else:
-            focal, g_assignment_se = None, None
+            g_assignment_estimate, g_assignment_se = None, None
             g_assignment_status = "NOT_IDENTIFIED" if (
-                "G_ASSIGNMENT_IS_NOT_THETA_A" in g_assignment_reasons or
                 "COMMON_SUPPORT_FAILURE" in g_assignment_reasons or
                 "G_RANDOMIZATION_NOT_ESTABLISHED" in g_assignment_reasons
             ) else "INDETERMINATE"
@@ -500,12 +503,12 @@ class Analyzer:
         reasons = tuple(dict.fromkeys(package_reasons + g_assignment_reasons))
         payload = {"run_id": evidence.run_id, "estimand_id": contract.estimand_id,
                    "package_status": package_status, "g_assignment_status": g_assignment_status,
-                   "package_itt": package, "g_assignment_effect": focal,
+                   "package_itt": package, "g_assignment_effect": g_assignment_estimate,
                    "first_stage_delta_t_acc": first_stage,
                    "package_se": package_se, "g_assignment_se": g_assignment_se,
                    "reasons": list(reasons), "input_sha256": evidence.sha256}
         return AnalyzerResult(evidence.run_id, contract.estimand_id,
-            package_status, g_assignment_status, package, focal, first_stage, package_se, g_assignment_se,
+            package_status, g_assignment_status, package, g_assignment_estimate, first_stage, package_se, g_assignment_se,
             reasons, evidence.sha256, _hash(payload))
 
 
