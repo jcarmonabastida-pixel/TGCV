@@ -74,6 +74,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         self.assertIsNotNone(result.g_assignment_effect)
         self.assertIsNone(report.package_recovered)
         self.assertIsNotNone(report.g_assignment_recovered)
+        self.assertTrue(report.expected_abstention_respected)
 
     def test_direct_g_path_does_not_contaminate_g_assignment_truth(self):
         _, _, _, result, _ = self.execute_world(self.worlds()["R0_DIRECT_G"])
