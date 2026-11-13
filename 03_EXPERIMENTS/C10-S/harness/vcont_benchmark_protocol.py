@@ -530,7 +530,7 @@ class PairEvaluationAdapter:
             observed_identification_status=status, observed_abstained=abstained)
         return PairEvaluationRecord(spec.key, "RUN", level_class, analyzer.run_id,
             spec.dgp_truth_field,
-            None if level_class == "EVALUABLE" or raw_truth is None else None if level_class != "EVALUABLE" else float(raw_truth),
+            float(raw_truth) if level_class == "EVALUABLE" and raw_truth is not None else None,
             output_field, None if output is None else float(output), status, abstained,
             adjudication, absolute_error, recovered)
 
