@@ -529,9 +529,10 @@ class PairEvaluationAdapter:
             dgp_truth=raw_truth, analyzer_output=output, adjudication=adjudication,
             observed_identification_status=status, observed_abstained=abstained)
         return PairEvaluationRecord(spec.key, "RUN", level_class, analyzer.run_id,
-            None if raw_truth is None else float(raw_truth), output_field,
-            None if output is None else float(output), status, abstained, adjudication,
-            absolute_error, recovered)
+            spec.dgp_truth_field,
+            None if level_class == "EVALUABLE" or raw_truth is None else None if level_class != "EVALUABLE" else float(raw_truth),
+            output_field, None if output is None else float(output), status, abstained,
+            adjudication, absolute_error, recovered)
 
     def adapt_repeated(self, spec: ScenarioEstimandSpec, report, manifest, tolerance: float) -> PairEvaluationRecord:
         if not isfinite(float(tolerance)) or tolerance < 0:
