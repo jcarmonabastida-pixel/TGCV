@@ -641,6 +641,6 @@ Each EVALUABLE pair record also carries its absolute error and tolerance-based r
 
 The precision verdict now distinguishes a known MCSE above its predeclared target (`FAIL`) from missing MCSE or missing target (`NOT_EVALUABLE`). A passing MCSE remains `PASS`.
 
-Three integrated harness tests cover run/repeated temporal separation, scenario-version mismatch rejection and preservation of non-identified reference-regime status. The protocol test covers PASS / FAIL / NOT_EVALUABLE precision states.
+Three integrated harness tests cover run/repeated temporal separation, scenario-version mismatch rejection and preservation of non-identified reference-regime status. Protocol tests cover the matrix-declared temporal classes and PASS / FAIL / NOT_EVALUABLE precision states.
 
 This change does not alter the DGPs, estimands, truth definitions, identification assumptions, numeric tolerances, N/R choices or scientific claims. It does not materialize or score theta_A. No calibration bank, Monte Carlo benchmark or scientific experiment is authorized or run. `main` remains unchanged and PR #116 remains Draft.
