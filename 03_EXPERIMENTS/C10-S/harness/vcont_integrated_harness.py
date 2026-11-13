@@ -132,6 +132,8 @@ class AnalysisContract:
     transportability_version: str | None = None
     transportability_scope: str | None = None
     transportability_evidence_status: str = "NOT_ESTABLISHED"
+    g_assignment_mechanism_hash: str = ""
+    z_assignment_mechanism_hash: str = ""
 
     def validate(self) -> None:
         if not self.estimand_id or not self.estimand_version or not self.target_regime_id or not self.target_regime_version:
@@ -233,6 +235,8 @@ class AnalyzerResult:
     reference_regime_status: Identification = "INDETERMINATE"
     reference_regime_id: str = "G_REFERENCE_50_50"
     reference_regime_version: str = "001"
+    g_assignment_mechanism_hash: str = ""
+    z_assignment_mechanism_hash: str = ""
 
 
 @dataclass(frozen=True)
@@ -573,11 +577,14 @@ class Analyzer:
                    "target_regime_id": contract.target_regime_id, "target_regime_version": contract.target_regime_version,
                    "outcome_id": contract.outcome_id, "outcome_version": contract.outcome_version,
                    "reference_regime_status": reference_regime_status,
-                   "reference_regime_id": "G_REFERENCE_50_50", "reference_regime_version": "001"}
+                   "reference_regime_id": "G_REFERENCE_50_50", "reference_regime_version": "001",
+                   "g_assignment_mechanism_hash": contract.g_assignment_mechanism_hash,
+                   "z_assignment_mechanism_hash": contract.z_assignment_mechanism_hash}
         return AnalyzerResult(evidence.run_id, contract.estimand_id, package_status, g_assignment_status,
             package, g_assignment_estimate, first_stage, package_se, g_assignment_se, reasons, evidence.sha256,
             _hash(payload), contract.target_regime_id, contract.target_regime_version, contract.outcome_id, contract.outcome_version,
-            reference_regime_status, "G_REFERENCE_50_50", "001")
+            reference_regime_status, "G_REFERENCE_50_50", "001",
+            contract.g_assignment_mechanism_hash, contract.z_assignment_mechanism_hash)
 
 
 class Evaluator:
@@ -597,10 +604,12 @@ class Evaluator:
             "reference_regime_status": result.reference_regime_status,
             "reference_regime_id": result.reference_regime_id,
             "reference_regime_version": result.reference_regime_version,
+            "g_assignment_mechanism_hash": result.g_assignment_mechanism_hash,
+            "z_assignment_mechanism_hash": result.z_assignment_mechanism_hash,
         }
         if _hash(payload) != result.output_sha256:
             raise FirewallError("Analyzer output seal invalid")
-        if (result.estimand_id != contract.estimand_id or result.target_regime_id != contract.target_regime_id or result.target_regime_version != contract.target_regime_version or result.outcome_id != contract.outcome_id or result.outcome_version != contract.outcome_version or result.reference_regime_id != truth.g_reference_regime_id or result.reference_regime_version != truth.g_reference_regime_version or truth.g_assignment_mechanism_hash == "" or truth.z_assignment_mechanism_hash == ""):
+        if (result.estimand_id != contract.estimand_id or result.target_regime_id != contract.target_regime_id or result.target_regime_version != contract.target_regime_version or result.outcome_id != contract.outcome_id or result.outcome_version != contract.outcome_version or result.reference_regime_id != truth.g_reference_regime_id or result.reference_regime_version != truth.g_reference_regime_version or result.g_assignment_mechanism_hash != contract.g_assignment_mechanism_hash or result.z_assignment_mechanism_hash != contract.z_assignment_mechanism_hash or truth.g_assignment_mechanism_hash != contract.g_assignment_mechanism_hash or truth.z_assignment_mechanism_hash != contract.z_assignment_mechanism_hash):
             raise ContractError("estimand, target regime, mechanism provenance or outcome identity mismatch")
         package_target = truth.itt_z_run_truth
         package_error = None if result.package_itt is None or package_target is None else abs(result.package_itt - package_target)
@@ -692,4 +701,6 @@ def contract_for(cfg: ScenarioConfig) -> AnalysisContract:
         transportability_version=("001" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else None),
         transportability_scope=("HIGH" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else None),
         transportability_evidence_status=("STRUCTURALLY_VERIFIED" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else "NOT_ESTABLISHED"),
+        g_assignment_mechanism_hash=_hash({"g_seed": cfg.seed + 200003 if cfg.g_assignment_seed is None else cfg.g_assignment_seed, "positivity": cfg.positivity, "n": cfg.n_units}),
+        z_assignment_mechanism_hash=_hash({"z_seed": cfg.seed + 100003 if cfg.z_assignment_seed is None else cfg.z_assignment_seed, "n": cfg.n_units}),
     )
