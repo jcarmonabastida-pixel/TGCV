@@ -523,6 +523,8 @@ class PairEvaluationRecord:
     adjudication: str
     absolute_error: float | None
     recovered: bool | None
+    outer_replicate_id: str = "outer-000000"
+    assignment_role: str = "REPEATED_ASSIGNMENT"
 
 
 class PairEvaluationAdapter:
@@ -539,6 +541,10 @@ class PairEvaluationAdapter:
             raise ProtocolError("manifest scenario_id does not match evaluation matrix")
         if manifest.version != spec.key.scenario_version:
             raise ProtocolError("ScenarioConfig/manifest version does not match EvaluationKey")
+        if not getattr(manifest, "outer_replicate_id", None):
+            raise ProtocolError("manifest outer-replicate identity is required")
+        if getattr(manifest, "assignment_role", None) not in ("RUN", "REPEATED_ASSIGNMENT"):
+            raise ProtocolError("manifest assignment role is invalid")
         if (observed_id, observed_version) != (spec.key.estimand_id, spec.key.estimand_version):
             raise ProtocolError("Analyzer/repeated output estimand identity/version does not match matrix")
 
@@ -569,7 +575,8 @@ class PairEvaluationAdapter:
                 observed_identification_status=status, observed_abstained=abstained)
             return PairEvaluationRecord(spec.key, "RUN", "STATUS_ONLY", analyzer.run_id,
                 "REFERENCE_REGIME_IDENTIFICATION_STATUS", None, None, None,
-                status, abstained, adjudication, None, None)
+                status, abstained, adjudication, None, None,
+                manifest.outer_replicate_id, manifest.assignment_role)
         elif estimand == "ITT_G_Z0_VCONT":
             observed_id, observed_version, status = analyzer.g_assignment_estimand_id, analyzer.g_assignment_estimand_version, analyzer.g_assignment_status
         else:
@@ -603,7 +610,8 @@ class PairEvaluationAdapter:
             spec.dgp_truth_field,
             float(raw_truth) if level_class == "EVALUABLE" and raw_truth is not None else None,
             output_field, None if output is None else float(output), status, abstained,
-            adjudication, absolute_error, recovered)
+            adjudication, absolute_error, recovered,
+            manifest.outer_replicate_id, manifest.assignment_role)
 
     def adapt_repeated(self, spec: ScenarioEstimandSpec, report, manifest, tolerance: float) -> PairEvaluationRecord:
         if not isfinite(float(tolerance)) or tolerance < 0:
@@ -644,7 +652,8 @@ class PairEvaluationAdapter:
         return PairEvaluationRecord(spec.key, "REPEATED_ASSIGNMENT", level_class, None, spec.dgp_truth_field,
             None if raw_truth is None else float(raw_truth), output_field,
             None if output is None else float(output), status, abstained, adjudication,
-            absolute_error, recovered)
+            absolute_error, recovered, manifest.outer_replicate_id,
+            "REPEATED_ASSIGNMENT")
 
 
 def summarize_estimand(spec: ScenarioEstimandSpec, *, estimates: Iterable[float] | None = None,
