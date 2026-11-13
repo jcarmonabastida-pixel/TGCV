@@ -324,3 +324,12 @@ The executable identity must be attested at the execution boundary; a caller-sup
 **Gate 159 status:** PREFLIGHT COMPLETED / PERSISTED; CODE IMPLEMENTATION OPEN; ADVERSARIAL REGRESSION OPEN.
 
 This preflight authorizes no calibration/evaluation seed-bank generation, N/R/M sizing, Monte Carlo benchmark execution or scientific execution. `main` remains unchanged; PR #116 remains Draft on its existing base branch.
+
+
+### Gate 159 continuation — authentication trust boundary
+
+The Gate 159 preflight has been extended to distinguish declared provenance, deterministically reconciled provenance, and externally authenticated execution provenance. The current Python process cannot authenticate its own commit from caller-supplied fields or environment variables. An externally verifiable attestation mechanism and trust root must be governed before any report can receive an authenticated-provenance status.
+
+Seed-bank, RunManifest and effective-configuration reconciliation may proceed independently, but those checks establish consistency only, not execution-origin authenticity.
+
+**Current Gate 159 status:** seed/configuration/manifest reconciliation OPEN; external attestation trust mechanism ARCHITECTURE DECISION REQUIRED / BLOCKED; authenticated provenance status BLOCKED. No code, tests, CI, calibration, seed-bank generation, sizing or scientific execution is claimed by this addendum.
