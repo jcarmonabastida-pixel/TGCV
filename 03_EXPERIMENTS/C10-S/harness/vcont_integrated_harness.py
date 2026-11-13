@@ -814,8 +814,11 @@ class Evaluator:
             raise ContractError("nonempty repeated-assignment runs and nonnegative tolerance required")
         world_ids = {run[3].world_id for run in runs}
         mechanism_truths = {run[0].itt_z_mechanism_truth for run in runs}
-        if len(world_ids) != 1 or len(mechanism_truths) != 1 or None in mechanism_truths:
-            raise ContractError("repeated-assignment evaluation requires one fixed world and one defined mechanism truth")
+        mechanism_ids = {(run[3].g_assignment_mechanism_id, run[3].g_assignment_mechanism_version,
+                          run[3].g_assignment_mechanism_hash, run[3].g_reference_regime_id,
+                          run[3].g_reference_regime_version) for run in runs}
+        if len(world_ids) != 1 or len(mechanism_truths) != 1 or len(mechanism_ids) != 1 or None in mechanism_truths:
+            raise ContractError("repeated-assignment evaluation requires one fixed world, one assignment mechanism and one defined mechanism truth")
         reports = tuple(self.evaluate(truth, result, contract, tolerance, manifest)
                         for truth, result, contract, manifest in runs)
         estimates = [result.package_itt for _, result, _, _ in runs]
