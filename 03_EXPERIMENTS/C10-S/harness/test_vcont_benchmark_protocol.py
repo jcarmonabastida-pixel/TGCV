@@ -268,6 +268,12 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
         with self.assertRaises(ProtocolError):
             validate_monte_carlo_benchmark_design(
                 replace(design, metric_targets=design.metric_targets[:-1]), matrix)
+        duplicated = matrix[:-1] + (matrix[0],)
+        with self.assertRaises(ProtocolError):
+            validate_monte_carlo_benchmark_design(design, duplicated)
+        with self.assertRaises(ProtocolError):
+            validate_monte_carlo_benchmark_design(
+                replace(design, executable_commit="not-a-commit"), matrix)
 
     def test_mcse_precision_distinguishes_fail_from_not_evaluable(self):
         spec = next(row for row in build_scenario_estimand_matrix()
