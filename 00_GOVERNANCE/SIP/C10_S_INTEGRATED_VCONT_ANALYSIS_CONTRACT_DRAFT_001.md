@@ -457,3 +457,17 @@ The Gate 124 static audit identified a missing RunManifest handoff, incomplete e
 **Important boundary:** these changes have not been executed. No test, CI, benchmark, Monte Carlo run or scientific execution has been started. Static source presence and contract alignment are not PASS evidence.
 
 **Updated state:** Gate 124 corrective source changes persisted; static review of the final diff remains to be completed; test execution remains unauthorized (scientific_execution=false; execution_authorized=false).
+
+
+### 14.5 Gate 125 — final static coverage correction — 2026-11-13
+
+Following the 52/52 primary and clean-replay CI pass, the Gate 125 audit identified three remaining test-coverage gaps and one workflow omission. The following corrections are now persisted:
+
+1. **AC-11 identity/version boundaries:** added evaluator rejection cases for transportability restriction ID/version, outcome ID, Z assignment mechanism version, reference-regime ID and scenario/DGP version.
+2. **AC-13 version-consistency adjudication:** added an end-to-end Analyzer→Evaluator test requiring package, G-assignment and reference-regime statuses to be INDETERMINATE, expected abstention to be respected, and no false reference-regime mismatch.
+3. **AC-15 independent reproducibility:** added a four-way seed test. Identical world/Z/G seeds reproduce both assignment vectors; changing only Z seed changes only Z; changing only G seed changes only G; potential V_cont and ΔT_acc truth remain invariant across assignment-seed changes.
+4. **Workflow compilation:** explicit `py_compile` now includes `vcont_integrated_harness.py` and `test_vcont_integrated_harness.py` in addition to the pre-existing focal/P178 modules.
+
+The integrated harness test module now contains 38 test definitions (35 prior + 3 added in Gate 125). These are source-level additions only until the next Actions run completes.
+
+**Execution boundary:** this correction does not authorize or start Monte Carlo, benchmark or scientific execution. The next authorized technical check is the C10-S focal harness GitHub Actions workflow on this research-branch push. `main` remains unchanged; PR #116 remains Draft.
