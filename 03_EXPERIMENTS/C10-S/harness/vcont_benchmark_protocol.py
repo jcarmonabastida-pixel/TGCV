@@ -423,6 +423,10 @@ class MonteCarloBenchmarkDesign:
     repeated_assignments: int
     matrix_fingerprint: str
     metric_targets: tuple[tuple[str, str, str, str, str, float], ...]
+    seed_bank_label: str
+    seed_bank_fingerprint: str
+    executable_commit: str
+    configuration_fingerprint: str
 
 
 def scenario_matrix_fingerprint(matrix: Iterable["ScenarioEstimandSpec"]) -> str:
@@ -457,6 +461,17 @@ def validate_monte_carlo_benchmark_design(design: MonteCarloBenchmarkDesign,
         raise ProtocolError("matrix scenario or estimand versions do not match the declared benchmark design")
     if scenario_matrix_fingerprint(specs) != design.matrix_fingerprint:
         raise ProtocolError("design matrix fingerprint does not match the authoritative matrix")
+    if not design.seed_bank_label or not design.seed_bank_label.strip():
+        raise ProtocolError("seed-bank label is required for benchmark provenance")
+    for label, value in (("seed_bank_fingerprint", design.seed_bank_fingerprint),
+                         ("configuration_fingerprint", design.configuration_fingerprint)):
+        if (not isinstance(value, str) or len(value) != 64
+                or any(ch not in "0123456789abcdef" for ch in value.lower())):
+            raise ProtocolError(f"{label} must be a 64-character hexadecimal fingerprint")
+    if (not isinstance(design.executable_commit, str)
+            or len(design.executable_commit) not in (40, 64)
+            or any(ch not in "0123456789abcdef" for ch in design.executable_commit.lower())):
+        raise ProtocolError("executable_commit must be a 40- or 64-character hexadecimal commit identity")
     required_targets = set()
     for spec in specs:
         temporal_class = (
