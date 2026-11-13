@@ -418,8 +418,8 @@ def validate_evaluation_observation(spec: ScenarioEstimandSpec, *, observed_key:
         if adjudication == "STATUS_PASS" and (observed_identification_status != spec.identification_expectation or observed_abstained is not spec.abstention_expectation):
             raise ProtocolError("status PASS does not match the declared identification/abstention expectation")
     elif spec.evaluation_class == "NOT_EVALUABLE":
-        if analyzer_output_field is not None or analyzer_output is not None or adjudication == "PASS":
-            raise ProtocolError("NOT_EVALUABLE cannot receive numeric scoring or PASS")
+        if analyzer_output_field is not None or analyzer_output is not None or adjudication != "NOT_EVALUABLE":
+            raise ProtocolError("NOT_EVALUABLE cannot receive numeric scoring or a pass adjudication")
     else:
         raise ProtocolError("unsupported evaluation class")
 
