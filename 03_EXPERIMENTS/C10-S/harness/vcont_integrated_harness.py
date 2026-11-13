@@ -861,9 +861,4 @@ def contract_for(cfg: ScenarioConfig) -> AnalysisContract:
         z_assignment_mechanism_version="001", reference_regime_id="G_REFERENCE_50_50", reference_regime_version="001",
         g_assignment_mechanism_hash=_hash({"algorithm": "balanced_binary_then_zero_HIGH_if_support_failure", "positivity": cfg.positivity, "n": cfg.n_units}),
         z_assignment_mechanism_hash=_hash({"algorithm": "balanced_binary_complete_randomization", "n": cfg.n_units}),
-        g_assignment_mechanism_id=("G_BALANCED_WITH_STRATUM_SUPPORT" if not cfg.positivity else "G_BALANCED"),
-        g_assignment_mechanism_version="001", z_assignment_mechanism_id="Z_BALANCED_INDEPENDENT",
-        z_assignment_mechanism_version="001", reference_regime_id="G_REFERENCE_50_50", reference_regime_version="001",
-        transportability_outcome_id=("V_CONT" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else None),
-        transportability_basis=("Complete DGP potential-outcome invariance: all Z-dependent terms are absent and shared exogenous draws are reused" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else None),
     )
