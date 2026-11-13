@@ -1073,16 +1073,26 @@ class Evaluator:
             raise ProtocolError("Monte Carlo aggregation requires the four authoritative matrix pairs")
         m = len(per_outer)
 
-        required_metric_targets = {
-            "run_conditional.absolute_error_mean",
-            "g_assignment_z0.absolute_error_mean",
-            "mechanism_marginal.absolute_error_mean",
-            "reference_regime.absolute_error_mean",
+        metric_name_by_estimand = {
+            "ITT_Z_RUN_CONDITIONAL_VCONT": "run_conditional.absolute_error_mean",
+            "ITT_G_Z0_VCONT": "g_assignment_z0.absolute_error_mean",
+            "ITT_Z_MECHANISM_MARGINAL_VCONT": "mechanism_marginal.absolute_error_mean",
+            "ITT_Z_REFERENCE_REGIME_VCONT": "reference_regime.absolute_error_mean",
         }
+        required_metric_targets = set()
+        for spec in selected:
+            if spec.key.estimand_id == "ITT_Z_RUN_CONDITIONAL_VCONT" and spec.run_evaluation_class == "EVALUABLE":
+                required_metric_targets.add(metric_name_by_estimand[spec.key.estimand_id])
+            if spec.key.estimand_id == "ITT_G_Z0_VCONT" and spec.run_evaluation_class == "EVALUABLE":
+                required_metric_targets.add(metric_name_by_estimand[spec.key.estimand_id])
+            if spec.key.estimand_id == "ITT_Z_MECHANISM_MARGINAL_VCONT" and spec.repeated_evaluation_class == "EVALUABLE":
+                required_metric_targets.add(metric_name_by_estimand[spec.key.estimand_id])
+            if spec.key.estimand_id == "ITT_Z_REFERENCE_REGIME_VCONT" and spec.repeated_evaluation_class == "EVALUABLE":
+                required_metric_targets.add(metric_name_by_estimand[spec.key.estimand_id])
         if set(target_mcse_by_metric) != required_metric_targets:
-            raise ContractError("predeclared MCSE targets must cover exactly the four numeric M-level metrics")
+            raise ContractError("MCSE targets must cover exactly the numeric EVALUABLE M-level metrics in the authoritative matrix")
         def continuous_metric(values, metric_name):
-            if len(values) != m or any(value is None for value in values):
+            if metric_name not in target_mcse_by_metric or len(values) != m or any(value is None for value in values):
                 return None
             return summarize_monte_carlo(
                 [(row["outer_replicate_id"], value) for row, value in zip(per_outer, values)],
