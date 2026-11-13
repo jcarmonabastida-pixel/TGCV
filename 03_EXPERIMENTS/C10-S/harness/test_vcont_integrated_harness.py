@@ -167,7 +167,7 @@ class VContIntegratedHarnessTests(unittest.TestCase):
                         if m == 0:
                             truth = replace(truth, itt_z_run_truth=None)
                         else:
-                            result = replace(result, package_itt=float("nan"))
+                            result = replace(result, package_itt=None)
                             output_payload = {
                                 "run_id": result.run_id, "estimand_id": result.estimand_id,
                                 "package_status": result.package_status,
