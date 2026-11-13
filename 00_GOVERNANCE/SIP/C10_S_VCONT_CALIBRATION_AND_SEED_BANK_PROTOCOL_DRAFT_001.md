@@ -287,3 +287,14 @@ Gate 157 completes the Gate 156 benchmark-level integration. The typed R assignm
 **Technical verification:** commit `0afb77fb45308a7d1573d0ab644a9d6f69e7302d`, workflow run `43494346461`; compile PASS, primary suite 99/99 PASS, clean source-archive replay 99/99 PASS. Artifact `14070228979`, SHA-256 `c9cb24f9d4504f609abbf8d7eaa8ce0ad839279cbc0b2ddc0c2768b8b1a556c7`.
 
 This verification is deterministic software testing only. No calibration/evaluation seed bank was generated; no numeric N/R/M sizing, calibration, benchmark study or scientific execution was performed or authorized. The caller must supply canonical seed-bank, executable and configuration provenance; this implementation does not select those values.
+
+
+## 16. Gate 157 post-verification qualification
+
+The benchmark-level MONTE_CARLO implementation and its general deterministic CI result are recorded in:
+
+`C10_S_VCONT_MONTE_CARLO_BENCHMARK_AGGREGATION_IMPLEMENTATION_GATE_157_DRAFT_001.md`.
+
+A subsequent audit found that the final `TRUTH_MISSING` / `INVALID_OUTPUT` classification branches were present in the verified implementation commit, but were not directly exercised by regression assertions in that commit's test suite. Their targeted behavior is therefore **NOT VERIFIED / CONDITIONAL / OPEN**, notwithstanding the general 99/99 + 99/99 suite result.
+
+No calibration, seed-bank generation, N/R/M sizing or scientific execution is authorized by this qualification.
