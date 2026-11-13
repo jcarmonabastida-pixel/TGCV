@@ -198,7 +198,10 @@ def build_seed_bank(bank: str, scenarios: Iterable[str], n_grid: Iterable[int],
                     _derive_seed(bank, scenario_id, n, r, "z", namespace),
                     _derive_seed(bank, scenario_id, n, r, "g", namespace),
                 ))
-    validate_seed_banks(plan, ())
+    if bank == "calibration":
+        validate_seed_banks(plan, ())
+    else:
+        validate_seed_banks((), plan)
     return tuple(plan)
 
 
