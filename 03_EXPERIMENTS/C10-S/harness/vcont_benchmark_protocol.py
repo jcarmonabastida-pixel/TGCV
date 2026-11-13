@@ -228,6 +228,11 @@ class SeedAssignment:
     outer_replicate_id: str = "outer-000000"
     assignment_role: str = "REPEATED_ASSIGNMENT"
 
+    @property
+    def assignment_index(self) -> int:
+        """Typed runtime alias for the R index; RUN is always -1."""
+        return self.replicate
+
 
 def _derive_seed(bank: str, scenario_id: str, n_units: int, replicate: int,
                  stream: str, namespace: str, scenario_version: str = "UNVERSIONED",
