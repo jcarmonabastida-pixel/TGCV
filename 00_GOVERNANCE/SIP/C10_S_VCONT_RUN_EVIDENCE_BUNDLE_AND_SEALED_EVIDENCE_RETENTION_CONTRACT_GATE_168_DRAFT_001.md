@@ -184,3 +184,10 @@ Do not patch the source silently. Record the exact projection algorithm/schema v
 - `main`: unchanged; PR #116 remains Draft on its existing base.
 
 **Next operation:** prepare the minimal source correction and compatibility test design for the world-identity projection, then implement the carrier/orchestrator only after the corrected identity invariant is verified. Preserve all existing scientific contracts and keep execution strictly technical; no scientific experiment is authorized.
+## 11. Gate 169 supersession — world identity blocker withdrawn
+
+Gate 169's static reinspection of the current branch source found that `Generator.generate()` already removes both `assignment_role` and `assignment_index` from `world_spec` before computing `world_id`. The Gate 168 §7 finding that these fields remained in the current projection was incorrect and is withdrawn. The earlier blocker is closed at static-source level; no Generator source correction is required based on that finding.
+
+The existing regression `test_outer_replicate_identity_propagates_and_separates_worlds` already checked RUN/R shared world identity and separation across M. Gate 169 strengthens it to isolate role/index changes, assert run-ID distinction, isolate DGP-parameter changes and assert different world seeds across M. The strengthened test source has been persisted but NOT EXECUTED. No runtime PASS or CI claim is made.
+
+This supersession does not close Gate 159 seed-bank reconciliation, establish cryptographic provenance, or implement RunEvidenceBundle. Gate 168's schema, deep-immutability requirements and inline SealedEvidence retention decision remain operative. See `C10_S_VCONT_WORLD_IDENTITY_INVARIANCE_AUDIT_GATE_169_DRAFT_001.md`.
