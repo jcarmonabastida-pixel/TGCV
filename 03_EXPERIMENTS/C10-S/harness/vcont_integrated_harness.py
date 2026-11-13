@@ -481,7 +481,19 @@ class Generator:
         truth = TruthBundle(run_id, tuple(v_truth), tuple(interval_truth), tuple(enabled_truth), tuple(profile_truth), tuple(delta_truth),
             itt_reference, itt_g_z0, None, cfg.seed, itt_run, itt_mechanism, itt_reference, invariant_truth,
             "HIGH" if unsupported_high else "ALL", "G_REFERENCE_50_50", "001", gh, zh)
-        return manifest, truth, EvidenceCandidate(run_id, tuple(rows))
+        provenance = {"run_id": run_id, "scenario_id": cfg.scenario_id, "scenario_version": cfg.version,
+            "world_id": world_id, "world_version": cfg.version, "replicate_id": cfg.replicate_id,
+            "g_assignment_mechanism_id": manifest.g_assignment_mechanism_id,
+            "g_assignment_mechanism_version": manifest.g_assignment_mechanism_version,
+            "g_assignment_mechanism_hash": gh,
+            "z_assignment_mechanism_id": manifest.z_assignment_mechanism_id,
+            "z_assignment_mechanism_version": manifest.z_assignment_mechanism_version,
+            "z_assignment_mechanism_hash": zh,
+            "g_reference_regime_id": manifest.g_reference_regime_id,
+            "g_reference_regime_version": manifest.g_reference_regime_version,
+            "z_assignment_vector_hash": manifest.z_assignment_vector_hash,
+            "g_assignment_vector_hash": manifest.g_assignment_vector_hash}
+        return manifest, truth, EvidenceCandidate(run_id, tuple(rows), provenance)
 
 
 class Sealer:
@@ -622,14 +634,25 @@ class Analyzer:
                    "transportability_id": contract.transportability_id,
                    "transportability_version": contract.transportability_version,
                    "transportability_scope": contract.transportability_scope,
-                   "transportability_evidence_status": contract.transportability_evidence_status}
+                   "transportability_evidence_status": contract.transportability_evidence_status,
+                   "estimand_version": contract.estimand_version,
+                   "g_assignment_mechanism_id": contract.g_assignment_mechanism_id,
+                   "g_assignment_mechanism_version": contract.g_assignment_mechanism_version,
+                   "z_assignment_mechanism_id": contract.z_assignment_mechanism_id,
+                   "z_assignment_mechanism_version": contract.z_assignment_mechanism_version,
+                   "reference_regime_id": contract.reference_regime_id,
+                   "reference_regime_version": contract.reference_regime_version,
+                   "provenance_sha256": evidence.manifest["provenance_sha256"]}
         return AnalyzerResult(evidence.run_id, contract.estimand_id, package_status, g_assignment_status,
             package, g_assignment_estimate, first_stage, package_se, g_assignment_se, reasons, evidence.sha256,
             _hash(payload), contract.target_regime_id, contract.target_regime_version, contract.outcome_id, contract.outcome_version,
             reference_regime_status, "G_REFERENCE_50_50", "001",
             contract.g_assignment_mechanism_hash, contract.z_assignment_mechanism_hash,
             contract.transportability_id, contract.transportability_version,
-            contract.transportability_scope, contract.transportability_evidence_status)
+            contract.transportability_scope, contract.transportability_evidence_status,
+            contract.estimand_version, contract.g_assignment_mechanism_id, contract.g_assignment_mechanism_version,
+            contract.z_assignment_mechanism_id, contract.z_assignment_mechanism_version,
+            contract.reference_regime_id, contract.reference_regime_version, evidence.manifest["provenance_sha256"])
 
 
 class Evaluator:
@@ -655,6 +678,14 @@ class Evaluator:
             "transportability_version": result.transportability_version,
             "transportability_scope": result.transportability_scope,
             "transportability_evidence_status": result.transportability_evidence_status,
+            "estimand_version": result.estimand_version,
+            "g_assignment_mechanism_id": result.g_assignment_mechanism_id,
+            "g_assignment_mechanism_version": result.g_assignment_mechanism_version,
+            "z_assignment_mechanism_id": result.z_assignment_mechanism_id,
+            "z_assignment_mechanism_version": result.z_assignment_mechanism_version,
+            "reference_regime_id": result.reference_regime_id,
+            "reference_regime_version": result.reference_regime_version,
+            "provenance_sha256": result.provenance_sha256,
         }
         if _hash(payload) != result.output_sha256:
             raise FirewallError("Analyzer output seal invalid")
