@@ -195,3 +195,11 @@ No evidence supports claiming the export interface is implemented. No code was c
 - main unchanged; PR #116 remains Draft on its existing base.
 
 **Gate 168 — freeze the RunEvidenceBundle and immutable SealedEvidence retention/retrieval contract**, then reconcile the Gate 166 schema. Implementation should follow only after that boundary is frozen and explicitly authorized.
+
+## 11. Gate 168 correction — world-identity projection
+
+The Gate 167 source audit's description of the Generator world-identity projection was incomplete. Reinspection of the exact source shows that `Generator.generate()` removes `seed`, `world_seed`, `z_assignment_seed`, `g_assignment_seed` and `replicate_id` from `world_spec`, but does **not** remove `assignment_role` or `assignment_index`. Both remain in the object hashed into `world_id`.
+
+This means a designated RUN and repeated assignments with the same intended M/world seed can receive different world IDs solely because their role/index differ. That conflicts with Gate 154's fixed-world-within-M contract. The earlier Gate 167 statement implying role/index were removed is corrected; no historical record is erased.
+
+Gate 168 defines the required versioned correction and deterministic regression. Until it is implemented and verified, shared world identity is a BLOCKER for evidence-bundle acceptance. This is a static source finding, not a runtime test result.
