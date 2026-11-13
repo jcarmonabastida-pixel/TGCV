@@ -66,5 +66,32 @@ class VContBenchmarkProtocolTests(unittest.TestCase):
             summarize_scenario("R0", estimates=[1.0])
 
 
+
+    def test_calibration_and_evaluation_seed_banks_are_disjoint(self):
+        calibration = build_seed_bank("calibration", ["R0_NULL"], [100, 200], 3, "protocol-v1")
+        evaluation = build_seed_bank("evaluation", ["R0_NULL"], [100, 200], 3, "protocol-v1")
+        validate_seed_banks(calibration, evaluation)
+        self.assertEqual(calibration[0].world_seed, calibration[1].world_seed)
+        self.assertNotEqual(calibration[0].z_assignment_seed, calibration[1].z_assignment_seed)
+        self.assertNotEqual(calibration[0].g_assignment_seed, calibration[1].g_assignment_seed)
+        self.assertNotEqual(calibration[0].world_seed, evaluation[0].world_seed)
+
+    def test_seed_bank_rejects_invalid_n_grid(self):
+        with self.assertRaises(ProtocolError):
+            build_seed_bank("calibration", ["R0"], [99], 2, "protocol-v1")
+
+    def test_minimum_n_selection_requires_all_scenario_targets(self):
+        observed = {
+            100: {"R0_NULL": 0.08, "R0_POSITIVE": 0.15},
+            200: {"R0_NULL": 0.04, "R0_POSITIVE": 0.08},
+            400: {"R0_NULL": 0.02, "R0_POSITIVE": 0.04},
+        }
+        targets = {"R0_NULL": 0.05, "R0_POSITIVE": 0.10}
+        self.assertEqual(select_minimum_n(observed, targets), 200)
+
+    def test_minimum_n_fails_closed_if_no_candidate_meets_targets(self):
+        with self.assertRaises(ProtocolError):
+            select_minimum_n({100: {"R0": 0.2}}, {"R0": 0.1})
+
 if __name__ == "__main__":
     unittest.main()
