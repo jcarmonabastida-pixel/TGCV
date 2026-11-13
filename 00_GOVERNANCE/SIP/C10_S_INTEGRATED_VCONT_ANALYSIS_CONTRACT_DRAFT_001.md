@@ -606,3 +606,18 @@ This repeated-assignment mean evaluates the marginal reference target; no single
 ### 15.4 Execution and governance boundary
 
 This change persists source, tests and documentary alignment only. It does not execute tests or GitHub Actions, generate seed banks, run calibration, run Monte Carlo, or authorize scientific execution. scientific_execution=false; execution_authorized=false. main is unchanged and PR #116 remains Draft.
+
+
+### 15.5 Gate 144 — technical CI verification
+
+The push-triggered GitHub Actions workflow completed successfully on the integrated source/test commit.
+
+- Workflow run: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/43477822238
+- Tested commit: d1d3666139576600eedbe833448f8283aed620b9
+- Explicit harness/test compilation: PASS.
+- Primary contract suite: 81 tests, PASS.
+- Clean-source-archive replay: 81 tests, PASS.
+- Job and workflow conclusion: SUCCESS.
+- Artifact ID: 14062479568.
+
+The workflow was triggered automatically by the research-branch push; it was not manually dispatched. This is technical conformance evidence only. It does not run the calibration bank, Monte Carlo benchmark or scientific experiment and does not establish causal identification, recovery of the focal accessibility effect, or the TGCV accessibility-to-Value claim. Numeric N/R/MCSE/recovery thresholds remain OPEN. The documentation-only update that records this result is subsequent to the tested commit; no executable or test source changed after the tested commit.
