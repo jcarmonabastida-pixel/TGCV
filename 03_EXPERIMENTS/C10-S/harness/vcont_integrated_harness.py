@@ -62,6 +62,11 @@ class ScenarioConfig:
     no_interference: bool
     measurement_identified: bool
     version_consistency: bool
+    zg_interaction_effect: float = 0.0
+    world_seed: int | None = None
+    z_assignment_seed: int | None = None
+    g_assignment_seed: int | None = None
+    replicate_id: str = "replicate-000"
 
     def validate(self) -> None:
         if not self.scenario_id or not self.version:
@@ -82,7 +87,7 @@ class ScenarioConfig:
         if not all(math.isfinite(x) for x in (
             self.focal_access_effect, self.package_direct_effect,
             self.focal_direct_effect, self.collateral_effect,
-            self.heterogeneity, self.interference_effect,
+            self.heterogeneity, self.interference_effect, self.zg_interaction_effect,
         )):
             raise ContractError("effects must be finite")
         if not self.randomized_z or not self.randomized_g:
@@ -118,10 +123,21 @@ class AnalysisContract:
     version_consistency: bool
     focal_direct_path_absent: bool
     common_nonfocal_regime: bool
+    target_regime_id: str = "G_REFERENCE_50_50"
+    target_regime_version: str = "001"
+    outcome_id: str = "V_CONT"
+    outcome_version: str = "001"
+    z_effect_invariant_across_g: bool = False
+    transportability_id: str | None = None
+    transportability_version: str | None = None
+    transportability_scope: str | None = None
+    transportability_evidence_status: str = "NOT_ESTABLISHED"
 
     def validate(self) -> None:
-        if not self.estimand_id or not self.estimand_version:
-            raise ContractError("estimand identity/version required")
+        if not self.estimand_id or not self.estimand_version or not self.target_regime_id or not self.target_regime_version:
+            raise ContractError("estimand and target-regime identity/version required")
+        if self.z_effect_invariant_across_g and not (self.transportability_id and self.transportability_version and self.transportability_scope and self.transportability_evidence_status == "STRUCTURALLY_VERIFIED"):
+            raise ContractError("transportability declaration requires ID, version, scope and structural verification")
 
 
 @dataclass(frozen=True)
@@ -135,6 +151,17 @@ class RunManifest:
     window_end: float
     interval_width: float
     generator_version: str
+    world_id: str = "world-legacy"
+    world_version: str = "001"
+    replicate_id: str = "replicate-000"
+    g_assignment_mechanism_id: str = "G_BALANCED"
+    g_assignment_mechanism_version: str = "001"
+    g_assignment_mechanism_hash: str = ""
+    z_assignment_mechanism_id: str = "Z_BALANCED"
+    z_assignment_mechanism_version: str = "001"
+    z_assignment_mechanism_hash: str = ""
+    g_reference_regime_id: str = "G_REFERENCE_50_50"
+    g_reference_regime_version: str = "001"
 
 
 @dataclass(frozen=True)
@@ -152,6 +179,11 @@ class TruthBundle:
     itt_g_z0_truth: float
     theta_a_truth: float | None
     seed: int
+    itt_z_run_truth: float | None = None
+    itt_z_mechanism_truth: float | None = None
+    itt_z_reference_truth: float | None = None
+    transportability_invariant_truth: bool | None = None
+    transportability_scope_truth: str | None = None
 
     @property
     def itt_package_truth(self) -> float:
@@ -187,6 +219,10 @@ class AnalyzerResult:
     abstention_reasons: tuple[str, ...]
     input_sha256: str
     output_sha256: str
+    target_regime_id: str = "G_REFERENCE_50_50"
+    target_regime_version: str = "001"
+    outcome_id: str = "V_CONT"
+    outcome_version: str = "001"
 
 
 @dataclass(frozen=True)
@@ -224,11 +260,16 @@ class Generator:
 
     def generate(self, cfg: ScenarioConfig) -> tuple[RunManifest, TruthBundle, EvidenceCandidate]:
         cfg.validate()
-        rng = random.Random(cfg.seed)
-        run_id = _hash(asdict(cfg))[:24]
-        z_assign = _balanced_binary(cfg.n_units, rng)
-        g_assign = _balanced_binary(cfg.n_units, rng)
-        baseline_x = [rng.random() for _ in range(cfg.n_units)]
+        world_seed = cfg.seed if cfg.world_seed is None else cfg.world_seed
+        z_seed = cfg.seed + 100003 if cfg.z_assignment_seed is None else cfg.z_assignment_seed
+        g_seed = cfg.seed + 200003 if cfg.g_assignment_seed is None else cfg.g_assignment_seed
+        world_rng = random.Random(world_seed)
+        z_rng = random.Random(z_seed)
+        g_rng = random.Random(g_seed)
+        run_id = _hash({"config": asdict(cfg), "replicate_id": cfg.replicate_id, "world_seed": world_seed, "z_seed": z_seed, "g_seed": g_seed})[:24]
+        z_assign = _balanced_binary(cfg.n_units, z_rng)
+        g_assign = _balanced_binary(cfg.n_units, g_rng)
+        baseline_x = [world_rng.random() for _ in range(cfg.n_units)]
         if not cfg.positivity:
             # Deliberate structural positivity failure: G=1 is unavailable in
             # the high-baseline stratum, not merely flagged in metadata.
@@ -245,15 +286,15 @@ class Generator:
 
         for i in range(cfg.n_units):
             x = baseline_x[i]
-            u_access = rng.random()
-            u_relation = rng.random()
-            u_context = rng.random()
-            u_mapping = rng.random()
-            u_provision = rng.random()
-            u_alt = rng.random()
-            u_trajectory = rng.random()
-            u_enabled = [rng.random() for _ in range(cfg.n_intervals)]
-            u_profile = [rng.random() for _ in range(cfg.n_intervals)]
+            u_access = world_rng.random()
+            u_relation = world_rng.random()
+            u_context = world_rng.random()
+            u_mapping = world_rng.random()
+            u_provision = world_rng.random()
+            u_alt = world_rng.random()
+            u_trajectory = world_rng.random()
+            u_enabled = [world_rng.random() for _ in range(cfg.n_intervals)]
+            u_profile = [world_rng.random() for _ in range(cfg.n_intervals)]
             cluster = i // 4
             # Synthetic exposure is based on the other units' assigned Z in
             # the same four-unit cluster; it is inert in no-interference worlds.
@@ -296,6 +337,7 @@ class Generator:
                         + cfg.focal_direct_effect * g
                         + cfg.collateral_effect * (z * alternative)
                         + cfg.heterogeneity * (x - 0.5) * trajectory
+                        + cfg.zg_interaction_effect * z * g
                     )
                     if not cfg.no_interference:
                         # Partial-interference potential: hold the realized assignments
@@ -341,19 +383,19 @@ class Generator:
             observed_enabled, observed_profile = [], []
             status_enabled, status_profile = [], []
             for en_state, pr_state in zip(true_enabled, true_profile):
-                if rng.random() < cfg.missing_probability:
+                if world_rng.random() < cfg.missing_probability:
                     observed_enabled.append(None)
                     status_enabled.append("MISSING")
                 else:
-                    flip = rng.random()
+                    flip = world_rng.random()
                     observed_enabled.append(int(flip < cfg.measurement_sensitivity) if en_state
                                             else int(flip >= cfg.measurement_specificity))
                     status_enabled.append("OBSERVED")
-                if rng.random() < cfg.missing_probability:
+                if world_rng.random() < cfg.missing_probability:
                     observed_profile.append(None)
                     status_profile.append("MISSING")
                 else:
-                    flip = rng.random()
+                    flip = world_rng.random()
                     observed_profile.append(int(flip < cfg.measurement_sensitivity) if pr_state
                                              else int(flip >= cfg.measurement_specificity))
                     status_profile.append("OBSERVED")
@@ -373,20 +415,24 @@ class Generator:
             })
 
         # Potential arrays are indexed [unit][z][g].
-        itt = mean(
-            (unit[1][0] + unit[1][1]) / 2 - (unit[0][0] + unit[0][1]) / 2
-            for unit in v_truth
-        )
-        # This is the total G-assignment contrast under Z=0, not theta_A.
+        itt_reference = mean((unit[1][0] + unit[1][1]) / 2 - (unit[0][0] + unit[0][1]) / 2 for unit in v_truth)
+        itt_run = mean(unit[1][g_assign[i]] - unit[0][g_assign[i]] for i, unit in enumerate(v_truth))
+        qrun = [0.5 if cfg.positivity or baseline_x[i] < 0.5 else 0.0 for i in range(cfg.n_units)]
+        itt_mechanism = mean((1-qrun[i]) * (unit[1][0]-unit[0][0]) + qrun[i] * (unit[1][1]-unit[0][1]) for i, unit in enumerate(v_truth))
         itt_g_z0 = mean(unit[0][1] - unit[0][0] for unit in v_truth)
+        unsupported_high = [i for i, x in enumerate(baseline_x) if not cfg.positivity and x >= 0.5]
+        invariant_truth = all(abs((v_truth[i][1][1]-v_truth[i][0][1]) - (v_truth[i][1][0]-v_truth[i][0][0])) < 1e-12 for i in unsupported_high) if unsupported_high else True
         window_end = cfg.last_transition_support + cfg.follow_up
         interval_width = (window_end - cfg.window_start) / cfg.n_intervals
-        manifest = RunManifest(run_id, cfg.scenario_id, cfg.version,
-                               cfg.n_units, cfg.n_intervals, cfg.window_start,
-                               window_end, interval_width, self.version)
-        truth = TruthBundle(run_id, tuple(v_truth), tuple(interval_truth),
-                            tuple(enabled_truth), tuple(profile_truth), tuple(delta_truth),
-                            itt, itt_g_z0, None, cfg.seed)
+        gh = _hash({"g_seed": g_seed, "positivity": cfg.positivity, "n": cfg.n_units})
+        zh = _hash({"z_seed": z_seed, "n": cfg.n_units})
+        manifest = RunManifest(run_id, cfg.scenario_id, cfg.version, cfg.n_units, cfg.n_intervals,
+            cfg.window_start, window_end, interval_width, self.version,
+            _hash({"world_seed": world_seed, "scenario": cfg.scenario_id}), cfg.version, cfg.replicate_id,
+            "G_BALANCED_WITH_STRATUM_SUPPORT" if not cfg.positivity else "G_BALANCED", "001", gh,
+            "Z_BALANCED_INDEPENDENT", "001", zh, "G_REFERENCE_50_50", "001")
+        truth = TruthBundle(run_id, tuple(v_truth), tuple(interval_truth), tuple(enabled_truth), tuple(profile_truth), tuple(delta_truth),
+            itt_reference, itt_g_z0, None, cfg.seed, itt_run, itt_mechanism, itt_reference, invariant_truth, "HIGH" if unsupported_high else "ALL")
         return manifest, truth, EvidenceCandidate(run_id, tuple(rows))
 
 
@@ -434,6 +480,8 @@ class Analyzer:
             g_assignment_reasons.append("G_RANDOMIZATION_NOT_ESTABLISHED")
         if not contract.positivity:
             g_assignment_reasons.append("COMMON_SUPPORT_FAILURE")
+            if not contract.z_effect_invariant_across_g:
+                package_reasons.append("REFERENCE_REGIME_NOT_IDENTIFIED_WITHOUT_TOTAL_EFFECT_TRANSPORTABILITY")
         if not contract.no_interference:
             shared_reasons.append("INTERFERENCE_REQUIRES_CLUSTER_EXPOSURE_ESTIMAND")
         if not contract.measurement_identified:
@@ -472,7 +520,7 @@ class Analyzer:
             package_status: Identification = "IDENTIFIED"
         else:
             package, package_se = None, None
-            package_status = "NOT_IDENTIFIED" if "PACKAGE_RANDOMIZATION_NOT_ESTABLISHED" in package_reasons else "INDETERMINATE"
+            package_status = "NOT_IDENTIFIED" if any(x in package_reasons for x in ("PACKAGE_RANDOMIZATION_NOT_ESTABLISHED", "REFERENCE_REGIME_NOT_IDENTIFIED_WITHOUT_TOTAL_EFFECT_TRANSPORTABILITY")) else "INDETERMINATE"
 
         first_stage = None
         if observed_v is not None:
@@ -506,10 +554,12 @@ class Analyzer:
                    "package_itt": package, "g_assignment_effect": g_assignment_estimate,
                    "first_stage_delta_t_acc": first_stage,
                    "package_se": package_se, "g_assignment_se": g_assignment_se,
-                   "reasons": list(reasons), "input_sha256": evidence.sha256}
-        return AnalyzerResult(evidence.run_id, contract.estimand_id,
-            package_status, g_assignment_status, package, g_assignment_estimate, first_stage, package_se, g_assignment_se,
-            reasons, evidence.sha256, _hash(payload))
+                   "reasons": list(reasons), "input_sha256": evidence.sha256,
+                   "target_regime_id": contract.target_regime_id, "target_regime_version": contract.target_regime_version,
+                   "outcome_id": contract.outcome_id, "outcome_version": contract.outcome_version}
+        return AnalyzerResult(evidence.run_id, contract.estimand_id, package_status, g_assignment_status,
+            package, g_assignment_estimate, first_stage, package_se, g_assignment_se, reasons, evidence.sha256,
+            _hash(payload), contract.target_regime_id, contract.target_regime_version, contract.outcome_id, contract.outcome_version)
 
 
 class Evaluator:
@@ -524,10 +574,15 @@ class Evaluator:
             "first_stage_delta_t_acc": result.first_stage_delta_t_acc,
             "package_se": result.package_se, "g_assignment_se": result.g_assignment_se,
             "reasons": list(result.abstention_reasons), "input_sha256": result.input_sha256,
+            "target_regime_id": result.target_regime_id, "target_regime_version": result.target_regime_version,
+            "outcome_id": result.outcome_id, "outcome_version": result.outcome_version,
         }
         if _hash(payload) != result.output_sha256:
             raise FirewallError("Analyzer output seal invalid")
-        package_error = None if result.package_itt is None else abs(result.package_itt - truth.itt_z_truth)
+        if (result.estimand_id != contract.estimand_id or result.target_regime_id != contract.target_regime_id or result.target_regime_version != contract.target_regime_version or result.outcome_id != contract.outcome_id or result.outcome_version != contract.outcome_version):
+            raise ContractError("estimand, target regime or outcome identity mismatch")
+        package_target = truth.itt_z_run_truth
+        package_error = None if result.package_itt is None or package_target is None else abs(result.package_itt - package_target)
         # Analyzer's G-assignment estimate is adjudicated against its matching
         # assignment truth, never against theta_A.
         g_assignment_error = (
@@ -588,6 +643,7 @@ def benchmark_scenarios(n_units: int = 400, n_intervals: int = 20,
             "interference_effect": 0.15, "no_interference": False}),
         ("R0_SUPPORT_FAILURE", "R0", "POSITIVITY_FAILURE", {"positivity": False}),
         ("R0_HETEROGENEITY", "R0", "EFFECT_HETEROGENEITY", {"heterogeneity": 0.20}),
+        ("R2_SUPPORT_FAILURE_ZG_INTERACTION", "R2", "SUPPORT_FAILURE_ZG_INTERACTION", {"positivity": False, "alternative_probability": 0.65, "collateral_effect": 0.10, "zg_interaction_effect": 0.30}),
     ]
     result = []
     for sid, profile, mechanism, overrides in specs:
@@ -600,8 +656,7 @@ def benchmark_scenarios(n_units: int = 400, n_intervals: int = 20,
 
 def contract_for(cfg: ScenarioConfig) -> AnalysisContract:
     return AnalysisContract(
-        estimand_id="ITT_D2_AND_THETA_A_VCONT",
-        estimand_version="001",
+        estimand_id="ITT_Z_RUN_CONDITIONAL_AND_ITT_G_Z0", estimand_version="002",
         randomized_z=cfg.randomized_z,
         randomized_g=cfg.randomized_g,
         positivity=cfg.positivity,
@@ -609,5 +664,11 @@ def contract_for(cfg: ScenarioConfig) -> AnalysisContract:
         measurement_identified=cfg.measurement_identified,
         version_consistency=cfg.version_consistency,
         focal_direct_path_absent=(cfg.focal_direct_effect == 0.0),
-        common_nonfocal_regime=True,
+        common_nonfocal_regime=True, target_regime_id="G_REALIZED_VECTOR", target_regime_version="001",
+        outcome_id="V_CONT", outcome_version="001",
+        z_effect_invariant_across_g=(not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 and cfg.package_direct_effect == 0.0 and cfg.collateral_effect == 0.0 and cfg.heterogeneity == 0.0 and cfg.no_interference),
+        transportability_id=("R0_TOTAL_Z_EFFECT_INVARIANCE" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else None),
+        transportability_version=("001" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else None),
+        transportability_scope=("HIGH" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else None),
+        transportability_evidence_status=("STRUCTURALLY_VERIFIED" if not cfg.positivity and cfg.profile == "R0" and cfg.zg_interaction_effect == 0.0 else "NOT_ESTABLISHED"),
     )
