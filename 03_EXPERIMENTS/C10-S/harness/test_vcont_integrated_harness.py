@@ -4,6 +4,7 @@ These tests are intentionally not run as part of documentary/code authoring.
 Running them generates synthetic truth and requires the explicit execution gate.
 """
 import unittest
+from dataclasses import replace
 
 from vcont_integrated_harness import (
     Analyzer, Evaluator, Generator, Sealer, benchmark_scenarios, contract_for,
@@ -60,6 +61,19 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         self.assertLess(truthn.itt_g_z0_truth, 0.0)
         self.assertEqual(result0.g_assignment_status, "IDENTIFIED")
         self.assertEqual(resultn.g_assignment_status, "IDENTIFIED")
+
+    def test_g_assignment_does_not_require_z_randomization(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        _, truth, candidate = self.generator.generate(cfg)
+        sealed = self.sealer.seal(candidate)
+        contract = replace(contract_for(cfg), randomized_z=False)
+        result = self.analyzer.analyze(sealed, contract)
+        report = self.evaluator.evaluate(truth, result, contract, tolerance=0.10)
+        self.assertEqual(result.package_status, "NOT_IDENTIFIED")
+        self.assertEqual(result.g_assignment_status, "IDENTIFIED")
+        self.assertIsNotNone(result.g_assignment_effect)
+        self.assertIsNone(report.package_recovered)
+        self.assertIsNotNone(report.g_assignment_recovered)
 
     def test_direct_g_path_does_not_contaminate_g_assignment_truth(self):
         _, _, _, result, _ = self.execute_world(self.worlds()["R0_DIRECT_G"])
