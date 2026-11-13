@@ -1,6 +1,6 @@
 # C10-S V_cont — Gate 157: MONTE_CARLO Benchmark Aggregation Implementation
 
-**Status:** IMPLEMENTED / TECHNICALLY VERIFIED — CLASSIFICATION REGRESSION CONDITIONAL  
+**Status:** IMPLEMENTED / TECHNICALLY VERIFIED — TARGETED CLASSIFICATION REGRESSION PASS  
 **Branch:** `research/c10-s-consolidation-draft`  
 **Governing contract:** `C10_S_VCONT_MONTE_CARLO_MATRIX_COVERAGE_CONTRACT_GATE_156_DRAFT_001.md`  
 **Preflight:** `C10_S_VCONT_MONTE_CARLO_GATE_157_IMPLEMENTATION_PREFLIGHT_DRAFT_001.md`  
@@ -87,23 +87,29 @@ This is deterministic technical verification only. It is not scientific, causal,
 
 ## 4.1 Post-verification audit — invalid-output classification
 
-A post-closure audit checked the final classification change against the exact verified commit `0afb77fb45308a7d1573d0ab644a9d6f69e7302d`.
+A post-closure audit initially found that the 99-test Gate 157 suite did not directly exercise the `TRUTH_MISSING` and `INVALID_OUTPUT` branches. The gap was corrected with a dedicated integration regression in `test_vcont_integrated_harness.py`.
 
-The implementation contains distinct `TRUTH_MISSING` and `INVALID_OUTPUT` branches and separate counters. However, the test file at that exact commit contains no assertions exercising either branch or their denominators. The successful 99/99 primary suite and 99/99 clean replay therefore verify the suite as a whole, but **do not specifically verify this final classification correction**.
+The regression constructs two outer worlds for the same EVALUABLE RUN-conditional pair:
+- M0: the DGP run truth is absent while the Analyzer status remains IDENTIFIED; expected classification `TRUTH_MISSING`.
+- M1: the DGP truth is present while the sealed Analyzer estimate is absent and its status remains IDENTIFIED; expected classification `INVALID_OUTPUT`.
+
+Assertions verify both distinct contribution states, `truth_missing_count=1`, `invalid_output_count=1`, `missing_contribution_count=0`, `status_denominator=2`, `numeric_denominator=0`, `abstention_count=0`, and `observed_M=expected_M=2`.
+
+**Targeted verification:** commit `a399c5810fa988b31390e2957671f6bf134836b7`; GitHub Actions run `43496381997`; compile PASS; primary suite 100/100 PASS; clean source-archive replay 100/100 PASS. Artifact ID `14070369862`; SHA-256 `c9a3050c8081bb48099b57ad123cd2e955c31f88791529016c2943252b5f9ffd`. Workflow: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/43496381997.
 
 Corrected status:
 - Classification code: IMPLEMENTED.
-- General technical suite at the verified commit: PASS (99/99 + 99/99 replay).
-- Targeted regression coverage for `TRUTH_MISSING` vs `INVALID_OUTPUT`: NOT VERIFIED.
-- Gate 157 overall: IMPLEMENTED / TECHNICALLY VERIFIED, with this narrow regression item CONDITIONAL / OPEN.
-- No claim is made that the targeted classification behavior has passed tests.
+- Targeted regression: PASS.
+- General technical suite and clean replay: PASS (100/100 each).
+- Gate 157 classification item: CLOSED — TECHNICALLY VERIFIED.
+- This is deterministic software verification, not calibration, benchmark evidence or scientific execution.
 
-The targeted regression test and a new CI run must be completed before this narrow item can be closed. This audit does not authorize calibration, seed-bank generation or scientific execution.
+No calibration, seed-bank generation or scientific execution is authorized by this verification.
 
 ## 5. Gate status
 
 - Gate 154: M/R separation contract — DEFINED / PERSISTED.
 - Gate 155: outer M and per-scenario aggregation — IMPLEMENTED / TECHNICALLY VERIFIED.
 - Gate 156: 52-pair matrix coverage contract — IMPLEMENTED / TECHNICALLY VERIFIED through Gate 157.
-- Gate 157: benchmark-level aggregation and typed R identity — IMPLEMENTED / TECHNICALLY VERIFIED; targeted invalid-output classification regression remains CONDITIONAL / OPEN.
+- Gate 157: benchmark-level aggregation, typed R identity and `TRUTH_MISSING` / `INVALID_OUTPUT` classification regression — IMPLEMENTED / TECHNICALLY VERIFIED (100/100 primary + 100/100 clean replay; run `43496381997`).
 - `main` unchanged; PR #116 remains Draft on its original base branch.
