@@ -925,6 +925,56 @@ class Evaluator:
             next(iter(reference_estimand_ids))[0], next(iter(reference_estimand_ids))[1])
 
 
+    def evaluate_matrix_pairs(self, runs, tolerance: float, matrix=None):
+        """Evaluate this scenario against its versioned matrix at run and repeat levels.
+
+        Each run contributes run-conditional, reference-regime and ITT-G records.
+        Mechanism-marginal is emitted once from the repeated-assignment aggregate.
+        """
+        from vcont_benchmark_protocol import (
+            PairEvaluationAdapter, ProtocolError, build_scenario_estimand_matrix,
+        )
+        runs = tuple(runs)
+        if not runs:
+            raise ContractError("matrix evaluation requires at least one run")
+        scenario_versions = {(item[3].scenario_id, item[3].version) for item in runs}
+        world_ids = {item[3].world_id for item in runs}
+        if len(scenario_versions) != 1 or len(world_ids) != 1:
+            raise ContractError("matrix repeated evaluation requires one scenario/version and one fixed world")
+        scenario_id, scenario_version = next(iter(scenario_versions))
+        specs = tuple(matrix) if matrix is not None else build_scenario_estimand_matrix()
+        selected = tuple(spec for spec in specs if spec.key.scenario_id == scenario_id)
+        if len(selected) != 4 or {spec.key.scenario_version for spec in selected} != {scenario_version}:
+            raise ProtocolError("matrix must contain exactly four pairs for the observed scenario/version")
+        if len({spec.key for spec in selected}) != 4:
+            raise ProtocolError("matrix contains duplicate scenario-estimand keys")
+        adapter = PairEvaluationAdapter()
+        per_run_reports = []
+        records = []
+        for truth, result, contract, manifest in runs:
+            if manifest.scenario_id != scenario_id or manifest.version != scenario_version:
+                raise ContractError("run manifest scenario identity/version changed within repeated set")
+            per_run_reports.append(self.evaluate(truth, result, contract, tolerance, manifest))
+            for spec in selected:
+                if spec.key.estimand_id == "ITT_Z_MECHANISM_MARGINAL_VCONT":
+                    continue
+                records.append(adapter.adapt_run(spec, truth, result, manifest))
+        repeated = self.evaluate_repeated_assignment(list(runs), tolerance)
+        representative_manifest = runs[0][3]
+        for spec in selected:
+            if spec.key.estimand_id in ("ITT_Z_MECHANISM_MARGINAL_VCONT", "ITT_Z_REFERENCE_REGIME_VCONT"):
+                records.append(adapter.adapt_repeated(spec, repeated, representative_manifest))
+        expected = {spec.key for spec in selected}
+        if {record.key for record in records} != expected:
+            raise ProtocolError("matrix adapter did not produce all four required estimand keys")
+        return {
+            "scenario_id": scenario_id,
+            "scenario_version": scenario_version,
+            "pair_records": tuple(records),
+            "per_run_reports": tuple(per_run_reports),
+            "repeated_assignment_report": repeated,
+        }
+
 def benchmark_scenarios(n_units: int = 400, n_intervals: int = 20,
                         seed: int = 20261112) -> tuple[ScenarioConfig, ...]:
     """Explicit candidate design points; not empirical rates or confirmatory defaults."""
