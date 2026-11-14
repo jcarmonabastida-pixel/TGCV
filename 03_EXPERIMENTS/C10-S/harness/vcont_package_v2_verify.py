@@ -187,6 +187,9 @@ def _check_registered_uint64(files: Mapping[str, Any]) -> tuple[int, ...]:
         value = files[file_path]
         found = []
         for pointer, child in _pointer_occurrences(value):
+            key = pointer.rsplit("/", 1)[-1]
+            if key in {"seed", "world_seed", "z_assignment_seed", "g_assignment_seed"} and not _registered_pattern(pointer):
+                raise PackageVerificationError(f"{file_path}{pointer}: direct seed field is outside the frozen registry")
             if re.fullmatch(pattern, pointer):
                 _uint64(child, file_path + pointer)
                 found.append(pointer)
@@ -195,6 +198,76 @@ def _check_registered_uint64(files: Mapping[str, Any]) -> tuple[int, ...]:
         if not found or len(found) % minimum_per_group != 0:
             raise PackageVerificationError(f"{file_path}: registered uint64 pointers are missing or incomplete")
         counts.append(len(found))
+
+    # Cardinality and per-row consumption checks for every direct row registry.
+    for file_path in (
+        "seeds/evaluation_seed_assignments.json",
+        "seeds/calibration_seed_manifest.json",
+        "runs/temporal_manifest.json",
+    ):
+        envelope = files[file_path]
+        rows = envelope.get("rows") if isinstance(envelope, dict) else None
+        if (not isinstance(rows, list) or not rows
+                or envelope.get("row_count") != len(rows)):
+            raise PackageVerificationError(f"{file_path}: row_count/rows envelope is incomplete")
+        for index, row in enumerate(rows):
+            if not isinstance(row, dict):
+                raise PackageVerificationError(f"{file_path}/rows/{index}: row is not an object")
+            fields = (("world_seed", "z_assignment_seed", "g_assignment_seed")
+                      if file_path != "runs/temporal_manifest.json"
+                      else ("world_seed", "z_assignment_seed", "g_assignment_seed"))
+            for field in fields:
+                _uint64(row.get(field), f"{file_path}/rows/{index}/{field}")
+
+    report_envelope = files["report/report.json"]
+    report_payload = report_envelope.get("report") if isinstance(report_envelope, dict) else None
+    if not isinstance(report_payload, dict):
+        raise PackageVerificationError("report/report.json: FrozenReportSnapshot report payload is missing")
+    temporal = report_payload.get("temporal_manifest")
+    nested_temporal = report_payload.get("manifest", {}).get("temporal_manifest")
+    pairs = report_payload.get("pair_ledger")
+    nested_pairs = report_payload.get("manifest", {}).get("pair_ledger")
+    if not all(isinstance(rows, list) for rows in (temporal, nested_temporal, pairs, nested_pairs)):
+        raise PackageVerificationError("report/report.json: registered duplicate seed-bearing arrays are missing")
+    if temporal != nested_temporal or pairs != nested_pairs:
+        raise PackageVerificationError("report/report.json: duplicate seed-bearing report views diverge")
+    for collection_name, rows, field_names in (
+        ("temporal_manifest", temporal, ("world_seed", "z_assignment_seed", "g_assignment_seed")),
+        ("pair_ledger", pairs, ()),
+    ):
+        for index, row in enumerate(rows):
+            if collection_name == "temporal_manifest":
+                for field in field_names:
+                    _uint64(row.get(field), f"report/{collection_name}/{index}/{field}")
+            else:
+                contributions = row.get("contributions") if isinstance(row, dict) else None
+                if not isinstance(contributions, list) or not contributions:
+                    raise PackageVerificationError(f"report/pair_ledger/{index}: contributions missing")
+                for j, contribution in enumerate(contributions):
+                    _uint64(contribution.get("world_seed"), f"report/pair_ledger/{index}/contributions/{j}/world_seed")
+    scenarios = report_payload.get("scenario_reports")
+    if not isinstance(scenarios, dict) or len(scenarios) != 13:
+        raise PackageVerificationError("report scenario_reports must contain exactly 13 scenarios")
+    for scenario_id, scenario in scenarios.items():
+        outer_rows = scenario.get("per_outer_replicate") if isinstance(scenario, dict) else None
+        if not isinstance(outer_rows, list) or not outer_rows:
+            raise PackageVerificationError(f"report/scenario_reports/{scenario_id}: per_outer_replicate missing")
+        for index, outer in enumerate(outer_rows):
+            run = outer.get("run") if isinstance(outer, dict) else None
+            if not isinstance(run, list) or len(run) != 4:
+                raise PackageVerificationError(f"report/scenario_reports/{scenario_id}/{index}: RUN tuple malformed")
+            _uint64(run[0].get("seed"), f"report/scenario_reports/{scenario_id}/{index}/run/0/seed")
+            for field in ("world_seed", "z_assignment_seed", "g_assignment_seed"):
+                _uint64(run[3].get(field), f"report/scenario_reports/{scenario_id}/{index}/run/3/{field}")
+
+    run_records = files["runs/run_records.json"]
+    outer_records = run_records.get("outer_world_evidence_records") if isinstance(run_records, dict) else None
+    if not isinstance(outer_records, list) or not outer_records:
+        raise PackageVerificationError("run_records outer_world_evidence_records is missing")
+    for index, outer in enumerate(outer_records):
+        key = outer.get("key") if isinstance(outer, dict) else None
+        _uint64(key.get("world_seed") if isinstance(key, dict) else None,
+                f"runs/run_records.json/outer_world_evidence_records/{index}/key/world_seed")
     # No wrapper may occur in any package JSON outside a registered path.
     for file_path, value in files.items():
         if file_path in expected_paths:
