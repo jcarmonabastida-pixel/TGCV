@@ -722,21 +722,24 @@ def produce_and_capture_benchmark(
     if (len(set(captured_temporal)) != expected_temporal_rows
             or set(captured_temporal) != set(observed_temporal)):
         raise ContractError("benchmark temporal manifest does not join one-to-one with captured RUN/R evidence")
-    evidence_worlds = {
-        (scenario_id, outer_id): world_id
-        for scenario_id, outer_id, world_id in evidence_index
-    }
+    evidence_worlds = {}
+    for outer_bundle in bundles:
+        run_manifest = outer_bundle.run_bundle.run_manifest.restore(RunManifest)
+        evidence_worlds[(outer_bundle.scenario_id, outer_bundle.outer_replicate_id)] = (
+            outer_bundle.world_id, run_manifest.run_id
+        )
     for pair in report.get("pair_ledger", ()):
         scenario_id, scenario_version, _, _, level = pair["key"]
-        if level != "MONTE_CARLO" or len(pair.get("contributions", ())) != design.outer_replicates:
-            raise ContractError("pair ledger contribution count/key does not match declared M")
+        if (level != "MONTE_CARLO" or scenario_version != versions.get(scenario_id)
+                or len(pair.get("contributions", ())) != design.outer_replicates):
+            raise ContractError("pair ledger contribution count/key does not match declared scenario/M design")
         contribution_ids = set()
         for contribution in pair["contributions"]:
             outer_id = contribution["outer_replicate_id"]
-            expected_world = evidence_worlds.get((scenario_id, outer_id))
+            expected_world, expected_run_id = evidence_worlds.get((scenario_id, outer_id), (None, None))
             if (expected_world is None or contribution["world_id"] != expected_world
-                    or outer_id in contribution_ids):
-                raise ContractError("52-pair contribution does not join uniquely to its captured scenario/M evidence")
+                    or contribution["run_id"] != expected_run_id or outer_id in contribution_ids):
+                raise ContractError("52-pair contribution does not join uniquely to its captured scenario/M RUN evidence")
             contribution_ids.add(outer_id)
         if contribution_ids != {f"outer-{m:06d}" for m in range(design.outer_replicates)}:
             raise ContractError("pair ledger is missing one or more captured M contributions")
