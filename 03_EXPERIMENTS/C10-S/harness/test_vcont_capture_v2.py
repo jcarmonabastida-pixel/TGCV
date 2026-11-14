@@ -30,29 +30,215 @@ class CaptureV2Tests(unittest.TestCase):
         )
 
     def report_fixture(self):
-        temporal = [{
-            "scenario_id": "R0_FOCAL_POSITIVE",
-            "scenario_version": "VCONT-SYNTH-001",
-            "N": 32,
-            "outer_replicate_id": "outer-000000",
-            "assignment_role": "RUN",
-            "assignment_index": -1,
-            "run_id": "run-0001",
-            "world_id": "world-0001",
-            "world_seed": 18446744073709551615,
-            "z_assignment_seed": 9007199254740993,
-            "g_assignment_seed": 17,
-        }]
-        pair_ledger = [{
-            "key": ["R0_FOCAL_POSITIVE", "VCONT-SYNTH-001",
-                    "ITT_Z_RUN_CONDITIONAL_VCONT", "001", "MONTE_CARLO"],
-            "contributions": [{
-                "outer_replicate_id": "outer-000000",
-                "world_id": "world-0001",
-                "run_id": "run-0001",
-                "world_seed": 18446744073709551615,
-            }],
-        }]
+        temporal = []
+        for scenario_id, scenario_version in self.versions:
+            for m in range(self.design.outer_replicates):
+                outer_id = f"outer-{m:06d}"
+                for role, assignment_index in (
+                    [("RUN", -1)] + [
+                        ("REPEATED_ASSIGNMENT", r)
+                        for r in range(self.design.repeated_assignments)
+                    ]
+                ):
+                    temporal.append({
+                        "scenario_id": scenario_id,
+                        "scenario_version": scenario_version,
+                        "N": self.design.n_units,
+                        "outer_replicate_id": outer_id,
+                        "assignment_role": role,
+                        "assignment_index": assignment_index,
+                        "run_id": f"run-{scenario_id}-{m}-{assignment_index}",
+                        "world_id": f"world-{scenario_id}-{m}",
+                        "world_seed": 17,
+                        "z_assignment_seed": 19 + max(0, assignment_index),
+                        "g_assignment_seed": 23 + max(0, assignment_index),
+                    })
+
+        binary = {
+            "n": 2, "successes": 1, "rate": 0.5, "mcse": 0.35,
+            "wilson_95_low": 0.1, "wilson_95_high": 0.9,
+        }
+        metric = {
+            "outer_replicates": 2, "metric_mean": 0.1, "metric_sd": 0.2,
+            "mcse": 0.14, "target_mcse": 0.2, "precision_status": "PASS",
+        }
+        rmse_metric = {
+            "outer_replicates": 2, "rmse": 0.2, "mean_squared_error": 0.04,
+            "mcse_rmse_delta": 0.1, "target_mcse": 0.2, "precision_status": "PASS",
+        }
+        pair_ledger = []
+        scenario_reports = {}
+
+        truth_fields = (
+            "run_id potential_v potential_interval_truth potential_enabled_truth "
+            "potential_profile_truth potential_delta_t_acc itt_z_truth itt_g_z0_truth "
+            "theta_a_truth seed itt_z_run_truth itt_z_mechanism_truth itt_z_reference_truth "
+            "transportability_invariant_truth transportability_scope_truth "
+            "g_reference_regime_id g_reference_regime_version g_assignment_mechanism_hash "
+            "z_assignment_mechanism_hash outer_replicate_id assignment_role assignment_index"
+        ).split()
+        analyzer_fields = (
+            "run_id estimand_id package_status g_assignment_status package_itt "
+            "g_assignment_effect first_stage_delta_t_acc package_se g_assignment_se "
+            "abstention_reasons input_sha256 output_sha256 target_regime_id "
+            "target_regime_version outcome_id outcome_version reference_regime_status "
+            "reference_regime_id reference_regime_version g_assignment_mechanism_hash "
+            "z_assignment_mechanism_hash transportability_id transportability_version "
+            "transportability_scope transportability_evidence_status estimand_version "
+            "g_assignment_mechanism_id g_assignment_mechanism_version "
+            "z_assignment_mechanism_id z_assignment_mechanism_version provenance_sha256 "
+            "transportability_outcome_id transportability_basis reference_regime_itt "
+            "run_conditional_estimand_id run_conditional_estimand_version "
+            "reference_regime_estimand_id reference_regime_estimand_version "
+            "g_assignment_estimand_id g_assignment_estimand_version outer_replicate_id "
+            "assignment_role assignment_index"
+        ).split()
+        contract_fields = (
+            "estimand_id estimand_version randomized_z randomized_g positivity "
+            "no_interference measurement_identified version_consistency "
+            "focal_direct_path_absent common_nonfocal_regime target_regime_id "
+            "target_regime_version outcome_id outcome_version z_effect_invariant_across_g "
+            "transportability_id transportability_version transportability_scope "
+            "transportability_evidence_status g_assignment_mechanism_hash "
+            "z_assignment_mechanism_hash g_assignment_mechanism_id "
+            "g_assignment_mechanism_version z_assignment_mechanism_id "
+            "z_assignment_mechanism_version reference_regime_id reference_regime_version "
+            "transportability_outcome_id transportability_basis run_conditional_estimand_id "
+            "run_conditional_estimand_version mechanism_marginal_estimand_id "
+            "mechanism_marginal_estimand_version reference_regime_estimand_id "
+            "reference_regime_estimand_version g_assignment_estimand_id "
+            "g_assignment_estimand_version"
+        ).split()
+        run_manifest_fields = (
+            "run_id scenario_id version n_units n_intervals window_start window_end "
+            "interval_width generator_version world_id world_version replicate_id "
+            "g_assignment_mechanism_id g_assignment_mechanism_version "
+            "g_assignment_mechanism_hash z_assignment_mechanism_id "
+            "z_assignment_mechanism_version z_assignment_mechanism_hash "
+            "g_reference_regime_id g_reference_regime_version z_assignment_vector_hash "
+            "g_assignment_vector_hash g_assignment_probability_by_stratum world_seed "
+            "z_assignment_seed g_assignment_seed outer_replicate_id assignment_role "
+            "assignment_index"
+        ).split()
+        evaluation_fields = (
+            "run_id package_abs_error g_assignment_abs_error package_recovered "
+            "g_assignment_recovered expected_abstention_respected notes "
+            "reference_regime_status_correct reference_regime_estimate_present"
+        ).split()
+        repeated_fields = (
+            "world_id replicate_count mean_run_estimate mechanism_truth marginal_abs_error "
+            "marginal_recovered per_run_reports reference_truth reference_estimate_mean "
+            "reference_abs_error reference_recovered reference_identification_status "
+            "mechanism_marginal_estimand_id mechanism_marginal_estimand_version "
+            "reference_regime_estimand_id reference_regime_estimand_version"
+        ).split()
+
+        for scenario_id, scenario_version in self.versions:
+            selected = [spec for spec in self.matrix if spec.key.scenario_id == scenario_id]
+            for spec in selected:
+                contributions = []
+                for m in range(self.design.outer_replicates):
+                    contributions.append({
+                        "outer_replicate_id": f"outer-{m:06d}",
+                        "world_id": f"world-{scenario_id}-{m}",
+                        "world_seed": 17,
+                        "run_id": f"run-{scenario_id}-{m}",
+                        "temporal_source": "RUN",
+                        "evaluation_class": "EVALUABLE",
+                        "run_status": "IDENTIFIED",
+                        "identification_status": "IDENTIFIED",
+                        "identification_expected": "IDENTIFIED",
+                        "abstention_expected": False,
+                        "adjudicated_status": "IDENTIFIED",
+                        "identification_correct": True,
+                        "abstention_correct": True,
+                        "abstained": False,
+                        "abstention_reasons": [],
+                        "estimate": 0.1,
+                        "truth": 0.1,
+                        "signed_error": 0.0,
+                        "absolute_error": 0.0,
+                        "squared_error": 0.0,
+                        "contribution_state": "NUMERIC",
+                    })
+                pair_ledger.append({
+                    "key": [scenario_id, scenario_version, spec.key.estimand_id,
+                            spec.key.estimand_version, "MONTE_CARLO"],
+                    "evaluation_class": "EVALUABLE",
+                    "truth_status": "DEFINED",
+                    "expected_M": 2, "observed_M": 2,
+                    "numeric_denominator": 2, "status_denominator": 2,
+                    "missing_contribution_count": 0, "truth_missing_count": 0,
+                    "invalid_output_count": 0, "abstention_count": 0,
+                    "identification_correct_count": 2, "abstention_correct_count": 2,
+                    "identification_rates": {
+                        "identified": binary, "not_identified": binary,
+                        "indeterminate": binary, "abstained": binary,
+                    },
+                    "run_identification_rates": {
+                        "identified": binary, "not_identified": binary,
+                        "indeterminate": binary,
+                    },
+                    "metrics": {"bias": metric, "mae": metric, "rmse": rmse_metric},
+                    "precision_status": "PASS_PRECISION",
+                    "contributions": contributions,
+                })
+
+            per_outer = []
+            for m in range(self.design.outer_replicates):
+                outer_id = f"outer-{m:06d}"
+                run = [
+                    dict.fromkeys(truth_fields),
+                    dict.fromkeys(analyzer_fields),
+                    dict.fromkeys(contract_fields),
+                    dict.fromkeys(run_manifest_fields),
+                ]
+                run[0].update({"run_id": f"run-{scenario_id}-{m}", "seed": 17})
+                run[1].update({"run_id": f"run-{scenario_id}-{m}"})
+                run[3].update({
+                    "run_id": f"run-{scenario_id}-{m}", "scenario_id": scenario_id,
+                    "version": scenario_version, "n_units": self.design.n_units,
+                    "world_seed": 17, "z_assignment_seed": 19, "g_assignment_seed": 23,
+                    "outer_replicate_id": outer_id,
+                })
+                evaluation = dict.fromkeys(evaluation_fields)
+                evaluation["run_id"] = f"run-{scenario_id}-{m}"
+                repeated = dict.fromkeys(repeated_fields)
+                repeated["world_id"] = f"world-{scenario_id}-{m}"
+                repeated["per_run_reports"] = [dict(evaluation) for _ in range(2)]
+                per_outer.append({
+                    "outer_replicate_id": outer_id,
+                    "run": run,
+                    "run_report": evaluation,
+                    "repeated_report": repeated,
+                })
+            scenario_reports[scenario_id] = {
+                "scenario_id": scenario_id, "scenario_version": scenario_version,
+                "n_units": self.design.n_units, "outer_replicate_count": 2,
+                "coverage": dict.fromkeys((
+                    "required_pairs", "run_conditional_numeric", "g_assignment_numeric",
+                    "mechanism_marginal_numeric", "reference_regime_numeric",
+                    "reference_regime_identification_status",
+                ), 2),
+                "run_conditional": {
+                    "bias": metric, "mae": metric, "rmse": rmse_metric,
+                    "recovery_rate": binary, "identification_rate": binary,
+                },
+                "g_assignment_z0": {
+                    "bias": metric, "mae": metric, "rmse": rmse_metric,
+                    "recovery_rate": binary, "identification_rate": binary,
+                },
+                "mechanism_marginal": {
+                    "bias": metric, "mae": metric, "rmse": rmse_metric,
+                    "recovery_rate": binary,
+                },
+                "reference_regime": {
+                    "bias": metric, "mae": metric, "rmse": rmse_metric,
+                    "identification_rate": binary, "recovery_rate": binary,
+                },
+                "per_outer_replicate": per_outer,
+            }
+
         manifest = {
             "scenario_versions": self.versions,
             "N": 32, "M": 2, "R": 2,
@@ -77,13 +263,11 @@ class CaptureV2Tests(unittest.TestCase):
             "temporal_manifest": temporal,
             "pair_ledger": pair_ledger,
             "manifest": manifest,
-            "scenario_reports": {},
+            "scenario_reports": scenario_reports,
             "coverage": {"required_pairs": 52, "observed_pairs": 52, "scenario_count": 13},
             "report_fingerprint": hashlib.sha256(
-                json.dumps(
-                    json.loads(json.dumps(manifest, default=lambda value: value.__dict__, sort_keys=True)),
-                    sort_keys=True, separators=(",", ":"), allow_nan=False,
-                ).encode("utf-8")
+                json.dumps(manifest, sort_keys=True, separators=(",", ":"), allow_nan=False)
+                .encode("utf-8")
             ).hexdigest(),
         }
 
