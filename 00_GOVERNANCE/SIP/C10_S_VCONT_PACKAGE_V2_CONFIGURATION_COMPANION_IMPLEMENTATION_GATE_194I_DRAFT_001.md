@@ -153,3 +153,27 @@ Three additional tests were added for writer parity, historical fingerprint mism
 
 **Updated disposition:** IMPLEMENTED / CONDITIONAL — STATIC REVIEW ONLY; TESTS NOT EXECUTED. This closes the missing historical seed-bank digest check at source-code level; it does not establish that the implementation passes the tests or a real package.
 
+## 9. Gate 194-I.2 — source-level consistency audit
+
+The writer, verifier and adversarial fixtures were reviewed against the single normative definitions in Gate 194-F §§4–5 and 11–12, the Gate 181 source projection and capture identity, and the Gate 179 SeedAssignment source fingerprint.
+
+The audit confirms at source level:
+
+- writer-generated companion paths are exactly the two frozen paths and are excluded from caller-supplied companions;
+- the Analyzer component points to the canonical representative RUN snapshot, not to its own companion declaration;
+- the verifier independently enforces canonical scenario/M/R record order and consumes every RUN/R AnalysisContract snapshot;
+- all 37 fields and the nine-boolean/five-nullable-string type partition are checked;
+- the historical Gate 179 seed fingerprint is independently reconstructed from decoded source integers and compared with the evaluation manifest's `seed_bank_fingerprint_legacy`, the design object's `seed_bank_fingerprint`, and the benchmark-design declaration;
+- the typed evaluation assignment-manifest digest remains a separate component;
+- the 28 component records, exact source references, component order and aggregate digest are independently reconstructed;
+- the test runner guard remains after all 18 added test methods, and the tests are in the existing manual-workflow allowlist.
+
+**Static disposition: PASS_STATIC for the source-to-wire companion contract and its independent reconstruction.**  
+**Overall Gate 194-I disposition: CONDITIONAL — tests not executed and no real package assembled or verified.**
+
+The current comparison reports the research branch as diverged from `main` (32 commits behind). No merge, rebase, cherry-pick or promotion was performed. PR #116 remains open and Draft. All Gate 194-I changes remain isolated to the research branch.
+
+The pure-test workflow is manual-only (`workflow_dispatch`) and was not dispatched. No tests, compilation, CI, package generation, calibration or scientific execution were performed.
+
+**Next operation requiring separate authorization:** dispatch the existing pure-test workflow for the 18 new companion cases and the pre-existing verifier regression suite. A test-workflow PASS would still not authorize package generation or scientific execution.
+
