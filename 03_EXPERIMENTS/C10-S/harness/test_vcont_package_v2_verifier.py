@@ -9,6 +9,7 @@ from types import SimpleNamespace
 from vcont_package_v2 import (
     COMPANION_PATHS, GENERATED_COMPANION_PATHS,
     _assemble_analysis_contracts_v1,
+    _assemble_configuration_fingerprints_v1,
     _legacy_seed_bank_fingerprint_from_wire_rows,
 )
 from vcont_benchmark_protocol import SeedAssignment
@@ -1218,6 +1219,35 @@ class ConfigurationCompanionVerifierTests(unittest.TestCase):
         self.assertEqual(len(companion["applicability"]), 26)
         self.assertEqual(companion["benchmark_export_id"], captured.capture_id)
         self.assertEqual(companion["source_contracts"][0]["analyzer_version"], ANALYZER_VERSION)
+
+    def test_writer_assembles_28_configuration_components_and_aggregate(self):
+        files, report, matrix = _fixture()
+        benchmark_design = files["design/benchmark_design.json"]
+        design = SimpleNamespace(
+            scenario_versions=tuple(
+                (sid, "v1") for sid in AUTHORITATIVE_SCENARIO_IDS
+            ),
+            n_units=25,
+            outer_replicates=1,
+            repeated_assignments=1,
+            configuration_fingerprint=benchmark_design["configuration_fingerprint"],
+            seed_bank_fingerprint=benchmark_design["seed_bank_fingerprint"],
+        )
+        observed = _assemble_configuration_fingerprints_v1(
+            "a" * 64,
+            design,
+            files["design/effective_scenario_configs.json"],
+            files["design/analysis_contracts.json"],
+            matrix,
+            files["seeds/evaluation_seed_assignments.json"],
+            benchmark_design,
+            files["runs/run_records.json"],
+        )
+        self.assertEqual(len(observed["components"]), 28)
+        self.assertEqual(
+            observed["aggregate"]["digest_sha256"],
+            benchmark_design["configuration_fingerprint"],
+        )
 
     def test_writer_recomputes_legacy_seed_bank_fingerprint_from_typed_rows(self):
         files, report, matrix = _fixture()
