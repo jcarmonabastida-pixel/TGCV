@@ -897,7 +897,36 @@ def _fixture():
         "row_count": 52,
         "rows": matrix_rows,
     })
-    assignment_rows = [{"assignment": i} for i in range(26)]
+    assignment_rows = []
+    legacy_seed_rows = []
+    for s, (sid, version) in enumerate(versions):
+        world_seed = 1000 + s
+        for role, replicate in (("RUN", -1), ("REPEATED_ASSIGNMENT", 0)):
+            z_seed = 2000 + 2 * s + (0 if role == "RUN" else 1)
+            g_seed = 3000 + 2 * s + (0 if role == "RUN" else 1)
+            source_row = {
+                "bank": "evaluation",
+                "scenario_id": sid,
+                "scenario_version": version,
+                "n_units": n_units,
+                "replicate": replicate,
+                "outer_replicate_id": "outer-000000",
+                "assignment_role": role,
+                "world_seed": world_seed,
+                "z_assignment_seed": z_seed,
+                "g_assignment_seed": g_seed,
+            }
+            legacy_seed_rows.append(source_row)
+            assignment_rows.append({
+                **{key: value for key, value in source_row.items()
+                   if key not in {"world_seed", "z_assignment_seed", "g_assignment_seed"}},
+                "world_seed": {"$type": "uint64", "decimal": str(world_seed)},
+                "z_assignment_seed": {"$type": "uint64", "decimal": str(z_seed)},
+                "g_assignment_seed": {"$type": "uint64", "decimal": str(g_seed)},
+            })
+    legacy_seed_fingerprint = hashlib.sha256(
+        json.dumps(legacy_seed_rows, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
     assignments = {
         "schema_id": "TGCV-C10S-VCONT-EVALUATION-SEED-ASSIGNMENTS",
         "schema_version": "2.0.0",
@@ -985,6 +1014,7 @@ def _fixture():
         "outer_replicates": M,
         "repeated_assignments": R,
         "configuration_fingerprint": aggregate_digest,
+        "seed_bank_fingerprint": legacy_seed_fingerprint,
     }
     files = {
         "runs/run_records.json": {
@@ -995,7 +1025,10 @@ def _fixture():
         "provenance/configuration_fingerprints.json": fingerprints,
         "design/effective_scenario_configs.json": effective,
         "seeds/evaluation_seed_assignments.json": assignments,
-        "design/benchmark_design.json": {"configuration_fingerprint": aggregate_digest},
+        "design/benchmark_design.json": {
+            "configuration_fingerprint": aggregate_digest,
+            "seed_bank_fingerprint": legacy_seed_fingerprint,
+        },
     }
     decoded_report = {"report": {"design": report_design}}
     return files, decoded_report, matrix
@@ -1071,6 +1104,19 @@ class ConfigurationCompanionVerifierTests(unittest.TestCase):
     def test_rejects_dgp_component_digest_drift(self):
         files, report, matrix = _fixture()
         files["provenance/configuration_fingerprints.json"]["components"][0]["digest_sha256"] = "0" * 64
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_configuration_companions(files, report, matrix)
+
+    def test_rejects_historical_seed_bank_fingerprint_mismatch(self):
+        files, report, matrix = _fixture()
+        files["design/benchmark_design.json"]["seed_bank_fingerprint"] = "0" * 64
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_configuration_companions(files, report, matrix)
+
+    def test_rejects_reordered_evaluation_seed_rows(self):
+        files, report, matrix = _fixture()
+        rows = files["seeds/evaluation_seed_assignments.json"]["rows"]
+        rows[0], rows[1] = rows[1], rows[0]
         with self.assertRaises(PackageVerificationError):
             _reconcile_configuration_companions(files, report, matrix)
 
