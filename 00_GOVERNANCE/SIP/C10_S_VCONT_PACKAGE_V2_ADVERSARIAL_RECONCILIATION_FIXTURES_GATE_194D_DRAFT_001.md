@@ -131,3 +131,27 @@ Current reviewed blob identities:
 The next operation should be G194-D completion at package-fixture level only if the fixture can be built from frozen contracts without invoking producers or seed generation. Otherwise, proceed to G194-E static audit and record the remaining integration fixture as an explicit evidence limitation rather than manufacturing a synthetic end-to-end PASS.
 
 PR #116 remains Draft. No changes to `main`, historical frozen contracts or scientific components. Scientific execution remains unauthorized.
+
+
+## 10. Gate 194-E static-audit finding corrected during continuation
+
+A source-to-source comparison against the historical `RunEvidenceBundle.capture` contract found that the verifier recomputed the SealedEvidence provenance digest but did not bind every provenance identity field to the decoded SeedAssignment, ScenarioConfig and RunManifest, nor require `AnalyzerResult.provenance_sha256` to equal that digest.
+
+This allowed an internally self-consistent provenance object to be attached to the wrong RUN/world while retaining its own valid digest.
+
+The verifier now uses `_assert_sealed_provenance_identity` to bind:
+- run_id, scenario/version and replicate identity;
+- world_id/world_version;
+- outer replicate, role and assignment index;
+- G/Z mechanism IDs, versions and hashes;
+- reference-regime identity;
+- Z/G assignment-vector hashes;
+- recomputed provenance digest and AnalyzerResult.provenance_sha256.
+
+Three additional unexecuted fixtures cover a positive join, cross-world/run identity divergence and AnalyzerResult digest divergence.
+
+Source commits:
+- verifier: `88b791cd8a4e35c0475e151fc175e73f18bc701a`
+- fixtures: `45fb6389c6577224502ef2f40045c047c3916332`
+
+The change is a verifier correction derived from the existing historical capture contract; no historical contract or producer was modified.
