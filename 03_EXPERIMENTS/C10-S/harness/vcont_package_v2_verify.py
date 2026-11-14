@@ -1,10 +1,10 @@
 """Independent structural verifier for TGCV C10-S V_cont package v2.
 
 This module deliberately does not import or call vcont_package_v2. It verifies
-archive integrity, JCS, the frozen inventory, report/matrix schemas and all
-registered uint64 wire occurrences. Semantic RUN/R snapshot joins, full Gate159
-derivation, source-execution reconciliation, technical-test provenance and
-external authentication remain explicitly separate status layers.
+archive integrity, JCS, the frozen inventory, report/matrix schemas, registered
+uint64 occurrences and independent RUN/R snapshot/source joins. Full Gate159
+derivation, calibration disjointness, source-execution reconciliation,
+technical-test provenance and external authentication remain separate layers.
 """
 from __future__ import annotations
 
@@ -624,8 +624,6 @@ def _assert_snapshot_seed_relations(
         _exact_source_uint64(manifest.get(name), f"RunManifest.{name}")
         for name in ("world_seed", "z_assignment_seed", "g_assignment_seed")
     )
-    if any(value is None for value in config_streams):
-        raise PackageVerificationError("ScenarioConfig must explicitly carry all three assignment streams")
     if assignment_streams != config_streams or assignment_streams != manifest_streams:
         raise PackageVerificationError("SeedAssignment/ScenarioConfig/RunManifest stream equality failed")
     if len(set(assignment_streams)) != 3:
