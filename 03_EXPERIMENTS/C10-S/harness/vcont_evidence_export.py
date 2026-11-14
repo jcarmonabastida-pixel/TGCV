@@ -643,6 +643,14 @@ def produce_and_capture_benchmark(
         if (len({row.z_assignment_seed for row in group_rows}) != len(group_rows)
                 or len({row.g_assignment_seed for row in group_rows}) != len(group_rows)):
             raise ContractError("Z/G assignment seeds must be unique within each M group")
+    for scenario_id in SCENARIO_IDS:
+        scenario_world_seeds = {
+            run_ids_by_group[(scenario_id, versions[scenario_id], design.n_units,
+                              f"outer-{m:06d}")][0].world_seed
+            for m in range(design.outer_replicates)
+        }
+        if len(scenario_world_seeds) != design.outer_replicates:
+            raise ContractError("outer M worlds must have distinct world seeds within each scenario")
 
     evaluator = Evaluator()
     scenario_outer_runs: dict[str, dict[str, tuple]] = {}
