@@ -181,3 +181,24 @@ Implementation commits:
 - Gate 194-B decoder fixtures: `9ba72bdad00a2f4cbc3a94be907a67eb2c4a0ce9`.
 
 **Disposition:** G194-A crosswalk is now materially closed for the RUN snapshot envelope; companion schemas 1, 3, 8, 9 and 11 still require their own exact field-level/source-resolution contracts. G194-B decoder is IMPLEMENTED IN SOURCE / NOT COMPILED / NOT EXECUTED / STATIC REVIEW PENDING. No tests, compilation, CI, workflow, package, producer, seed generation, calibration or scientific execution occurred.
+
+
+### Gate 194-B static registry comparison
+
+A source-level comparison was performed between the closed decoder registry and the current source dataclass annotations. All eleven registered dataclasses match exactly:
+
+| Type | Source fields | Registry fields | Missing / extra |
+|---|---:|---:|---|
+| SeedAssignment | 10 | 10 | None |
+| AnalysisContract | 37 | 37 | None |
+| AnalyzerResult | 43 | 43 | None |
+| EvaluationReport | 9 | 9 | None |
+| EvidenceCandidate | 3 | 3 | None |
+| RepeatedAssignmentReport | 16 | 16 | None |
+| RunManifest | 29 | 29 | None |
+| ScenarioConfig | 37 | 37 | None |
+| SealedEvidence | 4 | 4 | None |
+| TruthBundle | 22 | 22 | None |
+| MatrixTruthProjection | 14 | 14 | None |
+
+This comparison is static source inspection, not compilation or runtime evidence. It establishes exact field-name coverage at the inspected branch revision. Per-field semantic value constraints and the full package RUN/R consumption of the decoded values remain for G194-C; the decoder does not instantiate application dataclasses or execute their validators.
