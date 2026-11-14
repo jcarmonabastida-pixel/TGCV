@@ -1259,12 +1259,12 @@ def _reconcile_report_seed_sources(
         world_seed = exact_uint64(assignment.world_seed, "SeedAssignment.world_seed")
         z_seed = exact_uint64(assignment.z_assignment_seed, "SeedAssignment.z_assignment_seed")
         g_seed = exact_uint64(assignment.g_assignment_seed, "SeedAssignment.g_assignment_seed")
-        effective_world = config.seed if config.world_seed is None else exact_uint64(config.world_seed, "ScenarioConfig.world_seed")
-        effective_z = config.seed + 100003 if config.z_assignment_seed is None else exact_uint64(config.z_assignment_seed, "ScenarioConfig.z_assignment_seed")
-        effective_g = config.seed + 200003 if config.g_assignment_seed is None else exact_uint64(config.g_assignment_seed, "ScenarioConfig.g_assignment_seed")
-        exact_uint64(effective_world, "effective ScenarioConfig.world_seed")
-        exact_uint64(effective_z, "effective ScenarioConfig.z_assignment_seed")
-        exact_uint64(effective_g, "effective ScenarioConfig.g_assignment_seed")
+        if (config.world_seed is None or config.z_assignment_seed is None
+                or config.g_assignment_seed is None):
+            raise ContractError("v2.1 confirmatory RUN/R ScenarioConfig must explicitly carry all three assignment streams")
+        effective_world = exact_uint64(config.world_seed, "ScenarioConfig.world_seed")
+        effective_z = exact_uint64(config.z_assignment_seed, "ScenarioConfig.z_assignment_seed")
+        effective_g = exact_uint64(config.g_assignment_seed, "ScenarioConfig.g_assignment_seed")
         if truth_seed != config_seed:
             raise ContractError("v2.1 MatrixTruthProjection.seed / ScenarioConfig.seed mismatch")
         if (world_seed, z_seed, g_seed) != (effective_world, effective_z, effective_g):
