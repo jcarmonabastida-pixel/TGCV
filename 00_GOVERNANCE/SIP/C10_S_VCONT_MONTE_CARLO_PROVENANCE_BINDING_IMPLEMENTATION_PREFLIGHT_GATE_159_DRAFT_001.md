@@ -335,7 +335,7 @@ Following explicit user authorization, the package boundary received a first bou
 
 - Writer: exact CalibrationBankManifest v2.0.0 root and row allowlists, required envelope fields, execution-evidence enum, typed uint64 decoding and exact seed-derivation descriptor validation.
 - Independent verifier: calibration namespace/descriptor binding; per-row world/Z/G seed recomputation; source-typed legacy fingerprint recomputation; RUN/R group invariants; within-row stream distinction; fixed world seed within M; distinct world seeds across M; unique Z/G values within M; and full three-stream calibration/evaluation union disjointness.
-- Eight adversarial/positive pure tests are now authored for the calibration verifier. They remain NOT EXECUTED.
+- Nine adversarial/positive pure tests are now authored for the calibration verifier. They remain NOT EXECUTED.
 
 The initial implementation increment did not yet enforce the full calibration design contract. The following correction is now implemented in source, using Gate 178 §§6.1–6.3, Gate 179 §4, Gate 181 §2.3a, Gate 156 and the existing source structures for seed-bank generation and MonteCarloBenchmarkDesign.metric_targets:
 
@@ -353,7 +353,7 @@ The Gate 178 design description was therefore not absent: it specified the dimen
 - Source-execution GitHub binding and technical-test run binding require independently resolved GitHub evidence; they cannot be inferred from producer declarations.
 - External cryptographic attestation remains a separate trusted-builder/signature verification layer.
 
-No tests, compilation, package construction, calibration, seed generation, producer, benchmark or scientific execution was performed in these increments. The eight tests are AUTHORED / NOT EXECUTED.
+No tests, compilation, package construction, calibration, seed generation, producer, benchmark or scientific execution was performed in these increments. The nine calibration tests are AUTHORED / NOT EXECUTED.
 
 **Increment 1 disposition:** calibration design cardinality/order, per-row seed derivation, source-typed legacy fingerprint, manifest JCS digest, RUN/R invariants and three-stream cross-bank disjointness are IMPLEMENTED IN SOURCE; tests AUTHORED / NOT EXECUTED. Gate159 artifact derivation and external provenance remain OPEN. Gate 159 overall remains CONDITIONAL / OPEN.
 ## 12. Gate 159 nested companion wire crosswalk — calibration and reconciliation v1 (2026-11-14)
@@ -411,7 +411,7 @@ Following the calibration increment, the independent verifier now also:
 - rejects producer-declared PASS for GitHub source-execution, technical-test and calibration-execution bindings that this verifier has not independently resolved;
 - independently derives REJECTED / NOT_RECONCILED / RECONCILED and recomputes findings_digest over the exact Gate159 root projection excluding only findings_digest.
 
-Six additional deterministic adversarial fixtures were authored: valid NOT_RECONCILED, forged aggregate status, findings-digest drift, self-asserted external PASS, check-order drift and invalid conditional NOT_APPLICABLE. Together with the eight calibration fixtures, 14 test methods are now authored for these increments.
+Seven additional deterministic adversarial fixtures were authored: valid NOT_RECONCILED, forged aggregate status, findings-digest drift, self-asserted external PASS, check-order drift, unregistered input digest and invalid conditional NOT_APPLICABLE. Together with the nine calibration fixtures, 16 test methods are now authored for these increments.
 
 **No tests or compilation have been executed.** The source updates and fixtures are persisted only on the research branch. No package was built; no seed bank, calibration, producer, benchmark or scientific execution occurred.
 
