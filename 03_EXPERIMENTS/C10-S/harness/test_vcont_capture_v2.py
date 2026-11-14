@@ -314,7 +314,7 @@ class CaptureV2Tests(unittest.TestCase):
         version = "VCONT-SYNTH-001"
         outer_id = "outer-000000"
         n_units = 32
-        base = benchmark_scenarios(n_units=n_units, n_intervals=4, seed=1000)[0]
+        base = benchmark_scenarios(n_units=n_units, n_intervals=20, seed=1000)[0]
 
         def make_bundle(role, index, run_id, z_seed, g_seed):
             config = replace(
