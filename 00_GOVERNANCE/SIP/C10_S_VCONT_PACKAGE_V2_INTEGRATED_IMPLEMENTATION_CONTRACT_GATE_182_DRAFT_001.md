@@ -230,3 +230,9 @@ This gate is sufficient to prepare a bounded implementation change after the JCS
 ## 11. Next operation — Gate 183
 
 Gate 183 should perform a final static implementability preflight against the exact dependency lock, workflow permissions and test layout, then produce a file-by-file implementation plan. Only after that preflight should a separate explicit authorization govern code changes and deterministic technical tests. Scientific execution remains separately governed.
+
+## 12. Gate 183 — preflight disposition
+
+Gate 183's static preflight confirms that the implementation architecture is feasible but blocks an ordinary in-branch harness code push under the current workflow configuration. The push trigger in `.github/workflows/c10-s-focal-harness-tests.yml` covers every path under `03_EXPERIMENTS/C10-S/harness/**` and runs the full unittest suite; `test_vcont_integrated_harness.py` calls Generator.generate and both evidence producers, so this workflow is not a pure serializer-only suite. The harness and repository also have no dependency lock/project manifest and no pinned RFC 8785/JCS implementation.
+
+No workflow, code, dependency or test was changed. Gate 183 recommends a governed workflow split so pure v2 fixture tests can run independently while producer/integrated synthetic tests remain behind separate explicit authorization. Gate 183 is CONDITIONAL / BLOCKED pending the CI execution-boundary decision and pinned JCS dependency. See `C10_S_VCONT_PACKAGE_V2_IMPLEMENTATION_PREFLIGHT_GATE_183_DRAFT_001.md`. This supersedes no Gate 182 API decision; it adds an execution-governance prerequisite.
