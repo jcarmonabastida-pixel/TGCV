@@ -1828,15 +1828,20 @@ def _reconcile_calibration_manifest(
     }
     if not isinstance(design, dict) or set(design) != design_fields:
         raise PackageVerificationError("calibration design exact field allowlist mismatch")
-    scenario_versions = design.get("scenario_versions")
-    if (not isinstance(scenario_versions, dict) or not scenario_versions
-            or any(sid not in AUTHORITATIVE_SCENARIO_IDS for sid in scenario_versions)
-            or list(scenario_versions) != [
-                sid for sid in AUTHORITATIVE_SCENARIO_IDS if sid in scenario_versions
+    scenario_version_pairs = design.get("scenario_versions")
+    if (not isinstance(scenario_version_pairs, list) or not scenario_version_pairs
+            or any(not isinstance(pair, list) or len(pair) != 2 for pair in scenario_version_pairs)):
+        raise PackageVerificationError("calibration scenario_versions must be an ordered array of [scenario_id, version] pairs")
+    scenario_ids = [pair[0] for pair in scenario_version_pairs]
+    if (any(not isinstance(sid, str) or sid not in AUTHORITATIVE_SCENARIO_IDS for sid in scenario_ids)
+            or scenario_ids != [
+                sid for sid in AUTHORITATIVE_SCENARIO_IDS if sid in set(scenario_ids)
             ]
-            or any(not isinstance(version, str) or not version.strip()
-                   for version in scenario_versions.values())):
-        raise PackageVerificationError("calibration scenario_versions are not an ordered authoritative subset")
+            or len(set(scenario_ids)) != len(scenario_ids)
+            or any(not isinstance(pair[1], str) or not pair[1].strip()
+                   for pair in scenario_version_pairs)):
+        raise PackageVerificationError("calibration scenario_versions are not a unique ordered authoritative subset")
+    scenario_versions = {sid: version for sid, version in scenario_version_pairs}
     n_grid = design.get("n_grid")
     if (not isinstance(n_grid, list) or not n_grid
             or any(isinstance(n, bool) or not isinstance(n, int) or n < 16 or n % 4
@@ -1885,7 +1890,7 @@ def _reconcile_calibration_manifest(
         raise PackageVerificationError("calibration row_count does not match its declared design cardinality")
     expected_order = [
         (sid, scenario_versions[sid], n, f"outer-{m:06d}", role, replicate)
-        for sid in scenario_versions
+        for sid in scenario_ids
         for n in n_grid
         for m in range(m_count)
         for role, replicate in ([("RUN", -1)] + [
