@@ -1266,7 +1266,7 @@ def _reconcile_report_seed_sources(
             world_seed, z_seed, g_seed
         ):
             raise ContractError("v2.1 RunManifest streams differ from SeedAssignment")
-        if (manifest.world_id, manifest.world_version) != (config.scenario_id and manifest.world_id, config.version):
+        if manifest.world_version != config.version:
             raise ContractError("v2.1 RunManifest world version differs from ScenarioConfig")
         return assignment, config, manifest, truth_projection, analyzer_source, contract_source, evaluation_source
 
@@ -1302,12 +1302,6 @@ def _reconcile_report_seed_sources(
                 outer_id=outer_id, role="RUN", index=-1,
             )
             run_id = manifest.run_id
-            if (truth, analyzer_report, contract_report, manifest_report) != (
-                # Reconstruct the full source TruthBundle from the report and
-                # compare the other three immutable source dataclasses exactly.
-                truth, analyzer_source, contract_source, manifest
-            ):
-                raise ContractError("v2.1 Evaluator RUN tuple differs from captured Analyzer/Contract/Manifest sources")
             if (analyzer_report != analyzer_source or contract_report != contract_source
                     or manifest_report != manifest):
                 raise ContractError("v2.1 Evaluator RUN tuple diverges from exact captured source dataclasses")
