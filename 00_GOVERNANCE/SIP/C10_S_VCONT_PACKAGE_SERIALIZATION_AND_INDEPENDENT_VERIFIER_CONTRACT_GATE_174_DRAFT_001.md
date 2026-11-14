@@ -215,3 +215,13 @@ The `CapturedBenchmark.report` is a mutable dictionary inside a frozen dataclass
 CalibrationBankManifest, Gate159ReconciliationArtifact, SourceExecutionEvidence and TechnicalTestEvidence are independent companion artifacts joined by benchmark_export_id. They are not supplied by the current evaluation capture API and cannot be inferred from producer-declared fingerprints. Missing companions remain UNAVAILABLE/UNVERIFIABLE and block Gate 164 confirmatory acceptance.
 
 See Gate 176. No source implementation or tests occurred.
+
+## 13. Gate 177 — serializer input readiness
+
+Gate 177 confirms that the exact matrix capture boundary exists but the current validator does not enforce Gate 176's canonical row order. The legacy matrix fingerprint sorts rows and omits `tolerance_id`; the full-matrix validator must enforce canonical order and exact field/value types.
+
+The current FrozenSnapshot API accepts dataclasses only, not the top-level report dict; its generic Python JSON encoding is not RFC 8785 JCS and its decoder is not a strict independent package decoder. A separate versioned FrozenReportSnapshot with an explicit typed report projection, pinned JCS implementation/version and strict decoder is required.
+
+Preserve CapturedBenchmark's existing report/bundle/index fields and shapes. Add only trailing optional capture fields for compatibility, but fail closed for export when absent. Define one non-circular content-derived capture identity, with benchmark_export_id aliased to capture_id and companion artifacts excluded from its digest. Exact calibration and Gate 159 check schemas remain pending.
+
+See Gate 177. Serializer implementation is not yet ready; no code/tests executed.
