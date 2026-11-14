@@ -828,7 +828,7 @@ def _report_v2_projection(report: dict[str, Any]) -> dict[str, Any]:
         "scenario_reports", "coverage", "report_fingerprint",
     }
     if not isinstance(report, dict) or set(report) != expected:
-        raise ContractError("Evaluator report top-level schema differs from FrozenReportSnapshot v2.0.0")
+        raise ContractError("Evaluator report top-level schema differs from FrozenReportSnapshot v2.1.0")
     recomputed_legacy_fingerprint = _legacy_report_fingerprint(report["manifest"])
     if report.get("report_fingerprint") != recomputed_legacy_fingerprint:
         raise ContractError("legacy report_fingerprint does not match the frozen source algorithm")
@@ -1259,8 +1259,13 @@ def _reconcile_report_seed_sources(
                     raise ContractError("v2.1 TruthBundle.seed source must be exact uint64")
             if outer.world_seed != manifest.world_seed:
                 raise ContractError("v2.1 OuterWorldEvidenceBundle world_seed differs from RUN RunManifest")
-            if bundle.key[-1] != run_id:
-                raise ContractError("v2.1 RUN evidence key run_id mismatch")
+            expected_run_key = (
+                scenario_id, version, n_units, outer_id, "RUN", -1, run_id
+            )
+            if bundle.key != expected_run_key or bundle.bank != "evaluation":
+                raise ContractError("v2.1 RUN evidence record does not match the exact evaluation logical key")
+            if outer.world_seed != assignment.world_seed:
+                raise ContractError("v2.1 OuterWorldEvidenceBundle key world_seed differs from evaluation SeedAssignment")
             # A distinct legacy config seed is valid; do not conflate it with world_seed.
     if len(bundle_map) != len(expected_groups):
         raise ContractError("v2.1 source bundle reconciliation left unconsumed scenario/M bundles")
