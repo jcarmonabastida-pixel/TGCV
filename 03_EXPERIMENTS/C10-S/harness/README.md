@@ -210,3 +210,5 @@ The v2.1 reconciliation helper now joins the complete Evaluator RUN tuple to its
 
 The capture test module now has 25 methods, including deterministic typed-bundle positive and adversarial fixtures. These tests are written but not executed. The pure workflow remains manual-only and was not dispatched. The package writer/verifier modules and package-v2 schema-profile implementation are absent; package-level v2.1 conformance remains open. See `00_GOVERNANCE/SIP/C10_S_VCONT_FROZEN_REPORT_SNAPSHOT_V2_1_SOURCE_RECONCILIATION_GATE_190_DRAFT_001.md`.
 
+Gate 190 final source audit also binds the Evaluator scenario labels (`scenario_id`, `scenario_version`), ordered M-row label (`outer_replicate_id`), and its `run_report` / `repeated_report` summaries to the exact captured evaluation-report snapshots. The typed fixtures mirror these returned fields. This remains source-inspected, not compiled or executed.
+
