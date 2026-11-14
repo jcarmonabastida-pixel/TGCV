@@ -968,6 +968,9 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
 
     if len(run_map) != expected_runs:
         raise PackageVerificationError("run record cardinality mismatch")
+    run_ids = [key[6] for key in run_map]
+    if len(set(run_ids)) != len(run_ids):
+        raise PackageVerificationError("run_id is duplicated across distinct logical RUN/R keys")
     observed_run_order = [key[:6] for key in run_map]
     if observed_run_order != expected_order:
         raise PackageVerificationError("run_evidence_records are not in canonical scenario/M/R order")
@@ -1153,6 +1156,8 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
         scenario = scenarios[sid]
         if (scenario.get("scenario_id"), scenario.get("scenario_version")) != (sid, versions[sid]):
             raise PackageVerificationError("scenario report identity differs from design")
+        if scenario.get("n_units") != n_units or scenario.get("outer_replicate_count") != M:
+            raise PackageVerificationError("scenario report N/M dimensions differ from design")
         per_outer = scenario.get("per_outer_replicate")
         if not isinstance(per_outer, list) or len(per_outer) != M:
             raise PackageVerificationError("scenario report per_outer_replicate cardinality mismatch")
