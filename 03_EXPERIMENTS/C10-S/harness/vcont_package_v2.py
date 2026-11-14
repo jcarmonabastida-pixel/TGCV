@@ -848,7 +848,7 @@ def serialize_package_files_v2(
                 raise PackageBuildError("evaluation seed assignment envelope is not the exact v2.0.0 rows schema")
         if path == "seeds/calibration_seed_manifest.json":
             if (value.get("schema_id") != "TGCV-C10S-VCONT-CALIBRATION-BANK-MANIFEST"
-                    or value.get("schema_version") != "1.0.0" or value.get("bank") != "calibration"
+                    or value.get("schema_version") != "2.0.0" or value.get("bank") != "calibration"
                     or not isinstance(value.get("rows"), list)
                     or value.get("row_count") != len(value["rows"])):
                 raise PackageBuildError("calibration seed manifest is not the exact v2.0.0 rows schema")
