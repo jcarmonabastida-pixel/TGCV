@@ -297,3 +297,13 @@ A fresh harness inventory confirms that `vcont_package_v2.py`, `vcont_package_v2
 
 Gate 190's source fixtures are authored but not executed. The manual pure workflow was inspected and not dispatched; the legacy synthetic workflow was also inspected and not dispatched. No producer, package, calibration or scientific execution occurred. See `C10_S_VCONT_FROZEN_REPORT_SNAPSHOT_V2_1_SOURCE_RECONCILIATION_GATE_190_DRAFT_001.md`.
 
+## Gate 191 addendum — exact v2 package/report schema dependency
+
+Gate 191 closes the package-profile cross-reference left open by Gates 188–190. The confirmatory package successor is `TGCV-C10S-VCONT-MC-PACKAGE@2.0.0`; its RUN export envelope is `TGCV-C10S-VCONT-RUN-EXPORT-ENVELOPE@2.0.0`; and it MUST declare the report dependency exactly as `TGCV-C10S-VCONT-REPORT-SNAPSHOT@2.1.0` with payload type `TGCV-C10S-VCONT-BENCHMARK-REPORT`. The report envelope itself remains the exact Gate 188 v2.1.0 envelope; no extra payload-version field is introduced.
+
+The exact 14-file Gate 164 inventory is unchanged. Gate 164 v1.0.0, FrozenReportSnapshot v2.0.0 and RUN export envelope v1.0.0 remain frozen and mutually non-interpretable with their v2 successors. The package writer and independent verifier must reject report v2.0.0, unknown versions, payload mismatches and any cross-version fallback.
+
+Gate 191 also records static corrections to the Gate 190 source reconciler: AnalysisContract is not run-scoped and is validated by its actual semantic fields/digest; EvidenceCandidate and SealedEvidence snapshots and their legacy digests are now reconciled; the typed fixture and adversarial row mutations were corrected. The capture test module now has 27 written methods (10 source-reconciliation methods), none executed.
+
+The bounded implementation sequence and exact contract are in `C10_S_VCONT_PACKAGE_V2_PROFILE_AND_INDEPENDENT_VERIFIER_IMPLEMENTATION_CONTRACT_GATE_191_DRAFT_001.md`. Writer/verifier modules and package tests remain NOT IMPLEMENTED. The pinned RFC 8785 dependency is reused. No tests, imports, compilation, CI, package construction, producer, calibration or scientific execution occurred.
+
