@@ -1171,6 +1171,13 @@ def _reconcile_report_seed_sources(
     if not isinstance(versions, tuple):
         raise ContractError("v2.1 source reconciliation requires immutable scenario versions")
     n_units, outer_replicates = design.n_units, design.outer_replicates
+    scenario_ids = tuple(sid for sid, _ in versions)
+    if (not versions or len(scenario_ids) != len(set(scenario_ids))
+            or any(not isinstance(sid, str) or not sid or not isinstance(ver, str) or not ver
+                   for sid, ver in versions)):
+        raise ContractError("v2.1 design scenario/version registry must be nonempty and unique")
+    if isinstance(n_units, bool) or not isinstance(n_units, int) or n_units < 1:
+        raise ContractError("v2.1 design N must be a positive integer")
     if (isinstance(outer_replicates, bool) or not isinstance(outer_replicates, int)
             or outer_replicates < 1 or isinstance(design.repeated_assignments, bool)
             or not isinstance(design.repeated_assignments, int) or design.repeated_assignments < 1):
