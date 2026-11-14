@@ -930,5 +930,66 @@ class RunEvidenceBundleCaptureTests(unittest.TestCase):
         restored_repeated = FrozenSnapshot.capture(repeated_report).restore(RepeatedAssignmentReport)
         self.assertEqual(restored_repeated.per_run_reports, (report,))
 
+
+class VContEvidenceOrchestrationTests(unittest.TestCase):
+    def _assignments(self, outer_replicates=1):
+        from vcont_benchmark_protocol import build_seed_bank
+        config = benchmark_scenarios(n_units=16, n_intervals=20)[0]
+        rows = build_seed_bank(
+            bank="evaluation",
+            scenarios=(config.scenario_id,),
+            n_grid=(config.n_units,),
+            replicates=1,
+            namespace="gate171-orchestration-regression",
+            scenario_versions={config.scenario_id: config.version},
+            outer_replicates=outer_replicates,
+        )
+        return config, rows
+
+    def test_producer_captures_exact_run_and_repeated_sources_at_m_boundary(self):
+        from vcont_evidence_export import produce_and_capture_outer_world
+        config, assignments = self._assignments()
+        captured = produce_and_capture_outer_world(
+            assignments, config, expected_repeated_assignments=1, tolerance=1e9
+        )
+        self.assertEqual(len(captured.evaluator_runs), 2)
+        self.assertEqual(captured.evidence_bundle.repeated_bundles.__len__(), 1)
+        self.assertEqual(captured.evidence_bundle.run_bundle.key[4:6], ("RUN", -1))
+        repeated_assignment = captured.evidence_bundle.repeated_bundles[0].assignment.restore(
+            type(assignments[1])
+        )
+        self.assertEqual((repeated_assignment.assignment_role, repeated_assignment.assignment_index),
+                         ("REPEATED_ASSIGNMENT", 0))
+        self.assertEqual(
+            captured.evidence_bundle.repeated_assignment_report.restore(
+                __import__("vcont_integrated_harness").RepeatedAssignmentReport
+            ).replicate_count,
+            1,
+        )
+
+    def test_producer_rejects_missing_r_before_generation(self):
+        from vcont_evidence_export import produce_and_capture_outer_world
+        from vcont_integrated_harness import ContractError
+        config, assignments = self._assignments()
+        with self.assertRaises(ContractError):
+            produce_and_capture_outer_world(
+                (assignments[0],), config, expected_repeated_assignments=1, tolerance=1.0
+            )
+
+    def test_producer_rejects_cross_m_rows_before_generation(self):
+        from vcont_evidence_export import produce_and_capture_outer_world
+        from vcont_integrated_harness import ContractError
+        config, assignments = self._assignments(outer_replicates=2)
+        run_m0 = next(row for row in assignments if row.outer_replicate_id == "outer-000000"
+                      and row.assignment_role == "RUN")
+        repeated_m1 = next(row for row in assignments if row.outer_replicate_id == "outer-000001"
+                           and row.assignment_role == "REPEATED_ASSIGNMENT")
+        with self.assertRaises(ContractError):
+            produce_and_capture_outer_world(
+                (run_m0, repeated_m1), config,
+                expected_repeated_assignments=1, tolerance=1.0
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
