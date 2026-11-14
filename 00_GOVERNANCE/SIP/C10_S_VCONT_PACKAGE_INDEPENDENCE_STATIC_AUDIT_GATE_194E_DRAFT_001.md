@@ -124,3 +124,32 @@ Latest reviewed blob identities:
 The next operation should complete the companion crosswalk and semantic joins, beginning with exact `benchmark_export_id` linkage and the effective configuration/AnalysisContract registries. Package-level adversarial fixtures should follow only when they can be constructed from frozen inputs without invoking producers or generating seeds.
 
 PR #116 remains Draft. No changes to `main`, historical frozen contracts or scientific components. Scientific execution remains unauthorized.
+
+
+## 9. Gate 194-E continuation — exact benchmark_export_id crosswalk
+
+A source-to-source crosswalk of the 11 non-capture companion paths was completed against the Gate 191 package-v2 writer contract. The important correction is that `benchmark_export_id` is **not** a universal field required in all 11 companions. The writer contract declares it only in the RUN export envelope and Gate159 reconciliation companion. Other companions carry their own domain identities and must not be forced to duplicate a capture identifier without a frozen contract requiring it.
+
+| Companion path | Contractual benchmark_export_id field | Identity role |
+|---|---:|---|
+| `design/benchmark_design.json` | No | Frozen benchmark design |
+| `design/effective_scenario_configs.json` | No | Effective scenario configuration registry |
+| `design/analysis_contracts.json` | No | AnalysisContract registry |
+| `seeds/evaluation_seed_assignments.json` | No | Evaluation-bank assignment rows |
+| `seeds/calibration_seed_manifest.json` | No | Calibration-bank manifest |
+| `runs/temporal_manifest.json` | No | RunManifest temporal projection |
+| `runs/run_records.json` | **Yes** | RUN/R export envelope; ID must be a lowercase 64-hex SHA-256 string |
+| `provenance/source_execution.json` | No | Source execution provenance |
+| `provenance/configuration_fingerprints.json` | No | Configuration fingerprint registry |
+| `validation/reconciliation_results.json` | **Yes** | Gate159 reconciliation; ID must equal RUN export ID |
+| `validation/test_evidence.json` | No | Technical test evidence |
+
+The independent verifier now calls `_reconcile_benchmark_export_identity` after RUN/R reconstruction. It requires both declared-ID companions, validates the RUN export ID's exact lowercase SHA-256 representation, checks the Gate159 schema/version, and rejects any mismatch between the two IDs. It does not infer identity from filenames or propagate an ID into companions whose frozen schema does not declare it.
+
+Four unexecuted fixtures cover the positive cross-companion join, Gate159 divergence, malformed/missing identity and Gate159 schema-version drift.
+
+Source commits:
+- verifier: `16a0d4c4c67950e8c6159acfd3f2e73aaf7c0020`
+- fixtures: `fca7edd9b301e0a1fe5701d7dc6b509e12da5a8a`
+
+This closes the *declared-field crosswalk and equality check only*. It does not independently derive the capture identity from the complete set of snapshots and report/matrix digests, nor does it complete the semantic crosswalk of the other nine companion payloads.
