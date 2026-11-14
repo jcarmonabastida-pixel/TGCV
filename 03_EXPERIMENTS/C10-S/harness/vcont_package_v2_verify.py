@@ -233,32 +233,82 @@ def _check_report(report_envelope: Any) -> None:
         REPORT_SCHEMA_ID, REPORT_SCHEMA_VERSION, REPORT_PAYLOAD_TYPE
     ):
         raise PackageVerificationError("package v2 requires FrozenReportSnapshot v2.1.0")
+    if report_envelope["legacy_fingerprint_algorithm"] != (
+        "TGCV-C10S-VCONT-LEGACY-REPORT-FINGERPRINT-PYJSON-SORTKEYS-COMPACT-SHA256-1"
+    ):
+        raise PackageVerificationError("unknown historical report fingerprint algorithm")
     report = report_envelope["report"]
     if not isinstance(report, dict) or not isinstance(report.get("manifest"), dict):
         raise PackageVerificationError("report payload/legacy manifest is missing")
     if _historical_fingerprint(report["manifest"]) != report_envelope["legacy_report_fingerprint"]:
         raise PackageVerificationError("historical Evaluator report fingerprint mismatch")
+    manifest = report["manifest"]
     if report.get("report_fingerprint") != report_envelope["legacy_report_fingerprint"]:
         raise PackageVerificationError("report root fingerprint differs from the frozen envelope")
-    if report.get("temporal_manifest") != report["manifest"].get("temporal_manifest"):
+    if report.get("temporal_manifest") != manifest.get("temporal_manifest"):
         raise PackageVerificationError("root/nested temporal manifest copies diverge")
-    if report.get("pair_ledger") != report["manifest"].get("pair_ledger"):
+    if report.get("pair_ledger") != manifest.get("pair_ledger"):
         raise PackageVerificationError("root/nested pair-ledger copies diverge")
     coverage = report.get("coverage")
     if coverage != {"required_pairs": 52, "observed_pairs": 52, "scenario_count": 13}:
         raise PackageVerificationError("report coverage is not exactly 52 pairs / 13 scenarios")
+    n_units, outer_replicates, repeated_assignments = (
+        manifest.get("N"), manifest.get("M"), manifest.get("R")
+    )
+    for label, value, minimum in (
+        ("N", n_units, 1), ("M", outer_replicates, 2), ("R", repeated_assignments, 1)
+    ):
+        if isinstance(value, bool) or not isinstance(value, int) or value < minimum:
+            raise PackageVerificationError(f"report manifest {label} is outside its declared integer domain")
     scenarios = report.get("scenario_reports")
-    if not isinstance(scenarios, dict) or len(scenarios) != 13:
-        raise PackageVerificationError("report must retain exactly 13 scenario reports")
+    scenario_versions = manifest.get("scenario_versions")
+    if (not isinstance(scenarios, dict) or len(scenarios) != 13
+            or not isinstance(scenario_versions, list) or len(scenario_versions) != 13):
+        raise PackageVerificationError("report must retain exactly 13 declared scenario reports")
+    declared_ids = []
+    for pair in scenario_versions:
+        if not isinstance(pair, list) or len(pair) != 2 or not all(isinstance(x, str) and x for x in pair):
+            raise PackageVerificationError("report scenario_versions manifest is malformed")
+        declared_ids.append(pair[0])
+    if len(set(declared_ids)) != 13 or set(scenarios) != set(declared_ids):
+        raise PackageVerificationError("report scenario reports differ from declared scenario registry")
+    temporal = report.get("temporal_manifest")
+    pairs = report.get("pair_ledger")
+    expected_temporal_count = 13 * outer_replicates * (1 + repeated_assignments)
+    if not isinstance(temporal, list) or len(temporal) != expected_temporal_count:
+        raise PackageVerificationError("report temporal manifest cardinality differs from 13 x M x (1+R)")
+    if not isinstance(pairs, list) or len(pairs) != 52:
+        raise PackageVerificationError("report pair ledger must contain exactly 52 ordered pairs")
+    for row in temporal:
+        if not isinstance(row, dict):
+            raise PackageVerificationError("report temporal row is not an object")
+        for field in ("world_seed", "z_assignment_seed", "g_assignment_seed"):
+            if type(row.get(field)) is not int or not 0 <= row[field] <= UINT64_MAX:
+                raise PackageVerificationError(f"report temporal {field} is not a decoded uint64")
+    for pair in pairs:
+        contributions = pair.get("contributions") if isinstance(pair, dict) else None
+        if not isinstance(contributions, list) or len(contributions) != outer_replicates:
+            raise PackageVerificationError("pair ledger contribution cardinality differs from M")
+        for contribution in contributions:
+            if type(contribution.get("world_seed")) is not int or not 0 <= contribution["world_seed"] <= UINT64_MAX:
+                raise PackageVerificationError("pair contribution world_seed is not a decoded uint64")
     for scenario_id, scenario in scenarios.items():
-        if not isinstance(scenario, dict) or not isinstance(scenario.get("per_outer_replicate"), list):
-            raise PackageVerificationError(f"scenario report {scenario_id} lacks per-outer rows")
+        if (not isinstance(scenario, dict)
+                or scenario.get("scenario_id") != scenario_id
+                or not isinstance(scenario.get("per_outer_replicate"), list)
+                or len(scenario["per_outer_replicate"]) != outer_replicates):
+            raise PackageVerificationError(f"scenario report {scenario_id} identity/cardinality mismatch")
         for index, row in enumerate(scenario["per_outer_replicate"]):
-            if row.get("outer_replicate_id") != f"outer-{index:06d}":
+            if not isinstance(row, dict) or row.get("outer_replicate_id") != f"outer-{index:06d}":
                 raise PackageVerificationError(f"scenario report {scenario_id} has noncanonical M ordering")
             run = row.get("run")
-            if not isinstance(run, list) or len(run) != 4:
+            if not isinstance(run, list) or len(run) != 4 or not all(isinstance(item, dict) for item in run):
                 raise PackageVerificationError(f"scenario report {scenario_id} RUN tuple must contain four ordered objects")
+            if type(run[0].get("seed")) is not int or not 0 <= run[0]["seed"] <= UINT64_MAX:
+                raise PackageVerificationError("scenario report TruthBundle.seed is not a decoded uint64")
+            for field in ("world_seed", "z_assignment_seed", "g_assignment_seed"):
+                if type(run[3].get(field)) is not int or not 0 <= run[3][field] <= UINT64_MAX:
+                    raise PackageVerificationError(f"scenario report RunManifest.{field} is not a decoded uint64")
 
 
 def verify_package_v2(
@@ -353,11 +403,15 @@ def verify_package_v2(
     decoded_report = _decode_registered(report)
     _check_report(decoded_report)
     matrix = parsed["design/scenario_estimand_matrix.json"]
-    if (not isinstance(matrix, dict) or matrix.get("schema_id") != MATRIX_SCHEMA_ID
+    if (not isinstance(matrix, dict) or set(matrix) != {
+            "schema_id", "schema_version", "design_identity", "row_count", "rows",
+            "legacy_matrix_fingerprint", "full_matrix_digest_algorithm", "full_matrix_sha256",
+        } or matrix.get("schema_id") != MATRIX_SCHEMA_ID
             or matrix.get("schema_version") != MATRIX_SCHEMA_VERSION
             or matrix.get("row_count") != 52 or not isinstance(matrix.get("rows"), list)
-            or len(matrix["rows"]) != 52):
-        raise PackageVerificationError("MatrixCapture schema/cardinality mismatch")
+            or len(matrix["rows"]) != 52
+            or matrix.get("full_matrix_digest_algorithm") != "TGCV-C10S-VCONT-MATRIX-FULL-JCS-SHA256-1"):
+        raise PackageVerificationError("MatrixCapture schema/cardinality/digest-algorithm mismatch")
     matrix_digest = _sha256(rfc8785.dumps({
         "schema_id": MATRIX_SCHEMA_ID,
         "schema_version": MATRIX_SCHEMA_VERSION,
