@@ -816,7 +816,11 @@ def _reconcile_effective_scenario_config_rows(
     rows = effective_file.get("rows")
     if not isinstance(rows, list) or len(rows) != len(AUTHORITATIVE_SCENARIO_IDS):
         raise PackageVerificationError("effective ScenarioConfig projection must contain exactly 13 rows")
-    if "row_count" in effective_file and effective_file["row_count"] != len(rows):
+    if "row_count" in effective_file and (
+        isinstance(effective_file["row_count"], bool)
+        or not isinstance(effective_file["row_count"], int)
+        or effective_file["row_count"] != len(rows)
+    ):
         raise PackageVerificationError("effective ScenarioConfig projection row_count mismatch")
     if not isinstance(report_design, dict):
         raise PackageVerificationError("report design is required for effective ScenarioConfig reconciliation")
@@ -840,6 +844,11 @@ def _reconcile_effective_scenario_config_rows(
     for index, row in enumerate(rows):
         if not isinstance(row, dict) or set(row) != row_fields:
             raise PackageVerificationError(f"effective ScenarioConfig row {index} field allowlist mismatch")
+        if (not isinstance(row["scenario_id"], str) or not row["scenario_id"]
+                or not isinstance(row["scenario_version"], str) or not row["scenario_version"]
+                or isinstance(row["n_units"], bool) or not isinstance(row["n_units"], int)
+                or row["n_units"] < 1):
+            raise PackageVerificationError(f"effective ScenarioConfig row {index} identity values are invalid")
         key = (row["scenario_id"], row["scenario_version"], row["n_units"])
         if key != expected_order[index]:
             raise PackageVerificationError(f"effective ScenarioConfig row {index} differs from authoritative scenario/version/N order")
@@ -1816,8 +1825,13 @@ def verify_package_v2(
         raise
     except Exception as exc:
         raise PackageVerificationError(f"RUN/R semantic reconciliation failed closed: {exc}") from exc
-    _reconcile_benchmark_export_identity(parsed)
-    _reconcile_effective_scenario_configs(parsed, decoded_report)
+    try:
+        _reconcile_benchmark_export_identity(parsed)
+        _reconcile_effective_scenario_configs(parsed, decoded_report)
+    except PackageVerificationError:
+        raise
+    except Exception as exc:
+        raise PackageVerificationError(f"companion identity/config reconciliation failed closed: {exc}") from exc
     matrix = parsed["design/scenario_estimand_matrix.json"]
     if (not isinstance(matrix, dict) or set(matrix) != {
             "schema_id", "schema_version", "design_identity", "row_count", "rows",
