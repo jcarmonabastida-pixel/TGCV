@@ -63,6 +63,7 @@ class PackageVerificationResult:
     integrity_status: str
     schema_status: str
     completeness_status: str
+    run_r_reconciliation_status: str
     identity_reconciliation_status: str
     source_execution_provenance_status: str
     technical_test_evidence_status: str
@@ -1454,6 +1455,19 @@ def verify_package_v2(
     }))
     if matrix_digest != matrix.get("full_matrix_sha256"):
         raise PackageVerificationError("MatrixCapture full-matrix digest mismatch")
+    report_design = decoded_report["report"]["design"]
+    expected_matrix_identity = {
+        "scenario_versions": [
+            {"scenario_id": sid, "scenario_version": version}
+            for sid, version in report_design["scenario_versions"]
+        ],
+        "N": report_design["n_units"],
+        "M": report_design["outer_replicates"],
+        "R": report_design["repeated_assignments"],
+        "legacy_matrix_fingerprint": report_design["matrix_fingerprint"],
+    }
+    if matrix.get("design_identity") != expected_matrix_identity:
+        raise PackageVerificationError("MatrixCapture design identity differs from FrozenReportSnapshot design")
 
     if (decoded_report["report"]["temporal_manifest"]
             != decoded_report["report"]["manifest"]["temporal_manifest"]
@@ -1473,7 +1487,7 @@ def verify_package_v2(
     # trust_policy is intentionally not used to infer authentication. A
     # governed attestation verifier and trusted signer configuration are absent.
     limitations = (
-        "RUN/R FrozenSnapshot decoding and exact source joins are not implemented in this verifier slice.",
+        "RUN/R snapshots, assignments, temporal rows, outer-world records, report tuples, pair contributions and repeated reports were reconciled independently in this verifier slice.",
         "Calibration/evaluation seed disjointness and Gate159 derived-status recomputation are not implemented.",
         "Source-execution metadata has not been independently resolved against GitHub.",
         "Technical-test evidence has not been independently bound to a trusted workflow run/artifact.",
@@ -1482,6 +1496,6 @@ def verify_package_v2(
     return PackageVerificationResult(
         PACKAGE_SCHEMA_ID, PACKAGE_SCHEMA_VERSION, manifest["profile"],
         archive_sha, manifest_sha, package_id, len(extracted),
-        "PASS", "PARTIAL", "STRUCTURAL_ONLY", "NOT_VERIFIED",
-        "NOT_VERIFIED", "NOT_VERIFIED", "NOT_AUTHENTICATED", limitations,
+        "PASS", "PARTIAL", "STRUCTURAL_ONLY", "RECONCILED",
+        "NOT_VERIFIED", "NOT_VERIFIED", "NOT_VERIFIED", "NOT_AUTHENTICATED", limitations,
     )
