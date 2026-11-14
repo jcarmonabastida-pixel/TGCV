@@ -386,7 +386,7 @@ def _assemble_analysis_contracts_v1(
             for r_index, run_bundle in enumerate(run_bundles):
                 assignment = run_bundle.assignment.restore(SeedAssignment)
                 expected_role, expected_index = ("RUN", -1) if r_index == 0 else ("REPEATED_ASSIGNMENT", r_index - 1)
-                if (isinstance(assignment.replicate, bool) or not isinstance(assignment.replicate, int):
+                if isinstance(assignment.replicate, bool) or not isinstance(assignment.replicate, int):
                     raise PackageBuildError("captured SeedAssignment replicate must be an exact integer")
                 if (assignment.scenario_id, assignment.scenario_version, assignment.n_units,
                     assignment.outer_replicate_id, assignment.assignment_role, assignment.assignment_index) != (
@@ -541,8 +541,6 @@ def _assemble_configuration_fingerprints_v1(
         ANALYSIS_CONTRACTS_SCHEMA_ID, ANALYSIS_CONTRACTS_SCHEMA_VERSION, benchmark_export_id
     ):
         raise PackageBuildError("AnalysisContract companion schema/version/export identity mismatch")
-    if design.configuration_fingerprint != benchmark_design.get("configuration_fingerprint"):
-        raise PackageBuildError("source design object and benchmark_design companion declarations differ")
     if design.configuration_fingerprint != benchmark_design.get("configuration_fingerprint"):
         raise PackageBuildError("source design object and benchmark_design companion declarations differ")
     legacy_seed_fingerprint = _legacy_seed_bank_fingerprint_from_wire_rows(assignment_rows, design)
