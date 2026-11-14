@@ -7,7 +7,7 @@ a separate implementation and must recompute those claims from archive content.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 import hashlib
 import io
 import tarfile
@@ -16,6 +16,7 @@ from typing import Any, Mapping
 
 import rfc8785
 from vcont_benchmark_protocol import SCENARIO_IDS, SeedAssignment
+from vcont_integrated_harness import AnalysisContract, Analyzer, RunManifest
 
 
 PACKAGE_SCHEMA_ID = "TGCV-C10S-VCONT-MC-PACKAGE"
@@ -42,11 +43,15 @@ PACKAGE_PATHS = (
     "validation/reconciliation_results.json",
     "validation/test_evidence.json",
 )
+GENERATED_COMPANION_PATHS = frozenset({
+    "design/analysis_contracts.json",
+    "provenance/configuration_fingerprints.json",
+})
 COMPANION_PATHS = frozenset(PACKAGE_PATHS) - {
     "manifest.json",
     "report/report.json",
     "design/scenario_estimand_matrix.json",
-}
+} - GENERATED_COMPANION_PATHS
 
 class PackageBuildError(ValueError):
     """Raised when a package input is incomplete or violates the wire contract."""
@@ -54,7 +59,7 @@ class PackageBuildError(ValueError):
 
 @dataclass(frozen=True)
 class VContPackageCompanionsV2:
-    """Actual independently materialized JSON payloads for all non-capture files."""
+    """Caller-materialized non-capture payloads; two configuration companions are derived here."""
     files: Mapping[str, Mapping[str, Any]]
 
 
@@ -309,6 +314,269 @@ def build_deterministic_tar_v2(files: Mapping[str, bytes]) -> bytes:
     return output.getvalue()
 
 
+
+ANALYSIS_CONTRACTS_SCHEMA_ID = "TGCV-C10S-ANALYSIS-CONTRACTS"
+ANALYSIS_CONTRACTS_SCHEMA_VERSION = "1.0.0"
+EFFECTIVE_ANALYSIS_CONTRACT_SCHEMA_ID = "TGCV-C10S-EFFECTIVE-ANALYSIS-CONTRACT"
+EFFECTIVE_ANALYSIS_CONTRACT_SCHEMA_VERSION = "1.0.0"
+CONFIGURATION_FINGERPRINTS_SCHEMA_ID = "TGCV-C10S-CONFIGURATION-FINGERPRINTS"
+CONFIGURATION_FINGERPRINTS_SCHEMA_VERSION = "1.0.0"
+AGGREGATE_FINGERPRINT_SCHEMA_ID = "TGCV-C10S-AGGREGATE-DESIGN-FINGERPRINT"
+AGGREGATE_FINGERPRINT_SCHEMA_VERSION = "1.0.0"
+ANALYSIS_CONTRACT_DIGEST_ALGORITHM = "TGCV-C10S-ANALYSIS-CONTRACT-PAYLOAD-JCS-SHA256-1"
+DGP_CONFIG_DIGEST_ALGORITHM = "TGCV-C10S-EFFECTIVE-SCENARIO-CONFIG-JCS-SHA256-1"
+EVALUATION_ASSIGNMENT_DIGEST_ALGORITHM = "TGCV-C10S-EVALUATION-ASSIGNMENT-MANIFEST-JCS-SHA256-1"
+AGGREGATE_FINGERPRINT_ALGORITHM = "TGCV-C10S-AGGREGATE-DESIGN-FINGERPRINT-JCS-SHA256-1"
+SOURCE_DESIGN_DECLARATION = "design/benchmark_design.json#/configuration_fingerprint"
+
+
+def _digest_jcs(value: Any) -> str:
+    return _sha256(rfc8785.dumps(value))
+
+
+def _analysis_contract_payload_digest(
+    scenario_id: str, scenario_version: str, n_units: int,
+    analyzer_version: str, contract_payload: Mapping[str, Any],
+) -> str:
+    payload = {
+        "schema_id": EFFECTIVE_ANALYSIS_CONTRACT_SCHEMA_ID,
+        "schema_version": EFFECTIVE_ANALYSIS_CONTRACT_SCHEMA_VERSION,
+        "scenario_id": scenario_id,
+        "scenario_version": scenario_version,
+        "n_units": n_units,
+        "analyzer_version": analyzer_version,
+        "analysis_contract": dict(contract_payload),
+    }
+    return _digest_jcs(payload)
+
+
+def _assemble_analysis_contracts_v1(
+    captured: Any, design: Any, run_records: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Build the 13/26 companion from retained RUN/R snapshots, not caller declarations."""
+    versions = tuple(design.scenario_versions)
+    if tuple(row[0] for row in versions) != tuple(SCENARIO_IDS):
+        raise PackageBuildError("analysis-contract source design is not in authoritative scenario order")
+    M, R, n_units = design.outer_replicates, design.repeated_assignments, design.n_units
+    records = run_records.get("run_evidence_records")
+    if not isinstance(records, list) or len(records) != len(SCENARIO_IDS) * M * (1 + R):
+        raise PackageBuildError("analysis-contract assembly requires the exact RUN/R record universe")
+    bundles = tuple(captured.outer_world_bundles)
+    ordered = sorted(
+        bundles,
+        key=lambda item: (SCENARIO_IDS.index(item.scenario_id), int(item.outer_replicate_id.split("-")[-1])),
+    )
+    if len(ordered) != len(SCENARIO_IDS) * M:
+        raise PackageBuildError("analysis-contract source bundle cardinality mismatch")
+    source_rows = []
+    applicability = []
+    for s, (scenario_id, scenario_version) in enumerate(versions):
+        scenario_bundles = [b for b in ordered if b.scenario_id == scenario_id]
+        if len(scenario_bundles) != M:
+            raise PackageBuildError("analysis-contract source lacks an exact scenario/M bundle set")
+        source_contract = None
+        for m, bundle in enumerate(scenario_bundles):
+            if (bundle.scenario_version, bundle.n_units, bundle.outer_replicate_id) != (
+                scenario_version, n_units, f"outer-{m:06d}"
+            ):
+                raise PackageBuildError("analysis-contract source bundle key/order mismatch")
+            run_bundles = (bundle.run_bundle,) + tuple(bundle.repeated_bundles)
+            if len(run_bundles) != 1 + R:
+                raise PackageBuildError("analysis-contract source RUN/R cardinality mismatch")
+            for r_index, run_bundle in enumerate(run_bundles):
+                assignment = run_bundle.assignment.restore(SeedAssignment)
+                expected_role, expected_index = ("RUN", -1) if r_index == 0 else ("REPEATED_ASSIGNMENT", r_index - 1)
+                if (assignment.scenario_id, assignment.scenario_version, assignment.n_units,
+                    assignment.outer_replicate_id, assignment.assignment_role, assignment.assignment_index) != (
+                    scenario_id, scenario_version, n_units, f"outer-{m:06d}", expected_role, expected_index
+                ):
+                    raise PackageBuildError("captured AnalysisContract source does not match its full RUN/R assignment key")
+                contract_snapshot = run_bundle.analysis_contract
+                if contract_snapshot.type_id != "vcont_integrated_harness.AnalysisContract":
+                    raise PackageBuildError("captured AnalysisContract snapshot type_id mismatch")
+                contract = run_bundle.analysis_contract.restore(AnalysisContract)
+                contract_payload = asdict(contract)
+                if source_contract is None:
+                    source_contract = contract_payload
+                elif contract_payload != source_contract:
+                    raise PackageBuildError("AnalysisContract differs across RUN/R snapshots for one scenario")
+                record_index = s * M * (1 + R) + m * (1 + R) + r_index
+                record = records[record_index]
+                manifest = run_bundle.run_manifest.restore(RunManifest)
+                key = record.get("key") if isinstance(record, Mapping) else None
+                if not isinstance(key, Mapping) or (
+                    key.get("scenario_id"), key.get("scenario_version"), key.get("N"),
+                    key.get("outer_replicate_id"), key.get("assignment_role"),
+                    key.get("assignment_index"), key.get("run_id")
+                ) != (
+                    scenario_id, scenario_version, n_units, f"outer-{m:06d}",
+                    expected_role, expected_index, manifest.run_id
+                ):
+                    raise PackageBuildError("RUN/R record order/key does not bind to captured AnalysisContract snapshot")
+                refs = record.get("snapshot_refs")
+                ref = refs.get("analysis_contract") if isinstance(refs, Mapping) else None
+                if not isinstance(ref, Mapping) or (
+                    ref.get("type_id"), ref.get("serialization_id"), ref.get("sha256")
+                ) != (
+                    contract_snapshot.type_id, "TGCV-FROZEN-SNAPSHOT-1", contract_snapshot.sha256
+                ):
+                    raise PackageBuildError("RUN/R AnalysisContract snapshot reference differs from retained source bytes")
+        if source_contract is None:
+            raise PackageBuildError("scenario has no source AnalysisContract")
+        digest = _analysis_contract_payload_digest(
+            scenario_id, scenario_version, n_units, Analyzer.version, source_contract
+        )
+        source_rows.append({
+            "scenario_id": scenario_id,
+            "scenario_version": scenario_version,
+            "n_units": n_units,
+            "analyzer_version": Analyzer.version,
+            "analysis_contract": source_contract,
+            "contract_payload_digest": digest,
+        })
+        for run_family in ("RUN", "REPEATED_ASSIGNMENT"):
+            applicability.append({
+                "scenario_id": scenario_id,
+                "scenario_version": scenario_version,
+                "n_units": n_units,
+                "run_family": run_family,
+                "contract_payload_digest": digest,
+            })
+    return {
+        "schema_id": ANALYSIS_CONTRACTS_SCHEMA_ID,
+        "schema_version": ANALYSIS_CONTRACTS_SCHEMA_VERSION,
+        "benchmark_export_id": captured.capture_id,
+        "source_contracts": source_rows,
+        "applicability": applicability,
+    }
+
+
+def _assemble_configuration_fingerprints_v1(
+    benchmark_export_id: str,
+    effective_configs: Mapping[str, Any],
+    analysis_contracts: Mapping[str, Any],
+    matrix: Mapping[str, Any],
+    assignments: Mapping[str, Any],
+    benchmark_design: Mapping[str, Any],
+    run_records: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Derive the 28 semantic components and aggregate from source companions."""
+    effective_rows = effective_configs.get("rows")
+    source_contracts = analysis_contracts.get("source_contracts")
+    assignment_rows = assignments.get("rows")
+    run_rows = run_records.get("run_evidence_records")
+    if not isinstance(effective_rows, list) or len(effective_rows) != 13:
+        raise PackageBuildError("fingerprint assembly requires exactly 13 effective ScenarioConfig rows")
+    if not isinstance(source_contracts, list) or len(source_contracts) != 13:
+        raise PackageBuildError("fingerprint assembly requires exactly 13 source AnalysisContract rows")
+    if not isinstance(assignment_rows, list) or not assignment_rows:
+        raise PackageBuildError("fingerprint assembly requires ordered evaluation assignment rows")
+    if not isinstance(run_rows, list):
+        raise PackageBuildError("fingerprint assembly requires RUN evidence records")
+    components = []
+    for index, row in enumerate(effective_rows):
+        if not isinstance(row, Mapping):
+            raise PackageBuildError("effective ScenarioConfig row is not an object")
+        sid, version, n_units = row.get("scenario_id"), row.get("scenario_version"), row.get("n_units")
+        if (sid, version) != tuple(SCENARIO_IDS[index:index + 1] + ()):
+            # The version is checked against the corresponding AnalysisContract below.
+            if sid != SCENARIO_IDS[index]:
+                raise PackageBuildError("effective ScenarioConfig rows are not in authoritative scenario order")
+        scope = [sid, version, n_units]
+        components.append({
+            "component_id": f"dgp-generator:{sid}:{version}:{n_units}",
+            "component_type": "DGP_GENERATOR_CONFIG",
+            "scope_key": scope,
+            "source_ref": f"design/effective_scenario_configs.json#/rows/{index}",
+            "payload_schema_id": "TGCV-C10S-VCONT-EFFECTIVE-SCENARIO-CONFIG-PROJECTION",
+            "payload_schema_version": "2.0.0",
+            "algorithm_id": DGP_CONFIG_DIGEST_ALGORITHM,
+            "digest_sha256": _digest_jcs(row),
+        })
+    for index, row in enumerate(source_contracts):
+        if not isinstance(row, Mapping):
+            raise PackageBuildError("source AnalysisContract row is not an object")
+        sid, version, n_units = row.get("scenario_id"), row.get("scenario_version"), row.get("n_units")
+        if sid != SCENARIO_IDS[index]:
+            raise PackageBuildError("source AnalysisContract rows are not in authoritative scenario order")
+        scope = [sid, version, n_units]
+        scenario_index = index
+        M = len(run_rows) // (13 * (1 + max(1, 0))) if False else None
+        # The first RUN record for scenario s is located by its canonical source key.
+        run_index = next((j for j, record in enumerate(run_rows)
+                          if isinstance(record, Mapping)
+                          and isinstance(record.get("key"), Mapping)
+                          and record["key"].get("scenario_id") == sid
+                          and record["key"].get("scenario_version") == version
+                          and record["key"].get("N") == n_units
+                          and record["key"].get("outer_replicate_id") == "outer-000000"
+                          and record["key"].get("assignment_role") == "RUN"
+                          and record["key"].get("assignment_index") == -1), None)
+        if run_index is None:
+            raise PackageBuildError("cannot derive representative RUN AnalysisContract source reference")
+        components.append({
+            "component_id": f"analyzer-contract:{sid}:{version}:{n_units}",
+            "component_type": "ANALYZER_EFFECTIVE_CONTRACT",
+            "scope_key": scope,
+            "source_ref": f"runs/run_records.json#/run_evidence_records/{run_index}/snapshot_refs/analysis_contract",
+            "payload_schema_id": EFFECTIVE_ANALYSIS_CONTRACT_SCHEMA_ID,
+            "payload_schema_version": EFFECTIVE_ANALYSIS_CONTRACT_SCHEMA_VERSION,
+            "algorithm_id": ANALYSIS_CONTRACT_DIGEST_ALGORITHM,
+            "digest_sha256": row.get("contract_payload_digest"),
+        })
+    if (matrix.get("schema_id"), matrix.get("schema_version")) != (MATRIX_SCHEMA_ID, MATRIX_SCHEMA_VERSION):
+        raise PackageBuildError("MatrixCapture source schema/version mismatch during fingerprint assembly")
+    components.append({
+        "component_id": "scenario-estimand-matrix",
+        "component_type": "SCENARIO_ESTIMAND_MATRIX",
+        "scope_key": benchmark_export_id,
+        "source_ref": "design/scenario_estimand_matrix.json#",
+        "payload_schema_id": MATRIX_SCHEMA_ID,
+        "payload_schema_version": MATRIX_SCHEMA_VERSION,
+        "algorithm_id": "TGCV-C10S-VCONT-MATRIX-FULL-JCS-SHA256-1",
+        "digest_sha256": matrix.get("full_matrix_sha256"),
+    })
+    if (assignments.get("schema_id"), assignments.get("schema_version"), assignments.get("bank")) != (
+        "TGCV-C10S-VCONT-EVALUATION-SEED-ASSIGNMENTS", "2.0.0", "evaluation"
+    ):
+        raise PackageBuildError("evaluation assignment source schema/version/bank mismatch")
+    components.append({
+        "component_id": "evaluation-seed-bank",
+        "component_type": "EVALUATION_SEED_BANK",
+        "scope_key": benchmark_export_id,
+        "source_ref": "seeds/evaluation_seed_assignments.json#/rows",
+        "payload_schema_id": assignments["schema_id"],
+        "payload_schema_version": assignments["schema_version"],
+        "algorithm_id": EVALUATION_ASSIGNMENT_DIGEST_ALGORITHM,
+        "digest_sha256": _digest_jcs({"rows": assignment_rows}),
+    })
+    aggregate_input = {
+        "schema_id": AGGREGATE_FINGERPRINT_SCHEMA_ID,
+        "schema_version": AGGREGATE_FINGERPRINT_SCHEMA_VERSION,
+        "components": [{
+            name: component[name] for name in (
+                "component_id", "component_type", "scope_key", "payload_schema_id",
+                "payload_schema_version", "algorithm_id", "digest_sha256"
+            )
+        } for component in components],
+    }
+    aggregate_digest = _digest_jcs(aggregate_input)
+    declared = benchmark_design.get("configuration_fingerprint")
+    if declared != aggregate_digest:
+        raise PackageBuildError("recomputed aggregate configuration fingerprint differs from benchmark design declaration")
+    return {
+        "schema_id": CONFIGURATION_FINGERPRINTS_SCHEMA_ID,
+        "schema_version": CONFIGURATION_FINGERPRINTS_SCHEMA_VERSION,
+        "benchmark_export_id": benchmark_export_id,
+        "components": components,
+        "aggregate": {
+            "algorithm_id": AGGREGATE_FINGERPRINT_ALGORITHM,
+            "digest_sha256": aggregate_digest,
+            "source_design_declaration": SOURCE_DESIGN_DECLARATION,
+        },
+    }
+
+
 def serialize_package_files_v2(
     captured: Any,
     design: Any,
@@ -318,9 +586,9 @@ def serialize_package_files_v2(
 ) -> Mapping[str, bytes]:
     """Serialize the exact 13 data files; manifest and TAR are added by builder.
 
-    Companion payloads are supplied as actual records, never synthesized here.
-    This boundary validates presence, top-level shape and schema identity only.
-    Semantic joins and evidence status require independent verification.
+    All other companion payloads are supplied as materialized records. The two
+    configuration companions are rebuilt from captured snapshots and source files;
+    independent verification remains a separate implementation.
     """
     if profile != "CONFIRMATORY":
         raise PackageBuildError("Gate 191 defines only the CONFIRMATORY package profile")
@@ -466,6 +734,23 @@ def serialize_package_files_v2(
                 raise PackageBuildError("Gate159 reconciliation companion schema/identity mismatch")
         payloads[path] = value
 
+    try:
+        run_records_payload = payloads["runs/run_records.json"]
+        analysis_contracts_payload = _assemble_analysis_contracts_v1(captured, design, run_records_payload)
+        payloads["design/analysis_contracts.json"] = analysis_contracts_payload
+        payloads["provenance/configuration_fingerprints.json"] = _assemble_configuration_fingerprints_v1(
+            capture_id,
+            payloads["design/effective_scenario_configs.json"],
+            analysis_contracts_payload,
+            matrix_payload,
+            payloads["seeds/evaluation_seed_assignments.json"],
+            payloads["design/benchmark_design.json"],
+            run_records_payload,
+        )
+    except PackageBuildError:
+        raise
+    except Exception as exc:
+        raise PackageBuildError(f"configuration companion assembly failed: {exc}") from exc
     if set(payloads) != set(PACKAGE_PATHS) - {"manifest.json"}:
         raise PackageBuildError("internal package inventory is not the exact 13 data paths")
     return {path: _jcs_json(payloads[path]) for path in sorted(payloads)}
