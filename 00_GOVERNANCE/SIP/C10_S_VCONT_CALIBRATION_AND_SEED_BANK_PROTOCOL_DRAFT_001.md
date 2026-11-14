@@ -556,3 +556,11 @@ The capture API receives only evaluation assignments. Actual calibration manifes
 Gate 176 defines the capture-time immutable MatrixCapture v1.0.0 for the exact 52 ScenarioEstimandSpec rows passed to the evaluator. It retains every declared field, including `tolerance_id`, in canonical order and adds a versioned full-matrix JCS SHA-256. The legacy matrix fingerprint remains unchanged.
 
 The frozen CapturedBenchmark dataclass contains a mutable report dict; a separate immutable report snapshot/digest is required for package export. Calibration manifest, Gate 159 reconciliation, independent GitHub source-execution provenance and technical-test evidence are separate companion artifacts joined by benchmark_export_id. They cannot be inferred from the evaluation bank or declared design fingerprints. Missing companions block Gate 164 confirmatory acceptance. See Gate 176. No implementation or execution occurred.
+
+## 36. Gate 177 — capture/export implementation-readiness audit
+
+Gate 177 found that the producer retains the exact matrix tuple through validation and evaluator invocation, but the current validator does not enforce canonical SCENARIO_IDS × ESTIMAND_SPECS order. The legacy fingerprint sorts rows and omits `tolerance_id`; the new full digest requires strict row/value validation.
+
+The report root is a mutable dict and cannot be passed to the current dataclass-only FrozenSnapshot.capture API. Its canonical serialization is Python JSON rather than RFC 8785 JCS. A separate typed FrozenReportSnapshot, pinned JCS implementation/version and strict decoder are required. Preserve existing CapturedBenchmark report/bundle/index shapes and use trailing optional new fields with fail-closed export validation.
+
+Gate 176's two IDs require a non-circular content-derived rule; Gate 177 proposes `benchmark_export_id = capture_id`. Calibration and Gate 159 companion schemas still need exact row, cardinality, denominator and applicability rules. See Gate 177. No code/tests/execution occurred.
