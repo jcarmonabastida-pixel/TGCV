@@ -1,6 +1,6 @@
 # C10-S V_cont — Gate 168: RunEvidenceBundle and SealedEvidence retention contract
 
-**Status:** CONTRACT DEFINED WITH IMPLEMENTATION BLOCKER  
+**Status:** CONTRACT DEFINED; SOURCE BLOCKER SUPERSEDED BY GATE 169; CAPTURE API IMPLEMENTED BY GATE 170; ORCHESTRATION INTEGRATION OPEN  
 **Branch:** `research/c10-s-consolidation-draft`  
 **Depends on:** Gates 154, 159, 164, 165, 166 and 167  
 **Scientific execution:** NOT AUTHORIZED  
@@ -12,7 +12,7 @@ Freeze the minimum per-run evidence carrier and the retention rule needed to imp
 
 Gate 168 is a data-contract and source-integrity operation. It does not authorize seed-bank generation, calibration, N/R/M sizing, benchmark execution, Monte Carlo execution or scientific execution.
 
-**Implementation is blocked by a source-level world-identity discrepancy discovered during this gate.** The current Generator's world-identity projection includes `assignment_role` and `assignment_index`. Consequently, RUN and repeated assignments sharing the same outer identity and world seed can receive different `world_id` values. This conflicts with Gate 154's invariant that one world is shared by the designated RUN and all R assignments within M. The discrepancy must be corrected and regression-tested before a conforming bundle can be accepted.
+**Historical Gate 168 finding, superseded:** this gate initially reported that the Generator world-identity projection retained `assignment_role` and `assignment_index`. Gate 169 re-read the current branch source and withdrew that finding; the current projection excludes both fields. Gate 170 subsequently implemented the standalone immutable capture API. The remaining implementation gap is end-to-end producer/orchestration integration, not the world-identity projection.
 
 ## 2. Historical reconciliation
 
@@ -121,9 +121,9 @@ Before a bundle is accepted:
 
 Any failed or unverifiable join blocks the affected export. No record is silently filtered, repaired from aggregate values, coerced to zero or converted into an Analyzer abstention.
 
-## 7. Critical source discrepancy — world identity
+## 7. Historical source discrepancy — superseded by Gate 169
 
-Static inspection of `Generator.generate()` in `03_EXPERIMENTS/C10-S/harness/vcont_integrated_harness.py` shows:
+At Gate 168, the source inspection was reported as showing the following:
 
 - `world_spec = asdict(cfg)`;
 - the current removal list excludes `seed`, `world_seed`, `z_assignment_seed`, `g_assignment_seed` and `replicate_id`;
@@ -134,14 +134,14 @@ Because RUN and REPEATED_ASSIGNMENT have different role/index values, their worl
 
 Gate 167's description of the projection as removing role/index is therefore corrected by this Gate 168 finding. Gate 155's historical implementation/CI record is not erased; its scope is qualified by this newly identified source-level invariant gap.
 
-**Required correction before Gate 168 implementation acceptance:** version the world-identity projection so assignment role/index are excluded from world identity while scenario/version/N/DGP identity, outer M identity and world seed remain bound. Preserve assignment role/index in run identity and all run-level manifests. Add a deterministic regression proving:
+**Historical required correction (withdrawn by Gate 169):** the proposed projection correction is not required for the current branch source. Gate 169 records the actual current projection and strengthens the regression. Its deterministic checks include:
 - RUN and every R assignment in the same M have the same world_id and world_seed;
 - distinct M values have distinct world IDs and world seeds;
 - changing role/index alone does not change world identity;
 - changing the DGP/world-defining configuration or M/world seed does change world identity;
 - run_id remains unique across RUN and R.
 
-Do not patch the source silently. Record the exact projection algorithm/schema version and compatibility consequences in the implementation change.
+Do not treat this historical finding as a current blocker. See Gate 169 for the superseding source audit and regression status.
 
 ## 8. Compatibility and non-goals
 
