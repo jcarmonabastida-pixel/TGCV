@@ -73,3 +73,15 @@ The package writer/verifier and package profile cross-reference remain a separat
 The capture boundary can now produce a v2.1-shaped report snapshot only when source bundles are supplied by the production caller. The report projection and source reconciliation are implemented in code, but not executed. Source-bundle adversarial test coverage, package-profile integration, independent verification, trusted provenance and end-to-end package conformance remain open.
 
 No scientific estimand, DGP, causal claim, or authorization to execute experiments is changed.
+
+## 5. Post-write source-shape correction
+
+A second read of the actual Evaluator return path established that the report carries:
+- `design` as a typed `MonteCarloBenchmarkDesign`;
+- `per_outer_replicate` as a tuple;
+- the four-element `run` as a tuple of typed `TruthBundle`, `AnalyzerResult`, `AnalysisContract`, and `RunManifest` objects.
+
+The Gate 189 reconciliation helper was corrected to consume those actual source types and tuple containers, rather than assuming the JSON-projected dict/list form. The helper also verifies the complete seven-part RUN evidence key and the separate `evaluation` bank field. The later JCS projection still converts dataclasses/tuples into JSON objects/arrays before applying the exact pointer wrappers.
+
+This was a source-level correction based on reading the Evaluator construction and producer call path. It was not compiled or executed. The remaining test gap is material: no pure fixture currently exercises the full source-bundle reconciliation helper with real or typed test-double bundles. The 17 test methods exercise the isolated report projection and the mandatory-source guard, not successful/failed bundle reconciliation.
+
