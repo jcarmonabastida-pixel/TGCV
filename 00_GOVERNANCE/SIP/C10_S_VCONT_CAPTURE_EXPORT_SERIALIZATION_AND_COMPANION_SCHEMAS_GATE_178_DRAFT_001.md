@@ -500,3 +500,13 @@ The selected candidate distribution is confirmed on PyPI as `rfc8785==0.1.4`. Th
 `520d690b448ecf0703691c76e1a34a24ddcd4fc5bc41d589cb7c58ec651bcd48`.
 
 This is a verified upstream distribution hash, not evidence that the dependency is installed in the TGCV environment. The later authorized implementation preflight must use this exact artifact (or create a separately reviewed dependency update with a new hash), record the dependency lock, and run the RFC/project vector suite. JCS normative behavior remains RFC 8785; the package pin does not waive cross-implementation verification.
+
+## 16. Gate 179 — typed uint64 successor and schema-version correction
+
+Gate 179 resolves the Gate 178 uint64/JCS blocker at the schema-design level. The successor to Gate 164 v1.0.0 is **package v2.0.0**, not v1.1.0: changing a seed field from JSON number to a typed JSON object is wire-incompatible and requires a major schema version.
+
+The exact typed representation is `{"$type":"uint64","decimal":"<canonical unsigned decimal>"}`, restricted to 0…18446744073709551615 and applied at every direct seed-bearing package JSON field. Historical seed fingerprints continue to be computed from source-typed integers before wire projection. Existing FrozenSnapshot canonical bytes remain opaque base64 and byte-preserved, not reserialized as JCS.
+
+Schema crosswalk: FrozenReportSnapshot, CalibrationBankManifest, capture identity and RUN-EXPORT-ENVELOPE advance to 2.0.0; MatrixCapture and Gate159 reconciliation remain 1.0.0. The 14-file inventory and archive profile remain unchanged. The prior Gate 178 suggestion of v1.1.0 is explicitly superseded. Full field-level contract and regression vectors: `C10_S_VCONT_PACKAGE_UINT64_WIRE_FORMAT_DECISION_AND_V2_CROSSWALK_GATE_179_DRAFT_001.md`.
+
+Gate 179 closes the schema-design incompatibility only. Implementation remains blocked pending contract acceptance and explicit authorization. No code/tests/CI, seed generation, calibration, package or scientific execution occurred.
