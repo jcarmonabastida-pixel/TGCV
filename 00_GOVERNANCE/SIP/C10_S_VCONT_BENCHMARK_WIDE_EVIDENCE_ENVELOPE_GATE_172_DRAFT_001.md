@@ -110,3 +110,9 @@ The Gate 164 archive can retain its exact path inventory. `runs/run_records.json
 No package serialization exists yet. FrozenSnapshot's tagged JSON bytes, SealedEvidence's legacy digest and the evaluator's report fingerprint are separate legacy/source integrity layers, not JCS. A package adapter must round-trip snapshots and recompute legacy SealedEvidence digests before computing separate JCS file/manifest/archive digests.
 
 Gate 159, calibration manifest, GitHub-resolved workflow/source/artifact metadata, JCS/tar writer and independent verifier remain open. No tests, package build or benchmark was executed. See Gate 173.
+
+## 10. Gate 175 — exact matrix capture gap
+
+Gate 175 confirms that `produce_and_capture_benchmark()` accepts and validates the exact matrix, then uses it for the 52-pair evaluation, but the returned `CapturedBenchmark` does not retain that matrix. Its report contains the design/fingerprint and resulting pair ledger only. Therefore Gate 172's benchmark-wide evidence envelope is complete for RUN/R and M evidence but not self-contained for exact matrix export. A capture-time immutable matrix payload (or immutable companion explicitly bound to the same capture/design) is required; do not reconstruct it from current code.
+
+The existing matrix fingerprint also omits `ScenarioEstimandSpec.tolerance_id`; retain it as legacy and add a separately versioned full-matrix digest. Calibration, Gate 159 and external workflow/test provenance remain separate absent inputs. See Gate 175. No execution occurred.
