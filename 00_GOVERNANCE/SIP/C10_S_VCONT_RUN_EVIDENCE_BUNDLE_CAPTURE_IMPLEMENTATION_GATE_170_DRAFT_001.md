@@ -98,3 +98,10 @@ Gate 171 adds `produce_and_capture_outer_world(...)` in the same source module. 
 The Gate 170 statement that no integrated producer/orchestration call site existed is therefore superseded at the **single-M boundary**. Gate 170's original scope remains accurate: it implemented the capture primitives but did not itself wire them into a producer.
 
 The benchmark-wide 13-scenario caller remains OPEN; no current caller yet loops all scenarios/M and combines the returned evidence bundles with the 52-pair benchmark report. See Gate 171 for the exact boundary, source and regression scope. The new regression tests are NOT EXECUTED.
+
+
+## 10. Gate 172 — benchmark-wide evidence envelope
+
+The single-M capture API from Gates 170–171 is now coordinated by `produce_and_capture_benchmark(...)`. It partitions exact pre-materialized evaluation SeedAssignment rows over the 13 registered scenarios and declared M values, calls the M producer once per group, joins the returned legacy four-object tuples to their exact captured source snapshots, assembles the existing `scenario_outer_runs` structure, and calls the existing benchmark evaluator once. The returned `CapturedBenchmark` co-locates its report, 13×M OuterWorldEvidenceBundles and evidence index.
+
+This closes the source-level benchmark-wide orchestration gap. It does not close Gate 159 authentication, canonical packaging or trusted attestation. Tests and driver remain NOT EXECUTED / NOT RUNTIME VERIFIED. See Gate 172.
