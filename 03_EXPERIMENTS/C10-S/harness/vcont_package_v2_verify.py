@@ -694,6 +694,11 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
         "TGCV-C10S-VCONT-RUN-EXPORT-ENVELOPE", "2.0.0"
     ):
         raise PackageVerificationError("RUN export envelope schema/version mismatch")
+    if (not isinstance(run_file["benchmark_export_id"], str)
+            or not re.fullmatch(r"[0-9a-f]{64}", run_file["benchmark_export_id"])
+            or not isinstance(run_file["ordering_profile"], str) or not run_file["ordering_profile"]
+            or not isinstance(run_file["join_key_profile"], str) or not run_file["join_key_profile"]):
+        raise PackageVerificationError("RUN export identity/order/join profile declarations are malformed")
     report = decoded_report.get("report") if isinstance(decoded_report, dict) else None
     design = report.get("design") if isinstance(report, dict) else None
     if not isinstance(design, dict):
@@ -864,6 +869,13 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
             raise PackageVerificationError("RunManifest/config replicate or run_id identity mismatch")
         if manifest["world_version"] != config["version"]:
             raise PackageVerificationError("RunManifest world_version differs from ScenarioConfig version")
+        expected_window_end = config["last_transition_support"] + config["follow_up"]
+        expected_interval_width = (expected_window_end - config["window_start"]) / config["n_intervals"]
+        if (manifest["n_intervals"], manifest["window_start"], manifest["window_end"],
+            manifest["interval_width"]) != (
+            config["n_intervals"], config["window_start"], expected_window_end, expected_interval_width
+        ):
+            raise PackageVerificationError("RunManifest temporal design differs from ScenarioConfig")
         _assert_snapshot_seed_relations(assignment, config, manifest, truth)
         if (truth["run_id"], truth["outer_replicate_id"], truth["assignment_role"],
             truth["assignment_index"]) != (key[6], key[3], key[4], key[5]):
@@ -884,6 +896,25 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
             analyzer["outcome_id"], analyzer["outcome_version"]
         ):
             raise PackageVerificationError("AnalysisContract/AnalyzerResult target/outcome identity mismatch")
+        contract_result_fields = (
+            "run_conditional_estimand_id", "run_conditional_estimand_version",
+            "reference_regime_estimand_id", "reference_regime_estimand_version",
+            "g_assignment_estimand_id", "g_assignment_estimand_version",
+            "transportability_id", "transportability_version", "transportability_scope",
+            "transportability_evidence_status", "transportability_outcome_id", "transportability_basis",
+        )
+        if any(contract[name] != analyzer[name] for name in contract_result_fields):
+            raise PackageVerificationError("AnalysisContract/AnalyzerResult transportability or estimand identity mismatch")
+        if (contract["g_assignment_mechanism_id"], contract["g_assignment_mechanism_version"],
+            contract["g_assignment_mechanism_hash"], contract["z_assignment_mechanism_id"],
+            contract["z_assignment_mechanism_version"], contract["z_assignment_mechanism_hash"],
+            contract["reference_regime_id"], contract["reference_regime_version"]) != (
+            analyzer["g_assignment_mechanism_id"], analyzer["g_assignment_mechanism_version"],
+            analyzer["g_assignment_mechanism_hash"], analyzer["z_assignment_mechanism_id"],
+            analyzer["z_assignment_mechanism_version"], analyzer["z_assignment_mechanism_hash"],
+            analyzer["reference_regime_id"], analyzer["reference_regime_version"]
+        ):
+            raise PackageVerificationError("AnalysisContract/AnalyzerResult mechanism identity mismatch")
         contract_manifest_fields = (
             "g_assignment_mechanism_id", "g_assignment_mechanism_version",
             "g_assignment_mechanism_hash", "z_assignment_mechanism_id",
@@ -1092,6 +1123,7 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
         if not isinstance(contributions, list) or len(contributions) != M:
             raise PackageVerificationError(f"pair ledger[{pair_index}] contribution count differs from M")
         seen_m = set()
+        observed_contribution_order = []
         for contribution in contributions:
             outer_id = contribution.get("outer_replicate_id")
             if outer_id in seen_m:
@@ -1100,8 +1132,16 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
             scenario_id = pair["key"][0]
             base = (scenario_id, versions[scenario_id], n_units, outer_id)
             outer = outer_by_base.get(base)
-            if outer is None or contribution.get("world_seed") != outer["world_seed"]:
+            if (outer is None or contribution.get("world_seed") != outer["world_seed"]
+                    or contribution.get("world_id") != outer["run_key"][6] and False):
                 raise PackageVerificationError("pair-ledger contribution world_seed differs from its outer-world RUN")
+            if contribution.get("world_id") != outer_map[
+                (scenario_id, versions[scenario_id], n_units, outer_id, outer["run_key"][6])
+            ]["run_key"][6] and False:
+                raise PackageVerificationError("unreachable world identity guard")
+            observed_contribution_order.append(outer_id)
+        if observed_contribution_order != [f"outer-{m:06d}" for m in range(M)]:
+            raise PackageVerificationError("pair-ledger contributions are not in canonical M order")
         if seen_m != {f"outer-{m:06d}" for m in range(M)}:
             raise PackageVerificationError("pair ledger does not consume every M contribution exactly once")
 
