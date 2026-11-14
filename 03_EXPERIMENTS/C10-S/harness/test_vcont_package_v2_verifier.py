@@ -1512,19 +1512,19 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
 
     def test_recomputes_not_reconciled_when_external_bindings_unavailable(self):
         artifact = self._fixture()
-        self.assertEqual(_reconcile_gate159_artifact(artifact, "b" * 64), "NOT_RECONCILED")
+        self.assertEqual(_reconcile_gate159_artifact(artifact, "b" * 64, {}), "NOT_RECONCILED")
 
     def test_rejects_forged_derived_status(self):
         artifact = self._fixture()
         artifact["derived_status"] = "RECONCILED"
         with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64)
+            _reconcile_gate159_artifact(artifact, "b" * 64, {})
 
     def test_rejects_findings_digest_drift(self):
         artifact = self._fixture()
         artifact["findings_digest"] = "0" * 64
         with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64)
+            _reconcile_gate159_artifact(artifact, "b" * 64, {})
 
     def test_rejects_external_check_self_asserted_pass(self):
         artifact = self._fixture()
@@ -1536,7 +1536,7 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
         payload.pop("findings_digest")
         artifact["findings_digest"] = hashlib.sha256(rfc8785.dumps(payload)).hexdigest()
         with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64)
+            _reconcile_gate159_artifact(artifact, "b" * 64, {})
 
     def test_rejects_required_check_order_drift(self):
         artifact = self._fixture()
@@ -1545,7 +1545,16 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
         payload.pop("findings_digest")
         artifact["findings_digest"] = hashlib.sha256(rfc8785.dumps(payload)).hexdigest()
         with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64)
+            _reconcile_gate159_artifact(artifact, "b" * 64, {})
+
+    def test_rejects_check_input_digest_not_in_artifact_registry(self):
+        artifact = self._fixture()
+        artifact["checks"][0]["input_digests"] = {"unlisted": "e" * 64}
+        payload = dict(artifact)
+        payload.pop("findings_digest")
+        artifact["findings_digest"] = hashlib.sha256(rfc8785.dumps(payload)).hexdigest()
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_gate159_artifact(artifact, "b" * 64, {})
 
     def test_rejects_not_applicable_without_seed_manifest_only_reason(self):
         artifact = self._fixture()
@@ -1554,7 +1563,7 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
         payload.pop("findings_digest")
         artifact["findings_digest"] = hashlib.sha256(rfc8785.dumps(payload)).hexdigest()
         with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64)
+            _reconcile_gate159_artifact(artifact, "b" * 64, {})
 
 
 if __name__ == "__main__":
