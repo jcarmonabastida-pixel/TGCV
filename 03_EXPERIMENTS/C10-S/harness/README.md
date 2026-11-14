@@ -212,3 +212,9 @@ The capture test module now has 25 methods, including deterministic typed-bundle
 
 Gate 190 final source audit also binds the Evaluator scenario labels (`scenario_id`, `scenario_version`), ordered M-row label (`outer_replicate_id`), and its `run_report` / `repeated_report` summaries to the exact captured evaluation-report snapshots. The typed fixtures mirror these returned fields. This remains source-inspected, not compiled or executed.
 
+### Gate 191 — source-audit corrections and package profile contract
+
+Gate 191's static audit corrected the Gate 190 helper's invalid `AnalysisContract.run_id` access. The helper now validates the contract through its real mechanism/estimand/outcome/transportability fields and retained digest. It also restores and reconciles EvidenceCandidate and SealedEvidence snapshots, recomputes provenance/sealed/configuration/contract digests, and checks their joins to AnalyzerResult. The typed positive fixture now contains complete digest-consistent source snapshots; seed-divergence tests preserve the complete Evaluator row. The capture module has 27 test methods, including 10 source-reconciliation methods. None has been executed.
+
+The v2 package profile contract is now explicit: package schema v2.0.0 and RUN export envelope v2.0.0 require report sub-schema `TGCV-C10S-VCONT-REPORT-SNAPSHOT@2.1.0`, payload type `TGCV-C10S-VCONT-BENCHMARK-REPORT`. The exact Gate 164 14-file inventory remains unchanged. Writer and independent verifier modules and their test modules are still absent. See `00_GOVERNANCE/SIP/C10_S_VCONT_PACKAGE_V2_PROFILE_AND_INDEPENDENT_VERIFIER_IMPLEMENTATION_CONTRACT_GATE_191_DRAFT_001.md`.
+
