@@ -245,3 +245,90 @@ Until that trust root and verifier exist, the maximum legitimate package status 
 - Scientific execution, calibration/evaluation seed-bank generation and Monte Carlo execution: NOT AUTHORIZED / NOT EXECUTED.
 
 **Next bounded operation:** perform a static schema-and-source crosswalk for the calibration manifest and Gate159 reconciliation artifact only, then freeze the exact check registry and derived-status algorithm before any implementation. Do not build a real package, invoke producers, generate seeds or execute calibration/Monte Carlo in that operation.
+
+## 10. Gate 178 companion contract — exact Gate159 schema/source crosswalk (static, 2026-11-14)
+
+The calibration and Gate159 companion schemas were recovered from Gate 178 §§6–8 and cross-checked against Gates 179/181 and the current package writer/verifier. This section records the normative requirements and the exact current implementation boundary.
+
+### 10.1 CalibrationBankManifest v2.0.0
+
+The v2 envelope retains the Gate 178 exact logical fields, with the Gate 179/181 versioned uint64 wire projection:
+
+- `schema_id = TGCV-C10S-VCONT-CALIBRATION-BANK-MANIFEST`;
+- `schema_version = 2.0.0`;
+- `bank = calibration`;
+- non-empty `namespace`;
+- exact `seed_derivation` descriptor: algorithm `TGCV-C10S-VCONT-SEED-v3`, hash `SHA-256`, output rule `first_8_digest_bytes_unsigned_big_endian`;
+- calibration-specific `design` (ordered scenario IDs/version map, sorted N grid, M, R and declared purpose/targets);
+- `row_count`, `rows`;
+- `seed_bank_fingerprint_legacy`;
+- versioned `manifest_sha256`;
+- `execution_evidence_status` in `NOT_CAPTURED`, `AVAILABLE`, `UNVERIFIABLE`.
+
+Each row's exact logical fields are: bank, scenario_id, scenario_version, n_units, replicate, outer_replicate_id, assignment_role, world_seed, z_assignment_seed and g_assignment_seed. The three seed fields use the exact Gate 179 uint64 object. `assignment_index` is not a second source field; it is the runtime alias of `replicate`.
+
+Calibration row count is derived from its own design: `scenario_count × n_grid_count × M × (1 + R)`. It is not copied from evaluation design. Canonical order is authoritative scenario order, ascending N, ascending M, RUN first (-1), then R indices 0…R-1.
+
+Required semantic checks: exact one RUN and contiguous R per scenario/version/N/M; fixed world seed within M; distinct world seeds across M; unique Z seeds and unique G seeds within M; pairwise-distinct world/Z/G within each row; calibration/evaluation union disjointness across all three streams; source-typed legacy fingerprint recomputation; independent JCS manifest digest recomputation. Calibration rows are not joined to evaluation RunManifests. Calibration execution links are conditional and missing evidence is UNAVAILABLE/UNVERIFIABLE, not an empty PASS.
+
+### 10.2 Gate159ReconciliationArtifact v1.0.0
+
+The exact envelope is:
+`schema_id`, `schema_version`, `benchmark_export_id`, `design_identity`, `verifier_identity`, `input_artifacts`, `required_check_ids`, `checks`, `derived_status`, `findings_digest`.
+
+Each exact check row is:
+`check_id`, `check_version`, `scope`, `applicability`, `join_key_profile`, `expected_count`, `observed_count`, `matched_count`, `mismatch_count`, `mismatches`, `input_digests`, `status`, `reason`.
+
+Allowed applicability: `REQUIRED` / `CONDITIONAL`. Allowed statuses: `PASS`, `FAIL`, `UNAVAILABLE`, `UNVERIFIABLE`, `NOT_APPLICABLE`. Counts are nonnegative exact integers or null only where the contract permits. Mismatch rows are ordered, bounded and data-only; they identify key, field, expected/observed digest or value reference and reason, without disclosing secrets or raw seed values.
+
+The exact required check IDs, in frozen order, are:
+
+1. `EVALUATION_ASSIGNMENT_RUN_MANIFEST_ONE_TO_ONE`
+2. `CALIBRATION_EVALUATION_SEED_DISJOINTNESS`
+3. `EVALUATION_SEED_FINGERPRINT_RECOMPUTATION`
+4. `CALIBRATION_SEED_FINGERPRINT_RECOMPUTATION`
+5. `EFFECTIVE_CONFIGURATION_FINGERPRINT_RECOMPUTATION`
+6. `MATRIX_LEGACY_AND_FULL_DIGEST_RECOMPUTATION`
+7. `SOURCE_EXECUTION_GITHUB_BINDING`
+8. `TECHNICAL_TEST_RUN_BINDING`
+
+Conditional check: `CALIBRATION_ASSIGNMENT_EXECUTION_LINK`, required only when calibration run outputs or N/R sizing claims rely on executed calibration records; otherwise NOT_APPLICABLE requires a documented seed-manifest-only calibration scope.
+
+Derived status is not caller-authored:
+- REJECTED if any required check is FAIL;
+- NOT_RECONCILED if no required check fails but a required check is missing, UNAVAILABLE or UNVERIFIABLE;
+- RECONCILED only when all required checks are present and PASS, and each conditional check is PASS or validly NOT_APPLICABLE with a documented reason.
+
+### 10.3 Exact current source comparison
+
+| Contract element | Current writer/verifier behavior | Finding |
+|---|---|---|
+| Calibration envelope | Writer checks schema ID/version/bank/rows/row_count | Shallow envelope guard only |
+| Calibration exact row allowlist and canonical order | No complete independent check found | OPEN |
+| Calibration design-derived cardinality | Not recomputed from calibration's own design | OPEN |
+| Calibration seed derivation descriptor and each row's world/Z/G values | Gate 194-I.4 recomputes evaluation rows only | OPEN for calibration |
+| Calibration source-typed legacy fingerprint | Not recomputed from calibration rows | OPEN |
+| Calibration JCS manifest digest | Not recomputed independently | OPEN |
+| Cross-bank union disjointness | Existing protocol helper exists, but package verifier does not invoke an independent equivalent | OPEN |
+| Gate159 artifact root and check-row exact schemas | Writer checks only schema/version/benchmark_export_id; verifier checks those same identity fields | OPEN |
+| Exact required check catalogue/order and cardinalities | Not independently enforced | OPEN |
+| Check result recomputation from package inputs | Not implemented | OPEN |
+| Derived status recomputation / findings digest | Not implemented | OPEN |
+| GitHub source execution and technical-test binding | Not resolved by the package verifier | EXTERNAL / OPEN |
+| Cryptographic attestation | No trusted signer/verifier | NOT_AUTHENTICATED |
+
+The existing `validate_seed_banks()` helper is useful source logic but is not by itself the package acceptance contract: it does not establish the exact package-level calibration design cardinality/order, source fingerprint/JCS manifest digest, Gate159 check-row evidence or derived aggregate status. The independent verifier must implement/reconcile these from the serialized v2 inputs without trusting producer-supplied status.
+
+### 10.4 Bounded implementation contract for the next code gate
+
+The next implementation should be limited to the pure package boundary:
+
+1. Add an independent calibration-manifest verifier with exact root/row allowlists, design-derived cardinality, canonical order, exact RUN/R coverage, role/index types, per-row stream uniqueness, within-M/world and cross-M checks, seed derivation recomputation from the calibration descriptor, source-typed legacy fingerprint and JCS manifest digest.
+2. Recompute calibration/evaluation disjointness over the complete three-stream seed unions. Report counts and bounded mismatch references without raw seed disclosure.
+3. Add a strict Gate159 check-registry validator for the exact eight required IDs/order plus the conditional calibration-execution check, exact root/row allowlists, duplicate/missing/extra checks, count/null semantics, input digests, allowed statuses and bounded mismatch structures.
+4. Recompute all checks whose evidence is internal to the package. For GitHub source-execution and technical-test checks, require independently resolved evidence; absent evidence is UNAVAILABLE/UNVERIFIABLE and forces NOT_RECONCILED, never PASS.
+5. Independently derive Gate159 `derived_status` and `findings_digest`; reject any caller-declared mismatch.
+6. Add adversarial pure fixtures for calibration schema/cardinality/order/seed/fingerprint/disjointness and forged/missing/duplicate/extra Gate159 check rows/statuses.
+7. Keep the current external-authentication output NOT_AUTHENTICATED. Do not add OIDC/signing permissions or a trusted workflow in this code gate.
+
+No Generator, Sealer, Analyzer, Evaluator, DGP, estimand or seed-generation source is to be modified. No producer, seed-bank generation, calibration, package construction, benchmark or scientific execution is included. A separate technical-test authorization is required before compiling or executing tests if not already granted for this new verifier layer.
