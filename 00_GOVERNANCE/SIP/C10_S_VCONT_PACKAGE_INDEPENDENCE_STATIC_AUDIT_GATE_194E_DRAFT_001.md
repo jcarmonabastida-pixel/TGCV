@@ -211,9 +211,16 @@ Source commits:
 - effective config fixtures: `f273ac1b22de35122e60281e173bc714fd8022ea`
 
 Latest reviewed blob identities:
-- verifier: `e2768e3cc2da447713f6f64fc6be9d6616b7ad74`
+- verifier: `73e05aa1da7c3f9609f1590b4d78c06c1ec080e8`
 - test module: `529cc257558bc27e80cf646c5a7bfea20bf65b17`
 
 Static text inspection found no imports from the writer, capture/export, integrated harness or benchmark-protocol modules in the verifier, and no temporary `and False`, empty-comprehension, TODO/FIXME or NotImplemented scaffolding in the verifier/test files. This is not a syntax check or execution.
 
 **Disposition:** benchmark_export_id declared-field equality is IMPLEMENTED IN SOURCE / FIXTURES WRITTEN / NOT EXECUTED. Effective structural config row reconciliation is IMPLEMENTED IN SOURCE / FIXTURES WRITTEN / ROOT ENVELOPE PARTIAL / NOT EXECUTED. AnalysisContract companion schema remains OPEN. The five historical companion gaps are not all closed.
+
+
+### 10.5 Fail-closed hardening
+
+A follow-up static pass added strict integer validation for an optional `row_count`, nonempty string/integer validation for effective-config row identities, and a fail-closed exception boundary around the companion identity/config reconciliation calls. Unexpected decoding or shape errors are now surfaced as `PackageVerificationError` rather than leaking an unrelated exception type.
+
+Verifier commit: `fd42afe16e9a82c1cb3bcec99ba03e6bc537a689`. Latest verifier blob: `73e05aa1da7c3f9609f1590b4d78c06c1ec080e8`. No test or compilation was performed.
