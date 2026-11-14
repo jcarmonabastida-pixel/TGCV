@@ -13,6 +13,7 @@ import base64
 import hashlib
 import io
 import json
+import math
 import re
 import tarfile
 from typing import Any, Mapping
@@ -1820,13 +1821,76 @@ def _reconcile_calibration_manifest(
         or descriptor.get("namespace") != namespace
     ):
         raise PackageVerificationError("calibration seed_derivation descriptor is invalid")
-    if not isinstance(calibration.get("design"), dict) or not calibration["design"]:
-        raise PackageVerificationError("calibration design declaration is missing")
+    design = calibration.get("design")
+    design_fields = {
+        "scenario_versions", "n_grid", "outer_replicates", "repeated_assignments",
+        "calibration_purpose", "metric_targets",
+    }
+    if not isinstance(design, dict) or set(design) != design_fields:
+        raise PackageVerificationError("calibration design exact field allowlist mismatch")
+    scenario_versions = design.get("scenario_versions")
+    if (not isinstance(scenario_versions, dict) or not scenario_versions
+            or any(sid not in AUTHORITATIVE_SCENARIO_IDS for sid in scenario_versions)
+            or list(scenario_versions) != [
+                sid for sid in AUTHORITATIVE_SCENARIO_IDS if sid in scenario_versions
+            ]
+            or any(not isinstance(version, str) or not version.strip()
+                   for version in scenario_versions.values())):
+        raise PackageVerificationError("calibration scenario_versions are not an ordered authoritative subset")
+    n_grid = design.get("n_grid")
+    if (not isinstance(n_grid, list) or not n_grid
+            or any(isinstance(n, bool) or not isinstance(n, int) or n < 16 or n % 4
+                   for n in n_grid)
+            or n_grid != sorted(set(n_grid))):
+        raise PackageVerificationError("calibration n_grid must be sorted unique supported integer N values")
+    m_count, r_count = design.get("outer_replicates"), design.get("repeated_assignments")
+    if (isinstance(m_count, bool) or not isinstance(m_count, int) or m_count < 1
+            or isinstance(r_count, bool) or not isinstance(r_count, int) or r_count < 1):
+        raise PackageVerificationError("calibration M/R design dimensions must be positive exact integers")
+    purpose = design.get("calibration_purpose")
+    if not isinstance(purpose, str) or not purpose.strip():
+        raise PackageVerificationError("calibration_purpose must be a nonempty declared string")
+    targets = design.get("metric_targets")
+    target_fields = {
+        "scenario_id", "scenario_version", "estimand_id", "estimand_version",
+        "metric_id", "target_mcse",
+    }
+    if not isinstance(targets, list) or not targets:
+        raise PackageVerificationError("calibration metric_targets must be a nonempty declared list")
+    target_keys = set()
+    for index, target in enumerate(targets):
+        if not isinstance(target, dict) or set(target) != target_fields:
+            raise PackageVerificationError(f"calibration metric target {index} field allowlist mismatch")
+        sid = target.get("scenario_id")
+        if (sid not in scenario_versions or target.get("scenario_version") != scenario_versions[sid]
+                or not all(isinstance(target.get(field), str) and target[field].strip()
+                           for field in ("estimand_id", "estimand_version", "metric_id"))
+                or isinstance(target.get("target_mcse"), bool)
+                or not isinstance(target.get("target_mcse"), (int, float))
+                or not math.isfinite(float(target["target_mcse"])) or target["target_mcse"] <= 0):
+            raise PackageVerificationError(f"calibration metric target {index} identity/value is invalid")
+        target_key = (
+            sid, target["scenario_version"], target["estimand_id"],
+            target["estimand_version"], target["metric_id"],
+        )
+        if target_key in target_keys:
+            raise PackageVerificationError("calibration metric_targets contain duplicate identities")
+        target_keys.add(target_key)
     if calibration.get("execution_evidence_status") not in ("NOT_CAPTURED", "AVAILABLE", "UNVERIFIABLE"):
         raise PackageVerificationError("calibration execution_evidence_status is invalid")
     rows = calibration.get("rows")
-    if not isinstance(rows, list) or not rows or calibration.get("row_count") != len(rows):
-        raise PackageVerificationError("calibration row_count/rows envelope is incomplete")
+    expected_row_count = len(scenario_versions) * len(n_grid) * m_count * (1 + r_count)
+    if not isinstance(rows, list) or calibration.get("row_count") != expected_row_count or len(rows) != expected_row_count:
+        raise PackageVerificationError("calibration row_count does not match its declared design cardinality")
+    expected_order = [
+        (sid, scenario_versions[sid], n, f"outer-{m:06d}", role, replicate)
+        for sid in scenario_versions
+        for n in n_grid
+        for m in range(m_count)
+        for role, replicate in ([("RUN", -1)] + [
+            ("REPEATED_ASSIGNMENT", r) for r in range(r_count)
+        ])
+    ]
 
     def derive(row: Mapping[str, Any], stream: str, role: str, replicate: int) -> int:
         payload = (
@@ -1862,6 +1926,9 @@ def _reconcile_calibration_manifest(
             "z_assignment_seed": _uint64(row.get("z_assignment_seed"), f"calibration rows[{index}].z_assignment_seed"),
             "g_assignment_seed": _uint64(row.get("g_assignment_seed"), f"calibration rows[{index}].g_assignment_seed"),
         }
+        observed_identity = (sid, version, n, outer, role, replicate)
+        if observed_identity != expected_order[index]:
+            raise PackageVerificationError(f"calibration row {index} is not in declared canonical scenario/N/M/R order")
         if len(set(seeds.values())) != 3:
             raise PackageVerificationError(f"calibration row {index} reuses a seed across streams")
         expected = {
@@ -1899,10 +1966,14 @@ def _reconcile_calibration_manifest(
     legacy_digest = _sha256(json.dumps(legacy_rows, sort_keys=True, separators=(",", ":")).encode("utf-8"))
     if calibration.get("seed_bank_fingerprint_legacy") != legacy_digest:
         raise PackageVerificationError("calibration source-typed legacy seed-bank fingerprint does not recompute")
-    if not isinstance(calibration.get("manifest_sha256"), str) or re.fullmatch(
-        r"[0-9a-f]{64}", calibration["manifest_sha256"]
-    ) is None:
-        raise PackageVerificationError("calibration manifest_sha256 is not lowercase SHA-256 hex")
+    manifest_payload = dict(calibration)
+    declared_manifest_digest = manifest_payload.pop("manifest_sha256", None)
+    try:
+        expected_manifest_digest = _sha256(rfc8785.dumps(manifest_payload))
+    except Exception as exc:
+        raise PackageVerificationError(f"calibration manifest JCS input is invalid: {exc}") from exc
+    if declared_manifest_digest != expected_manifest_digest:
+        raise PackageVerificationError("calibration manifest JCS digest does not recompute")
 
     evaluation_rows = evaluation.get("rows") if isinstance(evaluation, dict) else None
     if not isinstance(evaluation_rows, list) or not evaluation_rows:
