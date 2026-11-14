@@ -99,3 +99,9 @@ Implement the complete nested Evaluator-report schema allowlists and cardinality
 ## 6. Post-review source-shape correction
 
 A final read-through of the actual `_design_identity_projection()` showed that `scenario_versions` is represented as an ordered array of objects with exactly `scenario_id` and `scenario_version`, not as pairs. The Gate 186 guard was aligned to that actual source shape before closure. It now validates the exact row object shape and authoritative scenario order, then reconciles each bundle against the declared version map. This correction is source-reviewed only; no test or compilation was run.
+
+## 7. Gate 187 outcome
+
+Gate 187 implemented exact nested allowlists and cardinality checks from Evaluator's actual report construction: 13 scenario reports, 52 ordered pair rows, M contributions per pair, 13×M×(1+R) temporal rows, M per-outer scenario reports and R nested repeated-assignment reports. It added source/test fixture coverage for unknown nested fields and cardinality drift; no tests were executed.
+
+Gate 187 also found that Gate 181's uint64 registry omits four direct seed paths retained inside `scenario_reports[*].per_outer_replicate[*].run`: TruthBundle.seed and the three RunManifest seed fields. Because Gate 181 requires complete report preservation, this prevents a full v2.0.0 JCS conformance claim. No implicit registry amendment was made. Gate 188 must decide a versioned contract successor or explicit report-projection change. See `C10_S_VCONT_PACKAGE_V2_NESTED_REPORT_SCHEMA_ALLOWLISTS_GATE_187_DRAFT_001.md`.
