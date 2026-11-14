@@ -5,7 +5,7 @@ Generator, Sealer, Analyzer, Evaluator, seed-bank builder or benchmark runner.
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, fields, is_dataclass
+from dataclasses import asdict, dataclass, fields, is_dataclass, replace
 from enum import Enum
 import hashlib
 import json
@@ -14,9 +14,9 @@ from typing import Any, TypeVar
 
 from vcont_benchmark_protocol import SeedAssignment
 from vcont_integrated_harness import (
-    AnalysisContract, AnalyzerResult, ContractError, EvaluationReport,
-    EvidenceCandidate, RepeatedAssignmentReport, RunManifest, ScenarioConfig,
-    SealedEvidence, TruthBundle,
+    AnalysisContract, Analyzer, AnalyzerResult, ContractError, EvaluationReport,
+    Evaluator, EvidenceCandidate, Generator, RepeatedAssignmentReport, RunManifest,
+    ScenarioConfig, SealedEvidence, Sealer, TruthBundle, contract_for,
 )
 
 T = TypeVar("T")
@@ -421,3 +421,120 @@ class OuterWorldEvidenceBundle:
             manifest.world_id, manifest.world_version, manifest.world_seed,
             run_bundle, tuple(repeated), FrozenSnapshot.capture(repeated_assignment_report),
         )
+
+
+@dataclass(frozen=True)
+class CapturedRun:
+    """One produced run plus the unchanged legacy tuple consumed by Evaluator."""
+    evidence_bundle: RunEvidenceBundle
+    evaluator_tuple: tuple[TruthBundle, AnalyzerResult, AnalysisContract, RunManifest]
+
+
+@dataclass(frozen=True)
+class CapturedOuterWorld:
+    """Integrated M boundary: immutable evidence plus legacy aggregation inputs."""
+    evidence_bundle: OuterWorldEvidenceBundle
+    evaluator_runs: tuple[tuple[TruthBundle, AnalyzerResult, AnalysisContract, RunManifest], ...]
+
+
+def produce_and_capture_outer_world(
+    assignments: tuple[SeedAssignment, ...],
+    config_template: ScenarioConfig,
+    *,
+    expected_repeated_assignments: int,
+    tolerance: float,
+) -> CapturedOuterWorld:
+    """Produce and capture exactly one M while every per-run source object coexists.
+
+    This is the producer/orchestration boundary missing from Gate 167. It consumes
+    already-materialized SeedAssignment rows; it never derives seeds or builds a bank.
+    The returned evaluator tuples preserve the existing four-object Monte Carlo
+    interface, while the parallel immutable OuterWorldEvidenceBundle retains the
+    complete Gate 166 source records. Calling this function performs synthetic
+    generation/analyzer/evaluation and therefore requires the applicable execution
+    authorization; defining/importing it does not execute a benchmark.
+    """
+    from vcont_benchmark_protocol import SeedAssignment as AssignmentType
+
+    rows = tuple(assignments)
+    if not rows or any(not isinstance(row, AssignmentType) for row in rows):
+        raise ContractError("outer-world producer requires typed SeedAssignment rows")
+    if expected_repeated_assignments < 1 or tolerance < 0:
+        raise ContractError("positive R and nonnegative evaluation tolerance required")
+    if len(rows) != expected_repeated_assignments + 1:
+        raise ContractError("outer-world producer requires exactly one RUN plus R rows")
+    run_rows = [row for row in rows if row.assignment_role == "RUN"]
+    repeated_rows = sorted(
+        (row for row in rows if row.assignment_role == "REPEATED_ASSIGNMENT"),
+        key=lambda row: row.assignment_index,
+    )
+    if len(run_rows) != 1 or len(repeated_rows) != expected_repeated_assignments:
+        raise ContractError("outer-world producer requires exactly one RUN and R repeated rows")
+    if run_rows[0].assignment_index != -1 or [row.assignment_index for row in repeated_rows] != list(
+        range(expected_repeated_assignments)
+    ):
+        raise ContractError("outer-world producer requires RUN=-1 and contiguous R indices 0..R-1")
+    ordered = (run_rows[0],) + tuple(repeated_rows)
+    group_identity = {
+        (row.bank, row.scenario_id, row.scenario_version, row.n_units,
+         row.outer_replicate_id, row.world_seed)
+        for row in ordered
+    }
+    if len(group_identity) != 1:
+        raise ContractError("SeedAssignment rows do not belong to one scenario/N/M/world")
+    bank, scenario_id, scenario_version, n_units, _, _ = next(iter(group_identity))
+    if (scenario_id, scenario_version, n_units) != (
+        config_template.scenario_id, config_template.version, config_template.n_units
+    ):
+        raise ContractError("SeedAssignment group does not match the structural ScenarioConfig template")
+    if bank != "evaluation":
+        raise ContractError("benchmark producer accepts evaluation-bank assignments only")
+    if (len({row.z_assignment_seed for row in ordered}) != len(ordered)
+            or len({row.g_assignment_seed for row in ordered}) != len(ordered)):
+        raise ContractError("assignment-specific Z/G seeds must be unique within M")
+
+    generator, sealer, analyzer, evaluator = Generator(), Sealer(), Analyzer(), Evaluator()
+    captured: list[CapturedRun] = []
+    for assignment in ordered:
+        config = replace(
+            config_template,
+            world_seed=assignment.world_seed,
+            z_assignment_seed=assignment.z_assignment_seed,
+            g_assignment_seed=assignment.g_assignment_seed,
+            outer_replicate_id=assignment.outer_replicate_id,
+            assignment_role=assignment.assignment_role,
+            assignment_index=assignment.assignment_index,
+        )
+        run_manifest, truth_bundle, evidence_candidate = generator.generate(config)
+        sealed_evidence = sealer.seal(evidence_candidate)
+        analysis_contract = contract_for(config)
+        analyzer_result = analyzer.analyze(sealed_evidence, analysis_contract)
+        evaluation_report = evaluator.evaluate(
+            truth_bundle, analyzer_result, analysis_contract, tolerance, run_manifest
+        )
+        run_bundle = RunEvidenceBundle.capture(
+            assignment=assignment,
+            config=config,
+            run_manifest=run_manifest,
+            truth_bundle=truth_bundle,
+            evidence_candidate=evidence_candidate,
+            sealed_evidence=sealed_evidence,
+            analysis_contract=analysis_contract,
+            analyzer_result=analyzer_result,
+            evaluation_report=evaluation_report,
+        )
+        captured.append(CapturedRun(
+            run_bundle,
+            (truth_bundle, analyzer_result, analysis_contract, run_manifest),
+        ))
+
+    evaluator_runs = tuple(item.evaluator_tuple for item in captured)
+    repeated_report = evaluator.evaluate_repeated_assignment(
+        list(evaluator_runs[1:]), tolerance
+    )
+    outer_bundle = OuterWorldEvidenceBundle.capture(
+        tuple(item.evidence_bundle for item in captured),
+        repeated_report,
+        expected_repeated_assignments,
+    )
+    return CapturedOuterWorld(outer_bundle, evaluator_runs)
