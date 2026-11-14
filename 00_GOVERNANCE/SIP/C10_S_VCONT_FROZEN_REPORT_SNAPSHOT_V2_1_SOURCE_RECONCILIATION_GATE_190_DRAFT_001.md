@@ -35,7 +35,7 @@ The helper `_reconcile_report_seed_sources` in `vcont_evidence_export.py` now va
    - `TruthBundle.seed == ScenarioConfig.seed == MatrixTruthProjection.seed`;
    - RunManifest world/Z/G streams equal their matching SeedAssignment and effective ScenarioConfig streams;
    - outer-world world seed equals RUN assignment and RUN manifest.
-7. Effective stream fallback semantics used by `RunEvidenceBundle.capture`: when a ScenarioConfig stream field is `None`, world uses `config.seed`, Z uses `config.seed + 100003`, and G uses `config.seed + 200003`. The helper does not incorrectly compare a defaulted stream to a literal `None`.
+7. Explicit stream enforcement for the confirmatory producer: `ScenarioConfig.world_seed`, `z_assignment_seed` and `g_assignment_seed` must all be present and exact uint64 values. Although the lower-level `RunEvidenceBundle.capture` supports effective defaults for other callers, `produce_and_capture_outer_world` explicitly replaces all three fields from the evaluation SeedAssignment; Gate 190 enforces that stricter producer contract.
 8. Exact RUN report tuple equality for AnalyzerResult, AnalysisContract and RunManifest, and equality of the report TruthBundle's retained matrix projection to the immutable MatrixTruthProjection snapshot.
 9. Exact R repeated-bundle count, indices 0..R-1, logical keys, world identity/seed, unique run IDs and unique Z/G streams within the M group.
 10. RepeatedAssignmentReport identity/count and exact ordered EvaluationReport correspondence to the repeated RunEvidenceBundles.
@@ -89,4 +89,6 @@ Perform a read-only source audit of the complete helper and fixtures, correct an
 A further read of `Evaluator.evaluate_monte_carlo` established that the per-outer row also carries `outer_replicate_id`, `run_report` and `repeated_report`, while the scenario report carries `scenario_id` and `scenario_version`. Gate 190 now checks those labels against the ordered scenario/M key and checks both summary report objects against the exact captured RUN and repeated EvaluationReport sources. This prevents a correctly seeded RUN tuple from being attached to a mislabeled M row or a divergent evaluation summary.
 
 The typed pure fixture was extended to include those exact Evaluator fields. This is a static source-level strengthening; the test suite remains unexecuted.
+
+A subsequent direct inspection of `produce_and_capture_outer_world` resolved the distinction between the generic `RunEvidenceBundle.capture` fallback and the confirmatory producer: the producer always sets all three ScenarioConfig stream fields explicitly from the SeedAssignment before generation. Gate 190 therefore rejects `None` for any of these fields rather than accepting fallback derivation. The pure fixture was updated to mirror that actual producer path. This correction preserves `ScenarioConfig.seed` as a distinct TruthBundle source.
 
