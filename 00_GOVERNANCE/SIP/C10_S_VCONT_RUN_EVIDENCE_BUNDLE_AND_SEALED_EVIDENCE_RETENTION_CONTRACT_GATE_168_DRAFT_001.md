@@ -200,3 +200,12 @@ Gate 169 withdrew the Gate 168 source-level world-identity blocker: current Gene
 Gate 170 implements the Gate 168 data contract as a standalone capture API in `03_EXPERIMENTS/C10-S/harness/vcont_evidence_export.py`. It provides deeply immutable canonical typed snapshots, per-run joins and digest checks, the Gate 166 matrix-only truth projection, inline SealedEvidence rows+manifest, and an OuterWorldEvidenceBundle cardinality/identity validator. Details and source-level limitations are recorded in `C10_S_VCONT_RUN_EVIDENCE_BUNDLE_CAPTURE_IMPLEMENTATION_GATE_170_DRAFT_001.md`.
 
 **Important qualification:** the capture API is not yet called by the existing benchmark orchestration; the latter still uses reduced four-object tuples. Thus Gate 168's contract is IMPLEMENTED AS A CAPTURE PRIMITIVE, not end-to-end integrated. The regression source is persisted but NOT EXECUTED. Gate 159, producer integration, package creation and external provenance remain OPEN. The earlier §1/§7 world-identity blocker statements are superseded by Gate 169 and must not be treated as current findings.
+
+
+## 13. Gate 171 — M-level producer boundary implemented
+
+The Gate 170 standalone capture API is now called by an explicit M-level producer/orchestration function: `produce_and_capture_outer_world(...)` in `03_EXPERIMENTS/C10-S/harness/vcont_evidence_export.py`.
+
+For one scenario/N/M group, it consumes the exact evaluation SeedAssignment rows, applies their three seed streams and M/R identity to a copy of the structural ScenarioConfig template, invokes the existing Generator, Sealer, Analyzer and Evaluator in order, captures each RunEvidenceBundle while all source objects coexist, computes one repeated-assignment report, and creates one OuterWorldEvidenceBundle. It also returns the existing four-object evaluator tuples unchanged.
+
+Thus the Gate 168/170 implementation is now integrated at the **single-M producer boundary**, not merely available as a disconnected capture primitive. The benchmark-wide 13-scenario driver and 52-pair evidence co-export remain OPEN and are the next Gate 172 operation. The source regression tests are persisted but NOT EXECUTED. No runtime PASS or benchmark execution is claimed.
