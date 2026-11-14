@@ -613,6 +613,16 @@ def _uint64_wire(value: Any) -> dict[str, str]:
     return {"$type": "uint64", "decimal": str(value)}
 
 
+def _legacy_report_fingerprint(manifest_payload: Any) -> str:
+    # Exact existing Evaluator sequence: JSON round-trip with default=asdict and
+    # sorted keys, followed by the unchanged compact _hash JSON/SHA-256 operation.
+    normalized = json.loads(json.dumps(manifest_payload, default=asdict, sort_keys=True))
+    payload = json.dumps(
+        normalized, sort_keys=True, separators=(",", ":"), allow_nan=False
+    ).encode("utf-8")
+    return _sha256_hex(payload)
+
+
 def _report_v2_projection(report: dict[str, Any]) -> dict[str, Any]:
     expected = {
         "design", "temporal_manifest", "pair_ledger", "manifest",
@@ -620,6 +630,9 @@ def _report_v2_projection(report: dict[str, Any]) -> dict[str, Any]:
     }
     if not isinstance(report, dict) or set(report) != expected:
         raise ContractError("Evaluator report top-level schema differs from FrozenReportSnapshot v2.0.0")
+    recomputed_legacy_fingerprint = _legacy_report_fingerprint(report["manifest"])
+    if report.get("report_fingerprint") != recomputed_legacy_fingerprint:
+        raise ContractError("legacy report_fingerprint does not match the frozen source algorithm")
     projected = _jcs_safe_source(report)
     expected_design_fields = {
         "scenario_versions", "n_units", "outer_replicates", "repeated_assignments",
