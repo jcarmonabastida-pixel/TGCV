@@ -1,4 +1,4 @@
-name: C10-S V_cont package v2 pure capture and writer tests
+name: C10-S V_cont package v2 pure capture, writer and verifier tests
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   vcont-package-v2-pure-capture-tests:
-    name: Pure capture and package writer fixtures — no synthetic producer execution
+    name: Pure capture, package writer and independent verifier fixtures — no synthetic producer execution
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -35,10 +35,10 @@ jobs:
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           PYTHONDONTWRITEBYTECODE: '1'
-        run: python -m py_compile vcont_evidence_export.py vcont_package_v2.py test_vcont_capture_v2.py test_vcont_package_v2_serialization.py
+        run: python -m py_compile vcont_evidence_export.py vcont_package_v2.py vcont_package_v2_verify.py test_vcont_capture_v2.py test_vcont_package_v2_serialization.py test_vcont_package_v2_verifier.py
 
       - name: Run only allowlisted pure capture and package writer fixtures
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           PYTHONDONTWRITEBYTECODE: '1'
-        run: python -B -m unittest -v test_vcont_capture_v2 test_vcont_package_v2_serialization
+        run: python -B -m unittest -v test_vcont_capture_v2 test_vcont_package_v2_serialization test_vcont_package_v2_verifier
