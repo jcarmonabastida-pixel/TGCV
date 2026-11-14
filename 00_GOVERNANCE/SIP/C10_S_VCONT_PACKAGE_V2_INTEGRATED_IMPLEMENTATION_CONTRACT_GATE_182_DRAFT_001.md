@@ -264,3 +264,7 @@ Three automatic pure-workflow runs occurred during the first Gate 185 pushes bef
 ## 17. Gate 185 report-fingerprint reconciliation refinement
 
 The capture implementation recomputes the legacy report fingerprint from the source-typed manifest before uint64 wire conversion, using the frozen historical Evaluator JSON round-trip and compact SHA-256 operation; it rejects any mismatch. The pure fixture source covers a tampered fingerprint. No tests were executed.
+
+## 18. Gate 186 — capture source audit
+
+Gate 186 corrected the legacy report fingerprint algorithm identifier to the exact Gate 181 value and strengthened the capture identity's design-to-outer-world scenario/version/N join. It also found a remaining conformance gap: nested report structures are preserved recursively but lack complete versioned field allowlists and cardinality checks. The capture report projection must not be treated as a strict schema decoder until Gate 187 closes this. Tests remain unexecuted; no producer or scientific operation ran. See `C10_S_VCONT_PACKAGE_V2_CAPTURE_SOURCE_AUDIT_GATE_186_DRAFT_001.md`.
