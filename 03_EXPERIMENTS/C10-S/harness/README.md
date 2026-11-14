@@ -204,3 +204,9 @@ The test module contains 17 methods, including typed-boundary and invalid-input 
 
 Gate 189 source-shape correction: the reconciliation helper consumes the actual Evaluator representation (`MonteCarloBenchmarkDesign`, tuple-valued per-outer rows, and the four typed source dataclasses), not the later JSON dict/list projection. It also checks the complete RUN logical key. This correction is source-inspected but uncompiled/unexecuted. No pure test yet exercises a complete source-bundle positive/negative join; the current 17 tests cover projection fixtures and the missing-source fail-closed guard only.
 
+### Gate 190 — source-bundle reconciliation fixtures
+
+The v2.1 reconciliation helper now joins the complete Evaluator RUN tuple to its immutable RUN `RunEvidenceBundle`, and validates all R repeated bundles against the same scenario/M/world, including exact logical keys, evaluation bank, run IDs, source seeds, unique Z/G streams and the ordered repeated-assignment report. Effective ScenarioConfig stream defaults are resolved using the same fallback semantics as `RunEvidenceBundle.capture`. `TruthBundle.seed` remains distinct from the explicit world/Z/G streams.
+
+The capture test module now has 25 methods, including deterministic typed-bundle positive and adversarial fixtures. These tests are written but not executed. The pure workflow remains manual-only and was not dispatched. The package writer/verifier modules and package-v2 schema-profile implementation are absent; package-level v2.1 conformance remains open. See `00_GOVERNANCE/SIP/C10_S_VCONT_FROZEN_REPORT_SNAPSHOT_V2_1_SOURCE_RECONCILIATION_GATE_190_DRAFT_001.md`.
+
