@@ -349,7 +349,9 @@ def verify_package_v2(
         raise PackageVerificationError("manifest file inventory/length/digest records do not recompute")
 
     report = parsed["report/report.json"]
-    _check_report(report)
+    _check_registered_uint64(parsed)
+    decoded_report = _decode_registered(report)
+    _check_report(decoded_report)
     matrix = parsed["design/scenario_estimand_matrix.json"]
     if (not isinstance(matrix, dict) or matrix.get("schema_id") != MATRIX_SCHEMA_ID
             or matrix.get("schema_version") != MATRIX_SCHEMA_VERSION
@@ -365,8 +367,6 @@ def verify_package_v2(
     if matrix_digest != matrix.get("full_matrix_sha256"):
         raise PackageVerificationError("MatrixCapture full-matrix digest mismatch")
 
-    _check_registered_uint64(parsed)
-    decoded_report = _decode_registered(report)
     if (decoded_report["report"]["temporal_manifest"]
             != decoded_report["report"]["manifest"]["temporal_manifest"]
             or decoded_report["report"]["pair_ledger"]
