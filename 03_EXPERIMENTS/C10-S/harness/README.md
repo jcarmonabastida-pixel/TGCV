@@ -123,3 +123,9 @@ The top-level report is a mutable dict; the existing FrozenSnapshot API accepts 
 The exact MatrixCapture, FrozenReportSnapshot, capture identity, CalibrationBankManifest, Gate159ReconciliationArtifact, source/test companion and strict-decoder contracts are defined in `00_GOVERNANCE/SIP/C10_S_VCONT_CAPTURE_EXPORT_SERIALIZATION_AND_COMPANION_SCHEMAS_GATE_178_DRAFT_001.md`.
 
 Gate 178 is CONDITIONAL: Gate 164 v1.0.0 requires JCS for package JSON but its seed fields originate as unsigned 64-bit integers. Exact JCS number representation is not guaranteed above 2^53-1, and the frozen schema prohibits numeric-to-string coercion. A versioned exact uint64 wire representation must be formally resolved before packager implementation. No code/tests/CI or scientific execution occurred.
+
+## Gate 179 — package v2 uint64 wire format
+
+Gate 179 defines the exact typed uint64 JCS representation and versions the confirmatory package successor as Gate 164 v2.0.0. Gate 164 v1.0.0 remains frozen. The exact 14-file inventory, JCS profile and deterministic tar profile are unchanged. Direct seed-bearing package JSON fields use `{"$type":"uint64","decimal":"<canonical unsigned decimal>"}`; source SeedAssignment integers, seed derivation and historical fingerprints are unchanged. FrozenSnapshot bytes remain opaque and byte-preserved.
+
+The RUN-EXPORT-ENVELOPE, FrozenReportSnapshot, CalibrationBankManifest and capture identity advance to v2.0.0; MatrixCapture and Gate159 reconciliation remain v1.0.0. Implementation remains blocked pending governed acceptance and explicit authorization. No code/tests/CI or scientific execution occurred. See Gate 179.
