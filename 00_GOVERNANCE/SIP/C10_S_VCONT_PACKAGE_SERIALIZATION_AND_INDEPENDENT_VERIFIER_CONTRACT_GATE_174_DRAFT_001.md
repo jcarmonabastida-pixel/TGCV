@@ -193,3 +193,15 @@ In addition to Gate 164 §10:
 - main unchanged; PR #116 remains Draft on its existing base.
 
 **Next Gate 175:** static implementability audit of the Gate 174 contract against the actual type registry, snapshot encoder/decoder, matrix object, report schema and available provenance APIs. Resolve type/field gaps before authorizing any serializer implementation.
+
+## 11. Gate 175 — source implementability qualification
+
+Gate 175 found that `produce_and_capture_benchmark()` validates and consumes the exact 52-row matrix locally but does not retain it in the returned `CapturedBenchmark` (which contains only report, outer-world bundles and evidence index). The report retains the design fingerprint and 52-pair ledger, not the exact matrix definitions. Therefore the Gate 174 requirement to export the exact matrix cannot be met from CapturedBenchmark alone; callers would need a separately retained immutable matrix explicitly bound to the capture.
+
+A second issue: `scenario_matrix_fingerprint()` omits `ScenarioEstimandSpec.tolerance_id`. Preserve this legacy fingerprint unchanged for compatibility, but add a versioned full-matrix digest covering every declared field including tolerance_id and nested EvaluationKey fields. The full digest is the exact matrix commitment.
+
+The snapshot registry covers the current run dataclasses but not ScenarioEstimandSpec/EvaluationKey. The generic decoder drops enum type identity, accepts untagged dictionaries and does not enforce exact field sets or schema versions; arbitrary bytes and non-string mapping keys are rejected. No enum-valued field was identified in the currently registered snapshot dataclass fields, so enum loss is a latent generic gap rather than a demonstrated loss in current RUN/R records. `FrozenSnapshot.restore()` is not an independent strict package decoder.
+
+RUN/R snapshots, M bundles, repeated reports, design, temporal manifest and 52-pair report are available in source. Structural ScenarioConfig registry can be deterministically projected from retained per-run configs under the capture's explicit field-removal rule; AnalysisContracts can be deduplicated by complete snapshot bytes with per-run references. Calibration manifest, Gate 159 reconciliation and independently resolved GitHub source/test metadata are not provided by the capture API.
+
+**Gate 174 disposition updated:** contract DEFINED / QUALIFIED; confirmatory packager remains BLOCKED pending exact matrix retention/full digest, calibration and independent provenance inputs, and strict decoder. See Gate 175. No code, tests or benchmark were executed.
