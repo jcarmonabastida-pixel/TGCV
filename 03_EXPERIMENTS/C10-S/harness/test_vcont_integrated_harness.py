@@ -869,9 +869,6 @@ class VContIntegratedHarnessTests(unittest.TestCase):
                             for record in reference))
         self.assertTrue(all(record.analyzer_output is None for record in reference))
 
-if __name__ == "__main__":
-    unittest.main()
-
 class RunEvidenceBundleCaptureTests(unittest.TestCase):
     def test_run_evidence_bundle_snapshots_exact_sources_deeply(self):
         from vcont_benchmark_protocol import SeedAssignment
@@ -920,3 +917,6 @@ class RunEvidenceBundleCaptureTests(unittest.TestCase):
         self.assertEqual(restored_sealed.sha256, sealed.sha256)
         self.assertEqual(bundle.sealed_evidence_legacy_sha256, sealed.sha256)
         self.assertEqual(bundle.validation_status, "STRUCTURALLY_VALID")
+
+if __name__ == "__main__":
+    unittest.main()
