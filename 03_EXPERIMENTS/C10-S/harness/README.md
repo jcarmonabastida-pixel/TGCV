@@ -155,3 +155,9 @@ JCS dependency pin: `rfc8785==0.1.4`, wheel SHA-256 `520d690b448ecf0703691c76e1a
 ### Gate 184 correction
 
 The first pure workflow revision had an invalid unquoted pip-install scalar. GitHub created failed workflow-run records with zero jobs; no tests or other job steps executed. The command was quoted in commit 84d6e4695e7e94f694ca5bb40125a81c8936eefe and the corrected workflow YAML parsed successfully. No CI job has passed yet.
+
+## Gate 185 — first package v2 capture slice
+
+Implemented in `vcont_evidence_export.py`: MatrixCapture v1.0.0 with canonical 52-row order and full JCS digest; FrozenReportSnapshot v2.0.0 with Gate 181 typed uint64 wrappers and immutable canonical bytes; content-derived capture_id v2.0.0; additive CapturedBenchmark fields while preserving the original three positional fields. New pure fixture test source: `test_vcont_capture_v2.py`.
+
+No tests, imports, compilation, dependency installation, workflow dispatch or producer execution occurred. JCS conformance is not yet verified. The pure workflow is manual-only and scoped to the capture test module pending separate technical execution authorization. See Gate 185.
