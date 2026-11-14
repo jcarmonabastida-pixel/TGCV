@@ -69,3 +69,15 @@ The repository currently contains two distinct harness implementations; do not t
 - focal_harness.py, test_focal_harness.py, and the P178 bridge/Monte Carlo scripts are the earlier, separate P178 focal harness. Their historical theta_access_truth and focal-attribution fields belong to that legacy P178 contract and were not migrated by Gates 87–88. P178 artifacts/results are preserved and must not be silently reinterpreted as validation of the integrated theta_A estimand.
 
 The integrated test module is included by Python unittest discovery (python -m unittest -v) but has not been run as part of Gates 87–88. Its current contract suite contains 16 tests. Static authoring/review is not a test PASS or scientific execution.
+
+## Integrated V_cont harness and evidence-export boundary
+
+The V_cont synthetic harness is a separate, newer implementation slice from the legacy focal/P178 harness described above:
+
+- `vcont_integrated_harness.py`: ScenarioConfig, Generator, Sealer, Analyzer, Evaluator and the existing 13-scenario / 52-pair Monte Carlo aggregation interfaces.
+- `vcont_benchmark_protocol.py`: typed M/R SeedAssignment rows, seed-bank contracts, Monte Carlo design and matrix coverage.
+- `vcont_evidence_export.py`: immutable RunEvidenceBundle and OuterWorldEvidenceBundle capture. Gate 171 adds `produce_and_capture_outer_world(...)`, which accepts exact pre-materialized evaluation assignments for one scenario/N/M group, invokes the existing Generator → Sealer → Analyzer → Evaluator sequence, captures each run before source objects are discarded, and returns both the immutable M bundle and the unchanged legacy evaluator tuples.
+
+The Gate 171 producer is a callable API, not an executed benchmark. Calling it generates synthetic data and therefore requires the applicable execution authorization. The benchmark-wide 13-scenario driver, evidence-envelope co-export, Gate 159 provenance reconciliation, canonical package writer and trusted attestation remain open. The Gate 171 regression tests are persisted but have NOT been executed.
+
+The older `focal_harness.py` and P178 scripts remain separate historical artifacts; their outputs must not be treated as V_cont integrated-harness results.
