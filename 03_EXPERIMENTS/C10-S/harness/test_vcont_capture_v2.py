@@ -302,6 +302,10 @@ class CaptureV2Tests(unittest.TestCase):
         baseline = capture_matrix(self.matrix, self.design)
         self.assertNotEqual(changed_capture.full_matrix_sha256, baseline.full_matrix_sha256)
 
+    def test_v2_1_snapshot_rejects_missing_source_bundle_reconciliation(self):
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(self.report_fixture())
+
     def test_report_snapshot_wraps_uint64_and_is_immutable_from_compatibility_dict(self):
         report = self.report_fixture()
         snapshot = freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
