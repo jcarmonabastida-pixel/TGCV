@@ -365,7 +365,7 @@ class CaptureV2Tests(unittest.TestCase):
             )
             return bundle, (truth, analyzer, contract, manifest), evaluation
 
-        run_bundle, run_tuple, _ = make_bundle("RUN", -1, "run-main", 101003, 201003)
+        run_bundle, run_tuple, run_evaluation = make_bundle("RUN", -1, "run-main", 101003, 201003)
         repeated_bundle, _, repeated_evaluation = make_bundle(
             "REPEATED_ASSIGNMENT", 0, "run-repeat", 101004, 201004
         )
@@ -384,7 +384,16 @@ class CaptureV2Tests(unittest.TestCase):
         report = {
             "design": design,
             "scenario_reports": {
-                scenario_id: {"per_outer_replicate": ({"run": run_tuple},)}
+                scenario_id: {
+                    "scenario_id": scenario_id,
+                    "scenario_version": version,
+                    "per_outer_replicate": ({
+                        "outer_replicate_id": outer_id,
+                        "run": run_tuple,
+                        "run_report": run_evaluation,
+                        "repeated_report": repeated_report,
+                    },),
+                }
             },
         }
         return report, outer, run_tuple
