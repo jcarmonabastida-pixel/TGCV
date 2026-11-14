@@ -1439,7 +1439,12 @@ def verify_package_v2(
     _check_registered_uint64(parsed)
     decoded_report = _decode_registered(report)
     _check_report(decoded_report)
-    reconciled_run_count, reconciled_outer_count = _reconcile_run_records(parsed, decoded_report)
+    try:
+        reconciled_run_count, reconciled_outer_count = _reconcile_run_records(parsed, decoded_report)
+    except PackageVerificationError:
+        raise
+    except Exception as exc:
+        raise PackageVerificationError(f"RUN/R semantic reconciliation failed closed: {exc}") from exc
     matrix = parsed["design/scenario_estimand_matrix.json"]
     if (not isinstance(matrix, dict) or set(matrix) != {
             "schema_id", "schema_version", "design_identity", "row_count", "rows",
