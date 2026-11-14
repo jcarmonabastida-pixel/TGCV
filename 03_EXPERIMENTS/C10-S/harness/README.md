@@ -99,3 +99,9 @@ Source evidence availability does not equal package implementation. FrozenSnapsh
 The package serialization contract is defined in `00_GOVERNANCE/SIP/C10_S_VCONT_PACKAGE_SERIALIZATION_AND_INDEPENDENT_VERIFIER_CONTRACT_GATE_174_DRAFT_001.md`. It retains Gate 164's exact 14-file inventory and specifies the existing `runs/run_records.json` as a versioned envelope of RUN/R snapshots and scenario/M bundles. FrozenSnapshot bytes are transported exactly (base64 + type/serialization ID + SHA-256); package JCS is a separate layer.
 
 Gate 164 v1.0.0 is fail-closed on absent calibration manifest, Gate 159 reconciliation, independent GitHub source/workflow metadata or required technical test evidence. A diagnostic partial package, if later designed, must use a distinct schema ID/version. The current enum decoder does not restore enum types and the snapshot encoder rejects arbitrary bytes; Gate 175 audits the type/API gaps. No packager or verifier implementation exists.
+
+## Gate 175 — serialization implementability audit
+
+The current capture API retains RUN/R snapshots, M bundles, repeated reports, design, temporal manifest and 52-pair ledger. It does **not** retain the exact matrix passed to the evaluator: `produce_and_capture_benchmark()` consumes it locally and returns only report, outer-world bundles and evidence index. The design fingerprint and pair ledger are not a lossless matrix payload. The legacy matrix fingerprint also omits `tolerance_id`; retain it unchanged and add a full versioned matrix digest over every field.
+
+Calibration manifest, Gate 159 reconciliation and independently resolved GitHub workflow/test provenance are not supplied by the capture API. The generic snapshot decoder also lacks strict field/version/duplicate-key validation; its enum restoration defect is latent for current registered snapshot fields but must be closed or rejected by the independent verifier. See Gate 175. No tests or execution were performed.
