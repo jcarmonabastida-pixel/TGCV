@@ -256,3 +256,7 @@ Gate 185 implements MatrixCapture v1.0.0, FrozenReportSnapshot v2.0.0, capture i
 Gate 185 explicitly identifies the legacy report fingerprint algorithm as `TGCV-C10S-VCONT-LEGACY-REPORT-PYTHON-JSON-SHA256-1`, binding the existing source operation without changing its bytes. JCS conformance remains unverified pending test execution.
 
 To preserve the Gate 182 separate-authorization boundary, Gate 184's pure workflow is temporarily manual-only and runs only the first capture fixture module. No workflow dispatch, dependency installation, compilation, test, producer or scientific execution occurred. See Gate 185.
+
+## 16. Gate 185 workflow execution deviation
+
+Three automatic pure-workflow runs occurred during the first Gate 185 pushes before the workflow was changed to manual-only: 43542215502, 43542249750 and 43542308263. Each installed the pinned JCS dependency and attempted compilation; each failed on the then-missing `vcont_package_v2.py`. The test step was skipped. No synthetic producer or scientific execution occurred. The source module compiled before the missing-file failure. This is recorded as an unintended CI execution, not as test evidence or acceptance. The current workflow is manual-only and has not been dispatched. See Gate 185 §9 and Gate 184 §10.
