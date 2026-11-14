@@ -1255,6 +1255,60 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
 
 
 
+
+def _reconcile_matrix_pair_ledger(matrix: Any, decoded_report: Any) -> None:
+    """Join each ordered pair-ledger row to its exact MatrixCapture identity."""
+    if not isinstance(matrix, dict) or not isinstance(matrix.get("rows"), list) or len(matrix["rows"]) != 52:
+        raise PackageVerificationError("MatrixCapture must contain exactly 52 rows for pair-ledger reconciliation")
+    report = decoded_report.get("report") if isinstance(decoded_report, dict) else None
+    if not isinstance(report, dict) or not isinstance(report.get("pair_ledger"), list):
+        raise PackageVerificationError("report pair ledger is missing for MatrixCapture reconciliation")
+    ledger = report["pair_ledger"]
+    if len(ledger) != 52:
+        raise PackageVerificationError("pair ledger must contain exactly 52 rows for MatrixCapture reconciliation")
+    expected_matrix_fields = {
+        "key", "evaluation_class", "truth_status", "dgp_truth_field",
+        "analyzer_output_field", "aggregation_field", "identification_expectation",
+        "abstention_expectation", "tolerance_id", "reason",
+        "run_evaluation_class", "repeated_evaluation_class",
+    }
+    seen_matrix_keys = set()
+    seen_pair_keys = set()
+    for index, (matrix_row, pair_row) in enumerate(zip(matrix["rows"], ledger)):
+        if not isinstance(matrix_row, dict) or set(matrix_row) != expected_matrix_fields:
+            raise PackageVerificationError(f"MatrixCapture row {index} field allowlist mismatch")
+        key = matrix_row["key"]
+        if not isinstance(key, dict) or set(key) != {
+            "scenario_id", "scenario_version", "estimand_id", "estimand_version",
+        }:
+            raise PackageVerificationError(f"MatrixCapture row {index} identity field allowlist mismatch")
+        identity = tuple(key[name] for name in (
+            "scenario_id", "scenario_version", "estimand_id", "estimand_version",
+        ))
+        if any(not isinstance(value, str) or not value for value in identity):
+            raise PackageVerificationError(f"MatrixCapture row {index} identity values are invalid")
+        if identity in seen_matrix_keys:
+            raise PackageVerificationError("MatrixCapture contains a duplicate scenario/estimand identity")
+        seen_matrix_keys.add(identity)
+        if matrix_row["evaluation_class"] not in (
+            "EVALUABLE", "STATUS_ONLY", "NOT_IDENTIFIABLE", "NOT_EVALUABLE",
+        ) or matrix_row["truth_status"] not in ("DEFINED", "UNDEFINED", "NOT_MATERIALIZED"):
+            raise PackageVerificationError(f"MatrixCapture row {index} class/status is invalid")
+        if not isinstance(pair_row, dict) or not isinstance(pair_row.get("key"), list):
+            raise PackageVerificationError(f"pair ledger row {index} key is not an ordered identity list")
+        expected_pair_key = [*identity, "MONTE_CARLO"]
+        if pair_row["key"] != expected_pair_key:
+            raise PackageVerificationError(f"pair ledger row {index} key/order differs from MatrixCapture")
+        pair_identity = tuple(pair_row["key"])
+        if pair_identity in seen_pair_keys:
+            raise PackageVerificationError("pair ledger contains a duplicate scenario/estimand identity")
+        seen_pair_keys.add(pair_identity)
+        if (pair_row.get("evaluation_class"), pair_row.get("truth_status")) != (
+            matrix_row["evaluation_class"], matrix_row["truth_status"],
+        ):
+            raise PackageVerificationError(f"pair ledger row {index} evaluation/truth classification differs from MatrixCapture")
+
+
 def _historical_fingerprint(manifest_payload: Any) -> str:
     # Gate 181's historical source-domain two-stage Python JSON algorithm.
     normalized = json.loads(json.dumps(manifest_payload, sort_keys=True))
@@ -1509,6 +1563,7 @@ def verify_package_v2(
     }
     if matrix.get("design_identity") != expected_matrix_identity:
         raise PackageVerificationError("MatrixCapture design identity differs from FrozenReportSnapshot design")
+    _reconcile_matrix_pair_ledger(matrix, decoded_report)
 
     if (decoded_report["report"]["temporal_manifest"]
             != decoded_report["report"]["manifest"]["temporal_manifest"]
