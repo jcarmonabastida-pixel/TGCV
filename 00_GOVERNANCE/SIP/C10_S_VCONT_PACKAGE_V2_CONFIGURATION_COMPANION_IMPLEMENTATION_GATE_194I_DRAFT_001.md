@@ -1,6 +1,6 @@
 # C10-S V_cont — Gate 194-I: configuration companion assembly and independent verification
 
-**Status:** IMPLEMENTED — STATIC REVIEW ONLY; NOT EXECUTED  
+**Status:** IMPLEMENTED — PURE TEST SUITE PASS; REAL PACKAGE NOT BUILT OR VERIFIED  
 **Branch:** `research/c10-s-consolidation-draft`  
 **Scope:** the two Gate 194-H frozen companions, their independent semantic verification, and adversarial test authoring.  
 **Authorization:** user approval to proceed with the bounded implementation, 2026-11-14.
@@ -16,7 +16,7 @@ Gate 194-I implements only the Gate 194-H configuration-companion contract:
 
 No Generator, Sealer, Analyzer, Evaluator, DGP, estimand, seed derivation, scientific interpretation, package profile, package inventory, or historical snapshot serialization code was modified. The writer imports the existing `AnalysisContract`, `Analyzer.version` and `RunManifest` definitions only to materialize the companion from already captured source evidence; it does not instantiate or invoke these components.
 
-No package was generated. No tests, compilation, CI, workflow, calibration or scientific execution was performed.
+No package was generated. Pure compilation and regression tests were subsequently executed through the bounded GitHub Actions workflow recorded in §9.2. No calibration or scientific execution was performed.
 
 ## 2. Pre-implementation correction: independent AnalysisContract source
 
@@ -86,7 +86,7 @@ The new independent reconciliation layer:
 
 The verifier result now reports identity reconciliation as `RECONCILED` only after this configuration layer succeeds. Overall schema status remains partial, completeness remains structural-only, source-execution provenance remains unverified, and external authentication remains `NOT_AUTHENTICATED`.
 
-## 5. Tests authored — not executed
+## 5. Tests authored and execution scope
 
 Added 18 positive/adversarial cases to the existing allowlisted file:
 
@@ -107,19 +107,19 @@ Coverage includes:
 - DGP component digest drift;
 - aggregate source-declaration mismatch.
 
-The existing manual-only workflow `.github/workflows/c10-s-vcont-package-v2-pure-tests.yml` already includes this test module. Its trigger is `workflow_dispatch`; it was not dispatched. No workflow file was modified.
+The existing workflow `.github/workflows/c10-s-vcont-package-v2-pure-tests.yml` includes this test module. Its permanent trigger remains `workflow_dispatch`; a narrowly scoped temporary `push` trigger was used and then removed to run the tests from the mobile-constrained session. The exact execution and restoration are recorded in §9.2.
 
 ## 6. Static review findings and remaining conditions
 
 **Implementation state:** code written and committed on the research branch.  
-**Execution state:** NOT EXECUTED.  
-**Static disposition:** CONDITIONAL — implementation has not yet received an execution-backed regression result.
+**Execution state:** PURE TESTS EXECUTED — PASS (92/92).  
+**Test disposition:** PASS — execution-backed regression suite passed. **Overall Gate disposition:** CONDITIONAL — no real captured package has yet been assembled and independently verified.
 
 The following are deliberately not claimed:
 
 - that the writer successfully assembles a real captured benchmark;
 - that the verifier passes a real package;
-- that the new tests pass;
+- that a real captured benchmark can be assembled;
 - that the aggregate declaration in any extant design fixture equals the newly frozen aggregate;
 - that Gate159, calibration/evaluation disjointness, source-execution provenance, technical-test provenance or external authentication are verified.
 
@@ -133,9 +133,9 @@ The writer's aggregate-declaration equality is a fail-closed precondition. Its c
 - No claim, estimand, DGP truth, causal assumption, TGCV Core element, claim status or Evidence→Claim Matrix entry changed.
 - Implementation and package integrity are not scientific evidence for `ΔT_acc → ΔV`.
 
-**Gate 194-I disposition: IMPLEMENTED / CONDITIONAL — STATIC REVIEW ONLY; TESTS NOT EXECUTED.**
+**Gate 194-I disposition: IMPLEMENTED / CONDITIONAL — PURE TEST SUITE PASS; REAL PACKAGE NOT BUILT OR VERIFIED.**
 
-**Next operation:** complete a source-level consistency audit of the writer/verifier pair and the new test fixtures. Only after that audit should a separate explicit authorization be sought to dispatch the existing manual pure-test workflow. No package generation or scientific execution is implied.
+**Next operation:** proceed to a separately bounded source/package fixture operation only after its own authorization. A passing pure-test suite does not authorize package generation or scientific execution.
 
 ## 8. Gate 194-I.1 — historical seed-bank fingerprint closure
 
@@ -151,7 +151,7 @@ That gap is now closed in both writer and independent verifier:
 
 Three additional tests were added for writer parity, historical fingerprint mismatch and reordered evaluation rows. The Gate 194-I companion test set now contains **18 authored tests**, all still unexecuted.
 
-**Updated disposition:** IMPLEMENTED / CONDITIONAL — STATIC REVIEW ONLY; TESTS NOT EXECUTED. This closes the missing historical seed-bank digest check at source-code level; it does not establish that the implementation passes the tests or a real package.
+**Updated disposition:** IMPLEMENTED / CONDITIONAL — pure test suite PASS (92/92); no real package generated or verified. This closes the historical seed-bank digest check at source-code level and provides regression evidence for the pure writer/verifier path.
 
 ## 9. Gate 194-I.2 — source-level consistency audit
 
@@ -169,11 +169,11 @@ The audit confirms at source level:
 - the test runner guard remains after all 18 added test methods, and the tests are in the existing manual-workflow allowlist.
 
 **Static disposition: PASS_STATIC for the source-to-wire companion contract and its independent reconstruction.**  
-**Overall Gate 194-I disposition: CONDITIONAL — tests not executed and no real package assembled or verified.**
+**Overall Gate 194-I disposition: CONDITIONAL — pure test suite PASS; no real package assembled or verified.**
 
 The current comparison reports the research branch as diverged from `main` (32 commits behind). No merge, rebase, cherry-pick or promotion was performed. PR #116 remains open and Draft. All Gate 194-I changes remain isolated to the research branch.
 
-The pure-test workflow is manual-only (`workflow_dispatch`) and was not dispatched. No tests, compilation, CI, package generation, calibration or scientific execution were performed.
+The pure-test workflow is restored to manual-only (`workflow_dispatch`). The bounded test run did not execute package generation, calibration or scientific execution.
 
 **Next operation requiring separate authorization:** dispatch the existing pure-test workflow for the 18 new companion cases and the pre-existing verifier regression suite. A test-workflow PASS would still not authorize package generation or scientific execution.
 
@@ -183,3 +183,18 @@ Gate 181's evaluation-assignment envelope also declares a `seed_derivation` desc
 
 Accordingly, the assignment manifest's seed-derivation descriptor remains declared metadata, not independently authenticated derivation provenance. This limitation stays within `source_execution_provenance_status=NOT_VERIFIED`; no seed-generation or calibration operation is authorized by Gate 194-I.
 
+### 9.2 Gate 194-I.3 — regression correction and pure-test execution
+
+The first bounded run (workflow run [43633198109](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/43633198109), commit `8a640ec847419812f38cd1119562d60fc1bc0baa`) executed 92 tests and exposed five fixture/code failures. The failures were corrected without changing the package schema, scientific components, estimands, DGPs or verifier acceptance rules:
+
+- `vcont_package_v2.py`: added the missing standard-library `json` import required by the historical seed-bank fingerprint reconstruction.
+- `test_vcont_package_v2_verifier.py`: changed positive report fixtures to use the frozen 13-ID authoritative scenario registry, including the registered uint64-pointer fixture. The verifier's 13-scenario invariant was not weakened.
+- `test_vcont_capture_v2.py`: made the uint64 boundary test actually supply `2**64 - 1` and `2**53 + 1` in both duplicate temporal views and recomputed the fixture's historical report fingerprint accordingly. The assertion was retained.
+
+The corrected pure suite then completed successfully: **92 tests, 0 failures, 0 errors**. Run: [43633578902](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/43633578902). The workflow checked out exact commit `f58d2701cf9e1a98f22ff5ea7211f0f8c60c641d`; Python 3.12 setup, hash-locked JCS installation, allowlisted module compilation and the unittest step all passed.
+
+To accommodate the absence of an available workflow-dispatch action, the workflow YAML received a temporary branch-and-path-scoped `push` trigger, then was restored to its original manual-only `workflow_dispatch` configuration. Restoration commit: `9f9f67be7a0af9348bf036df72a223cc322688dc`. The current workflow file was re-read and confirmed to contain only `workflow_dispatch`.
+
+This is execution-backed technical regression evidence for the pure test suite only. It is not evidence that a real V_cont package has been assembled or independently verified, and it does not establish source-execution provenance, external authentication, calibration/evaluation separation, or any scientific claim about `ΔT_acc → ΔV`.
+
+**Gate 194-I.3 disposition: PURE TEST SUITE PASS (92/92); OVERALL GATE REMAINS CONDITIONAL PENDING REAL-PACKAGE VALIDATION AND RESIDUAL PROVENANCE WORK.**
