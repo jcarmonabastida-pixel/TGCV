@@ -161,3 +161,7 @@ The first pure workflow revision had an invalid unquoted pip-install scalar. Git
 Implemented in `vcont_evidence_export.py`: MatrixCapture v1.0.0 with canonical 52-row order and full JCS digest; FrozenReportSnapshot v2.0.0 with Gate 181 typed uint64 wrappers and immutable canonical bytes; content-derived capture_id v2.0.0; additive CapturedBenchmark fields while preserving the original three positional fields. New pure fixture test source: `test_vcont_capture_v2.py`.
 
 No tests, imports, compilation, dependency installation, workflow dispatch or producer execution occurred. JCS conformance is not yet verified. The pure workflow is manual-only and scoped to the capture test module pending separate technical execution authorization. See Gate 185.
+
+### Gate 185 CI correction
+
+Three push-triggered runs occurred before the pure workflow was made manual-only (43542215502, 43542249750, 43542308263). Each installed the pinned JCS dependency, then failed while compiling the previous workflow's not-yet-existing `vcont_package_v2.py`; tests were skipped. The capture source module compiled; no tests, producers or scientific operations ran. These were unintended workflow executions and are not PASS evidence. The current workflow is manual-only and scoped to the capture fixture module. See Gate 185 §9.
