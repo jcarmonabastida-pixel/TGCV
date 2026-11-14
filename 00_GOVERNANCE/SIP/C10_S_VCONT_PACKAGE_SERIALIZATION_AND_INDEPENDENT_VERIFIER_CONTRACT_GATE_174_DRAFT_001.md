@@ -205,3 +205,13 @@ The snapshot registry covers the current run dataclasses but not ScenarioEstiman
 RUN/R snapshots, M bundles, repeated reports, design, temporal manifest and 52-pair report are available in source. Structural ScenarioConfig registry can be deterministically projected from retained per-run configs under the capture's explicit field-removal rule; AnalysisContracts can be deduplicated by complete snapshot bytes with per-run references. Calibration manifest, Gate 159 reconciliation and independently resolved GitHub source/test metadata are not provided by the capture API.
 
 **Gate 174 disposition updated:** contract DEFINED / QUALIFIED; confirmatory packager remains BLOCKED pending exact matrix retention/full digest, calibration and independent provenance inputs, and strict decoder. See Gate 175. No code, tests or benchmark were executed.
+
+## 12. Gate 176 — matrix capture and companion artifact resolution
+
+Gate 176 defines a capture-time immutable `MatrixCapture v1.0.0` containing the exact 52 typed matrix rows passed to the evaluator. It adds a versioned full-matrix JCS SHA-256 over every declared ScenarioEstimandSpec field and nested EvaluationKey field, including `tolerance_id`. The legacy `scenario_matrix_fingerprint()` remains unchanged and is checked separately.
+
+The `CapturedBenchmark.report` is a mutable dictionary inside a frozen dataclass. Gate 176 therefore requires a capture-time immutable report snapshot/digest as the authoritative package input while retaining the mutable report as a compatibility view.
+
+CalibrationBankManifest, Gate159ReconciliationArtifact, SourceExecutionEvidence and TechnicalTestEvidence are independent companion artifacts joined by benchmark_export_id. They are not supplied by the current evaluation capture API and cannot be inferred from producer-declared fingerprints. Missing companions remain UNAVAILABLE/UNVERIFIABLE and block Gate 164 confirmatory acceptance.
+
+See Gate 176. No source implementation or tests occurred.
