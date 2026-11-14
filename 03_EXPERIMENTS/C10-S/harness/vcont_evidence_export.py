@@ -163,6 +163,13 @@ class RunEvidenceBundle:
             raise ContractError("SeedAssignment seeds do not match RunManifest")
         if run_manifest.replicate_id != config.replicate_id:
             raise ContractError("RunManifest replicate_id does not match ScenarioConfig")
+        expected_window_end = config.last_transition_support + config.follow_up
+        expected_interval_width = (expected_window_end - config.window_start) / config.n_intervals
+        if (run_manifest.n_intervals != config.n_intervals
+                or run_manifest.window_start != config.window_start
+                or run_manifest.window_end != expected_window_end
+                or run_manifest.interval_width != expected_interval_width):
+            raise ContractError("RunManifest temporal design does not match ScenarioConfig")
         run_id = run_manifest.run_id
         if not run_id or any(obj.run_id != run_id for obj in (
             truth_bundle, evidence_candidate, sealed_evidence, analyzer_result, evaluation_report
@@ -170,13 +177,17 @@ class RunEvidenceBundle:
             raise ContractError("source-object run_id join failed")
         if (truth_bundle.outer_replicate_id, truth_bundle.assignment_role, truth_bundle.assignment_index) != (
             assignment.outer_replicate_id, role, index
-        ):
-            raise ContractError("TruthBundle M/role/index join failed")
+        ) or truth_bundle.seed != config.seed:
+            raise ContractError("TruthBundle run/M/role/index/seed join failed")
         if (analyzer_result.outer_replicate_id, analyzer_result.assignment_role,
             analyzer_result.assignment_index) != (assignment.outer_replicate_id, role, index):
             raise ContractError("AnalyzerResult M/role/index join failed")
         if (evidence_candidate.provenance or {}) != sealed_evidence.manifest.get("provenance"):
             raise ContractError("EvidenceCandidate/SealedEvidence provenance mismatch")
+        if evidence_candidate.rows != sealed_evidence.rows:
+            raise ContractError("EvidenceCandidate rows differ from the rows retained by SealedEvidence")
+        if sealed_evidence.manifest.get("row_count") != len(sealed_evidence.rows):
+            raise ContractError("SealedEvidence manifest row_count does not match retained rows")
         provenance = sealed_evidence.manifest.get("provenance", {})
         if any(provenance.get(k) != v for k, v in {
             "run_id": run_id, "scenario_id": config.scenario_id,
@@ -199,6 +210,23 @@ class RunEvidenceBundle:
             analyzer_result.outcome_id, analyzer_result.outcome_version
         ):
             raise ContractError("AnalysisContract/AnalyzerResult target or outcome mismatch")
+        if (analysis_contract.g_assignment_mechanism_id,
+            analysis_contract.g_assignment_mechanism_version,
+            analysis_contract.g_assignment_mechanism_hash,
+            analysis_contract.z_assignment_mechanism_id,
+            analysis_contract.z_assignment_mechanism_version,
+            analysis_contract.z_assignment_mechanism_hash,
+            analysis_contract.reference_regime_id,
+            analysis_contract.reference_regime_version) != (
+            analyzer_result.g_assignment_mechanism_id,
+            analyzer_result.g_assignment_mechanism_version,
+            analyzer_result.g_assignment_mechanism_hash,
+            analyzer_result.z_assignment_mechanism_id,
+            analyzer_result.z_assignment_mechanism_version,
+            analyzer_result.z_assignment_mechanism_hash,
+            analyzer_result.reference_regime_id,
+            analyzer_result.reference_regime_version):
+            raise ContractError("AnalysisContract/AnalyzerResult mechanism or reference-regime mismatch")
         if evaluation_report.run_id != analyzer_result.run_id:
             raise ContractError("EvaluationReport/AnalyzerResult run mismatch")
 
@@ -263,9 +291,10 @@ class OuterWorldEvidenceBundle:
         all_manifests = [bundle.run_manifest.restore(RunManifest) for bundle in all_bundles]
         if len({bundle.key[-1] for bundle in all_bundles}) != len(all_bundles):
             raise ContractError("duplicate run_id within outer-world bundle")
-        if any((row.scenario_id, row.scenario_version, row.n_units, row.outer_replicate_id,
-                row.world_seed) != (config.scenario_id, config.version, config.n_units,
-                                    run_assignment.outer_replicate_id, run_assignment.world_seed)
+        if any((row.bank, row.scenario_id, row.scenario_version, row.n_units,
+                row.outer_replicate_id, row.world_seed) !=
+               (run_assignment.bank, config.scenario_id, config.version, config.n_units,
+                run_assignment.outer_replicate_id, run_assignment.world_seed)
                for row in all_assignments):
             raise ContractError("outer-world SeedAssignment identity/world mismatch")
         if any((item.world_id, item.world_version, item.world_seed) !=
