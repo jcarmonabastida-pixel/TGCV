@@ -429,7 +429,8 @@ def _validate_snapshot_node(value: Any, label: str) -> Any:
     if isinstance(value, dict):
         if set(value) == {"$dataclass", "fields"}:
             type_id, fields = value["$dataclass"], value["fields"]
-            if type_id not in _SNAPSHOT_TYPE_FIELDS or not isinstance(fields, dict):
+            if (not isinstance(type_id, str) or type_id not in _SNAPSHOT_TYPE_FIELDS
+                    or not isinstance(fields, dict)):
                 raise PackageVerificationError(f"{label}: unknown dataclass type or malformed fields")
             expected = _SNAPSHOT_TYPE_FIELDS[type_id]
             if set(fields) != expected:
@@ -446,7 +447,9 @@ def _validate_snapshot_node(value: Any, label: str) -> Any:
             }
         if set(value) == {"$enum", "value"}:
             enum_id, enum_value = value["$enum"], value["value"]
-            if enum_id not in _SNAPSHOT_ENUM_VALUES or enum_value not in _SNAPSHOT_ENUM_VALUES[enum_id]:
+            if (not isinstance(enum_id, str) or enum_id not in _SNAPSHOT_ENUM_VALUES
+                    or not isinstance(enum_value, str)
+                    or enum_value not in _SNAPSHOT_ENUM_VALUES[enum_id]):
                 raise PackageVerificationError(f"{label}: unknown enum identity or value")
             return {"$enum": enum_id, "value": enum_value}
         if set(value) == {"$tuple"} or set(value) == {"$list"}:
