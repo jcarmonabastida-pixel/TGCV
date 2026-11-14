@@ -404,8 +404,9 @@ class CaptureV2Tests(unittest.TestCase):
     def test_v2_1_source_reconciliation_rejects_report_manifest_seed_divergence(self):
         report, outer, run_tuple = self._source_reconciliation_fixture()
         altered = replace(run_tuple[3], world_seed=run_tuple[3].world_seed + 1)
+        row = report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]
         report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"] = (
-            {"run": run_tuple[:3] + (altered,)},
+            {**row, "run": run_tuple[:3] + (altered,)},
         )
         with self.assertRaises(ContractError):
             _reconcile_report_seed_sources(report, (outer,))
@@ -423,8 +424,9 @@ class CaptureV2Tests(unittest.TestCase):
     def test_v2_1_source_reconciliation_rejects_truth_seed_projection_mismatch(self):
         report, outer, run_tuple = self._source_reconciliation_fixture()
         altered_truth = replace(run_tuple[0], seed=run_tuple[0].seed + 1)
+        row = report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]
         report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"] = (
-            {"run": (altered_truth,) + run_tuple[1:]},
+            {**row, "run": (altered_truth,) + run_tuple[1:]},
         )
         with self.assertRaises(ContractError):
             _reconcile_report_seed_sources(report, (outer,))
