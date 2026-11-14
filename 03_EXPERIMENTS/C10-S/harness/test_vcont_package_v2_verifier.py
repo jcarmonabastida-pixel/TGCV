@@ -1467,7 +1467,33 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
             "SOURCE_EXECUTION_GITHUB_BINDING",
             "TECHNICAL_TEST_RUN_BINDING",
         ]
+        input_paths = sorted({
+            path for paths in {
+                required[0]: ("runs/run_records.json", "runs/temporal_manifest.json", "seeds/evaluation_seed_assignments.json"),
+                required[1]: ("seeds/calibration_seed_manifest.json", "seeds/evaluation_seed_assignments.json"),
+                required[2]: ("seeds/evaluation_seed_assignments.json",),
+                required[3]: ("seeds/calibration_seed_manifest.json",),
+                required[4]: ("design/analysis_contracts.json", "design/effective_scenario_configs.json", "provenance/configuration_fingerprints.json"),
+                required[5]: ("design/scenario_estimand_matrix.json",),
+                required[6]: ("provenance/source_execution.json",),
+                required[7]: ("provenance/source_execution.json", "validation/test_evidence.json"),
+                "CALIBRATION_ASSIGNMENT_EXECUTION_LINK": ("seeds/calibration_seed_manifest.json",),
+            }.values() for path in paths
+        })
+        package_files = {path: ("fixture:" + path).encode("utf-8") for path in input_paths}
+        input_digests = {path: hashlib.sha256(package_files[path]).hexdigest() for path in input_paths}
         checks = []
+        check_inputs = {
+            required[0]: ("runs/run_records.json", "runs/temporal_manifest.json", "seeds/evaluation_seed_assignments.json"),
+            required[1]: ("seeds/calibration_seed_manifest.json", "seeds/evaluation_seed_assignments.json"),
+            required[2]: ("seeds/evaluation_seed_assignments.json",),
+            required[3]: ("seeds/calibration_seed_manifest.json",),
+            required[4]: ("design/analysis_contracts.json", "design/effective_scenario_configs.json", "provenance/configuration_fingerprints.json"),
+            required[5]: ("design/scenario_estimand_matrix.json",),
+            required[6]: ("provenance/source_execution.json",),
+            required[7]: ("provenance/source_execution.json", "validation/test_evidence.json"),
+            "CALIBRATION_ASSIGNMENT_EXECUTION_LINK": ("seeds/calibration_seed_manifest.json",),
+        }
         for index, check_id in enumerate(required):
             external = index >= 6
             checks.append({
@@ -1479,7 +1505,7 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
                 "matched_count": None if external else 1,
                 "mismatch_count": None if external else 0,
                 "mismatches": [],
-                "input_digests": {"fixture-input": "a" * 64},
+                "input_digests": {path: input_digests[path] for path in check_inputs[check_id]},
                 "status": "UNVERIFIABLE" if external else "PASS",
                 "reason": "Independent source/test resolution unavailable" if external
                           else "Independently recomputed from package inputs",
@@ -1489,7 +1515,8 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
             "check_version": "1.0.0", "scope": "calibration", "applicability": "CONDITIONAL",
             "join_key_profile": "TGCV-C10S-CALIBRATION-JOIN-v1",
             "expected_count": None, "observed_count": None, "matched_count": None,
-            "mismatch_count": None, "mismatches": [], "input_digests": {},
+            "mismatch_count": None, "mismatches": [],
+            "input_digests": {path: input_digests[path] for path in check_inputs["CALIBRATION_ASSIGNMENT_EXECUTION_LINK"]},
             "status": "NOT_APPLICABLE",
             "reason": "Documented seed-manifest-only calibration scope; no executed calibration records are claimed",
         })
@@ -1501,33 +1528,33 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
                 "name": "fixture-verifier", "version": "1.0.0",
                 "source_commit": "c" * 40, "implementation_digest": "d" * 64,
             },
-            "input_artifacts": [{"artifact_id": "fixture-input", "sha256": "a" * 64}],
+            "input_artifacts": [{"artifact_id": path, "sha256": input_digests[path]} for path in input_paths],
             "required_check_ids": required, "checks": checks,
             "derived_status": "NOT_RECONCILED", "findings_digest": "",
         }
         payload = dict(artifact)
         payload.pop("findings_digest")
         artifact["findings_digest"] = hashlib.sha256(rfc8785.dumps(payload)).hexdigest()
-        return artifact
+        return artifact, package_files
 
     def test_recomputes_not_reconciled_when_external_bindings_unavailable(self):
-        artifact = self._fixture()
-        self.assertEqual(_reconcile_gate159_artifact(artifact, "b" * 64, {}), "NOT_RECONCILED")
+        artifact, package_files = self._fixture()
+        self.assertEqual(_reconcile_gate159_artifact(artifact, "b" * 64, package_files), "NOT_RECONCILED")
 
     def test_rejects_forged_derived_status(self):
-        artifact = self._fixture()
+        artifact, package_files = self._fixture()
         artifact["derived_status"] = "RECONCILED"
         with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64, {})
+            _reconcile_gate159_artifact(artifact, "b" * 64, package_files)
 
     def test_rejects_findings_digest_drift(self):
-        artifact = self._fixture()
+        artifact, package_files = self._fixture()
         artifact["findings_digest"] = "0" * 64
         with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64, {})
+            _reconcile_gate159_artifact(artifact, "b" * 64, package_files)
 
     def test_rejects_external_check_self_asserted_pass(self):
-        artifact = self._fixture()
+        artifact, package_files = self._fixture()
         artifact["checks"][6]["status"] = "PASS"
         artifact["checks"][6]["observed_count"] = 1
         artifact["checks"][6]["matched_count"] = 1
@@ -1536,34 +1563,35 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
         payload.pop("findings_digest")
         artifact["findings_digest"] = hashlib.sha256(rfc8785.dumps(payload)).hexdigest()
         with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64, {})
+            _reconcile_gate159_artifact(artifact, "b" * 64, package_files)
 
     def test_rejects_required_check_order_drift(self):
-        artifact = self._fixture()
+        artifact, package_files = self._fixture()
         artifact["checks"][0], artifact["checks"][1] = artifact["checks"][1], artifact["checks"][0]
         payload = dict(artifact)
         payload.pop("findings_digest")
         artifact["findings_digest"] = hashlib.sha256(rfc8785.dumps(payload)).hexdigest()
         with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64, {})
-
-    def test_rejects_check_input_digest_not_in_artifact_registry(self):
-        artifact = self._fixture()
-        artifact["checks"][0]["input_digests"] = {"unlisted": "e" * 64}
-        payload = dict(artifact)
-        payload.pop("findings_digest")
-        artifact["findings_digest"] = hashlib.sha256(rfc8785.dumps(payload)).hexdigest()
-        with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64, {})
+            _reconcile_gate159_artifact(artifact, "b" * 64, package_files)
 
     def test_rejects_not_applicable_without_seed_manifest_only_reason(self):
-        artifact = self._fixture()
+        artifact, package_files = self._fixture()
         artifact["checks"][-1]["reason"] = "Not applicable"
         payload = dict(artifact)
         payload.pop("findings_digest")
         artifact["findings_digest"] = hashlib.sha256(rfc8785.dumps(payload)).hexdigest()
         with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64, {})
+            _reconcile_gate159_artifact(artifact, "b" * 64, package_files)
+
+    def test_rejects_unregistered_check_input_digest(self):
+        artifact, package_files = self._fixture()
+        artifact["checks"][0]["input_digests"]["unlisted"] = "e" * 64
+        payload = dict(artifact)
+        payload.pop("findings_digest")
+        artifact["findings_digest"] = hashlib.sha256(rfc8785.dumps(payload)).hexdigest()
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_gate159_artifact(artifact, "b" * 64, package_files)
+
 
 
 if __name__ == "__main__":
