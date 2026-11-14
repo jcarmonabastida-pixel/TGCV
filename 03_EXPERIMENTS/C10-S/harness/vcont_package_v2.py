@@ -11,6 +11,7 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 import hashlib
 import io
+import json
 import tarfile
 import unicodedata
 from typing import Any, Mapping
