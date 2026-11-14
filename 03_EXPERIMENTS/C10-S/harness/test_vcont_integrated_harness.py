@@ -878,7 +878,7 @@ class RunEvidenceBundleCaptureTests(unittest.TestCase):
         from vcont_evidence_export import RunEvidenceBundle
 
         cfg = replace(
-            benchmark_scenarios(n_units=16, n_intervals=4)[0],
+            benchmark_scenarios(n_units=16, n_intervals=20)[0],
             seed=1771, world_seed=991, z_assignment_seed=11, g_assignment_seed=21,
             outer_replicate_id="outer-bundle-000001", assignment_role="RUN",
             assignment_index=-1, replicate_id="bundle-run",
