@@ -117,3 +117,9 @@ The exact 52-row matrix passed to the benchmark evaluator must be retained at ca
 The existing producer has the correct capture boundary: it validates `specs`, retains the tuple and passes it to the evaluator. However, the current matrix validator does not enforce canonical row order, and the legacy fingerprint sorts rows and omits `tolerance_id`.
 
 The top-level report is a mutable dict; the existing FrozenSnapshot API accepts dataclasses only and uses Python JSON rather than JCS. A separate typed FrozenReportSnapshot, pinned JCS implementation/version and strict decoder are required. Preserve the current CapturedBenchmark report/bundle/index fields and shapes. Define a non-circular content-derived capture identity and exact companion schemas before implementation. See Gate 177. No tests or execution were performed.
+
+## Gate 178 — capture/export serialization and companion schemas
+
+The exact MatrixCapture, FrozenReportSnapshot, capture identity, CalibrationBankManifest, Gate159ReconciliationArtifact, source/test companion and strict-decoder contracts are defined in `00_GOVERNANCE/SIP/C10_S_VCONT_CAPTURE_EXPORT_SERIALIZATION_AND_COMPANION_SCHEMAS_GATE_178_DRAFT_001.md`.
+
+Gate 178 is CONDITIONAL: Gate 164 v1.0.0 requires JCS for package JSON but its seed fields originate as unsigned 64-bit integers. Exact JCS number representation is not guaranteed above 2^53-1, and the frozen schema prohibits numeric-to-string coercion. A versioned exact uint64 wire representation must be formally resolved before packager implementation. No code/tests/CI or scientific execution occurred.
