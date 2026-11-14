@@ -362,7 +362,7 @@ No tests, compilation, package construction, calibration, seed generation, produ
 
 The exact nested `design` object in CalibrationBankManifest v2.0.0 is frozen for this package implementation as:
 
-- `scenario_versions`: JSON object mapping scenario ID to nonempty version string. Keys must form an ordered subsequence of `AUTHORITATIVE_SCENARIO_IDS`; no unknown IDs, duplicates or noncanonical order.
+- `scenario_versions`: nonempty JSON array of exact two-element `[scenario_id, scenario_version]` arrays. Scenario IDs must form a unique ordered subsequence of `AUTHORITATIVE_SCENARIO_IDS`; versions are nonempty strings. An array is required because JCS canonicalizes object-member order and cannot preserve semantic scenario order in a JSON object.
 - `n_grid`: nonempty ascending array of unique exact integers, each N >= 16 and divisible by four.
 - `outer_replicates`: positive exact integer M.
 - `repeated_assignments`: positive exact integer R.
