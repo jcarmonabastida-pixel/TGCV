@@ -232,3 +232,6 @@ Gate 174 specifies transport of each FrozenSnapshot as base64 of its exact retai
 A concrete source limitation is recorded: current `_decode` returns enum underlying values rather than restoring registered enum types, and `_encode` rejects arbitrary bytes. The future adapter therefore needs a versioned allowlisted decoder and fail-closed handling of unsupported values; no universal type-preserving round-trip is claimed yet.
 
 The Gate 164 confirmatory profile requires actual calibration manifest and Gate 159 reconciliation; diagnostic partial transport, if later specified, must have a distinct schema ID/version. See Gate 174. No serializer/verifier code or tests were executed.
+
+
+**Next continuity gate:** Gate 175 — static implementability audit of the Gate 174 serialization contract against the actual snapshot type registry, encoder/decoder, matrix/report schema and provenance APIs. No serializer implementation is authorized or implied by this pointer.
