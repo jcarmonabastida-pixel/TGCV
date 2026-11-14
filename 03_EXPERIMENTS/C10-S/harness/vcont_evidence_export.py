@@ -560,9 +560,9 @@ _MATRIX_SCHEMA_ID = "TGCV-C10S-VCONT-MATRIX-CAPTURE"
 _MATRIX_SCHEMA_VERSION = "1.0.0"
 _MATRIX_DIGEST_ALGORITHM = "TGCV-C10S-VCONT-MATRIX-FULL-JCS-SHA256-1"
 _REPORT_SCHEMA_ID = "TGCV-C10S-VCONT-REPORT-SNAPSHOT"
-_REPORT_SCHEMA_VERSION = "2.0.0"
+_REPORT_SCHEMA_VERSION = "2.1.0"
 _REPORT_PAYLOAD_TYPE = "TGCV-C10S-VCONT-BENCHMARK-REPORT"
-_REPORT_PAYLOAD_VERSION = "2.0.0"
+_REPORT_PAYLOAD_VERSION = "2.1.0"
 _REPORT_CANONICALIZATION = "RFC8785-JCS"
 # Stable identifier for the unchanged Evaluator _hash implementation:
 # json.dumps(sort_keys=True, separators=(",", ":"), allow_nan=False), UTF-8, SHA-256.
@@ -803,6 +803,11 @@ def _validate_scenario_report(value: Any, scenario_id: str, scenario_version: st
             ("TruthBundle", "AnalyzerResult", "AnalysisContract", "RunManifest"),
         ):
             _require_exact_object(value, fields_expected, f"{scenario_id}.per_outer[{m}].{label}")
+        # Gate 188 / FrozenReportSnapshot v2.1.0: retain the complete RUN
+        # tuple and project its four registered uint64 fields explicitly.
+        run[0]["seed"] = _uint64_wire(run[0]["seed"])
+        for seed_field in ("world_seed", "z_assignment_seed", "g_assignment_seed"):
+            run[3][seed_field] = _uint64_wire(run[3][seed_field])
         _validate_evaluation_report(row["run_report"], f"{scenario_id}.per_outer[{m}].run_report")
         repeated = _require_exact_object(
             row["repeated_report"], _REPEATED_REPORT_FIELDS,
@@ -1150,7 +1155,114 @@ def capture_matrix(specs, design) -> MatrixCapture:
     )
 
 
-def freeze_report_snapshot(report: dict[str, Any]) -> FrozenReportSnapshot:
+def _reconcile_report_seed_sources(
+    report: dict[str, Any], outer_world_bundles: tuple[OuterWorldEvidenceBundle, ...]
+) -> None:
+    """Reconcile every Evaluator RUN seed occurrence to immutable source bundles.
+
+    TruthBundle.seed is the legacy ScenarioConfig.seed / MatrixTruthProjection.seed.
+    It is deliberately not equated to the explicit world/Z/G assignment streams.
+    """
+    if not isinstance(outer_world_bundles, tuple):
+        raise ContractError("v2.1 source reconciliation requires an immutable tuple of OuterWorldEvidenceBundle")
+    design = report.get("design")
+    if not isinstance(design, dict):
+        raise ContractError("v2.1 source reconciliation requires report design")
+    versions = design.get("scenario_versions")
+    n_units = design.get("n_units")
+    outer_replicates = design.get("outer_replicates")
+    if not isinstance(versions, (list, tuple)):
+        raise ContractError("v2.1 source reconciliation requires declared scenario versions")
+    expected_groups = {
+        (sid, version, n_units, f"outer-{m:06d}")
+        for sid, version in versions for m in range(outer_replicates)
+    }
+    if len(outer_world_bundles) != len(expected_groups):
+        raise ContractError("v2.1 source bundle cardinality differs from scenario x M")
+    bundle_map = {}
+    for outer in outer_world_bundles:
+        if not isinstance(outer, OuterWorldEvidenceBundle):
+            raise ContractError("v2.1 source reconciliation rejects untyped outer-world evidence")
+        key = (outer.scenario_id, outer.scenario_version, outer.n_units, outer.outer_replicate_id)
+        if key in bundle_map or key not in expected_groups:
+            raise ContractError("v2.1 source bundle has duplicate or unknown scenario/M key")
+        bundle_map[key] = outer
+    if set(bundle_map) != expected_groups:
+        raise ContractError("v2.1 source bundles do not cover every declared scenario/M key")
+
+    scenario_reports = report.get("scenario_reports")
+    if not isinstance(scenario_reports, dict):
+        raise ContractError("v2.1 report scenario_reports must be an object")
+    for scenario_id, version in versions:
+        scenario = scenario_reports.get(scenario_id)
+        if not isinstance(scenario, dict):
+            raise ContractError("v2.1 report is missing a registered scenario")
+        per_outer = scenario.get("per_outer_replicate")
+        if not isinstance(per_outer, list) or len(per_outer) != outer_replicates:
+            raise ContractError("v2.1 report per-outer cardinality differs from design")
+        for m, row in enumerate(per_outer):
+            outer_id = f"outer-{m:06d}"
+            outer = bundle_map[(scenario_id, version, n_units, outer_id)]
+            if (outer.scenario_id, outer.scenario_version, outer.n_units, outer.outer_replicate_id) != (
+                scenario_id, version, n_units, outer_id
+            ):
+                raise ContractError("v2.1 OuterWorldEvidenceBundle identity mismatch")
+            run = row.get("run") if isinstance(row, dict) else None
+            if not isinstance(run, list) or len(run) != 4:
+                raise ContractError("v2.1 RUN tuple must contain exactly four ordered objects")
+            truth, _, _, manifest_report = run
+            bundle = outer.run_bundle
+            assignment = bundle.assignment.restore(SeedAssignment)
+            config = bundle.scenario_config.restore(ScenarioConfig)
+            manifest = bundle.run_manifest.restore(RunManifest)
+            truth_projection = bundle.truth_projection.restore(MatrixTruthProjection)
+            if assignment.bank != "evaluation":
+                raise ContractError("v2.1 report RUN must join to the evaluation SeedAssignment bank")
+            identity = (scenario_id, version, n_units, outer_id, "RUN", -1)
+            if (assignment.scenario_id, assignment.scenario_version, assignment.n_units,
+                assignment.outer_replicate_id, assignment.assignment_role, assignment.assignment_index) != identity:
+                raise ContractError("v2.1 evaluation SeedAssignment RUN identity mismatch")
+            if (config.scenario_id, config.version, config.n_units, config.outer_replicate_id,
+                config.assignment_role, config.assignment_index) != identity:
+                raise ContractError("v2.1 ScenarioConfig RUN identity mismatch")
+            if (manifest.scenario_id, manifest.version, manifest.n_units, manifest.outer_replicate_id,
+                manifest.assignment_role, manifest.assignment_index) != identity:
+                raise ContractError("v2.1 RunManifest RUN identity mismatch")
+            run_id = manifest.run_id
+            if not run_id or any(item.get("run_id") != run_id for item in (truth, manifest_report)):
+                raise ContractError("v2.1 report RUN run_id does not match source RunManifest")
+            if truth.get("seed") != config.seed or truth_projection.seed != config.seed:
+                raise ContractError("v2.1 TruthBundle.seed / ScenarioConfig.seed / MatrixTruthProjection.seed mismatch")
+            for field, source in (
+                ("world_seed", assignment.world_seed),
+                ("z_assignment_seed", assignment.z_assignment_seed),
+                ("g_assignment_seed", assignment.g_assignment_seed),
+            ):
+                report_value = manifest_report.get(field)
+                config_value = getattr(config, field)
+                manifest_value = getattr(manifest, field)
+                if any(isinstance(v, bool) or not isinstance(v, int) or not 0 <= v <= _UINT64_MAX
+                       for v in (report_value, source, config_value, manifest_value)):
+                    raise ContractError(f"v2.1 {field} must be an exact uint64 source integer")
+                if not (report_value == source == config_value == manifest_value):
+                    raise ContractError(f"v2.1 {field} source reconciliation mismatch")
+            for value in (truth.get("seed"), config.seed, truth_projection.seed):
+                if isinstance(value, bool) or not isinstance(value, int) or not 0 <= value <= _UINT64_MAX:
+                    raise ContractError("v2.1 TruthBundle.seed source must be exact uint64")
+            if outer.world_seed != manifest.world_seed:
+                raise ContractError("v2.1 OuterWorldEvidenceBundle world_seed differs from RUN RunManifest")
+            if bundle.key[-1] != run_id:
+                raise ContractError("v2.1 RUN evidence key run_id mismatch")
+            # A distinct legacy config seed is valid; do not conflate it with world_seed.
+    if len(bundle_map) != len(expected_groups):
+        raise ContractError("v2.1 source bundle reconciliation left unconsumed scenario/M bundles")
+
+
+def freeze_report_snapshot(
+    report: dict[str, Any], *, outer_world_bundles: tuple[OuterWorldEvidenceBundle, ...] | None = None
+) -> FrozenReportSnapshot:
+    if outer_world_bundles is not None:
+        _reconcile_report_seed_sources(report, outer_world_bundles)
     projected_report = _report_v2_projection(report)
     envelope = {
         "schema_id": _REPORT_SCHEMA_ID,
@@ -1516,7 +1628,7 @@ def produce_and_capture_benchmark(
     if len(bundles) != len(SCENARIO_IDS) * design.outer_replicates:
         raise ContractError("benchmark evidence envelope must contain exactly one bundle per scenario/M")
     matrix_capture = capture_matrix(specs, design)
-    report_snapshot = freeze_report_snapshot(report)
+    report_snapshot = freeze_report_snapshot(report, outer_world_bundles=tuple(bundles))
     design_identity = _design_identity_projection(design)
     capture_id = derive_capture_identity(
         design_identity, matrix_capture, tuple(bundles), report_snapshot, tuple(evidence_index)
