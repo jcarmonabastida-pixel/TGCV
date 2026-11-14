@@ -580,3 +580,11 @@ The source seed derivation remains unchanged: `_derive_seed()` returns the unsig
 For Gate 164 package v2.0.0 JCS payloads, each direct seed field is projected as the exact typed object `{"$type":"uint64","decimal":"<canonical unsigned decimal>"}`, range 0…18446744073709551615. The exact affected fields and five JSON paths are enumerated in Gate 179 §3. Historical seed-bank fingerprints are recomputed from the original typed SeedAssignment rows before projection. FrozenSnapshot canonical bytes remain opaque and byte-preserved.
 
 Gate 164 v1.0.0 remains frozen; package v2.0.0 is the successor draft. No code, tests, seed generation, calibration, package, benchmark or scientific execution occurred. Full contract: `C10_S_VCONT_PACKAGE_UINT64_WIRE_FORMAT_DECISION_AND_V2_CROSSWALK_GATE_179_DRAFT_001.md`.
+
+## 39. Gate 180 — source-schema audit of uint64 export coverage
+
+Gate 180 confirms that the evaluator emits the three assignment stream seeds in each temporal-manifest row and emits `world_seed` again in each of the 52-pair ledger contributions. The pair ledger is duplicated at report root and within the legacy manifest payload. All these direct report JSON occurrences must use the Gate 179 typed uint64 representation and must be reconciled for equality before historical fingerprint recomputation.
+
+The source ScenarioConfig also contains a base `seed` plus optional world/Z/G stream seeds. Their presence in the package's effective structural configuration projection has not been established. The exact projection must explicitly classify these fields before the v2 direct-seed registry can be considered complete. No seed algorithm or source SeedAssignment type is changed.
+
+Gate 180 also confirms that MatrixCapture and FrozenReportSnapshot are not yet retained by CapturedBenchmark, and that calibration/Gate159/source/test companions are not producer outputs. See Gate 180. No code, tests, seed generation, calibration, package or scientific execution occurred.
