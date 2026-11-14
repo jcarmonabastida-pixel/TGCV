@@ -595,6 +595,53 @@ def _logical_run_key(value: Any, label: str) -> tuple[Any, ...]:
 
 
 
+
+def _exact_source_uint64(value: Any, label: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or not 0 <= value <= UINT64_MAX:
+        raise PackageVerificationError(f"{label}: source value is not an exact uint64 integer")
+    return value
+
+
+def _assert_snapshot_seed_relations(
+    assignment: dict[str, Any], config: dict[str, Any],
+    manifest: dict[str, Any], truth_projection: dict[str, Any],
+) -> None:
+    """Enforce the four source-specific seed equalities without conflating domains."""
+    config_seed = _exact_source_uint64(config.get("seed"), "ScenarioConfig.seed")
+    truth_seed = _exact_source_uint64(truth_projection.get("seed"), "MatrixTruthProjection.seed")
+    if truth_seed != config_seed:
+        raise PackageVerificationError("MatrixTruthProjection.seed differs from ScenarioConfig.seed")
+    assignment_streams = tuple(
+        _exact_source_uint64(assignment.get(name), f"SeedAssignment.{name}")
+        for name in ("world_seed", "z_assignment_seed", "g_assignment_seed")
+    )
+    config_streams = tuple(
+        _exact_source_uint64(config.get(name), f"ScenarioConfig.{name}")
+        for name in ("world_seed", "z_assignment_seed", "g_assignment_seed")
+    )
+    manifest_streams = tuple(
+        _exact_source_uint64(manifest.get(name), f"RunManifest.{name}")
+        for name in ("world_seed", "z_assignment_seed", "g_assignment_seed")
+    )
+    if any(value is None for value in config_streams):
+        raise PackageVerificationError("ScenarioConfig must explicitly carry all three assignment streams")
+    if assignment_streams != config_streams or assignment_streams != manifest_streams:
+        raise PackageVerificationError("SeedAssignment/ScenarioConfig/RunManifest stream equality failed")
+    if len(set(assignment_streams)) != 3:
+        raise PackageVerificationError("world/Z/G seed streams are not distinct within assignment")
+
+
+def _snapshot_report_projection(value: Any) -> Any:
+    """Match the report's source-safe projection: tuples become JSON arrays."""
+    if isinstance(value, dict):
+        return {key: _snapshot_report_projection(child) for key, child in value.items()}
+    if isinstance(value, tuple):
+        return [_snapshot_report_projection(child) for child in value]
+    if isinstance(value, list):
+        return [_snapshot_report_projection(child) for child in value]
+    return value
+
+
 def _snapshot_encode_source(value: Any) -> Any:
     """Reproduce the historical tagged encoder for a plain source-domain value."""
     if isinstance(value, dict):
@@ -817,19 +864,10 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
             raise PackageVerificationError("RunManifest/config replicate or run_id identity mismatch")
         if manifest["world_version"] != config["version"]:
             raise PackageVerificationError("RunManifest world_version differs from ScenarioConfig version")
-        assignment_seeds = (assignment["world_seed"], assignment["z_assignment_seed"],
-                            assignment["g_assignment_seed"])
-        config_seeds = (config["world_seed"], config["z_assignment_seed"], config["g_assignment_seed"])
-        manifest_seeds = (manifest["world_seed"], manifest["z_assignment_seed"], manifest["g_assignment_seed"])
-        if any(value is None for value in config_seeds) or assignment_seeds != config_seeds or assignment_seeds != manifest_seeds:
-            raise PackageVerificationError("SeedAssignment/ScenarioConfig/RunManifest stream equality failed")
-        if len(set(assignment_seeds)) != 3:
-            raise PackageVerificationError("world/Z/G seed streams are not distinct within assignment")
+        _assert_snapshot_seed_relations(assignment, config, manifest, truth)
         if (truth["run_id"], truth["outer_replicate_id"], truth["assignment_role"],
-            truth["assignment_index"], truth["seed"]) != (
-            key[6], key[3], key[4], key[5], config["seed"]
-        ):
-            raise PackageVerificationError("MatrixTruthProjection identity/seed differs from ScenarioConfig")
+            truth["assignment_index"]) != (key[6], key[3], key[4], key[5]):
+            raise PackageVerificationError("MatrixTruthProjection run/M/role/index identity differs from key")
         if any(obj.get("run_id") != key[6] for obj in (candidate, sealed, analyzer, evaluation)):
             raise PackageVerificationError("run-scoped evidence/analyzer/evaluation object run_id mismatch")
         if (analyzer["outer_replicate_id"], analyzer["assignment_role"], analyzer["assignment_index"]) != (
@@ -1108,15 +1146,15 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
                 (contract_report, contract_snapshot, "AnalysisContract"),
                 (manifest_report, manifest_snapshot, "RunManifest"),
             ):
-                if report_obj != snapshot_obj:
+                if report_obj != _snapshot_report_projection(snapshot_obj):
                     raise PackageVerificationError(f"report RUN {label} differs from captured snapshot")
-            if row.get("run_report") != decoded["evaluation_report"]:
+            if row.get("run_report") != _snapshot_report_projection(decoded["evaluation_report"]):
                 raise PackageVerificationError("report RUN evaluation summary differs from EvaluationReport snapshot")
             repeated_reports = [
                 _snapshot_source_value(decoded_by_key[key]["evaluation_report"])
                 for key in outer["repeated_keys"]
             ]
-            if row.get("repeated_report") != outer["repeated_report"]:
+            if row.get("repeated_report") != _snapshot_report_projection(outer["repeated_report"]):
                 raise PackageVerificationError("report repeated aggregate differs from RepeatedAssignmentReport snapshot")
             if len(repeated_reports) != R:
                 raise PackageVerificationError("repeated report source cardinality differs from R")
