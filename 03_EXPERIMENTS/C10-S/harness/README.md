@@ -143,3 +143,11 @@ Gate 181 additionally pins the exact v2 evaluation-assignment and temporal-manif
 ## Gate 182 — integrated package v2 implementation contract
 
 Gate 182 defines the additive CapturedBenchmark capture fields, capture sequence, v1/v2 schema migration, pure v2 writer, independent verifier, companion interface, JCS dependency prerequisite and deterministic regression plan. Existing report/bundle/index interfaces remain unchanged. The writer and verifier must not invoke the synthetic producer; legacy three-field captures remain constructible but are rejected for v2 export as incomplete. No code, tests, CI, seed generation, calibration, package generation or scientific execution occurred. Full contract: `00_GOVERNANCE/SIP/C10_S_VCONT_PACKAGE_V2_INTEGRATED_IMPLEMENTATION_CONTRACT_GATE_182_DRAFT_001.md`.
+
+## Gate 184 — CI execution boundary
+
+The legacy integrated harness workflow is manual-only and requires an explicit confirmation input before running its synthetic Generator/producer test suite. Pushes to harness files no longer execute that suite.
+
+A dedicated workflow `.github/workflows/c10-s-vcont-package-v2-pure-tests.yml` is reserved for the five fixture-only v2 test modules. It uses an explicit test list, never unittest discovery, and is path-filtered to v2 sources/tests and `requirements-vcont-v2.lock`. The test modules are not implemented yet, so this workflow is not runnable/PASS until they are added with the corresponding source.
+
+JCS dependency pin: `rfc8785==0.1.4`, wheel SHA-256 `520d690b448ecf0703691c76e1a34a24ddcd4fc5bc41d589cb7c58ec651bcd48`. RFC 8785 conformance remains unverified until independent vectors pass. No workflow dispatch, tests, compile, dependency installation, producer invocation or scientific execution occurred. See Gate 184.
