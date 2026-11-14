@@ -41,7 +41,7 @@ Implemented:
 
 The existing historical report fingerprint is not recomputed with JCS. Gate 181 requires an algorithm identifier but the Gate 164/178 text froze the source algorithm without assigning a stable identifier. Gate 185 assigns the explicit identifier:
 
-`TGCV-C10S-VCONT-LEGACY-REPORT-PYTHON-JSON-SHA256-1`
+`TGCV-C10S-VCONT-LEGACY-REPORT-FINGERPRINT-PYJSON-SORTKEYS-COMPACT-SHA256-1`
 
 It denotes the unchanged source operation: normalize the manifest payload through `json.dumps(..., default=asdict, sort_keys=True)` then `json.loads`; apply the existing `_hash` operation using sorted keys, compact separators, `allow_nan=False`, UTF-8 and SHA-256. This names the existing algorithm; it does not change the fingerprint bytes.
 
