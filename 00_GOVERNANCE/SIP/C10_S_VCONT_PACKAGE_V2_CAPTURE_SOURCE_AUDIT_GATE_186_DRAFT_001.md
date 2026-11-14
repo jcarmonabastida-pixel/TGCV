@@ -95,3 +95,7 @@ The new design-to-bundle validation has not been exercised. The pure workflow re
 ## 5. Next operation — Gate 187
 
 Implement the complete nested Evaluator-report schema allowlists and cardinality checks from the actual source construction, with positive and adversarial fixture vectors. Keep the existing report source payload and historical fingerprint unchanged. Do not run tests or dispatch CI without separate technical execution authorization. Do not invoke the producer or any scientific operation.
+
+## 6. Post-review source-shape correction
+
+A final read-through of the actual `_design_identity_projection()` showed that `scenario_versions` is represented as an ordered array of objects with exactly `scenario_id` and `scenario_version`, not as pairs. The Gate 186 guard was aligned to that actual source shape before closure. It now validates the exact row object shape and authoritative scenario order, then reconciles each bundle against the declared version map. This correction is source-reviewed only; no test or compilation was run.
