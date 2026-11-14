@@ -1165,13 +1165,13 @@ def _reconcile_report_seed_sources(
     if not isinstance(outer_world_bundles, tuple):
         raise ContractError("v2.1 source reconciliation requires an immutable tuple of OuterWorldEvidenceBundle")
     design = report.get("design")
-    if not isinstance(design, dict):
-        raise ContractError("v2.1 source reconciliation requires report design")
-    versions = design.get("scenario_versions")
-    n_units = design.get("n_units")
-    outer_replicates = design.get("outer_replicates")
-    if not isinstance(versions, (list, tuple)):
-        raise ContractError("v2.1 source reconciliation requires declared scenario versions")
+    if not isinstance(design, MonteCarloBenchmarkDesign):
+        raise ContractError("v2.1 source reconciliation requires the typed MonteCarloBenchmarkDesign")
+    versions = design.scenario_versions
+    n_units = design.n_units
+    outer_replicates = design.outer_replicates
+    if not isinstance(versions, tuple):
+        raise ContractError("v2.1 source reconciliation requires the immutable declared scenario versions")
     expected_groups = {
         (sid, version, n_units, f"outer-{m:06d}")
         for sid, version in versions for m in range(outer_replicates)
@@ -1197,7 +1197,7 @@ def _reconcile_report_seed_sources(
         if not isinstance(scenario, dict):
             raise ContractError("v2.1 report is missing a registered scenario")
         per_outer = scenario.get("per_outer_replicate")
-        if not isinstance(per_outer, list) or len(per_outer) != outer_replicates:
+        if not isinstance(per_outer, (list, tuple)) or len(per_outer) != outer_replicates:
             raise ContractError("v2.1 report per-outer cardinality differs from design")
         for m, row in enumerate(per_outer):
             outer_id = f"outer-{m:06d}"
@@ -1207,9 +1207,13 @@ def _reconcile_report_seed_sources(
             ):
                 raise ContractError("v2.1 OuterWorldEvidenceBundle identity mismatch")
             run = row.get("run") if isinstance(row, dict) else None
-            if not isinstance(run, list) or len(run) != 4:
-                raise ContractError("v2.1 RUN tuple must contain exactly four ordered objects")
+            if not isinstance(run, (list, tuple)) or len(run) != 4:
+                raise ContractError("v2.1 RUN tuple must contain exactly four ordered source objects")
             truth, analyzer_report, contract_report, manifest_report = run
+            if not all(isinstance(item, expected_type) for item, expected_type in zip(
+                run, (TruthBundle, AnalyzerResult, AnalysisContract, RunManifest)
+            )):
+                raise ContractError("v2.1 report RUN tuple source types/order are invalid")
             bundle = outer.run_bundle
             assignment = bundle.assignment.restore(SeedAssignment)
             config = bundle.scenario_config.restore(ScenarioConfig)
@@ -1232,20 +1236,20 @@ def _reconcile_report_seed_sources(
                 manifest.assignment_role, manifest.assignment_index) != identity:
                 raise ContractError("v2.1 RunManifest RUN identity mismatch")
             run_id = manifest.run_id
-            if not run_id or any(item.get("run_id") != run_id for item in (
+            if not run_id or any(item.run_id != run_id for item in (
                 truth, analyzer_report, contract_report, manifest_report
             )):
                 raise ContractError("v2.1 report RUN tuple run_id does not match source RunManifest")
             if any(item.run_id != run_id for item in (analyzer_source, contract_source)):
                 raise ContractError("v2.1 captured AnalyzerResult/AnalysisContract run_id mismatch")
-            if truth.get("seed") != config.seed or truth_projection.seed != config.seed:
+            if truth.seed != config.seed or truth_projection.seed != config.seed:
                 raise ContractError("v2.1 TruthBundle.seed / ScenarioConfig.seed / MatrixTruthProjection.seed mismatch")
             for field, source in (
                 ("world_seed", assignment.world_seed),
                 ("z_assignment_seed", assignment.z_assignment_seed),
                 ("g_assignment_seed", assignment.g_assignment_seed),
             ):
-                report_value = manifest_report.get(field)
+                report_value = getattr(manifest_report, field)
                 config_value = getattr(config, field)
                 manifest_value = getattr(manifest, field)
                 if any(isinstance(v, bool) or not isinstance(v, int) or not 0 <= v <= _UINT64_MAX
@@ -1253,7 +1257,7 @@ def _reconcile_report_seed_sources(
                     raise ContractError(f"v2.1 {field} must be an exact uint64 source integer")
                 if not (report_value == source == config_value == manifest_value):
                     raise ContractError(f"v2.1 {field} source reconciliation mismatch")
-            for value in (truth.get("seed"), config.seed, truth_projection.seed):
+            for value in (truth.seed, config.seed, truth_projection.seed):
                 if isinstance(value, bool) or not isinstance(value, int) or not 0 <= value <= _UINT64_MAX:
                     raise ContractError("v2.1 TruthBundle.seed source must be exact uint64")
             if outer.world_seed != manifest.world_seed:
