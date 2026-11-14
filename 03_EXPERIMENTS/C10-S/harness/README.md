@@ -81,3 +81,9 @@ The V_cont synthetic harness is a separate, newer implementation slice from the 
 The Gate 171 producer is a callable API, not an executed benchmark. Calling it generates synthetic data and therefore requires the applicable execution authorization. The benchmark-wide 13-scenario driver, evidence-envelope co-export, Gate 159 provenance reconciliation, canonical package writer and trusted attestation remain open. The Gate 171 regression tests are persisted but have NOT been executed.
 
 The older `focal_harness.py` and P178 scripts remain separate historical artifacts; their outputs must not be treated as V_cont integrated-harness results.
+
+## Benchmark-wide V_cont evidence envelope (Gate 172)
+
+`vcont_evidence_export.py` now exposes `produce_and_capture_benchmark(...)` above the Gate 171 per-M producer. It consumes a declared `MonteCarloBenchmarkDesign`, the 13 structural scenario templates and the exact pre-materialized evaluation-bank SeedAssignment rows; captures one OuterWorldEvidenceBundle per scenario/M; verifies each legacy tuple against its captured source snapshots; then calls the existing `evaluate_monte_carlo_benchmark()` once and returns its unchanged report together with the evidence envelope and scenario/M/world index.
+
+This is a source-level driver, not an executed benchmark. Importing it is inert; calling it performs synthetic generation and benchmark evaluation and requires applicable execution authorization. Gate 172 regression tests are persisted but NOT EXECUTED. Gate 159 fingerprint reconciliation, canonical JCS/tar packaging and trusted attestation remain OPEN.
