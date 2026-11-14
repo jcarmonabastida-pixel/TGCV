@@ -235,3 +235,13 @@ The Gate 164 confirmatory profile requires actual calibration manifest and Gate 
 
 
 **Next continuity gate:** Gate 175 — static implementability audit of the Gate 174 serialization contract against the actual snapshot type registry, encoder/decoder, matrix/report schema and provenance APIs. No serializer implementation is authorized or implied by this pointer.
+
+## 17. Gate 176 — matrix and external companion contracts
+
+Gate 176 closes the remaining Gate 175 source-boundary design decisions. The exact validated 52-row ScenarioEstimandSpec matrix is captured at evaluator invocation in immutable `MatrixCapture v1.0.0`; it is not reconstructed later. A versioned full-matrix JCS digest includes all declared fields, including `tolerance_id`, while preserving the legacy fingerprint.
+
+The current `CapturedBenchmark.report` is a mutable dict inside a frozen dataclass. Gate 176 requires an immutable capture-time report snapshot/digest for package export, retaining the legacy dict only as a compatibility view.
+
+Calibration manifest, Gate 159 reconciliation, GitHub source-execution provenance and technical-test evidence are separately supplied companion artifacts, bound to the same benchmark export identity. They are not evaluation-producer inputs and cannot be inferred from design declarations. See `C10_S_VCONT_CAPTURE_MATRIX_AND_EXTERNAL_EVIDENCE_COMPANION_CONTRACT_GATE_176_DRAFT_001.md`.
+
+**Next continuity gate:** Gate 177 — source/API implementation-readiness review of the bounded Gate 176 change set. No serializer implementation or scientific execution is authorized by this pointer.
