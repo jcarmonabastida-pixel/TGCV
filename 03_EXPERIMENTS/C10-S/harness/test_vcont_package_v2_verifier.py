@@ -21,6 +21,7 @@ from vcont_package_v2_verify import (
     _resolve_outer_world_run_reference,
     _assert_report_snapshot_projection,
     _register_unique_run_record,
+    _assert_sealed_provenance_identity,
 )
 
 
@@ -533,6 +534,85 @@ class IndependentVerifierPrimitiveTests(unittest.TestCase):
         _assert_report_snapshot_projection(valid_projection, captured, "positive fixture")
         with self.assertRaises(PackageVerificationError):
             _assert_report_snapshot_projection(false_projection, captured, "false provenance fixture")
+
+
+
+    def _sealed_provenance_fixture(self):
+        assignment = {
+            "outer_replicate_id": "outer-000000",
+            "assignment_role": "RUN",
+            "replicate": -1,
+        }
+        config = {
+            "scenario_id": "S01", "version": "v1", "replicate_id": "replicate-000",
+        }
+        manifest = {
+            "world_id": "world-01", "world_version": "v1",
+            "g_assignment_mechanism_id": "G-MECH",
+            "g_assignment_mechanism_version": "1",
+            "g_assignment_mechanism_hash": "g-hash",
+            "z_assignment_mechanism_id": "Z-MECH",
+            "z_assignment_mechanism_version": "1",
+            "z_assignment_mechanism_hash": "z-hash",
+            "g_reference_regime_id": "G-REF",
+            "g_reference_regime_version": "1",
+            "z_assignment_vector_hash": "z-vector",
+            "g_assignment_vector_hash": "g-vector",
+        }
+        provenance = {
+            "run_id": "run-1",
+            "scenario_id": "S01",
+            "scenario_version": "v1",
+            "world_id": "world-01",
+            "world_version": "v1",
+            "replicate_id": "replicate-000",
+            "outer_replicate_id": "outer-000000",
+            "assignment_role": "RUN",
+            "assignment_index": -1,
+            "g_assignment_mechanism_id": "G-MECH",
+            "g_assignment_mechanism_version": "1",
+            "g_assignment_mechanism_hash": "g-hash",
+            "z_assignment_mechanism_id": "Z-MECH",
+            "z_assignment_mechanism_version": "1",
+            "z_assignment_mechanism_hash": "z-hash",
+            "g_reference_regime_id": "G-REF",
+            "g_reference_regime_version": "1",
+            "z_assignment_vector_hash": "z-vector",
+            "g_assignment_vector_hash": "g-vector",
+        }
+        digest = hashlib.sha256(json.dumps(
+            provenance, sort_keys=True, separators=(",", ":"), allow_nan=False,
+        ).encode("utf-8")).hexdigest()
+        manifest["provenance_sha256"] = digest
+        analyzer = {"provenance_sha256": digest}
+        return assignment, config, manifest, provenance, analyzer
+
+    def test_sealed_provenance_is_bound_to_run_manifest_and_analyzer(self):
+        assignment, config, manifest, provenance, analyzer = self._sealed_provenance_fixture()
+        digest = _assert_sealed_provenance_identity(
+            provenance, "run-1", assignment, config, manifest, analyzer
+        )
+        self.assertEqual(digest, analyzer["provenance_sha256"])
+
+    def test_sealed_provenance_rejects_cross_world_and_wrong_run_identity(self):
+        assignment, config, manifest, provenance, analyzer = self._sealed_provenance_fixture()
+        with self.assertRaises(PackageVerificationError):
+            _assert_sealed_provenance_identity(
+                dict(provenance, world_id="world-OTHER"),
+                "run-1", assignment, config, manifest, analyzer,
+            )
+        with self.assertRaises(PackageVerificationError):
+            _assert_sealed_provenance_identity(
+                provenance, "run-OTHER", assignment, config, manifest, analyzer,
+            )
+
+    def test_sealed_provenance_rejects_analyzer_digest_divergence(self):
+        assignment, config, manifest, provenance, analyzer = self._sealed_provenance_fixture()
+        with self.assertRaises(PackageVerificationError):
+            _assert_sealed_provenance_identity(
+                provenance, "run-1", assignment, config, manifest,
+                dict(analyzer, provenance_sha256="0" * 64),
+            )
 
 
 
