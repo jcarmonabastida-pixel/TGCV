@@ -998,5 +998,80 @@ class VContEvidenceOrchestrationTests(unittest.TestCase):
             )
 
 
+
+class VContBenchmarkEvidenceEnvelopeTests(unittest.TestCase):
+    def _design_and_inputs(self):
+        from vcont_benchmark_protocol import (
+            MonteCarloBenchmarkDesign, build_seed_bank,
+            build_scenario_estimand_matrix, scenario_matrix_fingerprint,
+        )
+        scenarios = benchmark_scenarios(n_units=16, n_intervals=20)
+        versions = tuple((cfg.scenario_id, cfg.version) for cfg in scenarios)
+        matrix = build_scenario_estimand_matrix(dict(versions))
+        targets = []
+        for spec in matrix:
+            temporal = (spec.run_evaluation_class
+                        if spec.key.estimand_id in (
+                            "ITT_Z_RUN_CONDITIONAL_VCONT", "ITT_G_Z0_VCONT")
+                        else spec.repeated_evaluation_class)
+            if temporal == "EVALUABLE":
+                for metric in ("bias", "mae", "rmse"):
+                    targets.append((spec.key.scenario_id, spec.key.scenario_version,
+                                    spec.key.estimand_id, spec.key.estimand_version,
+                                    metric, 1e9))
+        design = MonteCarloBenchmarkDesign(
+            scenario_versions=versions, n_units=16, outer_replicates=2,
+            repeated_assignments=1, matrix_fingerprint=scenario_matrix_fingerprint(matrix),
+            metric_targets=tuple(targets), seed_bank_label="GATE172_DETERMINISTIC_FIXTURE",
+            seed_bank_fingerprint="a" * 64, executable_commit="c" * 40,
+            configuration_fingerprint="b" * 64,
+        )
+        assignments = build_seed_bank(
+            bank="evaluation", scenarios=tuple(cfg.scenario_id for cfg in scenarios),
+            n_grid=(16,), replicates=1, namespace="gate172-driver-regression",
+            scenario_versions=dict(versions), outer_replicates=2,
+        )
+        return design, scenarios, assignments, matrix
+
+    def test_complete_benchmark_returns_52_pairs_and_one_bundle_per_scenario_m(self):
+        from vcont_evidence_export import produce_and_capture_benchmark
+        design, scenarios, assignments, matrix = self._design_and_inputs()
+        captured = produce_and_capture_benchmark(
+            design, assignments, scenarios, tolerance=1e9, matrix=matrix
+        )
+        self.assertEqual(captured.report["coverage"], {
+            "required_pairs": 52, "observed_pairs": 52, "scenario_count": 13
+        })
+        self.assertEqual(len(captured.report["pair_ledger"]), 52)
+        self.assertEqual(len(captured.outer_world_bundles), 26)
+        self.assertEqual(len(captured.evidence_index), 26)
+        self.assertEqual(len(captured.report["temporal_manifest"]), 13 * 2 * 2)
+        self.assertEqual(len({(b.scenario_id, b.outer_replicate_id)
+                              for b in captured.outer_world_bundles}), 26)
+
+    def test_driver_rejects_missing_scenario_m_group_before_generation(self):
+        from vcont_evidence_export import produce_and_capture_benchmark
+        from vcont_integrated_harness import ContractError
+        design, scenarios, assignments, matrix = self._design_and_inputs()
+        incomplete = tuple(row for row in assignments
+                           if not (row.scenario_id == scenarios[0].scenario_id
+                                   and row.outer_replicate_id == "outer-000001"))
+        with self.assertRaises(ContractError):
+            produce_and_capture_benchmark(
+                design, incomplete, scenarios, tolerance=1e9, matrix=matrix
+            )
+
+    def test_driver_rejects_calibration_bank_before_generation(self):
+        from dataclasses import replace
+        from vcont_evidence_export import produce_and_capture_benchmark
+        from vcont_integrated_harness import ContractError
+        design, scenarios, assignments, matrix = self._design_and_inputs()
+        mixed = (replace(assignments[0], bank="calibration"),) + assignments[1:]
+        with self.assertRaises(ContractError):
+            produce_and_capture_benchmark(
+                design, mixed, scenarios, tolerance=1e9, matrix=matrix
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
