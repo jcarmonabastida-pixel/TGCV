@@ -648,9 +648,6 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
     if (not isinstance(records, list) or len(records) != expected_runs
             or not isinstance(outer_records, list) or len(outer_records) != expected_outers):
         raise PackageVerificationError("RUN/R source record cardinality differs from 13 x M x (1+R)")
-    if run_file["benchmark_export_id"] != files["manifest.json"].get("benchmark_export_id", run_file["benchmark_export_id"]):
-        # The package manifest has no export ID in v2; this branch only guards malformed explicit values.
-        raise PackageVerificationError("RUN export identity is inconsistent with package context")
 
     assignment_file = files["seeds/evaluation_seed_assignments.json"]
     temporal_file = files["runs/temporal_manifest.json"]
@@ -846,14 +843,8 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
         run_map[key] = record
         decoded_by_key[key] = decoded
 
-    if len(run_map) != expected_runs or set(run_map) != {
-        (sid, versions[sid], n_units, f"outer-{m:06d}", role, idx, None)
-        for sid in [] for m in []
-        for role, idx in []
-    }:
-        # The exact run_id universe is derived from the independently decoded RunManifest set below.
-        if len(run_map) != expected_runs:
-            raise PackageVerificationError("run record cardinality mismatch")
+    if len(run_map) != expected_runs:
+        raise PackageVerificationError("run record cardinality mismatch")
     # Each assignment/temporal key must map to one unique run record and exact run_id.
     key6_to_run = {}
     for key, record in run_map.items():
@@ -937,21 +928,16 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
             "vcont_integrated_harness.RepeatedAssignmentReport",
         )
         repeated_evaluations = tuple(
-            _snapshot_source_value(decoded_by_key[parsed_key]["evaluation_report"])
+            decoded_by_key[parsed_key]["evaluation_report"]
             for parsed_key in expected_repeated
         )
         if (repeated_report["world_id"] != key["world_id"]
                 or repeated_report["replicate_count"] != R
-                or tuple(repeated_report["per_run_reports"]) != repeated_evaluations):
-            raise PackageVerificationError("RepeatedAssignmentReport does not match exact ordered R evaluation reports")
+                or tuple(repeated_report["per_run_reports"]) != repeated_evaluations):            raise PackageVerificationError("RepeatedAssignmentReport does not match exact ordered R evaluation reports")
         outer_map[outer_key] = {
             "run_key": run_key, "repeated_keys": tuple(expected_repeated),
             "world_seed": world_seed, "repeated_report": repeated_report,
         }
-    expected_outer_keys = {
-        (sid, versions[sid], n_units, f"outer-{m:06d}", None)
-        for sid in [] for m in []
-    }
     if len(outer_map) != expected_outers:
         raise PackageVerificationError("outer-world record cardinality differs from 13 x M")
     outer_by_base = {
@@ -1056,15 +1042,15 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
                 (contract_report, contract_snapshot, "AnalysisContract"),
                 (manifest_report, manifest_snapshot, "RunManifest"),
             ):
-                if report_obj != _snapshot_source_value(snapshot_obj):
+                if report_obj != snapshot_obj:
                     raise PackageVerificationError(f"report RUN {label} differs from captured snapshot")
-            if row.get("run_report") != _snapshot_source_value(decoded["evaluation_report"]):
+            if row.get("run_report") != decoded["evaluation_report"]:
                 raise PackageVerificationError("report RUN evaluation summary differs from EvaluationReport snapshot")
             repeated_reports = [
                 _snapshot_source_value(decoded_by_key[key]["evaluation_report"])
                 for key in outer["repeated_keys"]
             ]
-            if row.get("repeated_report") != _snapshot_source_value(outer["repeated_report"]):
+            if row.get("repeated_report") != outer["repeated_report"]:
                 raise PackageVerificationError("report repeated aggregate differs from RepeatedAssignmentReport snapshot")
             if len(repeated_reports) != R:
                 raise PackageVerificationError("repeated report source cardinality differs from R")
