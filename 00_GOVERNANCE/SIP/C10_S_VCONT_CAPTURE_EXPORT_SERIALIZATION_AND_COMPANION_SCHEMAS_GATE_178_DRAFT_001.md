@@ -526,3 +526,9 @@ Gate 181 closes the schema-level questions left open by Gate 180. It freezes the
 The effective structural config excludes `seed`, world/Z/G assignment seeds and RUN/R identity fields from direct JSON. It retains the exact structural ScenarioConfig fields and an explicit policy requiring all three RNG stream seeds to be supplied by SeedAssignment. Full per-run effective ScenarioConfig snapshots remain byte-preserved and opaque in run_records; their values are reconciled to the assignment rows after supported decoding.
 
 Capture identity v2.0.0 is evaluation-capture-only. Calibration, Gate159, source-execution and technical-test companions are independently assembled and bound by benchmark_export_id; companion digests affect package_id, not capture_id. The 14-file source/projection/verifier crosswalk is defined in Gate 181. Current source still lacks MatrixCapture/FrozenReportSnapshot retention and companion/package implementation. No code/tests/CI or scientific execution occurred.
+
+## Gate 182 — integrated implementation boundary
+
+Gate 182 maps the Gate 178 MatrixCapture v1.0.0, FrozenReportSnapshot, calibration and Gate159 contracts into exact code boundaries. The current `produce_and_capture_benchmark` must capture the exact canonical matrix tuple before Evaluator and freeze the source-typed report immediately after Evaluator returns; the existing three CapturedBenchmark fields remain positional/compatible and new fields are trailing optional fields. Legacy three-field captures remain constructible but are ineligible for v2 export.
+
+The v2 writer and independent verifier are separate modules and neither invokes synthetic generation. Gate 182 also resolves the version conflict: Gate 174 v1.0.0 retains design-derived benchmark_export_id; a new RUN-EXPORT-ENVELOPE v2.0.0 uses benchmark_export_id=capture_id. A pinned RFC 8785 implementation is an explicit pre-implementation prerequisite. No code/tests/CI or scientific execution occurred.
