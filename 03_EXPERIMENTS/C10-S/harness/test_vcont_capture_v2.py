@@ -309,7 +309,7 @@ class CaptureV2Tests(unittest.TestCase):
         report["coverage"]["observed_pairs"] = 0
         self.assertEqual(snapshot.canonical_bytes, original_bytes)
         envelope = json.loads(snapshot.canonical_bytes.decode("utf-8"))
-        self.assertEqual(envelope["schema_version"], "2.0.0")
+        self.assertEqual(envelope["schema_version"], "2.1.0")
         self.assertEqual(envelope["payload_type"], "TGCV-C10S-VCONT-BENCHMARK-REPORT")
         self.assertEqual(envelope["schema_id"], "TGCV-C10S-VCONT-REPORT-SNAPSHOT")
         self.assertEqual(
@@ -387,15 +387,39 @@ class CaptureV2Tests(unittest.TestCase):
             freeze_report_snapshot(report)
 
 
-    def test_report_snapshot_fails_closed_on_unregistered_seed_in_scenario_report(self):
+    def test_report_snapshot_v2_1_wraps_all_four_scenario_run_uint64_paths(self):
         report = self.report_fixture()
-        report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"][0]["seed"] = 1 << 53
-        with self.assertRaises(ContractError):
-            freeze_report_snapshot(report)
-        report = self.report_fixture()
-        report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"][3]["world_seed"] = 1 << 53
-        with self.assertRaises(ContractError):
-            freeze_report_snapshot(report)
+        run = report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"]
+        run[0]["seed"] = 9007199254740992
+        run[3]["world_seed"] = 9007199254740991
+        run[3]["z_assignment_seed"] = 18446744073709551615
+        run[3]["g_assignment_seed"] = 0
+        snapshot = freeze_report_snapshot(report)
+        envelope = json.loads(snapshot.canonical_bytes.decode("utf-8"))
+        projected = envelope["report"]["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"]
+        self.assertEqual(projected[0]["seed"], {"$type": "uint64", "decimal": "9007199254740992"})
+        self.assertEqual(projected[3]["world_seed"], {"$type": "uint64", "decimal": "9007199254740991"})
+        self.assertEqual(projected[3]["z_assignment_seed"], {"$type": "uint64", "decimal": "18446744073709551615"})
+        self.assertEqual(projected[3]["g_assignment_seed"], {"$type": "uint64", "decimal": "0"})
+        self.assertEqual(snapshot.schema_version, "2.1.0")
+
+    def test_report_snapshot_v2_1_rejects_invalid_nested_uint64_sources(self):
+        mutations = (
+            (0, "seed", -1),
+            (0, "seed", True),
+            (0, "seed", 1 << 64),
+            (3, "world_seed", -1),
+            (3, "world_seed", True),
+            (3, "world_seed", 1 << 64),
+            (3, "z_assignment_seed", 1.5),
+            (3, "g_assignment_seed", "23"),
+        )
+        for tuple_index, field, invalid in mutations:
+            report = self.report_fixture()
+            report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"][tuple_index][field] = invalid
+            with self.subTest(tuple_index=tuple_index, field=field, invalid=invalid):
+                with self.assertRaises(ContractError):
+                    freeze_report_snapshot(report)
 
     def test_rfc8785_known_canonicalization_vectors(self):
         self.assertEqual(rfc8785.dumps({"b": 2, "a": 1}), b'{"a":1,"b":2}')
