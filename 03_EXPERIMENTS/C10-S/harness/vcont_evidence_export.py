@@ -765,7 +765,8 @@ def _validate_evaluation_report(value: Any, label: str) -> None:
 
 
 def _validate_scenario_report(value: Any, scenario_id: str, scenario_version: str,
-                              n_units: int, outer_replicates: int) -> None:
+                              n_units: int, outer_replicates: int,
+                              repeated_assignments: int) -> None:
     report = _require_exact_object(value, _SCENARIO_REPORT_FIELDS, f"scenario_reports.{scenario_id}")
     if (report["scenario_id"] != scenario_id or report["scenario_version"] != scenario_version
             or report["n_units"] != n_units or report["outer_replicate_count"] != outer_replicates):
@@ -982,7 +983,7 @@ def _report_v2_projection(report: dict[str, Any]) -> dict[str, Any]:
     for scenario_id in SCENARIO_IDS:
         _validate_scenario_report(
             scenario_reports[scenario_id], scenario_id, versions[scenario_id],
-            n_units, outer_replicates,
+            n_units, outer_replicates, repeated_assignments,
         )
     coverage = _require_exact_object(
         projected["coverage"], {"required_pairs", "observed_pairs", "scenario_count"},
