@@ -686,3 +686,77 @@ The frozen schema identities needed for the source projection, matrix and evalua
 The source-boundary ambiguities found in Gate 194-G have been corrected. The 13/26/28 architecture is internally consistent with the frozen Gate 181/178/179 inputs. The remaining step before implementation is an explicit freeze decision on the three newly proposed schemas and the aggregate semantic contract. This document alone does not freeze them.
 
 No code, writer, verifier, tests or workflows were changed. No imports, tests, compilation, CI, producers, seed generation, calibration, package generation or scientific execution were performed. `main` remains untouched; PR #116 remains Draft.
+
+
+### 12. Gate 194-H — freeze preflight and normative conflict reconciliation
+
+**User decision:** approval to proceed with the recommended schema-freeze direction, 2026-11-14.  
+**Effect:** authorizes the freeze-preparation operation; it does not authorize code changes or scientific execution.  
+**Disposition:** **FREEZE BLOCKED — INTERNAL CONTRACT CONFLICTS MUST BE RESOLVED FIRST.**
+
+A full-document review immediately before freeze found that §§4–5 and §§11.3–11.6 contain incompatible definitions. The PASS_STATIC result in §11.11 applies to source-identity crosswalk and field/digest source consistency; it does not establish internal consistency of every companion wire definition. The following conflicts are material and must not be silently resolved by implementation.
+
+#### 12.1 Conflicting AnalysisContract algorithm identifiers
+
+- §4.1 identifies the semantic payload digest as `TGCV-C10S-ANALYSIS-CONTRACT-PAYLOAD-JCS-SHA256-1`.
+- §5.1 identifies the Analyzer/contract component digest as `TGCV-C10S-EFFECTIVE-ANALYSIS-CONTRACT-JCS-SHA256-1`.
+- §11.3 again uses `TGCV-C10S-ANALYSIS-CONTRACT-PAYLOAD-JCS-SHA256-1`.
+
+These cannot all be independently authoritative for the same byte input. Proposed resolution: use the §4.1/§11.3 identifier as the single semantic payload digest algorithm and require the Analyzer component's `algorithm_id` to equal it. The historical FrozenSnapshot digest remains separate.
+
+#### 12.2 Conflicting component row schemas and vocabularies
+
+- §5 defines component rows with exactly eight properties: `component_id`, `component_type`, `scope_key`, `source_ref`, `payload_schema_id`, `payload_schema_version`, `algorithm_id`, `digest_sha256`.
+- §11.6 instead defines six properties: `component_type`, `component_key`, `algorithm_id`, `schema_id`, `schema_version`, `sha256`.
+- §5 uses the controlled vocabulary `DGP_GENERATOR_CONFIG`, `ANALYZER_EFFECTIVE_CONTRACT`, `SCENARIO_ESTIMAND_MATRIX`, `EVALUATION_SEED_BANK`; §11.6 uses different names for three families.
+
+Proposed resolution: retain the eight-property §5 component record, because it includes stable component identity and source locator needed for exact source reconciliation. Keep the §5 controlled vocabulary and canonical family ordering. Map the four component families to the 28 records without introducing a second vocabulary. Replace §11.6's six-property record shape and field aliases.
+
+#### 12.3 Conflicting aggregate input schema and payload
+
+- §5.2 defines aggregate input schema ID `TGCV-C10S-AGGREGATE-DESIGN-FINGERPRINT`, version `1.0.0`, and component projections using `component_id`, `component_type`, `scope_key`, `payload_schema_id`, `payload_schema_version`, `algorithm_id`, `digest_sha256`.
+- §11.6 defines `TGCV-C10S-CONFIGURATION-FINGERPRINT-MANIFEST` and adds `component_count`, while renaming the component fields.
+
+Proposed resolution: retain the §5.2 aggregate schema and exact seven-field component projection, in its exact order. Do not include `source_ref` in the aggregate digest input; it is a locator, not part of semantic component identity. Do not add `component_count` unless the schema is explicitly revised and independently justified. The aggregate `components` array length is already fixed at 28 by the contract.
+
+#### 12.4 Conflicting scenario ordering rules
+
+- §4 specifies lexicographic UTF-8 ordering by scenario ID, scenario version and numeric N.
+- §11.1 and §11.6 require the canonical 13-scenario registry order.
+
+These are not equivalent. Proposed resolution: use the authoritative Gate 181 `SCENARIO_IDS` registry order throughout every scenario-indexed companion and aggregate component family. Within each scenario, use the exact source version and numeric N. The lexicographic rule in §4 is superseded.
+
+#### 12.5 Source locator remains under-specified
+
+The eight-field §5 component schema requires `source_ref`, but currently permits either a package-relative JSON Pointer or a frozen source-record locator without freezing a single grammar. The Gate 191 package path inventory confirms the companion paths but does not, by itself, define a unique pointer grammar for every source object. This is a schema-level ambiguity. Before freeze, specify exact allowed pointer forms and target objects for all four component families, or replace `source_ref` with a closed typed locator object and freeze that object. Do not allow arbitrary strings.
+
+#### 12.6 Proposed root and algorithm registry after reconciliation
+
+Subject to the source_ref closure in §12.5, the intended single registry is:
+
+| Object | Schema ID | Version | Status |
+|---|---|---:|---|
+| `design/analysis_contracts.json` root | `TGCV-C10S-ANALYSIS-CONTRACTS` | 1.0.0 | Proposed new |
+| Semantic AnalysisContract digest input | `TGCV-C10S-EFFECTIVE-ANALYSIS-CONTRACT` | 1.0.0 | Proposed new |
+| `provenance/configuration_fingerprints.json` root | `TGCV-C10S-CONFIGURATION-FINGERPRINTS` | 1.0.0 | Proposed new |
+| Aggregate digest input | `TGCV-C10S-AGGREGATE-DESIGN-FINGERPRINT` | 1.0.0 | Proposed new |
+
+Single algorithm registry:
+
+- `TGCV-C10S-ANALYSIS-CONTRACT-PAYLOAD-JCS-SHA256-1`: semantic AnalysisContract payload; also the Analyzer component digest.
+- `TGCV-C10S-EFFECTIVE-SCENARIO-CONFIG-JCS-SHA256-1`: exact Gate 181 nested effective projection row.
+- Matrix component: reuse the exact MatrixCapture v1.0.0 full-matrix digest algorithm and digest value.
+- Evaluation component: reuse Gate 181 `evaluation_seed_manifest_sha256` algorithm and digest value; separately recompute and validate the Gate 179 source-typed legacy `seed_bank_fingerprint`.
+- `TGCV-C10S-AGGREGATE-DESIGN-FINGERPRINT-JCS-SHA256-1`: §5.2 aggregate input schema, after the seven-field component projection is fixed.
+
+#### 12.7 Freeze gate decision
+
+The user's approval is recorded as approval to proceed with this freeze preparation, not as blind acceptance of mutually inconsistent wire contracts. The new schemas MUST NOT be marked FROZEN until:
+
+1. the §12.1–12.4 single-definition resolutions are integrated into the normative sections (not left as competing alternatives);
+2. the `source_ref` grammar and exact source targets are closed;
+3. the aggregate component projection and canonical ordering are identical in every section;
+4. the verifier can derive each source target independently from package content and frozen contract, not from producer-authored arbitrary locators;
+5. all exact root/row/property allowlists and digest input objects are singular and internally consistent.
+
+**No code was changed. No tests, compilation, CI, package generation, calibration or scientific execution were run.** Gate 194-H is a freeze-preflight finding, not a failed scientific test. Implementation remains blocked until the documentary contract is coherent and frozen by an explicit decision.
