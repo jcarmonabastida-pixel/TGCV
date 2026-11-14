@@ -236,3 +236,11 @@ Gate 183 should perform a final static implementability preflight against the ex
 Gate 183's static preflight confirms that the implementation architecture is feasible but blocks an ordinary in-branch harness code push under the current workflow configuration. The push trigger in `.github/workflows/c10-s-focal-harness-tests.yml` covers every path under `03_EXPERIMENTS/C10-S/harness/**` and runs the full unittest suite; `test_vcont_integrated_harness.py` calls Generator.generate and both evidence producers, so this workflow is not a pure serializer-only suite. The harness and repository also have no dependency lock/project manifest and no pinned RFC 8785/JCS implementation.
 
 No workflow, code, dependency or test was changed. Gate 183 recommends a governed workflow split so pure v2 fixture tests can run independently while producer/integrated synthetic tests remain behind separate explicit authorization. Gate 183 is CONDITIONAL / BLOCKED pending the CI execution-boundary decision and pinned JCS dependency. See `C10_S_VCONT_PACKAGE_V2_IMPLEMENTATION_PREFLIGHT_GATE_183_DRAFT_001.md`. This supersedes no Gate 182 API decision; it adds an execution-governance prerequisite.
+
+## 13. Gate 184 — execution-boundary prerequisite resolved at configuration level
+
+The user approved Option A (workflow split). Gate 184 removes push triggers from the legacy integrated synthetic workflow and requires manual dispatch, an explicit boolean confirmation and the exact research branch. A separate pure v2 workflow runs only five explicitly named fixture test modules and does not run full unittest discovery. The pure workflow is restricted to v2 source/test/dependency paths.
+
+Gate 184 also pins `rfc8785==0.1.4` to wheel SHA-256 `520d690b448ecf0703691c76e1a34a24ddcd4fc5bc41d589cb7c58ec651bcd48`. The artifact has no PyPI provenance attestation; the hash pins bytes, not publisher identity. RFC 8785 conformance vectors remain to be executed by the future pure test suite.
+
+This resolves the workflow-configuration blocker but does not authorize code/test execution. The named pure test modules do not yet exist; the pure workflow is not considered runnable or PASS until the full source/test set is added. See Gate 184. No workflow was dispatched; no tests or scientific execution occurred.
