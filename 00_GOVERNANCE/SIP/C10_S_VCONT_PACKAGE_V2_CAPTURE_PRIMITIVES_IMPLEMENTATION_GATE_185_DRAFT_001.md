@@ -108,3 +108,15 @@ Static inspection of the test source confirms it does not call Generator, Sealer
 ## 8. Next operation — Gate 186
 
 Gate 186 should statically audit the capture implementation against the exact source report schema and capture-identity contract, close any code-level discrepancies, and then add the pure serialization/uint64 projection module. Do not run the pure tests or dispatch the workflow until separate technical execution authorization is explicit. Do not invoke the benchmark producer.
+
+## 9. Corrective execution record — push-triggered preflight runs
+
+The first Gate 185 source/test commits landed while the previous Gate 184 pure workflow still had its push trigger and its full future-module compile list. GitHub therefore ran that workflow on three commits:
+
+- `3bf7cb56a8bf0da305e9802c7555eb52c3163b3b` — run `43542215502`;
+- `f3fc6dd51d6e4bcb87611595c1e69cbf11731545` — run `43542249750`;
+- `0fedd28ed20ced1ae3f6e1da1d630d0083e2cbd3` — run `43542308263`.
+
+Each run installed the hash-pinned `rfc8785==0.1.4` dependency, then attempted the previous workflow's compile list and failed at the first not-yet-created module, `vcont_package_v2.py`. The test step was skipped in all three runs. The capture module appeared before the missing module in the compile command and its compilation completed without a reported syntax error. No test method, Generator, Sealer, Analyzer, Evaluator, producer, seed generation, calibration or scientific operation ran.
+
+This was an unintended technical workflow execution caused by the still-active push trigger. It is recorded as a governance/configuration deviation, not a PASS. The workflow was then changed to manual-only and narrowed to the capture module plus its fixture test. The current workflow has not been dispatched. This correction supersedes §1/§5/§7 statements that implied no dependency installation or compilation occurred.
