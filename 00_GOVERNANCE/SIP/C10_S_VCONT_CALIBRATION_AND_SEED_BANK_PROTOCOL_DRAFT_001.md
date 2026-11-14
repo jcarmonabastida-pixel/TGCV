@@ -598,3 +598,9 @@ Confirmatory ScenarioConfig execution requires explicit world/Z/G stream seeds e
 No seed derivation, generation, calibration, tests, package or scientific execution occurred. Full contract: Gate 181.
 
 Gate 181 pins the evaluation-assignment and temporal-manifest root envelopes and the exact `rows` array pointers for v2.0.0. The calibration manifest retains its Gate 178 `rows` envelope with typed uint64 seed values. No bare top-level arrays or alternate root shapes are permitted.
+
+## 41. Gate 182 — package v2 implementation boundary
+
+Gate 182 defines the code boundary for using already materialized evaluation/calibration seed rows in package v2. The capture producer consumes evaluation assignments only and must capture the exact assignment rows and source snapshots without deriving new seeds. Calibration assignments and their manifest enter only through the independently supplied companion input. The writer/verifier must enforce the Gate 181 uint64 registry and calibration/evaluation disjointness.
+
+No implementation, seed generation, calibration, tests, package generation or benchmark was performed. Scientific execution remains unauthorized. See Gate 182 for module APIs, migration and fail-closed requirements.
