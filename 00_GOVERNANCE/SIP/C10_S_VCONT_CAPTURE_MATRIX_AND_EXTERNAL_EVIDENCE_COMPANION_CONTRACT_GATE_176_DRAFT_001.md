@@ -188,3 +188,9 @@ See `C10_S_VCONT_CAPTURE_EXPORT_IMPLEMENTABILITY_AUDIT_GATE_177_DRAFT_001.md`. G
 Gate 178 specifies the exact MatrixCapture row field set/value domains and positional order (SCENARIO_IDS × ESTIMAND_SPECS), the full-matrix JCS digest input, the FrozenReportSnapshot payload, deterministic non-circular capture identity, CalibrationBankManifest, Gate159ReconciliationArtifact, SourceExecutionEvidence, TechnicalTestEvidence and strict decoder requirements. The legacy matrix fingerprint and legacy report fingerprint remain unchanged and separately verified.
 
 Gate 178 also identifies a blocker not resolved by Gate 176: the seed derivation produces uint64 integers, while the Gate 164 JCS package contract does not define an exact uint64 wire encoding and prohibits bare numeric-to-string coercion. No package implementation may proceed until this is resolved through an explicit versioned schema decision. Full crosswalk: `C10_S_VCONT_CAPTURE_EXPORT_SERIALIZATION_AND_COMPANION_SCHEMAS_GATE_178_DRAFT_001.md`.
+
+## 9. Gate 179 — capture identity and report/calibration schema v2
+
+Gate 179 versions the JCS projections that contain direct seed values. FrozenReportSnapshot, CalibrationBankManifest and benchmark capture identity advance to schema version 2.0.0 and use the exact typed uint64 object `{"$type":"uint64","decimal":"<canonical unsigned decimal>"}` for every direct seed field. MatrixCapture remains v1.0.0 because it contains no seeds. Gate159 reconciliation remains v1.0.0 because raw seed values are not included in its check records.
+
+The historical report, matrix and seed-bank fingerprints remain unchanged and are computed under their existing algorithms from source values. Gate 164 v1.0.0 remains frozen; its wire-compatible successor is v2.0.0. The full decision and direct-field registry are in Gate 179.
