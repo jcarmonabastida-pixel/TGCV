@@ -260,3 +260,7 @@ To preserve the Gate 182 separate-authorization boundary, Gate 184's pure workfl
 ## 16. Gate 185 workflow execution deviation
 
 Three automatic pure-workflow runs occurred during the first Gate 185 pushes before the workflow was changed to manual-only: 43542215502, 43542249750 and 43542308263. Each installed the pinned JCS dependency and attempted compilation; each failed on the then-missing `vcont_package_v2.py`. The test step was skipped. No synthetic producer or scientific execution occurred. The source module compiled before the missing-file failure. This is recorded as an unintended CI execution, not as test evidence or acceptance. The current workflow is manual-only and has not been dispatched. See Gate 185 §9 and Gate 184 §10.
+
+## 17. Gate 185 report-fingerprint reconciliation refinement
+
+The capture implementation recomputes the legacy report fingerprint from the source-typed manifest before uint64 wire conversion, using the frozen historical Evaluator JSON round-trip and compact SHA-256 operation; it rejects any mismatch. The pure fixture source covers a tampered fingerprint. No tests were executed.
