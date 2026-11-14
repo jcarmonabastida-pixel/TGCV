@@ -508,3 +508,14 @@ The function applies the exact world/Z/G streams and assignment identity, calls 
 Three regression tests were added: successful RUN+R capture, missing-R rejection and cross-M rejection. They have NOT been executed. The producer function itself was not called. No test PASS, CI, calibration, seed-bank generation, N/R/M sizing, Monte Carlo, benchmark or scientific execution is claimed.
 
 **Boundary still open:** no benchmark-wide driver yet partitions all 13 scenario blocks and M groups, calls the producer for every M, and co-exports all OuterWorldEvidenceBundles with the existing 52-pair result. That is Gate 172. Gate 159 reconciliation, canonical JCS/tar packaging, trusted builder and attestation also remain OPEN.
+
+
+## 31. Gate 172 — benchmark-wide evidence envelope implementation
+
+Gate 172 adds `produce_and_capture_benchmark(...)` to `03_EXPERIMENTS/C10-S/harness/vcont_evidence_export.py`. It accepts the frozen `MonteCarloBenchmarkDesign`, exactly 13 matching structural `ScenarioConfig` templates and already-materialized evaluation-bank `SeedAssignment` rows. It validates 13×M×(1+R) assignment coverage, exact scenario/version/N/M/role/index joins, one RUN plus R repeated rows per M, shared world seed and unique Z/G assignment streams.
+
+In deterministic scenario/M order, it calls the Gate 171 producer once per group, joins each legacy tuple to its exact RunEvidenceBundle snapshots, constructs the existing `scenario_outer_runs` input and calls the unchanged `evaluate_monte_carlo_benchmark()` exactly once. It returns the evaluator report and 13×M OuterWorldEvidenceBundles in one `CapturedBenchmark`, with an explicit scenario/M/world index.
+
+The evaluator remains authoritative for the 52-pair ledger, report fingerprint, temporal manifest and aggregation calculations. Gate 172 does not change these semantics. Its positive complete-envelope test and two preflight rejection tests are persisted but NOT EXECUTED. The driver itself was NOT CALLED; no runtime PASS, CI, benchmark or scientific result is claimed.
+
+The design's seed-bank/configuration fingerprints and executable commit are still only structurally/format-validated; Gate 172 does not independently recompute them from the effective assignment bank, configurations or running process. Gate 159 reconciliation, canonical JCS/tar package writer and trusted attestation remain OPEN.
