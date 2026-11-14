@@ -690,8 +690,56 @@ def produce_and_capture_benchmark(
     } or len(report.get("pair_ledger", ())) != 52):
         raise ContractError("benchmark evaluator did not return the complete 52-pair/13-scenario ledger")
     expected_temporal_rows = expected_count
-    if len(report.get("temporal_manifest", ())) != expected_temporal_rows:
+    temporal_rows = tuple(report.get("temporal_manifest", ()))
+    if len(temporal_rows) != expected_temporal_rows:
         raise ContractError("benchmark temporal manifest cardinality differs from captured evidence assignments")
+    def temporal_key(row):
+        return (
+            row["scenario_id"], row["scenario_version"], row["N"],
+            row["outer_replicate_id"], row["assignment_role"],
+            row["assignment_index"], row["run_id"], row["world_id"],
+            row["world_seed"], row["z_assignment_seed"], row["g_assignment_seed"],
+        )
+    captured_temporal = []
+    for outer_bundle in bundles:
+        run_bundles = (outer_bundle.run_bundle,) + outer_bundle.repeated_bundles
+        for run_bundle in run_bundles:
+            manifest = run_bundle.run_manifest.restore(RunManifest)
+            captured_temporal.append(temporal_key({
+                "scenario_id": manifest.scenario_id,
+                "scenario_version": manifest.version,
+                "N": manifest.n_units,
+                "outer_replicate_id": manifest.outer_replicate_id,
+                "assignment_role": manifest.assignment_role,
+                "assignment_index": manifest.assignment_index,
+                "run_id": manifest.run_id,
+                "world_id": manifest.world_id,
+                "world_seed": manifest.world_seed,
+                "z_assignment_seed": manifest.z_assignment_seed,
+                "g_assignment_seed": manifest.g_assignment_seed,
+            }))
+    observed_temporal = [temporal_key(row) for row in temporal_rows]
+    if (len(set(captured_temporal)) != expected_temporal_rows
+            or set(captured_temporal) != set(observed_temporal)):
+        raise ContractError("benchmark temporal manifest does not join one-to-one with captured RUN/R evidence")
+    evidence_worlds = {
+        (scenario_id, outer_id): world_id
+        for scenario_id, outer_id, world_id in evidence_index
+    }
+    for pair in report.get("pair_ledger", ()):
+        scenario_id, scenario_version, _, _, level = pair["key"]
+        if level != "MONTE_CARLO" or len(pair.get("contributions", ())) != design.outer_replicates:
+            raise ContractError("pair ledger contribution count/key does not match declared M")
+        contribution_ids = set()
+        for contribution in pair["contributions"]:
+            outer_id = contribution["outer_replicate_id"]
+            expected_world = evidence_worlds.get((scenario_id, outer_id))
+            if (expected_world is None or contribution["world_id"] != expected_world
+                    or outer_id in contribution_ids):
+                raise ContractError("52-pair contribution does not join uniquely to its captured scenario/M evidence")
+            contribution_ids.add(outer_id)
+        if contribution_ids != {f"outer-{m:06d}" for m in range(design.outer_replicates)}:
+            raise ContractError("pair ledger is missing one or more captured M contributions")
     if len(bundles) != len(SCENARIO_IDS) * design.outer_replicates:
         raise ContractError("benchmark evidence envelope must contain exactly one bundle per scenario/M")
     return CapturedBenchmark(report, tuple(bundles), tuple(evidence_index))
