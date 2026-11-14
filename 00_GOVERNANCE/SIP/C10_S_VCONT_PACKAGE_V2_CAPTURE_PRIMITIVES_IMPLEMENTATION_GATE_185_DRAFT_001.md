@@ -132,3 +132,9 @@ Gate 186 corrected the legacy report fingerprint algorithm identifier to the exa
 Gate 186 found that nested `scenario_reports`, `coverage`, pair-ledger rows/contributions and nested metric/status structures are preserved recursively but do not yet have complete exact field allowlists. Unknown nested fields are not dropped, but schema drift is not rejected as Gate 181 requires. Therefore Gate 185's report projection is not yet a strict schema decoder and full Gate 181 conformance remains CONDITIONAL. Gate 187 is assigned to close these allowlists/cardinality checks from actual Evaluator source. See Gate 186.
 
 Gate 186's design-to-bundle guard was also aligned to the actual `_design_identity_projection()` source representation: ordered `{scenario_id, scenario_version}` objects, not pair tuples. It validates this exact shape before bundle reconciliation. This final adjustment remains unexecuted.
+
+## 12. Gate 187 nested schema and cardinality implementation
+
+Gate 187 added exact allowlists for temporal rows, pair-ledger rows/contributions, metric/rate summaries, all 13 scenario report structures, per-outer source tuples, EvaluationReport and RepeatedAssignmentReport. It enforces canonical 52-pair order, M contributions, 13×M×(1+R) temporal rows, 13 scenario reports, M per-outer reports and R repeated reports. A complete structural fixture and adversarial source tests were added but not executed.
+
+Important residual blocker: the actual scenario report RUN tuple retains `TruthBundle.seed` and `RunManifest.world_seed/z_assignment_seed/g_assignment_seed`. These four uint64 source paths are absent from Gate 181's frozen direct uint64 registry. Gate 187 does not silently expand that registry or change FrozenReportSnapshot v2.0.0. Full JCS conformance remains conditional pending Gate 188's versioned contract decision. See Gate 187.
