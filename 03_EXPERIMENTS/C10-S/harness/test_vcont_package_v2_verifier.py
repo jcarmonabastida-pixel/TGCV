@@ -24,6 +24,7 @@ from vcont_package_v2_verify import (
     _assert_sealed_provenance_identity,
     AUTHORITATIVE_SCENARIO_IDS,
     AUTHORITATIVE_ESTIMAND_IDS,
+    _reconcile_benchmark_export_identity,
 )
 
 
@@ -616,6 +617,49 @@ class IndependentVerifierPrimitiveTests(unittest.TestCase):
                 provenance, "run-1", assignment, config, manifest,
                 dict(analyzer, provenance_sha256="0" * 64),
             )
+
+
+
+    def _benchmark_export_identity_fixture(self):
+        export_id = "a" * 64
+        return {
+            "runs/run_records.json": {
+                "schema_id": "TGCV-C10S-VCONT-RUN-EXPORT-ENVELOPE",
+                "schema_version": "2.0.0",
+                "benchmark_export_id": export_id,
+            },
+            "validation/reconciliation_results.json": {
+                "schema_id": "TGCV-C10S-VCONT-GATE159-RECONCILIATION",
+                "schema_version": "1.0.0",
+                "benchmark_export_id": export_id,
+            },
+        }
+
+    def test_benchmark_export_id_matches_between_run_and_gate159_companions(self):
+        files = self._benchmark_export_identity_fixture()
+        self.assertEqual(_reconcile_benchmark_export_identity(files), "a" * 64)
+
+    def test_benchmark_export_id_reconciliation_rejects_gate159_divergence(self):
+        files = self._benchmark_export_identity_fixture()
+        files["validation/reconciliation_results.json"]["benchmark_export_id"] = "b" * 64
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_benchmark_export_identity(files)
+
+    def test_benchmark_export_id_reconciliation_rejects_malformed_or_missing_identity(self):
+        files = self._benchmark_export_identity_fixture()
+        files["runs/run_records.json"]["benchmark_export_id"] = "A" * 64
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_benchmark_export_identity(files)
+        files = self._benchmark_export_identity_fixture()
+        del files["validation/reconciliation_results.json"]["benchmark_export_id"]
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_benchmark_export_identity(files)
+
+    def test_benchmark_export_id_reconciliation_rejects_wrong_gate159_contract(self):
+        files = self._benchmark_export_identity_fixture()
+        files["validation/reconciliation_results.json"]["schema_version"] = "2.0.0"
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_benchmark_export_identity(files)
 
 
 
