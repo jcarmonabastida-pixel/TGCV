@@ -679,6 +679,29 @@ def _snapshot_legacy_sealed_digest(sealed: dict[str, Any]) -> str:
     return _sha256(payload)
 
 
+
+def _resolve_outer_world_run_reference(
+    reference: Any, label: str, base: tuple[Any, ...], role: str, index: int,
+    run_map: Mapping[tuple[Any, ...], Any], decoded_by_key: Mapping[tuple[Any, ...], Any],
+    expected_world: tuple[Any, Any, Any],
+) -> tuple[tuple[Any, ...], dict[str, Any]]:
+    """Resolve one full RUN/R key and bind it to the designated outer-world identity."""
+    parsed_key = _logical_run_key(reference, label)
+    if parsed_key[:6] != (*base, role, index):
+        raise PackageVerificationError(f"{label} does not identify the expected RUN/R assignment")
+    if parsed_key not in run_map:
+        raise PackageVerificationError(f"{label} is an orphaned RUN/R reference")
+    manifest = decoded_by_key[parsed_key]["run_manifest"]
+    if manifest.get("run_id") != parsed_key[6]:
+        raise PackageVerificationError(f"{label} run_id differs from its decoded RunManifest")
+    observed_world = (
+        manifest.get("world_id"), manifest.get("world_version"), manifest.get("world_seed"),
+    )
+    if observed_world != expected_world:
+        raise PackageVerificationError(f"{label} is bound to a different outer-world identity")
+    return parsed_key, manifest
+
+
 def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tuple[int, int]:
     """Rebuild RUN/R and outer-world joins from the package's independent sources."""
     run_file = files["runs/run_records.json"]
@@ -1048,33 +1071,20 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
         if outer["bank"] != "evaluation":
             raise PackageVerificationError("outer-world record bank must be evaluation")
         base = (key["scenario_id"], key["scenario_version"], key["N"], key["outer_replicate_id"])
-        run_key_obj = outer["run_record_key"]
-        run_key = _logical_run_key(run_key_obj, "outer_world.run_record_key")
-        if run_key[:6] != (*base, "RUN", -1):
-            raise PackageVerificationError("outer-world RUN reference does not identify its designated RUN")
-        run_record = run_map.get(run_key)
-        if run_record is None:
-            raise PackageVerificationError("outer-world RUN reference is orphaned")
-        run_decoded = decoded_by_key[run_key]
-        run_manifest = run_decoded["run_manifest"]
-        if (run_manifest["world_id"], run_manifest["world_version"], run_manifest["world_seed"]) != (
-            key["world_id"], key["world_version"], world_seed
-        ):
-            raise PackageVerificationError("outer-world key differs from designated RUN RunManifest")
+        run_key, run_manifest = _resolve_outer_world_run_reference(
+            outer["run_record_key"], "outer_world.run_record_key", base, "RUN", -1,
+            run_map, decoded_by_key, (key["world_id"], key["world_version"], world_seed),
+        )
         repeated_keys = outer["repeated_run_record_keys"]
         if not isinstance(repeated_keys, list) or len(repeated_keys) != R:
             raise PackageVerificationError("outer-world repeated RUN references differ from R")
         expected_repeated = []
         for repeat_index, ref_key in enumerate(repeated_keys):
-            parsed_key = _logical_run_key(ref_key, f"outer_world.repeated_run_record_keys[{repeat_index}]")
-            if parsed_key[:6] != (*base, "REPEATED_ASSIGNMENT", repeat_index):
-                raise PackageVerificationError("outer-world repeated reference index/order mismatch")
-            if parsed_key not in run_map:
-                raise PackageVerificationError("outer-world repeated RUN reference is orphaned")
-            repeated_manifest = decoded_by_key[parsed_key]["run_manifest"]
-            if (repeated_manifest["world_id"], repeated_manifest["world_version"],
-                repeated_manifest["world_seed"]) != (key["world_id"], key["world_version"], world_seed):
-                raise PackageVerificationError("repeated assignment is crossed into another world")
+            parsed_key, repeated_manifest = _resolve_outer_world_run_reference(
+                ref_key, f"outer_world.repeated_run_record_keys[{repeat_index}]",
+                base, "REPEATED_ASSIGNMENT", repeat_index, run_map, decoded_by_key,
+                (key["world_id"], key["world_version"], world_seed),
+            )
             expected_repeated.append(parsed_key)
         repeated_z, repeated_g = set(), set()
         for parsed_key in [run_key] + expected_repeated:
