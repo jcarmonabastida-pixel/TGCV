@@ -1,7 +1,10 @@
-"""Immutable capture boundary for C10-S V_cont run evidence.
+"""C10-S V_cont immutable evidence capture and M-level producer boundary.
 
-This module snapshots already-produced source objects. It never invokes the
-Generator, Sealer, Analyzer, Evaluator, seed-bank builder or benchmark runner.
+RunEvidenceBundle/OuterWorldEvidenceBundle snapshot source objects without
+reconstructing them. Importing this module performs no generation or evaluation.
+The explicit produce_and_capture_outer_world() API invokes Generator, Sealer,
+Analyzer and Evaluator only when a caller invokes it with execution authority.
+It never builds or derives a seed bank or runs the benchmark-wide aggregator.
 """
 from __future__ import annotations
 
