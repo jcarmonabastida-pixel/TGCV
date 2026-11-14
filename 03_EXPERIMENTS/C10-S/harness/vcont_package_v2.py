@@ -148,6 +148,25 @@ def _legacy_report_fingerprint(manifest_payload: Any) -> str:
     return _sha256(payload)
 
 
+def _decode_report_uint64(value: Any) -> Any:
+    if isinstance(value, dict):
+        if "$type" in value:
+            if set(value) != {"$type", "decimal"} or value.get("$type") != "uint64":
+                raise PackageBuildError("report contains a malformed typed uint64 wrapper")
+            decimal = value.get("decimal")
+            if (not isinstance(decimal, str) or not decimal.isascii()
+                    or not decimal.isdigit() or (len(decimal) > 1 and decimal.startswith("0"))):
+                raise PackageBuildError("report contains a noncanonical uint64 decimal")
+            number = int(decimal)
+            if number > (1 << 64) - 1:
+                raise PackageBuildError("report uint64 wrapper exceeds the source domain")
+            return number
+        return {key: _decode_report_uint64(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_decode_report_uint64(item) for item in value]
+    return value
+
+
 def _recompute_capture_id(captured: Any, design_identity: dict[str, Any]) -> str:
     bundles = tuple(captured.outer_world_bundles)
     ordered = sorted(
@@ -382,7 +401,7 @@ def serialize_package_files_v2(
     report_payload = report_envelope.get("report")
     if not isinstance(report_payload, dict) or not isinstance(report_payload.get("manifest"), dict):
         raise PackageBuildError("FrozenReportSnapshot lacks the complete legacy manifest payload")
-    recomputed_legacy_fingerprint = _legacy_report_fingerprint(report_payload["manifest"])
+    recomputed_legacy_fingerprint = _legacy_report_fingerprint(_decode_report_uint64(report_payload["manifest"]))
     if (recomputed_legacy_fingerprint != report_envelope.get("legacy_report_fingerprint")
             or recomputed_legacy_fingerprint != report_payload.get("report_fingerprint")):
         raise PackageBuildError("historical Evaluator report fingerprint does not recompute from source-domain manifest")
