@@ -112,13 +112,13 @@ class IndependentVerifierPrimitiveTests(unittest.TestCase):
     def test_registered_seed_pointers_require_typed_wrappers(self):
         wrapper = {"$type": "uint64", "decimal": "0"}
         files = {
-            "seeds/evaluation_seed_assignments.json": {"rows": [{
+            "seeds/evaluation_seed_assignments.json": {"row_count": 1, "rows": [{
                 "world_seed": wrapper, "z_assignment_seed": wrapper, "g_assignment_seed": wrapper,
             }]},
-            "seeds/calibration_seed_manifest.json": {"rows": [{
+            "seeds/calibration_seed_manifest.json": {"row_count": 1, "rows": [{
                 "world_seed": wrapper, "z_assignment_seed": wrapper, "g_assignment_seed": wrapper,
             }]},
-            "runs/temporal_manifest.json": {"rows": [{
+            "runs/temporal_manifest.json": {"row_count": 1, "rows": [{
                 "world_seed": wrapper, "z_assignment_seed": wrapper, "g_assignment_seed": wrapper,
             }]},
             "report/report.json": {"report": {
