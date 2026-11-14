@@ -1384,7 +1384,7 @@ class CalibrationManifestVerifierTests(unittest.TestCase):
                 "metric_targets": [{
                     "scenario_id": scenario_id, "scenario_version": scenario_version,
                     "estimand_id": AUTHORITATIVE_ESTIMAND_IDS[0], "estimand_version": "v1",
-                    "metric_id": "mae", "target_mcse": 0.1,
+                    "metric": "mae", "target_mcse": 0.1,
                 }],
             },
             "row_count": len(rows), "rows": rows,
