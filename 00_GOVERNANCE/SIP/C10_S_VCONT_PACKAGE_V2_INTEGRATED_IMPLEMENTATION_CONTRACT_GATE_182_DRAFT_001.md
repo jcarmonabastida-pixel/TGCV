@@ -244,3 +244,7 @@ The user approved Option A (workflow split). Gate 184 removes push triggers from
 Gate 184 also pins `rfc8785==0.1.4` to wheel SHA-256 `520d690b448ecf0703691c76e1a34a24ddcd4fc5bc41d589cb7c58ec651bcd48`. The artifact has no PyPI provenance attestation; the hash pins bytes, not publisher identity. RFC 8785 conformance vectors remain to be executed by the future pure test suite.
 
 This resolves the workflow-configuration blocker but does not authorize code/test execution. The named pure test modules do not yet exist; the pure workflow is not considered runnable or PASS until the full source/test set is added. See Gate 184. No workflow was dispatched; no tests or scientific execution occurred.
+
+## 14. Gate 184 workflow parse correction
+
+The initial pure-v2 workflow contained an unquoted pip-install scalar that was invalid YAML. GitHub created failed workflow-run records with zero jobs; no CI job or test executed. The command was quoted in commit 84d6e4695e7e94f694ca5bb40125a81c8936eefe, and the corrected file was fetched and parsed successfully. This is a workflow-configuration correction only; it does not establish test or JCS conformance. See Gate 184 §8.
