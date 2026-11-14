@@ -203,3 +203,16 @@ The earlier Gate 178 suggestion of a v1.1.0 successor is superseded: because the
 ## 11. Next operation
 
 Gate 180 should perform a final v2.0.0 crosswalk against the exact Gate 164/174/178 payload projections and confirm every direct seed-bearing JSON location from the source schema. It must also reconcile the 14-file schema inventory with the existing capture API and Gate159 companion inputs. Only after that crosswalk is stable should the implementation contract be submitted for acceptance/authorization. No serializer implementation or test execution is implied.
+
+## 12. Gate 180 source-schema correction — direct seed registry not yet complete
+
+Gate 180's static inspection of the current evaluator identifies additional direct uint64 occurrences in `report/report.json` omitted from the initial Gate 179 §3 prose registry. Each 52-pair ledger contribution contains `world_seed`; the pair ledger is present both at report root and inside the legacy `manifest` payload. The v2 wire registry must therefore include:
+
+- `pair_ledger[*].contributions[*].world_seed`;
+- `manifest.pair_ledger[*].contributions[*].world_seed`;
+
+in addition to the three seed fields in report.temporal_manifest and their duplicated `manifest.temporal_manifest` occurrences. Root and nested legacy-manifest copies must decode to the same source integer and be equality-checked before historical fingerprint recomputation.
+
+Gate 180 also finds that source `ScenarioConfig` contains `seed`, `world_seed`, `z_assignment_seed` and `g_assignment_seed`, while Gate 164 requires an effective configuration file. The current package projection does not exist, so it is not yet proven whether these fields are excluded from `design/effective_scenario_configs.json` or serialized directly. Gate 179's assertion that no seed values occur in that path is therefore **UNVERIFIED** pending an exact EffectiveScenarioConfigProjection schema.
+
+This addendum qualifies Gate 179's field-level completeness claim; it does not alter the uint64 wire primitive, package v2.0.0 version decision, source seed algorithm, legacy fingerprints or 14-file inventory. See Gate 180. No code/tests/CI or scientific execution occurred.
