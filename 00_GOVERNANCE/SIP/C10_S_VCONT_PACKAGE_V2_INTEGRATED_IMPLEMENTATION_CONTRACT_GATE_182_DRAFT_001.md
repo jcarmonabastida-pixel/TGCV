@@ -312,4 +312,6 @@ The bounded implementation sequence and exact contract are in `C10_S_VCONT_PACKA
 Gate 192 partially implements the pure package-v2 file/TAR boundary in `vcont_package_v2.py`. It includes RFC 8785 file canonicalization, exact 14-path inventory, deterministic normalized USTAR, report v2.1/MatrixCapture and capture-identity prechecks, required materialized companion payloads, and selected schema-header checks. Seven pure writer tests are written and explicitly listed in the manual research-branch-only workflow.
 
 This implementation is partial. The writer does not yet perform all field-level companion validation or all package semantic joins. It does not create companion evidence. The independent verifier remains unimplemented. No import, compile, test, workflow, package construction or scientific execution occurred. See Gate 192.
+## Gate 193 implementation addendum
 
+The separate independent verifier module `vcont_package_v2_verify.py` and its pure tests have been added under Gate 193. It does not import the writer. Current implementation covers structural archive/JCS/manifest/report/matrix/uint64 verification only; full companion schemas, RUN/R snapshot joins, calibration/Gate159 derivation, source-execution and technical-test reconciliation, and authentication remain explicitly unverified. No tests or compilation were executed. See Gate 193.
