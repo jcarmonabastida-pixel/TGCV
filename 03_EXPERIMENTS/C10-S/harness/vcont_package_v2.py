@@ -98,7 +98,7 @@ def _design_identity(design: Any) -> dict[str, Any]:
         "M": design.outer_replicates,
         "R": design.repeated_assignments,
         "matrix_fingerprint": design.matrix_fingerprint,
-        "metric_targets": [list(row) for row in design.metric_targets],
+        "metric_targets": _jcs_safe_source(design.metric_targets),
         "seed_bank_label": design.seed_bank_label,
         "seed_bank_fingerprint": design.seed_bank_fingerprint,
         "executable_commit": design.executable_commit,
@@ -110,6 +110,42 @@ def _uint64_wire(value: int) -> dict[str, str]:
     if isinstance(value, bool) or not isinstance(value, int) or not 0 <= value <= (1 << 64) - 1:
         raise PackageBuildError("seed source is not an exact uint64 integer")
     return {"$type": "uint64", "decimal": str(value)}
+
+
+def _jcs_safe_source(value: Any) -> Any:
+    """Independent exact source-to-JSON conversion used by capture identity v2."""
+    from dataclasses import asdict, is_dataclass
+    from enum import Enum
+    import math
+    if is_dataclass(value) and not isinstance(value, type):
+        return _jcs_safe_source(asdict(value))
+    if isinstance(value, Enum):
+        return value.value
+    if isinstance(value, dict):
+        if any(not isinstance(key, str) for key in value):
+            raise PackageBuildError("capture identity requires string object keys")
+        return {key: _jcs_safe_source(item) for key, item in value.items()}
+    if isinstance(value, (tuple, list)):
+        return [_jcs_safe_source(item) for item in value]
+    if isinstance(value, bool) or value is None or isinstance(value, str):
+        return value
+    if isinstance(value, int):
+        if abs(value) > (1 << 64) - 1:
+            raise PackageBuildError("capture identity source integer exceeds uint64 domain")
+        return value
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise PackageBuildError("capture identity rejects NaN and infinity")
+        return value
+    raise PackageBuildError(f"unsupported capture identity source type: {type(value).__name__}")
+
+
+def _legacy_report_fingerprint(manifest_payload: Any) -> str:
+    import json
+    from dataclasses import asdict
+    normalized = json.loads(json.dumps(manifest_payload, default=asdict, sort_keys=True))
+    payload = json.dumps(normalized, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")
+    return _sha256(payload)
 
 
 def _recompute_capture_id(captured: Any, design_identity: dict[str, Any]) -> str:
@@ -325,8 +361,15 @@ def serialize_package_files_v2(
         raise PackageBuildError("MatrixCapture retained bytes differ from its JCS payload")
     if expected_matrix_digest != matrix.full_matrix_sha256:
         raise PackageBuildError("MatrixCapture full-matrix digest does not recompute")
-    if matrix_payload.get("design_identity") != design_identity:
-        raise PackageBuildError("MatrixCapture design identity differs from supplied design")
+    expected_matrix_design_identity = {
+        "scenario_versions": design_identity["scenario_versions"],
+        "N": design_identity["N"],
+        "M": design_identity["M"],
+        "R": design_identity["R"],
+        "legacy_matrix_fingerprint": design_identity["matrix_fingerprint"],
+    }
+    if matrix_payload.get("design_identity") != expected_matrix_design_identity:
+        raise PackageBuildError("MatrixCapture design identity differs from the exact declared matrix design projection")
     if rebuilt_capture_id != capture_id:
         raise PackageBuildError("capture_id does not recompute from the retained source evidence")
     if (not isinstance(report_envelope, dict)
@@ -336,6 +379,13 @@ def serialize_package_files_v2(
         raise PackageBuildError("report snapshot envelope differs from the declared v2.1 schema")
     if report_envelope.get("legacy_report_fingerprint") != getattr(report, "legacy_report_fingerprint", None):
         raise PackageBuildError("report snapshot legacy fingerprint metadata mismatch")
+    report_payload = report_envelope.get("report")
+    if not isinstance(report_payload, dict) or not isinstance(report_payload.get("manifest"), dict):
+        raise PackageBuildError("FrozenReportSnapshot lacks the complete legacy manifest payload")
+    recomputed_legacy_fingerprint = _legacy_report_fingerprint(report_payload["manifest"])
+    if (recomputed_legacy_fingerprint != report_envelope.get("legacy_report_fingerprint")
+            or recomputed_legacy_fingerprint != report_payload.get("report_fingerprint")):
+        raise PackageBuildError("historical Evaluator report fingerprint does not recompute from source-domain manifest")
     if rfc8785.dumps(report_envelope) != report_bytes:
         raise PackageBuildError("FrozenReportSnapshot bytes are not canonical RFC 8785 JCS")
     if (not isinstance(matrix_payload, dict)
