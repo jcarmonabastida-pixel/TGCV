@@ -1853,7 +1853,7 @@ def _reconcile_calibration_manifest(
     targets = design.get("metric_targets")
     target_fields = {
         "scenario_id", "scenario_version", "estimand_id", "estimand_version",
-        "metric_id", "target_mcse",
+        "metric", "target_mcse",
     }
     if not isinstance(targets, list) or not targets:
         raise PackageVerificationError("calibration metric_targets must be a nonempty declared list")
@@ -1864,14 +1864,14 @@ def _reconcile_calibration_manifest(
         sid = target.get("scenario_id")
         if (sid not in scenario_versions or target.get("scenario_version") != scenario_versions[sid]
                 or not all(isinstance(target.get(field), str) and target[field].strip()
-                           for field in ("estimand_id", "estimand_version", "metric_id"))
+                           for field in ("estimand_id", "estimand_version", "metric"))
                 or isinstance(target.get("target_mcse"), bool)
                 or not isinstance(target.get("target_mcse"), (int, float))
                 or not math.isfinite(float(target["target_mcse"])) or target["target_mcse"] <= 0):
             raise PackageVerificationError(f"calibration metric target {index} identity/value is invalid")
         target_key = (
             sid, target["scenario_version"], target["estimand_id"],
-            target["estimand_version"], target["metric_id"],
+            target["estimand_version"], target["metric"],
         )
         if target_key in target_keys:
             raise PackageVerificationError("calibration metric_targets contain duplicate identities")
