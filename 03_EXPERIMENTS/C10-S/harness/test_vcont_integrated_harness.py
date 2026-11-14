@@ -920,5 +920,15 @@ class RunEvidenceBundleCaptureTests(unittest.TestCase):
         self.assertEqual(bundle.sealed_evidence_legacy_sha256, sealed.sha256)
         self.assertEqual(bundle.validation_status, "STRUCTURALLY_VALID")
 
+        from vcont_evidence_export import FrozenSnapshot
+        from vcont_integrated_harness import RepeatedAssignmentReport
+        repeated_report = RepeatedAssignmentReport(
+            world_id=manifest.world_id, replicate_count=1, mean_run_estimate=None,
+            mechanism_truth=0.0, marginal_abs_error=None, marginal_recovered=None,
+            per_run_reports=(report,),
+        )
+        restored_repeated = FrozenSnapshot.capture(repeated_report).restore(RepeatedAssignmentReport)
+        self.assertEqual(restored_repeated.per_run_reports, (report,))
+
 if __name__ == "__main__":
     unittest.main()
