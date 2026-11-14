@@ -179,3 +179,18 @@ Gate 186 final source-shape correction: capture identity validates `scenario_ver
 The report projection now checks exact nested field allowlists and cardinalities: 13 scenario reports, 52 ordered pair rows with M contributions, 13×M×(1+R) temporal rows, M per-outer records and R repeated reports. A complete structural fixture and adversarial tests were added but not executed.
 
 Residual contract blocker: scenario report per-outer RUN tuples retain `TruthBundle.seed` and `RunManifest.world_seed/z_assignment_seed/g_assignment_seed`; these four uint64 paths are absent from Gate 181's frozen pointer registry. Full FrozenReportSnapshot v2.0.0 JCS conformance remains conditional until Gate 188 resolves a versioned contract amendment. See Gate 187.
+
+### Gate 188 — FrozenReportSnapshot v2.1.0 successor contract
+
+Gate 188 resolves the four unregistered seed occurrences in the complete Evaluator report by defining FrozenReportSnapshot v2.1.0. It preserves the complete `scenario_reports` RUN tuple and leaves Gate 181 / FrozenReportSnapshot v2.0.0 and Gate 164 v1.0.0 frozen.
+
+The source audit distinguishes the values rather than treating all four as world-seed aliases: `TruthBundle.seed` is populated from `ScenarioConfig.seed` and is checked against the retained `MatrixTruthProjection.seed`; it is not equated to `SeedAssignment.world_seed`. The other three nested values are the RUN `RunManifest` streams and must reconcile one-to-one with the evaluation SeedAssignment, explicit ScenarioConfig streams, RunManifest snapshot and outer-world key as applicable.
+
+The new schema registers exactly:
+- `/scenario_reports/*/per_outer_replicate/*/run/0/seed`;
+- `/scenario_reports/*/per_outer_replicate/*/run/3/world_seed`;
+- `/scenario_reports/*/per_outer_replicate/*/run/3/z_assignment_seed`;
+- `/scenario_reports/*/per_outer_replicate/*/run/3/g_assignment_seed`.
+
+Gate 188 defines exact source equality, RUN join keys, uint64 wrapper grammar, fail-closed behavior, digest/fingerprint separation, compatibility and regression requirements. It is a contract decision only: no source implementation, tests, compilation, CI, producer, seed, calibration, package or scientific execution occurred. The manual pure-capture workflow remains undispatched. Full contract: `00_GOVERNANCE/SIP/C10_S_VCONT_FROZEN_REPORT_SNAPSHOT_V2_1_SUCCESSOR_CONTRACT_GATE_188_DRAFT_001.md`.
+
