@@ -760,6 +760,13 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
                     "z_assignment_seed", "g_assignment_seed"}
         if set(row) != required or row["bank"] != "evaluation":
             raise PackageVerificationError("evaluation SeedAssignment row field/bank mismatch")
+        if (not isinstance(row["scenario_id"], str) or not row["scenario_id"]
+                or not isinstance(row["scenario_version"], str) or not row["scenario_version"]
+                or isinstance(row["n_units"], bool) or not isinstance(row["n_units"], int) or row["n_units"] < 1
+                or isinstance(row["replicate"], bool) or not isinstance(row["replicate"], int)
+                or not isinstance(row["outer_replicate_id"], str) or not row["outer_replicate_id"]
+                or row["assignment_role"] not in ("RUN", "REPEATED_ASSIGNMENT")):
+            raise PackageVerificationError("evaluation SeedAssignment identity field types are invalid")
         key = (row["scenario_id"], row["scenario_version"], row["n_units"],
                row["outer_replicate_id"], row["assignment_role"], row["replicate"])
         if key in assignment_map:
@@ -772,6 +779,15 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
                     "world_seed", "z_assignment_seed", "g_assignment_seed"}
         if set(row) != required:
             raise PackageVerificationError("temporal RunManifest projection field allowlist mismatch")
+        if (not isinstance(row["scenario_id"], str) or not row["scenario_id"]
+                or not isinstance(row["scenario_version"], str) or not row["scenario_version"]
+                or isinstance(row["N"], bool) or not isinstance(row["N"], int) or row["N"] < 1
+                or not isinstance(row["outer_replicate_id"], str) or not row["outer_replicate_id"]
+                or row["assignment_role"] not in ("RUN", "REPEATED_ASSIGNMENT")
+                or isinstance(row["assignment_index"], bool) or not isinstance(row["assignment_index"], int)
+                or not isinstance(row["run_id"], str) or not row["run_id"]
+                or not isinstance(row["world_id"], str) or not row["world_id"]):
+            raise PackageVerificationError("temporal RunManifest identity field types are invalid")
         key = (row["scenario_id"], row["scenario_version"], row["N"],
                row["outer_replicate_id"], row["assignment_role"], row["assignment_index"])
         if key in temporal_map:
@@ -849,6 +865,16 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
         contract = decoded["analysis_contract"]
         analyzer = decoded["analyzer_result"]
         evaluation = decoded["evaluation_report"]
+        if (not isinstance(assignment["scenario_id"], str) or not assignment["scenario_id"]
+                or not isinstance(assignment["scenario_version"], str) or not assignment["scenario_version"]
+                or isinstance(assignment["n_units"], bool) or not isinstance(assignment["n_units"], int)
+                or isinstance(assignment["replicate"], bool) or not isinstance(assignment["replicate"], int)
+                or not isinstance(assignment["outer_replicate_id"], str)
+                or not isinstance(config["n_units"], int) or isinstance(config["n_units"], bool)
+                or not isinstance(config["assignment_index"], int) or isinstance(config["assignment_index"], bool)
+                or not isinstance(manifest["n_units"], int) or isinstance(manifest["n_units"], bool)
+                or not isinstance(manifest["assignment_index"], int) or isinstance(manifest["assignment_index"], bool)):
+            raise PackageVerificationError("snapshot assignment/config/manifest identity field types are invalid")
         identity = (assignment["scenario_id"], assignment["scenario_version"], assignment["n_units"],
                     assignment["outer_replicate_id"], assignment["assignment_role"],
                     assignment["replicate"])
@@ -1007,6 +1033,13 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
             "world_id", "world_version", "world_seed",
         }:
             raise PackageVerificationError("outer-world key field allowlist mismatch")
+        if (not isinstance(key["scenario_id"], str) or not key["scenario_id"]
+                or not isinstance(key["scenario_version"], str) or not key["scenario_version"]
+                or isinstance(key["N"], bool) or not isinstance(key["N"], int) or key["N"] < 1
+                or not isinstance(key["outer_replicate_id"], str) or not key["outer_replicate_id"]
+                or not isinstance(key["world_id"], str) or not key["world_id"]
+                or not isinstance(key["world_version"], str) or not key["world_version"]):
+            raise PackageVerificationError("outer-world key identity field types are invalid")
         world_seed = _uint64(key["world_seed"], f"outer_world_evidence_records[{index}].key.world_seed")
         outer_key = (key["scenario_id"], key["scenario_version"], key["N"],
                      key["outer_replicate_id"], key["world_id"])
