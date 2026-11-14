@@ -100,3 +100,13 @@ Do not label the output provenance-authenticated or independently reproducible u
 ## 8. Next operation — Gate 173
 
 Audit the benchmark-wide source boundary and package readiness without executing it. Verify that the driver truly invokes the benchmark evaluator once, that all evidence bundles are co-addressable with the 52-pair ledger and temporal manifest, that the envelope can be serialized without lossy reconstruction, and that report fingerprint versus evidence-package digest are distinct and non-circular. Then specify the minimal canonical benchmark package schema and capture manifest, preserving the legacy report fingerprint and SealedEvidence digest semantics. Keep Gate 159 authentication gaps explicit; do not sign or claim authentication until a trusted builder and attestation workflow exist.
+
+## 9. Gate 173 — package-readiness qualification
+
+Gate 173 confirms statically that the `CapturedBenchmark` source envelope contains the Gate 166 run snapshots, inline SealedEvidence rows+manifest, exact per-run reports, one repeated aggregate per scenario/M, the evaluator report and scenario/M/world index. This resolves Gate 165's source-capture absence at the orchestration boundary; it does not make the reduced report independently sufficient.
+
+The Gate 164 archive can retain its exact path inventory. `runs/run_records.json` is to be serialized as a versioned envelope containing all RUN/R RunEvidenceRecords and all OuterWorldEvidenceBundles, with explicit order, cardinalities and join keys. The exact matrix used by the evaluator must also be retained as its own Gate 164 design file.
+
+No package serialization exists yet. FrozenSnapshot's tagged JSON bytes, SealedEvidence's legacy digest and the evaluator's report fingerprint are separate legacy/source integrity layers, not JCS. A package adapter must round-trip snapshots and recompute legacy SealedEvidence digests before computing separate JCS file/manifest/archive digests.
+
+Gate 159, calibration manifest, GitHub-resolved workflow/source/artifact metadata, JCS/tar writer and independent verifier remain open. No tests, package build or benchmark was executed. See Gate 173.
