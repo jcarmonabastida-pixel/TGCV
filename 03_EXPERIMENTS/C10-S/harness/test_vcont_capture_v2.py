@@ -318,15 +318,14 @@ class CaptureV2Tests(unittest.TestCase):
 
         def make_bundle(role, index, run_id, z_seed, g_seed):
             config = replace(
-                base, seed=1000, world_seed=None,
-                z_assignment_seed=None if role == "RUN" else z_seed,
-                g_assignment_seed=None if role == "RUN" else g_seed,
+                base, seed=1000, world_seed=1000,
+                z_assignment_seed=z_seed, g_assignment_seed=g_seed,
                 replicate_id="replicate-000", outer_replicate_id=outer_id,
                 assignment_role=role, assignment_index=index,
             )
             world_seed = config.seed
-            effective_z = config.seed + 100003 if config.z_assignment_seed is None else config.z_assignment_seed
-            effective_g = config.seed + 200003 if config.g_assignment_seed is None else config.g_assignment_seed
+            effective_z = config.z_assignment_seed
+            effective_g = config.g_assignment_seed
             assignment = SeedAssignment(
                 "evaluation", scenario_id, n_units, index, world_seed,
                 effective_z, effective_g, version, outer_id, role,
