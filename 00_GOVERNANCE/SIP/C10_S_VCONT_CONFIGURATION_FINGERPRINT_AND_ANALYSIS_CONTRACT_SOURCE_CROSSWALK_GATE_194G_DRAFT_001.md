@@ -87,7 +87,7 @@ reference_regime_estimand_id, reference_regime_estimand_version,
 g_assignment_estimand_id, g_assignment_estimand_version
 ```
 
-Source annotations distinguish booleans, non-null strings and nullable strings. In particular, the transportability ID/version/scope/outcome/basis fields are nullable; the remaining fields have non-null source types. The exact field types/defaults must be taken from the dataclass, not inferred from snapshot examples.
+Source annotations distinguish booleans, non-null strings and nullable strings. In particular, the transportability ID/version/scope/outcome/basis fields are nullable; the remaining fields have non-null source types. The source type partition is: **9 booleans** (`randomized_z`, `randomized_g`, `positivity`, `no_interference`, `measurement_identified`, `version_consistency`, `focal_direct_path_absent`, `common_nonfocal_regime`, `z_effect_invariant_across_g`), **non-null strings** for all identity/version/hash/status/mechanism/basis fields other than the nullable set, and **5 nullable strings** (`transportability_id`, `transportability_version`, `transportability_scope`, `transportability_outcome_id`, `transportability_basis`). The source annotations are authoritative; the exact field names and types are captured in the decoder registry. Note: the boolean list comprises nine fields, not ten.
 
 `contract_for(cfg)` constructs the contract from `ScenarioConfig`. It does not accept a SeedAssignment, RunManifest, RUN/R role, assignment index or run ID. The resulting AnalysisContract is therefore scenario/config-scoped, not run-scoped. The Analyzer class exposes only `version = "c10s-vcont-analyzer-0.1"` and `analyze(evidence, contract)`; no separate Analyzer configuration object or mutable configuration state was found. The accepted Gate 194-F interpretation of Analyzer.version plus AnalysisContract as the current effective Analyzer configuration is source-compatible.
 
@@ -171,7 +171,7 @@ This is the actual unresolved gap Gate 194-F is intended to close. No writer/ver
 | Companion exact root/row schemas | NOT_VERIFIABLE | Writer accepts mappings; verifier does not consume these two schemas |
 | Exact-once 28-component aggregate consumption | NOT_VERIFIABLE in current implementation | New verifier obligation |
 | Calibration outside evaluation aggregate | MATCH as separation principle | Gate 181 and separate calibration manifest/disjointness |
-| RFC 8785 implementation use | MATCH at source call sites | `rfc8785.dumps` used; dependency pin/lock must be independently checked before implementation |
+| RFC 8785 implementation use | MATCH | `rfc8785.dumps` is used in the source; `requirements-vcont-v2.lock` pins `rfc8785==0.1.4` with the exact Gate 178 wheel SHA-256 `520d690b448ecf0703691c76e1a34a24ddcd4fc5bc41d589cb7c58ec651bcd48` (lock blob `3b49087a242d14e3bc30f8d56e00b4f8d213a51c`) |
 | External authentication | NOT_VERIFIABLE / NOT_AUTHENTICATED | Explicitly absent from current verifier |
 
 ## 5. Required amendments to Gate 194-F before schema freeze
@@ -182,7 +182,7 @@ This is the actual unresolved gap Gate 194-F is intended to close. No writer/ver
 4. Include the exact 37 AnalysisContract field names, types and nullability in the schema registry or a versioned registry reference; preserve all source defaults and explicit nulls.
 5. Name the new AnalysisContract semantic JCS digest and aggregate design fingerprint as newly introduced algorithms, not historical source algorithms.
 6. Freeze exact root/row schemas, canonical ordering, source references, benchmark_export_id joins and exact-once consumption for both companion files.
-7. Confirm the pinned RFC 8785 dependency in the lock file and retain the Gate 178/181 source pin. This is a static dependency inspection; do not install or execute anything.
+7. Retain the verified RFC 8785 dependency pin: `rfc8785==0.1.4`, wheel SHA-256 `520d690b448ecf0703691c76e1a34a24ddcd4fc5bc41d589cb7c58ec651bcd48`, in `requirements-vcont-v2.lock`. No installation or execution is required.
 
 No source contract should be changed merely to fit the proposed companion schema. If any proposed field mapping cannot be grounded, retain NOT_VERIFIABLE and stop before implementation.
 
