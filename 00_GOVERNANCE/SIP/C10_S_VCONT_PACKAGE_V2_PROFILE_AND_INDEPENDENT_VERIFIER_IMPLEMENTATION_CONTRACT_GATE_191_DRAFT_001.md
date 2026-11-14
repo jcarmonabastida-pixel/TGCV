@@ -240,4 +240,8 @@ Preflight the manual pure workflow against the exact future package module/test 
 Gate 192 partially implements the pure file/TAR writer in `03_EXPERIMENTS/C10-S/harness/vcont_package_v2.py`, with seven deterministic pure tests and an expanded explicit manual workflow allowlist. The writer uses the locked RFC 8785 dependency, preserves the 14-path inventory, requires all eleven materialized companion payloads, recomputes capture identity, and constructs normalized deterministic USTAR bytes. It does not import or invoke producer classes/functions.
 
 This is not complete package conformance: field-level companion schemas and all semantic joins are not yet fully validated by the writer; the independent verifier remains absent. No tests, compilation or workflow were executed. See Gate 192.
+## Gate 193 implementation addendum
 
+Gate 193 adds the separate `vcont_package_v2_verify.py` structural verifier and 12 deterministic pure test methods. The verifier independently checks strict JSON/JCS, duplicate keys, exact inventory, canonical TAR bytes, manifest/file digests, report v2.1/fingerprint/duplicate views, MatrixCapture digest and registered uint64 wrappers. It returns `PARTIAL` schema and `NOT_VERIFIED` identity/provenance/test statuses; authentication remains `NOT_AUTHENTICATED`.
+
+Gate 193 also records and corrects three writer source defects discovered by comparing it with the canonical identity and MatrixCapture constructors. Full companion schema validation, opaque snapshot decoding, semantic RUN/R joins, Gate159/calibration derivation, GitHub provenance/test-evidence binding and attestation verification remain open. No tests, compilation or workflow were executed. See Gate 193.
