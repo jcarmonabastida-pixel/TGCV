@@ -486,6 +486,13 @@ def _legacy_seed_bank_fingerprint_from_wire_rows(rows: Any, design: Any) -> str:
     for row in rows:
         if not isinstance(row, Mapping) or set(row) != required or row.get("bank") != "evaluation":
             raise PackageBuildError("historical seed-bank fingerprint row field/bank mismatch")
+        if (not isinstance(row["scenario_id"], str) or not row["scenario_id"]
+                or not isinstance(row["scenario_version"], str) or not row["scenario_version"]
+                or isinstance(row["n_units"], bool) or not isinstance(row["n_units"], int) or row["n_units"] < 1
+                or isinstance(row["replicate"], bool) or not isinstance(row["replicate"], int)
+                or not isinstance(row["outer_replicate_id"], str) or not row["outer_replicate_id"]
+                or row["assignment_role"] not in ("RUN", "REPEATED_ASSIGNMENT")):
+            raise PackageBuildError("historical seed-bank fingerprint identity field types are invalid")
         observed_order.append((
             row["scenario_id"], row["scenario_version"], row["n_units"],
             row["outer_replicate_id"], row["assignment_role"], row["replicate"],
