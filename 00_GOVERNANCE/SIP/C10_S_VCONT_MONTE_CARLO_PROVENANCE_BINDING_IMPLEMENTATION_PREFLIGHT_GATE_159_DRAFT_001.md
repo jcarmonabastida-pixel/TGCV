@@ -250,12 +250,12 @@ Until that trust root and verifier exist, the maximum legitimate package status 
 
 The calibration and Gate159 companion schemas were recovered from Gate 178 §§6–8 and cross-checked against Gates 179/181 and the current package writer/verifier. This section records the normative requirements and the exact current implementation boundary.
 
-### 10.1 CalibrationBankManifest v2.0.0
+### 10.1 CalibrationBankManifest v1.0.0
 
-The v2 envelope retains the Gate 178 exact logical fields, with the Gate 179/181 versioned uint64 wire projection:
+The v2 envelope retains the Gate 178 exact v1.0.0 logical envelope and rows, with the Gate 179/181 versioned uint64 wire projection:
 
 - `schema_id = TGCV-C10S-VCONT-CALIBRATION-BANK-MANIFEST`;
-- `schema_version = 2.0.0`;
+- `schema_version = 1.0.0`;
 - `bank = calibration`;
 - non-empty `namespace`;
 - exact `seed_derivation` descriptor: algorithm `TGCV-C10S-VCONT-SEED-v3`, hash `SHA-256`, output rule `first_8_digest_bytes_unsigned_big_endian`;
