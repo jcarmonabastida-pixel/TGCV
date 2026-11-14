@@ -388,3 +388,9 @@ Gate 182 should translate this closed source-to-wire contract into a bounded imp
 - explicit non-goals preserving Generator/Sealer/Analyzer/Evaluator semantics.
 
 After static reconciliation of that implementation contract, implementation and test execution require their governed authorization. No scientific execution is implied.
+
+## 10. Gate 182 — implementation contract
+
+Gate 182 translates the Gate 181 projections into a bounded implementation contract. It preserves the three existing CapturedBenchmark fields and adds trailing optional MatrixCapture, FrozenReportSnapshot and capture_id fields. The producer must capture the exact canonical matrix tuple before Evaluator and freeze the report immediately after Evaluator returns. The v2 writer and independent verifier are separate modules and must not invoke Generator/Sealer/Analyzer/Evaluator.
+
+Gate 182 explicitly versions the envelope migration: Gate 174 RUN-EXPORT-ENVELOPE v1.0.0 retains design-derived benchmark_export_id; v2.0.0 uses benchmark_export_id=capture_id. It also requires a pinned RFC 8785 dependency before serializer implementation. Full API, module boundaries, compatibility, test plan and acceptance criteria are in Gate 182. Implementation remains NOT IMPLEMENTED; no tests or scientific execution occurred.
