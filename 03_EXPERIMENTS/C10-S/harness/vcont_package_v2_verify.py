@@ -1063,7 +1063,8 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
         )
         if (repeated_report["world_id"] != key["world_id"]
                 or repeated_report["replicate_count"] != R
-                or tuple(repeated_report["per_run_reports"]) != repeated_evaluations):            raise PackageVerificationError("RepeatedAssignmentReport does not match exact ordered R evaluation reports")
+                or tuple(repeated_report["per_run_reports"]) != repeated_evaluations):
+            raise PackageVerificationError("RepeatedAssignmentReport does not match exact ordered R evaluation reports")
         outer_map[outer_key] = {
             "run_key": run_key, "repeated_keys": tuple(expected_repeated),
             "world_seed": world_seed, "world_id": key["world_id"],
@@ -1188,14 +1189,8 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
                     raise PackageVerificationError(f"report RUN {label} differs from captured snapshot")
             if row.get("run_report") != _snapshot_report_projection(decoded["evaluation_report"]):
                 raise PackageVerificationError("report RUN evaluation summary differs from EvaluationReport snapshot")
-            repeated_reports = [
-                _snapshot_source_value(decoded_by_key[key]["evaluation_report"])
-                for key in outer["repeated_keys"]
-            ]
             if row.get("repeated_report") != _snapshot_report_projection(outer["repeated_report"]):
                 raise PackageVerificationError("report repeated aggregate differs from RepeatedAssignmentReport snapshot")
-            if len(repeated_reports) != R:
-                raise PackageVerificationError("repeated report source cardinality differs from R")
 
     # Evidence index is an exact, ordered one-to-one projection of outer-world keys.
     evidence_index = run_file["evidence_index"]
