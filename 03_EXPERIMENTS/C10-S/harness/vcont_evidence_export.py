@@ -197,12 +197,14 @@ class RunEvidenceBundle:
             effective_world_seed, effective_z_seed, effective_g_seed
         ):
             raise ContractError("SeedAssignment seeds do not match effective ScenarioConfig streams")
+        if len({assignment.world_seed, assignment.z_assignment_seed, assignment.g_assignment_seed}) != 3:
+            raise ContractError("world, Z and G streams must have distinct seeds within an assignment")
         if (run_manifest.world_seed, run_manifest.z_assignment_seed, run_manifest.g_assignment_seed) != (
             assignment.world_seed, assignment.z_assignment_seed, assignment.g_assignment_seed
         ):
             raise ContractError("SeedAssignment seeds do not match RunManifest")
-        if run_manifest.replicate_id != config.replicate_id:
-            raise ContractError("RunManifest replicate_id does not match ScenarioConfig")
+        if run_manifest.replicate_id != config.replicate_id or run_manifest.world_version != config.version:
+            raise ContractError("RunManifest replicate/world version does not match ScenarioConfig")
         expected_window_end = config.last_transition_support + config.follow_up
         expected_interval_width = (expected_window_end - config.window_start) / config.n_intervals
         if (run_manifest.n_intervals != config.n_intervals
