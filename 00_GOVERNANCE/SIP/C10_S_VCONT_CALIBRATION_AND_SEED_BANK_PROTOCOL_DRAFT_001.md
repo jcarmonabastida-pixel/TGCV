@@ -572,3 +572,11 @@ Gate 178 freezes the exact MatrixCapture v1.0.0 row schema and SCENARIO_IDS × E
 The JCS Python implementation candidate is `rfc8785==0.1.4`, subject to later dependency pinning and independent conformance vectors. Gate 178 finds a Gate 164 v1.0.0 compatibility blocker: seed derivation yields uint64 integers, but ordinary JCS numeric representation cannot guarantee exactness above 2^53-1 and the frozen package contract disallows numeric-to-string coercion. A versioned exact uint64 wire representation must be approved before packager implementation. Gate 164 v1.0.0 is not silently modified.
 
 Gate 178 is documentary only. No code, tests, CI, seed generation, calibration, package, benchmark or scientific execution occurred. Full contract: `C10_S_VCONT_CAPTURE_EXPORT_SERIALIZATION_AND_COMPANION_SCHEMAS_GATE_178_DRAFT_001.md`.
+
+## 38. Gate 179 — uint64 package wire projection
+
+The source seed derivation remains unchanged: `_derive_seed()` returns the unsigned integer represented by the first eight SHA-256 digest bytes. SeedAssignment continues to retain integer values; no seed is regenerated, transformed or relabelled by Gate 179.
+
+For Gate 164 package v2.0.0 JCS payloads, each direct seed field is projected as the exact typed object `{"$type":"uint64","decimal":"<canonical unsigned decimal>"}`, range 0…18446744073709551615. The exact affected fields and five JSON paths are enumerated in Gate 179 §3. Historical seed-bank fingerprints are recomputed from the original typed SeedAssignment rows before projection. FrozenSnapshot canonical bytes remain opaque and byte-preserved.
+
+Gate 164 v1.0.0 remains frozen; package v2.0.0 is the successor draft. No code, tests, seed generation, calibration, package, benchmark or scientific execution occurred. Full contract: `C10_S_VCONT_PACKAGE_UINT64_WIRE_FORMAT_DECISION_AND_V2_CROSSWALK_GATE_179_DRAFT_001.md`.
