@@ -2003,6 +2003,13 @@ def _reconcile_configuration_companions(
     for assignment_index, row in enumerate(assignment_rows):
         if not isinstance(row, dict) or set(row) != legacy_seed_fields or row.get("bank") != "evaluation":
             raise PackageVerificationError("historical seed-bank source row field/bank mismatch")
+        if (not isinstance(row["scenario_id"], str) or not row["scenario_id"]
+                or not isinstance(row["scenario_version"], str) or not row["scenario_version"]
+                or isinstance(row["n_units"], bool) or not isinstance(row["n_units"], int) or row["n_units"] < 1
+                or isinstance(row["replicate"], bool) or not isinstance(row["replicate"], int)
+                or not isinstance(row["outer_replicate_id"], str) or not row["outer_replicate_id"]
+                or row["assignment_role"] not in ("RUN", "REPEATED_ASSIGNMENT")):
+            raise PackageVerificationError("historical seed-bank source identity field types are invalid")
         observed_assignment_order.append((
             row["scenario_id"], row["scenario_version"], row["n_units"],
             row["outer_replicate_id"], row["assignment_role"], row["replicate"],
