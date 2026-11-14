@@ -138,6 +138,12 @@ class CaptureV2Tests(unittest.TestCase):
     def test_report_snapshot_rejects_root_nested_manifest_disagreement(self):
         report = self.report_fixture()
         report["manifest"]["temporal_manifest"][0]["world_seed"] = 1
+        normalized = json.loads(json.dumps(
+            report["manifest"], default=lambda value: value.__dict__, sort_keys=True
+        ))
+        report["report_fingerprint"] = hashlib.sha256(json.dumps(
+            normalized, sort_keys=True, separators=(",", ":"), allow_nan=False
+        ).encode("utf-8")).hexdigest()
         with self.assertRaises(ContractError):
             freeze_report_snapshot(report)
 
@@ -151,6 +157,14 @@ class CaptureV2Tests(unittest.TestCase):
     def test_report_snapshot_rejects_non_uint64_seed_and_unknown_top_level_field(self):
         report = self.report_fixture()
         report["temporal_manifest"][0]["world_seed"] = -1
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report)
+        report = self.report_fixture()
+        report["temporal_manifest"][0]["z_assignment_seed"] = 1 << 64
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report)
+        report = self.report_fixture()
+        report["temporal_manifest"][0]["g_assignment_seed"] = True
         with self.assertRaises(ContractError):
             freeze_report_snapshot(report)
         report = self.report_fixture()
