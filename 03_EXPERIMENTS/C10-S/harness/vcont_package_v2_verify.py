@@ -2699,7 +2699,8 @@ def verify_package_v2(
     # governed attestation verifier and trusted signer configuration are absent.
     limitations = (
         "RUN/R snapshots, assignments, temporal rows, outer-world records, report tuples, pair contributions, AnalysisContract applicability, 13/26 companion rows and all 28 configuration fingerprints were reconciled independently.",
-        "Calibration design/cardinality/order, typed legacy fingerprint, JCS manifest digest and cross-bank three-stream disjointness are independently checked; Gate159 check registry and derived status are independently recomputed.",
+        "Calibration design/cardinality/order, typed legacy fingerprint, JCS manifest digest and cross-bank three-stream disjointness are independently checked.",
+        f"Gate159 nested schema, check registry, derived status and findings digest are independently validated; derived_status={gate159_derived_status}.",
         "Source-execution metadata has not been independently resolved against GitHub.",
         "Technical-test evidence has not been independently bound to a trusted workflow run/artifact.",
         "External attestation/signature verification is not implemented; package is NOT_AUTHENTICATED.",
