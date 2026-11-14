@@ -305,3 +305,11 @@ The package's `design/scenario_estimand_matrix.json` must be populated from the 
 The current `CapturedBenchmark.report` is a mutable dict despite the frozen outer dataclass. Gate 176 requires a capture-time immutable report snapshot/digest as the authoritative package payload; the existing report field remains a compatibility view.
 
 The calibration manifest, Gate 159 reconciliation, GitHub source-execution provenance and technical-test evidence are separately supplied companion artifacts joined by benchmark_export_id. They are not derived from evaluation-bank assignments or design-declared fingerprints. Missing companions block Gate 164 CONFIRMATORY acceptance. See Gate 176. No implementation or execution occurred.
+
+## 19. Gate 177 — package-input implementation readiness
+
+Gate 177 identifies that the current producer validates 52 unique matrix keys but does not enforce canonical matrix row order; the legacy fingerprint sorts rows and omits `tolerance_id`. MatrixCapture must reject noncanonical input order and validate exact field/value types before computing its full digest.
+
+The report root is a mutable dict. Existing FrozenSnapshot capture only accepts dataclasses, and its generic JSON encoding is not JCS. Gate 164's report package input therefore requires a separate typed FrozenReportSnapshot with explicit schema, pinned RFC 8785 implementation/version, canonical bytes and strict decoding.
+
+Preserve existing CapturedBenchmark report/bundle/index compatibility. The capture/export identity must be content-derived and non-circular; Gate 177 proposes `benchmark_export_id = capture_id` from a canonical identity payload that excludes companion artifacts. Exact calibration and Gate 159 companion row schemas and cardinality/denominator rules remain to be frozen. See Gate 177. No implementation or tests occurred.
