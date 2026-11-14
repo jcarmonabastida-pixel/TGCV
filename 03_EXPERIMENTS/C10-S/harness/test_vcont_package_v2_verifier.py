@@ -117,15 +117,14 @@ class IndependentVerifierPrimitiveTests(unittest.TestCase):
             for _ in range(52)
         ]
         manifest = {
-            "scenario_versions": [[f"S{i:02d}", "v1"] for i in range(13)],
+            "scenario_versions": [[sid, "v1"] for sid in AUTHORITATIVE_SCENARIO_IDS],
             "N": 1, "M": 2, "R": 1,
             "temporal_manifest": temporal,
             "pair_ledger": pair_ledger,
         }
         fingerprint = _historical_fingerprint(manifest)
         scenario_reports = {}
-        for i in range(13):
-            sid = f"S{i:02d}"
+        for sid in AUTHORITATIVE_SCENARIO_IDS:
             scenario_reports[sid] = {
                 "scenario_id": sid,
                 "per_outer_replicate": [
@@ -193,11 +192,12 @@ class IndependentVerifierPrimitiveTests(unittest.TestCase):
                 },
                 "pair_ledger": [{"contributions": [{"world_seed": wrapper}]}],
                 "scenario_reports": {
-                    "S": {"per_outer_replicate": [{"run": [
+                    scenario_id: {"per_outer_replicate": [{"run": [
                         {"seed": wrapper}, {}, {}, {
                             "world_seed": wrapper, "z_assignment_seed": wrapper, "g_assignment_seed": wrapper,
                         }
                     ]}]}
+                    for scenario_id in AUTHORITATIVE_SCENARIO_IDS
                 },
             }},
             "runs/run_records.json": {"outer_world_evidence_records": [{"key": {"world_seed": wrapper}}]},
