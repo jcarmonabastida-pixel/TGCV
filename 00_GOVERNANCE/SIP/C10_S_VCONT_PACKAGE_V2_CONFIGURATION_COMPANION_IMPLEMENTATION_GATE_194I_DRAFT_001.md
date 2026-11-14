@@ -149,7 +149,7 @@ That gap is now closed in both writer and independent verifier:
 - the result is compared with `seed_bank_fingerprint_legacy` in the evaluation assignment envelope, the historical `seed_bank_fingerprint` in the source design object, and the corresponding `design/benchmark_design.json` declaration;
 - calibration remains separate and is not mixed into the evaluation bank or the 28-component aggregate.
 
-Three additional tests were added for writer parity, historical fingerprint mismatch and reordered evaluation rows. The Gate 194-I companion test set now contains **18 authored tests**, all still unexecuted.
+Three additional tests were added for writer parity, historical fingerprint mismatch and reordered evaluation rows. The Gate 194-I companion test set contains **18 authored tests**, all included in the passing 92-test pure suite.
 
 **Updated disposition:** IMPLEMENTED / CONDITIONAL — pure test suite PASS (92/92); no real package generated or verified. This closes the historical seed-bank digest check at source-code level and provides regression evidence for the pure writer/verifier path.
 
@@ -175,7 +175,7 @@ The current comparison reports the research branch as diverged from `main` (32 c
 
 The pure-test workflow is restored to manual-only (`workflow_dispatch`). The bounded test run did not execute package generation, calibration or scientific execution.
 
-**Next operation requiring separate authorization:** dispatch the existing pure-test workflow for the 18 new companion cases and the pre-existing verifier regression suite. A test-workflow PASS would still not authorize package generation or scientific execution.
+**Next operation requiring separate authorization:** any real-package construction and independent verification. The pure-test workflow has already passed; that result does not authorize package generation or scientific execution.
 
 ### 9.1 Residual seed-derivation metadata boundary
 
