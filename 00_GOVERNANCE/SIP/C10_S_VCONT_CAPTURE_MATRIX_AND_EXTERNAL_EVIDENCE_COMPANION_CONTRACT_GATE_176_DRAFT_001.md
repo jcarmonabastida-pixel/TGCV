@@ -182,3 +182,9 @@ Preserve the three current `CapturedBenchmark` fields and their report/bundle/in
 Gate 176's `capture_id` and `benchmark_export_id` need a non-circular deterministic derivation. Gate 177 proposes one content digest with `benchmark_export_id = capture_id`, excluding external companion artifacts. Calibration and Gate 159 companion descriptions also require exact row schemas, cardinalities, denominators and applicability rules.
 
 See `C10_S_VCONT_CAPTURE_EXPORT_IMPLEMENTABILITY_AUDIT_GATE_177_DRAFT_001.md`. Gate 176 remains DEFINED / QUALIFIED; implementation remains OPEN. No code or tests were changed/executed.
+
+## 8. Gate 178 — schema closure and serialization qualification
+
+Gate 178 specifies the exact MatrixCapture row field set/value domains and positional order (SCENARIO_IDS × ESTIMAND_SPECS), the full-matrix JCS digest input, the FrozenReportSnapshot payload, deterministic non-circular capture identity, CalibrationBankManifest, Gate159ReconciliationArtifact, SourceExecutionEvidence, TechnicalTestEvidence and strict decoder requirements. The legacy matrix fingerprint and legacy report fingerprint remain unchanged and separately verified.
+
+Gate 178 also identifies a blocker not resolved by Gate 176: the seed derivation produces uint64 integers, while the Gate 164 JCS package contract does not define an exact uint64 wire encoding and prohibits bare numeric-to-string coercion. No package implementation may proceed until this is resolved through an explicit versioned schema decision. Full crosswalk: `C10_S_VCONT_CAPTURE_EXPORT_SERIALIZATION_AND_COMPANION_SCHEMAS_GATE_178_DRAFT_001.md`.
