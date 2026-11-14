@@ -1,9 +1,10 @@
 """Pure V_cont package-v2 file canonicalizer and deterministic TAR writer.
 
-This module accepts already materialized evidence payloads. It never invokes
-Generator, Sealer, Analyzer, Evaluator, producers, seed generation or calibration.
-It does not independently validate scientific/provenance joins; the verifier is
-a separate implementation and must recompute those claims from archive content.
+This module accepts already materialized evidence payloads and captured
+snapshots. It never invokes Generator, Sealer, Analyzer, Evaluator, producers,
+seed generation or calibration. It assembles only the two Gate 194 configuration
+companions and checks their immediate source bindings; the independent verifier
+separately reconstructs those claims from archive content.
 """
 from __future__ import annotations
 
