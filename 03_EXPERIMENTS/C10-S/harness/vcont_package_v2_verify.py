@@ -2038,6 +2038,8 @@ def _reconcile_configuration_companions(
     legacy_seed_fingerprint = _sha256(
         json.dumps(legacy_seed_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
     )
+    if assignment_file.get("seed_bank_fingerprint_legacy") != legacy_seed_fingerprint:
+        raise PackageVerificationError("evaluation assignment legacy seed-bank fingerprint does not recompute")
     if benchmark_design.get("seed_bank_fingerprint") != legacy_seed_fingerprint:
         raise PackageVerificationError("historical source-typed seed_bank_fingerprint does not recompute")
     if report_design.get("seed_bank_fingerprint") not in (None, legacy_seed_fingerprint):
