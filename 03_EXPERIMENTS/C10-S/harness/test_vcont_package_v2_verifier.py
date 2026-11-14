@@ -1108,6 +1108,18 @@ class ConfigurationCompanionVerifierTests(unittest.TestCase):
         with self.assertRaises(PackageVerificationError):
             _reconcile_configuration_companions(files, report, matrix)
 
+    def test_rejects_repeated_assignment_contract_divergence(self):
+        files, report, matrix = _fixture()
+        ref = files["runs/run_records.json"]["run_evidence_records"][1]["snapshot_refs"]["analysis_contract"]
+        tagged = json.loads(base64.b64decode(ref["canonical_bytes_base64"]).decode("utf-8"))
+        tagged["fields"]["estimand_id"] = "repeated-assignment-contract-drift"
+        raw = json.dumps(tagged, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ref["canonical_bytes_base64"] = base64.b64encode(raw).decode("ascii")
+        ref["sha256"] = hashlib.sha256(raw).hexdigest()
+        files["runs/run_records.json"]["run_evidence_records"][1]["analysis_contract_sha256"] = ref["sha256"]
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_configuration_companions(files, report, matrix)
+
     def test_rejects_dgp_component_digest_drift(self):
         files, report, matrix = _fixture()
         files["provenance/configuration_fingerprints.json"]["components"][0]["digest_sha256"] = "0" * 64
