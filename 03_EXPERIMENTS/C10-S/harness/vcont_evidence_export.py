@@ -110,6 +110,45 @@ def _snapshot_digest(value: Any) -> str:
 
 
 @dataclass(frozen=True)
+class MatrixTruthProjection:
+    """Only the frozen Gate 166 matrix truth fields; no potential-outcome arrays."""
+
+    run_id: str
+    itt_z_run_truth: float | None
+    itt_g_z0_truth: float
+    itt_z_mechanism_truth: float | None
+    itt_z_reference_truth: float | None
+    outer_replicate_id: str
+    assignment_role: str
+    assignment_index: int
+    g_reference_regime_id: str
+    g_reference_regime_version: str
+    g_assignment_mechanism_hash: str
+    z_assignment_mechanism_hash: str
+    seed: int
+    theta_a_truth: float | None
+
+
+def _matrix_truth_projection(truth: TruthBundle) -> MatrixTruthProjection:
+    return MatrixTruthProjection(
+        run_id=truth.run_id,
+        itt_z_run_truth=truth.itt_z_run_truth,
+        itt_g_z0_truth=truth.itt_g_z0_truth,
+        itt_z_mechanism_truth=truth.itt_z_mechanism_truth,
+        itt_z_reference_truth=truth.itt_z_reference_truth,
+        outer_replicate_id=truth.outer_replicate_id,
+        assignment_role=truth.assignment_role,
+        assignment_index=truth.assignment_index,
+        g_reference_regime_id=truth.g_reference_regime_id,
+        g_reference_regime_version=truth.g_reference_regime_version,
+        g_assignment_mechanism_hash=truth.g_assignment_mechanism_hash,
+        z_assignment_mechanism_hash=truth.z_assignment_mechanism_hash,
+        seed=truth.seed,
+        theta_a_truth=truth.theta_a_truth,
+    )
+
+
+@dataclass(frozen=True)
 class RunEvidenceBundle:
     schema_id: str
     schema_version: str
@@ -118,7 +157,7 @@ class RunEvidenceBundle:
     assignment: FrozenSnapshot
     scenario_config: FrozenSnapshot
     run_manifest: FrozenSnapshot
-    truth_bundle: FrozenSnapshot
+    truth_projection: FrozenSnapshot
     evidence_candidate: FrozenSnapshot
     sealed_evidence: FrozenSnapshot
     analysis_contract: FrozenSnapshot
@@ -240,7 +279,7 @@ class RunEvidenceBundle:
         return cls(
             "TGCV-C10S-VCONT-RUN-EVIDENCE-BUNDLE", "1.0.0", key, assignment.bank,
             FrozenSnapshot.capture(assignment), FrozenSnapshot.capture(config),
-            FrozenSnapshot.capture(run_manifest), FrozenSnapshot.capture(truth_bundle),
+            FrozenSnapshot.capture(run_manifest), FrozenSnapshot.capture(_matrix_truth_projection(truth_bundle)),
             FrozenSnapshot.capture(evidence_candidate), FrozenSnapshot.capture(sealed_evidence),
             FrozenSnapshot.capture(analysis_contract), FrozenSnapshot.capture(analyzer_result),
             FrozenSnapshot.capture(evaluation_report), _snapshot_digest(structural),
