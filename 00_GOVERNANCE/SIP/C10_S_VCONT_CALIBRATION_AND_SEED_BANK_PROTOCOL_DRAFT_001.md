@@ -588,3 +588,11 @@ Gate 180 confirms that the evaluator emits the three assignment stream seeds in 
 The source ScenarioConfig also contains a base `seed` plus optional world/Z/G stream seeds. Their presence in the package's effective structural configuration projection has not been established. The exact projection must explicitly classify these fields before the v2 direct-seed registry can be considered complete. No seed algorithm or source SeedAssignment type is changed.
 
 Gate 180 also confirms that MatrixCapture and FrozenReportSnapshot are not yet retained by CapturedBenchmark, and that calibration/Gate159/source/test companions are not producer outputs. See Gate 180. No code, tests, seed generation, calibration, package or scientific execution occurred.
+
+## 40. Gate 181 — exact seed projection and report joins
+
+Gate 181 freezes every direct uint64 occurrence in package v2.0.0, including duplicated report temporal-manifest and pair-ledger contribution fields. The verifier joins every direct value back to the source SeedAssignment/RunManifest/outer-world key and rejects mismatches rather than normalizing them.
+
+Confirmatory ScenarioConfig execution requires explicit world/Z/G stream seeds exactly matching the evaluation SeedAssignment row. The legacy `seed` fallback is forbidden for confirmatory capture. The structural effective-config JSON excludes seed and RUN/R identity fields; complete per-run ScenarioConfig snapshots, including their seed fields, remain opaque and byte-preserved in run_records and are reconciled after supported decoding. The historical seed-bank fingerprints continue to use exact source-typed SeedAssignment rows under their unchanged algorithm, before wire projection.
+
+No seed derivation, generation, calibration, tests, package or scientific execution occurred. Full contract: Gate 181.
