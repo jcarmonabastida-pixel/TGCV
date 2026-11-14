@@ -7,7 +7,7 @@ import json
 import rfc8785
 from types import SimpleNamespace
 from vcont_package_v2 import (
-    COMPANION_PATHS, GENERATED_COMPANION_PATHS,
+    COMPANION_PATHS, GENERATED_COMPANION_PATHS, PackageBuildError,
     _assemble_analysis_contracts_v1,
     _assemble_configuration_fingerprints_v1,
     _legacy_seed_bank_fingerprint_from_wire_rows,
@@ -1260,6 +1260,14 @@ class ConfigurationCompanionVerifierTests(unittest.TestCase):
             observed["aggregate"]["digest_sha256"],
             benchmark_design["configuration_fingerprint"],
         )
+        altered_assignments = json.loads(json.dumps(files["seeds/evaluation_seed_assignments.json"]))
+        altered_assignments["seed_derivation"]["namespace"] = "different-namespace"
+        with self.assertRaises(PackageBuildError):
+            _assemble_configuration_fingerprints_v1(
+                "a" * 64, design, files["design/effective_scenario_configs.json"],
+                files["design/analysis_contracts.json"], matrix, altered_assignments,
+                benchmark_design, files["runs/run_records.json"],
+            )
 
     def test_writer_recomputes_legacy_seed_bank_fingerprint_from_typed_rows(self):
         files, report, matrix = _fixture()
@@ -1278,6 +1286,18 @@ class ConfigurationCompanionVerifierTests(unittest.TestCase):
             observed,
             files["design/benchmark_design.json"]["seed_bank_fingerprint"],
         )
+
+    def test_rejects_seed_derivation_namespace_drift(self):
+        files, report, matrix = _fixture()
+        files["seeds/evaluation_seed_assignments.json"]["seed_derivation"]["namespace"] = "different-namespace"
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_configuration_companions(files, report, matrix)
+
+    def test_rejects_seed_derivation_descriptor_drift(self):
+        files, report, matrix = _fixture()
+        files["seeds/evaluation_seed_assignments.json"]["seed_derivation"]["output_rule"] = "first_8_bytes"
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_configuration_companions(files, report, matrix)
 
     def test_rejects_assignment_manifest_legacy_fingerprint_mismatch(self):
         files, report, matrix = _fixture()
