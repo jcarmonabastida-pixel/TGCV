@@ -9,6 +9,7 @@ external authentication remain explicitly separate status layers.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import base64
 import hashlib
 import io
 import json
@@ -296,6 +297,243 @@ def _decode_registered(value: Any) -> Any:
     if isinstance(value, list):
         return [_decode_registered(child) for child in value]
     return value
+
+
+
+@dataclass(frozen=True)
+class DecodedFrozenSnapshot:
+    """Strictly decoded view plus the immutable original snapshot bytes."""
+    type_id: str
+    serialization_id: str
+    canonical_bytes: bytes
+    sha256: str
+    value: Any
+
+
+_SNAPSHOT_TYPE_FIELDS = {
+    "vcont_benchmark_protocol.SeedAssignment": frozenset({
+        "bank", "scenario_id", "n_units", "replicate", "world_seed",
+        "z_assignment_seed", "g_assignment_seed", "scenario_version",
+        "outer_replicate_id", "assignment_role",
+    }),
+    "vcont_integrated_harness.AnalysisContract": frozenset({
+        "estimand_id", "estimand_version", "randomized_z", "randomized_g",
+        "positivity", "no_interference", "measurement_identified",
+        "version_consistency", "focal_direct_path_absent", "common_nonfocal_regime",
+        "target_regime_id", "target_regime_version", "outcome_id", "outcome_version",
+        "z_effect_invariant_across_g", "transportability_id", "transportability_version",
+        "transportability_scope", "transportability_evidence_status",
+        "g_assignment_mechanism_hash", "z_assignment_mechanism_hash",
+        "g_assignment_mechanism_id", "g_assignment_mechanism_version",
+        "z_assignment_mechanism_id", "z_assignment_mechanism_version",
+        "reference_regime_id", "reference_regime_version", "transportability_outcome_id",
+        "transportability_basis", "run_conditional_estimand_id",
+        "run_conditional_estimand_version", "mechanism_marginal_estimand_id",
+        "mechanism_marginal_estimand_version", "reference_regime_estimand_id",
+        "reference_regime_estimand_version", "g_assignment_estimand_id",
+        "g_assignment_estimand_version",
+    }),
+    "vcont_integrated_harness.AnalyzerResult": frozenset({
+        "run_id", "estimand_id", "package_status", "g_assignment_status",
+        "package_itt", "g_assignment_effect", "first_stage_delta_t_acc",
+        "package_se", "g_assignment_se", "abstention_reasons", "input_sha256",
+        "output_sha256", "target_regime_id", "target_regime_version", "outcome_id",
+        "outcome_version", "reference_regime_status", "reference_regime_id",
+        "reference_regime_version", "g_assignment_mechanism_hash",
+        "z_assignment_mechanism_hash", "transportability_id",
+        "transportability_version", "transportability_scope",
+        "transportability_evidence_status", "estimand_version",
+        "g_assignment_mechanism_id", "g_assignment_mechanism_version",
+        "z_assignment_mechanism_id", "z_assignment_mechanism_version",
+        "provenance_sha256", "transportability_outcome_id", "transportability_basis",
+        "reference_regime_itt", "run_conditional_estimand_id",
+        "run_conditional_estimand_version", "reference_regime_estimand_id",
+        "reference_regime_estimand_version", "g_assignment_estimand_id",
+        "g_assignment_estimand_version", "outer_replicate_id",
+        "assignment_role", "assignment_index",
+    }),
+    "vcont_integrated_harness.EvaluationReport": frozenset({
+        "run_id", "package_abs_error", "g_assignment_abs_error", "package_recovered",
+        "g_assignment_recovered", "expected_abstention_respected", "notes",
+        "reference_regime_status_correct", "reference_regime_estimate_present",
+    }),
+    "vcont_integrated_harness.EvidenceCandidate": frozenset({
+        "run_id", "rows", "provenance",
+    }),
+    "vcont_integrated_harness.RepeatedAssignmentReport": frozenset({
+        "world_id", "replicate_count", "mean_run_estimate", "mechanism_truth",
+        "marginal_abs_error", "marginal_recovered", "per_run_reports",
+        "reference_truth", "reference_estimate_mean", "reference_abs_error",
+        "reference_recovered", "reference_identification_status",
+        "mechanism_marginal_estimand_id", "mechanism_marginal_estimand_version",
+        "reference_regime_estimand_id", "reference_regime_estimand_version",
+    }),
+    "vcont_integrated_harness.RunManifest": frozenset({
+        "run_id", "scenario_id", "version", "n_units", "n_intervals",
+        "window_start", "window_end", "interval_width", "generator_version",
+        "world_id", "world_version", "replicate_id", "g_assignment_mechanism_id",
+        "g_assignment_mechanism_version", "g_assignment_mechanism_hash",
+        "z_assignment_mechanism_id", "z_assignment_mechanism_version",
+        "z_assignment_mechanism_hash", "g_reference_regime_id",
+        "g_reference_regime_version", "z_assignment_vector_hash",
+        "g_assignment_vector_hash", "g_assignment_probability_by_stratum",
+        "world_seed", "z_assignment_seed", "g_assignment_seed",
+        "outer_replicate_id", "assignment_role", "assignment_index",
+    }),
+    "vcont_integrated_harness.ScenarioConfig": frozenset({
+        "scenario_id", "version", "profile", "mechanism", "n_units", "n_intervals",
+        "seed", "window_start", "last_transition_support", "follow_up",
+        "enabled_probability", "baseline_conformity", "focal_access_effect",
+        "package_direct_effect", "focal_direct_effect", "collateral_effect",
+        "provision_probability", "alternative_probability", "heterogeneity",
+        "interference_effect", "measurement_sensitivity", "measurement_specificity",
+        "missing_probability", "randomized_z", "randomized_g", "positivity",
+        "no_interference", "measurement_identified", "version_consistency",
+        "zg_interaction_effect", "world_seed", "z_assignment_seed",
+        "g_assignment_seed", "replicate_id", "outer_replicate_id",
+        "assignment_role", "assignment_index",
+    }),
+    "vcont_integrated_harness.SealedEvidence": frozenset({
+        "run_id", "rows", "manifest", "sha256",
+    }),
+    "vcont_integrated_harness.TruthBundle": frozenset({
+        "run_id", "potential_v", "potential_interval_truth", "potential_enabled_truth",
+        "potential_profile_truth", "potential_delta_t_acc", "itt_z_truth",
+        "itt_g_z0_truth", "theta_a_truth", "seed", "itt_z_run_truth",
+        "itt_z_mechanism_truth", "itt_z_reference_truth",
+        "transportability_invariant_truth", "transportability_scope_truth",
+        "g_reference_regime_id", "g_reference_regime_version",
+        "g_assignment_mechanism_hash", "z_assignment_mechanism_hash",
+        "outer_replicate_id", "assignment_role", "assignment_index",
+    }),
+    "vcont_evidence_export.MatrixTruthProjection": frozenset({
+        "run_id", "itt_z_run_truth", "itt_g_z0_truth", "itt_z_mechanism_truth",
+        "itt_z_reference_truth", "outer_replicate_id", "assignment_role",
+        "assignment_index", "g_reference_regime_id", "g_reference_regime_version",
+        "g_assignment_mechanism_hash", "z_assignment_mechanism_hash", "seed",
+        "theta_a_truth",
+    }),
+}
+_SNAPSHOT_ENUM_VALUES = {
+    "vcont_benchmark_protocol.EvaluationClass": frozenset({
+        "EVALUABLE", "STATUS_ONLY", "NOT_IDENTIFIABLE", "NOT_EVALUABLE",
+    }),
+    "vcont_benchmark_protocol.TruthStatus": frozenset({
+        "DEFINED", "UNDEFINED", "NOT_MATERIALIZED",
+    }),
+}
+
+
+def _validate_snapshot_node(value: Any, label: str) -> Any:
+    """Validate the closed historical tagged grammar without importing its codec."""
+    if isinstance(value, dict):
+        if set(value) == {"$dataclass", "fields"}:
+            type_id, fields = value["$dataclass"], value["fields"]
+            if type_id not in _SNAPSHOT_TYPE_FIELDS or not isinstance(fields, dict):
+                raise PackageVerificationError(f"{label}: unknown dataclass type or malformed fields")
+            expected = _SNAPSHOT_TYPE_FIELDS[type_id]
+            if set(fields) != expected:
+                missing, extra = sorted(expected - set(fields)), sorted(set(fields) - expected)
+                raise PackageVerificationError(
+                    f"{label}: {type_id} field allowlist mismatch; missing={missing}; extra={extra}"
+                )
+            return {
+                "$dataclass": type_id,
+                "fields": {
+                    key: _validate_snapshot_node(child, f"{label}.{type_id}.{key}")
+                    for key, child in fields.items()
+                },
+            }
+        if set(value) == {"$enum", "value"}:
+            enum_id, enum_value = value["$enum"], value["value"]
+            if enum_id not in _SNAPSHOT_ENUM_VALUES or enum_value not in _SNAPSHOT_ENUM_VALUES[enum_id]:
+                raise PackageVerificationError(f"{label}: unknown enum identity or value")
+            return {"$enum": enum_id, "value": enum_value}
+        if set(value) == {"$tuple"} or set(value) == {"$list"}:
+            tag = "$tuple" if "$tuple" in value else "$list"
+            items = value[tag]
+            if not isinstance(items, list):
+                raise PackageVerificationError(f"{label}: {tag} payload must be an array")
+            return {tag: [
+                _validate_snapshot_node(child, f"{label}.{tag}[{index}]")
+                for index, child in enumerate(items)
+            ]}
+        if set(value) == {"$map"}:
+            items = value["$map"]
+            if not isinstance(items, dict) or list(items) != sorted(items):
+                raise PackageVerificationError(f"{label}: $map must have string keys in canonical sorted order")
+            return {"$map": {
+                key: _validate_snapshot_node(child, f"{label}.$map[{key!r}]")
+                for key, child in items.items()
+            }}
+        raise PackageVerificationError(f"{label}: untagged or unknown object in FrozenSnapshot grammar")
+    if value is None or isinstance(value, (str, bool, int)):
+        return value
+    if isinstance(value, float):
+        import math
+        if not math.isfinite(value):
+            raise PackageVerificationError(f"{label}: non-finite snapshot number")
+        return value
+    raise PackageVerificationError(f"{label}: unsupported FrozenSnapshot value type")
+
+
+def decode_frozen_snapshot_ref(
+    reference: Any, *, expected_type_id: str | None = None
+) -> DecodedFrozenSnapshot:
+    """Independently validate a Gate 174 snapshot envelope and preserve its exact bytes."""
+    required = {
+        "type_id", "encoding", "media_type", "serialization_id",
+        "canonical_bytes_base64", "sha256",
+    }
+    if not isinstance(reference, dict) or set(reference) != required:
+        raise PackageVerificationError("FrozenSnapshot reference field allowlist mismatch")
+    type_id = reference["type_id"]
+    if (not isinstance(type_id, str) or type_id not in _SNAPSHOT_TYPE_FIELDS
+            or (expected_type_id is not None and type_id != expected_type_id)):
+        raise PackageVerificationError("FrozenSnapshot reference has an unknown or unexpected type_id")
+    if (reference["encoding"], reference["media_type"], reference["serialization_id"]) != (
+        "base64", "application/vnd.tgcv.typed-snapshot+json", "TGCV-FROZEN-SNAPSHOT-1"
+    ):
+        raise PackageVerificationError("FrozenSnapshot encoding/media_type/serialization_id mismatch")
+    encoded = reference["canonical_bytes_base64"]
+    if not isinstance(encoded, str):
+        raise PackageVerificationError("FrozenSnapshot base64 payload must be a string")
+    try:
+        snapshot_bytes = base64.b64decode(encoded, validate=True)
+    except Exception as exc:
+        raise PackageVerificationError(f"FrozenSnapshot base64 payload is invalid: {exc}") from exc
+    if base64.b64encode(snapshot_bytes).decode("ascii") != encoded:
+        raise PackageVerificationError("FrozenSnapshot base64 payload is not canonical")
+    digest = reference["sha256"]
+    if (not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest)
+            or _sha256(snapshot_bytes) != digest):
+        raise PackageVerificationError("FrozenSnapshot exact-byte SHA-256 mismatch")
+    try:
+        raw = snapshot_bytes.decode("utf-8", errors="strict")
+        parsed = json.loads(
+            raw, object_pairs_hook=_unique_object, parse_constant=_reject_constant
+        )
+        canonical = json.dumps(
+            parsed, sort_keys=True, separators=(",", ":"), ensure_ascii=False,
+            allow_nan=False,
+        ).encode("utf-8")
+    except PackageVerificationError:
+        raise
+    except Exception as exc:
+        raise PackageVerificationError(f"FrozenSnapshot strict JSON decode failed: {exc}") from exc
+    if canonical != snapshot_bytes:
+        raise PackageVerificationError("FrozenSnapshot bytes are not canonical historical serialization")
+    if (not isinstance(parsed, dict) or set(parsed) != {"$dataclass", "fields"}
+            or parsed.get("$dataclass") != type_id):
+        raise PackageVerificationError("FrozenSnapshot root dataclass identity mismatch")
+    decoded = _validate_snapshot_node(parsed, "FrozenSnapshot")
+    return DecodedFrozenSnapshot(
+        type_id=type_id,
+        serialization_id="TGCV-FROZEN-SNAPSHOT-1",
+        canonical_bytes=snapshot_bytes,
+        sha256=digest,
+        value=decoded,
+    )
 
 
 def _historical_fingerprint(manifest_payload: Any) -> str:
