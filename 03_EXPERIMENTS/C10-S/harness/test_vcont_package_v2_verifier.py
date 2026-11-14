@@ -903,11 +903,20 @@ def _fixture():
     })
     assignment_rows = []
     legacy_seed_rows = []
+    seed_namespace = "test-fixture"
+
+    def fixture_seed(sid, version, stream, role, replicate):
+        payload = (
+            f"TGCV-C10S-VCONT-SEED-v3|{seed_namespace}|evaluation|{sid}|"
+            f"{version}|{n_units}|outer-000000|{role}|{replicate}|{stream}"
+        )
+        return int.from_bytes(hashlib.sha256(payload.encode("utf-8")).digest()[:8], "big")
+
     for s, (sid, version) in enumerate(versions):
-        world_seed = 1000 + s
+        world_seed = fixture_seed(sid, version, "world", "RUN", -1)
         for role, replicate in (("RUN", -1), ("REPEATED_ASSIGNMENT", 0)):
-            z_seed = 2000 + 2 * s + (0 if role == "RUN" else 1)
-            g_seed = 3000 + 2 * s + (0 if role == "RUN" else 1)
+            z_seed = fixture_seed(sid, version, "z", role, replicate)
+            g_seed = fixture_seed(sid, version, "g", role, replicate)
             source_row = {
                 "bank": "evaluation",
                 "scenario_id": sid,
@@ -941,7 +950,7 @@ def _fixture():
             "algorithm": "TGCV-C10S-VCONT-SEED-v3",
             "hash": "SHA-256",
             "output_rule": "first_8_digest_bytes_unsigned_big_endian",
-            "namespace": "test-fixture",
+            "namespace": seed_namespace,
         },
         "rows": assignment_rows,
     }
