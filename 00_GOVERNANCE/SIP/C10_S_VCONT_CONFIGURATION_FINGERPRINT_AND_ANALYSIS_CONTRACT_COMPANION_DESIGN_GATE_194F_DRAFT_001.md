@@ -564,3 +564,19 @@ This amendment corrects the source-field registries, authoritative ordering and 
 **Disposition: CONDITIONAL — AMENDED DESIGN, NOT FROZEN.**
 
 Before schema freeze, perform one read-only consistency review across this amendment, Gate 181's exact projection, the source field/type registry, the package writer's 14-path inventory and the independent verifier's existing decoder/reconciliation boundaries. Record any residual mismatch explicitly. No implementation, tests, compilation, CI, package generation, calibration or scientific execution is authorized by this amendment.
+
+
+### 11.9 DGP/Generator component algorithm and remaining schema-identity gate
+
+The DGP/Generator component algorithm is newly introduced under this amendment:
+
+- Algorithm ID: `TGCV-C10S-EFFECTIVE-SCENARIO-CONFIG-JCS-SHA256-1`.
+- Input: the complete, exact Gate 181 `EffectiveScenarioConfigProjection@2.0.0` row, including `scenario_id`, `scenario_version`, `n_units`, `generator_version`, `seed_policy` and all 26 structural fields in their frozen types.
+- Digest: lowercase SHA-256 over RFC 8785 JCS UTF-8 bytes, with no trailing newline.
+- Exclusions: no assignment seed, RUN/R identity, replicate identity, capture ID, report, MatrixCapture, package metadata or derived fingerprint may be added to this component input.
+
+The component record's `schema_id` and `schema_version` MUST be copied literally from the authoritative Gate 181 projection contract; the implementation MUST NOT invent aliases or infer them from the display label `EffectiveScenarioConfigProjection@2.0.0`.
+
+**Residual schema-identity blocker:** Gate 194-G establishes the projection version and exact fields but its crosswalk does not transcribe the literal schema ID/version values for every input family (Gate 181 effective-config projection, AnalysisContract semantic envelope, MatrixCapture and ordered evaluation assignment manifest). Those literals must be recovered from the governing source contracts/constants and entered into a closed registry before schema freeze. This is a documentary/source-reconciliation task, not permission to create replacement IDs.
+
+Accordingly, the Gate 194-F.1 amendment is internally specified at the field and digest-domain level, but the companion schemas remain **NOT FROZEN** until the literal schema-identity registry is verified. The final consistency review must fail closed on any missing or conflicting schema ID/version, rather than accepting a guessed value.
