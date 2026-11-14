@@ -142,3 +142,7 @@ The user approved Option A. Gate 184 applies the workflow split on the research 
 - `rfc8785==0.1.4` is pinned to the PyPI universal wheel SHA-256 `520d690b448ecf0703691c76e1a34a24ddcd4fc5bc41d589cb7c58ec651bcd48`.
 
 The pure test modules are not implemented yet; the workflow is a forward contract and is not runnable/passing until the complete source/test set is added atomically. JCS conformance vectors remain unexecuted. No workflow was dispatched and no test, dependency installation, compilation, synthetic generation or scientific execution occurred. See Gate 184 for exact configuration and limitations.
+
+## Gate 184 corrective record
+
+The first pure-workflow YAML had an unquoted pip command containing :all:; GitHub created failed push-run records with zero jobs. The scalar was quoted in commit 84d6e4695e7e94f694ca5bb40125a81c8936eefe. The corrected YAML was fetched and parsed locally. No job/test/dependency install/producer ran. See Gate 184 §8. This corrects the earlier summary: workflow-run records existed, but there was no CI job execution.
