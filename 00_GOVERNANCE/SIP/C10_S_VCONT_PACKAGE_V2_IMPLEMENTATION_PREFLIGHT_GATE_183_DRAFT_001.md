@@ -131,3 +131,14 @@ Option B only postpones the trigger; it does not resolve it for eventual integra
 Gate 184 should resolve the CI execution boundary as a governance change before implementation. It should define which existing test paths are pure software checks and which invoke synthetic data generation, then establish a dedicated pure-v2 workflow with no producer imports/calls. The JCS dependency and its artifact identity can then be pinned. Only after these conditions are persisted should implementation begin.
 
 This gate does not request or imply authorization for synthetic producer execution, calibration, seed generation, Monte Carlo execution or scientific experimentation.
+
+## Gate 184 — resolution of the CI execution-boundary blocker
+
+The user approved Option A. Gate 184 applies the workflow split on the research branch:
+
+- the legacy integrated workflow no longer has push triggers and requires manual dispatch, explicit boolean confirmation, and the exact research branch;
+- a dedicated pure v2 workflow uses an explicit list of fixture-only test modules and never invokes full unittest discovery;
+- the pure workflow is path-filtered to the v2 capture/package/verifier sources, dedicated tests and hash-locked JCS dependency;
+- `rfc8785==0.1.4` is pinned to the PyPI universal wheel SHA-256 `520d690b448ecf0703691c76e1a34a24ddcd4fc5bc41d589cb7c58ec651bcd48`.
+
+The pure test modules are not implemented yet; the workflow is a forward contract and is not runnable/passing until the complete source/test set is added atomically. JCS conformance vectors remain unexecuted. No workflow was dispatched and no test, dependency installation, compilation, synthetic generation or scientific execution occurred. See Gate 184 for exact configuration and limitations.
