@@ -2009,6 +2009,40 @@ GATE159_REQUIRED_CHECK_IDS = (
     "TECHNICAL_TEST_RUN_BINDING",
 )
 GATE159_CONDITIONAL_CHECK_ID = "CALIBRATION_ASSIGNMENT_EXECUTION_LINK"
+GATE159_CHECK_INPUT_PATHS = {
+    "EVALUATION_ASSIGNMENT_RUN_MANIFEST_ONE_TO_ONE": (
+        "runs/run_records.json", "runs/temporal_manifest.json",
+        "seeds/evaluation_seed_assignments.json",
+    ),
+    "CALIBRATION_EVALUATION_SEED_DISJOINTNESS": (
+        "seeds/calibration_seed_manifest.json", "seeds/evaluation_seed_assignments.json",
+    ),
+    "EVALUATION_SEED_FINGERPRINT_RECOMPUTATION": (
+        "seeds/evaluation_seed_assignments.json",
+    ),
+    "CALIBRATION_SEED_FINGERPRINT_RECOMPUTATION": (
+        "seeds/calibration_seed_manifest.json",
+    ),
+    "EFFECTIVE_CONFIGURATION_FINGERPRINT_RECOMPUTATION": (
+        "design/analysis_contracts.json", "design/effective_scenario_configs.json",
+        "provenance/configuration_fingerprints.json",
+    ),
+    "MATRIX_LEGACY_AND_FULL_DIGEST_RECOMPUTATION": (
+        "design/scenario_estimand_matrix.json",
+    ),
+    "SOURCE_EXECUTION_GITHUB_BINDING": (
+        "provenance/source_execution.json",
+    ),
+    "TECHNICAL_TEST_RUN_BINDING": (
+        "provenance/source_execution.json", "validation/test_evidence.json",
+    ),
+    "CALIBRATION_ASSIGNMENT_EXECUTION_LINK": (
+        "seeds/calibration_seed_manifest.json",
+    ),
+}
+GATE159_INPUT_ARTIFACT_PATHS = tuple(sorted({
+    path for paths in GATE159_CHECK_INPUT_PATHS.values() for path in paths
+}))
 
 
 def _reconcile_gate159_artifact(
@@ -2055,8 +2089,11 @@ def _reconcile_gate159_artifact(
     if input_ids != sorted(set(input_ids)):
         raise PackageVerificationError("Gate159 input_artifacts are duplicated or not in canonical order")
     input_digest_map = {item["artifact_id"]: item["sha256"] for item in inputs}
-    for artifact_id, payload in package_files.items():
-        if artifact_id in input_digest_map and input_digest_map[artifact_id] != _sha256(payload):
+    if input_ids != list(GATE159_INPUT_ARTIFACT_PATHS):
+        raise PackageVerificationError("Gate159 input_artifacts do not match the exact package input registry")
+    for artifact_id in GATE159_INPUT_ARTIFACT_PATHS:
+        payload = package_files.get(artifact_id)
+        if not isinstance(payload, bytes) or input_digest_map[artifact_id] != _sha256(payload):
             raise PackageVerificationError(f"Gate159 input artifact digest differs from packaged bytes: {artifact_id}")
     if artifact.get("required_check_ids") != list(GATE159_REQUIRED_CHECK_IDS):
         raise PackageVerificationError("Gate159 required_check_ids differ from the frozen Gate 178 order")
@@ -2101,9 +2138,11 @@ def _reconcile_gate159_artifact(
             for key, value in digests.items()
         ):
             raise PackageVerificationError(f"Gate159 check row {index} input_digests is malformed")
-        if any(key not in input_digest_map or input_digest_map[key] != value
-               for key, value in digests.items()):
-            raise PackageVerificationError(f"Gate159 check row {index} input_digests do not resolve to input_artifacts")
+        expected_check_inputs = set(GATE159_CHECK_INPUT_PATHS[expected_id])
+        if set(digests) != expected_check_inputs or any(
+            digests.get(key) != input_digest_map.get(key) for key in expected_check_inputs
+        ):
+            raise PackageVerificationError(f"Gate159 check row {index} input_digests differ from its exact package input registry")
         status = row.get("status")
         if status not in ("PASS", "FAIL", "UNAVAILABLE", "UNVERIFIABLE", "NOT_APPLICABLE"):
             raise PackageVerificationError(f"Gate159 check row {index} status is invalid")
