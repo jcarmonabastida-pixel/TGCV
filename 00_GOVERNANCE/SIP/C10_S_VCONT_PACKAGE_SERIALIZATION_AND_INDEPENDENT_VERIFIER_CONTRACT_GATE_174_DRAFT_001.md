@@ -231,3 +231,11 @@ See Gate 177. Serializer implementation is not yet ready; no code/tests executed
 Gate 178 closes the strict decoder, MatrixCapture, FrozenReportSnapshot, deterministic capture identity, CalibrationBankManifest and Gate159ReconciliationArtifact contracts. It selects `rfc8785==0.1.4` as the Python JCS implementation candidate, subject to dependency pinning, RFC vector conformance and independent cross-implementation byte equality at the later authorized implementation preflight.
 
 A material compatibility blocker remains: seed derivation emits unsigned 64-bit integers, while Gate 164 v1.0.0 requires JCS and disallows numeric-to-string coercion. Exact uint64 preservation is not guaranteed by ordinary JCS numbers above 2^53-1. Gate 164 v1.0.0 remains unchanged and implementation-blocked until an explicit exact wire representation is approved under a versioned schema decision. See Gate 178. No source code, tests, CI or scientific execution occurred.
+
+## 12. Gate 179 — RUN envelope v2 and typed uint64 verifier
+
+Gate 179 versions `TGCV-C10S-VCONT-RUN-EXPORT-ENVELOPE` from 1.0.0 to **2.0.0** for the Gate 164 package v2.0.0 successor. Direct `outer_world_evidence_records[*].key.world_seed` is encoded using the exact typed uint64 object `{"$type":"uint64","decimal":"<canonical unsigned decimal>"}`. The other direct seed-bearing JSON locations are listed in Gate 179 §3.
+
+The per-run `FrozenSnapshot.canonical_bytes_base64` remains opaque and byte-identical; its SHA-256 is verified before strict allowlisted decoding. Historical fingerprints are recomputed from source-typed integers before package projection. The verifier must reject bare numeric/string seed values, malformed/out-of-range wrappers and cross-version auto-coercion.
+
+The exact 14-file inventory is unchanged. Gate 164 v1.0.0 remains immutable; package v2.0.0 and RUN envelope v2.0.0 are the successor draft. No code/tests/CI or scientific execution occurred. Full decision and vectors: Gate 179.
