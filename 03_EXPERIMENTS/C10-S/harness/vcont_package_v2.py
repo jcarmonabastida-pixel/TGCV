@@ -451,6 +451,61 @@ def _assemble_analysis_contracts_v1(
     }
 
 
+
+def _decode_assignment_uint64_wire(value: Any) -> int:
+    if not isinstance(value, Mapping) or set(value) != {"$type", "decimal"} or value.get("$type") != "uint64":
+        raise PackageBuildError("evaluation SeedAssignment contains a malformed uint64 wire value")
+    decimal = value.get("decimal")
+    if (not isinstance(decimal, str) or not decimal.isascii() or not decimal.isdigit()
+            or (len(decimal) > 1 and decimal.startswith("0"))):
+        raise PackageBuildError("evaluation SeedAssignment contains a noncanonical uint64 decimal")
+    number = int(decimal)
+    if number > (1 << 64) - 1:
+        raise PackageBuildError("evaluation SeedAssignment uint64 exceeds its source domain")
+    return number
+
+
+def _legacy_seed_bank_fingerprint_from_wire_rows(rows: Any, design: Any) -> str:
+    required = {
+        "bank", "scenario_id", "scenario_version", "n_units", "replicate",
+        "outer_replicate_id", "assignment_role", "world_seed",
+        "z_assignment_seed", "g_assignment_seed",
+    }
+    if not isinstance(rows, list) or not rows:
+        raise PackageBuildError("historical seed-bank fingerprint requires nonempty evaluation rows")
+    versions = dict(design.scenario_versions)
+    expected_order = [
+        (sid, versions[sid], design.n_units, f"outer-{m:06d}", role, index)
+        for sid in SCENARIO_IDS for m in range(design.outer_replicates)
+        for role, index in ([("RUN", -1)] + [
+            ("REPEATED_ASSIGNMENT", r) for r in range(design.repeated_assignments)
+        ])
+    ]
+    payload = []
+    observed_order = []
+    for row in rows:
+        if not isinstance(row, Mapping) or set(row) != required or row.get("bank") != "evaluation":
+            raise PackageBuildError("historical seed-bank fingerprint row field/bank mismatch")
+        observed_order.append((
+            row["scenario_id"], row["scenario_version"], row["n_units"],
+            row["outer_replicate_id"], row["assignment_role"], row["replicate"],
+        ))
+        payload.append({
+            "bank": row["bank"],
+            "scenario_id": row["scenario_id"],
+            "scenario_version": row["scenario_version"],
+            "n_units": row["n_units"],
+            "outer_replicate_id": row["outer_replicate_id"],
+            "assignment_role": row["assignment_role"],
+            "replicate": row["replicate"],
+            "world_seed": _decode_assignment_uint64_wire(row["world_seed"]),
+            "z_assignment_seed": _decode_assignment_uint64_wire(row["z_assignment_seed"]),
+            "g_assignment_seed": _decode_assignment_uint64_wire(row["g_assignment_seed"]),
+        })
+    if observed_order != expected_order:
+        raise PackageBuildError("historical seed-bank rows are not in frozen scenario/M/R order")
+    return _sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8"))
+
 def _assemble_configuration_fingerprints_v1(
     benchmark_export_id: str,
     design: Any,
@@ -479,6 +534,12 @@ def _assemble_configuration_fingerprints_v1(
         raise PackageBuildError("AnalysisContract companion schema/version/export identity mismatch")
     if design.configuration_fingerprint != benchmark_design.get("configuration_fingerprint"):
         raise PackageBuildError("source design object and benchmark_design companion declarations differ")
+    if design.configuration_fingerprint != benchmark_design.get("configuration_fingerprint"):
+        raise PackageBuildError("source design object and benchmark_design companion declarations differ")
+    legacy_seed_fingerprint = _legacy_seed_bank_fingerprint_from_wire_rows(assignment_rows, design)
+    if (legacy_seed_fingerprint != design.seed_bank_fingerprint
+            or legacy_seed_fingerprint != benchmark_design.get("seed_bank_fingerprint")):
+        raise PackageBuildError("historical source-typed seed_bank_fingerprint does not recompute")
     if not isinstance(source_contracts, list) or len(source_contracts) != 13:
         raise PackageBuildError("fingerprint assembly requires exactly 13 source AnalysisContract rows")
     if not isinstance(assignment_rows, list) or not assignment_rows:
