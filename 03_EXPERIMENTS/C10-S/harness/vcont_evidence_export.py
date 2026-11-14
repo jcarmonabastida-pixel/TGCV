@@ -949,16 +949,17 @@ def derive_capture_identity(design_identity, matrix_capture, outer_world_bundles
         raise ContractError("capture identity design projection differs from the exact declared design schema")
     scenario_versions = design_identity["scenario_versions"]
     if (not isinstance(scenario_versions, (tuple, list))
-            or any(not isinstance(item, (tuple, list)) or len(item) != 2
-                   or not isinstance(item[0], str) or not isinstance(item[1], str) or not item[1]
+            or any(not isinstance(item, dict) or set(item) != {"scenario_id", "scenario_version"}
+                   or not isinstance(item["scenario_id"], str)
+                   or not isinstance(item["scenario_version"], str) or not item["scenario_version"]
                    for item in scenario_versions)
-            or tuple(item[0] for item in scenario_versions) != tuple(SCENARIO_IDS)):
+            or tuple(item["scenario_id"] for item in scenario_versions) != tuple(SCENARIO_IDS)):
         raise ContractError("capture identity scenario/version projection is not in authoritative order")
     for name, minimum in (("N", 1), ("M", 2), ("R", 1)):
         value = design_identity[name]
         if isinstance(value, bool) or not isinstance(value, int) or value < minimum:
             raise ContractError(f"capture identity design {name} is outside its declared integer domain")
-    declared_versions = dict(scenario_versions)
+    declared_versions = {item["scenario_id"]: item["scenario_version"] for item in scenario_versions}
     for bundle in bundles:
         if (bundle.scenario_id not in declared_versions
                 or bundle.scenario_version != declared_versions[bundle.scenario_id]
