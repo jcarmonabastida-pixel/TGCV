@@ -391,6 +391,25 @@ def _check_report(report_envelope: Any) -> None:
                     raise PackageVerificationError(f"scenario report RunManifest.{field} is not a decoded uint64")
 
 
+def _independent_tar_rebuild(files: Mapping[str, bytes]) -> bytes:
+    """Rebuild the normative USTAR byte stream without calling the writer."""
+    buffer = io.BytesIO()
+    with tarfile.open(fileobj=buffer, mode="w", format=tarfile.USTAR_FORMAT) as archive:
+        for path in sorted(files):
+            info = tarfile.TarInfo(path)
+            info.size = len(files[path])
+            info.mtime = 0
+            info.uid = 0
+            info.gid = 0
+            info.uname = ""
+            info.gname = ""
+            info.mode = 0o644
+            info.type = tarfile.REGTYPE
+            info.pax_headers = {}
+            archive.addfile(info, io.BytesIO(files[path]))
+    return buffer.getvalue()
+
+
 def verify_package_v2(
     archive_bytes: bytes,
     *,
@@ -442,6 +461,9 @@ def verify_package_v2(
         extra = sorted(set(extracted) - set(PACKAGE_PATHS))
         raise PackageVerificationError(f"archive inventory mismatch; missing={missing}; extra={extra}")
 
+    if _independent_tar_rebuild(extracted) != archive_bytes:
+        raise PackageVerificationError("archive bytes differ from independently rebuilt canonical USTAR stream")
+
     parsed: dict[str, Any] = {}
     canonical_bytes: dict[str, bytes] = {}
     for path in PACKAGE_PATHS:
@@ -484,6 +506,8 @@ def verify_package_v2(
 
     if trust_policy is not None:
         raise PackageVerificationError("external trust_policy verification is not implemented in this verifier version")
+    if manifest["legacy_report_fingerprint"] != parsed["report/report.json"].get("legacy_report_fingerprint"):
+        raise PackageVerificationError("manifest legacy report fingerprint differs from report snapshot")
     report = parsed["report/report.json"]
     _check_registered_uint64(parsed)
     decoded_report = _decode_registered(report)
