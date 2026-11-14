@@ -389,6 +389,8 @@ def _assemble_analysis_contracts_v1(
                 expected_role, expected_index = ("RUN", -1) if r_index == 0 else ("REPEATED_ASSIGNMENT", r_index - 1)
                 if isinstance(assignment.replicate, bool) or not isinstance(assignment.replicate, int):
                     raise PackageBuildError("captured SeedAssignment replicate must be an exact integer")
+                if isinstance(assignment.n_units, bool) or not isinstance(assignment.n_units, int) or assignment.n_units < 1:
+                    raise PackageBuildError("captured SeedAssignment n_units must be an exact positive integer")
                 if assignment.bank != "evaluation":
                     raise PackageBuildError("captured AnalysisContract source is not from the evaluation bank")
                 if (assignment.scenario_id, assignment.scenario_version, assignment.n_units,
