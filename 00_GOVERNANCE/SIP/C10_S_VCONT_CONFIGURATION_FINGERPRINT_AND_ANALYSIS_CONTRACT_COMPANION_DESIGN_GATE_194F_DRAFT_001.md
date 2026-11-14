@@ -333,3 +333,234 @@ If any item conflicts with this proposal, stop and record the discrepancy; do no
 - PR #116: remains Draft; this document belongs only to `research/c10-s-consolidation-draft`.
 
 **Next operation:** perform the static source crosswalk in §10 and compare every proposed schema/digest input with the exact source APIs and frozen Gate 181/179 definitions. Only after that reconciliation should the schemas be frozen and implementation considered.
+
+
+## 11. Gate 194-F.1 amendment — source crosswalk corrections
+
+**Status:** DESIGN AMENDMENT — PROPOSED, NOT FROZEN  
+**Authority:** Gate 194-G source crosswalk, 2026-11-14  
+**Precedence:** This section supersedes any inconsistent wording in §§2–10. It does not rewrite historical Gate 194-G findings or imply implementation.
+
+### 11.1 Authoritative scenario order
+
+The 13 scenario identifiers and their canonical order are:
+
+1. `R0_FOCAL_POSITIVE`
+2. `R0_FOCAL_NULL`
+3. `R0_FOCAL_ADVERSE`
+4. `R0_DIRECT_G`
+5. `R0_DIRECT_Z`
+6. `R1_ALTERNATIVE_BASELINE`
+7. `R2_ALTERNATIVE_AFFECTED`
+8. `R3_PROVISION_FAILURE`
+9. `R0_MEASUREMENT_ADVERSE`
+10. `R0_INTERFERENCE`
+11. `R0_SUPPORT_FAILURE`
+12. `R0_HETEROGENEITY`
+13. `R2_SUPPORT_FAILURE_ZG_INTERACTION`
+
+All scenario-indexed companion arrays MUST follow this registry order, then the declared scenario version and numeric N. Do not substitute lexical ordering.
+
+### 11.2 Exact EffectiveScenarioConfig structural field registry
+
+The 26 structural fields, in the Gate 181 projection order, are:
+
+```text
+profile
+mechanism
+n_intervals
+window_start
+last_transition_support
+follow_up
+enabled_probability
+baseline_conformity
+focal_access_effect
+package_direct_effect
+focal_direct_effect
+collateral_effect
+provision_probability
+alternative_probability
+heterogeneity
+interference_effect
+measurement_sensitivity
+measurement_specificity
+missing_probability
+randomized_z
+randomized_g
+positivity
+no_interference
+measurement_identified
+version_consistency
+zg_interaction_effect
+```
+
+The effective row additionally carries `scenario_id`, `scenario_version`, `n_units`, `generator_version` and the exact `seed_policy` as defined by Gate 181. The eight excluded source fields remain excluded from this structural projection: `seed`, `world_seed`, `z_assignment_seed`, `g_assignment_seed`, `replicate_id`, `outer_replicate_id`, `assignment_role`, `assignment_index`. They remain represented and reconciled in their authoritative assignment/manifest/snapshot records.
+
+The DGP/Generator fingerprint input MUST be the exact Gate 181 effective structural projection row, not a reconstructed subset and not the full mutable ScenarioConfig object.
+
+### 11.3 Exact AnalysisContract field and type registry
+
+The source payload has exactly these 37 fields:
+
+```text
+estimand_id
+estimand_version
+randomized_z
+randomized_g
+positivity
+no_interference
+measurement_identified
+version_consistency
+focal_direct_path_absent
+common_nonfocal_regime
+target_regime_id
+target_regime_version
+outcome_id
+outcome_version
+z_effect_invariant_across_g
+transportability_id
+transportability_version
+transportability_scope
+transportability_evidence_status
+g_assignment_mechanism_hash
+z_assignment_mechanism_hash
+g_assignment_mechanism_id
+g_assignment_mechanism_version
+z_assignment_mechanism_id
+z_assignment_mechanism_version
+reference_regime_id
+reference_regime_version
+transportability_outcome_id
+transportability_basis
+run_conditional_estimand_id
+run_conditional_estimand_version
+mechanism_marginal_estimand_id
+mechanism_marginal_estimand_version
+reference_regime_estimand_id
+reference_regime_estimand_version
+g_assignment_estimand_id
+g_assignment_estimand_version
+```
+
+Type partition, matching the source annotations:
+
+- Boolean: `randomized_z`, `randomized_g`, `positivity`, `no_interference`, `measurement_identified`, `version_consistency`, `focal_direct_path_absent`, `common_nonfocal_regime`, `z_effect_invariant_across_g`.
+- Nullable string: `transportability_id`, `transportability_version`, `transportability_scope`, `transportability_outcome_id`, `transportability_basis`.
+- Non-null string: the remaining 23 fields.
+
+No coercion is permitted between booleans, strings, nulls or numeric values. The companion row MUST contain exactly these 37 properties in its `analysis_contract` object. The semantic digest input is a separate envelope:
+
+```json
+{
+  "schema_id": "TGCV-C10S-EFFECTIVE-ANALYSIS-CONTRACT",
+  "schema_version": "1.0.0",
+  "scenario_id": "<exact scenario id>",
+  "scenario_version": "<exact scenario version>",
+  "n_units": 0,
+  "analyzer_version": "c10s-vcont-analyzer-0.1",
+  "analysis_contract": {
+    "<all 37 exact source properties>": "<source-typed values>"
+  }
+}
+```
+
+The example is schematic; actual values MUST be taken from the source `contract_for(cfg)` projection and authoritative design identity. Digest: lowercase SHA-256 of RFC 8785 JCS UTF-8 bytes, no trailing newline. Algorithm ID: `TGCV-C10S-ANALYSIS-CONTRACT-PAYLOAD-JCS-SHA256-1`. This is a newly introduced semantic digest, not an existing source digest.
+
+The historical RUN/R FrozenSnapshot digest remains a distinct integrity check over the exact retained historical snapshot bytes. The verifier MUST decode the snapshot, validate the exact 37-field typed payload, project its semantic contract, and compare that projection with the companion source row. It MUST NOT compare unlike digest domains or replace the historical snapshot digest with the new JCS digest.
+
+### 11.4 MatrixCapture digest correction
+
+The Matrix component MUST reuse the source-supported MatrixCapture full digest. Its exact digest input is the four-member object:
+
+```json
+{
+  "schema_id": "<MatrixCapture schema id>",
+  "schema_version": "<MatrixCapture schema version>",
+  "row_count": 52,
+  "rows": ["<the exact 52 canonical rows>"]
+}
+```
+
+Algorithm ID: `TGCV-C10S-VCONT-MATRIX-FULL-JCS-SHA256-1`. The SHA-256 is computed over RFC 8785 JCS UTF-8 bytes, lowercase hex, with no appended newline.
+
+The digest input explicitly EXCLUDES `design_identity`, `legacy_matrix_fingerprint`, `full_matrix_digest_algorithm` and `full_matrix_sha256`. The legacy fingerprint remains a separate compatibility field. Hashing the complete MatrixCapture envelope is prohibited because it defines a different and circular digest domain.
+
+### 11.5 Evaluation assignment component digest
+
+The evaluation assignment component MUST reuse the exact source-supported ordered assignment wire projection:
+
+```text
+bank
+scenario_id
+scenario_version
+n_units
+replicate
+outer_replicate_id
+assignment_role
+world_seed
+z_assignment_seed
+g_assignment_seed
+```
+
+The three seed values MUST retain the Gate 179 typed uint64 wire representation. Rows are ordered by the canonical 13-scenario registry, then numeric outer-world replicate, with RUN first and repeated assignments in their authoritative assignment-index order.
+
+Digest input: `{"rows": ordered_assignment_wire_rows}`. Algorithm ID: `TGCV-C10S-EVALUATION-ASSIGNMENT-MANIFEST-JCS-SHA256-1`. Digest: lowercase SHA-256 of RFC 8785 JCS UTF-8 bytes, no trailing newline.
+
+This value is a recomputable evaluation assignment-manifest component. It MUST NOT be represented as a recomputation of the historical `MonteCarloBenchmarkDesign.seed_bank_fingerprint`; that legacy field remains a separately preserved declaration unless and until its own source algorithm is defined and audited. Calibration assignments are excluded from this evaluation component and remain independently manifested and checked for disjointness.
+
+### 11.6 Exact 28-component aggregate manifest
+
+The aggregate contains exactly 28 component records:
+
+- 13 `DGP_GENERATOR_EFFECTIVE_CONFIG` records, one for each canonical scenario row;
+- 13 `ANALYZER_EFFECTIVE_CONTRACT` records, one for each canonical scenario contract;
+- one `MATRIX_CAPTURE` record;
+- one `EVALUATION_ASSIGNMENT_MANIFEST` record.
+
+Each component record has exactly:
+
+- `component_type`: one of the four values above;
+- `component_key`: the scenario key `(scenario_id, scenario_version, n_units)` for scenario-indexed components; the fixed string `GLOBAL` for the two global components;
+- `algorithm_id`: exact algorithm identifier;
+- `schema_id`: exact input schema identifier;
+- `schema_version`: exact input schema version;
+- `sha256`: lowercase 64-character digest independently recomputed from the authoritative input.
+
+Canonical ordering is the four component families in the order listed above; within each scenario family, use the authoritative 13-scenario registry order. The global MatrixCapture record precedes the global evaluation assignment record.
+
+The aggregate input is the exact versioned object:
+
+```json
+{
+  "schema_id": "TGCV-C10S-CONFIGURATION-FINGERPRINT-MANIFEST",
+  "schema_version": "1.0.0",
+  "algorithm_id": "TGCV-C10S-CONFIGURATION-FINGERPRINT-AGGREGATE-JCS-SHA256-1",
+  "component_count": 28,
+  "components": ["<the exact ordered 28 component records>"]
+}
+```
+
+The aggregate digest is lowercase SHA-256 over RFC 8785 JCS UTF-8 bytes of this object, with no trailing newline. The aggregate object MUST NOT include its own digest, the legacy `configuration_fingerprint` declaration, package file hashes, package ID, archive digest, capture ID, report snapshot digest or calibration-bank digest. This prevents circularity and keeps package integrity, capture identity and calibration provenance as separate dimensions.
+
+The recomputed aggregate is compared with the declared `MonteCarloBenchmarkDesign.configuration_fingerprint`. A mismatch is a semantic provenance failure even if the declaration is syntactically valid hexadecimal. The legacy declaration is not an input to its own recomputation.
+
+### 11.7 Exact-once reconciliation obligations
+
+The independent verifier MUST establish all of the following, not merely compare row counts:
+
+1. Every one of the 13 source contract rows maps to exactly one authoritative scenario/version/N configuration.
+2. Every source contract row is referenced by exactly two applicability rows: one `RUN`, one `REPEATED_ASSIGNMENT`.
+3. Every observed RUN/R AnalysisContract snapshot maps to exactly one applicability row and the corresponding source contract row.
+4. No applicability row, source contract row, observed RUN/R snapshot or scenario identity is duplicated, omitted, orphaned or cross-linked.
+5. All 13 DGP/Generator and 13 Analyzer/contract components are consumed exactly once by the aggregate; MatrixCapture and evaluation assignment components are each consumed exactly once.
+6. Each component digest is recomputed from its own authoritative input before aggregate recomputation.
+7. Calibration assignments are not silently included in evaluation rows or aggregate components; calibration manifest and disjointness are checked independently.
+8. The legacy `seed_bank_fingerprint` and `configuration_fingerprint` declarations are preserved and compared only against the explicitly defined corresponding semantics; syntax-only validity is never treated as provenance.
+
+### 11.8 Gate 194-F.1 disposition
+
+This amendment corrects the source-field registries, authoritative ordering and digest domains identified by Gate 194-G. It resolves the design ambiguities at the documentary level but does not establish that the schemas are implemented or that the verifier consumes them.
+
+**Disposition: CONDITIONAL — AMENDED DESIGN, NOT FROZEN.**
+
+Before schema freeze, perform one read-only consistency review across this amendment, Gate 181's exact projection, the source field/type registry, the package writer's 14-path inventory and the independent verifier's existing decoder/reconciliation boundaries. Record any residual mismatch explicitly. No implementation, tests, compilation, CI, package generation, calibration or scientific execution is authorized by this amendment.
