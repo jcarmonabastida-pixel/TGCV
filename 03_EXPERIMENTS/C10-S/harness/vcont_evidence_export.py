@@ -26,6 +26,14 @@ def _type_id(cls: type) -> str:
     return f"{cls.__module__}.{cls.__qualname__}"
 
 
+_SNAPSHOT_TYPES = (
+    SeedAssignment, AnalysisContract, AnalyzerResult, EvaluationReport,
+    EvidenceCandidate, RepeatedAssignmentReport, RunManifest, ScenarioConfig,
+    SealedEvidence, TruthBundle,
+)
+_SNAPSHOT_TYPE_BY_ID = {_type_id(item): item for item in _SNAPSHOT_TYPES}
+
+
 def _encode(value: Any) -> Any:
     if is_dataclass(value) and not isinstance(value, type):
         return {
@@ -62,7 +70,12 @@ def _decode(value: Any) -> Any:
         if set(value) == {"$enum", "value"}:
             return _decode(value["value"])
         if set(value) == {"$dataclass", "fields"}:
-            return {key: _decode(item) for key, item in value["fields"].items()}
+            type_id = value["$dataclass"]
+            snapshot_type = _SNAPSHOT_TYPE_BY_ID.get(type_id)
+            if snapshot_type is None:
+                raise ContractError(f"unregistered nested snapshot type: {type_id}")
+            decoded_fields = {key: _decode(item) for key, item in value["fields"].items()}
+            return snapshot_type(**decoded_fields)
         return {key: _decode(item) for key, item in value.items()}
     return value
 
