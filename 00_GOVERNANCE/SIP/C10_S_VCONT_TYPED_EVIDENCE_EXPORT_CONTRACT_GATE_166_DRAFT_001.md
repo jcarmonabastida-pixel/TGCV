@@ -277,3 +277,12 @@ Gate 171 implements the explicit M-level producer boundary in `03_EXPERIMENTS/C1
 No Generator/Sealer/Analyzer/Evaluator method semantics or 52-pair ledger logic were changed. The API is defined and persisted but has NOT been called in this gate. Three regression tests were added and NOT EXECUTED.
 
 **Remaining:** there is no benchmark-wide 13-scenario driver yet. The caller must still partition exact evaluation assignments, call the M producer for every scenario/M, assemble `scenario_outer_runs`, invoke `evaluate_monte_carlo_benchmark()` once and co-return the evidence bundles with the 52-pair result. This is Gate 172. Gate 159, package writer and trusted attestation remain OPEN.
+
+
+## 16. Gate 172 — complete benchmark evidence envelope
+
+The typed per-run and per-M carriers are now assembled by `produce_and_capture_benchmark(...)` in `vcont_evidence_export.py`. The driver consumes the frozen MonteCarloBenchmarkDesign, 13 structural templates and exact evaluation-bank assignment rows; rejects incomplete/mis-keyed scenario/M/R coverage before generation; calls the Gate 171 M producer exactly once per scenario/M; checks the exact captured snapshots against the legacy tuples; and invokes the unchanged `evaluate_monte_carlo_benchmark()` exactly once.
+
+The `CapturedBenchmark` return contains the existing evaluator report (including its 52-pair ledger and temporal manifest), exactly one OuterWorldEvidenceBundle per scenario/M and a scenario/M/world identity index. No estimand, matrix, ledger, denominator, target or aggregation semantics are changed.
+
+This is source implementation only. The driver and positive regression have NOT been executed. Gate 159 still prevents claims that the declared seed-bank fingerprint, effective configuration fingerprint or executable commit have been independently authenticated. Canonical package/attestation remains open. See Gate 172.
