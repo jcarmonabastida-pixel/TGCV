@@ -71,6 +71,37 @@ The v2 verifier MUST check all of the following after decoding typed uint64 valu
 
 A mismatch is a reconciliation FAIL, not a normalization opportunity. The verifier MUST NOT sort, coerce, fill or silently repair mismatched records.
 
+### 2.3a Exact root envelopes for the registered row arrays
+
+To make the JSON Pointer registry in §2.1 unambiguous, the following v2.0.0 file envelopes are normative.
+
+**Evaluation assignments** — `seeds/evaluation_seed_assignments.json`:
+- `schema_id` = `TGCV-C10S-VCONT-EVALUATION-SEED-ASSIGNMENTS`;
+- `schema_version` = `2.0.0`;
+- `bank` = `evaluation`;
+- `row_count`;
+- `seed_derivation` with algorithm `TGCV-C10S-VCONT-SEED-v3`, hash `SHA-256`, output rule `first_8_digest_bytes_unsigned_big_endian`, and declared namespace;
+- `seed_bank_fingerprint_legacy`;
+- `rows`, exact ordered SeedAssignment projections.
+
+Each evaluation row contains exactly `bank`, `scenario_id`, `scenario_version`, `n_units`, `replicate`, `outer_replicate_id`, `assignment_role`, `world_seed`, `z_assignment_seed`, `g_assignment_seed`. `replicate` is the source dataclass field; `assignment_index` is its runtime alias and is not emitted as a second independent value.
+
+**Temporal manifest** — `runs/temporal_manifest.json`:
+- `schema_id` = `TGCV-C10S-VCONT-TEMPORAL-MANIFEST`;
+- `schema_version` = `2.0.0`;
+- `row_count`;
+- `rows`, exact ordered RunManifest projections.
+
+Each temporal row contains exactly `scenario_id`, `scenario_version`, `N`, `outer_replicate_id`, `assignment_role`, `assignment_index`, `run_id`, `world_id`, `world_seed`, `z_assignment_seed`, `g_assignment_seed`. Row order is authoritative scenario order, numeric M order, RUN first, then numeric R order.
+
+**Calibration assignments** — `seeds/calibration_seed_manifest.json` use the Gate 178 CalibrationBankManifest envelope, versioned to 2.0.0 by Gate 179. Its existing exact `rows` member and row schema are retained; only the three seed values use the typed uint64 wire object.
+
+The `report/report.json` remains the FrozenReportSnapshot v2.0.0 envelope defined in §4.3. The `runs/run_records.json` root and `outer_world_evidence_records` member retain the Gate 174 RUN-EXPORT-ENVELOPE structure, version 2.0.0.
+
+### 2.3b Pointer registry root convention
+
+All pointers in §2.1 are now rooted at the file JSON object. In particular, the three assignment/temporal row collections are explicitly `/rows/*`; calibration uses its Gate 178 `rows` member. This removes any assumption that these files are bare top-level arrays. Any implementation emitting a different root shape is nonconforming and must fail closed.
+
 ### 2.3 Prohibited direct-seed locations
 
 The following are not direct uint64 fields in v2.0.0:
@@ -196,8 +227,10 @@ The historical report fingerprint is computed by the current source from the sou
 
 1. Construct `manifest_payload` with its original fields and source-typed temporal/pair-ledger rows.
 2. Apply the existing source conversion `json.loads(json.dumps(manifest_payload, default=asdict, sort_keys=True))`.
-3. Apply the existing `_hash(...)` implementation.
+3. Apply the existing `_hash(...)` implementation, which executes `json.dumps(obj, sort_keys=True, separators=(\",\", \":\"), allow_nan=False)`, encodes UTF-8 and returns lowercase SHA-256 hex.
 4. Store the result as the legacy `report_fingerprint`.
+
+The frozen algorithm identifier for this exact two-stage process is `TGCV-C10S-VCONT-LEGACY-REPORT-FINGERPRINT-PYJSON-SORTKEYS-COMPACT-SHA256-1`. It is a source-compatibility identifier, not an RFC 8785/JCS profile.
 
 This order MUST be preserved. The input is the original source-domain manifest payload, not JCS bytes, not uint64 wrapper dictionaries and not the complete report root. The duplicated root views are equality-checked against the nested manifest views, but they are not independently inserted into the historical fingerprint input.
 
