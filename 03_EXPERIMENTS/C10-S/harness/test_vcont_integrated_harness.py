@@ -905,6 +905,7 @@ class RunEvidenceBundleCaptureTests(unittest.TestCase):
         restored_candidate = bundle.evidence_candidate.restore(type(candidate))
         original_unit_id = restored_candidate.rows[0]["unit_id"]
         candidate.rows[0]["unit_id"] = "MUTATED_AFTER_CAPTURE"
+        candidate.rows[0]["s3_enabled"][0] = 1 - candidate.rows[0]["s3_enabled"][0]
         self.assertEqual(
             bundle.evidence_candidate.restore(type(candidate)).rows[0]["unit_id"],
             original_unit_id,
