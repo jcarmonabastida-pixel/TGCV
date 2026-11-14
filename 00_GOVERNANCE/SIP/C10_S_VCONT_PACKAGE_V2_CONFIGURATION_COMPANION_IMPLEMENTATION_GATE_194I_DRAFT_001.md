@@ -62,6 +62,8 @@ The writer assembles 28 component rows in frozen order:
 - one MatrixCapture component using its four-field digest domain;
 - one evaluation assignment component using `SHA256(JCS({"rows": ordered_assignment_wire_rows}))`.
 
+Separately, it decodes the three typed uint64 streams back to source integers and recomputes the historical Gate 179 `seed_bank_fingerprint` over the exact ten source SeedAssignment fields and original row order. It compares that value with both the source design object and `design/benchmark_design.json`. This historical fingerprint is not substituted for the evaluation wire-manifest component and is not added as a 29th component.
+
 It then computes the exact versioned seven-field aggregate projection and checks that the result equals both the source `MonteCarloBenchmarkDesign.configuration_fingerprint` and the `design/benchmark_design.json` declaration. A mismatch fails closed; the writer does not overwrite or normalize the declaration.
 
 ## 4. Independent verifier implementation
@@ -78,6 +80,7 @@ The new independent reconciliation layer:
 - checks type ID, serialization ID, base64 canonicality, exact-byte SHA-256, full scenario/version/N and RUN/R family mapping;
 - enforces canonical `run_evidence_records` order and exact consumption of every scenario contract by all RUN/R records;
 - derives the 13 representative source references from the canonical RUN rows and rejects the former self-referential locator;
+- independently recomputes the historical source-typed Gate 179 `seed_bank_fingerprint` separately from the typed evaluation-manifest digest;
 - independently recomputes all 28 components and the aggregate from package sources;
 - checks both companion roots against the same `benchmark_export_id` and compares the aggregate to the source design declaration.
 
@@ -85,7 +88,7 @@ The verifier result now reports identity reconciliation as `RECONCILED` only aft
 
 ## 5. Tests authored — not executed
 
-Added 11 positive/adversarial cases to the existing allowlisted file:
+Added 14 positive/adversarial cases to the existing allowlisted file:
 
 `03_EXPERIMENTS/C10-S/harness/test_vcont_package_v2_verifier.py`
 
@@ -131,3 +134,20 @@ The writer's aggregate-declaration equality is a fail-closed precondition. Its c
 **Gate 194-I disposition: IMPLEMENTED / CONDITIONAL — STATIC REVIEW ONLY; TESTS NOT EXECUTED.**
 
 **Next operation:** complete a source-level consistency audit of the writer/verifier pair and the new test fixtures. Only after that audit should a separate explicit authorization be sought to dispatch the existing manual pure-test workflow. No package generation or scientific execution is implied.
+
+## 8. Gate 194-I.1 — historical seed-bank fingerprint closure
+
+A final crosswalk against the source function `seed_bank_fingerprint(assignments)` in `vcont_benchmark_protocol.py` found that the initial Gate 194-I implementation recomputed the typed evaluation-manifest digest but had not yet added the separate historical source-typed fingerprint check.
+
+That gap is now closed in both writer and independent verifier:
+
+- typed uint64 wire values are decoded to exact source integers;
+- the historical payload is reconstructed using exactly the ten Gate 179 SeedAssignment fields and original row order;
+- SHA-256 is recomputed over the original `json.dumps(sort_keys=True, separators=(",", ":"))` representation;
+- the result is compared with the historical `seed_bank_fingerprint` declaration in the source design;
+- calibration remains separate and is not mixed into the evaluation bank or the 28-component aggregate.
+
+Three additional tests were added for writer parity, historical fingerprint mismatch and reordered evaluation rows. The Gate 194-I companion test set now contains **14 authored tests**, all still unexecuted.
+
+**Updated disposition:** IMPLEMENTED / CONDITIONAL — STATIC REVIEW ONLY; TESTS NOT EXECUTED. This closes the missing historical seed-bank digest check at source-code level; it does not establish that the implementation passes the tests or a real package.
+
