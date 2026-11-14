@@ -15,6 +15,8 @@ from vcont_package_v2_verify import (
     _uint64,
     _historical_fingerprint,
     decode_frozen_snapshot_ref,
+    _assert_snapshot_seed_relations,
+    _logical_run_key,
 )
 
 
@@ -301,6 +303,55 @@ class IndependentVerifierPrimitiveTests(unittest.TestCase):
         )
         with self.assertRaises(PackageVerificationError):
             decode_frozen_snapshot_ref(malformed)
+
+
+
+    def test_seed_domains_remain_distinct_when_truth_seed_differs_from_world_seed(self):
+        assignment = {
+            "world_seed": 101, "z_assignment_seed": 202, "g_assignment_seed": 303,
+        }
+        config = {
+            "seed": 17, "world_seed": 101, "z_assignment_seed": 202, "g_assignment_seed": 303,
+        }
+        manifest = {
+            "world_seed": 101, "z_assignment_seed": 202, "g_assignment_seed": 303,
+        }
+        truth_projection = {"seed": 17}
+        _assert_snapshot_seed_relations(assignment, config, manifest, truth_projection)
+        self.assertNotEqual(truth_projection["seed"], manifest["world_seed"])
+
+    def test_seed_domain_reconciliation_rejects_truth_config_and_stream_divergence(self):
+        assignment = {
+            "world_seed": 101, "z_assignment_seed": 202, "g_assignment_seed": 303,
+        }
+        config = {
+            "seed": 17, "world_seed": 101, "z_assignment_seed": 202, "g_assignment_seed": 303,
+        }
+        manifest = {
+            "world_seed": 101, "z_assignment_seed": 202, "g_assignment_seed": 303,
+        }
+        with self.assertRaises(PackageVerificationError):
+            _assert_snapshot_seed_relations(assignment, config, manifest, {"seed": 101})
+        with self.assertRaises(PackageVerificationError):
+            _assert_snapshot_seed_relations(
+                assignment, dict(config, z_assignment_seed=999), manifest, {"seed": 17}
+            )
+        with self.assertRaises(PackageVerificationError):
+            _assert_snapshot_seed_relations(
+                assignment, config, dict(manifest, g_assignment_seed=999), {"seed": 17}
+            )
+
+    def test_logical_run_key_rejects_noncanonical_role_index_and_extra_fields(self):
+        valid = {
+            "scenario_id": "S01", "scenario_version": "v1", "N": 700,
+            "outer_replicate_id": "outer-000000", "assignment_role": "RUN",
+            "assignment_index": -1, "run_id": "run-001",
+        }
+        self.assertEqual(_logical_run_key(valid, "fixture")[-1], "run-001")
+        with self.assertRaises(PackageVerificationError):
+            _logical_run_key(dict(valid, assignment_index=0), "bad-run-index")
+        with self.assertRaises(PackageVerificationError):
+            _logical_run_key(dict(valid, unexpected="field"), "extra-field")
 
 
 
