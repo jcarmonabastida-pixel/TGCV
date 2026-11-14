@@ -392,7 +392,10 @@ class IndependentVerifierPrimitiveTests(unittest.TestCase):
                     "evaluation_class": evaluation_class,
                     "truth_status": truth_status,
                 })
-        return {"rows": matrix_rows}, {"report": {"pair_ledger": pair_rows}}
+        scenario_versions = [[sid, "v1"] for sid in AUTHORITATIVE_SCENARIO_IDS]
+        return {"rows": matrix_rows}, {
+            "report": {"design": {"scenario_versions": scenario_versions}, "pair_ledger": pair_rows}
+        }
 
     def test_matrix_capture_and_pair_ledger_exact_52_pair_join(self):
         matrix, report = self._matrix_pair_fixture()
