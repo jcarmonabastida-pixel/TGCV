@@ -229,17 +229,52 @@ class RunEvidenceBundle:
         if sealed_evidence.manifest.get("row_count") != len(sealed_evidence.rows):
             raise ContractError("SealedEvidence manifest row_count does not match retained rows")
         provenance = sealed_evidence.manifest.get("provenance", {})
-        if any(provenance.get(k) != v for k, v in {
+        expected_provenance = {
             "run_id": run_id, "scenario_id": config.scenario_id,
             "scenario_version": config.version, "world_id": run_manifest.world_id,
             "world_version": run_manifest.world_version, "replicate_id": config.replicate_id,
             "outer_replicate_id": assignment.outer_replicate_id,
             "assignment_role": role, "assignment_index": index,
-        }.items()):
-            raise ContractError("SealedEvidence provenance does not match run identity")
+            "g_assignment_mechanism_id": run_manifest.g_assignment_mechanism_id,
+            "g_assignment_mechanism_version": run_manifest.g_assignment_mechanism_version,
+            "g_assignment_mechanism_hash": run_manifest.g_assignment_mechanism_hash,
+            "z_assignment_mechanism_id": run_manifest.z_assignment_mechanism_id,
+            "z_assignment_mechanism_version": run_manifest.z_assignment_mechanism_version,
+            "z_assignment_mechanism_hash": run_manifest.z_assignment_mechanism_hash,
+            "g_reference_regime_id": run_manifest.g_reference_regime_id,
+            "g_reference_regime_version": run_manifest.g_reference_regime_version,
+            "z_assignment_vector_hash": run_manifest.z_assignment_vector_hash,
+            "g_assignment_vector_hash": run_manifest.g_assignment_vector_hash,
+        }
+        if any(provenance.get(k) != v for k, v in expected_provenance.items()):
+            raise ContractError("SealedEvidence provenance does not match RunManifest/run identity")
+        if sealed_evidence.manifest.get("provenance_sha256") != _snapshot_digest(provenance):
+            # Sealer's legacy JSON digest is distinct from the typed snapshot digest.
+            legacy_provenance = hashlib.sha256(json.dumps(
+                provenance, sort_keys=True, separators=(",", ":"), allow_nan=False
+            ).encode("utf-8")).hexdigest()
+            if sealed_evidence.manifest.get("provenance_sha256") != legacy_provenance:
+                raise ContractError("SealedEvidence provenance digest does not recompute")
         legacy_digest = _legacy_sealed_digest(sealed_evidence)
         if legacy_digest != sealed_evidence.sha256 or analyzer_result.input_sha256 != legacy_digest:
             raise ContractError("SealedEvidence digest does not match retained rows or AnalyzerResult input")
+        if (analysis_contract.g_assignment_mechanism_id,
+            analysis_contract.g_assignment_mechanism_version,
+            analysis_contract.g_assignment_mechanism_hash,
+            analysis_contract.z_assignment_mechanism_id,
+            analysis_contract.z_assignment_mechanism_version,
+            analysis_contract.z_assignment_mechanism_hash,
+            analysis_contract.reference_regime_id,
+            analysis_contract.reference_regime_version) != (
+            run_manifest.g_assignment_mechanism_id,
+            run_manifest.g_assignment_mechanism_version,
+            run_manifest.g_assignment_mechanism_hash,
+            run_manifest.z_assignment_mechanism_id,
+            run_manifest.z_assignment_mechanism_version,
+            run_manifest.z_assignment_mechanism_hash,
+            run_manifest.g_reference_regime_id,
+            run_manifest.g_reference_regime_version):
+            raise ContractError("AnalysisContract does not match RunManifest mechanism/regime identity")
         if (analysis_contract.estimand_id, analysis_contract.estimand_version) != (
             analyzer_result.estimand_id, analyzer_result.estimand_version
         ):
@@ -269,6 +304,8 @@ class RunEvidenceBundle:
             raise ContractError("AnalysisContract/AnalyzerResult mechanism or reference-regime mismatch")
         if evaluation_report.run_id != analyzer_result.run_id:
             raise ContractError("EvaluationReport/AnalyzerResult run mismatch")
+        if analyzer_result.provenance_sha256 != sealed_evidence.manifest.get("provenance_sha256"):
+            raise ContractError("AnalyzerResult provenance digest does not match sealed manifest")
 
         structural = asdict(config)
         for name in ("seed", "world_seed", "z_assignment_seed", "g_assignment_seed",
