@@ -1221,7 +1221,7 @@ def _reconcile_report_seed_sources(
             truth_projection = bundle.truth_projection.restore(MatrixTruthProjection)
             analyzer_source = bundle.analyzer_result.restore(AnalyzerResult)
             contract_source = bundle.analysis_contract.restore(AnalysisContract)
-            if len(outer.repeated_bundles) != design.get("repeated_assignments"):
+            if len(outer.repeated_bundles) != design.repeated_assignments:
                 raise ContractError("v2.1 OuterWorldEvidenceBundle repeated-assignment cardinality differs from R")
             if assignment.bank != "evaluation":
                 raise ContractError("v2.1 report RUN must join to the evaluation SeedAssignment bank")
