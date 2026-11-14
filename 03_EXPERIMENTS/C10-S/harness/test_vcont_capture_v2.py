@@ -546,6 +546,18 @@ class CaptureV2Tests(unittest.TestCase):
 
     def test_report_snapshot_wraps_uint64_and_is_immutable_from_compatibility_dict(self):
         report = self.report_fixture()
+        # Exercise the uint64 upper boundary and the first integer above 2**53.
+        for temporal_view in (
+            report["temporal_manifest"],
+            report["manifest"]["temporal_manifest"],
+        ):
+            temporal_view[0]["world_seed"] = (1 << 64) - 1
+            temporal_view[0]["z_assignment_seed"] = (1 << 53) + 1
+        report["report_fingerprint"] = hashlib.sha256(
+            json.dumps(
+                report["manifest"], sort_keys=True, separators=(",", ":"), allow_nan=False
+            ).encode("utf-8")
+        ).hexdigest()
         snapshot = freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
         original_bytes = snapshot.canonical_bytes
         report["coverage"]["observed_pairs"] = 0
