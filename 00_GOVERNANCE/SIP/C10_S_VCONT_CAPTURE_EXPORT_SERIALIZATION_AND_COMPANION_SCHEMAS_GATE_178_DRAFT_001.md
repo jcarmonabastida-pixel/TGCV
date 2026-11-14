@@ -510,3 +510,11 @@ The exact typed representation is `{"$type":"uint64","decimal":"<canonical unsig
 Schema crosswalk: FrozenReportSnapshot, CalibrationBankManifest, capture identity and RUN-EXPORT-ENVELOPE advance to 2.0.0; MatrixCapture and Gate159 reconciliation remain 1.0.0. The 14-file inventory and archive profile remain unchanged. The prior Gate 178 suggestion of v1.1.0 is explicitly superseded. Full field-level contract and regression vectors: `C10_S_VCONT_PACKAGE_UINT64_WIRE_FORMAT_DECISION_AND_V2_CROSSWALK_GATE_179_DRAFT_001.md`.
 
 Gate 179 closes the schema-design incompatibility only. Implementation remains blocked pending contract acceptance and explicit authorization. No code/tests/CI, seed generation, calibration, package or scientific execution occurred.
+
+## 17. Gate 180 — capture implementation gap
+
+Gate 180 verifies against current source that `CapturedBenchmark` still has only the three legacy fields `report`, `outer_world_bundles` and `evidence_index`. `produce_and_capture_benchmark()` validates the matrix tuple and passes it to Evaluator but does not retain MatrixCapture; it returns the mutable report dict and does not create FrozenReportSnapshot. The required trailing optional fields and producer-populated fail-closed capture behavior from Gate 178 §3.3 are not implemented.
+
+The producer also has no inputs for calibration manifest, Gate159 reconciliation, source-execution evidence or technical-test evidence. These remain independent companion artifacts and must be assembled and bound at a separate export boundary; the capture producer cannot infer or attest them.
+
+The current FrozenSnapshot codec remains a legacy opaque snapshot serializer, not JCS and not a strict independent package verifier. Its enum decoder returns underlying values and its JSON parser does not reject duplicate keys. Existing snapshot bytes must remain byte-preserved; the v2 verifier must be separate and strict. See Gate 180. No code/tests/CI or scientific execution occurred.
