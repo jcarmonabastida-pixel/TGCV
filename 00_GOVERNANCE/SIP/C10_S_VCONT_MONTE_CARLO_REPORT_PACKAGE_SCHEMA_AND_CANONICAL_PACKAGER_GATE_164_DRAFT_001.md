@@ -297,3 +297,11 @@ Gate 175 inspected the actual benchmark capture API. `produce_and_capture_benchm
 Additionally, `scenario_matrix_fingerprint()` omits `ScenarioEstimandSpec.tolerance_id`. Preserve this legacy fingerprint for compatibility, but require a separately versioned full-matrix digest covering every declared matrix and nested key field, including `tolerance_id`. The full digest is the commitment to the exact matrix; the legacy fingerprint remains a historical/compatibility check only.
 
 Gate 175 status: matrix export and complete fingerprint commitment BLOCKED at current source boundary. Gate 164 confirmatory package cannot be accepted until the exact matrix payload and full digest are present and independently verified. See Gate 175. No code/tests/package execution occurred.
+
+## 18. Gate 176 — capture-time matrix and external companion inputs
+
+The package's `design/scenario_estimand_matrix.json` must be populated from the exact immutable `MatrixCapture` produced at the same capture boundary as evaluation. It must not be rebuilt from current code or inferred from the pair ledger. MatrixCapture carries all 52 typed rows in canonical order and a versioned full-matrix JCS SHA-256 that includes every field, including `tolerance_id`. The legacy matrix fingerprint remains unchanged and is verified separately.
+
+The current `CapturedBenchmark.report` is a mutable dict despite the frozen outer dataclass. Gate 176 requires a capture-time immutable report snapshot/digest as the authoritative package payload; the existing report field remains a compatibility view.
+
+The calibration manifest, Gate 159 reconciliation, GitHub source-execution provenance and technical-test evidence are separately supplied companion artifacts joined by benchmark_export_id. They are not derived from evaluation-bank assignments or design-declared fingerprints. Missing companions block Gate 164 CONFIRMATORY acceptance. See Gate 176. No implementation or execution occurred.
