@@ -332,3 +332,21 @@ The next implementation should be limited to the pure package boundary:
 7. Keep the current external-authentication output NOT_AUTHENTICATED. Do not add OIDC/signing permissions or a trusted workflow in this code gate.
 
 No Generator, Sealer, Analyzer, Evaluator, DGP, estimand or seed-generation source is to be modified. No producer, seed-bank generation, calibration, package construction, benchmark or scientific execution is included. A separate technical-test authorization is required before compiling or executing tests if not already granted for this new verifier layer.
+## 11. Gate 159 implementation increment 1 — calibration row reconciliation (2026-11-14)
+
+Following explicit user authorization, the package boundary has received a first bounded implementation increment:
+
+- Writer: exact CalibrationBankManifest v2.0.0 root allowlist, required envelope fields, execution-evidence enum, row allowlist/bank checks, typed uint64 decoding and exact seed-derivation descriptor validation.
+- Independent verifier: exact calibration root and row allowlists; v2.0.0 identity; descriptor/namespace binding; per-row world/Z/G seed recomputation from the declared calibration namespace; source-typed legacy fingerprint recomputation; RUN/R group checks; within-row stream distinction; fixed world seed within each M; distinct world seeds across M; unique Z/G values within each M; and full three-stream calibration/evaluation union disjointness.
+- Five adversarial pure tests were authored for positive reconciliation, namespace drift, legacy fingerprint drift, cross-bank collision and row-field expansion.
+
+The verifier intentionally does NOT claim the calibration companion is fully closed yet. The following contract gaps were discovered during implementation and remain open rather than being guessed:
+
+1. Gate 178 describes the calibration design contents semantically (ordered scenario/version map, sorted N grid, M, R, purpose/targets) but does not freeze an exact field allowlist and wire types for that nested object. The implementation currently requires a nonempty object but does not derive row cardinality or authoritative scenario/N/M/R ordering from it.
+2. Gate 178/Gate 181 identify manifest_sha256 as a versioned JCS manifest digest, but the exact digest input projection (self-field exclusion and algorithm identifier) is not stated in the recovered contract. The verifier checks its lowercase SHA-256 representation only; it does not claim digest recomputation.
+3. Gate 178 defines Gate159 check-row fields and status derivation, but does not freeze the canonical findings_digest input projection/algorithm or exact schemas for verifier_identity and each input_artifacts entry. Gate159 check-registry and derived-status recomputation therefore remain OPEN.
+4. Source-execution GitHub binding, technical-test run binding and external attestation remain unavailable to this deterministic package verifier.
+
+No tests, compilation, package construction, calibration, seed generation, producer, benchmark or scientific execution was performed in this increment. The five tests are authored but NOT EXECUTED.
+
+**Increment 1 disposition:** calibration seed derivation, legacy row fingerprint, internal RUN/R group invariants and cross-bank three-stream disjointness are IMPLEMENTED IN SOURCE; test coverage AUTHORED / NOT EXECUTED. Calibration design-derived cardinality/order and manifest JCS digest remain OPEN. Gate159 check artifact recomputation remains OPEN. Gate 159 overall remains CONDITIONAL / OPEN.
