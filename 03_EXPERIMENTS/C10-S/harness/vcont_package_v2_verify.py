@@ -1863,8 +1863,9 @@ def _reconcile_calibration_manifest(
             raise PackageVerificationError(f"calibration metric target {index} field allowlist mismatch")
         sid = target.get("scenario_id")
         if (sid not in scenario_versions or target.get("scenario_version") != scenario_versions[sid]
+                or target.get("estimand_id") not in AUTHORITATIVE_ESTIMAND_IDS
                 or not all(isinstance(target.get(field), str) and target[field].strip()
-                           for field in ("estimand_id", "estimand_version", "metric"))
+                           for field in ("estimand_version", "metric"))
                 or isinstance(target.get("target_mcse"), bool)
                 or not isinstance(target.get("target_mcse"), (int, float))
                 or not math.isfinite(float(target["target_mcse"])) or target["target_mcse"] <= 0):
@@ -2107,6 +2108,8 @@ def _reconcile_gate159_artifact(artifact: Any, expected_export_id: str) -> str:
                 raise PackageVerificationError(f"Gate159 check row {index} mismatch_count differs from materialized mismatches")
         if status == "PASS" and (
             mismatch_count != 0 or mismatches or observed is None or matched is None
+            or matched != observed
+            or (row.get("expected_count") is not None and row["expected_count"] != observed)
         ):
             raise PackageVerificationError(f"Gate159 check row {index} PASS is inconsistent with its counts")
         if status == "FAIL" and (mismatch_count in (None, 0) or not mismatches):
