@@ -542,3 +542,11 @@ The current snapshot decoder does not restore enum types (it returns their under
 Gate 164 CONFIRMATORY v1.0.0 is fail-closed when calibration manifest, Gate 159 reconciliation, independent GitHub source/workflow resolution or required technical test evidence is missing. No placeholder or caller PASS is acceptable. Any diagnostic partial-transport format must use a distinct schema ID/version and cannot claim Gate 164 compliance or reconciled/authenticated provenance.
 
 The independent verifier returns separate integrity, schema, completeness, reconciliation, source provenance, test and attestation statuses; producer validation flags are untrusted. Full contract: Gate 174. No serializer, package, tests, CI, calibration or scientific execution occurred. Next Gate 175 audits implementability against actual types and APIs.
+
+## 34. Gate 175 — package serialization implementability audit
+
+Gate 175 finds the RUN/R and M evidence source objects available in `CapturedBenchmark`, but the exact 52-row matrix is not retained: the producer validates and uses it locally, while the return object contains report, outer-world bundles and evidence index only. The report's design fingerprint and pair ledger do not reconstruct the exact matrix. The matrix must be retained as an immutable capture-time payload or bound companion.
+
+The legacy `scenario_matrix_fingerprint()` omits `tolerance_id`; keep it unchanged for compatibility and add a full versioned matrix digest covering all declared fields. The generic snapshot decoder is not a strict independent decoder (enum values lose type identity, untagged dicts are accepted, exact field/version checks are absent); no enum-valued fields were identified in the current registered snapshot dataclasses, so that enum issue is latent for current records. Arbitrary bytes and non-string mapping keys remain unsupported.
+
+The capture API receives only evaluation assignments. Actual calibration manifest, Gate 159 reconciliation and independent GitHub workflow/test evidence are absent from its return contract. Therefore Gate 164 confirmatory packager remains blocked. See Gate 175. No code, tests, calibration, seed generation, package or benchmark was executed.
