@@ -224,3 +224,11 @@ Gate 173 confirms that the Gate 170 typed snapshots retain the complete SealedEv
 The current FrozenSnapshot bytes use a custom tagged Python JSON representation and a snapshot-specific SHA-256. This is not RFC 8785 JCS. Preserve it as the source-snapshot integrity layer. A package adapter must losslessly encode/decode snapshot bytes and restore the declared typed objects; then independently recompute the legacy SealedEvidence digest from restored rows+manifest and compare it with AnalyzerResult.input_sha256. JCS digests are a separate package layer and must not replace snapshot, SealedEvidence or report fingerprint semantics.
 
 The Gate 164 `runs/run_records.json` path can carry the complete ordered RunEvidenceRecord and OuterWorldEvidenceBundle envelope; no new archive path is needed. Gate 159 reconciliation, actual calibration manifest availability, external workflow/source identity and package verifier remain open. See Gate 173. No tests or runtime/package execution occurred.
+
+## 16. Gate 174 — snapshot transport contract
+
+Gate 174 specifies transport of each FrozenSnapshot as base64 of its exact retained `canonical_bytes`, plus the exact type ID, serialization ID and SHA-256. The source snapshot bytes and their digest remain unchanged; package JCS applies only to the containing package JSON. The verifier must validate base64, byte digest, allowlisted type/schema and restore the typed source before recomputing the legacy SealedEvidence digest from exact rows+manifest.
+
+A concrete source limitation is recorded: current `_decode` returns enum underlying values rather than restoring registered enum types, and `_encode` rejects arbitrary bytes. The future adapter therefore needs a versioned allowlisted decoder and fail-closed handling of unsupported values; no universal type-preserving round-trip is claimed yet.
+
+The Gate 164 confirmatory profile requires actual calibration manifest and Gate 159 reconciliation; diagnostic partial transport, if later specified, must have a distinct schema ID/version. See Gate 174. No serializer/verifier code or tests were executed.
