@@ -1332,25 +1332,32 @@ class CalibrationManifestVerifierTests(unittest.TestCase):
     @staticmethod
     def _fixture():
         namespace = "calibration-fixture"
-        rows = []
-        for role, replicate in (("RUN", -1), ("REPEATED_ASSIGNMENT", 0)):
-            def seed(stream, seed_role, seed_replicate):
-                payload = (
-                    f"TGCV-C10S-VCONT-SEED-v3|{namespace}|calibration|S0|v1|24|"
-                    f"outer-000000|{seed_role}|{seed_replicate}|{stream}"
-                )
-                return int.from_bytes(hashlib.sha256(payload.encode("utf-8")).digest()[:8], "big")
-            world = seed("world", "RUN", -1)
-            z = seed("z", role, replicate)
-            g = seed("g", role, replicate)
-            rows.append({
-                "bank": "calibration", "scenario_id": "S0", "scenario_version": "v1",
-                "n_units": 24, "replicate": replicate, "outer_replicate_id": "outer-000000",
-                "assignment_role": role,
-                "world_seed": {"$type": "uint64", "decimal": str(world)},
-                "z_assignment_seed": {"$type": "uint64", "decimal": str(z)},
-                "g_assignment_seed": {"$type": "uint64", "decimal": str(g)},
-            })
+        scenario_id = AUTHORITATIVE_SCENARIO_IDS[0]
+        scenario_version = "v1"
+
+        def make_rows(bank):
+            rows = []
+            for role, replicate in (("RUN", -1), ("REPEATED_ASSIGNMENT", 0)):
+                def seed(stream, seed_role, seed_replicate):
+                    payload = (
+                        f"TGCV-C10S-VCONT-SEED-v3|{namespace}|{bank}|{scenario_id}|"
+                        f"{scenario_version}|24|outer-000000|{seed_role}|{seed_replicate}|{stream}"
+                    )
+                    return int.from_bytes(hashlib.sha256(payload.encode("utf-8")).digest()[:8], "big")
+                world = seed("world", "RUN", -1)
+                z = seed("z", role, replicate)
+                g = seed("g", role, replicate)
+                rows.append({
+                    "bank": bank, "scenario_id": scenario_id, "scenario_version": scenario_version,
+                    "n_units": 24, "replicate": replicate, "outer_replicate_id": "outer-000000",
+                    "assignment_role": role,
+                    "world_seed": {"$type": "uint64", "decimal": str(world)},
+                    "z_assignment_seed": {"$type": "uint64", "decimal": str(z)},
+                    "g_assignment_seed": {"$type": "uint64", "decimal": str(g)},
+                })
+            return rows
+
+        rows = make_rows("calibration")
         legacy_rows = [{
             **{k: v for k, v in row.items()
                if k not in ("world_seed", "z_assignment_seed", "g_assignment_seed")},
@@ -1370,19 +1377,27 @@ class CalibrationManifestVerifierTests(unittest.TestCase):
                 "output_rule": "first_8_digest_bytes_unsigned_big_endian",
                 "namespace": namespace,
             },
-            "design": {"fixture": True},
+            "design": {
+                "scenario_versions": {scenario_id: scenario_version},
+                "n_grid": [24], "outer_replicates": 1, "repeated_assignments": 1,
+                "calibration_purpose": "N_R_PRECISION_CALIBRATION",
+                "metric_targets": [{
+                    "scenario_id": scenario_id, "scenario_version": scenario_version,
+                    "estimand_id": AUTHORITATIVE_ESTIMAND_IDS[0], "estimand_version": "v1",
+                    "metric_id": "mae", "target_mcse": 0.1,
+                }],
+            },
             "row_count": len(rows), "rows": rows,
             "seed_bank_fingerprint_legacy": legacy,
-            "manifest_sha256": "a" * 64,
+            "manifest_sha256": "",
             "execution_evidence_status": "NOT_CAPTURED",
         }
-        evaluation_rows = [{
-            **{k: v for k, v in row.items() if k != "bank"},
-            "bank": "evaluation",
-        } for row in rows]
-        return calibration, {"rows": evaluation_rows}
+        digest_payload = dict(calibration)
+        digest_payload.pop("manifest_sha256")
+        calibration["manifest_sha256"] = hashlib.sha256(rfc8785.dumps(digest_payload)).hexdigest()
+        return calibration, {"rows": make_rows("evaluation")}
 
-    def test_reconciles_calibration_seed_derivation_fingerprint_and_disjointness(self):
+    def test_reconciles_calibration_seed_derivation_fingerprint_disjointness_and_manifest_digest(self):
         calibration, evaluation = self._fixture()
         result = _reconcile_calibration_manifest(calibration, evaluation)
         self.assertEqual(result["calibration_rows"], 2)
@@ -1409,6 +1424,30 @@ class CalibrationManifestVerifierTests(unittest.TestCase):
     def test_rejects_noncanonical_calibration_row_fields(self):
         calibration, evaluation = self._fixture()
         calibration["rows"][0]["assignment_index"] = -1
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_calibration_manifest(calibration, evaluation)
+
+    def test_rejects_design_cardinality_mismatch(self):
+        calibration, evaluation = self._fixture()
+        calibration["row_count"] = 1
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_calibration_manifest(calibration, evaluation)
+
+    def test_rejects_row_order_drift(self):
+        calibration, evaluation = self._fixture()
+        calibration["rows"].reverse()
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_calibration_manifest(calibration, evaluation)
+
+    def test_rejects_manifest_jcs_digest_drift(self):
+        calibration, evaluation = self._fixture()
+        calibration["manifest_sha256"] = "0" * 64
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_calibration_manifest(calibration, evaluation)
+
+    def test_rejects_design_field_expansion(self):
+        calibration, evaluation = self._fixture()
+        calibration["design"]["unexpected"] = True
         with self.assertRaises(PackageVerificationError):
             _reconcile_calibration_manifest(calibration, evaluation)
 
