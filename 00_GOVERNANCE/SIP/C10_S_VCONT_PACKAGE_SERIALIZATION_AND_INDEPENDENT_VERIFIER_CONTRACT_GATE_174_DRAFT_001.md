@@ -247,3 +247,11 @@ Gate 180 adds two mandatory report seed locations to the v2 verifier registry: `
 The `design/effective_scenario_configs.json` seed-field scope remains unresolved because source ScenarioConfig contains four seed-valued fields and no package projection currently establishes their inclusion/exclusion. The verifier registry must be generated from the final versioned projection schema, not a prose assumption.
 
 The current FrozenSnapshot codec is not the strict v2 verifier: its JSON parser does not reject duplicate keys, enum decoding erases enum identity, and nested mappings are not constrained by a full exact-field schema. Existing opaque snapshot bytes remain unchanged; the independent verifier must validate their type allowlist and exact-byte digest separately. See Gate 180. No verifier implementation or tests were executed.
+
+## 14. Gate 181 — exact v2 verifier registry and projection contract
+
+Gate 181 freezes the direct uint64 JSON Pointer registry for package v2.0.0. It includes evaluation/calibration assignment rows, run temporal rows, root and nested report temporal rows, root and nested pair-ledger contribution `world_seed` values, and the outer-world key in run_records. The verifier must enforce all duplicate-view and assignment/RunManifest/run-record joins; no coercion, repair or silent sorting is permitted.
+
+`design/effective_scenario_configs.json` uses EffectiveScenarioConfigProjection v2.0.0: exact structural DGP/Generator fields only, explicit seed policy requiring world/Z/G stream seeds from SeedAssignment, and no direct seed or RUN/R identity fields. Full effective ScenarioConfig snapshots remain opaque byte-preserved FrozenSnapshot payloads in run_records and are reconciled after supported decoding.
+
+The verifier reconstructs the historical report fingerprint from source-typed manifest_payload after decoding uint64 wrappers and checking root/nested duplicate equality. It separately verifies FrozenReportSnapshot JCS and package digests. Calibration, Gate159, source-execution and test evidence are independent companion artifacts; absent required confirmatory companions block package acceptance. Full exact contract: Gate 181. No verifier code or tests were executed.
