@@ -847,11 +847,34 @@ def serialize_package_files_v2(
                     or value.get("row_count") != len(value["rows"])):
                 raise PackageBuildError("evaluation seed assignment envelope is not the exact v2.0.0 rows schema")
         if path == "seeds/calibration_seed_manifest.json":
-            if (value.get("schema_id") != "TGCV-C10S-VCONT-CALIBRATION-BANK-MANIFEST"
+            if (set(value) != {
+                    "schema_id", "schema_version", "bank", "namespace", "seed_derivation",
+                    "design", "row_count", "rows", "seed_bank_fingerprint_legacy",
+                    "manifest_sha256", "execution_evidence_status",
+                } or value.get("schema_id") != "TGCV-C10S-VCONT-CALIBRATION-BANK-MANIFEST"
                     or value.get("schema_version") != "2.0.0" or value.get("bank") != "calibration"
-                    or not isinstance(value.get("rows"), list)
-                    or value.get("row_count") != len(value["rows"])):
-                raise PackageBuildError("calibration seed manifest is not the exact v2.0.0 rows schema")
+                    or not isinstance(value.get("namespace"), str) or not value["namespace"].strip()
+                    or not isinstance(value.get("seed_derivation"), Mapping)
+                    or not isinstance(value.get("design"), Mapping)
+                    or not value["design"]
+                    or value.get("execution_evidence_status") not in ("NOT_CAPTURED", "AVAILABLE", "UNVERIFIABLE")
+                    or not isinstance(value.get("rows"), list) or not value["rows"]
+                    or value.get("row_count") != len(value["rows"])
+                    or not isinstance(value.get("seed_bank_fingerprint_legacy"), str)
+                    or not isinstance(value.get("manifest_sha256"), str)):
+                raise PackageBuildError("calibration seed manifest exact v2.0.0 envelope mismatch")
+            calibration_row_fields = {
+                "bank", "scenario_id", "scenario_version", "n_units", "replicate",
+                "outer_replicate_id", "assignment_role", "world_seed",
+                "z_assignment_seed", "g_assignment_seed",
+            }
+            for row_index, row in enumerate(value["rows"]):
+                if not isinstance(row, Mapping) or set(row) != calibration_row_fields:
+                    raise PackageBuildError(f"calibration seed manifest row {row_index} field allowlist mismatch")
+                if row.get("bank") != "calibration":
+                    raise PackageBuildError(f"calibration seed manifest row {row_index} has wrong bank")
+                for seed_field in ("world_seed", "z_assignment_seed", "g_assignment_seed"):
+                    _decode_assignment_uint64_wire(row.get(seed_field))
         if path == "runs/temporal_manifest.json":
             if (value.get("schema_id") != "TGCV-C10S-VCONT-TEMPORAL-MANIFEST"
                     or value.get("schema_version") != "2.0.0"
