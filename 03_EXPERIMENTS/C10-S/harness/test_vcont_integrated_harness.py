@@ -915,6 +915,7 @@ class RunEvidenceBundleCaptureTests(unittest.TestCase):
         self.assertEqual(matrix_truth.theta_a_truth, truth.theta_a_truth)
         self.assertFalse(hasattr(matrix_truth, "potential_v"))
         restored_sealed = bundle.sealed_evidence.restore(type(sealed))
+        self.assertEqual(restored_sealed.rows[0]["unit_id"], original_unit_id)
         self.assertEqual(restored_sealed.sha256, sealed.sha256)
         self.assertEqual(bundle.sealed_evidence_legacy_sha256, sealed.sha256)
         self.assertEqual(bundle.validation_status, "STRUCTURALLY_VALID")
