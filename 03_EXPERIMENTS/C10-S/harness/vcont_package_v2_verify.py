@@ -46,6 +46,22 @@ PACKAGE_PATHS = (
 DATA_PATHS = tuple(path for path in PACKAGE_PATHS if path != "manifest.json")
 UINT64_MAX = (1 << 64) - 1
 
+# Frozen Gate 166/benchmark-protocol registry; duplicated here intentionally so
+# the verifier does not import the producer's scenario/matrix registry.
+AUTHORITATIVE_SCENARIO_IDS = (
+    "R0_FOCAL_POSITIVE", "R0_FOCAL_NULL", "R0_FOCAL_ADVERSE",
+    "R0_DIRECT_G", "R0_DIRECT_Z", "R1_ALTERNATIVE_BASELINE",
+    "R2_ALTERNATIVE_AFFECTED", "R3_PROVISION_FAILURE",
+    "R0_MEASUREMENT_ADVERSE", "R0_INTERFERENCE", "R0_SUPPORT_FAILURE",
+    "R0_HETEROGENEITY", "R2_SUPPORT_FAILURE_ZG_INTERACTION",
+)
+AUTHORITATIVE_ESTIMAND_IDS = (
+    "ITT_Z_RUN_CONDITIONAL_VCONT",
+    "ITT_Z_MECHANISM_MARGINAL_VCONT",
+    "ITT_Z_REFERENCE_REGIME_VCONT",
+    "ITT_G_Z0_VCONT",
+)
+
 
 class PackageVerificationError(ValueError):
     """The archive or one of its mandatory structural contracts is invalid."""
@@ -790,12 +806,21 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
             or isinstance(M, bool) or not isinstance(M, int)
             or isinstance(R, bool) or not isinstance(R, int)):
         raise PackageVerificationError("report design dimensions/scenario registry are malformed")
-    scenario_order = [row[0] for row in scenario_versions
-                      if isinstance(row, list) and len(row) == 2]
-    versions = {row[0]: row[1] for row in scenario_versions
-                if isinstance(row, list) and len(row) == 2}
-    if len(scenario_order) != 13 or len(set(scenario_order)) != 13:
-        raise PackageVerificationError("report design scenario registry is not unique")
+    if (any(not isinstance(row, list) or len(row) != 2
+            or not all(isinstance(value, str) and value for value in row)
+            for row in scenario_versions)
+            or tuple(row[0] for row in scenario_versions) != AUTHORITATIVE_SCENARIO_IDS):
+        raise PackageVerificationError("report design scenario registry differs from frozen authoritative order")
+    scenario_order = [row[0] for row in scenario_versions]
+    versions = {row[0]: row[1] for row in scenario_versions}
+    report_manifest = report.get("manifest")
+    if (not isinstance(report_manifest, dict)
+            or report_manifest.get("scenario_versions") != scenario_versions
+            or report_manifest.get("N") != n_units
+            or report_manifest.get("M") != M
+            or report_manifest.get("R") != R
+            or report_manifest.get("matrix_fingerprint") != design.get("matrix_fingerprint")):
+        raise PackageVerificationError("report design and legacy manifest identities/dimensions diverge")
     expected_runs = 13 * M * (1 + R)
     expected_outers = 13 * M
     declared = run_file["declared_cardinality"]
@@ -1336,6 +1361,19 @@ def _reconcile_matrix_pair_ledger(matrix: Any, decoded_report: Any) -> None:
         "abstention_expectation", "tolerance_id", "reason",
         "run_evaluation_class", "repeated_evaluation_class",
     }
+    report_design = report.get("design")
+    scenario_versions = report_design.get("scenario_versions") if isinstance(report_design, dict) else None
+    if (not isinstance(scenario_versions, list)
+            or tuple(row[0] for row in scenario_versions
+                     if isinstance(row, list) and len(row) == 2) != AUTHORITATIVE_SCENARIO_IDS):
+        raise PackageVerificationError("MatrixCapture join lacks authoritative scenario order")
+    expected_matrix_identities = [
+        (sid, version, estimand_id, "001")
+        for sid, version in scenario_versions
+        for estimand_id in AUTHORITATIVE_ESTIMAND_IDS
+    ]
+    if len(expected_matrix_identities) != 52:
+        raise PackageVerificationError("frozen scenario/estimand universe is not exactly 52 pairs")
     seen_matrix_keys = set()
     seen_pair_keys = set()
     for index, (matrix_row, pair_row) in enumerate(zip(matrix["rows"], ledger)):
@@ -1351,6 +1389,8 @@ def _reconcile_matrix_pair_ledger(matrix: Any, decoded_report: Any) -> None:
         ))
         if any(not isinstance(value, str) or not value for value in identity):
             raise PackageVerificationError(f"MatrixCapture row {index} identity values are invalid")
+        if identity != expected_matrix_identities[index]:
+            raise PackageVerificationError(f"MatrixCapture row {index} differs from frozen 13 x 4 scenario/estimand order")
         if identity in seen_matrix_keys:
             raise PackageVerificationError("MatrixCapture contains a duplicate scenario/estimand identity")
         seen_matrix_keys.add(identity)
@@ -1428,8 +1468,9 @@ def _check_report(report_envelope: Any) -> None:
         if not isinstance(pair, list) or len(pair) != 2 or not all(isinstance(x, str) and x for x in pair):
             raise PackageVerificationError("report scenario_versions manifest is malformed")
         declared_ids.append(pair[0])
-    if len(set(declared_ids)) != 13 or set(scenarios) != set(declared_ids):
-        raise PackageVerificationError("report scenario reports differ from declared scenario registry")
+    if (tuple(declared_ids) != AUTHORITATIVE_SCENARIO_IDS
+            or set(scenarios) != set(declared_ids)):
+        raise PackageVerificationError("report scenario reports differ from frozen authoritative scenario registry")
     temporal = report.get("temporal_manifest")
     pairs = report.get("pair_ledger")
     expected_temporal_count = 13 * outer_replicates * (1 + repeated_assignments)
