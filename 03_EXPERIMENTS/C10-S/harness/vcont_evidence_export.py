@@ -940,6 +940,29 @@ def derive_capture_identity(design_identity, matrix_capture, outer_world_bundles
     if not isinstance(matrix_capture, MatrixCapture) or not isinstance(report_snapshot, FrozenReportSnapshot):
         raise ContractError("capture identity requires MatrixCapture and FrozenReportSnapshot")
     bundles = tuple(outer_world_bundles)
+    expected_design_fields = {
+        "scenario_versions", "N", "M", "R", "matrix_fingerprint",
+        "metric_targets", "seed_bank_label", "seed_bank_fingerprint",
+        "executable_commit", "configuration_fingerprint",
+    }
+    if not isinstance(design_identity, dict) or set(design_identity) != expected_design_fields:
+        raise ContractError("capture identity design projection differs from the exact declared design schema")
+    scenario_versions = design_identity["scenario_versions"]
+    if (not isinstance(scenario_versions, (tuple, list))
+            or tuple(item[0] for item in scenario_versions) != tuple(SCENARIO_IDS)
+            or any(not isinstance(item, (tuple, list)) or len(item) != 2
+                   or not isinstance(item[1], str) or not item[1] for item in scenario_versions)):
+        raise ContractError("capture identity scenario/version projection is not in authoritative order")
+    for name, minimum in (("N", 1), ("M", 2), ("R", 1)):
+        value = design_identity[name]
+        if isinstance(value, bool) or not isinstance(value, int) or value < minimum:
+            raise ContractError(f"capture identity design {name} is outside its declared integer domain")
+    declared_versions = dict(scenario_versions)
+    for bundle in bundles:
+        if (bundle.scenario_id not in declared_versions
+                or bundle.scenario_version != declared_versions[bundle.scenario_id]
+                or bundle.n_units != design_identity["N"]):
+            raise ContractError("outer-world bundle scenario/version/N differs from capture design identity")
     ordered_bundles = sorted(
         bundles, key=lambda b: (SCENARIO_IDS.index(b.scenario_id), int(b.outer_replicate_id.split("-")[-1]))
     )
