@@ -273,6 +273,11 @@ class RunEvidenceBundle:
             run_manifest.g_reference_regime_id,
             run_manifest.g_reference_regime_version):
             raise ContractError("AnalysisContract does not match RunManifest mechanism/regime identity")
+        if (truth_bundle.g_assignment_mechanism_hash, truth_bundle.z_assignment_mechanism_hash,
+            truth_bundle.g_reference_regime_id, truth_bundle.g_reference_regime_version) != (
+            run_manifest.g_assignment_mechanism_hash, run_manifest.z_assignment_mechanism_hash,
+            run_manifest.g_reference_regime_id, run_manifest.g_reference_regime_version):
+            raise ContractError("TruthBundle mechanism/reference-regime source binding mismatch")
         if (analysis_contract.estimand_id, analysis_contract.estimand_version) != (
             analyzer_result.estimand_id, analyzer_result.estimand_version
         ):
@@ -283,6 +288,16 @@ class RunEvidenceBundle:
             analyzer_result.outcome_id, analyzer_result.outcome_version
         ):
             raise ContractError("AnalysisContract/AnalyzerResult target or outcome mismatch")
+        contract_result_fields = (
+            "run_conditional_estimand_id", "run_conditional_estimand_version",
+            "reference_regime_estimand_id", "reference_regime_estimand_version",
+            "g_assignment_estimand_id", "g_assignment_estimand_version",
+            "transportability_id", "transportability_version", "transportability_scope",
+            "transportability_evidence_status", "transportability_outcome_id", "transportability_basis",
+        )
+        if any(getattr(analysis_contract, name) != getattr(analyzer_result, name)
+               for name in contract_result_fields):
+            raise ContractError("AnalysisContract/AnalyzerResult estimand or transportability identity mismatch")
         if (analysis_contract.g_assignment_mechanism_id,
             analysis_contract.g_assignment_mechanism_version,
             analysis_contract.g_assignment_mechanism_hash,
