@@ -248,3 +248,11 @@ This resolves the workflow-configuration blocker but does not authorize code/tes
 ## 14. Gate 184 workflow parse correction
 
 The initial pure-v2 workflow contained an unquoted pip-install scalar that was invalid YAML. GitHub created failed workflow-run records with zero jobs; no CI job or test executed. The command was quoted in commit 84d6e4695e7e94f694ca5bb40125a81c8936eefe, and the corrected file was fetched and parsed successfully. This is a workflow-configuration correction only; it does not establish test or JCS conformance. See Gate 184 §8.
+
+## 15. Gate 185 — capture primitives implementation
+
+Gate 185 implements MatrixCapture v1.0.0, FrozenReportSnapshot v2.0.0, capture identity v2.0.0 and the additive CapturedBenchmark fields in `vcont_evidence_export.py`. The existing first three fields and positional constructor remain unchanged. The producer now captures the exact matrix and immutable report snapshot immediately after Evaluator returns and derives content-only capture_id. The pure test source is `test_vcont_capture_v2.py`; it has not been executed.
+
+Gate 185 explicitly identifies the legacy report fingerprint algorithm as `TGCV-C10S-VCONT-LEGACY-REPORT-PYTHON-JSON-SHA256-1`, binding the existing source operation without changing its bytes. JCS conformance remains unverified pending test execution.
+
+To preserve the Gate 182 separate-authorization boundary, Gate 184's pure workflow is temporarily manual-only and runs only the first capture fixture module. No workflow dispatch, dependency installation, compilation, test, producer or scientific execution occurred. See Gate 185.
