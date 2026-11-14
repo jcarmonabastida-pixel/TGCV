@@ -508,6 +508,31 @@ class CaptureV2Tests(unittest.TestCase):
         with self.assertRaises(ContractError):
             _reconcile_report_seed_sources(report, (replace(outer, repeated_bundles=()),))
 
+    def test_v2_1_source_reconciliation_rejects_contract_manifest_identity_divergence(self):
+        report, outer, _ = self._source_reconciliation_fixture()
+        run_bundle = outer.run_bundle
+        contract = run_bundle.analysis_contract.restore(AnalysisContract)
+        altered = replace(contract, g_assignment_mechanism_id="UNREGISTERED_MECHANISM")
+        altered_run = replace(
+            run_bundle,
+            analysis_contract=FrozenSnapshot.capture(altered),
+            analysis_contract_sha256=_snapshot_digest(altered),
+        )
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (replace(outer, run_bundle=altered_run),))
+
+    def test_v2_1_source_reconciliation_rejects_sealed_evidence_digest_divergence(self):
+        report, outer, _ = self._source_reconciliation_fixture()
+        run_bundle = outer.run_bundle
+        sealed = run_bundle.sealed_evidence.restore(SealedEvidence)
+        altered_manifest = dict(sealed.manifest)
+        altered_manifest["row_count"] = 1
+        altered = replace(sealed, manifest=altered_manifest)
+        altered = replace(altered, sha256=_legacy_sealed_digest(altered))
+        altered_run = replace(run_bundle, sealed_evidence=FrozenSnapshot.capture(altered))
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (replace(outer, run_bundle=altered_run),))
+
     def test_v2_1_source_reconciliation_rejects_duplicate_or_missing_outer_groups(self):
         report, outer, _ = self._source_reconciliation_fixture()
         with self.assertRaises(ContractError):
