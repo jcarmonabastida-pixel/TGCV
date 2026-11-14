@@ -53,7 +53,8 @@ from vcont_package_v2_verify import (
     _SNAPSHOT_TYPE_FIELDS,
     _analysis_contract_payload_digest,
     _configuration_digest,
-    _reconcile_configuration_companions
+    _reconcile_configuration_companions,
+    _reconcile_calibration_manifest
 )
 
 
@@ -1325,6 +1326,91 @@ class ConfigurationCompanionVerifierTests(unittest.TestCase):
         )
         with self.assertRaises(PackageVerificationError):
             _reconcile_configuration_companions(files, report, matrix)
+
+
+class CalibrationManifestVerifierTests(unittest.TestCase):
+    @staticmethod
+    def _fixture():
+        namespace = "calibration-fixture"
+        rows = []
+        for role, replicate in (("RUN", -1), ("REPEATED_ASSIGNMENT", 0)):
+            def seed(stream, seed_role, seed_replicate):
+                payload = (
+                    f"TGCV-C10S-VCONT-SEED-v3|{namespace}|calibration|S0|v1|24|"
+                    f"outer-000000|{seed_role}|{seed_replicate}|{stream}"
+                )
+                return int.from_bytes(hashlib.sha256(payload.encode("utf-8")).digest()[:8], "big")
+            world = seed("world", "RUN", -1)
+            z = seed("z", role, replicate)
+            g = seed("g", role, replicate)
+            rows.append({
+                "bank": "calibration", "scenario_id": "S0", "scenario_version": "v1",
+                "n_units": 24, "replicate": replicate, "outer_replicate_id": "outer-000000",
+                "assignment_role": role,
+                "world_seed": {"$type": "uint64", "decimal": str(world)},
+                "z_assignment_seed": {"$type": "uint64", "decimal": str(z)},
+                "g_assignment_seed": {"$type": "uint64", "decimal": str(g)},
+            })
+        legacy_rows = [{
+            **{k: v for k, v in row.items()
+               if k not in ("world_seed", "z_assignment_seed", "g_assignment_seed")},
+            "world_seed": int(row["world_seed"]["decimal"]),
+            "z_assignment_seed": int(row["z_assignment_seed"]["decimal"]),
+            "g_assignment_seed": int(row["g_assignment_seed"]["decimal"]),
+        } for row in rows]
+        legacy = hashlib.sha256(
+            json.dumps(legacy_rows, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ).hexdigest()
+        calibration = {
+            "schema_id": "TGCV-C10S-VCONT-CALIBRATION-BANK-MANIFEST",
+            "schema_version": "2.0.0", "bank": "calibration",
+            "namespace": namespace,
+            "seed_derivation": {
+                "algorithm": "TGCV-C10S-VCONT-SEED-v3", "hash": "SHA-256",
+                "output_rule": "first_8_digest_bytes_unsigned_big_endian",
+                "namespace": namespace,
+            },
+            "design": {"fixture": True},
+            "row_count": len(rows), "rows": rows,
+            "seed_bank_fingerprint_legacy": legacy,
+            "manifest_sha256": "a" * 64,
+            "execution_evidence_status": "NOT_CAPTURED",
+        }
+        evaluation_rows = [{
+            **{k: v for k, v in row.items() if k != "bank"},
+            "bank": "evaluation",
+        } for row in rows]
+        return calibration, {"rows": evaluation_rows}
+
+    def test_reconciles_calibration_seed_derivation_fingerprint_and_disjointness(self):
+        calibration, evaluation = self._fixture()
+        result = _reconcile_calibration_manifest(calibration, evaluation)
+        self.assertEqual(result["calibration_rows"], 2)
+        self.assertEqual(result["cross_bank_collisions"], 0)
+
+    def test_rejects_calibration_namespace_or_seed_drift(self):
+        calibration, evaluation = self._fixture()
+        calibration["namespace"] = "different"
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_calibration_manifest(calibration, evaluation)
+
+    def test_rejects_calibration_legacy_fingerprint_drift(self):
+        calibration, evaluation = self._fixture()
+        calibration["seed_bank_fingerprint_legacy"] = "0" * 64
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_calibration_manifest(calibration, evaluation)
+
+    def test_rejects_cross_bank_collision_across_any_stream(self):
+        calibration, evaluation = self._fixture()
+        evaluation["rows"][0]["g_assignment_seed"] = calibration["rows"][0]["world_seed"]
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_calibration_manifest(calibration, evaluation)
+
+    def test_rejects_noncanonical_calibration_row_fields(self):
+        calibration, evaluation = self._fixture()
+        calibration["rows"][0]["assignment_index"] = -1
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_calibration_manifest(calibration, evaluation)
 
 
 if __name__ == "__main__":
