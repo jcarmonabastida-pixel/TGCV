@@ -216,3 +216,11 @@ Thus the Gate 168/170 implementation is now integrated at the **single-M produce
 Gate 172 now composes the Gate 168/170 RunEvidenceBundle and OuterWorldEvidenceBundle into a complete benchmark-level result. For every one of the 13 registered scenarios and every declared M, the driver captures one M bundle and joins all its RUN/R legacy evaluator tuples to the exact source snapshots. The final `CapturedBenchmark` co-returns the unchanged 52-pair evaluator report, temporal manifest, evidence bundles and evidence index.
 
 The source-level benchmark-wide capture boundary is implemented. No execution has been performed. Serialization of the full benchmark envelope into the canonical package and Gate 159 external provenance reconciliation remain open. See Gate 172.
+
+## 15. Gate 173 — package serialization boundary
+
+Gate 173 confirms that the Gate 170 typed snapshots retain the complete SealedEvidence rows and manifest in source memory, and Gate 172 returns one OuterWorldEvidenceBundle per scenario/M. The complete source evidence is now available for a future package adapter; it has not yet been serialized into the Gate 164 archive or independently round-tripped.
+
+The current FrozenSnapshot bytes use a custom tagged Python JSON representation and a snapshot-specific SHA-256. This is not RFC 8785 JCS. Preserve it as the source-snapshot integrity layer. A package adapter must losslessly encode/decode snapshot bytes and restore the declared typed objects; then independently recompute the legacy SealedEvidence digest from restored rows+manifest and compare it with AnalyzerResult.input_sha256. JCS digests are a separate package layer and must not replace snapshot, SealedEvidence or report fingerprint semantics.
+
+The Gate 164 `runs/run_records.json` path can carry the complete ordered RunEvidenceRecord and OuterWorldEvidenceBundle envelope; no new archive path is needed. Gate 159 reconciliation, actual calibration manifest availability, external workflow/source identity and package verifier remain open. See Gate 173. No tests or runtime/package execution occurred.
