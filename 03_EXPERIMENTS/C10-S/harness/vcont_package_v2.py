@@ -242,11 +242,34 @@ def serialize_package_files_v2(
             raise PackageBuildError(f"{path} must be a materialized JSON object")
         if path == "design/benchmark_design.json" and not value:
             raise PackageBuildError("benchmark design companion must contain the declared design payload")
+        if path == "seeds/evaluation_seed_assignments.json":
+            if (value.get("schema_id") != "TGCV-C10S-VCONT-EVALUATION-SEED-ASSIGNMENTS"
+                    or value.get("schema_version") != "2.0.0" or value.get("bank") != "evaluation"
+                    or not isinstance(value.get("rows"), list)
+                    or value.get("row_count") != len(value["rows"])):
+                raise PackageBuildError("evaluation seed assignment envelope is not the exact v2.0.0 rows schema")
+        if path == "seeds/calibration_seed_manifest.json":
+            if (value.get("schema_id") != "TGCV-C10S-VCONT-CALIBRATION-BANK-MANIFEST"
+                    or value.get("schema_version") != "2.0.0" or value.get("bank") != "calibration"
+                    or not isinstance(value.get("rows"), list)
+                    or value.get("row_count") != len(value["rows"])):
+                raise PackageBuildError("calibration seed manifest is not the exact v2.0.0 rows schema")
+        if path == "runs/temporal_manifest.json":
+            if (value.get("schema_id") != "TGCV-C10S-VCONT-TEMPORAL-MANIFEST"
+                    or value.get("schema_version") != "2.0.0"
+                    or not isinstance(value.get("rows"), list)
+                    or value.get("row_count") != len(value["rows"])):
+                raise PackageBuildError("temporal manifest is not the exact v2.0.0 rows schema")
         if path == "runs/run_records.json":
-            if value.get("benchmark_export_id") != capture_id:
-                raise PackageBuildError("RUN export envelope must bind benchmark_export_id to capture_id")
-            if value.get("schema_version") != "2.0.0":
-                raise PackageBuildError("RUN export envelope must be v2.0.0")
+            if (value.get("schema_id") != "TGCV-C10S-VCONT-RUN-EXPORT-ENVELOPE"
+                    or value.get("schema_version") != "2.0.0"
+                    or value.get("benchmark_export_id") != capture_id):
+                raise PackageBuildError("RUN export envelope schema/version/identity mismatch")
+        if path == "validation/reconciliation_results.json":
+            if (value.get("schema_id") != "TGCV-C10S-VCONT-GATE159-RECONCILIATION"
+                    or value.get("schema_version") != "1.0.0"
+                    or value.get("benchmark_export_id") != capture_id):
+                raise PackageBuildError("Gate159 reconciliation companion schema/identity mismatch")
         payloads[path] = value
 
     if set(payloads) != set(PACKAGE_PATHS) - {"manifest.json"}:
