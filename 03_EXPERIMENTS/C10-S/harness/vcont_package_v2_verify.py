@@ -2047,6 +2047,7 @@ GATE159_INPUT_ARTIFACT_PATHS = tuple(sorted({
 
 def _reconcile_gate159_artifact(
     artifact: Any, expected_export_id: str, package_files: Mapping[str, bytes],
+    expected_check_counts: Mapping[str, tuple[int | None, int | None, int | None, int | None]],
 ) -> str:
     """Validate Gate159 nested wire schema, independently derive status and findings digest."""
     root_fields = {
@@ -2146,6 +2147,12 @@ def _reconcile_gate159_artifact(
         status = row.get("status")
         if status not in ("PASS", "FAIL", "UNAVAILABLE", "UNVERIFIABLE", "NOT_APPLICABLE"):
             raise PackageVerificationError(f"Gate159 check row {index} status is invalid")
+        actual_counts = (
+            row.get("expected_count"), row.get("observed_count"),
+            row.get("matched_count"), row.get("mismatch_count"),
+        )
+        if expected_id not in expected_check_counts or actual_counts != expected_check_counts[expected_id]:
+            raise PackageVerificationError(f"Gate159 check row {index} counts differ from independently reconstructed denominators")
         observed, matched, mismatch_count = (
             row.get("observed_count"), row.get("matched_count"), row.get("mismatch_count")
         )
@@ -2179,10 +2186,10 @@ def _reconcile_gate159_artifact(
             raise PackageVerificationError(f"Gate159 internal check {check_id} does not reflect independent package verification")
     # GitHub provenance and technical-test evidence are not independently resolved here.
     for check_id in GATE159_REQUIRED_CHECK_IDS[6:]:
-        if statuses[check_id] == "PASS":
-            raise PackageVerificationError(f"Gate159 {check_id} cannot PASS from producer-declared package metadata")
-    if statuses[GATE159_CONDITIONAL_CHECK_ID] == "PASS":
-        raise PackageVerificationError("Gate159 calibration execution link cannot PASS without independently resolved execution evidence")
+        if statuses[check_id] not in ("UNAVAILABLE", "UNVERIFIABLE"):
+            raise PackageVerificationError(f"Gate159 {check_id} must remain unavailable until independently resolved")
+    if statuses[GATE159_CONDITIONAL_CHECK_ID] not in ("UNAVAILABLE", "UNVERIFIABLE", "NOT_APPLICABLE"):
+        raise PackageVerificationError("Gate159 calibration execution link cannot be resolved from package declarations alone")
 
     if any(status == "FAIL" for status in statuses.values()):
         derived_status = "REJECTED"
@@ -2713,6 +2720,38 @@ def verify_package_v2(
             parsed["validation/reconciliation_results.json"],
             parsed["runs/run_records.json"]["benchmark_export_id"],
             extracted,
+            {
+                "EVALUATION_ASSIGNMENT_RUN_MANIFEST_ONE_TO_ONE": (
+                    len(parsed["seeds/evaluation_seed_assignments.json"]["rows"]),
+                    len(parsed["runs/temporal_manifest.json"]["rows"]),
+                    len(parsed["runs/run_records.json"]["run_evidence_records"]), 0,
+                ),
+                "CALIBRATION_EVALUATION_SEED_DISJOINTNESS": (
+                    3 * (len(parsed["seeds/calibration_seed_manifest.json"]["rows"])
+                         + len(parsed["seeds/evaluation_seed_assignments.json"]["rows"])),
+                    3 * (len(parsed["seeds/calibration_seed_manifest.json"]["rows"])
+                         + len(parsed["seeds/evaluation_seed_assignments.json"]["rows"])),
+                    3 * (len(parsed["seeds/calibration_seed_manifest.json"]["rows"])
+                         + len(parsed["seeds/evaluation_seed_assignments.json"]["rows"])), 0,
+                ),
+                "EVALUATION_SEED_FINGERPRINT_RECOMPUTATION": (1, 1, 1, 0),
+                "CALIBRATION_SEED_FINGERPRINT_RECOMPUTATION": (1, 1, 1, 0),
+                "EFFECTIVE_CONFIGURATION_FINGERPRINT_RECOMPUTATION": (
+                    len(parsed["provenance/configuration_fingerprints.json"]["components"]),
+                    len(parsed["provenance/configuration_fingerprints.json"]["components"]),
+                    len(parsed["provenance/configuration_fingerprints.json"]["components"]), 0,
+                ),
+                "MATRIX_LEGACY_AND_FULL_DIGEST_RECOMPUTATION": (
+                    len(matrix["rows"]), len(matrix["rows"]), len(matrix["rows"]), 0,
+                ),
+                "SOURCE_EXECUTION_GITHUB_BINDING": (1, None, None, None),
+                "TECHNICAL_TEST_RUN_BINDING": (1, None, None, None),
+                "CALIBRATION_ASSIGNMENT_EXECUTION_LINK": (
+                    (None, None, None, None)
+                    if parsed["validation/reconciliation_results.json"]["checks"][-1]["status"] == "NOT_APPLICABLE"
+                    else (len(parsed["seeds/calibration_seed_manifest.json"]["rows"]), None, None, None)
+                ),
+            },
         )
     except PackageVerificationError:
         raise
