@@ -1272,9 +1272,19 @@ def _reconcile_report_seed_sources(
 
 
 def freeze_report_snapshot(
-    report: dict[str, Any], *, outer_world_bundles: tuple[OuterWorldEvidenceBundle, ...] | None = None
+    report: dict[str, Any], *,
+    outer_world_bundles: tuple[OuterWorldEvidenceBundle, ...] | None = None,
+    _allow_unreconciled_fixture: bool = False,
 ) -> FrozenReportSnapshot:
-    if outer_world_bundles is not None:
+    """Freeze a v2.1 report; production calls must supply captured source bundles.
+
+    The private fixture escape hatch exists only for isolated projection tests. It
+    must never be used by a producer, package writer, or evidence acceptance path.
+    """
+    if outer_world_bundles is None:
+        if not _allow_unreconciled_fixture:
+            raise ContractError("FrozenReportSnapshot v2.1 requires source-bundle reconciliation")
+    else:
         _reconcile_report_seed_sources(report, outer_world_bundles)
     projected_report = _report_v2_projection(report)
     envelope = {
