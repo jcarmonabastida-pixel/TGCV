@@ -286,3 +286,9 @@ The typed per-run and per-M carriers are now assembled by `produce_and_capture_b
 The `CapturedBenchmark` return contains the existing evaluator report (including its 52-pair ledger and temporal manifest), exactly one OuterWorldEvidenceBundle per scenario/M and a scenario/M/world identity index. No estimand, matrix, ledger, denominator, target or aggregation semantics are changed.
 
 This is source implementation only. The driver and positive regression have NOT been executed. Gate 159 still prevents claims that the declared seed-bank fingerprint, effective configuration fingerprint or executable commit have been independently authenticated. Canonical package/attestation remains open. See Gate 172.
+
+## 13. Gate 175 — matrix exportability qualification
+
+The Gate 175 source audit found that the exact 52-row `ScenarioEstimandSpec` matrix is validated and consumed by `produce_and_capture_benchmark()`, but is not retained in `CapturedBenchmark`; only the report's design fingerprint and pair ledger remain. The exact matrix package file therefore requires a capture-time immutable matrix payload or companion object explicitly bound to the same benchmark capture. It must not be reconstructed from current code or report output.
+
+The existing `scenario_matrix_fingerprint()` omits the declared `tolerance_id` field. Retain the legacy fingerprint unchanged, and add a versioned full-matrix digest that covers every `ScenarioEstimandSpec` and nested `EvaluationKey` field. See Gate 175. No source code or tests were changed/executed.
