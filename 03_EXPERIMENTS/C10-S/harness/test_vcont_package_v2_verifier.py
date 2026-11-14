@@ -8,8 +8,11 @@ import rfc8785
 from types import SimpleNamespace
 from vcont_package_v2 import (
     COMPANION_PATHS, GENERATED_COMPANION_PATHS,
+    _assemble_analysis_contracts_v1,
     _legacy_seed_bank_fingerprint_from_wire_rows,
 )
+from vcont_benchmark_protocol import SeedAssignment
+from vcont_integrated_harness import AnalysisContract
 from vcont_package_v2_verify import (
     PACKAGE_PATHS,
     PackageVerificationError,
@@ -1110,6 +1113,99 @@ class ConfigurationCompanionVerifierTests(unittest.TestCase):
         files["provenance/configuration_fingerprints.json"]["components"][0]["digest_sha256"] = "0" * 64
         with self.assertRaises(PackageVerificationError):
             _reconcile_configuration_companions(files, report, matrix)
+
+    def test_writer_assembles_13_contracts_and_26_applicability_rows_from_snapshots(self):
+        class Snapshot:
+            def __init__(self, value, type_id, digest):
+                self.value = value
+                self.type_id = type_id
+                self.sha256 = digest
+
+            def restore(self, expected_type):
+                return self.value
+
+        scenario_versions = tuple(
+            (sid, "v1") for sid in AUTHORITATIVE_SCENARIO_IDS
+        )
+        design = SimpleNamespace(
+            scenario_versions=scenario_versions,
+            n_units=25,
+            outer_replicates=1,
+            repeated_assignments=1,
+        )
+        contract = AnalysisContract(
+            estimand_id="ITT_Z_RUN_CONDITIONAL_VCONT",
+            estimand_version="001",
+            randomized_z=True,
+            randomized_g=True,
+            positivity=True,
+            no_interference=True,
+            measurement_identified=True,
+            version_consistency=True,
+            focal_direct_path_absent=True,
+            common_nonfocal_regime=True,
+        )
+        bundles, run_records = [], []
+        for scenario_index, (sid, version) in enumerate(scenario_versions):
+            snapshot_digest = hashlib.sha256(sid.encode("utf-8")).hexdigest()
+            run_bundles = []
+            for role, replicate in (("RUN", -1), ("REPEATED_ASSIGNMENT", 0)):
+                run_id = f"run-{scenario_index:02d}-{role}"
+                assignment = SeedAssignment(
+                    bank="evaluation",
+                    scenario_id=sid,
+                    n_units=25,
+                    replicate=replicate,
+                    world_seed=1000 + scenario_index,
+                    z_assignment_seed=2000 + 2 * scenario_index + (0 if role == "RUN" else 1),
+                    g_assignment_seed=3000 + 2 * scenario_index + (0 if role == "RUN" else 1),
+                    scenario_version=version,
+                    outer_replicate_id="outer-000000",
+                    assignment_role=role,
+                )
+                run_bundle = SimpleNamespace(
+                    assignment=Snapshot(assignment, "vcont_benchmark_protocol.SeedAssignment", "a" * 64),
+                    analysis_contract=Snapshot(
+                        contract, "vcont_integrated_harness.AnalysisContract", snapshot_digest
+                    ),
+                    run_manifest=Snapshot(SimpleNamespace(run_id=run_id),
+                                           "vcont_integrated_harness.RunManifest", "c" * 64),
+                )
+                run_bundles.append(run_bundle)
+                run_records.append({
+                    "key": {
+                        "scenario_id": sid,
+                        "scenario_version": version,
+                        "N": 25,
+                        "outer_replicate_id": "outer-000000",
+                        "assignment_role": role,
+                        "assignment_index": replicate,
+                        "run_id": run_id,
+                    },
+                    "snapshot_refs": {
+                        "analysis_contract": {
+                            "type_id": "vcont_integrated_harness.AnalysisContract",
+                            "serialization_id": "TGCV-FROZEN-SNAPSHOT-1",
+                            "sha256": snapshot_digest,
+                        }
+                    },
+                })
+            bundles.append(SimpleNamespace(
+                scenario_id=sid,
+                scenario_version=version,
+                n_units=25,
+                outer_replicate_id="outer-000000",
+                run_bundle=run_bundles[0],
+                repeated_bundles=(run_bundles[1],),
+            ))
+        captured = SimpleNamespace(capture_id="a" * 64, outer_world_bundles=tuple(bundles))
+        companion = _assemble_analysis_contracts_v1(
+            captured, design, {"run_evidence_records": run_records}
+        )
+        self.assertEqual(len(companion["source_contracts"]), 13)
+        self.assertEqual(len(companion["applicability"]), 26)
+        self.assertEqual(companion["benchmark_export_id"], captured.capture_id)
+        self.assertEqual(companion["source_contracts"][0]["analyzer_version"], ANALYZER_VERSION)
 
     def test_writer_recomputes_legacy_seed_bank_fingerprint_from_typed_rows(self):
         files, report, matrix = _fixture()
