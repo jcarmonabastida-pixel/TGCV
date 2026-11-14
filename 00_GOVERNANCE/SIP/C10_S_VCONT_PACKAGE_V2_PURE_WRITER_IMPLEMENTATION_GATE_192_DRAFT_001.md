@@ -117,3 +117,8 @@ No frozen predecessor is reinterpreted and no historical fingerprint is replaced
 ## 7. Next operation — Gate 193
 
 Complete the companion schema/field crosswalk and exact semantic joins, then implement the independent verifier in `vcont_package_v2_verify.py` without importing writer algorithms. The verifier must parse the archive independently, reject duplicate JSON keys, validate exact paths and schemas, recompute JCS/digests/uint64/report fingerprints, and derive separate integrity, completeness, reconciliation, provenance, test-evidence and authentication statuses. Do not execute tests or workflows without separate technical execution authorization. Do not invoke producers or scientific execution.
+## Gate 193 audit addendum
+
+Gate 193's static comparison with the canonical capture identity and MatrixCapture constructors found and corrected the writer's source-safe `metric_targets` conversion and its comparison of the full capture design identity against MatrixCapture's compact design identity. The writer also now recomputes the historical Evaluator report fingerprint from the source-domain manifest after decoding the registered uint64 wrappers; the v2.1 JCS snapshot digest remains over the wrapped envelope.
+
+These are source corrections only, not executed checks. The independent verifier is implemented separately in `vcont_package_v2_verify.py`; it does not import the writer. Its current scope is structural only and it explicitly leaves RUN/R snapshot joins, Gate159/calibration derivation, external provenance, technical-test binding and authentication unverified. See Gate 193. No tests or compilation were executed.
