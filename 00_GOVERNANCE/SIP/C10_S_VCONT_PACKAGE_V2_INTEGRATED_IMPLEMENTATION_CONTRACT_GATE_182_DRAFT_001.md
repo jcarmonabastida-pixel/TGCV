@@ -289,3 +289,11 @@ The report envelope has no separate `payload_version` member: `schema_version` i
 
 **Implementation boundary correction:** the research harness directory currently contains no package v2 writer or independent verifier module. Therefore the v2 package-profile reference, package serializer, verifier allowlist, compatibility rejection and package-level test vectors remain NOT IMPLEMENTED. Gate 189 does not claim package-level v2.1 conformance and does not change the 14-file inventory or package envelope version.
 
+## Gate 190 addendum — source reconciliation and package implementation boundary
+
+Gate 190 strengthens the report capture helper with exact RUN/R `RunEvidenceBundle` source reconciliation and typed pure fixtures. The v2.1 report dependency remains `TGCV-C10S-VCONT-REPORT-SNAPSHOT@2.1.0` as specified by Gates 188–189.
+
+A fresh harness inventory confirms that `vcont_package_v2.py`, `vcont_package_v2_verify.py` and the package serialization/verifier test modules are absent. The package writer, independent verifier and profile-level schema enforcement therefore remain NOT IMPLEMENTED. Gate 190 does not claim package-level conformance or alter the 14-file inventory.
+
+Gate 190's source fixtures are authored but not executed. The manual pure workflow was inspected and not dispatched; the legacy synthetic workflow was also inspected and not dispatched. No producer, package, calibration or scientific execution occurred. See `C10_S_VCONT_FROZEN_REPORT_SNAPSHOT_V2_1_SOURCE_RECONCILIATION_GATE_190_DRAFT_001.md`.
+
