@@ -150,6 +150,10 @@ class MatrixTruthProjection:
     theta_a_truth: float | None
 
 
+_SNAPSHOT_TYPES = _SNAPSHOT_TYPES + (MatrixTruthProjection,)
+_SNAPSHOT_TYPE_BY_ID = {_type_id(item): item for item in _SNAPSHOT_TYPES}
+
+
 def _matrix_truth_projection(truth: TruthBundle) -> MatrixTruthProjection:
     return MatrixTruthProjection(
         run_id=truth.run_id,
