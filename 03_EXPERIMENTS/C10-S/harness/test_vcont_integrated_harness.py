@@ -871,3 +871,48 @@ class VContIntegratedHarnessTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+class RunEvidenceBundleCaptureTests(unittest.TestCase):
+    def test_run_evidence_bundle_snapshots_exact_sources_deeply(self):
+        from vcont_benchmark_protocol import SeedAssignment
+        from vcont_evidence_export import RunEvidenceBundle
+
+        cfg = replace(
+            benchmark_scenarios(n_units=16, n_intervals=4)[0],
+            seed=1771, world_seed=991, z_assignment_seed=11, g_assignment_seed=21,
+            outer_replicate_id="outer-bundle-000001", assignment_role="RUN",
+            assignment_index=-1, replicate_id="bundle-run",
+        )
+        assignment = SeedAssignment(
+            bank="evaluation", scenario_id=cfg.scenario_id, n_units=cfg.n_units,
+            replicate=-1, world_seed=991, z_assignment_seed=11, g_assignment_seed=21,
+            scenario_version=cfg.version, outer_replicate_id=cfg.outer_replicate_id,
+            assignment_role="RUN",
+        )
+        generator = Generator()
+        sealer = Sealer()
+        analyzer = Analyzer()
+        evaluator = Evaluator()
+        manifest, truth, candidate = generator.generate(cfg)
+        sealed = sealer.seal(candidate)
+        contract = contract_for(cfg)
+        result = analyzer.analyze(sealed, contract)
+        report = evaluator.evaluate(truth, result, contract, tolerance=0.10, manifest=manifest)
+
+        bundle = RunEvidenceBundle.capture(
+            assignment=assignment, config=cfg, run_manifest=manifest,
+            truth_bundle=truth, evidence_candidate=candidate,
+            sealed_evidence=sealed, analysis_contract=contract,
+            analyzer_result=result, evaluation_report=report,
+        )
+        restored_candidate = bundle.evidence_candidate.restore(type(candidate))
+        original_unit_id = restored_candidate.rows[0]["unit_id"]
+        candidate.rows[0]["unit_id"] = "MUTATED_AFTER_CAPTURE"
+        self.assertEqual(
+            bundle.evidence_candidate.restore(type(candidate)).rows[0]["unit_id"],
+            original_unit_id,
+        )
+        restored_sealed = bundle.sealed_evidence.restore(type(sealed))
+        self.assertEqual(restored_sealed.sha256, sealed.sha256)
+        self.assertEqual(bundle.sealed_evidence_legacy_sha256, sealed.sha256)
+        self.assertEqual(bundle.validation_status, "STRUCTURALLY_VALID")
