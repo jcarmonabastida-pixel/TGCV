@@ -948,6 +948,7 @@ class VContEvidenceOrchestrationTests(unittest.TestCase):
 
     def test_producer_captures_exact_run_and_repeated_sources_at_m_boundary(self):
         from vcont_evidence_export import produce_and_capture_outer_world
+        from vcont_integrated_harness import RepeatedAssignmentReport
         config, assignments = self._assignments()
         captured = produce_and_capture_outer_world(
             assignments, config, expected_repeated_assignments=1, tolerance=1e9
@@ -962,7 +963,7 @@ class VContEvidenceOrchestrationTests(unittest.TestCase):
                          ("REPEATED_ASSIGNMENT", 0))
         self.assertEqual(
             captured.evidence_bundle.repeated_assignment_report.restore(
-                __import__("vcont_integrated_harness").RepeatedAssignmentReport
+                RepeatedAssignmentReport
             ).replicate_count,
             1,
         )
