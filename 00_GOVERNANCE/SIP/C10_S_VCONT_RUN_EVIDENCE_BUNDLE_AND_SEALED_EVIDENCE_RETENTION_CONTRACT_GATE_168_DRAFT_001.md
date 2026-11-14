@@ -191,3 +191,12 @@ Gate 169's static reinspection of the current branch source found that `Generato
 The existing regression `test_outer_replicate_identity_propagates_and_separates_worlds` already checked RUN/R shared world identity and separation across M. Gate 169 strengthens it to isolate role/index changes, assert run-ID distinction, isolate DGP-parameter changes and assert different world seeds across M. The strengthened test source has been persisted but NOT EXECUTED. No runtime PASS or CI claim is made.
 
 This supersession does not close Gate 159 seed-bank reconciliation, establish cryptographic provenance, or implement RunEvidenceBundle. Gate 168's schema, deep-immutability requirements and inline SealedEvidence retention decision remain operative. See `C10_S_VCONT_WORLD_IDENTITY_INVARIANCE_AUDIT_GATE_169_DRAFT_001.md`.
+
+
+## 12. Gate 170 implementation update and Gate 169 supersession
+
+Gate 169 withdrew the Gate 168 source-level world-identity blocker: current Generator source excludes `assignment_role` and `assignment_index` from the world identity projection. Gate 170's current implementation does not modify Generator.
+
+Gate 170 implements the Gate 168 data contract as a standalone capture API in `03_EXPERIMENTS/C10-S/harness/vcont_evidence_export.py`. It provides deeply immutable canonical typed snapshots, per-run joins and digest checks, the Gate 166 matrix-only truth projection, inline SealedEvidence rows+manifest, and an OuterWorldEvidenceBundle cardinality/identity validator. Details and source-level limitations are recorded in `C10_S_VCONT_RUN_EVIDENCE_BUNDLE_CAPTURE_IMPLEMENTATION_GATE_170_DRAFT_001.md`.
+
+**Important qualification:** the capture API is not yet called by the existing benchmark orchestration; the latter still uses reduced four-object tuples. Thus Gate 168's contract is IMPLEMENTED AS A CAPTURE PRIMITIVE, not end-to-end integrated. The regression source is persisted but NOT EXECUTED. Gate 159, producer integration, package creation and external provenance remain OPEN. The earlier §1/§7 world-identity blocker statements are superseded by Gate 169 and must not be treated as current findings.
