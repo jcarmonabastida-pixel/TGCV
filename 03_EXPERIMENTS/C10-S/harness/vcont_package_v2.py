@@ -392,10 +392,18 @@ def serialize_package_files_v2(
     if rebuilt_capture_id != capture_id:
         raise PackageBuildError("capture_id does not recompute from the retained source evidence")
     if (not isinstance(report_envelope, dict)
+            or set(report_envelope) != {
+                "schema_id", "schema_version", "payload_type", "legacy_report_fingerprint",
+                "legacy_fingerprint_algorithm", "report",
+            }
             or report_envelope.get("schema_id") != REPORT_SCHEMA_ID
             or report_envelope.get("schema_version") != REPORT_SCHEMA_VERSION
-            or report_envelope.get("payload_type") != REPORT_PAYLOAD_TYPE):
-        raise PackageBuildError("report snapshot envelope differs from the declared v2.1 schema")
+            or report_envelope.get("payload_type") != REPORT_PAYLOAD_TYPE
+            or report_envelope.get("legacy_fingerprint_algorithm") != (
+                "TGCV-C10S-VCONT-LEGACY-REPORT-FINGERPRINT-PYJSON-SORTKEYS-COMPACT-SHA256-1"
+            )
+            or report_envelope.get("legacy_fingerprint_algorithm") != getattr(report, "legacy_fingerprint_algorithm", None)):
+        raise PackageBuildError("report snapshot envelope/legacy algorithm differs from the exact v2.1 schema")
     if report_envelope.get("legacy_report_fingerprint") != getattr(report, "legacy_report_fingerprint", None):
         raise PackageBuildError("report snapshot legacy fingerprint metadata mismatch")
     report_payload = report_envelope.get("report")
@@ -408,10 +416,15 @@ def serialize_package_files_v2(
     if rfc8785.dumps(report_envelope) != report_bytes:
         raise PackageBuildError("FrozenReportSnapshot bytes are not canonical RFC 8785 JCS")
     if (not isinstance(matrix_payload, dict)
+            or set(matrix_payload) != {
+                "schema_id", "schema_version", "design_identity", "row_count", "rows",
+                "legacy_matrix_fingerprint", "full_matrix_digest_algorithm", "full_matrix_sha256",
+            }
             or matrix_payload.get("schema_id") != MATRIX_SCHEMA_ID
             or matrix_payload.get("schema_version") != MATRIX_SCHEMA_VERSION
-            or matrix_payload.get("row_count") != 52):
-        raise PackageBuildError("MatrixCapture payload envelope mismatch")
+            or matrix_payload.get("row_count") != 52
+            or matrix_payload.get("full_matrix_digest_algorithm") != "TGCV-C10S-VCONT-MATRIX-FULL-JCS-SHA256-1"):
+        raise PackageBuildError("MatrixCapture payload field/schema/digest-algorithm mismatch")
 
     payloads: dict[str, Mapping[str, Any]] = {
         "report/report.json": report_envelope,
