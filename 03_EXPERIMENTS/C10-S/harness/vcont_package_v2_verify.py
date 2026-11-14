@@ -62,6 +62,31 @@ AUTHORITATIVE_ESTIMAND_IDS = (
     "ITT_G_Z0_VCONT",
 )
 
+EFFECTIVE_CONFIG_SCHEMA_ID = "TGCV-C10S-VCONT-EFFECTIVE-SCENARIO-CONFIG-PROJECTION"
+EFFECTIVE_CONFIG_SCHEMA_VERSION = "2.0.0"
+EFFECTIVE_CONFIG_STRUCTURAL_FIELDS = frozenset({
+    "profile", "mechanism", "n_intervals", "window_start",
+    "last_transition_support", "follow_up", "enabled_probability",
+    "baseline_conformity", "focal_access_effect", "package_direct_effect",
+    "focal_direct_effect", "collateral_effect", "provision_probability",
+    "alternative_probability", "heterogeneity", "interference_effect",
+    "measurement_sensitivity", "measurement_specificity", "missing_probability",
+    "randomized_z", "randomized_g", "positivity", "no_interference",
+    "measurement_identified", "version_consistency", "zg_interaction_effect",
+})
+EFFECTIVE_CONFIG_SEED_POLICY = {
+    "mode": "EXPLICIT_ASSIGNMENT_STREAMS_REQUIRED",
+    "source": "SeedAssignment",
+    "streams": ["world_seed", "z_assignment_seed", "g_assignment_seed"],
+    "fallback": "FORBIDDEN",
+    "algorithm": "TGCV-C10S-VCONT-SEED-v3",
+}
+EFFECTIVE_CONFIG_EXCLUDED_SOURCE_FIELDS = frozenset({
+    "seed", "world_seed", "z_assignment_seed", "g_assignment_seed",
+    "replicate_id", "outer_replicate_id", "assignment_role", "assignment_index",
+})
+
+
 
 class PackageVerificationError(ValueError):
     """The archive or one of its mandatory structural contracts is invalid."""
@@ -775,6 +800,139 @@ def _resolve_outer_world_run_reference(
         raise PackageVerificationError(f"{label} is bound to a different outer-world identity")
     return parsed_key, manifest
 
+
+
+
+def _reconcile_effective_scenario_config_rows(
+    effective_file: Any, report_design: Any, decoded_runs: list[dict[str, Any]],
+) -> int:
+    """Reconcile the Gate 181 structural config rows against every decoded RUN/R config snapshot."""
+    if not isinstance(effective_file, dict):
+        raise PackageVerificationError("effective ScenarioConfig companion must be an object")
+    if (effective_file.get("schema_id"), effective_file.get("schema_version")) != (
+        EFFECTIVE_CONFIG_SCHEMA_ID, EFFECTIVE_CONFIG_SCHEMA_VERSION
+    ):
+        raise PackageVerificationError("effective ScenarioConfig projection schema/version mismatch")
+    rows = effective_file.get("rows")
+    if not isinstance(rows, list) or len(rows) != len(AUTHORITATIVE_SCENARIO_IDS):
+        raise PackageVerificationError("effective ScenarioConfig projection must contain exactly 13 rows")
+    if "row_count" in effective_file and effective_file["row_count"] != len(rows):
+        raise PackageVerificationError("effective ScenarioConfig projection row_count mismatch")
+    if not isinstance(report_design, dict):
+        raise PackageVerificationError("report design is required for effective ScenarioConfig reconciliation")
+    scenario_versions = report_design.get("scenario_versions")
+    n_units = report_design.get("n_units")
+    M, R = report_design.get("outer_replicates"), report_design.get("repeated_assignments")
+    if (not isinstance(scenario_versions, list)
+            or tuple(row[0] for row in scenario_versions
+                     if isinstance(row, list) and len(row) == 2) != AUTHORITATIVE_SCENARIO_IDS
+            or isinstance(n_units, bool) or not isinstance(n_units, int)
+            or isinstance(M, bool) or not isinstance(M, int)
+            or isinstance(R, bool) or not isinstance(R, int)):
+        raise PackageVerificationError("report design is malformed for effective ScenarioConfig reconciliation")
+    versions = {row[0]: row[1] for row in scenario_versions}
+    row_fields = {
+        "scenario_id", "scenario_version", "n_units", "generator_version",
+        "seed_policy", "config",
+    }
+    expected_order = [(sid, versions[sid], n_units) for sid in AUTHORITATIVE_SCENARIO_IDS]
+    row_map: dict[tuple[Any, ...], dict[str, Any]] = {}
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict) or set(row) != row_fields:
+            raise PackageVerificationError(f"effective ScenarioConfig row {index} field allowlist mismatch")
+        key = (row["scenario_id"], row["scenario_version"], row["n_units"])
+        if key != expected_order[index]:
+            raise PackageVerificationError(f"effective ScenarioConfig row {index} differs from authoritative scenario/version/N order")
+        if key in row_map:
+            raise PackageVerificationError("effective ScenarioConfig projection contains a duplicate row key")
+        if not isinstance(row["generator_version"], str) or not row["generator_version"]:
+            raise PackageVerificationError(f"effective ScenarioConfig row {index} generator_version is invalid")
+        if row["seed_policy"] != EFFECTIVE_CONFIG_SEED_POLICY:
+            raise PackageVerificationError(f"effective ScenarioConfig row {index} seed_policy differs from Gate 181")
+        config_projection = row["config"]
+        if not isinstance(config_projection, dict) or set(config_projection) != EFFECTIVE_CONFIG_STRUCTURAL_FIELDS:
+            raise PackageVerificationError(f"effective ScenarioConfig row {index} structural config field allowlist mismatch")
+        row_map[key] = row
+
+    expected_runs = len(AUTHORITATIVE_SCENARIO_IDS) * M * (1 + R)
+    if len(decoded_runs) != expected_runs:
+        raise PackageVerificationError("effective ScenarioConfig join input cardinality differs from 13 x M x (1+R)")
+    seen_run_keys = set()
+    generator_versions: dict[str, set[str]] = {sid: set() for sid in AUTHORITATIVE_SCENARIO_IDS}
+    consumed: dict[tuple[Any, ...], int] = {key: 0 for key in row_map}
+    for item in decoded_runs:
+        if not isinstance(item, dict) or set(item) != {"key", "config", "generator_version"}:
+            raise PackageVerificationError("decoded effective-config RUN input field allowlist mismatch")
+        key = item["key"]
+        if not isinstance(key, tuple) or len(key) != 7 or key in seen_run_keys:
+            raise PackageVerificationError("effective-config RUN input key is malformed or duplicated")
+        seen_run_keys.add(key)
+        scenario_key = (key[0], key[1], key[2])
+        row = row_map.get(scenario_key)
+        if row is None:
+            raise PackageVerificationError("RUN/R config snapshot has no effective ScenarioConfig row")
+        config = item["config"]
+        if not isinstance(config, dict):
+            raise PackageVerificationError("decoded ScenarioConfig snapshot is not an object")
+        if (config.get("scenario_id"), config.get("version"), config.get("n_units")) != scenario_key:
+            raise PackageVerificationError("ScenarioConfig snapshot identity differs from effective projection row key")
+        structural = {
+            name: value for name, value in config.items()
+            if name not in EFFECTIVE_CONFIG_EXCLUDED_SOURCE_FIELDS
+        }
+        expected_structural = {
+            "scenario_id": row["scenario_id"],
+            "version": row["scenario_version"],
+            "n_units": row["n_units"],
+            **row["config"],
+        }
+        if structural != expected_structural:
+            raise PackageVerificationError("effective structural config differs from one or more exact RUN/R snapshots")
+        generator_version = item["generator_version"]
+        if generator_version != row["generator_version"]:
+            raise PackageVerificationError("effective ScenarioConfig generator_version differs from RunManifest")
+        generator_versions[key[0]].add(generator_version)
+        consumed[scenario_key] += 1
+    if any(count != M * (1 + R) for count in consumed.values()):
+        raise PackageVerificationError("effective ScenarioConfig row was not consumed by every expected RUN/R snapshot")
+    if any(len(values) != 1 for values in generator_versions.values()):
+        raise PackageVerificationError("Generator.version differs across RUN/R snapshots within a scenario")
+    return len(rows)
+
+
+def _reconcile_effective_scenario_configs(files: Mapping[str, Any], decoded_report: Any) -> int:
+    effective_file = files.get("design/effective_scenario_configs.json")
+    run_file = files.get("runs/run_records.json")
+    report = decoded_report.get("report") if isinstance(decoded_report, dict) else None
+    design = report.get("design") if isinstance(report, dict) else None
+    if not isinstance(run_file, dict) or not isinstance(run_file.get("run_evidence_records"), list):
+        raise PackageVerificationError("RUN evidence records are missing for effective ScenarioConfig reconciliation")
+    decoded_runs = []
+    for index, record in enumerate(run_file["run_evidence_records"]):
+        if not isinstance(record, dict) or not isinstance(record.get("snapshot_refs"), dict):
+            raise PackageVerificationError(f"RUN record {index} lacks snapshot refs for effective ScenarioConfig reconciliation")
+        key = _logical_run_key(record.get("key"), f"effective-config run record {index}")
+        refs = record["snapshot_refs"]
+        config = _snapshot_fields(
+            decode_frozen_snapshot_ref(
+                refs.get("scenario_config"),
+                expected_type_id="vcont_integrated_harness.ScenarioConfig",
+            ),
+            "vcont_integrated_harness.ScenarioConfig",
+        )
+        manifest = _snapshot_fields(
+            decode_frozen_snapshot_ref(
+                refs.get("run_manifest"),
+                expected_type_id="vcont_integrated_harness.RunManifest",
+            ),
+            "vcont_integrated_harness.RunManifest",
+        )
+        decoded_runs.append({
+            "key": key,
+            "config": config,
+            "generator_version": manifest.get("generator_version"),
+        })
+    return _reconcile_effective_scenario_config_rows(effective_file, design, decoded_runs)
 
 
 def _reconcile_benchmark_export_identity(files: Mapping[str, Any]) -> str:
@@ -1659,6 +1817,7 @@ def verify_package_v2(
     except Exception as exc:
         raise PackageVerificationError(f"RUN/R semantic reconciliation failed closed: {exc}") from exc
     _reconcile_benchmark_export_identity(parsed)
+    _reconcile_effective_scenario_configs(parsed, decoded_report)
     matrix = parsed["design/scenario_estimand_matrix.json"]
     if (not isinstance(matrix, dict) or set(matrix) != {
             "schema_id", "schema_version", "design_identity", "row_count", "rows",
