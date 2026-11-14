@@ -275,3 +275,17 @@ Gate 173 verdict: source evidence availability substantially improved; package i
 
 
 **Explicit supersession of §14 raw-row default:** Gate 168 selected inline canonical SealedEvidence rows+manifest for this V_cont package lineage, and Gate 173 confirms that Gate 170/172 snapshots retain those rows in source memory. Therefore the §14 statement that raw SealedEvidence rows are excluded by default is historical and does not govern this package lineage. The package `runs/run_records.json` envelope must preserve the exact rows and manifest and the verifier must recompute the legacy SealedEvidence digest after decoding. This does not require full TruthBundle potential-outcome arrays; the Gate 166 matrix truth projection remains the data-minimization boundary.
+
+## 16. Gate 174 — serialization and independent verifier contract
+
+Gate 174 freezes the package serialization boundary without implementing it. The exact 14-file Gate 164 v1.0.0 inventory, JCS profile, deterministic uncompressed POSIX tar profile and digest dependency graph remain unchanged.
+
+The existing `runs/run_records.json` path is now specified as `TGCV-C10S-VCONT-RUN-EXPORT-ENVELOPE v1.0.0`: ordered RUN/R RunEvidenceRecords, one OuterWorldEvidenceRecord per scenario/M, exact repeated aggregate report once per M, evidence index, declared cardinalities and explicit join keys. Each source snapshot is carried as base64 of its exact existing `FrozenSnapshot.canonical_bytes`, together with type ID, serialization ID and SHA-256. This preserves source bytes and does not relabel their custom tagged JSON digest as JCS. The containing package JSON file is separately JCS-canonicalized.
+
+Gate 174 also identifies a decoder requirement: the current snapshot `_decode` returns an enum's underlying value rather than restoring the registered enum type, and the encoder rejects arbitrary bytes. A future adapter must use a versioned allowlisted type/enum registry, reject unsupported values, and prove exact round-trip; current source does not justify a universal type-preserving claim.
+
+**Profile decision:** Gate 164 CONFIRMATORY v1.0.0 is fail-closed. Missing actual calibration manifest, Gate 159 reconciliation, independently resolved GitHub source/workflow metadata, or required technical test evidence prevents acceptance. No placeholder manifest or producer PASS can satisfy it. A possible diagnostic partial-transport profile must use a distinct schema ID/version and cannot be labelled Gate 164-compliant, RECONCILED or AUTHENTICATED; its schema is not defined here.
+
+The independent verifier is a separate implementation boundary and returns separate integrity, schema, completeness, reconciliation, source provenance, test evidence and attestation statuses. It does not trust producer validation flags. Full contract: `C10_S_VCONT_PACKAGE_SERIALIZATION_AND_INDEPENDENT_VERIFIER_CONTRACT_GATE_174_DRAFT_001.md`.
+
+Gate 174 status: serialization/verifier contract DEFINED; packager, decoder, verifier and tests NOT IMPLEMENTED/NOT EXECUTED. Next Gate 175 audits actual type/schema/API implementability before any serializer implementation.
