@@ -144,17 +144,17 @@ class IndependentVerifierPrimitiveTests(unittest.TestCase):
 
     def test_unregistered_uint64_wrapper_is_rejected(self):
         files = {
-            "seeds/evaluation_seed_assignments.json": {"rows": [{
+            "seeds/evaluation_seed_assignments.json": {"row_count": 1, "rows": [{
                 "world_seed": {"$type": "uint64", "decimal": "0"},
                 "z_assignment_seed": {"$type": "uint64", "decimal": "1"},
                 "g_assignment_seed": {"$type": "uint64", "decimal": "2"},
             }]},
-            "seeds/calibration_seed_manifest.json": {"rows": [{
+            "seeds/calibration_seed_manifest.json": {"row_count": 1, "rows": [{
                 "world_seed": {"$type": "uint64", "decimal": "0"},
                 "z_assignment_seed": {"$type": "uint64", "decimal": "1"},
                 "g_assignment_seed": {"$type": "uint64", "decimal": "2"},
             }]},
-            "runs/temporal_manifest.json": {"rows": [{
+            "runs/temporal_manifest.json": {"row_count": 1, "rows": [{
                 "world_seed": {"$type": "uint64", "decimal": "0"},
                 "z_assignment_seed": {"$type": "uint64", "decimal": "1"},
                 "g_assignment_seed": {"$type": "uint64", "decimal": "2"},
