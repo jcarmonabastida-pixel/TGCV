@@ -1290,13 +1290,15 @@ def _reconcile_report_seed_sources(
         scenario = scenario_reports[scenario_id]
         if not isinstance(scenario, dict):
             raise ContractError("v2.1 report scenario entry must be an object")
+        if (scenario.get("scenario_id"), scenario.get("scenario_version")) != (scenario_id, version):
+            raise ContractError("v2.1 scenario report identity differs from declared design")
         per_outer = scenario.get("per_outer_replicate")
         if not isinstance(per_outer, (list, tuple)) or len(per_outer) != outer_replicates:
             raise ContractError("v2.1 report per-outer cardinality differs from design")
         for m, row in enumerate(per_outer):
             outer_id = f"outer-{m:06d}"
-            if not isinstance(row, dict):
-                raise ContractError("v2.1 report per-outer row must be an object")
+            if not isinstance(row, dict) or row.get("outer_replicate_id") != outer_id:
+                raise ContractError("v2.1 report per-outer row identity differs from ordered M key")
             outer = bundle_map[(scenario_id, version, n_units, outer_id)]
             if (outer.scenario_id, outer.scenario_version, outer.n_units, outer.outer_replicate_id) != (
                 scenario_id, version, n_units, outer_id
@@ -1314,7 +1316,7 @@ def _reconcile_report_seed_sources(
             )):
                 raise ContractError("v2.1 report RUN tuple source types/order are invalid")
             (assignment, config, manifest, truth_projection, analyzer_source,
-             contract_source, _) = validate_run_bundle(
+             contract_source, run_evaluation_source) = validate_run_bundle(
                 outer.run_bundle, scenario_id=scenario_id, version=version,
                 outer_id=outer_id, role="RUN", index=-1,
             )
@@ -1366,6 +1368,8 @@ def _reconcile_report_seed_sources(
                         for bundle in outer.repeated_bundles
                     )):
                 raise ContractError("v2.1 repeated-assignment report differs from exact ordered source reports")
+            if row.get("run_report") != run_evaluation_source or row.get("repeated_report") != repeated_report:
+                raise ContractError("v2.1 Evaluator per-outer report summaries differ from captured RUN/R evaluation reports")
     if len(bundle_map) != len(expected_groups):
         raise ContractError("v2.1 source bundle reconciliation left unconsumed scenario/M bundles")
 
