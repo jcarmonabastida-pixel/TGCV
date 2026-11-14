@@ -564,3 +564,11 @@ Gate 177 found that the producer retains the exact matrix tuple through validati
 The report root is a mutable dict and cannot be passed to the current dataclass-only FrozenSnapshot.capture API. Its canonical serialization is Python JSON rather than RFC 8785 JCS. A separate typed FrozenReportSnapshot, pinned JCS implementation/version and strict decoder are required. Preserve existing CapturedBenchmark report/bundle/index shapes and use trailing optional new fields with fail-closed export validation.
 
 Gate 176's two IDs require a non-circular content-derived rule; Gate 177 proposes `benchmark_export_id = capture_id`. Calibration and Gate 159 companion schemas still need exact row, cardinality, denominator and applicability rules. See Gate 177. No code/tests/execution occurred.
+
+## 37. Gate 178 — capture/export serialization and companion schemas
+
+Gate 178 freezes the exact MatrixCapture v1.0.0 row schema and SCENARIO_IDS × ESTIMAND_SPECS positional order; the versioned full-matrix JCS digest; FrozenReportSnapshot v1.0.0; deterministic non-circular `capture_id = benchmark_export_id`; CalibrationBankManifest v1.0.0; Gate159ReconciliationArtifact v1.0.0; SourceExecutionEvidence and TechnicalTestEvidence; strict decoder behavior; and the regression specification. The historical matrix/report/seed fingerprints remain distinct and unchanged.
+
+The JCS Python implementation candidate is `rfc8785==0.1.4`, subject to later dependency pinning and independent conformance vectors. Gate 178 finds a Gate 164 v1.0.0 compatibility blocker: seed derivation yields uint64 integers, but ordinary JCS numeric representation cannot guarantee exactness above 2^53-1 and the frozen package contract disallows numeric-to-string coercion. A versioned exact uint64 wire representation must be approved before packager implementation. Gate 164 v1.0.0 is not silently modified.
+
+Gate 178 is documentary only. No code, tests, CI, seed generation, calibration, package, benchmark or scientific execution occurred. Full contract: `C10_S_VCONT_CAPTURE_EXPORT_SERIALIZATION_AND_COMPANION_SCHEMAS_GATE_178_DRAFT_001.md`.
