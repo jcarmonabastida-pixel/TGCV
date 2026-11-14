@@ -321,3 +321,13 @@ Gate 178 identifies a schema-level incompatibility requiring resolution before i
 Gate 164 v1.0.0 is not silently changed by this addendum. Before implementation, either demonstrate an exact uint64 representation already permitted by the frozen v1.0.0 schema, or approve a versioned successor (proposed v1.1.0) with a typed exact uint64 wire representation used consistently across all 14 files and the independent verifier. Rounding, float conversion, truncation or bare decimal-string substitution is prohibited.
 
 Gate 178 also specifies exact MatrixCapture/FrozenReportSnapshot schemas, strict decoder behavior, calibration and Gate159 companion schemas, and deterministic capture identity. See `C10_S_VCONT_CAPTURE_EXPORT_SERIALIZATION_AND_COMPANION_SCHEMAS_GATE_178_DRAFT_001.md`. Packager implementation remains blocked; no code/tests/CI or scientific execution occurred.
+
+## 20. Gate 179 — versioned uint64 successor
+
+Gate 179 resolves the Gate 178 uint64/JCS conflict at the schema-design level. Gate 164 `TGCV-C10S-VCONT-MC-PACKAGE v1.0.0` remains frozen and unchanged. The confirmatory successor is **v2.0.0**, not v1.1.0, because the wire type changes from a JSON number to an exact typed object and is not backward-compatible.
+
+The exact uint64 representation is `{"$type":"uint64","decimal":"<canonical unsigned decimal>"}`, with exact members, canonical decimal syntax and range 0…18446744073709551615. It applies to every direct seed occurrence in the five package JSON paths enumerated by Gate 179: evaluation seed assignments, calibration seed manifest, temporal manifest, report temporal_manifest and outer-world `world_seed` in run_records. Legacy FrozenSnapshot canonical bytes remain opaque base64 and byte-preserved; historical fingerprints are recomputed from source-typed integers before wire projection.
+
+The exact 14-file inventory, RFC 8785 JCS rule, uncompressed deterministic tar profile and digest dependency graph remain unchanged. The RUN-EXPORT-ENVELOPE, FrozenReportSnapshot, CalibrationBankManifest and capture-identity schemas advance to 2.0.0; MatrixCapture and Gate159 reconciliation remain 1.0.0. See `C10_S_VCONT_PACKAGE_UINT64_WIRE_FORMAT_DECISION_AND_V2_CROSSWALK_GATE_179_DRAFT_001.md`.
+
+Gate 164 v1.0.0 remains DEFINED/FROZEN; v2.0.0 is DEFINED AS SUCCESSOR DRAFT. No implementation, tests, CI, seed generation, calibration, package or scientific execution occurred. Implementation authorization remains absent.
