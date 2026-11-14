@@ -453,6 +453,7 @@ def _assemble_analysis_contracts_v1(
 
 def _assemble_configuration_fingerprints_v1(
     benchmark_export_id: str,
+    design: Any,
     effective_configs: Mapping[str, Any],
     analysis_contracts: Mapping[str, Any],
     matrix: Mapping[str, Any],
@@ -467,6 +468,17 @@ def _assemble_configuration_fingerprints_v1(
     run_rows = run_records.get("run_evidence_records")
     if not isinstance(effective_rows, list) or len(effective_rows) != 13:
         raise PackageBuildError("fingerprint assembly requires exactly 13 effective ScenarioConfig rows")
+    if (effective_configs.get("schema_id"), effective_configs.get("schema_version")) != (
+        "TGCV-C10S-VCONT-EFFECTIVE-SCENARIO-CONFIG-PROJECTION", "2.0.0"
+    ):
+        raise PackageBuildError("effective ScenarioConfig source schema/version mismatch")
+    if (analysis_contracts.get("schema_id"), analysis_contracts.get("schema_version"),
+        analysis_contracts.get("benchmark_export_id")) != (
+        ANALYSIS_CONTRACTS_SCHEMA_ID, ANALYSIS_CONTRACTS_SCHEMA_VERSION, benchmark_export_id
+    ):
+        raise PackageBuildError("AnalysisContract companion schema/version/export identity mismatch")
+    if design.configuration_fingerprint != benchmark_design.get("configuration_fingerprint"):
+        raise PackageBuildError("source design object and benchmark_design companion declarations differ")
     if not isinstance(source_contracts, list) or len(source_contracts) != 13:
         raise PackageBuildError("fingerprint assembly requires exactly 13 source AnalysisContract rows")
     if not isinstance(assignment_rows, list) or not assignment_rows:
@@ -478,10 +490,11 @@ def _assemble_configuration_fingerprints_v1(
         if not isinstance(row, Mapping):
             raise PackageBuildError("effective ScenarioConfig row is not an object")
         sid, version, n_units = row.get("scenario_id"), row.get("scenario_version"), row.get("n_units")
-        if (sid, version) != tuple(SCENARIO_IDS[index:index + 1] + ()):
-            # The version is checked against the corresponding AnalysisContract below.
-            if sid != SCENARIO_IDS[index]:
-                raise PackageBuildError("effective ScenarioConfig rows are not in authoritative scenario order")
+        source = source_contracts[index]
+        if (sid, version, n_units) != (
+            source.get("scenario_id"), source.get("scenario_version"), source.get("n_units")
+        ) or sid != SCENARIO_IDS[index]:
+            raise PackageBuildError("effective ScenarioConfig and AnalysisContract scenario scopes diverge")
         scope = [sid, version, n_units]
         components.append({
             "component_id": f"dgp-generator:{sid}:{version}:{n_units}",
@@ -500,20 +513,21 @@ def _assemble_configuration_fingerprints_v1(
         if sid != SCENARIO_IDS[index]:
             raise PackageBuildError("source AnalysisContract rows are not in authoritative scenario order")
         scope = [sid, version, n_units]
-        scenario_index = index
-        M = len(run_rows) // (13 * (1 + max(1, 0))) if False else None
-        # The first RUN record for scenario s is located by its canonical source key.
-        run_index = next((j for j, record in enumerate(run_rows)
-                          if isinstance(record, Mapping)
-                          and isinstance(record.get("key"), Mapping)
-                          and record["key"].get("scenario_id") == sid
-                          and record["key"].get("scenario_version") == version
-                          and record["key"].get("N") == n_units
-                          and record["key"].get("outer_replicate_id") == "outer-000000"
-                          and record["key"].get("assignment_role") == "RUN"
-                          and record["key"].get("assignment_index") == -1), None)
-        if run_index is None:
-            raise PackageBuildError("cannot derive representative RUN AnalysisContract source reference")
+        run_index = index * design.outer_replicates * (1 + design.repeated_assignments)
+        if run_index >= len(run_rows):
+            raise PackageBuildError("derived representative RUN AnalysisContract source index is out of range")
+        record = run_rows[run_index]
+        key = record.get("key") if isinstance(record, Mapping) else None
+        if not isinstance(key, Mapping) or (
+            key.get("scenario_id"), key.get("scenario_version"), key.get("N"),
+            key.get("outer_replicate_id"), key.get("assignment_role"), key.get("assignment_index")
+        ) != (sid, version, n_units, "outer-000000", "RUN", -1):
+            raise PackageBuildError("derived representative RUN AnalysisContract source index is not the canonical source row")
+        expected_contract_digest = _analysis_contract_payload_digest(
+            sid, version, n_units, row.get("analyzer_version"), row.get("analysis_contract")
+        )
+        if row.get("analyzer_version") != Analyzer.version or expected_contract_digest != row.get("contract_payload_digest"):
+            raise PackageBuildError("AnalysisContract semantic digest/version does not recompute")
         components.append({
             "component_id": f"analyzer-contract:{sid}:{version}:{n_units}",
             "component_type": "ANALYZER_EFFECTIVE_CONTRACT",
@@ -740,6 +754,7 @@ def serialize_package_files_v2(
         payloads["design/analysis_contracts.json"] = analysis_contracts_payload
         payloads["provenance/configuration_fingerprints.json"] = _assemble_configuration_fingerprints_v1(
             capture_id,
+            design,
             payloads["design/effective_scenario_configs.json"],
             analysis_contracts_payload,
             matrix_payload,
