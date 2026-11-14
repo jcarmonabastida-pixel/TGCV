@@ -234,3 +234,10 @@ All tests use fixed deterministic source fixtures. They must not call Generator,
 ### Next operation — Gate 192
 
 Preflight the manual pure workflow against the exact future package module/test paths, then implement the package writer only. Do not implement or call the verifier in the same code slice; first complete a static writer review. Tests remain unexecuted pending separate technical execution authorization.
+
+## Gate 192 implementation addendum
+
+Gate 192 partially implements the pure file/TAR writer in `03_EXPERIMENTS/C10-S/harness/vcont_package_v2.py`, with seven deterministic pure tests and an expanded explicit manual workflow allowlist. The writer uses the locked RFC 8785 dependency, preserves the 14-path inventory, requires all eleven materialized companion payloads, recomputes capture identity, and constructs normalized deterministic USTAR bytes. It does not import or invoke producer classes/functions.
+
+This is not complete package conformance: field-level companion schemas and all semantic joins are not yet fully validated by the writer; the independent verifier remains absent. No tests, compilation or workflow were executed. See Gate 192.
+
