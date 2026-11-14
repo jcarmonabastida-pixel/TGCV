@@ -580,3 +580,70 @@ The component record's `schema_id` and `schema_version` MUST be copied literally
 **Residual schema-identity blocker:** Gate 194-G establishes the projection version and exact fields but its crosswalk does not transcribe the literal schema ID/version values for every input family (Gate 181 effective-config projection, AnalysisContract semantic envelope, MatrixCapture and ordered evaluation assignment manifest). Those literals must be recovered from the governing source contracts/constants and entered into a closed registry before schema freeze. This is a documentary/source-reconciliation task, not permission to create replacement IDs.
 
 Accordingly, the Gate 194-F.1 amendment is internally specified at the field and digest-domain level, but the companion schemas remain **NOT FROZEN** until the literal schema-identity registry is verified. The final consistency review must fail closed on any missing or conflicting schema ID/version, rather than accepting a guessed value.
+
+
+### 11.10 Gate 194-F.2 — literal schema identity registry and historical digest reconciliation
+
+**Status:** SOURCE IDENTITIES RECOVERED WHERE FROZEN; NEW COMPANION IDENTITIES REMAIN PROPOSED.  
+**Sources:** Gate 181 §§2.3a, 3, 4.3, 5.1; Gate 178 §§2, 5; Gate 179 §§3–4; source modules listed in Gate 194-G.
+
+#### A. Closed schema identity registry
+
+| Payload / use | Literal schema ID | Version | Status / source |
+|---|---|---:|---|
+| Effective ScenarioConfig projection | `TGCV-C10S-VCONT-EFFECTIVE-SCENARIO-CONFIG-PROJECTION` | `2.0.0` | FROZEN — Gate 181 §3 and verifier constant |
+| MatrixCapture | `TGCV-C10S-VCONT-MATRIX-CAPTURE` | `1.0.0` | FROZEN — Gate 178 §2 and source constant |
+| Evaluation SeedAssignment file | `TGCV-C10S-VCONT-EVALUATION-SEED-ASSIGNMENTS` | `2.0.0` | FROZEN — Gate 181 §2.3a |
+| Capture identity | `TGCV-C10S-VCONT-BENCHMARK-CAPTURE-IDENTITY` | `2.0.0` | FROZEN — Gate 181 §5.1 and source |
+| Analysis-contract companion root | `TGCV-C10S-ANALYSIS-CONTRACTS` | `1.0.0` | NEW PROPOSAL — Gate 194-F |
+| Semantic AnalysisContract digest input | `TGCV-C10S-EFFECTIVE-ANALYSIS-CONTRACT` | `1.0.0` | NEW PROPOSAL — Gate 194-F |
+| Configuration-fingerprints companion root | `TGCV-C10S-CONFIGURATION-FINGERPRINTS` | `1.0.0` | NEW PROPOSAL — Gate 194-F |
+| Aggregate fingerprint input | `TGCV-C10S-CONFIGURATION-FINGERPRINT-MANIFEST` | `1.0.0` | NEW PROPOSAL — §11.6 |
+| Matrix component digest input | `TGCV-C10S-VCONT-MATRIX-CAPTURE` | `1.0.0` | Reuses frozen MatrixCapture digest domain |
+| Evaluation assignment component source | `TGCV-C10S-VCONT-EVALUATION-SEED-ASSIGNMENTS` | `2.0.0` | Reuses frozen evaluation assignment row envelope; component digest is separately identified in §11.5 |
+
+The two new companion roots and the semantic AnalysisContract envelope are not historical source schemas. They remain proposals until separately frozen. No alias or inferred identifier is permitted.
+
+#### B. EffectiveScenarioConfig digest input shape correction
+
+Gate 181 §3.1 defines each effective projection row as exactly:
+
+- `scenario_id`;
+- `scenario_version`;
+- `n_units`;
+- `generator_version`;
+- `seed_policy`;
+- `config`, containing exactly the 26 structural fields.
+
+Therefore the Gate 194-F.1 DGP/Generator component digest input is the exact complete row with the 26 properties nested under `config`. It is NOT a flattened row with those 26 properties at top level. The algorithm ID remains `TGCV-C10S-EFFECTIVE-SCENARIO-CONFIG-JCS-SHA256-1`, with RFC 8785 JCS and SHA-256. This clarification is normative for this proposal and prevents a semantic projection drift.
+
+#### C. Evaluation seed-bank: two distinct source-supported digest domains
+
+Gate 179 §3 and source `seed_bank_fingerprint(assignments)` define the historical seed-bank fingerprint over original source-typed SeedAssignment values. Its exact row properties and order are:
+
+`bank, scenario_id, scenario_version, n_units, outer_replicate_id, assignment_role, replicate, world_seed, z_assignment_seed, g_assignment_seed`.
+
+The source algorithm constructs an ordered list of those source-typed rows, serializes with `json.dumps(payload, sort_keys=True, separators=(",", ":"))`, encodes UTF-8, then computes SHA-256. It rejects an empty bank and mixed-bank input. This historical fingerprint MUST be recomputed from the original source-typed evaluation assignments before uint64 wire projection, in accordance with Gate 179. It is not syntax-only evidence.
+
+Separately, Gate 181 §5.1 and `derive_capture_identity` compute `evaluation_seed_manifest_sha256` over `{"rows": ordered _assignment_wire rows}`, where each seed is represented by the exact Gate 179 typed uint64 wire object. The assignment order is the capture-identity order: authoritative scenario order, numeric outer-world order, RUN first, then repeated assignments in their source order. The source assignment projection fields are the ten properties enumerated above (including `replicate`, not an independently emitted `assignment_index`).
+
+These are distinct algorithms and domains:
+
+1. `seed_bank_fingerprint_legacy`: original source-typed rows, Gate 179 algorithm, independently recomputed and compared with the legacy declaration.
+2. `evaluation_seed_manifest_sha256`: typed uint64 wire rows, Gate 181 capture-identity algorithm, independently recomputed and used as the single evaluation assignment component in the 28-component aggregate.
+
+The second MUST NOT replace, overwrite, or be reported as the first. The first MUST NOT be recomputed over wrapper dictionaries. Calibration is a separate bank, separately fingerprinted and checked for evaluation/calibration disjointness; it is excluded from both evaluation digests and the 28-component aggregate.
+
+#### D. Matrix digest identity confirmed
+
+The source constants are `_MATRIX_SCHEMA_ID = TGCV-C10S-VCONT-MATRIX-CAPTURE` and `_MATRIX_SCHEMA_VERSION = 1.0.0`. The digest input is exactly the four-member object specified in §11.4. The full MatrixCapture envelope additionally carries design identity, legacy matrix fingerprint, algorithm label and full digest; those additional fields are excluded from the digest input.
+
+#### E. Benchmark export identity
+
+Gate 181 §5.1 defines `benchmark_export_id = capture_id`. All proposed companion root envelopes MUST bind to this exact value. It is the capture identity from the same package export, not a new independently invented export identifier. No companion may be joined across capture IDs.
+
+#### F. Disposition
+
+The frozen schema identities needed for the source projection, matrix and evaluation assignment inputs are now recovered literally. The two companion root schema IDs and the semantic AnalysisContract schema remain new proposed identities, as they should be. The prior residual “missing schema identity” blocker is therefore narrowed to approval of those three new schema definitions, not uncertainty about the existing Gate 181/178 source contracts.
+
+**Disposition: CONDITIONAL — SOURCE IDENTITY CROSSWALK COMPLETE FOR FROZEN INPUTS; NEW COMPANION SCHEMAS NOT YET FROZEN.** A final read-only consistency audit must verify the amended field nesting, source-typed legacy seed fingerprint, typed capture assignment digest, 28-component ordering, root IDs and exact benchmark_export_id binding. No implementation or execution is authorized.
