@@ -170,3 +170,15 @@ Do not:
 - `main`: unchanged; PR #116 remains Draft on its existing base.
 
 **Next Gate 177:** source/API implementation-readiness review of the Gate 176 bounded change set, including compatibility of CapturedBenchmark consumers, full-matrix digest algorithm test vectors, immutable report snapshot encoding, and companion artifact schemas. Do not execute tests until technical execution is explicitly authorized by the applicable governance.
+
+## 8. Gate 177 — implementation-readiness qualification
+
+Gate 177's source/API audit confirms the exact capture boundary exists, but Gate 176 is **not yet implementation-ready**. The current matrix validator checks 52 unique keys and declared coverage but does not enforce the canonical SCENARIO_IDS × ESTIMAND_SPECS row order; the legacy fingerprint sorts rows and therefore cannot prove order. Gate 178 must freeze positional validation and exact allowed field/value types.
+
+The current `FrozenSnapshot.capture()` accepts dataclasses only, not the top-level report dict. The generic encoder's Python `json.dumps` is not RFC 8785 JCS, and the current decoder is not strict. Gate 178 must define a separate typed `FrozenReportSnapshot`, its report projection, pinned JCS implementation/version and strict decoder.
+
+Preserve the three current `CapturedBenchmark` fields and their report/bundle/index shapes. Gate 177 recommends adding new trailing optional fields for MatrixCapture and report snapshot; producer-created captures must populate both, while package export rejects missing fields. The existing integration regression consumes the legacy report shape.
+
+Gate 176's `capture_id` and `benchmark_export_id` need a non-circular deterministic derivation. Gate 177 proposes one content digest with `benchmark_export_id = capture_id`, excluding external companion artifacts. Calibration and Gate 159 companion descriptions also require exact row schemas, cardinalities, denominators and applicability rules.
+
+See `C10_S_VCONT_CAPTURE_EXPORT_IMPLEMENTABILITY_AUDIT_GATE_177_DRAFT_001.md`. Gate 176 remains DEFINED / QUALIFIED; implementation remains OPEN. No code or tests were changed/executed.
