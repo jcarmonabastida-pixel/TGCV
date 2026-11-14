@@ -105,3 +105,9 @@ Gate 164 v1.0.0 is fail-closed on absent calibration manifest, Gate 159 reconcil
 The current capture API retains RUN/R snapshots, M bundles, repeated reports, design, temporal manifest and 52-pair ledger. It does **not** retain the exact matrix passed to the evaluator: `produce_and_capture_benchmark()` consumes it locally and returns only report, outer-world bundles and evidence index. The design fingerprint and pair ledger are not a lossless matrix payload. The legacy matrix fingerprint also omits `tolerance_id`; retain it unchanged and add a full versioned matrix digest over every field.
 
 Calibration manifest, Gate 159 reconciliation and independently resolved GitHub workflow/test provenance are not supplied by the capture API. The generic snapshot decoder also lacks strict field/version/duplicate-key validation; its enum restoration defect is latent for current registered snapshot fields but must be closed or rejected by the independent verifier. See Gate 175. No tests or execution were performed.
+
+## Gate 176 — matrix and companion evidence contract
+
+The exact 52-row matrix passed to the benchmark evaluator must be retained at capture time as immutable `MatrixCapture v1.0.0`; do not rebuild it from current code or infer it from the ledger. Its full-matrix JCS digest covers every declared field, including `tolerance_id`, while the legacy matrix fingerprint remains unchanged.
+
+`CapturedBenchmark.report` is a mutable dict despite the frozen wrapper. Package export must use an immutable report snapshot/digest captured at the same boundary. Calibration manifest, Gate 159 reconciliation, independent GitHub source execution and technical-test evidence are separate companion artifacts, not evaluation producer inputs. See Gate 176.
