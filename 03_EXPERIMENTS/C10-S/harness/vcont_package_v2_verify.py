@@ -2051,8 +2051,8 @@ GATE159_INPUT_ARTIFACT_PATHS = tuple(sorted({
 
 
 def _reconcile_gate159_artifact(
-    artifact: Any, expected_export_id: str, package_files: Mapping[str, bytes],
-    expected_check_counts: Mapping[str, tuple[int | None, int | None, int | None, int | None]],
+    artifact: Any, expected_export_id: str, expected_design_identity: Mapping[str, Any],
+    package_files: Mapping[str, bytes], expected_check_counts: Mapping[str, tuple[int | None, int | None, int | None, int | None]],
 ) -> str:
     """Validate Gate159 nested wire schema, independently derive status and findings digest."""
     root_fields = {
@@ -2067,8 +2067,8 @@ def _reconcile_gate159_artifact(
         "TGCV-C10S-VCONT-GATE159-RECONCILIATION", "1.0.0", expected_export_id
     ):
         raise PackageVerificationError("Gate159 schema/version/benchmark_export_id mismatch")
-    if not isinstance(artifact.get("design_identity"), dict) or not artifact["design_identity"]:
-        raise PackageVerificationError("Gate159 design_identity must be a nonempty object")
+    if artifact.get("design_identity") != expected_design_identity:
+        raise PackageVerificationError("Gate159 design_identity differs from the independently validated MatrixCapture design identity")
     verifier = artifact.get("verifier_identity")
     verifier_fields = {"name", "version", "source_commit", "implementation_digest"}
     if not isinstance(verifier, dict) or set(verifier) != verifier_fields:
@@ -2724,6 +2724,7 @@ def verify_package_v2(
         gate159_derived_status = _reconcile_gate159_artifact(
             parsed["validation/reconciliation_results.json"],
             parsed["runs/run_records.json"]["benchmark_export_id"],
+            matrix["design_identity"],
             extracted,
             {
                 "EVALUATION_ASSIGNMENT_RUN_MANIFEST_ONE_TO_ONE": (
