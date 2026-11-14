@@ -1742,6 +1742,53 @@ def _independent_tar_rebuild(files: Mapping[str, bytes]) -> bytes:
 
 
 
+def _recompute_evaluation_seed_derivation(assignments: Mapping[str, Any]) -> None:
+    """Independently recompute evaluation seeds from the Gate 181 descriptor."""
+    descriptor = assignments.get("seed_derivation")
+    required = {"algorithm", "hash", "output_rule", "namespace"}
+    if (not isinstance(descriptor, dict) or set(descriptor) != required
+            or descriptor.get("algorithm") != "TGCV-C10S-VCONT-SEED-v3"
+            or descriptor.get("hash") != "SHA-256"
+            or descriptor.get("output_rule") != "first_8_digest_bytes_unsigned_big_endian"
+            or not isinstance(descriptor.get("namespace"), str)
+            or not descriptor["namespace"].strip()):
+        raise PackageVerificationError("evaluation seed_derivation descriptor is invalid")
+    rows = assignments.get("rows")
+    if not isinstance(rows, list) or not rows:
+        raise PackageVerificationError("seed derivation requires nonempty evaluation assignment rows")
+    namespace = descriptor["namespace"]
+
+    def derive(row: Mapping[str, Any], stream: str, role: str, replicate: int) -> int:
+        payload = (
+            f"TGCV-C10S-VCONT-SEED-v3|{namespace}|{row['bank']}|{row['scenario_id']}|"
+            f"{row['scenario_version']}|{row['n_units']}|{row['outer_replicate_id']}|"
+            f"{role}|{replicate}|{stream}"
+        )
+        return int.from_bytes(hashlib.sha256(payload.encode("utf-8")).digest()[:8], "big")
+
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict):
+            raise PackageVerificationError("seed derivation assignment row must be an object")
+        role, replicate = row.get("assignment_role"), row.get("replicate")
+        if role not in ("RUN", "REPEATED_ASSIGNMENT"):
+            raise PackageVerificationError("seed derivation assignment role is invalid")
+        if isinstance(replicate, bool) or not isinstance(replicate, int):
+            raise PackageVerificationError("seed derivation replicate must be an exact integer")
+        if (role == "RUN" and replicate != -1) or (role == "REPEATED_ASSIGNMENT" and replicate < 0):
+            raise PackageVerificationError("seed derivation role/replicate identity is invalid")
+        expected = {
+            "world_seed": derive(row, "world", "RUN", -1),
+            "z_assignment_seed": derive(row, "z", role, replicate),
+            "g_assignment_seed": derive(row, "g", role, replicate),
+        }
+        for field, value in expected.items():
+            actual = _uint64(row.get(field), f"evaluation assignments[{index}].{field}")
+            if actual != value:
+                raise PackageVerificationError(
+                    f"evaluation seed derivation mismatch at row {index}: {field}"
+                )
+
+
 def _configuration_digest(value: Any) -> str:
     try:
         return _sha256(rfc8785.dumps(value))
@@ -2035,6 +2082,7 @@ def _reconcile_configuration_companions(
     ]
     if observed_assignment_order != expected_assignment_order:
         raise PackageVerificationError("historical seed-bank source rows are not in canonical scenario/M/R order")
+    _recompute_evaluation_seed_derivation(assignment_file)
     legacy_seed_fingerprint = _sha256(
         json.dumps(legacy_seed_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
     )
