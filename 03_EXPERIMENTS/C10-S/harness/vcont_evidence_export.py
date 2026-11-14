@@ -621,6 +621,13 @@ def _report_v2_projection(report: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(report, dict) or set(report) != expected:
         raise ContractError("Evaluator report top-level schema differs from FrozenReportSnapshot v2.0.0")
     projected = _jcs_safe_source(report)
+    expected_design_fields = {
+        "scenario_versions", "n_units", "outer_replicates", "repeated_assignments",
+        "matrix_fingerprint", "metric_targets", "seed_bank_label",
+        "seed_bank_fingerprint", "executable_commit", "configuration_fingerprint",
+    }
+    if not isinstance(projected["design"], dict) or set(projected["design"]) != expected_design_fields:
+        raise ContractError("Evaluator design projection differs from the declared report schema")
     if not isinstance(projected["report_fingerprint"], str) or len(projected["report_fingerprint"]) != 64:
         raise ContractError("legacy report_fingerprint must be a 64-character digest")
     if not isinstance(projected["manifest"], dict):
@@ -774,6 +781,11 @@ def _matrix_row(spec: Any) -> dict[str, Any]:
                  "run_evaluation_class", "repeated_evaluation_class"):
         if row[name] is not None and (not isinstance(row[name], str) or not row[name]):
             raise ContractError(f"MatrixCapture {name} must be a nonempty string or explicit null")
+    for name in ("run_evaluation_class", "repeated_evaluation_class"):
+        if row[name] not in (None, "EVALUABLE", "STATUS_ONLY", "NOT_IDENTIFIABLE", "NOT_EVALUABLE"):
+            raise ContractError(f"MatrixCapture {name} has an unknown EvaluationClass")
+    if set(row["key"]) != {"scenario_id", "scenario_version", "estimand_id", "estimand_version"}:
+        raise ContractError("MatrixCapture key must contain exactly four identity fields")
     for name, value in row["key"].items():
         if not isinstance(value, str) or not value:
             raise ContractError(f"MatrixCapture key.{name} must be a nonempty string")
@@ -927,7 +939,9 @@ def derive_capture_identity(design_identity, matrix_capture, outer_world_bundles
         for scenario_id in SCENARIO_IDS for outer_id in outer_ids
     }
     observed_keys = {(bundle.scenario_id, bundle.outer_replicate_id) for bundle in ordered_bundles}
-    if (not outer_ids or outer_ids != tuple(f"outer-{m:06d}" for m in range(len(outer_ids)))
+    expected_m = design_identity.get("M") if isinstance(design_identity, dict) else None
+    if (not outer_ids or (expected_m is not None and len(outer_ids) != expected_m)
+            or outer_ids != tuple(f"outer-{m:06d}" for m in range(len(outer_ids)))
             or observed_keys != expected_keys or len(observed_keys) != len(ordered_bundles)):
         raise ContractError("capture identity requires exactly one ordered outer bundle per scenario/M")
     assignments = []
