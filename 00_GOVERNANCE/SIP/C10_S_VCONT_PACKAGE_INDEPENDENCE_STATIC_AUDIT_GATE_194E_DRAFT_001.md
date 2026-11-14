@@ -364,3 +364,68 @@ Before implementing either companion, the governing contract must settle:
 No code or tests have been added for these unresolved contracts. No guessed aggregate hash or synthetic Analyzer configuration has been introduced.
 
 **Disposition:** source facts and digest-domain boundaries are now documented; both `design/analysis_contracts.json` and `provenance/configuration_fingerprints.json` remain OPEN at schema/derivation level. The next implementation-ready step is not to write another guessed verifier helper; it is to resolve the aggregate configuration-fingerprint contract and its exact mapping to the already defined effective-config and AnalysisContract projections.
+
+
+## 14. Gate 194-E — resolution matrix for configuration fingerprints
+
+A further historical/source pass resolves several points that were previously grouped together as unspecified. The distinction below is now explicit: some payloads and recomputation duties are frozen; the aggregate algorithm and companion wire schema are not.
+
+### 14.1 Normative elements already frozen and reusable
+
+**Effective DGP/Generator payload**
+- Gate 181 §3.1–§3.3 freezes the exact EffectiveScenarioConfigProjection@2.0.0 row: scenario_id, scenario_version, n_units, generator_version, seed_policy and the exact 26-field structural config.
+- The row key/order and all stochastic/run-identity exclusions are explicit.
+- Gate 164 §6.3 requires the effective DGP/Generator configuration to be included and its fingerprint recomputed from that payload.
+- Gate 181 §7.2 requires a structural-config digest to change when any structural field changes and remain invariant to assignment-seed-only changes.
+
+**AnalysisContract payload**
+- Gate 181 §6 requires an exact effective AnalysisContract projection and per-scenario/run-family identity/source mapping.
+- The source dataclass has exactly 37 fields. contract_for(cfg) creates it from ScenarioConfig; neither its factory nor its 37 fields contain RUN/R identity.
+- The current Analyzer class exposes only version = c10s-vcont-analyzer-0.1 and an analyze(evidence, contract) method. No separate Analyzer configuration dataclass/object or configurable instance state is present in the inspected source.
+- Gate 164 §3 and §6.3 require effective AnalysisContract and Analyzer configuration/version to be represented and their fingerprints recomputed.
+
+**Matrix and seed-bank payloads**
+- MatrixCapture v1.0.0 already supplies a full 52-row canonical matrix payload and its full JCS SHA-256, distinct from the historical matrix fingerprint.
+- Evaluation SeedAssignment rows have a separately recomputable ordered-manifest digest, also used in capture identity. Calibration remains a separate manifest and disjointness check; it must not be silently merged into evaluation-bank identity.
+- Gate 164 §6.2–§6.3 requires actual rows or immutable retrievable material to recompute seed-bank identity and disjointness.
+
+### 14.2 Concrete source gap confirmed
+
+MonteCarloBenchmarkDesign.configuration_fingerprint is only checked for 64-character hexadecimal syntax in validate_monte_carlo_benchmark_design. It is copied unchanged into the legacy report manifest and benchmark-design package projection. No source function in the inspected protocol defines its payload, component order, domain separation or derivation.
+
+The package writer accepts design/analysis_contracts.json and provenance/configuration_fingerprints.json as caller-materialized mappings. It does not freeze their schemas or recompute their semantic fingerprints. This is consistent with Gate 191's boundary, but means the package currently has no source-of-truth algorithm for the aggregate declaration.
+
+### 14.3 Candidate mapping that matches the producer (NOT FROZEN)
+
+A source-compatible candidate for the AnalysisContract companion is:
+- 13 scenario contract payloads, one per scenario/version/N, each containing the exact 37 source fields plus the Analyzer version;
+- 26 explicit applicability rows keyed by (scenario_id, scenario_version, N, run_family), where run_family ∈ {RUN, REPEATED_ASSIGNMENT};
+- each applicability row references the same scenario contract payload digest for both families;
+- verifier consumes each applicability row against every corresponding RUN/R snapshot and verifies the exact historical snapshot digest separately.
+
+This preserves the role-independent contract_for(cfg) source behavior while satisfying the Gate 181 per-scenario/run-family mapping. It is a candidate only: Gate 181 does not freeze the exact row/root schema, whether the 37 fields repeat in the 26 rows, or the companion digest domain.
+
+### 14.4 Candidate non-circular fingerprint dependency graph (NOT FROZEN)
+
+A possible versioned graph, to be explicitly accepted or amended before implementation, is:
+
+1. **DGP/Generator component:** per-scenario digest over the exact Gate 181 effective-config row, including generator_version and seed_policy, using SHA-256 over RFC 8785 JCS bytes.
+2. **Analyzer/contract component:** per-scenario digest over a versioned object containing the exact 37-field AnalysisContract projection and Analyzer.version, using a separately named SHA-256/JCS domain. The historical FrozenSnapshot SHA remains an independent byte-identity check, not a substitute.
+3. **Matrix component:** reuse MatrixCapture's full JCS SHA-256; preserve the legacy matrix fingerprint as a separate compatibility declaration.
+4. **Evaluation seed-bank component:** recompute the ordered evaluation assignment-manifest SHA-256 from exact materialized rows; keep calibration manifest digest/disjointness separate.
+5. **Aggregate design fingerprint:** derive from a versioned, ordered component manifest containing the above component IDs, schema/algorithm IDs and digests. This aggregate would replace neither package ID nor capture_id.
+6. **Configuration-fingerprints companion:** carry each component's source reference, algorithm/schema ID, declared digest and independently recomputable status; require exact consumption of every declared component.
+
+The proposal intentionally does not specify a final schema ID, version, property names or byte-level object shape. Those are decision items, not facts recovered from the historical contracts.
+
+### 14.5 Explicit decision required before code
+
+The following questions must be answered in a bounded design decision:
+- Approve or reject the 13-source-contract / 26-applicability-row mapping.
+- Decide whether Analyzer.version plus AnalysisContract is the complete effective Analyzer configuration for this implementation, or whether the source must first expose a distinct Analyzer configuration payload. No such payload currently exists.
+- Approve or replace the proposed per-component JCS digest domains.
+- Define the ordered aggregate component set and exact MonteCarloBenchmarkDesign.configuration_fingerprint derivation.
+- Decide whether the aggregate includes the evaluation seed-bank digest and MatrixCapture digest, and confirm that calibration remains separately declared.
+- Freeze exact root/row schemas and exact-one-time consumption rules for both companion files.
+
+**Disposition:** Gate 181 effective-config payload and recomputation obligations are DEFINED and already partly implemented in the verifier. Matrix and evaluation seed-manifest digest sources are DEFINED. The AnalysisContract source shape and Analyzer version are known, but its companion applicability schema remains OPEN. The aggregate configuration fingerprint and configuration_fingerprints.json schema remain OPEN. No implementation is added until the above design decision is explicitly accepted. No tests, compilation, workflow, producer, calibration or scientific execution was performed.
