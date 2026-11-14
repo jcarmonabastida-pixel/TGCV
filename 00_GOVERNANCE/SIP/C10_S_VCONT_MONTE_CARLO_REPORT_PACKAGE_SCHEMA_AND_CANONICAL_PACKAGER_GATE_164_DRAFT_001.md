@@ -313,3 +313,11 @@ Gate 177 identifies that the current producer validates 52 unique matrix keys bu
 The report root is a mutable dict. Existing FrozenSnapshot capture only accepts dataclasses, and its generic JSON encoding is not JCS. Gate 164's report package input therefore requires a separate typed FrozenReportSnapshot with explicit schema, pinned RFC 8785 implementation/version, canonical bytes and strict decoding.
 
 Preserve existing CapturedBenchmark report/bundle/index compatibility. The capture/export identity must be content-derived and non-circular; Gate 177 proposes `benchmark_export_id = capture_id` from a canonical identity payload that excludes companion artifacts. Exact calibration and Gate 159 companion row schemas and cardinality/denominator rules remain to be frozen. See Gate 177. No implementation or tests occurred.
+
+## 15. Gate 178 — JCS and uint64 seed wire-format compatibility
+
+Gate 178 identifies a schema-level incompatibility requiring resolution before implementation. The current seed derivation converts the first eight SHA-256 digest bytes to an unsigned 64-bit integer. Gate 164 §4.1 requires JCS and disallows numeric-to-string coercion, while the seed assignment, temporal and report payloads carry these seeds as numeric values. JCS follows ECMAScript IEEE-754 number serialization and cannot guarantee exact representation for every integer above 9007199254740991.
+
+Gate 164 v1.0.0 is not silently changed by this addendum. Before implementation, either demonstrate an exact uint64 representation already permitted by the frozen v1.0.0 schema, or approve a versioned successor (proposed v1.1.0) with a typed exact uint64 wire representation used consistently across all 14 files and the independent verifier. Rounding, float conversion, truncation or bare decimal-string substitution is prohibited.
+
+Gate 178 also specifies exact MatrixCapture/FrozenReportSnapshot schemas, strict decoder behavior, calibration and Gate159 companion schemas, and deterministic capture identity. See `C10_S_VCONT_CAPTURE_EXPORT_SERIALIZATION_AND_COMPANION_SCHEMAS_GATE_178_DRAFT_001.md`. Packager implementation remains blocked; no code/tests/CI or scientific execution occurred.
