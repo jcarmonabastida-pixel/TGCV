@@ -477,3 +477,23 @@ The existing RUN/R shared-world and cross-M separation test was strengthened to 
 **Disposition:** world-identity source contract STATICALLY CONSISTENT; regression STRENGTHENED / NOT EXECUTED; Gate 168 bundle contract remains DEFINED; RunEvidenceBundle implementation OPEN. No Generator source change, calibration, seed-bank generation, Monte Carlo, benchmark or scientific execution was performed. `main` remains unchanged and PR #116 remains Draft.
 
 **Next:** Gate 170 — implement the Gate 168 capture boundary and deeply immutable RunEvidenceBundle snapshots, retaining full SealedEvidence rows and manifests.
+
+
+## 29. Gate 170 — immutable RunEvidenceBundle capture implementation
+
+Gate 170 is persisted in `00_GOVERNANCE/SIP/C10_S_VCONT_RUN_EVIDENCE_BUNDLE_CAPTURE_IMPLEMENTATION_GATE_170_DRAFT_001.md`.
+
+The new module `03_EXPERIMENTS/C10-S/harness/vcont_evidence_export.py` implements:
+
+- canonical deeply immutable `FrozenSnapshot` payloads with type identity, SHA-256 and typed restoration;
+- `RunEvidenceBundle.capture(...)` with exact SeedAssignment/ScenarioConfig/RunManifest joins, M/role/index checks, source run-ID joins, provenance digest recomputation, full SealedEvidence legacy digest recomputation, AnalysisContract/AnalyzerResult binding and exact EvaluationReport capture;
+- a Gate 166 `MatrixTruthProjection` that retains matrix truth fields and explicit theta_A null/value without exporting potential-outcome arrays;
+- `OuterWorldEvidenceBundle.capture(...)` enforcing one RUN, exactly R indices 0..R-1, shared world identity, common bank/design identity, unique run IDs and distinct Z/G assignment streams.
+
+A regression source was added to the harness test module to verify source mutation after capture cannot mutate the bundle and that the truth projection excludes potential arrays. It has NOT been executed; no runtime PASS or CI evidence is claimed.
+
+**Integration boundary:** the new API is not yet wired into the current benchmark producer/Monte Carlo path, which still consumes reduced tuples. No package writer, Gate 159 reconciliation, calibration manifest retrieval, trusted builder or attestor is implemented. Gate 170 is therefore IMPLEMENTED at the capture-primitive level; producer integration remains OPEN.
+
+No Generator/Sealer/Analyzer/Evaluator scientific semantics were changed. No tests, CI, calibration, seed-bank generation, N/R/M sizing, Monte Carlo, benchmark or scientific execution was performed. `main` remains unchanged and PR #116 remains Draft.
+
+**Next:** Gate 171 — integrate the capture API at the producer/orchestration boundary and construct one OuterWorldEvidenceBundle per M without reconstructing omitted source objects from aggregate outputs.
