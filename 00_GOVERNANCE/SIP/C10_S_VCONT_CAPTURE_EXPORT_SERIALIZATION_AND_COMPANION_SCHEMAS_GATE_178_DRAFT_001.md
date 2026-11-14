@@ -492,3 +492,11 @@ The canonical bootstrap remains design/recovery only; no experiment authorizatio
 ## 14. Next operation
 
 Gate 179 must resolve the Gate 164 wire-format compatibility through a versioned schema decision, then perform a final crosswalk against the exact 14-file inventory and the current Gate 174 verifier interface. Only after that can the implementation contract be submitted for acceptance and explicit implementation authorization. Do not start the serializer in Gate 179 by default.
+
+## 15. JCS implementation artifact pin — source verification addendum
+
+The selected candidate distribution is confirmed on PyPI as `rfc8785==0.1.4`. The project describes it as a pure-Python implementation with no runtime dependencies and byte-returning APIs. The exact universal wheel `rfc8785-0.1.4-py3-none-any.whl` has SHA-256:
+
+`520d690b448ecf0703691c76e1a34a24ddcd4fc5bc41d589cb7c58ec651bcd48`.
+
+This is a verified upstream distribution hash, not evidence that the dependency is installed in the TGCV environment. The later authorized implementation preflight must use this exact artifact (or create a separately reviewed dependency update with a new hash), record the dependency lock, and run the RFC/project vector suite. JCS normative behavior remains RFC 8785; the package pin does not waive cross-implementation verification.
