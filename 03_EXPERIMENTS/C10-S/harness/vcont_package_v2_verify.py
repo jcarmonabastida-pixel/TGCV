@@ -1789,6 +1789,143 @@ def _recompute_evaluation_seed_derivation(assignments: Mapping[str, Any]) -> Non
                 )
 
 
+def _reconcile_calibration_manifest(
+    calibration: Any, evaluation: Any,
+) -> dict[str, int]:
+    """Independently validate calibration rows and complete three-stream bank separation."""
+    root_fields = {
+        "schema_id", "schema_version", "bank", "namespace", "seed_derivation",
+        "design", "row_count", "rows", "seed_bank_fingerprint_legacy",
+        "manifest_sha256", "execution_evidence_status",
+    }
+    row_fields = {
+        "bank", "scenario_id", "scenario_version", "n_units", "replicate",
+        "outer_replicate_id", "assignment_role", "world_seed",
+        "z_assignment_seed", "g_assignment_seed",
+    }
+    if not isinstance(calibration, dict) or set(calibration) != root_fields:
+        raise PackageVerificationError("calibration manifest exact root field allowlist mismatch")
+    if (calibration.get("schema_id"), calibration.get("schema_version"), calibration.get("bank")) != (
+        "TGCV-C10S-VCONT-CALIBRATION-BANK-MANIFEST", "2.0.0", "calibration"
+    ):
+        raise PackageVerificationError("calibration manifest schema/version/bank mismatch")
+    namespace = calibration.get("namespace")
+    descriptor = calibration.get("seed_derivation")
+    if not isinstance(namespace, str) or not namespace.strip() or not isinstance(descriptor, dict):
+        raise PackageVerificationError("calibration namespace/seed_derivation is missing")
+    if set(descriptor) != {"algorithm", "hash", "output_rule", "namespace"} or (
+        descriptor.get("algorithm") != "TGCV-C10S-VCONT-SEED-v3"
+        or descriptor.get("hash") != "SHA-256"
+        or descriptor.get("output_rule") != "first_8_digest_bytes_unsigned_big_endian"
+        or descriptor.get("namespace") != namespace
+    ):
+        raise PackageVerificationError("calibration seed_derivation descriptor is invalid")
+    if not isinstance(calibration.get("design"), dict) or not calibration["design"]:
+        raise PackageVerificationError("calibration design declaration is missing")
+    if calibration.get("execution_evidence_status") not in ("NOT_CAPTURED", "AVAILABLE", "UNVERIFIABLE"):
+        raise PackageVerificationError("calibration execution_evidence_status is invalid")
+    rows = calibration.get("rows")
+    if not isinstance(rows, list) or not rows or calibration.get("row_count") != len(rows):
+        raise PackageVerificationError("calibration row_count/rows envelope is incomplete")
+
+    def derive(row: Mapping[str, Any], stream: str, role: str, replicate: int) -> int:
+        payload = (
+            f"TGCV-C10S-VCONT-SEED-v3|{namespace}|calibration|{row['scenario_id']}|"
+            f"{row['scenario_version']}|{row['n_units']}|{row['outer_replicate_id']}|"
+            f"{role}|{replicate}|{stream}"
+        )
+        return int.from_bytes(hashlib.sha256(payload.encode("utf-8")).digest()[:8], "big")
+
+    legacy_rows = []
+    calibration_streams: set[int] = set()
+    groups: dict[tuple[Any, ...], list[tuple[int, dict[str, Any]]]] = {}
+    worlds_by_design: dict[tuple[Any, ...], dict[str, int]] = {}
+    z_by_world: dict[tuple[Any, ...], set[int]] = {}
+    g_by_world: dict[tuple[Any, ...], set[int]] = {}
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict) or set(row) != row_fields or row.get("bank") != "calibration":
+            raise PackageVerificationError(f"calibration row {index} exact field/bank mismatch")
+        sid, version, n, outer, role, replicate = (
+            row.get("scenario_id"), row.get("scenario_version"), row.get("n_units"),
+            row.get("outer_replicate_id"), row.get("assignment_role"), row.get("replicate"),
+        )
+        if (not isinstance(sid, str) or not sid or not isinstance(version, str) or not version
+                or isinstance(n, bool) or not isinstance(n, int) or n < 1
+                or not isinstance(outer, str) or re.fullmatch(r"outer-[0-9]{6}", outer) is None
+                or role not in ("RUN", "REPEATED_ASSIGNMENT")
+                or isinstance(replicate, bool) or not isinstance(replicate, int)
+                or (role == "RUN" and replicate != -1)
+                or (role == "REPEATED_ASSIGNMENT" and replicate < 0)):
+            raise PackageVerificationError(f"calibration row {index} identity types/values are invalid")
+        seeds = {
+            "world_seed": _uint64(row.get("world_seed"), f"calibration rows[{index}].world_seed"),
+            "z_assignment_seed": _uint64(row.get("z_assignment_seed"), f"calibration rows[{index}].z_assignment_seed"),
+            "g_assignment_seed": _uint64(row.get("g_assignment_seed"), f"calibration rows[{index}].g_assignment_seed"),
+        }
+        if len(set(seeds.values())) != 3:
+            raise PackageVerificationError(f"calibration row {index} reuses a seed across streams")
+        expected = {
+            "world_seed": derive(row, "world", "RUN", -1),
+            "z_assignment_seed": derive(row, "z", role, replicate),
+            "g_assignment_seed": derive(row, "g", role, replicate),
+        }
+        if seeds != expected:
+            raise PackageVerificationError(f"calibration seed derivation mismatch at row {index}")
+        key = (sid, version, n, outer)
+        groups.setdefault(key, []).append((index, row))
+        worlds_by_design.setdefault((sid, version, n), {})[outer] = seeds["world_seed"]
+        z_by_world.setdefault(key, set()).add(seeds["z_assignment_seed"])
+        g_by_world.setdefault(key, set()).add(seeds["g_assignment_seed"])
+        calibration_streams.update(seeds.values())
+        legacy_rows.append({
+            "bank": "calibration", "scenario_id": sid, "scenario_version": version,
+            "n_units": n, "outer_replicate_id": outer, "assignment_role": role,
+            "replicate": replicate, **seeds,
+        })
+    for key, entries in groups.items():
+        roles = [(row["assignment_role"], row["replicate"]) for _, row in entries]
+        if roles.count(("RUN", -1)) != 1:
+            raise PackageVerificationError(f"calibration group {key} must contain exactly one RUN")
+        repeated = sorted(index for role, index in roles if role == "REPEATED_ASSIGNMENT")
+        if repeated != list(range(len(repeated))):
+            raise PackageVerificationError(f"calibration group {key} repeated assignment indices are not contiguous")
+        if len({row["world_seed"]["decimal"] for _, row in entries}) != 1:
+            raise PackageVerificationError(f"calibration group {key} does not retain one world seed across RUN/R")
+        if len(z_by_world[key]) != len(entries) or len(g_by_world[key]) != len(entries):
+            raise PackageVerificationError(f"calibration group {key} reuses a Z or G assignment seed")
+    for key, outer_worlds in worlds_by_design.items():
+        if len(set(outer_worlds.values())) != len(outer_worlds):
+            raise PackageVerificationError(f"calibration design {key} reuses a world seed across M")
+    legacy_digest = _sha256(json.dumps(legacy_rows, sort_keys=True, separators=(",", ":")).encode("utf-8"))
+    if calibration.get("seed_bank_fingerprint_legacy") != legacy_digest:
+        raise PackageVerificationError("calibration source-typed legacy seed-bank fingerprint does not recompute")
+    if not isinstance(calibration.get("manifest_sha256"), str) or re.fullmatch(
+        r"[0-9a-f]{64}", calibration["manifest_sha256"]
+    ) is None:
+        raise PackageVerificationError("calibration manifest_sha256 is not lowercase SHA-256 hex")
+
+    evaluation_rows = evaluation.get("rows") if isinstance(evaluation, dict) else None
+    if not isinstance(evaluation_rows, list) or not evaluation_rows:
+        raise PackageVerificationError("evaluation assignments unavailable for bank disjointness")
+    evaluation_streams = set()
+    for index, row in enumerate(evaluation_rows):
+        if not isinstance(row, dict):
+            raise PackageVerificationError("evaluation assignment row is malformed")
+        for field in ("world_seed", "z_assignment_seed", "g_assignment_seed"):
+            evaluation_streams.add(_uint64(row.get(field), f"evaluation rows[{index}].{field}"))
+    collisions = calibration_streams & evaluation_streams
+    if collisions:
+        raise PackageVerificationError(
+            f"calibration/evaluation banks share {len(collisions)} seed values across world/Z/G streams"
+        )
+    return {
+        "calibration_rows": len(rows),
+        "calibration_seed_values": len(calibration_streams),
+        "evaluation_seed_values": len(evaluation_streams),
+        "cross_bank_collisions": 0,
+    }
+
+
 def _configuration_digest(value: Any) -> str:
     try:
         return _sha256(rfc8785.dumps(value))
@@ -2288,6 +2425,10 @@ def verify_package_v2(
     _reconcile_matrix_pair_ledger(matrix, decoded_report)
     try:
         _reconcile_configuration_companions(parsed, decoded_report, matrix)
+        calibration_summary = _reconcile_calibration_manifest(
+            parsed["seeds/calibration_seed_manifest.json"],
+            parsed["seeds/evaluation_seed_assignments.json"],
+        )
     except PackageVerificationError:
         raise
     except Exception as exc:
@@ -2312,7 +2453,7 @@ def verify_package_v2(
     # governed attestation verifier and trusted signer configuration are absent.
     limitations = (
         "RUN/R snapshots, assignments, temporal rows, outer-world records, report tuples, pair contributions, AnalysisContract applicability, 13/26 companion rows and all 28 configuration fingerprints were reconciled independently.",
-        "Calibration/evaluation seed disjointness and Gate159 derived-status recomputation are not implemented.",
+        "Calibration row derivation, typed legacy fingerprint and cross-bank three-stream disjointness are independently checked; Gate159 artifact registry/status derivation remains open.",
         "Source-execution metadata has not been independently resolved against GitHub.",
         "Technical-test evidence has not been independently bound to a trusted workflow run/artifact.",
         "External attestation/signature verification is not implemented; package is NOT_AUTHENTICATED.",
