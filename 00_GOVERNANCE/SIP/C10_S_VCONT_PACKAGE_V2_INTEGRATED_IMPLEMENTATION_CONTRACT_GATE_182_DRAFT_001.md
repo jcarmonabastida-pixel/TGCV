@@ -307,3 +307,9 @@ Gate 191 also records static corrections to the Gate 190 source reconciler: Anal
 
 The bounded implementation sequence and exact contract are in `C10_S_VCONT_PACKAGE_V2_PROFILE_AND_INDEPENDENT_VERIFIER_IMPLEMENTATION_CONTRACT_GATE_191_DRAFT_001.md`. Writer/verifier modules and package tests remain NOT IMPLEMENTED. The pinned RFC 8785 dependency is reused. No tests, imports, compilation, CI, package construction, producer, calibration or scientific execution occurred.
 
+## Gate 192 implementation addendum
+
+Gate 192 partially implements the pure package-v2 file/TAR boundary in `vcont_package_v2.py`. It includes RFC 8785 file canonicalization, exact 14-path inventory, deterministic normalized USTAR, report v2.1/MatrixCapture and capture-identity prechecks, required materialized companion payloads, and selected schema-header checks. Seven pure writer tests are written and explicitly listed in the manual research-branch-only workflow.
+
+This implementation is partial. The writer does not yet perform all field-level companion validation or all package semantic joins. It does not create companion evidence. The independent verifier remains unimplemented. No import, compile, test, workflow, package construction or scientific execution occurred. See Gate 192.
+
