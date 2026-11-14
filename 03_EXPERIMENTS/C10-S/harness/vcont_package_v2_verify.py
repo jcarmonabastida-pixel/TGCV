@@ -1880,6 +1880,24 @@ def _reconcile_configuration_companions(
         if not isinstance(record, dict) or not isinstance(record.get("snapshot_refs"), dict):
             raise PackageVerificationError("RUN/R record lacks AnalysisContract snapshot reference")
         key = _logical_run_key(record.get("key"), f"AnalysisContract RUN/R record {run_index}")
+        scenario_position = run_index // (M * (1 + R))
+        within_scenario = run_index % (M * (1 + R))
+        outer_position = within_scenario // (1 + R)
+        assignment_position = within_scenario % (1 + R)
+        expected_role, expected_assignment_index = (
+            ("RUN", -1) if assignment_position == 0
+            else ("REPEATED_ASSIGNMENT", assignment_position - 1)
+        )
+        expected_record_key = (
+            AUTHORITATIVE_SCENARIO_IDS[scenario_position],
+            versions[AUTHORITATIVE_SCENARIO_IDS[scenario_position]],
+            n_units,
+            f"outer-{outer_position:06d}",
+            expected_role,
+            expected_assignment_index,
+        )
+        if key[:6] != expected_record_key:
+            raise PackageVerificationError("RUN/R evidence record array is not in canonical scenario/M/R order")
         scope = (key[0], key[1], key[2])
         if scope not in source_map:
             raise PackageVerificationError("RUN/R AnalysisContract snapshot references unknown scenario contract")
