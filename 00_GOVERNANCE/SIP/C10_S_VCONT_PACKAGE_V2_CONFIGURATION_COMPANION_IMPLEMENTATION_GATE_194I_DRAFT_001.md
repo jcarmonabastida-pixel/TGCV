@@ -198,3 +198,28 @@ To accommodate the absence of an available workflow-dispatch action, the workflo
 This is execution-backed technical regression evidence for the pure test suite only. It is not evidence that a real V_cont package has been assembled or independently verified, and it does not establish source-execution provenance, external authentication, calibration/evaluation separation, or any scientific claim about `ΔT_acc → ΔV`.
 
 **Gate 194-I.3 disposition: PURE TEST SUITE PASS (92/92); OVERALL GATE REMAINS CONDITIONAL PENDING REAL-PACKAGE VALIDATION AND RESIDUAL PROVENANCE WORK.**
+
+### 9.3 Gate 194-I.4 — evaluation seed-derivation reconciliation
+
+A source crosswalk against Gate 181 §2.3a and `vcont_benchmark_protocol._derive_seed` established the exact derivation contract:
+
+- descriptor fields: `algorithm`, `hash`, `output_rule`, `namespace`;
+- algorithm: `TGCV-C10S-VCONT-SEED-v3`;
+- hash: `SHA-256`;
+- output: first eight digest bytes interpreted as unsigned big-endian;
+- UTF-8 payload: `TGCV-C10S-VCONT-SEED-v3|{namespace}|{bank}|{scenario_id}|{scenario_version}|{n_units}|{outer_replicate_id}|{assignment_role}|{replicate}|{stream}`.
+
+The earlier implementation checked the assignment rows, their uint64 wire representation and their historical/typed fingerprints, but did not check that the declared derivation descriptor actually produced those seed values. This gap is now closed at the package boundary:
+
+- the writer independently recomputes every evaluation row's world/Z/G seed from the descriptor and rejects malformed descriptors, invalid RUN/R role/index combinations or any seed mismatch;
+- the independent verifier repeats that recomputation from the packaged descriptor and raw typed assignment rows; it does not import the writer;
+- `world_seed` is recomputed using the designated RUN identity (`replicate=-1`, role RUN) for both RUN and repeated rows; Z/G streams use each row's actual role and replicate;
+- adversarial tests cover namespace drift, descriptor output-rule drift and writer-side rejection.
+
+The corrected pure suite passed **94 tests, 0 failures, 0 errors**. Run: [43634332794](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/43634332794), checking out exact commit `a01e0ea2ba27d0e6c8d3b46fc76a9b48edd32872`. Python 3.12 setup, hash-locked JCS installation, allowlisted compilation and the unittest step all passed. The workflow was then restored to its original manual-only `workflow_dispatch` configuration; restoration commit: `cde5e02bfd4368514eef1a2cd35546e188e85f7c`. The current workflow file was re-read and confirmed to contain no `push` trigger.
+
+**Boundary:** this closes deterministic derivation reconciliation, not execution authentication. The namespace remains a descriptor carried by the assignment manifest. Recomputing all row values proves that the rows are consistent with that declared namespace and algorithm; by itself it does not prove which process invoked the producer, that the producer actually used the recomputed values at runtime, or that the descriptor was not jointly fabricated with the rows. Those claims still require the Gate 159 execution-provenance/trust architecture. Calibration/evaluation bank disjointness and Gate 159 derived-status recomputation also remain outside this Gate 194-I verifier.
+
+No seed bank was generated. No Generator, Evaluator, calibration, benchmark, package generation or scientific execution was run. The test workflow exercises deterministic validation against fixtures only.
+
+**Gate 194-I.4 disposition: PASS for deterministic evaluation seed-derivation reconciliation and its pure regression suite; overall Gate 194-I remains CONDITIONAL pending real-package validation, calibration/evaluation provenance and trusted execution attestation.**
