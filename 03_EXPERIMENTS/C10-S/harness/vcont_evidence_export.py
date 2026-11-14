@@ -1210,12 +1210,16 @@ def _reconcile_report_seed_sources(
             run = row.get("run") if isinstance(row, dict) else None
             if not isinstance(run, list) or len(run) != 4:
                 raise ContractError("v2.1 RUN tuple must contain exactly four ordered objects")
-            truth, _, _, manifest_report = run
+            truth, analyzer_report, contract_report, manifest_report = run
             bundle = outer.run_bundle
             assignment = bundle.assignment.restore(SeedAssignment)
             config = bundle.scenario_config.restore(ScenarioConfig)
             manifest = bundle.run_manifest.restore(RunManifest)
             truth_projection = bundle.truth_projection.restore(MatrixTruthProjection)
+            analyzer_source = bundle.analyzer_result.restore(AnalyzerResult)
+            contract_source = bundle.analysis_contract.restore(AnalysisContract)
+            if len(outer.repeated_bundles) != design.get("repeated_assignments"):
+                raise ContractError("v2.1 OuterWorldEvidenceBundle repeated-assignment cardinality differs from R")
             if assignment.bank != "evaluation":
                 raise ContractError("v2.1 report RUN must join to the evaluation SeedAssignment bank")
             identity = (scenario_id, version, n_units, outer_id, "RUN", -1)
@@ -1229,8 +1233,12 @@ def _reconcile_report_seed_sources(
                 manifest.assignment_role, manifest.assignment_index) != identity:
                 raise ContractError("v2.1 RunManifest RUN identity mismatch")
             run_id = manifest.run_id
-            if not run_id or any(item.get("run_id") != run_id for item in (truth, manifest_report)):
-                raise ContractError("v2.1 report RUN run_id does not match source RunManifest")
+            if not run_id or any(item.get("run_id") != run_id for item in (
+                truth, analyzer_report, contract_report, manifest_report
+            )):
+                raise ContractError("v2.1 report RUN tuple run_id does not match source RunManifest")
+            if any(item.run_id != run_id for item in (analyzer_source, contract_source)):
+                raise ContractError("v2.1 captured AnalyzerResult/AnalysisContract run_id mismatch")
             if truth.get("seed") != config.seed or truth_projection.seed != config.seed:
                 raise ContractError("v2.1 TruthBundle.seed / ScenarioConfig.seed / MatrixTruthProjection.seed mismatch")
             for field, source in (
