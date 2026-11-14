@@ -304,7 +304,7 @@ class CaptureV2Tests(unittest.TestCase):
 
     def test_report_snapshot_wraps_uint64_and_is_immutable_from_compatibility_dict(self):
         report = self.report_fixture()
-        snapshot = freeze_report_snapshot(report)
+        snapshot = freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
         original_bytes = snapshot.canonical_bytes
         report["coverage"]["observed_pairs"] = 0
         self.assertEqual(snapshot.canonical_bytes, original_bytes)
@@ -336,55 +336,55 @@ class CaptureV2Tests(unittest.TestCase):
             normalized, sort_keys=True, separators=(",", ":"), allow_nan=False
         ).encode("utf-8")).hexdigest()
         with self.assertRaises(ContractError):
-            freeze_report_snapshot(report)
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
 
 
     def test_report_snapshot_rejects_tampered_legacy_fingerprint(self):
         report = self.report_fixture()
         report["report_fingerprint"] = "e" * 64
         with self.assertRaises(ContractError):
-            freeze_report_snapshot(report)
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
 
     def test_report_snapshot_rejects_non_uint64_seed_and_unknown_top_level_field(self):
         report = self.report_fixture()
         report["temporal_manifest"][0]["world_seed"] = -1
         with self.assertRaises(ContractError):
-            freeze_report_snapshot(report)
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
         report = self.report_fixture()
         report["temporal_manifest"][0]["z_assignment_seed"] = 1 << 64
         with self.assertRaises(ContractError):
-            freeze_report_snapshot(report)
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
         report = self.report_fixture()
         report["temporal_manifest"][0]["g_assignment_seed"] = True
         with self.assertRaises(ContractError):
-            freeze_report_snapshot(report)
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
         report = self.report_fixture()
         report["unexpected"] = True
         with self.assertRaises(ContractError):
-            freeze_report_snapshot(report)
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
 
 
     def test_report_snapshot_rejects_unknown_nested_scenario_field(self):
         report = self.report_fixture()
         report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"][0]["unexpected"] = 1
         with self.assertRaises(ContractError):
-            freeze_report_snapshot(report)
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
 
     def test_report_snapshot_rejects_temporal_and_pair_cardinality_drift(self):
         report = self.report_fixture()
         report["temporal_manifest"].pop()
         with self.assertRaises(ContractError):
-            freeze_report_snapshot(report)
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
         report = self.report_fixture()
         report["pair_ledger"].pop()
         with self.assertRaises(ContractError):
-            freeze_report_snapshot(report)
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
 
     def test_report_snapshot_rejects_unknown_pair_contribution_field(self):
         report = self.report_fixture()
         report["pair_ledger"][0]["contributions"][0]["unexpected"] = "drift"
         with self.assertRaises(ContractError):
-            freeze_report_snapshot(report)
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
 
 
     def test_report_snapshot_v2_1_wraps_all_four_scenario_run_uint64_paths(self):
@@ -394,7 +394,7 @@ class CaptureV2Tests(unittest.TestCase):
         run[3]["world_seed"] = 9007199254740991
         run[3]["z_assignment_seed"] = 18446744073709551615
         run[3]["g_assignment_seed"] = 0
-        snapshot = freeze_report_snapshot(report)
+        snapshot = freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
         envelope = json.loads(snapshot.canonical_bytes.decode("utf-8"))
         projected = envelope["report"]["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"]
         self.assertEqual(projected[0]["seed"], {"$type": "uint64", "decimal": "9007199254740992"})
@@ -408,7 +408,7 @@ class CaptureV2Tests(unittest.TestCase):
         run = report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"]
         run[0]["seed"] = 31
         run[3]["world_seed"] = 17
-        snapshot = freeze_report_snapshot(report)
+        snapshot = freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
         envelope = json.loads(snapshot.canonical_bytes.decode("utf-8"))
         projected = envelope["report"]["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"]
         self.assertEqual(projected[0]["seed"], {"$type": "uint64", "decimal": "31"})
@@ -430,7 +430,7 @@ class CaptureV2Tests(unittest.TestCase):
             report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"][tuple_index][field] = invalid
             with self.subTest(tuple_index=tuple_index, field=field, invalid=invalid):
                 with self.assertRaises(ContractError):
-                    freeze_report_snapshot(report)
+                    freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
 
     def test_rfc8785_known_canonicalization_vectors(self):
         self.assertEqual(rfc8785.dumps({"b": 2, "a": 1}), b'{"a":1,"b":2}')
