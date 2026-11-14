@@ -262,3 +262,52 @@ The next bounded operation is to define and reconcile the companion's source-to-
 This preserves the distinction between:
 - **per-run AnalysisContract snapshot identity:** implemented and checked by the RUN/R verifier;
 - **design/analysis_contracts.json companion completeness and one-to-one applicability:** not yet specified or verified.
+
+
+## 12. Gate 194-E continuation — AnalysisContract source and applicability audit
+
+### 12.1 Exact source object established
+
+The current registered `vcont_integrated_harness.AnalysisContract` dataclass contains exactly 37 fields. The independent verifier's closed source-field registry matches those 37 names. The object has no:
+- `run_id`;
+- `outer_replicate_id`;
+- `assignment_role`;
+- `assignment_index`;
+- scenario ID/version or N fields.
+
+The source factory `contract_for(cfg)` constructs the AnalysisContract from `ScenarioConfig`. Its current implementation reads structural/configuration properties (randomization, positivity, interference, measurement, focal-path and mechanism/regime declarations); it does not receive a SeedAssignment, RunManifest, run ID, outer-world ID or assignment role/index. It therefore does not create a run-scoped identity.
+
+### 12.2 Source-to-snapshot digest is already defined
+
+`RunEvidenceBundle.capture` stores `analysis_contract_sha256` as the historical tagged FrozenSnapshot digest of the AnalysisContract object. The independent verifier:
+- strictly decodes each AnalysisContract snapshot under the closed 37-field type registry;
+- recomputes the digest from the exact retained snapshot bytes through the independent decoder;
+- requires the run record's `analysis_contract_sha256` to equal the snapshot reference digest;
+- reconciles the contract's estimand/version, target regime, outcome, transportability declarations and mechanism/reference-regime identities against AnalyzerResult and RunManifest.
+
+This is a per-RUN/R snapshot integrity and semantic join. It is not yet a check of the separate `design/analysis_contracts.json` companion.
+
+### 12.3 RUN/R applicability fact
+
+The factory `contract_for(cfg)` does not branch on RUN versus REPEATED_ASSIGNMENT. The RUN/R role is introduced in the subsequent RunEvidenceBundle capture key and in the SeedAssignment/ScenarioConfig/RunManifest identity join. Therefore, a proposed companion mapping that treats the two run families as two different AnalysisContract source objects would not be supported by the inspected producer semantics.
+
+The normative Gate 181 crosswalk nevertheless requires an exact per-scenario/run-family identity and source mapping. The intended distinction appears to be applicability/consumption by run family, not a different contract object per role. That interpretation is supported by source structure but is not a substitute for an explicit wire schema.
+
+### 12.4 Remaining normative decisions — do not implement by guess
+
+The following are still not fixed by Gate 181/Gate 191/Gate 194-A:
+1. Companion root schema ID/version and exact root field allowlist.
+2. Whether the 37-field source projection is stored once per scenario and referenced by two run-family applicability rows, or repeated in each family row.
+3. Exact row key and controlled vocabulary for the run-family mapping.
+4. Exact source-mapping representation: snapshot digest only, source projection plus digest, or another frozen mapping.
+5. Whether the contract digest in the companion is the historical tagged FrozenSnapshot SHA-256 over the exact 37-field dataclass projection, or a separately declared JCS digest over a companion row. These are different digest domains and must not be conflated.
+6. Exact cardinality and one-to-one consumption rule between companion mappings and the observed RUN/R snapshots.
+7. Exact crosswalk from each companion row to the effective ScenarioConfig row and to `provenance/configuration_fingerprints.json`.
+
+A plausible but **not approved** candidate is one source contract projection per scenario/version/N, with two explicit applicability mappings (RUN and REPEATED_ASSIGNMENT) that point to the same contract digest. This matches the current factory's role-independent construction, but must not be treated as a frozen schema until the mapping and digest domains are explicitly decided.
+
+### 12.5 Disposition and next bounded operation
+
+No `analysis_contracts.json` verifier code or tests have been added in this continuation. The correct next operation is a narrow contract-resolution step: retrieve the exact Gate 178/179 configuration-fingerprint schema and the Gate 191 companion obligations, then resolve the seven decisions above against the existing producer output and historical contracts. If the normative material still does not determine a unique row schema, record a decision request and obtain explicit design acceptance before implementation.
+
+**Disposition:** per-run AnalysisContract snapshot identity/semantic reconciliation remains implemented in source; separate companion schema and applicability remain OPEN. No producer, scientific component, DGP, estimand, seed generation or execution behavior was changed.
