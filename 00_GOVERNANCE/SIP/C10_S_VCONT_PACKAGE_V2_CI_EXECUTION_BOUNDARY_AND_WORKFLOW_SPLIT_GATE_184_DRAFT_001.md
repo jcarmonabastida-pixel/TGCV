@@ -109,3 +109,11 @@ Before accepting the JCS layer, the pure v2 suite must execute RFC 8785 conforma
 ## 7. Next operation — Gate 185
 
 Gate 185 should implement the pure capture primitives and their fixture-only tests, including the RFC 8785 conformance vectors. The implementation commit must include all test modules named by the pure workflow path filters, or otherwise adjust the workflow atomically so it cannot trigger against missing files. No integrated producer test or scientific execution is authorized by Gate 184.
+
+## 8. Corrective configuration record — YAML parse defect
+
+After the first push, GitHub recorded seven failed workflow-run entries for the new pure workflow, each with **zero jobs**. The failure was in workflow configuration parsing, not in the test command: the unquoted plain-scalar pip command contained the :all: token followed by whitespace, which made the YAML invalid.
+
+The command was quoted in commit 84d6e4695e7e94f694ca5bb40125a81c8936eefe. The corrected workflow was fetched back from the branch and parsed successfully with a YAML parser. No job was present in any of the seven failed runs, and no dependency installation, compilation, test, producer or scientific operation occurred.
+
+This correction supersedes any reading of §5/§6 that might imply no workflow-run records were created. Accurate state: push events created failed configuration-only run records with zero jobs; no workflow job executed. The corrected workflow file has not yet been executed.
