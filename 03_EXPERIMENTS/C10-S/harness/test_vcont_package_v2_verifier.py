@@ -17,6 +17,7 @@ from vcont_package_v2_verify import (
     decode_frozen_snapshot_ref,
     _assert_snapshot_seed_relations,
     _logical_run_key,
+    _reconcile_matrix_pair_ledger,
 )
 
 
@@ -352,6 +353,74 @@ class IndependentVerifierPrimitiveTests(unittest.TestCase):
             _logical_run_key(dict(valid, assignment_index=0), "bad-run-index")
         with self.assertRaises(PackageVerificationError):
             _logical_run_key(dict(valid, unexpected="field"), "extra-field")
+
+
+
+    def _matrix_pair_fixture(self):
+        matrix_rows = []
+        pair_rows = []
+        for scenario_index in range(13):
+            sid = f"S{scenario_index:02d}"
+            for estimand_index in range(4):
+                estimand_id = f"E{estimand_index:02d}"
+                estimand_version = "001"
+                evaluation_class = ("EVALUABLE", "STATUS_ONLY", "NOT_IDENTIFIABLE", "NOT_EVALUABLE")[estimand_index]
+                truth_status = ("DEFINED", "UNDEFINED", "NOT_MATERIALIZED", "DEFINED")[estimand_index]
+                matrix_rows.append({
+                    "key": {
+                        "scenario_id": sid, "scenario_version": "v1",
+                        "estimand_id": estimand_id, "estimand_version": estimand_version,
+                    },
+                    "evaluation_class": evaluation_class,
+                    "truth_status": truth_status,
+                    "dgp_truth_field": "truth",
+                    "analyzer_output_field": "estimate",
+                    "aggregation_field": "mean",
+                    "identification_expectation": "IDENTIFIED",
+                    "abstention_expectation": False,
+                    "tolerance_id": "TOL-001",
+                    "reason": "fixture",
+                    "run_evaluation_class": evaluation_class,
+                    "repeated_evaluation_class": evaluation_class,
+                })
+                pair_rows.append({
+                    "key": [sid, "v1", estimand_id, estimand_version, "MONTE_CARLO"],
+                    "evaluation_class": evaluation_class,
+                    "truth_status": truth_status,
+                })
+        return {"rows": matrix_rows}, {"report": {"pair_ledger": pair_rows}}
+
+    def test_matrix_capture_and_pair_ledger_exact_52_pair_join(self):
+        matrix, report = self._matrix_pair_fixture()
+        _reconcile_matrix_pair_ledger(matrix, report)
+
+    def test_matrix_pair_join_rejects_wrong_scenario_estimand_version_and_order(self):
+        mutations = (
+            lambda row: row["key"].__setitem__(0, "S99"),
+            lambda row: row["key"].__setitem__(2, "E99"),
+            lambda row: row["key"].__setitem__(3, "999"),
+        )
+        for mutate in mutations:
+            matrix, report = self._matrix_pair_fixture()
+            mutate(report["report"]["pair_ledger"][0])
+            with self.subTest(mutate=mutate), self.assertRaises(PackageVerificationError):
+                _reconcile_matrix_pair_ledger(matrix, report)
+        matrix, report = self._matrix_pair_fixture()
+        report["report"]["pair_ledger"][0], report["report"]["pair_ledger"][1] = (
+            report["report"]["pair_ledger"][1], report["report"]["pair_ledger"][0]
+        )
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_matrix_pair_ledger(matrix, report)
+
+    def test_matrix_pair_join_rejects_classification_drift_and_duplicate_identity(self):
+        matrix, report = self._matrix_pair_fixture()
+        report["report"]["pair_ledger"][0]["evaluation_class"] = "NOT_EVALUABLE"
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_matrix_pair_ledger(matrix, report)
+        matrix, report = self._matrix_pair_fixture()
+        matrix["rows"][1]["key"] = dict(matrix["rows"][0]["key"])
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_matrix_pair_ledger(matrix, report)
 
 
 
