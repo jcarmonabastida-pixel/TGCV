@@ -4,7 +4,7 @@ import hashlib
 import json
 import unittest
 
-import rfc8785
+from vcont_package_v2 import COMPANION_PATHS, GENERATED_COMPANION_PATHS
 
 from vcont_package_v2_verify import (
     ANALYSIS_CONTRACTS_SCHEMA_ID,
@@ -244,6 +244,42 @@ class ConfigurationCompanionVerifierTests(unittest.TestCase):
     def test_positive_13_26_28_reconciliation(self):
         files, report, matrix = _fixture()
         self.assertEqual(_reconcile_configuration_companions(files, report, matrix), (13, 26, 28))
+
+    def test_writer_generates_both_configuration_companions(self):
+        self.assertEqual(
+            GENERATED_COMPANION_PATHS,
+            frozenset({
+                "design/analysis_contracts.json",
+                "provenance/configuration_fingerprints.json",
+            }),
+        )
+        self.assertTrue(GENERATED_COMPANION_PATHS.isdisjoint(COMPANION_PATHS))
+
+    def test_rejects_twelve_source_contract_rows(self):
+        files, report, matrix = _fixture()
+        files["design/analysis_contracts.json"]["source_contracts"].pop()
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_configuration_companions(files, report, matrix)
+
+    def test_rejects_run_snapshot_crossed_to_another_scenario(self):
+        files, report, matrix = _fixture()
+        files["runs/run_records.json"]["run_evidence_records"][0]["key"]["scenario_id"] = (
+            AUTHORITATIVE_SCENARIO_IDS[1]
+        )
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_configuration_companions(files, report, matrix)
+
+    def test_rejects_analyzer_version_drift(self):
+        files, report, matrix = _fixture()
+        files["design/analysis_contracts.json"]["source_contracts"][0]["analyzer_version"] = "other-version"
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_configuration_companions(files, report, matrix)
+
+    def test_rejects_matrix_digest_drift(self):
+        files, report, matrix = _fixture()
+        matrix["full_matrix_sha256"] = "0" * 64
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_configuration_companions(files, report, matrix)
 
     def test_rejects_missing_applicability_relation(self):
         files, report, matrix = _fixture()
