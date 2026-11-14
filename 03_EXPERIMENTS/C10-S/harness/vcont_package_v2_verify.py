@@ -280,6 +280,9 @@ def _check_registered_uint64(files: Mapping[str, Any]) -> tuple[int, ...]:
         if file_path in expected_paths:
             continue
         for pointer, child in _pointer_occurrences(value):
+            key = pointer.rsplit("/", 1)[-1]
+            if key in {"seed", "world_seed", "z_assignment_seed", "g_assignment_seed"}:
+                raise PackageVerificationError(f"{file_path}{pointer}: direct seed field is prohibited outside the frozen registry")
             if isinstance(child, dict) and "$type" in child:
                 raise PackageVerificationError(f"{file_path}{pointer}: typed wrapper is prohibited at this path")
     return tuple(counts)
