@@ -331,3 +331,11 @@ The exact uint64 representation is `{"$type":"uint64","decimal":"<canonical unsi
 The exact 14-file inventory, RFC 8785 JCS rule, uncompressed deterministic tar profile and digest dependency graph remain unchanged. The RUN-EXPORT-ENVELOPE, FrozenReportSnapshot, CalibrationBankManifest and capture-identity schemas advance to 2.0.0; MatrixCapture and Gate159 reconciliation remain 1.0.0. See `C10_S_VCONT_PACKAGE_UINT64_WIRE_FORMAT_DECISION_AND_V2_CROSSWALK_GATE_179_DRAFT_001.md`.
 
 Gate 164 v1.0.0 remains DEFINED/FROZEN; v2.0.0 is DEFINED AS SUCCESSOR DRAFT. No implementation, tests, CI, seed generation, calibration, package or scientific execution occurred. Implementation authorization remains absent.
+
+## 21. Gate 180 — v2 source-schema crosswalk qualification
+
+Gate 180 finds that the Gate 179 direct uint64 field registry is not yet complete. In `report/report.json`, each pair-ledger contribution carries `world_seed`; the pair ledger appears both at report root and within the legacy `manifest` payload. Both copies must use the v2 typed uint64 representation and must be equality-checked before historical report fingerprint recomputation. The three seed fields in report.temporal_manifest and their duplicated legacy-manifest copies remain covered.
+
+The effective-config path also requires an explicit projection contract: source `ScenarioConfig` has `seed`, `world_seed`, `z_assignment_seed` and `g_assignment_seed`, but the current producer has no package projector that proves whether they are excluded or included in `design/effective_scenario_configs.json`. Gate 179's claim that the path contains no seeds is unverified until the exact projection is frozen.
+
+The current `CapturedBenchmark` still contains only `report`, `outer_world_bundles` and `evidence_index`; it does not retain MatrixCapture or FrozenReportSnapshot. Calibration, Gate159, source-execution and test-evidence companions are not supplied by the capture producer and must be bound at a separate fail-closed export boundary. Gate 164 v2.0.0 remains a draft contract, not an implemented package. See Gate 180.
