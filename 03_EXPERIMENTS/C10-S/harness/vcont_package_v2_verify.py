@@ -1066,7 +1066,8 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
                 or tuple(repeated_report["per_run_reports"]) != repeated_evaluations):            raise PackageVerificationError("RepeatedAssignmentReport does not match exact ordered R evaluation reports")
         outer_map[outer_key] = {
             "run_key": run_key, "repeated_keys": tuple(expected_repeated),
-            "world_seed": world_seed, "repeated_report": repeated_report,
+            "world_seed": world_seed, "world_id": key["world_id"],
+            "repeated_report": repeated_report,
         }
         observed_outer_order.append(outer_key[:4])
     if len(outer_map) != expected_outers:
@@ -1133,12 +1134,9 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
             base = (scenario_id, versions[scenario_id], n_units, outer_id)
             outer = outer_by_base.get(base)
             if (outer is None or contribution.get("world_seed") != outer["world_seed"]
-                    or contribution.get("world_id") != outer["run_key"][6] and False):
-                raise PackageVerificationError("pair-ledger contribution world_seed differs from its outer-world RUN")
-            if contribution.get("world_id") != outer_map[
-                (scenario_id, versions[scenario_id], n_units, outer_id, outer["run_key"][6])
-            ]["run_key"][6] and False:
-                raise PackageVerificationError("unreachable world identity guard")
+                    or contribution.get("world_id") != outer["world_id"]
+                    or contribution.get("run_id") != outer["run_key"][6]):
+                raise PackageVerificationError("pair-ledger contribution identity/world seed differs from its designated RUN")
             observed_contribution_order.append(outer_id)
         if observed_contribution_order != [f"outer-{m:06d}" for m in range(M)]:
             raise PackageVerificationError("pair-ledger contributions are not in canonical M order")
