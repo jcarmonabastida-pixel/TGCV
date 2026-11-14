@@ -524,3 +524,11 @@ The design's seed-bank/configuration fingerprints and executable commit are stil
 ### Gate 172 implementation qualification — report/evidence join
 
 The Gate 172 driver compares the legacy TruthBundle against the deliberately bounded Gate 166 MatrixTruthProjection, not against omitted potential-outcome arrays. AnalyzerResult, AnalysisContract and RunManifest are restored and compared exactly. After the existing benchmark evaluator returns, the driver verifies one-to-one identity equality between captured RUN/R manifests and the temporal manifest; each of the 52×M pair contributions must join to the matching scenario/M world and designated RUN run_id. This remains source-level logic only and has NOT been executed.
+
+## 32. Gate 173 — package readiness and canonicalization audit
+
+Gate 173 statically confirms that the Gate 172 benchmark envelope contains the typed RUN/R source snapshots and M-level aggregate records needed to populate the Gate 164 `runs/run_records.json` payload. The exact Gate 164 path inventory can be retained; encode a versioned envelope in that existing file with 13×M×(1+R) run records, 13×M outer-world records, explicit evidence index and deterministic ordering. Keep the exact matrix used in the separate matrix package file.
+
+Do not equate source snapshot digests with package JCS digests. FrozenSnapshot uses its tagged Python JSON serialization; SealedEvidence and report fingerprints retain legacy algorithms. A package adapter must losslessly restore the typed records, recompute the SealedEvidence digest from exact rows+manifest, and only then compute JCS file, manifest and archive digests as separate layers.
+
+Gate 173 confirms that calibration assignments/manifest are not supplied to CapturedBenchmark; Gate 159 reconciliation and external GitHub-resolved producer/test metadata also remain absent. Therefore the source evidence envelope is available but package provenance cannot yet be RECONCILED. No package builder, verifier, tests, CI, calibration, seed-bank generation or benchmark was executed. See Gate 173.
