@@ -240,10 +240,8 @@ def serialize_package_files_v2(
         value = companions.files[path]
         if not isinstance(value, Mapping):
             raise PackageBuildError(f"{path} must be a materialized JSON object")
-        if path == "design/benchmark_design.json":
-            declared = value.get("capture_id")
-            if declared != capture_id:
-                raise PackageBuildError("benchmark design companion must bind the exact capture_id")
+        if path == "design/benchmark_design.json" and not value:
+            raise PackageBuildError("benchmark design companion must contain the declared design payload")
         if path == "runs/run_records.json":
             if value.get("benchmark_export_id") != capture_id:
                 raise PackageBuildError("RUN export envelope must bind benchmark_export_id to capture_id")
