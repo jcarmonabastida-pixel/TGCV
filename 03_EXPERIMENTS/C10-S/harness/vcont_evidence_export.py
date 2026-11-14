@@ -3,8 +3,10 @@
 RunEvidenceBundle/OuterWorldEvidenceBundle snapshot source objects without
 reconstructing them. Importing this module performs no generation or evaluation.
 The explicit produce_and_capture_outer_world() API invokes Generator, Sealer,
-Analyzer and Evaluator only when a caller invokes it with execution authority.
-It never builds or derives a seed bank or runs the benchmark-wide aggregator.
+Analyzer and Evaluator for one M group; produce_and_capture_benchmark() coordinates
+all declared scenario/M groups and invokes the existing benchmark evaluator. These
+APIs run only when called with execution authority. Neither API builds or derives
+a seed bank.
 """
 from __future__ import annotations
 
