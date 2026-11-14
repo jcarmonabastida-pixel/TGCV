@@ -153,7 +153,7 @@ def serialize_package_files_v2(
     report = getattr(captured, "report_snapshot", None)
     if not isinstance(capture_id, str) or len(capture_id) != 64:
         raise PackageBuildError("capture_id is absent or malformed")
-    if not isinstance(matrix, object) or matrix is None or not callable(getattr(matrix, "to_payload", None)):
+    if matrix is None or not callable(getattr(matrix, "to_payload", None)):
         raise PackageBuildError("immutable MatrixCapture is required")
     if (getattr(matrix, "schema_id", None) != MATRIX_SCHEMA_ID
             or getattr(matrix, "schema_version", None) != MATRIX_SCHEMA_VERSION
@@ -162,7 +162,7 @@ def serialize_package_files_v2(
     matrix_bytes = getattr(matrix, "canonical_bytes", None)
     if not isinstance(matrix_bytes, bytes) or _sha256(matrix_bytes) == "":
         raise PackageBuildError("MatrixCapture canonical bytes are absent")
-    if not isinstance(report, object) or report is None:
+    if report is None:
         raise PackageBuildError("FrozenReportSnapshot is required")
     if (getattr(report, "schema_id", None) != REPORT_SCHEMA_ID
             or getattr(report, "schema_version", None) != REPORT_SCHEMA_VERSION
@@ -184,10 +184,39 @@ def serialize_package_files_v2(
         raise PackageBuildError(f"companion inventory mismatch; missing={missing}; extra={extra}")
 
     try:
-        report_envelope = __import__("json").loads(report_bytes.decode("utf-8"))
+        import json
+        from vcont_evidence_export import (
+            _design_identity_projection, derive_capture_identity, freeze_report_snapshot,
+        )
+        report_envelope = json.loads(report_bytes.decode("utf-8"))
         matrix_payload = matrix.to_payload()
+        matrix_canonical = rfc8785.dumps(matrix_payload)
+        expected_matrix_digest = hashlib.sha256(rfc8785.dumps({
+            "schema_id": MATRIX_SCHEMA_ID,
+            "schema_version": MATRIX_SCHEMA_VERSION,
+            "row_count": 52,
+            "rows": matrix_payload.get("rows"),
+        })).hexdigest()
+        design_identity = _design_identity_projection(design)
+        rebuilt_report = freeze_report_snapshot(
+            captured.report, outer_world_bundles=captured.outer_world_bundles
+        )
+        rebuilt_capture_id = derive_capture_identity(
+            design_identity, matrix, captured.outer_world_bundles,
+            rebuilt_report, captured.evidence_index,
+        )
     except Exception as exc:
-        raise PackageBuildError(f"capture snapshot cannot be decoded: {exc}") from exc
+        raise PackageBuildError(f"capture/source identity reconciliation failed: {exc}") from exc
+    if matrix_canonical != matrix.canonical_bytes:
+        raise PackageBuildError("MatrixCapture retained bytes differ from its JCS payload")
+    if expected_matrix_digest != matrix.full_matrix_sha256:
+        raise PackageBuildError("MatrixCapture full-matrix digest does not recompute")
+    if matrix_payload.get("design_identity") != design_identity:
+        raise PackageBuildError("MatrixCapture design identity differs from supplied design")
+    if rebuilt_report.sha256 != report.sha256 or rebuilt_report.canonical_bytes != report.canonical_bytes:
+        raise PackageBuildError("FrozenReportSnapshot differs from the current report/source bundles")
+    if rebuilt_capture_id != capture_id:
+        raise PackageBuildError("capture_id does not recompute from the retained source evidence")
     if (not isinstance(report_envelope, dict)
             or report_envelope.get("schema_id") != REPORT_SCHEMA_ID
             or report_envelope.get("schema_version") != REPORT_SCHEMA_VERSION
@@ -195,6 +224,8 @@ def serialize_package_files_v2(
         raise PackageBuildError("report snapshot envelope differs from the declared v2.1 schema")
     if report_envelope.get("legacy_report_fingerprint") != getattr(report, "legacy_report_fingerprint", None):
         raise PackageBuildError("report snapshot legacy fingerprint metadata mismatch")
+    if rfc8785.dumps(report_envelope) != report_bytes:
+        raise PackageBuildError("FrozenReportSnapshot bytes are not canonical RFC 8785 JCS")
     if (not isinstance(matrix_payload, dict)
             or matrix_payload.get("schema_id") != MATRIX_SCHEMA_ID
             or matrix_payload.get("schema_version") != MATRIX_SCHEMA_VERSION
