@@ -125,6 +125,11 @@ class CaptureV2Tests(unittest.TestCase):
         envelope = json.loads(snapshot.canonical_bytes.decode("utf-8"))
         self.assertEqual(envelope["schema_version"], "2.0.0")
         self.assertEqual(envelope["payload_type"], "TGCV-C10S-VCONT-BENCHMARK-REPORT")
+        self.assertEqual(envelope["schema_id"], "TGCV-C10S-VCONT-REPORT-SNAPSHOT")
+        self.assertEqual(
+            envelope["legacy_fingerprint_algorithm"],
+            "TGCV-C10S-VCONT-LEGACY-REPORT-FINGERPRINT-PYJSON-SORTKEYS-COMPACT-SHA256-1",
+        )
         temporal = envelope["report"]["temporal_manifest"][0]
         self.assertEqual(temporal["world_seed"],
                          {"$type": "uint64", "decimal": "18446744073709551615"})
