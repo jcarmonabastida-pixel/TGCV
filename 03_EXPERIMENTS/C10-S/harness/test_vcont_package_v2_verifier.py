@@ -22,6 +22,8 @@ from vcont_package_v2_verify import (
     _assert_report_snapshot_projection,
     _register_unique_run_record,
     _assert_sealed_provenance_identity,
+    AUTHORITATIVE_SCENARIO_IDS,
+    AUTHORITATIVE_ESTIMAND_IDS,
 )
 
 
@@ -363,10 +365,8 @@ class IndependentVerifierPrimitiveTests(unittest.TestCase):
     def _matrix_pair_fixture(self):
         matrix_rows = []
         pair_rows = []
-        for scenario_index in range(13):
-            sid = f"S{scenario_index:02d}"
-            for estimand_index in range(4):
-                estimand_id = f"E{estimand_index:02d}"
+        for scenario_index, sid in enumerate(AUTHORITATIVE_SCENARIO_IDS):
+            for estimand_index, estimand_id in enumerate(AUTHORITATIVE_ESTIMAND_IDS):
                 estimand_version = "001"
                 evaluation_class = ("EVALUABLE", "STATUS_ONLY", "NOT_IDENTIFIABLE", "NOT_EVALUABLE")[estimand_index]
                 truth_status = ("DEFINED", "UNDEFINED", "NOT_MATERIALIZED", "DEFINED")[estimand_index]
