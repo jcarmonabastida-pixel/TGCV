@@ -550,7 +550,8 @@ def _assemble_configuration_fingerprints_v1(
         raise PackageBuildError("source design object and benchmark_design companion declarations differ")
     legacy_seed_fingerprint = _legacy_seed_bank_fingerprint_from_wire_rows(assignment_rows, design)
     if (legacy_seed_fingerprint != design.seed_bank_fingerprint
-            or legacy_seed_fingerprint != benchmark_design.get("seed_bank_fingerprint")):
+            or legacy_seed_fingerprint != benchmark_design.get("seed_bank_fingerprint")
+            or legacy_seed_fingerprint != assignments.get("seed_bank_fingerprint_legacy")):
         raise PackageBuildError("historical source-typed seed_bank_fingerprint does not recompute")
     if not isinstance(source_contracts, list) or len(source_contracts) != 13:
         raise PackageBuildError("fingerprint assembly requires exactly 13 source AnalysisContract rows")
