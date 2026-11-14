@@ -519,3 +519,8 @@ In deterministic scenario/M order, it calls the Gate 171 producer once per group
 The evaluator remains authoritative for the 52-pair ledger, report fingerprint, temporal manifest and aggregation calculations. Gate 172 does not change these semantics. Its positive complete-envelope test and two preflight rejection tests are persisted but NOT EXECUTED. The driver itself was NOT CALLED; no runtime PASS, CI, benchmark or scientific result is claimed.
 
 The design's seed-bank/configuration fingerprints and executable commit are still only structurally/format-validated; Gate 172 does not independently recompute them from the effective assignment bank, configurations or running process. Gate 159 reconciliation, canonical JCS/tar package writer and trusted attestation remain OPEN.
+
+
+### Gate 172 implementation qualification — report/evidence join
+
+The Gate 172 driver compares the legacy TruthBundle against the deliberately bounded Gate 166 MatrixTruthProjection, not against omitted potential-outcome arrays. AnalyzerResult, AnalysisContract and RunManifest are restored and compared exactly. After the existing benchmark evaluator returns, the driver verifies one-to-one identity equality between captured RUN/R manifests and the temporal manifest; each of the 52×M pair contributions must join to the matching scenario/M world and designated RUN run_id. This remains source-level logic only and has NOT been executed.
