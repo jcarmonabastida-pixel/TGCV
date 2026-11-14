@@ -63,6 +63,7 @@ def _decode(value: Any) -> Any:
             return _decode(value["value"])
         if set(value) == {"$dataclass", "fields"}:
             return {key: _decode(item) for key, item in value["fields"].items()}
+        return {key: _decode(item) for key, item in value.items()}
     return value
 
 
