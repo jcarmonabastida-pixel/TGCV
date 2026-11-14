@@ -349,3 +349,9 @@ The effective configuration file is now explicitly a structural DGP/Generator pr
 The legacy report fingerprint is computed over the original source-typed manifest_payload using the frozen historical algorithm before uint64 wire projection. FrozenReportSnapshot v2.0.0 JCS digest is separate. Calibration/Gate159/source/test evidence is assembled independently and bound through benchmark_export_id; it is not inferred by the capture producer. Full contract: Gate 181. No implementation/tests/CI or scientific execution occurred.
 
 Gate 181 also pins the exact v2 root envelopes for evaluation assignments and temporal manifest: both expose a `rows` array under declared schema IDs/version 2.0.0, so the JSON Pointer registry is rooted at `/rows/*`, not an assumed top-level array. Calibration retains the Gate 178 `rows` envelope at v2.0.0. The historical report fingerprint identifier is `TGCV-C10S-VCONT-LEGACY-REPORT-FINGERPRINT-PYJSON-SORTKEYS-COMPACT-SHA256-1`, preserving the exact source conversion plus compact sorted-key SHA-256 algorithm; it is not JCS.
+
+## Gate 182 — v2 implementation contract and migration
+
+Gate 182 defines the implementation boundary for the v2 successor to this package contract. Gate 164 v1.0.0 and its 14-file inventory remain historical and unchanged; the v2 writer emits a separately versioned package/envelope and uses the Gate 181 capture-derived benchmark_export_id. It must not relabel v2 output as v1.0.0.
+
+The v2 writer is a pure serializer over a complete CapturedBenchmark plus independent companions; it must not call the synthetic producer. A separate verifier independently checks canonical JSON, uint64 pointers, joins, snapshots, fingerprints and provenance/test companions. Full API and migration contract: Gate 182. No implementation or execution occurred.
