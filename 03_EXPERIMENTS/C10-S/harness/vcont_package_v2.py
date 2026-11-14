@@ -386,6 +386,8 @@ def _assemble_analysis_contracts_v1(
             for r_index, run_bundle in enumerate(run_bundles):
                 assignment = run_bundle.assignment.restore(SeedAssignment)
                 expected_role, expected_index = ("RUN", -1) if r_index == 0 else ("REPEATED_ASSIGNMENT", r_index - 1)
+                if (isinstance(assignment.replicate, bool) or not isinstance(assignment.replicate, int):
+                    raise PackageBuildError("captured SeedAssignment replicate must be an exact integer")
                 if (assignment.scenario_id, assignment.scenario_version, assignment.n_units,
                     assignment.outer_replicate_id, assignment.assignment_role, assignment.assignment_index) != (
                     scenario_id, scenario_version, n_units, f"outer-{m:06d}", expected_role, expected_index
