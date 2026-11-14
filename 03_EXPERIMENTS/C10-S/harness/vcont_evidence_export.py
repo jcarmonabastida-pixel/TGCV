@@ -918,18 +918,35 @@ def derive_capture_identity(design_identity, matrix_capture, outer_world_bundles
     ordered_bundles = sorted(
         bundles, key=lambda b: (SCENARIO_IDS.index(b.scenario_id), int(b.outer_replicate_id.split("-")[-1]))
     )
-    if len(ordered_bundles) != len(SCENARIO_IDS) * len({b.outer_replicate_id for b in ordered_bundles}):
-        raise ContractError("capture identity requires exactly one outer bundle per scenario/M")
+    outer_ids = tuple(sorted(
+        {bundle.outer_replicate_id for bundle in ordered_bundles},
+        key=lambda value: int(value.split("-")[-1]),
+    ))
+    expected_keys = {
+        (scenario_id, outer_id)
+        for scenario_id in SCENARIO_IDS for outer_id in outer_ids
+    }
+    observed_keys = {(bundle.scenario_id, bundle.outer_replicate_id) for bundle in ordered_bundles}
+    if (not outer_ids or outer_ids != tuple(f"outer-{m:06d}" for m in range(len(outer_ids)))
+            or observed_keys != expected_keys or len(observed_keys) != len(ordered_bundles)):
+        raise ContractError("capture identity requires exactly one ordered outer bundle per scenario/M")
     assignments = []
     for bundle in ordered_bundles:
         for run in (bundle.run_bundle,) + bundle.repeated_bundles:
             assignments.append(run.assignment.restore(SeedAssignment))
     assignment_digest = _sha256_hex(_jcs_bytes({"rows": [_assignment_wire(row) for row in assignments]}))
-    bundle_digests = [_outer_bundle_identity(bundle) for bundle in ordered_bundles]
+    bundle_digests = [_outer_bundle_identity(bundle)["sha256"] for bundle in ordered_bundles]
     evidence_rows = [
         {"scenario_id": sid, "outer_replicate_id": outer_id, "world_id": world_id}
         for sid, outer_id, world_id in evidence_index
     ]
+    expected_evidence_rows = [
+        {"scenario_id": bundle.scenario_id, "outer_replicate_id": bundle.outer_replicate_id,
+         "world_id": bundle.world_id}
+        for bundle in ordered_bundles
+    ]
+    if evidence_rows != expected_evidence_rows:
+        raise ContractError("evidence_index order/content differs from ordered captured outer-world bundles")
     identity_payload = {
         "schema_id": "TGCV-C10S-VCONT-BENCHMARK-CAPTURE-IDENTITY",
         "schema_version": "2.0.0",
