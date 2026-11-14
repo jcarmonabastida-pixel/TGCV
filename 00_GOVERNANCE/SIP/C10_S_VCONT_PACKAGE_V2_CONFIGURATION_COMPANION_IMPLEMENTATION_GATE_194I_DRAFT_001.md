@@ -88,7 +88,7 @@ The verifier result now reports identity reconciliation as `RECONCILED` only aft
 
 ## 5. Tests authored — not executed
 
-Added 15 positive/adversarial cases to the existing allowlisted file:
+Added 16 positive/adversarial cases to the existing allowlisted file:
 
 `03_EXPERIMENTS/C10-S/harness/test_vcont_package_v2_verifier.py`
 
@@ -102,7 +102,7 @@ Coverage includes:
 - Analyzer version drift;
 - MatrixCapture digest drift;
 - self-referential/wrong Analyzer `source_ref`;
-- semantic snapshot divergence despite a recomputed valid byte digest;
+- RUN and REPEATED_ASSIGNMENT semantic snapshot divergence despite recomputed valid byte digests;
 - DGP component digest drift;
 - aggregate source-declaration mismatch.
 
@@ -148,7 +148,7 @@ That gap is now closed in both writer and independent verifier:
 - the result is compared with the historical `seed_bank_fingerprint` declaration in the source design;
 - calibration remains separate and is not mixed into the evaluation bank or the 28-component aggregate.
 
-Three additional tests were added for writer parity, historical fingerprint mismatch and reordered evaluation rows. The Gate 194-I companion test set now contains **15 authored tests**, all still unexecuted.
+Three additional tests were added for writer parity, historical fingerprint mismatch and reordered evaluation rows. The Gate 194-I companion test set now contains **16 authored tests**, all still unexecuted.
 
 **Updated disposition:** IMPLEMENTED / CONDITIONAL — STATIC REVIEW ONLY; TESTS NOT EXECUTED. This closes the missing historical seed-bank digest check at source-code level; it does not establish that the implementation passes the tests or a real package.
 
