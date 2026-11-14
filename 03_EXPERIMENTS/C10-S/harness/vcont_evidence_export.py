@@ -19,8 +19,10 @@ from typing import Any, TypeVar
 
 from vcont_benchmark_protocol import (
     MonteCarloBenchmarkDesign, SCENARIO_IDS, SeedAssignment,
-    build_scenario_estimand_matrix,
+    ESTIMAND_SPECS, build_scenario_estimand_matrix, scenario_matrix_fingerprint,
 )
+from rfc8785 import dumps as _jcs_dumps
+
 from vcont_integrated_harness import (
     AnalysisContract, Analyzer, AnalyzerResult, ContractError, EvaluationReport,
     Evaluator, EvidenceCandidate, Generator, RepeatedAssignmentReport, RunManifest,
@@ -552,12 +554,408 @@ def produce_and_capture_outer_world(
     return CapturedOuterWorld(outer_bundle, evaluator_runs)
 
 
+# V_cont package v2 capture primitives. These helpers are pure and never invoke
+# Generator, Sealer, Analyzer, Evaluator or a producer.
+_MATRIX_SCHEMA_ID = "TGCV-C10S-VCONT-MATRIX-CAPTURE"
+_MATRIX_SCHEMA_VERSION = "1.0.0"
+_MATRIX_DIGEST_ALGORITHM = "TGCV-C10S-VCONT-MATRIX-FULL-JCS-SHA256-1"
+_REPORT_SCHEMA_ID = "TGCV-C10S-VCONT-REPORT-SNAPSHOT"
+_REPORT_SCHEMA_VERSION = "2.0.0"
+_REPORT_PAYLOAD_TYPE = "TGCV-C10S-VCONT-BENCHMARK-REPORT"
+_REPORT_PAYLOAD_VERSION = "2.0.0"
+_REPORT_CANONICALIZATION = "RFC8785-JCS"
+# Stable identifier for the unchanged Evaluator _hash implementation:
+# json.dumps(sort_keys=True, separators=(",", ":"), allow_nan=False), UTF-8, SHA-256.
+_LEGACY_REPORT_FINGERPRINT_ALGORITHM = "TGCV-C10S-VCONT-LEGACY-REPORT-PYTHON-JSON-SHA256-1"
+_UINT64_MAX = (1 << 64) - 1
+_SAFE_JCS_INTEGER = (1 << 53) - 1
+
+
+def _jcs_bytes(value: Any) -> bytes:
+    try:
+        return _jcs_dumps(value)
+    except Exception as exc:
+        raise ContractError(f"RFC 8785 canonicalization rejected payload: {exc}") from exc
+
+
+def _sha256_hex(payload: bytes) -> str:
+    return hashlib.sha256(payload).hexdigest()
+
+
+def _jcs_safe_source(value: Any) -> Any:
+    """Project source dataclasses/tuples to JSON data without lossy coercion."""
+    if is_dataclass(value) and not isinstance(value, type):
+        return _jcs_safe_source(asdict(value))
+    if isinstance(value, Enum):
+        return value.value
+    if isinstance(value, dict):
+        if any(not isinstance(key, str) for key in value):
+            raise ContractError("JCS projection requires string object keys")
+        return {key: _jcs_safe_source(item) for key, item in value.items()}
+    if isinstance(value, (tuple, list)):
+        return [_jcs_safe_source(item) for item in value]
+    if isinstance(value, bool) or value is None or isinstance(value, str):
+        return value
+    if isinstance(value, int):
+        if abs(value) > _SAFE_JCS_INTEGER:
+            raise ContractError("non-uint64 integer exceeds exact JCS integer domain")
+        return value
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise ContractError("JCS projection rejects NaN and infinity")
+        return value
+    raise ContractError(f"unsupported JCS source type: {type(value).__name__}")
+
+
+def _uint64_wire(value: Any) -> dict[str, str]:
+    if isinstance(value, bool) or not isinstance(value, int) or not 0 <= value <= _UINT64_MAX:
+        raise ContractError("registered seed field must be an exact unsigned 64-bit integer")
+    return {"$type": "uint64", "decimal": str(value)}
+
+
+def _report_v2_projection(report: dict[str, Any]) -> dict[str, Any]:
+    expected = {
+        "design", "temporal_manifest", "pair_ledger", "manifest",
+        "scenario_reports", "coverage", "report_fingerprint",
+    }
+    if not isinstance(report, dict) or set(report) != expected:
+        raise ContractError("Evaluator report top-level schema differs from FrozenReportSnapshot v2.0.0")
+    projected = _jcs_safe_source(report)
+    if not isinstance(projected["report_fingerprint"], str) or len(projected["report_fingerprint"]) != 64:
+        raise ContractError("legacy report_fingerprint must be a 64-character digest")
+    if not isinstance(projected["manifest"], dict):
+        raise ContractError("legacy report manifest must be an object")
+
+    def wrap_temporal(rows):
+        if not isinstance(rows, list):
+            raise ContractError("temporal manifest must be an array")
+        result = []
+        for row in rows:
+            if not isinstance(row, dict):
+                raise ContractError("temporal manifest rows must be objects")
+            item = dict(row)
+            for field in ("world_seed", "z_assignment_seed", "g_assignment_seed"):
+                if field not in item:
+                    raise ContractError(f"temporal manifest missing registered uint64 field: {field}")
+                item[field] = _uint64_wire(item[field])
+            result.append(item)
+        return result
+
+    def wrap_pair_ledger(rows):
+        if not isinstance(rows, list):
+            raise ContractError("pair ledger must be an array")
+        result = []
+        for row in rows:
+            if not isinstance(row, dict) or not isinstance(row.get("contributions"), list):
+                raise ContractError("pair ledger row/contributions schema invalid")
+            item = dict(row)
+            contributions = []
+            for contribution in item["contributions"]:
+                if not isinstance(contribution, dict) or "world_seed" not in contribution:
+                    raise ContractError("pair-ledger contribution missing registered world_seed")
+                value = dict(contribution)
+                value["world_seed"] = _uint64_wire(value["world_seed"])
+                contributions.append(value)
+            item["contributions"] = contributions
+            result.append(item)
+        return result
+
+    projected["temporal_manifest"] = wrap_temporal(projected["temporal_manifest"])
+    projected["pair_ledger"] = wrap_pair_ledger(projected["pair_ledger"])
+    manifest = projected["manifest"]
+    if set(manifest) != {
+        "scenario_versions", "N", "M", "R", "matrix_fingerprint",
+        "seed_bank_label", "seed_bank_fingerprint", "executable_commit",
+        "configuration_fingerprint", "metric_targets", "temporal_manifest",
+        "pair_ledger",
+    }:
+        raise ContractError("legacy manifest payload schema drift requires a report payload version increment")
+    manifest["temporal_manifest"] = wrap_temporal(manifest["temporal_manifest"])
+    manifest["pair_ledger"] = wrap_pair_ledger(manifest["pair_ledger"])
+    if projected["temporal_manifest"] != manifest["temporal_manifest"]:
+        raise ContractError("root and nested temporal manifests differ before uint64 projection")
+    if projected["pair_ledger"] != manifest["pair_ledger"]:
+        raise ContractError("root and nested pair ledgers differ before uint64 projection")
+    return projected
+
+
+def _freeze_nested(value: Any) -> Any:
+    if isinstance(value, dict):
+        return tuple((key, _freeze_nested(value[key])) for key in sorted(value))
+    if isinstance(value, list):
+        return tuple(_freeze_nested(item) for item in value)
+    return value
+
+
+def _thaw_nested(value: Any) -> Any:
+    if isinstance(value, tuple):
+        if all(isinstance(item, tuple) and len(item) == 2 and isinstance(item[0], str) for item in value):
+            return {key: _thaw_nested(item) for key, item in value}
+        return [_thaw_nested(item) for item in value]
+    return value
+
+
+@dataclass(frozen=True)
+class MatrixCapture:
+    schema_id: str
+    schema_version: str
+    design_identity: tuple
+    row_count: int
+    rows: tuple
+    legacy_matrix_fingerprint: str
+    full_matrix_digest_algorithm: str
+    full_matrix_sha256: str
+    canonical_bytes: bytes
+
+    def to_payload(self) -> dict[str, Any]:
+        return {
+            "schema_id": self.schema_id,
+            "schema_version": self.schema_version,
+            "design_identity": _thaw_nested(self.design_identity),
+            "row_count": self.row_count,
+            "rows": [_thaw_nested(row) for row in self.rows],
+            "legacy_matrix_fingerprint": self.legacy_matrix_fingerprint,
+            "full_matrix_digest_algorithm": self.full_matrix_digest_algorithm,
+            "full_matrix_sha256": self.full_matrix_sha256,
+        }
+
+
+@dataclass(frozen=True)
+class FrozenReportSnapshot:
+    schema_id: str
+    schema_version: str
+    payload_type: str
+    legacy_report_fingerprint: str
+    legacy_fingerprint_algorithm: str
+    canonical_bytes: bytes
+    sha256: str
+
+
+def _matrix_row(spec: Any) -> dict[str, Any]:
+    key = spec.key
+    row = {
+        "key": {
+            "scenario_id": key.scenario_id,
+            "scenario_version": key.scenario_version,
+            "estimand_id": key.estimand_id,
+            "estimand_version": key.estimand_version,
+        },
+        "evaluation_class": spec.evaluation_class,
+        "truth_status": spec.truth_status,
+        "dgp_truth_field": spec.dgp_truth_field,
+        "analyzer_output_field": spec.analyzer_output_field,
+        "aggregation_field": spec.aggregation_field,
+        "identification_expectation": spec.identification_expectation,
+        "abstention_expectation": spec.abstention_expectation,
+        "tolerance_id": spec.tolerance_id,
+        "reason": spec.reason,
+        "run_evaluation_class": spec.run_evaluation_class,
+        "repeated_evaluation_class": spec.repeated_evaluation_class,
+    }
+    if set(row) != {
+        "key", "evaluation_class", "truth_status", "dgp_truth_field",
+        "analyzer_output_field", "aggregation_field", "identification_expectation",
+        "abstention_expectation", "tolerance_id", "reason",
+        "run_evaluation_class", "repeated_evaluation_class",
+    }:
+        raise ContractError("MatrixCapture row field schema mismatch")
+    if not isinstance(row["abstention_expectation"], bool):
+        raise ContractError("abstention_expectation must be an exact boolean")
+    if row["evaluation_class"] not in ("EVALUABLE", "STATUS_ONLY", "NOT_IDENTIFIABLE", "NOT_EVALUABLE"):
+        raise ContractError("unknown MatrixCapture evaluation_class")
+    if row["truth_status"] not in ("DEFINED", "UNDEFINED", "NOT_MATERIALIZED"):
+        raise ContractError("unknown MatrixCapture truth_status")
+    if row["identification_expectation"] not in ("IDENTIFIED", "NOT_IDENTIFIED", "INDETERMINATE"):
+        raise ContractError("unknown MatrixCapture identification_expectation")
+    for name in ("dgp_truth_field", "reason"):
+        if not isinstance(row[name], str) or not row[name]:
+            raise ContractError(f"MatrixCapture {name} must be a nonempty string")
+    for name in ("analyzer_output_field", "aggregation_field", "tolerance_id",
+                 "run_evaluation_class", "repeated_evaluation_class"):
+        if row[name] is not None and (not isinstance(row[name], str) or not row[name]):
+            raise ContractError(f"MatrixCapture {name} must be a nonempty string or explicit null")
+    for name, value in row["key"].items():
+        if not isinstance(value, str) or not value:
+            raise ContractError(f"MatrixCapture key.{name} must be a nonempty string")
+    return row
+
+
+def capture_matrix(specs, design) -> MatrixCapture:
+    rows_source = tuple(specs)
+    expected_keys = tuple(
+        (scenario_id, estimand_id)
+        for scenario_id in SCENARIO_IDS
+        for estimand_id, *_ in ESTIMAND_SPECS
+    )
+    observed_keys = tuple((spec.key.scenario_id, spec.key.estimand_id) for spec in rows_source)
+    if len(rows_source) != 52 or observed_keys != expected_keys:
+        raise ContractError("MatrixCapture requires exactly 52 rows in authoritative positional order")
+    versions = dict(design.scenario_versions)
+    if tuple(sid for sid, _ in design.scenario_versions) != tuple(SCENARIO_IDS):
+        raise ContractError("design scenario_versions must use authoritative SCENARIO_IDS order")
+    if any(spec.key.scenario_version != versions[spec.key.scenario_id] for spec in rows_source):
+        raise ContractError("MatrixCapture scenario versions differ from design identity")
+    legacy = scenario_matrix_fingerprint(rows_source)
+    if legacy != design.matrix_fingerprint:
+        raise ContractError("historical matrix fingerprint does not match source matrix")
+    row_payloads = tuple(_matrix_row(spec) for spec in rows_source)
+    design_identity = {
+        "scenario_versions": [
+            {"scenario_id": sid, "scenario_version": version}
+            for sid, version in design.scenario_versions
+        ],
+        "N": design.n_units,
+        "M": design.outer_replicates,
+        "R": design.repeated_assignments,
+        "legacy_matrix_fingerprint": legacy,
+    }
+    digest_input = {
+        "schema_id": _MATRIX_SCHEMA_ID,
+        "schema_version": _MATRIX_SCHEMA_VERSION,
+        "row_count": 52,
+        "rows": list(row_payloads),
+    }
+    digest = _sha256_hex(_jcs_bytes(digest_input))
+    payload = {
+        **digest_input,
+        "design_identity": design_identity,
+        "legacy_matrix_fingerprint": legacy,
+        "full_matrix_digest_algorithm": _MATRIX_DIGEST_ALGORITHM,
+        "full_matrix_sha256": digest,
+    }
+    canonical = _jcs_bytes(payload)
+    return MatrixCapture(
+        _MATRIX_SCHEMA_ID, _MATRIX_SCHEMA_VERSION, _freeze_nested(design_identity),
+        52, tuple(_freeze_nested(row) for row in row_payloads), legacy,
+        _MATRIX_DIGEST_ALGORITHM, digest, canonical,
+    )
+
+
+def freeze_report_snapshot(report: dict[str, Any]) -> FrozenReportSnapshot:
+    projected_report = _report_v2_projection(report)
+    envelope = {
+        "schema_id": _REPORT_SCHEMA_ID,
+        "schema_version": _REPORT_SCHEMA_VERSION,
+        "payload_type": _REPORT_PAYLOAD_TYPE,
+        "legacy_report_fingerprint": projected_report["report_fingerprint"],
+        "legacy_fingerprint_algorithm": _LEGACY_REPORT_FINGERPRINT_ALGORITHM,
+        "report": projected_report,
+    }
+    canonical = _jcs_bytes(envelope)
+    return FrozenReportSnapshot(
+        _REPORT_SCHEMA_ID, _REPORT_SCHEMA_VERSION, _REPORT_PAYLOAD_TYPE,
+        projected_report["report_fingerprint"], _LEGACY_REPORT_FINGERPRINT_ALGORITHM,
+        canonical, _sha256_hex(canonical),
+    )
+
+
+def _design_identity_projection(design: MonteCarloBenchmarkDesign) -> dict[str, Any]:
+    return {
+        "scenario_versions": [
+            {"scenario_id": sid, "scenario_version": version}
+            for sid, version in design.scenario_versions
+        ],
+        "N": design.n_units, "M": design.outer_replicates,
+        "R": design.repeated_assignments,
+        "matrix_fingerprint": design.matrix_fingerprint,
+        "metric_targets": _jcs_safe_source(design.metric_targets),
+        "seed_bank_label": design.seed_bank_label,
+        "seed_bank_fingerprint": design.seed_bank_fingerprint,
+        "executable_commit": design.executable_commit,
+        "configuration_fingerprint": design.configuration_fingerprint,
+    }
+
+
+def _assignment_wire(row: SeedAssignment) -> dict[str, Any]:
+    return {
+        "bank": row.bank, "scenario_id": row.scenario_id,
+        "scenario_version": row.scenario_version, "n_units": row.n_units,
+        "replicate": row.replicate, "outer_replicate_id": row.outer_replicate_id,
+        "assignment_role": row.assignment_role,
+        "world_seed": _uint64_wire(row.world_seed),
+        "z_assignment_seed": _uint64_wire(row.z_assignment_seed),
+        "g_assignment_seed": _uint64_wire(row.g_assignment_seed),
+    }
+
+
+def _outer_bundle_identity(bundle: OuterWorldEvidenceBundle) -> dict[str, Any]:
+    run_bundles = (bundle.run_bundle,) + bundle.repeated_bundles
+    records = []
+    for run in run_bundles:
+        records.append({
+            "assignment": {"type_id": run.assignment.type_id, "sha256": run.assignment.sha256},
+            "scenario_config": {"type_id": run.scenario_config.type_id, "sha256": run.scenario_config.sha256},
+            "run_manifest": {"type_id": run.run_manifest.type_id, "sha256": run.run_manifest.sha256},
+            "truth_projection": {"type_id": run.truth_projection.type_id, "sha256": run.truth_projection.sha256},
+            "evidence_candidate": {"type_id": run.evidence_candidate.type_id, "sha256": run.evidence_candidate.sha256},
+            "sealed_evidence": {"type_id": run.sealed_evidence.type_id, "sha256": run.sealed_evidence.sha256},
+            "analysis_contract": {"type_id": run.analysis_contract.type_id, "sha256": run.analysis_contract.sha256},
+            "analyzer_result": {"type_id": run.analyzer_result.type_id, "sha256": run.analyzer_result.sha256},
+            "evaluation_report": {"type_id": run.evaluation_report.type_id, "sha256": run.evaluation_report.sha256},
+        })
+    projection = {
+        "scenario_id": bundle.scenario_id,
+        "scenario_version": bundle.scenario_version,
+        "n_units": bundle.n_units,
+        "outer_replicate_id": bundle.outer_replicate_id,
+        "world_id": bundle.world_id,
+        "world_version": bundle.world_version,
+        "world_seed": _uint64_wire(bundle.world_seed),
+        "run_and_repeated_snapshot_records": records,
+        "repeated_assignment_report": {
+            "type_id": bundle.repeated_assignment_report.type_id,
+            "sha256": bundle.repeated_assignment_report.sha256,
+        },
+    }
+    return {"sha256": _sha256_hex(_jcs_bytes(projection)), "projection": projection}
+
+
+def derive_capture_identity(design_identity, matrix_capture, outer_world_bundles,
+                            report_snapshot, evidence_index) -> str:
+    if not isinstance(matrix_capture, MatrixCapture) or not isinstance(report_snapshot, FrozenReportSnapshot):
+        raise ContractError("capture identity requires MatrixCapture and FrozenReportSnapshot")
+    bundles = tuple(outer_world_bundles)
+    ordered_bundles = sorted(
+        bundles, key=lambda b: (SCENARIO_IDS.index(b.scenario_id), int(b.outer_replicate_id.split("-")[-1]))
+    )
+    if len(ordered_bundles) != len(SCENARIO_IDS) * len({b.outer_replicate_id for b in ordered_bundles}):
+        raise ContractError("capture identity requires exactly one outer bundle per scenario/M")
+    assignments = []
+    for bundle in ordered_bundles:
+        for run in (bundle.run_bundle,) + bundle.repeated_bundles:
+            assignments.append(run.assignment.restore(SeedAssignment))
+    assignment_digest = _sha256_hex(_jcs_bytes({"rows": [_assignment_wire(row) for row in assignments]}))
+    bundle_digests = [_outer_bundle_identity(bundle) for bundle in ordered_bundles]
+    evidence_rows = [
+        {"scenario_id": sid, "outer_replicate_id": outer_id, "world_id": world_id}
+        for sid, outer_id, world_id in evidence_index
+    ]
+    identity_payload = {
+        "schema_id": "TGCV-C10S-VCONT-BENCHMARK-CAPTURE-IDENTITY",
+        "schema_version": "2.0.0",
+        "design_identity": _jcs_safe_source(design_identity),
+        "matrix_full_sha256": matrix_capture.full_matrix_sha256,
+        "evaluation_seed_manifest_sha256": assignment_digest,
+        "outer_world_bundle_digests": bundle_digests,
+        "report_snapshot_sha256": report_snapshot.sha256,
+        "evidence_index": evidence_rows,
+    }
+    return _sha256_hex(_jcs_bytes(identity_payload))
+
+
 @dataclass(frozen=True)
 class CapturedBenchmark:
     """One benchmark report and its complete scenario/M evidence envelope."""
     report: dict[str, Any]
     outer_world_bundles: tuple[OuterWorldEvidenceBundle, ...]
     evidence_index: tuple[tuple[str, str, str], ...]
+    matrix_capture: MatrixCapture | None = None
+    report_snapshot: FrozenReportSnapshot | None = None
+    capture_id: str | None = None
+
+    @property
+    def benchmark_export_id(self) -> str | None:
+        return self.capture_id
 
 
 def produce_and_capture_benchmark(
@@ -754,4 +1152,13 @@ def produce_and_capture_benchmark(
             raise ContractError("pair ledger is missing one or more captured M contributions")
     if len(bundles) != len(SCENARIO_IDS) * design.outer_replicates:
         raise ContractError("benchmark evidence envelope must contain exactly one bundle per scenario/M")
-    return CapturedBenchmark(report, tuple(bundles), tuple(evidence_index))
+    matrix_capture = capture_matrix(specs, design)
+    report_snapshot = freeze_report_snapshot(report)
+    design_identity = _design_identity_projection(design)
+    capture_id = derive_capture_identity(
+        design_identity, matrix_capture, tuple(bundles), report_snapshot, tuple(evidence_index)
+    )
+    return CapturedBenchmark(
+        report, tuple(bundles), tuple(evidence_index),
+        matrix_capture, report_snapshot, capture_id,
+    )
