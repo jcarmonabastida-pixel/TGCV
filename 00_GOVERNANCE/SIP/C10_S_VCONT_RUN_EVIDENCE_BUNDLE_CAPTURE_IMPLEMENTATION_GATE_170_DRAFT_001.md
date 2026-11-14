@@ -89,3 +89,12 @@ The test source has been statically inspected and persisted. **It has not been e
 ## 8. Next operation — Gate 171
 
 Integrate the capture API into a single explicit producer/orchestration boundary that has the exact SeedAssignment row and retains the complete per-run source objects through Evaluator.evaluate. Then adapt the M-level assembly to construct one OuterWorldEvidenceBundle per M without reconstructing source objects from reduced evaluator tuples. Preserve the existing evaluator outputs and the 52-pair ledger semantics. Add adversarial tests for failed joins, tampering, duplicate/missing R indices, cross-M mixing and source mutation. Do not execute tests without the applicable technical execution authorization.
+
+
+## 9. Gate 171 supersession — M-level producer boundary added
+
+Gate 171 adds `produce_and_capture_outer_world(...)` in the same source module. It invokes Generator → Sealer → Analyzer → Evaluator, captures each `RunEvidenceBundle` while the source objects coexist, computes one existing `RepeatedAssignmentReport`, and constructs one `OuterWorldEvidenceBundle` per supplied scenario/N/M group. It also returns the unchanged legacy four-object tuples for the existing Monte Carlo aggregation interface.
+
+The Gate 170 statement that no integrated producer/orchestration call site existed is therefore superseded at the **single-M boundary**. Gate 170's original scope remains accurate: it implemented the capture primitives but did not itself wire them into a producer.
+
+The benchmark-wide 13-scenario caller remains OPEN; no current caller yet loops all scenarios/M and combines the returned evidence bundles with the 52-pair benchmark report. See Gate 171 for the exact boundary, source and regression scope. The new regression tests are NOT EXECUTED.
