@@ -120,3 +120,13 @@ Resolve the source-level blockers without implementing the serializer yet:
 5. Update Gate 174/164/166/172 cross-references as one integrated contract correction.
 
 Only after Gate 176 should implementation readiness be reassessed. No benchmark, seed generation, calibration, test execution or scientific execution is authorized by this audit.
+
+## 10. Gate 176 — bounded source-contract resolution
+
+Gate 176 defines the exact follow-on source contract without implementing it. The exact validated 52-row matrix is captured at the same producer boundary in a dedicated immutable `MatrixCapture`; it is not rebuilt from current code or inferred from the 52-pair ledger. A versioned full-matrix JCS SHA-256 includes every ScenarioEstimandSpec field, nested EvaluationKey fields and `tolerance_id`. The legacy fingerprint remains unchanged for compatibility.
+
+Gate 176 also records that `CapturedBenchmark` is only shallowly frozen: its `report` field is a mutable dict. The compatibility view may remain, but package export must use a capture-time immutable report snapshot and digest.
+
+Calibration manifest, Gate 159 reconciliation, independently resolved GitHub source-execution provenance and technical-test evidence are specified as separately supplied companion artifacts bound to the benchmark export identity. They are not inputs to the evaluation-bank producer and cannot be synthesized from declared design fingerprints.
+
+Gate 175's blockers are now **contractually resolved, implementation still OPEN**. See `C10_S_VCONT_CAPTURE_MATRIX_AND_EXTERNAL_EVIDENCE_COMPANION_CONTRACT_GATE_176_DRAFT_001.md`. No code or tests were changed/executed.
