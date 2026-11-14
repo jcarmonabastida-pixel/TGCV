@@ -680,6 +680,23 @@ def _snapshot_legacy_sealed_digest(sealed: dict[str, Any]) -> str:
 
 
 
+
+def _assert_report_snapshot_projection(report_value: Any, snapshot_value: Any, label: str) -> None:
+    """Reject a structurally valid report object that is not the captured source projection."""
+    if report_value != _snapshot_report_projection(snapshot_value):
+        raise PackageVerificationError(f"{label} report projection differs from independently decoded snapshot")
+
+
+def _register_unique_run_record(
+    run_map: dict[tuple[Any, ...], Any], decoded_by_key: dict[tuple[Any, ...], Any],
+    key: tuple[Any, ...], record: Any, decoded: Any,
+) -> None:
+    if key in run_map or key in decoded_by_key:
+        raise PackageVerificationError("duplicate run key")
+    run_map[key] = record
+    decoded_by_key[key] = decoded
+
+
 def _resolve_outer_world_run_reference(
     reference: Any, label: str, base: tuple[Any, ...], role: str, index: int,
     run_map: Mapping[tuple[Any, ...], Any], decoded_by_key: Mapping[tuple[Any, ...], Any],
@@ -1008,10 +1025,7 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
             raise PackageVerificationError("designated RUN must use assignment_index -1")
         if key[4] == "REPEATED_ASSIGNMENT" and key[5] < 0:
             raise PackageVerificationError("repeated assignment index must be nonnegative")
-        if key in run_map:
-            raise PackageVerificationError("duplicate run key")
-        run_map[key] = record
-        decoded_by_key[key] = decoded
+        _register_unique_run_record(run_map, decoded_by_key, key, record, decoded)
 
     if len(run_map) != expected_runs:
         raise PackageVerificationError("run record cardinality mismatch")
@@ -1232,12 +1246,13 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
                 (contract_report, contract_snapshot, "AnalysisContract"),
                 (manifest_report, manifest_snapshot, "RunManifest"),
             ):
-                if report_obj != _snapshot_report_projection(snapshot_obj):
-                    raise PackageVerificationError(f"report RUN {label} differs from captured snapshot")
-            if row.get("run_report") != _snapshot_report_projection(decoded["evaluation_report"]):
-                raise PackageVerificationError("report RUN evaluation summary differs from EvaluationReport snapshot")
-            if row.get("repeated_report") != _snapshot_report_projection(outer["repeated_report"]):
-                raise PackageVerificationError("report repeated aggregate differs from RepeatedAssignmentReport snapshot")
+                _assert_report_snapshot_projection(report_obj, snapshot_obj, f"report RUN {label}")
+            _assert_report_snapshot_projection(
+                row.get("run_report"), decoded["evaluation_report"], "report RUN EvaluationReport"
+            )
+            _assert_report_snapshot_projection(
+                row.get("repeated_report"), outer["repeated_report"], "report RepeatedAssignmentReport"
+            )
 
     # Evidence index is an exact, ordered one-to-one projection of outer-world keys.
     evidence_index = run_file["evidence_index"]
