@@ -1262,12 +1262,21 @@ def _reconcile_report_seed_sources(
             raise ContractError("v2.1 MatrixTruthProjection.seed / ScenarioConfig.seed mismatch")
         if (world_seed, z_seed, g_seed) != (effective_world, effective_z, effective_g):
             raise ContractError("v2.1 SeedAssignment streams differ from effective ScenarioConfig streams")
-        if (manifest.world_seed, manifest.z_assignment_seed, manifest.g_assignment_seed) != (
-            world_seed, z_seed, g_seed
-        ):
+        manifest_world = exact_uint64(manifest.world_seed, "RunManifest.world_seed")
+        manifest_z = exact_uint64(manifest.z_assignment_seed, "RunManifest.z_assignment_seed")
+        manifest_g = exact_uint64(manifest.g_assignment_seed, "RunManifest.g_assignment_seed")
+        if (manifest_world, manifest_z, manifest_g) != (world_seed, z_seed, g_seed):
             raise ContractError("v2.1 RunManifest streams differ from SeedAssignment")
-        if manifest.world_version != config.version:
-            raise ContractError("v2.1 RunManifest world version differs from ScenarioConfig")
+        if len({world_seed, z_seed, g_seed}) != 3:
+            raise ContractError("v2.1 world/Z/G streams must be distinct within each assignment")
+        if manifest.world_version != config.version or manifest.replicate_id != config.replicate_id:
+            raise ContractError("v2.1 RunManifest world/replicate version differs from ScenarioConfig")
+        expected_end = config.last_transition_support + config.follow_up
+        expected_width = (expected_end - config.window_start) / config.n_intervals
+        if (manifest.n_intervals, manifest.window_start, manifest.window_end, manifest.interval_width) != (
+            config.n_intervals, config.window_start, expected_end, expected_width
+        ):
+            raise ContractError("v2.1 RunManifest temporal design differs from ScenarioConfig")
         return assignment, config, manifest, truth_projection, analyzer_source, contract_source, evaluation_source
 
     for scenario_id, version in versions:
@@ -1286,8 +1295,9 @@ def _reconcile_report_seed_sources(
                 scenario_id, version, n_units, outer_id
             ):
                 raise ContractError("v2.1 OuterWorldEvidenceBundle identity mismatch")
-            if len(outer.repeated_bundles) != design.repeated_assignments:
-                raise ContractError("v2.1 OuterWorldEvidenceBundle repeated-assignment cardinality differs from R")
+            if (not isinstance(outer.repeated_bundles, tuple)
+                    or len(outer.repeated_bundles) != design.repeated_assignments):
+                raise ContractError("v2.1 OuterWorldEvidenceBundle repeated-assignment tuple/cardinality differs from R")
             run = row.get("run")
             if not isinstance(run, (list, tuple)) or len(run) != 4:
                 raise ContractError("v2.1 RUN tuple must contain exactly four ordered source objects")
@@ -1305,6 +1315,7 @@ def _reconcile_report_seed_sources(
             if (analyzer_report != analyzer_source or contract_report != contract_source
                     or manifest_report != manifest):
                 raise ContractError("v2.1 Evaluator RUN tuple diverges from exact captured source dataclasses")
+            exact_uint64(truth.seed, "Evaluator TruthBundle.seed")
             if (truth.run_id, truth.outer_replicate_id, truth.assignment_role,
                 truth.assignment_index, truth.seed) != (
                 run_id, outer_id, "RUN", -1, config.seed
@@ -1318,8 +1329,8 @@ def _reconcile_report_seed_sources(
             if (outer.world_id, outer.world_version) != (manifest.world_id, manifest.world_version):
                 raise ContractError("v2.1 OuterWorldEvidenceBundle world identity differs from RUN manifest")
 
-            repeated_ids = set()
-            repeated_z, repeated_g = set(), set()
+            repeated_ids = {run_id}
+            repeated_z, repeated_g = {assignment.z_assignment_seed}, {assignment.g_assignment_seed}
             for r, repeated_bundle in enumerate(outer.repeated_bundles):
                 (r_assignment, r_config, r_manifest, _, _, _, r_evaluation) = validate_run_bundle(
                     repeated_bundle, scenario_id=scenario_id, version=version,
