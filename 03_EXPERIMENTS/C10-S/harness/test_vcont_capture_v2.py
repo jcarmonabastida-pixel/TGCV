@@ -1,6 +1,7 @@
 """Pure fixture tests for Gate 185 capture primitives; never invoke producers."""
 from dataclasses import replace
 import json
+import hashlib
 import math
 import unittest
 from types import SimpleNamespace
@@ -77,7 +78,12 @@ class CaptureV2Tests(unittest.TestCase):
             "manifest": manifest,
             "scenario_reports": {},
             "coverage": {"required_pairs": 52, "observed_pairs": 52, "scenario_count": 13},
-            "report_fingerprint": "d" * 64,
+            "report_fingerprint": hashlib.sha256(
+                json.dumps(
+                    json.loads(json.dumps(manifest, default=lambda value: value.__dict__, sort_keys=True)),
+                    sort_keys=True, separators=(",", ":"), allow_nan=False,
+                ).encode("utf-8")
+            ).hexdigest(),
         }
 
     def test_matrix_capture_has_exact_52_rows_and_recomputable_digest(self):
@@ -131,6 +137,13 @@ class CaptureV2Tests(unittest.TestCase):
     def test_report_snapshot_rejects_root_nested_manifest_disagreement(self):
         report = self.report_fixture()
         report["manifest"]["temporal_manifest"][0]["world_seed"] = 1
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report)
+
+
+    def test_report_snapshot_rejects_tampered_legacy_fingerprint(self):
+        report = self.report_fixture()
+        report["report_fingerprint"] = "e" * 64
         with self.assertRaises(ContractError):
             freeze_report_snapshot(report)
 
