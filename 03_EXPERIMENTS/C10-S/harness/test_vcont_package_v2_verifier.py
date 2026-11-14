@@ -1456,6 +1456,15 @@ class CalibrationManifestVerifierTests(unittest.TestCase):
 
 class Gate159ArtifactVerifierTests(unittest.TestCase):
     @staticmethod
+    def _design_identity():
+        return {
+            "scenario_versions": [{
+                "scenario_id": AUTHORITATIVE_SCENARIO_IDS[0], "scenario_version": "v1",
+            }],
+            "N": 24, "M": 1, "R": 1, "legacy_matrix_fingerprint": "e" * 64,
+        }
+
+    @staticmethod
     def _expected_counts():
         return {
             "EVALUATION_ASSIGNMENT_RUN_MANIFEST_ONE_TO_ONE": (2, 2, 2, 0),
@@ -1541,7 +1550,7 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
         artifact = {
             "schema_id": "TGCV-C10S-VCONT-GATE159-RECONCILIATION",
             "schema_version": "1.0.0", "benchmark_export_id": "b" * 64,
-            "design_identity": {"fixture": "design-v1"},
+            "design_identity": Gate159ArtifactVerifierTests._design_identity(),
             "verifier_identity": {
                 "name": "fixture-verifier", "version": "1.0.0",
                 "source_commit": "c" * 40, "implementation_digest": "d" * 64,
@@ -1557,19 +1566,19 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
 
     def test_recomputes_not_reconciled_when_external_bindings_unavailable(self):
         artifact, package_files = self._fixture()
-        self.assertEqual(_reconcile_gate159_artifact(artifact, "b" * 64, package_files, self._expected_counts()), "NOT_RECONCILED")
+        self.assertEqual(_reconcile_gate159_artifact(artifact, "b" * 64, self._design_identity(), package_files, self._expected_counts()), "NOT_RECONCILED")
 
     def test_rejects_forged_derived_status(self):
         artifact, package_files = self._fixture()
         artifact["derived_status"] = "RECONCILED"
         with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64, package_files, self._expected_counts())
+            _reconcile_gate159_artifact(artifact, "b" * 64, self._design_identity(), package_files, self._expected_counts())
 
     def test_rejects_findings_digest_drift(self):
         artifact, package_files = self._fixture()
         artifact["findings_digest"] = "0" * 64
         with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64, package_files, self._expected_counts())
+            _reconcile_gate159_artifact(artifact, "b" * 64, self._design_identity(), package_files, self._expected_counts())
 
     def test_rejects_external_check_self_asserted_pass(self):
         artifact, package_files = self._fixture()
@@ -1581,7 +1590,7 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
         payload.pop("findings_digest")
         artifact["findings_digest"] = hashlib.sha256(rfc8785.dumps(payload)).hexdigest()
         with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64, package_files, self._expected_counts())
+            _reconcile_gate159_artifact(artifact, "b" * 64, self._design_identity(), package_files, self._expected_counts())
 
     def test_rejects_required_check_order_drift(self):
         artifact, package_files = self._fixture()
@@ -1590,13 +1599,13 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
         payload.pop("findings_digest")
         artifact["findings_digest"] = hashlib.sha256(rfc8785.dumps(payload)).hexdigest()
         with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64, package_files, self._expected_counts())
+            _reconcile_gate159_artifact(artifact, "b" * 64, self._design_identity(), package_files, self._expected_counts())
 
     def test_rejects_input_artifact_digest_not_matching_packaged_bytes(self):
         artifact, package_files = self._fixture()
         package_files["runs/run_records.json"] = b"tampered"
         with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64, package_files, self._expected_counts())
+            _reconcile_gate159_artifact(artifact, "b" * 64, self._design_identity(), package_files, self._expected_counts())
 
     def test_rejects_not_applicable_without_seed_manifest_only_reason(self):
         artifact, package_files = self._fixture()
@@ -1605,7 +1614,7 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
         payload.pop("findings_digest")
         artifact["findings_digest"] = hashlib.sha256(rfc8785.dumps(payload)).hexdigest()
         with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64, package_files, self._expected_counts())
+            _reconcile_gate159_artifact(artifact, "b" * 64, self._design_identity(), package_files, self._expected_counts())
 
     def test_rejects_unregistered_check_input_digest(self):
         artifact, package_files = self._fixture()
@@ -1614,7 +1623,7 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
         payload.pop("findings_digest")
         artifact["findings_digest"] = hashlib.sha256(rfc8785.dumps(payload)).hexdigest()
         with self.assertRaises(PackageVerificationError):
-            _reconcile_gate159_artifact(artifact, "b" * 64, package_files, self._expected_counts())
+            _reconcile_gate159_artifact(artifact, "b" * 64, self._design_identity(), package_files, self._expected_counts())
 
 
 
