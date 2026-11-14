@@ -339,3 +339,11 @@ Gate 180 finds that the Gate 179 direct uint64 field registry is not yet complet
 The effective-config path also requires an explicit projection contract: source `ScenarioConfig` has `seed`, `world_seed`, `z_assignment_seed` and `g_assignment_seed`, but the current producer has no package projector that proves whether they are excluded or included in `design/effective_scenario_configs.json`. Gate 179's claim that the path contains no seeds is unverified until the exact projection is frozen.
 
 The current `CapturedBenchmark` still contains only `report`, `outer_world_bundles` and `evidence_index`; it does not retain MatrixCapture or FrozenReportSnapshot. Calibration, Gate159, source-execution and test-evidence companions are not supplied by the capture producer and must be bound at a separate fail-closed export boundary. Gate 164 v2.0.0 remains a draft contract, not an implemented package. See Gate 180.
+
+## 22. Gate 181 — v2 source-to-wire projection closure
+
+Gate 181 defines the complete v2.0.0 direct uint64 registry, including the root and nested legacy-manifest temporal rows and pair-ledger contribution copies. Every registered location uses the Gate 179 typed uint64 object and all duplicated report views are equality-checked before historical fingerprint recomputation.
+
+The effective configuration file is now explicitly a structural DGP/Generator projection: it contains the exact non-seed/non-assignment ScenarioConfig fields defined in Gate 181 §3, plus the explicit three-stream seed policy. The legacy `seed` fallback and per-assignment stream values are excluded from direct structural JSON; actual stream seeds are authoritative in SeedAssignment/RunManifest, while full per-run ScenarioConfig objects remain preserved in opaque FrozenSnapshot bytes in run_records. Confirmatory capture requires all three explicit stream seeds and rejects fallback use.
+
+The legacy report fingerprint is computed over the original source-typed manifest_payload using the frozen historical algorithm before uint64 wire projection. FrozenReportSnapshot v2.0.0 JCS digest is separate. Calibration/Gate159/source/test evidence is assembled independently and bound through benchmark_export_id; it is not inferred by the capture producer. Full contract: Gate 181. No implementation/tests/CI or scientific execution occurred.
