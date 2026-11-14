@@ -224,3 +224,41 @@ Static text inspection found no imports from the writer, capture/export, integra
 A follow-up static pass added strict integer validation for an optional `row_count`, nonempty string/integer validation for effective-config row identities, and a fail-closed exception boundary around the companion identity/config reconciliation calls. Unexpected decoding or shape errors are now surfaced as `PackageVerificationError` rather than leaking an unrelated exception type.
 
 Verifier commit: `fd42afe16e9a82c1cb3bcec99ba03e6bc537a689`. Latest verifier blob: `73e05aa1da7c3f9609f1590b4d78c06c1ec080e8`. No test or compilation was performed.
+
+
+## 11. Gate 194-E source audit — AnalysisContract companion boundary
+
+A static source comparison was completed before attempting any `design/analysis_contracts.json` verifier implementation.
+
+### 11.1 Facts established by existing source
+
+- The registered source type is `vcont_integrated_harness.AnalysisContract`.
+- Its frozen dataclass registry contains exactly 37 fields in the current inspected source.
+- It has **no `run_id` field**. A verifier must not invent one.
+- `RunEvidenceBundle.capture` validates the source AnalysisContract, checks its estimand, target/outcome, transportability and mechanism/reference-regime fields against AnalyzerResult and RunManifest, and computes `analysis_contract_sha256` using the historical tagged FrozenSnapshot source encoding.
+- The per-run `analysis_contract` FrozenSnapshot is retained in `runs/run_records.json`. The run record's `analysis_contract_sha256` must equal the snapshot reference SHA-256; the independent decoder recomputes that SHA over the exact retained bytes.
+- The current verifier already checks the AnalysisContract/AnalyzerResult estimand and target/outcome fields, transportability fields, and mechanism/reference-regime identity against RunManifest. These are per-run snapshot joins, not validation of the separate design companion.
+
+### 11.2 What is not defined
+
+The historical Gate 181 crosswalk describes `design/analysis_contracts.json` as an exact effective AnalysisContract projection with per-scenario/run-family identity and source mapping. Gate 194-A explicitly says the package-level schema remains open.
+
+The inspected normative artifacts do not establish:
+- the companion root schema ID/version and exact root field allowlist;
+- the exact row schema and whether it contains source fields, a typed projection, or both;
+- the canonical digest algorithm and its input domain for each companion row;
+- the exact applicability key that maps a contract to a scenario/version/N and RUN/R family;
+- whether identical contracts are deduplicated by snapshot digest or retained once per applicability key;
+- how one companion row is consumed exactly once by the per-run snapshots without fabricating `AnalysisContract.run_id`.
+
+The writer currently accepts this companion as a materialized object but does not validate its field-level schema. That is not a source contract.
+
+### 11.3 Gate decision
+
+No AnalysisContract companion schema or verifier code has been invented. The existing per-run AnalysisContract snapshot and semantic checks are retained; the independent companion remains OPEN.
+
+The next bounded operation is to define and reconcile the companion's source-to-wire projection and applicability relation from the frozen Gate 181/191 requirements and current `AnalysisContract` source. If those documents do not determine a unique mapping, record the missing design decision explicitly before implementation. Do not treat a matching snapshot digest alone as proof that the companion is complete.
+
+This preserves the distinction between:
+- **per-run AnalysisContract snapshot identity:** implemented and checked by the RUN/R verifier;
+- **design/analysis_contracts.json companion completeness and one-to-one applicability:** not yet specified or verified.
