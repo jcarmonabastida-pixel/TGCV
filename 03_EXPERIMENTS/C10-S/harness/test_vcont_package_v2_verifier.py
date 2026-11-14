@@ -25,6 +25,9 @@ from vcont_package_v2_verify import (
     AUTHORITATIVE_SCENARIO_IDS,
     AUTHORITATIVE_ESTIMAND_IDS,
     _reconcile_benchmark_export_identity,
+    _reconcile_effective_scenario_config_rows,
+    EFFECTIVE_CONFIG_STRUCTURAL_FIELDS,
+    EFFECTIVE_CONFIG_SEED_POLICY,
 )
 
 
@@ -660,6 +663,108 @@ class IndependentVerifierPrimitiveTests(unittest.TestCase):
         files["validation/reconciliation_results.json"]["schema_version"] = "2.0.0"
         with self.assertRaises(PackageVerificationError):
             _reconcile_benchmark_export_identity(files)
+
+
+
+    def _effective_config_fixture(self):
+        design = {
+            "scenario_versions": [[sid, "v1"] for sid in AUTHORITATIVE_SCENARIO_IDS],
+            "n_units": 20, "outer_replicates": 2, "repeated_assignments": 1,
+        }
+        rows = []
+        decoded_runs = []
+        for scenario_index, sid in enumerate(AUTHORITATIVE_SCENARIO_IDS):
+            projection = {
+                name: (
+                    f"value-{scenario_index}" if name in {"profile", "mechanism"}
+                    else False if name in {
+                        "randomized_z", "randomized_g", "positivity", "no_interference",
+                        "measurement_identified", "version_consistency",
+                    }
+                    else float(scenario_index + 1) if name in {
+                        "window_start", "last_transition_support", "follow_up",
+                        "enabled_probability", "baseline_conformity", "focal_access_effect",
+                        "package_direct_effect", "focal_direct_effect", "collateral_effect",
+                        "provision_probability", "alternative_probability", "heterogeneity",
+                        "interference_effect", "measurement_sensitivity",
+                        "measurement_specificity", "missing_probability", "zg_interaction_effect",
+                    }
+                    else 5
+                )
+                for name in EFFECTIVE_CONFIG_STRUCTURAL_FIELDS
+            }
+            rows.append({
+                "scenario_id": sid, "scenario_version": "v1", "n_units": 20,
+                "generator_version": "generator-v1",
+                "seed_policy": dict(EFFECTIVE_CONFIG_SEED_POLICY),
+                "config": projection,
+            })
+            for m in range(2):
+                for role, index in [("RUN", -1), ("REPEATED_ASSIGNMENT", 0)]:
+                    key = (sid, "v1", 20, f"outer-{m:06d}", role, index,
+                           f"run-{scenario_index:02d}-{m:06d}-{role}-{index}")
+                    config = {
+                        "scenario_id": sid, "version": "v1", "n_units": 20,
+                        **projection,
+                        "seed": 1000 + scenario_index + m,
+                        "world_seed": 2000 + scenario_index + m,
+                        "z_assignment_seed": 3000 + scenario_index + m,
+                        "g_assignment_seed": 4000 + scenario_index + m,
+                        "replicate_id": f"rep-{scenario_index}-{m}-{index}",
+                        "outer_replicate_id": f"outer-{m:06d}",
+                        "assignment_role": role, "assignment_index": index,
+                    }
+                    decoded_runs.append({
+                        "key": key, "config": config, "generator_version": "generator-v1",
+                    })
+        effective = {
+            "schema_id": "TGCV-C10S-VCONT-EFFECTIVE-SCENARIO-CONFIG-PROJECTION",
+            "schema_version": "2.0.0",
+            "rows": rows,
+        }
+        return effective, design, decoded_runs
+
+    def test_effective_config_rows_join_to_every_run_repetition_snapshot(self):
+        effective, design, decoded_runs = self._effective_config_fixture()
+        self.assertEqual(
+            _reconcile_effective_scenario_config_rows(effective, design, decoded_runs), 13
+        )
+
+    def test_effective_config_rejects_structural_snapshot_drift(self):
+        effective, design, decoded_runs = self._effective_config_fixture()
+        decoded_runs[0]["config"]["focal_access_effect"] = 999.0
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_effective_scenario_config_rows(effective, design, decoded_runs)
+
+    def test_effective_config_rejects_seed_or_run_identity_in_structural_projection(self):
+        effective, design, decoded_runs = self._effective_config_fixture()
+        effective["rows"][0]["config"]["world_seed"] = 1
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_effective_scenario_config_rows(effective, design, decoded_runs)
+        effective, design, decoded_runs = self._effective_config_fixture()
+        effective["rows"][0]["seed_policy"]["fallback"] = "ALLOW"
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_effective_scenario_config_rows(effective, design, decoded_runs)
+
+    def test_effective_config_rejects_generator_version_divergence(self):
+        effective, design, decoded_runs = self._effective_config_fixture()
+        decoded_runs[0]["generator_version"] = "generator-other"
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_effective_scenario_config_rows(effective, design, decoded_runs)
+
+    def test_effective_config_rejects_wrong_order_duplicate_and_missing_run_consumption(self):
+        effective, design, decoded_runs = self._effective_config_fixture()
+        effective["rows"][0], effective["rows"][1] = effective["rows"][1], effective["rows"][0]
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_effective_scenario_config_rows(effective, design, decoded_runs)
+        effective, design, decoded_runs = self._effective_config_fixture()
+        effective["rows"][1] = dict(effective["rows"][0])
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_effective_scenario_config_rows(effective, design, decoded_runs)
+        effective, design, decoded_runs = self._effective_config_fixture()
+        decoded_runs.pop()
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_effective_scenario_config_rows(effective, design, decoded_runs)
 
 
 
