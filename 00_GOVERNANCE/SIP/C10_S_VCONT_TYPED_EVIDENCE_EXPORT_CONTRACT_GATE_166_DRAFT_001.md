@@ -251,3 +251,14 @@ Gate 168 is persisted in `00_GOVERNANCE/SIP/C10_S_VCONT_RUN_EVIDENCE_BUNDLE_AND_
 For the v1.0.0 export implementation, the default exclusion of raw SealedEvidence rows is amended: the complete canonical manifest and rows are retained inline. The current repository has no immutable independently retrievable evidence store; a digest-only export would therefore be UNVERIFIABLE after capture. The legacy Sealer digest remains unchanged and is recomputed from its exact legacy canonical payload. The package-level JCS representation and digest remain separate.
 
 Gate 168 also defines the frozen RunEvidenceBundle and OuterWorldEvidenceBundle. Implementation acceptance is blocked pending correction of the Generator world-identity projection: current `world_spec` retains `assignment_role` and `assignment_index`, so role/index changes alter `world_id` despite Gate 154 requiring RUN and R to share one world. See Gate 168 §7. This is a source-level finding; no runtime test was run in Gate 168.
+
+
+## 14. Gate 170 implementation mapping — immutable capture API
+
+Gate 170's source implementation is recorded in `C10_S_VCONT_RUN_EVIDENCE_BUNDLE_CAPTURE_IMPLEMENTATION_GATE_170_DRAFT_001.md` and `03_EXPERIMENTS/C10-S/harness/vcont_evidence_export.py`.
+
+The new `RunEvidenceBundle.capture(...)` accepts the exact SeedAssignment and all source objects while they coexist, validates the per-run identity/provenance/contract joins, snapshots the full ScenarioConfig and complete RunManifest, retains EvidenceCandidate and complete SealedEvidence, stores the Gate 166 `MatrixTruthProjection` only (not potential-outcome arrays), and captures AnalysisContract, AnalyzerResult and EvaluationReport. FrozenSnapshot uses canonical typed envelopes and immutable bytes; its payload digest is checked on restore. SealedEvidence legacy digest is recomputed from retained manifest+rows and must equal AnalyzerResult.input_sha256.
+
+`OuterWorldEvidenceBundle.capture(...)` checks one RUN, exactly R ordered repeated indices, shared M/world identity, bank/design identity, unique run IDs and assignment-specific Z/G seeds, plus exact ordered repeated reports.
+
+**Qualification:** this is a standalone capture API, not yet wired into the existing benchmark producer. The existing Monte Carlo path still consumes reduced four-object tuples. Regression source is persisted but NOT EXECUTED. End-to-end export remains OPEN; no execution or scientific claim follows from the implementation.
