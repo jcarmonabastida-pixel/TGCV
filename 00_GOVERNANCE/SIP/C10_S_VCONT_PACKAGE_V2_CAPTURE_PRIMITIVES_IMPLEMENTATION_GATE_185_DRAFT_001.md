@@ -120,3 +120,7 @@ The first Gate 185 source/test commits landed while the previous Gate 184 pure w
 Each run installed the hash-pinned `rfc8785==0.1.4` dependency, then attempted the previous workflow's compile list and failed at the first not-yet-created module, `vcont_package_v2.py`. The test step was skipped in all three runs. The capture module appeared before the missing module in the compile command and its compilation completed without a reported syntax error. No test method, Generator, Sealer, Analyzer, Evaluator, producer, seed generation, calibration or scientific operation ran.
 
 This was an unintended technical workflow execution caused by the still-active push trigger. It is recorded as a governance/configuration deviation, not a PASS. The workflow was then changed to manual-only and narrowed to the capture module plus its fixture test. The current workflow has not been dispatched. This correction supersedes §1/§5/§7 statements that implied no dependency installation or compilation occurred.
+
+## 10. Gate 185 capture audit refinement
+
+The report snapshot implementation now recomputes the legacy report fingerprint from the original source-typed `manifest` before any uint64 wrapper projection, using the exact Evaluator JSON round-trip and unchanged compact `_hash` sequence. A mismatch fails closed. The fixture source now computes a valid legacy fingerprint and includes a negative tampering case. This is source/test authoring only; the test remains unexecuted.
