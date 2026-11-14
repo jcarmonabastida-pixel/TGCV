@@ -117,3 +117,9 @@ After the first push, GitHub recorded seven failed workflow-run entries for the 
 The command was quoted in commit 84d6e4695e7e94f694ca5bb40125a81c8936eefe. The corrected workflow was fetched back from the branch and parsed successfully with a YAML parser. No job was present in any of the seven failed runs, and no dependency installation, compilation, test, producer or scientific operation occurred.
 
 This correction supersedes any reading of §5/§6 that might imply no workflow-run records were created. Accurate state: push events created failed configuration-only run records with zero jobs; no workflow job executed. The corrected workflow file has not yet been executed.
+
+## 9. Gate 185 — staged pure-test workflow
+
+Gate 185 implemented the capture primitives and the first pure test module. Until a separate technical test execution authorization is given, the pure workflow is temporarily manual-only and narrowed to `vcont_evidence_export.py` plus `test_vcont_capture_v2.py`. It does not trigger on push and does not compile or invoke the integrated producer suite. On manual dispatch it installs the pinned JCS dependency, compiles only the capture module/test and runs only the capture fixture module.
+
+The other four v2 test modules and package/verifier source modules remain future implementation slices; the workflow will be expanded as they are added. No workflow dispatch, dependency installation, compile or test has occurred. See Gate 185.
