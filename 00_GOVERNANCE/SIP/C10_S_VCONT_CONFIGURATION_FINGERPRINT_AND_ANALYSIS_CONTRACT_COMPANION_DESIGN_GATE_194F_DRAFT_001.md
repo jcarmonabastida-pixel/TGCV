@@ -760,3 +760,63 @@ The user's approval is recorded as approval to proceed with this freeze preparat
 5. all exact root/row/property allowlists and digest input objects are singular and internally consistent.
 
 **No code was changed. No tests, compilation, CI, package generation, calibration or scientific execution were run.** Gate 194-H is a freeze-preflight finding, not a failed scientific test. Implementation remains blocked until the documentary contract is coherent and frozen by an explicit decision.
+
+
+#### 12.8 Closed source_ref grammar and exact source targets
+
+The `source_ref` value is a single string with the grammar:
+
+`<package-relative-path>#<RFC6901-JSON-Pointer>`
+
+- The path MUST be one exact path from the Gate 191 14-file package inventory.
+- The fragment MUST be an RFC 6901 JSON Pointer rooted at that file's JSON root.
+- No URI scheme, absolute path, query, percent-encoded alias, wildcard, parent traversal, or alternate path spelling is allowed.
+- Array indices are canonical non-negative decimal integers without leading zeroes (except index `0`).
+- The verifier derives the expected reference from the component family, authoritative scenario order and source file. It MUST NOT follow an arbitrary producer-selected pointer as authority.
+
+Exact source target patterns:
+
+| Component family | Exact source_ref pattern | Target payload |
+|---|---|---|
+| DGP/Generator | `design/effective_scenario_configs.json#/rows/<i>` | Complete Gate 181 effective projection row; `i` is the index of the matching scenario in the frozen 13-scenario registry |
+| Analyzer/contract | `design/analysis_contracts.json#/source_contracts/<i>` | Complete scenario source-contract row; `i` is the same canonical scenario index |
+| Matrix | `design/scenario_estimand_matrix.json#` | MatrixCapture root; digest input is the exact four-member projection in §11.4 |
+| Evaluation seed bank | `seeds/evaluation_seed_assignments.json#/rows` | Complete ordered evaluation SeedAssignment wire-row array |
+
+For scenario-indexed references, the verifier MUST independently establish that the pointed row's scenario ID, version and N equal the component's `scope_key`; the array index alone is never sufficient identity. The Analyzer source row's `contract_payload_digest` must equal the component digest. The DGP row must equal the authoritative Gate 181 projection after exact type and field validation. The matrix and assignment targets must pass their own frozen schema, cardinality, ordering and digest checks.
+
+#### 12.9 Normative conflict resolutions and single wire definition
+
+This section is the sole normative resolution of the competing definitions identified in §§12.1–12.4. It supersedes inconsistent wording in §§4–5 and §§11.1–11.7. The underlying field registries and source-derived facts remain applicable unless explicitly changed below.
+
+1. **AnalysisContract digest:** use only `TGCV-C10S-ANALYSIS-CONTRACT-PAYLOAD-JCS-SHA256-1` for the semantic payload defined in §4.1/§11.3. The Analyzer component's `algorithm_id` MUST be that same value. The alternate `TGCV-C10S-EFFECTIVE-ANALYSIS-CONTRACT-JCS-SHA256-1` is not part of the frozen registry.
+2. **Component row schema:** use exactly the eight §5 properties: `component_id`, `component_type`, `scope_key`, `source_ref`, `payload_schema_id`, `payload_schema_version`, `algorithm_id`, `digest_sha256`. No `component_key`, `schema_id`, `schema_version` or `sha256` aliases are permitted.
+3. **Component vocabulary:** use only `DGP_GENERATOR_CONFIG`, `ANALYZER_EFFECTIVE_CONTRACT`, `SCENARIO_ESTIMAND_MATRIX`, `EVALUATION_SEED_BANK`. Their counts are respectively 13, 13, 1 and 1.
+4. **Component identity:** retain the exact `component_id` forms in §5. Scenario `scope_key` is the canonical JSON array `[scenario_id, scenario_version, n_units]` serialized as a JSON value in the component row (not a concatenated string); singleton scope key is `benchmark_export_id`.
+5. **Component order:** use the Gate 181 authoritative 13-scenario registry order for each scenario-indexed family, followed by singleton families in the §5 vocabulary order. RUN/R applicability rows use the same scenario order, then RUN before REPEATED_ASSIGNMENT. The lexicographic order in §4 is superseded.
+6. **Aggregate input:** use only §5.2's schema ID `TGCV-C10S-AGGREGATE-DESIGN-FINGERPRINT`, version `1.0.0`, and its exact aggregate input object. The `components` array contains the 28 seven-property projections defined in §5.2: `component_id`, `component_type`, `scope_key`, `payload_schema_id`, `payload_schema_version`, `algorithm_id`, `digest_sha256`. `source_ref` is intentionally excluded from the aggregate semantic digest input. No `component_count` property is added.
+7. **Aggregate declaration:** the companion `aggregate` object has exactly the three §5.2 properties `algorithm_id`, `digest_sha256`, `source_design_declaration`. The source declaration locator is the fixed source design field `design/benchmark_design.json#/configuration_fingerprint`; it is compared to the independently recomputed aggregate.
+8. **DGP row:** digest the exact Gate 181 projection row, with the 26 structural fields nested under `config`.
+9. **Matrix and seed domains:** retain §11.4 and §11.10(C–D). The MatrixCapture digest input excludes `design_identity`, legacy fingerprint, algorithm label and digest. The evaluation wire-manifest digest uses typed uint64 rows; the Gate 179 source-typed legacy seed-bank fingerprint is independently recomputed and never substituted.
+10. **Export binding:** both companion roots MUST carry the exact `benchmark_export_id` equal to the reconciled `runs/run_records.json#/benchmark_export_id` value, which Gate 181 defines as `capture_id`.
+
+#### 12.10 Gate 194-H freeze decision
+
+The user's approval to proceed is applied to the single reconciled wire definition above.
+
+**FROZEN FOR IMPLEMENTATION — SCHEMA VERSION 1.0.0**, limited to these newly introduced definitions:
+
+- `TGCV-C10S-ANALYSIS-CONTRACTS@1.0.0`;
+- `TGCV-C10S-EFFECTIVE-ANALYSIS-CONTRACT@1.0.0`;
+- `TGCV-C10S-CONFIGURATION-FINGERPRINTS@1.0.0`;
+- `TGCV-C10S-AGGREGATE-DESIGN-FINGERPRINT@1.0.0`;
+- component row schema and its four-value controlled vocabulary;
+- exact source_ref grammar and four source target patterns;
+- single AnalysisContract, DGP, Matrix, evaluation-assignment and aggregate digest domains;
+- canonical ordering, 13/26/28 cardinalities and exact-once consumption rules.
+
+This freeze is a technical serialization/verification contract only. It does not freeze or validate scientific estimands, DGP truth, causal assumptions, outcomes, Value interpretation or empirical conclusions. Existing Gate 178/179/181 identities and digest domains remain unchanged.
+
+**Implementation boundary:** the next gate may modify only the package writer/verifier companion assembly and independent verification layers, plus their static/adversarial tests. It MUST NOT modify Generator, Sealer, Analyzer, Evaluator, DGPs, estimands, seed derivation or scientific interpretation. Tests may be authored but not executed absent separate authorization. No package generation, calibration or scientific execution is authorized.
+
+**Gate 194-H disposition: ACCEPTED / FROZEN FOR IMPLEMENTATION.** The prior §12.1–12.7 preflight findings are resolved by this section's single normative definitions. This document's historical sections remain preserved; in any conflict, §12.8–12.10 govern.
