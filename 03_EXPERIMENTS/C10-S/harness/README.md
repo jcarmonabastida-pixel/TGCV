@@ -173,3 +173,9 @@ Gate 185 refinement: FrozenReportSnapshot recomputes the historical report finge
 The exact Gate 181 legacy report fingerprint identifier is now used, and capture identity checks each outer-world bundle's scenario version and N against the design. Static audit found that nested report structures still lack complete exact field allowlists/cardinality checks; the projection preserves unknown fields but does not yet reject nested schema drift. Full report schema conformance remains conditional. Pure tests were not executed. See Gate 186.
 
 Gate 186 final source-shape correction: capture identity validates `scenario_versions` as the exact ordered object rows emitted by `_design_identity_projection()` (`scenario_id`, `scenario_version`), then reconciles bundle version/N. Not compiled or tested.
+
+### Gate 187 — nested report allowlists and remaining uint64 blocker
+
+The report projection now checks exact nested field allowlists and cardinalities: 13 scenario reports, 52 ordered pair rows with M contributions, 13×M×(1+R) temporal rows, M per-outer records and R repeated reports. A complete structural fixture and adversarial tests were added but not executed.
+
+Residual contract blocker: scenario report per-outer RUN tuples retain `TruthBundle.seed` and `RunManifest.world_seed/z_assignment_seed/g_assignment_seed`; these four uint64 paths are absent from Gate 181's frozen pointer registry. Full FrozenReportSnapshot v2.0.0 JCS conformance remains conditional until Gate 188 resolves a versioned contract amendment. See Gate 187.
