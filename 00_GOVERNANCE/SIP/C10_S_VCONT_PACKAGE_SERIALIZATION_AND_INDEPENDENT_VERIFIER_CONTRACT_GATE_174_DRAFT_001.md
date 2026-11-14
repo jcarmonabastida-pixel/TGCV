@@ -257,3 +257,9 @@ Gate 181 freezes the direct uint64 JSON Pointer registry for package v2.0.0. It 
 The verifier reconstructs the historical report fingerprint from source-typed manifest_payload after decoding uint64 wrappers and checking root/nested duplicate equality. It separately verifies FrozenReportSnapshot JCS and package digests. Calibration, Gate159, source-execution and test evidence are independent companion artifacts; absent required confirmatory companions block package acceptance. Full exact contract: Gate 181. No verifier code or tests were executed.
 
 Gate 181 pins the v2 evaluation-assignment and temporal-manifest file root envelopes, each with an exact `rows` array and schema ID/version 2.0.0; all direct-seed JSON Pointers are relative to these declared roots. It also pins the legacy report fingerprint identifier `TGCV-C10S-VCONT-LEGACY-REPORT-FINGERPRINT-PYJSON-SORTKEYS-COMPACT-SHA256-1`, which is recomputed from source-typed values and remains separate from JCS.
+
+## Gate 182 — implementation contract and v1/v2 envelope migration
+
+Gate 182 defines the bounded implementation contract for package v2. It preserves the Gate 174 v1.0.0 run-export envelope and its design-derived `benchmark_export_id` semantics unchanged. Gate 182 requires a separately versioned RUN-EXPORT-ENVELOPE v2.0.0, where `benchmark_export_id = capture_id` under Gate 181. A v1 reader rejects v2 and vice versa.
+
+The implementation boundary is additive capture fields on `CapturedBenchmark`, a pure v2 serializer/writer module, a separate independent verifier module and independently supplied companions. No Generator/Sealer/Analyzer/Evaluator semantics change. The exact module/API, capture sequence, JCS dependency prerequisite, tests and acceptance criteria are in Gate 182. No code or tests were executed.
