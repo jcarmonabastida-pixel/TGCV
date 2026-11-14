@@ -88,7 +88,7 @@ The verifier result now reports identity reconciliation as `RECONCILED` only aft
 
 ## 5. Tests authored — not executed
 
-Added 17 positive/adversarial cases to the existing allowlisted file:
+Added 18 positive/adversarial cases to the existing allowlisted file:
 
 `03_EXPERIMENTS/C10-S/harness/test_vcont_package_v2_verifier.py`
 
@@ -146,10 +146,10 @@ That gap is now closed in both writer and independent verifier:
 - typed uint64 wire values are decoded to exact source integers;
 - the historical payload is reconstructed using exactly the ten Gate 179 SeedAssignment fields and original row order;
 - SHA-256 is recomputed over the original `json.dumps(sort_keys=True, separators=(",", ":"))` representation;
-- the result is compared with the historical `seed_bank_fingerprint` declaration in the source design;
+- the result is compared with `seed_bank_fingerprint_legacy` in the evaluation assignment envelope, the historical `seed_bank_fingerprint` in the source design object, and the corresponding `design/benchmark_design.json` declaration;
 - calibration remains separate and is not mixed into the evaluation bank or the 28-component aggregate.
 
-Three additional tests were added for writer parity, historical fingerprint mismatch and reordered evaluation rows. The Gate 194-I companion test set now contains **17 authored tests**, all still unexecuted.
+Three additional tests were added for writer parity, historical fingerprint mismatch and reordered evaluation rows. The Gate 194-I companion test set now contains **18 authored tests**, all still unexecuted.
 
 **Updated disposition:** IMPLEMENTED / CONDITIONAL — STATIC REVIEW ONLY; TESTS NOT EXECUTED. This closes the missing historical seed-bank digest check at source-code level; it does not establish that the implementation passes the tests or a real package.
 
