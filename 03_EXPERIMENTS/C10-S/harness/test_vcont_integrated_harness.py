@@ -954,8 +954,14 @@ class VContEvidenceOrchestrationTests(unittest.TestCase):
             assignments, config, expected_repeated_assignments=1, tolerance=1e9
         )
         self.assertEqual(len(captured.evaluator_runs), 2)
-        self.assertEqual(captured.evidence_bundle.repeated_bundles.__len__(), 1)
+        self.assertEqual(len(captured.evidence_bundle.repeated_bundles), 1)
         self.assertEqual(captured.evidence_bundle.run_bundle.key[4:6], ("RUN", -1))
+        self.assertEqual(
+            captured.evaluator_runs[0][3],
+            captured.evidence_bundle.run_bundle.run_manifest.restore(
+                type(captured.evaluator_runs[0][3])
+            ),
+        )
         repeated_assignment = captured.evidence_bundle.repeated_bundles[0].assignment.restore(
             type(assignments[1])
         )
