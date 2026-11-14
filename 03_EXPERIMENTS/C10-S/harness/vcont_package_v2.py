@@ -861,7 +861,10 @@ def serialize_package_files_v2(
                     or value["seed_derivation"].get("output_rule") != "first_8_digest_bytes_unsigned_big_endian"
                     or value["seed_derivation"].get("namespace") != value.get("namespace")
                     or not isinstance(value.get("design"), Mapping)
-                    or not value["design"]
+                    or set(value.get("design", {})) != {
+                        "scenario_versions", "n_grid", "outer_replicates", "repeated_assignments",
+                        "calibration_purpose", "metric_targets",
+                    }
                     or value.get("execution_evidence_status") not in ("NOT_CAPTURED", "AVAILABLE", "UNVERIFIABLE")
                     or not isinstance(value.get("rows"), list) or not value["rows"]
                     or value.get("row_count") != len(value["rows"])
