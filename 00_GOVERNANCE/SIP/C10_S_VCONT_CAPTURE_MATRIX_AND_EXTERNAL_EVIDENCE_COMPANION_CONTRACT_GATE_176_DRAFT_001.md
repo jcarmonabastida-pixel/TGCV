@@ -194,3 +194,9 @@ Gate 178 also identifies a blocker not resolved by Gate 176: the seed derivation
 Gate 179 versions the JCS projections that contain direct seed values. FrozenReportSnapshot, CalibrationBankManifest and benchmark capture identity advance to schema version 2.0.0 and use the exact typed uint64 object `{"$type":"uint64","decimal":"<canonical unsigned decimal>"}` for every direct seed field. MatrixCapture remains v1.0.0 because it contains no seeds. Gate159 reconciliation remains v1.0.0 because raw seed values are not included in its check records.
 
 The historical report, matrix and seed-bank fingerprints remain unchanged and are computed under their existing algorithms from source values. Gate 164 v1.0.0 remains frozen; its wire-compatible successor is v2.0.0. The full decision and direct-field registry are in Gate 179.
+
+## 10. Gate 180 — source API reconciliation
+
+Gate 180 confirms that the current `produce_and_capture_benchmark()` validates and passes the exact `specs` tuple to Evaluator but does not retain it in the returned `CapturedBenchmark`. The returned object still contains only `report`, `outer_world_bundles` and `evidence_index`; no MatrixCapture or FrozenReportSnapshot fields are present. Gate 176/178's required immutable capture-at-source behavior therefore remains specified but not implemented.
+
+The current producer accepts evaluation assignments and structural ScenarioConfig templates only. Calibration manifest, Gate159 reconciliation, source-execution evidence and technical-test evidence remain separately sourced companions; a future export assembler must bind them to the same capture identity and fail closed when required companions are absent. See Gate 180.
