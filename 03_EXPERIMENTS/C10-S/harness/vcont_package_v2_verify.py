@@ -539,6 +539,563 @@ def decode_frozen_snapshot_ref(
     )
 
 
+
+def _snapshot_source_value(value: Any) -> Any:
+    """Convert a validated tagged snapshot tree to source-domain values for comparisons."""
+    if isinstance(value, dict):
+        if set(value) == {"$dataclass", "fields"}:
+            return {key: _snapshot_source_value(child)
+                    for key, child in value["fields"].items()}
+        if set(value) == {"$enum", "value"}:
+            return _snapshot_source_value(value["value"])
+        if set(value) == {"$tuple"}:
+            return tuple(_snapshot_source_value(child) for child in value["$tuple"])
+        if set(value) == {"$list"}:
+            return [_snapshot_source_value(child) for child in value["$list"]]
+        if set(value) == {"$map"}:
+            return {key: _snapshot_source_value(child) for key, child in value["$map"].items()}
+        raise PackageVerificationError("snapshot source conversion encountered an untagged object")
+    return value
+
+
+def _snapshot_fields(decoded: DecodedFrozenSnapshot, expected_type: str) -> dict[str, Any]:
+    if decoded.type_id != expected_type:
+        raise PackageVerificationError(
+            f"snapshot type mismatch: expected {expected_type}, got {decoded.type_id}"
+        )
+    root = decoded.value
+    if not isinstance(root, dict) or set(root) != {"$dataclass", "fields"}:
+        raise PackageVerificationError("decoded snapshot root is not a dataclass")
+    return _snapshot_source_value(root)
+
+
+def _logical_run_key(value: Any, label: str) -> tuple[Any, ...]:
+    required = (
+        "scenario_id", "scenario_version", "N", "outer_replicate_id",
+        "assignment_role", "assignment_index", "run_id",
+    )
+    if not isinstance(value, dict) or set(value) != set(required):
+        raise PackageVerificationError(f"{label}: exact logical RUN key fields required")
+    key = tuple(value[name] for name in required)
+    if (not isinstance(key[0], str) or not key[0]
+            or not isinstance(key[1], str) or not key[1]
+            or isinstance(key[2], bool) or not isinstance(key[2], int) or key[2] < 1
+            or not isinstance(key[3], str) or not key[3]
+            or key[4] not in ("RUN", "REPEATED_ASSIGNMENT")
+            or isinstance(key[5], bool) or not isinstance(key[5], int)
+            or not isinstance(key[6], str) or not key[6]):
+        raise PackageVerificationError(f"{label}: malformed logical RUN key values")
+    if (key[4], key[5]) == ("RUN", -1):
+        pass
+    elif key[4] == "REPEATED_ASSIGNMENT" and key[5] >= 0:
+        pass
+    else:
+        raise PackageVerificationError(f"{label}: role/index pair is not canonical")
+    return key
+
+
+def _snapshot_legacy_sealed_digest(sealed: dict[str, Any]) -> str:
+    if set(sealed) != {"run_id", "rows", "manifest", "sha256"}:
+        raise PackageVerificationError("SealedEvidence decoded fields are incomplete")
+    payload = json.dumps(
+        {"manifest": sealed["manifest"], "rows": sealed["rows"]},
+        sort_keys=True, separators=(",", ":"), allow_nan=False,
+    ).encode("utf-8")
+    return _sha256(payload)
+
+
+def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tuple[int, int]:
+    """Rebuild RUN/R and outer-world joins from the package's independent sources."""
+    run_file = files["runs/run_records.json"]
+    root_fields = {
+        "schema_id", "schema_version", "benchmark_export_id", "declared_cardinality",
+        "ordering_profile", "join_key_profile", "run_evidence_records",
+        "outer_world_evidence_records", "evidence_index",
+    }
+    if not isinstance(run_file, dict) or set(run_file) != root_fields:
+        raise PackageVerificationError("RUN export envelope exact root field allowlist mismatch")
+    if (run_file["schema_id"], run_file["schema_version"]) != (
+        "TGCV-C10S-VCONT-RUN-EXPORT-ENVELOPE", "2.0.0"
+    ):
+        raise PackageVerificationError("RUN export envelope schema/version mismatch")
+    report = decoded_report.get("report") if isinstance(decoded_report, dict) else None
+    design = report.get("design") if isinstance(report, dict) else None
+    if not isinstance(design, dict):
+        raise PackageVerificationError("report design identity is missing for RUN/R reconciliation")
+    scenario_versions = design.get("scenario_versions")
+    n_units, M, R = design.get("n_units"), design.get("outer_replicates"), design.get("repeated_assignments")
+    if (not isinstance(scenario_versions, list) or len(scenario_versions) != 13
+            or isinstance(n_units, bool) or not isinstance(n_units, int)
+            or isinstance(M, bool) or not isinstance(M, int)
+            or isinstance(R, bool) or not isinstance(R, int)):
+        raise PackageVerificationError("report design dimensions/scenario registry are malformed")
+    scenario_order = [row[0] for row in scenario_versions
+                      if isinstance(row, list) and len(row) == 2]
+    versions = {row[0]: row[1] for row in scenario_versions
+                if isinstance(row, list) and len(row) == 2}
+    if len(scenario_order) != 13 or len(set(scenario_order)) != 13:
+        raise PackageVerificationError("report design scenario registry is not unique")
+    expected_runs = 13 * M * (1 + R)
+    expected_outers = 13 * M
+    declared = run_file["declared_cardinality"]
+    if declared != {
+        "scenario_count": 13, "pair_count": 52, "outer_world_count": expected_outers,
+        "run_record_count": expected_runs, "repeated_report_count": expected_outers,
+    }:
+        raise PackageVerificationError("RUN export declared cardinalities differ from report design")
+    records = run_file["run_evidence_records"]
+    outer_records = run_file["outer_world_evidence_records"]
+    if (not isinstance(records, list) or len(records) != expected_runs
+            or not isinstance(outer_records, list) or len(outer_records) != expected_outers):
+        raise PackageVerificationError("RUN/R source record cardinality differs from 13 x M x (1+R)")
+    if run_file["benchmark_export_id"] != files["manifest.json"].get("benchmark_export_id", run_file["benchmark_export_id"]):
+        # The package manifest has no export ID in v2; this branch only guards malformed explicit values.
+        raise PackageVerificationError("RUN export identity is inconsistent with package context")
+
+    assignment_file = files["seeds/evaluation_seed_assignments.json"]
+    temporal_file = files["runs/temporal_manifest.json"]
+    for label, envelope, schema_id in (
+        ("evaluation assignments", assignment_file, "TGCV-C10S-VCONT-EVALUATION-SEED-ASSIGNMENTS"),
+        ("temporal manifest", temporal_file, "TGCV-C10S-VCONT-TEMPORAL-MANIFEST"),
+    ):
+        if (not isinstance(envelope, dict) or envelope.get("schema_id") != schema_id
+                or envelope.get("schema_version") != "2.0.0"
+                or not isinstance(envelope.get("rows"), list)
+                or envelope.get("row_count") != len(envelope["rows"])):
+            raise PackageVerificationError(f"{label}: exact v2 rows envelope is invalid")
+
+    def decode_wire_seed_row(row: dict[str, Any], label: str) -> dict[str, Any]:
+        if not isinstance(row, dict):
+            raise PackageVerificationError(f"{label}: row must be an object")
+        result = dict(row)
+        for field in ("world_seed", "z_assignment_seed", "g_assignment_seed"):
+            result[field] = _uint64(row.get(field), f"{label}.{field}")
+        return result
+
+    assignment_rows = [decode_wire_seed_row(row, f"evaluation assignments[{i}]")
+                       for i, row in enumerate(assignment_file["rows"])]
+    temporal_rows = [decode_wire_seed_row(row, f"temporal manifest[{i}]")
+                     for i, row in enumerate(temporal_file["rows"])]
+    assignment_map: dict[tuple[Any, ...], dict[str, Any]] = {}
+    for row in assignment_rows:
+        required = {"bank", "scenario_id", "scenario_version", "n_units", "replicate",
+                    "outer_replicate_id", "assignment_role", "world_seed",
+                    "z_assignment_seed", "g_assignment_seed"}
+        if set(row) != required or row["bank"] != "evaluation":
+            raise PackageVerificationError("evaluation SeedAssignment row field/bank mismatch")
+        key = (row["scenario_id"], row["scenario_version"], row["n_units"],
+               row["outer_replicate_id"], row["assignment_role"], row["replicate"])
+        if key in assignment_map:
+            raise PackageVerificationError("duplicate evaluation SeedAssignment logical key")
+        assignment_map[key] = row
+    temporal_map: dict[tuple[Any, ...], dict[str, Any]] = {}
+    for row in temporal_rows:
+        required = {"scenario_id", "scenario_version", "N", "outer_replicate_id",
+                    "assignment_role", "assignment_index", "run_id", "world_id",
+                    "world_seed", "z_assignment_seed", "g_assignment_seed"}
+        if set(row) != required:
+            raise PackageVerificationError("temporal RunManifest projection field allowlist mismatch")
+        key = (row["scenario_id"], row["scenario_version"], row["N"],
+               row["outer_replicate_id"], row["assignment_role"], row["assignment_index"])
+        if key in temporal_map:
+            raise PackageVerificationError("duplicate temporal manifest logical key")
+        temporal_map[key] = row
+    expected_keys = {
+        (sid, versions[sid], n_units, f"outer-{m:06d}", role, index)
+        for sid in scenario_order for m in range(M)
+        for role, index in ([("RUN", -1)] + [
+            ("REPEATED_ASSIGNMENT", r) for r in range(R)
+        ])
+    }
+    if set(assignment_map) != expected_keys or set(temporal_map) != expected_keys:
+        raise PackageVerificationError("assignment/temporal key sets differ from exact report design RUN/R universe")
+
+    run_map: dict[tuple[Any, ...], dict[str, Any]] = {}
+    decoded_by_key: dict[tuple[Any, ...], dict[str, dict[str, Any]]] = {}
+    snapshot_fields = {
+        "assignment": "vcont_benchmark_protocol.SeedAssignment",
+        "scenario_config": "vcont_integrated_harness.ScenarioConfig",
+        "run_manifest": "vcont_integrated_harness.RunManifest",
+        "truth_projection": "vcont_evidence_export.MatrixTruthProjection",
+        "evidence_candidate": "vcont_integrated_harness.EvidenceCandidate",
+        "sealed_evidence": "vcont_integrated_harness.SealedEvidence",
+        "analysis_contract": "vcont_integrated_harness.AnalysisContract",
+        "analyzer_result": "vcont_integrated_harness.AnalyzerResult",
+        "evaluation_report": "vcont_integrated_harness.EvaluationReport",
+    }
+    record_required = {
+        "key", "bank", "snapshot_refs", "scenario_config_structural_sha256",
+        "analysis_contract_sha256", "sealed_evidence_legacy_sha256",
+        "snapshot_validation_status",
+    }
+    for index, record in enumerate(records):
+        if not isinstance(record, dict) or set(record) != record_required:
+            raise PackageVerificationError(f"run_evidence_records[{index}]: exact record field allowlist mismatch")
+        key = _logical_run_key(record["key"], f"run_evidence_records[{index}].key")
+        if key in run_map:
+            raise PackageVerificationError("duplicate logical RUN/R key in run_evidence_records")
+        if record["bank"] != "evaluation":
+            raise PackageVerificationError("confirmatory RUN/R record is not in evaluation bank")
+        refs = record["snapshot_refs"]
+        if not isinstance(refs, dict) or set(refs) != set(snapshot_fields):
+            raise PackageVerificationError("run record snapshot_refs field allowlist mismatch")
+        decoded = {}
+        for name, type_id in snapshot_fields.items():
+            decoded[name] = _snapshot_fields(
+                decode_frozen_snapshot_ref(refs[name], expected_type_id=type_id), type_id
+            )
+        assignment = decoded["assignment"]
+        config = decoded["scenario_config"]
+        manifest = decoded["run_manifest"]
+        truth = decoded["truth_projection"]
+        candidate = decoded["evidence_candidate"]
+        sealed = decoded["sealed_evidence"]
+        contract = decoded["analysis_contract"]
+        analyzer = decoded["analyzer_result"]
+        evaluation = decoded["evaluation_report"]
+        identity = (assignment["scenario_id"], assignment["scenario_version"], assignment["n_units"],
+                    assignment["outer_replicate_id"], assignment["assignment_role"],
+                    assignment["replicate"])
+        expected_key = (key[0], key[1], key[2], key[3], key[4], key[5])
+        if identity != expected_key or assignment["bank"] != record["bank"]:
+            raise PackageVerificationError("SeedAssignment identity/bank differs from run record key")
+        if key[6] != manifest["run_id"]:
+            raise PackageVerificationError("run record key run_id differs from RunManifest")
+        if (config["scenario_id"], config["version"], config["n_units"],
+            config["outer_replicate_id"], config["assignment_role"], config["assignment_index"]) != expected_key:
+            raise PackageVerificationError("ScenarioConfig identity differs from full RUN/R key")
+        if (manifest["scenario_id"], manifest["version"], manifest["n_units"],
+            manifest["outer_replicate_id"], manifest["assignment_role"],
+            manifest["assignment_index"]) != expected_key:
+            raise PackageVerificationError("RunManifest identity differs from full RUN/R key")
+        if manifest["run_id"] != key[6] or config["replicate_id"] != manifest["replicate_id"]:
+            raise PackageVerificationError("RunManifest/config replicate or run_id identity mismatch")
+        if manifest["world_version"] != config["version"]:
+            raise PackageVerificationError("RunManifest world_version differs from ScenarioConfig version")
+        assignment_seeds = (assignment["world_seed"], assignment["z_assignment_seed"],
+                            assignment["g_assignment_seed"])
+        config_seeds = (config["world_seed"], config["z_assignment_seed"], config["g_assignment_seed"])
+        manifest_seeds = (manifest["world_seed"], manifest["z_assignment_seed"], manifest["g_assignment_seed"])
+        if any(value is None for value in config_seeds) or assignment_seeds != config_seeds or assignment_seeds != manifest_seeds:
+            raise PackageVerificationError("SeedAssignment/ScenarioConfig/RunManifest stream equality failed")
+        if len(set(assignment_seeds)) != 3:
+            raise PackageVerificationError("world/Z/G seed streams are not distinct within assignment")
+        if (truth["run_id"], truth["outer_replicate_id"], truth["assignment_role"],
+            truth["assignment_index"], truth["seed"]) != (
+            key[6], key[3], key[4], key[5], config["seed"]
+        ):
+            raise PackageVerificationError("MatrixTruthProjection identity/seed differs from ScenarioConfig")
+        if any(obj.get("run_id") != key[6] for obj in (candidate, sealed, analyzer, evaluation)):
+            raise PackageVerificationError("run-scoped evidence/analyzer/evaluation object run_id mismatch")
+        if (analyzer["outer_replicate_id"], analyzer["assignment_role"], analyzer["assignment_index"]) != (
+            key[3], key[4], key[5]
+        ):
+            raise PackageVerificationError("AnalyzerResult RUN/R identity differs from logical key")
+        if (contract["estimand_id"], contract["estimand_version"]) != (
+            analyzer["estimand_id"], analyzer["estimand_version"]
+        ):
+            raise PackageVerificationError("AnalysisContract/AnalyzerResult estimand identity mismatch")
+        if (contract["target_regime_id"], contract["target_regime_version"],
+            contract["outcome_id"], contract["outcome_version"]) != (
+            analyzer["target_regime_id"], analyzer["target_regime_version"],
+            analyzer["outcome_id"], analyzer["outcome_version"]
+        ):
+            raise PackageVerificationError("AnalysisContract/AnalyzerResult target/outcome identity mismatch")
+        contract_manifest_fields = (
+            "g_assignment_mechanism_id", "g_assignment_mechanism_version",
+            "g_assignment_mechanism_hash", "z_assignment_mechanism_id",
+            "z_assignment_mechanism_version", "z_assignment_mechanism_hash",
+            "reference_regime_id", "reference_regime_version",
+        )
+        manifest_fields = (
+            "g_assignment_mechanism_id", "g_assignment_mechanism_version",
+            "g_assignment_mechanism_hash", "z_assignment_mechanism_id",
+            "z_assignment_mechanism_version", "z_assignment_mechanism_hash",
+            "g_reference_regime_id", "g_reference_regime_version",
+        )
+        if tuple(contract[name] for name in contract_manifest_fields) != tuple(
+            manifest[name] for name in manifest_fields
+        ):
+            raise PackageVerificationError("AnalysisContract mechanism/reference identity differs from RunManifest")
+        if (record["analysis_contract_sha256"] != refs["analysis_contract"]["sha256"]
+                or record["sealed_evidence_legacy_sha256"] != sealed["sha256"]):
+            raise PackageVerificationError("run record declared contract/sealed digest differs from decoded source")
+        if record["scenario_config_structural_sha256"] != refs["scenario_config"]["sha256"] and not re.fullmatch(
+            r"[0-9a-f]{64}", str(record["scenario_config_structural_sha256"])
+        ):
+            raise PackageVerificationError("ScenarioConfig structural digest declaration is malformed")
+        sealed_digest = _snapshot_legacy_sealed_digest(sealed)
+        if sealed_digest != sealed["sha256"] or analyzer["input_sha256"] != sealed_digest:
+            raise PackageVerificationError("SealedEvidence legacy digest differs from AnalyzerResult.input_sha256")
+        if candidate["rows"] != sealed["rows"] or candidate["provenance"] != sealed["manifest"].get("provenance"):
+            raise PackageVerificationError("EvidenceCandidate and SealedEvidence rows/provenance diverge")
+        if sealed["manifest"].get("row_count") != len(sealed["rows"]):
+            raise PackageVerificationError("SealedEvidence row_count differs from retained rows")
+        provenance = sealed["manifest"].get("provenance", {})
+        provenance_digest = _sha256(json.dumps(
+            provenance, sort_keys=True, separators=(",", ":"), allow_nan=False
+        ).encode("utf-8"))
+        if sealed["manifest"].get("provenance_sha256") != provenance_digest:
+            raise PackageVerificationError("SealedEvidence provenance digest does not recompute")
+        if key[4] == "RUN" and key[5] != -1:
+            raise PackageVerificationError("designated RUN must use assignment_index -1")
+        if key[4] == "REPEATED_ASSIGNMENT" and key[5] < 0:
+            raise PackageVerificationError("repeated assignment index must be nonnegative")
+        if key in run_map:
+            raise PackageVerificationError("duplicate run key")
+        run_map[key] = record
+        decoded_by_key[key] = decoded
+
+    if len(run_map) != expected_runs or set(run_map) != {
+        (sid, versions[sid], n_units, f"outer-{m:06d}", role, idx, None)
+        for sid in [] for m in []
+        for role, idx in []
+    }:
+        # The exact run_id universe is derived from the independently decoded RunManifest set below.
+        if len(run_map) != expected_runs:
+            raise PackageVerificationError("run record cardinality mismatch")
+    # Each assignment/temporal key must map to one unique run record and exact run_id.
+    key6_to_run = {}
+    for key, record in run_map.items():
+        base = key[:6]
+        if base in key6_to_run:
+            raise PackageVerificationError("more than one run record consumes a logical assignment key")
+        key6_to_run[base] = (key, record)
+        assignment = assignment_map[base]
+        temporal = temporal_map[base]
+        manifest = decoded_by_key[key]["run_manifest"]
+        for field in ("world_seed", "z_assignment_seed", "g_assignment_seed"):
+            if assignment[field] != manifest[field] or temporal[field] != manifest[field]:
+                raise PackageVerificationError("assignment/temporal/RunManifest seed stream join failed")
+        if temporal["run_id"] != key[6] or temporal["world_id"] != manifest["world_id"]:
+            raise PackageVerificationError("temporal manifest run_id/world_id differs from RunManifest")
+    if set(key6_to_run) != expected_keys:
+        raise PackageVerificationError("one-to-one RUN/R assignment to run-record consumption failed")
+
+    outer_map = {}
+    for index, outer in enumerate(outer_records):
+        required = {"key", "run_record_key", "repeated_run_record_keys",
+                    "repeated_assignment_report", "bank"}
+        if not isinstance(outer, dict) or set(outer) != required:
+            raise PackageVerificationError(f"outer_world_evidence_records[{index}] field allowlist mismatch")
+        key = outer["key"]
+        if not isinstance(key, dict) or set(key) != {
+            "scenario_id", "scenario_version", "N", "outer_replicate_id",
+            "world_id", "world_version", "world_seed",
+        }:
+            raise PackageVerificationError("outer-world key field allowlist mismatch")
+        world_seed = _uint64(key["world_seed"], f"outer_world_evidence_records[{index}].key.world_seed")
+        outer_key = (key["scenario_id"], key["scenario_version"], key["N"],
+                     key["outer_replicate_id"], key["world_id"])
+        if outer_key in outer_map:
+            raise PackageVerificationError("duplicate outer-world logical key")
+        if outer["bank"] != "evaluation":
+            raise PackageVerificationError("outer-world record bank must be evaluation")
+        base = (key["scenario_id"], key["scenario_version"], key["N"], key["outer_replicate_id"])
+        run_key_obj = outer["run_record_key"]
+        run_key = _logical_run_key(run_key_obj, "outer_world.run_record_key")
+        if run_key[:6] != (*base, "RUN", -1):
+            raise PackageVerificationError("outer-world RUN reference does not identify its designated RUN")
+        run_record = run_map.get(run_key)
+        if run_record is None:
+            raise PackageVerificationError("outer-world RUN reference is orphaned")
+        run_decoded = decoded_by_key[run_key]
+        run_manifest = run_decoded["run_manifest"]
+        if (run_manifest["world_id"], run_manifest["world_version"], run_manifest["world_seed"]) != (
+            key["world_id"], key["world_version"], world_seed
+        ):
+            raise PackageVerificationError("outer-world key differs from designated RUN RunManifest")
+        repeated_keys = outer["repeated_run_record_keys"]
+        if not isinstance(repeated_keys, list) or len(repeated_keys) != R:
+            raise PackageVerificationError("outer-world repeated RUN references differ from R")
+        expected_repeated = []
+        for repeat_index, ref_key in enumerate(repeated_keys):
+            parsed_key = _logical_run_key(ref_key, f"outer_world.repeated_run_record_keys[{repeat_index}]")
+            if parsed_key[:6] != (*base, "REPEATED_ASSIGNMENT", repeat_index):
+                raise PackageVerificationError("outer-world repeated reference index/order mismatch")
+            if parsed_key not in run_map:
+                raise PackageVerificationError("outer-world repeated RUN reference is orphaned")
+            repeated_manifest = decoded_by_key[parsed_key]["run_manifest"]
+            if (repeated_manifest["world_id"], repeated_manifest["world_version"],
+                repeated_manifest["world_seed"]) != (key["world_id"], key["world_version"], world_seed):
+                raise PackageVerificationError("repeated assignment is crossed into another world")
+            expected_repeated.append(parsed_key)
+        repeated_z, repeated_g = set(), set()
+        for parsed_key in [run_key] + expected_repeated:
+            assignment = decoded_by_key[parsed_key]["assignment"]
+            if assignment["world_seed"] != world_seed:
+                raise PackageVerificationError("RUN/R assignment world_seed differs from outer-world key")
+            if assignment["z_assignment_seed"] in repeated_z or assignment["g_assignment_seed"] in repeated_g:
+                raise PackageVerificationError("Z/G assignment streams are not unique within outer world")
+            repeated_z.add(assignment["z_assignment_seed"])
+            repeated_g.add(assignment["g_assignment_seed"])
+        repeated_report = _snapshot_fields(
+            decode_frozen_snapshot_ref(
+                outer["repeated_assignment_report"],
+                expected_type_id="vcont_integrated_harness.RepeatedAssignmentReport",
+            ),
+            "vcont_integrated_harness.RepeatedAssignmentReport",
+        )
+        repeated_evaluations = tuple(
+            _snapshot_source_value(decoded_by_key[parsed_key]["evaluation_report"])
+            for parsed_key in expected_repeated
+        )
+        if (repeated_report["world_id"] != key["world_id"]
+                or repeated_report["replicate_count"] != R
+                or tuple(repeated_report["per_run_reports"]) != repeated_evaluations):
+            raise PackageVerificationError("RepeatedAssignmentReport does not match exact ordered R evaluation reports")
+        outer_map[outer_key] = {
+            "run_key": run_key, "repeated_keys": tuple(expected_repeated),
+            "world_seed": world_seed, "repeated_report": repeated_report,
+        }
+    expected_outer_keys = {
+        (sid, versions[sid], n_units, f"outer-{m:06d}", None)
+        for sid in [] for m in []
+    }
+    if len(outer_map) != expected_outers:
+        raise PackageVerificationError("outer-world record cardinality differs from 13 x M")
+    outer_by_base = {
+        (key[0], key[1], key[2], key[3]): value for key, value in outer_map.items()
+    }
+    expected_bases = {
+        (sid, versions[sid], n_units, f"outer-{m:06d}")
+        for sid in scenario_order for m in range(M)
+    }
+    if set(outer_by_base) != expected_bases:
+        raise PackageVerificationError("outer-world keys do not cover exact scenario/M universe")
+    # RUN/R world identity and world seed are constant within each outer-world cluster.
+    for base, outer in outer_by_base.items():
+        run_key = outer["run_key"]
+        run_assignment = decoded_by_key[run_key]["assignment"]
+        if run_assignment["world_seed"] != outer["world_seed"]:
+            raise PackageVerificationError("designated RUN assignment world_seed differs from outer-world key")
+        for repeated_key in outer["repeated_keys"]:
+            if decoded_by_key[repeated_key]["assignment"]["world_seed"] != outer["world_seed"]:
+                raise PackageVerificationError("repeated assignment world_seed differs from outer-world key")
+
+    # Temporal rows and report's duplicated temporal views must consume each run once.
+    report_temporal = report.get("temporal_manifest")
+    if not isinstance(report_temporal, list) or len(report_temporal) != expected_runs:
+        raise PackageVerificationError("report temporal manifest cardinality differs from RUN/R universe")
+    report_temporal_map = {}
+    for row in report_temporal:
+        key = (row["scenario_id"], row["scenario_version"], row["N"],
+               row["outer_replicate_id"], row["assignment_role"], row["assignment_index"])
+        if key in report_temporal_map:
+            raise PackageVerificationError("duplicate report temporal key")
+        report_temporal_map[key] = row
+    if set(report_temporal_map) != expected_keys:
+        raise PackageVerificationError("report temporal manifest does not cover exact RUN/R universe")
+    for base, (key, _) in key6_to_run.items():
+        temporal = temporal_map[base]
+        report_row = report_temporal_map[base]
+        if report_row != temporal:
+            raise PackageVerificationError("report temporal row differs from runs/temporal_manifest row")
+        manifest = decoded_by_key[key]["run_manifest"]
+        if report_row["run_id"] != key[6] or report_row["world_id"] != manifest["world_id"]:
+            raise PackageVerificationError("report temporal row run/world identity differs from snapshot")
+
+    # Pair ledger contributions must consume each outer-world RUN world seed once per pair.
+    pair_rows = report.get("pair_ledger")
+    if not isinstance(pair_rows, list) or len(pair_rows) != 52:
+        raise PackageVerificationError("report pair ledger must retain 52 rows")
+    for pair_index, pair in enumerate(pair_rows):
+        contributions = pair.get("contributions") if isinstance(pair, dict) else None
+        if not isinstance(contributions, list) or len(contributions) != M:
+            raise PackageVerificationError(f"pair ledger[{pair_index}] contribution count differs from M")
+        seen_m = set()
+        for contribution in contributions:
+            outer_id = contribution.get("outer_replicate_id")
+            if outer_id in seen_m:
+                raise PackageVerificationError("pair ledger duplicates an M contribution")
+            seen_m.add(outer_id)
+            scenario_id = pair["key"][0]
+            base = (scenario_id, versions[scenario_id], n_units, outer_id)
+            outer = outer_by_base.get(base)
+            if outer is None or contribution.get("world_seed") != outer["world_seed"]:
+                raise PackageVerificationError("pair-ledger contribution world_seed differs from its outer-world RUN")
+        if seen_m != {f"outer-{m:06d}" for m in range(M)}:
+            raise PackageVerificationError("pair ledger does not consume every M contribution exactly once")
+
+    # The report RUN tuple and aggregate report rows are independently compared with snapshots.
+    scenarios = report.get("scenario_reports")
+    if not isinstance(scenarios, dict) or set(scenarios) != set(scenario_order):
+        raise PackageVerificationError("scenario_reports registry differs from design")
+    for sid in scenario_order:
+        scenario = scenarios[sid]
+        if (scenario.get("scenario_id"), scenario.get("scenario_version")) != (sid, versions[sid]):
+            raise PackageVerificationError("scenario report identity differs from design")
+        per_outer = scenario.get("per_outer_replicate")
+        if not isinstance(per_outer, list) or len(per_outer) != M:
+            raise PackageVerificationError("scenario report per_outer_replicate cardinality mismatch")
+        for m, row in enumerate(per_outer):
+            outer_id = f"outer-{m:06d}"
+            base = (sid, versions[sid], n_units, outer_id)
+            outer = outer_by_base[base]
+            run_key = outer["run_key"]
+            decoded = decoded_by_key[run_key]
+            run_tuple = row.get("run")
+            if not isinstance(run_tuple, list) or len(run_tuple) != 4:
+                raise PackageVerificationError("scenario report RUN tuple must have four ordered objects")
+            truth, analyzer_report, contract_report, manifest_report = run_tuple
+            if not isinstance(truth, dict):
+                raise PackageVerificationError("scenario report TruthBundle projection is missing")
+            truth_snapshot = decoded["truth_projection"]
+            analyzer_snapshot = decoded["analyzer_result"]
+            contract_snapshot = decoded["analysis_contract"]
+            manifest_snapshot = decoded["run_manifest"]
+            if (truth.get("run_id"), truth.get("outer_replicate_id"),
+                truth.get("assignment_role"), truth.get("assignment_index"), truth.get("seed")) != (
+                run_key[6], outer_id, "RUN", -1, decoded["scenario_config"]["seed"]
+            ):
+                raise PackageVerificationError("report TruthBundle identity/seed differs from captured RUN")
+            if truth_snapshot["seed"] != decoded["scenario_config"]["seed"]:
+                raise PackageVerificationError("MatrixTruthProjection.seed differs from ScenarioConfig.seed")
+            for report_obj, snapshot_obj, label in (
+                (analyzer_report, analyzer_snapshot, "AnalyzerResult"),
+                (contract_report, contract_snapshot, "AnalysisContract"),
+                (manifest_report, manifest_snapshot, "RunManifest"),
+            ):
+                if report_obj != _snapshot_source_value(snapshot_obj):
+                    raise PackageVerificationError(f"report RUN {label} differs from captured snapshot")
+            if row.get("run_report") != _snapshot_source_value(decoded["evaluation_report"]):
+                raise PackageVerificationError("report RUN evaluation summary differs from EvaluationReport snapshot")
+            repeated_reports = [
+                _snapshot_source_value(decoded_by_key[key]["evaluation_report"])
+                for key in outer["repeated_keys"]
+            ]
+            if row.get("repeated_report") != _snapshot_source_value(outer["repeated_report"]):
+                raise PackageVerificationError("report repeated aggregate differs from RepeatedAssignmentReport snapshot")
+            if len(repeated_reports) != R:
+                raise PackageVerificationError("repeated report source cardinality differs from R")
+
+    # Evidence index is an exact, ordered one-to-one projection of outer-world keys.
+    evidence_index = run_file["evidence_index"]
+    if not isinstance(evidence_index, list) or len(evidence_index) != expected_outers:
+        raise PackageVerificationError("RUN evidence_index cardinality differs from 13 x M")
+    expected_index = [
+        {"scenario_id": sid, "outer_replicate_id": f"outer-{m:06d}",
+         "world_id": outer_by_base[(sid, versions[sid], n_units, f"outer-{m:06d")]["run_key"][6]}
+        for sid in [] for m in []
+    ]
+    # The evidence_index world_id is compared to the corresponding outer key, not to run_id.
+    consumed_index = set()
+    for row in evidence_index:
+        if not isinstance(row, dict) or set(row) != {"scenario_id", "outer_replicate_id", "world_id"}:
+            raise PackageVerificationError("evidence_index row field allowlist mismatch")
+        base = (row["scenario_id"], versions.get(row["scenario_id"]), n_units, row["outer_replicate_id"])
+        outer_key = next((k for k in outer_map if k[:4] == base), None)
+        if outer_key is None or row["world_id"] != outer_key[4]:
+            raise PackageVerificationError("evidence_index row does not resolve to exact outer-world identity")
+        if base in consumed_index:
+            raise PackageVerificationError("evidence_index duplicates an outer-world key")
+        consumed_index.add(base)
+    if consumed_index != expected_bases:
+        raise PackageVerificationError("evidence_index does not consume every outer-world key exactly once")
+    return len(run_map), len(outer_map)
+
+
+
 def _historical_fingerprint(manifest_payload: Any) -> str:
     # Gate 181's historical source-domain two-stage Python JSON algorithm.
     normalized = json.loads(json.dumps(manifest_payload, sort_keys=True))
@@ -756,6 +1313,7 @@ def verify_package_v2(
     _check_registered_uint64(parsed)
     decoded_report = _decode_registered(report)
     _check_report(decoded_report)
+    reconciled_run_count, reconciled_outer_count = _reconcile_run_records(parsed, decoded_report)
     matrix = parsed["design/scenario_estimand_matrix.json"]
     if (not isinstance(matrix, dict) or set(matrix) != {
             "schema_id", "schema_version", "design_identity", "row_count", "rows",
