@@ -808,8 +808,10 @@ def _validate_scenario_report(value: Any, scenario_id: str, scenario_version: st
             f"{scenario_id}.per_outer[{m}].repeated_report",
         )
         per_run = repeated["per_run_reports"]
-        if not isinstance(per_run, list) or len(per_run) < 1:
-            raise ContractError(f"{scenario_id}.per_outer[{m}] repeated report requires per-run reports")
+        if not isinstance(per_run, list) or len(per_run) != repeated_assignments:
+            raise ContractError(f"{scenario_id}.per_outer[{m}] repeated report must retain exactly R reports")
+        if repeated["replicate_count"] != repeated_assignments:
+            raise ContractError(f"{scenario_id}.per_outer[{m}] repeated report count differs from R")
         for index, item_report in enumerate(per_run):
             _validate_evaluation_report(item_report, f"{scenario_id}.per_outer[{m}].per_run_reports[{index}]")
 
@@ -886,7 +888,7 @@ def _report_v2_projection(report: dict[str, Any]) -> dict[str, Any]:
         if not isinstance(rows, list) or len(rows) != 52:
             raise ContractError(f"{label} must contain exactly 52 ordered rows")
         expected_pairs = tuple(
-            (scenario_id, estimand_id)
+            (scenario_id, versions[scenario_id], estimand_id, "001", "MONTE_CARLO")
             for scenario_id in SCENARIO_IDS
             for estimand_id, *_ in ESTIMAND_SPECS
         )
@@ -894,16 +896,28 @@ def _report_v2_projection(report: dict[str, Any]) -> dict[str, Any]:
         for index, row in enumerate(rows):
             item = _require_exact_object(row, _PAIR_LEDGER_FIELDS, f"{label}[{index}]")
             key = item["key"]
-            if (not isinstance(key, list) or len(key) != 5
-                    or tuple(key[:1] + key[2:3]) != expected_pairs[index]
-                    or key[4] != "MONTE_CARLO"):
+            if not isinstance(key, list) or tuple(key) != expected_pairs[index]:
                 raise ContractError(f"{label} pair key/order differs from the authoritative 52-pair matrix")
+            if item["evaluation_class"] not in ("EVALUABLE", "STATUS_ONLY", "NOT_IDENTIFIABLE", "NOT_EVALUABLE"):
+                raise ContractError(f"{label}[{index}] has an unknown EvaluationClass")
+            if item["truth_status"] not in ("DEFINED", "UNDEFINED", "NOT_MATERIALIZED"):
+                raise ContractError(f"{label}[{index}] has an unknown truth status")
+            count_fields = (
+                "expected_M", "observed_M", "numeric_denominator", "status_denominator",
+                "missing_contribution_count", "truth_missing_count", "invalid_output_count",
+                "abstention_count", "identification_correct_count", "abstention_correct_count",
+            )
+            if any(isinstance(item[name], bool) or not isinstance(item[name], int) or item[name] < 0
+                   for name in count_fields):
+                raise ContractError(f"{label}[{index}] contains a non-integer or negative count")
             if item["expected_M"] != outer_replicates or item["observed_M"] != outer_replicates:
                 raise ContractError(f"{label}[{index}] M denominator differs from design")
             if item["status_denominator"] != outer_replicates:
                 raise ContractError(f"{label}[{index}] status denominator differs from design")
-            if item["numeric_denominator"] < 0 or item["numeric_denominator"] > outer_replicates:
+            if item["numeric_denominator"] > outer_replicates:
                 raise ContractError(f"{label}[{index}] numeric denominator outside 0..M")
+            if item["precision_status"] not in ("NOT_EVALUABLE", "FAIL_PRECISION", "PASS_PRECISION"):
+                raise ContractError(f"{label}[{index}] has an unknown precision status")
             if not isinstance(item["contributions"], list) or len(item["contributions"]) != outer_replicates:
                 raise ContractError(f"{label}[{index}] must retain exactly one contribution per M")
             for m, contribution in enumerate(item["contributions"]):
@@ -911,6 +925,21 @@ def _report_v2_projection(report: dict[str, Any]) -> dict[str, Any]:
                                               f"{label}[{index}].contributions[{m}]")
                 if value["outer_replicate_id"] != f"outer-{m:06d}":
                     raise ContractError(f"{label}[{index}] contributions are not in canonical M order")
+                if value["temporal_source"] not in (
+                    "RUN", "REPEATED_ASSIGNMENT", "REPEATED_ASSIGNMENT_WITH_RUN_STATUS"
+                ):
+                    raise ContractError(f"{label}[{index}] contribution has unknown temporal_source")
+                if value["contribution_state"] not in (
+                    "NUMERIC", "STATUS_ONLY", "NOT_IDENTIFIABLE", "NOT_IDENTIFIED",
+                    "INDETERMINATE", "ABSTAINED", "TRUTH_MISSING", "INVALID_OUTPUT",
+                ):
+                    raise ContractError(f"{label}[{index}] contribution has unknown state")
+                for boolean_field in (
+                    "abstention_expected", "identification_correct",
+                    "abstention_correct", "abstained",
+                ):
+                    if not isinstance(value[boolean_field], bool):
+                        raise ContractError(f"{label}[{index}] contribution {boolean_field} must be boolean")
                 value["world_seed"] = _uint64_wire(value["world_seed"])
             for rate_name in ("identification_rates", "run_identification_rates"):
                 rates = _require_exact_object(item[rate_name], (
