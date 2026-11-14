@@ -124,3 +124,13 @@ A package may be built for diagnostic transport only if the missing fields are e
 ## 9. Next operation — Gate 174
 
 Define the pure, non-executing serialization contract and independent verifier interface for the existing Gate 164 v1.0.0 package paths. Freeze exact typed snapshot encoding, the `runs/run_records.json` envelope schema, array ordering, digest recomputation sequence and fail-closed validation result model. Before implementation, decide whether the packager should reject incomplete calibration/source provenance entirely or permit a clearly non-reconciled diagnostic package profile. Do not execute or generate any package in this gate.
+
+## 10. Gate 174 — serialization/verifier contract
+
+Gate 174 resolves the open profile decision. Gate 164 v1.0.0 remains a fail-closed CONFIRMATORY package: absent calibration manifest, Gate 159 reconciliation, independently resolved GitHub producer/source metadata or required technical test evidence blocks acceptance. No placeholder manifest or producer-declared PASS is allowed. Any future partial diagnostic transport must use a different schema ID/version and cannot claim Gate 164 compliance, RECONCILED or AUTHENTICATED status.
+
+The exact 14-file Gate 164 inventory remains unchanged. The existing `runs/run_records.json` path is specified as a versioned envelope of ordered RUN/R records, one outer-world record per scenario/M, one repeated aggregate report per M, evidence index, cardinalities and join keys. Source snapshots are transported as base64 of their exact existing bytes with type ID, serialization ID and SHA-256; package JSON receives separate JCS canonicalization.
+
+Gate 174 also identifies a concrete decoder gap: current snapshot enum decoding returns the underlying value rather than restoring the enum type; arbitrary bytes are not supported by the snapshot encoder. A versioned allowlisted decoder must close this before claiming type-preserving round-trip.
+
+The independent verifier's status vector and fail-closed behavior are defined. No code, tests, package or verifier was implemented/executed. See `C10_S_VCONT_PACKAGE_SERIALIZATION_AND_INDEPENDENT_VERIFIER_CONTRACT_GATE_174_DRAFT_001.md`. Next: Gate 175 static implementability audit.
