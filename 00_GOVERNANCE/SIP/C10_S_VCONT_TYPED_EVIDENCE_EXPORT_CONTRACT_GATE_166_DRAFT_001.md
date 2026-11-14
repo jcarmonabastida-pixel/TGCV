@@ -292,3 +292,9 @@ This is source implementation only. The driver and positive regression have NOT 
 The Gate 175 source audit found that the exact 52-row `ScenarioEstimandSpec` matrix is validated and consumed by `produce_and_capture_benchmark()`, but is not retained in `CapturedBenchmark`; only the report's design fingerprint and pair ledger remain. The exact matrix package file therefore requires a capture-time immutable matrix payload or companion object explicitly bound to the same benchmark capture. It must not be reconstructed from current code or report output.
 
 The existing `scenario_matrix_fingerprint()` omits the declared `tolerance_id` field. Retain the legacy fingerprint unchanged, and add a versioned full-matrix digest that covers every `ScenarioEstimandSpec` and nested `EvaluationKey` field. See Gate 175. No source code or tests were changed/executed.
+
+## 14. Gate 176 — matrix capture and immutable benchmark report
+
+Gate 176 defines `MatrixCapture v1.0.0`: the exact 52 typed ScenarioEstimandSpec rows are retained at the producer boundary, immediately after validation and before evaluator invocation. The capture includes every declared field, nested EvaluationKey identity, canonical order, unchanged legacy fingerprint and a new full-matrix JCS SHA-256 that includes `tolerance_id`. The legacy fingerprint is not redefined.
+
+Gate 176 also identifies that CapturedBenchmark's frozen dataclass contains a mutable report dict. The report remains available for compatibility, but export must consume an immutable capture-time report snapshot/digest. See Gate 176. No code/tests executed.
