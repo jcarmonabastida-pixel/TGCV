@@ -151,3 +151,7 @@ The legacy integrated harness workflow is manual-only and requires an explicit c
 A dedicated workflow `.github/workflows/c10-s-vcont-package-v2-pure-tests.yml` is reserved for the five fixture-only v2 test modules. It uses an explicit test list, never unittest discovery, and is path-filtered to v2 sources/tests and `requirements-vcont-v2.lock`. The test modules are not implemented yet, so this workflow is not runnable/PASS until they are added with the corresponding source.
 
 JCS dependency pin: `rfc8785==0.1.4`, wheel SHA-256 `520d690b448ecf0703691c76e1a34a24ddcd4fc5bc41d589cb7c58ec651bcd48`. RFC 8785 conformance remains unverified until independent vectors pass. No workflow dispatch, tests, compile, dependency installation, producer invocation or scientific execution occurred. See Gate 184.
+
+### Gate 184 correction
+
+The first pure workflow revision had an invalid unquoted pip-install scalar. GitHub created failed workflow-run records with zero jobs; no tests or other job steps executed. The command was quoted in commit 84d6e4695e7e94f694ca5bb40125a81c8936eefe and the corrected workflow YAML parsed successfully. No CI job has passed yet.
