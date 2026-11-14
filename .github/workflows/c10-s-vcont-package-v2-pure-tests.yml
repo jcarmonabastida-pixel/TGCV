@@ -5,6 +5,7 @@ on:
     branches:
       - research/c10-s-consolidation-draft
     paths:
+      - '03_EXPERIMENTS/C10-S/harness/requirements-vcont-v2.lock'
       - '03_EXPERIMENTS/C10-S/harness/vcont_evidence_export.py'
       - '03_EXPERIMENTS/C10-S/harness/vcont_package_v2.py'
       - '03_EXPERIMENTS/C10-S/harness/vcont_package_v2_verify.py'
