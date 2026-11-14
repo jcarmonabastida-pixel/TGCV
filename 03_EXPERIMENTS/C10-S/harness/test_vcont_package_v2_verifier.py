@@ -63,22 +63,43 @@ class IndependentVerifierPrimitiveTests(unittest.TestCase):
                 _safe_archive_path(path)
 
     def test_report_accepts_complete_legacy_fingerprint_and_duplicate_views(self):
-        manifest = {"temporal_manifest": [], "pair_ledger": []}
+        temporal = [
+            {"world_seed": 10 + m, "z_assignment_seed": 20 + m, "g_assignment_seed": 30 + m}
+            for _ in range(13) for m in range(2) for _r in range(2)
+        ]
+        pair_ledger = [
+            {"contributions": [
+                {"world_seed": 10 + m} for m in range(2)
+            ]}
+            for _ in range(52)
+        ]
+        manifest = {
+            "scenario_versions": [[f"S{i:02d}", "v1"] for i in range(13)],
+            "N": 1, "M": 2, "R": 1,
+            "temporal_manifest": temporal,
+            "pair_ledger": pair_ledger,
+        }
         fingerprint = _historical_fingerprint(manifest)
+        scenario_reports = {}
+        for i in range(13):
+            sid = f"S{i:02d}"
+            scenario_reports[sid] = {
+                "scenario_id": sid,
+                "per_outer_replicate": [
+                    {"outer_replicate_id": f"outer-{m:06d}", "run": [
+                        {"seed": 100 + m}, {}, {},
+                        {"world_seed": 10 + m, "z_assignment_seed": 20 + m, "g_assignment_seed": 30 + m},
+                    ]}
+                    for m in range(2)
+                ],
+            }
         report = {
             "manifest": manifest,
             "report_fingerprint": fingerprint,
-            "temporal_manifest": [],
-            "pair_ledger": [],
+            "temporal_manifest": temporal,
+            "pair_ledger": pair_ledger,
             "coverage": {"required_pairs": 52, "observed_pairs": 52, "scenario_count": 13},
-            "scenario_reports": {
-                f"S{i:02d}": {
-                    "per_outer_replicate": [
-                        {"outer_replicate_id": "outer-000000", "run": [{}, {}, {}, {}]}
-                    ]
-                }
-                for i in range(13)
-            },
+            "scenario_reports": scenario_reports,
         }
         _check_report({
             "schema_id": "TGCV-C10S-VCONT-REPORT-SNAPSHOT",
