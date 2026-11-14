@@ -44,7 +44,7 @@ The implementation deliberately does not compare TruthBundle.seed to world_seed.
 
 ## 3. Pure fixtures authored
 
-`test_vcont_capture_v2.py` now contains **25 test methods**. Four Gate 190 tests construct typed source objects and immutable FrozenSnapshots without calling Generator, Sealer, Analyzer, Evaluator or any producer:
+`test_vcont_capture_v2.py` now contains **25 test methods**. Eight Gate 190 tests construct typed source objects and immutable FrozenSnapshots without calling Generator, Sealer, Analyzer, Evaluator or any producer:
 - positive exact RUN + R source-bundle reconciliation;
 - report RunManifest seed divergence;
 - repeated SeedAssignment stream divergence;
