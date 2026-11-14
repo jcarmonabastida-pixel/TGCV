@@ -171,3 +171,5 @@ Gate 185 refinement: FrozenReportSnapshot recomputes the historical report finge
 ### Gate 186 — capture source audit
 
 The exact Gate 181 legacy report fingerprint identifier is now used, and capture identity checks each outer-world bundle's scenario version and N against the design. Static audit found that nested report structures still lack complete exact field allowlists/cardinality checks; the projection preserves unknown fields but does not yet reject nested schema drift. Full report schema conformance remains conditional. Pure tests were not executed. See Gate 186.
+
+Gate 186 final source-shape correction: capture identity validates `scenario_versions` as the exact ordered object rows emitted by `_design_identity_projection()` (`scenario_id`, `scenario_version`), then reconciles bundle version/N. Not compiled or tested.
