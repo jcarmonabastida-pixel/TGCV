@@ -245,3 +245,9 @@ The current `CapturedBenchmark.report` is a mutable dict inside a frozen datacla
 Calibration manifest, Gate 159 reconciliation, GitHub source-execution provenance and technical-test evidence are separately supplied companion artifacts, bound to the same benchmark export identity. They are not evaluation-producer inputs and cannot be inferred from design declarations. See `C10_S_VCONT_CAPTURE_MATRIX_AND_EXTERNAL_EVIDENCE_COMPANION_CONTRACT_GATE_176_DRAFT_001.md`.
 
 **Next continuity gate:** Gate 177 — source/API implementation-readiness review of the bounded Gate 176 change set. No serializer implementation or scientific execution is authorized by this pointer.
+
+## 18. Gate 177 — capture/export readiness
+
+Gate 177 confirms the existing producer has the correct matrix capture boundary and preserves the current CapturedBenchmark report/bundle/index interface. However, the validator does not enforce canonical matrix row order, the report root cannot use the existing dataclass-only FrozenSnapshot API, and the report's canonical JCS encoding and capture identity derivation remain unspecified. Calibration and Gate 159 companion check schemas also need exact cardinality, denominator and applicability rules.
+
+Gate 178 is assigned to close these contract details before implementation. See `C10_S_VCONT_CAPTURE_EXPORT_IMPLEMENTABILITY_AUDIT_GATE_177_DRAFT_001.md`. No code or tests were changed/executed.
