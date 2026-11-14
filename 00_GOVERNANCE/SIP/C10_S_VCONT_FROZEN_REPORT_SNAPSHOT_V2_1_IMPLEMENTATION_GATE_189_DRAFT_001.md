@@ -85,3 +85,5 @@ The Gate 189 reconciliation helper was corrected to consume those actual source 
 
 This was a source-level correction based on reading the Evaluator construction and producer call path. It was not compiled or executed. The remaining test gap is material: no pure fixture currently exercises the full source-bundle reconciliation helper with real or typed test-double bundles. The 17 test methods exercise the isolated report projection and the mandatory-source guard, not successful/failed bundle reconciliation.
 
+A final source-shape hardening pass also validates `OuterWorldEvidenceBundle.world_seed` itself as an exact uint64 before comparing it with the RUN manifest and evaluation assignment. This remains source-inspected only; no execution status is implied.
+
