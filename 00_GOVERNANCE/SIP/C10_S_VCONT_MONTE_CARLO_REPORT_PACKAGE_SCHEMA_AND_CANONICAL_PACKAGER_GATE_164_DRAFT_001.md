@@ -260,3 +260,15 @@ The package builder must consume the Gate 166 benchmark envelope and RunEvidence
 Two deliberate data-minimization constraints apply: full potential-outcome arrays are not included by default; raw SealedEvidence rows are not included by default. The latter digest is independently recomputable only if its canonical source representation is retrievable. Otherwise it remains UNVERIFIABLE and blocks RECONCILED provenance.
 
 Gate 164 remains the target package format. Its implementation remains OPEN pending Gate 166 export implementation and Gate 159 reconciliation. No code or execution authorization is implied.
+
+## 15. Gate 173 — package readiness and canonicalization audit
+
+Gate 173 statically reconciled the Gate 164 v1.0.0 package contract with the source added by Gates 166–172. The typed source evidence now exists in the Gate 172 `CapturedBenchmark` envelope: exact per-run snapshots, complete RunManifest and SeedAssignment, matrix truth projection, inline SealedEvidence rows+manifest, AnalyzerResult, AnalysisContract, per-run EvaluationReport and one repeated aggregate report per scenario/M. The report-only insufficiency found at Gate 165 is therefore resolved at source-capture level, not by the aggregate report itself.
+
+The existing exact package path inventory remains reusable; no additional archive path is required. Clarify `runs/run_records.json` as a versioned envelope containing the ordered RunEvidenceRecords (13×M×(1+R)), OuterWorldEvidenceBundles (13×M), evidence index and declared cardinalities/join keys. The exact matrix used must be included in `design/scenario_estimand_matrix.json`; it must not be reconstructed from report output.
+
+**Canonicalization boundary:** Gate 170's FrozenSnapshot bytes use a custom tagged Python JSON serialization and their own snapshot SHA-256. The SealedEvidence legacy digest and evaluator report fingerprint also retain their existing serialization semantics. None is RFC 8785 JCS. A future package adapter must losslessly encode/decode the typed snapshots (including bytes, tuple/list distinctions, enums, nulls and numeric values), independently recompute legacy digests, and only then apply JCS to package JSON files. Package file hashes, manifest digest and final tar SHA-256 remain separate, non-circular package-layer digests.
+
+**Still blocking RECONCILED package status:** no calibration manifest is supplied to CapturedBenchmark; Gate 159 seed/config/source reconciliation is not implemented; GitHub-resolved producer workflow/run/artifact metadata and exact technical test execution evidence are external; no JCS adapter, tar writer, independent package verifier or attestation exists.
+
+Gate 173 verdict: source evidence availability substantially improved; package implementation remains OPEN/BLOCKED pending the Gate 174 serialization/verifier contract and explicit treatment of incomplete calibration/source provenance. No tests, CI, package generation, benchmark or scientific execution occurred. See `C10_S_VCONT_MONTE_CARLO_PACKAGE_READINESS_AND_CANONICALIZATION_AUDIT_GATE_173_DRAFT_001.md`.
