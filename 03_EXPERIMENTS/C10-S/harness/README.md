@@ -194,3 +194,11 @@ The new schema registers exactly:
 
 Gate 188 defines exact source equality, RUN join keys, uint64 wrapper grammar, fail-closed behavior, digest/fingerprint separation, compatibility and regression requirements. It is a contract decision only: no source implementation, tests, compilation, CI, producer, seed, calibration, package or scientific execution occurred. The manual pure-capture workflow remains undispatched. Full contract: `00_GOVERNANCE/SIP/C10_S_VCONT_FROZEN_REPORT_SNAPSHOT_V2_1_SUCCESSOR_CONTRACT_GATE_188_DRAFT_001.md`.
 
+### Gate 189 — FrozenReportSnapshot v2.1.0 capture implementation
+
+The capture boundary now projects the four Gate 188 nested RUN seed paths to typed uint64 wrappers and uses schema version 2.1.0. Production snapshot freezing requires immutable `OuterWorldEvidenceBundle` sources and reconciles the report RUN tuple against its evaluation SeedAssignment, ScenarioConfig, RunManifest and MatrixTruthProjection under the exact scenario/M/RUN logical key.
+
+The source semantics remain distinct: `TruthBundle.seed` reconciles to `ScenarioConfig.seed` and `MatrixTruthProjection.seed`; it is not equated to the explicit world seed. The three RunManifest stream seeds reconcile to their matching SeedAssignment and ScenarioConfig fields, with world seed also reconciled to the OuterWorldEvidenceBundle.
+
+The test module contains 17 methods, including typed-boundary and invalid-input cases. The isolated projection tests use a private fixture-only bypass; they do not test source-bundle reconciliation. No tests, imports, compilation, CI, producers, package generation, calibrations or scientific execution have been run. Package profile/verifier integration and source-bundle adversarial fixtures remain open. See `00_GOVERNANCE/SIP/C10_S_VCONT_FROZEN_REPORT_SNAPSHOT_V2_1_IMPLEMENTATION_GATE_189_DRAFT_001.md`.
+
