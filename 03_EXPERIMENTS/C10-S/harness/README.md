@@ -111,3 +111,9 @@ Calibration manifest, Gate 159 reconciliation and independently resolved GitHub 
 The exact 52-row matrix passed to the benchmark evaluator must be retained at capture time as immutable `MatrixCapture v1.0.0`; do not rebuild it from current code or infer it from the ledger. Its full-matrix JCS digest covers every declared field, including `tolerance_id`, while the legacy matrix fingerprint remains unchanged.
 
 `CapturedBenchmark.report` is a mutable dict despite the frozen wrapper. Package export must use an immutable report snapshot/digest captured at the same boundary. Calibration manifest, Gate 159 reconciliation, independent GitHub source execution and technical-test evidence are separate companion artifacts, not evaluation producer inputs. See Gate 176.
+
+## Gate 177 — capture/export readiness audit
+
+The existing producer has the correct capture boundary: it validates `specs`, retains the tuple and passes it to the evaluator. However, the current matrix validator does not enforce canonical row order, and the legacy fingerprint sorts rows and omits `tolerance_id`.
+
+The top-level report is a mutable dict; the existing FrozenSnapshot API accepts dataclasses only and uses Python JSON rather than JCS. A separate typed FrozenReportSnapshot, pinned JCS implementation/version and strict decoder are required. Preserve the current CapturedBenchmark report/bundle/index fields and shapes. Define a non-circular content-derived capture identity and exact companion schemas before implementation. See Gate 177. No tests or execution were performed.
