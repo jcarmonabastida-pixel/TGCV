@@ -135,7 +135,13 @@ def _recompute_capture_id(captured: Any, design_identity: dict[str, Any]) -> str
 
     assignment_rows = []
     bundle_digests = []
+    declared_versions = {row["scenario_id"]: row["scenario_version"]
+                         for row in design_identity["scenario_versions"]}
     for bundle in ordered:
+        if (bundle.scenario_id not in declared_versions
+                or bundle.scenario_version != declared_versions[bundle.scenario_id]
+                or bundle.n_units != design_identity["N"]):
+            raise PackageBuildError("outer-world bundle scenario/version/N differs from design identity")
         run_bundles = (bundle.run_bundle,) + tuple(bundle.repeated_bundles)
         if len(run_bundles) != 1 + design_identity["R"]:
             raise PackageBuildError("outer-world RUN/R bundle cardinality mismatch")
