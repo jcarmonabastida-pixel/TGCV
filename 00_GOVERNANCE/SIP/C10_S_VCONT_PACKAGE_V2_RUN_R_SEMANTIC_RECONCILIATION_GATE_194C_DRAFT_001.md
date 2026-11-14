@@ -172,3 +172,12 @@ The remaining G194-C adjacent work is not silently absorbed into this implementa
 - calibration/evaluation disjointness, Gate159 derivation, source/test provenance and authentication.
 
 No tests, compilation, CI, workflow, package construction, producers, seeds, calibration or scientific experiments were executed. No changes were made to `main`, frozen historical contracts or scientific components. PR #116 remains Draft.
+
+
+## 7. Fail-closed input handling addendum
+
+The verifier call site now preserves `PackageVerificationError` and converts unexpected malformed-input exceptions raised inside RUN/R reconciliation into a fail-closed `PackageVerificationError`. This does not broaden acceptance; it makes malformed semantic structures reject through the verifier's declared error boundary.
+
+Additional source commit: `551c82b4ffddc84af697f35a0141bd45536c01b3`.
+
+The verifier source was re-read after this change. A static text scan found no remaining temporary placeholder guards or empty-comprehension scaffolding in the inserted RUN/R section. This is not a syntax/compile check and does not substitute for G194-E review.
