@@ -205,6 +205,7 @@ class CaptureV2Tests(unittest.TestCase):
                 evaluation["run_id"] = f"run-{scenario_id}-{m}"
                 repeated = dict.fromkeys(repeated_fields)
                 repeated["world_id"] = f"world-{scenario_id}-{m}"
+                repeated["replicate_count"] = self.design.repeated_assignments
                 repeated["per_run_reports"] = [dict(evaluation) for _ in range(2)]
                 per_outer.append({
                     "outer_replicate_id": outer_id,
@@ -215,11 +216,12 @@ class CaptureV2Tests(unittest.TestCase):
             scenario_reports[scenario_id] = {
                 "scenario_id": scenario_id, "scenario_version": scenario_version,
                 "n_units": self.design.n_units, "outer_replicate_count": 2,
-                "coverage": dict.fromkeys((
-                    "required_pairs", "run_conditional_numeric", "g_assignment_numeric",
-                    "mechanism_marginal_numeric", "reference_regime_numeric",
-                    "reference_regime_identification_status",
-                ), 2),
+                "coverage": {
+                    "required_pairs": 4, "run_conditional_numeric": 2,
+                    "g_assignment_numeric": 2, "mechanism_marginal_numeric": 2,
+                    "reference_regime_numeric": 2,
+                    "reference_regime_identification_status": 2,
+                },
                 "run_conditional": {
                     "bias": metric, "mae": metric, "rmse": rmse_metric,
                     "recovery_rate": binary, "identification_rate": binary,
