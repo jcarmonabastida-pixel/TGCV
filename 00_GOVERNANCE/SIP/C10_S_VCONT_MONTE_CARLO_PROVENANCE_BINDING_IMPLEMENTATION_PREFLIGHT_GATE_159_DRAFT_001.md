@@ -379,7 +379,7 @@ Digest input is the complete CalibrationBankManifest v2.0.0 JSON object with onl
 
 ### 12.3 Gate159ReconciliationArtifact v1.0.0 nested projection
 
-Gate 178 §7 already freezes the root/check catalogue and derived-status semantics. The following nested constraints make that schema machine-verifiable without changing its root field inventory:
+Gate 178 §7 already freezes the root/check catalogue and derived-status semantics. The following nested constraints make that schema machine-verifiable without changing its root field inventory: `design_identity` is required to equal the independently validated `design/scenario_estimand_matrix.json` MatrixCapture `design_identity` object exactly, binding the reconciliation artifact to the same declared scenario/version/N/M/R and legacy matrix identity.
 
 - `verifier_identity` is exactly `{name, version, source_commit, implementation_digest}`; name/version are nonempty strings, source_commit is a full 40-character lowercase Git commit SHA, and implementation_digest is a lowercase 64-character SHA-256 hex digest.
 - `input_artifacts` is the exact ordered registry of ten package paths: `design/analysis_contracts.json`, `design/effective_scenario_configs.json`, `design/scenario_estimand_matrix.json`, `provenance/configuration_fingerprints.json`, `provenance/source_execution.json`, `runs/run_records.json`, `runs/temporal_manifest.json`, `seeds/calibration_seed_manifest.json`, `seeds/evaluation_seed_assignments.json`, `validation/test_evidence.json`. Each row is exactly `{artifact_id, sha256}`, ordered lexically by artifact_id; every digest is recomputed from the exact packaged bytes. Each check's `input_digests` must equal its frozen check-specific subset of this registry.
