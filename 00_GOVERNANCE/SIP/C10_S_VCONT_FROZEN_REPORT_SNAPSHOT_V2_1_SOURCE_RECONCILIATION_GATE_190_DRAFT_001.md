@@ -83,3 +83,10 @@ The helper now covers the source equality and logical joins for RUN and R bundle
 ### Next operation — Gate 191
 
 Perform a read-only source audit of the complete helper and fixtures, correct any source-level defects found, then define the bounded implementation contract for the v2 package writer and independent verifier with an explicit `report_snapshot.schema_version = 2.1.0` dependency. Do not run tests or the workflow without separate execution authorization.
+
+## 7. Final Evaluator-row join refinement
+
+A further read of `Evaluator.evaluate_monte_carlo` established that the per-outer row also carries `outer_replicate_id`, `run_report` and `repeated_report`, while the scenario report carries `scenario_id` and `scenario_version`. Gate 190 now checks those labels against the ordered scenario/M key and checks both summary report objects against the exact captured RUN and repeated EvaluationReport sources. This prevents a correctly seeded RUN tuple from being attached to a mislabeled M row or a divergent evaluation summary.
+
+The typed pure fixture was extended to include those exact Evaluator fields. This is a static source-level strengthening; the test suite remains unexecuted.
+
