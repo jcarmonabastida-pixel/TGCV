@@ -581,8 +581,9 @@ def produce_and_capture_benchmark(
     if not isinstance(design, MonteCarloBenchmarkDesign):
         raise ContractError("benchmark producer requires a frozen MonteCarloBenchmarkDesign")
     versions = dict(design.scenario_versions)
-    if tuple(versions) != SCENARIO_IDS or set(versions) != set(SCENARIO_IDS):
-        raise ContractError("design scenario order/set must match the 13 registered scenario IDs")
+    if (len(versions) != len(design.scenario_versions)
+            or set(versions) != set(SCENARIO_IDS)):
+        raise ContractError("design must declare exactly the 13 registered scenario IDs")
     if design.outer_replicates < 2 or design.repeated_assignments < 1:
         raise ContractError("benchmark producer requires M>=2 and R>=1")
     if tolerance < 0:
