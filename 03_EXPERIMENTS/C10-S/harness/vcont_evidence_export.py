@@ -623,6 +623,197 @@ def _legacy_report_fingerprint(manifest_payload: Any) -> str:
     return _sha256_hex(payload)
 
 
+_TEMPORAL_FIELDS = {
+    "scenario_id", "scenario_version", "N", "outer_replicate_id",
+    "assignment_role", "assignment_index", "run_id", "world_id",
+    "world_seed", "z_assignment_seed", "g_assignment_seed",
+}
+_PAIR_LEDGER_FIELDS = {
+    "key", "evaluation_class", "truth_status", "expected_M", "observed_M",
+    "numeric_denominator", "status_denominator", "missing_contribution_count",
+    "truth_missing_count", "invalid_output_count", "abstention_count",
+    "identification_correct_count", "abstention_correct_count",
+    "identification_rates", "run_identification_rates", "metrics",
+    "precision_status", "contributions",
+}
+_CONTRIBUTION_FIELDS = {
+    "outer_replicate_id", "world_id", "world_seed", "run_id", "temporal_source",
+    "evaluation_class", "run_status", "identification_status",
+    "identification_expected", "abstention_expected", "adjudicated_status",
+    "identification_correct", "abstention_correct", "abstained",
+    "abstention_reasons", "estimate", "truth", "signed_error",
+    "absolute_error", "squared_error", "contribution_state",
+}
+_BINARY_SUMMARY_FIELDS = {
+    "n", "successes", "rate", "mcse", "wilson_95_low", "wilson_95_high",
+}
+_MC_SUMMARY_FIELDS = {
+    "outer_replicates", "metric_mean", "metric_sd", "mcse", "target_mcse",
+    "precision_status",
+}
+_RMSE_SUMMARY_FIELDS = {
+    "outer_replicates", "rmse", "mean_squared_error", "mcse_rmse_delta",
+    "target_mcse", "precision_status",
+}
+_SCENARIO_REPORT_FIELDS = {
+    "scenario_id", "scenario_version", "n_units", "outer_replicate_count",
+    "coverage", "run_conditional", "g_assignment_z0", "mechanism_marginal",
+    "reference_regime", "per_outer_replicate",
+}
+_SCENARIO_METRIC_BLOCKS = {
+    "run_conditional": {"bias", "mae", "rmse", "recovery_rate", "identification_rate"},
+    "g_assignment_z0": {"bias", "mae", "rmse", "recovery_rate", "identification_rate"},
+    "mechanism_marginal": {"bias", "mae", "rmse", "recovery_rate"},
+    "reference_regime": {"bias", "mae", "rmse", "identification_rate", "recovery_rate"},
+}
+_SCENARIO_COVERAGE_FIELDS = {
+    "required_pairs", "run_conditional_numeric", "g_assignment_numeric",
+    "mechanism_marginal_numeric", "reference_regime_numeric",
+    "reference_regime_identification_status",
+}
+_PER_OUTER_FIELDS = {"outer_replicate_id", "run", "run_report", "repeated_report"}
+_EVALUATION_REPORT_FIELDS = {
+    "run_id", "package_abs_error", "g_assignment_abs_error",
+    "package_recovered", "g_assignment_recovered", "expected_abstention_respected",
+    "notes", "reference_regime_status_correct", "reference_regime_estimate_present",
+}
+_REPEATED_REPORT_FIELDS = {
+    "world_id", "replicate_count", "mean_run_estimate", "mechanism_truth",
+    "marginal_abs_error", "marginal_recovered", "per_run_reports",
+    "reference_truth", "reference_estimate_mean", "reference_abs_error",
+    "reference_recovered", "reference_identification_status",
+    "mechanism_marginal_estimand_id", "mechanism_marginal_estimand_version",
+    "reference_regime_estimand_id", "reference_regime_estimand_version",
+}
+_TRUTH_BUNDLE_FIELDS = {
+    "run_id", "potential_v", "potential_interval_truth", "potential_enabled_truth",
+    "potential_profile_truth", "potential_delta_t_acc", "itt_z_truth",
+    "itt_g_z0_truth", "theta_a_truth", "seed", "itt_z_run_truth",
+    "itt_z_mechanism_truth", "itt_z_reference_truth",
+    "transportability_invariant_truth", "transportability_scope_truth",
+    "g_reference_regime_id", "g_reference_regime_version",
+    "g_assignment_mechanism_hash", "z_assignment_mechanism_hash",
+    "outer_replicate_id", "assignment_role", "assignment_index",
+}
+_ANALYZER_RESULT_FIELDS = {
+    "run_id", "estimand_id", "package_status", "g_assignment_status",
+    "package_itt", "g_assignment_effect", "first_stage_delta_t_acc",
+    "package_se", "g_assignment_se", "abstention_reasons", "input_sha256",
+    "output_sha256", "target_regime_id", "target_regime_version", "outcome_id",
+    "outcome_version", "reference_regime_status", "reference_regime_id",
+    "reference_regime_version", "g_assignment_mechanism_hash",
+    "z_assignment_mechanism_hash", "transportability_id",
+    "transportability_version", "transportability_scope",
+    "transportability_evidence_status", "estimand_version",
+    "g_assignment_mechanism_id", "g_assignment_mechanism_version",
+    "z_assignment_mechanism_id", "z_assignment_mechanism_version",
+    "provenance_sha256", "transportability_outcome_id", "transportability_basis",
+    "reference_regime_itt", "run_conditional_estimand_id",
+    "run_conditional_estimand_version", "reference_regime_estimand_id",
+    "reference_regime_estimand_version", "g_assignment_estimand_id",
+    "g_assignment_estimand_version", "outer_replicate_id",
+    "assignment_role", "assignment_index",
+}
+_ANALYSIS_CONTRACT_FIELDS = {
+    "estimand_id", "estimand_version", "randomized_z", "randomized_g",
+    "positivity", "no_interference", "measurement_identified",
+    "version_consistency", "focal_direct_path_absent", "common_nonfocal_regime",
+    "target_regime_id", "target_regime_version", "outcome_id", "outcome_version",
+    "z_effect_invariant_across_g", "transportability_id",
+    "transportability_version", "transportability_scope",
+    "transportability_evidence_status", "g_assignment_mechanism_hash",
+    "z_assignment_mechanism_hash", "g_assignment_mechanism_id",
+    "g_assignment_mechanism_version", "z_assignment_mechanism_id",
+    "z_assignment_mechanism_version", "reference_regime_id",
+    "reference_regime_version", "transportability_outcome_id",
+    "transportability_basis", "run_conditional_estimand_id",
+    "run_conditional_estimand_version", "mechanism_marginal_estimand_id",
+    "mechanism_marginal_estimand_version", "reference_regime_estimand_id",
+    "reference_regime_estimand_version", "g_assignment_estimand_id",
+    "g_assignment_estimand_version",
+}
+_RUN_MANIFEST_FIELDS = {
+    "run_id", "scenario_id", "version", "n_units", "n_intervals",
+    "window_start", "window_end", "interval_width", "generator_version",
+    "world_id", "world_version", "replicate_id", "g_assignment_mechanism_id",
+    "g_assignment_mechanism_version", "g_assignment_mechanism_hash",
+    "z_assignment_mechanism_id", "z_assignment_mechanism_version",
+    "z_assignment_mechanism_hash", "g_reference_regime_id",
+    "g_reference_regime_version", "z_assignment_vector_hash",
+    "g_assignment_vector_hash", "g_assignment_probability_by_stratum",
+    "world_seed", "z_assignment_seed", "g_assignment_seed",
+    "outer_replicate_id", "assignment_role", "assignment_index",
+}
+
+
+def _require_exact_object(value: Any, expected: set[str], label: str) -> dict[str, Any]:
+    if not isinstance(value, dict) or set(value) != expected:
+        observed = set(value) if isinstance(value, dict) else type(value).__name__
+        raise ContractError(f"{label} schema mismatch: expected exact registered fields; observed {observed}")
+    return value
+
+
+def _validate_summary(value: Any, allowed: tuple[set[str], ...], label: str) -> None:
+    if value is None:
+        return
+    if not isinstance(value, dict) or set(value) not in allowed:
+        raise ContractError(f"{label} summary schema mismatch")
+
+
+def _validate_evaluation_report(value: Any, label: str) -> None:
+    _require_exact_object(value, _EVALUATION_REPORT_FIELDS, label)
+
+
+def _validate_scenario_report(value: Any, scenario_id: str, scenario_version: str,
+                              n_units: int, outer_replicates: int) -> None:
+    report = _require_exact_object(value, _SCENARIO_REPORT_FIELDS, f"scenario_reports.{scenario_id}")
+    if (report["scenario_id"] != scenario_id or report["scenario_version"] != scenario_version
+            or report["n_units"] != n_units or report["outer_replicate_count"] != outer_replicates):
+        raise ContractError(f"scenario report identity differs from declared design: {scenario_id}")
+    _require_exact_object(report["coverage"], _SCENARIO_COVERAGE_FIELDS,
+                          f"scenario_reports.{scenario_id}.coverage")
+    for block_name, fields_expected in _SCENARIO_METRIC_BLOCKS.items():
+        block = _require_exact_object(report[block_name], fields_expected,
+                                      f"scenario_reports.{scenario_id}.{block_name}")
+        for metric in ("bias", "mae"):
+            if metric in block:
+                _validate_summary(block[metric], (_MC_SUMMARY_FIELDS,), f"{block_name}.{metric}")
+        if "rmse" in block:
+            _validate_summary(block["rmse"], (_RMSE_SUMMARY_FIELDS,), f"{block_name}.rmse")
+        for metric in ("recovery_rate", "identification_rate"):
+            if metric in block:
+                _validate_summary(block[metric], (_BINARY_SUMMARY_FIELDS,),
+                                  f"{block_name}.{metric}")
+    per_outer = report["per_outer_replicate"]
+    if not isinstance(per_outer, list) or len(per_outer) != outer_replicates:
+        raise ContractError(f"scenario report {scenario_id} must retain exactly M outer reports")
+    expected_outer_ids = [f"outer-{m:06d}" for m in range(outer_replicates)]
+    for m, item in enumerate(per_outer):
+        row = _require_exact_object(item, _PER_OUTER_FIELDS, f"{scenario_id}.per_outer_replicate[{m}]")
+        if row["outer_replicate_id"] != expected_outer_ids[m]:
+            raise ContractError(f"scenario report {scenario_id} outer rows are not in canonical M order")
+        run = row["run"]
+        if not isinstance(run, list) or len(run) != 4:
+            raise ContractError(f"{scenario_id}.per_outer_replicate[{m}].run must contain four source objects")
+        for value, fields_expected, label in zip(
+            run,
+            (_TRUTH_BUNDLE_FIELDS, _ANALYZER_RESULT_FIELDS,
+             _ANALYSIS_CONTRACT_FIELDS, _RUN_MANIFEST_FIELDS),
+            ("TruthBundle", "AnalyzerResult", "AnalysisContract", "RunManifest"),
+        ):
+            _require_exact_object(value, fields_expected, f"{scenario_id}.per_outer[{m}].{label}")
+        _validate_evaluation_report(row["run_report"], f"{scenario_id}.per_outer[{m}].run_report")
+        repeated = _require_exact_object(
+            row["repeated_report"], _REPEATED_REPORT_FIELDS,
+            f"{scenario_id}.per_outer[{m}].repeated_report",
+        )
+        per_run = repeated["per_run_reports"]
+        if not isinstance(per_run, list) or len(per_run) < 1:
+            raise ContractError(f"{scenario_id}.per_outer[{m}] repeated report requires per-run reports")
+        for index, item_report in enumerate(per_run):
+            _validate_evaluation_report(item_report, f"{scenario_id}.per_outer[{m}].per_run_reports[{index}]")
+
+
 def _report_v2_projection(report: dict[str, Any]) -> dict[str, Any]:
     expected = {
         "design", "temporal_manifest", "pair_ledger", "manifest",
@@ -634,70 +825,143 @@ def _report_v2_projection(report: dict[str, Any]) -> dict[str, Any]:
     if report.get("report_fingerprint") != recomputed_legacy_fingerprint:
         raise ContractError("legacy report_fingerprint does not match the frozen source algorithm")
     projected = _jcs_safe_source(report)
-    expected_design_fields = {
+    design = _require_exact_object(projected["design"], {
         "scenario_versions", "n_units", "outer_replicates", "repeated_assignments",
         "matrix_fingerprint", "metric_targets", "seed_bank_label",
         "seed_bank_fingerprint", "executable_commit", "configuration_fingerprint",
-    }
-    if not isinstance(projected["design"], dict) or set(projected["design"]) != expected_design_fields:
-        raise ContractError("Evaluator design projection differs from the declared report schema")
+    }, "Evaluator design")
+    n_units, outer_replicates, repeated_assignments = (
+        design["n_units"], design["outer_replicates"], design["repeated_assignments"]
+    )
+    for name, value, minimum in (
+        ("n_units", n_units, 1), ("outer_replicates", outer_replicates, 2),
+        ("repeated_assignments", repeated_assignments, 1),
+    ):
+        if isinstance(value, bool) or not isinstance(value, int) or value < minimum:
+            raise ContractError(f"Evaluator design {name} is outside its integer domain")
+    scenario_versions = design["scenario_versions"]
+    if (not isinstance(scenario_versions, list) or len(scenario_versions) != len(SCENARIO_IDS)
+            or any(not isinstance(row, list) or len(row) != 2
+                   or not all(isinstance(part, str) and part for part in row)
+                   for row in scenario_versions)
+            or tuple(row[0] for row in scenario_versions) != tuple(SCENARIO_IDS)):
+        raise ContractError("Evaluator design scenario_versions differ from authoritative scenario order")
+    versions = {row[0]: row[1] for row in scenario_versions}
+    if not isinstance(design["metric_targets"], list):
+        raise ContractError("Evaluator design metric_targets must be an array")
     if not isinstance(projected["report_fingerprint"], str) or len(projected["report_fingerprint"]) != 64:
         raise ContractError("legacy report_fingerprint must be a 64-character digest")
-    if not isinstance(projected["manifest"], dict):
-        raise ContractError("legacy report manifest must be an object")
 
-    def wrap_temporal(rows):
+    def wrap_temporal(rows, label):
         if not isinstance(rows, list):
-            raise ContractError("temporal manifest must be an array")
+            raise ContractError(f"{label} must be an array")
+        expected_count = len(SCENARIO_IDS) * outer_replicates * (1 + repeated_assignments)
+        if len(rows) != expected_count:
+            raise ContractError(f"{label} cardinality differs from 13 x M x (1+R)")
         result = []
-        for row in rows:
-            if not isinstance(row, dict):
-                raise ContractError("temporal manifest rows must be objects")
-            item = dict(row)
-            for field in ("world_seed", "z_assignment_seed", "g_assignment_seed"):
-                if field not in item:
-                    raise ContractError(f"temporal manifest missing registered uint64 field: {field}")
-                item[field] = _uint64_wire(item[field])
-            result.append(item)
+        expected_index = 0
+        for scenario_id in SCENARIO_IDS:
+            for m in range(outer_replicates):
+                expected_roles = [("RUN", -1)] + [
+                    ("REPEATED_ASSIGNMENT", r) for r in range(repeated_assignments)
+                ]
+                for role, assignment_index in expected_roles:
+                    row = _require_exact_object(rows[expected_index], _TEMPORAL_FIELDS,
+                                                f"{label}[{expected_index}]")
+                    if (row["scenario_id"] != scenario_id
+                            or row["scenario_version"] != versions[scenario_id]
+                            or row["N"] != n_units
+                            or row["outer_replicate_id"] != f"outer-{m:06d}"
+                            or row["assignment_role"] != role
+                            or row["assignment_index"] != assignment_index):
+                        raise ContractError(f"{label} is not in canonical scenario/M/R order")
+                    item = dict(row)
+                    for field in ("world_seed", "z_assignment_seed", "g_assignment_seed"):
+                        item[field] = _uint64_wire(item[field])
+                    result.append(item)
+                    expected_index += 1
         return result
 
-    def wrap_pair_ledger(rows):
-        if not isinstance(rows, list):
-            raise ContractError("pair ledger must be an array")
+    def wrap_pair_ledger(rows, label):
+        if not isinstance(rows, list) or len(rows) != 52:
+            raise ContractError(f"{label} must contain exactly 52 ordered rows")
+        expected_pairs = tuple(
+            (scenario_id, estimand_id)
+            for scenario_id in SCENARIO_IDS
+            for estimand_id, *_ in ESTIMAND_SPECS
+        )
         result = []
-        for row in rows:
-            if not isinstance(row, dict) or not isinstance(row.get("contributions"), list):
-                raise ContractError("pair ledger row/contributions schema invalid")
-            item = dict(row)
-            contributions = []
-            for contribution in item["contributions"]:
-                if not isinstance(contribution, dict) or "world_seed" not in contribution:
-                    raise ContractError("pair-ledger contribution missing registered world_seed")
-                value = dict(contribution)
+        for index, row in enumerate(rows):
+            item = _require_exact_object(row, _PAIR_LEDGER_FIELDS, f"{label}[{index}]")
+            key = item["key"]
+            if (not isinstance(key, list) or len(key) != 5
+                    or tuple(key[:1] + key[2:3]) != expected_pairs[index]
+                    or key[4] != "MONTE_CARLO"):
+                raise ContractError(f"{label} pair key/order differs from the authoritative 52-pair matrix")
+            if item["expected_M"] != outer_replicates or item["observed_M"] != outer_replicates:
+                raise ContractError(f"{label}[{index}] M denominator differs from design")
+            if item["status_denominator"] != outer_replicates:
+                raise ContractError(f"{label}[{index}] status denominator differs from design")
+            if item["numeric_denominator"] < 0 or item["numeric_denominator"] > outer_replicates:
+                raise ContractError(f"{label}[{index}] numeric denominator outside 0..M")
+            if not isinstance(item["contributions"], list) or len(item["contributions"]) != outer_replicates:
+                raise ContractError(f"{label}[{index}] must retain exactly one contribution per M")
+            for m, contribution in enumerate(item["contributions"]):
+                value = _require_exact_object(contribution, _CONTRIBUTION_FIELDS,
+                                              f"{label}[{index}].contributions[{m}]")
+                if value["outer_replicate_id"] != f"outer-{m:06d}":
+                    raise ContractError(f"{label}[{index}] contributions are not in canonical M order")
                 value["world_seed"] = _uint64_wire(value["world_seed"])
-                contributions.append(value)
-            item["contributions"] = contributions
+            for rate_name in ("identification_rates", "run_identification_rates"):
+                rates = _require_exact_object(item[rate_name], (
+                    {"identified", "not_identified", "indeterminate", "abstained"}
+                    if rate_name == "identification_rates"
+                    else {"identified", "not_identified", "indeterminate"}
+                ), f"{label}[{index}].{rate_name}")
+                for rate_key, rate in rates.items():
+                    _validate_summary(rate, (_BINARY_SUMMARY_FIELDS,), f"{rate_name}.{rate_key}")
+            metrics = _require_exact_object(item["metrics"], {"bias", "mae", "rmse"},
+                                            f"{label}[{index}].metrics")
+            _validate_summary(metrics["bias"], (_MC_SUMMARY_FIELDS,), "pair metrics.bias")
+            _validate_summary(metrics["mae"], (_MC_SUMMARY_FIELDS,), "pair metrics.mae")
+            _validate_summary(metrics["rmse"], (_RMSE_SUMMARY_FIELDS,), "pair metrics.rmse")
             result.append(item)
         return result
 
-    projected["temporal_manifest"] = wrap_temporal(projected["temporal_manifest"])
-    projected["pair_ledger"] = wrap_pair_ledger(projected["pair_ledger"])
-    manifest = projected["manifest"]
-    if set(manifest) != {
+    projected["temporal_manifest"] = wrap_temporal(projected["temporal_manifest"], "temporal_manifest")
+    projected["pair_ledger"] = wrap_pair_ledger(projected["pair_ledger"], "pair_ledger")
+    manifest = _require_exact_object(projected["manifest"], {
         "scenario_versions", "N", "M", "R", "matrix_fingerprint",
         "seed_bank_label", "seed_bank_fingerprint", "executable_commit",
         "configuration_fingerprint", "metric_targets", "temporal_manifest",
         "pair_ledger",
-    }:
-        raise ContractError("legacy manifest payload schema drift requires a report payload version increment")
-    manifest["temporal_manifest"] = wrap_temporal(manifest["temporal_manifest"])
-    manifest["pair_ledger"] = wrap_pair_ledger(manifest["pair_ledger"])
+    }, "legacy manifest")
+    if (manifest["N"] != n_units or manifest["M"] != outer_replicates
+            or manifest["R"] != repeated_assignments
+            or manifest["scenario_versions"] != scenario_versions):
+        raise ContractError("legacy manifest design fields differ from report design")
+    manifest["temporal_manifest"] = wrap_temporal(manifest["temporal_manifest"], "manifest.temporal_manifest")
+    manifest["pair_ledger"] = wrap_pair_ledger(manifest["pair_ledger"], "manifest.pair_ledger")
     if projected["temporal_manifest"] != manifest["temporal_manifest"]:
         raise ContractError("root and nested temporal manifests differ before uint64 projection")
     if projected["pair_ledger"] != manifest["pair_ledger"]:
         raise ContractError("root and nested pair ledgers differ before uint64 projection")
-    return projected
 
+    scenario_reports = _require_exact_object(
+        projected["scenario_reports"], set(SCENARIO_IDS), "scenario_reports"
+    )
+    for scenario_id in SCENARIO_IDS:
+        _validate_scenario_report(
+            scenario_reports[scenario_id], scenario_id, versions[scenario_id],
+            n_units, outer_replicates,
+        )
+    coverage = _require_exact_object(
+        projected["coverage"], {"required_pairs", "observed_pairs", "scenario_count"},
+        "report coverage",
+    )
+    if coverage != {"required_pairs": 52, "observed_pairs": 52, "scenario_count": 13}:
+        raise ContractError("report coverage does not confirm all 52 pairs and 13 scenarios")
+    return projected
 
 def _freeze_nested(value: Any) -> Any:
     if isinstance(value, dict):
