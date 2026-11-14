@@ -248,13 +248,11 @@ class RunEvidenceBundle:
         }
         if any(provenance.get(k) != v for k, v in expected_provenance.items()):
             raise ContractError("SealedEvidence provenance does not match RunManifest/run identity")
-        if sealed_evidence.manifest.get("provenance_sha256") != _snapshot_digest(provenance):
-            # Sealer's legacy JSON digest is distinct from the typed snapshot digest.
-            legacy_provenance = hashlib.sha256(json.dumps(
-                provenance, sort_keys=True, separators=(",", ":"), allow_nan=False
-            ).encode("utf-8")).hexdigest()
-            if sealed_evidence.manifest.get("provenance_sha256") != legacy_provenance:
-                raise ContractError("SealedEvidence provenance digest does not recompute")
+        legacy_provenance = hashlib.sha256(json.dumps(
+            provenance, sort_keys=True, separators=(",", ":"), allow_nan=False
+        ).encode("utf-8")).hexdigest()
+        if sealed_evidence.manifest.get("provenance_sha256") != legacy_provenance:
+            raise ContractError("SealedEvidence provenance digest does not recompute")
         legacy_digest = _legacy_sealed_digest(sealed_evidence)
         if legacy_digest != sealed_evidence.sha256 or analyzer_result.input_sha256 != legacy_digest:
             raise ContractError("SealedEvidence digest does not match retained rows or AnalyzerResult input")
