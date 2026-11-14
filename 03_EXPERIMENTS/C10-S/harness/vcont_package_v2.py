@@ -473,6 +473,52 @@ def _decode_assignment_uint64_wire(value: Any) -> int:
     return number
 
 
+def _recompute_seed_derivation(assignments: Mapping[str, Any], rows: Any) -> None:
+    """Recompute every evaluation seed from the frozen Gate 181 descriptor."""
+    descriptor = assignments.get("seed_derivation")
+    required = {"algorithm", "hash", "output_rule", "namespace"}
+    if (not isinstance(descriptor, Mapping) or set(descriptor) != required
+            or descriptor.get("algorithm") != "TGCV-C10S-VCONT-SEED-v3"
+            or descriptor.get("hash") != "SHA-256"
+            or descriptor.get("output_rule") != "first_8_digest_bytes_unsigned_big_endian"
+            or not isinstance(descriptor.get("namespace"), str)
+            or not descriptor["namespace"].strip()):
+        raise PackageBuildError("evaluation seed_derivation descriptor is invalid")
+    if not isinstance(rows, list) or not rows:
+        raise PackageBuildError("seed derivation requires nonempty evaluation assignment rows")
+    namespace = descriptor["namespace"]
+
+    def derive(row: Mapping[str, Any], stream: str, role: str, replicate: int) -> int:
+        payload = (
+            f"TGCV-C10S-VCONT-SEED-v3|{namespace}|{row['bank']}|{row['scenario_id']}|"
+            f"{row['scenario_version']}|{row['n_units']}|{row['outer_replicate_id']}|"
+            f"{role}|{replicate}|{stream}"
+        )
+        return int.from_bytes(hashlib.sha256(payload.encode("utf-8")).digest()[:8], "big")
+
+    for index, row in enumerate(rows):
+        if not isinstance(row, Mapping):
+            raise PackageBuildError("seed derivation assignment row must be an object")
+        role, replicate = row.get("assignment_role"), row.get("replicate")
+        if role not in ("RUN", "REPEATED_ASSIGNMENT"):
+            raise PackageBuildError("seed derivation assignment role is invalid")
+        if isinstance(replicate, bool) or not isinstance(replicate, int):
+            raise PackageBuildError("seed derivation replicate must be an exact integer")
+        if (role == "RUN" and replicate != -1) or (role == "REPEATED_ASSIGNMENT" and replicate < 0):
+            raise PackageBuildError("seed derivation role/replicate identity is invalid")
+        expected = {
+            "world_seed": derive(row, "world", "RUN", -1),
+            "z_assignment_seed": derive(row, "z", role, replicate),
+            "g_assignment_seed": derive(row, "g", role, replicate),
+        }
+        for field, value in expected.items():
+            actual = _decode_assignment_uint64_wire(row.get(field))
+            if actual != value:
+                raise PackageBuildError(
+                    f"evaluation seed derivation mismatch at row {index}: {field}"
+                )
+
+
 def _legacy_seed_bank_fingerprint_from_wire_rows(rows: Any, design: Any) -> str:
     required = {
         "bank", "scenario_id", "scenario_version", "n_units", "replicate",
@@ -549,6 +595,7 @@ def _assemble_configuration_fingerprints_v1(
         raise PackageBuildError("AnalysisContract companion schema/version/export identity mismatch")
     if design.configuration_fingerprint != benchmark_design.get("configuration_fingerprint"):
         raise PackageBuildError("source design object and benchmark_design companion declarations differ")
+    _recompute_seed_derivation(assignments, assignment_rows)
     legacy_seed_fingerprint = _legacy_seed_bank_fingerprint_from_wire_rows(assignment_rows, design)
     if (legacy_seed_fingerprint != design.seed_bank_fingerprint
             or legacy_seed_fingerprint != benchmark_design.get("seed_bank_fingerprint")
