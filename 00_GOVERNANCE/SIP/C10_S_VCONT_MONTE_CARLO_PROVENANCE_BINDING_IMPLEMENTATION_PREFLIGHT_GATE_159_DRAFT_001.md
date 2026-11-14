@@ -359,3 +359,43 @@ The Gate 178 design description was therefore not absent: it specified the dimen
 No tests, compilation, package construction, calibration, seed generation, producer, benchmark or scientific execution was performed in these increments. The eight tests are AUTHORED / NOT EXECUTED.
 
 **Increment 1 disposition:** calibration design cardinality/order, per-row seed derivation, source-typed legacy fingerprint, manifest JCS digest, RUN/R invariants and three-stream cross-bank disjointness are IMPLEMENTED IN SOURCE; tests AUTHORED / NOT EXECUTED. Gate159 artifact derivation and external provenance remain OPEN. Gate 159 overall remains CONDITIONAL / OPEN.
+## 12. Gate 159 nested companion wire crosswalk — calibration and reconciliation v1 (2026-11-14)
+
+### 12.1 Calibration design projection v2.0.0
+
+The exact nested `design` object in CalibrationBankManifest v2.0.0 is frozen for this package implementation as:
+
+- `scenario_versions`: JSON object mapping scenario ID to nonempty version string. Keys must form an ordered subsequence of `AUTHORITATIVE_SCENARIO_IDS`; no unknown IDs, duplicates or noncanonical order.
+- `n_grid`: nonempty ascending array of unique exact integers, each N >= 16 and divisible by four.
+- `outer_replicates`: positive exact integer M.
+- `repeated_assignments`: positive exact integer R.
+- `calibration_purpose`: nonempty declared string. It identifies the purpose/scope but does not itself authorize calibration execution or imply that a numeric target has been accepted.
+- `metric_targets`: nonempty array of exact objects `{scenario_id, scenario_version, estimand_id, estimand_version, metric, target_mcse}`. The scenario/version must be declared by `scenario_versions`; all identifiers are nonempty strings; `target_mcse` is finite and >0; the five-part metric identity is unique. The field mapping follows Gate 156/157's pair-keyed metric target contract and `MonteCarloBenchmarkDesign.metric_targets` source tuple.
+
+Design-derived row count is `len(scenario_versions) × len(n_grid) × outer_replicates × (1 + repeated_assignments)`. Canonical rows are scenario order, ascending N, ascending M (`outer-000000`…), RUN (`replicate=-1`), then R (`0…R-1`). This is the wire-level realization of Gate 178 §6.3 and `build_seed_bank()`; it does not select or approve numeric N/M/R or MCSE targets.
+
+### 12.2 Calibration manifest digest
+
+Algorithm identifier: `TGCV-C10S-VCONT-CALIBRATION-MANIFEST-JCS-SHA256-1`.
+
+Digest input is the complete CalibrationBankManifest v2.0.0 JSON object with only the `manifest_sha256` member removed. All other root fields, the complete exact design, row order, typed uint64 wrappers, legacy fingerprint and `execution_evidence_status` are included. Canonicalization is RFC 8785 JCS UTF-8; digest is lowercase SHA-256 hex. The digest is not self-included. This operationalizes Gate 178's versioned manifest JCS digest while preserving the Gate 179/181 typed uint64 projection.
+
+### 12.3 Gate159ReconciliationArtifact v1.0.0 nested projection
+
+Gate 178 §7 already freezes the root/check catalogue and derived-status semantics. The following nested constraints make that schema machine-verifiable without changing its root field inventory:
+
+- `verifier_identity` is exactly `{name, version, source_commit, implementation_digest}`; name/version are nonempty strings, source_commit is a full 40-character lowercase Git commit SHA, and implementation_digest is a lowercase 64-character SHA-256 hex digest.
+- `input_artifacts` is an ordered array of exact `{artifact_id, sha256}` objects; IDs are nonempty and unique, digests are lowercase SHA-256 hex, and rows are ordered lexically by artifact_id.
+- `required_check_ids` is exactly the eight Gate 178 §7.3 required IDs, in their frozen order. `checks` contains those eight rows in the same order followed by exactly one conditional `CALIBRATION_ASSIGNMENT_EXECUTION_LINK` row.
+- Every check row has the exact Gate 178 §7.2 field allowlist. `applicability` is REQUIRED for the eight mandatory rows and CONDITIONAL for the final calibration execution row. `scope`, `check_version`, `join_key_profile` and `reason` are nonempty strings.
+- `input_digests` is a JSON object mapping nonempty artifact identifiers to lowercase SHA-256 hex digests. `mismatches` is an ordered array of at most 100 exact `{key, field, expected_ref, observed_ref, reason}` objects; all members are nonempty strings and raw seed values/secrets are prohibited.
+- Counts are exact nonnegative integers (booleans rejected) or null under Gate 178 §7.2's availability rules. If observed_count, matched_count and mismatch_count are all integers, `matched_count + mismatch_count = observed_count`; mismatch_count equals the number of serialized mismatch records when that count is fully materialized. PASS requires zero mismatches and an empty mismatch list. FAIL requires at least one mismatch. NOT_APPLICABLE is valid only for the conditional check and requires an explicit seed-manifest-only scope reason.
+
+Gate159 `findings_digest` algorithm identifier: `TGCV-C10S-VCONT-GATE159-FINDINGS-JCS-SHA256-1`. Its input is the exact Gate159 root object with only `findings_digest` removed; `derived_status`, all ordered check rows, verifier identity, input artifact IDs/digests and design identity are included. Canonicalization is RFC 8785 JCS UTF-8; digest is lowercase SHA-256 hex. This is a non-circular integrity digest, not an attestation.
+
+Derived status is recomputed from the complete required and conditional check set. Any FAIL in a required check (or an applicable conditional check) yields REJECTED. Missing required rows or required UNAVAILABLE/UNVERIFIABLE rows yield NOT_RECONCILED. RECONCILED is allowed only when all eight required checks PASS and the conditional check PASSes or is validly NOT_APPLICABLE with a documented seed-manifest-only reason. The verifier must compare the declared `derived_status` and `findings_digest` with these independent recomputations.
+
+### 12.4 Independent evidence boundary
+
+The deterministic package verifier can establish the internal checks from package payloads only after their respective independent source validators have passed. It cannot manufacture SOURCE_EXECUTION_GITHUB_BINDING or TECHNICAL_TEST_RUN_BINDING from producer declarations. Until a separately resolved GitHub source/test evidence object is available, those checks must be UNAVAILABLE or UNVERIFIABLE; therefore the derived status cannot be RECONCILED. External Artifact Attestation remains outside this artifact and remains NOT_AUTHENTICATED until a trusted builder and signature verifier are implemented.
+
