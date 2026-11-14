@@ -274,3 +274,18 @@ Gate 186 corrected the legacy report fingerprint algorithm identifier to the exa
 Gate 187 implemented exact nested report field allowlists and cardinality checks from the actual Evaluator construction: temporal 13×M×(1+R), 52 ordered pair rows with M contributions, 13 scenario reports with M outer rows and R repeated reports, plus nested summary/source dataclass schemas. Structural fixture and adversarial tests were authored, not executed.
 
 The audit found a Gate 181 registry omission: the complete scenario report retains four uint64 source occurrences in its per-outer RUN tuple (`TruthBundle.seed` and the three `RunManifest` seed fields). These paths are not covered by the frozen Gate 181 uint64 pointer registry. Since the report projection must preserve the complete source report, FrozenReportSnapshot v2.0.0 cannot yet claim full JCS conformance. Gate 188 must make an explicit versioned contract decision; no implicit wire-schema amendment has been made. See Gate 187.
+
+## Gate 189 addendum — report snapshot successor dependency
+
+Gate 188 defined FrozenReportSnapshot v2.1.0 as the explicit successor to the frozen Gate 181 / v2.0.0 report contract. Gate 189 implemented the report-side capture projection and source-bundle reconciliation in `vcont_evidence_export.py`.
+
+For any future v2 package writer/verifier implementation under this Gate, the report sub-schema dependency MUST be pinned explicitly to:
+- `schema_id = TGCV-C10S-VCONT-REPORT-SNAPSHOT`;
+- `schema_version = 2.1.0`;
+- the unchanged `payload_type = TGCV-C10S-VCONT-BENCHMARK-REPORT`;
+- the exact v2.1 four-path registry and source-reconciliation semantics in Gates 188–189.
+
+The report envelope has no separate `payload_version` member: `schema_version` is the wire-version discriminator. No extra envelope key is introduced by Gate 189. FrozenReportSnapshot v2.0.0 readers MUST NOT accept v2.1.0 by inference.
+
+**Implementation boundary correction:** the research harness directory currently contains no package v2 writer or independent verifier module. Therefore the v2 package-profile reference, package serializer, verifier allowlist, compatibility rejection and package-level test vectors remain NOT IMPLEMENTED. Gate 189 does not claim package-level v2.1 conformance and does not change the 14-file inventory or package envelope version.
+
