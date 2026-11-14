@@ -794,10 +794,6 @@ class IndependentVerifierPrimitiveTests(unittest.TestCase):
 
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 def _contract_payload():
     names = _SNAPSHOT_TYPE_FIELDS["vcont_integrated_harness.AnalysisContract"]
     return {
@@ -1288,3 +1284,6 @@ class ConfigurationCompanionVerifierTests(unittest.TestCase):
         with self.assertRaises(PackageVerificationError):
             _reconcile_configuration_companions(files, report, matrix)
 
+
+if __name__ == "__main__":
+    unittest.main()
