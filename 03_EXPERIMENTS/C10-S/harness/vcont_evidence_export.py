@@ -15,7 +15,10 @@ import json
 import math
 from typing import Any, TypeVar
 
-from vcont_benchmark_protocol import SeedAssignment
+from vcont_benchmark_protocol import (
+    MonteCarloBenchmarkDesign, SCENARIO_IDS, SeedAssignment,
+    build_scenario_estimand_matrix,
+)
 from vcont_integrated_harness import (
     AnalysisContract, Analyzer, AnalyzerResult, ContractError, EvaluationReport,
     Evaluator, EvidenceCandidate, Generator, RepeatedAssignmentReport, RunManifest,
@@ -541,3 +544,148 @@ def produce_and_capture_outer_world(
         expected_repeated_assignments,
     )
     return CapturedOuterWorld(outer_bundle, evaluator_runs)
+
+
+@dataclass(frozen=True)
+class CapturedBenchmark:
+    """One benchmark report and its complete scenario/M evidence envelope."""
+    report: dict[str, Any]
+    outer_world_bundles: tuple[OuterWorldEvidenceBundle, ...]
+    evidence_index: tuple[tuple[str, str, str], ...]
+
+
+def produce_and_capture_benchmark(
+    design: MonteCarloBenchmarkDesign,
+    assignments: tuple[SeedAssignment, ...],
+    config_templates: tuple[ScenarioConfig, ...],
+    *,
+    tolerance: float,
+    matrix=None,
+) -> CapturedBenchmark:
+    """Build the complete 13-scenario evidence envelope without deriving seeds.
+
+    This function is an execution entry point: invocation generates synthetic
+    observations and runs the V_cont benchmark. Defining/importing it is inert.
+    It accepts a frozen design, already-materialized evaluation SeedAssignment
+    rows and one structural ScenarioConfig template per registered scenario.
+    """
+    from vcont_integrated_harness import Evaluator
+    from vcont_benchmark_protocol import validate_monte_carlo_benchmark_design
+
+    if not isinstance(design, MonteCarloBenchmarkDesign):
+        raise ContractError("benchmark producer requires a frozen MonteCarloBenchmarkDesign")
+    versions = dict(design.scenario_versions)
+    if tuple(versions) != SCENARIO_IDS or set(versions) != set(SCENARIO_IDS):
+        raise ContractError("design scenario order/set must match the 13 registered scenario IDs")
+    if design.outer_replicates < 2 or design.repeated_assignments < 1:
+        raise ContractError("benchmark producer requires M>=2 and R>=1")
+    if tolerance < 0:
+        raise ContractError("benchmark tolerance must be nonnegative")
+    specs = tuple(matrix) if matrix is not None else build_scenario_estimand_matrix(versions)
+    validate_monte_carlo_benchmark_design(design, specs)
+
+    templates = tuple(config_templates)
+    template_map = {item.scenario_id: item for item in templates}
+    if len(template_map) != len(templates) or set(template_map) != set(SCENARIO_IDS):
+        raise ContractError("producer requires exactly one unique ScenarioConfig template per registered scenario")
+    for scenario_id in SCENARIO_IDS:
+        template = template_map[scenario_id]
+        template.validate()
+        if (template.version, template.n_units) != (versions[scenario_id], design.n_units):
+            raise ContractError("ScenarioConfig template version/N differs from frozen benchmark design")
+
+    rows = tuple(assignments)
+    expected_count = len(SCENARIO_IDS) * design.outer_replicates * (1 + design.repeated_assignments)
+    if len(rows) != expected_count or any(not isinstance(row, SeedAssignment) for row in rows):
+        raise ContractError("evaluation assignment bank cardinality/type differs from 13 x M x (1+R)")
+    if any(row.bank != "evaluation" for row in rows):
+        raise ContractError("benchmark producer rejects calibration or mixed-bank assignments")
+    expected_groups = {
+        (sid, versions[sid], design.n_units, f"outer-{m:06d}")
+        for sid in SCENARIO_IDS for m in range(design.outer_replicates)
+    }
+    observed_groups = {
+        (row.scenario_id, row.scenario_version, row.n_units, row.outer_replicate_id)
+        for row in rows
+    }
+    if observed_groups != expected_groups:
+        raise ContractError("evaluation assignments contain missing, extra or mis-keyed scenario/M groups")
+    assignment_keys = [
+        (row.scenario_id, row.scenario_version, row.n_units, row.outer_replicate_id,
+         row.assignment_role, row.assignment_index)
+        for row in rows
+    ]
+    if len(set(assignment_keys)) != expected_count:
+        raise ContractError("duplicate scenario/M/role/R assignment identity")
+    run_ids_by_group: dict[tuple[str, str, int, str], list[SeedAssignment]] = {}
+    for row in rows:
+        key = (row.scenario_id, row.scenario_version, row.n_units, row.outer_replicate_id)
+        run_ids_by_group.setdefault(key, []).append(row)
+    for key, group_rows in run_ids_by_group.items():
+        run_rows = [row for row in group_rows if row.assignment_role == "RUN"]
+        repeated = sorted(
+            (row for row in group_rows if row.assignment_role == "REPEATED_ASSIGNMENT"),
+            key=lambda row: row.assignment_index,
+        )
+        if (len(run_rows) != 1 or run_rows[0].assignment_index != -1
+                or len(repeated) != design.repeated_assignments
+                or [row.assignment_index for row in repeated] != list(range(design.repeated_assignments))):
+            raise ContractError(f"incomplete or malformed RUN/R assignments for group {key}")
+        if len({row.world_seed for row in group_rows}) != 1:
+            raise ContractError("one world seed must be shared by RUN and R within M")
+        if (len({row.z_assignment_seed for row in group_rows}) != len(group_rows)
+                or len({row.g_assignment_seed for row in group_rows}) != len(group_rows)):
+            raise ContractError("Z/G assignment seeds must be unique within each M group")
+
+    evaluator = Evaluator()
+    scenario_outer_runs: dict[str, dict[str, tuple]] = {}
+    bundles: list[OuterWorldEvidenceBundle] = []
+    evidence_index: list[tuple[str, str, str]] = []
+    for scenario_id in SCENARIO_IDS:
+        scenario_outer_runs[scenario_id] = {}
+        for m in range(design.outer_replicates):
+            outer_id = f"outer-{m:06d}"
+            key = (scenario_id, versions[scenario_id], design.n_units, outer_id)
+            group_rows = tuple(run_ids_by_group[key])
+            captured = produce_and_capture_outer_world(
+                group_rows, template_map[scenario_id],
+                expected_repeated_assignments=design.repeated_assignments,
+                tolerance=tolerance,
+            )
+            outer_bundle = captured.evidence_bundle
+            if (outer_bundle.scenario_id, outer_bundle.scenario_version,
+                outer_bundle.n_units, outer_bundle.outer_replicate_id) != key:
+                raise ContractError("captured OuterWorldEvidenceBundle key differs from requested scenario/M group")
+            if len(captured.evaluator_runs) != 1 + design.repeated_assignments:
+                raise ContractError("captured legacy evaluator tuple count differs from design")
+            by_run_id = {
+                bundle.key[-1]: bundle
+                for bundle in (outer_bundle.run_bundle,) + outer_bundle.repeated_bundles
+            }
+            for legacy in captured.evaluator_runs:
+                manifest = legacy[3]
+                source_bundle = by_run_id.get(manifest.run_id)
+                if source_bundle is None:
+                    raise ContractError("legacy evaluator tuple has no matching captured evidence bundle")
+                if (source_bundle.truth_bundle.restore(type(legacy[0])) != legacy[0]
+                        or source_bundle.analyzer_result.restore(type(legacy[1])) != legacy[1]
+                        or source_bundle.analysis_contract.restore(type(legacy[2])) != legacy[2]
+                        or source_bundle.run_manifest.restore(type(legacy[3])) != legacy[3]):
+                    raise ContractError("legacy evaluator tuple differs from its exact captured source objects")
+            scenario_outer_runs[scenario_id][outer_id] = captured.evaluator_runs
+            bundles.append(outer_bundle)
+            evidence_index.append((scenario_id, outer_id, outer_bundle.world_id))
+
+    report = evaluator.evaluate_monte_carlo_benchmark(
+        scenario_outer_runs, design, tolerance, matrix=specs
+    )
+    if (report.get("coverage") != {
+        "required_pairs": 52, "observed_pairs": 52, "scenario_count": 13
+    } or len(report.get("pair_ledger", ())) != 52):
+        raise ContractError("benchmark evaluator did not return the complete 52-pair/13-scenario ledger")
+    expected_temporal_rows = expected_count
+    if len(report.get("temporal_manifest", ())) != expected_temporal_rows:
+        raise ContractError("benchmark temporal manifest cardinality differs from captured evidence assignments")
+    if len(bundles) != len(SCENARIO_IDS) * design.outer_replicates:
+        raise ContractError("benchmark evidence envelope must contain exactly one bundle per scenario/M")
+    return CapturedBenchmark(report, tuple(bundles), tuple(evidence_index))
