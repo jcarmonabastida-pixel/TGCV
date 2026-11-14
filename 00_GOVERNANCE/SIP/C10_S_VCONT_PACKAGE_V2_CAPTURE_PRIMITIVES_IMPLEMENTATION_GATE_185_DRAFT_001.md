@@ -124,3 +124,9 @@ This was an unintended technical workflow execution caused by the still-active p
 ## 10. Gate 185 capture audit refinement
 
 The report snapshot implementation now recomputes the legacy report fingerprint from the original source-typed `manifest` before any uint64 wrapper projection, using the exact Evaluator JSON round-trip and unchanged compact `_hash` sequence. A mismatch fails closed. The fixture source now computes a valid legacy fingerprint and includes a negative tampering case. This is source/test authoring only; the test remains unexecuted.
+
+## 11. Gate 186 correction and conformance limitation
+
+Gate 186 corrected the legacy report fingerprint algorithm identifier to the exact Gate 181 value: `TGCV-C10S-VCONT-LEGACY-REPORT-FINGERPRINT-PYJSON-SORTKEYS-COMPACT-SHA256-1`. It also strengthened capture identity validation so every outer-world bundle's scenario version and N must match the declared design identity. The corresponding identifier assertion was added to the pure fixture source; no tests were run.
+
+Gate 186 found that nested `scenario_reports`, `coverage`, pair-ledger rows/contributions and nested metric/status structures are preserved recursively but do not yet have complete exact field allowlists. Unknown nested fields are not dropped, but schema drift is not rejected as Gate 181 requires. Therefore Gate 185's report projection is not yet a strict schema decoder and full Gate 181 conformance remains CONDITIONAL. Gate 187 is assigned to close these allowlists/cardinality checks from actual Evaluator source. See Gate 186.
