@@ -10,10 +10,17 @@ from types import SimpleNamespace
 import rfc8785
 
 from vcont_benchmark_protocol import (
-    SCENARIO_IDS, build_scenario_estimand_matrix, scenario_matrix_fingerprint,
+    MonteCarloBenchmarkDesign, SCENARIO_IDS, SeedAssignment,
+    build_scenario_estimand_matrix, scenario_matrix_fingerprint,
+)
+from vcont_integrated_harness import (
+    AnalyzerResult, AnalysisContract, EvaluationReport, RepeatedAssignmentReport,
+    RunManifest, ScenarioConfig, TruthBundle, benchmark_scenarios, contract_for,
 )
 from vcont_evidence_export import (
-    CapturedBenchmark, ContractError, capture_matrix, freeze_report_snapshot,
+    CapturedBenchmark, ContractError, FrozenSnapshot, MatrixTruthProjection,
+    OuterWorldEvidenceBundle, RunEvidenceBundle, _matrix_truth_projection,
+    _reconcile_report_seed_sources, capture_matrix, freeze_report_snapshot,
 )
 
 
@@ -301,6 +308,116 @@ class CaptureV2Tests(unittest.TestCase):
         changed_capture = capture_matrix(changed, self.design)
         baseline = capture_matrix(self.matrix, self.design)
         self.assertNotEqual(changed_capture.full_matrix_sha256, baseline.full_matrix_sha256)
+
+    def _source_reconciliation_fixture(self):
+        scenario_id = "R0_FOCAL_POSITIVE"
+        version = "VCONT-SYNTH-001"
+        outer_id = "outer-000000"
+        n_units = 32
+        base = benchmark_scenarios(n_units=n_units, n_intervals=4, seed=1000)[0]
+
+        def make_bundle(role, index, run_id, z_seed, g_seed):
+            config = replace(
+                base, seed=1000, world_seed=None,
+                z_assignment_seed=None if role == "RUN" else z_seed,
+                g_assignment_seed=None if role == "RUN" else g_seed,
+                replicate_id="replicate-000", outer_replicate_id=outer_id,
+                assignment_role=role, assignment_index=index,
+            )
+            world_seed = config.seed
+            effective_z = config.seed + 100003 if config.z_assignment_seed is None else config.z_assignment_seed
+            effective_g = config.seed + 200003 if config.g_assignment_seed is None else config.g_assignment_seed
+            assignment = SeedAssignment(
+                "evaluation", scenario_id, n_units, index, world_seed,
+                effective_z, effective_g, version, outer_id, role,
+            )
+            manifest = RunManifest(
+                run_id, scenario_id, version, n_units, config.n_intervals,
+                config.window_start,
+                config.last_transition_support + config.follow_up,
+                (config.last_transition_support + config.follow_up - config.window_start) / config.n_intervals,
+                "generator-test", world_id="world-test", world_version=version,
+                replicate_id=config.replicate_id, world_seed=world_seed,
+                z_assignment_seed=effective_z, g_assignment_seed=effective_g,
+                outer_replicate_id=outer_id, assignment_role=role, assignment_index=index,
+            )
+            truth = TruthBundle(
+                run_id, (), (), (), (), (), 0.0, 0.0, None, config.seed,
+                outer_replicate_id=outer_id, assignment_role=role, assignment_index=index,
+            )
+            analyzer = AnalyzerResult(
+                run_id, "ITT_Z_RUN_CONDITIONAL_AND_ITT_G_Z0", "IDENTIFIED", "IDENTIFIED",
+                0.0, 0.0, None, None, None, (), "a" * 64, "b" * 64,
+                outer_replicate_id=outer_id, assignment_role=role, assignment_index=index,
+            )
+            contract = contract_for(config)
+            evaluation = EvaluationReport(run_id, None, None, None, None, True, ())
+            projection = _matrix_truth_projection(truth)
+            dummy = FrozenSnapshot.capture(projection)
+            bundle = RunEvidenceBundle(
+                "TGCV-C10S-VCONT-RUN-EVIDENCE-BUNDLE", "1.0.0",
+                (scenario_id, version, n_units, outer_id, role, index, run_id), "evaluation",
+                FrozenSnapshot.capture(assignment), FrozenSnapshot.capture(config),
+                FrozenSnapshot.capture(manifest), FrozenSnapshot.capture(projection),
+                dummy, dummy, FrozenSnapshot.capture(contract), FrozenSnapshot.capture(analyzer),
+                FrozenSnapshot.capture(evaluation), "c" * 64, "d" * 64, "e" * 64,
+                "STRUCTURALLY_VALID",
+            )
+            return bundle, (truth, analyzer, contract, manifest), evaluation
+
+        run_bundle, run_tuple, _ = make_bundle("RUN", -1, "run-main", 101003, 201003)
+        repeated_bundle, _, repeated_evaluation = make_bundle(
+            "REPEATED_ASSIGNMENT", 0, "run-repeat", 101004, 201004
+        )
+        repeated_report = RepeatedAssignmentReport(
+            "world-test", 1, None, 0.0, None, None, (repeated_evaluation,)
+        )
+        outer = OuterWorldEvidenceBundle(
+            "TGCV-C10S-VCONT-OUTER-WORLD-EVIDENCE-BUNDLE", "1.0.0",
+            scenario_id, version, n_units, outer_id, "world-test", version, 1000,
+            run_bundle, (repeated_bundle,), FrozenSnapshot.capture(repeated_report),
+        )
+        design = MonteCarloBenchmarkDesign(
+            ((scenario_id, version),), n_units, 1, 1, "f" * 64, (),
+            "evaluation", "a" * 64, "b" * 40, "c" * 64,
+        )
+        report = {
+            "design": design,
+            "scenario_reports": {
+                scenario_id: {"per_outer_replicate": ({"run": run_tuple},)}
+            },
+        }
+        return report, outer, run_tuple
+
+    def test_v2_1_source_reconciliation_accepts_exact_run_and_repeated_bundles(self):
+        report, outer, _ = self._source_reconciliation_fixture()
+        _reconcile_report_seed_sources(report, (outer,))
+
+    def test_v2_1_source_reconciliation_rejects_report_manifest_seed_divergence(self):
+        report, outer, run_tuple = self._source_reconciliation_fixture()
+        altered = replace(run_tuple[3], world_seed=run_tuple[3].world_seed + 1)
+        report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"] = (
+            {"run": run_tuple[:3] + (altered,)},
+        )
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (outer,))
+
+    def test_v2_1_source_reconciliation_rejects_repeated_seed_source_divergence(self):
+        report, outer, _ = self._source_reconciliation_fixture()
+        repeated = outer.repeated_bundles[0]
+        assignment = repeated.assignment.restore(SeedAssignment)
+        altered_assignment = replace(assignment, z_assignment_seed=assignment.z_assignment_seed + 1)
+        altered_bundle = replace(repeated, assignment=FrozenSnapshot.capture(altered_assignment))
+        altered_outer = replace(outer, repeated_bundles=(altered_bundle,))
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (altered_outer,))
+
+    def test_v2_1_source_reconciliation_rejects_duplicate_or_missing_outer_groups(self):
+        report, outer, _ = self._source_reconciliation_fixture()
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, ())
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (outer, outer))
 
     def test_v2_1_snapshot_rejects_missing_source_bundle_reconciliation(self):
         with self.assertRaises(ContractError):
