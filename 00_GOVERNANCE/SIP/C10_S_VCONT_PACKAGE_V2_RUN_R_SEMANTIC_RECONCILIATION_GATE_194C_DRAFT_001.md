@@ -181,3 +181,8 @@ The verifier call site now preserves `PackageVerificationError` and converts une
 Additional source commit: `551c82b4ffddc84af697f35a0141bd45536c01b3`.
 
 The verifier source was re-read after this change. A static text scan found no remaining temporary placeholder guards or empty-comprehension scaffolding in the inserted RUN/R section. This is not a syntax/compile check and does not substitute for G194-E review.
+
+
+A final fail-closed hardening pass rejects boolean-as-integer aliases and malformed identity field types in assignment rows, temporal rows, decoded assignment/config/manifest snapshots and outer-world keys. Source commit: `5eb296c88c8b8c45844df3d00a996be07cd98ae0`.
+
+This is source-level defensive validation only. It has not been compiled or exercised.
