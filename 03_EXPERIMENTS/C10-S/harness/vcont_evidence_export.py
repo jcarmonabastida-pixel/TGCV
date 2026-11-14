@@ -597,8 +597,8 @@ def _jcs_safe_source(value: Any) -> Any:
     if isinstance(value, bool) or value is None or isinstance(value, str):
         return value
     if isinstance(value, int):
-        if abs(value) > _SAFE_JCS_INTEGER:
-            raise ContractError("non-uint64 integer exceeds exact JCS integer domain")
+        if abs(value) > _UINT64_MAX:
+            raise ContractError("integer exceeds the declared uint64/JCS source domain")
         return value
     if isinstance(value, float):
         if not math.isfinite(value):
