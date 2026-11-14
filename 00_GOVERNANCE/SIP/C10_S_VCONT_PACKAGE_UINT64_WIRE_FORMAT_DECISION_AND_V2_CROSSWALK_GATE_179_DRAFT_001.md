@@ -216,3 +216,11 @@ in addition to the three seed fields in report.temporal_manifest and their dupli
 Gate 180 also finds that source `ScenarioConfig` contains `seed`, `world_seed`, `z_assignment_seed` and `g_assignment_seed`, while Gate 164 requires an effective configuration file. The current package projection does not exist, so it is not yet proven whether these fields are excluded from `design/effective_scenario_configs.json` or serialized directly. Gate 179's assertion that no seed values occur in that path is therefore **UNVERIFIED** pending an exact EffectiveScenarioConfigProjection schema.
 
 This addendum qualifies Gate 179's field-level completeness claim; it does not alter the uint64 wire primitive, package v2.0.0 version decision, source seed algorithm, legacy fingerprints or 14-file inventory. See Gate 180. No code/tests/CI or scientific execution occurred.
+
+## 13. Gate 181 — completed direct-seed registry and source projection
+
+Gate 181 supersedes the incomplete direct-seed field list in Gate 179 §3 with an exact JSON Pointer registry. In addition to evaluation/calibration rows, temporal manifests and outer-world keys, it includes both root and nested legacy-manifest report temporal rows and pair-ledger contribution `world_seed` fields. Duplicated report views must decode to exact equality before the historical report fingerprint is recomputed.
+
+Gate 181 also resolves the effective-config question: direct `design/effective_scenario_configs.json` is a structural projection that excludes `seed`, world/Z/G assignment seeds and RUN/R identity fields, and includes a mandatory explicit-stream seed policy. Full per-run ScenarioConfig snapshots remain opaque byte-preserved records; their seed values are reconciled to SeedAssignment after supported decoding. Confirmatory capture MUST reject missing or mismatched explicit stream seeds, so the legacy fallback cannot be used.
+
+The historical report fingerprint is recomputed over the original source-typed manifest_payload before uint64 wire projection. FrozenReportSnapshot v2.0.0 JCS digest remains separate. See Gate 181 for the full field registry, equality joins, 14-file crosswalk and companion assembly contract. The Gate 179 wire primitive and package v2.0.0 decision remain unchanged.
