@@ -224,9 +224,12 @@ def _check_registered_uint64(files: Mapping[str, Any]) -> tuple[int, ...]:
     if not isinstance(report_payload, dict):
         raise PackageVerificationError("report/report.json: FrozenReportSnapshot report payload is missing")
     temporal = report_payload.get("temporal_manifest")
-    nested_temporal = report_payload.get("manifest", {}).get("temporal_manifest")
+    report_manifest = report_payload.get("manifest")
+    if not isinstance(report_manifest, dict):
+        raise PackageVerificationError("report/report.json: nested legacy manifest is not an object")
+    nested_temporal = report_manifest.get("temporal_manifest")
     pairs = report_payload.get("pair_ledger")
-    nested_pairs = report_payload.get("manifest", {}).get("pair_ledger")
+    nested_pairs = report_manifest.get("pair_ledger")
     if not all(isinstance(rows, list) for rows in (temporal, nested_temporal, pairs, nested_pairs)):
         raise PackageVerificationError("report/report.json: registered duplicate seed-bearing arrays are missing")
     if temporal != nested_temporal or pairs != nested_pairs:
@@ -244,6 +247,8 @@ def _check_registered_uint64(files: Mapping[str, Any]) -> tuple[int, ...]:
                 if not isinstance(contributions, list) or not contributions:
                     raise PackageVerificationError(f"report/pair_ledger/{index}: contributions missing")
                 for j, contribution in enumerate(contributions):
+                    if not isinstance(contribution, dict):
+                        raise PackageVerificationError(f"report/pair_ledger/{index}/contributions/{j}: not an object")
                     _uint64(contribution.get("world_seed"), f"report/pair_ledger/{index}/contributions/{j}/world_seed")
     scenarios = report_payload.get("scenario_reports")
     if not isinstance(scenarios, dict) or len(scenarios) != 13:
@@ -256,6 +261,8 @@ def _check_registered_uint64(files: Mapping[str, Any]) -> tuple[int, ...]:
             run = outer.get("run") if isinstance(outer, dict) else None
             if not isinstance(run, list) or len(run) != 4:
                 raise PackageVerificationError(f"report/scenario_reports/{scenario_id}/{index}: RUN tuple malformed")
+            if not isinstance(run[0], dict) or not isinstance(run[3], dict):
+                raise PackageVerificationError(f"report/scenario_reports/{scenario_id}/{index}: source tuple objects malformed")
             _uint64(run[0].get("seed"), f"report/scenario_reports/{scenario_id}/{index}/run/0/seed")
             for field in ("world_seed", "z_assignment_seed", "g_assignment_seed"):
                 _uint64(run[3].get(field), f"report/scenario_reports/{scenario_id}/{index}/run/3/{field}")
@@ -406,6 +413,8 @@ def verify_package_v2(
             members = archive.getmembers()
             if len(members) != 14:
                 raise PackageVerificationError("archive must contain exactly 14 members")
+            if [member.name for member in members] != sorted(PACKAGE_PATHS):
+                raise PackageVerificationError("archive members are not in canonical lexical path order")
             for member in members:
                 _safe_archive_path(member.name)
                 if member.name in extracted or member.name.casefold() in seen_folded:
@@ -459,6 +468,8 @@ def verify_package_v2(
         "payload_type": REPORT_PAYLOAD_TYPE,
     }:
         raise PackageVerificationError("package manifest does not declare the exact report v2.1.0 dependency")
+    if manifest["package_id_derivation"] != "SHA256(JCS({schema_id,schema_version,manifest_sha256}))":
+        raise PackageVerificationError("package ID derivation declaration mismatch")
     expected_file_records = []
     for path in DATA_PATHS:
         payload = extracted[path]
@@ -471,6 +482,8 @@ def verify_package_v2(
     if manifest["files"] != expected_file_records:
         raise PackageVerificationError("manifest file inventory/length/digest records do not recompute")
 
+    if trust_policy is not None:
+        raise PackageVerificationError("external trust_policy verification is not implemented in this verifier version")
     report = parsed["report/report.json"]
     _check_registered_uint64(parsed)
     decoded_report = _decode_registered(report)
@@ -521,6 +534,6 @@ def verify_package_v2(
     return PackageVerificationResult(
         PACKAGE_SCHEMA_ID, PACKAGE_SCHEMA_VERSION, manifest["profile"],
         archive_sha, manifest_sha, package_id, len(extracted),
-        "PASS", "PASS", "STRUCTURAL_ONLY", "NOT_VERIFIED",
+        "PASS", "PARTIAL", "STRUCTURAL_ONLY", "NOT_VERIFIED",
         "NOT_VERIFIED", "NOT_VERIFIED", "NOT_AUTHENTICATED", limitations,
     )
