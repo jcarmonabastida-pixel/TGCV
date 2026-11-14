@@ -403,6 +403,17 @@ class CaptureV2Tests(unittest.TestCase):
         self.assertEqual(projected[3]["g_assignment_seed"], {"$type": "uint64", "decimal": "0"})
         self.assertEqual(snapshot.schema_version, "2.1.0")
 
+    def test_truth_bundle_seed_is_not_conflated_with_world_seed(self):
+        report = self.report_fixture()
+        run = report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"]
+        run[0]["seed"] = 31
+        run[3]["world_seed"] = 17
+        snapshot = freeze_report_snapshot(report)
+        envelope = json.loads(snapshot.canonical_bytes.decode("utf-8"))
+        projected = envelope["report"]["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"]
+        self.assertEqual(projected[0]["seed"], {"$type": "uint64", "decimal": "31"})
+        self.assertEqual(projected[3]["world_seed"], {"$type": "uint64", "decimal": "17"})
+
     def test_report_snapshot_v2_1_rejects_invalid_nested_uint64_sources(self):
         mutations = (
             (0, "seed", -1),
