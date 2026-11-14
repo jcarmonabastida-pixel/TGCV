@@ -855,6 +855,11 @@ def serialize_package_files_v2(
                     or value.get("schema_version") != "2.0.0" or value.get("bank") != "calibration"
                     or not isinstance(value.get("namespace"), str) or not value["namespace"].strip()
                     or not isinstance(value.get("seed_derivation"), Mapping)
+                    or set(value.get("seed_derivation", {})) != {"algorithm", "hash", "output_rule", "namespace"}
+                    or value["seed_derivation"].get("algorithm") != "TGCV-C10S-VCONT-SEED-v3"
+                    or value["seed_derivation"].get("hash") != "SHA-256"
+                    or value["seed_derivation"].get("output_rule") != "first_8_digest_bytes_unsigned_big_endian"
+                    or value["seed_derivation"].get("namespace") != value.get("namespace")
                     or not isinstance(value.get("design"), Mapping)
                     or not value["design"]
                     or value.get("execution_evidence_status") not in ("NOT_CAPTURED", "AVAILABLE", "UNVERIFIABLE")
