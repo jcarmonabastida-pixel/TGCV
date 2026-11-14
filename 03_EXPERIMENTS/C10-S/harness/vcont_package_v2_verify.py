@@ -2011,7 +2011,9 @@ GATE159_REQUIRED_CHECK_IDS = (
 GATE159_CONDITIONAL_CHECK_ID = "CALIBRATION_ASSIGNMENT_EXECUTION_LINK"
 
 
-def _reconcile_gate159_artifact(artifact: Any, expected_export_id: str) -> str:
+def _reconcile_gate159_artifact(
+    artifact: Any, expected_export_id: str, package_files: Mapping[str, bytes],
+) -> str:
     """Validate Gate159 nested wire schema, independently derive status and findings digest."""
     root_fields = {
         "schema_id", "schema_version", "benchmark_export_id", "design_identity",
@@ -2052,6 +2054,10 @@ def _reconcile_gate159_artifact(artifact: Any, expected_export_id: str) -> str:
         input_ids.append(item["artifact_id"])
     if input_ids != sorted(set(input_ids)):
         raise PackageVerificationError("Gate159 input_artifacts are duplicated or not in canonical order")
+    input_digest_map = {item["artifact_id"]: item["sha256"] for item in inputs}
+    for artifact_id, payload in package_files.items():
+        if artifact_id in input_digest_map and input_digest_map[artifact_id] != _sha256(payload):
+            raise PackageVerificationError(f"Gate159 input artifact digest differs from packaged bytes: {artifact_id}")
     if artifact.get("required_check_ids") != list(GATE159_REQUIRED_CHECK_IDS):
         raise PackageVerificationError("Gate159 required_check_ids differ from the frozen Gate 178 order")
 
@@ -2095,6 +2101,9 @@ def _reconcile_gate159_artifact(artifact: Any, expected_export_id: str) -> str:
             for key, value in digests.items()
         ):
             raise PackageVerificationError(f"Gate159 check row {index} input_digests is malformed")
+        if any(key not in input_digest_map or input_digest_map[key] != value
+               for key, value in digests.items()):
+            raise PackageVerificationError(f"Gate159 check row {index} input_digests do not resolve to input_artifacts")
         status = row.get("status")
         if status not in ("PASS", "FAIL", "UNAVAILABLE", "UNVERIFIABLE", "NOT_APPLICABLE"):
             raise PackageVerificationError(f"Gate159 check row {index} status is invalid")
@@ -2664,6 +2673,7 @@ def verify_package_v2(
         gate159_derived_status = _reconcile_gate159_artifact(
             parsed["validation/reconciliation_results.json"],
             parsed["runs/run_records.json"]["benchmark_export_id"],
+            extracted,
         )
     except PackageVerificationError:
         raise
