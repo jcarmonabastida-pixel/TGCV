@@ -208,3 +208,9 @@ Gate 181 should close the source-to-wire projection contract before implementati
 5. reconcile the exact 14-file schema and v2 verifier registry against these projections.
 
 Only after Gate 181 is reconciled should a bounded implementation contract be proposed. Implementation and test execution remain subject to the required explicit authorization.
+
+## 12. Gate 181 resolution
+
+Gate 181 closes the source-to-wire design gaps recorded by Gate 180. It defines the complete direct uint64 JSON Pointer registry, including duplicated root/nested report temporal and pair-ledger paths; freezes EffectiveScenarioConfigProjection v2.0.0 with explicit-stream-only RNG policy and opaque full run snapshots; specifies the historical report fingerprint recomputation order before wire projection; separates evaluation capture identity from independently supplied calibration/Gate159/source/test companions; and reconciles the exact 14-file package inventory.
+
+This resolves the schema decisions, not the source implementation gaps. CapturedBenchmark still requires additive MatrixCapture and FrozenReportSnapshot fields populated at capture time; companion assembler, package writer and independent v2 verifier remain unimplemented. Gate 181 status is SOURCE-TO-WIRE CONTRACT DEFINED — IMPLEMENTATION CONTRACT REQUIRED. No code/tests/CI or scientific execution occurred.
