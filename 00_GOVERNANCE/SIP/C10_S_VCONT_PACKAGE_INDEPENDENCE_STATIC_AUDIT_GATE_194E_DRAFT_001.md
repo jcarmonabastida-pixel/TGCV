@@ -153,3 +153,67 @@ Source commits:
 - fixtures: `fca7edd9b301e0a1fe5701d7dc6b509e12da5a8a`
 
 This closes the *declared-field crosswalk and equality check only*. It does not independently derive the capture identity from the complete set of snapshots and report/matrix digests, nor does it complete the semantic crosswalk of the other nine companion payloads.
+
+
+## 10. Gate 194-E continuation — companion identity and effective structural configuration
+
+### 10.1 Historical crosswalk reused
+
+The exact eleven-companion inventory and source-authority crosswalk were recovered from the existing Gate 194-A artifact. No replacement crosswalk was created. Gate 194-A explicitly classifies companion completeness as partial and identifies the remaining field-level/source-resolution gaps; that historical disposition remains in force.
+
+The writer source was inspected for every occurrence of `benchmark_export_id`. Under the current Gate 191/Gate 192 writer contract, the field is declared only in:
+- `runs/run_records.json`;
+- `validation/reconciliation_results.json`.
+
+The verifier now validates the RUN export ID and requires the Gate159 companion to declare the exact same ID under its frozen schema/version. It does not add the field to the other nine companions. This is a declared-field join, not an independent derivation of capture_id.
+
+### 10.2 EffectiveScenarioConfigProjection v2.0.0
+
+Gate 181 §3 provides an exact row-level projection contract. The verifier now implements the following source-level checks:
+- schema ID/version are exactly `TGCV-C10S-VCONT-EFFECTIVE-SCENARIO-CONFIG-PROJECTION@2.0.0`;
+- exactly 13 rows in authoritative scenario order, with exact scenario/version/N keys from the report design;
+- exact row field allowlist: scenario_id, scenario_version, n_units, generator_version, seed_policy and config;
+- exact 26-field structural ScenarioConfig allowlist from Gate 181;
+- exact explicit-stream seed policy, including forbidden fallback and the v3 seed algorithm;
+- no direct seed or RUN/R identity fields in the structural config projection;
+- exact equality of every structural projection with every decoded RUN/R ScenarioConfig snapshot for that scenario;
+- generator_version equality with every corresponding RunManifest snapshot;
+- exact consumption of M×(1+R) RUN/R snapshots per scenario, with no duplicate logical key.
+
+The production verifier performs the independent snapshot decode and passes the decoded source objects into the pure row reconciler. The row helper is directly fixture-tested. This binds the structural companion to all per-run opaque config snapshots rather than merely comparing a declared digest.
+
+**Deliberate limitation:** Gate 181 defines the projection schema ID/version and exact row schema, but does not state a complete root-object field allowlist. The implementation therefore does not invent one. It validates the required root declarations and exact row contract; exact root-envelope closure remains open and is not represented as complete companion schema conformance.
+
+### 10.3 AnalysisContract companion remains open
+
+The existing RUN/R verifier already decodes every AnalysisContract snapshot, validates the exact source type field registry, checks its retained snapshot digest, and reconciles semantic identity against RunManifest and AnalyzerResult. It correctly does not invent an `AnalysisContract.run_id`.
+
+That does **not** close `design/analysis_contracts.json`. Gate 181 specifies an effective AnalysisContract projection and per-scenario/run-family source mapping, while Gate 194-A explicitly records that the exact package-level schema remains open. No guessed root schema, deduplication key or projection envelope has been added. This companion remains a distinct open item.
+
+### 10.4 Fixtures and status
+
+New unexecuted effective-config fixtures cover:
+1. positive 13-row projection consumed by every RUN/R snapshot;
+2. structural parameter drift in one source snapshot;
+3. forbidden direct seed in the projection;
+4. forbidden legacy seed fallback policy;
+5. Generator.version divergence;
+6. wrong row order;
+7. duplicate row identity;
+8. missing RUN/R consumption.
+
+The benchmark-export identity fixtures from the preceding continuation remain unexecuted.
+
+Source commits:
+- benchmark export ID verifier: `16a0d4c4c67950e8c6159acfd3f2e73aaf7c0020`
+- benchmark export ID fixtures: `fca7edd9b301e0a1fe5701d7dc6b509e12da5a8a`
+- effective config verifier: `334915ad2309e248fe64d86b9669b490d5832104`
+- effective config fixtures: `f273ac1b22de35122e60281e173bc714fd8022ea`
+
+Latest reviewed blob identities:
+- verifier: `e2768e3cc2da447713f6f64fc6be9d6616b7ad74`
+- test module: `529cc257558bc27e80cf646c5a7bfea20bf65b17`
+
+Static text inspection found no imports from the writer, capture/export, integrated harness or benchmark-protocol modules in the verifier, and no temporary `and False`, empty-comprehension, TODO/FIXME or NotImplemented scaffolding in the verifier/test files. This is not a syntax check or execution.
+
+**Disposition:** benchmark_export_id declared-field equality is IMPLEMENTED IN SOURCE / FIXTURES WRITTEN / NOT EXECUTED. Effective structural config row reconciliation is IMPLEMENTED IN SOURCE / FIXTURES WRITTEN / ROOT ENVELOPE PARTIAL / NOT EXECUTED. AnalysisContract companion schema remains OPEN. The five historical companion gaps are not all closed.
