@@ -135,6 +135,7 @@ class PackageVerificationResult:
     technical_test_evidence_status: str
     external_authentication_status: str
     limitations: tuple[str, ...]
+    gate159_reconciliation_status: str = "NOT_RECONCILED"
 
 
 def _sha256(value: bytes) -> str:
@@ -2801,4 +2802,5 @@ def verify_package_v2(
         archive_sha, manifest_sha, package_id, len(extracted),
         "PASS", "PARTIAL", "STRUCTURAL_ONLY", "RECONCILED",
         "RECONCILED", "NOT_VERIFIED", "NOT_VERIFIED", "NOT_AUTHENTICATED", limitations,
+        gate159_reconciliation_status=gate159_derived_status,
     )
