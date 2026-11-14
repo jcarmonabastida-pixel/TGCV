@@ -253,7 +253,7 @@ The initial pure-v2 workflow contained an unquoted pip-install scalar that was i
 
 Gate 185 implements MatrixCapture v1.0.0, FrozenReportSnapshot v2.0.0, capture identity v2.0.0 and the additive CapturedBenchmark fields in `vcont_evidence_export.py`. The existing first three fields and positional constructor remain unchanged. The producer now captures the exact matrix and immutable report snapshot immediately after Evaluator returns and derives content-only capture_id. The pure test source is `test_vcont_capture_v2.py`; it has not been executed.
 
-Gate 185 explicitly identifies the legacy report fingerprint algorithm as `TGCV-C10S-VCONT-LEGACY-REPORT-PYTHON-JSON-SHA256-1`, binding the existing source operation without changing its bytes. JCS conformance remains unverified pending test execution.
+Gate 185 explicitly identifies the legacy report fingerprint algorithm as `TGCV-C10S-VCONT-LEGACY-REPORT-FINGERPRINT-PYJSON-SORTKEYS-COMPACT-SHA256-1`, binding the existing source operation without changing its bytes. JCS conformance remains unverified pending test execution.
 
 To preserve the Gate 182 separate-authorization boundary, Gate 184's pure workflow is temporarily manual-only and runs only the first capture fixture module. No workflow dispatch, dependency installation, compilation, test, producer or scientific execution occurred. See Gate 185.
 
