@@ -1574,6 +1574,12 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
         with self.assertRaises(PackageVerificationError):
             _reconcile_gate159_artifact(artifact, "b" * 64, package_files)
 
+    def test_rejects_input_artifact_digest_not_matching_packaged_bytes(self):
+        artifact, package_files = self._fixture()
+        package_files["runs/run_records.json"] = b"tampered"
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_gate159_artifact(artifact, "b" * 64, package_files)
+
     def test_rejects_not_applicable_without_seed_manifest_only_reason(self):
         artifact, package_files = self._fixture()
         artifact["checks"][-1]["reason"] = "Not applicable"
