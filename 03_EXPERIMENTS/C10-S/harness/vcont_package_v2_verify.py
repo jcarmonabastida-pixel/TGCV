@@ -2175,9 +2175,9 @@ def _reconcile_gate159_artifact(
         if status == "FAIL" and (mismatch_count in (None, 0) or not mismatches):
             raise PackageVerificationError(f"Gate159 check row {index} FAIL lacks materialized mismatch evidence")
         if status in ("UNAVAILABLE", "UNVERIFIABLE") and (
-            observed is not None or matched is not None or mismatch_count is not None
+            observed is not None or matched is not None or mismatch_count is not None or mismatches
         ):
-            raise PackageVerificationError(f"Gate159 check row {index} unavailable status must not fabricate observed counts")
+            raise PackageVerificationError(f"Gate159 check row {index} unavailable status must not fabricate observed counts or mismatches")
         if status == "NOT_APPLICABLE" and (
             expected_applicability != "CONDITIONAL"
             or "seed-manifest-only" not in row["reason"].lower()
@@ -2721,6 +2721,13 @@ def verify_package_v2(
             parsed["seeds/calibration_seed_manifest.json"],
             parsed["seeds/evaluation_seed_assignments.json"],
         )
+        gate159_artifact = parsed["validation/reconciliation_results.json"]
+        calibration_execution_status = parsed["seeds/calibration_seed_manifest.json"]["execution_evidence_status"]
+        if (gate159_artifact.get("checks", [{}])[-1].get("status") == "NOT_APPLICABLE"
+                and calibration_execution_status != "NOT_CAPTURED"):
+            raise PackageVerificationError(
+                "Gate159 calibration execution link cannot be NOT_APPLICABLE when calibration execution evidence is declared"
+            )
         gate159_derived_status = _reconcile_gate159_artifact(
             parsed["validation/reconciliation_results.json"],
             parsed["runs/run_records.json"]["benchmark_export_id"],
