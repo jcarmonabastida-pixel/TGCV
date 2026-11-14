@@ -1227,6 +1227,8 @@ def _reconcile_report_seed_sources(
         config = bundle.scenario_config.restore(ScenarioConfig)
         manifest = bundle.run_manifest.restore(RunManifest)
         truth_projection = bundle.truth_projection.restore(MatrixTruthProjection)
+        evidence_candidate = bundle.evidence_candidate.restore(EvidenceCandidate)
+        sealed_evidence = bundle.sealed_evidence.restore(SealedEvidence)
         analyzer_source = bundle.analyzer_result.restore(AnalyzerResult)
         contract_source = bundle.analysis_contract.restore(AnalysisContract)
         evaluation_source = bundle.evaluation_report.restore(EvaluationReport)
@@ -1246,11 +1248,78 @@ def _reconcile_report_seed_sources(
         run_id = manifest.run_id
         if not run_id or bundle.key != (*identity, run_id):
             raise ContractError("v2.1 RunEvidenceBundle exact logical key/run_id mismatch")
-        if any(item.run_id != run_id for item in (truth_projection, analyzer_source, contract_source, evaluation_source)):
-            raise ContractError("v2.1 captured source objects do not share the RunManifest run_id")
+        if any(item.run_id != run_id for item in (
+            truth_projection, evidence_candidate, sealed_evidence, analyzer_source, evaluation_source
+        )):
+            raise ContractError("v2.1 run-scoped captured source objects do not share the RunManifest run_id")
+        if (evidence_candidate.rows != sealed_evidence.rows
+                or (evidence_candidate.provenance or {}) != sealed_evidence.manifest.get("provenance")
+                or sealed_evidence.manifest.get("row_count") != len(sealed_evidence.rows)):
+            raise ContractError("v2.1 EvidenceCandidate/SealedEvidence source snapshots diverge")
+        provenance = sealed_evidence.manifest.get("provenance", {})
+        provenance_digest = hashlib.sha256(json.dumps(
+            provenance, sort_keys=True, separators=(",", ":"), allow_nan=False
+        ).encode("utf-8")).hexdigest()
+        if sealed_evidence.manifest.get("provenance_sha256") != provenance_digest:
+            raise ContractError("v2.1 SealedEvidence provenance digest does not recompute")
+        sealed_digest = _legacy_sealed_digest(sealed_evidence)
+        if (sealed_digest != sealed_evidence.sha256
+                or sealed_digest != bundle.sealed_evidence_legacy_sha256
+                or analyzer_source.input_sha256 != sealed_digest):
+            raise ContractError("v2.1 SealedEvidence legacy digest differs from source bundle/AnalyzerResult")
+        structural_config = asdict(config)
+        for field_name in (
+            "seed", "world_seed", "z_assignment_seed", "g_assignment_seed",
+            "replicate_id", "outer_replicate_id", "assignment_role", "assignment_index",
+        ):
+            structural_config.pop(field_name)
+        if bundle.scenario_config_structural_sha256 != _snapshot_digest(structural_config):
+            raise ContractError("v2.1 ScenarioConfig structural digest does not recompute")
+        if bundle.analysis_contract_sha256 != _snapshot_digest(contract_source):
+            raise ContractError("v2.1 AnalysisContract snapshot digest does not recompute")
         if (analyzer_source.outer_replicate_id, analyzer_source.assignment_role,
             analyzer_source.assignment_index) != (outer_id, role, index):
             raise ContractError("v2.1 AnalyzerResult M/role/index identity mismatch")
+        if (contract_source.g_assignment_mechanism_id, contract_source.g_assignment_mechanism_version,
+            contract_source.g_assignment_mechanism_hash, contract_source.z_assignment_mechanism_id,
+            contract_source.z_assignment_mechanism_version, contract_source.z_assignment_mechanism_hash,
+            contract_source.reference_regime_id, contract_source.reference_regime_version) != (
+            manifest.g_assignment_mechanism_id, manifest.g_assignment_mechanism_version,
+            manifest.g_assignment_mechanism_hash, manifest.z_assignment_mechanism_id,
+            manifest.z_assignment_mechanism_version, manifest.z_assignment_mechanism_hash,
+            manifest.g_reference_regime_id, manifest.g_reference_regime_version
+        ):
+            raise ContractError("v2.1 AnalysisContract mechanism/reference identity differs from RunManifest")
+        if (contract_source.estimand_id, contract_source.estimand_version) != (
+            analyzer_source.estimand_id, analyzer_source.estimand_version
+        ):
+            raise ContractError("v2.1 AnalysisContract/AnalyzerResult estimand identity mismatch")
+        if (contract_source.target_regime_id, contract_source.target_regime_version,
+            contract_source.outcome_id, contract_source.outcome_version) != (
+            analyzer_source.target_regime_id, analyzer_source.target_regime_version,
+            analyzer_source.outcome_id, analyzer_source.outcome_version
+        ):
+            raise ContractError("v2.1 AnalysisContract/AnalyzerResult target or outcome mismatch")
+        contract_result_fields = (
+            "run_conditional_estimand_id", "run_conditional_estimand_version",
+            "reference_regime_estimand_id", "reference_regime_estimand_version",
+            "g_assignment_estimand_id", "g_assignment_estimand_version",
+            "transportability_id", "transportability_version", "transportability_scope",
+            "transportability_evidence_status", "transportability_outcome_id", "transportability_basis",
+        )
+        if any(getattr(contract_source, name) != getattr(analyzer_source, name)
+               for name in contract_result_fields):
+            raise ContractError("v2.1 AnalysisContract/AnalyzerResult estimand or transportability identity mismatch")
+        if (contract_source.g_assignment_mechanism_id, contract_source.g_assignment_mechanism_version,
+            contract_source.g_assignment_mechanism_hash, contract_source.z_assignment_mechanism_id,
+            contract_source.z_assignment_mechanism_version, contract_source.z_assignment_mechanism_hash,
+            contract_source.reference_regime_id, contract_source.reference_regime_version) != (
+            analyzer_source.g_assignment_mechanism_id, analyzer_source.g_assignment_mechanism_version,
+            analyzer_source.g_assignment_mechanism_hash, analyzer_source.z_assignment_mechanism_id,
+            analyzer_source.z_assignment_mechanism_version, analyzer_source.z_assignment_mechanism_hash,
+            analyzer_source.reference_regime_id, analyzer_source.reference_regime_version
+        ):
+            raise ContractError("v2.1 AnalysisContract/AnalyzerResult mechanism identity mismatch")
         if (truth_projection.outer_replicate_id, truth_projection.assignment_role,
             truth_projection.assignment_index) != (outer_id, role, index):
             raise ContractError("v2.1 MatrixTruthProjection M/role/index identity mismatch")
