@@ -262,3 +262,18 @@ The new `RunEvidenceBundle.capture(...)` accepts the exact SeedAssignment and al
 `OuterWorldEvidenceBundle.capture(...)` checks one RUN, exactly R ordered repeated indices, shared M/world identity, bank/design identity, unique run IDs and assignment-specific Z/G seeds, plus exact ordered repeated reports.
 
 **Qualification:** this is a standalone capture API, not yet wired into the existing benchmark producer. The existing Monte Carlo path still consumes reduced four-object tuples. Regression source is persisted but NOT EXECUTED. End-to-end export remains OPEN; no execution or scientific claim follows from the implementation.
+
+
+## 15. Gate 171 — M-level producer/orchestration integration
+
+Gate 171 implements the explicit M-level producer boundary in `03_EXPERIMENTS/C10-S/harness/vcont_evidence_export.py`:
+
+- `produce_and_capture_outer_world(...)` consumes exact pre-materialized evaluation-bank SeedAssignment rows and a matching structural ScenarioConfig template;
+- it validates one RUN and exactly R contiguous repeated assignments, rejecting cross-M/world/scenario/N/bank groups before generation;
+- it executes the existing Generator → Sealer → Analyzer → Evaluator sequence in source code and captures each complete RunEvidenceBundle before source objects are discarded;
+- it constructs exactly one OuterWorldEvidenceBundle for the M group;
+- it returns the unchanged legacy four-object tuples in RUN, R=0..R-1 order for compatibility with existing MC aggregation.
+
+No Generator/Sealer/Analyzer/Evaluator method semantics or 52-pair ledger logic were changed. The API is defined and persisted but has NOT been called in this gate. Three regression tests were added and NOT EXECUTED.
+
+**Remaining:** there is no benchmark-wide 13-scenario driver yet. The caller must still partition exact evaluation assignments, call the M producer for every scenario/M, assemble `scenario_outer_runs`, invoke `evaluate_monte_carlo_benchmark()` once and co-return the evidence bundles with the 52-pair result. This is Gate 172. Gate 159, package writer and trusted attestation remain OPEN.
