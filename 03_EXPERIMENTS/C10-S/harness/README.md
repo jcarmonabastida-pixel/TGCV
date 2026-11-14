@@ -202,3 +202,5 @@ The source semantics remain distinct: `TruthBundle.seed` reconciles to `Scenario
 
 The test module contains 17 methods, including typed-boundary and invalid-input cases. The isolated projection tests use a private fixture-only bypass; they do not test source-bundle reconciliation. No tests, imports, compilation, CI, producers, package generation, calibrations or scientific execution have been run. Package profile/verifier integration and source-bundle adversarial fixtures remain open. See `00_GOVERNANCE/SIP/C10_S_VCONT_FROZEN_REPORT_SNAPSHOT_V2_1_IMPLEMENTATION_GATE_189_DRAFT_001.md`.
 
+Gate 189 source-shape correction: the reconciliation helper consumes the actual Evaluator representation (`MonteCarloBenchmarkDesign`, tuple-valued per-outer rows, and the four typed source dataclasses), not the later JSON dict/list projection. It also checks the complete RUN logical key. This correction is source-inspected but uncompiled/unexecuted. No pure test yet exercises a complete source-bundle positive/negative join; the current 17 tests cover projection fixtures and the missing-source fail-closed guard only.
+
