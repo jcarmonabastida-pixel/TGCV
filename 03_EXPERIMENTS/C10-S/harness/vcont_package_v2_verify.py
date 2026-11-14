@@ -669,6 +669,47 @@ def _snapshot_source_digest(value: Any) -> str:
     return _sha256(payload)
 
 
+
+def _assert_sealed_provenance_identity(
+    provenance: Any, run_id: str, assignment: dict[str, Any],
+    config: dict[str, Any], manifest: dict[str, Any], analyzer: dict[str, Any],
+) -> str:
+    """Bind the internally hashed sealed provenance to this exact captured RUN/R source."""
+    if not isinstance(provenance, dict):
+        raise PackageVerificationError("SealedEvidence provenance must be an object")
+    expected = {
+        "run_id": run_id,
+        "scenario_id": config["scenario_id"],
+        "scenario_version": config["version"],
+        "world_id": manifest["world_id"],
+        "world_version": manifest["world_version"],
+        "replicate_id": config["replicate_id"],
+        "outer_replicate_id": assignment["outer_replicate_id"],
+        "assignment_role": assignment["assignment_role"],
+        "assignment_index": assignment["replicate"],
+        "g_assignment_mechanism_id": manifest["g_assignment_mechanism_id"],
+        "g_assignment_mechanism_version": manifest["g_assignment_mechanism_version"],
+        "g_assignment_mechanism_hash": manifest["g_assignment_mechanism_hash"],
+        "z_assignment_mechanism_id": manifest["z_assignment_mechanism_id"],
+        "z_assignment_mechanism_version": manifest["z_assignment_mechanism_version"],
+        "z_assignment_mechanism_hash": manifest["z_assignment_mechanism_hash"],
+        "g_reference_regime_id": manifest["g_reference_regime_id"],
+        "g_reference_regime_version": manifest["g_reference_regime_version"],
+        "z_assignment_vector_hash": manifest["z_assignment_vector_hash"],
+        "g_assignment_vector_hash": manifest["g_assignment_vector_hash"],
+    }
+    if any(provenance.get(name) != value for name, value in expected.items()):
+        raise PackageVerificationError("SealedEvidence provenance identity differs from its RUN/R source objects")
+    digest = _sha256(json.dumps(
+        provenance, sort_keys=True, separators=(",", ":"), allow_nan=False
+    ).encode("utf-8"))
+    if manifest.get("provenance_sha256") != digest:
+        raise PackageVerificationError("SealedEvidence provenance digest does not recompute")
+    if analyzer.get("provenance_sha256") != digest:
+        raise PackageVerificationError("AnalyzerResult provenance_sha256 differs from SealedEvidence provenance")
+    return digest
+
+
 def _snapshot_legacy_sealed_digest(sealed: dict[str, Any]) -> str:
     if set(sealed) != {"run_id", "rows", "manifest", "sha256"}:
         raise PackageVerificationError("SealedEvidence decoded fields are incomplete")
@@ -1016,11 +1057,9 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
         if sealed["manifest"].get("row_count") != len(sealed["rows"]):
             raise PackageVerificationError("SealedEvidence row_count differs from retained rows")
         provenance = sealed["manifest"].get("provenance", {})
-        provenance_digest = _sha256(json.dumps(
-            provenance, sort_keys=True, separators=(",", ":"), allow_nan=False
-        ).encode("utf-8"))
-        if sealed["manifest"].get("provenance_sha256") != provenance_digest:
-            raise PackageVerificationError("SealedEvidence provenance digest does not recompute")
+        _assert_sealed_provenance_identity(
+            provenance, key[6], assignment, config, manifest, analyzer
+        )
         if key[4] == "RUN" and key[5] != -1:
             raise PackageVerificationError("designated RUN must use assignment_index -1")
         if key[4] == "REPEATED_ASSIGNMENT" and key[5] < 0:
