@@ -1,0 +1,103 @@
+name: C10-S legacy integrated synthetic harness tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_synthetic_test_execution:
+        description: "Confirm execution of the integrated suite, including synthetic Generator and producer calls"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  integrated-synthetic-contract-tests:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/research/c10-s-consolidation-draft' && inputs.confirm_synthetic_test_execution == true
+    name: Explicitly authorized integrated synthetic contract suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact research-branch commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pinned P178 reference dependencies
+        run: python -m pip install numpy==2.3.5 scipy==1.17.0
+
+      - name: Compile harness and tests
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: python -m py_compile focal_harness.py test_focal_harness.py test_p178_analyzer_bridge.py run_p178_analyzer_monte_carlo.py test_p178_analyzer_monte_carlo.py vcont_integrated_harness.py test_vcont_integrated_harness.py vcont_benchmark_protocol.py test_vcont_benchmark_protocol.py
+
+      - name: Run primary integrated suite and capture stdout/stderr
+        id: primary
+        shell: bash
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: |
+          set +e
+          PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v > "$RUNNER_TEMP/c10s-primary-stdout.txt" 2> "$RUNNER_TEMP/c10s-primary-stderr.txt"
+          status=$?
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+          cat "$RUNNER_TEMP/c10s-primary-stdout.txt"
+          cat "$RUNNER_TEMP/c10s-primary-stderr.txt" >&2
+          exit "$status"
+
+      - name: Replay suite from clean source archive after primary PASS
+        if: steps.primary.outputs.exit_code == '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          clean_root="$RUNNER_TEMP/c10s-clean-replay"
+          mkdir -p "$clean_root"
+          git archive "$GITHUB_SHA" 03_EXPERIMENTS/C10-S/harness 03_EXPERIMENTS/C10-S/calibration/p178_focal_monte_carlo.py 03_EXPERIMENTS/C10-S/calibration/p178_reference_N700.csv | tar -x -C "$clean_root"
+          cd "$clean_root/03_EXPERIMENTS/C10-S/harness"
+          PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v \
+            > "$RUNNER_TEMP/c10s-replay-stdout.txt" \
+            2> "$RUNNER_TEMP/c10s-replay-stderr.txt"
+          cat "$RUNNER_TEMP/c10s-replay-stdout.txt"
+          cat "$RUNNER_TEMP/c10s-replay-stderr.txt" >&2
+
+      - name: Record execution provenance
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p = Path(os.environ["RUNNER_TEMP"])
+          manifest = {
+              "workflow": "c10-s-legacy-integrated-synthetic-harness-tests",
+              "tested_commit": os.environ["GITHUB_SHA"],
+              "workflow_run_id": os.environ["GITHUB_RUN_ID"],
+              "run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+              "event": os.environ["GITHUB_EVENT_NAME"],
+              "ref": os.environ["GITHUB_REF"],
+              "synthetic_execution_confirmed": True,
+          }
+          (p / "c10s-execution-manifest.json").write_text(
+              json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
+          )
+          PY
+
+      - name: Upload execution captures and manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: c10s-integrated-synthetic-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/c10s-primary-stdout.txt
+            ${{ runner.temp }}/c10s-primary-stderr.txt
+            ${{ runner.temp }}/c10s-replay-stdout.txt
+            ${{ runner.temp }}/c10s-replay-stderr.txt
+            ${{ runner.temp }}/c10s-execution-manifest.json
+          if-no-files-found: warn
+          retention-days: 30

@@ -1,0 +1,157 @@
+name: C10-S P178 Analyzer Monte Carlo validation
+
+on:
+  push:
+    branches:
+      - research/c10-s-consolidation-draft
+    paths:
+      - '03_EXPERIMENTS/C10-S/harness/run_p178_analyzer_monte_carlo.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_p178_analyzer_monte_carlo.py'
+      - '03_EXPERIMENTS/C10-S/harness/focal_harness.py'
+      - '03_EXPERIMENTS/C10-S/calibration/p178_focal_monte_carlo.py'
+      - '03_EXPERIMENTS/C10-S/calibration/p178_reference_N700.csv'
+      - '.github/workflows/c10-s-analyzer-monte-carlo.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  p178-analyzer-monte-carlo:
+    name: Run 27-cell P178 Analyzer Monte Carlo and clean replay
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Check out exact research-branch commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pinned reference dependencies
+        run: python -m pip install numpy==2.3.5 scipy==1.17.0
+
+      - name: Compile harness, runner and tests
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python -m py_compile focal_harness.py test_focal_harness.py test_p178_analyzer_bridge.py run_p178_analyzer_monte_carlo.py test_p178_analyzer_monte_carlo.py
+
+      - name: Run software contract and Monte Carlo smoke tests
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: python -B -m unittest -v
+
+      - name: Execute primary 27-cell Analyzer Monte Carlo
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/c10s-primary"
+          python 03_EXPERIMENTS/C10-S/harness/run_p178_analyzer_monte_carlo.py \
+            --out "$RUNNER_TEMP/c10s-primary" \
+            --replications 10000 \
+            --strict-protocol \
+            > "$RUNNER_TEMP/c10s-primary-stdout.txt" \
+            2> "$RUNNER_TEMP/c10s-primary-stderr.txt"
+          cat "$RUNNER_TEMP/c10s-primary-stdout.txt"
+          cat "$RUNNER_TEMP/c10s-primary-stderr.txt" >&2
+
+      - name: Replay tests and full Monte Carlo from clean source archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          clean_root="$RUNNER_TEMP/c10s-clean-replay"
+          mkdir -p "$clean_root"
+          git archive "$GITHUB_SHA" \
+            03_EXPERIMENTS/C10-S/harness \
+            03_EXPERIMENTS/C10-S/calibration/p178_focal_monte_carlo.py \
+            03_EXPERIMENTS/C10-S/calibration/p178_reference_N700.csv \
+            | tar -x -C "$clean_root"
+
+          cd "$clean_root/03_EXPERIMENTS/C10-S/harness"
+          PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v \
+            > "$RUNNER_TEMP/c10s-replay-tests-stdout.txt" \
+            2> "$RUNNER_TEMP/c10s-replay-tests-stderr.txt"
+
+          cd "$clean_root"
+          python 03_EXPERIMENTS/C10-S/harness/run_p178_analyzer_monte_carlo.py \
+            --out "$RUNNER_TEMP/c10s-replay" \
+            --replications 10000 \
+            --strict-protocol \
+            > "$RUNNER_TEMP/c10s-replay-stdout.txt" \
+            2> "$RUNNER_TEMP/c10s-replay-stderr.txt"
+
+          cmp "$RUNNER_TEMP/c10s-primary/p178_analyzer_monte_carlo.csv" \
+              "$RUNNER_TEMP/c10s-replay/p178_analyzer_monte_carlo.csv"
+          cmp "$RUNNER_TEMP/c10s-primary/p178_analyzer_monte_carlo_manifest.json" \
+              "$RUNNER_TEMP/c10s-replay/p178_analyzer_monte_carlo_manifest.json"
+
+          cat "$RUNNER_TEMP/c10s-replay-tests-stdout.txt"
+          cat "$RUNNER_TEMP/c10s-replay-tests-stderr.txt" >&2
+          cat "$RUNNER_TEMP/c10s-replay-stdout.txt"
+          cat "$RUNNER_TEMP/c10s-replay-stderr.txt" >&2
+
+      - name: Record execution provenance and output hashes
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+
+          root = Path(os.environ["RUNNER_TEMP"])
+          def digest(path):
+              if not path.exists():
+                  return None
+              h = hashlib.sha256()
+              with path.open("rb") as stream:
+                  for block in iter(lambda: stream.read(1024 * 1024), b""):
+                      h.update(block)
+              return h.hexdigest()
+
+          files = [
+              "c10s-primary/p178_analyzer_monte_carlo.csv",
+              "c10s-primary/p178_analyzer_monte_carlo_manifest.json",
+              "c10s-replay/p178_analyzer_monte_carlo.csv",
+              "c10s-replay/p178_analyzer_monte_carlo_manifest.json",
+              "c10s-primary-stdout.txt", "c10s-primary-stderr.txt",
+              "c10s-replay-stdout.txt", "c10s-replay-stderr.txt",
+              "c10s-replay-tests-stdout.txt", "c10s-replay-tests-stderr.txt",
+          ]
+          manifest = {
+              "workflow": "c10-s-analyzer-monte-carlo",
+              "tested_commit": os.environ["GITHUB_SHA"],
+              "workflow_run_id": os.environ["GITHUB_RUN_ID"],
+              "run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+              "event": os.environ["GITHUB_EVENT_NAME"],
+              "ref": os.environ["GITHUB_REF"],
+              "sha256": {name: digest(root / name) for name in files},
+          }
+          (root / "c10s-analyzer-mc-execution-manifest.json").write_text(
+              json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+          )
+          PY
+
+      - name: Upload primary, replay and provenance artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: c10s-p178-analyzer-mc-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/c10s-primary/**
+            ${{ runner.temp }}/c10s-replay/**
+            ${{ runner.temp }}/c10s-primary-stdout.txt
+            ${{ runner.temp }}/c10s-primary-stderr.txt
+            ${{ runner.temp }}/c10s-replay-stdout.txt
+            ${{ runner.temp }}/c10s-replay-stderr.txt
+            ${{ runner.temp }}/c10s-replay-tests-stdout.txt
+            ${{ runner.temp }}/c10s-replay-tests-stderr.txt
+            ${{ runner.temp }}/c10s-analyzer-mc-execution-manifest.json
+          if-no-files-found: warn
+          retention-days: 30

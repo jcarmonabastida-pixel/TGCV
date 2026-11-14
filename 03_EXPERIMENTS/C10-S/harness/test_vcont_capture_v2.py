@@ -1,0 +1,700 @@
+"""Pure fixture tests for Gate 185 capture primitives; never invoke producers."""
+from dataclasses import asdict, replace
+import copy
+import json
+import hashlib
+import math
+import unittest
+from types import SimpleNamespace
+
+import rfc8785
+
+from vcont_benchmark_protocol import (
+    MonteCarloBenchmarkDesign, SCENARIO_IDS, SeedAssignment,
+    build_scenario_estimand_matrix, scenario_matrix_fingerprint,
+)
+from vcont_integrated_harness import (
+    AnalyzerResult, AnalysisContract, EvaluationReport, EvidenceCandidate,
+    RepeatedAssignmentReport, RunManifest, ScenarioConfig, SealedEvidence,
+    TruthBundle, benchmark_scenarios, contract_for,
+)
+from vcont_evidence_export import (
+    CapturedBenchmark, ContractError, FrozenSnapshot, MatrixTruthProjection,
+    OuterWorldEvidenceBundle, RunEvidenceBundle, _matrix_truth_projection,
+    _legacy_sealed_digest, _reconcile_report_seed_sources, _snapshot_digest,
+    capture_matrix, freeze_report_snapshot,
+)
+
+
+class CaptureV2Tests(unittest.TestCase):
+    def setUp(self):
+        self.versions = tuple((sid, "VCONT-SYNTH-001") for sid in SCENARIO_IDS)
+        self.matrix = build_scenario_estimand_matrix(dict(self.versions))
+        self.design = SimpleNamespace(
+            scenario_versions=self.versions,
+            n_units=32,
+            outer_replicates=2,
+            repeated_assignments=2,
+            matrix_fingerprint=scenario_matrix_fingerprint(self.matrix),
+        )
+
+    def report_fixture(self):
+        temporal = []
+        for scenario_id, scenario_version in self.versions:
+            for m in range(self.design.outer_replicates):
+                outer_id = f"outer-{m:06d}"
+                for role, assignment_index in (
+                    [("RUN", -1)] + [
+                        ("REPEATED_ASSIGNMENT", r)
+                        for r in range(self.design.repeated_assignments)
+                    ]
+                ):
+                    temporal.append({
+                        "scenario_id": scenario_id,
+                        "scenario_version": scenario_version,
+                        "N": self.design.n_units,
+                        "outer_replicate_id": outer_id,
+                        "assignment_role": role,
+                        "assignment_index": assignment_index,
+                        "run_id": f"run-{scenario_id}-{m}-{assignment_index}",
+                        "world_id": f"world-{scenario_id}-{m}",
+                        "world_seed": 17,
+                        "z_assignment_seed": 19 + max(0, assignment_index),
+                        "g_assignment_seed": 23 + max(0, assignment_index),
+                    })
+
+        binary = {
+            "n": 2, "successes": 1, "rate": 0.5, "mcse": 0.35,
+            "wilson_95_low": 0.1, "wilson_95_high": 0.9,
+        }
+        metric = {
+            "outer_replicates": 2, "metric_mean": 0.1, "metric_sd": 0.2,
+            "mcse": 0.14, "target_mcse": 0.2, "precision_status": "PASS",
+        }
+        rmse_metric = {
+            "outer_replicates": 2, "rmse": 0.2, "mean_squared_error": 0.04,
+            "mcse_rmse_delta": 0.1, "target_mcse": 0.2, "precision_status": "PASS",
+        }
+        pair_ledger = []
+        scenario_reports = {}
+
+        truth_fields = (
+            "run_id potential_v potential_interval_truth potential_enabled_truth "
+            "potential_profile_truth potential_delta_t_acc itt_z_truth itt_g_z0_truth "
+            "theta_a_truth seed itt_z_run_truth itt_z_mechanism_truth itt_z_reference_truth "
+            "transportability_invariant_truth transportability_scope_truth "
+            "g_reference_regime_id g_reference_regime_version g_assignment_mechanism_hash "
+            "z_assignment_mechanism_hash outer_replicate_id assignment_role assignment_index"
+        ).split()
+        analyzer_fields = (
+            "run_id estimand_id package_status g_assignment_status package_itt "
+            "g_assignment_effect first_stage_delta_t_acc package_se g_assignment_se "
+            "abstention_reasons input_sha256 output_sha256 target_regime_id "
+            "target_regime_version outcome_id outcome_version reference_regime_status "
+            "reference_regime_id reference_regime_version g_assignment_mechanism_hash "
+            "z_assignment_mechanism_hash transportability_id transportability_version "
+            "transportability_scope transportability_evidence_status estimand_version "
+            "g_assignment_mechanism_id g_assignment_mechanism_version "
+            "z_assignment_mechanism_id z_assignment_mechanism_version provenance_sha256 "
+            "transportability_outcome_id transportability_basis reference_regime_itt "
+            "run_conditional_estimand_id run_conditional_estimand_version "
+            "reference_regime_estimand_id reference_regime_estimand_version "
+            "g_assignment_estimand_id g_assignment_estimand_version outer_replicate_id "
+            "assignment_role assignment_index"
+        ).split()
+        contract_fields = (
+            "estimand_id estimand_version randomized_z randomized_g positivity "
+            "no_interference measurement_identified version_consistency "
+            "focal_direct_path_absent common_nonfocal_regime target_regime_id "
+            "target_regime_version outcome_id outcome_version z_effect_invariant_across_g "
+            "transportability_id transportability_version transportability_scope "
+            "transportability_evidence_status g_assignment_mechanism_hash "
+            "z_assignment_mechanism_hash g_assignment_mechanism_id "
+            "g_assignment_mechanism_version z_assignment_mechanism_id "
+            "z_assignment_mechanism_version reference_regime_id reference_regime_version "
+            "transportability_outcome_id transportability_basis run_conditional_estimand_id "
+            "run_conditional_estimand_version mechanism_marginal_estimand_id "
+            "mechanism_marginal_estimand_version reference_regime_estimand_id "
+            "reference_regime_estimand_version g_assignment_estimand_id "
+            "g_assignment_estimand_version"
+        ).split()
+        run_manifest_fields = (
+            "run_id scenario_id version n_units n_intervals window_start window_end "
+            "interval_width generator_version world_id world_version replicate_id "
+            "g_assignment_mechanism_id g_assignment_mechanism_version "
+            "g_assignment_mechanism_hash z_assignment_mechanism_id "
+            "z_assignment_mechanism_version z_assignment_mechanism_hash "
+            "g_reference_regime_id g_reference_regime_version z_assignment_vector_hash "
+            "g_assignment_vector_hash g_assignment_probability_by_stratum world_seed "
+            "z_assignment_seed g_assignment_seed outer_replicate_id assignment_role "
+            "assignment_index"
+        ).split()
+        evaluation_fields = (
+            "run_id package_abs_error g_assignment_abs_error package_recovered "
+            "g_assignment_recovered expected_abstention_respected notes "
+            "reference_regime_status_correct reference_regime_estimate_present"
+        ).split()
+        repeated_fields = (
+            "world_id replicate_count mean_run_estimate mechanism_truth marginal_abs_error "
+            "marginal_recovered per_run_reports reference_truth reference_estimate_mean "
+            "reference_abs_error reference_recovered reference_identification_status "
+            "mechanism_marginal_estimand_id mechanism_marginal_estimand_version "
+            "reference_regime_estimand_id reference_regime_estimand_version"
+        ).split()
+
+        for scenario_id, scenario_version in self.versions:
+            selected = [spec for spec in self.matrix if spec.key.scenario_id == scenario_id]
+            for spec in selected:
+                contributions = []
+                for m in range(self.design.outer_replicates):
+                    contributions.append({
+                        "outer_replicate_id": f"outer-{m:06d}",
+                        "world_id": f"world-{scenario_id}-{m}",
+                        "world_seed": 17,
+                        "run_id": f"run-{scenario_id}-{m}",
+                        "temporal_source": "RUN",
+                        "evaluation_class": "EVALUABLE",
+                        "run_status": "IDENTIFIED",
+                        "identification_status": "IDENTIFIED",
+                        "identification_expected": "IDENTIFIED",
+                        "abstention_expected": False,
+                        "adjudicated_status": "IDENTIFIED",
+                        "identification_correct": True,
+                        "abstention_correct": True,
+                        "abstained": False,
+                        "abstention_reasons": [],
+                        "estimate": 0.1,
+                        "truth": 0.1,
+                        "signed_error": 0.0,
+                        "absolute_error": 0.0,
+                        "squared_error": 0.0,
+                        "contribution_state": "NUMERIC",
+                    })
+                pair_ledger.append({
+                    "key": [scenario_id, scenario_version, spec.key.estimand_id,
+                            spec.key.estimand_version, "MONTE_CARLO"],
+                    "evaluation_class": "EVALUABLE",
+                    "truth_status": "DEFINED",
+                    "expected_M": 2, "observed_M": 2,
+                    "numeric_denominator": 2, "status_denominator": 2,
+                    "missing_contribution_count": 0, "truth_missing_count": 0,
+                    "invalid_output_count": 0, "abstention_count": 0,
+                    "identification_correct_count": 2, "abstention_correct_count": 2,
+                    "identification_rates": {
+                        "identified": binary, "not_identified": binary,
+                        "indeterminate": binary, "abstained": binary,
+                    },
+                    "run_identification_rates": {
+                        "identified": binary, "not_identified": binary,
+                        "indeterminate": binary,
+                    },
+                    "metrics": {"bias": metric, "mae": metric, "rmse": rmse_metric},
+                    "precision_status": "PASS_PRECISION",
+                    "contributions": contributions,
+                })
+
+            per_outer = []
+            for m in range(self.design.outer_replicates):
+                outer_id = f"outer-{m:06d}"
+                run = [
+                    dict.fromkeys(truth_fields),
+                    dict.fromkeys(analyzer_fields),
+                    dict.fromkeys(contract_fields),
+                    dict.fromkeys(run_manifest_fields),
+                ]
+                run[0].update({"run_id": f"run-{scenario_id}-{m}", "seed": 17})
+                run[1].update({"run_id": f"run-{scenario_id}-{m}"})
+                run[3].update({
+                    "run_id": f"run-{scenario_id}-{m}", "scenario_id": scenario_id,
+                    "version": scenario_version, "n_units": self.design.n_units,
+                    "world_seed": 17, "z_assignment_seed": 19, "g_assignment_seed": 23,
+                    "outer_replicate_id": outer_id,
+                })
+                evaluation = dict.fromkeys(evaluation_fields)
+                evaluation["run_id"] = f"run-{scenario_id}-{m}"
+                repeated = dict.fromkeys(repeated_fields)
+                repeated["world_id"] = f"world-{scenario_id}-{m}"
+                repeated["replicate_count"] = self.design.repeated_assignments
+                repeated["per_run_reports"] = [dict(evaluation) for _ in range(2)]
+                per_outer.append({
+                    "outer_replicate_id": outer_id,
+                    "run": run,
+                    "run_report": evaluation,
+                    "repeated_report": repeated,
+                })
+            scenario_reports[scenario_id] = {
+                "scenario_id": scenario_id, "scenario_version": scenario_version,
+                "n_units": self.design.n_units, "outer_replicate_count": 2,
+                "coverage": {
+                    "required_pairs": 4, "run_conditional_numeric": 2,
+                    "g_assignment_numeric": 2, "mechanism_marginal_numeric": 2,
+                    "reference_regime_numeric": 2,
+                    "reference_regime_identification_status": 2,
+                },
+                "run_conditional": {
+                    "bias": metric, "mae": metric, "rmse": rmse_metric,
+                    "recovery_rate": binary, "identification_rate": binary,
+                },
+                "g_assignment_z0": {
+                    "bias": metric, "mae": metric, "rmse": rmse_metric,
+                    "recovery_rate": binary, "identification_rate": binary,
+                },
+                "mechanism_marginal": {
+                    "bias": metric, "mae": metric, "rmse": rmse_metric,
+                    "recovery_rate": binary,
+                },
+                "reference_regime": {
+                    "bias": metric, "mae": metric, "rmse": rmse_metric,
+                    "identification_rate": binary, "recovery_rate": binary,
+                },
+                "per_outer_replicate": per_outer,
+            }
+
+        manifest = {
+            "scenario_versions": self.versions,
+            "N": 32, "M": 2, "R": 2,
+            "matrix_fingerprint": self.design.matrix_fingerprint,
+            "seed_bank_label": "evaluation",
+            "seed_bank_fingerprint": "a" * 64,
+            "executable_commit": "c" * 40,
+            "configuration_fingerprint": "b" * 64,
+            "metric_targets": (),
+            "temporal_manifest": copy.deepcopy(temporal),
+            "pair_ledger": copy.deepcopy(pair_ledger),
+        }
+        return {
+            "design": {
+                "scenario_versions": self.versions, "n_units": 32,
+                "outer_replicates": 2, "repeated_assignments": 2,
+                "matrix_fingerprint": self.design.matrix_fingerprint,
+                "metric_targets": (), "seed_bank_label": "evaluation",
+                "seed_bank_fingerprint": "a" * 64, "executable_commit": "c" * 40,
+                "configuration_fingerprint": "b" * 64,
+            },
+            "temporal_manifest": temporal,
+            "pair_ledger": pair_ledger,
+            "manifest": manifest,
+            "scenario_reports": scenario_reports,
+            "coverage": {"required_pairs": 52, "observed_pairs": 52, "scenario_count": 13},
+            "report_fingerprint": hashlib.sha256(
+                json.dumps(manifest, sort_keys=True, separators=(",", ":"), allow_nan=False)
+                .encode("utf-8")
+            ).hexdigest(),
+        }
+
+    def test_matrix_capture_has_exact_52_rows_and_recomputable_digest(self):
+        capture = capture_matrix(self.matrix, self.design)
+        payload = capture.to_payload()
+        self.assertEqual(capture.row_count, 52)
+        self.assertEqual(len(payload["rows"]), 52)
+        digest_input = {
+            "schema_id": "TGCV-C10S-VCONT-MATRIX-CAPTURE",
+            "schema_version": "1.0.0",
+            "row_count": 52,
+            "rows": payload["rows"],
+        }
+        self.assertEqual(
+            capture.full_matrix_sha256,
+            __import__("hashlib").sha256(rfc8785.dumps(digest_input)).hexdigest(),
+        )
+        self.assertEqual(capture.full_matrix_digest_algorithm,
+                         "TGCV-C10S-VCONT-MATRIX-FULL-JCS-SHA256-1")
+
+    def test_matrix_capture_rejects_permutation_even_when_pair_set_is_unchanged(self):
+        with self.assertRaises(ContractError):
+            capture_matrix((self.matrix[1], self.matrix[0]) + self.matrix[2:], self.design)
+
+    def test_tolerance_id_changes_full_digest_but_not_legacy_fingerprint(self):
+        changed = (replace(self.matrix[0], tolerance_id="TOLERANCE-REVISION-2"),) + self.matrix[1:]
+        self.assertEqual(scenario_matrix_fingerprint(changed), self.design.matrix_fingerprint)
+        changed_capture = capture_matrix(changed, self.design)
+        baseline = capture_matrix(self.matrix, self.design)
+        self.assertNotEqual(changed_capture.full_matrix_sha256, baseline.full_matrix_sha256)
+
+    def _source_reconciliation_fixture(self):
+        scenario_id = "R0_FOCAL_POSITIVE"
+        version = "VCONT-SYNTH-001"
+        outer_id = "outer-000000"
+        n_units = 32
+        base = benchmark_scenarios(n_units=n_units, n_intervals=20, seed=1000)[0]
+
+        def make_bundle(role, index, run_id, z_seed, g_seed):
+            config = replace(
+                base, seed=1000, world_seed=1000,
+                z_assignment_seed=z_seed, g_assignment_seed=g_seed,
+                replicate_id="replicate-000", outer_replicate_id=outer_id,
+                assignment_role=role, assignment_index=index,
+            )
+            contract = contract_for(config)
+            world_seed = config.world_seed
+            effective_z = config.z_assignment_seed
+            effective_g = config.g_assignment_seed
+            assignment = SeedAssignment(
+                "evaluation", scenario_id, n_units, index, world_seed,
+                effective_z, effective_g, version, outer_id, role,
+            )
+            manifest = RunManifest(
+                run_id, scenario_id, version, n_units, config.n_intervals,
+                config.window_start,
+                config.last_transition_support + config.follow_up,
+                (config.last_transition_support + config.follow_up - config.window_start) / config.n_intervals,
+                "generator-test", world_id="world-test", world_version=version,
+                replicate_id=config.replicate_id,
+                g_assignment_mechanism_id=contract.g_assignment_mechanism_id,
+                g_assignment_mechanism_version=contract.g_assignment_mechanism_version,
+                g_assignment_mechanism_hash=contract.g_assignment_mechanism_hash,
+                z_assignment_mechanism_id=contract.z_assignment_mechanism_id,
+                z_assignment_mechanism_version=contract.z_assignment_mechanism_version,
+                z_assignment_mechanism_hash=contract.z_assignment_mechanism_hash,
+                g_reference_regime_id=contract.reference_regime_id,
+                g_reference_regime_version=contract.reference_regime_version,
+                world_seed=world_seed, z_assignment_seed=effective_z,
+                g_assignment_seed=effective_g,
+                outer_replicate_id=outer_id, assignment_role=role, assignment_index=index,
+            )
+            truth = TruthBundle(
+                run_id, (), (), (), (), (), 0.0, 0.0, None, config.seed,
+                g_reference_regime_id=manifest.g_reference_regime_id,
+                g_reference_regime_version=manifest.g_reference_regime_version,
+                g_assignment_mechanism_hash=manifest.g_assignment_mechanism_hash,
+                z_assignment_mechanism_hash=manifest.z_assignment_mechanism_hash,
+                outer_replicate_id=outer_id, assignment_role=role, assignment_index=index,
+            )
+            provenance = {}
+            provenance_sha = hashlib.sha256(json.dumps(
+                provenance, sort_keys=True, separators=(",", ":"), allow_nan=False
+            ).encode("utf-8")).hexdigest()
+            sealed_manifest = {
+                "row_count": 0, "provenance": provenance,
+                "provenance_sha256": provenance_sha,
+            }
+            sealed = SealedEvidence(run_id, (), sealed_manifest, "")
+            sealed = replace(sealed, sha256=_legacy_sealed_digest(sealed))
+            candidate = EvidenceCandidate(run_id, (), provenance)
+            analyzer = AnalyzerResult(
+                run_id, contract.estimand_id, "IDENTIFIED", "IDENTIFIED",
+                0.0, 0.0, None, None, None, (), sealed.sha256, "b" * 64,
+                target_regime_id=contract.target_regime_id,
+                target_regime_version=contract.target_regime_version,
+                outcome_id=contract.outcome_id, outcome_version=contract.outcome_version,
+                g_assignment_mechanism_id=contract.g_assignment_mechanism_id,
+                g_assignment_mechanism_version=contract.g_assignment_mechanism_version,
+                g_assignment_mechanism_hash=contract.g_assignment_mechanism_hash,
+                z_assignment_mechanism_id=contract.z_assignment_mechanism_id,
+                z_assignment_mechanism_version=contract.z_assignment_mechanism_version,
+                z_assignment_mechanism_hash=contract.z_assignment_mechanism_hash,
+                reference_regime_id=contract.reference_regime_id,
+                reference_regime_version=contract.reference_regime_version,
+                estimand_version=contract.estimand_version,
+                run_conditional_estimand_id=contract.run_conditional_estimand_id,
+                run_conditional_estimand_version=contract.run_conditional_estimand_version,
+                reference_regime_estimand_id=contract.reference_regime_estimand_id,
+                reference_regime_estimand_version=contract.reference_regime_estimand_version,
+                g_assignment_estimand_id=contract.g_assignment_estimand_id,
+                g_assignment_estimand_version=contract.g_assignment_estimand_version,
+                transportability_id=contract.transportability_id,
+                transportability_version=contract.transportability_version,
+                transportability_scope=contract.transportability_scope,
+                transportability_evidence_status=contract.transportability_evidence_status,
+                transportability_outcome_id=contract.transportability_outcome_id,
+                transportability_basis=contract.transportability_basis,
+                provenance_sha256=provenance_sha,
+                outer_replicate_id=outer_id, assignment_role=role, assignment_index=index,
+            )
+            evaluation = EvaluationReport(run_id, None, None, None, None, True, ())
+            projection = _matrix_truth_projection(truth)
+            structural = asdict(config)
+            for field_name in (
+                "seed", "world_seed", "z_assignment_seed", "g_assignment_seed",
+                "replicate_id", "outer_replicate_id", "assignment_role", "assignment_index",
+            ):
+                structural.pop(field_name)
+            bundle = RunEvidenceBundle(
+                "TGCV-C10S-VCONT-RUN-EVIDENCE-BUNDLE", "1.0.0",
+                (scenario_id, version, n_units, outer_id, role, index, run_id), "evaluation",
+                FrozenSnapshot.capture(assignment), FrozenSnapshot.capture(config),
+                FrozenSnapshot.capture(manifest), FrozenSnapshot.capture(projection),
+                FrozenSnapshot.capture(candidate), FrozenSnapshot.capture(sealed),
+                FrozenSnapshot.capture(contract), FrozenSnapshot.capture(analyzer),
+                FrozenSnapshot.capture(evaluation), _snapshot_digest(structural),
+                _snapshot_digest(contract), sealed.sha256, "STRUCTURALLY_VALID",
+            )
+            return bundle, (truth, analyzer, contract, manifest), evaluation
+
+        run_bundle, run_tuple, run_evaluation = make_bundle("RUN", -1, "run-main", 101003, 201003)
+        repeated_bundle, _, repeated_evaluation = make_bundle(
+            "REPEATED_ASSIGNMENT", 0, "run-repeat", 101004, 201004
+        )
+        repeated_report = RepeatedAssignmentReport(
+            "world-test", 1, None, 0.0, None, None, (repeated_evaluation,)
+        )
+        outer = OuterWorldEvidenceBundle(
+            "TGCV-C10S-VCONT-OUTER-WORLD-EVIDENCE-BUNDLE", "1.0.0",
+            scenario_id, version, n_units, outer_id, "world-test", version, 1000,
+            run_bundle, (repeated_bundle,), FrozenSnapshot.capture(repeated_report),
+        )
+        design = MonteCarloBenchmarkDesign(
+            ((scenario_id, version),), n_units, 1, 1, "f" * 64, (),
+            "evaluation", "a" * 64, "b" * 40, "c" * 64,
+        )
+        report = {
+            "design": design,
+            "scenario_reports": {
+                scenario_id: {
+                    "scenario_id": scenario_id,
+                    "scenario_version": version,
+                    "per_outer_replicate": ({
+                        "outer_replicate_id": outer_id,
+                        "run": run_tuple,
+                        "run_report": run_evaluation,
+                        "repeated_report": repeated_report,
+                    },),
+                }
+            },
+        }
+        return report, outer, run_tuple
+
+    def test_v2_1_source_reconciliation_accepts_exact_run_and_repeated_bundles(self):
+        report, outer, _ = self._source_reconciliation_fixture()
+        _reconcile_report_seed_sources(report, (outer,))
+
+    def test_v2_1_source_reconciliation_rejects_report_manifest_seed_divergence(self):
+        report, outer, run_tuple = self._source_reconciliation_fixture()
+        altered = replace(run_tuple[3], world_seed=run_tuple[3].world_seed + 1)
+        row = report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]
+        report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"] = (
+            {**row, "run": run_tuple[:3] + (altered,)},
+        )
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (outer,))
+
+    def test_v2_1_source_reconciliation_rejects_repeated_seed_source_divergence(self):
+        report, outer, _ = self._source_reconciliation_fixture()
+        repeated = outer.repeated_bundles[0]
+        assignment = repeated.assignment.restore(SeedAssignment)
+        altered_assignment = replace(assignment, z_assignment_seed=assignment.z_assignment_seed + 1)
+        altered_bundle = replace(repeated, assignment=FrozenSnapshot.capture(altered_assignment))
+        altered_outer = replace(outer, repeated_bundles=(altered_bundle,))
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (altered_outer,))
+
+    def test_v2_1_source_reconciliation_rejects_truth_seed_projection_mismatch(self):
+        report, outer, run_tuple = self._source_reconciliation_fixture()
+        altered_truth = replace(run_tuple[0], seed=run_tuple[0].seed + 1)
+        row = report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]
+        report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"] = (
+            {**row, "run": (altered_truth,) + run_tuple[1:]},
+        )
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (outer,))
+
+    def test_v2_1_source_reconciliation_rejects_explicit_config_stream_mismatch(self):
+        report, outer, _ = self._source_reconciliation_fixture()
+        source = outer.run_bundle
+        config = source.scenario_config.restore(ScenarioConfig)
+        altered_config = replace(config, z_assignment_seed=999999)
+        altered_run = replace(source, scenario_config=FrozenSnapshot.capture(altered_config))
+        altered_outer = replace(outer, run_bundle=altered_run)
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (altered_outer,))
+
+    def test_v2_1_source_reconciliation_rejects_outer_world_seed_mismatch(self):
+        report, outer, _ = self._source_reconciliation_fixture()
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (replace(outer, world_seed=outer.world_seed + 1),))
+
+    def test_v2_1_source_reconciliation_rejects_missing_repeated_assignment(self):
+        report, outer, _ = self._source_reconciliation_fixture()
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (replace(outer, repeated_bundles=()),))
+
+    def test_v2_1_source_reconciliation_rejects_contract_manifest_identity_divergence(self):
+        report, outer, _ = self._source_reconciliation_fixture()
+        run_bundle = outer.run_bundle
+        contract = run_bundle.analysis_contract.restore(AnalysisContract)
+        altered = replace(contract, g_assignment_mechanism_id="UNREGISTERED_MECHANISM")
+        altered_run = replace(
+            run_bundle,
+            analysis_contract=FrozenSnapshot.capture(altered),
+            analysis_contract_sha256=_snapshot_digest(altered),
+        )
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (replace(outer, run_bundle=altered_run),))
+
+    def test_v2_1_source_reconciliation_rejects_sealed_evidence_digest_divergence(self):
+        report, outer, _ = self._source_reconciliation_fixture()
+        run_bundle = outer.run_bundle
+        sealed = run_bundle.sealed_evidence.restore(SealedEvidence)
+        altered_manifest = dict(sealed.manifest)
+        altered_manifest["row_count"] = 1
+        altered = replace(sealed, manifest=altered_manifest)
+        altered = replace(altered, sha256=_legacy_sealed_digest(altered))
+        altered_run = replace(run_bundle, sealed_evidence=FrozenSnapshot.capture(altered))
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (replace(outer, run_bundle=altered_run),))
+
+    def test_v2_1_source_reconciliation_rejects_duplicate_or_missing_outer_groups(self):
+        report, outer, _ = self._source_reconciliation_fixture()
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, ())
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (outer, outer))
+
+    def test_v2_1_snapshot_rejects_missing_source_bundle_reconciliation(self):
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(self.report_fixture())
+
+    def test_report_snapshot_wraps_uint64_and_is_immutable_from_compatibility_dict(self):
+        report = self.report_fixture()
+        snapshot = freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
+        original_bytes = snapshot.canonical_bytes
+        report["coverage"]["observed_pairs"] = 0
+        self.assertEqual(snapshot.canonical_bytes, original_bytes)
+        envelope = json.loads(snapshot.canonical_bytes.decode("utf-8"))
+        self.assertEqual(envelope["schema_version"], "2.1.0")
+        self.assertEqual(envelope["payload_type"], "TGCV-C10S-VCONT-BENCHMARK-REPORT")
+        self.assertEqual(envelope["schema_id"], "TGCV-C10S-VCONT-REPORT-SNAPSHOT")
+        self.assertEqual(
+            envelope["legacy_fingerprint_algorithm"],
+            "TGCV-C10S-VCONT-LEGACY-REPORT-FINGERPRINT-PYJSON-SORTKEYS-COMPACT-SHA256-1",
+        )
+        temporal = envelope["report"]["temporal_manifest"][0]
+        self.assertEqual(temporal["world_seed"],
+                         {"$type": "uint64", "decimal": "18446744073709551615"})
+        self.assertEqual(temporal["z_assignment_seed"],
+                         {"$type": "uint64", "decimal": "9007199254740993"})
+        nested = envelope["report"]["manifest"]["temporal_manifest"][0]
+        self.assertEqual(temporal, nested)
+        self.assertEqual(snapshot.sha256,
+                         __import__("hashlib").sha256(snapshot.canonical_bytes).hexdigest())
+
+    def test_report_snapshot_rejects_root_nested_manifest_disagreement(self):
+        report = self.report_fixture()
+        report["manifest"]["temporal_manifest"][0]["world_seed"] = 1
+        normalized = json.loads(json.dumps(
+            report["manifest"], default=lambda value: value.__dict__, sort_keys=True
+        ))
+        report["report_fingerprint"] = hashlib.sha256(json.dumps(
+            normalized, sort_keys=True, separators=(",", ":"), allow_nan=False
+        ).encode("utf-8")).hexdigest()
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
+
+
+    def test_report_snapshot_rejects_tampered_legacy_fingerprint(self):
+        report = self.report_fixture()
+        report["report_fingerprint"] = "e" * 64
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
+
+    def test_report_snapshot_rejects_non_uint64_seed_and_unknown_top_level_field(self):
+        report = self.report_fixture()
+        report["temporal_manifest"][0]["world_seed"] = -1
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
+        report = self.report_fixture()
+        report["temporal_manifest"][0]["z_assignment_seed"] = 1 << 64
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
+        report = self.report_fixture()
+        report["temporal_manifest"][0]["g_assignment_seed"] = True
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
+        report = self.report_fixture()
+        report["unexpected"] = True
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
+
+
+    def test_report_snapshot_rejects_unknown_nested_scenario_field(self):
+        report = self.report_fixture()
+        report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"][0]["unexpected"] = 1
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
+
+    def test_report_snapshot_rejects_temporal_and_pair_cardinality_drift(self):
+        report = self.report_fixture()
+        report["temporal_manifest"].pop()
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
+        report = self.report_fixture()
+        report["pair_ledger"].pop()
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
+
+    def test_report_snapshot_rejects_unknown_pair_contribution_field(self):
+        report = self.report_fixture()
+        report["pair_ledger"][0]["contributions"][0]["unexpected"] = "drift"
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
+
+
+    def test_report_snapshot_v2_1_wraps_all_four_scenario_run_uint64_paths(self):
+        report = self.report_fixture()
+        run = report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"]
+        run[0]["seed"] = 9007199254740992
+        run[3]["world_seed"] = 9007199254740991
+        run[3]["z_assignment_seed"] = 18446744073709551615
+        run[3]["g_assignment_seed"] = 0
+        snapshot = freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
+        envelope = json.loads(snapshot.canonical_bytes.decode("utf-8"))
+        projected = envelope["report"]["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"]
+        self.assertEqual(projected[0]["seed"], {"$type": "uint64", "decimal": "9007199254740992"})
+        self.assertEqual(projected[3]["world_seed"], {"$type": "uint64", "decimal": "9007199254740991"})
+        self.assertEqual(projected[3]["z_assignment_seed"], {"$type": "uint64", "decimal": "18446744073709551615"})
+        self.assertEqual(projected[3]["g_assignment_seed"], {"$type": "uint64", "decimal": "0"})
+        self.assertEqual(snapshot.schema_version, "2.1.0")
+
+    def test_truth_bundle_seed_is_not_conflated_with_world_seed(self):
+        report = self.report_fixture()
+        run = report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"]
+        run[0]["seed"] = 31
+        run[3]["world_seed"] = 17
+        snapshot = freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
+        envelope = json.loads(snapshot.canonical_bytes.decode("utf-8"))
+        projected = envelope["report"]["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"]
+        self.assertEqual(projected[0]["seed"], {"$type": "uint64", "decimal": "31"})
+        self.assertEqual(projected[3]["world_seed"], {"$type": "uint64", "decimal": "17"})
+
+    def test_report_snapshot_v2_1_rejects_invalid_nested_uint64_sources(self):
+        mutations = (
+            (0, "seed", -1),
+            (0, "seed", True),
+            (0, "seed", 1 << 64),
+            (3, "world_seed", -1),
+            (3, "world_seed", True),
+            (3, "world_seed", 1 << 64),
+            (3, "z_assignment_seed", 1.5),
+            (3, "g_assignment_seed", "23"),
+        )
+        for tuple_index, field, invalid in mutations:
+            report = self.report_fixture()
+            report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"][tuple_index][field] = invalid
+            with self.subTest(tuple_index=tuple_index, field=field, invalid=invalid):
+                with self.assertRaises(ContractError):
+                    freeze_report_snapshot(report, _allow_unreconciled_fixture=True)
+
+    def test_rfc8785_known_canonicalization_vectors(self):
+        self.assertEqual(rfc8785.dumps({"b": 2, "a": 1}), b'{"a":1,"b":2}')
+        self.assertEqual(
+            rfc8785.dumps({"numbers": [333333333.33333329, 1e30, 4.50, 2e-3, 1e-27]}),
+            b'{"numbers":[333333333.3333333,1e+30,4.5,0.002,1e-27]}',
+        )
+        self.assertEqual(rfc8785.dumps({"a": None, "b": []}), b'{"a":null,"b":[]}')
+
+    def test_rfc8785_rejects_non_finite_numbers_and_unsafe_integers(self):
+        with self.assertRaises(Exception):
+            rfc8785.dumps({"x": math.nan})
+        with self.assertRaises(Exception):
+            rfc8785.dumps({"x": 9007199254740992})
+
+    def test_three_argument_legacy_constructor_remains_compatible(self):
+        captured = CapturedBenchmark({}, (), ())
+        self.assertIsNone(captured.matrix_capture)
+        self.assertIsNone(captured.report_snapshot)
+        self.assertIsNone(captured.capture_id)
+        self.assertIsNone(captured.benchmark_export_id)
+
+
+if __name__ == "__main__":
+    unittest.main()
