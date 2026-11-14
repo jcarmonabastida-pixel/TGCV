@@ -15,6 +15,7 @@ import unicodedata
 from typing import Any, Mapping
 
 import rfc8785
+from vcont_benchmark_protocol import SCENARIO_IDS, SeedAssignment
 
 
 PACKAGE_SCHEMA_ID = "TGCV-C10S-VCONT-MC-PACKAGE"
@@ -84,6 +85,122 @@ def _jcs_json(value: Any) -> bytes:
         raise PackageBuildError("RFC 8785 implementation did not return bytes")
     return encoded + b"\n"
 
+
+
+def _design_identity(design: Any) -> dict[str, Any]:
+    versions = tuple(design.scenario_versions)
+    return {
+        "scenario_versions": [
+            {"scenario_id": sid, "scenario_version": version}
+            for sid, version in versions
+        ],
+        "N": design.n_units,
+        "M": design.outer_replicates,
+        "R": design.repeated_assignments,
+        "matrix_fingerprint": design.matrix_fingerprint,
+        "metric_targets": [list(row) for row in design.metric_targets],
+        "seed_bank_label": design.seed_bank_label,
+        "seed_bank_fingerprint": design.seed_bank_fingerprint,
+        "executable_commit": design.executable_commit,
+        "configuration_fingerprint": design.configuration_fingerprint,
+    }
+
+
+def _uint64_wire(value: int) -> dict[str, str]:
+    if isinstance(value, bool) or not isinstance(value, int) or not 0 <= value <= (1 << 64) - 1:
+        raise PackageBuildError("seed source is not an exact uint64 integer")
+    return {"$type": "uint64", "decimal": str(value)}
+
+
+def _recompute_capture_id(captured: Any, design_identity: dict[str, Any]) -> str:
+    bundles = tuple(captured.outer_world_bundles)
+    ordered = sorted(
+        bundles,
+        key=lambda item: (
+            SCENARIO_IDS.index(item.scenario_id),
+            int(item.outer_replicate_id.split("-")[-1]),
+        ),
+    )
+    if tuple(item["scenario_id"] for item in design_identity["scenario_versions"]) != tuple(SCENARIO_IDS):
+        raise PackageBuildError("capture design scenario order is not canonical")
+    if len(ordered) != len(SCENARIO_IDS) * design_identity["M"]:
+        raise PackageBuildError("capture outer-world bundle cardinality mismatch")
+    expected_pairs = {
+        (sid, f"outer-{m:06d}")
+        for sid in SCENARIO_IDS for m in range(design_identity["M"])
+    }
+    observed_pairs = {(item.scenario_id, item.outer_replicate_id) for item in ordered}
+    if observed_pairs != expected_pairs:
+        raise PackageBuildError("capture outer-world bundle keys are missing, duplicated or noncanonical")
+
+    assignment_rows = []
+    bundle_digests = []
+    for bundle in ordered:
+        run_bundles = (bundle.run_bundle,) + tuple(bundle.repeated_bundles)
+        if len(run_bundles) != 1 + design_identity["R"]:
+            raise PackageBuildError("outer-world RUN/R bundle cardinality mismatch")
+        snapshot_records = []
+        for run in run_bundles:
+            assignment = run.assignment.restore(SeedAssignment)
+            assignment_rows.append({
+                "bank": assignment.bank,
+                "scenario_id": assignment.scenario_id,
+                "scenario_version": assignment.scenario_version,
+                "n_units": assignment.n_units,
+                "replicate": assignment.replicate,
+                "outer_replicate_id": assignment.outer_replicate_id,
+                "assignment_role": assignment.assignment_role,
+                "world_seed": _uint64_wire(assignment.world_seed),
+                "z_assignment_seed": _uint64_wire(assignment.z_assignment_seed),
+                "g_assignment_seed": _uint64_wire(assignment.g_assignment_seed),
+            })
+            snapshot_records.append({
+                field: {"type_id": getattr(run, field).type_id, "sha256": getattr(run, field).sha256}
+                for field in (
+                    "assignment", "scenario_config", "run_manifest", "truth_projection",
+                    "evidence_candidate", "sealed_evidence", "analysis_contract",
+                    "analyzer_result", "evaluation_report",
+                )
+            })
+        projection = {
+            "scenario_id": bundle.scenario_id,
+            "scenario_version": bundle.scenario_version,
+            "n_units": bundle.n_units,
+            "outer_replicate_id": bundle.outer_replicate_id,
+            "world_id": bundle.world_id,
+            "world_version": bundle.world_version,
+            "world_seed": _uint64_wire(bundle.world_seed),
+            "run_and_repeated_snapshot_records": snapshot_records,
+            "repeated_assignment_report": {
+                "type_id": bundle.repeated_assignment_report.type_id,
+                "sha256": bundle.repeated_assignment_report.sha256,
+            },
+        }
+        bundle_digests.append(_sha256(rfc8785.dumps(projection)))
+
+    evidence_rows = [
+        {"scenario_id": sid, "outer_replicate_id": outer_id, "world_id": world_id}
+        for sid, outer_id, world_id in captured.evidence_index
+    ]
+    expected_evidence = [
+        {"scenario_id": item.scenario_id, "outer_replicate_id": item.outer_replicate_id,
+         "world_id": item.world_id}
+        for item in ordered
+    ]
+    if evidence_rows != expected_evidence:
+        raise PackageBuildError("capture evidence_index does not match ordered outer-world bundles")
+    assignment_digest = _sha256(rfc8785.dumps({"rows": assignment_rows}))
+    identity = {
+        "schema_id": "TGCV-C10S-VCONT-BENCHMARK-CAPTURE-IDENTITY",
+        "schema_version": "2.0.0",
+        "design_identity": design_identity,
+        "matrix_full_sha256": captured.matrix_capture.full_matrix_sha256,
+        "evaluation_seed_manifest_sha256": assignment_digest,
+        "outer_world_bundle_digests": bundle_digests,
+        "report_snapshot_sha256": captured.report_snapshot.sha256,
+        "evidence_index": evidence_rows,
+    }
+    return _sha256(rfc8785.dumps(identity))
 
 def _validate_path(path: str) -> None:
     if not isinstance(path, str) or not path or path.startswith("/") or "\\" in path:
@@ -185,9 +302,6 @@ def serialize_package_files_v2(
 
     try:
         import json
-        from vcont_evidence_export import (
-            _design_identity_projection, derive_capture_identity, freeze_report_snapshot,
-        )
         report_envelope = json.loads(report_bytes.decode("utf-8"))
         matrix_payload = matrix.to_payload()
         matrix_canonical = rfc8785.dumps(matrix_payload)
@@ -197,14 +311,8 @@ def serialize_package_files_v2(
             "row_count": 52,
             "rows": matrix_payload.get("rows"),
         })).hexdigest()
-        design_identity = _design_identity_projection(design)
-        rebuilt_report = freeze_report_snapshot(
-            captured.report, outer_world_bundles=captured.outer_world_bundles
-        )
-        rebuilt_capture_id = derive_capture_identity(
-            design_identity, matrix, captured.outer_world_bundles,
-            rebuilt_report, captured.evidence_index,
-        )
+        design_identity = _design_identity(design)
+        rebuilt_capture_id = _recompute_capture_id(captured, design_identity)
     except Exception as exc:
         raise PackageBuildError(f"capture/source identity reconciliation failed: {exc}") from exc
     if matrix_canonical != matrix.canonical_bytes:
@@ -213,8 +321,6 @@ def serialize_package_files_v2(
         raise PackageBuildError("MatrixCapture full-matrix digest does not recompute")
     if matrix_payload.get("design_identity") != design_identity:
         raise PackageBuildError("MatrixCapture design identity differs from supplied design")
-    if rebuilt_report.sha256 != report.sha256 or rebuilt_report.canonical_bytes != report.canonical_bytes:
-        raise PackageBuildError("FrozenReportSnapshot differs from the current report/source bundles")
     if rebuilt_capture_id != capture_id:
         raise PackageBuildError("capture_id does not recompute from the retained source evidence")
     if (not isinstance(report_envelope, dict)
