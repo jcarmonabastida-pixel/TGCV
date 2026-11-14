@@ -5,7 +5,11 @@ import hashlib
 import json
 
 import rfc8785
-from vcont_package_v2 import COMPANION_PATHS, GENERATED_COMPANION_PATHS
+from types import SimpleNamespace
+from vcont_package_v2 import (
+    COMPANION_PATHS, GENERATED_COMPANION_PATHS,
+    _legacy_seed_bank_fingerprint_from_wire_rows,
+)
 from vcont_package_v2_verify import (
     PACKAGE_PATHS,
     PackageVerificationError,
@@ -1106,6 +1110,24 @@ class ConfigurationCompanionVerifierTests(unittest.TestCase):
         files["provenance/configuration_fingerprints.json"]["components"][0]["digest_sha256"] = "0" * 64
         with self.assertRaises(PackageVerificationError):
             _reconcile_configuration_companions(files, report, matrix)
+
+    def test_writer_recomputes_legacy_seed_bank_fingerprint_from_typed_rows(self):
+        files, report, matrix = _fixture()
+        design = SimpleNamespace(
+            scenario_versions=tuple(
+                (sid, "v1") for sid in AUTHORITATIVE_SCENARIO_IDS
+            ),
+            n_units=25,
+            outer_replicates=1,
+            repeated_assignments=1,
+        )
+        observed = _legacy_seed_bank_fingerprint_from_wire_rows(
+            files["seeds/evaluation_seed_assignments.json"]["rows"], design
+        )
+        self.assertEqual(
+            observed,
+            files["design/benchmark_design.json"]["seed_bank_fingerprint"],
+        )
 
     def test_rejects_historical_seed_bank_fingerprint_mismatch(self):
         files, report, matrix = _fixture()
