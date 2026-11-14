@@ -209,3 +209,10 @@ The Gate 170 standalone capture API is now called by an explicit M-level produce
 For one scenario/N/M group, it consumes the exact evaluation SeedAssignment rows, applies their three seed streams and M/R identity to a copy of the structural ScenarioConfig template, invokes the existing Generator, Sealer, Analyzer and Evaluator in order, captures each RunEvidenceBundle while all source objects coexist, computes one repeated-assignment report, and creates one OuterWorldEvidenceBundle. It also returns the existing four-object evaluator tuples unchanged.
 
 Thus the Gate 168/170 implementation is now integrated at the **single-M producer boundary**, not merely available as a disconnected capture primitive. The benchmark-wide 13-scenario driver and 52-pair evidence co-export remain OPEN and are the next Gate 172 operation. The source regression tests are persisted but NOT EXECUTED. No runtime PASS or benchmark execution is claimed.
+
+
+## 14. Gate 172 — benchmark-wide bundle composition
+
+Gate 172 now composes the Gate 168/170 RunEvidenceBundle and OuterWorldEvidenceBundle into a complete benchmark-level result. For every one of the 13 registered scenarios and every declared M, the driver captures one M bundle and joins all its RUN/R legacy evaluator tuples to the exact source snapshots. The final `CapturedBenchmark` co-returns the unchanged 52-pair evaluator report, temporal manifest, evidence bundles and evidence index.
+
+The source-level benchmark-wide capture boundary is implemented. No execution has been performed. Serialization of the full benchmark envelope into the canonical package and Gate 159 external provenance reconciliation remain open. See Gate 172.
