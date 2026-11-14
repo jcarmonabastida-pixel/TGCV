@@ -137,3 +137,5 @@ Gate 180 is CONDITIONAL: source inspection found additional direct uint64 occurr
 ## Gate 181 — source-to-wire contract closure
 
 Gate 181 defines the complete v2 direct uint64 JSON Pointer registry, the structural EffectiveScenarioConfigProjection v2.0.0, explicit-stream-only confirmatory seed policy, historical report fingerprint recomputation before wire projection, and separate companion assembly bound by benchmark_export_id. It reconciles the 14-file package inventory. This closes schema decisions only: current CapturedBenchmark still lacks producer-populated MatrixCapture/FrozenReportSnapshot, and companion assembler/package writer/independent v2 verifier are not implemented. No code/tests/CI or scientific execution occurred. Full contract: `00_GOVERNANCE/SIP/C10_S_VCONT_PACKAGE_V2_SOURCE_TO_WIRE_PROJECTION_CONTRACT_GATE_181_DRAFT_001.md`.
+
+Gate 181 additionally pins the exact v2 evaluation-assignment and temporal-manifest root envelopes (`rows` arrays) and the non-JCS historical report fingerprint algorithm identifier. See the Gate 181 contract for the exact schemas and pointer roots.
