@@ -1568,6 +1568,22 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
         artifact, package_files = self._fixture()
         self.assertEqual(_reconcile_gate159_artifact(artifact, "b" * 64, self._design_identity(), package_files, self._expected_counts()), "NOT_RECONCILED")
 
+    def test_rejects_gate159_design_identity_drift(self):
+        artifact, package_files = self._fixture()
+        wrong_design = dict(self._design_identity())
+        wrong_design["M"] = 2
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_gate159_artifact(artifact, "b" * 64, wrong_design, package_files, self._expected_counts())
+
+    def test_rejects_fabricated_check_denominator(self):
+        artifact, package_files = self._fixture()
+        artifact["checks"][0]["expected_count"] = 99
+        payload = dict(artifact)
+        payload.pop("findings_digest")
+        artifact["findings_digest"] = hashlib.sha256(rfc8785.dumps(payload)).hexdigest()
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_gate159_artifact(artifact, "b" * 64, self._design_identity(), package_files, self._expected_counts())
+
     def test_rejects_forged_derived_status(self):
         artifact, package_files = self._fixture()
         artifact["derived_status"] = "RECONCILED"
