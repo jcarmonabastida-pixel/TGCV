@@ -225,3 +225,9 @@ The current FrozenSnapshot API accepts dataclasses only, not the top-level repor
 Preserve CapturedBenchmark's existing report/bundle/index fields and shapes. Add only trailing optional capture fields for compatibility, but fail closed for export when absent. Define one non-circular content-derived capture identity, with benchmark_export_id aliased to capture_id and companion artifacts excluded from its digest. Exact calibration and Gate 159 check schemas remain pending.
 
 See Gate 177. Serializer implementation is not yet ready; no code/tests executed.
+
+## 11. Gate 178 — strict decoder and uint64/JCS qualification
+
+Gate 178 closes the strict decoder, MatrixCapture, FrozenReportSnapshot, deterministic capture identity, CalibrationBankManifest and Gate159ReconciliationArtifact contracts. It selects `rfc8785==0.1.4` as the Python JCS implementation candidate, subject to dependency pinning, RFC vector conformance and independent cross-implementation byte equality at the later authorized implementation preflight.
+
+A material compatibility blocker remains: seed derivation emits unsigned 64-bit integers, while Gate 164 v1.0.0 requires JCS and disallows numeric-to-string coercion. Exact uint64 preservation is not guaranteed by ordinary JCS numbers above 2^53-1. Gate 164 v1.0.0 remains unchanged and implementation-blocked until an explicit exact wire representation is approved under a versioned schema decision. See Gate 178. No source code, tests, CI or scientific execution occurred.
