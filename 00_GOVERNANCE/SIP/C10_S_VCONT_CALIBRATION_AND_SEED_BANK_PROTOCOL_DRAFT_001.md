@@ -532,3 +532,13 @@ Gate 173 statically confirms that the Gate 172 benchmark envelope contains the t
 Do not equate source snapshot digests with package JCS digests. FrozenSnapshot uses its tagged Python JSON serialization; SealedEvidence and report fingerprints retain legacy algorithms. A package adapter must losslessly restore the typed records, recompute the SealedEvidence digest from exact rows+manifest, and only then compute JCS file, manifest and archive digests as separate layers.
 
 Gate 173 confirms that calibration assignments/manifest are not supplied to CapturedBenchmark; Gate 159 reconciliation and external GitHub-resolved producer/test metadata also remain absent. Therefore the source evidence envelope is available but package provenance cannot yet be RECONCILED. No package builder, verifier, tests, CI, calibration, seed-bank generation or benchmark was executed. See Gate 173.
+
+## 33. Gate 174 — serialization and independent verifier contract
+
+Gate 174 retains the exact Gate 164 v1.0.0 package inventory and freezes `runs/run_records.json` as a versioned envelope of RUN/R evidence records, one outer-world record per scenario/M, repeated aggregate report once per M, evidence index, cardinalities and join keys. Each FrozenSnapshot is transported as base64 of exact retained bytes with type ID, serialization ID and SHA-256. This snapshot integrity layer remains distinct from package JCS file/manifest/archive digests and from the legacy SealedEvidence/report fingerprints.
+
+The current snapshot decoder does not restore enum types (it returns their underlying values), and the encoder rejects arbitrary bytes. A future versioned allowlisted decoder must reject unknown types/fields and prove exact restoration; no universal round-trip is assumed.
+
+Gate 164 CONFIRMATORY v1.0.0 is fail-closed when calibration manifest, Gate 159 reconciliation, independent GitHub source/workflow resolution or required technical test evidence is missing. No placeholder or caller PASS is acceptable. Any diagnostic partial-transport format must use a distinct schema ID/version and cannot claim Gate 164 compliance or reconciled/authenticated provenance.
+
+The independent verifier returns separate integrity, schema, completeness, reconciliation, source provenance, test and attestation statuses; producer validation flags are untrusted. Full contract: Gate 174. No serializer, package, tests, CI, calibration or scientific execution occurred. Next Gate 175 audits implementability against actual types and APIs.
