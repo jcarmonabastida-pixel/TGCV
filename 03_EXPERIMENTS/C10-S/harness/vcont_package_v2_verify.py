@@ -1993,6 +1993,48 @@ def _reconcile_configuration_companions(
         "TGCV-C10S-VCONT-EVALUATION-SEED-ASSIGNMENTS", "2.0.0", "evaluation"
     ) or not isinstance(assignment_rows, list) or assignment_file.get("row_count") != len(assignment_rows):
         raise PackageVerificationError("evaluation assignment source schema/order envelope mismatch")
+    legacy_seed_fields = {
+        "bank", "scenario_id", "scenario_version", "n_units", "replicate",
+        "outer_replicate_id", "assignment_role", "world_seed",
+        "z_assignment_seed", "g_assignment_seed",
+    }
+    legacy_seed_payload = []
+    observed_assignment_order = []
+    for assignment_index, row in enumerate(assignment_rows):
+        if not isinstance(row, dict) or set(row) != legacy_seed_fields or row.get("bank") != "evaluation":
+            raise PackageVerificationError("historical seed-bank source row field/bank mismatch")
+        observed_assignment_order.append((
+            row["scenario_id"], row["scenario_version"], row["n_units"],
+            row["outer_replicate_id"], row["assignment_role"], row["replicate"],
+        ))
+        legacy_seed_payload.append({
+            "bank": row["bank"],
+            "scenario_id": row["scenario_id"],
+            "scenario_version": row["scenario_version"],
+            "n_units": row["n_units"],
+            "outer_replicate_id": row["outer_replicate_id"],
+            "assignment_role": row["assignment_role"],
+            "replicate": row["replicate"],
+            "world_seed": _uint64(row["world_seed"], f"evaluation assignments[{assignment_index}].world_seed"),
+            "z_assignment_seed": _uint64(row["z_assignment_seed"], f"evaluation assignments[{assignment_index}].z_assignment_seed"),
+            "g_assignment_seed": _uint64(row["g_assignment_seed"], f"evaluation assignments[{assignment_index}].g_assignment_seed"),
+        })
+    expected_assignment_order = [
+        (sid, versions[sid], n_units, f"outer-{m:06d}", role, index)
+        for sid in AUTHORITATIVE_SCENARIO_IDS for m in range(M)
+        for role, index in ([("RUN", -1)] + [
+            ("REPEATED_ASSIGNMENT", r) for r in range(R)
+        ])
+    ]
+    if observed_assignment_order != expected_assignment_order:
+        raise PackageVerificationError("historical seed-bank source rows are not in canonical scenario/M/R order")
+    legacy_seed_fingerprint = _sha256(
+        json.dumps(legacy_seed_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    )
+    if benchmark_design.get("seed_bank_fingerprint") != legacy_seed_fingerprint:
+        raise PackageVerificationError("historical source-typed seed_bank_fingerprint does not recompute")
+    if report_design.get("seed_bank_fingerprint") not in (None, legacy_seed_fingerprint):
+        raise PackageVerificationError("historical seed-bank fingerprint differs from report design declaration")
     assignment_digest = _configuration_digest({"rows": assignment_rows})
     components.append({
         "component_id": "evaluation-seed-bank",
