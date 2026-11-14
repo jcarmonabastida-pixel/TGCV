@@ -1997,6 +1997,164 @@ def _reconcile_calibration_manifest(
     }
 
 
+GATE159_REQUIRED_CHECK_IDS = (
+    "EVALUATION_ASSIGNMENT_RUN_MANIFEST_ONE_TO_ONE",
+    "CALIBRATION_EVALUATION_SEED_DISJOINTNESS",
+    "EVALUATION_SEED_FINGERPRINT_RECOMPUTATION",
+    "CALIBRATION_SEED_FINGERPRINT_RECOMPUTATION",
+    "EFFECTIVE_CONFIGURATION_FINGERPRINT_RECOMPUTATION",
+    "MATRIX_LEGACY_AND_FULL_DIGEST_RECOMPUTATION",
+    "SOURCE_EXECUTION_GITHUB_BINDING",
+    "TECHNICAL_TEST_RUN_BINDING",
+)
+GATE159_CONDITIONAL_CHECK_ID = "CALIBRATION_ASSIGNMENT_EXECUTION_LINK"
+
+
+def _reconcile_gate159_artifact(artifact: Any, expected_export_id: str) -> str:
+    """Validate Gate159 nested wire schema, independently derive status and findings digest."""
+    root_fields = {
+        "schema_id", "schema_version", "benchmark_export_id", "design_identity",
+        "verifier_identity", "input_artifacts", "required_check_ids", "checks",
+        "derived_status", "findings_digest",
+    }
+    if not isinstance(artifact, dict) or set(artifact) != root_fields:
+        raise PackageVerificationError("Gate159 exact root field allowlist mismatch")
+    if (artifact.get("schema_id"), artifact.get("schema_version"),
+            artifact.get("benchmark_export_id")) != (
+        "TGCV-C10S-VCONT-GATE159-RECONCILIATION", "1.0.0", expected_export_id
+    ):
+        raise PackageVerificationError("Gate159 schema/version/benchmark_export_id mismatch")
+    if not isinstance(artifact.get("design_identity"), dict) or not artifact["design_identity"]:
+        raise PackageVerificationError("Gate159 design_identity must be a nonempty object")
+    verifier = artifact.get("verifier_identity")
+    verifier_fields = {"name", "version", "source_commit", "implementation_digest"}
+    if not isinstance(verifier, dict) or set(verifier) != verifier_fields:
+        raise PackageVerificationError("Gate159 verifier_identity exact field allowlist mismatch")
+    if (not isinstance(verifier["name"], str) or not verifier["name"].strip()
+            or not isinstance(verifier["version"], str) or not verifier["version"].strip()
+            or not isinstance(verifier["source_commit"], str)
+            or re.fullmatch(r"[0-9a-f]{40}", verifier["source_commit"]) is None
+            or not isinstance(verifier["implementation_digest"], str)
+            or re.fullmatch(r"[0-9a-f]{64}", verifier["implementation_digest"]) is None):
+        raise PackageVerificationError("Gate159 verifier_identity values are invalid")
+
+    inputs = artifact.get("input_artifacts")
+    if not isinstance(inputs, list) or not inputs:
+        raise PackageVerificationError("Gate159 input_artifacts must be a nonempty ordered list")
+    input_ids = []
+    for index, item in enumerate(inputs):
+        if (not isinstance(item, dict) or set(item) != {"artifact_id", "sha256"}
+                or not isinstance(item.get("artifact_id"), str) or not item["artifact_id"].strip()
+                or not isinstance(item.get("sha256"), str)
+                or re.fullmatch(r"[0-9a-f]{64}", item["sha256"]) is None):
+            raise PackageVerificationError(f"Gate159 input_artifacts[{index}] is malformed")
+        input_ids.append(item["artifact_id"])
+    if input_ids != sorted(set(input_ids)):
+        raise PackageVerificationError("Gate159 input_artifacts are duplicated or not in canonical order")
+    if artifact.get("required_check_ids") != list(GATE159_REQUIRED_CHECK_IDS):
+        raise PackageVerificationError("Gate159 required_check_ids differ from the frozen Gate 178 order")
+
+    checks = artifact.get("checks")
+    expected_ids = list(GATE159_REQUIRED_CHECK_IDS) + [GATE159_CONDITIONAL_CHECK_ID]
+    if not isinstance(checks, list) or len(checks) != len(expected_ids):
+        raise PackageVerificationError("Gate159 checks must contain eight required and one conditional row")
+    check_fields = {
+        "check_id", "check_version", "scope", "applicability", "join_key_profile",
+        "expected_count", "observed_count", "matched_count", "mismatch_count",
+        "mismatches", "input_digests", "status", "reason",
+    }
+    mismatch_fields = {"key", "field", "expected_ref", "observed_ref", "reason"}
+    statuses = {}
+    for index, (row, expected_id) in enumerate(zip(checks, expected_ids)):
+        if not isinstance(row, dict) or set(row) != check_fields or row.get("check_id") != expected_id:
+            raise PackageVerificationError(f"Gate159 check row {index} field allowlist/order mismatch")
+        expected_applicability = "REQUIRED" if index < len(GATE159_REQUIRED_CHECK_IDS) else "CONDITIONAL"
+        if (row.get("applicability") != expected_applicability
+                or not isinstance(row.get("check_version"), str) or not row["check_version"].strip()
+                or not isinstance(row.get("scope"), str) or not row["scope"].strip()
+                or not isinstance(row.get("join_key_profile"), str) or not row["join_key_profile"].strip()
+                or not isinstance(row.get("reason"), str) or not row["reason"].strip()):
+            raise PackageVerificationError(f"Gate159 check row {index} applicability/identity/reason invalid")
+        for count_field in ("expected_count", "observed_count", "matched_count", "mismatch_count"):
+            count = row.get(count_field)
+            if count is not None and (isinstance(count, bool) or not isinstance(count, int) or count < 0):
+                raise PackageVerificationError(f"Gate159 check row {index} {count_field} must be null or nonnegative exact integer")
+        mismatches = row.get("mismatches")
+        if not isinstance(mismatches, list) or len(mismatches) > 100:
+            raise PackageVerificationError(f"Gate159 check row {index} mismatches must be an ordered list bounded at 100")
+        for mismatch_index, mismatch in enumerate(mismatches):
+            if (not isinstance(mismatch, dict) or set(mismatch) != mismatch_fields
+                    or any(not isinstance(mismatch.get(field), str) or not mismatch[field].strip()
+                           for field in mismatch_fields)):
+                raise PackageVerificationError(f"Gate159 mismatch {index}/{mismatch_index} is malformed")
+        digests = row.get("input_digests")
+        if not isinstance(digests, dict) or any(
+            not isinstance(key, str) or not key.strip() or not isinstance(value, str)
+            or re.fullmatch(r"[0-9a-f]{64}", value) is None
+            for key, value in digests.items()
+        ):
+            raise PackageVerificationError(f"Gate159 check row {index} input_digests is malformed")
+        status = row.get("status")
+        if status not in ("PASS", "FAIL", "UNAVAILABLE", "UNVERIFIABLE", "NOT_APPLICABLE"):
+            raise PackageVerificationError(f"Gate159 check row {index} status is invalid")
+        observed, matched, mismatch_count = (
+            row.get("observed_count"), row.get("matched_count"), row.get("mismatch_count")
+        )
+        if all(value is not None for value in (observed, matched, mismatch_count)):
+            if matched + mismatch_count != observed:
+                raise PackageVerificationError(f"Gate159 check row {index} count arithmetic is inconsistent")
+            if mismatch_count <= 100 and mismatch_count != len(mismatches):
+                raise PackageVerificationError(f"Gate159 check row {index} mismatch_count differs from materialized mismatches")
+        if status == "PASS" and (
+            mismatch_count != 0 or mismatches or observed is None or matched is None
+        ):
+            raise PackageVerificationError(f"Gate159 check row {index} PASS is inconsistent with its counts")
+        if status == "FAIL" and (mismatch_count in (None, 0) or not mismatches):
+            raise PackageVerificationError(f"Gate159 check row {index} FAIL lacks materialized mismatch evidence")
+        if status in ("UNAVAILABLE", "UNVERIFIABLE") and (
+            observed is not None or matched is not None or mismatch_count is not None
+        ):
+            raise PackageVerificationError(f"Gate159 check row {index} unavailable status must not fabricate observed counts")
+        if status == "NOT_APPLICABLE" and (
+            expected_applicability != "CONDITIONAL"
+            or "seed-manifest-only" not in row["reason"].lower()
+        ):
+            raise PackageVerificationError("Gate159 NOT_APPLICABLE is restricted to documented seed-manifest-only conditional scope")
+        statuses[expected_id] = status
+
+    # The package verifier has independently passed checks 1–6 before this call.
+    for check_id in GATE159_REQUIRED_CHECK_IDS[:6]:
+        if statuses[check_id] != "PASS":
+            raise PackageVerificationError(f"Gate159 internal check {check_id} does not reflect independent package verification")
+    # GitHub provenance and technical-test evidence are not independently resolved here.
+    for check_id in GATE159_REQUIRED_CHECK_IDS[6:]:
+        if statuses[check_id] == "PASS":
+            raise PackageVerificationError(f"Gate159 {check_id} cannot PASS from producer-declared package metadata")
+    if statuses[GATE159_CONDITIONAL_CHECK_ID] == "PASS":
+        raise PackageVerificationError("Gate159 calibration execution link cannot PASS without independently resolved execution evidence")
+
+    if any(status == "FAIL" for status in statuses.values()):
+        derived_status = "REJECTED"
+    elif (any(status != "PASS" for check_id, status in statuses.items()
+              if check_id in GATE159_REQUIRED_CHECK_IDS)
+          or statuses[GATE159_CONDITIONAL_CHECK_ID] not in ("PASS", "NOT_APPLICABLE")):
+        derived_status = "NOT_RECONCILED"
+    else:
+        derived_status = "RECONCILED"
+    if artifact.get("derived_status") != derived_status:
+        raise PackageVerificationError("Gate159 derived_status does not match independent check-set derivation")
+
+    findings_payload = dict(artifact)
+    declared_findings_digest = findings_payload.pop("findings_digest", None)
+    try:
+        expected_findings_digest = _sha256(rfc8785.dumps(findings_payload))
+    except Exception as exc:
+        raise PackageVerificationError(f"Gate159 findings digest input is not JCS serializable: {exc}") from exc
+    if declared_findings_digest != expected_findings_digest:
+        raise PackageVerificationError("Gate159 findings_digest does not recompute")
+    return derived_status
+
+
 def _configuration_digest(value: Any) -> str:
     try:
         return _sha256(rfc8785.dumps(value))
@@ -2500,6 +2658,10 @@ def verify_package_v2(
             parsed["seeds/calibration_seed_manifest.json"],
             parsed["seeds/evaluation_seed_assignments.json"],
         )
+        gate159_derived_status = _reconcile_gate159_artifact(
+            parsed["validation/reconciliation_results.json"],
+            parsed["runs/run_records.json"]["benchmark_export_id"],
+        )
     except PackageVerificationError:
         raise
     except Exception as exc:
@@ -2524,7 +2686,7 @@ def verify_package_v2(
     # governed attestation verifier and trusted signer configuration are absent.
     limitations = (
         "RUN/R snapshots, assignments, temporal rows, outer-world records, report tuples, pair contributions, AnalysisContract applicability, 13/26 companion rows and all 28 configuration fingerprints were reconciled independently.",
-        "Calibration row derivation, typed legacy fingerprint and cross-bank three-stream disjointness are independently checked; Gate159 artifact registry/status derivation remains open.",
+        "Calibration design/cardinality/order, typed legacy fingerprint, JCS manifest digest and cross-bank three-stream disjointness are independently checked; Gate159 check registry and derived status are independently recomputed.",
         "Source-execution metadata has not been independently resolved against GitHub.",
         "Technical-test evidence has not been independently bound to a trusted workflow run/artifact.",
         "External attestation/signature verification is not implemented; package is NOT_AUTHENTICATED.",
