@@ -1379,7 +1379,7 @@ class CalibrationManifestVerifierTests(unittest.TestCase):
                 "namespace": namespace,
             },
             "design": {
-                "scenario_versions": {scenario_id: scenario_version},
+                "scenario_versions": [[scenario_id, scenario_version]],
                 "n_grid": [24], "outer_replicates": 1, "repeated_assignments": 1,
                 "calibration_purpose": "N_R_PRECISION_CALIBRATION",
                 "metric_targets": [{
