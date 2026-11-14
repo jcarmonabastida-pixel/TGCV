@@ -49,13 +49,13 @@ In deterministic `SCENARIO_IDS` order, then ascending M:
 1. Partition the exact assignment rows by scenario/version/N/M.
 2. Call `produce_and_capture_outer_world()` exactly once for each group.
 3. Verify the returned M bundle identity and expected RUN+R tuple count.
-4. Join every legacy tuple to its RunEvidenceBundle by `run_id`; restore and compare TruthBundle, AnalyzerResult, AnalysisContract and RunManifest against the exact captured snapshots.
+4. Join every legacy tuple to its RunEvidenceBundle by `run_id`; compare the truth fields against the exact registered Gate 166 `MatrixTruthProjection` (the bundle intentionally excludes potential-outcome arrays), and restore/compare AnalyzerResult, AnalysisContract and RunManifest against their exact captured snapshots.
 5. Populate the existing `scenario_outer_runs[scenario_id][outer_id]` structure with the unchanged legacy tuples.
 6. Retain exactly one OuterWorldEvidenceBundle and one evidence-index row for that scenario/M.
 7. Invoke `Evaluator.evaluate_monte_carlo_benchmark()` exactly once after all groups have been captured.
 8. Verify 52 unique pair-ledger rows, 13 scenario reports, complete temporal-manifest cardinality and exactly 13×M evidence bundles.
 
-The benchmark evaluator remains the sole producer of the existing pair ledger and report fingerprint. Gate 172 does not reimplement or rewrite its aggregation.
+The benchmark evaluator remains the sole producer of the existing pair ledger and report fingerprint. Gate 172 does not reimplement or rewrite its aggregation. After evaluation, the driver also performs one-to-one equality checks between captured RUN/R RunManifest identities and the returned temporal manifest, and checks each of the 52 pair contributions against the matching scenario/M world and designated RUN `run_id` in the evidence envelope.
 
 ## 5. Regression source
 
