@@ -669,7 +669,7 @@ def produce_and_capture_benchmark(
                 source_bundle = by_run_id.get(manifest.run_id)
                 if source_bundle is None:
                     raise ContractError("legacy evaluator tuple has no matching captured evidence bundle")
-                if (source_bundle.truth_bundle.restore(type(legacy[0])) != legacy[0]
+                if (source_bundle.truth_projection.restore(MatrixTruthProjection) != _matrix_truth_projection(legacy[0])
                         or source_bundle.analyzer_result.restore(type(legacy[1])) != legacy[1]
                         or source_bundle.analysis_contract.restore(type(legacy[2])) != legacy[2]
                         or source_bundle.run_manifest.restore(type(legacy[3])) != legacy[3]):
