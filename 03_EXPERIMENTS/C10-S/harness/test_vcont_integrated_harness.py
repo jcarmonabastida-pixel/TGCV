@@ -912,6 +912,10 @@ class RunEvidenceBundleCaptureTests(unittest.TestCase):
             bundle.evidence_candidate.restore(type(candidate)).rows[0]["unit_id"],
             original_unit_id,
         )
+        from vcont_evidence_export import MatrixTruthProjection
+        matrix_truth = bundle.truth_projection.restore(MatrixTruthProjection)
+        self.assertEqual(matrix_truth.theta_a_truth, truth.theta_a_truth)
+        self.assertFalse(hasattr(matrix_truth, "potential_v"))
         restored_sealed = bundle.sealed_evidence.restore(type(sealed))
         self.assertEqual(restored_sealed.sha256, sealed.sha256)
         self.assertEqual(bundle.sealed_evidence_legacy_sha256, sealed.sha256)
