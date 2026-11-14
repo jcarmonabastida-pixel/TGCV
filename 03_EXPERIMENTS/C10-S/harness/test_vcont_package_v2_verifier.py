@@ -1407,6 +1407,7 @@ class CalibrationManifestVerifierTests(unittest.TestCase):
     def test_rejects_calibration_namespace_or_seed_drift(self):
         calibration, evaluation = self._fixture()
         calibration["namespace"] = "different"
+        calibration["seed_derivation"]["namespace"] = "different"
         with self.assertRaises(PackageVerificationError):
             _reconcile_calibration_manifest(calibration, evaluation)
 
