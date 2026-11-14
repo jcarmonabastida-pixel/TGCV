@@ -363,6 +363,29 @@ class CaptureV2Tests(unittest.TestCase):
         with self.assertRaises(ContractError):
             freeze_report_snapshot(report)
 
+
+    def test_report_snapshot_rejects_unknown_nested_scenario_field(self):
+        report = self.report_fixture()
+        report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"][0]["unexpected"] = 1
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report)
+
+    def test_report_snapshot_rejects_temporal_and_pair_cardinality_drift(self):
+        report = self.report_fixture()
+        report["temporal_manifest"].pop()
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report)
+        report = self.report_fixture()
+        report["pair_ledger"].pop()
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report)
+
+    def test_report_snapshot_rejects_unknown_pair_contribution_field(self):
+        report = self.report_fixture()
+        report["pair_ledger"][0]["contributions"][0]["unexpected"] = "drift"
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report)
+
     def test_rfc8785_known_canonicalization_vectors(self):
         self.assertEqual(rfc8785.dumps({"b": 2, "a": 1}), b'{"a":1,"b":2}')
         self.assertEqual(
