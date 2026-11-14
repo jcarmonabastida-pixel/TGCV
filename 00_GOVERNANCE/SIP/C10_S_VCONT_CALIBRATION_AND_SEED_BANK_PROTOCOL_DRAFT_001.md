@@ -497,3 +497,14 @@ A regression source was added to the harness test module to verify source mutati
 No Generator/Sealer/Analyzer/Evaluator scientific semantics were changed. No tests, CI, calibration, seed-bank generation, N/R/M sizing, Monte Carlo, benchmark or scientific execution was performed. `main` remains unchanged and PR #116 remains Draft.
 
 **Next:** Gate 171 — integrate the capture API at the producer/orchestration boundary and construct one OuterWorldEvidenceBundle per M without reconstructing omitted source objects from aggregate outputs.
+
+
+## 30. Gate 171 — M-level evidence producer/orchestration integration
+
+Gate 171 adds `produce_and_capture_outer_world(...)` to `03_EXPERIMENTS/C10-S/harness/vcont_evidence_export.py`. The function consumes already-materialized evaluation-bank SeedAssignment rows; it does not derive or generate a seed bank. It accepts one structural ScenarioConfig template and exactly one RUN plus R repeated assignments for a single M.
+
+The function applies the exact world/Z/G streams and assignment identity, calls the existing Generator → Sealer → Analyzer → Evaluator sequence, captures each RunEvidenceBundle before source objects are discarded, calculates one RepeatedAssignmentReport through the existing Evaluator method, and constructs one OuterWorldEvidenceBundle. It returns the unchanged legacy four-object tuples in RUN then R-index order, so existing MC aggregation interfaces and the 52-pair ledger semantics remain untouched.
+
+Three regression tests were added: successful RUN+R capture, missing-R rejection and cross-M rejection. They have NOT been executed. The producer function itself was not called. No test PASS, CI, calibration, seed-bank generation, N/R/M sizing, Monte Carlo, benchmark or scientific execution is claimed.
+
+**Boundary still open:** no benchmark-wide driver yet partitions all 13 scenario blocks and M groups, calls the producer for every M, and co-exports all OuterWorldEvidenceBundles with the existing 52-pair result. That is Gate 172. Gate 159 reconciliation, canonical JCS/tar packaging, trusted builder and attestation also remain OPEN.
