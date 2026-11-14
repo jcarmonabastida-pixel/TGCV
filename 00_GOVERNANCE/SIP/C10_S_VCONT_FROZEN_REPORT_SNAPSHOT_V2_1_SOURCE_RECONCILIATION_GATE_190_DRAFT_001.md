@@ -92,3 +92,13 @@ The typed pure fixture was extended to include those exact Evaluator fields. Thi
 
 A subsequent direct inspection of `produce_and_capture_outer_world` resolved the distinction between the generic `RunEvidenceBundle.capture` fallback and the confirmatory producer: the producer always sets all three ScenarioConfig stream fields explicitly from the SeedAssignment before generation. Gate 190 therefore rejects `None` for any of these fields rather than accepting fallback derivation. The pure fixture was updated to mirror that actual producer path. This correction preserves `ScenarioConfig.seed` as a distinct TruthBundle source.
 
+## 8. Gate 191 retrospective source-audit corrections
+
+Gate 191's read-only audit found a runtime defect in the Gate 190 helper: it accessed `AnalysisContract.run_id`, which does not exist on the actual dataclass. The source check was corrected to apply run-ID equality only to run-scoped objects and to reconcile AnalysisContract by its actual mechanism, estimand, outcome, transportability and digest fields against RunManifest/AnalyzerResult.
+
+The same audit strengthened source validation by restoring EvidenceCandidate and SealedEvidence snapshots, checking their run/row/provenance/row-count relationships, recomputing provenance and legacy sealed digests, and recomputing the structural ScenarioConfig and AnalysisContract digests. These changes were persisted in `vcont_evidence_export.py`.
+
+Two Gate 190 seed-divergence tests were also corrected to preserve the complete Evaluator row, avoiding false-positive failures on missing row labels. The positive typed fixture now contains valid EvidenceCandidate and SealedEvidence snapshots with internally consistent digests. Two additional adversarial methods cover AnalysisContract/RunManifest mismatch and SealedEvidence digest divergence.
+
+The test module now contains **27 methods**, of which **10** target source-bundle reconciliation. This is a later source revision; the original Gate 190 count above records the state at Gate 190's initial close. No tests, imports, compilation or workflow were executed. Gate 190 remains source-implemented but CONDITIONAL pending authorized technical execution.
+
