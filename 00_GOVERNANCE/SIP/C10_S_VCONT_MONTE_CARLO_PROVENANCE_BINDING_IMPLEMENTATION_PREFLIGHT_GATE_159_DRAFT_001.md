@@ -182,3 +182,66 @@ This does not block deterministic implementation of seed-bank fingerprint recomp
 - Provenance-authenticated report status: BLOCKED until the trust root and verifier are governed.
 - Gate 159 as a whole: OPEN; no authenticated provenance claim is permitted.
 - No code, tests, CI, seed-bank generation, calibration, N/R/M sizing, Monte Carlo benchmark or scientific execution was performed in this continuation.
+
+## 9. Gate 159 continuation crosswalk against package-v2 implementation (2026-11-14)
+
+This update reconciles the original Gate 159 obligations with the later Gates 166–194-I. It prevents both reimplementing work already present in the package verifier and incorrectly treating partial v2 coverage as closure of Gate 159.
+
+### 9.1 Deterministic elements already implemented in later source
+
+| Gate 159 obligation | Later implementation evidence | Current classification |
+|---|---|---|
+| Evaluation SeedAssignment ↔ RunManifest one-to-one identity and exact seed equality | Gate 194-C RUN/R semantic reconciliation in `vcont_package_v2_verify.py` | IMPLEMENTED IN SOURCE; covered by the Gate 194-I pure suite, but not validated against a real package |
+| RUN/R role/index, M/world identity, temporal rows and report contribution joins | Gate 194-C/D verifier reconciliation | IMPLEMENTED IN SOURCE; pure fixture suite passed; real-package validation absent |
+| Effective structural DGP/Generator configuration reconstruction | Gate 181 projection plus Gate 194-I configuration companion | IMPLEMENTED IN SOURCE; independent verifier recomputes the registered configuration components |
+| AnalysisContract and Analyzer-version binding | Gate 194-I 13 source contracts / 26 applicability rows, 37 fields, 28 component aggregate | IMPLEMENTED IN SOURCE; pure fixture suite passed |
+| Evaluation assignment seed derivation from declared descriptor | Gate 194-I.4 writer/verifier recomputation of every evaluation world/Z/G seed | IMPLEMENTED IN SOURCE; 94 pure tests passed |
+| Matrix and report coverage linkage | Gates 176/178/181 and 194-C/D/E | IMPLEMENTED IN SOURCE; structural/semantic package checks exist |
+
+These are source and fixture-level implementation results. They do not establish a successful real-package round trip or runtime execution provenance.
+
+### 9.2 Gate 159 obligations still not implemented
+
+The current `vcont_package_v2.py` checks only the calibration companion's envelope schema/version/bank label/row-count and the Gate159 companion's schema/version/`benchmark_export_id`. It does not derive the Gate159 status from the actual check rows.
+
+The independent verifier's final status vector explicitly records the following limitations:
+
+- calibration/evaluation seed disjointness is not implemented in the package verifier;
+- Gate159 derived-status recomputation is not implemented;
+- source-execution metadata is not independently resolved against GitHub;
+- technical-test evidence is not independently bound to a trusted workflow run/artifact;
+- external attestation/signature verification is absent and the package remains NOT_AUTHENTICATED.
+
+Accordingly, the remaining implementation work is not a general rewrite of RUN/R or configuration reconciliation. It is the narrowly scoped Gate159 companion layer:
+
+1. Freeze/verify the exact calibration-manifest row schema and canonical ordering against Gate 178/179/181.
+2. Recompute calibration and evaluation bank identities independently and invoke the existing bank-separation rule over the exact materialized rows. Check all required seed streams and report the exact denominator and collision set.
+3. Define the exact Gate159 reconciliation artifact check registry, input references/digests, denominator/count/mismatch fields, allowed statuses and canonical ordering.
+4. Recompute every check result from the package's actual calibration/evaluation assignments, RUN/R records, configuration components and report identity; do not accept caller-supplied PASS/status values.
+5. Derive the aggregate Gate159 status fail-closed from the required check set, preserving UNAVAILABLE/UNVERIFIABLE separately from FAIL and never treating an empty check as success.
+6. Add independent positive and adversarial fixtures for missing/extra/duplicate calibration rows, bank-label drift, every seed-stream collision class, wrong evaluation/calibration digest, altered check counts/status, omitted required checks, orphan/duplicate references and forged aggregate status.
+
+### 9.3 Separate trust-boundary work — not part of deterministic reconciliation
+
+Gate 163's dedicated attestor architecture remains a design, not an implemented trust service. The current five C10-S workflows inventoried by Gate 162 were not trusted signers. The package verifier deliberately does not infer authentication from caller fields or its `trust_policy` argument.
+
+The following remain separate and must not be smuggled into the deterministic Gate159 result:
+
+- independently resolving producer workflow ID/path, run ID/attempt, event, ref, commit, artifact ID and artifact digest from GitHub;
+- binding the tested source tree/archive digest to the exact producer execution;
+- independently resolving technical-test evidence;
+- implementing and governing the trusted-builder workflow and its immutable action revisions;
+- verifying the detached GitHub Artifact Attestation against the pinned repository/workflow/issuer/predicate policy.
+
+Until that trust root and verifier exist, the maximum legitimate package status is deterministic RECONCILED with source/test provenance NOT_VERIFIED and external authentication NOT_AUTHENTICATED.
+
+### 9.4 Current Gate 159 disposition
+
+- Evaluation-side seed derivation, assignment joins, RUN/R structure and effective configuration: IMPLEMENTED IN SOURCE; pure tests PASS; real-package round trip NOT VERIFIED.
+- Calibration/evaluation disjointness and Gate159 derived-status recomputation: OPEN.
+- GitHub source/test provenance: OPEN / NOT VERIFIED.
+- External authenticated provenance: BLOCKED pending trusted-builder implementation and verifier.
+- Gate 159 overall: OPEN / CONDITIONAL; no authenticated provenance claim is permitted.
+- Scientific execution, calibration/evaluation seed-bank generation and Monte Carlo execution: NOT AUTHORIZED / NOT EXECUTED.
+
+**Next bounded operation:** perform a static schema-and-source crosswalk for the calibration manifest and Gate159 reconciliation artifact only, then freeze the exact check registry and derived-status algorithm before any implementation. Do not build a real package, invoke producers, generate seeds or execute calibration/Monte Carlo in that operation.
