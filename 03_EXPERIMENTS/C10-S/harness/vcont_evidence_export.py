@@ -35,7 +35,7 @@ def _type_id(cls: type) -> str:
 
 
 _SNAPSHOT_TYPES = (
-    SeedAssignment, MatrixTruthProjection, AnalysisContract, AnalyzerResult, EvaluationReport,
+    SeedAssignment, AnalysisContract, AnalyzerResult, EvaluationReport,
     EvidenceCandidate, RepeatedAssignmentReport, RunManifest, ScenarioConfig,
     SealedEvidence, TruthBundle,
 )
