@@ -1902,6 +1902,9 @@ def _reconcile_configuration_companions(
             raise PackageVerificationError("RUN/R snapshot has no unique matching applicability relation")
         consumed_contracts[scope] += 1
         if key[3] == "outer-000000" and key[4] == "RUN":
+            expected_representative_index = AUTHORITATIVE_SCENARIO_IDS.index(scope[0]) * M * (1 + R)
+            if run_index != expected_representative_index:
+                raise PackageVerificationError("representative RUN source index differs from canonical scenario/M/R ordering")
             representative_refs[scope] = run_index
     if any(count != M * (1 + R) for count in consumed_contracts.values()):
         raise PackageVerificationError("each scenario contract was not consumed by every RUN/R snapshot exactly once")
@@ -1947,8 +1950,10 @@ def _reconcile_configuration_companions(
             "algorithm_id": ANALYSIS_CONTRACT_DIGEST_ALGORITHM,
             "digest_sha256": source["contract_payload_digest"],
         })
-    if matrix.get("schema_id") != MATRIX_SCHEMA_ID or matrix.get("schema_version") != MATRIX_SCHEMA_VERSION:
-        raise PackageVerificationError("MatrixCapture source schema/version mismatch")
+    if (matrix.get("schema_id"), matrix.get("schema_version"), matrix.get("row_count")) != (
+        MATRIX_SCHEMA_ID, MATRIX_SCHEMA_VERSION, 52
+    ) or not isinstance(matrix.get("rows"), list) or len(matrix["rows"]) != 52:
+        raise PackageVerificationError("MatrixCapture source schema/version/cardinality mismatch")
     matrix_digest = _configuration_digest({
         "schema_id": MATRIX_SCHEMA_ID, "schema_version": MATRIX_SCHEMA_VERSION,
         "row_count": 52, "rows": matrix.get("rows"),
