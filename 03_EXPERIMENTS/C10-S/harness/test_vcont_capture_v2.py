@@ -412,6 +412,35 @@ class CaptureV2Tests(unittest.TestCase):
         with self.assertRaises(ContractError):
             _reconcile_report_seed_sources(report, (altered_outer,))
 
+    def test_v2_1_source_reconciliation_rejects_truth_seed_projection_mismatch(self):
+        report, outer, run_tuple = self._source_reconciliation_fixture()
+        altered_truth = replace(run_tuple[0], seed=run_tuple[0].seed + 1)
+        report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"] = (
+            {"run": (altered_truth,) + run_tuple[1:]},
+        )
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (outer,))
+
+    def test_v2_1_source_reconciliation_rejects_explicit_config_stream_mismatch(self):
+        report, outer, _ = self._source_reconciliation_fixture()
+        source = outer.run_bundle
+        config = source.scenario_config.restore(ScenarioConfig)
+        altered_config = replace(config, z_assignment_seed=999999)
+        altered_run = replace(source, scenario_config=FrozenSnapshot.capture(altered_config))
+        altered_outer = replace(outer, run_bundle=altered_run)
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (altered_outer,))
+
+    def test_v2_1_source_reconciliation_rejects_outer_world_seed_mismatch(self):
+        report, outer, _ = self._source_reconciliation_fixture()
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (replace(outer, world_seed=outer.world_seed + 1),))
+
+    def test_v2_1_source_reconciliation_rejects_missing_repeated_assignment(self):
+        report, outer, _ = self._source_reconciliation_fixture()
+        with self.assertRaises(ContractError):
+            _reconcile_report_seed_sources(report, (replace(outer, repeated_bundles=()),))
+
     def test_v2_1_source_reconciliation_rejects_duplicate_or_missing_outer_groups(self):
         report, outer, _ = self._source_reconciliation_fixture()
         with self.assertRaises(ContractError):
