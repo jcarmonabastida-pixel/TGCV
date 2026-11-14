@@ -596,3 +596,5 @@ Gate 181 freezes every direct uint64 occurrence in package v2.0.0, including dup
 Confirmatory ScenarioConfig execution requires explicit world/Z/G stream seeds exactly matching the evaluation SeedAssignment row. The legacy `seed` fallback is forbidden for confirmatory capture. The structural effective-config JSON excludes seed and RUN/R identity fields; complete per-run ScenarioConfig snapshots, including their seed fields, remain opaque and byte-preserved in run_records and are reconciled after supported decoding. The historical seed-bank fingerprints continue to use exact source-typed SeedAssignment rows under their unchanged algorithm, before wire projection.
 
 No seed derivation, generation, calibration, tests, package or scientific execution occurred. Full contract: Gate 181.
+
+Gate 181 pins the evaluation-assignment and temporal-manifest root envelopes and the exact `rows` array pointers for v2.0.0. The calibration manifest retains its Gate 178 `rows` envelope with typed uint64 seed values. No bare top-level arrays or alternate root shapes are permitted.
