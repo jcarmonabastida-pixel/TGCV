@@ -518,3 +518,11 @@ Gate 180 verifies against current source that `CapturedBenchmark` still has only
 The producer also has no inputs for calibration manifest, Gate159 reconciliation, source-execution evidence or technical-test evidence. These remain independent companion artifacts and must be assembled and bound at a separate export boundary; the capture producer cannot infer or attest them.
 
 The current FrozenSnapshot codec remains a legacy opaque snapshot serializer, not JCS and not a strict independent package verifier. Its enum decoder returns underlying values and its JSON parser does not reject duplicate keys. Existing snapshot bytes must remain byte-preserved; the v2 verifier must be separate and strict. See Gate 180. No code/tests/CI or scientific execution occurred.
+
+## 18. Gate 181 — v2 source-to-wire projection closure
+
+Gate 181 closes the schema-level questions left open by Gate 180. It freezes the direct uint64 registry including duplicated report temporal-manifest and pair-ledger contribution paths; defines EffectiveScenarioConfigProjection v2.0.0; and specifies the historical report fingerprint ordering before wire projection.
+
+The effective structural config excludes `seed`, world/Z/G assignment seeds and RUN/R identity fields from direct JSON. It retains the exact structural ScenarioConfig fields and an explicit policy requiring all three RNG stream seeds to be supplied by SeedAssignment. Full per-run effective ScenarioConfig snapshots remain byte-preserved and opaque in run_records; their values are reconciled to the assignment rows after supported decoding.
+
+Capture identity v2.0.0 is evaluation-capture-only. Calibration, Gate159, source-execution and technical-test companions are independently assembled and bound by benchmark_export_id; companion digests affect package_id, not capture_id. The 14-file source/projection/verifier crosswalk is defined in Gate 181. Current source still lacks MatrixCapture/FrozenReportSnapshot retention and companion/package implementation. No code/tests/CI or scientific execution occurred.
