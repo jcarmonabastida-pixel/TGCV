@@ -218,3 +218,11 @@ Gate 191's static audit corrected the Gate 190 helper's invalid `AnalysisContrac
 
 The v2 package profile contract is now explicit: package schema v2.0.0 and RUN export envelope v2.0.0 require report sub-schema `TGCV-C10S-VCONT-REPORT-SNAPSHOT@2.1.0`, payload type `TGCV-C10S-VCONT-BENCHMARK-REPORT`. The exact Gate 164 14-file inventory remains unchanged. Writer and independent verifier modules and their test modules are still absent. See `00_GOVERNANCE/SIP/C10_S_VCONT_PACKAGE_V2_PROFILE_AND_INDEPENDENT_VERIFIER_IMPLEMENTATION_CONTRACT_GATE_191_DRAFT_001.md`.
 
+### Gate 192 — partial pure package-v2 writer
+
+`vcont_package_v2.py` now contains the JCS file serializer, exact 14-path inventory, strict path checks, deterministic normalized USTAR writer, report v2.1/MatrixCapture checks, capture-identity recomputation, selected companion schema-header checks and fail-closed requirement for all 11 materialized companion payloads. It does not import or invoke the evidence-export module or any synthetic producer. It does not fabricate calibration, Gate159, source-execution or test evidence.
+
+`test_vcont_package_v2_serialization.py` adds seven pure tests. The manual workflow remains `workflow_dispatch` only, now guarded to the research branch, with explicit compile/test module lists; it was not dispatched. The tests and compilation have not been run.
+
+This is a partial writer, not complete package conformance: field-level schemas and all semantic joins across companion payloads remain open, and no independent verifier exists. See `00_GOVERNANCE/SIP/C10_S_VCONT_PACKAGE_V2_PURE_WRITER_IMPLEMENTATION_GATE_192_DRAFT_001.md`.
+
