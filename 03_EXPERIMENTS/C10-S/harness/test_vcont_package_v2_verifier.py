@@ -18,6 +18,7 @@ from vcont_package_v2_verify import (
     _assert_snapshot_seed_relations,
     _logical_run_key,
     _reconcile_matrix_pair_ledger,
+    _resolve_outer_world_run_reference,
 )
 
 
@@ -421,6 +422,86 @@ class IndependentVerifierPrimitiveTests(unittest.TestCase):
         matrix["rows"][1]["key"] = dict(matrix["rows"][0]["key"])
         with self.assertRaises(PackageVerificationError):
             _reconcile_matrix_pair_ledger(matrix, report)
+
+
+
+    def _outer_world_reference_fixture(self):
+        base = ("S01", "v1", 700, "outer-000000")
+        run_key = (*base, "RUN", -1, "run-designated")
+        repeated_key = (*base, "REPEATED_ASSIGNMENT", 0, "run-repeat-0")
+        run_map = {run_key: {"record": "designated"}, repeated_key: {"record": "repeat"}}
+        decoded = {
+            run_key: {"run_manifest": {
+                "run_id": "run-designated", "world_id": "world-01",
+                "world_version": "v1", "world_seed": 101,
+            }},
+            repeated_key: {"run_manifest": {
+                "run_id": "run-repeat-0", "world_id": "world-01",
+                "world_version": "v1", "world_seed": 101,
+            }},
+        }
+        return base, run_key, repeated_key, run_map, decoded, ("world-01", "v1", 101)
+
+    def test_outer_world_reference_resolves_exact_designated_run_and_repetition(self):
+        base, run_key, repeated_key, run_map, decoded, world = self._outer_world_reference_fixture()
+        resolved, manifest = _resolve_outer_world_run_reference(
+            dict(zip(
+                ("scenario_id", "scenario_version", "N", "outer_replicate_id",
+                 "assignment_role", "assignment_index", "run_id"), run_key
+            )),
+            "designated", base, "RUN", -1, run_map, decoded, world,
+        )
+        self.assertEqual(resolved, run_key)
+        self.assertEqual(manifest["run_id"], "run-designated")
+        repeated, _ = _resolve_outer_world_run_reference(
+            dict(zip(
+                ("scenario_id", "scenario_version", "N", "outer_replicate_id",
+                 "assignment_role", "assignment_index", "run_id"), repeated_key
+            )),
+            "repeated", base, "REPEATED_ASSIGNMENT", 0, run_map, decoded, world,
+        )
+        self.assertEqual(repeated, repeated_key)
+
+    def test_outer_world_reference_rejects_cross_world_and_run_id_divergence(self):
+        base, run_key, _, run_map, decoded, world = self._outer_world_reference_fixture()
+        ref = dict(zip(
+            ("scenario_id", "scenario_version", "N", "outer_replicate_id",
+             "assignment_role", "assignment_index", "run_id"), run_key
+        ))
+        decoded[run_key]["run_manifest"]["world_id"] = "world-OTHER"
+        with self.assertRaises(PackageVerificationError):
+            _resolve_outer_world_run_reference(
+                ref, "cross-world", base, "RUN", -1, run_map, decoded, world
+            )
+        decoded[run_key]["run_manifest"]["world_id"] = "world-01"
+        decoded[run_key]["run_manifest"]["run_id"] = "run-diverged"
+        with self.assertRaises(PackageVerificationError):
+            _resolve_outer_world_run_reference(
+                ref, "run-id-divergence", base, "RUN", -1, run_map, decoded, world
+            )
+
+    def test_outer_world_reference_rejects_repetition_mapped_to_designated_run(self):
+        base, run_key, _, run_map, decoded, world = self._outer_world_reference_fixture()
+        ref = dict(zip(
+            ("scenario_id", "scenario_version", "N", "outer_replicate_id",
+             "assignment_role", "assignment_index", "run_id"), run_key
+        ))
+        with self.assertRaises(PackageVerificationError):
+            _resolve_outer_world_run_reference(
+                ref, "repeated-as-run", base, "REPEATED_ASSIGNMENT", 0,
+                run_map, decoded, world,
+            )
+
+    def test_outer_world_reference_rejects_orphaned_run(self):
+        base, run_key, _, _, decoded, world = self._outer_world_reference_fixture()
+        ref = dict(zip(
+            ("scenario_id", "scenario_version", "N", "outer_replicate_id",
+             "assignment_role", "assignment_index", "run_id"), run_key
+        ))
+        with self.assertRaises(PackageVerificationError):
+            _resolve_outer_world_run_reference(
+                ref, "orphan", base, "RUN", -1, {}, decoded, world
+            )
 
 
 
