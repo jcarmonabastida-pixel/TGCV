@@ -1,5 +1,8 @@
 """Pure tests for the independent package-v2 verifier primitives."""
 import unittest
+import base64
+import hashlib
+import json
 
 import rfc8785
 from vcont_package_v2_verify import (
@@ -11,6 +14,7 @@ from vcont_package_v2_verify import (
     _strict_json,
     _uint64,
     _historical_fingerprint,
+    decode_frozen_snapshot_ref,
 )
 
 
@@ -203,6 +207,101 @@ class IndependentVerifierPrimitiveTests(unittest.TestCase):
         }
         with self.assertRaises(PackageVerificationError):
             _check_registered_uint64(files)
+
+
+    def _seed_assignment_snapshot_ref(self):
+        type_id = "vcont_benchmark_protocol.SeedAssignment"
+        payload = {
+            "$dataclass": type_id,
+            "fields": {
+                "bank": "evaluation",
+                "scenario_id": "S01",
+                "n_units": 700,
+                "replicate": -1,
+                "world_seed": 111,
+                "z_assignment_seed": 222,
+                "g_assignment_seed": 333,
+                "scenario_version": "v1",
+                "outer_replicate_id": "outer-000000",
+                "assignment_role": "RUN",
+            },
+        }
+        raw = json.dumps(
+            payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False,
+            allow_nan=False,
+        ).encode("utf-8")
+        return {
+            "type_id": type_id,
+            "encoding": "base64",
+            "media_type": "application/vnd.tgcv.typed-snapshot+json",
+            "serialization_id": "TGCV-FROZEN-SNAPSHOT-1",
+            "canonical_bytes_base64": base64.b64encode(raw).decode("ascii"),
+            "sha256": hashlib.sha256(raw).hexdigest(),
+        }
+
+    def test_frozen_snapshot_decoder_accepts_exact_seed_assignment(self):
+        reference = self._seed_assignment_snapshot_ref()
+        decoded = decode_frozen_snapshot_ref(
+            reference, expected_type_id="vcont_benchmark_protocol.SeedAssignment"
+        )
+        self.assertEqual(decoded.type_id, reference["type_id"])
+        self.assertEqual(decoded.serialization_id, "TGCV-FROZEN-SNAPSHOT-1")
+        self.assertEqual(decoded.canonical_bytes, base64.b64decode(reference["canonical_bytes_base64"]))
+        self.assertEqual(decoded.sha256, reference["sha256"])
+
+    def test_frozen_snapshot_decoder_rejects_digest_and_root_type_divergence(self):
+        reference = self._seed_assignment_snapshot_ref()
+        bad_digest = dict(reference, sha256="0" * 64)
+        with self.assertRaises(PackageVerificationError):
+            decode_frozen_snapshot_ref(bad_digest)
+        bad_type = dict(reference, type_id="vcont_integrated_harness.TruthBundle")
+        with self.assertRaises(PackageVerificationError):
+            decode_frozen_snapshot_ref(bad_type)
+
+    def test_frozen_snapshot_decoder_rejects_missing_fields_and_bad_base64(self):
+        reference = self._seed_assignment_snapshot_ref()
+        raw = base64.b64decode(reference["canonical_bytes_base64"])
+        payload = json.loads(raw.decode("utf-8"))
+        del payload["fields"]["world_seed"]
+        changed = json.dumps(
+            payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False,
+            allow_nan=False,
+        ).encode("utf-8")
+        malformed = dict(
+            reference,
+            canonical_bytes_base64=base64.b64encode(changed).decode("ascii"),
+            sha256=hashlib.sha256(changed).hexdigest(),
+        )
+        with self.assertRaises(PackageVerificationError):
+            decode_frozen_snapshot_ref(malformed)
+        bad_base64 = dict(reference, canonical_bytes_base64="%%%")
+        with self.assertRaises(PackageVerificationError):
+            decode_frozen_snapshot_ref(bad_base64)
+
+    def test_frozen_snapshot_decoder_rejects_duplicate_keys_and_unknown_tags(self):
+        duplicate = b'{"$dataclass":"vcont_benchmark_protocol.SeedAssignment","fields":{},"fields":{}}'
+        duplicate_ref = self._seed_assignment_snapshot_ref()
+        duplicate_ref["canonical_bytes_base64"] = base64.b64encode(duplicate).decode("ascii")
+        duplicate_ref["sha256"] = hashlib.sha256(duplicate).hexdigest()
+        with self.assertRaises(PackageVerificationError):
+            decode_frozen_snapshot_ref(duplicate_ref)
+
+        reference = self._seed_assignment_snapshot_ref()
+        raw = base64.b64decode(reference["canonical_bytes_base64"])
+        payload = json.loads(raw.decode("utf-8"))
+        payload["fields"]["scenario_id"] = {"$mystery": "S01"}
+        changed = json.dumps(
+            payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False,
+            allow_nan=False,
+        ).encode("utf-8")
+        malformed = dict(
+            reference,
+            canonical_bytes_base64=base64.b64encode(changed).decode("ascii"),
+            sha256=hashlib.sha256(changed).hexdigest(),
+        )
+        with self.assertRaises(PackageVerificationError):
+            decode_frozen_snapshot_ref(malformed)
+
 
 
 if __name__ == "__main__":
