@@ -647,3 +647,42 @@ Gate 181 §5.1 defines `benchmark_export_id = capture_id`. All proposed companio
 The frozen schema identities needed for the source projection, matrix and evaluation assignment inputs are now recovered literally. The two companion root schema IDs and the semantic AnalysisContract schema remain new proposed identities, as they should be. The prior residual “missing schema identity” blocker is therefore narrowed to approval of those three new schema definitions, not uncertainty about the existing Gate 181/178 source contracts.
 
 **Disposition: CONDITIONAL — SOURCE IDENTITY CROSSWALK COMPLETE FOR FROZEN INPUTS; NEW COMPANION SCHEMAS NOT YET FROZEN.** A final read-only consistency audit must verify the amended field nesting, source-typed legacy seed fingerprint, typed capture assignment digest, 28-component ordering, root IDs and exact benchmark_export_id binding. No implementation or execution is authorized.
+
+
+### 11.11 Gate 194-F.3 — final read-only consistency review
+
+**Review scope:** §§11.1–11.10 against Gate 181, Gate 178, Gate 179, source constants/helpers, and the Gate 191 package inventory/verifier boundary. No source files were modified.
+
+| Consistency item | Result | Basis |
+|---|---|---|
+| 13 scenario identifiers and order | MATCH | Gate 194-G registry and source `SCENARIO_IDS` |
+| 26 structural fields and nesting | MATCH after §11.10 correction | Gate 181 §3.1–3.2: 26 fields are nested under `config` |
+| Effective-config schema ID/version | MATCH | Gate 181 §3.0 and verifier constants |
+| 37 AnalysisContract field names | MATCH | Gate 194-G dataclass/decoder crosswalk |
+| AnalysisContract source type partition | MATCH | 9 booleans, 5 nullable strings, 23 non-null strings |
+| Analyzer version + scenario-scoped contract | MATCH | Source Analyzer and `contract_for(cfg)` |
+| MatrixCapture ID/version and digest domain | MATCH | Gate 178 §2; source `capture_matrix`; verifier recomputation |
+| Evaluation assignment file ID/version | MATCH | Gate 181 §2.3a |
+| Typed assignment-manifest digest | MATCH | Gate 181 §5.1 and source `_assignment_wire` / `derive_capture_identity` |
+| Historical seed-bank fingerprint | MATCH after §11.10 distinction | Gate 179 §3 and source `seed_bank_fingerprint`; source-typed rows, pre-wire |
+| Capture/export identity | MATCH | Gate 181 §5.1: `benchmark_export_id = capture_id` |
+| 13 source contracts / 26 applicability relations | DESIGN-CONSISTENT | One scenario-scoped source contract; RUN and REPEATED_ASSIGNMENT applicability |
+| 28 aggregate components | DESIGN-CONSISTENT | 13 DGP + 13 Analyzer + MatrixCapture + evaluation assignment digest |
+| Two companion root schemas and semantic contract envelope | PROPOSED | New schemas; not found in historical source contracts |
+| Aggregate algorithm and exact-once consumption | PROPOSED | New independent-verifier obligations; not implemented |
+
+#### Review findings
+
+1. **Resolved:** the Gate 194-F.1 DGP/Generator digest description could be misread as a flattened projection. Section 11.10 now explicitly requires the exact Gate 181 row shape, with all 26 structural properties nested in `config`.
+2. **Resolved:** historical `seed_bank_fingerprint` and capture identity's `evaluation_seed_manifest_sha256` are separate algorithms. The former hashes original source-typed assignment rows using the Gate 179 algorithm; the latter hashes typed uint64 wire rows under Gate 181 capture identity. Neither may substitute for the other.
+3. **Resolved:** literal IDs/versions for the frozen effective-config, MatrixCapture, evaluation-assignment and capture-identity schemas are recorded from their governing contracts.
+4. **Not a discrepancy:** the two companion root schema IDs and the semantic AnalysisContract envelope ID are new proposed schema identities. They must remain labelled proposed until explicitly frozen; they must not be represented as recovered historical IDs.
+5. **No source support for implementation claims:** the current writer/verifier boundary still does not semantically consume both proposed companions or recompute the aggregate. This remains future implementation work, not a defect that can be marked resolved by documentation.
+
+#### Disposition
+
+**Gate 194-F.3: PASS_STATIC for source-identity crosswalk and internal design consistency; CONDITIONAL for schema freeze.**
+
+The source-boundary ambiguities found in Gate 194-G have been corrected. The 13/26/28 architecture is internally consistent with the frozen Gate 181/178/179 inputs. The remaining step before implementation is an explicit freeze decision on the three newly proposed schemas and the aggregate semantic contract. This document alone does not freeze them.
+
+No code, writer, verifier, tests or workflows were changed. No imports, tests, compilation, CI, producers, seed generation, calibration, package generation or scientific execution were performed. `main` remains untouched; PR #116 remains Draft.
