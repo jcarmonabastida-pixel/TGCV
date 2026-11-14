@@ -776,6 +776,27 @@ def _resolve_outer_world_run_reference(
     return parsed_key, manifest
 
 
+
+def _reconcile_benchmark_export_identity(files: Mapping[str, Any]) -> str:
+    """Reconcile the capture identity across every companion that declares it by contract."""
+    run_file = files.get("runs/run_records.json")
+    gate159 = files.get("validation/reconciliation_results.json")
+    if not isinstance(run_file, dict):
+        raise PackageVerificationError("RUN export companion is missing for benchmark_export_id reconciliation")
+    if not isinstance(gate159, dict):
+        raise PackageVerificationError("Gate159 companion is missing for benchmark_export_id reconciliation")
+    export_id = run_file.get("benchmark_export_id")
+    if not isinstance(export_id, str) or not re.fullmatch(r"[0-9a-f]{64}", export_id):
+        raise PackageVerificationError("RUN export benchmark_export_id is not a lowercase SHA-256 identity")
+    if (gate159.get("schema_id"), gate159.get("schema_version")) != (
+        "TGCV-C10S-VCONT-GATE159-RECONCILIATION", "1.0.0"
+    ):
+        raise PackageVerificationError("Gate159 companion schema/version differs from its frozen contract")
+    if gate159.get("benchmark_export_id") != export_id:
+        raise PackageVerificationError("Gate159 benchmark_export_id differs from RUN export capture identity")
+    return export_id
+
+
 def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tuple[int, int]:
     """Rebuild RUN/R and outer-world joins from the package's independent sources."""
     run_file = files["runs/run_records.json"]
@@ -1637,6 +1658,7 @@ def verify_package_v2(
         raise
     except Exception as exc:
         raise PackageVerificationError(f"RUN/R semantic reconciliation failed closed: {exc}") from exc
+    _reconcile_benchmark_export_identity(parsed)
     matrix = parsed["design/scenario_estimand_matrix.json"]
     if (not isinstance(matrix, dict) or set(matrix) != {
             "schema_id", "schema_version", "design_identity", "row_count", "rows",
