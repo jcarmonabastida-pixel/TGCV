@@ -1260,6 +1260,9 @@ def _reconcile_report_seed_sources(
             for value in (truth.seed, config.seed, truth_projection.seed):
                 if isinstance(value, bool) or not isinstance(value, int) or not 0 <= value <= _UINT64_MAX:
                     raise ContractError("v2.1 TruthBundle.seed source must be exact uint64")
+            if (isinstance(outer.world_seed, bool) or not isinstance(outer.world_seed, int)
+                    or not 0 <= outer.world_seed <= _UINT64_MAX):
+                raise ContractError("v2.1 OuterWorldEvidenceBundle world_seed must be exact uint64")
             if outer.world_seed != manifest.world_seed:
                 raise ContractError("v2.1 OuterWorldEvidenceBundle world_seed differs from RUN RunManifest")
             expected_run_key = (
