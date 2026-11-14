@@ -225,4 +225,10 @@ The v2 package profile contract is now explicit: package schema v2.0.0 and RUN e
 `test_vcont_package_v2_serialization.py` adds seven pure tests. The manual workflow remains `workflow_dispatch` only, now guarded to the research branch, with explicit compile/test module lists; it was not dispatched. The tests and compilation have not been run.
 
 This is a partial writer, not complete package conformance: field-level schemas and all semantic joins across companion payloads remain open, and no independent verifier exists. See `00_GOVERNANCE/SIP/C10_S_VCONT_PACKAGE_V2_PURE_WRITER_IMPLEMENTATION_GATE_192_DRAFT_001.md`.
+### Gate 193 — independent structural package-v2 verifier
 
+`vcont_package_v2_verify.py` adds an independent structural verifier; it does not import the writer. It independently parses strict JSON (duplicate-key/BOM/non-finite rejection), checks JCS bytes and the exact 14-file inventory, verifies TAR metadata and independently reconstructs canonical USTAR bytes, recomputes manifest/file digests and package ID, validates the report v2.1 envelope/fingerprint and duplicate views, checks 13-scenario/52-pair/M/R structural coverage, validates MatrixCapture's full digest, and consumes the Gate 181/188 uint64 pointer registry. The verifier explicitly returns partial/not-verified statuses for semantic RUN/R joins, calibration/Gate159, external provenance, test evidence and authentication; it does not claim full conformance.
+
+Static review also corrected three Gate 192 writer defects: source-safe `metric_targets` projection for capture identity, MatrixCapture's distinct compact design-identity projection, and source-domain legacy report fingerprint recomputation after decoding registered report wrappers. These corrections are not compiled or executed.
+
+`test_vcont_package_v2_verifier.py` contains 12 pure methods. The manual research-branch-only workflow now explicitly compiles/runs the verifier and its fixture module. No tests, compilation or workflow have been executed. See `00_GOVERNANCE/SIP/C10_S_VCONT_PACKAGE_V2_INDEPENDENT_VERIFIER_IMPLEMENTATION_GATE_193_DRAFT_001.md`.
