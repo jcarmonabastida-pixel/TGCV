@@ -268,3 +268,9 @@ The capture implementation recomputes the legacy report fingerprint from the sou
 ## 18. Gate 186 — capture source audit
 
 Gate 186 corrected the legacy report fingerprint algorithm identifier to the exact Gate 181 value and strengthened the capture identity's design-to-outer-world scenario/version/N join. It also found a remaining conformance gap: nested report structures are preserved recursively but lack complete versioned field allowlists and cardinality checks. The capture report projection must not be treated as a strict schema decoder until Gate 187 closes this. Tests remain unexecuted; no producer or scientific operation ran. See `C10_S_VCONT_PACKAGE_V2_CAPTURE_SOURCE_AUDIT_GATE_186_DRAFT_001.md`.
+
+## 19. Gate 187 — nested report schema implementation and contract blocker
+
+Gate 187 implemented exact nested report field allowlists and cardinality checks from the actual Evaluator construction: temporal 13×M×(1+R), 52 ordered pair rows with M contributions, 13 scenario reports with M outer rows and R repeated reports, plus nested summary/source dataclass schemas. Structural fixture and adversarial tests were authored, not executed.
+
+The audit found a Gate 181 registry omission: the complete scenario report retains four uint64 source occurrences in its per-outer RUN tuple (`TruthBundle.seed` and the three `RunManifest` seed fields). These paths are not covered by the frozen Gate 181 uint64 pointer registry. Since the report projection must preserve the complete source report, FrozenReportSnapshot v2.0.0 cannot yet claim full JCS conformance. Gate 188 must make an explicit versioned contract decision; no implicit wire-schema amendment has been made. See Gate 187.
