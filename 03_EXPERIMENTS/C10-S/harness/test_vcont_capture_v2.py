@@ -1,5 +1,6 @@
 """Pure fixture tests for Gate 185 capture primitives; never invoke producers."""
 from dataclasses import replace
+import copy
 import json
 import hashlib
 import math
@@ -61,8 +62,8 @@ class CaptureV2Tests(unittest.TestCase):
             "executable_commit": "c" * 40,
             "configuration_fingerprint": "b" * 64,
             "metric_targets": (),
-            "temporal_manifest": temporal,
-            "pair_ledger": pair_ledger,
+            "temporal_manifest": copy.deepcopy(temporal),
+            "pair_ledger": copy.deepcopy(pair_ledger),
         }
         return {
             "design": {
