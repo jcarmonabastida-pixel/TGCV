@@ -137,3 +137,47 @@ A structural PASS cannot imply identity reconciliation, companion completeness, 
 **G194-A disposition:** exact path inventory and source authority crosswalk are established; complete field-level crosswalk is **PARTIAL**, not PASS. Before G194-B code is written, retrieve and reconcile the exact Gate 174 RUN-EXPORT-ENVELOPE v2.0.0 schema, including `serialization_id`, snapshot envelope fields and per-type schema/version registry. Then implement the independent decoder in `vcont_package_v2_verify.py` only, with no writer/capture-code imports.
 
 No tests, compilation, CI, workflow, producers, seeds, calibration, package generation or scientific execution are authorized or performed by this Gate. No scientific component, estimand, DGP, seed derivation or canonical `main` artifact is changed.
+
+
+## 7. Gate 174 retrieval correction
+
+The exact Gate 174 contract has now been located at:
+`00_GOVERNANCE/SIP/C10_S_VCONT_PACKAGE_SERIALIZATION_AND_INDEPENDENT_VERIFIER_CONTRACT_GATE_174_DRAFT_001.md`.
+
+It closes the RUN envelope mapping precisely. Each snapshot reference has exactly:
+- `type_id`;
+- `encoding = base64`;
+- `media_type = application/vnd.tgcv.typed-snapshot+json`;
+- `serialization_id = TGCV-FROZEN-SNAPSHOT-1`;
+- `canonical_bytes_base64`;
+- `sha256`.
+
+There is no per-snapshot `schema_version` field in this envelope. The closed type/field registry is therefore bound to the verifier implementation/profile version, not inferred from a nonexistent snapshot schema-version member. The earlier wording in §3.2 requiring a separate per-snapshot schema/version field is superseded by this exact Gate 174 mapping. Enum tags must retain registered enum identity; current generic restore behavior is not accepted as the independent decoder.
+
+Gate 174 also specifies the canonical run key, outer-world key, exact RUN/R cardinalities, the nine snapshot references per run record, one repeated-assignment report per outer-world record, and the requirement that every referenced run key resolve exactly once.
+
+## 8. Gate 194-B implementation addendum
+
+The independent verifier now contains:
+- a closed type registry for the ten source dataclasses plus MatrixTruthProjection;
+- exact field allowlists recovered from the current source dataclass definitions;
+- a closed enum identity/value registry for EvaluationClass and TruthStatus;
+- recursive validation of dataclass, enum, tuple, list and map tags;
+- rejection of untagged/unknown objects, unknown types/enums, missing/extra fields and malformed collection tags;
+- strict Base64 decoding with canonical re-encoding check;
+- exact SHA-256 verification over the decoded original bytes;
+- strict UTF-8/JSON parsing with duplicate-key and non-finite rejection;
+- exact historical compact sorted-key JSON byte check, with no conversion to JCS;
+- exact Gate 174 envelope field, media type, encoding and serialization ID validation;
+- an immutable result retaining original bytes and digest separately from the decoded tagged structure.
+
+Public helper added: `decode_frozen_snapshot_ref(reference, expected_type_id=None)`.
+
+The pure verifier fixture module now contains four additional decoder tests: positive SeedAssignment snapshot, digest/root-type divergence, missing field/invalid Base64, and duplicate JSON key/unknown nested tag. These tests are written, not executed.
+
+Implementation commits:
+- Gate 194-A crosswalk: `41dcdbbe9a3196d7dd98667c742ffe213375c474`.
+- Gate 194-B decoder: `b0bf9b90728458079d525bd1211cca859bc27412`.
+- Gate 194-B decoder fixtures: `9ba72bdad00a2f4cbc3a94be907a67eb2c4a0ce9`.
+
+**Disposition:** G194-A crosswalk is now materially closed for the RUN snapshot envelope; companion schemas 1, 3, 8, 9 and 11 still require their own exact field-level/source-resolution contracts. G194-B decoder is IMPLEMENTED IN SOURCE / NOT COMPILED / NOT EXECUTED / STATIC REVIEW PENDING. No tests, compilation, CI, workflow, package, producer, seed generation, calibration or scientific execution occurred.
