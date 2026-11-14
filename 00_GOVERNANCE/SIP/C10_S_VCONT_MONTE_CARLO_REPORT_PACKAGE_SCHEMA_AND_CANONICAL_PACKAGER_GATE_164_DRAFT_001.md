@@ -289,3 +289,11 @@ Gate 174 also identifies a decoder requirement: the current snapshot `_decode` r
 The independent verifier is a separate implementation boundary and returns separate integrity, schema, completeness, reconciliation, source provenance, test evidence and attestation statuses. It does not trust producer validation flags. Full contract: `C10_S_VCONT_PACKAGE_SERIALIZATION_AND_INDEPENDENT_VERIFIER_CONTRACT_GATE_174_DRAFT_001.md`.
 
 Gate 174 status: serialization/verifier contract DEFINED; packager, decoder, verifier and tests NOT IMPLEMENTED/NOT EXECUTED. Next Gate 175 audits actual type/schema/API implementability before any serializer implementation.
+
+## 17. Gate 175 — exact matrix source qualification
+
+Gate 175 inspected the actual benchmark capture API. `produce_and_capture_benchmark()` validates and passes the exact 52-row `ScenarioEstimandSpec` matrix to the evaluator, but returns a `CapturedBenchmark` containing only report, outer-world bundles and evidence index. The report retains the design's legacy matrix fingerprint and the 52-pair ledger, not the exact matrix definitions. Thus `design/scenario_estimand_matrix.json` cannot be losslessly populated from CapturedBenchmark alone. The exact matrix must be retained as a capture-time immutable input or companion object bound to the same design and capture identity; rebuilding it from current code is not equivalent proof.
+
+Additionally, `scenario_matrix_fingerprint()` omits `ScenarioEstimandSpec.tolerance_id`. Preserve this legacy fingerprint for compatibility, but require a separately versioned full-matrix digest covering every declared matrix and nested key field, including `tolerance_id`. The full digest is the commitment to the exact matrix; the legacy fingerprint remains a historical/compatibility check only.
+
+Gate 175 status: matrix export and complete fingerprint commitment BLOCKED at current source boundary. Gate 164 confirmatory package cannot be accepted until the exact matrix payload and full digest are present and independently verified. See Gate 175. No code/tests/package execution occurred.
