@@ -386,6 +386,17 @@ class CaptureV2Tests(unittest.TestCase):
         with self.assertRaises(ContractError):
             freeze_report_snapshot(report)
 
+
+    def test_report_snapshot_fails_closed_on_unregistered_seed_in_scenario_report(self):
+        report = self.report_fixture()
+        report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"][0]["seed"] = 1 << 53
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report)
+        report = self.report_fixture()
+        report["scenario_reports"]["R0_FOCAL_POSITIVE"]["per_outer_replicate"][0]["run"][3]["world_seed"] = 1 << 53
+        with self.assertRaises(ContractError):
+            freeze_report_snapshot(report)
+
     def test_rfc8785_known_canonicalization_vectors(self):
         self.assertEqual(rfc8785.dumps({"b": 2, "a": 1}), b'{"a":1,"b":2}')
         self.assertEqual(
