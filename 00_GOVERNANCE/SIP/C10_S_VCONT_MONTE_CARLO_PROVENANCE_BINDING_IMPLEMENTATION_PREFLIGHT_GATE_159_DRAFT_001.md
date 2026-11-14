@@ -411,7 +411,7 @@ Following the calibration increment, the independent verifier now also:
 - rejects producer-declared PASS for GitHub source-execution, technical-test and calibration-execution bindings that this verifier has not independently resolved;
 - independently derives REJECTED / NOT_RECONCILED / RECONCILED and recomputes findings_digest over the exact Gate159 root projection excluding only findings_digest.
 
-Seven additional deterministic adversarial fixtures were authored: valid NOT_RECONCILED, forged aggregate status, findings-digest drift, self-asserted external PASS, check-order drift, unregistered input digest and invalid conditional NOT_APPLICABLE. Together with the nine calibration fixtures, 16 test methods are now authored for these increments.
+Eight additional deterministic adversarial fixtures were authored: valid NOT_RECONCILED, forged aggregate status, findings-digest drift, self-asserted external PASS, check-order drift, unregistered input digest, packaged-byte digest drift and invalid conditional NOT_APPLICABLE. Together with the nine calibration fixtures, 17 test methods are now authored for these increments.
 
 **No tests or compilation have been executed.** The source updates and fixtures are persisted only on the research branch. No package was built; no seed bank, calibration, producer, benchmark or scientific execution occurred.
 
