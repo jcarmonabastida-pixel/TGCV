@@ -123,3 +123,9 @@ This correction supersedes any reading of §5/§6 that might imply no workflow-r
 Gate 185 implemented the capture primitives and the first pure test module. Until a separate technical test execution authorization is given, the pure workflow is temporarily manual-only and narrowed to `vcont_evidence_export.py` plus `test_vcont_capture_v2.py`. It does not trigger on push and does not compile or invoke the integrated producer suite. On manual dispatch it installs the pinned JCS dependency, compiles only the capture module/test and runs only the capture fixture module.
 
 The other four v2 test modules and package/verifier source modules remain future implementation slices; the workflow will be expanded as they are added. No workflow dispatch, dependency installation, compile or test has occurred. See Gate 185.
+
+## 10. Gate 185 execution-boundary deviation and containment
+
+Three push events during the first Gate 185 commits still matched the earlier pure-workflow push trigger (runs 43542215502, 43542249750 and 43542308263). Each run installed the pinned JCS wheel and attempted the then-configured compile list; all failed because `vcont_package_v2.py` had not yet been created. The test step was skipped in every run. No producer or scientific execution occurred. The source capture module compiled before the missing-file failure; this is a narrow technical compile observation, not a test PASS.
+
+The push trigger was removed immediately afterward. The current pure workflow is manual-only and scoped to `vcont_evidence_export.py` and `test_vcont_capture_v2.py`. No further automatic execution is expected from pushes. This deviation corrects the earlier claim that no dependency installation or compilation took place during Gate 185.
