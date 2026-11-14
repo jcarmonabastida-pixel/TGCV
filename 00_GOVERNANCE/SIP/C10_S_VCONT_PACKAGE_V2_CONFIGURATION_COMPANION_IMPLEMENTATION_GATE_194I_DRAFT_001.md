@@ -177,3 +177,9 @@ The pure-test workflow is manual-only (`workflow_dispatch`) and was not dispatch
 
 **Next operation requiring separate authorization:** dispatch the existing pure-test workflow for the 18 new companion cases and the pre-existing verifier regression suite. A test-workflow PASS would still not authorize package generation or scientific execution.
 
+### 9.1 Residual seed-derivation metadata boundary
+
+Gate 181's evaluation-assignment envelope also declares a `seed_derivation` descriptor (algorithm, hash, output rule and namespace). Gate 194-I now verifies the exact assignment rows, their typed uint64 representation, the typed manifest digest and the legacy source-typed fingerprint declaration. It does **not** independently authenticate the declared namespace against the seed-generation call or recompute every seed from that namespace. The current `MonteCarloBenchmarkDesign` source type does not retain a namespace field, and the manifest descriptor alone is not independent provenance.
+
+Accordingly, the assignment manifest's seed-derivation descriptor remains declared metadata, not independently authenticated derivation provenance. This limitation stays within `source_execution_provenance_status=NOT_VERIFIED`; no seed-generation or calibration operation is authorized by Gate 194-I.
+
