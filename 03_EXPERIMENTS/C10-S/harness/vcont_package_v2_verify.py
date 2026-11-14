@@ -594,6 +594,35 @@ def _logical_run_key(value: Any, label: str) -> tuple[Any, ...]:
     return key
 
 
+
+def _snapshot_encode_source(value: Any) -> Any:
+    """Reproduce the historical tagged encoder for a plain source-domain value."""
+    if isinstance(value, dict):
+        if any(not isinstance(key, str) for key in value):
+            raise PackageVerificationError("snapshot source mapping contains a non-string key")
+        return {"$map": {key: _snapshot_encode_source(value[key]) for key in sorted(value)}}
+    if isinstance(value, tuple):
+        return {"$tuple": [_snapshot_encode_source(item) for item in value]}
+    if isinstance(value, list):
+        return {"$list": [_snapshot_encode_source(item) for item in value]}
+    if value is None or isinstance(value, (str, bool, int)):
+        return value
+    if isinstance(value, float):
+        import math
+        if not math.isfinite(value):
+            raise PackageVerificationError("snapshot source contains a non-finite number")
+        return value
+    raise PackageVerificationError("snapshot source contains an unsupported value")
+
+
+def _snapshot_source_digest(value: Any) -> str:
+    payload = json.dumps(
+        _snapshot_encode_source(value), sort_keys=True, separators=(",", ":"),
+        ensure_ascii=False, allow_nan=False,
+    ).encode("utf-8")
+    return _sha256(payload)
+
+
 def _snapshot_legacy_sealed_digest(sealed: dict[str, Any]) -> str:
     if set(sealed) != {"run_id", "rows", "manifest", "sha256"}:
         raise PackageVerificationError("SealedEvidence decoded fields are incomplete")
@@ -706,6 +735,25 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
     }
     if set(assignment_map) != expected_keys or set(temporal_map) != expected_keys:
         raise PackageVerificationError("assignment/temporal key sets differ from exact report design RUN/R universe")
+    expected_order = [
+        (sid, versions[sid], n_units, f"outer-{m:06d}", role, index)
+        for sid in scenario_order for m in range(M)
+        for role, index in ([("RUN", -1)] + [
+            ("REPEATED_ASSIGNMENT", repeat_index) for repeat_index in range(R)
+        ])
+    ]
+    assignment_order = [
+        (row["scenario_id"], row["scenario_version"], row["n_units"],
+         row["outer_replicate_id"], row["assignment_role"], row["replicate"])
+        for row in assignment_rows
+    ]
+    temporal_order = [
+        (row["scenario_id"], row["scenario_version"], row["N"],
+         row["outer_replicate_id"], row["assignment_role"], row["assignment_index"])
+        for row in temporal_rows
+    ]
+    if assignment_order != expected_order or temporal_order != expected_order:
+        raise PackageVerificationError("assignment/temporal rows are not in canonical scenario/M/R order")
 
     run_map: dict[tuple[Any, ...], dict[str, Any]] = {}
     decoded_by_key: dict[tuple[Any, ...], dict[str, dict[str, Any]]] = {}
@@ -817,10 +865,15 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
         if (record["analysis_contract_sha256"] != refs["analysis_contract"]["sha256"]
                 or record["sealed_evidence_legacy_sha256"] != sealed["sha256"]):
             raise PackageVerificationError("run record declared contract/sealed digest differs from decoded source")
-        if record["scenario_config_structural_sha256"] != refs["scenario_config"]["sha256"] and not re.fullmatch(
-            r"[0-9a-f]{64}", str(record["scenario_config_structural_sha256"])
-        ):
-            raise PackageVerificationError("ScenarioConfig structural digest declaration is malformed")
+        structural_config = {
+            name: value for name, value in config.items()
+            if name not in {
+                "seed", "world_seed", "z_assignment_seed", "g_assignment_seed",
+                "replicate_id", "outer_replicate_id", "assignment_role", "assignment_index",
+            }
+        }
+        if record["scenario_config_structural_sha256"] != _snapshot_source_digest(structural_config):
+            raise PackageVerificationError("ScenarioConfig structural digest does not recompute")
         sealed_digest = _snapshot_legacy_sealed_digest(sealed)
         if sealed_digest != sealed["sha256"] or analyzer["input_sha256"] != sealed_digest:
             raise PackageVerificationError("SealedEvidence legacy digest differs from AnalyzerResult.input_sha256")
@@ -845,6 +898,9 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
 
     if len(run_map) != expected_runs:
         raise PackageVerificationError("run record cardinality mismatch")
+    observed_run_order = [key[:6] for key in run_map]
+    if observed_run_order != expected_order:
+        raise PackageVerificationError("run_evidence_records are not in canonical scenario/M/R order")
     # Each assignment/temporal key must map to one unique run record and exact run_id.
     key6_to_run = {}
     for key, record in run_map.items():
@@ -864,6 +920,11 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
         raise PackageVerificationError("one-to-one RUN/R assignment to run-record consumption failed")
 
     outer_map = {}
+    expected_outer_order = [
+        (sid, versions[sid], n_units, f"outer-{m:06d}")
+        for sid in scenario_order for m in range(M)
+    ]
+    observed_outer_order = []
     for index, outer in enumerate(outer_records):
         required = {"key", "run_record_key", "repeated_run_record_keys",
                     "repeated_assignment_report", "bank"}
@@ -938,8 +999,11 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
             "run_key": run_key, "repeated_keys": tuple(expected_repeated),
             "world_seed": world_seed, "repeated_report": repeated_report,
         }
+        observed_outer_order.append(outer_key[:4])
     if len(outer_map) != expected_outers:
         raise PackageVerificationError("outer-world record cardinality differs from 13 x M")
+    if observed_outer_order != expected_outer_order:
+        raise PackageVerificationError("outer-world evidence records are not in canonical scenario/M order")
     outer_by_base = {
         (key[0], key[1], key[2], key[3]): value for key, value in outer_map.items()
     }
@@ -1037,6 +1101,8 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
                 raise PackageVerificationError("report TruthBundle identity/seed differs from captured RUN")
             if truth_snapshot["seed"] != decoded["scenario_config"]["seed"]:
                 raise PackageVerificationError("MatrixTruthProjection.seed differs from ScenarioConfig.seed")
+            if any(truth.get(name) != value for name, value in truth_snapshot.items()):
+                raise PackageVerificationError("report TruthBundle fields diverge from retained MatrixTruthProjection")
             for report_obj, snapshot_obj, label in (
                 (analyzer_report, analyzer_snapshot, "AnalyzerResult"),
                 (contract_report, contract_snapshot, "AnalysisContract"),
@@ -1059,13 +1125,9 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
     evidence_index = run_file["evidence_index"]
     if not isinstance(evidence_index, list) or len(evidence_index) != expected_outers:
         raise PackageVerificationError("RUN evidence_index cardinality differs from 13 x M")
-    expected_index = [
-        {"scenario_id": sid, "outer_replicate_id": f"outer-{m:06d}",
-         "world_id": outer_by_base[(sid, versions[sid], n_units, f"outer-{m:06d")]["run_key"][6]}
-        for sid in [] for m in []
-    ]
     # The evidence_index world_id is compared to the corresponding outer key, not to run_id.
     consumed_index = set()
+    observed_index_order = []
     for row in evidence_index:
         if not isinstance(row, dict) or set(row) != {"scenario_id", "outer_replicate_id", "world_id"}:
             raise PackageVerificationError("evidence_index row field allowlist mismatch")
@@ -1076,6 +1138,9 @@ def _reconcile_run_records(files: Mapping[str, Any], decoded_report: Any) -> tup
         if base in consumed_index:
             raise PackageVerificationError("evidence_index duplicates an outer-world key")
         consumed_index.add(base)
+        observed_index_order.append(base)
+    if observed_index_order != expected_outer_order:
+        raise PackageVerificationError("evidence_index is not in canonical scenario/M order")
     if consumed_index != expected_bases:
         raise PackageVerificationError("evidence_index does not consume every outer-world key exactly once")
     return len(run_map), len(outer_map)
