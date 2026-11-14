@@ -167,3 +167,7 @@ No tests, imports, compilation, dependency installation, workflow dispatch or pr
 Three push-triggered runs occurred before the pure workflow was made manual-only (43542215502, 43542249750, 43542308263). Each installed the pinned JCS dependency, then failed while compiling the previous workflow's not-yet-existing `vcont_package_v2.py`; tests were skipped. The capture source module compiled; no tests, producers or scientific operations ran. These were unintended workflow executions and are not PASS evidence. The current workflow is manual-only and scoped to the capture fixture module. See Gate 185 §9.
 
 Gate 185 refinement: FrozenReportSnapshot recomputes the historical report fingerprint from the source-typed manifest before typed uint64/JCS projection and fails closed on mismatch. The fixture suite includes a tampering regression, not yet executed.
+
+### Gate 186 — capture source audit
+
+The exact Gate 181 legacy report fingerprint identifier is now used, and capture identity checks each outer-world bundle's scenario version and N against the design. Static audit found that nested report structures still lack complete exact field allowlists/cardinality checks; the projection preserves unknown fields but does not yet reject nested schema drift. Full report schema conformance remains conditional. Pure tests were not executed. See Gate 186.
