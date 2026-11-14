@@ -116,3 +116,9 @@ Gate 159, calibration manifest, GitHub-resolved workflow/source/artifact metadat
 Gate 175 confirms that `produce_and_capture_benchmark()` accepts and validates the exact matrix, then uses it for the 52-pair evaluation, but the returned `CapturedBenchmark` does not retain that matrix. Its report contains the design/fingerprint and resulting pair ledger only. Therefore Gate 172's benchmark-wide evidence envelope is complete for RUN/R and M evidence but not self-contained for exact matrix export. A capture-time immutable matrix payload (or immutable companion explicitly bound to the same capture/design) is required; do not reconstruct it from current code.
 
 The existing matrix fingerprint also omits `ScenarioEstimandSpec.tolerance_id`; retain it as legacy and add a separately versioned full-matrix digest. Calibration, Gate 159 and external workflow/test provenance remain separate absent inputs. See Gate 175. No execution occurred.
+
+## 11. Gate 176 — complete benchmark capture qualification
+
+Gate 172's benchmark envelope now has a defined extension: the exact 52-row matrix passed to the evaluator must be retained in a capture-time immutable `MatrixCapture`, not reconstructed from the report or current source. The full-matrix JCS digest includes all ScenarioEstimandSpec and EvaluationKey fields, including `tolerance_id`; the legacy fingerprint remains unchanged.
+
+The frozen CapturedBenchmark wrapper does not make its nested report dict immutable. Gate 176 therefore adds a required immutable report snapshot as the authoritative package-export payload, while preserving the legacy report view. Calibration, Gate 159, source-execution and technical-test evidence remain independent companion artifacts. See Gate 176. No implementation/execution occurred.
