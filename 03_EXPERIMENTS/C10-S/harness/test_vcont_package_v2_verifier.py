@@ -1471,6 +1471,7 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
 
     @staticmethod
     def _fixture():
+        expected_counts = Gate159ArtifactVerifierTests._expected_counts()
         required = [
             "EVALUATION_ASSIGNMENT_RUN_MANIFEST_ONE_TO_ONE",
             "CALIBRATION_EVALUATION_SEED_DISJOINTNESS",
@@ -1514,10 +1515,10 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
                 "check_id": check_id, "check_version": "1.0.0",
                 "scope": "package", "applicability": "REQUIRED",
                 "join_key_profile": "TGCV-C10S-VCONT-GATE159-JOIN-v1",
-                "expected_count": self._expected_counts()[check_id][0],
-                "observed_count": self._expected_counts()[check_id][1],
-                "matched_count": self._expected_counts()[check_id][2],
-                "mismatch_count": self._expected_counts()[check_id][3],
+                "expected_count": expected_counts[check_id][0],
+                "observed_count": expected_counts[check_id][1],
+                "matched_count": expected_counts[check_id][2],
+                "mismatch_count": expected_counts[check_id][3],
                 "mismatches": [],
                 "input_digests": {path: input_digests[path] for path in check_inputs[check_id]},
                 "status": "UNVERIFIABLE" if external else "PASS",
@@ -1528,10 +1529,10 @@ class Gate159ArtifactVerifierTests(unittest.TestCase):
             "check_id": "CALIBRATION_ASSIGNMENT_EXECUTION_LINK",
             "check_version": "1.0.0", "scope": "calibration", "applicability": "CONDITIONAL",
             "join_key_profile": "TGCV-C10S-CALIBRATION-JOIN-v1",
-            "expected_count": self._expected_counts()["CALIBRATION_ASSIGNMENT_EXECUTION_LINK"][0],
-            "observed_count": self._expected_counts()["CALIBRATION_ASSIGNMENT_EXECUTION_LINK"][1],
-            "matched_count": self._expected_counts()["CALIBRATION_ASSIGNMENT_EXECUTION_LINK"][2],
-            "mismatch_count": self._expected_counts()["CALIBRATION_ASSIGNMENT_EXECUTION_LINK"][3],
+            "expected_count": expected_counts["CALIBRATION_ASSIGNMENT_EXECUTION_LINK"][0],
+            "observed_count": expected_counts["CALIBRATION_ASSIGNMENT_EXECUTION_LINK"][1],
+            "matched_count": expected_counts["CALIBRATION_ASSIGNMENT_EXECUTION_LINK"][2],
+            "mismatch_count": expected_counts["CALIBRATION_ASSIGNMENT_EXECUTION_LINK"][3],
             "mismatches": [],
             "input_digests": {path: input_digests[path] for path in check_inputs["CALIBRATION_ASSIGNMENT_EXECUTION_LINK"]},
             "status": "NOT_APPLICABLE",
