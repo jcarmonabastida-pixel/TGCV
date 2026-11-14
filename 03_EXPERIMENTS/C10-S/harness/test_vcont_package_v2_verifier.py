@@ -19,6 +19,8 @@ from vcont_package_v2_verify import (
     _logical_run_key,
     _reconcile_matrix_pair_ledger,
     _resolve_outer_world_run_reference,
+    _assert_report_snapshot_projection,
+    _register_unique_run_record,
 )
 
 
@@ -502,6 +504,35 @@ class IndependentVerifierPrimitiveTests(unittest.TestCase):
             _resolve_outer_world_run_reference(
                 ref, "orphan", base, "RUN", -1, {}, decoded, world
             )
+
+
+
+    def test_duplicate_logical_run_key_is_rejected_at_registration(self):
+        run_map, decoded = {}, {}
+        key = ("S01", "v1", 700, "outer-000000", "RUN", -1, "run-1")
+        _register_unique_run_record(run_map, decoded, key, {"record": 1}, {"snapshot": 1})
+        with self.assertRaises(PackageVerificationError):
+            _register_unique_run_record(run_map, decoded, key, {"record": 2}, {"snapshot": 2})
+
+    def test_structurally_valid_but_semantically_false_report_projection_is_rejected(self):
+        captured = {
+            "run_id": "run-1",
+            "estimate": 1.25,
+            "diagnostics": ("ok", "stable"),
+        }
+        valid_projection = {
+            "run_id": "run-1",
+            "estimate": 1.25,
+            "diagnostics": ["ok", "stable"],
+        }
+        false_projection = {
+            "run_id": "run-OTHER",
+            "estimate": 1.25,
+            "diagnostics": ["ok", "stable"],
+        }
+        _assert_report_snapshot_projection(valid_projection, captured, "positive fixture")
+        with self.assertRaises(PackageVerificationError):
+            _assert_report_snapshot_projection(false_projection, captured, "false provenance fixture")
 
 
 
