@@ -239,3 +239,11 @@ Gate 179 versions `TGCV-C10S-VCONT-RUN-EXPORT-ENVELOPE` from 1.0.0 to **2.0.0** 
 The per-run `FrozenSnapshot.canonical_bytes_base64` remains opaque and byte-identical; its SHA-256 is verified before strict allowlisted decoding. Historical fingerprints are recomputed from source-typed integers before package projection. The verifier must reject bare numeric/string seed values, malformed/out-of-range wrappers and cross-version auto-coercion.
 
 The exact 14-file inventory is unchanged. Gate 164 v1.0.0 remains immutable; package v2.0.0 and RUN envelope v2.0.0 are the successor draft. No code/tests/CI or scientific execution occurred. Full decision and vectors: Gate 179.
+
+## 13. Gate 180 — v2 verifier field registry and capture-source gaps
+
+Gate 180 adds two mandatory report seed locations to the v2 verifier registry: `report.pair_ledger[*].contributions[*].world_seed` and `report.manifest.pair_ledger[*].contributions[*].world_seed`. The legacy manifest also duplicates the temporal-manifest seed fields. The verifier must validate all direct occurrences, enforce equality of duplicated views, decode exact uint64 values and only then recompute historical report fingerprints from source-typed values.
+
+The `design/effective_scenario_configs.json` seed-field scope remains unresolved because source ScenarioConfig contains four seed-valued fields and no package projection currently establishes their inclusion/exclusion. The verifier registry must be generated from the final versioned projection schema, not a prose assumption.
+
+The current FrozenSnapshot codec is not the strict v2 verifier: its JSON parser does not reject duplicate keys, enum decoding erases enum identity, and nested mappings are not constrained by a full exact-field schema. Existing opaque snapshot bytes remain unchanged; the independent verifier must validate their type allowlist and exact-byte digest separately. See Gate 180. No verifier implementation or tests were executed.
