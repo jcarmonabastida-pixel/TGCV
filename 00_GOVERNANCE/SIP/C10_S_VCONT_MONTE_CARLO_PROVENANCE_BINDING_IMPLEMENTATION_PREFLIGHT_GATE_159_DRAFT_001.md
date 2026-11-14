@@ -301,20 +301,17 @@ Derived status is not caller-authored:
 
 ### 10.3 Exact current source comparison
 
-| Contract element | Current writer/verifier behavior | Finding |
+| Contract element | Current writer/verifier behavior after increments 1–2 | Finding |
 |---|---|---|
-| Calibration envelope | Writer checks schema ID/version/bank/rows/row_count | Shallow envelope guard only |
-| Calibration exact row allowlist and canonical order | No complete independent check found | OPEN |
-| Calibration design-derived cardinality | Not recomputed from calibration's own design | OPEN |
-| Calibration seed derivation descriptor and each row's world/Z/G values | Gate 194-I.4 recomputes evaluation rows only | OPEN for calibration |
-| Calibration source-typed legacy fingerprint | Not recomputed from calibration rows | OPEN |
-| Calibration JCS manifest digest | Not recomputed independently | OPEN |
-| Cross-bank union disjointness | Existing protocol helper exists, but package verifier does not invoke an independent equivalent | OPEN |
-| Gate159 artifact root and check-row exact schemas | Writer checks only schema/version/benchmark_export_id; verifier checks those same identity fields | OPEN |
-| Exact required check catalogue/order and cardinalities | Not independently enforced | OPEN |
-| Check result recomputation from package inputs | Not implemented | OPEN |
-| Derived status recomputation / findings digest | Not implemented | OPEN |
-| GitHub source execution and technical-test binding | Not resolved by the package verifier | EXTERNAL / OPEN |
+| Calibration envelope and exact rows | Writer enforces v2 root/design/row allowlists; verifier independently enforces them | IMPLEMENTED IN SOURCE |
+| Calibration design cardinality and canonical order | Derived from declared scenario/version map, N grid, M and R; exact row order checked | IMPLEMENTED IN SOURCE |
+| Calibration seed derivation | Every world/Z/G uint64 is independently recomputed from declared namespace and source algorithm | IMPLEMENTED IN SOURCE |
+| Calibration legacy fingerprint | Recomputed from source-typed row projection using the frozen historical JSON/SHA-256 algorithm | IMPLEMENTED IN SOURCE |
+| Calibration manifest JCS digest | Recomputed over exact v2 envelope excluding only manifest_sha256 | IMPLEMENTED IN SOURCE |
+| Calibration/evaluation disjointness | Full three-stream union intersection independently checked | IMPLEMENTED IN SOURCE |
+| Gate159 root/nested schemas and ordered check registry | Exact root, verifier identity, input artifacts, nine check rows and mismatch structures validated | IMPLEMENTED IN SOURCE |
+| Gate159 derived status and findings digest | Independently derived and compared with declared status/digest | IMPLEMENTED IN SOURCE |
+| GitHub source execution and technical-test binding | Cannot be authenticated from package declarations; PASS is rejected without independent resolution | EXTERNAL / OPEN |
 | Cryptographic attestation | No trusted signer/verifier | NOT_AUTHENTICATED |
 
 The existing `validate_seed_banks()` helper is useful source logic but is not by itself the package acceptance contract: it does not establish the exact package-level calibration design cardinality/order, source fingerprint/JCS manifest digest, Gate159 check-row evidence or derived aggregate status. The independent verifier must implement/reconcile these from the serialized v2 inputs without trusting producer-supplied status.
@@ -399,3 +396,32 @@ Derived status is recomputed from the complete required and conditional check se
 
 The deterministic package verifier can establish the internal checks from package payloads only after their respective independent source validators have passed. It cannot manufacture SOURCE_EXECUTION_GITHUB_BINDING or TECHNICAL_TEST_RUN_BINDING from producer declarations. Until a separately resolved GitHub source/test evidence object is available, those checks must be UNAVAILABLE or UNVERIFIABLE; therefore the derived status cannot be RECONCILED. External Artifact Attestation remains outside this artifact and remains NOT_AUTHENTICATED until a trusted builder and signature verifier are implemented.
 
+
+
+**Historical-plan note:** §10.3–10.4 records the pre-implementation boundary. Its OPEN items for calibration schema/cardinality/fingerprints/disjointness and deterministic Gate159 artifact reconstruction are superseded by implementation increments §§11–13. The remaining external source/test binding and attestation limitations are still current.
+## 13. Gate 159 implementation increment 2 — Gate159 artifact reconstruction (2026-11-14)
+
+Following the calibration increment, the independent verifier now also:
+
+- validates the exact Gate159 root allowlist and benchmark_export_id binding;
+- validates verifier_identity and ordered input_artifacts nested projections;
+- enforces the eight required checks in Gate 178 order plus the conditional calibration-execution row;
+- validates exact check/mismatch field sets, status/applicability, count types/arithmetic, bounded mismatch records and seed-manifest-only NOT_APPLICABLE conditions;
+- requires checks 1–6 to be PASS only after the corresponding package-internal independent verifications have passed;
+- rejects producer-declared PASS for GitHub source-execution, technical-test and calibration-execution bindings that this verifier has not independently resolved;
+- independently derives REJECTED / NOT_RECONCILED / RECONCILED and recomputes findings_digest over the exact Gate159 root projection excluding only findings_digest.
+
+Six additional deterministic adversarial fixtures were authored: valid NOT_RECONCILED, forged aggregate status, findings-digest drift, self-asserted external PASS, check-order drift and invalid conditional NOT_APPLICABLE. Together with the eight calibration fixtures, 14 test methods are now authored for these increments.
+
+**No tests or compilation have been executed.** The source updates and fixtures are persisted only on the research branch. No package was built; no seed bank, calibration, producer, benchmark or scientific execution occurred.
+
+### 13.1 Current Gate 159 disposition
+
+- Calibration manifest v2.0.0: design/cardinality/order, seed derivation, historical fingerprint, JCS manifest digest, RUN/R invariants and bank disjointness IMPLEMENTED IN SOURCE.
+- Gate159ReconciliationArtifact v1.0.0: exact nested schema, check registry, derived status and findings digest IMPLEMENTED IN SOURCE.
+- Source-execution GitHub binding: UNAVAILABLE / UNVERIFIED until independently resolved GitHub evidence is supplied.
+- Technical-test run binding: UNAVAILABLE / UNVERIFIED until independently resolved workflow/run/artifact evidence is supplied.
+- External cryptographic attestation: NOT_AUTHENTICATED.
+- Gate159 overall: implementation present, but any package without independently resolved source/test bindings must derive NOT_RECONCILED; no authenticated or scientific claim is implied.
+
+**Next operation:** static review the complete diff for calibration and Gate159 invariants, then request separate authorization for the deterministic technical test workflow. Do not run it as part of this implementation operation.
