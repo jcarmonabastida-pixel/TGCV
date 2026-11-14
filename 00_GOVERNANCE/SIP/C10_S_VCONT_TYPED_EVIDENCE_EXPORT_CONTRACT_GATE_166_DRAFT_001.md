@@ -1,6 +1,6 @@
 # C10-S V_cont — Gate 166: typed evidence-export contract
 
-**Status:** INTERFACE CONTRACT DEFINED / IMPLEMENTATION OPEN  
+**Status:** INTERFACE CONTRACT DEFINED; CAPTURE PRIMITIVES IMPLEMENTED; END-TO-END EXPORT OPEN  
 **Branch:** research/c10-s-consolidation-draft  
 **Depends on:** Gates 154, 159, 164 and 165  
 **Scientific execution:** NOT AUTHORIZED  
@@ -221,7 +221,7 @@ Package manifest/archive digests are constructed only after export validation an
 - EvaluationReport and repeated M report cardinalities: DEFINED.
 - Calibration manifest requirements: DEFINED.
 - Producer/external provenance split: DEFINED.
-- Export validator and implementation: OPEN.
+- RunEvidenceBundle capture primitives: IMPLEMENTED (Gate 170).\n- Producer/orchestration integration, full export validator and package implementation: OPEN.
 - Gate 159 reconciliation implementation: OPEN.
 - Packager implementation: OPEN pending export.
 - Tests: NOT RUN.
@@ -230,7 +230,7 @@ Package manifest/archive digests are constructed only after export validation an
 
 ## 11. Next gate
 
-**Gate 167 — source-boundary implementation design and compatibility impact audit.** Map each Gate 166 field to its exact construction point in Generator → Sealer → Analyzer → Evaluator orchestration; identify the smallest typed carrier changes and compatibility/version consequences. Resolve whether canonical SealedEvidence rows are retrievable for digest recomputation. No code changes until explicitly authorized.
+**Gate 171 — producer/orchestration integration.** Wire the Gate 170 capture API into the execution path that holds the exact SeedAssignment and all source objects through Evaluator.evaluate; assemble one OuterWorldEvidenceBundle per M without reconstructing source objects from reduced aggregate tuples.
 
 
 ## 12. Gate 167 source-boundary audit qualification
