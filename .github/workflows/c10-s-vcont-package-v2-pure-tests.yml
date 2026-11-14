@@ -1,0 +1,57 @@
+name: C10-S V_cont package v2 pure contract tests
+
+on:
+  push:
+    branches:
+      - research/c10-s-consolidation-draft
+    paths:
+      - '03_EXPERIMENTS/C10-S/harness/vcont_evidence_export.py'
+      - '03_EXPERIMENTS/C10-S/harness/vcont_package_v2.py'
+      - '03_EXPERIMENTS/C10-S/harness/vcont_package_v2_verify.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_vcont_capture_v2.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_vcont_package_v2_serialization.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_vcont_package_v2_verifier.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_vcont_package_v2_companions.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_vcont_package_v2_compatibility.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  vcont-package-v2-pure-tests:
+    name: Pure fixture tests — no synthetic producer execution
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact research-branch commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install hash-locked JCS dependency
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-v2.lock
+
+      - name: Compile only v2 capture/package modules and pure tests
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: python -m py_compile vcont_evidence_export.py vcont_package_v2.py vcont_package_v2_verify.py test_vcont_capture_v2.py test_vcont_package_v2_serialization.py test_vcont_package_v2_verifier.py test_vcont_package_v2_companions.py test_vcont_package_v2_compatibility.py
+
+      - name: Run only pure fixture-based v2 tests
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python -B -m unittest -v \
+            test_vcont_capture_v2 \
+            test_vcont_package_v2_serialization \
+            test_vcont_package_v2_verifier \
+            test_vcont_package_v2_companions \
+            test_vcont_package_v2_compatibility
