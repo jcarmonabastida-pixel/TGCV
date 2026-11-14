@@ -936,6 +936,13 @@ def _fixture():
         "schema_version": "2.0.0",
         "bank": "evaluation",
         "row_count": len(assignment_rows),
+        "seed_bank_fingerprint_legacy": legacy_seed_fingerprint,
+        "seed_derivation": {
+            "algorithm": "TGCV-C10S-VCONT-SEED-v3",
+            "hash": "SHA-256",
+            "output_rule": "first_8_digest_bytes_unsigned_big_endian",
+            "namespace": "test-fixture",
+        },
         "rows": assignment_rows,
     }
     contract_file = {
@@ -1262,6 +1269,12 @@ class ConfigurationCompanionVerifierTests(unittest.TestCase):
             observed,
             files["design/benchmark_design.json"]["seed_bank_fingerprint"],
         )
+
+    def test_rejects_assignment_manifest_legacy_fingerprint_mismatch(self):
+        files, report, matrix = _fixture()
+        files["seeds/evaluation_seed_assignments.json"]["seed_bank_fingerprint_legacy"] = "0" * 64
+        with self.assertRaises(PackageVerificationError):
+            _reconcile_configuration_companions(files, report, matrix)
 
     def test_rejects_historical_seed_bank_fingerprint_mismatch(self):
         files, report, matrix = _fixture()
