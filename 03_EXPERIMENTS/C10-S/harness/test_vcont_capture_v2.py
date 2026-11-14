@@ -1,5 +1,5 @@
 """Pure fixture tests for Gate 185 capture primitives; never invoke producers."""
-from dataclasses import replace
+from dataclasses import asdict, replace
 import copy
 import json
 import hashlib
@@ -14,13 +14,15 @@ from vcont_benchmark_protocol import (
     build_scenario_estimand_matrix, scenario_matrix_fingerprint,
 )
 from vcont_integrated_harness import (
-    AnalyzerResult, AnalysisContract, EvaluationReport, RepeatedAssignmentReport,
-    RunManifest, ScenarioConfig, TruthBundle, benchmark_scenarios, contract_for,
+    AnalyzerResult, AnalysisContract, EvaluationReport, EvidenceCandidate,
+    RepeatedAssignmentReport, RunManifest, ScenarioConfig, SealedEvidence,
+    TruthBundle, benchmark_scenarios, contract_for,
 )
 from vcont_evidence_export import (
     CapturedBenchmark, ContractError, FrozenSnapshot, MatrixTruthProjection,
     OuterWorldEvidenceBundle, RunEvidenceBundle, _matrix_truth_projection,
-    _reconcile_report_seed_sources, capture_matrix, freeze_report_snapshot,
+    _legacy_sealed_digest, _reconcile_report_seed_sources, _snapshot_digest,
+    capture_matrix, freeze_report_snapshot,
 )
 
 
@@ -323,7 +325,8 @@ class CaptureV2Tests(unittest.TestCase):
                 replicate_id="replicate-000", outer_replicate_id=outer_id,
                 assignment_role=role, assignment_index=index,
             )
-            world_seed = config.seed
+            contract = contract_for(config)
+            world_seed = config.world_seed
             effective_z = config.z_assignment_seed
             effective_g = config.g_assignment_seed
             assignment = SeedAssignment(
@@ -336,31 +339,85 @@ class CaptureV2Tests(unittest.TestCase):
                 config.last_transition_support + config.follow_up,
                 (config.last_transition_support + config.follow_up - config.window_start) / config.n_intervals,
                 "generator-test", world_id="world-test", world_version=version,
-                replicate_id=config.replicate_id, world_seed=world_seed,
-                z_assignment_seed=effective_z, g_assignment_seed=effective_g,
+                replicate_id=config.replicate_id,
+                g_assignment_mechanism_id=contract.g_assignment_mechanism_id,
+                g_assignment_mechanism_version=contract.g_assignment_mechanism_version,
+                g_assignment_mechanism_hash=contract.g_assignment_mechanism_hash,
+                z_assignment_mechanism_id=contract.z_assignment_mechanism_id,
+                z_assignment_mechanism_version=contract.z_assignment_mechanism_version,
+                z_assignment_mechanism_hash=contract.z_assignment_mechanism_hash,
+                g_reference_regime_id=contract.reference_regime_id,
+                g_reference_regime_version=contract.reference_regime_version,
+                world_seed=world_seed, z_assignment_seed=effective_z,
+                g_assignment_seed=effective_g,
                 outer_replicate_id=outer_id, assignment_role=role, assignment_index=index,
             )
             truth = TruthBundle(
                 run_id, (), (), (), (), (), 0.0, 0.0, None, config.seed,
+                g_reference_regime_id=manifest.g_reference_regime_id,
+                g_reference_regime_version=manifest.g_reference_regime_version,
+                g_assignment_mechanism_hash=manifest.g_assignment_mechanism_hash,
+                z_assignment_mechanism_hash=manifest.z_assignment_mechanism_hash,
                 outer_replicate_id=outer_id, assignment_role=role, assignment_index=index,
             )
+            provenance = {}
+            provenance_sha = hashlib.sha256(json.dumps(
+                provenance, sort_keys=True, separators=(",", ":"), allow_nan=False
+            ).encode("utf-8")).hexdigest()
+            sealed_manifest = {
+                "row_count": 0, "provenance": provenance,
+                "provenance_sha256": provenance_sha,
+            }
+            sealed = SealedEvidence(run_id, (), sealed_manifest, "")
+            sealed = replace(sealed, sha256=_legacy_sealed_digest(sealed))
+            candidate = EvidenceCandidate(run_id, (), provenance)
             analyzer = AnalyzerResult(
-                run_id, "ITT_Z_RUN_CONDITIONAL_AND_ITT_G_Z0", "IDENTIFIED", "IDENTIFIED",
-                0.0, 0.0, None, None, None, (), "a" * 64, "b" * 64,
+                run_id, contract.estimand_id, "IDENTIFIED", "IDENTIFIED",
+                0.0, 0.0, None, None, None, (), sealed.sha256, "b" * 64,
+                target_regime_id=contract.target_regime_id,
+                target_regime_version=contract.target_regime_version,
+                outcome_id=contract.outcome_id, outcome_version=contract.outcome_version,
+                g_assignment_mechanism_id=contract.g_assignment_mechanism_id,
+                g_assignment_mechanism_version=contract.g_assignment_mechanism_version,
+                g_assignment_mechanism_hash=contract.g_assignment_mechanism_hash,
+                z_assignment_mechanism_id=contract.z_assignment_mechanism_id,
+                z_assignment_mechanism_version=contract.z_assignment_mechanism_version,
+                z_assignment_mechanism_hash=contract.z_assignment_mechanism_hash,
+                reference_regime_id=contract.reference_regime_id,
+                reference_regime_version=contract.reference_regime_version,
+                estimand_version=contract.estimand_version,
+                run_conditional_estimand_id=contract.run_conditional_estimand_id,
+                run_conditional_estimand_version=contract.run_conditional_estimand_version,
+                reference_regime_estimand_id=contract.reference_regime_estimand_id,
+                reference_regime_estimand_version=contract.reference_regime_estimand_version,
+                g_assignment_estimand_id=contract.g_assignment_estimand_id,
+                g_assignment_estimand_version=contract.g_assignment_estimand_version,
+                transportability_id=contract.transportability_id,
+                transportability_version=contract.transportability_version,
+                transportability_scope=contract.transportability_scope,
+                transportability_evidence_status=contract.transportability_evidence_status,
+                transportability_outcome_id=contract.transportability_outcome_id,
+                transportability_basis=contract.transportability_basis,
+                provenance_sha256=provenance_sha,
                 outer_replicate_id=outer_id, assignment_role=role, assignment_index=index,
             )
-            contract = contract_for(config)
             evaluation = EvaluationReport(run_id, None, None, None, None, True, ())
             projection = _matrix_truth_projection(truth)
-            dummy = FrozenSnapshot.capture(projection)
+            structural = asdict(config)
+            for field_name in (
+                "seed", "world_seed", "z_assignment_seed", "g_assignment_seed",
+                "replicate_id", "outer_replicate_id", "assignment_role", "assignment_index",
+            ):
+                structural.pop(field_name)
             bundle = RunEvidenceBundle(
                 "TGCV-C10S-VCONT-RUN-EVIDENCE-BUNDLE", "1.0.0",
                 (scenario_id, version, n_units, outer_id, role, index, run_id), "evaluation",
                 FrozenSnapshot.capture(assignment), FrozenSnapshot.capture(config),
                 FrozenSnapshot.capture(manifest), FrozenSnapshot.capture(projection),
-                dummy, dummy, FrozenSnapshot.capture(contract), FrozenSnapshot.capture(analyzer),
-                FrozenSnapshot.capture(evaluation), "c" * 64, "d" * 64, "e" * 64,
-                "STRUCTURALLY_VALID",
+                FrozenSnapshot.capture(candidate), FrozenSnapshot.capture(sealed),
+                FrozenSnapshot.capture(contract), FrozenSnapshot.capture(analyzer),
+                FrozenSnapshot.capture(evaluation), _snapshot_digest(structural),
+                _snapshot_digest(contract), sealed.sha256, "STRUCTURALLY_VALID",
             )
             return bundle, (truth, analyzer, contract, manifest), evaluation
 
