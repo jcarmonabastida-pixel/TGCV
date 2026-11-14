@@ -820,3 +820,21 @@ This freeze is a technical serialization/verification contract only. It does not
 **Implementation boundary:** the next gate may modify only the package writer/verifier companion assembly and independent verification layers, plus their static/adversarial tests. It MUST NOT modify Generator, Sealer, Analyzer, Evaluator, DGPs, estimands, seed derivation or scientific interpretation. Tests may be authored but not executed absent separate authorization. No package generation, calibration or scientific execution is authorized.
 
 **Gate 194-H disposition: ACCEPTED / FROZEN FOR IMPLEMENTATION.** The prior §12.1–12.7 preflight findings are resolved by this section's single normative definitions. This document's historical sections remain preserved; in any conflict, §12.8–12.10 govern.
+
+
+#### 12.11 Gate 194-I pre-implementation correction — AnalysisContract source independence
+
+**Finding:** the Analyzer `source_ref` target specified in §12.8, `design/analysis_contracts.json#/source_contracts/<i>`, points into the companion whose content it is supposed to authenticate. That is self-referential and cannot satisfy §12.9(4)'s independent source derivation. The source row is a declaration, not its own source evidence.
+
+**Correction (same wire shape; no schema-version change):**
+
+- For the 13 Analyzer components, `source_ref` MUST be the exact RUN snapshot reference in `runs/run_records.json`:
+  `runs/run_records.json#/run_evidence_records/<j>/snapshot_refs/analysis_contract`.
+- `j` is derived, not supplied as authority: for the scenario's canonical registry index `s`, outer replicate `M=0`, RUN role, and the frozen RUN/R record ordering, `j = s × M_count × (1 + R_count)`. The verifier derives `M_count` and `R_count` from the independently reconciled report design and validates the pointed record's complete seven-part logical RUN key and matching run_id.
+- The pointed snapshot is decoded by the already frozen historical FrozenSnapshot registry. Its original bytes, type ID, serialization ID and SHA-256 are verified. The decoded 37-field AnalysisContract, scenario/version/N identity and Analyzer version are reconciled to the companion source-contract row and its semantic JCS digest.
+- Every other RUN and REPEATED_ASSIGNMENT AnalysisContract snapshot for that scenario is independently decoded and MUST equal the same source payload and applicability mapping. The representative pointer does not reduce the all-RUN/R reconciliation requirement.
+- `design/analysis_contracts.json#/source_contracts/<i>` is removed as an Analyzer component source target. It remains only the companion's declared source-contract row and is never treated as independent evidence.
+
+The eight-property component record, source_ref string grammar, root schemas, digest algorithms, 13/26/28 cardinalities and aggregate input are unchanged. This is a correction to the exact source target and its derivation, not a new semantic payload or a replacement of historical snapshots. The DGP, Matrix and evaluation source targets in §12.8 remain unchanged.
+
+**Disposition:** this correction resolves the circular source-reference defect before implementation. The independent verifier MUST fail closed if the computed RUN snapshot index, logical key, run_id, type/serialization identity, historical digest, decoded contract, or any other RUN/R contract differs. The Gate 194-H freeze remains applicable with this §12.11 override to §12.8's Analyzer row.
