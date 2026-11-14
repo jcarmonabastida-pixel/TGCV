@@ -37,7 +37,7 @@ jobs:
 
       - name: Install hash-locked JCS dependency
         working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-v2.lock
+        run: 'python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-v2.lock'
 
       - name: Compile only v2 capture/package modules and pure tests
         working-directory: 03_EXPERIMENTS/C10-S/harness
