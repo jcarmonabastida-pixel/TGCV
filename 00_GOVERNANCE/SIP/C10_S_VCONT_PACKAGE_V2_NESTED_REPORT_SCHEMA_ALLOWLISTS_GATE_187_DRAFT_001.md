@@ -45,7 +45,7 @@ Each contribution has an exact 21-field allowlist derived from Evaluator constru
 
 ### 2.3 Scenario reports
 
-The report must contain exactly the 13 registered scenario keys in authoritative order. Each scenario report has an exact root allowlist:
+The report must contain exactly the 13 registered scenario keys (object-key order is canonicalized by JCS; scenario identity is checked by key). Each scenario report has an exact root allowlist:
 `scenario_id`, `scenario_version`, `n_units`, `outer_replicate_count`, `coverage`, `run_conditional`, `g_assignment_z0`, `mechanism_marginal`, `reference_regime`, `per_outer_replicate`.
 
 Scenario identity/version/N/M are reconciled to design. Coverage and all four metric blocks have exact allowlists; continuous Monte Carlo, RMSE and binary-rate summary shapes are separately validated. Exactly M per-outer records are required in numeric order. Each per-outer record has exactly `outer_replicate_id`, `run`, `run_report`, `repeated_report`. The `run` projection must contain exactly four source objects in Evaluator tuple order: TruthBundle, AnalyzerResult, AnalysisContract and RunManifest, each checked against its source dataclass field set. EvaluationReport and RepeatedAssignmentReport shapes are also exact, with exactly R nested per-run reports.
