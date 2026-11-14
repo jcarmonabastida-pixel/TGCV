@@ -104,3 +104,10 @@ The successful test uses a small deterministic fixture and checks typed restorat
 ## 8. Next operation — Gate 172
 
 Implement the benchmark-wide driver that accepts the frozen `MonteCarloBenchmarkDesign`, exact evaluation-bank SeedAssignment rows and 13 structural ScenarioConfig templates; partitions rows deterministically by scenario and M; calls `produce_and_capture_outer_world()` exactly once per declared M; builds the existing `scenario_outer_runs` tuple structure without altering its contents; invokes the existing `evaluate_monte_carlo_benchmark()` once; and returns the 52-pair benchmark result together with exactly one evidence bundle per scenario/M. Add static/adversarial regressions for missing/extra scenario blocks, M/R cardinality, cross-bank contamination, duplicate run IDs and evidence/legacy-tuple identity. Do not execute the driver or tests without the applicable technical execution authorization.
+
+
+## 9. Gate 172 supersession — benchmark-wide coordinator added
+
+Gate 172 adds `produce_and_capture_benchmark(...)` in `vcont_evidence_export.py`. It validates the frozen design, 13 structural templates and exact evaluation assignment coverage; invokes the Gate 171 producer once per scenario/M; checks each legacy tuple against its captured source snapshots; builds the existing `scenario_outer_runs` input; calls the unchanged `evaluate_monte_carlo_benchmark()` once; and returns the 52-pair report together with one OuterWorldEvidenceBundle per scenario/M.
+
+The Gate 171 statement that no benchmark-wide caller existed is superseded at source-design level. Neither Gate 171 nor Gate 172 has been runtime-executed. Gate 159 fingerprint reconciliation and external attestation remain OPEN. See Gate 172 for exact scope and limits.
