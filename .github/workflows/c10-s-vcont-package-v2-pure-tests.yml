@@ -37,7 +37,7 @@ jobs:
           PYTHONDONTWRITEBYTECODE: '1'
         run: python -m py_compile vcont_evidence_export.py vcont_package_v2.py vcont_package_v2_verify.py test_vcont_capture_v2.py test_vcont_package_v2_serialization.py test_vcont_package_v2_verifier.py
 
-      - name: Run only allowlisted pure capture and package writer fixtures
+      - name: Run only allowlisted pure capture, package writer and verifier fixtures
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           PYTHONDONTWRITEBYTECODE: '1'
