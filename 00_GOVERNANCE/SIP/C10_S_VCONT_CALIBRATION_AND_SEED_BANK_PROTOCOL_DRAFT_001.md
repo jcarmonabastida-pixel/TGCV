@@ -550,3 +550,9 @@ Gate 175 finds the RUN/R and M evidence source objects available in `CapturedBen
 The legacy `scenario_matrix_fingerprint()` omits `tolerance_id`; keep it unchanged for compatibility and add a full versioned matrix digest covering all declared fields. The generic snapshot decoder is not a strict independent decoder (enum values lose type identity, untagged dicts are accepted, exact field/version checks are absent); no enum-valued fields were identified in the current registered snapshot dataclasses, so that enum issue is latent for current records. Arbitrary bytes and non-string mapping keys remain unsupported.
 
 The capture API receives only evaluation assignments. Actual calibration manifest, Gate 159 reconciliation and independent GitHub workflow/test evidence are absent from its return contract. Therefore Gate 164 confirmatory packager remains blocked. See Gate 175. No code, tests, calibration, seed generation, package or benchmark was executed.
+
+## 35. Gate 176 — matrix capture and independent companion artifacts
+
+Gate 176 defines the capture-time immutable MatrixCapture v1.0.0 for the exact 52 ScenarioEstimandSpec rows passed to the evaluator. It retains every declared field, including `tolerance_id`, in canonical order and adds a versioned full-matrix JCS SHA-256. The legacy matrix fingerprint remains unchanged.
+
+The frozen CapturedBenchmark dataclass contains a mutable report dict; a separate immutable report snapshot/digest is required for package export. Calibration manifest, Gate 159 reconciliation, independent GitHub source-execution provenance and technical-test evidence are separate companion artifacts joined by benchmark_export_id. They cannot be inferred from the evaluation bank or declared design fingerprints. Missing companions block Gate 164 confirmatory acceptance. See Gate 176. No implementation or execution occurred.
