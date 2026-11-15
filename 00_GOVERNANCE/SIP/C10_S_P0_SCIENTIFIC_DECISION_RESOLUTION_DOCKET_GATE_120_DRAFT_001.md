@@ -3,13 +3,13 @@
 **ID:** C10-S-GATE-120-P0-DECISION-RESOLUTION-DOCKET-001  
 **Fecha:** 2026-11-15  
 **Rama:** `research/c10-s-consolidation-draft` · PR #116 Draft  
-**Estado:** DECISION_DOCKET_PREPARED / HISTORICAL_ACCEPTANCES_RECONCILED / OWNER_APPROVAL_PENDING / NO_NEW_DECISION_ACCEPTED / NOT_DESIGN_FROZEN / NO_IMPLEMENTATION / NO_EXECUTION.
+**Estado:** ALL_FIVE_RECOMMENDATIONS_EXPLICITLY_ACCEPTED / DEC-C10-103_RECORDED / HISTORICAL_ACCEPTANCES_RECONCILED / CONDITIONAL_MATERIAL_AND_IDENTIFICATION_GATES_OPEN / NOT_DESIGN_FROZEN / NO_IMPLEMENTATION / NO_EXECUTION.
 
 ---
 
 ## 1. Propósito y límite
 
-Gate 120 convierte las cinco recomendaciones de Gate 119 en un expediente de resolución explícita. No adopta decisiones por silencio, persistencia, “adelante” ni por la recomendación del asistente. No crea DEC nuevas ni actualiza el Decision Log como ACCEPTED. La aprobación o rechazo explícito del responsable científico es condición previa para propagar decisiones.
+Gate 120 convierte las cinco recomendaciones de Gate 119 en un expediente de resolución explícita. El responsable científico aprobó expresamente las cinco recomendaciones en respuesta afirmativa del 2026-11-15. La resolución queda registrada en DEC-C10-103 y propagada al Decision Log, maestro y plan. La aprobación no demuestra las condiciones materiales/estadísticas ni autoriza ejecución.
 
 ## 2. Reconciliación histórica que no debe reabrirse
 
