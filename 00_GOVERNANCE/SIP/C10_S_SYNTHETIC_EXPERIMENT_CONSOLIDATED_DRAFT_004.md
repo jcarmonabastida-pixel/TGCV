@@ -192,3 +192,20 @@ El hallazgo es que la función técnica B1 (ENABLED/PROFILE), la consecuencia pa
 O-CONF/F* no sustituye ni valida automáticamente V_cont. Se preservan truth_dgp/observed_evidence/evaluation, el canal S3 imperfecto, el firewall Generator/Analyzer/Evaluator y la posibilidad de bounds/abstención. No se crean dimensiones, pesos, instrumentos, umbrales, IDs, parámetros o fixtures. No se modifican DEC, C0, U_G, RMA, Evidence→Claim Matrix, STATUS, Core o main. No hay Design Freeze, implementación ni ejecución; `scientific_execution=false`; `execution_authorized=false`.
 
 **Siguiente operación:** Gate 127 — reconciliar el caso de valoración B1 y Need_preZ con la consecuencia funcional que V_cont puede representar, distinguiendo qué está ya estipulado en el DGP, qué requiere definición normativa adicional y qué no puede identificarse desde la evidencia permitida al Analyzer. No asumir una relación determinista V_cont→Value.
+
+
+## 297. Gate 127 — reconciliación de Need_preZ, función B1 y consecuencia representable por V_cont (2026-11-16)
+
+**Registro:** `00_GOVERNANCE/SIP/C10_S_B1_NEED_PREZ_VCONT_CONSEQUENCE_RECONCILIATION_GATE_127_DRAFT_001.md`.  
+**Addendum al plan:** `00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_127_B1_CONSEQUENCE_RECONCILIATION_ADDENDUM_DRAFT_001.md`.  
+**Estado:** B1_FUNCTIONAL_PURPOSE_ACCEPTED / NEED_PREZ_CLASS_DEFINED / PER_UE_TRUTH_OPEN / VCONT_DIMENSION_PROVISIONALLY_SELECTED / CONSEQUENCE_MAPPING_PARTIALLY_ADMISSIBLE / VALUE_VALUATION_RULE_CONDITIONAL / NO_DESIGN_FREEZE.
+
+Gate 127 corrige una sobreextensión potencial de Gate 126. La reconstrucción del caso B1 §§12–17 y del maestro §282 confirma que el propósito funcional mínimo ya está definido: mantener disponible en destino un servicio capaz de admitir solicitudes conforme a ENABLED y exponer PROFILE. No se requiere inventar una operación de negocio adicional; la semántica de procesamiento posterior y de los perfiles puede permanecer abstracta en el DGP sintético.
+
+Need_preZ está definido conceptualmente como propósito basal pre-Z, pero su truth/roster por UE y evidencia/adjudicación siguen OPEN. V_cont representa cumplimiento temporal de la función ENABLED/PROFILE; no equivale a procesamiento exitoso ni al resultado de la oportunidad estandarizada. La continuidad de la capacidad de admisión es una consecuencia focal admisible candidata. Su interpretación como dimensión de Value requiere que el DGP estipule ex ante una regla normativa sintética, desde la perspectiva B1, versionada y simétrica. No se requiere autoridad humana/externa real, pero la regla no puede inventarse por conveniencia ni presentarse como preferencia empírica real.
+
+θ_A sobre V_cont conserva su estimando seleccionado; su interpretación como efecto sobre la dimensión Value queda condicionada a la regla de valoración, validez de medición y identificación. No se transfiere a Value contextual general ni a una afirmación general de creación de valor. Se mantienen vías colaterales/alternativas, truth/observed/evaluation y firewall Generator/Sealer/Analyzer/Evaluator.
+
+Pendientes: Need_preZ por UE; regla normativa DGP; parámetros y S3; vías por escenario; soporte/identificación/sensibilidad de θ_A; criterios cuantitativos y adjudicación. No se crean escalas, pesos, instrumentos, IDs, parámetros, roster o fixtures. No se modifican DEC, C0, U_G, RMA, Evidence→Claim Matrix, STATUS, Core o main. No Design Freeze, implementación ni ejecución; `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente operación:** Gate 128 — especificar la mínima regla de valoración sintética admisible para V_cont sin convertirla en tautología de accesibilidad ni introducir una función numérica no justificada; reutilizar DEC-C10-099…103, B1 §§14–17, B2–B3 y P179/P182/P183. Determinar si la regla puede estipularse dentro del DGP y qué elementos necesitan aceptación explícita antes de congelar el diseño.
