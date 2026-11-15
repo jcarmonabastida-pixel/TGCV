@@ -7537,3 +7537,15 @@ Brechas principales: ciclo de vida event_id/event_record_id/revisión/retractaci
 Se confirma que DEC-C10-062 no se hereda automáticamente: aplica a NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT. EVIDENCE_REGISTER conserva provenance; COVERAGE_REGISTER conserva universo/cobertura; no se crean registros paralelos. DEC-C10-065 exige snapshot_id + snapshot_object_record_id y FK compuesta exacta. N02/N03 siguen siendo roles del crosswalk, no claves físicas resueltas; Z no se convierte en NODE ni EID por defecto.
 
 **Siguiente operación:** Gate 98 — reconciliación correctiva del contrato lógico Gate 96, sin modificar decisiones ni plantilla U_G, manteniendo abierta la elección de claim directo/indirecto y sin aceptar B.
+
+
+## 16.248. Gate 98 — reconciliación correctiva del contrato lógico de eventos D2 (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_D2_PROCESS_EVENT_LOGICAL_CONTRACT_GATE_98_SUCCESSOR_DRAFT_002.md`.  
+**Estado:** SUCCESSOR LOGICAL CONTRACT / GATE 96 PARTIALLY RECONCILED / OPTION B NOT ACCEPTED / NO SCHEMA CHANGE / NO IMPLEMENTATION / NO EXECUTION / NO FREEZE.
+
+Gate 98 crea un sucesor lógico de Gate 96 sin reescribirlo. Corrige el ciclo de vida event_id/event_record_id/event_revision; separa revisión, evidencia y adjudicación; retira evidence_status y coverage_scope_id libres de PROCESS_EVENT; mantiene cuatro relaciones candidatas; fija FKs a registros exactos y pinning compuesto SNAPSHOT conforme DEC-C10-065; distingue Z como ocurrencia y evita convertirlo en NODE/EID; no presume que B_g0/B_g1 sea NODE; precisa event_type × event_result y relaciones causales.
+
+DEC-C10-061 no se amplía: permanecen seis destinos tipados y los caminos de claim directo/indirecto siguen abiertos. DEC-C10-070/C0 no se debilita: scopes conservan la tupla exacta con snapshot_id + snapshot_object_record_id, stage_key, route/object_class y universe_definition/version. La cobertura de eventos sin snapshot compatible queda no representable bajo el contrato actual y requiere gate/decisión separada; no se crea EVENT_COVERAGE_REGISTER.
+
+**Siguiente operación:** Gate 99 — crosswalk canónico de asignación Z, política B_g0/B_g1 y unidad, reutilizando DEC-C10-067, DGP Temporal and Role Contract y N02/N03. Resolver si POLICY_BOUND es acto independiente o binding de Z_ASSIGNED y mapear los targets a claves reales. No modificar DEC-C10-061/070 ni implementar.
