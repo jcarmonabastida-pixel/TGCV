@@ -7453,3 +7453,21 @@ El contrato mínimo de representación queda descrito en el registro Gate 92, si
 **Dictamen:** `GATE_92_D2_STAGE_CROSSWALK_COMPLETE / B_POLICY_AND_W_PROGRAMMED_ABSENT / W_ATTEMPT_AND_S_INSTALL_ABSENT / C_DEP_AND_A_F_D_F_ABSENT / DELTA_T_ACC_G_ONLY_PARTIAL / REACH_TRAJECTORY_INTERNAL_ONLY / V_CONT_LIMITED_OUTCOME_PRESENT / ANALYZER_ITT_Z_AND_G_ONLY / THETA_A_NOT_MATERIALIZED / NO_CODE_CHANGE / NO_NEW_WORLDS / NO_EXECUTION / NO_DESIGN_FREEZE`.
 
 **Siguiente gate — 93:** reconciliar el contrato mínimo con los inventarios existentes de truth/observed y el contrato de implementación; identificar artefactos reutilizables por etapa y producir un esquema versionado de eventos/snapshots sin duplicar objetos ni crear un sistema paralelo. Sin parámetros nuevos ni implementación hasta autorización expresa.
+
+
+## 16.243. Gate 93 — reconciliación del contrato D2 con U_G, snapshots y evidencia existentes (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_D2_UG_EXISTING_SCHEMA_RECONCILIATION_GATE_93_DRAFT_001.md`.  
+**Estado:** HISTORICAL SCHEMA REUSE CONFIRMED / NO PARALLEL EVENT OR SNAPSHOT MODEL REQUIRED AT DOCUMENTARY LEVEL / PHYSICAL EVENT BINDING OPEN / HARNESS MATERIALIZATION ABSENT.
+
+La reconstrucción histórica confirma que el contrato mínimo de Gate 92 no debe convertirse en un esquema nuevo: U_G ya define NODE, EDGE, ROUTE, PREDICATE, SNAPSHOT, ROUTE_STEP, EVIDENCE_REGISTER, CLAIM_EVIDENCE_LINK, COVERAGE_REGISTER, EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER, con DGP_TRUTH_SECURE segregado. El vocabulario semantic_role ya distingue TRANSFORMATION_SPEC, TRANSFORMATION_EVENT, ANALYTIC_CONSTRUCT, DATA_STATE_SNAPSHOT, AUTHORIZATION_POLICY y los roles técnicos. N02 representa asignación Z; N03 distingue política/proceso B, asignación, intento y provisión recibida. TID/SID/RID/EID y object_record_id/object_version separan identidades semánticas, eventos y revisiones de registro. SNAPSHOT fija pertenencia exacta mediante snapshot_object_record_id; ROUTE_STEP normaliza secuencia. DEC-C10-088 exige binding explícito entre stage_key, t0…t9, SNAPSHOT.phase y k=1…H.
+
+El crosswalk de Gate 93 identifica reutilización documental para cada etapa D2: N02/N03 para Z/B y eventos de provisión; N04–N07 para artefactos/componentes; N08/N09 y PREDICATE para C_dep*/A_f*/App/D_f; SNAPSHOT/NODE/EDGE/ROUTE/ROUTE_STEP para T_acc/ΔT_acc/Reach; y EVIDENCE_REGISTER/CLAIM_EVIDENCE_LINK/COVERAGE_REGISTER para observación, procedencia y cobertura. No se crea un segundo ledger de evidencia, un catálogo de eventos, una ontología paralela ni otro reloj.
+
+La brecha residual es de **binding físico**, no de ausencia total de contratos: decidir si W_programmed/W_attempt/receipt pueden representarse con NODE semantic_role=TRANSFORMATION_EVENT y EID bajo su definición existente; vincularlos a unidad, Z, B/version, stage_key, tiempo y snapshot; y preservar event_time frente a record-time. No se amplía silenciosamente EID a cualquier evento de provisión. D_f, mapping físico de ΔT_acc y la materialización del harness siguen abiertos.
+
+La especificación VIATRA de eventos inmutables es antecedente de instrumentación de transformaciones ejecutadas, pero no se adopta automáticamente como esquema D2 porque sus eventos BEGIN/END no representan por sí solos Z/B/programación/recepción/instalación.
+
+**Dictamen:** `GATE_93_HISTORICAL_SCHEMA_REUSE_CONFIRMED / U_G_AND_TEMPORAL_CONTRACTS_PREEXIST / NO_PARALLEL_EVENT_SNAPSHOT_PREDICATE_SCHEMA / PROVISION_EVENT_BINDING_OPEN / STAGE_TIME_SNAPSHOT_BINDING_OPEN / D_F_AND_DELTA_T_ACC_PHYSICAL_MAPPING_OPEN / HARNESS_D2_CHAIN_NOT_MATERIALIZED / NO_CODE_CHANGE / NO_NEW_WORLDS / NO_EXECUTION / NO_DESIGN_FREEZE`.
+
+**Siguiente gate — 94:** cerrar el binding de eventos D2 dentro de U_G existente: determinar qué eventos caben en NODE/TRANSFORMATION_EVENT/EID, qué evidencia se enlaza con EVIDENCE_REGISTER/CLAIM_EVIDENCE_LINK y cómo se vinculan a Z/B, unidad, etapa DGP, SNAPSHOT y event_time. Si el esquema actual no basta, justificar una extensión mínima frente a DEC-C10-061/064/065/088. No crear una tabla paralela ni implementar sin autorización expresa.
