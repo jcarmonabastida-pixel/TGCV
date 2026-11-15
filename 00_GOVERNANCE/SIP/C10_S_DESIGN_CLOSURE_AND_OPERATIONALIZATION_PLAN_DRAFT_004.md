@@ -7787,3 +7787,23 @@ Se incorpora el orden de adjudicación: estimando/resultado/población/unidad �
 No se cambian decisiones, contratos, C0, Gate 98/109 ni el esquema. No se crean claves o tablas puente. No se ejecutan validadores, código, simulaciones, estimaciones ni calibraciones. No se promueve research a main. scientific_execution=false; execution_authorized=false.
 
 **Siguiente operación:** Gate 111 — crosswalk de cobertura de los contratos de prueba existentes (S4R, MEAS, MISS, TRJ, INT, POL, P177–P183 y XSYNC) frente a los cuatro escenarios de asignación/exposición y sus estados de identificación, identificando vacíos reales sin crear IDs duplicados ni fixtures nuevos.
+
+
+## 16.261. Gate 111 — crosswalk de cobertura de contratos existentes frente a asignación e interferencia (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_EXISTING_TEST_CONTRACT_COVERAGE_CROSSWALK_GATE_111_DRAFT_001.md`.  
+**Estado:** HISTORICAL CONTRACT INVENTORY RECONCILED / UNIT-01…14 PRIMARY INTERFERENCE FAMILY / CONTRACT COVERAGE DEFINED NOT EXECUTED / FOCAL HARNESS SCOPE-LIMITED / P178 BENCHMARK EXECUTION DISTINCT / GAPS G111-01…12 OPEN / NO NEW TEST IDS / NO FREEZE.
+
+Gate 111 recupera el Test Contract Register vigente y reconoce §17 UNIT-01…14 como familia primaria ya existente para unidad, independencia, correlación basal, spillover de recursos/información, asignación por clúster, exposición (G_i(Z_{-i})), exposición desconocida, positividad, LATE bajo interferencia, integridad de asignación, tamaño efectivo, no-cluster retrospectivo y cambio de unidad. No se crea otra familia.
+
+El crosswalk clasifica A (asignación individual aislada) como PARCIAL-ALTA en contrato pero sin prueba material de aislamiento; B (clúster) como PARCIAL, porque UNIT-06/12 no distinguen spillover intra/intercluster ni fijan ponderación UE/cluster; C (mapa de exposición) como PARCIAL, porque UNIT-04/05/07/09 nombran la necesidad y el estimando, pero no especifican suficiencia/versionado del mapa, probabilidades de exposición y soporte conjunto; D (interferencia no mapeada) como PARCIAL-ALTA en regla de rechazo, pero sin métricas/denominadores completos de falsa identificación y abstención.
+
+MEAS-01…14, MISS-01…15, VER/TRJ-01…07, S4R-01…18, POL-01…10, P177-01…12, P178-SIM-01…10, P179-01…08, P182-01…12, P183-01…13, QX y XSYNC son capas complementarias con alcance delimitado. INT-01/02 se refieren a interacción/soporte q/g, no a interferencia entre unidades. El material histórico INT-01…08 se conserva solo para escenarios alternativos y no se computa como suite primaria D2.
+
+La inspección documental del focal harness confirma una slice de asignación individual balanceada con `interference_absent` como condición binaria; su README declara expresamente que no es un motor de clúster/interferencia ni implementa (G_i). Por ello no acredita B/C/D. El repositorio contiene un manifiesto/captura de benchmark P178 con R=10.000 por celda y asignación independent UE; el propio manifiesto limita su alcance a benchmark estimator only, sin TGCV Analyzer, escenarios adversariales de medición ni experimento confirmatorio. Esta ejecución del benchmark se separa del estado NOT_EXECUTED declarado para focal harness y no acredita UNIT-01…14 ni cobertura de interferencia.
+
+**Gaps G111-01…12:** aislamiento material A; separación intra/intercluster B; estimando y ponderación UE/cluster; suficiencia/versionado de (G_i); probabilidades de exposición; soporte conjunto; métricas de falsa identificación/abstención D; aleatorización/provenance; límite de implementación del focal harness; mapping O-CONF/V_cont; C4 bajo interferencia; sensibilidad a misspecification y spillover residual.
+
+No se infiere cobertura de UNIT-01…14 a partir de recuentos agregados de test definitions ni de workflows presentes. No se crean IDs duplicados, fixtures, schemas, claves o DDL. No se modifican DEC ni decisiones; no se ejecutan tests/workflows/benchmarks/simulaciones/estimaciones. No se modifica main ni estado Draft del PR #116. scientific_execution=false; execution_authorized=false.
+
+**Siguiente operación:** Gate 112 — reconciliar G111-01…12 contra DGP y PE Integrated Technical Specification; decidir qué se resuelve documentalmente, qué requiere especialización versionada de UNIT-01…14 y qué sigue siendo dependencia abierta de diseño. Priorizar la separación intra/intercluster, mapa/probabilidades/soporte de exposición, estimandos/ponderación y mapping O-CONF/V_cont/C4. Sin implementación ni ejecución.
