@@ -124,6 +124,10 @@ jobs:
           PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_focal_harness test_p178_analyzer_bridge test_p178_analyzer_monte_carlo test_vcont_integrated_harness test_vcont_benchmark_protocol test_vcont_capture_v2 test_vcont_package_v2_serialization test_vcont_package_v2_verifier > "$RUNNER_TEMP/c10s-replay-stdout.txt" 2> "$RUNNER_TEMP/c10s-replay-stderr.txt"
           cat "$RUNNER_TEMP/c10s-replay-stdout.txt"
           cat "$RUNNER_TEMP/c10s-replay-stderr.txt" >&2
+          for root in "$RUNNER_TEMP/c10s-primary-source" "$RUNNER_TEMP/c10s-clean-replay"; do
+            if find "$root/03_EXPERIMENTS/C10-S" \\( -type d -name __pycache__ -o -type f -name "*.pyc" \\) -print -quit | grep -q .; then exit 1; fi
+          done
+          diff -qr "$RUNNER_TEMP/c10s-primary-source" "$RUNNER_TEMP/c10s-clean-replay"
 
       - name: Upload execution payload and capture artifact identity
         id: payload
