@@ -7569,3 +7569,21 @@ U_G sí define `unit_id = NODE.node_id` para la unidad lógica raíz `LOGICAL_SE
 **Siguiente operación:** auditoría focal de identidad/versionado de B_g0/B_g1 y del registro de asignación Z, reutilizando contratos y catálogos existentes; completar en paralelo el mapping de unidad experimental, unidad de asignación y cluster con U_G. No proponer DDL ni crear targets hasta identificar claves canónicas.
 
 **Dictamen:** `GATE_99_SEMANTIC_CROSSWALK_PARTIALLY_RESOLVED / N02_N03_NOT_KEYS / Z_EVENT_IDENTITY_PROPOSED_NOT_IMPLEMENTED / B_POLICY_ID_VERSION_OPEN / POLICY_BOUND_NOT_SEPARATE_BY_DEFAULT / DGP_UNIT_TO_UG_MAPPING_OPEN / NO_DECISION_AMENDMENT / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE`.
+
+
+## 16.250. Gate 100 — identidad/versionado de política D2 y registro de asignación Z (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_D2_POLICY_IDENTITY_VERSION_AND_ASSIGNMENT_RECORD_GATE_100_DRAFT_001.md`.  
+**Estado:** DOCUMENTARY AUDIT / SEMANTIC IDENTITY CONTRACT PARTIALLY RESOLVED / PHYSICAL IDENTIFIERS OPEN / NO SCHEMA CHANGE / NO IMPLEMENTATION / NO EXECUTION / NO FREEZE.
+
+Gate 100 confirma que B_g0^D2/B_g1^D2 son definiciones contractuales de política/procedimiento de provisión, no políticas de autorización C_auth, artefactos técnicos, eventos de ejecución ni instancias CMP. La referencia lógica adecuada si B permanece fuera de NODE es `policy_contract_id + policy_version`, alternativa tipada ya prevista por Gate 98 para binding_role=POLICY_VERSION. Los valores concretos, autoridad/custodio y registro canónico siguen OPEN. N03 sigue siendo etiqueta de catálogo, no FK.
+
+El artefacto focal tiene identidad/versionado/hash propios y debe estar identificado antes de asignación según DEC-C10-067; no se encontró su identidad concreta ni su contrato. La versión recibida y las desviaciones deben conservarse sin sobrescribir la versión asignada. `instance_id + instance_version` de DEC-C10-069 identifica la instancia CMP, no B ni el artefacto.
+
+Se distinguen: política asignada, ofrecida, recibida, intento programado, intento efectivo, recepción material, instalación y verificación C_dep*. La política asignada no demuestra ninguno de los estados posteriores. El binding de política es referencia tipada de Z_ASSIGNED; POLICY_BOUND no es evento separado salvo acto autónomo y observable. Z/mecanismo/vector de asignación es distinto de la ocurrencia observada Z_ASSIGNED. Gate 98 propone `event_id` y `event_record_id + event_revision`, pero no están implementados; `assignment_id` no está demostrado como PK canónica.
+
+**Bloqueos conservados:** policy_contract_id y policy_version concretos; autoridad/versionado; identidad/versión/hash del artefacto; mecanismo/vector/seed/provenance y claves de Z; unidad/cluster; mapping de assigned/offered/received; materialización futura del registro de eventos.
+
+**Siguiente operación:** Gate 101 — auditoría focal de fuentes/identificadores del artefacto focal y de la asignación Z (mecanismo, vector, seed/provenance y claves de unidad/cluster), localizando contratos y valores existentes antes de proponer campos.
+
+**Dictamen:** `GATE_100_POLICY_IDENTITY_SEMANTICS_RESOLVED / PHYSICAL_POLICY_AND_ARTIFACT_IDENTIFIERS_OPEN / CMP_SEPARATE / Z_MECHANISM_SEPARATE_FROM_EVENT / NO_DECISION_AMENDMENT / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE`.
