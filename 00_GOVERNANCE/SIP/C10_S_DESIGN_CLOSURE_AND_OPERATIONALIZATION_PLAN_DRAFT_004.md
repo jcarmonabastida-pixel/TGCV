@@ -7807,3 +7807,31 @@ La inspección documental del focal harness confirma una slice de asignación in
 No se infiere cobertura de UNIT-01…14 a partir de recuentos agregados de test definitions ni de workflows presentes. No se crean IDs duplicados, fixtures, schemas, claves o DDL. No se modifican DEC ni decisiones; no se ejecutan tests/workflows/benchmarks/simulaciones/estimaciones. No se modifica main ni estado Draft del PR #116. scientific_execution=false; execution_authorized=false.
 
 **Siguiente operación:** Gate 112 — reconciliar G111-01…12 contra DGP y PE Integrated Technical Specification; decidir qué se resuelve documentalmente, qué requiere especialización versionada de UNIT-01…14 y qué sigue siendo dependencia abierta de diseño. Priorizar la separación intra/intercluster, mapa/probabilidades/soporte de exposición, estimandos/ponderación y mapping O-CONF/V_cont/C4. Sin implementación ni ejecución.
+
+
+## 16.262. Gate 112 — reconciliación de G111-01…12 con DGP, asignación y arquitectura PE (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_G111_GAP_RECONCILIATION_DGP_PE_GATE_112_DRAFT_001.md`.  
+**Estado:** DGP_INTERFERENCE_REQUIREMENTS_RECONCILED / ASSIGNMENT_SUPPORT_BLOCKERS_CONFIRMED / PE_STANDALONE_ARTIFACT_NOT_LOCATED / UNIT_SPECIALIZATION_REQUIRED / NO_NEW_TEST_IDS / NO_SCHEMA_CHANGE / NO_EXECUTION / NO_FREEZE.
+
+Gate 112 recupera el DGP Temporal and Role Contract §§15, 28, 48, 58–59; D2 Assignment/Population/Support; Outcome/Value Operationalization; Test Contract Register §17 UNIT-01…14, QX, S4R, P177–P183, MEAS/MISS; y los Gates 109–111. La referencia “PE Integrated Technical Specification” aparece en Gates 101/102 y en el plan, pero no se recuperó una ruta canónica exacta de un artefacto independiente. No se inventa ruta ni se declara auditada la especificación PE completa; se reutilizan solo los límites Generator–Analyzer–Evaluator expresos en los contratos disponibles.
+
+Reconciliación:
+- G111-01: aislamiento A condicionado a prueba material; UNIT-02 existente.
+- G111-02: especializar UNIT-03/06 para separar correlación basal, spillover intracluster e intercluster.
+- G111-03: target/estimando y ponderación UE vs cluster siguen OPEN; UNIT-06/12 no fijan la regla.
+- G111-04: especializar UNIT-04/05/07 para identidad/versionado, suficiencia, temporalidad y cobertura de G_i.
+- G111-05: probabilidades de exposición bloqueadas hasta especificar mecanismo Z y G_i; QX-06 solo cubre positividad de brazos por estrato/historia.
+- G111-06: q_X*, soporte de asignación, soporte de exposición y soporte g_A/C4 siguen separados y no materializados.
+- G111-07: especializar P177-10/P183-11/12 con UNIT-08 para denominadores de falsa identificación/atribución y abstención; tolerancias OPEN.
+- G111-08: mecanismo RNG, π, semilla/provenance, vector Z y mapping unidad→Z siguen OPEN; no inventar assignment_id.
+- G111-09: el focal harness sigue limitado a asignación individual y flag binario de no interferencia; B/C/D no implementados en esa slice.
+- G111-10: O-CONF instance×route y V_cont UE×K conservan unidades separadas; mapping instancia/ruta→UE y estimandos bajo cluster/exposición OPEN.
+- G111-11: C4 requiere intervención mediadora e identificación longitudinal bajo confusión inducida por Z; no se deriva de ITT/UNIT/G_i.
+- G111-12: especializar sensibilidad existente P178-SIM-10/P183-10 tras definir G_i; no fijar rangos de error ahora.
+
+Se reconcilian documentalmente UE/UA/UO distintos; UE=UA solo bajo aislamiento demostrado; Z distinto de programación/provisión/recepción/instalación/accesibilidad; correlación basal distinta de spillover; no usar ITT individual si interferencia no está resuelta; no inferir positividad de exposición desde π(Z); no confundir K intervalos V_cont con N; no equiparar ITT-D2, θ_A y C4.
+
+No se crean familias/test IDs, fixtures, schemas, claves o DDL. No se modifican DEC, C0, contratos fuente, U_G/PE, main ni estado Draft del PR #116. No se ejecutan validadores, código, tests, workflows, simulaciones, estimaciones ni calibraciones. scientific_execution=false; execution_authorized=false.
+
+**Siguiente operación:** Gate 113 — localizar/recuperar la especificación PE exacta y verificar el crosswalk de identidades/roles, serialización y firewall Generator–Analyzer–Evaluator. Si no existe o no es recuperable, registrar el límite de procedencia y no inferir especificación desde menciones históricas.
