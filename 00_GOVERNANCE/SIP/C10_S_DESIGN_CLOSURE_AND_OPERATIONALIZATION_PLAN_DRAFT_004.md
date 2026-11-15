@@ -7487,3 +7487,23 @@ Se detecta una tensión en el crosswalk candidato N02→TRANSFORMATION_EVENT del
 **Dictamen:** `GATE_94_D2_EVENT_SEMANTICS_DISAMBIGUATED / EID_RESTRICTED_TO_TRANSFORMATION_INSTANCE / W_PROGRAMMED_NOT_TRANSFORMATION_EVENT / RECEIPT_EVENT_NOT_REPRESENTED / W_ATTEMPT_EID_CONDITIONAL_ON_TRANSFORMATION_SEMANTICS / SNAPSHOT_AND_EVIDENCE_NOT_EVENT_SUBSTITUTES / U_G_INSUFFICIENT_FOR_ALL_PROCESS_EVENTS / MINIMAL_EVENT_EXTENSION_REQUIRED_AS_PROPOSAL / N02_TRANSFORMATION_EVENT_CROSSWALK_CONFLICT_RECORDED / NO_DECISION_CHANGE / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE`.
 
 **Siguiente gate — 95:** comparar NODE ampliado frente a un registro relacional mínimo de eventos integrado en U_G; verificar claves/FKs e identidad, temporalidad, snapshots y evidencia; preparar propuesta de decisión sin alterar DEC-C10-060 ni implementar.
+
+
+## 16.245. Gate 95 — comparación de alternativas para eventos de proceso D2 en U_G (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_D2_PROCESS_EVENT_REPRESENTATION_OPTIONS_GATE_95_DRAFT_001.md`.  
+**Estado:** OPTION B RECOMMENDED / INTEGRATED PROCESS-EVENT REGISTER PROPOSAL / NOT ACCEPTED / SCHEMA UNCHANGED / NO IMPLEMENTATION / NO EXECUTION.
+
+Se comparan: (A) ampliar NODE con eventos operativos y un nuevo semantic_role; (B) añadir un registro relacional de eventos integrado en U_G.
+
+A sobrecarga NODE: los eventos son ocurrencias temporales, no necesariamente entidades estructurales persistentes; pasarían a ser vértices candidatos del grafo, con riesgo de contaminar T_acc/Reach. Además, DEC-C10-060 aceptó un vocabulario de 16 semantic_role y NODE exige pinning exacto de snapshot (DEC-C10-065), lo que no resuelve event_time ni stage_key. object_version tampoco es secuencia de intentos.
+
+**Recomendación B:** registro relacional de eventos integrado en U_G, no plataforma/event store externo ni ledger de evidencia paralelo. Mantiene separados ocurrencia, estructura, snapshot y evidencia; conserva TID/SID/RID/EID para transformaciones reales; y evita convertir asignaciones/recepciones en nodos del grafo.
+
+Costes explícitos de B: requiere contrato propio de identidad/inmutabilidad; DEC-C10-062 no se aplica automáticamente; y DEC-C10-061 deberá ampliarse con destinos/FKs tipadas si CLAIM_EVIDENCE_LINK/EVALUATOR_ASSESSMENT/ADJUDICATION_REGISTER deben apuntar directamente a eventos. También quedan abiertos tipos, tiempos, causalidad/orden, snapshots pre/post, coverage, firewalls y compatibilidad física.
+
+No se aprueba nombre de tabla, campos, claves, enum, DDL, ni cambio de DEC-C10-060/061. El registro se recomienda como extensión normalizada de U_G, sin duplicar NODE/SNAPSHOT/EVIDENCE_REGISTER/COVERAGE_REGISTER. El harness y el Generator siguen sin materializar la cadena de eventos D2.
+
+**Dictamen:** `GATE_95_OPTION_B_RECOMMENDED / PROCESS_EVENT_REGISTER_AS_U_G_EXTENSION_NOT_PARALLEL_PLATFORM / NODE_STRUCTURAL_GRAPH_CONTAMINATION_RISK_CONFIRMED / EID_SCOPE_PRESERVED / DEC_C10_060_VOCABULARY_UNCHANGED / DEC_C10_061_TYPED_TARGET_AMENDMENT_REQUIRED_FOR_DIRECT_EVENT_CLAIMS / DEC_C10_062_NOT_AUTOMATICALLY_APPLICABLE_TO_EVENT_REGISTER / SNAPSHOT_EXACT_PINNING_PRESERVED / EVENT_TIME_AND_CAUSAL_ORDER_CONTRACT_OPEN / NO_SCHEMA_CHANGE / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE`.
+
+**Siguiente gate — 96:** desarrollar el contrato lógico del registro de eventos recomendado (B): identidad de ocurrencia/corrección, tipos de evento, tiempos, orden causal, referencias tipadas a Z/B/unidad/artefacto/snapshots, cobertura/evidencia y firewalls. Reconciliar extensiones de DEC-C10-061 y U_G sin modificar todavía el esquema físico ni implementar.
