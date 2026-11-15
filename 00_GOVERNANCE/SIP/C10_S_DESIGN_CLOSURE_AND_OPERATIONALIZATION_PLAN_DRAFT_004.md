@@ -7835,3 +7835,21 @@ Se reconcilian documentalmente UE/UA/UO distintos; UE=UA solo bajo aislamiento d
 No se crean familias/test IDs, fixtures, schemas, claves o DDL. No se modifican DEC, C0, contratos fuente, U_G/PE, main ni estado Draft del PR #116. No se ejecutan validadores, código, tests, workflows, simulaciones, estimaciones ni calibraciones. scientific_execution=false; execution_authorized=false.
 
 **Siguiente operación:** Gate 113 — localizar/recuperar la especificación PE exacta y verificar el crosswalk de identidades/roles, serialización y firewall Generator–Analyzer–Evaluator. Si no existe o no es recuperable, registrar el límite de procedencia y no inferir especificación desde menciones históricas.
+
+
+## 16.263. Gate 113 — recuperación de PE y auditoría de identidades, interfaces y firewall (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_PE_SPECIFICATION_IDENTITY_ROLE_FIREWALL_CROSSWALK_GATE_113_DRAFT_001.md`.  
+**Estado:** PE_ARTIFACT_RECOVERED / PE_LOGICAL_INTERFACES_RECONCILED / PHYSICAL_IDENTITY_CROSSWALK_PARTIAL / CMP_INSTANCE_CARDINALITY_AMBIGUOUS / FIREWALL_NOT_VERIFIED / SERIALIZATION_PARTIAL / IMPLEMENTATION_NOT_READY / NO_EXECUTION / NO_FREEZE.
+
+Gate 113 localiza el artefacto que Gate 112 había clasificado erróneamente como no recuperado: `C10_S_PE_INTEGRATED_TECHNICAL_SPECIFICATION_AND_IMPLEMENTATION_CONTRACT_DRAFT_001.md`, ID C10-S-PE-TECH-CONTRACT-001, blob SHA `5b3ba5256e42f388983cf408f5b51e0a4b9b86bb`. Se añadió addendum correctivo al documento Gate 112; solo se retira la dependencia de localizar PE.
+
+PE define seis responsabilidades lógicas y la secuencia Generator→Proyector/Sealer→Analyzer→Evaluator tras sellado. Enumera identidades diferenciadas de test/fixture/scenario/run, UE/UA/UO/Z, contract/instance, TID/SID/RID/EID, U_G object/version, snapshot, route, evidence y output analítico. No declara esas categorías como esquema físico implementado ni autoriza claves nuevas.
+
+El crosswalk confirma: UE/UA/UO, U_G, instance, route y run mantienen identidades separadas; los mappings físicos y cardinalidades continúan abiertos según Gate 109/110. PE §15 describe instance_id/version como propios de cada UE, mientras Gate 109 deja abierta la cardinalidad UE↔CMP instance; se registra ambigüedad PE-PB-01 para resolver contra roster/contrato material, sin interpretar la frase como cardinalidad aprobada.
+
+El firewall Generator/Sealer/Analyzer/Evaluator está definido lógicamente, pero no probado. SR-13 sigue CONDITIONAL; SR-19/SR-20 NOT_ASSESSED. JCS solo aplica al envelope UDG-01/U1 por DEC-C10-074; serialización de otros registros/bundles permanece OPEN. La salida Analyzer se define por estimando, pero schema/enums finales no están congelados. El crosswalk B1/Need mantiene E1/E2 separados del Analyzer; la proyección de observaciones Need al bundle PE es condicional al estimando y el mapping sigue propuesto/no aprobado.
+
+No se crean identidades, claves, tablas, schemas, test IDs o fixtures. No se modifican DEC, C0, U_G, main, RMA, Evidence→Claim Matrix ni STATUS. No se implementa ni ejecuta. PR #116 sigue Draft. scientific_execution=false; execution_authorized=false.
+
+**Siguiente operación:** Gate 114 — resolver PE-PB-01 y completar el crosswalk material UE↔CMP instance↔U_G↔EID↔route contra los contratos PB/D2, el inventario material y snapshots/roster disponibles. Debe separar identidad semántica, revisión, instancia técnica y observación, registrar cardinalidades respaldadas y mantener UNKNOWN cuando no haya roster/evidencia. No crear IDs/DDL ni asumir UE=instance o instance=U_G.
