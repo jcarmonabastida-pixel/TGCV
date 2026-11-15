@@ -7869,3 +7869,27 @@ TID/SID/RID/EID mantienen sus ámbitos separados; EID es aplicación/episodio de
 Se añadió addendum correctivo a Gate 113 para resolver PE-PB-01 en el alcance B1. No se modifican decisiones, DEC-C10-069, DEC-C10-082, C0, U_G, main, RMA, Evidence→Claim Matrix ni STATUS. No se crean IDs, roster, tablas, FKs, DDL, schemas, fixtures ni test IDs. No se ejecutan validadores, código, tests, workflows, simulaciones, estimaciones, calibraciones ni experimentos. PR #116 permanece Draft. scientific_execution=false; execution_authorized=false.
 
 **Siguiente operación:** Gate 115 — verificar si existe una fuente aprobada del universo/clave de UE y su mapping a SNAPSHOT.unit_id/unit_object_record_id bajo DEC-C10-059/064/065/082 y contratos IAM/PB. Si no existe, precisar la decisión documental que falta sin inventar una clave ni materializar roster.
+
+
+## 16.265. Gate 115 — auditoría de identidad UE y mapping a raíz U_G (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_UE_IDENTITY_AND_UG_ROOT_MAPPING_SOURCE_AUDIT_GATE_115_DRAFT_001.md`.  
+**Estado:** UE_SEMANTIC_ROLE_DEFINED / UE_PERSISTENT_KEY_NOT_ESTABLISHED / B1_PER_UE_BINDING_ACCEPTED / U_G_ROOT_IDENTITY_AND_SNAPSHOT_FK_DEFINED / UE_TO_UG_ROOT_MAPPING_UNKNOWN / ROSTER_NOT_MATERIALIZED / NO_NEW_ID / NO_SCHEMA_CHANGE / NO_EXECUTION / NO_FREEZE.
+
+Gate 115 recupera la definición aceptada de `DEC-C10S-B1-UNIT-001` integrada en el DGP: UE es la instancia sintética completa indexada como (i), a la que se asigna Z y para la que se generan estados transformacionales, trayectorias, Outcome y Value. Una entidad B1 se vincula 1:1 por UE y la decisión de identidad de servicio establece un instance_id propio por UE. Estas reglas definen semántica y binding, no una PK persistente de UE.
+
+U_G define otra identidad: `SNAPSHOT.unit_id = NODE.node_id` para el NODE raíz `LOGICAL_SERVICE_UNIT`, y `unit_object_record_id = NODE.object_record_id` para la revisión exacta. DEC-C10-064/065 fijan integridad y pinning de snapshots; DEC-C10-089 deja sin adjudicar el mapping raíz↔CMP. DEC-C10-082 fija CMP↔NODE anchor 1:1 por CMP/snapshot, no UE↔raíz. Ninguna de estas reglas equipara UE con U_G root.
+
+El `unit_id` genérico de PE/Test Contract Register no resuelve la identidad de UE: no especifica namespace/PK inequívoca y U_G ya asigna a `unit_id` una semántica propia. Tampoco son claves UE `instance_id`, `node_id`, `object_record_id`, `snapshot_id`, fixture/run/scenario o EID.
+
+DEC-C10-096 delimita el censo de la cohorte de validación Need al roster B1 aplicable, pero condiciona su aplicación a que ese roster esté aprobado; no materializa ni define por sí sola la clave UE. P*_{τ2} y P*_F son poblaciones causales/analíticas, no el universo de identidad.
+
+Resultado: UE tiene definición semántica; la clave persistente/namespace/continuidad del roster no está establecida; el mapping UE→SNAPSHOT.unit_id/unit_object_record_id permanece UNKNOWN, no 0 ni NA. No hay roster C10-S material, snapshots comparables ni filas IAM/C_SRC observadas. La cardinalidad UE→B1/instancia de servicio es 1:1 lógica, pero no se usa instance_id como PK UE.
+
+El documento precisa el contenido mínimo de una decisión/contrato pendiente: alcance de identidad (índice i vs identidad persistente), unicidad/continuidad entre DGP/roster/escenario/réplica/run, fuente y versión del roster pre-Z, binding UE↔B1/instance_id, mapping explícito a U_G root por snapshot exacto, cardinalidades permitidas y estados de ausencia/desconocimiento. No propone nombres de claves ni crea DEC; si existe contrato vigente que cubra esos puntos, debe citarse y reutilizarse.
+
+**Reconciliación de continuidad:** el addendum de Gate 114 resolvió PE-PB-01 para B1. La mención original de ambigüedad en §16.263 (Gate 113) es histórica y queda subordinada al addendum de Gate 113 y al resultado de Gate 114; no se reescribe el registro histórico.
+
+No se modifica DEC, C0, U_G, main, RMA, Evidence→Claim Matrix ni STATUS. No se crean IDs, roster, schemas, FKs, tablas, DDL, fixtures ni test IDs. No se ejecutan validadores, código, tests, workflows, simulaciones, estimaciones, calibraciones ni experimentos. PR #116 permanece Draft. scientific_execution=false; execution_authorized=false.
+
+**Siguiente operación:** Gate 116 — auditoría del contrato de roster y binding pre-Z: determinar si DGP/PE y los contratos B1/Need ya ofrecen fuente autoritativa versionada, integridad/continuidad por UE y binding verificable UE↔B1↔instance_id. Si no, precisar si el gap requiere una decisión de identidad DGP o una extensión acotada del contrato de roster, sin elegir una clave ni materializar unidades. Mantener UE→U_G root UNKNOWN hasta mapping explícito con snapshots exactos.
