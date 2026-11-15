@@ -7523,3 +7523,17 @@ Se distinguen `scheduled_time`, `event_time`/intervalo, `observed_at` (EVIDENCE_
 Los bindings reutilizan NODE/PREDICATE/SNAPSHOT y mantienen pinning exacto DEC-C10-065. EVIDENCE_REGISTER, COVERAGE_REGISTER y los mecanismos de evaluación/adjudicación existentes no se duplican. Se propone enmendar DEC-C10-061 para admitir PROCESS_EVENT como destino tipado directo cuando una afirmación trate de una ocurrencia; no se aprueba la enmienda. Truth de eventos y potenciales permanece segregada; el Analyzer solo recibe observaciones selladas.
 
 **Siguiente operación:** Gate 97 — auditoría de compatibilidad y suficiencia frente a la matriz física U_G y DEC-C10-061…065, con reconciliación de campos, claves, cardinalidades, restricciones y mapping N02/N03. Sin implementación, tests, simulación, ejecución ni freeze.
+
+
+## 16.247. Gate 97 — auditoría de compatibilidad del registro de eventos D2 con U_G (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_D2_EVENT_REGISTER_COMPATIBILITY_AUDIT_GATE_97_DRAFT_001.md`.  
+**Estado:** DOCUMENTARY COMPATIBILITY AUDIT / GATE 96 PARTIALLY COMPATIBLE / MATERIAL GAPS IDENTIFIED / NO ACCEPTANCE / NO SCHEMA CHANGE / NO IMPLEMENTATION / NO EXECUTION.
+
+La auditoría concluye que la Opción A aceptada por DEC-C10-063/064/065 (grafo estructural, versionado y pinning exacto) y la alternativa B recomendada en Gate 95 (registro relacional de ocurrencias de proceso) son composables, no alternativas mutuamente excluyentes. Gate 96 es parcialmente compatible, pero no directamente implementable.
+
+Brechas principales: ciclo de vida event_id/event_record_id/revisión/retractación; bindings tipados para unidad, Z, B/version y relaciones entre eventos; clave exacta de destino en bindings; claims directos sobre eventos bloqueados por DEC-C10-061 hasta enmienda expresa; cobertura de eventos no reconciliada con DEC-C10-070/C0; mapping de relojes/stage_key/snapshot incompleto; y compatibilidad event_type × event_result/relaciones por cerrar.
+
+Se confirma que DEC-C10-062 no se hereda automáticamente: aplica a NODE/EDGE/ROUTE/PREDICATE/SNAPSHOT. EVIDENCE_REGISTER conserva provenance; COVERAGE_REGISTER conserva universo/cobertura; no se crean registros paralelos. DEC-C10-065 exige snapshot_id + snapshot_object_record_id y FK compuesta exacta. N02/N03 siguen siendo roles del crosswalk, no claves físicas resueltas; Z no se convierte en NODE ni EID por defecto.
+
+**Siguiente operación:** Gate 98 — reconciliación correctiva del contrato lógico Gate 96, sin modificar decisiones ni plantilla U_G, manteniendo abierta la elección de claim directo/indirecto y sin aceptar B.
