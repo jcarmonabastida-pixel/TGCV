@@ -8020,3 +8020,15 @@ Para declarar aislamiento individual demostrado dentro del alcance deben satisfa
 La ruta alternativa es condicional: cluster si la interferencia es contenible en grupos definidos antes de Z, reabriendo UA/estimando/ponderación; mapa G_i(Z_-i) si es mapeable y tiene soporte; bounds/abstención si no es mapeable o no tiene soporte. No cluster retrospectivo ni cambio post-outcome.
 
 Resultado: el protocolo queda especificado, pero la evidencia material sigue NONE/NOT OBSERVED; la asignación individual UE=UA continúa CONDITIONAL. No se acredita aislamiento ni identificación de θ_A. No se modifican DEC, C0, U_G, RMA, Evidence→Claim Matrix, STATUS, main o código. No se ejecutan tests, simulaciones, calibraciones ni experimentos. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 16.273. Gate 122 — expediente mínimo de materialización probatoria del aislamiento (2026-11-15)
+
+**Registro:** `00_GOVERNANCE/SIP/C10_S_MINIMUM_ISOLATION_EVIDENCE_MATERIALIZATION_DOCKET_GATE_122_DRAFT_001.md`.  
+**Estado:** EVIDENCE_SOURCE_CROSSWALK_SPECIFIED / SOURCE_AVAILABILITY_UNVERIFIED / MATERIAL_INVENTORY_NONE / ISOLATION_NOT_DEMONSTRATED / UE_ASSIGNMENT_CONDITIONAL / NO_MATERIAL_CAPTURE / NO_FREEZE / NO_IMPLEMENTATION / NO_EXECUTION.
+
+Se reconstruyeron Gate 121, Adapter Provision Manifest B-M01…15, U_G Inventory Register Template, U_G Evidence Provenance and Adjudication Protocol S1…S8, IAM/C_SRC overlays, PE, UNIT-01…14 y PROV-01…12. Gate 122 convierte IS-1…IS-8 en crosswalk de afirmaciones, clases de fuente, registros U_G y cobertura; especifica procedencia, triangulación, roles, secuencia futura y precondiciones de captura.
+
+No se identificó ni consultó un sistema técnico B1/D2, runtime, IAM real, SBOM/manifiestos, logs, snapshots, servicios externos o custodios. No se materializó roster B/P*_{τ2}. Las fuentes técnicas concretas y su disponibilidad siguen UNVERIFIED; las plantillas U_G siguen vacías. Los artefactos GitHub recuperados son contratos documentales, no evidencia material de aislamiento.
+
+Ninguna condición IS-1…IS-8 pasa a PASS. La asignación individual UE=UA sigue CONDITIONAL; cluster/G_i no seleccionados; no se identifica θ_A. No se crean registros físicos, IDs, esquemas ni capturas; no se modifica main, DEC, C0, U_G, RMA, Evidence→Claim Matrix o STATUS. No se ejecuta código, validación, simulación ni experimento. `scientific_execution=false`; `execution_authorized=false`.
