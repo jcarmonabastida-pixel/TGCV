@@ -7893,3 +7893,19 @@ El documento precisa el contenido mínimo de una decisión/contrato pendiente: a
 No se modifica DEC, C0, U_G, main, RMA, Evidence→Claim Matrix ni STATUS. No se crean IDs, roster, schemas, FKs, tablas, DDL, fixtures ni test IDs. No se ejecutan validadores, código, tests, workflows, simulaciones, estimaciones, calibraciones ni experimentos. PR #116 permanece Draft. scientific_execution=false; execution_authorized=false.
 
 **Siguiente operación:** Gate 116 — auditoría del contrato de roster y binding pre-Z: determinar si DGP/PE y los contratos B1/Need ya ofrecen fuente autoritativa versionada, integridad/continuidad por UE y binding verificable UE↔B1↔instance_id. Si no, precisar si el gap requiere una decisión de identidad DGP o una extensión acotada del contrato de roster, sin elegir una clave ni materializar unidades. Mantener UE→U_G root UNKNOWN hasta mapping explícito con snapshots exactos.
+
+
+## 16.266. Gate 116 — reconciliación de identidad/versionado del roster y binding pre-Z (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_ROSTER_IDENTITY_VERSION_AND_PREZ_BINDING_RECONCILIATION_GATE_116_DRAFT_001.md`.  
+**Estado:** UE_IDENTITY_FIELD_EXISTS_AS_DRAFT / ROSTER_MANIFEST_CONTRACT_EXISTS_AS_DRAFT / ROSTER_APPROVAL_ABSENT / UE_KEY_SCOPE_AND_CONTINUITY_OPEN / B1_PREZ_BINDING_RULE_SPECIFIED_NOT_MATERIALIZED / NO_NEW_ID / NO_SCHEMA_CHANGE / NO_EXECUTION / NO_FREEZE.
+
+Gate 116 corrige parcialmente la lectura de Gate 115: `ue_id` sí está definido como identidad lógica de UE en el contrato mínimo de materialización B1/Need §2 y en el contrato del paquete analítico §4.2. Este último también propone `roster_id`, `roster_version`, `roster_digest` en PACKAGE_MANIFEST y el artefacto UNIT_BINDING. No procede crear otra clave ni afirmar que la UE carezca de representación.
+
+La especificación sigue no aprobada/no materializada. DEC-C10-095/096 aceptan reglas de estipulación y censo, pero no aprueban roster; DEC-C10-096 exige roster aprobado, versionado y cerrado antes de fijar cohorte. DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001 acepta instance_id propio y único por UE, instance_version monotónica y comprobación contra roster completo, pero no asigna IDs ni crea roster. El binding lógico UE↔B1↔instancia↔baseline_record_id(t−1)↔z_event_id(t0) está especificado, no verificado.
+
+Siguen abiertos namespace/alcance de unicidad y continuidad de ue_id entre versiones/rosters/paquetes/escenarios/réplicas/replays, tratamiento de sucesión/supersesión, autoridad y cierre del roster, y rosters A/B separados vs conjunto. La presencia de `unit_id/assignment_unit` en Test Contract Register no resuelve UE; U_G `unit_id` conserva su semántica como NODE.node_id raíz LOGICAL_SERVICE_UNIT. UE→U_G root sigue UNKNOWN.
+
+Resultado: no se necesita una nueva clave UE ni un séptimo artefacto. Hace falta cierre documental acotado y aprobación del contrato/roster antes de materialización. No se crean IDs, roster, tablas, schemas, FKs, fixtures, snapshots ni eventos. No se modifican DEC-C10-095/096, C0, U_G, main, RMA, Evidence→Claim Matrix ni STATUS. No se ejecutan validadores, código, tests, workflows ni experimentos. PR #116 permanece Draft. scientific_execution=false; execution_authorized=false.
+
+**Siguiente operación:** Gate 117 — reconstrucción del alcance/namespace y continuidad de `ue_id`, y decisión A/B de roster separado o conjunto, usando contratos DGP, package, identidad B1 e historial de decisiones. Si no existe una decisión fuente, presentar la bifurcación al responsable científico sin escoger ni materializar.
