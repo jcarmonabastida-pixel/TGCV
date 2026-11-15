@@ -132,6 +132,7 @@ jobs:
           retention-days: 30
 
       - name: Record profile execution and materialization manifest
+        id: manifest
         if: always()
         shell: bash
         env:
@@ -168,7 +169,7 @@ jobs:
               "repository":os.environ["GITHUB_REPOSITORY"],"commit":os.environ["GITHUB_SHA"],
               "tree":subprocess.check_output(["git","rev-parse","HEAD^{tree}"],text=True).strip(),
               "event":os.environ["GITHUB_EVENT_NAME"],"ref":os.environ["GITHUB_REF"],
-              "run_id":os.environ["GITHUB_RUN_ID"],"run_attempt":os.environ["GITHUB_RUN_ATTEMPT"],"job_status":os.environ.get("JOB_STATUS"),
+              "run_id":os.environ["GITHUB_RUN_ID"],"run_attempt":os.environ["GITHUB_RUN_ATTEMPT"],"job":os.environ.get("GITHUB_JOB"),"manifest_step_id":"manifest","job_status":os.environ.get("JOB_STATUS"),
               "authorization":{"input":"confirm_p178_profile_execution","value":os.environ.get("CONFIRM_P178_PROFILE_EXECUTION","not_exported"),"scope":"named synthetic tests + 27x10000 Monte Carlo + replay + capture"},
               "actions":{"checkout":"11bd71901bbe5b1630ceea73d27597364c9af683","setup-python":"a26af69be951a213d495a4c3e4e4022e16d87065","upload-artifact":"65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08"},
               "runner":{"image_os":os.environ.get("ImageOS"),"image_version":os.environ.get("ImageVersion"),"uname":subprocess.check_output(["uname","-a"],text=True).strip(),"os_release":Path("/etc/os-release").read_text(),"architecture":subprocess.check_output(["uname","-m"],text=True).strip()},
@@ -177,9 +178,9 @@ jobs:
               "tests":{"modules":["test_focal_harness","test_p178_analyzer_bridge","test_p178_analyzer_monte_carlo"],"command":"python -B -m unittest -v test_focal_harness test_p178_analyzer_bridge test_p178_analyzer_monte_carlo","bytecode_cache_policy":"py_compile then delete all __pycache__ and .pyc; assert absent; run with -B"},
               "inputs":[{"path":p,"sha256":digest(root/p),"size_bytes":(root/p).stat().st_size,"mode":oct((root/p).stat().st_mode & 0o777),"file_type":"regular_file","evidence_state":"materialized_input","consumption":"not_observed"} for p in paths],
               "artifact":{"payload_id":os.environ.get("PAYLOAD_ARTIFACT_ID"),"payload_digest":os.environ.get("PAYLOAD_ARTIFACT_DIGEST")},
-              "outputs":{}
+              "selected_wheels":[{"filename":"numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl","platform_tags":["cp312-cp312-manylinux_2_27_x86_64","cp312-cp312-manylinux_2_28_x86_64"],"sha256":"0d8163f43acde9a73c2a33605353a4f1bc4798745a8b1d73183b28e5b435ae28"},{"filename":"scipy-1.17.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl","platform_tags":["cp312-cp312-manylinux_2_27_x86_64","cp312-cp312-manylinux_2_28_x86_64"],"sha256":"9eeb9b5f5997f75507814ed9d298ab23f62cf79f5a3ef90031b1ee2506abdb5b"}],"outputs":{}
           }
-          for name in ["c10s-primary/p178_analyzer_monte_carlo.csv","c10s-primary/p178_analyzer_monte_carlo_manifest.json","c10s-replay/p178_analyzer_monte_carlo.csv","c10s-replay/p178_analyzer_monte_carlo_manifest.json"]:
+          for name in ["c10s-primary/p178_analyzer_monte_carlo.csv","c10s-primary/p178_analyzer_monte_carlo_manifest.json","c10s-replay/p178_analyzer_monte_carlo.csv","c10s-replay/p178_analyzer_monte_carlo_manifest.json","c10s-primary-stdout.txt","c10s-primary-stderr.txt","c10s-primary-tests-stdout.txt","c10s-primary-tests-stderr.txt","c10s-replay-stdout.txt","c10s-replay-stderr.txt","c10s-replay-tests-stdout.txt","c10s-replay-tests-stderr.txt"]:
               p=temp/name
               manifest["outputs"][name]=digest(p) if p.exists() else None
           (temp/"c10s-p178-execution-materialization-manifest.json").write_text(json.dumps(manifest,indent=2,sort_keys=True)+"\n")
