@@ -142,6 +142,7 @@ jobs:
             "dependencies":{"lock":paths[8],"lock_blob_sha":subprocess.check_output(["git","hash-object",paths[8]],text=True).strip()},"selected_wheels":[{"filename":"rfc8785-0.1.4-py3-none-any.whl","platform_tags":["py3-none-any"],"sha256":"520d690b448ecf0703691c76e1a34a24ddcd4fc5bc41d589cb7c58ec651bcd48"}],
             "tests":{"modules":["test_vcont_capture_v2","test_vcont_package_v2_serialization","test_vcont_package_v2_verifier"],"command":"python -B -m unittest -v test_vcont_capture_v2 test_vcont_package_v2_serialization test_vcont_package_v2_verifier","bytecode_cache_policy":"compile, delete all __pycache__ and .pyc, assert absent, execute with -B"},
             "inputs":[{"path":p,"sha256":sha(root/p),"size_bytes":(root/p).stat().st_size,"mode":oct((root/p).stat().st_mode & 0o777),"file_type":"regular_file","evidence_state":"materialized_input","consumption":"not_observed"} for p in paths],
+            "source_materialization":{"root":"$RUNNER_TEMP/c10s-ep03-source","archive_paths":paths},
             "artifact":{"payload_id":os.environ.get("PAYLOAD_ARTIFACT_ID"),"payload_digest":os.environ.get("PAYLOAD_ARTIFACT_DIGEST")},"outputs":{n:(sha(temp/n) if (temp/n).exists() else None) for n in ["c10s-pure-tests-stdout.txt","c10s-pure-tests-stderr.txt"]}}
           (temp/"c10s-vcont-pure-execution-materialization-manifest.json").write_text(json.dumps(m,indent=2,sort_keys=True)+"\n")
           PY
