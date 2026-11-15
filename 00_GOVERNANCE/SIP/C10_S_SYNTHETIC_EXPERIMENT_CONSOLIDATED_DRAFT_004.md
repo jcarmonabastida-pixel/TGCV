@@ -91,3 +91,17 @@ Referencia rectora: plan §16.200. D2 conserva funciones/potenciales separados p
 q_X* es historia basal común: X/H0 y C_c con mapping; F_alt,0 modifica análisis P*_F; E/App son marco; C_dep,0=A_f,0*=0 son estipulaciones del núcleo limpio. L_m,0 solo con justificación. Need_preZ/S7 no entra como filtro ni predictor; variables post-Z excluidas.
 
 ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*), con ΔE_T separado. ΔX* se clasifica campo a campo; campos no resueltos quedan ?. Funciones, distribuciones, soporte y parámetros OPEN. No se crean tests ni se ejecuta calibración.
+
+
+## 290. DEC-C10-103 — resolución aceptada de las cinco decisiones P0 de arquitectura causal (2026-11-15)
+
+Se incorpora DEC-C10-103, aceptada expresamente por el responsable científico tras Gate 120. Las cinco recomendaciones quedan aceptadas como arquitectura de trabajo condicionada:
+- A/B continúan como variantes DGP separadas conforme DEC-C10-095; rosters causales separados por defecto y crosswalk/matching solo con equivalencia basal y elegibilidad pre-Z demostradas. DEC-C10-096 sigue delimitada al censo de validación B1/Need_preZ.
+- Asignación individual por UE es la arquitectura confirmatoria preferida solo tras demostrar aislamiento material. La instancia B1 por UE no demuestra por sí sola aislamiento de recursos, dependencias mutables, agentes, canales, estado, side effects o carryover. Sin aislamiento, cluster/mapa de exposición requieren contrato propio; interferencia no mapeada exige bounds/abstención.
+- El target es promedio por UE bajo asignación individual aislada. Si se adopta cluster, reabrir unidad y ponderación UE/cluster.
+- θ_A(q_X*,r_common;V_cont), sobre el vector completo ΔT_acc* en B, es el objetivo focal de atribución, condicionado a factibilidad, soporte e identificación. ITT-D2 conserva el efecto total del paquete como estimando separado; C4 es mediación interventional longitudinal secundaria condicionada; efecto directo/no mediado queda fuera hasta definición propia. No calcular residual por resta.
+- UE tiene identidad inmutable dentro del roster/package versionado; matching A/B solo mediante crosswalk explícito. No se materializa ue_id ni se fuerza UE→U_G.
+
+Permanecen abiertos el roster B/P*τ2, aislamiento, UE=UA, Z/RNG/provenance, soporte de q_X*/g_A/r_common, mapping D2→g_A, medición y calibración V_cont/S3, T*/Δ/K, missingness, sensibilidad, potencia, vías colaterales y criterios Analyzer/Evaluator. La aceptación no acredita esas condiciones.
+
+No Design Freeze, materialización, implementación ni ejecución. No cambios en main, C0, U_G, RMA, Evidence→Claim Matrix o STATUS. PR #116 Draft. scientific_execution=false; execution_authorized=false.
