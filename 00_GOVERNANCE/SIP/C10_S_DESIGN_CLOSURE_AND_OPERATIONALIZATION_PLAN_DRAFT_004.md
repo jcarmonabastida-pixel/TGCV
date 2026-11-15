@@ -7767,3 +7767,23 @@ O-CONF conserva unidad instance×route_id; V_cont conserva unidad UE×K interval
 No se cambian DEC-C10-059/065/066/067/069/061/070, C0, PROCESS_EVENT ni el esquema. No se crean claves/tablas puente, tests, fixtures, DDL, validadores o código. No se ejecutan validadores, workflows, simulaciones ni experimentos. scientific_execution=false; execution_authorized=false.
 
 **Siguiente operación:** Gate 110 — especificación de estimandos de asignación y exposición bajo las alternativas aún abiertas (asignación individual aislada, asignación por clúster, asignación individual con mapa de exposición, y no-identificación por interferencia no mapeada), sin elegir un diseño ni fijar ponderaciones hasta recuperar el contrato de población y soporte.
+
+
+## 16.260. Gate 110 — estimandos de asignación y exposición bajo interferencia (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_ASSIGNMENT_EXPOSURE_ESTIMANDS_INTERFERENCE_GATE_110_DRAFT_001.md`.  
+**Estado:** ESTIMAND TAXONOMY SPECIFIED / FOUR ASSIGNMENT ARCHITECTURES DISTINGUISHED / EXPOSURE IDENTIFICATION CONDITIONS EXPLICIT / POPULATION-SUPPORT-RANDOMIZATION OPEN / NO NEW TEST IDS / NO SCHEMA CHANGE / NO IMPLEMENTATION / NO EXECUTION / NO FREEZE.
+
+Gate 110 formaliza cuatro arquitecturas aún abiertas por Gate 109: (A) asignación individual con aislamiento completo; (B) asignación por clúster; (C) asignación individual con mapa de exposición (G_i(Z_{-i})); (D) interferencia relevante no mapeada. No selecciona ninguna. A requiere UE=UA y aislamiento demostrado; B requiere aleatorización en cluster y tratamiento explícito de spillovers entre clusters; C requiere mapa correcto, probabilidades de exposición y soporte/positividad; D prohíbe declarar ITT individual convencional identificado bajo SUTVA y exige NOT_IDENTIFIED o bounds solo con restricciones defendibles.
+
+Para B se separan promedio por UE y promedio por clúster; con tamaños desiguales no son intercambiables. La asignación por clúster no elimina automáticamente interferencia intraclúster. Para C se distinguen efectos directos (DE(e)), spillover (SE(z;e_1,e_0)) y efectos marginales de políticas de asignación, sin reducirlos a una etiqueta de cluster.
+
+Se mantiene la separación rectora: ITT-D2 es efecto total del paquete por resultado; (g_A) interviene sobre la distribución factible del vector completo (Delta T_{acc}^{*}) bajo (q_X^*) común y (r_{common}); C4 es mediación interventional longitudinal. El mapping D2→(g_A) no está demostrado y C4 no es ITT−(	heta_A). O-CONF y V_cont conservan unidades, mediciones y estimandos separados.
+
+Se incorpora el orden de adjudicación: estimando/resultado/población/unidad → mecanismo y unidad de asignación → aislamiento/cluster/mapa → soporte/positividad → consistencia/versiones → pérdida/medición → estado de identificación → interpretación como paquete, (g_A) o C4. Salidas permitidas: IDENTIFIED, CONDITIONALLY_IDENTIFIED, BOUNDS_ONLY, NOT_IDENTIFIED, NOT_INSTANTIATED e INDETERMINATE_MEASUREMENT; EFFECT_OF_PACKAGE_ONLY se informa como calificación interpretativa junto al estado.
+
+**Gaps G110-01…16:** arquitectura real, identidades y cardinalidades UE/UA/cluster, aislamiento, (G_i), probabilidades de asignación/exposición, soporte, población/roster, ponderación UE/cluster, unidad de inferencia, consistencia/versiones, mapping D2 por O-CONF/V_cont, D2→(g_A), C4 bajo exposición, sensibilidad, restricciones de bounds y crosswalk de cobertura de tests existentes. No se crean test IDs ni fixtures.
+
+No se cambian decisiones, contratos, C0, Gate 98/109 ni el esquema. No se crean claves o tablas puente. No se ejecutan validadores, código, simulaciones, estimaciones ni calibraciones. No se promueve research a main. scientific_execution=false; execution_authorized=false.
+
+**Siguiente operación:** Gate 111 — crosswalk de cobertura de los contratos de prueba existentes (S4R, MEAS, MISS, TRJ, INT, POL, P177–P183 y XSYNC) frente a los cuatro escenarios de asignación/exposición y sus estados de identificación, identificando vacíos reales sin crear IDs duplicados ni fixtures nuevos.
