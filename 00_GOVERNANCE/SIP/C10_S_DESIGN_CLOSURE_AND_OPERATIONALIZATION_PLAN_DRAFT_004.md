@@ -7607,3 +7607,21 @@ Se mantienen separadas B (`policy_contract_id + policy_version`, Gate 100), TID/
 **Siguiente operación:** Gate 102 — reconciliación del inventario material de τ2 y grafo de dependencias del servicio con U_G/manifest, buscando el artefacto de DEC-C10-067 como NODE/DEPENDENCY/RID/propiedad de manifest y recuperando cardinalidad, owner, versión, unidad y snapshot.
 
 **Dictamen:** `GATE_101_EXISTING_IDENTITY_VOCABULARY_RECOVERED / RID_CANDIDATE_NOT_CONFIRMED / RANDOMIZATION_VECTOR_AND_ASSIGNMENT_KEY_OPEN / UE_UA_ROLES_EXIST_UA_CLUSTER_MAPPING_OPEN / NO_SCHEMA_CHANGE / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE`.
+
+
+## 16.252. Gate 102 — inventario material de τ2 y grafo de dependencias (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_D2_TAU2_MATERIAL_INVENTORY_AND_DEPENDENCY_GRAPH_RECONCILIATION_GATE_102_DRAFT_001.md`.  
+**Estado:** HISTORICAL CONTRACT RECONCILIATION / MATERIAL INVENTORY NOT POPULATED / NO ARTIFACT-TO-RID MAPPING CONFIRMED / NO SCHEMA CHANGE / NO IMPLEMENTATION / NO EXECUTION / NO FREEZE.
+
+Gate 102 recupera y reconcilia el Adapter Provision Manifest and Dependency Graph, la U_G Inventory Register Template, el contrato TID/SID/RID/EID, el Abstract Configuration Instance Contract, la matriz de mapping y el PE Integrated Technical Specification. El manifiesto B define superficies B-M01…M15, clases de dependencia y campos de nodos/aristas, pero es un contrato de captura/propuesta, no un inventario material. La plantilla U_G está declarada DRAFT / PLANTILLA VACÍA / NO INVENTARIADA / NO EJECUTADA; sus filas de ejemplo no son observaciones.
+
+No se ha localizado el artefacto concreto de DEC-C10-067 ni su RID, versión/build/hash, owner, runtime, endpoint o dependencias. RID sigue siendo candidato condicionado a que el objeto sea realmente una realización técnica de transformación. B puede relacionarse con uno o varios artefactos/dependencias; cardinalidad OPEN. El paquete CMP/PAR/REF/RUL/MET se mantiene separado del runtime/E_dst y de dependencias técnicas externas. No todo artefacto o dependencia debe convertirse en NODE.
+
+Los registros NODE/EDGE/SNAPSHOT y EVIDENCE/COVERAGE existentes ofrecen vocabulario candidato para integrar el manifiesto sin tablas paralelas, sujeto a mapping campo a campo, DEC-C10-062/065/076/079–081 y cobertura C0. No hay snapshots materiales pre-B/post-B/rollback ni evidencia de independencia A1/A2. Los estados son NO INVENTARIADO/?; no se infiere ausencia ni estado 0 desde plantillas vacías o falta de documentos. PROHIBIDO EN B para M13/M14 es una restricción de diseño, no una observación de no-afectación.
+
+**Bloqueos conservados:** artefacto y cardinalidad B→artefactos; mapping a RID/NODE/externo; inventario directo/transitivo; owner/consumidores/endpoint/permisos/recursos; snapshots y evidencia; mapping UE/UA/clúster→U_G; contrato de vector Z.
+
+**Siguiente operación:** Gate 103 — auditoría de suficiencia del inventario U_G y de la frontera de observabilidad para B. Determinar qué fuentes documentales/estructurales/runtime requiere cada dimensión, si NODE/EDGE/SNAPSHOT/EVIDENCE/COVERAGE actuales bastan y qué evidencias solo podrían obtenerse en una futura operación autorizada. No materializar filas ni ejecutar.
+
+**Dictamen:** `GATE_102_CONTRACTUAL_INVENTORY_MODEL_RECOVERED / MATERIAL_INVENTORY_EMPTY / B_ARTIFACT_NOT_LOCATED / RID_MAPPING_NOT_CONFIRMED / TRANSITIVE_GRAPH_NOT_OBSERVED / NO_SCHEMA_CHANGE / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE`.
