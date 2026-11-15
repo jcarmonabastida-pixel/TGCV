@@ -177,3 +177,18 @@ Orden de trabajo restante:
 
 No se ejecutan validadores, código, tests, workflows, simulaciones, estimaciones, calibraciones ni experimentos. No se modifican main, RMA, Evidence→Claim Matrix, STATUS, DEC, C0, U_G ni schemas. PR #116 permanece Draft.  
 `scientific_execution=false`; `execution_authorized=false`.
+
+
+---
+
+## Addendum de corrección — Gate 114: resolución de PE-PB-01 para B1 (2026-11-15)
+
+Gate 113 §4.1/§8 G113-04 registró como ambigua la cardinalidad UE↔CMP instance. La recuperación de `DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001` (aceptada el 2026-11-11) y de PB material reconciliation permite corregir ese estado:
+
+- Para la variante B1, cada UE tiene una instancia lógica de servicio propia, con `instance_id` único en el roster C10-S y `instance_version` monotónica e independiente.
+- El contrato y plantilla funcional son comunes; la instancia ejemplar `C10S-SVC-REQUEST-PROCESSOR-001` de DEC-C10-069 no se reutiliza para todas las UE.
+- Por tanto, PE-PB-01 pasa a **RESOLVED_DOCUMENTARILY_FOR_B1** y UE→instancia CMP servicio es 1:1 lógico.
+
+La decisión no proporciona roster ni IDs concretos, no demuestra aislamiento material y no resuelve UE→U_G root, UE→UA/cluster, CMP→NODE material ni EID/route. DEC-C10-082 sigue fijando CMP→NODE anchor 1:1 por CMP y snapshot exacto; no iguala instance_id con node_id. El crosswalk completo y los límites están en Gate 114: `C10_S_UE_CMP_UG_EID_ROUTE_MATERIAL_CROSSWALK_GATE_114_DRAFT_001.md`.
+
+Estado actualizado: **B1_INSTANCE_CARDINALITY_RESOLVED_LOGICALLY / MATERIAL_MAPPING_OPEN / FIREWALL_NOT_VERIFIED / NO_SCHEMA_CHANGE / NO_EXECUTION**. No se altera PE ni las decisiones aceptadas.
