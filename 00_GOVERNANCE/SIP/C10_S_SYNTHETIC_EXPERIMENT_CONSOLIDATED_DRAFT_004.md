@@ -177,3 +177,18 @@ DEC-C10-099…102 se respetan: la selección provisional de V_cont no prueba por
 Gate 125 determina que no estamos cerca de Design Freeze para la pregunta causal ΔT_acc*→Value. Sí existe una arquitectura candidata desarrollada, que permite concentrar el trabajo en dependencias estructurales/semánticas concretas sin reiniciar el diseño. La siguiente operación es Gate 126: auditoría de consistencia/admisibilidad del puente V_cont→consecuencia B1→Value, reutilizando DEC-C10-099…102, B2–B3, B1 Valuation Case, Outcome/Value Operationalization y P179/P182/P183.
 
 La secuencia Gates 181–199 de captura, serialización y procedencia del paquete V_cont permanece como corriente técnica separada: no rellena el DGP causal ni acredita θ_A. No se modifica código, DGP, DEC, C0, U_G, RMA, Evidence→Claim Matrix, STATUS o main; no se crean mundos/test IDs ni se ejecutan validadores, pruebas, simulaciones, estimaciones, calibraciones, productores o benchmarks. PR #116 permanece Draft; `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 296. Gate 126 — admisibilidad del puente V_cont → consecuencia B1 → Value (2026-11-16)
+
+**Registro:** `00_GOVERNANCE/SIP/C10_S_VCONT_B1_VALUE_BRIDGE_ADMISSIBILITY_AUDIT_GATE_126_DRAFT_001.md`.  
+**Addendum al plan:** `00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_126_VALUE_BRIDGE_ADDENDUM_DRAFT_001.md`.  
+**Estado:** DEC-C10-099_102_PRESERVED / VCONT_SELECTED_PROVISIONALLY / BENEFICIARY_CONSEQUENCE_NOT_OPERATIONALIZED / VALUE_VALUATION_RULE_OPEN / THETA_A_TARGET_IS_VCONT_NOT_FULL_VALUE / NOT_DESIGN_FROZEN / NO_IMPLEMENTATION / NO_EXECUTION.
+
+Gate 126 audita la consistencia de DEC-C10-099…103 con B2–B3, la reconciliación Outcome/Value y los contratos P179/P182/P183. No reabre las decisiones aceptadas: V_cont sigue siendo la dimensión mínima provisional de Value para B; DEC-C10-100 conserva la agregación temporal igualitaria; DEC-C10-101 fija t0; DEC-C10-102 conserva continuidad estricta por intervalo; DEC-C10-103 mantiene θ_A(q_X*,r_common;V_cont) como estimando focal seleccionado, distinto de ITT-D2 y C4.
+
+El hallazgo es que la función técnica B1 (ENABLED/PROFILE), la consecuencia para B1 respecto de Need_preZ y la valoración contextual son tres niveles distintos. B2–B3 mantiene la consecuencia no operacionalizada y la perspectiva/autoridad de valoración OPEN. Por tanto, la selección de V_cont y su truth temporal no validan automáticamente su interpretación como Value contextual. θ_A puede evaluar atribución causal sobre continuidad funcional; su interpretación como contribución a Value permanece CONDITIONAL hasta justificar el puente no circular hacia consecuencia y valoración.
+
+O-CONF/F* no sustituye ni valida automáticamente V_cont. Se preservan truth_dgp/observed_evidence/evaluation, el canal S3 imperfecto, el firewall Generator/Analyzer/Evaluator y la posibilidad de bounds/abstención. No se crean dimensiones, pesos, instrumentos, umbrales, IDs, parámetros o fixtures. No se modifican DEC, C0, U_G, RMA, Evidence→Claim Matrix, STATUS, Core o main. No hay Design Freeze, implementación ni ejecución; `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente operación:** Gate 127 — reconciliar el caso de valoración B1 y Need_preZ con la consecuencia funcional que V_cont puede representar, distinguiendo qué está ya estipulado en el DGP, qué requiere definición normativa adicional y qué no puede identificarse desde la evidencia permitida al Analyzer. No asumir una relación determinista V_cont→Value.
