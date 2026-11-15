@@ -168,3 +168,14 @@ Este gate **no propone el nombre de una nueva clave**, no decide si debe añadir
 **Siguiente operación:** Gate 116 — auditoría del contrato de roster y binding pre-Z: determinar si el DGP/PE y los contratos B1/Need ya ofrecen una fuente autoritativa versionada del roster, una regla de integridad/continuidad por UE y un binding verificable UE↔B1↔instance_id. Si no, precisar si el gap se resuelve con una decisión de identidad DGP o con una extensión acotada del contrato de roster; no elegir una clave ni materializar unidades. En paralelo, mantener UE→U_G root UNKNOWN hasta que exista mapping explícito con snapshots exactos.  
 
 **Gobernanza:** PR #116 permanece Draft. No se modifica main, RMA, Evidence→Claim Matrix, STATUS, DEC, C0 ni U_G. `scientific_execution=false`; `execution_authorized=false`.
+
+
+---
+
+## Addendum de precisión — Gate 116 (2026-11-15)
+
+La auditoría de Gate 116 recuperó dos contratos que contienen explícitamente el campo lógico `ue_id`: el contrato mínimo de materialización DGP B1/Need §2 y el contrato del paquete analítico §4.2. El segundo propone además `roster_id`, `roster_version`, `roster_digest`, `PACKAGE_MANIFEST` y `UNIT_BINDING`.
+
+Por tanto, la conclusión de Gate 115 se precisa así: **existe representación propuesta de identidad UE (`ue_id`) en contratos Draft; no existe todavía clave canónica aprobada/materializada ni reglas completas de namespace, unicidad y continuidad**. Los contratos están marcados NOT_APPROVED / NOT_MATERIALIZED; DEC-C10-096 exige roster aprobado, versionado y cerrado. No se asignan valores ni se crea otro ID.
+
+El resto del dictamen Gate 115 permanece: UE→U_G root = UNKNOWN; la raíz U_G conserva `NODE.node_id` y su revisión `NODE.object_record_id`; el binding B1/instancia lógico no demuestra mapping a raíz ni aislamiento material. Gate 116 registra la reconciliación completa.
