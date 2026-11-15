@@ -16,10 +16,11 @@ Gate 95 recomendó B: un registro relacional de eventos de proceso integrado en 
 
 1. `PROCESS_EVENT`: una fila versionada por ocurrencia operativa.
 2. `PROCESS_EVENT_RELATION`: relaciones explícitas entre ocurrencias, para causalidad, precedencia y reintentos.
-3. `PROCESS_EVENT_BINDING`: referencias tipadas desde una ocurrencia hacia unidad, asignación Z, política B/version, artefactos, componentes, predicados y snapshots.
-4. Reutilización de `EVIDENCE_REGISTER`, `CLAIM_EVIDENCE_LINK`, `COVERAGE_REGISTER`, `EVALUATOR_ASSESSMENT` y `ADJUDICATION_REGISTER`; no crear un ledger de evidencia alternativo.
+3. `PROCESS_EVENT_BINDING`: referencias tipadas desde una ocurrencia hacia unidad, política B/version, artefactos, componentes y predicados existentes.
+4. `PROCESS_EVENT_SNAPSHOT_BINDING`: referencias a revisiones exactas de SNAPSHOT, con papel temporal explícito.
+5. Reutilización de `EVIDENCE_REGISTER`, `CLAIM_EVIDENCE_LINK`, `COVERAGE_REGISTER`, `EVALUATOR_ASSESSMENT` y `ADJUDICATION_REGISTER`; no crear un ledger de evidencia alternativo.
 
-Los nombres anteriores son **identificadores lógicos propuestos**, no nombres físicos aceptados. Las tres relaciones forman una extensión interna de U_G. La necesidad y cardinalidad de cada relación se especifican aquí para evitar que la implementación tenga que inventar semánticas; la elección final de nombres, tipos físicos y serialización sigue abierta.
+Los nombres anteriores son **identificadores lógicos propuestos**, no nombres físicos aceptados. Las cuatro relaciones forman una extensión interna de U_G. La necesidad y cardinalidad de cada relación se especifican aquí para evitar que la implementación tenga que inventar semánticas; la elección final de nombres, tipos físicos y serialización sigue abierta.
 
 El registro representa ocurrencias observables y sus referencias. La truth de eventos potenciales o generados permanece fuera de U_G, en el canal restringido del Generator/Evaluator. No se admite una columna que mezcle truth y observación.
 
@@ -239,7 +240,7 @@ La identidad de la relación debe distinguir el par dirigido y el tipo; no se pr
 
 ### 7.1 PROCESS_EVENT_BINDING
 
-Una ocurrencia puede referenciar más de un objeto y más de un rol. Para evitar columnas polimórficas y permitir varios artefactos/componentes, se propone una relación normalizada de bindings.
+Una ocurrencia puede referenciar más de un objeto y más de un rol. Para evitar columnas polimórficas y permitir varios artefactos/componentes, se propone una relación normalizada de bindings. Esta relación no apunta a otras ocurrencias ni a SNAPSHOT: esas referencias tienen relaciones específicas.
 
 Campos lógicos:
 
@@ -247,12 +248,12 @@ Campos lógicos:
 - `event_record_id`: FK al registro exacto de PROCESS_EVENT.
 - `binding_role`: enum cerrado candidato.
 - `target_type`: enum que coincide exactamente con una columna FK tipada.
-- Columnas nullable: `target_node_record_id`, `target_edge_record_id`, `target_route_record_id`, `target_predicate_record_id`, `target_snapshot_record_id`, y `target_event_record_id` solo para relación a otra ocurrencia cuando no se use PROCESS_EVENT_RELATION.
+- Columnas nullable: `target_node_record_id`, `target_edge_record_id`, `target_route_record_id` y `target_predicate_record_id`. Los snapshots se enlazan exclusivamente mediante PROCESS_EVENT_SNAPSHOT_BINDING; otras ocurrencias se enlazan exclusivamente mediante PROCESS_EVENT_RELATION.
 - `recorded_at`, `recorded_by`, `evidence_id` y `coverage_scope_id` según proceda.
 
-Invariante: exactamente una FK destino no nula y concordante con target_type. No se acepta `target_id` sin tipo ni listas serializadas.
+Invariante: exactamente una de las cuatro FKs destino no nula y concordante con target_type. No se acepta `target_id` sin tipo ni listas serializadas.
 
-Roles candidatos, sujetos a reconciliación final con el crosswalk N01–N23:
+Roles candidatos para PROCESS_EVENT_BINDING, sujetos a reconciliación final con el crosswalk N01–N23:
 
 - `UNIT`: NODE semantic_role=LOGICAL_SERVICE_UNIT.
 - `ASSIGNMENT`: referencia al evento Z_ASSIGNED mediante relación de eventos, no un NODE artificial.
@@ -261,7 +262,7 @@ Roles candidatos, sujetos a reconciliación final con el crosswalk N01–N23:
 - `COMPONENT`: NODE de componente/runtime/dependencia.
 - `TRANSFORMATION_INSTANCE`: NODE TRANSFORMATION_EVENT con EID solo si cumple C10-S-ID-MATCH-001.
 - `PREDICATE_ASSESSMENT`: PREDICATE exacto evaluado, sin incorporar su truth al evento.
-- `SNAPSHOT_CONTEXT`: SNAPSHOT exacto; se recomienda además el binding específico de §7.2 para indicar su posición temporal.
+- Los roles de snapshot no pertenecen a PROCESS_EVENT_BINDING; se expresan exclusivamente mediante snapshot_relation_role en §7.2.
 
 El binding de unidad debe resolver una unidad lógica exacta. Si se usa el nodo raíz versionado, la referencia debe apuntar a su registro concreto conforme a DEC-C10-065; no se resolverá por «última versión». La relación entre el unit_id del DGP y el NODE LOGICAL_SERVICE_UNIT debe comprobarse, no asumirse por coincidencia textual.
 
