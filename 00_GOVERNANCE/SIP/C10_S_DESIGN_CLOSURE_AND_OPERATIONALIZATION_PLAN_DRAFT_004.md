@@ -7853,3 +7853,19 @@ El firewall Generator/Sealer/Analyzer/Evaluator está definido lógicamente, per
 No se crean identidades, claves, tablas, schemas, test IDs o fixtures. No se modifican DEC, C0, U_G, main, RMA, Evidence→Claim Matrix ni STATUS. No se implementa ni ejecuta. PR #116 sigue Draft. scientific_execution=false; execution_authorized=false.
 
 **Siguiente operación:** Gate 114 — resolver PE-PB-01 y completar el crosswalk material UE↔CMP instance↔U_G↔EID↔route contra los contratos PB/D2, el inventario material y snapshots/roster disponibles. Debe separar identidad semántica, revisión, instancia técnica y observación, registrar cardinalidades respaldadas y mantener UNKNOWN cuando no haya roster/evidencia. No crear IDs/DDL ni asumir UE=instance o instance=U_G.
+
+
+## 16.264. Gate 114 — crosswalk material UE–instancia CMP–U_G–EID–ruta (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_UE_CMP_UG_EID_ROUTE_MATERIAL_CROSSWALK_GATE_114_DRAFT_001.md`.  
+**Estado:** B1_UE_TO_SERVICE_INSTANCE_CARDINALITY_RESOLVED_DOCUMENTALLY / CMP_TO_NODE_ANCHOR_1_TO_1_PER_SNAPSHOT_ACCEPTED / U_G_ROOT_MAPPING_OPEN / TRANSFORMATION_EID_MAPPING_OPEN / ROUTE_ROSTER_OPEN / MATERIAL_ROSTER_NONE / ISOLATION_NOT_DEMONSTRATED / NO_EXECUTION / NO_FREEZE.
+
+Gate 114 reconcilia la decisión posterior a Gate 109 `DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001`: para B1, cada UE tiene una instancia de servicio propia, con instance_id único en el roster y versionado independiente; contrato/plantilla comunes; la instancia ejemplar de DEC-C10-069 no se reutiliza para todas las UE. Por tanto, UE→instancia CMP B1 es 1:1 lógico y la ambigüedad PE-PB-01 de Gate 113 se resuelve documentalmente para B1. No hay roster material ni IDs concretos.
+
+DEC-C10-082 fija CMP contractual→NODE anchor 1:1 por CMP y snapshot exacto; DEC-C10-065 fija pinning de revisión snapshot; DEC-C10-059/064 definen la raíz U_G con NODE.node_id y object_record_id. Estas reglas no igualan UE con U_G root, instance_id con node_id ni CMP instance con EID. La relación UE→U_G root sigue OPEN y requiere roster, snapshot y mapping exacto.
+
+TID/SID/RID/EID mantienen sus ámbitos separados; EID es aplicación/episodio de transformación, no instancia CMP ni NODE. route_id es ruta versionada, no UE/UA/instancia; O-CONF se adjudica por instancia×ruta y su mapping/agregación a UE sigue OPEN. UE→UA/cluster, mecanismo Z, interferencia, G_i, soporte y aislamiento siguen abiertos.
+
+Se añadió addendum correctivo a Gate 113 para resolver PE-PB-01 en el alcance B1. No se modifican decisiones, DEC-C10-069, DEC-C10-082, C0, U_G, main, RMA, Evidence→Claim Matrix ni STATUS. No se crean IDs, roster, tablas, FKs, DDL, schemas, fixtures ni test IDs. No se ejecutan validadores, código, tests, workflows, simulaciones, estimaciones, calibraciones ni experimentos. PR #116 permanece Draft. scientific_execution=false; execution_authorized=false.
+
+**Siguiente operación:** Gate 115 — verificar si existe una fuente aprobada del universo/clave de UE y su mapping a SNAPSHOT.unit_id/unit_object_record_id bajo DEC-C10-059/064/065/082 y contratos IAM/PB. Si no existe, precisar la decisión documental que falta sin inventar una clave ni materializar roster.
