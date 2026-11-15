@@ -7645,3 +7645,23 @@ La independencia de A1/A2 y el aislamiento del efecto focal de B requieren depen
 **Siguiente operación:** Gate 104 — auditoría de coherencia y suficiencia de contratos de observabilidad temporal/eventos frente a NODE lifecycle, S3, SNAPSHOT, cuatro tiempos de evento, relojes DGP/stage/SNAPSHOT y DEC-C10-071. Reutilizar Gate 98 y DEC-C10-065/070/071; no crear registro paralelo de telemetría.
 
 **Dictamen:** `GATE_103_CONCEPTUAL_SCHEMA_SUFFICIENT_CONDITIONALLY / NO_CURRENT_OPERATIONAL_OBSERVABILITY / NO_NEW_SCHEMA_JUSTIFIED / FUTURE_OBSERVATION_REQUIRES_SEPARATE_AUTHORIZATION / NO_DECISION_AMENDMENT / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE`.
+
+
+## 16.254. Gate 104 — reconciliación de observabilidad temporal y eventos de proceso (2026-11-15)
+
+**Registro autónomo:** 00_GOVERNANCE/SIP/C10_S_TEMPORAL_OBSERVABILITY_AND_PROCESS_EVENT_RECONCILIATION_GATE_104_DRAFT_001.md.  
+**Estado:** DOCUMENTARY TEMPORAL RECONCILIATION / FOUR EVENT-TIME ROLES PRESERVED / AXIS SEPARATION CONSISTENT / NODE LIFECYCLE REPRESENTATION NOT ESTABLISHED / CLOCK-CAPTURE CROSSWALK OPEN / NO SCHEMA CHANGE / NO IMPLEMENTATION / NO EXECUTION / NO FREEZE.
+
+Gate 104 reconcilia Gate 98, DGP Temporal and Role Contract, DEC-C10-065/070/071/083/088, U_G, S3 y los contratos de snapshot. Preserva cuatro roles temporales independientes del evento: scheduled_time (previsión), event_time o intervalo event_start_time/event_end_time (ocurrencia), observed_at en EVIDENCE_REGISTER (observación/captura) y recorded_at en PROCESS_EVENT (incorporación de la revisión). start/end es la representación intervalar del rol event_time, no un quinto reloj. No se cierra si event_time puntual puede coexistir con start/end ni su semántica en ese caso.
+
+capture_time del contrato S3 podría corresponder a observed_at solo cuando fuente/método demuestren que se trata del mismo instante de captura. Deben diferenciarse emisión, recepción/captura, timestamp contenido en fuente, observed_at y recorded_at. SNAPSHOT.timestamp es captura del snapshot y no se equipara automáticamente a ninguno de ellos. No se ha demostrado metadata de reloj armonizada (dominio, offset/deriva, precisión, incertidumbre, sincronización) entre PROCESS_EVENT, EVIDENCE_REGISTER y SNAPSHOT; no se calcula lag ni PRECEDES desde relojes incomparables.
+
+Se confirma la separación de t−1…t9/dgp_time_key, stage_key, SNAPSHOT.phase/timestamp, k=1…H y route_id. DEC-C10-071 conserva sus siete valores exactos; DEC-C10-083 solo acepta aplicabilidad de PAR-SVC-ENABLED/PROFILE en esas etapas; DEC-C10-088 prohíbe mappings por orden/nombre/timestamp. No se infiere stage o tiempo DGP desde event_type. k es profundidad transformacional, no tiempo/evento. DEC-C10-065 exige pinning compuesto exacto; binding BEFORE/AFTER/CONTEXT/ROLLBACK_STATE es contextual, no causal. Gate 98 ya reconoce que cobertura de eventos sin snapshot puede no representarse con C0; DEC-C10-070 no se modifica.
+
+**Corrección relevante a Gate 103:** la plantilla U_G NODE contiene observed_state genérico 1/0/? pero no seis estados lifecycle independientes declared/installed/deployed/loaded/invoked/executed ni crosswalk aprobado que permita derivarlos. Gate 103 acertó al distinguir conceptualmente los estados, pero sobreafirmó que NODE ya los representaba. Se conserva Gate 103 como histórico; la afirmación queda cualificada/no verificada. PROCESS_EVENT observado tampoco acredita por sí solo un estado lifecycle exhaustivo.
+
+**Resultado:** cuatro roles temporales preservados; ejes separados documentalmente; vocabulario stage_key aceptado; lifecycle NODE no establecido; mapping capture_time↔observed_at y clock metadata abiertos; semántica event_time puntual/intervalar parcial; cobertura de eventos sin snapshot sigue OPEN bajo C0. No se crea tabla, columna ni registro paralelo; no se modifica DEC-C10-065/070/071/083/088. Sin implementación, inspección runtime, captura, validadores, tests o ejecución.
+
+**Siguiente operación:** Gate 105 — contrato de representación de afirmaciones lifecycle y crosswalk temporal de captura/reloj. Resolver si los seis estados se representan mediante objetos/predicados/evaluaciones existentes y cómo se vinculan capture_time, observed_at, event_time y clock domains. Solo si el modelo existente no puede representar la semántica requerida se propondrá extensión mínima justificada.
+
+**Dictamen:** GATE_104_TEMPORAL_AXIS_SEPARATION_DOCUMENTARILY_CONSISTENT / FOUR_EVENT_TIME_ROLES_RETAINED / NODE_LIFECYCLE_MAPPING_OPEN / S3_CAPTURE_CLOCK_CROSSWALK_OPEN / EVENT_INTERVAL_SEMANTICS_OPEN / C0_UNCHANGED / NO_DECISION_AMENDMENT / NO_SCHEMA_CHANGE / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE.
