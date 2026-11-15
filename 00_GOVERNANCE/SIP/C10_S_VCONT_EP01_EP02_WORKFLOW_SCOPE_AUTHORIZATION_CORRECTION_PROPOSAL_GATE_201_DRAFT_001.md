@@ -1,6 +1,6 @@
 # C10-S V_cont — Gate 201: EP-01/EP-02 workflow scope and authorization correction proposal
 
-**Status:** RECONCILED DESIGN PROPOSAL — DEPENDENCY LOCKS OPEN / NOT APPROVED / NOT IMPLEMENTED  
+**Status:** RECONCILED DESIGN PROPOSAL — PYPI WHEEL HASHES RECORDED / RUNTIME AND MATERIALIZATION CLOSURE OPEN / NOT APPROVED / NOT IMPLEMENTED  
 **Branch:** `research/c10-s-consolidation-draft`  
 **Parent:** Gate 200 — execution-profile registry and source-closure boundaries  
 **Scope:** static reconciliation of the complete tracked test-module inventory visible in PR #116, test behavior, import/dependency closure and the minimum EP-01/EP-02 workflow correction. No workflow, source, lockfile, test, or governance contract is changed. No test, CI, Monte Carlo, producer, package-writer, calibration, or scientific execution is performed or authorized.
@@ -9,7 +9,7 @@
 
 Gate 200 found unrestricted unittest discovery in EP-01 and EP-02, a missing explicit JCS dependency in those discovered test sets, and an authorization mismatch in EP-01's automatic push trigger.
 
-This gate reconciles the proposed correction against the current PR changed-file inventory and source imports. It preserves the historical workflows and the distinct purposes of EP-01, EP-02 and EP-03.
+This gate reconciles the proposed correction against the current PR changed-file inventory, source imports and published wheel metadata. It preserves the historical workflows and the distinct purposes of EP-01, EP-02 and EP-03.
 
 ## 2. Test inventory and source-level classification
 
@@ -67,11 +67,31 @@ Explicitly exclude:
 
 The replay must invoke the exact same three-module list from the clean archive. Do not use directory-wide discovery. The compile list is not evidence that a module was executed or consumed.
 
-### 3.3 Dependency closure
+### 3.3 Candidate EP-01 dependency lock
 
-Static import inspection identifies NumPy and SciPy as the external runtime dependencies for the selected P178 test/runner path. The selected modules do not require JCS merely by virtue of the V_cont package tests, which are excluded.
+Static import inspection identifies NumPy and SciPy as the external runtime dependencies for the selected P178 test/runner path.
 
-Replace unhashed direct installation with a profile-specific complete dependency lock that pins exact distributions and accepted wheel SHA-256 hashes for the supported runner/Python platform. Do not invent hashes. Lockfile creation and wheel-hash verification remain open prerequisites.
+For a CPython 3.12, Linux x86-64, manylinux-compatible runner, PyPI publishes these exact wheel identities and SHA-256 checksums:
+
+| Distribution | Exact wheel | PyPI SHA-256 |
+|---|---|---|
+| NumPy 2.3.5 | `numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl` | `0d8163f43acde9a73c2a33605353a4f1bc4798745a8b1d73183b28e5b435ae28` |
+| SciPy 1.17.0 | `scipy-1.17.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl` | `9eeb9b5f5997f75507814ed9d298ab23f62cf79f5a3ef90031b1ee2506abdb5b` |
+
+Candidate requirements entries:
+
+```text
+numpy==2.3.5 \\
+    --hash=sha256:0d8163f43acde9a73c2a33605353a4f1bc4798745a8b1d73183b28e5b435ae28
+scipy==1.17.0 \\
+    --hash=sha256:9eeb9b5f5997f75507814ed9d298ab23f62cf79f5a3ef90031b1ee2506abdb5b
+```
+
+SciPy 1.17.0's release notes support Python 3.11–3.14 and NumPy 1.26.4 or later; the existing NumPy 2.3.5 selection satisfies that declared minimum. The exact selected wheels are CPython 3.12 x86-64 manylinux builds.
+
+**Integrity qualification:** the checksums above are the SHA-256 values published in PyPI's release-file metadata for the exact wheel filenames. An attempted direct binary download from the current environment was unavailable, so this gate does not claim an independent local re-hash of the wheel bytes. The future `pip --require-hashes` installation will enforce the published values against the bytes actually downloaded.
+
+Do not add JCS merely to compensate for excluded package-v2 tests. If later source-closure analysis finds a genuine import path to JCS in EP-01, include it explicitly or revise the source boundary under a separately reviewed proposal.
 
 ## 4. Proposed EP-02 correction — integrated synthetic contract suite
 
@@ -103,20 +123,35 @@ Use the identical list for primary and replay. Reconcile it against the exact ta
 
 The clean replay source archive must include the exact transitive source/data closure. Do not extract the entire harness directory merely for convenience unless that broader materialization is explicitly captured and justified in the future source manifest.
 
-### 4.3 Dependency closure
+### 4.3 Candidate EP-02 dependency lock
 
 Static import inspection identifies:
-- NumPy and SciPy for the P178 bridge/smoke-test path;
+- NumPy 2.3.5 and SciPy 1.17.0 for the P178 bridge/smoke-test path;
 - `rfc8785==0.1.4` for capture and package-v2 serialization/verifier paths;
 - Python standard-library modules for the remaining inspected test and harness paths.
 
-The existing `requirements-vcont-v2.lock` contains only the hash-pinned JCS dependency and is not a complete EP-02 lock. Before any dispatch:
-- define one complete EP-02 dependency lock covering direct and transitive distributions;
-- retain exact versions, platform wheel filenames/tags and verified SHA-256 hashes;
-- preserve `--require-hashes` and binary-only installation where compatible;
+PyPI publishes the following JCS wheel checksum, which matches the existing `requirements-vcont-v2.lock` entry:
+
+| Distribution | Exact wheel | PyPI SHA-256 |
+|---|---|---|
+| rfc8785 0.1.4 | `rfc8785-0.1.4-py3-none-any.whl` | `520d690b448ecf0703691c76e1a34a24ddcd4fc5bc41d589cb7c58ec651bcd48` |
+
+Candidate EP-02 requirements are the two entries in §3.3 plus:
+
+```text
+rfc8785==0.1.4 \\
+    --hash=sha256:520d690b448ecf0703691c76e1a34a24ddcd4fc5bc41d589cb7c58ec651bcd48
+```
+
+The existing `requirements-vcont-v2.lock` contains only this JCS dependency and is not a complete EP-02 lock. Before any dispatch:
+- define separate complete EP-01 and EP-02 lock files from the candidate entries above;
+- retain exact versions, platform wheel filenames/tags and published SHA-256 hashes;
+- preserve `--require-hashes` and `--only-binary=:all:`;
+- pin the workflow runner to a Linux x86-64 environment compatible with the selected manylinux wheels, rather than leaving architecture implicit;
+- record Python full version/build, pip version, runner image version and architecture in the execution-profile/source-materialization evidence;
 - do not rely on runner-preinstalled packages.
 
-No dependency lock is created or changed by this gate. Exact resolved transitive versions and wheel hashes remain OPEN.
+No dependency lock is created or changed by this gate. The wheel hashes are sourced from PyPI release-file metadata; local binary re-hashing was not performed.
 
 ## 5. EP-03 preservation
 
@@ -138,11 +173,12 @@ The workflow correction must not be implemented until:
 2. Every selected module is classified as pure, synthetic data generation, or Monte Carlo; its authorization scope is explicit.
 3. Primary and replay commands use identical explicit module lists and equivalent source/data boundaries.
 4. EP-01 has no automatic trigger capable of initiating synthetic tests or Monte Carlo.
-5. EP-01 and EP-02 each have complete, reproducible, hash-verified dependency locks.
-6. The clean-archive input list includes every required runtime file/data input and excludes unrelated test modules.
-7. The future source-materialization manifest binds workflow, job/step, exact command, source closure, dependencies, runtime observations and execution identity without claiming that compile/checkout implies consumption.
-8. EP-03 remains unchanged in purpose and test scope.
-9. No workflow is dispatched as part of design approval or implementation review.
+5. EP-01 and EP-02 use separate complete, reproducible, hash-enforced dependency locks.
+6. The runner platform is constrained to match the selected wheel tags and its actual image/Python/pip identity is captured.
+7. The clean-archive input list includes every required runtime file/data input and excludes unrelated test modules.
+8. The future source-materialization manifest binds workflow, job/step, exact command, source closure, dependencies, runtime observations and execution identity without claiming that compile/checkout implies consumption.
+9. EP-03 remains unchanged in purpose and test scope.
+10. No workflow is dispatched as part of design approval or implementation review.
 
 ## 7. Non-goals and governance boundary
 
@@ -156,7 +192,16 @@ This proposal does not:
 - authorize CI, producer, calibration, Monte Carlo, or scientific execution;
 - modify `main`, RMA, Evidence→Claim Matrix, STATUS, or C09.
 
-## 8. Disposition and next operation
+## 8. Sources and hash evidence
+
+- NumPy 2.3.5 PyPI release files: https://pypi.org/project/numpy/2.3.5/
+- SciPy 1.17.0 PyPI release files: https://pypi.org/project/scipy/1.17.0/
+- SciPy 1.17.0 release requirements: https://docs.scipy.org/doc/scipy/release/1.17.0-notes.html
+- rfc8785 0.1.4 PyPI release files: https://pypi.org/project/rfc8785/0.1.4/
+
+The hashes are published PyPI SHA-256 metadata for the exact wheel filenames. No local wheel bytes were available for a second hash calculation in this pass.
+
+## 9. Disposition and next operation
 
 **Gate 201: RECONCILED DESIGN PROPOSAL — CONDITIONAL / NOT APPROVED / NOT IMPLEMENTED.**
 
@@ -164,9 +209,9 @@ The design direction is now explicit:
 - EP-01 becomes manual-only and explicitly confirms its complete P178 synthetic-test + Monte Carlo profile.
 - EP-01 uses the three named P178 modules only.
 - EP-02 retains its explicit synthetic-execution confirmation and uses the eight named modules only.
-- EP-01 and EP-02 receive separate complete hash-verified dependency locks.
+- EP-01 and EP-02 use separate candidate hash-enforced dependency locks.
 - EP-03 remains separate and unchanged.
 
-The test-module allowlists are reconciled against the tracked PR inventory and Gate 200's discovery audit. Dependency lock contents, exact wheel hashes, and the final source/runtime closure are not yet closed. This proposal therefore remains conditional and is not implementation authorization.
+The test-module allowlists are reconciled against the tracked PR inventory and Gate 200's discovery audit. Candidate wheel identities, versions and PyPI checksums are recorded. The runner/runtime profile, local wheel-byte re-hash, final source-materialization closure, and implementation approval remain OPEN. This proposal is not implementation authorization.
 
-**Next operation:** close the exact dependency-lock contents and wheel-hash verification for EP-01 and EP-02, then conduct the final source-materialization closure audit. Do not edit workflows or dispatch runs during that design step.
+**Next operation:** close the runtime profile and exact source-materialization inventory for the three workflows, then reconcile the candidate lock files against the actual runner/platform. Do not edit workflows or dispatch runs during that design step.
