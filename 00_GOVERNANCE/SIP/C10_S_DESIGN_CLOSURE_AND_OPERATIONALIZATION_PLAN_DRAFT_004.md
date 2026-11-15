@@ -7549,3 +7549,23 @@ Gate 98 crea un sucesor lógico de Gate 96 sin reescribirlo. Corrige el ciclo de
 DEC-C10-061 no se amplía: permanecen seis destinos tipados y los caminos de claim directo/indirecto siguen abiertos. DEC-C10-070/C0 no se debilita: scopes conservan la tupla exacta con snapshot_id + snapshot_object_record_id, stage_key, route/object_class y universe_definition/version. La cobertura de eventos sin snapshot compatible queda no representable bajo el contrato actual y requiere gate/decisión separada; no se crea EVENT_COVERAGE_REGISTER.
 
 **Siguiente operación:** Gate 99 — crosswalk canónico de asignación Z, política B_g0/B_g1 y unidad, reutilizando DEC-C10-067, DGP Temporal and Role Contract y N02/N03. Resolver si POLICY_BOUND es acto independiente o binding de Z_ASSIGNED y mapear los targets a claves reales. No modificar DEC-C10-061/070 ni implementar.
+
+
+## 16.249. Gate 99 — crosswalk canónico de asignación Z, política D2 y unidad (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_D2_ASSIGNMENT_POLICY_UNIT_CANONICAL_CROSSWALK_GATE_99_DRAFT_001.md`.  
+**Estado:** DOCUMENTARY CROSSWALK / SEMANTIC DISTINCTIONS RESOLVED / PHYSICAL IDENTITIES PARTIALLY UNRESOLVED / NO SCHEMA CHANGE / NO IMPLEMENTATION / NO EXECUTION / NO FREEZE.
+
+Gate 99 confirma que N02 (Asignación Z) y N03 (Política/proceso B) son identificadores del catálogo conceptual N01–N23, no claves físicas ni FKs. N02 no es `node_id`, `object_record_id`, `event_id` ni `assignment_id`; N03 no es `policy_id` ni versión de política. La correspondencia semántica N02→TRANSFORMATION_EVENT no se aplica físicamente a Z: la asignación no es una transformación por defecto.
+
+La ocurrencia observada `Z_ASSIGNED` puede usar `event_id` y `event_record_id` del contrato lógico Gate 98 solo si la Opción B se acepta/materializa posteriormente; actualmente son identidades lógicas propuestas, no claves implementadas. El valor/mecanismo de asignación Z y la ocurrencia observada se mantienen conceptualmente separados.
+
+DEC-C10-067 define B_g0^D2/B_g1^D2, pero no fija `policy_id`/`policy_contract_id` ni `policy_version` canónicos. El binding a la política asignada se asocia a Z_ASSIGNED; `POLICY_BOUND` no es evento independiente por defecto. Solo se materializará como ocurrencia separada si existe un acto posterior de vinculación/recepción autónomo, observable y con identidad, tiempo, actor y evidencia propios. Política asignada y política recibida/versiones no se colapsan.
+
+U_G sí define `unit_id = NODE.node_id` para la unidad lógica raíz `LOGICAL_SERVICE_UNIT` y `unit_object_record_id = NODE.object_record_id` para la revisión exacta, con pinning de SNAPSHOT conforme DEC-C10-065. No está demostrado que la unidad experimental (i), la unidad de asignación y la unidad lógica U_G sean la misma entidad; el mapping DGP→U_G permanece OPEN mientras unidad/cluster/interferencia no estén resueltos.
+
+**Bloqueos conservados:** identidad física de asignación Z; identidad/versionado de política B; mapping unidad experimental/asignación/cluster→unit_id; mapping tipado de B; desviación entre política asignada y recibida; criterio de evento independiente POLICY_BOUND.
+
+**Siguiente operación:** auditoría focal de identidad/versionado de B_g0/B_g1 y del registro de asignación Z, reutilizando contratos y catálogos existentes; completar en paralelo el mapping de unidad experimental, unidad de asignación y cluster con U_G. No proponer DDL ni crear targets hasta identificar claves canónicas.
+
+**Dictamen:** `GATE_99_SEMANTIC_CROSSWALK_PARTIALLY_RESOLVED / N02_N03_NOT_KEYS / Z_EVENT_IDENTITY_PROPOSED_NOT_IMPLEMENTED / B_POLICY_ID_VERSION_OPEN / POLICY_BOUND_NOT_SEPARATE_BY_DEFAULT / DGP_UNIT_TO_UG_MAPPING_OPEN / NO_DECISION_AMENDMENT / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE`.
