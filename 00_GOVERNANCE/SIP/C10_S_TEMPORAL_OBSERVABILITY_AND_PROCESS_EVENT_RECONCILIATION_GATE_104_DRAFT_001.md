@@ -15,7 +15,7 @@ Auditar si las observaciones S3, los eventos PROCESS_EVENT candidatos, el ciclo 
 1. El contrato temporal de eventos conserva cuatro roles temporales independientes: scheduled_time, event_time (o intervalo event_start_time/event_end_time), observed_at y recorded_at. El intervalo start/end es una representación de duración del segundo rol, no un quinto reloj.
 2. SNAPSHOT.timestamp y capture_time del protocolo S3 son tiempos adicionales de captura que requieren mapping semántico explícito; no deben igualarse automáticamente a observed_at ni a recorded_at.
 3. stage_key, dgp_time_key/t−1…t9, SNAPSHOT.phase/timestamp y k=1…H son ejes distintos. DEC-C10-071, DEC-C10-083 y DEC-C10-088 son compatibles si se aplican sin inferencias por nombre, orden o timestamp.
-4. La plantilla NODE no contiene seis estados de lifecycle explícitos ni un crosswalk aprobado para representarlos. Gate 103 confundió la distinción conceptual de estados con su representación canónica. Este punto queda corregido/condicionado por Gate 104.
+4. U_G §12.7 enumera las seis dimensiones conceptuales de lifecycle para NODE; falta su formalización como campos/claims tipados y adjudicables. Gate 103 acertó en la distinción conceptual. Gate 104 había omitido esa evidencia y queda corregido por Gate 105.
 5. El contrato de relojes/captura no permite todavía comparar universalmente event_time con capture_time/observed_at: la metadata de clock domain, incertidumbre y sincronización no está armonizada entre PROCESS_EVENT, EVIDENCE_REGISTER y SNAPSHOT.
 6. No se identifica una razón para modificar ahora DEC-C10-065/070/071/083/088. Tampoco se autoriza crear columnas, tablas, eventos ni telemetría.
 
@@ -36,7 +36,7 @@ Auditar si las observaciones S3, los eventos PROCESS_EVENT candidatos, el ciclo 
 | U_G Inventory Register Template §§2, 6, 12 | NODE observed_state; SNAPSHOT phase/timestamp; EVIDENCE_REGISTER timestamp_start/end_tz | Plantilla Draft, vacía |
 | U_G Evidence/Provenance Protocol §§3–6, 19–23 | S1–S8, captura, límites, trivalent evidence and coverage | Protocolo documental; sin fuentes reales |
 | Temporal Horizon and S4R Integration Audit §§17–18 | S3 pasivo, capture_time−event_time, lag, pérdida, detección, censura | Cierre estructural; calibración numérica abierta |
-| Gate 103 | Modelo U_G y observabilidad | Se conserva histórico; su afirmación sobre NODE lifecycle queda cualificada por este gate |
+| Gate 103 | Modelo U_G y observabilidad | Se conserva histórico; la distinción conceptual queda confirmada, la formalización claim-level sigue abierta |
 
 ## 3. Reconciliación de los cuatro roles temporales del evento
 
