@@ -7507,3 +7507,19 @@ No se aprueba nombre de tabla, campos, claves, enum, DDL, ni cambio de DEC-C10-0
 **Dictamen:** `GATE_95_OPTION_B_RECOMMENDED / PROCESS_EVENT_REGISTER_AS_U_G_EXTENSION_NOT_PARALLEL_PLATFORM / NODE_STRUCTURAL_GRAPH_CONTAMINATION_RISK_CONFIRMED / EID_SCOPE_PRESERVED / DEC_C10_060_VOCABULARY_UNCHANGED / DEC_C10_061_TYPED_TARGET_AMENDMENT_REQUIRED_FOR_DIRECT_EVENT_CLAIMS / DEC_C10_062_NOT_AUTOMATICALLY_APPLICABLE_TO_EVENT_REGISTER / SNAPSHOT_EXACT_PINNING_PRESERVED / EVENT_TIME_AND_CAUSAL_ORDER_CONTRACT_OPEN / NO_SCHEMA_CHANGE / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE`.
 
 **Siguiente gate — 96:** desarrollar el contrato lógico del registro de eventos recomendado (B): identidad de ocurrencia/corrección, tipos de evento, tiempos, orden causal, referencias tipadas a Z/B/unidad/artefacto/snapshots, cobertura/evidencia y firewalls. Reconciliar extensiones de DEC-C10-061 y U_G sin modificar todavía el esquema físico ni implementar.
+
+
+## 16.246. Gate 96 — contrato lógico del registro relacional de eventos D2 (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_D2_PROCESS_EVENT_REGISTER_LOGICAL_CONTRACT_GATE_96_DRAFT_001.md`.  
+**Estado:** LOGICAL PROCESS-EVENT CONTRACT DRAFTED / OPTION B STILL UNACCEPTED / NO SCHEMA CHANGE / NO IMPLEMENTATION / NO EXECUTION.
+
+Gate 96 desarrolla la alternativa B recomendada en Gate 95 como extensión relacional interna de U_G, no como plataforma paralela. Propone tres relaciones lógicas: `PROCESS_EVENT` para ocurrencias y revisiones inmutables; `PROCESS_EVENT_RELATION` para causalidad, precedencia, reintentos y derivación; y `PROCESS_EVENT_BINDING` para referencias tipadas a objetos U_G. Los nombres son identificadores de diseño, no nombres físicos aceptados.
+
+El contrato separa `event_id` (ocurrencia), `event_record_id` (fila/revisión) y `event_revision`; las correcciones son append-only y los reintentos son ocurrencias distintas. Propone diez tipos D2 cerrados para la versión candidata, con resultado separado del tipo. La ausencia de un evento no se registra como ocurrencia ficticia: se adjudica mediante evidencia, cobertura y estado 1/0/?.
+
+Se distinguen `scheduled_time`, `event_time`/intervalo, `observed_at` (EVIDENCE_REGISTER) y `recorded_at`; `dgp_time_key`, `stage_key`, `SNAPSHOT.phase` y `k=1…H` permanecen ejes independientes. Causalidad y precedencia se expresan como relaciones explícitas; concurrencia no se fuerza a un orden total.
+
+Los bindings reutilizan NODE/PREDICATE/SNAPSHOT y mantienen pinning exacto DEC-C10-065. EVIDENCE_REGISTER, COVERAGE_REGISTER y los mecanismos de evaluación/adjudicación existentes no se duplican. Se propone enmendar DEC-C10-061 para admitir PROCESS_EVENT como destino tipado directo cuando una afirmación trate de una ocurrencia; no se aprueba la enmienda. Truth de eventos y potenciales permanece segregada; el Analyzer solo recibe observaciones selladas.
+
+**Siguiente operación:** Gate 97 — auditoría de compatibilidad y suficiencia frente a la matriz física U_G y DEC-C10-061…065, con reconciliación de campos, claves, cardinalidades, restricciones y mapping N02/N03. Sin implementación, tests, simulación, ejecución ni freeze.
