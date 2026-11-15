@@ -17,12 +17,12 @@ jobs:
         run: test "${GITHUB_REF}" = "refs/heads/research/c10-s-consolidation-draft"
 
       - name: Check out exact research-branch commit
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           ref: ${{ github.sha }}
 
       - name: Set up pinned Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
         with:
           python-version: '3.12.10'
 
@@ -93,7 +93,7 @@ jobs:
       - name: Upload pure-test runtime payload and capture artifact identity
         id: payload
         if: always()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
           name: c10s-vcont-pure-payload-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/c10s-runtime/**
@@ -137,7 +137,7 @@ jobs:
             "event":os.environ["GITHUB_EVENT_NAME"],"ref":os.environ["GITHUB_REF"],
             "run_id":os.environ["GITHUB_RUN_ID"],"run_attempt":os.environ["GITHUB_RUN_ATTEMPT"],"job":os.environ.get("GITHUB_JOB"),"manifest_step_id":"manifest","job_status":os.environ.get("JOB_STATUS"),
             "authorization":{"type":"manual_dispatch","scope":"pure capture/writer/verifier fixtures only; no synthetic producer"},
-            "actions":{"checkout":"11bd71901bbe5b1630ceea73d27597364c9af683","setup-python":"a26af69be951a213d495a4c3e4e4022e16d87065","upload-artifact":"65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08"},
+            "actions":{"checkout":"de0fac2e4500dabe0009e67214ff5f5447ce83dd","setup-python":"83679a892e2d95755f2dac6acb0bfd1e9ac5d548","upload-artifact":"b7c566a772e6b6bfb58ed0dc250532a479d7789f"},
             "runner":{"image_os":os.environ.get("ImageOS"),"image_version":os.environ.get("ImageVersion"),"os_release":Path("/etc/os-release").read_text(),"uname":subprocess.check_output(["uname","-a"],text=True).strip(),"architecture":platform.machine(),"libc":platform.libc_ver()},
             "runtime":{"python":subprocess.check_output(["python","-c","import sys;print(sys.version)"],text=True).strip(),"pip":subprocess.check_output(["python","-m","pip","--version"],text=True).strip(),"installed":subprocess.check_output(["python","-m","pip","freeze"],text=True).splitlines()},
             "dependencies":{"lock":paths[8],"lock_blob_sha":subprocess.check_output(["git","hash-object",paths[8]],text=True).strip(),"install_command":"python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-v2.lock"},"python_patch_policy":"CPython 3.12.10; last 3.12 release with binary installers; later 3.12 security releases are source-only","selected_wheels":[{"filename":"rfc8785-0.1.4-py3-none-any.whl","platform_tags":["py3-none-any"],"sha256":"520d690b448ecf0703691c76e1a34a24ddcd4fc5bc41d589cb7c58ec651bcd48"}],
@@ -150,7 +150,7 @@ jobs:
 
       - name: Upload pure-profile execution manifest
         if: always()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
           name: c10s-vcont-pure-manifest-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/c10s-vcont-pure-execution-materialization-manifest.json
