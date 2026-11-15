@@ -7747,3 +7747,23 @@ Se separan: mundo DGP; unidad experimental UE; unidad de asignación UA/cluster;
 **Siguiente operación:** Gate 109 — crosswalk UE–UA/cluster–unidad lógica U_G–instancia–ruta y requisitos de interferencia/exposición. Recuperar DEC-C10-059/065/069, DGP, aleatorización, inventario de rutas e identidades PE/test/fixture. No generar claves ad hoc ni equiparar unit_id y assignment_id.
 
 **Dictamen:** GATE_108_ANALYTICAL_IDENTITY_REQUIREMENTS_MAPPED / GLOBAL_CLAIM_ID_NOT_JUSTIFIED / EVENT_ID_CONDITIONALLY_REQUIRED_FOR_EPISODE_LEVEL_OPERATIONS / UE_UA_UG_UNIT_MAPPING_OPEN / D2_TO_G_A_NOT_ESTABLISHED / V_CONT_TRANSITION_IDENTITY_INTERNAL_REQUIREMENT / C0_UNCHANGED / DECISIONS_UNCHANGED / NO_SCHEMA_CHANGE / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE.
+
+
+## 16.259. Gate 109 — crosswalk UE–UA/cluster–U_G–instancia–ruta e interferencia (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_UE_UA_UG_INSTANCE_ROUTE_INTERFERENCE_CROSSWALK_GATE_109_DRAFT_001.md`.  
+**Estado:** ROLE CROSSWALK RECONCILED / UE→UA-CLUSTER AND UE→U_G MAPPINGS OPEN / EXPOSURE MAP NOT SPECIFIED / RANDOMIZATION VECTOR CONTRACT INCOMPLETE / NO SCHEMA CHANGE / NO IMPLEMENTATION / NO EXECUTION / NO FREEZE.
+
+Gate 109 recupera y reconcilia Gate 99, Gate 101, Gate 108, DEC-C10-059/065/069, el DGP, PE Integrated Technical Specification, Test Contract Register y los §§16.199–16.200. Distingue UE (unidad de potenciales/resultados), UA (unidad que recibe Z), cluster (nivel de asignación si procede), UO (unidad de observación), U_G unit_id (NODE raíz LOGICAL_SERVICE_UNIT), unit_object_record_id/object_version (revisión exacta), CMP instance_id/version, EID y route_id. No demuestra ninguna equivalencia general ni fija cardinalidades materiales.
+
+El plan §16.199.3 establece que UE=UA solo sería admisible con aislamiento completo por construcción. Si existen recursos, dependencias, pools, agentes o canales compartidos, el diseño requiere asignación por clúster o un mapa de exposición G_i(Z_-i); sin mapa/soporte no se declara SUTVA ni ITT individual identificado. Gate 109 precisa que asignar por clúster no elimina automáticamente interferencia intraclúster y que el estimando promedio por UE no equivale al promedio por clúster cuando difieren tamaños/pesos.
+
+El contrato lógico de aleatorización sigue incompleto: algoritmo RNG/versionado, alcance de semilla, estratos/bloques, π_h, clave UA/cluster, vector Z inmutable, hash/provenance y mapping unidad→Z no están recuperados. assignment_id no queda confirmado como PK canónica. test_id, fixture_id, run/scenario identity, semilla, unit_id, assignment_unit, vector Z y ocurrencia Z_ASSIGNED mantienen ámbitos separados.
+
+O-CONF conserva unidad instance×route_id; V_cont conserva unidad UE×K intervalos. Su mapping/agregación común requiere relación instance→UE y reglas explícitas; no se agregan ni replican por conveniencia. U_G mantiene su identidad de unidad lógica y el pinning exacto de snapshots DEC-C10-065; el mapping DGP→U_G y la cardinalidad UE↔U_G siguen OPEN.
+
+**Gaps:** G109-01…14 del documento autónomo, en particular UE/UA/cluster físicos, UE→U_G, U_G→instancia/EID, UE→UO, UE→route, RNG/vector/provenance, G_i(Z_-i), soporte de exposiciones, unidad de inferencia/ponderación y agregación O-CONF/V_cont.
+
+No se cambian DEC-C10-059/065/066/067/069/061/070, C0, PROCESS_EVENT ni el esquema. No se crean claves/tablas puente, tests, fixtures, DDL, validadores o código. No se ejecutan validadores, workflows, simulaciones ni experimentos. scientific_execution=false; execution_authorized=false.
+
+**Siguiente operación:** Gate 110 — especificación de estimandos de asignación y exposición bajo las alternativas aún abiertas (asignación individual aislada, asignación por clúster, asignación individual con mapa de exposición, y no-identificación por interferencia no mapeada), sin elegir un diseño ni fijar ponderaciones hasta recuperar el contrato de población y soporte.
