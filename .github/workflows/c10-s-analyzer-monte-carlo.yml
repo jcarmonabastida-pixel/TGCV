@@ -102,7 +102,7 @@ jobs:
             03_EXPERIMENTS/C10-S/calibration/p178_reference_N700.csv | tar -x -C "$clean_root"
           test "$(uname -m)" = "x86_64"
           python -m pip install --require-hashes --only-binary=:all: -r "$clean_root/03_EXPERIMENTS/C10-S/harness/requirements-p178-analyzer.lock"
-          find "$clean_root/03_EXPERIMENTS/C10-S" \( -type d -name __pycache__ -o -type f -name '*.pyc' \) -print -quit | grep -q . && exit 1 || true
+          if find "$clean_root/03_EXPERIMENTS/C10-S" \\( -type d -name __pycache__ -o -type f -name '*.pyc' \\) -print -quit | grep -q .; then exit 1; fi
           cd "$clean_root/03_EXPERIMENTS/C10-S/harness"
           PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_focal_harness test_p178_analyzer_bridge test_p178_analyzer_monte_carlo > "$RUNNER_TEMP/c10s-replay-tests-stdout.txt" 2> "$RUNNER_TEMP/c10s-replay-tests-stderr.txt"
           cd "$clean_root"
