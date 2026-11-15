@@ -1,6 +1,6 @@
 # C10-S — Gate 104: reconciliación de observabilidad temporal y eventos de proceso
 
-**Estado:** DOCUMENTARY TEMPORAL RECONCILIATION / FOUR EVENT-TIME ROLES PRESERVED / AXIS SEPARATION CONSISTENT / NODE LIFECYCLE REPRESENTATION NOT ESTABLISHED / CLOCK-CAPTURE CROSSWALK OPEN / NO SCHEMA CHANGE / NO IMPLEMENTATION / NO EXECUTION / NO FREEZE  
+**Estado:** DOCUMENTARY TEMPORAL RECONCILIATION / FOUR EVENT-TIME ROLES PRESERVED / AXIS SEPARATION CONSISTENT / NODE LIFECYCLE CONCEPTS PRESENT / STRUCTURED CLAIM MAPPING OPEN / CLOCK-CAPTURE CROSSWALK OPEN / NO SCHEMA CHANGE / NO IMPLEMENTATION / NO EXECUTION / NO FREEZE  
 **Fecha:** 2026-11-15  
 **Rama:** research/c10-s-consolidation-draft · PR #116 Draft  
 **Precedencia:** DEC-C10-065, DEC-C10-070, DEC-C10-071, DEC-C10-083, DEC-C10-088; Gates 93–103, especialmente Gate 98; DGP Temporal and Role Contract; U_G Inventory Register Template; U_G Evidence/Provenance and Adjudication Protocol; Transformational Snapshot and Delta Reconciliation; Temporal Horizon and S4R Integration Audit.
@@ -19,7 +19,7 @@ Auditar si las observaciones S3, los eventos PROCESS_EVENT candidatos, el ciclo 
 5. El contrato de relojes/captura no permite todavía comparar universalmente event_time con capture_time/observed_at: la metadata de clock domain, incertidumbre y sincronización no está armonizada entre PROCESS_EVENT, EVIDENCE_REGISTER y SNAPSHOT.
 6. No se identifica una razón para modificar ahora DEC-C10-065/070/071/083/088. Tampoco se autoriza crear columnas, tablas, eventos ni telemetría.
 
-**Dictamen:** GATE_104_TEMPORAL_AXIS_SEPARATION_DOCUMENTARILY_CONSISTENT / FOUR_EVENT_TIME_ROLES_RETAINED / SNAPSHOT_AND_S3_CAPTURE_CROSSWALK_OPEN / NODE_LIFECYCLE_REPRESENTATION_NOT_ESTABLISHED / NO_DECISION_AMENDMENT / NO_SCHEMA_CHANGE / NO_IMPLEMENTATION / NO_EXECUTION / NO_FREEZE.
+**Dictamen:** GATE_104_TEMPORAL_AXIS_SEPARATION_DOCUMENTARILY_CONSISTENT / FOUR_EVENT_TIME_ROLES_RETAINED / SNAPSHOT_AND_S3_CAPTURE_CROSSWALK_OPEN / NODE_LIFECYCLE_CONCEPTS_PRESENT_CLAIM_MAPPING_OPEN / NO_DECISION_AMENDMENT / NO_SCHEMA_CHANGE / NO_IMPLEMENTATION / NO_EXECUTION / NO_FREEZE.
 
 ## 2. Fuentes recuperadas y precedencia
 
