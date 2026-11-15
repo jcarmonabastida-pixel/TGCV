@@ -7471,3 +7471,19 @@ La especificación VIATRA de eventos inmutables es antecedente de instrumentaci�
 **Dictamen:** `GATE_93_HISTORICAL_SCHEMA_REUSE_CONFIRMED / U_G_AND_TEMPORAL_CONTRACTS_PREEXIST / NO_PARALLEL_EVENT_SNAPSHOT_PREDICATE_SCHEMA / PROVISION_EVENT_BINDING_OPEN / STAGE_TIME_SNAPSHOT_BINDING_OPEN / D_F_AND_DELTA_T_ACC_PHYSICAL_MAPPING_OPEN / HARNESS_D2_CHAIN_NOT_MATERIALIZED / NO_CODE_CHANGE / NO_NEW_WORLDS / NO_EXECUTION / NO_DESIGN_FREEZE`.
 
 **Siguiente gate — 94:** cerrar el binding de eventos D2 dentro de U_G existente: determinar qué eventos caben en NODE/TRANSFORMATION_EVENT/EID, qué evidencia se enlaza con EVIDENCE_REGISTER/CLAIM_EVIDENCE_LINK y cómo se vinculan a Z/B, unidad, etapa DGP, SNAPSHOT y event_time. Si el esquema actual no basta, justificar una extensión mínima frente a DEC-C10-061/064/065/088. No crear una tabla paralela ni implementar sin autorización expresa.
+
+
+## 16.244. Gate 94 — binding de eventos D2 e identidad EID (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_D2_EVENT_BINDING_AND_EID_SCOPE_GATE_94_DRAFT_001.md`.  
+**Estado:** EVENT SEMANTICS DISAMBIGUATED / EID SCOPE RESTRICTED / U_G INSUFFICIENT FOR ALL D2 PROCESS EVENTS / MINIMAL EXTENSION REQUIRED AS PROPOSAL / NOT ACCEPTED OR IMPLEMENTED.
+
+El análisis distingue asignación Z, política B, programación W_programmed, intento W_attempt, recepción, instalación y C_dep*. EID conserva el significado del contrato de identidad: identifica una aplicación/intento concreto de transformación sobre unidad y tiempo; no es un ID genérico para cualquier evento operativo. W_programmed es programación procedimental, receipt es recepción y la asignación Z no es transformación por defecto. W_attempt y S_install solo usan TRANSFORMATION_EVENT/EID cuando el acto concreto satisface realmente esa semántica. SNAPSHOT representa estado observado, EVIDENCE_REGISTER procedencia y ninguno sustituye el evento.
+
+Se detecta una tensión en el crosswalk candidato N02→TRANSFORMATION_EVENT del contrato semantic_role: N02 representa el rol causal de asignación Z, pero eso no hace que la asignación sea una transformación. Se registra la discrepancia sin modificar DEC-C10-060 ni el vocabulario aceptado. El crosswalk de Gate 93 queda acotado a catálogo causal, no binding físico.
+
+**Conclusión:** U_G actual no representa sin ambigüedad todos los eventos de proceso D2. Se propone evaluar una extensión mínima para eventos operativos no transformacionales, con identidad distinta de EID, tiempos explícitos y referencias a unidad/Z/B/etapa/snapshot/evidencia. No se aprueban nombres, campos, claves, tabla, enum o DDL.
+
+**Dictamen:** `GATE_94_D2_EVENT_SEMANTICS_DISAMBIGUATED / EID_RESTRICTED_TO_TRANSFORMATION_INSTANCE / W_PROGRAMMED_NOT_TRANSFORMATION_EVENT / RECEIPT_EVENT_NOT_REPRESENTED / W_ATTEMPT_EID_CONDITIONAL_ON_TRANSFORMATION_SEMANTICS / SNAPSHOT_AND_EVIDENCE_NOT_EVENT_SUBSTITUTES / U_G_INSUFFICIENT_FOR_ALL_PROCESS_EVENTS / MINIMAL_EVENT_EXTENSION_REQUIRED_AS_PROPOSAL / N02_TRANSFORMATION_EVENT_CROSSWALK_CONFLICT_RECORDED / NO_DECISION_CHANGE / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE`.
+
+**Siguiente gate — 95:** comparar NODE ampliado frente a un registro relacional mínimo de eventos integrado en U_G; verificar claves/FKs e identidad, temporalidad, snapshots y evidencia; preparar propuesta de decisión sin alterar DEC-C10-060 ni implementar.
