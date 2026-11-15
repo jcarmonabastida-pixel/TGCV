@@ -7968,3 +7968,24 @@ La combinación es una recomendación para aprobación del responsable científi
 No se modifican DEC, C0, U_G, main, RMA, Evidence→Claim Matrix ni STATUS. No se crean IDs, roster, clusters, mapas, schemas, tablas, fixtures o test IDs. No se modifica código ni se ejecutan validadores, tests, workflows, simulaciones, estimaciones, calibraciones o experimentos. PR #116 permanece Draft. `scientific_execution=false`; `execution_authorized=false`.
 
 **Siguiente operación:** Gate 120 — presentar la resolución de las cinco recomendaciones P0 para aprobación explícita y propagar solo las opciones aceptadas a los contratos existentes. No registrar ninguna como decisión aceptada antes de recibir aprobación.
+
+
+## 16.270. Gate 120 — expediente de resolución de decisiones P0 (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_P0_SCIENTIFIC_DECISION_RESOLUTION_DOCKET_GATE_120_DRAFT_001.md`.  
+**Estado:** DECISION_DOCKET_PREPARED / HISTORICAL_ACCEPTANCES_RECONCILED / OWNER_APPROVAL_PENDING / NO_NEW_DECISION_ACCEPTED / NOT_DESIGN_FROZEN / NO_IMPLEMENTATION / NO_EXECUTION.
+
+Gate 120 prepara la aprobación explícita de las cinco recomendaciones de Gate 119. No adopta decisiones por persistencia o por la instrucción de avanzar. Reconciliación histórica esencial: DEC-C10-066/067 ya acepta D2 como escenario primario candidato y su definición material conceptual; DEC-C10-095 ya mantiene A como referencia y B como extensión Value separada/versionada; DEC-C10-096 define únicamente el censo de validación B1/Need_preZ, no la población causal P*τ2 ni una regla general de roster; DEC-C10-099…102 fijan V_cont como dimensión mínima provisional y sus reglas temporales iniciales, con parámetros y validez aún abiertos.
+
+Se presentan para resolución:
+1. **R120-1:** rosters causales A/B separados por defecto, con matching solo mediante crosswalk y equivalencia basal demostrada. No se vuelve a votar la separación de DGP A/B ya aceptada.
+2. **R120-2:** asignación individual por UE solo condicional a demostrar aislamiento material; cluster o mapa de exposición requieren especificación y soporte propios; interferencia no mapeada exige abstención/bounds.
+3. **R120-3:** promedio por UE bajo arquitectura individual aislada; si se elige cluster, reabrir ponderación UE/cluster.
+4. **R120-4:** \\(\\theta_A(q_X^*,r_{common};V_{cont})\\) como estimando focal de atribución sobre \\(\\Delta T_{acc}^*\\), condicionado a intervención factible/soporte; ITT-D2 como efecto total de paquete separado; C4 secundario condicionado; efecto directo fuera del núcleo hasta definición propia. Nunca residual por resta.
+5. **R120-5:** identidad UE inmutable dentro del roster/package versionado; crosswalk explícito opcional entre variantes; no forzar continuidad global ni UE→U_G root sin necesidad justificada.
+
+R120-1 precede a R120-2; R120-3 depende del régimen de asignación/interferencia; R120-4 depende de población, unidad, exposición y soporte; R120-5 debe resolverse antes de materializar roster/bindings. Se admiten aprobaciones parciales y estados CONDITIONAL/OPEN.
+
+No se crean DEC ni se actualiza el Decision Log como ACCEPTED antes de la respuesta explícita del responsable científico. No se materializan roster, schema, fixtures, clusters, mapas de exposición ni parámetros. No se modifica C0, U_G, RMA, Evidence→Claim Matrix, STATUS, código o `main`; no se ejecutan validadores, tests, workflows, simulaciones, estimaciones, calibraciones o experimentos. PR #116 permanece Draft. `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente operación:** incorporar las respuestas explícitas, resolver dependencias y propagar solo decisiones aceptadas a los contratos existentes.
