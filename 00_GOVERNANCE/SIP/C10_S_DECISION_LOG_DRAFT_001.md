@@ -1605,3 +1605,22 @@ La ventana empieza en t0 conforme DEC-C10-101. Se recomienda un reloj explícito
 Unidad, eventos relevantes, duración mínima representable, T*, Δ, K, regla de cierre y calibración S3 siguen OPEN. Esta decisión no autoriza implementación, materialización, generación, simulación, estimación, calibración ni Design Freeze.
 
 Registro autónomo: 00_GOVERNANCE/decisions/DEC-C10-102_V_CONT_STRICT_INTERVAL_CONTINUITY_ACCEPTANCE.md. Plan integrado §16.192; reconciliación B1/Need_preZ temporal §11; auditoría temporal/S4R §9. scientific_execution=false; execution_authorized=false.
+
+
+## DEC-C10-103 — C10-S P0 causal architecture resolution (2026-11-15)
+
+**Estado:** ACCEPTED WORKING DESIGN DECISION — CONDITIONAL MATERIAL/IDENTIFICATION GATES OPEN; NOT DESIGN FREEZE.
+**Base de aceptación:** aprobación expresa del usuario de las cinco recomendaciones de Gate 120.
+
+Se aceptan R120-1…R120-5 como arquitectura causal de trabajo, sin reabrir DEC-C10-095 ni DEC-C10-096:
+1. **Población/rosters:** A y B siguen siendo DGP separados por DEC-C10-095; rosters causales separados por defecto. Matching/spine A↔B solo mediante crosswalk versionado que demuestre equivalencia basal, elegibilidad pre-Z y compatibilidad de variables/contratos. El censo Need_preZ de DEC-C10-096 no sustituye P*τ2.
+2. **Asignación/interferencia:** asignación individual por UE es la arquitectura confirmatoria preferida, condicionada a evidencia material de aislamiento de recursos/pools, dependencias mutables, agentes, canales, estado compartido, side effects y carryover. Si no se acredita, no se presume identificación individual; cluster/mapa de exposición requieren contrato propio. Interferencia no mapeada implica bounds/abstención.
+3. **Unidad de inferencia:** promedio por UE bajo asignación individual y aislamiento demostrado. Si se adopta cluster, reabrir target y ponderación UE/cluster antes del análisis.
+4. **Estimandos:** θ_A(q_X*,r_common;V_cont), sobre ΔT_acc* completo en B, es el objetivo focal de atribución, sujeto a intervenciones factibles, soporte y supuestos identificadores. ITT-D2 permanece como efecto total separado del paquete. C4 es mediación interventional longitudinal secundaria y condicionada. Efecto directo/no mediado queda fuera del núcleo confirmatorio hasta definición propia. Nunca definir residual como ITT menos C4 o θ_A.
+5. **Identidad:** identidad UE inmutable dentro del roster/package versionado; matching entre variantes solo por crosswalk explícito. No materializa el campo Draft ue_id ni fuerza UE→U_G root.
+
+Permanecen OPEN/CONDITIONAL: roster B causal y P*τ2; prueba de aislamiento y UE=UA; probabilidades/RNG/provenance de Z; factibilidad y soporte conjunto de q_X*, g_A1/g_A0 y r_common; mapping D2→g_A; validez/observación/calibración de V_cont/S3, T*/Δ/K, missingness, sensibilidad y potencia; vías colaterales; recuperación/abstención Analyzer/Evaluator. DEC-C10-099…102 permanecen vigentes y sus gates de medición/identificación siguen abiertos.
+
+No se aprueba Design Freeze, roster/schema/fixture físico, código, implementación, simulación, calibración, estimación ni ejecución. No se modifican main, C0, U_G, RMA, Evidence→Claim Matrix o STATUS. PR #116 permanece Draft. scientific_execution=false; execution_authorized=false.
+
+Registro autónomo: 00_GOVERNANCE/decisions/DEC-C10-103_C10S_P0_CAUSAL_ARCHITECTURE_RESOLUTION_ACCEPTANCE.md. Gate 120; maestro §290; plan §16.271.
