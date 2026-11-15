@@ -7981,7 +7981,7 @@ Se presentan para resolución:
 1. **R120-1:** rosters causales A/B separados por defecto, con matching solo mediante crosswalk y equivalencia basal demostrada. No se vuelve a votar la separación de DGP A/B ya aceptada.
 2. **R120-2:** asignación individual por UE solo condicional a demostrar aislamiento material; cluster o mapa de exposición requieren especificación y soporte propios; interferencia no mapeada exige abstención/bounds.
 3. **R120-3:** promedio por UE bajo arquitectura individual aislada; si se elige cluster, reabrir ponderación UE/cluster.
-4. **R120-4:** \\(\\theta_A(q_X^*,r_{common};V_{cont})\\) como estimando focal de atribución sobre \\(\\Delta T_{acc}^*\\), condicionado a intervención factible/soporte; ITT-D2 como efecto total de paquete separado; C4 secundario condicionado; efecto directo fuera del núcleo hasta definición propia. Nunca residual por resta.
+4. **R120-4:** \(\\theta_A(q_X^*,r_{common};V_{cont})\) como estimando focal de atribución sobre \(\\Delta T_{acc}^*\), condicionado a intervención factible/soporte; ITT-D2 como efecto total de paquete separado; C4 secundario condicionado; efecto directo fuera del núcleo hasta definición propia. Nunca residual por resta.
 5. **R120-5:** identidad UE inmutable dentro del roster/package versionado; crosswalk explícito opcional entre variantes; no forzar continuidad global ni UE→U_G root sin necesidad justificada.
 
 R120-1 precede a R120-2; R120-3 depende del régimen de asignación/interferencia; R120-4 depende de población, unidad, exposición y soporte; R120-5 debe resolverse antes de materializar roster/bindings. Se admiten aprobaciones parciales y estados CONDITIONAL/OPEN.
