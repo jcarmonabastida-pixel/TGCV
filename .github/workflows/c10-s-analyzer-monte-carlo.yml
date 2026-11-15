@@ -123,7 +123,7 @@ jobs:
           cmp "$RUNNER_TEMP/c10s-primary/p178_analyzer_monte_carlo.csv" "$RUNNER_TEMP/c10s-replay/p178_analyzer_monte_carlo.csv"
           cmp "$RUNNER_TEMP/c10s-primary/p178_analyzer_monte_carlo_manifest.json" "$RUNNER_TEMP/c10s-replay/p178_analyzer_monte_carlo_manifest.json"
           for root in "$RUNNER_TEMP/c10s-primary-source" "$RUNNER_TEMP/c10s-clean-replay"; do
-            if find "$root/03_EXPERIMENTS/C10-S" \\( -type d -name __pycache__ -o -type f -name '*.pyc' \\) -print -quit | grep -q .; then exit 1; fi
+            if find "$root/03_EXPERIMENTS/C10-S" \( -type d -name __pycache__ -o -type f -name '*.pyc' \) -print -quit | grep -q .; then exit 1; fi
           done
           diff -qr "$RUNNER_TEMP/c10s-primary-source" "$RUNNER_TEMP/c10s-clean-replay"
 
