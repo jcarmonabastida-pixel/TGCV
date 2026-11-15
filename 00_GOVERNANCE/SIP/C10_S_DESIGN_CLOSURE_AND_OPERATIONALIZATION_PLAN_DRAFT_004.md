@@ -7370,3 +7370,39 @@ La suite técnica no demuestra recuperación causal de θ_A ni atribución del e
 ### 16.239.5. Siguiente gate — 90
 
 **Gate 90 — cerrar el inventario de cobertura científica C1/C3 contra el roster finito existente, sin crear mundos nuevos.** Cruzar las clases y configuraciones ya presentes con los seis roles de C1 y los seis roles de C3 definidos en Gate 71; distinguir cobertura implementada, cobertura ejecutada por tests, y cobertura todavía no representada. Para cada celda no cubierta, identificar si falta un escenario, una verdad de referencia, un estimador, una regla de abstención o un test. No inferir cobertura científica a partir del PASS de la suite de 33 tests. No ampliar el roster salvo que la auditoría demuestre una ausencia irreducible y se justifique antes como discrepancia científica. No ejecutar benchmark ni experimento confirmatorio sin autorización separada.
+
+
+## 16.240. Gate 90 — inventario de cobertura científica C1/C3 contra el roster finito existente (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_C1_C3_COVERAGE_INVENTORY_GATE_90_DRAFT_001.md`.  
+**HEAD auditado:** `c892dedbce748dba0572061c428c7c30582e04bc`.  
+**Estado:** STATIC COVERAGE AUDIT COMPLETE / C1 PARTIAL / C3 NOT MATERIALIZED / CURRENT-HEAD EXECUTION NOT VERIFIED / NO NEW WORLDS / NO SCIENTIFIC EXECUTION.
+
+Se cruzaron los seis roles C1 y seis C3 de §16.225 con los 13 escenarios actuales de `benchmark_scenarios()`, los contratos del Generator/TruthBundle/Analyzer/Evaluator y los tests declarados.
+
+### 16.240.1. Dictamen C1
+
+- **C1-POS: NOT COVERED.** El escenario R0 focal limpio no hace que Z modifique provisión, alternativa ni outcome; el efecto focal positivo actual se asigna mediante G. R0_DIRECT_Z introduce una vía directa y no sustituye el control focal limpio. R2 es colateral y R3 adverso.
+- **C1-NULL: PARTIAL / NOT ACCREDITED.** R0_FOCAL_NULL permite una truth ITT-Z nula, pero el test de nulo verifica ITT-G, no ITT-Z.
+- **C1-NEG: PARTIAL.** R3 reduce provisión bajo Z y un test comprueba truth ITT-Z negativa y estado identificado; no comprueba explícitamente recuperación de signo/magnitud.
+- **C1-DECOUPLED: PARTIAL.** Hay mecanismos directos/colaterales y separación ITT-Z/ITT-G/θ_A no materializado, pero no existe una pareja truth ITT-Z/θ_A adjudicable.
+- **C1-HET: NOT COVERED.** El coeficiente actual no produce signos condicionales opuestos en el rango basal y no hay truth/estimación por estrato.
+- **C1-ABSTAIN: PARTIAL.** Medición adversa e interferencia activan abstención; el fallo de soporte G no debe confundirse con no identificación del ITT-Z, que puede conservarse por transportabilidad bajo el contrato existente.
+
+### 16.240.2. Dictamen C3
+
+Los seis roles C3 siguen **NOT MATERIALIZED**. G no equivale a g_A por Gate 86; `theta_a_truth` permanece `None`; no existe estimador focal, truth condicional por estrato ni bounds. Los escenarios directos/colaterales solo cubren mecanismos adversariales para ITT-G/ITT-Z, no celdas C3 completas.
+
+### 16.240.3. Ejecución y procedencia
+
+Gate 89 ejecutó 33 tests primaria y replay en el commit `244896092e6414ccd92bd31a19776dcf71266c15`; el módulo integrado en ese commit tenía 16 métodos de test. En HEAD actual, el módulo tiene 60 métodos declarados y sus blobs de Generator/tests han cambiado. El PASS histórico no se transfiere al HEAD actual. El workflow actual es manual y exige confirmación; no se ha despachado.
+
+### 16.240.4. Discrepancia documental
+
+La docstring del Generator aún afirma que G es una intervención explícita sobre el cambio focal completo g_A. Contradice Gate 86–89, que distinguen asignación G de g_A y mantienen θ_A no materializado. Se registra como texto semántico obsoleto para corregir en Gate 91; no se modifica código en Gate 90.
+
+### 16.240.5. Siguiente gate
+
+**Gate 91:** reconciliar el mecanismo causal C1-POS de D2/Z con el Generator y corregir la docstring G/g_A; decidir si C1-POS puede representarse mediante una configuración admisible del roster existente, sin confundirlo con una vía directa ni crear mundos. Resolver también el estado de C1-HET. Mantener θ_A no materializado hasta que el par g_A0/g_A1, q_X* y r_common sean factibles. No modificar DGP/código ni ejecutar en ese gate.
+
+**Dictamen:** `GATE_90_STATIC_C1_C3_COVERAGE_INVENTORY_COMPLETE / C1_PARTIAL / C3_NOT_MATERIALIZED / C1_POS_MISSING / C1_HET_MISSING / 13_SCENARIO_ROSTER_RETAINED / GATE_89_PASS_BOUNDED_TO_2448960 / CURRENT_HEAD_NOT_EXECUTED / STALE_G_EQUALS_G_A_DOCSTRING_FOUND / NO_NEW_WORLDS / NO_CODE_CHANGE / NO_BENCHMARK / NO_SCIENTIFIC_EXECUTION / NO_DESIGN_FREEZE`.
