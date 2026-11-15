@@ -105,3 +105,16 @@ Se incorpora DEC-C10-103, aceptada expresamente por el responsable científico t
 Permanecen abiertos el roster B/P*τ2, aislamiento, UE=UA, Z/RNG/provenance, soporte de q_X*/g_A/r_common, mapping D2→g_A, medición y calibración V_cont/S3, T*/Δ/K, missingness, sensibilidad, potencia, vías colaterales y criterios Analyzer/Evaluator. La aceptación no acredita esas condiciones.
 
 No Design Freeze, materialización, implementación ni ejecución. No cambios en main, C0, U_G, RMA, Evidence→Claim Matrix o STATUS. PR #116 Draft. scientific_execution=false; execution_authorized=false.
+
+
+## 291. Gate 121 — suficiencia de evidencia material y adjudicación del aislamiento entre UE (2026-11-15)
+
+Registro: `00_GOVERNANCE/SIP/C10_S_ISOLATION_EVIDENCE_SUFFICIENCY_AND_ADJUDICATION_GATE_121_DRAFT_001.md`.
+
+Gate 121 reutiliza Gate 102, PB material D2, Adapter Provision Manifest, U_G Inventory Register Template, IAM overlays, PE, PROV-01…12 y UNIT-01…14. No crea un segundo inventario ni nuevos test IDs. La identidad lógica de instancia única por UE no demuestra aislamiento físico. Se distingue compartición, transmisión entre UE y consecuencia causal.
+
+La asignación individual UE=UA solo puede declararse `ISOLATION_DEMONSTRATED_WITHIN_SCOPE` si se satisfacen IS-1…IS-8: frontera/cobertura cerradas; inventario versionado y trazable; ausencia de transmisión cruzada relevante; recursos no rivales/segregados; permisos/datos segregados; alternativas y medición preservadas; temporalidad/rollback cubiertos; adjudicación independiente bajo firewall efectivo. Un solo requisito relevante OPEN, ?, PARTIAL, MISSING o CONFLICTING impide el PASS. NONE/MISSING no equivale a 0.
+
+Si la interferencia es contenible por grupos definidos pre-Z, se requiere contrato cluster y reabrir UA, estimando y ponderación; si es mapeable con soporte, contrato versionado G_i(Z_-i); si no es mapeable o carece de soporte, bounds/abstención. No se selecciona arquitectura post-outcome ni se forman clusters retrospectivos.
+
+Estado: `MATERIAL_INVENTORY_NONE / ISOLATION_NOT_DEMONSTRATED / UE_ASSIGNMENT_CONDITIONAL / UNIT_01_14_DOCUMENTED_NOT_EXECUTED / PROV_01_12_DOCUMENTED_NOT_EXECUTED`. El gate no acredita aislamiento, no identifica θ_A, no cierra ITT/medición/soporte, y no autoriza materialización, implementación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
