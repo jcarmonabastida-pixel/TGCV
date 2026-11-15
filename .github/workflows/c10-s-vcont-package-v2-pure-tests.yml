@@ -88,7 +88,7 @@ jobs:
           python -B -m unittest -v test_vcont_capture_v2 test_vcont_package_v2_serialization test_vcont_package_v2_verifier > "$RUNNER_TEMP/c10s-pure-tests-stdout.txt" 2> "$RUNNER_TEMP/c10s-pure-tests-stderr.txt"
           cat "$RUNNER_TEMP/c10s-pure-tests-stdout.txt"
           cat "$RUNNER_TEMP/c10s-pure-tests-stderr.txt" >&2
-          if find "$RUNNER_TEMP/c10s-ep03-source/03_EXPERIMENTS/C10-S" \\( -type d -name __pycache__ -o -type f -name "*.pyc" \\) -print -quit | grep -q .; then exit 1; fi
+          if find "$RUNNER_TEMP/c10s-ep03-source/03_EXPERIMENTS/C10-S" \( -type d -name __pycache__ -o -type f -name "*.pyc" \) -print -quit | grep -q .; then exit 1; fi
 
       - name: Upload pure-test runtime payload and capture artifact identity
         id: payload
