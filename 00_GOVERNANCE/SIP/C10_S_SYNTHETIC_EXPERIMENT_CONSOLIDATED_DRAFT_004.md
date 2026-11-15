@@ -144,3 +144,21 @@ IS-1…IS-8 y S1…S8 se conservan como taxonomías, reinterpretadas sobre roste
 DEC-C10-103 y la jerarquía de estimandos permanecen sin cambios. UE=UA sigue condicional por escenario DGP y fidelidad del harness; los escenarios con interferencia requieren arquitectura/estimando compatibles; la interferencia no mapeable requiere bounds/abstención. No se declara aislamiento demostrado, identificación de θ_A ni Design Freeze.
 
 No se generan datos, no se modifica código, no se ejecutan pruebas/validadores/simulaciones/estimaciones ni se autoriza ejecución. PR #116 permanece Draft; `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 294. Gate 124 — auditoría de cobertura y separación de carriles S/M (2026-11-15)
+
+Registro: `00_GOVERNANCE/SIP/C10_S_SYNTHETIC_AND_MATERIAL_D2_SCOPE_COVERAGE_AUDIT_GATE_124_DRAFT_001.md`; addendum al plan: `00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_DUAL_LANE_CORRECTION_GATE_124_DRAFT_001.md`.
+
+Gate 124 confirma que C10-S tiene dos carriles relacionados pero no intercambiables:
+
+- **S — harness sintético:** mundos DGP generados, truth restringida, evidencia observada/sellada, Analyzer ciego y Evaluator posterior. No requiere infraestructura productiva ni fieldwork.
+- **M — confirmación material D2/B1:** identidad/roster reales, IAM/C_SRC, snapshots, inventario de dependencias, recursos, aislamiento, soporte y evidencia material.
+
+La especificación integrada del harness §§1, 6–9 declara expresamente esta separación. El inventario finito §14 declara que E1–E4 y B-M01…15 son tipos de evidencia sintética, sin recuperación de SBOM/APIs/runtime/ACL/logs/snapshots externos. PD §4 y §15, el DGP temporal §§6–10/15–17 y el Test Contract Register §§10–12/17/22–23 contienen contratos de interferencia, recursos, truth/observed, adversarios y evaluación. PE §§8–14/16–20 conserva el firewall como contrato lógico, pero no implementado ni probado.
+
+IS-1…IS-8 se clasifican **PARTIAL** en S: hay contratos lógicos reutilizables, pero permanecen abiertos universo/escenarios y parámetros, mapa de interferencia, reglas cuantitativas de recursos, firewall efectivo, oráculos/medición, resets/replay y adjudicación efectiva. En M, IS-1…IS-8 permanecen OPEN / NOT MATERIALIZED / NOT EVIDENCED conforme a PB y Gates 121–122.
+
+Gate 123 acertó al retirar fieldwork externo como precondición del carril S, pero su supersession general de Gates 121–122 era demasiado amplia. Gate 124 la limita: Gates 121–122 no aplican como adquisición material al harness sintético; se conservan como contratos del carril M. No se infiere aislamiento material desde truth o tests sintéticos.
+
+El siguiente trabajo del carril S es consolidar el ledger mínimo de parámetros y escenarios, distinguiendo requisitos esenciales para identificación/recuperación de escenarios secundarios y análisis de sensibilidad, sin inventar valores. El carril M permanece separado y bloqueado a la espera de instancia/roster/autorización material. No se generan datos ni se modifica/ejecuta código. PR #116 sigue Draft; `scientific_execution=false`; `execution_authorized=false`.
