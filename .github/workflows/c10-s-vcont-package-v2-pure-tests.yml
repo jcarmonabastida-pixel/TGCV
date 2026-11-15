@@ -96,7 +96,10 @@ jobs:
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
           name: c10s-vcont-pure-payload-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/c10s-runtime/**
+          path: |
+            ${{ runner.temp }}/c10s-runtime/**
+            ${{ runner.temp }}/c10s-pure-tests-stdout.txt
+            ${{ runner.temp }}/c10s-pure-tests-stderr.txt
           if-no-files-found: warn
           retention-days: 30
 
