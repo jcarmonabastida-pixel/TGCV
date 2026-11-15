@@ -162,3 +162,18 @@ IS-1…IS-8 se clasifican **PARTIAL** en S: hay contratos lógicos reutilizables
 Gate 123 acertó al retirar fieldwork externo como precondición del carril S, pero su supersession general de Gates 121–122 era demasiado amplia. Gate 124 la limita: Gates 121–122 no aplican como adquisición material al harness sintético; se conservan como contratos del carril M. No se infiere aislamiento material desde truth o tests sintéticos.
 
 El siguiente trabajo del carril S es consolidar el ledger mínimo de parámetros y escenarios, distinguiendo requisitos esenciales para identificación/recuperación de escenarios secundarios y análisis de sensibilidad, sin inventar valores. El carril M permanece separado y bloqueado a la espera de instancia/roster/autorización material. No se generan datos ni se modifica/ejecuta código. PR #116 sigue Draft; `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 295. Gate 125 — auditoría de suficiencia del ledger DGP existente y dependencias de Design Freeze (2026-11-16)
+
+Registro: `00_GOVERNANCE/SIP/C10_S_EXISTING_DGP_LEDGER_SUFFICIENCY_AND_FREEZE_DEPENDENCY_AUDIT_GATE_125_DRAFT_001.md`; addendum al plan: `00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_125_LEDGER_REUSE_ADDENDUM_DRAFT_001.md`.
+
+Gate 125 verifica que el ledger paramétrico ya está definido estructuralmente en §16.223 (Gate 69), el roster dirigido y las funciones/potenciales en §§16.188–16.212, y los doce roles de celda C1/C3 en §§16.224–16.225 (Gates 70–71). No se crea otro ledger ni se amplía el roster por defecto. La cobertura conceptual no equivale a materialización ni a recuperación verificada.
+
+Las brechas prioritarias no son simplemente numéricas: (1) la cadena causal D2 de DEC-C10-067 no está representada como etapas separadas en el harness actual; (2) G no equivale a g_A, no existe un par operativo g_A0/g_A1 ni truth/estimador θ_A; (3) q_X*, historias basales, masas y soporte conjunto siguen sin materializarse; (4) asignación/interferencia debe definirse por escenario sintético, sin transferir PASS al carril material; (5) V_cont conserva selección provisional y reglas temporales aceptadas, pero T*, Δ, K, S3 y validez siguen abiertos; (6) el puente V_cont→consecuencia B1→Value contextual no está cerrado; (7) O-CONF/F*, missingness/censura, bounds/abstención y criterios cuantitativos siguen pendientes.
+
+DEC-C10-099…102 se respetan: la selección provisional de V_cont no prueba por sí sola que continuidad funcional sea una consecuencia valorada para B1. B2–B3 exige consecuencia, perspectiva y autoridad de valoración; la relación entre ambas debe justificarse sin circularidad. Por ello, θ_A sobre V_cont no equivale todavía a evidencia confirmatoria de ΔT_acc*→Value contextual.
+
+Gate 125 determina que no estamos cerca de Design Freeze para la pregunta causal ΔT_acc*→Value. Sí existe una arquitectura candidata desarrollada, que permite concentrar el trabajo en dependencias estructurales/semánticas concretas sin reiniciar el diseño. La siguiente operación es Gate 126: auditoría de consistencia/admisibilidad del puente V_cont→consecuencia B1→Value, reutilizando DEC-C10-099…102, B2–B3, B1 Valuation Case, Outcome/Value Operationalization y P179/P182/P183.
+
+La secuencia Gates 181–199 de captura, serialización y procedencia del paquete V_cont permanece como corriente técnica separada: no rellena el DGP causal ni acredita θ_A. No se modifica código, DGP, DEC, C0, U_G, RMA, Evidence→Claim Matrix, STATUS o main; no se crean mundos/test IDs ni se ejecutan validadores, pruebas, simulaciones, estimaciones, calibraciones, productores o benchmarks. PR #116 permanece Draft; `scientific_execution=false`; `execution_authorized=false`.
