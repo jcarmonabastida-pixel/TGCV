@@ -8006,3 +8006,17 @@ El responsable científico aprobó expresamente las cinco recomendaciones de Gat
 Las recomendaciones no declaran satisfechos los gates. Permanecen OPEN/CONDITIONAL roster B/P*τ2, aislamiento/UE=UA, asignación Z y provenance, soporte de q_X*/g_A/r_common, mapping D2→g_A, medición/calibración V_cont/S3, T*/Δ/K, missingness, sensibilidad, potencia, vías colaterales y contrato Analyzer/Evaluator. DEC-C10-099…102 permanecen vigentes con sus límites.
 
 No Design Freeze, schema/roster/fixtures físicos, implementación, calibración, estimación, simulación ni ejecución. No se modifica main, C0, U_G, RMA, Evidence→Claim Matrix o STATUS. PR #116 sigue Draft. scientific_execution=false; execution_authorized=false.
+
+
+## 16.272. Gate 121 — suficiencia de evidencia material y adjudicación del aislamiento (2026-11-15)
+
+**Registro:** `00_GOVERNANCE/SIP/C10_S_ISOLATION_EVIDENCE_SUFFICIENCY_AND_ADJUDICATION_GATE_121_DRAFT_001.md`.  
+**Estado:** ISOLATION_EVIDENCE_PROTOCOL_SPECIFIED / MATERIAL_INVENTORY_NONE / ISOLATION_NOT_DEMONSTRATED / UE_ASSIGNMENT_CONDITIONAL / NO_FREEZE / NO_IMPLEMENTATION / NO_EXECUTION.
+
+Se reutilizan Gate 102, Gate 109–113, Gate 119–120, DEC-C10-103, PB Material D2, Adapter Provision Manifest, U_G Inventory Register Template, IAM/PE, B-M01…15, PROV-01…12 y UNIT-01…14. No se recrea inventario, esquema ni familia de pruebas. Se distingue compartición de recursos, transmisión cross-UE y consecuencia causal.
+
+Para declarar aislamiento individual demostrado dentro del alcance deben satisfacerse conjuntamente IS-1…IS-8: frontera/cobertura cerradas; inventario trazable; sin transmisión cruzada relevante; recursos no rivales o segregados; permisos/datos segregados; alternativas/medición preservadas; temporalidad/rollback cubiertos; adjudicación independiente con firewall efectivo. Cualquier requisito relevante OPEN, ?, PARTIAL, MISSING o CONFLICTING impide declarar aislamiento. NONE/MISSING no se convierte en 0.
+
+La ruta alternativa es condicional: cluster si la interferencia es contenible en grupos definidos antes de Z, reabriendo UA/estimando/ponderación; mapa G_i(Z_-i) si es mapeable y tiene soporte; bounds/abstención si no es mapeable o no tiene soporte. No cluster retrospectivo ni cambio post-outcome.
+
+Resultado: el protocolo queda especificado, pero la evidencia material sigue NONE/NOT OBSERVED; la asignación individual UE=UA continúa CONDITIONAL. No se acredita aislamiento ni identificación de θ_A. No se modifican DEC, C0, U_G, RMA, Evidence→Claim Matrix, STATUS, main o código. No se ejecutan tests, simulaciones, calibraciones ni experimentos. `scientific_execution=false`; `execution_authorized=false`.
