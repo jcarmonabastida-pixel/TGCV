@@ -7947,3 +7947,24 @@ El resto se clasifica como materialización, especificación contractual o cuant
 No se modifican decisiones fuente, C0, U_G, main, RMA, Evidence→Claim Matrix ni STATUS. No se crean roster, IDs, cluster, mapa, schemas, tablas, fixtures o test IDs. No se ejecutan validadores, código, tests, workflows, simulaciones, estimaciones, calibraciones o experimentos. PR #116 permanece Draft. scientific_execution=false; execution_authorized=false.
 
 **Siguiente operación:** Gate 119 — comparación de las cinco decisiones del Gate 118 contra la pregunta causal primaria, D2 y los mundos adversariales; recomendar una combinación coherente sin aprobarla ni materializarla. Si la evidencia no permite recomendar, presentar la bifurcación y sus consecuencias para identificación.
+
+
+## 16.269. Gate 119 — comparación de arquitecturas causales y recomendación para D2/Value (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_CAUSAL_ARCHITECTURE_COMPARISON_GATE_119_DRAFT_001.md`.  
+**Estado:** HISTORICAL_DECISIONS_RECONCILED / FIVE_P0_OPTIONS_COMPARED / CONDITIONAL_ARCHITECTURE_RECOMMENDED / OWNER_APPROVAL_REQUIRED / MATERIAL_AND_QUANTITATIVE_GATES_OPEN / NOT_DESIGN_FROZEN / NOT_IMPLEMENTATION_READY / NO_EXECUTION.
+
+Gate 119 compara las cinco decisiones P0 de Gate 118 con la pregunta causal principal y la precedencia vigente. Reutiliza DEC-C10-066/067 (D2 primario candidato y contrato material), DEC-C10-095 (A referencia sin cambios y B extensión sintética separada/versionada para Value) y DEC-C10-096 (censo Need_preZ del roster aprobado aplicable, sin decidir roster conjunto/separado). Corrige el alcance de M03: A y B ya deben permanecer como variantes DGP separadas; lo pendiente es si existe roster/spine basal común y matching legítimo, no si deben fusionarse.
+
+**Recomendación no aprobada:**
+1. Mantener A y B como DGP/paquetes versionados separados; rosters separados por defecto, con matching explícito solo si existe equivalencia basal pre-Z demostrable. B es el ámbito de la pregunta de Value; A conserva el papel de referencia técnica y no se usa como brazo control de B.
+2. Desarrollar asignación individual aislada como arquitectura confirmatoria primaria solo si se demuestra aislamiento material de recursos, dependencias mutables, agentes, canales, estado compartido y carryover. Cluster y mapa G_i quedan como arquitecturas alternativas/adversariales que requieren especificación propia; interferencia relevante no mapeada exige abstención/bounds. No se presume que el aislamiento exista.
+3. Si se mantiene la arquitectura aislada, utilizar el promedio por UE como target primario. Si se adopta cluster, reabrir ponderación e inferencia: promedio por UE y promedio por cluster no son intercambiables con tamaños desiguales.
+4. Situar \\(\\theta_A(q_X^*,r_{common};V_{cont})\\) como estimando focal de atribución sobre el vector completo \\(\\Delta T_{acc}^*\\), en B y bajo soporte/intervenciones factibles; mantener ITT-D2 como efecto total del paquete separado. C4 queda como análisis mediador secundario condicionado a identificación longitudinal. No incluir efecto directo en núcleo confirmatorio hasta especificar estimando propio; no definir residual por resta.
+5. Acotar identidad UE al roster/package versionado, con replay conservando identidad y nueva réplica como nueva realización salvo contrato contrario. Matching A/B solo por crosswalk explícito; no crear clave ni igualar UE con U_G.
+
+La combinación es una recomendación para aprobación del responsable científico, no una decisión aceptada ni autorización. Permanecen abiertos el roster aprobado, aislamiento material, mecanismo Z/provenance, soporte de q_X*/g_A/r_common, medición V_cont, vías colaterales, missingness, sensibilidad, potencia y contrato Analyzer/Evaluator. UE→U_G root permanece UNKNOWN salvo que se justifique su necesidad y se disponga de snapshot exacto.
+
+No se modifican DEC, C0, U_G, main, RMA, Evidence→Claim Matrix ni STATUS. No se crean IDs, roster, clusters, mapas, schemas, tablas, fixtures o test IDs. No se modifica código ni se ejecutan validadores, tests, workflows, simulaciones, estimaciones, calibraciones o experimentos. PR #116 permanece Draft. `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente operación:** Gate 120 — presentar la resolución de las cinco recomendaciones P0 para aprobación explícita y propagar solo las opciones aceptadas a los contratos existentes. No registrar ninguna como decisión aceptada antes de recibir aprobación.
