@@ -7431,3 +7431,25 @@ Se detectan textos obsoletos en el Generator que llaman (g_A) a G (docstring y m
 **Dictamen:** `GATE_91_D2_Z_GENERATOR_MISMATCH_CONFIRMED / C1_POS_NOT_REPRESENTABLE_IN_CURRENT_R0 / C1_HET_NOT_COVERED_BY_Z / W_PROGRAMMED_W_ATTEMPT_STAGES_ABSENT / QUANTITATIVE_COMPLIANCE_PARAMETERS_OPEN / STALE_G_EQUALS_G_A_CODE_TEXT_FOUND / NO_CODE_CHANGE / NO_NEW_WORLDS / NO_EXECUTION / NO_DESIGN_FREEZE`.
 
 **Siguiente gate — 92:** construir el crosswalk de etapas D2 contra Generator, TruthBundle, Projector, Sealer, Analyzer y Evaluator; separar campos existentes, proxies no válidos y ausencias; definir el contrato mínimo y las decisiones cuantitativas pendientes, sin implementar ni inventar parámetros. La corrección de textos obsoletos G/g_A requiere autorización específica de edición de código.
+
+
+## 16.242. Gate 92 — crosswalk de etapas D2 entre Generator, evidencia, Analyzer y Evaluator (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_D2_STAGE_TO_HARNESS_CROSSWALK_GATE_92_DRAFT_001.md`.  
+**Estado:** D2 STAGE CROSSWALK COMPLETE / POLICY-TO-ACCESSIBILITY CHAIN NOT MATERIALIZED / NO CODE CHANGE / NO EXECUTION.
+
+El crosswalk de DEC-C10-067 frente al harness actual concluye:
+- Z existe como asignación aleatoria genérica, pero no identifica una política material B_g0/B_g1.
+- B, W_programmed, W_attempt, S_install y C_dep* están ausentes; `provision_ok` es un proxy no válido de intento/instalación.
+- A_f* y D_f* no existen como objetos separados. `focal_access` es una conjunción interna de cuatro coordenadas G y no implementa la fórmula candidata A_f*.
+- `potential_delta_t_acc` y `delta_t_acc_observed` contienen cuatro coordenadas, pero el vector es generado por G; la primera etapa del Analyzer es G→ΔT_acc, no D2/Z→ΔT_acc. El mapping a (ΔU,ΔR,ΔC,ΔX) no está cerrado.
+- Reach/trajectory solo se usan internamente para generar V_cont; no se transportan como verdad/evidencia adjudicable.
+- V_cont es el único resultado temporal implementado dentro del alcance limitado del harness.
+- No hay clase Projector separada: Generator devuelve EvidenceCandidate y Sealer aplica la allowlist observada.
+- Analyzer estima ITT-Z, ITT-G y un régimen de referencia; no estima etapas D2 ni θ_A. Evaluator adjudica únicamente esas verdades.
+
+El contrato mínimo de representación queda descrito en el registro Gate 92, sin aprobar nombres definitivos ni valores: identidad/política, eventos de intento/recepción, instalación/componentes C_dep, A_f/App/D_f, snapshots/diff T_acc, Reach/trayectoria, evidencia 1/0/? y separación de roles/firewall. Los parámetros de cumplimiento, éxito, reintentos, mapping, soporte, q_X*, g_A y r_common permanecen OPEN.
+
+**Dictamen:** `GATE_92_D2_STAGE_CROSSWALK_COMPLETE / B_POLICY_AND_W_PROGRAMMED_ABSENT / W_ATTEMPT_AND_S_INSTALL_ABSENT / C_DEP_AND_A_F_D_F_ABSENT / DELTA_T_ACC_G_ONLY_PARTIAL / REACH_TRAJECTORY_INTERNAL_ONLY / V_CONT_LIMITED_OUTCOME_PRESENT / ANALYZER_ITT_Z_AND_G_ONLY / THETA_A_NOT_MATERIALIZED / NO_CODE_CHANGE / NO_NEW_WORLDS / NO_EXECUTION / NO_DESIGN_FREEZE`.
+
+**Siguiente gate — 93:** reconciliar el contrato mínimo con los inventarios existentes de truth/observed y el contrato de implementación; identificar artefactos reutilizables por etapa y producir un esquema versionado de eventos/snapshots sin duplicar objetos ni crear un sistema paralelo. Sin parámetros nuevos ni implementación hasta autorización expresa.
