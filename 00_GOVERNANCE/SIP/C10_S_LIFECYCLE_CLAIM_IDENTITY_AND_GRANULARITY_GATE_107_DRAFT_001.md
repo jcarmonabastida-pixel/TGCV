@@ -1,6 +1,6 @@
 # C10-S — Gate 107: identidad y granularidad de las afirmaciones lifecycle
 
-**Estado:** HISTORICAL RECONSTRUCTION COMPLETED / EXISTING LINK-LEVEL ADJUDICATION CAPABILITY CONFIRMED / STATE-CLAIM GRANULARITY CONDITIONALLY REPRESENTABLE / CROSS-EVIDENCE CLAIM IDENTITY NOT GUARANTEED / OCCURRENCE IDENTITY NOT REPRESENTABLE AS NORMALIZED EVENT / MINIMUM SEMANTIC CONTRACT PROPOSED / NO SCHEMA CHANGE / NO IMPLEMENTATION / NO EXECUTION / NO FREEZE  
+**Estado:** HISTORICAL RECONSTRUCTION COMPLETED / EXISTING LINK-TO-ADJUDICATION NAVIGATION PATH CONFIRMED / STATE-CLAIM GRANULARITY CONDITIONALLY REPRESENTABLE / CROSS-EVIDENCE CLAIM IDENTITY NOT GUARANTEED / OCCURRENCE IDENTITY NOT REPRESENTABLE AS NORMALIZED EVENT / MINIMUM SEMANTIC CONTRACT PROPOSED / NO SCHEMA CHANGE / NO IMPLEMENTATION / NO EXECUTION / NO FREEZE  
 **Fecha:** 2026-11-15  
 **Rama:** research/c10-s-consolidation-draft · PR #116 Draft  
 **Precedencia:** Gates 103–106; Gate 98 successor; U_G Inventory Register Template Draft 001 §§2, 5, 12.1–12.10, 15.4–15.6, 17–20; U_G Evidence/Provenance/Adjudication Protocol Draft 001 §§8–10, 13–17; DGP Temporal and Role Contract; DEC-C10-061/065/070/071/083/088. No se modifica ninguna decisión aceptada.
@@ -21,7 +21,7 @@ La respuesta no es binaria para todos los casos.
 4. **Para ocurrencias individuales INVOKED/EXECUTED**, claim_evidence_id tampoco es un event_id: identifica el vínculo probatorio, no el acto ocurrido. La referencia a NODE solo identifica el componente/objeto, no una invocación concreta. CLAIM_EVIDENCE_LINK puede documentar una afirmación textual sobre una ocurrencia localizable en una fuente, pero no normaliza multiplicidad, correlación, reintentos, orden ni identidad del evento.
 5. **No se justifica todavía añadir un claim_id global ni aceptar PROCESS_EVENT.** La mínima convención documental puede cerrar parte del problema de claims de estado; la identidad compartida entre múltiples evidencias sigue abierta. Para ocurrencias, se necesita una identidad de evento si el estimando/análisis requiere consultar episodios individualmente, pero su representación física depende del contrato PROCESS_EVENT y de las decisiones correspondientes.
 
-**Dictamen:** GATE_107_EXISTING_LINK_LEVEL_EVALUATION_AND_ADJUDICATION_CONFIRMED / STATE_CLAIMS_CONDITIONALLY_ADJUDICABLE_AT_LINK_GRANULARITY / CROSS_EVIDENCE_CLAIM_IDENTITY_NOT_GUARANTEED / OCCURRENCE_IDENTITY_NOT_NORMALIZED / NO_GLOBAL_CLAIM_ID_APPROVED / NO_PROCESS_EVENT_ACCEPTANCE / NO_SCHEMA_CHANGE / NO_IMPLEMENTATION / NO_EXECUTION / NO_FREEZE.
+**Dictamen:** GATE_107_LINK_TO_ADJUDICATION_NAVIGATION_PATH_CONFIRMED / CLAIM_TARGET_EXCLUSIVITY_NOT_CONSTRAINED / STATE_CLAIMS_CONDITIONALLY_DOCUMENTABLE / CROSS_EVIDENCE_CLAIM_IDENTITY_NOT_GUARANTEED / OCCURRENCE_IDENTITY_NOT_NORMALIZED / NO_GLOBAL_CLAIM_ID_APPROVED / NO_PROCESS_EVENT_ACCEPTANCE / NO_SCHEMA_CHANGE / NO_IMPLEMENTATION / NO_EXECUTION / NO_FREEZE.
 
 ## 2. Reconstrucción histórica y correcciones
 
@@ -216,7 +216,7 @@ No derivar:
 ## 8. Decisión de diseño y cuestiones abiertas
 
 1. No se añade claim_id, claim_type ni claim_revision en Gate 107.
-2. Se reconoce la capacidad documental de asociación link-level entre CLAIM_EVIDENCE_LINK y EVALUATOR_ASSESSMENT/ADJUDICATION_REGISTER mediante las FKs opcionales ya definidas.
+2. Se reconoce la ruta documental de navegación desde CLAIM_EVIDENCE_LINK hacia EVALUATOR_ASSESSMENT/ADJUDICATION_REGISTER mediante las FKs opcionales ya definidas; la exclusividad claim-target no está constreñida.
 3. Se limita la suficiencia actual a claims de estado de una dimensión por vínculo, target NODE exacto, scope/ventana y fuente/paquete inequívocos.
 4. La agrupación de varias filas de evidencia bajo una afirmación común permanece OPEN; no se resuelve por texto repetido ni por bundle artificial.
 5. Las ocurrencias INVOKED/EXECUTED no se normalizan en NODE ni en CLAIM_EVIDENCE_LINK; event identity sigue OPEN y condicionada a necesidad analítica.
@@ -260,4 +260,4 @@ Auditoría documental asistida, no revisión independiente. Se inspeccionaron co
 
 scientific_execution=false; execution_authorized=false.
 
-**Dictamen final:** GATE_107_LINK_LEVEL_EVALUATION_CAPABILITY_CONFIRMED / STATE_CLAIMS_CONDITIONALLY_DOCUMENTABLE / MULTI_EVIDENCE_CLAIM_IDENTITY_OPEN / OCCURRENCE_IDENTITY_NOT_NORMALIZED / NO_GLOBAL_CLAIM_ID_APPROVED / NO_PROCESS_EVENT_ACCEPTANCE / C0_UNCHANGED / NO_DECISION_AMENDMENT / NO_SCHEMA_CHANGE / NO_IMPLEMENTATION / NO_EXECUTION / NO_DESIGN_FREEZE.
+**Dictamen final:** GATE_107_LINK_TO_ADJUDICATION_NAVIGATION_PATH_CONFIRMED / CLAIM_TARGET_EXCLUSIVITY_NOT_CONSTRAINED / STATE_CLAIMS_CONDITIONALLY_DOCUMENTABLE / MULTI_EVIDENCE_CLAIM_IDENTITY_OPEN / OCCURRENCE_IDENTITY_NOT_NORMALIZED / NO_GLOBAL_CLAIM_ID_APPROVED / NO_PROCESS_EVENT_ACCEPTANCE / C0_UNCHANGED / NO_DECISION_AMENDMENT / NO_SCHEMA_CHANGE / NO_IMPLEMENTATION / NO_EXECUTION / NO_DESIGN_FREEZE.
