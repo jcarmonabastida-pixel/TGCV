@@ -7989,3 +7989,20 @@ R120-1 precede a R120-2; R120-3 depende del régimen de asignación/interferenci
 No se crean DEC ni se actualiza el Decision Log como ACCEPTED antes de la respuesta explícita del responsable científico. No se materializan roster, schema, fixtures, clusters, mapas de exposición ni parámetros. No se modifica C0, U_G, RMA, Evidence→Claim Matrix, STATUS, código o `main`; no se ejecutan validadores, tests, workflows, simulaciones, estimaciones, calibraciones o experimentos. PR #116 permanece Draft. `scientific_execution=false`; `execution_authorized=false`.
 
 **Siguiente operación:** incorporar las respuestas explícitas, resolver dependencias y propagar solo decisiones aceptadas a los contratos existentes.
+
+
+## 16.271. DEC-C10-103 — resolución aceptada de las cinco decisiones P0 (2026-11-15)
+
+**Registro autónomo:** 00_GOVERNANCE/decisions/DEC-C10-103_C10S_P0_CAUSAL_ARCHITECTURE_RESOLUTION_ACCEPTANCE.md.
+**Estado:** ACCEPTED WORKING DESIGN DECISION / CONDITIONAL MATERIAL_AND_IDENTIFICATION_GATES_OPEN / NOT DESIGN_FROZEN / NO_IMPLEMENTATION / NO_EXECUTION.
+
+El responsable científico aprobó expresamente las cinco recomendaciones de Gate 120. Se registra:
+1. A/B permanecen como variantes DGP separadas por DEC-C10-095; rosters causales separados por defecto. Crosswalk/matching solo con equivalencia basal, elegibilidad pre-Z y compatibilidad contractual demostradas. DEC-C10-096 sigue siendo censo de validación Need_preZ, no población causal P*τ2.
+2. Asignación individual por UE como arquitectura confirmatoria preferida, condicionada a demostrar aislamiento material completo de vías plausibles. Si no se demuestra, no se presume identificación individual; cluster/mapa G_i requieren especificación propia; interferencia no mapeada implica bounds/abstención.
+3. Promedio por UE como target bajo asignación individual aislada. Si se adopta cluster, reabrir target/ponderación UE frente a cluster.
+4. θ_A(q_X*,r_common;V_cont), sobre ΔT_acc* completo en B, como objetivo focal de atribución sujeto a factibilidad/soporte/identificación. ITT-D2 sigue siendo efecto total separado del paquete. C4 es análisis longitudinal mediador secundario condicionado. Efecto directo/no mediado fuera del núcleo confirmatorio hasta estimando propio; residual nunca por resta.
+5. Identidad UE inmutable dentro del roster/package versionado; matching A/B solo por crosswalk explícito. No materializa ue_id ni fuerza UE→U_G.
+
+Las recomendaciones no declaran satisfechos los gates. Permanecen OPEN/CONDITIONAL roster B/P*τ2, aislamiento/UE=UA, asignación Z y provenance, soporte de q_X*/g_A/r_common, mapping D2→g_A, medición/calibración V_cont/S3, T*/Δ/K, missingness, sensibilidad, potencia, vías colaterales y contrato Analyzer/Evaluator. DEC-C10-099…102 permanecen vigentes con sus límites.
+
+No Design Freeze, schema/roster/fixtures físicos, implementación, calibración, estimación, simulación ni ejecución. No se modifica main, C0, U_G, RMA, Evidence→Claim Matrix o STATUS. PR #116 sigue Draft. scientific_execution=false; execution_authorized=false.
