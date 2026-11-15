@@ -7909,3 +7909,19 @@ Siguen abiertos namespace/alcance de unicidad y continuidad de ue_id entre versi
 Resultado: no se necesita una nueva clave UE ni un séptimo artefacto. Hace falta cierre documental acotado y aprobación del contrato/roster antes de materialización. No se crean IDs, roster, tablas, schemas, FKs, fixtures, snapshots ni eventos. No se modifican DEC-C10-095/096, C0, U_G, main, RMA, Evidence→Claim Matrix ni STATUS. No se ejecutan validadores, código, tests, workflows ni experimentos. PR #116 permanece Draft. scientific_execution=false; execution_authorized=false.
 
 **Siguiente operación:** Gate 117 — reconstrucción del alcance/namespace y continuidad de `ue_id`, y decisión A/B de roster separado o conjunto, usando contratos DGP, package, identidad B1 e historial de decisiones. Si no existe una decisión fuente, presentar la bifurcación al responsable científico sin escoger ni materializar.
+
+
+## 16.267. Gate 117 — auditoría de namespace/continuidad UE y alcance de roster A/B (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_UE_IDENTITY_NAMESPACE_CONTINUITY_AND_AB_ROSTER_DECISION_AUDIT_GATE_117_DRAFT_001.md`.  
+**Estado:** UE_LOCAL_ROLE_CONFIRMED / UE_GLOBAL_PERSISTENCE_NOT_SPECIFIED / ROSTER_VERSION_SCOPE_PROPOSED_NOT_APPROVED / A_B_ROSTER_SCOPE_OPEN_BY_DECISION / UE_VS_UA_NOT_EQUIVALENT_BY_DEFAULT / CLUSTER_INTERFERENCE_REGIME_OPEN / NO_NEW_ID / NO_DECISION_CHANGE / NO_FREEZE / NO_IMPLEMENTATION / NO_EXECUTION.
+
+Gate 117 reconstruye DGP Temporal and Role Contract §2, B1 minimum materialization contract, B1 analytical package contract, DEC-C10-095/096 y DEC-C10S-B1-SERVICE-INSTANCE-IDENTITY-001. La UE es unidad lógica indexada por i; el campo propuesto `ue_id` se resuelve dentro de package_id/package_version y roster versionado. No existe regla aprobada de continuidad de ue_id entre roster/package/DGP/escenario/réplica/replay. La unicidad de instance_id por UE no se extrapola a UE.
+
+DEC-C10-096 deja expresamente sin decidir roster A/B separado vs conjunto. No se recuperó decisión fuente que elija. La cohorte Need será el censo del roster aprobado aplicable, cualquiera que sea la opción; la regla de censo no decide la arquitectura de población. DGP §2 obliga a declarar UE y UA por separado; si hay asignación por cluster o interferencia, indexación y estimandos deben ampliarse antes de implementar. No se establece UE=UA, cluster ni aleatorización individual.
+
+El mapping UE→U_G root permanece UNKNOWN. Interferencia, exposición, pools/recursos compartidos, carryover, mecanismo Z, soporte, estimandos/identificación, parámetros de observación, potencia/precisión y firewall/implementación siguen abiertos en sus contratos respectivos.
+
+Resultado: no estamos cerca de Design Freeze ni de implementación científica. Estamos más cerca de una matriz integrada y finita de decisiones pendientes. No se elige A/B, namespace persistente, UE=UA/cluster ni régimen de interferencia. No se crean IDs, roster, schemas, tablas ni mappings. No se modifican DEC-C10-095/096, C0, U_G, main, RMA, Evidence→Claim Matrix ni STATUS. No se ejecutan validadores, código, tests, workflows, simulaciones, estimaciones, calibraciones ni experimentos. PR #116 permanece Draft. scientific_execution=false; execution_authorized=false.
+
+**Siguiente operación:** Gate 118 — construir la matriz mínima de decisiones causales pendientes, vinculando roster/UE/UA/cluster/interferencia al estimando ITT primario, efectos mediados por accesibilidad y efecto residual, con D2 como candidato prioritario. Separar decisión explícita del responsable científico de cierre documental; no iniciar implementación.
