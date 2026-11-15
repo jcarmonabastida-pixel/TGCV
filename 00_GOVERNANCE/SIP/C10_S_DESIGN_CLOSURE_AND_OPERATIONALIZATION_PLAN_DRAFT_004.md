@@ -7587,3 +7587,23 @@ Se distinguen: política asignada, ofrecida, recibida, intento programado, inten
 **Siguiente operación:** Gate 101 — auditoría focal de fuentes/identificadores del artefacto focal y de la asignación Z (mecanismo, vector, seed/provenance y claves de unidad/cluster), localizando contratos y valores existentes antes de proponer campos.
 
 **Dictamen:** `GATE_100_POLICY_IDENTITY_SEMANTICS_RESOLVED / PHYSICAL_POLICY_AND_ARTIFACT_IDENTIFIERS_OPEN / CMP_SEPARATE / Z_MECHANISM_SEPARATE_FROM_EVENT / NO_DECISION_AMENDMENT / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE`.
+
+
+## 16.251. Gate 101 — identidad del artefacto focal y mecanismo de asignación Z (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_D2_ARTIFACT_AND_RANDOMIZATION_IDENTITY_AUDIT_GATE_101_DRAFT_001.md`.  
+**Estado:** DOCUMENTARY HISTORICAL AUDIT / EXISTING LOGICAL IDENTITIES RECOVERED / PHYSICAL CROSSWALKS OPEN / NO SCHEMA CHANGE / NO IMPLEMENTATION / NO EXECUTION / NO FREEZE.
+
+Gate 101 recupera el vocabulario ya existente: TID/SID/RID/EID separa transformación, especificación, realización técnica/artefacto e instancia de aplicación; RID es el candidato más próximo al artefacto focal exigido por DEC-C10-067, pero no se ha demostrado el mapping del artefacto concreto a un RID ni se ha localizado su identidad/versión/hash. No crear `artifact_id` por analogía ni asumir que el artefacto es NODE si el contrato no lo exige.
+
+La PE Integrated Technical Specification y el Test Contract Register ya prevén `test_id/version`, `fixture_id/hash`, run/scenario identity, `unit_id`, UE/UA/UO, Z, brazo/política y versión, además de reproducibilidad con semilla, versiones, configuración y hash de entorno. Son identidades/roles de experimento, fixture y ejecución; no sustituyen identidad de artefacto ni vector de asignación. El DGP declara UE y UA por separado, pero no fija la PK física de UA ni resuelve cluster/interferencia.
+
+El DGP indica aleatorización conforme al diseño y preservación ITT, pero los contratos consultados no concretan algoritmo RNG/versión, alcance/derivación de semilla, estratos/bloques, vector inmutable de asignación, hash del vector, mapping unidad→Z ni PK persistente `assignment_id`. Semilla/estado generador pertenece al Generator y queda restringido al Analyzer; esto es requisito de cegamiento, no contrato completo de aleatorización.
+
+Se mantienen separadas B (`policy_contract_id + policy_version`, Gate 100), TID/SID/RID, EID, CMP `instance_id/version`, fixture/run/scenario, vector/mecanismo Z, UE/UA/UO y ocurrencia `Z_ASSIGNED` (`event_id` propuesto Gate 98). No se modifican DEC-C10-061/067/070.
+
+**Bloqueos conservados:** mapping artefacto DEC-C10-067→RID; clase/cardinalidad del artefacto y grafo de dependencias; identidad/versionado/hash preasignación y recibido; RNG/semilla/vector/provenance; PK asignación; UA/cluster y mapping UE→UA→U_G; relación vector→Z_ASSIGNED.
+
+**Siguiente operación:** Gate 102 — reconciliación del inventario material de τ2 y grafo de dependencias del servicio con U_G/manifest, buscando el artefacto de DEC-C10-067 como NODE/DEPENDENCY/RID/propiedad de manifest y recuperando cardinalidad, owner, versión, unidad y snapshot.
+
+**Dictamen:** `GATE_101_EXISTING_IDENTITY_VOCABULARY_RECOVERED / RID_CANDIDATE_NOT_CONFIRMED / RANDOMIZATION_VECTOR_AND_ASSIGNMENT_KEY_OPEN / UE_UA_ROLES_EXIST_UA_CLUSTER_MAPPING_OPEN / NO_SCHEMA_CHANGE / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE`.
