@@ -7925,3 +7925,25 @@ El mapping UE→U_G root permanece UNKNOWN. Interferencia, exposición, pools/re
 Resultado: no estamos cerca de Design Freeze ni de implementación científica. Estamos más cerca de una matriz integrada y finita de decisiones pendientes. No se elige A/B, namespace persistente, UE=UA/cluster ni régimen de interferencia. No se crean IDs, roster, schemas, tablas ni mappings. No se modifican DEC-C10-095/096, C0, U_G, main, RMA, Evidence→Claim Matrix ni STATUS. No se ejecutan validadores, código, tests, workflows, simulaciones, estimaciones, calibraciones ni experimentos. PR #116 permanece Draft. scientific_execution=false; execution_authorized=false.
 
 **Siguiente operación:** Gate 118 — construir la matriz mínima de decisiones causales pendientes, vinculando roster/UE/UA/cluster/interferencia al estimando ITT primario, efectos mediados por accesibilidad y efecto residual, con D2 como candidato prioritario. Separar decisión explícita del responsable científico de cierre documental; no iniciar implementación.
+
+
+## 16.268. Gate 118 — matriz integrada de decisiones causales y preparación para Design Freeze (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_CAUSAL_DESIGN_DECISION_MATRIX_AND_FREEZE_READINESS_GATE_118_DRAFT_001.md`.  
+**Estado:** HISTORICAL_CAUSAL_CONTRACTS_REUSED / ESTIMAND_SEPARATION_RECONCILED / DECISION_DEPENDENCIES_ORDERED / SCIENTIFIC_OWNER_CHOICES_OPEN / MATERIAL_AND_QUANTITATIVE_GATES_OPEN / NOT_DESIGN_FROZEN / NOT_IMPLEMENTATION_READY / NO_EXECUTION.
+
+Gate 118 reutiliza §§16.185–16.218, Gates 109–112 y 115–117. No abre otra auditoría general. Consolida la secuencia de decisiones: población/roster A-B; identidad UE; UE-UA-cluster y arquitectura de interferencia A/B/C/D; target/ponderación; mecanismo Z; mapa G_i cuando C; soporte/positividad; consistencia/versiones; ITT-D2; theta_A sobre vector completo ΔT_acc*; C4 mediación interventional; vías directas/colaterales; O-CONF instancia×ruta; V_cont UE×K; observación/missingness; Analyzer/Evaluator; sensibilidad/falsación; potencia/precisión; y condiciones de freeze.
+
+Se reafirma que ITT-D2 es efecto total del paquete por resultado; theta_A interviene sobre la distribución factible del vector completo ΔT_acc* bajo q_X* común y r_common; C4 es mediación interventional longitudinal. Ninguno se sustituye por otro. Las fuentes no definen un residual como ITT−theta_A ni como complemento automático de C4. Si se requiere una contribución directa/no mediada, deberá especificarse un estimando directo interventional coherente.
+
+DEC-C10-096 deja A/B roster separado vs conjunto abierto. Gate 110 mantiene cuatro arquitecturas de asignación/interferencia sin seleccionar; Gate 111 identifica UNIT-01…14 como familia primaria, con cobertura contractual pero no ejecución; Gate 112 confirma vacíos en aislamiento, intra/intercluster, G_i, probabilidades/soporte, ponderación, O-CONF/V_cont y C4. Gates 115–117 muestran que ue_id/manifest existen como propuesta, pero roster/namespace/continuidad y mapping material permanecen abiertos.
+
+**Cinco decisiones irreducibles del responsable científico:** (1) universos A/B distintos o escenarios sobre la misma población; (2) arquitectura DGP confirmatoria de interferencia, con D como adversarial/no identificable si corresponde; (3) target UE vs cluster cuando haya cluster; (4) alcance confirmatorio de ITT, theta_A, C4 y eventual efecto directo interventional; (5) continuidad de identidad UE entre escenarios/versiones o identidad acotada al roster/package con matching explícito cuando se requiera.
+
+El resto se clasifica como materialización, especificación contractual o cuantificación dependiente de las decisiones P0. No se decide RNG, semillas, N, K, p*, umbrales ni claves técnicas en esta fase.
+
+**Dictamen:** GATE_118_CAUSAL_DECISION_MATRIX_RECONCILED / HISTORICAL_CONTRACTS_REUSED / ITT_THETA_A_C4_AND_DIRECT_EFFECT_SEPARATED / RESIDUAL_NOT_DEFINED_BY_SUBTRACTION / P0_OWNER_DECISIONS_OPEN / MATERIAL_AND_QUANTITATIVE_DEPENDENCIES_OPEN / DESIGN_FREEZE_NOT_READY / IMPLEMENTATION_NOT_READY / NO_NEW_TEST_IDS / NO_SCHEMA_CHANGE / NO_EXECUTION.
+
+No se modifican decisiones fuente, C0, U_G, main, RMA, Evidence→Claim Matrix ni STATUS. No se crean roster, IDs, cluster, mapa, schemas, tablas, fixtures o test IDs. No se ejecutan validadores, código, tests, workflows, simulaciones, estimaciones, calibraciones o experimentos. PR #116 permanece Draft. scientific_execution=false; execution_authorized=false.
+
+**Siguiente operación:** Gate 119 — comparación de las cinco decisiones del Gate 118 contra la pregunta causal primaria, D2 y los mundos adversariales; recomendar una combinación coherente sin aprobarla ni materializarla. Si la evidencia no permite recomendar, presentar la bifurcación y sus consecuencias para identificación.
