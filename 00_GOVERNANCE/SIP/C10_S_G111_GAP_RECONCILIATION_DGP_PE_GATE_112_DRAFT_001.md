@@ -79,3 +79,16 @@ No se modifican main, RMA, Evidence→Claim Matrix, STATUS, DEC, C0, contratos f
 scientific_execution=false; execution_authorized=false.
 
 **Siguiente operación:** Gate 113 — localizar y recuperar la especificación PE exacta y verificar el crosswalk de identidades/roles y el firewall Generator–Analyzer–Evaluator. Si no existe o no es recuperable, registrar formalmente el límite de procedencia y no inferir una especificación desde menciones históricas.
+
+
+---
+
+## Addendum de corrección documental — Gate 113 (2026-11-15)
+
+La afirmación de §2 y del dictamen de Gate 112 `PE_STANDALONE_ARTIFACT_NOT_LOCATED / PE_SPEC_PATH_NOT_VERIFIED` queda corregida. El artefacto PE sí estaba presente en la rama research y se recuperó posteriormente en:
+
+`00_GOVERNANCE/SIP/C10_S_PE_INTEGRATED_TECHNICAL_SPECIFICATION_AND_IMPLEMENTATION_CONTRACT_DRAFT_001.md`
+
+ID `C10-S-PE-TECH-CONTRACT-001`; blob SHA `5b3ba5256e42f388983cf408f5b51e0a4b9b86bb`. La ruta y el contenido se auditan en Gate 113, `C10_S_PE_SPECIFICATION_IDENTITY_ROLE_FIREWALL_CROSSWALK_GATE_113_DRAFT_001.md`.
+
+La conclusión correcta es **PE_ARTIFACT_LOCATED / PE_RECONCILED_DOCUMENTALLY / TECHNICAL_CONTRACT_PARTIAL / IMPLEMENTATION_NOT_READY**. Se retira únicamente la dependencia de localizar el documento. Permanecen abiertos los mappings físicos, la cardinalidad UE↔instancia, RNG/vector Z, mapa G_i/soporte, perfiles de serialización, firewall efectivo y gates G-MAT/G-SCHEMA/G-ROLE/G-TEST/G-REPRO/G-AUTH. La corrección no modifica los restantes dictámenes científicos de Gate 112 ni autoriza implementación o ejecución.
