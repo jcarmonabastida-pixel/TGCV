@@ -125,7 +125,7 @@ jobs:
           cat "$RUNNER_TEMP/c10s-replay-stdout.txt"
           cat "$RUNNER_TEMP/c10s-replay-stderr.txt" >&2
           for root in "$RUNNER_TEMP/c10s-primary-source" "$RUNNER_TEMP/c10s-clean-replay"; do
-            if find "$root/03_EXPERIMENTS/C10-S" \\( -type d -name __pycache__ -o -type f -name "*.pyc" \\) -print -quit | grep -q .; then exit 1; fi
+            if find "$root/03_EXPERIMENTS/C10-S" \( -type d -name __pycache__ -o -type f -name "*.pyc" \) -print -quit | grep -q .; then exit 1; fi
           done
           diff -qr "$RUNNER_TEMP/c10s-primary-source" "$RUNNER_TEMP/c10s-clean-replay"
 
