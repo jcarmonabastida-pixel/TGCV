@@ -118,3 +118,14 @@ La asignación individual UE=UA solo puede declararse `ISOLATION_DEMONSTRATED_WI
 Si la interferencia es contenible por grupos definidos pre-Z, se requiere contrato cluster y reabrir UA, estimando y ponderación; si es mapeable con soporte, contrato versionado G_i(Z_-i); si no es mapeable o carece de soporte, bounds/abstención. No se selecciona arquitectura post-outcome ni se forman clusters retrospectivos.
 
 Estado: `MATERIAL_INVENTORY_NONE / ISOLATION_NOT_DEMONSTRATED / UE_ASSIGNMENT_CONDITIONAL / UNIT_01_14_DOCUMENTED_NOT_EXECUTED / PROV_01_12_DOCUMENTED_NOT_EXECUTED`. El gate no acredita aislamiento, no identifica θ_A, no cierra ITT/medición/soporte, y no autoriza materialización, implementación o ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 292. Gate 122 — expediente mínimo de materialización probatoria del aislamiento (2026-11-15)
+
+Registro: `00_GOVERNANCE/SIP/C10_S_MINIMUM_ISOLATION_EVIDENCE_MATERIALIZATION_DOCKET_GATE_122_DRAFT_001.md`.
+
+Gate 122 reutiliza Gate 121, B-M01…15, S1…S8, U_G, IAM/C_SRC, PE, UNIT-01…14 y PROV-01…12. Define el crosswalk IS-1…IS-8 → afirmación → clases de fuente → registros U_G → cobertura necesaria, además de procedencia, triangulación, roles, secuencia futura y precondiciones de captura.
+
+Dictamen: las fuentes técnicas concretas, el sistema B1/D2, el roster causal, los custodios y los permisos no están identificados en este gate. Los contratos y plantillas de GitHub están disponibles como documentación, pero no constituyen evidencia material del runtime. Se mantiene `SOURCE_AVAILABILITY_UNVERIFIED / MATERIAL_INVENTORY_NONE / ISOLATION_NOT_DEMONSTRATED / UE_ASSIGNMENT_CONDITIONAL`.
+
+Gate 122 no crea registros físicos, no captura datos, no consulta entornos técnicos, no cambia esquemas ni autoriza operaciones. Ninguna de las condiciones IS-1…IS-8 pasa a PASS. `scientific_execution=false`; `execution_authorized=false`.
