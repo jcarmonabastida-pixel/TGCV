@@ -7514,7 +7514,7 @@ No se aprueba nombre de tabla, campos, claves, enum, DDL, ni cambio de DEC-C10-0
 **Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_D2_PROCESS_EVENT_REGISTER_LOGICAL_CONTRACT_GATE_96_DRAFT_001.md`.  
 **Estado:** LOGICAL PROCESS-EVENT CONTRACT DRAFTED / OPTION B STILL UNACCEPTED / NO SCHEMA CHANGE / NO IMPLEMENTATION / NO EXECUTION.
 
-Gate 96 desarrolla la alternativa B recomendada en Gate 95 como extensión relacional interna de U_G, no como plataforma paralela. Propone tres relaciones lógicas: `PROCESS_EVENT` para ocurrencias y revisiones inmutables; `PROCESS_EVENT_RELATION` para causalidad, precedencia, reintentos y derivación; y `PROCESS_EVENT_BINDING` para referencias tipadas a objetos U_G. Los nombres son identificadores de diseño, no nombres físicos aceptados.
+Gate 96 desarrolla la alternativa B recomendada en Gate 95 como extensión relacional interna de U_G, no como plataforma paralela. Propone cuatro relaciones lógicas: `PROCESS_EVENT` para ocurrencias y revisiones inmutables; `PROCESS_EVENT_RELATION` para causalidad, precedencia, reintentos y derivación; `PROCESS_EVENT_BINDING` para referencias tipadas a NODE/EDGE/ROUTE/PREDICATE; y `PROCESS_EVENT_SNAPSHOT_BINDING` para revisiones exactas de SNAPSHOT. Los nombres son identificadores de diseño, no nombres físicos aceptados.
 
 El contrato separa `event_id` (ocurrencia), `event_record_id` (fila/revisión) y `event_revision`; las correcciones son append-only y los reintentos son ocurrencias distintas. Propone diez tipos D2 cerrados para la versión candidata, con resultado separado del tipo. La ausencia de un evento no se registra como ocurrencia ficticia: se adjudica mediante evidencia, cobertura y estado 1/0/?.
 
