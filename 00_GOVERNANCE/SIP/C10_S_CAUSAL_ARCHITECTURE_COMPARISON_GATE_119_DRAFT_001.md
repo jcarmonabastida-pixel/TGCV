@@ -11,7 +11,7 @@
 
 Gate 119 compara las cinco decisiones P0 de Gate 118 con la pregunta científica C10-S: determinar si una intervención sobre la accesibilidad transformacional completa puede contribuir causalmente a Value, sin confundir ese efecto con el efecto total de asignar un paquete técnico.
 
-**Dictamen:** existe una combinación de diseño preferible para desarrollar como propuesta, pero no puede aprobarse ni materializarse por inferencia documental. Se recomienda un DGP B versionado para la pregunta de Value, con A preservado como referencia técnica; asignación D2 individual bajo aislamiento material demostrado; target medio por UE; \\(\\theta_A\\) como estimando focal de atribución; ITT-D2 como efecto de política separado; C4 como análisis mediador secundario condicionado a identificación; y continuidad UE acotada a cada roster/versionado, con matching entre variantes solo mediante crosswalk explícito.
+**Dictamen:** existe una combinación de diseño preferible para desarrollar como propuesta, pero no puede aprobarse ni materializarse por inferencia documental. Se recomienda un DGP B versionado para la pregunta de Value, con A preservado como referencia técnica; asignación D2 individual bajo aislamiento material demostrado; target medio por UE; \(\theta_A\) como estimando focal de atribución; ITT-D2 como efecto de política separado; C4 como análisis mediador secundario condicionado a identificación; y continuidad UE acotada a cada roster/versionado, con matching entre variantes solo mediante crosswalk explícito.
 
 Esta recomendación es condicional. Si el aislamiento no puede demostrarse, la arquitectura individual A no se considera válida por defecto: el resultado debe pasar a un régimen de interferencia mapeada/cluster formalmente especificado o a abstención/bounds.
 
@@ -27,7 +27,7 @@ Se reutilizan, sin reabrir ni sustituir:
 - Gate 110: arquitecturas de asignación/interferencia A–D y sus consecuencias analíticas.
 - Gates 111–112: UNIT-01…14 como familia contractual primaria; cobertura documental no equivale a implementación/ejecución.
 - Gates 115–117: `ue_id` y manifest existen en contratos Draft; roster no aprobado/materializado; UE→U_G root sigue UNKNOWN.
-- Contratos existentes de G, \\(g_A\\), q_X*, r_common, ITT-Z y \\(\\theta_A\\), que mantienen separados el mecanismo de asignación y la intervención sobre accesibilidad.
+- Contratos existentes de G, \(g_A\), q_X*, r_common, ITT-Z y \(\theta_A\), que mantienen separados el mecanismo de asignación y la intervención sobre accesibilidad.
 
 **Corrección de alcance de M03 (Gate 118):** DEC-C10-095 ya exige que A y B permanezcan como variantes DGP separadas, identificables y comparables. La cuestión no es si se fusionan en un único DGP (eso está descartado), sino si sus rosters contienen unidades distintas o si existe un spine basal común con matching legítimo. DEC-C10-096 deja abierta esa cuestión de roster para el paquete B1/Need. Gate 119 la recomienda, pero no la decide.
 
@@ -72,12 +72,12 @@ No se propone ahora un estimando de cluster como co-primario.
 
 La pregunta central de C10-S es la contribución causal de la accesibilidad a Value. Por ello se recomienda:
 
-1. **Estimando focal de atribución:** \\(\\theta_A(q_X^*,r_{common};V_{cont})\\), definido sobre la distribución conjunta factible del vector completo \\(\\Delta T_{acc}^*\\), en la población B y bajo la historia basal y régimen no focal expresamente fijados. Es el objeto que responde directamente a la intervención sobre accesibilidad; no equivale a una coordenada aislada ni a Z.
+1. **Estimando focal de atribución:** \(\theta_A(q_X^*,r_{common};V_{cont})\), definido sobre la distribución conjunta factible del vector completo \(\Delta T_{acc}^*\), en la población B y bajo la historia basal y régimen no focal expresamente fijados. Es el objeto que responde directamente a la intervención sobre accesibilidad; no equivale a una coordenada aislada ni a Z.
 2. **ITT-D2:** efecto total de asignar el paquete material D2 sobre cada resultado preespecificado, incluido V_cont cuando su contrato de medición esté cerrado. Es un efecto de política/paquete, no una atribución automática a accesibilidad.
-3. **C4:** análisis secundario de mediación interventional longitudinal, solo si se especifican intervención, historia, confusores post-Z, soporte secuencial, exposición y medición suficientes. No es requisito para renombrar o identificar \\(\\theta_A\\).
-4. **Efecto directo/no mediado:** fuera del núcleo confirmatorio por ahora. Solo se añadirá si se formula un estimando directo interventional coherente y se justifican sus supuestos. No definir residual como ITT−\\(\\theta_A\\) ni como complemento algebraico de C4.
+3. **C4:** análisis secundario de mediación interventional longitudinal, solo si se especifican intervención, historia, confusores post-Z, soporte secuencial, exposición y medición suficientes. No es requisito para renombrar o identificar \(\theta_A\).
+4. **Efecto directo/no mediado:** fuera del núcleo confirmatorio por ahora. Solo se añadirá si se formula un estimando directo interventional coherente y se justifican sus supuestos. No definir residual como ITT−\(\theta_A\) ni como complemento algebraico de C4.
 
-La confirmación de una relación causal de accesibilidad con Value requiere identificación propia de \\(\\theta_A\\) y recuperación correcta por Analyzer frente a mundos conocidos del DGP. Un ITT-D2 positivo por sí solo no basta.
+La confirmación de una relación causal de accesibilidad con Value requiere identificación propia de \(\theta_A\) y recuperación correcta por Analyzer frente a mundos conocidos del DGP. Un ITT-D2 positivo por sí solo no basta.
 
 ### P0-5 — Identidad y continuidad UE
 
@@ -97,7 +97,7 @@ La combinación preferida para someter a aprobación es:
 - **Asignación:** individual por UE solo si UE=UA y aislamiento material están demostrados.
 - **Target:** promedio por UE.
 - **Interferencia:** A como condición confirmatoria; B/C como alternativas adversariales explícitas; D como condición de abstención/bounds.
-- **Atribución:** \\(\\theta_A\\) como objetivo focal; ITT-D2 como efecto total de paquete; C4 secundario condicionado; efecto directo no incluido hasta especificación independiente.
+- **Atribución:** \(\theta_A\) como objetivo focal; ITT-D2 como efecto total de paquete; C4 secundario condicionado; efecto directo no incluido hasta especificación independiente.
 - **Identidad:** roster B versionado; identidad UE local al roster; matching A/B solo mediante crosswalk justificado.
 
 No se aprueba ninguna de estas recomendaciones. La aprobación requiere al responsable científico y no se infiere de la persistencia del gate.
@@ -110,8 +110,8 @@ La recomendación no debe convertirse en una ruta de escape que fuerce la identi
 - Si se adopta cluster, no usar número de UE como sustituto del número de clusters independientes; fijar previamente target y varianza.
 - Si se adopta G_i, no afirmar suficiencia ni positividad sin relaciones, probabilidades y soporte conjunto.
 - Si hay interferencia relevante no mapeada, clasificar el estimando como BOUNDS_ONLY / NOT_IDENTIFIED / INDETERMINATE según los contratos existentes.
-- Si \\(g_{A1}\\) y \\(g_{A0}\\) no son factibles en q_X* o carecen de soporte común, \\(\\theta_A\\) no queda identificado por extrapolación.
-- Si B no contiene variación/support de Value o el criterio de valoración no está estipulado pre-Z, no se formula una conclusión confirmatoria sobre \\(\\Delta T_{acc}\\to Value\\).
+- Si \(g_{A1}\) y \(g_{A0}\) no son factibles en q_X* o carecen de soporte común, \(\theta_A\) no queda identificado por extrapolación.
+- Si B no contiene variación/support de Value o el criterio de valoración no está estipulado pre-Z, no se formula una conclusión confirmatoria sobre \(\Delta T_{acc}\to Value\).
 - Si las vías colaterales de D2 afectan Value, ITT-D2 conserva interpretación como efecto del paquete; no se atribuye a accesibilidad por exclusión asumida.
 
 ## 6. Decisiones y trabajos que permanecen abiertos
@@ -120,7 +120,7 @@ La recomendación no debe convertirse en una ruta de escape que fuerce la identi
 - Aceptar o rechazar la recomendación de rosters A/B separados con matching opcional.
 - Aceptar o rechazar aislamiento individual como arquitectura confirmatoria condicionada.
 - Aceptar target medio por UE.
-- Aceptar \\(\\theta_A\\) como estimando focal de atribución en B, con ITT-D2 separado y C4 secundario.
+- Aceptar \(\theta_A\) como estimando focal de atribución en B, con ITT-D2 separado y C4 secundario.
 - Aceptar identidad UE acotada al roster versionado con crosswalk opcional.
 
 ### Requieren cierre documental/material posterior
