@@ -7406,3 +7406,28 @@ La docstring del Generator aún afirma que G es una intervención explícita sob
 **Gate 91:** reconciliar el mecanismo causal C1-POS de D2/Z con el Generator y corregir la docstring G/g_A; decidir si C1-POS puede representarse mediante una configuración admisible del roster existente, sin confundirlo con una vía directa ni crear mundos. Resolver también el estado de C1-HET. Mantener θ_A no materializado hasta que el par g_A0/g_A1, q_X* y r_common sean factibles. No modificar DGP/código ni ejecutar en ese gate.
 
 **Dictamen:** `GATE_90_STATIC_C1_C3_COVERAGE_INVENTORY_COMPLETE / C1_PARTIAL / C3_NOT_MATERIALIZED / C1_POS_MISSING / C1_HET_MISSING / 13_SCENARIO_ROSTER_RETAINED / GATE_89_PASS_BOUNDED_TO_2448960 / CURRENT_HEAD_NOT_EXECUTED / STALE_G_EQUALS_G_A_DOCSTRING_FOUND / NO_NEW_WORLDS / NO_CODE_CHANGE / NO_BENCHMARK / NO_SCIENTIFIC_EXECUTION / NO_DESIGN_FREEZE`.
+
+
+## 16.241. Gate 91 — reconciliación de D2/Z, Generator y ausencia de C1-POS (2026-11-15)
+
+**Registro autónomo:** `00_GOVERNANCE/SIP/C10_S_D2_Z_GENERATOR_CAUSAL_MAPPING_AUDIT_GATE_91_DRAFT_001.md`.  
+**Estado:** D2 MATERIAL POLICY ↔ GENERATOR MISMATCH CONFIRMED / C1-POS NOT REPRESENTABLE IN CURRENT R0 / C1-HET NOT COVERED BY Z / G ≠ g_A PRECEDENCE CONFIRMED / NO CODE CHANGE / NO EXECUTION.
+
+DEC-C10-067 define D2 como (Zightarrow B_{gZ}^{D2}ightarrow W_{programmed}ightarrow W_{attempt}ightarrow S_{install}ightarrow C_{dep}^{*}ightarrow A_f^{*}ightarrow D_f^{*}). En D2, (W_{programmed}=0) bajo control y (W_{programmed}=1) bajo tratamiento; el intento efectivo, recepción, instalación y éxito permanecen separados. El cumplimiento y éxito cuantitativos no están aprobados.
+
+La inspección del Generator actual confirma que:
+- no existen campos/etapas separados para (W_{programmed}), (W_{attempt}), recepción, instalación y componentes verificados;
+- en R0, la probabilidad de provisión y el exógeno de provisión son comunes a Z; el vector focal depende de G, no de Z;
+- R3 reduce provisión bajo Z (vía adversarial negativa);
+- R2 altera alternativa/colaterales;
+- R0_DIRECT_Z produce una vía directa al outcome, no provisión focal.
+
+**Consecuencia:** C1-POS no puede representarse en el R0 limpio del roster actual. No se repara con una assertion ni renombrando R0_DIRECT_Z o el efecto G. Falta el mecanismo D2/Z de provisión focal. No se inventan probabilidades de cumplimiento, recepción o éxito para completarlo.
+
+C1-HET tampoco está cubierta: el modificador `heterogeneity` actual opera sobre el contraste G y, con los parámetros presentes, no produce signos condicionales opuestos; sin una vía Z→accesibilidad no genera heterogeneidad ITT-Z.
+
+Se detectan textos obsoletos en el Generator que llaman (g_A) a G (docstring y mensaje de validación). Gate 86 y README del harness prevalecen: G es una asignación auxiliar, no el par de políticas conjuntas (g_A). No se corrige el código en este gate.
+
+**Dictamen:** `GATE_91_D2_Z_GENERATOR_MISMATCH_CONFIRMED / C1_POS_NOT_REPRESENTABLE_IN_CURRENT_R0 / C1_HET_NOT_COVERED_BY_Z / W_PROGRAMMED_W_ATTEMPT_STAGES_ABSENT / QUANTITATIVE_COMPLIANCE_PARAMETERS_OPEN / STALE_G_EQUALS_G_A_CODE_TEXT_FOUND / NO_CODE_CHANGE / NO_NEW_WORLDS / NO_EXECUTION / NO_DESIGN_FREEZE`.
+
+**Siguiente gate — 92:** construir el crosswalk de etapas D2 contra Generator, TruthBundle, Projector, Sealer, Analyzer y Evaluator; separar campos existentes, proxies no válidos y ausencias; definir el contrato mínimo y las decisiones cuantitativas pendientes, sin implementar ni inventar parámetros. La corrección de textos obsoletos G/g_A requiere autorización específica de edición de código.
