@@ -163,9 +163,9 @@ La tabla NODE de U_G §2 contiene, entre otros:
 - coverage_status;
 - timestamp y metadatos de revisión/snapshot.
 
-No contiene campos explícitos independientes para declared, installed, deployed, loaded, invoked y executed. Tampoco se ha localizado un crosswalk aprobado que permita tratar observed_state como seis dimensiones de lifecycle.
+U_G §12.7 sí enumera explícitamente la extensión NODE «estado declarado/instalado/desplegado/cargado/invocado/ejecutado». La lectura de Gate 104 omitió esa línea. No obstante, el encabezado NODE de §2 mantiene observed_state genérico y §12.7 no desglosa las seis dimensiones como campos tipados ni define sus dominios, temporalidad, identidad de claim, cardinalidad o reglas de evaluación. La intención conceptual existe; la representación estructurada/operacional no queda demostrada.
 
-La búsqueda de las seis etiquetas en la plantilla no encuentra un contrato de lifecycle; su única referencia genérica a lifecycle aparece en un criterio de identidad/frontera, no como definición de estados o campos.
+Por tanto, no es correcto afirmar que la plantilla no contemple las seis dimensiones. El hallazgo preciso es que §12.7 las declara como extensión de diseño, pero no se formalizan en el esquema normalizado como seis atributos independientes con semántica, clave y reglas verificables.
 
 ### 7.2 No equivalencias
 
@@ -178,7 +178,7 @@ La búsqueda de las seis etiquetas en la plantilla no encuentra un contrato de l
 
 ### 7.3 Corrección explícita
 
-La frase de Gate 103 que presentaba el ciclo de vida NODE como ya contemplado por la plantilla queda CUALIFICADA / NO VERIFICADA. Gate 103 distinguió correctamente seis estados conceptuales y sus fuentes, pero atribuyó prematuramente esa separación al modelo NODE.
+La frase de Gate 103 que presentaba el ciclo de vida NODE como contemplado conceptualmente por la plantilla se confirma en lo esencial: U_G §12.7 enumera expresamente las seis dimensiones. Lo que no queda verificado es su formalización estructurada como atributos independientes ni su adjudicación claim-level. Gate 104 había omitido esa sección y su diagnóstico se corrige por Gate 105.
 
 No se modifica el documento histórico Gate 103 ni se cambia el esquema en Gate 104. El resultado es un gap de representación/crosswalk OPEN, no una prueba de que se necesite una nueva tabla o seis columnas. Primero debe decidirse si los estados se representan como afirmaciones tipadas sobre NODE con evidencia/ventana, mediante predicados existentes, eventos, o combinación; solo si ninguno permite la semántica requerida podrá proponerse extensión mínima.
 
@@ -222,7 +222,7 @@ La truth DGP y la observación S3 conservan resoluciones separadas. S3 ausente/p
 | stage_key ↔ SNAPSHOT.timestamp | SEPARATED | Timestamp no identifica etapa |
 | k ↔ event/time | SEPARATED | k es profundidad transformacional |
 | clock domains/uncertainty across records | PARTIAL / OPEN | Metadata no armonizada |
-| NODE six-state lifecycle | NOT ESTABLISHED | No fields/crosswalk canonical found |
+| NODE six-state lifecycle | CONCEPTUALLY PRESENT / STRUCTURE OPEN | U_G §12.7 lists six dimensions; no typed field/claim-level contract found |
 | PROCESS_EVENT occurrence semantics | LOGICAL DRAFT | Option B not accepted; no implementation |
 | PROCESS_EVENT ↔ SNAPSHOT | LOGICAL DRAFT | Exact composite pinning if bound; contextual only |
 | S3 detection/lag | STRUCTURALLY SPECIFIED | Numeric calibration and mode selection open |
@@ -254,4 +254,4 @@ Gate 104 es auditoría documental asistida, no revisión independiente. No se in
 
 scientific_execution=false; execution_authorized=false.
 
-**Dictamen final:** GATE_104_TEMPORAL_AXIS_SEPARATION_DOCUMENTARILY_CONSISTENT / FOUR_EVENT_TIME_ROLES_RETAINED / NODE_LIFECYCLE_MAPPING_OPEN / S3_CAPTURE_CLOCK_CROSSWALK_OPEN / EVENT_INTERVAL_SEMANTICS_OPEN / C0_UNCHANGED / NO_DECISION_AMENDMENT / NO_SCHEMA_CHANGE / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE.
+**Dictamen final:** GATE_104_TEMPORAL_AXIS_SEPARATION_DOCUMENTARILY_CONSISTENT / FOUR_EVENT_TIME_ROLES_RETAINED / NODE_LIFECYCLE_CONCEPTS_PRESENT_CLAIM_MAPPING_OPEN / S3_CAPTURE_CLOCK_CROSSWALK_OPEN / EVENT_INTERVAL_SEMANTICS_OPEN / C0_UNCHANGED / NO_DECISION_AMENDMENT / NO_SCHEMA_CHANGE / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE.
