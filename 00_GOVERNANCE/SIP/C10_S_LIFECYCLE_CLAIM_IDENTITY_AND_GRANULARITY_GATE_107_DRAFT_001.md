@@ -15,7 +15,7 @@ Gate 107 resuelve una pregunta más acotada que Gate 106:
 
 La respuesta no es binaria para todos los casos.
 
-1. **La capacidad relacional existente es mayor que la descrita inicialmente en Gate 105.** CLAIM_EVIDENCE_LINK dispone de claim_evidence_id y puede referenciar opcionalmente un evaluator_record_id y un adjudication_id. EVALUATOR_ASSESSMENT mantiene una fila por evaluación independiente E1/E2, con target tipado a objeto y scope/rule/rationale; ADJUDICATION_REGISTER enlaza las dos evaluaciones y conserva decisión y posición minoritaria. La cadena permite asociar una evaluación/adjudicación con una fila concreta de claim-evidence.
+1. **La capacidad relacional existente es mayor que la descrita inicialmente en Gate 105.** CLAIM_EVIDENCE_LINK dispone de claim_evidence_id y puede referenciar opcionalmente un evaluator_record_id singular y un adjudication_id singular. ADJUDICATION_REGISTER enlaza las dos evaluaciones E1/E2 y conserva decisión y posición minoritaria. La cadena permite navegar desde una fila concreta de claim-evidence hasta una adjudicación y, desde ella, hasta ambas evaluaciones. Es una asociación relacional documental; no garantiza por sí sola que el target de la adjudicación sea una proposición claim-level, porque EVALUATOR_ASSESSMENT y ADJUDICATION_REGISTER conservan target tipado de objeto y no una FK a claim_id.
 2. **Para una afirmación de estado de NODE con una única evidencia o un paquete de evidencia previamente consolidado**, esa granularidad puede bastar documentalmente si la fila CLAIM_EVIDENCE_LINK se trata como la unidad adjudicable y se impone un contrato semántico explícito: una proposición por fila, dimensión lifecycle explícita en claim_statement/relevance_scope, target NODE exacto y evaluación con scope/regla idénticos. No hace falta afirmar que la estructura sea incapaz de cualquier adjudicación claim-specific.
 3. **Para una misma afirmación respaldada por varias filas CLAIM_EVIDENCE_LINK**, el esquema no ofrece una clave común de afirmación. Repetir el texto no crea una FK ni garantiza que las filas sean la misma proposición, la misma revisión semántica, ventana, población o scope. claim_evidence_id identifica cada vínculo, no el claim compartido. Por tanto, la agrupación y la evolución/versionado de una afirmación a través de varias evidencias no están garantizados.
 4. **Para ocurrencias individuales INVOKED/EXECUTED**, claim_evidence_id tampoco es un event_id: identifica el vínculo probatorio, no el acto ocurrido. La referencia a NODE solo identifica el componente/objeto, no una invocación concreta. CLAIM_EVIDENCE_LINK puede documentar una afirmación textual sobre una ocurrencia localizable en una fuente, pero no normaliza multiplicidad, correlación, reintentos, orden ni identidad del evento.
@@ -73,7 +73,7 @@ La plantilla y el protocolo siguen Draft y no validados técnicamente. Sus relac
 | Fuente | evidence_id | Artefacto/fuente y versión | Un evento ni una afirmación |
 | Ocurrencia | No existe clave normalizada aceptada para INVOKED/EXECUTED | — | Identidad individual de un acto runtime |
 
-La FK opcional de CLAIM_EVIDENCE_LINK a evaluator_record_id y adjudication_id permite una asociación **por vínculo**. No implica una relación 1:N de evaluaciones con un claim_id que no existe. Tampoco convierte el claim_evidence_id en clave de una afirmación que pueda sobrevivir a la sustitución/añadido de fuentes.
+La FK opcional de CLAIM_EVIDENCE_LINK a evaluator_record_id (singular) y adjudication_id (singular) permite una ruta de navegación **desde el vínculo**. El vínculo directo evaluator_record_id puede apuntar a una evaluación; la referencia a adjudication_id permite alcanzar el par E1/E2 que la adjudicación registra. Pero las tablas de evaluación/adjudicación siguen targeteando el objeto, no la proposición. Por ello, la relación no demuestra que la evaluación sea semánticamente exclusiva de ese claim si el mismo objeto/scope contiene varias proposiciones. Tampoco convierte claim_evidence_id en clave de una afirmación que sobreviva a la sustitución/añadido de fuentes.
 
 ## 4. Subcaso A — afirmaciones de estado sobre NODE
 
@@ -104,7 +104,7 @@ La estructura actual puede representar documentalmente un claim de estado por v�
 - E1 y E2 permanecen separados; el adjudication_id solo se usa cuando existe adjudicación válida y apunta a los registros originales;
 - una fila de objeto no hereda automáticamente la evaluación de otra dimensión o de otro scope.
 
-Esto permite una **adjudicación documental a granularidad de vínculo**. No equivale a tener un objeto claim independiente ni a una restricción técnica que asegure unicidad de la proposición. Si se pretende que la misma proposición agregue varias evidencias, la convención no puede agruparlas con garantías relacionales.
+Esto permite una **ruta documental de asociación a granularidad de vínculo**, condicionada a que target, dimensión, regla y scope de la adjudicación coincidan exactamente con la proposición del vínculo. No equivale a tener un objeto claim independiente ni a una restricción técnica que asegure que la adjudicación no se reutiliza para otra proposición del mismo objeto. Si se pretende que la misma proposición agregue varias evidencias, la convención no puede agruparlas con garantías relacionales.
 
 ### 4.3. Varias evidencias para una misma afirmación
 
@@ -232,7 +232,7 @@ No derivar:
 | G107-01 | Claim state unitario por link con semántica explícita | DOCUMENTABLE UNDER CONVENTION; no validado |
 | G107-02 | Claim identity compartida por varias evidencias | OPEN |
 | G107-03 | claim_type/claim_revision explícitos | OPEN; no aprobados |
-| G107-04 | Asociar E1/E2/adjudicación al claim agregado | LINK-LEVEL RELATION AVAILABLE; aggregate claim target OPEN |
+| G107-04 | Asociar E1/E2/adjudicación al claim agregado | LINK-LEVEL NAVIGATION PATH AVAILABLE; claim-target exclusivity not constrained |
 | G107-05 | Seis dimensiones lifecycle como campos tipados de NODE | OPEN; no se requieren seis booleanos |
 | G107-06 | INVOKED/EXECUTED event identity | OPEN; necesidad depende de análisis |
 | G107-07 | LOAD como estado vs ocurrencia | OPEN; DGP/fuente deben fijar unidad |
