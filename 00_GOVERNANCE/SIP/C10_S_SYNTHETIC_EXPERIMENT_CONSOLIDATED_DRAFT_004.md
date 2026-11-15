@@ -129,3 +129,18 @@ Gate 122 reutiliza Gate 121, B-M01…15, S1…S8, U_G, IAM/C_SRC, PE, UNIT-01…
 Dictamen: las fuentes técnicas concretas, el sistema B1/D2, el roster causal, los custodios y los permisos no están identificados en este gate. Los contratos y plantillas de GitHub están disponibles como documentación, pero no constituyen evidencia material del runtime. Se mantiene `SOURCE_AVAILABILITY_UNVERIFIED / MATERIAL_INVENTORY_NONE / ISOLATION_NOT_DEMONSTRATED / UE_ASSIGNMENT_CONDITIONAL`.
 
 Gate 122 no crea registros físicos, no captura datos, no consulta entornos técnicos, no cambia esquemas ni autoriza operaciones. Ninguna de las condiciones IS-1…IS-8 pasa a PASS. `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 293. Gate 123 — corrección del encuadre sintético de aislamiento y evidencia (2026-11-15)
+
+Registro: `00_GOVERNANCE/SIP/C10_S_SYNTHETIC_ISOLATION_AND_EVIDENCE_REINTERPRETATION_GATE_123_DRAFT_001.md`; addendum al plan: `00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_CORRECTIVE_ADDENDUM_GATE_123_DRAFT_001.md`.
+
+Gate 123 corrige el error de alcance de Gates 121–122: C10-S es un experimento sintético y no requiere localizar infraestructura productiva B1/D2, hosts, runtimes, IAM real, proveedores, custodios ni snapshots externos. Se conservan los Gates 121–122 como historial, pero su exigencia de adquisición de fuentes externas queda supersedida para este experimento.
+
+Se separan cuatro capas: (1) verdad estructural del DGP conocida por Generator; (2) fidelidad con que el harness materializa el DGP; (3) evidencia observada filtrada y sellada por Sealer/Projector; (4) recuperación/abstención de Analyzer y evaluación posterior contra truth por Evaluator. El conocimiento de Generator no demuestra identificabilidad ni recuperación por Analyzer.
+
+IS-1…IS-8 y S1…S8 se conservan como taxonomías, reinterpretadas sobre roster, dependencias, recursos, interferencia, permisos sintéticos, temporalidad, manifests, trazas, snapshots y bundles del mundo generado. U_G solo se reutiliza dentro de sus contratos existentes; no se crea schema ni test ID nuevo.
+
+DEC-C10-103 y la jerarquía de estimandos permanecen sin cambios. UE=UA sigue condicional por escenario DGP y fidelidad del harness; los escenarios con interferencia requieren arquitectura/estimando compatibles; la interferencia no mapeable requiere bounds/abstención. No se declara aislamiento demostrado, identificación de θ_A ni Design Freeze.
+
+No se generan datos, no se modifica código, no se ejecutan pruebas/validadores/simulaciones/estimaciones ni se autoriza ejecución. PR #116 permanece Draft; `scientific_execution=false`; `execution_authorized=false`.
