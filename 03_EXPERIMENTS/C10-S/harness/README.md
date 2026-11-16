@@ -566,7 +566,16 @@ recovery under repeated sampling.
 
 The same integration module now materializes three separately identified focal
 DGP worlds while holding the direct D2 package path fixed: positive
-`theta_A=+0.5`, null `theta_A=0`, and negative `theta_A=-0.5`. Each world has
+`theta_A=+0.5`, null `theta_A=0`, and negative `theta_A=-0.5`.
+
+The functional-history rule grammar also supports explicit conjunctive
+joint-vector predicates. The integration fixture uses this to separate a focal
+component from a second, common alternative component: when the alternative
+component disables ENABLED in both focal-policy arms, the reserved focal
+contrast is null even though the focal rule remains explicitly gated on the
+alternative component being absent. This is a bounded pathway-interaction
+fixture, not a general interaction estimator or a claim that all alternative
+mechanisms are represented. Each world has
 its own world/DGP/run identity and deterministic seed, and all three pass
 through the same potential-history generation, randomized assignment, realized
 history selection, ideal interval observation, Sealer, Analyzer and Evaluator
