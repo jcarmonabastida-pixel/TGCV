@@ -50,6 +50,33 @@ class C10SFactorialWorldResult:
     reserved_truth: FactorialTruthBundle
     evaluator_result: FactorialEvaluationResult
 
+    def validate(self, grid: IntervalGrid) -> None:
+        self.world.validate()
+        grid.validate()
+        expected_d2 = {
+            (unit.unit_id, z) for unit in self.world.units for z in (0, 1)
+        }
+        if set(self.d2_event_histories_by_unit_z) != expected_d2:
+            raise ContractError("factorial result must retain exact unit × Z D2 potential-history coverage")
+        self.d2_vcont_truth.validate(
+            self.world, self.d2_event_histories_by_unit_z, grid,
+        )
+        self.reserved_truth.validate()
+        if self.history_selection.assignment_bundle_sha256 != self.assignment_bundle.result_sha256:
+            raise ContractError("factorial realized-history selection is detached from assignment bundle")
+        if not self.sealed_evidence.rows or self.sealed_evidence.sha256 != self.analyzer_result.input_sha256:
+            raise ContractError("factorial Analyzer result is detached from sealed S3 evidence")
+        if self.evaluator_result.evidence_sha256 != self.sealed_evidence.sha256:
+            raise ContractError("factorial Evaluator result is detached from sealed S3 evidence")
+        if self.evaluator_result.analyzer_output_sha256 != self.analyzer_result.output_sha256:
+            raise ContractError("factorial Evaluator result is detached from Analyzer output")
+        if not self.evaluator_result.correct_adjudication:
+            raise ContractError("factorial Evaluator rejected the Analyzer result")
+        run_ids = {history.run_id for history in self.d2_event_histories_by_unit_z.values()}
+        run_ids.update(history.run_id for history in self.factorial_potential_histories.values())
+        if len(run_ids) != 1 or self.sealed_evidence.run_id not in run_ids:
+            raise ContractError("factorial D2, A×M potentials and sealed observations must share one run identity")
+
 
 def materialize_c10s_factorial_world_from_dgp(
     *,
@@ -138,8 +165,10 @@ def materialize_c10s_factorial_world_from_dgp(
     evaluation = evaluate_factorial_analysis(
         truth, sealed, analyzer_result, assignments, tolerance=evaluation_tolerance,
     )
-    return C10SFactorialWorldResult(
+    result = C10SFactorialWorldResult(
         world, structural, reach, trajectories, d2_histories, d2_vcont_truth, potentials,
         assignments, realized, selection, interval_records, sealed,
         analysis_contract, analyzer_result, truth, evaluation,
     )
+    result.validate(grid)
+    return result
