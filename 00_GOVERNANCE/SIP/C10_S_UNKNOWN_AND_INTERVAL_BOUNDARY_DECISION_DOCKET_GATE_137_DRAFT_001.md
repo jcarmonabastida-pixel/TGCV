@@ -60,3 +60,14 @@ No modifica DEC, DGP base, plan base, schemas, código, tests, workflows, IDs, R
 
 scientific_execution=false  
 execution_authorized=false
+
+
+## 7. Acceptance outcome — DEC-C10-104 (2026-11-16)
+
+The user explicitly accepted the Gate 137 proposal. The semi-open interval convention and conservative Generator UNKNOWN rule are therefore ACCEPTED WORKING DESIGN DECISIONS, recorded autonomously as DEC-C10-104 at 00_GOVERNANCE/decisions/DEC-C10-104_VCONT_INTERVAL_BOUNDARY_AND_GENERATOR_UNKNOWN_RULE_ACCEPTANCE.md and appended to the C10-S Decision Log.
+
+The operative interval convention is I_k=[b_{k−1},b_k) for k=1,…,K−1 and I_K=[b_{K−1},b_K]. Internal-boundary events belong to the interval beginning there; T* belongs to the final interval. No numerical temporal parameter is selected.
+
+The tri-valued truth and bounds of DEC-C10-100 remain. Generator must not manufacture functional ? from S3 missingness, incomplete DGP/harness representation, unmodelled events/timestamps, observation failure or implementation defects. A functional ? requires a future explicit DGP contract defining intrinsic A_B1 indeterminacy, condition, scope and provenance. Until such a contract exists, complete determinate histories yield 1/0.
+
+This acceptance does not authorize code/schema/test/workflow changes, materialization, generation, simulation, calibration, estimation, execution or Design Freeze. DEC-C10-100…103 remain otherwise unchanged. scientific_execution=false; execution_authorized=false.
