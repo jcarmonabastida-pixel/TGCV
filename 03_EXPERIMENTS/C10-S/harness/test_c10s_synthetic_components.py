@@ -9,7 +9,7 @@ from c10s_synthetic_components import (
     StructuralTransformation, StructuralSnapshot, StructuralRouteStep,
     StructuralRoute, StructuralReachabilityEngine,
     evaluate_synthetic_world_reachability,
-    StructuralAtom, StructuralIdentityMatch, TransformationalStateSnapshot,
+    StructuralAtom, StructuralIdentityMatch, StructuralTransitionRule, TransformationalStateSnapshot,
     EvidenceStateSnapshot, TransformationalDeltaEngine, D2StructuralPotentialPair,
     evaluate_d2_structural_deltas, D2StructuralGenerationConfig,
     generate_d2_structural_potential_pairs,
@@ -640,6 +640,16 @@ class SyntheticComponentTests(unittest.TestCase):
                 StructuralAtom("C", "COND-1", "CONDITION", "v1", 1, (("authorization", "true"),)),
                 StructuralAtom("X", "CTX-1", "CONTEXT", "v1", 1, (("environment", "A"),)),
             ),
+            transition_rules=(
+                StructuralTransitionRule(
+                    StructuralAtom("R", "REL-1", "RELATION", "v1", 1, (("edge", "focal-route-open"),)),
+                    "MODIFY", "c_dep_star",
+                ),
+                StructuralTransitionRule(
+                    StructuralAtom("C", "COND-2", "CONDITION", "v1", 1, (("collateral", "installed-service"),)),
+                    "ADD", "s_install",
+                ),
+            ),
         )
         world, pairs = SyntheticWorldBuilder().generate_complete(
             config, d2_config, structural_config,
@@ -651,8 +661,12 @@ class SyntheticComponentTests(unittest.TestCase):
         self.assertTrue(all(any(row.baseline_id == "TAU-FOCAL" and row.change_kind == "MODIFIED"
                                 for row in delta.delta_u) for delta in deltas))
         self.assertTrue(all(delta.evidence_delta.changed is False for delta in deltas))
-        self.assertTrue(all(len(delta.delta_r) == len(delta.delta_c) == len(delta.delta_x) == 1
-                            for delta in deltas))
+        self.assertTrue(all(
+            any(row.change_kind == "MODIFIED" and row.baseline_id == "REL-1" for row in delta.delta_r)
+            and any(row.change_kind == "ADDED" and row.post_id == "COND-2" for row in delta.delta_c)
+            and len(delta.delta_x) == 1
+            for delta in deltas
+        ))
 
 
     def test_empty_incomplete_structural_universe_is_unknown_not_zero(self):
