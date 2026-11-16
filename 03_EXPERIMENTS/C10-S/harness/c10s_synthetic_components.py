@@ -18,7 +18,7 @@ from typing import Callable, Literal, Sequence
 
 AdmissionBehavior = Literal["ADMIT", "NO_ADMISSION"]
 ProfileValue = Literal["STANDARD", "READ_ONLY", "DISABLED"]
-TriState = Literal[1, 0]
+TriState = Literal[1, 0, "?"]
 
 
 class ContractError(ValueError):
@@ -474,6 +474,268 @@ class QXHistoryMass:
     c_c_ref: str
     mass: float
 
+
+
+
+# Structural transformation space and three-valued reachability.
+# This engine consumes explicit structural predicates; it does not infer them
+# from D2 stages, assignment, selection, execution, Outcome or Value.
+
+ReachState = Literal[1, 0, "?"]
+
+
+def _reach_state(value, label: str) -> None:
+    if value not in (1, 0, "?") or isinstance(value, bool):
+        raise ContractError(f"{label} must be one of 1, 0, ?")
+
+
+def _kleene_and(values: Sequence[ReachState]) -> ReachState:
+    if not values:
+        return 1
+    if any(value == 0 for value in values):
+        return 0
+    if all(value == 1 for value in values):
+        return 1
+    return "?"
+
+
+def _kleene_or(values: Sequence[ReachState], *, exhaustive: bool) -> ReachState:
+    if any(value == 1 for value in values):
+        return 1
+    if values and all(value == 0 for value in values) and exhaustive:
+        return 0
+    return "?"
+
+
+@dataclass(frozen=True)
+class StructuralTransformation:
+    transformation_id: str
+    semantic_version: str
+    snapshot_id: str
+    accessible_state: ReachState
+
+    def validate(self) -> None:
+        if not all((self.transformation_id, self.semantic_version, self.snapshot_id)):
+            raise ContractError("transformation identity, semantic version and snapshot are required")
+        _reach_state(self.accessible_state, "T_acc state")
+
+
+@dataclass(frozen=True)
+class StructuralSnapshot:
+    snapshot_id: str
+    snapshot_version: str
+    world_id: str
+    world_version: str
+    dgp_id: str
+    dgp_version: str
+    boundary_id: str
+    context_id: str
+    horizon: float
+    transformations: tuple[StructuralTransformation, ...]
+    universe_exhaustive: bool
+    relations_exhaustive: bool
+    conditions_exhaustive: bool
+    resources_exhaustive: bool
+    catalog_version: str
+
+    def validate(self) -> None:
+        if not all((self.snapshot_id, self.snapshot_version, self.world_id,
+                    self.world_version, self.dgp_id, self.dgp_version,
+                    self.boundary_id, self.context_id, self.catalog_version)):
+            raise ContractError("structural snapshot identity, boundary, context and catalog version are required")
+        if not math.isfinite(self.horizon) or self.horizon <= 0:
+            raise ContractError("structural horizon must be positive and finite")
+        ids = [item.transformation_id for item in self.transformations]
+        if len(ids) != len(set(ids)):
+            raise ContractError("transformation IDs must be unique within a snapshot")
+        for item in self.transformations:
+            item.validate()
+            if item.snapshot_id != self.snapshot_id:
+                raise ContractError("transformation belongs to a different structural snapshot")
+        if not self.transformations:
+            raise ContractError("structural snapshot must declare its finite transformation catalog")
+
+    @property
+    def catalog_is_exhaustive(self) -> bool:
+        return all((self.universe_exhaustive, self.relations_exhaustive,
+                    self.conditions_exhaustive, self.resources_exhaustive))
+
+
+@dataclass(frozen=True)
+class StructuralRouteStep:
+    transformation_id: str
+    state_before: str
+    state_after: str
+    applicability_state: ReachState
+    predicate_states: tuple[tuple[str, ReachState], ...] = ()
+    duration: float = 0.0
+
+    def validate(self) -> None:
+        if not self.transformation_id or not self.state_before or not self.state_after:
+            raise ContractError("route step requires transformation and explicit input/output states")
+        _reach_state(self.applicability_state, "App_f state")
+        if not math.isfinite(self.duration) or self.duration < 0:
+            raise ContractError("route-step duration must be finite and nonnegative")
+        names = [name for name, _ in self.predicate_states]
+        if any(not name for name in names) or len(names) != len(set(names)):
+            raise ContractError("route predicate names must be nonempty and unique per step")
+        for name, value in self.predicate_states:
+            _reach_state(value, f"route predicate {name}")
+
+
+@dataclass(frozen=True)
+class StructuralRoute:
+    route_id: str
+    target_state: str
+    steps: tuple[StructuralRouteStep, ...]
+    relation_states: tuple[ReachState, ...]
+    temporal_feasibility_state: ReachState
+    route_scope: str
+
+    def validate(self) -> None:
+        if not self.route_id or not self.target_state or not self.route_scope or not self.steps:
+            raise ContractError("route identity, target, scope and at least one step are required")
+        if len(self.relation_states) != len(self.steps) - 1:
+            raise ContractError("one explicit relation state is required between adjacent route steps")
+        for value in self.relation_states:
+            _reach_state(value, "REL_f state")
+        _reach_state(self.temporal_feasibility_state, "temporal feasibility state")
+        for step in self.steps:
+            step.validate()
+        for left, right in zip(self.steps, self.steps[1:]):
+            if left.state_after != right.state_before:
+                raise ContractError("route state transition is discontinuous")
+
+
+@dataclass(frozen=True)
+class StructuralRouteEvaluation:
+    route_id: str
+    target_state: str
+    route_state: ReachState
+    first_blocking_predicate: str | None
+    unknown_predicates: tuple[str, ...]
+    total_duration: float
+
+
+@dataclass(frozen=True)
+class ReachabilityResult:
+    snapshot_id: str
+    snapshot_version: str
+    target_states: tuple[tuple[str, ReachState], ...]
+    route_evaluations: tuple[StructuralRouteEvaluation, ...]
+    enumeration_complete: bool
+    catalog_exhaustive: bool
+    search_truncated: bool
+    result_sha256: str
+
+    def validate(self) -> None:
+        targets = [target for target, _ in self.target_states]
+        if len(targets) != len(set(targets)):
+            raise ContractError("reachability result contains duplicate target states")
+        for _, state in self.target_states:
+            _reach_state(state, "Reach_H state")
+        route_ids = [row.route_id for row in self.route_evaluations]
+        if len(route_ids) != len(set(route_ids)):
+            raise ContractError("reachability result contains duplicate route IDs")
+        if not self.result_sha256:
+            raise ContractError("reachability result fingerprint is required")
+
+
+class StructuralReachabilityEngine:
+    """Evaluate explicit T_acc, App, relation and route predicates separately.
+
+    A confirmed route establishes Reach=1. Reach=0 requires exhaustive catalog,
+    relations, conditions, resources and completed enumeration. Truncation or
+    unknown predicates never become structural absence.
+    """
+    version = "c10s-structural-reachability-0.1"
+
+    def evaluate(
+        self,
+        snapshot: StructuralSnapshot,
+        routes: Sequence[StructuralRoute],
+        *,
+        enumeration_complete: bool,
+        search_truncated: bool = False,
+    ) -> ReachabilityResult:
+        snapshot.validate()
+        if search_truncated and enumeration_complete:
+            raise ContractError("a truncated search cannot be declared enumeration-complete")
+        transformations = {item.transformation_id: item for item in snapshot.transformations}
+        route_ids = [route.route_id for route in routes]
+        if len(route_ids) != len(set(route_ids)):
+            raise ContractError("route IDs must be unique")
+        evaluations = []
+        for route in routes:
+            route.validate()
+            states: list[ReachState] = []
+            names: list[str] = []
+            first_block = None
+            unknown = []
+            total_duration = 0.0
+            for index, step in enumerate(route.steps):
+                transform = transformations.get(step.transformation_id)
+                if transform is None:
+                    raise ContractError("route references a transformation outside the declared snapshot catalog")
+                predicates = [(f"T_acc:{step.transformation_id}", transform.accessible_state),
+                              (f"App:{step.transformation_id}", step.applicability_state)]
+                predicates.extend((f"{name}:{step.transformation_id}", value)
+                                  for name, value in step.predicate_states)
+                for name, value in predicates:
+                    states.append(value)
+                    names.append(name)
+                    if value == "?" and name not in unknown:
+                        unknown.append(name)
+                    if value == 0 and first_block is None:
+                        first_block = name
+                total_duration += step.duration
+                if index < len(route.relation_states):
+                    name = f"REL:{route.route_id}:{index}"
+                    value = route.relation_states[index]
+                    states.append(value)
+                    names.append(name)
+                    if value == "?" and name not in unknown:
+                        unknown.append(name)
+                    if value == 0 and first_block is None:
+                        first_block = name
+            temporal_state = route.temporal_feasibility_state
+            if total_duration > snapshot.horizon:
+                temporal_state = 0
+            states.append(temporal_state)
+            names.append(f"TEMPORAL:{route.route_id}")
+            if temporal_state == "?" and names[-1] not in unknown:
+                unknown.append(names[-1])
+            if temporal_state == 0 and first_block is None:
+                first_block = names[-1]
+            route_state = _kleene_and(states)
+            evaluations.append(StructuralRouteEvaluation(
+                route.route_id, route.target_state, route_state,
+                first_block, tuple(unknown), total_duration,
+            ))
+        target_states = []
+        targets = sorted({route.target_state for route in routes})
+        # A target absent from enumerated routes can be refuted only when both
+        # the declared universe and the route enumeration are exhaustive.
+        exhaustive = snapshot.catalog_is_exhaustive and enumeration_complete and not search_truncated
+        for target in targets:
+            target_routes = [row.route_state for row in evaluations if row.target_state == target]
+            target_states.append((target, _kleene_or(target_routes, exhaustive=exhaustive)))
+        payload = {
+            "snapshot_id": snapshot.snapshot_id,
+            "snapshot_version": snapshot.snapshot_version,
+            "target_states": tuple(target_states),
+            "route_evaluations": tuple(evaluations),
+            "enumeration_complete": enumeration_complete,
+            "catalog_exhaustive": snapshot.catalog_is_exhaustive,
+            "search_truncated": search_truncated,
+        }
+        result = ReachabilityResult(
+            snapshot.snapshot_id, snapshot.snapshot_version, tuple(target_states),
+            tuple(evaluations), enumeration_complete, snapshot.catalog_is_exhaustive,
+            search_truncated, digest(payload),
+        )
+        result.validate()
+        return result
 
 
 @dataclass(frozen=True)
