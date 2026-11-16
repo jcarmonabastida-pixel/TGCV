@@ -570,13 +570,14 @@ DGP worlds while holding the direct D2 package path fixed: positive
 its own world/DGP/run identity and deterministic seed, and all three pass
 through the same potential-history generation, randomized assignment, realized
 history selection, ideal interval observation, Sealer, Analyzer and Evaluator
-interfaces. The positive and negative realized HT point estimates are checked
-for the corresponding sign; the null is checked against the independent
-reserved oracle truth, not against a forced zero one-draw estimate. A single
-randomized estimate can fluctuate under the null, so these scenarios are
-software-path and oracle-separation regressions, not a power/calibration study
-or a null-testing procedure. The broad evaluator tolerance remains a wiring
-check only and must not be interpreted as accurate causal recovery.
+interfaces. Each scenario's reserved oracle truth is checked independently;
+the Analyzer remains a one-draw design-based estimator and is not required to
+classify the sign of a finite-sample estimate. In particular, the null is not
+checked against a forced zero one-draw estimate: randomization noise can produce
+a nonzero estimate under a true null. These scenarios are software-path and
+oracle-separation regressions, not a power/calibration study or a null-testing
+procedure. The broad evaluator tolerance remains a wiring check only and must
+not be interpreted as accurate causal recovery.
 
 The module is included in EP-02's identical primary and clean-replay
 fifteen-module allowlist, compile list, source materialization closure and
