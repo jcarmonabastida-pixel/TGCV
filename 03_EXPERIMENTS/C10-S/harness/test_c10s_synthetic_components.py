@@ -21,6 +21,7 @@ from c10s_synthetic_components import (
     JointPolicyHistory, QXHistoryMass, RCommonPairCertificate,
     S3SequenceKernelRow, S3ObservationConfig, adjudicate_intervals,
     compute_theta_a_truth, evaluate_theta_a_output, generate_d2_potentials, project_s3,
+    ThetaAPolicyAssignmentConfig, generate_theta_a_policy_assignments,
     project_s3_into_evidence_candidate, compose_existing_generation,
 )
 
@@ -838,6 +839,40 @@ class SyntheticComponentTests(unittest.TestCase):
         )
         self.assertEqual(theta_vcont.theta_a_truth.outcome_id, "V_CONT")
         self.assertAlmostEqual(theta_vcont.theta_a_truth.theta_a_truth, -1.0)
+
+        # Direct g_A assignment is a separate randomized intervention, not
+        # the legacy package Z or scalar G assignment.
+        policy_assignment_config = ThetaAPolicyAssignmentConfig(
+            "G_A_DIRECT_RANDOMIZED", "001", "THETA-A-SEED-001",
+            tuple((row.history_ref, 0.5) for row in world.q_x),
+        )
+        policy_assignments = generate_theta_a_policy_assignments(
+            world, policy_assignment_config, g_a0, g_a1, feasible, r_common,
+        )
+        replay_assignments = generate_theta_a_policy_assignments(
+            world, policy_assignment_config, g_a0, g_a1, feasible, r_common,
+        )
+        self.assertEqual(policy_assignments.result_sha256, replay_assignments.result_sha256)
+        self.assertEqual(
+            {row.history_ref for row in policy_assignments.assignments},
+            {row.history_ref for row in world.q_x},
+        )
+        for assignment in policy_assignments.assignments:
+            self.assertEqual(assignment.probability_a0, 0.5)
+            self.assertEqual(assignment.probability_a1, 0.5)
+            self.assertEqual(
+                assignment.assigned_vector,
+                vector_1 if assignment.assigned_arm == 1 else vector_0,
+            )
+        with self.assertRaises(ContractError):
+            generate_theta_a_policy_assignments(
+                world,
+                ThetaAPolicyAssignmentConfig(
+                    "G_A_NO_POSITIVITY", "001", "THETA-A-SEED-002",
+                    tuple((row.history_ref, 1.0) for row in world.q_x),
+                ),
+                g_a0, g_a1, feasible, r_common,
+            )
         with self.assertRaises(ContractError):
             compute_theta_a_vcont_truth_from_event_histories(
                 world, world.q_x, g_a0, g_a1, feasible, r_common,
