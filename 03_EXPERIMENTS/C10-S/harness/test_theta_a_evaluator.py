@@ -16,20 +16,20 @@ class ThetaAObservationEvaluatorTests(unittest.TestCase):
         self.evidence = SealedThetaAEvidence("run-1", rows, manifest,
                                             _hash({"manifest": manifest, "rows": rows}))
         self.truth = SimpleNamespace(
-            evaluator_only=True, outcome_id="V_CONT", estimand_id="THETA_A_VCONT",
+            evaluator_only=True, outcome_id="V_CONT", estimand_id="THETA_A_QX_GA_RCOMMON_VCONT",
             estimand_version="1.0", q_x_fingerprint="qx", theta_a_truth=0.3)
         self.truth_bundle = SimpleNamespace(
             validate=lambda: None, theta_a_truth=self.truth,
             event_history_manifest=(("h0", "vec", "regime", "eh0", "content-sha"),))
         self.contract = ThetaAObservationAnalysisContract(
             q_x_mass_by_history=(("h0", 1.0),), q_x_sha256="qx",
-            assignment_bundle_sha256="ab", estimand_id="THETA_A_VCONT",
+            assignment_bundle_sha256="ab", estimand_id="THETA_A_QX_GA_RCOMMON_VCONT",
             estimand_version="1.0")
 
     def make_result(self, *, status="PARTIALLY_IDENTIFIED", estimate=None,
                     lower=-1.0, upper=1.0, input_sha=None):
         provisional = ThetaAObservationAnalysisResult(
-            "run-1", "THETA_A_VCONT", "1.0", status, estimate, lower, upper,
+            "run-1", "THETA_A_QX_GA_RCOMMON_VCONT", "1.0", status, estimate, lower, upper,
             1.0, (), (1, 1), "POINT_SAMPLE", "STRICT_VCONT_NOT_OBSERVED",
             input_sha or self.evidence.sha256, "")
         return ThetaAObservationAnalysisResult(
