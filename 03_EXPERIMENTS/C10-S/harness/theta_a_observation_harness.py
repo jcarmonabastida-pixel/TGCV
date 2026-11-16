@@ -66,7 +66,8 @@ class ThetaASealer:
             if row["run_id"] != candidate.run_id:
                 raise ContractError("theta_A row run_id mismatch")
             required_strings = ("unit_id", "history_ref", "assignment_bundle_sha256",
-                                "q_x_sha256", "assigned_vector_sha256",
+                                "q_x_sha256", "g_a0_sha256", "g_a1_sha256", "r_common_sha256",
+                                "assigned_vector_sha256",
                                 "policy_fingerprint", "r_common_fingerprint", "history_id",
                                 "observation_id", "profile_config_id", "profile_config_version",
                                 "s3_config_id", "s3_config_version")
@@ -103,9 +104,11 @@ class ThetaASealer:
                 raise ContractError("duplicate theta_A observation_id")
             seen_observations.add(oid)
             unit = row["unit_id"]
-            assignment_contract = (row["assigned_arm"], row["assigned_vector_sha256"],
-                                   row["policy_fingerprint"], row["r_common_fingerprint"],
-                                   row["history_ref"], row["history_id"])
+            assignment_contract = (row["assignment_bundle_sha256"], row["q_x_sha256"],
+                                   row["g_a0_sha256"], row["g_a1_sha256"],
+                                   row["r_common_sha256"], row["assigned_arm"],
+                                   row["assigned_vector_sha256"], row["policy_fingerprint"],
+                                   row["r_common_fingerprint"], row["history_ref"], row["history_id"])
             if unit in unit_contracts and unit_contracts[unit] != assignment_contract:
                 raise ContractError("inconsistent g_A assignment/history across a unit's observations")
             unit_contracts[unit] = assignment_contract
