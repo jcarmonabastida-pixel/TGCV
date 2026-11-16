@@ -1468,6 +1468,244 @@ class SyntheticWorldReachabilityContrast:
             raise ContractError("Reach contrast fingerprint is required")
 
 
+@dataclass(frozen=True)
+class D2TrajectoryGenerationConfig:
+    """Explicit DGP rules for route selection and execution after Reach."""
+    config_id: str
+    config_version: str
+    selection_probability_by_target: tuple[tuple[str, float], ...]
+    route_selection_weight: tuple[tuple[str, float], ...]
+    route_execution_probability: tuple[tuple[str, float], ...]
+    step_execution_probability: tuple[tuple[str, float], ...]
+    randomization_salt: str
+
+    def validate(self, reach_config: D2ReachGenerationConfig) -> None:
+        if not all((self.config_id, self.config_version, self.randomization_salt)):
+            raise ContractError("trajectory config identity, version and randomization salt are mandatory")
+        for rows, label in (
+            (self.selection_probability_by_target, "selection probability"),
+            (self.route_selection_weight, "route selection weight"),
+            (self.route_execution_probability, "route execution probability"),
+            (self.step_execution_probability, "step execution probability"),
+        ):
+            keys = [key for key, _ in rows]
+            if len(keys) != len(set(keys)) or any(not key for key in keys):
+                raise ContractError(f"{label} keys must be nonempty and unique")
+            for _, value in rows:
+                if not math.isfinite(value):
+                    raise ContractError(f"{label} values must be finite")
+        selection = dict(self.selection_probability_by_target)
+        weights = dict(self.route_selection_weight)
+        route_exec = dict(self.route_execution_probability)
+        step_exec = dict(self.step_execution_probability)
+        if set(selection) != set(reach_config.target_states):
+            raise ContractError("trajectory selection probabilities must cover the exact Reach target universe")
+        for value in selection.values():
+            _probability(value, "route selection probability")
+        route_ids = {route.route_id for route in reach_config.route_templates}
+        if set(weights) != route_ids or set(route_exec) != route_ids:
+            raise ContractError("route weights and execution probabilities must cover the exact route catalog")
+        if any(value <= 0 for value in weights.values()):
+            raise ContractError("route selection weights must be strictly positive")
+        for value in route_exec.values():
+            _probability(value, "route execution probability")
+        step_ids = {step.transformation_id for route in reach_config.route_templates for step in route.steps}
+        if set(step_exec) != step_ids:
+            raise ContractError("step execution probabilities must cover the exact transformation steps")
+        for value in step_exec.values():
+            _probability(value, "step execution probability")
+
+
+@dataclass(frozen=True)
+class ExecutedTrajectoryStep:
+    transformation_id: str
+    state_before: str
+    state_after: str
+    executed_state: Literal[0, 1]
+    duration: float
+
+
+@dataclass(frozen=True)
+class D2PotentialTrajectory:
+    unit_id: str
+    z: int
+    target_state: str
+    reach_state: ReachState
+    selection_state: ReachState
+    selected_route_id: str | None
+    execution_state: ReachState
+    trajectory_status: Literal[
+        "COMPLETED", "PARTIAL", "NOT_SELECTED", "NOT_REACHABLE", "UNKNOWN",
+    ]
+    executed_steps: tuple[ExecutedTrajectoryStep, ...]
+    terminal_state: str | None
+
+    def validate(self) -> None:
+        if not self.unit_id or self.z not in (0, 1) or not self.target_state:
+            raise ContractError("potential trajectory requires exact unit, Z and target identity")
+        _reach_state(self.reach_state, "trajectory Reach")
+        _reach_state(self.selection_state, "trajectory selection")
+        _reach_state(self.execution_state, "trajectory execution")
+        if self.selected_route_id is None and self.executed_steps:
+            raise ContractError("trajectory cannot contain executed steps without a selected route")
+        if self.selection_state == 1 and self.selected_route_id is None:
+            raise ContractError("selected trajectory must identify its route")
+        if self.selection_state != 1 and self.selected_route_id is not None:
+            raise ContractError("unselected/unknown trajectory cannot identify a selected route")
+        if self.trajectory_status == "COMPLETED" and self.execution_state != 1:
+            raise ContractError("completed trajectory requires successful execution")
+        if self.trajectory_status == "PARTIAL" and (self.execution_state != 0 or not self.executed_steps):
+            raise ContractError("partial trajectory requires a nonempty executed prefix and failed execution")
+        if self.trajectory_status in ("NOT_SELECTED", "NOT_REACHABLE", "UNKNOWN") and self.executed_steps:
+            raise ContractError("non-executed trajectory status cannot contain executed steps")
+        if self.executed_steps:
+            for left, right in zip(self.executed_steps, self.executed_steps[1:]):
+                if left.state_after != right.state_before:
+                    raise ContractError("executed trajectory state sequence is discontinuous")
+            if self.terminal_state != self.executed_steps[-1].state_after:
+                raise ContractError("trajectory terminal state differs from its executed prefix")
+        elif self.terminal_state is not None:
+            raise ContractError("trajectory without executed steps cannot declare a terminal state")
+
+
+@dataclass(frozen=True)
+class SyntheticWorldTrajectoryBundle:
+    world_id: str
+    world_version: str
+    dgp_id: str
+    dgp_version: str
+    trajectories: tuple[D2PotentialTrajectory, ...]
+    result_sha256: str
+
+    def validate(self, world: "SyntheticWorldBundle", reach: SyntheticWorldReachabilityContrast,
+                 reach_config: D2ReachGenerationConfig) -> None:
+        world.validate()
+        reach.validate(world)
+        expected = {
+            (unit.unit_id, z, target)
+            for unit in world.units for z in (0, 1) for target in reach_config.target_states
+        }
+        actual = {(row.unit_id, row.z, row.target_state) for row in self.trajectories}
+        if actual != expected or len(actual) != len(self.trajectories):
+            raise ContractError("potential trajectories must cover every unit × Z × target exactly")
+        if (self.world_id, self.world_version, self.dgp_id, self.dgp_version) != (
+            world.world_id, world.world_version, world.dgp_id, world.dgp_version
+        ):
+            raise ContractError("trajectory bundle identity differs from its synthetic world")
+        for row in self.trajectories:
+            row.validate()
+        if not self.result_sha256:
+            raise ContractError("trajectory bundle fingerprint is required")
+
+
+def _dgp_uniform(*parts: object) -> float:
+    return int(digest(parts)[:16], 16) / float(16 ** 16)
+
+
+def evaluate_d2_potential_trajectories(
+    world: "SyntheticWorldBundle",
+    reach: SyntheticWorldReachabilityContrast,
+    reach_config: D2ReachGenerationConfig,
+    config: D2TrajectoryGenerationConfig,
+) -> SyntheticWorldTrajectoryBundle:
+    """Generate potential selection/execution/trajectory without equating Reach to action."""
+    world.validate()
+    reach.validate(world)
+    reach_config.validate()
+    config.validate(reach_config)
+    selection_probability = dict(config.selection_probability_by_target)
+    route_weights = dict(config.route_selection_weight)
+    route_execution = dict(config.route_execution_probability)
+    step_execution = dict(config.step_execution_probability)
+    contrasts = {(row.unit_id, row.z): row for row in reach.contrasts}
+    trajectories = []
+    for unit in world.units:
+        for z in (0, 1):
+            contrast = contrasts[(unit.unit_id, z)]
+            route_evaluations = contrast.post.route_evaluations
+            for target in reach_config.target_states:
+                target_reach = dict(contrast.post.target_states)[target]
+                candidates = [row for row in route_evaluations if row.target_state == target]
+                confirmed = [row for row in candidates if row.route_state == 1]
+                unknown = [row for row in candidates if row.route_state == "?"]
+                if confirmed:
+                    total_weight = sum(route_weights[row.route_id] for row in confirmed)
+                    draw = _dgp_uniform(config.randomization_salt, unit.unit_id, target, "selection-route")
+                    cumulative = 0.0
+                    selected = confirmed[-1]
+                    for candidate in sorted(confirmed, key=lambda row: row.route_id):
+                        cumulative += route_weights[candidate.route_id] / total_weight
+                        if draw < cumulative:
+                            selected = candidate
+                            break
+                    selected_flag = (
+                        _dgp_uniform(config.randomization_salt, unit.unit_id, target, "selection")
+                        < selection_probability[target]
+                    )
+                    if not selected_flag:
+                        trajectories.append(D2PotentialTrajectory(
+                            unit.unit_id, z, target, target_reach, 0, None, 0,
+                            "NOT_SELECTED", (), None,
+                        ))
+                        continue
+                    route_template = next(route for route in reach_config.route_templates
+                                          if route.route_id == selected.route_id)
+                    if _dgp_uniform(config.randomization_salt, unit.unit_id, target,
+                                    selected.route_id, "route-execution") >= route_execution[selected.route_id]:
+                        trajectories.append(D2PotentialTrajectory(
+                            unit.unit_id, z, target, target_reach, 1, selected.route_id, 0,
+                            "NOT_SELECTED", (), None,
+                        ))
+                        continue
+                    executed = []
+                    failed = False
+                    for index, step in enumerate(route_template.steps):
+                        success = _dgp_uniform(
+                            config.randomization_salt, unit.unit_id, target,
+                            selected.route_id, index, step.transformation_id, "step-execution",
+                        ) < step_execution[step.transformation_id]
+                        if not success:
+                            failed = True
+                            break
+                        executed.append(ExecutedTrajectoryStep(
+                            step.transformation_id, step.state_before, step.state_after, 1, step.duration,
+                        ))
+                    if failed:
+                        status = "PARTIAL" if executed else "NOT_SELECTED"
+                        execution_state = 0
+                    else:
+                        status = "COMPLETED"
+                        execution_state = 1
+                    trajectories.append(D2PotentialTrajectory(
+                        unit.unit_id, z, target, target_reach, 1, selected.route_id,
+                        execution_state, status, tuple(executed),
+                        executed[-1].state_after if executed else None,
+                    ))
+                elif target_reach == 0 and not unknown:
+                    trajectories.append(D2PotentialTrajectory(
+                        unit.unit_id, z, target, target_reach, 0, None, 0,
+                        "NOT_REACHABLE", (), None,
+                    ))
+                else:
+                    trajectories.append(D2PotentialTrajectory(
+                        unit.unit_id, z, target, "?", "?", None, "?",
+                        "UNKNOWN", (), None,
+                    ))
+    payload = {
+        "world_id": world.world_id, "world_version": world.world_version,
+        "dgp_id": world.dgp_id, "dgp_version": world.dgp_version,
+        "reach_sha256": reach.result_sha256, "reach_config": reach_config,
+        "trajectory_config": config, "trajectories": tuple(trajectories),
+    }
+    result = SyntheticWorldTrajectoryBundle(
+        world.world_id, world.world_version, world.dgp_id, world.dgp_version,
+        tuple(trajectories), digest(payload),
+    )
+    result.validate(world, reach, reach_config)
+    return result
+
+
+
 def _reach_atom_state(
     atoms_by_id: dict[str, StructuralAtom],
     atom_id: str,
