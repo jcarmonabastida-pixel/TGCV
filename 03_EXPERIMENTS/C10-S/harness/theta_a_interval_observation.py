@@ -160,6 +160,8 @@ def validate_interval_s3_observations(
             raise ContractError("invalid interval S3 missingness status")
         if (row.observation_status == "MISSING") != (row.observed_compliance is None):
             raise ContractError("interval S3 value and missingness status disagree")
+        if row.observed_compliance is not None and type(row.observed_compliance) is not bool:
+            raise ContractError("interval S3 compliance observation must be Boolean or missing")
         if (row.capture_time < row.interval_end
                 or row.ingestion_time < row.capture_time):
             raise ContractError("interval S3 capture/ingestion chronology is invalid")
