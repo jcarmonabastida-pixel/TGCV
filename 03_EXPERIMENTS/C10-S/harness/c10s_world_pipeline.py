@@ -180,7 +180,6 @@ def materialize_c10s_complete_world(
     if any(
         history.world_id != world.world_id
         or history.world_version != world.world_version
-        or history.dgp_id != world.dgp_id
         or history.dgp_version != world.dgp_version
         or history.unit_id != unit_id
         for (unit_id, _), history in d2_histories_by_unit_z.items()
