@@ -562,3 +562,19 @@ The module is included in EP-02's identical primary and clean-replay
 fifteen-module allowlist, compile list, source materialization closure and
 execution manifest. Its source has been persisted; neither this test nor EP-02
 has been executed.
+
+**Measurement-scope boundary (Gate 131).** The fixture's
+`CONTINUOUS_EVENT_COVERAGE` mode with zero missingness is an explicitly ideal
+synthetic benchmark channel. It tests the best-case software path from
+interval truth to admissible interval observations and whether the Analyzer /
+Evaluator integration can recover the known contrast without truth leakage.
+It is not evidence that passive, imperfect S3 signals identify or measure
+`A_B1`/`V_cont` in realistic conditions, and it does not close Gate 131.
+No inference is made from this benchmark to imperfect telemetry, finite event
+detection, lag/error, missingness, censoring, or measurement validity.
+Under the current Gate 131 contract, such imperfect-channel cases must remain
+separate: absent an accepted signal-to-truth measurement model or approved
+partial-identification procedure, the Analyzer must abstain / return
+INDETERMINATE rather than infer continuity from missing signals. This scope
+clarification reuses the existing integration test; it creates no new Gate or
+test family and does not authorize test/workflow execution.
