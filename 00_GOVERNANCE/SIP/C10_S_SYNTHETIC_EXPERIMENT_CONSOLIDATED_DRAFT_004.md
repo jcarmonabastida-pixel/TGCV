@@ -406,3 +406,16 @@ El Analyzer inicial puede limitarse a estimación puntual bajo S3 perfecto/compl
 No se requiere nueva semántica, DEC, ledger, escenario ni schema para estas tres cuestiones. Siguiente: revisión de aceptación/versionado del DGP temporal y delta de implementación trazable contra contratos existentes. Esta recomendación no acepta formalmente el DGP ni autoriza implementación. C10-S global sigue abierto por θ_A/q_X*/g_A/r_common, identificación, soporte/interferencia, calibración y criterios de recuperación.
 
 No se modificó código, schema, DEC, tests, workflows, main ni PR base. No hubo ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 313. Gate 141 — revisión de aceptación del contrato DGP temporal §§48–55 (2026-11-16)
+
+**Registro:** 00_GOVERNANCE/SIP/C10_S_DGP_TEMPORAL_CONTRACT_ACCEPTANCE_REVIEW_GATE_141_DRAFT_001.md. **Addendum al plan:** 00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_141_DGP_TEMPORAL_ACCEPTANCE_REVIEW_ADDENDUM_DRAFT_001.md.
+
+La reconstrucción confirma que el contrato DGP temporal §§48–55 sigue DRAFT/NO APROBADO/NO IMPLEMENTADO. DEC-C10-100…104 sí están aceptadas y prevalecen: no se reabren agregación V_cont, inicio t0 post-Z, continuidad estricta, fronteras semiabiertas ni UNKNOWN conservador.
+
+Gate 141 recomienda aceptación parcial como especificación técnica de trabajo de: inventario/familias B1 y relojes separados (§§49–50), principio de horizonte común/censura (§52), reutilización de perfiles/IDs existentes (§53), plan de cobertura (§54, sin calibración aprobada) y orden lógico Generator→truth→S3→Analyzer→Evaluator (§55). §48 se reconoce solo como integración de decisiones vigentes. §51 y parámetros temporales/mecanismos S3 siguen propuestos y abiertos.
+
+La aceptación parcial R141-A requiere aprobación expresa del usuario. R141-B condiciona la aceptación futura del contrato completo a una revisión versionada que armonice frontera/UNKNOWN con DEC-C10-104 y distinga bounds futuros de la ruta inicial Analyzer ideal + abstención. No se modifica el DGP original ni el Decision Log. La implementación del harness sigue pendiente.
+
+No hay Design Freeze, cambios de código/schema ni ejecución. scientific_execution=false; execution_authorized=false.
