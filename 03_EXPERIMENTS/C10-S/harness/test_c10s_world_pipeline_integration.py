@@ -28,7 +28,11 @@ from c10s_functional_history import (
 )
 from c10s_world_pipeline import materialize_c10s_complete_world_from_dgp
 from c10s_factorial_pipeline import materialize_c10s_factorial_world_from_dgp
-from theta_am_factorial import FactorialAssignmentConfig
+from theta_am_factorial import (
+    FactorialAssignmentConfig, FactorialIntervalSealer,
+    FactorialObservationAnalyzer, evaluate_factorial_analysis,
+    factorial_candidate_from_records,
+)
 from theta_a_interval_observation import IntervalMonitorConfig
 
 
@@ -277,7 +281,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             assignment_config=fixture["assignment_config"],
             estimand_version="1",
             outcome_version="VCONT-B1-1",
-            evaluation_tolerance=2.0,
+            evaluation_tolerance=0.25,
             interval_monitor_configs_by_history_ref=fixture["monitor_configs"],
             interval_monitor_seeds_by_unit=fixture["monitor_seeds"],
         )
@@ -454,7 +458,13 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertAlmostEqual(truth.theta_a_given_m1, 0.0)
         self.assertAlmostEqual(truth.theta_am_interaction, -1.0)
         self.assertEqual(len(result.analyzer_result.contrasts), 3)
-        self.assertTrue(result.evaluator_result.correct_adjudication)
+        self.assertEqual(len(result.evaluator_result.absolute_errors), 3)
+        for error, observed, expected_truth in zip(
+            result.evaluator_result.absolute_errors,
+            result.analyzer_result.contrasts,
+            (truth.theta_a_given_m0, truth.theta_a_given_m1, truth.theta_am_interaction),
+        ):
+            self.assertAlmostEqual(error, abs(observed.point_estimate - expected_truth))
 
         # Independently reconstruct the four strict-V_cont HT cell means from
         # realized S3 rows; no latent or reserved truth enters this calculation.
@@ -478,6 +488,35 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         for observed, expected in zip(result.analyzer_result.contrasts, expected_contrasts):
             self.assertEqual(observed.identification, "IDENTIFIED")
             self.assertAlmostEqual(observed.point_estimate, expected)
+
+        # All interval values missing: the Analyzer must abstain from point
+        # identification and return an estimator missingness envelope. This
+        # envelope is not a confidence interval or causal truth bound.
+        missing_records = tuple(
+            replace(row, observed_compliance=None, observation_status="MISSING")
+            for row in result.interval_observations
+        )
+        missing_evidence = FactorialIntervalSealer().seal(
+            factorial_candidate_from_records(missing_records)
+        )
+        partial_analysis = FactorialObservationAnalyzer().analyze(
+            missing_evidence, result.analysis_contract,
+        )
+        self.assertEqual(
+            tuple(row.identification for row in partial_analysis.contrasts),
+            ("PARTIALLY_IDENTIFIED",) * 3,
+        )
+        self.assertTrue(all(
+            row.point_estimate is None
+            and row.lower_bound is not None
+            and row.upper_bound is not None
+            for row in partial_analysis.contrasts
+        ))
+        partial_evaluation = evaluate_factorial_analysis(
+            result.reserved_truth, missing_evidence, partial_analysis,
+            result.assignment_bundle, tolerance=0.25,
+        )
+        self.assertTrue(partial_evaluation.correct_adjudication)
 
         # Null-M negative control: the same factorial assignment and world,
         # but no G_M functional rule, must recover zero interaction.
@@ -505,7 +544,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertAlmostEqual(null_result.reserved_truth.theta_a_given_m0, 1.0)
         self.assertAlmostEqual(null_result.reserved_truth.theta_a_given_m1, 1.0)
         self.assertAlmostEqual(null_result.reserved_truth.theta_am_interaction, 0.0)
-        self.assertTrue(null_result.evaluator_result.correct_adjudication)
+        self.assertEqual(len(null_result.evaluator_result.absolute_errors), 3)
 
 if __name__ == "__main__":
     unittest.main()
