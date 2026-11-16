@@ -76,3 +76,16 @@ Se incorpora la auditoría documental `C10_S_GATE_148_D_O_A_RELATION_FORMALIZATI
 Hallazgo: deben distinguirse D_valid (RUL declarativa), D_enabled, O (disponibilidad runtime) y A (capacidad efectiva de admisión). D_valid no equivale a O/A; ENABLED=true no demuestra disponibilidad/capacidad; ENABLED=false implica no admitir aunque el runtime esté disponible. Los mecanismos de recursos pueden afectar O/A sin duplicar transiciones truth.
 
 Permanece abierta la articulación exacta entre RUL-SVC-ENABLE-PROFILE-01 / DEC-C10-068, la función efectiva de admisión de §§49–50 y la definición Truth/V_cont de DEC-C10-102. No se modifica DEC-C10-102 ni se crean DEC nuevas. §51 y parámetros temporales siguen abiertos. No hay autorización de schema, código, tests, generación, simulación ni ejecución científica.
+
+
+## Addendum Gate 148 — aceptación R148-A y alcance efectivo de V_cont (2026-11-16)
+
+Se acepta expresamente R148-A y la orientación de que `V_cont` represente la continuidad de la función efectiva del servicio B1, incluyendo las interrupciones runtime que impidan realmente la admisión. Registro: `C10_S_GATE_148_R148A_ACCEPTANCE_EFFECTIVE_SERVICE_VCONT_SCOPE_DRAFT_001.md`.
+
+La dirección semántica queda aceptada: `D_valid`, `D_enabled`, `O` y `A` son distintos; la validez de RUL-SVC-ENABLE-PROFILE-01 conserva su implicación unidireccional; ENABLED=false implica no admitir aunque el runtime esté disponible; ENABLED=true no demuestra disponibilidad/capacidad; y los mecanismos runtime solo modifican truth cuando afectan efectivamente la función B1. La truth de A_B1/V_cont no se limita a validez declarativa.
+
+**DEC-C10-102 permanece vigente y sin modificación.** Su formulación de continuidad estricta se refiere expresamente al cumplimiento ENABLED/PROFILE. La inclusión de disponibilidad efectiva requiere reconciliación normativa explícita antes de materializar A_B1/V_cont. Gate 149 realizará el crosswalk DEC-C10-102/104 ↔ DEC-C10-068/099/100 ↔ Gates 127/134/147-B/148 y determinará si basta una interpretación compatible o si hace falta decisión complementaria/sucesora. No se reescribe el historial ni se presume una enmienda.
+
+No se crean DEC en Gate 148 ni se modifican DEC-C10-068/099…104. §51, reloj, rejilla, T*, Δ, K y calibración S3 permanecen abiertos. No hay autorización de schema, código, tests, fixtures, generación, simulación, estimación, calibración ni ejecución científica.
+
+`scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
