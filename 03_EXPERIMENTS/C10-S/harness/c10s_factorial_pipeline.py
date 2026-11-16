@@ -11,7 +11,7 @@ from typing import Sequence
 
 from c10s_synthetic_components import (
     D2MechanismConfig, D2ReachGenerationConfig, D2StructuralGenerationConfig,
-    D2TrajectoryGenerationConfig, EventHistory, IntervalGrid,
+    D2TrajectoryGenerationConfig, EventHistory, IntervalGrid, ContractError,
     JointPolicyHistory, RCommonPairCertificate, SyntheticWorldBuilder,
     SyntheticWorldConfig, Vector4,
 )
@@ -79,10 +79,22 @@ def materialize_c10s_factorial_world_from_dgp(
     history is projected to S3; the reserved potential histories remain
     evaluator-side.
     """
+    grid.validate()
     builder = SyntheticWorldBuilder()
     world, structural, reach, trajectories = builder.generate_complete_with_trajectories(
         world_config, d2_config, structural_config, reach_config, trajectory_config,
     )
+    expected_refs = {row.history_ref for row in world.q_x}
+    if set(grids_by_history_ref) != expected_refs or set(interval_monitor_configs_by_history_ref) != expected_refs:
+        raise ContractError("factorial S3 grids and monitor configurations must cover q_X* exactly")
+    for candidate_grid in grids_by_history_ref.values():
+        candidate_grid.validate()
+        if (candidate_grid.grid_id, candidate_grid.grid_version, candidate_grid.boundaries) != (
+            grid.grid_id, grid.grid_version, grid.boundaries
+        ):
+            raise ContractError("factorial truth and observed S3 must share the exact same interval grid")
+    if set(interval_monitor_seeds_by_unit) != {unit.unit_id for unit in world.units}:
+        raise ContractError("factorial interval-monitor seeds must cover the exact world roster")
     d2_histories = generate_d2_event_history_potentials(
         world, functional_history_config, initial_state_by_unit_z,
     )
