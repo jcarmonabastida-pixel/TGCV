@@ -904,9 +904,9 @@ class TransformationalStateSnapshot:
             raise ContractError("transformational snapshot identity and scope are mandatory")
         if self.potential_z not in (0, 1) or self.timepoint not in ("BASELINE", "POST"):
             raise ContractError("snapshot must identify potential Z and BASELINE/POST timepoint")
-        atom_keys = [(atom.component, atom.canonical_id) for atom in self.atoms]
-        if len(atom_keys) != len(set(atom_keys)):
-            raise ContractError("structural atom IDs must be unique within each component")
+        atom_ids = [atom.canonical_id for atom in self.atoms]
+        if len(atom_ids) != len(set(atom_ids)):
+            raise ContractError("canonical structural atom IDs must be globally unique within a snapshot")
         for atom in self.atoms:
             atom.validate()
         complete = dict(self.component_complete)
