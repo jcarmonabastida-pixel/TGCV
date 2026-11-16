@@ -1,7 +1,7 @@
 # C10-S — Paquete B: propuesta integrada de cierre del DGP temporal y del diseño causal
 
 **Fecha:** 2026-11-16  
-**Estado:** INTEGRATED_DESIGN_RECONCILIATION_COMPLETE / LOGICAL_CONTRACT_PROPOSED_FOR_ACCEPTANCE / MATERIAL_PARAMETERS_AND_IDENTIFICATION_OPEN / NOT_DESIGN_FROZEN.  
+**Estado:** B1_B6_ACCEPTED / SYNTHETIC_LANE_MATERIALIZATION_REQUIRED / MATERIAL_PARAMETERS_AND_CAUSAL_RECOVERY_OPEN / NOT_DESIGN_FROZEN.  
 **Rama:** research/c10-s-consolidation-draft · PR #116 Draft.  
 **Precedencia:** DEC-C10-066/067/068/069/095/099…104; DEC-C10-103; DEC-C10S population/estimand decisions; Package A accepted C1–C6; R144-A; R146-A…D; R147-A/B; R148-A; R150-A; R151-A/A8; R152-A1…A6; R208-A1…A6; Gates 121, 129, 130; DGP Temporal and Role Contract §§48–55; D2 Assignment/Population/Support Reconciliation; Path Predicate Temporal Evidence Matrix; UNIT-01…14, PROV-01…12, P177–P183, MEAS/MISS and S3 contracts.
 **Tipo:** reconciliación integrada y propuesta de decisiones de diseño; no crea DEC ni modifica los contratos fuente.
@@ -203,9 +203,9 @@ No se considerarán cerrados ni identificados por aceptación:
 
 La aceptación de B1–B6 no autoriza materializar roster/datos, crear schemas/fixtures, modificar código, ejecutar tests, calibrar, simular, estimar o ejecutar el experimento. Esas autorizaciones seguirán separadas y se solicitarán cuando los paquetes C y D hayan definido el contrato completo.
 
-## 11. Acto de aprobación requerido
+## 11. Registro de aceptación
 
-Aceptar o rechazar conjuntamente B1–B6. La aceptación debe entenderse exactamente con el alcance del §10: cierre lógico integrado y criterios de dependencia, no cierre empírico/material ni autorización de ejecución. Si se acepta, se registrará la aceptación en el maestro, Decision Log y Closure Control Matrix, sin crear DEC ni alterar los contratos fuente.
+B1–B6 han sido aceptadas conjuntamente por el usuario. La aceptación se registra en el maestro, Decision Log y Closure Control Matrix, y se complementa con C10_S_PACKAGE_B_ACCEPTANCE_AND_SYNTHETIC_MATERIALIZATION_RECONCILIATION_DRAFT_001.md. El alcance aceptado cierra el contrato lógico integrado; la materialización pendiente corresponde al carril sintético S y no exige una instancia real M. La implementación S queda autorizada en la rama research, pero no la ejecución de tests, calibración, Monte Carlo ni experimento científico.
 
 scientific_execution=false  
 execution_authorized=false  
