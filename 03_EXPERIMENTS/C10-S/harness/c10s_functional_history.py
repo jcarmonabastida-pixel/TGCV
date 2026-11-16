@@ -95,10 +95,8 @@ class FunctionalHistoryDGPConfig:
             rule.validate()
             if rule.event_time < self.support_start or rule.event_time > self.support_end:
                 raise ContractError("functional rule event_time falls outside declared support")
-        if not any(rule.source == "D2" for rule in self.rules):
-            raise ContractError("DGP must explicitly declare its D2 functional mechanism rules")
-        if not any(rule.source == "G_A" for rule in self.rules):
-            raise ContractError("DGP must explicitly declare its direct-g_A functional mechanism rules")
+        # Empty rule subsets are meaningful null-effect mechanisms. They are
+        # not silently replaced by an accessibility/admission mapping.
 
 
 def _apply_rules(
@@ -133,6 +131,29 @@ def _apply_rules(
             suborder=rule.suborder,
         ))
         current = after
+    by_time: dict[Decimal, list[int]] = {}
+    for index, change in enumerate(changes):
+        by_time.setdefault(change.event_time, []).append(index)
+    for indices in by_time.values():
+        if len(indices) == 1:
+            index = indices[0]
+            if changes[index].suborder is not None:
+                row = changes[index]
+                changes[index] = FunctionalStateChange(
+                    row.event_time, row.state_after, row.causal_family,
+                    row.provenance_ref, None,
+                )
+        else:
+            supplied = [changes[index].suborder for index in indices]
+            if all(value is None for value in supplied):
+                for order, index in enumerate(indices):
+                    row = changes[index]
+                    changes[index] = FunctionalStateChange(
+                        row.event_time, row.state_after, row.causal_family,
+                        row.provenance_ref, order,
+                    )
+            elif any(value is None for value in supplied):
+                raise ContractError("same-time functional rules must declare all suborders or none")
     return tuple(changes)
 
 
