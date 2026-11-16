@@ -464,3 +464,14 @@ R144-B mantiene §51 completo, reloj numérico, soporte, T*, ρ_follow, Δ, K y 
 No se modificó DGP, DEC, Decision Log, schemas, código, tests, workflows ni artefactos canónicos main. No hubo ejecución.
 
 scientific_execution=false; execution_authorized=false.
+
+
+## 317. Gate 144 — aceptación expresa de R144-A (2026-11-16)
+
+El usuario acepta R144-A para el DGP sintético: estado funcional inicial post-Z en t0; persistencia por tramos hasta transición truth explícita; transiciones con before/after, familia causal, identidad/versión, event_time y provenance; simultaneidad genuina atómica; suborden explícito para estados intermedios; aplicación de DEC-C10-104 cuando exista rejilla comparable; y defectos de historia/harness separados de UNKNOWN funcional.
+
+R144-B permanece abierto: §51, reloj/unidad/coordenada contractual, W_c, T*, ρ_follow, Δ, K, soporte y captura/calibración S3. La aceptación no autoriza implementación ni ejecución.
+
+Gate 144 pasa a **R144_A_ACCEPTED_FOR_SYNTHETIC_DGP_LOGICAL_SEMANTICS / R144_B_OPEN**. No se modifican DEC, DGP original, código, schemas, tests, workflows ni main.
+
+scientific_execution=false; execution_authorized=false.
