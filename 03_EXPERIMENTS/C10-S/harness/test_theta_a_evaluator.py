@@ -11,19 +11,24 @@ from c10s_synthetic_components import ContractError
 class ThetaAObservationEvaluatorTests(unittest.TestCase):
     def setUp(self):
         rows = ({"history_ref": "h0", "history_id": "eh0", "unit_id": "u0",
-                 "assignment_bundle_sha256": "ab", "q_x_sha256": "qx"},)
+                 "assignment_bundle_sha256": "ab", "q_x_sha256": "qx",
+                 "g_a0_sha256": "ga0", "g_a1_sha256": "ga1",
+                 "r_common_sha256": "rc", "r_common_fingerprint": "r"},)
         manifest = {"run_id": "run-1", "schema": "test"}
         self.evidence = SealedThetaAEvidence("run-1", rows, manifest,
                                             _hash({"manifest": manifest, "rows": rows}))
         self.truth = SimpleNamespace(
             evaluator_only=True, outcome_id="V_CONT", estimand_id="THETA_A_QX_GA_RCOMMON_VCONT",
-            estimand_version="1.0", q_x_fingerprint="qx", theta_a_truth=0.3)
+            estimand_version="1.0", q_x_fingerprint="qx", g_a0_fingerprint="ga0",
+            g_a1_fingerprint="ga1", theta_a_truth=0.3,
+            contributions=(SimpleNamespace(history_ref="h0", r_common_fingerprint="r"),))
         self.truth_bundle = SimpleNamespace(
             validate=lambda: None, theta_a_truth=self.truth,
             event_history_manifest=(("h0", "vec", "regime", "eh0", "content-sha"),))
         self.contract = ThetaAObservationAnalysisContract(
             q_x_mass_by_history=(("h0", 1.0),), q_x_sha256="qx",
-            assignment_bundle_sha256="ab", estimand_id="THETA_A_QX_GA_RCOMMON_VCONT",
+            assignment_bundle_sha256="ab", g_a0_sha256="ga0", g_a1_sha256="ga1",
+            r_common_sha256="rc", estimand_id="THETA_A_QX_GA_RCOMMON_VCONT",
             estimand_version="1.0")
 
     def make_result(self, *, status="PARTIALLY_IDENTIFIED", estimate=None,
