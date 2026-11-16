@@ -127,3 +127,6 @@ Auditoría estática de GitHub. No imports, compilación, tests, CI, dispatch, g
 
 `scientific_execution=false`  
 `execution_authorized=false`
+
+
+**Límite adicional de la truth:** en el código actual, `potential_interval_truth` se materializa como conjunción binaria ENABLED∧PROFILE (0/1) para cada intervalo. La ausencia S3 produce `None` en el canal observado, no un estado desconocido de la truth del Generator. Por tanto, la semántica UNKNOWN de DEC-C10-100 y sus bounds por intervalos de truth desconocida no están materializados en este harness; no deben confundirse con missingness observacional. Gate 133 comprobará si esta diferencia está intencionadamente fuera del alcance del benchmark ideal o requiere una decisión de diseño antes del freeze.
