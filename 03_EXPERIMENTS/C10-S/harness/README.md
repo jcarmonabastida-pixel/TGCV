@@ -564,13 +564,15 @@ software-scoring tolerance: this is an integration/contract test of the complete
 data path, not a claim of estimator calibration, statistical power, or causal
 recovery under repeated sampling.
 
-The same integration module now materializes four separately identified focal
-DGP worlds while holding the direct D2 package path fixed: positive
-`theta_A=+0.5`, null `theta_A=0`, negative `theta_A=-0.5`, and a bounded
-alternative-path interaction scenario with `theta_A=0`. Each world has its
-own world/DGP/run identity and deterministic seed, and all four pass through
-the same potential-history generation, randomized assignment, realized
-history selection, ideal interval observation, Sealer, Analyzer and Evaluator
+The same integration module now materializes four separately identified
+runs across three DGP configurations while holding the direct D2 package path
+fixed: positive `theta_A=+0.5`, null `theta_A=0`, negative `theta_A=-0.5`,
+and an alternative-path regime with `theta_A=0`. The positive and alternative
+runs share the same base world, roster, DGP identity, seed and q_X* population;
+only the common alternative-policy component differs. Null and negative cases
+have their own versioned DGP identities. All four runs pass through the same
+potential-history generation, randomized assignment, realized history
+selection, ideal interval observation, Sealer, Analyzer and Evaluator
 interfaces. Each scenario's reserved oracle truth is checked independently;
 the Analyzer remains a one-draw design-based estimator and is not required to
 classify the sign of a finite-sample estimate. In particular, the null is not
@@ -581,13 +583,14 @@ procedure. The broad evaluator tolerance remains a wiring check only and must
 not be interpreted as accurate causal recovery.
 
 The functional-history rule grammar supports explicit conjunctive joint-vector
-predicates. In the alternative-path scenario, a second policy component changes
-ENABLED to false in both focal-policy arms while leaving the declared admission
-behavior at ADMIT; this deliberately creates a B1 conformance failure common to
-both arms. The focal admission rule is gated on that alternative component
-being absent. The resulting focal contrast is null under the active alternative
-path, a bounded pathway-interaction fixture rather than a general interaction
-estimator or a claim that all alternative mechanisms are represented.
+predicates. In the shared base DGP, the focal admission rule is active only
+when the alternative component is absent. When the alternative component is
+active, it changes ENABLED to false in both focal-policy arms while leaving
+the declared admission behavior at ADMIT, creating a common B1 conformance
+failure. The test compares the two oracle focal contrasts under the same base
+population and asserts their difference (0.5), a bounded interaction contrast.
+It is not a general interaction estimator or a claim that all alternative
+mechanisms are represented.
 
 The module is included in EP-02's identical primary and clean-replay
 fifteen-module allowlist, compile list, source materialization closure and
