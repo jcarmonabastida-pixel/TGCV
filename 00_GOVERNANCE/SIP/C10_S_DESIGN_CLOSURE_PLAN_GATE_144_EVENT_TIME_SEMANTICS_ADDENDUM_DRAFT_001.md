@@ -3,16 +3,27 @@
 **Fecha:** 2026-11-16  
 **Registro:** C10_S_EVENT_TIME_AND_TRANSITION_SEMANTICS_GATE_144_DRAFT_001.md  
 **Rama:** research/c10-s-consolidation-draft · PR #116 Draft  
-**Estado:** RECONSTRUCTION_COMPLETE / R144_PROPOSAL_PENDING_ACCEPTANCE / NO_IMPLEMENTATION.
+**Estado:** RECONSTRUCTION_COMPLETE / R144_A_ACCEPTED / R144_B_OPEN / NO_IMPLEMENTATION.
 
 Gate 144 confirma que DEC-C10-100…104 y Gates 135–143 ya fijan agregación, t0, continuidad estricta, fronteras, UNKNOWN, separación de relojes y firewall. DGP §51 contiene coordenada normalizada x=(t−t0)/W_c, pero Gate 142 la dejó fuera de la aceptación parcial; sigue como propuesta.
 
 Vacío no cerrado: persistencia del estado entre transiciones, estado inicial post-Z, simultaneidad/igual event_time y representación de estados intermedios. El orden ordinal preserva EventHistory, pero no basta para adjudicar intervalos sin comparación con fronteras.
 
-R144-A propone proceso de estado por tramos, estado inicial en t0, eventos before/after con provenance, simultaneidad atómica y suborden explícito para secuencias con estados intermedios, y aplicación de DEC-C10-104 cuando exista rejilla comparable. Historias completas/determinadas producen 1/0; defectos de historia no producen funcional UNKNOWN.
+R144-A aceptada por el usuario el 2026-11-16 proceso de estado por tramos, estado inicial en t0, eventos before/after con provenance, simultaneidad atómica y suborden explícito para secuencias con estados intermedios, y aplicación de DEC-C10-104 cuando exista rejilla comparable. Historias completas/determinadas producen 1/0; defectos de historia no producen funcional UNKNOWN.
 
 R144-B mantiene §51 completo, reloj numérico, soporte, T*, ρ_follow, Δ, K y contrato/calibración S3 abiertos. Aceptar R144-A no autoriza implementación ni aprueba EventHistory físico, rejilla o adjudicador. Requiere aceptación expresa del usuario.
 
 No se modificó DGP, DEC, Decision Log, schemas, código, tests, workflows ni artefactos canónicos main. No hubo ejecución.
+
+scientific_execution=false; execution_authorized=false.
+
+
+## Aceptación expresa
+
+El usuario aceptó R144-A el 2026-11-16. Quedan aceptados para el DGP sintético el estado inicial post-Z, persistencia por tramos entre transiciones truth, transiciones atómicas para simultaneidad genuina, suborden explícito para estados intermedios, aplicación futura de DEC-C10-104 y clasificación de defectos de historia/harness separada de UNKNOWN funcional.
+
+R144-B permanece abierto: §51, reloj/escala, W_c, T*, ρ_follow, Δ, K, soporte, frontera temporal materializable y mecanismo/calibración S3 no quedan aprobados.
+
+La aceptación es semántica, no implementación. No autoriza código, schemas, tests, validadores, workflows ni ejecución científica.
 
 scientific_execution=false; execution_authorized=false.
