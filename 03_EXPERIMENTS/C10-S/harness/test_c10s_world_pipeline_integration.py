@@ -161,7 +161,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 FunctionalHistoryRule(
                     rule_id="GA-VECTOR-ENABLES-ADMISSION",
                     source="G_A",
-                    event_time=Decimal("1"),
+                    event_time=Decimal("0"),
                     causal_family="DIRECT_GA_FUNCTIONAL_ADMISSION",
                     provenance_ref="FUNCTIONAL-DGP#GA-VECTOR-ENABLES-ADMISSION",
                     set_admission="ADMIT",
@@ -241,7 +241,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         # feed the reserved oracle and the realized-assignment selection.
         self.assertEqual(len(result.d2_histories_by_unit_z), 64)
         self.assertEqual(len(result.theta_a_truth.event_history_manifest), 64)
-        self.assertAlmostEqual(result.theta_a_truth.theta_a_truth, 0.5)
+        self.assertAlmostEqual(result.theta_a_truth.theta_a_truth, 1.0)
         self.assertEqual(
             {row.assigned_arm for row in result.theta_a_assignments.assignments},
             {0, 1},
