@@ -999,6 +999,10 @@ class Evaluator:
         if (run_id != sealed_evidence.run_id or run_id != analyzer_result.run_id
                 or analyzer_result.input_sha256 != sealed_evidence.sha256):
             raise ContractError("EventHistory evaluation run/evidence binding mismatch")
+        if (sealed_evidence.manifest.get("schema") != "C10S-VCONT-S3-002"
+                or _hash({"manifest": sealed_evidence.manifest, "rows": sealed_evidence.rows})
+                != sealed_evidence.sha256):
+            raise FirewallError("sealed S3 evidence schema or digest is invalid")
 
         histories_by_id = {history.history_id: history for history in extension.event_histories}
         selected_ids = {item.history_ref for item in observations}
@@ -1014,8 +1018,11 @@ class Evaluator:
 
         adjudications = {item.history_id: item for item in extension.interval_adjudications}
         rows_by_unit = {row.get("unit_id"): row for row in sealed_evidence.rows}
-        if len(rows_by_unit) != len(sealed_evidence.rows):
-            raise ContractError("sealed evidence has duplicate/missing unit identities")
+        selected_units = [histories_by_id[history_id].unit_id for history_id in selected_ids]
+        if (len(rows_by_unit) != len(sealed_evidence.rows)
+                or len(selected_units) != len(set(selected_units))
+                or set(rows_by_unit) != set(selected_units)):
+            raise ContractError("selected EventHistory and sealed evidence unit rosters differ")
 
         enabled_n = enabled_correct = 0
         admission_n = admission_correct = 0
