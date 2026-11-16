@@ -823,8 +823,13 @@ class FactorialTruthBundle:
             raise ContractError("factorial truth must be fully identified and evaluator-only")
         if len(self.cell_means) != 4 or any(not isinstance(v, (int, float)) for v in self.cell_means):
             raise ContractError("factorial truth requires four finite cell means")
-        if any(not __import__("math").isfinite(v) for v in self.cell_means):
-            raise ContractError("factorial cell truths must be finite")
+        if any(not __import__("math").isfinite(v) or not 0.0 <= v <= 1.0
+               for v in self.cell_means):
+            raise ContractError("strict binary V_cont cell truths must be finite and in [0,1]")
+        if (not self.event_history_manifest
+                or len({row[4] for row in self.event_history_manifest}) != len(self.event_history_manifest)
+                or any(row[3] not in (0, 1) for row in self.event_history_manifest)):
+            raise ContractError("factorial truth requires unique, explicitly indexed M potential histories")
         mu00, mu10, mu01, mu11 = self.cell_means
         expected = (mu10 - mu00, mu11 - mu01, (mu11 - mu01) - (mu10 - mu00))
         actual = (self.theta_a_given_m0, self.theta_a_given_m1, self.theta_am_interaction)
@@ -916,6 +921,8 @@ def compute_factorial_vcont_truth_from_event_histories(
             raise ContractError("factorial potential histories must share exact V_cont grid support")
         if history.history_id in history_ids or history.potential_id in potential_ids:
             raise ContractError("factorial potential EventHistory IDs must be unique")
+        if f":G_AxM:{factor_m_id}:{factor_m_version}:" not in history.potential_id:
+            raise ContractError("factorial EventHistory potential identity omits the declared M mechanism/version")
         history_ids.add(history.history_id)
         potential_ids.add(history.potential_id)
         run_ids.add(history.run_id)
