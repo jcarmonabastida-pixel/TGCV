@@ -717,8 +717,11 @@ class StructuralReachabilityEngine:
                 route.route_id, route.target_state, route_state,
                 first_block, tuple(unknown), total_duration,
             ))
-        target_states = []
-        targets = sorted(set(target_states) | {route.target_state for route in routes})
+        declared_targets = tuple(target_states)
+        if any(not target for target in declared_targets) or len(declared_targets) != len(set(declared_targets)):
+            raise ContractError("declared reachability target states must be nonempty and unique")
+        target_results = []
+        targets = sorted(set(declared_targets) | {route.target_state for route in routes})
         if any(not target for target in targets):
             raise ContractError("declared reachability target states must be nonempty")
         # A target absent from enumerated routes can be refuted only when both
@@ -726,18 +729,18 @@ class StructuralReachabilityEngine:
         exhaustive = snapshot.catalog_is_exhaustive and enumeration_complete and not search_truncated
         for target in targets:
             target_routes = [row.route_state for row in evaluations if row.target_state == target]
-            target_states.append((target, _kleene_or(target_routes, exhaustive=exhaustive)))
+            target_results.append((target, _kleene_or(target_routes, exhaustive=exhaustive)))
         payload = {
             "snapshot_id": snapshot.snapshot_id,
             "snapshot_version": snapshot.snapshot_version,
-            "target_states": tuple(target_states),
+            "target_states": tuple(target_results),
             "route_evaluations": tuple(evaluations),
             "enumeration_complete": enumeration_complete,
             "catalog_exhaustive": snapshot.catalog_is_exhaustive,
             "search_truncated": search_truncated,
         }
         result = ReachabilityResult(
-            snapshot.snapshot_id, snapshot.snapshot_version, tuple(target_states),
+            snapshot.snapshot_id, snapshot.snapshot_version, tuple(target_results),
             tuple(evaluations), enumeration_complete, snapshot.catalog_is_exhaustive,
             search_truncated, digest(payload),
         )
