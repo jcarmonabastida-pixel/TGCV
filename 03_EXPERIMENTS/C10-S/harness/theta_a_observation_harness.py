@@ -113,9 +113,10 @@ class ThetaASealer:
                 raise ContractError("inconsistent g_A assignment/history across a unit's observations")
             unit_contracts[unit] = assignment_contract
             normalised_rows.append(dict(row))
-        arms = {contract[0] for contract in unit_contracts.values()}
-        if arms != {0, 1}:
-            raise ContractError("theta_A evidence must contain units assigned to both g_A arms")
+        # Do not reject a sparse realized arm at sealing time. Randomized
+        # assignment positivity is a design property; realized sample support
+        # is an Analyzer identification condition and must yield abstention,
+        # not a sealing crash.
         manifest = {"run_id": candidate.run_id, "schema": SCHEMA,
                     "sealer_version": self.version, "row_count": len(normalised_rows),
                     "unit_count": len(unit_contracts),
