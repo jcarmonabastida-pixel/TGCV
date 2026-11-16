@@ -9,6 +9,9 @@ from c10s_synthetic_components import (
     StructuralTransformation, StructuralSnapshot, StructuralRouteStep,
     StructuralRoute, StructuralReachabilityEngine,
     evaluate_synthetic_world_reachability,
+    StructuralAtom, StructuralIdentityMatch, TransformationalStateSnapshot,
+    EvidenceStateSnapshot, TransformationalDeltaEngine, D2StructuralPotentialPair,
+    evaluate_d2_structural_deltas,
     FunctionalState, FunctionalTransition, IntervalGrid,
     JointPolicyHistory, QXHistoryMass, RCommonPairCertificate,
     S3SequenceKernelRow, S3ObservationConfig, adjudicate_intervals,
@@ -512,6 +515,150 @@ class SyntheticComponentTests(unittest.TestCase):
         )
         self.assertEqual(dict(exhaustive.target_states)["S-TARGET-ABSENT"], 0)
         self.assertEqual(dict(incomplete.target_states)["S-TARGET-ABSENT"], "?")
+
+
+    def structural_state_snapshot(self, snapshot_id, timepoint, atoms, *, unit="UE-1", z=0,
+                                   complete=(("U", True), ("R", True), ("C", True), ("X", True))):
+        return TransformationalStateSnapshot(
+            snapshot_id, "001", "WORLD-DELTA", "001", "DGP-DELTA", "001",
+            unit, z, timepoint, "BOUNDARY-1", "CONTEXT-1", "CATALOG-1",
+            tuple(atoms), tuple(complete),
+        )
+
+    def evidence_state(self, evidence_id, *, coverage="COMPLETE", source="SRC-1"):
+        return EvidenceStateSnapshot(
+            evidence_id, (source,), coverage, "VALID", f"PROV-{evidence_id}",
+            "EVIDENCE-001", "ADJUDICATION-001",
+        )
+
+    def test_delta_t_acc_materializes_u_r_c_x_separately_from_evidence_delta(self):
+        baseline_atoms = (
+            StructuralAtom("U", "TAU-FOCAL", "TRANSFORMATION", "v1", 0, (("kind", "migration"),)),
+            StructuralAtom("U", "TAU-ALT", "TRANSFORMATION", "v1", 1, (("kind", "fallback"),)),
+            StructuralAtom("R", "REL-1", "RELATION", "v1", 1, (("from", "S0"), ("to", "S1"))),
+            StructuralAtom("C", "COND-1", "CONDITION", "v1", 1, (("authorization", "true"),)),
+            StructuralAtom("X", "CTX-1", "CONTEXT", "v1", 1, (("environment", "A"),)),
+        )
+        post_atoms = (
+            StructuralAtom("U", "TAU-FOCAL", "TRANSFORMATION", "v2", 1, (("kind", "migration"),)),
+            StructuralAtom("U", "TAU-ALT", "TRANSFORMATION", "v1", 1, (("kind", "fallback"),)),
+            StructuralAtom("R", "REL-1", "RELATION", "v1", 1, (("from", "S0"), ("to", "S1"))),
+            StructuralAtom("C", "COND-1", "CONDITION", "v1", 1, (("authorization", "true"),)),
+            StructuralAtom("X", "CTX-1", "CONTEXT", "v1", 1, (("environment", "A"),)),
+        )
+        result = TransformationalDeltaEngine().evaluate(
+            self.structural_state_snapshot("SNAP-B", "BASELINE", baseline_atoms),
+            self.structural_state_snapshot("SNAP-P", "POST", post_atoms),
+            evidence_baseline=self.evidence_state("E-B", coverage="PARTIAL"),
+            evidence_post=self.evidence_state("E-P", coverage="COMPLETE", source="SRC-2"),
+        )
+        self.assertEqual(result.delta_state, 1)
+        self.assertEqual(len(result.delta_u), 2)
+        focal = next(row for row in result.delta_u if row.baseline_id == "TAU-FOCAL")
+        self.assertEqual((focal.change_kind, focal.change_state), ("MODIFIED", 1))
+        self.assertTrue(all(row.change_state == 0 for rows in (result.delta_r, result.delta_c, result.delta_x) for row in rows))
+        self.assertTrue(result.evidence_delta.changed)
+        self.assertEqual(result.delta_state, 1)
+
+    def test_evidence_improvement_alone_does_not_create_delta_t_acc(self):
+        atoms = (
+            StructuralAtom("U", "TAU-1", "TRANSFORMATION", "v1", 1, (("kind", "convert"),)),
+            StructuralAtom("R", "REL-1", "RELATION", "v1", 1, (("edge", "a-b"),)),
+            StructuralAtom("C", "COND-1", "CONDITION", "v1", 1, (("rule", "r1"),)),
+            StructuralAtom("X", "CTX-1", "CONTEXT", "v1", 1, (("state", "s0"),)),
+        )
+        result = TransformationalDeltaEngine().evaluate(
+            self.structural_state_snapshot("SNAP-B", "BASELINE", atoms),
+            self.structural_state_snapshot("SNAP-P", "POST", atoms),
+            evidence_baseline=self.evidence_state("E-B", coverage="PARTIAL"),
+            evidence_post=self.evidence_state("E-P", coverage="COMPLETE"),
+        )
+        self.assertEqual(result.delta_state, 0)
+        self.assertTrue(result.evidence_delta.changed)
+
+    def test_unknown_identity_correspondence_propagates_unknown_not_add_remove(self):
+        before = (StructuralAtom("U", "TAU-OLD", "TRANSFORMATION", "v1", 1, (("kind", "convert"),)),)
+        after = (StructuralAtom("U", "TAU-NEW", "TRANSFORMATION", "v2", 1, (("kind", "convert"),)),)
+        result = TransformationalDeltaEngine().evaluate(
+            self.structural_state_snapshot("SNAP-B", "BASELINE", before),
+            self.structural_state_snapshot("SNAP-P", "POST", after),
+            identity_matches=(StructuralIdentityMatch("TAU-OLD", "TAU-NEW", "?"),),
+            evidence_baseline=self.evidence_state("E-B"),
+            evidence_post=self.evidence_state("E-P"),
+        )
+        self.assertEqual(result.delta_state, "?")
+        self.assertEqual(result.entries[0].change_kind, "UNKNOWN")
+
+    def test_incomplete_component_cannot_turn_unmatched_atom_into_confirmed_addition(self):
+        before = ()
+        after = (StructuralAtom("R", "REL-NEW", "RELATION", "v1", 1, (("edge", "a-b"),)),)
+        incomplete = (("U", True), ("R", False), ("C", True), ("X", True))
+        result = TransformationalDeltaEngine().evaluate(
+            self.structural_state_snapshot("SNAP-B", "BASELINE", before, complete=incomplete),
+            self.structural_state_snapshot("SNAP-P", "POST", after, complete=incomplete),
+            evidence_baseline=self.evidence_state("E-B"),
+            evidence_post=self.evidence_state("E-P"),
+        )
+        self.assertEqual(result.delta_r[0].change_kind, "UNKNOWN")
+        self.assertEqual(result.delta_state, "?")
+
+    def test_noncomparable_snapshots_and_outcome_value_fields_are_rejected(self):
+        atoms = (StructuralAtom("U", "TAU-1", "TRANSFORMATION", "v1", 1, (("kind", "convert"),)),)
+        before = self.structural_state_snapshot("SNAP-B", "BASELINE", atoms)
+        after = TransformationalStateSnapshot(
+            "SNAP-P", "001", "WORLD-DELTA", "001", "DGP-DELTA", "001",
+            "UE-OTHER", 0, "POST", "BOUNDARY-1", "CONTEXT-1", "CATALOG-1",
+            atoms, (("U", True), ("R", True), ("C", True), ("X", True)),
+        )
+        with self.assertRaises(ContractError):
+            TransformationalDeltaEngine().evaluate(
+                before, after, evidence_baseline=self.evidence_state("E-B"),
+                evidence_post=self.evidence_state("E-P"),
+            )
+        with self.assertRaises(ContractError):
+            StructuralAtom("X", "CTX-1", "CONTEXT", "v1", 1, (("Outcome", "post"),)).validate()
+
+    def test_d2_potential_binding_checks_focal_truth_but_returns_full_structural_delta(self):
+        from c10s_synthetic_components import SyntheticWorldBuilder, SyntheticWorldConfig
+        d2_config = D2MechanismConfig(
+            "D2-DELTA", "001", ("POL-0", "POL-1"), ("001", "001"),
+            ("ART-0", "ART-1"), ("ACT-0", "ACT-1"),
+            (1.0, 1.0), (1.0, 1.0), (0.0, 0.0), (1.0, 1.0), (1.0, 1.0),
+            (((True, True, True, True), 1.0),), "MECH-001",
+        )
+        config = SyntheticWorldConfig(
+            "WORLD-DELTA", "001", "D2-DELTA", "001", "ROSTER-DELTA", "001",
+            "UE", 2, 92, 1, (("H0", 1.0),), 1, 1.0,
+            0.5, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, (0.5, 0.5),
+        )
+        world = SyntheticWorldBuilder().generate(config, d2_config)
+        pairs = {}
+        for unit in world.units:
+            for z in (0, 1):
+                base_atoms = (
+                    StructuralAtom("U", "TAU-FOCAL", "TRANSFORMATION", "v1", 0, (("kind", "focal"),)),
+                    StructuralAtom("R", "REL-1", "RELATION", "v1", 1, (("edge", "focal-route"),)),
+                    StructuralAtom("C", "COND-1", "CONDITION", "v1", 1, (("authorization", "true"),)),
+                    StructuralAtom("X", "CTX-1", "CONTEXT", "v1", 1, (("environment", "A"),)),
+                )
+                post_atoms = (
+                    StructuralAtom("U", "TAU-FOCAL", "TRANSFORMATION", "v1", 1, (("kind", "focal"),)),
+                    StructuralAtom("R", "REL-1", "RELATION", "v1", 1, (("edge", "focal-route"),)),
+                    StructuralAtom("C", "COND-1", "CONDITION", "v1", 1, (("authorization", "true"),)),
+                    StructuralAtom("X", "CTX-1", "CONTEXT", "v1", 1, (("environment", "A"),)),
+                )
+                pairs[(unit.unit_id, z)] = D2StructuralPotentialPair(
+                    unit.unit_id, z, "TAU-FOCAL",
+                    self.structural_state_snapshot(f"B-{unit.unit_id}-{z}", "BASELINE", base_atoms, unit=unit.unit_id, z=z),
+                    self.structural_state_snapshot(f"P-{unit.unit_id}-{z}", "POST", post_atoms, unit=unit.unit_id, z=z),
+                    self.evidence_state(f"EB-{unit.unit_id}-{z}"),
+                    self.evidence_state(f"EP-{unit.unit_id}-{z}"),
+                )
+        deltas = evaluate_d2_structural_deltas(world, pairs)
+        self.assertEqual(len(deltas), 4)
+        self.assertTrue(all(delta.delta_state == 1 for delta in deltas))
+        self.assertTrue(all(any(row.baseline_id == "TAU-FOCAL" and row.change_kind == "MODIFIED"
+                                for row in delta.delta_u) for delta in deltas))
 
 
 if __name__ == "__main__":
