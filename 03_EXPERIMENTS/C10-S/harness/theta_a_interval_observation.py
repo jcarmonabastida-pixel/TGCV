@@ -170,3 +170,108 @@ def validate_interval_s3_observations(
         if (row.capture_time != row.interval_end + config.capture_lag
                 or row.ingestion_time != row.capture_time + config.ingestion_lag):
             raise ContractError("interval S3 capture/ingestion lags differ from monitor config")
+
+
+@dataclass(frozen=True)
+class ThetaAIntervalObservationRecord:
+    """Realized direct-g_A assignment joined to one interval-only S3 record."""
+    run_id: str
+    unit_id: str
+    history_ref: str
+    assignment_bundle_sha256: str
+    q_x_sha256: str
+    g_a0_sha256: str
+    g_a1_sha256: str
+    r_common_sha256: str
+    assigned_arm: int
+    assignment_probability: float
+    assigned_vector_sha256: str
+    policy_fingerprint: str
+    r_common_fingerprint: str
+    history_id: str
+    observation_id: str
+    interval_index: int
+    interval_start: Decimal
+    interval_end: Decimal
+    observed_compliance: bool | None
+    observation_status: Literal["OBSERVED", "MISSING"]
+    coverage_mode: Literal["CONTINUOUS_EVENT_COVERAGE"]
+    capture_time: Decimal
+    ingestion_time: Decimal
+    monitor_id: str
+    monitor_version: str
+    grid_id: str
+    grid_version: str
+    temporal_resolution: Literal["INTERVAL_LEVEL"] = "INTERVAL_LEVEL"
+
+
+def compose_theta_a_interval_s3_records(
+    assignments,
+    selection,
+    histories,
+    grids_by_history_ref,
+    monitor_configs_by_history_ref,
+    seeds_by_unit,
+):
+    """Compose assignment -> selected realized history -> interval S3, without truth export."""
+    from c10s_synthetic_components import theta_a_event_history_potential_id
+    if selection.assignment_bundle_sha256 != assignments.result_sha256:
+        raise ContractError("interval S3 selection is detached from direct-g_A assignment bundle")
+    history_by_id = {history.history_id: history for history in histories}
+    if len(history_by_id) != len(histories):
+        raise ContractError("duplicate EventHistory IDs in interval S3 composition")
+    selected = {unit: (hid, sha, pid) for unit, hid, sha, pid in selection.selected_history_manifest}
+    if set(selected) != {row.unit_id for row in assignments.assignments}:
+        raise ContractError("interval S3 selection must cover the exact assignment roster")
+    if set(seeds_by_unit) != set(selected):
+        raise ContractError("one interval-monitor seed is required per assigned unit")
+    records = []
+    for assignment in assignments.assignments:
+        history_id, history_sha, potential_id = selected[assignment.unit_id]
+        history = history_by_id.get(history_id)
+        if history is None or (
+            history.unit_id, history.history_id, history.content_sha256, history.potential_id,
+            history.history_ref, history.world_id, history.world_version, history.dgp_version,
+        ) != (
+            assignment.unit_id, history_id, history_sha, potential_id,
+            assignment.history_ref, assignments.world_id, assignments.world_version,
+            assignments.dgp_version,
+        ):
+            raise ContractError("interval S3 selected history does not match realized assignment provenance")
+        grid = grids_by_history_ref.get(assignment.history_ref)
+        config = monitor_configs_by_history_ref.get(assignment.history_ref)
+        if grid is None or config is None:
+            raise ContractError("one exact interval grid and monitor config is required per q_X history")
+        projected = project_interval_s3(history, grid, config, seed=seeds_by_unit[assignment.unit_id])
+        probability = assignment.probability_a1 if assignment.assigned_arm == 1 else assignment.probability_a0
+        for row in projected:
+            records.append(ThetaAIntervalObservationRecord(
+                run_id=history.run_id, unit_id=assignment.unit_id,
+                history_ref=assignment.history_ref,
+                assignment_bundle_sha256=assignments.result_sha256,
+                q_x_sha256=assignments.q_x_sha256, g_a0_sha256=assignments.g_a0_sha256,
+                g_a1_sha256=assignments.g_a1_sha256, r_common_sha256=assignments.r_common_sha256,
+                assigned_arm=assignment.assigned_arm, assignment_probability=probability,
+                assigned_vector_sha256=assignment.assigned_vector_sha256,
+                policy_fingerprint=assignment.policy_fingerprint,
+                r_common_fingerprint=assignment.r_common_fingerprint,
+                history_id=history.history_id, observation_id=row.observation_id,
+                interval_index=row.interval_index, interval_start=row.interval_start,
+                interval_end=row.interval_end, observed_compliance=row.observed_compliance,
+                observation_status=row.observation_status, coverage_mode=row.coverage_mode,
+                capture_time=row.capture_time, ingestion_time=row.ingestion_time,
+                monitor_id=row.monitor_id, monitor_version=row.monitor_version,
+                grid_id=row.grid_id, grid_version=row.grid_version,
+            ))
+    return tuple(records)
+
+
+def candidate_from_theta_a_interval_records(records):
+    from dataclasses import asdict
+    from theta_a_observation_harness import ThetaAEvidenceCandidate
+    if not records:
+        raise ContractError("cannot construct interval theta_A evidence from empty records")
+    run_ids = {row.run_id for row in records}
+    if len(run_ids) != 1:
+        raise ContractError("interval theta_A records contain multiple run identities")
+    return ThetaAEvidenceCandidate(next(iter(run_ids)), tuple(asdict(row) for row in records))
