@@ -24,7 +24,7 @@ D2_FIELDS = {
 
 @dataclass(frozen=True)
 class FunctionalHistoryRule:
-    """One explicit DGP rule; either a D2-stage predicate or one g_A component."""
+    """One explicit DGP rule with a D2-stage or joint-vector predicate."""
     rule_id: str
     source: Source
     event_time: Decimal
