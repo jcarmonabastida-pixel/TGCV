@@ -130,7 +130,7 @@ def materialize_c10s_factorial_world_from_dgp(
         estimand_version=estimand_version,
     )
     evaluation = evaluate_factorial_analysis(
-        truth, sealed, analyzer_result, tolerance=evaluation_tolerance,
+        truth, sealed, analyzer_result, assignments, tolerance=evaluation_tolerance,
     )
     return C10SFactorialWorldResult(
         world, structural, reach, trajectories, d2_histories, potentials,
