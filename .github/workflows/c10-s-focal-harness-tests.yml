@@ -187,6 +187,7 @@ jobs:
             "03_EXPERIMENTS/C10-S/harness/test_theta_a_observation_harness.py",
             "03_EXPERIMENTS/C10-S/harness/test_theta_a_analyzer.py",
             "03_EXPERIMENTS/C10-S/harness/test_theta_a_evaluator.py",
+            "03_EXPERIMENTS/C10-S/harness/test_c10s_world_pipeline_integration.py",
             "03_EXPERIMENTS/C10-S/harness/theta_a_observation_harness.py",
             "03_EXPERIMENTS/C10-S/harness/theta_a_analyzer.py",
             "03_EXPERIMENTS/C10-S/harness/theta_a_evaluator.py",
