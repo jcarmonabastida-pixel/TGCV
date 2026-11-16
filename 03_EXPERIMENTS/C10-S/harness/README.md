@@ -71,6 +71,14 @@ The Evaluator also receives the direct assignment bundle (not the truth oracle's
 
 The current `POINT_SAMPLE` Analyzer returns the logical contrast bounds [-1,1]. The Evaluator therefore records correct coverage when the oracle lies inside those bounds, while explicitly marking the bounds non-informative; this is not causal recovery. Regression specifications cover point recovery, bound coverage, bounds excluding truth, and evidence/result provenance mismatch. They have not been executed.
 
+### C10-S complete-world composition entrypoint
+
+`c10s_world_pipeline.py` adds `materialize_c10s_complete_world(...)` as the first coordinated composition API for the current synthetic-world components. It materializes the finite target roster and D2 potentials, computes the complete U/R/C/X structural delta for each unit × Z potential, derives baseline/post Reach and potential trajectories, adjudicates the D2 VCONT-B1-MIN potential truth, computes the direct-`g_A` theta_A oracle from its reserved policy EventHistories, randomizes the direct policy assignment, selects the exact realized EventHistory, projects S3, seals the evidence, runs the observation-only Analyzer and performs the independent Evaluator comparison.
+
+The composition requires explicit versioned configs, q_X* masses, joint policies, feasibility support, fixed r_common certificates, temporal grid, both D2 EventHistory potentials and the complete g_A policy-EventHistory support. D2 and g_A histories must share one run identity and bind to the same world/roster. It does not synthesize event transitions from downstream outcomes or infer absent histories. The output retains the exact source bundles and validates their common world/run identity and coverage.
+
+This is an integration API, not yet the final self-contained DGP runner: the EventHistory potential sets are still supplied by the caller, the S3 implementation remains POINT_SAMPLE, and the Analyzer therefore returns non-informative [-1,1] theta_A bounds when both randomized arms and target support are represented. Missing target support or a missing realized arm now produces explicit INDETERMINATE abstention rather than a crash. The Evaluator requires the reserved truth to lie within the reported bounds even when the Analyzer abstains. No tests or experiment have been executed.
+
 ## Integrated V_cont harness — separate migration boundary (Gate 87–88)
 
 The repository currently contains two distinct harness implementations; do not treat their similarly named focal concepts as interchangeable:
