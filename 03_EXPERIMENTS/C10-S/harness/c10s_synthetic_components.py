@@ -968,6 +968,7 @@ class TransformationalDelta:
     delta_r: tuple[StructuralDeltaEntry, ...]
     delta_c: tuple[StructuralDeltaEntry, ...]
     delta_x: tuple[StructuralDeltaEntry, ...]
+    component_completeness: tuple[tuple[StructuralComponent, bool], ...]
     delta_state: ReachState
     evidence_delta: EvidenceDelta
     result_sha256: str
@@ -983,6 +984,9 @@ class TransformationalDelta:
             raise ContractError("ΔC* projection differs from canonical delta entries")
         if tuple(self.delta_x) != tuple(x for x in self.entries if x.component == "X"):
             raise ContractError("ΔX* projection differs from canonical delta entries")
+        completeness = dict(self.component_completeness)
+        if set(completeness) != {"U", "R", "C", "X"} or len(self.component_completeness) != 4:
+            raise ContractError("ΔT_acc* must retain completeness for all U/R/C/X components")
         _reach_state(self.delta_state, "ΔT_acc* state")
 
 
@@ -1089,9 +1093,16 @@ class TransformationalDeltaEngine:
 
         entries.sort(key=lambda row: (row.component, row.baseline_id or "", row.post_id or ""))
         changed_states = [row.change_state for row in entries]
+        component_completeness = tuple(
+            (component, dict(baseline.component_complete)[component]
+             and dict(post.component_complete)[component])
+            for component in ("U", "R", "C", "X")
+        )
         if any(state == 1 for state in changed_states):
             delta_state: ReachState = 1
-        elif any(state == "?" for state in changed_states):
+        elif any(state == "?" for state in changed_states) or not all(
+            complete for _, complete in component_completeness
+        ):
             delta_state = "?"
         else:
             delta_state = 0
@@ -1101,6 +1112,7 @@ class TransformationalDeltaEngine:
         payload = {
             "scope": scope_before, "baseline_snapshot_id": baseline.snapshot_id,
             "post_snapshot_id": post.snapshot_id, "entries": tuple(entries),
+            "component_completeness": component_completeness,
             "delta_state": delta_state, "evidence_delta": evidence_delta,
         }
         result = TransformationalDelta(
@@ -1108,7 +1120,7 @@ class TransformationalDeltaEngine:
             baseline.dgp_version, baseline.unit_id, baseline.potential_z,
             baseline.snapshot_id, post.snapshot_id, tuple(entries),
             by_component["U"], by_component["R"], by_component["C"], by_component["X"],
-            delta_state, evidence_delta, digest(payload),
+            component_completeness, delta_state, evidence_delta, digest(payload),
         )
         result.validate()
         return result
@@ -1148,6 +1160,13 @@ def evaluate_d2_structural_deltas(
         if (pair.unit_id, pair.z) != key or not pair.focal_transformation_id:
             raise ContractError("D2 structural pair identity/focal transformation binding is invalid")
         stage = units[unit_id].d2_potentials.potentials_by_z[z]
+        expected_scope = (world.world_id, world.world_version, world.dgp_id,
+                          world.dgp_version, unit_id, z)
+        for snapshot in (pair.baseline, pair.post):
+            actual_scope = (snapshot.world_id, snapshot.world_version, snapshot.dgp_id,
+                            snapshot.dgp_version, snapshot.unit_id, snapshot.potential_z)
+            if actual_scope != expected_scope:
+                raise ContractError("D2 structural snapshot does not bind to its exact world/unit/Z potential")
         baseline_atoms = [a for a in pair.baseline.atoms
                           if a.component == "U" and a.canonical_id == pair.focal_transformation_id]
         post_atoms = [a for a in pair.post.atoms
