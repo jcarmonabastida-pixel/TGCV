@@ -725,6 +725,36 @@ class SyntheticComponentTests(unittest.TestCase):
             self.assertEqual(by_key[(unit.unit_id, 1, "TARGET-FOCAL")].terminal_state, "S2")
             self.assertEqual(by_key[(unit.unit_id, 0, "TARGET-ABSENT")].trajectory_status, "NOT_REACHABLE")
 
+        no_selection_config = D2TrajectoryGenerationConfig(
+            "TRAJECTORY-NO-SELECTION", "001",
+            (("TARGET-FOCAL", 0.0), ("TARGET-ABSENT", 0.0)),
+            (("ROUTE-FOCAL", 1.0),), (("ROUTE-FOCAL", 1.0),),
+            (("TAU-FOCAL", 1.0), ("TAU-ALT", 1.0)), "FIXTURE-SEED-002",
+        )
+        no_selection = evaluate_d2_potential_trajectories(
+            world, reach, reach_config, no_selection_config,
+        )
+        self.assertTrue(all(
+            row.reach_state == 1 and row.selection_state == 0
+            and row.trajectory_status == "NOT_SELECTED"
+            for row in no_selection.trajectories if row.z == 1 and row.target_state == "TARGET-FOCAL"
+        ))
+
+        execution_failure_config = D2TrajectoryGenerationConfig(
+            "TRAJECTORY-EXECUTION-FAIL", "001",
+            (("TARGET-FOCAL", 1.0), ("TARGET-ABSENT", 1.0)),
+            (("ROUTE-FOCAL", 1.0),), (("ROUTE-FOCAL", 0.0),),
+            (("TAU-FOCAL", 1.0), ("TAU-ALT", 1.0)), "FIXTURE-SEED-003",
+        )
+        execution_failure = evaluate_d2_potential_trajectories(
+            world, reach, reach_config, execution_failure_config,
+        )
+        self.assertTrue(all(
+            row.reach_state == 1 and row.selection_state == 1
+            and row.execution_state == 0 and row.trajectory_status == "EXECUTION_FAILED"
+            for row in execution_failure.trajectories if row.z == 1 and row.target_state == "TARGET-FOCAL"
+        ))
+
 
     def test_empty_incomplete_structural_universe_is_unknown_not_zero(self):
         incomplete = (("U", False), ("R", False), ("C", False), ("X", False))
