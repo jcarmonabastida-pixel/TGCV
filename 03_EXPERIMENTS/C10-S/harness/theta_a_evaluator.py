@@ -145,10 +145,14 @@ class ThetaAObservationEvaluator:
                 raise ContractError("observed assignment is not bound to the reserved common-r_common policy regime")
 
         if result.temporal_resolution == "INTERVAL_LEVEL":
-            if (result.missing_interval_count < 0
+            observed_missing = sum(row.get("observation_status") == "MISSING" for row in evidence.rows)
+            if (evidence.manifest.get("temporal_resolution") != "INTERVAL_LEVEL"
+                    or result.missing_interval_count != observed_missing
+                    or result.total_interval_count != len(evidence.rows)
+                    or result.missing_interval_count < 0
                     or result.total_interval_count <= 0
                     or result.missing_interval_count > result.total_interval_count):
-                raise ContractError("interval Analyzer missingness counts are invalid")
+                raise ContractError("interval Analyzer counts do not reproduce sealed observation missingness")
             if (result.measurement_lower_bound is None) != (result.measurement_upper_bound is None):
                 raise ContractError("interval measurement bounds must be jointly present or absent")
             if result.measurement_lower_bound is not None and not (
@@ -157,8 +161,8 @@ class ThetaAObservationEvaluator:
                 and -1.0 <= result.measurement_lower_bound <= result.measurement_upper_bound <= 1.0
             ):
                 raise ContractError("interval measurement-only bounds must be finite and within [-1,1]")
-            if result.missing_interval_count and result.identification != "PARTIALLY_IDENTIFIED":
-                raise ContractError("missing interval evidence requires partial-identification abstention")
+            if result.missing_interval_count and result.identification not in ("PARTIALLY_IDENTIFIED", "INDETERMINATE"):
+                raise ContractError("missing interval evidence requires partial-identification or support abstention")
             if not result.missing_interval_count and result.identification == "PARTIALLY_IDENTIFIED":
                 raise ContractError("complete interval evidence must not abstain for missingness")
         lower, upper = result.lower_bound, result.upper_bound
