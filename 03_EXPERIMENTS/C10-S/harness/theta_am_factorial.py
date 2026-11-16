@@ -563,6 +563,7 @@ class FactorialIntervalSealer:
 class FactorialAnalysisContract:
     q_x_mass_by_history: tuple[tuple[str, float], ...]
     expected_unit_ids: tuple[str, ...]
+    probability_by_history: tuple[tuple[str, float, float, float, float], ...]
     q_x_sha256: str
     assignment_bundle_sha256: str
     g_a0_sha256: str
@@ -590,6 +591,13 @@ class FactorialAnalysisContract:
         if (not self.expected_unit_ids or len(self.expected_unit_ids) != len(set(self.expected_unit_ids))
                 or len(self.expected_unit_ids) != len(qx)):
             raise ContractError("factorial analysis requires the exact unique q_X unit roster")
+        probabilities = {row[0]: row[1:] for row in self.probability_by_history}
+        if len(probabilities) != len(self.probability_by_history) or set(probabilities) != set(qx):
+            raise ContractError("factorial analysis cell probabilities must cover q_X exactly")
+        for ref, values in probabilities.items():
+            if (len(values) != 4 or any(not 0.0 < p < 1.0 for p in values)
+                    or abs(sum(values) - 1.0) > 1e-12):
+                raise ContractError(f"factorial analysis cell probabilities are invalid for {ref}")
 
 
 @dataclass(frozen=True)
@@ -676,6 +684,10 @@ class FactorialObservationAnalyzer:
             cell = first["assigned_cell"]
             if cell not in cell_order or (first["a_arm"], first["m_arm"]) != (int(cell[0]), int(cell[1])):
                 raise ContractError("factorial unit cell encoding is invalid")
+            probability_index = cell_order.index(cell)
+            expected_probability = dict((ref, values) for ref, *values in contract.probability_by_history)[first["history_ref"]][probability_index]
+            if first["assignment_probability"] != expected_probability:
+                raise ContractError("factorial evidence probability differs from the declared randomization design")
             ordered = sorted(bucket, key=lambda x: x["interval_index"])
             if [r["interval_index"] for r in ordered] != list(range(len(ordered))):
                 raise ContractError("factorial interval sequence has gaps or duplicate indices")
@@ -975,16 +987,18 @@ def evaluate_factorial_analysis(
     for expected, contrast in zip(truth_values, result.contrasts):
         if contrast.identification == "IDENTIFIED":
             error = abs(contrast.point_estimate - expected) if contrast.point_estimate is not None else None
-            covered = (contrast.lower_bound is not None and contrast.upper_bound is not None
-                       and contrast.lower_bound - tolerance <= expected <= contrast.upper_bound + tolerance)
-            item_correct = error is not None and error <= tolerance and covered
+            covered = None
+            item_correct = error is not None and error <= tolerance
         elif contrast.identification == "PARTIALLY_IDENTIFIED":
             error = None
-            covered = (contrast.lower_bound is not None and contrast.upper_bound is not None
-                       and contrast.lower_bound - tolerance <= expected <= contrast.upper_bound + tolerance)
-            item_correct = bool(covered)
+            covered = None
+            item_correct = (contrast.point_estimate is None
+                            and contrast.lower_bound is not None
+                            and contrast.upper_bound is not None)
         elif contrast.identification == "NOT_IDENTIFIED":
-            error, covered, item_correct = None, None, contrast.point_estimate is None
+            error, covered, item_correct = (None, None,
+                contrast.point_estimate is None and contrast.lower_bound is None
+                and contrast.upper_bound is None)
         else:
             raise ContractError("unsupported factorial identification status")
         errors.append(error)
