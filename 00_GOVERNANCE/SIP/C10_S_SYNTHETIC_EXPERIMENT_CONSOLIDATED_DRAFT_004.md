@@ -533,3 +533,12 @@ El responsable científico acepta conjuntamente C1–C6 de `C10_S_DEC-C10-102_CO
 El crosswalk DEC-C10-102/Gate 154/R150-A/R151-A8/R152-A/R208-A queda **CLOSED_FOR_CURRENT_SYNTHETIC_DGP_LOGICAL_SCOPE**. Se preserva DEC-C10-102 y no se crea DEC-C10-105. V_cont queda delimitado a continuidad de admisión/no-admisión efectiva requerida por ENABLED; PROFILE sigue como obligación contractual declarativa, sin adjudicación temporal en el DGP actual; D_valid se evalúa separadamente. Se conserva operador estricto y {1,0,?} sin UNKNOWN por missingness/defectos.
 
 No cierra §51, materialización EventHistory/TruthBundle, D2, población/asignación, aislamiento/soporte, θ_A, Outcome/Value, potencia, tests, firewall técnico o Design Freeze. Sin autorización de implementación/ejecución.
+
+
+## 322. Paquete B — reconciliación integrada temporal y causal (2026-11-16)
+
+Se incorpora la propuesta integrada `C10_S_PACKAGE_B_INTEGRATED_TEMPORAL_DGP_AND_CAUSAL_DESIGN_CLOSURE_PROPOSAL_DRAFT_001.md`, que reúne §51, DEC-C10-099…104, R144-A/R146-A…D, contrato EventHistory, S3, D2, población, asignación, aislamiento, q_X*/g_A/r_common y θ_A. Reutiliza D2 Assignment/Population/Support, Gate 121, Gate 129, Gate 130, DGP Temporal and Role Contract §§48–55, Path Predicate Temporal Evidence Matrix y contratos UNIT/PROV/P177–P183/MEAS/MISS.
+
+**Dictamen:** reconciliación documental completa; se propone aceptar B1–B6 como cierre del contrato lógico integrado. La coordenada normalizada §51 (t0=0, t_c,max=1) se distingue de los parámetros aún abiertos ρ_follow/T*, Δ/K y de la calibración S3. EventHistory y la adjudicación conservan R144-A/R146-A…D y la separación truth/PROCESS_EVENT/S3/Analyzer/Evaluator. D2 preserva Z frente a programación/provisión, P*τ2/P*_F, UE/UA/UO, ITT y θ_A separados; aislamiento, roster, asignación, q_X*, g_A y r_common siguen sin materialización/certificación.
+
+**Estado:** PROPOSED_FOR_ACCEPTANCE. La aceptación B1–B6 cerraría únicamente el contrato lógico; no convertiría parámetros, población, soporte, θ_A o V_cont-S3 en materialmente identificados, ni autorizaría materialización, implementación o ejecución. Paquete A C1–C6 permanece aceptado (§321).
