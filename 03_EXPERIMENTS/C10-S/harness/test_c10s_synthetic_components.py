@@ -1,7 +1,8 @@
 import unittest
 from decimal import Decimal
 
-from vcont_integrated_harness import EvidenceCandidate, Generator, Sealer, benchmark_scenarios
+from vcont_integrated_harness import (Analyzer, EvidenceCandidate, Evaluator, Generator,
+                                      Sealer, benchmark_scenarios, contract_for)
 
 from c10s_synthetic_components import (
     ContractError, D2Baseline, D2MechanismConfig, EventHistory,
@@ -281,6 +282,18 @@ class SyntheticComponentTests(unittest.TestCase):
         self.assertNotIn("event_history", envelope.evidence_candidate.rows[0])
         sealed = Sealer().seal(envelope.evidence_candidate)
         self.assertEqual(sealed.manifest["schema"], "C10S-VCONT-S3-002")
+        analyzer_result = Analyzer().analyze(sealed, contract_for(scenario))
+        evaluation = Evaluator().evaluate_event_history_interface(
+            envelope, sealed, analyzer_result
+        )
+        self.assertEqual(evaluation["selected_history_count"], 16)
+        self.assertEqual(evaluation["s3_observation_count"], 80)
+        self.assertTrue(evaluation["point_sample_only"])
+        self.assertTrue(evaluation["analyzer_abstention_respected"])
+        self.assertTrue(all(
+            value == 1.0 for value in evaluation["v_cont_truth_by_unit"].values()
+        ))
+        self.assertFalse(evaluation["causal_itt_and_theta_a_scored"])
         self.assertEqual(
             len(envelope.truth_extension.event_histories), 16
         )

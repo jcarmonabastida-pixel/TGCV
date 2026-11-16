@@ -981,6 +981,127 @@ class Evaluator:
                                 package_ok, g_assignment_ok, expected_abstention, tuple(notes),
                                 reference_status_correct, reference_estimate_present)
 
+    def evaluate_event_history_interface(self, envelope, sealed_evidence: SealedEvidence,
+                                         analyzer_result: AnalyzerResult) -> dict[str, Any]:
+        """Post-seal evaluation of EventHistory → S3 → Analyzer interface.
+
+        Reconciles emitted observations with reserved EventHistory truth and
+        verifies that point samples do not receive an identified strict
+        interval-continuity estimate. It does not score causal ITT/theta_A.
+        """
+        extension = getattr(envelope, "truth_extension", None)
+        manifest = getattr(envelope, "run_manifest", None)
+        observations = tuple(getattr(envelope, "s3_observations", ()))
+        if extension is None or manifest is None or not observations:
+            raise ContractError("complete generation envelope and S3 observations are required")
+        extension.validate()
+        run_id = manifest.run_id
+        if (run_id != sealed_evidence.run_id or run_id != analyzer_result.run_id
+                or analyzer_result.input_sha256 != sealed_evidence.sha256):
+            raise ContractError("EventHistory evaluation run/evidence binding mismatch")
+
+        histories_by_id = {history.history_id: history for history in extension.event_histories}
+        selected_ids = {item.history_ref for item in observations}
+        if not selected_ids or not selected_ids.issubset(histories_by_id):
+            raise ContractError("S3 observations reference absent or no selected EventHistory")
+        by_history = {history_id: [] for history_id in selected_ids}
+        observation_ids = set()
+        for item in observations:
+            if item.observation_id in observation_ids:
+                raise ContractError("duplicate S3 observation identity")
+            observation_ids.add(item.observation_id)
+            by_history[item.history_ref].append(item)
+
+        adjudications = {item.history_id: item for item in extension.interval_adjudications}
+        rows_by_unit = {row.get("unit_id"): row for row in sealed_evidence.rows}
+        if len(rows_by_unit) != len(sealed_evidence.rows):
+            raise ContractError("sealed evidence has duplicate/missing unit identities")
+
+        enabled_n = enabled_correct = 0
+        admission_n = admission_correct = 0
+        profile_n = profile_correct = 0
+        truth_vcont_by_unit = {}
+        for history_id, items in by_history.items():
+            history = histories_by_id[history_id]
+            history.validate(require_complete=True)
+            items = sorted(items, key=lambda item: item.observation_time)
+            if any(a.observation_time >= b.observation_time for a, b in zip(items, items[1:])):
+                raise ContractError("S3 observation times must be strictly increasing")
+            row = rows_by_unit.get(history.unit_id)
+            if row is None:
+                raise ContractError("selected EventHistory unit is absent from sealed evidence")
+            if len(items) != len(row["s3_enabled"]):
+                raise ContractError("S3 observations and sealed evidence cardinality differ")
+            expected_projection = {
+                "s3_enabled": [None if x.enabled_observed is None else int(x.enabled_observed) for x in items],
+                "s3_admission_behavior": [x.admission_behavior_observed for x in items],
+                "s3_profile_value": [x.profile_value_observed for x in items],
+                "s3_profile_config_id": [x.profile_config_id for x in items],
+                "s3_profile_config_version": [x.profile_config_version for x in items],
+                "s3_enabled_status": [x.enabled_status for x in items],
+                "s3_admission_status": [x.admission_status for x in items],
+                "s3_profile_status": [x.profile_status for x in items],
+                "s3_temporal_support": ["POINT_SAMPLE"] * len(items),
+            }
+            if any(row[key] != values for key, values in expected_projection.items()):
+                raise FirewallError("sealed evidence does not match its EventHistory S3 projection")
+
+            for item in items:
+                state = history.initial_post_z_state
+                for transition in history.transitions:
+                    if transition.event_time <= item.observation_time:
+                        state = transition.state_after
+                    else:
+                        break
+                if (item.profile_config_id != state.profile_config_id
+                        or item.profile_config_version != state.profile_config_version):
+                    raise ContractError("observed PROFILE identity/version differs from EventHistory state")
+                if item.enabled_observed is not None:
+                    enabled_n += 1
+                    enabled_correct += int(item.enabled_observed == state.enabled)
+                if item.admission_behavior_observed is not None:
+                    admission_n += 1
+                    admission_correct += int(item.admission_behavior_observed == state.admission_behavior)
+                if item.profile_value_observed is not None:
+                    profile_n += 1
+                    profile_correct += int(item.profile_value_observed == state.profile)
+
+            adjudication = adjudications.get(history_id)
+            if adjudication is None or adjudication.history_sha256 != history.content_sha256:
+                raise ContractError("selected EventHistory lacks its exact interval adjudication")
+            truth_vcont_by_unit[history.unit_id] = adjudication.v_cont_truth
+
+        point_samples = all(
+            support == "POINT_SAMPLE"
+            for row in sealed_evidence.rows for support in row["s3_temporal_support"]
+        )
+        abstention_respected = True
+        if point_samples:
+            abstention_respected = (
+                analyzer_result.package_status != "IDENTIFIED"
+                and analyzer_result.g_assignment_status != "IDENTIFIED"
+                and "S3_POINT_SAMPLES_DO_NOT_IDENTIFY_STRICT_INTERVAL_CONTINUITY"
+                    in analyzer_result.abstention_reasons
+            )
+            if not abstention_respected:
+                raise ContractError("Analyzer did not abstain on point samples for strict interval continuity")
+
+        return {
+            "run_id": run_id,
+            "selected_history_count": len(selected_ids),
+            "s3_observation_count": len(observations),
+            "enabled_observed_count": enabled_n,
+            "enabled_correct_count": enabled_correct,
+            "admission_observed_count": admission_n,
+            "admission_correct_count": admission_correct,
+            "profile_observed_count": profile_n,
+            "profile_correct_count": profile_correct,
+            "v_cont_truth_by_unit": truth_vcont_by_unit,
+            "point_sample_only": point_samples,
+            "analyzer_abstention_respected": abstention_respected,
+            "causal_itt_and_theta_a_scored": False,
+        }
+
     def evaluate_repeated_assignment(self, runs: list[tuple[TruthBundle, AnalyzerResult, AnalysisContract, RunManifest]], tolerance: float) -> RepeatedAssignmentReport:
         if not runs or tolerance < 0:
             raise ContractError("nonempty repeated-assignment runs and nonnegative tolerance required")
