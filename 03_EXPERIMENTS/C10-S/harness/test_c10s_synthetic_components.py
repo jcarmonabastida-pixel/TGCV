@@ -718,6 +718,10 @@ class SyntheticComponentTests(unittest.TestCase):
             for row in reach.contrasts
         ))
         self.assertEqual(len(trajectories.trajectories), 8)
+        replay = evaluate_d2_potential_trajectories(
+            world, reach, reach_config, trajectory_config,
+        )
+        self.assertEqual(trajectories.result_sha256, replay.result_sha256)
         by_key = {(row.unit_id, row.z, row.target_state): row for row in trajectories.trajectories}
         for unit in world.units:
             self.assertEqual(by_key[(unit.unit_id, 0, "TARGET-FOCAL")].trajectory_status, "NOT_REACHABLE")
