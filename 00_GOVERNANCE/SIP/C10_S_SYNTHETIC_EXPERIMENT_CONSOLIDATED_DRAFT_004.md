@@ -352,3 +352,14 @@ La reconstrucción de DEC-C10-100…102, Decision Log hasta DEC-C10-103, DGP §�
 La convención semiabierta [b_{k−1},b_k) para intervalos internos, con el último intervalo incluyendo T*, está recomendada consistentemente en DGP §49 y plan §§16.193.4, 16.195 y 16.198.2. DEC-C10-102 exige asignación determinista, única y versionada, pero no la adopta; no se encontró aceptación posterior hasta DEC-C10-103. Se propone aceptación expresa antes de versionar/materializar. No se crea DEC-C10-104 ni se modifica el Decision Log antes de la aceptación.
 
 **Siguiente tras la decisión:** crosswalk de conformidad de implementación hacia Generator → TruthBundle → Sealer → Analyzer → Evaluator. Sin cambios de código/schema ni ejecución; scientific_execution=false; execution_authorized=false.
+
+
+## 309. DEC-C10-104 — aceptación de frontera y regla conservadora de UNKNOWN (2026-11-16)
+
+**Registro autónomo:** 00_GOVERNANCE/decisions/DEC-C10-104_VCONT_INTERVAL_BOUNDARY_AND_GENERATOR_UNKNOWN_RULE_ACCEPTANCE.md. **Gate de origen:** Gate 137; **Decision Log:** C10_S_DECISION_LOG_DRAFT_001.md.
+
+El usuario acepta la convención versionada: para b0=t0 < … < bK=T*, I_k=[b_{k−1},b_k) en k=1,…,K−1 e I_K=[b_{K−1},b_K]. Los eventos en fronteras internas se asignan al intervalo que comienza allí; los eventos en T* al último. Los episodios de fallo que cruzan fronteras afectan a todos los intervalos intersectados. No se fijan T*, K, Δ, unidad, resolución, frecuencia ni detectabilidad.
+
+Se acepta la regla conservadora: se mantiene {1,0,?} y la propagación a bounds de DEC-C10-100; no se genera ? en historias completas y determinadas. UNKNOWN funcional requiere una estipulación DGP futura, explícita y tipada, que defina indeterminación intrínseca de A_B1, condición, alcance y provenance. S3 missingness/lag/error/cobertura, omisiones de DGP/harness, eventos/timestamps no modelados, fallo de observación o defectos de implementación no son UNKNOWN funcional.
+
+DEC-C10-100…103 permanecen vigentes salvo esta especificación complementaria. No se autoriza código, schemas, tests, materialización, generación, simulación, calibración, estimación, ejecución ni Design Freeze. scientific_execution=false; execution_authorized=false.
