@@ -391,6 +391,111 @@ class EventHistory:
 
 
 @dataclass(frozen=True)
+class FunctionalStateChange:
+    """One DGP-authored functional state change; not a PROCESS_EVENT."""
+
+    event_time: Decimal
+    state_after: FunctionalState
+    causal_family: str
+    provenance_ref: str
+    suborder: int | None = None
+
+
+@dataclass(frozen=True)
+class EventHistoryGenerationSpec:
+    """Complete, explicit functional path specification for one potential."""
+
+    history_id: str
+    history_version: str
+    run_id: str
+    world_id: str
+    world_version: str
+    dgp_version: str
+    unit_id: str
+    potential_id: str
+    adjudication_rules_version: str
+    support_start: Decimal
+    support_end: Decimal
+    initial_post_z_state: FunctionalState
+    changes: tuple[FunctionalStateChange, ...]
+    profile_config_id: str = "B1-PROFILE"
+    profile_config_version: str = "001"
+
+    def validate(self) -> None:
+        if not all((
+            self.history_id, self.history_version, self.run_id, self.world_id,
+            self.world_version, self.dgp_version, self.unit_id, self.potential_id,
+            self.adjudication_rules_version, self.profile_config_id,
+            self.profile_config_version,
+        )):
+            raise ContractError("EventHistory generation spec requires complete identity/version")
+        if (not isinstance(self.support_start, Decimal)
+                or not isinstance(self.support_end, Decimal)
+                or self.support_start >= self.support_end):
+            raise ContractError("EventHistory generation spec requires positive Decimal support")
+        self.initial_post_z_state.validate()
+        if (self.initial_post_z_state.profile_config_id != self.profile_config_id
+                or self.initial_post_z_state.profile_config_version != self.profile_config_version):
+            raise ContractError("initial PROFILE identity/version differs from generation spec")
+        ordered = tuple(sorted(
+            self.changes,
+            key=lambda row: (row.event_time, -1 if row.suborder is None else row.suborder),
+        ))
+        if ordered != self.changes:
+            raise ContractError("functional state changes must be ordered by event_time/suborder")
+        if any(
+            not isinstance(row.event_time, Decimal)
+            or row.event_time < self.support_start or row.event_time > self.support_end
+            or not row.causal_family or not row.provenance_ref
+            for row in self.changes
+        ):
+            raise ContractError("each functional change needs in-support time and causal provenance")
+
+
+def generate_event_history(spec: EventHistoryGenerationSpec) -> EventHistory:
+    """Materialize one complete EventHistory from explicit DGP functional states.
+
+    The function does not infer admission from D2 accessibility, infer state
+    changes from PROCESS_EVENT, or derive temporal states from S3. The DGP must
+    supply the functional state path and causal provenance explicitly.
+    """
+    spec.validate()
+    current = spec.initial_post_z_state
+    transitions = []
+    for index, change in enumerate(spec.changes):
+        change.state_after.validate()
+        if current == change.state_after:
+            raise ContractError("neutral state changes are not functional EventHistory transitions")
+        if (current.profile != change.state_after.profile
+                and (current.profile_config_id, current.profile_config_version)
+                == (change.state_after.profile_config_id, change.state_after.profile_config_version)):
+            raise ContractError("PROFILE value change requires a new configuration identity/version")
+        transition_id = digest({
+            "history_id": spec.history_id, "history_version": spec.history_version,
+            "index": index, "event_time": change.event_time,
+            "state_before": current, "state_after": change.state_after,
+            "causal_family": change.causal_family,
+            "provenance_ref": change.provenance_ref, "suborder": change.suborder,
+        })
+        transitions.append(FunctionalTransition(
+            transition_id, change.event_time, current, change.state_after,
+            change.causal_family, change.provenance_ref, change.suborder,
+        ))
+        current = change.state_after
+    transition_tuple = tuple(transitions)
+    history = EventHistory(
+        spec.history_id, spec.history_version, spec.run_id, spec.world_id,
+        spec.world_version, spec.dgp_version, spec.unit_id, spec.potential_id,
+        spec.adjudication_rules_version, spec.support_start, spec.support_end,
+        spec.initial_post_z_state, transition_tuple,
+        tuple(row.transition_id for row in transition_tuple),
+        True, True, True, spec.profile_config_id, spec.profile_config_version,
+    )
+    history.validate(require_complete=True)
+    return history
+
+
+@dataclass(frozen=True)
 class IntervalGrid:
     boundaries: tuple[Decimal, ...]
     grid_id: str
