@@ -22,12 +22,16 @@ class ThetaAObservationAnalysisContract:
     q_x_mass_by_history: tuple[tuple[str, float], ...]
     q_x_sha256: str
     assignment_bundle_sha256: str
+    g_a0_sha256: str
+    g_a1_sha256: str
+    r_common_sha256: str
     estimand_id: str = "THETA_A_QX_GA_RCOMMON_VCONT"
     estimand_version: str = "1.0"
 
     def validate(self) -> None:
-        if not self.q_x_sha256 or not self.assignment_bundle_sha256:
-            raise ContractError("theta_A analysis requires q_X and assignment-bundle fingerprints")
+        if not all((self.q_x_sha256, self.assignment_bundle_sha256,
+                    self.g_a0_sha256, self.g_a1_sha256, self.r_common_sha256)):
+            raise ContractError("theta_A analysis requires q_X, assignment, g_A0/g_A1 and r_common fingerprints")
         if not self.estimand_id or not self.estimand_version:
             raise ContractError("theta_A estimand identity/version are required")
         mapping = dict(self.q_x_mass_by_history)
@@ -74,7 +78,11 @@ class ThetaAObservationAnalyzer:
             raise ContractError("theta_A Analyzer requires non-empty sealed evidence")
         rows = evidence.rows
         if any(row.get("assignment_bundle_sha256") != contract.assignment_bundle_sha256
-               or row.get("q_x_sha256") != contract.q_x_sha256 for row in rows):
+               or row.get("q_x_sha256") != contract.q_x_sha256
+               or row.get("g_a0_sha256") != contract.g_a0_sha256
+               or row.get("g_a1_sha256") != contract.g_a1_sha256
+               or row.get("r_common_sha256") != contract.r_common_sha256
+               for row in rows):
             raise ContractError("analysis contract fingerprints do not match sealed assignment/q_X provenance")
         qx = dict(contract.q_x_mass_by_history)
         observed_histories = {row["history_ref"] for row in rows}
@@ -86,9 +94,10 @@ class ThetaAObservationAnalyzer:
         for row in rows:
             unit = row["unit_id"]
             prior = by_unit.setdefault(unit, row)
-            invariant = ("history_ref", "assigned_arm", "assignment_probability",
-                         "assigned_vector_sha256", "policy_fingerprint",
-                         "r_common_fingerprint", "history_id")
+            invariant = ("history_ref", "assignment_bundle_sha256", "q_x_sha256",
+                         "g_a0_sha256", "g_a1_sha256", "r_common_sha256",
+                         "assigned_arm", "assignment_probability", "assigned_vector_sha256",
+                         "policy_fingerprint", "r_common_fingerprint", "history_id")
             if any(prior[k] != row[k] for k in invariant):
                 raise ContractError("unit-level assignment/history fields vary across S3 observations")
         arms = [0, 0]
