@@ -785,6 +785,7 @@ def evaluate_synthetic_world_reachability(
     world: "SyntheticWorldBundle",
     snapshots_by_unit_z: dict[tuple[str, int], StructuralSnapshot],
     routes_by_unit_z: dict[tuple[str, int], Sequence[StructuralRoute]],
+    target_states_by_unit_z: dict[tuple[str, int], Sequence[str]],
     enumeration_complete_by_unit_z: dict[tuple[str, int], bool],
     search_truncated_by_unit_z: dict[tuple[str, int], bool],
 ) -> SyntheticWorldReachabilityBundle:
@@ -798,6 +799,7 @@ def evaluate_synthetic_world_reachability(
     for label, mapping in (
         ("structural snapshots", snapshots_by_unit_z),
         ("route catalogs", routes_by_unit_z),
+        ("target-state universes", target_states_by_unit_z),
         ("enumeration completeness", enumeration_complete_by_unit_z),
         ("search truncation", search_truncated_by_unit_z),
     ):
@@ -818,6 +820,7 @@ def evaluate_synthetic_world_reachability(
             snapshot, routes_by_unit_z[key],
             enumeration_complete=enumeration_complete_by_unit_z[key],
             search_truncated=search_truncated_by_unit_z[key],
+            target_states=target_states_by_unit_z[key],
         )
         rows.append(UnitPotentialReachability(unit_id, z, snapshot.snapshot_id, result))
     payload = {
