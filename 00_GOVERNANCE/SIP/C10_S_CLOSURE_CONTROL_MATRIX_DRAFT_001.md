@@ -3365,3 +3365,26 @@ Artefacto rector: `C10_S_PACKAGE_B_INTEGRATED_TEMPORAL_DGP_AND_CAUSAL_DESIGN_CLO
 B1–B6 quedan aceptadas. Se corrige la separación S/M: el experimento C10-S se materializa como mundo sintético controlado; roster real, IAM/C_SRC, snapshots de runtime e IS-1…8 materiales no son prerequisitos del carril S. Se reutilizan el roster/ledger de §§16.188–16.223, la matriz 13×52, el harness integrado y los protocolos de seed/provenance existentes.
 
 El trabajo de materialización se concentra en las brechas verificadas: D2 por etapas; q_X*/g_A0/g_A1/r_common/θ_A; EventHistory/event_time/IntervalAdjudication; parámetros temporales sintéticos; y S3 temporal imperfecto. El puente contextual a Value se mantiene en Paquete C. La instrucción del usuario autoriza implementación S en la rama research, pero no ejecución de tests/workflows, calibración, Monte Carlo o experimento.
+
+
+## 17. Paquete B — estado de materialización fuente (2026-11-16)
+
+| Componente | Estado actual | Límite pendiente |
+|---|---|---|
+| D2 por etapas | SOURCE_IMPLEMENTED — potenciales Z=0/Z=1 parametrizados con draws comunes; política, artefacto, actor, programación, intento, receipt, instalación, C_dep*, A_f*, D_f* separados | No hay parámetros confirmatorios ni asignación D2/π_h materializada; no hay crossover/reintentos |
+| EventHistory | SOURCE_IMPLEMENTED — identidad/versionado, post-Z initial state, event_time, before/after, causal family, provenance, suborder, expected-transition manifest | No hay fábrica de historias confirmatoria ni soporte/reloj aprobados |
+| IntervalAdjudication | SOURCE_IMPLEMENTED — continuidad estricta, intervalos iguales suministrados, frontera interna semiabierta, último cerrado, V_cont | §51/R144-B, T*, Δ, K y resolución abiertos |
+| q_X* | ORACLE_INPUT_CONTRACT_IMPLEMENTED | No hay roster/historias/masas aprobadas |
+| g_A0/g_A1 | ORACLE_INPUT_CONTRACT_IMPLEMENTED sobre vector completo | No hay par operativo seleccionado/versionado |
+| r_common | CERTIFICATE_VALIDATION_IMPLEMENTED | No hay certificados por historia materializados |
+| θ_A truth | EVALUATOR_ORACLE_IMPLEMENTED | No hay truth de instancia sin inputs; Analyzer no estima θ_A |
+| S3 | JOINT_SEQUENCE_PROJECTOR_IMPLEMENTED | Señales, schedule, error, missingness, lag y calibración no seleccionados/validados; no integrado en Sealer/Analyzer |
+| Composer | SOURCE_IMPLEMENTED — compone Generator legacy y truth extension separada | No modifica TruthBundle ni AnalyzerResult; firewall de proceso/almacenamiento no demostrado |
+| Tests | SOURCE_ADDED | No ejecutados/importados/compilados |
+| Workflow EP-02 | ALLOWLIST_9_MODULES / MANUAL_ONLY | No dispatch; confirmación expresa requerida |
+| D_f*→ΔT_acc*→Reach/trajectory→Outcome/Value | OPEN | Mapping y funciones causales deben materializarse bajo contratos existentes |
+| Paquete C / potencia / N/R | OPEN | No se anticipa ni se reutiliza P178 como potencia de θ_A |
+
+Artefacto rector: C10_S_PACKAGE_B_SYNTHETIC_COMPONENTS_SOURCE_MATERIALIZATION_RECORD_DRAFT_001.md.
+
+**Autorización:** implementación S=true; test/workflow/technical execution=false; calibration=false; scientific_execution=false; execution_authorized=false; material_lane_authorized=false.

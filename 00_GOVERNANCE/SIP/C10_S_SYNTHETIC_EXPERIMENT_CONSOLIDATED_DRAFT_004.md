@@ -551,3 +551,16 @@ B1–B6 quedan aceptadas conjuntamente como contrato lógico temporal y causal i
 Las brechas sintéticas reales son: (i) cadena D2 por etapas; (ii) q_X*, par g_A0/g_A1, r_common y truth/estimador θ_A; (iii) EventHistory con event_time y completitud, más IntervalAdjudication conectado a DEC-C10-100…104; (iv) valores sintéticos versionados para ρ_follow/T*/K/Δ y calibración temporal; (v) proyección S3 temporal imperfecta completa; (vi) asignación/independencia por construcción y escenarios adversariales de interferencia. El puente V_cont→consecuencia B1→Value contextual sigue en Paquete C.
 
 Se autoriza implementación únicamente del carril sintético S en el harness existente y sus tests fuente. No se autoriza ejecutar tests/workflows, generar bancos, calibrar, simular, estimar ni ejecutar el experimento. No se abre carril M ni se promueve contenido a main.
+
+
+## 324. Paquete B — materialización fuente integrada de componentes sintéticos (2026-11-16)
+
+Se registra la primera materialización de software del carril sintético S conforme a la autorización posterior del usuario. Artefacto rector: C10_S_PACKAGE_B_SYNTHETIC_COMPONENTS_SOURCE_MATERIALIZATION_RECORD_DRAFT_001.md.
+
+Se añade c10s_synthetic_components.py y test_c10s_synthetic_components.py. El bloque implementa: D2 como potenciales por etapas parametrizados (Z/B/W_programmed/W_attempt/receipt/S_install/C_dep*/A_f*/D_f*); EventHistory con identidad, versiones separadas, expected-transition manifest y completitud; adjudicación estricta A_B1/V_cont con fronteras DEC-C10-104 sobre una rejilla explícita suministrada; oracle Evaluator de θ_A sobre inputs explícitos q_X*/g_A0/g_A1/soporte/r_common; comparador de recuperación/abstención; S3 con kernel conjunto de secuencia; composer sobre el Generator existente sin alterar EvidenceCandidate.
+
+No se modificó vcont_integrated_harness.py ni se añadió estimador θ_A al Analyzer. No se han elegido parámetros D2, roster/masas q_X*, políticas g_A, certificados r_common, reloj/§51, T*/Δ/K ni calibración S3. El mapping D_f*→ΔT_acc*→Reach/Π→trayectoria→Outcome/Value permanece abierto. El oracle de truth no equivale a identificación ni recuperación por Analyzer.
+
+El workflow EP-02 amplía su allowlist de ocho a nueve módulos y mantiene dispatch manual en research, confirmación expresa, primary y clean replay. No se ha despachado. No se han ejecutado import, compile, tests, generación, calibración, Monte Carlo, Analyzer, Evaluator o experimento.
+
+**Estado:** SOURCE_COMPONENTS_MATERIALIZED / NOT_TESTED / ANALYZER_THETA_A_NOT_IMPLEMENTED / EXECUTION_NOT_AUTHORIZED. PR #116 Draft; main intacta. DEC, RMA, Evidence→Claim Matrix, STATUS y TGCV Core sin cambios.

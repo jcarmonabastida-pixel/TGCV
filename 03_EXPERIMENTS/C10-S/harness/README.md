@@ -232,3 +232,29 @@ This is a partial writer, not complete package conformance: field-level schemas 
 Static review also corrected three Gate 192 writer defects: source-safe `metric_targets` projection for capture identity, MatrixCapture's distinct compact design-identity projection, and source-domain legacy report fingerprint recomputation after decoding registered report wrappers. These corrections are not compiled or executed.
 
 `test_vcont_package_v2_verifier.py` contains 12 pure methods. The manual research-branch-only workflow now explicitly compiles/runs the verifier and its fixture module. No tests, compilation or workflow have been executed. See `00_GOVERNANCE/SIP/C10_S_VCONT_PACKAGE_V2_INDEPENDENT_VERIFIER_IMPLEMENTATION_GATE_193_DRAFT_001.md`.
+
+ 
+## Synthetic D2 / EventHistory / theta_A components — source materialization
+
+c10s_synthetic_components.py is an additive component library used with the integrated V_cont harness; it is not a second benchmark runner and it does not replace vcont_integrated_harness.py.
+
+Implemented source contracts:
+- D2MechanismConfig and generate_d2_potentials(...) retain Z, B-policy identity/version/artifact/actor, W_programmed, W_attempt, receipt, S_install, the joint four-part C_dep* technical state, A_f* and D_f* as separate potential stages. Both Z potentials use shared exogenous draws. Stage probabilities and the joint component distribution are mandatory inputs; no DEC-C10-067 candidate probability or s=.80 value is silently used.
+- EventHistory and FunctionalTransition implement the reserved truth-history shape with separate DGP/history/adjudication versions, unit/world/potential scope, unique transition IDs, initial post-Z state, event_time, before/after states, causal family, reserved provenance reference, optional suborder, and an independent expected-transition-ID manifest. PROCESS_EVENT and S3 are not reused as truth.
+- adjudicate_intervals(...) applies the strict A_B1 admission behavior contract, equal-duration grid, internal half-open intervals and final closed interval. A complete history yields 1/0; an incomplete history fails closed as a harness defect, never functional UNKNOWN.
+- compute_theta_a_truth(...) is a generic Evaluator-side oracle over explicit q_X* masses, complete four-coordinate joint policies, per-history feasible support and COMMON_FIXED r_common certificates. It does not infer q_X* from sample frequencies, equate G with g_A, select the policy pair, or expose truth to Analyzer.
+- S3SequenceKernelRow and project_s3(...) use a joint distribution over the complete observation sequence, preserving cross-signal and temporal dependence rather than assuming independent observations. Schedule and per-observation capture/ingestion lags are explicit inputs. The projector returns observations only and does not mutate EventHistory.
+- compose_existing_generation(...) composes the existing Generator output with the additive D2/EventHistory truth extension while leaving the legacy EvidenceCandidate unchanged. project_s3_batch(...) creates the separate observation-only projection.
+
+Test source: test_c10s_synthetic_components.py (contract fixtures for D2 stage separation, EventHistory boundaries/simultaneity/completeness, theta_A standardization/support and joint S3 missingness). Tests have not been executed, imported or compiled. No workflow was dispatched.
+
+Materialization boundary and unresolved work:
+- This source is not yet wired into the legacy Analyzer's evidence allowlist or theta_A estimate/result schema. The Analyzer still estimates the existing ITT-Z/ITT-G targets only. No theta_A recovery claim follows from the Evaluator oracle.
+- q_X* rows/masses, an admissible/versioned g_A0/g_A1 pair, and per-history r_common certificates remain required explicit inputs. The implementation does not invent them.
+- The D2 engine does not yet map D_f* to the full ΔT_acc* vector, Reach/Π, trajectory, Outcome or contextual Value; those mappings remain governed by existing contracts and require their own executable functions.
+- EventHistory event_time and IntervalGrid accept exact Decimal inputs but choose no clock unit, support, T*, Δ, K or confirmatory temporal values. R144-B / §51 remain open.
+- S3 sequence kernels are caller-supplied. No signals, schedule, rates, calibration, detectability, error-correction or missingness mechanism is selected or validated. The existing integrated Analyzer's point-identification restriction (perfect and complete S3) remains unchanged.
+- The composer and all new APIs are source materialization only. No compile/test, synthetic generation, calibration, Monte Carlo, Analyzer/Evaluator run, package generation, workflow dispatch or scientific execution was performed.
+
+
+The EP-02 integrated harness workflow now includes test_c10s_synthetic_components.py and c10s_synthetic_components.py in its exact nine-module source/test allowlist, primary run and clean replay. It remains workflow_dispatch-only, restricted to research/c10-s-consolidation-draft and guarded by confirm_synthetic_test_execution=true. It has not been dispatched; the added tests have not been compiled or run.

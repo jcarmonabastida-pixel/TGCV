@@ -217,3 +217,12 @@ implementation_authorized=false
 B1–B6 quedan **ACEPTADAS** por el usuario como contrato lógico integrado. La aceptación se complementa con C10_S_PACKAGE_B_ACCEPTANCE_AND_SYNTHETIC_MATERIALIZATION_RECONCILIATION_DRAFT_001.md: C10-S es el carril S sintético; roster real, IAM/C_SRC, snapshots productivos e IS-1…8 del carril M no son prerequisitos del experimento sintético. Se reutilizan §§16.188–16.223, matriz 13×52, harness integrado, seed-bank protocol y contratos existentes. Las brechas sintéticas reales son D2 por etapas, q_X*/g_A0/g_A1/r_common/θ_A, EventHistory/event_time/IntervalAdjudication, parámetros temporales y S3 completo. Se autoriza implementar estas piezas en el harness existente dentro de la rama research; no se autoriza ejecutar tests, calibración, Monte Carlo ni experimento.
 
 **Estado:** B1_B6_ACCEPTED / SYNTHETIC_MATERIALIZATION_REQUIRED / SCOPE_S_ONLY / IMPLEMENTATION_AUTHORIZED_S_ONLY / EXECUTION_NOT_AUTHORIZED.
+
+
+## 13. Corrigendum operativo posterior — autorización de implementación S (2026-11-16)
+
+La línea implementation_authorized=false del registro histórico de aceptación §11 antecede a la instrucción expresa posterior del usuario de materializar conjuntamente los componentes sintéticos. Para el estado operativo vigente prevalecen esa autorización posterior y el registro C10_S_PACKAGE_B_SYNTHETIC_COMPONENTS_SOURCE_MATERIALIZATION_RECORD_DRAFT_001.md.
+
+**implementation_authorized=true** únicamente para componentes fuente del carril sintético S en research/c10-s-consolidation-draft. No autoriza dispatch, compilación/import, tests, ejecución técnica, calibración, generación de bancos, Monte Carlo, Analyzer/Evaluator, experimento científico, carril M, promoción a main o merge de PR #116.
+
+La aceptación B1–B6 no convierte en aceptados los parámetros temporales de §51 ni selecciona q_X*, g_A0/g_A1 o r_common. La materialización fuente debe respetar los contratos existentes y dejar esos objetos como inputs explícitos cuando aún no están aprobados.

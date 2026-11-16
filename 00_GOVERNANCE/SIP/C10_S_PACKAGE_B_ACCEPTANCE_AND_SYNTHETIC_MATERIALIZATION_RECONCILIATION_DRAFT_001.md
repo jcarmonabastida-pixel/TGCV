@@ -155,3 +155,18 @@ No autoriza materialización/captura M, acceso a sistemas externos, promoción a
 Preparar un único delta de implementación en el harness existente, empezando por S-B1/S-B2/S-B3 como bloque indivisible (D2 + q_X*/g_A/r_common/θ_A + EventHistory/IntervalAdjudication). No abrir Gates separados para cada campo. Después, completar S3 y calibración temporal; Outcome/Value contextual continúa en Paquete C.
 
 No se crean escenarios por defecto, no se crea un roster conceptual nuevo, no se repite Gate 121/122 y no se reabren decisiones aceptadas.
+
+
+## 9. Registro de materialización fuente — 2026-11-16
+
+Se ha materializado un primer bloque ejecutable de componentes en 03_EXPERIMENTS/C10-S/harness/c10s_synthetic_components.py, con tests fuente en test_c10s_synthetic_components.py y documentación en README.md. El registro autocontenido es C10_S_PACKAGE_B_SYNTHETIC_COMPONENTS_SOURCE_MATERIALIZATION_RECORD_DRAFT_001.md.
+
+El bloque implementa D2 por etapas como generador parametrizado de potenciales; EventHistory con identidad/versionado/completitud y manifiesto de transiciones; adjudicación estricta A_B1/V_cont sobre una rejilla explícita suministrada; oracle Evaluator de θ_A sobre q_X*, políticas conjuntas y certificados r_common explícitos; comparador de recuperación/abstención; proyección S3 con kernel conjunto de secuencia; y composer que conserva separado el EvidenceCandidate legacy.
+
+**No se han elegido** parámetros D2, roster/masas q_X*, políticas g_A0/g_A1, soporte factible, certificados r_common, reloj, T*, Δ, K, calendario o calibración S3. El Analyzer legacy no estima θ_A y no se ha conectado aún el nuevo proyector a su allowlist. Tampoco está materializado el mapping D_f*→ΔT_acc*→Reach/Π→trayectoria→Outcome/Value.
+
+El workflow de harness se amplía a nueve módulos con allowlist exacta y clean replay, manteniendo dispatch manual, rama research y confirmación booleana. No se ha despachado. No se han ejecutado imports, compilación, tests, generación, calibración, Monte Carlo, Analyzer, Evaluator ni experimento.
+
+**Estado actualizado:** SOURCE_COMPONENTS_MATERIALIZED / D2_PARAMETERIZED_POTENTIALS_IMPLEMENTED / EVENTHISTORY_AND_INTERVAL_ENGINE_IMPLEMENTED / THETA_A_EVALUATOR_ORACLE_IMPLEMENTED / S3_JOINT_SEQUENCE_PROJECTOR_IMPLEMENTED / ANALYZER_THETA_A_NOT_IMPLEMENTED / NOT_TESTED / EXECUTION_NOT_AUTHORIZED.
+
+Se mantienen: implementation_authorized=true (carril S y componentes fuente); technical_test_execution_authorized=false; workflow_dispatch_authorized=false; scientific_execution=false; execution_authorized=false; material_lane_authorized=false.
