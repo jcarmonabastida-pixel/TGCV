@@ -12,7 +12,8 @@ from c10s_synthetic_components import (
     StructuralAtom, StructuralIdentityMatch, StructuralTransitionRule, TransformationalStateSnapshot,
     EvidenceStateSnapshot, TransformationalDeltaEngine, D2StructuralPotentialPair,
     evaluate_d2_structural_deltas, D2StructuralGenerationConfig,
-    generate_d2_structural_potential_pairs,
+    generate_d2_structural_potential_pairs, D2ReachStepTemplate, D2ReachRouteTemplate,
+    D2ReachGenerationConfig, evaluate_d2_structural_reachability,
     FunctionalState, FunctionalTransition, IntervalGrid,
     JointPolicyHistory, QXHistoryMass, RCommonPairCertificate,
     S3SequenceKernelRow, S3ObservationConfig, adjudicate_intervals,
@@ -653,8 +654,9 @@ class SyntheticComponentTests(unittest.TestCase):
             "STRUCTURAL-D2-MIN", "001", "TAU-FOCAL", "v1",
             "BOUNDARY-1", "CONTEXT-1", "CATALOG-1",
             (
-                StructuralAtom("R", "REL-1", "RELATION", "v1", 1, (("edge", "focal-route"),)),
-                StructuralAtom("C", "COND-1", "CONDITION", "v1", 1, (("authorization", "true"),)),
+                StructuralAtom("U", "TAU-ALT", "TRANSFORMATION", "v1", 1, (("kind", "alternative"),)),
+                StructuralAtom("R", "REL-1", "RELATION", "v1", 0, (("edge", "focal-route-closed"),)),
+                StructuralAtom("C", "COND-1", "CONDITION", "v1", 0, (("authorization", "false"),)),
                 StructuralAtom("X", "CTX-1", "CONTEXT", "v1", 1, (("environment", "A"),)),
             ),
             transition_rules=(
@@ -663,13 +665,27 @@ class SyntheticComponentTests(unittest.TestCase):
                     "MODIFY", "c_dep_star",
                 ),
                 StructuralTransitionRule(
-                    StructuralAtom("C", "COND-2", "CONDITION", "v1", 1, (("collateral", "installed-service"),)),
-                    "ADD", "s_install",
+                    StructuralAtom("C", "COND-1", "CONDITION", "v1", 1, (("authorization", "true"),)),
+                    "MODIFY", "s_install",
                 ),
             ),
         )
-        world, pairs = SyntheticWorldBuilder().generate_complete(
-            config, d2_config, structural_config,
+        reach_config = D2ReachGenerationConfig(
+            "REACH-D2-MIN", "001", 5.0,
+            ("TAU-FOCAL", "TAU-ALT"),
+            ("TARGET-FOCAL", "TARGET-ABSENT"),
+            (D2ReachRouteTemplate(
+                "ROUTE-FOCAL", "TARGET-FOCAL",
+                (
+                    D2ReachStepTemplate("TAU-FOCAL", "S0", "S1", 1),
+                    D2ReachStepTemplate("TAU-ALT", "S1", "S2", 1),
+                ),
+                (("R", "REL-1"),), 1, "FOCAL",
+            ),),
+            True, True, True, True, True, False,
+        )
+        world, pairs, reach = SyntheticWorldBuilder().generate_complete_with_reachability(
+            config, d2_config, structural_config, reach_config,
         )
         deltas = evaluate_d2_structural_deltas(world, pairs)
         self.assertEqual(set(pairs), {(unit.unit_id, z) for unit in world.units for z in (0, 1)})
@@ -680,9 +696,17 @@ class SyntheticComponentTests(unittest.TestCase):
         self.assertTrue(all(delta.evidence_delta.changed is False for delta in deltas))
         self.assertTrue(all(
             any(row.change_kind == "MODIFIED" and row.baseline_id == "REL-1" for row in delta.delta_r)
-            and any(row.change_kind == "ADDED" and row.post_id == "COND-2" for row in delta.delta_c)
+            and any(row.change_kind == "MODIFIED" and row.baseline_id == "COND-1" for row in delta.delta_c)
             and len(delta.delta_x) == 1
             for delta in deltas
+        ))
+        self.assertEqual(len(reach.contrasts), 4)
+        self.assertTrue(all(
+            dict(row.baseline.target_states)["TARGET-FOCAL"] == 0
+            and dict(row.post.target_states)["TARGET-FOCAL"] == 1
+            and dict(row.post.target_states)["TARGET-ABSENT"] == 0
+            and dict(row.delta_by_target)["TARGET-FOCAL"] == 1
+            for row in reach.contrasts
         ))
 
 
