@@ -260,3 +260,18 @@ q_X* está definido como distribución objetivo conjunta pre-Z, pero carece de r
 La dependencia de theta_a_truth es: roster aprobado → historias/snapshots pre-Z → q_X* y masas → par g_A → factibilidad/soporte conjunto → r_common acreditable → potenciales focales. El Generator no debe calcular theta_a_truth desde G y el Analyzer no debe confundir asignación G con intervención focal. No se crean políticas, historias, masas, parámetros, escenarios ni tests; no se modifican código, schema, DEC, C0, U_G, RMA, Evidence→Claim Matrix, STATUS, Core o main. No ejecución; `scientific_execution=false`; `execution_authorized=false`.
 
 **Siguiente operación:** Gate 131 — auditoría de suficiencia de medición/observación de V_cont mediante S3, reutilizando DEC-C10-099…102, el contrato integrado V_cont, P182/P183 y la matriz temporal existente. No fijar T*, Δ, K, tolerancias, tasas de error o calibración por conveniencia; no duplicar matrices ni ejecutar.
+
+
+## 301. Corrigendum a Gate 130 — semántica de G frente a g_A y θ_A (2026-11-16)
+
+**Registro:** `00_GOVERNANCE/SIP/C10_S_GATE_130_G_ASSIGNMENT_AND_GA_SEMANTICS_CORRIGENDUM_DRAFT_001.md`. Gate 130 debe leerse con esta precisión: el contrato integrado V_cont §1 define G como asignación aleatorizada a una intervención sintética sobre el vector focal completo ΔT_acc*. Por tanto, no es correcto caracterizar G como si careciera de intervención focal. Sin embargo, el ITT-G^{Z=0} de ese benchmark no equivale automáticamente a θ_A(q_X*,r_common;V_cont): falta acreditar correspondencia de niveles con el par g_A0/g_A1 aceptado, población objetivo, soporte por historia, régimen no focal común y medición válida. G tampoco representa la asignación material D2 B_g0^D2/B_g1^D2. Se conserva theta_a_truth=None y la no equivalencia de ITT-G y θ_A. No se altera DEC-C10-103 ni el contrato integrado.
+
+## 302. Gate 131 — suficiencia de medición e identificación observacional de V_cont mediante S3 (2026-11-16)
+
+**Registro:** `00_GOVERNANCE/SIP/C10_S_VCONT_S3_MEASUREMENT_IDENTIFICATION_SUFFICIENCY_AUDIT_GATE_131_DRAFT_001.md`. **Addendum al plan:** `00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_131_S3_MEASUREMENT_AUDIT_ADDENDUM_DRAFT_001.md`.
+
+DEC-C10-099…102 aceptan la dimensión V_cont, su agregación temporal igualitaria, inicio de ventana t0 y continuidad estricta por intervalo. S3 está definido como canal pasivo, no-mutante, vectorial e imperfecto, pero no existe un modelo de medición S3 identificado/validado que permita recuperar puntualmente V_cont a partir de señales observadas. El contrato integrado mantiene medición perfecta y completa como restricción actual de identificación puntual; error o ausencia sin modelo aprobado exige bounds/abstención/INDETERMINATE, no una estimación puntual.
+
+P182-01…12 y P183-01…13, MEAS-01…14 y MISS-01…15 son contratos generales reutilizables, no fixtures/oráculos ejecutados para S3. Gates 172–183 y 199–205 establecen captura/export/provenance/workflow, no validez de medida. No se crean nuevas matrices ni familias de tests, ni se fijan T*, Δ, K, tasas o tolerancias. No ejecución; `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente operación:** Gate 132 — crosswalk dirigido entre señales S3 observables, truth A_B1/V_cont, P182/P183, MEAS/MISS y allowlist del Analyzer; distinguir benchmark ideal de robustez a error, sin seleccionar parámetros ni ejecutar.
