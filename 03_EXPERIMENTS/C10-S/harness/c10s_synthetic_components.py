@@ -2949,6 +2949,9 @@ class ThetaAS3ObservationRecord:
     history_ref: str
     assignment_bundle_sha256: str
     q_x_sha256: str
+    g_a0_sha256: str
+    g_a1_sha256: str
+    r_common_sha256: str
     assigned_arm: int
     assignment_probability: float
     assigned_vector_sha256: str
@@ -3022,7 +3025,8 @@ def compose_theta_a_s3_observation_records(
             records.append(ThetaAS3ObservationRecord(
                 history.run_id, assignment.unit_id, assignment.history_ref,
                 assignments.result_sha256, assignments.q_x_sha256,
-                assignment.assigned_arm,
+                assignments.g_a0_sha256, assignments.g_a1_sha256,
+                assignments.r_common_sha256, assignment.assigned_arm,
                 assignment.probability_a1 if assignment.assigned_arm == 1 else assignment.probability_a0,
                 assignment.assigned_vector_sha256,
                 assignment.policy_fingerprint, assignment.r_common_fingerprint,
