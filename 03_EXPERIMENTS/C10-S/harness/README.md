@@ -503,3 +503,34 @@ continues to receive only realized S3 observations, never the potential historie
 or evaluator-side truth. Existing `POINT_SAMPLE` limitations are unchanged:
 these generated histories do not by themselves make strict temporal continuity
 observable.
+
+
+### Focal theta_A continuous interval observation
+
+`theta_a_interval_observation.py` adds a distinct interval-monitor projection for
+the direct-`g_A` observation path. It reuses the existing `IntervalGrid` and
+strict `adjudicate_intervals()` semantics; it does not treat point samples as
+interval evidence. The monitor contract requires the explicit
+`CONTINUOUS_EVENT_COVERAGE` mode, exact monitor/grid identity and version,
+and explicit capture/ingestion lags. It emits one observation per interval,
+with a Boolean observed compliance signal or an explicit MISSING status.
+
+The initial monitor is a certified continuous event monitor with perfect
+classification conditional on an observed interval. Interval missingness is
+parameterized and seeded reproducibly. This is an explicit synthetic
+measurement assumption, not an empirical claim about real monitors. The
+observation payload contains interval bounds, measured compliance, missingness,
+coverage declaration and monitor provenance; it does not contain EventHistory
+transitions, latent states, interval adjudication objects, or V_cont truth.
+The validation function checks roster/history/grid/monitor binding and complete
+interval coverage without comparing observed values against reserved truth.
+
+Regressions include a transient within-interval admission interruption that
+endpoint point samples would miss, deterministic missingness, exact interval
+coverage, and rejection of POINT_SAMPLE as continuous monitoring. This module
+is an observation generator only: the focal Sealer/Analyzer still consume
+POINT_SAMPLE records and have not yet been adapted to this new interval schema.
+Consequently, this block does not yet identify theta_A. The next integration
+step must carry these interval observations through the evidence firewall and
+implement missing-interval bounds/estimation without exposing the oracle to the
+Analyzer.
