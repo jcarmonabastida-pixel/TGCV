@@ -1,7 +1,7 @@
 # C10-S — Propuesta de complemento normativo a DEC-C10-102: alcance temporal de A_B1 y V_cont
 
 **Fecha:** 2026-11-16  
-**Estado:** PROPOSED_FOR_EXPLICIT_ACCEPTANCE / NOT_AN_ACCEPTED_DECISION / NO_DESIGN_FREEZE.  
+**Estado:** ACCEPTED_FOR_CURRENT_SYNTHETIC_DGP_LOGICAL_SCOPE / NO_DESIGN_FREEZE.  
 **Rama:** `research/c10-s-consolidation-draft` · PR #116 (Draft).  
 **Tipo:** propuesta de decisión complementaria; DEC-C10-102 y las decisiones históricas permanecen inalteradas.
 
@@ -97,3 +97,8 @@ No modifica DEC-C10-068/099…104, el DGP original, §51, schemas, código, fixt
 `scientific_execution=false`  
 `execution_authorized=false`  
 `implementation_authorized=false`
+
+
+## 7. Estado posterior a la aceptación (2026-11-16)
+
+C1–C6 fueron aceptadas conjuntamente. Registro: `C10_S_DEC-C10-102_COMPLEMENTARY_SCOPE_ACCEPTANCE_RECORD_DRAFT_001.md`. El crosswalk normativo queda `CLOSED_FOR_CURRENT_SYNTHETIC_DGP_LOGICAL_SCOPE`. No se crea DEC-C10-105; DEC-C10-102 y DEC-C10-099…104 permanecen intactas. §51, materialización y paquetes B–D siguen abiertos.
