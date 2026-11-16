@@ -432,3 +432,18 @@ Se registra la armonización versionada exigida por R141-B: DEC-C10-104 gobierna
 El DGP íntegro §§48–55 no queda aceptado ni congelado. La aceptación documental no materializa EventHistory/TruthBundle ni acredita conformidad del harness. Próximo trabajo documental: delta único de implementación trazable. No hay autorización de código ni ejecución.
 
 scientific_execution=false; execution_authorized=false.
+
+
+## 315. Gate 143 — delta único de implementación temporal V_cont (2026-11-16)
+
+**Registro:** 00_GOVERNANCE/SIP/C10_S_VCONT_TEMPORAL_IMPLEMENTATION_DELTA_SPECIFICATION_GATE_143_DRAFT_001.md. **Addendum:** 00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_143_TEMPORAL_IMPLEMENTATION_DELTA_ADDENDUM_DRAFT_001.md.
+
+Gate 143 prepara un delta único para el harness integrado. La inspección estática del blob 88c6c7bd6f82353e64a4f12edbe2e2abc2cec002 identifica la limitación actual: truth por intervalos generada directamente como ENABLED∧PROFILE, rejilla uniforme obligatoria, provision_ok binario y ausencia de EventHistory de transiciones fechadas/adjudicación estricta desde eventos. S3 representa None/MISSING separadamente y Analyzer se abstiene ante medición no identificada; Evaluator actual evalúa ITT-Z/ITT-G, no bounds temporales V_cont.
+
+El delta D1–D6 comprende EventHistory por unidad/potencial (z,g); adjudicador A_B1 estricto conforme DEC-C10-102/104; TruthBundle temporal versionado y bounds de truth DEC-C10-100; canal S3/Sealer independiente sin truth leakage; Analyzer puntual ideal + abstención sin bounds propios; Evaluator post-sellado que separa truth bounds y resultados Analyzer.
+
+La baseline actual se preserva intacta. La ruta temporal sería una versión sucesora con identidad/hashes propios. No fijar unidad temporal, coordenada, event_time numérico, §51, T*, Δ, K, soporte, τ_follow ni calibración. Estas dependencias impiden implementación inmediata.
+
+No se modificó código, tests, schemas, DGP, DEC ni Decision Log. No hubo pruebas, simulaciones, calibración o workflows. Preflight, tests y cambios de código requieren autorización separada.
+
+scientific_execution=false; execution_authorized=false.
