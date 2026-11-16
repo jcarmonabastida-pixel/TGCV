@@ -836,6 +836,339 @@ def evaluate_synthetic_world_reachability(
     return bundle
 
 
+
+# Full structural snapshot/delta contract: U/R/C/X truth is kept apart from E_T.
+StructuralComponent = Literal["U", "R", "C", "X"]
+SnapshotTimepoint = Literal["BASELINE", "POST"]
+
+
+@dataclass(frozen=True)
+class StructuralAtom:
+    component: StructuralComponent
+    canonical_id: str
+    semantic_type: str
+    semantic_version: str
+    state: ReachState
+    attributes: tuple[tuple[str, str], ...]
+
+    def validate(self) -> None:
+        if self.component not in ("U", "R", "C", "X"):
+            raise ContractError("structural atom must belong to U/R/C/X")
+        if not all((self.canonical_id, self.semantic_type, self.semantic_version)):
+            raise ContractError("structural atom identity/type/version are mandatory")
+        _reach_state(self.state, f"{self.component} structural state")
+        keys = [key for key, _ in self.attributes]
+        if any(not key for key in keys) or len(keys) != len(set(keys)):
+            raise ContractError("structural atom attribute keys must be nonempty and unique")
+        forbidden = {"outcome", "value", "selection", "execution"}
+        if any(key.strip().casefold() in forbidden for key in keys):
+            raise ContractError("Outcome, Value, selection and execution are downstream, not S_T* fields")
+
+
+@dataclass(frozen=True)
+class StructuralIdentityMatch:
+    baseline_id: str
+    post_id: str
+    match_state: ReachState
+
+    def validate(self) -> None:
+        if not self.baseline_id or not self.post_id:
+            raise ContractError("identity correspondence requires both baseline and post IDs")
+        if self.baseline_id == self.post_id:
+            raise ContractError("explicit correspondence is only for different canonical IDs")
+        if self.match_state not in (1, "?"):
+            raise ContractError("identity correspondence must be confirmed (1) or unresolved (?)")
+
+
+@dataclass(frozen=True)
+class TransformationalStateSnapshot:
+    snapshot_id: str
+    snapshot_version: str
+    world_id: str
+    world_version: str
+    dgp_id: str
+    dgp_version: str
+    unit_id: str
+    potential_z: int
+    timepoint: SnapshotTimepoint
+    boundary_id: str
+    context_id: str
+    catalog_version: str
+    atoms: tuple[StructuralAtom, ...]
+    component_complete: tuple[tuple[StructuralComponent, bool], ...]
+
+    def validate(self) -> None:
+        if not all((self.snapshot_id, self.snapshot_version, self.world_id,
+                    self.world_version, self.dgp_id, self.dgp_version, self.unit_id,
+                    self.boundary_id, self.context_id, self.catalog_version)):
+            raise ContractError("transformational snapshot identity and scope are mandatory")
+        if self.potential_z not in (0, 1) or self.timepoint not in ("BASELINE", "POST"):
+            raise ContractError("snapshot must identify potential Z and BASELINE/POST timepoint")
+        atom_keys = [(atom.component, atom.canonical_id) for atom in self.atoms]
+        if len(atom_keys) != len(set(atom_keys)):
+            raise ContractError("structural atom IDs must be unique within each component")
+        for atom in self.atoms:
+            atom.validate()
+        complete = dict(self.component_complete)
+        if set(complete) != {"U", "R", "C", "X"} or any(type(v) is not bool for v in complete.values()):
+            raise ContractError("component completeness must explicitly cover U/R/C/X")
+        if len(self.component_complete) != 4:
+            raise ContractError("component completeness declarations must not be duplicated")
+
+
+@dataclass(frozen=True)
+class StructuralDeltaEntry:
+    component: StructuralComponent
+    change_kind: Literal["ADDED", "REMOVED", "MODIFIED", "UNCHANGED", "UNKNOWN"]
+    change_state: ReachState
+    baseline_id: str | None
+    post_id: str | None
+    baseline_sha256: str | None
+    post_sha256: str | None
+    semantic_type: str | None
+
+
+@dataclass(frozen=True)
+class EvidenceStateSnapshot:
+    evidence_id: str
+    source_refs: tuple[str, ...]
+    coverage_state: str
+    validity_state: str
+    provenance_sha256: str
+    evidence_version: str
+    adjudication_version: str
+
+    def validate(self) -> None:
+        if not all((self.evidence_id, self.coverage_state, self.validity_state,
+                    self.provenance_sha256, self.evidence_version, self.adjudication_version)):
+            raise ContractError("E_T evidence identity, coverage, validity, provenance and versions are required")
+        if len(self.source_refs) != len(set(self.source_refs)):
+            raise ContractError("E_T source references must be unique")
+
+
+@dataclass(frozen=True)
+class EvidenceDelta:
+    changed: bool
+    baseline_sha256: str
+    post_sha256: str
+
+
+@dataclass(frozen=True)
+class TransformationalDelta:
+    world_id: str
+    world_version: str
+    dgp_id: str
+    dgp_version: str
+    unit_id: str
+    potential_z: int
+    baseline_snapshot_id: str
+    post_snapshot_id: str
+    entries: tuple[StructuralDeltaEntry, ...]
+    delta_u: tuple[StructuralDeltaEntry, ...]
+    delta_r: tuple[StructuralDeltaEntry, ...]
+    delta_c: tuple[StructuralDeltaEntry, ...]
+    delta_x: tuple[StructuralDeltaEntry, ...]
+    delta_state: ReachState
+    evidence_delta: EvidenceDelta
+    result_sha256: str
+
+    def validate(self) -> None:
+        if not self.result_sha256:
+            raise ContractError("transformational delta fingerprint is required")
+        if tuple(self.delta_u) != tuple(x for x in self.entries if x.component == "U"):
+            raise ContractError("ΔU* projection differs from canonical delta entries")
+        if tuple(self.delta_r) != tuple(x for x in self.entries if x.component == "R"):
+            raise ContractError("ΔR* projection differs from canonical delta entries")
+        if tuple(self.delta_c) != tuple(x for x in self.entries if x.component == "C"):
+            raise ContractError("ΔC* projection differs from canonical delta entries")
+        if tuple(self.delta_x) != tuple(x for x in self.entries if x.component == "X"):
+            raise ContractError("ΔX* projection differs from canonical delta entries")
+        _reach_state(self.delta_state, "ΔT_acc* state")
+
+
+def _atom_fingerprint(atom: StructuralAtom | None) -> str | None:
+    return None if atom is None else digest(atom)
+
+
+def _evidence_delta(before: EvidenceStateSnapshot, after: EvidenceStateSnapshot) -> EvidenceDelta:
+    before.validate()
+    after.validate()
+    before_hash, after_hash = digest(before), digest(after)
+    return EvidenceDelta(before_hash != after_hash, before_hash, after_hash)
+
+
+class TransformationalDeltaEngine:
+    """Diff comparable structural truth snapshots; never folds E_T into ΔT_acc*."""
+    version = "c10s-transformational-delta-0.1"
+
+    def evaluate(
+        self,
+        baseline: TransformationalStateSnapshot,
+        post: TransformationalStateSnapshot,
+        *,
+        identity_matches: Sequence[StructuralIdentityMatch] = (),
+        evidence_baseline: EvidenceStateSnapshot,
+        evidence_post: EvidenceStateSnapshot,
+    ) -> TransformationalDelta:
+        baseline.validate()
+        post.validate()
+        scope_before = (baseline.world_id, baseline.world_version, baseline.dgp_id,
+                        baseline.dgp_version, baseline.unit_id, baseline.potential_z,
+                        baseline.boundary_id, baseline.context_id, baseline.catalog_version)
+        scope_after = (post.world_id, post.world_version, post.dgp_id,
+                       post.dgp_version, post.unit_id, post.potential_z,
+                       post.boundary_id, post.context_id, post.catalog_version)
+        if scope_before != scope_after or baseline.timepoint != "BASELINE" or post.timepoint != "POST":
+            raise ContractError("ΔT_acc* requires comparable BASELINE/POST snapshots in the same world/unit/Z/boundary/context/catalog")
+        before = {(a.component, a.canonical_id): a for a in baseline.atoms}
+        after = {(a.component, a.canonical_id): a for a in post.atoms}
+        matches = tuple(identity_matches)
+        for match in matches:
+            match.validate()
+        if len({m.baseline_id for m in matches}) != len(matches) or len({m.post_id for m in matches}) != len(matches):
+            raise ContractError("identity correspondence must be one-to-one")
+        entries: list[StructuralDeltaEntry] = []
+        consumed_before: set[tuple[str, str]] = set()
+        consumed_after: set[tuple[str, str]] = set()
+
+        def add_pair(component, left, right, unresolved=False):
+            left_key = None if left is None else (component, left.canonical_id)
+            right_key = None if right is None else (component, right.canonical_id)
+            if left_key: consumed_before.add(left_key)
+            if right_key: consumed_after.add(right_key)
+            if unresolved:
+                kind, state = "UNKNOWN", "?"
+            elif left is None:
+                complete = dict(baseline.component_complete)[component] and dict(post.component_complete)[component]
+                kind, state = ("ADDED", 1) if complete else ("UNKNOWN", "?")
+            elif right is None:
+                complete = dict(baseline.component_complete)[component] and dict(post.component_complete)[component]
+                kind, state = ("REMOVED", 1) if complete else ("UNKNOWN", "?")
+            elif left.semantic_type != right.semantic_type:
+                raise ContractError("semantic type mismatch cannot be silently matched across identities")
+            elif (left.state, left.attributes) != (right.state, right.attributes):
+                kind, state = "MODIFIED", 1
+            else:
+                kind, state = "UNCHANGED", 0
+            entries.append(StructuralDeltaEntry(
+                component, kind, state,
+                None if left is None else left.canonical_id,
+                None if right is None else right.canonical_id,
+                _atom_fingerprint(left), _atom_fingerprint(right),
+                None if right is None and left is None else (
+                    right.semantic_type if right is not None else left.semantic_type
+                ),
+            ))
+
+        for match in matches:
+            left_candidates = [(key, atom) for key, atom in before.items()
+                               if key[1] == match.baseline_id and key not in consumed_before]
+            right_candidates = [(key, atom) for key, atom in after.items()
+                                if key[1] == match.post_id and key not in consumed_after]
+            if len(left_candidates) != 1 or len(right_candidates) != 1:
+                raise ContractError("explicit identity correspondence must resolve exactly one atom on each side")
+            (left_key, left), (right_key, right) = left_candidates[0], right_candidates[0]
+            if left_key[0] != right_key[0]:
+                raise ContractError("identity correspondence cannot move an object across U/R/C/X components")
+            if match.match_state == 1 and left.semantic_type != right.semantic_type:
+                raise ContractError("confirmed identity match requires the same semantic type")
+            add_pair(left_key[0], left, right, unresolved=(match.match_state == "?"))
+
+        for key in sorted(set(before) | set(after)):
+            if key in consumed_before or key in consumed_after:
+                continue
+            left, right = before.get(key), after.get(key)
+            if left is not None and right is not None:
+                if left.semantic_type == right.semantic_type:
+                    add_pair(key[0], left, right)
+                else:
+                    add_pair(key[0], left, None)
+                    add_pair(key[0], None, right)
+            else:
+                add_pair(key[0], left, right)
+
+        entries.sort(key=lambda row: (row.component, row.baseline_id or "", row.post_id or ""))
+        changed_states = [row.change_state for row in entries]
+        if any(state == 1 for state in changed_states):
+            delta_state: ReachState = 1
+        elif any(state == "?" for state in changed_states):
+            delta_state = "?"
+        else:
+            delta_state = 0
+        evidence_delta = _evidence_delta(evidence_baseline, evidence_post)
+        by_component = {component: tuple(row for row in entries if row.component == component)
+                        for component in ("U", "R", "C", "X")}
+        payload = {
+            "scope": scope_before, "baseline_snapshot_id": baseline.snapshot_id,
+            "post_snapshot_id": post.snapshot_id, "entries": tuple(entries),
+            "delta_state": delta_state, "evidence_delta": evidence_delta,
+        }
+        result = TransformationalDelta(
+            baseline.world_id, baseline.world_version, baseline.dgp_id,
+            baseline.dgp_version, baseline.unit_id, baseline.potential_z,
+            baseline.snapshot_id, post.snapshot_id, tuple(entries),
+            by_component["U"], by_component["R"], by_component["C"], by_component["X"],
+            delta_state, evidence_delta, digest(payload),
+        )
+        result.validate()
+        return result
+
+
+@dataclass(frozen=True)
+class D2StructuralPotentialPair:
+    unit_id: str
+    z: int
+    focal_transformation_id: str
+    baseline: TransformationalStateSnapshot
+    post: TransformationalStateSnapshot
+    evidence_baseline: EvidenceStateSnapshot
+    evidence_post: EvidenceStateSnapshot
+    identity_matches: tuple[StructuralIdentityMatch, ...] = ()
+
+
+def evaluate_d2_structural_deltas(
+    world: "SyntheticWorldBundle",
+    pairs_by_unit_z: dict[tuple[str, int], D2StructuralPotentialPair],
+) -> tuple[TransformationalDelta, ...]:
+    """Bind complete U/R/C/X baseline→post truth deltas to both D2 potentials.
+
+    D2's focal A_f*/D_f* is checked against the focal U atom only; it is not
+    substituted for the complete ΔT_acc* vector.
+    """
+    world.validate()
+    expected = {(unit.unit_id, z) for unit in world.units for z in (0, 1)}
+    if set(pairs_by_unit_z) != expected:
+        raise ContractError("D2 structural pairs must cover every world unit × Z potential exactly")
+    engine = TransformationalDeltaEngine()
+    results = []
+    units = {unit.unit_id: unit for unit in world.units}
+    for key in sorted(expected):
+        unit_id, z = key
+        pair = pairs_by_unit_z[key]
+        if (pair.unit_id, pair.z) != key or not pair.focal_transformation_id:
+            raise ContractError("D2 structural pair identity/focal transformation binding is invalid")
+        stage = units[unit_id].d2_potentials.potentials_by_z[z]
+        baseline_atoms = [a for a in pair.baseline.atoms
+                          if a.component == "U" and a.canonical_id == pair.focal_transformation_id]
+        post_atoms = [a for a in pair.post.atoms
+                      if a.component == "U" and a.canonical_id == pair.focal_transformation_id]
+        if len(baseline_atoms) != 1 or len(post_atoms) != 1:
+            raise ContractError("D2 structural snapshots must contain exactly one focal U atom at baseline and post")
+        expected_pre = 1 if units[unit_id].d2_baseline.focal_accessible_pre else 0
+        expected_post = 1 if stage.a_f_post else 0
+        if baseline_atoms[0].state != expected_pre or post_atoms[0].state != expected_post:
+            raise ContractError("focal U accessibility truth disagrees with D2 baseline/A_f* potential truth")
+        delta = engine.evaluate(
+            pair.baseline, pair.post, identity_matches=pair.identity_matches,
+            evidence_baseline=pair.evidence_baseline, evidence_post=pair.evidence_post,
+        )
+        expected_opening = (not units[unit_id].d2_baseline.focal_accessible_pre) and stage.a_f_post
+        if stage.d_f_opening != expected_opening:
+            raise ContractError("D2 D_f* opening truth is inconsistent with its baseline and post A_f*")
+        results.append(delta)
+    return tuple(results)
+
+
 @dataclass(frozen=True)
 class SyntheticWorldConfig:
     """Explicit finite target-world fixture; masses are q_X* inputs, not sample frequencies."""
