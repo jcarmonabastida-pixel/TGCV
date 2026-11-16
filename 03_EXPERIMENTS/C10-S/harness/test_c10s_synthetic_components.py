@@ -1,12 +1,15 @@
 import unittest
 from decimal import Decimal
 
+from vcont_integrated_harness import EvidenceCandidate
+
 from c10s_synthetic_components import (
     ContractError, D2Baseline, D2MechanismConfig, EventHistory,
     FunctionalState, FunctionalTransition, IntervalGrid,
     JointPolicyHistory, QXHistoryMass, RCommonPairCertificate,
     S3SequenceKernelRow, S3ObservationConfig, adjudicate_intervals,
     compute_theta_a_truth, evaluate_theta_a_output, generate_d2_potentials, project_s3,
+    project_s3_into_evidence_candidate,
 )
 
 
@@ -145,6 +148,47 @@ class SyntheticComponentTests(unittest.TestCase):
         self.assertTrue(all(row.admission_status == "MISSING" for row in rows))
         self.assertEqual(history.content_sha256, before_hash)
         self.assertEqual(rows[0].ingestion_time, Decimal("0.3"))
+
+
+    def test_s3_projection_replaces_only_evidence_columns_for_analyzer(self):
+        history = self.history()
+        config = S3ObservationConfig(
+            (Decimal("0"), Decimal("2"), Decimal("4")),
+            (Decimal("0.1"),) * 3, (Decimal("0.2"),) * 3,
+            (S3SequenceKernelRow(
+                ((False, "NO_ADMISSION"),) * 3,
+                ((((True, "ADMIT"), (False, "NO_ADMISSION"), (None, None)), 1.0),),
+            ),),
+            "S3-ADAPTER", "001",
+        )
+        observations = project_s3(history, config, seed=11)
+        original = {
+            "unit_id": "UE-001", "assignment_z": 0, "assignment_g": 1,
+            "s3_enabled": [0, 0, 0], "s3_profile_match": [0, 0, 0],
+            "s3_enabled_status": ["OBSERVED"] * 3,
+            "s3_profile_status": ["OBSERVED"] * 3,
+            "delta_t_acc_observed": (0, 0, 0, 0), "profile": "R0", "version": "001",
+        }
+        candidate = EvidenceCandidate("RUN-001", (original,), {"run_id": "RUN-001"})
+        projected = project_s3_into_evidence_candidate(candidate, (history,), observations)
+        row = projected.rows[0]
+        self.assertEqual(row["s3_enabled"], [1, 0, None])
+        self.assertEqual(row["s3_profile_match"], [1, 0, None])
+        self.assertEqual(row["s3_enabled_status"], ["OBSERVED", "OBSERVED", "MISSING"])
+        self.assertEqual(row["s3_profile_status"], ["OBSERVED", "OBSERVED", "MISSING"])
+        self.assertEqual(row["assignment_z"], 0)
+        self.assertEqual(row["assignment_g"], 1)
+        self.assertEqual(row["delta_t_acc_observed"], (0, 0, 0, 0))
+        self.assertNotIn("event_history", row)
+        self.assertNotIn("interval_adjudication", row)
+        self.assertEqual(candidate.rows[0], original)
+
+    def test_s3_projection_rejects_incomplete_unit_roster(self):
+        candidate = EvidenceCandidate("RUN-001", ({
+            "unit_id": "UE-001", "s3_enabled": [0], "s3_profile_match": [0],
+        },), None)
+        with self.assertRaises(ContractError):
+            project_s3_into_evidence_candidate(candidate, (), ())
 
 
 if __name__ == "__main__":

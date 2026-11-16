@@ -8,7 +8,7 @@ support/grid, S3 calibration, or downstream TGCV Value rules.
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from decimal import Decimal
 import hashlib
 import json
@@ -881,3 +881,93 @@ def project_s3_batch(
     if len(observation_ids) != len(set(observation_ids)):
         raise ContractError("S3 observation IDs must be unique")
     return tuple(rows)
+
+
+
+def project_s3_into_evidence_candidate(
+    candidate,
+    selected_histories: Sequence[EventHistory],
+    observations: Sequence[S3Observation],
+):
+    """Return an evidence-only candidate whose S3 fields come from EventHistory.
+
+    The caller supplies exactly one selected (realized-assignment) history per
+    unit. Potential histories and adjudications remain evaluator-side. Only the
+    existing S3 evidence columns are replaced; assignment/provenance and every
+    other candidate field are preserved. Admission behavior is projected to
+    the existing B1 profile-match indicator without exposing truth objects.
+    """
+    if not getattr(candidate, "run_id", None) or not getattr(candidate, "rows", None):
+        raise ContractError("an identified nonempty EvidenceCandidate is required")
+    history_by_unit = {}
+    history_ids = set()
+    for history in selected_histories:
+        history.validate(require_complete=True)
+        if history.run_id != candidate.run_id:
+            raise ContractError("selected EventHistory run differs from EvidenceCandidate")
+        if history.unit_id in history_by_unit or history.history_id in history_ids:
+            raise ContractError("selected EventHistory must be unique by unit and history")
+        history_by_unit[history.unit_id] = history
+        history_ids.add(history.history_id)
+
+    source_rows = tuple(candidate.rows)
+    unit_ids = [row.get("unit_id") for row in source_rows if isinstance(row, dict)]
+    if len(unit_ids) != len(source_rows) or any(not unit for unit in unit_ids):
+        raise ContractError("EvidenceCandidate rows require explicit unit_id values")
+    if len(unit_ids) != len(set(unit_ids)) or set(unit_ids) != set(history_by_unit):
+        raise ContractError("selected EventHistory roster must match EvidenceCandidate units exactly")
+
+    observations_by_history = {}
+    observation_ids = set()
+    for observation in observations:
+        if observation.observation_id in observation_ids:
+            raise ContractError("S3 observation IDs must be unique")
+        observation_ids.add(observation.observation_id)
+        observations_by_history.setdefault(observation.history_ref, []).append(observation)
+    if set(observations_by_history) != history_ids:
+        raise ContractError("S3 observations must cover each selected EventHistory exactly")
+
+    projected_rows = []
+    for row in source_rows:
+        history = history_by_unit[row["unit_id"]]
+        projected = observations_by_history[history.history_id]
+        if not projected:
+            raise ContractError("each selected EventHistory requires a nonempty S3 sequence")
+        if any(
+            item.unit_id != history.unit_id or item.history_ref != history.history_id
+            for item in projected
+        ):
+            raise ContractError("S3 observation unit/history binding mismatch")
+        if tuple(sorted(projected, key=lambda item: item.observation_time)) != tuple(projected):
+            raise ContractError("S3 observations must preserve the declared temporal order")
+        if len({(item.config_id, item.config_version) for item in projected}) != 1:
+            raise ContractError("one S3 configuration identity/version is required per history")
+        if any(
+            item.capture_time < item.observation_time
+            or item.ingestion_time < item.capture_time
+            or item.enabled_status != ("MISSING" if item.enabled_observed is None else "OBSERVED")
+            or item.admission_status != (
+                "MISSING" if item.admission_behavior_observed is None else "OBSERVED"
+            )
+            for item in projected
+        ):
+            raise ContractError("S3 status or capture/ingestion chronology is inconsistent")
+        if (len(row.get("s3_enabled", ())) != len(projected)
+                or len(row.get("s3_profile_match", ())) != len(projected)):
+            raise ContractError("S3 sequence length must match the existing Analyzer interval evidence shape")
+        updated = dict(row)
+        updated["s3_enabled"] = [
+            None if item.enabled_observed is None else int(item.enabled_observed)
+            for item in projected
+        ]
+        updated["s3_enabled_status"] = [item.enabled_status for item in projected]
+        updated["s3_profile_match"] = [
+            None if item.admission_behavior_observed is None
+            else int(item.admission_behavior_observed == "ADMIT")
+            for item in projected
+        ]
+        updated["s3_profile_status"] = [item.admission_status for item in projected]
+        projected_rows.append(updated)
+
+    # Keep the EvidenceCandidate type and provenance; attach no truth objects.
+    return replace(candidate, rows=tuple(projected_rows))
