@@ -349,6 +349,18 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             feasible_vectors_by_history=fixture["feasible"],
             r_common_certificates=fixture["r_common"],
         )
+        # Same base world/population and DGP; only the common alternative
+        # regime changes between the two focal-policy contrasts.
+        alternative_fixture = self._fixture("alternative")
+        alternative_result = self._run_pipeline(alternative_fixture)
+        self.assertEqual(result.world.world_id, alternative_result.world.world_id)
+        self.assertEqual(result.world.q_x, alternative_result.world.q_x)
+        self.assertAlmostEqual(alternative_result.theta_a_truth.theta_a_truth, 0.0)
+        self.assertAlmostEqual(
+            result.theta_a_truth.theta_a_truth - alternative_result.theta_a_truth.theta_a_truth,
+            0.5,
+        )
+        self.assertAlmostEqual(alternative_result.d2_vcont_truth.finite_population_itt_z_v_cont, -0.5)
 
     def test_null_negative_and_alternative_path_scenarios_are_separately_generated(self):
         expected_truth = {"null": 0.0, "negative": -0.5, "alternative": 0.0}
