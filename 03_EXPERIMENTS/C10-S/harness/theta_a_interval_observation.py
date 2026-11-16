@@ -16,8 +16,7 @@ import random
 from typing import Literal
 
 from c10s_synthetic_components import (
-    ContractError, EventHistory, IntervalGrid, IntervalAdjudication,
-    adjudicate_intervals, digest,
+    ContractError, EventHistory, IntervalGrid, digest,
 )
 
 
@@ -39,6 +38,7 @@ class IntervalMonitorConfig:
             raise ContractError("interval missingness probability must be in [0,1)")
         if (not isinstance(self.capture_lag, Decimal)
                 or not isinstance(self.ingestion_lag, Decimal)
+                or not self.capture_lag.is_finite() or not self.ingestion_lag.is_finite()
                 or self.capture_lag < 0 or self.ingestion_lag < 0):
             raise ContractError("interval capture/ingestion lags must be non-negative Decimal values")
 
@@ -81,14 +81,37 @@ def project_interval_s3(
     config.validate()
     if grid.boundaries[0] != history.support_start or grid.boundaries[-1] != history.support_end:
         raise ContractError("interval monitor grid must cover exact EventHistory support")
-    adjudication = adjudicate_intervals(history, grid)
+    # Independent continuous-monitor scan: no call to the evaluator's
+    # interval adjudicator and no adjudication object crosses this boundary.
+    monitored_values = []
+    events = history.transitions
+    for index, (left, right) in enumerate(zip(grid.boundaries, grid.boundaries[1:])):
+        final = index == len(grid.boundaries) - 2
+        current = history.initial_post_z_state
+        for event in events:
+            if event.event_time < left:
+                current = event.state_after
+            else:
+                break
+        interval_events = [
+            event for event in events
+            if event.event_time >= left and (
+                event.event_time <= right if final else event.event_time < right
+            )
+        ]
+        events_at_left = any(event.event_time == left for event in interval_events)
+        compliant = current.compliant if left == history.support_start or not events_at_left else True
+        for event in interval_events:
+            current = event.state_after
+            compliant = compliant and current.compliant
+        monitored_values.append(compliant)
     rng = random.Random(seed)
     records = []
-    for index, (left, right, truth) in enumerate(zip(
-        grid.boundaries, grid.boundaries[1:], adjudication.interval_truth
+    for index, (left, right, monitored_value) in enumerate(zip(
+        grid.boundaries, grid.boundaries[1:], monitored_values
     )):
         missing = rng.random() < config.missing_probability
-        observed = None if missing else bool(truth)
+        observed = None if missing else bool(monitored_value)
         capture_time = right + config.capture_lag
         ingestion_time = capture_time + config.ingestion_lag
         identity = digest((
@@ -144,3 +167,6 @@ def validate_interval_s3_observations(
             config.monitor_id, config.monitor_version, grid.grid_id, grid.grid_version
         ):
             raise ContractError("interval S3 monitor/grid identity mismatch")
+        if (row.capture_time != row.interval_end + config.capture_lag
+                or row.ingestion_time != row.capture_time + config.ingestion_lag):
+            raise ContractError("interval S3 capture/ingestion lags differ from monitor config")
