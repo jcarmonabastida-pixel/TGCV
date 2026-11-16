@@ -103,6 +103,16 @@ class C10SCompleteWorldResult:
         d2_histories = dict(self.d2_histories_by_unit_z)
         self.d2_vcont_truth.validate(world, d2_histories, grid)
         self.theta_a_truth.validate()
+        if (self.theta_a_truth.world_id, self.theta_a_truth.world_version,
+                self.theta_a_truth.dgp_id, self.theta_a_truth.dgp_version) != (
+            world.world_id, world.world_version, world.dgp_id, world.dgp_version
+        ):
+            raise ContractError("theta_A oracle identity differs from the composed synthetic world")
+        if (self.theta_a_assignments.world_id, self.theta_a_assignments.world_version,
+                self.theta_a_assignments.dgp_id, self.theta_a_assignments.dgp_version) != (
+            world.world_id, world.world_version, world.dgp_id, world.dgp_version
+        ):
+            raise ContractError("direct-g_A assignment identity differs from the composed synthetic world")
         self.theta_a_assignments.validate(
             world, assignment_config, g_a0, g_a1,
             feasible_vectors_by_history, r_common_certificates,
