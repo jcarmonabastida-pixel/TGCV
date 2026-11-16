@@ -3,7 +3,7 @@ from decimal import Decimal
 import unittest
 
 from c10s_synthetic_components import (
-    EventHistoryGenerationSpec, FunctionalState, FunctionalStateChange,
+    ContractError, EventHistoryGenerationSpec, FunctionalState, FunctionalStateChange,
     IntervalGrid, generate_event_history,
 )
 from theta_a_interval_observation import (
@@ -60,7 +60,7 @@ class IntervalObservationTests(unittest.TestCase):
     def test_contract_rejects_incomplete_or_misaligned_interval_coverage(self):
         records = project_interval_s3(self.history, self.grid, self.config, seed=5)
         validate_interval_s3_observations(records, self.history, self.grid, self.config)
-        with self.assertRaises(Exception):
+        with self.assertRaises(ContractError):
             validate_interval_s3_observations(records[:1], self.history, self.grid, self.config)
 
     def test_point_sampling_cannot_be_declared_continuous_monitoring(self):
