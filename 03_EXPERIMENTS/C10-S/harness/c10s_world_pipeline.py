@@ -45,7 +45,14 @@ from c10s_synthetic_components import (
 from theta_a_observation_harness import (
     SealedThetaAEvidence,
     ThetaASealer,
+    ThetaAIntervalSealer,
     candidate_from_s3_records,
+)
+from theta_a_interval_observation import (
+    IntervalMonitorConfig,
+    ThetaAIntervalObservationRecord,
+    compose_theta_a_interval_s3_records,
+    candidate_from_theta_a_interval_records,
 )
 from theta_a_analyzer import (
     ThetaAObservationAnalysisContract,
@@ -72,7 +79,7 @@ class C10SCompleteWorldResult:
     theta_a_truth: ThetaAVContTruthBundle
     theta_a_assignments: ThetaAPolicyAssignmentBundle
     realized_history_selection: ThetaAPolicyHistorySelection
-    s3_records: tuple[ThetaAS3ObservationRecord, ...]
+    s3_records: tuple[ThetaAS3ObservationRecord | ThetaAIntervalObservationRecord, ...]
     sealed_evidence: SealedThetaAEvidence
     analyzer_contract: ThetaAObservationAnalysisContract
     analyzer_result: ThetaAObservationAnalysisResult
@@ -152,11 +159,13 @@ def materialize_c10s_complete_world(
     r_common_certificates: Sequence[RCommonPairCertificate],
     event_histories_by_policy: dict[tuple[str, str, str], EventHistory],
     assignment_config: ThetaAPolicyAssignmentConfig,
-    s3_configs_by_history_ref: dict[str, object],
-    s3_seeds_by_unit: dict[str, int],
+    s3_configs_by_history_ref: dict[str, object] | None = None,
+    s3_seeds_by_unit: dict[str, int] | None = None,
     estimand_version: str,
     outcome_version: str,
     evaluation_tolerance: float,
+    interval_monitor_configs_by_history_ref: dict[str, IntervalMonitorConfig] | None = None,
+    interval_monitor_seeds_by_unit: dict[str, int] | None = None,
 ) -> C10SCompleteWorldResult:
     """Materialize one coherent world through D2/ΔT_acc*/Reach/trajectory and
     the direct-g_A → EventHistory → S3 → Sealer → Analyzer → Evaluator path.
@@ -208,12 +217,32 @@ def materialize_c10s_complete_world(
         feasible_vectors_by_history, r_common_certificates,
     )
     selection = select_theta_a_realized_histories(assignments, policy_histories)
-    s3_records = compose_theta_a_s3_observation_records(
-        assignments, selection, policy_histories,
-        s3_configs_by_history_ref, s3_seeds_by_unit,
-    )
-    candidate = candidate_from_s3_records(s3_records)
-    sealed = ThetaASealer().seal(candidate)
+    if interval_monitor_configs_by_history_ref is not None:
+        if s3_configs_by_history_ref is not None or s3_seeds_by_unit is not None:
+            raise ContractError("select exactly one focal S3 measurement mode: point or interval")
+        expected_refs = {row.history_ref for row in world.q_x}
+        if set(interval_monitor_configs_by_history_ref) != expected_refs:
+            raise ContractError("interval monitor configs must cover q_X* history support exactly")
+        if interval_monitor_seeds_by_unit is None or set(interval_monitor_seeds_by_unit) != {
+            row.unit_id for row in world.units
+        }:
+            raise ContractError("interval monitor seeds must cover the world unit roster exactly")
+        grids_by_history = {ref: grid for ref in expected_refs}
+        s3_records = compose_theta_a_interval_s3_records(
+            assignments, selection, policy_histories, grids_by_history,
+            interval_monitor_configs_by_history_ref, interval_monitor_seeds_by_unit,
+        )
+        candidate = candidate_from_theta_a_interval_records(s3_records)
+        sealed = ThetaAIntervalSealer().seal(candidate)
+    else:
+        if s3_configs_by_history_ref is None or s3_seeds_by_unit is None:
+            raise ContractError("point S3 mode requires explicit configs and seeds")
+        s3_records = compose_theta_a_s3_observation_records(
+            assignments, selection, policy_histories,
+            s3_configs_by_history_ref, s3_seeds_by_unit,
+        )
+        candidate = candidate_from_s3_records(s3_records)
+        sealed = ThetaASealer().seal(candidate)
     contract = ThetaAObservationAnalysisContract(
         q_x_mass_by_history=tuple((row.history_ref, row.mass) for row in world.q_x),
         q_x_sha256=assignments.q_x_sha256,
@@ -320,4 +349,6 @@ def materialize_c10s_complete_world_from_dgp(
         s3_seeds_by_unit=s3_seeds_by_unit,
         estimand_version=estimand_version, outcome_version=outcome_version,
         evaluation_tolerance=evaluation_tolerance,
+        interval_monitor_configs_by_history_ref=interval_monitor_configs_by_history_ref,
+        interval_monitor_seeds_by_unit=interval_monitor_seeds_by_unit,
     )
