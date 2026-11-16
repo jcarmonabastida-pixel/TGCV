@@ -470,3 +470,36 @@ The Analyzer verifies fingerprint agreement, target-support compatibility, unit-
 Crucially, the current S3 temporal resolution remains `POINT_SAMPLE`. These records do not reveal whether strict interval continuity held between observations. For binary strict-continuity `V_cont`, with no approved temporal measurement model or additional restrictions, each arm-specific target mean remains in [0,1] and the sharp logical contrast bound is [-1,1]. The Analyzer therefore returns `PARTIALLY_IDENTIFIED`, no point estimate, and the explicit reason `STRICT_VCONT_NOT_OBSERVED_BY_POINT_SAMPLES`. This is an honest but non-informative bound; it is not evidence for or against a causal effect.
 
 Regression specifications were added in `test_theta_a_analyzer.py` for the trivial sharp bound, q_X fingerprint mismatch, incomplete target support, and invalid q_X normalization. They have **not** been executed. The independent Evaluator/oracle comparison and a measurement design capable of narrowing the bounds remain outstanding.
+
+
+### DGP-driven D2 / direct-g_A functional histories
+
+`c10s_functional_history.py` adds the explicit bridge from generated mechanisms to
+functional truth. `FunctionalHistoryDGPConfig` is versioned and contains
+`FunctionalHistoryRule` rows. A D2 rule names one allow-listed D2 stage predicate;
+a direct-`g_A` rule names one exact component/value predicate in the joint policy
+vector. Each rule explicitly declares its event time, causal family, provenance,
+and the ENABLED and/or admission state it changes. No default mapping exists from
+`A_f*`, `D_f*`, `C_dep*`, PROCESS_EVENT, or S3 to ENABLED/admission.
+
+`generate_d2_event_history_potentials()` materializes both Z-specific histories
+for every roster unit. `generate_g_a_event_history_potentials()` materializes one
+history for every distinct positive-mass joint vector supported by either
+`g_A0` or `g_A1`, under the certified common regime. The keys preserve the
+existing oracle contract: history reference, vector fingerprint, and common-regime
+fingerprint. Initial functional states are explicit inputs and must cover the
+complete D2 potential roster and q_X* support.
+
+`materialize_c10s_complete_world_from_dgp()` is the integrated entry point. It
+generates the structural world, both sets of functional potential histories, and
+then delegates to the existing composer. The lower-level composer remains
+available for controlled fixtures and compatibility; the new entry point no
+longer requires externally constructed EventHistory dictionaries.
+
+This is implementation, not validation or scientific execution. The DGP still
+requires confirmatory parameter choices, initial-state specification, temporal
+measurement design, and the frozen q_X*/policy/support inputs. The Analyzer
+continues to receive only realized S3 observations, never the potential histories
+or evaluator-side truth. Existing `POINT_SAMPLE` limitations are unchanged:
+these generated histories do not by themselves make strict temporal continuity
+observable.
