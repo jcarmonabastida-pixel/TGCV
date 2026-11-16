@@ -632,7 +632,6 @@ class SyntheticComponentTests(unittest.TestCase):
             "UE", 2, 92, 1, (("H0", 1.0),), 1, 1.0,
             0.5, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, (0.5, 0.5),
         )
-        world = SyntheticWorldBuilder().generate(config, d2_config)
         structural_config = D2StructuralGenerationConfig(
             "STRUCTURAL-D2-MIN", "001", "TAU-FOCAL", "v1",
             "BOUNDARY-1", "CONTEXT-1", "CATALOG-1",
@@ -642,7 +641,9 @@ class SyntheticComponentTests(unittest.TestCase):
                 StructuralAtom("X", "CTX-1", "CONTEXT", "v1", 1, (("environment", "A"),)),
             ),
         )
-        pairs = generate_d2_structural_potential_pairs(world, structural_config)
+        world, pairs = SyntheticWorldBuilder().generate_complete(
+            config, d2_config, structural_config,
+        )
         deltas = evaluate_d2_structural_deltas(world, pairs)
         self.assertEqual(set(pairs), {(unit.unit_id, z) for unit in world.units for z in (0, 1)})
         self.assertEqual(len(deltas), 4)
