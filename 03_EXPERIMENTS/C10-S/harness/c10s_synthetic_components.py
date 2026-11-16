@@ -2390,6 +2390,124 @@ def compute_theta_a_truth(
     )
 
 
+@dataclass(frozen=True)
+class ThetaAVContTruthBundle:
+    theta_a_truth: ThetaATruth
+    grid_id: str
+    grid_version: str
+    event_history_manifest: tuple[tuple[str, str, str, str, str], ...]
+    result_sha256: str
+
+    def validate(self) -> None:
+        if not self.theta_a_truth.evaluator_only or self.theta_a_truth.outcome_id != "V_CONT":
+            raise ContractError("theta_A V_cont truth must remain evaluator-only and outcome-specific")
+        if not self.grid_id or not self.grid_version or not self.event_history_manifest:
+            raise ContractError("theta_A V_cont truth requires grid and EventHistory provenance")
+        if not self.result_sha256:
+            raise ContractError("theta_A V_cont result fingerprint is required")
+        if len({row[3] for row in self.event_history_manifest}) != len(self.event_history_manifest):
+            raise ContractError("theta_A V_cont EventHistory manifest IDs must be unique")
+
+
+def compute_theta_a_vcont_truth_from_event_histories(
+    world: "SyntheticWorldBundle",
+    q_x: Sequence[QXHistoryMass],
+    g_a0: Sequence[JointPolicyHistory],
+    g_a1: Sequence[JointPolicyHistory],
+    feasible_vectors_by_history: dict[str, tuple[Vector4, ...]],
+    r_common_certificates: Sequence[RCommonPairCertificate],
+    event_histories_by_policy: dict[tuple[str, str, str], EventHistory],
+    grid: IntervalGrid,
+    *,
+    estimand_version: str,
+    outcome_version: str,
+) -> ThetaAVContTruthBundle:
+    """Compute evaluator-only theta_A truth using reserved EventHistory V_cont outcomes.
+
+    Each history is keyed explicitly by (q_X history ref, digest(joint policy
+    vector), common-r regime fingerprint). No outcome is inferred from D2 Z,
+    structural Reach, selection, execution or the trajectory.
+    """
+    world.validate()
+    grid.validate()
+    if tuple(q_x) != world.q_x:
+        raise ContractError("theta_A q_X* must match the exact synthetic-world target masses and anchors")
+    qx_by_history = {row.history_ref: row for row in q_x}
+    unit_by_history = {
+        unit.d2_baseline.baseline_history_ref: unit.unit_id for unit in world.units
+    }
+    if set(qx_by_history) != set(unit_by_history):
+        raise ContractError("theta_A q_X* histories do not cover the exact world roster")
+    certificates = {row.history_ref: row for row in r_common_certificates}
+    if len(certificates) != len(r_common_certificates) or set(certificates) != set(qx_by_history):
+        raise ContractError("theta_A requires one r_common certificate per world q_X* history")
+    required_keys = set()
+    for policies in (g_a0, g_a1):
+        for policy in policies:
+            certificate = certificates.get(policy.history_ref)
+            if certificate is None:
+                raise ContractError("joint policy has no matching r_common certificate")
+            if certificate.g_a0_fingerprint != certificate.g_a1_fingerprint:
+                raise ContractError("theta_A V_cont EventHistory adapter requires fixed common r_common")
+            for vector, _ in policy.distribution:
+                required_keys.add((
+                    policy.history_ref, digest(vector), certificate.g_a0_fingerprint,
+                ))
+    if set(event_histories_by_policy) != required_keys:
+        raise ContractError("EventHistory inputs must cover exact q_X × joint-policy support under r_common")
+    histories = tuple(event_histories_by_policy[key] for key in sorted(required_keys))
+    history_ids = [history.history_id for history in histories]
+    potential_ids = [history.potential_id for history in histories]
+    run_ids = {history.run_id for history in histories}
+    if (len(history_ids) != len(set(history_ids))
+            or len(potential_ids) != len(set(potential_ids)) or len(run_ids) != 1):
+        raise ContractError("theta_A EventHistory identities/potentials must be unique and belong to one run")
+    values = {}
+    manifest = []
+    for key in sorted(required_keys):
+        history_ref, vector_sha, regime_fingerprint = key
+        history = event_histories_by_policy[key]
+        history.validate(require_complete=True)
+        if (history.world_id, history.world_version, history.dgp_version, history.unit_id) != (
+            world.world_id, world.world_version, world.dgp_version, unit_by_history[history_ref]
+        ):
+            raise ContractError("theta_A EventHistory does not bind to its exact world/q_X unit")
+        if history.support_start != grid.boundaries[0] or history.support_end != grid.boundaries[-1]:
+            raise ContractError("theta_A EventHistories must share the exact common V_cont grid support")
+        adjudication = adjudicate_intervals(history, grid)
+        values[key] = adjudication.v_cont_truth
+        manifest.append((
+            history_ref, vector_sha, regime_fingerprint,
+            history.history_id, history.content_sha256,
+        ))
+
+    def vcont_outcome(history_ref: str, vector: Vector4, regime_fingerprint: str) -> float:
+        key = (history_ref, digest(vector), regime_fingerprint)
+        if key not in values:
+            raise ContractError("theta_A outcome requested outside the sealed EventHistory policy support")
+        return values[key]
+
+    theta_truth = compute_theta_a_truth(
+        q_x, g_a0, g_a1, feasible_vectors_by_history,
+        r_common_certificates, vcont_outcome,
+        estimand_version=estimand_version, outcome_version=outcome_version,
+    )
+    manifest_tuple = tuple(manifest)
+    payload = {
+        "world_id": world.world_id, "world_version": world.world_version,
+        "dgp_id": world.dgp_id, "dgp_version": world.dgp_version,
+        "theta_a_truth": theta_truth, "grid": grid,
+        "event_history_manifest": manifest_tuple,
+    }
+    result = ThetaAVContTruthBundle(
+        theta_truth, grid.grid_id, grid.grid_version,
+        manifest_tuple, digest(payload),
+    )
+    result.validate()
+    return result
+
+
+
 # S3: passive projection via an explicit joint emission kernel.
 
 @dataclass(frozen=True)
