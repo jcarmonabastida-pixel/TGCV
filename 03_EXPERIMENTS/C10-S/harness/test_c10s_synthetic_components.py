@@ -11,7 +11,8 @@ from c10s_synthetic_components import (
     evaluate_synthetic_world_reachability,
     StructuralAtom, StructuralIdentityMatch, TransformationalStateSnapshot,
     EvidenceStateSnapshot, TransformationalDeltaEngine, D2StructuralPotentialPair,
-    evaluate_d2_structural_deltas,
+    evaluate_d2_structural_deltas, D2StructuralGenerationConfig,
+    generate_d2_structural_potential_pairs,
     FunctionalState, FunctionalTransition, IntervalGrid,
     JointPolicyHistory, QXHistoryMass, RCommonPairCertificate,
     S3SequenceKernelRow, S3ObservationConfig, adjudicate_intervals,
@@ -618,7 +619,7 @@ class SyntheticComponentTests(unittest.TestCase):
         with self.assertRaises(ContractError):
             StructuralAtom("X", "CTX-1", "CONTEXT", "v1", 1, (("Outcome", "post"),)).validate()
 
-    def test_d2_potential_binding_checks_focal_truth_but_returns_full_structural_delta(self):
+    def test_d2_world_generator_materializes_structural_snapshots_for_every_potential(self):
         from c10s_synthetic_components import SyntheticWorldBuilder, SyntheticWorldConfig
         d2_config = D2MechanismConfig(
             "D2-DELTA", "001", ("POL-0", "POL-1"), ("001", "001"),
@@ -632,33 +633,25 @@ class SyntheticComponentTests(unittest.TestCase):
             0.5, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, (0.5, 0.5),
         )
         world = SyntheticWorldBuilder().generate(config, d2_config)
-        pairs = {}
-        for unit in world.units:
-            for z in (0, 1):
-                base_atoms = (
-                    StructuralAtom("U", "TAU-FOCAL", "TRANSFORMATION", "v1", 0, (("kind", "focal"),)),
-                    StructuralAtom("R", "REL-1", "RELATION", "v1", 1, (("edge", "focal-route"),)),
-                    StructuralAtom("C", "COND-1", "CONDITION", "v1", 1, (("authorization", "true"),)),
-                    StructuralAtom("X", "CTX-1", "CONTEXT", "v1", 1, (("environment", "A"),)),
-                )
-                post_atoms = (
-                    StructuralAtom("U", "TAU-FOCAL", "TRANSFORMATION", "v1", 1, (("kind", "focal"),)),
-                    StructuralAtom("R", "REL-1", "RELATION", "v1", 1, (("edge", "focal-route"),)),
-                    StructuralAtom("C", "COND-1", "CONDITION", "v1", 1, (("authorization", "true"),)),
-                    StructuralAtom("X", "CTX-1", "CONTEXT", "v1", 1, (("environment", "A"),)),
-                )
-                pairs[(unit.unit_id, z)] = D2StructuralPotentialPair(
-                    unit.unit_id, z, "TAU-FOCAL",
-                    self.structural_state_snapshot(f"B-{unit.unit_id}-{z}", "BASELINE", base_atoms, unit=unit.unit_id, z=z),
-                    self.structural_state_snapshot(f"P-{unit.unit_id}-{z}", "POST", post_atoms, unit=unit.unit_id, z=z),
-                    self.evidence_state(f"EB-{unit.unit_id}-{z}"),
-                    self.evidence_state(f"EP-{unit.unit_id}-{z}"),
-                )
+        structural_config = D2StructuralGenerationConfig(
+            "STRUCTURAL-D2-MIN", "001", "TAU-FOCAL", "v1",
+            "BOUNDARY-1", "CONTEXT-1", "CATALOG-1",
+            (
+                StructuralAtom("R", "REL-1", "RELATION", "v1", 1, (("edge", "focal-route"),)),
+                StructuralAtom("C", "COND-1", "CONDITION", "v1", 1, (("authorization", "true"),)),
+                StructuralAtom("X", "CTX-1", "CONTEXT", "v1", 1, (("environment", "A"),)),
+            ),
+        )
+        pairs = generate_d2_structural_potential_pairs(world, structural_config)
         deltas = evaluate_d2_structural_deltas(world, pairs)
+        self.assertEqual(set(pairs), {(unit.unit_id, z) for unit in world.units for z in (0, 1)})
         self.assertEqual(len(deltas), 4)
         self.assertTrue(all(delta.delta_state == 1 for delta in deltas))
         self.assertTrue(all(any(row.baseline_id == "TAU-FOCAL" and row.change_kind == "MODIFIED"
                                 for row in delta.delta_u) for delta in deltas))
+        self.assertTrue(all(delta.evidence_delta.changed is False for delta in deltas))
+        self.assertTrue(all(len(delta.delta_r) == len(delta.delta_c) == len(delta.delta_x) == 1
+                            for delta in deltas))
 
 
     def test_empty_incomplete_structural_universe_is_unknown_not_zero(self):
