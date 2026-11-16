@@ -41,10 +41,14 @@ class ThetaAObservationAnalyzerTests(unittest.TestCase):
             ThetaAObservationAnalyzer().analyze(self.evidence, bad)
 
     def test_missing_target_history_is_reported_without_fabricating_point_estimate(self):
-        partial = SealedThetaAEvidence("run-1", (self.evidence.rows[0],), {}, "hash")
-        # A single arm cannot support the randomized two-arm analysis.
-        with self.assertRaises(ContractError):
-            ThetaAObservationAnalyzer().analyze(partial, self.contract)
+        contract = ThetaAObservationAnalysisContract(
+            q_x_mass_by_history=(("h0", 0.4), ("h1", 0.4), ("h2", 0.2)),
+            q_x_sha256="qx", assignment_bundle_sha256="ab")
+        result = ThetaAObservationAnalyzer().analyze(self.evidence, contract)
+        self.assertEqual(result.missing_target_histories, ("h2",))
+        self.assertAlmostEqual(result.target_q_x_coverage, 0.8)
+        self.assertIsNone(result.point_estimate)
+        self.assertEqual((result.lower_bound, result.upper_bound), (-1.0, 1.0))
 
     def test_qx_masses_must_sum_to_one(self):
         bad = ThetaAObservationAnalysisContract(
