@@ -135,6 +135,13 @@ class ThetaAObservationEvaluator:
                                  for row in evidence.rows}
         if not evidence_history_keys or not evidence_history_keys.issubset(truth_history_keys):
             raise ContractError("sealed observations do not map to the reserved realized EventHistory manifest")
+        if result.temporal_resolution == "INTERVAL_LEVEL":
+            truth_history_content = {(row[0], row[3]): row[4]
+                                     for row in truth_bundle.event_history_manifest}
+            for row in evidence.rows:
+                key = (row["history_ref"], row["history_id"])
+                if row.get("history_content_sha256") != truth_history_content.get(key):
+                    raise ContractError("interval evidence does not bind to the exact reserved EventHistory content")
         truth_regime_by_history = {
             contribution.history_ref: contribution.r_common_fingerprint
             for contribution in truth.contributions
