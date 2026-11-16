@@ -70,6 +70,9 @@ class ScenarioConfig:
     outer_replicate_id: str = "outer-000000"
     assignment_role: str = "REPEATED_ASSIGNMENT"
     assignment_index: int = 0
+    b1_profile_value: str = "STANDARD"
+    b1_profile_config_id: str = "B1-PROFILE"
+    b1_profile_config_version: str = "001"
 
     def validate(self) -> None:
         if not self.scenario_id or not self.version or not self.outer_replicate_id:
@@ -80,7 +83,11 @@ class ScenarioConfig:
                 or (self.assignment_role == "REPEATED_ASSIGNMENT" and self.assignment_index < 0)):
             raise ContractError("assignment_index must be -1 for RUN and nonnegative for repeated assignments")
         if self.profile not in ("R0", "R1", "R2", "R3"):
-            raise ContractError("profile must be R0/R1/R2/R3")
+            raise ContractError("scenario profile must be R0/R1/R2/R3")
+        if self.b1_profile_value not in ("STANDARD", "READ_ONLY", "DISABLED"):
+            raise ContractError("declared B1 PROFILE value is invalid")
+        if not self.b1_profile_config_id or not self.b1_profile_config_version:
+            raise ContractError("declared B1 PROFILE identity/version is required")
         if self.n_units < 16 or self.n_units % 4:
             raise ContractError("n_units must be >=16 and divisible by four")
         if self.n_intervals < 2:
@@ -221,7 +228,7 @@ class TruthBundle:
     potential_v: tuple[tuple[tuple[float, float], tuple[float, float]], ...]
     potential_interval_truth: tuple[Any, ...]
     potential_enabled_truth: tuple[Any, ...]
-    potential_profile_truth: tuple[Any, ...]
+    potential_admission_conformance_truth: tuple[Any, ...]
     potential_delta_t_acc: tuple[Any, ...]
     # Truths are kept distinct: Z package ITT, G assignment contrast, and
     # focal accessibility intervention truth. theta_a_truth remains absent
@@ -398,7 +405,7 @@ class Generator:
         v_truth = []
         interval_truth = []
         enabled_truth = []
-        profile_truth = []
+        admission_conformance_truth = []
         delta_truth = []
 
         for i in range(cfg.n_units):
@@ -411,20 +418,20 @@ class Generator:
             u_alt = world_rng.random()
             u_trajectory = world_rng.random()
             u_enabled = [world_rng.random() for _ in range(cfg.n_intervals)]
-            u_profile = [world_rng.random() for _ in range(cfg.n_intervals)]
+            u_admission_conformance = [world_rng.random() for _ in range(cfg.n_intervals)]
             cluster = i // 4
             # Synthetic exposure is based on the other units' assigned Z in
             # the same four-unit cluster; it is inert in no-interference worlds.
             unit_potentials = []
             unit_intervals = []
             unit_enabled = []
-            unit_profile = []
+            unit_admission_conformance = []
             unit_delta = []
             for z in (0, 1):
                 z_potentials = []
                 z_intervals = []
                 z_enabled = []
-                z_profile = []
+                z_admission_conformance = []
                 z_delta = []
                 for g in (0, 1):
                     provision_p = cfg.provision_probability
@@ -447,7 +454,7 @@ class Generator:
                         alternative = int(u_alt < cfg.alternative_probability)
                     reach = int(bool(focal_access or alternative))
                     trajectory = int(reach and u_trajectory < 0.95)
-                    profile_match_p = (
+                    admission_conformance_p = (
                         cfg.baseline_conformity
                         + cfg.focal_access_effect * trajectory
                         + cfg.package_direct_effect * z
@@ -461,45 +468,49 @@ class Generator:
                         # of the other three cluster members fixed while intervening on i.
                         peers = [j for j in range(cluster * 4, cluster * 4 + 4) if j != i]
                         peer_exposure = mean(z_assign[j] for j in peers)
-                        profile_match_p += cfg.interference_effect * peer_exposure
-                    profile_match_p = max(0.0, min(1.0, profile_match_p))
-                    # B1 is conjunctive: ENABLED and the declared PROFILE must
-                    # both hold throughout an interval. Components stay separate.
+                        admission_conformance_p += cfg.interference_effect * peer_exposure
+                    admission_conformance_p = max(0.0, min(1.0, admission_conformance_p))
+                    # The legacy "profile_match" signal represented the
+                    # probability of correct ENABLED-conditioned admission.
+                    # Recast it as admission conformance; PROFILE is a separate
+                    # static, versioned declaration and never a runtime signal.
                     enabled_raw = [int(u < cfg.enabled_probability) for u in u_enabled]
-                    profile_raw = [int(u < profile_match_p) for u in u_profile]
+                    admission_conformance_raw = [
+                        int(u < admission_conformance_p) for u in u_admission_conformance
+                    ]
                     transition_slots = int(round(
                         (cfg.last_transition_support - cfg.window_start) /
                         ((cfg.last_transition_support + cfg.follow_up - cfg.window_start) / cfg.n_intervals)
                     ))
                     for slot in range(transition_slots, cfg.n_intervals):
                         enabled_raw[slot] = enabled_raw[transition_slots - 1]
-                        profile_raw[slot] = profile_raw[transition_slots - 1]
+                        admission_conformance_raw[slot] = admission_conformance_raw[transition_slots - 1]
                     enabled_states = tuple(enabled_raw)
-                    profile_states = tuple(profile_raw)
-                    states = tuple(int(en and pr) for en, pr in zip(enabled_states, profile_states))
+                    admission_conformance_states = tuple(admission_conformance_raw)
+                    states = admission_conformance_states
                     v = sum(states) / cfg.n_intervals
                     z_potentials.append(v)
                     z_intervals.append(states)
                     z_enabled.append(enabled_states)
-                    z_profile.append(profile_states)
+                    z_admission_conformance.append(admission_conformance_states)
                     z_delta.append(delta_vector)
                 unit_potentials.append(tuple(z_potentials))
                 unit_intervals.append(tuple(z_intervals))
                 unit_enabled.append(tuple(z_enabled))
-                unit_profile.append(tuple(z_profile))
+                unit_admission_conformance.append(tuple(z_admission_conformance))
                 unit_delta.append(tuple(z_delta))
             v_truth.append(tuple(unit_potentials))
             interval_truth.append(tuple(unit_intervals))
             enabled_truth.append(tuple(unit_enabled))
-            profile_truth.append(tuple(unit_profile))
+            admission_conformance_truth.append(tuple(unit_admission_conformance))
             delta_truth.append(tuple(unit_delta))
 
             z, g = z_assign[i], g_assign[i]
             true_enabled = unit_enabled[z][g]
-            true_profile = unit_profile[z][g]
-            observed_enabled, observed_profile = [], []
-            status_enabled, status_profile = [], []
-            for en_state, pr_state in zip(true_enabled, true_profile):
+            true_admission_conformance = unit_admission_conformance[z][g]
+            observed_enabled, observed_admission_behavior = [], []
+            status_enabled, status_admission = [], []
+            for en_state, conforms in zip(true_enabled, true_admission_conformance):
                 if world_rng.random() < cfg.missing_probability:
                     observed_enabled.append(None)
                     status_enabled.append("MISSING")
@@ -508,14 +519,21 @@ class Generator:
                     observed_enabled.append(int(flip < cfg.measurement_sensitivity) if en_state
                                             else int(flip >= cfg.measurement_specificity))
                     status_enabled.append("OBSERVED")
+                expected_behavior = "ADMIT" if en_state else "NO_ADMISSION"
+                contrary_behavior = "NO_ADMISSION" if en_state else "ADMIT"
                 if world_rng.random() < cfg.missing_probability:
-                    observed_profile.append(None)
-                    status_profile.append("MISSING")
+                    observed_admission_behavior.append(None)
+                    status_admission.append("MISSING")
                 else:
                     flip = world_rng.random()
-                    observed_profile.append(int(flip < cfg.measurement_sensitivity) if pr_state
-                                             else int(flip >= cfg.measurement_specificity))
-                    status_profile.append("OBSERVED")
+                    observed_conforms = (
+                        flip < cfg.measurement_sensitivity if conforms
+                        else flip >= cfg.measurement_specificity
+                    )
+                    observed_admission_behavior.append(
+                        expected_behavior if observed_conforms else contrary_behavior
+                    )
+                    status_admission.append("OBSERVED")
             rows.append({
                 "unit_id": f"UE-{i + 1:06d}",
                 "cluster_id": f"CL-{cluster:05d}",
@@ -523,9 +541,13 @@ class Generator:
                 "assignment_g": g,
                 "baseline_stratum": "HIGH" if x >= 0.5 else "LOW",
                 "s3_enabled": observed_enabled,
-                "s3_profile_match": observed_profile,
+                "s3_admission_behavior": observed_admission_behavior,
+                "s3_profile_value": [cfg.b1_profile_value] * cfg.n_intervals,
                 "s3_enabled_status": status_enabled,
-                "s3_profile_status": status_profile,
+                "s3_admission_status": status_admission,
+                "s3_profile_status": ["OBSERVED"] * cfg.n_intervals,
+                "s3_profile_config_id": [cfg.b1_profile_config_id] * cfg.n_intervals,
+                "s3_profile_config_version": [cfg.b1_profile_config_version] * cfg.n_intervals,
                 "delta_t_acc_observed": unit_delta[z][g],
                 "profile": cfg.profile,
                 "version": cfg.version,
@@ -551,7 +573,7 @@ class Generator:
             "Z_BALANCED_INDEPENDENT", "001", zh, "G_REFERENCE_50_50", "001",
             _hash(z_assign), _hash(g_assign), (("LOW", 0.5), ("HIGH", 0.0 if not cfg.positivity else 0.5)),
             world_seed, z_seed, g_seed, cfg.outer_replicate_id, cfg.assignment_role, cfg.assignment_index)
-        truth = TruthBundle(run_id, tuple(v_truth), tuple(interval_truth), tuple(enabled_truth), tuple(profile_truth), tuple(delta_truth),
+        truth = TruthBundle(run_id, tuple(v_truth), tuple(interval_truth), tuple(enabled_truth), tuple(admission_conformance_truth), tuple(delta_truth),
             itt_reference, itt_g_z0, None, cfg.seed, itt_run, itt_mechanism, itt_reference, invariant_truth,
             "HIGH" if unsupported_high else "ALL", "G_REFERENCE_50_50", "001", gh, zh,
             cfg.outer_replicate_id, cfg.assignment_role, cfg.assignment_index)
@@ -577,18 +599,38 @@ class Sealer:
         if not candidate.rows:
             raise ContractError("empty evidence")
         allowed = {"unit_id", "cluster_id", "assignment_z", "assignment_g",
-                   "baseline_stratum", "s3_enabled", "s3_profile_match", "s3_enabled_status",
-                   "s3_profile_status", "delta_t_acc_observed", "profile", "version"}
+                   "baseline_stratum", "s3_enabled", "s3_admission_behavior",
+                   "s3_profile_value", "s3_enabled_status", "s3_admission_status",
+                   "s3_profile_status", "s3_profile_config_id", "s3_profile_config_version",
+                   "delta_t_acc_observed", "profile", "version"}
         for row in candidate.rows:
             if set(row) != allowed:
                 raise FirewallError("reserved/missing evidence fields")
-            lengths = {len(row[k]) for k in ("s3_enabled", "s3_profile_match",
-                       "s3_enabled_status", "s3_profile_status")}
+            lengths = {len(row[k]) for k in (
+                "s3_enabled", "s3_admission_behavior", "s3_profile_value",
+                "s3_enabled_status", "s3_admission_status", "s3_profile_status",
+                "s3_profile_config_id", "s3_profile_config_version"
+            )}
             if len(lengths) != 1:
                 raise ContractError("S3 interval/status cardinality mismatch")
-            if any(v not in (0, 1, None) for k in ("s3_enabled", "s3_profile_match")
-                   for v in row[k]):
-                raise ContractError("invalid S3 value")
+            if any(v not in (0, 1, None) for v in row["s3_enabled"]):
+                raise ContractError("invalid ENABLED observation")
+            if any(v not in ("ADMIT", "NO_ADMISSION", None) for v in row["s3_admission_behavior"]):
+                raise ContractError("invalid admission-behaviour observation")
+            if any(v not in ("STANDARD", "READ_ONLY", "DISABLED", None) for v in row["s3_profile_value"]):
+                raise ContractError("invalid declared PROFILE observation")
+            if any(v not in ("OBSERVED", "MISSING") for k in (
+                "s3_enabled_status", "s3_admission_status", "s3_profile_status"
+            ) for v in row[k]):
+                raise ContractError("invalid S3 observation status")
+            if any(not value for value in row["s3_profile_config_id"] + row["s3_profile_config_version"]):
+                raise ContractError("declared PROFILE configuration identity/version required per observation")
+            if any((v is None) != (status == "MISSING") for values, statuses in (
+                (row["s3_enabled"], row["s3_enabled_status"]),
+                (row["s3_admission_behavior"], row["s3_admission_status"]),
+                (row["s3_profile_value"], row["s3_profile_status"]),
+            ) for v, status in zip(values, statuses)):
+                raise ContractError("S3 value/status mismatch")
             if len(row["delta_t_acc_observed"]) != 4 or any(v not in (0, 1) for v in row["delta_t_acc_observed"]):
                 raise ContractError("Delta T_acc must contain four binary coordinates")
         provenance_allowed = {"run_id", "scenario_id", "scenario_version", "world_id", "world_version",
@@ -605,8 +647,8 @@ class Sealer:
             raise ContractError("sealed provenance requires RUN index -1 or a nonnegative repeated R index")
         if _hash([row["assignment_z"] for row in candidate.rows]) != candidate.provenance.get("z_assignment_vector_hash") or _hash([row["assignment_g"] for row in candidate.rows]) != candidate.provenance.get("g_assignment_vector_hash"):
             raise ContractError("assignment vectors do not match provenance hashes")
-        manifest = {"run_id": candidate.run_id, "schema": "C10S-VCONT-S3-001",
-                    "row_count": len(candidate.rows), "sealer_version": "0.2",
+        manifest = {"run_id": candidate.run_id, "schema": "C10S-VCONT-S3-002",
+                    "row_count": len(candidate.rows), "sealer_version": "0.3",
                     "outer_replicate_id": candidate.provenance["outer_replicate_id"],
                     "assignment_role": candidate.provenance["assignment_role"],
                     "assignment_index": candidate.provenance["assignment_index"],
@@ -616,7 +658,7 @@ class Sealer:
 
 
 class Analyzer:
-    version = "c10s-vcont-analyzer-0.1"
+    version = "c10s-vcont-analyzer-0.2"
 
     def analyze(self, evidence: SealedEvidence, contract: AnalysisContract) -> AnalyzerResult:
         contract.validate()
@@ -660,13 +702,14 @@ class Analyzer:
             shared_reasons.append("VERSION_INCONSISTENCY")
 
         complete = all(
-            all(v in (0, 1) for k in ("s3_enabled", "s3_profile_match") for v in row[k])
+            all(v in (0, 1) for v in row["s3_enabled"])
+            and all(v in ("ADMIT", "NO_ADMISSION") for v in row["s3_admission_behavior"])
             for row in evidence.rows
         )
         if not complete:
             shared_reasons.append("S3_MISSINGNESS_REQUIRES_BOUNDS_OR_MODEL")
         ideal = all(
-            all(s == "OBSERVED" for k in ("s3_enabled_status", "s3_profile_status") for s in row[k])
+            all(s == "OBSERVED" for k in ("s3_enabled_status", "s3_admission_status") for s in row[k])
             for row in evidence.rows
         )
         if not ideal:
@@ -681,7 +724,11 @@ class Analyzer:
             # Outcome construction is shared; each estimand is adjudicated
             # independently against its own assignment and support conditions.
             observed_v = [
-                mean(int(en and pr) for en, pr in zip(row["s3_enabled"], row["s3_profile_match"]))
+                mean(
+                    int((enabled == 1 and behavior == "ADMIT")
+                        or (enabled == 0 and behavior == "NO_ADMISSION"))
+                    for enabled, behavior in zip(row["s3_enabled"], row["s3_admission_behavior"])
+                )
                 for row in evidence.rows
             ]
 

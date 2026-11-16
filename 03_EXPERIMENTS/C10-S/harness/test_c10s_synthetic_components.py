@@ -1,12 +1,15 @@
 import unittest
 from decimal import Decimal
 
+from vcont_integrated_harness import EvidenceCandidate
+
 from c10s_synthetic_components import (
     ContractError, D2Baseline, D2MechanismConfig, EventHistory,
     FunctionalState, FunctionalTransition, IntervalGrid,
     JointPolicyHistory, QXHistoryMass, RCommonPairCertificate,
     S3SequenceKernelRow, S3ObservationConfig, adjudicate_intervals,
     compute_theta_a_truth, evaluate_theta_a_output, generate_d2_potentials, project_s3,
+    project_s3_into_evidence_candidate,
 )
 
 
@@ -134,8 +137,8 @@ class SyntheticComponentTests(unittest.TestCase):
             (Decimal("0.1"), Decimal("0.1"), Decimal("0.1")),
             (Decimal("0.2"), Decimal("0.2"), Decimal("0.2")),
             (S3SequenceKernelRow(
-                ((False, "NO_ADMISSION"),) * 3,
-                ((((None, None), (None, None), (None, None)), 1.0),),
+                ((False, "NO_ADMISSION", "STANDARD"),) * 3,
+                ((((None, None, None), (None, None, None), (None, None, None)), 1.0),),
             ),),
             "S3-TEST", "001",
         )
@@ -145,7 +148,63 @@ class SyntheticComponentTests(unittest.TestCase):
         self.assertTrue(all(row.admission_status == "MISSING" for row in rows))
         self.assertEqual(history.content_sha256, before_hash)
         self.assertEqual(rows[0].ingestion_time, Decimal("0.3"))
+        self.assertEqual(rows[0].profile_value_observed, "STANDARD")
+        self.assertEqual(rows[0].profile_config_id, "B1-PROFILE")
+        self.assertFalse(hasattr(rows[0], "profile_exposure_observed"))
 
+
+
+    def test_profile_configuration_transition_does_not_change_a_b1(self):
+        before = FunctionalState(False, "NO_ADMISSION", "STANDARD")
+        after = FunctionalState(False, "NO_ADMISSION", "READ_ONLY", "B1-PROFILE", "002")
+        history = self.history((
+            FunctionalTransition("T-PROFILE", Decimal("2"), before, after,
+                                 "DECLARATIVE_CONFIGURATION", "TRUTH-PROFILE-1"),
+        ), initial=before)
+        result = adjudicate_intervals(
+            history, IntervalGrid((Decimal("0"), Decimal("2"), Decimal("4")), "GRID", "001")
+        )
+        self.assertEqual(result.interval_truth, (1, 1))
+        self.assertTrue(before.declarative_valid)
+        self.assertTrue(after.declarative_valid)
+        invalid_declaration = FunctionalState(True, "ADMIT", "DISABLED")
+        self.assertFalse(invalid_declaration.declarative_valid)
+        # D_valid is separate: this does not rewrite the A_B1 admission predicate.
+        self.assertTrue(invalid_declaration.compliant)
+
+    def test_s3_projection_binds_observations_without_truth_leakage(self):
+        history = self.history()
+        config = S3ObservationConfig(
+            (Decimal("0"), Decimal("2"), Decimal("4")),
+            (Decimal("0.1"),) * 3, (Decimal("0.2"),) * 3,
+            (S3SequenceKernelRow(
+                ((False, "NO_ADMISSION", "STANDARD"),) * 3,
+                ((((False, "NO_ADMISSION", "STANDARD"),
+                   (False, "NO_ADMISSION", "STANDARD"),
+                   (False, "NO_ADMISSION", "STANDARD")), 1.0),),
+            ),),
+            "S3-ADAPTER", "001",
+        )
+        observations = project_s3(history, config, seed=11)
+        original = {
+            "unit_id": "UE-001", "s3_enabled": [1, 1, 1],
+            "s3_admission_behavior": ["ADMIT"] * 3,
+            "s3_profile_value": ["READ_ONLY"] * 3,
+            "s3_enabled_status": ["OBSERVED"] * 3,
+            "s3_admission_status": ["OBSERVED"] * 3,
+            "s3_profile_status": ["OBSERVED"] * 3,
+        }
+        candidate = EvidenceCandidate("RUN-001", (original,), {"run_id": "RUN-001"})
+        projected = project_s3_into_evidence_candidate(candidate, (history,), observations)
+        row = projected.rows[0]
+        self.assertEqual(row["s3_enabled"], [0, 0, 0])
+        self.assertEqual(row["s3_admission_behavior"], ["NO_ADMISSION"] * 3)
+        self.assertEqual(row["s3_profile_value"], ["STANDARD"] * 3)
+        self.assertEqual(row["s3_profile_config_id"], ["B1-PROFILE"] * 3)
+        self.assertEqual(row["s3_profile_config_version"], ["001"] * 3)
+        self.assertNotIn("event_history", row)
+        self.assertNotIn("interval_adjudication", row)
+        self.assertEqual(candidate.rows[0], original)
 
 
 if __name__ == "__main__":

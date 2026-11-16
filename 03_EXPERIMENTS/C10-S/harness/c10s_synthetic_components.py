@@ -8,7 +8,7 @@ support/grid, S3 calibration, or downstream TGCV Value rules.
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from decimal import Decimal
 import hashlib
 import json
@@ -17,6 +17,7 @@ import random
 from typing import Callable, Literal, Sequence
 
 AdmissionBehavior = Literal["ADMIT", "NO_ADMISSION"]
+ProfileValue = Literal["STANDARD", "READ_ONLY", "DISABLED"]
 TriState = Literal[1, 0]
 
 
@@ -256,13 +257,27 @@ def generate_d2_potentials(
 class FunctionalState:
     enabled: bool
     admission_behavior: AdmissionBehavior
+    # PROFILE and its identity/version are declarative configuration, not exposure.
+    profile: ProfileValue = "STANDARD"
+    profile_config_id: str = "B1-PROFILE"
+    profile_config_version: str = "001"
 
     def validate(self) -> None:
-        if self.admission_behavior not in ("ADMIT", "NO_ADMISSION"):
-            raise ContractError("unsupported admission behavior")
+        if type(self.enabled) is not bool or self.admission_behavior not in ("ADMIT", "NO_ADMISSION"):
+            raise ContractError("unsupported ENABLED/admission state")
+        if self.profile not in ("STANDARD", "READ_ONLY", "DISABLED"):
+            raise ContractError("unsupported declared PROFILE value")
+        if not self.profile_config_id or not self.profile_config_version:
+            raise ContractError("declared PROFILE identity/version is required")
+
+    @property
+    def declarative_valid(self) -> bool:
+        # RUL-SVC-ENABLE-PROFILE-01 is an implication, not an uptime rule.
+        return not self.enabled or self.profile in ("STANDARD", "READ_ONLY")
 
     @property
     def compliant(self) -> bool:
+        # Gate 154 / R208: A_B1 adjudicates only admission behaviour required by ENABLED.
         expected = "ADMIT" if self.enabled else "NO_ADMISSION"
         return self.admission_behavior == expected
 
@@ -299,12 +314,15 @@ class EventHistory:
     scope_declared_complete: bool
     generation_complete: bool
     representation_complete: bool
+    profile_config_id: str = "B1-PROFILE"
+    profile_config_version: str = "001"
 
     def validate(self, *, require_complete: bool = True) -> None:
         required = (
             self.history_id, self.history_version, self.run_id, self.world_id,
             self.world_version, self.dgp_version, self.unit_id, self.potential_id,
-            self.adjudication_rules_version,
+            self.adjudication_rules_version, self.profile_config_id,
+            self.profile_config_version,
         )
         if any(not x for x in required):
             raise ContractError("EventHistory scope identities and versions are mandatory")
@@ -313,6 +331,9 @@ class EventHistory:
         if self.support_start >= self.support_end:
             raise ContractError("EventHistory support must have positive duration")
         self.initial_post_z_state.validate()
+        if (self.initial_post_z_state.profile_config_id != self.profile_config_id
+                or self.initial_post_z_state.profile_config_version != self.profile_config_version):
+            raise ContractError("EventHistory initial PROFILE identity/version must match its declared baseline")
         ids = [event.transition_id for event in self.transitions]
         if any(not x for x in ids) or len(ids) != len(set(ids)):
             raise ContractError("truth transition IDs must be unique within EventHistory")
@@ -341,6 +362,10 @@ class EventHistory:
                 raise ContractError("transition state_before does not continue the preceding functional state")
             if event.state_before == event.state_after:
                 raise ContractError("functionally neutral process occurrences are not EventHistory transitions")
+            if (event.state_before.profile != event.state_after.profile
+                    and (event.state_before.profile_config_id, event.state_before.profile_config_version)
+                    == (event.state_after.profile_config_id, event.state_after.profile_config_version)):
+                raise ContractError("a PROFILE value change requires an explicit configuration identity/version change")
             current = event.state_after
             by_time.setdefault(event.event_time, []).append(event)
         for same_time in by_time.values():
@@ -580,12 +605,11 @@ def compute_theta_a_truth(
 
 @dataclass(frozen=True)
 class S3SequenceKernelRow:
-    # Complete latent truth path at the declared observation schedule.
-    truth_sequence: tuple[tuple[bool, AdmissionBehavior], ...]
-    # Joint distribution over the complete observed sequence. This preserves
-    # cross-signal and temporal dependence; no iid/independence assumption.
+    # ENABLED, admission behaviour and declared PROFILE at each scheduled time.
+    # PROFILE is configuration state; no PROFILE-exposure signal is modelled.
+    truth_sequence: tuple[tuple[bool, AdmissionBehavior, ProfileValue], ...]
     observed_sequences: tuple[
-        tuple[tuple[tuple[bool | None, AdmissionBehavior | None], ...], float], ...
+        tuple[tuple[tuple[bool | None, AdmissionBehavior | None, ProfileValue | None], ...], float], ...
     ]
 
 
@@ -611,8 +635,8 @@ class S3ObservationConfig:
             t < history.support_start or t > history.support_end for t in self.schedule
         ):
             raise ContractError("S3 schedule must be explicit and lie within truth support")
-        if tuple(sorted(self.schedule)) != self.schedule:
-            raise ContractError("S3 schedule must be ordered")
+        if any(a >= b for a, b in zip(self.schedule, self.schedule[1:])):
+            raise ContractError("S3 schedule must be strictly increasing")
         keys = [row.truth_sequence for row in self.kernel]
         if len(keys) != len(set(keys)):
             raise ContractError("S3 sequence kernel has duplicate latent paths")
@@ -621,17 +645,20 @@ class S3ObservationConfig:
                 raise ContractError("S3 kernel latent path must cover the complete schedule")
             _distribution_total(row.observed_sequences, "S3 joint sequence emission kernel")
             if any(
-                not isinstance(enabled, bool) or behavior not in ("ADMIT", "NO_ADMISSION")
-                for enabled, behavior in row.truth_sequence
+                type(enabled) is not bool
+                or behavior not in ("ADMIT", "NO_ADMISSION")
+                or profile not in ("STANDARD", "READ_ONLY", "DISABLED")
+                for enabled, behavior, profile in row.truth_sequence
             ):
-                raise ContractError("invalid latent S3 truth sequence")
+                raise ContractError("invalid latent S3 ENABLED/admission/PROFILE sequence")
             for observed, _ in row.observed_sequences:
                 if len(observed) != len(self.schedule):
                     raise ContractError("S3 emitted sequence must match the declared schedule")
                 if any(
                     (enabled is not None and type(enabled) is not bool)
                     or behavior not in (None, "ADMIT", "NO_ADMISSION")
-                    for enabled, behavior in observed
+                    or profile not in (None, "STANDARD", "READ_ONLY", "DISABLED")
+                    for enabled, behavior, profile in observed
                 ):
                     raise ContractError("invalid S3 observed sequence emission")
 
@@ -646,8 +673,12 @@ class S3Observation:
     ingestion_time: Decimal
     enabled_observed: bool | None
     admission_behavior_observed: AdmissionBehavior | None
+    profile_value_observed: ProfileValue | None
     enabled_status: Literal["OBSERVED", "MISSING"]
     admission_status: Literal["OBSERVED", "MISSING"]
+    profile_status: Literal["OBSERVED", "MISSING"]
+    profile_config_id: str
+    profile_config_version: str
     config_id: str
     config_version: str
 
@@ -671,8 +702,8 @@ def project_s3(history: EventHistory, config: S3ObservationConfig, *, seed: int)
     history.validate(require_complete=True)
     config.validate(history)
     truth_sequence = tuple(
-        (_state_at(history, at).enabled, _state_at(history, at).admission_behavior)
-        for at in config.schedule
+        (state.enabled, state.admission_behavior, state.profile)
+        for state in (_state_at(history, at) for at in config.schedule)
     )
     kernel = {row.truth_sequence: row.observed_sequences for row in config.kernel}
     outcomes = kernel.get(truth_sequence)
@@ -689,14 +720,18 @@ def project_s3(history: EventHistory, config: S3ObservationConfig, *, seed: int)
             break
     observations = []
     for index, (at, observed) in enumerate(zip(config.schedule, selected)):
-        enabled, behavior = observed
+        enabled, behavior, profile = observed
+        state_at_observation = _state_at(history, at)
         capture_time = at + config.capture_lags[index]
         ingestion_time = capture_time + config.ingestion_lags[index]
         observations.append(S3Observation(
             f"S3-{history.history_id}-{index:06d}", history.unit_id,
             history.history_id, at, capture_time, ingestion_time,
-            enabled, behavior, "MISSING" if enabled is None else "OBSERVED",
+            enabled, behavior, profile,
+            "MISSING" if enabled is None else "OBSERVED",
             "MISSING" if behavior is None else "OBSERVED",
+            "MISSING" if profile is None else "OBSERVED",
+            state_at_observation.profile_config_id, state_at_observation.profile_config_version,
             config.config_id, config.config_version,
         ))
     return tuple(observations)
@@ -881,3 +916,72 @@ def project_s3_batch(
     if len(observation_ids) != len(set(observation_ids)):
         raise ContractError("S3 observation IDs must be unique")
     return tuple(rows)
+
+
+
+def project_s3_into_evidence_candidate(candidate, selected_histories, observations):
+    """Bind realized EventHistory/S3 observations to the sealed evidence schema.
+
+    Only observations and public configuration identity are projected. Truth,
+    potential histories, adjudications, seeds and DGP parameters stay reserved.
+    PROFILE is carried as declarative configuration; exposure is not modelled.
+    """
+    if not getattr(candidate, "run_id", None) or not getattr(candidate, "rows", None):
+        raise ContractError("identified nonempty EvidenceCandidate is required")
+    histories_by_unit, history_ids = {}, set()
+    for history in selected_histories:
+        history.validate(require_complete=True)
+        if history.run_id != candidate.run_id:
+            raise ContractError("selected EventHistory run differs from EvidenceCandidate")
+        if history.unit_id in histories_by_unit or history.history_id in history_ids:
+            raise ContractError("one realized EventHistory per unit is required")
+        histories_by_unit[history.unit_id] = history
+        history_ids.add(history.history_id)
+    rows = tuple(candidate.rows)
+    unit_ids = [row.get("unit_id") if isinstance(row, dict) else None for row in rows]
+    if any(not unit_id for unit_id in unit_ids) or len(unit_ids) != len(set(unit_ids)):
+        raise ContractError("candidate rows require unique explicit unit_id values")
+    if set(unit_ids) != set(histories_by_unit):
+        raise ContractError("selected EventHistory roster must exactly match candidate units")
+    by_history, observation_ids = {}, set()
+    for item in observations:
+        if item.observation_id in observation_ids:
+            raise ContractError("S3 observation IDs must be unique")
+        observation_ids.add(item.observation_id)
+        by_history.setdefault(item.history_ref, []).append(item)
+    if set(by_history) != history_ids:
+        raise ContractError("S3 observations must cover every selected EventHistory exactly")
+    projected_rows = []
+    for row in rows:
+        history = histories_by_unit[row["unit_id"]]
+        projected = by_history[history.history_id]
+        if not projected or any(x.unit_id != history.unit_id or x.history_ref != history.history_id for x in projected):
+            raise ContractError("S3 observation unit/history binding mismatch")
+        if tuple(sorted(projected, key=lambda x: x.observation_time)) != tuple(projected):
+            raise ContractError("S3 observations must preserve temporal order")
+        if any(
+            x.profile_config_id != _state_at(history, x.observation_time).profile_config_id
+            or x.profile_config_version != _state_at(history, x.observation_time).profile_config_version
+            or x.capture_time < x.observation_time
+            or x.ingestion_time < x.capture_time
+            or x.enabled_status != ("MISSING" if x.enabled_observed is None else "OBSERVED")
+            or x.admission_status != ("MISSING" if x.admission_behavior_observed is None else "OBSERVED")
+            or x.profile_status != ("MISSING" if x.profile_value_observed is None else "OBSERVED")
+            for x in projected
+        ):
+            raise ContractError("S3 status, PROFILE binding or chronology is inconsistent")
+        if len({(x.config_id, x.config_version) for x in projected}) != 1:
+            raise ContractError("one S3 observation configuration identity/version is required per history")
+        if len(projected) != len(row.get("s3_enabled", ())):
+            raise ContractError("S3 observation count must match Analyzer evidence cardinality")
+        updated = dict(row)
+        updated["s3_enabled"] = [None if x.enabled_observed is None else int(x.enabled_observed) for x in projected]
+        updated["s3_admission_behavior"] = [x.admission_behavior_observed for x in projected]
+        updated["s3_profile_value"] = [x.profile_value_observed for x in projected]
+        updated["s3_enabled_status"] = [x.enabled_status for x in projected]
+        updated["s3_admission_status"] = [x.admission_status for x in projected]
+        updated["s3_profile_status"] = [x.profile_status for x in projected]
+        updated["s3_profile_config_id"] = [x.profile_config_id for x in projected]
+        updated["s3_profile_config_version"] = [x.profile_config_version for x in projected]
+        projected_rows.append(updated)
+    return replace(candidate, rows=tuple(projected_rows))

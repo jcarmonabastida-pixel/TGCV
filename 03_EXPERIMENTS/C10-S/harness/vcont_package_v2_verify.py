@@ -459,14 +459,15 @@ _SNAPSHOT_TYPE_FIELDS = {
         "no_interference", "measurement_identified", "version_consistency",
         "zg_interaction_effect", "world_seed", "z_assignment_seed",
         "g_assignment_seed", "replicate_id", "outer_replicate_id",
-        "assignment_role", "assignment_index",
+        "assignment_role", "assignment_index", "b1_profile_value",
+        "b1_profile_config_id", "b1_profile_config_version",
     }),
     "vcont_integrated_harness.SealedEvidence": frozenset({
         "run_id", "rows", "manifest", "sha256",
     }),
     "vcont_integrated_harness.TruthBundle": frozenset({
         "run_id", "potential_v", "potential_interval_truth", "potential_enabled_truth",
-        "potential_profile_truth", "potential_delta_t_acc", "itt_z_truth",
+        "potential_admission_conformance_truth", "potential_delta_t_acc", "itt_z_truth",
         "itt_g_z0_truth", "theta_a_truth", "seed", "itt_z_run_truth",
         "itt_z_mechanism_truth", "itt_z_reference_truth",
         "transportability_invariant_truth", "transportability_scope_truth",

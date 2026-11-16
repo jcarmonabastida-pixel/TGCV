@@ -294,14 +294,8 @@ class VContIntegratedHarnessTests(unittest.TestCase):
         for i, unit in enumerate(truth.potential_interval_truth):
             for z in (0, 1):
                 for g in (0, 1):
-                    derived = tuple(
-                        int(en and pr)
-                        for en, pr in zip(
-                            truth.potential_enabled_truth[i][z][g],
-                            truth.potential_profile_truth[i][z][g],
-                        )
-                    )
-                    self.assertEqual(derived, unit[z][g])
+                    derived = truth.potential_admission_conformance_truth[i][z][g]
+                    self.assertEqual(tuple(derived), unit[z][g])
 
     def test_r2_collateral_alternative_and_r3_provision_are_separate(self):
         _, truth2, _, result2, _ = self.execute_world(self.worlds()["R2_ALTERNATIVE_AFFECTED"])
@@ -325,9 +319,9 @@ class VContIntegratedHarnessTests(unittest.TestCase):
             for z in (0, 1):
                 for g in (0, 1):
                     enabled = truth.potential_enabled_truth[i][z][g]
-                    profile = truth.potential_profile_truth[i][z][g]
+                    conformance = truth.potential_admission_conformance_truth[i][z][g]
                     self.assertEqual(enabled[16:], (enabled[15],) * 4)
-                    self.assertEqual(profile[16:], (profile[15],) * 4)
+                    self.assertEqual(conformance[16:], (conformance[15],) * 4)
 
     def test_manifest_uses_equal_intervals_over_common_window(self):
         manifest, _, _, _, _ = self.execute_world(self.worlds()["R0_FOCAL_POSITIVE"])
@@ -1071,6 +1065,31 @@ class VContBenchmarkEvidenceEnvelopeTests(unittest.TestCase):
             produce_and_capture_benchmark(
                 design, mixed, scenarios, tolerance=1e9, matrix=matrix
             )
+
+
+    def test_profile_is_versioned_configuration_not_admission_signal(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        cfg_read_only = replace(cfg, b1_profile_value="READ_ONLY")
+        _, truth_standard, candidate_standard = self.generator.generate(cfg)
+        _, truth_read_only, candidate_read_only = self.generator.generate(cfg_read_only)
+        self.assertEqual(
+            truth_standard.potential_interval_truth,
+            truth_read_only.potential_interval_truth,
+        )
+        self.assertNotIn("s3_profile_match", candidate_standard.rows[0])
+        self.assertIn("s3_admission_behavior", candidate_standard.rows[0])
+        self.assertEqual(
+            candidate_standard.rows[0]["s3_profile_value"],
+            ["STANDARD"] * cfg.n_intervals,
+        )
+        self.assertEqual(
+            candidate_read_only.rows[0]["s3_profile_value"],
+            ["READ_ONLY"] * cfg.n_intervals,
+        )
+        self.assertEqual(
+            candidate_standard.rows[0]["s3_admission_behavior"],
+            candidate_read_only.rows[0]["s3_admission_behavior"],
+        )
 
 
 if __name__ == "__main__":

@@ -686,7 +686,7 @@ _REPEATED_REPORT_FIELDS = {
 }
 _TRUTH_BUNDLE_FIELDS = {
     "run_id", "potential_v", "potential_interval_truth", "potential_enabled_truth",
-    "potential_profile_truth", "potential_delta_t_acc", "itt_z_truth",
+    "potential_admission_conformance_truth", "potential_delta_t_acc", "itt_z_truth",
     "itt_g_z0_truth", "theta_a_truth", "seed", "itt_z_run_truth",
     "itt_z_mechanism_truth", "itt_z_reference_truth",
     "transportability_invariant_truth", "transportability_scope_truth",
