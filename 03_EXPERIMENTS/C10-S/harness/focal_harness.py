@@ -382,14 +382,16 @@ class Analyzer:
         if not package_ok:
             return self._abstain(evidence, contract, "PACKAGE_ITT_ASSUMPTIONS_OR_MEASUREMENT_NOT_ESTABLISHED")
         package_status: Identification = "IDENTIFIED"
-        focal_ok = (contract.direct_path_status == "ABSENT" and contract.common_regime
-                    and contract.positivity and contract.version_consistency)
-        focal_status: Identification = "IDENTIFIED" if focal_ok else (
-            "NOT_IDENTIFIED" if contract.direct_path_status == "PRESENT" else "INDETERMINATE")
-        reason = None if focal_ok else "FOCAL_ATTRIBUTION_REQUIRES_NO_DIRECT_PATH_AND_COMMON_REGIME"
-        focal_estimate = estimate if focal_ok else None
-        focal_se = se if focal_ok else None
-        focal_interval = interval if focal_ok else None
+        # This legacy evidence schema observes randomized Z and Q_B1 only.
+        # It contains no direct assignment to the joint g_A0/g_A1 policies,
+        # no realized joint policy vector, and no policy-linked EventHistory.
+        # Therefore ITT-Z must never be relabelled as theta_A, even when
+        # direct-path and common-regime assumptions are declared.
+        focal_status: Identification = "INDETERMINATE"
+        reason = "THETA_A_REQUIRES_DIRECT_GA_ASSIGNMENT_AND_POLICY_LINKED_OBSERVATIONS"
+        focal_estimate = None
+        focal_se = None
+        focal_interval = None
         result_payload = {"run_id": evidence.run_id, "estimand_id": contract.estimand_id,
                           "estimand_version": contract.estimand_version,
                           "package_identification": package_status, "focal_identification": focal_status,
@@ -449,15 +451,10 @@ class Evaluator:
         package_conditions = (contract.randomized_assignment and contract.measurement_ideal
                               and contract.interference_absent and result.package_itt_estimate is not None)
         expected_package_status = "IDENTIFIED" if package_conditions else "INDETERMINATE"
-        if expected_package_status == "INDETERMINATE":
-            expected_focal_status = "INDETERMINATE"
-        elif contract.direct_path_status == "PRESENT":
-            expected_focal_status = "NOT_IDENTIFIED"
-        elif (contract.direct_path_status == "UNKNOWN" or not contract.common_regime
-              or not contract.positivity or not contract.version_consistency):
-            expected_focal_status = "INDETERMINATE"
-        else:
-            expected_focal_status = "NOT_IDENTIFIED" if truth.direct_path_truth else "IDENTIFIED"
+        # The evidence schema has no g_A assignment or policy-linked
+        # EventHistory, so theta_A is unidentifiable from this input regardless
+        # of the package-ITT assumptions or declared direct-path status.
+        expected_focal_status = "INDETERMINATE"
         classification_correct = (
             result.package_identification == expected_package_status
             and result.focal_identification == expected_focal_status
