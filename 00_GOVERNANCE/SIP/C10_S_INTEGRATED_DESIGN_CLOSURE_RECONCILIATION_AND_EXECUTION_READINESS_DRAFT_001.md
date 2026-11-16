@@ -234,3 +234,12 @@ La propuesta única C1–C6 se encuentra en `C10_S_DEC-C10-102_COMPLEMENTARY_SCO
 C1–C6 han sido aceptadas conjuntamente. Registro: `C10_S_DEC-C10-102_COMPLEMENTARY_SCOPE_ACCEPTANCE_RECORD_DRAFT_001.md`. Crosswalk normativo **CLOSED_FOR_CURRENT_SYNTHETIC_DGP_LOGICAL_SCOPE**. DEC-C10-102 y DEC-C10-099…104 no se modifican; no se crea DEC-C10-105. PROFILE exposure permanece obligación contractual no adjudicada temporalmente por V_cont en el DGP actual; D_valid se mantiene separado; operador estricto y {1,0,?} intactos.
 
 El Paquete A queda cerrado en su alcance lógico. Paquetes B–D y Design Freeze permanecen abiertos; no se autoriza implementación ni ejecución.
+
+
+## 15. Paquete B — propuesta integrada de cierre lógico (2026-11-16)
+
+Se completa una única propuesta B1–B6 en `C10_S_PACKAGE_B_INTEGRATED_TEMPORAL_DGP_AND_CAUSAL_DESIGN_CLOSURE_PROPOSAL_DRAFT_001.md`. La reconciliación combina §51 y DEC-C10-099…104, EventHistory R144-A/R146-A…D, S3, D2, población, asignación, aislamiento, q_X*/g_A/r_common y jerarquía ITT/θ_A/C4.
+
+La coordenada temporal está conceptualmente delimitada; ρ_follow/T*, Δ/K y calibración S3 siguen parámetros abiertos. El contrato causal distingue asignación Z, programación D2, provisión/instalación, apertura focal y vector ΔT_acc*. UE=UA solo con aislamiento demostrado. Los contratos q_X*, g_A y r_common existen; las filas, masas, políticas factibles y certificados no están materializados. θ_A permanece no identificado y el Analyzer actual no lo estima.
+
+**Estado:** PROPOSED_FOR_ACCEPTANCE. La aceptación cerrará el contrato lógico integrado, no los parámetros/materialización/identificación. Paquete A ya aceptado; paquetes C y D siguen pendientes.
