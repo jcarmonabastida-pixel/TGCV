@@ -8,6 +8,7 @@ from c10s_synthetic_components import (
     ContractError, D2Baseline, D2MechanismConfig, EventHistory,
     StructuralTransformation, StructuralSnapshot, StructuralRouteStep,
     StructuralRoute, StructuralReachabilityEngine,
+    evaluate_synthetic_world_reachability,
     FunctionalState, FunctionalTransition, IntervalGrid,
     JointPolicyHistory, QXHistoryMass, RCommonPairCertificate,
     S3SequenceKernelRow, S3ObservationConfig, adjudicate_intervals,
@@ -372,7 +373,7 @@ class SyntheticComponentTests(unittest.TestCase):
     def structural_snapshot(self, *, exhaustive=True, horizon=5.0):
         return StructuralSnapshot(
             "SNAP-001", "001", "WORLD-001", "001", "DGP-001", "001",
-            "BOUNDARY-001", "CONTEXT-001", horizon,
+            "UE-001", 0, "BOUNDARY-001", "CONTEXT-001", horizon,
             (
                 StructuralTransformation("TAU-1", "v1", "SNAP-001", 1),
                 StructuralTransformation("TAU-2", "v1", "SNAP-001", 1),
@@ -446,6 +447,54 @@ class SyntheticComponentTests(unittest.TestCase):
             StructuralReachabilityEngine().evaluate(
                 snapshot, (route,), enumeration_complete=True, search_truncated=True,
             )
+
+
+    def test_structural_reachability_is_bound_to_every_world_unit_and_z_potential(self):
+        from c10s_synthetic_components import SyntheticWorldBuilder, SyntheticWorldConfig
+        d2_config = D2MechanismConfig(
+            "D2-WORLD", "001", ("POL-0", "POL-1"), ("001", "001"),
+            ("ART-0", "ART-1"), ("ACT-0", "ACT-1"),
+            (0.0, 1.0), (0.8, 0.8), (0.0, 0.0), (0.9, 0.9), (0.8, 0.8),
+            (((True, True, True, True), 1.0),), "MECH-001",
+        )
+        config = SyntheticWorldConfig(
+            "WORLD-REACH", "001", "D2-WORLD", "001", "ROSTER-REACH", "001",
+            "UE", 2, 91, 1, (("H0", 1.0),), 1, 1.0,
+            0.5, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, (0.5, 0.5),
+        )
+        world = SyntheticWorldBuilder().generate(config, d2_config)
+        snapshots, routes, complete, truncated = {}, {}, {}, {}
+        for unit in world.units:
+            for z in (0, 1):
+                key = (unit.unit_id, z)
+                snap_id = f"SNAP-{unit.unit_id}-Z{z}"
+                snapshots[key] = StructuralSnapshot(
+                    snap_id, "001", world.world_id, world.world_version,
+                    world.dgp_id, world.dgp_version, unit.unit_id, z,
+                    "BOUNDARY-001", "CONTEXT-001", 2.0,
+                    (StructuralTransformation(f"TAU-{unit.unit_id}-Z{z}", "v1", snap_id, 1),),
+                    True, True, True, True, "CATALOG-001",
+                )
+                routes[key] = (StructuralRoute(
+                    f"ROUTE-{unit.unit_id}-Z{z}", f"TARGET-{unit.unit_id}-Z{z}",
+                    (StructuralRouteStep(f"TAU-{unit.unit_id}-Z{z}", "S0", "S1", 1, duration=1.0),),
+                    (), 1, "FOCAL",
+                ),)
+                complete[key] = True
+                truncated[key] = False
+        result = evaluate_synthetic_world_reachability(
+            world, snapshots, routes, complete, truncated,
+        )
+        result.validate(world)
+        self.assertEqual(len(result.unit_potential_results), 4)
+        self.assertEqual(
+            {(row.unit_id, row.z) for row in result.unit_potential_results},
+            {(unit.unit_id, z) for unit in world.units for z in (0, 1)},
+        )
+        self.assertTrue(all(
+            next(iter(row.result.target_states))[1] == 1
+            for row in result.unit_potential_results
+        ))
 
 
 if __name__ == "__main__":
