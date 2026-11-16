@@ -304,3 +304,14 @@ Gate 133 delimita el benchmark integrado: DGP con truth ENABLED/PROFILE y V_cont
 La correspondencia temporal con DEC-C10-100…102 es parcial: ventana común, intervalos iguales y truth por unidad/régimen/intervalo sí están representados; UNKNOWN funcional en truth, eventos intraintervalo, event/observation/ingestion time y bounds para UNKNOWN no. La ausencia S3 (`None`) no equivale a UNKNOWN de truth.
 
 **Siguiente operación:** Gate 134 — determinar si UNKNOWN/continuidad estricta completa debe formar parte del benchmark o si el alcance binario intervalizado está expresamente autorizado como benchmark acotado. Sin cambios de código ni ejecución; `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 305. Gate 134 — conformidad temporal de V_cont y alcance admisible del benchmark integrado (2026-11-16)
+
+**Registro:** `00_GOVERNANCE/SIP/C10_S_VCONT_TEMPORAL_SEMANTICS_CONFORMANCE_AND_BENCHMARK_SCOPE_GATE_134_DRAFT_001.md`. **Addendum al plan:** `00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_134_TEMPORAL_SEMANTICS_ADDENDUM_DRAFT_001.md`.
+
+Gate 134 reconcilia DEC-C10-099…102. No queda pendiente elegir entre truth binaria y tri-valuada: DEC-C10-100 ya acepta truth `{1,0,?}` por intervalos iguales y bounds `[n1/K,(n1+n?)/K]`; DEC-C10-101 inicia la ventana en t0 incluyendo provisión/instalación; DEC-C10-102 exige continuidad estricta durante todo intervalo, 0 ante cualquier incumplimiento confirmado y ? solo si el Generator no determina truth. Missingness/lag/cobertura S3 son observacionales y no equivalen a UNKNOWN funcional.
+
+El harness actual usa truth binaria 0/1 por intervalo, no materializa UNKNOWN ni bounds y no conserva eventos fechados que permitan adjudicar cualquier incumplimiento intraintervalo o frontera. Su correspondencia temporal es parcial. El benchmark actual se conserva como baseline metodológico restringido para ITT-Z/ITT-G bajo DGP binario y S3 perfecto/completo; no es implementación completa ni validación confirmatoria de V_cont. No se emite otra DEC para redecidir semántica ya aceptada.
+
+**Siguiente operación:** Gate 135 — crosswalk DEC → DGP → TruthBundle → Evaluator, sin fijar parámetros ni modificar código/schemas/DEC. No ejecución; `scientific_execution=false`; `execution_authorized=false`.
