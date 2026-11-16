@@ -1533,7 +1533,7 @@ def evaluate_d2_structural_reachability(
                 config.universe_exhaustive and complete["U"],
                 config.relations_exhaustive and complete["R"],
                 config.conditions_exhaustive and complete["C"],
-                config.resources_exhaustive and complete["X"],
+                config.resources_exhaustive,
                 config.catalog_version,
             )
 
