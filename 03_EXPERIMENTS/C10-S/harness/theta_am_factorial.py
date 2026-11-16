@@ -290,6 +290,7 @@ def materialize_factorial_potentials(
     g_a0: Sequence[JointPolicyHistory], g_a1: Sequence[JointPolicyHistory],
     r_common_certificates: Sequence[RCommonPairCertificate],
     initial_state_by_history,
+    feasible_vectors_by_history: dict[str, tuple[Vector4, ...]],
     assignment_config: FactorialAssignmentConfig,
 ):
     """Generate all A×M potentials and one randomized realized assignment bundle."""
@@ -300,10 +301,7 @@ def materialize_factorial_potentials(
     )
     assignments = generate_factorial_assignments(
         world, assignment_config, g_a0, g_a1,
-        {ref: tuple(vector for vector, _ in (
-            next(rows for rows in (g_a0, g_a1) if rows[0].history_ref == ref).distribution
-        )) for ref in {row.history_ref for row in world.q_x}},
-        r_common_certificates,
+        feasible_vectors_by_history, r_common_certificates,
     )
     selected, selection = select_factorial_potential_histories(assignments, potentials)
     return potentials, assignments, selected, selection
