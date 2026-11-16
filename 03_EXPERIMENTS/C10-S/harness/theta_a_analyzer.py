@@ -22,7 +22,7 @@ class ThetaAObservationAnalysisContract:
     q_x_mass_by_history: tuple[tuple[str, float], ...]
     q_x_sha256: str
     assignment_bundle_sha256: str
-    estimand_id: str = "THETA_A_VCONT"
+    estimand_id: str = "THETA_A_QX_GA_RCOMMON_VCONT"
     estimand_version: str = "1.0"
 
     def validate(self) -> None:
