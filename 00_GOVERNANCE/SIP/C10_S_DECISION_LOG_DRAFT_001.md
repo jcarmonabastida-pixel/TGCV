@@ -1659,3 +1659,12 @@ La propuesta mantiene intactos DEC-C10-099…104 y, en particular, el operador e
 C1–C6 aceptadas conjuntamente por el responsable científico. Registro: `C10_S_DEC-C10-102_COMPLEMENTARY_SCOPE_ACCEPTANCE_RECORD_DRAFT_001.md`. El crosswalk normativo con Gate 154/R150-A/R151-A8/R152-A/R208-A queda cerrado para el DGP sintético vigente. DEC-C10-102 y DEC-C10-099…104 permanecen intactas; no se crea DEC-C10-105. V_cont se limita a continuidad temporal de admisión/no-admisión requerida por ENABLED; PROFILE exposure sigue obligación contractual no adjudicada temporalmente; D_valid se evalúa separadamente. Se preservan continuidad estricta y {1,0,?}.
 
 No se cierra §51 ni la materialización temporal, causal, medición, estadística, tests o firewall. No Design Freeze, implementación ni ejecución.
+
+
+## Propuesta Paquete B — cierre lógico temporal y causal integrado (2026-11-16)
+
+Se propone aceptar conjuntamente B1–B6 de `C10_S_PACKAGE_B_INTEGRATED_TEMPORAL_DGP_AND_CAUSAL_DESIGN_CLOSURE_PROPOSAL_DRAFT_001.md`. La propuesta integra §51, rejilla DEC-C10-099…104, EventHistory R144-A/R146-A…D, S3, D2, población/asignación, aislamiento, q_X*/g_A/r_common y θ_A.
+
+La aceptación solo cerraría el contrato lógico y el mapa de dependencias. Permanecen abiertos los parámetros temporales y S3, roster/población, asignación Z, aislamiento material, soporte, par g_A, certificados r_common e identificación/recuperación θ_A. No se fijan números ni se presume 1:1, no se ratifican políticas extremas, no se materializan datos y no se autoriza implementación/ejecución.
+
+**Estado:** PROPOSED / ACCEPTANCE PENDING. Paquete A C1–C6 aceptado y registrado por separado.
