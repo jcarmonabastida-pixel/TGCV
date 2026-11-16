@@ -391,3 +391,18 @@ Se explicita la distinción entre truth bounds DEC-C10-100 [n1/K,(n1+n?)/K] y An
 El baseline ITT-Z/ITT-G, TruthBundle como frontera, Sealer/firewall, S3 ideal y abstención adversarial se reutilizan en su alcance. No acreditan V_cont temporal completo, bounds Analyzer ni θ_A. Pendientes: estado/versionado del DGP temporal, mapping post-Z de provisión/instalación, derivación determinista EventHistory→A_B1, método Analyzer bounds o abstención y criterio de cobertura Evaluator.
 
 No se modificaron código/schema/DEC/tests/workflows ni se ejecutó ninguna operación técnica o científica. scientific_execution=false; execution_authorized=false.
+
+
+## 312. Gate 140 — reconciliación DGP temporal, mapping post-Z y alcance inicial Analyzer (2026-11-16)
+
+**Registro:** 00_GOVERNANCE/SIP/C10_S_TEMPORAL_DGP_AND_ANALYZER_SCOPE_RECONCILIATION_GATE_140_DRAFT_001.md. **Addendum al plan:** 00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_140_TEMPORAL_ANALYZER_RECONCILIATION_ADDENDUM_DRAFT_001.md.
+
+La reconstrucción histórica determina que las tres dependencias propuestas tras Gate 139 ya tienen cobertura lógica en contratos existentes. DGP temporal §§49–55 define inventario B1, familias de transición, relojes, horizonte, mapping de perfiles y P182/P183/MEAS/MISS, cobertura adimensional y orden de generación. Sigue siendo DRAFT y requiere aceptación/versionado explícitos antes de considerarlo baseline congelado; no necesita una DEC por subsección.
+
+El mapping post-Z W_programmed → W_attempt → receipt → S_install → C_dep* está definido a nivel contractual. DEC-C10-101 incluye provisión e instalación desde t0 inmediatamente posterior a Z. Estas etapas no son automáticamente fallos B1: solo su efecto funcional efectivo sobre ENABLED/PROFILE y la capacidad de admisión determina A_B1. El vacío actual es de materialización: el harness usa provision_ok binario y no conserva la cronología diferenciada/event history.
+
+El Analyzer inicial puede limitarse a estimación puntual bajo S3 perfecto/completo y abstención INDETERMINATE ante missingness/error no corregidos. El contrato integrado no habilita bounds sin un método y contrato aprobados. Esto conserva el benchmark ideal y los controles adversariales de abstención en su alcance actual, sin afirmar recuperación bajo S3 imperfecto ni convertir ITT-Z/ITT-G en θ_A.
+
+No se requiere nueva semántica, DEC, ledger, escenario ni schema para estas tres cuestiones. Siguiente: revisión de aceptación/versionado del DGP temporal y delta de implementación trazable contra contratos existentes. Esta recomendación no acepta formalmente el DGP ni autoriza implementación. C10-S global sigue abierto por θ_A/q_X*/g_A/r_common, identificación, soporte/interferencia, calibración y criterios de recuperación.
+
+No se modificó código, schema, DEC, tests, workflows, main ni PR base. No hubo ejecución. scientific_execution=false; execution_authorized=false.
