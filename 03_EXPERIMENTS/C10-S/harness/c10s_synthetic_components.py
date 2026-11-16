@@ -1802,6 +1802,27 @@ class SyntheticWorldBuilder:
         return world, structural_pairs
 
 
+    def generate_complete_with_reachability(
+        self,
+        config: SyntheticWorldConfig,
+        d2_config: D2MechanismConfig,
+        structural_config: D2StructuralGenerationConfig,
+        reach_config: D2ReachGenerationConfig,
+    ) -> tuple[
+        SyntheticWorldBundle,
+        dict[tuple[str, int], D2StructuralPotentialPair],
+        SyntheticWorldReachabilityContrast,
+    ]:
+        """Materialize roster, D2/structural potentials and baseline/post Reach."""
+        world, structural_pairs = self.generate_complete(
+            config, d2_config, structural_config,
+        )
+        reach_contrast = evaluate_d2_structural_reachability(
+            world, structural_pairs, reach_config,
+        )
+        return world, structural_pairs, reach_contrast
+
+
 @dataclass(frozen=True)
 class JointPolicyHistory:
     history_ref: str
