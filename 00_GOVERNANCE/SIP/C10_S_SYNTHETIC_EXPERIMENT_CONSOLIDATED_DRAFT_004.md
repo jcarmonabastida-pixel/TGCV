@@ -226,3 +226,22 @@ Implicaciones del firewall: Generator incorpora la regla versionada ex ante y co
 No se modifican DEC, C0, U_G, RMA, Evidence→Claim Matrix, STATUS, Core o main. No Design Freeze, implementación ni ejecución; `scientific_execution=false`; `execution_authorized=false`.
 
 **Siguiente operación:** Gate 129 — auditoría de identificabilidad y recuperación de θ_A sobre V_cont bajo VCONT-B1-MIN aceptada. Recuperar DEC-C10-095…103, P177/P178/P179/P182/P183, ledger §16.223, matriz temporal de rutas, q_X*, r_common, población/unidad/soporte, interferencia y contratos Generator–Sealer–Analyzer–Evaluator. Distinguir condiciones de identificación, medición S3, bounds/abstención, sensibilidad y decisiones cuantitativas abiertas; no añadir escenarios/parámetros/test IDs por conveniencia.
+
+
+## 299. Gate 129 — identificabilidad y recuperación de θ_A sobre V_cont (2026-11-16)
+
+**Registro:** `00_GOVERNANCE/SIP/C10_S_THETA_A_IDENTIFICATION_AND_ANALYZER_RECOVERY_AUDIT_GATE_129_DRAFT_001.md`.  
+**Addendum al plan:** `00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_129_THETA_A_IDENTIFICATION_ADDENDUM_DRAFT_001.md`.  
+**Estado:** THETA_A_ESTIMAND_DEFINED / FULL_VECTOR_G_A_INTERVENTIONS_NOT_MATERIALIZED / Q_X_AND_R_COMMON_NOT_MATERIALIZED / IDENTIFICATION_NOT_ESTABLISHED / VCONT_S3_MEASUREMENT_NOT_VALIDATED / CURRENT_ANALYZER_DOES_NOT_ESTIMATE_THETA_A / P178_BOUNDED_METHOD_BENCHMARK_ONLY / NO_DESIGN_FREEZE.
+
+Gate 129 reutiliza DEC-C10-103, el ledger §16.223, los contratos §§16.226–16.227, Gates 69–86, 90–93 y 110–125 y P177/P178/P179/P182/P183. Confirma que θ_A(q_X*,r_common;V_cont), como intervención sobre el vector completo ΔT_acc*, está definido y seleccionado, pero no materializado ni identificado. Las historias basales/masas q_X*, las políticas conjuntas g_A0/g_A1, su factibilidad/soporte y r_common por celda siguen OPEN. No se crea otro ledger.
+
+El Generator integrado conserva theta_a_truth=None hasta materializar g_A y q_X*. El Analyzer integrado estima ITT-Z e ITT-G, no θ_A. G no equivale a g_A; ITT-D2, ITT-G|Z=0, θ_A y C4 mantienen identidades separadas. La cadena D2 no está completamente representada en el harness. La asignación individual UE es preferida solo condicionada a demostrar aislamiento sintético por construcción/evidencia; cluster o mapa G_i requieren contratos propios; interferencia no mapeada conduce a bounds/abstención.
+
+P178 tiene PASS de reproducibilidad para un benchmark metodológico escalar Q_B1, con N=700, R=10.000/celda, 27 celdas y 270.000 invocaciones, replay byte-identical y 17/17 contract tests en el workflow auditado. Su manifiesto limita el alcance a benchmark estimator only con medición ideal, régimen común, positividad, vía directa ausente e interferencia ausente fijados. No acredita θ_A sobre ΔT_acc*, V_cont/S3, adversidad, interferencia o falta de soporte.
+
+DEC-C10-099…102 mantienen la regla temporal de V_cont; VCONT-B1-MIN está aceptada para la dimensión acotada de continuidad funcional. Sin embargo, T*, Δ, K, S3, cobertura/error/missingness y calibración no están cerrados. P177/P179/P182/P183 permanecen contratos con cobertura parcial, no PASS global.
+
+No se modifica código, schema, roster, test register, DEC, C0, U_G, RMA, Evidence→Claim Matrix, STATUS, Core o main. No se ejecutan validadores, tests, workflows, generación, simulaciones, calibraciones, estimaciones o experimentos. No Design Freeze; `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente operación:** Gate 130 — reconciliar los contratos existentes de q_X*, g_A0/g_A1 y r_common frente al ledger §16.223 y los potenciales §16.226, para identificar el mínimo contrato operativo reutilizable y el bloqueo exacto que impide materializar theta_a_truth, sin crear políticas, historias, masas, parámetros, IDs o escenarios.
