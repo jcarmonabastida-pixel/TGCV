@@ -564,3 +564,20 @@ No se modificó vcont_integrated_harness.py ni se añadió estimador θ_A al Ana
 El workflow EP-02 amplía su allowlist de ocho a nueve módulos y mantiene dispatch manual en research, confirmación expresa, primary y clean replay. No se ha despachado. No se han ejecutado import, compile, tests, generación, calibración, Monte Carlo, Analyzer, Evaluator o experimento.
 
 **Estado:** SOURCE_COMPONENTS_MATERIALIZED / NOT_TESTED / ANALYZER_THETA_A_NOT_IMPLEMENTED / EXECUTION_NOT_AUTHORIZED. PR #116 Draft; main intacta. DEC, RMA, Evidence→Claim Matrix, STATUS y TGCV Core sin cambios.
+
+
+## 325. Directriz operativa C10-S — misión ejecutable y regla de no-dispersión (2026-11-16)
+
+La misión y disciplina de trabajo quedan fijadas en 00_GOVERNANCE/SIP/C10_S_EXECUTABLE_EXPERIMENT_MISSION_AND_NO_DRIFT_CONTRACT_001.md.
+
+**Objeto único:** cerrar la materialización del mundo sintético completo y completar el software para ejecutar un experimento sintético reproducible que pueda demostrar, limitar o refutar la contribución causal de la accesibilidad al Value contextual. No se trata de seguir ampliando documentación ni de demostrar solo un estimando auxiliar sobre V_cont.
+
+El mundo ejecutable debe conectar población/covariables/Need_preZ, asignación Z, política D2 y etapas de provisión, C_dep*, A_f*/D_f*, T_acc basal/post y ΔT_acc* completo, Reach/rutas/alternativas, selección/ejecución/trayectoria, Outcome, consecuencia y Value contextual. EventHistory y adjudicación temporal producen truth; S3 produce observación imperfecta; Sealer/Analyzer no reciben truth; Evaluator compara la salida sellada con potenciales y truth independientes. Z/ITT de paquete, g_A0/g_A1, q_X*, r_common y θ_A deben quedar integrados en el mismo DGP, sin confundir efecto de paquete con contribución de accesibilidad.
+
+**Regla de no-dispersión:** no abrir nuevos Gates, micro-Gates, matrices o documentos por cada campo/función; no repetir auditorías ni reconstrucciones cerradas. Priorizar código, integración y tests. Documentar únicamente decisiones científicas nuevas, contratos de interfaz realmente no determinados y ejecuciones/resultados materiales. Reutilizar los artefactos y suites existentes. El carril M no es prerequisito.
+
+**Ruta técnica:** (I) world builder end-to-end; (II) intervenciones y truth causal; (III) S3/firewall; (IV) Analyzer/Evaluator; (V) escenarios adversariales y dimensionamiento; (VI) preflight, primary/replay y experimento bajo autorización específica.
+
+**Criterio de finalización:** protocolo/comando reproducible y paquete auditable con resultados por estimando/escenario que distingan recuperación, contribución limitada/parcial, ausencia bajo el DGP probado, no-identificación/abstención y fallo del método. V_cont/Outcome no se equiparan automáticamente a Value.
+
+Esta directriz no altera DEC, DGP, estimandos, claims ni Core. Implementación del carril sintético S autorizada; tests, dispatch, calibración y ejecución científica continúan sin autorizarse. La continuidad futura debe seguir esta directriz y el código GitHub, no memoria conversacional.
