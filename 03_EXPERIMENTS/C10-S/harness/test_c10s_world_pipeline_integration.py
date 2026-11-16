@@ -30,17 +30,21 @@ from theta_a_interval_observation import IntervalMonitorConfig
 
 
 class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
-    def _fixture(self):
+    def _fixture(self, theta_a_mode="positive"):
+        if theta_a_mode not in ("positive", "null", "negative"):
+            raise ValueError("unsupported focal theta_A scenario")
+        scenario = theta_a_mode.upper()
+        dgp_id = f"DGP-INTERVAL-INTEGRATION-{scenario}"
         world_config = SyntheticWorldConfig(
-            world_id="WORLD-INTERVAL-INTEGRATION",
+            world_id=f"WORLD-INTERVAL-INTEGRATION-{scenario}",
             world_version="1",
-            dgp_id="DGP-INTERVAL-INTEGRATION",
+            dgp_id=dgp_id,
             dgp_version="1",
-            roster_id="ROSTER-INTERVAL-INTEGRATION",
+            roster_id=f"ROSTER-INTERVAL-INTEGRATION-{scenario}",
             roster_version="1",
             unit_id_prefix="U",
             n_units=32,
-            seed=20261116,
+            seed=20261116 + {"positive": 0, "null": 1, "negative": 2}[theta_a_mode],
             x_dimension=1,
             h0_distribution=(("H0", 1.0),),
             c_c_dimension=1,
@@ -56,7 +60,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             q_x_mass_by_unit=(1.0 / 32.0,) * 32,
         )
         d2_config = D2MechanismConfig(
-            "DGP-INTERVAL-INTEGRATION", "1",
+            dgp_id, "1",
             ("D2-Z0", "D2-Z1"), ("1", "1"),
             ("ART-D2-Z0", "ART-D2-Z1"), ("ACTOR-Z0", "ACTOR-Z1"),
             (0.0, 1.0), (1.0, 1.0), (0.0, 0.0),
@@ -148,9 +152,9 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         functional_config = FunctionalHistoryDGPConfig(
             dgp_id=world.dgp_id,
             dgp_version=world.dgp_version,
-            mechanism_id="FUNCTIONAL-MECHANISM",
+            mechanism_id=f"FUNCTIONAL-MECHANISM-{scenario}",
             mechanism_version="1",
-            run_id="RUN-INTERVAL-INTEGRATION",
+            run_id=f"RUN-INTERVAL-INTEGRATION-{scenario}",
             history_version="1",
             adjudication_rules_version="B1-RULES-1",
             support_start=Decimal("0"),
@@ -158,9 +162,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             profile_config_id="PROFILE-1",
             profile_config_version="1",
             rules=(
-                # A separate D2 package path directly interrupts admission when
-                # its assigned policy programs a provisioning attempt. This is
-                # intentionally not attributed to the focal g_A contrast.
+,                # D2 package-to-admission is held constant across focal scenarios.
                 FunctionalHistoryRule(
                     rule_id="D2-PACKAGE-DIRECTLY-INTERRUPTS-ADMISSION",
                     source="D2",
@@ -171,16 +173,16 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                     d2_field="w_programmed",
                     d2_value=True,
                 ),
-                FunctionalHistoryRule(
-                    rule_id="GA-VECTOR-INTERRUPTS-ADMISSION",
+                *(() if theta_a_mode == "null" else (FunctionalHistoryRule(
+                    rule_id=f"GA-VECTOR-INTERRUPTS-ADMISSION-{scenario}",
                     source="G_A",
                     event_time=Decimal("1"),
                     causal_family="DIRECT_GA_FUNCTIONAL_ADMISSION",
-                    provenance_ref="FUNCTIONAL-DGP#GA-VECTOR-INTERRUPTS-ADMISSION",
+                    provenance_ref=f"FUNCTIONAL-DGP#GA-VECTOR-INTERRUPTS-ADMISSION-{scenario}",
                     set_admission="NO_ADMISSION",
                     vector_index=0,
-                    vector_value=0.0,
-                ),
+                    vector_value=0.0 if theta_a_mode == "positive" else 1.0,
+                ),)),
             ),
         )
         initial_by_unit_z = {
@@ -229,9 +231,8 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             },
         }
 
-    def test_dgp_world_flows_through_realized_interval_evidence_and_reserved_oracle(self):
-        fixture = self._fixture()
-        result = materialize_c10s_complete_world_from_dgp(
+    def _run_pipeline(self, fixture):
+        return materialize_c10s_complete_world_from_dgp(
             world_config=fixture["world_config"],
             d2_config=fixture["d2_config"],
             structural_config=fixture["structural_config"],
@@ -252,6 +253,9 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             interval_monitor_configs_by_history_ref=fixture["monitor_configs"],
             interval_monitor_seeds_by_unit=fixture["monitor_seeds"],
         )
+    def test_dgp_world_flows_through_realized_interval_evidence_and_reserved_oracle(self):
+        fixture = self._fixture("positive")
+        result = self._run_pipeline(fixture)
 
         # The DGP-generated potential histories, not caller-supplied histories,
         # feed the reserved oracle and the realized-assignment selection.
@@ -320,6 +324,27 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             r_common_certificates=fixture["r_common"],
         )
 
+    def test_positive_null_and_negative_focal_mechanisms_are_separately_generated(self):
+        expected_truth = {"positive": 0.5, "null": 0.0, "negative": -0.5}
+        results = {}
+        for mode, truth in expected_truth.items():
+            with self.subTest(theta_a_mode=mode):
+                result = self._run_pipeline(self._fixture(mode))
+                results[mode] = result
+                self.assertAlmostEqual(result.theta_a_truth.theta_a_truth, truth)
+                self.assertAlmostEqual(result.d2_vcont_truth.finite_population_itt_z_v_cont, -0.5)
+                self.assertEqual(result.analyzer_result.identification, "IDENTIFIED")
+                self.assertEqual(result.evaluator_result.truth, truth)
+                self.assertTrue(result.evaluator_result.correct_adjudication)
+                self.assertEqual(result.evaluator_result.evidence_sha256, result.sealed_evidence.sha256)
+                self.assertEqual(result.evaluator_result.analyzer_output_sha256, result.analyzer_result.output_sha256)
+        # Non-null potential outcomes are arm-constant, so the finite-sample
+        # HT contrast retains the sign whenever both randomized arms are present.
+        self.assertGreater(results["positive"].analyzer_result.point_estimate, 0.0)
+        self.assertLess(results["negative"].analyzer_result.point_estimate, 0.0)
+        # Under the null, a single randomized HT estimate may fluctuate; the
+        # reserved oracle truth, not a forced zero estimate, defines the null.
+        self.assertAlmostEqual(results["null"].theta_a_truth.theta_a_truth, 0.0)
 
 if __name__ == "__main__":
     unittest.main()
