@@ -528,6 +528,8 @@ class StructuralSnapshot:
     world_version: str
     dgp_id: str
     dgp_version: str
+    unit_id: str
+    potential_z: int
     boundary_id: str
     context_id: str
     horizon: float
@@ -540,9 +542,11 @@ class StructuralSnapshot:
 
     def validate(self) -> None:
         if not all((self.snapshot_id, self.snapshot_version, self.world_id,
-                    self.world_version, self.dgp_id, self.dgp_version,
+                    self.world_version, self.dgp_id, self.dgp_version, self.unit_id,
                     self.boundary_id, self.context_id, self.catalog_version)):
             raise ContractError("structural snapshot identity, boundary, context and catalog version are required")
+        if self.potential_z not in (0, 1):
+            raise ContractError("structural snapshot must identify one potential Z world")
         if not math.isfinite(self.horizon) or self.horizon <= 0:
             raise ContractError("structural horizon must be positive and finite")
         ids = [item.transformation_id for item in self.transformations]
@@ -736,6 +740,94 @@ class StructuralReachabilityEngine:
         )
         result.validate()
         return result
+
+
+
+@dataclass(frozen=True)
+class UnitPotentialReachability:
+    unit_id: str
+    z: int
+    snapshot_id: str
+    result: ReachabilityResult
+
+
+@dataclass(frozen=True)
+class SyntheticWorldReachabilityBundle:
+    world_id: str
+    world_version: str
+    dgp_id: str
+    dgp_version: str
+    unit_potential_results: tuple[UnitPotentialReachability, ...]
+    result_sha256: str
+
+    def validate(self, world: "SyntheticWorldBundle") -> None:
+        world.validate()
+        if (self.world_id, self.world_version, self.dgp_id, self.dgp_version) != (
+            world.world_id, world.world_version, world.dgp_id, world.dgp_version
+        ):
+            raise ContractError("reachability bundle identity differs from its synthetic world")
+        expected = {(unit.unit_id, z) for unit in world.units for z in (0, 1)}
+        actual = {(row.unit_id, row.z) for row in self.unit_potential_results}
+        if actual != expected or len(actual) != len(self.unit_potential_results):
+            raise ContractError("reachability bundle must contain exactly both Z potentials per world unit")
+        for row in self.unit_potential_results:
+            row.result.validate()
+            if row.result.snapshot_id != row.snapshot_id:
+                raise ContractError("reachability result and snapshot identities differ")
+        if not self.result_sha256:
+            raise ContractError("world reachability fingerprint is required")
+
+
+def evaluate_synthetic_world_reachability(
+    world: "SyntheticWorldBundle",
+    snapshots_by_unit_z: dict[tuple[str, int], StructuralSnapshot],
+    routes_by_unit_z: dict[tuple[str, int], Sequence[StructuralRoute]],
+    enumeration_complete_by_unit_z: dict[tuple[str, int], bool],
+    search_truncated_by_unit_z: dict[tuple[str, int], bool],
+) -> SyntheticWorldReachabilityBundle:
+    """Attach explicit structural snapshots/reachability to every D2 potential.
+
+    No D2 field is translated into T_acc, App, REL or Reach. The caller must
+    provide each structural world and its route predicates explicitly.
+    """
+    world.validate()
+    expected = {(unit.unit_id, z) for unit in world.units for z in (0, 1)}
+    for label, mapping in (
+        ("structural snapshots", snapshots_by_unit_z),
+        ("route catalogs", routes_by_unit_z),
+        ("enumeration completeness", enumeration_complete_by_unit_z),
+        ("search truncation", search_truncated_by_unit_z),
+    ):
+        if set(mapping) != expected:
+            raise ContractError(f"{label} must cover every unit × Z potential exactly")
+    engine = StructuralReachabilityEngine()
+    rows = []
+    for key in sorted(expected):
+        snapshot = snapshots_by_unit_z[key]
+        unit_id, z = key
+        if (snapshot.world_id, snapshot.world_version, snapshot.dgp_id,
+                snapshot.dgp_version, snapshot.unit_id, snapshot.potential_z) != (
+            world.world_id, world.world_version, world.dgp_id,
+            world.dgp_version, unit_id, z
+        ):
+            raise ContractError("structural snapshot does not bind to the exact world/unit/potential")
+        result = engine.evaluate(
+            snapshot, routes_by_unit_z[key],
+            enumeration_complete=enumeration_complete_by_unit_z[key],
+            search_truncated=search_truncated_by_unit_z[key],
+        )
+        rows.append(UnitPotentialReachability(unit_id, z, snapshot.snapshot_id, result))
+    payload = {
+        "world_id": world.world_id, "world_version": world.world_version,
+        "dgp_id": world.dgp_id, "dgp_version": world.dgp_version,
+        "unit_potential_results": tuple(rows),
+    }
+    bundle = SyntheticWorldReachabilityBundle(
+        world.world_id, world.world_version, world.dgp_id, world.dgp_version,
+        tuple(rows), digest(payload),
+    )
+    bundle.validate(world)
+    return bundle
 
 
 @dataclass(frozen=True)
