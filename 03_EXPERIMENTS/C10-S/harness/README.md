@@ -378,3 +378,20 @@ Selection is made only among confirmed reachable routes; route weights are expli
 Random draws are keyed by the world seed commitment, DGP salt, unit, target, route and step (excluding Z where a common exogenous draw is required), preserving paired potential-world comparisons. Bundle validation cross-checks selected route identity and target against the independently adjudicated post-Reach result. SyntheticWorldBuilder.generate_complete_with_trajectories() now exposes the integrated path through roster, D2 potentials, U/R/C/X snapshots, Reach, selection, execution and trajectories. Outcome and contextual Value remain downstream and are not fabricated by this block.
 
 The integrated regression fixture checks reachable-and-completed under one potential, unreachable under the other, reachable-but-not-selected under an alternative selection policy, and selected-but-execution-failed under an alternative execution policy. These are source-level test definitions only; no tests or experiments were run.
+
+
+## D2 potential EventHistory → V_cont truth
+
+The D2 world can now be joined to the already defined EventHistory adjudicator without inferring functional continuity from structural accessibility or from a trajectory. The caller supplies an explicit mapping of one complete EventHistory for every (unit_id, Z) potential and one common IntervalGrid. The adapter validates world/DGP/unit identity, unique history and potential identities, common run and grid support, and exact unit × Z coverage.
+
+For each potential it applies the existing DEC-C10-100/104 interval adjudication and retains the interval truth vector, EventHistory content hash, PROFILE configuration identity/version (through EventHistory), and adjudication-rules version. It then computes the finite synthetic-population package-assignment contrast:
+
+`ITT_Z^{D2}(V_{cont}) = \sum_i q_{X,i}^{*}\,[V_{cont,i}(1)-V_{cont,i}(0)]`
+
+The target masses are the explicit q_X* masses already attached to the synthetic world; they are not estimated from roster frequencies. The bundle is evaluator-side truth, validates by re-adjudicating the exact reserved histories, and carries a content fingerprint. This is an assignment/package contrast on the provisional V_cont dimension; it is not `theta_A`, not an accessibility-mediated effect, and not proof that the D2 package acts only through accessibility.
+
+Gate 154 / R208 scope remains controlling: temporal V_cont adjudication uses effective admission continuity under ENABLED. PROFILE remains a versioned declarative B1 obligation, not an invented temporal exposure trajectory. The existing point-sample S3 abstention remains unchanged.
+
+This bridge does **not** instantiate O-CONF/F*, a beneficiary-consequence measure, the normative valuation authority/criterion, or general Value. DEC-C10-099 selects V_cont provisionally as the only minimal candidate dimension, but its measurement/identification gates remain open. The generated V_cont truth is therefore a bounded synthetic dimension-specific outcome/value truth, not a complete contextual-Value verdict. No V_j is added, no weights or scalar index are introduced, and no O-CONF result is inferred from V_cont or trajectory.
+
+The integrated regression fixture deliberately gives Z=0 unreachable trajectories but fully compliant V_cont histories, and Z=1 completed trajectories but noncompliant V_cont histories. This adversarial separation ensures the adapter reads only EventHistory truth and does not manufacture value from Reach or execution. A missing unit × Z history is rejected. These are source-level test definitions only; no tests, workflows, Monte Carlo runs or scientific experiments have been executed.
