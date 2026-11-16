@@ -284,12 +284,15 @@ class SyntheticComponentTests(unittest.TestCase):
         self.assertEqual(sealed.manifest["schema"], "C10S-VCONT-S3-002")
         analyzer_result = Analyzer().analyze(sealed, contract_for(scenario))
         evaluation = Evaluator().evaluate_event_history_interface(
-            envelope, sealed, analyzer_result
+            envelope, sealed, analyzer_result, contract_for(scenario)
         )
         self.assertEqual(evaluation["selected_history_count"], 16)
         self.assertEqual(evaluation["s3_observation_count"], 80)
         self.assertTrue(evaluation["point_sample_only"])
         self.assertTrue(evaluation["analyzer_abstention_respected"])
+        self.assertTrue(evaluation["analysis_output_seal_verified"])
+        self.assertTrue(evaluation["analysis_reference_identification_status_correct"])
+        self.assertTrue(evaluation["analysis_expected_abstention_respected"])
         self.assertTrue(all(
             value == 1.0 for value in evaluation["v_cont_truth_by_unit"].values()
         ))

@@ -951,7 +951,9 @@ class Evaluator:
             expected_reference_status: Identification = "NOT_IDENTIFIED"
         elif not contract.positivity and truth.transportability_invariant_truth is False:
             expected_reference_status = "NOT_IDENTIFIED"
-        elif (not contract.no_interference or not contract.measurement_identified or not contract.version_consistency):
+        elif (not contract.no_interference or not contract.measurement_identified or not contract.version_consistency
+              or any(support != "INTERVAL_LEVEL"
+                     for row in result.rows for support in row["s3_temporal_support"])):
             expected_reference_status = "INDETERMINATE"
         elif not contract.positivity and (truth.transportability_invariant_truth is not True or truth.transportability_scope_truth != contract.transportability_scope or contract.transportability_evidence_status != "STRUCTURALLY_VERIFIED"):
             expected_reference_status = "INDETERMINATE"
@@ -982,7 +984,8 @@ class Evaluator:
                                 reference_status_correct, reference_estimate_present)
 
     def evaluate_event_history_interface(self, envelope, sealed_evidence: SealedEvidence,
-                                         analyzer_result: AnalyzerResult) -> dict[str, Any]:
+                                         analyzer_result: AnalyzerResult,
+                                         contract: AnalysisContract) -> dict[str, Any]:
         """Post-seal evaluation of EventHistory → S3 → Analyzer interface.
 
         Reconciles emitted observations with reserved EventHistory truth and
@@ -991,14 +994,20 @@ class Evaluator:
         """
         extension = getattr(envelope, "truth_extension", None)
         manifest = getattr(envelope, "run_manifest", None)
+        base_truth = getattr(envelope, "base_truth_bundle", None)
         observations = tuple(getattr(envelope, "s3_observations", ()))
-        if extension is None or manifest is None or not observations:
+        if extension is None or manifest is None or base_truth is None or not observations:
             raise ContractError("complete generation envelope and S3 observations are required")
         extension.validate()
         run_id = manifest.run_id
         if (run_id != sealed_evidence.run_id or run_id != analyzer_result.run_id
                 or analyzer_result.input_sha256 != sealed_evidence.sha256):
             raise ContractError("EventHistory evaluation run/evidence binding mismatch")
+        # Reuse the existing evaluator's output-seal and assignment-provenance
+        # checks; point-sample support is explicitly INDETERMINATE below.
+        base_analysis_report = self.evaluate(
+            base_truth, analyzer_result, contract, tolerance=0.0, manifest=manifest,
+        )
         if (sealed_evidence.manifest.get("schema") != "C10S-VCONT-S3-002"
                 or _hash({"manifest": sealed_evidence.manifest, "rows": sealed_evidence.rows})
                 != sealed_evidence.sha256):
@@ -1106,6 +1115,9 @@ class Evaluator:
             "v_cont_truth_by_unit": truth_vcont_by_unit,
             "point_sample_only": point_samples,
             "analyzer_abstention_respected": abstention_respected,
+            "analysis_output_seal_verified": True,
+            "analysis_reference_identification_status_correct": base_analysis_report.reference_regime_status_correct,
+            "analysis_expected_abstention_respected": base_analysis_report.expected_abstention_respected,
             "causal_itt_and_theta_a_scored": False,
         }
 
