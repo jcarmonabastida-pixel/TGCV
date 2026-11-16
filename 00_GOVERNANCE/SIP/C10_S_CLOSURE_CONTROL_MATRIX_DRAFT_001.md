@@ -3322,3 +3322,18 @@ Fuentes: DEC-C10-068/069, maestro §§174–178 y §216.2–216.3, contratos F* 
 | EventHistory / IntervalAdjudication | LOGIC PARTIAL / MATERIALIZATION OPEN | Requiere §51 y materialización/conformidad posterior |
 
 Artefacto rector: `C10_S_DEC-C10-102_COMPLEMENTARY_SCOPE_DECISION_PROPOSAL_DRAFT_001.md`. No se modifica DEC-C10-102 ni se registra DEC complementaria como aceptada. La aprobación de C1–C6 cerraría solo el alcance normativo lógico del DGP sintético vigente; no Design Freeze, implementación ni ejecución.
+
+
+## 147. Paquete A — C1–C6 aceptadas (2026-11-16)
+
+| Control | Estado | Alcance |
+|---|---|---|
+| Crosswalk DEC-C10-102 / Gate 154 / R150-A / R151-A8 / R152-A / R208-A | CLOSED_FOR_CURRENT_SYNTHETIC_DGP_LOGICAL_SCOPE | Registro de aceptación C1–C6; DEC-C10-102 intacta |
+| A_B1 / V_cont | LOGICAL_SCOPE_ACCEPTED | Admisión/no-admisión efectiva conforme a ENABLED, incluyendo runtime constitutivo |
+| PROFILE | CONTRACTUAL_OBLIGATION_PRESERVED | Declarativo versionado; exposure fuera de adjudicación temporal actual |
+| D_valid | SEPARATE_VALIDITY_PREDICATE | No recodificar como A_B1=0/UNKNOWN; soporte primario conforme |
+| Continuidad / truth | STRICT_OPERATOR_PRESERVED | DEC-C10-102/100/101/104 y {1,0,?} preservados |
+| §51 / EventHistory materialization | OPEN | R144-B y materialización siguen pendientes |
+| D2 / población / aislamiento / soporte | OPEN | Paquete B |
+
+Registro: `C10_S_DEC-C10-102_COMPLEMENTARY_SCOPE_ACCEPTANCE_RECORD_DRAFT_001.md`. Sin DEC-C10-105, Design Freeze, implementación o ejecución.
