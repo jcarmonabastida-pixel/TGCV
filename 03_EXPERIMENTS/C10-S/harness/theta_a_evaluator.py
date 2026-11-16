@@ -52,6 +52,10 @@ def _result_payload(result: ThetaAObservationAnalysisResult) -> dict[str, Any]:
         "temporal_resolution": result.temporal_resolution,
         "abstention_reason": result.abstention_reason,
         "input_sha256": result.input_sha256,
+        "measurement_lower_bound": result.measurement_lower_bound,
+        "measurement_upper_bound": result.measurement_upper_bound,
+        "missing_interval_count": result.missing_interval_count,
+        "total_interval_count": result.total_interval_count,
     }
 
 
@@ -140,6 +144,23 @@ class ThetaAObservationEvaluator:
                     or row["r_common_fingerprint"] != truth_regime_by_history.get(row["history_ref"])):
                 raise ContractError("observed assignment is not bound to the reserved common-r_common policy regime")
 
+        if result.temporal_resolution == "INTERVAL_LEVEL":
+            if (result.missing_interval_count < 0
+                    or result.total_interval_count <= 0
+                    or result.missing_interval_count > result.total_interval_count):
+                raise ContractError("interval Analyzer missingness counts are invalid")
+            if (result.measurement_lower_bound is None) != (result.measurement_upper_bound is None):
+                raise ContractError("interval measurement bounds must be jointly present or absent")
+            if result.measurement_lower_bound is not None and not (
+                math.isfinite(result.measurement_lower_bound)
+                and math.isfinite(result.measurement_upper_bound)
+                and -1.0 <= result.measurement_lower_bound <= result.measurement_upper_bound <= 1.0
+            ):
+                raise ContractError("interval measurement-only bounds must be finite and within [-1,1]")
+            if result.missing_interval_count and result.identification != "PARTIALLY_IDENTIFIED":
+                raise ContractError("missing interval evidence requires partial-identification abstention")
+            if not result.missing_interval_count and result.identification == "PARTIALLY_IDENTIFIED":
+                raise ContractError("complete interval evidence must not abstain for missingness")
         lower, upper = result.lower_bound, result.upper_bound
         if not (math.isfinite(lower) and math.isfinite(upper) and lower <= upper):
             raise ContractError("Analyzer bounds must be finite and ordered")
