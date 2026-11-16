@@ -102,3 +102,16 @@ La propuesta de complemento (candidata DEC-C10-105, ID provisional no asignado) 
 No se ha creado DEC-C10-105 ni se ha solicitado todavía aceptación de su texto. Gate 150 debe completar el contrato lógico de A_B1 en ENABLED=true/false y preparar, si procede, el complemento para decisión expresa. DEC-C10-068/099…104 permanecen intactas; §51, parámetros temporales, schema, código, tests y ejecución siguen abiertos/no autorizados.
 
 `scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
+
+
+## Gate 150 — contrato B1 en ENABLED=true/false y exposición de PROFILE (2026-11-16)
+
+Auditoría documental: `C10_S_GATE_150_B1_FUNCTIONAL_CONTRACT_ENABLED_STATES_AUDIT_DRAFT_001.md` (commit `475d8bb7f6d120711e9af8e88b659216030eafd1`).
+
+La reconstrucción de DEC-C10-068, el contrato lógico §2/§12 y §§49–50 del contrato DGP confirma que la función B1 exige: admitir cuando ENABLED=true; no admitir cuando ENABLED=false; y exponer PROFILE declarado en ambos estados. La RUL solo restringe PROFILE cuando ENABLED=true; ENABLED=false no implica PROFILE=DISABLED. STANDARD/READ_ONLY no reciben semántica adicional.
+
+Se propone R150-A: la función B1 comprende el comportamiento de admisión condicionado por ENABLED más la exposición del perfil declarado. La no-admisión con ENABLED=false es correcta; la admisión efectiva en ese estado es incumplimiento. La exposición se mantiene abstracta, sin definir endpoint/protocolo/payload.
+
+L150-01: aunque PROFILE exposure es obligación funcional explícita, §§49–50 catalogan mecanismos runtime principalmente por su efecto en capacidad de admisión. Sigue abierto si la pérdida independiente de exposición puede producirse por mecanismos ya catalogados y cómo representarla en EventHistory sin ampliar el DGP por inferencia. R150-A no se registra como aceptada hasta respuesta expresa. Gate 151 resolverá esta laguna.
+
+No se modifican DEC-C10-068/099…104. §51, reloj, T*, Δ, K y calibración S3 siguen abiertos. Sin schema, código, tests, generación ni ejecución.
