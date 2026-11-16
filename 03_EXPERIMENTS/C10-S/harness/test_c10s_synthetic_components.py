@@ -483,7 +483,9 @@ class SyntheticComponentTests(unittest.TestCase):
                 complete[key] = True
                 truncated[key] = False
         result = evaluate_synthetic_world_reachability(
-            world, snapshots, routes, complete, truncated,
+            world, snapshots, routes,
+            {key: (f"TARGET-{key[0]}-Z{key[1]}",) for key in snapshots},
+            complete, truncated,
         )
         result.validate(world)
         self.assertEqual(len(result.unit_potential_results), 4)
