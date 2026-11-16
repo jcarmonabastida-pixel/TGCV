@@ -37,6 +37,7 @@ class C10SFactorialWorldResult:
     reach: object
     trajectories: object
     d2_event_histories_by_unit_z: dict[tuple[str, int], EventHistory]
+    d2_vcont_truth: object
     factorial_potential_histories: dict[tuple[str, str, str, int], EventHistory]
     assignment_bundle: FactorialAssignmentBundle
     realized_histories: tuple[EventHistory, ...]
@@ -98,6 +99,9 @@ def materialize_c10s_factorial_world_from_dgp(
     d2_histories = generate_d2_event_history_potentials(
         world, functional_history_config, initial_state_by_unit_z,
     )
+    # Keep the D2 package-level ITT-Z truth as a distinct oracle output.
+    # It is not substituted for either focal A simple effect or the A×M interaction.
+    d2_vcont_truth = builder.evaluate_complete_vcont_truth(world, d2_histories, grid)
     potentials, assignments, realized, selection = materialize_factorial_potentials(
         world, functional_history_config, g_a0, g_a1, r_common_certificates,
         initial_state_by_history, feasible_vectors_by_history, assignment_config,
@@ -133,7 +137,7 @@ def materialize_c10s_factorial_world_from_dgp(
         truth, sealed, analyzer_result, assignments, tolerance=evaluation_tolerance,
     )
     return C10SFactorialWorldResult(
-        world, structural, reach, trajectories, d2_histories, potentials,
+        world, structural, reach, trajectories, d2_histories, d2_vcont_truth, potentials,
         assignments, realized, selection, interval_records, sealed,
         analysis_contract, analyzer_result, truth, evaluation,
     )
