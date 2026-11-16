@@ -449,5 +449,33 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(len(result.analyzer_result.contrasts), 3)
         self.assertTrue(result.evaluator_result.correct_adjudication)
 
+        # Null-M negative control: the same factorial assignment and world,
+        # but no G_M functional rule, must recover zero interaction.
+        null_result = materialize_c10s_factorial_world_from_dgp(
+            world_config=fixture["world_config"],
+            d2_config=fixture["d2_config"],
+            structural_config=fixture["structural_config"],
+            reach_config=fixture["reach_config"],
+            trajectory_config=fixture["trajectory_config"],
+            functional_history_config=base,
+            initial_state_by_unit_z=fixture["initial_by_unit_z"],
+            initial_state_by_history=fixture["initial_by_history"],
+            grid=fixture["grid"],
+            g_a0=fixture["g_a0"],
+            g_a1=fixture["g_a1"],
+            feasible_vectors_by_history=fixture["feasible"],
+            r_common_certificates=fixture["r_common"],
+            assignment_config=assignment,
+            grids_by_history_ref=grids,
+            interval_monitor_configs_by_history_ref=fixture["monitor_configs"],
+            interval_monitor_seeds_by_unit=fixture["monitor_seeds"],
+            estimand_version="1",
+            evaluation_tolerance=2.0,
+        )
+        self.assertAlmostEqual(null_result.reserved_truth.theta_a_given_m0, 1.0)
+        self.assertAlmostEqual(null_result.reserved_truth.theta_a_given_m1, 1.0)
+        self.assertAlmostEqual(null_result.reserved_truth.theta_am_interaction, 0.0)
+        self.assertTrue(null_result.evaluator_result.correct_adjudication)
+
 if __name__ == "__main__":
     unittest.main()
