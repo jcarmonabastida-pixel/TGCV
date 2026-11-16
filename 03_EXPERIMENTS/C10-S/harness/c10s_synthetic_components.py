@@ -2059,7 +2059,14 @@ class D2VContTruthBundle:
         )
         if not math.isclose(self.finite_population_itt_z_v_cont, expected_itt, rel_tol=0.0, abs_tol=1e-12):
             raise ContractError("finite-population ITT-Z truth does not match q_X*-weighted potential contrast")
-        if self.q_x_sha256 != digest(world.q_x) or not self.result_sha256:
+        expected_payload = {
+            "world_id": world.world_id, "world_version": world.world_version,
+            "dgp_id": world.dgp_id, "dgp_version": world.dgp_version,
+            "run_id": self.run_id, "grid": grid,
+            "potential_truth": self.potential_truth, "q_x": world.q_x,
+            "finite_population_itt_z_v_cont": self.finite_population_itt_z_v_cont,
+        }
+        if self.q_x_sha256 != digest(world.q_x) or self.result_sha256 != digest(expected_payload):
             raise ContractError("V_cont truth q_X* provenance or result fingerprint is invalid")
 
 
