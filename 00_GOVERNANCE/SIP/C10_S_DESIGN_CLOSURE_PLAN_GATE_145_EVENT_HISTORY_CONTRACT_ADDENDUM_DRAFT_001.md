@@ -115,3 +115,10 @@ Se propone R150-A: la función B1 comprende el comportamiento de admisión condi
 L150-01: aunque PROFILE exposure es obligación funcional explícita, §§49–50 catalogan mecanismos runtime principalmente por su efecto en capacidad de admisión. Sigue abierto si la pérdida independiente de exposición puede producirse por mecanismos ya catalogados y cómo representarla en EventHistory sin ampliar el DGP por inferencia. R150-A no se registra como aceptada hasta respuesta expresa. Gate 151 resolverá esta laguna.
 
 No se modifican DEC-C10-068/099…104. §51, reloj, T*, Δ, K y calibración S3 siguen abiertos. Sin schema, código, tests, generación ni ejecución.
+
+
+## Addendum Gate 150 — aceptación R150-A (2026-11-16)
+
+Se registra la aceptación expresa de R150-A en `C10_S_GATE_150_B1_FUNCTIONAL_CONTRACT_ENABLED_STATES_AUDIT_DRAFT_001.md` (commit `36eb3b3c201001e1b67814fa68d9bcb3092ee3cf`). La aceptación lógica establece las dos obligaciones de B1 —admisión condicionada por ENABLED y exposición del PROFILE declarado— en ambos estados, conserva la implicación unidireccional de RUL, y aclara que la no-admisión con ENABLED=false es correcta mientras que admitir efectivamente en ese estado incumple la función. El incumplimiento confirmado de cualquiera de las obligaciones aplicables hace A_B1=0 en los intervalos afectados, bajo continuidad estricta. La exposición permanece abstracta y no incorpora interfaz o mecanismo físico.
+
+L150-01 sigue abierto: carácter temporal de PROFILE exposure, mecanismos constitutivos ya catalogados que puedan impedirla y representación de su truth en EventHistory. No se amplían §§49–50 por inferencia. Gate 151 debe resolver esa laguna antes de preparar el complemento decisional. No se crea DEC ni se modifica schema, DGP numérico, reloj, código, tests, harness o autorización.
