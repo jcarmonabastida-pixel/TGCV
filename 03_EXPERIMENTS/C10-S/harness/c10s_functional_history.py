@@ -36,6 +36,9 @@ class FunctionalHistoryRule:
     d2_value: bool | None = None
     vector_index: int | None = None
     vector_value: object | None = None
+    # Conjunctive joint-vector predicates permit explicit interaction rules.
+    # The legacy single-component pair remains supported unchanged.
+    vector_predicates: tuple[tuple[int, object], ...] | None = None
     suborder: int | None = None
 
     def validate(self) -> None:
@@ -52,11 +55,22 @@ class FunctionalHistoryRule:
         if self.source == "D2":
             if self.d2_field not in D2_FIELDS or type(self.d2_value) is not bool:
                 raise ContractError("D2 rule requires an allowlisted stage field and Boolean trigger value")
-            if self.vector_index is not None or self.vector_value is not None:
+            if (self.vector_index is not None or self.vector_value is not None
+                    or self.vector_predicates is not None):
                 raise ContractError("D2 rule cannot also contain a g_A vector predicate")
         elif self.source == "G_A":
-            if self.vector_index not in range(4) or self.d2_field is not None or self.d2_value is not None:
-                raise ContractError("g_A rule requires exactly one vector component index [0..3]")
+            if self.d2_field is not None or self.d2_value is not None:
+                raise ContractError("g_A rule cannot contain a D2-stage predicate")
+            if self.vector_predicates is None:
+                if type(self.vector_index) is not int or self.vector_index not in range(4) or self.vector_value is None:
+                    raise ContractError("g_A rule requires one vector component index [0..3] and value")
+            else:
+                indices = [index for index, _ in self.vector_predicates]
+                if (self.vector_index is not None or self.vector_value is not None
+                        or not self.vector_predicates
+                        or any(type(index) is not int or index not in range(4) for index in indices)
+                        or len(indices) != len(set(indices))):
+                    raise ContractError("g_A conjunctive predicates require unique component indices [0..3]")
         else:
             raise ContractError("functional rule source must be D2 or G_A")
 
@@ -112,7 +126,13 @@ def _apply_rules(
         if source == "D2":
             triggered = getattr(mechanism, rule.d2_field) is rule.d2_value
         else:
-            triggered = mechanism[rule.vector_index] == rule.vector_value
+            if rule.vector_predicates is None:
+                triggered = mechanism[rule.vector_index] == rule.vector_value
+            else:
+                triggered = all(
+                    mechanism[index] == value
+                    for index, value in rule.vector_predicates
+                )
         if not triggered:
             continue
         after = FunctionalState(
