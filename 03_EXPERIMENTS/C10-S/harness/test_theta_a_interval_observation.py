@@ -7,8 +7,12 @@ from c10s_synthetic_components import (
     IntervalGrid, generate_event_history,
 )
 from theta_a_interval_observation import (
-    IntervalMonitorConfig, project_interval_s3, validate_interval_s3_observations,
+    IntervalMonitorConfig, ThetaAIntervalObservationRecord,
+    candidate_from_theta_a_interval_records, project_interval_s3,
+    validate_interval_s3_observations,
 )
+from theta_a_observation_harness import ThetaAIntervalSealer
+from theta_a_analyzer import ThetaAObservationAnalysisContract, ThetaAObservationAnalyzer
 
 
 class IntervalObservationTests(unittest.TestCase):
@@ -70,6 +74,78 @@ class IntervalObservationTests(unittest.TestCase):
         )
         with self.assertRaises(ContractError):
             project_interval_s3(self.history, self.grid, config, seed=1)
+
+
+    def _focal_records(self, missing_arm1=False):
+        rows = []
+        for unit, history, arm, values in (
+            ("U0", "H0", 0, (True, True)),
+            ("U1", "H1", 1, ((None, True) if missing_arm1 else (False, True))),
+        ):
+            for index, value in enumerate(values):
+                start = Decimal(index)
+                end = Decimal(index + 1)
+                rows.append(ThetaAIntervalObservationRecord(
+                    run_id="RUN", unit_id=unit, history_ref=history,
+                    assignment_bundle_sha256="ASSIGN", q_x_sha256="QX",
+                    g_a0_sha256="GA0", g_a1_sha256="GA1", r_common_sha256="RC",
+                    assigned_arm=arm, assignment_probability=0.5,
+                    assigned_vector_sha256=f"VECTOR-{unit}",
+                    policy_fingerprint=f"POLICY-{arm}", r_common_fingerprint="RC-FP",
+                    history_id=f"HISTORY-{unit}", observation_id=f"OBS-{unit}-{index}",
+                    interval_index=index, interval_start=start, interval_end=end,
+                    observed_compliance=value,
+                    observation_status="MISSING" if value is None else "OBSERVED",
+                    coverage_mode="CONTINUOUS_EVENT_COVERAGE",
+                    capture_time=end + Decimal("0.1"),
+                    ingestion_time=end + Decimal("0.2"),
+                    monitor_id="MONITOR", monitor_version="1",
+                    grid_id="GRID", grid_version="1",
+                ))
+        return tuple(rows)
+
+    def _focal_analysis(self, missing_arm1=False):
+        records = self._focal_records(missing_arm1)
+        candidate = candidate_from_theta_a_interval_records(records)
+        sealed = ThetaAIntervalSealer().seal(candidate)
+        contract = ThetaAObservationAnalysisContract(
+            q_x_mass_by_history=(("H0", 0.5), ("H1", 0.5)),
+            q_x_sha256="QX", assignment_bundle_sha256="ASSIGN",
+            g_a0_sha256="GA0", g_a1_sha256="GA1", r_common_sha256="RC",
+        )
+        result = ThetaAObservationAnalyzer().analyze(sealed, contract)
+        return sealed, result
+
+    def test_interval_sealer_and_analyzer_recover_complete_direct_ga_contrast(self):
+        sealed, result = self._focal_analysis()
+        self.assertEqual(sealed.manifest["temporal_resolution"], "INTERVAL_LEVEL")
+        self.assertEqual(result.temporal_resolution, "INTERVAL_LEVEL")
+        self.assertEqual(result.identification, "IDENTIFIED")
+        self.assertAlmostEqual(result.point_estimate, -0.5)
+        self.assertEqual(result.missing_interval_count, 0)
+        self.assertEqual(result.measurement_lower_bound, -0.5)
+        self.assertEqual(result.measurement_upper_bound, -0.5)
+
+    def test_interval_missingness_abstains_and_reports_measurement_only_bounds(self):
+        sealed, result = self._focal_analysis(missing_arm1=True)
+        self.assertEqual(result.identification, "PARTIALLY_IDENTIFIED")
+        self.assertIsNone(result.point_estimate)
+        self.assertEqual(result.abstention_reason, "INTERVAL_MISSINGNESS_REQUIRES_ABSTENTION")
+        self.assertEqual(result.lower_bound, -1.0)
+        self.assertEqual(result.upper_bound, 1.0)
+        self.assertEqual(result.measurement_lower_bound, -0.5)
+        self.assertEqual(result.measurement_upper_bound, 0.0)
+        self.assertEqual(result.missing_interval_count, 1)
+        self.assertEqual(result.total_interval_count, 4)
+
+    def test_interval_sealer_rejects_mixed_grid_identity(self):
+        rows = list(self._focal_records())
+        rows[-1] = ThetaAIntervalObservationRecord(
+            **{**rows[-1].__dict__, "grid_id": "OTHER-GRID"}
+        )
+        candidate = candidate_from_theta_a_interval_records(tuple(rows))
+        with self.assertRaises(ContractError):
+            ThetaAIntervalSealer().seal(candidate)
 
 
 if __name__ == "__main__":
