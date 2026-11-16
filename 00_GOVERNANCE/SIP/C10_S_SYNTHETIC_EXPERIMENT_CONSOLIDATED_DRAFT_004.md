@@ -376,3 +376,18 @@ Se conserva el firewall: Projector/Sealer no reciben TruthBundle; Analyzer consu
 El baseline ideal se reutiliza solo para los estimandos puntuales ya implementados bajo S3 perfecto/completo. No acredita continuidad estricta, fronteras DEC-C10-104, bounds V_cont ni identificación de θ_A. No se ejecutaron tests, validadores ni simulaciones.
 
 **Siguiente:** especificación lógica mínima de conformidad event history → TruthBundle → bounds → Analyzer/Evaluator; después decidir plan de implementación. Sin cambios de código/schema ni ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 311. Gate 139 — especificación lógica EventHistory → TruthBundle → Analyzer → Evaluator (2026-11-16)
+
+**Registro:** 00_GOVERNANCE/SIP/C10_S_LOGICAL_CONFORMANCE_SPEC_EVENTHISTORY_TRUTHBUNDLE_ANALYZER_EVALUATOR_GATE_139_DRAFT_001.md. **Addendum al plan:** 00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_139_LOGICAL_CONFORMANCE_ADDENDUM_DRAFT_001.md.
+
+Gate 139 especifica la cadena lógica mínima sin schema físico ni parámetros nuevos. EventHistory es truth reservada con estados funcionales efectivos, transiciones fechadas, identidad/versión y provenance; la adjudicación A_B1 por intervalo aplica DEC-C10-101/102/104 y continuidad estricta; TruthBundle conserva potenciales, truth por intervalo, n1/n0/n?, bounds y trazabilidad; Analyzer consume solo evidencia sellada; Evaluator abre truth después y valida correspondencia, recuperación, bounds y abstención.
+
+Se reutiliza DGP temporal §§49–55, que ya propone event_time, familias de transición, relojes separados, horizonte común y orden de generación. Su estado sigue siendo DRAFT/propuesto; Gate 139 no lo convierte en contrato aprobado ni implementado. El harness sigue sin event history materializado.
+
+Se explicita la distinción entre truth bounds DEC-C10-100 [n1/K,(n1+n?)/K] y Analyzer bounds por identificación parcial desde S3: son objetos distintos. DEC-C10-104 implica n?=0 para historias sintéticas completas/determinadas; S3 missingness/error/lag no crea UNKNOWN funcional. Una causa intrínseca de ? requerirá estipulación DGP futura explícita y aceptada. No existe tal causa aprobada actualmente.
+
+El baseline ITT-Z/ITT-G, TruthBundle como frontera, Sealer/firewall, S3 ideal y abstención adversarial se reutilizan en su alcance. No acreditan V_cont temporal completo, bounds Analyzer ni θ_A. Pendientes: estado/versionado del DGP temporal, mapping post-Z de provisión/instalación, derivación determinista EventHistory→A_B1, método Analyzer bounds o abstención y criterio de cobertura Evaluator.
+
+No se modificaron código/schema/DEC/tests/workflows ni se ejecutó ninguna operación técnica o científica. scientific_execution=false; execution_authorized=false.
