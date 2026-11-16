@@ -475,6 +475,188 @@ class QXHistoryMass:
     mass: float
 
 
+
+@dataclass(frozen=True)
+class SyntheticWorldConfig:
+    """Explicit finite target-world fixture; masses are q_X* inputs, not sample frequencies."""
+    world_id: str
+    world_version: str
+    dgp_id: str
+    dgp_version: str
+    roster_id: str
+    roster_version: str
+    unit_id_prefix: str
+    n_units: int
+    seed: int
+    x_dimension: int
+    h0_distribution: tuple[tuple[str, float], ...]
+    c_c_dimension: int
+    c_c_component_probability: float
+    need_pre_z_probability: float
+    focal_accessible_pre_probability: float
+    c_auth_base_probability: float
+    c_resource_probability: float
+    c_capacity_probability: float
+    c_info_probability: float
+    c_domain_probability: float
+    c_other_probability: float
+    q_x_mass_by_unit: tuple[float, ...]
+
+    def validate(self) -> None:
+        if not all((self.world_id, self.world_version, self.dgp_id, self.dgp_version,
+                    self.roster_id, self.roster_version, self.unit_id_prefix)):
+            raise ContractError("synthetic world, DGP and roster identities/versions are required")
+        if self.n_units < 1 or self.x_dimension < 1 or self.c_c_dimension < 1:
+            raise ContractError("synthetic roster and baseline dimensions must be positive")
+        _distribution_total(self.h0_distribution, "H0 target distribution")
+        if any(not isinstance(label, str) or not label for label, _ in self.h0_distribution):
+            raise ContractError("H0 support labels must be nonempty strings")
+        for label, probability in (
+            ("C_c component", self.c_c_component_probability),
+            ("Need_preZ", self.need_pre_z_probability),
+            ("focal baseline accessibility", self.focal_accessible_pre_probability),
+            ("C_auth,base", self.c_auth_base_probability),
+            ("C_resource", self.c_resource_probability),
+            ("C_capacity", self.c_capacity_probability),
+            ("C_info", self.c_info_probability),
+            ("C_domain", self.c_domain_probability),
+            ("C_other", self.c_other_probability),
+        ):
+            _probability(probability, label)
+        if len(self.q_x_mass_by_unit) != self.n_units:
+            raise ContractError("q_X* must supply one explicit target mass per synthetic baseline history")
+        if any(not math.isfinite(mass) or mass <= 0.0 for mass in self.q_x_mass_by_unit):
+            raise ContractError("q_X* target masses must be positive and finite")
+        if abs(sum(self.q_x_mass_by_unit) - 1.0) > 1e-12:
+            raise ContractError("q_X* target masses must sum to one")
+
+
+@dataclass(frozen=True)
+class SyntheticWorldUnit:
+    unit_id: str
+    x_ref: str
+    h0_ref: str
+    c_c_ref: str
+    x: tuple[float, ...]
+    h0: str
+    c_c: tuple[bool, ...]
+    need_pre_z: bool
+    d2_baseline: D2Baseline
+    d2_potentials: D2PotentialBundle
+
+
+@dataclass(frozen=True)
+class SyntheticWorldBundle:
+    world_id: str
+    world_version: str
+    dgp_id: str
+    dgp_version: str
+    roster_id: str
+    roster_version: str
+    configuration_sha256: str
+    seed_commitment_sha256: str
+    d2_mechanism_sha256: str
+    units: tuple[SyntheticWorldUnit, ...]
+    q_x: tuple[QXHistoryMass, ...]
+    roster_sha256: str
+
+    def validate(self) -> None:
+        if not all((self.world_id, self.world_version, self.dgp_id, self.dgp_version,
+                    self.roster_id, self.roster_version, self.configuration_sha256,
+                    self.seed_commitment_sha256, self.d2_mechanism_sha256,
+                    self.roster_sha256)):
+            raise ContractError("synthetic world identity, versions and fingerprints are required")
+        unit_ids = [unit.unit_id for unit in self.units]
+        history_refs = [row.history_ref for row in self.q_x]
+        if not unit_ids or len(unit_ids) != len(set(unit_ids)):
+            raise ContractError("synthetic world roster must be nonempty and uniquely keyed")
+        if len(history_refs) != len(set(history_refs)) or set(history_refs) != {
+            unit.d2_baseline.baseline_history_ref for unit in self.units
+        }:
+            raise ContractError("q_X* must bind exactly once to every generated baseline history")
+        if abs(sum(row.mass for row in self.q_x) - 1.0) > 1e-12 or any(
+            not math.isfinite(row.mass) or row.mass <= 0.0 for row in self.q_x
+        ):
+            raise ContractError("q_X* masses must be positive and sum to one")
+        for unit in self.units:
+            unit.d2_baseline.validate()
+            unit.d2_potentials.validate()
+            if unit.d2_baseline.unit_id != unit.unit_id or unit.d2_potentials.unit_id != unit.unit_id:
+                raise ContractError("synthetic world unit, D2 baseline and potential identities differ")
+            if len(unit.x) == 0 or len(unit.c_c) == 0 or not unit.h0:
+                raise ContractError("synthetic baseline X/H0/C_c must be materialized")
+
+
+class SyntheticWorldBuilder:
+    """Materialize a finite baseline roster, q_X* masses and both D2 potentials.
+
+    This builder deliberately does not infer D_f* -> ΔT_acc* -> Reach/trajectory.
+    Those mappings remain separate contracts and must not be fabricated here.
+    """
+    version = "c10s-synthetic-world-builder-0.1"
+
+    def generate(
+        self, config: SyntheticWorldConfig, d2_config: D2MechanismConfig,
+    ) -> SyntheticWorldBundle:
+        config.validate()
+        d2_config.validate()
+        if config.dgp_id != d2_config.dgp_id or config.dgp_version != d2_config.dgp_version:
+            raise ContractError("world and D2 mechanism must bind to the same DGP identity/version")
+        rng = random.Random(config.seed)
+        h0_labels = [label for label, _ in config.h0_distribution]
+        h0_weights = [weight for _, weight in config.h0_distribution]
+        units = []
+        q_x = []
+        for index in range(config.n_units):
+            unit_id = f"{config.unit_id_prefix}-{index + 1:06d}"
+            x_ref = f"{config.roster_id}-X-{index + 1:06d}"
+            h0_ref = f"{config.roster_id}-H0-{index + 1:06d}"
+            c_c_ref = f"{config.roster_id}-CC-{index + 1:06d}"
+            history_ref = f"{config.roster_id}-BASE-{index + 1:06d}"
+            x = tuple(rng.random() for _ in range(config.x_dimension))
+            h0 = rng.choices(h0_labels, weights=h0_weights, k=1)[0]
+            c_c = tuple(rng.random() < config.c_c_component_probability
+                        for _ in range(config.c_c_dimension))
+            need_pre_z = rng.random() < config.need_pre_z_probability
+            baseline = D2Baseline(
+                unit_id, history_ref,
+                rng.random() < config.focal_accessible_pre_probability,
+                rng.random() < config.c_auth_base_probability,
+                rng.random() < config.c_resource_probability,
+                rng.random() < config.c_capacity_probability,
+                rng.random() < config.c_info_probability,
+                rng.random() < config.c_domain_probability,
+                rng.random() < config.c_other_probability,
+            )
+            d2_seed = rng.getrandbits(64)
+            potentials = generate_d2_potentials(
+                baseline, d2_config, exogenous_seed=d2_seed,
+            )
+            units.append(SyntheticWorldUnit(
+                unit_id, x_ref, h0_ref, c_c_ref, x, h0, c_c,
+                need_pre_z, baseline, potentials,
+            ))
+            q_x.append(QXHistoryMass(
+                history_ref, x_ref, h0_ref, c_c_ref,
+                config.q_x_mass_by_unit[index],
+            ))
+        roster_payload = tuple({
+            "unit_id": unit.unit_id, "x_ref": unit.x_ref, "h0_ref": unit.h0_ref,
+            "c_c_ref": unit.c_c_ref, "x": unit.x, "h0": unit.h0,
+            "c_c": unit.c_c, "need_pre_z": unit.need_pre_z,
+            "d2_baseline": unit.d2_baseline,
+            "d2_potentials": unit.d2_potentials,
+        } for unit in units)
+        result = SyntheticWorldBundle(
+            config.world_id, config.world_version, config.dgp_id, config.dgp_version,
+            config.roster_id, config.roster_version, digest(config),
+            digest({"seed": config.seed}), digest(d2_config),
+            tuple(units), tuple(q_x), digest(roster_payload),
+        )
+        result.validate()
+        return result
+
+
 @dataclass(frozen=True)
 class JointPolicyHistory:
     history_ref: str
