@@ -1652,3 +1652,10 @@ La propuesta mantiene intactos DEC-C10-099…104 y, en particular, el operador e
 **No es una decisión aceptada.** La aprobación expresa de C1–C6 es necesaria antes de emitir un registro decisional complementario. No se crea DEC-C10-105 en esta operación. No cambia §51, DGP, schemas, código, tests ni autorizaciones.
 
 `scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
+
+
+## Aceptación — complemento de alcance DEC-C10-102 (2026-11-16)
+
+C1–C6 aceptadas conjuntamente por el responsable científico. Registro: `C10_S_DEC-C10-102_COMPLEMENTARY_SCOPE_ACCEPTANCE_RECORD_DRAFT_001.md`. El crosswalk normativo con Gate 154/R150-A/R151-A8/R152-A/R208-A queda cerrado para el DGP sintético vigente. DEC-C10-102 y DEC-C10-099…104 permanecen intactas; no se crea DEC-C10-105. V_cont se limita a continuidad temporal de admisión/no-admisión requerida por ENABLED; PROFILE exposure sigue obligación contractual no adjudicada temporalmente; D_valid se evalúa separadamente. Se preservan continuidad estricta y {1,0,?}.
+
+No se cierra §51 ni la materialización temporal, causal, medición, estadística, tests o firewall. No Design Freeze, implementación ni ejecución.
