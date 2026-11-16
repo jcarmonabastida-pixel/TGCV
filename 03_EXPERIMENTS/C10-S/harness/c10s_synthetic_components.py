@@ -1592,8 +1592,24 @@ class SyntheticWorldTrajectoryBundle:
             world.world_id, world.world_version, world.dgp_id, world.dgp_version
         ):
             raise ContractError("trajectory bundle identity differs from its synthetic world")
+        reach_by_key = {(row.unit_id, row.z): row for row in reach.contrasts}
         for row in self.trajectories:
             row.validate()
+            potential = reach_by_key[(row.unit_id, row.z)]
+            target_reach = dict(potential.post.target_states)[row.target_state]
+            if row.reach_state != target_reach:
+                raise ContractError("trajectory Reach state differs from its post-potential adjudication")
+            route_rows = {item.route_id: item for item in potential.post.route_evaluations}
+            if row.selected_route_id is not None:
+                selected = route_rows.get(row.selected_route_id)
+                if selected is None or selected.target_state != row.target_state or selected.route_state != 1:
+                    raise ContractError("selected trajectory route is not a confirmed route to its target")
+            if row.selection_state == 1 and row.reach_state != 1:
+                raise ContractError("route selection cannot occur without confirmed Reach")
+            if row.reach_state == 0 and (row.selection_state != 0 or row.trajectory_status != "NOT_REACHABLE"):
+                raise ContractError("Reach=0 must yield no selection and NOT_REACHABLE")
+            if row.reach_state == "?" and row.trajectory_status != "UNKNOWN":
+                raise ContractError("unknown Reach cannot yield a determinate trajectory")
         if not self.result_sha256:
             raise ContractError("trajectory bundle fingerprint is required")
 
@@ -1630,7 +1646,7 @@ def evaluate_d2_potential_trajectories(
                 unknown = [row for row in candidates if row.route_state == "?"]
                 if confirmed:
                     total_weight = sum(route_weights[row.route_id] for row in confirmed)
-                    draw = _dgp_uniform(config.randomization_salt, unit.unit_id, target, "selection-route")
+                    draw = _dgp_uniform(world.seed_commitment_sha256, config.randomization_salt, unit.unit_id, target, "selection-route")
                     cumulative = 0.0
                     selected = confirmed[-1]
                     for candidate in sorted(confirmed, key=lambda row: row.route_id):
@@ -1639,7 +1655,7 @@ def evaluate_d2_potential_trajectories(
                             selected = candidate
                             break
                     selected_flag = (
-                        _dgp_uniform(config.randomization_salt, unit.unit_id, target, "selection")
+                        _dgp_uniform(world.seed_commitment_sha256, config.randomization_salt, unit.unit_id, target, "selection")
                         < selection_probability[target]
                     )
                     if not selected_flag:
@@ -1650,7 +1666,7 @@ def evaluate_d2_potential_trajectories(
                         continue
                     route_template = next(route for route in reach_config.route_templates
                                           if route.route_id == selected.route_id)
-                    if _dgp_uniform(config.randomization_salt, unit.unit_id, target,
+                    if _dgp_uniform(world.seed_commitment_sha256, config.randomization_salt, unit.unit_id, target,
                                     selected.route_id, "route-execution") >= route_execution[selected.route_id]:
                         trajectories.append(D2PotentialTrajectory(
                             unit.unit_id, z, target, target_reach, 1, selected.route_id, 0,
@@ -1661,8 +1677,9 @@ def evaluate_d2_potential_trajectories(
                     failed = False
                     for index, step in enumerate(route_template.steps):
                         success = _dgp_uniform(
-                            config.randomization_salt, unit.unit_id, target,
-                            selected.route_id, index, step.transformation_id, "step-execution",
+                            world.seed_commitment_sha256, config.randomization_salt,
+                            unit.unit_id, target, selected.route_id, index,
+                            step.transformation_id, "step-execution",
                         ) < step_execution[step.transformation_id]
                         if not success:
                             failed = True
