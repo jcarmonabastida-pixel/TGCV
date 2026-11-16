@@ -6,9 +6,8 @@ produce S3 observations or an ITT-Z estimate.
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 import hashlib
-import json
 import math
 from typing import Sequence
 
@@ -16,6 +15,7 @@ from c10s_synthetic_components import (
     ContractError,
     D2VContTruthBundle,
     EventHistory,
+    IntervalGrid,
     SyntheticWorldBundle,
     digest,
 )
@@ -72,11 +72,10 @@ class D2ObservedAssignmentBundle:
         world: SyntheticWorldBundle,
         truth: D2VContTruthBundle,
         histories_by_unit_z: dict[tuple[str, int], EventHistory],
+        grid: IntervalGrid,
     ) -> None:
         world.validate()
-        truth.validate(world, histories_by_unit_z, _grid_from_truth_unavailable())
-        # The full truth validation is performed by the caller with its actual
-        # IntervalGrid. Here we validate assignment-to-world and potential links.
+        truth.validate(world, histories_by_unit_z, grid)
         if (self.world_id, self.world_version, self.dgp_id, self.dgp_version) != (
             world.world_id, world.world_version, world.dgp_id, world.dgp_version
         ):
