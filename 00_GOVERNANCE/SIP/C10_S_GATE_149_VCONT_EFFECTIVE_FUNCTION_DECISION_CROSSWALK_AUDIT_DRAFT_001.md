@@ -149,3 +149,12 @@ No se fijan reloj, rejilla, T*, Δ, K, resolución, duración mínima, carga, um
 `scientific_execution=false`  
 `execution_authorized=false`  
 `implementation_authorized=false`
+
+
+## 9. Addendum Gate 150 — reconstrucción del estado ENABLED=false (2026-11-16)
+
+Gate 150 recuperó texto ya existente en DEC-C10-068, el contrato lógico del servicio §2/§12 y, decisivamente, §§49–50 del contrato DGP. Estos últimos ya estipulan la función completa: admitir cuando ENABLED=true, no admitir cuando ENABLED=false y exponer PROFILE declarado; STANDARD/READ_ONLY no reciben semántica adicional.
+
+Por tanto, la duda de Gate 149 sobre si PROFILE exposure estaba definido en ENABLED=false queda resuelta por reconstrucción histórica: la exposición del PROFILE declarado se requiere también en ese estado, mientras que la RUL no restringe el valor de PROFILE cuando ENABLED=false. No se añade ENABLED=false ⇒ PROFILE=DISABLED. La no-admisión es comportamiento correcto; admitir efectivamente cuando está deshabilitado sería incumplimiento.
+
+Persiste L150-01: el contrato exige exposición de PROFILE, pero el catálogo de transiciones runtime §§49–50 se centra en mecanismos que afectan capacidad de admisión. Falta determinar si la pérdida independiente de exposición puede producirse mediante mecanismos ya catalogados y cómo queda representada en EventHistory, sin inventar interfaz o mecanismos. El texto de Gate 149 queda complementado, no reescrito; no se modifica ninguna DEC.
