@@ -534,3 +534,28 @@ within-interval interruptions, deterministic missingness, common-grid
 integrity, direct-g_A standardization, missingness abstention, and rejection of
 POINT_SAMPLE as continuous monitoring. Source and regression definitions only;
 no tests or workflows have been run.
+
+
+### Complete-world interval integration regression
+
+`test_c10s_world_pipeline_integration.py` exercises the public
+`materialize_c10s_complete_world_from_dgp()` entry point with a deterministic,
+versioned synthetic fixture. It generates the world and D2/g_A functional
+potential histories, randomizes direct `g_A`, selects the realized history,
+projects continuous interval observations, seals the observation-only payload,
+runs the interval Analyzer, and invokes the independent Evaluator against the
+reserved oracle.
+
+The regression checks exact D2 potential coverage, q_X* support in the oracle
+manifest, realized-history selection, both randomized arms, interval-level
+observation completeness, absence of EventHistory/adjudication/V_cont truth in
+sealed evidence, independent reconstruction of the finite-sample
+Horvitz-Thompson contrast, and evidence/result digest linkage through the
+Evaluator. It deliberately uses a broad software-scoring tolerance: this is an
+integration/contract test of the complete data path, not a claim of estimator
+calibration, statistical power, or causal recovery under repeated sampling.
+
+The module is included in EP-02's identical primary and clean-replay
+fifteen-module allowlist, compile list, source materialization closure and
+execution manifest. Its source has been persisted; neither this test nor EP-02
+has been executed.
