@@ -241,6 +241,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         # feed the reserved oracle and the realized-assignment selection.
         self.assertEqual(len(result.d2_histories_by_unit_z), 32)
         self.assertEqual(len(result.theta_a_truth.event_history_manifest), 32)
+        self.assertAlmostEqual(result.theta_a_truth.theta_a_truth, 0.5)
         self.assertEqual(
             {row.assigned_arm for row in result.theta_a_assignments.assignments},
             {0, 1},
