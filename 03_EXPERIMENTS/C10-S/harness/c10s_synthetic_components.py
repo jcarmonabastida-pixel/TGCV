@@ -502,7 +502,7 @@ def _kleene_and(values: Sequence[ReachState]) -> ReachState:
 def _kleene_or(values: Sequence[ReachState], *, exhaustive: bool) -> ReachState:
     if any(value == 1 for value in values):
         return 1
-    if values and all(value == 0 for value in values) and exhaustive:
+    if exhaustive and all(value == 0 for value in values):
         return 0
     return "?"
 
@@ -661,6 +661,7 @@ class StructuralReachabilityEngine:
         *,
         enumeration_complete: bool,
         search_truncated: bool = False,
+        target_states: Sequence[str] = (),
     ) -> ReachabilityResult:
         snapshot.validate()
         if search_truncated and enumeration_complete:
@@ -717,7 +718,9 @@ class StructuralReachabilityEngine:
                 first_block, tuple(unknown), total_duration,
             ))
         target_states = []
-        targets = sorted({route.target_state for route in routes})
+        targets = sorted(set(target_states) | {route.target_state for route in routes})
+        if any(not target for target in targets):
+            raise ContractError("declared reachability target states must be nonempty")
         # A target absent from enumerated routes can be refuted only when both
         # the declared universe and the route enumeration are exhaustive.
         exhaustive = snapshot.catalog_is_exhaustive and enumeration_complete and not search_truncated
