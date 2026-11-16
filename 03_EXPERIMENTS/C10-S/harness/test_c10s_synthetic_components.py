@@ -677,7 +677,7 @@ class SyntheticComponentTests(unittest.TestCase):
             (D2ReachRouteTemplate(
                 "ROUTE-FOCAL", "TARGET-FOCAL",
                 (
-                    D2ReachStepTemplate("TAU-FOCAL", "S0", "S1", 1),
+                    D2ReachStepTemplate("TAU-FOCAL", "S0", "S1", 1, predicate_atom_bindings=(("AUTH", "C", "COND-1"),)),
                     D2ReachStepTemplate("TAU-ALT", "S1", "S2", 1),
                 ),
                 (("R", "REL-1"),), 1, "FOCAL",
