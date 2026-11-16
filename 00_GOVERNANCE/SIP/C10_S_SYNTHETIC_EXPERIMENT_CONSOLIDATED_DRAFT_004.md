@@ -291,3 +291,16 @@ El benchmark ideal puede servir como baseline metodológico para ITT-Z/ITT-G baj
 
 
 **Precisión Gate 132:** el harness materializa `potential_interval_truth` como 0/1; S3 missingness es `None` en observación y no UNKNOWN de la truth. La ruta UNKNOWN/bounds de DEC-C10-100 no está materializada y debe reconciliarse en Gate 133, sin asumir equivalencia.
+
+
+## 304. Gate 133 — benchmark ideal, abstención adversarial y correspondencia temporal V_cont (2026-11-16)
+
+**Registro:** `00_GOVERNANCE/SIP/C10_S_VCONT_IDEAL_BENCHMARK_AND_TEMPORAL_SEMANTICS_RECONCILIATION_GATE_133_DRAFT_001.md`. **Addendum al plan:** `00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_133_IDEAL_BENCHMARK_RECONCILIATION_ADDENDUM_DRAFT_001.md`.
+
+Gate 133 delimita el benchmark integrado: DGP con truth ENABLED/PROFILE y V_cont binario por intervalo; S3 con sensibilidad/especificidad/ausencia; ruta numérica solo con S3 perfecto y completo. Permite evaluar recuperación de los cuatro estimandos de asignación ITT-Z/ITT-G definidos en el contrato integrado bajo sus condiciones; no estima θ_A (`theta_a_truth=None`) ni acredita robustez a error/ausencia o el claim ΔT_acc→Value.
+
+`R0_MEASUREMENT_ADVERSE` es STATUS_ONLY/INDETERMINATE con abstención esperada para sus cuatro estimandos. Existe test fuente que comprueba package_status y g_assignment_status INDETERMINATE y expected_abstention_respected; no se ejecutó. Gates 200–205 ya gobiernan EP-01/02/03; Gate 205 mantiene abierta la validación integral YAML/actionlint y shell/Python de workflows.
+
+La correspondencia temporal con DEC-C10-100…102 es parcial: ventana común, intervalos iguales y truth por unidad/régimen/intervalo sí están representados; UNKNOWN funcional en truth, eventos intraintervalo, event/observation/ingestion time y bounds para UNKNOWN no. La ausencia S3 (`None`) no equivale a UNKNOWN de truth.
+
+**Siguiente operación:** Gate 134 — determinar si UNKNOWN/continuidad estricta completa debe formar parte del benchmark o si el alcance binario intervalizado está expresamente autorizado como benchmark acotado. Sin cambios de código ni ejecución; `scientific_execution=false`; `execution_authorized=false`.
