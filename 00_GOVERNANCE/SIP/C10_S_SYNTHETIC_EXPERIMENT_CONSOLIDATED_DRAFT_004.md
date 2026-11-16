@@ -288,3 +288,6 @@ Existe `R0_MEASUREMENT_ADVERSE` como escenario STATUS_ONLY y un test de software
 El benchmark ideal puede servir como baseline metodológico para ITT-Z/ITT-G bajo las restricciones del contrato; no acredita robustez de medida, θ_A ni el puente completo V_cont→consecuencia B1→Value. No se modifica código, schemas, test register, workflows, DEC, main, RMA, Evidence→Claim Matrix o STATUS. No ejecución; `scientific_execution=false`; `execution_authorized=false`.
 
 **Siguiente operación:** Gate 133 — reconciliar alcance del benchmark ideal y R0_MEASUREMENT_ADVERSE, MEAS/MISS, cobertura técnica ya existente y perfiles de ejecución, además de correspondencia temporal con DEC-C10-100…102. No crear IDs ni ejecutar.
+
+
+**Precisión Gate 132:** el harness materializa `potential_interval_truth` como 0/1; S3 missingness es `None` en observación y no UNKNOWN de la truth. La ruta UNKNOWN/bounds de DEC-C10-100 no está materializada y debe reconciliarse en Gate 133, sin asumir equivalencia.
