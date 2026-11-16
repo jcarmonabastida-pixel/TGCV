@@ -122,3 +122,14 @@ No se modifican DEC-C10-068/099…104. §51, reloj, T*, Δ, K y calibración S3 
 Se registra la aceptación expresa de R150-A en `C10_S_GATE_150_B1_FUNCTIONAL_CONTRACT_ENABLED_STATES_AUDIT_DRAFT_001.md` (commit `36eb3b3c201001e1b67814fa68d9bcb3092ee3cf`). La aceptación lógica establece las dos obligaciones de B1 —admisión condicionada por ENABLED y exposición del PROFILE declarado— en ambos estados, conserva la implicación unidireccional de RUL, y aclara que la no-admisión con ENABLED=false es correcta mientras que admitir efectivamente en ese estado incumple la función. El incumplimiento confirmado de cualquiera de las obligaciones aplicables hace A_B1=0 en los intervalos afectados, bajo continuidad estricta. La exposición permanece abstracta y no incorpora interfaz o mecanismo físico.
 
 L150-01 sigue abierto: carácter temporal de PROFILE exposure, mecanismos constitutivos ya catalogados que puedan impedirla y representación de su truth en EventHistory. No se amplían §§49–50 por inferencia. Gate 151 debe resolver esa laguna antes de preparar el complemento decisional. No se crea DEC ni se modifica schema, DGP numérico, reloj, código, tests, harness o autorización.
+
+
+## Gate 151 — alcance runtime de PROFILE exposure (2026-11-16)
+
+Auditoría: `C10_S_GATE_151_PROFILE_EXPOSURE_RUNTIME_SCOPE_AUDIT_DRAFT_001.md` (commit `85bc01f95adcb89d633dfeb688663a2859de19c6`).
+
+La reconstrucción de contrato lógico §§2–5/12 y DGP §§49–50 encuentra que PROFILE exposure es una obligación funcional abstracta de B1, pero no existe mecanismo causal/runtime ni familia de transición que permita perderla de forma independiente de admisión. El catálogo runtime vigente atribuye sus mecanismos a cambios de capacidad de admisión; no autoriza inferir que una caída de proceso/listener produzca automáticamente pérdida de exposición.
+
+Se propone R151-A: mantener la obligación de exposición en A_B1, sin crear estado dinámico autónomo ni transición de exposición en EventHistory. Las transiciones runtime existentes solo afectan exposición si el DGP estipula explícitamente indisponibilidad de la instancia lógica completa; esa atribución no se presume. Una futura variación independiente exigiría ampliación aprobada del DGP.
+
+R151-A está pendiente de aceptación expresa. Si se acepta, Gate 152 reconciliará el contrato compuesto A_B1 con EventHistory y preparará el complemento decisional candidato, sin crear DEC todavía. No se modifican DEC, schema, §51, reloj, código, tests, harness ni autorizaciones.
