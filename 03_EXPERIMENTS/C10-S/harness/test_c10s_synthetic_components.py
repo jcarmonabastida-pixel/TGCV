@@ -497,5 +497,20 @@ class SyntheticComponentTests(unittest.TestCase):
         ))
 
 
+    def test_no_route_is_zero_only_when_explicit_target_universe_is_exhaustive(self):
+        snapshot = self.structural_snapshot()
+        engine = StructuralReachabilityEngine()
+        exhaustive = engine.evaluate(
+            snapshot, (), enumeration_complete=True,
+            target_states=("S-TARGET-ABSENT",),
+        )
+        incomplete = engine.evaluate(
+            snapshot, (), enumeration_complete=False,
+            target_states=("S-TARGET-ABSENT",),
+        )
+        self.assertEqual(dict(exhaustive.target_states)["S-TARGET-ABSENT"], 0)
+        self.assertEqual(dict(incomplete.target_states)["S-TARGET-ABSENT"], "?")
+
+
 if __name__ == "__main__":
     unittest.main()
