@@ -564,20 +564,12 @@ software-scoring tolerance: this is an integration/contract test of the complete
 data path, not a claim of estimator calibration, statistical power, or causal
 recovery under repeated sampling.
 
-The same integration module now materializes three separately identified focal
+The same integration module now materializes four separately identified focal
 DGP worlds while holding the direct D2 package path fixed: positive
-`theta_A=+0.5`, null `theta_A=0`, and negative `theta_A=-0.5`.
-
-The functional-history rule grammar also supports explicit conjunctive
-joint-vector predicates. The integration fixture uses this to separate a focal
-component from a second, common alternative component: when the alternative
-component disables ENABLED in both focal-policy arms, the reserved focal
-contrast is null even though the focal rule remains explicitly gated on the
-alternative component being absent. This is a bounded pathway-interaction
-fixture, not a general interaction estimator or a claim that all alternative
-mechanisms are represented. Each world has
-its own world/DGP/run identity and deterministic seed, and all three pass
-through the same potential-history generation, randomized assignment, realized
+`theta_A=+0.5`, null `theta_A=0`, negative `theta_A=-0.5`, and a bounded
+alternative-path interaction scenario with `theta_A=0`. Each world has its
+own world/DGP/run identity and deterministic seed, and all four pass through
+the same potential-history generation, randomized assignment, realized
 history selection, ideal interval observation, Sealer, Analyzer and Evaluator
 interfaces. Each scenario's reserved oracle truth is checked independently;
 the Analyzer remains a one-draw design-based estimator and is not required to
@@ -587,6 +579,14 @@ a nonzero estimate under a true null. These scenarios are software-path and
 oracle-separation regressions, not a power/calibration study or a null-testing
 procedure. The broad evaluator tolerance remains a wiring check only and must
 not be interpreted as accurate causal recovery.
+
+The functional-history rule grammar supports explicit conjunctive joint-vector
+predicates. In the alternative-path scenario, a second policy component disables
+ENABLED in both focal-policy arms, while the focal admission rule is explicitly
+gated on that alternative component being absent. This creates a bounded
+pathway-interaction fixture in which the focal contrast is null. It is not a
+general interaction estimator or a claim that all alternative mechanisms are
+represented.
 
 The module is included in EP-02's identical primary and clean-replay
 fifteen-module allowlist, compile list, source materialization closure and
