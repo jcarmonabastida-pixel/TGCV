@@ -233,7 +233,7 @@ class ThetaAObservationAnalyzer:
             measurement_lower = arm_lower[1] - arm_upper[0]
             measurement_upper = arm_upper[1] - arm_lower[0]
             if missing_count:
-                identification, reason, estimate = "PARTIALLY_IDENTIFIED", (
+                identification, reason, estimate = "INDETERMINATE", (
                     "INTERVAL_MISSINGNESS_REQUIRES_ABSTENTION"
                 ), None
             else:
