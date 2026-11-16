@@ -151,7 +151,7 @@ class ThetaAObservationAnalyzer:
 
     def _analyze_interval(self, evidence: SealedThetaAEvidence,
                           contract: ThetaAObservationAnalysisContract) -> ThetaAObservationAnalysisResult:
-        """Analyze interval evidence; keep missingness bounds distinct from causal bounds."""
+        """Use the design-unbiased q_X-standardized Horvitz-Thompson contrast."""
         if not evidence.rows or _hash({"manifest": evidence.manifest, "rows": evidence.rows}) != evidence.sha256:
             raise ContractError("interval Analyzer requires non-empty evidence with a valid seal")
         rows = evidence.rows
@@ -226,13 +226,10 @@ class ThetaAObservationAnalyzer:
             ), None
             measurement_lower = measurement_upper = None
         else:
-            denominators = [sum(item[0] for item in items) for items in arm_units]
-            if any(value <= 0 or not math.isfinite(value) for value in denominators):
-                raise ContractError("interval IPW/Hajek arm weights must have positive finite totals")
-            arm_lower = [sum(w * lo for w, lo, hi in items) / denominators[a]
-                         for a, items in enumerate(arm_units)]
-            arm_upper = [sum(w * hi for w, lo, hi in items) / denominators[a]
-                         for a, items in enumerate(arm_units)]
+            arm_lower = [sum(w * lo for w, lo, hi in items)
+                         for items in arm_units]
+            arm_upper = [sum(w * hi for w, lo, hi in items)
+                         for items in arm_units]
             measurement_lower = arm_lower[1] - arm_upper[0]
             measurement_upper = arm_upper[1] - arm_lower[0]
             if missing_count:
@@ -241,6 +238,10 @@ class ThetaAObservationAnalyzer:
                 ), None
             else:
                 identification, reason = "IDENTIFIED", ""
+                # Horvitz-Thompson preserves the declared q_X target masses
+                # and is design-unbiased under the recorded arm probabilities.
+                # Its finite-sample value may lie outside the parameter range;
+                # it is never clipped.
                 estimate = arm_lower[1] - arm_lower[0]
         result_payload = {
             "run_id": evidence.run_id, "estimand_id": contract.estimand_id,
