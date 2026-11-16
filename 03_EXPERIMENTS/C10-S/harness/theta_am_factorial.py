@@ -622,7 +622,12 @@ class FactorialAnalysisContract:
 
 @dataclass(frozen=True)
 class FactorialContrast:
-    """Point estimate plus measurement-only missingness bounds; not a sampling CI."""
+    """Observed-data HT point estimate and missingness envelope.
+
+    Bounds describe the range of this estimator when missing interval values
+    are unresolved. They are neither sampling confidence intervals nor
+    identification bounds for the finite-population causal estimand.
+    """
     estimand_id: str
     point_estimate: float | None
     lower_bound: float | None
@@ -995,7 +1000,6 @@ class FactorialEvaluationResult:
     truth_contrasts: tuple[float, float, float]
     analyzer_contrasts: tuple[FactorialContrast, ...]
     absolute_errors: tuple[float | None, float | None, float | None]
-    truth_within_measurement_bounds: tuple[bool | None, bool | None, bool | None]
     correct_adjudication: bool
     disposition: str
     tolerance: float
@@ -1081,32 +1085,23 @@ def evaluate_factorial_analysis(
         raise ContractError("factorial Analyzer must report both simple effects and interaction in canonical order")
     truth_values = (truth.theta_a_given_m0, truth.theta_a_given_m1, truth.theta_am_interaction)
     errors = []
-    bound_checks = []
     correct = True
     for expected, contrast in zip(truth_values, result.contrasts):
         has_bounds = contrast.lower_bound is not None and contrast.upper_bound is not None
-        if has_bounds:
-            if (not math.isfinite(contrast.lower_bound)
-                    or not math.isfinite(contrast.upper_bound)
-                    or contrast.lower_bound > contrast.upper_bound):
-                raise ContractError("factorial Analyzer returned invalid measurement-identification bounds")
-            within_bounds = (
-                contrast.lower_bound - tolerance <= expected
-                <= contrast.upper_bound + tolerance
-            )
-        else:
-            within_bounds = None
+        if has_bounds and (
+            not math.isfinite(contrast.lower_bound)
+            or not math.isfinite(contrast.upper_bound)
+            or contrast.lower_bound > contrast.upper_bound
+        ):
+            raise ContractError("factorial Analyzer returned invalid measurement-envelope bounds")
         if contrast.identification == "IDENTIFIED":
             if not has_bounds or contrast.point_estimate is None or not math.isfinite(contrast.point_estimate):
-                raise ContractError("identified factorial contrast must have a finite point estimate and bounds")
+                raise ContractError("identified factorial contrast must have a finite point estimate and measurement envelope")
             error = abs(contrast.point_estimate - expected)
-            item_correct = error <= tolerance and within_bounds is True
+            item_correct = error <= tolerance
         elif contrast.identification == "PARTIALLY_IDENTIFIED":
             error = None
-            item_correct = (
-                contrast.point_estimate is None and has_bounds
-                and within_bounds is True
-            )
+            item_correct = contrast.point_estimate is None and has_bounds
         elif contrast.identification == "NOT_IDENTIFIED":
             error = None
             item_correct = (
@@ -1117,11 +1112,9 @@ def evaluate_factorial_analysis(
         else:
             raise ContractError("unsupported factorial identification status")
         errors.append(error)
-        bound_checks.append(within_bounds)
         correct = correct and item_correct
     disposition = "CORRECT_RECOVERY_OR_ABSTENTION" if correct else "INCORRECT_FACTORIAL_ADJUDICATION"
     return FactorialEvaluationResult(
         truth.estimand_version, truth_values, result.contrasts, tuple(errors),
-        tuple(bound_checks), correct, disposition, tolerance,
-        evidence.sha256, result.output_sha256,
+        correct, disposition, tolerance, evidence.sha256, result.output_sha256,
     )
