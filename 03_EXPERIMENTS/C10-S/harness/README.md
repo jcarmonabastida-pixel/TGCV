@@ -507,30 +507,29 @@ observable.
 
 ### Focal theta_A continuous interval observation
 
-`theta_a_interval_observation.py` adds a distinct interval-monitor projection for
-the direct-`g_A` observation path. It reuses the existing `IntervalGrid` and
-strict `adjudicate_intervals()` semantics; it does not treat point samples as
-interval evidence. The monitor contract requires the explicit
-`CONTINUOUS_EVENT_COVERAGE` mode, exact monitor/grid identity and version,
-and explicit capture/ingestion lags. It emits one observation per interval,
-with a Boolean observed compliance signal or an explicit MISSING status.
+`theta_a_interval_observation.py` supplies a continuous event-monitor projection
+for the direct-`g_A` observation path. It emits one Boolean compliance
+observation (or explicit MISSING status) per interval, with interval/grid/
+monitor identity and capture/ingestion provenance. The monitor is a declared
+synthetic measurement mechanism with perfect classification conditional on
+coverage and an explicit reproducible missingness process; this is not an
+empirical claim about real monitors. It does not emit EventHistory transitions,
+latent states, adjudication objects or reserved V_cont truth.
 
-The initial monitor is a certified continuous event monitor with perfect
-classification conditional on an observed interval. Interval missingness is
-parameterized and seeded reproducibly. This is an explicit synthetic
-measurement assumption, not an empirical claim about real monitors. The
-observation payload contains interval bounds, measured compliance, missingness,
-coverage declaration and monitor provenance; it does not contain EventHistory
-transitions, latent states, interval adjudication objects, or V_cont truth.
-The validation function checks roster/history/grid/monitor binding and complete
-interval coverage without comparing observed values against reserved truth.
+The focal path now composes interval observations with the realized direct-g_A
+assignment and selected EventHistory, seals them through
+`ThetaAIntervalSealer`, and dispatches them to the interval branch of
+`ThetaAObservationAnalyzer`. The Analyzer uses q_X-standardized inverse-
+probability/Hájek weighting when all intervals are observed. If any interval is
+missing, it abstains from a point estimate and reports separate
+measurement-only bounds; causal contrast bounds remain the logical `[-1,1]`
+range. Measurement bounds are not confidence intervals or sharp causal
+identification bounds. The Evaluator alone compares point recovery or
+abstention with the reserved theta_A oracle.
 
-Regressions include a transient within-interval admission interruption that
-endpoint point samples would miss, deterministic missingness, exact interval
-coverage, and rejection of POINT_SAMPLE as continuous monitoring. This module
-is an observation generator only: the focal Sealer/Analyzer still consume
-POINT_SAMPLE records and have not yet been adapted to this new interval schema.
-Consequently, this block does not yet identify theta_A. The next integration
-step must carry these interval observations through the evidence firewall and
-implement missing-interval bounds/estimation without exposing the oracle to the
-Analyzer.
+The integrated pipeline accepts either the legacy point S3 configuration or
+the interval-monitor configuration, never both. Regressions cover transient
+within-interval interruptions, deterministic missingness, common-grid
+integrity, direct-g_A standardization, missingness abstention, and rejection of
+POINT_SAMPLE as continuous monitoring. Source and regression definitions only;
+no tests or workflows have been run.
