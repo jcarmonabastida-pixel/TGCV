@@ -758,3 +758,241 @@ class FactorialObservationAnalyzer:
             provisional.total_interval_count, provisional.input_sha256,
             _canonical_sha256(_factorial_result_payload(provisional)),
         )
+
+
+@dataclass(frozen=True)
+class FactorialTruthBundle:
+    world_id: str
+    world_version: str
+    dgp_id: str
+    dgp_version: str
+    factor_m_id: str
+    factor_m_version: str
+    estimand_version: str
+    cell_means: tuple[float, float, float, float]
+    theta_a_given_m0: float
+    theta_a_given_m1: float
+    theta_am_interaction: float
+    q_x_sha256: str
+    g_a0_sha256: str
+    g_a1_sha256: str
+    r_common_sha256: str
+    grid_id: str
+    grid_version: str
+    event_history_manifest: tuple[tuple[str, str, str, int, str, str], ...]
+    evaluator_only: bool
+    result_sha256: str
+
+    def validate(self) -> None:
+        if (not self.evaluator_only or not all((
+            self.world_id, self.world_version, self.dgp_id, self.dgp_version,
+            self.factor_m_id, self.factor_m_version, self.estimand_version,
+            self.q_x_sha256, self.g_a0_sha256, self.g_a1_sha256,
+            self.r_common_sha256, self.grid_id, self.grid_version,
+        ))):
+            raise ContractError("factorial truth must be fully identified and evaluator-only")
+        if len(self.cell_means) != 4 or any(not isinstance(v, (int, float)) for v in self.cell_means):
+            raise ContractError("factorial truth requires four finite cell means")
+        if any(not __import__("math").isfinite(v) for v in self.cell_means):
+            raise ContractError("factorial cell truths must be finite")
+        mu00, mu10, mu01, mu11 = self.cell_means
+        expected = (mu10 - mu00, mu11 - mu01, (mu11 - mu01) - (mu10 - mu00))
+        actual = (self.theta_a_given_m0, self.theta_a_given_m1, self.theta_am_interaction)
+        if any(abs(a - b) > 1e-12 for a, b in zip(expected, actual)):
+            raise ContractError("factorial truth contrasts do not match the four cell means")
+        payload = _factorial_truth_payload(self)
+        if self.result_sha256 != _canonical_sha256(payload):
+            raise ContractError("factorial reserved truth digest mismatch")
+
+
+def _factorial_truth_payload(truth: FactorialTruthBundle) -> dict:
+    return {
+        "world_id": truth.world_id, "world_version": truth.world_version,
+        "dgp_id": truth.dgp_id, "dgp_version": truth.dgp_version,
+        "factor_m_id": truth.factor_m_id, "factor_m_version": truth.factor_m_version,
+        "estimand_version": truth.estimand_version, "cell_means": truth.cell_means,
+        "theta_a_given_m0": truth.theta_a_given_m0,
+        "theta_a_given_m1": truth.theta_a_given_m1,
+        "theta_am_interaction": truth.theta_am_interaction,
+        "q_x_sha256": truth.q_x_sha256, "g_a0_sha256": truth.g_a0_sha256,
+        "g_a1_sha256": truth.g_a1_sha256, "r_common_sha256": truth.r_common_sha256,
+        "grid_id": truth.grid_id, "grid_version": truth.grid_version,
+        "event_history_manifest": truth.event_history_manifest,
+        "evaluator_only": truth.evaluator_only,
+    }
+
+
+def compute_factorial_vcont_truth_from_event_histories(
+    world: SyntheticWorldBundle,
+    q_x,
+    g_a0: Sequence[JointPolicyHistory],
+    g_a1: Sequence[JointPolicyHistory],
+    r_common_certificates: Sequence[RCommonPairCertificate],
+    potential_histories: dict[tuple[str, str, str, int], EventHistory],
+    grid,
+    *,
+    factor_m_id: str,
+    factor_m_version: str,
+    estimand_version: str,
+) -> FactorialTruthBundle:
+    """Reserved four-cell q_X-standardized V_cont truth from all potential histories."""
+    from c10s_synthetic_components import adjudicate_intervals
+    world.validate()
+    grid.validate()
+    if tuple(q_x) != world.q_x:
+        raise ContractError("factorial truth q_X must match the exact world target population")
+    if not factor_m_id or not factor_m_version or not estimand_version:
+        raise ContractError("factorial truth requires M and estimand identities/versions")
+    qx_by_ref = {row.history_ref: row for row in q_x}
+    unit_by_ref = {unit.d2_baseline.baseline_history_ref: unit.unit_id for unit in world.units}
+    if set(qx_by_ref) != set(unit_by_ref):
+        raise ContractError("factorial truth q_X does not cover the exact world roster")
+    policies = []
+    for rows, label in ((g_a0, "g_A0"), (g_a1, "g_A1")):
+        mapping = {row.history_ref: row for row in rows}
+        if len(mapping) != len(rows) or set(mapping) != set(qx_by_ref):
+            raise ContractError(f"factorial truth {label} support differs from q_X")
+        policies.append(mapping)
+    certs = {row.history_ref: row for row in r_common_certificates}
+    if len(certs) != len(r_common_certificates) or set(certs) != set(qx_by_ref):
+        raise ContractError("factorial truth requires one common-r certificate per q_X history")
+    required = set()
+    for ref in qx_by_ref:
+        cert = certs[ref]
+        if cert.status != "COMMON_FIXED" or cert.g_a0_fingerprint != cert.g_a1_fingerprint:
+            raise ContractError("factorial truth requires fixed common r_common")
+        for policy_map in policies:
+            for vector, probability in policy_map[ref].distribution:
+                if probability > 0:
+                    for m in (0, 1):
+                        required.add((ref, digest(vector), cert.g_a0_fingerprint, m))
+    if set(potential_histories) != required:
+        raise ContractError("factorial EventHistory potentials do not cover exact q_X × A-policy × M support")
+    outcome = {}
+    manifest = []
+    history_ids = set()
+    potential_ids = set()
+    run_ids = set()
+    for key in sorted(required):
+        ref, vector_sha, regime_sha, m = key
+        history = potential_histories[key]
+        history.validate(require_complete=True)
+        if (history.unit_id, history.history_ref, history.world_id,
+            history.world_version, history.dgp_version) != (
+            unit_by_ref[ref], ref, world.world_id, world.world_version, world.dgp_version
+        ):
+            raise ContractError("factorial potential EventHistory is detached from its world/q_X unit")
+        if history.support_start != grid.boundaries[0] or history.support_end != grid.boundaries[-1]:
+            raise ContractError("factorial potential histories must share exact V_cont grid support")
+        if history.history_id in history_ids or history.potential_id in potential_ids:
+            raise ContractError("factorial potential EventHistory IDs must be unique")
+        history_ids.add(history.history_id)
+        potential_ids.add(history.potential_id)
+        run_ids.add(history.run_id)
+        outcome[key] = adjudicate_intervals(history, grid).v_cont_truth
+        manifest.append((ref, vector_sha, regime_sha, m, history.history_id, history.content_sha256))
+    if len(run_ids) != 1:
+        raise ContractError("factorial potential histories must belong to one synthetic run")
+    cell_means = []
+    for cell in ("00", "10", "01", "11"):
+        a, m = int(cell[0]), int(cell[1])
+        policy_map = policies[a]
+        mu = 0.0
+        for qx_row in q_x:
+            ref = qx_row.history_ref
+            cert = certs[ref]
+            for vector, probability in policy_map[ref].distribution:
+                key = (ref, digest(vector), cert.g_a0_fingerprint, m)
+                mu += qx_row.mass * probability * outcome[key]
+        cell_means.append(mu)
+    mu00, mu10, mu01, mu11 = cell_means
+    payload = {
+        "world_id": world.world_id, "world_version": world.world_version,
+        "dgp_id": world.dgp_id, "dgp_version": world.dgp_version,
+        "factor_m_id": factor_m_id, "factor_m_version": factor_m_version,
+        "estimand_version": estimand_version, "cell_means": tuple(cell_means),
+        "theta_a_given_m0": mu10 - mu00, "theta_a_given_m1": mu11 - mu01,
+        "theta_am_interaction": (mu11 - mu01) - (mu10 - mu00),
+        "q_x_sha256": digest(tuple(q_x)), "g_a0_sha256": digest(tuple(g_a0)),
+        "g_a1_sha256": digest(tuple(g_a1)),
+        "r_common_sha256": digest(tuple(r_common_certificates)),
+        "grid_id": grid.grid_id, "grid_version": grid.grid_version,
+        "event_history_manifest": tuple(manifest), "evaluator_only": True,
+    }
+    truth = FactorialTruthBundle(
+        world.world_id, world.world_version, world.dgp_id, world.dgp_version,
+        factor_m_id, factor_m_version, estimand_version, tuple(cell_means),
+        mu10 - mu00, mu11 - mu01, (mu11 - mu01) - (mu10 - mu00),
+        digest(tuple(q_x)), digest(tuple(g_a0)), digest(tuple(g_a1)),
+        digest(tuple(r_common_certificates)), grid.grid_id, grid.grid_version,
+        tuple(manifest), True, _canonical_sha256(payload),
+    )
+    truth.validate()
+    return truth
+
+
+@dataclass(frozen=True)
+class FactorialEvaluationResult:
+    estimand_version: str
+    truth_contrasts: tuple[float, float, float]
+    analyzer_contrasts: tuple[FactorialContrast, ...]
+    absolute_errors: tuple[float | None, float | None, float | None]
+    truth_within_reported_bounds: tuple[bool | None, bool | None, bool | None]
+    correct_adjudication: bool
+    disposition: str
+    tolerance: float
+    evidence_sha256: str
+    analyzer_output_sha256: str
+
+
+def evaluate_factorial_analysis(
+    truth: FactorialTruthBundle, evidence: SealedFactorialEvidence,
+    result: FactorialAnalysisResult, *, tolerance: float,
+) -> FactorialEvaluationResult:
+    """Evaluator-only comparison; the truth bundle is never an Analyzer input."""
+    import math
+    truth.validate()
+    if not math.isfinite(tolerance) or tolerance < 0:
+        raise ContractError("factorial evaluation tolerance must be finite and non-negative")
+    if result.run_id != evidence.run_id or result.input_sha256 != evidence.sha256:
+        raise ContractError("factorial Analyzer result is detached from supplied sealed evidence")
+    if _canonical_sha256({"manifest": evidence.manifest, "rows": evidence.rows}) != evidence.sha256:
+        raise ContractError("factorial evidence digest is invalid at evaluation")
+    if _canonical_sha256(_factorial_result_payload(result)) != result.output_sha256:
+        raise ContractError("factorial Analyzer output digest is invalid")
+    if result.estimand_version != truth.estimand_version:
+        raise ContractError("factorial Analyzer and reserved truth estimand versions differ")
+    if (evidence.manifest.get("factor_m_id"), evidence.manifest.get("factor_m_version")) != (
+        truth.factor_m_id, truth.factor_m_version
+    ):
+        raise ContractError("factorial evidence and reserved M identity/version differ")
+    truth_values = (truth.theta_a_given_m0, truth.theta_a_given_m1, truth.theta_am_interaction)
+    if len(result.contrasts) != 3:
+        raise ContractError("factorial Analyzer must report both simple effects and interaction")
+    errors = []
+    coverage = []
+    correct = True
+    for expected, contrast in zip(truth_values, result.contrasts):
+        if contrast.identification == "IDENTIFIED":
+            error = abs(contrast.point_estimate - expected) if contrast.point_estimate is not None else None
+            covered = (contrast.lower_bound is not None and contrast.upper_bound is not None
+                       and contrast.lower_bound - tolerance <= expected <= contrast.upper_bound + tolerance)
+            item_correct = error is not None and error <= tolerance and covered
+        elif contrast.identification == "PARTIALLY_IDENTIFIED":
+            error = None
+            covered = (contrast.lower_bound is not None and contrast.upper_bound is not None
+                       and contrast.lower_bound - tolerance <= expected <= contrast.upper_bound + tolerance)
+            item_correct = bool(covered)
+        elif contrast.identification == "NOT_IDENTIFIED":
+            error, covered, item_correct = None, None, contrast.point_estimate is None
+        else:
+            raise ContractError("unsupported factorial identification status")
+        errors.append(error)
+        coverage.append(covered)
+        correct = correct and item_correct
+    disposition = "CORRECT_RECOVERY_OR_ABSTENTION" if correct else "INCORRECT_FACTORIAL_ADJUDICATION"
+    return FactorialEvaluationResult(
+        truth.estimand_version, truth_values, result.contrasts, tuple(errors),
+        tuple(coverage), correct, disposition, tolerance, evidence.sha256,
+        result.output_sha256,
+    )
