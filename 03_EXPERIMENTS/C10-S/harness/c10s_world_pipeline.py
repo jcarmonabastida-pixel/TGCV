@@ -18,6 +18,7 @@ from c10s_synthetic_components import (
     D2StructuralGenerationConfig,
     D2TrajectoryGenerationConfig,
     EventHistory,
+    FunctionalState,
     IntervalGrid,
     JointPolicyHistory,
     QXHistoryMass,
@@ -295,7 +296,7 @@ def materialize_c10s_complete_world_from_dgp(
     potential histories; S3 still sees only the realized-history projection.
     """
     builder = SyntheticWorldBuilder()
-    world, _, _ = builder.generate_complete_with_trajectories(
+    world, _, _, _ = builder.generate_complete_with_trajectories(
         world_config, d2_config, structural_config, reach_config, trajectory_config,
     )
     d2_histories = generate_d2_event_history_potentials(
