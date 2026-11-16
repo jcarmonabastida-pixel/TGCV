@@ -65,9 +65,13 @@ class FunctionalHistoryRule:
                 if type(self.vector_index) is not int or self.vector_index not in range(4) or self.vector_value is None:
                     raise ContractError("g_A rule requires one vector component index [0..3] and value")
             else:
-                indices = [index for index, _ in self.vector_predicates]
-                if (self.vector_index is not None or self.vector_value is not None
+                if (not isinstance(self.vector_predicates, tuple)
                         or not self.vector_predicates
+                        or any(not isinstance(item, tuple) or len(item) != 2
+                               for item in self.vector_predicates)):
+                    raise ContractError("g_A conjunctive predicates must be a non-empty tuple of (index, value) pairs")
+                indices = [item[0] for item in self.vector_predicates]
+                if (self.vector_index is not None or self.vector_value is not None
                         or any(type(index) is not int or index not in range(4) for index in indices)
                         or len(indices) != len(set(indices))):
                     raise ContractError("g_A conjunctive predicates require unique component indices [0..3]")
