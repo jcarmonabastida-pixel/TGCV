@@ -58,5 +58,46 @@ class FunctionalHistoryRuleTests(unittest.TestCase):
         self.assertEqual(changes[0].state_after.admission_behavior, "NO_ADMISSION")
 
 
+    def test_explicit_alternative_path_uses_its_own_joint_vector_component(self):
+        initial = FunctionalState(True, "ADMIT")
+        rule = FunctionalHistoryRule(
+            rule_id="GA-ALTERNATIVE-01", source="G_A",
+            event_time=Decimal("1"),
+            causal_family="ALTERNATIVE_FUNCTIONAL_PATH",
+            provenance_ref="DGP-CONFIG#GA-ALTERNATIVE-01",
+            set_enabled=False,
+            vector_predicates=((1, 1),),
+        )
+        changes = _apply_rules(
+            source="G_A", initial=initial, rules=(rule,),
+            mechanism=(0, 1, 0, 0),
+        )
+        self.assertEqual(len(changes), 1)
+        self.assertFalse(changes[0].state_after.enabled)
+        self.assertEqual(changes[0].state_after.admission_behavior, "ADMIT")
+
+    def test_interaction_rule_requires_all_declared_vector_components(self):
+        initial = FunctionalState(True, "ADMIT")
+        rule = FunctionalHistoryRule(
+            rule_id="GA-FOCAL-X-ALTERNATIVE-01", source="G_A",
+            event_time=Decimal("1"),
+            causal_family="FOCAL_BY_ALTERNATIVE_INTERACTION",
+            provenance_ref="DGP-CONFIG#GA-FOCAL-X-ALTERNATIVE-01",
+            set_admission="NO_ADMISSION",
+            vector_predicates=((0, 0.0), (1, 0.0)),
+        )
+        active = _apply_rules(
+            source="G_A", initial=initial, rules=(rule,),
+            mechanism=(0.0, 0.0, 0.0, 0.0),
+        )
+        inactive = _apply_rules(
+            source="G_A", initial=initial, rules=(rule,),
+            mechanism=(0.0, 1.0, 0.0, 0.0),
+        )
+        self.assertEqual(len(active), 1)
+        self.assertEqual(active[0].state_after.admission_behavior, "NO_ADMISSION")
+        self.assertEqual(inactive, ())
+
+
 if __name__ == "__main__":
     unittest.main()
