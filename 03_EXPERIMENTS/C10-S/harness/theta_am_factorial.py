@@ -8,6 +8,9 @@ analysis, and the reserved factorial oracle.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+import hashlib
+import json
+from decimal import Decimal
 from typing import Literal, Sequence
 
 from c10s_synthetic_components import (
@@ -305,3 +308,453 @@ def materialize_factorial_potentials(
     )
     selected, selection = select_factorial_potential_histories(assignments, potentials)
     return potentials, assignments, selected, selection
+
+
+@dataclass(frozen=True)
+class FactorialIntervalObservationRecord:
+    """One realized cell assignment joined to one interval-only S3 observation."""
+    run_id: str
+    unit_id: str
+    history_ref: str
+    assignment_bundle_sha256: str
+    q_x_sha256: str
+    g_a0_sha256: str
+    g_a1_sha256: str
+    r_common_sha256: str
+    factor_m_id: str
+    factor_m_version: str
+    factor_m_sha256: str
+    assigned_cell: FactorialCell
+    a_arm: int
+    m_arm: int
+    assignment_probability: float
+    assigned_vector_sha256: str
+    policy_fingerprint: str
+    r_common_fingerprint: str
+    history_id: str
+    history_version: str
+    history_content_sha256: str
+    observation_id: str
+    interval_index: int
+    interval_start: Decimal
+    interval_end: Decimal
+    observed_compliance: bool | None
+    observation_status: Literal["OBSERVED", "MISSING"]
+    coverage_mode: Literal["CONTINUOUS_EVENT_COVERAGE"]
+    capture_time: Decimal
+    ingestion_time: Decimal
+    monitor_id: str
+    monitor_version: str
+    grid_id: str
+    grid_version: str
+    temporal_resolution: Literal["INTERVAL_LEVEL"] = "INTERVAL_LEVEL"
+
+
+def compose_factorial_interval_s3_records(
+    assignments: FactorialAssignmentBundle,
+    selection: FactorialHistorySelection,
+    histories: Sequence[EventHistory],
+    grids_by_history_ref,
+    monitor_configs_by_history_ref,
+    seeds_by_unit: dict[str, int],
+) -> tuple[FactorialIntervalObservationRecord, ...]:
+    """Project only the realized factorial history into interval S3 observations."""
+    from theta_a_interval_observation import project_interval_s3
+    if selection.assignment_bundle_sha256 != assignments.result_sha256:
+        raise ContractError("factorial S3 selection is detached from its assignment bundle")
+    history_by_id = {row.history_id: row for row in histories}
+    if len(history_by_id) != len(histories):
+        raise ContractError("duplicate EventHistory IDs in factorial S3 composition")
+    selected = {u: (hid, sha, pid) for u, hid, sha, pid in selection.selected_history_manifest}
+    roster = {row.unit_id for row in assignments.assignments}
+    if set(selected) != roster or set(seeds_by_unit) != roster:
+        raise ContractError("factorial S3 requires exact assignment/selection/seed roster coverage")
+    records = []
+    for assignment in assignments.assignments:
+        history_id, history_sha, potential_id = selected[assignment.unit_id]
+        history = history_by_id.get(history_id)
+        if history is None or (
+            history.unit_id, history.history_id, history.content_sha256,
+            history.potential_id, history.history_ref, history.world_id,
+            history.world_version, history.dgp_version,
+        ) != (
+            assignment.unit_id, history_id, history_sha, potential_id,
+            assignment.history_ref, assignments.world_id,
+            assignments.world_version, assignments.dgp_version,
+        ):
+            raise ContractError("factorial realized EventHistory provenance mismatch")
+        grid = grids_by_history_ref.get(assignment.history_ref)
+        monitor = monitor_configs_by_history_ref.get(assignment.history_ref)
+        if grid is None or monitor is None:
+            raise ContractError("factorial S3 requires one grid and monitor config per q_X history")
+        projected = project_interval_s3(history, grid, monitor, seed=seeds_by_unit[assignment.unit_id])
+        for row in projected:
+            records.append(FactorialIntervalObservationRecord(
+                run_id=history.run_id, unit_id=assignment.unit_id,
+                history_ref=assignment.history_ref,
+                assignment_bundle_sha256=assignments.result_sha256,
+                q_x_sha256=assignments.q_x_sha256,
+                g_a0_sha256=assignments.g_a0_sha256,
+                g_a1_sha256=assignments.g_a1_sha256,
+                r_common_sha256=assignments.r_common_sha256,
+                factor_m_id=assignments.factor_m_id,
+                factor_m_version=assignments.factor_m_version,
+                factor_m_sha256=assignments.factor_m_sha256,
+                assigned_cell=assignment.cell_id, a_arm=assignment.a_arm,
+                m_arm=assignment.m_arm,
+                assignment_probability=assignment.assignment_probability,
+                assigned_vector_sha256=assignment.assigned_vector_sha256,
+                policy_fingerprint=assignment.policy_fingerprint,
+                r_common_fingerprint=assignment.r_common_fingerprint,
+                history_id=history.history_id, history_version=history.history_version,
+                history_content_sha256=history.content_sha256,
+                observation_id=row.observation_id, interval_index=row.interval_index,
+                interval_start=row.interval_start, interval_end=row.interval_end,
+                observed_compliance=row.observed_compliance,
+                observation_status=row.observation_status, coverage_mode=row.coverage_mode,
+                capture_time=row.capture_time, ingestion_time=row.ingestion_time,
+                monitor_id=row.monitor_id, monitor_version=row.monitor_version,
+                grid_id=row.grid_id, grid_version=row.grid_version,
+            ))
+    if len({row.observation_id for row in records}) != len(records):
+        raise ContractError("factorial S3 observation IDs must be unique")
+    return tuple(records)
+
+
+@dataclass(frozen=True)
+class FactorialEvidenceCandidate:
+    run_id: str
+    rows: tuple[dict, ...]
+
+
+@dataclass(frozen=True)
+class SealedFactorialEvidence:
+    run_id: str
+    rows: tuple[dict, ...]
+    manifest: dict
+    sha256: str
+
+
+def _plain(value):
+    if isinstance(value, Decimal):
+        return str(value)
+    if isinstance(value, dict):
+        return {str(k): _plain(v) for k, v in sorted(value.items())}
+    if isinstance(value, (tuple, list)):
+        return [_plain(v) for v in value]
+    return value
+
+
+def _canonical_sha256(value) -> str:
+    raw = json.dumps(_plain(value), sort_keys=True, separators=(",", ":"),
+                     ensure_ascii=False, allow_nan=False)
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+
+def factorial_candidate_from_records(records) -> FactorialEvidenceCandidate:
+    if not records:
+        raise ContractError("cannot create factorial evidence from empty S3 records")
+    run_ids = {row.run_id for row in records}
+    if len(run_ids) != 1:
+        raise ContractError("factorial S3 records contain multiple run identities")
+    return FactorialEvidenceCandidate(next(iter(run_ids)),
+                                       tuple(asdict(row) for row in records))
+
+
+class FactorialIntervalSealer:
+    """Closed-schema firewall for realized factorial interval observations."""
+    version = "c10s-factorial-interval-sealer-0.1"
+
+    def seal(self, candidate: FactorialEvidenceCandidate) -> SealedFactorialEvidence:
+        allowed = frozenset(FactorialIntervalObservationRecord.__dataclass_fields__)
+        if not candidate.run_id or not candidate.rows:
+            raise ContractError("factorial evidence requires run identity and rows")
+        seen = set()
+        units = {}
+        rows_out = []
+        for row in candidate.rows:
+            if set(row) != allowed or row.get("temporal_resolution") != "INTERVAL_LEVEL":
+                raise ContractError("factorial interval row violates its closed schema")
+            if row["run_id"] != candidate.run_id:
+                raise ContractError("factorial interval run identity mismatch")
+            string_fields = (
+                "unit_id", "history_ref", "assignment_bundle_sha256", "q_x_sha256",
+                "g_a0_sha256", "g_a1_sha256", "r_common_sha256", "factor_m_id",
+                "factor_m_version", "factor_m_sha256", "assigned_vector_sha256",
+                "policy_fingerprint", "r_common_fingerprint", "history_id",
+                "history_version", "history_content_sha256", "observation_id",
+                "monitor_id", "monitor_version", "grid_id", "grid_version",
+            )
+            if any(not isinstance(row[k], str) or not row[k] for k in string_fields):
+                raise ContractError("factorial interval identity/version fields are mandatory")
+            cell = row["assigned_cell"]
+            if cell not in ("00", "10", "01", "11"):
+                raise ContractError("factorial cell must be one of 00, 10, 01, 11")
+            if (row["a_arm"], row["m_arm"]) != (int(cell[0]), int(cell[1])):
+                raise ContractError("factorial cell and factor values disagree")
+            p = row["assignment_probability"]
+            if not isinstance(p, (int, float)) or isinstance(p, bool) or not 0.0 < p < 1.0:
+                raise ContractError("factorial assignment probability must be in (0,1)")
+            if row["coverage_mode"] != "CONTINUOUS_EVENT_COVERAGE":
+                raise ContractError("factorial strict V_cont requires certified continuous event coverage")
+            if row["observation_status"] not in ("OBSERVED", "MISSING"):
+                raise ContractError("invalid factorial interval observation status")
+            value = row["observed_compliance"]
+            if (row["observation_status"] == "MISSING") != (value is None):
+                raise ContractError("factorial interval value and missingness status disagree")
+            if value is not None and type(value) is not bool:
+                raise ContractError("factorial interval compliance must be Boolean or missing")
+            if type(row["interval_index"]) is not int or row["interval_index"] < 0:
+                raise ContractError("factorial interval index must be non-negative")
+            times = (row["interval_start"], row["interval_end"],
+                     row["capture_time"], row["ingestion_time"])
+            if any(not isinstance(t, Decimal) or not t.is_finite() for t in times):
+                raise ContractError("factorial interval chronology must use finite Decimal values")
+            if not times[0] < times[1] <= times[2] <= times[3]:
+                raise ContractError("factorial interval/capture/ingestion chronology is invalid")
+            if row["observation_id"] in seen:
+                raise ContractError("duplicate factorial interval observation ID")
+            seen.add(row["observation_id"])
+            invariant = tuple(row[k] for k in (
+                "assignment_bundle_sha256", "q_x_sha256", "g_a0_sha256", "g_a1_sha256",
+                "r_common_sha256", "factor_m_id", "factor_m_version", "factor_m_sha256",
+                "assigned_cell", "a_arm", "m_arm", "assignment_probability",
+                "assigned_vector_sha256", "policy_fingerprint", "r_common_fingerprint",
+                "history_ref", "history_id", "history_version", "history_content_sha256",
+            ))
+            bucket = units.setdefault(row["unit_id"], {"invariant": invariant, "rows": []})
+            if bucket["invariant"] != invariant:
+                raise ContractError("factorial assignment/history fields vary within a unit")
+            bucket["rows"].append(row)
+            rows_out.append(dict(row))
+        common_grid = None
+        common_bounds = None
+        for unit, bucket in units.items():
+            ordered = sorted(bucket["rows"], key=lambda x: x["interval_index"])
+            if [r["interval_index"] for r in ordered] != list(range(len(ordered))):
+                raise ContractError(f"factorial interval coverage has gaps for unit {unit}")
+            grid = (ordered[0]["grid_id"], ordered[0]["grid_version"])
+            bounds = tuple((r["interval_start"], r["interval_end"]) for r in ordered)
+            if any((r["grid_id"], r["grid_version"]) != grid for r in ordered):
+                raise ContractError("factorial grid identity varies within a unit")
+            if any(left[1] != right[0] for left, right in zip(bounds, bounds[1:])):
+                raise ContractError("factorial interval coverage has a gap or overlap")
+            if common_grid is None:
+                common_grid, common_bounds = grid, bounds
+            elif grid != common_grid or bounds != common_bounds:
+                raise ContractError("factorial units must share one exact interval grid")
+        manifest = {
+            "run_id": candidate.run_id, "schema": "C10S-FACTORIAL-AxM-S3-INTERVAL-001",
+            "sealer_version": self.version, "row_count": len(rows_out),
+            "unit_count": len(units), "temporal_resolution": "INTERVAL_LEVEL",
+            "grid_id": common_grid[0], "grid_version": common_grid[1],
+            "interval_count_per_unit": len(common_bounds),
+            "assignment_bundle_sha256": rows_out[0]["assignment_bundle_sha256"],
+            "q_x_sha256": rows_out[0]["q_x_sha256"],
+            "factor_m_id": rows_out[0]["factor_m_id"],
+            "factor_m_version": rows_out[0]["factor_m_version"],
+            "factor_m_sha256": rows_out[0]["factor_m_sha256"],
+        }
+        return SealedFactorialEvidence(candidate.run_id, tuple(rows_out), manifest,
+                                       _canonical_sha256({"manifest": manifest, "rows": rows_out}))
+
+
+@dataclass(frozen=True)
+class FactorialAnalysisContract:
+    q_x_mass_by_history: tuple[tuple[str, float], ...]
+    expected_unit_ids: tuple[str, ...]
+    q_x_sha256: str
+    assignment_bundle_sha256: str
+    g_a0_sha256: str
+    g_a1_sha256: str
+    r_common_sha256: str
+    factor_m_id: str
+    factor_m_version: str
+    factor_m_sha256: str
+    estimand_version: str = "1.0"
+
+    def validate(self) -> None:
+        if not all((self.q_x_sha256, self.assignment_bundle_sha256,
+                    self.g_a0_sha256, self.g_a1_sha256, self.r_common_sha256,
+                    self.factor_m_id, self.factor_m_version, self.factor_m_sha256,
+                    self.estimand_version)):
+            raise ContractError("factorial analysis provenance and estimand versions are mandatory")
+        qx = dict(self.q_x_mass_by_history)
+        if not qx or len(qx) != len(self.q_x_mass_by_history):
+            raise ContractError("factorial q_X target masses must have unique nonempty support")
+        if any(not k or not isinstance(v, (int, float)) or not 0 < v < 1.0000000001
+               for k, v in qx.items()):
+            raise ContractError("factorial q_X masses must be positive and finite")
+        if abs(sum(qx.values()) - 1.0) > 1e-10:
+            raise ContractError("factorial q_X masses must sum to one")
+        if (not self.expected_unit_ids or len(self.expected_unit_ids) != len(set(self.expected_unit_ids))
+                or len(self.expected_unit_ids) != len(qx)):
+            raise ContractError("factorial analysis requires the exact unique q_X unit roster")
+
+
+@dataclass(frozen=True)
+class FactorialContrast:
+    estimand_id: str
+    point_estimate: float | None
+    lower_bound: float | None
+    upper_bound: float | None
+    identification: Literal["IDENTIFIED", "PARTIALLY_IDENTIFIED", "NOT_IDENTIFIED"]
+
+
+@dataclass(frozen=True)
+class FactorialAnalysisResult:
+    run_id: str
+    estimand_version: str
+    cell_unit_counts: tuple[int, int, int, int]
+    cell_means: tuple[float | None, float | None, float | None, float | None]
+    cell_lower_bounds: tuple[float | None, float | None, float | None, float | None]
+    cell_upper_bounds: tuple[float | None, float | None, float | None, float | None]
+    contrasts: tuple[FactorialContrast, ...]
+    missing_interval_count: int
+    total_interval_count: int
+    input_sha256: str
+    output_sha256: str
+
+
+def _factorial_result_payload(result: FactorialAnalysisResult) -> dict:
+    return {
+        "run_id": result.run_id, "estimand_version": result.estimand_version,
+        "cell_unit_counts": result.cell_unit_counts, "cell_means": result.cell_means,
+        "cell_lower_bounds": result.cell_lower_bounds,
+        "cell_upper_bounds": result.cell_upper_bounds,
+        "contrasts": result.contrasts,
+        "missing_interval_count": result.missing_interval_count,
+        "total_interval_count": result.total_interval_count,
+        "input_sha256": result.input_sha256,
+    }
+
+
+class FactorialObservationAnalyzer:
+    """Observation-only HT analysis of both simple effects and A×M interaction."""
+    version = "c10s-factorial-observation-analyzer-0.1"
+
+    def analyze(self, evidence: SealedFactorialEvidence,
+                contract: FactorialAnalysisContract) -> FactorialAnalysisResult:
+        contract.validate()
+        if (not evidence.rows
+                or _canonical_sha256({"manifest": evidence.manifest, "rows": evidence.rows}) != evidence.sha256):
+            raise ContractError("factorial Analyzer requires nonempty evidence with a valid seal")
+        qx = dict(contract.q_x_mass_by_history)
+        expected_units = set(contract.expected_unit_ids)
+        by_unit = {}
+        for row in evidence.rows:
+            if (row["assignment_bundle_sha256"] != contract.assignment_bundle_sha256
+                    or row["q_x_sha256"] != contract.q_x_sha256
+                    or row["g_a0_sha256"] != contract.g_a0_sha256
+                    or row["g_a1_sha256"] != contract.g_a1_sha256
+                    or row["r_common_sha256"] != contract.r_common_sha256
+                    or row["factor_m_id"] != contract.factor_m_id
+                    or row["factor_m_version"] != contract.factor_m_version
+                    or row["factor_m_sha256"] != contract.factor_m_sha256):
+                raise ContractError("factorial evidence does not match the frozen analysis contract")
+            by_unit.setdefault(row["unit_id"], []).append(row)
+        if set(by_unit) != expected_units:
+            raise ContractError("factorial evidence must cover the exact assigned-unit roster")
+        cell_order = ("00", "10", "01", "11")
+        cell_items = {cell: [] for cell in cell_order}
+        missing_count = total_count = 0
+        common_grid = common_bounds = None
+        for unit, bucket in by_unit.items():
+            first = bucket[0]
+            if first["history_ref"] not in qx:
+                raise ContractError("factorial evidence history falls outside q_X target support")
+            invariant_fields = (
+                "history_ref", "assignment_bundle_sha256", "q_x_sha256",
+                "g_a0_sha256", "g_a1_sha256", "r_common_sha256", "factor_m_id",
+                "factor_m_version", "factor_m_sha256", "assigned_cell", "a_arm",
+                "m_arm", "assignment_probability", "assigned_vector_sha256",
+                "policy_fingerprint", "r_common_fingerprint", "history_id",
+                "history_version", "history_content_sha256",
+            )
+            if any(any(row[k] != first[k] for k in invariant_fields) for row in bucket):
+                raise ContractError("factorial unit assignment/history provenance varies across intervals")
+            cell = first["assigned_cell"]
+            if cell not in cell_order or (first["a_arm"], first["m_arm"]) != (int(cell[0]), int(cell[1])):
+                raise ContractError("factorial unit cell encoding is invalid")
+            ordered = sorted(bucket, key=lambda x: x["interval_index"])
+            if [r["interval_index"] for r in ordered] != list(range(len(ordered))):
+                raise ContractError("factorial interval sequence has gaps or duplicate indices")
+            grid = (ordered[0]["grid_id"], ordered[0]["grid_version"])
+            bounds = tuple((r["interval_start"], r["interval_end"]) for r in ordered)
+            if any((r["grid_id"], r["grid_version"]) != grid for r in ordered):
+                raise ContractError("factorial interval grid changes within a unit")
+            if any(a[1] != b[0] for a, b in zip(bounds, bounds[1:])):
+                raise ContractError("factorial interval sequence has a temporal gap or overlap")
+            if common_grid is None:
+                common_grid, common_bounds = grid, bounds
+            elif grid != common_grid or bounds != common_bounds:
+                raise ContractError("factorial units do not share one exact interval grid")
+            if any(r["coverage_mode"] != "CONTINUOUS_EVENT_COVERAGE" for r in ordered):
+                raise ContractError("factorial V_cont analysis requires certified continuous coverage")
+            if any((r["observation_status"] == "MISSING") != (r["observed_compliance"] is None)
+                   for r in ordered):
+                raise ContractError("factorial interval missingness/value coding is inconsistent")
+            successes = sum(r["observed_compliance"] is True for r in ordered)
+            missing = sum(r["observation_status"] == "MISSING" for r in ordered)
+            n = len(ordered)
+            if n == 0:
+                raise ContractError("factorial unit must have at least one interval")
+            missing_count += missing
+            total_count += n
+            lo, hi = successes / n, (successes + missing) / n
+            probability = first["assignment_probability"]
+            if not isinstance(probability, (int, float)) or isinstance(probability, bool) or not 0 < probability < 1:
+                raise ContractError("factorial cell assignment probability is invalid")
+            cell_items[cell].append((qx[first["history_ref"]] / probability, lo, hi))
+        counts = tuple(len(cell_items[cell]) for cell in cell_order)
+        cell_means = []
+        cell_lowers = []
+        cell_uppers = []
+        for cell in cell_order:
+            items = cell_items[cell]
+            if not items:
+                cell_means.append(None)
+                cell_lowers.append(None)
+                cell_uppers.append(None)
+            else:
+                lower = sum(w * lo for w, lo, hi in items)
+                upper = sum(w * hi for w, lo, hi in items)
+                cell_lowers.append(lower)
+                cell_uppers.append(upper)
+                cell_means.append(lower if missing_count == 0 else None)
+        contrasts = []
+        if any(count == 0 for count in counts):
+            contrasts = [
+                FactorialContrast("THETA_A_GIVEN_M0", None, None, None, "NOT_IDENTIFIED"),
+                FactorialContrast("THETA_A_GIVEN_M1", None, None, None, "NOT_IDENTIFIED"),
+                FactorialContrast("THETA_AxM_INTERACTION", None, None, None, "NOT_IDENTIFIED"),
+            ]
+        else:
+            specs = (
+                ("THETA_A_GIVEN_M0", ((1, 1), (0, -1))),
+                ("THETA_A_GIVEN_M1", ((3, 1), (2, -1))),
+                ("THETA_AxM_INTERACTION", ((3, 1), (2, -1), (1, -1), (0, 1))),
+            )
+            for estimand_id, terms in specs:
+                lower = sum(cell_lowers[i] if sign > 0 else -cell_uppers[i]
+                            for i, sign in terms)
+                upper = sum(cell_uppers[i] if sign > 0 else -cell_lowers[i]
+                            for i, sign in terms)
+                if missing_count:
+                    point, status = None, "PARTIALLY_IDENTIFIED"
+                else:
+                    point = sum(sign * cell_means[i] for i, sign in terms)
+                    status = "IDENTIFIED"
+                contrasts.append(FactorialContrast(estimand_id, point, lower, upper, status))
+        provisional = FactorialAnalysisResult(
+            evidence.run_id, contract.estimand_version, counts, tuple(cell_means),
+            tuple(cell_lowers), tuple(cell_uppers), tuple(contrasts),
+            missing_count, total_count, evidence.sha256, "",
+        )
+        return FactorialAnalysisResult(
+            provisional.run_id, provisional.estimand_version, provisional.cell_unit_counts,
+            provisional.cell_means, provisional.cell_lower_bounds, provisional.cell_upper_bounds,
+            provisional.contrasts, provisional.missing_interval_count,
+            provisional.total_interval_count, provisional.input_sha256,
+            _canonical_sha256(_factorial_result_payload(provisional)),
+        )
