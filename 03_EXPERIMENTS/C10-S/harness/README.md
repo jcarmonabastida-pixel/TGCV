@@ -360,3 +360,21 @@ The same structural generator accepts explicit `StructuralTransitionRule` entrie
 
 
 A regression correction also preserves declared target states when candidate routes exist for other targets. This matters because exhaustive absence (`Reach=0`) is only adjudicable for targets explicitly included in the finite target universe. Tests now include a routed target and a separately declared route-absent target in the same evaluation. All new test definitions remain unexecuted.
+
+
+## D2 potential route selection, execution and trajectories
+
+D2TrajectoryGenerationConfig explicitly versions the post-Reach selection and execution mechanisms: selection probability by target, route weights, route execution probability, step execution probability and a randomization salt. These are DGP parameters, not inferred from Reach or chosen as empirical defaults.
+
+evaluate_d2_potential_trajectories() consumes the post-potential route adjudications for every unit × Z and produces a trajectory record for every declared target. The output keeps four states distinct:
+
+- Reach: whether at least one admissible route exists;
+- selection_state: whether a route is selected under the declared selection mechanism;
+- execution_state: whether the selected route executes successfully;
+- trajectory_status and the executed state sequence: completed, partial, not selected, execution failed, unreachable or unknown.
+
+Selection is made only among confirmed reachable routes; route weights are explicit. A target with only unresolved route candidates remains unknown. A confirmed reachable target may remain unselected. A selected route may fail to execute, and a failed step stops the realized sequence at its executed prefix. The model never treats Reach as selection or execution.
+
+Random draws are keyed by DGP salt, unit, target, route and step (excluding Z where a common exogenous draw is required), preserving paired potential-world comparisons. SyntheticWorldBuilder.generate_complete_with_trajectories() now exposes the integrated path through roster, D2 potentials, U/R/C/X snapshots, Reach, selection, execution and trajectories. Outcome and contextual Value remain downstream and are not fabricated by this block.
+
+The integrated regression fixture checks reachable-and-completed under one potential, unreachable under the other, reachable-but-not-selected under an alternative selection policy, and selected-but-execution-failed under an alternative execution policy. These are source-level test definitions only; no tests or experiments were run.
