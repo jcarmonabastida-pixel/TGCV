@@ -17,7 +17,8 @@ from c10s_synthetic_components import (
     SyntheticWorldBundle, digest,
 )
 from d2_observed_assignment import (
-    D2ObservedAssignmentBundle, select_d2_realized_histories,
+    D2ObservedAssignmentBundle, D2ObservedAssignmentConfig,
+    generate_d2_observed_assignments, select_d2_realized_histories,
 )
 from theta_a_interval_observation import (
     IntervalMonitorConfig, IntervalS3Observation,
@@ -311,15 +312,12 @@ def materialize_d2_observed_interval_lane(
     world: SyntheticWorldBundle,
     truth: D2VContTruthBundle,
     histories_by_unit_z: dict[tuple[str, int], EventHistory],
-    assignment_config,
+    assignment_config: D2ObservedAssignmentConfig,
     grid: IntervalGrid,
     monitor_config: IntervalMonitorConfig,
     seeds_by_unit: dict[str, int],
 ) -> D2ObservedIntervalLaneResult:
     """Complete D2 Z assignment -> realized EventHistory -> interval S3 -> Sealer."""
-    from d2_observed_assignment import (
-        generate_d2_observed_assignments,
-    )
     assignments = generate_d2_observed_assignments(
         world, truth, histories_by_unit_z, assignment_config,
     )
