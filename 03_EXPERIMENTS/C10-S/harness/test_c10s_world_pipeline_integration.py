@@ -39,7 +39,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             roster_id="ROSTER-INTERVAL-INTEGRATION",
             roster_version="1",
             unit_id_prefix="U",
-            n_units=16,
+            n_units=32,
             seed=20261116,
             x_dimension=1,
             h0_distribution=(("H0", 1.0),),
@@ -53,7 +53,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             c_info_probability=1.0,
             c_domain_probability=1.0,
             c_other_probability=1.0,
-            q_x_mass_by_unit=(1.0 / 16.0,) * 16,
+            q_x_mass_by_unit=(1.0 / 32.0,) * 32,
         )
         d2_config = D2MechanismConfig(
             "DGP-INTERVAL-INTEGRATION", "1",
@@ -239,19 +239,19 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
 
         # The DGP-generated potential histories, not caller-supplied histories,
         # feed the reserved oracle and the realized-assignment selection.
-        self.assertEqual(len(result.d2_histories_by_unit_z), 32)
-        self.assertEqual(len(result.theta_a_truth.event_history_manifest), 32)
+        self.assertEqual(len(result.d2_histories_by_unit_z), 64)
+        self.assertEqual(len(result.theta_a_truth.event_history_manifest), 64)
         self.assertAlmostEqual(result.theta_a_truth.theta_a_truth, 0.5)
         self.assertEqual(
             {row.assigned_arm for row in result.theta_a_assignments.assignments},
             {0, 1},
         )
-        self.assertEqual(len(result.realized_history_selection.selected_history_manifest), 16)
+        self.assertEqual(len(result.realized_history_selection.selected_history_manifest), 32)
 
         # Every selected history is observed on the common continuous interval
         # grid; neither latent histories nor V_cont adjudications cross S3.
         self.assertEqual(result.sealed_evidence.manifest["temporal_resolution"], "INTERVAL_LEVEL")
-        self.assertEqual(len(result.s3_records), 32)
+        self.assertEqual(len(result.s3_records), 64)
         self.assertTrue(all(row.observation_status == "OBSERVED" for row in result.s3_records))
         for row in result.sealed_evidence.rows:
             self.assertNotIn("event_history", row)
