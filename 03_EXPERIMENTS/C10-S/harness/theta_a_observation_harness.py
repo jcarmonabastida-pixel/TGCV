@@ -163,7 +163,7 @@ class ThetaAIntervalSealer:
                        "grid_id", "grid_version")
             if any(not isinstance(row[k], str) or not row[k] for k in strings):
                 raise ContractError("interval theta_A identity/version fields are mandatory")
-            if row["assigned_arm"] not in (0, 1):
+            if type(row["assigned_arm"]) is not int or row["assigned_arm"] not in (0, 1):
                 raise ContractError("interval theta_A assigned arm must be binary")
             p = row["assignment_probability"]
             if not isinstance(p, (int, float)) or isinstance(p, bool) or not 0.0 < p <= 1.0:
