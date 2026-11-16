@@ -15,6 +15,7 @@ from c10s_synthetic_components import (
     generate_d2_structural_potential_pairs, D2ReachStepTemplate, D2ReachRouteTemplate,
     D2ReachGenerationConfig, evaluate_d2_structural_reachability,
     D2TrajectoryGenerationConfig, evaluate_d2_potential_trajectories,
+    evaluate_d2_vcont_potential_truth,
     FunctionalState, FunctionalTransition, IntervalGrid,
     JointPolicyHistory, QXHistoryMass, RCommonPairCertificate,
     S3SequenceKernelRow, S3ObservationConfig, adjudicate_intervals,
@@ -758,6 +759,54 @@ class SyntheticComponentTests(unittest.TestCase):
             and row.execution_state == 0 and row.trajectory_status == "EXECUTION_FAILED"
             for row in execution_failure.trajectories if row.z == 1 and row.target_state == "TARGET-FOCAL"
         ))
+
+        # V_cont is adjudicated from its own EventHistory truth, never inferred
+        # from Reach or trajectory. This deliberately adversarial fixture has
+        # opposite trajectory/continuity patterns across the two potentials.
+        histories_by_unit_z = {}
+        for unit in world.units:
+            for z in (0, 1):
+                initial = (
+                    FunctionalState(False, "NO_ADMISSION")
+                    if z == 0 else FunctionalState(True, "NO_ADMISSION")
+                )
+                history_id = f"{unit.unit_id}-EH-Z{z}"
+                histories_by_unit_z[(unit.unit_id, z)] = EventHistory(
+                    history_id=history_id, history_version="001", run_id="RUN-DELTA",
+                    world_id=world.world_id, world_version=world.world_version,
+                    dgp_version=world.dgp_version, unit_id=unit.unit_id,
+                    potential_id=f"{unit.unit_id}-POTENTIAL-Z{z}",
+                    adjudication_rules_version="AB1-001",
+                    support_start=Decimal("0"), support_end=Decimal("4"),
+                    initial_post_z_state=initial, transitions=(),
+                    expected_transition_ids=(), scope_declared_complete=True,
+                    generation_complete=True, representation_complete=True,
+                )
+        vcont_grid = IntervalGrid(
+            (Decimal("0"), Decimal("2"), Decimal("4")), "GRID-D2", "001",
+        )
+        vcont_truth = SyntheticWorldBuilder().evaluate_complete_vcont_truth(
+            world, histories_by_unit_z, vcont_grid,
+        )
+        self.assertEqual(len(vcont_truth.potential_truth), 4)
+        self.assertAlmostEqual(vcont_truth.finite_population_itt_z_v_cont, -1.0)
+        self.assertTrue(all(
+            row.v_cont_truth == (1.0 if row.z == 0 else 0.0)
+            for row in vcont_truth.potential_truth
+        ))
+        self.assertTrue(all(
+            row.trajectory_status == "NOT_REACHABLE"
+            for row in trajectories.trajectories if row.z == 0 and row.target_state == "TARGET-FOCAL"
+        ))
+        self.assertTrue(all(
+            row.trajectory_status == "COMPLETED"
+            for row in trajectories.trajectories if row.z == 1 and row.target_state == "TARGET-FOCAL"
+        ))
+        with self.assertRaises(ContractError):
+            evaluate_d2_vcont_potential_truth(
+                world, {key: value for key, value in histories_by_unit_z.items() if key[1] == 0},
+                vcont_grid,
+            )
 
 
     def test_empty_incomplete_structural_universe_is_unknown_not_zero(self):
