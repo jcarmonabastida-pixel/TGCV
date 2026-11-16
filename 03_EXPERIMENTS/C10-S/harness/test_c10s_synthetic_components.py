@@ -14,6 +14,7 @@ from c10s_synthetic_components import (
     evaluate_d2_structural_deltas, D2StructuralGenerationConfig,
     generate_d2_structural_potential_pairs, D2ReachStepTemplate, D2ReachRouteTemplate,
     D2ReachGenerationConfig, evaluate_d2_structural_reachability,
+    D2TrajectoryGenerationConfig, evaluate_d2_potential_trajectories,
     FunctionalState, FunctionalTransition, IntervalGrid,
     JointPolicyHistory, QXHistoryMass, RCommonPairCertificate,
     S3SequenceKernelRow, S3ObservationConfig, adjudicate_intervals,
@@ -684,8 +685,16 @@ class SyntheticComponentTests(unittest.TestCase):
             ),),
             True, True, True, True, True, False,
         )
-        world, pairs, reach = SyntheticWorldBuilder().generate_complete_with_reachability(
-            config, d2_config, structural_config, reach_config,
+        trajectory_config = D2TrajectoryGenerationConfig(
+            "TRAJECTORY-D2-MIN", "001",
+            (("TARGET-FOCAL", 1.0), ("TARGET-ABSENT", 1.0)),
+            (("ROUTE-FOCAL", 1.0),),
+            (("ROUTE-FOCAL", 1.0),),
+            (("TAU-FOCAL", 1.0), ("TAU-ALT", 1.0)),
+            "FIXTURE-SEED-001",
+        )
+        world, pairs, reach, trajectories = SyntheticWorldBuilder().generate_complete_with_trajectories(
+            config, d2_config, structural_config, reach_config, trajectory_config,
         )
         deltas = evaluate_d2_structural_deltas(world, pairs)
         self.assertEqual(set(pairs), {(unit.unit_id, z) for unit in world.units for z in (0, 1)})
@@ -708,6 +717,13 @@ class SyntheticComponentTests(unittest.TestCase):
             and dict(row.delta_by_target)["TARGET-FOCAL"] == 1
             for row in reach.contrasts
         ))
+        self.assertEqual(len(trajectories.trajectories), 8)
+        by_key = {(row.unit_id, row.z, row.target_state): row for row in trajectories.trajectories}
+        for unit in world.units:
+            self.assertEqual(by_key[(unit.unit_id, 0, "TARGET-FOCAL")].trajectory_status, "NOT_REACHABLE")
+            self.assertEqual(by_key[(unit.unit_id, 1, "TARGET-FOCAL")].trajectory_status, "COMPLETED")
+            self.assertEqual(by_key[(unit.unit_id, 1, "TARGET-FOCAL")].terminal_state, "S2")
+            self.assertEqual(by_key[(unit.unit_id, 0, "TARGET-ABSENT")].trajectory_status, "NOT_REACHABLE")
 
 
     def test_empty_incomplete_structural_universe_is_unknown_not_zero(self):
