@@ -163,10 +163,12 @@ def _materialize(
     initial_state: FunctionalState, source: Source,
     mechanism: D2PotentialStage | Vector4,
 ) -> EventHistory:
-    initial = FunctionalState(
-        initial_state.enabled, initial_state.admission_behavior,
-        initial_state.profile, config.profile_config_id, config.profile_config_version,
-    )
+    initial_state.validate()
+    if (initial_state.profile_config_id, initial_state.profile_config_version) != (
+        config.profile_config_id, config.profile_config_version
+    ):
+        raise ContractError("initial functional state PROFILE identity/version differs from DGP config")
+    initial = initial_state
     changes = _apply_rules(
         source=source, initial=initial,
         rules=config.rules, mechanism=mechanism,
@@ -238,7 +240,6 @@ def generate_g_a_event_history_potentials(
         cert = certs[history_ref]
         if cert.status != "COMMON_FIXED" or not cert.regime_id or not cert.regime_version:
             raise ContractError("functional g_A generation requires a certified common fixed regime")
-        unit_id = qx_by_ref[history_ref].history_ref
         unit = next(u for u in world.units if u.d2_baseline.baseline_history_ref == history_ref)
         unit_id = unit.unit_id
         vectors = {}
