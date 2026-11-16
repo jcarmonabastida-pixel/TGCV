@@ -2271,6 +2271,218 @@ class JointPolicyHistory:
 
 
 @dataclass(frozen=True)
+class ThetaAPolicyAssignmentConfig:
+    mechanism_id: str
+    mechanism_version: str
+    randomization_salt: str
+    probability_a1_by_history: tuple[tuple[str, float], ...]
+
+    def validate(self, world: "SyntheticWorldBundle") -> None:
+        refs = {row.history_ref for row in world.q_x}
+        supplied = [row[0] for row in self.probability_a1_by_history]
+        if not all((self.mechanism_id, self.mechanism_version, self.randomization_salt)):
+            raise ContractError("theta_A policy-assignment mechanism identity/version/salt required")
+        if len(supplied) != len(set(supplied)) or set(supplied) != refs:
+            raise ContractError("theta_A policy-assignment probabilities must cover q_X* histories exactly")
+        for history_ref, probability in self.probability_a1_by_history:
+            if not math.isfinite(probability) or not 0.0 < probability < 1.0:
+                raise ContractError(f"theta_A assignment positivity fails for {history_ref}")
+
+
+@dataclass(frozen=True)
+class ThetaAPolicyAssignment:
+    unit_id: str
+    history_ref: str
+    assigned_arm: int
+    probability_a0: float
+    probability_a1: float
+    assigned_vector: Vector4
+    assigned_vector_sha256: str
+    policy_fingerprint: str
+    r_common_fingerprint: str
+
+
+@dataclass(frozen=True)
+class ThetaAPolicyAssignmentBundle:
+    world_id: str
+    world_version: str
+    dgp_id: str
+    dgp_version: str
+    mechanism_id: str
+    mechanism_version: str
+    mechanism_sha256: str
+    randomization_salt_sha256: str
+    q_x_sha256: str
+    g_a0_sha256: str
+    g_a1_sha256: str
+    r_common_sha256: str
+    assignments: tuple[ThetaAPolicyAssignment, ...]
+    result_sha256: str
+
+    def validate(
+        self,
+        world: "SyntheticWorldBundle",
+        config: ThetaAPolicyAssignmentConfig,
+        g_a0: Sequence["JointPolicyHistory"],
+        g_a1: Sequence["JointPolicyHistory"],
+        feasible_vectors_by_history: dict[str, tuple[Vector4, ...]],
+        r_common_certificates: Sequence["RCommonPairCertificate"],
+    ) -> None:
+        world.validate()
+        config.validate(world)
+        refs = {row.history_ref for row in world.q_x}
+        policy_maps = []
+        for rows, label in ((g_a0, "g_A0"), (g_a1, "g_A1")):
+            mapping = {row.history_ref: row for row in rows}
+            if len(mapping) != len(rows) or set(mapping) != refs:
+                raise ContractError(f"{label} must cover q_X* histories exactly")
+            for history_ref, policy in mapping.items():
+                _distribution_total(policy.distribution, f"{label} distribution for {history_ref}")
+                feasible = {digest(vector) for vector in feasible_vectors_by_history.get(history_ref, ())}
+                if not feasible or any(digest(vector) not in feasible for vector, _ in policy.distribution):
+                    raise ContractError(f"{label} support is not jointly feasible for {history_ref}")
+            policy_maps.append(mapping)
+        certs = {row.history_ref: row for row in r_common_certificates}
+        if len(certs) != len(r_common_certificates) or set(certs) != refs:
+            raise ContractError("one r_common certificate is required per q_X* history")
+        for cert in certs.values():
+            if (cert.status != "COMMON_FIXED" or not cert.regime_id or not cert.regime_version
+                    or not cert.g_a0_fingerprint or cert.g_a0_fingerprint != cert.g_a1_fingerprint):
+                raise ContractError("theta_A policy assignment requires fixed common r_common")
+        if len({(row.regime_id, row.regime_version, row.g_a0_fingerprint)
+                for row in certs.values()}) != 1:
+            raise ContractError("r_common identity/version/fingerprint must be common across q_X*")
+        units = {unit.d2_baseline.baseline_history_ref: unit.unit_id for unit in world.units}
+        rows = {row.history_ref: row for row in self.assignments}
+        if len(rows) != len(self.assignments) or set(rows) != refs:
+            raise ContractError("theta_A policy assignments must cover every q_X* unit exactly")
+        probabilities = dict(config.probability_a1_by_history)
+        for history_ref, row in rows.items():
+            arm = row.assigned_arm
+            if arm not in (0, 1) or row.unit_id != units[history_ref]:
+                raise ContractError("theta_A assignment arm or unit/history binding is invalid")
+            p1 = probabilities[history_ref]
+            if (row.probability_a0, row.probability_a1) != (1.0 - p1, p1):
+                raise ContractError("theta_A assignment probabilities differ from declared mechanism")
+            policy = policy_maps[arm][history_ref]
+            if row.policy_fingerprint != digest(policy.distribution):
+                raise ContractError("assigned policy fingerprint does not match declared g_A policy")
+            if digest(row.assigned_vector) not in {digest(v) for v, _ in policy.distribution}:
+                raise ContractError("assigned vector is outside the selected joint-policy support")
+            cert = certs[history_ref]
+            if row.r_common_fingerprint != cert.g_a0_fingerprint:
+                raise ContractError("assigned policy does not bind to the common r_common regime")
+            if row.assigned_vector_sha256 != digest(row.assigned_vector):
+                raise ContractError("assigned joint vector fingerprint is invalid")
+        payload = {
+            "world_id": self.world_id, "world_version": self.world_version,
+            "dgp_id": self.dgp_id, "dgp_version": self.dgp_version,
+            "mechanism_id": self.mechanism_id, "mechanism_version": self.mechanism_version,
+            "mechanism_sha256": self.mechanism_sha256,
+            "randomization_salt_sha256": self.randomization_salt_sha256,
+            "q_x_sha256": self.q_x_sha256, "g_a0_sha256": self.g_a0_sha256,
+            "g_a1_sha256": self.g_a1_sha256, "r_common_sha256": self.r_common_sha256,
+            "assignments": self.assignments,
+        }
+        if (self.world_id, self.world_version, self.dgp_id, self.dgp_version) != (
+            world.world_id, world.world_version, world.dgp_id, world.dgp_version
+        ):
+            raise ContractError("theta_A assignment bundle world/DGP identity mismatch")
+        if (self.mechanism_id, self.mechanism_version, self.mechanism_sha256,
+                self.randomization_salt_sha256, self.q_x_sha256,
+                self.g_a0_sha256, self.g_a1_sha256,
+                self.r_common_sha256) != (
+            config.mechanism_id, config.mechanism_version, digest(config),
+            digest(config.randomization_salt), digest(world.q_x),
+            digest(tuple(g_a0)), digest(tuple(g_a1)), digest(tuple(r_common_certificates))
+        ):
+            raise ContractError("theta_A assignment bundle provenance mismatch")
+        if self.result_sha256 != digest(payload):
+            raise ContractError("theta_A assignment bundle content fingerprint is invalid")
+
+
+def generate_theta_a_policy_assignments(
+    world: "SyntheticWorldBundle",
+    config: ThetaAPolicyAssignmentConfig,
+    g_a0: Sequence["JointPolicyHistory"],
+    g_a1: Sequence["JointPolicyHistory"],
+    feasible_vectors_by_history: dict[str, tuple[Vector4, ...]],
+    r_common_certificates: Sequence["RCommonPairCertificate"],
+) -> ThetaAPolicyAssignmentBundle:
+    """Randomize the joint g_A intervention directly; never use Z or legacy G."""
+    world.validate()
+    config.validate(world)
+    refs = {row.history_ref for row in world.q_x}
+    policy_maps = []
+    for rows, label in ((g_a0, "g_A0"), (g_a1, "g_A1")):
+        mapping = {row.history_ref: row for row in rows}
+        if len(mapping) != len(rows) or set(mapping) != refs:
+            raise ContractError(f"{label} must cover q_X* histories exactly")
+        for history_ref, policy in mapping.items():
+            _distribution_total(policy.distribution, f"{label} distribution for {history_ref}")
+            feasible = {digest(vector) for vector in feasible_vectors_by_history.get(history_ref, ())}
+            if not feasible or any(digest(vector) not in feasible for vector, _ in policy.distribution):
+                raise ContractError(f"{label} support is not jointly feasible for {history_ref}")
+        policy_maps.append(mapping)
+    certs = {row.history_ref: row for row in r_common_certificates}
+    if len(certs) != len(r_common_certificates) or set(certs) != refs:
+        raise ContractError("one r_common certificate is required per q_X* history")
+    if any(row.status != "COMMON_FIXED" or row.g_a0_fingerprint != row.g_a1_fingerprint
+           for row in certs.values()):
+        raise ContractError("theta_A assignment requires certified fixed common r_common")
+    if len({(row.regime_id, row.regime_version, row.g_a0_fingerprint)
+            for row in certs.values()}) != 1:
+        raise ContractError("r_common identity/version/fingerprint must be common across q_X*")
+    p_a1 = dict(config.probability_a1_by_history)
+    assignments = []
+    for unit, qx in zip(world.units, world.q_x):
+        arm_draw = _dgp_uniform(
+            world.seed_commitment_sha256, config.randomization_salt,
+            unit.unit_id, "theta-a-policy-arm",
+        )
+        arm = 1 if arm_draw < p_a1[qx.history_ref] else 0
+        policy = policy_maps[arm][qx.history_ref]
+        vector_draw = _dgp_uniform(
+            world.seed_commitment_sha256, config.randomization_salt,
+            unit.unit_id, arm, "theta-a-joint-vector",
+        )
+        cumulative = 0.0
+        vector = policy.distribution[-1][0]
+        for candidate, probability in policy.distribution:
+            cumulative += probability
+            if vector_draw < cumulative:
+                vector = candidate
+                break
+        cert = certs[qx.history_ref]
+        assignments.append(ThetaAPolicyAssignment(
+            unit.unit_id, qx.history_ref, arm, 1.0 - p_a1[qx.history_ref],
+            p_a1[qx.history_ref], vector, digest(vector),
+            digest(policy.distribution), cert.g_a0_fingerprint,
+        ))
+    payload = {
+        "world_id": world.world_id, "world_version": world.world_version,
+        "dgp_id": world.dgp_id, "dgp_version": world.dgp_version,
+        "mechanism_id": config.mechanism_id, "mechanism_version": config.mechanism_version,
+        "mechanism_sha256": digest(config),
+        "randomization_salt_sha256": digest(config.randomization_salt),
+        "q_x_sha256": digest(world.q_x), "g_a0_sha256": digest(tuple(g_a0)),
+        "g_a1_sha256": digest(tuple(g_a1)),
+        "r_common_sha256": digest(tuple(r_common_certificates)),
+        "assignments": tuple(assignments),
+    }
+    result = ThetaAPolicyAssignmentBundle(
+        world.world_id, world.world_version, world.dgp_id, world.dgp_version,
+        config.mechanism_id, config.mechanism_version, digest(config),
+        digest(config.randomization_salt), digest(world.q_x),
+        digest(tuple(g_a0)), digest(tuple(g_a1)),
+        digest(tuple(r_common_certificates)), tuple(assignments), digest(payload),
+    )
+    result.validate(world, config, g_a0, g_a1, feasible_vectors_by_history, r_common_certificates)
+    return result
+
+
+
+@dataclass(frozen=True)
 class RCommonPairCertificate:
     history_ref: str
     regime_id: str
