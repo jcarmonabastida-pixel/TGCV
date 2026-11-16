@@ -1346,6 +1346,252 @@ def generate_d2_structural_potential_pairs(
     return pairs
 
 
+
+@dataclass(frozen=True)
+class D2ReachStepTemplate:
+    transformation_id: str
+    state_before: str
+    state_after: str
+    applicability_state: ReachState
+    duration: float = 0.0
+    predicate_atom_bindings: tuple[tuple[str, StructuralComponent, str], ...] = ()
+
+    def validate(self) -> None:
+        if not all((self.transformation_id, self.state_before, self.state_after)):
+            raise ContractError("D2 Reach step template requires transformation and state identities")
+        _reach_state(self.applicability_state, "D2 route App state")
+        if not math.isfinite(self.duration) or self.duration < 0:
+            raise ContractError("D2 route duration must be finite and nonnegative")
+        names = [name for name, _, _ in self.predicate_atom_bindings]
+        if len(names) != len(set(names)) or any(not name or not atom_id for name, _, atom_id in self.predicate_atom_bindings):
+            raise ContractError("D2 route predicate bindings must have unique names and atom identities")
+        for _, component, _ in self.predicate_atom_bindings:
+            if component not in ("R", "C", "X"):
+                raise ContractError("route step predicate bindings must reference R/C/X atoms")
+
+
+@dataclass(frozen=True)
+class D2ReachRouteTemplate:
+    route_id: str
+    target_state: str
+    steps: tuple[D2ReachStepTemplate, ...]
+    relation_atom_bindings: tuple[tuple[StructuralComponent, str], ...]
+    temporal_feasibility_state: ReachState
+    route_scope: str
+
+    def validate(self) -> None:
+        if not all((self.route_id, self.target_state, self.route_scope)) or not self.steps:
+            raise ContractError("D2 Reach route template requires route, target, scope and steps")
+        if len(self.relation_atom_bindings) != len(self.steps) - 1:
+            raise ContractError("D2 Reach route requires one explicit R binding between adjacent steps")
+        for step in self.steps:
+            step.validate()
+        for component, atom_id in self.relation_atom_bindings:
+            if component != "R" or not atom_id:
+                raise ContractError("route relation bindings must identify explicit R atoms")
+        _reach_state(self.temporal_feasibility_state, "D2 route temporal feasibility")
+
+
+@dataclass(frozen=True)
+class D2ReachGenerationConfig:
+    config_id: str
+    config_version: str
+    horizon: float
+    transformation_universe: tuple[str, ...]
+    target_states: tuple[str, ...]
+    route_templates: tuple[D2ReachRouteTemplate, ...]
+    universe_exhaustive: bool
+    relations_exhaustive: bool
+    conditions_exhaustive: bool
+    resources_exhaustive: bool
+    enumeration_complete: bool
+    search_truncated: bool = False
+    snapshot_version: str = "C10S-REACH-SNAPSHOT-001"
+    catalog_version: str = "C10S-REACH-CATALOG-001"
+
+    def validate(self) -> None:
+        if not self.config_id or not self.config_version or not self.snapshot_version or not self.catalog_version:
+            raise ContractError("D2 Reach config identity and versions are mandatory")
+        if not math.isfinite(self.horizon) or self.horizon <= 0:
+            raise ContractError("D2 Reach horizon must be positive and finite")
+        if not self.transformation_universe or len(self.transformation_universe) != len(set(self.transformation_universe)):
+            raise ContractError("D2 Reach transformation universe must be finite, nonempty and unique")
+        if not self.target_states or len(self.target_states) != len(set(self.target_states)) or any(not x for x in self.target_states):
+            raise ContractError("D2 Reach target universe must be explicit, nonempty and unique")
+        route_ids = [route.route_id for route in self.route_templates]
+        if len(route_ids) != len(set(route_ids)):
+            raise ContractError("D2 Reach route template IDs must be unique")
+        if self.search_truncated and self.enumeration_complete:
+            raise ContractError("truncated D2 route search cannot be declared complete")
+        for route in self.route_templates:
+            route.validate()
+            if any(step.transformation_id not in self.transformation_universe for step in route.steps):
+                raise ContractError("D2 route references a transformation outside the declared universe")
+
+
+@dataclass(frozen=True)
+class D2PotentialReachContrast:
+    unit_id: str
+    z: int
+    baseline: ReachabilityResult
+    post: ReachabilityResult
+    delta_by_target: tuple[tuple[str, ReachState], ...]
+
+
+@dataclass(frozen=True)
+class SyntheticWorldReachabilityContrast:
+    world_id: str
+    world_version: str
+    dgp_id: str
+    dgp_version: str
+    contrasts: tuple[D2PotentialReachContrast, ...]
+    result_sha256: str
+
+    def validate(self, world: "SyntheticWorldBundle") -> None:
+        world.validate()
+        if (self.world_id, self.world_version, self.dgp_id, self.dgp_version) != (
+            world.world_id, world.world_version, world.dgp_id, world.dgp_version
+        ):
+            raise ContractError("Reach contrast identity differs from its synthetic world")
+        expected = {(unit.unit_id, z) for unit in world.units for z in (0, 1)}
+        actual = {(row.unit_id, row.z) for row in self.contrasts}
+        if actual != expected or len(actual) != len(self.contrasts):
+            raise ContractError("Reach contrasts must cover every unit × Z potential exactly")
+        for row in self.contrasts:
+            row.baseline.validate()
+            row.post.validate()
+            if set(dict(row.baseline.target_states)) != set(dict(row.post.target_states)):
+                raise ContractError("baseline/post Reach target universes differ")
+            if dict(row.delta_by_target).keys() != dict(row.post.target_states).keys():
+                raise ContractError("Reach contrast delta does not cover the exact target universe")
+        if not self.result_sha256:
+            raise ContractError("Reach contrast fingerprint is required")
+
+
+def _reach_atom_state(
+    atoms_by_id: dict[str, StructuralAtom],
+    atom_id: str,
+    component: StructuralComponent,
+    component_complete: dict[str, bool],
+) -> ReachState:
+    atom = atoms_by_id.get(atom_id)
+    if atom is None:
+        return 0 if component_complete[component] else "?"
+    if atom.component != component:
+        raise ContractError("D2 Reach binding component disagrees with structural atom")
+    return atom.state
+
+
+def evaluate_d2_structural_reachability(
+    world: "SyntheticWorldBundle",
+    structural_pairs: dict[tuple[str, int], D2StructuralPotentialPair],
+    config: D2ReachGenerationConfig,
+) -> SyntheticWorldReachabilityContrast:
+    """Derive baseline/post Reach from generated U/R/C/X truth plus explicit route rules."""
+    world.validate()
+    config.validate()
+    expected = {(unit.unit_id, z) for unit in world.units for z in (0, 1)}
+    if set(structural_pairs) != expected:
+        raise ContractError("D2 Reach input must cover every unit × Z structural pair exactly")
+    engine = StructuralReachabilityEngine()
+    contrasts = []
+    for key in sorted(expected):
+        pair = structural_pairs[key]
+        if (pair.unit_id, pair.z) != key:
+            raise ContractError("D2 Reach structural pair key mismatch")
+        baseline = pair.baseline
+        post = pair.post
+        scope = (world.world_id, world.world_version, world.dgp_id, world.dgp_version, key[0], key[1])
+        for snapshot in (baseline, post):
+            if (snapshot.world_id, snapshot.world_version, snapshot.dgp_id,
+                    snapshot.dgp_version, snapshot.unit_id, snapshot.potential_z) != scope:
+                raise ContractError("D2 Reach structural snapshot is not bound to exact world/unit/Z")
+        base_atoms = {atom.canonical_id: atom for atom in baseline.atoms}
+        post_atoms = {atom.canonical_id: atom for atom in post.atoms}
+        base_complete = dict(baseline.component_complete)
+        post_complete = dict(post.component_complete)
+
+        def make_snapshot(source, atoms, complete, timepoint):
+            transformations = []
+            for transformation_id in config.transformation_universe:
+                atom = atoms.get(transformation_id)
+                if atom is None:
+                    state = 0 if complete["U"] else "?"
+                else:
+                    if atom.component != "U":
+                        raise ContractError("declared transformation universe ID resolves to a non-U atom")
+                    state = atom.state
+                transformations.append(StructuralTransformation(
+                    transformation_id, atom.semantic_version if atom else "ABSENT-OR-UNKNOWN",
+                    f"{source.snapshot_id}:{timepoint}", state,
+                ))
+            return StructuralSnapshot(
+                f"{source.snapshot_id}:REACH:{timepoint}", config.snapshot_version,
+                source.world_id, source.world_version, source.dgp_id, source.dgp_version,
+                source.unit_id, source.potential_z, source.boundary_id, source.context_id,
+                config.horizon, tuple(transformations),
+                config.universe_exhaustive and complete["U"],
+                config.relations_exhaustive and complete["R"],
+                config.conditions_exhaustive and complete["C"],
+                config.resources_exhaustive and complete["X"],
+                config.catalog_version,
+            )
+
+        def make_routes(atoms, complete):
+            routes = []
+            for template in config.route_templates:
+                steps = []
+                for step in template.steps:
+                    predicates = tuple(
+                        (name, _reach_atom_state(atoms, atom_id, component, complete))
+                        for name, component, atom_id in step.predicate_atom_bindings
+                    )
+                    steps.append(StructuralRouteStep(
+                        step.transformation_id, step.state_before, step.state_after,
+                        step.applicability_state, predicates, step.duration,
+                    ))
+                relations = tuple(
+                    _reach_atom_state(atoms, atom_id, component, complete)
+                    for component, atom_id in template.relation_atom_bindings
+                )
+                routes.append(StructuralRoute(
+                    template.route_id, template.target_state, tuple(steps),
+                    relations, template.temporal_feasibility_state, template.route_scope,
+                ))
+            return tuple(routes)
+
+        base_reach_snapshot = make_snapshot(baseline, base_atoms, base_complete, "BASELINE")
+        post_reach_snapshot = make_snapshot(post, post_atoms, post_complete, "POST")
+        base_result = engine.evaluate(
+            base_reach_snapshot, make_routes(base_atoms, base_complete),
+            enumeration_complete=config.enumeration_complete,
+            search_truncated=config.search_truncated, target_states=config.target_states,
+        )
+        post_result = engine.evaluate(
+            post_reach_snapshot, make_routes(post_atoms, post_complete),
+            enumeration_complete=config.enumeration_complete,
+            search_truncated=config.search_truncated, target_states=config.target_states,
+        )
+        base_states, post_states = dict(base_result.target_states), dict(post_result.target_states)
+        delta = tuple(
+            (target, "?" if "?" in (base_states[target], post_states[target])
+             else (0 if base_states[target] == post_states[target] else 1))
+            for target in sorted(config.target_states)
+        )
+        contrasts.append(D2PotentialReachContrast(key[0], key[1], base_result, post_result, delta))
+    payload = {
+        "world_id": world.world_id, "world_version": world.world_version,
+        "dgp_id": world.dgp_id, "dgp_version": world.dgp_version,
+        "config": config, "contrasts": tuple(contrasts),
+    }
+    result = SyntheticWorldReachabilityContrast(
+        world.world_id, world.world_version, world.dgp_id, world.dgp_version,
+        tuple(contrasts), digest(payload),
+    )
+    result.validate(world)
+    return result
+
+
 @dataclass(frozen=True)
 class SyntheticWorldConfig:
     """Explicit finite target-world fixture; masses are q_X* inputs, not sample frequencies."""
