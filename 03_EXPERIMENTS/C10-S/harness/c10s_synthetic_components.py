@@ -2392,6 +2392,10 @@ def compute_theta_a_truth(
 
 @dataclass(frozen=True)
 class ThetaAVContTruthBundle:
+    world_id: str
+    world_version: str
+    dgp_id: str
+    dgp_version: str
     theta_a_truth: ThetaATruth
     grid_id: str
     grid_version: str
@@ -2399,14 +2403,23 @@ class ThetaAVContTruthBundle:
     result_sha256: str
 
     def validate(self) -> None:
+        if not all((self.world_id, self.world_version, self.dgp_id, self.dgp_version)):
+            raise ContractError("theta_A V_cont world/DGP identity is mandatory")
         if not self.theta_a_truth.evaluator_only or self.theta_a_truth.outcome_id != "V_CONT":
             raise ContractError("theta_A V_cont truth must remain evaluator-only and outcome-specific")
         if not self.grid_id or not self.grid_version or not self.event_history_manifest:
             raise ContractError("theta_A V_cont truth requires grid and EventHistory provenance")
-        if not self.result_sha256:
-            raise ContractError("theta_A V_cont result fingerprint is required")
         if len({row[3] for row in self.event_history_manifest}) != len(self.event_history_manifest):
             raise ContractError("theta_A V_cont EventHistory manifest IDs must be unique")
+        payload = {
+            "world_id": self.world_id, "world_version": self.world_version,
+            "dgp_id": self.dgp_id, "dgp_version": self.dgp_version,
+            "theta_a_truth": self.theta_a_truth,
+            "grid_id": self.grid_id, "grid_version": self.grid_version,
+            "event_history_manifest": self.event_history_manifest,
+        }
+        if self.result_sha256 != digest(payload):
+            raise ContractError("theta_A V_cont content fingerprint is invalid")
 
 
 def compute_theta_a_vcont_truth_from_event_histories(
@@ -2496,10 +2509,12 @@ def compute_theta_a_vcont_truth_from_event_histories(
     payload = {
         "world_id": world.world_id, "world_version": world.world_version,
         "dgp_id": world.dgp_id, "dgp_version": world.dgp_version,
-        "theta_a_truth": theta_truth, "grid": grid,
+        "theta_a_truth": theta_truth,
+        "grid_id": grid.grid_id, "grid_version": grid.grid_version,
         "event_history_manifest": manifest_tuple,
     }
     result = ThetaAVContTruthBundle(
+        world.world_id, world.world_version, world.dgp_id, world.dgp_version,
         theta_truth, grid.grid_id, grid.grid_version,
         manifest_tuple, digest(payload),
     )
