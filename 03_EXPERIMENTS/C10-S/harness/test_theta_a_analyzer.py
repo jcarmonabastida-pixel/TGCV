@@ -67,6 +67,20 @@ class ThetaAObservationAnalyzerTests(unittest.TestCase):
         result = ThetaAObservationAnalyzer().analyze(self.evidence, contract)
         self.assertEqual(result.missing_target_histories, ("h2",))
         self.assertAlmostEqual(result.target_q_x_coverage, 0.8)
+        self.assertEqual(result.identification, "INDETERMINATE")
+        self.assertEqual(result.abstention_reason, "TARGET_QX_SUPPORT_INCOMPLETE")
+        self.assertIsNone(result.point_estimate)
+        self.assertEqual((result.lower_bound, result.upper_bound), (-1.0, 1.0))
+
+    def test_missing_realized_arm_returns_indeterminate_not_sealer_or_analyzer_crash(self):
+        rows = (self.evidence.rows[0],)
+        manifest = {"run_id": "run-1", "schema": "test"}
+        sparse = SealedThetaAEvidence(
+            "run-1", rows, manifest,
+            _hash({"manifest": manifest, "rows": rows}))
+        result = ThetaAObservationAnalyzer().analyze(sparse, self.contract)
+        self.assertEqual(result.identification, "INDETERMINATE")
+        self.assertEqual(result.abstention_reason, "REALIZED_GA_ARM_SUPPORT_MISSING")
         self.assertIsNone(result.point_estimate)
         self.assertEqual((result.lower_bound, result.upper_bound), (-1.0, 1.0))
 
