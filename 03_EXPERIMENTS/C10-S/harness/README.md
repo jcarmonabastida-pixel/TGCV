@@ -423,3 +423,12 @@ The selected arm/vector now has a deterministic EventHistory linkage: theta_a_ev
 ### Focal estimand firewall (current status)
 
 The legacy `focal_harness.py` evidence schema observes randomized `assignment_z` and `q_b1_observed` only. It does not carry a direct assignment to the joint `g_A0/g_A1` policies, the realized joint policy vector, or a policy-linked realized EventHistory. Consequently, its Analyzer estimates the package ITT only and must abstain on `theta_A`; direct-path declarations and common-regime assumptions cannot turn ITT-Z into the focal estimand. The direct-`g_A` assignment and EventHistory components in `c10s_synthetic_components.py` remain to be connected to the sealed observation path before a focal estimator can be implemented.
+
+
+### Direct g_A → realized EventHistory → S3 composition
+
+`compose_theta_a_s3_observation_records()` now joins each direct joint-policy assignment to the exact selected realized EventHistory and projects that history through its declared S3 configuration. The returned rows carry the assigned arm, joint-vector fingerprint, policy and common-regime fingerprints, history identity, S3 observation values, independent missingness states, configuration versions, and an explicit `POINT_SAMPLE` resolution marker.
+
+The composition enforces exact unit coverage across assignments, selected histories, and observation seeds; verifies the selected history ID, content hash, potential ID, unit, baseline history reference, world and DGP provenance; and rejects duplicate observation IDs. It deliberately excludes q_X masses, policy distributions, latent between-sample truth, potential outcomes, and the reserved theta_A oracle.
+
+This closes the data-composition gap only. It does **not** yet make the legacy focal Sealer/Analyzer accept this schema or identify strict temporal `V_cont`: point samples remain insufficient to establish continuity. The next integration step is a dedicated allow-listed focal observation schema and Sealer path, followed by Analyzer abstention or valid partial-identification bounds under the actual observation design.
