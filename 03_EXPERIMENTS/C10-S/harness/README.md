@@ -305,3 +305,18 @@ can be computed.
 
 Two source-level regression-test definitions cover deterministic replay, exact q_X*
 mass binding and rejection of non-normalized target masses. They have not been run.
+
+
+## Structural transformation space and Reach_H engine
+
+`StructuralReachabilityEngine` consumes a versioned `StructuralSnapshot` with an explicit finite transformation catalog and caller-supplied route candidates. Each transformation's `T_acc` state is kept separate from route-step `App`, typed relation states, other constitutive predicates and temporal feasibility. Route conjunction and alternative-route aggregation use three-valued logic `{1, 0, ?}`.
+
+- A confirmed admissible route is sufficient for `Reach_H=1`, even if another route is unknown.
+- `Reach_H=0` requires every relevant route to be refuted, exhaustive universe/relations/conditions/resources and completed, untruncated enumeration.
+- Missing coverage, unresolved predicates or incomplete enumeration preserve `?`; truncation cannot be represented as absence.
+- Duration beyond the predeclared horizon refutes that route, not the transformation's `T_acc` state.
+- Selection, execution, Outcome and Value are not inputs to this engine.
+
+`evaluate_synthetic_world_reachability()` binds one structural snapshot and route catalog to every `(unit_id, Z)` potential in the generated world. It validates exact roster × potential coverage and world/DGP/unit/version identity. Crucially, it does not translate `C_dep*`, `A_f*` or `D_f*` into `T_acc`, applicability or relations. The structural snapshots and route predicates must be supplied explicitly; the D2-to-structural mapping remains a separate, unresolved scientific input.
+
+Adversarial source tests cover confirmed-vs-unknown alternatives, the exhaustiveness requirement for Reach=0, accessibility vs applicability, horizon/truncation, and exact unit × Z binding. Tests have not been executed.
