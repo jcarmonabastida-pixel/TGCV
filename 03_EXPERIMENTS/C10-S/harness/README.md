@@ -320,3 +320,23 @@ mass binding and rejection of non-normalized target masses. They have not been r
 `evaluate_synthetic_world_reachability()` binds one structural snapshot and route catalog to every `(unit_id, Z)` potential in the generated world. It validates exact roster × potential coverage and world/DGP/unit/version identity. It also requires an explicit target-state universe for each unit × Z potential so that targets with no candidate route are not silently omitted. Crucially, it does not translate `C_dep*`, `A_f*` or `D_f*` into `T_acc`, applicability or relations. The structural snapshots and route predicates must be supplied explicitly; the D2-to-structural mapping remains a separate, unresolved scientific input.
 
 Adversarial source tests cover confirmed-vs-unknown alternatives, the exhaustiveness requirement for Reach=0, accessibility vs applicability, horizon/truncation, and exact unit × Z binding. Tests have not been executed.
+
+
+## Full structural ΔT_acc* (U/R/C/X) and separate ΔE_T
+
+`TransformationalDeltaEngine` now diffs a pair of comparable, versioned `TransformationalStateSnapshot` objects for the same world, DGP, unit, potential Z, boundary, context and catalog. The causal structural result is represented as four independent projections:
+
+- `ΔU*`: transformation identities and structural accessibility states;
+- `ΔR*`: typed relations/interfaces/dependencies;
+- `ΔC*`: constitutive conditions/configuration;
+- `ΔX*`: constitutive system/context state.
+
+`StructuralAtom` carries canonical identity, semantic type/version, three-valued structural state and explicit attributes. Exact canonical identity with stable semantic type is matched automatically; version change alone is not treated as functional change. Different IDs require an explicit one-to-one correspondence. An unresolved correspondence remains `?`; a semantic-type change is represented as retirement plus addition, not silently matched.
+
+Component coverage is explicit for U/R/C/X. An unmatched object is classified as added/removed only when both snapshots declare that component complete. Incomplete coverage, unresolved identity or non-comparable scope cannot be converted into zero change. `Outcome`, `Value`, selection and execution fields are rejected from structural atoms.
+
+`EvidenceStateSnapshot` is diffed independently into `EvidenceDelta` (sources, coverage, validity, provenance and versions). Evidence improvement/loss never enters `ΔT_acc*` or changes its truth by itself.
+
+`evaluate_d2_structural_deltas()` requires exactly one baseline/post structural pair for every roster unit × Z potential. It checks world/DGP/unit/Z identity and verifies the focal U-state against D2 baseline accessibility and the corresponding `A_f*` potential. It returns the full U/R/C/X delta; focal `D_f*` is not substituted for the full space delta.
+
+Source-level adversarial tests cover U/R/C/X separation, evidence-only change, unresolved matching, incomplete coverage, non-comparable snapshots, downstream-field exclusion, and D2 unit × potential binding. These test definitions have not been executed.
