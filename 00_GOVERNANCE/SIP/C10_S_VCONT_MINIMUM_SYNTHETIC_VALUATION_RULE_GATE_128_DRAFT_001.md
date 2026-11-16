@@ -3,12 +3,12 @@
 **ID:** C10-S-VCONT-MINIMUM-SYNTHETIC-VALUATION-RULE-128  
 **Fecha:** 2026-11-16  
 **Rama:** `research/c10-s-consolidation-draft` · PR #116 (Draft)  
-**Estado:** DEC-C10-099_102_PRESERVED / VALUE_DIMENSION_SELECTED / NORMATIVE_RULE_NOT_ACCEPTED / MINIMAL_RULE_PROPOSED_FOR_EXPLICIT_APPROVAL / NO_DESIGN_FREEZE / NO_IMPLEMENTATION / NO_EXECUTION  
-**Precedencia:** DEC-C10-068, DEC-C10-095…103; B1 Valuation Case §§12–17; B2–B3 §§3–7; Outcome/Value reconciliation §§2, 4; P179/P182/P183; Gates 126–127.
+**Estado:** DEC-C10-099_102_PRESERVED / VCONT_B1_MIN_EXPLICITLY_ACCEPTED_IN_CHAT / SYNTHETIC_ORDINAL_RULE_ACCEPTED_FOR_BOUNDED_DIMENSION / VALUE_GENERAL_OUT_OF_SCOPE / NO_DESIGN_FREEZE / NO_IMPLEMENTATION / NO_EXECUTION  
+**Precedencia:** DEC-C10-068, DEC-C10-095…103; B1 Valuation Case §§12–17; B2–B3 §§3–7; Outcome/Value reconciliation §§2, 4; P179/P182/P183; Gates 126–127. Aceptación explícita de VCONT-B1-MIN: 2026-11-16.
 
 ## 1. Dictamen ejecutivo
 
-DEC-C10-099 ya selecciona provisionalmente `V_cont` como única dimensión mínima de Value para la extensión sintética B y declara `V=(V_cont)), sin índice compuesto, pesos ni compensación. DEC-C10-100 fija su truth como fracción temporal de cumplimiento funcional por intervalos iguales y conserva bounds cuando existen intervalos desconocidos. No corresponde volver a seleccionar la dimensión ni inventar una segunda transformación numérica.
+DEC-C10-099 ya selecciona provisionalmente `V_cont` como única dimensión mínima de Value para la extensión sintética B y declara `V=(V_cont)`, sin índice compuesto, pesos ni compensación. DEC-C10-100 fija su truth como fracción temporal de cumplimiento funcional por intervalos iguales y conserva bounds cuando existen intervalos desconocidos. No corresponde volver a seleccionar la dimensión ni inventar una segunda transformación numérica.
 
 Sin embargo, DEC-C10-099 exige que el criterio normativo del DGP, las consecuencias potenciales y el mecanismo de valoración estén estipulados ex ante. Esa condición no está satisfecha por el mero hecho de que el Generator conozca `V_cont_truth`, ni por la fórmula temporal de DEC-C10-100. El DGP necesita declarar qué significa valorar la continuidad desde la perspectiva B1 y cuál es el alcance exacto de esa valoración.
 
@@ -35,9 +35,9 @@ La función técnica B1 (admitir conforme a ENABLED y exponer PROFILE) especific
 
 DEC-C10-095 fija una estipulación basal explícita, versionada y reservada por UE para la truth de `Need_preZ`; DEC-C10-096 fija el censo de validación de la población aplicable. Esas decisiones no definen una regla de valoración de V_cont ni deben confundirse con ella.
 
-## 3. Propuesta mínima de regla normativa — no aceptada todavía
+## 3. Regla normativa mínima VCONT-B1-MIN — aceptada para la dimensión acotada
 
-Se propone para el endpoint sintético focal la siguiente estipulación, limitada estrictamente a la única dimensión seleccionada:
+Se registra la aceptación explícita del usuario, recibida el 2026-11-16 en la conversación de trabajo, de la siguiente estipulación para el endpoint sintético focal, limitada estrictamente a la única dimensión seleccionada:
 
 > **Regla propuesta VCONT-B1-MIN:** En el mundo sintético B, desde la perspectiva normativa de B1 y respecto del propósito basal versionado, la consecuencia focal valorada es la continuidad temporal de la capacidad efectiva del servicio para admitir solicitudes conforme a ENABLED y exponer PROFILE. Para esta dimensión y solo para esta dimensión, un nivel mayor de continuidad no se valora peor que uno menor; niveles iguales representan la misma valoración en la dimensión. `V_cont_truth` es la representación completa de esa dimensión. No se añade transformación cardinal, peso, umbral, compensación ni agregación con otras consecuencias.
 
@@ -81,13 +81,13 @@ No se crean nuevos indicadores, escalas, pesos, umbrales, IDs de test, parámetr
 | B. Rechazar la preferencia débil por mayor continuidad | V_cont permanece como resultado técnico/constructo seleccionado, pero su interpretación valorativa queda sin regla; θ_A no sustenta Value |
 | C. Exigir que el endpoint represente consecuencias más amplias | El alcance unitario V_cont es insuficiente; habría que reabrir formalmente la selección/alcance de Value, sin añadir dimensiones por conveniencia |
 
-No se interpreta el silencio como aceptación. Gate 128 no registra una decisión nueva ni modifica DEC-C10-099.
+La aceptación conversacional resuelve la condición de aprobación de trabajo de Gate 128. No constituye por sí sola un nuevo Decision Record formal ni modifica DEC-C10-099; la regla queda aceptada como estipulación normativa del DGP para la dimensión unitaria acotada.
 
 ## 7. Dictamen y autorización
 
-**Resultado:** MINIMAL_RULE_CAN_BE_STIPULATED_IN_DGP / PROPOSED_ORDINAL_CRITERION_REQUIRES_EXPLICIT_USER_ACCEPTANCE / VALUE_INTERPRETATION_NOT_YET_CLOSED.
+**Resultado:** VCONT_B1_MIN_ACCEPTED_FOR_BOUNDED_SYNTHETIC_VALUE_DIMENSION / VALUE_INTERPRETATION_CLOSED_ONLY_AT_THIS_SCOPE / VALUE_CONTEXTUAL_GENERAL_NOT_ESTABLISHED.
 
-La opción A es la recomendación metodológica mínima porque conserva DEC-C10-099, evita un índice o función cardinal inventada y limita la afirmación a la dimensión realmente seleccionada. No debe propagarse como decisión aceptada hasta recibir aprobación explícita.
+La aceptación confirma la opción A: conserva DEC-C10-099, evita un índice o función cardinal inventada y limita la afirmación a la dimensión realmente seleccionada. El Generator deberá codificar la regla como estipulación normativa ex ante, versionada y separada de los mecanismos de accesibilidad; el Analyzer no recibirá truth ni parámetros reservados. El Evaluator podrá usarla en la adjudicación post-sellado.
 
 No Design Freeze, implementación ni ejecución. No se modifica main, DEC, C0, U_G, RMA, Evidence→Claim Matrix, STATUS o TGCV Core. No se ejecutan validadores, tests, generación, simulaciones, calibraciones o estimaciones.
 
