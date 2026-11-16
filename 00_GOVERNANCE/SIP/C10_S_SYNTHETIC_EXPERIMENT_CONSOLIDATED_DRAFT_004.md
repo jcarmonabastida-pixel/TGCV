@@ -524,3 +524,12 @@ Se completa la reconstrucción normativa y se prepara una única propuesta compl
 No modifica DEC-C10-068/099…104, DGP original, §51, código, schema, tests, RMA, Matrix, STATUS o Core. Sin Design Freeze, implementación ni ejecución.
 
 `scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
+
+
+## 321. Paquete A — aceptación de C1–C6 (2026-11-16)
+
+El responsable científico acepta conjuntamente C1–C6 de `C10_S_DEC-C10-102_COMPLEMENTARY_SCOPE_DECISION_PROPOSAL_DRAFT_001.md`. Registro: `C10_S_DEC-C10-102_COMPLEMENTARY_SCOPE_ACCEPTANCE_RECORD_DRAFT_001.md`.
+
+El crosswalk DEC-C10-102/Gate 154/R150-A/R151-A8/R152-A/R208-A queda **CLOSED_FOR_CURRENT_SYNTHETIC_DGP_LOGICAL_SCOPE**. Se preserva DEC-C10-102 y no se crea DEC-C10-105. V_cont queda delimitado a continuidad de admisión/no-admisión efectiva requerida por ENABLED; PROFILE sigue como obligación contractual declarativa, sin adjudicación temporal en el DGP actual; D_valid se evalúa separadamente. Se conserva operador estricto y {1,0,?} sin UNKNOWN por missingness/defectos.
+
+No cierra §51, materialización EventHistory/TruthBundle, D2, población/asignación, aislamiento/soporte, θ_A, Outcome/Value, potencia, tests, firewall técnico o Design Freeze. Sin autorización de implementación/ejecución.
