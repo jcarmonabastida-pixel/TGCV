@@ -2942,6 +2942,98 @@ def project_s3(history: EventHistory, config: S3ObservationConfig, *, seed: int)
 
 
 @dataclass(frozen=True)
+class ThetaAS3ObservationRecord:
+    """Analyzer-candidate row: realized g_A assignment joined to passive S3 only."""
+    run_id: str
+    unit_id: str
+    history_ref: str
+    assigned_arm: int
+    assigned_vector_sha256: str
+    policy_fingerprint: str
+    r_common_fingerprint: str
+    history_id: str
+    observation_id: str
+    observation_time: Decimal
+    capture_time: Decimal
+    ingestion_time: Decimal
+    enabled_observed: bool | None
+    admission_behavior_observed: AdmissionBehavior | None
+    profile_value_observed: ProfileValue | None
+    enabled_status: Literal["OBSERVED", "MISSING"]
+    admission_status: Literal["OBSERVED", "MISSING"]
+    profile_status: Literal["OBSERVED", "MISSING"]
+    profile_config_id: str
+    profile_config_version: str
+    s3_config_id: str
+    s3_config_version: str
+    temporal_resolution: Literal["POINT_SAMPLE"] = "POINT_SAMPLE"
+
+
+def compose_theta_a_s3_observation_records(
+    assignments: "ThetaAPolicyAssignmentBundle",
+    selection: "ThetaAPolicyHistorySelection",
+    histories: Sequence[EventHistory],
+    configs_by_history_ref: dict[str, S3ObservationConfig],
+    seeds_by_unit: dict[str, int],
+) -> tuple[ThetaAS3ObservationRecord, ...]:
+    """Join direct g_A assignment -> selected realized EventHistory -> S3 observations.
+
+    This is an observation-only projection. It deliberately does not export
+    potential outcomes, latent truth states between sample times, q_X masses,
+    policy distributions, or the reserved theta_A oracle.
+    """
+    if selection.assignment_bundle_sha256 != assignments.result_sha256:
+        raise ContractError("theta_A history selection does not bind to this assignment bundle")
+    if len(selection.selected_history_manifest) != len(assignments.assignments):
+        raise ContractError("theta_A selected-history manifest must cover assignments exactly")
+    history_by_id = {history.history_id: history for history in histories}
+    if len(history_by_id) != len(histories):
+        raise ContractError("duplicate EventHistory IDs in theta_A S3 composition")
+    selected = {unit_id: (history_id, content_sha, potential_id)
+                for unit_id, history_id, content_sha, potential_id
+                in selection.selected_history_manifest}
+    if len(selected) != len(selection.selected_history_manifest):
+        raise ContractError("duplicate units in theta_A selected-history manifest")
+    assignment_units = {row.unit_id for row in assignments.assignments}
+    if set(selected) != assignment_units or set(seeds_by_unit) != assignment_units:
+        raise ContractError("theta_A S3 composition requires exact assignment/selection/seed unit coverage")
+    records = []
+    for assignment in assignments.assignments:
+        history_id, content_sha, potential_id = selected[assignment.unit_id]
+        history = history_by_id.get(history_id)
+        if history is None:
+            raise ContractError("selected theta_A EventHistory is absent from supplied histories")
+        if (history.unit_id != assignment.unit_id
+                or history.potential_id != potential_id
+                or history.content_sha256 != content_sha
+                or history.history_ref != assignment.history_ref
+                or history.world_id != assignments.world_id
+                or history.world_version != assignments.world_version
+                or history.dgp_version != assignments.dgp_version):
+            raise ContractError("selected theta_A EventHistory does not match assignment identity/provenance")
+        config = configs_by_history_ref.get(assignment.history_ref)
+        if config is None:
+            raise ContractError("missing S3 configuration for theta_A baseline history")
+        observations = project_s3(history, config, seed=seeds_by_unit[assignment.unit_id])
+        for obs in observations:
+            records.append(ThetaAS3ObservationRecord(
+                history.run_id, assignment.unit_id, assignment.history_ref,
+                assignment.assigned_arm, assignment.assigned_vector_sha256,
+                assignment.policy_fingerprint, assignment.r_common_fingerprint,
+                history.history_id, obs.observation_id, obs.observation_time,
+                obs.capture_time, obs.ingestion_time, obs.enabled_observed,
+                obs.admission_behavior_observed, obs.profile_value_observed,
+                obs.enabled_status, obs.admission_status, obs.profile_status,
+                obs.profile_config_id, obs.profile_config_version,
+                obs.config_id, obs.config_version,
+            ))
+    observation_ids = [row.observation_id for row in records]
+    if len(observation_ids) != len(set(observation_ids)):
+        raise ContractError("theta_A S3 observation IDs must be unique")
+    return tuple(records)
+
+
+@dataclass(frozen=True)
 class ThetaAEvaluation:
     estimand_id: str
     truth: float
