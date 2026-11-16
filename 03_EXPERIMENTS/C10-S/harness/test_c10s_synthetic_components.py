@@ -518,6 +518,23 @@ class SyntheticComponentTests(unittest.TestCase):
         self.assertEqual(dict(incomplete.target_states)["S-TARGET-ABSENT"], "?")
 
 
+    def test_declared_absent_target_is_preserved_alongside_targets_with_routes(self):
+        snapshot = self.structural_snapshot()
+        route = StructuralRoute(
+            "ROUTE-PRESENT", "S-TARGET-PRESENT",
+            (StructuralRouteStep("TAU-1", "S0", "S1", 1, duration=1.0),),
+            (), 1, "FOCAL",
+        )
+        result = StructuralReachabilityEngine().evaluate(
+            snapshot, (route,), enumeration_complete=True,
+            target_states=("S-TARGET-PRESENT", "S-TARGET-ABSENT"),
+        )
+        self.assertEqual(dict(result.target_states), {
+            "S-TARGET-ABSENT": 0,
+            "S-TARGET-PRESENT": 1,
+        })
+
+
     def structural_state_snapshot(self, snapshot_id, timepoint, atoms, *, unit="UE-1", z=0,
                                    complete=(("U", True), ("R", True), ("C", True), ("X", True))):
         return TransformationalStateSnapshot(
