@@ -432,3 +432,10 @@ The legacy `focal_harness.py` evidence schema observes randomized `assignment_z`
 The composition enforces exact unit coverage across assignments, selected histories, and observation seeds; verifies the selected history ID, content hash, potential ID, unit, baseline history reference, world and DGP provenance; and rejects duplicate observation IDs. It deliberately excludes q_X masses, policy distributions, latent between-sample truth, potential outcomes, and the reserved theta_A oracle.
 
 This closes the data-composition gap only. It does **not** yet make the legacy focal Sealer/Analyzer accept this schema or identify strict temporal `V_cont`: point samples remain insufficient to establish continuity. The next integration step is a dedicated allow-listed focal observation schema and Sealer path, followed by Analyzer abstention or valid partial-identification bounds under the actual observation design.
+
+
+### Dedicated focal S3 Sealer
+
+`theta_a_observation_harness.py` adds a separate allow-listed sealing path for the direct-`g_A` S3 records. It validates run/unit/history identity, assignment-arm and joint-vector consistency within each unit, policy/common-regime fingerprints, independent missingness declarations, configuration identity/version, timestamp ordering, unique observation IDs, and the explicit `POINT_SAMPLE` resolution marker. Both assigned arms must be represented.
+
+The sealed schema contains only the declared `ThetaAS3ObservationRecord` fields. It excludes target-population masses, policy distributions, potential outcomes, latent EventHistory truth between samples, and the reserved theta_A oracle. This is a data-integrity boundary, not an identification claim: the Sealer does not establish continuous `V_cont`, estimate theta_A, or replace the legacy ITT-Z Sealer. The focal Analyzer and Evaluator integration remains outstanding.
