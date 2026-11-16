@@ -706,14 +706,25 @@ class FactorialObservationAnalyzer:
             if any((r["observation_status"] == "MISSING") != (r["observed_compliance"] is None)
                    for r in ordered):
                 raise ContractError("factorial interval missingness/value coding is inconsistent")
-            successes = sum(r["observed_compliance"] is True for r in ordered)
             missing = sum(r["observation_status"] == "MISSING" for r in ordered)
             n = len(ordered)
             if n == 0:
                 raise ContractError("factorial unit must have at least one interval")
             missing_count += missing
             total_count += n
-            lo, hi = successes / n, (successes + missing) / n
+            # V_cont is strict continuity across the complete horizon, not an
+            # average interval-compliance score. Any observed failure fixes 0;
+            # all-true observed intervals plus missing intervals leave {0,1}.
+            observed_failure = any(
+                r["observation_status"] == "OBSERVED" and r["observed_compliance"] is False
+                for r in ordered
+            )
+            if observed_failure:
+                lo, hi = 0.0, 0.0
+            elif missing:
+                lo, hi = 0.0, 1.0
+            else:
+                lo, hi = 1.0, 1.0
             probability = first["assignment_probability"]
             if not isinstance(probability, (int, float)) or isinstance(probability, bool) or not 0 < probability < 1:
                 raise ContractError("factorial cell assignment probability is invalid")
@@ -733,31 +744,30 @@ class FactorialObservationAnalyzer:
                 upper = sum(w * hi for w, lo, hi in items)
                 cell_lowers.append(lower)
                 cell_uppers.append(upper)
-                cell_means.append(lower if missing_count == 0 else None)
+                cell_means.append(lower if lower == upper else None)
         contrasts = []
-        if any(count == 0 for count in counts):
-            contrasts = [
-                FactorialContrast("THETA_A_GIVEN_M0", None, None, None, "NOT_IDENTIFIED"),
-                FactorialContrast("THETA_A_GIVEN_M1", None, None, None, "NOT_IDENTIFIED"),
-                FactorialContrast("THETA_AxM_INTERACTION", None, None, None, "NOT_IDENTIFIED"),
-            ]
-        else:
-            specs = (
-                ("THETA_A_GIVEN_M0", ((1, 1), (0, -1))),
-                ("THETA_A_GIVEN_M1", ((3, 1), (2, -1))),
-                ("THETA_AxM_INTERACTION", ((3, 1), (2, -1), (1, -1), (0, 1))),
-            )
-            for estimand_id, terms in specs:
-                lower = sum(cell_lowers[i] if sign > 0 else -cell_uppers[i]
-                            for i, sign in terms)
-                upper = sum(cell_uppers[i] if sign > 0 else -cell_lowers[i]
-                            for i, sign in terms)
-                if missing_count:
-                    point, status = None, "PARTIALLY_IDENTIFIED"
-                else:
-                    point = sum(sign * cell_means[i] for i, sign in terms)
-                    status = "IDENTIFIED"
-                contrasts.append(FactorialContrast(estimand_id, point, lower, upper, status))
+        specs = (
+            ("THETA_A_GIVEN_M0", ((1, 1), (0, -1))),
+            ("THETA_A_GIVEN_M1", ((3, 1), (2, -1))),
+            ("THETA_AxM_INTERACTION", ((3, 1), (2, -1), (1, -1), (0, 1))),
+        )
+        for estimand_id, terms in specs:
+            term_indices = tuple(i for i, _ in terms)
+            if any(cell_items[cell_order[i]] == [] for i in term_indices):
+                contrasts.append(FactorialContrast(
+                    estimand_id, None, None, None, "NOT_IDENTIFIED",
+                ))
+                continue
+            lower = sum(cell_lowers[i] if sign > 0 else -cell_uppers[i]
+                        for i, sign in terms)
+            upper = sum(cell_uppers[i] if sign > 0 else -cell_lowers[i]
+                        for i, sign in terms)
+            if all(cell_means[i] is not None for i in term_indices):
+                point = sum(sign * cell_means[i] for i, sign in terms)
+                status = "IDENTIFIED"
+            else:
+                point, status = None, "PARTIALLY_IDENTIFIED"
+            contrasts.append(FactorialContrast(estimand_id, point, lower, upper, status))
         provisional = FactorialAnalysisResult(
             evidence.run_id, contract.estimand_version, counts, tuple(cell_means),
             tuple(cell_lowers), tuple(cell_uppers), tuple(contrasts),
