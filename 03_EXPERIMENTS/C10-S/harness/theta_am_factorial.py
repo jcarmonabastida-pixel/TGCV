@@ -191,12 +191,17 @@ def generate_factorial_assignments(
 ) -> FactorialAssignmentBundle:
     """Randomize one of four A×M cells per unit with known positive probability."""
     config.validate(world)
+    refs = {row.history_ref for row in world.q_x}
     policies = []
-    for rows in (g_a0, g_a1):
+    for rows, label in ((g_a0, "g_A0"), (g_a1, "g_A1")):
         mapping = {row.history_ref: row for row in rows}
+        if len(mapping) != len(rows) or set(mapping) != refs:
+            raise ContractError(f"{label} must cover q_X* histories exactly")
         policies.append(mapping)
     probabilities = {row[0]: row[1:] for row in config.probability_by_history}
     certs = {row.history_ref: row for row in r_common_certificates}
+    if len(certs) != len(r_common_certificates) or set(certs) != refs:
+        raise ContractError("factorial assignment requires one r_common certificate per q_X* history")
     assignments = []
     for unit, qx in zip(world.units, world.q_x):
         p00, p10, p01, p11 = probabilities[qx.history_ref]
@@ -1027,8 +1032,19 @@ def evaluate_factorial_analysis(
         raise ContractError("factorial assignment bundle contains duplicate unit IDs")
     if {row["unit_id"] for row in evidence.rows} != set(assignment_by_unit):
         raise ContractError("factorial evidence does not cover the exact assigned-unit roster")
+    reserved_history_keys = {
+        (row[0], row[1], row[2], row[3], row[4], row[5])
+        for row in truth.event_history_manifest
+    }
     for row in evidence.rows:
         assigned = assignment_by_unit[row["unit_id"]]
+        history_key = (
+            row["history_ref"], row["assigned_vector_sha256"],
+            row["r_common_fingerprint"], row["m_arm"],
+            row["history_id"], row["history_content_sha256"],
+        )
+        if history_key not in reserved_history_keys:
+            raise ContractError("realized factorial EventHistory is absent from the reserved potential-history manifest")
         if (
             row["assigned_cell"] != assigned.cell_id
             or row["a_arm"] != assigned.a_arm
