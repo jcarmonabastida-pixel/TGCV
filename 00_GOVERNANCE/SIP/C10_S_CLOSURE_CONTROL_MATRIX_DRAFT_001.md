@@ -3306,3 +3306,19 @@ Artefacto rector: `C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md` §12. La
 | Consecuencia B1 / Value | OPEN / NOT MEASURABLE | No derivar de F*, O-CONF, accesibilidad o ejecución |
 
 Fuentes: DEC-C10-068/069, maestro §§174–178 y §216.2–216.3, contratos F* y servicio. Artefacto rector actualizado: C10_S_B1_VALUATION_CASE_RECONCILIATION_DRAFT_001.md §13 y maestro §279. No se inventa una operación ni se autoriza materialización o ejecución.
+
+
+## 146. Paquete A — reconciliación normativa DEC-C10-102 / Gate 154 (2026-11-16)
+
+| Control | Estado actualizado | Criterio / acción pendiente |
+|---|---|---|
+| Operador estricto DEC-C10-102 | ACCEPTED / PRESERVED | No modificar regla 1/0/? ni introducir gracia/tolerancia |
+| Gate 154 — alcance temporal A_B1/V_cont | ACCEPTED | Admisión/no-admisión requerida por ENABLED, incluida disponibilidad runtime constitutiva |
+| R150-A — PROFILE exposure | ACCEPTED CONTRACTUAL OBLIGATION | Se conserva como obligación B1; no se presume cumplida |
+| R151-A8 — PROFILE adjudicability | ACCEPTED LOGICAL LIMIT | Sin trayectoria truth independiente; no adjudicar continuidad por EventHistory ni inferirla de admisión |
+| R208-A — PROFILE/D_valid/runtime | ACCEPTED LOGICAL SCOPE | PROFILE declarativo versionado; D_valid separado; runtime solo si altera admisión |
+| Crosswalk normativo compuesto | PROPOSAL PREPARED / OWNER ACCEPTANCE PENDING | Aceptar C1–C6 de la propuesta complementaria antes de declarar cerrado |
+| §51 / temporalización material | OPEN | No queda resuelto por el paquete A |
+| EventHistory / IntervalAdjudication | LOGIC PARTIAL / MATERIALIZATION OPEN | Requiere §51 y materialización/conformidad posterior |
+
+Artefacto rector: `C10_S_DEC-C10-102_COMPLEMENTARY_SCOPE_DECISION_PROPOSAL_DRAFT_001.md`. No se modifica DEC-C10-102 ni se registra DEC complementaria como aceptada. La aprobación de C1–C6 cerraría solo el alcance normativo lógico del DGP sintético vigente; no Design Freeze, implementación ni ejecución.
