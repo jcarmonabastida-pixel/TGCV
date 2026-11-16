@@ -253,6 +253,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             interval_monitor_configs_by_history_ref=fixture["monitor_configs"],
             interval_monitor_seeds_by_unit=fixture["monitor_seeds"],
         )
+
     def test_dgp_world_flows_through_realized_interval_evidence_and_reserved_oracle(self):
         fixture = self._fixture("positive")
         result = self._run_pipeline(fixture)
@@ -262,6 +263,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(len(result.d2_histories_by_unit_z), 64)
         self.assertEqual(len(result.theta_a_truth.event_history_manifest), 64)
         self.assertAlmostEqual(result.theta_a_truth.theta_a_truth, 0.5)
+        self.assertGreater(result.analyzer_result.point_estimate, 0.0)
         # D2 has a distinct direct package path with the opposite sign.
         # Its ITT-Z must never be relabelled as the focal accessibility effect.
         self.assertAlmostEqual(result.d2_vcont_truth.finite_population_itt_z_v_cont, -0.5)
@@ -325,7 +327,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         )
 
     def test_positive_null_and_negative_focal_mechanisms_are_separately_generated(self):
-        expected_truth = {"positive": 0.5, "null": 0.0, "negative": -0.5}
+        expected_truth = {"null": 0.0, "negative": -0.5}
         results = {}
         for mode, truth in expected_truth.items():
             with self.subTest(theta_a_mode=mode):
@@ -340,7 +342,6 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 self.assertEqual(result.evaluator_result.analyzer_output_sha256, result.analyzer_result.output_sha256)
         # Non-null potential outcomes are arm-constant, so the finite-sample
         # HT contrast retains the sign whenever both randomized arms are present.
-        self.assertGreater(results["positive"].analyzer_result.point_estimate, 0.0)
         self.assertLess(results["negative"].analyzer_result.point_estimate, 0.0)
         # Under the null, a single randomized HT estimate may fluctuate; the
         # reserved oracle truth, not a forced zero estimate, defines the null.
