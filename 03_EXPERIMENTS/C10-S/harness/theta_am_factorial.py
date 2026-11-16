@@ -1018,6 +1018,8 @@ def evaluate_factorial_analysis(
         raise ContractError("factorial evidence digest is invalid at evaluation")
     if _canonical_sha256(_factorial_result_payload(result)) != result.output_sha256:
         raise ContractError("factorial Analyzer output digest is invalid")
+    if digest(_assignment_payload(assignment_bundle)) != assignment_bundle.result_sha256:
+        raise ContractError("factorial assignment bundle digest is invalid at evaluation")
     if result.estimand_version != truth.estimand_version:
         raise ContractError("factorial Analyzer and reserved truth estimand versions differ")
     if ((
