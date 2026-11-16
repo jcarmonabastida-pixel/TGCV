@@ -2591,9 +2591,14 @@ def theta_a_event_history_potential_id(assignment: "ThetaAPolicyAssignment") -> 
     """Canonical link from a realized g_A assignment to its reserved EventHistory."""
     if assignment.assigned_arm not in (0, 1):
         raise ContractError("theta_A EventHistory link requires a valid assigned policy arm")
+    # A functional potential is indexed by unit, assigned joint vector and
+    # common regime. The randomized arm selects a policy distribution; it is
+    # not itself a distinct functional potential when both policies support
+    # the same vector. Keep this identity aligned with
+    # generate_g_a_event_history_potentials().
     return (
-        f"THETA_A|A{assignment.assigned_arm}|"
-        f"{assignment.assigned_vector_sha256}|{assignment.r_common_fingerprint}"
+        f"{assignment.unit_id}:G_A:"
+        f"{assignment.assigned_vector_sha256}:{assignment.r_common_fingerprint}"
     )
 
 
