@@ -3,6 +3,7 @@
 Source-level regression only. This module is included in EP-02 but has not
 been executed under the current execution authorization boundary.
 """
+from dataclasses import replace
 from decimal import Decimal
 import unittest
 
@@ -26,6 +27,8 @@ from c10s_functional_history import (
     FunctionalHistoryRule,
 )
 from c10s_world_pipeline import materialize_c10s_complete_world_from_dgp
+from c10s_factorial_pipeline import materialize_c10s_factorial_world_from_dgp
+from theta_am_factorial import FactorialAssignmentConfig
 from theta_a_interval_observation import IntervalMonitorConfig
 
 
@@ -378,6 +381,73 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 self.assertEqual(result.evaluator_result.analyzer_output_sha256, result.analyzer_result.output_sha256)
         # Under the null, a single randomized HT estimate may fluctuate; the
         # reserved oracle truth, not a forced zero estimate, defines the null.
+
+
+    def test_factorial_a_by_m_recovers_both_simple_effects_and_interaction(self):
+        fixture = self._fixture("positive")
+        base = fixture["functional_config"]
+        # M is an independent synthetic functional pathway. It changes
+        # admission directly through a G_M rule and has no Vector4 coordinate.
+        m_rule = FunctionalHistoryRule(
+            rule_id="GM-ALTERNATIVE-FUNCTIONAL-ADMISSION-PATH",
+            source="G_M",
+            event_time=Decimal("0.5"),
+            causal_family="ALTERNATIVE_FUNCTIONAL_PATH_M",
+            provenance_ref="FUNCTIONAL-DGP#GM-ALTERNATIVE-FUNCTIONAL-ADMISSION-PATH",
+            set_admission="NO_ADMISSION",
+            factor_m_value=True,
+        )
+        functional = replace(base, rules=base.rules + (m_rule,))
+        probability_by_history = tuple(
+            (history_ref, 0.25, 0.25, 0.25, 0.25)
+            for history_ref in fixture["monitor_configs"]
+        )
+        assignment = FactorialAssignmentConfig(
+            mechanism_id="DIRECT-GA-X-ALT-M-FACTORIAL",
+            mechanism_version="1",
+            factor_m_id="ALT-FUNCTIONAL-PATH-M",
+            factor_m_version="1",
+            randomization_salt="DIRECT-GA-X-ALT-M-FACTORIAL-SALT",
+            probability_by_history=probability_by_history,
+        )
+        grids = {ref: fixture["grid"] for ref in fixture["monitor_configs"]}
+        result = materialize_c10s_factorial_world_from_dgp(
+            world_config=fixture["world_config"],
+            d2_config=fixture["d2_config"],
+            structural_config=fixture["structural_config"],
+            reach_config=fixture["reach_config"],
+            trajectory_config=fixture["trajectory_config"],
+            functional_history_config=functional,
+            initial_state_by_unit_z=fixture["initial_by_unit_z"],
+            initial_state_by_history=fixture["initial_by_history"],
+            grid=fixture["grid"],
+            g_a0=fixture["g_a0"],
+            g_a1=fixture["g_a1"],
+            feasible_vectors_by_history=fixture["feasible"],
+            r_common_certificates=fixture["r_common"],
+            assignment_config=assignment,
+            grids_by_history_ref=grids,
+            interval_monitor_configs_by_history_ref=fixture["monitor_configs"],
+            interval_monitor_seeds_by_unit=fixture["monitor_seeds"],
+            estimand_version="1",
+            evaluation_tolerance=2.0,
+        )
+        self.assertEqual(len(result.factorial_potential_histories), 128)
+        self.assertEqual(len(result.assignment_bundle.assignments), 32)
+        self.assertEqual(
+            {row.cell_id for row in result.assignment_bundle.assignments},
+            {"00", "10", "01", "11"},
+        )
+        truth = result.reserved_truth
+        self.assertAlmostEqual(truth.cell_means[0], 0.0)
+        self.assertAlmostEqual(truth.cell_means[1], 1.0)
+        self.assertAlmostEqual(truth.cell_means[2], 0.0)
+        self.assertAlmostEqual(truth.cell_means[3], 0.0)
+        self.assertAlmostEqual(truth.theta_a_given_m0, 1.0)
+        self.assertAlmostEqual(truth.theta_a_given_m1, 0.0)
+        self.assertAlmostEqual(truth.theta_am_interaction, -1.0)
+        self.assertEqual(len(result.analyzer_result.contrasts), 3)
+        self.assertTrue(result.evaluator_result.correct_adjudication)
 
 if __name__ == "__main__":
     unittest.main()
