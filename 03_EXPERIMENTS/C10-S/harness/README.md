@@ -439,3 +439,14 @@ This closes the data-composition gap only. It does **not** yet make the legacy f
 `theta_a_observation_harness.py` adds a separate allow-listed sealing path for the direct-`g_A` S3 records. It validates run/unit/history identity, assignment-arm and joint-vector consistency within each unit, policy/common-regime fingerprints, independent missingness declarations, configuration identity/version, timestamp ordering, unique observation IDs, and the explicit `POINT_SAMPLE` resolution marker. Both assigned arms must be represented.
 
 The sealed schema contains only the declared `ThetaAS3ObservationRecord` fields. It excludes target-population masses, policy distributions, potential outcomes, latent EventHistory truth between samples, and the reserved theta_A oracle. This is a data-integrity boundary, not an identification claim: the Sealer does not establish continuous `V_cont`, estimate theta_A, or replace the legacy ITT-Z Sealer. The focal Analyzer and Evaluator integration remains outstanding.
+
+
+### Observation-only focal Analyzer and target-population contract
+
+`theta_a_analyzer.py` consumes only `SealedThetaAEvidence` plus an explicit `ThetaAObservationAnalysisContract`. The contract carries the finite target support and normalized `q_X^*` masses, together with the q_X and direct-assignment bundle fingerprints. The S3 records now carry those two fingerprints and the realized assignment probability; the focal Sealer validates their presence and the probability domain.
+
+The Analyzer verifies fingerprint agreement, target-support compatibility, unit-level assignment/history consistency, positive assignment probabilities, and representation of both randomized arms. It reports target-mass coverage and missing target histories.
+
+Crucially, the current S3 temporal resolution remains `POINT_SAMPLE`. These records do not reveal whether strict interval continuity held between observations. For binary strict-continuity `V_cont`, with no approved temporal measurement model or additional restrictions, each arm-specific target mean remains in [0,1] and the sharp logical contrast bound is [-1,1]. The Analyzer therefore returns `PARTIALLY_IDENTIFIED`, no point estimate, and the explicit reason `STRICT_VCONT_NOT_OBSERVED_BY_POINT_SAMPLES`. This is an honest but non-informative bound; it is not evidence for or against a causal effect.
+
+Regression specifications were added in `test_theta_a_analyzer.py` for the trivial sharp bound, q_X fingerprint mismatch, incomplete target support, and invalid q_X normalization. They have **not** been executed. The independent Evaluator/oracle comparison and a measurement design capable of narrowing the bounds remain outstanding.
