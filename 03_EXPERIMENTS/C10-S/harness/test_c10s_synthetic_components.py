@@ -15,7 +15,8 @@ from c10s_synthetic_components import (
     generate_d2_structural_potential_pairs, D2ReachStepTemplate, D2ReachRouteTemplate,
     D2ReachGenerationConfig, evaluate_d2_structural_reachability,
     D2TrajectoryGenerationConfig, evaluate_d2_potential_trajectories,
-    evaluate_d2_vcont_potential_truth,
+    evaluate_d2_vcont_potential_truth, compute_theta_a_vcont_truth_from_event_histories,
+    digest,
     FunctionalState, FunctionalTransition, IntervalGrid,
     JointPolicyHistory, QXHistoryMass, RCommonPairCertificate,
     S3SequenceKernelRow, S3ObservationConfig, adjudicate_intervals,
@@ -794,6 +795,56 @@ class SyntheticComponentTests(unittest.TestCase):
             row.v_cont_truth == (1.0 if row.z == 0 else 0.0)
             for row in vcont_truth.potential_truth
         ))
+
+        vector_0 = (0.0, 0.0, 0.0, 0.0)
+        vector_1 = (1.0, 1.0, 1.0, 1.0)
+        g_a0 = tuple(JointPolicyHistory(row.history_ref, ((vector_0, 1.0),)) for row in world.q_x)
+        g_a1 = tuple(JointPolicyHistory(row.history_ref, ((vector_1, 1.0),)) for row in world.q_x)
+        feasible = {row.history_ref: (vector_0, vector_1) for row in world.q_x}
+        r_common = tuple(
+            RCommonPairCertificate(row.history_ref, "R-COMMON", "001",
+                                   "R-COMMON-FP", "R-COMMON-FP", "COMMON_FIXED")
+            for row in world.q_x
+        )
+        histories_by_policy = {}
+        for qx in world.q_x:
+            unit_id = next(unit.unit_id for unit in world.units
+                           if unit.d2_baseline.baseline_history_ref == qx.history_ref)
+            for vector in (vector_0, vector_1):
+                is_zero_policy = vector == vector_0
+                history = EventHistory(
+                    history_id=f"{unit_id}-POLICY-{int(is_zero_policy)}",
+                    history_version="001", run_id="RUN-THETA",
+                    world_id=world.world_id, world_version=world.world_version,
+                    dgp_version=world.dgp_version, unit_id=unit_id,
+                    potential_id=f"{unit_id}-POLICY-POTENTIAL-{int(is_zero_policy)}",
+                    adjudication_rules_version="AB1-001",
+                    support_start=Decimal("0"), support_end=Decimal("4"),
+                    initial_post_z_state=(
+                        FunctionalState(False, "NO_ADMISSION") if is_zero_policy
+                        else FunctionalState(True, "NO_ADMISSION")
+                    ),
+                    transitions=(), expected_transition_ids=(),
+                    scope_declared_complete=True, generation_complete=True,
+                    representation_complete=True,
+                )
+                histories_by_policy[(
+                    qx.history_ref, digest(vector), "R-COMMON-FP",
+                )] = history
+        theta_vcont = compute_theta_a_vcont_truth_from_event_histories(
+            world, world.q_x, g_a0, g_a1, feasible, r_common,
+            histories_by_policy, vcont_grid,
+            estimand_version="001", outcome_version="VCONT-001",
+        )
+        self.assertEqual(theta_vcont.theta_a_truth.outcome_id, "V_CONT")
+        self.assertAlmostEqual(theta_vcont.theta_a_truth.theta_a_truth, -1.0)
+        with self.assertRaises(ContractError):
+            compute_theta_a_vcont_truth_from_event_histories(
+                world, world.q_x, g_a0, g_a1, feasible, r_common,
+                {key: value for key, value in histories_by_policy.items()
+                 if key[1] != digest(vector_1)},
+                vcont_grid, estimand_version="001", outcome_version="VCONT-001",
+            )
         self.assertTrue(all(
             row.trajectory_status == "NOT_REACHABLE"
             for row in trajectories.trajectories if row.z == 0 and row.target_state == "TARGET-FOCAL"
