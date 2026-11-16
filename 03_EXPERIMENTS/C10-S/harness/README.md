@@ -487,8 +487,11 @@ for every roster unit. `generate_g_a_event_history_potentials()` materializes on
 history for every distinct positive-mass joint vector supported by either
 `g_A0` or `g_A1`, under the certified common regime. The keys preserve the
 existing oracle contract: history reference, vector fingerprint, and common-regime
-fingerprint. Initial functional states are explicit inputs and must cover the
-complete D2 potential roster and q_X* support.
+fingerprint. The realized-history selector uses the matching unit/vector/regime
+potential identity; randomized arm is not treated as a second functional potential
+when the same vector is supported by both policy distributions. Initial functional
+states are explicit inputs and must cover the complete D2 potential roster and
+q_X* support.
 
 `materialize_c10s_complete_world_from_dgp()` is the integrated entry point. It
 generates the structural world, both sets of functional potential histories, and
