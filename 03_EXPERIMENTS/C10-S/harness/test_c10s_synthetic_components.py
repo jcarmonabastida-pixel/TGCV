@@ -20,7 +20,7 @@ class SyntheticComponentTests(unittest.TestCase):
             world_id="WORLD-001", world_version="001", dgp_version="DGP-001",
             unit_id="UE-001", potential_id="Z0_POLICY0",
             adjudication_rules_version="AB1-001",
-            support_start=Decimal("0"), support_end=Decimal("1"),
+            support_start=Decimal("0"), support_end=Decimal("4"),
             initial_post_z_state=initial or FunctionalState(False, "NO_ADMISSION"),
             transitions=tuple(transitions), expected_transition_ids=tuple(
                 event.transition_id for event in transitions
@@ -36,7 +36,7 @@ class SyntheticComponentTests(unittest.TestCase):
             FunctionalTransition("T-1", Decimal("2"), before, failed, "RUNTIME_FAILURE", "TRUTH-PROV-1"),
         ))
         result = adjudicate_intervals(
-            history, IntervalGrid((Decimal("0"), Decimal("0.2"), Decimal("0.4"), Decimal("0.6"), Decimal("0.8"), Decimal("1")), "GRID", "001")
+            history, IntervalGrid((Decimal("0"), Decimal("2"), Decimal("4")), "GRID", "001")
         )
         self.assertEqual(result.interval_truth, (1, 0))
         self.assertEqual(result.v_cont_truth, 0.5)
@@ -233,7 +233,7 @@ class SyntheticComponentTests(unittest.TestCase):
                     world_version=manifest.world_version, dgp_version="DGP-001",
                     unit_id=unit_id, potential_id="REALIZED_SELECTED",
                     adjudication_rules_version="AB1-001",
-                    support_start=Decimal("0"), support_end=Decimal("4"),
+                    support_start=Decimal("0"), support_end=Decimal("1"),
                     initial_post_z_state=state, transitions=(),
                     expected_transition_ids=(), scope_declared_complete=True,
                     generation_complete=True, representation_complete=True,
@@ -243,7 +243,7 @@ class SyntheticComponentTests(unittest.TestCase):
         def grid_factory(histories):
             return {
                 history.history_id: IntervalGrid(
-                    (Decimal("0"), Decimal("2"), Decimal("4")), "GRID", "001"
+                    (Decimal("0"), Decimal("0.2"), Decimal("0.4"), Decimal("0.6"), Decimal("0.8"), Decimal("1")), "GRID", "001"
                 ) for history in histories
             }
 
