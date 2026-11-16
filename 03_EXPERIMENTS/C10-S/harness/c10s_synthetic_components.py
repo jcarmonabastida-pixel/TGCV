@@ -2247,6 +2247,16 @@ class SyntheticWorldBuilder:
 
 
 
+    def evaluate_complete_vcont_truth(
+        self,
+        world: SyntheticWorldBundle,
+        histories_by_unit_z: dict[tuple[str, int], EventHistory],
+        grid: IntervalGrid,
+    ) -> D2VContTruthBundle:
+        """Attach reserved B1 V_cont truth to an already materialized D2 world."""
+        return evaluate_d2_vcont_potential_truth(world, histories_by_unit_z, grid)
+
+
 @dataclass(frozen=True)
 class JointPolicyHistory:
     history_ref: str
