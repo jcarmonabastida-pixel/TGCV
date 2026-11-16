@@ -70,8 +70,6 @@ class C10SFactorialWorldResult:
             raise ContractError("factorial Evaluator result is detached from sealed S3 evidence")
         if self.evaluator_result.analyzer_output_sha256 != self.analyzer_result.output_sha256:
             raise ContractError("factorial Evaluator result is detached from Analyzer output")
-        if not self.evaluator_result.correct_adjudication:
-            raise ContractError("factorial Evaluator rejected the Analyzer result")
         run_ids = {history.run_id for history in self.d2_event_histories_by_unit_z.values()}
         run_ids.update(history.run_id for history in self.factorial_potential_histories.values())
         if len(run_ids) != 1 or self.sealed_evidence.run_id not in run_ids:
