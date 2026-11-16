@@ -129,7 +129,7 @@ class IntervalObservationTests(unittest.TestCase):
 
     def test_interval_missingness_abstains_and_reports_measurement_only_bounds(self):
         sealed, result = self._focal_analysis(missing_arm1=True)
-        self.assertEqual(result.identification, "PARTIALLY_IDENTIFIED")
+        self.assertEqual(result.identification, "INDETERMINATE")
         self.assertIsNone(result.point_estimate)
         self.assertEqual(result.abstention_reason, "INTERVAL_MISSINGNESS_REQUIRES_ABSTENTION")
         self.assertEqual(result.lower_bound, -1.0)
