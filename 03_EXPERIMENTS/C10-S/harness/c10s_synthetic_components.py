@@ -1188,6 +1188,112 @@ def evaluate_d2_structural_deltas(
     return tuple(results)
 
 
+
+@dataclass(frozen=True)
+class D2StructuralGenerationConfig:
+    """Explicit, versioned bridge from D2 focal admission to the focal U atom.
+
+    Non-focal U/R/C/X atoms are a declared structural fixture and remain
+    invariant in this minimal adapter. No C_dep* field is promoted to T_acc,
+    applicability, relation or context.
+    """
+    config_id: str
+    config_version: str
+    focal_transformation_id: str
+    focal_semantic_version: str
+    boundary_id: str
+    context_id: str
+    catalog_version: str
+    invariant_atoms: tuple[StructuralAtom, ...]
+    component_complete: tuple[tuple[StructuralComponent, bool], ...] = (
+        ("U", True), ("R", True), ("C", True), ("X", True),
+    )
+    evidence_version: str = "C10S-TRUTH-PROJECTION-001"
+    adjudication_version: str = "C10S-STRUCTURAL-ADJUDICATION-001"
+
+    def validate(self) -> None:
+        if not all((self.config_id, self.config_version, self.focal_transformation_id,
+                    self.focal_semantic_version, self.boundary_id, self.context_id,
+                    self.catalog_version, self.evidence_version, self.adjudication_version)):
+            raise ContractError("D2 structural generation config identity and versions are mandatory")
+        if any(atom.component not in ("U", "R", "C", "X") for atom in self.invariant_atoms):
+            raise ContractError("invariant structural catalog contains an invalid component")
+        if any(atom.canonical_id == self.focal_transformation_id for atom in self.invariant_atoms):
+            raise ContractError("focal transformation must be generated from D2 potential truth, not duplicated in catalog")
+        ids = [atom.canonical_id for atom in self.invariant_atoms]
+        if len(ids) != len(set(ids)):
+            raise ContractError("invariant structural catalog IDs must be unique")
+        for atom in self.invariant_atoms:
+            atom.validate()
+        completeness = dict(self.component_complete)
+        if set(completeness) != {"U", "R", "C", "X"} or len(self.component_complete) != 4:
+            raise ContractError("structural generator must explicitly declare U/R/C/X completeness")
+        if any(type(value) is not bool for value in completeness.values()):
+            raise ContractError("structural component completeness must be Boolean")
+
+
+def generate_d2_structural_potential_pairs(
+    world: "SyntheticWorldBundle",
+    config: D2StructuralGenerationConfig,
+) -> dict[tuple[str, int], D2StructuralPotentialPair]:
+    """Materialize baseline/post structural truth for every unit × Z potential."""
+    world.validate()
+    config.validate()
+    invariant = tuple(config.invariant_atoms)
+    evidence_hash = digest({
+        "world_id": world.world_id, "world_version": world.world_version,
+        "dgp_id": world.dgp_id, "dgp_version": world.dgp_version,
+        "structural_config": config,
+    })
+    pairs: dict[tuple[str, int], D2StructuralPotentialPair] = {}
+    for unit in world.units:
+        for z in (0, 1):
+            stage = unit.d2_potentials.potentials_by_z[z]
+            focal_baseline = StructuralAtom(
+                "U", config.focal_transformation_id, "TRANSFORMATION",
+                config.focal_semantic_version,
+                1 if unit.d2_baseline.focal_accessible_pre else 0,
+                (("role", "D2_FOCAL"), ("boundary_id", config.boundary_id)),
+            )
+            focal_post = StructuralAtom(
+                "U", config.focal_transformation_id, "TRANSFORMATION",
+                config.focal_semantic_version,
+                1 if stage.a_f_post else 0,
+                (("role", "D2_FOCAL"), ("boundary_id", config.boundary_id)),
+            )
+            baseline_atoms = (focal_baseline,) + invariant
+            post_atoms = (focal_post,) + invariant
+            common = (
+                world.world_id, world.world_version, world.dgp_id, world.dgp_version,
+                unit.unit_id, z, config.boundary_id, config.context_id, config.catalog_version,
+            )
+            baseline_snapshot = TransformationalStateSnapshot(
+                f"{world.world_id}:{unit.unit_id}:Z{z}:BASE",
+                config.config_version, *common[:4], common[4], common[5], "BASELINE",
+                common[6], common[7], common[8], baseline_atoms, config.component_complete,
+            )
+            post_snapshot = TransformationalStateSnapshot(
+                f"{world.world_id}:{unit.unit_id}:Z{z}:POST",
+                config.config_version, *common[:4], common[4], common[5], "POST",
+                common[6], common[7], common[8], post_atoms, config.component_complete,
+            )
+            baseline_snapshot.validate()
+            post_snapshot.validate()
+            evidence = EvidenceStateSnapshot(
+                f"{world.world_id}:{unit.unit_id}:Z{z}:STRUCTURAL-TRUTH",
+                (f"{unit.d2_baseline.baseline_history_ref}:STRUCTURAL-CATALOG",),
+                "COMPLETE" if all(value for _, value in config.component_complete) else "PARTIAL",
+                "VALID", evidence_hash, config.evidence_version, config.adjudication_version,
+            )
+            pairs[(unit.unit_id, z)] = D2StructuralPotentialPair(
+                unit.unit_id, z, config.focal_transformation_id,
+                baseline_snapshot, post_snapshot, evidence, evidence,
+            )
+    # The ordinary delta evaluator remains the single adjudication path.
+    evaluate_d2_structural_deltas(world, pairs)
+    return pairs
+
+
 @dataclass(frozen=True)
 class SyntheticWorldConfig:
     """Explicit finite target-world fixture; masses are q_X* inputs, not sample frequencies."""
