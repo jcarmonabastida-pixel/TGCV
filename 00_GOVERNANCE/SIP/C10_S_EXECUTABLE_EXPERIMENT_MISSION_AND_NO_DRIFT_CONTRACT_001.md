@@ -14,7 +14,7 @@ El experimento debe construir mundos con verdad conocida, aplicar intervenciones
 - distingue el efecto total de asignación/paquete del efecto atribuible a accesibilidad y de vías alternativas o directas;
 - detecta efectos nulos, positivos, negativos, heterogeneidad, interacciones, interferencia, falta de soporte y no-identificación;
 - produce bounds o abstención cuando no existe identificación;
-- conecta la contribución a accesibilidad con Outcome y Value contextual, sin identificar automáticamente V_cont, Outcome técnico o admisión con Value.
+- conecta la contribución a accesibilidad con Outcome y Value contextual. Aplica expresamente VCONT-B1-MIN, aceptada en Gate 128: V_cont es la dimensión sintética acotada de continuidad funcional valorada desde la perspectiva B1; no equivale a Value general, beneficio neto ni a otras dimensiones no instanciadas.
 
 El resultado no está predeterminado. C10-S debe poder producir evidencia favorable, limitante, refutatoria o no concluyente para la hipótesis causal, conforme a los estimandos y criterios preespecificados.
 
