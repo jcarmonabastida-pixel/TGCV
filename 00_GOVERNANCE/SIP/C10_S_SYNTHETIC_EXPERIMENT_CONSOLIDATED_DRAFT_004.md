@@ -363,3 +363,16 @@ El usuario acepta la convención versionada: para b0=t0 < … < bK=T*, I_k=[b_{k
 Se acepta la regla conservadora: se mantiene {1,0,?} y la propagación a bounds de DEC-C10-100; no se genera ? en historias completas y determinadas. UNKNOWN funcional requiere una estipulación DGP futura, explícita y tipada, que defina indeterminación intrínseca de A_B1, condición, alcance y provenance. S3 missingness/lag/error/cobertura, omisiones de DGP/harness, eventos/timestamps no modelados, fallo de observación o defectos de implementación no son UNKNOWN funcional.
 
 DEC-C10-100…103 permanecen vigentes salvo esta especificación complementaria. No se autoriza código, schemas, tests, materialización, generación, simulación, calibración, estimación, ejecución ni Design Freeze. scientific_execution=false; execution_authorized=false.
+
+
+## 310. Gate 138 — crosswalk DEC → Generator → TruthBundle → Sealer → Analyzer → Evaluator (2026-11-16)
+
+**Registro:** 00_GOVERNANCE/SIP/C10_S_DECISION_TO_GENERATOR_TRUTHBUNDLE_SEALER_ANALYZER_EVALUATOR_CONFORMANCE_GATE_138_DRAFT_001.md. **Addendum al plan:** 00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_138_CONFORMANCE_CROSSWALK_ADDENDUM_DRAFT_001.md.
+
+Gate 138 confirma que el harness integrado conserva una arquitectura útil de DGP sintético con potenciales Z/G, TruthBundle separado, proyección observacional, Sealer, Analyzer y Evaluator, pero todavía no es conforme con la semántica confirmatoria completa de V_cont. Generator produce ENABLED/PROFILE y conjunción binaria por slot, sin event history fechado que acredite continuidad estricta intraintervalo. provision_ok es un sorteo binario, no una cronología separada de provisión e instalación. TruthBundle mantiene arrays actuales binarios, sin truth tri-valuada ni bounds individuales. Analyzer opera en ruta puntual bajo S3 perfecto/completo y se abstiene ante missingness/medición no identificada; no implementa bounds V_cont ni corrección por error. Evaluator valida integridad y compara ITT-Z/ITT-G escalares, pero no evalúa recuperación/cobertura de bounds V_cont.
+
+Se conserva el firewall: Projector/Sealer no reciben TruthBundle; Analyzer consume solo evidencia sellada; Evaluator abre truth tras verificar la salida. S3 missingness/error/lag no modifica truth funcional. DEC-C10-104 ya fija frontera semiabierta y regla conservadora de UNKNOWN: historias completas/determinadas producen 1/0; ? requiere estipulación DGP futura explícita.
+
+El baseline ideal se reutiliza solo para los estimandos puntuales ya implementados bajo S3 perfecto/completo. No acredita continuidad estricta, fronteras DEC-C10-104, bounds V_cont ni identificación de θ_A. No se ejecutaron tests, validadores ni simulaciones.
+
+**Siguiente:** especificación lógica mínima de conformidad event history → TruthBundle → bounds → Analyzer/Evaluator; después decidir plan de implementación. Sin cambios de código/schema ni ejecución. scientific_execution=false; execution_authorized=false.
