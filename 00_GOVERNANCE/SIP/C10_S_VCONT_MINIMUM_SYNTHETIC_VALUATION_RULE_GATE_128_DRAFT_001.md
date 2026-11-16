@@ -10,9 +10,9 @@
 
 DEC-C10-099 ya selecciona provisionalmente `V_cont` como única dimensión mínima de Value para la extensión sintética B y declara `V=(V_cont)`, sin índice compuesto, pesos ni compensación. DEC-C10-100 fija su truth como fracción temporal de cumplimiento funcional por intervalos iguales y conserva bounds cuando existen intervalos desconocidos. No corresponde volver a seleccionar la dimensión ni inventar una segunda transformación numérica.
 
-Sin embargo, DEC-C10-099 exige que el criterio normativo del DGP, las consecuencias potenciales y el mecanismo de valoración estén estipulados ex ante. Esa condición no está satisfecha por el mero hecho de que el Generator conozca `V_cont_truth`, ni por la fórmula temporal de DEC-C10-100. El DGP necesita declarar qué significa valorar la continuidad desde la perspectiva B1 y cuál es el alcance exacto de esa valoración.
+Sin embargo, la fórmula temporal de DEC-C10-100 no determina por sí sola el criterio normativo. El Gate propuso una estipulación interna del mundo sintético, que fue aceptada explícitamente por el usuario el 2026-11-16. La aceptación resuelve la regla ordinal mínima para el alcance acotado; no demuestra validez de medición, identificación causal ni suficiencia de V_cont para Value contextual general.
 
-**Dictamen:** la regla puede ser una estipulación normativa interna del mundo sintético. No requiere una autoridad humana o externa real ni una función de utilidad cardinal. Pero su contenido no puede deducirse de ENABLED/PROFILE ni ser introducido unilateralmente como decisión aceptada. Se formula una propuesta mínima para aprobación explícita; hasta entonces, la interpretación de `V_cont` como dimensión de Value permanece condicional.
+**Dictamen actualizado:** VCONT-B1-MIN está aceptada como estipulación normativa ex ante de la dimensión unitaria de continuidad funcional. Su incorporación al DGP y la evaluación de su aplicación permanecen pendientes; la interpretación de Value general sigue fuera de alcance.
 
 ## 2. Decisiones y límites ya fijados
 
