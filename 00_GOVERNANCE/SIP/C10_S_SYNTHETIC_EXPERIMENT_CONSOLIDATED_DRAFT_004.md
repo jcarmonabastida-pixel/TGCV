@@ -245,3 +245,18 @@ DEC-C10-099…102 mantienen la regla temporal de V_cont; VCONT-B1-MIN está acep
 No se modifica código, schema, roster, test register, DEC, C0, U_G, RMA, Evidence→Claim Matrix, STATUS, Core o main. No se ejecutan validadores, tests, workflows, generación, simulaciones, calibraciones, estimaciones o experimentos. No Design Freeze; `scientific_execution=false`; `execution_authorized=false`.
 
 **Siguiente operación:** Gate 130 — reconciliar los contratos existentes de q_X*, g_A0/g_A1 y r_common frente al ledger §16.223 y los potenciales §16.226, para identificar el mínimo contrato operativo reutilizable y el bloqueo exacto que impide materializar theta_a_truth, sin crear políticas, historias, masas, parámetros, IDs o escenarios.
+
+
+## 300. Gate 130 — reconciliación de q_X*, g_A0/g_A1 y r_common con contratos existentes (2026-11-16)
+
+**Registro:** `00_GOVERNANCE/SIP/C10_S_QX_GA_RCOMMON_EXISTING_CONTRACT_RECONCILIATION_GATE_130_DRAFT_001.md`.  
+**Addendum al plan:** `00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_130_QX_GA_RCOMMON_RECONCILIATION_ADDENDUM_DRAFT_001.md`.  
+**Estado:** CONTRACT_SCHEMAS_ALREADY_DEFINED / q_X_HISTORY_ROWS_AND_MASSES_NOT_MATERIALIZED / g_A_PAIR_NOT_SELECTED_OR_VERSIONED / r_COMMON_SEMANTICS_DEFINED_BUT_NOT_CERTIFIED_PER_HISTORY / MATERIALIZATION_AUTHORIZATION_ABSENT / NO_NEW_CONTRACT_REQUIRED / NO_DESIGN_FREEZE.
+
+Gate 130 determina que no falta otra especificación narrativa para los objetos que impiden materializar theta_a_truth. §16.223 ya define el ledger padre por celda; §16.232 (Gate 79) el registro hijo por historia y controles de q_X*/soporte/r_common; §§16.231 y 16.236 (Gates 78/86) cierran la forma conjunta y condicionada por historia de g_A0/g_A1, la definición simbólica de q_X* y el significado operativo de r_common. §16.233 (Gate 80) ya constató que el roster B1/UE no está aprobado/materializado, faltan historias X/H0/C_c y snapshots basales, y no existe autorización de materialización en este ciclo.
+
+q_X* está definido como distribución objetivo conjunta pre-Z, pero carece de roster causal, filas de historia y masas. La forma de g_A está definida, pero no existe par operativo versionado: los extremos deterministas (0,0,0,0)/(1,1,1,1) de §16.230.2 no fueron ratificados por §16.231.1 y §16.236.2, y no hay alternativa aprobada. r_common tiene regla semántica definida, pero no puede certificarse por historia/celda sin historias y potenciales versionados. Factibilidad estructural, evaluabilidad contrafactual del Generator y soporte de identificación del Analyzer permanecen separados.
+
+La dependencia de theta_a_truth es: roster aprobado → historias/snapshots pre-Z → q_X* y masas → par g_A → factibilidad/soporte conjunto → r_common acreditable → potenciales focales. El Generator no debe calcular theta_a_truth desde G y el Analyzer no debe confundir asignación G con intervención focal. No se crean políticas, historias, masas, parámetros, escenarios ni tests; no se modifican código, schema, DEC, C0, U_G, RMA, Evidence→Claim Matrix, STATUS, Core o main. No ejecución; `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente operación:** Gate 131 — auditoría de suficiencia de medición/observación de V_cont mediante S3, reutilizando DEC-C10-099…102, el contrato integrado V_cont, P182/P183 y la matriz temporal existente. No fijar T*, Δ, K, tolerancias, tasas de error o calibración por conveniencia; no duplicar matrices ni ejecutar.
