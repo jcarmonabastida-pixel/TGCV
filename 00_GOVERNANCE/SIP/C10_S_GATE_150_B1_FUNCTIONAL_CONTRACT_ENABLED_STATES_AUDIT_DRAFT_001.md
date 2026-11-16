@@ -131,3 +131,22 @@ Mantener OPEN:
 `scientific_execution=false`  
 `execution_authorized=false`  
 `implementation_authorized=false`
+
+
+## 9. Addendum — aceptación expresa R150-A (2026-11-16)
+
+El usuario acepta expresamente R150-A en los siete términos enumerados en §7. Se registra la aceptación semántica y lógica para el DGP sintético:
+
+1. B1 contiene dos obligaciones funcionales: comportamiento de admisión condicionado por ENABLED y exposición del PROFILE declarado.
+2. ENABLED=true requiere admitir y exponer PROFILE, con PROFILE∈{STANDARD, READ_ONLY} por RUL-SVC-ENABLE-PROFILE-01.
+3. ENABLED=false requiere no admitir y exponer PROFILE; la RUL no restringe el valor declarado en este estado.
+4. STANDARD y READ_ONLY no reciben semántica diferenciada adicional.
+5. La no-admisión cuando ENABLED=false es comportamiento correcto; admitir efectivamente en ese estado es incumplimiento.
+6. El incumplimiento confirmado de cualquiera de las obligaciones funcionales aplicables hace A_B1=0 en los intervalos afectados, sujeto a la continuidad estricta y las reglas temporales ya aceptadas. UNKNOWN no se usa para suplir evidencia observacional ausente, fallos del harness ni defectos de integridad.
+7. La exposición de PROFILE permanece abstracta: no se define endpoint, protocolo, payload ni mecanismo físico.
+
+**La aceptación no resuelve L150-01.** Continúan abiertos el carácter continuo de la exposición de PROFILE, los mecanismos constitutivos ya catalogados que podrían impedirla independientemente de la admisión y su representación como verdad funcional en EventHistory. No se amplían §§49–50 por inferencia.
+
+No se crea ni modifica DEC-C10, schema, DGP numérico, reloj, rejilla, código, tests, fixtures ni harness. No se autoriza generación, simulación, estimación, calibración ni ejecución científica.
+
+Estado: `R150_A_ACCEPTED_FOR_SYNTHETIC_DGP_LOGICAL_SEMANTICS / L150_01_OPEN / NO_DEC / NO_IMPLEMENTATION`.
