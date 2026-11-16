@@ -1624,3 +1624,18 @@ Permanecen OPEN/CONDITIONAL: roster B causal y P*τ2; prueba de aislamiento y UE
 No se aprueba Design Freeze, roster/schema/fixture físico, código, implementación, simulación, calibración, estimación ni ejecución. No se modifican main, C0, U_G, RMA, Evidence→Claim Matrix o STATUS. PR #116 permanece Draft. scientific_execution=false; execution_authorized=false.
 
 Registro autónomo: 00_GOVERNANCE/decisions/DEC-C10-103_C10S_P0_CAUSAL_ARCHITECTURE_RESOLUTION_ACCEPTANCE.md. Gate 120; maestro §290; plan §16.271.
+
+
+## DEC-C10-104 — V_cont interval-boundary convention and conservative Generator UNKNOWN rule (2026-11-16)
+
+**Estado:** ACCEPTED WORKING DESIGN DECISION — NOT DESIGN FREEZE.  
+**Base de aceptación:** aprobación expresa del usuario el 2026-11-16 de la propuesta Gate 137.
+
+Se acepta como decisión complementaria a DEC-C10-100…102:
+
+1. Para b0=t0 < … < bK=T*, los intervalos internos son I_k=[b_{k−1},b_k), k=1,…,K−1, y el último I_K=[b_{K−1},b_K]. Un evento en una frontera interna pertenece al intervalo que comienza allí; un evento en T* pertenece al último. Un episodio de incumplimiento que atraviesa fronteras afecta a cada intervalo cuyo soporte intersecta el episodio.
+2. Se conserva la verdad tri-valuada de DEC-C10-100, pero Generator no emitirá ? en historias sintéticas completas y determinadas. Solo podrá emitir UNKNOWN funcional tras un contrato DGP explícito que defina una indeterminación intrínseca de A_B1, su condición, alcance y provenance.
+3. S3 missingness/lag/error/cobertura, omisiones del DGP/harness, eventos/timestamps no modelados, defectos de implementación y falta de observación del Analyzer no constituyen UNKNOWN funcional.
+4. No se fijan T*, K, Δ, unidad/resolución temporal ni detectabilidad. DEC-C10-100…102 permanecen vigentes; no se autoriza implementación, pruebas, generación, simulación, calibración, estimación, ejecución ni Design Freeze.
+
+Registro autónomo: 00_GOVERNANCE/decisions/DEC-C10-104_VCONT_INTERVAL_BOUNDARY_AND_GENERATOR_UNKNOWN_RULE_ACCEPTANCE.md. scientific_execution=false; execution_authorized=false.
