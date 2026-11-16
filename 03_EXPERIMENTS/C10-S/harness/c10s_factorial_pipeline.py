@@ -11,6 +11,7 @@ from typing import Sequence
 
 from c10s_synthetic_components import (
     D2MechanismConfig, D2ReachGenerationConfig, D2StructuralGenerationConfig,
+    D2VContTruthBundle,
     D2TrajectoryGenerationConfig, EventHistory, IntervalGrid, ContractError,
     JointPolicyHistory, RCommonPairCertificate, SyntheticWorldBuilder,
     SyntheticWorldConfig, Vector4,
@@ -37,7 +38,7 @@ class C10SFactorialWorldResult:
     reach: object
     trajectories: object
     d2_event_histories_by_unit_z: dict[tuple[str, int], EventHistory]
-    d2_vcont_truth: object
+    d2_vcont_truth: D2VContTruthBundle
     factorial_potential_histories: dict[tuple[str, str, str, int], EventHistory]
     assignment_bundle: FactorialAssignmentBundle
     realized_histories: tuple[EventHistory, ...]
@@ -102,6 +103,7 @@ def materialize_c10s_factorial_world_from_dgp(
     # Keep the D2 package-level ITT-Z truth as a distinct oracle output.
     # It is not substituted for either focal A simple effect or the A×M interaction.
     d2_vcont_truth = builder.evaluate_complete_vcont_truth(world, d2_histories, grid)
+    d2_vcont_truth.validate(world, d2_histories, grid)
     potentials, assignments, realized, selection = materialize_factorial_potentials(
         world, functional_history_config, g_a0, g_a1, r_common_certificates,
         initial_state_by_history, feasible_vectors_by_history, assignment_config,
