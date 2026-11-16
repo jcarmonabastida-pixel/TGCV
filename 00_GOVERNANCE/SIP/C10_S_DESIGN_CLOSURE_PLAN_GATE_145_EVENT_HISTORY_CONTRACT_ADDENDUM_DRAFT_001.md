@@ -67,3 +67,12 @@ Se preserva truth / observed_evidence / evaluation y que la detectabilidad S3 no
 **Continuación:** completar matriz de cobertura de mecanismos B1 y formalizar la relación entre las tres dimensiones.
 
 `scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
+
+
+## Gate 148 — auditoría D/O/A (2026-11-16)
+
+Se incorpora la auditoría documental `C10_S_GATE_148_D_O_A_RELATION_FORMALIZATION_AUDIT_DRAFT_001.md` (commit `6a10d65878b265c22b0a345a17b84b10ed6a381b`). No registra aceptación de R148-A: deja una propuesta para decisión y localiza L148-01.
+
+Hallazgo: deben distinguirse D_valid (RUL declarativa), D_enabled, O (disponibilidad runtime) y A (capacidad efectiva de admisión). D_valid no equivale a O/A; ENABLED=true no demuestra disponibilidad/capacidad; ENABLED=false implica no admitir aunque el runtime esté disponible. Los mecanismos de recursos pueden afectar O/A sin duplicar transiciones truth.
+
+Permanece abierta la articulación exacta entre RUL-SVC-ENABLE-PROFILE-01 / DEC-C10-068, la función efectiva de admisión de §§49–50 y la definición Truth/V_cont de DEC-C10-102. No se modifica DEC-C10-102 ni se crean DEC nuevas. §51 y parámetros temporales siguen abiertos. No hay autorización de schema, código, tests, generación, simulación ni ejecución científica.
