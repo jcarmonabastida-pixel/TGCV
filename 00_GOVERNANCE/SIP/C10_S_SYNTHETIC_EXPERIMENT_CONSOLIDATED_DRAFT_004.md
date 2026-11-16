@@ -419,3 +419,16 @@ Gate 141 recomienda aceptación parcial como especificación técnica de trabajo
 La aceptación parcial R141-A requiere aprobación expresa del usuario. R141-B condiciona la aceptación futura del contrato completo a una revisión versionada que armonice frontera/UNKNOWN con DEC-C10-104 y distinga bounds futuros de la ruta inicial Analyzer ideal + abstención. No se modifica el DGP original ni el Decision Log. La implementación del harness sigue pendiente.
 
 No hay Design Freeze, cambios de código/schema ni ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 314. Gate 142 — aceptación parcial y armonización del DGP temporal (2026-11-16)
+
+**Registro:** 00_GOVERNANCE/SIP/C10_S_DGP_TEMPORAL_PARTIAL_ACCEPTANCE_AND_HARMONIZATION_GATE_142_DRAFT_001.md. **Addendum:** 00_GOVERNANCE/SIP/C10_S_DGP_TEMPORAL_CONTRACT_HARMONIZATION_ADDENDUM_GATE_142_DRAFT_001.md.
+
+El usuario aceptó expresamente R141-A y R141-B. Quedan aceptados como especificación técnica de trabajo, no congelada: §§48–50, §52, §53 y §55 dentro de sus límites; §54 únicamente como plan de cobertura. §51, coordenada, rejilla, anclaje, soporte, mecanismo S3 y parámetros temporales/calibración permanecen OPEN. DEC-C10-100…104 prevalecen sin cambios.
+
+Se registra la armonización versionada exigida por R141-B: DEC-C10-104 gobierna fronteras/UNKNOWN; ? funcional requiere estipulación explícita Generator/DGP y nunca representa missingness/error/lag S3 ni defectos del harness; bounds Analyzer son posibilidad futura no aprobada; la ruta inicial es estimación puntual bajo S3 perfecto/completo y abstención INDETERMINATE si no identifica. El DGP original se conserva inalterado.
+
+El DGP íntegro §§48–55 no queda aceptado ni congelado. La aceptación documental no materializa EventHistory/TruthBundle ni acredita conformidad del harness. Próximo trabajo documental: delta único de implementación trazable. No hay autorización de código ni ejecución.
+
+scientific_execution=false; execution_authorized=false.
