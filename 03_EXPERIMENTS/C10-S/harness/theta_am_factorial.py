@@ -7,7 +7,7 @@ analysis, and the reserved factorial oracle.
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, is_dataclass
 import hashlib
 import json
 from decimal import Decimal
@@ -443,6 +443,8 @@ class SealedFactorialEvidence:
 def _plain(value):
     if isinstance(value, Decimal):
         return str(value)
+    if is_dataclass(value):
+        return _plain(asdict(value))
     if isinstance(value, dict):
         return {str(k): _plain(v) for k, v in sorted(value.items())}
     if isinstance(value, (tuple, list)):
