@@ -61,6 +61,16 @@ The strict run evaluates 27 cells × 10,000 replications (270,000 Analyzer invoc
 
 This remains non-confirmatory and covers only the existing focal P178 cells. It does not test weak signal, direct paths, positivity failure, degraded measurement, interference, or abstention under non-identification.
 
+
+
+### Focal theta_A Evaluator — reserved-oracle comparison
+
+`theta_a_evaluator.py` adds an independent Evaluator for the sealed direct-`g_A` S3 observation path. It receives the reserved `ThetaAVContTruthBundle` only after Analyzer output exists. It verifies the truth-bundle digest, estimand/outcome identity, q_X fingerprint, evidence digest, Analyzer-result digest, assignment/q_X provenance and the correspondence between observed histories and the reserved EventHistory manifest.
+
+For an identified point result, it scores absolute error against the reserved `theta_A) oracle. For partial identification, it checks whether the reported bounds contain the reserved truth and separately marks whether the bounds are informative. For `NOT_IDENTIFIED`/`INDETERMINATE`, it requires a point-estimate abstention and an explicit reason. A bound that excludes the reserved truth is classified as an Analyzer adjudication failure.
+
+The current `POINT_SAMPLE` Analyzer returns the logical contrast bounds [-1,1]. The Evaluator therefore records correct coverage when the oracle lies inside those bounds, while explicitly marking the bounds non-informative; this is not causal recovery. Regression specifications cover point recovery, bound coverage, bounds excluding truth, and evidence/result provenance mismatch. They have not been executed.
+
 ## Integrated V_cont harness — separate migration boundary (Gate 87–88)
 
 The repository currently contains two distinct harness implementations; do not treat their similarly named focal concepts as interchangeable:
