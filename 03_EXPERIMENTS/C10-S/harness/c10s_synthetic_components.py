@@ -1977,6 +1977,148 @@ class SyntheticWorldBundle:
             raise ContractError("synthetic world roster fingerprint does not match materialized contents")
 
 
+@dataclass(frozen=True)
+class D2PotentialVContTruth:
+    unit_id: str
+    z: int
+    potential_id: str
+    history_id: str
+    history_sha256: str
+    grid_id: str
+    grid_version: str
+    rules_version: str
+    interval_truth: tuple[TriState, ...]
+    v_cont_truth: float
+
+
+@dataclass(frozen=True)
+class D2VContTruthBundle:
+    world_id: str
+    world_version: str
+    dgp_id: str
+    dgp_version: str
+    run_id: str
+    grid_id: str
+    grid_version: str
+    potential_truth: tuple[D2PotentialVContTruth, ...]
+    finite_population_itt_z_v_cont: float
+    q_x_sha256: str
+    result_sha256: str
+
+    def validate(
+        self,
+        world: "SyntheticWorldBundle",
+        histories_by_unit_z: dict[tuple[str, int], EventHistory],
+        grid: IntervalGrid,
+    ) -> None:
+        world.validate()
+        grid.validate()
+        expected = {(unit.unit_id, z) for unit in world.units for z in (0, 1)}
+        if set(histories_by_unit_z) != expected:
+            raise ContractError("V_cont truth requires exactly one EventHistory per unit × Z potential")
+        if (self.world_id, self.world_version, self.dgp_id, self.dgp_version) != (
+            world.world_id, world.world_version, world.dgp_id, world.dgp_version
+        ):
+            raise ContractError("V_cont truth identity differs from its synthetic world")
+        if (self.grid_id, self.grid_version) != (grid.grid_id, grid.grid_version):
+            raise ContractError("V_cont truth grid identity differs from its common adjudication grid")
+        histories = tuple(histories_by_unit_z[key] for key in sorted(expected))
+        run_ids = {history.run_id for history in histories}
+        history_ids = [history.history_id for history in histories]
+        potential_ids = [history.potential_id for history in histories]
+        if len(run_ids) != 1 or self.run_id not in run_ids:
+            raise ContractError("all potential EventHistories must share the declared run identity")
+        if len(history_ids) != len(set(history_ids)) or len(potential_ids) != len(set(potential_ids)):
+            raise ContractError("potential EventHistory and potential IDs must be unique")
+        if len(self.potential_truth) != len(expected):
+            raise ContractError("V_cont truth row count must equal unit × Z potential coverage")
+        rows = {(row.unit_id, row.z): row for row in self.potential_truth}
+        if set(rows) != expected or len(rows) != len(self.potential_truth):
+            raise ContractError("V_cont truth rows must cover every unit × Z potential exactly")
+        for key in sorted(expected):
+            history = histories_by_unit_z[key]
+            history.validate(require_complete=True)
+            if (history.world_id, history.world_version, history.dgp_version, history.unit_id) != (
+                world.world_id, world.world_version, world.dgp_version, key[0]
+            ):
+                raise ContractError("EventHistory does not bind to its exact world/unit potential")
+            adjudication = adjudicate_intervals(history, grid)
+            row = rows[key]
+            if (row.potential_id, row.history_id, row.history_sha256, row.grid_id,
+                    row.grid_version, row.rules_version, row.interval_truth, row.v_cont_truth) != (
+                history.potential_id, history.history_id, history.content_sha256,
+                grid.grid_id, grid.grid_version, history.adjudication_rules_version,
+                adjudication.interval_truth, adjudication.v_cont_truth
+            ):
+                raise ContractError("V_cont potential truth does not reproduce from its reserved EventHistory")
+        masses = {unit.unit_id: qx.mass for unit, qx in zip(world.units, world.q_x)}
+        expected_itt = sum(
+            masses[unit.unit_id] * (
+                rows[(unit.unit_id, 1)].v_cont_truth - rows[(unit.unit_id, 0)].v_cont_truth
+            ) for unit in world.units
+        )
+        if not math.isclose(self.finite_population_itt_z_v_cont, expected_itt, rel_tol=0.0, abs_tol=1e-12):
+            raise ContractError("finite-population ITT-Z truth does not match q_X*-weighted potential contrast")
+        if self.q_x_sha256 != digest(world.q_x) or not self.result_sha256:
+            raise ContractError("V_cont truth q_X* provenance or result fingerprint is invalid")
+
+
+def evaluate_d2_vcont_potential_truth(
+    world: "SyntheticWorldBundle",
+    histories_by_unit_z: dict[tuple[str, int], EventHistory],
+    grid: IntervalGrid,
+) -> D2VContTruthBundle:
+    """Adjudicate B1 V_cont for both D2 assignment potentials, independently of trajectory."""
+    world.validate()
+    grid.validate()
+    expected = {(unit.unit_id, z) for unit in world.units for z in (0, 1)}
+    if set(histories_by_unit_z) != expected:
+        raise ContractError("V_cont truth requires exactly one EventHistory per unit × Z potential")
+    rows = []
+    run_ids = set()
+    for key in sorted(expected):
+        history = histories_by_unit_z[key]
+        history.validate(require_complete=True)
+        if (history.world_id, history.world_version, history.dgp_version, history.unit_id) != (
+            world.world_id, world.world_version, world.dgp_version, key[0]
+        ):
+            raise ContractError("EventHistory does not bind to its exact world/unit potential")
+        if history.support_start != grid.boundaries[0] or history.support_end != grid.boundaries[-1]:
+            raise ContractError("all V_cont potential histories must share the exact common grid support")
+        adjudication = adjudicate_intervals(history, grid)
+        run_ids.add(history.run_id)
+        rows.append(D2PotentialVContTruth(
+            key[0], key[1], history.potential_id, history.history_id,
+            history.content_sha256, grid.grid_id, grid.grid_version,
+            history.adjudication_rules_version, adjudication.interval_truth,
+            adjudication.v_cont_truth,
+        ))
+    if len(run_ids) != 1:
+        raise ContractError("all V_cont potential histories must belong to one run")
+    row_map = {(row.unit_id, row.z): row for row in rows}
+    masses = {unit.unit_id: qx.mass for unit, qx in zip(world.units, world.q_x)}
+    itt_z = sum(
+        masses[unit.unit_id] * (
+            row_map[(unit.unit_id, 1)].v_cont_truth - row_map[(unit.unit_id, 0)].v_cont_truth
+        ) for unit in world.units
+    )
+    payload = {
+        "world_id": world.world_id, "world_version": world.world_version,
+        "dgp_id": world.dgp_id, "dgp_version": world.dgp_version,
+        "run_id": next(iter(run_ids)), "grid": grid,
+        "potential_truth": tuple(rows), "q_x": world.q_x,
+        "finite_population_itt_z_v_cont": itt_z,
+    }
+    result = D2VContTruthBundle(
+        world.world_id, world.world_version, world.dgp_id, world.dgp_version,
+        next(iter(run_ids)), grid.grid_id, grid.grid_version, tuple(rows),
+        itt_z, digest(world.q_x), digest(payload),
+    )
+    result.validate(world, histories_by_unit_z, grid)
+    return result
+
+
+
 class SyntheticWorldBuilder:
     """Materialize a finite baseline roster, q_X* masses and both D2 potentials.
 
