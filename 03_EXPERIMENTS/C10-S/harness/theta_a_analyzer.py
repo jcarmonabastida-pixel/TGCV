@@ -13,7 +13,7 @@ import json
 import math
 from typing import Any
 
-from theta_a_observation_harness import SealedThetaAEvidence
+from theta_a_observation_harness import SealedThetaAEvidence, _hash
 from c10s_synthetic_components import ContractError
 
 
@@ -76,6 +76,8 @@ class ThetaAObservationAnalyzer:
         contract.validate()
         if not evidence.rows:
             raise ContractError("theta_A Analyzer requires non-empty sealed evidence")
+        if _hash({"manifest": evidence.manifest, "rows": evidence.rows}) != evidence.sha256:
+            raise ContractError("theta_A Analyzer received evidence with an invalid seal digest")
         rows = evidence.rows
         if any(row.get("assignment_bundle_sha256") != contract.assignment_bundle_sha256
                or row.get("q_x_sha256") != contract.q_x_sha256
