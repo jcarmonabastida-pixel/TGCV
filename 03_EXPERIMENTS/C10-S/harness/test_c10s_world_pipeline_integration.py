@@ -158,6 +158,19 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             profile_config_id="PROFILE-1",
             profile_config_version="1",
             rules=(
+                # A separate D2 package path directly interrupts admission when
+                # its assigned policy programs a provisioning attempt. This is
+                # intentionally not attributed to the focal g_A contrast.
+                FunctionalHistoryRule(
+                    rule_id="D2-PACKAGE-DIRECTLY-INTERRUPTS-ADMISSION",
+                    source="D2",
+                    event_time=Decimal("1"),
+                    causal_family="D2_DIRECT_PACKAGE_PATH",
+                    provenance_ref="FUNCTIONAL-DGP#D2-PACKAGE-DIRECTLY-INTERRUPTS-ADMISSION",
+                    set_admission="NO_ADMISSION",
+                    d2_field="w_programmed",
+                    d2_value=True,
+                ),
                 FunctionalHistoryRule(
                     rule_id="GA-VECTOR-INTERRUPTS-ADMISSION",
                     source="G_A",
@@ -245,6 +258,13 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(len(result.d2_histories_by_unit_z), 64)
         self.assertEqual(len(result.theta_a_truth.event_history_manifest), 64)
         self.assertAlmostEqual(result.theta_a_truth.theta_a_truth, 0.5)
+        # D2 has a distinct direct package path with the opposite sign.
+        # Its ITT-Z must never be relabelled as the focal accessibility effect.
+        self.assertAlmostEqual(result.d2_vcont_truth.finite_population_itt_z_v_cont, -0.5)
+        self.assertNotAlmostEqual(
+            result.d2_vcont_truth.finite_population_itt_z_v_cont,
+            result.theta_a_truth.theta_a_truth,
+        )
         self.assertEqual(
             {row.assigned_arm for row in result.theta_a_assignments.assignments},
             {0, 1},
