@@ -109,24 +109,31 @@ class ThetaAObservationAnalyzer:
             if arm not in (0, 1) or not isinstance(probability, (int, float)) or not 0 < probability <= 1:
                 raise ContractError("invalid assigned arm or assignment probability")
             arms[arm] += 1
-        if arms[0] == 0 or arms[1] == 0:
-            raise ContractError("both randomized g_A arms must be represented")
         covered_mass = sum(qx[key] for key in observed_histories)
-        # Strict V_cont is binary, but no row observes the complete interval.
-        # Point samples constrain instants only; absent an approved temporal
-        # observation model, each arm-specific target mean remains in [0,1].
-        # The sharp contrast bound is consequently [-1,1], even with full q_X
-        # support. This is a bound, not an estimate and not evidence of effect.
+        # Distinguish missing target support / realized-arm support from the
+        # temporal measurement limitation. All three prevent a point estimate,
+        # but they are scientifically different reasons for abstention.
+        if missing:
+            identification = "INDETERMINATE"
+            abstention_reason = "TARGET_QX_SUPPORT_INCOMPLETE"
+        elif arms[0] == 0 or arms[1] == 0:
+            identification = "INDETERMINATE"
+            abstention_reason = "REALIZED_GA_ARM_SUPPORT_MISSING"
+        else:
+            identification = "PARTIALLY_IDENTIFIED"
+            abstention_reason = "STRICT_VCONT_NOT_OBSERVED_BY_POINT_SAMPLES"
+        # Strict V_cont is binary, but point samples do not observe complete
+        # interval continuity. The logical contrast bounds remain [-1,1].
         result_payload = {
             "run_id": evidence.run_id, "estimand_id": contract.estimand_id,
             "estimand_version": contract.estimand_version,
-            "identification": "PARTIALLY_IDENTIFIED", "point_estimate": None,
+            "identification": identification, "point_estimate": None,
             "lower_bound": -1.0, "upper_bound": 1.0,
             "target_q_x_coverage": covered_mass,
             "missing_target_histories": missing,
             "assigned_arm_unit_counts": tuple(arms),
             "temporal_resolution": "POINT_SAMPLE",
-            "abstention_reason": "STRICT_VCONT_NOT_OBSERVED_BY_POINT_SAMPLES",
+            "abstention_reason": abstention_reason,
             "input_sha256": evidence.sha256,
         }
         return ThetaAObservationAnalysisResult(**result_payload,
