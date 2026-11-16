@@ -15,7 +15,7 @@ from c10s_synthetic_components import (
     SyntheticWorldBundle, Vector4, digest, generate_event_history,
 )
 
-Source = Literal["D2", "G_A"]
+Source = Literal["D2", "G_A", "G_M"]
 D2_FIELDS = {
     "w_programmed", "w_attempt", "receipt", "s_install",
     "c_dep_star", "a_f_post", "d_f_opening",
@@ -39,6 +39,7 @@ class FunctionalHistoryRule:
     # Conjunctive joint-vector predicates permit explicit interaction rules.
     # The legacy single-component pair remains supported unchanged.
     vector_predicates: tuple[tuple[int, object], ...] | None = None
+    factor_m_value: bool | None = None
     suborder: int | None = None
 
     def validate(self) -> None:
@@ -56,11 +57,11 @@ class FunctionalHistoryRule:
             if self.d2_field not in D2_FIELDS or type(self.d2_value) is not bool:
                 raise ContractError("D2 rule requires an allowlisted stage field and Boolean trigger value")
             if (self.vector_index is not None or self.vector_value is not None
-                    or self.vector_predicates is not None):
+                    or self.vector_predicates is not None or self.factor_m_value is not None):
                 raise ContractError("D2 rule cannot also contain a g_A vector predicate")
         elif self.source == "G_A":
-            if self.d2_field is not None or self.d2_value is not None:
-                raise ContractError("g_A rule cannot contain a D2-stage predicate")
+            if self.d2_field is not None or self.d2_value is not None or self.factor_m_value is not None:
+                raise ContractError("g_A rule cannot contain a D2-stage or factor-M predicate")
             if self.vector_predicates is None:
                 if type(self.vector_index) is not int or self.vector_index not in range(4) or self.vector_value is None:
                     raise ContractError("g_A rule requires one vector component index [0..3] and value")
@@ -76,8 +77,13 @@ class FunctionalHistoryRule:
                         or any(type(index) is not int or index not in range(4) for index in indices)
                         or len(indices) != len(set(indices))):
                     raise ContractError("g_A conjunctive predicates require unique component indices [0..3]")
+        elif self.source == "G_M":
+            if (self.d2_field is not None or self.d2_value is not None
+                    or self.vector_index is not None or self.vector_value is not None
+                    or self.vector_predicates is not None or type(self.factor_m_value) is not bool):
+                raise ContractError("G_M rule requires only an explicit Boolean factor_m_value predicate")
         else:
-            raise ContractError("functional rule source must be D2 or G_A")
+            raise ContractError("functional rule source must be D2, G_A or G_M")
 
 
 @dataclass(frozen=True)
@@ -120,17 +126,17 @@ class FunctionalHistoryDGPConfig:
 
 def _apply_rules(
     *, source: Source, initial: FunctionalState, rules: Sequence[FunctionalHistoryRule],
-    mechanism: D2PotentialStage | Vector4,
+    mechanism: D2PotentialStage | Vector4, factor_m: bool | None = None,
 ) -> tuple[FunctionalStateChange, ...]:
     current = initial
     changes = []
     for rule in sorted(
-        (r for r in rules if r.source == source),
+        (r for r in rules if r.source == source or (source == "G_A" and r.source == "G_M")),
         key=lambda r: (r.event_time, -1 if r.suborder is None else r.suborder, r.rule_id),
     ):
         if source == "D2":
             triggered = getattr(mechanism, rule.d2_field) is rule.d2_value
-        else:
+        elif rule.source == "G_A":
             if rule.vector_predicates is None:
                 triggered = mechanism[rule.vector_index] == rule.vector_value
             else:
@@ -138,6 +144,10 @@ def _apply_rules(
                     mechanism[index] == value
                     for index, value in rule.vector_predicates
                 )
+        else:
+            if factor_m is None:
+                raise ContractError("G_M functional rules require an explicit factorial M potential")
+            triggered = factor_m is rule.factor_m_value
         if not triggered:
             continue
         after = FunctionalState(
@@ -186,7 +196,7 @@ def _materialize(
     *, world: SyntheticWorldBundle, config: FunctionalHistoryDGPConfig,
     unit_id: str, potential_id: str, history_id: str,
     initial_state: FunctionalState, source: Source,
-    mechanism: D2PotentialStage | Vector4,
+    mechanism: D2PotentialStage | Vector4, factor_m: bool | None = None,
 ) -> EventHistory:
     initial_state.validate()
     if (initial_state.profile_config_id, initial_state.profile_config_version) != (
@@ -196,7 +206,7 @@ def _materialize(
     initial = initial_state
     changes = _apply_rules(
         source=source, initial=initial,
-        rules=config.rules, mechanism=mechanism,
+        rules=config.rules, mechanism=mechanism, factor_m=factor_m,
     )
     spec = EventHistoryGenerationSpec(
         history_id=history_id, history_version=config.history_version,
@@ -232,6 +242,63 @@ def generate_d2_event_history_potentials(
                 source="D2", mechanism=stage,
             )
             result[key] = history
+    return result
+
+
+def generate_factorial_event_history_potentials(
+    world: SyntheticWorldBundle, config: FunctionalHistoryDGPConfig,
+    g_a0: Sequence[JointPolicyHistory], g_a1: Sequence[JointPolicyHistory],
+    r_common_certificates: Sequence[RCommonPairCertificate],
+    initial_state_by_history: dict[str, FunctionalState],
+    *, factor_m_id: str, factor_m_version: str,
+) -> dict[tuple[str, str, str, int], EventHistory]:
+    """Generate the four A×M potential histories within one fixed synthetic world.
+
+    A is represented by the existing direct-g_A joint-policy vector. M is a
+    separate Boolean DGP intervention, never a Vector4 coordinate. Every
+    supported vector is materialized under both M potentials and the same
+    certified r_common regime.
+    """
+    config.validate(world)
+    if not factor_m_id or not factor_m_version:
+        raise ContractError("factor M identity and version are mandatory")
+    qx_by_ref = {row.history_ref: row for row in world.q_x}
+    expected_refs = set(qx_by_ref)
+    if set(initial_state_by_history) != expected_refs:
+        raise ContractError("factorial initial functional states must cover q_X* exactly")
+    certs = {row.history_ref: row for row in r_common_certificates}
+    if len(certs) != len(r_common_certificates) or set(certs) != expected_refs:
+        raise ContractError("factorial generation requires one r_common certificate per q_X* history")
+    policy_maps = []
+    for policy_rows, label in ((g_a0, "g_A0"), (g_a1, "g_A1")):
+        mapping = {row.history_ref: row for row in policy_rows}
+        if len(mapping) != len(policy_rows) or set(mapping) != expected_refs:
+            raise ContractError(f"{label} must cover q_X* histories exactly")
+        policy_maps.append(mapping)
+    if any(cert.status != "COMMON_FIXED" or not cert.regime_id or not cert.regime_version
+           or not cert.g_a0_fingerprint or cert.g_a0_fingerprint != cert.g_a1_fingerprint
+           for cert in certs.values()):
+        raise ContractError("factorial generation requires certified common fixed r_common")
+    result = {}
+    for history_ref in sorted(expected_refs):
+        cert = certs[history_ref]
+        unit = next(u for u in world.units if u.d2_baseline.baseline_history_ref == history_ref)
+        vectors = {}
+        for policy_map in policy_maps:
+            for vector, probability in policy_map[history_ref].distribution:
+                if probability > 0:
+                    vectors[digest(vector)] = vector
+        for m_arm in (0, 1):
+            for vector_sha, vector in sorted(vectors.items()):
+                key = (history_ref, vector_sha, cert.g_a0_fingerprint, m_arm)
+                result[key] = _materialize(
+                    world=world, config=config, unit_id=unit.unit_id,
+                    potential_id=(f"{unit.unit_id}:G_AxM:{vector_sha}:"
+                                  f"{cert.g_a0_fingerprint}:M{m_arm}"),
+                    history_id=f"{config.run_id}:{unit.unit_id}:G_A:{vector_sha}:M{m_arm}",
+                    initial_state=initial_state_by_history[history_ref],
+                    source="G_A", mechanism=vector, factor_m=bool(m_arm),
+                )
     return result
 
 
