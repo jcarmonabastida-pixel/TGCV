@@ -136,3 +136,88 @@ def candidate_from_s3_records(
         raise ContractError("theta_A S3 records contain multiple run identities")
     return ThetaAEvidenceCandidate(next(iter(run_ids)),
                                    tuple(asdict(record) for record in records))
+
+
+class ThetaAIntervalSealer:
+    """Seal interval-level focal S3 observations behind a strict evidence allow-list."""
+    version = "c10s-theta-a-interval-sealer-0.1"
+
+    def seal(self, candidate: ThetaAEvidenceCandidate) -> SealedThetaAEvidence:
+        from theta_a_interval_observation import ThetaAIntervalObservationRecord
+        allowed = frozenset(ThetaAIntervalObservationRecord.__dataclass_fields__)
+        if not candidate.run_id or not candidate.rows:
+            raise ContractError("interval theta_A evidence requires run identity and rows")
+        seen_ids = set()
+        units = {}
+        normalised = []
+        for row in candidate.rows:
+            if set(row) != allowed or row.get("temporal_resolution") != "INTERVAL_LEVEL":
+                raise ContractError("interval theta_A row violates its closed schema")
+            if row["run_id"] != candidate.run_id:
+                raise ContractError("interval theta_A run identity mismatch")
+            strings = ("unit_id", "history_ref", "assignment_bundle_sha256", "q_x_sha256",
+                       "g_a0_sha256", "g_a1_sha256", "r_common_sha256",
+                       "assigned_vector_sha256", "policy_fingerprint", "r_common_fingerprint",
+                       "history_id", "observation_id", "monitor_id", "monitor_version",
+                       "grid_id", "grid_version")
+            if any(not isinstance(row[k], str) or not row[k] for k in strings):
+                raise ContractError("interval theta_A identity/version fields are mandatory")
+            if row["assigned_arm"] not in (0, 1):
+                raise ContractError("interval theta_A assigned arm must be binary")
+            p = row["assignment_probability"]
+            if not isinstance(p, (int, float)) or isinstance(p, bool) or not 0.0 < p <= 1.0:
+                raise ContractError("interval theta_A assignment probability must be in (0,1]")
+            if row["coverage_mode"] != "CONTINUOUS_EVENT_COVERAGE":
+                raise ContractError("strict interval continuity requires certified continuous coverage")
+            if row["observation_status"] not in ("OBSERVED", "MISSING"):
+                raise ContractError("invalid interval observation status")
+            value = row["observed_compliance"]
+            if (row["observation_status"] == "MISSING") != (value is None):
+                raise ContractError("interval observed value and missingness status disagree")
+            if value is not None and type(value) is not bool:
+                raise ContractError("interval compliance observation must be Boolean or missing")
+            if type(row["interval_index"]) is not int or row["interval_index"] < 0:
+                raise ContractError("interval index must be a non-negative integer")
+            times = (row["interval_start"], row["interval_end"], row["capture_time"], row["ingestion_time"])
+            if any(not isinstance(t, Decimal) or not t.is_finite() for t in times):
+                raise ContractError("interval observation times must be finite Decimal values")
+            if not times[0] < times[1] <= times[2] <= times[3]:
+                raise ContractError("interval/capture/ingestion chronology is invalid")
+            if row["observation_id"] in seen_ids:
+                raise ContractError("duplicate interval observation ID")
+            seen_ids.add(row["observation_id"])
+            unit = row["unit_id"]
+            assignment = tuple(row[k] for k in (
+                "assignment_bundle_sha256", "q_x_sha256", "g_a0_sha256", "g_a1_sha256",
+                "r_common_sha256", "assigned_arm", "assignment_probability",
+                "assigned_vector_sha256", "policy_fingerprint", "r_common_fingerprint",
+                "history_ref", "history_id",
+            ))
+            contract = units.setdefault(unit, {"assignment": assignment, "rows": []})
+            if contract["assignment"] != assignment:
+                raise ContractError("interval observations vary in unit-level assignment/history provenance")
+            contract["rows"].append(row)
+            normalised.append(dict(row))
+        common_grid = None
+        common_intervals = None
+        for unit, contract in units.items():
+            rows = sorted(contract["rows"], key=lambda x: x["interval_index"])
+            if [x["interval_index"] for x in rows] != list(range(len(rows))):
+                raise ContractError(f"interval coverage has gaps or duplicate indices for unit {unit}")
+            grid = (rows[0]["grid_id"], rows[0]["grid_version"])
+            bounds = tuple((x["interval_start"], x["interval_end"]) for x in rows)
+            if any((x["grid_id"], x["grid_version"]) != grid for x in rows):
+                raise ContractError("grid identity changes within a unit")
+            if common_grid is None:
+                common_grid, common_intervals = grid, bounds
+            elif grid != common_grid or bounds != common_intervals:
+                raise ContractError("all q_X units must share the exact same interval grid")
+            if any(a[1] != b[0] for a, b in zip(bounds, bounds[1:])):
+                raise ContractError("interval coverage must be contiguous without gaps or overlaps")
+        manifest = {"run_id": candidate.run_id, "schema": "C10S-THETA-A-S3-INTERVAL-001",
+                    "sealer_version": self.version, "row_count": len(normalised),
+                    "unit_count": len(units), "temporal_resolution": "INTERVAL_LEVEL",
+                    "grid_id": common_grid[0], "grid_version": common_grid[1],
+                    "interval_count_per_unit": len(common_intervals)}
+        payload = {"manifest": manifest, "rows": normalised}
+        return SealedThetaAEvidence(candidate.run_id, tuple(normalised), manifest, _hash(payload))
