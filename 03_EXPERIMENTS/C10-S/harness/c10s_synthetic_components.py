@@ -1190,6 +1190,36 @@ def evaluate_d2_structural_deltas(
 
 
 @dataclass(frozen=True)
+class StructuralTransitionRule:
+    atom: StructuralAtom
+    action: Literal["ADD", "REMOVE", "MODIFY"]
+    trigger_stage: Literal[
+        "w_programmed", "w_attempt", "receipt", "s_install",
+        "c_dep_star", "a_f_post", "d_f_opening",
+    ]
+    trigger_when: bool = True
+
+    def validate(self, invariant_atoms: Sequence[StructuralAtom]) -> None:
+        self.atom.validate()
+        if self.action not in ("ADD", "REMOVE", "MODIFY"):
+            raise ContractError("structural transition action must be ADD/REMOVE/MODIFY")
+        if self.trigger_stage not in (
+            "w_programmed", "w_attempt", "receipt", "s_install",
+            "c_dep_star", "a_f_post", "d_f_opening",
+        ):
+            raise ContractError("structural transition trigger is not an explicit D2 stage")
+        existing = {atom.canonical_id: atom for atom in invariant_atoms}
+        if self.action == "ADD" and self.atom.canonical_id in existing:
+            raise ContractError("ADD transition target already exists in the baseline catalog")
+        if self.action in ("REMOVE", "MODIFY") and self.atom.canonical_id not in existing:
+            raise ContractError("REMOVE/MODIFY transition target must exist in the baseline catalog")
+        if self.action in ("REMOVE", "MODIFY"):
+            baseline = existing[self.atom.canonical_id]
+            if baseline.component != self.atom.component or baseline.semantic_type != self.atom.semantic_type:
+                raise ContractError("REMOVE/MODIFY transition must preserve component and semantic type")
+
+
+@dataclass(frozen=True)
 class D2StructuralGenerationConfig:
     """Explicit, versioned bridge from D2 focal admission to the focal U atom.
 
@@ -1205,6 +1235,7 @@ class D2StructuralGenerationConfig:
     context_id: str
     catalog_version: str
     invariant_atoms: tuple[StructuralAtom, ...]
+    transition_rules: tuple[StructuralTransitionRule, ...] = ()
     component_complete: tuple[tuple[StructuralComponent, bool], ...] = (
         ("U", True), ("R", True), ("C", True), ("X", True),
     )
@@ -1225,6 +1256,11 @@ class D2StructuralGenerationConfig:
             raise ContractError("invariant structural catalog IDs must be unique")
         for atom in self.invariant_atoms:
             atom.validate()
+        rule_ids = [rule.atom.canonical_id for rule in self.transition_rules]
+        if len(rule_ids) != len(set(rule_ids)):
+            raise ContractError("only one structural transition rule per canonical atom is allowed")
+        for rule in self.transition_rules:
+            rule.validate(self.invariant_atoms)
         completeness = dict(self.component_complete)
         if set(completeness) != {"U", "R", "C", "X"} or len(self.component_complete) != 4:
             raise ContractError("structural generator must explicitly declare U/R/C/X completeness")
@@ -1262,7 +1298,20 @@ def generate_d2_structural_potential_pairs(
                 (("role", "D2_FOCAL"), ("boundary_id", config.boundary_id)),
             )
             baseline_atoms = (focal_baseline,) + invariant
-            post_atoms = (focal_post,) + invariant
+            post_by_id = {atom.canonical_id: atom for atom in invariant}
+            for rule in config.transition_rules:
+                triggered = getattr(stage, rule.trigger_stage) is rule.trigger_when
+                if not triggered:
+                    continue
+                if rule.action == "ADD":
+                    post_by_id[rule.atom.canonical_id] = rule.atom
+                elif rule.action == "REMOVE":
+                    post_by_id.pop(rule.atom.canonical_id)
+                else:
+                    post_by_id[rule.atom.canonical_id] = rule.atom
+            post_atoms = (focal_post,) + tuple(
+                post_by_id[key] for key in sorted(post_by_id)
+            )
             common = (
                 world.world_id, world.world_version, world.dgp_id, world.dgp_version,
                 unit.unit_id, z, config.boundary_id, config.context_id, config.catalog_version,
