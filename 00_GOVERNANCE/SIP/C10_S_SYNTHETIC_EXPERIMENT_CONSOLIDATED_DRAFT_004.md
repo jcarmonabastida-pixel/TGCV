@@ -341,3 +341,14 @@ Quedan dos vacíos documentales: (1) fuente/condición generadora legítima de U
 P182/P183/MEAS/MISS son criterios reutilizables, no evidencia de materialización, calibración, ejecución o PASS. No se modifican decisiones, código, schemas ni parámetros.
 
 **Siguiente:** Gate 137 — delimitar UNKNOWN funcional y verificar precedencia/adopción de frontera; luego preparar crosswalk de implementación sin autorizar cambios ni ejecución. scientific_execution=false; execution_authorized=false.
+
+
+## 308. Gate 137 — docket de UNKNOWN funcional y convención de frontera (2026-11-16)
+
+**Registro:** 00_GOVERNANCE/SIP/C10_S_UNKNOWN_AND_INTERVAL_BOUNDARY_DECISION_DOCKET_GATE_137_DRAFT_001.md. **Addendum:** 00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_137_UNKNOWN_BOUNDARY_DOCKET_ADDENDUM_DRAFT_001.md.
+
+La reconstrucción de DEC-C10-100…102, Decision Log hasta DEC-C10-103, DGP §§48–55 y plan §§16.193–198 no encuentra una causa intrínseca ya aceptada para que Generator emita UNKNOWN funcional en A_B1. P182/P183/MEAS/MISS describen incertidumbre del canal observacional, no una causa de UNKNOWN de truth. Se recomienda no fabricar ? en historias sintéticas completas y determinadas; conservar el valor tri-valuado y sus bounds, permitiendo ? solo cuando un contrato DGP explícito defina una indeterminación funcional propia con condición semántica y provenance reservada. No se inventa aquí esa condición.
+
+La convención semiabierta [b_{k−1},b_k) para intervalos internos, con el último intervalo incluyendo T*, está recomendada consistentemente en DGP §49 y plan §§16.193.4, 16.195 y 16.198.2. DEC-C10-102 exige asignación determinista, única y versionada, pero no la adopta; no se encontró aceptación posterior hasta DEC-C10-103. Se propone aceptación expresa antes de versionar/materializar. No se crea DEC-C10-104 ni se modifica el Decision Log antes de la aceptación.
+
+**Siguiente tras la decisión:** crosswalk de conformidad de implementación hacia Generator → TruthBundle → Sealer → Analyzer → Evaluator. Sin cambios de código/schema ni ejecución; scientific_execution=false; execution_authorized=false.
