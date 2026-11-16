@@ -65,7 +65,8 @@ class ThetaASealer:
                 raise ContractError("theta_A row violates the S3 evidence allow-list")
             if row["run_id"] != candidate.run_id:
                 raise ContractError("theta_A row run_id mismatch")
-            required_strings = ("unit_id", "history_ref", "assigned_vector_sha256",
+            required_strings = ("unit_id", "history_ref", "assignment_bundle_sha256",
+                                "q_x_sha256", "assigned_vector_sha256",
                                 "policy_fingerprint", "r_common_fingerprint", "history_id",
                                 "observation_id", "profile_config_id", "profile_config_version",
                                 "s3_config_id", "s3_config_version")
@@ -73,6 +74,10 @@ class ThetaASealer:
                 raise ContractError("theta_A evidence contains missing identity or version fields")
             if row["assigned_arm"] not in (0, 1):
                 raise ContractError("theta_A assigned_arm must be 0 or 1")
+            probability = row["assignment_probability"]
+            if (not isinstance(probability, (int, float)) or isinstance(probability, bool)
+                    or not 0.0 < probability <= 1.0):
+                raise ContractError("theta_A assignment probability must be in (0,1]")
             if row["temporal_resolution"] != "POINT_SAMPLE":
                 raise ContractError("unsupported temporal resolution in theta_A evidence")
             if row["enabled_status"] not in ("OBSERVED", "MISSING"):
