@@ -254,3 +254,69 @@ def materialize_c10s_complete_world(
         r_common_certificates=r_common_certificates,
     )
     return result
+
+
+# DGP-driven functional history materialization. The lower-level composer above
+# remains available for explicit fixtures; this entry point removes externally
+# supplied EventHistory dictionaries from the normal synthetic-world path.
+from c10s_functional_history import (
+    FunctionalHistoryDGPConfig,
+    generate_d2_event_history_potentials,
+    generate_g_a_event_history_potentials,
+)
+
+
+def materialize_c10s_complete_world_from_dgp(
+    *,
+    world_config: SyntheticWorldConfig,
+    d2_config: D2MechanismConfig,
+    structural_config: D2StructuralGenerationConfig,
+    reach_config: D2ReachGenerationConfig,
+    trajectory_config: D2TrajectoryGenerationConfig,
+    functional_history_config: FunctionalHistoryDGPConfig,
+    initial_state_by_unit_z: dict[tuple[str, int], FunctionalState],
+    initial_state_by_history: dict[str, FunctionalState],
+    grid: IntervalGrid,
+    g_a0: Sequence[JointPolicyHistory],
+    g_a1: Sequence[JointPolicyHistory],
+    feasible_vectors_by_history: dict[str, tuple[Vector4, ...]],
+    r_common_certificates: Sequence[RCommonPairCertificate],
+    assignment_config: ThetaAPolicyAssignmentConfig,
+    s3_configs_by_history_ref: dict[str, object],
+    s3_seeds_by_unit: dict[str, int],
+    estimand_version: str,
+    outcome_version: str,
+    evaluation_tolerance: float,
+) -> C10SCompleteWorldResult:
+    """Generate D2 and direct-g_A potential EventHistories inside the DGP pipeline.
+
+    Functional rules, rather than implicit accessibility/admission equivalence,
+    determine ENABLED/admission. The legacy composer receives only generated
+    potential histories; S3 still sees only the realized-history projection.
+    """
+    builder = SyntheticWorldBuilder()
+    world, _, _ = builder.generate_complete_with_trajectories(
+        world_config, d2_config, structural_config, reach_config, trajectory_config,
+    )
+    d2_histories = generate_d2_event_history_potentials(
+        world, functional_history_config, initial_state_by_unit_z,
+    )
+    policy_histories = generate_g_a_event_history_potentials(
+        world, functional_history_config, g_a0, g_a1,
+        r_common_certificates, initial_state_by_history,
+    )
+    return materialize_c10s_complete_world(
+        world_config=world_config, d2_config=d2_config,
+        structural_config=structural_config, reach_config=reach_config,
+        trajectory_config=trajectory_config,
+        d2_histories_by_unit_z=d2_histories, grid=grid,
+        g_a0=g_a0, g_a1=g_a1,
+        feasible_vectors_by_history=feasible_vectors_by_history,
+        r_common_certificates=r_common_certificates,
+        event_histories_by_policy=policy_histories,
+        assignment_config=assignment_config,
+        s3_configs_by_history_ref=s3_configs_by_history_ref,
+        s3_seeds_by_unit=s3_seeds_by_unit,
+        estimand_version=estimand_version, outcome_version=outcome_version,
+        evaluation_tolerance=evaluation_tolerance,
+    )
