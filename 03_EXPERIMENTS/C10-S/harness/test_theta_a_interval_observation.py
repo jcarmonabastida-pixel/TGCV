@@ -68,7 +68,7 @@ class IntervalObservationTests(unittest.TestCase):
             "MONITOR", "1", "POINT_SAMPLE", 0.0,
             Decimal("0"), Decimal("0"),
         )
-        with self.assertRaises(Exception):
+        with self.assertRaises(ContractError):
             project_interval_s3(self.history, self.grid, config, seed=1)
 
 
