@@ -227,3 +227,10 @@ Se resolvió la reconstrucción de precedencia: Gate 154 está aceptado; R150-A 
 La propuesta única C1–C6 se encuentra en `C10_S_DEC-C10-102_COMPLEMENTARY_SCOPE_DECISION_PROPOSAL_DRAFT_001.md`. Hasta su aceptación expresa, el crosswalk se clasifica como **PROPOSAL_PREPARED / ACCEPTANCE_PENDING**, no como CLOSED. La propuesta preserva la obligación contractual PROFILE sin atribuirle una trayectoria temporal que el DGP no genera, y limita V_cont a la continuidad temporal de la función efectiva de admisión requerida por ENABLED.
 
 **Resultado de paquete:** la ambigüedad se ha reducido a una decisión de alcance precisa, no a una nueva auditoría. No se ha creado DEC aceptada. §51 y los paquetes B–D permanecen abiertos.
+
+
+## 14. Paquete A — aceptación decisional (2026-11-16)
+
+C1–C6 han sido aceptadas conjuntamente. Registro: `C10_S_DEC-C10-102_COMPLEMENTARY_SCOPE_ACCEPTANCE_RECORD_DRAFT_001.md`. Crosswalk normativo **CLOSED_FOR_CURRENT_SYNTHETIC_DGP_LOGICAL_SCOPE**. DEC-C10-102 y DEC-C10-099…104 no se modifican; no se crea DEC-C10-105. PROFILE exposure permanece obligación contractual no adjudicada temporalmente por V_cont en el DGP actual; D_valid se mantiene separado; operador estricto y {1,0,?} intactos.
+
+El Paquete A queda cerrado en su alcance lógico. Paquetes B–D y Design Freeze permanecen abiertos; no se autoriza implementación ni ejecución.
