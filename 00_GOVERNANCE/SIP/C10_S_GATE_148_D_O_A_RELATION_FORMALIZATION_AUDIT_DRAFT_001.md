@@ -103,3 +103,14 @@ Aceptar únicamente estas reglas de articulación:
 `scientific_execution=false`  
 `execution_authorized=false`  
 `implementation_authorized=false`
+
+
+## 9. Addendum — aceptación expresa R148-A (2026-11-16)
+
+El usuario acepta R148-A y la orientación de que V_cont adjudique la continuidad de la función efectiva del servicio B1, incluyendo interrupciones runtime que impidan realmente la admisión. La aceptación se registra íntegramente en `C10_S_GATE_148_R148A_ACCEPTANCE_EFFECTIVE_SERVICE_VCONT_SCOPE_DRAFT_001.md`.
+
+La aceptación resuelve la dirección semántica del punto 7 de R148-A: A_B1/V_cont no se limita a la validez declarativa de RUL-SVC-ENABLE-PROFILE-01. Se mantienen separados D_valid, D_enabled, O y A; ENABLED=false impide admisión aunque O sea verdadera; ENABLED=true no basta para inferir disponibilidad/capacidad; y los mecanismos runtime solo alteran truth cuando afectan realmente la función B1.
+
+**Límite de precedencia:** DEC-C10-102 sigue vigente y no se modifica. Su formulación expresa continuidad estricta de ENABLED/PROFILE, mientras que la orientación aceptada requiere incluir disponibilidad efectiva. La reconciliación normativa exacta queda abierta para Gate 149. No se reescribe la DEC ni se presume que la aceptación conversacional la haya sustituido.
+
+Estado actualizado: `R148-A_ACCEPTED / EFFECTIVE_SERVICE_FUNCTION_SCOPE_ACCEPTED / DEC_C10_102_SCOPE_RECONCILIATION_REQUIRED`. No se crea DEC-C10 ni se autoriza schema, código, tests, fixtures, generación, simulación, estimación, calibración o ejecución.
