@@ -543,6 +543,13 @@ class FactorialIntervalSealer:
                 common_grid, common_bounds = grid, bounds
             elif grid != common_grid or bounds != common_bounds:
                 raise ContractError("factorial units must share one exact interval grid")
+        global_fields = (
+            "assignment_bundle_sha256", "q_x_sha256", "g_a0_sha256",
+            "g_a1_sha256", "r_common_sha256", "factor_m_id",
+            "factor_m_version", "factor_m_sha256",
+        )
+        if any(row[k] != rows_out[0][k] for row in rows_out for k in global_fields):
+            raise ContractError("factorial evidence mixes assignment, population, policy or M provenance")
         manifest = {
             "run_id": candidate.run_id, "schema": "C10S-FACTORIAL-AxM-S3-INTERVAL-001",
             "sealer_version": self.version, "row_count": len(rows_out),
@@ -602,6 +609,7 @@ class FactorialAnalysisContract:
 
 @dataclass(frozen=True)
 class FactorialContrast:
+    """Point estimate plus measurement-only missingness bounds; not a sampling CI."""
     estimand_id: str
     point_estimate: float | None
     lower_bound: float | None
@@ -984,10 +992,16 @@ def evaluate_factorial_analysis(
         raise ContractError("factorial Analyzer output digest is invalid")
     if result.estimand_version != truth.estimand_version:
         raise ContractError("factorial Analyzer and reserved truth estimand versions differ")
-    if (evidence.manifest.get("factor_m_id"), evidence.manifest.get("factor_m_version")) != (
-        truth.factor_m_id, truth.factor_m_version
-    ):
-        raise ContractError("factorial evidence and reserved M identity/version differ")
+    if ((
+        evidence.manifest.get("factor_m_id"), evidence.manifest.get("factor_m_version"),
+        evidence.manifest.get("q_x_sha256"),
+        evidence.rows[0].get("g_a0_sha256"), evidence.rows[0].get("g_a1_sha256"),
+        evidence.rows[0].get("r_common_sha256"),
+    ) != (
+        truth.factor_m_id, truth.factor_m_version, truth.q_x_sha256,
+        truth.g_a0_sha256, truth.g_a1_sha256, truth.r_common_sha256,
+    )):
+        raise ContractError("factorial evidence and reserved truth provenance differ")
     truth_values = (truth.theta_a_given_m0, truth.theta_a_given_m1, truth.theta_am_interaction)
     if len(result.contrasts) != 3:
         raise ContractError("factorial Analyzer must report both simple effects and interaction")
