@@ -68,7 +68,8 @@ class FunctionalHistoryRule:
                 if (not isinstance(self.vector_predicates, tuple)
                         or not self.vector_predicates
                         or any(not isinstance(item, tuple) or len(item) != 2
-                               for item in self.vector_predicates)):
+                               for item in self.vector_predicates)
+                        or any(item[1] is None for item in self.vector_predicates)):
                     raise ContractError("g_A conjunctive predicates must be a non-empty tuple of (index, value) pairs")
                 indices = [item[0] for item in self.vector_predicates]
                 if (self.vector_index is not None or self.vector_value is not None
