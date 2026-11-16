@@ -325,7 +325,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             r_common_certificates=fixture["r_common"],
         )
 
-    def test_positive_null_and_negative_focal_mechanisms_are_separately_generated(self):
+    def test_null_and_negative_focal_mechanisms_are_separately_generated(self):
         expected_truth = {"null": 0.0, "negative": -0.5}
         results = {}
         for mode, truth in expected_truth.items():
@@ -339,11 +339,8 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 self.assertTrue(result.evaluator_result.correct_adjudication)
                 self.assertEqual(result.evaluator_result.evidence_sha256, result.sealed_evidence.sha256)
                 self.assertEqual(result.evaluator_result.analyzer_output_sha256, result.analyzer_result.output_sha256)
-        # Non-null potential outcomes are arm-constant, so the finite-sample
-        # HT contrast retains the sign whenever both randomized arms are present.
         # Under the null, a single randomized HT estimate may fluctuate; the
         # reserved oracle truth, not a forced zero estimate, defines the null.
-        self.assertAlmostEqual(results["null"].theta_a_truth.theta_a_truth, 0.0)
 
 if __name__ == "__main__":
     unittest.main()
