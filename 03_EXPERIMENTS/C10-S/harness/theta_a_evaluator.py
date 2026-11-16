@@ -172,6 +172,50 @@ class ThetaAObservationEvaluator:
                 raise ContractError("missing interval evidence requires partial-identification or support abstention")
             if not result.missing_interval_count and result.identification == "PARTIALLY_IDENTIFIED":
                 raise ContractError("complete interval evidence must not abstain for missingness")
+            # Independently reconstruct measurement-only HT bounds from sealed
+            # observations. This does not consult the reserved outcome oracle.
+            qx_mass = dict(contract.q_x_mass_by_history)
+            by_unit = {}
+            for row in evidence.rows:
+                by_unit.setdefault(row["unit_id"], []).append(row)
+            arm_lower = [0.0, 0.0]
+            arm_upper = [0.0, 0.0]
+            arm_support = [0, 0]
+            observed_histories = set()
+            for unit_rows in by_unit.values():
+                first = unit_rows[0]
+                ordered = sorted(unit_rows, key=lambda row: row["interval_index"])
+                n = len(ordered)
+                successes = sum(row["observed_compliance"] is True for row in ordered)
+                missing = sum(row["observation_status"] == "MISSING" for row in ordered)
+                y_lower = successes / n
+                y_upper = (successes + missing) / n
+                arm = first["assigned_arm"]
+                weight = qx_mass[first["history_ref"]] / first["assignment_probability"]
+                arm_lower[arm] += weight * y_lower
+                arm_upper[arm] += weight * y_upper
+                arm_support[arm] += 1
+                observed_histories.add(first["history_ref"])
+            if set(qx_mass).issubset(observed_histories) and all(arm_support):
+                expected_measurement_lower = arm_lower[1] - arm_upper[0]
+                expected_measurement_upper = arm_upper[1] - arm_lower[0]
+            else:
+                expected_measurement_lower = expected_measurement_upper = None
+            if expected_measurement_lower is None:
+                if result.measurement_lower_bound is not None:
+                    raise ContractError("interval Analyzer reported measurement bounds without q_X/arm support")
+            elif (result.measurement_lower_bound is None
+                  or result.measurement_upper_bound is None
+                  or not math.isclose(result.measurement_lower_bound, expected_measurement_lower,
+                                      rel_tol=0.0, abs_tol=1e-12)
+                  or not math.isclose(result.measurement_upper_bound, expected_measurement_upper,
+                                      rel_tol=0.0, abs_tol=1e-12)):
+                raise ContractError("interval measurement-only bounds do not reproduce sealed S3 observations")
+            if result.missing_interval_count == 0 and all(arm_support):
+                if (result.identification != "IDENTIFIED" or result.point_estimate is None
+                        or not math.isclose(result.point_estimate, expected_measurement_lower,
+                                            rel_tol=0.0, abs_tol=1e-12)):
+                    raise ContractError("complete interval Analyzer point estimate does not reproduce HT contrast")
         lower, upper = result.lower_bound, result.upper_bound
         if not (math.isfinite(lower) and math.isfinite(upper) and lower <= upper):
             raise ContractError("Analyzer bounds must be finite and ordered")
