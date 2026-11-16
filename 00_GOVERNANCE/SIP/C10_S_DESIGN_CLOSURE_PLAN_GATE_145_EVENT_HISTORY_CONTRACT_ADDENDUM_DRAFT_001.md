@@ -50,3 +50,20 @@ Esta aceptación no cierra el inventario ni la clasificación exhaustiva de meca
 **Siguiente:** continuar Gate 147 con la auditoría de cobertura, solapamientos y clasificación de cada mecanismo B1, preservando las fronteras truth/observación/evaluación.
 
 `scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
+
+
+## Addendum Gate 147-B — aceptación de dimensiones funcionales y clasificación de mecanismos (2026-11-16)
+
+Se acepta expresamente R147-B1…R147-B4 y la separación conceptual de tres dimensiones: configuración declarativa (ENABLED/PROFILE), disponibilidad operativa efectiva y capacidad efectiva de admisión B1. El registro completo está en `C10_S_GATE_147B_FUNCTIONAL_DIMENSIONS_AND_MECHANISM_CLASSIFICATION_ACCEPTANCE_DRAFT_001.md`.
+
+- EventHistory representa verdad funcional, no un inventario indiscriminado de acontecimientos técnicos.
+- Los mecanismos runtime entran en truth cuando modifican efectivamente la disponibilidad operativa de B1.
+- Antecedentes múltiples de un mismo cambio funcional no producen transiciones truth duplicadas; se preservan simultaneidad y suborden conforme a R144-A.
+- El ciclo discreto de solicitudes permanece separado; ausencia de solicitud no es fallo y sus etapas no se colapsan.
+- Se aceptan tres dimensiones conceptuales distintas, pero su relación formal, condiciones necesarias/suficientes e interacciones siguen abiertas.
+
+Se preserva truth / observed_evidence / evaluation y que la detectabilidad S3 no define la verdad funcional. La aceptación no cierra cobertura de mecanismos §§49–50, no crea DEC-C10, no modifica el DGP original, no resuelve §51/reloj/soporte temporal y no autoriza schema, código, tests, generación, simulación, calibración ni ejecución científica.
+
+**Continuación:** completar matriz de cobertura de mecanismos B1 y formalizar la relación entre las tres dimensiones.
+
+`scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
