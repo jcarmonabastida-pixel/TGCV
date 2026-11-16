@@ -1535,7 +1535,7 @@ class D2PotentialTrajectory:
     selected_route_id: str | None
     execution_state: ReachState
     trajectory_status: Literal[
-        "COMPLETED", "PARTIAL", "NOT_SELECTED", "NOT_REACHABLE", "UNKNOWN",
+        "COMPLETED", "PARTIAL", "NOT_SELECTED", "EXECUTION_FAILED", "NOT_REACHABLE", "UNKNOWN",
     ]
     executed_steps: tuple[ExecutedTrajectoryStep, ...]
     terminal_state: str | None
@@ -1556,7 +1556,7 @@ class D2PotentialTrajectory:
             raise ContractError("completed trajectory requires successful execution")
         if self.trajectory_status == "PARTIAL" and (self.execution_state != 0 or not self.executed_steps):
             raise ContractError("partial trajectory requires a nonempty executed prefix and failed execution")
-        if self.trajectory_status in ("NOT_SELECTED", "NOT_REACHABLE", "UNKNOWN") and self.executed_steps:
+        if self.trajectory_status in ("NOT_SELECTED", "EXECUTION_FAILED", "NOT_REACHABLE", "UNKNOWN") and self.executed_steps:
             raise ContractError("non-executed trajectory status cannot contain executed steps")
         if self.executed_steps:
             for left, right in zip(self.executed_steps, self.executed_steps[1:]):
@@ -1654,7 +1654,7 @@ def evaluate_d2_potential_trajectories(
                                     selected.route_id, "route-execution") >= route_execution[selected.route_id]:
                         trajectories.append(D2PotentialTrajectory(
                             unit.unit_id, z, target, target_reach, 1, selected.route_id, 0,
-                            "NOT_SELECTED", (), None,
+                            "EXECUTION_FAILED", (), None,
                         ))
                         continue
                     executed = []
@@ -1671,7 +1671,7 @@ def evaluate_d2_potential_trajectories(
                             step.transformation_id, step.state_before, step.state_after, 1, step.duration,
                         ))
                     if failed:
-                        status = "PARTIAL" if executed else "NOT_SELECTED"
+                        status = "PARTIAL" if executed else "EXECUTION_FAILED"
                         execution_state = 0
                     else:
                         status = "COMPLETED"
@@ -1686,11 +1686,13 @@ def evaluate_d2_potential_trajectories(
                         unit.unit_id, z, target, target_reach, 0, None, 0,
                         "NOT_REACHABLE", (), None,
                     ))
-                else:
+                elif target_reach == "?":
                     trajectories.append(D2PotentialTrajectory(
                         unit.unit_id, z, target, "?", "?", None, "?",
                         "UNKNOWN", (), None,
                     ))
+                else:
+                    raise ContractError("Reach=1 requires at least one confirmed route for selection")
     payload = {
         "world_id": world.world_id, "world_version": world.world_version,
         "dgp_id": world.dgp_id, "dgp_version": world.dgp_version,
@@ -2059,6 +2061,31 @@ class SyntheticWorldBuilder:
             world, structural_pairs, reach_config,
         )
         return world, structural_pairs, reach_contrast
+
+
+
+    def generate_complete_with_trajectories(
+        self,
+        config: SyntheticWorldConfig,
+        d2_config: D2MechanismConfig,
+        structural_config: D2StructuralGenerationConfig,
+        reach_config: D2ReachGenerationConfig,
+        trajectory_config: D2TrajectoryGenerationConfig,
+    ) -> tuple[
+        SyntheticWorldBundle,
+        dict[tuple[str, int], D2StructuralPotentialPair],
+        SyntheticWorldReachabilityContrast,
+        SyntheticWorldTrajectoryBundle,
+    ]:
+        """Materialize the full path through potential route execution and trajectories."""
+        world, structural_pairs, reach = self.generate_complete_with_reachability(
+            config, d2_config, structural_config, reach_config,
+        )
+        trajectories = evaluate_d2_potential_trajectories(
+            world, reach, reach_config, trajectory_config,
+        )
+        return world, structural_pairs, reach, trajectories
+
 
 
 @dataclass(frozen=True)
