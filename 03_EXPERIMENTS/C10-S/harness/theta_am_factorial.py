@@ -279,12 +279,18 @@ def select_factorial_potential_histories(
         history = potential_histories.get(key)
         if history is None:
             raise ContractError("assigned factorial potential EventHistory is missing")
+        expected_potential_id = (
+            f"{assignment.unit_id}:G_AxM:{assignments.factor_m_id}:"
+            f"{assignments.factor_m_version}:{assignment.assigned_vector_sha256}:"
+            f"{assignment.r_common_fingerprint}:M{assignment.m_arm}"
+        )
         if (history.unit_id != assignment.unit_id
                 or history.history_ref != assignment.history_ref
                 or history.world_id != assignments.world_id
                 or history.world_version != assignments.world_version
-                or history.dgp_version != assignments.dgp_version):
-            raise ContractError("selected factorial history does not match assignment/world provenance")
+                or history.dgp_version != assignments.dgp_version
+                or history.potential_id != expected_potential_id):
+            raise ContractError("selected factorial history does not match exact A×M assignment/world provenance")
         selected.append(history)
         manifest.append((assignment.unit_id, history.history_id,
                          history.content_sha256, history.potential_id))
@@ -678,6 +684,9 @@ class FactorialObservationAnalyzer:
             by_unit.setdefault(row["unit_id"], []).append(row)
         if set(by_unit) != expected_units:
             raise ContractError("factorial evidence must cover the exact assigned-unit roster")
+        observed_histories = {rows[0]["history_ref"] for rows in by_unit.values()}
+        if observed_histories != set(qx):
+            raise ContractError("factorial evidence must cover each q_X history exactly once")
         cell_order = ("00", "10", "01", "11")
         cell_items = {cell: [] for cell in cell_order}
         missing_count = total_count = 0
@@ -928,8 +937,12 @@ def compute_factorial_vcont_truth_from_event_histories(
             raise ContractError("factorial potential histories must share exact V_cont grid support")
         if history.history_id in history_ids or history.potential_id in potential_ids:
             raise ContractError("factorial potential EventHistory IDs must be unique")
-        if f":G_AxM:{factor_m_id}:{factor_m_version}:" not in history.potential_id:
-            raise ContractError("factorial EventHistory potential identity omits the declared M mechanism/version")
+        expected_potential_id = (
+            f"{unit_by_ref[ref]}:G_AxM:{factor_m_id}:{factor_m_version}:"
+            f"{vector_sha}:{regime_sha}:M{m}"
+        )
+        if history.potential_id != expected_potential_id:
+            raise ContractError("factorial EventHistory potential identity does not match its exact A×M key")
         history_ids.add(history.history_id)
         potential_ids.add(history.potential_id)
         run_ids.add(history.run_id)
