@@ -6,6 +6,8 @@ from vcont_integrated_harness import (Analyzer, EvidenceCandidate, Evaluator, Ge
 
 from c10s_synthetic_components import (
     ContractError, D2Baseline, D2MechanismConfig, EventHistory,
+    StructuralTransformation, StructuralSnapshot, StructuralRouteStep,
+    StructuralRoute, StructuralReachabilityEngine,
     FunctionalState, FunctionalTransition, IntervalGrid,
     JointPolicyHistory, QXHistoryMass, RCommonPairCertificate,
     S3SequenceKernelRow, S3ObservationConfig, adjudicate_intervals,
@@ -365,6 +367,85 @@ class SyntheticComponentTests(unittest.TestCase):
         )
         with self.assertRaises(ContractError):
             config.validate()
+
+
+    def structural_snapshot(self, *, exhaustive=True, horizon=5.0):
+        return StructuralSnapshot(
+            "SNAP-001", "001", "WORLD-001", "001", "DGP-001", "001",
+            "BOUNDARY-001", "CONTEXT-001", horizon,
+            (
+                StructuralTransformation("TAU-1", "v1", "SNAP-001", 1),
+                StructuralTransformation("TAU-2", "v1", "SNAP-001", 1),
+                StructuralTransformation("TAU-3", "v1", "SNAP-001", "?"),
+            ),
+            exhaustive, exhaustive, exhaustive, exhaustive, "CATALOG-001",
+        )
+
+    def test_reach_confirmed_by_one_route_even_if_alternative_is_unknown(self):
+        snapshot = self.structural_snapshot()
+        routes = (
+            StructuralRoute(
+                "ROUTE-VALID", "S-TARGET",
+                (StructuralRouteStep("TAU-1", "S0", "S1", 1, duration=1.0),),
+                (), 1, "FOCAL",
+            ),
+            StructuralRoute(
+                "ROUTE-UNKNOWN", "S-TARGET",
+                (StructuralRouteStep("TAU-3", "S0", "S2", 1, duration=1.0),),
+                (), 1, "ALTERNATIVE",
+            ),
+        )
+        result = StructuralReachabilityEngine().evaluate(
+            snapshot, routes, enumeration_complete=True,
+        )
+        self.assertEqual(dict(result.target_states)["S-TARGET"], 1)
+        self.assertEqual(result.route_evaluations[1].route_state, "?")
+
+    def test_reach_zero_requires_exhaustive_catalog_and_completed_enumeration(self):
+        snapshot = self.structural_snapshot()
+        blocked = StructuralRoute(
+            "ROUTE-BLOCKED", "S-TARGET",
+            (StructuralRouteStep("TAU-1", "S0", "S1", 0, duration=1.0),),
+            (), 1, "FOCAL",
+        )
+        exhaustive = StructuralReachabilityEngine().evaluate(
+            snapshot, (blocked,), enumeration_complete=True,
+        )
+        incomplete = StructuralReachabilityEngine().evaluate(
+            snapshot, (blocked,), enumeration_complete=False,
+        )
+        self.assertEqual(dict(exhaustive.target_states)["S-TARGET"], 0)
+        self.assertEqual(dict(incomplete.target_states)["S-TARGET"], "?")
+
+    def test_accessibility_is_not_applicability_or_execution(self):
+        snapshot = self.structural_snapshot()
+        route = StructuralRoute(
+            "ROUTE-NOT-APPLICABLE", "S-TARGET",
+            (StructuralRouteStep("TAU-1", "S0", "S1", 0, duration=1.0),),
+            (), 1, "FOCAL",
+        )
+        result = StructuralReachabilityEngine().evaluate(
+            snapshot, (route,), enumeration_complete=True,
+        )
+        self.assertEqual(snapshot.transformations[0].accessible_state, 1)
+        self.assertEqual(result.route_evaluations[0].route_state, 0)
+
+    def test_truncated_or_over_horizon_route_cannot_establish_reach(self):
+        snapshot = self.structural_snapshot(horizon=1.0)
+        route = StructuralRoute(
+            "ROUTE-LONG", "S-TARGET",
+            (StructuralRouteStep("TAU-1", "S0", "S1", 1, duration=2.0),),
+            (), 1, "FOCAL",
+        )
+        result = StructuralReachabilityEngine().evaluate(
+            snapshot, (route,), enumeration_complete=False, search_truncated=True,
+        )
+        self.assertEqual(result.route_evaluations[0].route_state, 0)
+        self.assertTrue(result.search_truncated)
+        with self.assertRaises(ContractError):
+            StructuralReachabilityEngine().evaluate(
+                snapshot, (route,), enumeration_complete=True, search_truncated=True,
+            )
 
 
 if __name__ == "__main__":
