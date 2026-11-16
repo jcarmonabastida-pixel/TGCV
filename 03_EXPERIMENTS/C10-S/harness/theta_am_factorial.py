@@ -669,6 +669,7 @@ class FactorialObservationAnalyzer:
                 or _canonical_sha256({"manifest": evidence.manifest, "rows": evidence.rows}) != evidence.sha256):
             raise ContractError("factorial Analyzer requires nonempty evidence with a valid seal")
         qx = dict(contract.q_x_mass_by_history)
+        probability_by_history = {row[0]: row[1:] for row in contract.probability_by_history}
         expected_units = set(contract.expected_unit_ids)
         by_unit = {}
         for row in evidence.rows:
@@ -709,7 +710,7 @@ class FactorialObservationAnalyzer:
             if cell not in cell_order or (first["a_arm"], first["m_arm"]) != (int(cell[0]), int(cell[1])):
                 raise ContractError("factorial unit cell encoding is invalid")
             probability_index = cell_order.index(cell)
-            expected_probability = dict((ref, values) for ref, *values in contract.probability_by_history)[first["history_ref"]][probability_index]
+            expected_probability = probability_by_history[first["history_ref"]][probability_index]
             if first["assignment_probability"] != expected_probability:
                 raise ContractError("factorial evidence probability differs from the declared randomization design")
             ordered = sorted(bucket, key=lambda x: x["interval_index"])
