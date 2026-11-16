@@ -447,3 +447,20 @@ La baseline actual se preserva intacta. La ruta temporal sería una versión suc
 No se modificó código, tests, schemas, DGP, DEC ni Decision Log. No hubo pruebas, simulaciones, calibración o workflows. Preflight, tests y cambios de código requieren autorización separada.
 
 scientific_execution=false; execution_authorized=false.
+
+
+## 316. Gate 144 — semántica mínima de event_time y transiciones para V_cont (2026-11-16)
+
+**Registro:** 00_GOVERNANCE/SIP/C10_S_EVENT_TIME_AND_TRANSITION_SEMANTICS_GATE_144_DRAFT_001.md. **Addendum:** 00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_144_EVENT_TIME_SEMANTICS_ADDENDUM_DRAFT_001.md.
+
+Gate 144 confirma que DEC-C10-100…104 y Gates 135–143 fijan agregación, t0, continuidad estricta, fronteras, UNKNOWN, separación de relojes y firewall. DGP §51 contiene una coordenada normalizada x=(t−t0)/W_c, pero quedó fuera de la aceptación parcial Gate 142 y sigue como propuesta.
+
+Vacío no cerrado: persistencia del estado entre transiciones, estado inicial post-Z, simultaneidad/igual event_time y representación de estados intermedios. El orden ordinal preserva EventHistory, pero no basta para adjudicar intervalos sin comparación con fronteras.
+
+R144-A propone proceso de estado por tramos, estado inicial en t0, eventos before/after con provenance, simultaneidad atómica y suborden explícito para secuencias con estados intermedios, y aplicación de DEC-C10-104 cuando exista rejilla comparable. Historias completas/determinadas producen 1/0; defectos de historia no producen funcional UNKNOWN.
+
+R144-B mantiene §51 completo, reloj numérico, soporte, T*, ρ_follow, Δ, K y contrato/calibración S3 abiertos. La aceptación de R144-A no autoriza implementación ni aprueba EventHistory físico, rejilla o adjudicador. Requiere aceptación expresa.
+
+No se modificó DGP, DEC, Decision Log, schemas, código, tests, workflows ni artefactos canónicos main. No hubo ejecución.
+
+scientific_execution=false; execution_authorized=false.
