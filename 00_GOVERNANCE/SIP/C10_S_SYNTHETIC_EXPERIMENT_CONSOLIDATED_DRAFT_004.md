@@ -328,3 +328,16 @@ Se distingue UNKNOWN funcional (indeterminación de truth por Generator) de S3 N
 Se reutilizan TruthBundle como frontera, S3/Sealer/firewall, baseline ideal bajo S3 perfecto/completo y evaluación puntual ITT existente, con alcance limitado. Permanecen no implementados UNKNOWN, adjudicación por eventos intraintervalo, bounds de V_cont y bounds causales. No se modifican código, schemas, DEC, tests, workflows ni parámetros.
 
 **Siguiente operación:** Gate 136 — auditoría de suficiencia de los contratos temporales existentes (DGP temporal/roles, plan §§16.195–198, P182/P183/MEAS/MISS), para localizar solo vacíos genuinos antes de decidir cualquier cambio de diseño. No ejecución; scientific_execution=false; execution_authorized=false.
+
+
+## 307. Gate 136 — suficiencia de contratos temporales y vacíos residuales (2026-11-16)
+
+**Registro:** 00_GOVERNANCE/SIP/C10_S_TEMPORAL_CONTRACT_SUFFICIENCY_AND_REMAINING_GAPS_GATE_136_DRAFT_001.md. **Addendum al plan:** 00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_136_TEMPORAL_CONTRACT_SUFFICIENCY_ADDENDUM_DRAFT_001.md.
+
+La auditoría de §§16.195–198 del plan y §§49–55 del contrato DGP determina que ya están especificados el reloj normalizado desde t0, el soporte común, episodios funcionales con estado previo/posterior, event_time, versión y provenance, continuidad estricta por todos los intervalos intersectados, separación de los relojes truth/agregación/S3, mecanismos de captura snapshot/log/híbrido y estrategia general de bounds/abstención. No se crean otra matriz, escenarios ni familia de pruebas.
+
+Quedan dos vacíos documentales: (1) fuente/condición generadora legítima de UNKNOWN funcional para A_B1/V_cont, distinta de S3 missingness y de una omisión del propio DGP/harness; (2) la regla semiabierta [b_k,b_{k+1}) y asignación de frontera al intervalo que comienza allí está propuesta, pero pendiente de versionado/adopción antes de materializarla. DEC-C10-101 ya fija t0 post-Z e incluye provisión/instalación; falta mapping concreto en event history/harness, no redefinir la ventana.
+
+P182/P183/MEAS/MISS son criterios reutilizables, no evidencia de materialización, calibración, ejecución o PASS. No se modifican decisiones, código, schemas ni parámetros.
+
+**Siguiente:** Gate 137 — delimitar UNKNOWN funcional y verificar precedencia/adopción de frontera; luego preparar crosswalk de implementación sin autorizar cambios ni ejecución. scientific_execution=false; execution_authorized=false.
