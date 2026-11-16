@@ -340,3 +340,17 @@ Component coverage is explicit for U/R/C/X. An unmatched object is classified as
 `evaluate_d2_structural_deltas()` requires exactly one baseline/post structural pair for every roster unit × Z potential. It checks world/DGP/unit/Z identity and verifies the focal U-state against D2 baseline accessibility and the corresponding `A_f*` potential. It returns the full U/R/C/X delta; focal `D_f*` is not substituted for the full space delta.
 
 Source-level adversarial tests cover U/R/C/X separation, evidence-only change, unresolved matching, incomplete coverage, non-comparable snapshots, downstream-field exclusion, and D2 unit × potential binding. These test definitions have not been executed.
+
+
+## Integrated D2 structural-world materializer
+
+`SyntheticWorldBuilder.generate_complete()` now returns the baseline roster/D2 potential world together with generated baseline/post structural snapshots for every `(unit_id, Z)` pair. It requires an explicit, versioned `D2StructuralGenerationConfig`:
+
+- focal transformation identity and semantic version;
+- boundary, context and catalog identities;
+- the complete invariant U/R/C/X catalog for this fixture;
+- component-completeness declarations and adjudication/provenance versions.
+
+The adapter sets the focal U-state from the baseline accessibility predicate and the corresponding D2 `A_f*` potential. This is an explicit DGP bridge parameterization, not an inference from `C_dep*` or an empirical finding. The non-focal catalog remains invariant in this minimal fixture. This first materializer therefore exercises focal accessibility changes and a fully versioned structural universe, but does not yet instantiate collateral structural mechanisms; those require explicit transition rules in the next integration increment.
+
+Both snapshots are generated for each unit and both Z potentials, with common world/DGP/unit/Z/boundary/context/catalog identity. The ordinary `evaluate_d2_structural_deltas()` path adjudicates the generated pairs. The accompanying source test calls `generate_complete()` end-to-end and checks exact unit × Z coverage, focal ΔU*, invariant ΔR*/ΔC*/ΔX*, and unchanged E_T provenance. Test definitions have not been executed.
