@@ -554,9 +554,15 @@ manifest, realized-history selection, both randomized arms, interval-level
 observation completeness, absence of EventHistory/adjudication/V_cont truth in
 sealed evidence, independent reconstruction of the finite-sample
 Horvitz-Thompson contrast, and evidence/result digest linkage through the
-Evaluator. It deliberately uses a broad software-scoring tolerance: this is an
-integration/contract test of the complete data path, not a claim of estimator
-calibration, statistical power, or causal recovery under repeated sampling.
+Evaluator. Its fixture also activates a separately declared D2 package-to-admission
+path and asserts an ITT-Z truth of -0.5, while the direct-g_A accessibility
+contrast has theta_A truth +0.5. The opposite-signed, separately generated
+truths make it a regression against relabelling a package effect as the focal
+accessibility effect. This is a deliberately constructed adversarial fixture,
+not a claim that D2 must have this effect in every DGP. It uses a broad
+software-scoring tolerance: this is an integration/contract test of the complete
+data path, not a claim of estimator calibration, statistical power, or causal
+recovery under repeated sampling.
 
 The module is included in EP-02's identical primary and clean-replay
 fifteen-module allowlist, compile list, source materialization closure and
