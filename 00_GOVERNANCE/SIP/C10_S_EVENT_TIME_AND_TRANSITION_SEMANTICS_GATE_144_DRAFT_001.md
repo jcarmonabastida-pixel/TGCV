@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-11-16  
 **Rama:** research/c10-s-consolidation-draft · PR #116 Draft  
-**Estado:** HISTORICAL_RECONSTRUCTION_COMPLETE / EVENT_TIME_PARTIALLY_SPECIFIED / TRANSITION_HOLD_AND_SAME_TIME_ORDER_OPEN / R144_PROPOSAL_PENDING_USER_ACCEPTANCE / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE.
+**Estado:** HISTORICAL_RECONSTRUCTION_COMPLETE / EVENT_TIME_PARTIALLY_SPECIFIED / TRANSITION_LOGIC_ACCEPTED / R144_B_OPEN / NO_CODE_CHANGE / NO_EXECUTION / NO_DESIGN_FREEZE.
 
 ## 1. Objeto
 
@@ -70,7 +70,28 @@ La aceptación de R144-A, si se concede, cerraría solo la semántica lógica de
 
 La dependencia temporal no se resuelve eligiendo una escala numérica prematuramente. El vacío mínimo es la semántica de persistencia y simultaneidad de transiciones. Se recomienda que el usuario acepte R144-A y mantenga R144-B como condición de no ampliación: primero cerrar cómo cambia la truth; después resolver cómo se ubica esa truth en la ventana y rejilla.
 
-La propuesta requiere aceptación expresa. Hasta entonces, Gate 143 sigue siendo una especificación preparatoria, no autorizada para código. No se modifica DGP original, DEC, Decision Log, schemas, código, tests, workflows, RMA, Evidence→Claim Matrix, STATUS, main ni PR base.
+R144-A fue aceptada expresamente por el usuario el 2026-11-16; el registro de aceptación se incorpora en §8. Gate 143 sigue siendo una especificación preparatoria, no autorizada para código. No se modifica DGP original, DEC, Decision Log, schemas, código, tests, workflows, RMA, Evidence→Claim Matrix, STATUS, main ni PR base.
+
+scientific_execution=false  
+execution_authorized=false
+
+
+## 8. Aceptación expresa del usuario — R144-A (2026-11-16)
+
+**Estado:** R144_A_ACCEPTED_FOR_SYNTHETIC_DGP_LOGICAL_SEMANTICS / R144_B_REMAINS_OPEN / NO_IMPLEMENTATION_AUTHORIZATION.
+
+El usuario acepta expresamente R144-A. Quedan aceptadas para el DGP sintético, como semántica lógica:
+
+1. El Generator declara el estado funcional B1 inicial inmediatamente después de Z, en el ancla t0, antes de aplicar las transiciones post-Z ordenadas en ese ancla.
+2. El último estado funcional adjudicado persiste por tramos hasta una transición truth explícita posterior.
+3. Cada transición conserva estado previo/posterior, familia causal, identidad/versión, event_time y provenance.
+4. Cambios genuinamente simultáneos se representan como transición atómica vectorial. Una secuencia causal con estados intermedios distintos conserva suborden explícito y determinista; no se deduce del ID ni del orden de serialización.
+5. Cuando haya fronteras temporales comparables, se aplicará DEC-C10-104 sin alteración.
+6. Historia incompleta por defecto de contrato/harness, omisiones, colisiones no resueltas o timestamp inválido se clasifica como defecto de DGP/harness, no como UNKNOWN funcional.
+
+La aceptación cierra únicamente esta semántica lógica. No acepta §51, escala o unidad temporal, coordenada normalizada como contrato, W_c, T*, ρ_follow, Δ, K, soporte temporal, reloj físico, mecanismo/calibración S3, adjudicador implementado ni TruthBundle temporal. R144-B continúa abierto.
+
+Esta aceptación no autoriza cambios de código, schemas, tests, validadores, workflows, generación, simulación ni ejecución científica. Requiere gates posteriores y autorización explícita antes de cualquier implementación/ejecución.
 
 scientific_execution=false  
 execution_authorized=false
