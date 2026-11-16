@@ -1492,6 +1492,18 @@ class SyntheticWorldBuilder:
         return result
 
 
+    def generate_complete(
+        self,
+        config: SyntheticWorldConfig,
+        d2_config: D2MechanismConfig,
+        structural_config: D2StructuralGenerationConfig,
+    ) -> tuple[SyntheticWorldBundle, dict[tuple[str, int], D2StructuralPotentialPair]]:
+        """One-call materialization of roster, D2 potentials and structural truth."""
+        world = self.generate(config, d2_config)
+        structural_pairs = generate_d2_structural_potential_pairs(world, structural_config)
+        return world, structural_pairs
+
+
 @dataclass(frozen=True)
 class JointPolicyHistory:
     history_ref: str
