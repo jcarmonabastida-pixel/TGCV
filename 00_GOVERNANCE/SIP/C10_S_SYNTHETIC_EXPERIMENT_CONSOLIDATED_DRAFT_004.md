@@ -275,3 +275,16 @@ DEC-C10-099…102 aceptan la dimensión V_cont, su agregación temporal igualita
 P182-01…12 y P183-01…13, MEAS-01…14 y MISS-01…15 son contratos generales reutilizables, no fixtures/oráculos ejecutados para S3. Gates 172–183 y 199–205 establecen captura/export/provenance/workflow, no validez de medida. No se crean nuevas matrices ni familias de tests, ni se fijan T*, Δ, K, tasas o tolerancias. No ejecución; `scientific_execution=false`; `execution_authorized=false`.
 
 **Siguiente operación:** Gate 132 — crosswalk dirigido entre señales S3 observables, truth A_B1/V_cont, P182/P183, MEAS/MISS y allowlist del Analyzer; distinguir benchmark ideal de robustez a error, sin seleccionar parámetros ni ejecutar.
+
+
+## 303. Gate 132 — crosswalk S3 observación → truth V_cont y allowlist del Analyzer (2026-11-16)
+
+**Registro:** `00_GOVERNANCE/SIP/C10_S_VCONT_S3_OBSERVATION_TO_TRUTH_CROSSWALK_GATE_132_DRAFT_001.md`. **Addendum al plan:** `00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_132_S3_OBSERVATION_CROSSWALK_ADDENDUM_DRAFT_001.md`.
+
+Gate 132 precisa Gate 131: el harness implementa un canal S3 sintético por unidad e intervalo para ENABLED y PROFILE, con sensibilidad, especificidad y ausencia. El Generator conserva los estados potenciales y la conjunción funcional por intervalo; V_cont se calcula como su media sobre la rejilla. El Sealer aplica allowlist y sello; el Analyzer calcula la conjunción observada solo si la medición está declarada identificada y la cobertura es completa. ScenarioConfig limita esa ruta a Se=1, Sp=1 y missingness=0. No hay corrección calibrada de error, bounds validados, calibración independiente ni resolución temporal intraintervalo.
+
+Existe `R0_MEASUREMENT_ADVERSE` como escenario STATUS_ONLY y un test de software que comprueba abstención. Esto corrige la afirmación de Gate 131 de que no había caso adversarial/test S3: sí existe, pero no demuestra recuperación bajo error. `delta_t_acc_observed` es un vector focal separado de S3. Las etiquetas MEAS/MISS deben conservar su ámbito; el register reutiliza etiquetas en subdominios distintos y no deben fusionarse por coincidencia nominal.
+
+El benchmark ideal puede servir como baseline metodológico para ITT-Z/ITT-G bajo las restricciones del contrato; no acredita robustez de medida, θ_A ni el puente completo V_cont→consecuencia B1→Value. No se modifica código, schemas, test register, workflows, DEC, main, RMA, Evidence→Claim Matrix o STATUS. No ejecución; `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente operación:** Gate 133 — reconciliar alcance del benchmark ideal y R0_MEASUREMENT_ADVERSE, MEAS/MISS, cobertura técnica ya existente y perfiles de ejecución, además de correspondencia temporal con DEC-C10-100…102. No crear IDs ni ejecutar.
