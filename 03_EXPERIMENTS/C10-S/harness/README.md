@@ -581,12 +581,13 @@ procedure. The broad evaluator tolerance remains a wiring check only and must
 not be interpreted as accurate causal recovery.
 
 The functional-history rule grammar supports explicit conjunctive joint-vector
-predicates. In the alternative-path scenario, a second policy component disables
-ENABLED in both focal-policy arms, while the focal admission rule is explicitly
-gated on that alternative component being absent. This creates a bounded
-pathway-interaction fixture in which the focal contrast is null. It is not a
-general interaction estimator or a claim that all alternative mechanisms are
-represented.
+predicates. In the alternative-path scenario, a second policy component changes
+ENABLED to false in both focal-policy arms while leaving the declared admission
+behavior at ADMIT; this deliberately creates a B1 conformance failure common to
+both arms. The focal admission rule is gated on that alternative component
+being absent. The resulting focal contrast is null under the active alternative
+path, a bounded pathway-interaction fixture rather than a general interaction
+estimator or a claim that all alternative mechanisms are represented.
 
 The module is included in EP-02's identical primary and clean-replay
 fifteen-module allowlist, compile list, source materialization closure and
