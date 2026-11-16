@@ -34,3 +34,19 @@ La aceptación no crea DEC-C10, no cambia el DGP original, no define schema ni I
 **Siguiente:** Gate 147 auditará la cobertura del universo de mecanismos y el catálogo B1 de §§49–50, especialmente la frontera entre transiciones ENABLED/PROFILE, condiciones runtime causales y antecedentes de proceso. Debe preservar truth/observación/evaluación y no convertir la detectabilidad S3 en verdad funcional.
 
 `scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
+
+
+## Addendum Gate 147 — aceptación R147-A (2026-11-16)
+
+Se acepta expresamente R147-A como regla semántica y lógica del DGP sintético. El registro completo está en `C10_S_GATE_147_DECLARATIVE_CONFIGURATION_AND_EFFECTIVE_OPERATIONAL_AVAILABILITY_ACCEPTANCE_DRAFT_001.md`.
+
+- Se separa la configuración declarativa ENABLED/PROFILE de la disponibilidad operativa efectiva (proceso/módulo, listener/socket/superficie de ingreso, dependencias y capacidad/recursos cuando afecten la admisión).
+- Ambos planos pueden evolucionar independientemente; los cambios funcionalmente relevantes deben quedar representados en truth, sin convertir automáticamente toda señal runtime en transición.
+- Se preserva la separación truth / observed_evidence / evaluation. La detectabilidad S3 no define la verdad funcional.
+- Los antecedentes de provisión, instalación, verificación, rollback y reinicio no son por sí mismos incumplimientos ni transiciones truth.
+
+Esta aceptación no cierra el inventario ni la clasificación exhaustiva de mecanismos §§49–50. No crea DEC-C10, no cambia el DGP original, no define schema ni resuelve §51/reloj/soporte temporal. No autoriza implementación, tests, generación, simulación, calibración ni ejecución científica.
+
+**Siguiente:** continuar Gate 147 con la auditoría de cobertura, solapamientos y clasificación de cada mecanismo B1, preservando las fronteras truth/observación/evaluación.
+
+`scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
