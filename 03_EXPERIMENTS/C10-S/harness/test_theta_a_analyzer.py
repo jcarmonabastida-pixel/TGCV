@@ -1,6 +1,6 @@
 import unittest
 
-from theta_a_observation_harness import SealedThetaAEvidence
+from theta_a_observation_harness import SealedThetaAEvidence, _hash
 from theta_a_analyzer import (ThetaAObservationAnalysisContract,
                               ThetaAObservationAnalyzer)
 from c10s_synthetic_components import ContractError
@@ -22,7 +22,22 @@ class ThetaAObservationAnalyzerTests(unittest.TestCase):
                  "history_id": "eh1", "assignment_bundle_sha256": "ab", "q_x_sha256": "qx", "g_a0_sha256": "ga0",
                  "g_a1_sha256": "ga1", "r_common_sha256": "rc"},
             ),
-            manifest={}, sha256="sealed-hash")
+            manifest={"run_id": "run-1", "schema": "test"},
+            sha256=_hash({"manifest": {"run_id": "run-1", "schema": "test"},
+                          "rows": (
+                              {"unit_id": "u0", "history_ref": "h0", "assigned_arm": 0,
+                               "assignment_probability": 0.5, "assigned_vector_sha256": "v0",
+                               "policy_fingerprint": "p0", "r_common_fingerprint": "r",
+                               "history_id": "eh0", "assignment_bundle_sha256": "ab",
+                               "q_x_sha256": "qx", "g_a0_sha256": "ga0",
+                               "g_a1_sha256": "ga1", "r_common_sha256": "rc"},
+                              {"unit_id": "u1", "history_ref": "h1", "assigned_arm": 1,
+                               "assignment_probability": 0.5, "assigned_vector_sha256": "v1",
+                               "policy_fingerprint": "p1", "r_common_fingerprint": "r",
+                               "history_id": "eh1", "assignment_bundle_sha256": "ab",
+                               "q_x_sha256": "qx", "g_a0_sha256": "ga0",
+                               "g_a1_sha256": "ga1", "r_common_sha256": "rc"}
+                          )})
         self.contract = ThetaAObservationAnalysisContract(
             q_x_mass_by_history=(("h0", 0.4), ("h1", 0.6)),
             q_x_sha256="qx", assignment_bundle_sha256="ab",
