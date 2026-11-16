@@ -1,7 +1,7 @@
 import unittest
 from decimal import Decimal
 
-from vcont_integrated_harness import EvidenceCandidate, Generator, benchmark_scenarios
+from vcont_integrated_harness import EvidenceCandidate, Generator, Sealer, benchmark_scenarios
 
 from c10s_synthetic_components import (
     ContractError, D2Baseline, D2MechanismConfig, EventHistory,
@@ -279,6 +279,8 @@ class SyntheticComponentTests(unittest.TestCase):
             for row in envelope.evidence_candidate.rows
         ))
         self.assertNotIn("event_history", envelope.evidence_candidate.rows[0])
+        sealed = Sealer().seal(envelope.evidence_candidate)
+        self.assertEqual(sealed.manifest["schema"], "C10S-VCONT-S3-002")
         self.assertEqual(
             len(envelope.truth_extension.event_histories), 16
         )
