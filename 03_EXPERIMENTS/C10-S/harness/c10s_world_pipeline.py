@@ -67,6 +67,7 @@ class C10SCompleteWorldResult:
     reachability: SyntheticWorldReachabilityContrast
     trajectories: SyntheticWorldTrajectoryBundle
     d2_vcont_truth: D2VContTruthBundle
+    d2_histories_by_unit_z: tuple[tuple[tuple[str, int], EventHistory], ...]
     theta_a_truth: ThetaAVContTruthBundle
     theta_a_assignments: ThetaAPolicyAssignmentBundle
     realized_history_selection: ThetaAPolicyHistorySelection
@@ -99,11 +100,8 @@ class C10SCompleteWorldResult:
             raise ContractError("complete-world result must retain exact unit × Z ΔT_acc* coverage")
         self.reachability.validate(world)
         self.trajectories.validate(world, self.reachability, reach_config)
-        self.d2_vcont_truth.validate(
-            world,
-            {(row.unit_id, row.z): row for row in self._d2_histories_placeholder},
-            grid,
-        )
+        d2_histories = dict(self.d2_histories_by_unit_z)
+        self.d2_vcont_truth.validate(world, d2_histories, grid)
         self.theta_a_truth.validate()
         self.theta_a_assignments.validate(
             world, assignment_config, g_a0, g_a1,
@@ -119,14 +117,14 @@ class C10SCompleteWorldResult:
             raise ContractError("Evaluator result is detached from sealed evidence")
         if self.evaluator_result.analyzer_output_sha256 != self.analyzer_result.output_sha256:
             raise ContractError("Evaluator result is detached from Analyzer output")
+        if not self.evaluator_result.correct_adjudication:
+            raise ContractError("independent Evaluator rejected the Analyzer's current adjudication")
+        run_ids = {history.run_id for history in d2_histories.values()}
+        run_ids.update(history.run_id for history in self._policy_histories)
+        if len(run_ids) != 1 or self.sealed_evidence.run_id not in run_ids:
+            raise ContractError("complete-world components do not share one experiment run identity")
 
-    @property
-    def _d2_histories_placeholder(self):
-        # The full D2 EventHistory mapping is carried in the truth bundle's
-        # construction manifest by the pipeline result, not duplicated here.
-        # Validation of that mapping is performed before this aggregate is built.
-        raise ContractError("use validate_pipeline_result() with the original D2 EventHistory map")
-
+    _policy_histories: tuple[EventHistory, ...] = ()
 
 def materialize_c10s_complete_world(
     *,
@@ -145,7 +143,6 @@ def materialize_c10s_complete_world(
     assignment_config: ThetaAPolicyAssignmentConfig,
     s3_configs_by_history_ref: dict[str, object],
     s3_seeds_by_unit: dict[str, int],
-    *,
     estimand_version: str,
     outcome_version: str,
     evaluation_tolerance: float,
@@ -160,12 +157,6 @@ def materialize_c10s_complete_world(
     """
     if not estimand_version or not outcome_version:
         raise ContractError("estimand and outcome versions must be explicit")
-    if set(d2_histories_by_unit_z) != {
-        (unit.unit_id, z) for unit in () for z in (0, 1)
-    }:
-        # Coverage is checked after the world roster is materialized below.
-        pass
-
     builder = SyntheticWorldBuilder()
     world, structural_pairs, reachability, trajectories = (
         builder.generate_complete_with_trajectories(
@@ -236,6 +227,7 @@ def materialize_c10s_complete_world(
         reachability=reachability,
         trajectories=trajectories,
         d2_vcont_truth=d2_truth,
+        d2_histories_by_unit_z=tuple(sorted(d2_histories_by_unit_z.items())),
         theta_a_truth=theta_truth,
         theta_a_assignments=assignments,
         realized_history_selection=selection,
@@ -244,5 +236,12 @@ def materialize_c10s_complete_world(
         analyzer_contract=contract,
         analyzer_result=analysis,
         evaluator_result=evaluation,
+        _policy_histories=policy_histories,
+    )
+    result.validate(
+        grid=grid, reach_config=reach_config, g_a0=g_a0, g_a1=g_a1,
+        assignment_config=assignment_config,
+        feasible_vectors_by_history=feasible_vectors_by_history,
+        r_common_certificates=r_common_certificates,
     )
     return result
