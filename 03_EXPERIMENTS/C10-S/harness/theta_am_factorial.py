@@ -1072,9 +1072,12 @@ def evaluate_factorial_analysis(
             or row["history_ref"] != assigned.history_ref
         ):
             raise ContractError("factorial sealed observation does not reproduce its exact randomized assignment")
+    expected_estimands = (
+        "THETA_A_GIVEN_M0", "THETA_A_GIVEN_M1", "THETA_AxM_INTERACTION",
+    )
+    if tuple(row.estimand_id for row in result.contrasts) != expected_estimands:
+        raise ContractError("factorial Analyzer must report both simple effects and interaction in canonical order")
     truth_values = (truth.theta_a_given_m0, truth.theta_a_given_m1, truth.theta_am_interaction)
-    if len(result.contrasts) != 3:
-        raise ContractError("factorial Analyzer must report both simple effects and interaction")
     errors = []
     coverage = []
     correct = True
