@@ -418,3 +418,8 @@ The generator validates exact q_X* coverage, policy support against the declared
 
 
 The selected arm/vector now has a deterministic EventHistory linkage: theta_a_event_history_potential_id() binds the assigned arm, complete joint-vector fingerprint and common r_common fingerprint into the EventHistory potential identity. select_theta_a_realized_histories() requires exactly one matching, complete history for every assigned UE and rejects missing, duplicate or mismatched potentials. This is the selection boundary needed before S3 projection; the EventHistory factory must materialize the exact potential IDs for its g_A histories.
+
+
+### Focal estimand firewall (current status)
+
+The legacy `focal_harness.py` evidence schema observes randomized `assignment_z` and `q_b1_observed` only. It does not carry a direct assignment to the joint `g_A0/g_A1` policies, the realized joint policy vector, or a policy-linked realized EventHistory. Consequently, its Analyzer estimates the package ITT only and must abstain on `theta_A`; direct-path declarations and common-regime assumptions cannot turn ITT-Z into the focal estimand. The direct-`g_A` assignment and EventHistory components in `c10s_synthetic_components.py` remain to be connected to the sealed observation path before a focal estimator can be implemented.
