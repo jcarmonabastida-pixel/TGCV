@@ -91,8 +91,11 @@ class ThetaAObservationEvaluator:
             raise ContractError("sealed evidence does not match the analysis assignment/q_X contract")
 
         # Bind every observed unit/history to the reserved selected-history manifest.
-        truth_history_keys = {(row[0], row[1], row[3]) for row in truth_bundle.event_history_manifest}
-        evidence_history_keys = {(row["unit_id"], row["history_ref"], row["history_id"])
+        # Manifest rows are (history_ref, vector_sha, r_common_fingerprint,
+        # history_id, EventHistory content SHA); unit identity is carried by
+        # the assignment/evidence binding, not by this policy-potential manifest.
+        truth_history_keys = {(row[0], row[3]) for row in truth_bundle.event_history_manifest}
+        evidence_history_keys = {(row["history_ref"], row["history_id"])
                                  for row in evidence.rows}
         if not evidence_history_keys or not evidence_history_keys.issubset(truth_history_keys):
             raise ContractError("sealed observations do not map to the reserved realized EventHistory manifest")
