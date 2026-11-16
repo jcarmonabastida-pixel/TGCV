@@ -277,3 +277,60 @@ class D2IntervalSealer:
             candidate.run_id, tuple(normalised), manifest,
             _hash({"manifest": manifest, "rows": normalised}),
         )
+
+
+@dataclass(frozen=True)
+class D2ObservedIntervalLaneResult:
+    assignments: D2ObservedAssignmentBundle
+    interval_records: tuple[D2IntervalObservationRecord, ...]
+    sealed_evidence: SealedD2IntervalEvidence
+
+    def validate(
+        self,
+        world: SyntheticWorldBundle,
+        truth: D2VContTruthBundle,
+        histories_by_unit_z: dict[tuple[str, int], EventHistory],
+        grid: IntervalGrid,
+    ) -> None:
+        self.assignments.validate(world, truth, histories_by_unit_z, grid)
+        if not self.interval_records or not self.sealed_evidence.rows:
+            raise ContractError("D2 observed interval lane requires records and sealed evidence")
+        if self.sealed_evidence.run_id != self.interval_records[0].run_id:
+            raise ContractError("D2 sealed evidence run differs from interval records")
+        if self.sealed_evidence.sha256 != _hash({
+            "manifest": self.sealed_evidence.manifest,
+            "rows": list(self.sealed_evidence.rows),
+        }):
+            raise ContractError("D2 sealed evidence digest does not match its contents")
+        if len(self.sealed_evidence.rows) != len(self.interval_records):
+            raise ContractError("D2 sealed evidence row count differs from source observations")
+
+
+def materialize_d2_observed_interval_lane(
+    *,
+    world: SyntheticWorldBundle,
+    truth: D2VContTruthBundle,
+    histories_by_unit_z: dict[tuple[str, int], EventHistory],
+    assignment_config,
+    grid: IntervalGrid,
+    monitor_config: IntervalMonitorConfig,
+    seeds_by_unit: dict[str, int],
+) -> D2ObservedIntervalLaneResult:
+    """Complete D2 Z assignment -> realized EventHistory -> interval S3 -> Sealer."""
+    from d2_observed_assignment import (
+        generate_d2_observed_assignments,
+    )
+    assignments = generate_d2_observed_assignments(
+        world, truth, histories_by_unit_z, assignment_config,
+    )
+    records = compose_d2_interval_s3_records(
+        world, assignments, histories_by_unit_z, truth, grid,
+        monitor_config, seeds_by_unit,
+    )
+    candidate = D2IntervalEvidenceCandidate(
+        records[0].run_id, tuple(asdict(row) for row in records),
+    )
+    sealed = D2IntervalSealer().seal(candidate)
+    result = D2ObservedIntervalLaneResult(assignments, records, sealed)
+    result.validate(world, truth, histories_by_unit_z, grid)
+    return result
