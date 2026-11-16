@@ -312,7 +312,7 @@ mass binding and rejection of non-normalized target masses. They have not been r
 `StructuralReachabilityEngine` consumes a versioned `StructuralSnapshot` with an explicit finite transformation catalog and caller-supplied route candidates. Each transformation's `T_acc` state is kept separate from route-step `App`, typed relation states, other constitutive predicates and temporal feasibility. Route conjunction and alternative-route aggregation use three-valued logic `{1, 0, ?}`.
 
 - A confirmed admissible route is sufficient for `Reach_H=1`, even if another route is unknown.
-- `Reach_H=0` requires every relevant route to be refuted, exhaustive universe/relations/conditions/resources and completed, untruncated enumeration.
+- `Reach_H=0` requires every relevant route to be refuted, exhaustive universe/relations/conditions/resources and completed, untruncated enumeration. Targets with no enumerated route must be supplied explicitly in the target-state universe; only then can exhaustive absence be classified as 0.
 - Missing coverage, unresolved predicates or incomplete enumeration preserve `?`; truncation cannot be represented as absence.
 - Duration beyond the predeclared horizon refutes that route, not the transformation's `T_acc` state.
 - Selection, execution, Outcome and Value are not inputs to this engine.
