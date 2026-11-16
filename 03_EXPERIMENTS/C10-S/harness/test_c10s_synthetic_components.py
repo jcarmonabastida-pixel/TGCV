@@ -22,6 +22,7 @@ from c10s_synthetic_components import (
     S3SequenceKernelRow, S3ObservationConfig, adjudicate_intervals,
     compute_theta_a_truth, evaluate_theta_a_output, generate_d2_potentials, project_s3,
     ThetaAPolicyAssignmentConfig, generate_theta_a_policy_assignments,
+    theta_a_event_history_potential_id, select_theta_a_realized_histories,
     project_s3_into_evidence_candidate, compose_existing_generation,
 )
 
@@ -872,6 +873,37 @@ class SyntheticComponentTests(unittest.TestCase):
                     tuple((row.history_ref, 1.0) for row in world.q_x),
                 ),
                 g_a0, g_a1, feasible, r_common,
+            )
+
+        realized_policy_histories = []
+        for assignment in policy_assignments.assignments:
+            realized_policy_histories.append(EventHistory(
+                history_id=f"{assignment.unit_id}-REALIZED-GA",
+                history_version="001", run_id="RUN-THETA",
+                world_id=world.world_id, world_version=world.world_version,
+                dgp_version=world.dgp_version, unit_id=assignment.unit_id,
+                potential_id=theta_a_event_history_potential_id(assignment),
+                adjudication_rules_version="AB1-001",
+                support_start=Decimal("0"), support_end=Decimal("4"),
+                initial_post_z_state=(
+                    FunctionalState(False, "NO_ADMISSION") if assignment.assigned_arm == 0
+                    else FunctionalState(True, "NO_ADMISSION")
+                ),
+                transitions=(), expected_transition_ids=(),
+                scope_declared_complete=True, generation_complete=True,
+                representation_complete=True,
+            ))
+        selected_policy_histories = select_theta_a_realized_histories(
+            policy_assignments, realized_policy_histories,
+        )
+        self.assertEqual(len(selected_policy_histories.selected_history_id_by_unit), len(world.units))
+        self.assertEqual(
+            {row[0] for row in selected_policy_histories.selected_history_id_by_unit},
+            {unit.unit_id for unit in world.units},
+        )
+        with self.assertRaises(ContractError):
+            select_theta_a_realized_histories(
+                policy_assignments, realized_policy_histories[:-1],
             )
         with self.assertRaises(ContractError):
             compute_theta_a_vcont_truth_from_event_histories(
