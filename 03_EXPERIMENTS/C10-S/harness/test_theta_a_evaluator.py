@@ -13,7 +13,9 @@ class ThetaAObservationEvaluatorTests(unittest.TestCase):
         rows = ({"history_ref": "h0", "history_id": "eh0", "unit_id": "u0",
                  "assignment_bundle_sha256": "ab", "q_x_sha256": "qx",
                  "g_a0_sha256": "ga0", "g_a1_sha256": "ga1",
-                 "r_common_sha256": "rc", "r_common_fingerprint": "r"},)
+                 "r_common_sha256": "rc", "r_common_fingerprint": "r",
+                 "assigned_arm": 0, "assignment_probability": 0.5,
+                 "assigned_vector_sha256": "v0", "policy_fingerprint": "p0"},)
         manifest = {"run_id": "run-1", "schema": "test"}
         self.evidence = SealedThetaAEvidence("run-1", rows, manifest,
                                             _hash({"manifest": manifest, "rows": rows}))
@@ -25,6 +27,14 @@ class ThetaAObservationEvaluatorTests(unittest.TestCase):
         self.truth_bundle = SimpleNamespace(
             validate=lambda: None, theta_a_truth=self.truth,
             event_history_manifest=(("h0", "vec", "regime", "eh0", "content-sha"),))
+        self.assignment_bundle = SimpleNamespace(
+            result_sha256="ab", q_x_sha256="qx", g_a0_sha256="ga0",
+            g_a1_sha256="ga1", r_common_sha256="rc",
+            assignments=(SimpleNamespace(
+                unit_id="u0", history_ref="h0", assigned_arm=0,
+                probability_a0=0.5, probability_a1=0.5,
+                assigned_vector_sha256="v0", policy_fingerprint="p0",
+                r_common_fingerprint="r"),))
         self.contract = ThetaAObservationAnalysisContract(
             q_x_mass_by_history=(("h0", 1.0),), q_x_sha256="qx",
             assignment_bundle_sha256="ab", g_a0_sha256="ga0", g_a1_sha256="ga1",
@@ -49,7 +59,7 @@ class ThetaAObservationEvaluatorTests(unittest.TestCase):
     def test_noninformative_bounds_cover_reserved_truth_but_are_not_informative(self):
         result = self.make_result()
         report = ThetaAObservationEvaluator().evaluate(
-            self.truth_bundle, self.evidence, result, self.contract, tolerance=0.01)
+            self.truth_bundle, self.evidence, result, self.assignment_bundle, self.contract, tolerance=0.01)
         self.assertTrue(report.truth_within_bounds)
         self.assertFalse(report.informative_bounds)
         self.assertTrue(report.correct_adjudication)
@@ -58,7 +68,7 @@ class ThetaAObservationEvaluatorTests(unittest.TestCase):
     def test_bounds_excluding_reserved_truth_are_rejected_as_incorrect_adjudication(self):
         result = self.make_result(lower=-1.0, upper=0.1)
         report = ThetaAObservationEvaluator().evaluate(
-            self.truth_bundle, self.evidence, result, self.contract, tolerance=0.01)
+            self.truth_bundle, self.evidence, result, self.assignment_bundle, self.contract, tolerance=0.01)
         self.assertFalse(report.truth_within_bounds)
         self.assertFalse(report.correct_adjudication)
         self.assertEqual(report.disposition, "INVALID_BOUNDS_EXCLUDE_TRUTH")
@@ -66,7 +76,7 @@ class ThetaAObservationEvaluatorTests(unittest.TestCase):
     def test_identified_point_estimate_is_scored_against_reserved_truth(self):
         result = self.make_result(status="IDENTIFIED", estimate=0.28, lower=0.2, upper=0.4)
         report = ThetaAObservationEvaluator().evaluate(
-            self.truth_bundle, self.evidence, result, self.contract, tolerance=0.05)
+            self.truth_bundle, self.evidence, result, self.assignment_bundle, self.contract, tolerance=0.05)
         self.assertAlmostEqual(report.absolute_error, 0.02)
         self.assertTrue(report.correct_adjudication)
         self.assertEqual(report.disposition, "POINT_RECOVERED")
@@ -75,7 +85,7 @@ class ThetaAObservationEvaluatorTests(unittest.TestCase):
         result = self.make_result(input_sha="different")
         with self.assertRaises(ContractError):
             ThetaAObservationEvaluator().evaluate(
-                self.truth_bundle, self.evidence, result, self.contract, tolerance=0.01)
+                self.truth_bundle, self.evidence, result, self.assignment_bundle, self.contract, tolerance=0.01)
 
 
 if __name__ == "__main__":
