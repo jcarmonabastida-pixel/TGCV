@@ -977,7 +977,8 @@ class FactorialEvaluationResult:
 
 def evaluate_factorial_analysis(
     truth: FactorialTruthBundle, evidence: SealedFactorialEvidence,
-    result: FactorialAnalysisResult, *, tolerance: float,
+    result: FactorialAnalysisResult, assignment_bundle: FactorialAssignmentBundle,
+    *, tolerance: float,
 ) -> FactorialEvaluationResult:
     """Evaluator-only comparison; the truth bundle is never an Analyzer input."""
     import math
@@ -1002,6 +1003,36 @@ def evaluate_factorial_analysis(
         truth.g_a0_sha256, truth.g_a1_sha256, truth.r_common_sha256,
     )):
         raise ContractError("factorial evidence and reserved truth provenance differ")
+    if ((
+        assignment_bundle.result_sha256, assignment_bundle.q_x_sha256,
+        assignment_bundle.g_a0_sha256, assignment_bundle.g_a1_sha256,
+        assignment_bundle.r_common_sha256, assignment_bundle.factor_m_id,
+        assignment_bundle.factor_m_version, assignment_bundle.factor_m_sha256,
+    ) != (
+        evidence.manifest.get("assignment_bundle_sha256"), truth.q_x_sha256,
+        truth.g_a0_sha256, truth.g_a1_sha256, truth.r_common_sha256,
+        truth.factor_m_id, truth.factor_m_version,
+        evidence.manifest.get("factor_m_sha256"),
+    )):
+        raise ContractError("factorial assignment bundle, sealed evidence and reserved truth provenance differ")
+    assignment_by_unit = {row.unit_id: row for row in assignment_bundle.assignments}
+    if len(assignment_by_unit) != len(assignment_bundle.assignments):
+        raise ContractError("factorial assignment bundle contains duplicate unit IDs")
+    if {row["unit_id"] for row in evidence.rows} != set(assignment_by_unit):
+        raise ContractError("factorial evidence does not cover the exact assigned-unit roster")
+    for row in evidence.rows:
+        assigned = assignment_by_unit[row["unit_id"]]
+        if (
+            row["assigned_cell"] != assigned.cell_id
+            or row["a_arm"] != assigned.a_arm
+            or row["m_arm"] != assigned.m_arm
+            or row["assignment_probability"] != assigned.assignment_probability
+            or row["assigned_vector_sha256"] != assigned.assigned_vector_sha256
+            or row["policy_fingerprint"] != assigned.policy_fingerprint
+            or row["r_common_fingerprint"] != assigned.r_common_fingerprint
+            or row["history_ref"] != assigned.history_ref
+        ):
+            raise ContractError("factorial sealed observation does not reproduce its exact randomized assignment")
     truth_values = (truth.theta_a_given_m0, truth.theta_a_given_m1, truth.theta_am_interaction)
     if len(result.contrasts) != 3:
         raise ContractError("factorial Analyzer must report both simple effects and interaction")
