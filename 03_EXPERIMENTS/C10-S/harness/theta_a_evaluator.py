@@ -172,8 +172,9 @@ class ThetaAObservationEvaluator:
             if not result.abstention_reason:
                 raise ContractError("non-identified Analyzer result requires an explicit abstention reason")
             error = None
-            correct = True
-            disposition = "CORRECT_ABSTENTION"
+            correct = covers
+            disposition = ("CORRECT_ABSTENTION" if covers
+                           else "ABSTENTION_BOUNDS_EXCLUDE_TRUTH")
         else:
             raise ContractError(f"unsupported theta_A identification status: {status}")
 
