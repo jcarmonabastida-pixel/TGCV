@@ -3337,3 +3337,24 @@ Artefacto rector: `C10_S_DEC-C10-102_COMPLEMENTARY_SCOPE_DECISION_PROPOSAL_DRAFT
 | D2 / población / aislamiento / soporte | OPEN | Paquete B |
 
 Registro: `C10_S_DEC-C10-102_COMPLEMENTARY_SCOPE_ACCEPTANCE_RECORD_DRAFT_001.md`. Sin DEC-C10-105, Design Freeze, implementación o ejecución.
+
+
+## 148. Paquete B — reconciliación integrada y decisión pendiente (2026-11-16)
+
+| Control | Estado | Condición de cierre / límite |
+|---|---|---|
+| Coordenada §51 | LOGICAL_COORDINATE_RECONCILED | t0=0; t_c,max=1; reloj adimensional, no físico |
+| T*/ρ_follow | OPEN | Soporte común de recuperación/persistencia ex ante |
+| Δ/K | OPEN | Derivación por resolución, aliasing y estabilidad |
+| EventHistory | LOGICAL_CONTRACT_ACCEPTED | Materialización/versionado/completitud y conformidad pendientes |
+| S3 | CONTRACT_DEFINED / NOT_CALIBRATED | Modalidad, cadencia, lag, pérdida, error y curva de detección |
+| D2 vs Z/provisión | SEMANTICALLY_RECONCILED | Aleatorización Z no especificada |
+| Población/roster | PRECEDENCE PARTIAL / NOT MATERIALIZED | E_i, E_scope/App, estados ? y roster |
+| UE=UA / aislamiento | CONDITIONAL / NOT DEMONSTRATED | IS-1…8 con evidencia material |
+| q_X* | SCHEMA DEFINED / ROWS AND MASSES ABSENT | Historias y masas por unidad |
+| g_A0/g_A1 | FORM DEFINED / PAIR NOT SELECTED | Políticas conjuntas factibles/versionadas |
+| r_common | SEMANTICS DEFINED / NOT CERTIFIED | Certificados por historia |
+| θ_A | NOT IDENTIFIED / NOT RECOVERED | No sustituir por ITT-G ni por G |
+| Paquete B B1–B6 | PROPOSAL / ACCEPTANCE PENDING | Aceptación lógica no implica materialización ni identificación |
+
+Artefacto rector: `C10_S_PACKAGE_B_INTEGRATED_TEMPORAL_DGP_AND_CAUSAL_DESIGN_CLOSURE_PROPOSAL_DRAFT_001.md`. No nuevos contratos/IDs de test; se reutilizan Gates 121/129/130 y contratos existentes. Sin implementación ni ejecución.
