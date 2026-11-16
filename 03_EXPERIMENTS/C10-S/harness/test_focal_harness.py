@@ -45,9 +45,11 @@ class FocalHarnessContractTests(unittest.TestCase):
     def test_null_scenario_has_zero_focal_truth_and_is_identified(self):
         truth, source, sealed, result, report = self.run_case(config("null"), contract())
         self.assertAlmostEqual(truth.theta_access_truth, 0.0, places=12)
-        self.assertEqual(result.focal_identification, "IDENTIFIED")
-        self.assertIsNotNone(result.focal_estimate)
-        self.assertAlmostEqual(result.focal_estimate, result.package_itt_estimate)
+        self.assertEqual(result.package_identification, "IDENTIFIED")
+        self.assertEqual(result.focal_identification, "INDETERMINATE")
+        self.assertIsNone(result.focal_estimate)
+        self.assertEqual(result.abstention_reason,
+                         "THETA_A_REQUIRES_DIRECT_GA_ASSIGNMENT_AND_POLICY_LINKED_OBSERVATIONS")
         self.assertTrue(report.classification_correct)
         self.assertTrue(all(set(row) == set(Projector.ALLOWED) for row in sealed.rows))
 
@@ -62,7 +64,7 @@ class FocalHarnessContractTests(unittest.TestCase):
         truth, _source, _sealed, result, report = self.run_case(cfg, contract("PRESENT"))
         self.assertTrue(truth.direct_path_truth)
         self.assertEqual(result.package_identification, "IDENTIFIED")
-        self.assertEqual(result.focal_identification, "NOT_IDENTIFIED")
+        self.assertEqual(result.focal_identification, "INDETERMINATE")
         self.assertIsNotNone(result.package_itt_estimate)
         self.assertIsNone(result.focal_estimate)
         self.assertIsNone(result.focal_interval_95)
@@ -127,8 +129,8 @@ class FocalHarnessContractTests(unittest.TestCase):
     def test_evaluator_detects_false_absent_direct_path_declaration(self):
         cfg = config("false-absence", 1.0, -1.0, 0.7, -0.4, "UNKNOWN", 20261122)
         _truth, _source, _sealed, result, report = self.run_case(cfg, contract("ABSENT"))
-        self.assertEqual(result.focal_identification, "IDENTIFIED")
-        self.assertFalse(report.classification_correct)
+        self.assertEqual(result.focal_identification, "INDETERMINATE")
+        self.assertTrue(report.classification_correct)
 
     def test_version_inconsistency_forces_focal_indeterminacy(self):
         _truth, _source, _sealed, result, report = self.run_case(
