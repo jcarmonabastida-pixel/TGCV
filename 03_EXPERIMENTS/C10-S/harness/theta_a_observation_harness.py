@@ -73,7 +73,7 @@ class ThetaASealer:
                                 "s3_config_id", "s3_config_version")
             if any(not isinstance(row[k], str) or not row[k] for k in required_strings):
                 raise ContractError("theta_A evidence contains missing identity or version fields")
-            if row["assigned_arm"] not in (0, 1):
+            if type(row["assigned_arm"]) is not int or row["assigned_arm"] not in (0, 1):
                 raise ContractError("theta_A assigned_arm must be 0 or 1")
             probability = row["assignment_probability"]
             if (not isinstance(probability, (int, float)) or isinstance(probability, bool)
@@ -158,7 +158,8 @@ class ThetaAIntervalSealer:
             strings = ("unit_id", "history_ref", "assignment_bundle_sha256", "q_x_sha256",
                        "g_a0_sha256", "g_a1_sha256", "r_common_sha256",
                        "assigned_vector_sha256", "policy_fingerprint", "r_common_fingerprint",
-                       "history_id", "observation_id", "monitor_id", "monitor_version",
+                       "history_id", "history_version", "history_content_sha256",
+                       "observation_id", "monitor_id", "monitor_version",
                        "grid_id", "grid_version")
             if any(not isinstance(row[k], str) or not row[k] for k in strings):
                 raise ContractError("interval theta_A identity/version fields are mandatory")
@@ -191,7 +192,7 @@ class ThetaAIntervalSealer:
                 "assignment_bundle_sha256", "q_x_sha256", "g_a0_sha256", "g_a1_sha256",
                 "r_common_sha256", "assigned_arm", "assignment_probability",
                 "assigned_vector_sha256", "policy_fingerprint", "r_common_fingerprint",
-                "history_ref", "history_id",
+                "history_ref", "history_id", "history_version", "history_content_sha256",
             ))
             contract = units.setdefault(unit, {"assignment": assignment, "rows": []})
             if contract["assignment"] != assignment:
