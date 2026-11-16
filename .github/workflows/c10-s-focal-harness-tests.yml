@@ -134,7 +134,7 @@ jobs:
         run: |
           set -euo pipefail
           cd "$RUNNER_TEMP/c10s-clean-replay/03_EXPERIMENTS/C10-S/harness"
-          PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_focal_harness test_p178_analyzer_bridge test_p178_analyzer_monte_carlo test_vcont_integrated_harness test_vcont_benchmark_protocol test_vcont_capture_v2 test_vcont_package_v2_serialization test_vcont_package_v2_verifier test_c10s_synthetic_components test_c10s_functional_history test_theta_a_observation_harness test_theta_a_analyzer test_theta_a_evaluator > "$RUNNER_TEMP/c10s-replay-stdout.txt" 2> "$RUNNER_TEMP/c10s-replay-stderr.txt"
+          PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_focal_harness test_p178_analyzer_bridge test_p178_analyzer_monte_carlo test_vcont_integrated_harness test_vcont_benchmark_protocol test_vcont_capture_v2 test_vcont_package_v2_serialization test_vcont_package_v2_verifier test_c10s_synthetic_components test_c10s_functional_history test_theta_a_interval_observation test_theta_a_observation_harness test_theta_a_analyzer test_theta_a_evaluator > "$RUNNER_TEMP/c10s-replay-stdout.txt" 2> "$RUNNER_TEMP/c10s-replay-stderr.txt"
           cat "$RUNNER_TEMP/c10s-replay-stdout.txt"
           cat "$RUNNER_TEMP/c10s-replay-stderr.txt" >&2
           for root in "$RUNNER_TEMP/c10s-primary-source" "$RUNNER_TEMP/c10s-clean-replay"; do
@@ -181,6 +181,8 @@ jobs:
             "03_EXPERIMENTS/C10-S/harness/test_vcont_package_v2_serialization.py",
             "03_EXPERIMENTS/C10-S/harness/test_vcont_package_v2_verifier.py",
             "03_EXPERIMENTS/C10-S/harness/test_c10s_synthetic_components.py",
+            "03_EXPERIMENTS/C10-S/harness/test_c10s_functional_history.py",
+            "03_EXPERIMENTS/C10-S/harness/test_theta_a_interval_observation.py",
             "03_EXPERIMENTS/C10-S/harness/test_theta_a_observation_harness.py",
             "03_EXPERIMENTS/C10-S/harness/test_theta_a_analyzer.py",
             "03_EXPERIMENTS/C10-S/harness/test_theta_a_evaluator.py",
@@ -188,6 +190,8 @@ jobs:
             "03_EXPERIMENTS/C10-S/harness/theta_a_analyzer.py",
             "03_EXPERIMENTS/C10-S/harness/theta_a_evaluator.py",
             "03_EXPERIMENTS/C10-S/harness/c10s_world_pipeline.py",
+            "03_EXPERIMENTS/C10-S/harness/c10s_functional_history.py",
+            "03_EXPERIMENTS/C10-S/harness/theta_a_interval_observation.py",
             "03_EXPERIMENTS/C10-S/harness/c10s_synthetic_components.py",
             "03_EXPERIMENTS/C10-S/harness/focal_harness.py",
             "03_EXPERIMENTS/C10-S/harness/run_p178_analyzer_monte_carlo.py",
