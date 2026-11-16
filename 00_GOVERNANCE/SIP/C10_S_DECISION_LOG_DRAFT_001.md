@@ -1639,3 +1639,16 @@ Se acepta como decisión complementaria a DEC-C10-100…102:
 4. No se fijan T*, K, Δ, unidad/resolución temporal ni detectabilidad. DEC-C10-100…102 permanecen vigentes; no se autoriza implementación, pruebas, generación, simulación, calibración, estimación, ejecución ni Design Freeze.
 
 Registro autónomo: 00_GOVERNANCE/decisions/DEC-C10-104_VCONT_INTERVAL_BOUNDARY_AND_GENERATOR_UNKNOWN_RULE_ACCEPTANCE.md. scientific_execution=false; execution_authorized=false.
+
+
+## Propuesta complementaria pendiente — alcance temporal A_B1 / DEC-C10-102 (2026-11-16)
+
+**Estado:** PROPOSED_FOR_EXPLICIT_ACCEPTANCE / NOT_ACCEPTED / NO_DEC_CREATED.
+
+Se incorpora la propuesta C1–C6 contenida en `C10_S_DEC-C10-102_COMPLEMENTARY_SCOPE_DECISION_PROPOSAL_DRAFT_001.md`. La propuesta formaliza la precedencia de Gate 154 para el alcance temporal de A_B1/V_cont, preservando R150-A (PROFILE exposure como obligación contractual), R151-A8 (sin trayectoria truth independiente), R152-A y R208-A (PROFILE declarativo versionado; D_valid separado; runtime constitutivo cuando altera admisión).
+
+La propuesta mantiene intactos DEC-C10-099…104 y, en particular, el operador estricto de DEC-C10-102. V_cont se limita a continuidad temporal de admisión/no-admisión requerida por ENABLED, incluida disponibilidad runtime constitutiva. PROFILE exposure queda fuera de esa adjudicación temporal en el DGP actual, sin inferencia desde admisión y sin UNKNOWN artificial. D_valid se evalúa separadamente; la no conformidad declarativa es no conformidad del Generator/DGP o escenario adversarial versionado, no A_B1=0/UNKNOWN automático.
+
+**No es una decisión aceptada.** La aprobación expresa de C1–C6 es necesaria antes de emitir un registro decisional complementario. No se crea DEC-C10-105 en esta operación. No cambia §51, DGP, schemas, código, tests ni autorizaciones.
+
+`scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
