@@ -181,6 +181,9 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             (Decimal("0"), Decimal("1"), Decimal("2")),
             "GRID-INTEGRATION", "1",
         )
+        # Gate 131 scope: ideal best-case benchmark only. This perfect,
+        # complete interval channel tests the software path; it is not a
+        # validated model for imperfect passive S3 measurement.
         monitor = IntervalMonitorConfig(
             monitor_id="MONITOR-INTEGRATION",
             monitor_version="1",
