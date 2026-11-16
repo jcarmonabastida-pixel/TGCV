@@ -828,14 +828,11 @@ class C10STruthExtension:
 
 @dataclass(frozen=True)
 class C10SGenerationEnvelope:
-    """Composes the existing integrated Generator with the additive truth extension.
-
-    The legacy evidence candidate remains unchanged. Truth-side objects are
-    returned separately and must never be passed to Sealer or Analyzer.
-    """
+    """End-to-end generation envelope with separate evidence and reserved truth."""
     run_manifest: object
     base_truth_bundle: object
     evidence_candidate: object
+    s3_observations: tuple[S3Observation, ...]
     truth_extension: C10STruthExtension
 
 
@@ -848,13 +845,16 @@ def compose_existing_generation(
     event_history_factory: Callable[[object, Sequence[D2PotentialBundle]], Sequence[EventHistory]],
     grid_factory: Callable[[Sequence[EventHistory]], dict[str, IntervalGrid]],
     *,
+    selected_history_id_by_unit: dict[str, str],
+    s3_configs_by_history: dict[str, S3ObservationConfig],
+    s3_seeds_by_history: dict[str, int],
     theta_a_inputs: ThetaAInputs | None = None,
 ) -> C10SGenerationEnvelope:
     """Compose new D2/EventHistory truth with the existing V_cont Generator.
 
-    No parameters are inferred from Z/G frequencies. Every D2 unit seed,
-    EventHistory and grid factories are explicit caller-supplied DGP rules;
-    no clock, event-time schedule or grid is selected here.
+    No parameters are inferred from Z/G frequencies. D2 seeds, all potential
+    histories, the realized-history selector, grids, S3 configurations and S3
+    seeds are explicit caller-supplied DGP rules. No clock or grid is inferred.
     """
     manifest, base_truth, evidence = base_generator.generate(scenario_config)
     baseline_ids = [row.unit_id for row in d2_baselines]
@@ -894,7 +894,32 @@ def compose_existing_generation(
         manifest.run_id, d2_bundles, histories, adjudications, theta_truth,
     )
     extension.validate()
-    return C10SGenerationEnvelope(manifest, base_truth, evidence, extension)
+
+    # Select exactly one realized-assignment history per evidence unit. The
+    # selection is explicit; it is never inferred from IDs or row ordering.
+    if set(selected_history_id_by_unit) != set(baseline_ids):
+        raise ContractError("realized-history selector must cover the D2 unit roster exactly")
+    histories_by_id = {history.history_id: history for history in histories}
+    if len(selected_history_id_by_unit.values()) != len(set(selected_history_id_by_unit.values())):
+        raise ContractError("a realized EventHistory cannot be selected for multiple units")
+    selected_histories = []
+    for unit_id, history_id in selected_history_id_by_unit.items():
+        history = histories_by_id.get(history_id)
+        if history is None or history.unit_id != unit_id:
+            raise ContractError("selected EventHistory identity/unit binding is invalid")
+        selected_histories.append(history)
+    selected_ids = {history.history_id for history in selected_histories}
+    if set(s3_configs_by_history) != selected_ids or set(s3_seeds_by_history) != selected_ids:
+        raise ContractError("S3 configs and seeds must cover the realized EventHistory roster exactly")
+    s3_observations = project_s3_batch(
+        tuple(selected_histories), s3_configs_by_history, s3_seeds_by_history,
+    )
+    projected_evidence = project_s3_into_evidence_candidate(
+        evidence, tuple(selected_histories), s3_observations,
+    )
+    return C10SGenerationEnvelope(
+        manifest, base_truth, projected_evidence, s3_observations, extension,
+    )
 
 
 def project_s3_batch(

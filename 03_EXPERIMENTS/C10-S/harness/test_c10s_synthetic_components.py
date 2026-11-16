@@ -1,7 +1,7 @@
 import unittest
 from decimal import Decimal
 
-from vcont_integrated_harness import EvidenceCandidate
+from vcont_integrated_harness import EvidenceCandidate, Generator, benchmark_scenarios
 
 from c10s_synthetic_components import (
     ContractError, D2Baseline, D2MechanismConfig, EventHistory,
@@ -9,7 +9,7 @@ from c10s_synthetic_components import (
     JointPolicyHistory, QXHistoryMass, RCommonPairCertificate,
     S3SequenceKernelRow, S3ObservationConfig, adjudicate_intervals,
     compute_theta_a_truth, evaluate_theta_a_output, generate_d2_potentials, project_s3,
-    project_s3_into_evidence_candidate,
+    project_s3_into_evidence_candidate, compose_existing_generation,
 )
 
 
@@ -20,7 +20,7 @@ class SyntheticComponentTests(unittest.TestCase):
             world_id="WORLD-001", world_version="001", dgp_version="DGP-001",
             unit_id="UE-001", potential_id="Z0_POLICY0",
             adjudication_rules_version="AB1-001",
-            support_start=Decimal("0"), support_end=Decimal("4"),
+            support_start=Decimal("0"), support_end=Decimal("1"),
             initial_post_z_state=initial or FunctionalState(False, "NO_ADMISSION"),
             transitions=tuple(transitions), expected_transition_ids=tuple(
                 event.transition_id for event in transitions
@@ -36,7 +36,7 @@ class SyntheticComponentTests(unittest.TestCase):
             FunctionalTransition("T-1", Decimal("2"), before, failed, "RUNTIME_FAILURE", "TRUTH-PROV-1"),
         ))
         result = adjudicate_intervals(
-            history, IntervalGrid((Decimal("0"), Decimal("2"), Decimal("4")), "GRID", "001")
+            history, IntervalGrid((Decimal("0"), Decimal("0.2"), Decimal("0.4"), Decimal("0.6"), Decimal("0.8"), Decimal("1")), "GRID", "001")
         )
         self.assertEqual(result.interval_truth, (1, 0))
         self.assertEqual(result.v_cont_truth, 0.5)
@@ -206,6 +206,82 @@ class SyntheticComponentTests(unittest.TestCase):
         self.assertNotIn("event_history", row)
         self.assertNotIn("interval_adjudication", row)
         self.assertEqual(candidate.rows[0], original)
+
+
+    def test_composition_connects_realized_eventhistory_s3_and_sealed_evidence(self):
+        scenario = benchmark_scenarios(n_units=16, n_intervals=5)[0]
+        baselines = tuple(
+            D2Baseline(f"UE-{i+1:06d}", f"BASE-{i+1:06d}", False, True, True, True, True, True, True)
+            for i in range(16)
+        )
+        d2_config = D2MechanismConfig(
+            "D2-SYNTH", "001", ("B_D2_0", "B_D2_1"), ("001", "001"),
+            ("ARTIFACT-0", "ARTIFACT-1"), ("ACTOR-0", "ACTOR-1"),
+            (0.0, 1.0), (0.8, 0.8), (0.0, 0.0), (0.9, 0.9), (0.8, 0.8),
+            (((True, True, True, True), 0.7), ((True, False, True, True), 0.3)),
+            "MECH-001",
+        )
+
+        def history_factory(manifest, bundles):
+            histories = []
+            for bundle in bundles:
+                unit_id = bundle.unit_id
+                state = FunctionalState(False, "NO_ADMISSION", "STANDARD")
+                histories.append(EventHistory(
+                    history_id=f"EH-{unit_id}", history_version="001",
+                    run_id=manifest.run_id, world_id=manifest.world_id,
+                    world_version=manifest.world_version, dgp_version="DGP-001",
+                    unit_id=unit_id, potential_id="REALIZED_SELECTED",
+                    adjudication_rules_version="AB1-001",
+                    support_start=Decimal("0"), support_end=Decimal("4"),
+                    initial_post_z_state=state, transitions=(),
+                    expected_transition_ids=(), scope_declared_complete=True,
+                    generation_complete=True, representation_complete=True,
+                ))
+            return tuple(histories)
+
+        def grid_factory(histories):
+            return {
+                history.history_id: IntervalGrid(
+                    (Decimal("0"), Decimal("2"), Decimal("4")), "GRID", "001"
+                ) for history in histories
+            }
+
+        selected = {row.unit_id: f"EH-{row.unit_id}" for row in baselines}
+        configs, seeds = {}, {}
+        for index, history_id in enumerate(selected.values()):
+            configs[history_id] = S3ObservationConfig(
+                (Decimal("0"), Decimal("0.2"), Decimal("0.4"), Decimal("0.6"), Decimal("0.8")),
+                (Decimal("0.01"),) * 5,
+                (Decimal("0.02"),) * 5,
+                (S3SequenceKernelRow(
+                    ((False, "NO_ADMISSION", "STANDARD"),) * 5,
+                    (
+                        (((False, "NO_ADMISSION", "STANDARD"),) * 5, 1.0),
+                    ),
+                ),),
+                "S3-COMPOSE", "001",
+            )
+            seeds[history_id] = 700 + index
+
+        envelope = compose_existing_generation(
+            Generator(), scenario, baselines, d2_config,
+            {row.unit_id: 1000 + i for i, row in enumerate(baselines)},
+            history_factory, grid_factory,
+            selected_history_id_by_unit=selected,
+            s3_configs_by_history=configs,
+            s3_seeds_by_history=seeds,
+        )
+        self.assertEqual(len(envelope.s3_observations), 80)
+        self.assertEqual(len(envelope.evidence_candidate.rows), 16)
+        self.assertTrue(all(
+            set(row["s3_temporal_support"]) == {"POINT_SAMPLE"}
+            for row in envelope.evidence_candidate.rows
+        ))
+        self.assertNotIn("event_history", envelope.evidence_candidate.rows[0])
+        self.assertEqual(
+            len(envelope.truth_extension.event_histories), 16
+        )
 
 
 if __name__ == "__main__":
