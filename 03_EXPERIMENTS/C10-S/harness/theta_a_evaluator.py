@@ -11,7 +11,8 @@ from dataclasses import dataclass
 import math
 from typing import Any
 
-from c10s_synthetic_components import ContractError, ThetaAVContTruthBundle
+from c10s_synthetic_components import (ContractError, ThetaAVContTruthBundle,
+                                        ThetaAPolicyAssignmentBundle)
 from theta_a_observation_harness import SealedThetaAEvidence, _hash
 from theta_a_analyzer import (ThetaAObservationAnalysisContract,
                               ThetaAObservationAnalysisResult,
@@ -62,6 +63,7 @@ class ThetaAObservationEvaluator:
     def evaluate(self, truth_bundle: ThetaAVContTruthBundle,
                  evidence: SealedThetaAEvidence,
                  result: ThetaAObservationAnalysisResult,
+                 assignment_bundle: ThetaAPolicyAssignmentBundle,
                  contract: ThetaAObservationAnalysisContract,
                  *, tolerance: float) -> ThetaAObservationEvaluation:
         truth_bundle.validate()
@@ -89,9 +91,36 @@ class ThetaAObservationEvaluator:
             raise ContractError("sealed theta_A evidence digest is invalid")
         if _canonical_hash(_result_payload(result)) != result.output_sha256:
             raise ContractError("Analyzer result digest is invalid")
+        if (assignment_bundle.result_sha256 != contract.assignment_bundle_sha256
+                or assignment_bundle.q_x_sha256 != contract.q_x_sha256
+                or assignment_bundle.g_a0_sha256 != contract.g_a0_sha256
+                or assignment_bundle.g_a1_sha256 != contract.g_a1_sha256
+                or assignment_bundle.r_common_sha256 != contract.r_common_sha256):
+            raise ContractError("assignment bundle does not match the analysis intervention/population contract")
         if any(row.get("assignment_bundle_sha256") != contract.assignment_bundle_sha256
-               or row.get("q_x_sha256") != contract.q_x_sha256 for row in evidence.rows):
-            raise ContractError("sealed evidence does not match the analysis assignment/q_X contract")
+               or row.get("q_x_sha256") != contract.q_x_sha256
+               or row.get("g_a0_sha256") != contract.g_a0_sha256
+               or row.get("g_a1_sha256") != contract.g_a1_sha256
+               or row.get("r_common_sha256") != contract.r_common_sha256
+               for row in evidence.rows):
+            raise ContractError("sealed evidence does not match the analysis assignment/q_X/policy contract")
+        assignment_by_unit = {row.unit_id: row for row in assignment_bundle.assignments}
+        if len(assignment_by_unit) != len(assignment_bundle.assignments):
+            raise ContractError("assignment bundle contains duplicate unit assignments")
+        evidence_units = {row["unit_id"] for row in evidence.rows}
+        if evidence_units != set(assignment_by_unit):
+            raise ContractError("sealed observations must cover the exact assigned-unit roster")
+        for row in evidence.rows:
+            assigned = assignment_by_unit[row["unit_id"]]
+            assigned_probability = (assigned.probability_a1 if assigned.assigned_arm == 1
+                                    else assigned.probability_a0)
+            if (row["assigned_arm"] != assigned.assigned_arm
+                    or row["assigned_vector_sha256"] != assigned.assigned_vector_sha256
+                    or row["policy_fingerprint"] != assigned.policy_fingerprint
+                    or row["r_common_fingerprint"] != assigned.r_common_fingerprint
+                    or row["history_ref"] != assigned.history_ref
+                    or row["assignment_probability"] != assigned_probability):
+                raise ContractError("sealed observation does not reproduce its exact direct-g_A assignment record")
 
         # Bind every observed unit/history to the reserved selected-history manifest.
         # Manifest rows are (history_ref, vector_sha, r_common_fingerprint,
