@@ -176,7 +176,8 @@ class ThetaAObservationAnalyzer:
         invariant_fields = ("history_ref", "assignment_bundle_sha256", "q_x_sha256",
                             "g_a0_sha256", "g_a1_sha256", "r_common_sha256",
                             "assigned_arm", "assignment_probability", "assigned_vector_sha256",
-                            "policy_fingerprint", "r_common_fingerprint", "history_id")
+                            "policy_fingerprint", "r_common_fingerprint", "history_id",
+                            "history_version", "history_content_sha256")
         arm_units = [[], []]
         missing_count = 0
         total_count = 0
