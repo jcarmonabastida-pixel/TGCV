@@ -302,5 +302,70 @@ class SyntheticComponentTests(unittest.TestCase):
         )
 
 
+    def test_world_builder_materializes_explicit_roster_qx_and_d2_potentials(self):
+        from c10s_synthetic_components import (
+            SyntheticWorldBuilder, SyntheticWorldConfig,
+        )
+        world_config = SyntheticWorldConfig(
+            world_id="WORLD-FIXTURE", world_version="001",
+            dgp_id="D2-WORLD-FIXTURE", dgp_version="001",
+            roster_id="ROSTER-FIXTURE", roster_version="001",
+            unit_id_prefix="UE", n_units=4, seed=20261116,
+            x_dimension=2, h0_distribution=(("H0-A", 0.75), ("H0-B", 0.25)),
+            c_c_dimension=2, c_c_component_probability=0.8,
+            need_pre_z_probability=0.6, focal_accessible_pre_probability=0.2,
+            c_auth_base_probability=1.0, c_resource_probability=0.9,
+            c_capacity_probability=0.9, c_info_probability=0.95,
+            c_domain_probability=0.95, c_other_probability=0.95,
+            q_x_mass_by_unit=(0.1, 0.2, 0.3, 0.4),
+        )
+        d2_config = D2MechanismConfig(
+            "D2-WORLD-FIXTURE", "001",
+            ("B_D2_0", "B_D2_1"), ("001", "001"),
+            ("ARTIFACT-0", "ARTIFACT-1"), ("ACTOR-0", "ACTOR-1"),
+            (0.0, 1.0), (0.8, 0.8), (0.0, 0.0), (0.9, 0.9), (0.8, 0.8),
+            (((True, True, True, True), 0.7),
+             ((True, False, True, True), 0.3)),
+            "MECH-001",
+        )
+        builder = SyntheticWorldBuilder()
+        world = builder.generate(world_config, d2_config)
+        replay = builder.generate(world_config, d2_config)
+        world.validate()
+        self.assertEqual(world.roster_sha256, replay.roster_sha256)
+        self.assertEqual(world.configuration_sha256, replay.configuration_sha256)
+        self.assertEqual(tuple(row.mass for row in world.q_x), (0.1, 0.2, 0.3, 0.4))
+        self.assertAlmostEqual(sum(row.mass for row in world.q_x), 1.0)
+        self.assertEqual(len(world.units), 4)
+        self.assertEqual({len(unit.x) for unit in world.units}, {2})
+        self.assertEqual({len(unit.c_c) for unit in world.units}, {2})
+        self.assertTrue(all(
+            tuple(stage.z for stage in unit.d2_potentials.potentials_by_z) == (0, 1)
+            for unit in world.units
+        ))
+        self.assertTrue(all(
+            unit.d2_baseline.baseline_history_ref == qx.history_ref
+            for unit, qx in zip(world.units, world.q_x)
+        ))
+
+    def test_world_builder_rejects_qx_masses_that_are_not_explicitly_normalized(self):
+        from c10s_synthetic_components import SyntheticWorldBuilder, SyntheticWorldConfig
+        config = SyntheticWorldConfig(
+            world_id="WORLD-FIXTURE", world_version="001",
+            dgp_id="D2-WORLD-FIXTURE", dgp_version="001",
+            roster_id="ROSTER-FIXTURE", roster_version="001",
+            unit_id_prefix="UE", n_units=2, seed=7,
+            x_dimension=1, h0_distribution=(("H0-A", 1.0),),
+            c_c_dimension=1, c_c_component_probability=1.0,
+            need_pre_z_probability=0.5, focal_accessible_pre_probability=0.0,
+            c_auth_base_probability=1.0, c_resource_probability=1.0,
+            c_capacity_probability=1.0, c_info_probability=1.0,
+            c_domain_probability=1.0, c_other_probability=1.0,
+            q_x_mass_by_unit=(0.5, 0.6),
+        )
+        with self.assertRaises(ContractError):
+            config.validate()
+
+
 if __name__ == "__main__":
     unittest.main()
