@@ -498,11 +498,12 @@ longer requires externally constructed EventHistory dictionaries.
 
 This is implementation, not validation or scientific execution. The DGP still
 requires confirmatory parameter choices, initial-state specification, temporal
-measurement design, and the frozen q_X*/policy/support inputs. The Analyzer
-continues to receive only realized S3 observations, never the potential histories
-or evaluator-side truth. Existing `POINT_SAMPLE` limitations are unchanged:
-these generated histories do not by themselves make strict temporal continuity
-observable.
+measurement configuration, and the frozen q_X*/policy/support inputs. The
+Analyzer continues to receive only realized S3 observations, never the potential
+histories or evaluator-side truth. Legacy `POINT_SAMPLE` remains insufficient
+for strict temporal continuity; the separate interval-monitor mode now provides
+the focal direct-g_A observation route when its continuous-coverage assumption
+is explicitly configured.
 
 
 ### Focal theta_A continuous interval observation
