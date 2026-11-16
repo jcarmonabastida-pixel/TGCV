@@ -1090,6 +1090,25 @@ class VContBenchmarkEvidenceEnvelopeTests(unittest.TestCase):
             candidate_standard.rows[0]["s3_admission_behavior"],
             candidate_read_only.rows[0]["s3_admission_behavior"],
         )
+        self.assertEqual(
+            candidate_standard.rows[0]["s3_temporal_support"],
+            ["INTERVAL_LEVEL"] * cfg.n_intervals,
+        )
+
+    def test_point_samples_abstain_on_strict_interval_continuity(self):
+        cfg = self.worlds()["R0_FOCAL_POSITIVE"]
+        manifest, truth, candidate = self.generator.generate(cfg)
+        point_rows = tuple({
+            **row, "s3_temporal_support": ["POINT_SAMPLE"] * cfg.n_intervals
+        } for row in candidate.rows)
+        point_candidate = replace(candidate, rows=point_rows)
+        sealed = self.sealer.seal(point_candidate)
+        result = self.analyzer.analyze(sealed, contract_for(cfg))
+        self.assertEqual(result.package_status, "INDETERMINATE")
+        self.assertIn(
+            "S3_POINT_SAMPLES_DO_NOT_IDENTIFY_STRICT_INTERVAL_CONTINUITY",
+            result.abstention_reasons,
+        )
 
 
 if __name__ == "__main__":

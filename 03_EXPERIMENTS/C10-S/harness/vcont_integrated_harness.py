@@ -546,6 +546,7 @@ class Generator:
                 "s3_enabled_status": status_enabled,
                 "s3_admission_status": status_admission,
                 "s3_profile_status": ["OBSERVED"] * cfg.n_intervals,
+                "s3_temporal_support": ["INTERVAL_LEVEL"] * cfg.n_intervals,
                 "s3_profile_config_id": [cfg.b1_profile_config_id] * cfg.n_intervals,
                 "s3_profile_config_version": [cfg.b1_profile_config_version] * cfg.n_intervals,
                 "delta_t_acc_observed": unit_delta[z][g],
@@ -601,7 +602,8 @@ class Sealer:
         allowed = {"unit_id", "cluster_id", "assignment_z", "assignment_g",
                    "baseline_stratum", "s3_enabled", "s3_admission_behavior",
                    "s3_profile_value", "s3_enabled_status", "s3_admission_status",
-                   "s3_profile_status", "s3_profile_config_id", "s3_profile_config_version",
+                   "s3_profile_status", "s3_temporal_support",
+                   "s3_profile_config_id", "s3_profile_config_version",
                    "delta_t_acc_observed", "profile", "version"}
         for row in candidate.rows:
             if set(row) != allowed:
@@ -609,7 +611,7 @@ class Sealer:
             lengths = {len(row[k]) for k in (
                 "s3_enabled", "s3_admission_behavior", "s3_profile_value",
                 "s3_enabled_status", "s3_admission_status", "s3_profile_status",
-                "s3_profile_config_id", "s3_profile_config_version"
+                "s3_temporal_support", "s3_profile_config_id", "s3_profile_config_version"
             )}
             if len(lengths) != 1:
                 raise ContractError("S3 interval/status cardinality mismatch")
@@ -619,6 +621,8 @@ class Sealer:
                 raise ContractError("invalid admission-behaviour observation")
             if any(v not in ("STANDARD", "READ_ONLY", "DISABLED", None) for v in row["s3_profile_value"]):
                 raise ContractError("invalid declared PROFILE observation")
+            if any(v not in ("INTERVAL_LEVEL", "POINT_SAMPLE") for v in row["s3_temporal_support"]):
+                raise ContractError("unknown S3 temporal support declaration")
             if any(v not in ("OBSERVED", "MISSING") for k in (
                 "s3_enabled_status", "s3_admission_status", "s3_profile_status"
             ) for v in row[k]):
@@ -714,6 +718,11 @@ class Analyzer:
         )
         if not ideal:
             shared_reasons.append("S3_COVERAGE_INCOMPLETE")
+        if any(
+            support != "INTERVAL_LEVEL"
+            for row in evidence.rows for support in row["s3_temporal_support"]
+        ):
+            shared_reasons.append("S3_POINT_SAMPLES_DO_NOT_IDENTIFY_STRICT_INTERVAL_CONTINUITY")
         if shared_reasons and reference_regime_status == "IDENTIFIED":
             reference_regime_status = "INDETERMINATE"
 

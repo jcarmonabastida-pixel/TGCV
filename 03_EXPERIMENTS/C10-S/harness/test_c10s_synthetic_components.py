@@ -202,6 +202,7 @@ class SyntheticComponentTests(unittest.TestCase):
         self.assertEqual(row["s3_profile_value"], ["STANDARD"] * 3)
         self.assertEqual(row["s3_profile_config_id"], ["B1-PROFILE"] * 3)
         self.assertEqual(row["s3_profile_config_version"], ["001"] * 3)
+        self.assertEqual(row["s3_temporal_support"], ["POINT_SAMPLE"] * 3)
         self.assertNotIn("event_history", row)
         self.assertNotIn("interval_adjudication", row)
         self.assertEqual(candidate.rows[0], original)

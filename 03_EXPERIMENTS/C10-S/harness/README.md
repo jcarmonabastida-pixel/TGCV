@@ -258,3 +258,24 @@ Materialization boundary and unresolved work:
 
 
 The EP-02 integrated harness workflow now includes test_c10s_synthetic_components.py and c10s_synthetic_components.py in its exact nine-module source/test allowlist, primary run and clean replay. It remains workflow_dispatch-only, restricted to research/c10-s-consolidation-draft and guarded by confirm_synthetic_test_execution=true. It has not been dispatched; the added tests have not been compiled or run.
+
+
+## B1 EventHistory → S3 → sealed evidence interface (schema 002)
+
+The B1 evidence contract now keeps the three functional/configuration concepts separate:
+
+- ENABLED is the declared dynamic service state.
+- admission_behavior is the observed/generated functional behavior (ADMIT or NO_ADMISSION). A_B1 conformance is the behavior required by ENABLED, per Gate 154.
+- PROFILE is declarative configuration (STANDARD, READ_ONLY, DISABLED) with configuration identity/version. It is not a PROFILE-exposure signal and does not enter the temporal A_B1 predicate. D_valid remains a separate declarative check.
+
+FunctionalState and EventHistory preserve PROFILE values and versioned configuration changes. A change in PROFILE requires a configuration identity/version change; it is not turned into an independent exposure trajectory. S3Observation carries observed ENABLED, admission behavior and PROFILE value separately, with independent missingness/status fields and the applicable PROFILE configuration identity/version.
+
+The evidence-row contract is now: s3_enabled, s3_admission_behavior; s3_profile_value, s3_profile_config_id, s3_profile_config_version; independent s3_enabled_status, s3_admission_status, s3_profile_status; and s3_temporal_support, explicitly INTERVAL_LEVEL or POINT_SAMPLE.
+
+The former s3_profile_match field and TruthBundle.potential_profile_truth name are retired. The truth field is now potential_admission_conformance_truth. Sealer schema is C10S-VCONT-S3-002 (Sealer 0.3); Analyzer is c10s-vcont-analyzer-0.2. Analyzer forms the observed B1 conformance indicator from ENABLED plus admission behavior and does not use PROFILE as a proxy for admission or continuity.
+
+project_s3_into_evidence_candidate(...) requires one realized, complete EventHistory per candidate unit, exact roster/history binding, ordered observations, matching configuration versions and cardinality. It projects only observations and declared configuration identity/version; it never copies EventHistory, interval adjudication, potential outcomes, seeds or DGP parameters into evidence.
+
+Temporal guard: EventHistory S3 observations are point samples and are labelled POINT_SAMPLE. They can enter the sealed evidence envelope, but Analyzer abstains from a strict interval-continuity point estimate with S3_POINT_SAMPLES_DO_NOT_IDENTIFY_STRICT_INTERVAL_CONTINUITY. The existing interval-level synthetic channel is labelled INTERVAL_LEVEL. This distinction prevents a sample at one instant from being treated as proof that no functional interruption occurred anywhere in the interval. No new S3 coverage or calibration assumption is inferred by this interface change.
+
+The code and regression-test definitions are persisted in the research branch. No tests, workflows, simulations, calibration or scientific execution were run in this authoring operation.

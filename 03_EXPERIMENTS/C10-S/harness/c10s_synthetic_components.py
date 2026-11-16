@@ -981,6 +981,7 @@ def project_s3_into_evidence_candidate(candidate, selected_histories, observatio
         updated["s3_enabled_status"] = [x.enabled_status for x in projected]
         updated["s3_admission_status"] = [x.admission_status for x in projected]
         updated["s3_profile_status"] = [x.profile_status for x in projected]
+        updated["s3_temporal_support"] = ["POINT_SAMPLE"] * len(projected)
         updated["s3_profile_config_id"] = [x.profile_config_id for x in projected]
         updated["s3_profile_config_version"] = [x.profile_config_version for x in projected]
         projected_rows.append(updated)
