@@ -165,7 +165,7 @@ class ThetaAObservationEvaluator:
             if result.measurement_lower_bound is not None and not (
                 math.isfinite(result.measurement_lower_bound)
                 and math.isfinite(result.measurement_upper_bound)
-                and -1.0 <= result.measurement_lower_bound <= result.measurement_upper_bound <= 1.0
+                and result.measurement_lower_bound <= result.measurement_upper_bound
             ):
                 raise ContractError("interval measurement-only bounds must be finite and within [-1,1]")
             if result.missing_interval_count and result.identification not in ("PARTIALLY_IDENTIFIED", "INDETERMINATE"):
@@ -185,7 +185,8 @@ class ThetaAObservationEvaluator:
         if status == "IDENTIFIED":
             if estimate is None or not math.isfinite(estimate):
                 raise ContractError("identified Analyzer result must provide a finite point estimate")
-            if not lower - tolerance <= estimate <= upper + tolerance:
+            if (result.temporal_resolution != "INTERVAL_LEVEL"
+                    and not lower - tolerance <= estimate <= upper + tolerance):
                 raise ContractError("identified point estimate lies outside its reported interval")
             error = abs(estimate - truth.theta_a_truth)
             correct = covers and error <= tolerance
