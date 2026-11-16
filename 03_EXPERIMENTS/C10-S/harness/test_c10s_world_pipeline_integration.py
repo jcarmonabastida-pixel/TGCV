@@ -143,7 +143,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             ),
         )
         initial = FunctionalState(
-            True, "NO_ADMISSION", "STANDARD", "PROFILE-1", "1",
+            True, "ADMIT", "STANDARD", "PROFILE-1", "1",
         )
         functional_config = FunctionalHistoryDGPConfig(
             dgp_id=world.dgp_id,
@@ -159,14 +159,14 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             profile_config_version="1",
             rules=(
                 FunctionalHistoryRule(
-                    rule_id="GA-VECTOR-ENABLES-ADMISSION",
+                    rule_id="GA-VECTOR-INTERRUPTS-ADMISSION",
                     source="G_A",
-                    event_time=Decimal("0"),
+                    event_time=Decimal("1"),
                     causal_family="DIRECT_GA_FUNCTIONAL_ADMISSION",
-                    provenance_ref="FUNCTIONAL-DGP#GA-VECTOR-ENABLES-ADMISSION",
-                    set_admission="ADMIT",
+                    provenance_ref="FUNCTIONAL-DGP#GA-VECTOR-INTERRUPTS-ADMISSION",
+                    set_admission="NO_ADMISSION",
                     vector_index=0,
-                    vector_value=1.0,
+                    vector_value=0.0,
                 ),
             ),
         )
