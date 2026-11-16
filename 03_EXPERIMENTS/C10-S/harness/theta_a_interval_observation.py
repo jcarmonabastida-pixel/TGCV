@@ -189,6 +189,8 @@ class ThetaAIntervalObservationRecord:
     policy_fingerprint: str
     r_common_fingerprint: str
     history_id: str
+    history_version: str
+    history_content_sha256: str
     observation_id: str
     interval_index: int
     interval_start: Decimal
@@ -214,7 +216,6 @@ def compose_theta_a_interval_s3_records(
     seeds_by_unit,
 ):
     """Compose assignment -> selected realized history -> interval S3, without truth export."""
-    from c10s_synthetic_components import theta_a_event_history_potential_id
     if selection.assignment_bundle_sha256 != assignments.result_sha256:
         raise ContractError("interval S3 selection is detached from direct-g_A assignment bundle")
     history_by_id = {history.history_id: history for history in histories}
@@ -255,7 +256,8 @@ def compose_theta_a_interval_s3_records(
                 assigned_vector_sha256=assignment.assigned_vector_sha256,
                 policy_fingerprint=assignment.policy_fingerprint,
                 r_common_fingerprint=assignment.r_common_fingerprint,
-                history_id=history.history_id, observation_id=row.observation_id,
+                history_id=history.history_id, history_version=history.history_version,
+                history_content_sha256=history.content_sha256, observation_id=row.observation_id,
                 interval_index=row.interval_index, interval_start=row.interval_start,
                 interval_end=row.interval_end, observed_compliance=row.observed_compliance,
                 observation_status=row.observation_status, coverage_mode=row.coverage_mode,
