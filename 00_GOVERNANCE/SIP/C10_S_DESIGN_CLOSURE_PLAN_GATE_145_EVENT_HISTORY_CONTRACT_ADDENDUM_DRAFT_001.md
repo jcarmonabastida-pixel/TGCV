@@ -89,3 +89,16 @@ La dirección semántica queda aceptada: `D_valid`, `D_enabled`, `O` y `A` son d
 No se crean DEC en Gate 148 ni se modifican DEC-C10-068/099…104. §51, reloj, rejilla, T*, Δ, K y calibración S3 permanecen abiertos. No hay autorización de schema, código, tests, fixtures, generación, simulación, estimación, calibración ni ejecución científica.
 
 `scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
+
+
+## Gate 149 — crosswalk normativo de V_cont y función efectiva B1 (2026-11-16)
+
+Se completó el crosswalk documental en `C10_S_GATE_149_VCONT_EFFECTIVE_FUNCTION_DECISION_CROSSWALK_AUDIT_DRAFT_001.md` (commit `c09e73e10d94b21e8e11a1c6eb13bac773624737`).
+
+Dictamen: el constructo V_cont de DEC-C10-099 es compatible con R148-A porque ya refiere a la continuidad de la capacidad efectiva del servicio, no al flag ENABLED aislado. Sin embargo, A_B1(i,k) necesita una aclaración complementaria: una lectura de DEC-C10-102 limitada a evaluar únicamente RUL-SVC-ENABLE-PROFILE-01 no capturaría fallos runtime con ENABLED/PROFILE intactos. Se preserva el operador temporal estricto de DEC-C10-102; no se reinterpreta la RUL como uptime ni se modifica ninguna DEC existente.
+
+La propuesta de complemento (candidata DEC-C10-105, ID provisional no asignado) delimitaría A_B1 como cumplimiento temporal de la función efectiva conforme al estado declarativo vigente, incorporando mecanismos runtime solo cuando impidan el comportamiento requerido. Importante: ENABLED=false implica no admitir; la no admisión esperada no se etiqueta automáticamente como fallo. El comportamiento adicional requerido en ese estado (incluida exposición PROFILE) y la constitutividad exacta de mecanismos siguen abiertos.
+
+No se ha creado DEC-C10-105 ni se ha solicitado todavía aceptación de su texto. Gate 150 debe completar el contrato lógico de A_B1 en ENABLED=true/false y preparar, si procede, el complemento para decisión expresa. DEC-C10-068/099…104 permanecen intactas; §51, parámetros temporales, schema, código, tests y ejecución siguen abiertos/no autorizados.
+
+`scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
