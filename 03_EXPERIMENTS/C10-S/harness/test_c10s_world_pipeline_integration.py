@@ -352,7 +352,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             r_common_certificates=fixture["r_common"],
         )
 
-    def test_null_and_negative_focal_mechanisms_are_separately_generated(self):
+    def test_null_negative_and_alternative_path_scenarios_are_separately_generated(self):
         expected_truth = {"null": 0.0, "negative": -0.5, "alternative": 0.0}
         results = {}
         for mode, truth in expected_truth.items():
