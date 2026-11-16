@@ -507,3 +507,20 @@ El benchmark ideal ITT-Z/ITT-G permanece reutilizable únicamente en su alcance 
 No se modifica ninguna DEC, DGP original, código, schema, test, workflow, RMA, Evidence→Claim Matrix, STATUS o Core. No se ejecutan validadores, pruebas, generación, calibración, simulación, estimación o Monte Carlo. No Design Freeze.
 
 `scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
+
+
+## 320. Paquete A — propuesta integrada de precedencia normativa DEC-C10-102 / Gate 154 (2026-11-16)
+
+Se completa la reconstrucción normativa y se prepara una única propuesta complementaria, sin reabrir ni modificar decisiones aceptadas:
+
+`00_GOVERNANCE/SIP/C10_S_DEC-C10-102_COMPLEMENTARY_SCOPE_DECISION_PROPOSAL_DRAFT_001.md`.
+
+**Hallazgo integrado:** Gate 154 ya fue aceptado expresamente y delimita A_B1/V_cont al comportamiento de admisión/no-admisión exigido por ENABLED, incluida la disponibilidad runtime constitutiva que impida realizarlo. R150-A mantiene PROFILE exposure como obligación contractual; R151-A8 excluye su adjudicación temporal por ausencia de trayectoria truth independiente; R208-A conserva PROFILE como configuración declarativa versionada y D_valid como dimensión separada. La composición es científicamente coherente si se formaliza la precedencia de alcance sin alterar el operador estricto de DEC-C10-102.
+
+**Propuesta C1–C6:** (C1) alcance temporal A_B1; (C2) semántica ENABLED=true/false; (C3) PROFILE y D_valid; (C4) runtime constitutivo/EventHistory; (C5) operador estricto y {1,0,?}; (C6) límite de la afirmación de V_cont. La propuesta preserva todas las obligaciones y decisiones históricas, y descarta inferir PROFILE exposure desde admisión o convertir ausencia de representación/observación en UNKNOWN.
+
+**Estado:** propuesta completa pendiente de aceptación expresa. No se registra DEC-C10-105 como aceptada. Si se acepta, se cerrará únicamente el crosswalk normativo lógico para el DGP sintético vigente; §51, materialización temporal, D2, identificación, medición, potencia y ejecución seguirán abiertos.
+
+No modifica DEC-C10-068/099…104, DGP original, §51, código, schema, tests, RMA, Matrix, STATUS o Core. Sin Design Freeze, implementación ni ejecución.
+
+`scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
