@@ -18,3 +18,19 @@ No se crea schema ni ledger, no se altera DGP original ni Decision Log y no se f
 Gate 145 no autoriza código, schemas, tests, validadores, workflows, generación, simulación, calibración ni ejecución científica.
 
 scientific_execution=false; execution_authorized=false.
+
+
+## Addendum Gate 146 — aceptación de identidad, versionado, regeneración y completitud (2026-11-16)
+
+Se acepta expresamente R146-A…R146-D como reglas semánticas y lógicas del DGP sintético. El registro completo de aceptación es `C10_S_GATE_146_EVENTHISTORY_IDENTITY_VERSION_COMPLETENESS_ACCEPTANCE_DRAFT_001.md`.
+
+- R146-A: identidad propia de transición truth, única dentro de EventHistory y separada de TID/EID/identificadores observacionales.
+- R146-B: versionado separado de DGP, EventHistory y reglas de adjudicación.
+- R146-C: regeneración/corrección inmutable; nueva versión de historia y conservación de la anterior.
+- R146-D: completitud de ámbito, generativa e integridad de representación; cero transiciones puede ser una historia completa.
+
+La aceptación no crea DEC-C10, no cambia el DGP original, no define schema ni IDs físicos, no resuelve matching ejecutable ni §51/reloj/soporte temporal. R144-B permanece abierta. No autoriza implementación, tests, generación, simulación, calibración ni ejecución científica.
+
+**Siguiente:** Gate 147 auditará la cobertura del universo de mecanismos y el catálogo B1 de §§49–50, especialmente la frontera entre transiciones ENABLED/PROFILE, condiciones runtime causales y antecedentes de proceso. Debe preservar truth/observación/evaluación y no convertir la detectabilidad S3 en verdad funcional.
+
+`scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
