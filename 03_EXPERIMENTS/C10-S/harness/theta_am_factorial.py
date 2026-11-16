@@ -1049,15 +1049,24 @@ def evaluate_factorial_analysis(
         evidence.manifest.get("factor_m_sha256"),
     )):
         raise ContractError("factorial assignment bundle, sealed evidence and reserved truth provenance differ")
+    if (
+        assignment_bundle.world_id, assignment_bundle.world_version,
+        assignment_bundle.dgp_id, assignment_bundle.dgp_version,
+    ) != (truth.world_id, truth.world_version, truth.dgp_id, truth.dgp_version):
+        raise ContractError("factorial assignment bundle belongs to a different reserved-truth world/DGP")
     assignment_by_unit = {row.unit_id: row for row in assignment_bundle.assignments}
-    if len(assignment_by_unit) != len(assignment_bundle.assignments):
-        raise ContractError("factorial assignment bundle contains duplicate unit IDs")
+    assigned_history_refs = {row.history_ref for row in assignment_bundle.assignments}
+    if (len(assignment_by_unit) != len(assignment_bundle.assignments)
+            or len(assigned_history_refs) != len(assignment_bundle.assignments)):
+        raise ContractError("factorial assignment bundle contains duplicate unit or q_X history IDs")
     if {row["unit_id"] for row in evidence.rows} != set(assignment_by_unit):
         raise ContractError("factorial evidence does not cover the exact assigned-unit roster")
     reserved_history_keys = {
         (row[0], row[1], row[2], row[3], row[4], row[5])
         for row in truth.event_history_manifest
     }
+    if assigned_history_refs != {row[0] for row in reserved_history_keys}:
+        raise ContractError("factorial assignment bundle does not cover the exact reserved q_X* history roster")
     for row in evidence.rows:
         assigned = assignment_by_unit[row["unit_id"]]
         history_key = (
