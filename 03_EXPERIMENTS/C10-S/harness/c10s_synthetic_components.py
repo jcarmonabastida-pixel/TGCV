@@ -574,17 +574,34 @@ class SyntheticWorldBundle:
             unit.d2_baseline.baseline_history_ref for unit in self.units
         }:
             raise ContractError("q_X* must bind exactly once to every generated baseline history")
-        if abs(sum(row.mass for row in self.q_x) - 1.0) > 1e-12 or any(
+        if len(self.q_x) != len(self.units) or abs(sum(row.mass for row in self.q_x) - 1.0) > 1e-12 or any(
             not math.isfinite(row.mass) or row.mass <= 0.0 for row in self.q_x
         ):
-            raise ContractError("q_X* masses must be positive and sum to one")
-        for unit in self.units:
+            raise ContractError("q_X* must bind one positive target mass per unit and sum to one")
+        roster_payload = []
+        for unit, qx in zip(self.units, self.q_x):
             unit.d2_baseline.validate()
             unit.d2_potentials.validate()
             if unit.d2_baseline.unit_id != unit.unit_id or unit.d2_potentials.unit_id != unit.unit_id:
                 raise ContractError("synthetic world unit, D2 baseline and potential identities differ")
+            if (qx.history_ref != unit.d2_baseline.baseline_history_ref
+                    or qx.x_ref != unit.x_ref or qx.h0_ref != unit.h0_ref
+                    or qx.c_c_ref != unit.c_c_ref):
+                raise ContractError("q_X* history/X/H0/C_c anchors must bind to the exact roster unit")
+            if (unit.d2_potentials.dgp_id != self.dgp_id
+                    or unit.d2_potentials.dgp_version != self.dgp_version):
+                raise ContractError("D2 potential bundle DGP identity/version differs from world")
             if len(unit.x) == 0 or len(unit.c_c) == 0 or not unit.h0:
                 raise ContractError("synthetic baseline X/H0/C_c must be materialized")
+            roster_payload.append({
+                "unit_id": unit.unit_id, "x_ref": unit.x_ref, "h0_ref": unit.h0_ref,
+                "c_c_ref": unit.c_c_ref, "x": unit.x, "h0": unit.h0,
+                "c_c": unit.c_c, "need_pre_z": unit.need_pre_z,
+                "d2_baseline": unit.d2_baseline,
+                "d2_potentials": unit.d2_potentials,
+            })
+        if digest(tuple(roster_payload)) != self.roster_sha256:
+            raise ContractError("synthetic world roster fingerprint does not match materialized contents")
 
 
 class SyntheticWorldBuilder:
