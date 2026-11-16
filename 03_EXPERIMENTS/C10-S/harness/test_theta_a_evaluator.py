@@ -81,6 +81,14 @@ class ThetaAObservationEvaluatorTests(unittest.TestCase):
         self.assertTrue(report.correct_adjudication)
         self.assertEqual(report.disposition, "POINT_RECOVERED")
 
+    def test_indeterminate_abstention_still_requires_bounds_to_cover_reserved_truth(self):
+        result = self.make_result(status="INDETERMINATE", lower=-1.0, upper=0.1)
+        report = ThetaAObservationEvaluator().evaluate(
+            self.truth_bundle, self.evidence, result, self.assignment_bundle, self.contract, tolerance=0.01)
+        self.assertFalse(report.truth_within_bounds)
+        self.assertFalse(report.correct_adjudication)
+        self.assertEqual(report.disposition, "ABSTENTION_BOUNDS_EXCLUDE_TRUTH")
+
     def test_result_bound_to_different_evidence_is_rejected(self):
         result = self.make_result(input_sha="different")
         with self.assertRaises(ContractError):
