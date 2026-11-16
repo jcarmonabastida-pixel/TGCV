@@ -162,7 +162,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             profile_config_id="PROFILE-1",
             profile_config_version="1",
             rules=(
-,                # D2 package-to-admission is held constant across focal scenarios.
+                # D2 package-to-admission is held constant across focal scenarios.
                 FunctionalHistoryRule(
                     rule_id="D2-PACKAGE-DIRECTLY-INTERRUPTS-ADMISSION",
                     source="D2",
