@@ -293,9 +293,10 @@ def generate_factorial_event_history_potentials(
                 key = (history_ref, vector_sha, cert.g_a0_fingerprint, m_arm)
                 result[key] = _materialize(
                     world=world, config=config, unit_id=unit.unit_id,
-                    potential_id=(f"{unit.unit_id}:G_AxM:{vector_sha}:"
-                                  f"{cert.g_a0_fingerprint}:M{m_arm}"),
-                    history_id=f"{config.run_id}:{unit.unit_id}:G_A:{vector_sha}:M{m_arm}",
+                    potential_id=(f"{unit.unit_id}:G_AxM:{factor_m_id}:{factor_m_version}:"
+                                  f"{vector_sha}:{cert.g_a0_fingerprint}:M{m_arm}"),
+                    history_id=(f"{config.run_id}:{unit.unit_id}:G_AxM:"
+                                f"{factor_m_id}:{factor_m_version}:{vector_sha}:M{m_arm}"),
                     initial_state=initial_state_by_history[history_ref],
                     source="G_A", mechanism=vector, factor_m=bool(m_arm),
                 )
