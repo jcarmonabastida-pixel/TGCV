@@ -2482,6 +2482,72 @@ def generate_theta_a_policy_assignments(
 
 
 
+def theta_a_event_history_potential_id(assignment: "ThetaAPolicyAssignment") -> str:
+    """Canonical link from a realized g_A assignment to its reserved EventHistory."""
+    if assignment.assigned_arm not in (0, 1):
+        raise ContractError("theta_A EventHistory link requires a valid assigned policy arm")
+    return (
+        f"THETA_A|A{assignment.assigned_arm}|"
+        f"{assignment.assigned_vector_sha256}|{assignment.r_common_fingerprint}"
+    )
+
+
+@dataclass(frozen=True)
+class ThetaAPolicyHistorySelection:
+    run_id: str
+    assignment_bundle_sha256: str
+    selected_history_id_by_unit: tuple[tuple[str, str], ...]
+    selected_history_manifest: tuple[tuple[str, str, str, str], ...]
+    result_sha256: str
+
+
+def select_theta_a_realized_histories(
+    assignments: "ThetaAPolicyAssignmentBundle",
+    histories: Sequence[EventHistory],
+) -> ThetaAPolicyHistorySelection:
+    """Select exactly the EventHistory implied by each direct joint g_A assignment."""
+    if not histories:
+        raise ContractError("theta_A realized-history selection requires EventHistory inputs")
+    run_ids = {history.run_id for history in histories}
+    if len(run_ids) != 1:
+        raise ContractError("theta_A policy EventHistories must belong to one run")
+    run_id = next(iter(run_ids))
+    history_ids = [history.history_id for history in histories]
+    if len(history_ids) != len(set(history_ids)):
+        raise ContractError("theta_A policy EventHistory identities must be unique")
+    index = {}
+    for history in histories:
+        history.validate(require_complete=True)
+        key = (history.unit_id, history.potential_id)
+        if key in index:
+            raise ContractError("duplicate EventHistory for the same unit and g_A potential")
+        index[key] = history
+    selected = []
+    for assignment in assignments.assignments:
+        potential_id = theta_a_event_history_potential_id(assignment)
+        history = index.get((assignment.unit_id, potential_id))
+        if history is None:
+            raise ContractError("realized g_A assignment has no matching EventHistory potential")
+        selected.append((assignment.unit_id, history))
+    if len({history.history_id for _, history in selected}) != len(selected):
+        raise ContractError("one EventHistory cannot be selected for multiple assigned units")
+    selected_map = tuple((unit_id, history.history_id) for unit_id, history in selected)
+    manifest = tuple(
+        (unit_id, history.history_id, history.content_sha256, history.potential_id)
+        for unit_id, history in selected
+    )
+    payload = {
+        "run_id": run_id,
+        "assignment_bundle_sha256": assignments.result_sha256,
+        "selected_history_id_by_unit": selected_map,
+        "selected_history_manifest": manifest,
+    }
+    return ThetaAPolicyHistorySelection(
+        run_id, assignments.result_sha256, selected_map, manifest, digest(payload),
+    )
+
+
+
 @dataclass(frozen=True)
 class RCommonPairCertificate:
     history_ref: str
