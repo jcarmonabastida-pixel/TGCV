@@ -362,8 +362,8 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         )
         self.assertAlmostEqual(alternative_result.d2_vcont_truth.finite_population_itt_z_v_cont, -0.5)
 
-    def test_null_negative_and_alternative_path_scenarios_are_separately_generated(self):
-        expected_truth = {"null": 0.0, "negative": -0.5, "alternative": 0.0}
+    def test_null_and_negative_focal_scenarios_are_separately_generated(self):
+        expected_truth = {"null": 0.0, "negative": -0.5}
         results = {}
         for mode, truth in expected_truth.items():
             with self.subTest(theta_a_mode=mode):
