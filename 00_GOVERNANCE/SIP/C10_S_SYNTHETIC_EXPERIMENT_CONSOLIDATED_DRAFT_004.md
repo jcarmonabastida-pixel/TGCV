@@ -315,3 +315,16 @@ Gate 134 reconcilia DEC-C10-099…102. No queda pendiente elegir entre truth bin
 El harness actual usa truth binaria 0/1 por intervalo, no materializa UNKNOWN ni bounds y no conserva eventos fechados que permitan adjudicar cualquier incumplimiento intraintervalo o frontera. Su correspondencia temporal es parcial. El benchmark actual se conserva como baseline metodológico restringido para ITT-Z/ITT-G bajo DGP binario y S3 perfecto/completo; no es implementación completa ni validación confirmatoria de V_cont. No se emite otra DEC para redecidir semántica ya aceptada.
 
 **Siguiente operación:** Gate 135 — crosswalk DEC → DGP → TruthBundle → Evaluator, sin fijar parámetros ni modificar código/schemas/DEC. No ejecución; `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 306. Gate 135 — crosswalk DEC → DGP → TruthBundle → Evaluator (2026-11-16)
+
+**Registro:** 00_GOVERNANCE/SIP/C10_S_DEC_TO_DGP_TRUTHBUNDLE_EVALUATOR_CONFORMANCE_CROSSWALK_GATE_135_DRAFT_001.md. **Addendum al plan:** 00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_135_TRUTHBUNDLE_EVALUATOR_ADDENDUM_DRAFT_001.md.
+
+Gate 135 localiza la pérdida principal de conformidad en Generator: ENABLED/PROFILE se generan como estados binarios por slot y su conjunción fuerza 0/1; TruthBundle conserva la frontera de truth reservada, pero no contiene actualmente UNKNOWN funcional. El código no conserva event log de transiciones efectivas intraintervalo, por lo que no acredita continuidad estricta en cualquier instante. transition_slots y estados por slot no sustituyen la cronología necesaria.
+
+Se distingue UNKNOWN funcional (indeterminación de truth por Generator) de S3 None/MISSING, error observado y lag event/observation/ingestion. Sealer debe seguir sellando solo observaciones permitidas, sin TruthBundle. Evaluator verifica el sello y compara ITT-Z/ITT-G puntuales, pero no calcula bounds tri-valuados de V_cont. Los bounds individuales por unidad/régimen son [n1/K,(n1+n?)/K]; no se prescribe trasladarlos a contrastes causales restando extremos marginales, pues requieren contrato conjunto de potenciales, población, soporte e interferencia.
+
+Se reutilizan TruthBundle como frontera, S3/Sealer/firewall, baseline ideal bajo S3 perfecto/completo y evaluación puntual ITT existente, con alcance limitado. Permanecen no implementados UNKNOWN, adjudicación por eventos intraintervalo, bounds de V_cont y bounds causales. No se modifican código, schemas, DEC, tests, workflows ni parámetros.
+
+**Siguiente operación:** Gate 136 — auditoría de suficiencia de los contratos temporales existentes (DGP temporal/roles, plan §§16.195–198, P182/P183/MEAS/MISS), para localizar solo vacíos genuinos antes de decidir cualquier cambio de diseño. No ejecución; scientific_execution=false; execution_authorized=false.
