@@ -449,6 +449,29 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(len(result.analyzer_result.contrasts), 3)
         self.assertTrue(result.evaluator_result.correct_adjudication)
 
+        # Independently reconstruct the four strict-V_cont HT cell means from
+        # realized S3 rows; no latent or reserved truth enters this calculation.
+        qx_mass = {row.history_ref: row.mass for row in result.world.q_x}
+        by_unit = {}
+        for row in result.sealed_evidence.rows:
+            by_unit.setdefault(row["unit_id"], []).append(row)
+        expected_cells = [0.0, 0.0, 0.0, 0.0]
+        cell_index = {"00": 0, "10": 1, "01": 2, "11": 3}
+        for rows in by_unit.values():
+            first = rows[0]
+            strict_v_cont = float(all(row["observed_compliance"] is True for row in rows))
+            expected_cells[cell_index[first["assigned_cell"]]] += (
+                qx_mass[first["history_ref"]] / first["assignment_probability"]
+            ) * strict_v_cont
+        expected_contrasts = (
+            expected_cells[1] - expected_cells[0],
+            expected_cells[3] - expected_cells[2],
+            (expected_cells[3] - expected_cells[2]) - (expected_cells[1] - expected_cells[0]),
+        )
+        for observed, expected in zip(result.analyzer_result.contrasts, expected_contrasts):
+            self.assertEqual(observed.identification, "IDENTIFIED")
+            self.assertAlmostEqual(observed.point_estimate, expected)
+
         # Null-M negative control: the same factorial assignment and world,
         # but no G_M functional rule, must recover zero interaction.
         null_result = materialize_c10s_factorial_world_from_dgp(
