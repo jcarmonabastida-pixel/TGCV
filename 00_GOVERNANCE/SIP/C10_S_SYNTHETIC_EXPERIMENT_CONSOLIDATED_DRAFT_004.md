@@ -475,3 +475,16 @@ R144-B permanece abierto: §51, reloj/unidad/coordenada contractual, W_c, T*, ρ
 Gate 144 pasa a **R144_A_ACCEPTED_FOR_SYNTHETIC_DGP_LOGICAL_SEMANTICS / R144_B_OPEN**. No se modifican DEC, DGP original, código, schemas, tests, workflows ni main.
 
 scientific_execution=false; execution_authorized=false.
+
+
+## 318. Gate 145 — contrato lógico de EventHistory (2026-11-16)
+
+**Registro:** `00_GOVERNANCE/SIP/C10_S_EVENT_HISTORY_LOGICAL_CONTRACT_GATE_145_DRAFT_001.md`. **Addendum:** `00_GOVERNANCE/SIP/C10_S_DESIGN_CLOSURE_PLAN_GATE_145_EVENT_HISTORY_CONTRACT_ADDENDUM_DRAFT_001.md`.
+
+Gate 145 reconstruye Gates 94–98, el DGP temporal §§48–55, Gates 135–144, DEC-C10-100…104 y Gate 139. Separa expresamente PROCESS_EVENT observacional (ocurrencias operativas y revisiones de registro) de EventHistory reservado (transiciones funcionales truth generadas por unidad y potencial); no se reutiliza el primero como truth ni se crea un registro observacional duplicado.
+
+R144-A deja aceptados estado inicial ENABLED/PROFILE post-Z en t0, persistencia por tramos, transiciones truth con estado previo/posterior, familia, identidad/versión, event_time y provenance, simultaneidad atómica y suborden explícito. DEC-C10-104 gobierna la futura adjudicación temporal. Gates 139/143 ya sitúan EventHistory/TruthBundle en el firewall Generator→Evaluator, fuera de Sealer/Analyzer.
+
+EventHistory queda **LOGICALLY PARTIALLY CLOSED / MATERIALIZATION OPEN**. Permanecen pendientes el alcance de identidad única y versionado de transición, regeneración/corrección y hashes, criterio verificable de completitud por unidad/potencial/soporte y comparación de event_time con fronteras. §51, reloj, W_c, T*, ρ_follow, Δ, K y S3 siguen OPEN. No se crea DEC ni schema, no se modifica DGP original ni Decision Log, y no hay autorización de código o ejecución.
+
+scientific_execution=false; execution_authorized=false.
