@@ -995,7 +995,6 @@ class FactorialEvaluationResult:
     truth_contrasts: tuple[float, float, float]
     analyzer_contrasts: tuple[FactorialContrast, ...]
     absolute_errors: tuple[float | None, float | None, float | None]
-    truth_within_reported_bounds: tuple[bool | None, bool | None, bool | None]
     correct_adjudication: bool
     disposition: str
     tolerance: float
@@ -1079,31 +1078,26 @@ def evaluate_factorial_analysis(
         raise ContractError("factorial Analyzer must report both simple effects and interaction in canonical order")
     truth_values = (truth.theta_a_given_m0, truth.theta_a_given_m1, truth.theta_am_interaction)
     errors = []
-    coverage = []
     correct = True
     for expected, contrast in zip(truth_values, result.contrasts):
         if contrast.identification == "IDENTIFIED":
             error = abs(contrast.point_estimate - expected) if contrast.point_estimate is not None else None
-            covered = None
             item_correct = error is not None and error <= tolerance
         elif contrast.identification == "PARTIALLY_IDENTIFIED":
             error = None
-            covered = None
             item_correct = (contrast.point_estimate is None
                             and contrast.lower_bound is not None
                             and contrast.upper_bound is not None)
         elif contrast.identification == "NOT_IDENTIFIED":
-            error, covered, item_correct = (None, None,
+            error, item_correct = (None,
                 contrast.point_estimate is None and contrast.lower_bound is None
                 and contrast.upper_bound is None)
         else:
             raise ContractError("unsupported factorial identification status")
         errors.append(error)
-        coverage.append(covered)
         correct = correct and item_correct
     disposition = "CORRECT_RECOVERY_OR_ABSTENTION" if correct else "INCORRECT_FACTORIAL_ADJUDICATION"
     return FactorialEvaluationResult(
         truth.estimand_version, truth_values, result.contrasts, tuple(errors),
-        tuple(coverage), correct, disposition, tolerance, evidence.sha256,
-        result.output_sha256,
+        correct, disposition, tolerance, evidence.sha256, result.output_sha256,
     )
