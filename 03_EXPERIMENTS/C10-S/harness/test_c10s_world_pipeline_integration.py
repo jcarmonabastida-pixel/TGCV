@@ -439,6 +439,13 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             {"00", "10", "01", "11"},
         )
         truth = result.reserved_truth
+        # Package-level D2 ITT-Z is retained as a separate potential-outcome
+        # contrast; it is not the focal direct-g_A effect or A×M interaction.
+        self.assertAlmostEqual(result.d2_vcont_truth.finite_population_itt_z_v_cont, -0.5)
+        self.assertNotAlmostEqual(
+            result.d2_vcont_truth.finite_population_itt_z_v_cont,
+            truth.theta_a_given_m0,
+        )
         self.assertAlmostEqual(truth.cell_means[0], 0.0)
         self.assertAlmostEqual(truth.cell_means[1], 1.0)
         self.assertAlmostEqual(truth.cell_means[2], 0.0)
