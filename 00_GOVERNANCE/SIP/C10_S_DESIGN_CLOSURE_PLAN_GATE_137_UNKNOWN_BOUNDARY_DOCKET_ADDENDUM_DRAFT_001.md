@@ -12,3 +12,10 @@ La convención semiabierta [b_{k−1},b_k) para intervalos internos y cierre inc
 No se crea DEC-C10-104 hasta recibir aceptación; no se cambia el Decision Log ni se implementa nada. Siguiente tras la decisión: crosswalk de conformidad hacia Generator/TruthBundle/Sealer/Analyzer/Evaluator.
 
 scientific_execution=false; execution_authorized=false.
+
+
+## Acceptance outcome — 2026-11-16
+
+The user explicitly accepted both proposals. DEC-C10-104 now records the semi-open interval convention and the conservative Generator UNKNOWN rule as accepted working design decisions. Internal-boundary events belong to the interval beginning at that boundary; T* belongs to the final interval. Functional ? is not emitted in complete determinate histories and cannot arise from S3 missingness, incomplete DGP/harness representation or implementation defects. It requires a future explicit DGP contract defining intrinsic A_B1 indeterminacy.
+
+The tri-valued state space and bounds in DEC-C10-100 remain unchanged. No numerical temporal parameters are fixed. This does not authorize implementation, schema/test changes, materialization or execution; no Design Freeze.
