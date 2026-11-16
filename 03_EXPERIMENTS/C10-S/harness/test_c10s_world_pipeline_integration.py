@@ -31,7 +31,7 @@ from theta_a_interval_observation import IntervalMonitorConfig
 
 class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
     def _fixture(self, theta_a_mode="positive"):
-        if theta_a_mode not in ("positive", "null", "negative"):
+        if theta_a_mode not in ("positive", "null", "negative", "alternative"):
             raise ValueError("unsupported focal theta_A scenario")
         scenario = theta_a_mode.upper()
         dgp_id = f"DGP-INTERVAL-INTEGRATION-{scenario}"
@@ -44,7 +44,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             roster_version="1",
             unit_id_prefix="U",
             n_units=32,
-            seed=20261116 + {"positive": 0, "null": 1, "negative": 2}[theta_a_mode],
+            seed=20261116 + {"positive": 0, "null": 1, "negative": 2, "alternative": 3}[theta_a_mode],
             x_dimension=1,
             h0_distribution=(("H0", 1.0),),
             c_c_dimension=1,
@@ -116,8 +116,9 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             randomization_salt="TRAJECTORY-SALT",
         )
         world = SyntheticWorldBuilder().generate(world_config, d2_config)
-        zero_vector = (0.0, 0.0, 0.0, 0.0)
-        one_vector = (1.0, 0.0, 0.0, 0.0)
+        alternative_active = theta_a_mode == "alternative"
+        zero_vector = (0.0, 1.0, 0.0, 0.0) if alternative_active else (0.0, 0.0, 0.0, 0.0)
+        one_vector = (1.0, 1.0, 0.0, 0.0) if alternative_active else (1.0, 0.0, 0.0, 0.0)
         g_a0 = tuple(
             JointPolicyHistory(row.history_ref, ((zero_vector, 1.0),))
             for row in world.q_x
@@ -173,16 +174,42 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                     d2_field="w_programmed",
                     d2_value=True,
                 ),
-                *(() if theta_a_mode == "null" else (FunctionalHistoryRule(
-                    rule_id=f"GA-VECTOR-INTERRUPTS-ADMISSION-{scenario}",
-                    source="G_A",
-                    event_time=Decimal("1"),
-                    causal_family="DIRECT_GA_FUNCTIONAL_ADMISSION",
-                    provenance_ref=f"FUNCTIONAL-DGP#GA-VECTOR-INTERRUPTS-ADMISSION-{scenario}",
-                    set_admission="NO_ADMISSION",
-                    vector_index=0,
-                    vector_value=0.0 if theta_a_mode == "positive" else 1.0,
-                ),)),
+                *(
+                    (
+                        FunctionalHistoryRule(
+                            rule_id="GA-ALTERNATIVE-DISABLES-ADMISSION",
+                            source="G_A",
+                            event_time=Decimal("0.5"),
+                            causal_family="ALTERNATIVE_FUNCTIONAL_PATH",
+                            provenance_ref="FUNCTIONAL-DGP#GA-ALTERNATIVE-DISABLES-ADMISSION",
+                            set_enabled=False,
+                            vector_index=1,
+                            vector_value=1.0,
+                        ),
+                        FunctionalHistoryRule(
+                            rule_id="GA-FOCAL-ONLY-WHEN-ALTERNATIVE-ABSENT",
+                            source="G_A",
+                            event_time=Decimal("1"),
+                            causal_family="FOCAL_BY_ALTERNATIVE_INTERACTION",
+                            provenance_ref="FUNCTIONAL-DGP#GA-FOCAL-ONLY-WHEN-ALTERNATIVE-ABSENT",
+                            set_admission="NO_ADMISSION",
+                            vector_predicates=((0, 0.0), (1, 0.0)),
+                        ),
+                    )
+                    if alternative_active
+                    else (() if theta_a_mode == "null" else (FunctionalHistoryRule(
+                        rule_id=f"GA-VECTOR-INTERRUPTS-ADMISSION-{scenario}",
+                        source="G_A",
+                        event_time=Decimal("1"),
+                        causal_family="DIRECT_GA_FUNCTIONAL_ADMISSION",
+                        provenance_ref=f"FUNCTIONAL-DGP#GA-VECTOR-INTERRUPTS-ADMISSION-{scenario}",
+                        set_admission="NO_ADMISSION",
+                        vector_predicates=(
+                            (0, 0.0 if theta_a_mode == "positive" else 1.0),
+                            (1, 0.0),
+                        ),
+                    ),))
+                ),
             ),
         )
         initial_by_unit_z = {
@@ -326,7 +353,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         )
 
     def test_null_and_negative_focal_mechanisms_are_separately_generated(self):
-        expected_truth = {"null": 0.0, "negative": -0.5}
+        expected_truth = {"null": 0.0, "negative": -0.5, "alternative": 0.0}
         results = {}
         for mode, truth in expected_truth.items():
             with self.subTest(theta_a_mode=mode):
