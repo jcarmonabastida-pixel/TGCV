@@ -17,7 +17,8 @@ from c10s_synthetic_components import (
     D2TrajectoryGenerationConfig, evaluate_d2_potential_trajectories,
     evaluate_d2_vcont_potential_truth, compute_theta_a_vcont_truth_from_event_histories,
     digest,
-    FunctionalState, FunctionalTransition, IntervalGrid,
+    FunctionalState, FunctionalTransition, FunctionalStateChange,
+    EventHistoryGenerationSpec, generate_event_history, IntervalGrid,
     JointPolicyHistory, QXHistoryMass, RCommonPairCertificate,
     S3SequenceKernelRow, S3ObservationConfig, adjudicate_intervals,
     compute_theta_a_truth, evaluate_theta_a_output, generate_d2_potentials, project_s3,
@@ -42,6 +43,60 @@ class SyntheticComponentTests(unittest.TestCase):
             scope_declared_complete=complete, generation_complete=complete,
             representation_complete=complete,
         )
+
+    def test_event_history_generator_materializes_complete_chained_transitions(self):
+        initial = FunctionalState(False, "NO_ADMISSION")
+        enabled_without_admission = FunctionalState(True, "NO_ADMISSION")
+        admitted = FunctionalState(True, "ADMIT")
+        spec = EventHistoryGenerationSpec(
+            "EH-GEN-001", "001", "RUN-001", "WORLD-001", "001",
+            "DGP-001", "UE-001", "GA-A1-VECTOR-R", "AB1-001",
+            Decimal("0"), Decimal("4"), initial,
+            (
+                FunctionalStateChange(Decimal("1"), enabled_without_admission,
+                                      "ENABLEMENT", "DGP-TRUTH-ENABLE"),
+                FunctionalStateChange(Decimal("2"), admitted,
+                                      "ADMISSION", "DGP-TRUTH-ADMIT"),
+            ),
+        )
+        first = generate_event_history(spec)
+        second = generate_event_history(spec)
+        self.assertEqual(first, second)
+        self.assertTrue(first.scope_declared_complete)
+        self.assertTrue(first.generation_complete)
+        self.assertTrue(first.representation_complete)
+        self.assertEqual(len(first.transitions), 2)
+        self.assertEqual(first.transitions[1].state_before, enabled_without_admission)
+        self.assertEqual(first.expected_transition_ids,
+                         tuple(row.transition_id for row in first.transitions))
+        adjudicated = adjudicate_intervals(
+            first, IntervalGrid((Decimal("0"), Decimal("2"), Decimal("4")), "GRID-GEN", "001")
+        )
+        self.assertEqual(adjudicated.interval_truth, (0, 1))
+
+    def test_event_history_generator_rejects_neutral_or_unordered_changes(self):
+        initial = FunctionalState(False, "NO_ADMISSION")
+        spec = EventHistoryGenerationSpec(
+            "EH-GEN-002", "001", "RUN-001", "WORLD-001", "001",
+            "DGP-001", "UE-001", "GA-A0-VECTOR-R", "AB1-001",
+            Decimal("0"), Decimal("4"), initial,
+            (FunctionalStateChange(Decimal("1"), initial, "NOOP", "P-NOOP"),),
+        )
+        with self.assertRaises(ContractError):
+            generate_event_history(spec)
+        unordered = EventHistoryGenerationSpec(
+            "EH-GEN-003", "001", "RUN-001", "WORLD-001", "001",
+            "DGP-001", "UE-001", "GA-A0-VECTOR-R", "AB1-001",
+            Decimal("0"), Decimal("4"), initial,
+            (
+                FunctionalStateChange(Decimal("2"), FunctionalState(True, "ADMIT"),
+                                      "ADMISSION", "P2"),
+                FunctionalStateChange(Decimal("1"), FunctionalState(False, "ADMIT"),
+                                      "ENABLEMENT", "P1"),
+            ),
+        )
+        with self.assertRaises(ContractError):
+            generate_event_history(unordered)
 
     def test_internal_boundary_event_belongs_to_interval_that_starts_there(self):
         before = FunctionalState(False, "NO_ADMISSION")
