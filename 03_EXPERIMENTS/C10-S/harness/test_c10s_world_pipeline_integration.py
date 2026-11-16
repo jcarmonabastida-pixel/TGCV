@@ -33,7 +33,8 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
     def _fixture(self, theta_a_mode="positive"):
         if theta_a_mode not in ("positive", "null", "negative", "alternative"):
             raise ValueError("unsupported focal theta_A scenario")
-        scenario = theta_a_mode.upper()
+        # Positive and alternative regimes share one base DGP/population.
+        scenario = "INTERACTION" if theta_a_mode in ("positive", "alternative") else theta_a_mode.upper()
         dgp_id = f"DGP-INTERVAL-INTEGRATION-{scenario}"
         world_config = SyntheticWorldConfig(
             world_id=f"WORLD-INTERVAL-INTEGRATION-{scenario}",
@@ -44,7 +45,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             roster_version="1",
             unit_id_prefix="U",
             n_units=32,
-            seed=20261116 + {"positive": 0, "null": 1, "negative": 2, "alternative": 3}[theta_a_mode],
+            seed=20261116 + {"positive": 0, "null": 1, "negative": 2, "alternative": 0}[theta_a_mode],
             x_dimension=1,
             h0_distribution=(("H0", 1.0),),
             c_c_dimension=1,
@@ -155,7 +156,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             dgp_version=world.dgp_version,
             mechanism_id=f"FUNCTIONAL-MECHANISM-{scenario}",
             mechanism_version="1",
-            run_id=f"RUN-INTERVAL-INTEGRATION-{scenario}",
+            run_id=f"RUN-INTERVAL-INTEGRATION-{theta_a_mode.upper()}",
             history_version="1",
             adjudication_rules_version="B1-RULES-1",
             support_start=Decimal("0"),
@@ -196,7 +197,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                             vector_predicates=((0, 0.0), (1, 0.0)),
                         ),
                     )
-                    if alternative_active
+                    if theta_a_mode in ("positive", "alternative")
                     else (() if theta_a_mode == "null" else (FunctionalHistoryRule(
                         rule_id=f"GA-VECTOR-INTERRUPTS-ADMISSION-{scenario}",
                         source="G_A",
@@ -204,10 +205,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                         causal_family="DIRECT_GA_FUNCTIONAL_ADMISSION",
                         provenance_ref=f"FUNCTIONAL-DGP#GA-VECTOR-INTERRUPTS-ADMISSION-{scenario}",
                         set_admission="NO_ADMISSION",
-                        vector_predicates=(
-                            (0, 0.0 if theta_a_mode == "positive" else 1.0),
-                            (1, 0.0),
-                        ),
+                        vector_predicates=((0, 1.0), (1, 0.0)),
                     ),))
                 ),
             ),
