@@ -488,3 +488,22 @@ R144-A deja aceptados estado inicial ENABLED/PROFILE post-Z en t0, persistencia 
 EventHistory queda **LOGICALLY PARTIALLY CLOSED / MATERIALIZATION OPEN**. Permanecen pendientes el alcance de identidad única y versionado de transición, regeneración/corrección y hashes, criterio verificable de completitud por unidad/potencial/soporte y comparación de event_time con fronteras. §51, reloj, W_c, T*, ρ_follow, Δ, K y S3 siguen OPEN. No se crea DEC ni schema, no se modifica DGP original ni Decision Log, y no hay autorización de código o ejecución.
 
 scientific_execution=false; execution_authorized=false.
+
+
+## 319. Reconciliación integrada de cierre del diseño y preparación del experimento (2026-11-16)
+
+Se incorpora como síntesis rectora de cierre documental, sin sustituir las fuentes ni crear DEC:
+
+`00_GOVERNANCE/SIP/C10_S_INTEGRATED_DESIGN_CLOSURE_RECONCILIATION_AND_EXECUTION_READINESS_DRAFT_001.md`.
+
+La reconciliación reutiliza §§277–318, DEC-C10-099…104, R144-A, R146-A…D, R147-A/B, R148-A, R150-A, R151-A/A8, R152-A1…A6, Gates 206–208, Gate 121, Gates 129–130, el contrato DGP temporal/roles, el registro de pruebas y el protocolo de calibración/seed bank.
+
+**Dictamen integrado:** diseño no cerrado; factibilidad confirmatoria e identificación de la contribución específica de accesibilidad a Value no establecidas; implementación y ejecución no autorizadas. El trabajo se consolida en cuatro paquetes dependientes: (A) reconciliación normativa DEC-C10-102/Gate 154/R208; (B) §51 y DGP temporal + D2/población/asignación/aislamiento/soporte; (C) medición Outcome/Value, EventHistory/S3/Analyzer/Evaluator y recuperación causal; (D) criterios estadísticos, potencia/precisión, seed banks, conformidad y autorizaciones.
+
+**Bloqueos determinantes:** (1) precedencia normativa PROFILE/D_valid frente al predicado temporal A_B1; (2) parámetros §51 y materialización EventHistory/TruthBundle; (3) asignación D2, roster, aislamiento y soporte; (4) par operativo g_A0/g_A1, q_X* y r_common por historia; (5) Outcome/Value no operacionalizados; (6) calibración S3, bounds y objetivos N/R/MCSE; (7) enforcement técnico del firewall y pruebas no ejecutadas.
+
+El benchmark ideal ITT-Z/ITT-G permanece reutilizable únicamente en su alcance binario y S3 perfecto/completo. No acredita V_cont temporal completo, θ_A, robustez a error/ausencia ni ΔT_acc→Value. La ausencia de identificación actual no es evidencia de efecto nulo.
+
+No se modifica ninguna DEC, DGP original, código, schema, test, workflow, RMA, Evidence→Claim Matrix, STATUS o Core. No se ejecutan validadores, pruebas, generación, calibración, simulación, estimación o Monte Carlo. No Design Freeze.
+
+`scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
