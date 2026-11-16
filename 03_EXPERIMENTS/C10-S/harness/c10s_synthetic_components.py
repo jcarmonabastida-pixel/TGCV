@@ -2518,6 +2518,10 @@ def select_theta_a_realized_histories(
     index = {}
     for history in histories:
         history.validate(require_complete=True)
+        if (history.world_id, history.world_version, history.dgp_version) != (
+            assignments.world_id, assignments.world_version, assignments.dgp_version
+        ):
+            raise ContractError("theta_A EventHistory world/DGP identity differs from its assignment bundle")
         key = (history.unit_id, history.potential_id)
         if key in index:
             raise ContractError("duplicate EventHistory for the same unit and g_A potential")
