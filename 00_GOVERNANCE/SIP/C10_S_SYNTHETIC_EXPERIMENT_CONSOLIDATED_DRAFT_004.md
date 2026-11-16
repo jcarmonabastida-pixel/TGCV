@@ -209,3 +209,20 @@ Need_preZ está definido conceptualmente como propósito basal pre-Z, pero su tr
 Pendientes: Need_preZ por UE; regla normativa DGP; parámetros y S3; vías por escenario; soporte/identificación/sensibilidad de θ_A; criterios cuantitativos y adjudicación. No se crean escalas, pesos, instrumentos, IDs, parámetros, roster o fixtures. No se modifican DEC, C0, U_G, RMA, Evidence→Claim Matrix, STATUS, Core o main. No Design Freeze, implementación ni ejecución; `scientific_execution=false`; `execution_authorized=false`.
 
 **Siguiente operación:** Gate 128 — especificar la mínima regla de valoración sintética admisible para V_cont sin convertirla en tautología de accesibilidad ni introducir una función numérica no justificada; reutilizar DEC-C10-099…103, B1 §§14–17, B2–B3 y P179/P182/P183. Determinar si la regla puede estipularse dentro del DGP y qué elementos necesitan aceptación explícita antes de congelar el diseño.
+
+
+## 298. Gate 128 — regla normativa mínima de valoración sintética para V_cont (2026-11-16)
+
+**Registro:** `00_GOVERNANCE/SIP/C10_S_VCONT_MINIMUM_SYNTHETIC_VALUATION_RULE_GATE_128_DRAFT_001.md`.  
+**Addendum independiente:** `00_GOVERNANCE/SIP/C10_S_GATE_128_VALUATION_RULE_PROPOSAL_ADDENDUM_DRAFT_001.md`.  
+**Estado:** DEC-C10-099_102_PRESERVED / VALUE_DIMENSION_SELECTED / NORMATIVE_RULE_NOT_ACCEPTED / MINIMAL_RULE_PROPOSED_FOR_EXPLICIT_APPROVAL / NO_DESIGN_FREEZE.
+
+DEC-C10-099 selecciona V_cont como única dimensión mínima provisional de Value para B, con vector unitario y sin índice compuesto, pesos o compensación. DEC-C10-100 fija su truth temporal. Sin embargo, DEC-C10-099 exige que el criterio normativo, las consecuencias potenciales y el mecanismo de valoración estén estipulados ex ante. La fórmula temporal y la función ENABLED/PROFILE no resuelven por sí solas esa condición.
+
+Gate 128 propone VCONT-B1-MIN: desde la perspectiva sintética B1, la consecuencia focal de esta dimensión es la continuidad temporal de la capacidad de admisión conforme a ENABLED y exposición de PROFILE; dentro de esta dimensión, mayor continuidad se valora débilmente mejor y niveles iguales reciben igual valoración. No se introduce función cardinal, peso, umbral, compensación ni dimensión adicional. La afirmación queda limitada a Value en la dimensión de continuidad funcional, no a Value global ni a todas las consecuencias B1.
+
+La propuesta no está aceptada. La preferencia ordinal es una estipulación normativa que requiere aprobación explícita. Si se rechaza, V_cont permanece como constructo/resultado seleccionado sin interpretación confirmatoria como Value. Si se exige representar costes, riesgos, demoras u otras consecuencias dentro del mismo endpoint, V_cont unitario no basta y debe reabrirse formalmente el alcance, sin añadir dimensiones por conveniencia. Se preservan truth_dgp/observed_evidence/evaluation y el firewall Generator/Sealer/Analyzer/Evaluator.
+
+El plan integrado no se modificó porque su contenido completo no pudo recuperarse en esta operación; no se actualizó a ciegas. El addendum independiente deja constancia de esta limitación. No se modifican DEC, C0, U_G, RMA, Evidence→Claim Matrix, STATUS, Core o main. No Design Freeze, implementación ni ejecución; `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente operación:** obtener aceptación/rechazo explícito de VCONT-B1-MIN. Tras esa resolución, Gate 129 deberá integrar el criterio aceptado o registrar el límite de inferencia y volver a las dependencias de identificación/medición de θ_A; no debe continuar propagando la regla como si estuviera aprobada.
