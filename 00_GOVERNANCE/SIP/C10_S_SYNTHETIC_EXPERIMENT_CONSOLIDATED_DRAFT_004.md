@@ -542,3 +542,12 @@ Se incorpora la propuesta integrada `C10_S_PACKAGE_B_INTEGRATED_TEMPORAL_DGP_AND
 **Dictamen:** reconciliación documental completa; se propone aceptar B1–B6 como cierre del contrato lógico integrado. La coordenada normalizada §51 (t0=0, t_c,max=1) se distingue de los parámetros aún abiertos ρ_follow/T*, Δ/K y de la calibración S3. EventHistory y la adjudicación conservan R144-A/R146-A…D y la separación truth/PROCESS_EVENT/S3/Analyzer/Evaluator. D2 preserva Z frente a programación/provisión, P*τ2/P*_F, UE/UA/UO, ITT y θ_A separados; aislamiento, roster, asignación, q_X*, g_A y r_common siguen sin materialización/certificación.
 
 **Estado:** PROPOSED_FOR_ACCEPTANCE. La aceptación B1–B6 cerraría únicamente el contrato lógico; no convertiría parámetros, población, soporte, θ_A o V_cont-S3 en materialmente identificados, ni autorizaría materialización, implementación o ejecución. Paquete A C1–C6 permanece aceptado (§321).
+
+
+## 323. Paquete B aceptado y corrección del alcance de materialización (2026-11-16)
+
+B1–B6 quedan aceptadas conjuntamente como contrato lógico temporal y causal integrado. Se registra que C10-S confirmatorio es el carril sintético S; no exige roster real, IAM/C_SRC, snapshots productivos ni evidencia IS-1…8 del carril M. La materialización pendiente es la del DGP sintético, reutilizando §§16.188–16.223, matriz 13×52, vcont_integrated_harness.py, seed-bank protocol y contratos existentes.
+
+Las brechas sintéticas reales son: (i) cadena D2 por etapas; (ii) q_X*, par g_A0/g_A1, r_common y truth/estimador θ_A; (iii) EventHistory con event_time y completitud, más IntervalAdjudication conectado a DEC-C10-100…104; (iv) valores sintéticos versionados para ρ_follow/T*/K/Δ y calibración temporal; (v) proyección S3 temporal imperfecta completa; (vi) asignación/independencia por construcción y escenarios adversariales de interferencia. El puente V_cont→consecuencia B1→Value contextual sigue en Paquete C.
+
+Se autoriza implementación únicamente del carril sintético S en el harness existente y sus tests fuente. No se autoriza ejecutar tests/workflows, generar bancos, calibrar, simular, estimar ni ejecutar el experimento. No se abre carril M ni se promueve contenido a main.

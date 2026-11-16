@@ -3358,3 +3358,10 @@ Registro: `C10_S_DEC-C10-102_COMPLEMENTARY_SCOPE_ACCEPTANCE_RECORD_DRAFT_001.md`
 | Paquete B B1–B6 | PROPOSAL / ACCEPTANCE PENDING | Aceptación lógica no implica materialización ni identificación |
 
 Artefacto rector: `C10_S_PACKAGE_B_INTEGRATED_TEMPORAL_DGP_AND_CAUSAL_DESIGN_CLOSURE_PROPOSAL_DRAFT_001.md`. No nuevos contratos/IDs de test; se reutilizan Gates 121/129/130 y contratos existentes. Sin implementación ni ejecución.
+
+
+## 16. Paquete B aceptado — alcance sintético y materialización pendiente (2026-11-16)
+
+B1–B6 quedan aceptadas. Se corrige la separación S/M: el experimento C10-S se materializa como mundo sintético controlado; roster real, IAM/C_SRC, snapshots de runtime e IS-1…8 materiales no son prerequisitos del carril S. Se reutilizan el roster/ledger de §§16.188–16.223, la matriz 13×52, el harness integrado y los protocolos de seed/provenance existentes.
+
+El trabajo de materialización se concentra en las brechas verificadas: D2 por etapas; q_X*/g_A0/g_A1/r_common/θ_A; EventHistory/event_time/IntervalAdjudication; parámetros temporales sintéticos; y S3 temporal imperfecto. El puente contextual a Value se mantiene en Paquete C. La instrucción del usuario autoriza implementación S en la rama research, pero no ejecución de tests/workflows, calibración, Monte Carlo o experimento.

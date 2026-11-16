@@ -210,3 +210,10 @@ Aceptar o rechazar conjuntamente B1–B6. La aceptación debe entenderse exactam
 scientific_execution=false  
 execution_authorized=false  
 implementation_authorized=false
+
+
+## 12. Aceptación y precisión de materialización sintética (2026-11-16)
+
+B1–B6 quedan **ACEPTADAS** por el usuario como contrato lógico integrado. La aceptación se complementa con C10_S_PACKAGE_B_ACCEPTANCE_AND_SYNTHETIC_MATERIALIZATION_RECONCILIATION_DRAFT_001.md: C10-S es el carril S sintético; roster real, IAM/C_SRC, snapshots productivos e IS-1…8 del carril M no son prerequisitos del experimento sintético. Se reutilizan §§16.188–16.223, matriz 13×52, harness integrado, seed-bank protocol y contratos existentes. Las brechas sintéticas reales son D2 por etapas, q_X*/g_A0/g_A1/r_common/θ_A, EventHistory/event_time/IntervalAdjudication, parámetros temporales y S3 completo. Se autoriza implementar estas piezas en el harness existente dentro de la rama research; no se autoriza ejecutar tests, calibración, Monte Carlo ni experimento.
+
+**Estado:** B1_B6_ACCEPTED / SYNTHETIC_MATERIALIZATION_REQUIRED / SCOPE_S_ONLY / IMPLEMENTATION_AUTHORIZED_S_ONLY / EXECUTION_NOT_AUTHORIZED.

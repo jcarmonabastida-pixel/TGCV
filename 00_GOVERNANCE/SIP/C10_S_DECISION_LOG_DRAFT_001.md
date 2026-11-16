@@ -1668,3 +1668,28 @@ Se propone aceptar conjuntamente B1–B6 de `C10_S_PACKAGE_B_INTEGRATED_TEMPORAL
 La aceptación solo cerraría el contrato lógico y el mapa de dependencias. Permanecen abiertos los parámetros temporales y S3, roster/población, asignación Z, aislamiento material, soporte, par g_A, certificados r_common e identificación/recuperación θ_A. No se fijan números ni se presume 1:1, no se ratifican políticas extremas, no se materializan datos y no se autoriza implementación/ejecución.
 
 **Estado:** PROPOSED / ACCEPTANCE PENDING. Paquete A C1–C6 aceptado y registrado por separado.
+
+
+## Paquete B — aceptación B1–B6 y materialización S (2026-11-16)
+
+| Control | Estado | Condición / alcance |
+|---|---|---|
+| B1 coordenada §51 | ACCEPTED | Coordenada adimensional t0=0, t_c,max=1; no tiempo físico |
+| B2 operador temporal | ACCEPTED LOGICALLY | K/Δ y sensibilidad deben instanciarse en DGP sintético |
+| B3 EventHistory | ACCEPTED LOGICALLY | EventHistory/event_time/versión/completitud y adjudicador aún no materializados en harness |
+| B4 T* | ACCEPTED LOGICALLY | ρ_follow/T* sintéticos por fijar y someter a sensibilidad |
+| B5 S3 | ACCEPTED LOGICALLY | Contrato aceptado; proyección temporal completa pendiente |
+| B6 D2/causal | ACCEPTED LOGICALLY | D2 por etapas, q_X*/g_A/r_common/θ_A pendientes de materialización S |
+| Roster conceptual | EXISTING / REUSE | §§16.188–16.212 y §16.223; no crear otro |
+| Roster sintético instanciado | OPEN | Generar desde roster/ledger existente; no buscar unidades reales |
+| Aislamiento S | BY_CONSTRUCTION / ADVERSARIAL_SCENARIOS | No Gate 121/122 ni evidencia M como prerequisito |
+| Aislamiento M | NOT_APPLICABLE_TO_S / OPEN_FOR_SEPARATE_M | No bloquea el experimento sintético |
+| θ_A | NOT_MATERIALIZED | q_X*, g_A pair, r_common, truth y estimador |
+| EventHistory | LOGICAL_ACCEPTED / NOT_IMPLEMENTED | event_time, identidad/versionado, completitud y adjudicación |
+| Temporal params | OPEN_SYNTHETIC_INSTANCE | ρ_follow/T*/K/Δ seleccionados por cobertura/aliasing/refinamiento |
+| S3 | PARTIAL_IMPLEMENTATION | sensibilidad/especificidad/missingness existen; cadencia/lag/pérdida/dependencia temporal faltan |
+| Outcome/Value bridge | PACKAGE C | No confundir θ_A sobre V_cont con ΔValue general |
+| Implementación S | AUTHORIZED | Solo research branch; tests no ejecutados |
+| Ejecución | NOT_AUTHORIZED | Sin dispatch, tests, calibración, Monte Carlo o experimento |
+
+Artefacto rector: C10_S_PACKAGE_B_ACCEPTANCE_AND_SYNTHETIC_MATERIALIZATION_RECONCILIATION_DRAFT_001.md.
