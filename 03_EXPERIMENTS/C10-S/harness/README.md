@@ -279,3 +279,29 @@ compose_existing_generation(...) now requires an explicit selected_history_id_by
 Temporal guard: EventHistory S3 observations are point samples and are labelled POINT_SAMPLE. They can enter the sealed evidence envelope, but Analyzer abstains from a strict interval-continuity point estimate with S3_POINT_SAMPLES_DO_NOT_IDENTIFY_STRICT_INTERVAL_CONTINUITY. The existing interval-level synthetic channel is labelled INTERVAL_LEVEL. This distinction prevents a sample at one instant from being treated as proof that no functional interruption occurred anywhere in the interval. No new S3 coverage or calibration assumption is inferred by this interface change. Evaluator.evaluate_event_history_interface(...) runs only after sealing: it verifies the evidence digest and reuses the existing Analyzer-output seal/assignment-provenance checks; it checks exact evidence-to-S3-to-EventHistory binding, scores observed/missing signal fidelity, exposes the selected histories' V_cont truth to the Evaluator, and verifies the Analyzer's abstention on point samples. It explicitly does not score causal ITT or theta_A.
 
 The code and regression-test definitions are persisted in the research branch. No tests, workflows, simulations, calibration or scientific execution were run in this authoring operation.
+
+
+## C10-S finite baseline roster and D2 world builder
+
+`SyntheticWorldBuilder` is the first integrated world-materialization layer in
+`c10s_synthetic_components.py`. It consumes an explicit, versioned
+`SyntheticWorldConfig` and `D2MechanismConfig` and returns a
+`SyntheticWorldBundle` containing:
+
+- a uniquely identified finite synthetic roster;
+- explicit baseline X, H0 and C_c values and Need_preZ, without using Need_preZ as a post-assignment filter;
+- one D2 baseline record and both common-exogenous Z potential-stage bundles per unit;
+- q_X* history rows with caller-supplied positive target masses summing exactly to one (never inferred from realized roster frequencies);
+- world/DGP/roster identities, configuration and mechanism fingerprints, seed commitment and a deterministic roster digest.
+
+The fixture parameters are caller-supplied design values, not empirical rates or confirmatory defaults. The builder does not silently select a q_X* mass vector or D2 stage probabilities.
+
+**Deliberate boundary:** this layer does not invent the unresolved mapping from D_f* to the full
+`ΔT_acc*` vector, Reach/Π, trajectory, Outcome or contextual Value. It does not
+select `g_A0/g_A1`, `r_common` or a temporal EventHistory factory.
+Those are not aliases for D2 stages. The next integration step must connect these
+separate objects under the governing contracts before θ_A or a causal Value claim
+can be computed.
+
+Two source-level regression-test definitions cover deterministic replay, exact q_X*
+mass binding and rejection of non-normalized target masses. They have not been run.
