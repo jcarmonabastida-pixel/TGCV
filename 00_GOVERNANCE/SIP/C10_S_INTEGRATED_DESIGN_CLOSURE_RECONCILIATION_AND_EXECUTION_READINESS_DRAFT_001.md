@@ -216,3 +216,14 @@ Esta operación es documental. No crea DEC, no altera el DGP original, no cambia
 `scientific_execution=false`  
 `execution_authorized=false`  
 `implementation_authorized=false`
+
+
+## 13. Paquete A — resultado de reconciliación normativa (2026-11-16)
+
+**Estado:** DOCUMENTARY_RECONCILIATION_COMPLETE / COMPLEMENTARY_DECISION_PROPOSAL_PENDING_ACCEPTANCE.
+
+Se resolvió la reconstrucción de precedencia: Gate 154 está aceptado; R150-A conserva PROFILE exposure como obligación contractual; R151-A8 impide adjudicar su continuidad sin trayectoria truth; R152-A deja abierta la composición; R208-A conserva PROFILE declarativo versionado, D_valid separado y runtime constitutivo. No es necesario reabrir esas aceptaciones ni modificar el operador estricto de DEC-C10-102.
+
+La propuesta única C1–C6 se encuentra en `C10_S_DEC-C10-102_COMPLEMENTARY_SCOPE_DECISION_PROPOSAL_DRAFT_001.md`. Hasta su aceptación expresa, el crosswalk se clasifica como **PROPOSAL_PREPARED / ACCEPTANCE_PENDING**, no como CLOSED. La propuesta preserva la obligación contractual PROFILE sin atribuirle una trayectoria temporal que el DGP no genera, y limita V_cont a la continuidad temporal de la función efectiva de admisión requerida por ENABLED.
+
+**Resultado de paquete:** la ambigüedad se ha reducido a una decisión de alcance precisa, no a una nueva auditoría. No se ha creado DEC aceptada. §51 y los paquetes B–D permanecen abiertos.
