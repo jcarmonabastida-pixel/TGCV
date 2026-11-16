@@ -312,11 +312,13 @@ def materialize_c10s_complete_world_from_dgp(
     feasible_vectors_by_history: dict[str, tuple[Vector4, ...]],
     r_common_certificates: Sequence[RCommonPairCertificate],
     assignment_config: ThetaAPolicyAssignmentConfig,
-    s3_configs_by_history_ref: dict[str, object],
-    s3_seeds_by_unit: dict[str, int],
+    s3_configs_by_history_ref: dict[str, object] | None = None,
+    s3_seeds_by_unit: dict[str, int] | None = None,
     estimand_version: str,
     outcome_version: str,
     evaluation_tolerance: float,
+    interval_monitor_configs_by_history_ref: dict[str, IntervalMonitorConfig] | None = None,
+    interval_monitor_seeds_by_unit: dict[str, int] | None = None,
 ) -> C10SCompleteWorldResult:
     """Generate D2 and direct-g_A potential EventHistories inside the DGP pipeline.
 
