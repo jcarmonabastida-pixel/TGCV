@@ -661,5 +661,17 @@ class SyntheticComponentTests(unittest.TestCase):
                                 for row in delta.delta_u) for delta in deltas))
 
 
+    def test_empty_incomplete_structural_universe_is_unknown_not_zero(self):
+        incomplete = (("U", False), ("R", False), ("C", False), ("X", False))
+        before = self.structural_state_snapshot("SNAP-B", "BASELINE", (), complete=incomplete)
+        after = self.structural_state_snapshot("SNAP-P", "POST", (), complete=incomplete)
+        result = TransformationalDeltaEngine().evaluate(
+            before, after, evidence_baseline=self.evidence_state("E-B"),
+            evidence_post=self.evidence_state("E-P"),
+        )
+        self.assertEqual(result.delta_state, "?")
+        self.assertEqual(dict(result.component_completeness), {"U": False, "R": False, "C": False, "X": False})
+
+
 if __name__ == "__main__":
     unittest.main()
