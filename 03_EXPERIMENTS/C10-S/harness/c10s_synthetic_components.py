@@ -2573,6 +2573,7 @@ class NeedPreZStipulation:
     contract_version: str
     instance_version: int
     package_version: str
+    baseline_record_id: str
     baseline_time: str
     stipulation: str
     rule_version: str
@@ -2582,7 +2583,7 @@ class NeedPreZStipulation:
         required = (
             self.unit_id, self.b1_id, self.service_instance_id, self.contract_id,
             self.contract_version, self.instance_version, self.package_version,
-            self.baseline_time, self.rule_version, self.basis_ref,
+            self.baseline_record_id, self.baseline_time, self.rule_version, self.basis_ref,
         )
         if not all(required):
             raise ContractError("Need_preZ stipulation identity, binding, baseline and provenance are mandatory")
@@ -2603,6 +2604,7 @@ class NeedPreZTruthRecord:
     contract_version: str
     instance_version: str
     package_version: str
+    baseline_record_id: str
     baseline_time: str
     need_truth_state: TriState
     rule_version: str
@@ -2646,7 +2648,8 @@ class NeedPreZTruthBundle:
         for row in self.records:
             if (not all((row.b1_id, row.service_instance_id, row.contract_id,
                          row.contract_version, row.package_version,
-                         row.rule_version, row.truth_basis_ref, row.stipulation_sha256))
+                         row.baseline_record_id, row.rule_version, row.truth_basis_ref,
+                         row.stipulation_sha256))
                     or type(row.instance_version) is not int or row.instance_version < 1
                     or row.baseline_time != "t-1"
                     or row.need_truth_state not in (0, 1, "?")):
@@ -2692,7 +2695,7 @@ def materialize_need_prez_truth(
         records.append(NeedPreZTruthRecord(
             row.unit_id, row.b1_id, row.service_instance_id, row.contract_id,
             row.contract_version, row.instance_version, row.package_version,
-            row.baseline_time, state, row.rule_version, row.basis_ref,
+            row.baseline_record_id, row.baseline_time, state, row.rule_version, row.basis_ref,
             stipulation_hash,
         ))
     payload = {
