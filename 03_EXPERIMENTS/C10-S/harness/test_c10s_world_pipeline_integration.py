@@ -718,6 +718,9 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 result.d2_observed_lane.sealed_evidence.run_id,
                 observed_subset,
                 expected_roster,
+                tuple((row.unit_id, row.history_ref, row.assigned_z,
+                       row.probability_z0, row.probability_z1)
+                      for row in original_bundle.assignments),
             )
         )
         self.assertEqual(
@@ -727,12 +730,13 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         unit_nonresponse_analysis = D2ITTZAnalyzer().analyze(
             unit_nonresponse_evidence, result.d2_analysis_contract,
         )
-        self.assertEqual(unit_nonresponse_analysis.identification, "INDETERMINATE")
+        self.assertEqual(unit_nonresponse_analysis.identification, "PARTIALLY_IDENTIFIED")
         self.assertIsNone(unit_nonresponse_analysis.point_estimate)
         self.assertIn(
             original_bundle.assignments[-1].history_ref,
             unit_nonresponse_analysis.missing_target_histories,
         )
+        self.assertLessEqual(unit_nonresponse_analysis.lower_bound, unit_nonresponse_analysis.upper_bound)
         unit_nonresponse_evaluation = D2ITTZEvaluator().evaluate(
             world=result.d2_world, truth=result.d2_vcont_truth,
             assignments=original_bundle, evidence=unit_nonresponse_evidence,
@@ -741,7 +745,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         )
         self.assertEqual(
             unit_nonresponse_evaluation.disposition,
-            "CORRECT_ABSTENTION_SUPPORT_INCOMPLETE",
+            "CORRECT_ABSTENTION_UNIT_NONRESPONSE",
         )
 
 if __name__ == "__main__":
