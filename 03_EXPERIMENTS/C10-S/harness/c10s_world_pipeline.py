@@ -106,7 +106,24 @@ class C10SCompleteWorldResult:
         deltas = {(row.unit_id, row.potential_z): row for row in self.structural_deltas}
         if set(deltas) != expected or len(deltas) != len(self.structural_deltas):
             raise ContractError("complete-world result must retain exact unit × Z ΔT_acc* coverage")
+        for key in sorted(expected):
+            pair = pairs[key]
+            delta = deltas[key]
+            if (delta.baseline_snapshot_id, delta.post_snapshot_id) != (
+                pair.baseline.snapshot_id, pair.post.snapshot_id,
+            ):
+                raise ContractError("ΔT_acc* does not reference its exact D2 baseline/post structural snapshots")
         self.reachability.validate(world)
+        reach_by_key = {(row.unit_id, row.z): row for row in self.reachability.contrasts}
+        if set(reach_by_key) != expected or len(reach_by_key) != len(expected):
+            raise ContractError("complete-world Reach must retain exact unit × Z potential coverage")
+        for key in sorted(expected):
+            pair = pairs[key]
+            contrast = reach_by_key[key]
+            if (contrast.baseline.snapshot_id, contrast.post.snapshot_id) != (
+                pair.baseline.snapshot_id, pair.post.snapshot_id,
+            ):
+                raise ContractError("Reach baseline/post snapshots are detached from the exact ΔT_acc* potential")
         self.trajectories.validate(world, self.reachability, reach_config)
         d2_histories = dict(self.d2_histories_by_unit_z)
         self.d2_vcont_truth.validate(world, d2_histories, grid)
