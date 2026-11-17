@@ -645,6 +645,13 @@ La clasificación esperada de identificación es una entrada explícita del cont
 
 El siguiente paso dependiente de decisión es aportar un roster focal versionado con world/DGP/roster IDs y versiones, prefijo de unidad, truth-status independiente y base de independencia por escenario, además de objetivos MCSE explícitos. No se infieren del protocolo 13×52 ni de P178. La creación de este scaffold no autoriza la generación de bancos ni la calibración.
 
+### Integración técnica del protocolo N/M/R con World Builder
+
+Se extendió el fixture de `test_c10s_world_pipeline_integration.py` para aceptar cada `ThetaASeedAssignment` sin cambiar la semántica del DGP existente. El fixture ahora propaga al mundo la identidad/versión world, DGP y roster, el prefijo de unidades, N y la semilla de mundo; propaga a la asignación directa el salt propio de R, el run_id propio de R y al monitor S3 las semillas derivadas por unidad. Se añadió una regresión de integración que ejecuta en memoria el pipeline completo de la fixture para las cuatro filas de prueba N=32, M=2, R=2, captura Analyzer/Evaluator y comprueba la agregación por M.
+
+Esta prueba usa exclusivamente parámetros de fixture para verificar interfaces y separación N/M/R. No selecciona el roster científico focal, no fija el dimensionamiento confirmatorio y no genera un banco persistido ni ejecuta calibración. El allowlist EP-02 conserva sus dieciséis módulos; la regresión se añade al módulo de integración ya incluido.
+
+**Estado tras la integración:** fuente y definición de regresión persistidas en research; compilación, suite EP-02 y replay pendientes. No se ejecutan ahora: el contrato de misión vigente fija `technical_test_execution_authorized=false` y `workflow_dispatch_authorized=false`. La implementación no cambia las autorizaciones de §325 ni habilita calibración/experimento.
 `scientific_execution=false` · `execution_authorized=false` · `calibration_authorized=false`
 
 No se modifica `main`, RMA, Evidence→Claim Matrix, STATUS o TGCV Core. PR #116 permanece Draft/no merged.
