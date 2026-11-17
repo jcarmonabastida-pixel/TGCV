@@ -20,6 +20,7 @@ class D2ITTZAnalysisContract:
     assignment_mechanism_version: str
     estimand_id: str = "ITT_Z_D2_VCONT_QX"
     estimand_version: str = "1.0"
+    confidence_level: float = 0.95
 
     def validate(self) -> None:
         mapping = dict(self.q_x_mass_by_history)
@@ -29,6 +30,8 @@ class D2ITTZAnalysisContract:
             raise ContractError("ITT-Z q_X masses must be finite and strictly positive")
         if not math.isclose(sum(mapping.values()), 1.0, rel_tol=0.0, abs_tol=1e-10):
             raise ContractError("ITT-Z q_X masses must sum to one")
+        if not 0.0 < self.confidence_level < 1.0:
+            raise ContractError("ITT-Z randomization confidence level must be in (0,1)")
         if not all((self.q_x_sha256, self.assignment_bundle_sha256,
                     self.assignment_mechanism_id, self.assignment_mechanism_version,
                     self.estimand_id, self.estimand_version)):
@@ -44,6 +47,9 @@ class D2ITTZAnalysisResult:
     point_estimate: float | None
     lower_bound: float
     upper_bound: float
+    randomization_lower_bound: float | None
+    randomization_upper_bound: float | None
+    hoeffding_radius: float | None
     target_q_x_coverage: float
     missing_target_histories: tuple[str, ...]
     assigned_z_unit_counts: tuple[int, int]
@@ -60,6 +66,9 @@ def _result_payload(result: D2ITTZAnalysisResult) -> dict[str, Any]:
         "estimand_version": result.estimand_version,
         "identification": result.identification, "point_estimate": result.point_estimate,
         "lower_bound": result.lower_bound, "upper_bound": result.upper_bound,
+        "randomization_lower_bound": result.randomization_lower_bound,
+        "randomization_upper_bound": result.randomization_upper_bound,
+        "hoeffding_radius": result.hoeffding_radius,
         "target_q_x_coverage": result.target_q_x_coverage,
         "missing_target_histories": result.missing_target_histories,
         "assigned_z_unit_counts": result.assigned_z_unit_counts,
@@ -105,6 +114,7 @@ class D2ITTZAnalyzer:
             raise ContractError("ITT-Z evidence contains histories outside q_X target support")
         missing_histories = tuple(sorted(set(qx) - observed_histories))
         arm: list[list[tuple[float, int, int]]] = [[], []]
+        randomization_range_sq = 0.0
         missing_count = total_count = 0
         for unit, rows in by_unit.items():
             first = rows[0]
@@ -150,9 +160,15 @@ class D2ITTZAnalyzer:
             y_upper = 0 if any_failure else 1
             missing_count += sum(row["observation_status"] == "MISSING" for row in ordered)
             total_count += len(ordered)
-            arm[z].append((qx[first["history_ref"]] / p, y_lower, y_upper))
+            mass = qx[first["history_ref"]]
+            arm[z].append((mass / p, y_lower, y_upper))
+            p1 = first["probability_z1"]
+            p0 = first["probability_z0"]
+            contribution_range = mass * (1.0 / p1 + 1.0 / p0)
+            randomization_range_sq += contribution_range * contribution_range
         counts = (len(arm[0]), len(arm[1]))
         coverage = sum(qx[key] for key in observed_histories)
+        randomization_lower = randomization_upper = radius = None
         if missing_histories or not all(counts):
             identification, estimate, reason = "INDETERMINATE", None, (
                 "TARGET_QX_SUPPORT_INCOMPLETE" if missing_histories else "REALIZED_Z_ARM_SUPPORT_MISSING"
@@ -168,11 +184,18 @@ class D2ITTZAnalyzer:
             else:
                 identification, reason = "IDENTIFIED", ""
                 estimate = mu_lower[1] - mu_lower[0]
+                alpha = 1.0 - contract.confidence_level
+                radius = math.sqrt(0.5 * randomization_range_sq * math.log(2.0 / alpha))
+                randomization_lower = max(-1.0, estimate - radius)
+                randomization_upper = min(1.0, estimate + radius)
         payload = {
             "run_id": evidence.run_id, "estimand_id": contract.estimand_id,
             "estimand_version": contract.estimand_version,
             "identification": identification, "point_estimate": estimate,
             "lower_bound": lower, "upper_bound": upper,
+            "randomization_lower_bound": randomization_lower,
+            "randomization_upper_bound": randomization_upper,
+            "hoeffding_radius": radius,
             "target_q_x_coverage": coverage, "missing_target_histories": missing_histories,
             "assigned_z_unit_counts": counts, "missing_interval_count": missing_count,
             "total_interval_count": total_count, "abstention_reason": reason,
