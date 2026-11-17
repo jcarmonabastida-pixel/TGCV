@@ -105,9 +105,21 @@ class D2ITTZAnalyzer:
         if (manifest.get("row_count") != len(evidence.rows)
                 or not isinstance(manifest.get("unit_count"), int)
                 or manifest.get("unit_count") < 1
+                or not isinstance(manifest.get("expected_unit_count"), int)
+                or manifest.get("expected_unit_count") < manifest.get("unit_count")
+                or not isinstance(manifest.get("expected_unit_history_refs"), (tuple, list))
+                or not isinstance(manifest.get("missing_unit_ids"), (tuple, list))
                 or not isinstance(manifest.get("interval_count_per_unit"), int)
                 or manifest.get("interval_count_per_unit") < 1):
-            raise ContractError("ITT-Z sealed manifest counts are missing or inconsistent")
+            raise ContractError("ITT-Z sealed manifest counts/roster are missing or inconsistent")
+        expected_pairs = tuple(tuple(row) for row in manifest["expected_unit_history_refs"])
+        expected_ids = [row[0] for row in expected_pairs]
+        expected_refs = [row[1] for row in expected_pairs]
+        if (len(expected_pairs) != manifest["expected_unit_count"]
+                or len(expected_ids) != len(set(expected_ids))
+                or len(expected_refs) != len(set(expected_refs))
+                or set(expected_refs) != set(contract_history for contract_history, _ in contract.q_x_mass_by_history)):
+            raise ContractError("ITT-Z sealed expected roster does not map one-to-one onto q_X* support")
         qx = dict(contract.q_x_mass_by_history)
         by_unit: dict[str, list[dict[str, Any]]] = {}
         for row in evidence.rows:
@@ -127,6 +139,17 @@ class D2ITTZAnalyzer:
             by_unit.setdefault(row["unit_id"], []).append(row)
         if len(by_unit) != manifest["unit_count"]:
             raise ContractError("ITT-Z sealed manifest unit count differs from observed evidence")
+        expected_by_unit = dict(expected_pairs)
+        if not set(by_unit).issubset(expected_by_unit):
+            raise ContractError("ITT-Z evidence contains units outside the declared randomized roster")
+        observed_history_by_unit = {
+            unit: rows[0]["history_ref"] for unit, rows in by_unit.items()
+        }
+        if any(expected_by_unit[unit] != history_ref
+               for unit, history_ref in observed_history_by_unit.items()):
+            raise ContractError("ITT-Z observed unit/history mapping differs from sealed expected roster")
+        if tuple(sorted(set(expected_by_unit) - set(by_unit))) != tuple(sorted(manifest["missing_unit_ids"])):
+            raise ContractError("ITT-Z sealed missing-unit manifest does not match observed roster")
         if len(by_unit) > len(qx):
             raise ContractError("ITT-Z evidence contains more units than q_X target support")
         expected_interval_count = manifest["interval_count_per_unit"]
