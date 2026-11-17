@@ -70,7 +70,7 @@ def _result_payload(result: ThetaAObservationAnalysisResult) -> dict[str, Any]:
 class ThetaAObservationEvaluator:
     """Independent oracle comparison; never pass its truth object to Analyzer."""
 
-    version = "c10s-theta-a-observation-evaluator-0.1"
+    version = "c10s-theta-a-observation-evaluator-0.2"
 
     def evaluate(self, truth_bundle: ThetaAVContTruthBundle,
                  evidence: SealedThetaAEvidence,
@@ -119,6 +119,15 @@ class ThetaAObservationEvaluator:
         assignment_by_unit = {row.unit_id: row for row in assignment_bundle.assignments}
         if len(assignment_by_unit) != len(assignment_bundle.assignments):
             raise ContractError("assignment bundle contains duplicate unit assignments")
+        if contract.confidence_level is not None:
+            p1_by_history = dict(contract.probability_a1_by_history)
+            if set(p1_by_history) != {row.history_ref for row in assignment_bundle.assignments}:
+                raise ContractError("inferential probability contract does not cover the exact assignment histories")
+            if any(not math.isclose(
+                    p1_by_history[row.history_ref], row.probability_a1,
+                    rel_tol=0.0, abs_tol=1e-12
+            ) for row in assignment_bundle.assignments):
+                raise ContractError("inferential probability contract differs from the actual two-arm assignment bundle")
         evidence_units = {row["unit_id"] for row in evidence.rows}
         if evidence_units != set(assignment_by_unit):
             raise ContractError("sealed observations must cover the exact assigned-unit roster")
