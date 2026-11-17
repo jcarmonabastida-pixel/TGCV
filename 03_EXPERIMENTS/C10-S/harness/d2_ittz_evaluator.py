@@ -21,7 +21,7 @@ class D2ITTZEvaluation:
     lower_bound: float
     upper_bound: float
     absolute_error: float | None
-    truth_within_bounds: bool
+    truth_within_bounds: bool | None
     correct_adjudication: bool
     disposition: str
     tolerance: float
@@ -107,25 +107,32 @@ class D2ITTZEvaluator:
         lower, upper = result.lower_bound, result.upper_bound
         if not (math.isfinite(lower) and math.isfinite(upper) and lower <= upper):
             raise ContractError("ITT-Z Analyzer bounds must be finite and ordered")
-        covers = lower - tolerance <= target_truth <= upper + tolerance
         if result.identification == "IDENTIFIED":
             if result.point_estimate is None or not math.isfinite(result.point_estimate):
                 raise ContractError("identified ITT-Z result requires a finite estimate")
+            if result.missing_interval_count != 0:
+                raise ContractError("identified ITT-Z result cannot contain missing intervals")
             error = abs(result.point_estimate - target_truth)
-            correct = error <= tolerance and covers
+            covers = lower - tolerance <= target_truth <= upper + tolerance
+            correct = error <= tolerance
             disposition = "POINT_RECOVERED" if correct else "POINT_RECOVERY_FAILED"
         elif result.identification == "PARTIALLY_IDENTIFIED":
             if result.point_estimate is not None or not result.abstention_reason:
-                raise ContractError("partial ITT-Z identification must abstain with an explicit reason")
-            error = None
-            correct = covers
-            disposition = "BOUNDS_COVER_TRUTH" if covers else "BOUNDS_EXCLUDE_TRUTH"
+                raise ContractError("partial ITT-Z result must abstain with an explicit reason")
+            if result.missing_interval_count <= 0:
+                raise ContractError("partial ITT-Z status requires interval missingness")
+            # These bounds concern completion of missing interval values in the
+            # realized HT contrast, not sampling uncertainty or causal truth.
+            # They must never be interpreted as causal identification bounds.
+            error, covers = None, None
+            correct = True
+            disposition = "CORRECT_ABSTENTION_MEASUREMENT_INCOMPLETE"
         elif result.identification == "INDETERMINATE":
             if result.point_estimate is not None or not result.abstention_reason:
                 raise ContractError("indeterminate ITT-Z result must abstain explicitly")
-            error = None
-            correct = covers
-            disposition = "CORRECT_ABSTENTION" if covers else "ABSTENTION_BOUNDS_EXCLUDE_TRUTH"
+            error, covers = None, None
+            correct = True
+            disposition = "CORRECT_ABSTENTION_SUPPORT_INCOMPLETE"
         else:
             raise ContractError("unsupported ITT-Z identification status")
         return D2ITTZEvaluation(
