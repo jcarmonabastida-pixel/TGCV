@@ -91,7 +91,7 @@ def _canonical_hash(value: Any) -> str:
 class ThetaAObservationAnalyzer:
     """Analyze sealed focal observations without access to DGP truth."""
 
-    version = "c10s-theta-a-observation-analyzer-0.1"
+    version = "c10s-theta-a-observation-analyzer-0.2"
 
     def analyze(self, evidence: SealedThetaAEvidence,
                 contract: ThetaAObservationAnalysisContract) -> ThetaAObservationAnalysisResult:
