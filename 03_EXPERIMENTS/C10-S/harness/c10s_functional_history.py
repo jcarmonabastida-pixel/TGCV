@@ -164,8 +164,8 @@ def _apply_rules(
         r for r in rules
         if r.source == source
         or (source == "G_A" and r.source == "G_M")
-        or (source == "G_A" and factor_m is not None
-            and r.source == "TRAJECTORY" and trajectories_by_target is not None)
+        or (source == "G_A" and r.source == "TRAJECTORY"
+            and trajectories_by_target is not None)
         or (source == "D2" and r.source == "TRAJECTORY")
     )
     for rule in sorted(
