@@ -9,3 +9,5 @@ Retry 3 after second integration audit; commits include Reach suffix binding, fa
 Retry 4 after semantic and interface reconciliation: truth scalar access, evaluator recovery disposition, factorial EventHistory assignment crosswalk, and DEC-C10-100 V_cont aggregation expectations.
 
 Retry 5 after final event-history crosswalk, transition-field, D2 Z-specific fixture, and evaluator-recovery assertion corrections.
+
+Retry 6 after final D2 truth digest interface and DEC-C10-100/102 factorial interval aggregation expectation alignment.
