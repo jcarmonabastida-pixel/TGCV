@@ -116,6 +116,13 @@ class D2ITTZAnalyzer:
                 or not all(isinstance(manifest.get(key), str) and manifest.get(key)
                            for key in ("grid_id", "grid_version", "monitor_id", "monitor_version"))):
             raise ContractError("ITT-Z sealed manifest counts/roster are missing or inconsistent")
+        interval_bounds = tuple(tuple(row) for row in manifest.get("interval_bounds", ()))
+        if (len(interval_bounds) != manifest["interval_count_per_unit"]
+                or any(len(pair) != 2 or not pair[0] < pair[1]
+                       for pair in interval_bounds)
+                or any(left[1] != right[0]
+                       for left, right in zip(interval_bounds, interval_bounds[1:]))):
+            raise ContractError("ITT-Z manifest interval boundaries do not reproduce the declared temporal grid")
         expected_pairs = tuple(tuple(row) for row in manifest["expected_unit_history_refs"])
         expected_assignments = tuple(tuple(row) for row in manifest.get("expected_unit_assignments", ()))
         expected_ids = [row[0] for row in expected_pairs]
