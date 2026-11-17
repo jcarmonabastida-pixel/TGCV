@@ -119,12 +119,12 @@ class ThetaAObservationAnalyzer:
         # Distinguish missing target support / realized-arm support from the
         # temporal measurement limitation. All three prevent a point estimate,
         # but they are scientifically different reasons for abstention.
-        if missing:
-            identification = "INDETERMINATE"
-            abstention_reason = "TARGET_QX_SUPPORT_INCOMPLETE"
-        elif arms[0] == 0 or arms[1] == 0:
+        if arms[0] == 0 or arms[1] == 0:
             identification = "INDETERMINATE"
             abstention_reason = "REALIZED_GA_ARM_SUPPORT_MISSING"
+        elif missing:
+            identification = "INDETERMINATE"
+            abstention_reason = "TARGET_QX_SUPPORT_INCOMPLETE"
         else:
             identification = "PARTIALLY_IDENTIFIED"
             abstention_reason = "STRICT_VCONT_NOT_OBSERVED_BY_POINT_SAMPLES"
@@ -220,9 +220,10 @@ class ThetaAObservationAnalyzer:
             arm_units[arm].append((qx[first["history_ref"]] / probability, lower_y, upper_y))
         arm_counts = tuple(len(items) for items in arm_units)
         covered_mass = sum(qx[key] for key in observed_histories)
-        if missing_histories or 0 in arm_counts:
+        if 0 in arm_counts or missing_histories:
             identification, reason, estimate = "INDETERMINATE", (
-                "TARGET_QX_SUPPORT_INCOMPLETE" if missing_histories else "REALIZED_GA_ARM_SUPPORT_MISSING"
+                "REALIZED_GA_ARM_SUPPORT_MISSING" if 0 in arm_counts
+                else "TARGET_QX_SUPPORT_INCOMPLETE"
             ), None
             measurement_lower = measurement_upper = None
         else:
