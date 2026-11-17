@@ -2637,8 +2637,11 @@ class NeedPreZTruthBundle:
             raise ContractError("Need_preZ truth must cover the complete applicable UE census exactly once")
         b1_ids = [row.b1_id for row in self.records]
         service_ids = [row.service_instance_id for row in self.records]
-        if len(set(b1_ids)) != len(b1_ids) or len(set(service_ids)) != len(service_ids):
-            raise ContractError("Need_preZ census requires unique B1 and service-instance bindings")
+        baseline_ids = [row.baseline_record_id for row in self.records]
+        if (len(set(b1_ids)) != len(b1_ids)
+                or len(set(service_ids)) != len(service_ids)
+                or len(set(baseline_ids)) != len(baseline_ids)):
+            raise ContractError("Need_preZ census requires unique B1, service-instance and baseline-record bindings")
         package_contracts = {
             (row.contract_id, row.contract_version, row.package_version, row.rule_version)
             for row in self.records
