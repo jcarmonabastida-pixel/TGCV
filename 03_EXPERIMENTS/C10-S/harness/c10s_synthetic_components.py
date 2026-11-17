@@ -634,7 +634,7 @@ class StructuralSnapshot:
     dgp_id: str
     dgp_version: str
     unit_id: str
-    potential_z: int
+    potential_z: int | None
     boundary_id: str
     context_id: str
     horizon: float
@@ -644,14 +644,22 @@ class StructuralSnapshot:
     conditions_exhaustive: bool
     resources_exhaustive: bool
     catalog_version: str
+    potential_axis: Literal["Z", "G_A"] = "Z"
+    potential_label: str | None = None
 
     def validate(self) -> None:
         if not all((self.snapshot_id, self.snapshot_version, self.world_id,
                     self.world_version, self.dgp_id, self.dgp_version, self.unit_id,
                     self.boundary_id, self.context_id, self.catalog_version)):
             raise ContractError("structural snapshot identity, boundary, context and catalog version are required")
-        if self.potential_z not in (0, 1):
-            raise ContractError("structural snapshot must identify one potential Z world")
+        if self.potential_axis == "Z":
+            if self.potential_z not in (0, 1) or self.potential_label is not None:
+                raise ContractError("Z structural snapshot must identify Z=0/1 and no factorial label")
+        elif self.potential_axis == "G_A":
+            if self.potential_z is not None or not self.potential_label:
+                raise ContractError("g_A structural snapshot must identify its vector potential without a Z value")
+        else:
+            raise ContractError("structural snapshot potential axis must be Z or G_A")
         if not math.isfinite(self.horizon) or self.horizon <= 0:
             raise ContractError("structural horizon must be positive and finite")
         ids = [item.transformation_id for item in self.transformations]
@@ -1779,12 +1787,13 @@ def evaluate_factorial_structural_reachability(
             return StructuralSnapshot(
                 f"{source.snapshot_id}:REACH:{timepoint}", config.snapshot_version,
                 source.world_id, source.world_version, source.dgp_id, source.dgp_version,
-                source.unit_id, source.boundary_id, source.context_id,
+                source.unit_id, source.potential_z, source.boundary_id, source.context_id,
                 config.horizon, tuple(transformations),
                 config.universe_exhaustive and complete["U"],
                 config.relations_exhaustive and complete["R"],
                 config.conditions_exhaustive and complete["C"],
                 config.resources_exhaustive, config.catalog_version,
+                source.potential_axis, source.potential_label,
             )
         def make_routes(atoms, complete):
             routes = []
