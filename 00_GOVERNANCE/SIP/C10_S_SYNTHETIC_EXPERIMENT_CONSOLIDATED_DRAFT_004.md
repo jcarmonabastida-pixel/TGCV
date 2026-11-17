@@ -613,7 +613,7 @@ Se ejecutó de nuevo la suite técnica después de implementar el intervalo cons
 
 ## 328. Protocolo focal de calibración θ_A — scaffold N/M/R (2026-11-17)
 
-**Implementación fuente añadida en research:** `03_EXPERIMENTS/C10-S/harness/theta_a_calibration_protocol.py`, con nueve definiciones de regresión en `test_theta_a_calibration_protocol.py`. Se amplió el allowlist manual EP-02 a dieciséis módulos para incluir ambos archivos. El workflow sigue siendo manual-only y no se ha despachado.
+**Implementación fuente añadida en research:** `03_EXPERIMENTS/C10-S/harness/theta_a_calibration_protocol.py`, con diez definiciones de regresión en `test_theta_a_calibration_protocol.py`. Se amplió el allowlist manual EP-02 a dieciséis módulos para incluir ambos archivos. El workflow sigue siendo manual-only y no se ha despachado.
 
 ### Contrato de replicación
 
@@ -634,7 +634,7 @@ La clasificación esperada de identificación es una entrada explícita del cont
 ### Estado y límites
 
 - **Implementación fuente:** presente en la rama research.
-- **Pruebas:** nueve definiciones añadidas al allowlist; **no compiladas ni ejecutadas**.
+- **Pruebas:** diez definiciones añadidas al allowlist; **no compiladas ni ejecutadas**.
 - **Workflow:** allowlist estáticamente ampliado; YAML/actionlint no validado y no despachado.
 - **Calibración:** no ejecutada.
 - **Seed banks:** no generados.
