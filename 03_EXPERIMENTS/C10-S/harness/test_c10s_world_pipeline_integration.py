@@ -635,7 +635,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertAlmostEqual(null_result.reserved_truth.theta_a_given_m1, 0.5)
         self.assertAlmostEqual(null_result.reserved_truth.theta_am_interaction, 0.0)
         self.assertTrue(all(
-            row.delta.delta_state == 0
+            row.delta.delta_state == (1 if row.vector[0] == 1.0 else 0)
             for row in null_result.factorial_structural_potentials.values()
         ))
         self.assertEqual(len(null_result.evaluator_result.absolute_errors), 3)
@@ -820,9 +820,9 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         ):
             self.assertTrue(all(
                 any(change.causal_family == "TRAJECTORY_EXECUTION_TO_B1_ADMISSION"
-                    for change in histories[(unit_id, 1)].changes)
+                    for change in histories[(unit_id, 1)].transitions)
                 and not any(change.causal_family == "TRAJECTORY_EXECUTION_TO_B1_ADMISSION"
-                            for change in histories[(unit_id, 0)].changes)
+                            for change in histories[(unit_id, 0)].transitions)
                 for unit_id in cohort_ids
             ))
         for key, history in result.factorial_cohort.factorial_potential_histories.items():
