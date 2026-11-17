@@ -126,7 +126,8 @@ class C10SCompleteWorldResult:
             pair = pairs[key]
             contrast = reach_by_key[key]
             if (contrast.baseline.snapshot_id, contrast.post.snapshot_id) != (
-                pair.baseline.snapshot_id, pair.post.snapshot_id,
+                f"{pair.baseline.snapshot_id}:REACH:BASELINE",
+                f"{pair.post.snapshot_id}:REACH:POST",
             ):
                 raise ContractError("Reach baseline/post snapshots are detached from the exact ΔT_acc* potential")
         self.trajectories.validate(world, self.reachability, reach_config)
