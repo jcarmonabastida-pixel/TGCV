@@ -1,6 +1,9 @@
 name: C10-S V_cont package v2 pure capture, writer and verifier tests
 
 on:
+  push:
+    branches:
+      - research/c10-s-consolidation-draft
   workflow_dispatch:
 
 permissions:
@@ -8,6 +11,7 @@ permissions:
 
 jobs:
   vcont-package-v2-pure-capture-tests:
+    if: github.ref == 'refs/heads/research/c10-s-consolidation-draft' && (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && contains(github.event.head_commit.message, '[C10S-TECHNICAL-TESTS-AUTHORIZED]')))
     name: Pure capture, package writer and independent verifier fixtures — no synthetic producer execution
     runs-on: ubuntu-24.04
     timeout-minutes: 15
@@ -109,6 +113,7 @@ jobs:
         shell: bash
         env:
           JOB_STATUS: ${{ job.status }}
+          GITHUB_HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           PAYLOAD_ARTIFACT_ID: ${{ steps.payload.outputs.artifact-id }}
           PAYLOAD_ARTIFACT_DIGEST: ${{ steps.payload.outputs.artifact-digest }}
         run: |
@@ -139,7 +144,7 @@ jobs:
             "tree":subprocess.check_output(["git","rev-parse","HEAD^{tree}"],text=True).strip(),
             "event":os.environ["GITHUB_EVENT_NAME"],"ref":os.environ["GITHUB_REF"],
             "run_id":os.environ["GITHUB_RUN_ID"],"run_attempt":os.environ["GITHUB_RUN_ATTEMPT"],"job":os.environ.get("GITHUB_JOB"),"manifest_step_id":"manifest","job_status":os.environ.get("JOB_STATUS"),
-            "authorization":{"type":"manual_dispatch","scope":"pure capture/writer/verifier fixtures only; no synthetic producer"},
+            "authorization":{"mechanism":os.environ["GITHUB_EVENT_NAME"],"push_commit_message":os.environ.get("GITHUB_HEAD_COMMIT_MESSAGE"),"required_push_marker":"[C10S-TECHNICAL-TESTS-AUTHORIZED]","scope":"pure capture/writer/verifier fixtures only; no synthetic producer"},
             "actions":{"checkout":"de0fac2e4500dabe0009e67214ff5f5447ce83dd","setup-python":"83679a892e2d95755f2dac6acb0bfd1e9ac5d548","upload-artifact":"b7c566a772e6b6bfb58ed0dc250532a479d7789f"},
             "runner":{"image_os":os.environ.get("ImageOS"),"image_version":os.environ.get("ImageVersion"),"os_release":Path("/etc/os-release").read_text(),"uname":subprocess.check_output(["uname","-a"],text=True).strip(),"architecture":platform.machine(),"libc":platform.libc_ver()},
             "runtime":{"python":subprocess.check_output(["python","-c","import sys;print(sys.version)"],text=True).strip(),"pip":subprocess.check_output(["python","-m","pip","--version"],text=True).strip(),"installed":subprocess.check_output(["python","-m","pip","freeze"],text=True).splitlines()},

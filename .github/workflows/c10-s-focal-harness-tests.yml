@@ -1,6 +1,9 @@
 name: C10-S integrated synthetic contract suite
 
 on:
+  push:
+    branches:
+      - research/c10-s-consolidation-draft
   workflow_dispatch:
     inputs:
       confirm_synthetic_test_execution:
@@ -14,7 +17,7 @@ permissions:
 
 jobs:
   integrated-synthetic-contract-tests:
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/research/c10-s-consolidation-draft' && inputs.confirm_synthetic_test_execution == true
+    if: github.ref == 'refs/heads/research/c10-s-consolidation-draft' && ((github.event_name == 'workflow_dispatch' && inputs.confirm_synthetic_test_execution == true) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[C10S-TECHNICAL-TESTS-AUTHORIZED]')))
     name: Explicitly authorized integrated synthetic contract suite
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -171,7 +174,8 @@ jobs:
         shell: bash
         env:
           JOB_STATUS: ${{ job.status }}
-          CONFIRM_SYNTHETIC_TEST_EXECUTION: ${{ inputs.confirm_synthetic_test_execution }}
+          CONFIRM_SYNTHETIC_TEST_EXECUTION: ${{ inputs.confirm_synthetic_test_execution || (github.event_name == 'push' && contains(github.event.head_commit.message, '[C10S-TECHNICAL-TESTS-AUTHORIZED]')) }}
+          GITHUB_HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           PAYLOAD_ARTIFACT_ID: ${{ steps.payload.outputs.artifact-id }}
           PAYLOAD_ARTIFACT_DIGEST: ${{ steps.payload.outputs.artifact-digest }}
         run: |
@@ -232,7 +236,7 @@ jobs:
             "tree":subprocess.check_output(["git","rev-parse","HEAD^{tree}"],text=True).strip(),
             "event":os.environ["GITHUB_EVENT_NAME"],"ref":os.environ["GITHUB_REF"],
             "run_id":os.environ["GITHUB_RUN_ID"],"run_attempt":os.environ["GITHUB_RUN_ATTEMPT"],"job":os.environ.get("GITHUB_JOB"),"manifest_step_id":"manifest","job_status":os.environ.get("JOB_STATUS"),
-            "authorization":{"input":"confirm_synthetic_test_execution","value":os.environ["CONFIRM_SYNTHETIC_TEST_EXECUTION"],"scope":"exact fifteen-test-module suite and clean replay only"},
+            "authorization":{"mechanism":os.environ["GITHUB_EVENT_NAME"],"dispatch_input":os.environ.get("CONFIRM_SYNTHETIC_TEST_EXECUTION"),"push_commit_message":os.environ.get("GITHUB_HEAD_COMMIT_MESSAGE"),"required_push_marker":"[C10S-TECHNICAL-TESTS-AUTHORIZED]","scope":"exact fifteen-test-module suite and clean replay only"},
             "actions":{"checkout":"de0fac2e4500dabe0009e67214ff5f5447ce83dd","setup-python":"83679a892e2d95755f2dac6acb0bfd1e9ac5d548","upload-artifact":"b7c566a772e6b6bfb58ed0dc250532a479d7789f"},
             "runner":{"image_os":os.environ.get("ImageOS"),"image_version":os.environ.get("ImageVersion"),"os_release":Path("/etc/os-release").read_text(),"uname":subprocess.check_output(["uname","-a"],text=True).strip(),"architecture":platform.machine(),"libc":platform.libc_ver()},
             "runtime":{"python":subprocess.check_output(["python","-c","import sys;print(sys.version)"],text=True).strip(),"pip":subprocess.check_output(["python","-m","pip","--version"],text=True).strip(),"installed":subprocess.check_output(["python","-m","pip","freeze"],text=True).splitlines()},
