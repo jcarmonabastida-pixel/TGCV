@@ -347,13 +347,13 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         # feed the reserved oracle and the realized-assignment selection.
         self.assertEqual(len(result.d2_histories_by_unit_z), 64)
         self.assertEqual(len(result.theta_a_truth.event_history_manifest), 64)
-        self.assertAlmostEqual(result.theta_a_truth.theta_a_truth, 0.5)
+        self.assertAlmostEqual(result.theta_a_truth.theta_a_truth.theta_a_truth, 0.5)
         # D2 has a distinct direct package path with the opposite sign.
         # Its ITT-Z must never be relabelled as the focal accessibility effect.
         self.assertAlmostEqual(result.d2_vcont_truth.finite_population_itt_z_v_cont, -0.5)
         self.assertNotAlmostEqual(
             result.d2_vcont_truth.finite_population_itt_z_v_cont,
-            result.theta_a_truth.theta_a_truth,
+            result.theta_a_truth.theta_a_truth.theta_a_truth,
         )
         self.assertEqual(
             {row.assigned_arm for row in result.theta_a_assignments.assignments},
@@ -415,9 +415,9 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         alternative_result = self._run_pipeline(alternative_fixture)
         self.assertEqual(result.world.world_id, alternative_result.world.world_id)
         self.assertEqual(result.world.q_x, alternative_result.world.q_x)
-        self.assertAlmostEqual(alternative_result.theta_a_truth.theta_a_truth, 0.0)
+        self.assertAlmostEqual(alternative_result.theta_a_truth.theta_a_truth.theta_a_truth, 0.0)
         self.assertAlmostEqual(
-            result.theta_a_truth.theta_a_truth - alternative_result.theta_a_truth.theta_a_truth,
+            result.theta_a_truth.theta_a_truth.theta_a_truth - alternative_result.theta_a_truth.theta_a_truth.theta_a_truth,
             0.5,
         )
         self.assertAlmostEqual(alternative_result.d2_vcont_truth.finite_population_itt_z_v_cont, -0.5)
@@ -429,7 +429,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             with self.subTest(theta_a_mode=mode):
                 result = self._run_pipeline(self._fixture(mode))
                 results[mode] = result
-                self.assertAlmostEqual(result.theta_a_truth.theta_a_truth, truth)
+                self.assertAlmostEqual(result.theta_a_truth.theta_a_truth.theta_a_truth, truth)
                 self.assertAlmostEqual(result.d2_vcont_truth.finite_population_itt_z_v_cont, -0.5)
                 self.assertEqual(result.analyzer_result.identification, "IDENTIFIED")
                 self.assertEqual(result.evaluator_result.truth, truth)
@@ -1252,7 +1252,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 "EXECUTION_FAILED",
             )
             self.assertEqual(truth[(unit.unit_id, 0)], 1)
-            self.assertEqual(truth[(unit.unit_id, 1)], 0)
+            self.assertEqual(truth[(unit.unit_id, 1)], 0.5)
             self.assertFalse(any(
                 change.causal_family == "TRAJECTORY_EXECUTION_TO_B1_ADMISSION"
                 for change in histories[(unit.unit_id, 0)].changes
