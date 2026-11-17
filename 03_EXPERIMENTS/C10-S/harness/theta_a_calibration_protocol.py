@@ -269,6 +269,7 @@ def validate_theta_a_seed_banks(
     def streams(rows):
         return {
             "world": {x.world_seed for x in rows},
+            "world_id": {x.world_id for x in rows},
             "assignment": {x.randomization_salt for x in rows},
             "s3": {x.s3_seed for x in rows},
             "run": {x.run_id for x in rows},
@@ -276,6 +277,8 @@ def validate_theta_a_seed_banks(
     left, right = streams(cal), streams(ev)
     if any(left[key] & right[key] for key in left):
         raise ThetaACalibrationError("calibration and evaluation banks must be disjoint across every focal stream")
+    if (left["world"] | left["s3"]) & (right["world"] | right["s3"]):
+        raise ThetaACalibrationError("calibration and evaluation numeric seed streams must be cross-disjoint")
 
 
 def s3_seeds_by_unit(seed: int, unit_ids: Sequence[str]) -> dict[str, int]:
