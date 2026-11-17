@@ -344,11 +344,19 @@ def materialize_c10s_complete_world_from_dgp(
     potential histories; S3 still sees only the realized-history projection.
     """
     builder = SyntheticWorldBuilder()
-    world, _, _, _ = builder.generate_complete_with_trajectories(
+    world, _, _, trajectory_bundle = builder.generate_complete_with_trajectories(
         world_config, d2_config, structural_config, reach_config, trajectory_config,
     )
+    trajectory_rules_declared = any(
+        rule.source == "TRAJECTORY" for rule in functional_history_config.rules
+    )
+    trajectory_map = {
+        (row.unit_id, row.z, row.target_state): row
+        for row in trajectory_bundle.trajectories
+    }
     d2_histories = generate_d2_event_history_potentials(
         world, functional_history_config, initial_state_by_unit_z,
+        trajectories_by_unit_z_target=trajectory_map if trajectory_rules_declared else None,
     )
     policy_histories = generate_g_a_event_history_potentials(
         world, functional_history_config, g_a0, g_a1,
