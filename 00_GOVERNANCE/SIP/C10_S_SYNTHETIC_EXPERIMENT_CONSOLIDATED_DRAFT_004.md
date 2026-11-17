@@ -613,7 +613,7 @@ Se ejecutó de nuevo la suite técnica después de implementar el intervalo cons
 
 ## 328. Protocolo focal de calibración θ_A — scaffold N/M/R (2026-11-17)
 
-**Implementación fuente añadida en research:** `03_EXPERIMENTS/C10-S/harness/theta_a_calibration_protocol.py`, con ocho definiciones de regresión en `test_theta_a_calibration_protocol.py`. Se amplió el allowlist manual EP-02 a dieciséis módulos para incluir ambos archivos. El workflow sigue siendo manual-only y no se ha despachado.
+**Implementación fuente añadida en research:** `03_EXPERIMENTS/C10-S/harness/theta_a_calibration_protocol.py`, con nueve definiciones de regresión en `test_theta_a_calibration_protocol.py`. Se amplió el allowlist manual EP-02 a dieciséis módulos para incluir ambos archivos. El workflow sigue siendo manual-only y no se ha despachado.
 
 ### Contrato de replicación
 
@@ -621,7 +621,7 @@ Se ejecutó de nuevo la suite técnica después de implementar el intervalo cons
 - **M:** mundos exteriores independientes, con identidad y semilla distintas.
 - **R:** asignaciones repetidas dentro de un M fijo. El world_id, world_seed y configuración del mundo deben permanecer invariantes; cada R tiene run_id, salt de aleatorización conjunta y semilla S3 propios.
 - El salt por R alimenta las dos etapas ya separadas por domain labels en el generador: asignación Bernoulli a g_A0/g_A1 y sorteo del vector conjunto dentro de la política seleccionada. El sorteo de vector permanece dentro del resultado estocástico del estimando.
-- El flujo S3 se deriva separadamente por R y se expande por unidad. El capture boundary vuelve a comprobar el compromiso de seed del mundo y el hash del salt realmente usado.
+- El flujo S3 se deriva separadamente por R y se expande por unidad. El capture boundary vuelve a comprobar el compromiso de seed del mundo y el hash del salt realmente usado; en el canal S3 de intervalo continuo verifica también cada observation_id contra la semilla de monitor por R/unidad. El muestreo puntual queda fuera de esta calibración de intervalos de confianza.
 - Los fingerprints de configuración del mundo y del diseño q_X/g_A/r_common deben permanecer constantes dentro de M; los fingerprints de asignación, evidencia sellada y salida Analyzer deben variar entre R.
 - Calibration y evaluation banks tienen namespaces separados y validación de disjunción de streams world/assignment/S3. El protocolo no reutiliza el seed bank ni las clases RUN/R de la matriz 13×52.
 
@@ -634,7 +634,7 @@ La clasificación esperada de identificación es una entrada explícita del cont
 ### Estado y límites
 
 - **Implementación fuente:** presente en la rama research.
-- **Pruebas:** ocho definiciones añadidas al allowlist; **no compiladas ni ejecutadas**.
+- **Pruebas:** nueve definiciones añadidas al allowlist; **no compiladas ni ejecutadas**.
 - **Workflow:** allowlist estáticamente ampliado; YAML/actionlint no validado y no despachado.
 - **Calibración:** no ejecutada.
 - **Seed banks:** no generados.
