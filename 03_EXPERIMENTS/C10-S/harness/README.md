@@ -672,3 +672,22 @@ The next calibration design must distinguish units `N`, repeated assignments `R`
 - Regression source now covers the bounded interval arithmetic, suppression under missingness, and complete-world pipeline wiring.
 
 These source changes have **not** been compiled or tested. EP-02's earlier 283/283 result predates these changes and must not be represented as validation of Analyzer/Evaluator v0.2.
+
+## EP-02 regression after focal inference implementation — 2026-11-17
+
+**Run 826 — PASS.** The updated Analyzer/Evaluator v0.2, complete-world pipeline entrypoint and added regression tests were executed on the research branch.
+
+- Workflow: [run 44174593341](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44174593341).
+- Tested source commit: `d25065add02057256ea26e412a5abf15d30eb539`.
+- Primary suite: **286/286 PASS**, 8.193 seconds.
+- Clean replay: **286/286 PASS**, 8.119 seconds.
+- Pinned dependencies, identical source materializations, compilation, bytecode-free primary/replay, payload and manifest uploads: all successful.
+- The new end-to-end regression `test_two_stage_inference_is_wired_through_complete_world_and_evaluator` passed, along with the Analyzer arithmetic and missingness-abstention regressions.
+
+Artifacts:
+- Payload artifact ID `14369975957`, SHA-256 `4d8a9ee245fd6b3572f74eb4a8394b9f60a3022751a9299ea51fc38f2168ddee`.
+- Manifest artifact ID `14370045871`, SHA-256 `4420a6c799a797b3892e156248ae7c019a9738fbeae5a1af1223487da3c26409`.
+
+**Failure and correction provenance.** The immediately preceding run 825 failed with six errors, all caused by the DGP entrypoint not accepting the two new inference options. The source signature and propagation were corrected before run 826. Run 826 supersedes run 825. The two commits after the tested commit only restored the workflow to manual-only configuration and removed the temporary sentinel; a GitHub compare confirms no harness source or test changed after the tested commit.
+
+**Scope boundary.** This is technical regression/replay evidence for the updated software contracts. It is not calibration, Monte Carlo, empirical coverage/power validation, or a scientific/confirmatory experiment. The Hoeffding interval is implemented and tested for wiring/arithmetic, but its operating characteristics remain uncalibrated. No scientific execution was performed.
