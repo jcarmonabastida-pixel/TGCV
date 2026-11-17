@@ -96,6 +96,16 @@ class FunctionalHistoryRule:
                     or self.trajectory_field not in ("trajectory_status", "execution_state")
                     or self.trajectory_value is None):
                 raise ContractError("trajectory rule requires target, allowlisted field and explicit value")
+            if self.trajectory_field == "trajectory_status" and self.trajectory_value not in (
+                "COMPLETED", "PARTIAL", "NOT_SELECTED", "EXECUTION_FAILED",
+                "NOT_REACHABLE", "UNKNOWN",
+            ):
+                raise ContractError("trajectory_status rule value is outside the declared status vocabulary")
+            if self.trajectory_field == "execution_state" and (
+                self.trajectory_value not in (1, 0, "?")
+                or isinstance(self.trajectory_value, bool)
+            ):
+                raise ContractError("trajectory execution_state rule value must be 1, 0 or ?")
             if any(value is not None for value in (
                 self.d2_field, self.d2_value, self.vector_index, self.vector_value,
                 self.vector_predicates, self.factor_m_value,
@@ -279,6 +289,7 @@ def generate_d2_event_history_potentials(
         if set(trajectories_by_unit_z_target) != expected_trajectory_keys:
             raise ContractError("trajectory potentials must cover exact unit × Z × target support")
         for key, trajectory in trajectories_by_unit_z_target.items():
+            trajectory.validate()
             if (trajectory.unit_id, trajectory.z, trajectory.target_state) != key:
                 raise ContractError("trajectory potential identity differs from its declared key")
             trajectories_by_unit_z.setdefault((key[0], key[1]), {})[key[2]] = trajectory
