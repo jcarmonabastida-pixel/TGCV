@@ -286,7 +286,7 @@ class D2ITTZEvaluator:
                     assignment.probability_z1, p_assigned,
                     assignment.assignment_uniform_sha256,
                     selected_truth.potential_id, selected_truth.history_id,
-                    selected_truth.history_content_sha256
+                    selected_truth.history_sha256
                     ) for row in rows):
                 raise ContractError("D2 observed S3 assignment/probabilities do not match the hashed assignment and exact reserved potential")
         target_truth = truth.finite_population_itt_z_v_cont
