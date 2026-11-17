@@ -18,6 +18,10 @@ class D2ITTZAnalysisContract:
     assignment_bundle_sha256: str
     assignment_mechanism_id: str
     assignment_mechanism_version: str
+    grid_id: str
+    grid_version: str
+    monitor_id: str
+    monitor_version: str
     estimand_id: str = "ITT_Z_D2_VCONT_QX"
     estimand_version: str = "1.0"
     confidence_level: float = 0.95
@@ -34,6 +38,7 @@ class D2ITTZAnalysisContract:
             raise ContractError("ITT-Z randomization confidence level must be in (0,1)")
         if not all((self.q_x_sha256, self.assignment_bundle_sha256,
                     self.assignment_mechanism_id, self.assignment_mechanism_version,
+                    self.grid_id, self.grid_version, self.monitor_id, self.monitor_version,
                     self.estimand_id, self.estimand_version)):
             raise ContractError("ITT-Z analysis requires assignment/q_X/estimand provenance")
 
@@ -104,6 +109,11 @@ class D2ITTZAnalyzer:
         manifest = evidence.manifest
         if manifest.get("temporal_resolution") != "INTERVAL_LEVEL":
             raise ContractError("ITT-Z strict V_cont requires interval-level evidence")
+        if (manifest.get("grid_id"), manifest.get("grid_version"),
+                manifest.get("monitor_id"), manifest.get("monitor_version")) != (
+                contract.grid_id, contract.grid_version,
+                contract.monitor_id, contract.monitor_version):
+            raise ContractError("ITT-Z grid/monitor identity differs from the independent analysis contract")
         if (manifest.get("row_count") != len(evidence.rows)
                 or not isinstance(manifest.get("unit_count"), int)
                 or manifest.get("unit_count") < 0
@@ -160,6 +170,7 @@ class D2ITTZAnalyzer:
         if len(by_unit) != manifest["unit_count"]:
             raise ContractError("ITT-Z sealed manifest unit count differs from observed evidence")
         expected_by_unit = dict(expected_pairs)
+        missing_unit_ids = tuple(sorted(set(expected_by_unit) - set(by_unit)))
         if not set(by_unit).issubset(expected_by_unit):
             raise ContractError("ITT-Z evidence contains units outside the declared randomized roster")
         observed_history_by_unit = {
@@ -303,10 +314,18 @@ def analysis_contract_from_world(
     assignment_bundle_sha256: str,
     assignment_mechanism_id: str,
     assignment_mechanism_version: str,
+    grid_id: str,
+    grid_version: str,
+    monitor_id: str,
+    monitor_version: str,
 ) -> D2ITTZAnalysisContract:
     world.validate()
     return D2ITTZAnalysisContract(
-        tuple((row.history_ref, row.mass) for row in world.q_x),
-        digest(world.q_x),
-        assignment_bundle_sha256, assignment_mechanism_id, assignment_mechanism_version,
+        q_x_mass_by_history=tuple((row.history_ref, row.mass) for row in world.q_x),
+        q_x_sha256=digest(world.q_x),
+        assignment_bundle_sha256=assignment_bundle_sha256,
+        assignment_mechanism_id=assignment_mechanism_id,
+        assignment_mechanism_version=assignment_mechanism_version,
+        grid_id=grid_id, grid_version=grid_version,
+        monitor_id=monitor_id, monitor_version=monitor_version,
     )
