@@ -934,9 +934,9 @@ def compute_factorial_vcont_truth_from_event_histories(
         ref, vector_sha, regime_sha, m = key
         history = potential_histories[key]
         history.validate(require_complete=True)
-        if (history.unit_id, history.history_ref, history.world_id,
+        if (history.unit_id, history.world_id,
             history.world_version, history.dgp_version) != (
-            unit_by_ref[ref], ref, world.world_id, world.world_version, world.dgp_version
+            unit_by_ref[ref], world.world_id, world.world_version, world.dgp_version
         ):
             raise ContractError("factorial potential EventHistory is detached from its world/q_X unit")
         if history.support_start != grid.boundaries[0] or history.support_end != grid.boundaries[-1]:
