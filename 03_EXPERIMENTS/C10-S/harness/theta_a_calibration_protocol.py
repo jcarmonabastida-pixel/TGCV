@@ -284,7 +284,7 @@ def validate_theta_a_seed_banks(
                 f"{scenario.scenario_id}|{scenario.scenario_version}|{row.n_units}|{row.outer_world_id}"
             )
             run_root = root + f"|assignment-{row.assignment_replicate:06d}"
-            expected = (
+            expected_derivation = (
                 _seed(root + "|world"),
                 "theta-a-world-" + _digest(root + "|world-id")[:24],
                 "theta-a-roster-" + _digest(root + "|roster-id")[:24],
@@ -297,7 +297,7 @@ def validate_theta_a_seed_banks(
                 row.world_seed, row.world_id, row.roster_id, row.unit_id_prefix,
                 row.run_id, row.randomization_salt, row.s3_seed,
             )
-            if actual != expected or (
+            if actual != expected_derivation or (
                 row.world_version != scenario.world_version
                 or row.dgp_id != scenario.dgp_id
                 or row.dgp_version != scenario.dgp_version
