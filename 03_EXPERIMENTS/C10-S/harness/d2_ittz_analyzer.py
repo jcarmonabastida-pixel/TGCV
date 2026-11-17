@@ -99,20 +99,22 @@ class D2ITTZAnalyzer:
         contract: D2ITTZAnalysisContract,
     ) -> D2ITTZAnalysisResult:
         contract.validate()
-        if not evidence.rows or _hash({"manifest": evidence.manifest, "rows": list(evidence.rows)}) != evidence.sha256:
-            raise ContractError("ITT-Z Analyzer requires non-empty sealed evidence with valid digest")
+        if _hash({"manifest": evidence.manifest, "rows": list(evidence.rows)}) != evidence.sha256:
+            raise ContractError("ITT-Z Analyzer requires sealed evidence with valid digest")
         manifest = evidence.manifest
         if manifest.get("temporal_resolution") != "INTERVAL_LEVEL":
             raise ContractError("ITT-Z strict V_cont requires interval-level evidence")
         if (manifest.get("row_count") != len(evidence.rows)
                 or not isinstance(manifest.get("unit_count"), int)
-                or manifest.get("unit_count") < 1
+                or manifest.get("unit_count") < 0
                 or not isinstance(manifest.get("expected_unit_count"), int)
                 or manifest.get("expected_unit_count") < manifest.get("unit_count")
                 or not isinstance(manifest.get("expected_unit_history_refs"), (tuple, list))
                 or not isinstance(manifest.get("missing_unit_ids"), (tuple, list))
                 or not isinstance(manifest.get("interval_count_per_unit"), int)
-                or manifest.get("interval_count_per_unit") < 1):
+                or manifest.get("interval_count_per_unit") < 1
+                or not all(isinstance(manifest.get(key), str) and manifest.get(key)
+                           for key in ("grid_id", "grid_version", "monitor_id", "monitor_version"))):
             raise ContractError("ITT-Z sealed manifest counts/roster are missing or inconsistent")
         expected_pairs = tuple(tuple(row) for row in manifest["expected_unit_history_refs"])
         expected_assignments = tuple(tuple(row) for row in manifest.get("expected_unit_assignments", ()))
