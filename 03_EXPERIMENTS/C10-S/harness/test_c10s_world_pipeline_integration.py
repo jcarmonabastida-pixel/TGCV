@@ -28,6 +28,8 @@ from c10s_functional_history import (
 )
 from c10s_world_pipeline import materialize_c10s_complete_world_from_dgp
 from c10s_factorial_pipeline import materialize_c10s_factorial_world_from_dgp
+from c10s_dual_cohort_pipeline import materialize_c10s_dual_cohort_world_from_dgp
+from d2_observed_assignment import D2ObservedAssignmentConfig
 from theta_am_factorial import (
     FactorialAssignmentConfig, FactorialIntervalSealer,
     FactorialObservationAnalyzer, evaluate_factorial_analysis,
@@ -545,6 +547,93 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertAlmostEqual(null_result.reserved_truth.theta_a_given_m1, 1.0)
         self.assertAlmostEqual(null_result.reserved_truth.theta_am_interaction, 0.0)
         self.assertEqual(len(null_result.evaluator_result.absolute_errors), 3)
+
+
+    def test_dual_cohort_pipeline_keeps_ittz_and_factorial_assignments_disjoint(self):
+        fixture = self._fixture("positive")
+        d2_world_config = replace(
+            fixture["world_config"],
+            world_id="WORLD-INTERVAL-INTEGRATION-D2-COHORT",
+            roster_id="ROSTER-INTERVAL-INTEGRATION-D2-COHORT",
+            unit_id_prefix="D2U",
+        )
+        d2_world = SyntheticWorldBuilder().generate(
+            d2_world_config, fixture["d2_config"],
+        )
+        initial = FunctionalState(
+            True, "ADMIT", "STANDARD", "PROFILE-1", "1",
+        )
+        d2_initial_by_unit_z = {
+            (unit.unit_id, z): initial
+            for unit in d2_world.units for z in (0, 1)
+        }
+        d2_assignment = D2ObservedAssignmentConfig(
+            mechanism_id="D2-PACKAGE-Z-RANDOMIZATION",
+            mechanism_version="1",
+            randomization_salt="D2-PACKAGE-Z-SALT-INDEPENDENT",
+            probability_z1_by_history=tuple(
+                (row.history_ref, 0.5) for row in d2_world.q_x
+            ),
+        )
+        d2_monitor_seeds = {
+            unit.unit_id: 19000 + index
+            for index, unit in enumerate(d2_world.units)
+        }
+        monitor = next(iter(fixture["monitor_configs"].values()))
+        result = materialize_c10s_dual_cohort_world_from_dgp(
+            factorial_world_config=fixture["world_config"],
+            d2_world_config=d2_world_config,
+            d2_config=fixture["d2_config"],
+            structural_config=fixture["structural_config"],
+            reach_config=fixture["reach_config"],
+            trajectory_config=fixture["trajectory_config"],
+            functional_history_config=fixture["functional_config"],
+            factorial_initial_state_by_unit_z=fixture["initial_by_unit_z"],
+            d2_initial_state_by_unit_z=d2_initial_by_unit_z,
+            initial_state_by_history=fixture["initial_by_history"],
+            grid=fixture["grid"],
+            g_a0=fixture["g_a0"],
+            g_a1=fixture["g_a1"],
+            feasible_vectors_by_history=fixture["feasible"],
+            r_common_certificates=fixture["r_common"],
+            factorial_assignment_config=fixture["assignment_config"],
+            d2_assignment_config=d2_assignment,
+            factorial_grids_by_history_ref=dict.fromkeys(
+                fixture["monitor_configs"], fixture["grid"],
+            ),
+            factorial_interval_monitor_configs_by_history_ref=fixture["monitor_configs"],
+            factorial_interval_monitor_seeds_by_unit=fixture["monitor_seeds"],
+            d2_interval_monitor_configs_by_history_ref=dict.fromkeys(
+                (row.history_ref for row in d2_world.q_x), monitor,
+            ),
+            d2_interval_monitor_seeds_by_unit=d2_monitor_seeds,
+            estimand_version="1",
+            evaluation_tolerance=0.25,
+        )
+        factorial_ids = {unit.unit_id for unit in result.factorial_cohort.world.units}
+        d2_ids = {unit.unit_id for unit in result.d2_world.units}
+        self.assertFalse(factorial_ids & d2_ids)
+        self.assertEqual(
+            result.d2_observed_lane.sealed_evidence.manifest["unit_count"],
+            len(result.d2_world.units),
+        )
+        self.assertEqual(
+            result.d2_analysis_contract.assignment_bundle_sha256,
+            result.d2_observed_lane.assignments.result_sha256,
+        )
+        self.assertEqual(
+            result.d2_analyzer_result.input_sha256,
+            result.d2_observed_lane.sealed_evidence.sha256,
+        )
+        self.assertIn(
+            result.d2_evaluator_result.disposition,
+            (
+                "TRUTH_WITHIN_HOEFFDING_RANDOMIZATION_BOUND",
+                "TRUTH_OUTSIDE_HOEFFDING_RANDOMIZATION_BOUND",
+            ),
+        )
+        self.assertIsNotNone(result.d2_evaluator_result.absolute_error)
+        result.validate(fixture["grid"])
 
 if __name__ == "__main__":
     unittest.main()
