@@ -1651,17 +1651,17 @@ def generate_factorial_structural_potentials(
             post_by_id = {atom.canonical_id: atom for atom in baseline_atoms}
             for rule in matched_rules:
                 if rule.action == "ADD":
-                        if rule.atom.canonical_id in post_by_id:
-                            raise ContractError("g_A structural ADD target already exists in this potential")
-                        post_by_id[rule.atom.canonical_id] = rule.atom
-                    elif rule.action == "REMOVE":
-                        if rule.atom.canonical_id not in post_by_id:
-                            raise ContractError("g_A structural REMOVE target is absent in this potential")
-                        post_by_id.pop(rule.atom.canonical_id)
-                    else:
-                        if rule.atom.canonical_id not in post_by_id:
-                            raise ContractError("g_A structural MODIFY target is absent in this potential")
-                        post_by_id[rule.atom.canonical_id] = rule.atom
+                    if rule.atom.canonical_id in post_by_id:
+                        raise ContractError("g_A structural ADD target already exists in this potential")
+                    post_by_id[rule.atom.canonical_id] = rule.atom
+                elif rule.action == "REMOVE":
+                    if rule.atom.canonical_id not in post_by_id:
+                        raise ContractError("g_A structural REMOVE target is absent in this potential")
+                    post_by_id.pop(rule.atom.canonical_id)
+                else:
+                    if rule.atom.canonical_id not in post_by_id:
+                        raise ContractError("g_A structural MODIFY target is absent in this potential")
+                    post_by_id[rule.atom.canonical_id] = rule.atom
             label = f"{vector_sha}:{cert.g_a0_fingerprint}"
             base_id = f"{world.world_id}:{unit.unit_id}:GA:{label}:BASE"
             post_id = f"{world.world_id}:{unit.unit_id}:GA:{label}:POST"
