@@ -2635,6 +2635,12 @@ class NeedPreZTruthBundle:
         service_ids = [row.service_instance_id for row in self.records]
         if len(set(b1_ids)) != len(b1_ids) or len(set(service_ids)) != len(service_ids):
             raise ContractError("Need_preZ census requires unique B1 and service-instance bindings")
+        package_contracts = {
+            (row.contract_id, row.contract_version, row.package_version, row.rule_version)
+            for row in self.records
+        }
+        if len(package_contracts) != 1:
+            raise ContractError("Need_preZ census must use one common versioned B1 contract, package and truth rule")
         for row in self.records:
             if (not all((row.b1_id, row.service_instance_id, row.contract_id,
                          row.contract_version, row.instance_version, row.package_version,
