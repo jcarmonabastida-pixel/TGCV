@@ -88,6 +88,7 @@ class D2IntervalEvidenceCandidate:
     run_id: str
     rows: tuple[dict[str, Any], ...]
     expected_unit_history_refs: tuple[tuple[str, str], ...] = ()
+    expected_unit_assignments: tuple[tuple[str, str, int, float, float], ...] = ()
 
 
 @dataclass(frozen=True)
@@ -197,6 +198,23 @@ class D2IntervalSealer:
         units: dict[str, dict[str, Any]] = {}
         normalised = []
         expected_pairs = candidate.expected_unit_history_refs
+        expected_assignments = candidate.expected_unit_assignments
+        if expected_assignments:
+            assignment_ids = [row[0] for row in expected_assignments]
+            if (len(assignment_ids) != len(set(assignment_ids))
+                    or any(not row[0] or not row[1] or type(row[2]) is not int
+                           or row[2] not in (0, 1)
+                           or not 0.0 < row[3] < 1.0 or not 0.0 < row[4] < 1.0
+                           or abs(row[3] + row[4] - 1.0) > 1e-12
+                           for row in expected_assignments)):
+                raise ContractError("D2 expected assignment roster has invalid identities, arms or probabilities")
+            details_by_unit = {row[0]: row for row in expected_assignments}
+            if expected_pairs and any(
+                details_by_unit.get(unit_id, (None, history_ref))[1] != history_ref
+                for unit_id, history_ref in expected_pairs
+            ):
+                raise ContractError("D2 expected assignment details disagree with expected history roster")
+            expected_pairs = tuple((row[0], row[1]) for row in expected_assignments)
         if expected_pairs:
             expected_ids = [unit_id for unit_id, _ in expected_pairs]
             expected_refs = [history_ref for _, history_ref in expected_pairs]
@@ -300,11 +318,22 @@ class D2IntervalSealer:
             expected_by_unit = dict(observed_pairs)
             expected_pairs = tuple(sorted(expected_by_unit.items()))
         missing_unit_ids = tuple(sorted(set(expected_by_unit) - set(units)))
+        if expected_assignments:
+            assignment_details = tuple(sorted(expected_assignments))
+        elif expected_pairs and not missing_unit_ids:
+            assignment_details = tuple(sorted(
+                (unit, expected_by_unit[unit], units[unit]["assignment"][10],
+                 units[unit]["assignment"][11], units[unit]["assignment"][12])
+                for unit in expected_by_unit
+            ))
+        else:
+            raise ContractError("D2 roster with unit nonresponse requires declared assigned arms and probabilities")
         manifest = {
             "run_id": candidate.run_id, "schema": SCHEMA,
             "sealer_version": self.version, "row_count": len(normalised),
             "unit_count": len(units), "expected_unit_count": len(expected_by_unit),
             "expected_unit_history_refs": tuple(sorted(expected_pairs)),
+            "expected_unit_assignments": assignment_details,
             "missing_unit_ids": missing_unit_ids,
             "temporal_resolution": "INTERVAL_LEVEL",
             "grid_id": common_grid[0], "grid_version": common_grid[1],
@@ -395,6 +424,9 @@ def materialize_d2_observed_interval_lane(
     candidate = D2IntervalEvidenceCandidate(
         records[0].run_id, tuple(asdict(row) for row in records),
         tuple((row.unit_id, row.history_ref) for row in assignments.assignments),
+        tuple((row.unit_id, row.history_ref, row.assigned_z,
+               row.probability_z0, row.probability_z1)
+              for row in assignments.assignments),
     )
     sealed = D2IntervalSealer().seal(candidate)
     result = D2ObservedIntervalLaneResult(assignments, records, sealed)
