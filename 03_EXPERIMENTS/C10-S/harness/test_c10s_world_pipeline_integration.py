@@ -807,7 +807,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         )
         empty_lane.validate(
             result.d2_world, result.d2_vcont_truth,
-            dict(result.d2_histories_by_unit_z), fixture["grid"],
+            result.d2_event_histories_by_unit_z, fixture["grid"],
         )
         empty_analysis = D2ITTZAnalyzer().analyze(
             empty_evidence, result.d2_analysis_contract,
