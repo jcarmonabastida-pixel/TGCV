@@ -1,11 +1,6 @@
 name: C10-S P178 Analyzer Monte Carlo validation
 
 on:
-  push:
-    branches:
-      - research/c10-s-consolidation-draft
-    paths:
-      - '.github/workflows/c10-s-analyzer-monte-carlo.yml'
   workflow_dispatch:
     inputs:
       confirm_p178_profile_execution:
@@ -19,7 +14,7 @@ permissions:
 
 jobs:
   p178-analyzer-monte-carlo:
-    if: (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/research/c10-s-consolidation-draft' && inputs.confirm_p178_profile_execution == true) || (github.event_name == 'push' && github.ref == 'refs/heads/research/c10-s-consolidation-draft' && github.event.head_commit.message == 'C10S-TEMP-TEST-TRIGGER')
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/research/c10-s-consolidation-draft' && inputs.confirm_p178_profile_execution == true
     name: Explicitly authorized P178 profile and clean replay
     runs-on: ubuntu-24.04
     timeout-minutes: 180
@@ -27,7 +22,7 @@ jobs:
       - name: Check out exact research-branch commit
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
-          ref: ac6ee419f2bc8fae2d0554e4148fe198af332a3e
+          ref: ${{ github.sha }}
 
       - name: Set up pinned Python
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
