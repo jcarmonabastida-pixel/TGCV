@@ -897,14 +897,23 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         false_grid_evidence = D2IntervalSealer().seal(replace(
             empty_candidate, grid_id="GRID-ALTERED",
         ))
-        false_grid_analysis = D2ITTZAnalyzer().analyze(
-            false_grid_evidence, result.d2_analysis_contract,
+        with self.assertRaises(ContractError):
+            D2ITTZAnalyzer().analyze(
+                false_grid_evidence, result.d2_analysis_contract,
+            )
+        false_grid_result = replace(
+            empty_analysis, input_sha256=false_grid_evidence.sha256,
+        )
+        false_grid_payload = _result_payload(false_grid_result)
+        false_grid_result = replace(
+            false_grid_result,
+            output_sha256=_output_hash(false_grid_payload),
         )
         with self.assertRaises(ContractError):
             D2ITTZEvaluator().evaluate(
                 world=result.d2_world, truth=result.d2_vcont_truth,
                 assignments=original_bundle, evidence=false_grid_evidence,
-                contract=result.d2_analysis_contract, result=false_grid_analysis,
+                contract=result.d2_analysis_contract, result=false_grid_result,
                 tolerance=0.25,
             )
 
