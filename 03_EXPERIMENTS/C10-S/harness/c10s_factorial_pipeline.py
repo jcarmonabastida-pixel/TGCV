@@ -168,6 +168,8 @@ def materialize_c10s_factorial_world_from_dgp(
     g_a0: Sequence[JointPolicyHistory],
     g_a1: Sequence[JointPolicyHistory],
     g_a_structural_rules: Sequence[GAStructuralTransitionRule],
+    g_a_structural_mapping_id: str,
+    g_a_structural_mapping_version: str,
     feasible_vectors_by_history: dict[str, tuple[Vector4, ...]],
     r_common_certificates: Sequence[RCommonPairCertificate],
     assignment_config: FactorialAssignmentConfig,
@@ -220,6 +222,8 @@ def materialize_c10s_factorial_world_from_dgp(
     factorial_structural = generate_factorial_structural_potentials(
         world, structural_config, g_a0, g_a1, feasible_vectors_by_history,
         r_common_certificates, g_a_structural_rules,
+        mapping_id=g_a_structural_mapping_id,
+        mapping_version=g_a_structural_mapping_version,
     )
     factorial_reach = evaluate_factorial_structural_reachability(
         world, factorial_structural, reach_config,
