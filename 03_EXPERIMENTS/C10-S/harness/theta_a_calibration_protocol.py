@@ -332,9 +332,9 @@ def capture_theta_a_replicate(
         result.analyzer_result.point_estimate,
         result.analyzer_result.inference_lower_bound,
         result.analyzer_result.inference_upper_bound,
-        evaluation.inference_covered,
-        evaluation.inference_width,
-        result.analyzer_result.inference_confidence_level,
+        evaluation.inference_truth_covered,
+        evaluation.inference_interval_width,
+        evaluation.inference_confidence_level,
     )
     record.validate()
     return record
