@@ -50,6 +50,7 @@ from theta_a_calibration_protocol import (
     ThetaACalibrationDesign, ThetaACalibrationScenario,
     build_theta_a_seed_bank, capture_theta_a_replicate,
     s3_seeds_by_unit, summarize_theta_a_calibration,
+    theta_a_pipeline_inference_options,
 )
 
 
@@ -324,7 +325,10 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             ),
         }
 
-    def _run_pipeline(self, fixture, theta_a_confidence_level=None):
+    def _run_pipeline(
+        self, fixture, theta_a_confidence_level=None,
+        theta_a_unit_independence_certified=None,
+    ):
         return materialize_c10s_complete_world_from_dgp(
             world_config=fixture["world_config"],
             d2_config=fixture["d2_config"],
@@ -347,7 +351,11 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             interval_monitor_configs_by_history_ref=fixture["monitor_configs"],
             interval_monitor_seeds_by_unit=fixture["monitor_seeds"],
             theta_a_confidence_level=theta_a_confidence_level,
-            theta_a_unit_independence_certified=theta_a_confidence_level is not None,
+            theta_a_unit_independence_certified=(
+                theta_a_unit_independence_certified
+                if theta_a_unit_independence_certified is not None
+                else theta_a_confidence_level is not None
+            ),
         )
 
     def test_theta_a_nmr_protocol_is_wired_through_complete_world_and_evaluator(self):
@@ -378,9 +386,8 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         records = []
         for assignment in assignments:
             fixture = self._fixture("positive", seed_assignment=assignment)
-            result = self._run_pipeline(
-                fixture, theta_a_confidence_level=design.confidence_level,
-            )
+            inference_options = theta_a_pipeline_inference_options(design, scenario)
+            result = self._run_pipeline(fixture, **inference_options)
             records.append(capture_theta_a_replicate(
                 result, assignment, scenario,
                 requested_confidence_level=design.confidence_level,
