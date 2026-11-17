@@ -25,6 +25,8 @@ from c10s_synthetic_components import (
     SyntheticWorldConfig,
     NeedPreZStipulation,
     ThetaAPolicyAssignmentConfig,
+    S3ObservationConfig,
+    S3SequenceKernelRow,
 )
 from c10s_functional_history import (
     FunctionalHistoryDGPConfig,
@@ -316,6 +318,24 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             "monitor_configs": {
                 row.history_ref: monitor for row in world.q_x
             },
+            # Deliberately point-sampled at t=0 only. The DGP truth path is
+            # complete, but strict interval continuity is not observed.
+            "point_s3_configs": {
+                row.history_ref: S3ObservationConfig(
+                    schedule=(Decimal("0"),),
+                    capture_lags=(Decimal("0.1"),),
+                    ingestion_lags=(Decimal("0.2"),),
+                    kernel=(S3SequenceKernelRow(
+                        truth_sequence=((True, "ADMIT", "STANDARD"),),
+                        observed_sequences=(
+                            (((True, "ADMIT", "STANDARD"),), 1.0),
+                        ),
+                    ),),
+                    config_id="POINT-S3-INTEGRATION",
+                    config_version="1",
+                )
+                for row in world.q_x
+            },
             "monitor_seeds": (
                 s3_seeds_by_unit(seed_assignment.s3_seed, tuple(unit.unit_id for unit in world.units))
                 if seed_assignment is not None else {
@@ -327,8 +347,19 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
 
     def _run_pipeline(
         self, fixture, theta_a_confidence_level=None,
-        theta_a_unit_independence_certified=None,
+        theta_a_unit_independence_certified=None, point_s3=False,
     ):
+        measurement_args = (
+            {
+                "s3_configs_by_history_ref": fixture["point_s3_configs"],
+                "s3_seeds_by_unit": fixture["monitor_seeds"],
+            }
+            if point_s3 else
+            {
+                "interval_monitor_configs_by_history_ref": fixture["monitor_configs"],
+                "interval_monitor_seeds_by_unit": fixture["monitor_seeds"],
+            }
+        )
         return materialize_c10s_complete_world_from_dgp(
             world_config=fixture["world_config"],
             d2_config=fixture["d2_config"],
@@ -348,9 +379,8 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             estimand_version="1",
             outcome_version="VCONT-B1-1",
             evaluation_tolerance=0.25,
-            interval_monitor_configs_by_history_ref=fixture["monitor_configs"],
-            interval_monitor_seeds_by_unit=fixture["monitor_seeds"],
-            theta_a_confidence_level=theta_a_confidence_level,
+            **measurement_args,
+            theta_a_confidence_level=(None if point_s3 else theta_a_confidence_level),
             theta_a_unit_independence_certified=(
                 theta_a_unit_independence_certified
                 if theta_a_unit_independence_certified is not None
@@ -413,6 +443,25 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             group = [row for row in records if row.world_id == world_id]
             self.assertEqual(len(group), 2)
             self.assertEqual(len({row.run_id for row in group}), 2)
+
+    def test_point_s3_world_pipeline_abstains_with_truth_covered(self):
+        fixture = self._fixture("positive")
+        result = self._run_pipeline(fixture, point_s3=True)
+
+        self.assertEqual(result.sealed_evidence.manifest["temporal_resolution"], "POINT_SAMPLE")
+        self.assertEqual(result.analyzer_result.temporal_resolution, "POINT_SAMPLE")
+        self.assertEqual(result.analyzer_result.identification, "PARTIALLY_IDENTIFIED")
+        self.assertEqual(
+            result.analyzer_result.abstention_reason,
+            "STRICT_VCONT_NOT_OBSERVED_BY_POINT_SAMPLES",
+        )
+        self.assertIsNone(result.analyzer_result.point_estimate)
+        self.assertEqual(result.analyzer_result.lower_bound, -1.0)
+        self.assertEqual(result.analyzer_result.upper_bound, 1.0)
+        self.assertAlmostEqual(result.evaluator_result.truth, 0.5)
+        self.assertTrue(result.evaluator_result.truth_within_bounds)
+        self.assertTrue(result.evaluator_result.correct_adjudication)
+        self.assertEqual(result.evaluator_result.disposition, "BOUNDS_COVER_TRUTH")
 
     def test_two_stage_inference_is_wired_through_complete_world_and_evaluator(self):
         fixture = self._fixture("positive")
