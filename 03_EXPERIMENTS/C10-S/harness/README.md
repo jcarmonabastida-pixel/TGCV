@@ -726,4 +726,17 @@ This scaffold defines the focal replication and reporting boundary without trans
 
 `test_c10s_world_pipeline_integration.py` now includes a source-level integration regression that passes the focal seed assignments through the existing complete-world DGP fixture. It binds each M world to its world/roster identity, version, unit prefix and world seed; each R binds its run identity, joint-policy randomization salt and unit-expanded S3 seed. The test then captures the actual Analyzer/Evaluator output and exercises the N/M/R aggregator. This is a wiring regression using a small deterministic software fixture, not a selected scientific scenario roster or a calibration run.
 
-The regression adds no new EP-02 module: it extends the already allowlisted world-pipeline test module. The combined EP-02 profile remains sixteen test modules. The source and test definition are persisted in the research branch but remain **uncompiled and unexecuted** under the current authorization boundary.
+The regression adds no new EP-02 module: it extends the already allowlisted world-pipeline test module. The combined EP-02 profile remains sixteen test modules.
+
+### EP-02 Run 828 — authorized technical validation (2026-11-18)
+
+- **Result:** PASS. GitHub Actions run `44201023934`, run number 828, tested commit `0139ff58864db455ab49ed8addd2fec28188a45c`.
+- **Compilation:** PASS for the exact source/test allowlist.
+- **Primary suite:** **297/297 PASS** in 12.945 s.
+- **Clean replay:** **297/297 PASS** in 13.085 s, from a separately materialized but byte-identical source closure.
+- **New N/M/R integration regression:** PASS; the test is reported explicitly in both primary and replay output.
+- **Reproducibility controls:** pinned CPython 3.12.10, hash-locked dependencies, primary/replay tree equivalence, bytecode-cache removal and absence checks all passed.
+- **Artifacts:** payload ID `14379769769`; execution manifest ID `14380508733`. Both are retained by GitHub Actions for 30 days.
+- **First attempt:** Run 827 (`44200852299`) failed with eight errors because the validator reused the name `expected` for a per-row derivation tuple, shadowing the expected N×M×R key set before the final cardinality check. Renaming it to `expected_derivation` corrected the defect; Run 828 validates that correction.
+
+This is software integration and regression/replay evidence only. It does not establish calibration, interval coverage, power, Type-I error, scientific identification or the causal contribution of accessibility. No calibration/evaluation bank was generated; no scientific experiment or Monte Carlo was run. The one-time technical authorization has been consumed, and the workflow was restored to manual-only operation after the run.
