@@ -50,6 +50,7 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         return ThetaAReplicateRecord(
             row.scenario_id, row.scenario_version, row.n_units,
             row.outer_world_id, row.assignment_replicate, row.world_id, row.run_id,
+            "THETA_A_QX_GA_RCOMMON_VCONT", "1.0", "V_CONT", "1.0",
             expected, observed, 0.2, point, lower, upper, covered, width, requested_level,
             fp("world|" + row.outer_world_id), fp("policy-design"),
             fp(row.randomization_salt), fp(row.run_id + "|evidence"),
