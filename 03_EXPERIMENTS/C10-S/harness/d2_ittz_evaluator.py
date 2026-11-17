@@ -87,6 +87,7 @@ class D2ITTZEvaluator:
             "missing_interval_count": result.missing_interval_count,
             "total_interval_count": result.total_interval_count,
             "abstention_reason": result.abstention_reason,
+            "bound_scope": result.bound_scope,
             "input_sha256": result.input_sha256,
         }) != result.output_sha256:
             raise ContractError("ITT-Z Analyzer result fingerprint is invalid")
@@ -262,6 +263,8 @@ class D2ITTZEvaluator:
         if not (math.isfinite(lower) and math.isfinite(upper) and lower <= upper):
             raise ContractError("ITT-Z Analyzer bounds must be finite and ordered")
         if result.identification == "IDENTIFIED":
+            if result.bound_scope != "NONE":
+                raise ContractError("identified ITT-Z result must not declare measurement-completion bounds")
             if result.point_estimate is None or not math.isfinite(result.point_estimate):
                 raise ContractError("identified ITT-Z result requires a finite estimate")
             if result.missing_interval_count != 0:
@@ -314,6 +317,8 @@ class D2ITTZEvaluator:
                 if covers else "TRUTH_OUTSIDE_HOEFFDING_RANDOMIZATION_BOUND"
             )
         elif result.identification == "PARTIALLY_IDENTIFIED":
+            if result.bound_scope != "REALIZED_HT_MEASUREMENT_COMPLETION":
+                raise ContractError("partial ITT-Z bounds must declare their realized-HT measurement scope")
             if result.point_estimate is not None or not result.abstention_reason:
                 raise ContractError("partial ITT-Z result must abstain with an explicit reason")
             if result.missing_interval_count <= 0 and not expected_missing_unit_ids:
