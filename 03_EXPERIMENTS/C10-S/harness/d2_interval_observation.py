@@ -201,7 +201,8 @@ class D2IntervalSealer:
         expected_assignments = candidate.expected_unit_assignments
         if expected_assignments:
             assignment_ids = [row[0] for row in expected_assignments]
-            if (len(assignment_ids) != len(set(assignment_ids))
+            if (any(len(row) != 5 for row in expected_assignments)
+                    or len(assignment_ids) != len(set(assignment_ids))
                     or any(not row[0] or not row[1] or type(row[2]) is not int
                            or row[2] not in (0, 1)
                            or not 0.0 < row[3] < 1.0 or not 0.0 < row[4] < 1.0
