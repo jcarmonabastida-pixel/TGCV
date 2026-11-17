@@ -1548,6 +1548,10 @@ class FactorialStructuralPotential:
                 self.baseline.dgp_version) != (
                 world.world_id, world.world_version, world.dgp_id, world.dgp_version):
             raise ContractError("factorial structural potential belongs to a different world/DGP")
+        if (self.post.world_id, self.post.world_version, self.post.dgp_id,
+                self.post.dgp_version, self.post.unit_id) != (
+                world.world_id, world.world_version, world.dgp_id, world.dgp_version, self.unit_id):
+            raise ContractError("factorial post snapshot belongs to a different world/DGP/unit")
         if (self.delta.baseline_snapshot_id, self.delta.post_snapshot_id) != (
                 self.baseline.snapshot_id, self.post.snapshot_id):
             raise ContractError("factorial ΔT_acc* is detached from its exact structural snapshots")
@@ -1730,6 +1734,12 @@ class FactorialReachPotential:
             f"{potential.post.snapshot_id}:REACH:POST",
         ):
             raise ContractError("factorial Reach snapshots do not derive from the exact structural snapshots")
+        expected_label = potential.potential_label
+        if (self.baseline.potential_axis, self.post.potential_axis,
+                self.baseline.potential_z, self.post.potential_z,
+                self.baseline.potential_label, self.post.potential_label) != (
+                "G_A", "G_A", None, None, expected_label, expected_label):
+            raise ContractError("factorial Reach snapshots must preserve exact g_A vector/r_common identity")
         if set(dict(self.baseline.target_states)) != set(config.target_states) or set(
             dict(self.post.target_states)
         ) != set(config.target_states):
