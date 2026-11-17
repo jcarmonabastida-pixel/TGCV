@@ -67,6 +67,12 @@ class C10SDualCohortWorldResult:
         _validate_paired_baseline(self.factorial_cohort.world, self.d2_world)
         if self.d2_analysis_contract.assignment_bundle_sha256 != self.d2_observed_lane.assignments.result_sha256:
             raise ContractError("D2 ITT-Z analysis contract is detached from the observed assignment")
+        manifest = self.d2_observed_lane.sealed_evidence.manifest
+        if (self.d2_analysis_contract.grid_id, self.d2_analysis_contract.grid_version,
+                self.d2_analysis_contract.monitor_id, self.d2_analysis_contract.monitor_version) != (
+                manifest.get("grid_id"), manifest.get("grid_version"),
+                manifest.get("monitor_id"), manifest.get("monitor_version")):
+            raise ContractError("D2 ITT-Z analysis contract is detached from sealed grid/monitor identity")
         if self.d2_analyzer_result.input_sha256 != self.d2_observed_lane.sealed_evidence.sha256:
             raise ContractError("D2 ITT-Z Analyzer result is detached from sealed S3 evidence")
         if self.d2_evaluator_result.analyzer_output_sha256 != self.d2_analyzer_result.output_sha256:
@@ -184,15 +190,29 @@ def materialize_c10s_dual_cohort_world_from_dgp(
         d2_world, functional_history_config, d2_initial_state_by_unit_z,
     )
     d2_truth = builder.evaluate_complete_vcont_truth(d2_world, d2_histories, grid)
+    d2_monitor_configs = dict(d2_interval_monitor_configs_by_history_ref)
+    expected_history_refs = {row.history_ref for row in d2_world.q_x}
+    if set(d2_monitor_configs) != expected_history_refs:
+        raise ContractError("D2 monitor configuration roster must cover exact q_X* history support")
+    for monitor_config in d2_monitor_configs.values():
+        monitor_config.validate()
+    monitor_identities = {
+        (config.monitor_id, config.monitor_version)
+        for config in d2_monitor_configs.values()
+    }
+    if len(monitor_identities) != 1:
+        raise ContractError("D2 ITT-Z lane requires one independently declared monitor identity/version")
+    monitor_id, monitor_version = next(iter(monitor_identities))
     d2_lane = materialize_d2_observed_interval_lane(
         world=d2_world, truth=d2_truth, histories_by_unit_z=d2_histories,
         assignment_config=d2_assignment_config, grid=grid,
-        monitor_config_by_history_ref=d2_interval_monitor_configs_by_history_ref,
+        monitor_config_by_history_ref=d2_monitor_configs,
         seeds_by_unit=d2_interval_monitor_seeds_by_unit,
     )
     analysis_contract = analysis_contract_from_world(
         d2_world, d2_lane.assignments.result_sha256,
         d2_lane.assignments.mechanism_id, d2_lane.assignments.mechanism_version,
+        grid.grid_id, grid.grid_version, monitor_id, monitor_version,
     )
     analyzer_result = D2ITTZAnalyzer().analyze(
         d2_lane.sealed_evidence, analysis_contract,
