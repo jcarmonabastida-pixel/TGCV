@@ -117,6 +117,26 @@ class ThetaACalibrationDesign:
             raise ThetaACalibrationError("duplicate focal metric target")
 
 
+def theta_a_pipeline_inference_options(
+    design: ThetaACalibrationDesign,
+    scenario: ThetaACalibrationScenario,
+) -> dict[str, float | bool | None]:
+    """Bind the explicit scenario independence declaration to pipeline inputs."""
+    design.validate()
+    scenario.validate()
+    if scenario not in design.scenario_specs:
+        raise ThetaACalibrationError("pipeline scenario is not part of the declared focal design")
+    if scenario.unit_independence_certified:
+        return {
+            "theta_a_confidence_level": design.confidence_level,
+            "theta_a_unit_independence_certified": True,
+        }
+    return {
+        "theta_a_confidence_level": None,
+        "theta_a_unit_independence_certified": False,
+    }
+
+
 @dataclass(frozen=True)
 class ThetaASeedAssignment:
     bank: Bank
