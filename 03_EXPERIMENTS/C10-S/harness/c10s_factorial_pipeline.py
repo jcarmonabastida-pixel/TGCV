@@ -107,7 +107,7 @@ class C10SFactorialWorldResult:
             ):
                 raise ContractError("factorial Reach is detached from its exact structural potential snapshots")
         expected_factorial_support = {
-            (row.history_ref, row[1], row[2])
+            (row[0], row[1], row[2])
             for row in self.factorial_potential_histories
         }
         if set(self.factorial_structural_potentials) != expected_factorial_support:
