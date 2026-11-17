@@ -844,6 +844,19 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             result.d2_world, result.d2_vcont_truth,
             result.d2_event_histories_by_unit_z, fixture["grid"],
         )
+        self.assertEqual(
+            (result.d2_analysis_contract.grid_id, result.d2_analysis_contract.grid_version,
+             result.d2_analysis_contract.monitor_id, result.d2_analysis_contract.monitor_version),
+            (fixture["grid"].grid_id, fixture["grid"].grid_version,
+             monitor.monitor_id, monitor.monitor_version),
+        )
+        false_monitor_evidence = D2IntervalSealer().seal(replace(
+            empty_candidate, monitor_id="MONITOR-ALTERED",
+        ))
+        with self.assertRaises(ContractError):
+            D2ITTZAnalyzer().analyze(
+                false_monitor_evidence, result.d2_analysis_contract,
+            )
         empty_analysis = D2ITTZAnalyzer().analyze(
             empty_evidence, result.d2_analysis_contract,
         )
@@ -864,6 +877,22 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             "CORRECT_ABSTENTION_UNIT_NONRESPONSE",
         )
         self.assertTrue(empty_evaluation.correct_adjudication)
+
+        false_monitor_result = replace(
+            empty_analysis, input_sha256=false_monitor_evidence.sha256,
+        )
+        false_monitor_payload = _result_payload(false_monitor_result)
+        false_monitor_result = replace(
+            false_monitor_result,
+            output_sha256=_output_hash(false_monitor_payload),
+        )
+        with self.assertRaises(ContractError):
+            D2ITTZEvaluator().evaluate(
+                world=result.d2_world, truth=result.d2_vcont_truth,
+                assignments=original_bundle, evidence=false_monitor_evidence,
+                contract=result.d2_analysis_contract, result=false_monitor_result,
+                tolerance=0.25,
+            )
 
         false_grid_evidence = D2IntervalSealer().seal(replace(
             empty_candidate, grid_id="GRID-ALTERED",
