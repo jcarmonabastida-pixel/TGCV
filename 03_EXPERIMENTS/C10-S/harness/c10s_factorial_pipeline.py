@@ -156,6 +156,22 @@ class C10SFactorialWorldResult:
             raise ContractError("factorial Evaluator result is detached from sealed S3 evidence")
         if self.evaluator_result.analyzer_output_sha256 != self.analyzer_result.output_sha256:
             raise ContractError("factorial Evaluator result is detached from Analyzer output")
+        for history_key, history in self.factorial_potential_histories.items():
+            history_ref, vector_sha, regime_fingerprint, m_arm = history_key
+            structural_potential = self.factorial_structural_potentials.get(
+                (history_ref, vector_sha, regime_fingerprint),
+            )
+            if structural_potential is None:
+                raise ContractError("factorial EventHistory has no matching structural g_A potential")
+            expected_potential_id = (
+                f"{structural_potential.unit_id}:G_AxM:{self.assignment_bundle.factor_m_id}:"
+                f"{self.assignment_bundle.factor_m_version}:{vector_sha}:{regime_fingerprint}:M{m_arm}"
+            )
+            if (history.unit_id, history.potential_id, history.world_id,
+                    history.world_version, history.dgp_version) != (
+                    structural_potential.unit_id, expected_potential_id,
+                    self.world.world_id, self.world.world_version, self.world.dgp_version):
+                raise ContractError("factorial EventHistory is detached from its exact structural vector potential")
         run_ids = {history.run_id for history in self.d2_event_histories_by_unit_z.values()}
         run_ids.update(history.run_id for history in self.factorial_potential_histories.values())
         if len(run_ids) != 1 or self.sealed_evidence.run_id not in run_ids:
