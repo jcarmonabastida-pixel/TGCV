@@ -694,7 +694,7 @@ Artifacts:
 
 ## Focal θ_A calibration protocol scaffold — 2026-11-17
 
-The focal direct-`g_A` path now has a separate source-level calibration protocol in `theta_a_calibration_protocol.py`, with nine deterministic contract-test definitions in `test_theta_a_calibration_protocol.py`. It is deliberately separate from `vcont_benchmark_protocol.py` and its 13-scenario × 52-assignment-estimand matrix; that protocol explicitly excludes `theta_A` and its RUN/R semantics are not imported as focal estimands.
+The focal direct-`g_A` path now has a separate source-level calibration protocol in `theta_a_calibration_protocol.py`, with ten deterministic contract-test definitions in `test_theta_a_calibration_protocol.py`. It is deliberately separate from `vcont_benchmark_protocol.py` and its 13-scenario × 52-assignment-estimand matrix; that protocol explicitly excludes `theta_A` and its RUN/R semantics are not imported as focal estimands.
 
 ### N / M / R semantics
 
