@@ -800,6 +800,15 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(empty_evidence.manifest["missing_unit_ids"], tuple(sorted(
             row[0] for row in assignment_rows
         )))
+        empty_lane = replace(
+            result.d2_observed_lane,
+            interval_records=(),
+            sealed_evidence=empty_evidence,
+        )
+        empty_lane.validate(
+            result.d2_world, result.d2_vcont_truth,
+            dict(result.d2_histories_by_unit_z), fixture["grid"],
+        )
         empty_analysis = D2ITTZAnalyzer().analyze(
             empty_evidence, result.d2_analysis_contract,
         )
@@ -820,6 +829,20 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             "CORRECT_ABSTENTION_UNIT_NONRESPONSE",
         )
         self.assertTrue(empty_evaluation.correct_adjudication)
+
+        false_grid_evidence = D2IntervalSealer().seal(replace(
+            empty_candidate, grid_id="GRID-ALTERED",
+        ))
+        false_grid_analysis = D2ITTZAnalyzer().analyze(
+            false_grid_evidence, result.d2_analysis_contract,
+        )
+        with self.assertRaises(ContractError):
+            D2ITTZEvaluator().evaluate(
+                world=result.d2_world, truth=result.d2_vcont_truth,
+                assignments=original_bundle, evidence=false_grid_evidence,
+                contract=result.d2_analysis_contract, result=false_grid_analysis,
+                tolerance=0.25,
+            )
 
         # Rehashed false arm metadata for a wholly unobserved unit is rejected
         # against the independent randomized assignment bundle.
