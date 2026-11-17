@@ -1153,7 +1153,7 @@ class TransformationalDeltaEngine:
                        post.potential_z, post.potential_label,
                        post.boundary_id, post.context_id, post.catalog_version)
         if scope_before != scope_after or baseline.timepoint != "BASELINE" or post.timepoint != "POST":
-            raise ContractError("ΔT_acc* requires comparable BASELINE/POST snapshots in the same world/unit/Z/boundary/context/catalog")
+            raise ContractError("ΔT_acc* requires comparable BASELINE/POST snapshots in the same world/unit/potential-axis/boundary/context/catalog")
         before = {(a.component, a.canonical_id): a for a in baseline.atoms}
         after = {(a.component, a.canonical_id): a for a in post.atoms}
         matches = tuple(identity_matches)
