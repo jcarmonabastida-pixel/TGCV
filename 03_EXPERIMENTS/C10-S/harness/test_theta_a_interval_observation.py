@@ -105,7 +105,7 @@ class IntervalObservationTests(unittest.TestCase):
                 ))
         return tuple(rows)
 
-    def _focal_analysis(self, missing_arm1=False):
+    def _focal_analysis(self, missing_arm1=False, confidence_level=None):
         records = self._focal_records(missing_arm1)
         candidate = candidate_from_theta_a_interval_records(records)
         sealed = ThetaAIntervalSealer().seal(candidate)
@@ -113,6 +113,8 @@ class IntervalObservationTests(unittest.TestCase):
             q_x_mass_by_history=(("H0", 0.5), ("H1", 0.5)),
             q_x_sha256="QX", assignment_bundle_sha256="ASSIGN",
             g_a0_sha256="GA0", g_a1_sha256="GA1", r_common_sha256="RC",
+            probability_a1_by_history=(("H0", 0.5), ("H1", 0.5)) if confidence_level is not None else (),
+            confidence_level=confidence_level,
         )
         result = ThetaAObservationAnalyzer().analyze(sealed, contract)
         return sealed, result
@@ -126,6 +128,22 @@ class IntervalObservationTests(unittest.TestCase):
         self.assertEqual(result.missing_interval_count, 0)
         self.assertEqual(result.measurement_lower_bound, -0.5)
         self.assertEqual(result.measurement_upper_bound, -0.5)
+
+    def test_two_stage_hoeffding_interval_accounts_for_policy_draw_and_arm_randomization(self):
+        _, result = self._focal_analysis(confidence_level=0.95)
+        self.assertEqual(result.inference_method, "HOEFFDING_TWO_STAGE_BOUNDED_HT_V1")
+        self.assertEqual(result.inference_confidence_level, 0.95)
+        self.assertAlmostEqual(result.hoeffding_range_sum_squares, 8.0)
+        radius = (0.5 * 8.0 * __import__("math").log(2.0 / 0.05)) ** 0.5
+        self.assertAlmostEqual(result.inference_lower_bound, result.point_estimate - radius)
+        self.assertAlmostEqual(result.inference_upper_bound, result.point_estimate + radius)
+
+    def test_two_stage_hoeffding_interval_is_not_reported_after_missingness_abstention(self):
+        _, result = self._focal_analysis(missing_arm1=True, confidence_level=0.95)
+        self.assertEqual(result.identification, "INDETERMINATE")
+        self.assertIsNone(result.inference_method)
+        self.assertIsNone(result.inference_lower_bound)
+        self.assertIsNone(result.inference_upper_bound)
 
     def test_interval_missingness_abstains_and_reports_measurement_only_bounds(self):
         sealed, result = self._focal_analysis(missing_arm1=True)
