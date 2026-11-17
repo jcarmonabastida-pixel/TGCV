@@ -48,6 +48,7 @@ class D2ITTZEvaluator:
         tolerance: float = 1e-10,
     ) -> D2ITTZEvaluation:
         world.validate()
+        contract.validate()
         if not math.isfinite(tolerance) or tolerance < 0:
             raise ContractError("ITT-Z evaluator tolerance must be finite and non-negative")
         if (truth.world_id, truth.world_version, truth.dgp_id, truth.dgp_version) != (
@@ -97,6 +98,96 @@ class D2ITTZEvaluator:
         evidence_units = {row["unit_id"] for row in evidence.rows}
         if evidence_units != set(assignments_by_unit):
             raise ContractError("D2 S3 evidence must cover exactly the randomized assignment roster")
+        manifest = evidence.manifest
+        if (manifest.get("temporal_resolution") != "INTERVAL_LEVEL"
+                or manifest.get("row_count") != len(evidence.rows)
+                or manifest.get("unit_count") != len(assignments_by_unit)
+                or not isinstance(manifest.get("interval_count_per_unit"), int)
+                or manifest.get("interval_count_per_unit") < 1):
+            raise ContractError("D2 sealed manifest does not describe the exact randomized interval roster")
+        by_unit_rows: dict[str, list[dict]] = {}
+        for row in evidence.rows:
+            by_unit_rows.setdefault(row["unit_id"], []).append(row)
+        qx_mass = dict(contract.q_x_mass_by_history)
+        observed_histories = set()
+        arm_terms: list[list[tuple[float, int, int]]] = [[], []]
+        missing_interval_count = total_interval_count = 0
+        expected_interval_count = manifest["interval_count_per_unit"]
+        for unit_id, rows in by_unit_rows.items():
+            ordered = sorted(rows, key=lambda row: row["interval_index"])
+            if (len(ordered) != expected_interval_count
+                    or [row["interval_index"] for row in ordered] != list(range(expected_interval_count))):
+                raise ContractError("D2 sealed evidence has an incomplete or duplicated interval sequence")
+            if any(left["interval_end"] != right["interval_start"]
+                   for left, right in zip(ordered, ordered[1:])):
+                raise ContractError("D2 sealed evidence interval sequence is not contiguous")
+            first = ordered[0]
+            observed_histories.add(first["history_ref"])
+            assignment = assignments_by_unit[unit_id]
+            if first["history_ref"] not in qx_mass:
+                raise ContractError("D2 sealed evidence history is outside q_X support")
+            if any((row["history_ref"], row["assigned_z"], row["probability_z0"],
+                    row["probability_z1"], row["assignment_probability"]) != (
+                    first["history_ref"], assignment.assigned_z,
+                    assignment.probability_z0, assignment.probability_z1,
+                    assignment.probability_z1 if assignment.assigned_z else assignment.probability_z0
+                    ) for row in ordered):
+                raise ContractError("D2 interval rows disagree on history or randomized assignment")
+            if any(row["coverage_mode"] != "CONTINUOUS_EVENT_COVERAGE"
+                   or row["observation_status"] not in ("OBSERVED", "MISSING")
+                   or ((row["observation_status"] == "MISSING") != (row["observed_compliance"] is None))
+                   or (row["observation_status"] == "OBSERVED"
+                       and type(row["observed_compliance"]) is not bool)
+                   for row in ordered):
+                raise ContractError("D2 interval observations violate strict S3 missingness/value semantics")
+            any_failure = any(row["observed_compliance"] is False for row in ordered)
+            any_missing = any(row["observation_status"] == "MISSING" for row in ordered)
+            y_lower = 0 if any_failure or any_missing else 1
+            y_upper = 0 if any_failure else 1
+            missing_interval_count += sum(row["observation_status"] == "MISSING" for row in ordered)
+            total_interval_count += len(ordered)
+            mass = qx_mass[first["history_ref"]]
+            p = assignment.probability_z1 if assignment.assigned_z else assignment.probability_z0
+            arm_terms[assignment.assigned_z].append((mass / p, y_lower, y_upper))
+        missing_histories = tuple(sorted(set(qx_mass) - observed_histories))
+        assigned_counts = (len(arm_terms[0]), len(arm_terms[1]))
+        expected_coverage = sum(qx_mass[key] for key in observed_histories)
+        if (result.missing_target_histories != missing_histories
+                or result.assigned_z_unit_counts != assigned_counts
+                or result.missing_interval_count != missing_interval_count
+                or result.total_interval_count != total_interval_count
+                or not math.isclose(result.target_q_x_coverage, expected_coverage,
+                                    rel_tol=0.0, abs_tol=1e-12)):
+            raise ContractError("D2 Analyzer support, assignment-count or missingness diagnostics do not reproduce from S3")
+        if missing_histories or not all(assigned_counts):
+            expected_identification = "INDETERMINATE"
+            expected_lower, expected_upper = -1.0, 1.0
+            expected_estimate = None
+            expected_reason = (
+                "TARGET_QX_SUPPORT_INCOMPLETE" if missing_histories
+                else "REALIZED_Z_ARM_SUPPORT_MISSING"
+            )
+        else:
+            mu_lower = [sum(w * lo for w, lo, hi in values) for values in arm_terms]
+            mu_upper = [sum(w * hi for w, lo, hi in values) for values in arm_terms]
+            expected_lower = mu_lower[1] - mu_upper[0]
+            expected_upper = mu_upper[1] - mu_lower[0]
+            if missing_interval_count:
+                expected_identification = "PARTIALLY_IDENTIFIED"
+                expected_estimate = None
+                expected_reason = "INTERVAL_MISSINGNESS_PREVENTS_STRICT_VCONT_POINT_RECOVERY"
+            else:
+                expected_identification = "IDENTIFIED"
+                expected_estimate = mu_lower[1] - mu_lower[0]
+                expected_reason = ""
+        if (result.identification != expected_identification
+                or not math.isclose(result.lower_bound, expected_lower,
+                                    rel_tol=1e-10, abs_tol=1e-12)
+                or not math.isclose(result.upper_bound, expected_upper,
+                                    rel_tol=1e-10, abs_tol=1e-12)
+                or result.point_estimate != expected_estimate
+                or result.abstention_reason != expected_reason):
+            raise ContractError("D2 Analyzer identification status/measurement bounds do not reproduce independently from sealed S3")
         # Recompute the assignment-bundle digest independently. The Analyzer
         # only sees the opaque digest; the Evaluator verifies its full contents.
         assignment_payload = {
