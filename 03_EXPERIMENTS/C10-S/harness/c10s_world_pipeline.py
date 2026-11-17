@@ -196,6 +196,7 @@ def materialize_c10s_complete_world(
     interval_monitor_configs_by_history_ref: dict[str, IntervalMonitorConfig] | None = None,
     interval_monitor_seeds_by_unit: dict[str, int] | None = None,
     theta_a_confidence_level: float | None = None,
+    theta_a_unit_independence_certified: bool = False,
 ) -> C10SCompleteWorldResult:
     """Materialize one coherent world through D2/ΔT_acc*/Reach/trajectory and
     the direct-g_A → EventHistory → S3 → Sealer → Analyzer → Evaluator path.
@@ -288,6 +289,7 @@ def materialize_c10s_complete_world(
             if theta_a_confidence_level is not None else ()
         ),
         confidence_level=theta_a_confidence_level,
+        unit_independence_certified=theta_a_unit_independence_certified,
     )
     analysis = ThetaAObservationAnalyzer().analyze(sealed, contract)
     evaluation = ThetaAObservationEvaluator().evaluate(
@@ -401,4 +403,5 @@ def materialize_c10s_complete_world_from_dgp(
         interval_monitor_configs_by_history_ref=interval_monitor_configs_by_history_ref,
         interval_monitor_seeds_by_unit=interval_monitor_seeds_by_unit,
         theta_a_confidence_level=theta_a_confidence_level,
+        theta_a_unit_independence_certified=theta_a_unit_independence_certified,
     )
