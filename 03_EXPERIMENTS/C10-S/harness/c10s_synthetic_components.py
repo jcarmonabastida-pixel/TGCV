@@ -1963,7 +1963,9 @@ def evaluate_factorial_potential_trajectories(
             candidates = [row for row in reach.post.route_evaluations if row.target_state == target]
             confirmed = [row for row in candidates if row.route_state == 1]
             unknown = [row for row in candidates if row.route_state == "?"]
-            identity = (reach.unit_id, target, reach.vector_sha256, reach.r_common_fingerprint)
+            # Common random numbers across g_A vector potentials preserve
+            # within-unit counterfactual pairing for route selection/execution.
+            identity = (reach.unit_id, target)
             if confirmed:
                 total_weight = sum(route_weights[row.route_id] for row in confirmed)
                 draw = _dgp_uniform(
