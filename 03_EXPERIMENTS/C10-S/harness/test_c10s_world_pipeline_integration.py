@@ -685,6 +685,25 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             fixture["functional_config"],
             rules=fixture["functional_config"].rules + (trajectory_rule,),
         )
+        def stipulations_for(world, prefix):
+            return tuple(
+                NeedPreZStipulation(
+                    unit_id=unit.unit_id,
+                    b1_id=f"{prefix}-B1-{index:03d}",
+                    service_instance_id=f"{prefix}-SVC-{index:03d}",
+                    contract_id="B1-CONTRACT",
+                    contract_version="001",
+                    instance_version=f"{prefix}-INSTANCE-{index:03d}-001",
+                    package_version="B1-PACKAGE-001",
+                    baseline_time="t-1",
+                    stipulation=("FOCAL_INCLUSION", "FOCAL_EXCLUSION",
+                                 "SEMANTIC_INDETERMINACY")[((index - 1) % 3)],
+                    rule_version="NEED-RULE-TEST-001",
+                    basis_ref=f"{prefix}-RESERVED-STIPULATION-{index:03d}",
+                )
+                for index, unit in enumerate(world.units, start=1)
+            )
+
         result = materialize_c10s_dual_cohort_world_from_dgp(
             factorial_world_config=fixture["world_config"],
             d2_world_config=d2_world_config,
@@ -695,6 +714,8 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             functional_history_config=dual_functional_config,
             factorial_initial_state_by_unit_z=fixture["initial_by_unit_z"],
             d2_initial_state_by_unit_z=d2_initial_by_unit_z,
+            factorial_need_pre_z_stipulations=stipulations_for(factorial_world, "FACTORIAL"),
+            d2_need_pre_z_stipulations=stipulations_for(d2_world, "D2"),
             initial_state_by_history=fixture["initial_by_history"],
             grid=fixture["grid"],
             g_a0=fixture["g_a0"],
