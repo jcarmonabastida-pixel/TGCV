@@ -72,8 +72,9 @@ class ThetaACalibrationDesign:
             raise ThetaACalibrationError("N grid must contain positive exact integers")
         if len(self.n_grid) != len(set(self.n_grid)):
             raise ThetaACalibrationError("N grid contains duplicate candidate sizes")
-        if self.outer_worlds_m < 2 or self.assignment_replicates_r < 2:
-            raise ThetaACalibrationError("focal calibration requires M>=2 and R>=2")
+        if (type(self.outer_worlds_m) is not int or type(self.assignment_replicates_r) is not int
+                or self.outer_worlds_m < 2 or self.assignment_replicates_r < 2):
+            raise ThetaACalibrationError("focal calibration requires exact integer M>=2 and R>=2")
         if not isfinite(self.confidence_level) or not 0.0 < self.confidence_level < 1.0:
             raise ThetaACalibrationError("confidence_level must be explicitly between zero and one")
         if not self.namespace.strip():
@@ -87,7 +88,7 @@ class ThetaACalibrationDesign:
         for scenario_id, version, n_units, metric, target in self.metric_targets:
             if (scenario_id, version) not in scenario_keys or n_units not in self.n_grid:
                 raise ThetaACalibrationError("metric target references an undeclared scenario/version/N")
-            if not metric.strip() or not isfinite(target) or target <= 0:
+            if not metric.strip() or isinstance(target, bool) or not isfinite(target) or target <= 0:
                 raise ThetaACalibrationError("metric targets require a name and finite positive MCSE")
             target_keys.append((scenario_id, version, n_units, metric))
         if len(target_keys) != len(set(target_keys)):
@@ -208,8 +209,6 @@ def validate_theta_a_seed_banks(
             ids, seeds = zip(*values)
             if len(set(ids)) != len(ids) or len(set(seeds)) != len(seeds):
                 raise ThetaACalibrationError("independent outer worlds M require distinct identities and seeds")
-        for key in expected_scenarios:
-            pass
         if len({x.run_id for x in rows}) != len(rows):
             raise ThetaACalibrationError("each M×R assignment requires a unique run_id")
         assignment_keys = [
@@ -264,6 +263,7 @@ class ThetaAReplicateRecord:
     inference_upper_bound: float | None
     inference_covered: bool | None
     inference_width: float | None
+    confidence_level: float | None
 
     def validate(self) -> None:
         if not all((self.scenario_id, self.scenario_version, self.outer_world_id,
@@ -292,8 +292,14 @@ class ThetaAReplicateRecord:
                     or interval[0] > interval[1]
                     or type(self.inference_covered) is not bool
                     or self.inference_width is None or not isfinite(self.inference_width)
-                    or not _close(self.inference_width, interval[1] - interval[0])):
+                    or not _close(self.inference_width, interval[1] - interval[0])
+                    or self.confidence_level is None
+                    or not isfinite(self.confidence_level)
+                    or not 0.0 < self.confidence_level < 1.0
+                    or self.inference_covered != (interval[0] <= self.truth <= interval[1])):
                 raise ThetaACalibrationError("inferential interval evidence is inconsistent")
+        elif self.confidence_level is not None:
+            raise ThetaACalibrationError("confidence level cannot be recorded when no interval was emitted")
 
 
 def _close(a: float, b: float) -> bool:
@@ -328,6 +334,7 @@ def capture_theta_a_replicate(
         result.analyzer_result.inference_upper_bound,
         evaluation.inference_covered,
         evaluation.inference_width,
+        result.analyzer_result.inference_confidence_level,
     )
     record.validate()
     return record
@@ -388,11 +395,19 @@ def summarize_theta_a_calibration(
     }
     if len(record_map) != len(result_rows) or set(record_map) != set(assignment_map):
         raise ThetaACalibrationError("replicate records must match the complete N×M×R seed plan exactly")
+    scenario_map = {(x.scenario_id, x.scenario_version): x for x in design.scenario_specs}
     for key, record in record_map.items():
         record.validate()
         seed = assignment_map[key]
+        scenario = scenario_map[(record.scenario_id, record.scenario_version)]
+        if record.expected_identification != scenario.expected_identification:
+            raise ThetaACalibrationError("replicate truth-class label differs from its scenario contract")
         if (record.world_id, record.run_id) != (seed.world_id, seed.run_id):
             raise ThetaACalibrationError("replicate evidence provenance differs from its seed assignment")
+        if record.inference_lower_bound is not None and not _close(
+            record.confidence_level, design.confidence_level
+        ):
+            raise ThetaACalibrationError("replicate confidence level differs from the calibration design")
 
     target_map = {(sid, ver, n, metric): target
                   for sid, ver, n, metric, target in design.metric_targets}
@@ -465,7 +480,8 @@ def summarize_theta_a_calibration(
             metric_summaries = []
             for name in names:
                 contributions = metric_values[name]
-                target = target_map.get((scenario.scenario_id, scenario.scenario_version, n_units, name))
+                target_name = "point_rmse" if name == "point_rmse_mse" else name
+                target = target_map.get((scenario.scenario_id, scenario.scenario_version, n_units, target_name))
                 if len(contributions) != design.outer_worlds_m or any(x is None for x in contributions):
                     metric_summaries.append(ThetaAMetricSummary(
                         name, None, None, target, "NOT_EVALUABLE", tuple()
