@@ -15,6 +15,8 @@ from c10s_synthetic_components import (
     D2ReachStepTemplate,
     D2StructuralGenerationConfig,
     D2TrajectoryGenerationConfig,
+    GAStructuralTransitionRule,
+    StructuralAtom,
     FunctionalState,
     IntervalGrid,
     JointPolicyHistory,
@@ -155,6 +157,19 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             row.history_ref: (zero_vector, one_vector)
             for row in world.q_x
         }
+        g_a_structural_rules = (
+            (
+                GAStructuralTransitionRule(
+                    atom=StructuralAtom(
+                        "U", "TAU-FOCAL", "TRANSFORMATION", "1", 1,
+                        (("role", "FOCAL_ACCESSIBILITY"), ("boundary_id", "BOUNDARY-1")),
+                    ),
+                    action="MODIFY",
+                    vector_predicates=((0, 1.0),),
+                ),
+            )
+            if theta_a_mode != "null" else ()
+        )
         assignment_config = ThetaAPolicyAssignmentConfig(
             mechanism_id="DIRECT-GA-RANDOMIZATION",
             mechanism_version="1",
@@ -259,6 +274,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             "grid": grid,
             "g_a0": g_a0,
             "g_a1": g_a1,
+            "g_a_structural_rules": g_a_structural_rules,
             "feasible": feasible,
             "r_common": r_common,
             "assignment_config": assignment_config,
@@ -284,6 +300,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             grid=fixture["grid"],
             g_a0=fixture["g_a0"],
             g_a1=fixture["g_a1"],
+            g_a_structural_rules=fixture["g_a_structural_rules"],
             feasible_vectors_by_history=fixture["feasible"],
             r_common_certificates=fixture["r_common"],
             assignment_config=fixture["assignment_config"],
@@ -435,6 +452,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             grid=fixture["grid"],
             g_a0=fixture["g_a0"],
             g_a1=fixture["g_a1"],
+            g_a_structural_rules=fixture["g_a_structural_rules"],
             feasible_vectors_by_history=fixture["feasible"],
             r_common_certificates=fixture["r_common"],
             assignment_config=assignment,
@@ -546,6 +564,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             grid=fixture["grid"],
             g_a0=fixture["g_a0"],
             g_a1=fixture["g_a1"],
+            g_a_structural_rules=fixture["g_a_structural_rules"],
             feasible_vectors_by_history=fixture["feasible"],
             r_common_certificates=fixture["r_common"],
             assignment_config=assignment,
@@ -633,6 +652,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             grid=fixture["grid"],
             g_a0=fixture["g_a0"],
             g_a1=fixture["g_a1"],
+            g_a_structural_rules=fixture["g_a_structural_rules"],
             feasible_vectors_by_history=fixture["feasible"],
             r_common_certificates=fixture["r_common"],
             factorial_assignment_config=fixture["assignment_config"],
