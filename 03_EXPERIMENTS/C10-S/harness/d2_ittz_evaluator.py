@@ -318,6 +318,11 @@ class D2ITTZEvaluator:
                 raise ContractError("partial ITT-Z result must abstain with an explicit reason")
             if result.missing_interval_count <= 0 and not expected_missing_unit_ids:
                 raise ContractError("partial ITT-Z status requires interval or unit-level nonresponse")
+            if any(value is not None for value in (
+                result.randomization_lower_bound, result.randomization_upper_bound,
+                result.hoeffding_radius, result.randomization_confidence_level,
+            )):
+                raise ContractError("measurement-completion bounds must not be presented as randomization confidence bounds")
             # Bounds concern completion of unobserved binary outcomes in the
             # realized HT contrast, not randomization uncertainty or causal truth.
             error, covers = None, None
