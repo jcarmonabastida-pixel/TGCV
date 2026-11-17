@@ -117,6 +117,10 @@ class D2ITTZEvaluator:
                 or not all(isinstance(manifest.get(key), str) and manifest.get(key)
                            for key in ("grid_id", "grid_version", "monitor_id", "monitor_version"))):
             raise ContractError("D2 sealed manifest does not describe the complete randomized roster and observed interval subset")
+        if (evidence.run_id != truth.run_id
+                or (manifest.get("grid_id"), manifest.get("grid_version"))
+                != (truth.grid_id, truth.grid_version)):
+            raise ContractError("D2 sealed run/grid identity differs from reserved V_cont truth")
         if any(expected_by_unit[unit_id] != assignment.history_ref
                for unit_id, assignment in assignments_by_unit.items()):
             raise ContractError("D2 sealed expected unit/history roster differs from hashed assignment bundle")
