@@ -771,6 +771,41 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 result=tampered_unit_bounds, tolerance=0.25,
             )
 
+        # Combined nonresponse: one unit is wholly absent and another has
+        # an interval missing. The two mechanisms must remain distinguishable.
+        combined_rows = [
+            dict(row) for row in observed_subset
+            if row["unit_id"] != omitted_unit
+        ]
+        combined_rows[0]["observed_compliance"] = None
+        combined_rows[0]["observation_status"] = "MISSING"
+        combined_evidence = D2IntervalSealer().seal(
+            D2IntervalEvidenceCandidate(
+                result.d2_observed_lane.sealed_evidence.run_id,
+                tuple(combined_rows),
+                expected_roster,
+                tuple((row.unit_id, row.history_ref, row.assigned_z,
+                       row.probability_z0, row.probability_z1)
+                      for row in original_bundle.assignments),
+            )
+        )
+        combined_analysis = D2ITTZAnalyzer().analyze(
+            combined_evidence, result.d2_analysis_contract,
+        )
+        self.assertEqual(combined_analysis.identification, "PARTIALLY_IDENTIFIED")
+        self.assertIn("UNIT_NONRESPONSE_AND_INTERVAL_MISSINGNESS",
+                      combined_analysis.abstention_reason)
+        combined_evaluation = D2ITTZEvaluator().evaluate(
+            world=result.d2_world, truth=result.d2_vcont_truth,
+            assignments=original_bundle, evidence=combined_evidence,
+            contract=result.d2_analysis_contract, result=combined_analysis,
+            tolerance=0.25,
+        )
+        self.assertEqual(
+            combined_evaluation.disposition,
+            "CORRECT_ABSTENTION_MEASUREMENT_AND_UNIT_NONRESPONSE",
+        )
+
         # Zero-response edge: retain the complete randomized assignment roster
         # and the declared grid/monitor independently of observed S3 rows.
         assignment_rows = tuple(
