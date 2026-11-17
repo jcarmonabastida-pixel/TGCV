@@ -740,3 +740,8 @@ The regression adds no new EP-02 module: it extends the already allowlisted worl
 - **First attempt:** Run 827 (`44200852299`) failed with eight errors because the validator reused the name `expected` for a per-row derivation tuple, shadowing the expected N×M×R key set before the final cardinality check. Renaming it to `expected_derivation` corrected the defect; Run 828 validates that correction.
 
 This is software integration and regression/replay evidence only. It does not establish calibration, interval coverage, power, Type-I error, scientific identification or the causal contribution of accessibility. No calibration/evaluation bank was generated; no scientific experiment or Monte Carlo was run. The one-time technical authorization has been consumed, and the workflow was restored to manual-only operation after the run.
+
+
+### Realized-arm support abstention
+
+The same point-S3 World Builder fixture accepts a one-unit roster while retaining the valid randomized assignment probability p=0.5. With one realized unit, one of the two arms is necessarily absent. The regression requires Analyzer `INDETERMINATE / REALIZED_GA_ARM_SUPPORT_MISSING`, no point estimate, logical bounds [-1,1], and Evaluator `CORRECT_ABSTENTION` covering the reserved truth. This is a realized finite-roster arm-support failure, not structural assignment positivity failure. The test is source-only until an authorized EP-02 run.
