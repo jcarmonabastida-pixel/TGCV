@@ -704,7 +704,7 @@ The focal direct-`g_A` path now has a separate source-level calibration protocol
 - There is no extra designated RUN row for `theta_A`: the focal estimator has no run-conditional estimand class.
 - The existing assignment generator uses one per-R salt with distinct domain labels for the Bernoulli arm draw and the within-policy joint-vector draw. The second-stage vector draw is therefore varied on every R and remains part of the stochastic-policy estimand, not conditioned away.
 - S3 measurement uses a separate per-R seed, expanded deterministically to unit-specific monitor seeds.
-- Calibration and evaluation banks are domain-separated and validated for disjoint world, assignment and S3 streams.
+- Calibration and evaluation banks are domain-separated and validated for disjoint world, assignment and S3 streams. The capture boundary rechecks the materialized world seed commitment and actual assignment-salt hash; R rows must preserve world-configuration and q_X/g_A/r_common design fingerprints while varying assignment, sealed-evidence and Analyzer-output fingerprints.
 
 ### Captured metrics and fail-closed rules
 
@@ -717,7 +717,7 @@ The scenario contract must supply its expected identification status independent
 - No N grid, M, R, confidence level, MCSE target, point-recovery tolerance, scenario roster or scientific parameter has been selected. The values in the unit-test fixtures are software fixtures only, not design defaults.
 - The seed-bank builder is source code only. No calibration/evaluation bank was generated or opened.
 - No DGP, Generator, S3, Analyzer, Evaluator, Monte Carlo or scientific experiment was run by this change.
-- The new module and regression tests have been added to the manual-only EP-02 source/compile/test/replay allowlist (now sixteen test modules). The workflow remains research-branch-only and requires its existing explicit confirmation input.
+- The new module and its eight regression-test definitions have been added to the manual-only EP-02 source/compile/test/replay allowlist (now sixteen test modules). The workflow remains research-branch-only and requires its existing explicit confirmation input.
 - This new source/test increment has **not** been compiled, executed or replayed. Workflow YAML/actionlint validation is also still pending. EP-02 run 826 remains evidence for the previous 286-test source commit only; it does not validate this increment.
 
 This scaffold defines the focal replication and reporting boundary without transferring P178/13×52 numeric targets or authorizing calibration. The next decision-dependent step is to supply an independently justified focal scenario roster and explicit metric precision targets before any bank generation; no such values are inferred here.
