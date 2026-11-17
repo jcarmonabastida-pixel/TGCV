@@ -713,6 +713,48 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         expected_roster = tuple(
             (row.unit_id, row.history_ref) for row in original_bundle.assignments
         )
+        expected_assignment_details = tuple(
+            (row.unit_id, row.history_ref, row.assigned_z,
+             row.probability_z0, row.probability_z1)
+            for row in original_bundle.assignments
+        )
+        missing_one_per_arm = tuple(
+            next(row.unit_id for row in original_bundle.assignments if row.assigned_z == z)
+            for z in (0, 1)
+        )
+        two_arm_rows = tuple(
+            dict(row) for row in result.d2_observed_lane.sealed_evidence.rows
+            if row["unit_id"] not in set(missing_one_per_arm)
+        )
+        two_arm_evidence = D2IntervalSealer().seal(
+            D2IntervalEvidenceCandidate(
+                result.d2_observed_lane.sealed_evidence.run_id,
+                two_arm_rows, expected_roster, expected_assignment_details,
+            )
+        )
+        two_arm_analysis = D2ITTZAnalyzer().analyze(
+            two_arm_evidence, result.d2_analysis_contract,
+        )
+        self.assertEqual(two_arm_analysis.identification, "PARTIALLY_IDENTIFIED")
+        self.assertEqual(two_arm_analysis.missing_target_histories, tuple(sorted(
+            row.history_ref for row in original_bundle.assignments
+            if row.unit_id in set(missing_one_per_arm)
+        )))
+        self.assertEqual(
+            two_arm_analysis.assigned_z_unit_counts,
+            (sum(row.assigned_z == 0 for row in original_bundle.assignments) - 1,
+             sum(row.assigned_z == 1 for row in original_bundle.assignments) - 1),
+        )
+        two_arm_evaluation = D2ITTZEvaluator().evaluate(
+            world=result.d2_world, truth=result.d2_vcont_truth,
+            assignments=original_bundle, evidence=two_arm_evidence,
+            contract=result.d2_analysis_contract, result=two_arm_analysis,
+            tolerance=0.25,
+        )
+        self.assertEqual(
+            two_arm_evaluation.disposition,
+            "CORRECT_ABSTENTION_UNIT_NONRESPONSE",
+        )
         unit_nonresponse_evidence = D2IntervalSealer().seal(
             D2IntervalEvidenceCandidate(
                 result.d2_observed_lane.sealed_evidence.run_id,
