@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import unittest
 from dataclasses import replace
+from decimal import Decimal
+from types import SimpleNamespace
 
 from theta_a_calibration_protocol import (
     ThetaACalibrationDesign,
@@ -13,6 +16,7 @@ from theta_a_calibration_protocol import (
     s3_seeds_by_unit,
     summarize_theta_a_calibration,
     validate_theta_a_seed_banks,
+    _validate_interval_s3_seed_provenance,
 )
 
 
@@ -82,6 +86,41 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         second = s3_seeds_by_unit(12345, ("u1", "u2", "u3"))
         self.assertEqual(first, second)
         self.assertEqual(len(set(first.values())), 3)
+
+    def test_interval_s3_observation_ids_bind_the_r_specific_unit_seed(self):
+        design = self._design()
+        assignment = build_theta_a_seed_bank(design, "calibration")[0]
+        unit_ids = tuple(f"unit-{i}" for i in range(4))
+        seeds = __import__(
+            "theta_a_calibration_protocol"
+        ).s3_seeds_by_unit(assignment.s3_seed, unit_ids)
+        rows = []
+        for unit_id in unit_ids:
+            history_id = "history-" + unit_id
+            payload = (
+                assignment.run_id, unit_id, history_id,
+                "monitor", "1", "grid", "1", 0, seeds[unit_id],
+            )
+            identity = hashlib.sha256(json.dumps(
+                payload, sort_keys=True, separators=(",", ":"), allow_nan=False
+            ).encode("utf-8")).hexdigest()[:24]
+            rows.append(SimpleNamespace(
+                run_id=assignment.run_id, unit_id=unit_id, history_id=history_id,
+                monitor_id="monitor", monitor_version="1", grid_id="grid", grid_version="1",
+                interval_index=0, interval_start=Decimal("0"), interval_end=Decimal("1"),
+                coverage_mode="CONTINUOUS_EVENT_COVERAGE", observation_status="OBSERVED",
+                observed_compliance=True, observation_id="IS3-" + identity,
+            ))
+        result = SimpleNamespace(
+            s3_records=tuple(rows),
+            world=SimpleNamespace(units=tuple(SimpleNamespace(unit_id=x) for x in unit_ids)),
+        )
+        _validate_interval_s3_seed_provenance(result, assignment)
+        tampered = list(rows)
+        tampered[0] = replace(tampered[0], observation_id="IS3-" + "0" * 24)
+        result.s3_records = tuple(tampered)
+        with self.assertRaises(ThetaACalibrationError):
+            _validate_interval_s3_seed_provenance(result, assignment)
 
     def test_identified_summary_aggregates_coverage_and_width_across_m(self):
         design = self._design()
