@@ -534,13 +534,16 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             result.d2_vcont_truth.finite_population_itt_z_v_cont,
             truth.theta_a_given_m0,
         )
-        self.assertAlmostEqual(truth.cell_means[0], 0.0)
+        # DEC-C10-100/102 aggregate equal-duration, strictly adjudicated
+        # intervals. The A=0 interruption at t=1 affects the second block,
+        # so its V_cont is 1/2 rather than a horizon-wide binary zero.
+        self.assertAlmostEqual(truth.cell_means[0], 0.5)
         self.assertAlmostEqual(truth.cell_means[1], 1.0)
         self.assertAlmostEqual(truth.cell_means[2], 0.0)
         self.assertAlmostEqual(truth.cell_means[3], 0.0)
-        self.assertAlmostEqual(truth.theta_a_given_m0, 1.0)
+        self.assertAlmostEqual(truth.theta_a_given_m0, 0.5)
         self.assertAlmostEqual(truth.theta_a_given_m1, 0.0)
-        self.assertAlmostEqual(truth.theta_am_interaction, -1.0)
+        self.assertAlmostEqual(truth.theta_am_interaction, -0.5)
         self.assertEqual(len(result.analyzer_result.contrasts), 3)
         self.assertEqual(len(result.evaluator_result.absolute_errors), 3)
         for error, observed, expected_truth in zip(
