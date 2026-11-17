@@ -129,6 +129,29 @@ class D2ITTZEvaluator:
                     or result.randomization_lower_bound > result.randomization_upper_bound
                     or result.hoeffding_radius < 0):
                 raise ContractError("identified ITT-Z requires finite design-based randomization bounds")
+            qx_mass = {row.history_ref: row.mass for row in world.q_x}
+            assignment_range_sq = sum(
+                (
+                    qx_mass[row.history_ref]
+                    * (1.0 / row.probability_z1 + 1.0 / row.probability_z0)
+                ) ** 2
+                for row in assignments.assignments
+            )
+            expected_radius = math.sqrt(
+                0.5 * assignment_range_sq
+                * math.log(2.0 / (1.0 - contract.confidence_level))
+            )
+            expected_randomization_lower = max(-1.0, result.point_estimate - expected_radius)
+            expected_randomization_upper = min(1.0, result.point_estimate + expected_radius)
+            if (not math.isclose(result.hoeffding_radius, expected_radius,
+                                 rel_tol=1e-10, abs_tol=1e-12)
+                    or not math.isclose(result.randomization_lower_bound,
+                                        expected_randomization_lower,
+                                        rel_tol=1e-10, abs_tol=1e-12)
+                    or not math.isclose(result.randomization_upper_bound,
+                                        expected_randomization_upper,
+                                        rel_tol=1e-10, abs_tol=1e-12)):
+                raise ContractError("ITT-Z randomization bounds do not reproduce from the declared assignment design")
             error = abs(result.point_estimate - target_truth)
             covers = (
                 result.randomization_lower_bound - tolerance <= target_truth
