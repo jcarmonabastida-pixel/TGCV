@@ -34,7 +34,7 @@ class D2ITTZEvaluation:
 class D2ITTZEvaluator:
     """The only component in this lane allowed to inspect reserved D2 truth."""
 
-    version = "c10s-d2-ittz-evaluator-0.1"
+    version = "c10s-d2-ittz-evaluator-0.2"
 
     def evaluate(
         self,
