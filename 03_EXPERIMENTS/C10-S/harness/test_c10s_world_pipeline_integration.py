@@ -702,5 +702,47 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 tolerance=0.25,
             )
 
+        # Entire-unit nonresponse is distinct from interval missingness:
+        # retain the full randomized roster in the sealed manifest while
+        # withholding every S3 row for one assigned unit.
+        omitted_unit = original_bundle.assignments[-1].unit_id
+        observed_subset = tuple(
+            dict(row) for row in result.d2_observed_lane.sealed_evidence.rows
+            if row["unit_id"] != omitted_unit
+        )
+        expected_roster = tuple(
+            (row.unit_id, row.history_ref) for row in original_bundle.assignments
+        )
+        unit_nonresponse_evidence = D2IntervalSealer().seal(
+            D2IntervalEvidenceCandidate(
+                result.d2_observed_lane.sealed_evidence.run_id,
+                observed_subset,
+                expected_roster,
+            )
+        )
+        self.assertEqual(
+            unit_nonresponse_evidence.manifest["missing_unit_ids"],
+            (omitted_unit,),
+        )
+        unit_nonresponse_analysis = D2ITTZAnalyzer().analyze(
+            unit_nonresponse_evidence, result.d2_analysis_contract,
+        )
+        self.assertEqual(unit_nonresponse_analysis.identification, "INDETERMINATE")
+        self.assertIsNone(unit_nonresponse_analysis.point_estimate)
+        self.assertIn(
+            original_bundle.assignments[-1].history_ref,
+            unit_nonresponse_analysis.missing_target_histories,
+        )
+        unit_nonresponse_evaluation = D2ITTZEvaluator().evaluate(
+            world=result.d2_world, truth=result.d2_vcont_truth,
+            assignments=original_bundle, evidence=unit_nonresponse_evidence,
+            contract=result.d2_analysis_contract,
+            result=unit_nonresponse_analysis, tolerance=0.25,
+        )
+        self.assertEqual(
+            unit_nonresponse_evaluation.disposition,
+            "CORRECT_ABSTENTION_SUPPORT_INCOMPLETE",
+        )
+
 if __name__ == "__main__":
     unittest.main()
