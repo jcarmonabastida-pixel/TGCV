@@ -14,6 +14,7 @@ from c10s_synthetic_components import (
     IntervalGrid, SyntheticWorldBuilder, SyntheticWorldBundle, SyntheticWorldConfig,
     D2StructuralGenerationConfig, D2ReachGenerationConfig, D2TrajectoryGenerationConfig,
     D2StructuralPotentialPair, SyntheticWorldReachabilityContrast, SyntheticWorldTrajectoryBundle,
+    evaluate_d2_structural_deltas,
 )
 from c10s_functional_history import (
     FunctionalHistoryDGPConfig, generate_d2_event_history_potentials,
@@ -38,6 +39,7 @@ class C10SDualCohortWorldResult:
     factorial_cohort: C10SFactorialWorldResult
     d2_world: SyntheticWorldBundle
     d2_structural_pairs: tuple[tuple[tuple[str, int], D2StructuralPotentialPair], ...]
+    d2_structural_deltas: tuple[object, ...]
     d2_reachability: SyntheticWorldReachabilityContrast
     d2_trajectories: SyntheticWorldTrajectoryBundle
     d2_event_histories_by_unit_z: dict[tuple[str, int], EventHistory]
@@ -57,6 +59,17 @@ class C10SDualCohortWorldResult:
         structural_pairs = dict(self.d2_structural_pairs)
         if set(structural_pairs) != expected or len(structural_pairs) != len(self.d2_structural_pairs):
             raise ContractError("D2 cohort must retain exact unit × Z structural-potential coverage")
+        delta_by_key = {
+            (row.unit_id, row.potential_z): row for row in self.d2_structural_deltas
+        }
+        if set(delta_by_key) != expected or len(delta_by_key) != len(self.d2_structural_deltas):
+            raise ContractError("D2 cohort must retain exact unit × Z ΔT_acc* coverage")
+        for key in expected:
+            pair, delta = structural_pairs[key], delta_by_key[key]
+            if (delta.baseline_snapshot_id, delta.post_snapshot_id) != (
+                pair.baseline.snapshot_id, pair.post.snapshot_id
+            ):
+                raise ContractError("D2 ΔT_acc* is detached from its exact structural potential snapshots")
         self.d2_reachability.validate(self.d2_world)
         reach_by_key = {(row.unit_id, row.z): row for row in self.d2_reachability.contrasts}
         if set(reach_by_key) != expected or len(reach_by_key) != len(expected):
@@ -212,6 +225,7 @@ def materialize_c10s_dual_cohort_world_from_dgp(
             d2_world_config, d2_config, structural_config, reach_config, trajectory_config,
         )
     )
+    d2_structural_deltas = evaluate_d2_structural_deltas(d2_world, d2_structural_pairs)
     _validate_paired_baseline(factorial.world, d2_world)
     trajectory_rules_declared = any(
         rule.source == "TRAJECTORY" for rule in functional_history_config.rules
@@ -259,7 +273,8 @@ def materialize_c10s_dual_cohort_world_from_dgp(
     )
     result = C10SDualCohortWorldResult(
         factorial, d2_world, tuple(sorted(d2_structural_pairs.items())),
-        d2_reachability, d2_trajectories, d2_histories, d2_truth, d2_lane,
+        tuple(d2_structural_deltas), d2_reachability, d2_trajectories,
+        d2_histories, d2_truth, d2_lane,
         analysis_contract, analyzer_result, evaluator_result,
     )
     result.validate(grid, reach_config)
