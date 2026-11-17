@@ -100,6 +100,35 @@ class C10SDualCohortWorldResult:
         ):
             raise ContractError("D2 and A×M cohorts must use the same DGP identity/version")
         _validate_paired_baseline(self.factorial_cohort.world, self.d2_world)
+        factorial_baseline_by_unit = {}
+        for potential in self.factorial_cohort.factorial_structural_potentials.values():
+            prior = factorial_baseline_by_unit.setdefault(
+                potential.unit_id,
+                (potential.baseline.atoms, potential.baseline.component_complete,
+                 potential.baseline.boundary_id, potential.baseline.context_id,
+                 potential.baseline.catalog_version),
+            )
+            if prior != (
+                potential.baseline.atoms, potential.baseline.component_complete,
+                potential.baseline.boundary_id, potential.baseline.context_id,
+                potential.baseline.catalog_version,
+            ):
+                raise ContractError("g_A structural potentials for one unit do not share the same pre-intervention baseline")
+        if len(factorial_baseline_by_unit) != len(self.factorial_cohort.world.units):
+            raise ContractError("factorial structural baseline does not cover the exact cohort roster")
+        d2_pairs_by_unit_z = dict(self.d2_structural_pairs)
+        for factorial_unit, d2_unit in zip(
+            self.factorial_cohort.world.units, self.d2_world.units,
+        ):
+            factorial_baseline = factorial_baseline_by_unit[factorial_unit.unit_id]
+            for z in (0, 1):
+                d2_baseline = d2_pairs_by_unit_z[(d2_unit.unit_id, z)].baseline
+                if factorial_baseline != (
+                    d2_baseline.atoms, d2_baseline.component_complete,
+                    d2_baseline.boundary_id, d2_baseline.context_id,
+                    d2_baseline.catalog_version,
+                ):
+                    raise ContractError("paired cohorts have different structural pre-intervention truth")
         expected_initial_state_count = 2 * len(self.d2_world.units)
         if (len(self.factorial_initial_states_by_unit_z) != expected_initial_state_count
                 or len(self.d2_initial_states_by_unit_z) != expected_initial_state_count):
