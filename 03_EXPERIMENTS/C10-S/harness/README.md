@@ -612,3 +612,27 @@ partial-identification procedure, the Analyzer must abstain / return
 INDETERMINATE rather than infer continuity from missing signals. This scope
 clarification reuses the existing integration test; it creates no new Gate or
 test family and does not authorize test/workflow execution.
+
+## EP-02 execution result — 2026-11-17 (supersedes earlier source-only status notes)
+
+The fifteen-module integrated synthetic contract suite was executed on the research branch and completed successfully.
+
+- Workflow: [run 44137938623](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44137938623), run number 824.
+- Tested source commit: `4b402b58d209672432250de57881120365e25264`.
+- Event/ref: `push` on `research/c10-s-consolidation-draft`.
+- Job: `134232513657`, conclusion `success`.
+- Primary suite: **283/283 PASS**, 7.920 seconds.
+- Clean replay: **283/283 PASS**, 7.943 seconds.
+- Compilation, pinned hash-locked dependency installation, equivalent primary/replay source materialization, bytecode-free execution and post-run artifact/manifest uploads: all workflow steps completed successfully.
+- The suite's exact fifteen-module allowlist includes the direct-`g_A` interval-observation Analyzer/Evaluator tests and `test_c10s_world_pipeline_integration`, which exercises the complete D2/structural ΔT_acc*/Reach/trajectory/EventHistory plus direct-`g_A` → S3 → Sealer → Analyzer → Evaluator path, as well as the separate D2 and factorial cohort integration contracts.
+
+Artifacts:
+- Payload artifact ID `14354080019`, SHA-256 `e3fff18b4d5a7cecb4dbc8b2de9893efd40d9b3cfdec24c4201de49b90bc32ef`.
+- Materialization manifest artifact ID `14353780565`, SHA-256 `ed8e09082c0b75366540d476453e9eef02cc3049a1bfaffaefe4881b2986b08c`.
+
+The two subsequent cleanup commits advanced the PR head to `5c01fece6e4f59bcf343db342d36fe8b18101a87`. The exact comparison against the tested commit shows only two changes: removal of the temporary trigger sentinel and restoration of the workflow to its manual, research-branch-only, explicit-confirmation configuration. No harness source or test file changed after the tested commit.
+
+**Scope boundary:** this is technical contract-suite and clean-replay evidence only. It is not a calibration run, seed-bank generation, Monte Carlo study, confirmatory experiment, or scientific result. It does not validate imperfect S3 measurement, establish general statistical recovery/power, operationalize Outcome or contextual Value, or prove the general TGCV causal claim. No scientific execution was performed or authorized by this run.
+
+Earlier statements in this README that the integrated source/tests or EP-02 had not been executed are historical authoring-time status notes. This section records their subsequent execution and supersedes those statements for the 2026-11-17 state; the historical notes are retained for provenance.
+
