@@ -1614,9 +1614,6 @@ def generate_factorial_structural_potentials(
             raise ContractError("factorial structural potentials require certified fixed common r_common")
     result = {}
     engine = TransformationalDeltaEngine()
-    rule_targets = [rule.atom.canonical_id for rule in rules]
-    if len(rule_targets) != len(set(rule_targets)):
-        raise ContractError("g_A structural mapping may declare only one rule per structural atom")
     for history_ref in sorted(expected_refs):
         unit = unit_by_ref[history_ref]
         cert = certs[history_ref]
@@ -1644,10 +1641,16 @@ def generate_factorial_structural_potentials(
         for vector_sha, vector in sorted(vector_support.items()):
             for rule in rules:
                 rule.validate(baseline_atoms)
+            matched_rules = [
+                rule for rule in rules
+                if all(vector[index] == value for index, value in rule.vector_predicates)
+            ]
+            matched_targets = [rule.atom.canonical_id for rule in matched_rules]
+            if len(matched_targets) != len(set(matched_targets)):
+                raise ContractError("g_A structural mapping has overlapping predicates for one atom/vector")
             post_by_id = {atom.canonical_id: atom for atom in baseline_atoms}
-            for rule in rules:
-                if all(vector[index] == value for index, value in rule.vector_predicates):
-                    if rule.action == "ADD":
+            for rule in matched_rules:
+                if rule.action == "ADD":
                         if rule.atom.canonical_id in post_by_id:
                             raise ContractError("g_A structural ADD target already exists in this potential")
                         post_by_id[rule.atom.canonical_id] = rule.atom
