@@ -867,6 +867,10 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             monitor_id=monitor.monitor_id,
             monitor_version=monitor.monitor_version,
             interval_bounds=tuple(zip(boundaries, boundaries[1:])),
+            assignment_bundle_sha256=original_bundle.result_sha256,
+            assignment_mechanism_id=original_bundle.mechanism_id,
+            assignment_mechanism_version=original_bundle.mechanism_version,
+            q_x_sha256=original_bundle.q_x_sha256,
         )
         empty_evidence = D2IntervalSealer().seal(empty_candidate)
         self.assertEqual(empty_evidence.rows, ())
@@ -892,6 +896,13 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             (fixture["grid"].grid_id, fixture["grid"].grid_version,
              monitor.monitor_id, monitor.monitor_version),
         )
+        false_assignment_provenance = D2IntervalSealer().seal(replace(
+            empty_candidate, assignment_bundle_sha256="0" * 64,
+        ))
+        with self.assertRaises(ContractError):
+            D2ITTZAnalyzer().analyze(
+                false_assignment_provenance, result.d2_analysis_contract,
+            )
         false_monitor_evidence = D2IntervalSealer().seal(replace(
             empty_candidate, monitor_id="MONITOR-ALTERED",
         ))
