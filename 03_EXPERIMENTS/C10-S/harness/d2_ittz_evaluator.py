@@ -96,15 +96,26 @@ class D2ITTZEvaluator:
             raise ContractError("ITT-Z Analyzer estimand identity/version mismatch")
         assignments_by_unit = {row.unit_id: row for row in assignments.assignments}
         evidence_units = {row["unit_id"] for row in evidence.rows}
-        if evidence_units != set(assignments_by_unit):
-            raise ContractError("D2 S3 evidence must cover exactly the randomized assignment roster")
+        if not evidence_units.issubset(assignments_by_unit):
+            raise ContractError("D2 S3 evidence contains units outside the randomized assignment roster")
         manifest = evidence.manifest
+        expected_pairs = tuple(tuple(row) for row in manifest.get("expected_unit_history_refs", ()))
+        expected_by_unit = dict(expected_pairs)
         if (manifest.get("temporal_resolution") != "INTERVAL_LEVEL"
                 or manifest.get("row_count") != len(evidence.rows)
-                or manifest.get("unit_count") != len(assignments_by_unit)
+                or manifest.get("unit_count") != len(evidence_units)
+                or manifest.get("expected_unit_count") != len(assignments_by_unit)
+                or set(expected_by_unit) != set(assignments_by_unit)
+                or len(expected_pairs) != len(expected_by_unit)
                 or not isinstance(manifest.get("interval_count_per_unit"), int)
                 or manifest.get("interval_count_per_unit") < 1):
-            raise ContractError("D2 sealed manifest does not describe the exact randomized interval roster")
+            raise ContractError("D2 sealed manifest does not describe the complete randomized roster and observed interval subset")
+        if any(expected_by_unit[unit_id] != assignment.history_ref
+               for unit_id, assignment in assignments_by_unit.items()):
+            raise ContractError("D2 sealed expected unit/history roster differs from hashed assignment bundle")
+        expected_missing_unit_ids = tuple(sorted(set(assignments_by_unit) - evidence_units))
+        if tuple(sorted(manifest.get("missing_unit_ids", ()))) != expected_missing_unit_ids:
+            raise ContractError("D2 sealed manifest missing-unit list differs from assignment/evidence coverage")
         by_unit_rows: dict[str, list[dict]] = {}
         for row in evidence.rows:
             by_unit_rows.setdefault(row["unit_id"], []).append(row)
