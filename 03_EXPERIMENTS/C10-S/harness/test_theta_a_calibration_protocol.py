@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import unittest
 
 from theta_a_calibration_protocol import (
@@ -32,6 +33,18 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
                 ("THETA_A_IDEAL", "1.0", 4, "interval_coverage", 0.01),
                 ("THETA_A_IDEAL", "1.0", 4, "interval_width", 0.01),
             ) if scenario.expected_identification == "IDENTIFIED" else (),
+        )
+
+    def _record(self, row, expected, observed, point, lower, upper, covered, width, requested_level):
+        def fp(value):
+            return hashlib.sha256(value.encode("utf-8")).hexdigest()
+        return ThetaAReplicateRecord(
+            row.scenario_id, row.scenario_version, row.n_units,
+            row.outer_world_id, row.assignment_replicate, row.world_id, row.run_id,
+            expected, observed, 0.2, point, lower, upper, covered, width, requested_level,
+            fp("world|" + row.outer_world_id), fp("policy-design"),
+            fp(row.randomization_salt), fp(row.run_id + "|evidence"),
+            fp(row.run_id + "|analyzer"),
         )
 
     def test_seed_bank_keeps_world_fixed_within_m_and_randomizes_each_r(self):
@@ -68,12 +81,7 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         design = self._design()
         assignments = build_theta_a_seed_bank(design, "calibration")
         records = tuple(
-            ThetaAReplicateRecord(
-                row.scenario_id, row.scenario_version, row.n_units,
-                row.outer_world_id, row.assignment_replicate, row.world_id, row.run_id,
-                "IDENTIFIED", "IDENTIFIED", 0.2, 0.21,
-                0.1, 0.3, True, 0.2, 0.95,
-            )
+            self._record(row, "IDENTIFIED", "IDENTIFIED", 0.21, 0.1, 0.3, True, 0.2, 0.95)
             for row in assignments
         )
         summary = summarize_theta_a_calibration(
@@ -94,18 +102,12 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         records = []
         for index, row in enumerate(assignments):
             if index == 0:
-                records.append(ThetaAReplicateRecord(
-                    row.scenario_id, row.scenario_version, row.n_units,
-                    row.outer_world_id, row.assignment_replicate, row.world_id, row.run_id,
-                    "IDENTIFIED", "INDETERMINATE", 0.2, None,
-                    None, None, None, None, 0.95,
+                records.append(self._record(
+                    row, "IDENTIFIED", "INDETERMINATE", None, None, None, None, None, 0.95
                 ))
             else:
-                records.append(ThetaAReplicateRecord(
-                    row.scenario_id, row.scenario_version, row.n_units,
-                    row.outer_world_id, row.assignment_replicate, row.world_id, row.run_id,
-                    "IDENTIFIED", "IDENTIFIED", 0.2, 0.21,
-                    0.1, 0.3, True, 0.2, 0.95,
+                records.append(self._record(
+                    row, "IDENTIFIED", "IDENTIFIED", 0.21, 0.1, 0.3, True, 0.2, 0.95
                 ))
         summary = summarize_theta_a_calibration(
             design, assignments, records, bank="calibration"
@@ -122,12 +124,7 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         design = self._design(scenario)
         assignments = build_theta_a_seed_bank(design, "calibration")
         records = tuple(
-            ThetaAReplicateRecord(
-                row.scenario_id, row.scenario_version, row.n_units,
-                row.outer_world_id, row.assignment_replicate, row.world_id, row.run_id,
-                "NOT_IDENTIFIED", "NOT_IDENTIFIED", 0.2, None,
-                None, None, None, None, None,
-            )
+            self._record(row, "NOT_IDENTIFIED", "NOT_IDENTIFIED", None, None, None, None, None, None)
             for row in assignments
         )
         summary = summarize_theta_a_calibration(
