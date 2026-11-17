@@ -305,15 +305,44 @@ class D2ObservedIntervalLaneResult:
         self.assignments.validate(world, truth, histories_by_unit_z, grid)
         if not self.interval_records or not self.sealed_evidence.rows:
             raise ContractError("D2 observed interval lane requires records and sealed evidence")
-        if self.sealed_evidence.run_id != self.interval_records[0].run_id:
-            raise ContractError("D2 sealed evidence run differs from interval records")
+        expected_units = {unit.unit_id for unit in world.units}
+        record_units = {row.unit_id for row in self.interval_records}
+        evidence_units = {row["unit_id"] for row in self.sealed_evidence.rows}
+        if record_units != expected_units or evidence_units != expected_units:
+            raise ContractError("D2 interval records and sealed evidence must cover the exact randomized roster")
+        run_ids = {row.run_id for row in self.interval_records}
+        if len(run_ids) != 1 or self.sealed_evidence.run_id not in run_ids:
+            raise ContractError("D2 sealed evidence run differs from source interval records")
+        source_rows = tuple(asdict(row) for row in self.interval_records)
+        if source_rows != self.sealed_evidence.rows:
+            raise ContractError("D2 sealed evidence content differs from its source interval records")
+        expected_per_unit = len(grid.boundaries) - 1
+        counts = {unit: 0 for unit in expected_units}
+        for row in self.interval_records:
+            counts[row.unit_id] += 1
+            assignment = next(x for x in self.assignments.assignments if x.unit_id == row.unit_id)
+            if (row.world_id, row.world_version, row.dgp_id, row.dgp_version,
+                    row.assignment_bundle_sha256, row.assigned_z,
+                    row.selected_potential_id, row.history_id) != (
+                    world.world_id, world.world_version, world.dgp_id, world.dgp_version,
+                    self.assignments.result_sha256, assignment.assigned_z,
+                    assignment.selected_potential_id, assignment.selected_history_id
+                    ):
+                raise ContractError("D2 interval record is detached from its world/assignment/selected history")
+        if any(count != expected_per_unit for count in counts.values()):
+            raise ContractError("D2 interval records must cover the exact declared grid for every unit")
         if self.sealed_evidence.sha256 != _hash({
             "manifest": self.sealed_evidence.manifest,
             "rows": list(self.sealed_evidence.rows),
         }):
             raise ContractError("D2 sealed evidence digest does not match its contents")
-        if len(self.sealed_evidence.rows) != len(self.interval_records):
-            raise ContractError("D2 sealed evidence row count differs from source observations")
+        manifest = self.sealed_evidence.manifest
+        if (manifest.get("unit_count"), manifest.get("row_count"),
+                manifest.get("interval_count_per_unit")) != (
+                len(expected_units), len(self.interval_records),
+                expected_per_unit
+                ):
+            raise ContractError("D2 sealed manifest counts differ from the randomized roster/grid")
 
 
 def materialize_d2_observed_interval_lane(
