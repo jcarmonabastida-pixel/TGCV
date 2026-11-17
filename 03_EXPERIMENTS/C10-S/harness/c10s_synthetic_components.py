@@ -1481,8 +1481,8 @@ class GAStructuralTransitionRule:
     """Explicit mapping from a complete g_A vector predicate to one structural atom change.
 
     Vector coordinates have no implicit U/R/C/X meaning. The rule names the
-    concrete atom, component, action and complete predicate; that mapping is
-    versioned by the containing D2StructuralGenerationConfig.
+    concrete atom, component, action and complete predicate; mapping identity
+    and version are supplied separately to generate_factorial_structural_potentials.
     """
     atom: StructuralAtom
     action: Literal["ADD", "REMOVE", "MODIFY"]
@@ -1533,6 +1533,8 @@ class FactorialStructuralPotential:
         self.baseline.validate()
         self.post.validate()
         self.delta.validate()
+        self.evidence_baseline.validate()
+        self.evidence_post.validate()
         if self.vector_sha256 != digest(self.vector) or len(self.vector) != 4:
             raise ContractError("factorial structural potential must retain its exact complete g_A vector")
         if not all((self.mapping_id, self.mapping_version, self.mapping_sha256)):
@@ -1555,6 +1557,10 @@ class FactorialStructuralPotential:
         if (self.delta.baseline_snapshot_id, self.delta.post_snapshot_id) != (
                 self.baseline.snapshot_id, self.post.snapshot_id):
             raise ContractError("factorial ΔT_acc* is detached from its exact structural snapshots")
+        if (self.delta.world_id, self.delta.world_version, self.delta.dgp_id,
+                self.delta.dgp_version, self.delta.unit_id) != (
+                world.world_id, world.world_version, world.dgp_id, world.dgp_version, self.unit_id):
+            raise ContractError("factorial ΔT_acc* belongs to a different world/DGP/unit")
 
     @property
     def potential_label(self) -> str:
