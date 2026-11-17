@@ -952,8 +952,8 @@ class Evaluator:
         elif not contract.positivity and truth.transportability_invariant_truth is False:
             expected_reference_status = "NOT_IDENTIFIED"
         elif (not contract.no_interference or not contract.measurement_identified or not contract.version_consistency
-              or any(support != "INTERVAL_LEVEL"
-                     for row in result.rows for support in row["s3_temporal_support"])):
+              or "S3_POINT_SAMPLES_DO_NOT_IDENTIFY_STRICT_INTERVAL_CONTINUITY"
+                 in result.abstention_reasons):
             expected_reference_status = "INDETERMINATE"
         elif not contract.positivity and (truth.transportability_invariant_truth is not True or truth.transportability_scope_truth != contract.transportability_scope or contract.transportability_evidence_status != "STRUCTURALLY_VERIFIED"):
             expected_reference_status = "INDETERMINATE"
