@@ -77,6 +77,7 @@ class D2ITTZEvaluator:
             "randomization_lower_bound": result.randomization_lower_bound,
             "randomization_upper_bound": result.randomization_upper_bound,
             "hoeffding_radius": result.hoeffding_radius,
+            "randomization_confidence_level": result.randomization_confidence_level,
             "target_q_x_coverage": result.target_q_x_coverage,
             "missing_target_histories": result.missing_target_histories,
             "assigned_z_unit_counts": result.assigned_z_unit_counts,
@@ -118,9 +119,11 @@ class D2ITTZEvaluator:
             if (result.randomization_lower_bound is None
                     or result.randomization_upper_bound is None
                     or result.hoeffding_radius is None
+                    or result.randomization_confidence_level is None
                     or not math.isfinite(result.randomization_lower_bound)
                     or not math.isfinite(result.randomization_upper_bound)
                     or not math.isfinite(result.hoeffding_radius)
+                    or result.randomization_confidence_level != contract.confidence_level
                     or result.randomization_lower_bound > result.randomization_upper_bound
                     or result.hoeffding_radius < 0):
                 raise ContractError("identified ITT-Z requires finite design-based randomization bounds")
