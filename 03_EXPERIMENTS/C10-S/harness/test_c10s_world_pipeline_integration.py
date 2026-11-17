@@ -46,25 +46,34 @@ from theta_am_factorial import (
     factorial_candidate_from_records,
 )
 from theta_a_interval_observation import IntervalMonitorConfig
+from theta_a_calibration_protocol import (
+    ThetaACalibrationDesign, ThetaACalibrationScenario,
+    build_theta_a_seed_bank, capture_theta_a_replicate,
+    s3_seeds_by_unit, summarize_theta_a_calibration,
+)
 
 
 class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
-    def _fixture(self, theta_a_mode="positive"):
+    def _fixture(self, theta_a_mode="positive", seed_assignment=None):
         if theta_a_mode not in ("positive", "null", "negative", "alternative"):
             raise ValueError("unsupported focal theta_A scenario")
         # Positive and alternative regimes share one base DGP/population.
         scenario = "INTERACTION" if theta_a_mode in ("positive", "alternative") else theta_a_mode.upper()
         dgp_id = f"DGP-INTERVAL-INTEGRATION-{scenario}"
+        n_units = seed_assignment.n_units if seed_assignment is not None else 32
         world_config = SyntheticWorldConfig(
-            world_id=f"WORLD-INTERVAL-INTEGRATION-{scenario}",
-            world_version="1",
-            dgp_id=dgp_id,
-            dgp_version="1",
-            roster_id=f"ROSTER-INTERVAL-INTEGRATION-{scenario}",
-            roster_version="1",
-            unit_id_prefix="U",
-            n_units=32,
-            seed=20261116 + {"positive": 0, "null": 1, "negative": 2, "alternative": 0}[theta_a_mode],
+            world_id=(seed_assignment.world_id if seed_assignment is not None
+                      else f"WORLD-INTERVAL-INTEGRATION-{scenario}"),
+            world_version=(seed_assignment.world_version if seed_assignment is not None else "1"),
+            dgp_id=(seed_assignment.dgp_id if seed_assignment is not None else dgp_id),
+            dgp_version=(seed_assignment.dgp_version if seed_assignment is not None else "1"),
+            roster_id=(seed_assignment.roster_id if seed_assignment is not None
+                       else f"ROSTER-INTERVAL-INTEGRATION-{scenario}"),
+            roster_version=(seed_assignment.roster_version if seed_assignment is not None else "1"),
+            unit_id_prefix=(seed_assignment.unit_id_prefix if seed_assignment is not None else "U"),
+            n_units=n_units,
+            seed=(seed_assignment.world_seed if seed_assignment is not None else
+                  20261116 + {"positive": 0, "null": 1, "negative": 2, "alternative": 0}[theta_a_mode]),
             x_dimension=1,
             h0_distribution=(("H0", 1.0),),
             c_c_dimension=1,
@@ -76,7 +85,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             c_info_probability=1.0,
             c_domain_probability=1.0,
             c_other_probability=1.0,
-            q_x_mass_by_unit=(1.0 / 32.0,) * 32,
+            q_x_mass_by_unit=(1.0 / n_units,) * n_units,
         )
         d2_config = D2MechanismConfig(
             dgp_id, "1",
@@ -174,7 +183,8 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         assignment_config = ThetaAPolicyAssignmentConfig(
             mechanism_id="DIRECT-GA-RANDOMIZATION",
             mechanism_version="1",
-            randomization_salt="DIRECT-GA-SALT",
+            randomization_salt=(seed_assignment.randomization_salt
+                                if seed_assignment is not None else "DIRECT-GA-SALT"),
             probability_a1_by_history=tuple(
                 (row.history_ref, 0.5) for row in world.q_x
             ),
@@ -187,7 +197,8 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             dgp_version=world.dgp_version,
             mechanism_id=f"FUNCTIONAL-MECHANISM-{scenario}",
             mechanism_version="1",
-            run_id=f"RUN-INTERVAL-INTEGRATION-{theta_a_mode.upper()}",
+            run_id=(seed_assignment.run_id if seed_assignment is not None
+                    else f"RUN-INTERVAL-INTEGRATION-{theta_a_mode.upper()}"),
             history_version="1",
             adjudication_rules_version="B1-RULES-1",
             support_start=Decimal("0"),
@@ -304,10 +315,13 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             "monitor_configs": {
                 row.history_ref: monitor for row in world.q_x
             },
-            "monitor_seeds": {
-                unit.unit_id: 9000 + index
-                for index, unit in enumerate(world.units)
-            },
+            "monitor_seeds": (
+                s3_seeds_by_unit(seed_assignment.s3_seed, tuple(unit.unit_id for unit in world.units))
+                if seed_assignment is not None else {
+                    unit.unit_id: 9000 + index
+                    for index, unit in enumerate(world.units)
+                }
+            ),
         }
 
     def _run_pipeline(self, fixture, theta_a_confidence_level=None):
