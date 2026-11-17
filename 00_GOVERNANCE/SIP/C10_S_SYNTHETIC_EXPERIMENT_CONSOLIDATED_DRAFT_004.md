@@ -748,3 +748,12 @@ La regresión end-to-end de World Builder incorpora ahora una ruta alternativa d
 El nuevo test exige: Analyzer `PARTIALLY_IDENTIFIED`; razón `STRICT_VCONT_NOT_OBSERVED_BY_POINT_SAMPLES`; ausencia de estimación puntual; bounds lógicos [-1,1]; y Evaluator `BOUNDS_COVER_TRUTH` para truth positiva conocida (+0,5). Esto prueba abstención por resolución de medición, no falta de positividad, soporte q_X ni brazo realizado.
 
 Reutiliza el World Builder y los kernels S3 existentes; no introduce DGP ni estimando nuevo. Contrato fuente persistido, ejecución dinámica pendiente. No se han generado bancos ni ejecutado calibración o experimento científico. Estado: SOURCE_CONTRACT_ADDED / NOT_EXECUTED.
+
+
+## 334. Integración de abstención por brazo realizado ausente en World Builder (2026-11-18)
+
+Se amplía el fixture existente con un parámetro de tamaño de roster y un test point-S3 de N=1. La probabilidad de asignación sigue siendo p=0,5, por lo que la positividad estructural del mecanismo se conserva; con una única unidad, necesariamente falta uno de los dos brazos realizados.
+
+El contrato exige Analyzer `INDETERMINATE`, razón `REALIZED_GA_ARM_SUPPORT_MISSING`, ausencia de estimación puntual, bounds [-1,1] y Evaluator `CORRECT_ABSTENTION` con truth reservada cubierta. Es una insuficiencia de soporte de brazos en el roster realizado, no una violación de positividad del mecanismo. Reutiliza el DGP/World Builder y el canal point-S3 existentes, sin introducir DGP o estimando nuevo.
+
+Estado: SOURCE_CONTRACT_ADDED / NOT_EXECUTED. La suite no se ha ejecutado; no se han generado bancos ni realizado calibración o experimento científico.
