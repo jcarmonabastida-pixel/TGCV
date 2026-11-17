@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import unittest
+from dataclasses import replace
 
 from theta_a_calibration_protocol import (
     ThetaACalibrationDesign,
@@ -95,6 +96,17 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         self.assertEqual(metrics["interval_coverage"].precision_status, "PASS_PRECISION")
         self.assertEqual(summary.type_i_error_status, "NOT_DEFINED_NO_TEST_PROCEDURE")
         self.assertEqual(summary.power_status, "NOT_DEFINED_NO_TEST_PROCEDURE")
+
+    def test_replicates_within_must_keep_world_and_policy_fingerprints(self):
+        design = self._design()
+        assignments = build_theta_a_seed_bank(design, "calibration")
+        records = [
+            self._record(row, "IDENTIFIED", "IDENTIFIED", 0.21, 0.1, 0.3, True, 0.2, 0.95)
+            for row in assignments
+        ]
+        records[0] = replace(records[0], world_configuration_sha256=hashlib.sha256(b"drift").hexdigest())
+        with self.assertRaises(ThetaACalibrationError):
+            summarize_theta_a_calibration(design, assignments, records, bank="calibration")
 
     def test_missing_interval_is_not_dropped_from_coverage_denominator(self):
         design = self._design()
