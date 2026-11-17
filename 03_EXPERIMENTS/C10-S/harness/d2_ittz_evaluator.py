@@ -101,12 +101,16 @@ class D2ITTZEvaluator:
         manifest = evidence.manifest
         expected_pairs = tuple(tuple(row) for row in manifest.get("expected_unit_history_refs", ()))
         expected_by_unit = dict(expected_pairs)
+        expected_assignments = tuple(tuple(row) for row in manifest.get("expected_unit_assignments", ()))
+        expected_assignment_by_unit = {row[0]: row for row in expected_assignments}
         if (manifest.get("temporal_resolution") != "INTERVAL_LEVEL"
                 or manifest.get("row_count") != len(evidence.rows)
                 or manifest.get("unit_count") != len(evidence_units)
                 or manifest.get("expected_unit_count") != len(assignments_by_unit)
                 or set(expected_by_unit) != set(assignments_by_unit)
                 or len(expected_pairs) != len(expected_by_unit)
+                or set(expected_assignment_by_unit) != set(assignments_by_unit)
+                or len(expected_assignments) != len(expected_assignment_by_unit)
                 or not isinstance(manifest.get("interval_count_per_unit"), int)
                 or manifest.get("interval_count_per_unit") < 1):
             raise ContractError("D2 sealed manifest does not describe the complete randomized roster and observed interval subset")
@@ -116,6 +120,13 @@ class D2ITTZEvaluator:
         expected_missing_unit_ids = tuple(sorted(set(assignments_by_unit) - evidence_units))
         if tuple(sorted(manifest.get("missing_unit_ids", ()))) != expected_missing_unit_ids:
             raise ContractError("D2 sealed manifest missing-unit list differs from assignment/evidence coverage")
+        for unit_id, assignment in assignments_by_unit.items():
+            expected_detail = expected_assignment_by_unit[unit_id]
+            if expected_detail != (
+                unit_id, assignment.history_ref, assignment.assigned_z,
+                assignment.probability_z0, assignment.probability_z1,
+            ):
+                raise ContractError("D2 sealed expected assignment detail differs from hashed assignment bundle")
         by_unit_rows: dict[str, list[dict]] = {}
         for row in evidence.rows:
             by_unit_rows.setdefault(row["unit_id"], []).append(row)
@@ -170,27 +181,28 @@ class D2ITTZEvaluator:
                 or not math.isclose(result.target_q_x_coverage, expected_coverage,
                                     rel_tol=0.0, abs_tol=1e-12)):
             raise ContractError("D2 Analyzer support, assignment-count or missingness diagnostics do not reproduce from S3")
-        if missing_histories or not all(assigned_counts):
-            expected_identification = "INDETERMINATE"
-            expected_lower, expected_upper = -1.0, 1.0
+        for unit_id in expected_missing_unit_ids:
+            _, history_ref, z, p0, p1 = expected_assignment_by_unit[unit_id]
+            mass = qx_mass[history_ref]
+            p = p1 if z == 1 else p0
+            arm_terms[z].append((mass / p, 0, 1))
+        mu_lower = [sum(w * lo for w, lo, hi in values) for values in arm_terms]
+        mu_upper = [sum(w * hi for w, lo, hi in values) for values in arm_terms]
+        expected_lower = mu_lower[1] - mu_upper[0]
+        expected_upper = mu_upper[1] - mu_lower[0]
+        if missing_interval_count or expected_missing_unit_ids:
+            expected_identification = "PARTIALLY_IDENTIFIED"
             expected_estimate = None
-            expected_reason = (
-                "TARGET_QX_SUPPORT_INCOMPLETE" if missing_histories
-                else "REALIZED_Z_ARM_SUPPORT_MISSING"
-            )
-        else:
-            mu_lower = [sum(w * lo for w, lo, hi in values) for values in arm_terms]
-            mu_upper = [sum(w * hi for w, lo, hi in values) for values in arm_terms]
-            expected_lower = mu_lower[1] - mu_upper[0]
-            expected_upper = mu_upper[1] - mu_lower[0]
+            reasons = []
+            if expected_missing_unit_ids:
+                reasons.append("UNIT_NONRESPONSE")
             if missing_interval_count:
-                expected_identification = "PARTIALLY_IDENTIFIED"
-                expected_estimate = None
-                expected_reason = "INTERVAL_MISSINGNESS_PREVENTS_STRICT_VCONT_POINT_RECOVERY"
-            else:
-                expected_identification = "IDENTIFIED"
-                expected_estimate = mu_lower[1] - mu_lower[0]
-                expected_reason = ""
+                reasons.append("INTERVAL_MISSINGNESS")
+            expected_reason = "_AND_".join(reasons) + "_PREVENTS_STRICT_VCONT_POINT_RECOVERY"
+        else:
+            expected_identification = "IDENTIFIED"
+            expected_estimate = mu_lower[1] - mu_lower[0]
+            expected_reason = ""
         if (result.identification != expected_identification
                 or not math.isclose(result.lower_bound, expected_lower,
                                     rel_tol=1e-10, abs_tol=1e-12)
