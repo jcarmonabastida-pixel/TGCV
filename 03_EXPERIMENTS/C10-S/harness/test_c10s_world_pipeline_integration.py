@@ -517,6 +517,17 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             0.5,
         )
         self.assertAlmostEqual(alternative_result.d2_vcont_truth.finite_population_itt_z_v_cont, -0.5)
+        # The alternative pathway is active in the common policy regime for
+        # both g_A arms. It masks the focal contrast but does not, by itself,
+        # make that contrast unidentified: the DGP truth is zero and the
+        # observation/assignment support remains complete.
+        self.assertEqual(alternative_result.analyzer_result.identification, "IDENTIFIED")
+        self.assertAlmostEqual(alternative_result.evaluator_result.truth, 0.0)
+        self.assertTrue(alternative_result.evaluator_result.correct_adjudication)
+        self.assertEqual(
+            alternative_result.evaluator_result.disposition,
+            "POINT_RECOVERED",
+        )
 
     def test_null_and_negative_focal_scenarios_are_separately_generated(self):
         expected_truth = {"null": 0.0, "negative": -0.5}
