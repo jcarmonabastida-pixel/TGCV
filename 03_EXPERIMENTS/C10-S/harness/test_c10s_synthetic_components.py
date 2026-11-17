@@ -745,7 +745,7 @@ class SyntheticComponentTests(unittest.TestCase):
         d2_config = D2MechanismConfig(
             "D2-DELTA", "001", ("POL-0", "POL-1"), ("001", "001"),
             ("ART-0", "ART-1"), ("ACT-0", "ACT-1"),
-            (1.0, 1.0), (1.0, 1.0), (0.0, 0.0), (1.0, 1.0), (1.0, 1.0),
+            (0.0, 1.0), (0.0, 1.0), (0.0, 0.0), (0.0, 1.0), (0.0, 1.0),
             (((True, True, True, True), 1.0),), "MECH-001",
         )
         config = SyntheticWorldConfig(
@@ -801,23 +801,41 @@ class SyntheticComponentTests(unittest.TestCase):
         deltas = evaluate_d2_structural_deltas(world, pairs)
         self.assertEqual(set(pairs), {(unit.unit_id, z) for unit in world.units for z in (0, 1)})
         self.assertEqual(len(deltas), 4)
-        self.assertTrue(all(delta.delta_state == 1 for delta in deltas))
-        self.assertTrue(all(any(row.baseline_id == "TAU-FOCAL" and row.change_kind == "MODIFIED"
-                                for row in delta.delta_u) for delta in deltas))
+        delta_by_z = {(row.unit_id, row.potential_z): row for row in deltas}
+        self.assertTrue(all(delta_by_z[(unit.unit_id, 0)].delta_state == 0 for unit in world.units))
+        self.assertTrue(all(delta_by_z[(unit.unit_id, 1)].delta_state == 1 for unit in world.units))
+        self.assertTrue(all(
+            not any(row.baseline_id == "TAU-FOCAL" and row.change_kind == "MODIFIED"
+                    for row in delta_by_z[(unit.unit_id, 0)].delta_u)
+            and any(row.baseline_id == "TAU-FOCAL" and row.change_kind == "MODIFIED"
+                    for row in delta_by_z[(unit.unit_id, 1)].delta_u)
+            for unit in world.units
+        ))
         self.assertTrue(all(delta.evidence_delta.changed is False for delta in deltas))
         self.assertTrue(all(
-            any(row.change_kind == "MODIFIED" and row.baseline_id == "REL-1" for row in delta.delta_r)
-            and any(row.change_kind == "MODIFIED" and row.baseline_id == "COND-1" for row in delta.delta_c)
-            and len(delta.delta_x) == 1
-            for delta in deltas
+            not any(row.change_kind == "MODIFIED" and row.baseline_id == "REL-1"
+                    for row in delta_by_z[(unit.unit_id, 0)].delta_r)
+            and not any(row.change_kind == "MODIFIED" and row.baseline_id == "COND-1"
+                        for row in delta_by_z[(unit.unit_id, 0)].delta_c)
+            and any(row.change_kind == "MODIFIED" and row.baseline_id == "REL-1"
+                    for row in delta_by_z[(unit.unit_id, 1)].delta_r)
+            and any(row.change_kind == "MODIFIED" and row.baseline_id == "COND-1"
+                    for row in delta_by_z[(unit.unit_id, 1)].delta_c)
+            and len(delta_by_z[(unit.unit_id, 0)].delta_x) == 1
+            and len(delta_by_z[(unit.unit_id, 1)].delta_x) == 1
+            for unit in world.units
         ))
         self.assertEqual(len(reach.contrasts), 4)
+        reach_by_z = {(row.unit_id, row.z): row for row in reach.contrasts}
         self.assertTrue(all(
-            dict(row.baseline.target_states)["TARGET-FOCAL"] == 0
-            and dict(row.post.target_states)["TARGET-FOCAL"] == 1
-            and dict(row.post.target_states)["TARGET-ABSENT"] == 0
-            and dict(row.delta_by_target)["TARGET-FOCAL"] == 1
-            for row in reach.contrasts
+            dict(reach_by_z[(unit.unit_id, 0)].baseline.target_states)["TARGET-FOCAL"] == 0
+            and dict(reach_by_z[(unit.unit_id, 0)].post.target_states)["TARGET-FOCAL"] == 0
+            and dict(reach_by_z[(unit.unit_id, 0)].delta_by_target)["TARGET-FOCAL"] == 0
+            and dict(reach_by_z[(unit.unit_id, 1)].baseline.target_states)["TARGET-FOCAL"] == 0
+            and dict(reach_by_z[(unit.unit_id, 1)].post.target_states)["TARGET-FOCAL"] == 1
+            and dict(reach_by_z[(unit.unit_id, 1)].post.target_states)["TARGET-ABSENT"] == 0
+            and dict(reach_by_z[(unit.unit_id, 1)].delta_by_target)["TARGET-FOCAL"] == 1
+            for unit in world.units
         ))
         self.assertEqual(len(trajectories.trajectories), 8)
         replay = evaluate_d2_potential_trajectories(
