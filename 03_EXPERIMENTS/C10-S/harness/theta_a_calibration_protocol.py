@@ -35,13 +35,22 @@ _ALLOWED_METRICS = {
 class ThetaACalibrationScenario:
     scenario_id: str
     scenario_version: str
+    world_version: str
+    dgp_id: str
+    dgp_version: str
+    roster_version: str
+    unit_id_prefix: str
     expected_identification: Identification
     unit_independence_certified: bool
     independence_basis: str = ""
 
     def validate(self) -> None:
-        if not self.scenario_id.strip() or not self.scenario_version.strip():
-            raise ThetaACalibrationError("focal scenario identity/version is required")
+        if not all((
+            self.scenario_id.strip(), self.scenario_version.strip(),
+            self.world_version.strip(), self.dgp_id.strip(), self.dgp_version.strip(),
+            self.roster_version.strip(), self.unit_id_prefix.strip(),
+        )):
+            raise ThetaACalibrationError("focal scenario, world, DGP and roster identities/versions are required")
         if self.expected_identification not in _VALID_IDENTIFICATION:
             raise ThetaACalibrationError(
                 "focal calibration currently supports IDENTIFIED, NOT_IDENTIFIED or INDETERMINATE truth classes"
@@ -146,6 +155,12 @@ class ThetaASeedAssignment:
     outer_world_id: str
     assignment_replicate: int
     world_id: str
+    roster_id: str
+    world_version: str
+    dgp_id: str
+    dgp_version: str
+    roster_version: str
+    unit_id_prefix: str
     run_id: str
     world_seed: int
     randomization_salt: str
@@ -189,6 +204,8 @@ def build_theta_a_seed_bank(
                 )
                 world_seed = _seed(root + "|world")
                 world_id = "theta-a-world-" + _digest(root + "|world-id")[:24]
+                roster_id = "theta-a-roster-" + _digest(root + "|roster-id")[:24]
+                unit_id_prefix = scenario.unit_id_prefix + "-" + _digest(root + "|unit-prefix")[:8]
                 for r in range(design.assignment_replicates_r):
                     run_root = root + f"|assignment-{r:06d}"
                     rows.append(ThetaASeedAssignment(
@@ -199,6 +216,12 @@ def build_theta_a_seed_bank(
                         outer_world_id=outer_id,
                         assignment_replicate=r,
                         world_id=world_id,
+                        roster_id=roster_id,
+                        world_version=scenario.world_version,
+                        dgp_id=scenario.dgp_id,
+                        dgp_version=scenario.dgp_version,
+                        roster_version=scenario.roster_version,
+                        unit_id_prefix=unit_id_prefix,
                         run_id="theta-a-run-" + _digest(run_root + "|run-id")[:24],
                         world_seed=world_seed,
                         randomization_salt=_digest(run_root + "|joint-policy-randomization"),
@@ -240,7 +263,9 @@ def validate_theta_a_seed_banks(
         if len(actual) != len(set(actual)) or set(actual) != expected:
             raise ThetaACalibrationError(f"{bank} bank must contain every declared scenario×N×M×R row exactly once")
         if any(
-            not x.world_id or not x.run_id or not x.outer_world_id
+            not x.world_id or not x.roster_id or not x.world_version
+            or not x.dgp_id or not x.dgp_version or not x.roster_version
+            or not x.unit_id_prefix or not x.run_id or not x.outer_world_id
             or type(x.n_units) is not int or x.n_units < 1
             or type(x.assignment_replicate) is not int or x.assignment_replicate < 0
             or type(x.world_seed) is not int or type(x.s3_seed) is not int
@@ -252,23 +277,32 @@ def validate_theta_a_seed_banks(
         worlds = {}
         for row in rows:
             key = (row.scenario_id, row.scenario_version, row.n_units, row.outer_world_id)
-            prior = worlds.setdefault(key, (row.world_id, row.world_seed))
-            if prior != (row.world_id, row.world_seed):
-                raise ThetaACalibrationError("world identity/seed must remain fixed across R within each M")
+            prior = worlds.setdefault(
+                key,
+                (row.world_id, row.roster_id, row.world_seed, row.world_version,
+                 row.dgp_id, row.dgp_version, row.roster_version, row.unit_id_prefix),
+            )
+            current = (
+                row.world_id, row.roster_id, row.world_seed, row.world_version,
+                row.dgp_id, row.dgp_version, row.roster_version, row.unit_id_prefix,
+            )
+            if prior != current:
+                raise ThetaACalibrationError("world/roster/DGP identity and seed must remain fixed across R within each M")
         by_design = {}
-        for key, (world_id, world_seed) in worlds.items():
-            by_design.setdefault(key[:3], []).append((world_id, world_seed))
+        for key, identity in worlds.items():
+            by_design.setdefault(key[:3], []).append(identity)
         for values in by_design.values():
-            ids, seeds = zip(*values)
-            if len(set(ids)) != len(ids) or len(set(seeds)) != len(seeds):
-                raise ThetaACalibrationError("independent outer worlds M require distinct identities and seeds")
-        distinct_worlds = {
-            (key, world_id, world_seed)
-            for key, (world_id, world_seed) in worlds.items()
-        }
-        if (len({world_id for _, world_id, _ in distinct_worlds}) != len(distinct_worlds)
-                or len({world_seed for _, _, world_seed in distinct_worlds}) != len(distinct_worlds)):
-            raise ThetaACalibrationError("each distinct scenario×N×M world requires a unique identity and seed")
+            world_ids = [x[0] for x in values]
+            roster_ids = [x[1] for x in values]
+            seeds = [x[2] for x in values]
+            if (len(set(world_ids)) != len(values) or len(set(roster_ids)) != len(values)
+                    or len(set(seeds)) != len(values)):
+                raise ThetaACalibrationError("independent outer worlds M require distinct world/roster identities and seeds")
+        distinct_worlds = {key: identity for key, identity in worlds.items()}
+        if (len({x[0] for x in distinct_worlds.values()}) != len(distinct_worlds)
+                or len({x[1] for x in distinct_worlds.values()}) != len(distinct_worlds)
+                or len({x[2] for x in distinct_worlds.values()}) != len(distinct_worlds)):
+            raise ThetaACalibrationError("each distinct scenario×N×M world requires unique world/roster identities and seed")
         if len({x.run_id for x in rows}) != len(rows):
             raise ThetaACalibrationError("each M×R assignment requires a unique run_id")
         assignment_keys = [
@@ -460,7 +494,13 @@ def capture_theta_a_replicate(
     scenario.validate()
     _validate_interval_s3_seed_provenance(result, assignment)
     if (result.world.world_id != assignment.world_id
+            or result.world.roster_id != assignment.roster_id
+            or result.world.world_version != assignment.world_version
+            or result.world.dgp_id != assignment.dgp_id
+            or result.world.dgp_version != assignment.dgp_version
+            or result.world.roster_version != assignment.roster_version
             or len(result.world.units) != assignment.n_units
+            or any(not unit.unit_id.startswith(assignment.unit_id_prefix) for unit in result.world.units)
             or result.world.seed_commitment_sha256 != _canonical_hash({"seed": assignment.world_seed})
             or result.analyzer_result.run_id != assignment.run_id
             or result.evaluator_result.run_id != assignment.run_id):
