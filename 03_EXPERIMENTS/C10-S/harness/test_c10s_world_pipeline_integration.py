@@ -683,6 +683,17 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 (row.history_ref, 0.5) for row in d2_world.q_x
             ),
         )
+        factorial_assignment_config = FactorialAssignmentConfig(
+            mechanism_id="FACTORIAL-AxM-DUAL-COHORT",
+            mechanism_version="1",
+            factor_m_id="FACTOR-M-DUAL-COHORT",
+            factor_m_version="1",
+            randomization_salt="FACTORIAL-AxM-DUAL-COHORT-SALT",
+            probability_by_history=tuple(
+                (row.history_ref, 0.25, 0.25, 0.25, 0.25)
+                for row in factorial_world.q_x
+            ),
+        )
         d2_monitor_seeds = {
             unit.unit_id: 19000 + index
             for index, unit in enumerate(d2_world.units)
@@ -748,7 +759,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             g_a_structural_mapping_version=fixture["g_a_structural_mapping_version"],
             feasible_vectors_by_history=fixture["feasible"],
             r_common_certificates=fixture["r_common"],
-            factorial_assignment_config=fixture["assignment_config"],
+            factorial_assignment_config=factorial_assignment_config,
             d2_assignment_config=d2_assignment,
             factorial_grids_by_history_ref=dict.fromkeys(
                 fixture["monitor_configs"], fixture["grid"],
