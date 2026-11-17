@@ -91,9 +91,7 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         design = self._design()
         assignment = build_theta_a_seed_bank(design, "calibration")[0]
         unit_ids = tuple(f"unit-{i}" for i in range(4))
-        seeds = __import__(
-            "theta_a_calibration_protocol"
-        ).s3_seeds_by_unit(assignment.s3_seed, unit_ids)
+        seeds = s3_seeds_by_unit(assignment.s3_seed, unit_ids)
         rows = []
         for unit_id in unit_ids:
             history_id = "history-" + unit_id
