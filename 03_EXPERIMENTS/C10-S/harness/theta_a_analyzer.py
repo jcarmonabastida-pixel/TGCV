@@ -27,6 +27,8 @@ class ThetaAObservationAnalysisContract:
     r_common_sha256: str
     estimand_id: str = "THETA_A_QX_GA_RCOMMON_VCONT"
     estimand_version: str = "1.0"
+    probability_a1_by_history: tuple[tuple[str, float], ...] = ()
+    confidence_level: float | None = None
 
     def validate(self) -> None:
         if not all((self.q_x_sha256, self.assignment_bundle_sha256,
@@ -41,6 +43,17 @@ class ThetaAObservationAnalysisContract:
             raise ContractError("q_X target masses must be finite and strictly positive")
         if not math.isclose(sum(mapping.values()), 1.0, rel_tol=0.0, abs_tol=1e-10):
             raise ContractError("q_X target masses must sum to one")
+        if self.probability_a1_by_history:
+            probabilities = dict(self.probability_a1_by_history)
+            if len(probabilities) != len(self.probability_a1_by_history) or set(probabilities) != set(mapping):
+                raise ContractError("theta_A inference probabilities must cover q_X histories exactly")
+            if any(not math.isfinite(p) or not 0.0 < p < 1.0 for p in probabilities.values()):
+                raise ContractError("theta_A inference requires strict positivity for both policy arms")
+        if self.confidence_level is not None:
+            if not math.isfinite(self.confidence_level) or not 0.0 < self.confidence_level < 1.0:
+                raise ContractError("theta_A confidence_level must be explicitly between zero and one")
+            if not self.probability_a1_by_history:
+                raise ContractError("theta_A confidence interval requires the declared history-specific assignment probabilities")
 
 
 @dataclass(frozen=True)
@@ -63,6 +76,11 @@ class ThetaAObservationAnalysisResult:
     measurement_upper_bound: float | None = None
     missing_interval_count: int = 0
     total_interval_count: int = 0
+    inference_method: str | None = None
+    inference_confidence_level: float | None = None
+    inference_lower_bound: float | None = None
+    inference_upper_bound: float | None = None
+    hoeffding_range_sum_squares: float | None = None
 
 
 def _canonical_hash(value: Any) -> str:
@@ -145,9 +163,55 @@ class ThetaAObservationAnalyzer:
             "measurement_upper_bound": None,
             "missing_interval_count": 0,
             "total_interval_count": 0,
+            "inference_method": None,
+            "inference_confidence_level": None,
+            "inference_lower_bound": None,
+            "inference_upper_bound": None,
+            "hoeffding_range_sum_squares": None,
         }
         return ThetaAObservationAnalysisResult(**result_payload,
             output_sha256=_canonical_hash(result_payload))
+
+
+    @staticmethod
+    def _bounded_ht_interval(contract, by_unit, qx, estimate, *, eligible):
+        """Conservative finite-sample CI for the two-stage stochastic-policy HT target.
+
+        The selected joint-vector draw is part of each unit's bounded [0,1]
+        outcome. Independence is required across units for the complete
+        arm-assignment plus within-policy vector randomization.
+        """
+        empty = {
+            "inference_method": None,
+            "inference_confidence_level": None,
+            "inference_lower_bound": None,
+            "inference_upper_bound": None,
+            "hoeffding_range_sum_squares": None,
+        }
+        if contract.confidence_level is None or not eligible or estimate is None:
+            return empty
+        p1_by_history = dict(contract.probability_a1_by_history)
+        range_sum_squares = 0.0
+        for bucket in by_unit.values():
+            first = bucket[0]
+            history = first["history_ref"]
+            p1 = p1_by_history[history]
+            p0 = 1.0 - p1
+            expected_assigned_probability = p1 if first["assigned_arm"] == 1 else p0
+            if not math.isclose(first["assignment_probability"], expected_assigned_probability,
+                                rel_tol=0.0, abs_tol=1e-12):
+                raise ContractError("sealed assignment probability differs from inferential design contract")
+            width = qx[history] * (1.0 / p1 + 1.0 / p0)
+            range_sum_squares += width * width
+        alpha = 1.0 - contract.confidence_level
+        radius = math.sqrt(0.5 * range_sum_squares * math.log(2.0 / alpha))
+        return {
+            "inference_method": "HOEFFDING_TWO_STAGE_BOUNDED_HT_V1",
+            "inference_confidence_level": contract.confidence_level,
+            "inference_lower_bound": estimate - radius,
+            "inference_upper_bound": estimate + radius,
+            "hoeffding_range_sum_squares": range_sum_squares,
+        }
 
     def _analyze_interval(self, evidence: SealedThetaAEvidence,
                           contract: ThetaAObservationAnalysisContract) -> ThetaAObservationAnalysisResult:
@@ -244,6 +308,10 @@ class ThetaAObservationAnalyzer:
                 # Its finite-sample value may lie outside the parameter range;
                 # it is never clipped.
                 estimate = arm_lower[1] - arm_lower[0]
+        inference = self._bounded_ht_interval(
+            contract, by_unit, qx, estimate,
+            eligible=(identification == "IDENTIFIED" and missing_count == 0),
+        )
         result_payload = {
             "run_id": evidence.run_id, "estimand_id": contract.estimand_id,
             "estimand_version": contract.estimand_version,
@@ -261,6 +329,7 @@ class ThetaAObservationAnalyzer:
             "measurement_upper_bound": measurement_upper,
             "missing_interval_count": missing_count,
             "total_interval_count": total_count,
+            **inference,
         }
         return ThetaAObservationAnalysisResult(**result_payload,
             output_sha256=_canonical_hash(result_payload))
