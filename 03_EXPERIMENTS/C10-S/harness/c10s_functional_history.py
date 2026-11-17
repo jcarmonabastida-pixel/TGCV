@@ -12,10 +12,10 @@ from typing import Literal, Sequence
 from c10s_synthetic_components import (
     ContractError, D2PotentialStage, EventHistory, EventHistoryGenerationSpec,
     FunctionalState, FunctionalStateChange, JointPolicyHistory, RCommonPairCertificate,
-    SyntheticWorldBundle, Vector4, digest, generate_event_history,
+    SyntheticWorldBundle, Vector4, D2PotentialTrajectory, digest, generate_event_history,
 )
 
-Source = Literal["D2", "G_A", "G_M"]
+Source = Literal["D2", "G_A", "G_M", "TRAJECTORY"]
 D2_FIELDS = {
     "w_programmed", "w_attempt", "receipt", "s_install",
     "c_dep_star", "a_f_post", "d_f_opening",
@@ -40,6 +40,9 @@ class FunctionalHistoryRule:
     # The legacy single-component pair remains supported unchanged.
     vector_predicates: tuple[tuple[int, object], ...] | None = None
     factor_m_value: bool | None = None
+    trajectory_target_state: str | None = None
+    trajectory_field: Literal["trajectory_status", "execution_state"] | None = None
+    trajectory_value: object | None = None
     suborder: int | None = None
 
     def validate(self) -> None:
@@ -82,8 +85,18 @@ class FunctionalHistoryRule:
                     or self.vector_index is not None or self.vector_value is not None
                     or self.vector_predicates is not None or type(self.factor_m_value) is not bool):
                 raise ContractError("G_M rule requires only an explicit Boolean factor_m_value predicate")
+        elif self.source == "TRAJECTORY":
+            if (not self.trajectory_target_state
+                    or self.trajectory_field not in ("trajectory_status", "execution_state")
+                    or self.trajectory_value is None):
+                raise ContractError("trajectory rule requires target, allowlisted field and explicit value")
+            if any(value is not None for value in (
+                self.d2_field, self.d2_value, self.vector_index, self.vector_value,
+                self.vector_predicates, self.factor_m_value,
+            )):
+                raise ContractError("trajectory rule cannot also contain D2, g_A or G_M predicates")
         else:
-            raise ContractError("functional rule source must be D2, G_A or G_M")
+            raise ContractError("functional rule source must be D2, G_A, G_M or TRAJECTORY")
 
 
 @dataclass(frozen=True)
@@ -127,15 +140,27 @@ class FunctionalHistoryDGPConfig:
 def _apply_rules(
     *, source: Source, initial: FunctionalState, rules: Sequence[FunctionalHistoryRule],
     mechanism: D2PotentialStage | Vector4, factor_m: bool | None = None,
+    trajectories_by_target: dict[str, D2PotentialTrajectory] | None = None,
 ) -> tuple[FunctionalStateChange, ...]:
     current = initial
     changes = []
+    selected_rules = (
+        r for r in rules
+        if r.source == source
+        or (source == "G_A" and r.source == "G_M")
+        or (source == "D2" and r.source == "TRAJECTORY")
+    )
     for rule in sorted(
-        (r for r in rules if r.source == source or (source == "G_A" and r.source == "G_M")),
+        selected_rules,
         key=lambda r: (r.event_time, -1 if r.suborder is None else r.suborder, r.rule_id),
     ):
-        if source == "D2":
+        if rule.source == "D2":
             triggered = getattr(mechanism, rule.d2_field) is rule.d2_value
+        elif rule.source == "TRAJECTORY":
+            if trajectories_by_target is None or rule.trajectory_target_state not in trajectories_by_target:
+                raise ContractError("D2 EventHistory trajectory rule lacks its exact target-potential trajectory")
+            trajectory = trajectories_by_target[rule.trajectory_target_state]
+            triggered = getattr(trajectory, rule.trajectory_field) == rule.trajectory_value
         elif rule.source == "G_A":
             if rule.vector_predicates is None:
                 triggered = mechanism[rule.vector_index] == rule.vector_value
@@ -197,6 +222,7 @@ def _materialize(
     unit_id: str, potential_id: str, history_id: str,
     initial_state: FunctionalState, source: Source,
     mechanism: D2PotentialStage | Vector4, factor_m: bool | None = None,
+    trajectories_by_target: dict[str, D2PotentialTrajectory] | None = None,
 ) -> EventHistory:
     initial_state.validate()
     if (initial_state.profile_config_id, initial_state.profile_config_version) != (
@@ -207,6 +233,7 @@ def _materialize(
     changes = _apply_rules(
         source=source, initial=initial,
         rules=config.rules, mechanism=mechanism, factor_m=factor_m,
+        trajectories_by_target=trajectories_by_target,
     )
     spec = EventHistoryGenerationSpec(
         history_id=history_id, history_version=config.history_version,
@@ -224,12 +251,33 @@ def _materialize(
 def generate_d2_event_history_potentials(
     world: SyntheticWorldBundle, config: FunctionalHistoryDGPConfig,
     initial_state_by_unit_z: dict[tuple[str, int], FunctionalState],
+    trajectories_by_unit_z_target: dict[tuple[str, int, str], D2PotentialTrajectory] | None = None,
 ) -> dict[tuple[str, int], EventHistory]:
-    """Generate both Z-specific functional histories for every roster unit."""
+    """Generate D2 functional histories with optional explicit trajectory-outcome rules."""
     config.validate(world)
     expected = {(unit.unit_id, z) for unit in world.units for z in (0, 1)}
     if set(initial_state_by_unit_z) != expected:
         raise ContractError("D2 initial functional states must cover exact unit × Z potential roster")
+    trajectory_rules = tuple(rule for rule in config.rules if rule.source == "TRAJECTORY")
+    trajectories_by_unit_z: dict[tuple[str, int], dict[str, D2PotentialTrajectory]] = {}
+    if trajectory_rules:
+        if trajectories_by_unit_z_target is None:
+            raise ContractError("trajectory-driven D2 EventHistory requires generated potential trajectories")
+        targets = {key[2] for key in trajectories_by_unit_z_target}
+        required_targets = {rule.trajectory_target_state for rule in trajectory_rules}
+        if not required_targets.issubset(targets):
+            raise ContractError("trajectory bundle omits a target referenced by a functional rule")
+        expected_trajectory_keys = {
+            (unit_id, z, target) for unit_id, z in expected for target in targets
+        }
+        if set(trajectories_by_unit_z_target) != expected_trajectory_keys:
+            raise ContractError("trajectory potentials must cover exact unit × Z × target support")
+        for key, trajectory in trajectories_by_unit_z_target.items():
+            if (trajectory.unit_id, trajectory.z, trajectory.target_state) != key:
+                raise ContractError("trajectory potential identity differs from its declared key")
+            trajectories_by_unit_z.setdefault((key[0], key[1]), {})[key[2]] = trajectory
+    elif trajectories_by_unit_z_target is not None:
+        raise ContractError("trajectory inputs were supplied but no trajectory-driven functional rule is declared")
     result = {}
     for unit in world.units:
         for stage in unit.d2_potentials.potentials_by_z:
@@ -240,6 +288,7 @@ def generate_d2_event_history_potentials(
                 history_id=f"{config.run_id}:{unit.unit_id}:D2:Z{stage.z}",
                 initial_state=initial_state_by_unit_z[key],
                 source="D2", mechanism=stage,
+                trajectories_by_target=trajectories_by_unit_z.get(key),
             )
             result[key] = history
     return result
