@@ -771,5 +771,88 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 result=tampered_unit_bounds, tolerance=0.25,
             )
 
+    def test_d2_total_unit_nonresponse_retains_assignment_and_temporal_design(self):
+        fixture = self._fixture("positive")
+        result = self._run_pipeline(fixture)
+        assignments = result.d2_observed_lane.assignments
+        assignment_rows = tuple(
+            (row.unit_id, row.history_ref, row.assigned_z,
+             row.probability_z0, row.probability_z1)
+            for row in assignments.assignments
+        )
+        self.assertEqual({row[2] for row in assignment_rows}, {0, 1})
+        monitor = next(iter(fixture["monitor_configs"].values()))
+        boundaries = fixture["grid"].boundaries
+        empty_candidate = D2IntervalEvidenceCandidate(
+            run_id=result.d2_observed_lane.sealed_evidence.run_id,
+            rows=(),
+            expected_unit_assignments=assignment_rows,
+            grid_id=fixture["grid"].grid_id,
+            grid_version=fixture["grid"].grid_version,
+            monitor_id=monitor.monitor_id,
+            monitor_version=monitor.monitor_version,
+            interval_bounds=tuple(zip(boundaries, boundaries[1:])),
+        )
+        evidence = D2IntervalSealer().seal(empty_candidate)
+        self.assertEqual(evidence.rows, ())
+        self.assertEqual(evidence.manifest["row_count"], 0)
+        self.assertEqual(evidence.manifest["unit_count"], 0)
+        self.assertEqual(evidence.manifest["expected_unit_count"], len(assignments.assignments))
+        self.assertEqual(evidence.manifest["missing_unit_ids"], tuple(sorted(
+            row.unit_id for row in assignments.assignments
+        )))
+        self.assertEqual(evidence.manifest["interval_count_per_unit"], len(boundaries) - 1)
+
+        analysis = D2ITTZAnalyzer().analyze(evidence, result.d2_analysis_contract)
+        self.assertEqual(analysis.identification, "PARTIALLY_IDENTIFIED")
+        self.assertIsNone(analysis.point_estimate)
+        self.assertEqual(analysis.assigned_z_unit_counts, (0, 0))
+        self.assertEqual(analysis.total_interval_count, 0)
+        self.assertEqual(analysis.target_q_x_coverage, 0.0)
+        self.assertEqual(analysis.bound_scope, "REALIZED_HT_MEASUREMENT_COMPLETION")
+        self.assertEqual(
+            analysis.abstention_reason,
+            "UNIT_NONRESPONSE_PREVENTS_STRICT_VCONT_POINT_RECOVERY",
+        )
+        evaluation = D2ITTZEvaluator().evaluate(
+            world=result.d2_world,
+            truth=result.d2_vcont_truth,
+            assignments=assignments,
+            evidence=evidence,
+            contract=result.d2_analysis_contract,
+            result=analysis,
+            tolerance=0.25,
+        )
+        self.assertEqual(
+            evaluation.disposition,
+            "CORRECT_ABSTENTION_UNIT_NONRESPONSE",
+        )
+        self.assertTrue(evaluation.correct_adjudication)
+
+        # A self-consistent but false declared arm for an unobserved unit must
+        # still be rejected by the independent assignment oracle.
+        tampered_assignments = list(assignment_rows)
+        first = tampered_assignments[0]
+        tampered_assignments[0] = (
+            first[0], first[1], 1 - first[2], first[3], first[4],
+        )
+        tampered_evidence = D2IntervalSealer().seal(replace(
+            empty_candidate,
+            expected_unit_assignments=tuple(tampered_assignments),
+        ))
+        tampered_analysis = D2ITTZAnalyzer().analyze(
+            tampered_evidence, result.d2_analysis_contract,
+        )
+        with self.assertRaises(ContractError):
+            D2ITTZEvaluator().evaluate(
+                world=result.d2_world,
+                truth=result.d2_vcont_truth,
+                assignments=assignments,
+                evidence=tampered_evidence,
+                contract=result.d2_analysis_contract,
+                result=tampered_analysis,
+                tolerance=0.25,
+            )
+
 if __name__ == "__main__":
     unittest.main()
