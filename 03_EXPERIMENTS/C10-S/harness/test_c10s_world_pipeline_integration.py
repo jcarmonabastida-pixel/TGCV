@@ -275,8 +275,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                     instance_version=f"INSTANCE-{index:03d}-001",
                     package_version="B1-PACKAGE-001",
                     baseline_time="t-1",
-                    stipulation=("FOCAL_INCLUSION", "FOCAL_EXCLUSION",
-                                 "SEMANTIC_INDETERMINACY")[((index - 1) % 3)],
+                    stipulation=states[(index - 1) % 3],
                     rule_version="NEED-RULE-TEST-001",
                     basis_ref=f"RESERVED-TEST-STIPULATION-{index:03d}",
                 )
@@ -691,6 +690,11 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             rules=fixture["functional_config"].rules + (trajectory_rule,),
         )
         def stipulations_for(world, prefix):
+            states = (
+                ("FOCAL_INCLUSION", "FOCAL_EXCLUSION", "SEMANTIC_INDETERMINACY")
+                if prefix == "FACTORIAL"
+                else ("FOCAL_EXCLUSION", "SEMANTIC_INDETERMINACY", "FOCAL_INCLUSION")
+            )
             return tuple(
                 NeedPreZStipulation(
                     unit_id=unit.unit_id,
@@ -751,7 +755,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(
             len(result.d2_need_pre_z_truth.records), len(result.d2_world.units),
         )
-        self.assertEqual(
+        self.assertNotEqual(
             tuple(row.need_truth_state for row in result.factorial_need_pre_z_truth.records),
             tuple(row.need_truth_state for row in result.d2_need_pre_z_truth.records),
         )
