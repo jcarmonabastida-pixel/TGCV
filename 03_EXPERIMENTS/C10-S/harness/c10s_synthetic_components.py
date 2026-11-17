@@ -2602,7 +2602,7 @@ class NeedPreZTruthRecord:
     service_instance_id: str
     contract_id: str
     contract_version: str
-    instance_version: str
+    instance_version: int
     package_version: str
     baseline_record_id: str
     baseline_time: str
