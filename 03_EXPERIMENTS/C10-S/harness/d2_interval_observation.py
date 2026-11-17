@@ -87,6 +87,7 @@ class D2IntervalObservationRecord:
 class D2IntervalEvidenceCandidate:
     run_id: str
     rows: tuple[dict[str, Any], ...]
+    expected_unit_history_refs: tuple[tuple[str, str], ...] = ()
 
 
 @dataclass(frozen=True)
@@ -195,6 +196,16 @@ class D2IntervalSealer:
         seen_ids = set()
         units: dict[str, dict[str, Any]] = {}
         normalised = []
+        expected_pairs = candidate.expected_unit_history_refs
+        if expected_pairs:
+            expected_ids = [unit_id for unit_id, _ in expected_pairs]
+            expected_refs = [history_ref for _, history_ref in expected_pairs]
+            if (len(expected_ids) != len(set(expected_ids))
+                    or len(expected_refs) != len(set(expected_refs))
+                    or any(not unit_id or not history_ref for unit_id, history_ref in expected_pairs)):
+                raise ContractError("D2 expected randomized roster must have unique unit/history identities")
+        else:
+            expected_pairs = ()
         for row in candidate.rows:
             if set(row) != allowed or row.get("temporal_resolution") != "INTERVAL_LEVEL":
                 raise ContractError("D2 interval evidence violates its closed S3 schema")
@@ -275,10 +286,27 @@ class D2IntervalSealer:
                 common_grid, common_bounds, common_monitor = grid, bounds, monitor
             elif grid != common_grid or bounds != common_bounds or monitor != common_monitor:
                 raise ContractError("all D2 units must share exact grid and monitor versions")
+        observed_pairs = {
+            unit: contract["assignment"][4]
+            for unit, contract in units.items()
+        }
+        if expected_pairs:
+            expected_by_unit = dict(expected_pairs)
+            if not set(units).issubset(expected_by_unit):
+                raise ContractError("D2 observed rows contain units outside the declared randomized roster")
+            if any(observed_pairs[unit] != expected_by_unit[unit] for unit in units):
+                raise ContractError("D2 observed history refs differ from the declared randomized roster")
+        else:
+            expected_by_unit = dict(observed_pairs)
+            expected_pairs = tuple(sorted(expected_by_unit.items()))
+        missing_unit_ids = tuple(sorted(set(expected_by_unit) - set(units)))
         manifest = {
             "run_id": candidate.run_id, "schema": SCHEMA,
             "sealer_version": self.version, "row_count": len(normalised),
-            "unit_count": len(units), "temporal_resolution": "INTERVAL_LEVEL",
+            "unit_count": len(units), "expected_unit_count": len(expected_by_unit),
+            "expected_unit_history_refs": tuple(sorted(expected_pairs)),
+            "missing_unit_ids": missing_unit_ids,
+            "temporal_resolution": "INTERVAL_LEVEL",
             "grid_id": common_grid[0], "grid_version": common_grid[1],
             "monitor_id": common_monitor[0], "monitor_version": common_monitor[1],
             "interval_count_per_unit": len(common_bounds),
@@ -366,6 +394,7 @@ def materialize_d2_observed_interval_lane(
     )
     candidate = D2IntervalEvidenceCandidate(
         records[0].run_id, tuple(asdict(row) for row in records),
+        tuple((row.unit_id, row.history_ref) for row in assignments.assignments),
     )
     sealed = D2IntervalSealer().seal(candidate)
     result = D2ObservedIntervalLaneResult(assignments, records, sealed)
