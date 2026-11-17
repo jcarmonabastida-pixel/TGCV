@@ -635,13 +635,17 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(len(result.d2_reachability.contrasts), 64)
         self.assertEqual(len(result.d2_trajectories.trajectories), 64)
         d2_histories = result.d2_event_histories_by_unit_z
-        self.assertTrue(all(
-            any(change.causal_family == "TRAJECTORY_EXECUTION_TO_B1_ADMISSION"
-                for change in d2_histories[(unit_id, 1)].changes)
-            and not any(change.causal_family == "TRAJECTORY_EXECUTION_TO_B1_ADMISSION"
-                        for change in d2_histories[(unit_id, 0)].changes)
-            for unit_id in d2_ids
-        ))
+        factorial_d2_histories = result.factorial_cohort.d2_event_histories_by_unit_z
+        for cohort_ids, histories in (
+            (d2_ids, d2_histories), (factorial_ids, factorial_d2_histories),
+        ):
+            self.assertTrue(all(
+                any(change.causal_family == "TRAJECTORY_EXECUTION_TO_B1_ADMISSION"
+                    for change in histories[(unit_id, 1)].changes)
+                and not any(change.causal_family == "TRAJECTORY_EXECUTION_TO_B1_ADMISSION"
+                            for change in histories[(unit_id, 0)].changes)
+                for unit_id in cohort_ids
+            ))
         self.assertEqual(
             result.d2_observed_lane.sealed_evidence.manifest["unit_count"],
             len(result.d2_world.units),
