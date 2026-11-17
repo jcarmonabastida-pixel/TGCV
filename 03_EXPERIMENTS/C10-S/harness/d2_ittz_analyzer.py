@@ -96,7 +96,7 @@ def _output_hash(payload: dict[str, Any]) -> str:
 class D2ITTZAnalyzer:
     """Estimate the randomized D2 package ITT; no potential truth is accepted."""
 
-    version = "c10s-d2-ittz-analyzer-0.2"
+    version = "c10s-d2-ittz-analyzer-0.3"
 
     def analyze(
         self,
