@@ -651,7 +651,16 @@ Se extendió el fixture de `test_c10s_world_pipeline_integration.py` para acepta
 
 Esta prueba usa exclusivamente parámetros de fixture para verificar interfaces y separación N/M/R. No selecciona el roster científico focal, no fija el dimensionamiento confirmatorio y no genera un banco persistido ni ejecuta calibración. El allowlist EP-02 conserva sus dieciséis módulos; la regresión se añade al módulo de integración ya incluido.
 
-**Estado tras la integración:** fuente y definición de regresión persistidas en research; compilación, suite EP-02 y replay pendientes. No se ejecutan ahora: el contrato de misión vigente fija `technical_test_execution_authorized=false` y `workflow_dispatch_authorized=false`. La implementación no cambia las autorizaciones de §325 ni habilita calibración/experimento.
+**Estado tras la integración:** fuente y regresión validadas técnicamente en EP-02 Run 828: compilación PASS, 297/297 pruebas PASS y replay limpio 297/297 PASS. La autorización puntual del usuario se consumió y quedó cerrada en el contrato de misión. No se habilitó calibración ni experimento científico.
 `scientific_execution=false` · `execution_authorized=false` · `calibration_authorized=false`
 
 No se modifica `main`, RMA, Evidence→Claim Matrix, STATUS o TGCV Core. PR #116 permanece Draft/no merged.
+## 329. EP-02 — validación técnica del scaffold focal y World Builder (2026-11-18)
+
+**Run 828 PASS:** GitHub Actions `44201023934`, commit probado `0139ff58864db455ab49ed8addd2fec28188a45c`. La compilación exacta del allowlist de dieciséis módulos pasó; la suite primaria completó **297/297 PASS (12.945 s)** y el replay desde una materialización limpia e idéntica completó **297/297 PASS (13.085 s)**. Pasaron también la equivalencia de árboles, los controles de bytecode y el nuevo test `test_theta_a_nmr_protocol_is_wired_through_complete_world_and_evaluator`.
+
+**Defecto encontrado y corregido durante la validación:** Run 827 (`44200852299`) detectó ocho errores por sombreado de variable en `validate_theta_a_seed_banks`: la tupla de derivación de una fila sobrescribía el conjunto `expected` de claves N×M×R antes de comprobar cardinalidad. Se renombró la variable local a `expected_derivation`; Run 828 valida la corrección. No se ocultó ni se contabilizó Run 827 como PASS.
+
+**Artefactos:** payload `14379769769`; manifiesto `14380508733`. **Estado de autorización:** la autorización puntual cubrió únicamente compilación, suite EP-02 y replay; quedó consumida. El workflow se restauró a `workflow_dispatch` manual-only. `calibration_authorized=false`, `scientific_execution=false`, `execution_authorized=false`.
+
+**Alcance:** evidencia de integración de software y regresión reproducible. No acredita calibración estadística, cobertura, potencia, error tipo I, identificación causal ni contribución empírica de ΔT_acc a Value. No se generaron bancos de calibración/evaluación, no se ejecutó Monte Carlo ni experimento científico. No se modificó `main`, RMA, Evidence→Claim Matrix, STATUS ni TGCV Core.
