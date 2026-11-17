@@ -300,7 +300,6 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             grid=fixture["grid"],
             g_a0=fixture["g_a0"],
             g_a1=fixture["g_a1"],
-            g_a_structural_rules=fixture["g_a_structural_rules"],
             feasible_vectors_by_history=fixture["feasible"],
             r_common_certificates=fixture["r_common"],
             assignment_config=fixture["assignment_config"],
@@ -463,9 +462,12 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             evaluation_tolerance=2.0,
         )
         self.assertEqual(len(result.factorial_potential_histories), 128)
+        self.assertEqual(len(result.factorial_structural_potentials), 64)
+        self.assertEqual(len(result.factorial_reach_potentials), 64)
+        self.assertEqual(len(result.factorial_trajectories), 64)
         self.assertEqual(
             result.accessibility_attribution_status,
-            "NOT_ESTABLISHED_GA_TO_DELTA_T_ACC_MAPPING",
+            "GA_TO_DELTA_T_ACC_REACH_TRAJECTORY_MATERIALIZED_VALUE_BRIDGE_OPEN",
         )
         with self.assertRaises(ContractError):
             result.require_accessibility_attribution()
@@ -674,7 +676,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertFalse(factorial_ids & d2_ids)
         self.assertEqual(
             result.factorial_cohort.accessibility_attribution_status,
-            "NOT_ESTABLISHED_GA_TO_DELTA_T_ACC_MAPPING",
+            "GA_TO_DELTA_T_ACC_REACH_TRAJECTORY_MATERIALIZED_VALUE_BRIDGE_OPEN",
         )
         with self.assertRaises(ContractError):
             result.factorial_cohort.require_accessibility_attribution()
@@ -684,6 +686,9 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(len(result.d2_structural_deltas), 64)
         self.assertEqual(len(result.d2_reachability.contrasts), 64)
         self.assertEqual(len(result.factorial_cohort.structural_deltas), 64)
+        self.assertEqual(len(result.factorial_cohort.factorial_structural_potentials), 64)
+        self.assertEqual(len(result.factorial_cohort.factorial_reach_potentials), 64)
+        self.assertEqual(len(result.factorial_cohort.factorial_trajectories), 64)
         self.assertEqual(len(result.d2_trajectories.trajectories), 64)
         d2_histories = result.d2_event_histories_by_unit_z
         factorial_d2_histories = result.factorial_cohort.d2_event_histories_by_unit_z
