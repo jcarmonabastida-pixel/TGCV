@@ -285,7 +285,6 @@ def select_factorial_potential_histories(
             f"{assignment.r_common_fingerprint}:M{assignment.m_arm}"
         )
         if (history.unit_id != assignment.unit_id
-                or history.history_ref != assignment.history_ref
                 or history.world_id != assignments.world_id
                 or history.world_version != assignments.world_version
                 or history.dgp_version != assignments.dgp_version
