@@ -14,6 +14,7 @@ from theta_a_calibration_protocol import (
     ThetaAReplicateRecord,
     build_theta_a_seed_bank,
     s3_seeds_by_unit,
+    theta_a_pipeline_inference_options,
     summarize_theta_a_calibration,
     validate_theta_a_seed_banks,
     _validate_interval_s3_seed_provenance,
@@ -51,6 +52,27 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
             fp(row.randomization_salt), fp(row.run_id + "|evidence"),
             fp(row.run_id + "|analyzer"),
         )
+
+    def test_pipeline_inference_options_follow_explicit_independence_contract(self):
+        identified = self._design()
+        options = theta_a_pipeline_inference_options(identified, identified.scenario_specs[0])
+        self.assertEqual(options["theta_a_confidence_level"], 0.95)
+        self.assertIs(options["theta_a_unit_independence_certified"], True)
+
+        nonidentified = self._design(ThetaACalibrationScenario(
+            "THETA_A_NO_SUPPORT", "1.0", "NOT_IDENTIFIED", False
+        ))
+        options = theta_a_pipeline_inference_options(nonidentified, nonidentified.scenario_specs[0])
+        self.assertIsNone(options["theta_a_confidence_level"])
+        self.assertIs(options["theta_a_unit_independence_certified"], False)
+
+        missingness = self._design(ThetaACalibrationScenario(
+            "THETA_A_MISSING", "1.0", "INDETERMINATE", True,
+            "unit-level joint assignment is independent; observation incompleteness is separately represented",
+        ))
+        options = theta_a_pipeline_inference_options(missingness, missingness.scenario_specs[0])
+        self.assertEqual(options["theta_a_confidence_level"], 0.95)
+        self.assertIs(options["theta_a_unit_independence_certified"], True)
 
     def test_seed_bank_keeps_world_fixed_within_m_and_randomizes_each_r(self):
         design = self._design()
