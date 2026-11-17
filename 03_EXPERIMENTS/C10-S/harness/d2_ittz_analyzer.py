@@ -7,7 +7,7 @@ import json
 import math
 from typing import Any
 
-from c10s_synthetic_components import ContractError, D2VContTruthBundle, SyntheticWorldBundle
+from c10s_synthetic_components import ContractError, SyntheticWorldBundle, digest
 from d2_interval_observation import SealedD2IntervalEvidence, _hash
 
 
@@ -247,8 +247,6 @@ def analysis_contract_from_world(
     world.validate()
     return D2ITTZAnalysisContract(
         tuple((row.history_ref, row.mass) for row in world.q_x),
-        world.q_x_sha256 if hasattr(world, "q_x_sha256") else __import__(
-            "c10s_synthetic_components"
-        ).digest(world.q_x),
+        digest(world.q_x),
         assignment_bundle_sha256, assignment_mechanism_id, assignment_mechanism_version,
     )
