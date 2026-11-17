@@ -832,7 +832,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             ]
             has_trajectory_change = any(
                 change.causal_family == "TRAJECTORY_EXECUTION_TO_B1_ADMISSION"
-                for change in history.changes
+                for change in history.transitions
             )
             self.assertEqual(
                 has_trajectory_change,
