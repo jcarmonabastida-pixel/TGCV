@@ -61,9 +61,14 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
             self.assertEqual(len({x.randomization_salt for x in rows}), 2)
             self.assertEqual(len({x.s3_seed for x in rows}), 2)
             self.assertEqual(len({x.run_id for x in rows}), 2)
-        self.assertEqual(
-            len({x.world_seed for x in calibration if x.outer_world_id != "outer-000000"}), 1
-        )
+        world_seeds = {
+            outer_id: {x.world_seed for x in calibration if x.outer_world_id == outer_id}
+            for outer_id in ("outer-000000", "outer-000001")
+        }
+        self.assertEqual(len(world_seeds["outer-000000"]), 1)
+        self.assertEqual(len(world_seeds["outer-000001"]), 1)
+        self.assertNotEqual(next(iter(world_seeds["outer-000000"])),
+                            next(iter(world_seeds["outer-000001"])))
         self.assertFalse({x.world_seed for x in calibration} & {x.world_seed for x in evaluation})
 
     def test_seed_bank_rejects_incomplete_r_coverage(self):
