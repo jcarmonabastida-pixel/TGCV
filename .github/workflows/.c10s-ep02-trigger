@@ -1,7 +1,0 @@
-TGCV C10-S EP-02 temporary push trigger
-Authorized in ChatGPT conversation on 2026-11-17.
-Scope: exact fifteen-module integrated synthetic contract suite, source compilation, clean replay, execution payload and manifest.
-Branch: research/c10-s-consolidation-draft
-This sentinel is temporary and will be removed after the run is captured.
-
-Retry 2 after compile-gate indentation correction at 38df0e2e8399b9086adf5ed02cafc9532cdb4954.
