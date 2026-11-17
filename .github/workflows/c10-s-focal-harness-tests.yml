@@ -17,7 +17,6 @@ permissions:
 
 jobs:
   integrated-synthetic-contract-tests:
-    if: github.ref == 'refs/heads/research/c10-s-consolidation-draft'
     name: Explicitly authorized integrated synthetic contract suite
     runs-on: ubuntu-24.04
     timeout-minutes: 30

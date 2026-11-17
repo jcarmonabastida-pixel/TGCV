@@ -11,7 +11,6 @@ permissions:
 
 jobs:
   vcont-package-v2-pure-capture-tests:
-    if: github.ref == 'refs/heads/research/c10-s-consolidation-draft'
     name: Pure capture, package writer and independent verifier fixtures — no synthetic producer execution
     runs-on: ubuntu-24.04
     timeout-minutes: 15
