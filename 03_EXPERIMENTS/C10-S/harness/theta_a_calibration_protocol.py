@@ -22,6 +22,7 @@ class ThetaACalibrationError(ValueError):
 Bank = Literal["calibration", "evaluation"]
 Identification = Literal["IDENTIFIED", "NOT_IDENTIFIED", "INDETERMINATE"]
 _VALID_IDENTIFICATION = {"IDENTIFIED", "NOT_IDENTIFIED", "INDETERMINATE"}
+_VALID_ANALYZER_IDENTIFICATION = _VALID_IDENTIFICATION | {"PARTIALLY_IDENTIFIED"}
 
 
 @dataclass(frozen=True)
@@ -283,8 +284,9 @@ class ThetaAReplicateRecord:
             raise ThetaACalibrationError("replicate record identities are mandatory")
         if self.n_units < 1 or self.assignment_replicate < 0:
             raise ThetaACalibrationError("replicate record N/R identity is invalid")
-        if self.expected_identification not in _VALID_IDENTIFICATION or self.analyzer_identification not in _VALID_IDENTIFICATION:
-            raise ThetaACalibrationError("unsupported identification status in replicate record")
+        if (self.expected_identification not in _VALID_IDENTIFICATION
+                or self.analyzer_identification not in _VALID_ANALYZER_IDENTIFICATION):
+            raise ThetaACalibrationError("unsupported truth/analyzer identification status in replicate record")
         if not isfinite(self.truth) or not -1.0 <= self.truth <= 1.0:
             raise ThetaACalibrationError("theta_A truth must be finite and in [-1,1]")
         if self.analyzer_identification == "IDENTIFIED":
