@@ -996,6 +996,58 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             )
 
 
+
+    def test_d2_trajectory_execution_explicitly_drives_b1_vcont_history(self):
+        fixture = self._fixture("positive")
+        trajectory_rule = FunctionalHistoryRule(
+            rule_id="TRAJECTORY-EXECUTION-FAILURE-INTERRUPTS-B1",
+            source="TRAJECTORY",
+            event_time=Decimal("1.5"),
+            causal_family="TRAJECTORY_EXECUTION_TO_B1_ADMISSION",
+            provenance_ref="FUNCTIONAL-DGP#TRAJECTORY-EXECUTION-FAILURE-INTERRUPTS-B1",
+            set_admission="NO_ADMISSION",
+            trajectory_target_state="TARGET",
+            trajectory_field="trajectory_status",
+            trajectory_value="EXECUTION_FAILED",
+        )
+        fixture["functional_config"] = replace(
+            fixture["functional_config"], rules=(trajectory_rule,),
+        )
+        fixture["trajectory_config"] = replace(
+            fixture["trajectory_config"],
+            route_execution_probability=(("ROUTE-FOCAL", 0.0),),
+        )
+        result = self._run_pipeline(fixture)
+        trajectories = {
+            (row.unit_id, row.z, row.target_state): row
+            for row in result.trajectories.trajectories
+        }
+        truth = {
+            (row.unit_id, row.z): row.v_cont_truth
+            for row in result.d2_vcont_truth.potential_truth
+        }
+        histories = dict(result.d2_histories_by_unit_z)
+        for unit in result.world.units:
+            self.assertEqual(
+                trajectories[(unit.unit_id, 0, "TARGET")].trajectory_status,
+                "NOT_REACHABLE",
+            )
+            self.assertEqual(
+                trajectories[(unit.unit_id, 1, "TARGET")].trajectory_status,
+                "EXECUTION_FAILED",
+            )
+            self.assertEqual(truth[(unit.unit_id, 0)], 1)
+            self.assertEqual(truth[(unit.unit_id, 1)], 0)
+            self.assertFalse(any(
+                change.causal_family == "TRAJECTORY_EXECUTION_TO_B1_ADMISSION"
+                for change in histories[(unit.unit_id, 0)].changes
+            ))
+            self.assertTrue(any(
+                change.causal_family == "TRAJECTORY_EXECUTION_TO_B1_ADMISSION"
+                for change in histories[(unit.unit_id, 1)].changes
+            ))
+
+
     def test_complete_world_rejects_reach_detached_from_delta_snapshots(self):
         fixture = self._fixture("positive")
         result = self._run_pipeline(fixture)
