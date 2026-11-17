@@ -163,7 +163,7 @@ def _apply_rules(
     selected_rules = (
         r for r in rules
         if r.source == source
-        or (source == "G_A" and r.source == "G_M")
+        or (source == "G_A" and r.source in ("G_M", "TRAJECTORY"))
         or (source == "D2" and r.source == "TRAJECTORY")
     )
     for rule in sorted(
@@ -317,6 +317,7 @@ def generate_factorial_event_history_potentials(
     r_common_certificates: Sequence[RCommonPairCertificate],
     initial_state_by_history: dict[str, FunctionalState],
     *, factor_m_id: str, factor_m_version: str,
+    trajectories_by_history_vector_target: dict[tuple[str, str, str, str], object] | None = None,
 ) -> dict[tuple[str, str, str, int], EventHistory]:
     """Generate the four A×M potential histories within one fixed synthetic world.
 
@@ -345,6 +346,35 @@ def generate_factorial_event_history_potentials(
            or not cert.g_a0_fingerprint or cert.g_a0_fingerprint != cert.g_a1_fingerprint
            for cert in certs.values()):
         raise ContractError("factorial generation requires certified common fixed r_common")
+    trajectory_rules = tuple(rule for rule in config.rules if rule.source == "TRAJECTORY")
+    trajectories_by_history_vector: dict[tuple[str, str, str], dict[str, object]] = {}
+    expected_trajectory_keys = set()
+    for history_ref in sorted(expected_refs):
+        cert = certs[history_ref]
+        vectors = {
+            digest(vector): vector
+            for policy_map in policy_maps
+            for vector, probability in policy_map[history_ref].distribution
+            if probability > 0
+        }
+        for vector_sha in vectors:
+            for rule in trajectory_rules:
+                expected_trajectory_keys.add((
+                    history_ref, vector_sha, cert.g_a0_fingerprint,
+                    rule.trajectory_target_state,
+                ))
+    if trajectory_rules:
+        if trajectories_by_history_vector_target is None:
+            raise ContractError("factorial EventHistory trajectory rules require exact g_A potential trajectories")
+        if set(trajectories_by_history_vector_target) != expected_trajectory_keys:
+            raise ContractError("factorial trajectory inputs must cover exact q_X* × vector × r_common × target support")
+        for key, trajectory in trajectories_by_history_vector_target.items():
+            if (trajectory.history_ref, trajectory.vector_sha256,
+                    trajectory.r_common_fingerprint, trajectory.target_state) != key:
+                raise ContractError("factorial trajectory identity differs from its declared potential key")
+            trajectories_by_history_vector.setdefault(key[:3], {})[key[3]] = trajectory
+    elif trajectories_by_history_vector_target is not None:
+        raise ContractError("factorial trajectories supplied without a declared TRAJECTORY EventHistory rule")
     result = {}
     for history_ref in sorted(expected_refs):
         cert = certs[history_ref]
@@ -365,6 +395,9 @@ def generate_factorial_event_history_potentials(
                                 f"{factor_m_id}:{factor_m_version}:{vector_sha}:M{m_arm}"),
                     initial_state=initial_state_by_history[history_ref],
                     source="G_A", mechanism=vector, factor_m=bool(m_arm),
+                    trajectories_by_target=trajectories_by_history_vector.get(
+                        (history_ref, vector_sha, cert.g_a0_fingerprint),
+                    ),
                 )
     return result
 
