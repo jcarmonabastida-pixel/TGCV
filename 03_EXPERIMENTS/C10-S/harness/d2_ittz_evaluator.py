@@ -121,6 +121,13 @@ class D2ITTZEvaluator:
                 or (manifest.get("grid_id"), manifest.get("grid_version"))
                 != (truth.grid_id, truth.grid_version)):
             raise ContractError("D2 sealed run/grid identity differs from reserved V_cont truth")
+        interval_bounds = tuple(tuple(row) for row in manifest.get("interval_bounds", ()))
+        if (len(interval_bounds) != manifest.get("interval_count_per_unit")
+                or any(len(pair) != 2 or not pair[0] < pair[1]
+                       for pair in interval_bounds)
+                or any(left[1] != right[0]
+                       for left, right in zip(interval_bounds, interval_bounds[1:]))):
+            raise ContractError("D2 sealed manifest interval boundaries are invalid or incomplete")
         if any(expected_by_unit[unit_id] != assignment.history_ref
                for unit_id, assignment in assignments_by_unit.items()):
             raise ContractError("D2 sealed expected unit/history roster differs from hashed assignment bundle")
@@ -150,6 +157,8 @@ class D2ITTZEvaluator:
             if any(left["interval_end"] != right["interval_start"]
                    for left, right in zip(ordered, ordered[1:])):
                 raise ContractError("D2 sealed evidence interval sequence is not contiguous")
+            if tuple((row["interval_start"], row["interval_end"]) for row in ordered) != interval_bounds:
+                raise ContractError("D2 observed interval sequence differs from declared manifest grid boundaries")
             first = ordered[0]
             observed_histories.add(first["history_ref"])
             assignment = assignments_by_unit[unit_id]
