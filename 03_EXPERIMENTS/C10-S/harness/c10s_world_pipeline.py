@@ -26,6 +26,9 @@ from c10s_synthetic_components import (
     SyntheticWorldBuilder,
     SyntheticWorldBundle,
     SyntheticWorldConfig,
+    NeedPreZStipulation,
+    NeedPreZTruthBundle,
+    materialize_need_prez_truth,
     SyntheticWorldReachabilityContrast,
     SyntheticWorldTrajectoryBundle,
     D2StructuralPotentialPair,
@@ -70,6 +73,7 @@ class C10SCompleteWorldResult:
     """One identity-bound synthetic world and its independent causal adjudication."""
 
     world: SyntheticWorldBundle
+    need_pre_z_truth: NeedPreZTruthBundle
     structural_pairs: tuple[tuple[tuple[str, int], D2StructuralPotentialPair], ...]
     structural_deltas: tuple[object, ...]
     reachability: SyntheticWorldReachabilityContrast
@@ -98,6 +102,7 @@ class C10SCompleteWorldResult:
     ) -> None:
         world = self.world
         world.validate()
+        self.need_pre_z_truth.validate(world)
         grid.validate()
         pairs = dict(self.structural_pairs)
         expected = {(unit.unit_id, z) for unit in world.units for z in (0, 1)}
@@ -169,6 +174,7 @@ def materialize_c10s_complete_world(
     reach_config: D2ReachGenerationConfig,
     trajectory_config: D2TrajectoryGenerationConfig,
     d2_histories_by_unit_z: dict[tuple[str, int], EventHistory],
+    need_pre_z_stipulations: Sequence[NeedPreZStipulation],
     grid: IntervalGrid,
     g_a0: Sequence[JointPolicyHistory],
     g_a1: Sequence[JointPolicyHistory],
@@ -201,6 +207,7 @@ def materialize_c10s_complete_world(
             reach_config, trajectory_config,
         )
     )
+    need_truth = materialize_need_prez_truth(world, need_pre_z_stipulations)
     expected_d2 = {(unit.unit_id, z) for unit in world.units for z in (0, 1)}
     if set(d2_histories_by_unit_z) != expected_d2:
         raise ContractError("D2 EventHistory inputs must cover every world unit × Z potential exactly")
@@ -278,6 +285,7 @@ def materialize_c10s_complete_world(
 
     result = C10SCompleteWorldResult(
         world=world,
+        need_pre_z_truth=need_truth,
         structural_pairs=tuple(sorted(structural_pairs.items())),
         structural_deltas=tuple(structural_deltas),
         reachability=reachability,
@@ -323,6 +331,7 @@ def materialize_c10s_complete_world_from_dgp(
     functional_history_config: FunctionalHistoryDGPConfig,
     initial_state_by_unit_z: dict[tuple[str, int], FunctionalState],
     initial_state_by_history: dict[str, FunctionalState],
+    need_pre_z_stipulations: Sequence[NeedPreZStipulation],
     grid: IntervalGrid,
     g_a0: Sequence[JointPolicyHistory],
     g_a1: Sequence[JointPolicyHistory],
@@ -366,7 +375,8 @@ def materialize_c10s_complete_world_from_dgp(
         world_config=world_config, d2_config=d2_config,
         structural_config=structural_config, reach_config=reach_config,
         trajectory_config=trajectory_config,
-        d2_histories_by_unit_z=d2_histories, grid=grid,
+        d2_histories_by_unit_z=d2_histories,
+        need_pre_z_stipulations=need_pre_z_stipulations, grid=grid,
         g_a0=g_a0, g_a1=g_a1,
         feasible_vectors_by_history=feasible_vectors_by_history,
         r_common_certificates=r_common_certificates,
