@@ -748,5 +748,24 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             "CORRECT_ABSTENTION_UNIT_NONRESPONSE",
         )
 
+        # The Evaluator must reconstruct the unit-nonresponse envelope even
+        # when a tampered Analyzer output is re-hashed consistently.
+        tampered_unit_bounds = replace(
+            unit_nonresponse_analysis,
+            upper_bound=unit_nonresponse_analysis.upper_bound + 0.1,
+        )
+        tampered_unit_payload = _result_payload(tampered_unit_bounds)
+        tampered_unit_bounds = replace(
+            tampered_unit_bounds,
+            output_sha256=_output_hash(tampered_unit_payload),
+        )
+        with self.assertRaises(ContractError):
+            D2ITTZEvaluator().evaluate(
+                world=result.d2_world, truth=result.d2_vcont_truth,
+                assignments=original_bundle, evidence=unit_nonresponse_evidence,
+                contract=result.d2_analysis_contract,
+                result=tampered_unit_bounds, tolerance=0.25,
+            )
+
 if __name__ == "__main__":
     unittest.main()
