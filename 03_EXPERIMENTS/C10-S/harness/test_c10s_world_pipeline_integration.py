@@ -445,6 +445,12 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             evaluation_tolerance=2.0,
         )
         self.assertEqual(len(result.factorial_potential_histories), 128)
+        self.assertEqual(
+            result.accessibility_attribution_status,
+            "NOT_ESTABLISHED_GA_TO_DELTA_T_ACC_MAPPING",
+        )
+        with self.assertRaises(ContractError):
+            result.require_accessibility_attribution()
         self.assertEqual(len(result.assignment_bundle.assignments), 32)
         self.assertEqual(
             {row.cell_id for row in result.assignment_bundle.assignments},
@@ -646,6 +652,12 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         factorial_ids = {unit.unit_id for unit in result.factorial_cohort.world.units}
         d2_ids = {unit.unit_id for unit in result.d2_world.units}
         self.assertFalse(factorial_ids & d2_ids)
+        self.assertEqual(
+            result.factorial_cohort.accessibility_attribution_status,
+            "NOT_ESTABLISHED_GA_TO_DELTA_T_ACC_MAPPING",
+        )
+        with self.assertRaises(ContractError):
+            result.factorial_cohort.require_accessibility_attribution()
         self.assertEqual(len(result.factorial_initial_states_by_unit_z), 64)
         self.assertEqual(len(result.d2_initial_states_by_unit_z), 64)
         self.assertEqual(len(result.d2_structural_pairs), 64)
