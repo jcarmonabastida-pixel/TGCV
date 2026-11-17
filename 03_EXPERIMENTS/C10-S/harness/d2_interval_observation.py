@@ -94,6 +94,10 @@ class D2IntervalEvidenceCandidate:
     monitor_id: str = ""
     monitor_version: str = ""
     interval_bounds: tuple[tuple[Decimal, Decimal], ...] = ()
+    assignment_bundle_sha256: str = ""
+    assignment_mechanism_id: str = ""
+    assignment_mechanism_version: str = ""
+    q_x_sha256: str = ""
 
 
 @dataclass(frozen=True)
@@ -189,6 +193,10 @@ def candidate_from_d2_interval_records(
     monitor_id: str = "",
     monitor_version: str = "",
     interval_bounds: tuple[tuple[Decimal, Decimal], ...] = (),
+    assignment_bundle_sha256: str = "",
+    assignment_mechanism_id: str = "",
+    assignment_mechanism_version: str = "",
+    q_x_sha256: str = "",
 ) -> D2IntervalEvidenceCandidate:
     """Build S3 evidence; empty observations require a complete external context.
 
@@ -204,6 +212,10 @@ def candidate_from_d2_interval_records(
             "run_id": next(iter(run_ids)),
             "grid_id": first.grid_id, "grid_version": first.grid_version,
             "monitor_id": first.monitor_id, "monitor_version": first.monitor_version,
+            "assignment_bundle_sha256": first.assignment_bundle_sha256,
+            "assignment_mechanism_id": first.assignment_mechanism_id,
+            "assignment_mechanism_version": first.assignment_mechanism_version,
+            "q_x_sha256": first.q_x_sha256,
             "interval_bounds": tuple(
                 (row.interval_start, row.interval_end)
                 for row in sorted(records, key=lambda x: x.interval_index)
@@ -216,12 +228,18 @@ def candidate_from_d2_interval_records(
         monitor_id = monitor_id or inferred["monitor_id"]
         monitor_version = monitor_version or inferred["monitor_version"]
         interval_bounds = interval_bounds or inferred["interval_bounds"]
+        assignment_bundle_sha256 = assignment_bundle_sha256 or inferred["assignment_bundle_sha256"]
+        assignment_mechanism_id = assignment_mechanism_id or inferred["assignment_mechanism_id"]
+        assignment_mechanism_version = assignment_mechanism_version or inferred["assignment_mechanism_version"]
+        q_x_sha256 = q_x_sha256 or inferred["q_x_sha256"]
     if not run_id:
         raise ContractError("D2 interval evidence requires an explicit run identity")
     return D2IntervalEvidenceCandidate(
         run_id, tuple(asdict(row) for row in records),
         expected_unit_history_refs, expected_unit_assignments,
         grid_id, grid_version, monitor_id, monitor_version, interval_bounds,
+        assignment_bundle_sha256, assignment_mechanism_id,
+        assignment_mechanism_version, q_x_sha256,
     )
 
 
@@ -237,6 +255,9 @@ class D2IntervalSealer:
             candidate.expected_unit_assignments and candidate.grid_id
             and candidate.grid_version and candidate.monitor_id
             and candidate.monitor_version and candidate.interval_bounds
+            and candidate.assignment_bundle_sha256
+            and candidate.assignment_mechanism_id
+            and candidate.assignment_mechanism_version and candidate.q_x_sha256
         ):
             raise ContractError("zero-row D2 evidence requires full roster, assignment, grid, monitor and interval context")
         seen_ids = set()
