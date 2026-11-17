@@ -1635,6 +1635,8 @@ def generate_factorial_structural_potentials(
         for arm, policy in enumerate(policy_maps):
             _distribution_total(policy[history_ref].distribution, f"g_A{arm} distribution for {history_ref}")
             for vector, probability in policy[history_ref].distribution:
+                if not isinstance(vector, tuple) or len(vector) != 4:
+                    raise ContractError("g_A structural potentials require the complete four-coordinate vector")
                 if digest(vector) not in feasible:
                     raise ContractError(f"g_A{arm} support exceeds structural feasibility for {history_ref}")
                 if probability > 0:
