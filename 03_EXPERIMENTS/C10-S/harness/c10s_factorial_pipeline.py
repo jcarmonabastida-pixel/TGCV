@@ -14,7 +14,7 @@ from c10s_synthetic_components import (
     D2VContTruthBundle,
     D2TrajectoryGenerationConfig, EventHistory, IntervalGrid, ContractError,
     JointPolicyHistory, RCommonPairCertificate, SyntheticWorldBuilder,
-    SyntheticWorldConfig, Vector4,
+    SyntheticWorldConfig, Vector4, evaluate_d2_structural_deltas,
 )
 from c10s_functional_history import (
     FunctionalHistoryDGPConfig, generate_d2_event_history_potentials,
@@ -35,6 +35,7 @@ from theta_am_factorial import (
 class C10SFactorialWorldResult:
     world: object
     structural: object
+    structural_deltas: tuple[object, ...]
     reach: object
     trajectories: object
     d2_event_histories_by_unit_z: dict[tuple[str, int], EventHistory]
@@ -53,6 +54,31 @@ class C10SFactorialWorldResult:
     def validate(self, grid: IntervalGrid) -> None:
         self.world.validate()
         grid.validate()
+        structural_pairs = dict(self.structural)
+        expected_structural = {
+            (unit.unit_id, z) for unit in self.world.units for z in (0, 1)
+        }
+        if set(structural_pairs) != expected_structural or len(structural_pairs) != len(self.structural):
+            raise ContractError("factorial cohort must retain exact unit × Z structural-pair coverage")
+        delta_by_key = {(row.unit_id, row.potential_z): row for row in self.structural_deltas}
+        if set(delta_by_key) != expected_structural or len(delta_by_key) != len(self.structural_deltas):
+            raise ContractError("factorial cohort must retain exact unit × Z ΔT_acc* coverage")
+        for key in expected_structural:
+            pair, delta = structural_pairs[key], delta_by_key[key]
+            if (delta.baseline_snapshot_id, delta.post_snapshot_id) != (
+                pair.baseline.snapshot_id, pair.post.snapshot_id
+            ):
+                raise ContractError("factorial ΔT_acc* is detached from its exact structural potential snapshots")
+        self.reach.validate(self.world)
+        reach_by_key = {(row.unit_id, row.z): row for row in self.reach.contrasts}
+        if set(reach_by_key) != expected_structural or len(reach_by_key) != len(expected_structural):
+            raise ContractError("factorial cohort must retain exact unit × Z Reach coverage")
+        for key in expected_structural:
+            pair, reach = structural_pairs[key], reach_by_key[key]
+            if (reach.baseline.snapshot_id, reach.post.snapshot_id) != (
+                pair.baseline.snapshot_id, pair.post.snapshot_id
+            ):
+                raise ContractError("factorial Reach is detached from its exact structural potential snapshots")
         expected_d2 = {
             (unit.unit_id, z) for unit in self.world.units for z in (0, 1)
         }
@@ -137,6 +163,7 @@ def materialize_c10s_factorial_world_from_dgp(
     # It is not substituted for either focal A simple effect or the A×M interaction.
     d2_vcont_truth = builder.evaluate_complete_vcont_truth(world, d2_histories, grid)
     d2_vcont_truth.validate(world, d2_histories, grid)
+    structural_deltas = evaluate_d2_structural_deltas(world, structural)
     potentials, assignments, realized, selection = materialize_factorial_potentials(
         world, functional_history_config, g_a0, g_a1, r_common_certificates,
         initial_state_by_history, feasible_vectors_by_history, assignment_config,
@@ -172,7 +199,8 @@ def materialize_c10s_factorial_world_from_dgp(
         truth, sealed, analyzer_result, assignments, tolerance=evaluation_tolerance,
     )
     result = C10SFactorialWorldResult(
-        world, structural, reach, trajectories, d2_histories, d2_vcont_truth, potentials,
+        world, structural, tuple(structural_deltas), reach, trajectories,
+        d2_histories, d2_vcont_truth, potentials,
         assignments, realized, selection, interval_records, sealed,
         analysis_contract, analyzer_result, truth, evaluation,
     )
