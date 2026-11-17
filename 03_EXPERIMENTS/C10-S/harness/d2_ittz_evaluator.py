@@ -68,6 +68,8 @@ class D2ITTZEvaluator:
                 or contract.assignment_mechanism_id != assignments.mechanism_id
                 or contract.assignment_mechanism_version != assignments.mechanism_version):
             raise ContractError("ITT-Z analysis contract differs from the realized assignment bundle")
+        if (contract.grid_id, contract.grid_version) != (truth.grid_id, truth.grid_version):
+            raise ContractError("ITT-Z analysis contract grid differs from reserved V_cont truth")
         if result.run_id != evidence.run_id or result.input_sha256 != evidence.sha256:
             raise ContractError("ITT-Z Analyzer result is not bound to supplied evidence")
         if _hash({"manifest": evidence.manifest, "rows": list(evidence.rows)}) != evidence.sha256:
@@ -100,6 +102,17 @@ class D2ITTZEvaluator:
         if not evidence_units.issubset(assignments_by_unit):
             raise ContractError("D2 S3 evidence contains units outside the randomized assignment roster")
         manifest = evidence.manifest
+        if (manifest.get("grid_id"), manifest.get("grid_version"),
+                manifest.get("monitor_id"), manifest.get("monitor_version")) != (
+                contract.grid_id, contract.grid_version,
+                contract.monitor_id, contract.monitor_version):
+            raise ContractError("D2 sealed grid/monitor identity differs from independent analysis contract")
+        if any((row.get("grid_id"), row.get("grid_version"),
+                row.get("monitor_id"), row.get("monitor_version")) != (
+                contract.grid_id, contract.grid_version,
+                contract.monitor_id, contract.monitor_version)
+               for row in evidence.rows):
+            raise ContractError("D2 observed S3 row grid/monitor identity differs from analysis contract")
         expected_pairs = tuple(tuple(row) for row in manifest.get("expected_unit_history_refs", ()))
         expected_by_unit = dict(expected_pairs)
         expected_assignments = tuple(tuple(row) for row in manifest.get("expected_unit_assignments", ()))
