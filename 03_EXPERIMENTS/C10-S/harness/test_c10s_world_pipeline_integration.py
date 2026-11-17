@@ -583,6 +583,21 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             for index, unit in enumerate(d2_world.units)
         }
         monitor = next(iter(fixture["monitor_configs"].values()))
+        trajectory_rule = FunctionalHistoryRule(
+            rule_id="DUAL-TRAJECTORY-COMPLETION-TO-B1",
+            source="TRAJECTORY",
+            event_time=Decimal("1.5"),
+            causal_family="TRAJECTORY_EXECUTION_TO_B1_ADMISSION",
+            provenance_ref="FUNCTIONAL-DGP#DUAL-TRAJECTORY-COMPLETION-TO-B1",
+            set_admission="NO_ADMISSION",
+            trajectory_target_state="TARGET",
+            trajectory_field="trajectory_status",
+            trajectory_value="COMPLETED",
+        )
+        dual_functional_config = replace(
+            fixture["functional_config"],
+            rules=fixture["functional_config"].rules + (trajectory_rule,),
+        )
         result = materialize_c10s_dual_cohort_world_from_dgp(
             factorial_world_config=fixture["world_config"],
             d2_world_config=d2_world_config,
@@ -590,7 +605,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             structural_config=fixture["structural_config"],
             reach_config=fixture["reach_config"],
             trajectory_config=fixture["trajectory_config"],
-            functional_history_config=fixture["functional_config"],
+            functional_history_config=dual_functional_config,
             factorial_initial_state_by_unit_z=fixture["initial_by_unit_z"],
             d2_initial_state_by_unit_z=d2_initial_by_unit_z,
             initial_state_by_history=fixture["initial_by_history"],
@@ -616,6 +631,17 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         factorial_ids = {unit.unit_id for unit in result.factorial_cohort.world.units}
         d2_ids = {unit.unit_id for unit in result.d2_world.units}
         self.assertFalse(factorial_ids & d2_ids)
+        self.assertEqual(len(result.d2_structural_pairs), 64)
+        self.assertEqual(len(result.d2_reachability.contrasts), 64)
+        self.assertEqual(len(result.d2_trajectories.trajectories), 64)
+        d2_histories = result.d2_event_histories_by_unit_z
+        self.assertTrue(all(
+            any(change.causal_family == "TRAJECTORY_EXECUTION_TO_B1_ADMISSION"
+                for change in d2_histories[(unit_id, 1)].changes)
+            and not any(change.causal_family == "TRAJECTORY_EXECUTION_TO_B1_ADMISSION"
+                        for change in d2_histories[(unit_id, 0)].changes)
+            for unit_id in d2_ids
+        ))
         self.assertEqual(
             result.d2_observed_lane.sealed_evidence.manifest["unit_count"],
             len(result.d2_world.units),
@@ -636,7 +662,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             ),
         )
         self.assertIsNotNone(result.d2_evaluator_result.absolute_error)
-        result.validate(fixture["grid"])
+        result.validate(fixture["grid"], fixture["reach_config"])
 
         # Tampering with assignment probabilities while retaining the opaque
         # bundle digest must fail at the independent oracle-side boundary.
