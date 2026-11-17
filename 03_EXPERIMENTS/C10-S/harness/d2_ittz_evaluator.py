@@ -97,16 +97,40 @@ class D2ITTZEvaluator:
         evidence_units = {row["unit_id"] for row in evidence.rows}
         if evidence_units != set(assignments_by_unit):
             raise ContractError("D2 S3 evidence must cover exactly the randomized assignment roster")
+        # Recompute the assignment-bundle digest independently. The Analyzer
+        # only sees the opaque digest; the Evaluator verifies its full contents.
+        assignment_payload = {
+            "world": (assignments.world_id, assignments.world_version,
+                      assignments.dgp_id, assignments.dgp_version),
+            "mechanism": (assignments.mechanism_id, assignments.mechanism_version,
+                          assignments.mechanism_sha256),
+            "salt_sha256": assignments.randomization_salt_sha256,
+            "q_x_sha256": assignments.q_x_sha256,
+            "assignments": assignments.assignments,
+        }
+        if digest(assignment_payload) != assignments.result_sha256:
+            raise ContractError("D2 assignment bundle digest does not match its contents")
         truth_rows = {(row.unit_id, row.z): row for row in truth.potential_truth}
         for unit_id, assignment in assignments_by_unit.items():
             selected_truth = truth_rows[(unit_id, assignment.assigned_z)]
             rows = [row for row in evidence.rows if row["unit_id"] == unit_id]
-            if any((row["assigned_z"], row["selected_potential_id"], row["history_id"],
+            if not rows:
+                raise ContractError("D2 randomized unit has no observed S3 rows")
+            p_assigned = (
+                assignment.probability_z1 if assignment.assigned_z == 1
+                else assignment.probability_z0
+            )
+            if any((row["assigned_z"], row["probability_z0"], row["probability_z1"],
+                    row["assignment_probability"], row["assignment_uniform_sha256"],
+                    row["selected_potential_id"], row["history_id"],
                     row["history_content_sha256"]) != (
-                    assignment.assigned_z, selected_truth.potential_id,
-                    selected_truth.history_id, selected_truth.history_content_sha256
+                    assignment.assigned_z, assignment.probability_z0,
+                    assignment.probability_z1, p_assigned,
+                    assignment.assignment_uniform_sha256,
+                    selected_truth.potential_id, selected_truth.history_id,
+                    selected_truth.history_content_sha256
                     ) for row in rows):
-                raise ContractError("D2 observed S3 history does not match the exact reserved assigned-Z potential")
+                raise ContractError("D2 observed S3 assignment/probabilities do not match the hashed assignment and exact reserved potential")
         target_truth = truth.finite_population_itt_z_v_cont
         if not math.isfinite(target_truth) or not -1.0 <= target_truth <= 1.0:
             raise ContractError("reserved finite-population ITT-Z truth is outside [-1,1]")
