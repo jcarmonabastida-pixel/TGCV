@@ -18,8 +18,10 @@ class D2ITTZEvaluation:
     truth_itt_z: float
     analyzer_identification: str
     point_estimate: float | None
-    lower_bound: float
-    upper_bound: float
+    measurement_lower_bound: float
+    measurement_upper_bound: float
+    randomization_lower_bound: float | None
+    randomization_upper_bound: float | None
     absolute_error: float | None
     truth_within_bounds: bool | None
     correct_adjudication: bool
@@ -161,6 +163,8 @@ class D2ITTZEvaluator:
             raise ContractError("unsupported ITT-Z identification status")
         return D2ITTZEvaluation(
             evidence.run_id, target_truth, result.identification,
-            result.point_estimate, lower, upper, error, covers, correct,
+            result.point_estimate, lower, upper,
+            result.randomization_lower_bound, result.randomization_upper_bound,
+            error, covers, correct,
             disposition, tolerance, evidence.sha256, result.output_sha256,
         )
