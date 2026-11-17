@@ -34,7 +34,7 @@ from c10s_world_pipeline import materialize_c10s_complete_world_from_dgp
 from c10s_factorial_pipeline import materialize_c10s_factorial_world_from_dgp
 from c10s_dual_cohort_pipeline import (
     materialize_c10s_dual_cohort_world_from_dgp,
-    _validate_paired_functional_initial_states,
+    _validate_cohort_initial_states,
 )
 from d2_observed_assignment import D2ObservedAssignmentConfig
 from d2_ittz_evaluator import D2ITTZEvaluator
@@ -639,6 +639,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             world_id="WORLD-INTERVAL-INTEGRATION-D2-COHORT",
             roster_id="ROSTER-INTERVAL-INTEGRATION-D2-COHORT",
             unit_id_prefix="D2U",
+            seed=fixture["world_config"].seed + 101,
         )
         d2_world = SyntheticWorldBuilder().generate(
             d2_world_config, fixture["d2_config"],
@@ -653,14 +654,23 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         factorial_world = SyntheticWorldBuilder().generate(
             fixture["world_config"], fixture["d2_config"],
         )
-        mismatched_initial_states = dict(d2_initial_by_unit_z)
-        mismatched_initial_states[(d2_world.units[0].unit_id, 0)] = replace(
+        distinct_d2_initial_states = dict(d2_initial_by_unit_z)
+        distinct_d2_initial_states[(d2_world.units[0].unit_id, 0)] = replace(
             initial, admission_behavior="NO_ADMISSION",
         )
+        _validate_cohort_initial_states(
+            factorial_world, fixture["initial_by_unit_z"], "factorial",
+        )
+        _validate_cohort_initial_states(
+            d2_world, distinct_d2_initial_states, "D2",
+        )
+        self.assertNotEqual(
+            fixture["initial_by_unit_z"][(factorial_world.units[0].unit_id, 0)],
+            distinct_d2_initial_states[(d2_world.units[0].unit_id, 0)],
+        )
         with self.assertRaises(ContractError):
-            _validate_paired_functional_initial_states(
-                factorial_world, d2_world,
-                fixture["initial_by_unit_z"], mismatched_initial_states,
+            _validate_cohort_initial_states(
+                d2_world, {}, "D2",
             )
         d2_assignment = D2ObservedAssignmentConfig(
             mechanism_id="D2-PACKAGE-Z-RANDOMIZATION",
@@ -706,8 +716,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                     instance_version=1,
                     package_version="B1-PACKAGE-001",
                     baseline_time="t-1",
-                    stipulation=("FOCAL_INCLUSION", "FOCAL_EXCLUSION",
-                                 "SEMANTIC_INDETERMINACY")[((index - 1) % 3)],
+                            stipulation=states[(index - 1) % 3],
                     rule_version="NEED-RULE-TEST-001",
                     basis_ref=f"{prefix}-RESERVED-STIPULATION-{index:03d}",
                 )
