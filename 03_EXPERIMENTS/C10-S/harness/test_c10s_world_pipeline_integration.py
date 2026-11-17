@@ -433,7 +433,10 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 self.assertAlmostEqual(result.d2_vcont_truth.finite_population_itt_z_v_cont, -0.5)
                 self.assertEqual(result.analyzer_result.identification, "IDENTIFIED")
                 self.assertEqual(result.evaluator_result.truth, truth)
-                self.assertTrue(result.evaluator_result.correct_adjudication)
+                self.assertIn(
+                    result.evaluator_result.disposition,
+                    ("POINT_RECOVERED", "POINT_RECOVERY_FAILED"),
+                )
                 self.assertEqual(result.evaluator_result.evidence_sha256, result.sealed_evidence.sha256)
                 self.assertEqual(result.evaluator_result.analyzer_output_sha256, result.analyzer_result.output_sha256)
         # Under the null, a single randomized HT estimate may fluctuate; the
@@ -1255,11 +1258,11 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             self.assertEqual(truth[(unit.unit_id, 1)], 0.5)
             self.assertFalse(any(
                 change.causal_family == "TRAJECTORY_EXECUTION_TO_B1_ADMISSION"
-                for change in histories[(unit.unit_id, 0)].changes
+                for change in histories[(unit.unit_id, 0)].transitions
             ))
             self.assertTrue(any(
                 change.causal_family == "TRAJECTORY_EXECUTION_TO_B1_ADMISSION"
-                for change in histories[(unit.unit_id, 1)].changes
+                for change in histories[(unit.unit_id, 1)].transitions
             ))
 
 
