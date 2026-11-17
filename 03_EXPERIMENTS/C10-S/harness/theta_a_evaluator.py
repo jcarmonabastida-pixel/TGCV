@@ -38,6 +38,9 @@ class ThetaAObservationEvaluation:
     tolerance: float
     evidence_sha256: str
     analyzer_output_sha256: str
+    inference_truth_covered: bool | None = None
+    inference_interval_width: float | None = None
+    inference_confidence_level: float | None = None
 
 
 def _result_payload(result: ThetaAObservationAnalysisResult) -> dict[str, Any]:
@@ -56,6 +59,11 @@ def _result_payload(result: ThetaAObservationAnalysisResult) -> dict[str, Any]:
         "measurement_upper_bound": result.measurement_upper_bound,
         "missing_interval_count": result.missing_interval_count,
         "total_interval_count": result.total_interval_count,
+        "inference_method": result.inference_method,
+        "inference_confidence_level": result.inference_confidence_level,
+        "inference_lower_bound": result.inference_lower_bound,
+        "inference_upper_bound": result.inference_upper_bound,
+        "hoeffding_range_sum_squares": result.hoeffding_range_sum_squares,
     }
 
 
@@ -216,6 +224,56 @@ class ThetaAObservationEvaluator:
                         or not math.isclose(result.point_estimate, expected_measurement_lower,
                                             rel_tol=0.0, abs_tol=1e-12)):
                     raise ContractError("complete interval Analyzer point estimate does not reproduce HT contrast")
+
+            # Independently verify the optional bounded two-stage HT interval.
+            inference_fields = (
+                result.inference_method, result.inference_confidence_level,
+                result.inference_lower_bound, result.inference_upper_bound,
+                result.hoeffding_range_sum_squares,
+            )
+            inference_eligible = (
+                result.missing_interval_count == 0
+                and result.identification == "IDENTIFIED"
+                and result.point_estimate is not None
+                and set(qx_mass).issubset(observed_histories)
+                and all(arm_support)
+            )
+            if contract.confidence_level is None or not inference_eligible:
+                if any(value is not None for value in inference_fields):
+                    raise ContractError("theta_A inferential interval reported without a complete eligible design")
+            else:
+                if not contract.probability_a1_by_history:
+                    raise ContractError("theta_A inferential interval lacks declared assignment probabilities")
+                p1_by_history = dict(contract.probability_a1_by_history)
+                range_sum_squares = 0.0
+                for unit_rows in by_unit.values():
+                    first = unit_rows[0]
+                    p1 = p1_by_history[first["history_ref"]]
+                    p0 = 1.0 - p1
+                    selected_probability = p1 if first["assigned_arm"] == 1 else p0
+                    if not math.isclose(first["assignment_probability"], selected_probability,
+                                        rel_tol=0.0, abs_tol=1e-12):
+                        raise ContractError("sealed assignment probability differs from inferential contract")
+                    width = qx_mass[first["history_ref"]] * (1.0 / p1 + 1.0 / p0)
+                    range_sum_squares += width * width
+                radius = math.sqrt(
+                    0.5 * range_sum_squares
+                    * math.log(2.0 / (1.0 - contract.confidence_level))
+                )
+                expected_lower = result.point_estimate - radius
+                expected_upper = result.point_estimate + radius
+                if (result.inference_method != "HOEFFDING_TWO_STAGE_BOUNDED_HT_V1"
+                        or result.inference_confidence_level != contract.confidence_level
+                        or result.hoeffding_range_sum_squares is None
+                        or not math.isclose(result.hoeffding_range_sum_squares, range_sum_squares,
+                                            rel_tol=0.0, abs_tol=1e-12)
+                        or result.inference_lower_bound is None
+                        or result.inference_upper_bound is None
+                        or not math.isclose(result.inference_lower_bound, expected_lower,
+                                            rel_tol=0.0, abs_tol=1e-12)
+                        or not math.isclose(result.inference_upper_bound, expected_upper,
+                                            rel_tol=0.0, abs_tol=1e-12)):
+                    raise ContractError("theta_A bounded two-stage inferential interval failed independent reconstruction")
         lower, upper = result.lower_bound, result.upper_bound
         if not (math.isfinite(lower) and math.isfinite(upper) and lower <= upper):
             raise ContractError("Analyzer bounds must be finite and ordered")
@@ -257,9 +315,18 @@ class ThetaAObservationEvaluator:
 
         # Width 2 is the logical range for a binary contrast and is not informative.
         informative = width < 2.0 - 1e-12
+        inference_covered = None
+        inference_width = None
+        if result.inference_lower_bound is not None and result.inference_upper_bound is not None:
+            inference_covered = (
+                result.inference_lower_bound <= truth.theta_a_truth
+                <= result.inference_upper_bound
+            )
+            inference_width = result.inference_upper_bound - result.inference_lower_bound
         return ThetaAObservationEvaluation(
             result.run_id, truth.estimand_id, truth.estimand_version,
             truth.theta_a_truth, status, estimate, lower, upper, error, covers,
             width, informative, correct, disposition, tolerance, evidence.sha256,
-            result.output_sha256,
+            result.output_sha256, inference_covered, inference_width,
+            result.inference_confidence_level,
         )
