@@ -656,7 +656,7 @@ The interval S3 monitor is currently an ideal continuous-coverage channel with i
 
 ### Calibration boundary
 
-The existing 13-scenario × 4-assignment-estimand (52-key) matrix and its seed-bank protocol explicitly exclude `theta_A`; that exclusion must remain intact. The current protocol sizes assignment repetitions `R` for its own estimands and specifies an outer Monte Carlo dimension `M` that is not implemented. Its `required_replicates` function must not be repurposed as an `M` selector or silently transferred to `theta_A`.
+The existing 13-scenario × 4-assignment-estimand (52-key) matrix and its seed-bank protocol explicitly exclude `theta_A`; that exclusion must remain intact. The assignment generator also performs a second, within-arm random draw of the joint vector from the selected `g_A` policy distribution. A focal variance contract must account for both the Bernoulli arm assignment and this policy-vector randomization (or explicitly condition on a fixed set of policy draws and state the narrower estimand). A variance formula for the first-stage Bernoulli assignment alone is not automatically valid for the stochastic-policy estimand. The current protocol sizes assignment repetitions `R` for its own estimands and specifies an outer Monte Carlo dimension `M` that is not implemented. Its `required_replicates` function must not be repurposed as an `M` selector or silently transferred to `theta_A`.
 
 ### Next implementation block
 
