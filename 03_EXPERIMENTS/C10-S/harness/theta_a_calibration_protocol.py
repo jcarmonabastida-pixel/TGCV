@@ -277,11 +277,24 @@ class ThetaAReplicateRecord:
     inference_covered: bool | None
     inference_width: float | None
     requested_confidence_level: float | None
+    world_configuration_sha256: str
+    policy_design_sha256: str
+    assignment_randomization_sha256: str
+    evidence_sha256: str
+    analyzer_output_sha256: str
 
     def validate(self) -> None:
         if not all((self.scenario_id, self.scenario_version, self.outer_world_id,
                     self.world_id, self.run_id)):
             raise ThetaACalibrationError("replicate record identities are mandatory")
+        fingerprints = (
+            self.world_configuration_sha256, self.policy_design_sha256,
+            self.assignment_randomization_sha256, self.evidence_sha256,
+            self.analyzer_output_sha256,
+        )
+        if any(len(value) != 64 or any(ch not in "0123456789abcdef" for ch in value)
+               for value in fingerprints):
+            raise ThetaACalibrationError("replicate record requires five lowercase SHA-256 fingerprints")
         if self.n_units < 1 or self.assignment_replicate < 0:
             raise ThetaACalibrationError("replicate record N/R identity is invalid")
         if (self.expected_identification not in _VALID_IDENTIFICATION
@@ -345,13 +358,18 @@ def capture_theta_a_replicate(
         assignment.outer_world_id, assignment.assignment_replicate,
         assignment.world_id, assignment.run_id, scenario.expected_identification,
         result.analyzer_result.identification,
-        result.theta_a_truth.theta_a_truth.theta_a_truth,
+        truth.theta_a_truth,
         result.analyzer_result.point_estimate,
         result.analyzer_result.inference_lower_bound,
         result.analyzer_result.inference_upper_bound,
         evaluation.inference_truth_covered,
         evaluation.inference_interval_width,
         requested_confidence_level,
+        result.world.configuration_sha256,
+        policy_design_sha256,
+        assignment_bundle.randomization_salt_sha256,
+        result.sealed_evidence.sha256,
+        result.analyzer_result.output_sha256,
     )
     if evaluation.inference_confidence_level is not None and (
         requested_confidence_level is None
@@ -447,6 +465,12 @@ def summarize_theta_a_calibration(
                 ]
                 if len({x.world_id for x in group}) != 1:
                     raise ThetaACalibrationError("R replicates within one M do not share one world")
+                for field in ("world_configuration_sha256", "policy_design_sha256"):
+                    if len({getattr(x, field) for x in group}) != 1:
+                        raise ThetaACalibrationError(f"R replicates within one M changed {field}")
+                for field in ("assignment_randomization_sha256", "evidence_sha256", "analyzer_output_sha256"):
+                    if len({getattr(x, field) for x in group}) != len(group):
+                        raise ThetaACalibrationError(f"R replicates within one M must have distinct {field}")
                 truths = [x.truth for x in group]
                 if any(not _close(value, truths[0]) for value in truths[1:]):
                     raise ThetaACalibrationError("theta_A truth must remain fixed across R within each M")
