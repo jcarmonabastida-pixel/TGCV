@@ -88,7 +88,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             q_x_mass_by_unit=(1.0 / n_units,) * n_units,
         )
         d2_config = D2MechanismConfig(
-            dgp_id, "1",
+            world_config.dgp_id, world_config.dgp_version,
             ("D2-Z0", "D2-Z1"), ("1", "1"),
             ("ART-D2-Z0", "ART-D2-Z1"), ("ACTOR-Z0", "ACTOR-Z1"),
             (0.0, 1.0), (1.0, 1.0), (0.0, 0.0),
