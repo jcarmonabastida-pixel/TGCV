@@ -1,6 +1,11 @@
 name: C10-S V_cont package v2 pure capture, writer and verifier tests
 
 on:
+  push:
+    branches:
+      - research/c10-s-consolidation-draft
+    paths:
+      - '.github/workflows/c10-s-vcont-package-v2-pure-tests.yml'
   workflow_dispatch:
 
 permissions:
