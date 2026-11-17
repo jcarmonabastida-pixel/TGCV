@@ -322,8 +322,8 @@ class D2IntervalSealer:
             assignment_details = tuple(sorted(expected_assignments))
         elif expected_pairs and not missing_unit_ids:
             assignment_details = tuple(sorted(
-                (unit, expected_by_unit[unit], units[unit]["assignment"][10],
-                 units[unit]["assignment"][11], units[unit]["assignment"][12])
+                (unit, expected_by_unit[unit], units[unit]["assignment"][9],
+                 units[unit]["assignment"][10], units[unit]["assignment"][11])
                 for unit in expected_by_unit
             ))
         else:
