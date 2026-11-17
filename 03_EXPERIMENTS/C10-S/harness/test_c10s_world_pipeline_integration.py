@@ -350,6 +350,63 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             theta_a_unit_independence_certified=theta_a_confidence_level is not None,
         )
 
+    def test_theta_a_nmr_protocol_is_wired_through_complete_world_and_evaluator(self):
+        scenario = ThetaACalibrationScenario(
+            scenario_id="THETA_A_POSITIVE_INTERVAL_FIXTURE",
+            scenario_version="1.0",
+            world_version="1",
+            dgp_id="DGP-INTERVAL-INTEGRATION-INTERACTION",
+            dgp_version="1",
+            roster_version="1",
+            unit_id_prefix="U",
+            expected_identification="IDENTIFIED",
+            unit_independence_certified=True,
+            independence_basis=(
+                "fixture units have independently generated potential histories; "
+                "both assignment stages use independent unit-level draws and no interference"
+            ),
+        )
+        design = ThetaACalibrationDesign(
+            scenario_specs=(scenario,),
+            n_grid=(32,),
+            outer_worlds_m=2,
+            assignment_replicates_r=2,
+            confidence_level=0.95,
+            namespace="theta-a-world-pipeline-integration-test-v1",
+        )
+        assignments = build_theta_a_seed_bank(design, "calibration")
+        records = []
+        for assignment in assignments:
+            fixture = self._fixture("positive", seed_assignment=assignment)
+            result = self._run_pipeline(
+                fixture, theta_a_confidence_level=design.confidence_level,
+            )
+            records.append(capture_theta_a_replicate(
+                result, assignment, scenario,
+                requested_confidence_level=design.confidence_level,
+            ))
+        summaries = summarize_theta_a_calibration(
+            design, assignments, records, bank="calibration",
+        )
+        self.assertEqual(len(assignments), 4)
+        self.assertEqual(len(records), 4)
+        self.assertEqual(len(summaries), 1)
+        summary = summaries[0]
+        self.assertEqual(summary.outer_worlds_m, 2)
+        self.assertEqual(summary.assignment_replicates_r, 2)
+        metrics = {item.metric: item for item in summary.metrics}
+        self.assertEqual(metrics["identification_rate"].mean, 1.0)
+        self.assertIsNotNone(metrics["point_bias"].mean)
+        self.assertIsNotNone(metrics["interval_coverage"].mean)
+        self.assertEqual(
+            len({row.world_id for row in records}), 2,
+            "M must contain distinct outer worlds while R stays within each world",
+        )
+        for world_id in {row.world_id for row in records}:
+            group = [row for row in records if row.world_id == world_id]
+            self.assertEqual(len(group), 2)
+            self.assertEqual(len({row.run_id for row in group}), 2)
+
     def test_two_stage_inference_is_wired_through_complete_world_and_evaluator(self):
         fixture = self._fixture("positive")
         result = self._run_pipeline(fixture, theta_a_confidence_level=0.95)
