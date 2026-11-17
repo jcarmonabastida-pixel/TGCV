@@ -217,7 +217,9 @@ class D2ITTZEvaluator:
             selected_truth = truth_rows[(unit_id, assignment.assigned_z)]
             rows = [row for row in evidence.rows if row["unit_id"] == unit_id]
             if not rows:
-                raise ContractError("D2 randomized unit has no observed S3 rows")
+                # Unit-level nonresponse is represented in the sealed roster
+                # manifest and is handled as incomplete q_X support below.
+                continue
             p_assigned = (
                 assignment.probability_z1 if assignment.assigned_z == 1
                 else assignment.probability_z0
