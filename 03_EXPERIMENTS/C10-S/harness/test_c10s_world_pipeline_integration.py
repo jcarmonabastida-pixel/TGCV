@@ -731,6 +731,10 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             unit_nonresponse_evidence, result.d2_analysis_contract,
         )
         self.assertEqual(unit_nonresponse_analysis.identification, "PARTIALLY_IDENTIFIED")
+        self.assertEqual(
+            unit_nonresponse_analysis.bound_scope,
+            "REALIZED_HT_MEASUREMENT_COMPLETION",
+        )
         self.assertIsNone(unit_nonresponse_analysis.point_estimate)
         self.assertIn(
             original_bundle.assignments[-1].history_ref,
