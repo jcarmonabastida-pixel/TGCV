@@ -12,6 +12,8 @@ from typing import Mapping
 from c10s_synthetic_components import (
     ContractError, D2MechanismConfig, D2VContTruthBundle, EventHistory,
     IntervalGrid, SyntheticWorldBuilder, SyntheticWorldBundle, SyntheticWorldConfig,
+    D2StructuralGenerationConfig, D2ReachGenerationConfig, D2TrajectoryGenerationConfig,
+    D2StructuralPotentialPair, SyntheticWorldReachabilityContrast, SyntheticWorldTrajectoryBundle,
 )
 from c10s_functional_history import (
     FunctionalHistoryDGPConfig, generate_d2_event_history_potentials,
@@ -35,6 +37,9 @@ from c10s_factorial_pipeline import (
 class C10SDualCohortWorldResult:
     factorial_cohort: C10SFactorialWorldResult
     d2_world: SyntheticWorldBundle
+    d2_structural_pairs: tuple[tuple[tuple[str, int], D2StructuralPotentialPair], ...]
+    d2_reachability: SyntheticWorldReachabilityContrast
+    d2_trajectories: SyntheticWorldTrajectoryBundle
     d2_event_histories_by_unit_z: dict[tuple[str, int], EventHistory]
     d2_vcont_truth: D2VContTruthBundle
     d2_observed_lane: D2ObservedIntervalLaneResult
@@ -42,13 +47,28 @@ class C10SDualCohortWorldResult:
     d2_analyzer_result: D2ITTZAnalysisResult
     d2_evaluator_result: D2ITTZEvaluation
 
-    def validate(self, grid: IntervalGrid) -> None:
+    def validate(self, grid: IntervalGrid, reach_config: D2ReachGenerationConfig) -> None:
         grid.validate()
         self.factorial_cohort.validate(grid)
         self.d2_world.validate()
         expected = {
             (unit.unit_id, z) for unit in self.d2_world.units for z in (0, 1)
         }
+        structural_pairs = dict(self.d2_structural_pairs)
+        if set(structural_pairs) != expected or len(structural_pairs) != len(self.d2_structural_pairs):
+            raise ContractError("D2 cohort must retain exact unit × Z structural-potential coverage")
+        self.d2_reachability.validate(self.d2_world)
+        reach_by_key = {(row.unit_id, row.z): row for row in self.d2_reachability.contrasts}
+        if set(reach_by_key) != expected or len(reach_by_key) != len(expected):
+            raise ContractError("D2 cohort must retain exact unit × Z Reach-potential coverage")
+        for key in expected:
+            pair = structural_pairs[key]
+            reach = reach_by_key[key]
+            if (reach.baseline.snapshot_id, reach.post.snapshot_id) != (
+                pair.baseline.snapshot_id, pair.post.snapshot_id
+            ):
+                raise ContractError("D2 Reach is detached from its exact structural potential snapshots")
+        self.d2_trajectories.validate(self.d2_world, self.d2_reachability, reach_config)
         if set(self.d2_event_histories_by_unit_z) != expected:
             raise ContractError("D2 cohort must retain exact unit × Z potential EventHistory coverage")
         self.d2_vcont_truth.validate(self.d2_world, self.d2_event_histories_by_unit_z, grid)
@@ -128,9 +148,9 @@ def materialize_c10s_dual_cohort_world_from_dgp(
     factorial_world_config: SyntheticWorldConfig,
     d2_world_config: SyntheticWorldConfig,
     d2_config: D2MechanismConfig,
-    structural_config,
-    reach_config,
-    trajectory_config,
+    structural_config: D2StructuralGenerationConfig,
+    reach_config: D2ReachGenerationConfig,
+    trajectory_config: D2TrajectoryGenerationConfig,
     functional_history_config: FunctionalHistoryDGPConfig,
     factorial_initial_state_by_unit_z,
     d2_initial_state_by_unit_z,
@@ -187,7 +207,11 @@ def materialize_c10s_dual_cohort_world_from_dgp(
         evaluation_tolerance=evaluation_tolerance,
     )
     builder = SyntheticWorldBuilder()
-    d2_world = builder.generate(d2_world_config, d2_config)
+    d2_world, d2_structural_pairs, d2_reachability, d2_trajectories = (
+        builder.generate_complete_with_trajectories(
+            d2_world_config, d2_config, structural_config, reach_config, trajectory_config,
+        )
+    )
     _validate_paired_baseline(factorial.world, d2_world)
     d2_histories = generate_d2_event_history_potentials(
         d2_world, functional_history_config, d2_initial_state_by_unit_z,
@@ -226,8 +250,9 @@ def materialize_c10s_dual_cohort_world_from_dgp(
         result=analyzer_result, tolerance=evaluation_tolerance,
     )
     result = C10SDualCohortWorldResult(
-        factorial, d2_world, d2_histories, d2_truth, d2_lane,
+        factorial, d2_world, tuple(sorted(d2_structural_pairs.items())),
+        d2_reachability, d2_trajectories, d2_histories, d2_truth, d2_lane,
         analysis_contract, analyzer_result, evaluator_result,
     )
-    result.validate(grid)
+    result.validate(grid, reach_config)
     return result
