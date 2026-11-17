@@ -353,12 +353,26 @@ def capture_theta_a_replicate(
     ):
         raise ThetaACalibrationError("scenario contract differs from focal seed assignment")
     evaluation = result.evaluator_result
+    truth_bundle = result.theta_a_truth.theta_a_truth
+    assignment_bundle = result.theta_a_assignments
+    if (truth_bundle.q_x_fingerprint != assignment_bundle.q_x_sha256
+            or truth_bundle.g_a0_fingerprint != assignment_bundle.g_a0_sha256
+            or truth_bundle.g_a1_fingerprint != assignment_bundle.g_a1_sha256):
+        raise ThetaACalibrationError("reserved truth and assignment bundle have different q_X/g_A fingerprints")
+    policy_design_sha256 = _digest("|".join((
+        assignment_bundle.q_x_sha256, assignment_bundle.g_a0_sha256,
+        assignment_bundle.g_a1_sha256, assignment_bundle.r_common_sha256,
+    )))
+    if (evaluation.truth != truth_bundle.theta_a_truth
+            or evaluation.analyzer_identification != result.analyzer_result.identification
+            or evaluation.point_estimate != result.analyzer_result.point_estimate):
+        raise ThetaACalibrationError("Evaluator record differs from the supplied Analyzer and reserved truth")
     record = ThetaAReplicateRecord(
         assignment.scenario_id, assignment.scenario_version, assignment.n_units,
         assignment.outer_world_id, assignment.assignment_replicate,
         assignment.world_id, assignment.run_id, scenario.expected_identification,
         result.analyzer_result.identification,
-        truth.theta_a_truth,
+        truth_bundle.theta_a_truth,
         result.analyzer_result.point_estimate,
         result.analyzer_result.inference_lower_bound,
         result.analyzer_result.inference_upper_bound,
