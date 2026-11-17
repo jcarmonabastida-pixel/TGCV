@@ -26,7 +26,7 @@ from theta_a_interval_observation import (
 )
 
 
-SCHEMA = "C10S-D2-Z-S3-INTERVAL-002"
+SCHEMA = "C10S-D2-Z-S3-INTERVAL-003"
 
 
 def _plain(value: Any) -> Any:
