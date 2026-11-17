@@ -85,7 +85,8 @@ class C10SDualCohortWorldResult:
             pair = structural_pairs[key]
             reach = reach_by_key[key]
             if (reach.baseline.snapshot_id, reach.post.snapshot_id) != (
-                pair.baseline.snapshot_id, pair.post.snapshot_id
+                f"{pair.baseline.snapshot_id}:REACH:BASELINE",
+                f"{pair.post.snapshot_id}:REACH:POST",
             ):
                 raise ContractError("D2 Reach is detached from its exact structural potential snapshots")
         self.d2_trajectories.validate(self.d2_world, self.d2_reachability, reach_config)
