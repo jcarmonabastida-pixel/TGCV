@@ -17,11 +17,24 @@ permissions:
 
 jobs:
   integrated-synthetic-contract-tests:
-    if: github.ref == 'refs/heads/research/c10-s-consolidation-draft' && ((github.event_name == 'workflow_dispatch' && inputs.confirm_synthetic_test_execution == true) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[C10S-TECHNICAL-TESTS-AUTHORIZED]')))
+    if: github.ref == 'refs/heads/research/c10-s-consolidation-draft'
     name: Explicitly authorized integrated synthetic contract suite
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
+      - name: Enforce explicit technical-test authorization
+        shell: bash
+        env:
+          DISPATCH_CONFIRMATION: ${{ inputs.confirm_synthetic_test_execution }}
+          PUSH_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
+            test "$DISPATCH_CONFIRMATION" = "true"
+          else
+            [[ "$PUSH_COMMIT_MESSAGE" == *"[C10S-TECHNICAL-TESTS-AUTHORIZED]"* ]]
+          fi
+
       - name: Check out exact research-branch commit
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:

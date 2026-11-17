@@ -11,11 +11,21 @@ permissions:
 
 jobs:
   vcont-package-v2-pure-capture-tests:
-    if: github.ref == 'refs/heads/research/c10-s-consolidation-draft' && (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && contains(github.event.head_commit.message, '[C10S-TECHNICAL-TESTS-AUTHORIZED]')))
+    if: github.ref == 'refs/heads/research/c10-s-consolidation-draft'
     name: Pure capture, package writer and independent verifier fixtures — no synthetic producer execution
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
+      - name: Enforce explicit technical-test authorization
+        shell: bash
+        env:
+          PUSH_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_EVENT_NAME" == "push" ]]; then
+            [[ "$PUSH_COMMIT_MESSAGE" == *"[C10S-TECHNICAL-TESTS-AUTHORIZED]"* ]]
+          fi
+
       - name: Enforce research-branch-only execution
         shell: bash
         run: test "${GITHUB_REF}" = "refs/heads/research/c10-s-consolidation-draft"
