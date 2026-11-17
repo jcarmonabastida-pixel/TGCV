@@ -334,6 +334,11 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
     def test_dgp_world_flows_through_realized_interval_evidence_and_reserved_oracle(self):
         fixture = self._fixture("positive")
         result = self._run_pipeline(fixture)
+        self.assertEqual(len(result.need_pre_z_truth.records), fixture["world_config"].n_units)
+        self.assertEqual(
+            {row.need_truth_state for row in result.need_pre_z_truth.records},
+            {1, 0, "?"},
+        )
 
         # The DGP-generated potential histories, not caller-supplied histories,
         # feed the reserved oracle and the realized-assignment selection.
@@ -738,6 +743,17 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             d2_interval_monitor_seeds_by_unit=d2_monitor_seeds,
             estimand_version="1",
             evaluation_tolerance=0.25,
+        )
+        self.assertEqual(
+            len(result.factorial_need_pre_z_truth.records),
+            len(result.factorial_cohort.world.units),
+        )
+        self.assertEqual(
+            len(result.d2_need_pre_z_truth.records), len(result.d2_world.units),
+        )
+        self.assertEqual(
+            tuple(row.need_truth_state for row in result.factorial_need_pre_z_truth.records),
+            tuple(row.need_truth_state for row in result.d2_need_pre_z_truth.records),
         )
         factorial_ids = {unit.unit_id for unit in result.factorial_cohort.world.units}
         d2_ids = {unit.unit_id for unit in result.d2_world.units}
