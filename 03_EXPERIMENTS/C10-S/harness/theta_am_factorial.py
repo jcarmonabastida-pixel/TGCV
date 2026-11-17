@@ -306,12 +306,14 @@ def materialize_factorial_potentials(
     initial_state_by_history,
     feasible_vectors_by_history: dict[str, tuple[Vector4, ...]],
     assignment_config: FactorialAssignmentConfig,
+    trajectories_by_history_vector_target=None,
 ):
     """Generate all A×M potentials and one randomized realized assignment bundle."""
     potentials = generate_factorial_event_history_potentials(
         world, functional_history_config, g_a0, g_a1, r_common_certificates,
         initial_state_by_history, factor_m_id=assignment_config.factor_m_id,
         factor_m_version=assignment_config.factor_m_version,
+        trajectories_by_history_vector_target=trajectories_by_history_vector_target,
     )
     assignments = generate_factorial_assignments(
         world, assignment_config, g_a0, g_a1,
