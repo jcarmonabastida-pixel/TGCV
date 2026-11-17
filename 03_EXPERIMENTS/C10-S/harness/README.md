@@ -644,7 +644,7 @@ This is a source-level audit of the current direct-`g_A` interval-observation pa
 
 - `generate_theta_a_policy_assignments` assigns one unit to `g_A0` or `g_A1` using an explicit history-specific Bernoulli probability strictly between zero and one. The draw is keyed by the unit and a dedicated randomization salt; Z and the legacy G assignment are not substituted.
 - The focal Analyzer uses the sealed interval observations and the declared `q_X*` history masses. With complete certified interval observations and both realized arms represented, it computes a q_X-standardized Horvitz–Thompson contrast. With missing intervals, incomplete target support or an absent realized arm, it abstains.
-- The independent Evaluator opens the reserved `theta_A) truth after analysis and checks provenance, point recovery or abstention. It does not feed truth to the Analyzer.
+- The independent Evaluator opens the reserved `theta_A` truth after analysis and checks provenance, point recovery or abstention. It does not feed truth to the Analyzer.
 
 ### Exact inferential gap
 
