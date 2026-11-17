@@ -600,3 +600,14 @@ Se registra el estado material posterior a la directriz §325, sin reabrir decis
 **Siguiente bloque.** El primer contrato inferencial conservador está implementado como `HOEFFDING_TWO_STAGE_BOUNDED_HT_V1` en Analyzer/Evaluator, opcional hasta que se proporcionen nivel de confianza y probabilidades por historia explícitos. Devuelve un intervalo inferencial separado de los límites lógicos y de los límites de medición; se abstiene de producirlo si falta soporte o hay missingness. Falta calibrarlo empíricamente con N/R/M separados y bancos disjuntos, evaluando cobertura, anchura/precisión, error tipo I y potencia cuando se defina un contraste, recuperación puntual y abstención correcta. No se ha implementado SE ni p-value. Los escenarios de medición imperfecta y el puente Outcome/consecuencia B1/Value contextual continúan como dependencias separadas; no se presentan como cerrados.
 
 **Autorización y estado.** La implementación del carril S continúa autorizada por §325. La ejecución EP-02 fue acotada a su autorización técnica específica. No se ha ejecutado calibración, generación de bancos, Monte Carlo, evaluación científica ni experimento confirmatorio. Las modificaciones fuente de Analyzer/Evaluator v0.2 y pipeline posteriores a EP-02 tampoco se han compilado ni probado; las regresiones añadidas son todavía fuente no ejecutada. No se modifica `main), no se promueve el PR #116 (sigue Draft) y no se alteran DEC, RMA, Evidence→Claim Matrix, STATUS o Core.
+
+## 327. EP-02 — regresión de inferencia focal integrada (2026-11-17)
+
+Se ejecutó de nuevo la suite técnica después de implementar el intervalo conservador de dos etapas y propagar sus parámetros por el punto de entrada DGP.
+
+**Run 826:** PASS. GitHub Actions `44174593341`, commit probado `d25065add02057256ea26e412a5abf15d30eb539`. Suite primaria **286/286 PASS** en 8.193 s; replay limpio **286/286 PASS** en 8.119 s. La prueba nueva de wiring del intervalo en el mundo completo y Evaluator pasó. Payload y manifiesto se conservan en los artefactos del run y se registran en el README del harness.
+
+**Corrección intermedia:** Run 825 falló con seis errores por omisión de los parámetros nuevos en la firma de `materialize_c10s_complete_world_from_dgp`. Se corrigió la firma y propagación; Run 826 valida esa corrección. La comparación de commits confirma que los dos commits posteriores al commit probado solo restauran el workflow manual y eliminan el centinela temporal; no alteran código ni tests.
+
+**Alcance:** evidencia técnica de compilación, contratos de software y replay. No acredita calibración del intervalo, cobertura empírica, error tipo I, potencia, precisión útil ni identificación causal general. No hubo calibración, Monte Carlo ni experimento científico. La activación temporal quedó retirada; el workflow vuelve a ser manual y el centinela no existe.
+
