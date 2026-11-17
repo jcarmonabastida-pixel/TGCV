@@ -481,6 +481,7 @@ class D2ObservedIntervalLaneResult:
             or manifest.get("missing_unit_ids") != expected_missing
             or tuple(manifest.get("expected_unit_assignments", ())) != expected_assignments
             or manifest.get("interval_count_per_unit") != expected_per_unit
+            or tuple(manifest.get("interval_bounds", ())) != tuple(zip(grid.boundaries, grid.boundaries[1:]))
             or (manifest.get("grid_id"), manifest.get("grid_version"))
                != (grid.grid_id, grid.grid_version)
             or not manifest.get("monitor_id") or not manifest.get("monitor_version")
