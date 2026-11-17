@@ -389,6 +389,10 @@ class ThetaAReplicateRecord:
     assignment_replicate: int
     world_id: str
     run_id: str
+    estimand_id: str
+    estimand_version: str
+    outcome_id: str
+    outcome_version: str
     expected_identification: Identification
     analyzer_identification: Identification
     truth: float
@@ -406,8 +410,11 @@ class ThetaAReplicateRecord:
 
     def validate(self) -> None:
         if not all((self.scenario_id, self.scenario_version, self.outer_world_id,
-                    self.world_id, self.run_id)):
-            raise ThetaACalibrationError("replicate record identities are mandatory")
+                    self.world_id, self.run_id, self.estimand_id,
+                    self.estimand_version, self.outcome_id, self.outcome_version)):
+            raise ThetaACalibrationError("replicate record identities and estimand/outcome versions are mandatory")
+        if self.outcome_id != "V_CONT":
+            raise ThetaACalibrationError("focal theta_A calibration is restricted to the V_CONT outcome")
         fingerprints = (
             self.world_configuration_sha256, self.policy_design_sha256,
             self.assignment_randomization_sha256, self.evidence_sha256,
@@ -552,6 +559,12 @@ def capture_theta_a_replicate(
         assignment_bundle.q_x_sha256, assignment_bundle.g_a0_sha256,
         assignment_bundle.g_a1_sha256, assignment_bundle.r_common_sha256,
     )))
+    if (truth_bundle.outcome_id != "V_CONT"
+            or result.analyzer_result.estimand_id != truth_bundle.estimand_id
+            or result.analyzer_result.estimand_version != truth_bundle.estimand_version
+            or evaluation.estimand_id != truth_bundle.estimand_id
+            or evaluation.estimand_version != truth_bundle.estimand_version):
+        raise ThetaACalibrationError("Analyzer/Evaluator estimand identity differs from reserved V_CONT truth")
     if (evaluation.truth != truth_bundle.theta_a_truth
             or evaluation.analyzer_identification != result.analyzer_result.identification
             or evaluation.point_estimate != result.analyzer_result.point_estimate):
@@ -559,8 +572,10 @@ def capture_theta_a_replicate(
     record = ThetaAReplicateRecord(
         assignment.scenario_id, assignment.scenario_version, assignment.n_units,
         assignment.outer_world_id, assignment.assignment_replicate,
-        assignment.world_id, assignment.run_id, scenario.expected_identification,
-        result.analyzer_result.identification,
+        assignment.world_id, assignment.run_id,
+        truth_bundle.estimand_id, truth_bundle.estimand_version,
+        truth_bundle.outcome_id, truth_bundle.outcome_version,
+        scenario.expected_identification, result.analyzer_result.identification,
         truth_bundle.theta_a_truth,
         result.analyzer_result.point_estimate,
         result.analyzer_result.inference_lower_bound,
@@ -668,7 +683,10 @@ def summarize_theta_a_calibration(
                 ]
                 if len({x.world_id for x in group}) != 1:
                     raise ThetaACalibrationError("R replicates within one M do not share one world")
-                for field in ("world_configuration_sha256", "policy_design_sha256"):
+                for field in (
+                    "world_configuration_sha256", "policy_design_sha256",
+                    "estimand_id", "estimand_version", "outcome_id", "outcome_version",
+                ):
                     if len({getattr(x, field) for x in group}) != 1:
                         raise ThetaACalibrationError(f"R replicates within one M changed {field}")
                 for field in ("assignment_randomization_sha256", "evidence_sha256", "analyzer_output_sha256"):
