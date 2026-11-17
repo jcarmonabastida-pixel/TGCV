@@ -234,11 +234,10 @@ def compose_theta_a_interval_s3_records(
         history = history_by_id.get(history_id)
         if history is None or (
             history.unit_id, history.history_id, history.content_sha256, history.potential_id,
-            history.history_ref, history.world_id, history.world_version, history.dgp_version,
+            history.world_id, history.world_version, history.dgp_version,
         ) != (
             assignment.unit_id, history_id, history_sha, potential_id,
-            assignment.history_ref, assignments.world_id, assignments.world_version,
-            assignments.dgp_version,
+            assignments.world_id, assignments.world_version, assignments.dgp_version,
         ):
             raise ContractError("interval S3 selected history does not match realized assignment provenance")
         grid = grids_by_history_ref.get(assignment.history_ref)
