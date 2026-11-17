@@ -103,7 +103,8 @@ class C10SFactorialWorldResult:
         for key in expected_structural:
             pair, reach = structural_pairs[key], reach_by_key[key]
             if (reach.baseline.snapshot_id, reach.post.snapshot_id) != (
-                pair.baseline.snapshot_id, pair.post.snapshot_id
+                f"{pair.baseline.snapshot_id}:REACH:BASELINE",
+                f"{pair.post.snapshot_id}:REACH:POST",
             ):
                 raise ContractError("factorial Reach is detached from its exact structural potential snapshots")
         expected_factorial_support = {
