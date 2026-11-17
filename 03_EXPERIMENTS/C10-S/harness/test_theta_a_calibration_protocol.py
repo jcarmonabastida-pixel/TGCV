@@ -224,7 +224,11 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         design = self._design(scenario)
         assignments = build_theta_a_seed_bank(design, "calibration")
         records = tuple(
-            self._record(row, "NOT_IDENTIFIED", "NOT_IDENTIFIED", None, None, None, None, None, None)
+            self._record(
+                row, "NOT_IDENTIFIED",
+                "NOT_IDENTIFIED" if row.assignment_replicate == 0 else "PARTIALLY_IDENTIFIED",
+                None, None, None, None, None, None,
+            )
             for row in assignments
         )
         summary = summarize_theta_a_calibration(
