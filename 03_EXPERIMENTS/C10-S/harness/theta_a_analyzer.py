@@ -29,6 +29,7 @@ class ThetaAObservationAnalysisContract:
     estimand_version: str = "1.0"
     probability_a1_by_history: tuple[tuple[str, float], ...] = ()
     confidence_level: float | None = None
+    unit_independence_certified: bool = False
 
     def validate(self) -> None:
         if not all((self.q_x_sha256, self.assignment_bundle_sha256,
@@ -54,6 +55,8 @@ class ThetaAObservationAnalysisContract:
                 raise ContractError("theta_A confidence_level must be explicitly between zero and one")
             if not self.probability_a1_by_history:
                 raise ContractError("theta_A confidence interval requires the declared history-specific assignment probabilities")
+            if self.unit_independence_certified is not True:
+                raise ContractError("theta_A Hoeffding interval requires explicit unit-independence certification")
 
 
 @dataclass(frozen=True)
