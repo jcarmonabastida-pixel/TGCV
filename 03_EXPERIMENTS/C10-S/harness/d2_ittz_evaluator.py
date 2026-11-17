@@ -74,6 +74,9 @@ class D2ITTZEvaluator:
             "estimand_version": result.estimand_version,
             "identification": result.identification, "point_estimate": result.point_estimate,
             "lower_bound": result.lower_bound, "upper_bound": result.upper_bound,
+            "randomization_lower_bound": result.randomization_lower_bound,
+            "randomization_upper_bound": result.randomization_upper_bound,
+            "hoeffding_radius": result.hoeffding_radius,
             "target_q_x_coverage": result.target_q_x_coverage,
             "missing_target_histories": result.missing_target_histories,
             "assigned_z_unit_counts": result.assigned_z_unit_counts,
@@ -112,10 +115,28 @@ class D2ITTZEvaluator:
                 raise ContractError("identified ITT-Z result requires a finite estimate")
             if result.missing_interval_count != 0:
                 raise ContractError("identified ITT-Z result cannot contain missing intervals")
+            if (result.randomization_lower_bound is None
+                    or result.randomization_upper_bound is None
+                    or result.hoeffding_radius is None
+                    or not math.isfinite(result.randomization_lower_bound)
+                    or not math.isfinite(result.randomization_upper_bound)
+                    or not math.isfinite(result.hoeffding_radius)
+                    or result.randomization_lower_bound > result.randomization_upper_bound
+                    or result.hoeffding_radius < 0):
+                raise ContractError("identified ITT-Z requires finite design-based randomization bounds")
             error = abs(result.point_estimate - target_truth)
-            covers = lower - tolerance <= target_truth <= upper + tolerance
-            correct = error <= tolerance
-            disposition = "POINT_RECOVERED" if correct else "POINT_RECOVERY_FAILED"
+            covers = (
+                result.randomization_lower_bound - tolerance <= target_truth
+                <= result.randomization_upper_bound + tolerance
+            )
+            # HT is design-unbiased, not exactly equal to finite-population
+            # truth in each randomization. Evaluate finite-sample coverage,
+            # never exact equality to the oracle.
+            correct = covers
+            disposition = (
+                "TRUTH_WITHIN_HOEFFDING_RANDOMIZATION_BOUND"
+                if covers else "TRUTH_OUTSIDE_HOEFFDING_RANDOMIZATION_BOUND"
+            )
         elif result.identification == "PARTIALLY_IDENTIFIED":
             if result.point_estimate is not None or not result.abstention_reason:
                 raise ContractError("partial ITT-Z result must abstain with an explicit reason")
