@@ -720,7 +720,7 @@ def summarize_theta_a_calibration(
                     expected_status = scenario.expected_identification
                     metric_values.setdefault("correct_abstention_rate", []).append((
                         outer_id,
-                        sum(x.analyzer_identification == expected_status for x in group) / r_count,
+                        sum(x.analyzer_identification != "IDENTIFIED" for x in group) / r_count,
                     ))
                     metric_values.setdefault("false_identification_rate", []).append(
                         (outer_id, sum(identified) / r_count)
