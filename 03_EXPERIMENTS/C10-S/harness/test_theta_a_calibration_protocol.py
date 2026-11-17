@@ -24,8 +24,11 @@ from theta_a_calibration_protocol import (
 class ThetaACalibrationProtocolTests(unittest.TestCase):
     def _design(self, scenario=None):
         scenario = scenario or ThetaACalibrationScenario(
-            "THETA_A_IDEAL", "1.0", "IDENTIFIED", True,
-            "unit-level potential histories and two-stage randomization are generated independently by unit",
+            scenario_id="THETA_A_IDEAL", scenario_version="1.0",
+            world_version="world-v1", dgp_id="C10S-THETA-A", dgp_version="1.0",
+            roster_version="1.0", unit_id_prefix="unit",
+            expected_identification="IDENTIFIED", unit_independence_certified=True,
+            independence_basis="unit-level potential histories and two-stage randomization are generated independently by unit",
         )
         return ThetaACalibrationDesign(
             scenario_specs=(scenario,),
@@ -60,15 +63,21 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         self.assertIs(options["theta_a_unit_independence_certified"], True)
 
         nonidentified = self._design(ThetaACalibrationScenario(
-            "THETA_A_NO_SUPPORT", "1.0", "NOT_IDENTIFIED", False
+            scenario_id="THETA_A_NO_SUPPORT", scenario_version="1.0",
+            world_version="world-v1", dgp_id="C10S-THETA-A", dgp_version="1.0",
+            roster_version="1.0", unit_id_prefix="unit",
+            expected_identification="NOT_IDENTIFIED", unit_independence_certified=False,
         ))
         options = theta_a_pipeline_inference_options(nonidentified, nonidentified.scenario_specs[0])
         self.assertIsNone(options["theta_a_confidence_level"])
         self.assertIs(options["theta_a_unit_independence_certified"], False)
 
         missingness = self._design(ThetaACalibrationScenario(
-            "THETA_A_MISSING", "1.0", "INDETERMINATE", True,
-            "unit-level joint assignment is independent; observation incompleteness is separately represented",
+            scenario_id="THETA_A_MISSING", scenario_version="1.0",
+            world_version="world-v1", dgp_id="C10S-THETA-A", dgp_version="1.0",
+            roster_version="1.0", unit_id_prefix="unit",
+            expected_identification="INDETERMINATE", unit_independence_certified=True,
+            independence_basis="unit-level joint assignment is independent; observation incompleteness is separately represented",
         ))
         options = theta_a_pipeline_inference_options(missingness, missingness.scenario_specs[0])
         self.assertEqual(options["theta_a_confidence_level"], 0.95)
@@ -197,7 +206,10 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
 
     def test_nonidentified_scenario_reports_correct_abstention(self):
         scenario = ThetaACalibrationScenario(
-            "THETA_A_NO_SUPPORT", "1.0", "NOT_IDENTIFIED", False
+            scenario_id="THETA_A_NO_SUPPORT", scenario_version="1.0",
+            world_version="world-v1", dgp_id="C10S-THETA-A", dgp_version="1.0",
+            roster_version="1.0", unit_id_prefix="unit",
+            expected_identification="NOT_IDENTIFIED", unit_independence_certified=False,
         )
         design = self._design(scenario)
         assignments = build_theta_a_seed_bank(design, "calibration")
@@ -214,7 +226,10 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
 
     def test_partial_identification_is_rejected_until_bounds_are_adjudicated(self):
         scenario = ThetaACalibrationScenario(
-            "THETA_A_PARTIAL", "1.0", "PARTIALLY_IDENTIFIED", False
+            scenario_id="THETA_A_PARTIAL", scenario_version="1.0",
+            world_version="world-v1", dgp_id="C10S-THETA-A", dgp_version="1.0",
+            roster_version="1.0", unit_id_prefix="unit",
+            expected_identification="PARTIALLY_IDENTIFIED", unit_independence_certified=False,
         )
         with self.assertRaises(ThetaACalibrationError):
             self._design(scenario).validate()
