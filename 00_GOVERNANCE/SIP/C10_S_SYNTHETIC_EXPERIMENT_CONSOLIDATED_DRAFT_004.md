@@ -664,3 +664,54 @@ No se modifica `main`, RMA, Evidence→Claim Matrix, STATUS o TGCV Core. PR #116
 **Artefactos:** payload `14379769769`; manifiesto `14380508733`. **Estado de autorización:** la autorización puntual cubrió únicamente compilación, suite EP-02 y replay; quedó consumida. El workflow se restauró a `workflow_dispatch` manual-only. `calibration_authorized=false`, `scientific_execution=false`, `execution_authorized=false`.
 
 **Alcance:** evidencia de integración de software y regresión reproducible. No acredita calibración estadística, cobertura, potencia, error tipo I, identificación causal ni contribución empírica de ΔT_acc a Value. No se generaron bancos de calibración/evaluación, no se ejecutó Monte Carlo ni experimento científico. No se modificó `main`, RMA, Evidence→Claim Matrix, STATUS ni TGCV Core.
+
+## 330. Propuesta preliminar de dimensionamiento para calibración focal θ_A — NO CONGELADA (2026-11-18)
+
+**Naturaleza:** propuesta de trabajo para discusión y sensibilidad; no constituye decisión científica, roster aprobado, diseño confirmatorio ni autorización de ejecución. Se incorpora en el maestro existente para evitar abrir un documento paralelo.
+
+### Estado de partida y restricciones observadas
+
+El protocolo `theta_a_calibration_protocol.py` ya implementa N unidades por mundo, M mundos exteriores independientes y R asignaciones dentro de cada mundo; exige M≥2 y R≥2, separa los streams de calibración/evaluación y calcula primero contribuciones por M antes de obtener MCSE entre mundos. Los objetivos MCSE son explícitos por escenario, N y métrica. La suite EP-02 Run 828 acredita la integración de software de este scaffold y del fixture World Builder; no acredita calibración estadística.
+
+Los cuatro modos `positive`, `null`, `negative` y `alternative` presentes en `test_c10s_world_pipeline_integration.py` son modos de fixture de integración. Sus nombres no constituyen por sí mismos adjudicación de truth θ_A ni de estado de identificación. En particular, el caso `alternative` comparte configuración base con `positive` y añade una vía funcional alternativa/interacción; no se le asignará automáticamente una clase NOT_IDENTIFIED o PARTIALLY_IDENTIFIED. La clase debe salir de la verdad independiente del DGP y de los contratos de identificación vigentes. El protocolo actual rechaza truth PARTIALLY_IDENTIFIED hasta que existan bounds adjudicados; no debe forzarse esa clase para encajar el roster.
+
+La métrica de Type-I error y la potencia siguen sin procedimiento de contraste definido. Un escenario con θ_A=0 no basta por sí solo para declarar Type-I error ni potencia.
+
+### Roster focal propuesto — primera ola
+
+1. **Identificado positivo:** efecto focal no nulo positivo, sin vía alternativa/directa incompatible con la identificación.
+2. **Identificado nulo:** θ_A=0 por construcción, manteniendo las condiciones de identificación.
+3. **Identificado negativo:** efecto focal no nulo negativo, manteniendo las condiciones de identificación.
+4. **Vía alternativa/competidora:** fixture `alternative` como candidato adversarial; incluirlo en el roster solo después de adjudicar independientemente si θ_A queda IDENTIFIED, NOT_IDENTIFIED o INDETERMINATE. Si resulta parcialmente identificado, mantenerlo fuera de esta calibración puntual hasta resolver bounds, sin recodificarlo.
+
+**Condición de entrada por escenario:** registrar la verdad analítica θ_A y expected_identification a partir del DGP/Evaluator independiente, y verificar que la manipulación cambia el mecanismo pretendido sin alterar inadvertidamente q_X*, r_common, soporte, versiones ni otras rutas. La clase esperada nunca se inferirá de la respuesta del Analyzer.
+
+### Dimensionamiento exploratorio escalonado — candidato, no congelado
+
+| Parámetro | Propuesta inicial | Motivo / regla de revisión |
+|---|---:|---|
+| N (unidades por mundo) | 32, 64, 128 | 32 reutiliza el tamaño del fixture actual; 64/128 permiten observar sensibilidad a N. La compatibilidad de N mayores debe verificarse técnicamente antes de construir bancos. |
+| M (mundos exteriores) | 30 | Unidad independiente para MCSE; primera aproximación de piloto, no garantía de precisión. |
+| R (asignaciones por mundo) | 20 | Reduce ruido de asignación dentro de cada mundo y permite estimar contribuciones por M; no sustituye aumentar M. |
+| Confianza | 0,95 | Nivel explícito inicial coherente con la lectura del intervalo conservador; no se presenta como decisión confirmatoria. |
+| Tolerancia de recuperación puntual | No fijada inicialmente | Mantener errores continuos (bias, MAE, RMSE); fijar tolerancia solo con justificación de escala/uso del estimando, no por conveniencia del resultado. |
+
+El tamaño inicial sería 3 N × 30 M × 20 R = 1.800 ejecuciones por escenario y banco. Con los tres escenarios identificados serían 5.400 ejecuciones por banco; calibración y evaluación usarían bancos disjuntos y, por tanto, streams independientes. La vía alternativa solo añade coste después de su adjudicación. Este volumen es una propuesta de planificación, no una generación de seeds ni una ejecución.
+
+**Regla adaptativa de coste:** comenzar con N=32/64/128, M=30, R=20 en calibración; ampliar primero M (por ejemplo a 60 y después 100) cuando el MCSE entre mundos no alcance el objetivo. Aumentar R si la variación entre asignaciones dentro de M domina la contribución por mundo. Aumentar N solo cuando el objetivo sea estudiar la dependencia del comportamiento del estimador respecto del tamaño de roster; no usar N como sustituto de M. Evaluación independiente se ejecutaría únicamente tras cerrar y congelar el diseño y obtener autorización específica.
+
+### Objetivos MCSE propuestos para la primera ola
+
+Para los escenarios identificados, objetivos iniciales de MCSE absoluto ≤0,02 para: bias puntual, MAE, RMSE, cobertura del intervalo y anchura media del intervalo. Para todos los escenarios, MCSE ≤0,02 para tasas de identificación y abstención. Para escenarios no identificados/indeterminados, MCSE ≤0,02 para abstención correcta y falsa identificación. Son objetivos de precisión Monte Carlo de las métricas, no umbrales de calidad científica del estimador ni tolerancias de error por unidad.
+
+La cobertura y anchura solo son evaluables cuando el Analyzer entrega intervalos admisibles; las abstenciones y la falta de intervalos se mantienen en sus denominadores y se informan por separado. Cualquier contribución M/R requerida ausente conserva el estado NOT_EVALUABLE según el agregador actual. No se eliminarán réplicas incompletas mediante complete-case.
+
+### Límites y decisiones aún abiertas
+
+- El intervalo Hoeffding de dos etapas requiere certificación explícita de independencia por unidad, probabilidades correctas, pesos q_X fijos, observación completa y resultado acotado; el roster debe declarar y justificar esa base, no inferirla de seeds diferentes.
+- La calibración focal actual se restringe a `THETA_A_QX_GA_RCOMMON_VCONT` sobre `V_CONT`. No demuestra el puente general V_cont→Outcome/Value contextual ni la contribución completa ΔT_acc→Value.
+- Type-I error/potencia requieren un procedimiento de contraste separado y preespecificado; no se inventan a partir de cobertura.
+- La clase de identificación del caso alternativo, los escenarios no identificados específicos, la tolerancia puntual, los valores finales de N/M/R y los objetivos MCSE permanecen abiertos.
+- No se han construido bancos, ejecutado simulaciones, calculado resultados de precisión ni realizado calibración/evaluación científica.
+
+**Estado:** PROPOSAL_ONLY / NOT_FROZEN / NOT_EXECUTED. Se mantienen `calibration_authorized=false`, `scientific_execution=false`, `execution_authorized=false`; no cambia la autorización vigente. PR #116 permanece Draft; `main`, RMA, Evidence→Claim Matrix, STATUS y TGCV Core no se modifican.
