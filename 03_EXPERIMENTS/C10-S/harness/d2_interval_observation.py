@@ -318,9 +318,10 @@ class D2ObservedIntervalLaneResult:
             raise ContractError("D2 sealed evidence content differs from its source interval records")
         expected_per_unit = len(grid.boundaries) - 1
         counts = {unit: 0 for unit in expected_units}
+        assignment_by_unit = {x.unit_id: x for x in self.assignments.assignments}
         for row in self.interval_records:
             counts[row.unit_id] += 1
-            assignment = next(x for x in self.assignments.assignments if x.unit_id == row.unit_id)
+            assignment = assignment_by_unit[row.unit_id]
             if (row.world_id, row.world_version, row.dgp_id, row.dgp_version,
                     row.assignment_bundle_sha256, row.assigned_z,
                     row.selected_potential_id, row.history_id) != (
