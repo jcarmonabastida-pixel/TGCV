@@ -1511,6 +1511,9 @@ class FactorialStructuralPotential:
     vector: Vector4
     vector_sha256: str
     r_common_fingerprint: str
+    mapping_id: str
+    mapping_version: str
+    mapping_sha256: str
     baseline: TransformationalStateSnapshot
     post: TransformationalStateSnapshot
     delta: TransformationalDelta
@@ -1524,6 +1527,8 @@ class FactorialStructuralPotential:
         self.delta.validate()
         if self.vector_sha256 != digest(self.vector) or len(self.vector) != 4:
             raise ContractError("factorial structural potential must retain its exact complete g_A vector")
+        if not all((self.mapping_id, self.mapping_version, self.mapping_sha256)):
+            raise ContractError("factorial structural potential requires versioned g_A mapping provenance")
         if (self.baseline.unit_id, self.post.unit_id, self.baseline.potential_axis,
                 self.post.potential_axis, self.baseline.potential_z, self.post.potential_z,
                 self.baseline.potential_label, self.post.potential_label,
@@ -1552,6 +1557,9 @@ def generate_factorial_structural_potentials(
     feasible_vectors_by_history: dict[str, tuple[Vector4, ...]],
     r_common_certificates: Sequence["RCommonPairCertificate"],
     rules: Sequence[GAStructuralTransitionRule],
+    *,
+    mapping_id: str,
+    mapping_version: str,
 ) -> dict[tuple[str, str, str], FactorialStructuralPotential]:
     """Materialize ΔT_acc* for every supported q_X* × complete-vector × r_common potential.
 
@@ -1561,6 +1569,9 @@ def generate_factorial_structural_potentials(
     """
     world.validate()
     config.validate()
+    if not mapping_id or not mapping_version:
+        raise ContractError("g_A structural mapping identity and version are mandatory")
+    mapping_sha256 = digest((mapping_id, mapping_version, tuple(rules), config.config_id, config.config_version))
     qx_by_ref = {row.history_ref: row for row in world.q_x}
     expected_refs = set(qx_by_ref)
     unit_by_ref = {
@@ -1652,7 +1663,8 @@ def generate_factorial_structural_potentials(
                 "world": (world.world_id, world.world_version, world.dgp_id, world.dgp_version),
                 "unit_id": unit.unit_id, "history_ref": history_ref,
                 "vector": vector, "r_common": cert, "structural_config": config,
-                "rules": tuple(rules),
+                "mapping_id": mapping_id, "mapping_version": mapping_version,
+                "mapping_sha256": mapping_sha256, "rules": tuple(rules),
             })
             evidence_base = EvidenceStateSnapshot(
                 f"{base_id}:E_T", (f"{history_ref}:QX_BASELINE",),
@@ -1669,6 +1681,7 @@ def generate_factorial_structural_potentials(
             )
             potential = FactorialStructuralPotential(
                 history_ref, unit.unit_id, vector, vector_sha, cert.g_a0_fingerprint,
+                mapping_id, mapping_version, mapping_sha256,
                 baseline, post, delta, evidence_base, evidence_post,
             )
             potential.validate(world)
