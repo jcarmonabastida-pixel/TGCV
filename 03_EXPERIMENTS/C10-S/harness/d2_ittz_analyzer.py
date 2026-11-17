@@ -114,6 +114,11 @@ class D2ITTZAnalyzer:
                 contract.grid_id, contract.grid_version,
                 contract.monitor_id, contract.monitor_version):
             raise ContractError("ITT-Z grid/monitor identity differs from the independent analysis contract")
+        if (manifest.get("assignment_bundle_sha256"), manifest.get("assignment_mechanism_id"),
+                manifest.get("assignment_mechanism_version"), manifest.get("q_x_sha256")) != (
+                contract.assignment_bundle_sha256, contract.assignment_mechanism_id,
+                contract.assignment_mechanism_version, contract.q_x_sha256):
+            raise ContractError("ITT-Z sealed assignment provenance differs from independent analysis contract")
         if (manifest.get("row_count") != len(evidence.rows)
                 or not isinstance(manifest.get("unit_count"), int)
                 or manifest.get("unit_count") < 0
