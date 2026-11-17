@@ -100,6 +100,10 @@ class C10SDualCohortWorldResult:
         ):
             raise ContractError("D2 and A×M cohorts must use the same DGP identity/version")
         _validate_paired_baseline(self.factorial_cohort.world, self.d2_world)
+        expected_initial_state_count = 2 * len(self.d2_world.units)
+        if (len(self.factorial_initial_states_by_unit_z) != expected_initial_state_count
+                or len(self.d2_initial_states_by_unit_z) != expected_initial_state_count):
+            raise ContractError("paired B1 initial-state manifests must retain exact unit × Z cardinality")
         _validate_paired_functional_initial_states(
             self.factorial_cohort.world, self.d2_world,
             dict(self.factorial_initial_states_by_unit_z),
@@ -137,6 +141,8 @@ def _validate_paired_baseline(
         raise ContractError("paired cohorts must share the same baseline exogenous seed commitment")
     if tuple(row.mass for row in factorial_world.q_x) != tuple(row.mass for row in d2_world.q_x):
         raise ContractError("paired cohorts must use identical q_X* target masses")
+    if factorial_world.d2_mechanism_sha256 != d2_world.d2_mechanism_sha256:
+        raise ContractError("paired cohorts must use the exact same versioned D2 mechanism configuration")
     f_ids = {unit.unit_id for unit in factorial_world.units}
     d_ids = {unit.unit_id for unit in d2_world.units}
     f_refs = {row.history_ref for row in factorial_world.q_x}
