@@ -469,6 +469,17 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(len(result.factorial_structural_potentials), 64)
         self.assertEqual(len(result.factorial_reach_potentials), 64)
         self.assertEqual(len(result.factorial_trajectories), 64)
+        for key, potential in result.factorial_structural_potentials.items():
+            reach = result.factorial_reach_potentials[key]
+            trajectory = result.factorial_trajectories[(*key, "TARGET")]
+            if potential.vector[0] == 1.0:
+                self.assertEqual(potential.delta.delta_state, 1)
+                self.assertEqual(dict(reach.post.target_states)["TARGET"], 1)
+                self.assertEqual(trajectory.trajectory_status, "COMPLETED")
+            else:
+                self.assertEqual(potential.delta.delta_state, 0)
+                self.assertEqual(dict(reach.post.target_states)["TARGET"], 0)
+                self.assertEqual(trajectory.trajectory_status, "NOT_REACHABLE")
         self.assertEqual(
             result.accessibility_attribution_status,
             "GA_TO_DELTA_T_ACC_REACH_TRAJECTORY_MATERIALIZED_VALUE_BRIDGE_OPEN",
@@ -710,6 +721,19 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                             for change in histories[(unit_id, 0)].changes)
                 for unit_id in cohort_ids
             ))
+        for key, history in result.factorial_cohort.factorial_potential_histories.items():
+            vector_key = key[:3]
+            trajectory = result.factorial_cohort.factorial_trajectories[
+                (*vector_key, "TARGET")
+            ]
+            has_trajectory_change = any(
+                change.causal_family == "TRAJECTORY_EXECUTION_TO_B1_ADMISSION"
+                for change in history.changes
+            )
+            self.assertEqual(
+                has_trajectory_change,
+                trajectory.trajectory_status == "COMPLETED",
+            )
         self.assertEqual(
             result.d2_observed_lane.sealed_evidence.manifest["unit_count"],
             len(result.d2_world.units),
