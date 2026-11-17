@@ -631,8 +631,8 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             estimand_version="1",
             evaluation_tolerance=2.0,
         )
-        self.assertAlmostEqual(null_result.reserved_truth.theta_a_given_m0, 1.0)
-        self.assertAlmostEqual(null_result.reserved_truth.theta_a_given_m1, 1.0)
+        self.assertAlmostEqual(null_result.reserved_truth.theta_a_given_m0, 0.5)
+        self.assertAlmostEqual(null_result.reserved_truth.theta_a_given_m1, 0.5)
         self.assertAlmostEqual(null_result.reserved_truth.theta_am_interaction, 0.0)
         self.assertTrue(all(
             row.delta.delta_state == 0
