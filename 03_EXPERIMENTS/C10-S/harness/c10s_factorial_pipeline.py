@@ -156,6 +156,13 @@ class C10SFactorialWorldResult:
             raise ContractError("factorial Evaluator result is detached from sealed S3 evidence")
         if self.evaluator_result.analyzer_output_sha256 != self.analyzer_result.output_sha256:
             raise ContractError("factorial Evaluator result is detached from Analyzer output")
+        for assignment in self.assignment_bundle.assignments:
+            assigned_structural_key = (
+                assignment.history_ref, assignment.assigned_vector_sha256,
+                assignment.r_common_fingerprint,
+            )
+            if assigned_structural_key not in self.factorial_structural_potentials:
+                raise ContractError("realized factorial assignment has no matching structural g_A potential")
         for history_key, history in self.factorial_potential_histories.items():
             history_ref, vector_sha, regime_fingerprint, m_arm = history_key
             structural_potential = self.factorial_structural_potentials.get(
