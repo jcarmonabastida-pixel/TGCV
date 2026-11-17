@@ -138,7 +138,10 @@ class C10SFactorialWorldResult:
             reach_potential = self.factorial_reach_potentials[key]
             reach_potential.validate(potential, self.factorial_reach_config)
             for target in self.factorial_target_states:
-                self.factorial_trajectories[(*key, target)].validate(reach_potential)
+                trajectory = self.factorial_trajectories[(*key, target)]
+                if trajectory.target_state != target:
+                    raise ContractError("factorial trajectory dictionary key differs from its target identity")
+                trajectory.validate(reach_potential)
         expected_d2 = {
             (unit.unit_id, z) for unit in self.world.units for z in (0, 1)
         }
