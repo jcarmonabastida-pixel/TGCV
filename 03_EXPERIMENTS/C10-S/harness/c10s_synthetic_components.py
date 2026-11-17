@@ -2571,7 +2571,7 @@ class NeedPreZStipulation:
     service_instance_id: str
     contract_id: str
     contract_version: str
-    instance_version: str
+    instance_version: int
     package_version: str
     baseline_time: str
     stipulation: str
@@ -2586,6 +2586,8 @@ class NeedPreZStipulation:
         )
         if not all(required):
             raise ContractError("Need_preZ stipulation identity, binding, baseline and provenance are mandatory")
+        if type(self.instance_version) is not int or self.instance_version < 1:
+            raise ContractError("B1 service instance_version must be a positive monotonic integer")
         if self.baseline_time != "t-1":
             raise ContractError("Need_preZ truth must be fixed at baseline t-1, before Z at t0")
         if self.stipulation not in ("FOCAL_INCLUSION", "FOCAL_EXCLUSION", "SEMANTIC_INDETERMINACY"):
@@ -2643,8 +2645,9 @@ class NeedPreZTruthBundle:
             raise ContractError("Need_preZ census must use one common versioned B1 contract, package and truth rule")
         for row in self.records:
             if (not all((row.b1_id, row.service_instance_id, row.contract_id,
-                         row.contract_version, row.instance_version, row.package_version,
+                         row.contract_version, row.package_version,
                          row.rule_version, row.truth_basis_ref, row.stipulation_sha256))
+                    or type(row.instance_version) is not int or row.instance_version < 1
                     or row.baseline_time != "t-1"
                     or row.need_truth_state not in (0, 1, "?")):
                 raise ContractError("Need_preZ truth row has incomplete binding, provenance or invalid state")
