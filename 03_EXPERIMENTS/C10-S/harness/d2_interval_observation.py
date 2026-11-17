@@ -26,7 +26,7 @@ from theta_a_interval_observation import (
 )
 
 
-SCHEMA = "C10S-D2-Z-S3-INTERVAL-001"
+SCHEMA = "C10S-D2-Z-S3-INTERVAL-002"
 
 
 def _plain(value: Any) -> Any:
@@ -227,7 +227,7 @@ def candidate_from_d2_interval_records(
 
 class D2IntervalSealer:
     """Closed-schema S3 sealer for the randomized D2 assignment lane."""
-    version = "c10s-d2-interval-sealer-0.1"
+    version = "c10s-d2-interval-sealer-0.2"
 
     def seal(self, candidate: D2IntervalEvidenceCandidate) -> SealedD2IntervalEvidence:
         allowed = frozenset(D2IntervalObservationRecord.__dataclass_fields__)
