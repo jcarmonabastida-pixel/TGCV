@@ -14,7 +14,10 @@ from c10s_synthetic_components import (
     D2VContTruthBundle,
     D2TrajectoryGenerationConfig, EventHistory, IntervalGrid, ContractError,
     JointPolicyHistory, RCommonPairCertificate, SyntheticWorldBuilder,
-    SyntheticWorldConfig, Vector4, evaluate_d2_structural_deltas,
+    SyntheticWorldConfig, Vector4, GAStructuralTransitionRule,
+    FactorialStructuralPotential, FactorialReachPotential, FactorialPotentialTrajectory,
+    evaluate_d2_structural_deltas, generate_factorial_structural_potentials,
+    evaluate_factorial_structural_reachability, evaluate_factorial_potential_trajectories,
 )
 from c10s_functional_history import (
     FunctionalHistoryDGPConfig, generate_d2_event_history_potentials,
@@ -50,24 +53,29 @@ class C10SFactorialWorldResult:
     analyzer_result: FactorialAnalysisResult
     reserved_truth: FactorialTruthBundle
     evaluator_result: FactorialEvaluationResult
+    factorial_structural_potentials: dict[tuple[str, str, str], FactorialStructuralPotential]
+    factorial_reach_potentials: dict[tuple[str, str, str], FactorialReachPotential]
+    factorial_trajectories: dict[tuple[str, str, str, str], FactorialPotentialTrajectory]
+    factorial_target_states: tuple[str, ...]
+    factorial_reach_config: D2ReachGenerationConfig
 
     @property
     def accessibility_attribution_status(self) -> str:
         """Current causal scope of the factorial result.
 
-        The present factorial oracle evaluates G_A contrasts on V_cont, while
-        the structural snapshots/ΔT_acc*/Reach/trajectories in this result are
-        still indexed by D2 Z potentials. Until a versioned g_A→structural
-        potential mapping is supplied and validated, this result must not be
-        interpreted as an identified accessibility contribution.
+        Structural ΔT_acc*, Reach and trajectory potentials are generated per
+        supported q_X* × complete g_A vector × r_common potential. This closes
+        the structural path only; Outcome/Value composition and causal Analyzer
+        identification remain open.
         """
-        return "NOT_ESTABLISHED_GA_TO_DELTA_T_ACC_MAPPING"
+        return "GA_TO_DELTA_T_ACC_REACH_TRAJECTORY_MATERIALIZED_VALUE_BRIDGE_OPEN"
 
     def require_accessibility_attribution(self) -> None:
         """Fail closed if a caller attempts to treat the V_cont contrast as θ_A on ΔT_acc*."""
         raise ContractError(
-            "accessibility attribution is not established: factorial G_A potentials "
-            "are not yet linked to matching ΔT_acc*, Reach and trajectory potentials"
+            "full accessibility-to-Value attribution is not established: the structural "
+            "g_A-to-ΔT_acc*-to-Reach-to-trajectory chain is materialized, but Outcome/Value "
+            "composition and Analyzer identification are not yet validated"
         )
 
     def validate(self, grid: IntervalGrid) -> None:
