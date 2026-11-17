@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from typing import Mapping
 
 from c10s_synthetic_components import (
-    ContractError, D2MechanismConfig, D2VContTruthBundle, EventHistory,
+    ContractError, D2MechanismConfig, D2VContTruthBundle, EventHistory, FunctionalState,
     IntervalGrid, SyntheticWorldBuilder, SyntheticWorldBundle, SyntheticWorldConfig,
     D2StructuralGenerationConfig, D2ReachGenerationConfig, D2TrajectoryGenerationConfig,
     D2StructuralPotentialPair, SyntheticWorldReachabilityContrast, SyntheticWorldTrajectoryBundle,
@@ -48,6 +48,8 @@ class C10SDualCohortWorldResult:
     d2_analysis_contract: D2ITTZAnalysisContract
     d2_analyzer_result: D2ITTZAnalysisResult
     d2_evaluator_result: D2ITTZEvaluation
+    factorial_initial_states_by_unit_z: tuple[tuple[tuple[str, int], FunctionalState], ...]
+    d2_initial_states_by_unit_z: tuple[tuple[tuple[str, int], FunctionalState], ...]
 
     def validate(self, grid: IntervalGrid, reach_config: D2ReachGenerationConfig) -> None:
         grid.validate()
@@ -98,6 +100,11 @@ class C10SDualCohortWorldResult:
         ):
             raise ContractError("D2 and A×M cohorts must use the same DGP identity/version")
         _validate_paired_baseline(self.factorial_cohort.world, self.d2_world)
+        _validate_paired_functional_initial_states(
+            self.factorial_cohort.world, self.d2_world,
+            dict(self.factorial_initial_states_by_unit_z),
+            dict(self.d2_initial_states_by_unit_z),
+        )
         if self.d2_analysis_contract.assignment_bundle_sha256 != self.d2_observed_lane.assignments.result_sha256:
             raise ContractError("D2 ITT-Z analysis contract is detached from the observed assignment")
         manifest = self.d2_observed_lane.sealed_evidence.manifest
@@ -156,6 +163,51 @@ def _validate_paired_baseline(
             raise ContractError("paired cohorts do not share the same D2 exogenous potential draws")
 
 
+
+def _validate_paired_functional_initial_states(
+    factorial_world: SyntheticWorldBundle,
+    d2_world: SyntheticWorldBundle,
+    factorial_initial_state_by_unit_z: Mapping[tuple[str, int], FunctionalState],
+    d2_initial_state_by_unit_z: Mapping[tuple[str, int], FunctionalState],
+) -> None:
+    """Require paired cohorts to share the same pre-intervention B1 truth.
+
+    Cohort unit IDs remain disjoint. Pairing is by the deterministic baseline
+    roster position already used by _validate_paired_baseline, never by unit ID
+    or post-assignment observations. The check covers each Z potential before
+    any D2/G_A/G_M/trajectory transition is applied.
+    """
+    expected_factorial = {
+        (unit.unit_id, z) for unit in factorial_world.units for z in (0, 1)
+    }
+    expected_d2 = {
+        (unit.unit_id, z) for unit in d2_world.units for z in (0, 1)
+    }
+    if set(factorial_initial_state_by_unit_z) != expected_factorial:
+        raise ContractError(
+            "factorial initial functional states must cover the exact unit × Z roster"
+        )
+    if set(d2_initial_state_by_unit_z) != expected_d2:
+        raise ContractError(
+            "D2 initial functional states must cover the exact unit × Z roster"
+        )
+    if len(factorial_world.units) != len(d2_world.units):
+        raise ContractError("paired functional-state cohorts must have equal roster sizes")
+    for factorial_unit, d2_unit in zip(factorial_world.units, d2_world.units):
+        for z in (0, 1):
+            factorial_state = factorial_initial_state_by_unit_z[
+                (factorial_unit.unit_id, z)
+            ]
+            d2_state = d2_initial_state_by_unit_z[(d2_unit.unit_id, z)]
+            factorial_state.validate()
+            d2_state.validate()
+            if factorial_state != d2_state:
+                raise ContractError(
+                    "paired cohorts have different initial B1 functional truth "
+                    f"for baseline position {factorial_unit.unit_id}/{d2_unit.unit_id}, Z={z}"
+                )
+
+
 def materialize_c10s_dual_cohort_world_from_dgp(
     *,
     factorial_world_config: SyntheticWorldConfig,
@@ -202,6 +254,11 @@ def materialize_c10s_dual_cohort_world_from_dgp(
         d2_world_config.dgp_id, d2_world_config.dgp_version
     ):
         raise ContractError("functional EventHistory generator must bind to the cohort DGP")
+    _validate_paired_functional_initial_states(
+        SyntheticWorldBuilder().generate(factorial_world_config, d2_config),
+        SyntheticWorldBuilder().generate(d2_world_config, d2_config),
+        factorial_initial_state_by_unit_z, d2_initial_state_by_unit_z,
+    )
     factorial = materialize_c10s_factorial_world_from_dgp(
         world_config=factorial_world_config, d2_config=d2_config,
         structural_config=structural_config, reach_config=reach_config,
@@ -272,10 +329,20 @@ def materialize_c10s_dual_cohort_world_from_dgp(
         result=analyzer_result, tolerance=evaluation_tolerance,
     )
     result = C10SDualCohortWorldResult(
-        factorial, d2_world, tuple(sorted(d2_structural_pairs.items())),
-        tuple(d2_structural_deltas), d2_reachability, d2_trajectories,
-        d2_histories, d2_truth, d2_lane,
-        analysis_contract, analyzer_result, evaluator_result,
+        factorial_cohort=factorial,
+        d2_world=d2_world,
+        d2_structural_pairs=tuple(sorted(d2_structural_pairs.items())),
+        d2_structural_deltas=tuple(d2_structural_deltas),
+        d2_reachability=d2_reachability,
+        d2_trajectories=d2_trajectories,
+        d2_event_histories_by_unit_z=d2_histories,
+        d2_vcont_truth=d2_truth,
+        d2_observed_lane=d2_lane,
+        d2_analysis_contract=analysis_contract,
+        d2_analyzer_result=analyzer_result,
+        d2_evaluator_result=evaluator_result,
+        factorial_initial_states_by_unit_z=tuple(sorted(factorial_initial_state_by_unit_z.items())),
+        d2_initial_states_by_unit_z=tuple(sorted(d2_initial_state_by_unit_z.items())),
     )
     result.validate(grid, reach_config)
     return result
