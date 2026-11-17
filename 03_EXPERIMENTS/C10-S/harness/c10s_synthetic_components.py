@@ -997,21 +997,31 @@ class TransformationalStateSnapshot:
     dgp_id: str
     dgp_version: str
     unit_id: str
-    potential_z: int
+    potential_z: int | None
     timepoint: SnapshotTimepoint
     boundary_id: str
     context_id: str
     catalog_version: str
     atoms: tuple[StructuralAtom, ...]
     component_complete: tuple[tuple[StructuralComponent, bool], ...]
+    potential_axis: Literal["Z", "G_A"] = "Z"
+    potential_label: str | None = None
 
     def validate(self) -> None:
         if not all((self.snapshot_id, self.snapshot_version, self.world_id,
                     self.world_version, self.dgp_id, self.dgp_version, self.unit_id,
                     self.boundary_id, self.context_id, self.catalog_version)):
             raise ContractError("transformational snapshot identity and scope are mandatory")
-        if self.potential_z not in (0, 1) or self.timepoint not in ("BASELINE", "POST"):
-            raise ContractError("snapshot must identify potential Z and BASELINE/POST timepoint")
+        if self.potential_axis == "Z":
+            if self.potential_z not in (0, 1) or self.potential_label is not None:
+                raise ContractError("Z-axis snapshot must identify Z=0/1 and no factorial potential label")
+        elif self.potential_axis == "G_A":
+            if self.potential_z is not None or not self.potential_label:
+                raise ContractError("g_A-axis snapshot must use a vector-specific label and no Z value")
+        else:
+            raise ContractError("snapshot potential axis must be Z or G_A")
+        if self.timepoint not in ("BASELINE", "POST"):
+            raise ContractError("snapshot must identify BASELINE/POST timepoint")
         atom_ids = [atom.canonical_id for atom in self.atoms]
         if len(atom_ids) != len(set(atom_ids)):
             raise ContractError("canonical structural atom IDs must be globally unique within a snapshot")
@@ -1068,7 +1078,7 @@ class TransformationalDelta:
     dgp_id: str
     dgp_version: str
     unit_id: str
-    potential_z: int
+    potential_z: int | None
     baseline_snapshot_id: str
     post_snapshot_id: str
     entries: tuple[StructuralDeltaEntry, ...]
@@ -1080,6 +1090,8 @@ class TransformationalDelta:
     delta_state: ReachState
     evidence_delta: EvidenceDelta
     result_sha256: str
+    potential_axis: Literal["Z", "G_A"] = "Z"
+    potential_label: str | None = None
 
     def validate(self) -> None:
         if not self.result_sha256:
@@ -1125,10 +1137,12 @@ class TransformationalDeltaEngine:
         baseline.validate()
         post.validate()
         scope_before = (baseline.world_id, baseline.world_version, baseline.dgp_id,
-                        baseline.dgp_version, baseline.unit_id, baseline.potential_z,
+                        baseline.dgp_version, baseline.unit_id, baseline.potential_axis,
+                        baseline.potential_z, baseline.potential_label,
                         baseline.boundary_id, baseline.context_id, baseline.catalog_version)
         scope_after = (post.world_id, post.world_version, post.dgp_id,
-                       post.dgp_version, post.unit_id, post.potential_z,
+                       post.dgp_version, post.unit_id, post.potential_axis,
+                       post.potential_z, post.potential_label,
                        post.boundary_id, post.context_id, post.catalog_version)
         if scope_before != scope_after or baseline.timepoint != "BASELINE" or post.timepoint != "POST":
             raise ContractError("ΔT_acc* requires comparable BASELINE/POST snapshots in the same world/unit/Z/boundary/context/catalog")
@@ -1229,6 +1243,7 @@ class TransformationalDeltaEngine:
             baseline.snapshot_id, post.snapshot_id, tuple(entries),
             by_component["U"], by_component["R"], by_component["C"], by_component["X"],
             component_completeness, delta_state, evidence_delta, digest(payload),
+            baseline.potential_axis, baseline.potential_label,
         )
         result.validate()
         return result
@@ -1449,6 +1464,219 @@ def generate_d2_structural_potential_pairs(
     # The ordinary delta evaluator remains the single adjudication path.
     evaluate_d2_structural_deltas(world, pairs)
     return pairs
+
+
+@dataclass(frozen=True)
+class GAStructuralTransitionRule:
+    """Explicit mapping from a complete g_A vector predicate to one structural atom change.
+
+    Vector coordinates have no implicit U/R/C/X meaning. The rule names the
+    concrete atom, component, action and complete predicate; that mapping is
+    versioned by the containing D2StructuralGenerationConfig.
+    """
+    atom: StructuralAtom
+    action: Literal["ADD", "REMOVE", "MODIFY"]
+    vector_predicates: tuple[tuple[int, object], ...]
+
+    def validate(self, baseline_atoms: Sequence[StructuralAtom]) -> None:
+        self.atom.validate()
+        if self.action not in ("ADD", "REMOVE", "MODIFY"):
+            raise ContractError("g_A structural action must be ADD/REMOVE/MODIFY")
+        if (not isinstance(self.vector_predicates, tuple) or not self.vector_predicates
+                or any(not isinstance(row, tuple) or len(row) != 2 for row in self.vector_predicates)):
+            raise ContractError("g_A structural rule requires explicit non-empty vector predicates")
+        indices = [row[0] for row in self.vector_predicates]
+        if (any(type(index) is not int or index not in range(4) for index in indices)
+                or len(indices) != len(set(indices))):
+            raise ContractError("g_A structural predicates require unique vector indices [0..3]")
+        if any(value is None for _, value in self.vector_predicates):
+            raise ContractError("g_A structural predicates cannot use null values")
+        existing = {atom.canonical_id: atom for atom in baseline_atoms}
+        if self.action == "ADD" and self.atom.canonical_id in existing:
+            raise ContractError("g_A ADD target already exists in the baseline structural catalog")
+        if self.action in ("REMOVE", "MODIFY") and self.atom.canonical_id not in existing:
+            raise ContractError("g_A REMOVE/MODIFY target must exist in the baseline structural catalog")
+        if self.action in ("REMOVE", "MODIFY"):
+            baseline = existing[self.atom.canonical_id]
+            if (baseline.component, baseline.semantic_type) != (self.atom.component, self.atom.semantic_type):
+                raise ContractError("g_A structural transition must preserve component and semantic type")
+
+
+@dataclass(frozen=True)
+class FactorialStructuralPotential:
+    history_ref: str
+    unit_id: str
+    vector: Vector4
+    vector_sha256: str
+    r_common_fingerprint: str
+    baseline: TransformationalStateSnapshot
+    post: TransformationalStateSnapshot
+    delta: TransformationalDelta
+    evidence_baseline: EvidenceStateSnapshot
+    evidence_post: EvidenceStateSnapshot
+
+    def validate(self, world: "SyntheticWorldBundle") -> None:
+        world.validate()
+        self.baseline.validate()
+        self.post.validate()
+        self.delta.validate()
+        if self.vector_sha256 != digest(self.vector) or len(self.vector) != 4:
+            raise ContractError("factorial structural potential must retain its exact complete g_A vector")
+        if (self.baseline.unit_id, self.post.unit_id, self.baseline.potential_axis,
+                self.post.potential_axis, self.baseline.potential_z, self.post.potential_z,
+                self.baseline.potential_label, self.post.potential_label) != (
+                self.unit_id, self.unit_id, "G_A", "G_A", None, None,
+                self.potential_label, self.potential_label):
+            raise ContractError("factorial structural snapshots must bind to the exact vector/r_common potential")
+        if (self.baseline.world_id, self.baseline.world_version, self.baseline.dgp_id,
+                self.baseline.dgp_version) != (
+                world.world_id, world.world_version, world.dgp_id, world.dgp_version):
+            raise ContractError("factorial structural potential belongs to a different world/DGP")
+        if (self.delta.baseline_snapshot_id, self.delta.post_snapshot_id) != (
+                self.baseline.snapshot_id, self.post.snapshot_id):
+            raise ContractError("factorial ΔT_acc* is detached from its exact structural snapshots")
+
+    @property
+    def potential_label(self) -> str:
+        return f"{self.vector_sha256}:{self.r_common_fingerprint}"
+
+
+def generate_factorial_structural_potentials(
+    world: "SyntheticWorldBundle",
+    config: D2StructuralGenerationConfig,
+    g_a0: Sequence["JointPolicyHistory"],
+    g_a1: Sequence["JointPolicyHistory"],
+    feasible_vectors_by_history: dict[str, tuple[Vector4, ...]],
+    r_common_certificates: Sequence["RCommonPairCertificate"],
+    rules: Sequence[GAStructuralTransitionRule],
+) -> dict[tuple[str, str, str], FactorialStructuralPotential]:
+    """Materialize ΔT_acc* for every supported q_X* × complete-vector × r_common potential.
+
+    The mapping is deliberately explicit: no Vector4 coordinate is assumed to
+    be a U/R/C/X component. Rules that do not match a vector leave the declared
+    structural catalog unchanged, which is a legitimate null structural effect.
+    """
+    world.validate()
+    config.validate()
+    qx_by_ref = {row.history_ref: row for row in world.q_x}
+    expected_refs = set(qx_by_ref)
+    unit_by_ref = {
+        unit.d2_baseline.baseline_history_ref: unit for unit in world.units
+    }
+    if set(unit_by_ref) != expected_refs:
+        raise ContractError("factorial structural mapping requires exact q_X* to unit correspondence")
+    policy_maps = []
+    for rows, label in ((g_a0, "g_A0"), (g_a1, "g_A1")):
+        mapping = {row.history_ref: row for row in rows}
+        if len(mapping) != len(rows) or set(mapping) != expected_refs:
+            raise ContractError(f"{label} structural policy must cover q_X* exactly")
+        policy_maps.append(mapping)
+    certs = {row.history_ref: row for row in r_common_certificates}
+    if len(certs) != len(r_common_certificates) or set(certs) != expected_refs:
+        raise ContractError("factorial structural potentials require one r_common certificate per q_X* history")
+    if len({(row.regime_id, row.regime_version) for row in certs.values()}) != 1:
+        raise ContractError("factorial structural potentials require one common r_common identity/version")
+    for cert in certs.values():
+        if (cert.status != "COMMON_FIXED" or not cert.regime_id or not cert.regime_version
+                or not cert.g_a0_fingerprint or cert.g_a0_fingerprint != cert.g_a1_fingerprint):
+            raise ContractError("factorial structural potentials require certified fixed common r_common")
+    result = {}
+    engine = TransformationalDeltaEngine()
+    for history_ref in sorted(expected_refs):
+        unit = unit_by_ref[history_ref]
+        cert = certs[history_ref]
+        baseline_atoms = (
+            StructuralAtom(
+                "U", config.focal_transformation_id, "TRANSFORMATION",
+                config.focal_semantic_version,
+                1 if unit.d2_baseline.focal_accessible_pre else 0,
+                (("role", "FOCAL_ACCESSIBILITY"), ("boundary_id", config.boundary_id)),
+            ),
+        ) + tuple(config.invariant_atoms)
+        feasible = {digest(vector) for vector in feasible_vectors_by_history.get(history_ref, ())}
+        if not feasible:
+            raise ContractError(f"joint structural feasibility is absent for q_X* history {history_ref}")
+        vector_support = {}
+        for arm, policy in enumerate(policy_maps):
+            _distribution_total(policy[history_ref].distribution, f"g_A{arm} distribution for {history_ref}")
+            for vector, probability in policy[history_ref].distribution:
+                if digest(vector) not in feasible:
+                    raise ContractError(f"g_A{arm} support exceeds structural feasibility for {history_ref}")
+                if probability > 0:
+                    vector_support[digest(vector)] = vector
+        for vector_sha, vector in sorted(vector_support.items()):
+            for rule in rules:
+                rule.validate(baseline_atoms)
+            post_by_id = {atom.canonical_id: atom for atom in baseline_atoms}
+            for rule in rules:
+                if all(vector[index] == value for index, value in rule.vector_predicates):
+                    if rule.action == "ADD":
+                        if rule.atom.canonical_id in post_by_id:
+                            raise ContractError("g_A structural ADD target already exists in this potential")
+                        post_by_id[rule.atom.canonical_id] = rule.atom
+                    elif rule.action == "REMOVE":
+                        if rule.atom.canonical_id not in post_by_id:
+                            raise ContractError("g_A structural REMOVE target is absent in this potential")
+                        post_by_id.pop(rule.atom.canonical_id)
+                    else:
+                        if rule.atom.canonical_id not in post_by_id:
+                            raise ContractError("g_A structural MODIFY target is absent in this potential")
+                        post_by_id[rule.atom.canonical_id] = rule.atom
+            label = f"{vector_sha}:{cert.g_a0_fingerprint}"
+            base_id = f"{world.world_id}:{unit.unit_id}:GA:{label}:BASE"
+            post_id = f"{world.world_id}:{unit.unit_id}:GA:{label}:POST"
+            common = (
+                world.world_id, world.world_version, world.dgp_id, world.dgp_version,
+                unit.unit_id, None, config.boundary_id, config.context_id, config.catalog_version,
+            )
+            baseline = TransformationalStateSnapshot(
+                base_id, config.config_version, *common[:4], common[4], common[5],
+                "BASELINE", common[6], common[7], common[8],
+                baseline_atoms, config.component_complete, "G_A", label,
+            )
+            post = TransformationalStateSnapshot(
+                post_id, config.config_version, *common[:4], common[4], common[5],
+                "POST", common[6], common[7], common[8],
+                tuple(post_by_id[key] for key in sorted(post_by_id)),
+                config.component_complete, "G_A", label,
+            )
+            baseline.validate()
+            post.validate()
+            evidence_hash = digest({
+                "world": (world.world_id, world.world_version, world.dgp_id, world.dgp_version),
+                "unit_id": unit.unit_id, "history_ref": history_ref,
+                "vector": vector, "r_common": cert, "structural_config": config,
+                "rules": tuple(rules),
+            })
+            evidence_base = EvidenceStateSnapshot(
+                f"{base_id}:E_T", (f"{history_ref}:QX_BASELINE",),
+                "COMPLETE" if all(v for _, v in config.component_complete) else "PARTIAL",
+                "VALID", evidence_hash, config.evidence_version, config.adjudication_version,
+            )
+            evidence_post = EvidenceStateSnapshot(
+                f"{post_id}:E_T", (f"{history_ref}:GA_POTENTIAL:{label}",),
+                "COMPLETE" if all(v for _, v in config.component_complete) else "PARTIAL",
+                "VALID", evidence_hash, config.evidence_version, config.adjudication_version,
+            )
+            delta = engine.evaluate(
+                baseline, post, evidence_baseline=evidence_base, evidence_post=evidence_post,
+            )
+            potential = FactorialStructuralPotential(
+                history_ref, unit.unit_id, vector, vector_sha, cert.g_a0_fingerprint,
+                baseline, post, delta, evidence_base, evidence_post,
+            )
+            potential.validate(world)
+            result[(history_ref, vector_sha, cert.g_a0_fingerprint)] = potential
+    expected_support = {
+        (history_ref, digest(vector), certs[history_ref].g_a0_fingerprint)
+        for history_ref in expected_refs
+        for policy_map in policy_maps
+        for vector, probability in policy_map[history_ref].distribution
+        if probability > 0
+    }
+    if set(result) != expected_support:
+        raise ContractError("factorial structural potentials do not cover exact positive-mass g_A joint-policy support")
+    return result
 
 
 
