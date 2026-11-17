@@ -51,6 +51,25 @@ class C10SFactorialWorldResult:
     reserved_truth: FactorialTruthBundle
     evaluator_result: FactorialEvaluationResult
 
+    @property
+    def accessibility_attribution_status(self) -> str:
+        """Current causal scope of the factorial result.
+
+        The present factorial oracle evaluates G_A contrasts on V_cont, while
+        the structural snapshots/ΔT_acc*/Reach/trajectories in this result are
+        still indexed by D2 Z potentials. Until a versioned g_A→structural
+        potential mapping is supplied and validated, this result must not be
+        interpreted as an identified accessibility contribution.
+        """
+        return "NOT_ESTABLISHED_GA_TO_DELTA_T_ACC_MAPPING"
+
+    def require_accessibility_attribution(self) -> None:
+        """Fail closed if a caller attempts to treat the V_cont contrast as θ_A on ΔT_acc*."""
+        raise ContractError(
+            "accessibility attribution is not established: factorial G_A potentials "
+            "are not yet linked to matching ΔT_acc*, Reach and trajectory potentials"
+        )
+
     def validate(self, grid: IntervalGrid) -> None:
         self.world.validate()
         grid.validate()
