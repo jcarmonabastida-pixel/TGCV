@@ -663,3 +663,12 @@ The existing 13-scenario × 4-assignment-estimand (52-key) matrix and its seed-b
 The first conservative inference contract is now implemented in Analyzer/Evaluator as `HOEFFDING_TWO_STAGE_BOUNDED_HT_V1`. It is intentionally optional until an explicit confidence level and exact history-specific assignment probabilities are supplied. It returns a distinct inferential interval and range-sum diagnostic; the logical parameter bounds `[-1,1]` and measurement-only bounds retain their separate meanings. Missingness, incomplete q_X support or absent realized-arm support suppress the inferential interval rather than silently narrowing the target.
 
 The next calibration design must distinguish units `N`, repeated assignments `R` within a fixed world, and independent outer worlds `M`, with disjoint calibration/evaluation seed domains. It must measure empirical coverage, interval width/precision, type-I error and power (where a test is later specified), point recovery and correct abstention, including unequal history-specific probabilities and policy-vector stochasticity. No standard error or p-value is claimed. Numeric precision targets, candidate grids and budgets remain governed by explicit pre-execution decisions. This method implementation is a source-level change only: no test suite, calibration, seed generation, Monte Carlo or scientific experiment was run.
+
+### Source integration added after this audit
+
+- Analyzer/Evaluator versions advanced to `0.2`.
+- The complete-world pipeline exposes optional `theta_a_confidence_level`; when explicitly supplied, it passes the exact `assignment_config.probability_a1_by_history` into the analysis contract. With no confidence level, the legacy point/bounds behavior is unchanged.
+- The Evaluator checks the full history-specific probability map against both arm probabilities in the actual assignment bundle, then independently reconstructs the Hoeffding interval and reports truth coverage separately from point-recovery adjudication.
+- Regression source now covers the bounded interval arithmetic, suppression under missingness, and complete-world pipeline wiring.
+
+These source changes have **not** been compiled or tested. EP-02's earlier 283/283 result predates these changes and must not be represented as validation of Analyzer/Evaluator v0.2.
