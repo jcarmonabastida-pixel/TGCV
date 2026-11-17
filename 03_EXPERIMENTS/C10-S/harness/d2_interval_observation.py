@@ -433,21 +433,20 @@ class D2ObservedIntervalLaneResult:
         grid: IntervalGrid,
     ) -> None:
         self.assignments.validate(world, truth, histories_by_unit_z, grid)
-        if not self.interval_records or not self.sealed_evidence.rows:
-            raise ContractError("D2 observed interval lane requires records and sealed evidence")
         expected_units = {unit.unit_id for unit in world.units}
         record_units = {row.unit_id for row in self.interval_records}
         evidence_units = {row["unit_id"] for row in self.sealed_evidence.rows}
-        if record_units != expected_units or evidence_units != expected_units:
-            raise ContractError("D2 interval records and sealed evidence must cover the exact randomized roster")
-        run_ids = {row.run_id for row in self.interval_records}
-        if len(run_ids) != 1 or self.sealed_evidence.run_id not in run_ids:
-            raise ContractError("D2 sealed evidence run differs from source interval records")
+        if record_units != evidence_units or not record_units.issubset(expected_units):
+            raise ContractError("D2 interval records/evidence must be the same subset of the randomized roster")
+        if self.sealed_evidence.run_id != truth.run_id or any(
+            row.run_id != self.sealed_evidence.run_id for row in self.interval_records
+        ):
+            raise ContractError("D2 sealed evidence run differs from reserved truth/source interval records")
         source_rows = tuple(asdict(row) for row in self.interval_records)
         if source_rows != self.sealed_evidence.rows:
             raise ContractError("D2 sealed evidence content differs from its source interval records")
         expected_per_unit = len(grid.boundaries) - 1
-        counts = {unit: 0 for unit in expected_units}
+        counts = {unit: 0 for unit in record_units}
         assignment_by_unit = {x.unit_id: x for x in self.assignments.assignments}
         for row in self.interval_records:
             counts[row.unit_id] += 1
@@ -461,19 +460,31 @@ class D2ObservedIntervalLaneResult:
                     ):
                 raise ContractError("D2 interval record is detached from its world/assignment/selected history")
         if any(count != expected_per_unit for count in counts.values()):
-            raise ContractError("D2 interval records must cover the exact declared grid for every unit")
+            raise ContractError("observed D2 units must cover the exact declared grid")
         if self.sealed_evidence.sha256 != _hash({
             "manifest": self.sealed_evidence.manifest,
             "rows": list(self.sealed_evidence.rows),
         }):
             raise ContractError("D2 sealed evidence digest does not match its contents")
         manifest = self.sealed_evidence.manifest
-        if (manifest.get("unit_count"), manifest.get("row_count"),
-                manifest.get("interval_count_per_unit")) != (
-                len(expected_units), len(self.interval_records),
-                expected_per_unit
-                ):
-            raise ContractError("D2 sealed manifest counts differ from the randomized roster/grid")
+        expected_missing = tuple(sorted(expected_units - record_units))
+        expected_assignments = tuple(sorted(
+            (row.unit_id, row.history_ref, row.assigned_z,
+             row.probability_z0, row.probability_z1)
+            for row in self.assignments.assignments
+        ))
+        if (
+            manifest.get("unit_count") != len(record_units)
+            or manifest.get("row_count") != len(self.interval_records)
+            or manifest.get("expected_unit_count") != len(expected_units)
+            or manifest.get("missing_unit_ids") != expected_missing
+            or tuple(manifest.get("expected_unit_assignments", ())) != expected_assignments
+            or manifest.get("interval_count_per_unit") != expected_per_unit
+            or (manifest.get("grid_id"), manifest.get("grid_version"))
+               != (grid.grid_id, grid.grid_version)
+            or not manifest.get("monitor_id") or not manifest.get("monitor_version")
+        ):
+            raise ContractError("D2 sealed manifest differs from the randomized roster/grid/monitor context")
 
 
 def materialize_d2_observed_interval_lane(
