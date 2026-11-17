@@ -994,6 +994,15 @@ class VContEvidenceOrchestrationTests(unittest.TestCase):
 
 
 class VContBenchmarkEvidenceEnvelopeTests(unittest.TestCase):
+    def setUp(self):
+        self.generator = Generator()
+        self.sealer = Sealer()
+        self.analyzer = Analyzer()
+        self.evaluator = Evaluator()
+
+    def worlds(self):
+        return {cfg.scenario_id: cfg for cfg in benchmark_scenarios(n_units=400, n_intervals=20)}
+
     def _design_and_inputs(self):
         from vcont_benchmark_protocol import (
             MonteCarloBenchmarkDesign, build_seed_bank,
