@@ -618,7 +618,7 @@ Se ejecutó de nuevo la suite técnica después de implementar el intervalo cons
 ### Contrato de replicación
 
 - **N:** unidades de cada mundo sintético.
-- **M:** mundos exteriores independientes, con identidad y semilla distintas.
+- **M:** mundos exteriores independientes, con identidades de mundo/roster, prefijo de unidad y semilla distintos.
 - **R:** asignaciones repetidas dentro de un M fijo. El world_id, world_seed y configuración del mundo deben permanecer invariantes; cada R tiene run_id, salt de aleatorización conjunta y semilla S3 propios.
 - El salt por R alimenta las dos etapas ya separadas por domain labels en el generador: asignación Bernoulli a g_A0/g_A1 y sorteo del vector conjunto dentro de la política seleccionada. El sorteo de vector permanece dentro del resultado estocástico del estimando.
 - El flujo S3 se deriva separadamente por R y se expande por unidad. El capture boundary vuelve a comprobar el compromiso de seed del mundo y el hash del salt realmente usado; en el canal S3 de intervalo continuo verifica también cada observation_id contra la semilla de monitor por R/unidad. El muestreo puntual queda fuera de esta calibración de intervalos de confianza.
