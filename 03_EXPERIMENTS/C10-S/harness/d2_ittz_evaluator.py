@@ -107,6 +107,11 @@ class D2ITTZEvaluator:
                 contract.grid_id, contract.grid_version,
                 contract.monitor_id, contract.monitor_version):
             raise ContractError("D2 sealed grid/monitor identity differs from independent analysis contract")
+        if (manifest.get("assignment_bundle_sha256"), manifest.get("assignment_mechanism_id"),
+                manifest.get("assignment_mechanism_version"), manifest.get("q_x_sha256")) != (
+                contract.assignment_bundle_sha256, contract.assignment_mechanism_id,
+                contract.assignment_mechanism_version, contract.q_x_sha256):
+            raise ContractError("D2 sealed assignment provenance differs from independent analysis contract")
         if any((row.get("grid_id"), row.get("grid_version"),
                 row.get("monitor_id"), row.get("monitor_version")) != (
                 contract.grid_id, contract.grid_version,
