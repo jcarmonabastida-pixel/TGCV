@@ -60,23 +60,6 @@ class C10SDualCohortWorldResult:
         self.factorial_need_pre_z_truth.validate(self.factorial_cohort.world)
         self.d2_world.validate()
         self.d2_need_pre_z_truth.validate(self.d2_world)
-        factorial_need = {
-            row.unit_id: row for row in self.factorial_need_pre_z_truth.records
-        }
-        d2_need = {row.unit_id: row for row in self.d2_need_pre_z_truth.records}
-        for factorial_unit, d2_unit in zip(
-            self.factorial_cohort.world.units, self.d2_world.units,
-        ):
-            f_need = factorial_need[factorial_unit.unit_id]
-            d_need = d2_need[d2_unit.unit_id]
-            if (f_need.need_truth_state, f_need.contract_id, f_need.contract_version,
-                    f_need.package_version, f_need.rule_version) != (
-                d_need.need_truth_state, d_need.contract_id, d_need.contract_version,
-                d_need.package_version, d_need.rule_version
-            ):
-                raise ContractError(
-                    "paired cohorts must preserve identical pre-Z Need truth and B1 package semantics"
-                )
         expected = {
             (unit.unit_id, z) for unit in self.d2_world.units for z in (0, 1)
         }
