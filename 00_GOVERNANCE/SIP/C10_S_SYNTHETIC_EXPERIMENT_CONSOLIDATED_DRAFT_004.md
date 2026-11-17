@@ -727,3 +727,16 @@ Se añadió al test end-to-end existente una expectativa explícita: `alternativ
 **Roster preliminar resultante:** positivo identificado (+0,5); nulo identificado (0); negativo identificado (−0,5); alternativa común identificada nula (0, vía alternativa activa). Los valores son verdades analíticas del fixture existente, no estimaciones muestrales. No se ha añadido todavía un escenario con vía directa diferencial/no-identificación: debe reutilizarse un mecanismo existente y adjudicar su verdad reservada antes de incorporarlo, sin fabricar un nuevo DGP paralelo.
 
 No se generan bancos, no se ejecutan simulaciones ni calibración; no se modifica autorización. Estado: SOURCE_CONTRACT_ADDED / NOT_EXECUTED.
+
+## 332. Auditoría de la ruta integrada de no-identificación / abstención (2026-11-18)
+
+Se inspeccionó el World Builder, el pipeline completo, el Analyzer y los tests de observación. Resultado:
+
+1. El fixture completo actual genera una sola historia q_X (H0, masa 1), asignación g_A con probabilidad 0.5 por historia y roster de 32 unidades. La rama interval-level exige cobertura q_X y ambos brazos realizados; con monitor de missingness 0.0, el fixture base está construido para identificación, no para pérdida de soporte.
+2. El pipeline completo sí dispone de una segunda ruta de medición point-S3: cuando no se pasan configs interval-monitor, exige `s3_configs_by_history_ref` y `s3_seeds_by_unit`, sella evidencia con `ThetaASealer` y el Analyzer clasifica point samples completos como `PARTIALLY_IDENTIFIED` (`STRICT_VCONT_NOT_OBSERVED_BY_POINT_SAMPLES`). Esto es una limitación de resolución temporal, no falta de positividad ni pérdida de soporte.
+3. Los tests unitarios ya cubren `INDETERMINATE` por ausencia de brazo realizado y soporte q_X incompleto; no se ha encontrado todavía un fixture World Builder que produzca esas condiciones conservando un DGP coherente y un Evaluator que adjudique la abstención.
+4. El fixture `alternative` común permanece identificado y nulo; no sirve como caso de no-identificación.
+
+**Conclusión:** no debe etiquetarse la ruta point-S3 como falta de soporte, ni alterar probabilidades/roster a posteriori para forzar un brazo ausente. La siguiente implementación válida es reutilizar los kernels S3 puntuales ya definidos en `c10s_synthetic_components.py` y añadir una variante de observación point-S3 al fixture World Builder; su test debe comprobar `PARTIALLY_IDENTIFIED`, razón de abstención, bounds que contienen la truth reservada y adjudicación correcta del Evaluator. La ruta `INDETERMINATE` por falta de soporte queda como una línea distinta y requiere manipulación del soporte/assignment especificada en el DGP antes de implementarla.
+
+No se han modificado Analyzer/Evaluator, no se han creado nuevos DGPs, no se han generado bancos ni ejecutado pruebas. Estado: SOURCE_AUDIT_COMPLETE / IMPLEMENTATION_PENDING / NOT_EXECUTED. La autorización científica y de calibración permanece desactivada.
