@@ -1,4 +1,4 @@
-"""End-to-end integration of the DGP -> EventHistory -> interval S3 -> oracle path.
+"""End-to-end integration of the DGP -> EventHistory -> interval/point S3 -> oracle paths.
 
 Source-level regression only. This module is included in EP-02 but has not
 been executed under the current execution authorization boundary.
@@ -57,13 +57,14 @@ from theta_a_calibration_protocol import (
 
 
 class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
-    def _fixture(self, theta_a_mode="positive", seed_assignment=None):
+    def _fixture(self, theta_a_mode="positive", seed_assignment=None, n_units=None):
         if theta_a_mode not in ("positive", "null", "negative", "alternative"):
             raise ValueError("unsupported focal theta_A scenario")
         # Positive and alternative regimes share one base DGP/population.
         scenario = "INTERACTION" if theta_a_mode in ("positive", "alternative") else theta_a_mode.upper()
         dgp_id = f"DGP-INTERVAL-INTEGRATION-{scenario}"
-        n_units = seed_assignment.n_units if seed_assignment is not None else 32
+        n_units = (seed_assignment.n_units if seed_assignment is not None
+                   else (n_units if n_units is not None else 32))
         world_config = SyntheticWorldConfig(
             world_id=(seed_assignment.world_id if seed_assignment is not None
                       else f"WORLD-INTERVAL-INTEGRATION-{scenario}"),
@@ -462,6 +463,28 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertTrue(result.evaluator_result.truth_within_bounds)
         self.assertTrue(result.evaluator_result.correct_adjudication)
         self.assertEqual(result.evaluator_result.disposition, "BOUNDS_COVER_TRUTH")
+
+    def test_point_s3_single_unit_world_adjudicates_missing_realized_arm(self):
+        # Positivity of the assignment mechanism is preserved (p=0.5).
+        # With one realized unit, one arm is necessarily absent; this tests
+        # realized-arm support failure, not structural assignment positivity.
+        fixture = self._fixture("positive", n_units=1)
+        result = self._run_pipeline(fixture, point_s3=True)
+
+        self.assertEqual(result.analyzer_result.identification, "INDETERMINATE")
+        self.assertEqual(
+            result.analyzer_result.abstention_reason,
+            "REALIZED_GA_ARM_SUPPORT_MISSING",
+        )
+        self.assertIsNone(result.analyzer_result.point_estimate)
+        self.assertEqual(result.analyzer_result.lower_bound, -1.0)
+        self.assertEqual(result.analyzer_result.upper_bound, 1.0)
+        self.assertEqual(sum(result.analyzer_result.assigned_arm_unit_counts), 1)
+        self.assertIn(0, result.analyzer_result.assigned_arm_unit_counts)
+        self.assertAlmostEqual(result.evaluator_result.truth, 0.5)
+        self.assertTrue(result.evaluator_result.truth_within_bounds)
+        self.assertTrue(result.evaluator_result.correct_adjudication)
+        self.assertEqual(result.evaluator_result.disposition, "CORRECT_ABSTENTION")
 
     def test_two_stage_inference_is_wired_through_complete_world_and_evaluator(self):
         fixture = self._fixture("positive")
