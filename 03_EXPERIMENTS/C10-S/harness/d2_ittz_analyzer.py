@@ -138,7 +138,9 @@ class D2ITTZAnalyzer:
         expected_ids = [row[0] for row in expected_pairs]
         expected_refs = [row[1] for row in expected_pairs]
         assignment_ids = [row[0] for row in expected_assignments]
-        if (len(expected_pairs) != manifest["expected_unit_count"]
+        if (any(len(row) != 2 for row in expected_pairs)
+                or any(len(row) != 5 for row in expected_assignments)
+                or len(expected_pairs) != manifest["expected_unit_count"]
                 or len(expected_ids) != len(set(expected_ids))
                 or len(expected_refs) != len(set(expected_refs))
                 or set(expected_refs) != set(contract_history for contract_history, _ in contract.q_x_mass_by_history)
