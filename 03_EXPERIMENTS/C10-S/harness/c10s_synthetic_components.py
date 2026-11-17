@@ -1282,6 +1282,8 @@ def evaluate_d2_structural_deltas(
         pair = pairs_by_unit_z[key]
         if (pair.unit_id, pair.z) != key or not pair.focal_transformation_id:
             raise ContractError("D2 structural pair identity/focal transformation binding is invalid")
+        if pair.baseline.potential_axis != "Z" or pair.post.potential_axis != "Z":
+            raise ContractError("D2 structural evaluator accepts only Z-axis potential snapshots")
         stage = units[unit_id].d2_potentials.potentials_by_z[z]
         expected_scope = (world.world_id, world.world_version, world.dgp_id,
                           world.dgp_version, unit_id, z)
@@ -1524,10 +1526,11 @@ class FactorialStructuralPotential:
             raise ContractError("factorial structural potential must retain its exact complete g_A vector")
         if (self.baseline.unit_id, self.post.unit_id, self.baseline.potential_axis,
                 self.post.potential_axis, self.baseline.potential_z, self.post.potential_z,
-                self.baseline.potential_label, self.post.potential_label) != (
+                self.baseline.potential_label, self.post.potential_label,
+                self.delta.potential_axis, self.delta.potential_z, self.delta.potential_label) != (
                 self.unit_id, self.unit_id, "G_A", "G_A", None, None,
-                self.potential_label, self.potential_label):
-            raise ContractError("factorial structural snapshots must bind to the exact vector/r_common potential")
+                self.potential_label, self.potential_label, "G_A", None, self.potential_label):
+            raise ContractError("factorial structural snapshots/delta must bind to the exact vector/r_common potential")
         if (self.baseline.world_id, self.baseline.world_version, self.baseline.dgp_id,
                 self.baseline.dgp_version) != (
                 world.world_id, world.world_version, world.dgp_id, world.dgp_version):
@@ -1582,6 +1585,9 @@ def generate_factorial_structural_potentials(
             raise ContractError("factorial structural potentials require certified fixed common r_common")
     result = {}
     engine = TransformationalDeltaEngine()
+    rule_targets = [rule.atom.canonical_id for rule in rules]
+    if len(rule_targets) != len(set(rule_targets)):
+        raise ContractError("g_A structural mapping may declare only one rule per structural atom")
     for history_ref in sorted(expected_refs):
         unit = unit_by_ref[history_ref]
         cert = certs[history_ref]
@@ -1709,6 +1715,14 @@ class FactorialReachPotential:
             raise ContractError("factorial Reach target support differs from its versioned configuration")
         if set(dict(self.delta_by_target)) != set(config.target_states):
             raise ContractError("factorial Reach deltas do not cover the exact target universe")
+        baseline_states, post_states = dict(self.baseline.target_states), dict(self.post.target_states)
+        expected_delta = {
+            target: ("?" if "?" in (baseline_states[target], post_states[target])
+                     else (0 if baseline_states[target] == post_states[target] else 1))
+            for target in config.target_states
+        }
+        if dict(self.delta_by_target) != expected_delta:
+            raise ContractError("factorial Reach delta does not match its baseline/post potential states")
         if not self.result_sha256:
             raise ContractError("factorial Reach potential digest is required")
 
@@ -1857,6 +1871,20 @@ class FactorialPotentialTrajectory:
             raise ContractError("factorial route selection requires confirmed Reach and an exact route")
         if self.selection_state != 1 and self.selected_route_id is not None:
             raise ContractError("unselected factorial trajectory cannot identify a route")
+        if self.reach_state == 0 and (
+            self.selection_state != 0 or self.execution_state != 0
+            or self.trajectory_status != "NOT_REACHABLE"
+        ):
+            raise ContractError("factorial Reach=0 must yield NOT_REACHABLE without selection/execution")
+        if self.reach_state == "?" and (
+            self.selection_state != "?" or self.execution_state != "?"
+            or self.trajectory_status != "UNKNOWN"
+        ):
+            raise ContractError("factorial Reach=? must remain UNKNOWN without selection/execution")
+        if self.selection_state == 0 and self.reach_state == 1 and (
+            self.execution_state != 0 or self.trajectory_status != "NOT_SELECTED"
+        ):
+            raise ContractError("confirmed but unselected factorial route must remain NOT_SELECTED")
         if self.trajectory_status == "COMPLETED" and self.execution_state != 1:
             raise ContractError("completed factorial trajectory requires successful execution")
         if self.trajectory_status == "PARTIAL" and (self.execution_state != 0 or not self.executed_steps):
