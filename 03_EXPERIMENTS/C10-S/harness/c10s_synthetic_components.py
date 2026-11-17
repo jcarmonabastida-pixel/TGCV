@@ -1746,9 +1746,9 @@ class FactorialReachPotential:
         ):
             raise ContractError("factorial Reach snapshots do not derive from the exact structural snapshots")
         expected_label = potential.potential_label
-        if (self.baseline.potential_axis, self.post.potential_axis,
-                self.baseline.potential_z, self.post.potential_z,
-                self.baseline.potential_label, self.post.potential_label) != (
+        if (potential.baseline.potential_axis, potential.post.potential_axis,
+                potential.baseline.potential_z, potential.post.potential_z,
+                potential.baseline.potential_label, potential.post.potential_label) != (
                 "G_A", "G_A", None, None, expected_label, expected_label):
             raise ContractError("factorial Reach snapshots must preserve exact g_A vector/r_common identity")
         if set(dict(self.baseline.target_states)) != set(config.target_states) or set(
@@ -3791,8 +3791,13 @@ def project_s3(history: EventHistory, config: S3ObservationConfig, *, seed: int)
             break
     observations = []
     for index, (at, observed) in enumerate(zip(config.schedule, selected)):
-        enabled, behavior, profile = observed
+        enabled, behavior, _kernel_profile = observed
         state_at_observation = _state_at(history, at)
+        # PROFILE is a declared, versioned configuration invariant, not a
+        # stochastic exposure measurement. Its observed projection therefore
+        # comes from the state/configuration even when the joint kernel marks
+        # ENABLED and admission as missing.
+        profile = state_at_observation.profile
         capture_time = at + config.capture_lags[index]
         ingestion_time = capture_time + config.ingestion_lags[index]
         observations.append(S3Observation(
@@ -3879,7 +3884,6 @@ def compose_theta_a_s3_observation_records(
         if (history.unit_id != assignment.unit_id
                 or history.potential_id != potential_id
                 or history.content_sha256 != content_sha
-                or history.history_ref != assignment.history_ref
                 or history.world_id != assignments.world_id
                 or history.world_version != assignments.world_version
                 or history.dgp_version != assignments.dgp_version):
