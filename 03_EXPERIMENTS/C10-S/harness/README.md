@@ -721,3 +721,9 @@ The scenario contract must supply its expected identification status independent
 - This new source/test increment has **not** been compiled, executed or replayed. Workflow YAML/actionlint validation is also still pending. EP-02 run 826 remains evidence for the previous 286-test source commit only; it does not validate this increment.
 
 This scaffold defines the focal replication and reporting boundary without transferring P178/13×52 numeric targets or authorizing calibration. The next decision-dependent step is to supply an independently justified focal scenario roster (world/DGP/roster IDs and versions, unit-ID prefix, truth-identification class and independence basis) plus explicit metric precision targets before any bank generation; no such values are inferred here.
+
+### End-to-end N/M/R wiring regression
+
+`test_c10s_world_pipeline_integration.py` now includes a source-level integration regression that passes the focal seed assignments through the existing complete-world DGP fixture. It binds each M world to its world/roster identity, version, unit prefix and world seed; each R binds its run identity, joint-policy randomization salt and unit-expanded S3 seed. The test then captures the actual Analyzer/Evaluator output and exercises the N/M/R aggregator. This is a wiring regression using a small deterministic software fixture, not a selected scientific scenario roster or a calibration run.
+
+The regression adds no new EP-02 module: it extends the already allowlisted world-pipeline test module. The combined EP-02 profile remains sixteen test modules. The source and test definition are persisted in the research branch but remain **uncompiled and unexecuted** under the current authorization boundary.
