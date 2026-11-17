@@ -254,11 +254,6 @@ def materialize_c10s_dual_cohort_world_from_dgp(
         d2_world_config.dgp_id, d2_world_config.dgp_version
     ):
         raise ContractError("functional EventHistory generator must bind to the cohort DGP")
-    _validate_paired_functional_initial_states(
-        SyntheticWorldBuilder().generate(factorial_world_config, d2_config),
-        SyntheticWorldBuilder().generate(d2_world_config, d2_config),
-        factorial_initial_state_by_unit_z, d2_initial_state_by_unit_z,
-    )
     factorial = materialize_c10s_factorial_world_from_dgp(
         world_config=factorial_world_config, d2_config=d2_config,
         structural_config=structural_config, reach_config=reach_config,
@@ -284,6 +279,10 @@ def materialize_c10s_dual_cohort_world_from_dgp(
     )
     d2_structural_deltas = evaluate_d2_structural_deltas(d2_world, d2_structural_pairs)
     _validate_paired_baseline(factorial.world, d2_world)
+    _validate_paired_functional_initial_states(
+        factorial.world, d2_world,
+        factorial_initial_state_by_unit_z, d2_initial_state_by_unit_z,
+    )
     trajectory_rules_declared = any(
         rule.source == "TRAJECTORY" for rule in functional_history_config.rules
     )
