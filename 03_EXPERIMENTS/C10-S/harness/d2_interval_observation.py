@@ -422,6 +422,26 @@ class D2IntervalSealer:
             or candidate.interval_bounds and candidate.interval_bounds != common_bounds
         ):
             raise ContractError("D2 candidate context differs from observed grid/monitor/interval rows")
+        assignment_fields = (
+            "assignment_bundle_sha256", "assignment_mechanism_id",
+            "assignment_mechanism_version", "q_x_sha256",
+        )
+        if candidate.rows:
+            first_row = candidate.rows[0]
+            assignment_context = tuple(first_row[field] for field in assignment_fields)
+            if any(
+                tuple(row[field] for field in assignment_fields) != assignment_context
+                for row in candidate.rows
+            ):
+                raise ContractError("D2 S3 rows do not share one assignment/q_X provenance context")
+            declared_context = tuple(getattr(candidate, field) for field in assignment_fields)
+            if any(value and value != inferred
+                   for value, inferred in zip(declared_context, assignment_context)):
+                raise ContractError("D2 candidate assignment context differs from observed S3 provenance")
+        else:
+            assignment_context = tuple(getattr(candidate, field) for field in assignment_fields)
+        if not all(isinstance(value, str) and value for value in assignment_context):
+            raise ContractError("D2 evidence requires explicit assignment bundle/mechanism/q_X provenance")
         manifest = {
             "run_id": candidate.run_id, "schema": SCHEMA,
             "sealer_version": self.version, "row_count": len(normalised),
@@ -432,6 +452,10 @@ class D2IntervalSealer:
             "temporal_resolution": "INTERVAL_LEVEL",
             "grid_id": common_grid[0], "grid_version": common_grid[1],
             "monitor_id": common_monitor[0], "monitor_version": common_monitor[1],
+            "assignment_bundle_sha256": assignment_context[0],
+            "assignment_mechanism_id": assignment_context[1],
+            "assignment_mechanism_version": assignment_context[2],
+            "q_x_sha256": assignment_context[3],
             "interval_count_per_unit": len(common_bounds),
             "interval_bounds": tuple(common_bounds),
         }
