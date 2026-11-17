@@ -568,7 +568,7 @@ class SyntheticComponentTests(unittest.TestCase):
         config = SyntheticWorldConfig(
             "WORLD-REACH", "001", "D2-WORLD", "001", "ROSTER-REACH", "001",
             "UE", 2, 91, 1, (("H0", 1.0),), 1, 1.0,
-            0.5, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, (0.5, 0.5),
+            0.5, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, (0.5, 0.5),
         )
         world = SyntheticWorldBuilder().generate(config, d2_config)
         snapshots, routes, complete, truncated = {}, {}, {}, {}
@@ -751,7 +751,7 @@ class SyntheticComponentTests(unittest.TestCase):
         config = SyntheticWorldConfig(
             "WORLD-DELTA", "001", "D2-DELTA", "001", "ROSTER-DELTA", "001",
             "UE", 2, 92, 1, (("H0", 1.0),), 1, 1.0,
-            0.5, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, (0.5, 0.5),
+            0.5, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, (0.5, 0.5),
         )
         structural_config = D2StructuralGenerationConfig(
             "STRUCTURAL-D2-MIN", "001", "TAU-FOCAL", "v1",
