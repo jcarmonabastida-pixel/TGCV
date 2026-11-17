@@ -1679,6 +1679,302 @@ def generate_factorial_structural_potentials(
     return result
 
 
+@dataclass(frozen=True)
+class FactorialReachPotential:
+    history_ref: str
+    unit_id: str
+    vector_sha256: str
+    r_common_fingerprint: str
+    baseline: ReachabilityResult
+    post: ReachabilityResult
+    delta_by_target: tuple[tuple[str, ReachState], ...]
+    result_sha256: str
+
+    def validate(self, potential: FactorialStructuralPotential, config: "D2ReachGenerationConfig") -> None:
+        self.baseline.validate()
+        self.post.validate()
+        if (self.history_ref, self.unit_id, self.vector_sha256, self.r_common_fingerprint) != (
+            potential.history_ref, potential.unit_id, potential.vector_sha256,
+            potential.r_common_fingerprint,
+        ):
+            raise ContractError("factorial Reach potential is detached from its exact g_A structural potential")
+        if (self.baseline.snapshot_id, self.post.snapshot_id) != (
+            f"{potential.baseline.snapshot_id}:REACH:BASELINE",
+            f"{potential.post.snapshot_id}:REACH:POST",
+        ):
+            raise ContractError("factorial Reach snapshots do not derive from the exact structural snapshots")
+        if set(dict(self.baseline.target_states)) != set(config.target_states) or set(
+            dict(self.post.target_states)
+        ) != set(config.target_states):
+            raise ContractError("factorial Reach target support differs from its versioned configuration")
+        if set(dict(self.delta_by_target)) != set(config.target_states):
+            raise ContractError("factorial Reach deltas do not cover the exact target universe")
+        if not self.result_sha256:
+            raise ContractError("factorial Reach potential digest is required")
+
+
+def evaluate_factorial_structural_reachability(
+    world: "SyntheticWorldBundle",
+    structural_potentials: dict[tuple[str, str, str], FactorialStructuralPotential],
+    config: "D2ReachGenerationConfig",
+) -> dict[tuple[str, str, str], FactorialReachPotential]:
+    """Derive Reach for each exact q_X* × g_A-vector × r_common potential."""
+    world.validate()
+    config.validate()
+    unit_by_history = {
+        unit.d2_baseline.baseline_history_ref: unit.unit_id for unit in world.units
+    }
+    expected_refs = set(unit_by_history)
+    if not structural_potentials:
+        raise ContractError("factorial structural potentials are required before Reach")
+    engine = StructuralReachabilityEngine()
+    results = {}
+    for key, potential in sorted(structural_potentials.items()):
+        potential.validate(world)
+        if key != (potential.history_ref, potential.vector_sha256, potential.r_common_fingerprint):
+            raise ContractError("factorial structural potential dictionary key mismatch")
+        if potential.history_ref not in expected_refs or unit_by_history[potential.history_ref] != potential.unit_id:
+            raise ContractError("factorial structural potential history/unit is outside q_X*")
+        def make_snapshot(source, atoms, complete, timepoint):
+            transformations = []
+            for transformation_id in config.transformation_universe:
+                atom = atoms.get(transformation_id)
+                if atom is None:
+                    state = 0 if complete["U"] else "?"
+                else:
+                    if atom.component != "U":
+                        raise ContractError("declared transformation universe ID resolves to a non-U atom")
+                    state = atom.state
+                transformations.append(StructuralTransformation(
+                    transformation_id, atom.semantic_version if atom else "ABSENT-OR-UNKNOWN",
+                    f"{source.snapshot_id}:{timepoint}", state,
+                ))
+            return StructuralSnapshot(
+                f"{source.snapshot_id}:REACH:{timepoint}", config.snapshot_version,
+                source.world_id, source.world_version, source.dgp_id, source.dgp_version,
+                source.unit_id, source.boundary_id, source.context_id,
+                config.horizon, tuple(transformations),
+                config.universe_exhaustive and complete["U"],
+                config.relations_exhaustive and complete["R"],
+                config.conditions_exhaustive and complete["C"],
+                config.resources_exhaustive, config.catalog_version,
+            )
+        def make_routes(atoms, complete):
+            routes = []
+            for template in config.route_templates:
+                steps = []
+                for step in template.steps:
+                    predicates = tuple(
+                        (name, _reach_atom_state(atoms, atom_id, component, complete))
+                        for name, component, atom_id in step.predicate_atom_bindings
+                    )
+                    steps.append(StructuralRouteStep(
+                        step.transformation_id, step.state_before, step.state_after,
+                        step.applicability_state, predicates, step.duration,
+                    ))
+                relations = tuple(
+                    _reach_atom_state(atoms, atom_id, component, complete)
+                    for component, atom_id in template.relation_atom_bindings
+                )
+                routes.append(StructuralRoute(
+                    template.route_id, template.target_state, tuple(steps),
+                    relations, template.temporal_feasibility_state, template.route_scope,
+                ))
+            return tuple(routes)
+        base_atoms = {atom.canonical_id: atom for atom in potential.baseline.atoms}
+        post_atoms = {atom.canonical_id: atom for atom in potential.post.atoms}
+        base_complete = dict(potential.baseline.component_complete)
+        post_complete = dict(potential.post.component_complete)
+        base_snapshot = make_snapshot(potential.baseline, base_atoms, base_complete, "BASELINE")
+        post_snapshot = make_snapshot(potential.post, post_atoms, post_complete, "POST")
+        baseline = engine.evaluate(
+            base_snapshot, make_routes(base_atoms, base_complete),
+            enumeration_complete=config.enumeration_complete,
+            search_truncated=config.search_truncated, target_states=config.target_states,
+        )
+        post = engine.evaluate(
+            post_snapshot, make_routes(post_atoms, post_complete),
+            enumeration_complete=config.enumeration_complete,
+            search_truncated=config.search_truncated, target_states=config.target_states,
+        )
+        base_states, post_states = dict(baseline.target_states), dict(post.target_states)
+        delta = tuple(
+            (target, "?" if "?" in (base_states[target], post_states[target])
+             else (0 if base_states[target] == post_states[target] else 1))
+            for target in sorted(config.target_states)
+        )
+        payload = {
+            "world": (world.world_id, world.world_version, world.dgp_id, world.dgp_version),
+            "structural_potential": key, "reach_config": config,
+            "baseline": baseline, "post": post, "delta_by_target": delta,
+        }
+        result = FactorialReachPotential(
+            potential.history_ref, potential.unit_id, potential.vector_sha256,
+            potential.r_common_fingerprint, baseline, post, delta, digest(payload),
+        )
+        result.validate(potential, config)
+        results[key] = result
+    expected_keys = set(structural_potentials)
+    if set(results) != expected_keys:
+        raise ContractError("factorial Reach must cover exact structural potential support")
+    return results
+
+
+@dataclass(frozen=True)
+class FactorialPotentialTrajectory:
+    history_ref: str
+    unit_id: str
+    vector_sha256: str
+    r_common_fingerprint: str
+    target_state: str
+    reach_state: ReachState
+    selection_state: ReachState
+    selected_route_id: str | None
+    execution_state: ReachState
+    trajectory_status: Literal[
+        "COMPLETED", "PARTIAL", "NOT_SELECTED", "EXECUTION_FAILED", "NOT_REACHABLE", "UNKNOWN",
+    ]
+    executed_steps: tuple[ExecutedTrajectoryStep, ...]
+    terminal_state: str | None
+
+    def validate(self, reach: FactorialReachPotential) -> None:
+        if (self.history_ref, self.unit_id, self.vector_sha256, self.r_common_fingerprint) != (
+            reach.history_ref, reach.unit_id, reach.vector_sha256, reach.r_common_fingerprint,
+        ):
+            raise ContractError("factorial trajectory is detached from its exact Reach potential")
+        _reach_state(self.reach_state, "factorial trajectory Reach")
+        _reach_state(self.selection_state, "factorial trajectory selection")
+        _reach_state(self.execution_state, "factorial trajectory execution")
+        target_reach = dict(reach.post.target_states).get(self.target_state)
+        if target_reach != self.reach_state:
+            raise ContractError("factorial trajectory Reach differs from post-potential adjudication")
+        route_rows = {row.route_id: row for row in reach.post.route_evaluations}
+        if self.selected_route_id is not None:
+            selected = route_rows.get(self.selected_route_id)
+            if selected is None or selected.target_state != self.target_state or selected.route_state != 1:
+                raise ContractError("factorial trajectory selected a route not confirmed by Reach")
+        if self.selection_state == 1 and (self.reach_state != 1 or self.selected_route_id is None):
+            raise ContractError("factorial route selection requires confirmed Reach and an exact route")
+        if self.selection_state != 1 and self.selected_route_id is not None:
+            raise ContractError("unselected factorial trajectory cannot identify a route")
+        if self.trajectory_status == "COMPLETED" and self.execution_state != 1:
+            raise ContractError("completed factorial trajectory requires successful execution")
+        if self.trajectory_status == "PARTIAL" and (self.execution_state != 0 or not self.executed_steps):
+            raise ContractError("partial factorial trajectory requires an executed prefix and failed execution")
+        if self.executed_steps:
+            for left, right in zip(self.executed_steps, self.executed_steps[1:]):
+                if left.state_after != right.state_before:
+                    raise ContractError("factorial executed trajectory is discontinuous")
+            if self.terminal_state != self.executed_steps[-1].state_after:
+                raise ContractError("factorial trajectory terminal state differs from executed prefix")
+        elif self.terminal_state is not None:
+            raise ContractError("factorial trajectory without executed steps cannot declare a terminal state")
+
+
+def evaluate_factorial_potential_trajectories(
+    world: "SyntheticWorldBundle",
+    reach_potentials: dict[tuple[str, str, str], FactorialReachPotential],
+    reach_config: "D2ReachGenerationConfig",
+    config: "D2TrajectoryGenerationConfig",
+) -> dict[tuple[str, str, str, str], FactorialPotentialTrajectory]:
+    """Generate route selection/execution for each factorial vector potential."""
+    world.validate()
+    reach_config.validate()
+    config.validate(reach_config)
+    selection_probability = dict(config.selection_probability_by_target)
+    route_weights = dict(config.route_selection_weight)
+    route_execution = dict(config.route_execution_probability)
+    step_execution = dict(config.step_execution_probability)
+    route_by_id = {route.route_id: route for route in reach_config.route_templates}
+    results = {}
+    for key, reach in sorted(reach_potentials.items()):
+        if key != (reach.history_ref, reach.vector_sha256, reach.r_common_fingerprint):
+            raise ContractError("factorial Reach dictionary key mismatch")
+        for target in reach_config.target_states:
+            target_reach = dict(reach.post.target_states)[target]
+            candidates = [row for row in reach.post.route_evaluations if row.target_state == target]
+            confirmed = [row for row in candidates if row.route_state == 1]
+            unknown = [row for row in candidates if row.route_state == "?"]
+            identity = (reach.unit_id, target, reach.vector_sha256, reach.r_common_fingerprint)
+            if confirmed:
+                total_weight = sum(route_weights[row.route_id] for row in confirmed)
+                draw = _dgp_uniform(
+                    world.seed_commitment_sha256, config.randomization_salt, *identity, "selection-route",
+                )
+                cumulative = 0.0
+                selected = confirmed[-1]
+                for candidate in sorted(confirmed, key=lambda row: row.route_id):
+                    cumulative += route_weights[candidate.route_id] / total_weight
+                    if draw < cumulative:
+                        selected = candidate
+                        break
+                selected_flag = _dgp_uniform(
+                    world.seed_commitment_sha256, config.randomization_salt, *identity, "selection",
+                ) < selection_probability[target]
+                if not selected_flag:
+                    result = FactorialPotentialTrajectory(
+                        reach.history_ref, reach.unit_id, reach.vector_sha256,
+                        reach.r_common_fingerprint, target, target_reach, 0, None, 0,
+                        "NOT_SELECTED", (), None,
+                    )
+                else:
+                    route = route_by_id[selected.route_id]
+                    if _dgp_uniform(
+                        world.seed_commitment_sha256, config.randomization_salt, *identity,
+                        selected.route_id, "route-execution",
+                    ) >= route_execution[selected.route_id]:
+                        result = FactorialPotentialTrajectory(
+                            reach.history_ref, reach.unit_id, reach.vector_sha256,
+                            reach.r_common_fingerprint, target, target_reach, 1,
+                            selected.route_id, 0, "EXECUTION_FAILED", (), None,
+                        )
+                    else:
+                        executed = []
+                        failed = False
+                        for index, step in enumerate(route.steps):
+                            success = _dgp_uniform(
+                                world.seed_commitment_sha256, config.randomization_salt,
+                                *identity, selected.route_id, index,
+                                step.transformation_id, "step-execution",
+                            ) < step_execution[step.transformation_id]
+                            if not success:
+                                failed = True
+                                break
+                            executed.append(ExecutedTrajectoryStep(
+                                step.transformation_id, step.state_before, step.state_after, 1, step.duration,
+                            ))
+                        status = ("PARTIAL" if executed else "EXECUTION_FAILED") if failed else "COMPLETED"
+                        result = FactorialPotentialTrajectory(
+                            reach.history_ref, reach.unit_id, reach.vector_sha256,
+                            reach.r_common_fingerprint, target, target_reach, 1,
+                            selected.route_id, 0 if failed else 1, status, tuple(executed),
+                            executed[-1].state_after if executed else None,
+                        )
+            elif target_reach == 0 and not unknown:
+                result = FactorialPotentialTrajectory(
+                    reach.history_ref, reach.unit_id, reach.vector_sha256,
+                    reach.r_common_fingerprint, target, target_reach, 0, None, 0,
+                    "NOT_REACHABLE", (), None,
+                )
+            elif target_reach == "?":
+                result = FactorialPotentialTrajectory(
+                    reach.history_ref, reach.unit_id, reach.vector_sha256,
+                    reach.r_common_fingerprint, target, target_reach, "?",
+                    None, "?", "UNKNOWN", (), None,
+                )
+            else:
+                raise ContractError("factorial Reach=1 requires a confirmed route for selection")
+            result.validate(reach)
+            results[(reach.history_ref, reach.vector_sha256, reach.r_common_fingerprint, target)] = result
+    expected = {
+        (reach.history_ref, reach.vector_sha256, reach.r_common_fingerprint, target)
+        for reach in reach_potentials.values() for target in reach_config.target_states
+    }
+    if set(results) != expected:
+        raise ContractError("factorial trajectories must cover exact vector-potential × target support")
+    return results
+
+
 
 @dataclass(frozen=True)
 class D2ReachStepTemplate:
