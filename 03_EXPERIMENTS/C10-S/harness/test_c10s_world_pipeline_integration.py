@@ -32,6 +32,8 @@ from c10s_factorial_pipeline import materialize_c10s_factorial_world_from_dgp
 from c10s_dual_cohort_pipeline import materialize_c10s_dual_cohort_world_from_dgp
 from d2_observed_assignment import D2ObservedAssignmentConfig
 from d2_ittz_evaluator import D2ITTZEvaluator
+from d2_ittz_analyzer import D2ITTZAnalyzer, _result_payload, _output_hash
+from d2_interval_observation import D2IntervalEvidenceCandidate, D2IntervalSealer
 from theta_am_factorial import (
     FactorialAssignmentConfig, FactorialIntervalSealer,
     FactorialObservationAnalyzer, evaluate_factorial_analysis,
@@ -658,6 +660,45 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 evidence=result.d2_observed_lane.sealed_evidence,
                 contract=result.d2_analysis_contract,
                 result=result.d2_analyzer_result,
+                tolerance=0.25,
+            )
+
+        # Force one observed interval to missing, then verify that the oracle
+        # reconstructs the measurement-completion bounds rather than trusting
+        # the Analyzer's declared interval.
+        source_rows = [dict(row) for row in result.d2_observed_lane.sealed_evidence.rows]
+        source_rows[0]["observed_compliance"] = None
+        source_rows[0]["observation_status"] = "MISSING"
+        partial_evidence = D2IntervalSealer().seal(
+            D2IntervalEvidenceCandidate(result.d2_observed_lane.sealed_evidence.run_id,
+                                        tuple(source_rows))
+        )
+        partial_analysis = D2ITTZAnalyzer().analyze(
+            partial_evidence, result.d2_analysis_contract,
+        )
+        self.assertEqual(partial_analysis.identification, "PARTIALLY_IDENTIFIED")
+        partial_evaluation = D2ITTZEvaluator().evaluate(
+            world=result.d2_world, truth=result.d2_vcont_truth,
+            assignments=original_bundle, evidence=partial_evidence,
+            contract=result.d2_analysis_contract, result=partial_analysis,
+            tolerance=0.25,
+        )
+        self.assertEqual(
+            partial_evaluation.disposition,
+            "CORRECT_ABSTENTION_MEASUREMENT_INCOMPLETE",
+        )
+        tampered_partial = replace(
+            partial_analysis, lower_bound=partial_analysis.lower_bound + 0.1,
+        )
+        tampered_payload = _result_payload(tampered_partial)
+        tampered_partial = replace(
+            tampered_partial, output_sha256=_output_hash(tampered_payload),
+        )
+        with self.assertRaises(ContractError):
+            D2ITTZEvaluator().evaluate(
+                world=result.d2_world, truth=result.d2_vcont_truth,
+                assignments=original_bundle, evidence=partial_evidence,
+                contract=result.d2_analysis_contract, result=tampered_partial,
                 tolerance=0.25,
             )
 
