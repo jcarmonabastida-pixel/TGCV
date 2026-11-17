@@ -431,6 +431,10 @@ class SyntheticComponentTests(unittest.TestCase):
             tuple(row.unit_id for row in need_truth.records),
             tuple(unit.unit_id for unit in world.units),
         )
+        self.assertTrue(all(
+            type(row.instance_version) is int and row.instance_version == 1
+            for row in need_truth.records
+        ))
         with self.assertRaises(ContractError):
             materialize_need_prez_truth(world, stipulations[:-1])
         with self.assertRaises(ContractError):
