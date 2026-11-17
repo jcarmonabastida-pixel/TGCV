@@ -400,7 +400,44 @@ class SyntheticComponentTests(unittest.TestCase):
         world = builder.generate(world_config, d2_config)
         replay = builder.generate(world_config, d2_config)
         world.validate()
-        self.assertFalse(hasattr(world.units[0], "need_pre_z"))
+        from c10s_synthetic_components import (
+            NeedPreZStipulation, materialize_need_prez_truth,
+        )
+        stipulations = tuple(
+            NeedPreZStipulation(
+                unit_id=unit.unit_id,
+                b1_id=f"B1-{index:03d}",
+                service_instance_id=f"SVC-{index:03d}",
+                contract_id="B1-CONTRACT",
+                contract_version="001",
+                instance_version=f"INSTANCE-{index:03d}-001",
+                package_version="B1-PACKAGE-001",
+                baseline_time="t-1",
+                stipulation=("FOCAL_INCLUSION", "FOCAL_EXCLUSION",
+                             "SEMANTIC_INDETERMINACY", "FOCAL_INCLUSION")[index - 1],
+                rule_version="NEED-RULE-001",
+                basis_ref=f"RESERVED-STIPULATION-{index:03d}",
+            )
+            for index, unit in enumerate(world.units, start=1)
+        )
+        need_truth = materialize_need_prez_truth(world, stipulations)
+        need_truth.validate(world)
+        self.assertEqual(
+            tuple(row.need_truth_state for row in need_truth.records),
+            (1, 0, "?", 1),
+        )
+        self.assertEqual(
+            tuple(row.unit_id for row in need_truth.records),
+            tuple(unit.unit_id for unit in world.units),
+        )
+        with self.assertRaises(ContractError):
+            materialize_need_prez_truth(world, stipulations[:-1])
+        with self.assertRaises(ContractError):
+            materialize_need_prez_truth(world, stipulations + (stipulations[0],))
+        with self.assertRaises(ContractError):
+            materialize_need_prez_truth(
+                world, (stipulations[0],) * len(world.units)
+            )
         self.assertEqual(world.roster_sha256, replay.roster_sha256)
         self.assertEqual(world.configuration_sha256, replay.configuration_sha256)
         self.assertEqual(tuple(row.mass for row in world.q_x), (0.1, 0.2, 0.3, 0.4))
