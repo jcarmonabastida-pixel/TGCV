@@ -691,3 +691,33 @@ Artifacts:
 **Failure and correction provenance.** The immediately preceding run 825 failed with six errors, all caused by the DGP entrypoint not accepting the two new inference options. The source signature and propagation were corrected before run 826. Run 826 supersedes run 825. The two commits after the tested commit only restored the workflow to manual-only configuration and removed the temporary sentinel; a GitHub compare confirms no harness source or test changed after the tested commit.
 
 **Scope boundary.** This is technical regression/replay evidence for the updated software contracts. It is not calibration, Monte Carlo, empirical coverage/power validation, or a scientific/confirmatory experiment. The Hoeffding interval is implemented and tested for wiring/arithmetic, but its operating characteristics remain uncalibrated. No scientific execution was performed.
+
+## Focal θ_A calibration protocol scaffold — 2026-11-17
+
+The focal direct-`g_A` path now has a separate source-level calibration protocol in `theta_a_calibration_protocol.py`, with deterministic contract fixtures in `test_theta_a_calibration_protocol.py`. It is deliberately separate from `vcont_benchmark_protocol.py` and its 13-scenario × 52-assignment-estimand matrix; that protocol explicitly excludes `theta_A` and its RUN/R semantics are not imported as focal estimands.
+
+### N / M / R semantics
+
+- **N:** units in one synthetic world.
+- **M:** independent outer worlds, each with a distinct world identity and world seed.
+- **R:** repeated direct-`g_A` assignment replicates within one fixed M world. Each R gets a unique `run_id`, joint-policy randomization salt and S3 seed; world identity/seed remain fixed within M.
+- There is no extra designated RUN row for `theta_A`: the focal estimator has no run-conditional estimand class.
+- The existing assignment generator uses one per-R salt with distinct domain labels for the Bernoulli arm draw and the within-policy joint-vector draw. The second-stage vector draw is therefore varied on every R and remains part of the stochastic-policy estimand, not conditioned away.
+- S3 measurement uses a separate per-R seed, expanded deterministically to unit-specific monitor seeds.
+- Calibration and evaluation banks are domain-separated and validated for disjoint world, assignment and S3 streams.
+
+### Captured metrics and fail-closed rules
+
+The aggregator first forms one metric contribution per fixed world M from its R replicates, then estimates Monte Carlo means/MCSE across independent M worlds. It supports interval coverage and width, point bias/MAE/RMSE, point recovery only when an explicit tolerance is supplied, identification/abstention, correct abstention, false identification/abstention and interval availability. Missing R/M contributions or any abstention in a numeric identified-only metric make that metric `NOT_EVALUABLE`; they are not removed from a complete-case denominator.
+
+The scenario contract must supply its expected identification status independently of the Analyzer. It also requires an explicit independence basis for scenarios declared identified. `PARTIALLY_IDENTIFIED` truth scenarios are deliberately rejected until the measurement-bound procedure is adjudicated; the observed Analyzer status `PARTIALLY_IDENTIFIED` is retained rather than collapsed to another status. Type-I error and power are explicitly `NOT_DEFINED_NO_TEST_PROCEDURE`; the Hoeffding interval is not silently turned into a hypothesis test.
+
+### Scope and status
+
+- No N grid, M, R, confidence level, MCSE target, point-recovery tolerance, scenario roster or scientific parameter has been selected. The values in the unit-test fixtures are software fixtures only, not design defaults.
+- The seed-bank builder is source code only. No calibration/evaluation bank was generated or opened.
+- No DGP, Generator, S3, Analyzer, Evaluator, Monte Carlo or scientific experiment was run by this change.
+- The new module and regression tests have been added to the manual-only EP-02 source/compile/test/replay allowlist (now sixteen test modules). The workflow remains research-branch-only and requires its existing explicit confirmation input.
+- This new source/test increment has **not** been compiled, executed or replayed. Workflow YAML/actionlint validation is also still pending. EP-02 run 826 remains evidence for the previous 286-test source commit only; it does not validate this increment.
+
+This scaffold defines the focal replication and reporting boundary without transferring P178/13×52 numeric targets or authorizing calibration. The next decision-dependent step is to supply an independently justified focal scenario roster and explicit metric precision targets before any bank generation; no such values are inferred here.
