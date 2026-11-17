@@ -295,13 +295,15 @@ def validate_theta_a_seed_banks(
             world_ids = [x[0] for x in values]
             roster_ids = [x[1] for x in values]
             seeds = [x[2] for x in values]
+            unit_prefixes = [x[7] for x in values]
             if (len(set(world_ids)) != len(values) or len(set(roster_ids)) != len(values)
-                    or len(set(seeds)) != len(values)):
-                raise ThetaACalibrationError("independent outer worlds M require distinct world/roster identities and seeds")
+                    or len(set(seeds)) != len(values) or len(set(unit_prefixes)) != len(values)):
+                raise ThetaACalibrationError("independent outer worlds M require distinct world/roster/unit identities and seeds")
         distinct_worlds = {key: identity for key, identity in worlds.items()}
         if (len({x[0] for x in distinct_worlds.values()}) != len(distinct_worlds)
                 or len({x[1] for x in distinct_worlds.values()}) != len(distinct_worlds)
-                or len({x[2] for x in distinct_worlds.values()}) != len(distinct_worlds)):
+                or len({x[2] for x in distinct_worlds.values()}) != len(distinct_worlds)
+                or len({x[7] for x in distinct_worlds.values()}) != len(distinct_worlds)):
             raise ThetaACalibrationError("each distinct scenario×N×M world requires unique world/roster identities and seed")
         if len({x.run_id for x in rows}) != len(rows):
             raise ThetaACalibrationError("each M×R assignment requires a unique run_id")
