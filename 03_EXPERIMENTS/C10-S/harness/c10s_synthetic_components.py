@@ -1619,7 +1619,7 @@ def generate_factorial_structural_potentials(
                 "U", config.focal_transformation_id, "TRANSFORMATION",
                 config.focal_semantic_version,
                 1 if unit.d2_baseline.focal_accessible_pre else 0,
-                (("role", "FOCAL_ACCESSIBILITY"), ("boundary_id", config.boundary_id)),
+                (("role", "D2_FOCAL"), ("boundary_id", config.boundary_id)),
             ),
         ) + tuple(config.invariant_atoms)
         feasible = {digest(vector) for vector in feasible_vectors_by_history.get(history_ref, ())}
