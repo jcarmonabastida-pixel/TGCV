@@ -310,7 +310,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             },
         }
 
-    def _run_pipeline(self, fixture):
+    def _run_pipeline(self, fixture, theta_a_confidence_level=None):
         return materialize_c10s_complete_world_from_dgp(
             world_config=fixture["world_config"],
             d2_config=fixture["d2_config"],
@@ -332,6 +332,23 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             evaluation_tolerance=0.25,
             interval_monitor_configs_by_history_ref=fixture["monitor_configs"],
             interval_monitor_seeds_by_unit=fixture["monitor_seeds"],
+            theta_a_confidence_level=theta_a_confidence_level,
+        )
+
+    def test_two_stage_inference_is_wired_through_complete_world_and_evaluator(self):
+        fixture = self._fixture("positive")
+        result = self._run_pipeline(fixture, theta_a_confidence_level=0.95)
+        self.assertEqual(
+            result.analyzer_result.inference_method,
+            "HOEFFDING_TWO_STAGE_BOUNDED_HT_V1",
+        )
+        self.assertEqual(result.analyzer_result.inference_confidence_level, 0.95)
+        self.assertIsNotNone(result.analyzer_result.inference_lower_bound)
+        self.assertIsNotNone(result.analyzer_result.inference_upper_bound)
+        self.assertIsNotNone(result.evaluator_result.inference_truth_covered)
+        self.assertEqual(
+            dict(result.analyzer_contract.probability_a1_by_history),
+            dict(fixture["assignment_config"].probability_a1_by_history),
         )
 
     def test_dgp_world_flows_through_realized_interval_evidence_and_reserved_oracle(self):
