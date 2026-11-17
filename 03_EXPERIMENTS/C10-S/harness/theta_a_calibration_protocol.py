@@ -140,6 +140,11 @@ def _seed(payload: str) -> int:
     return int.from_bytes(hashlib.sha256(payload.encode("utf-8")).digest()[:8], "big")
 
 
+def _canonical_hash(value) -> str:
+    payload = json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
 def build_theta_a_seed_bank(
     design: ThetaACalibrationDesign, bank: Bank,
 ) -> tuple[ThetaASeedAssignment, ...]:
@@ -374,6 +379,7 @@ def capture_theta_a_replicate(
     scenario.validate()
     if (result.world.world_id != assignment.world_id
             or len(result.world.units) != assignment.n_units
+            or result.world.seed_commitment_sha256 != _canonical_hash({"seed": assignment.world_seed})
             or result.analyzer_result.run_id != assignment.run_id
             or result.evaluator_result.run_id != assignment.run_id):
         raise ThetaACalibrationError("complete-world result does not match its focal M/R seed assignment")
@@ -384,6 +390,8 @@ def capture_theta_a_replicate(
     evaluation = result.evaluator_result
     truth_bundle = result.theta_a_truth.theta_a_truth
     assignment_bundle = result.theta_a_assignments
+    if (assignment_bundle.randomization_salt_sha256 != _canonical_hash(assignment.randomization_salt)):
+        raise ThetaACalibrationError("actual assignment salt differs from its focal R seed assignment")
     if (truth_bundle.q_x_fingerprint != assignment_bundle.q_x_sha256
             or truth_bundle.g_a0_fingerprint != assignment_bundle.g_a0_sha256
             or truth_bundle.g_a1_fingerprint != assignment_bundle.g_a1_sha256):
