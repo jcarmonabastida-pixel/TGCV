@@ -50,6 +50,7 @@ class D2ITTZAnalysisResult:
     randomization_lower_bound: float | None
     randomization_upper_bound: float | None
     hoeffding_radius: float | None
+    randomization_confidence_level: float | None
     target_q_x_coverage: float
     missing_target_histories: tuple[str, ...]
     assigned_z_unit_counts: tuple[int, int]
@@ -69,6 +70,7 @@ def _result_payload(result: D2ITTZAnalysisResult) -> dict[str, Any]:
         "randomization_lower_bound": result.randomization_lower_bound,
         "randomization_upper_bound": result.randomization_upper_bound,
         "hoeffding_radius": result.hoeffding_radius,
+        "randomization_confidence_level": result.randomization_confidence_level,
         "target_q_x_coverage": result.target_q_x_coverage,
         "missing_target_histories": result.missing_target_histories,
         "assigned_z_unit_counts": result.assigned_z_unit_counts,
@@ -198,7 +200,7 @@ class D2ITTZAnalyzer:
             randomization_range_sq += contribution_range * contribution_range
         counts = (len(arm[0]), len(arm[1]))
         coverage = sum(qx[key] for key in observed_histories)
-        randomization_lower = randomization_upper = radius = None
+        randomization_lower = randomization_upper = radius = confidence_level = None
         if missing_histories or not all(counts):
             identification, estimate, reason = "INDETERMINATE", None, (
                 "TARGET_QX_SUPPORT_INCOMPLETE" if missing_histories else "REALIZED_Z_ARM_SUPPORT_MISSING"
@@ -214,7 +216,8 @@ class D2ITTZAnalyzer:
             else:
                 identification, reason = "IDENTIFIED", ""
                 estimate = mu_lower[1] - mu_lower[0]
-                alpha = 1.0 - contract.confidence_level
+                confidence_level = contract.confidence_level
+                alpha = 1.0 - confidence_level
                 radius = math.sqrt(0.5 * randomization_range_sq * math.log(2.0 / alpha))
                 randomization_lower = max(-1.0, estimate - radius)
                 randomization_upper = min(1.0, estimate + radius)
@@ -226,6 +229,7 @@ class D2ITTZAnalyzer:
             "randomization_lower_bound": randomization_lower,
             "randomization_upper_bound": randomization_upper,
             "hoeffding_radius": radius,
+            "randomization_confidence_level": confidence_level,
             "target_q_x_coverage": coverage, "missing_target_histories": missing_histories,
             "assigned_z_unit_counts": counts, "missing_interval_count": missing_count,
             "total_interval_count": total_count, "abstention_reason": reason,
