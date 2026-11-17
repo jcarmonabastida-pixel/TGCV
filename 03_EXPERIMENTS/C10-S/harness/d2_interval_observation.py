@@ -412,6 +412,7 @@ class D2IntervalSealer:
             "grid_id": common_grid[0], "grid_version": common_grid[1],
             "monitor_id": common_monitor[0], "monitor_version": common_monitor[1],
             "interval_count_per_unit": len(common_bounds),
+            "interval_bounds": tuple(common_bounds),
         }
         return SealedD2IntervalEvidence(
             candidate.run_id, tuple(normalised), manifest,
