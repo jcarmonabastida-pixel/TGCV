@@ -241,7 +241,10 @@ class D2ITTZAnalyzer:
             p = p1 if z == 1 else p0
             arm[z].append((mass / p, 0, 1))
             randomization_range_sq += (mass * (1.0 / p1 + 1.0 / p0)) ** 2
-        counts = (len(arm[0]) - len(missing_unit_ids), len(arm[1]) - len(missing_unit_ids))
+        counts = (
+            sum(rows[0]["assigned_z"] == 0 for rows in by_unit.values()),
+            sum(rows[0]["assigned_z"] == 1 for rows in by_unit.values()),
+        )
         coverage = sum(qx[key] for key in observed_histories)
         randomization_lower = randomization_upper = radius = confidence_level = None
         mu_lower = [sum(w * lo for w, lo, hi in values) for values in arm]
