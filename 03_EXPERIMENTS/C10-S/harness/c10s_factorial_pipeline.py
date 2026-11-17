@@ -120,8 +120,10 @@ class C10SFactorialWorldResult:
         }
         if len(mapping_identities) != 1:
             raise ContractError("all factorial structural potentials must share one exact versioned g_A mapping")
-        if not self.factorial_target_states or len(self.factorial_target_states) != len(set(self.factorial_target_states)):
-            raise ContractError("factorial trajectory target universe must be explicit and unique")
+        if (not self.factorial_target_states
+                or len(self.factorial_target_states) != len(set(self.factorial_target_states))
+                or self.factorial_target_states != self.factorial_reach_config.target_states):
+            raise ContractError("factorial trajectory target universe must match its exact versioned Reach configuration")
         expected_factorial_trajectories = {
             (history_ref, vector_sha, regime, target)
             for history_ref, vector_sha, regime in expected_factorial_support
