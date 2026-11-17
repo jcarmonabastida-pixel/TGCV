@@ -319,6 +319,15 @@ class D2IntervalSealer:
             expected_pairs = tuple(sorted(expected_by_unit.items()))
         missing_unit_ids = tuple(sorted(set(expected_by_unit) - set(units)))
         if expected_assignments:
+            detail_by_unit = {row[0]: row for row in expected_assignments}
+            for unit_id, unit_contract in units.items():
+                assignment = unit_contract["assignment"]
+                observed_detail = (
+                    unit_id, assignment[4], assignment[9], assignment[10], assignment[11],
+                )
+                if detail_by_unit.get(unit_id) != observed_detail:
+                    raise ContractError("D2 expected assignment metadata differs from observed S3 assignment provenance")
+        if expected_assignments:
             assignment_details = tuple(sorted(expected_assignments))
         elif expected_pairs and not missing_unit_ids:
             assignment_details = tuple(sorted(
