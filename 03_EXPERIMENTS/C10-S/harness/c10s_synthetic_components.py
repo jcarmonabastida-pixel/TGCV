@@ -2560,6 +2560,147 @@ def evaluate_d2_structural_reachability(
 
 
 @dataclass(frozen=True)
+class NeedPreZStipulation:
+    """Reserved, explicit pre-Z B1 objective stipulation for one synthetic UE.
+
+    This is an input to the DGP truth composer, never a stochastic draw,
+    covariate, observed evidence record, or post-treatment classification.
+    """
+    unit_id: str
+    b1_id: str
+    service_instance_id: str
+    contract_id: str
+    contract_version: str
+    instance_version: str
+    package_version: str
+    baseline_time: str
+    stipulation: str
+    rule_version: str
+    basis_ref: str
+
+    def validate(self) -> None:
+        required = (
+            self.unit_id, self.b1_id, self.service_instance_id, self.contract_id,
+            self.contract_version, self.instance_version, self.package_version,
+            self.baseline_time, self.rule_version, self.basis_ref,
+        )
+        if not all(required):
+            raise ContractError("Need_preZ stipulation identity, binding, baseline and provenance are mandatory")
+        if self.baseline_time != "t-1":
+            raise ContractError("Need_preZ truth must be fixed at baseline t-1, before Z at t0")
+        if self.stipulation not in ("FOCAL_INCLUSION", "FOCAL_EXCLUSION", "SEMANTIC_INDETERMINACY"):
+            raise ContractError("Need_preZ requires an explicit inclusion, exclusion or semantic-indeterminacy stipulation")
+
+
+@dataclass(frozen=True)
+class NeedPreZTruthRecord:
+    unit_id: str
+    b1_id: str
+    service_instance_id: str
+    contract_id: str
+    contract_version: str
+    instance_version: str
+    package_version: str
+    baseline_time: str
+    need_truth_state: TriState
+    rule_version: str
+    truth_basis_ref: str
+    stipulation_sha256: str
+
+
+@dataclass(frozen=True)
+class NeedPreZTruthBundle:
+    world_id: str
+    world_version: str
+    dgp_id: str
+    dgp_version: str
+    roster_id: str
+    roster_version: str
+    records: tuple[NeedPreZTruthRecord, ...]
+    result_sha256: str
+
+    def validate(self, world: "SyntheticWorldBundle") -> None:
+        world.validate()
+        if (self.world_id, self.world_version, self.dgp_id, self.dgp_version,
+                self.roster_id, self.roster_version) != (
+            world.world_id, world.world_version, world.dgp_id, world.dgp_version,
+            world.roster_id, world.roster_version
+        ):
+            raise ContractError("Need_preZ truth bundle must bind to the exact world and census roster versions")
+        expected = {unit.unit_id for unit in world.units}
+        actual = [row.unit_id for row in self.records]
+        if set(actual) != expected or len(actual) != len(expected):
+            raise ContractError("Need_preZ truth must cover the complete applicable UE census exactly once")
+        b1_ids = [row.b1_id for row in self.records]
+        service_ids = [row.service_instance_id for row in self.records]
+        if len(set(b1_ids)) != len(b1_ids) or len(set(service_ids)) != len(service_ids):
+            raise ContractError("Need_preZ census requires unique B1 and service-instance bindings")
+        for row in self.records:
+            if (not all((row.b1_id, row.service_instance_id, row.contract_id,
+                         row.contract_version, row.instance_version, row.package_version,
+                         row.rule_version, row.truth_basis_ref, row.stipulation_sha256))
+                    or row.baseline_time != "t-1"
+                    or row.need_truth_state not in (0, 1, "?")):
+                raise ContractError("Need_preZ truth row has incomplete binding, provenance or invalid state")
+        payload = {
+            "world_id": self.world_id, "world_version": self.world_version,
+            "dgp_id": self.dgp_id, "dgp_version": self.dgp_version,
+            "roster_id": self.roster_id, "roster_version": self.roster_version,
+            "records": self.records,
+        }
+        if digest(payload) != self.result_sha256:
+            raise ContractError("Need_preZ reserved truth fingerprint does not match its records")
+
+
+def materialize_need_prez_truth(
+    world: "SyntheticWorldBundle",
+    stipulations: Sequence[NeedPreZStipulation],
+) -> NeedPreZTruthBundle:
+    """Compose reserved Need_preZ truth only from explicit versioned stipulations.
+
+    Missing/duplicate units and invalid bindings are integrity errors, never
+    truth=0 or truth=?. No prevalence, random draw, proxy, or post-Z field is used.
+    """
+    world.validate()
+    expected = {unit.unit_id for unit in world.units}
+    by_unit = {}
+    for stipulation in stipulations:
+        stipulation.validate()
+        if stipulation.unit_id in by_unit:
+            raise ContractError("Need_preZ census contains duplicate UE stipulations")
+        by_unit[stipulation.unit_id] = stipulation
+    if set(by_unit) != expected:
+        raise ContractError("Need_preZ stipulations must cover the exact complete world roster; omissions block materialization")
+    records = []
+    for unit in world.units:
+        row = by_unit[unit.unit_id]
+        state = {
+            "FOCAL_INCLUSION": 1,
+            "FOCAL_EXCLUSION": 0,
+            "SEMANTIC_INDETERMINACY": "?",
+        }[row.stipulation]
+        stipulation_hash = digest(row)
+        records.append(NeedPreZTruthRecord(
+            row.unit_id, row.b1_id, row.service_instance_id, row.contract_id,
+            row.contract_version, row.instance_version, row.package_version,
+            row.baseline_time, state, row.rule_version, row.basis_ref,
+            stipulation_hash,
+        ))
+    payload = {
+        "world_id": world.world_id, "world_version": world.world_version,
+        "dgp_id": world.dgp_id, "dgp_version": world.dgp_version,
+        "roster_id": world.roster_id, "roster_version": world.roster_version,
+        "records": tuple(records),
+    }
+    result = NeedPreZTruthBundle(
+        world.world_id, world.world_version, world.dgp_id, world.dgp_version,
+        world.roster_id, world.roster_version, tuple(records), digest(payload),
+    )
+    result.validate(world)
+    return result
+
+
+@dataclass(frozen=True)
 class SyntheticWorldConfig:
     """Explicit finite target-world fixture; masses are q_X* inputs, not sample frequencies."""
     world_id: str
