@@ -1,8 +1,8 @@
 """Two-cohort integration for D2 package ITT-Z and focal factorial A×M.
 
-Both cohorts are materialized by the same DGP specification and paired baseline
-draws, but have disjoint unit/roster/world identities and independent randomized
-assignments. A unit is never assigned in both experimental lanes.
+Both cohorts use the same DGP specification but have separate baseline
+realizations and disjoint unit/roster/world identities with independent randomized
+assignments. No cross-cohort matching is implied or permitted without an explicit crosswalk.
 """
 from __future__ import annotations
 
@@ -104,7 +104,6 @@ class C10SDualCohortWorldResult:
             self.d2_world.dgp_id, self.d2_world.dgp_version
         ):
             raise ContractError("D2 and A×M cohorts must use the same DGP identity/version")
-        _validate_paired_baseline(self.factorial_cohort.world, self.d2_world)
         factorial_baseline_by_unit = {}
         for potential in self.factorial_cohort.factorial_structural_potentials.values():
             prior = factorial_baseline_by_unit.setdefault(
@@ -121,28 +120,28 @@ class C10SDualCohortWorldResult:
                 raise ContractError("g_A structural potentials for one unit do not share the same pre-intervention baseline")
         if len(factorial_baseline_by_unit) != len(self.factorial_cohort.world.units):
             raise ContractError("factorial structural baseline does not cover the exact cohort roster")
-        d2_pairs_by_unit_z = dict(self.d2_structural_pairs)
-        for factorial_unit, d2_unit in zip(
-            self.factorial_cohort.world.units, self.d2_world.units,
-        ):
-            factorial_baseline = factorial_baseline_by_unit[factorial_unit.unit_id]
-            for z in (0, 1):
-                d2_baseline = d2_pairs_by_unit_z[(d2_unit.unit_id, z)].baseline
-                if factorial_baseline != (
-                    d2_baseline.atoms, d2_baseline.component_complete,
-                    d2_baseline.boundary_id, d2_baseline.context_id,
-                    d2_baseline.catalog_version,
-                ):
-                    raise ContractError("paired cohorts have different structural pre-intervention truth")
-        expected_initial_state_count = 2 * len(self.d2_world.units)
-        if (len(self.factorial_initial_states_by_unit_z) != expected_initial_state_count
-                or len(self.d2_initial_states_by_unit_z) != expected_initial_state_count):
-            raise ContractError("paired B1 initial-state manifests must retain exact unit × Z cardinality")
-        _validate_paired_functional_initial_states(
-            self.factorial_cohort.world, self.d2_world,
-            dict(self.factorial_initial_states_by_unit_z),
-            dict(self.d2_initial_states_by_unit_z),
+        d2_baseline_by_unit = {}
+        for (unit_id, z), pair in self.d2_structural_pairs:
+            prior = d2_baseline_by_unit.setdefault(
+                unit_id,
+                (pair.baseline.atoms, pair.baseline.component_complete,
+                 pair.baseline.boundary_id, pair.baseline.context_id,
+                 pair.baseline.catalog_version),
+            )
+            if prior != (
+                pair.baseline.atoms, pair.baseline.component_complete,
+                pair.baseline.boundary_id, pair.baseline.context_id,
+                pair.baseline.catalog_version,
+            ):
+                raise ContractError("D2 structural potentials for one unit do not share the same pre-intervention baseline")
+        if len(d2_baseline_by_unit) != len(self.d2_world.units):
+            raise ContractError("D2 structural baseline does not cover the exact cohort roster")
+        factorial_initial = dict(self.factorial_initial_states_by_unit_z)
+        d2_initial = dict(self.d2_initial_states_by_unit_z)
+        _validate_cohort_initial_states(
+            self.factorial_cohort.world, factorial_initial, "factorial",
         )
+        _validate_cohort_initial_states(self.d2_world, d2_initial, "D2")
         if self.d2_analysis_contract.assignment_bundle_sha256 != self.d2_observed_lane.assignments.result_sha256:
             raise ContractError("D2 ITT-Z analysis contract is detached from the observed assignment")
         manifest = self.d2_observed_lane.sealed_evidence.manifest
@@ -165,87 +164,22 @@ class C10SDualCohortWorldResult:
             raise ContractError("both experimental cohorts must share one run identity")
 
 
-def _validate_paired_baseline(
-    factorial_world: SyntheticWorldBundle,
-    d2_world: SyntheticWorldBundle,
+def _validate_cohort_initial_states(
+    world: SyntheticWorldBundle,
+    initial_state_by_unit_z: Mapping[tuple[str, int], FunctionalState],
+    cohort_label: str,
 ) -> None:
-    if len(factorial_world.units) != len(d2_world.units):
-        raise ContractError("paired experimental cohorts must have equal roster sizes")
-    if factorial_world.seed_commitment_sha256 != d2_world.seed_commitment_sha256:
-        raise ContractError("paired cohorts must share the same baseline exogenous seed commitment")
-    if tuple(row.mass for row in factorial_world.q_x) != tuple(row.mass for row in d2_world.q_x):
-        raise ContractError("paired cohorts must use identical q_X* target masses")
-    if factorial_world.d2_mechanism_sha256 != d2_world.d2_mechanism_sha256:
-        raise ContractError("paired cohorts must use the exact same versioned D2 mechanism configuration")
-    f_ids = {unit.unit_id for unit in factorial_world.units}
-    d_ids = {unit.unit_id for unit in d2_world.units}
-    f_refs = {row.history_ref for row in factorial_world.q_x}
-    d_refs = {row.history_ref for row in d2_world.q_x}
-    if f_ids & d_ids or f_refs & d_refs:
-        raise ContractError("experimental cohort unit IDs and baseline-history refs must be disjoint")
-    baseline_fields = (
-        "focal_accessible_pre", "c_auth_base", "c_resource", "c_capacity",
-        "c_info", "c_domain", "c_other",
-    )
-    for f_unit, d_unit in zip(factorial_world.units, d2_world.units):
-        # Need_preZ is a reserved explicit stipulation under DEC-C10-095,
-        # not a stochastic SyntheticWorldUnit draw. It is not materialized
-        # in this world schema, so paired baseline equality covers X/H0/C_c.
-        if (f_unit.x, f_unit.h0, f_unit.c_c) != (
-            d_unit.x, d_unit.h0, d_unit.c_c
-        ):
-            raise ContractError("paired cohorts do not share the same baseline X/H0/C_c draws")
-        if tuple(getattr(f_unit.d2_baseline, name) for name in baseline_fields) != tuple(
-            getattr(d_unit.d2_baseline, name) for name in baseline_fields
-        ):
-            raise ContractError("paired cohorts have different D2 baseline predicates")
-        if f_unit.d2_potentials.exogenous_draws_sha256 != d_unit.d2_potentials.exogenous_draws_sha256:
-            raise ContractError("paired cohorts do not share the same D2 exogenous potential draws")
-
-
-
-def _validate_paired_functional_initial_states(
-    factorial_world: SyntheticWorldBundle,
-    d2_world: SyntheticWorldBundle,
-    factorial_initial_state_by_unit_z: Mapping[tuple[str, int], FunctionalState],
-    d2_initial_state_by_unit_z: Mapping[tuple[str, int], FunctionalState],
-) -> None:
-    """Require paired cohorts to share the same pre-intervention B1 truth.
-
-    Cohort unit IDs remain disjoint. Pairing is by the deterministic baseline
-    roster position already used by _validate_paired_baseline, never by unit ID
-    or post-assignment observations. The check covers each Z potential before
-    any D2/G_A/G_M/trajectory transition is applied.
-    """
-    expected_factorial = {
-        (unit.unit_id, z) for unit in factorial_world.units for z in (0, 1)
+    """Validate pre-intervention B1 truth within one cohort, without cross-cohort matching."""
+    expected = {
+        (unit.unit_id, z) for unit in world.units for z in (0, 1)
     }
-    expected_d2 = {
-        (unit.unit_id, z) for unit in d2_world.units for z in (0, 1)
-    }
-    if set(factorial_initial_state_by_unit_z) != expected_factorial:
+    if set(initial_state_by_unit_z) != expected:
         raise ContractError(
-            "factorial initial functional states must cover the exact unit × Z roster"
+            f"{cohort_label} initial functional states must cover its exact unit × Z roster"
         )
-    if set(d2_initial_state_by_unit_z) != expected_d2:
-        raise ContractError(
-            "D2 initial functional states must cover the exact unit × Z roster"
-        )
-    if len(factorial_world.units) != len(d2_world.units):
-        raise ContractError("paired functional-state cohorts must have equal roster sizes")
-    for factorial_unit, d2_unit in zip(factorial_world.units, d2_world.units):
-        for z in (0, 1):
-            factorial_state = factorial_initial_state_by_unit_z[
-                (factorial_unit.unit_id, z)
-            ]
-            d2_state = d2_initial_state_by_unit_z[(d2_unit.unit_id, z)]
-            factorial_state.validate()
-            d2_state.validate()
-            if factorial_state != d2_state:
-                raise ContractError(
-                    "paired cohorts have different initial B1 functional truth "
-                    f"for baseline position {factorial_unit.unit_id}/{d2_unit.unit_id}, Z={z}"
-                )
+    for state in initial_state_by_unit_z.values():
+        state.validate()
+
 
 
 def materialize_c10s_dual_cohort_world_from_dgp(
@@ -280,17 +214,13 @@ def materialize_c10s_dual_cohort_world_from_dgp(
     estimand_version: str,
     evaluation_tolerance: float,
 ) -> C10SDualCohortWorldResult:
-    """Build paired, disjoint cohorts and integrate both sealed causal lanes."""
+    """Build separate, disjoint cohorts under one DGP and integrate both causal lanes."""
     if (factorial_world_config.world_id, factorial_world_config.roster_id,
             factorial_world_config.unit_id_prefix) == (
         d2_world_config.world_id, d2_world_config.roster_id,
         d2_world_config.unit_id_prefix
     ):
         raise ContractError("D2 and A×M cohort world/roster/unit namespaces must be distinct")
-    if (factorial_world_config.seed, factorial_world_config.n_units) != (
-        d2_world_config.seed, d2_world_config.n_units
-    ):
-        raise ContractError("paired cohorts require the same baseline seed and roster size")
     if (factorial_world_config.dgp_id, factorial_world_config.dgp_version) != (
         d2_world_config.dgp_id, d2_world_config.dgp_version
     ):
@@ -332,10 +262,11 @@ def materialize_c10s_dual_cohort_world_from_dgp(
         d2_world, d2_need_pre_z_stipulations,
     )
     d2_structural_deltas = evaluate_d2_structural_deltas(d2_world, d2_structural_pairs)
-    _validate_paired_baseline(factorial.world, d2_world)
-    _validate_paired_functional_initial_states(
-        factorial.world, d2_world,
-        factorial_initial_state_by_unit_z, d2_initial_state_by_unit_z,
+    _validate_cohort_initial_states(
+        factorial.world, factorial_initial_state_by_unit_z, "factorial",
+    )
+    _validate_cohort_initial_states(
+        d2_world, d2_initial_state_by_unit_z, "D2",
     )
     trajectory_rules_declared = any(
         rule.source == "TRAJECTORY" for rule in functional_history_config.rules
