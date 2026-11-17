@@ -108,10 +108,13 @@ def _validate_paired_baseline(
         "c_info", "c_domain", "c_other",
     )
     for f_unit, d_unit in zip(factorial_world.units, d2_world.units):
-        if (f_unit.x, f_unit.h0, f_unit.c_c, f_unit.need_pre_z) != (
-            d_unit.x, d_unit.h0, d_unit.c_c, d_unit.need_pre_z
+        # Need_preZ is a reserved explicit stipulation under DEC-C10-095,
+        # not a stochastic SyntheticWorldUnit draw. It is not materialized
+        # in this world schema, so paired baseline equality covers X/H0/C_c.
+        if (f_unit.x, f_unit.h0, f_unit.c_c) != (
+            d_unit.x, d_unit.h0, d_unit.c_c
         ):
-            raise ContractError("paired cohorts do not share the same baseline X/H0/C_c/need draws")
+            raise ContractError("paired cohorts do not share the same baseline X/H0/C_c draws")
         if tuple(getattr(f_unit.d2_baseline, name) for name in baseline_fields) != tuple(
             getattr(d_unit.d2_baseline, name) for name in baseline_fields
         ):
