@@ -194,11 +194,15 @@ def validate_theta_a_seed_banks(
         if len(actual) != len(set(actual)) or set(actual) != expected:
             raise ThetaACalibrationError(f"{bank} bank must contain every declared scenario×N×M×R row exactly once")
         if any(
-            not x.world_id or not x.run_id or not x.randomization_salt
-            or x.n_units < 1 or x.assignment_replicate < 0
+            not x.world_id or not x.run_id or not x.outer_world_id
+            or type(x.n_units) is not int or x.n_units < 1
+            or type(x.assignment_replicate) is not int or x.assignment_replicate < 0
+            or type(x.world_seed) is not int or type(x.s3_seed) is not int
+            or len(x.randomization_salt) != 64
+            or any(ch not in "0123456789abcdef" for ch in x.randomization_salt)
             for x in rows
         ):
-            raise ThetaACalibrationError("focal seed row has missing identity or invalid N/R")
+            raise ThetaACalibrationError("focal seed row has missing identity, invalid N/R or malformed stream material")
         worlds = {}
         for row in rows:
             key = (row.scenario_id, row.scenario_version, row.n_units, row.outer_world_id)
@@ -229,6 +233,8 @@ def validate_theta_a_seed_banks(
             raise ThetaACalibrationError("each R requires a distinct joint-policy randomization salt")
         if len({x.s3_seed for x in rows}) != len(rows):
             raise ThetaACalibrationError("each R requires a distinct S3 measurement seed")
+        if {x.world_seed for x in rows} & {x.s3_seed for x in rows}:
+            raise ThetaACalibrationError("world and S3 measurement streams must be disjoint")
         if len(assignment_keys) != len(expected):
             raise ThetaACalibrationError("focal seed bank row cardinality mismatch")
 
@@ -248,6 +254,8 @@ def validate_theta_a_seed_banks(
 
 def s3_seeds_by_unit(seed: int, unit_ids: Sequence[str]) -> dict[str, int]:
     """Expand one R-specific S3 seed into deterministic unit-specific monitor seeds."""
+    if type(seed) is not int:
+        raise ThetaACalibrationError("S3 root seed must be an exact integer")
     if not unit_ids or any(not isinstance(x, str) or not x for x in unit_ids):
         raise ThetaACalibrationError("S3 seed expansion requires nonempty unit IDs")
     if len(unit_ids) != len(set(unit_ids)):
