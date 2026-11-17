@@ -1,0 +1,201 @@
+"""Observation-only ITT-Z Analyzer for the D2 strict V_cont S3 lane."""
+from __future__ import annotations
+
+from dataclasses import dataclass
+import hashlib
+import json
+import math
+from typing import Any
+
+from c10s_synthetic_components import ContractError, D2VContTruthBundle, SyntheticWorldBundle
+from d2_interval_observation import SealedD2IntervalEvidence, _hash
+
+
+@dataclass(frozen=True)
+class D2ITTZAnalysisContract:
+    q_x_mass_by_history: tuple[tuple[str, float], ...]
+    q_x_sha256: str
+    assignment_bundle_sha256: str
+    assignment_mechanism_id: str
+    assignment_mechanism_version: str
+    estimand_id: str = "ITT_Z_D2_VCONT_QX"
+    estimand_version: str = "1.0"
+
+    def validate(self) -> None:
+        mapping = dict(self.q_x_mass_by_history)
+        if not mapping or len(mapping) != len(self.q_x_mass_by_history):
+            raise ContractError("ITT-Z q_X masses must have unique non-empty history support")
+        if any(not key or not math.isfinite(value) or value <= 0 for key, value in mapping.items()):
+            raise ContractError("ITT-Z q_X masses must be finite and strictly positive")
+        if not math.isclose(sum(mapping.values()), 1.0, rel_tol=0.0, abs_tol=1e-10):
+            raise ContractError("ITT-Z q_X masses must sum to one")
+        if not all((self.q_x_sha256, self.assignment_bundle_sha256,
+                    self.assignment_mechanism_id, self.assignment_mechanism_version,
+                    self.estimand_id, self.estimand_version)):
+            raise ContractError("ITT-Z analysis requires assignment/q_X/estimand provenance")
+
+
+@dataclass(frozen=True)
+class D2ITTZAnalysisResult:
+    run_id: str
+    estimand_id: str
+    estimand_version: str
+    identification: str
+    point_estimate: float | None
+    lower_bound: float
+    upper_bound: float
+    target_q_x_coverage: float
+    missing_target_histories: tuple[str, ...]
+    assigned_z_unit_counts: tuple[int, int]
+    missing_interval_count: int
+    total_interval_count: int
+    abstention_reason: str
+    input_sha256: str
+    output_sha256: str
+
+
+def _result_payload(result: D2ITTZAnalysisResult) -> dict[str, Any]:
+    return {
+        "run_id": result.run_id, "estimand_id": result.estimand_id,
+        "estimand_version": result.estimand_version,
+        "identification": result.identification, "point_estimate": result.point_estimate,
+        "lower_bound": result.lower_bound, "upper_bound": result.upper_bound,
+        "target_q_x_coverage": result.target_q_x_coverage,
+        "missing_target_histories": result.missing_target_histories,
+        "assigned_z_unit_counts": result.assigned_z_unit_counts,
+        "missing_interval_count": result.missing_interval_count,
+        "total_interval_count": result.total_interval_count,
+        "abstention_reason": result.abstention_reason,
+        "input_sha256": result.input_sha256,
+    }
+
+
+def _output_hash(payload: dict[str, Any]) -> str:
+    return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":"),
+                                     ensure_ascii=False, allow_nan=False).encode()).hexdigest()
+
+
+class D2ITTZAnalyzer:
+    """Estimate the randomized D2 package ITT; no potential truth is accepted."""
+
+    version = "c10s-d2-ittz-analyzer-0.1"
+
+    def analyze(
+        self,
+        evidence: SealedD2IntervalEvidence,
+        contract: D2ITTZAnalysisContract,
+    ) -> D2ITTZAnalysisResult:
+        contract.validate()
+        if not evidence.rows or _hash({"manifest": evidence.manifest, "rows": list(evidence.rows)}) != evidence.sha256:
+            raise ContractError("ITT-Z Analyzer requires non-empty sealed evidence with valid digest")
+        if evidence.manifest.get("temporal_resolution") != "INTERVAL_LEVEL":
+            raise ContractError("ITT-Z strict V_cont requires interval-level evidence")
+        qx = dict(contract.q_x_mass_by_history)
+        by_unit: dict[str, list[dict[str, Any]]] = {}
+        for row in evidence.rows:
+            if (row.get("assignment_bundle_sha256") != contract.assignment_bundle_sha256
+                    or row.get("q_x_sha256") != contract.q_x_sha256
+                    or row.get("assignment_mechanism_id") != contract.assignment_mechanism_id
+                    or row.get("assignment_mechanism_version") != contract.assignment_mechanism_version):
+                raise ContractError("ITT-Z analysis contract does not match sealed assignment provenance")
+            by_unit.setdefault(row["unit_id"], []).append(row)
+        observed_histories = {rows[0]["history_ref"] for rows in by_unit.values()}
+        unexpected = observed_histories - set(qx)
+        if unexpected:
+            raise ContractError("ITT-Z evidence contains histories outside q_X target support")
+        missing_histories = tuple(sorted(set(qx) - observed_histories))
+        arm: list[list[tuple[float, int, int]]] = [[], []]
+        missing_count = total_count = 0
+        for unit, rows in by_unit.items():
+            first = rows[0]
+            invariant = (
+                "world_id", "world_version", "dgp_id", "dgp_version", "history_ref",
+                "assignment_bundle_sha256", "q_x_sha256", "assignment_mechanism_id",
+                "assignment_mechanism_version", "assigned_z", "probability_z0",
+                "probability_z1", "assignment_probability", "assignment_uniform_sha256",
+                "selected_potential_id", "history_id", "history_version",
+                "history_content_sha256", "grid_id", "grid_version", "monitor_id",
+                "monitor_version",
+            )
+            if any(any(row.get(k) != first.get(k) for k in invariant) for row in rows):
+                raise ContractError("ITT-Z unit has inconsistent assignment/history provenance")
+            ordered = sorted(rows, key=lambda row: row["interval_index"])
+            if [row["interval_index"] for row in ordered] != list(range(len(ordered))):
+                raise ContractError("ITT-Z interval sequence has gaps or duplicate indices")
+            if any(left["interval_end"] != right["interval_start"] for left, right in zip(ordered, ordered[1:])):
+                raise ContractError("ITT-Z interval sequence is not contiguous")
+            if first["coverage_mode"] != "CONTINUOUS_EVENT_COVERAGE":
+                raise ContractError("ITT-Z strict V_cont requires continuous event coverage")
+            z = first["assigned_z"]
+            p = first["assignment_probability"]
+            if type(z) is not int or z not in (0, 1) or not isinstance(p, (int, float)) or not 0 < p <= 1:
+                raise ContractError("ITT-Z assigned arm/probability is invalid")
+            if abs(first["probability_z0"] + first["probability_z1"] - 1.0) > 1e-12:
+                raise ContractError("ITT-Z assignment probabilities do not sum to one")
+            expected_p = first["probability_z1"] if z else first["probability_z0"]
+            if abs(p - expected_p) > 1e-12:
+                raise ContractError("ITT-Z realized assignment probability mismatch")
+            if any(row["observation_status"] not in ("OBSERVED", "MISSING") for row in ordered):
+                raise ContractError("ITT-Z invalid interval observation status")
+            if any((row["observation_status"] == "MISSING") != (row["observed_compliance"] is None)
+                   for row in ordered):
+                raise ContractError("ITT-Z interval missingness/value mismatch")
+            if any(row["observation_status"] == "OBSERVED" and type(row["observed_compliance"]) is not bool
+                   for row in ordered):
+                raise ContractError("ITT-Z observed compliance must be Boolean")
+            # Strict continuity is a conjunction across time, not an interval mean.
+            any_failure = any(row["observed_compliance"] is False for row in ordered)
+            any_missing = any(row["observation_status"] == "MISSING" for row in ordered)
+            y_lower = 0 if any_failure or any_missing else 1
+            y_upper = 0 if any_failure else 1
+            missing_count += sum(row["observation_status"] == "MISSING" for row in ordered)
+            total_count += len(ordered)
+            arm[z].append((qx[first["history_ref"]] / p, y_lower, y_upper))
+        counts = (len(arm[0]), len(arm[1]))
+        coverage = sum(qx[key] for key in observed_histories)
+        if missing_histories or not all(counts):
+            identification, estimate, reason = "INDETERMINATE", None, (
+                "TARGET_QX_SUPPORT_INCOMPLETE" if missing_histories else "REALIZED_Z_ARM_SUPPORT_MISSING"
+            )
+            lower = upper = None
+        else:
+            mu_lower = [sum(w * lo for w, lo, hi in values) for values in arm]
+            mu_upper = [sum(w * hi for w, lo, hi in values) for values in arm]
+            lower = mu_lower[1] - mu_upper[0]
+            upper = mu_upper[1] - mu_lower[0]
+            if missing_count:
+                identification, estimate, reason = "PARTIALLY_IDENTIFIED", None, "INTERVAL_MISSINGNESS_PREVENTS_STRICT_VCONT_POINT_RECOVERY"
+            else:
+                identification, reason = "IDENTIFIED", ""
+                estimate = mu_lower[1] - mu_lower[0]
+        payload = {
+            "run_id": evidence.run_id, "estimand_id": contract.estimand_id,
+            "estimand_version": contract.estimand_version,
+            "identification": identification, "point_estimate": estimate,
+            "lower_bound": lower, "upper_bound": upper,
+            "target_q_x_coverage": coverage, "missing_target_histories": missing_histories,
+            "assigned_z_unit_counts": counts, "missing_interval_count": missing_count,
+            "total_interval_count": total_count, "abstention_reason": reason,
+            "input_sha256": evidence.sha256,
+        }
+        # For incomplete support, retain logical binary contrast bounds.
+        if lower is None:
+            payload["lower_bound"], payload["upper_bound"] = -1.0, 1.0
+        result = D2ITTZAnalysisResult(**payload, output_sha256=_output_hash(payload))
+        return result
+
+
+def analysis_contract_from_world(
+    world: SyntheticWorldBundle,
+    assignment_bundle_sha256: str,
+    assignment_mechanism_id: str,
+    assignment_mechanism_version: str,
+) -> D2ITTZAnalysisContract:
+    world.validate()
+    return D2ITTZAnalysisContract(
+        tuple((row.history_ref, row.mass) for row in world.q_x),
+        world.q_x_sha256 if hasattr(world, "q_x_sha256") else __import__(
+            "c10s_synthetic_components"
+        ).digest(world.q_x),
+        assignment_bundle_sha256, assignment_mechanism_id, assignment_mechanism_version,
+    )
