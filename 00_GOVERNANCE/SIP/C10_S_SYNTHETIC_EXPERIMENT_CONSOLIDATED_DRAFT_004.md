@@ -682,7 +682,7 @@ La métrica de Type-I error y la potencia siguen sin procedimiento de contraste 
 1. **Identificado positivo:** efecto focal no nulo positivo, sin vía alternativa/directa incompatible con la identificación.
 2. **Identificado nulo:** θ_A=0 por construcción, manteniendo las condiciones de identificación.
 3. **Identificado negativo:** efecto focal no nulo negativo, manteniendo las condiciones de identificación.
-4. **Vía alternativa/competidora:** fixture `alternative` como candidato adversarial; incluirlo en el roster solo después de adjudicar independientemente si θ_A queda IDENTIFIED, NOT_IDENTIFIED o INDETERMINATE. Si resulta parcialmente identificado, mantenerlo fuera de esta calibración puntual hasta resolver bounds, sin recodificarlo.
+4. **Vía alternativa/competidora:** el fixture `alternative` activa una vía funcional alternativa en el régimen común de ambas políticas g_A. La verdad reservada construida por el DGP es θ_A=0; el contrato de regresión ahora exige que Analyzer/Evaluator la clasifiquen como IDENTIFIED / POINT_RECOVERED, porque la vía alternativa común enmascara el contraste focal pero no elimina soporte ni identificación. Esta adjudicación está codificada como expectativa de test, todavía no ejecutada dinámicamente. No confundirla con un escenario de vía directa diferencial ni con no-identificación.
 
 **Condición de entrada por escenario:** registrar la verdad analítica θ_A y expected_identification a partir del DGP/Evaluator independiente, y verificar que la manipulación cambia el mecanismo pretendido sin alterar inadvertidamente q_X*, r_common, soporte, versiones ni otras rutas. La clase esperada nunca se inferirá de la respuesta del Analyzer.
 
@@ -715,3 +715,15 @@ La cobertura y anchura solo son evaluables cuando el Analyzer entrega intervalos
 - No se han construido bancos, ejecutado simulaciones, calculado resultados de precisión ni realizado calibración/evaluación científica.
 
 **Estado:** PROPOSAL_ONLY / NOT_FROZEN / NOT_EXECUTED. Se mantienen `calibration_authorized=false`, `scientific_execution=false`, `execution_authorized=false`; no cambia la autorización vigente. PR #116 permanece Draft; `main`, RMA, Evidence→Claim Matrix, STATUS y TGCV Core no se modifican.
+
+## 331. Adjudicación de verdad del fixture alternativo común — contrato de regresión (2026-11-18)
+
+La inspección del DGP de `test_c10s_world_pipeline_integration.py` permite precisar el significado del modo `alternative`: ambos brazos g_A se evalúan bajo el mismo régimen con la segunda coordenada del vector activa; la regla alternativa deshabilita ENABLED en ambos, mientras la regla focal se aplica solo cuando esa coordenada está ausente. Por tanto, en el régimen común alternativo la verdad reservada focal es θ_A=0. La vía alternativa enmascara el efecto focal, pero al ser común a ambos brazos y mantenerse asignación/observación completas, no constituye por sí sola una violación de identificación.
+
+Se añadió al test end-to-end existente una expectativa explícita: `alternative_result.analyzer_result.identification == IDENTIFIED`, truth del Evaluator igual a cero, adjudicación correcta y disposición `POINT_RECOVERED`. Se conserva la distinción respecto al ITT-Z de paquete, cuya verdad permanece −0,5.
+
+**Estado de evidencia:** contrato de regresión añadido y persistido; no ejecutado. Es una adjudicación estática de la verdad del DGP y de la clase esperada, no un resultado observado del Analyzer. EP-02 Run 828 no cubre esta nueva aserción. Requiere autorización técnica para ejecutar la suite antes de elevarla a PASS.
+
+**Roster preliminar resultante:** positivo identificado (+0,5); nulo identificado (0); negativo identificado (−0,5); alternativa común identificada nula (0, vía alternativa activa). Los valores son verdades analíticas del fixture existente, no estimaciones muestrales. No se ha añadido todavía un escenario con vía directa diferencial/no-identificación: debe reutilizarse un mecanismo existente y adjudicar su verdad reservada antes de incorporarlo, sin fabricar un nuevo DGP paralelo.
+
+No se generan bancos, no se ejecutan simulaciones ni calibración; no se modifica autorización. Estado: SOURCE_CONTRACT_ADDED / NOT_EXECUTED.
