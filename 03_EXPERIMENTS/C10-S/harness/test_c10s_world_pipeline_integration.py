@@ -8,6 +8,7 @@ from decimal import Decimal
 import unittest
 
 from c10s_synthetic_components import (
+    ContractError,
     D2MechanismConfig,
     D2ReachGenerationConfig,
     D2ReachRouteTemplate,
@@ -30,6 +31,7 @@ from c10s_world_pipeline import materialize_c10s_complete_world_from_dgp
 from c10s_factorial_pipeline import materialize_c10s_factorial_world_from_dgp
 from c10s_dual_cohort_pipeline import materialize_c10s_dual_cohort_world_from_dgp
 from d2_observed_assignment import D2ObservedAssignmentConfig
+from d2_ittz_evaluator import D2ITTZEvaluator
 from theta_am_factorial import (
     FactorialAssignmentConfig, FactorialIntervalSealer,
     FactorialObservationAnalyzer, evaluate_factorial_analysis,
@@ -634,6 +636,30 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         )
         self.assertIsNotNone(result.d2_evaluator_result.absolute_error)
         result.validate(fixture["grid"])
+
+        # Tampering with assignment probabilities while retaining the opaque
+        # bundle digest must fail at the independent oracle-side boundary.
+        original_bundle = result.d2_observed_lane.assignments
+        original_row = original_bundle.assignments[0]
+        tampered_row = replace(
+            original_row,
+            probability_z0=original_row.probability_z0 - 0.01,
+            probability_z1=original_row.probability_z1 + 0.01,
+        )
+        tampered_bundle = replace(
+            original_bundle,
+            assignments=(tampered_row,) + original_bundle.assignments[1:],
+        )
+        with self.assertRaises(ContractError):
+            D2ITTZEvaluator().evaluate(
+                world=result.d2_world,
+                truth=result.d2_vcont_truth,
+                assignments=tampered_bundle,
+                evidence=result.d2_observed_lane.sealed_evidence,
+                contract=result.d2_analysis_contract,
+                result=result.d2_analyzer_result,
+                tolerance=0.25,
+            )
 
 if __name__ == "__main__":
     unittest.main()
