@@ -29,7 +29,10 @@ from c10s_functional_history import (
 )
 from c10s_world_pipeline import materialize_c10s_complete_world_from_dgp
 from c10s_factorial_pipeline import materialize_c10s_factorial_world_from_dgp
-from c10s_dual_cohort_pipeline import materialize_c10s_dual_cohort_world_from_dgp
+from c10s_dual_cohort_pipeline import (
+    materialize_c10s_dual_cohort_world_from_dgp,
+    _validate_paired_functional_initial_states,
+)
 from d2_observed_assignment import D2ObservedAssignmentConfig
 from d2_ittz_evaluator import D2ITTZEvaluator
 from d2_ittz_analyzer import D2ITTZAnalyzer, _result_payload, _output_hash
@@ -570,6 +573,18 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             (unit.unit_id, z): initial
             for unit in d2_world.units for z in (0, 1)
         }
+        factorial_world = SyntheticWorldBuilder().generate(
+            fixture["world_config"], fixture["d2_config"],
+        )
+        mismatched_initial_states = dict(d2_initial_by_unit_z)
+        mismatched_initial_states[(d2_world.units[0].unit_id, 0)] = replace(
+            initial, admission_behavior="NO_ADMISSION",
+        )
+        with self.assertRaises(ContractError):
+            _validate_paired_functional_initial_states(
+                factorial_world, d2_world,
+                fixture["initial_by_unit_z"], mismatched_initial_states,
+            )
         d2_assignment = D2ObservedAssignmentConfig(
             mechanism_id="D2-PACKAGE-Z-RANDOMIZATION",
             mechanism_version="1",
@@ -631,6 +646,8 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         factorial_ids = {unit.unit_id for unit in result.factorial_cohort.world.units}
         d2_ids = {unit.unit_id for unit in result.d2_world.units}
         self.assertFalse(factorial_ids & d2_ids)
+        self.assertEqual(len(result.factorial_initial_states_by_unit_z), 64)
+        self.assertEqual(len(result.d2_initial_states_by_unit_z), 64)
         self.assertEqual(len(result.d2_structural_pairs), 64)
         self.assertEqual(len(result.d2_structural_deltas), 64)
         self.assertEqual(len(result.d2_reachability.contrasts), 64)
