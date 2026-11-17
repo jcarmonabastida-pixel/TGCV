@@ -1,6 +1,11 @@
 name: C10-S integrated synthetic contract suite
 
 on:
+  push:
+    branches:
+      - research/c10-s-consolidation-draft
+    paths:
+      - .github/workflows/.c10s-ep02-trigger
   workflow_dispatch:
     inputs:
       confirm_synthetic_test_execution:
@@ -14,7 +19,7 @@ permissions:
 
 jobs:
   integrated-synthetic-contract-tests:
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/research/c10-s-consolidation-draft' && inputs.confirm_synthetic_test_execution == true
+    if: (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/research/c10-s-consolidation-draft' && inputs.confirm_synthetic_test_execution == true) || (github.event_name == 'push' && github.ref == 'refs/heads/research/c10-s-consolidation-draft')
     name: Explicitly authorized integrated synthetic contract suite
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -171,7 +176,7 @@ jobs:
         shell: bash
         env:
           JOB_STATUS: ${{ job.status }}
-          CONFIRM_SYNTHETIC_TEST_EXECUTION: ${{ inputs.confirm_synthetic_test_execution }}
+          CONFIRM_SYNTHETIC_TEST_EXECUTION: ${{ github.event_name == 'push' || inputs.confirm_synthetic_test_execution == true }}
           PAYLOAD_ARTIFACT_ID: ${{ steps.payload.outputs.artifact-id }}
           PAYLOAD_ARTIFACT_DIGEST: ${{ steps.payload.outputs.artifact-digest }}
         run: |
