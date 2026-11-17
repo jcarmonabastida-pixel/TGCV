@@ -45,7 +45,7 @@ REFERENCE_TOLERANCE = 1e-9
 BATCH = 250
 
 CONTRACT = AnalysisContract(
-    estimand_id="THETA_A_Q_B1",
+    estimand_id="ITT_Z_Q_B1",
     estimand_version="001",
     randomized_assignment=True,
     direct_path_status="ABSENT",
@@ -157,12 +157,12 @@ def run_cell(
             )
             if not adjudication.classification_correct:
                 classification_errors += 1
-            if result.focal_identification != "IDENTIFIED":
+            if result.package_identification != "IDENTIFIED":
                 abstentions += 1
 
-            estimate = result.focal_estimate
-            se = result.focal_standard_error
-            interval = result.focal_interval_95
+            estimate = result.package_itt_estimate
+            se = result.package_itt_standard_error
+            interval = result.package_itt_interval_95
             if estimate is None or se is None or interval is None or not math.isfinite(se) or se <= 0:
                 invalid += 1
                 estimates[replicate_index] = np.nan
@@ -271,7 +271,7 @@ def evaluate_acceptance(rows: list[dict[str, Any]], replications: int) -> dict[s
         "replications_per_cell": all(row["valid_replicates"] == replications for row in rows),
         "zero_invalid_replicates": all(row["invalid_replicates"] == 0 for row in rows),
         "zero_classification_errors": all(row["classification_errors"] == 0 for row in rows),
-        "zero_focal_abstentions": all(row["abstentions"] == 0 for row in rows),
+        "zero_package_itt_abstentions": all(row["abstentions"] == 0 for row in rows),
         "coverage_wilson_compatible_in_at_least_26_cells": coverage_compatible >= 26,
         "coverage_absolute_deviation_at_most_0_005": all(
             abs(row["coverage"] - 0.95) <= 0.005 for row in rows
