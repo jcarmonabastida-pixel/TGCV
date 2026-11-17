@@ -995,5 +995,29 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 tolerance=0.25,
             )
 
+
+    def test_complete_world_rejects_reach_detached_from_delta_snapshots(self):
+        fixture = self._fixture("positive")
+        result = self._run_pipeline(fixture)
+        first = result.reachability.contrasts[0]
+        detached_baseline = replace(first.baseline, snapshot_id="DETACHED-BASELINE")
+        detached_contrast = replace(first, baseline=detached_baseline)
+        detached_reach = replace(
+            result.reachability,
+            contrasts=(detached_contrast,) + result.reachability.contrasts[1:],
+        )
+        detached_result = replace(result, reachability=detached_reach)
+        with self.assertRaises(ContractError):
+            detached_result.validate(
+                grid=fixture["grid"],
+                reach_config=fixture["reach_config"],
+                g_a0=fixture["g_a0"],
+                g_a1=fixture["g_a1"],
+                assignment_config=fixture["assignment_config"],
+                feasible_vectors_by_history=fixture["feasible"],
+                r_common_certificates=fixture["r_common"],
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
