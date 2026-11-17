@@ -1912,6 +1912,10 @@ class FactorialPotentialTrajectory:
                 raise ContractError("factorial trajectory selected a route not confirmed by Reach")
         if self.selection_state == 1 and (self.reach_state != 1 or self.selected_route_id is None):
             raise ContractError("factorial route selection requires confirmed Reach and an exact route")
+        if self.selected_route_id is None and self.executed_steps:
+            raise ContractError("factorial trajectory cannot execute steps without a selected route")
+        if self.selection_state == 1 and self.selected_route_id is None:
+            raise ContractError("selected factorial trajectory must identify its exact route")
         if self.selection_state != 1 and self.selected_route_id is not None:
             raise ContractError("unselected factorial trajectory cannot identify a route")
         if self.reach_state == 0 and (
@@ -1932,6 +1936,10 @@ class FactorialPotentialTrajectory:
             raise ContractError("completed factorial trajectory requires successful execution")
         if self.trajectory_status == "PARTIAL" and (self.execution_state != 0 or not self.executed_steps):
             raise ContractError("partial factorial trajectory requires an executed prefix and failed execution")
+        if self.trajectory_status in (
+            "NOT_SELECTED", "EXECUTION_FAILED", "NOT_REACHABLE", "UNKNOWN",
+        ) and self.executed_steps:
+            raise ContractError("non-executed factorial trajectory status cannot contain executed steps")
         if self.executed_steps:
             for left, right in zip(self.executed_steps, self.executed_steps[1:]):
                 if left.state_after != right.state_before:
