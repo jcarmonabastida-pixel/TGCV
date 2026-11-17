@@ -122,8 +122,16 @@ def materialize_c10s_factorial_world_from_dgp(
             raise ContractError("factorial truth and observed S3 must share the exact same interval grid")
     if set(interval_monitor_seeds_by_unit) != {unit.unit_id for unit in world.units}:
         raise ContractError("factorial interval-monitor seeds must cover the exact world roster")
+    trajectory_rules_declared = any(
+        rule.source == "TRAJECTORY" for rule in functional_history_config.rules
+    )
+    trajectory_map = {
+        (row.unit_id, row.z, row.target_state): row
+        for row in trajectories.trajectories
+    }
     d2_histories = generate_d2_event_history_potentials(
         world, functional_history_config, initial_state_by_unit_z,
+        trajectories_by_unit_z_target=trajectory_map if trajectory_rules_declared else None,
     )
     # Keep the D2 package-level ITT-Z truth as a distinct oracle output.
     # It is not substituted for either focal A simple effect or the A×M interaction.
