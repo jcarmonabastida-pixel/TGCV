@@ -174,7 +174,7 @@ def _apply_rules(
             triggered = getattr(mechanism, rule.d2_field) is rule.d2_value
         elif rule.source == "TRAJECTORY":
             if trajectories_by_target is None or rule.trajectory_target_state not in trajectories_by_target:
-                raise ContractError("D2 EventHistory trajectory rule lacks its exact target-potential trajectory")
+                raise ContractError("functional EventHistory trajectory rule lacks its exact target-potential trajectory")
             trajectory = trajectories_by_target[rule.trajectory_target_state]
             triggered = getattr(trajectory, rule.trajectory_field) == rule.trajectory_value
         elif rule.source == "G_A":
