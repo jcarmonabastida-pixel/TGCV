@@ -114,6 +114,12 @@ class C10SFactorialWorldResult:
             raise ContractError("g_A structural potentials must cover exact positive-mass vector × r_common support")
         if set(self.factorial_reach_potentials) != expected_factorial_support:
             raise ContractError("g_A Reach potentials must cover exact structural potential support")
+        mapping_identities = {
+            (row.mapping_id, row.mapping_version, row.mapping_sha256)
+            for row in self.factorial_structural_potentials.values()
+        }
+        if len(mapping_identities) != 1:
+            raise ContractError("all factorial structural potentials must share one exact versioned g_A mapping")
         if not self.factorial_target_states or len(self.factorial_target_states) != len(set(self.factorial_target_states)):
             raise ContractError("factorial trajectory target universe must be explicit and unique")
         expected_factorial_trajectories = {
