@@ -115,7 +115,9 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         )
         _validate_interval_s3_seed_provenance(result, assignment)
         tampered = list(rows)
-        tampered[0] = replace(tampered[0], observation_id="IS3-" + "0" * 24)
+        tampered[0] = SimpleNamespace(**{
+            **vars(tampered[0]), "observation_id": "IS3-" + "0" * 24
+        })
         result.s3_records = tuple(tampered)
         with self.assertRaises(ThetaACalibrationError):
             _validate_interval_s3_seed_provenance(result, assignment)
