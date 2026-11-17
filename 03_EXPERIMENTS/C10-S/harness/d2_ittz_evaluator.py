@@ -211,10 +211,18 @@ class D2ITTZEvaluator:
                 assignment.probability_z1 if assignment.assigned_z == 1
                 else assignment.probability_z0
             )
-            if any((row["assigned_z"], row["probability_z0"], row["probability_z1"],
+            if any((row["world_id"], row["world_version"], row["dgp_id"],
+                    row["dgp_version"], row["history_ref"],
+                    row["assignment_bundle_sha256"], row["q_x_sha256"],
+                    row["assignment_mechanism_id"], row["assignment_mechanism_version"],
+                    row["assigned_z"], row["probability_z0"], row["probability_z1"],
                     row["assignment_probability"], row["assignment_uniform_sha256"],
                     row["selected_potential_id"], row["history_id"],
                     row["history_content_sha256"]) != (
+                    world.world_id, world.world_version, world.dgp_id,
+                    world.dgp_version, assignment.history_ref,
+                    assignments.result_sha256, assignments.q_x_sha256,
+                    assignments.mechanism_id, assignments.mechanism_version,
                     assignment.assigned_z, assignment.probability_z0,
                     assignment.probability_z1, p_assigned,
                     assignment.assignment_uniform_sha256,
