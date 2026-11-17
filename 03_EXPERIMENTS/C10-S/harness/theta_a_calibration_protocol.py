@@ -558,7 +558,7 @@ def summarize_theta_a_calibration(
         if (record.world_id, record.run_id) != (seed.world_id, seed.run_id):
             raise ThetaACalibrationError("replicate evidence provenance differs from its seed assignment")
         expected_level = (
-            design.confidence_level if scenario.expected_identification == "IDENTIFIED" else None
+            design.confidence_level if scenario.unit_independence_certified else None
         )
         if record.requested_confidence_level != expected_level:
             raise ThetaACalibrationError("replicate requested confidence level differs from its scenario/design contract")
