@@ -93,6 +93,8 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
             rows = [x for x in calibration if x.outer_world_id == outer_id]
             self.assertEqual(len({x.world_id for x in rows}), 1)
             self.assertEqual(len({x.world_seed for x in rows}), 1)
+            self.assertEqual(len({x.roster_id for x in rows}), 1)
+            self.assertEqual(len({x.unit_id_prefix for x in rows}), 1)
             self.assertEqual(len({x.randomization_salt for x in rows}), 2)
             self.assertEqual(len({x.s3_seed for x in rows}), 2)
             self.assertEqual(len({x.run_id for x in rows}), 2)
@@ -104,6 +106,14 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         self.assertEqual(len(world_seeds["outer-000001"]), 1)
         self.assertNotEqual(next(iter(world_seeds["outer-000000"])),
                             next(iter(world_seeds["outer-000001"])))
+        self.assertNotEqual(
+            next(x.roster_id for x in calibration if x.outer_world_id == "outer-000000"),
+            next(x.roster_id for x in calibration if x.outer_world_id == "outer-000001"),
+        )
+        self.assertNotEqual(
+            next(x.unit_id_prefix for x in calibration if x.outer_world_id == "outer-000000"),
+            next(x.unit_id_prefix for x in calibration if x.outer_world_id == "outer-000001"),
+        )
         self.assertFalse({x.world_seed for x in calibration} & {x.world_seed for x in evaluation})
 
     def test_seed_bank_rejects_incomplete_r_coverage(self):
