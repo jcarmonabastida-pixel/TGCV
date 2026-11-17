@@ -98,7 +98,7 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
                     row.scenario_id, row.scenario_version, row.n_units,
                     row.outer_world_id, row.assignment_replicate, row.world_id, row.run_id,
                     "IDENTIFIED", "INDETERMINATE", 0.2, None,
-                    None, None, None, None, None,
+                    None, None, None, None, 0.95,
                 ))
             else:
                 records.append(ThetaAReplicateRecord(
