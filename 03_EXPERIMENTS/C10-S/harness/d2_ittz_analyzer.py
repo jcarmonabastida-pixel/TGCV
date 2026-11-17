@@ -113,13 +113,22 @@ class D2ITTZAnalyzer:
                 or manifest.get("interval_count_per_unit") < 1):
             raise ContractError("ITT-Z sealed manifest counts/roster are missing or inconsistent")
         expected_pairs = tuple(tuple(row) for row in manifest["expected_unit_history_refs"])
+        expected_assignments = tuple(tuple(row) for row in manifest.get("expected_unit_assignments", ()))
         expected_ids = [row[0] for row in expected_pairs]
         expected_refs = [row[1] for row in expected_pairs]
+        assignment_ids = [row[0] for row in expected_assignments]
         if (len(expected_pairs) != manifest["expected_unit_count"]
                 or len(expected_ids) != len(set(expected_ids))
                 or len(expected_refs) != len(set(expected_refs))
-                or set(expected_refs) != set(contract_history for contract_history, _ in contract.q_x_mass_by_history)):
-            raise ContractError("ITT-Z sealed expected roster does not map one-to-one onto q_X* support")
+                or set(expected_refs) != set(contract_history for contract_history, _ in contract.q_x_mass_by_history)
+                or len(expected_assignments) != manifest["expected_unit_count"]
+                or len(assignment_ids) != len(set(assignment_ids))
+                or set(assignment_ids) != set(expected_ids)
+                or any(type(row[2]) is not int or row[2] not in (0, 1)
+                       or not 0.0 < row[3] < 1.0 or not 0.0 < row[4] < 1.0
+                       or abs(row[3] + row[4] - 1.0) > 1e-12
+                       for row in expected_assignments)):
+            raise ContractError("ITT-Z sealed expected roster/assignment metadata does not map one-to-one onto q_X* support")
         qx = dict(contract.q_x_mass_by_history)
         by_unit: dict[str, list[dict[str, Any]]] = {}
         for row in evidence.rows:
@@ -221,29 +230,40 @@ class D2ITTZAnalyzer:
             p0 = first["probability_z0"]
             contribution_range = mass * (1.0 / p1 + 1.0 / p0)
             randomization_range_sq += contribution_range * contribution_range
-        counts = (len(arm[0]), len(arm[1]))
+        # Unit-level nonresponse contributes an unknown binary strict-V_cont
+        # outcome to its known randomized arm. This bounds the realized HT
+        # contrast; it is not a confidence interval or causal identification bound.
+        expected_assignment_by_unit = {row[0]: row for row in expected_assignments}
+        observed_unit_ids = set(by_unit)
+        for unit_id in sorted(set(expected_assignment_by_unit) - observed_unit_ids):
+            _, history_ref, z, p0, p1 = expected_assignment_by_unit[unit_id]
+            mass = qx[history_ref]
+            p = p1 if z == 1 else p0
+            arm[z].append((mass / p, 0, 1))
+            randomization_range_sq += (mass * (1.0 / p1 + 1.0 / p0)) ** 2
+        counts = (len(arm[0]) - len(missing_unit_ids), len(arm[1]) - len(missing_unit_ids))
         coverage = sum(qx[key] for key in observed_histories)
         randomization_lower = randomization_upper = radius = confidence_level = None
-        if missing_histories or not all(counts):
-            identification, estimate, reason = "INDETERMINATE", None, (
-                "TARGET_QX_SUPPORT_INCOMPLETE" if missing_histories else "REALIZED_Z_ARM_SUPPORT_MISSING"
-            )
-            lower = upper = None
-        else:
-            mu_lower = [sum(w * lo for w, lo, hi in values) for values in arm]
-            mu_upper = [sum(w * hi for w, lo, hi in values) for values in arm]
-            lower = mu_lower[1] - mu_upper[0]
-            upper = mu_upper[1] - mu_lower[0]
+        mu_lower = [sum(w * lo for w, lo, hi in values) for values in arm]
+        mu_upper = [sum(w * hi for w, lo, hi in values) for values in arm]
+        lower = mu_lower[1] - mu_upper[0]
+        upper = mu_upper[1] - mu_lower[0]
+        if missing_count or missing_unit_ids:
+            identification, estimate = "PARTIALLY_IDENTIFIED", None
+            reasons = []
+            if missing_unit_ids:
+                reasons.append("UNIT_NONRESPONSE")
             if missing_count:
-                identification, estimate, reason = "PARTIALLY_IDENTIFIED", None, "INTERVAL_MISSINGNESS_PREVENTS_STRICT_VCONT_POINT_RECOVERY"
-            else:
-                identification, reason = "IDENTIFIED", ""
-                estimate = mu_lower[1] - mu_lower[0]
-                confidence_level = contract.confidence_level
-                alpha = 1.0 - confidence_level
-                radius = math.sqrt(0.5 * randomization_range_sq * math.log(2.0 / alpha))
-                randomization_lower = max(-1.0, estimate - radius)
-                randomization_upper = min(1.0, estimate + radius)
+                reasons.append("INTERVAL_MISSINGNESS")
+            reason = "_AND_".join(reasons) + "_PREVENTS_STRICT_VCONT_POINT_RECOVERY"
+        else:
+            identification, reason = "IDENTIFIED", ""
+            estimate = mu_lower[1] - mu_lower[0]
+            confidence_level = contract.confidence_level
+            alpha = 1.0 - confidence_level
+            radius = math.sqrt(0.5 * randomization_range_sq * math.log(2.0 / alpha))
+            randomization_lower = max(-1.0, estimate - radius)
+            randomization_upper = min(1.0, estimate + radius)
         payload = {
             "run_id": evidence.run_id, "estimand_id": contract.estimand_id,
             "estimand_version": contract.estimand_version,
@@ -258,9 +278,6 @@ class D2ITTZAnalyzer:
             "total_interval_count": total_count, "abstention_reason": reason,
             "input_sha256": evidence.sha256,
         }
-        # For incomplete support, retain logical binary contrast bounds.
-        if lower is None:
-            payload["lower_bound"], payload["upper_bound"] = -1.0, 1.0
         result = D2ITTZAnalysisResult(**payload, output_sha256=_output_hash(payload))
         return result
 
