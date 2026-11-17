@@ -37,7 +37,7 @@ class ThetaAObservationAnalyzerTests(unittest.TestCase):
                                "history_id": "eh1", "assignment_bundle_sha256": "ab",
                                "q_x_sha256": "qx", "g_a0_sha256": "ga0",
                                "g_a1_sha256": "ga1", "r_common_sha256": "rc"}
-                          )})
+                          )}))
         self.contract = ThetaAObservationAnalysisContract(
             q_x_mass_by_history=(("h0", 0.4), ("h1", 0.6)),
             q_x_sha256="qx", assignment_bundle_sha256="ab",
