@@ -611,3 +611,40 @@ Se ejecutó de nuevo la suite técnica después de implementar el intervalo cons
 
 **Alcance:** evidencia técnica de compilación, contratos de software y replay. No acredita calibración del intervalo, cobertura empírica, error tipo I, potencia, precisión útil ni identificación causal general. No hubo calibración, Monte Carlo ni experimento científico. La activación temporal quedó retirada; el workflow vuelve a ser manual y el centinela no existe.
 
+## 328. Protocolo focal de calibración θ_A — scaffold N/M/R (2026-11-17)
+
+**Implementación fuente añadida en research:** `03_EXPERIMENTS/C10-S/harness/theta_a_calibration_protocol.py`, con ocho definiciones de regresión en `test_theta_a_calibration_protocol.py`. Se amplió el allowlist manual EP-02 a dieciséis módulos para incluir ambos archivos. El workflow sigue siendo manual-only y no se ha despachado.
+
+### Contrato de replicación
+
+- **N:** unidades de cada mundo sintético.
+- **M:** mundos exteriores independientes, con identidad y semilla distintas.
+- **R:** asignaciones repetidas dentro de un M fijo. El world_id, world_seed y configuración del mundo deben permanecer invariantes; cada R tiene run_id, salt de aleatorización conjunta y semilla S3 propios.
+- El salt por R alimenta las dos etapas ya separadas por domain labels en el generador: asignación Bernoulli a g_A0/g_A1 y sorteo del vector conjunto dentro de la política seleccionada. El sorteo de vector permanece dentro del resultado estocástico del estimando.
+- El flujo S3 se deriva separadamente por R y se expande por unidad. El capture boundary vuelve a comprobar el compromiso de seed del mundo y el hash del salt realmente usado.
+- Los fingerprints de configuración del mundo y del diseño q_X/g_A/r_common deben permanecer constantes dentro de M; los fingerprints de asignación, evidencia sellada y salida Analyzer deben variar entre R.
+- Calibration y evaluation banks tienen namespaces separados y validación de disjunción de streams world/assignment/S3. El protocolo no reutiliza el seed bank ni las clases RUN/R de la matriz 13×52.
+
+### Agregación y métricas
+
+El agregador calcula primero una contribución por mundo M a partir de sus R asignaciones, y después estima medias y MCSE entre M independientes. Incluye cobertura y anchura de intervalo, bias/MAE/RMSE, recuperación puntual solo con tolerancia explícita, disponibilidad de intervalo, identificación/abstención, abstención correcta, falsa identificación y falsa abstención. No elimina silenciosamente replicaciones incompletas: si falta cualquier contribución requerida, la métrica correspondiente es `NOT_EVALUABLE`.
+
+La clasificación esperada de identificación es una entrada explícita del contrato de escenario, separada del Analyzer. Se requiere una base explícita para declarar independencia entre unidades en escenarios identificados. Los escenarios de verdad `PARTIALLY_IDENTIFIED` se rechazan por ahora porque P183-11 no dispone todavía de bounds de medición adjudicados. Type-I error y power quedan `NOT_DEFINED_NO_TEST_PROCEDURE`; no se infieren de un intervalo de confianza.
+
+### Estado y límites
+
+- **Implementación fuente:** presente en la rama research.
+- **Pruebas:** ocho definiciones añadidas al allowlist; **no compiladas ni ejecutadas**.
+- **Workflow:** allowlist estáticamente ampliado; YAML/actionlint no validado y no despachado.
+- **Calibración:** no ejecutada.
+- **Seed banks:** no generados.
+- **Diseño científico:** no se han seleccionado roster focal de escenarios, N, M, R, confidence level, MCSE targets, tolerancia de recuperación ni parámetros DGP. Los números usados por las fixtures unitarias son exclusivamente datos de prueba de software.
+- **Identificación parcial:** no evaluable hasta resolver el uso adjudicativo de measurement bounds.
+- **Type-I/power:** pendientes de un procedimiento de contraste separado.
+- **Value contextual:** el protocolo sigue limitado a `θ_A(q_X*,r_common;V_cont)`; no cierra el puente V_cont→Outcome/Value general ni la contribución `ΔT_acc→Value`.
+
+El siguiente paso dependiente de decisión es aportar un roster focal versionado con truth-status independiente por escenario y objetivos MCSE explícitos. No se infieren del protocolo 13×52 ni de P178. La creación de este scaffold no autoriza la generación de bancos ni la calibración.
+
+`scientific_execution=false` · `execution_authorized=false` · `calibration_authorized=false`
+
+No se modifica `main`, RMA, Evidence→Claim Matrix, STATUS o TGCV Core. PR #116 permanece Draft/no merged.
