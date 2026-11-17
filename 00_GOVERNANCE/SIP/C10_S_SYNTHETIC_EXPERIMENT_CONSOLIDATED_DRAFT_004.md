@@ -629,7 +629,7 @@ Se ejecutó de nuevo la suite técnica después de implementar el intervalo cons
 
 El agregador calcula primero una contribución por mundo M a partir de sus R asignaciones, y después estima medias y MCSE entre M independientes. Incluye cobertura y anchura de intervalo, bias/MAE/RMSE, recuperación puntual solo con tolerancia explícita, disponibilidad de intervalo, identificación/abstención, abstención correcta, falsa identificación y falsa abstención. No elimina silenciosamente replicaciones incompletas: si falta cualquier contribución requerida, la métrica correspondiente es `NOT_EVALUABLE`.
 
-La clasificación esperada de identificación es una entrada explícita del contrato de escenario, separada del Analyzer. Se requiere una base explícita para declarar independencia entre unidades en escenarios identificados. Los escenarios de verdad `PARTIALLY_IDENTIFIED` se rechazan por ahora porque P183-11 no dispone todavía de bounds de medición adjudicados. Type-I error y power quedan `NOT_DEFINED_NO_TEST_PROCEDURE`; no se infieren de un intervalo de confianza.
+La clasificación esperada de identificación es una entrada explícita del contrato de escenario, separada del Analyzer. Se requiere una base explícita para declarar independencia entre unidades. En esos escenarios se conserva el confidence level solicitado aunque el Analyzer se abstenga por missingness o falta de soporte; la disponibilidad del intervalo se informa por separado y no se eliminan esas replicaciones. Los escenarios de verdad `PARTIALLY_IDENTIFIED` se rechazan por ahora porque P183-11 no dispone todavía de bounds de medición adjudicados. Type-I error y power quedan `NOT_DEFINED_NO_TEST_PROCEDURE`; no se infieren de un intervalo de confianza.
 
 ### Estado y límites
 
