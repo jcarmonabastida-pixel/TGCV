@@ -1,0 +1,5 @@
+TGCV C10-S EP-02 repair verification trigger
+Authorized in conversation on 2026-11-17.
+Scope: exact fifteen-module synthetic/integrated contract suite, source compilation and clean replay only.
+Branch: research/c10-s-consolidation-draft
+Temporary sentinel; remove after run capture.
