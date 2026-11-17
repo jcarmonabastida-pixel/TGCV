@@ -525,6 +525,10 @@ class D2ObservedIntervalLaneResult:
             or manifest.get("expected_unit_count") != len(expected_units)
             or manifest.get("missing_unit_ids") != expected_missing
             or tuple(manifest.get("expected_unit_assignments", ())) != expected_assignments
+            or manifest.get("assignment_bundle_sha256") != self.assignments.result_sha256
+            or manifest.get("assignment_mechanism_id") != self.assignments.mechanism_id
+            or manifest.get("assignment_mechanism_version") != self.assignments.mechanism_version
+            or manifest.get("q_x_sha256") != self.assignments.q_x_sha256
             or manifest.get("interval_count_per_unit") != expected_per_unit
             or tuple(manifest.get("interval_bounds", ())) != tuple(zip(grid.boundaries, grid.boundaries[1:]))
             or (manifest.get("grid_id"), manifest.get("grid_version"))
