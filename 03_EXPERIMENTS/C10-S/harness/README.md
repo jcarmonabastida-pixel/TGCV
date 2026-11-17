@@ -694,7 +694,7 @@ Artifacts:
 
 ## Focal θ_A calibration protocol scaffold — 2026-11-17
 
-The focal direct-`g_A` path now has a separate source-level calibration protocol in `theta_a_calibration_protocol.py`, with deterministic contract fixtures in `test_theta_a_calibration_protocol.py`. It is deliberately separate from `vcont_benchmark_protocol.py` and its 13-scenario × 52-assignment-estimand matrix; that protocol explicitly excludes `theta_A` and its RUN/R semantics are not imported as focal estimands.
+The focal direct-`g_A` path now has a separate source-level calibration protocol in `theta_a_calibration_protocol.py`, with nine deterministic contract-test definitions in `test_theta_a_calibration_protocol.py`. It is deliberately separate from `vcont_benchmark_protocol.py` and its 13-scenario × 52-assignment-estimand matrix; that protocol explicitly excludes `theta_A` and its RUN/R semantics are not imported as focal estimands.
 
 ### N / M / R semantics
 
@@ -704,7 +704,7 @@ The focal direct-`g_A` path now has a separate source-level calibration protocol
 - There is no extra designated RUN row for `theta_A`: the focal estimator has no run-conditional estimand class.
 - The existing assignment generator uses one per-R salt with distinct domain labels for the Bernoulli arm draw and the within-policy joint-vector draw. The second-stage vector draw is therefore varied on every R and remains part of the stochastic-policy estimand, not conditioned away.
 - S3 measurement uses a separate per-R seed, expanded deterministically to unit-specific monitor seeds.
-- Calibration and evaluation banks are domain-separated and validated for disjoint world, assignment and S3 streams. The capture boundary rechecks the materialized world seed commitment and actual assignment-salt hash; R rows must preserve world-configuration and q_X/g_A/r_common design fingerprints while varying assignment, sealed-evidence and Analyzer-output fingerprints.
+- Calibration and evaluation banks are domain-separated and validated for disjoint world, assignment and S3 streams. The capture boundary rechecks the materialized world seed commitment and actual assignment-salt hash; for the continuous interval lane it also verifies each S3 observation ID against the per-R/per-unit monitor seed. R rows must preserve world-configuration and q_X/g_A/r_common design fingerprints while varying assignment, sealed-evidence and Analyzer-output fingerprints. Point-sample S3 is explicitly ineligible for this interval-confidence calibration.
 
 ### Captured metrics and fail-closed rules
 
