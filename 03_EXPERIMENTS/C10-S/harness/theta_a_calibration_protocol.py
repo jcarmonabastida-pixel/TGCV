@@ -172,6 +172,8 @@ def validate_theta_a_seed_banks(
     """Fail-closed N/M/R completeness and disjointness check for focal banks."""
     design.validate()
     cal, ev = tuple(calibration), tuple(evaluation)
+    if not cal and not ev:
+        raise ThetaACalibrationError("at least one focal seed bank must be supplied")
     if any(row.bank != "calibration" for row in cal) or any(row.bank != "evaluation" for row in ev):
         raise ThetaACalibrationError("seed rows are stored under the wrong bank label")
 
@@ -209,6 +211,13 @@ def validate_theta_a_seed_banks(
             ids, seeds = zip(*values)
             if len(set(ids)) != len(ids) or len(set(seeds)) != len(seeds):
                 raise ThetaACalibrationError("independent outer worlds M require distinct identities and seeds")
+        distinct_worlds = {
+            (key, world_id, world_seed)
+            for key, (world_id, world_seed) in worlds.items()
+        }
+        if (len({world_id for _, world_id, _ in distinct_worlds}) != len(distinct_worlds)
+                or len({world_seed for _, _, world_seed in distinct_worlds}) != len(distinct_worlds)):
+            raise ThetaACalibrationError("each distinct scenario×N×M world requires a unique identity and seed")
         if len({x.run_id for x in rows}) != len(rows):
             raise ThetaACalibrationError("each M×R assignment requires a unique run_id")
         assignment_keys = [
@@ -242,8 +251,11 @@ def s3_seeds_by_unit(seed: int, unit_ids: Sequence[str]) -> dict[str, int]:
         raise ThetaACalibrationError("S3 seed expansion requires nonempty unit IDs")
     if len(unit_ids) != len(set(unit_ids)):
         raise ThetaACalibrationError("S3 seed expansion received duplicate unit IDs")
-    return {unit_id: _seed(f"TGCV-C10S-THETA-A-S3-UNIT-v1|{seed}|{unit_id}")
-            for unit_id in unit_ids}
+    result = {unit_id: _seed(f"TGCV-C10S-THETA-A-S3-UNIT-v1|{seed}|{unit_id}")
+              for unit_id in unit_ids}
+    if len(set(result.values())) != len(result):
+        raise ThetaACalibrationError("derived S3 unit seeds collided")
+    return result
 
 
 @dataclass(frozen=True)
@@ -263,7 +275,7 @@ class ThetaAReplicateRecord:
     inference_upper_bound: float | None
     inference_covered: bool | None
     inference_width: float | None
-    confidence_level: float | None
+    requested_confidence_level: float | None
 
     def validate(self) -> None:
         if not all((self.scenario_id, self.scenario_version, self.outer_world_id,
@@ -283,6 +295,11 @@ class ThetaAReplicateRecord:
         interval = (self.inference_lower_bound, self.inference_upper_bound)
         if (interval[0] is None) != (interval[1] is None):
             raise ThetaACalibrationError("inferential interval bounds must be jointly present or absent")
+        if self.requested_confidence_level is not None and (
+            not isfinite(self.requested_confidence_level)
+            or not 0.0 < self.requested_confidence_level < 1.0
+        ):
+            raise ThetaACalibrationError("requested confidence level must be finite and between zero and one")
         if interval[0] is None:
             if self.inference_covered is not None or self.inference_width is not None:
                 raise ThetaACalibrationError("coverage/width cannot exist without an inferential interval")
@@ -293,13 +310,9 @@ class ThetaAReplicateRecord:
                     or type(self.inference_covered) is not bool
                     or self.inference_width is None or not isfinite(self.inference_width)
                     or not _close(self.inference_width, interval[1] - interval[0])
-                    or self.confidence_level is None
-                    or not isfinite(self.confidence_level)
-                    or not 0.0 < self.confidence_level < 1.0
+                    or self.requested_confidence_level is None
                     or self.inference_covered != (interval[0] <= self.truth <= interval[1])):
                 raise ThetaACalibrationError("inferential interval evidence is inconsistent")
-        elif self.confidence_level is not None:
-            raise ThetaACalibrationError("confidence level cannot be recorded when no interval was emitted")
 
 
 def _close(a: float, b: float) -> bool:
@@ -310,6 +323,8 @@ def capture_theta_a_replicate(
     result,
     assignment: ThetaASeedAssignment,
     scenario: ThetaACalibrationScenario,
+    *,
+    requested_confidence_level: float | None,
 ) -> ThetaAReplicateRecord:
     """Capture evaluator-side metrics from one completed world without rerunning it."""
     scenario.validate()
@@ -334,8 +349,13 @@ def capture_theta_a_replicate(
         result.analyzer_result.inference_upper_bound,
         evaluation.inference_truth_covered,
         evaluation.inference_interval_width,
-        evaluation.inference_confidence_level,
+        requested_confidence_level,
     )
+    if evaluation.inference_confidence_level is not None and (
+        requested_confidence_level is None
+        or not _close(evaluation.inference_confidence_level, requested_confidence_level)
+    ):
+        raise ThetaACalibrationError("Evaluator confidence level differs from the requested focal calibration level")
     record.validate()
     return record
 
@@ -404,10 +424,11 @@ def summarize_theta_a_calibration(
             raise ThetaACalibrationError("replicate truth-class label differs from its scenario contract")
         if (record.world_id, record.run_id) != (seed.world_id, seed.run_id):
             raise ThetaACalibrationError("replicate evidence provenance differs from its seed assignment")
-        if record.inference_lower_bound is not None and not _close(
-            record.confidence_level, design.confidence_level
-        ):
-            raise ThetaACalibrationError("replicate confidence level differs from the calibration design")
+        expected_level = (
+            design.confidence_level if scenario.expected_identification == "IDENTIFIED" else None
+        )
+        if record.requested_confidence_level != expected_level:
+            raise ThetaACalibrationError("replicate requested confidence level differs from its scenario/design contract")
 
     target_map = {(sid, ver, n, metric): target
                   for sid, ver, n, metric, target in design.metric_targets}
@@ -482,9 +503,10 @@ def summarize_theta_a_calibration(
                 contributions = metric_values[name]
                 target_name = "point_rmse" if name == "point_rmse_mse" else name
                 target = target_map.get((scenario.scenario_id, scenario.scenario_version, n_units, target_name))
+                output_name = "point_rmse" if name == "point_rmse_mse" else name
                 if len(contributions) != design.outer_worlds_m or any(x is None for x in contributions):
                     metric_summaries.append(ThetaAMetricSummary(
-                        name, None, None, target, "NOT_EVALUABLE", tuple()
+                        output_name, None, None, target, "NOT_EVALUABLE", tuple()
                     ))
                     continue
                 values = tuple((x[0], x[1]) for x in contributions if x is not None)
@@ -494,7 +516,6 @@ def summarize_theta_a_calibration(
                     value = sqrt(mse)
                     mcse_mse = stdev(xs) / sqrt(design.outer_worlds_m)
                     mcse = mcse_mse / (2.0 * value) if value > 0 else (0.0 if mcse_mse == 0 else None)
-                    output_name = "point_rmse"
                 else:
                     value = mean(xs)
                     mcse = stdev(xs) / sqrt(design.outer_worlds_m)
