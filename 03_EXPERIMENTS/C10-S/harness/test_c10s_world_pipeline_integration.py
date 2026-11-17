@@ -718,6 +718,9 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
              row.probability_z0, row.probability_z1)
             for row in original_bundle.assignments
         )
+        self.assertEqual(
+            {row.assigned_z for row in original_bundle.assignments}, {0, 1},
+        )
         missing_one_per_arm = tuple(
             next(row.unit_id for row in original_bundle.assignments if row.assigned_z == z)
             for z in (0, 1)
