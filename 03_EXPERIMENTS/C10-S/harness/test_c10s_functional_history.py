@@ -5,7 +5,7 @@ import unittest
 from types import SimpleNamespace
 from decimal import Decimal
 
-from c10s_synthetic_components import D2PotentialStage, FunctionalState
+from c10s_synthetic_components import ContractError, D2PotentialStage, FunctionalState
 from c10s_functional_history import FunctionalHistoryRule, _apply_rules
 
 
@@ -146,7 +146,7 @@ class FunctionalHistoryRuleTests(unittest.TestCase):
             set_enabled=True, trajectory_target_state="TARGET-C",
             trajectory_field="execution_state", trajectory_value=1,
         )
-        with self.assertRaises(Exception):
+        with self.assertRaises(ContractError):
             _apply_rules(
                 source="D2", initial=FunctionalState(False, "NO_ADMISSION"),
                 rules=(rule,), mechanism=self.stage(),
