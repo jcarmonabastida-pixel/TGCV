@@ -97,17 +97,47 @@ class D2ITTZAnalyzer:
         contract.validate()
         if not evidence.rows or _hash({"manifest": evidence.manifest, "rows": list(evidence.rows)}) != evidence.sha256:
             raise ContractError("ITT-Z Analyzer requires non-empty sealed evidence with valid digest")
-        if evidence.manifest.get("temporal_resolution") != "INTERVAL_LEVEL":
+        manifest = evidence.manifest
+        if manifest.get("temporal_resolution") != "INTERVAL_LEVEL":
             raise ContractError("ITT-Z strict V_cont requires interval-level evidence")
+        if (manifest.get("row_count") != len(evidence.rows)
+                or not isinstance(manifest.get("unit_count"), int)
+                or manifest.get("unit_count") < 1
+                or not isinstance(manifest.get("interval_count_per_unit"), int)
+                or manifest.get("interval_count_per_unit") < 1):
+            raise ContractError("ITT-Z sealed manifest counts are missing or inconsistent")
         qx = dict(contract.q_x_mass_by_history)
         by_unit: dict[str, list[dict[str, Any]]] = {}
         for row in evidence.rows:
+            if row.get("run_id") != evidence.run_id:
+                raise ContractError("ITT-Z evidence contains a foreign run identity")
+            if (row.get("grid_id"), row.get("grid_version"),
+                    row.get("monitor_id"), row.get("monitor_version")) != (
+                    manifest.get("grid_id"), manifest.get("grid_version"),
+                    manifest.get("monitor_id"), manifest.get("monitor_version")
+                    ):
+                raise ContractError("ITT-Z row grid/monitor identity differs from sealed manifest")
             if (row.get("assignment_bundle_sha256") != contract.assignment_bundle_sha256
                     or row.get("q_x_sha256") != contract.q_x_sha256
                     or row.get("assignment_mechanism_id") != contract.assignment_mechanism_id
                     or row.get("assignment_mechanism_version") != contract.assignment_mechanism_version):
                 raise ContractError("ITT-Z analysis contract does not match sealed assignment provenance")
             by_unit.setdefault(row["unit_id"], []).append(row)
+        if len(by_unit) != manifest["unit_count"]:
+            raise ContractError("ITT-Z sealed manifest unit count differs from observed evidence")
+        if len(by_unit) > len(qx):
+            raise ContractError("ITT-Z evidence contains more units than q_X target support")
+        expected_interval_count = manifest["interval_count_per_unit"]
+        observed_bounds = None
+        for unit, rows in by_unit.items():
+            ordered = sorted(rows, key=lambda row: row["interval_index"])
+            if len(ordered) != expected_interval_count:
+                raise ContractError(f"ITT-Z interval count differs from manifest for {unit}")
+            bounds = tuple((row["interval_start"], row["interval_end"]) for row in ordered)
+            if observed_bounds is None:
+                observed_bounds = bounds
+            elif bounds != observed_bounds:
+                raise ContractError("ITT-Z units do not share the same interval grid boundaries")
         observed_histories = {rows[0]["history_ref"] for rows in by_unit.values()}
         unexpected = observed_histories - set(qx)
         if unexpected:
