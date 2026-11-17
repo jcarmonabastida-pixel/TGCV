@@ -70,8 +70,8 @@ jobs:
             03_EXPERIMENTS/C10-S/calibration/p178_focal_monte_carlo.py
             03_EXPERIMENTS/C10-S/calibration/p178_reference_N700.csv
           )
-          git archive "$GITHUB_SHA" "${profile_paths[@]}" | tar -x -C "$primary_root"
-          git archive "$GITHUB_SHA" "${profile_paths[@]}" | tar -x -C "$replay_root"
+          git archive "ac6ee419f2bc8fae2d0554e4148fe198af332a3e" "${profile_paths[@]}" | tar -x -C "$primary_root"
+          git archive "ac6ee419f2bc8fae2d0554e4148fe198af332a3e" "${profile_paths[@]}" | tar -x -C "$replay_root"
           diff -qr "$primary_root" "$replay_root"
 
       - name: Compile declared P178 source and tests in primary materialization

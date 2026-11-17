@@ -62,7 +62,7 @@ jobs:
             03_EXPERIMENTS/C10-S/harness/vcont_integrated_harness.py
             03_EXPERIMENTS/C10-S/harness/requirements-vcont-v2.lock
           )
-          git archive "$GITHUB_SHA" "${profile_paths[@]}" | tar -x -C "$source_root"
+          git archive "ac6ee419f2bc8fae2d0554e4148fe198af332a3e" "${profile_paths[@]}" | tar -x -C "$source_root"
 
       - name: Install existing hash-locked pure-profile dependency
         working-directory: ${{ runner.temp }}/c10s-ep03-source/03_EXPERIMENTS/C10-S/harness
