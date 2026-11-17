@@ -1970,7 +1970,6 @@ class SyntheticWorldConfig:
     h0_distribution: tuple[tuple[str, float], ...]
     c_c_dimension: int
     c_c_component_probability: float
-    need_pre_z_probability: float
     focal_accessible_pre_probability: float
     c_auth_base_probability: float
     c_resource_probability: float
@@ -1991,7 +1990,6 @@ class SyntheticWorldConfig:
             raise ContractError("H0 support labels must be nonempty strings")
         for label, probability in (
             ("C_c component", self.c_c_component_probability),
-            ("Need_preZ", self.need_pre_z_probability),
             ("focal baseline accessibility", self.focal_accessible_pre_probability),
             ("C_auth,base", self.c_auth_base_probability),
             ("C_resource", self.c_resource_probability),
@@ -2018,7 +2016,6 @@ class SyntheticWorldUnit:
     x: tuple[float, ...]
     h0: str
     c_c: tuple[bool, ...]
-    need_pre_z: bool
     d2_baseline: D2Baseline
     d2_potentials: D2PotentialBundle
 
@@ -2074,7 +2071,7 @@ class SyntheticWorldBundle:
             roster_payload.append({
                 "unit_id": unit.unit_id, "x_ref": unit.x_ref, "h0_ref": unit.h0_ref,
                 "c_c_ref": unit.c_c_ref, "x": unit.x, "h0": unit.h0,
-                "c_c": unit.c_c, "need_pre_z": unit.need_pre_z,
+                "c_c": unit.c_c,
                 "d2_baseline": unit.d2_baseline,
                 "d2_potentials": unit.d2_potentials,
             })
@@ -2261,7 +2258,6 @@ class SyntheticWorldBuilder:
             h0 = rng.choices(h0_labels, weights=h0_weights, k=1)[0]
             c_c = tuple(rng.random() < config.c_c_component_probability
                         for _ in range(config.c_c_dimension))
-            need_pre_z = rng.random() < config.need_pre_z_probability
             baseline = D2Baseline(
                 unit_id, history_ref,
                 rng.random() < config.focal_accessible_pre_probability,
@@ -2278,7 +2274,7 @@ class SyntheticWorldBuilder:
             )
             units.append(SyntheticWorldUnit(
                 unit_id, x_ref, h0_ref, c_c_ref, x, h0, c_c,
-                need_pre_z, baseline, potentials,
+                baseline, potentials,
             ))
             q_x.append(QXHistoryMass(
                 history_ref, x_ref, h0_ref, c_c_ref,
@@ -2287,7 +2283,7 @@ class SyntheticWorldBuilder:
         roster_payload = tuple({
             "unit_id": unit.unit_id, "x_ref": unit.x_ref, "h0_ref": unit.h0_ref,
             "c_c_ref": unit.c_c_ref, "x": unit.x, "h0": unit.h0,
-            "c_c": unit.c_c, "need_pre_z": unit.need_pre_z,
+            "c_c": unit.c_c,
             "d2_baseline": unit.d2_baseline,
             "d2_potentials": unit.d2_potentials,
         } for unit in units)

@@ -63,7 +63,6 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             h0_distribution=(("H0", 1.0),),
             c_c_dimension=1,
             c_c_component_probability=1.0,
-            need_pre_z_probability=1.0,
             focal_accessible_pre_probability=0.0,
             c_auth_base_probability=1.0,
             c_resource_probability=1.0,

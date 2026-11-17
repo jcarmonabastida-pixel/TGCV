@@ -381,7 +381,7 @@ class SyntheticComponentTests(unittest.TestCase):
             unit_id_prefix="UE", n_units=4, seed=20261116,
             x_dimension=2, h0_distribution=(("H0-A", 0.75), ("H0-B", 0.25)),
             c_c_dimension=2, c_c_component_probability=0.8,
-            need_pre_z_probability=0.6, focal_accessible_pre_probability=0.2,
+            focal_accessible_pre_probability=0.2,
             c_auth_base_probability=1.0, c_resource_probability=0.9,
             c_capacity_probability=0.9, c_info_probability=0.95,
             c_domain_probability=0.95, c_other_probability=0.95,
@@ -400,6 +400,7 @@ class SyntheticComponentTests(unittest.TestCase):
         world = builder.generate(world_config, d2_config)
         replay = builder.generate(world_config, d2_config)
         world.validate()
+        self.assertFalse(hasattr(world.units[0], "need_pre_z"))
         self.assertEqual(world.roster_sha256, replay.roster_sha256)
         self.assertEqual(world.configuration_sha256, replay.configuration_sha256)
         self.assertEqual(tuple(row.mass for row in world.q_x), (0.1, 0.2, 0.3, 0.4))
@@ -425,7 +426,7 @@ class SyntheticComponentTests(unittest.TestCase):
             unit_id_prefix="UE", n_units=2, seed=7,
             x_dimension=1, h0_distribution=(("H0-A", 1.0),),
             c_c_dimension=1, c_c_component_probability=1.0,
-            need_pre_z_probability=0.5, focal_accessible_pre_probability=0.0,
+            focal_accessible_pre_probability=0.0,
             c_auth_base_probability=1.0, c_resource_probability=1.0,
             c_capacity_probability=1.0, c_info_probability=1.0,
             c_domain_probability=1.0, c_other_probability=1.0,
