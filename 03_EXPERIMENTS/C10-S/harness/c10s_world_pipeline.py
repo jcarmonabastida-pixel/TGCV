@@ -359,6 +359,8 @@ def materialize_c10s_complete_world_from_dgp(
     evaluation_tolerance: float,
     interval_monitor_configs_by_history_ref: dict[str, IntervalMonitorConfig] | None = None,
     interval_monitor_seeds_by_unit: dict[str, int] | None = None,
+    theta_a_confidence_level: float | None = None,
+    theta_a_unit_independence_certified: bool = False,
 ) -> C10SCompleteWorldResult:
     """Generate D2 and direct-g_A potential EventHistories inside the DGP pipeline.
 
