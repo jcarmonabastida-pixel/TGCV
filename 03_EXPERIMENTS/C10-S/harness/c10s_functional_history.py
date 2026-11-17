@@ -1,4 +1,4 @@
-"""Explicit functional DGP bridge from D2/g_A mechanisms to EventHistory.
+"""Explicit functional DGP bridge from D2/g_A/trajectory mechanisms to EventHistory.
 
 No accessibility-to-admission equivalence is built in. Every state transition
 requires a versioned rule authored in FunctionalHistoryDGPConfig.
@@ -60,10 +60,14 @@ class FunctionalHistoryRule:
             if self.d2_field not in D2_FIELDS or type(self.d2_value) is not bool:
                 raise ContractError("D2 rule requires an allowlisted stage field and Boolean trigger value")
             if (self.vector_index is not None or self.vector_value is not None
-                    or self.vector_predicates is not None or self.factor_m_value is not None):
+                    or self.vector_predicates is not None or self.factor_m_value is not None
+                    or self.trajectory_target_state is not None
+                    or self.trajectory_field is not None or self.trajectory_value is not None):
                 raise ContractError("D2 rule cannot also contain a g_A vector predicate")
         elif self.source == "G_A":
-            if self.d2_field is not None or self.d2_value is not None or self.factor_m_value is not None:
+            if (self.d2_field is not None or self.d2_value is not None or self.factor_m_value is not None
+                    or self.trajectory_target_state is not None
+                    or self.trajectory_field is not None or self.trajectory_value is not None):
                 raise ContractError("g_A rule cannot contain a D2-stage or factor-M predicate")
             if self.vector_predicates is None:
                 if type(self.vector_index) is not int or self.vector_index not in range(4) or self.vector_value is None:
@@ -83,7 +87,9 @@ class FunctionalHistoryRule:
         elif self.source == "G_M":
             if (self.d2_field is not None or self.d2_value is not None
                     or self.vector_index is not None or self.vector_value is not None
-                    or self.vector_predicates is not None or type(self.factor_m_value) is not bool):
+                    or self.vector_predicates is not None or type(self.factor_m_value) is not bool
+                    or self.trajectory_target_state is not None
+                    or self.trajectory_field is not None or self.trajectory_value is not None):
                 raise ContractError("G_M rule requires only an explicit Boolean factor_m_value predicate")
         elif self.source == "TRAJECTORY":
             if (not self.trajectory_target_state
