@@ -776,6 +776,10 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         factorial_ids = {unit.unit_id for unit in result.factorial_cohort.world.units}
         d2_ids = {unit.unit_id for unit in result.d2_world.units}
         self.assertFalse(factorial_ids & d2_ids)
+        self.assertNotEqual(
+            result.factorial_cohort.world.seed_commitment_sha256,
+            result.d2_world.seed_commitment_sha256,
+        )
         self.assertEqual(
             result.factorial_cohort.accessibility_attribution_status,
             "GA_TO_DELTA_T_ACC_REACH_TRAJECTORY_MATERIALIZED_VALUE_BRIDGE_OPEN",
