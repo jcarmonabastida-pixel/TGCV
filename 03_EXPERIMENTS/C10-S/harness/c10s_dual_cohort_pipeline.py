@@ -138,6 +138,12 @@ class C10SDualCohortWorldResult:
             raise ContractError("D2 structural baseline does not cover the exact cohort roster")
         factorial_initial = dict(self.factorial_initial_states_by_unit_z)
         d2_initial = dict(self.d2_initial_states_by_unit_z)
+        if (len(factorial_initial) != len(self.factorial_initial_states_by_unit_z)
+                or len(factorial_initial) != 2 * len(self.factorial_cohort.world.units)):
+            raise ContractError("factorial initial-state manifest must contain unique exact unit × Z coverage")
+        if (len(d2_initial) != len(self.d2_initial_states_by_unit_z)
+                or len(d2_initial) != 2 * len(self.d2_world.units)):
+            raise ContractError("D2 initial-state manifest must contain unique exact unit × Z coverage")
         _validate_cohort_initial_states(
             self.factorial_cohort.world, factorial_initial, "factorial",
         )
