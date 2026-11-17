@@ -49,7 +49,7 @@ class P178AnalyzerBridgeTests(unittest.TestCase):
 
         evidence = Sealer().seal(EvidenceCandidate("p178-bridge-positive-n700", tuple(rows)))
         contract = AnalysisContract(
-            estimand_id="THETA_A_Q_B1",
+            estimand_id="ITT_Z_Q_B1",
             estimand_version="001",
             randomized_assignment=True,
             direct_path_status="ABSENT",
@@ -72,12 +72,16 @@ class P178AnalyzerBridgeTests(unittest.TestCase):
         expected_interval = (estimate - critical * se, estimate + critical * se)
 
         self.assertEqual(result.package_identification, "IDENTIFIED")
-        self.assertEqual(result.focal_identification, "IDENTIFIED")
+        self.assertEqual(result.focal_identification, "INDETERMINATE")
         self.assertAlmostEqual(result.package_itt_estimate, estimate, places=14)
         self.assertAlmostEqual(result.package_itt_standard_error, se, places=14)
         self.assertAlmostEqual(result.package_itt_interval_95[0], expected_interval[0], places=12)
         self.assertAlmostEqual(result.package_itt_interval_95[1], expected_interval[1], places=12)
-        self.assertAlmostEqual(result.focal_estimate, estimate, places=14)
+        self.assertIsNone(result.focal_estimate)
+        self.assertEqual(
+            result.abstention_reason,
+            "THETA_A_REQUIRES_DIRECT_GA_ASSIGNMENT_AND_POLICY_LINKED_OBSERVATIONS",
+        )
 
 
 if __name__ == "__main__":
