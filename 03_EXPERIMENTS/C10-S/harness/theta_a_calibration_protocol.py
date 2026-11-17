@@ -23,6 +23,12 @@ Bank = Literal["calibration", "evaluation"]
 Identification = Literal["IDENTIFIED", "NOT_IDENTIFIED", "INDETERMINATE"]
 _VALID_IDENTIFICATION = {"IDENTIFIED", "NOT_IDENTIFIED", "INDETERMINATE"}
 _VALID_ANALYZER_IDENTIFICATION = _VALID_IDENTIFICATION | {"PARTIALLY_IDENTIFIED"}
+_ALLOWED_METRICS = {
+    "interval_coverage", "interval_width", "point_bias", "point_mae",
+    "point_rmse", "point_recovery_rate", "identification_rate",
+    "abstention_rate", "interval_availability_rate", "false_abstention_rate",
+    "correct_abstention_rate", "false_identification_rate",
+}
 
 
 @dataclass(frozen=True)
@@ -73,6 +79,8 @@ class ThetaACalibrationDesign:
             raise ThetaACalibrationError("N grid must contain positive exact integers")
         if len(self.n_grid) != len(set(self.n_grid)):
             raise ThetaACalibrationError("N grid contains duplicate candidate sizes")
+        if tuple(sorted(self.n_grid)) != self.n_grid:
+            raise ThetaACalibrationError("N candidate grid must be in ascending canonical order")
         if (type(self.outer_worlds_m) is not int or type(self.assignment_replicates_r) is not int
                 or self.outer_worlds_m < 2 or self.assignment_replicates_r < 2):
             raise ThetaACalibrationError("focal calibration requires exact integer M>=2 and R>=2")
@@ -86,11 +94,24 @@ class ThetaACalibrationDesign:
             raise ThetaACalibrationError("point-recovery tolerance must be finite and nonnegative")
         target_keys = []
         scenario_keys = set(keys)
+        scenario_map = {(x.scenario_id, x.scenario_version): x for x in self.scenario_specs}
         for scenario_id, version, n_units, metric, target in self.metric_targets:
             if (scenario_id, version) not in scenario_keys or n_units not in self.n_grid:
                 raise ThetaACalibrationError("metric target references an undeclared scenario/version/N")
-            if not metric.strip() or isinstance(target, bool) or not isfinite(target) or target <= 0:
-                raise ThetaACalibrationError("metric targets require a name and finite positive MCSE")
+            if metric not in _ALLOWED_METRICS or isinstance(target, bool) or not isfinite(target) or target <= 0:
+                raise ThetaACalibrationError("metric targets require a supported metric and finite positive MCSE")
+            scenario = scenario_map[(scenario_id, version)]
+            if metric == "point_recovery_rate" and self.point_recovery_tolerance is None:
+                raise ThetaACalibrationError("point-recovery target requires an explicit tolerance")
+            identified_only = {
+                "interval_coverage", "interval_width", "point_bias", "point_mae",
+                "point_rmse", "point_recovery_rate", "false_abstention_rate",
+            }
+            abstention_only = {"correct_abstention_rate", "false_identification_rate"}
+            if metric in identified_only and scenario.expected_identification != "IDENTIFIED":
+                raise ThetaACalibrationError("identified-only metric target assigned to a nonidentified scenario")
+            if metric in abstention_only and scenario.expected_identification == "IDENTIFIED":
+                raise ThetaACalibrationError("abstention-only metric target assigned to an identified scenario")
             target_keys.append((scenario_id, version, n_units, metric))
         if len(target_keys) != len(set(target_keys)):
             raise ThetaACalibrationError("duplicate focal metric target")
