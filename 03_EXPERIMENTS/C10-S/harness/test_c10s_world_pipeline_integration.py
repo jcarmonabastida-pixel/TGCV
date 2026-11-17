@@ -632,7 +632,9 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         d2_ids = {unit.unit_id for unit in result.d2_world.units}
         self.assertFalse(factorial_ids & d2_ids)
         self.assertEqual(len(result.d2_structural_pairs), 64)
+        self.assertEqual(len(result.d2_structural_deltas), 64)
         self.assertEqual(len(result.d2_reachability.contrasts), 64)
+        self.assertEqual(len(result.factorial_cohort.structural_deltas), 64)
         self.assertEqual(len(result.d2_trajectories.trajectories), 64)
         d2_histories = result.d2_event_histories_by_unit_z
         factorial_d2_histories = result.factorial_cohort.d2_event_histories_by_unit_z
