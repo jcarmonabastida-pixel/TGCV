@@ -643,7 +643,7 @@ La clasificación esperada de identificación es una entrada explícita del cont
 - **Type-I/power:** pendientes de un procedimiento de contraste separado.
 - **Value contextual:** el protocolo sigue limitado a `θ_A(q_X*,r_common;V_cont)`; no cierra el puente V_cont→Outcome/Value general ni la contribución `ΔT_acc→Value`.
 
-El siguiente paso dependiente de decisión es aportar un roster focal versionado con truth-status independiente por escenario y objetivos MCSE explícitos. No se infieren del protocolo 13×52 ni de P178. La creación de este scaffold no autoriza la generación de bancos ni la calibración.
+El siguiente paso dependiente de decisión es aportar un roster focal versionado con world/DGP/roster IDs y versiones, prefijo de unidad, truth-status independiente y base de independencia por escenario, además de objetivos MCSE explícitos. No se infieren del protocolo 13×52 ni de P178. La creación de este scaffold no autoriza la generación de bancos ni la calibración.
 
 `scientific_execution=false` · `execution_authorized=false` · `calibration_authorized=false`
 
