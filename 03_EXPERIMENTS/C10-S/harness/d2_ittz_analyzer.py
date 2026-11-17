@@ -57,6 +57,7 @@ class D2ITTZAnalysisResult:
     missing_interval_count: int
     total_interval_count: int
     abstention_reason: str
+    bound_scope: str
     input_sha256: str
     output_sha256: str
 
@@ -77,6 +78,7 @@ def _result_payload(result: D2ITTZAnalysisResult) -> dict[str, Any]:
         "missing_interval_count": result.missing_interval_count,
         "total_interval_count": result.total_interval_count,
         "abstention_reason": result.abstention_reason,
+        "bound_scope": result.bound_scope,
         "input_sha256": result.input_sha256,
     }
 
@@ -259,8 +261,10 @@ class D2ITTZAnalyzer:
             if missing_count:
                 reasons.append("INTERVAL_MISSINGNESS")
             reason = "_AND_".join(reasons) + "_PREVENTS_STRICT_VCONT_POINT_RECOVERY"
+            bound_scope = "REALIZED_HT_MEASUREMENT_COMPLETION"
         else:
             identification, reason = "IDENTIFIED", ""
+            bound_scope = "NONE"
             estimate = mu_lower[1] - mu_lower[0]
             confidence_level = contract.confidence_level
             alpha = 1.0 - confidence_level
@@ -279,7 +283,7 @@ class D2ITTZAnalyzer:
             "target_q_x_coverage": coverage, "missing_target_histories": missing_histories,
             "assigned_z_unit_counts": counts, "missing_interval_count": missing_count,
             "total_interval_count": total_count, "abstention_reason": reason,
-            "input_sha256": evidence.sha256,
+            "bound_scope": bound_scope, "input_sha256": evidence.sha256,
         }
         result = D2ITTZAnalysisResult(**payload, output_sha256=_output_hash(payload))
         return result
