@@ -10,7 +10,7 @@ from dataclasses import asdict, dataclass
 from decimal import Decimal
 import hashlib
 import json
-from typing import Any, Sequence
+from typing import Any, Mapping, Sequence
 
 from c10s_synthetic_components import (
     ContractError, D2VContTruthBundle, EventHistory, IntervalGrid,
@@ -103,13 +103,21 @@ def compose_d2_interval_s3_records(
     histories_by_unit_z: dict[tuple[str, int], EventHistory],
     truth: D2VContTruthBundle,
     grid: IntervalGrid,
-    monitor_config: IntervalMonitorConfig,
+    monitor_config_by_history_ref: Mapping[str, IntervalMonitorConfig] | IntervalMonitorConfig,
     seeds_by_unit: dict[str, int],
 ) -> tuple[D2IntervalObservationRecord, ...]:
     """Project exactly one assigned D2 EventHistory per q_X unit to interval S3."""
     world.validate()
     grid.validate()
-    monitor_config.validate()
+    if isinstance(monitor_config_by_history_ref, IntervalMonitorConfig):
+        monitor_configs = {unit.d2_baseline.baseline_history_ref: monitor_config_by_history_ref for unit in world.units}
+    else:
+        monitor_configs = dict(monitor_config_by_history_ref)
+    expected_refs = {row.history_ref for row in world.q_x}
+    if set(monitor_configs) != expected_refs:
+        raise ContractError("D2 interval monitor configurations must cover q_X* histories exactly")
+    for config in monitor_configs.values():
+        config.validate()
     assignments.validate(world, truth, histories_by_unit_z, grid)
     if set(seeds_by_unit) != {unit.unit_id for unit in world.units}:
         raise ContractError("D2 interval monitor seeds must cover the exact randomized roster")
@@ -120,6 +128,7 @@ def compose_d2_interval_s3_records(
     records = []
     for history in selected:
         assignment = assignment_by_unit[history.unit_id]
+        monitor_config = monitor_configs[assignment.history_ref]
         projected = project_interval_s3(
             history, grid, monitor_config, seed=seeds_by_unit[history.unit_id],
         )
@@ -314,7 +323,7 @@ def materialize_d2_observed_interval_lane(
     histories_by_unit_z: dict[tuple[str, int], EventHistory],
     assignment_config: D2ObservedAssignmentConfig,
     grid: IntervalGrid,
-    monitor_config: IntervalMonitorConfig,
+    monitor_config_by_history_ref: Mapping[str, IntervalMonitorConfig] | IntervalMonitorConfig,
     seeds_by_unit: dict[str, int],
 ) -> D2ObservedIntervalLaneResult:
     """Complete D2 Z assignment -> realized EventHistory -> interval S3 -> Sealer."""
@@ -323,7 +332,7 @@ def materialize_d2_observed_interval_lane(
     )
     records = compose_d2_interval_s3_records(
         world, assignments, histories_by_unit_z, truth, grid,
-        monitor_config, seeds_by_unit,
+        monitor_config_by_history_ref, seeds_by_unit,
     )
     candidate = D2IntervalEvidenceCandidate(
         records[0].run_id, tuple(asdict(row) for row in records),
