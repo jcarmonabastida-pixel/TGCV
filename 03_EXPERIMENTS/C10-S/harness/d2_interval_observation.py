@@ -89,6 +89,11 @@ class D2IntervalEvidenceCandidate:
     rows: tuple[dict[str, Any], ...]
     expected_unit_history_refs: tuple[tuple[str, str], ...] = ()
     expected_unit_assignments: tuple[tuple[str, str, int, float, float], ...] = ()
+    grid_id: str = ""
+    grid_version: str = ""
+    monitor_id: str = ""
+    monitor_version: str = ""
+    interval_bounds: tuple[tuple[Decimal, Decimal], ...] = ()
 
 
 @dataclass(frozen=True)
@@ -175,14 +180,48 @@ def compose_d2_interval_s3_records(
 
 def candidate_from_d2_interval_records(
     records: Sequence[D2IntervalObservationRecord],
+    *,
+    run_id: str | None = None,
+    expected_unit_history_refs: tuple[tuple[str, str], ...] = (),
+    expected_unit_assignments: tuple[tuple[str, str, int, float, float], ...] = (),
+    grid_id: str = "",
+    grid_version: str = "",
+    monitor_id: str = "",
+    monitor_version: str = "",
+    interval_bounds: tuple[tuple[Decimal, Decimal], ...] = (),
 ) -> D2IntervalEvidenceCandidate:
-    if not records:
-        raise ContractError("cannot construct D2 S3 evidence from empty interval records")
-    run_ids = {row.run_id for row in records}
-    if len(run_ids) != 1:
-        raise ContractError("D2 interval observations contain multiple run identities")
+    """Build S3 evidence; empty observations require a complete external context.
+
+    The roster/assignment and temporal grid/monitor are declared independently
+    of observed rows, so zero response cannot erase the observation design.
+    """
+    if records:
+        run_ids = {row.run_id for row in records}
+        if len(run_ids) != 1:
+            raise ContractError("D2 interval observations contain multiple run identities")
+        first = records[0]
+        inferred = {
+            "run_id": next(iter(run_ids)),
+            "grid_id": first.grid_id, "grid_version": first.grid_version,
+            "monitor_id": first.monitor_id, "monitor_version": first.monitor_version,
+            "interval_bounds": tuple(
+                (row.interval_start, row.interval_end)
+                for row in sorted(records, key=lambda x: x.interval_index)
+                if row.unit_id == first.unit_id
+            ),
+        }
+        run_id = run_id or inferred["run_id"]
+        grid_id = grid_id or inferred["grid_id"]
+        grid_version = grid_version or inferred["grid_version"]
+        monitor_id = monitor_id or inferred["monitor_id"]
+        monitor_version = monitor_version or inferred["monitor_version"]
+        interval_bounds = interval_bounds or inferred["interval_bounds"]
+    if not run_id:
+        raise ContractError("D2 interval evidence requires an explicit run identity")
     return D2IntervalEvidenceCandidate(
-        next(iter(run_ids)), tuple(asdict(row) for row in records),
+        run_id, tuple(asdict(row) for row in records),
+        expected_unit_history_refs, expected_unit_assignments,
+        grid_id, grid_version, monitor_id, monitor_version, interval_bounds,
     )
 
 
@@ -192,8 +231,14 @@ class D2IntervalSealer:
 
     def seal(self, candidate: D2IntervalEvidenceCandidate) -> SealedD2IntervalEvidence:
         allowed = frozenset(D2IntervalObservationRecord.__dataclass_fields__)
-        if not candidate.run_id or not candidate.rows:
-            raise ContractError("D2 interval evidence requires run identity and rows")
+        if not candidate.run_id:
+            raise ContractError("D2 interval evidence requires run identity")
+        if not candidate.rows and not (
+            candidate.expected_unit_assignments and candidate.grid_id
+            and candidate.grid_version and candidate.monitor_id
+            and candidate.monitor_version and candidate.interval_bounds
+        ):
+            raise ContractError("zero-row D2 evidence requires full roster, assignment, grid, monitor and interval context")
         seen_ids = set()
         units: dict[str, dict[str, Any]] = {}
         normalised = []
@@ -285,9 +330,21 @@ class D2IntervalSealer:
                 raise ContractError("D2 interval observations vary in unit assignment/history provenance")
             contract["rows"].append(row)
             normalised.append(dict(row))
-        common_grid = None
-        common_bounds = None
-        common_monitor = None
+        common_grid = ((candidate.grid_id, candidate.grid_version)
+                       if not candidate.rows else None)
+        common_bounds = candidate.interval_bounds if not candidate.rows else None
+        common_monitor = ((candidate.monitor_id, candidate.monitor_version)
+                          if not candidate.rows else None)
+        if not candidate.rows:
+            if (not common_grid[0] or not common_grid[1]
+                    or not common_monitor[0] or not common_monitor[1]
+                    or not common_bounds
+                    or any(not isinstance(a, Decimal) or not isinstance(b, Decimal)
+                           or not a.is_finite() or not b.is_finite() or not a < b
+                           for a, b in common_bounds)
+                    or any(left[1] != right[0]
+                           for left, right in zip(common_bounds, common_bounds[1:]))):
+                raise ContractError("zero-row D2 evidence has invalid declared grid/monitor context")
         for unit, contract in units.items():
             rows = sorted(contract["rows"], key=lambda x: x["interval_index"])
             if [r["interval_index"] for r in rows] != list(range(len(rows))):
@@ -338,6 +395,12 @@ class D2IntervalSealer:
             ))
         else:
             raise ContractError("D2 roster with unit nonresponse requires declared assigned arms and probabilities")
+        if candidate.rows and (
+            candidate.grid_id and (candidate.grid_id, candidate.grid_version) != common_grid
+            or candidate.monitor_id and (candidate.monitor_id, candidate.monitor_version) != common_monitor
+            or candidate.interval_bounds and candidate.interval_bounds != common_bounds
+        ):
+            raise ContractError("D2 candidate context differs from observed grid/monitor/interval rows")
         manifest = {
             "run_id": candidate.run_id, "schema": SCHEMA,
             "sealer_version": self.version, "row_count": len(normalised),
