@@ -14,6 +14,7 @@ from c10s_synthetic_components import (
     GAStructuralTransitionRule, IntervalGrid, SyntheticWorldBuilder, SyntheticWorldBundle, SyntheticWorldConfig,
     D2StructuralGenerationConfig, D2ReachGenerationConfig, D2TrajectoryGenerationConfig,
     D2StructuralPotentialPair, SyntheticWorldReachabilityContrast, SyntheticWorldTrajectoryBundle,
+    NeedPreZStipulation, NeedPreZTruthBundle, materialize_need_prez_truth,
     evaluate_d2_structural_deltas,
 )
 from c10s_functional_history import (
@@ -37,7 +38,9 @@ from c10s_factorial_pipeline import (
 @dataclass(frozen=True)
 class C10SDualCohortWorldResult:
     factorial_cohort: C10SFactorialWorldResult
+    factorial_need_pre_z_truth: NeedPreZTruthBundle
     d2_world: SyntheticWorldBundle
+    d2_need_pre_z_truth: NeedPreZTruthBundle
     d2_structural_pairs: tuple[tuple[tuple[str, int], D2StructuralPotentialPair], ...]
     d2_structural_deltas: tuple[object, ...]
     d2_reachability: SyntheticWorldReachabilityContrast
@@ -54,7 +57,9 @@ class C10SDualCohortWorldResult:
     def validate(self, grid: IntervalGrid, reach_config: D2ReachGenerationConfig) -> None:
         grid.validate()
         self.factorial_cohort.validate(grid)
+        self.factorial_need_pre_z_truth.validate(self.factorial_cohort.world)
         self.d2_world.validate()
+        self.d2_need_pre_z_truth.validate(self.d2_world)
         expected = {
             (unit.unit_id, z) for unit in self.d2_world.units for z in (0, 1)
         }
@@ -254,6 +259,8 @@ def materialize_c10s_dual_cohort_world_from_dgp(
     functional_history_config: FunctionalHistoryDGPConfig,
     factorial_initial_state_by_unit_z,
     d2_initial_state_by_unit_z,
+    factorial_need_pre_z_stipulations: Sequence[NeedPreZStipulation],
+    d2_need_pre_z_stipulations: Sequence[NeedPreZStipulation],
     initial_state_by_history,
     grid: IntervalGrid,
     g_a0,
@@ -318,6 +325,12 @@ def materialize_c10s_dual_cohort_world_from_dgp(
             d2_world_config, d2_config, structural_config, reach_config, trajectory_config,
         )
     )
+    factorial_need_truth = materialize_need_prez_truth(
+        factorial.world, factorial_need_pre_z_stipulations,
+    )
+    d2_need_truth = materialize_need_prez_truth(
+        d2_world, d2_need_pre_z_stipulations,
+    )
     d2_structural_deltas = evaluate_d2_structural_deltas(d2_world, d2_structural_pairs)
     _validate_paired_baseline(factorial.world, d2_world)
     _validate_paired_functional_initial_states(
@@ -370,7 +383,9 @@ def materialize_c10s_dual_cohort_world_from_dgp(
     )
     result = C10SDualCohortWorldResult(
         factorial_cohort=factorial,
+        factorial_need_pre_z_truth=factorial_need_truth,
         d2_world=d2_world,
+        d2_need_pre_z_truth=d2_need_truth,
         d2_structural_pairs=tuple(sorted(d2_structural_pairs.items())),
         d2_structural_deltas=tuple(d2_structural_deltas),
         d2_reachability=d2_reachability,
