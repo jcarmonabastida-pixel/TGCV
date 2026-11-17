@@ -740,3 +740,11 @@ Se inspeccionó el World Builder, el pipeline completo, el Analyzer y los tests 
 **Conclusión:** no debe etiquetarse la ruta point-S3 como falta de soporte, ni alterar probabilidades/roster a posteriori para forzar un brazo ausente. La siguiente implementación válida es reutilizar los kernels S3 puntuales ya definidos en `c10s_synthetic_components.py` y añadir una variante de observación point-S3 al fixture World Builder; su test debe comprobar `PARTIALLY_IDENTIFIED`, razón de abstención, bounds que contienen la truth reservada y adjudicación correcta del Evaluator. La ruta `INDETERMINATE` por falta de soporte queda como una línea distinta y requiere manipulación del soporte/assignment especificada en el DGP antes de implementarla.
 
 No se han modificado Analyzer/Evaluator, no se han creado nuevos DGPs, no se han generado bancos ni ejecutado pruebas. Estado: SOURCE_AUDIT_COMPLETE / IMPLEMENTATION_PENDING / NOT_EXECUTED. La autorización científica y de calibración permanece desactivada.
+
+## 333. Integración de observación puntual S3 en World Builder — contrato de abstención parcial (2026-11-18)
+
+La regresión end-to-end de World Builder incorpora ahora una ruta alternativa de observación point-S3 mediante `S3ObservationConfig` y `S3SequenceKernelRow` existentes, con muestreo en t=0 solamente. Las historias latentes del DGP siguen completas y la verdad reservada del Evaluator permanece separada; la proyección puntual no revela continuidad estricta a nivel de intervalo.
+
+El nuevo test exige: Analyzer `PARTIALLY_IDENTIFIED`; razón `STRICT_VCONT_NOT_OBSERVED_BY_POINT_SAMPLES`; ausencia de estimación puntual; bounds lógicos [-1,1]; y Evaluator `BOUNDS_COVER_TRUTH` para truth positiva conocida (+0,5). Esto prueba abstención por resolución de medición, no falta de positividad, soporte q_X ni brazo realizado.
+
+Reutiliza el World Builder y los kernels S3 existentes; no introduce DGP ni estimando nuevo. Contrato fuente persistido, ejecución dinámica pendiente. No se han generado bancos ni ejecutado calibración o experimento científico. Estado: SOURCE_CONTRACT_ADDED / NOT_EXECUTED.
