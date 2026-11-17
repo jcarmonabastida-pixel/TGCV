@@ -316,14 +316,19 @@ class D2ITTZEvaluator:
         elif result.identification == "PARTIALLY_IDENTIFIED":
             if result.point_estimate is not None or not result.abstention_reason:
                 raise ContractError("partial ITT-Z result must abstain with an explicit reason")
-            if result.missing_interval_count <= 0:
-                raise ContractError("partial ITT-Z status requires interval missingness")
-            # These bounds concern completion of missing interval values in the
-            # realized HT contrast, not sampling uncertainty or causal truth.
-            # They must never be interpreted as causal identification bounds.
+            if result.missing_interval_count <= 0 and not expected_missing_unit_ids:
+                raise ContractError("partial ITT-Z status requires interval or unit-level nonresponse")
+            # Bounds concern completion of unobserved binary outcomes in the
+            # realized HT contrast, not randomization uncertainty or causal truth.
             error, covers = None, None
             correct = True
-            disposition = "CORRECT_ABSTENTION_MEASUREMENT_INCOMPLETE"
+            disposition = (
+                "CORRECT_ABSTENTION_UNIT_NONRESPONSE"
+                if expected_missing_unit_ids and not result.missing_interval_count
+                else "CORRECT_ABSTENTION_MEASUREMENT_AND_UNIT_NONRESPONSE"
+                if expected_missing_unit_ids
+                else "CORRECT_ABSTENTION_MEASUREMENT_INCOMPLETE"
+            )
         elif result.identification == "INDETERMINATE":
             if result.point_estimate is not None or not result.abstention_reason:
                 raise ContractError("indeterminate ITT-Z result must abstain explicitly")
