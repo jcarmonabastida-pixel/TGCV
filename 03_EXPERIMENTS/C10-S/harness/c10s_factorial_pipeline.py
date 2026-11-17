@@ -267,10 +267,28 @@ def materialize_c10s_factorial_world_from_dgp(
         truth, sealed, analyzer_result, assignments, tolerance=evaluation_tolerance,
     )
     result = C10SFactorialWorldResult(
-        world, structural, tuple(structural_deltas), reach, trajectories,
-        d2_histories, d2_vcont_truth, potentials,
-        assignments, realized, selection, interval_records, sealed,
-        analysis_contract, analyzer_result, truth, evaluation,
+        world=world,
+        structural=structural,
+        structural_deltas=tuple(structural_deltas),
+        reach=reach,
+        trajectories=trajectories,
+        d2_event_histories_by_unit_z=d2_histories,
+        d2_vcont_truth=d2_vcont_truth,
+        factorial_potential_histories=potentials,
+        assignment_bundle=assignments,
+        realized_histories=realized,
+        history_selection=selection,
+        interval_observations=interval_records,
+        sealed_evidence=sealed,
+        analysis_contract=analysis_contract,
+        analyzer_result=analyzer_result,
+        reserved_truth=truth,
+        evaluator_result=evaluation,
+        factorial_structural_potentials=factorial_structural,
+        factorial_reach_potentials=factorial_reach,
+        factorial_trajectories=factorial_trajectories,
+        factorial_target_states=reach_config.target_states,
+        factorial_reach_config=reach_config,
     )
     result.validate(grid)
     return result
