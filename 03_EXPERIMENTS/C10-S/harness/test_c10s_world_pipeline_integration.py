@@ -274,6 +274,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                     contract_version="1.0.0",
                     instance_version=1,
                     package_version="B1-PACKAGE-001",
+                    baseline_record_id=f"{prefix}-BASELINE-{index:03d}",
                     baseline_time="t-1",
                     stipulation=states[(index - 1) % 3],
                     rule_version="NEED-RULE-TEST-001",
