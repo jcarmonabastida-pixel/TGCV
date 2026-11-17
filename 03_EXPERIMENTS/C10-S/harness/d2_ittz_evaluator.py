@@ -113,7 +113,9 @@ class D2ITTZEvaluator:
                 or set(expected_assignment_by_unit) != set(assignments_by_unit)
                 or len(expected_assignments) != len(expected_assignment_by_unit)
                 or not isinstance(manifest.get("interval_count_per_unit"), int)
-                or manifest.get("interval_count_per_unit") < 1):
+                or manifest.get("interval_count_per_unit") < 1
+                or not all(isinstance(manifest.get(key), str) and manifest.get(key)
+                           for key in ("grid_id", "grid_version", "monitor_id", "monitor_version"))):
             raise ContractError("D2 sealed manifest does not describe the complete randomized roster and observed interval subset")
         if any(expected_by_unit[unit_id] != assignment.history_ref
                for unit_id, assignment in assignments_by_unit.items()):
