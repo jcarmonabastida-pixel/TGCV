@@ -469,6 +469,11 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(len(result.factorial_structural_potentials), 64)
         self.assertEqual(len(result.factorial_reach_potentials), 64)
         self.assertEqual(len(result.factorial_trajectories), 64)
+        self.assertEqual(
+            {(row.mapping_id, row.mapping_version)
+             for row in result.factorial_structural_potentials.values()},
+            {("TEST-GA-STRUCTURAL-MAP", "1")},
+        )
         for key, potential in result.factorial_structural_potentials.items():
             reach = result.factorial_reach_potentials[key]
             trajectory = result.factorial_trajectories[(*key, "TARGET")]
@@ -596,6 +601,10 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertAlmostEqual(null_result.reserved_truth.theta_a_given_m0, 1.0)
         self.assertAlmostEqual(null_result.reserved_truth.theta_a_given_m1, 1.0)
         self.assertAlmostEqual(null_result.reserved_truth.theta_am_interaction, 0.0)
+        self.assertTrue(all(
+            row.delta.delta_state == 0
+            for row in null_result.factorial_structural_potentials.values()
+        ))
         self.assertEqual(len(null_result.evaluator_result.absolute_errors), 3)
 
 
