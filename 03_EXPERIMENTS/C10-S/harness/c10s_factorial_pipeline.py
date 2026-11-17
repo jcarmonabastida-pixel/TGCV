@@ -106,6 +106,31 @@ class C10SFactorialWorldResult:
                 pair.baseline.snapshot_id, pair.post.snapshot_id
             ):
                 raise ContractError("factorial Reach is detached from its exact structural potential snapshots")
+        expected_factorial_support = {
+            (row.history_ref, row[1], row[2])
+            for row in self.factorial_potential_histories
+        }
+        if set(self.factorial_structural_potentials) != expected_factorial_support:
+            raise ContractError("g_A structural potentials must cover exact positive-mass vector × r_common support")
+        if set(self.factorial_reach_potentials) != expected_factorial_support:
+            raise ContractError("g_A Reach potentials must cover exact structural potential support")
+        if not self.factorial_target_states or len(self.factorial_target_states) != len(set(self.factorial_target_states)):
+            raise ContractError("factorial trajectory target universe must be explicit and unique")
+        expected_factorial_trajectories = {
+            (history_ref, vector_sha, regime, target)
+            for history_ref, vector_sha, regime in expected_factorial_support
+            for target in self.factorial_target_states
+        }
+        if set(self.factorial_trajectories) != expected_factorial_trajectories:
+            raise ContractError("g_A trajectories must cover exact vector-potential × target support")
+        for key, potential in self.factorial_structural_potentials.items():
+            potential.validate(self.world)
+            if key != (potential.history_ref, potential.vector_sha256, potential.r_common_fingerprint):
+                raise ContractError("g_A structural potential key/provenance mismatch")
+            reach_potential = self.factorial_reach_potentials[key]
+            reach_potential.validate(potential, self.factorial_reach_config)
+            for target in self.factorial_target_states:
+                self.factorial_trajectories[(*key, target)].validate(reach_potential)
         expected_d2 = {
             (unit.unit_id, z) for unit in self.world.units for z in (0, 1)
         }
@@ -142,6 +167,7 @@ def materialize_c10s_factorial_world_from_dgp(
     grid: IntervalGrid,
     g_a0: Sequence[JointPolicyHistory],
     g_a1: Sequence[JointPolicyHistory],
+    g_a_structural_rules: Sequence[GAStructuralTransitionRule],
     feasible_vectors_by_history: dict[str, tuple[Vector4, ...]],
     r_common_certificates: Sequence[RCommonPairCertificate],
     assignment_config: FactorialAssignmentConfig,
@@ -191,9 +217,24 @@ def materialize_c10s_factorial_world_from_dgp(
     d2_vcont_truth = builder.evaluate_complete_vcont_truth(world, d2_histories, grid)
     d2_vcont_truth.validate(world, d2_histories, grid)
     structural_deltas = evaluate_d2_structural_deltas(world, structural)
+    factorial_structural = generate_factorial_structural_potentials(
+        world, structural_config, g_a0, g_a1, feasible_vectors_by_history,
+        r_common_certificates, g_a_structural_rules,
+    )
+    factorial_reach = evaluate_factorial_structural_reachability(
+        world, factorial_structural, reach_config,
+    )
+    factorial_trajectories = evaluate_factorial_potential_trajectories(
+        world, factorial_reach, reach_config, trajectory_config,
+    )
+    trajectory_rules_declared = any(
+        rule.source == "TRAJECTORY" for rule in functional_history_config.rules
+    )
+    factorial_trajectory_map = factorial_trajectories if trajectory_rules_declared else None
     potentials, assignments, realized, selection = materialize_factorial_potentials(
         world, functional_history_config, g_a0, g_a1, r_common_certificates,
         initial_state_by_history, feasible_vectors_by_history, assignment_config,
+        trajectories_by_history_vector_target=factorial_trajectory_map,
     )
     interval_records = compose_factorial_interval_s3_records(
         assignments, selection, realized, grids_by_history_ref,
