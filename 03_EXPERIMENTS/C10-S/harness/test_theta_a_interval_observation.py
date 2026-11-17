@@ -115,6 +115,7 @@ class IntervalObservationTests(unittest.TestCase):
             g_a0_sha256="GA0", g_a1_sha256="GA1", r_common_sha256="RC",
             probability_a1_by_history=(("H0", 0.5), ("H1", 0.5)) if confidence_level is not None else (),
             confidence_level=confidence_level,
+            unit_independence_certified=confidence_level is not None,
         )
         result = ThetaAObservationAnalyzer().analyze(sealed, contract)
         return sealed, result
