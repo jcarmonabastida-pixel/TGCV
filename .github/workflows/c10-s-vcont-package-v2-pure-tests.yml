@@ -1,11 +1,6 @@
 name: C10-S V_cont package v2 pure capture, writer and verifier tests
 
 on:
-  push:
-    branches:
-      - research/c10-s-consolidation-draft
-    paths:
-      - '.github/workflows/c10-s-vcont-package-v2-pure-tests.yml'
   workflow_dispatch:
 
 permissions:
@@ -24,7 +19,7 @@ jobs:
       - name: Check out exact research-branch commit
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
-          ref: ac6ee419f2bc8fae2d0554e4148fe198af332a3e
+          ref: ${{ github.sha }}
 
       - name: Set up pinned Python
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
@@ -62,7 +57,7 @@ jobs:
             03_EXPERIMENTS/C10-S/harness/vcont_integrated_harness.py
             03_EXPERIMENTS/C10-S/harness/requirements-vcont-v2.lock
           )
-          git archive "ac6ee419f2bc8fae2d0554e4148fe198af332a3e" "${profile_paths[@]}" | tar -x -C "$source_root"
+          git archive "$GITHUB_SHA" "${profile_paths[@]}" | tar -x -C "$source_root"
 
       - name: Install existing hash-locked pure-profile dependency
         working-directory: ${{ runner.temp }}/c10s-ep03-source/03_EXPERIMENTS/C10-S/harness
@@ -164,5 +159,3 @@ jobs:
           path: ${{ runner.temp }}/c10s-vcont-pure-execution-materialization-manifest.json
           if-no-files-found: warn
           retention-days: 30
-
-# temporary trigger nonce

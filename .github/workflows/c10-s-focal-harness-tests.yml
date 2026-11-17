@@ -1,11 +1,6 @@
 name: C10-S integrated synthetic contract suite
 
 on:
-  push:
-    branches:
-      - research/c10-s-consolidation-draft
-    paths:
-      - '.github/workflows/c10-s-focal-harness-tests.yml'
   workflow_dispatch:
     inputs:
       confirm_synthetic_test_execution:
@@ -19,7 +14,7 @@ permissions:
 
 jobs:
   integrated-synthetic-contract-tests:
-    if: (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/research/c10-s-consolidation-draft' && inputs.confirm_synthetic_test_execution == true) || (github.event_name == 'push' && github.ref == 'refs/heads/research/c10-s-consolidation-draft' && github.event.head_commit.message == 'C10S-TEMP-TEST-TRIGGER')
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/research/c10-s-consolidation-draft' && inputs.confirm_synthetic_test_execution == true
     name: Explicitly authorized integrated synthetic contract suite
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -27,7 +22,7 @@ jobs:
       - name: Check out exact research-branch commit
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
-          ref: ac6ee419f2bc8fae2d0554e4148fe198af332a3e
+          ref: ${{ github.sha }}
 
       - name: Set up pinned Python
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
@@ -100,8 +95,8 @@ jobs:
             03_EXPERIMENTS/C10-S/calibration/p178_focal_monte_carlo.py
             03_EXPERIMENTS/C10-S/calibration/p178_reference_N700.csv
           )
-          git archive "ac6ee419f2bc8fae2d0554e4148fe198af332a3e" "${profile_paths[@]}" | tar -x -C "$primary_root"
-          git archive "ac6ee419f2bc8fae2d0554e4148fe198af332a3e" "${profile_paths[@]}" | tar -x -C "$replay_root"
+          git archive "$GITHUB_SHA" "${profile_paths[@]}" | tar -x -C "$primary_root"
+          git archive "$GITHUB_SHA" "${profile_paths[@]}" | tar -x -C "$replay_root"
           diff -qr "$primary_root" "$replay_root"
 
       - name: Compile exact integrated source and test allowlist in primary materialization
@@ -258,5 +253,3 @@ jobs:
           path: ${{ runner.temp }}/c10s-integrated-execution-materialization-manifest.json
           if-no-files-found: warn
           retention-days: 30
-
-# temporary trigger nonce
