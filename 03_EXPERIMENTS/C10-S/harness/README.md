@@ -636,3 +636,30 @@ The two subsequent cleanup commits advanced the PR head to `5c01fece6e4f59bcf343
 
 Earlier statements in this README that the integrated source/tests or EP-02 had not been executed are historical authoring-time status notes. This section records their subsequent execution and supersedes those statements for the 2026-11-17 state; the historical notes are retained for provenance.
 
+## Focal θ_A inference readiness audit — 2026-11-17
+
+This is a source-level audit of the current direct-`g_A` interval-observation path after EP-02. It is not a calibration or scientific result.
+
+### What is implemented
+
+- `generate_theta_a_policy_assignments` assigns one unit to `g_A0` or `g_A1` using an explicit history-specific Bernoulli probability strictly between zero and one. The draw is keyed by the unit and a dedicated randomization salt; Z and the legacy G assignment are not substituted.
+- The focal Analyzer uses the sealed interval observations and the declared `q_X*` history masses. With complete certified interval observations and both realized arms represented, it computes a q_X-standardized Horvitz–Thompson contrast. With missing intervals, incomplete target support or an absent realized arm, it abstains.
+- The independent Evaluator opens the reserved `theta_A) truth after analysis and checks provenance, point recovery or abstention. It does not feed truth to the Analyzer.
+
+### Exact inferential gap
+
+The current `ThetaAObservationAnalysisResult` exposes a point estimate, logical range `[-1,1]`, measurement-only bounds and abstention counts. It does **not** expose a design-based variance, standard error, sampling confidence interval, test statistic or p-value. The Evaluator's `tolerance` is a point-recovery criterion, not an inferential interval or type-I/power procedure.
+
+The existing interval test uses a two-unit fixture with one unit in each arm. It proves wiring and deterministic arithmetic only; it cannot validate variance estimation, coverage, type-I error, power, small-sample behavior or operating characteristics under unequal assignment probabilities.
+
+The interval S3 monitor is currently an ideal continuous-coverage channel with independently generated interval missingness. It is not a calibrated imperfect-detection/false-positive model. The point-sample route remains unable to identify strict interval continuity. Neither route establishes robustness to imperfect S3.
+
+### Calibration boundary
+
+The existing 13-scenario × 4-assignment-estimand (52-key) matrix and its seed-bank protocol explicitly exclude `theta_A`; that exclusion must remain intact. The current protocol sizes assignment repetitions `R` for its own estimands and specifies an outer Monte Carlo dimension `M` that is not implemented. Its `required_replicates` function must not be repurposed as an `M` selector or silently transferred to `theta_A`.
+
+### Next implementation block
+
+Before any focal calibration, the research branch needs a separately versioned inferential contract for `theta_A(q_X*, r_common; V_cont)`, bound to the existing assignment mechanism and target weights. It must specify the randomization variance estimator (including its assumptions and behavior for unequal history-specific probabilities), interval construction/test procedure, finite-sample limitations, and the metrics/denominators for recovery, coverage, type-I error, power and correct abstention. The calibration design must distinguish units `N`, repeated assignments `R` within a fixed world, and independent outer worlds `M`, with disjoint calibration/evaluation seed domains.
+
+This is a software/method contract gap, not a reason to rebuild the two cohorts, World Builder, EventHistory or the existing 13×52 matrix. Numeric precision targets, candidate grids and budgets remain governed by explicit pre-execution decisions. No calibration, seed generation, Monte Carlo, test suite or scientific experiment was run by this audit.
