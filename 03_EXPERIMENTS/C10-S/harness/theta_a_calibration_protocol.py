@@ -274,6 +274,34 @@ def validate_theta_a_seed_banks(
             for x in rows
         ):
             raise ThetaACalibrationError("focal seed row has missing identity, invalid N/R or malformed stream material")
+        scenario_map = {(x.scenario_id, x.scenario_version): x for x in design.scenario_specs}
+        for row in rows:
+            scenario = scenario_map[(row.scenario_id, row.scenario_version)]
+            root = (
+                f"TGCV-C10S-THETA-A-SEED-v1|{design.namespace}|{bank}|"
+                f"{scenario.scenario_id}|{scenario.scenario_version}|{row.n_units}|{row.outer_world_id}"
+            )
+            run_root = root + f"|assignment-{row.assignment_replicate:06d}"
+            expected = (
+                _seed(root + "|world"),
+                "theta-a-world-" + _digest(root + "|world-id")[:24],
+                "theta-a-roster-" + _digest(root + "|roster-id")[:24],
+                scenario.unit_id_prefix + "-" + _digest(root + "|unit-prefix")[:8],
+                "theta-a-run-" + _digest(run_root + "|run-id")[:24],
+                _digest(run_root + "|joint-policy-randomization"),
+                _seed(run_root + "|s3-measurement"),
+            )
+            actual = (
+                row.world_seed, row.world_id, row.roster_id, row.unit_id_prefix,
+                row.run_id, row.randomization_salt, row.s3_seed,
+            )
+            if actual != expected or (
+                row.world_version != scenario.world_version
+                or row.dgp_id != scenario.dgp_id
+                or row.dgp_version != scenario.dgp_version
+                or row.roster_version != scenario.roster_version
+            ):
+                raise ThetaACalibrationError("focal seed row differs from its canonical scenario×N×M×R derivation")
         worlds = {}
         for row in rows:
             key = (row.scenario_id, row.scenario_version, row.n_units, row.outer_world_id)
