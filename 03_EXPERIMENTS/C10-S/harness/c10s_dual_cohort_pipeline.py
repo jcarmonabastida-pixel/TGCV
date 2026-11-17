@@ -213,8 +213,16 @@ def materialize_c10s_dual_cohort_world_from_dgp(
         )
     )
     _validate_paired_baseline(factorial.world, d2_world)
+    trajectory_rules_declared = any(
+        rule.source == "TRAJECTORY" for rule in functional_history_config.rules
+    )
+    d2_trajectory_map = {
+        (row.unit_id, row.z, row.target_state): row
+        for row in d2_trajectories.trajectories
+    }
     d2_histories = generate_d2_event_history_potentials(
         d2_world, functional_history_config, d2_initial_state_by_unit_z,
+        trajectories_by_unit_z_target=d2_trajectory_map if trajectory_rules_declared else None,
     )
     d2_truth = builder.evaluate_complete_vcont_truth(d2_world, d2_histories, grid)
     d2_monitor_configs = dict(d2_interval_monitor_configs_by_history_ref)
