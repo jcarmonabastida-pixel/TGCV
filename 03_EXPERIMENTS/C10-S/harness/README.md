@@ -699,7 +699,7 @@ The focal direct-`g_A` path now has a separate source-level calibration protocol
 ### N / M / R semantics
 
 - **N:** units in one synthetic world.
-- **M:** independent outer worlds, each with a distinct world identity and world seed.
+- **M:** independent outer worlds, each with distinct world/roster identities, unit-ID prefix and world seed.
 - **R:** repeated direct-`g_A` assignment replicates within one fixed M world. Each R gets a unique `run_id`, joint-policy randomization salt and S3 seed; world identity/seed remain fixed within M.
 - There is no extra designated RUN row for `theta_A`: the focal estimator has no run-conditional estimand class.
 - The existing assignment generator uses one per-R salt with distinct domain labels for the Bernoulli arm draw and the within-policy joint-vector draw. The second-stage vector draw is therefore varied on every R and remains part of the stochastic-policy estimand, not conditioned away.
