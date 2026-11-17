@@ -23,6 +23,8 @@ Bank = Literal["calibration", "evaluation"]
 Identification = Literal["IDENTIFIED", "NOT_IDENTIFIED", "INDETERMINATE"]
 _VALID_IDENTIFICATION = {"IDENTIFIED", "NOT_IDENTIFIED", "INDETERMINATE"}
 _VALID_ANALYZER_IDENTIFICATION = _VALID_IDENTIFICATION | {"PARTIALLY_IDENTIFIED"}
+FOCAL_ESTIMAND_ID = "THETA_A_QX_GA_RCOMMON_VCONT"
+FOCAL_OUTCOME_ID = "V_CONT"
 _ALLOWED_METRICS = {
     "interval_coverage", "interval_width", "point_bias", "point_mae",
     "point_rmse", "point_recovery_rate", "identification_rate",
@@ -413,8 +415,8 @@ class ThetaAReplicateRecord:
                     self.world_id, self.run_id, self.estimand_id,
                     self.estimand_version, self.outcome_id, self.outcome_version)):
             raise ThetaACalibrationError("replicate record identities and estimand/outcome versions are mandatory")
-        if self.outcome_id != "V_CONT":
-            raise ThetaACalibrationError("focal theta_A calibration is restricted to the V_CONT outcome")
+        if self.estimand_id != FOCAL_ESTIMAND_ID or self.outcome_id != FOCAL_OUTCOME_ID:
+            raise ThetaACalibrationError("focal calibration is restricted to THETA_A_QX_GA_RCOMMON_VCONT over V_CONT")
         fingerprints = (
             self.world_configuration_sha256, self.policy_design_sha256,
             self.assignment_randomization_sha256, self.evidence_sha256,
@@ -559,7 +561,8 @@ def capture_theta_a_replicate(
         assignment_bundle.q_x_sha256, assignment_bundle.g_a0_sha256,
         assignment_bundle.g_a1_sha256, assignment_bundle.r_common_sha256,
     )))
-    if (truth_bundle.outcome_id != "V_CONT"
+    if (truth_bundle.estimand_id != FOCAL_ESTIMAND_ID
+            or truth_bundle.outcome_id != FOCAL_OUTCOME_ID
             or result.analyzer_result.estimand_id != truth_bundle.estimand_id
             or result.analyzer_result.estimand_version != truth_bundle.estimand_version
             or evaluation.estimand_id != truth_bundle.estimand_id
@@ -673,6 +676,18 @@ def summarize_theta_a_calibration(
     summaries = []
     for scenario in design.scenario_specs:
         for n_units in design.n_grid:
+            scenario_records = [
+                row for row in result_rows
+                if row.scenario_id == scenario.scenario_id
+                and row.scenario_version == scenario.scenario_version
+                and row.n_units == n_units
+            ]
+            estimand_versions = {
+                (row.estimand_id, row.estimand_version, row.outcome_id, row.outcome_version)
+                for row in scenario_records
+            }
+            if len(estimand_versions) != 1:
+                raise ThetaACalibrationError("estimand/outcome identity and versions must remain fixed across all M worlds")
             by_m = {}
             for m in range(design.outer_worlds_m):
                 outer_id = f"outer-{m:06d}"
