@@ -7,11 +7,11 @@ assignments. A unit is never assigned in both experimental lanes.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Mapping
+from typing import Mapping, Sequence
 
 from c10s_synthetic_components import (
     ContractError, D2MechanismConfig, D2VContTruthBundle, EventHistory, FunctionalState,
-    IntervalGrid, SyntheticWorldBuilder, SyntheticWorldBundle, SyntheticWorldConfig,
+    GAStructuralTransitionRule, IntervalGrid, SyntheticWorldBuilder, SyntheticWorldBundle, SyntheticWorldConfig,
     D2StructuralGenerationConfig, D2ReachGenerationConfig, D2TrajectoryGenerationConfig,
     D2StructuralPotentialPair, SyntheticWorldReachabilityContrast, SyntheticWorldTrajectoryBundle,
     evaluate_d2_structural_deltas,
@@ -229,6 +229,7 @@ def materialize_c10s_dual_cohort_world_from_dgp(
     grid: IntervalGrid,
     g_a0,
     g_a1,
+    g_a_structural_rules: Sequence[GAStructuralTransitionRule],
     feasible_vectors_by_history,
     r_common_certificates,
     factorial_assignment_config,
@@ -268,6 +269,7 @@ def materialize_c10s_dual_cohort_world_from_dgp(
         initial_state_by_unit_z=factorial_initial_state_by_unit_z,
         initial_state_by_history=initial_state_by_history, grid=grid,
         g_a0=g_a0, g_a1=g_a1,
+        g_a_structural_rules=g_a_structural_rules,
         feasible_vectors_by_history=feasible_vectors_by_history,
         r_common_certificates=r_common_certificates,
         assignment_config=factorial_assignment_config,
