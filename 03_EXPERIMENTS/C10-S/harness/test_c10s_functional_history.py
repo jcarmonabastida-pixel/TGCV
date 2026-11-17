@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import unittest
+from types import SimpleNamespace
 from decimal import Decimal
 
 from c10s_synthetic_components import D2PotentialStage, FunctionalState
@@ -75,6 +76,82 @@ class FunctionalHistoryRuleTests(unittest.TestCase):
         self.assertEqual(len(changes), 1)
         self.assertFalse(changes[0].state_after.enabled)
         self.assertEqual(changes[0].state_after.admission_behavior, "ADMIT")
+
+    def test_d2_trajectory_rule_changes_functional_state_only_on_exact_target_potential(self):
+        initial = FunctionalState(False, "NO_ADMISSION")
+        rule = FunctionalHistoryRule(
+            rule_id="TRAJ-D2-01", source="TRAJECTORY",
+            event_time=Decimal("3"),
+            causal_family="EXECUTED_TRAJECTORY_CONSEQUENCE",
+            provenance_ref="DGP-CONFIG#TRAJ-D2-01",
+            set_enabled=True, trajectory_target_state="TARGET-A",
+            trajectory_field="trajectory_status", trajectory_value="COMPLETED",
+        )
+        completed = SimpleNamespace(trajectory_status="COMPLETED", execution_state=1)
+        partial = SimpleNamespace(trajectory_status="PARTIAL", execution_state=0)
+        matched = _apply_rules(
+            source="D2", initial=initial, rules=(rule,),
+            mechanism=self.stage(),
+            trajectories_by_target={"TARGET-A": completed},
+        )
+        unmatched = _apply_rules(
+            source="D2", initial=initial, rules=(rule,),
+            mechanism=self.stage(),
+            trajectories_by_target={"TARGET-A": partial},
+        )
+        self.assertEqual(len(matched), 1)
+        self.assertTrue(matched[0].state_after.enabled)
+        self.assertEqual(unmatched, ())
+
+    def test_g_a_trajectory_rule_uses_exact_factorial_potential_and_target(self):
+        initial = FunctionalState(True, "ADMIT")
+        rule = FunctionalHistoryRule(
+            rule_id="TRAJ-GA-01", source="TRAJECTORY",
+            event_time=Decimal("4"),
+            causal_family="GA_EXECUTED_TRAJECTORY_CONSEQUENCE",
+            provenance_ref="DGP-CONFIG#TRAJ-GA-01",
+            set_admission="NO_ADMISSION", trajectory_target_state="TARGET-B",
+            trajectory_field="execution_state", trajectory_value=1,
+        )
+        completed = SimpleNamespace(
+            history_ref="HX1", vector_sha256="a" * 64,
+            r_common_fingerprint="b" * 64, target_state="TARGET-B",
+            trajectory_status="COMPLETED", execution_state=1,
+        )
+        not_executed = SimpleNamespace(
+            history_ref="HX1", vector_sha256="a" * 64,
+            r_common_fingerprint="b" * 64, target_state="TARGET-B",
+            trajectory_status="NOT_SELECTED", execution_state=0,
+        )
+        matched = _apply_rules(
+            source="G_A", initial=initial, rules=(rule,),
+            mechanism=(1, 0, 0, 1),
+            trajectories_by_target={"TARGET-B": completed},
+        )
+        unmatched = _apply_rules(
+            source="G_A", initial=initial, rules=(rule,),
+            mechanism=(1, 0, 0, 1),
+            trajectories_by_target={"TARGET-B": not_executed},
+        )
+        self.assertEqual(len(matched), 1)
+        self.assertEqual(matched[0].state_after.admission_behavior, "NO_ADMISSION")
+        self.assertEqual(unmatched, ())
+
+    def test_trajectory_rule_fails_closed_when_exact_target_is_missing(self):
+        rule = FunctionalHistoryRule(
+            rule_id="TRAJ-MISSING-01", source="TRAJECTORY",
+            event_time=Decimal("5"),
+            causal_family="TRAJECTORY_MISSING_TARGET",
+            provenance_ref="DGP-CONFIG#TRAJ-MISSING-01",
+            set_enabled=True, trajectory_target_state="TARGET-C",
+            trajectory_field="execution_state", trajectory_value=1,
+        )
+        with self.assertRaises(Exception):
+            _apply_rules(
+                source="D2", initial=FunctionalState(False, "NO_ADMISSION"),
+                rules=(rule,), mechanism=self.stage(),
+                trajectories_by_target={},
+            )
 
     def test_interaction_rule_requires_all_declared_vector_components(self):
         initial = FunctionalState(True, "ADMIT")
