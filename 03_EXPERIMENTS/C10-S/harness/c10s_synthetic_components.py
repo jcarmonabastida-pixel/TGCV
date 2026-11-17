@@ -1747,7 +1747,7 @@ def evaluate_factorial_structural_reachability(
                     state = atom.state
                 transformations.append(StructuralTransformation(
                     transformation_id, atom.semantic_version if atom else "ABSENT-OR-UNKNOWN",
-                    f"{source.snapshot_id}:{timepoint}", state,
+                    f"{source.snapshot_id}:REACH:{timepoint}", state,
                 ))
             return StructuralSnapshot(
                 f"{source.snapshot_id}:REACH:{timepoint}", config.snapshot_version,
@@ -2409,7 +2409,7 @@ def evaluate_d2_structural_reachability(
                     state = atom.state
                 transformations.append(StructuralTransformation(
                     transformation_id, atom.semantic_version if atom else "ABSENT-OR-UNKNOWN",
-                    f"{source.snapshot_id}:{timepoint}", state,
+                    f"{source.snapshot_id}:REACH:{timepoint}", state,
                 ))
             return StructuralSnapshot(
                 f"{source.snapshot_id}:REACH:{timepoint}", config.snapshot_version,
