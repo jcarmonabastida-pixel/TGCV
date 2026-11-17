@@ -162,7 +162,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 GAStructuralTransitionRule(
                     atom=StructuralAtom(
                         "U", "TAU-FOCAL", "TRANSFORMATION", "1", 1,
-                        (("role", "FOCAL_ACCESSIBILITY"), ("boundary_id", "BOUNDARY-1")),
+                        (("role", "D2_FOCAL"), ("boundary_id", "BOUNDARY-1")),
                     ),
                     action="MODIFY",
                     vector_predicates=((0, 1.0),),
