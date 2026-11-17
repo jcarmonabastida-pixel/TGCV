@@ -23,6 +23,7 @@ from c10s_synthetic_components import (
     RCommonPairCertificate,
     SyntheticWorldBuilder,
     SyntheticWorldConfig,
+    NeedPreZStipulation,
     ThetaAPolicyAssignmentConfig,
 )
 from c10s_functional_history import (
@@ -264,6 +265,23 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         )
         return {
             "world_config": world_config,
+            "need_pre_z_stipulations": tuple(
+                NeedPreZStipulation(
+                    unit_id=unit.unit_id,
+                    b1_id=f"B1-{index:03d}",
+                    service_instance_id=f"SVC-{index:03d}",
+                    contract_id="B1-CONTRACT",
+                    contract_version="001",
+                    instance_version=f"INSTANCE-{index:03d}-001",
+                    package_version="B1-PACKAGE-001",
+                    baseline_time="t-1",
+                    stipulation=("FOCAL_INCLUSION", "FOCAL_EXCLUSION",
+                                 "SEMANTIC_INDETERMINACY")[((index - 1) % 3)],
+                    rule_version="NEED-RULE-TEST-001",
+                    basis_ref=f"RESERVED-TEST-STIPULATION-{index:03d}",
+                )
+                for index, unit in enumerate(world.units, start=1)
+            ),
             "d2_config": d2_config,
             "structural_config": structural_config,
             "reach_config": reach_config,
@@ -299,6 +317,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             functional_history_config=fixture["functional_config"],
             initial_state_by_unit_z=fixture["initial_by_unit_z"],
             initial_state_by_history=fixture["initial_by_history"],
+            need_pre_z_stipulations=fixture["need_pre_z_stipulations"],
             grid=fixture["grid"],
             g_a0=fixture["g_a0"],
             g_a1=fixture["g_a1"],
