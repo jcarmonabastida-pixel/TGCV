@@ -158,8 +158,13 @@ class C10SCompleteWorldResult:
             raise ContractError("Evaluator result is detached from sealed evidence")
         if self.evaluator_result.analyzer_output_sha256 != self.analyzer_result.output_sha256:
             raise ContractError("Evaluator result is detached from Analyzer output")
-        if not self.evaluator_result.correct_adjudication:
-            raise ContractError("independent Evaluator rejected the Analyzer's current adjudication")
+        if (self.evaluator_result.estimand_id != self.theta_a_truth.theta_a_truth.estimand_id
+                or self.evaluator_result.estimand_version != self.theta_a_truth.theta_a_truth.estimand_version
+                or self.evaluator_result.truth != self.theta_a_truth.theta_a_truth.theta_a_truth):
+            raise ContractError("Evaluator result is detached from the reserved theta_A truth identity/value")
+        # A false correct_adjudication is a scientific recovery result, not a
+        # materialization/provenance failure. Preserve it for evaluation rather
+        # than rejecting an otherwise valid synthetic world.
         run_ids = {history.run_id for history in d2_histories.values()}
         run_ids.update(history.run_id for history in self._policy_histories)
         if len(run_ids) != 1 or self.sealed_evidence.run_id not in run_ids:
