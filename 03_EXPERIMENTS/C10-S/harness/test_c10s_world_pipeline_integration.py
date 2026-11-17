@@ -333,6 +333,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             interval_monitor_configs_by_history_ref=fixture["monitor_configs"],
             interval_monitor_seeds_by_unit=fixture["monitor_seeds"],
             theta_a_confidence_level=theta_a_confidence_level,
+            theta_a_unit_independence_certified=theta_a_confidence_level is not None,
         )
 
     def test_two_stage_inference_is_wired_through_complete_world_and_evaluator(self):
