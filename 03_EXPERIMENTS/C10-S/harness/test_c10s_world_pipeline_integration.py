@@ -819,9 +819,9 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             (d2_ids, d2_histories), (factorial_ids, factorial_d2_histories),
         ):
             self.assertTrue(all(
-                any(change.causal_family == "TRAJECTORY_EXECUTION_TO_B1_ADMISSION"
+                any(change.causal_family == "D2_DIRECT_PACKAGE_PATH"
                     for change in histories[(unit_id, 1)].transitions)
-                and not any(change.causal_family == "TRAJECTORY_EXECUTION_TO_B1_ADMISSION"
+                and not any(change.causal_family == "D2_DIRECT_PACKAGE_PATH"
                             for change in histories[(unit_id, 0)].transitions)
                 for unit_id in cohort_ids
             ))
