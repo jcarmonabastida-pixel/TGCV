@@ -368,6 +368,64 @@ def _close(a: float, b: float) -> bool:
     return abs(a - b) <= 1e-12
 
 
+def _validate_interval_s3_seed_provenance(result, assignment: ThetaASeedAssignment) -> None:
+    """Require the focal continuous-interval lane and verify every emitted S3 seed."""
+    rows = tuple(result.s3_records)
+    unit_ids = {unit.unit_id for unit in result.world.units}
+    if not rows or {row.unit_id for row in rows} != unit_ids:
+        raise ThetaACalibrationError("focal calibration requires interval S3 coverage for the exact world roster")
+    if any(
+        getattr(row, "coverage_mode", None) != "CONTINUOUS_EVENT_COVERAGE"
+        or getattr(row, "run_id", None) != assignment.run_id
+        for row in rows
+    ):
+        raise ThetaACalibrationError(
+            "focal confidence calibration requires continuous interval S3 records bound to this R; point samples are not eligible"
+        )
+    seeds = s3_seeds_by_unit(assignment.s3_seed, tuple(sorted(unit_ids)))
+    by_unit = {}
+    for row in rows:
+        by_unit.setdefault(row.unit_id, []).append(row)
+        expected_id = "IS3-" + _canonical_hash((
+            row.run_id, row.unit_id, row.history_id,
+            row.monitor_id, row.monitor_version, row.grid_id,
+            row.grid_version, row.interval_index, seeds[row.unit_id],
+        ))[:24]
+        if row.observation_id != expected_id:
+            raise ThetaACalibrationError("interval S3 observation ID does not bind to its assigned R-specific unit seed")
+        if row.observation_status == "MISSING":
+            if row.observed_compliance is not None:
+                raise ThetaACalibrationError("missing S3 interval must not contain an observed compliance value")
+        elif row.observation_status == "OBSERVED":
+            if type(row.observed_compliance) is not bool:
+                raise ThetaACalibrationError("observed S3 interval requires a Boolean compliance value")
+        else:
+            raise ThetaACalibrationError("unsupported interval S3 observation status")
+    counts = {unit_id: len(unit_rows) for unit_id, unit_rows in by_unit.items()}
+    if len(set(counts.values())) != 1:
+        raise ThetaACalibrationError("all units must have the same complete interval-grid cardinality")
+    common_grid = {
+        (row.grid_id, row.grid_version, row.monitor_id, row.monitor_version)
+        for row in rows
+    }
+    if len(common_grid) != 1:
+        raise ThetaACalibrationError("focal interval S3 requires one common versioned grid and monitor")
+    expected_boundaries = None
+    for unit_id, unit_rows in by_unit.items():
+        ordered = sorted(unit_rows, key=lambda row: row.interval_index)
+        if [row.interval_index for row in ordered] != list(range(len(ordered))):
+            raise ThetaACalibrationError("interval S3 indices must cover each grid cell exactly once")
+        boundaries = tuple((row.interval_start, row.interval_end) for row in ordered)
+        if any(left >= right for left, right in boundaries):
+            raise ThetaACalibrationError("interval S3 cells must have positive duration")
+        if any(boundaries[i][1] != boundaries[i + 1][0] for i in range(len(boundaries) - 1)):
+            raise ThetaACalibrationError("interval S3 grid must be contiguous within each unit")
+        if expected_boundaries is None:
+            expected_boundaries = boundaries
+        elif boundaries != expected_boundaries:
+            raise ThetaACalibrationError("all units must share the exact same interval boundaries")
+
+
 def capture_theta_a_replicate(
     result,
     assignment: ThetaASeedAssignment,
@@ -377,6 +435,7 @@ def capture_theta_a_replicate(
 ) -> ThetaAReplicateRecord:
     """Capture evaluator-side metrics from one completed world without rerunning it."""
     scenario.validate()
+    _validate_interval_s3_seed_provenance(result, assignment)
     if (result.world.world_id != assignment.world_id
             or len(result.world.units) != assignment.n_units
             or result.world.seed_commitment_sha256 != _canonical_hash({"seed": assignment.world_seed})
