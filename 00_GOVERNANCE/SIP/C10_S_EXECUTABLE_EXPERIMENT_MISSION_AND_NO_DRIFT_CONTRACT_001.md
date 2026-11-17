@@ -81,8 +81,8 @@ La interpretación final debe distinguir el efecto de asignación/paquete, la co
 Esta directriz fija el propósito y la disciplina de trabajo; no modifica estimandos, DEC, DGP congelados, claim status ni Core. La autorización ya registrada en el Paquete B permite implementar y modificar código/tests del carril sintético S en esta rama research.
 
 - implementation_authorized=true — integración y materialización de software S.
-- technical_test_execution_authorized=false
-- workflow_dispatch_authorized=false
+- technical_test_execution_authorized=true — autorización expresa del usuario en esta conversación (2026-11-18), limitada a compilar, ejecutar los dieciséis módulos EP-02 y realizar el replay limpio idéntico sobre la rama research.
+- workflow_dispatch_authorized=true — autorización operativa limitada a activar ese workflow EP-02 en research; como la conexión GitHub disponible no expone dispatch API, se admite un disparador push temporal y acotado, que se retirará tras registrar el run.
 - calibration_authorized=false
 - scientific_execution=false
 - execution_authorized=false
