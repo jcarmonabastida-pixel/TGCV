@@ -263,22 +263,25 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             capture_lag=Decimal("0.1"),
             ingestion_lag=Decimal("0.2"),
         )
+        fixture_need_states = (
+            "FOCAL_INCLUSION", "FOCAL_EXCLUSION", "SEMANTIC_INDETERMINACY",
+        )
         return {
             "world_config": world_config,
             "need_pre_z_stipulations": tuple(
                 NeedPreZStipulation(
                     unit_id=unit.unit_id,
-                    b1_id=f"B1-{index:03d}",
-                    service_instance_id=f"SVC-{index:03d}",
+                    b1_id=f"FIXTURE-B1-{index:03d}",
+                    service_instance_id=f"FIXTURE-SVC-{index:03d}",
                     contract_id="C10S-SVC-REQUEST-PROCESSOR",
                     contract_version="1.0.0",
                     instance_version=1,
                     package_version="B1-PACKAGE-001",
-                    baseline_record_id=f"{prefix}-BASELINE-{index:03d}",
+                    baseline_record_id=f"FIXTURE-BASELINE-{index:03d}",
                     baseline_time="t-1",
-                    stipulation=states[(index - 1) % 3],
+                    stipulation=fixture_need_states[(index - 1) % 3],
                     rule_version="NEED-RULE-TEST-001",
-                    basis_ref=f"RESERVED-TEST-STIPULATION-{index:03d}",
+                    basis_ref=f"FIXTURE-RESERVED-STIPULATION-{index:03d}",
                 )
                 for index, unit in enumerate(world.units, start=1)
             ),
@@ -711,12 +714,13 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                     unit_id=unit.unit_id,
                     b1_id=f"{prefix}-B1-{index:03d}",
                     service_instance_id=f"{prefix}-SVC-{index:03d}",
-                    contract_id="B1-CONTRACT",
-                    contract_version="001",
+                    contract_id="C10S-SVC-REQUEST-PROCESSOR",
+                    contract_version="1.0.0",
                     instance_version=1,
                     package_version="B1-PACKAGE-001",
+                    baseline_record_id=f"{prefix}-BASELINE-{index:03d}",
                     baseline_time="t-1",
-                            stipulation=states[(index - 1) % 3],
+                    stipulation=states[(index - 1) % 3],
                     rule_version="NEED-RULE-TEST-001",
                     basis_ref=f"{prefix}-RESERVED-STIPULATION-{index:03d}",
                 )
