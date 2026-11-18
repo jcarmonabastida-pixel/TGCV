@@ -2996,3 +2996,37 @@ La recuperación de §§361–366 confirma que el estimando candidato y la fórm
 **Siguiente operación técnica:** continuar las regresiones de verdad reservada ya derivadas en §§369–372 y la integración del carril S; después resolver por decisión explícita el contrato IID/Registry antes de implementar el contraste pareado.
 
 **Controles:** en este turno se modificó únicamente el test de integración target-only en la rama `research/c10-s-consolidation-draft`; no se modificó el agregador, Analyzer, Evaluator, DGP, roster, seeds ni workflows. No se ejecutaron tests, DGP, Analyzer/Evaluator, workflows, calibración o Monte Carlo. PR #116 permanece Draft; `main`, RMA v3.38, Matrix v1.47, STATUS y Core permanecen intactos. `implementation_authorized=true`, `technical_test_execution_authorized=false`, `workflow_dispatch_authorized=false`, `calibration_authorized=false`, `scientific_execution=false`, `execution_authorized=false`.
+
+
+## 375. Contrato integrado de verdad, identificación y adjudicación en el mundo completo (2026-11-18)
+
+**Estado:** END_TO_END_TRUTH_ISOLATION_REGRESSION_SPECIFIED / IMPLEMENTED_NOT_EXECUTED.  
+**Propósito científico:** verificar en una sola ruta integrada que el DGP conoce la verdad del estimando sobre la población objetivo completa, que el Analyzer solo recibe evidencia observable y contratos de identificación, y que el Evaluator independiente puede adjudicar correctamente una abstención cuando el soporte fuente no cubre toda la población objetivo.
+
+### 375.1 Prueba adversarial integrada
+
+Se refuerza el caso target-only existente con un DGP deliberadamente discriminante:
+- masa de historias fuente = 0,5; contraste focal fuente = +0,5;
+- masa de historia target-only = 0,5; contraste focal de esa historia = 0;
+- verdad reservada del estimando completo = 0,5×0,5 + 0,5×0 = +0,25.
+
+La regresión comprueba simultáneamente que:
+1. TruthBundle y Evaluator reciben +0,25, no la verdad fuente +0,5;
+2. el Analyzer conserva `NOT_IDENTIFIED`, sin estimación puntual, por `TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT`;
+3. el contrato de análisis no contiene campos de verdad reservada ni contribuciones del oráculo;
+4. el manifiesto y las filas de evidencia sellada no transportan campos de verdad ni contribuciones;
+5. el Evaluator adjudica `CORRECT_ABSTENTION` usando la verdad reservada independiente.
+
+Esta prueba integra ponderación por población objetivo, separación entre verdad e identificación, frontera de información Analyzer/Evaluator y adjudicación en una sola trayectoria DGP → EventHistory → S3 → Sealer → Analyzer → Evaluator. No se añade un segundo estimando ni se altera el roster/fingerprint.
+
+### 375.2 Alcance y limitación de evidencia
+
+La regresión está incorporada en `test_target_only_truth_oracle_weights_target_specific_contrast`. El cambio es de test y no modifica el DGP, el Analyzer, el Evaluator, el generador de EventHistory ni el agregador. Está persistido en la rama de investigación, pero **no ejecutado**: por tanto el estado es IMPLEMENTED_NOT_EXECUTED, no PASS.
+
+La aserción de ausencia de campos explícitos de verdad/contribución verifica la frontera del contrato serializado. No constituye por sí sola una prueba general contra canales laterales o filtración semántica indirecta; esa garantía requiere mantener la separación de módulos y los hashes/provenance del pipeline.
+
+### 375.3 Decisión de continuidad orientada a la misión
+
+Se prioriza la validez del experimento sobre la expansión del catálogo de auditorías. El siguiente bloque integrado será la **consolidación del protocolo focal de cinco escenarios**: verificar que el roster, el DGP ejecutable, la verdad reservada, la clase de identificación, la disposición esperada y el ledger de métricas describen una misma batería confirmatoria sin contradicciones. Se reutilizarán contratos y oráculos existentes; no se crearán matrices paralelas ni se reabrirán decisiones cerradas. Cualquier incompatibilidad se resolverá en el artefacto fuente mínimo, conservando trazabilidad.
+
+**Controles:** modificación limitada al test de integración y a este registro del documento maestro en `research/c10-s-consolidation-draft`. No se modifican Analyzer, Evaluator, DGP, EventHistory generator, agregador, roster, seeds, workflows, RMA, Evidence→Claim Matrix, STATUS, Core ni `main`. No se ejecutan tests, DGP, Analyzer/Evaluator, CI, workflows, calibración o Monte Carlo. PR #116 permanece Draft. `implementation_authorized=true` para integración en research; `technical_test_execution_authorized=false`, `workflow_dispatch_authorized=false`, `calibration_authorized=false`, `scientific_execution=false`, `execution_authorized=false`.
