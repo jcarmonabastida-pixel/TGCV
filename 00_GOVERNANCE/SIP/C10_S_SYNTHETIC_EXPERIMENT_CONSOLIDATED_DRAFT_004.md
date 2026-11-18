@@ -3537,3 +3537,107 @@ El cálculo auxiliar será puro y no mutante: consumirá registros ya producidos
 **Dictamen:** queda seleccionado el bootstrap jerárquico no paramétrico como método primario candidato, con ANOVA/modelos paramétricos solo como sensibilidad condicionada. La selección no se considera validada hasta superar los fixtures analíticos/sintéticos de §382.7. M pequeño, componentes en frontera, denominadores incompletos y falta de coupling conducen a abstención/no estimabilidad, no a precisión fabricada.
 
 **Siguiente operación:** elaborar el protocolo de validación de §382.7 como una matriz compacta de fixtures, verdades analíticas, invariantes y criterios de adjudicación; reconciliarlo con los tests y contratos existentes para reutilizar cobertura y evitar duplicaciones. Solo después, proponer el contrato mínimo de implementación auxiliar. No modificar código, tests, DGP, Analyzer, Evaluator, agregador, seeds, workflows ni artefactos canónicos; no ejecutar fixtures, tests, calibración, Monte Carlo, productores ni experimento científico. PR #116 permanece Draft; `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 383. Cierre de validación metodológica y contrato de implementación auxiliar (2026-11-18)
+
+**Estado:** METHOD_SPECIFICATION_CLOSED_FOR_IMPLEMENTATION / IMPLEMENTATION_GATE_CONDITIONAL / NO_EXECUTION / NO_CONFIRMATORY_PRECISION_CLAIM. Este cierre decide el método, la unidad correcta de remuestreo, los límites de validez y los criterios de aceptación de su implementación. No afirma que el método haya superado validación numérica de cobertura: esa evidencia requiere fixtures y ejecución autorizada posteriores.
+
+### 383.1 Reconciliación con el protocolo realmente implementado
+
+La inspección directa de `theta_a_calibration_protocol.py` confirma que la unidad de datos de este diseño no es una observación individual aislada:
+
+- N identifica las unidades del mundo sintético;
+- M identifica mundos exteriores;
+- cada mundo M conserva un mismo `world_id`, configuración, roster, DGP, q_X, soporte, estimando y outcome a través de R;
+- R identifica asignaciones conjuntas repetidas dentro del mismo mundo, con aleatorización, evidencia y salida Analyzer distintas;
+- la verdad `theta_A` permanece fija a través de R dentro de cada mundo;
+- el protocolo exige correspondencia completa y exacta del plan N×M×R, y las métricas identificadas con denominadores incompletos se adjudican NOT_EVALUABLE.
+
+Por tanto, §382 se precisa en un punto esencial: el remuestreo interior no seleccionará unidades N ni filas internas de una evidencia ya agregada. La unidad interior será el **registro completo de una asignación replicada R**, junto con su resultado adjudicado y los campos métricos derivados de ese mismo registro. El remuestreo exterior será el **mundo completo M**. No se reejecutan Analyzer/Evaluator ni se reconstruyen resultados a partir de componentes parciales.
+
+### 383.2 Matriz compacta de validación y cobertura existente
+
+| Caso de validación | Contrato o capacidad existente reutilizable | Tratamiento en la validación auxiliar | Criterio de aceptación |
+|---|---|---|---|
+| Componentes within y between positivos | Diseño N×M×R; contribuciones por mundo | Fixture analítico balanceado | Recupera ambos componentes y reproduce la varianza de medias por mundo |
+| Between nulo/cercano a cero | No hay oráculo de componentes ni intervalo bootstrap acreditado | Fixture analítico de frontera | No fuerza el componente raw a cero; identifica frontera/inestabilidad |
+| Within nulo | R repetido y truth fija dentro de M | Fixture degenerado | Detecta degeneración sin división por cero ni precisión artificial |
+| M pequeño | `OuterWorldSamplingContract` y modos de muestreo | Fixture con pocos clusters distintos | Devuelve soporte insuficiente/inestabilidad; nunca lo corrige aumentando B bootstrap |
+| Indicadores raros, todo 0/todo 1 | Registro de métricas y denominadores | Fixtures discretos | Conserva degeneración y límites; no produce intervalos regulares ficticios |
+| Denominador incompleto | Reglas fail-closed de `summarize_theta_a_calibration` | Fixture con R ausente/no evaluable | Mantiene NOT_EVALUABLE; el bootstrap no rescata complete cases |
+| No identificación/abstención | Clases IDENTIFIED/NOT_IDENTIFIED/INDETERMINATE y métricas específicas | Fixtures de clasificación | No inventa estimaciones puntuales, cobertura o RMSE para métricas inaplicables |
+| RMSE/MSE próximo a cero | Agregación actual conserva MSE por mundo antes de raíz | Fixture con verdad analítica | Infiere primero en escala MSE; marca la transformación no regular en cero |
+| Contraste A−B con mundo común y R acoplado | `world_family_id` es identidad de familia, no prueba de coupling | Fixture pareado con contrato explícito | Remuestrea pares M y pares R solo con binding verificable de asignación |
+| Contraste con mundo común sin coupling R | No existe garantía derivable de igualdad de índice | Fixture adversarial | Rechaza emparejamiento interior; declara no estimable la varianza pareada |
+| Comparación entre N | §380: world_id/world_seed varían con N | Fixture no pareado | Prohíbe bootstrap pareado o interpretación de mismos mundos |
+| Reconciliación MCSE legado | Agregador conserva contribuciones por M y calcula MCSE entre mundos | Fixture de identidad algebraica | Mismo R: reproduce exactamente, dentro de tolerancia numérica fijada en tests, el MCSE legado; no lo reemplaza |
+
+**Cobertura real, sin inflación:** el protocolo existente ya cubre la identidad y completitud del plan N×M×R, la invariancia del mundo a través de R, la distinción de streams/provenance, las reglas de evaluabilidad y el cálculo legado de MCSE entre mundos bajo contrato IID declarado. Los tests existentes cubren contratos de diseño, seed banks, provenance, denominadores, agregación de métricas y el pipeline Analyzer/Evaluator. El benchmark P178 y sus tests bridge/smoke son una línea diferente: no validan la descomposición N×M×R ni el bootstrap de componentes.
+
+**Brecha específica no cubierta:** no se ha localizado una implementación ni un test que calcule MSW/MSB, estime por separado within/between, genere incertidumbre de esos componentes mediante remuestreo jerárquico y proyecte conjuntamente la incertidumbre de MCSE al cambiar M/R. La presencia de tests del protocolo no debe contabilizarse como cobertura de esta capacidad nueva.
+
+### 383.3 Reglas de cálculo cerradas para implementar
+
+Para una métrica evaluable y balanceada, sea (q_{mr}) la contribución escalar del registro de asignación R=r en el mundo m; (ar q_m=R^{-1}sum_r q_{mr}), y (ar q=M^{-1}sum_mar q_m).
+
+Se implementarán como estimadores de momentos:
+[
+MSW=rac{1}{M}sum_{m=1}^{M}
+rac{sum_{r=1}^{R}(q_{mr}-ar q_m)^2}{R-1},
+qquad
+MSB=rac{R}{M-1}sum_{m=1}^{M}(ar q_m-ar q)^2.
+]
+[
+widehat{sigma}^{2}_{within}=MSW,qquad
+widehat{sigma}^{2}_{between,raw}=rac{MSB-MSW}{R}.
+]
+La identidad de reconciliación es:
+[
+s^2(ar q_m)=widehat{sigma}^{2}_{between,raw}
++rac{widehat{sigma}^{2}_{within}}{R}.
+]
+El MCSE del promedio global de M mundos, cuando el contrato de muestreo exterior permite inferencia IID, se reconcilia como (s(ar q_m)/sqrt M). Para la superficie proyectada:
+[
+widehat{Var}(ar q_{M,R})=
+rac{widehat{sigma}^{2}_{between}}{M}
++rac{widehat{sigma}^{2}_{within}}{MR},
+]
+con componente between raw conservado y estado de frontera si es negativo; la versión restringida a cero solo será sensibilidad explícita, nunca sustitución silenciosa.
+
+**Unidad de bootstrap:** cada réplica exterior selecciona M mundos completos con reemplazo; por cada mundo seleccionado, la réplica interior selecciona R registros completos de asignación con reemplazo. Se recalculan los componentes y la superficie proyectada en cada réplica. No se remuestrean unidades N, observaciones de un Analyzer aisladas, campos separados ni contribuciones derivadas de la misma asignación como si fueran independientes.
+
+**Condición de independencia:** la inferencia sobre M exige `DECLARED_IID_PSEUDORANDOM` completo y validado como declaración de modelo; `UNVERIFIED`, `FIXED_FINITE_SET` y `DEPENDENT` permiten resúmenes descriptivos, pero no MCSE inferencial IID ni PASS_PRECISION. La inferencia within exige que el contrato de asignación justifique intercambiabilidad de R dentro del mundo. Si esa condición no está declarada, se reporta el componente descriptivo y se abstiene de inferencia/proyección probabilística. El bootstrap no certifica por sí mismo ninguno de estos supuestos.
+
+**Métricas:** el remuestreo opera sobre el escalar `q_mr` ya definido por el registro métrico y su aplicabilidad. Para tasas se remuestrean registros R completos y se recalcula la tasa; para bias/MAE se recalcula el resumen desde el error del registro; para RMSE se remuestrea MSE por registro y se aplica raíz al final. No se crea una métrica escalar donde el registro declara NOT_EVALUABLE. Si el protocolo exige todos los R y falta alguno, el estimando de esa celda sigue NOT_EVALUABLE; no se hace bootstrap de los R supervivientes.
+
+**Contrastes:** el remuestreo exterior pareado requiere un binding de identidad de mundo y un estimando de diferencia explícito. El remuestreo interior pareado exige, además, un identificador/versionado de coupling de asignaciones R y correspondencia uno-a-uno. `world_family_id`, igual número de réplica o igualdad de índice no bastan. Entre N no hay pareamiento mientras el generador no conserve un contrato de mundo común.
+
+### 383.4 Criterios de aceptación de la implementación auxiliar
+
+La implementación podrá considerarse **STATIC_CONTRACT_PASS** solo cuando sus tests (sin ejecutar el banco científico) acrediten:
+
+1. tipos, dominios, M/R mínimos y rechazo de datos no finitos;
+2. fórmulas MSW/MSB y componentes correctos frente a oráculos analíticos;
+3. identidad de reconciliación y equivalencia del MCSE legado para el R observado;
+4. preservación del componente between raw negativo y clasificación de frontera;
+5. abstención con M insuficiente, R degenerado o supuestos de muestreo no declarados;
+6. invariancia frente al orden de entrada y reproducibilidad determinista con semilla bootstrap explícita;
+7. fail-closed para registros ausentes, duplicados, identidades mezcladas, métricas no aplicables y denominadores incompletos;
+8. respeto de los contratos de emparejamiento, sin inferir coupling desde índices o nombres de familia;
+9. RMSE en escala MSE y tratamiento explícito de la no regularidad en cero;
+10. pureza/no mutación: los objetos de entrada, resúmenes históricos, MCSE legado, hashes de evidencia y artefactos de banco permanecen idénticos;
+11. provenance de método, versión, inputs, parámetros bootstrap y semilla en cada resultado;
+12. ausencia de cualquier efecto sobre Generator, Analyzer, Evaluator, DGP, roster, seeds, workflows o autorización.
+
+La validación numérica de cobertura/estabilidad del bootstrap (incluidos componentes en frontera y M pequeño) será una fase posterior distinta y requerirá fixtures de simulación y autorización de ejecución específica. Un `STATIC_CONTRACT_PASS` no equivale a validación estadística, `PASS_PRECISION`, calibración, potencia, Type-I error ni recuperación causal.
+
+### 383.5 Decisión de cierre y paso a implementación
+
+**Cierre metodológico:** no quedan decisiones de método abiertas que impidan implementar el estimador auxiliar. Se adopta bootstrap jerárquico por mundos M y registros completos de asignación R, con condiciones de muestreo y abstención anteriores. Se corrige expresamente la ambigüedad de §382 sobre la unidad interior de remuestreo.
+
+**Gate de implementación:** ABIERTO, limitado a un módulo auxiliar puro y sus tests estáticos. Reutilizar `theta_a_calibration_protocol.py` y su registro de métricas como fuente; no duplicar agregación, denominadores ni semántica de evaluabilidad. El módulo consumirá `ThetaACalibrationSummary`/contribuciones por mundo o una proyección tipada mínima de estas, sin recalcular ni mutar el protocolo. Si el summary actual no conserva los R individuales necesarios, se añadirá una interfaz de lectura inmutable y explícita; no se alterará el resultado agregado legado.
+
+**Fuera de este gate:** ejecución de tests, workflows, fixtures simulados, benchmark P178, seed-bank builders, calibration/evaluation banks, Monte Carlo o experimento científico. No se seleccionan nuevos N/M/R, confianza, targets, tolerancias ni valores históricos confirmatorios. PR #116 sigue Draft; `main` intacta; `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente operación:** implementar el módulo auxiliar y sus tests estáticos en el harness, en una unidad de cambio integrada. Primero inspeccionar si el summary expone los R individuales; si no, añadir una proyección inmutable mínima de registros R con identidad y métricas, preservando los hashes y la salida actual. No ejecutar los tests ni workflows sin autorización expresa.
