@@ -603,13 +603,28 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         for scenario in roster:
             captured = by_scenario[scenario.scenario_id]
             self.assertEqual(len(captured), 4)
+            # The four identified truths are declared by the versioned
+            # profile. The fifth value is an independent test-only analytic
+            # reference from §§369/371; keep profile.expected_theta_a_truth=None.
+            analytic_truth = {
+                "THETA_A_POSITIVE_V1": 0.5,
+                "THETA_A_NULL_V1": 0.0,
+                "THETA_A_NEGATIVE_V1": -0.5,
+                "THETA_A_ALTERNATIVE_COMMON_V1": 0.0,
+                "THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1": 0.5,
+            }[scenario.scenario_id]
             if scenario.dgp_profile.expected_theta_a_truth is not None:
-                self.assertTrue(all(
-                    abs(row.truth - scenario.dgp_profile.expected_theta_a_truth) <= 1e-12
-                    for row in captured
-                ))
+                self.assertAlmostEqual(
+                    analytic_truth, scenario.dgp_profile.expected_theta_a_truth,
+                )
             else:
-                self.assertTrue(all(-1.0 <= row.truth <= 1.0 for row in captured))
+                self.assertEqual(
+                    scenario.scenario_id, "THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1",
+                )
+                self.assertIsNone(scenario.dgp_profile.expected_theta_a_truth)
+            self.assertTrue(all(
+                abs(row.truth - analytic_truth) <= 1e-12 for row in captured
+            ), f"reserved truth mismatch: scenario={scenario.scenario_id}")
             self.assertTrue(all(
                 row.analyzer_identification == scenario.expected_identification
                 for row in captured
