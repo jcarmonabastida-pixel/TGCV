@@ -414,7 +414,7 @@ class ThetaAStructuralSupportRow:
     intervention_defined: bool
     g_a0_feasible: bool
     g_a1_feasible: bool
-    assignment_probability_a1: float
+    assignment_probability_a1: float | None
 
 
 @dataclass(frozen=True)
@@ -444,9 +444,13 @@ class ThetaAStructuralSupportContract:
             if any(type(value) is not bool for value in
                    (row.intervention_defined, row.g_a0_feasible, row.g_a1_feasible)):
                 raise ContractError("intervention definition and policy feasibility must be explicit Booleans")
-            if (not math.isfinite(row.assignment_probability_a1)
-                    or not 0.0 < row.assignment_probability_a1 < 1.0):
-                raise ContractError("both focal policy assignment probabilities must be strictly positive")
+            if row.source_mass > 0.0:
+                if (row.assignment_probability_a1 is None
+                        or not math.isfinite(row.assignment_probability_a1)
+                        or not 0.0 < row.assignment_probability_a1 < 1.0):
+                    raise ContractError("source-supported target histories require strict two-arm assignment positivity")
+            elif row.assignment_probability_a1 is not None:
+                raise ContractError("assignment propensity must be absent when source mass is structurally zero")
 
 
 @dataclass(frozen=True)
