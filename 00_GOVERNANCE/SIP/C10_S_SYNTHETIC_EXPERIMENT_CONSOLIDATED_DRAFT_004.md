@@ -1375,3 +1375,131 @@ Antes de modificar código, la especificación debe decidir:
 La revisión no cambia código, tests, roster, N/M/R, seeds, truth, Analyzer, Evaluator, tolerancias, bancos ni autorizaciones. No se ejecutó el runner ni calibración. `calibration_authorized=false`; `scientific_execution=false`; `execution_authorized=false`.
 
 **Siguiente operación:** elaborar la especificación de estimandos de rendimiento y denominadores (documental, sin implementación), resolver la ponderación por réplica frente a mundo y fijar el método de MCSE cluster/ratio. Solo después se podrá redactar el contrato estadístico cuantitativo completo y valorar si necesita una decisión gobernada.
+
+
+## 359. Especificación propuesta de estimandos de rendimiento y denominadores para el benchmark focal — revisión documental (2026-11-18)
+
+**Estado:** PERFORMANCE_ESTIMANDS_SPECIFIED_AS_CANDIDATE / NOT_FROZEN / IMPLEMENTATION_NOT_AUTHORIZED / CALIBRATION_NOT_AUTHORIZED.  
+**Base:** auditoría §358 y agregador existente `summarize_theta_a_calibration()`.  
+**Propósito:** separar el rendimiento operacional del procedimiento completo de la precisión numérica condicional, sin borrar réplicas no identificadas ni convertir abstenciones en errores numéricos.
+
+### 359.1 Unidad estadística y clave de agregación
+
+La unidad independiente para incertidumbre Monte Carlo es el mundo exterior M. Las R asignaciones de un mundo son repeticiones condicionales al mismo mundo, no mundos independientes. La clave mínima de cada resumen es:
+
+`(scenario_id, scenario_version, N, metric_id, metric_version, estimand_id, estimand_version, DGP_profile_sha256, design_config_sha256)`.
+
+Cada mundo m conserva un vector de contadores/sumas por métrica; el resumen no se construye destruyendo la relación entre las R réplicas y su mundo.
+
+### 359.2 Plano operacional primario — todas las R intentadas
+
+Para cada mundo m y escenario/N, con R intentos previstos y validados:
+
+- `identified_rate_m = n(IDENTIFIED)/R`;
+- `not_identified_rate_m = n(NOT_IDENTIFIED)/R`;
+- `indeterminate_rate_m = n(INDETERMINATE)/R`;
+- `partial_identification_rate_m = n(PARTIALLY_IDENTIFIED)/R`;
+- `invalid_output_rate_m` y `missing_record_rate_m`, si el sistema de captura permite observar esos fallos sin convertirlos en estados Analyzer. La ausencia de registro sigue siendo un fallo de integridad del plan y bloquea el PASS de cobertura;
+- para el escenario estructuralmente NOT_IDENTIFIED: `correct_cause_abstention_rate_m`, `wrong_cause_abstention_rate_m` y `false_identification_rate_m`, con clasificación mutuamente excluyente;
+- para escenarios IDENTIFIED: `false_abstention_rate_m = 1 - identified_rate_m`, desglosada por estado y causa.
+
+El estimando agregado primario es la media no ponderada de las M contribuciones de mundo. El denominador de cada tasa es R por mundo y M mundos completos. La incertidumbre Monte Carlo se calcula entre las M contribuciones, no sobre M×R filas.
+
+Los estados de salida válidos deben ser mutuamente excluyentes. Una taxonomía de implementación futura puede incluir además `OUTPUT_INVALID` y `RECORD_MISSING`, pero ambos son fallos técnicos/coverage y nunca deben atribuirse al comportamiento científico del Analyzer.
+
+### 359.3 Plano numérico condicional — ponderación primaria por réplica identificada
+
+Para los escenarios cuya verdad DGP es IDENTIFIED, la precisión numérica se define condicional a que el Analyzer haya producido una estimación puntual finita. La ponderación primaria propuesta es por réplica identificada, no por mundo con al menos una identificación:
+
+`I_mr = 1[Analyzer_{mr}=IDENTIFIED y estimate_{mr} finita]`.
+
+Para cada mundo se retienen numerador y denominador:
+- bias: `A_m=Σ_r I_{mr} e_{mr}`;
+- MAE: `A_m=Σ_r I_{mr}|e_{mr}|`;
+- MSE: `A_m=Σ_r I_{mr}e_{mr}^2`;
+- point recovery: `A_m=Σ_r I_{mr}1(|e_{mr}|≤δ)`;
+- denominador común: `B_m=Σ_r I_{mr}`.
+
+Los estimandos condicionales primarios se calculan como razones de sumas sobre mundos:
+
+`Bias_cond = Σ_m A_m / Σ_m B_m`
+
+con el numerador específico de bias, y análogamente para MAE, MSE y point-recovery. RMSE es `sqrt(MSE_cond)`. Esta definición responde: “entre todos los intentos de asignación en los mundos de la población DGP que el procedimiento identifica, ¿qué error produce?”. No afirma que la tasa de identificación sea alta; por eso siempre se presenta junto al plano operacional §359.2.
+
+El MCSE se estima por clusters M. Para cada métrica razón `θ = Σ A_m / Σ B_m`, se conserva `u_m=A_m-θB_m` y se estima:
+
+`MCSE_cluster(θ) = SD(u_1,…,u_M) / (sqrt(M) × mean(B_1,…,B_M))`.
+
+La expresión presupone mundos independientes y una media de denominador positiva; si `Σ B_m=0`, la métrica condicional es `NOT_EVALUABLE` con denominador cero. No se calcula SD sobre las réplicas identificadas como si fueran independientes.
+
+Como diagnóstico secundario se puede reportar la media no ponderada de las métricas condicionales por mundo con `B_m>0`, junto con el número de mundos elegibles y la distribución de `B_m/R`. Ese resultado es un estimando distinto, pondera por igual mundos con diferente número de identificaciones y no reemplaza el estimando primario por réplica.
+
+### 359.4 Intervalos inferenciales
+
+Para cada réplica identificada:
+- `interval_issued_mr`: indicador de intervalo Hoeffding válido emitido;
+- `covered_mr`: indicador de que el intervalo emitido contiene la truth reservada;
+- `width_mr`: anchura del intervalo cuando está emitido.
+
+Se proponen cuatro métricas distintas:
+
+1. **Disponibilidad:** `Σ interval_issued/(M×R)`, media de disponibilidad por mundo.
+2. **Cobertura condicional:** `Σ covered/Σ interval_issued`, estimada como razón por clusters M. Su denominador es el número de intervalos emitidos; se etiqueta expresamente como cobertura entre intervalos emitidos.
+3. **Éxito conjunto:** `Σ 1(interval_issued AND covered)/(M×R)`, si se desea conocer la probabilidad de que un intento produzca un intervalo disponible y cubriente.
+4. **Anchura condicional:** `Σ width/Σ interval_issued`, con MCSE cluster por M.
+
+La cobertura condicional no se interpreta como cobertura incondicional del procedimiento cuando la emisión depende de identificación o ausencia de missingness. El éxito conjunto no se denomina “cobertura nominal” y no sustituye la cobertura condicional. El nivel 0,95 sigue siendo candidato del diseño, no una afirmación confirmatoria.
+
+### 359.5 Evaluator y límites lógicos
+
+Las métricas del Evaluator se mantienen en una capa de auditoría distinta:
+
+- `evaluator_disposition` por réplica, con distribución de cada categoría;
+- recuperación puntual del Evaluator en escenarios identificados, reportada con δ técnica explícita;
+- corrección de clase/causa de abstención en el escenario NOT_IDENTIFIED;
+- `truth_within_bounds` como control de dominio lógico [-1,1], no como métrica de rendimiento ni evidencia de recuperación.
+
+No se agrega `evaluator_correct_adjudication_rate` entre escenarios identificados y no identificados como si fuese un KPI homogéneo. Tampoco se interpreta `POINT_RECOVERY_FAILED` como fallo de identificación estructural.
+
+### 359.6 Tolerancias y targets
+
+Se mantienen dos criterios distintos hasta decisión expresa:
+
+- `δ_eval`: tolerancia técnica que utiliza el Evaluator para emitir `POINT_RECOVERED/POINT_RECOVERY_FAILED`;
+- `δ_science`: tolerancia científica de recuperación para la métrica `point_recovery_rate`.
+
+No se presupone que sean iguales. Cada criterio deberá tener valor, unidad, versión, justificación, ámbito de aplicación y fingerprint. Si se decide que son el mismo criterio, la identidad compartida debe quedar explícita y validada; si son distintos, sus métricas no se deben fusionar.
+
+El manifiesto de targets debe enumerar el conjunto exacto de métricas obligatorias por escenario × versión × N. Debe distinguir:
+- `TARGETED`: tiene objetivo MCSE preespecificado;
+- `NOT_APPLICABLE`: métrica no definida para esa clase de verdad;
+- `NOT_TARGETED`: métrica aplicable sin objetivo de precisión;
+- `NOT_EVALUABLE`: faltan datos elegibles o denominador positivo;
+- `FAIL_PRECISION`: MCSE supera el target;
+- `PASS_PRECISION`: MCSE satisface el target y la cobertura/procedencia está completa.
+
+No se permite PASS de calibración cuando cualquier target obligatorio está ausente, incompleto o no evaluable. Un PASS_PRECISION solo acredita precisión Monte Carlo de la estimación de la métrica; no acredita que el estimador tenga sesgo/error aceptable.
+
+### 359.7 R y M: regla de dimensionamiento que debe acompañar a la implementación
+
+La primera calibración no debe asumir que R=20 y M=100 son suficientes. Para cada métrica primaria se estimarán:
+- varianza entre mundos de las contribuciones por mundo;
+- componente de varianza dentro del mundo entre asignaciones;
+- MCSE externo observado;
+- sensibilidad de MCSE y del rendimiento a aumentar R manteniendo M, y a aumentar M manteniendo R.
+
+R se seleccionará para que el componente intramundo no domine innecesariamente la varianza de la contribución por mundo. M se seleccionará para satisfacer los targets MCSE entre mundos. Cualquier extensión adaptativa del banco de calibración deberá tener una regla determinista/versionada de derivación de seeds, límite de presupuesto y regla de parada preespecificada; nunca se ampliará el banco de evaluación a partir de sus propios resultados.
+
+### 359.8 Decisiones aún abiertas y disposición
+
+Esta especificación es una propuesta coherente con la unidad M×R ya implementada, no una congelación. Antes de implementar se requiere decidir:
+1. si se acepta la ponderación primaria por réplica identificada y se mantiene la ponderación por mundo como diagnóstico secundario;
+2. el método definitivo de MCSE cluster para razones y el método para RMSE (MSE primario más delta, o bootstrap cluster preespecificado);
+3. si el éxito conjunto de intervalo se requiere como target;
+4. la taxonomía final de estados y códigos de causa;
+5. valores/versiones y justificación de `δ_eval` y `δ_science`;
+6. lista exhaustiva de targets y estados de aplicabilidad.
+
+**No se cambia código ni tests.** No se crean seeds/bancos, no se ejecuta calibración ni evaluación, no se ejecuta Monte Carlo y no se autoriza ejecución científica. Se mantienen `calibration_authorized=false`, `execution_authorized=false`, `scientific_execution=false`.
+
+**Siguiente operación:** reconciliar esta especificación con los contratos existentes de calibración, métricas y evaluación para comprobar que no contradice un criterio ya aceptado; resolver los seis puntos abiertos mediante propuesta de decisión, sin modificar implementación hasta que el contrato quede estable.
