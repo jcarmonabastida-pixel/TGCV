@@ -635,6 +635,8 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(len(result._policy_histories), 8)
         self.assertEqual(len(result.theta_a_assignments.assignments), 4)
         self.assertEqual(len(result.s3_records), 8)
+        self.assertEqual(result.analyzer_result.total_interval_count, 6)
+        self.assertEqual(result.analyzer_result.missing_interval_count, 0)
         self.assertEqual(
             result.analyzer_contract.source_only_history_refs,
             (excluded_source_history,),
