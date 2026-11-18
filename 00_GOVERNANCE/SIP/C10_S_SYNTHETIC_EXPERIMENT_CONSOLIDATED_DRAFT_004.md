@@ -851,3 +851,14 @@ Se han añadido cuatro pruebas unitarias de contrato para no solapamiento objeti
 **Límite esencial:** esta primera modificación aún no conecta el contrato con SyntheticWorldBundle, la generación de asignaciones, el sellado de evidencia, el resultado del Analyzer ni el Evaluator. Por tanto, no constituye el caso end-to-end de no identificación estructural y no cierra la brecha. Tampoco altera el roster, las decisiones Gate 130, el estimando ni las políticas confirmatorias.
 
 **Estado:** CONTRATO Y PRUEBAS UNITARIAS AÑADIDOS / INTEGRACIÓN END-TO-END PENDIENTE / NO EJECUTADO. No se ejecutó EP-02 ni replay; no se generaron bancos, seeds, Monte Carlo ni ejecución científica. La autorización de ejecución sigue sin presumirse.
+## 340. Separación de fingerprints q_X objetivo/fuente y adjudicación estructural en Analyzer (2026-11-18)
+
+El contrato focal del Analyzer incorpora ahora fingerprints diferenciados: `q_x_sha256` identifica la distribución objetivo del estimando y `source_q_x_sha256` identifica la población fuente de asignación. El contrato de soporte estructural debe cubrir exactamente todas las historias y masas del q_X objetivo, y su fingerprint fuente debe coincidir con el q_X de asignación. Las observaciones selladas continúan vinculadas al fingerprint fuente.
+
+Antes de la adjudicación de medición point/interval, el Analyzer valida el digest y la procedencia de la evidencia. Si la intervención está definida, ambas políticas son factibles y alguna historia objetivo de masa positiva carece de soporte fuente, devuelve `NOT_IDENTIFIED / TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT`, sin estimación puntual, con cotas lógicas [-1,1], masa objetivo soportada, historias sin soporte y fingerprint del contrato. La clasificación estructural precede a las limitaciones de observación o brazos realizados. Si el soporte estructural es completo, continúan las rutas existentes del Analyzer.
+
+El pipeline completo actual declara explícitamente `source_q_x_sha256=assignments.q_x_sha256`, sin cambiar el caso legacy de soporte coincidente. **La separación aún no está integrada en World Builder, Generator, TruthBundle y Evaluator:** `SyntheticWorldBundle` mantiene el anclaje uno-a-uno entre roster y q_X; generación de asignaciones y potenciales exige ese mismo soporte; el Evaluator aún exige igualdad entre el fingerprint q_X de asignación y el del truth/contrato. Por tanto, el cambio no constituye el escenario end-to-end requerido ni permite declarar cerrada la brecha.
+
+Se añadieron pruebas de fuente al módulo existente para la abstención estructural y la vinculación de fingerprints objetivo/fuente. No se ejecutó EP-02 ni replay; no se generaron bancos ni se realizó calibración o ejecución científica.
+
+**Estado:** ANALYZER_STRUCTURAL_ADJUDICATION_SOURCE_IMPLEMENTED / TARGET_SOURCE_SEPARATION_PARTIAL / WORLD_GENERATOR_TRUTH_EVALUATOR_INTEGRATION_OPEN / NOT_DYNAMICALLY_VALIDATED.
