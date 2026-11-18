@@ -3225,9 +3225,10 @@ class ThetaAPolicyAssignmentBundle:
         g_a1: Sequence["JointPolicyHistory"],
         feasible_vectors_by_history: dict[str, tuple[Vector4, ...]],
         r_common_certificates: Sequence["RCommonPairCertificate"],
+        structural_support_contract: object | None = None,
     ) -> None:
         world.validate()
-        config.validate(world)
+        config.validate(world, structural_support_contract)
         refs = {row.history_ref for row in world.q_x}
         policy_maps = []
         for rows, label in ((g_a0, "g_A0"), (g_a1, "g_A1")):
@@ -3306,10 +3307,15 @@ def generate_theta_a_policy_assignments(
     g_a1: Sequence["JointPolicyHistory"],
     feasible_vectors_by_history: dict[str, tuple[Vector4, ...]],
     r_common_certificates: Sequence["RCommonPairCertificate"],
+    structural_support_contract: object | None = None,
 ) -> ThetaAPolicyAssignmentBundle:
-    """Randomize the joint g_A intervention directly; never use Z or legacy G."""
+    """Randomize the joint g_A intervention directly; never use Z or legacy G.
+
+    Boundary assignment probabilities are available only for explicit synthetic
+    non-identification fixtures carrying a source-bound structural-support contract.
+    """
     world.validate()
-    config.validate(world)
+    config.validate(world, structural_support_contract)
     refs = {row.history_ref for row in world.q_x}
     policy_maps = []
     for rows, label in ((g_a0, "g_A0"), (g_a1, "g_A1")):
@@ -3375,7 +3381,10 @@ def generate_theta_a_policy_assignments(
         digest(tuple(g_a0)), digest(tuple(g_a1)),
         digest(tuple(r_common_certificates)), tuple(assignments), digest(payload),
     )
-    result.validate(world, config, g_a0, g_a1, feasible_vectors_by_history, r_common_certificates)
+    result.validate(
+        world, config, g_a0, g_a1, feasible_vectors_by_history,
+        r_common_certificates, structural_support_contract,
+    )
     return result
 
 
