@@ -745,3 +745,17 @@ This is software integration and regression/replay evidence only. It does not es
 ### Realized-arm support abstention
 
 The same point-S3 World Builder fixture accepts a one-unit roster while retaining the valid randomized assignment probability p=0.5. With one realized unit, one of the two arms is necessarily absent. The regression requires Analyzer `INDETERMINATE / REALIZED_GA_ARM_SUPPORT_MISSING`, no point estimate, logical bounds [-1,1], and Evaluator `CORRECT_ABSTENTION` covering the reserved truth. This is a realized finite-roster arm-support failure, not structural assignment positivity failure. The test is source-only until an authorized EP-02 run.
+
+### EP-02 dynamic validation — Run 829
+
+The exact sixteen-module EP-02 integrated software-contract suite completed successfully on commit `e0c939b43601f140155666b5a9b6a022853b6bbd` (GitHub Actions run `44204384079`). Primary execution: 299 tests, all passed; clean replay from an equivalent independently materialized source tree: 299 tests, all passed. Both new World Builder regressions passed in primary and replay:
+- `test_point_s3_world_pipeline_abstains_with_truth_covered`
+- `test_point_s3_single_unit_world_adjudicates_missing_realized_arm`
+
+Pinned CPython 3.12.10, hash-locked dependencies, source compilation, primary/replay tree equivalence, bytecode-cache absence and artifact uploads all completed successfully. This is software-contract validation only. No calibration banks, Monte Carlo calibration, or scientific execution were generated or run.
+
+Artifacts:
+- Payload artifact ID `14383046746`, SHA-256 `c34eca732e75d3f3ba070f243aa48c0383ffc567ff9bfb533b35ece9d3beda03`.
+- Manifest artifact ID `14383560381`, SHA-256 `989a52821a4d0c07dbf36ab77b95bd13ff190dc5b239a321cbdca6f8e7fa925f`.
+
+The workflow was restored immediately after dispatch to its original `workflow_dispatch`-only gate in commit `5df7961cd960f6fccdb02d3c3658dee095fc6683`. Run 829 remains bound to the exact tested commit above. Status: EP-02 SOFTWARE CONTRACTS PASS / 299+299 / CLEAN REPLAY PASS; scientific calibration remains NOT AUTHORIZED / NOT EXECUTED.
