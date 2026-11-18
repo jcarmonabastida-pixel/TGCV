@@ -19,7 +19,7 @@ permissions:
 
 jobs:
   integrated-synthetic-contract-tests:
-    if: github.ref == 'refs/heads/research/c10-s-consolidation-draft' && ((github.event_name == 'workflow_dispatch' && inputs.confirm_synthetic_test_execution == true) || (github.event_name == 'push' && github.event.head_commit.message == 'TEMP EP02 STRUCTURAL SUPPORT VALIDATION RETRY'))
+    if: github.ref == 'refs/heads/research/c10-s-consolidation-draft' && ((github.event_name == 'workflow_dispatch' && inputs.confirm_synthetic_test_execution == true) || (github.event_name == 'push' && github.event.head_commit.message == 'TEMP EP02 STRUCTURAL SUPPORT VALIDATION RETRY 2'))
     name: Explicitly authorized integrated synthetic contract suite
     runs-on: ubuntu-24.04
     timeout-minutes: 30
