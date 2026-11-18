@@ -634,6 +634,12 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(len(result.theta_a_truth.event_history_manifest), 6)
         self.assertEqual(len(result._policy_histories), 8)
         self.assertEqual(len(result.theta_a_assignments.assignments), 4)
+        self.assertEqual(len(result.s3_records), 8)
+        self.assertEqual(
+            result.analyzer_contract.source_only_history_refs,
+            (excluded_source_history,),
+        )
+        self.assertEqual(sum(result.analyzer_result.assigned_arm_unit_counts), 3)
         self.assertNotEqual(
             result.analyzer_contract.g_a0_sha256,
             result.analyzer_contract.target_g_a0_sha256,
