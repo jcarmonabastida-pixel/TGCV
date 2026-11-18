@@ -3,7 +3,9 @@ from types import SimpleNamespace
 
 from theta_a_observation_harness import SealedThetaAEvidence, _hash
 from theta_a_analyzer import (ThetaAObservationAnalysisContract,
-                              ThetaAObservationAnalysisResult, _canonical_hash)
+                              ThetaAObservationAnalysisResult, _canonical_hash,
+                              ThetaAStructuralSupportRow, ThetaAStructuralSupportContract,
+                              adjudicate_theta_a_structural_support)
 from theta_a_evaluator import ThetaAObservationEvaluator, _result_payload
 from c10s_synthetic_components import ContractError
 
@@ -95,6 +97,48 @@ class ThetaAObservationEvaluatorTests(unittest.TestCase):
             ThetaAObservationEvaluator().evaluate(
                 self.truth_bundle, self.evidence, result, self.assignment_bundle, self.contract, tolerance=0.01)
 
+    def test_evaluator_accepts_correct_structural_nonidentification_with_distinct_target_source(self):
+        source_rows = tuple(dict(row, q_x_sha256="source-qx") for row in self.evidence.rows)
+        manifest = self.evidence.manifest
+        evidence = SealedThetaAEvidence(
+            self.evidence.run_id, source_rows, manifest,
+            _hash({"manifest": manifest, "rows": source_rows}),
+        )
+        support = ThetaAStructuralSupportContract(
+            "support-fixture", "1.0", "target-qx", "source-qx",
+            (
+                ThetaAStructuralSupportRow("h0", 0.4, 1.0, True, True, True, 0.5),
+                ThetaAStructuralSupportRow("h1", 0.6, 0.0, True, True, True, 0.5),
+            ),
+        )
+        contract = ThetaAObservationAnalysisContract(
+            q_x_mass_by_history=(("h0", 0.4), ("h1", 0.6)),
+            q_x_sha256="target-qx", source_q_x_sha256="source-qx",
+            assignment_bundle_sha256="ab", g_a0_sha256="ga0",
+            g_a1_sha256="ga1", r_common_sha256="rc",
+            estimand_id="THETA_A_QX_GA_RCOMMON_VCONT", estimand_version="1.0",
+            structural_support_contract=support,
+        )
+        self.truth.q_x_fingerprint = "target-qx"
+        self.assignment_bundle.q_x_sha256 = "source-qx"
+        provisional = ThetaAObservationAnalysisResult(
+            run_id="run-1", estimand_id=contract.estimand_id,
+            estimand_version=contract.estimand_version, identification="NOT_IDENTIFIED",
+            point_estimate=None, lower_bound=-1.0, upper_bound=1.0,
+            target_q_x_coverage=0.4, missing_target_histories=("h1",),
+            assigned_arm_unit_counts=(1, 0), temporal_resolution="POINT_SAMPLE",
+            abstention_reason="TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT",
+            input_sha256=evidence.sha256, output_sha256="",
+            structural_support_sha256=adjudicate_theta_a_structural_support(support).contract_sha256,
+        )
+        result = ThetaAObservationAnalysisResult(
+            **{**provisional.__dict__, "output_sha256": _canonical_hash(_result_payload(provisional))}
+        )
+        report = ThetaAObservationEvaluator().evaluate(
+            self.truth_bundle, evidence, result, self.assignment_bundle, contract, tolerance=0.01)
+        self.assertTrue(report.truth_within_bounds)
+        self.assertTrue(report.correct_adjudication)
+        self.assertEqual(report.disposition, "CORRECT_ABSTENTION")
 
 if __name__ == "__main__":
     unittest.main()
