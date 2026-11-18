@@ -14,7 +14,7 @@ import numpy as np
 from pathlib import Path
 import platform
 import sys
-from statistics import mean
+from statistics import mean, median
 from types import SimpleNamespace
 from typing import Any
 
@@ -173,7 +173,7 @@ def _component_cell_summary(records: list[dict[str, Any]], component: str) -> di
     result.update({
         "bias": mean(errors),
         "rmse": math.sqrt(mean(error * error for error in errors)),
-        "median_absolute_error": sorted(abs(error) for error in errors)[len(errors) // 2],
+        "median_absolute_error": median(abs(error) for error in errors),
         "mean_interval_width": mean(widths),
         "mean_estimate": mean(estimates),
         "analytical_truth": truths[0],
@@ -202,22 +202,30 @@ def _summarize_tier_a(spec, records: list[dict[str, Any]]) -> dict[str, Any]:
     mcse["total_datasets"] = len(records)
     if availability < 0.95:
         mcse["status"] = "CONDITIONAL_NOT_CALIBRATED"
+    finite_count = sum(_finite_record(row) for row in records)
+    components_pass = (
+        within["status"] == "PASS_BOUNDED_NUMERICAL_VALIDATION"
+        and between["status"] == "PASS_BOUNDED_NUMERICAL_VALIDATION"
+        and finite_count == len(records)
+    )
+    if not components_pass:
+        disposition = "NOT_VALIDATED"
+    elif mcse["status"] == "CONDITIONAL_NOT_CALIBRATED":
+        disposition = "CONDITIONAL_NOT_CALIBRATED"
+    elif mcse["status"] == "PASS_BOUNDED_NUMERICAL_VALIDATION":
+        disposition = "PASS_BOUNDED_NUMERICAL_VALIDATION"
+    else:
+        disposition = "NOT_VALIDATED"
     return {
         "cell": spec.manifest(),
         "datasets_completed": len(records),
-        "finite_records": sum(_finite_record(row) for row in records),
+        "finite_records": finite_count,
         "within_component": within,
         "between_component_raw": between,
         "projected_mcse": mcse,
         "mean_boundary_fraction": mean(row["boundary_fraction"] for row in records),
         "mean_valid_bootstrap_replicates": mean(row["valid_bootstrap_replicates"] for row in records),
-        "disposition": (
-            "PASS_BOUNDED_NUMERICAL_VALIDATION"
-            if within["status"] == "PASS_BOUNDED_NUMERICAL_VALIDATION"
-            and between["status"] == "PASS_BOUNDED_NUMERICAL_VALIDATION"
-            and mcse["status"] == "PASS_BOUNDED_NUMERICAL_VALIDATION"
-            else "NOT_VALIDATED"
-        ),
+        "disposition": disposition,
     }
 
 
@@ -236,6 +244,32 @@ def _summarize_tier_b(spec, records: list[dict[str, Any]]) -> dict[str, Any]:
             and row["projected_mcse_interval"] == [None, None]
             for row in records
         )
+    abstention_ok = True
+    for row in records:
+        if spec.m < 3:
+            continue
+        if row["boundary_fraction"] > 0:
+            abstention_ok = abstention_ok and (
+                row["projected_mcse_status"] == "SENSITIVITY_REQUIRED"
+                and row["projected_mcse_interval"] == [None, None]
+            )
+        elif row["bootstrap_degenerate"]:
+            expected = "RMSE_DELTA_NONREGULAR" if spec.family == "F6" else "DEGENERATE_BOOTSTRAP_DISTRIBUTION"
+            abstention_ok = abstention_ok and (
+                row["projected_mcse_status"] == expected
+                and row["projected_mcse_interval"] == [None, None]
+            )
+        elif spec.family == "F6":
+            # Positive-MSE delta projections remain exploratory and are not scored.
+            abstention_ok = abstention_ok and row["projected_mcse_status"] in {
+                "ESTIMABLE_UNDER_DECLARED_SAMPLING", "SENSITIVITY_REQUIRED",
+                "RMSE_DELTA_NONREGULAR",
+            }
+        else:
+            abstention_ok = abstention_ok and row["projected_mcse_status"] in {
+                "ESTIMABLE_UNDER_DECLARED_SAMPLING", "SENSITIVITY_REQUIRED",
+                "DEGENERATE_BOOTSTRAP_DISTRIBUTION",
+            }
     finite_count = sum(_finite_record(row) for row in records)
     valid_count = sum(
         row["valid_bootstrap_replicates"] == spec.b
@@ -252,9 +286,10 @@ def _summarize_tier_b(spec, records: list[dict[str, Any]]) -> dict[str, Any]:
         "negative_raw_between_count": sum(row["estimate_between_raw"] < 0 for row in records),
         "mean_boundary_fraction": mean(row["boundary_fraction"] for row in records),
         "support_negative_control_pass": support_ok,
+        "boundary_abstention_consistency_pass": abstention_ok,
         "disposition": (
             "PASS_DIAGNOSTIC_CONTRACT"
-            if finite_count == len(records) and valid_count == len(records) and support_ok
+            if finite_count == len(records) and valid_count == len(records) and support_ok and abstention_ok
             else "NOT_VALIDATED"
         ),
     }
