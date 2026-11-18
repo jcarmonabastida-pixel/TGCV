@@ -18,7 +18,8 @@ jobs:
     steps:
       - name: No-op for non-authorization refs
         if: ${{ !startsWith(github.ref, 'refs/heads/research/c10s-nested-mr-auth-') }}
-        run: echo "No numerical execution: this ref is not a dedicated authorization branch."
+        run: |
+          echo "No numerical execution: this ref is not a dedicated authorization branch."
 
       - name: Checkout the authorization commit
         if: startsWith(github.ref, 'refs/heads/research/c10s-nested-mr-auth-')
