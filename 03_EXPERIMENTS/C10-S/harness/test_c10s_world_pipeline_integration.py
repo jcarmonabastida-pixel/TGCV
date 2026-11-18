@@ -457,6 +457,18 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             "theta_a_structural_support_contract": support,
             "theta_a_target_history_materializations": (target_materialization,),
         }
+        with self.assertRaisesRegex(ContractError, "every and only target-only histories"):
+            incomplete_fixture = dict(fixture)
+            incomplete_fixture["theta_a_population_args"] = {
+                key: value for key, value in fixture["theta_a_population_args"].items()
+                if key != "theta_a_target_history_materializations"
+            }
+            self._run_pipeline(incomplete_fixture)
+        with self.assertRaisesRegex(ContractError, "dimensions must match"):
+            replace(
+                target_materialization,
+                x_values=target_materialization.x_values + (999.0,),
+            ).validate(source_world=world)
         result = self._run_pipeline(fixture)
         self.assertEqual(len(result.world.units), 4)
         self.assertEqual(len(result.theta_a_truth.event_history_manifest), 10)
