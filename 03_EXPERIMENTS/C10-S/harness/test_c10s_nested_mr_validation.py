@@ -65,13 +65,14 @@ class NestedMRFixtureContractTests(unittest.TestCase):
 
     def test_analyzer_receives_complete_fixture_and_returns_all_bootstrap_draws(self):
         spec = next(x for x in tier_a_specs() if x.cell_id == "F1_balanced_M10_R5")
-        record = analyze_fixture(generate_fixture(spec, 4), bootstrap_replicates=100)
+        dataset = generate_fixture(spec, 4)
+        record = analyze_fixture(dataset, bootstrap_replicates=100)
         self.assertEqual(record["bootstrap_replicates"], 100)
         self.assertEqual(record["valid_bootstrap_replicates"], 100)
         self.assertIn("within_ms", record["intervals_95"])
         self.assertIn("between_raw", record["intervals_95"])
         self.assertIsNotNone(record["observed_mcse"])
-        world_means = np.mean(np.asarray(spec and generate_fixture(spec, 4).rows), axis=1)
+        world_means = np.mean(np.asarray(dataset.rows), axis=1)
         expected_legacy_mcse = float(np.sqrt(np.var(world_means, ddof=1) / spec.m))
         self.assertAlmostEqual(record["observed_mcse"], expected_legacy_mcse)
 
