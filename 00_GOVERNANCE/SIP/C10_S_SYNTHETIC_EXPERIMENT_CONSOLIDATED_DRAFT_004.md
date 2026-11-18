@@ -904,3 +904,16 @@ Se refuerza `SyntheticThetaATargetHistory`: el valor tipado H0 de una historia o
 **EP-02 Run 835:** GitHub Actions `44280725936`, commit `a9a2999309c32bba5cdc89901fdd45e1d9c24c3b`: compilación PASS; primaria 307/307 PASS (13.634 s); replay limpio 307/307 PASS (13.404 s). Payload `14416543657`, SHA-256 `953dbdbf545d2a91299fc8ec5f0620170c21468aa063e9fee9b2a59ca3d5cb6d`; manifiesto `14416238830`, SHA-256 `57f11616c56a626435cb79c11b2067ce40429389b9aa404406f02123042ae8ea`.
 
 Workflow restaurado a activación manual `workflow_dispatch`; blob SHA `28471861a1c94038a11b5997a0b0e761b2659466`. Validación técnica acotada, sin calibración científica ni autorización de población.
+## 345. Adjudicación separada de soporte fuente, positividad y factibilidad de intervención (2026-11-18)
+
+Se precisa la adjudicación focal sin reabrir Gate 130 ni materializar objetos B1/UE:
+
+- **Historia objetivo fuera del soporte fuente:** `NOT_IDENTIFIED / TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT`, con sus referencias separadas.
+- **Historia objetivo con soporte fuente pero probabilidad de asignación focal 0 o 1:** `NOT_IDENTIFIED / SOURCE_ASSIGNMENT_POSITIVITY_FAILURE`, también con referencias separadas.
+- **Intervención indefinida o política conjunta estructuralmente inviable:** `ContractError`; no es no-identificación estadística porque el contraste/intervención no está bien definido o no es aplicable.
+
+Si concurren las dos primeras causas, el Analyzer conserva ambos tokens de razón y ambos conjuntos de historias. El Analyzer comprueba la propensión de cada observación sellada contra el contrato estructural; el Evaluator vuelve a comprobar la evidencia y el bundle de asignación contra el mismo contrato. La ausencia finita de un brazo realizado permanece `INDETERMINATE / REALIZED_GA_ARM_SUPPORT_MISSING`, distinta de la falta estructural de positividad.
+
+El generador ejecutable de asignaciones mantiene positividad estricta; no se relaja el diseño de asignación. Los valores frontera se admiten únicamente en el contrato explícito de adjudicación del Analyzer para representar la causa de no identificación. La evaluabilidad de potenciales por Generator sigue siendo una condición separada.
+
+Alcance: contrato software sintético; no crea ni autoriza roster q_X* B1/UE, pareja operativa g_A ni población científica. Sin cambio de estimando, objetivo causal ni decisión Gate 130. Estado de validación dinámica pendiente de EP-02/replay.
