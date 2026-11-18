@@ -999,3 +999,19 @@ Se cerró la brecha de compatibilidad entre roster fuente y población objetivo 
 **Validación EP-02:** Run 851 (`44335617915`), commit exacto `90c6512f2361c153d8de550ad6167c47ceb55f7f`, SUCCESS. Suite integrada de 16 módulos: 313/313 PASS en ejecución primaria y 313/313 PASS en replay limpio desde materialización equivalente. Incluye las regresiones source-superset, target-only sin fallo de positividad y no-solapamiento combinado con fallo de positividad. Payload artifact `14440773039` (SHA-256 `bf81186b49c55d86a5f6f7303f9dbb58a182b2bfcd6803df048574b2d387bbf3`); manifest artifact `14440308992` (SHA-256 `ad092a5bd230bf4d507476e47caf6fc7d58b8f0b9d600ae23b3018798aec1045`).
 
 **Alcance y estado:** PASS_STATIC + PASS_EP02_TECHNICAL + PASS_CLEAN_REPLAY para los contratos de software cubiertos. No constituye evidencia de calibración científica, recuperación de parámetros causales ni validez empírica. No se generó banco, no se ejecutó Monte Carlo/calibración, no se congeló el roster y no se modificó main ni Gate 130. El roster de cinco escenarios sigue siendo candidato y NOT_FROZEN. La workflow temporal por push y su sentinel se han retirado; el workflow queda limitado a `workflow_dispatch` con confirmación explícita.
+
+
+## 351. Reconciliación de captura de réplicas con soporte fuente/objetivo separado (2026-11-18)
+
+La revisión del protocolo de calibración encontró una incompatibilidad latente: `capture_theta_a_replicate` exigía igualdad entre fingerprints q_X/g_A del bundle de asignación fuente y los de la verdad reservada, aunque el pipeline ya permite que el roster fuente y la población objetivo q_X* difieran. Esa condición impedía capturar réplicas de los escenarios source-superset/target-subset y target-superset/source-support-failure aun cuando Analyzer y Evaluator los adjudicaran correctamente.
+
+Se corrigió la vinculación de procedencia en la captura:
+
+- Bundle de asignación: q_X fuente, g_A fuente, r_common fuente y assignment mechanism se contrastan con los campos fuente del Analyzer contract.
+- Verdad reservada: q_X objetivo y g_A0/g_A1 restringidas a q_X* se contrastan con q_X y target_g_A0/target_g_A1 del Analyzer contract.
+- El fingerprint de diseño de política incorpora ambos lados (fuente y objetivo) y el fingerprint canónico del contrato de soporte estructural, evitando colapsar poblaciones distintas bajo una identidad común.
+- Se añadieron regresiones unitarias: aceptación de un source-superset/target-subset correctamente vinculado y rechazo de una verdad que erróneamente use el fingerprint de q_X fuente en vez del objetivo.
+
+**EP-02 Run 852:** `44337524579`, commit probado `9b10ae3235dae0c28837a45aa824858a2fb27a7c`, SUCCESS. Suite de 16 módulos: 315/315 PASS en primaria y 315/315 PASS en replay limpio. Payload artifact `14441238525`, digest ZIP `0d56ecf8ac014250400a999bbf9a78133465754e8630e59e790d4b9dcbbec6dc`; manifest artifact `14441468115`, digest ZIP `e1f7d5af43055d67d4ece0c7e835d628de55e40f025945febea13b1fc3a28491`.
+
+**Alcance:** PASS técnico del contrato de captura y de la suite EP-02/replay. No valida el runner de calibración, el roster tipado, el rendimiento estadístico, MCSE observado ni la recuperación causal. No se generó banco de seeds ni se ejecutó Monte Carlo/calibración. La workflow temporal por push fue retirada y el workflow queda exclusivamente `workflow_dispatch` con confirmación explícita.
