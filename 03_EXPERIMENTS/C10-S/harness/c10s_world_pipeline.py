@@ -136,6 +136,7 @@ class C10SCompleteWorldResult:
         assignment_config: ThetaAPolicyAssignmentConfig,
         feasible_vectors_by_history: dict[str, tuple[Vector4, ...]],
         r_common_certificates: Sequence[RCommonPairCertificate],
+        theta_a_structural_support_contract: ThetaAStructuralSupportContract | None = None,
     ) -> None:
         world = self.world
         world.validate()
@@ -184,6 +185,7 @@ class C10SCompleteWorldResult:
         self.theta_a_assignments.validate(
             world, assignment_config, g_a0, g_a1,
             feasible_vectors_by_history, r_common_certificates,
+            theta_a_structural_support_contract,
         )
         if self.realized_history_selection.assignment_bundle_sha256 != self.theta_a_assignments.result_sha256:
             raise ContractError("realized EventHistory selection is detached from direct-g_A assignments")
@@ -389,6 +391,7 @@ def materialize_c10s_complete_world(
         assignment_config=assignment_config,
         feasible_vectors_by_history=feasible_vectors_by_history,
         r_common_certificates=r_common_certificates,
+        theta_a_structural_support_contract=theta_a_structural_support_contract,
     )
     return result
 
