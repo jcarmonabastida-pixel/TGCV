@@ -277,6 +277,10 @@ def materialize_c10s_complete_world(
     if (len({row.history_ref for row in target_q_x}) != len(target_q_x)
             or set(target_unit_ids) != {row.history_ref for row in target_q_x}):
         raise ContractError("theta_A target q_X and target-unit identities must cover exactly the same histories")
+    assignment_probabilities = dict(assignment_config.probability_a1_by_history)
+    has_boundary_propensity = any(value in (0.0, 1.0) for value in assignment_probabilities.values())
+    if has_boundary_propensity and theta_a_structural_support_contract is None:
+        raise ContractError("boundary assignment propensities require an explicit structural-support adjudication contract")
     if theta_a_structural_support_contract is not None:
         if (theta_a_structural_support_contract.target_q_x_sha256 != digest(target_q_x)
                 or theta_a_structural_support_contract.source_q_x_sha256 != digest(world.q_x)):
@@ -287,6 +291,12 @@ def materialize_c10s_complete_world(
                 rel_tol=0.0, abs_tol=1e-12,
         ) for row in theta_a_structural_support_contract.rows):
             raise ContractError("structural-support source masses do not reproduce the generated source q_X")
+        if any(row.source_mass > 0.0 and not math.isclose(
+                row.assignment_probability_a1,
+                assignment_probabilities.get(row.history_ref, math.nan),
+                rel_tol=0.0, abs_tol=1e-12,
+        ) for row in theta_a_structural_support_contract.rows):
+            raise ContractError("structural-support propensities do not reproduce the generated assignment mechanism")
     theta_truth = compute_theta_a_vcont_truth_from_event_histories(
         world, target_q_x, g_a0, g_a1, feasible_vectors_by_history,
         r_common_certificates, event_histories_by_policy, grid,
