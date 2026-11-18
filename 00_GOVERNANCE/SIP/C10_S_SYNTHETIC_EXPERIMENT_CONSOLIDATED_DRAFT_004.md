@@ -2770,3 +2770,61 @@ No se debe introducir un parámetro duplicado en producción ni cambiar el mapeo
 **Siguiente paso permitido:** revisar estáticamente la cobertura de verdad reservada y las expectativas de los cinco escenarios, verificando que los cuatro valores predeclarados del roster y el valor test-only derivado para target-only se mantienen separados y completos. No abrir un nuevo roster ni duplicar escenarios.
 
 **Controles:** únicamente se actualiza el documento maestro de la rama `research/c10-s-consolidation-draft`; no se modifican código, tests, perfiles, roster, seeds, workflows, RMA, Evidence→Claim Matrix, STATUS, Core ni `main`. No se ejecutan tests, pipelines, Analyzer/Evaluator, DGP, CI, calibración, Monte Carlo ni experimento científico. PR #116 permanece Draft. `implementation_authorized=false`, `scientific_execution=false`, `execution_authorized=false`, `calibration_authorized=false`.
+
+
+## 372. Matriz de cobertura de verdad reservada y expectativas del roster de cinco escenarios (2026-11-18)
+
+**Estado:** STATIC_COVERAGE_AUDIT / FOUR_PREDECLARED_TRUTHS_RECONCILED / FIFTH_TEST_ONLY_EXPECTATION / ROSTER_NOT_FROZEN.  
+**Objetivo:** comprobar que la derivación de §369/§371 cubre los cinco contratos candidatos sin alterar la separación entre verdad predeclarada del perfil, verdad reservada materializada y verdad de referencia del test.
+
+### 372.1 Matriz de correspondencia
+
+| ID de escenario | Variante ejecutada por la fábrica | Verdad del perfil | Verdad analítica de referencia | Identificación esperada | Evidencia de test revisada |
+|---|---|---:|---:|---|---|
+| `THETA_A_POSITIVE_V1` | `positive` | +0,5 | +0,5 | IDENTIFIED | Contrato del roster y pruebas del pipeline positivo |
+| `THETA_A_NULL_V1` | `null` | 0 | 0 | IDENTIFIED | Contrato del roster y pruebas de los modos focales |
+| `THETA_A_NEGATIVE_V1` | `negative` | −0,5 | −0,5 | IDENTIFIED | Contrato del roster y pruebas de los modos focales |
+| `THETA_A_ALTERNATIVE_COMMON_V1` | `alternative` | 0 | 0 | IDENTIFIED | Contrato del roster y prueba de vía alternativa común |
+| `THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1` | `positive` + materializador target-only | `None` | +0,5, solo como expectativa analítica test-only de §369/§371 | NOT_IDENTIFIED | Test end-to-end target-only; actualmente solo verifica bounds, causa y abstención |
+
+### 372.2 Cobertura efectivamente presente
+
+La revisión estática de `test_theta_a_calibration_protocol.py` encuentra:
+- una aserción explícita del orden de los cinco IDs;
+- una aserción explícita de las truths del perfil `[0.5, 0.0, -0.5, 0.0, None]`;
+- una aserción de `NOT_IDENTIFIED` y de la causa exacta para el quinto escenario;
+- un recorrido de captura por escenario que compara `row.truth` con la verdad del perfil cuando esta no es `None`, y para el quinto escenario comprueba únicamente `[-1,1]`.
+
+La revisión de `test_c10s_world_pipeline_integration.py` encuentra:
+- pruebas de verdad focal positiva y de la separación entre θ_A y el ITT-D2;
+- prueba del régimen alternativo común, con verdad focal cero y soporte identificado;
+- prueba end-to-end target-only sin fallo de positividad de asignación, que verifica la causa exacta `TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT`, la masa no soportada 0.5, cobertura 0.5, el roster fuente sin unidad sintética añadida y `CORRECT_ABSTENTION`;
+- ausencia de una aserción de igualdad numérica con +0,5 en ese test target-only.
+
+Las expectativas +0,5/0/−0,5/0 están vinculadas al contrato tipado del perfil y a pruebas del pipeline para los cuatro modos identificados. La expectativa target-only +0,5 todavía no está vinculada a una aserción de test. La verdad reservada se calcula y se captura, pero el test end-to-end no la contrasta con una derivación independiente.
+
+### 372.3 Lo que esta matriz no debe colapsar
+
+1. **Truth del perfil:** los cuatro valores declarados son parte del contrato tipado y su fingerprint; el quinto `None` es una omisión deliberada de predeclaración histórica. No cambiarlo en esta operación.
+2. **Truth reservada:** el TruthBundle y el Evaluator calculan/reciben una verdad numérica en cada réplica, también para el quinto escenario. Su existencia no vuelve identificado el estimando.
+3. **Identificación:** el quinto Analyzer debe abstenerse por soporte objetivo no cubierto aunque el DGP conozca la verdad. No se debe convertir +0,5 en punto estimado, bound más estrecho ni entrada visible al Analyzer.
+4. **Métricas:** bias, MAE, RMSE, recuperación puntual, cobertura y anchura de intervalo continúan `NOT_EVALUABLE` para el escenario estructuralmente no identificado. Una comparación del oráculo con +0,5 valida la verdad reservada, no convierte esas métricas en evaluables.
+
+### 372.4 Dictamen
+
+La cobertura conceptual de los cinco escenarios está reconciliada. No hay una quinta verdad desconocida: hay una verdad reservada materializada cuya cifra no está predeclarada en el perfil histórico. La derivación de §369 ofrece una expectativa de referencia +0,5, condicionada a la configuración actual del generador y del materializador. El cambio futuro correcto es una aserción test-only; no un cambio de perfil, fingerprint, Analyzer, Evaluator, roster ni estimando.
+
+| Componente | Estado |
+|---|---|
+| Cuatro truths predeclaradas del perfil | RECONCILED |
+| Quinta truth reservada materializada | IMPLEMENTED PATH / NOT NUMERICALLY ASSERTED |
+| Expectativa analítica +0,5 para target-only | DERIVED CONDITIONALLY / TEST-ONLY |
+| Cobertura de abstención/causa target-only | TEST AUTHORED / HISTORICAL EP-02 EVIDENCE / NO NEW EXECUTION |
+| Igualdad TruthBundle/Evaluator vs +0,5 | MISSING ASSERTION |
+| Roster | FIVE CANDIDATES / NOT FROZEN |
+| Implementación del cambio | NOT AUTHORIZED |
+| Ejecución y calibración | NOT AUTHORIZED |
+
+**Siguiente operación:** completar la auditoría de independencia de unidades y de mundos para el roster completo, con especial atención al quinto escenario: su unidad sintética target-only no pertenece al roster fuente aleatorizado, y la declaración `unit_independence_certified=False` debe interpretarse sin confundirla con dependencia entre las unidades fuente. La auditoría debe separar independencia de unidades dentro de M, independencia de mundos M e independencia/relación de asignaciones R.
+
+**Controles:** solo documento maestro en `research/c10-s-consolidation-draft`; no se modifican código, tests, perfil, roster, seeds, workflows, decisiones fuente, RMA, Evidence→Claim Matrix, STATUS, Core ni `main`. No se ejecutan tests, DGP, Analyzer/Evaluator, runner, CI, calibración o Monte Carlo. PR #116 permanece Draft. `implementation_authorized=false`, `scientific_execution=false`, `execution_authorized=false`, `calibration_authorized=false`.
