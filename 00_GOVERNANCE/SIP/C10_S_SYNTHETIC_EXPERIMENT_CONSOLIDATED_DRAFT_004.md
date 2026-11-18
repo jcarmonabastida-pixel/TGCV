@@ -897,3 +897,10 @@ El punto de entrada DGP exige materializaciones para todas y solo las historias 
 **EP-02 Run 834:** GitHub Actions `44280284615`, commit probado `a92bbdc5b6f5a75e6c22d1e0c5a266185b5b106d`: compilación PASS; primaria 307/307 PASS (13.579 s); replay limpio 307/307 PASS (13.379 s). Payload `14416891006`, SHA-256 `d01bb844c4a91e25de8180031c25f860a975c27dc1b0972d6376fe298050691d`; manifiesto `14417325217`, SHA-256 `9656eebe7593761bb7df51edde0f7494c6355be4d171477077777b20f57eafe8`.
 
 Workflow restaurado a `workflow_dispatch` únicamente; blob SHA `28471861a1c94038a11b5997a0b0e761b2659466`. Evidencia técnica acotada del contrato de materialización sintética; no constituye calibración científica ni autorización de población.
+## 344. Cierre de dominio H0 para materialización basal objetivo — EP-02 Run 835 (2026-11-18)
+
+Se refuerza `SyntheticThetaATargetHistory`: el valor tipado H0 de una historia objetivo externa debe pertenecer al soporte declarado en `SyntheticWorldConfig.h0_distribution`. Una etiqueta fuera del dominio falla cerrado. La regresión cubre además la omisión de materialización y la dimensión X incompatible.
+
+**EP-02 Run 835:** GitHub Actions `44280725936`, commit `a9a2999309c32bba5cdc89901fdd45e1d9c24c3b`: compilación PASS; primaria 307/307 PASS (13.634 s); replay limpio 307/307 PASS (13.404 s). Payload `14416543657`, SHA-256 `953dbdbf545d2a91299fc8ec5f0620170c21468aa063e9fee9b2a59ca3d5cb6d`; manifiesto `14416238830`, SHA-256 `57f11616c56a626435cb79c11b2067ce40429389b9aa404406f02123042ae8ea`.
+
+Workflow restaurado a activación manual `workflow_dispatch`; blob SHA `28471861a1c94038a11b5997a0b0e761b2659466`. Validación técnica acotada, sin calibración científica ni autorización de población.
