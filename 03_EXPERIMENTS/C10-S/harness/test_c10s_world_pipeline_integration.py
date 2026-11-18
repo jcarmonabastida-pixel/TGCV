@@ -414,6 +414,13 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             unit.d2_baseline.baseline_history_ref: unit.unit_id for unit in world.units
         }
         target_unit_ids = {**source_unit_ids, extra_ref: extra_unit_id}
+        assignment_probabilities = dict(fixture["assignment_config"].probability_a1_by_history)
+        positivity_failure_history = world.q_x[0].history_ref
+        assignment_probabilities[positivity_failure_history] = 0.0
+        fixture["assignment_config"] = replace(
+            fixture["assignment_config"],
+            probability_a1_by_history=tuple(sorted(assignment_probabilities.items())),
+        )
         zero_vector = fixture["g_a0"][0].distribution[0][0]
         one_vector = fixture["g_a1"][0].distribution[0][0]
         fixture["g_a0"] = fixture["g_a0"] + (JointPolicyHistory(extra_ref, ((zero_vector, 1.0),)),)
@@ -435,7 +442,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             tuple(
                 ThetaAStructuralSupportRow(
                     row.history_ref, row.mass, 1.0 / len(world.units),
-                    True, True, True, 0.5,
+                    True, True, True, assignment_probabilities[row.history_ref],
                 ) for row in target_q_x[:-1]
             ) + (ThetaAStructuralSupportRow(
                 extra_ref, 0.5, 0.0, True, True, True, None,
@@ -482,8 +489,15 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(len(result.theta_a_truth.event_history_manifest), 10)
         self.assertEqual(len(result.theta_a_assignments.assignments), 4)
         self.assertEqual(result.analyzer_result.identification, "NOT_IDENTIFIED")
-        self.assertEqual(result.analyzer_result.abstention_reason, "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT")
+        self.assertEqual(
+            result.analyzer_result.abstention_reason,
+            "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT+SOURCE_ASSIGNMENT_POSITIVITY_FAILURE",
+        )
         self.assertEqual(result.analyzer_result.missing_target_histories, (extra_ref,))
+        self.assertEqual(
+            result.analyzer_result.assignment_positivity_failure_histories,
+            (positivity_failure_history,),
+        )
         self.assertAlmostEqual(result.analyzer_result.target_q_x_coverage, 0.5)
         self.assertTrue(result.evaluator_result.truth_within_bounds)
         self.assertTrue(result.evaluator_result.correct_adjudication)
