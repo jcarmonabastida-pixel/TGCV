@@ -972,3 +972,15 @@ Manteniendo provisionalmente N={32,64,128}, M=100 y R=20, el paso de cuatro a ci
 5. Probar el agregador con esos registros capturados y verificar que las métricas inaplicables se marcan `NOT_EVALUABLE`, no se fuerzan a cero ni se omiten mediante complete-case.
 
 **Estado:** FIVE_SCENARIO_ROSTER_CANDIDATE / STRUCTURAL_NONIDENTIFICATION_CALIBRATION_PATH_NOT_IMPLEMENTED / SOURCE_SUPERSET_REGRESSION_OPEN / DIMENSIONING_CANDIDATE / NOT_FROZEN / NOT_EXECUTED. No se generaron bancos/seeds ni se ejecutó calibración, Monte Carlo o experimento científico. No cambia Gate 130, el estimando, las políticas ni la autorización vigente.
+
+
+## 349. Fixtures aisladas de frontera de soporte añadidas — EP-02 pendiente (2026-11-18)
+
+Se añadieron dos pruebas generadas end-to-end en `test_c10s_world_pipeline_integration.py`, sin alterar la prueba adversarial combinada existente:
+
+- `test_target_only_support_without_assignment_failure_abstains_end_to_end`: historia target-only de masa positiva, políticas focales definidas y factibles, y positividad de asignación 0.5 estricta en todo el solapamiento objetivo/fuente. Resultado esperado: `NOT_IDENTIFIED / TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT`, ninguna historia con fallo de positividad de asignación y Evaluator `CORRECT_ABSTENTION`.
+- `test_source_support_strict_superset_of_target_is_benign_end_to_end`: q_X objetivo es subconjunto estricto del soporte fuente generado; masas objetivo renormalizadas y masas fuente conservadas en el contrato. Se mantiene la asignación sobre el roster fuente completo, mientras la verdad focal se evalúa sobre q_X*. Resultado esperado: Analyzer identificado, cobertura objetivo 1.0, Evaluator `CORRECT_IDENTIFICATION`; la historia solo-fuente no debe causar abstención.
+
+La segunda prueba conserva deliberadamente políticas, certificados y asignaciones sobre todo el mundo fuente: el generador de asignaciones requiere cobertura completa del soporte fuente aunque el estimando focal se evalúe en el subconjunto objetivo. Esto evita confundir roster de asignación fuente con población objetivo del estimando.
+
+**Estado:** TESTS_AUTHORED / STATIC_REVIEW_ONLY / EP-02_NOT_RUN / REPLAY_NOT_RUN. Las pruebas aún no están compiladas ni ejecutadas. Requieren nueva autorización EP-02 + replay sobre el nuevo commit de tests. No se ejecutó calibración, no se creó banco de seeds y no se inició experimento científico.
