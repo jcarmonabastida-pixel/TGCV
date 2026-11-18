@@ -662,7 +662,14 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             result.analyzer_contract.target_g_a1_sha256,
         )
         self.assertNotIn(excluded_source_history, target_refs)
-        self.assertEqual(result.analyzer_result.identification, "IDENTIFIED")
+        self.assertEqual(
+            result.analyzer_result.identification, "IDENTIFIED",
+            f"diagnostic: reason={result.analyzer_result.abstention_reason}; "
+            f"arms={result.analyzer_result.assigned_arm_unit_counts}; "
+            f"missing={result.analyzer_result.missing_target_histories}; "
+            f"intervals={result.analyzer_result.missing_interval_count}/"
+            f"{result.analyzer_result.total_interval_count}",
+        )
         self.assertEqual(result.analyzer_result.abstention_reason, "")
         self.assertEqual(result.analyzer_result.missing_target_histories, ())
         self.assertEqual(result.analyzer_result.assignment_positivity_failure_histories, ())
