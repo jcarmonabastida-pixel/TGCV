@@ -7,7 +7,7 @@ calibration or creates a bank unless its explicit builder is called.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 import hashlib
 import json
 from math import isfinite, sqrt
@@ -561,7 +561,7 @@ def _validate_truth_assignment_population_bindings(
         analysis_contract.q_x_sha256,
         target_g_a0,
         target_g_a1,
-        analysis_contract.structural_support_contract.result_sha256
+        _canonical_hash(asdict(analysis_contract.structural_support_contract))
         if analysis_contract.structural_support_contract is not None else "",
     )))
 
