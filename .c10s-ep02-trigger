@@ -1,1 +1,1 @@
-Authorized EP-02 retry: canonical dataclass serialization for structural-support fingerprint; source/target support regression and replay. Technical only.
+Authorized EP-02 retry: separate target-estimand policy fingerprints from source assignment bundle; end-to-end support tests and replay only.
