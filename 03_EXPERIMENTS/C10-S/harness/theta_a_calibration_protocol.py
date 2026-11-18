@@ -1131,6 +1131,119 @@ class ThetaACalibrationSummary:
     power_status: str = "NOT_DEFINED_NO_TEST_PROCEDURE"
 
 
+
+def theta_a_nested_metric_contributions(
+    design: ThetaACalibrationDesign,
+    scenario: ThetaACalibrationScenario,
+    records: Iterable[ThetaAReplicateRecord],
+    *,
+    n_units: int,
+    metric: str,
+) -> tuple[tuple[float, ...], ...] | None:
+    """Expose the exact per-R scalar contributions used by the focal aggregator.
+
+    Returns None when the metric is NOT_EVALUABLE under the protocol's frozen
+    denominator/applicability rules. Rows are ordered by outer_world_id and
+    assignment_replicate. point_rmse returns squared errors (MSE scale), as
+    the legacy summary's outer_world_contributions do.
+    """
+    design.validate()
+    if metric not in _THETA_A_METRIC_BY_NAME:
+        raise ThetaACalibrationError("unknown focal metric for nested contribution extraction")
+    if n_units not in design.n_grid or scenario not in design.scenario_specs:
+        raise ThetaACalibrationError("nested extraction scenario/N is outside the design")
+    rows = tuple(records)
+    grouped = {}
+    for row in rows:
+        if (row.scenario_id, row.scenario_version, row.n_units) != (
+            scenario.scenario_id, scenario.scenario_version, n_units
+        ):
+            continue
+        key = (row.outer_world_id, row.assignment_replicate)
+        if key in grouped:
+            raise ThetaACalibrationError("duplicate M/R record in nested contribution extraction")
+        row.validate()
+        grouped[key] = row
+    output = []
+    for m in range(design.outer_worlds_m):
+        outer_id = f"outer-{m:06d}"
+        group = []
+        for r in range(design.assignment_replicates_r):
+            record = grouped.get((outer_id, r))
+            if record is None:
+                return None
+            group.append(record)
+        identified = [x.analyzer_identification == "IDENTIFIED" for x in group]
+        if metric == "identification_rate":
+            values = [float(x) for x in identified]
+        elif metric == "abstention_rate":
+            values = [float(not x) for x in identified]
+        elif metric == "interval_availability_rate":
+            values = [float(x.inference_covered is not None) for x in group]
+        elif metric in ("evaluator_truth_within_bounds_rate", "evaluator_correct_adjudication_rate"):
+            field = ("evaluator_truth_within_bounds" if metric == "evaluator_truth_within_bounds_rate"
+                     else "evaluator_correct_adjudication")
+            raw = [getattr(x, field) for x in group]
+            if any(value is None for value in raw):
+                return None
+            values = [float(value) for value in raw]
+        elif metric == "false_abstention_rate":
+            if scenario.expected_identification != "IDENTIFIED":
+                return None
+            values = [float(not x) for x in identified]
+        elif metric in ("point_bias", "point_mae", "point_rmse", "point_recovery_rate"):
+            if scenario.expected_identification != "IDENTIFIED" or not all(identified):
+                return None
+            errors = [float(x.point_estimate) - x.truth for x in group]
+            if metric == "point_bias":
+                values = errors
+            elif metric == "point_mae":
+                values = [abs(x) for x in errors]
+            elif metric == "point_rmse":
+                values = [x * x for x in errors]
+            else:
+                if design.point_recovery_tolerance is None:
+                    return None
+                values = [float(abs(x) <= design.point_recovery_tolerance) for x in errors]
+        elif metric in ("interval_coverage", "interval_width"):
+            if scenario.expected_identification != "IDENTIFIED" or any(
+                x.inference_covered is None or x.inference_width is None for x in group
+            ):
+                return None
+            values = (
+                [float(x.inference_covered) for x in group]
+                if metric == "interval_coverage"
+                else [float(x.inference_width) for x in group]
+            )
+        elif metric in (
+            "correct_abstention_rate", "wrong_cause_abstention_rate",
+            "partial_identification_rate", "false_identification_rate",
+        ):
+            if scenario.expected_identification == "IDENTIFIED":
+                return None
+            expected_reason = scenario.dgp_profile.expected_abstention_reason if scenario.dgp_profile else None
+            if metric == "correct_abstention_rate":
+                values = [float(
+                    x.analyzer_identification == "NOT_IDENTIFIED"
+                    and x.observed_abstention_reason == expected_reason
+                ) for x in group]
+            elif metric == "wrong_cause_abstention_rate":
+                values = [float(
+                    x.analyzer_identification in ("NOT_IDENTIFIED", "INDETERMINATE")
+                    and not (x.analyzer_identification == "NOT_IDENTIFIED"
+                             and x.observed_abstention_reason == expected_reason)
+                ) for x in group]
+            elif metric == "partial_identification_rate":
+                values = [float(x.analyzer_identification == "PARTIALLY_IDENTIFIED") for x in group]
+            else:
+                values = [float(x.analyzer_identification == "IDENTIFIED") for x in group]
+        else:
+            raise ThetaACalibrationError("metric has no registered per-R contribution rule")
+        output.append(tuple(values))
+    if len(grouped) != design.outer_worlds_m * design.assignment_replicates_r:
+        raise ThetaACalibrationError("nested extraction received unexpected M/R records")
+    return tuple(output)
+
 def summarize_theta_a_calibration(
     design: ThetaACalibrationDesign,
     assignments: Iterable[ThetaASeedAssignment],
