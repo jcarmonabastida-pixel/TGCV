@@ -3108,3 +3108,46 @@ No se seleccionan N, M, R, targets de precisión, confianza, potencia ni Type-I 
 El siguiente trabajo no será otra auditoría de escenarios. Será cerrar el protocolo de medición y diseño sobre la batería ya existente: definir el conjunto confirmatorio de métricas por clase de identificación, explicitar los denominadores y los criterios de recuperación/abstención, y vincularlos al contrato de muestreo M. Solo después se derivarán N/M/R y los objetivos de precisión/potencia. Los valores históricos de fixture y candidatos anteriores no se elevan a defaults.
 
 **Controles:** se modifican el protocolo focal, su test unitario y el README técnico de harness, más este registro en el maestro, exclusivamente en `research/c10-s-consolidation-draft`. No se modifican DGP, roster, Analyzer, Evaluator, estimando, seeds, workflows, RMA, Matrix, STATUS, Core ni `main`. No se ejecutan tests, compilación, DGP, Analyzer/Evaluator, workflows, calibración, Monte Carlo ni experimento científico. PR #116 permanece Draft. `implementation_authorized=true`, `technical_test_execution_authorized=false`, `workflow_dispatch_authorized=false`, `calibration_authorized=false`, `scientific_execution=false`, `execution_authorized=false`.
+
+
+## 378. Registro único de métricas, denominadores y target manifest (2026-11-18)
+
+**Estado:** METRIC_REGISTRY_IMPLEMENTED_STATIC / TARGET_MANIFEST_VERSIONED / REGRESSION_AUTHORED_NOT_EXECUTED / NO_CONFIRMATORY_TARGETS_SELECTED.  
+**Propósito:** cerrar en el protocolo ejecutable la correspondencia entre métricas, clases de identificación, denominadores dentro de M y agregación exterior, evitando que la aplicabilidad dependa de ramas dispersas o de la presencia accidental de observaciones.
+
+### 378.1 Registro exhaustivo
+
+`THETA_A_METRIC_REGISTRY` contiene los 16 resultados del agregador y declara para cada uno:
+- aplicabilidad: `ALL`, `IDENTIFIED` o `NOT_IDENTIFIED`;
+- denominador dentro de mundo: todos los R, todos los R identificados, todos los R con intervalo o todos los R con auditoría Evaluator completa;
+- agregación: proporción/media dentro de R seguida de media equiponderada entre M, o raíz de la media equiponderada de MSE por mundo.
+
+Las reglas son:
+1. Tasas operacionales y de identificación/abstención: denominador R completo de cada M.
+2. Bias, MAE, RMSE y recuperación puntual: requieren todos los R identificados en el M. Si falla alguno, la contribución del M es ausente y la métrica completa queda `NOT_EVALUABLE`; no se usa complete-case. Sin tolerancia explícita, `point_recovery_rate` conserva su slot pero es no evaluable.
+3. Cobertura/anchura: requieren intervalo válido para todos los R del M. `interval_availability_rate` se informa separadamente con denominador R completo.
+4. Métricas de adjudicación Evaluator: requieren el triplete de auditoría completo en todos los R del M.
+5. Las métricas incompatibles con la clase del escenario permanecen presentes como `NOT_EVALUABLE`, nunca se omiten ni se convierten en cero.
+6. La agregación da el mismo peso a cada M. RMSE es la raíz de la media equiponderada de los MSE por mundo; R no se cuenta como mundo.
+
+La validación de targets consume el mismo registro y rechaza objetivos de métricas incompatibles con la clase de identificación.
+
+### 378.2 Target Manifest y trazabilidad
+
+Una colección `metric_targets` no vacía requiere `metric_target_manifest_id` y `metric_target_manifest_version`. El resumen conserva el SHA-256 de la identidad, versión y targets exactos. Un diseño sin objetivos no puede declarar una identidad de manifest vacía o ficticia. Los umbrales presentes en helpers unitarios son exclusivos de test; no se promueve ningún MCSE target ni tolerancia de recuperación al diseño confirmatorio.
+
+### 378.3 Regresión y límites
+
+Las pruebas añadidas comprueban la exhaustividad de los 16 resultados, sus reglas de denominador/aplicabilidad, el rechazo de targets sin identidad/versionado y la conservación del fingerprint en el resumen. Se mantienen separados:
+- precisión Monte Carlo entre M, condicionada al contrato de muestreo §377;
+- precisión de recuperación puntual del Analyzer;
+- cobertura/anchura de intervalos;
+- tasas de abstención y adjudicación.
+
+No se define Type-I error ni potencia: continúan `NOT_DEFINED_NO_TEST_PROCEDURE`. No se seleccionan N, M, R, confianza, tolerancias ni umbrales confirmatorios.
+
+**Dictamen integrado:** §§377–378 cierran dos fallos de gobernanza del resumen estadístico: no declarar precisión inferencial sin un supuesto M explícito y no aceptar objetivos sin un registro de métricas/denominadores versionado. No constituyen dimensionamiento ni calibración.
+
+**Siguiente bloque:** construir el dimensionamiento N/M/R desde la distribución sintética y los estimandos/targets que se aprueben, usando simulación analítica/oráculos antes de abrir bancos. No transferir automáticamente N=700 de P178, M=100 ni los MCSE históricos. Antes de una decisión sobre targets confirmatorios, el diseño debe permanecer sin targets numéricos y el roster continúa `NOT_FROZEN`.
+
+**Controles:** se modifican el protocolo focal, su test unitario y el README técnico de harness, más este maestro en `research/c10-s-consolidation-draft`. No se cambian DGP, Analyzer, Evaluator, roster, seeds, workflows, RMA, Matrix, STATUS, Core ni `main`. No se ejecutan tests, compilación, DGP, Analyzer/Evaluator, workflows, calibración, Monte Carlo ni experimento científico. PR #116 permanece Draft. `implementation_authorized=true`, `technical_test_execution_authorized=false`, `workflow_dispatch_authorized=false`, `calibration_authorized=false`, `scientific_execution=false`, `execution_authorized=false`.
