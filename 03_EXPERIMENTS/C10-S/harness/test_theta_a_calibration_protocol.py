@@ -12,6 +12,7 @@ from theta_a_calibration_protocol import (
     ThetaACalibrationDGPProfile,
     ThetaACalibrationError,
     ThetaACalibrationScenario,
+    OuterWorldSamplingContract,
     ThetaAReplicateRecord,
     build_theta_a_seed_bank,
     build_theta_a_candidate_scenario_roster,
@@ -46,6 +47,18 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
                 ("THETA_A_IDEAL", "1.0", 4, "interval_coverage", 0.01),
                 ("THETA_A_IDEAL", "1.0", 4, "interval_width", 0.01),
             ) if scenario.expected_identification == "IDENTIFIED" else (),
+            outer_world_sampling=OuterWorldSamplingContract(
+                mode="DECLARED_IID_PSEUDORANDOM",
+                contract_id="TEST-OUTER-WORLD-IID",
+                contract_version="1.0",
+                target_distribution_id="TEST-WORLD-DISTRIBUTION",
+                target_distribution_version="1.0",
+                world_generator_id="TEST-WORLD-GENERATOR",
+                world_generator_version="1.0",
+                seed_stream_id="TEST-SEED-STREAM",
+                seed_stream_version="1.0",
+                independence_basis="independent pseudorandom streams under the declared test-only world distribution",
+            ),
         )
 
     def _record(self, row, expected, observed, point, lower, upper, covered, width, requested_level,
@@ -343,6 +356,42 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         self.assertEqual(metrics["interval_coverage"].precision_status, "PASS_PRECISION")
         self.assertEqual(summary.type_i_error_status, "NOT_DEFINED_NO_TEST_PROCEDURE")
         self.assertEqual(summary.power_status, "NOT_DEFINED_NO_TEST_PROCEDURE")
+
+    def test_unverified_outer_world_sampling_suppresses_inferential_mcse(self):
+        design = replace(
+            self._design(),
+            outer_world_sampling=OuterWorldSamplingContract(),
+        )
+        assignments = build_theta_a_seed_bank(design, "calibration")
+        records = tuple(
+            self._record(row, "IDENTIFIED", "IDENTIFIED", 0.21, 0.1, 0.3, True, 0.2, 0.95)
+            for row in assignments
+        )
+        summary = summarize_theta_a_calibration(
+            design, assignments, records, bank="calibration"
+        )[0]
+        metrics = {item.metric: item for item in summary.metrics}
+        coverage = metrics["interval_coverage"]
+        self.assertAlmostEqual(coverage.mean, 1.0)
+        self.assertIsNone(coverage.mcse)
+        self.assertEqual(coverage.precision_status, "NOT_EVALUABLE_IID_UNVERIFIED")
+        self.assertEqual(
+            coverage.mcse_interpretation, "NO_INFERENTIAL_MCSE_IID_UNVERIFIED",
+        )
+        self.assertEqual(summary.outer_world_sampling_mode, "UNVERIFIED")
+
+    def test_declared_iid_outer_world_contract_requires_complete_provenance(self):
+        design = replace(
+            self._design(),
+            outer_world_sampling=OuterWorldSamplingContract(
+                mode="DECLARED_IID_PSEUDORANDOM",
+                contract_id="TEST-IID", contract_version="1.0",
+                target_distribution_id="TEST-DGP",
+                target_distribution_version="1.0",
+            ),
+        )
+        with self.assertRaises(ThetaACalibrationError):
+            design.validate()
 
     def test_replicates_within_must_keep_world_and_policy_fingerprints(self):
         design = self._design()
