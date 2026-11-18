@@ -174,13 +174,14 @@ class ThetaAObservationEvaluator:
             raise ContractError("assignment bundle contains duplicate unit assignments")
         if contract.confidence_level is not None:
             p1_by_history = dict(contract.probability_a1_by_history)
-            if set(p1_by_history) != {row.history_ref for row in assignment_bundle.assignments}:
-                raise ContractError("inferential probability contract does not cover the exact assignment histories")
+            if set(p1_by_history) != set(dict(contract.q_x_mass_by_history)):
+                raise ContractError("inferential probability contract does not cover the exact target q_X histories")
             if any(not math.isclose(
                     p1_by_history[row.history_ref], row.probability_a1,
                     rel_tol=0.0, abs_tol=1e-12
-            ) for row in assignment_bundle.assignments):
-                raise ContractError("inferential probability contract differs from the actual two-arm assignment bundle")
+            ) for row in assignment_bundle.assignments
+                   if row.history_ref in p1_by_history):
+                raise ContractError("inferential probability contract differs from the target portion of the actual assignment bundle")
         evidence_units = {row["unit_id"] for row in evidence.rows}
         if evidence_units != set(assignment_by_unit):
             raise ContractError("sealed observations must cover the exact assigned-unit roster")
