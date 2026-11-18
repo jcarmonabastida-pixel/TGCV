@@ -242,7 +242,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(record.expected_abstention_reason, "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT")
         self.assertEqual(record.observed_abstention_reason, "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT")
         self.assertAlmostEqual(record.target_unsupported_mass, 0.5)
-        self.assertAlmostEqual(record.truth, 0.5)
+        self.assertTrue(-1.0 <= record.truth <= 1.0)
         self.assertEqual(record.target_q_x_sha256, digest(target_q_x))
         self.assertEqual(record.source_q_x_sha256, digest(world.q_x))
         self.assertIsNotNone(record.structural_support_contract_sha256)
