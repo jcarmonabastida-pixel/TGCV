@@ -2828,3 +2828,93 @@ La cobertura conceptual de los cinco escenarios está reconciliada. No hay una q
 **Siguiente operación:** completar la auditoría de independencia de unidades y de mundos para el roster completo, con especial atención al quinto escenario: su unidad sintética target-only no pertenece al roster fuente aleatorizado, y la declaración `unit_independence_certified=False` debe interpretarse sin confundirla con dependencia entre las unidades fuente. La auditoría debe separar independencia de unidades dentro de M, independencia de mundos M e independencia/relación de asignaciones R.
 
 **Controles:** solo documento maestro en `research/c10-s-consolidation-draft`; no se modifican código, tests, perfil, roster, seeds, workflows, decisiones fuente, RMA, Evidence→Claim Matrix, STATUS, Core ni `main`. No se ejecutan tests, DGP, Analyzer/Evaluator, runner, CI, calibración o Monte Carlo. PR #116 permanece Draft. `implementation_authorized=false`, `scientific_execution=false`, `execution_authorized=false`, `calibration_authorized=false`.
+
+
+## 373. Auditoría de independencia N×M×R y emparejamiento entre escenarios (2026-11-18)
+
+**Estado:** STATIC_DEPENDENCE_AUDIT / SEED_STREAM_SEPARATION_IMPLEMENTED / STATISTICAL_INDEPENDENCE_CONDITIONAL / TARGET_ONLY_UNIT_NOT_SAMPLED.  
+**Objetivo:** separar la independencia postulada dentro de cada mundo, la generación de mundos exteriores M, las réplicas de asignación R y el emparejamiento deliberado entre escenarios. La unicidad de seeds/streams no se interpreta por sí sola como demostración matemática de independencia.
+
+### 373.1 Unidades N dentro de un mundo M
+
+`SyntheticWorldBuilder.generate()` usa un único `random.Random(config.seed)` por mundo y recorre secuencialmente las N unidades. Para cada unidad genera sus covariables basales, indicadores Bernoulli de componentes y un `d2_seed` propio mediante `getrandbits(64)`, con el que materializa sus potenciales D2. La identidad y el roster de cada unidad se generan por índice y se validan como parte del mundo.
+
+La asignación focal usa `_dgp_uniform(world.seed_commitment_sha256, randomization_salt, unit_id, ...)`: separa por clave la extracción de brazo y la extracción del vector conjunto. Los potenciales funcionales G_A se generan por unidad/historia, vector y régimen común; no se reutiliza la asignación realizada como si fuera el potencial contrafactual.
+
+**Dictamen N:** la arquitectura implementada es compatible con unidades generadas independientemente bajo el modelo de pseudoaleatoriedad de los generadores y sin interferencia. La declaración de `independence_basis` del roster es una justificación de diseño, no un certificado estadístico observado. La revisión estática no prueba independencia empírica ni excluye toda dependencia compartida no representada por el DGP.
+
+Para los cuatro escenarios identificados, `unit_independence_certified=True` habilita el cálculo inferencial individual previsto por el protocolo. Esa bandera sigue siendo una premisa declarada del escenario, no una conclusión que el validador derive del código.
+
+### 373.2 Mundos exteriores M
+
+La derivación de semillas `TGCV-C10S-THETA-A-SEED-v2` construye `world_seed/world_id/roster_id/unit_id_prefix` a partir de namespace, banco, familia de mundo, versiones, N e identificador exterior M. La validación exige:
+- identidad y seed constantes entre las R del mismo escenario×N×M;
+- world_id, roster_id, seed y prefijo de unidades distintos entre M dentro de un diseño;
+- identidad basal exactamente compartida entre escenarios de una misma `world_family_id`×N×M;
+- identidad distinta entre familias×N×M.
+
+Esto acredita separación y unicidad determinista de identidades/semillas, no independencia matemática por sí sola. La interpretación de mundos M como réplicas independientes descansa además en el supuesto de pseudoaleatoriedad de las semillas y del generador, y en que no haya estado global compartido entre ejecuciones. No hay ejecución ni diagnóstico de correlación entre mundos en esta revisión.
+
+**Dictamen M:** `M` representa mundos exteriores distintos por construcción de streams y de identidad. Su independencia estadística es una hipótesis de diseño condicionada al mecanismo pseudoaleatorio, no un resultado probado por la validación de fingerprints.
+
+### 373.3 Réplicas R dentro de M
+
+Para un M dado, R conserva el mismo mundo, roster, DGP y verdad reservada. Cada R recibe:
+- `run_id` distinto;
+- `randomization_salt` distinto para la asignación de política conjunta;
+- `s3_seed` distinto para la observación;
+- separación explícita entre streams de mundo y S3.
+
+El generador focal deriva los draws de asignación a partir del compromiso del mundo, salt de R, unidad y dominio de extracción. La validación exige unicidad global de `run_id`, salts y seeds S3 y su separación respecto a seeds de mundo.
+
+**Dictamen R:** las R son repeticiones de asignación/observación condicionadas al mismo mundo M; no son mundos independientes ni deben aumentar el número efectivo de M para el MCSE entre mundos. Son streams diferenciados y reproducibles; su independencia condicional se apoya en el esquema hash/salt y en el supuesto pseudoaleatorio, no en la mera diferencia de cadenas.
+
+### 373.4 Emparejamiento entre escenarios
+
+La familia `THETA_A_INTERACTION_BASE_V1` agrupa positive, alternative y positive_target_only. Para cada N×M comparten exactamente world_seed, world_id, roster_id y prefijo de unidades. Los escenarios conservan run_id, salts y streams S3 propios. Positive y alternative son, por tanto, comparaciones emparejadas sobre el mismo mundo basal con regímenes funcionales distintos; target-only añade una extensión determinista del soporte objetivo sobre esa misma base.
+
+Null y negative pertenecen a familias de mundo distintas. No deben presentarse como emparejados con positive/alternative ni usarse como si fueran contrastes pareados de la misma realización basal.
+
+El emparejamiento positive/alternative/target-only es intencional y compatible con contrastes por mundo. No contradice la independencia entre mundos M, pero exige que el análisis preserve la estructura pareada por familia y no trate las observaciones de escenarios de una misma familia×N×M como independientes.
+
+### 373.5 Particularidad del quinto escenario target-only
+
+El quinto escenario declara `unit_independence_certified=False`. La revisión del materializador muestra que:
+- las N unidades fuente siguen siendo las unidades del mundo generado;
+- la historia `TARGET-ONLY-HISTORY-001` recibe una identidad sintética `TARGET-ONLY-UNIT-001`, pero no se incorpora a `world.units`;
+- no recibe asignación focal ni observación S3 de una unidad fuente;
+- sus covariables X/H0/C_c se anclan copiando las de la primera unidad fuente;
+- su estado funcional inicial y sus potenciales G_A se materializan de forma determinista bajo las reglas positivas.
+
+Por ello, `unit_independence_certified=False` no debe interpretarse como evidencia de dependencia entre las N unidades fuente. Es una negativa conservadora a certificar independencia individual para el estimando q_X* completo, que contiene masa target-only no muestreada ni aleatorizada. La historia añadida no es una unidad independiente extraída de la población fuente. El estimando objetivo sigue teniendo verdad sintética definida, pero no adquiere soporte observacional ni una muestra independiente para inferencia.
+
+La consecuencia operativa correcta es la ya implementada: no suministrar confianza inferencial individual al Analyzer para el quinto escenario y mantener `NOT_IDENTIFIED / TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT`. No reinterpretar la flag como una refutación de independencia de las unidades fuente, ni elevarla a certificación de representatividad de la unidad anclada.
+
+### 373.6 Implicaciones para la futura inferencia y el MCSE
+
+1. N cuantifica unidades fuente dentro del mundo; no incluye la historia target-only sintética como unidad aleatorizada.
+2. R cuantifica repeticiones de asignación/observación dentro del mismo M; no sustituye M.
+3. M cuantifica mundos exteriores; su independencia requiere el supuesto pseudoaleatorio y ausencia de estado compartido, además de seeds/identidades distintas.
+4. Los contrastes positive–alternative–target-only dentro de una misma familia×N×M deben preservar el emparejamiento; el análisis no debe inflar el tamaño muestral contando escenarios emparejados como mundos distintos.
+5. Para target-only, las métricas de recuperación puntual e intervalar siguen `NOT_EVALUABLE`; una verdad reservada conocida no repara la ausencia de soporte.
+6. Antes de congelar el protocolo debe quedar explícita la unidad de agregación del MCSE entre M y la forma de calcular contrastes emparejados por mundo. No basta con afirmar que las seeds son únicas.
+
+### 373.7 Dictamen
+
+| Dimensión | Resultado estático |
+|---|---|
+| Generación de unidades fuente N | IMPLEMENTED / PSEUDORANDOM DESIGN BASIS |
+| Independencia N | CONDITIONAL DESIGN ASSUMPTION / NOT EMPIRICALLY VERIFIED |
+| Separación de mundos M | IMPLEMENTED / UNIQUE DETERMINISTIC SEEDS AND IDENTITIES |
+| Independencia M | CONDITIONAL PSEUDORANDOM-STREAM ASSUMPTION / NOT PROVEN BY UNIQUENESS |
+| R dentro de M | IMPLEMENTED / DISTINCT ASSIGNMENT AND S3 STREAMS |
+| Independencia condicional R | CONDITIONAL ON HASH/SALT PSEUDORANDOMNESS |
+| Emparejamiento positive/alternative/target-only | IMPLEMENTED BY SHARED WORLD FAMILY |
+| Null/negative pairing with interaction family | NOT DECLARED |
+| Unidad target-only como muestra independiente | NOT PRESENT / NOT CLAIMED |
+| Flag de independencia target-only | CONSERVATIVE FALSE FOR FULL TARGET ESTIMAND |
+| MCSE paired-by-world specification | OPEN |
+
+**Siguiente operación:** revisar si la especificación estadística del agregador (§361–§366) preserva de forma suficiente el emparejamiento positive/alternative/target-only y separa el nivel M del nivel R, sin contar R como mundos ni escenarios emparejados como réplicas independientes. Si el contrato actual no lo resuelve, registrar la brecha sin implementar el agregador.
+
+**Controles:** auditoría estática únicamente; no se generan seeds, no se invoca el runner, no se ejecutan tests, DGP, Analyzer/Evaluator, workflows, calibración o Monte Carlo. No se modifican código, tests, perfiles, roster, locks, RMA, Evidence→Claim Matrix, STATUS, Core ni `main`. PR #116 permanece Draft. `implementation_authorized=false`, `scientific_execution=false`, `execution_authorized=false`, `calibration_authorized=false`.
