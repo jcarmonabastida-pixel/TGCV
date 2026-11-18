@@ -1,1 +1,1 @@
-Authorized EP-02 retry: source-superset target-subset regression now uses a predeclared larger synthetic roster to avoid finite-sample missing-arm ambiguity. Technical suite and replay only.
+Authorized EP-02 diagnostic retry: expose source-superset interval Analyzer abstention reason and arm/missingness counts. Technical suite/replay only; no calibration.
