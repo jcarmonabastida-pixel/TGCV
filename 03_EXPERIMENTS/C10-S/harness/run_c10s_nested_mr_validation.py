@@ -14,7 +14,7 @@ import numpy as np
 from pathlib import Path
 import platform
 import sys
-from statistics import mean, median
+from statistics import mean, median, stdev
 from types import SimpleNamespace
 from typing import Any
 
@@ -80,10 +80,11 @@ def _summary_for(dataset):
     world_means = tuple(sum(row) / len(row) for row in dataset.rows)
     grand = sum(world_means) / len(world_means)
     reported = math.sqrt(grand) if dataset.metric == "point_rmse" else grand
+    legacy_mcse = None if dataset.metric == "point_rmse" else stdev(world_means) / math.sqrt(len(world_means))
     return SimpleNamespace(
         metric=dataset.metric,
         mean=reported,
-        mcse=None,
+        mcse=legacy_mcse,
         outer_world_contributions=tuple(zip(dataset.world_ids, world_means)),
     )
 
@@ -124,6 +125,7 @@ def analyze_fixture(dataset, bootstrap_replicates: int | None = None) -> dict[st
         "true_between": spec.true_between,
         "estimate_within": result.within_ms,
         "estimate_between_raw": result.between_raw,
+        "observed_mcse": result.observed_mcse,
         "intervals_95": intervals,
         "projected_mcse_interval": [projection[2], projection[3]],
         "projected_mcse_status": projection[4],
