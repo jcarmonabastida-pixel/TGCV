@@ -296,9 +296,28 @@ def materialize_c10s_complete_world(
                 rel_tol=0.0, abs_tol=1e-12,
         ) for row in theta_a_structural_support_contract.rows):
             raise ContractError("structural-support propensities do not reproduce the generated assignment mechanism")
+    # Assignment and realized-history materialization span the complete
+    # source roster (plus target-only histories), whereas the focal truth
+    # functional is integrated only over q_X*. Keep these supports distinct:
+    # source-only histories need randomized assignments and EventHistories,
+    # but they must not enter the target estimand or its truth manifest.
+    target_refs = {row.history_ref for row in target_q_x}
+    target_g_a0 = tuple(row for row in g_a0 if row.history_ref in target_refs)
+    target_g_a1 = tuple(row for row in g_a1 if row.history_ref in target_refs)
+    target_r_common = tuple(
+        row for row in r_common_certificates if row.history_ref in target_refs
+    )
+    target_feasible = {
+        history_ref: vectors for history_ref, vectors in feasible_vectors_by_history.items()
+        if history_ref in target_refs
+    }
+    target_event_histories = {
+        key: history for key, history in event_histories_by_policy.items()
+        if key[0] in target_refs
+    }
     theta_truth = compute_theta_a_vcont_truth_from_event_histories(
-        world, target_q_x, g_a0, g_a1, feasible_vectors_by_history,
-        r_common_certificates, event_histories_by_policy, grid,
+        world, target_q_x, target_g_a0, target_g_a1, target_feasible,
+        target_r_common, target_event_histories, grid,
         estimand_version=estimand_version, outcome_version=outcome_version,
         unit_id_by_history=target_unit_ids,
     )
