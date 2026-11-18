@@ -423,7 +423,8 @@ def generate_g_a_event_history_potentials(
     unit_ids = unit_id_by_history or {
         unit.d2_baseline.baseline_history_ref: unit.unit_id for unit in world.units
     }
-    if set(unit_ids) != expected_refs or any(not value for value in unit_ids.values()):
+    if (set(unit_ids) != expected_refs or any(not value for value in unit_ids.values())
+            or len(set(unit_ids.values())) != len(unit_ids)):
         raise ContractError("g_A target unit identities must cover exact target-history support")
     certs = {row.history_ref: row for row in r_common_certificates}
     if len(certs) != len(r_common_certificates) or set(certs) != expected_refs:
