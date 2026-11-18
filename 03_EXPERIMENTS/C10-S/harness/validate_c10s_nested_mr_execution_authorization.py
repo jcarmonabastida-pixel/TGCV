@@ -99,7 +99,7 @@ def main() -> int:
         "tier": auth["tier"],
         "resume_from_run_id": auth.get("resume_from_run_id"),
     }
-    args.output_json.write_text(json.dumps(output, sort_keys=True) + "\\n", encoding="utf-8")
+    args.output_json.write_text(json.dumps(output, sort_keys=True) + "\n", encoding="utf-8")
     return 0
 
 
