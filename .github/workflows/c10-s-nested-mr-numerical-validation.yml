@@ -91,10 +91,6 @@ jobs:
         if: startsWith(github.ref, 'refs/heads/research/c10s-nested-mr-auth-')
         working-directory: source
         env:
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_REF_NAME: ${{ github.ref_name }}
-          GITHUB_RUN_ID: ${{ github.run_id }}
-          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
           APPROVED_CODE_COMMIT: ${{ steps.authorization.outputs.approved_code_commit }}
           TIER: ${{ steps.authorization.outputs.tier }}
         run: |
