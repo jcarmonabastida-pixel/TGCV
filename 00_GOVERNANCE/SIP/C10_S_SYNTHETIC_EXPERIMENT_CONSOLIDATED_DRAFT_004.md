@@ -3079,3 +3079,32 @@ La matriz de cinco escenarios queda reconciliada con la fábrica DGP, el TruthBu
 **Estado de evidencia:** el cambio de test y esta reconciliación están persistidos, pero no ejecutados. El estado es `IMPLEMENTED_NOT_EXECUTED`, no PASS ni evidencia de recuperación científica.
 
 **Controles:** solo se modifica el test integrado existente y este documento maestro en `research/c10-s-consolidation-draft`. No se cambian DGP, Analyzer, Evaluator, agregador, roster/profile, seeds, workflows, RMA, Evidence→Claim Matrix, STATUS, Core ni `main`. No se ejecutan tests, pipelines, DGP, Analyzer/Evaluator, CI, workflows, calibración, Monte Carlo ni experimento científico. PR #116 permanece Draft. `implementation_authorized=true`, `technical_test_execution_authorized=false`, `workflow_dispatch_authorized=false`, `calibration_authorized=false`, `scientific_execution=false`, `execution_authorized=false`.
+
+
+## 377. Gate explícito de muestreo exterior M y validez del MCSE (2026-11-18)
+
+**Estado:** IMPLEMENTED_STATIC / REGRESSION_AUTHORED_NOT_EXECUTED / NO_SCIENTIFIC_DESIGN_VALUES_PROMOTED.  
+**Propósito:** corregir una brecha concreta de §374.2: el agregador calculaba `sd(q_m)/sqrt(M)` y podía emitir `PASS_PRECISION` aunque el diseño no declarase una población objetivo de mundos ni un fundamento IID. La unicidad de seeds/identidades no basta para esa interpretación.
+
+### 377.1 Contrato ejecutable
+
+`ThetaACalibrationDesign` incorpora `OuterWorldSamplingContract`, con cuatro modos explícitos:
+
+- `UNVERIFIED` (por defecto): media y contribuciones por mundo siguen disponibles como descripciones del conjunto generado; `mcse=None` y cualquier target de precisión queda `NOT_EVALUABLE_IID_UNVERIFIED`.
+- `FIXED_FINITE_SET`: resultado descriptivo del conjunto finito; no se emite MCSE IID ni veredicto de precisión inferencial.
+- `DEPENDENT`: se conserva la descripción por mundo, pero se suprime MCSE IID.
+- `DECLARED_IID_PSEUDORANDOM`: permite calcular `sd(q_m)/sqrt(M)` solo si un contrato versionado declara distribución objetivo de mundos, generador, derivación del stream de seeds y fundamento de independencia. La interpretación y el veredicto de precisión quedan explícitamente condicionados a ese supuesto; no se etiqueta como certificación empírica IID.
+
+Cada `ThetaAMetricSummary` conserva `mcse_interpretation`; `ThetaACalibrationSummary` conserva modo y SHA-256 del contrato. El fingerprint vincula el resultado al contrato exacto utilizado.
+
+### 377.2 Regresión y límites
+
+Se actualiza el helper unitario de prueba con un contrato IID ficticio, exclusivo de test, para mantener la comprobación aritmética previa. Se añade una regresión que elimina ese contrato y exige simultáneamente: media descriptiva conservada, MCSE inferencial ausente, estado `NOT_EVALUABLE_IID_UNVERIFIED` y fingerprint del modo no verificado. Otra regresión exige que el modo IID no acepte un contrato parcial sin generador/stream/fundamento completos.
+
+No se seleccionan N, M, R, targets de precisión, confianza, potencia ni Type-I error. Tampoco se implementa el contraste pareado. El cambio cierra la interpretación silenciosa del MCSE, no el dimensionamiento confirmatorio. `DECLARED_IID_PSEUDORANDOM` representa una asunción declarada y trazable, no evidencia de independencia estadística observada.
+
+### 377.3 Continuidad integrada
+
+El siguiente trabajo no será otra auditoría de escenarios. Será cerrar el protocolo de medición y diseño sobre la batería ya existente: definir el conjunto confirmatorio de métricas por clase de identificación, explicitar los denominadores y los criterios de recuperación/abstención, y vincularlos al contrato de muestreo M. Solo después se derivarán N/M/R y los objetivos de precisión/potencia. Los valores históricos de fixture y candidatos anteriores no se elevan a defaults.
+
+**Controles:** se modifican el protocolo focal, su test unitario y el README técnico de harness, más este registro en el maestro, exclusivamente en `research/c10-s-consolidation-draft`. No se modifican DGP, roster, Analyzer, Evaluator, estimando, seeds, workflows, RMA, Matrix, STATUS, Core ni `main`. No se ejecutan tests, compilación, DGP, Analyzer/Evaluator, workflows, calibración, Monte Carlo ni experimento científico. PR #116 permanece Draft. `implementation_authorized=true`, `technical_test_execution_authorized=false`, `workflow_dispatch_authorized=false`, `calibration_authorized=false`, `scientific_execution=false`, `execution_authorized=false`.
