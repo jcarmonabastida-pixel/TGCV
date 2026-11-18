@@ -2697,3 +2697,76 @@ Por tanto, el trabajo de este turno se limita a revisión estática y reconcilia
 **Siguiente operación permitida:** cerrar documentalmente la derivación de expectativa y el contrato de cambio mínimo, o recuperar una autorización vigente y explícita de implementación. Hasta entonces, mantener los artefactos ejecutables intactos.
 
 **Controles:** únicamente documento maestro en `research/c10-s-consolidation-draft`; `main`, RMA v3.38, Evidence→Claim Matrix v1.47, STATUS y Core sin cambios; PR #116 permanece Draft.
+
+
+## 371. Compatibilidad de la verdad analítica target-only con el contrato histórico del roster (2026-11-18)
+
+**Estado:** HISTORICAL_CONTRACT_RECONCILED / ANALYTIC_EXPECTATION_TEST_ONLY / ROSTER_FIELD_UNCHANGED / IMPLEMENTATION_NOT_AUTHORIZED.  
+**Propósito:** resolver la aparente tensión entre §369 (+0,5 como derivación analítica condicionada) y el contrato histórico que mantiene `expected_theta_a_truth=None` para `positive_target_only`. Esta sección no cambia el roster, su fingerprint, el DGP, el Evaluator ni las autorizaciones.
+
+### 371.1 Precedencia histórica recuperada
+
+La secuencia documental relevante es:
+
+1. **§336.1–336.4:** define cuatro escenarios identificados y sus cuatro truths focales (+0,5; 0; −0,5; 0). Expresamente deja fuera una truth focal NOT_IDENTIFIED y la pérdida de soporte q_X* integrada.
+2. **§348.1:** añade el quinto escenario target-only. Establece que la verdad reservada θ_A puede existir como contraste DGP sobre q_X* completo aunque no sea identificable desde la población fuente observada. No fija un valor numérico para ella.
+3. **§355.1–355.2:** materializa la quinta variante como positive + target-only, pero declara que su truth numérica no se predeclara y que el Evaluator registra la verdad reservada sin imponer un valor no establecido por el contrato histórico.
+4. **Implementación del roster:** `ThetaACalibrationDGPProfile.validate()` conserva una tabla histórica que asigna `None` a `positive_target_only` y rechaza cualquier `expected_theta_a_truth` distinto de ese valor. El perfil del quinto escenario declara `generator_variant="positive_target_only"` y omite `expected_theta_a_truth`.
+5. **§369:** aporta una derivación manual nueva, basada en las reglas funcionales y el materializador target-only actuales, según la cual cada historia —incluida la target-only— tiene contraste focal +0,5 y la agregación sobre q_X* sigue dando +0,5.
+
+La excepción histórica `None` no representa que la verdad generadora sea desconocida o inexistente. Representa que el contrato de §336/§348/§355 no había predeclarado una cifra para ese quinto escenario y que la captura no debía forzarla desde el perfil. §369 puede aportar ahora una expectativa analítica de referencia sin reescribir retroactivamente ese contrato.
+
+### 371.2 Distinción obligatoria entre tres campos
+
+| Objeto | Semántica | Estado/acción |
+|---|---|---|
+| `dgp_profile.expected_theta_a_truth` | Verdad predeclarada en el contrato tipado del roster; forma parte de su fingerprint | Mantener `None` para target-only hasta una decisión explícita que versionara el roster |
+| Expectativa analítica de referencia de §369 | Resultado calculado a mano desde las reglas funcionales y la fórmula de agregación; independiente del código de adjudicación, aunque derivado de la misma especificación DGP | Puede usarse como oráculo esperado exclusivamente en tests |
+| `ThetaAVContTruthBundle.theta_a_truth` / `Evaluator.truth` | Verdad reservada materializada por la cadena ejecutable para ese mundo | Debe compararse contra la expectativa analítica en una prueba futura autorizada |
+
+Por tanto, no se debe cambiar el perfil del quinto escenario a `expected_theta_a_truth=0.5`, ni modificar su fingerprint, ni hacer que el Analyzer conozca esa expectativa. La comparación futura puede afirmar `TruthBundle.truth == 0.5` y `Evaluator.truth == 0.5` mediante una constante/oráculo analítico definido en el lado de tests, mientras el campo histórico del perfil continúa siendo `None`.
+
+Esto preserva el significado original de `None`: ausencia de predeclaración en el contrato del roster, no una afirmación de que el valor no pueda derivarse posteriormente.
+
+### 371.3 Condiciones que sostienen la derivación +0,5
+
+La expectativa de §369 es válida para la fixture actual solo si se mantienen simultáneamente estas condiciones observadas en los blobs revisados:
+
+- `execute_calibration_scenario()` traduce `positive_target_only` al generador `positive` y aplica el materializador target-only.
+- El materializador escala las masas fuente por (1-u), añade la historia target-only con masa (u=0.5), y le asigna los mismos vectores focales, certificado `r_common` y estado inicial `(enabled=True, admission=ADMIT)`.
+- La regla focal G_A positiva se activa para el vector con primera coordenada 0 y segunda coordenada 0; cambia admission a `NO_ADMISSION` en t=1. Para el vector con primera coordenada 1 no se activa.
+- La regla D2 que interrumpe directamente admission no se selecciona al generar potenciales `G_A`; el adaptador selecciona las reglas de fuente `G_A` (y las familias explícitamente admitidas por su contrato), no convierte el potencial D2 observado en el potencial focal.
+- La regla alternativa común de deshabilitación no está presente en el generador positivo.
+- La rejilla y el adjudicador siguen la convención temporal aceptada en DEC-C10-104: el evento t=1 pertenece a [1,2], no a [0,1).
+
+Bajo esas condiciones, para cada historia (h), (delta(h)=1-0.5=+0.5), incluida la historia target-only. Con masas fuente renormalizadas por (1-u) y masa target-only (u), (	heta_A(q_X^*)=(1-u)0.5+u0.5=+0.5).
+
+**Límite epistemológico:** esto es una derivación analítica desde el DGP especificado y una expectativa de test independiente del código del oráculo/adjudicador. No es una segunda implementación ejecutable del generador, ni validación dinámica, ni evidencia de que el Analyzer pueda identificar el parámetro. La separación de canales Analyzer/Evaluator sigue pendiente de prueba dinámica autorizada.
+
+### 371.4 Ajuste del contrato mínimo de test
+
+La modificación futura, si se autoriza, debe:
+1. Mantener intactos `ThetaACalibrationDGPProfile.expected_theta_a_truth=None`, el validador histórico del perfil y el fingerprint del quinto escenario.
+2. Definir en el módulo de tests una expectativa analítica explícita `EXPECTED_TARGET_ONLY_THETA_A = 0.5`, derivada de la regla de cumplimiento por intervalos y de la ponderación de masas; no importarla desde el DGP ni desde el oráculo.
+3. En el test end-to-end existente, comparar la verdad del TruthBundle y `Evaluator.truth` con +0,5, además de comprobar la abstención y su causa exacta.
+4. En la captura por roster, conservar la semántica de `None`; añadir una aserción de test separada que compare `record.truth` con +0,5 para el escenario target-only, sin cambiar el dataclass ni su lógica de captura.
+5. Mantener el control adversarial de ponderación de §369 separado de los cinco escenarios confirmatorios candidatos.
+
+No se debe introducir un parámetro duplicado en producción ni cambiar el mapeo histórico de truths para facilitar una aserción. La prueba debe detectar divergencias entre la expectativa analítica, la verdad materializada y la adjudicación, no obligar a la implementación a repetir su propia salida.
+
+### 371.5 Dictamen y autorización
+
+| Elemento | Dictamen |
+|---|---|
+| Contrato histórico `None` para target-only | PRESERVED / NOT A CLAIM OF UNKNOWN TRUTH |
+| Expectativa analítica +0,5 | DERIVED CONDITIONALLY / TEST-ONLY REFERENCE |
+| Cambio del perfil/fingerprint | NOT REQUIRED / NOT AUTHORIZED |
+| Comparación TruthBundle/Evaluator contra +0,5 | REQUIRED FUTURE TEST / NOT IMPLEMENTED |
+| Verificación dinámica | NOT EXECUTED |
+| Roster de cinco escenarios | CANDIDATE / NOT FROZEN |
+| Implementación | BLOCKED — IMPLEMENTATION_NOT_AUTHORIZED |
+| Ejecución EP-02 / Analyzer / Evaluator / DGP / calibración | NOT AUTHORIZED |
+
+**Siguiente paso permitido:** revisar estáticamente la cobertura de verdad reservada y las expectativas de los cinco escenarios, verificando que los cuatro valores predeclarados del roster y el valor test-only derivado para target-only se mantienen separados y completos. No abrir un nuevo roster ni duplicar escenarios.
+
+**Controles:** únicamente se actualiza el documento maestro de la rama `research/c10-s-consolidation-draft`; no se modifican código, tests, perfiles, roster, seeds, workflows, RMA, Evidence→Claim Matrix, STATUS, Core ni `main`. No se ejecutan tests, pipelines, Analyzer/Evaluator, DGP, CI, calibración, Monte Carlo ni experimento científico. PR #116 permanece Draft. `implementation_authorized=false`, `scientific_execution=false`, `execution_authorized=false`, `calibration_authorized=false`.
