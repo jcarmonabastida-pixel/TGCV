@@ -39,8 +39,6 @@ class ThetaACalibrationDGPProfile:
     """Versioned, synthetic-only support profile for one focal DGP scenario."""
     profile_id: str
     profile_version: str
-    target_q_x_sha256: str
-    source_q_x_sha256: str
     structural_support_contract_id: str
     structural_support_contract_version: str
     support_relation: Literal["EQUAL", "SOURCE_STRICT_SUPERSET", "TARGET_HAS_UNSUPPORTED_HISTORIES"]
@@ -54,9 +52,6 @@ class ThetaACalibrationDGPProfile:
         )
         if any(not isinstance(value, str) or not value.strip() for value in identities):
             raise ThetaACalibrationError("typed DGP profile and structural-support contract identities/versions are mandatory")
-        for value in (self.target_q_x_sha256, self.source_q_x_sha256):
-            if len(value) != 64 or any(ch not in "0123456789abcdef" for ch in value):
-                raise ThetaACalibrationError("DGP profile requires target/source lowercase SHA-256 fingerprints")
         if self.support_relation not in {
             "EQUAL", "SOURCE_STRICT_SUPERSET", "TARGET_HAS_UNSUPPORTED_HISTORIES"
         }:
@@ -474,6 +469,9 @@ class ThetaAReplicateRecord:
     evidence_sha256: str
     analyzer_output_sha256: str
     dgp_profile_sha256: str
+    target_q_x_sha256: str
+    source_q_x_sha256: str
+    structural_support_contract_sha256: str | None
     expected_abstention_reason: str | None
     observed_abstention_reason: str | None
     target_unsupported_mass: float
@@ -489,10 +487,16 @@ class ThetaAReplicateRecord:
             self.world_configuration_sha256, self.policy_design_sha256,
             self.assignment_randomization_sha256, self.evidence_sha256,
             self.analyzer_output_sha256, self.dgp_profile_sha256,
+            self.target_q_x_sha256, self.source_q_x_sha256,
         )
         if any(len(value) != 64 or any(ch not in "0123456789abcdef" for ch in value)
                for value in fingerprints):
-            raise ThetaACalibrationError("replicate record requires five lowercase SHA-256 fingerprints")
+            raise ThetaACalibrationError("replicate record requires lowercase SHA-256 fingerprints")
+        if self.structural_support_contract_sha256 is not None and (
+            len(self.structural_support_contract_sha256) != 64
+            or any(ch not in "0123456789abcdef" for ch in self.structural_support_contract_sha256)
+        ):
+            raise ThetaACalibrationError("structural-support contract fingerprint must be lowercase SHA-256")
         if self.n_units < 1 or self.assignment_replicate < 0:
             raise ThetaACalibrationError("replicate record N/R identity is invalid")
         if (self.expected_identification not in _VALID_IDENTIFICATION
@@ -676,8 +680,10 @@ def capture_theta_a_replicate(
             raise ThetaACalibrationError("profiled DGP replicate is missing its structural-support contract")
         if (structural_contract.contract_id != profile.structural_support_contract_id
                 or structural_contract.contract_version != profile.structural_support_contract_version
-                or structural_contract.target_q_x_sha256 != profile.target_q_x_sha256
-                or structural_contract.source_q_x_sha256 != profile.source_q_x_sha256):
+                or structural_contract.target_q_x_sha256 != result.analyzer_contract.q_x_sha256
+                or structural_contract.source_q_x_sha256 != (
+                    result.analyzer_contract.source_q_x_sha256 or result.analyzer_contract.q_x_sha256
+                )):
             raise ThetaACalibrationError("materialized structural-support contract differs from the scenario DGP profile")
         actual_unsupported = tuple(sorted(
             (row.history_ref, row.target_mass)
@@ -734,6 +740,9 @@ def capture_theta_a_replicate(
         result.sealed_evidence.sha256,
         result.analyzer_result.output_sha256,
         scenario.dgp_profile_sha256,
+        result.analyzer_contract.q_x_sha256,
+        result.analyzer_contract.source_q_x_sha256 or result.analyzer_contract.q_x_sha256,
+        _canonical_hash(asdict(structural_contract)) if structural_contract is not None else None,
         profile.expected_abstention_reason if profile is not None else None,
         result.analyzer_result.abstention_reason or None,
         unsupported_mass,
