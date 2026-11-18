@@ -16,7 +16,7 @@ from c10s_synthetic_components import (ContractError, ThetaAVContTruthBundle,
 from theta_a_observation_harness import SealedThetaAEvidence, _hash
 from theta_a_analyzer import (ThetaAObservationAnalysisContract,
                               ThetaAObservationAnalysisResult,
-                              _canonical_hash)
+                              _canonical_hash, adjudicate_theta_a_structural_support)
 
 
 @dataclass(frozen=True)
@@ -64,6 +64,7 @@ def _result_payload(result: ThetaAObservationAnalysisResult) -> dict[str, Any]:
         "inference_lower_bound": result.inference_lower_bound,
         "inference_upper_bound": result.inference_upper_bound,
         "hoeffding_range_sum_squares": result.hoeffding_range_sum_squares,
+        "structural_support_sha256": result.structural_support_sha256,
     }
 
 
@@ -99,18 +100,36 @@ class ThetaAObservationEvaluator:
             raise ContractError("Analyzer result estimand identity/version mismatch")
         if result.input_sha256 != evidence.sha256:
             raise ContractError("Analyzer result is not bound to the supplied sealed evidence")
+        expected_support_sha = structural.contract_sha256 if structural is not None else None
+        if result.structural_support_sha256 != expected_support_sha:
+            raise ContractError("Analyzer result structural-support provenance differs from evaluation contract")
+        if structural is not None and structural.status == "NOT_IDENTIFIED":
+            if (result.identification != "NOT_IDENTIFIED"
+                    or result.abstention_reason != structural.reason
+                    or result.point_estimate is not None
+                    or result.lower_bound != -1.0 or result.upper_bound != 1.0
+                    or result.missing_target_histories != structural.unsupported_target_histories):
+                raise ContractError("Analyzer did not correctly abstain for structural target/source non-overlap")
+        elif structural is not None and structural.status == "STRUCTURAL_SUPPORT_SUFFICIENT":
+            if result.identification == "NOT_IDENTIFIED" and result.abstention_reason == "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT":
+                raise ContractError("Analyzer falsely reported structural non-identification under complete support")
         if _hash({"manifest": evidence.manifest, "rows": evidence.rows}) != evidence.sha256:
             raise ContractError("sealed theta_A evidence digest is invalid")
         if _canonical_hash(_result_payload(result)) != result.output_sha256:
             raise ContractError("Analyzer result digest is invalid")
+        source_qx_sha256 = contract.source_q_x_sha256 or contract.q_x_sha256
+        structural = (
+            adjudicate_theta_a_structural_support(contract.structural_support_contract)
+            if contract.structural_support_contract is not None else None
+        )
         if (assignment_bundle.result_sha256 != contract.assignment_bundle_sha256
-                or assignment_bundle.q_x_sha256 != contract.q_x_sha256
+                or assignment_bundle.q_x_sha256 != source_qx_sha256
                 or assignment_bundle.g_a0_sha256 != contract.g_a0_sha256
                 or assignment_bundle.g_a1_sha256 != contract.g_a1_sha256
                 or assignment_bundle.r_common_sha256 != contract.r_common_sha256):
             raise ContractError("assignment bundle does not match the analysis intervention/population contract")
         if any(row.get("assignment_bundle_sha256") != contract.assignment_bundle_sha256
-               or row.get("q_x_sha256") != contract.q_x_sha256
+               or row.get("q_x_sha256") != source_qx_sha256
                or row.get("g_a0_sha256") != contract.g_a0_sha256
                or row.get("g_a1_sha256") != contract.g_a1_sha256
                or row.get("r_common_sha256") != contract.r_common_sha256
