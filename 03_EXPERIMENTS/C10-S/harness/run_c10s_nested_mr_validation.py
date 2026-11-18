@@ -143,7 +143,7 @@ def analyze_fixture(dataset, bootstrap_replicates: int | None = None) -> dict[st
 
 def _finite_record(record: dict[str, Any]) -> bool:
     for key in (
-        "estimate_within", "estimate_between_raw", "true_within",
+        "estimate_within", "estimate_between_raw", "observed_mcse", "true_within",
         "true_between", "boundary_fraction",
     ):
         value = record.get(key)
