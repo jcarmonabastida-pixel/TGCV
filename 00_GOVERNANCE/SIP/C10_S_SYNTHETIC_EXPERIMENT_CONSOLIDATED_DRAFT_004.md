@@ -2570,11 +2570,11 @@ V_CONT por historia es la media de los dos indicadores de cumplimiento. Por tant
 
 Las políticas focales son deterministas. En los escenarios positivo, nulo y negativo:
 - `g_A0=(0,0,0,0)`
-- `g_A1=(1,0,0,0))
+- `g_A1=(1,0,0,0)`
 
 En `alternative`:
 - `g_A0=(0,1,0,0)`
-- `g_A1=(1,1,0,0))
+- `g_A1=(1,1,0,0)`
 
 La regla D2 de interrupción de admisión no se activa en la generación de potenciales `G_A`: el generador selecciona las reglas cuya fuente es `G_A` y no infiere V_CONT desde D2. La regla D2 común se mantiene fuera de esta derivación focal.
 
