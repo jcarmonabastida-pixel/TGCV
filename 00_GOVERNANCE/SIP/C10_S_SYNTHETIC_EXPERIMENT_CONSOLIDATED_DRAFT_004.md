@@ -1503,3 +1503,131 @@ Esta especificación es una propuesta coherente con la unidad M×R ya implementa
 **No se cambia código ni tests.** No se crean seeds/bancos, no se ejecuta calibración ni evaluación, no se ejecuta Monte Carlo y no se autoriza ejecución científica. Se mantienen `calibration_authorized=false`, `execution_authorized=false`, `scientific_execution=false`.
 
 **Siguiente operación:** reconciliar esta especificación con los contratos existentes de calibración, métricas y evaluación para comprobar que no contradice un criterio ya aceptado; resolver los seis puntos abiertos mediante propuesta de decisión, sin modificar implementación hasta que el contrato quede estable.
+
+
+## 360. Reconciliación histórica de §358–359 con contratos C10-S vigentes — revisión documental (2026-11-18)
+
+**Estado:** HISTORICAL_RECONCILIATION_COMPLETED / METRIC_SEMANTICS_DECISION_OPEN / NO_CONTRACT_FROZEN / NO_IMPLEMENTATION / CALIBRATION_NOT_AUTHORIZED.  
+**Regla aplicada:** Historical Reconstruction Before New Work Rule v0.1.  
+**Fuentes focales inspeccionadas:** §§328, 330, 336, 348, 355–357 del presente maestro; `theta_a_calibration_protocol.py` (blob `9675b9f6805b11f1a1037a3e4b2f95af53038e4c`); `harness/README.md`; contratos V_cont históricos indicados abajo.  
+**Propósito:** distinguir qué está ya definido/implementado, qué es una convención provisional del scaffold y qué decisión nueva propone §359. No reabrir ni importar contratos de otro benchmark.
+
+### 360.1 Identidad del experimento: θ_A focal, no benchmark V_cont de 13×52
+
+La fuente rectora del alcance es §357.2 y la declaración anterior §328: el protocolo focal `theta_a_calibration_protocol.py` evalúa exclusivamente `THETA_A_QX_GA_RCOMMON_VCONT` sobre `V_CONT`, con jerarquía N×M×R y **sin RUN separado**. No reutiliza el seed bank ni las clases RUN/REPEATED_ASSIGNMENT del benchmark V_cont anterior.
+
+Se inspeccionaron:
+- `C10_S_VCONT_CALIBRATION_AND_SEED_BANK_PROTOCOL_DRAFT_001.md`;
+- `C10_S_VCONT_SCENARIO_ESTIMAND_COVERAGE_MATRIX_DRAFT_001.md`;
+- `C10_S_VCONT_MONTE_CARLO_OUTER_REPLICATION_CONTRACT_DRAFT_001.md`;
+- `C10_S_VCONT_MONTE_CARLO_MATRIX_COVERAGE_CONTRACT_GATE_156_DRAFT_001.md`;
+- `C10_S_THETA_A_IDENTIFICATION_AND_ANALYZER_RECOVERY_AUDIT_GATE_129_DRAFT_001.md`.
+
+El protocolo/coverage de 13 escenarios × 4 estimandos = 52 pares corresponde a ITT-Z/ITT-G y sus niveles temporales. El Gate 154/155/156 conserva una fila RUN designada más R asignaciones repetidas dentro de cada M y sus obligaciones de ledger 52-pair. Gate 129 confirma que θ_A no es un alias de ITT-G ni del contraste del benchmark previo. Esos contratos son antecedentes relevantes para separación de estimandos, seed-bank disjointness, provenance, denominadores y estados fail-closed; **sus 52 pares, RUN extra y reglas de temporal contribution no se importan al protocolo focal θ_A**. Esta separación ya está expresamente documentada en §§328 y 357.2 y en el código de construcción de seed bank.
+
+### 360.2 Reconciliación de estados históricos
+
+| Elemento | Evidencia histórica | Estado correcto ahora |
+|---|---|---|
+| N/M/R e identidades de seed | §328 y `build_theta_a_seed_bank()` | IMPLEMENTED_SCAFFOLD; N/M/R numéricos no frozen |
+| Cinco escenarios tipados | §§348 y 355; `build_theta_a_candidate_scenario_roster()` | CANDIDATE_ROSTER_IMPLEMENTED; no roster científico frozen |
+| Fábrica/runner y captura | §355 y EP-02 Run 862 (§357.1) | SOFTWARE_CONFORMANCE_PASS; no calibration run |
+| Orden de agregación | §328 y `summarize_theta_a_calibration()` | IMPLEMENTED: R dentro de M, MCSE entre M |
+| Falta de una contribución | agregador actual exige cobertura exacta N×M×R; §328 | FAIL_CLOSED / NOT_EVALUABLE; no complete-case silencioso |
+| Regla all-R para métricas condicionales | implementación actual del agregador | IMPLEMENTATION_CONVENTION, no decisión científica congelada |
+| N={32,64,128}, M=100, R=20 | §§336/348/357 | CANDIDATE_ONLY |
+| MCSE continuo ≤0,02 y tasas ≤0,05 | §§336/348/357 | CANDIDATE_TARGETS, no targets aprobados |
+| Confianza 0,95 | §§336/357 y design field | CANDIDATE_ONLY |
+| Tolerancia de recuperación | §357.4; design field nullable | OPEN; 0,25 del Evaluator no es criterio científico aprobado |
+| Type-I error/potencia | §§328/330/357 | NOT_DEFINED_NO_TEST_PROCEDURE |
+| Bancos, calibración y evaluación | harness README + §357 | NOT_GENERATED / NOT_EXECUTED / NOT_AUTHORIZED |
+
+No se identifica un contrato de estimandos condicionales ya aprobado que obligue a ponderar por mundo o por réplica identificada. El scaffold actual usa una condición all-R para poder producir un valor por mundo; eso es una regla implementada para evitar denominadores selectivos, no una resolución formal del estimando científico condicional. Por tanto, §359 puede avanzar como propuesta de definición, pero no debe presentarse como mera documentación de una decisión ya aceptada.
+
+### 360.3 Reconciliación de la ponderación condicional
+
+§359 propone como estimando primario la razón agrupada por réplica identificada:
+
+`θ_rep = Σ_m A_m / Σ_m B_m`,
+
+donde `B_m` es el número de R identificadas en el mundo m. Esto estima el error esperado entre los intentos identificados de la distribución conjunta de mundos y asignaciones; mundos con más identificaciones aportan más peso. La incertidumbre se calcula por clusters M, no como si las filas M×R fueran independientes.
+
+La alternativa es el promedio equiponderado de los cocientes de cada mundo elegible:
+
+`θ_world = mean_m(A_m/B_m | B_m>0)`.
+
+Esto responde a una pregunta distinta: rendimiento condicional medio del mundo, dando igual peso a mundos con distinta tasa de identificación. No debe confundirse con `θ_rep`.
+
+**Propuesta para decisión, no congelada:** conservar `θ_rep` como estimando condicional primario porque corresponde a seleccionar al azar un intento de la población de intentos y condicionar a que el procedimiento lo identifique; conservar `θ_world` como diagnóstico secundario para revelar heterogeneidad/selección entre mundos. Presentar siempre ambas junto a la tasa operacional de identificación y a la distribución de `B_m/R`. Si la pregunta científica que se desea priorizar es “un mundo típico”, deberá elegirse `θ_world` como primario mediante decisión explícita. Ninguno sustituye al rendimiento operacional sobre todos los intentos.
+
+El estimador cluster/ratio propuesto en §359 es algebraicamente apropiado para `θ_rep` bajo mundos independientes y denominador medio positivo. Debe implementarse con la corrección de varianza muestral y conservar `(A_m,B_m)` para auditoría. Para `θ_world`, el MCSE se calcula entre los cocientes de mundos elegibles, pero su incertidumbre y selección deben reportar el número de mundos con B_m>0; no se puede ocultar mundos sin identificaciones.
+
+### 360.4 Intervalos y cobertura: refinamiento necesario
+
+La regla actual exige que todas las R réplicas tengan intervalo para producir la contribución de cobertura/anchura del mundo. §359 separa disponibilidad, cobertura entre intervalos emitidos, éxito conjunto y anchura condicional, lo que es metodológicamente más informativo y compatible con la exigencia histórica de no descartar abstenciones.
+
+Debe precisarse que:
+- `interval_issued` se determina por presencia y validez de ambos límites, no por `inference_covered` solamente;
+- cobertura condicional usa como denominador todos los intervalos válidos emitidos;
+- disponibilidad usa todos los intentos planificados;
+- éxito conjunto usa todos los intentos planificados y exige intervalo válido + cobertura;
+- anchura condicional usa solo intervalos válidos emitidos.
+
+El registro actual valida la consistencia de límites/cobertura/anchura y exige ausencia de intervalo en salidas no identificadas. El capture ledger estricto exige todos los registros N×M×R. Un registro ausente o inválido bloquea integridad/cobertura del plan y no se transforma en abstención ni en intervalo no cubriente. No debe prometerse una tasa de `missing_record`/salida inválida hasta que exista un ledger de intentos capaz de registrar esos fallos externos sin perder el plan esperado.
+
+### 360.5 Estados y aplicabilidad: discrepancia real entre propuesta y código
+
+El agregador actual representa varias métricas no aplicables a un escenario con una lista de contribuciones `None`, que termina en `NOT_EVALUABLE`. §359 propone distinguir correctamente `NOT_APPLICABLE` de `NOT_EVALUABLE`, `NOT_TARGETED`, `FAIL_PRECISION` y `PASS_PRECISION`. Esta es una mejora contractual pendiente, no una capacidad ya implementada.
+
+La clasificación debe quedar así:
+- `NOT_APPLICABLE`: métrica semánticamente no definida para la clase de truth/escenario;
+- `NOT_TARGETED`: aplicable y calculable, pero sin target MCSE aprobado;
+- `NOT_EVALUABLE`: aplicable pero sin denominador elegible, datos suficientes o incertidumbre calculable;
+- `FAIL_PRECISION`: target aprobado, cobertura íntegra y MCSE por encima del límite;
+- `PASS_PRECISION`: target aprobado, cobertura íntegra y MCSE dentro del límite.
+
+El escenario estructuralmente NOT_IDENTIFIED no recibe bias/MAE/MSE/RMSE/point recovery ni cobertura condicional de intervalos como si hubiese estimación identificada; estas métricas son `NOT_APPLICABLE`, no `NOT_EVALUABLE`. La disponibilidad de intervalo, abstención correcta/causa incorrecta y falsa identificación sí son métricas aplicables. En escenarios IDENTIFIED, las tasas de falsa identificación/correct abstention propias de la clase no identificada son `NOT_APPLICABLE`.
+
+La taxonomía de Analyzer debe mantener estados mutuamente excluyentes y la causa observada. `OUTPUT_INVALID` y `RECORD_MISSING` pertenecen a integridad técnica/coverage, no son estados Analyzer. La validación exacta actual fail-closed es conservadora; no debe relajarse para conseguir contadores de fallos.
+
+### 360.6 Targets, tolerancias y MCSE: qué ya está y qué falta
+
+El código valida cada target que recibe, pero no exige que el conjunto de targets cubra todas las métricas obligatorias de cada escenario × N. Si faltan targets, el resumen puede devolver `NOT_TARGETED`; esto no es suficiente para un PASS de calibración. §359 acierta al exigir un manifiesto exhaustivo, pero su schema debe especificar la aplicabilidad esperada y el target obligatorio por clave.
+
+Se conserva la precedencia de §336/§348/§357:
+- targets candidatos continuos ≤0,02;
+- targets candidatos de tasas ≤0,05;
+- M=100 solo alcanza el peor caso 0,05 para contribuciones binarias por mundo; no garantiza 0,02;
+- N=32/64/128 es grid de calibración candidato y no demuestra precisión inferencial del Analyzer;
+- R=20 es candidato sin análisis de componentes intra/intermundo;
+- confianza 0,95 es candidata, no nivel congelado;
+- no se fija MDE, type-I error, potencia ni tolerancia científica de recuperación.
+
+Para RMSE, mantener MSE y su MCSE como resultados primarios evita depender de una aproximación delta inestable cerca de cero. RMSE puede mostrarse como transformación descriptiva; si se le asigna un target MCSE propio, deberá preespecificarse y validarse el método de incertidumbre (p. ej. bootstrap por mundos) antes del freeze. No convertir automáticamente el target de MSE en target de RMSE.
+
+### 360.7 Tolerancias y procedencia
+
+`point_recovery_tolerance` está en el design actual, pero no forma parte del registro de réplica como valor/version/hash; tampoco queda vinculada al umbral técnico de adjudicación del Evaluator. Se confirma la brecha de §357.4.
+
+No se hereda el 0,25 de la adjudicación del Evaluator como tolerancia científica. Antes del freeze se requiere una de estas decisiones explícitas:
+1. `δ_eval` y `δ_science` son el mismo criterio: identidad/version/fingerprint único, valor justificado y propagado a diseño, manifiesto, réplica y resumen; o
+2. son criterios distintos: dos métricas etiquetadas por separado, cada una con valor, versión, justificación y ámbito.
+
+La tolerancia no debe usarse para convertir recuperación puntual en condición de identificación estructural. `POINT_RECOVERY_FAILED` continúa siendo una salida identificada con recuperación puntual insuficiente según el criterio técnico, no una abstención.
+
+### 360.8 Dictamen y trabajo mínimo restante
+
+**Dictamen:** §359 es compatible con la arquitectura focal N×M×R y no contradice ningún contrato estadístico focal previamente congelado, porque las decisiones numéricas y el estimando de rendimiento condicional estaban explícitamente abiertos. Sí propone un cambio semántico respecto de la regla all-R implementada; ese cambio debe aprobarse como contrato antes de tocar el agregador. Los contratos V_cont 13×52 y RUN+R no se reabren ni se mezclan con θ_A.
+
+**Cierres documentales pendientes antes de implementación:**
+1. aprobar/rechazar `θ_rep` primario y `θ_world` secundario;
+2. decidir cobertura condicional, disponibilidad y éxito conjunto como métricas obligatorias;
+3. fijar taxonomía final de estados/códigos de causa y aplicabilidad;
+4. cerrar target manifest exhaustivo por escenario × versión × N × métrica;
+5. decidir `δ_eval` frente a `δ_science` y su trazabilidad;
+6. seleccionar MSE como métrica de precisión primaria y método/estatus de RMSE;
+7. establecer cómo se estima varianza intra/intermundo para dimensionar R/M sin reutilizar evaluación.
+
+No se modifica `theta_a_calibration_protocol.py`, tests, DGP, roster, Analyzer, Evaluator, tolerancias, seeds, banks, workflows ni autorizaciones. No se ejecuta EP-02, calibración, Monte Carlo ni evaluación. `main`, RMA v3.38, Matrix v1.47, STATUS y TGCV Core permanecen sin modificación. PR #116 permanece Draft. `calibration_authorized=false`, `scientific_execution=false`, `execution_authorized=false`.
+
+**Siguiente operación:** convertir los siete cierres en una propuesta de decisión breve, con recomendación y alternativas explícitas, y verificar que cada elección se refleje coherentemente en el manifiesto y en el contrato de agregación antes de cualquier implementación.
