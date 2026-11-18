@@ -115,5 +115,46 @@ class NestedPrecisionTests(unittest.TestCase):
         self.assertEqual(analyze_nested_precision(**kwargs), analyze_nested_precision(**kwargs))
 
 
+    def test_two_outer_worlds_abstain_from_projection(self):
+        rows = ((0.0, 2.0), (2.0, 4.0))
+        result = analyze_nested_precision(
+            metric="identification_rate",
+            replicate_contributions=rows,
+            summary_metric=self._summary(rows),
+            outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            projections=((2, 2),),
+            bootstrap_replicates=500,
+            bootstrap_seed=4,
+        )
+        self.assertEqual(result.status, "INSUFFICIENT_OUTER_SUPPORT")
+        self.assertEqual(result.projections[0][-1], "INSUFFICIENT_OUTER_SUPPORT")
+        self.assertIsNone(result.projections[0][2])
+
+    def test_rmse_uses_mse_contributions_and_legacy_delta_mcse(self):
+        rows = ((0.01, 0.09), (0.04, 0.16), (0.09, 0.25))
+        world_mse = tuple(sum(row) / len(row) for row in rows)
+        summary = SimpleNamespace(
+            metric="point_rmse",
+            mean=(sum(world_mse) / len(world_mse)) ** 0.5,
+            mcse=0.0123,
+            outer_world_contributions=tuple(
+                (f"outer-{index:06d}", value)
+                for index, value in enumerate(world_mse)
+            ),
+        )
+        result = analyze_nested_precision(
+            metric="point_rmse",
+            replicate_contributions=rows,
+            summary_metric=summary,
+            outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            projections=((3, 2),),
+            bootstrap_replicates=500,
+            bootstrap_seed=8,
+        )
+        self.assertAlmostEqual(result.observed_mcse, 0.0123)
+        self.assertAlmostEqual(result.between_raw + result.within_ms / 2,
+                               result.observed_world_mean_variance)
+
+
 if __name__ == "__main__":
     unittest.main()
