@@ -187,7 +187,8 @@ class ThetaAObservationEvaluator:
                     or row["r_common_fingerprint"] != truth_regime_by_history.get(row["history_ref"])):
                 raise ContractError("observed assignment is not bound to the reserved common-r_common policy regime")
 
-        if result.temporal_resolution == "INTERVAL_LEVEL":
+        structural_nonidentified = structural is not None and structural.status == "NOT_IDENTIFIED"
+        if result.temporal_resolution == "INTERVAL_LEVEL" and not structural_nonidentified:
             observed_missing = sum(row.get("observation_status") == "MISSING" for row in evidence.rows)
             if (evidence.manifest.get("temporal_resolution") != "INTERVAL_LEVEL"
                     or result.missing_interval_count != observed_missing
