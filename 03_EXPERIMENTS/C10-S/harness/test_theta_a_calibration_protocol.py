@@ -303,15 +303,17 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
                 expected_abstention_reason="TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT",
             ),
         )
-        design = self._design(scenario)
+        design = replace(self._design(scenario), assignment_replicates_r=3)
         assignments = build_theta_a_seed_bank(design, "calibration")
         records = []
         for row in assignments:
-            if row.outer_world_id == "outer-000000" and row.assignment_replicate == 0:
+            if row.assignment_replicate == 0:
                 observed, reason, point = "NOT_IDENTIFIED", "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT", None
-            elif row.outer_world_id == "outer-000000":
+            elif row.assignment_replicate == 1 and row.outer_world_id == "outer-000000":
+                observed, reason, point = "NOT_IDENTIFIED", "SOURCE_ASSIGNMENT_POSITIVITY_FAILURE", None
+            elif row.assignment_replicate == 1:
                 observed, reason, point = "INDETERMINATE", "REALIZED_GA_ARM_SUPPORT_MISSING", None
-            elif row.assignment_replicate == 0:
+            elif row.outer_world_id == "outer-000000":
                 observed, reason, point = "PARTIALLY_IDENTIFIED", "STRICT_VCONT_NOT_OBSERVED_BY_POINT_SAMPLES", None
             else:
                 observed, reason, point = "IDENTIFIED", None, 0.2
@@ -324,10 +326,10 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
             design, assignments, tuple(records), bank="calibration"
         )[0]
         metrics = {x.metric: x for x in summary.metrics}
-        self.assertAlmostEqual(metrics["correct_abstention_rate"].mean, 0.25)
-        self.assertAlmostEqual(metrics["wrong_cause_abstention_rate"].mean, 0.25)
-        self.assertAlmostEqual(metrics["partial_identification_rate"].mean, 0.25)
-        self.assertAlmostEqual(metrics["false_identification_rate"].mean, 0.25)
+        self.assertAlmostEqual(metrics["correct_abstention_rate"].mean, 1 / 3)
+        self.assertAlmostEqual(metrics["wrong_cause_abstention_rate"].mean, 1 / 3)
+        self.assertAlmostEqual(metrics["partial_identification_rate"].mean, 1 / 6)
+        self.assertAlmostEqual(metrics["false_identification_rate"].mean, 1 / 6)
 
     def test_partial_identification_is_rejected_until_bounds_are_adjudicated(self):
         scenario = ThetaACalibrationScenario(
