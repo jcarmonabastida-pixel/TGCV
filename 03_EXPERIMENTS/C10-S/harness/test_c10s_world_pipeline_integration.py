@@ -501,6 +501,31 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 row.analyzer_identification == scenario.expected_identification
                 for row in captured
             ))
+        paired_scenarios = (
+            "THETA_A_POSITIVE_V1",
+            "THETA_A_ALTERNATIVE_COMMON_V1",
+            "THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1",
+        )
+        for outer_id in ("outer-000000", "outer-000001"):
+            for replicate in (0, 1):
+                paired_records = [
+                    next(
+                        row for row in by_scenario[scenario_id]
+                        if row.outer_world_id == outer_id
+                        and row.assignment_replicate == replicate
+                    )
+                    for scenario_id in paired_scenarios
+                ]
+                self.assertEqual(len({row.world_id for row in paired_records}), 1)
+                self.assertEqual(
+                    len({row.world_configuration_sha256 for row in paired_records}), 1,
+                )
+                self.assertEqual(len({row.run_id for row in paired_records}), 3)
+                self.assertEqual(
+                    len({row.assignment_randomization_sha256 for row in paired_records}), 3,
+                )
+                self.assertEqual(len({row.evidence_sha256 for row in paired_records}), 3)
+
         target_only = by_scenario["THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1"]
         self.assertTrue(all(
             row.observed_abstention_reason == "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT"
