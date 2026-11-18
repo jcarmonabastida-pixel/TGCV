@@ -120,6 +120,26 @@ class ThetaAObservationEvaluator:
         elif structural is not None and structural.status == "STRUCTURAL_SUPPORT_SUFFICIENT":
             if result.identification == "NOT_IDENTIFIED" and result.abstention_reason == "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT":
                 raise ContractError("Analyzer falsely reported structural non-identification under complete support")
+            support_by_history = {row.history_ref: row for row in contract.structural_support_contract.rows}
+            for row in evidence.rows:
+                support_row = support_by_history[row["history_ref"]]
+                expected_probability = (
+                    support_row.assignment_probability_a1
+                    if row["assigned_arm"] == 1
+                    else 1.0 - support_row.assignment_probability_a1
+                )
+                if not math.isclose(row["assignment_probability"], expected_probability,
+                                    rel_tol=0.0, abs_tol=1e-12):
+                    raise ContractError("Evaluator found sealed assignment propensity inconsistent with structural support")
+            assignment_by_history = {row.history_ref: row for row in assignment_bundle.assignments}
+            for history_ref, support_row in support_by_history.items():
+                if support_row.source_mass > 0.0:
+                    assigned = assignment_by_history.get(history_ref)
+                    if assigned is None or not math.isclose(
+                        assigned.probability_a1, support_row.assignment_probability_a1,
+                        rel_tol=0.0, abs_tol=1e-12,
+                    ):
+                        raise ContractError("Evaluator found assignment bundle inconsistent with structural support")
         if _hash({"manifest": evidence.manifest, "rows": evidence.rows}) != evidence.sha256:
             raise ContractError("sealed theta_A evidence digest is invalid")
         if _canonical_hash(_result_payload(result)) != result.output_sha256:
