@@ -31,6 +31,7 @@ class ThetaAObservationAnalysisContract:
     confidence_level: float | None = None
     unit_independence_certified: bool = False
     structural_support_contract: "ThetaAStructuralSupportContract | None" = None
+    source_q_x_sha256: str | None = None
 
     def validate(self) -> None:
         if not all((self.q_x_sha256, self.assignment_bundle_sha256,
@@ -55,6 +56,9 @@ class ThetaAObservationAnalysisContract:
             self.structural_support_contract.validate()
             if self.structural_support_contract.target_q_x_sha256 != self.q_x_sha256:
                 raise ContractError("structural-support target fingerprint must match analysis q_X")
+            source_fingerprint = self.source_q_x_sha256 or self.q_x_sha256
+            if self.structural_support_contract.source_q_x_sha256 != source_fingerprint:
+                raise ContractError("structural-support source fingerprint must match assignment source q_X")
             target_masses = dict(self.q_x_mass_by_history)
             support_rows = self.structural_support_contract.rows
             if set(target_masses) != {row.history_ref for row in support_rows}:
@@ -157,8 +161,9 @@ class ThetaAObservationAnalyzer:
         if _hash({"manifest": evidence.manifest, "rows": evidence.rows}) != evidence.sha256:
             raise ContractError("theta_A Analyzer received evidence with an invalid seal digest")
         rows = evidence.rows
+        source_qx_sha256 = contract.source_q_x_sha256 or contract.q_x_sha256
         if any(row.get("assignment_bundle_sha256") != contract.assignment_bundle_sha256
-               or row.get("q_x_sha256") != contract.q_x_sha256
+               or row.get("q_x_sha256") != source_qx_sha256
                or row.get("g_a0_sha256") != contract.g_a0_sha256
                or row.get("g_a1_sha256") != contract.g_a1_sha256
                or row.get("r_common_sha256") != contract.r_common_sha256
