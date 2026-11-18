@@ -278,6 +278,7 @@ def materialize_c10s_complete_world(
     contract = ThetaAObservationAnalysisContract(
         q_x_mass_by_history=tuple((row.history_ref, row.mass) for row in world.q_x),
         q_x_sha256=assignments.q_x_sha256,
+        source_q_x_sha256=assignments.q_x_sha256,
         assignment_bundle_sha256=assignments.result_sha256,
         g_a0_sha256=assignments.g_a0_sha256,
         g_a1_sha256=assignments.g_a1_sha256,
