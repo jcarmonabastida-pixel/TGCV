@@ -251,6 +251,7 @@ class ThetaAObservationAnalyzer:
             "inference_upper_bound": None,
             "hoeffding_range_sum_squares": None,
             "structural_support_sha256": structural.contract_sha256 if structural else None,
+            "assignment_positivity_failure_histories": (),
         }
         return ThetaAObservationAnalysisResult(**result_payload,
             output_sha256=_canonical_hash(result_payload))
@@ -417,6 +418,7 @@ class ThetaAObservationAnalyzer:
                 _canonical_hash(contract.structural_support_contract)
                 if contract.structural_support_contract is not None else None
             ),
+            "assignment_positivity_failure_histories": (),
             **inference,
         }
         return ThetaAObservationAnalysisResult(**result_payload,
