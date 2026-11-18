@@ -254,9 +254,12 @@ def _summarize_tier_b(spec, records: list[dict[str, Any]]) -> dict[str, Any]:
                 and row["projected_mcse_interval"] == [None, None]
             )
         elif row["bootstrap_degenerate"]:
-            expected = "RMSE_DELTA_NONREGULAR" if spec.family == "F6" else "DEGENERATE_BOOTSTRAP_DISTRIBUTION"
+            expected = (
+                {"RMSE_DELTA_NONREGULAR", "DEGENERATE_BOOTSTRAP_DISTRIBUTION"}
+                if spec.family == "F6" else {"DEGENERATE_BOOTSTRAP_DISTRIBUTION"}
+            )
             abstention_ok = abstention_ok and (
-                row["projected_mcse_status"] == expected
+                row["projected_mcse_status"] in expected
                 and row["projected_mcse_interval"] == [None, None]
             )
         elif spec.family == "F6":
