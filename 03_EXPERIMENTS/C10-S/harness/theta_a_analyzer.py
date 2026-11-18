@@ -156,7 +156,7 @@ class ThetaAObservationAnalyzer:
                 "structural_support_sha256": structural.contract_sha256,
             }
             return ThetaAObservationAnalysisResult(**result_payload, output_sha256=_canonical_hash(result_payload))
-        observed_histories = {row["history_ref"] for row in rows)
+        observed_histories = {row["history_ref"] for row in rows}
         missing = tuple(sorted(set(qx) - observed_histories))
         unexpected = observed_histories - set(qx)
         if unexpected:
