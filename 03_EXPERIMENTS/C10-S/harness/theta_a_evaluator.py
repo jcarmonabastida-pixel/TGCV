@@ -200,15 +200,19 @@ class ThetaAObservationEvaluator:
         # Manifest rows are (history_ref, vector_sha, r_common_fingerprint,
         # history_id, EventHistory content SHA); unit identity is carried by
         # the assignment/evidence binding, not by this policy-potential manifest.
+        source_only_refs = set(contract.source_only_history_refs)
+        target_evidence_rows = tuple(
+            row for row in evidence.rows if row["history_ref"] not in source_only_refs
+        )
         truth_history_keys = {(row[0], row[3]) for row in truth_bundle.event_history_manifest}
         evidence_history_keys = {(row["history_ref"], row["history_id"])
-                                 for row in evidence.rows}
+                                 for row in target_evidence_rows}
         if not evidence_history_keys or not evidence_history_keys.issubset(truth_history_keys):
             raise ContractError("sealed observations do not map to the reserved realized EventHistory manifest")
         if result.temporal_resolution == "INTERVAL_LEVEL":
             truth_history_content = {(row[0], row[3]): row[4]
                                      for row in truth_bundle.event_history_manifest}
-            for row in evidence.rows:
+            for row in target_evidence_rows:
                 key = (row["history_ref"], row["history_id"])
                 if row.get("history_content_sha256") != truth_history_content.get(key):
                     raise ContractError("interval evidence does not bind to the exact reserved EventHistory content")
@@ -216,17 +220,17 @@ class ThetaAObservationEvaluator:
             contribution.history_ref: contribution.r_common_fingerprint
             for contribution in truth.contributions
         }
-        for row in evidence.rows:
+        for row in target_evidence_rows:
             if (row["r_common_sha256"] != contract.r_common_sha256
                     or row["r_common_fingerprint"] != truth_regime_by_history.get(row["history_ref"])):
                 raise ContractError("observed assignment is not bound to the reserved common-r_common policy regime")
 
         structural_nonidentified = structural is not None and structural.status == "NOT_IDENTIFIED"
         if result.temporal_resolution == "INTERVAL_LEVEL" and not structural_nonidentified:
-            observed_missing = sum(row.get("observation_status") == "MISSING" for row in evidence.rows)
+            observed_missing = sum(row.get("observation_status") == "MISSING" for row in target_evidence_rows)
             if (evidence.manifest.get("temporal_resolution") != "INTERVAL_LEVEL"
                     or result.missing_interval_count != observed_missing
-                    or result.total_interval_count != len(evidence.rows)
+                    or result.total_interval_count != len(target_evidence_rows)
                     or result.missing_interval_count < 0
                     or result.total_interval_count <= 0
                     or result.missing_interval_count > result.total_interval_count):
@@ -247,7 +251,7 @@ class ThetaAObservationEvaluator:
             # observations. This does not consult the reserved outcome oracle.
             qx_mass = dict(contract.q_x_mass_by_history)
             by_unit = {}
-            for row in evidence.rows:
+            for row in target_evidence_rows:
                 by_unit.setdefault(row["unit_id"], []).append(row)
             arm_lower = [0.0, 0.0]
             arm_upper = [0.0, 0.0]
