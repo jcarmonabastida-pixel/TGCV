@@ -178,6 +178,17 @@ def analyze_nested_precision(
         else sqrt(world_var / m) if outer_world_sampling_mode == "DECLARED_IID_PSEUDORANDOM"
         else None
     )
+    legacy_mcse = getattr(summary_metric, "mcse", None)
+    if not is_rmse and observed_mcse is not None and legacy_mcse is not None:
+        if (
+            isinstance(legacy_mcse, bool)
+            or not isinstance(legacy_mcse, (int, float))
+            or not isfinite(legacy_mcse)
+            or abs(observed_mcse - legacy_mcse) > 1e-10
+        ):
+            raise NestedPrecisionError(
+                "observed MCSE does not reconcile to the legacy outer-world summary"
+            )
     status = (
         "INSUFFICIENT_OUTER_SUPPORT" if m < 3
         else "DESCRIPTIVE_ONLY_NO_IID_OUTER_INFERENCE"
