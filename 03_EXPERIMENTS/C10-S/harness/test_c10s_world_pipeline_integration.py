@@ -58,7 +58,7 @@ from theta_a_calibration_protocol import (
     ThetaACalibrationDesign, ThetaACalibrationDGPProfile, ThetaACalibrationScenario,
     build_theta_a_seed_bank, capture_theta_a_replicate,
     run_theta_a_calibration_replicates, s3_seeds_by_unit, summarize_theta_a_calibration,
-    theta_a_pipeline_inference_options,
+    theta_a_pipeline_inference_options, build_theta_a_candidate_scenario_roster,
 )
 
 
@@ -292,6 +292,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             "FOCAL_INCLUSION", "FOCAL_EXCLUSION", "SEMANTIC_INDETERMINACY",
         )
         return {
+            "world": world,
             "world_config": world_config,
             "need_pre_z_stipulations": tuple(
                 NeedPreZStipulation(
@@ -399,6 +400,106 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 else theta_a_confidence_level is not None
             ),
         )
+
+    def _configure_target_only_support_fixture(self, fixture, scenario):
+        profile = scenario.dgp_profile
+        if profile is None or profile.support_relation != "TARGET_HAS_UNSUPPORTED_HISTORIES":
+            raise ValueError("target-only fixture requires a target-unsupported DGP profile")
+        if len(profile.target_unsupported_history_masses) != 1:
+            raise ValueError("current target-only materializer supports exactly one reserved target-only history")
+        world = fixture["world"]
+        extra_ref, unsupported_mass = profile.target_unsupported_history_masses[0]
+        extra_unit_id = "TARGET-ONLY-UNIT-001"
+        extra_qx = QXHistoryMass(
+            extra_ref, "TARGET-X-001", "TARGET-H0-001", "TARGET-CC-001", unsupported_mass,
+        )
+        supported_mass = 1.0 - unsupported_mass
+        target_q_x = tuple(
+            QXHistoryMass(row.history_ref, row.x_ref, row.h0_ref, row.c_c_ref, row.mass * supported_mass)
+            for row in world.q_x
+        ) + (extra_qx,)
+        source_unit_ids = {
+            unit.d2_baseline.baseline_history_ref: unit.unit_id for unit in world.units
+        }
+        target_unit_ids = {**source_unit_ids, extra_ref: extra_unit_id}
+        assignment_probabilities = dict(fixture["assignment_config"].probability_a1_by_history)
+        zero_vector = fixture["g_a0"][0].distribution[0][0]
+        one_vector = fixture["g_a1"][0].distribution[0][0]
+        fixture["g_a0"] = fixture["g_a0"] + (JointPolicyHistory(extra_ref, ((zero_vector, 1.0),)),)
+        fixture["g_a1"] = fixture["g_a1"] + (JointPolicyHistory(extra_ref, ((one_vector, 1.0),)),)
+        fixture["r_common"] = fixture["r_common"] + (
+            RCommonPairCertificate(
+                extra_ref, "R-COMMON", "1",
+                fixture["r_common"][0].g_a0_fingerprint,
+                fixture["r_common"][0].g_a1_fingerprint, "COMMON_FIXED",
+            ),
+        )
+        fixture["feasible"][extra_ref] = (zero_vector, one_vector)
+        fixture["initial_by_history"][extra_ref] = FunctionalState(
+            True, "ADMIT", "STANDARD", "PROFILE-1", "1",
+        )
+        support = ThetaAStructuralSupportContract(
+            profile.structural_support_contract_id,
+            profile.structural_support_contract_version,
+            digest(target_q_x), digest(world.q_x),
+            tuple(
+                ThetaAStructuralSupportRow(
+                    row.history_ref, row.mass, source_row.mass,
+                    True, True, True, assignment_probabilities[row.history_ref],
+                )
+                for row, source_row in zip(target_q_x[:-1], world.q_x)
+            ) + (ThetaAStructuralSupportRow(
+                extra_ref, unsupported_mass, 0.0, True, True, True, None,
+            ),),
+        )
+        source_anchor = world.units[0]
+        target_materialization = SyntheticThetaATargetHistory(
+            q_x=extra_qx,
+            potential_unit_id=extra_unit_id,
+            x_values=source_anchor.x,
+            h0_value=source_anchor.h0,
+            c_c_values=source_anchor.c_c,
+            initial_functional_state=fixture["initial_by_history"][extra_ref],
+            provenance_ref="SYNTHETIC-TEST-DGP-TARGET-BASELINE-001",
+        )
+        fixture["theta_a_population_args"] = {
+            "theta_a_q_x": target_q_x,
+            "theta_a_unit_id_by_history": target_unit_ids,
+            "theta_a_structural_support_contract": support,
+            "theta_a_target_history_materializations": (target_materialization,),
+        }
+        fixture["target_q_x"] = target_q_x
+        fixture["target_materialization"] = target_materialization
+        return fixture
+
+    def _execute_calibration_scenario(self, assignment, scenario, inference_options):
+        profile = scenario.dgp_profile
+        if profile is None or profile.generator_variant is None:
+            raise ValueError("canonical calibration execution requires a typed generator variant")
+        mode = "positive" if profile.generator_variant == "positive_target_only" else profile.generator_variant
+        fixture = self._fixture(mode, seed_assignment=assignment)
+        if profile.support_relation == "TARGET_HAS_UNSUPPORTED_HISTORIES":
+            fixture = self._configure_target_only_support_fixture(fixture, scenario)
+        elif profile.support_relation == "EQUAL":
+            world = fixture["world"]
+            probabilities = dict(fixture["assignment_config"].probability_a1_by_history)
+            support = ThetaAStructuralSupportContract(
+                profile.structural_support_contract_id,
+                profile.structural_support_contract_version,
+                digest(world.q_x), digest(world.q_x),
+                tuple(
+                    ThetaAStructuralSupportRow(
+                        row.history_ref, row.mass, row.mass,
+                        True, True, True, probabilities[row.history_ref],
+                    ) for row in world.q_x
+                ),
+            )
+            fixture["theta_a_population_args"] = {
+                "theta_a_structural_support_contract": support,
+            }
+        else:
+            raise ValueError("candidate calibration factory does not materialize this support relation")
+        return self._run_pipeline(fixture, **inference_options)
 
     def test_structural_target_source_nonoverlap_runs_through_generated_world_to_evaluator(self):
         fixture = self._fixture(n_units=4)
