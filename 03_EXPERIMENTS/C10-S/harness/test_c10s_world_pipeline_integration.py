@@ -335,6 +335,28 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             result.analyzer_result.abstention_reason,
             "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT",
         )
+
+        # End-to-end oracle boundary: DGP truth is available to the independent
+        # Evaluator, never to the Analyzer's contract or sealed observations.
+        analyzer_contract_fields = {
+            field.name for field in __import__("dataclasses").fields(result.analyzer_contract)
+        }
+        self.assertFalse({
+            "truth", "theta_a_truth", "expected_theta_a_truth",
+            "target_history_contributions",
+        } & analyzer_contract_fields)
+        self.assertFalse({
+            key for key in result.sealed_evidence.manifest
+            if "truth" in key.lower() or "contribution" in key.lower()
+        })
+        for evidence_row in result.sealed_evidence.rows:
+            self.assertFalse({
+                key for key in evidence_row
+                if "truth" in key.lower() or "contribution" in key.lower()
+            })
+        self.assertIsNone(result.analyzer_result.point_estimate)
+        self.assertEqual(result.analyzer_result.identification, "NOT_IDENTIFIED")
+        self.assertAlmostEqual(result.evaluator_result.truth, independently_expected_truth)
         self.assertTrue(result.evaluator_result.correct_adjudication)
         self.assertEqual(result.evaluator_result.disposition, "CORRECT_ABSTENTION")
 
