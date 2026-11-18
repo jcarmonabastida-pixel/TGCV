@@ -1121,6 +1121,20 @@ def summarize_theta_a_calibration(
                         (outer_id, sum(identified) / r_count)
                     )
 
+            if scenario.expected_identification == "IDENTIFIED":
+                for name in (
+                    "correct_abstention_rate", "wrong_cause_abstention_rate",
+                    "partial_identification_rate", "false_identification_rate",
+                ):
+                    metric_values.setdefault(name, [None] * design.outer_worlds_m)
+            else:
+                for name in (
+                    "false_abstention_rate", "point_bias", "point_mae",
+                    "point_rmse_mse", "point_recovery_rate",
+                    "interval_coverage", "interval_width",
+                ):
+                    metric_values.setdefault(name, [None] * design.outer_worlds_m)
+
             names = sorted(metric_values)
             metric_summaries = []
             for name in names:
