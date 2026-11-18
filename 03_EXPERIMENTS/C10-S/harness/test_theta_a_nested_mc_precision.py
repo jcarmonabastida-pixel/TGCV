@@ -34,9 +34,6 @@ class NestedPrecisionTests(unittest.TestCase):
             within_world_sampling_independence_basis=(
                 "Test fixture: each R is an independently seeded randomization draw conditional on fixed M."
             ),
-            within_world_sampling_independence_basis=(
-                "Test fixture: each R is an independently seeded randomization draw conditional on fixed M."
-            ),
             projections=((3, 2), (6, 4)),
             bootstrap_replicates=500,
             bootstrap_seed=19,
