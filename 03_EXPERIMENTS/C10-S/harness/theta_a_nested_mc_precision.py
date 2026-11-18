@@ -115,16 +115,25 @@ def analyze_nested_precision(
         else sqrt(world_var / m) if outer_world_sampling_mode == "DECLARED_IID_PSEUDORANDOM"
         else None
     )
-    status = "DESCRIPTIVE_ONLY" if outer_world_sampling_mode != "DECLARED_IID_PSEUDORANDOM" else "ESTIMABLE_UNDER_DECLARED_SAMPLING"
+    status = (
+        "INSUFFICIENT_OUTER_SUPPORT" if m < 3
+        else "DESCRIPTIVE_ONLY" if outer_world_sampling_mode != "DECLARED_IID_PSEUDORANDOM"
+        else "ESTIMABLE_UNDER_DECLARED_SAMPLING"
+    )
     rng = random.Random(bootstrap_seed)
     boot: list[tuple[float, float, float, float]] = []
     boundary = 0
     for _ in range(bootstrap_replicates):
-        selected = [rows[rng.randrange(m)] for _ in range(m)]
+        selected_indices = [rng.randrange(m) for _ in range(m)]
+        if len(set(selected_indices)) < 2:
+            continue
+        selected = [rows[index] for index in selected_indices]
         nested = tuple(tuple(row[rng.randrange(r)] for _ in range(r)) for row in selected)
         b_msw, _, b_between, _ = _components(nested)
         boot.append((b_msw, b_between, b_between + b_msw / r, mean(mean(row) for row in nested)))
         boundary += b_between < 0.0
+    if not boot:
+        raise NestedPrecisionError("bootstrap produced no replicate with at least two distinct outer worlds")
 
     def percentile(values: Sequence[float], probability: float) -> float:
         ordered = sorted(values)
@@ -153,7 +162,9 @@ def analyze_nested_precision(
                     continue
                 projected_mcse /= 2.0 * sqrt(sampled_mean_mse)
             values.append(projected_mcse)
-        if len(values) < bootstrap_replicates * 0.95:
+        if m < 3:
+            projections_out.append((target_m, target_r, None, None, "INSUFFICIENT_OUTER_SUPPORT"))
+        elif len(values) < bootstrap_replicates * 0.95:
             projections_out.append((target_m, target_r, None, None, "SENSITIVITY_REQUIRED"))
         else:
             projections_out.append((
@@ -163,5 +174,5 @@ def analyze_nested_precision(
     return NestedPrecisionResult(
         metric, status, m, r, msw, max(0.0, between_raw), between_raw,
         world_var, observed_mcse, bootstrap_replicates, len(boot),
-        boundary / bootstrap_replicates, intervals, tuple(projections_out),
+        boundary / len(boot), intervals, tuple(projections_out),
     )
