@@ -33,7 +33,10 @@ class NestedPrecisionResult:
     component_intervals: tuple[tuple[str, float, float], ...]
     projections: tuple[tuple[int, int, float | None, float | None, str], ...]
     method_id: str = "TGCV_NESTED_MR_BOOTSTRAP"
-    method_version: str = "1.0"
+    method_version: str = "1.1"
+    within_world_sampling_mode: str = "UNVERIFIED"
+    within_world_sampling_contract_id: str | None = None
+    within_world_sampling_contract_version: str | None = None
 
 
 def _finite_rows(rows: Sequence[Sequence[float]]) -> tuple[tuple[float, ...], ...]:
@@ -70,6 +73,9 @@ def analyze_nested_precision(
     summary_metric,
     outer_world_sampling_mode: str,
     projections: Sequence[tuple[int, int]],
+    within_world_sampling_mode: str = "UNVERIFIED",
+    within_world_sampling_contract_id: str | None = None,
+    within_world_sampling_contract_version: str | None = None,
     bootstrap_replicates: int = 2000,
     bootstrap_seed: int = 0,
 ) -> NestedPrecisionResult:
@@ -96,6 +102,25 @@ def analyze_nested_precision(
         "UNVERIFIED", "FIXED_FINITE_SET", "DEPENDENT", "DECLARED_IID_PSEUDORANDOM"
     }:
         raise NestedPrecisionError("unsupported outer-world sampling mode")
+    if within_world_sampling_mode not in {
+        "UNVERIFIED", "FIXED_FINITE_SET", "DEPENDENT", "DECLARED_IID_PSEUDORANDOM"
+    }:
+        raise NestedPrecisionError("unsupported within-world replicate sampling mode")
+    if within_world_sampling_mode == "DECLARED_IID_PSEUDORANDOM":
+        if not all(
+            isinstance(value, str) and value.strip()
+            for value in (
+                within_world_sampling_contract_id,
+                within_world_sampling_contract_version,
+            )
+        ):
+            raise NestedPrecisionError(
+                "declared IID within-world sampling requires a versioned contract identity"
+            )
+    elif within_world_sampling_contract_id is not None or within_world_sampling_contract_version is not None:
+        raise NestedPrecisionError(
+            "non-IID within-world modes cannot claim an IID sampling contract identity"
+        )
     if getattr(summary_metric, "metric", None) != metric:
         raise NestedPrecisionError("summary metric identity does not match replicate contributions")
     summary_rows = tuple(getattr(summary_metric, "outer_world_contributions", ()))
@@ -121,7 +146,10 @@ def analyze_nested_precision(
     )
     status = (
         "INSUFFICIENT_OUTER_SUPPORT" if m < 3
-        else "DESCRIPTIVE_ONLY" if outer_world_sampling_mode != "DECLARED_IID_PSEUDORANDOM"
+        else "DESCRIPTIVE_ONLY_NO_IID_OUTER_INFERENCE"
+        if outer_world_sampling_mode != "DECLARED_IID_PSEUDORANDOM"
+        else "DESCRIPTIVE_ONLY_NO_IID_WITHIN_R_INFERENCE"
+        if within_world_sampling_mode != "DECLARED_IID_PSEUDORANDOM"
         else "ESTIMABLE_UNDER_DECLARED_SAMPLING"
     )
     rng = random.Random(bootstrap_seed)
@@ -182,6 +210,8 @@ def analyze_nested_precision(
             projection_status = "INSUFFICIENT_OUTER_SUPPORT"
         elif outer_world_sampling_mode != "DECLARED_IID_PSEUDORANDOM":
             projection_status = "DESCRIPTIVE_ONLY_NO_IID_OUTER_INFERENCE"
+        elif within_world_sampling_mode != "DECLARED_IID_PSEUDORANDOM":
+            projection_status = "DESCRIPTIVE_ONLY_NO_IID_WITHIN_R_INFERENCE"
         elif is_rmse and grand_mean <= 0:
             projection_status = "RMSE_DELTA_NONREGULAR"
         elif len(boot) < bootstrap_replicates * 0.95:
@@ -205,4 +235,7 @@ def analyze_nested_precision(
         metric, status, m, r, msw, max(0.0, between_raw), between_raw,
         world_var, observed_mcse, bootstrap_replicates, len(boot),
         boundary / len(boot), intervals, tuple(projections_out),
+        within_world_sampling_mode=within_world_sampling_mode,
+        within_world_sampling_contract_id=within_world_sampling_contract_id,
+        within_world_sampling_contract_version=within_world_sampling_contract_version,
     )
