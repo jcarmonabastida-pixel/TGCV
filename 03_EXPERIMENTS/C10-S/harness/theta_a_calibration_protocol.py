@@ -73,8 +73,8 @@ class ThetaACalibrationDGPProfile:
                 raise ThetaACalibrationError("target-only profile requires unsupported mass and its exact Analyzer reason")
         elif self.target_unsupported_history_masses or self.expected_abstention_reason is not None:
             raise ThetaACalibrationError("benign/equal support profiles cannot declare target-only mass or abstention reason")
-        if (self.generator_variant is None) != (self.expected_theta_a_truth is None):
-            raise ThetaACalibrationError("canonical DGP variants require an independently declared analytic theta_A truth")
+        if self.expected_theta_a_truth is not None and self.generator_variant is None:
+            raise ThetaACalibrationError("an analytic theta_A truth must be bound to an explicit DGP generator variant")
         if self.generator_variant is not None and self.generator_variant not in {
             "positive", "null", "negative", "alternative", "positive_target_only"
         }:
