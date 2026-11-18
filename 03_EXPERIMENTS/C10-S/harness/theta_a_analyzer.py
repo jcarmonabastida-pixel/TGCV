@@ -50,8 +50,10 @@ class ThetaAObservationAnalysisContract:
             probabilities = dict(self.probability_a1_by_history)
             if len(probabilities) != len(self.probability_a1_by_history) or set(probabilities) != set(mapping):
                 raise ContractError("theta_A inference probabilities must cover q_X histories exactly")
-            if any(not math.isfinite(p) or not 0.0 < p < 1.0 for p in probabilities.values()):
-                raise ContractError("theta_A inference requires strict positivity for both policy arms")
+            lower = 0.0 if self.structural_support_contract is not None else math.nextafter(0.0, 1.0)
+            upper = 1.0 if self.structural_support_contract is not None else math.nextafter(1.0, 0.0)
+            if any(not math.isfinite(p) or p < lower or p > upper for p in probabilities.values()):
+                raise ContractError("boundary assignment probabilities require a structural-support contract")
         if self.structural_support_contract is not None:
             self.structural_support_contract.validate()
             if self.structural_support_contract.target_q_x_sha256 != self.q_x_sha256:
@@ -65,6 +67,13 @@ class ThetaAObservationAnalysisContract:
                 raise ContractError("structural-support contract must cover the full q_X target")
             if any(not math.isclose(target_masses[row.history_ref], row.target_mass, rel_tol=0.0, abs_tol=1e-10) for row in support_rows):
                 raise ContractError("structural-support target masses must match analysis q_X")
+            if self.probability_a1_by_history:
+                probabilities = dict(self.probability_a1_by_history)
+                if any(row.source_mass > 0.0 and not math.isclose(
+                    probabilities.get(row.history_ref, math.nan),
+                    row.assignment_probability_a1, rel_tol=0.0, abs_tol=1e-12,
+                ) for row in support_rows):
+                    raise ContractError("structural-support propensities must match the analysis assignment mechanism")
         if self.confidence_level is not None:
             if not math.isfinite(self.confidence_level) or not 0.0 < self.confidence_level < 1.0:
                 raise ContractError("theta_A confidence_level must be explicitly between zero and one")
@@ -100,6 +109,7 @@ class ThetaAObservationAnalysisResult:
     inference_upper_bound: float | None = None
     hoeffding_range_sum_squares: float | None = None
     structural_support_sha256: str | None = None
+    assignment_positivity_failure_histories: tuple[str, ...] = ()
 
 
 def _canonical_hash(value: Any) -> str:
@@ -127,6 +137,17 @@ class ThetaAObservationAnalyzer:
                    or row.get("g_a1_sha256") != contract.g_a1_sha256
                    or row.get("r_common_sha256") != contract.r_common_sha256 for row in rows):
                 raise ContractError("structural-support evidence fingerprints do not match analysis contract")
+            support_by_history = {row.history_ref: row for row in contract.structural_support_contract.rows}
+            for row in rows:
+                support_row = support_by_history[row["history_ref"]]
+                expected_probability = (
+                    support_row.assignment_probability_a1
+                    if row["assigned_arm"] == 1
+                    else 1.0 - support_row.assignment_probability_a1
+                )
+                if not math.isclose(row["assignment_probability"], expected_probability,
+                                    rel_tol=0.0, abs_tol=1e-12):
+                    raise ContractError("sealed assignment probability differs from structural support contract")
             by_unit = {}
             for row in rows:
                 prior = by_unit.setdefault(row["unit_id"], row)
@@ -153,6 +174,7 @@ class ThetaAObservationAnalyzer:
                 "inference_lower_bound": None, "inference_upper_bound": None,
                 "hoeffding_range_sum_squares": None,
                 "structural_support_sha256": structural.contract_sha256,
+                "assignment_positivity_failure_histories": structural.assignment_positivity_failure_histories,
             }
             return ThetaAObservationAnalysisResult(**result_payload, output_sha256=_canonical_hash(result_payload))
         if evidence.manifest.get("temporal_resolution") == "INTERVAL_LEVEL":
@@ -447,8 +469,8 @@ class ThetaAStructuralSupportContract:
             if row.source_mass > 0.0:
                 if (row.assignment_probability_a1 is None
                         or not math.isfinite(row.assignment_probability_a1)
-                        or not 0.0 < row.assignment_probability_a1 < 1.0):
-                    raise ContractError("source-supported target histories require strict two-arm assignment positivity")
+                        or not 0.0 <= row.assignment_probability_a1 <= 1.0):
+                    raise ContractError("source-supported target histories require assignment propensity in [0,1]")
             elif row.assignment_probability_a1 is not None:
                 raise ContractError("assignment propensity must be absent when source mass is structurally zero")
 
@@ -459,6 +481,7 @@ class ThetaAStructuralSupportAdjudication:
     reason: str
     unsupported_target_histories: tuple[str, ...]
     contract_sha256: str
+    assignment_positivity_failure_histories: tuple[str, ...] = ()
 
 
 def adjudicate_theta_a_structural_support(
@@ -484,8 +507,18 @@ def adjudicate_theta_a_structural_support(
     unsupported = tuple(sorted(
         row.history_ref for row in contract.rows if row.source_mass <= 0.0
     ))
-    status = "NOT_IDENTIFIED" if unsupported else "STRUCTURAL_SUPPORT_SUFFICIENT"
-    reason = "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT" if unsupported else ""
+    positivity_failures = tuple(sorted(
+        row.history_ref for row in contract.rows
+        if row.source_mass > 0.0 and row.assignment_probability_a1 in (0.0, 1.0)
+    ))
+    failures = []
+    if unsupported:
+        failures.append("TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT")
+    if positivity_failures:
+        failures.append("SOURCE_ASSIGNMENT_POSITIVITY_FAILURE")
+    status = "NOT_IDENTIFIED" if failures else "STRUCTURAL_SUPPORT_SUFFICIENT"
+    reason = "+".join(failures)
     return ThetaAStructuralSupportAdjudication(
-        status, reason, unsupported, _canonical_hash(asdict(contract))
+        status, reason, unsupported, _canonical_hash(asdict(contract)),
+        positivity_failures,
     )
