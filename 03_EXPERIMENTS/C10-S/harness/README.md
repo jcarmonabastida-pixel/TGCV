@@ -903,3 +903,6 @@ The existing combined non-overlap + assignment-positivity regression remains unc
 
 
 **Run evidence:** GitHub Actions run 851 (`44335617915`), exact tested commit `90c6512f2361c153d8de550ad6167c47ceb55f7f`, conclusion SUCCESS. Primary and clean replay each report 313/313 tests. Payload artifact `14440773039`, SHA-256 `bf81186b49c55d86a5f6f7303f9dbb58a182b2bfcd6803df048574b2d387bbf3`; execution manifest artifact `14440308992`, SHA-256 `ad092a5bd230bf4d507476e47caf6fc7d58b8f0b9d600ae23b3018798aec1045`. The workflow has been restored to `workflow_dispatch` only; no temporary push trigger is retained.
+
+
+<!-- [EP02-TRIGGER] temporary technical suite trigger; remove after run -->
