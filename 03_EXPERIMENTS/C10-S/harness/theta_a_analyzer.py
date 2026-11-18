@@ -336,3 +336,89 @@ class ThetaAObservationAnalyzer:
         }
         return ThetaAObservationAnalysisResult(**result_payload,
             output_sha256=_canonical_hash(result_payload))
+
+
+@dataclass(frozen=True)
+class ThetaAStructuralSupportRow:
+    """One positive-mass target history and its source/policy support facts.
+
+    This is a test-harness adjudication input, not a population roster and
+    not authorization to materialize any B1/UE target population.
+    """
+    history_ref: str
+    target_mass: float
+    source_mass: float
+    intervention_defined: bool
+    g_a0_feasible: bool
+    g_a1_feasible: bool
+    assignment_probability_a1: float
+
+
+@dataclass(frozen=True)
+class ThetaAStructuralSupportContract:
+    """Versioned separation of target mass, source support and policy feasibility."""
+    contract_id: str
+    contract_version: str
+    target_q_x_sha256: str
+    source_q_x_sha256: str
+    rows: tuple[ThetaAStructuralSupportRow, ...]
+
+    def validate(self) -> None:
+        if not all((self.contract_id, self.contract_version,
+                    self.target_q_x_sha256, self.source_q_x_sha256)):
+            raise ContractError("structural-support contract identity and both distribution fingerprints are required")
+        refs = [row.history_ref for row in self.rows]
+        if not refs or len(refs) != len(set(refs)):
+            raise ContractError("structural-support rows require unique positive-mass target histories")
+        if not math.isclose(sum(row.target_mass for row in self.rows), 1.0,
+                            rel_tol=0.0, abs_tol=1e-10):
+            raise ContractError("structural-support target masses must sum to one")
+        for row in self.rows:
+            if not row.history_ref or not math.isfinite(row.target_mass) or row.target_mass <= 0:
+                raise ContractError("each structural-support row requires a positive finite target mass")
+            if not math.isfinite(row.source_mass) or row.source_mass < 0:
+                raise ContractError("source mass must be finite and non-negative")
+            if any(type(value) is not bool for value in
+                   (row.intervention_defined, row.g_a0_feasible, row.g_a1_feasible)):
+                raise ContractError("intervention definition and policy feasibility must be explicit Booleans")
+            if (not math.isfinite(row.assignment_probability_a1)
+                    or not 0.0 < row.assignment_probability_a1 < 1.0):
+                raise ContractError("both focal policy assignment probabilities must be strictly positive")
+
+
+@dataclass(frozen=True)
+class ThetaAStructuralSupportAdjudication:
+    status: str
+    reason: str
+    unsupported_target_histories: tuple[str, ...]
+    contract_sha256: str
+
+
+def adjudicate_theta_a_structural_support(
+    contract: ThetaAStructuralSupportContract,
+) -> ThetaAStructuralSupportAdjudication:
+    """Adjudicate structural target/source support before inspecting outcomes.
+
+    Undefined/infeasible interventions are contract errors, not non-identification.
+    A well-defined policy contrast with target mass outside source support is
+    NOT_IDENTIFIED. Realized sample-arm/evidence failures remain Analyzer-level
+    INDETERMINATE results and are not inferred here.
+    """
+    contract.validate()
+    for row in contract.rows:
+        if not row.intervention_defined:
+            raise ContractError(
+                f"theta_A intervention is undefined for positive-mass target history {row.history_ref}"
+            )
+        if not row.g_a0_feasible or not row.g_a1_feasible:
+            raise ContractError(
+                f"theta_A policy is structurally infeasible for positive-mass target history {row.history_ref}"
+            )
+    unsupported = tuple(sorted(
+        row.history_ref for row in contract.rows if row.source_mass <= 0.0
+    ))
+    status = "NOT_IDENTIFIED" if unsupported else "STRUCTURAL_SUPPORT_SUFFICIENT"
+    reason = "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT" if unsupported else ""
+    return ThetaAStructuralSupportAdjudication(
+        status, reason, unsupported, _canonical_hash(contract)
+    )
