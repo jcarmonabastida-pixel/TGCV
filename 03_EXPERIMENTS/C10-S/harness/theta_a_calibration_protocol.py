@@ -349,12 +349,12 @@ def build_theta_a_seed_bank(
                 outer_id = f"outer-{m:06d}"
                 world_family_id = scenario.world_family_id or scenario.scenario_id
                 world_root = (
-                    f"TGCV-C10S-THETA-A-SEED-v1|{design.namespace}|{bank}|world-family|"
+                    f"TGCV-C10S-THETA-A-SEED-v2|{design.namespace}|{bank}|world-family|"
                     f"{world_family_id}|{scenario.world_version}|{scenario.dgp_id}|"
                     f"{scenario.dgp_version}|{scenario.roster_version}|{n_units}|{outer_id}"
                 )
                 root = (
-                    f"TGCV-C10S-THETA-A-SEED-v1|{design.namespace}|{bank}|scenario|"
+                    f"TGCV-C10S-THETA-A-SEED-v2|{design.namespace}|{bank}|scenario|"
                     f"{scenario.scenario_id}|{scenario.scenario_version}|{n_units}|{outer_id}"
                 )
                 world_seed = _seed(world_root + "|world")
@@ -436,12 +436,12 @@ def validate_theta_a_seed_banks(
             scenario = scenario_map[(row.scenario_id, row.scenario_version)]
             world_family_id = scenario.world_family_id or scenario.scenario_id
             world_root = (
-                f"TGCV-C10S-THETA-A-SEED-v1|{design.namespace}|{bank}|world-family|"
+                f"TGCV-C10S-THETA-A-SEED-v2|{design.namespace}|{bank}|world-family|"
                 f"{world_family_id}|{scenario.world_version}|{scenario.dgp_id}|"
                 f"{scenario.dgp_version}|{scenario.roster_version}|{row.n_units}|{row.outer_world_id}"
             )
             root = (
-                f"TGCV-C10S-THETA-A-SEED-v1|{design.namespace}|{bank}|scenario|"
+                f"TGCV-C10S-THETA-A-SEED-v2|{design.namespace}|{bank}|scenario|"
                 f"{scenario.scenario_id}|{scenario.scenario_version}|{row.n_units}|{row.outer_world_id}"
             )
             run_root = root + f"|profile-{scenario.dgp_profile_sha256}|assignment-{row.assignment_replicate:06d}"
