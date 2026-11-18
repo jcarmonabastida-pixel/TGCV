@@ -862,3 +862,14 @@ El pipeline completo actual declara explícitamente `source_q_x_sha256=assignmen
 Se añadieron pruebas de fuente al módulo existente para la abstención estructural y la vinculación de fingerprints objetivo/fuente. No se ejecutó EP-02 ni replay; no se generaron bancos ni se realizó calibración o ejecución científica.
 
 **Estado:** ANALYZER_STRUCTURAL_ADJUDICATION_SOURCE_IMPLEMENTED / TARGET_SOURCE_SEPARATION_PARTIAL / WORLD_GENERATOR_TRUTH_EVALUATOR_INTEGRATION_OPEN / NOT_DYNAMICALLY_VALIDATED.
+## 341. Evaluator independiente: soporte estructural y semántica de propensión fuente (2026-11-18)
+
+El Evaluator independiente deja de exigir que el fingerprint q_X del bundle de asignación coincida con el q_X objetivo del estimando. Comprueba ahora la verdad reservada contra el q_X objetivo, el bundle y las observaciones selladas contra el q_X fuente, el digest del contrato de soporte contra el resultado del Analyzer y la abstención exacta `NOT_IDENTIFIED / TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT`: sin estimación puntual, con cotas lógicas [-1,1] y lista íntegra de historias sin soporte. Después verifica que las cotas cubren la verdad objetivo reservada.
+
+Se precisa además la semántica de la probabilidad de asignación en el contrato de soporte: si la masa fuente de una historia objetivo es positiva, debe declararse positividad estricta de ambos brazos; si la masa fuente es cero, la propensión fuente debe ser `None`, porque una probabilidad condicional de asignación no está definida en un estrato vacío. La intervención focal debe seguir estando definida y ambas políticas deben ser factibles en todas las historias objetivo de masa positiva.
+
+Se añadió una prueba de fuente del Evaluator con q_X objetivo sobre h0/h1 y población fuente que solo contiene h0; la adjudicación esperada es `CORRECT_ABSTENTION`. Esta prueba sigue siendo una fixture de componente, no un mundo DGP generado. `SyntheticWorldBundle`, la generación de asignaciones y la construcción de verdad EventHistory continúan acoplados al mismo roster/q_X. El end-to-end real requiere una población sintética separada de potenciales de historias objetivo, factibilidad explícita de políticas sobre el objetivo completo y construcción de verdad que conserve historias objetivo sin unidades asignables en la fuente. No se infiere autorización de materialización B1/UE bajo Gate 130.
+
+Los cambios son estáticos. No se ejecutó EP-02 ni replay; no hubo calibración, seed bank, Monte Carlo ni ejecución científica.
+
+**Estado:** EVALUATOR_TARGET_SOURCE_CHECKS_IMPLEMENTED / WORLD_GENERATOR_TRUTH_DECOUPLING_OPEN / NOT_DYNAMICALLY_VALIDATED.
