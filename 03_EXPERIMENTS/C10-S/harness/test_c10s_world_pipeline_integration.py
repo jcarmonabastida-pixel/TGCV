@@ -468,7 +468,15 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             replace(
                 target_materialization,
                 x_values=target_materialization.x_values + (999.0,),
-            ).validate(source_world=world)
+            ).validate(
+                source_world=world,
+                allowed_h0_values={label for label, _ in fixture["world_config"].h0_distribution},
+            )
+        with self.assertRaisesRegex(ContractError, "X/H0/C_c anchors"):
+            replace(target_materialization, h0_value="OUTSIDE-DGP-SUPPORT").validate(
+                source_world=world,
+                allowed_h0_values={label for label, _ in fixture["world_config"].h0_distribution},
+            )
         result = self._run_pipeline(fixture)
         self.assertEqual(len(result.world.units), 4)
         self.assertEqual(len(result.theta_a_truth.event_history_manifest), 10)
