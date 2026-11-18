@@ -35,7 +35,10 @@ from c10s_functional_history import (
     FunctionalHistoryDGPConfig,
     FunctionalHistoryRule,
 )
-from c10s_world_pipeline import materialize_c10s_complete_world_from_dgp
+from c10s_world_pipeline import (
+    SyntheticThetaATargetHistory,
+    materialize_c10s_complete_world_from_dgp,
+)
 from c10s_factorial_pipeline import materialize_c10s_factorial_world_from_dgp
 from c10s_dual_cohort_pipeline import (
     materialize_c10s_dual_cohort_world_from_dgp,
@@ -402,10 +405,11 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         world = SyntheticWorldBuilder().generate(fixture["world_config"], fixture["d2_config"])
         extra_ref = "TARGET-ONLY-HISTORY-001"
         extra_unit_id = "TARGET-ONLY-UNIT-001"
+        extra_qx = QXHistoryMass(extra_ref, "TARGET-X-001", "TARGET-H0-001", "TARGET-CC-001", 0.5)
         target_q_x = tuple(
             QXHistoryMass(row.history_ref, row.x_ref, row.h0_ref, row.c_c_ref, row.mass * 0.5)
             for row in world.q_x
-        ) + (QXHistoryMass(extra_ref, "TARGET-X-001", "TARGET-H0-001", "TARGET-CC-001", 0.5),)
+        ) + (extra_qx,)
         source_unit_ids = {
             unit.d2_baseline.baseline_history_ref: unit.unit_id for unit in world.units
         }
@@ -437,10 +441,21 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 extra_ref, 0.5, 0.0, True, True, True, None,
             ),),
         )
+        source_anchor = world.units[0]
+        target_materialization = SyntheticThetaATargetHistory(
+            q_x=extra_qx,
+            potential_unit_id=extra_unit_id,
+            x_values=source_anchor.x,
+            h0_value=source_anchor.h0,
+            c_c_values=source_anchor.c_c,
+            initial_functional_state=fixture["initial_by_history"][extra_ref],
+            provenance_ref="SYNTHETIC-TEST-DGP-TARGET-BASELINE-001",
+        )
         fixture["theta_a_population_args"] = {
             "theta_a_q_x": target_q_x,
             "theta_a_unit_id_by_history": target_unit_ids,
             "theta_a_structural_support_contract": support,
+            "theta_a_target_history_materializations": (target_materialization,),
         }
         result = self._run_pipeline(fixture)
         self.assertEqual(len(result.world.units), 4)
