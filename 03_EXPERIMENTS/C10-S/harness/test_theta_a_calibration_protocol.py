@@ -7,6 +7,8 @@ from dataclasses import replace
 from decimal import Decimal
 from types import SimpleNamespace
 
+from theta_a_nested_mc_precision import analyze_nested_precision
+
 from theta_a_calibration_protocol import (
     ThetaACalibrationDesign,
     ThetaACalibrationDGPProfile,
@@ -25,7 +27,6 @@ from theta_a_calibration_protocol import (
     validate_theta_a_seed_banks,
     _validate_interval_s3_seed_provenance,
     _validate_truth_assignment_population_bindings,
-    # Nested precision is exercised against all registered metric contributions below.
 )
 
 
@@ -629,7 +630,6 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
                         for index, value in enumerate(world_means)
                     ),
                 )
-                from theta_a_nested_mc_precision import analyze_nested_precision
                 result = analyze_nested_precision(
                     metric=spec.metric,
                     replicate_contributions=values,
