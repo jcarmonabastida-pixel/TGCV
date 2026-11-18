@@ -29,8 +29,55 @@ _ALLOWED_METRICS = {
     "interval_coverage", "interval_width", "point_bias", "point_mae",
     "point_rmse", "point_recovery_rate", "identification_rate",
     "abstention_rate", "interval_availability_rate", "false_abstention_rate",
-    "correct_abstention_rate", "false_identification_rate",
+    "correct_abstention_rate", "wrong_cause_abstention_rate",
+    "partial_identification_rate", "false_identification_rate",
 }
+
+
+@dataclass(frozen=True)
+class ThetaACalibrationDGPProfile:
+    """Versioned, synthetic-only support profile for one focal DGP scenario."""
+    profile_id: str
+    profile_version: str
+    target_q_x_sha256: str
+    source_q_x_sha256: str
+    structural_support_contract_id: str
+    structural_support_contract_version: str
+    support_relation: Literal["EQUAL", "SOURCE_STRICT_SUPERSET", "TARGET_HAS_UNSUPPORTED_HISTORIES"]
+    target_unsupported_history_masses: tuple[tuple[str, float], ...] = ()
+    expected_abstention_reason: str | None = None
+
+    def validate(self) -> None:
+        identities = (
+            self.profile_id, self.profile_version, self.structural_support_contract_id,
+            self.structural_support_contract_version,
+        )
+        if any(not isinstance(value, str) or not value.strip() for value in identities):
+            raise ThetaACalibrationError("typed DGP profile and structural-support contract identities/versions are mandatory")
+        for value in (self.target_q_x_sha256, self.source_q_x_sha256):
+            if len(value) != 64 or any(ch not in "0123456789abcdef" for ch in value):
+                raise ThetaACalibrationError("DGP profile requires target/source lowercase SHA-256 fingerprints")
+        if self.support_relation not in {
+            "EQUAL", "SOURCE_STRICT_SUPERSET", "TARGET_HAS_UNSUPPORTED_HISTORIES"
+        }:
+            raise ThetaACalibrationError("unsupported target/source support relation")
+        refs = [row[0] for row in self.target_unsupported_history_masses]
+        if len(refs) != len(set(refs)) or any(not ref for ref in refs):
+            raise ThetaACalibrationError("unsupported target-history references must be nonempty and unique")
+        if any(not isfinite(mass) or mass <= 0.0 for _, mass in self.target_unsupported_history_masses):
+            raise ThetaACalibrationError("unsupported target-history masses must be finite and positive")
+        mass = sum(value for _, value in self.target_unsupported_history_masses)
+        if mass > 1.0 + 1e-12:
+            raise ThetaACalibrationError("unsupported target mass cannot exceed one")
+        if self.support_relation == "TARGET_HAS_UNSUPPORTED_HISTORIES":
+            if not self.target_unsupported_history_masses or self.expected_abstention_reason != "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT":
+                raise ThetaACalibrationError("target-only profile requires unsupported mass and its exact Analyzer reason")
+        elif self.target_unsupported_history_masses or self.expected_abstention_reason is not None:
+            raise ThetaACalibrationError("benign/equal support profiles cannot declare target-only mass or abstention reason")
+
+    @property
+    def fingerprint_sha256(self) -> str:
+        return _canonical_hash(asdict(self))
 
 
 @dataclass(frozen=True)
@@ -45,6 +92,11 @@ class ThetaACalibrationScenario:
     expected_identification: Identification
     unit_independence_certified: bool
     independence_basis: str = ""
+    dgp_profile: ThetaACalibrationDGPProfile | None = None
+
+    @property
+    def dgp_profile_sha256(self) -> str:
+        return _canonical_hash(asdict(self.dgp_profile)) if self.dgp_profile is not None else _canonical_hash({"profile": None})
 
     def validate(self) -> None:
         if not all((
@@ -57,6 +109,12 @@ class ThetaACalibrationScenario:
             raise ThetaACalibrationError(
                 "focal calibration currently supports IDENTIFIED, NOT_IDENTIFIED or INDETERMINATE truth classes"
             )
+        if self.dgp_profile is not None:
+            self.dgp_profile.validate()
+        if self.expected_identification == "NOT_IDENTIFIED" and self.dgp_profile is None:
+            raise ThetaACalibrationError("NOT_IDENTIFIED scenarios require a typed DGP/support profile")
+        if self.expected_identification == "NOT_IDENTIFIED" and self.dgp_profile.expected_abstention_reason is None:
+            raise ThetaACalibrationError("NOT_IDENTIFIED scenarios require an exact expected abstention reason")
         if type(self.unit_independence_certified) is not bool:
             raise ThetaACalibrationError("unit-independence declaration must be Boolean")
         if self.unit_independence_certified and not self.independence_basis.strip():
@@ -167,6 +225,7 @@ class ThetaASeedAssignment:
     world_seed: int
     randomization_salt: str
     s3_seed: int
+    dgp_profile_sha256: str
 
 
 def _digest(payload: str) -> str:
@@ -202,7 +261,7 @@ def build_theta_a_seed_bank(
                 outer_id = f"outer-{m:06d}"
                 root = (
                     f"TGCV-C10S-THETA-A-SEED-v1|{design.namespace}|{bank}|"
-                    f"{scenario.scenario_id}|{scenario.scenario_version}|{n_units}|{outer_id}"
+                    f"{scenario.scenario_id}|{scenario.scenario_version}|{scenario.dgp_profile_sha256}|{n_units}|{outer_id}"
                 )
                 world_seed = _seed(root + "|world")
                 world_id = "theta-a-world-" + _digest(root + "|world-id")[:24]
@@ -228,6 +287,7 @@ def build_theta_a_seed_bank(
                         world_seed=world_seed,
                         randomization_salt=_digest(run_root + "|joint-policy-randomization"),
                         s3_seed=_seed(run_root + "|s3-measurement"),
+                        dgp_profile_sha256=scenario.dgp_profile_sha256,
                     ))
     validate_theta_a_seed_banks(rows if bank == "calibration" else (),
                                 rows if bank == "evaluation" else (),
@@ -281,7 +341,7 @@ def validate_theta_a_seed_banks(
             scenario = scenario_map[(row.scenario_id, row.scenario_version)]
             root = (
                 f"TGCV-C10S-THETA-A-SEED-v1|{design.namespace}|{bank}|"
-                f"{scenario.scenario_id}|{scenario.scenario_version}|{row.n_units}|{row.outer_world_id}"
+                f"{scenario.scenario_id}|{scenario.scenario_version}|{scenario.dgp_profile_sha256}|{row.n_units}|{row.outer_world_id}"
             )
             run_root = root + f"|assignment-{row.assignment_replicate:06d}"
             expected_derivation = (
@@ -302,6 +362,7 @@ def validate_theta_a_seed_banks(
                 or row.dgp_id != scenario.dgp_id
                 or row.dgp_version != scenario.dgp_version
                 or row.roster_version != scenario.roster_version
+                or row.dgp_profile_sha256 != scenario.dgp_profile_sha256
             ):
                 raise ThetaACalibrationError("focal seed row differs from its canonical scenario×N×M×R derivation")
         worlds = {}
@@ -409,6 +470,10 @@ class ThetaAReplicateRecord:
     assignment_randomization_sha256: str
     evidence_sha256: str
     analyzer_output_sha256: str
+    dgp_profile_sha256: str
+    expected_abstention_reason: str | None
+    observed_abstention_reason: str | None
+    target_unsupported_mass: float
 
     def validate(self) -> None:
         if not all((self.scenario_id, self.scenario_version, self.outer_world_id,
@@ -420,7 +485,7 @@ class ThetaAReplicateRecord:
         fingerprints = (
             self.world_configuration_sha256, self.policy_design_sha256,
             self.assignment_randomization_sha256, self.evidence_sha256,
-            self.analyzer_output_sha256,
+            self.analyzer_output_sha256, self.dgp_profile_sha256,
         )
         if any(len(value) != 64 or any(ch not in "0123456789abcdef" for ch in value)
                for value in fingerprints):
@@ -432,6 +497,12 @@ class ThetaAReplicateRecord:
             raise ThetaACalibrationError("unsupported truth/analyzer identification status in replicate record")
         if not isfinite(self.truth) or not -1.0 <= self.truth <= 1.0:
             raise ThetaACalibrationError("theta_A truth must be finite and in [-1,1]")
+        if not isfinite(self.target_unsupported_mass) or not 0.0 <= self.target_unsupported_mass <= 1.0:
+            raise ThetaACalibrationError("replicate target unsupported mass must be finite and in [0,1]")
+        if self.expected_identification == "NOT_IDENTIFIED" and not self.expected_abstention_reason:
+            raise ThetaACalibrationError("NOT_IDENTIFIED replicate requires its exact expected abstention reason")
+        if self.observed_abstention_reason is not None and not isinstance(self.observed_abstention_reason, str):
+            raise ThetaACalibrationError("observed Analyzer abstention reason must be a string or None")
         if self.analyzer_identification == "IDENTIFIED":
             if self.point_estimate is None or not isfinite(self.point_estimate):
                 raise ThetaACalibrationError("identified replicate requires a finite point estimate")
@@ -594,6 +665,30 @@ def capture_theta_a_replicate(
         raise ThetaACalibrationError("scenario contract differs from focal seed assignment")
     evaluation = result.evaluator_result
     truth_bundle = result.theta_a_truth.theta_a_truth
+    profile = scenario.dgp_profile
+    structural_contract = result.analyzer_contract.structural_support_contract
+    unsupported_mass = 0.0
+    if profile is not None:
+        if structural_contract is None:
+            raise ThetaACalibrationError("profiled DGP replicate is missing its structural-support contract")
+        if (structural_contract.contract_id != profile.structural_support_contract_id
+                or structural_contract.contract_version != profile.structural_support_contract_version
+                or structural_contract.target_q_x_sha256 != profile.target_q_x_sha256
+                or structural_contract.source_q_x_sha256 != profile.source_q_x_sha256):
+            raise ThetaACalibrationError("materialized structural-support contract differs from the scenario DGP profile")
+        actual_unsupported = tuple(sorted(
+            (row.history_ref, row.target_mass)
+            for row in structural_contract.rows if row.source_mass == 0.0
+        ))
+        expected_unsupported = tuple(sorted(profile.target_unsupported_history_masses))
+        if actual_unsupported != expected_unsupported:
+            raise ThetaACalibrationError("materialized target-only histories/masses differ from the typed DGP profile")
+        unsupported_mass = sum(mass for _, mass in actual_unsupported)
+        structural_digest = _canonical_hash(asdict(structural_contract))
+        if result.analyzer_result.structural_support_sha256 != structural_digest:
+            raise ThetaACalibrationError("Analyzer structural-support fingerprint differs from materialized contract")
+    elif scenario.expected_identification == "NOT_IDENTIFIED":
+        raise ThetaACalibrationError("structural non-identification capture requires a typed DGP profile")
     assignment_bundle = result.theta_a_assignments
     if (assignment_bundle.randomization_salt_sha256 != _canonical_hash(assignment.randomization_salt)):
         raise ThetaACalibrationError("actual assignment salt differs from its focal R seed assignment")
@@ -630,6 +725,10 @@ def capture_theta_a_replicate(
         assignment_bundle.randomization_salt_sha256,
         result.sealed_evidence.sha256,
         result.analyzer_result.output_sha256,
+        scenario.dgp_profile_sha256,
+        profile.expected_abstention_reason if profile is not None else None,
+        result.analyzer_result.abstention_reason or None,
+        unsupported_mass,
     )
     if evaluation.inference_confidence_level is not None and (
         requested_confidence_level is None
@@ -702,6 +801,12 @@ def summarize_theta_a_calibration(
         scenario = scenario_map[(record.scenario_id, record.scenario_version)]
         if record.expected_identification != scenario.expected_identification:
             raise ThetaACalibrationError("replicate truth-class label differs from its scenario contract")
+        if record.dgp_profile_sha256 != scenario.dgp_profile_sha256 or seed.dgp_profile_sha256 != scenario.dgp_profile_sha256:
+            raise ThetaACalibrationError("replicate/seed DGP profile fingerprint differs from its scenario contract")
+        expected_reason = scenario.dgp_profile.expected_abstention_reason if scenario.dgp_profile else None
+        expected_mass = sum(mass for _, mass in scenario.dgp_profile.target_unsupported_history_masses) if scenario.dgp_profile else 0.0
+        if record.expected_abstention_reason != expected_reason or not _close(record.target_unsupported_mass, expected_mass):
+            raise ThetaACalibrationError("replicate expected abstention cause or unsupported target mass differs from its DGP profile")
         if (record.world_id, record.run_id) != (seed.world_id, seed.run_id):
             raise ThetaACalibrationError("replicate evidence provenance differs from its seed assignment")
         expected_level = (
@@ -790,10 +895,28 @@ def summarize_theta_a_calibration(
                         metric_values.setdefault("interval_width", []).append(None)
                 else:
                     expected_status = scenario.expected_identification
-                    metric_values.setdefault("correct_abstention_rate", []).append((
-                        outer_id,
-                        sum(x.analyzer_identification != "IDENTIFIED" for x in group) / r_count,
-                    ))
+                    expected_reason = scenario.dgp_profile.expected_abstention_reason if scenario.dgp_profile else None
+                    correct = [
+                        x.analyzer_identification == "NOT_IDENTIFIED"
+                        and x.observed_abstention_reason == expected_reason
+                        for x in group
+                    ]
+                    wrong_cause = [
+                        x.analyzer_identification in ("NOT_IDENTIFIED", "INDETERMINATE")
+                        and not (x.analyzer_identification == "NOT_IDENTIFIED"
+                                 and x.observed_abstention_reason == expected_reason)
+                        for x in group
+                    ]
+                    partial = [x.analyzer_identification == "PARTIALLY_IDENTIFIED" for x in group]
+                    metric_values.setdefault("correct_abstention_rate", []).append(
+                        (outer_id, sum(correct) / r_count)
+                    )
+                    metric_values.setdefault("wrong_cause_abstention_rate", []).append(
+                        (outer_id, sum(wrong_cause) / r_count)
+                    )
+                    metric_values.setdefault("partial_identification_rate", []).append(
+                        (outer_id, sum(partial) / r_count)
+                    )
                     metric_values.setdefault("false_identification_rate", []).append(
                         (outer_id, sum(identified) / r_count)
                     )
