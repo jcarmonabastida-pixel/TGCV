@@ -55,7 +55,7 @@ from theta_am_factorial import (
 )
 from theta_a_interval_observation import IntervalMonitorConfig
 from theta_a_calibration_protocol import (
-    ThetaACalibrationDesign, ThetaACalibrationScenario,
+    ThetaACalibrationDesign, ThetaACalibrationDGPProfile, ThetaACalibrationScenario,
     build_theta_a_seed_bank, capture_theta_a_replicate,
     s3_seeds_by_unit, summarize_theta_a_calibration,
     theta_a_pipeline_inference_options,
@@ -506,9 +506,35 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(result.evaluator_result.disposition, "CORRECT_ABSTENTION")
 
     def test_target_only_support_without_assignment_failure_abstains_end_to_end(self):
-        fixture = self._fixture(n_units=4)
-        world = SyntheticWorldBuilder().generate(fixture["world_config"], fixture["d2_config"])
         extra_ref = "TARGET-ONLY-HISTORY-001"
+        scenario = ThetaACalibrationScenario(
+            scenario_id="THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1",
+            scenario_version="1.0",
+            world_version="1",
+            dgp_id="DGP-INTERVAL-INTEGRATION-INTERACTION",
+            dgp_version="1",
+            roster_version="1",
+            unit_id_prefix="U",
+            expected_identification="NOT_IDENTIFIED",
+            unit_independence_certified=False,
+            dgp_profile=ThetaACalibrationDGPProfile(
+                profile_id="THETA_A_TARGET_SUPPORT_PROFILE",
+                profile_version="1.0",
+                structural_support_contract_id="SYNTHETIC-TARGET-SOURCE-SUPPORT-001",
+                structural_support_contract_version="1",
+                support_relation="TARGET_HAS_UNSUPPORTED_HISTORIES",
+                target_unsupported_history_masses=((extra_ref, 0.5),),
+                expected_abstention_reason="TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT",
+            ),
+        )
+        design = ThetaACalibrationDesign(
+            scenario_specs=(scenario,), n_grid=(4,), outer_worlds_m=2,
+            assignment_replicates_r=2, confidence_level=0.95,
+            namespace="theta-a-target-support-capture-integration-v1",
+        )
+        assignment = build_theta_a_seed_bank(design, "calibration")[0]
+        fixture = self._fixture("positive", seed_assignment=assignment, n_units=4)
+        world = SyntheticWorldBuilder().generate(fixture["world_config"], fixture["d2_config"])
         extra_unit_id = "TARGET-ONLY-UNIT-001"
         extra_qx = QXHistoryMass(extra_ref, "TARGET-X-001", "TARGET-H0-001", "TARGET-CC-001", 0.5)
         target_q_x = tuple(
@@ -583,7 +609,17 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 source_world=world,
                 allowed_h0_values={label for label, _ in fixture["world_config"].h0_distribution},
             )
-        result = self._run_pipeline(fixture)
+        inference_options = theta_a_pipeline_inference_options(design, scenario)
+        result = self._run_pipeline(fixture, **inference_options)
+        record = capture_theta_a_replicate(
+            result, assignment, scenario, requested_confidence_level=None,
+        )
+        self.assertEqual(record.expected_abstention_reason, "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT")
+        self.assertEqual(record.observed_abstention_reason, "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT")
+        self.assertAlmostEqual(record.target_unsupported_mass, 0.5)
+        self.assertEqual(record.target_q_x_sha256, digest(target_q_x))
+        self.assertEqual(record.source_q_x_sha256, digest(world.q_x))
+        self.assertIsNotNone(record.structural_support_contract_sha256)
         self.assertEqual(len(result.world.units), 4)
         self.assertEqual(len(result.theta_a_truth.event_history_manifest), 10)
         self.assertEqual(len(result.theta_a_assignments.assignments), 4)
