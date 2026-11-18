@@ -101,7 +101,7 @@ class ThetaAObservationAnalyzerTests(unittest.TestCase):
             "support-fixture", "1.0", "target-qx-sha", "source-qx-sha",
             (
                 ThetaAStructuralSupportRow("h0", 0.7, 0.7, True, True, True, 0.5),
-                ThetaAStructuralSupportRow("h1", 0.3, 0.0, True, True, True, 0.5),
+                ThetaAStructuralSupportRow("h1", 0.3, 0.0, True, True, True, None),
             ),
         )
         result = adjudicate_theta_a_structural_support(contract)
@@ -121,9 +121,9 @@ class ThetaAObservationAnalyzerTests(unittest.TestCase):
 
     def test_undefined_or_infeasible_policy_is_contract_error_not_nonidentification(self):
         for row in (
-            ThetaAStructuralSupportRow("h0", 1.0, 0.0, False, True, True, 0.5),
-            ThetaAStructuralSupportRow("h0", 1.0, 0.0, True, False, True, 0.5),
-            ThetaAStructuralSupportRow("h0", 1.0, 0.0, True, True, False, 0.5),
+            ThetaAStructuralSupportRow("h0", 1.0, 0.0, False, True, True, None),
+            ThetaAStructuralSupportRow("h0", 1.0, 0.0, True, False, True, None),
+            ThetaAStructuralSupportRow("h0", 1.0, 0.0, True, True, False, None),
         ):
             contract = ThetaAStructuralSupportContract(
                 "support-fixture", "1.0", "target-qx-sha", "source-qx-sha", (row,),
@@ -150,7 +150,7 @@ class ThetaAObservationAnalyzerTests(unittest.TestCase):
             "support-fixture", "1.0", "qx", "source-qx",
             (
                 ThetaAStructuralSupportRow("h0", 0.4, 1.0, True, True, True, 0.5),
-                ThetaAStructuralSupportRow("h1", 0.6, 0.0, True, True, True, 0.5),
+                ThetaAStructuralSupportRow("h1", 0.6, 0.0, True, True, True, None),
             ),
         )
         contract = ThetaAObservationAnalysisContract(
