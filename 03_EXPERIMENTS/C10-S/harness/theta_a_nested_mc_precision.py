@@ -117,13 +117,13 @@ def analyze_nested_precision(
     )
     status = "DESCRIPTIVE_ONLY" if outer_world_sampling_mode != "DECLARED_IID_PSEUDORANDOM" else "ESTIMABLE_UNDER_DECLARED_SAMPLING"
     rng = random.Random(bootstrap_seed)
-    boot: list[tuple[float, float, float]] = []
+    boot: list[tuple[float, float, float, float]] = []
     boundary = 0
     for _ in range(bootstrap_replicates):
         selected = [rows[rng.randrange(m)] for _ in range(m)]
         nested = tuple(tuple(row[rng.randrange(r)] for _ in range(r)) for row in selected)
         b_msw, _, b_between, _ = _components(nested)
-        boot.append((b_msw, b_between, b_between + b_msw / r))
+        boot.append((b_msw, b_between, b_between + b_msw / r, mean(mean(row) for row in nested)))
         boundary += b_between < 0.0
 
     def percentile(values: Sequence[float], probability: float) -> float:
@@ -143,13 +143,12 @@ def analyze_nested_precision(
     projections_out = []
     for target_m, target_r in projections:
         values = []
-        for b_msw, b_between, _ in boot:
+        for b_msw, b_between, _, sampled_mean_mse in boot:
             if b_between < 0:
                 continue
             projected_variance = b_between / target_m + b_msw / (target_m * target_r)
             projected_mcse = sqrt(projected_variance)
             if is_rmse:
-                sampled_mean_mse = mean(mean(row) for row in nested)
                 if sampled_mean_mse <= 0:
                     continue
                 projected_mcse /= 2.0 * sqrt(sampled_mean_mse)
