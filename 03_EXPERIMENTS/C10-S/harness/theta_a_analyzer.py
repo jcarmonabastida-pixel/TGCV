@@ -7,7 +7,7 @@ explicit analysis input and checked against the assignment manifest.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 import hashlib
 import json
 import math
@@ -487,5 +487,5 @@ def adjudicate_theta_a_structural_support(
     status = "NOT_IDENTIFIED" if unsupported else "STRUCTURAL_SUPPORT_SUFFICIENT"
     reason = "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT" if unsupported else ""
     return ThetaAStructuralSupportAdjudication(
-        status, reason, unsupported, _canonical_hash(contract)
+        status, reason, unsupported, _canonical_hash(asdict(contract))
     )
