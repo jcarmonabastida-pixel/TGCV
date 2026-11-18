@@ -490,10 +490,13 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         for scenario in roster:
             captured = by_scenario[scenario.scenario_id]
             self.assertEqual(len(captured), 4)
-            self.assertTrue(all(
-                abs(row.truth - scenario.dgp_profile.expected_theta_a_truth) <= 1e-12
-                for row in captured
-            ))
+            if scenario.dgp_profile.expected_theta_a_truth is not None:
+                self.assertTrue(all(
+                    abs(row.truth - scenario.dgp_profile.expected_theta_a_truth) <= 1e-12
+                    for row in captured
+                ))
+            else:
+                self.assertTrue(all(-1.0 <= row.truth <= 1.0 for row in captured))
             self.assertTrue(all(
                 row.analyzer_identification == scenario.expected_identification
                 for row in captured
