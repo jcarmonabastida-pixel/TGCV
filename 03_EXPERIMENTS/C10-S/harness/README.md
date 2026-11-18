@@ -759,3 +759,15 @@ Artifacts:
 - Manifest artifact ID `14383560381`, SHA-256 `989a52821a4d0c07dbf36ab77b95bd13ff190dc5b239a321cbdca6f8e7fa925f`.
 
 The workflow was restored immediately after dispatch to its original `workflow_dispatch`-only gate in commit `5df7961cd960f6fccdb02d3c3658dee095fc6683`. Run 829 remains bound to the exact tested commit above. Status: EP-02 SOFTWARE CONTRACTS PASS / 299+299 / CLEAN REPLAY PASS; scientific calibration remains NOT AUTHORIZED / NOT EXECUTED.
+
+### EP-02 dynamic validation — Run 830
+
+The exact sixteen-module EP-02 integrated software-contract suite completed successfully on commit `f307fea1e24c1dc17ad53e47914668707506b18f` (GitHub Actions run `44206129607`). Primary execution: 299 tests, all passed; clean replay from an equivalent independently materialized source tree: 299 tests, all passed. The newly added assertions distinguishing the positive and common-alternative functional mechanism IDs and `r_common` fingerprints passed in both executions.
+
+Pinned CPython 3.12.10, hash-locked dependencies, source compilation, primary/replay tree equivalence, bytecode-cache absence and artifact uploads completed successfully. This is software-contract validation only. No calibration banks, Monte Carlo calibration, or scientific execution were generated or run.
+
+Artifacts:
+- Payload artifact ID `14381964999`, SHA-256 `66e5f84565f300f879ab448bcbc7298999dfda1108b7ef524136783d164aeef6`.
+- Manifest artifact ID `14383437476`, SHA-256 `4000883453cf7f1f89f17187418f43fbb8f36e8c2cb543e2294e9f97c1e2da32`.
+
+The temporary push trigger was removed after dispatch. Workflow `.github/workflows/c10-s-focal-harness-tests.yml` is restored to its original `workflow_dispatch`-only authorization gate in commit `8451ea7c3c9e5f387c84e292099901e4ef436df3`. Run 830 remains bound to the exact tested commit above. State: `PASS_STATIC + PASS_DYNAMIC_EP02 / 299+299 / REPLAY_PASS / SCIENTIFIC_EXECUTION_NOT_AUTHORIZED`.
