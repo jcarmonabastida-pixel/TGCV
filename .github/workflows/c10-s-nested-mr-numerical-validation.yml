@@ -1,0 +1,104 @@
+name: C10-S nested M/R numerical validation — authorization gated
+
+on:
+  push:
+    branches:
+      - 'research/c10s-nested-mr-auth-*'
+    paths:
+      - '00_GOVERNANCE/authorizations/C10S_NESTED_MR_NUMERICAL_EXECUTION_AUTHORIZATION.json'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  numerical-validation:
+    if: startsWith(github.ref, 'refs/heads/research/c10s-nested-mr-auth-')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    steps:
+      - name: Checkout the authorization commit
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+
+      - name: Validate explicit authorization and exact approved parent
+        id: authorization
+        env:
+          WORKFLOW_COMMIT: ${{ github.sha }}
+          WORKFLOW_BRANCH: ${{ github.ref_name }}
+        run: |
+          python 03_EXPERIMENTS/C10-S/harness/validate_c10s_nested_mr_execution_authorization.py \
+            --authorization 00_GOVERNANCE/authorizations/C10S_NESTED_MR_NUMERICAL_EXECUTION_AUTHORIZATION.json \
+            --root . \
+            --workflow-commit "$WORKFLOW_COMMIT" \
+            --branch "$WORKFLOW_BRANCH" \
+            --output-json "$RUNNER_TEMP/c10s-authorization.json"
+          cp 00_GOVERNANCE/authorizations/C10S_NESTED_MR_NUMERICAL_EXECUTION_AUTHORIZATION.json "$RUNNER_TEMP/authorization.json"
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os
+          from pathlib import Path
+          p = Path(os.environ["RUNNER_TEMP"]) / "c10s-authorization.json"
+          d = json.loads(p.read_text(encoding="utf-8"))
+          for key in ("approved_code_commit", "tier", "authorization_id", "resume_from_run_id"):
+              value = d.get(key)
+              print(f"{key}={'' if value is None else value}")
+          PY
+
+      - name: Checkout the exact approved code commit
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ steps.authorization.outputs.approved_code_commit }}
+          path: source
+          persist-credentials: false
+
+      - name: Install hash-locked dependencies
+        working-directory: source/03_EXPERIMENTS/C10-S/harness
+        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+
+      - name: Restore prior verified cell checkpoints when explicitly requested
+        if: steps.authorization.outputs.resume_from_run_id != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PRIOR_RUN_ID: ${{ steps.authorization.outputs.resume_from_run_id }}
+          APPROVED_CODE_COMMIT: ${{ steps.authorization.outputs.approved_code_commit }}
+          TIER: ${{ steps.authorization.outputs.tier }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/c10s-output"
+          gh run download "$PRIOR_RUN_ID" \
+            --repo "$GITHUB_REPOSITORY" \
+            --name "c10s-nested-mr-validation-$APPROVED_CODE_COMMIT-$TIER" \
+            --dir "$RUNNER_TEMP/c10s-output"
+
+      - name: Execute only the separately authorized numerical tier
+        working-directory: source
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+          APPROVED_CODE_COMMIT: ${{ steps.authorization.outputs.approved_code_commit }}
+          TIER: ${{ steps.authorization.outputs.tier }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/c10s-output"
+          python 03_EXPERIMENTS/C10-S/harness/run_c10s_nested_mr_validation.py \
+            --tier "$TIER" \
+            --output "$RUNNER_TEMP/c10s-output" \
+            --root . \
+            --code-commit "$APPROVED_CODE_COMMIT" \
+            --authorization-file "$RUNNER_TEMP/authorization.json"
+
+      - name: Upload cell records, summaries and integrity manifest
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-nested-mr-validation-${{ steps.authorization.outputs.approved_code_commit }}-${{ steps.authorization.outputs.tier }}
+          path: ${{ runner.temp }}/c10s-output/
+          if-no-files-found: warn
+          retention-days: 90
