@@ -92,9 +92,11 @@ class ThetaAObservationEvaluator:
             raise ContractError("Analyzer contract and reserved theta_A estimand identity/version differ")
         if truth.q_x_fingerprint != contract.q_x_sha256:
             raise ContractError("analysis q_X fingerprint does not match reserved oracle q_X fingerprint")
-        if (truth.g_a0_fingerprint != contract.g_a0_sha256
-                or truth.g_a1_fingerprint != contract.g_a1_sha256):
-            raise ContractError("analysis g_A policy fingerprints do not match reserved oracle policies")
+        target_g_a0_sha256 = contract.target_g_a0_sha256 or contract.g_a0_sha256
+        target_g_a1_sha256 = contract.target_g_a1_sha256 or contract.g_a1_sha256
+        if (truth.g_a0_fingerprint != target_g_a0_sha256
+                or truth.g_a1_fingerprint != target_g_a1_sha256):
+            raise ContractError("target-population g_A policy fingerprints do not match reserved oracle policies")
         if result.run_id != evidence.run_id or result.run_id == "":
             raise ContractError("Analyzer result and sealed evidence run identity mismatch")
         if result.estimand_id != truth.estimand_id or result.estimand_version != truth.estimand_version:
