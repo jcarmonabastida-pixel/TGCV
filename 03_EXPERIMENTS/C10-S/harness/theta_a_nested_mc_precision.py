@@ -102,12 +102,19 @@ def analyze_nested_precision(
             raise NestedPrecisionError("summary world identities must be nonempty")
         if not isfinite(expected_mean) or abs(mean(rows[index]) - expected_mean) > 1e-10:
             raise NestedPrecisionError("within-world R contributions do not reconcile to legacy summary")
+    grand_mean = mean(mean(row) for row in rows)
+    is_rmse = metric == "point_rmse"
+    reported_mean = sqrt(grand_mean) if is_rmse else grand_mean
     if getattr(summary_metric, "mean", None) is not None:
-        if abs(mean(mean(row) for row in rows) - summary_metric.mean) > 1e-10:
+        if abs(reported_mean - summary_metric.mean) > 1e-10:
             raise NestedPrecisionError("grand mean does not reconcile to legacy summary")
 
     msw, msb, between_raw, world_var = _components(rows)
-    observed_mcse = sqrt(world_var / m) if outer_world_sampling_mode == "DECLARED_IID_PSEUDORANDOM" else None
+    observed_mcse = (
+        getattr(summary_metric, "mcse", None) if is_rmse
+        else sqrt(world_var / m) if outer_world_sampling_mode == "DECLARED_IID_PSEUDORANDOM"
+        else None
+    )
     status = "DESCRIPTIVE_ONLY" if outer_world_sampling_mode != "DECLARED_IID_PSEUDORANDOM" else "ESTIMABLE_UNDER_DECLARED_SAMPLING"
     rng = random.Random(bootstrap_seed)
     boot: list[tuple[float, float, float]] = []
@@ -139,7 +146,14 @@ def analyze_nested_precision(
         for b_msw, b_between, _ in boot:
             if b_between < 0:
                 continue
-            values.append(sqrt(b_between / target_m + b_msw / (target_m * target_r)))
+            projected_variance = b_between / target_m + b_msw / (target_m * target_r)
+            projected_mcse = sqrt(projected_variance)
+            if is_rmse:
+                sampled_mean_mse = mean(mean(row) for row in nested)
+                if sampled_mean_mse <= 0:
+                    continue
+                projected_mcse /= 2.0 * sqrt(sampled_mean_mse)
+            values.append(projected_mcse)
         if len(values) < bootstrap_replicates * 0.95:
             projections_out.append((target_m, target_r, None, None, "SENSITIVITY_REQUIRED"))
         else:
