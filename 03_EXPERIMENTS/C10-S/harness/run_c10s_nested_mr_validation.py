@@ -354,29 +354,54 @@ def run_tier(
     specs = tier_a_specs() if tier == "A" else tier_b_specs()
     summaries = []
     records_index = []
+    checkpoint_path = output_dir / "checkpoint_index.json"
+    checkpoint_entries: dict[str, dict[str, Any]] = {}
+    if checkpoint_path.is_file():
+        try:
+            checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+            header_ok = (
+                checkpoint.get("schema") == "TGCV-C10S-NESTED-MR-CHECKPOINT-001"
+                and checkpoint.get("tier") == tier
+                and checkpoint.get("code_commit") == code_commit
+                and checkpoint.get("protocol_sha256") == protocol_hash
+                and checkpoint.get("seed_schedule_version") == SEED_SCHEDULE_VERSION
+            )
+            if header_ok:
+                for entry in checkpoint.get("cells", []):
+                    cell_path = output_dir / entry["records"]
+                    summary_path = output_dir / entry["summary"]
+                    if not cell_path.is_file() or not summary_path.is_file():
+                        continue
+                    summary_value = json.loads(summary_path.read_text(encoding="utf-8"))
+                    if (
+                        sha256_file(cell_path) == entry.get("records_sha256")
+                        and sha256_file(summary_path) == entry.get("summary_sha256")
+                        and len(cell_path.read_text(encoding="utf-8").splitlines()) == entry.get("k")
+                        and summary_value.get("code_commit") == code_commit
+                        and summary_value.get("protocol_sha256") == protocol_hash
+                        and summary_value.get("cell", {}).get("cell_id") == entry.get("cell_id")
+                        and summary_value.get("datasets_completed") == entry.get("k")
+                        and summary_value.get("cell", {}).get("b") == entry.get("b")
+                    ):
+                        checkpoint_entries[entry["cell_id"]] = entry
+        except (OSError, ValueError, KeyError, TypeError):
+            checkpoint_entries = {}
+
     for spec in specs:
         cell_path = output_dir / f"{spec.cell_id}.jsonl"
         summary_path = output_dir / f"{spec.cell_id}.summary.json"
-        if cell_path.exists() and summary_path.exists():
+        cached_entry = checkpoint_entries.get(spec.cell_id)
+        if cached_entry is not None:
             cached = json.loads(summary_path.read_text(encoding="utf-8"))
-            record_lines = cell_path.read_text(encoding="utf-8").splitlines()
-            if (
-                cached.get("code_commit") == code_commit
-                and cached.get("protocol_sha256") == protocol_hash
-                and cached.get("cell", {}).get("cell_id") == spec.cell_id
-                and cached.get("datasets_completed") == spec.k
-                and cached.get("cell", {}).get("b") == spec.b
-                and cached.get("records_sha256") == sha256_file(cell_path)
-                and len(record_lines) == spec.k
-            ):
-                summaries.append(cached)
-                records_index.append({
-                    "cell_id": spec.cell_id, "records": cell_path.name,
-                    "records_sha256": cached["records_sha256"],
-                    "summary": summary_path.name, "summary_sha256": sha256_file(summary_path),
-                    "reused": True,
-                })
-                continue
+            summaries.append(cached)
+            records_index.append({
+                "cell_id": spec.cell_id, "records": cell_path.name,
+                "records_sha256": cached_entry["records_sha256"],
+                "summary": summary_path.name, "summary_sha256": cached_entry["summary_sha256"],
+                "reused": True,
+            })
+            continue
+
         temp_path = cell_path.with_suffix(".jsonl.tmp")
         if temp_path.exists():
             temp_path.unlink()
@@ -389,7 +414,7 @@ def run_tier(
                 record["run_id"] = os.environ.get("GITHUB_RUN_ID", "UNASSIGNED")
                 record["code_commit"] = code_commit
                 record["protocol_sha256"] = protocol_hash
-                stream.write(json.dumps(record, sort_keys=True, allow_nan=False) + "\n")
+                stream.write(json.dumps(record, sort_keys=True, allow_nan=False) + "\\n")
                 records.append(record)
         temp_path.replace(cell_path)
         summary = (
@@ -400,12 +425,34 @@ def run_tier(
         summary["protocol_sha256"] = protocol_hash
         summary["authorization_id"] = authorization["authorization_id"]
         summary["records_sha256"] = sha256_file(cell_path)
-        summary_path.write_text(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False) + "\n", encoding="utf-8")
+        summary_path.write_text(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False) + "\\n", encoding="utf-8")
+        summary_sha = sha256_file(summary_path)
+        entry = {
+            "cell_id": spec.cell_id,
+            "records": cell_path.name,
+            "records_sha256": summary["records_sha256"],
+            "summary": summary_path.name,
+            "summary_sha256": summary_sha,
+            "k": spec.k,
+            "b": spec.b,
+        }
+        checkpoint_entries[spec.cell_id] = entry
+        checkpoint = {
+            "schema": "TGCV-C10S-NESTED-MR-CHECKPOINT-001",
+            "tier": tier,
+            "code_commit": code_commit,
+            "protocol_sha256": protocol_hash,
+            "seed_schedule_version": SEED_SCHEDULE_VERSION,
+            "cells": list(checkpoint_entries.values()),
+        }
+        checkpoint_tmp = checkpoint_path.with_suffix(".json.tmp")
+        checkpoint_tmp.write_text(json.dumps(checkpoint, indent=2, sort_keys=True) + "\\n", encoding="utf-8")
+        checkpoint_tmp.replace(checkpoint_path)
         summaries.append(summary)
         records_index.append({
             "cell_id": spec.cell_id, "records": cell_path.name,
             "records_sha256": summary["records_sha256"],
-            "summary": summary_path.name, "summary_sha256": sha256_file(summary_path),
+            "summary": summary_path.name, "summary_sha256": summary_sha,
             "reused": False,
         })
 
