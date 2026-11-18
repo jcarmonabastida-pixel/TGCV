@@ -28,7 +28,7 @@ The actual C10-S outer-world and conditional assignment sampling mechanisms are 
 | Software tests | `test_c10s_nested_mr_validation.py` plus existing nested precision tests | Checks fixture truth contracts, schedule determinism, cell counts, coverage adjudication and deterministic degeneracy guards |
 | Remote controller | `.github/workflows/c10-s-nested-mr-numerical-validation.yml` | Runs only after a dedicated authorization-manifest commit; uploads immutable run artifacts |
 
-The bootstrap implementation is vectorized in batches of 64 using an explicitly pinned NumPy PCG64 stream. The fixture generator also uses PCG64, with separate SHA-256-derived dataset and bootstrap seed namespaces. It retains all outer cluster draws, including all-same-source draws, and resamples R independently within every selected cluster copy. The estimator, raw component definitions, projection formula, 95% percentile interval and boundary abstention semantics remain those of method version 1.2. The optimization changes execution mechanics and deterministic stream implementation, not the frozen statistical resampling law. There are no prior numerical outputs whose seed stream would need migration.
+The bootstrap implementation is vectorized in batches of 64 using an explicitly pinned NumPy PCG64 stream. The fixture generator also uses PCG64, with separate SHA-256-derived dataset and bootstrap seed namespaces. It retains all outer cluster draws, including all-same-source draws, and resamples R independently within every selected cluster copy. The estimator, raw component definitions, projection formula, legacy observed-MCSE reconciliation, 95% percentile interval and boundary abstention semantics remain those of method version 1.2. The optimization changes execution mechanics and deterministic stream implementation, not the frozen statistical resampling law. There are no prior numerical outputs whose seed stream would need migration.
 
 ## 3. Frozen fixture inventory
 
@@ -68,7 +68,7 @@ The fixture generator and evaluator keep analytical truth separate from the esti
 - F4: both components 0.
 - F6 with squared Normal errors at scale s: MSE contribution mean s and within variance `2*s^2`; between 0. Exact-zero scale has both components 0.
 
-For each dataset the runner records the analytical truths, component point estimates, raw between estimate, percentile intervals, projected MCSE interval/status, boundary fraction, B/valid-B counts, seeds, fixture identity, code commit and protocol hash.
+For each dataset the runner records the analytical truths, component point estimates, raw between estimate, percentile intervals, projected MCSE interval/status, independently calculated legacy observed MCSE and its reconciliation, boundary fraction, B/valid-B counts, seeds, fixture identity, code commit and protocol hash.
 
 Tier A cell adjudication follows protocol §9.5 exactly:
 - empirical 95% coverage in [0.93, 0.97];
