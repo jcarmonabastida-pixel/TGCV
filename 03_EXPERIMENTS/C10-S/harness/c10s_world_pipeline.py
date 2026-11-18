@@ -9,6 +9,7 @@ are performed by importing or authoring this module.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import math
 from typing import Sequence
 
 from c10s_synthetic_components import (
@@ -247,7 +248,7 @@ def materialize_c10s_complete_world(
                 or theta_a_structural_support_contract.source_q_x_sha256 != digest(world.q_x)):
             raise ContractError("structural-support fingerprints do not bind the generated target and source q_X")
         source_masses = {row.history_ref: row.mass for row in world.q_x}
-        if any(not __import__("math").isclose(
+        if any(not math.isclose(
                 row.source_mass, source_masses.get(row.history_ref, 0.0),
                 rel_tol=0.0, abs_tol=1e-12,
         ) for row in theta_a_structural_support_contract.rows):
