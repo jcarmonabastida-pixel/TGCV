@@ -3583,6 +3583,7 @@ def compute_theta_a_vcont_truth_from_event_histories(
     *,
     estimand_version: str,
     outcome_version: str,
+    unit_id_by_history: dict[str, str] | None = None,
 ) -> ThetaAVContTruthBundle:
     """Compute evaluator-only theta_A truth using reserved EventHistory V_cont outcomes.
 
@@ -3592,14 +3593,14 @@ def compute_theta_a_vcont_truth_from_event_histories(
     """
     world.validate()
     grid.validate()
-    if tuple(q_x) != world.q_x:
-        raise ContractError("theta_A q_X* must match the exact synthetic-world target masses and anchors")
     qx_by_history = {row.history_ref: row for row in q_x}
-    unit_by_history = {
+    unit_by_history = unit_id_by_history or {
         unit.d2_baseline.baseline_history_ref: unit.unit_id for unit in world.units
     }
-    if set(qx_by_history) != set(unit_by_history):
-        raise ContractError("theta_A q_X* histories do not cover the exact world roster")
+    if (not qx_by_history or len(qx_by_history) != len(q_x)
+            or set(qx_by_history) != set(unit_by_history)
+            or any(not unit_id for unit_id in unit_by_history.values())):
+        raise ContractError("theta_A target q_X* and reserved potential-unit identities must cover exactly the same histories")
     certificates = {row.history_ref: row for row in r_common_certificates}
     if len(certificates) != len(r_common_certificates) or set(certificates) != set(qx_by_history):
         raise ContractError("theta_A requires one r_common certificate per world q_X* history")
