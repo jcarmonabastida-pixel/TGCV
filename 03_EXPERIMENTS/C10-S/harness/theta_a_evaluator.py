@@ -65,6 +65,7 @@ def _result_payload(result: ThetaAObservationAnalysisResult) -> dict[str, Any]:
         "inference_upper_bound": result.inference_upper_bound,
         "hoeffding_range_sum_squares": result.hoeffding_range_sum_squares,
         "structural_support_sha256": result.structural_support_sha256,
+        "assignment_positivity_failure_histories": result.assignment_positivity_failure_histories,
     }
 
 
@@ -113,8 +114,9 @@ class ThetaAObservationEvaluator:
                     or result.abstention_reason != structural.reason
                     or result.point_estimate is not None
                     or result.lower_bound != -1.0 or result.upper_bound != 1.0
-                    or result.missing_target_histories != structural.unsupported_target_histories):
-                raise ContractError("Analyzer did not correctly abstain for structural target/source non-overlap")
+                    or result.missing_target_histories != structural.unsupported_target_histories
+                    or result.assignment_positivity_failure_histories != structural.assignment_positivity_failure_histories):
+                raise ContractError("Analyzer did not correctly abstain for structural source/assignment support failure")
         elif structural is not None and structural.status == "STRUCTURAL_SUPPORT_SUFFICIENT":
             if result.identification == "NOT_IDENTIFIED" and result.abstention_reason == "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT":
                 raise ContractError("Analyzer falsely reported structural non-identification under complete support")
