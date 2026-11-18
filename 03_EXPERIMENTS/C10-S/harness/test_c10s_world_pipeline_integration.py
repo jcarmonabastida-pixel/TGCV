@@ -632,7 +632,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         result = self._run_pipeline(fixture)
         self.assertEqual(len(world.q_x), 4)
         self.assertEqual(len(result.theta_a_truth.event_history_manifest), 6)
-        self.assertEqual(len(result.theta_a_assignments.assignments), 3)
+        self.assertEqual(len(result.theta_a_assignments.assignments), 4)
         self.assertNotIn(excluded_source_history, target_refs)
         self.assertEqual(result.analyzer_result.identification, "IDENTIFIED")
         self.assertEqual(result.analyzer_result.abstention_reason, "")
