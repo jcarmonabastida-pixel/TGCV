@@ -42,6 +42,22 @@ def validate_authorization(
         raise ValueError("authorization record is absent, malformed or not APPROVED")
     if not isinstance(auth.get("authorization_id"), str) or not auth["authorization_id"].strip():
         raise ValueError("authorization_id is required")
+    if branch != AUTH_BRANCH_PREFIX + auth["authorization_id"]:
+        raise ValueError("authorization branch must encode the exact authorization_id")
+    if auth.get("scope") != "C10S_NESTED_MR_NUMERICAL_METHOD_VALIDATION_ONLY":
+        raise ValueError("authorization scope must be numerical-method validation only")
+    if auth.get("numerical_method_validation_authorized") is not True:
+        raise ValueError("explicit numerical-method validation approval is required")
+    if auth.get("c10_scientific_execution_authorized") is not False:
+        raise ValueError("C10 scientific execution must remain explicitly unauthorized")
+    if not isinstance(auth.get("approved_by"), str) or not auth["approved_by"].strip():
+        raise ValueError("approved_by is required")
+    approved_at = auth.get("approved_at_utc")
+    if not isinstance(approved_at, str):
+        raise ValueError("approved_at_utc is required")
+    approval_time = datetime.fromisoformat(approved_at.replace("Z", "+00:00"))
+    if approval_time.tzinfo is None:
+        raise ValueError("approved_at_utc must include a UTC offset")
     if auth.get("protocol_id") != PROTOCOL_ID or auth.get("protocol_version") != PROTOCOL_VERSION:
         raise ValueError("authorization must bind frozen protocol version 002")
     if auth.get("method_id") != METHOD_ID or auth.get("method_version") != METHOD_VERSION:
@@ -74,8 +90,8 @@ def validate_authorization(
     if not isinstance(expires, str):
         raise ValueError("expires_utc is required")
     expiry = datetime.fromisoformat(expires.replace("Z", "+00:00"))
-    if expiry.tzinfo is None or expiry <= datetime.now(timezone.utc):
-        raise ValueError("authorization is expired or lacks an explicit UTC offset")
+    if expiry.tzinfo is None or expiry <= datetime.now(timezone.utc) or expiry <= approval_time:
+        raise ValueError("authorization is expired or has an invalid UTC interval")
     resume = auth.get("resume_from_run_id")
     if resume is not None and (type(resume) is not int or resume <= 0):
         raise ValueError("resume_from_run_id must be a positive workflow run ID or null")
