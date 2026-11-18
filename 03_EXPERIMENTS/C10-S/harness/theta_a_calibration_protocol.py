@@ -83,6 +83,16 @@ class ThetaACalibrationDGPProfile:
             not isfinite(self.expected_theta_a_truth) or not -1.0 <= self.expected_theta_a_truth <= 1.0
         ):
             raise ThetaACalibrationError("analytic theta_A truth must be finite and bounded in [-1,1]")
+        if self.generator_variant is not None:
+            expected_truth = {
+                "positive": 0.5,
+                "null": 0.0,
+                "negative": -0.5,
+                "alternative": 0.0,
+                "positive_target_only": None,
+            }[self.generator_variant]
+            if self.expected_theta_a_truth != expected_truth:
+                raise ThetaACalibrationError("candidate DGP analytic truth differs from the historical §336 scenario contract")
 
     @property
     def fingerprint_sha256(self) -> str:
@@ -123,6 +133,28 @@ class ThetaACalibrationScenario:
             )
         if self.dgp_profile is not None:
             self.dgp_profile.validate()
+            variant = self.dgp_profile.generator_variant
+            if variant is not None:
+                expected_dgp = {
+                    "positive": "DGP-INTERVAL-INTEGRATION-INTERACTION",
+                    "null": "DGP-INTERVAL-INTEGRATION-NULL",
+                    "negative": "DGP-INTERVAL-INTEGRATION-NEGATIVE",
+                    "alternative": "DGP-INTERVAL-INTEGRATION-INTERACTION",
+                    "positive_target_only": "DGP-INTERVAL-INTEGRATION-INTERACTION",
+                }[variant]
+                expected_class = "NOT_IDENTIFIED" if variant == "positive_target_only" else "IDENTIFIED"
+                expected_support = (
+                    "TARGET_HAS_UNSUPPORTED_HISTORIES"
+                    if variant == "positive_target_only" else "EQUAL"
+                )
+                expected_independence = variant != "positive_target_only"
+                if (
+                    self.dgp_id != expected_dgp
+                    or self.expected_identification != expected_class
+                    or self.dgp_profile.support_relation != expected_support
+                    or self.unit_independence_certified != expected_independence
+                ):
+                    raise ThetaACalibrationError("candidate scenario identity, truth class, support relation or independence declaration contradicts its DGP variant")
         if self.expected_identification == "NOT_IDENTIFIED" and self.dgp_profile is None:
             raise ThetaACalibrationError("NOT_IDENTIFIED scenarios require a typed DGP/support profile")
         if self.expected_identification == "NOT_IDENTIFIED" and self.dgp_profile.expected_abstention_reason is None:
