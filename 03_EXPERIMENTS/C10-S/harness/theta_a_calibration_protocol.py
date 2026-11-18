@@ -912,6 +912,8 @@ def summarize_theta_a_calibration(
                     raise ThetaACalibrationError("R replicates within one M do not share one world")
                 for field in (
                     "world_configuration_sha256", "policy_design_sha256",
+                    "dgp_profile_sha256", "target_q_x_sha256", "source_q_x_sha256",
+                    "structural_support_contract_sha256",
                     "estimand_id", "estimand_version", "outcome_id", "outcome_version",
                 ):
                     if len({getattr(x, field) for x in group}) != 1:
