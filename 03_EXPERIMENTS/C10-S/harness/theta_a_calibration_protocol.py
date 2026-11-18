@@ -31,6 +31,7 @@ _ALLOWED_METRICS = {
     "abstention_rate", "interval_availability_rate", "false_abstention_rate",
     "correct_abstention_rate", "wrong_cause_abstention_rate",
     "partial_identification_rate", "false_identification_rate",
+    "evaluator_truth_within_bounds_rate", "evaluator_correct_adjudication_rate",
 }
 
 
@@ -620,6 +621,9 @@ class ThetaAReplicateRecord:
     expected_abstention_reason: str | None
     observed_abstention_reason: str | None
     target_unsupported_mass: float
+    evaluator_truth_within_bounds: bool | None = None
+    evaluator_correct_adjudication: bool | None = None
+    evaluator_disposition: str | None = None
 
     def validate(self) -> None:
         if not all((self.scenario_id, self.scenario_version, self.outer_world_id,
@@ -655,6 +659,22 @@ class ThetaAReplicateRecord:
             raise ThetaACalibrationError("NOT_IDENTIFIED replicate requires its exact expected abstention reason")
         if self.observed_abstention_reason is not None and not isinstance(self.observed_abstention_reason, str):
             raise ThetaACalibrationError("observed Analyzer abstention reason must be a string or None")
+        evaluator_fields = (
+            self.evaluator_truth_within_bounds,
+            self.evaluator_correct_adjudication,
+            self.evaluator_disposition,
+        )
+        if any(value is not None for value in evaluator_fields) and not all(
+            value is not None for value in evaluator_fields
+        ):
+            raise ThetaACalibrationError("Evaluator truth/bounds/adjudication evidence must be captured as a complete triplet")
+        if evaluator_fields[0] is not None and (
+            type(evaluator_fields[0]) is not bool
+            or type(evaluator_fields[1]) is not bool
+            or not isinstance(evaluator_fields[2], str)
+            or not evaluator_fields[2].strip()
+        ):
+            raise ThetaACalibrationError("Evaluator adjudication evidence has invalid types or empty disposition")
         if self.analyzer_identification == "IDENTIFIED":
             if self.point_estimate is None or not isfinite(self.point_estimate):
                 raise ThetaACalibrationError("identified replicate requires a finite point estimate")
@@ -907,6 +927,9 @@ def capture_theta_a_replicate(
         profile.expected_abstention_reason if profile is not None else None,
         result.analyzer_result.abstention_reason or None,
         unsupported_mass,
+        evaluation.truth_within_bounds,
+        evaluation.correct_adjudication,
+        evaluation.disposition,
     )
     if evaluation.inference_confidence_level is not None and (
         requested_confidence_level is None
@@ -1096,6 +1119,16 @@ def summarize_theta_a_calibration(
                 metric_values.setdefault("interval_availability_rate", []).append(
                     (outer_id, sum(x.inference_covered is not None for x in group) / r_count)
                 )
+                if all(x.evaluator_truth_within_bounds is not None for x in group):
+                    metric_values.setdefault("evaluator_truth_within_bounds_rate", []).append(
+                        (outer_id, sum(bool(x.evaluator_truth_within_bounds) for x in group) / r_count)
+                    )
+                    metric_values.setdefault("evaluator_correct_adjudication_rate", []).append(
+                        (outer_id, sum(bool(x.evaluator_correct_adjudication) for x in group) / r_count)
+                    )
+                else:
+                    metric_values.setdefault("evaluator_truth_within_bounds_rate", []).append(None)
+                    metric_values.setdefault("evaluator_correct_adjudication_rate", []).append(None)
                 if scenario.expected_identification == "IDENTIFIED":
                     false_abstention = sum(not value for value in identified) / r_count
                     metric_values.setdefault("false_abstention_rate", []).append((outer_id, false_abstention))
