@@ -140,7 +140,7 @@ class ThetaAObservationAnalyzerTests(unittest.TestCase):
             adjudicate_theta_a_structural_support(contract)
 
     def test_structural_target_source_support_reaches_analyzer_not_identified(self):
-        rows = (self.evidence.rows[0],)
+        rows = (dict(self.evidence.rows[0], q_x_sha256="source-qx"),)
         manifest = {"run_id": "run-1", "schema": "test"}
         sparse = SealedThetaAEvidence(
             "run-1", rows, manifest,
