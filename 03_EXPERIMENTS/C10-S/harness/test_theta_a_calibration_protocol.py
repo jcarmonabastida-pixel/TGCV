@@ -14,6 +14,7 @@ from theta_a_calibration_protocol import (
     ThetaACalibrationScenario,
     ThetaAReplicateRecord,
     build_theta_a_seed_bank,
+    build_theta_a_candidate_scenario_roster,
     s3_seeds_by_unit,
     run_theta_a_calibration_replicates,
     theta_a_pipeline_inference_options,
@@ -228,6 +229,60 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
                 bank="calibration", execution_authorized=False,
             )
         self.assertEqual(called, [])
+
+    def test_five_scenario_candidate_roster_and_shared_base_worlds(self):
+        roster = build_theta_a_candidate_scenario_roster()
+        self.assertEqual(
+            [item.scenario_id for item in roster],
+            [
+                "THETA_A_POSITIVE_V1",
+                "THETA_A_NULL_V1",
+                "THETA_A_NEGATIVE_V1",
+                "THETA_A_ALTERNATIVE_COMMON_V1",
+                "THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1",
+            ],
+        )
+        self.assertEqual(
+            [item.dgp_profile.expected_theta_a_truth for item in roster],
+            [0.5, 0.0, -0.5, 0.0, 0.5],
+        )
+        self.assertEqual(roster[-1].expected_identification, "NOT_IDENTIFIED")
+        self.assertEqual(
+            roster[-1].dgp_profile.expected_abstention_reason,
+            "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT",
+        )
+        design = ThetaACalibrationDesign(
+            scenario_specs=roster, n_grid=(4,), outer_worlds_m=2,
+            assignment_replicates_r=2, confidence_level=0.95,
+            namespace="theta-a-five-scenario-roster-contract-v1",
+        )
+        assignments = build_theta_a_seed_bank(design, "calibration")
+        validate_theta_a_seed_banks(assignments, (), design=design)
+        self.assertEqual(len(assignments), 5 * 1 * 2 * 2)
+        by_scenario = {
+            item.scenario_id: [
+                row for row in assignments if row.scenario_id == item.scenario_id
+            ]
+            for item in roster
+        }
+        paired_ids = (
+            "THETA_A_POSITIVE_V1",
+            "THETA_A_ALTERNATIVE_COMMON_V1",
+            "THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1",
+        )
+        for outer_id in ("outer-000000", "outer-000001"):
+            paired = [
+                next(row for row in by_scenario[sid] if row.outer_world_id == outer_id)
+                for sid in paired_ids
+            ]
+            self.assertEqual(len({row.world_family_id for row in paired}), 1)
+            self.assertEqual(len({row.world_id for row in paired}), 1)
+            self.assertEqual(len({row.roster_id for row in paired}), 1)
+            self.assertEqual(len({row.world_seed for row in paired}), 1)
+            self.assertEqual(len({row.unit_id_prefix for row in paired}), 1)
+            self.assertEqual(len({row.run_id for row in paired}), 3)
+            self.assertEqual(len({row.randomization_salt for row in paired}), 3)
+            self.assertEqual(len({row.s3_seed for row in paired}), 3)
 
     def test_s3_unit_seeds_are_stable_and_distinct(self):
         first = s3_seeds_by_unit(12345, ("u1", "u2", "u3"))
