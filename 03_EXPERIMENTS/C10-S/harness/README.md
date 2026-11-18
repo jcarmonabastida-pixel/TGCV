@@ -907,3 +907,23 @@ The existing combined non-overlap + assignment-positivity regression remains unc
 
 
 **Calibration capture source/target binding regression — EP-02 Run 852 (2026-11-18):** `theta_a_calibration_protocol.py` now validates assignment/evidence fingerprints against the source-population contract and reserved truth fingerprints against the target q_X* and target-policy contract. This removes an internal capture contradiction for both source-superset/target-subset and target-superset/source-support-failure worlds. The policy-design fingerprint binds both populations, source assignment policies, target policy restrictions and the structural-support contract. Added direct regression tests for valid source/target separation and rejection when truth is incorrectly bound to source q_X. Run 852 (`44337524579`), tested commit `9b10ae3235dae0c28837a45aa824858a2fb27a7c`: 315/315 primary and 315/315 clean replay. Payload artifact `14441238525` (ZIP digest `0d56ecf8ac014250400a999bbf9a78133465754e8630e59e790d4b9dcbbec6dc`); manifest artifact `14441468115` (ZIP digest `e1f7d5af43055d67d4ece0c7e835d628de55e40f025945febea13b1fc3a28491`). This is technical capture/provenance validation only; no calibration bank, Monte Carlo, or scientific execution was run.
+
+### Typed DGP support profile and exact abstention adjudication — EP-02 Run 854 (2026-11-18)
+
+\`ThetaACalibrationDGPProfile\` now binds the synthetic profile identity/version, target and source q_X fingerprints, structural-support contract identity/version, support relation, target-only history references/masses and the exact expected Analyzer abstention reason. \`ThetaACalibrationScenario\` requires this profile for \`NOT_IDENTIFIED\` scenarios. Its canonical fingerprint is incorporated into scenario-derived world/roster/run identities and each \`ThetaASeedAssignment\`; seed validation recomputes that binding.
+
+\`capture_theta_a_replicate()\` now checks the materialized structural-support contract against the profile, including both q_X fingerprints, contract ID/version, exact target-only history/mass rows, source-only support relation where applicable, and the Analyzer structural-support digest. It records the expected and observed abstention reasons, profile fingerprint and target unsupported mass from the completed result. A wrong Analyzer reason is retained as an adjudication error for calibration metrics, not silently normalized to success.
+
+For a \`NOT_IDENTIFIED\` scenario, aggregation now separates:
+- \`correct_abstention_rate\`: Analyzer status is exactly \`NOT_IDENTIFIED\` and the reason token exactly matches the scenario profile;
+- \`wrong_cause_abstention_rate\`: \`NOT_IDENTIFIED\` or \`INDETERMINATE\` without that exact status/reason pair;
+- \`partial_identification_rate\`;
+- \`false_identification_rate\`.
+
+The regression deliberately includes correct target-support abstention, wrong-cause \`NOT_IDENTIFIED\`, \`INDETERMINATE\`, \`PARTIALLY_IDENTIFIED\` and false \`IDENTIFIED\` outputs. It confirms that none of the latter four categories is counted as correct structural abstention.
+
+**EP-02 Run 854:** [GitHub Actions](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44340655791), run `44340655791`, tested commit `2cb1f44f4f4c9aea1372d317359f039263dbf047`. Compilation PASS; 315/315 primary PASS (13.742 s); 315/315 clean replay PASS (13.694 s). Payload artifact `14443996431`, SHA-256 `ad041634ecb46af8b035b303ae7a91b2b4c6b1a7e58b74f77c5b83afe0d086e0`; manifest artifact `14443816333`, SHA-256 `be3123bf7897020ac179cb845e8d23e43a5bdb2d3b60edd47ea616f8e1f355a8`.
+
+The temporary push trigger and sentinel were removed; the workflow is restored to `workflow_dispatch` with explicit confirmation. Restoration commit `bb2eafe985e75637ed8942286fc4826809400858`; sentinel deletion commit `b0506ce709d1171c03f2dda760c53a14f50d77fd`.
+
+**Boundary:** this run validates protocol, provenance checks, seed binding and aggregation logic as software contracts. The aggregation regression still uses deliberately constructed records; a runner that materializes each N×M×R world through the actual DGP pipeline and passes its completed result into `capture_theta_a_replicate()` remains to be implemented and tested. No calibration bank, seed bank, Monte Carlo or scientific execution was generated. The roster remains `NOT_FROZEN`.
