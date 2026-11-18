@@ -81,7 +81,7 @@ class ThetaAObservationAnalyzerTests(unittest.TestCase):
         sparse = SealedThetaAEvidence(
             "run-1", rows, manifest,
             _hash({"manifest": manifest, "rows": rows}))
-        result = ThetaAObservationAnalyzer().analyze(sparse, self.contract)
+        result = ThetaAObservationAnalyzer().analyze(sparse, replace(self.contract, source_q_x_sha256="source-qx"))
         self.assertEqual(result.identification, "INDETERMINATE")
         self.assertEqual(result.abstention_reason, "REALIZED_GA_ARM_SUPPORT_MISSING")
         self.assertIsNone(result.point_estimate)
