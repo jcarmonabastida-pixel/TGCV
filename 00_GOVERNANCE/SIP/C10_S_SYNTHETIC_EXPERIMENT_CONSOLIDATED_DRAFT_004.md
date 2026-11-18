@@ -2084,3 +2084,76 @@ Siguen sin decidirse/aprobarse: δ_science, targets concretos, obligatoriedad de
 No se modifica código, tests, DGP, roster, Analyzer, Evaluator, workflow, seeds ni bancos. No se ejecutan tests, calibración, Monte Carlo ni evaluación. No se altera main, RMA, Matrix, STATUS o TGCV Core. PR #116 permanece Draft. Se mantienen `calibration_authorized=false`, `execution_authorized=false`, `scientific_execution=false`.
 
 **Siguiente operación:** revisión adversarial interna de §364 contra los tipos/funciones concretos del protocolo y contra los contratos de estimando DGP, centrada en comprobar que cada campo propuesto puede derivarse sin ambigüedad y que la partición de estados, aplicabilidad y contrastes pareados no introduce supuestos nuevos inadvertidos. Después de esa revisión se podrá preparar el contrato de oráculo y tests, todavía sin ejecutar calibración.
+
+
+## 365. Revisión de derivabilidad de §364 contra los tipos, seed plan, runner, captura y agregador existentes (2026-11-18)
+
+**Estado:** STATIC_ADVERSARIAL_REVIEW_COMPLETED / PARTIAL_DERIVABILITY / CONTRACT_AMENDMENTS_REQUIRED / NO_CODE_CHANGE / NO_EXECUTION.  
+**Fuentes:** §364; `theta_a_calibration_protocol.py` blob `9675b9f6805b11f1a1037a3e4b2f95af53038e4c`; `test_theta_a_calibration_protocol.py` blob `a15454020c1043c1d5244193d8c8feb64d3442b9`; harness README blob `4f8a9bd506f91245699c1023a6354fe8676b20e2`; gobernanza canónica de main (README, Bootstrap, Canonical State, RMA v3.38). Revisión exclusivamente estática; no se ejecutaron pruebas ni funciones de generación/runner.
+
+### 365.1 Dictamen
+
+§364 corrige la arquitectura conceptual en la dirección adecuada, pero **no es todavía un contrato directamente derivable del modelo de datos y de los resultados que produce el código actual**. Se identifican seis brechas principales: truth/disposition aún fusionados en el tipo de escenario y del registro; ausencia de ledger de fallos por intento; semántica de intervalos sin método/versionado explícito; métricas de estados parciales no calculadas de forma transversal; falta de resumen pareado; y ambigüedad sobre qué unidad de análisis independiente sustenta la inferencia M.
+
+La distinción fundamental es que §364 es un contrato futuro que requiere una migración de esquema y agregador, no una descripción de capacidades ya existentes.
+
+### 365.2 Matriz de derivabilidad
+
+| ID | Estado | Evidencia estática | Implicación / corrección requerida |
+|---|---|---|---|
+| DR-01 | BLOCKED | El alias `Identification` del módulo contiene IDENTIFIED, NOT_IDENTIFIED e INDETERMINATE. `ThetaACalibrationScenario.expected_identification` utiliza ese alias y `ThetaAReplicateRecord.expected_identification` reutiliza el mismo concepto. `PARTIALLY_IDENTIFIED` solo se admite en el conjunto de estados observados Analyzer, no como clase de verdad. | Implementar dos enums/campos distintos: verdad estructural DGP y disposición Analyzer esperada/observada. La clase de verdad INDETERMINATE del fixture de missingness actual debe migrarse a una clase de verdad estructural identificada/no identificada más un information_regime que causa indeterminación, o justificarse como una tercera verdad epistemológica con definición propia. No se puede mapear automáticamente. |
+| DR-02 | BLOCKED | El test `test_pipeline_inference_options_follow_explicit_independence_contract` construye un escenario con `expected_identification="INDETERMINATE"` para missingness, aunque afirma independencia a nivel unidad y mantiene el confidence level. El agregador actual cae en la rama `else` de no identificado y calcula `correct_abstention_rate` / `wrong_cause_abstention_rate` usando la causa del perfil (nula si no hay perfil). | Confirmación directa de la mezcla que AR-07 detectó. El nuevo modelo debe representar truth class e information regime por separado y definir qué se espera del Analyzer bajo missingness; el caso no debe ser tratado como NOT_IDENTIFIED por el mero hecho de no ser IDENTIFIED. |
+| DR-03 | BLOCKED | `run_theta_a_calibration_replicates` exige autorización explícita, llama secuencialmente al world_executor y propaga excepciones; devuelve registros solo si todos se capturan. `summarize_theta_a_calibration` exige igualdad exacta entre claves del seed plan y registros; cualquier missing/duplicado invalida la operación. No existe objeto por intento con estados TECHNICAL_FAILURE/OUTPUT_INVALID/RECORD_MISSING. | El ledger de §364 necesita una capa de orquestación/captura adicional con un resultado tipado por cada clave esperada, preservando excepción, etapa y causa. No debe convertir excepción en registro Analyzer ficticio. Mientras no exista, solo se puede informar integridad hard-fail; no se pueden estimar las cuatro tasas de ledger propuestas. |
+| DR-04 | CONDITIONAL | `ThetaAReplicateRecord` contiene bounds, coverage boolean, width y requested confidence level; valida coherencia matemática y exige que un intervalo corresponda a Analyzer IDENTIFIED. La captura además exige cobertura S3 continua para el roster y seed por unidad. | Se pueden derivar J y C de los campos actuales bajo la validación existente. No se deriva aún método inferencial, versión del algoritmo, definición de sidedness ni referencia explícita al contrato de intervalo; el nivel solicitado no identifica por sí solo el método. Añadir `interval_method_id/version`, `interval_contract_sha256` y `interval_status`/reason; diferenciar intervalo no emitido de salida inválida. |
+| DR-05 | BLOCKED | El resumen actual produce `identification_rate` y `abstention_rate` global, `false_abstention_rate` solo para verdad IDENTIFIED y métricas `correct_abstention_rate`, `wrong_cause_abstention_rate`, `partial_identification_rate`, `false_identification_rate` solo en la rama no IDENTIFIED. | §364 exige las cuatro tasas observadas como partición para toda clase de verdad, además de métricas de error por clase. El catálogo debe especificar la partición y calcularla siempre para cada escenario; la aplicabilidad de métricas de error se decide por truth class, no por la rama del código actual. |
+| DR-06 | BLOCKED | `ThetaAReplicateRecord` guarda `evaluator_truth_within_bounds`, `evaluator_correct_adjudication` y `evaluator_disposition` como tripleta opcional. El resumen actual los agrega en las mismas métricas por mundo que el resto, sin un artefacto/ledger separado de auditoría. | Crear `EvaluatorAuditRecord/Summary` o una sección tipada independiente, con regla de adjudicación versionada por clase y causa. No reutilizar el Metric Registry del Analyzer. |
+| DR-07 | BLOCKED | El agregador resume cada escenario independientemente; el seed validator sí exige identidad compartida de world/roster/seed para escenarios con el mismo `world_family_id`. No existe contraste pareado por familia/world_id en el resumen. | La identidad necesaria para pareamiento ya existe en SeedAssignment, pero la agregación cruzada falta. Añadir un contrato de contraste que verifique la bijección de world_id y M entre escenarios y conserve la covarianza. |
+| DR-08 | CONDITIONAL | El seed validator comprueba M mundos con world_id/roster/seed distintos dentro de escenario×N y exige compartir identidad para una misma world_family×N×M. El escenario declara `unit_independence_certified` y su base; no hay un campo explícito que certifique IID de los mundos exteriores ni la distribución generadora de la que proceden. | La independencia de unidades dentro del mundo y la independencia/IID entre mundos son niveles diferentes. Añadir `outer_world_sampling_design_id`, distribución objetivo, mecanismo de muestreo, versión y certificación de independencia entre M. Sin eso, la fórmula de MCSE es descriptiva del mecanismo de seeds, no inferencia poblacional general. |
+| DR-09 | BLOCKED | El diseño actual tiene `metric_targets` como tuplas opcionales, sin catálogo normativo, `required_for_calibration`, applicability manifest, ni comparación con un universo esperado. El código permite targets vacíos/parciales. | El Metric Registry y Target Manifest de §364 son nuevos artefactos requeridos. No hay derivación posible desde `metric_targets` actuales sin un contrato normativo externo. |
+| DR-10 | BLOCKED | `_ALLOWED_METRICS` conserva `point_rmse`, `interval_coverage`, `interval_width`, métricas de abstención y Evaluator. El resumen usa internamente `point_rmse_mse`, calcula RMSE y una MCSE delta, y no expone MSE como métrica separada. | La nueva identidad point_MSE debe ser nueva métrica/version y nuevo target; no renombrar el output histórico. Interval metrics deben recibir IDs nuevos si cambian población/denominador. |
+| DR-11 | CONDITIONAL | La clave `world_family_id` se conserva en SeedAssignment y el validador comprueba identidad común de mundo para la familia. El generador deriva la semilla de mundo a partir de family, world/DGP/roster versions, N y M; R tiene randomization_salt y S3 seed distintos. | Base suficiente para pareamiento de escenarios candidatos de la misma familia, siempre que DGP/version/roster comunes y emparejamiento completo se mantengan. No autoriza por sí solo una interpretación causal del contraste: ésta depende de qué mecanismo varía entre escenarios y qué se mantiene fijo en la DGP. |
+| DR-12 | CONDITIONAL | El resumen actual calcula tasas como contribuciones por mundo y luego media/SD entre M. El seed plan fija el mundo en R y aleatoriza assignment y S3 por R. | La unidad exterior M está clara; sin embargo, definir si la inferencia objetivo es sobre la distribución de mundos o sobre el conjunto fijo de mundos. Si M no es IID de una distribución declarada, reportar MCSE de Monte Carlo bajo seed mechanism, no incertidumbre poblacional. |
+| DR-13 | BLOCKED | `ThetaAReplicateRecord.validate` exige que un intervalo presente solo exista con Analyzer IDENTIFIED; si no hay bounds, coverage/width deben ser None. No contiene estado explícito de intervalo no emitido frente a intervalo inválido. | La definición J de §364 puede implementarse solo tras decidir el contrato de salida inválida. El fallo de validación debe ser ledger OUTPUT_INVALID, no intervalo ausente. No inferir J exclusivamente del estado Analyzer. |
+| DR-14 | CONDITIONAL | El código conserva expected/observed abstention reason y el perfil DGP fija causa esperada para verdad NOT_IDENTIFIED. El resumen actual combina NOT_IDENTIFIED e INDETERMINATE en wrong-cause si no coincide causa exacta; PARTIALLY_IDENTIFIED se contabiliza separadamente. | La nueva partición propuesta debe preservar causa exacta/incorrecta/ausente y separar estados. Definir qué causas se esperan bajo truth IDENTIFIED y cómo se clasifica una abstención estructural frente a falta de información. |
+| DR-15 | PASS_STATIC | El seed bank ya verifica cobertura exacta de escenarios×N×M×R, unicidad de filas, identidad fija dentro de R, diversidad entre M, streams disjuntos y world-family pairing. El summary también verifica que los registros coincidan exactamente con el plan y que truth/perfiles/fingerprints no deriven dentro de R. | La base de integridad y procedencia del plan se puede conservar; el nuevo ledger extiende el modelo para fallos de ejecución, no reemplaza estos controles. |
+
+### 365.3 Dos correcciones conceptuales obligatorias antes de tests
+
+**A. No confundir tres niveles de independencia.**
+- `unit_independence_certified`: independencia de unidades dentro de cada mundo, relevante para la validez del estimador individual/SE que emite Analyzer.
+- `outer_world_iid_certified`: independencia y muestreo IID de los M mundos desde una distribución objetivo, necesaria para la interpretación inferencial del MCSE entre mundos.
+- `paired_world_family`: dependencia deliberada entre escenarios que comparten el mismo mundo; se conserva en contrastes pareados, no se trata como independencia entre escenarios.
+
+La actual certificación de unidades no prueba IID de mundos. La fórmula MCSE §364.5 requiere que esa segunda certificación exista para cada design.
+
+**B. Distinguir ausencia de intervalo y output inválido.**
+- Analyzer puede no emitir intervalo de forma válida (por abstención o por contrato de no inferencia): J=0, siempre que el output completo sea válido.
+- Analyzer declara/produce intervalo y viola esquema, límites, método o metadatos: OUTPUT_INVALID y hard-fail de ledger.
+- No llega resultado: TECHNICAL_FAILURE o RECORD_MISSING según etapa y evidencia.
+- Intervalo válido emitido: J=1; C=1 si cubre truth.
+
+La actual dataclass permite representar ausencia con None y valida intervalos presentes, pero no lleva el estado/motivo tipado ni método/versionado. La distinción requiere ampliación de esquema.
+
+### 365.4 Matriz de alcance del trabajo requerido
+
+| Componente | Estado actual | Trabajo requerido |
+|---|---|---|
+| Seed plan N×M×R | Implementado y validado estáticamente | Conservar; añadir world-distribution contract |
+| World-family pairing | Identidad compartida implementada | Añadir contraste pareado a resumen |
+| Truth / Analyzer disposition | Fusionados parcialmente | Migración de schema + tests |
+| Ledger de intentos fallidos | No existe | Nuevo wrapper de ejecución y registros tipados |
+| Interval method identity | Parcial | Añadir método/version/hash y status |
+| Métricas de disposición | Parciales/condicionadas por rama | Partición exhaustiva y transversal |
+| Evaluator audit | Campos presentes, summary mezclado | Artefacto independiente |
+| Metric Registry / Target Manifest | No existe | Nuevo artefacto normativo y validador |
+| MSE condicional y MCSE ratio | No implementado | Nuevo agregador/oráculo |
+| Contrastes pareados | Seed pairing implementado, summary ausente | Nuevo resumen por world_family |
+| IID exterior M | No certificado | Contrato de muestreo de mundos |
+
+### 365.5 Disposición y siguiente operación
+
+La revisión **no aprueba §364 para implementación**. Los bloques DR-01, DR-03, DR-05, DR-06, DR-07, DR-09, DR-10 y DR-13 impiden derivar el contrato desde el código actual. DR-04, DR-08, DR-11, DR-12 y DR-14 son condicionales a nuevas identidades/contracts. DR-15 confirma que el seed-plan existente es una base sólida que no debe rehacerse.
+
+Siguiente operación recomendada: producir §366 como *data contract and oracle specification* independiente del código, que defina esquemas exactos para TruthClass, AnalyzerDisposition, AttemptLedger, IntervalRecord, EvaluatorAudit, OuterWorldSamplingContract, Metric Registry, Target Manifest y PairedContrast. Después se elaborará la tabla de mapeo desde los dataclasses actuales al nuevo esquema y los casos de oráculo. No escribir aún el código ni ejecutar tests/calibración.
+
+**Control:** no se modificó ningún archivo de código ni tests. No se invocaron builders de seed bank, world executor ni summarizer; no se generaron datos. No se ejecutaron tests, workflows, EP-02, calibración, Monte Carlo ni evaluación. main, RMA v3.38, Matrix v1.47, STATUS y TGCV Core permanecen intactos. PR #116 continúa Draft. `calibration_authorized=false`, `execution_authorized=false`, `scientific_execution=false`.
