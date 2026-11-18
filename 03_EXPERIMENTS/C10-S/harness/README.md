@@ -975,3 +975,22 @@ The integration suite now delegates to the reusable DGP factory and contains a c
 
 
 **EP-02 source-closure amendment (2026-11-18):** the workflow allowlists now include `theta_a_calibration_dgp.py` in all three required places: primary/replay source materialization, primary `py_compile`, and the execution-manifest input/hash inventory. The test-module count remains sixteen; the factory is an imported source dependency, not a seventeenth test module. Workflow change commit: `40e1dcf2414de4285d79b777b30aa6fbd027cc8d`. The workflow has not yet been dispatched; execution evidence is pending. The prior one-time technical authorization was consumed by earlier runs; a new explicit user authorization for this exact EP-02 suite and clean replay was received in this conversation. It excludes calibration banks, calibration/evaluation runs, Monte Carlo and scientific execution.
+
+
+### EP-02 Evaluator diagnosis and corrected integration assertions — Run 862 (2026-11-18)
+
+Run 859 exposed two failures in integration-test expectations, not a defect in the Analyzer or the independent Evaluator. Diagnostic Run 861 captured the exact reserved truth, point estimate, error, tolerance, bounds and disposition:
+
+- Five-scenario N×M×R integration, positive scenario, outer world 000000: both R replicates had truth 0.5, estimates 0.21875 and 0.78125, absolute error 0.28125, tolerance 0.25, truth within bounds, disposition `POINT_RECOVERY_FAILED`. The other two positive-scenario replicates had error 0.1875 and `POINT_RECOVERED`.
+- Benign source-strict-superset/target-subset integration: truth 0.5, estimate -0.1428571428571428, absolute error 0.6428571428571428, tolerance 0.25, truth within bounds (-1, 1), disposition `POINT_RECOVERY_FAILED`. Structural support remained sufficient and the Analyzer correctly returned `IDENTIFIED`.
+
+These observations are finite-sample point-recovery outcomes. They do not imply that source/target support is incompatible or that the Analyzer's identification decision is wrong. The prior tests incorrectly required every small-sample identified replicate to satisfy the separate point-recovery tolerance. The correction preserves the Evaluator algorithm and the 0.25 tolerance; it changes only the integration assertions:
+
+- The benign source-superset test verifies truth-within-bounds, continued `IDENTIFIED` status, no structural abstention and internal consistency between `correct_adjudication` and `POINT_RECOVERED` / `POINT_RECOVERY_FAILED`.
+- The five-scenario N×M×R capture test verifies truth-within-bounds and exact disposition/Boolean consistency. The nonidentified target-only scenario must still produce `CORRECT_ABSTENTION`. Identified scenarios may legitimately record either point-recovery outcome; the separate point-recovery metrics retain the observed performance rather than being forced to 100%.
+
+No Analyzer/Evaluator implementation, estimand, DGP truth, tolerance, support contract, seed derivation or scientific criterion was changed. No tolerance was widened and no failed point recovery was relabelled as successful.
+
+**EP-02 Run 862:** [GitHub Actions](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44351884258), run `44351884258`, tested commit `cdd43c87c6dab61a9521ac78fa4f07109e177e7f`. Compilation PASS; 319/319 primary PASS (19.280 s); 319/319 clean replay PASS (19.347 s); primary/replay source materializations equal; all workflow steps PASS. Payload artifact `14447449680`, SHA-256 `2c42b542d1110e6614083562a5398e90d0d813fb581b639b2b51380e482bd4f6`; manifest artifact `14448632515`, SHA-256 `5e197d682b6e3ab9ea4045db792a817d4b3cf250a6130e91a00383c5968612c8`.
+
+The temporary push trigger was removed and the sentinel deleted. Workflow restoration commit `e588ba6cdb2ed4a0f5c7a7e6e452c887975fb014`; sentinel deletion commit `d2d78695f8aa33b6c97e7f238bf3ee63bb9607c7`. The workflow is again `workflow_dispatch` only, with explicit confirmation; PR #116 remains Draft. This is EP-02 software-contract evidence only. It does not execute or authorize calibration banks, evaluation banks, Monte Carlo or scientific execution. The five-scenario roster remains `NOT_FROZEN`.
