@@ -34,6 +34,9 @@ class NestedPrecisionTests(unittest.TestCase):
             within_world_sampling_independence_basis=(
                 "Test fixture: each R is an independently seeded randomization draw conditional on fixed M."
             ),
+            within_world_sampling_independence_basis=(
+                "Test fixture: each R is an independently seeded randomization draw conditional on fixed M."
+            ),
             projections=((3, 2), (6, 4)),
             bootstrap_replicates=500,
             bootstrap_seed=19,
@@ -174,6 +177,9 @@ class NestedPrecisionTests(unittest.TestCase):
             within_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
             within_world_sampling_contract_id="TEST-R-ASSIGNMENT-IID",
             within_world_sampling_contract_version="1.0",
+            within_world_sampling_independence_basis=(
+                "Test fixture: each R is an independently seeded randomization draw conditional on fixed M."
+            ),
             projections=((3, 2),),
             bootstrap_replicates=500,
             bootstrap_seed=29,
@@ -201,6 +207,9 @@ class NestedPrecisionTests(unittest.TestCase):
             within_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
             within_world_sampling_contract_id="TEST-R-ASSIGNMENT-IID",
             within_world_sampling_contract_version="1.0",
+            within_world_sampling_independence_basis=(
+                "Test fixture: each R is an independently seeded randomization draw conditional on fixed M."
+            ),
             projections=((3, 2),),
             bootstrap_replicates=500,
             bootstrap_seed=31,
