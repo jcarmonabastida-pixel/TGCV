@@ -835,3 +835,19 @@ The existing 13×4 coverage matrix's `R0_SUPPORT_FAILURE` and `R2_SUPPORT_FAILUR
 **Disposition:** the positive/negative/null/common-alternative first-wave roster remains an identified-support recovery benchmark only. Structural q_X*/g_A support-failure coverage is OPEN / NOT IMPLEMENTED END-TO-END. Do not relabel target-history observation incompleteness or N=1 realized-arm absence as that scenario. No new estimand, ledger, or test ID is created by this audit. Gate 130's restriction remains operative: no approved B1/UE target roster or materialization authorization is inferred from a synthetic fixture. A future test-only DGP case must make the target-vs-source support relation explicit, retain the full declared q_X target (no post-hoc trimming), and produce a provenance-bound NOT_IDENTIFIED adjudication without fabricating replicate records. That requires a narrowly scoped implementation/design decision before adding the case.
 
 **Execution:** static source audit only. No code changes, calibration bank, Monte Carlo run, or scientific execution.
+
+## 339. Contrato explícito de soporte estructural focal — primer paso de implementación (2026-11-18)
+
+En la rama de investigación se ha añadido a theta_a_analyzer.py un contrato versionado y estrictamente sintético para separar, por cada historia de masa positiva en la distribución objetivo: masa objetivo, masa en la distribución fuente, definición de la intervención, factibilidad de ambas políticas focales y probabilidad declarada de asignación.
+
+La adjudicación tiene alcance deliberadamente acotado:
+
+- Intervención no definida o política focal estructuralmente inviable: ContractError. No se clasifica como NOT_IDENTIFIED, porque el contraste puede no estar definido.
+- Intervención definida, ambas políticas factibles y alguna historia objetivo de masa positiva con masa fuente cero: NOT_IDENTIFIED / TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT.
+- Soporte estructural completo: STRUCTURAL_SUPPORT_SUFFICIENT. Esto no acredita soporte de brazos realizados, integridad de observación ni identificación final.
+
+Se han añadido cuatro pruebas unitarias de contrato para no solapamiento objetivo/fuente, soporte completo, intervención/política no admisible y positividad de asignación inválida.
+
+**Límite esencial:** esta primera modificación aún no conecta el contrato con SyntheticWorldBundle, la generación de asignaciones, el sellado de evidencia, el resultado del Analyzer ni el Evaluator. Por tanto, no constituye el caso end-to-end de no identificación estructural y no cierra la brecha. Tampoco altera el roster, las decisiones Gate 130, el estimando ni las políticas confirmatorias.
+
+**Estado:** CONTRATO Y PRUEBAS UNITARIAS AÑADIDOS / INTEGRACIÓN END-TO-END PENDIENTE / NO EJECUTADO. No se ejecutó EP-02 ni replay; no se generaron bancos, seeds, Monte Carlo ni ejecución científica. La autorización de ejecución sigue sin presumirse.
