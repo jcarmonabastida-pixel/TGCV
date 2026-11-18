@@ -3030,3 +3030,52 @@ La aserción de ausencia de campos explícitos de verdad/contribución verifica 
 Se prioriza la validez del experimento sobre la expansión del catálogo de auditorías. El siguiente bloque integrado será la **consolidación del protocolo focal de cinco escenarios**: verificar que el roster, el DGP ejecutable, la verdad reservada, la clase de identificación, la disposición esperada y el ledger de métricas describen una misma batería confirmatoria sin contradicciones. Se reutilizarán contratos y oráculos existentes; no se crearán matrices paralelas ni se reabrirán decisiones cerradas. Cualquier incompatibilidad se resolverá en el artefacto fuente mínimo, conservando trazabilidad.
 
 **Controles:** modificación limitada al test de integración y a este registro del documento maestro en `research/c10-s-consolidation-draft`. No se modifican Analyzer, Evaluator, DGP, EventHistory generator, agregador, roster, seeds, workflows, RMA, Evidence→Claim Matrix, STATUS, Core ni `main`. No se ejecutan tests, DGP, Analyzer/Evaluator, CI, workflows, calibración o Monte Carlo. PR #116 permanece Draft. `implementation_authorized=true` para integración en research; `technical_test_execution_authorized=false`, `workflow_dispatch_authorized=false`, `calibration_authorized=false`, `scientific_execution=false`, `execution_authorized=false`.
+
+
+## 376. Contrato integrado de la batería focal de cinco escenarios (2026-11-18)
+
+**Estado:** FIVE_SCENARIO_ROSTER_RECONCILED / RESERVED_TRUTH_ASSERTION_INTEGRATED / TEST_IMPLEMENTED_NOT_EXECUTED / ROSTER_NOT_FROZEN.  
+**Objetivo de misión:** que una única ruta completa y una única captura N×M×R comprueben que los cinco escenarios candidatos conservan la verdad causal del DGP, la clase de identificación, la adjudicación del Evaluator y la aplicabilidad correcta de las métricas. Se reutiliza `test_five_scenario_candidate_roster_runs_complete_world_nmr_capture`; no se crea otro roster ni una batería paralela.
+
+### 376.1 Batería científica y papel de cada escenario
+
+| Escenario candidato | Verdad focal de referencia | Identificación esperada | Función discriminante |
+|---|---:|---|---|
+| `THETA_A_POSITIVE_V1` | +0,5 | IDENTIFIED | Recuperación de una contribución positiva conocida |
+| `THETA_A_NULL_V1` | 0 | IDENTIFIED | Control de ausencia de contribución focal |
+| `THETA_A_NEGATIVE_V1` | −0,5 | IDENTIFIED | Recuperación de signo opuesto |
+| `THETA_A_ALTERNATIVE_COMMON_V1` | 0 | IDENTIFIED | Vía funcional alternativa activa que enmascara el contraste focal sin destruir soporte |
+| `THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1` | +0,5, expectativa analítica test-only | NOT_IDENTIFIED | Verdad reservada existente, pero fuera del soporte fuente; exige abstención correcta |
+
+Los cuatro primeros valores permanecen predeclarados en el perfil tipado. El quinto mantiene `expected_theta_a_truth=None` y su fingerprint histórico. Su +0,5 procede de la derivación analítica condicionada de §§369/371 y solo se usa como expectativa independiente del test. No se altera el roster ni se filtra ese valor al Analyzer.
+
+### 376.2 Ruta integrada y adjudicación
+
+El test existente construye el roster, el plan N×M×R, ejecuta el callback DGP de mundo completo, captura el resultado del Evaluator y resume las métricas. La prueba exige:
+- cinco escenarios × un N de fixture × dos M × dos R, con captura exacta de cada asignación;
+- verdad reservada constante entre las R de un mismo M y concordante con la expectativa por escenario;
+- identificación del Analyzer igual a la clase declarada en el roster;
+- adjudicación del Evaluator coherente con recuperación puntual o abstención correcta;
+- emparejamiento por world_id/configuración entre positive, alternative y target-only, conservando run/salt/evidencia diferenciados;
+- para target-only, causa exacta `TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT`, masa no soportada 0,5, tasa de abstención correcta 1, falsa identificación 0 y métricas de recuperación puntual/intervalar `NOT_EVALUABLE`.
+
+La expectativa target-only +0,5 se ha añadido al test integrado como mapa analítico test-only. Para los cuatro escenarios identificados, el test contrasta con el valor del perfil. Para el quinto, exige explícitamente que el perfil siga en `None` y compara cada verdad reservada capturada con +0,5. Esto cierra la brecha registrada en §372 sin duplicar la prueba adversarial de §375: §375 altera deliberadamente la contribución target-only a cero y comprueba la ponderación (+0,25); §376 comprueba la batería candidata original (+0,5).
+
+### 376.3 Lectura confirmatoria y límites
+
+La batería cubre cuatro comportamientos de recuperación bajo identificación puntual y un comportamiento de abstención bajo no-identificación estructural. No equivale todavía a una calibración confirmatoria:
+- N=32, M=2 y R=2 en este test son tamaños de fixture de integración, no parámetros confirmatorios ni base de potencia/precisión.
+- La unicidad de seeds/identidades y el emparejamiento se verifican estructuralmente; la independencia estadística de M sigue condicionada al supuesto pseudoaleatorio de §373 y sin gate IID.
+- Las métricas condicionales de los escenarios identificados describen el comportamiento del Analyzer/Evaluator en la batería. No establecen Type-I error ni potencia: ambos siguen `NOT_DEFINED_NO_TEST_PROCEDURE`.
+- El escenario target-only no se puntúa por bias, recuperación puntual ni cobertura; conocer la verdad reservada no elimina la no-identificación.
+- Los resultados del test, cuando se ejecute bajo autorización, solo podrán acreditar recuperación dentro de estos DGP, versiones, tamaños y reglas. No demuestran causalidad empírica general ni el claim TGCV ΔT_acc→Value.
+
+### 376.4 Dictamen y continuidad
+
+La matriz de cinco escenarios queda reconciliada con la fábrica DGP, el TruthBundle/Evaluator, la clase de identificación y el agregador existente. Se ha reforzado el test integrado ya existente; no se ha creado un test adicional, ni se ha cambiado producción, el perfil histórico, el DGP, el Analyzer, el Evaluator, los seeds o el estimando.
+
+**Siguiente bloque de misión:** completar la preparación confirmatoria del experimento como un paquete: cerrar el contrato de métricas/targets y la interpretación de M (incluido el gate IID o una declaración explícita de conjunto finito), derivar N/M/R y potencia/precisión con oráculos independientes, y después preparar un único preflight reproducible. No implementar el contraste pareado ni iniciar calibración hasta resolver ese paquete; no reabrir las semánticas de los cinco escenarios ya reconciliadas.
+
+**Estado de evidencia:** el cambio de test y esta reconciliación están persistidos, pero no ejecutados. El estado es `IMPLEMENTED_NOT_EXECUTED`, no PASS ni evidencia de recuperación científica.
+
+**Controles:** solo se modifica el test integrado existente y este documento maestro en `research/c10-s-consolidation-draft`. No se cambian DGP, Analyzer, Evaluator, agregador, roster/profile, seeds, workflows, RMA, Evidence→Claim Matrix, STATUS, Core ni `main`. No se ejecutan tests, pipelines, DGP, Analyzer/Evaluator, CI, workflows, calibración, Monte Carlo ni experimento científico. PR #116 permanece Draft. `implementation_authorized=true`, `technical_test_execution_authorized=false`, `workflow_dispatch_authorized=false`, `calibration_authorized=false`, `scientific_execution=false`, `execution_authorized=false`.
