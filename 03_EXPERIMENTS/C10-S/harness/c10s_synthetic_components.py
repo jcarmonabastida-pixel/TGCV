@@ -3599,7 +3599,8 @@ def compute_theta_a_vcont_truth_from_event_histories(
     }
     if (not qx_by_history or len(qx_by_history) != len(q_x)
             or set(qx_by_history) != set(unit_by_history)
-            or any(not unit_id for unit_id in unit_by_history.values())):
+            or any(not unit_id for unit_id in unit_by_history.values())
+            or len(set(unit_by_history.values())) != len(unit_by_history)):
         raise ContractError("theta_A target q_X* and reserved potential-unit identities must cover exactly the same histories")
     certificates = {row.history_ref: row for row in r_common_certificates}
     if len(certificates) != len(r_common_certificates) or set(certificates) != set(qx_by_history):
