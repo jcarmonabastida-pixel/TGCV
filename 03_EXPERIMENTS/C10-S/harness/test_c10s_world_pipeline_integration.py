@@ -489,6 +489,38 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertTrue(result.evaluator_result.correct_adjudication)
         self.assertEqual(result.evaluator_result.disposition, "CORRECT_ABSTENTION")
 
+    def test_source_assignment_positivity_failure_runs_through_generated_world_to_evaluator(self):
+        fixture = self._fixture(n_units=4)
+        world = SyntheticWorldBuilder().generate(fixture["world_config"], fixture["d2_config"])
+        probabilities = dict(fixture["assignment_config"].probability_a1_by_history)
+        failed_history = world.q_x[0].history_ref
+        probabilities[failed_history] = 0.0
+        fixture["assignment_config"] = replace(
+            fixture["assignment_config"],
+            probability_a1_by_history=tuple(sorted(probabilities.items())),
+        )
+        support = ThetaAStructuralSupportContract(
+            "SYNTHETIC-ASSIGNMENT-POSITIVITY-001", "1",
+            digest(world.q_x), digest(world.q_x),
+            tuple(
+                ThetaAStructuralSupportRow(
+                    row.history_ref, row.mass, row.mass, True, True, True,
+                    probabilities[row.history_ref],
+                ) for row in world.q_x
+            ),
+        )
+        fixture["theta_a_population_args"] = {
+            "theta_a_structural_support_contract": support,
+        }
+        result = self._run_pipeline(fixture)
+        self.assertEqual(result.analyzer_result.identification, "NOT_IDENTIFIED")
+        self.assertEqual(result.analyzer_result.abstention_reason, "SOURCE_ASSIGNMENT_POSITIVITY_FAILURE")
+        self.assertEqual(result.analyzer_result.missing_target_histories, ())
+        self.assertEqual(result.analyzer_result.assignment_positivity_failure_histories, (failed_history,))
+        self.assertTrue(result.evaluator_result.truth_within_bounds)
+        self.assertTrue(result.evaluator_result.correct_adjudication)
+        self.assertEqual(result.evaluator_result.disposition, "CORRECT_ABSTENTION")
+
     def test_theta_a_nmr_protocol_is_wired_through_complete_world_and_evaluator(self):
         scenario = ThetaACalibrationScenario(
             scenario_id="THETA_A_POSITIVE_INTERVAL_FIXTURE",
