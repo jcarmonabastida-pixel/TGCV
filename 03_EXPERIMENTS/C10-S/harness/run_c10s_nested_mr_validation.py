@@ -414,7 +414,7 @@ def run_tier(
                 record["run_id"] = os.environ.get("GITHUB_RUN_ID", "UNASSIGNED")
                 record["code_commit"] = code_commit
                 record["protocol_sha256"] = protocol_hash
-                stream.write(json.dumps(record, sort_keys=True, allow_nan=False) + "\\n")
+                stream.write(json.dumps(record, sort_keys=True, allow_nan=False) + "\n")
                 records.append(record)
         temp_path.replace(cell_path)
         summary = (
@@ -425,7 +425,7 @@ def run_tier(
         summary["protocol_sha256"] = protocol_hash
         summary["authorization_id"] = authorization["authorization_id"]
         summary["records_sha256"] = sha256_file(cell_path)
-        summary_path.write_text(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False) + "\\n", encoding="utf-8")
+        summary_path.write_text(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False) + "\n", encoding="utf-8")
         summary_sha = sha256_file(summary_path)
         entry = {
             "cell_id": spec.cell_id,
@@ -446,7 +446,7 @@ def run_tier(
             "cells": list(checkpoint_entries.values()),
         }
         checkpoint_tmp = checkpoint_path.with_suffix(".json.tmp")
-        checkpoint_tmp.write_text(json.dumps(checkpoint, indent=2, sort_keys=True) + "\\n", encoding="utf-8")
+        checkpoint_tmp.write_text(json.dumps(checkpoint, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         checkpoint_tmp.replace(checkpoint_path)
         summaries.append(summary)
         records_index.append({
@@ -484,6 +484,7 @@ def run_tier(
         "source_hashes": source_hashes,
         "cells": summaries,
         "record_files": records_index,
+        "checkpoint_index_sha256": sha256_file(checkpoint_path),
         "deterministic_guards": guards,
         "deterministic_guards_sha256": sha256_file(output_dir / "deterministic_guards.json") if guards else None,
         "scope_exclusions": [
