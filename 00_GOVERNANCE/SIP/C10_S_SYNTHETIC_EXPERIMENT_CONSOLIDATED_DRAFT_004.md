@@ -1144,7 +1144,7 @@ El cambio de semántica de derivación queda versionado como `TGCV-C10S-THETA-A-
 
 ### 355.4 Métricas inaplicables y pruebas de integración
 
-El agregador materializa como `NOT_EVALUABLE` las métricas propias de escenarios identificados que no aplican a `NOT_IDENTIFIED`: false-abstention, bias, MAE, RMSE, point-recovery, interval coverage y interval width. No se imputan ceros ni se omiten por complete-case. La disponibilidad de intervalos, la abstención correcta, la causa incorrecta, la identificación parcial y la falsa identificación conservan sus métricas diferenciadas.
+Cada registro de captura conserva además los tres resultados independientes del Evaluator: truth dentro de bounds, adjudicación correcta y disposition; el resumen agrega por separado las tasas de bounds y adjudicación. El agregador materializa como `NOT_EVALUABLE` las métricas propias de escenarios identificados que no aplican a `NOT_IDENTIFIED`: false-abstention, bias, MAE, RMSE, point-recovery, interval coverage y interval width. No se imputan ceros ni se omiten por complete-case. La disponibilidad de intervalos, la abstención correcta, la causa incorrecta, la identificación parcial y la falsa identificación conservan sus métricas diferenciadas.
 
 Se añaden regresiones para: roster tipado de cinco escenarios; mundos compartidos con streams por escenario separados; captura target-only a través de la cadena real; ejecución de software N×M×R de los cinco escenarios mediante la fábrica; y métricas identificadas-only `NOT_EVALUABLE`.
 
