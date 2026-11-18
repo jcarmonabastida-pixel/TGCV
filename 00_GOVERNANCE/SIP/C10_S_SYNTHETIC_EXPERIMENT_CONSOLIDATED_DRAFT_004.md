@@ -1897,3 +1897,190 @@ No se encontró evidencia de que §362 haya sido implementado. El código conser
 No se modificó `theta_a_calibration_protocol.py`, tests, DGP, Analyzer, Evaluator, workflow, seed plan, roster, targets ni tolerancias. No se ejecutaron tests, EP-02, calibración, Monte Carlo ni evaluación. No se generaron bancos. `main`, RMA v3.38, Matrix v1.47, STATUS y TGCV Core permanecen intactos; PR #116 sigue Draft. Se mantienen `calibration_authorized=false`, `execution_authorized=false`, `scientific_execution=false`.
 
 **Siguiente operación:** producir §364 como revisión corregida de §362, sin código: separar truth/disposition, fijar el catálogo y el manifiesto no circular, completar métricas de intervalo/abstención/Evaluator y establecer el protocolo de contraste pareado entre escenarios de world_family.
+
+
+## 364. Contrato estadístico corregido del agregador θ_A — revisión de diseño posterior a AR-01…AR-15 (2026-11-18)
+
+**Estado:** REVISED_CONTRACT_PROPOSAL / STATIC_ONLY / NOT_APPROVED / NOT_IMPLEMENTED / NO_CALIBRATION.  
+**Precedencia:** esta sección es una propuesta de sustitución conceptual de §362 tras la revisión §363. §362 y §363 se conservan como antecedentes auditables; no se reescriben. Ninguna decisión científica se considera aprobada por el mero hecho de formularse aquí.  
+**Ámbito:** protocolo focal θ_A, cinco escenarios candidatos y estructura N×M×R. No se incorpora el benchmark V_cont 13×52 ni un RUN separado.
+
+### 364.1 Principios que corrigen el contrato anterior
+
+1. **Dos planos de resultado, nunca un score único implícito.** (A) rendimiento condicional entre intentos donde el Analyzer identifica y emite un punto válido; (B) comportamiento operacional sobre todos los intentos planificados: identificación, abstención, indeterminación, identificación parcial, salida inválida y fallos técnicos. No se permite presentar A como calidad global sin acompañarlo de B.
+2. **Verdad DGP y salida del Analyzer son variables diferentes.** La primera describe la identificabilidad estructural del estimando bajo el contrato causal/DGP. La segunda describe qué hizo el Analyzer con la información efectivamente observada. No se deduce una de la otra.
+3. **Integridad del ledger precede a cualquier métrica.** El universo de intentos esperados viene del seed plan firmado/versionado. La ausencia, duplicidad, fingerprint discordante o output inválido no se convierte en abstención estadística.
+4. **Precisión Monte Carlo, calidad del estimador y corrección causal son juicios distintos.** MCSE pequeño no significa bias pequeño; recuperar la verdad del DGP sintético no valida por sí solo la identificación causal fuera de ese DGP.
+5. **Métrica, aplicabilidad y target se definen antes de observar resultados.** Ningún resumen puede inventar su propio universo de métricas a partir de las filas disponibles.
+
+### 364.2 Modelo de datos: verdad, régimen de información, disposición y ledger
+
+Cada escenario versionado declara, como mínimo, cuatro campos independientes:
+
+- `truth_identification_class`: propiedad del estimando bajo el DGP y población objetivo; valores admitidos inicialmente `IDENTIFIED`, `NOT_IDENTIFIED` y `PARTIALLY_IDENTIFIED`. El valor procede de un contrato estructural verificable y no de la salida Analyzer.
+- `information_regime_id/version`: régimen de observación/medición/soporte realmente disponible al Analyzer. Puede ser completo, imperfecto o adversarial; no redefine retrospectivamente la clase de verdad.
+- `expected_analyzer_disposition`: expectativa normativa del escenario/fixture, cuando exista; valores `IDENTIFIED`, `NOT_IDENTIFIED`, `INDETERMINATE`, `PARTIALLY_IDENTIFIED`. Es una expectativa de conformidad, no verdad del DGP ni un criterio para excluir observaciones.
+- `expected_abstention_cause`: causa tipada exacta cuando la disposición esperada exige abstención; nula cuando no aplica. La causa observada se registra separadamente.
+
+Cada réplica registra:
+- `analyzer_disposition_observed` y `analyzer_cause_observed`;
+- `point_estimate` si y solo si el Analyzer emite estimación puntual válida;
+- intervalo inferencial con método, nivel, límites y estado de emisión/validez;
+- adjudicación independiente del Evaluator, incluyendo disposition, bounds lógicos, cobertura del intervalo inferencial cuando corresponda y recuperación puntual;
+- identidad completa de escenario, versión, N, M, R, world_id, run_id, seeds/fingerprints y versiones de Analyzer/Evaluator.
+
+Los estados de ledger son una dimensión externa y mutuamente excluyente: `VALID_RESULT`, `TECHNICAL_FAILURE`, `OUTPUT_INVALID`, `RECORD_MISSING`. Un registro duplicado, inesperado o con identidad discordante es un fallo de integridad del banco, no una quinta categoría resumible. El estado Analyzer solo existe dentro de `VALID_RESULT`.
+
+**Regla de población:** el análisis de conformidad del Analyzer compara `analyzer_disposition_observed` con `expected_analyzer_disposition`; el análisis de rendimiento compara la disposición observada con `truth_identification_class`. No se usa la expectativa del fixture como sustituto de la verdad ni se confunde una expectativa incumplida con un cambio de identificabilidad.
+
+Para los cinco escenarios focales actuales, la clasificación candidata es cuatro `IDENTIFIED` y uno `NOT_IDENTIFIED`. `INDETERMINATE` y `PARTIALLY_IDENTIFIED` permanecen como salidas adversariales del Analyzer y controles de contrato; no se inventa un sexto escenario ni se les asigna verdad DGP sin un perfil tipado nuevo. Si un futuro DGP tiene verdad parcialmente identificada, deberá declararlo explícitamente y definir sus métricas de conjunto/cotas antes de incorporarse al roster.
+
+### 364.3 Integridad del banco y denominadores operacionales
+
+Para cada clave esperada del seed plan debe existir exactamente un estado ledger. Hard gate:
+- cobertura exacta del conjunto de claves esperado;
+- sin duplicados, extras ni ausencias;
+- identidad y fingerprints coherentes;
+- versiones homogéneas dentro del banco;
+- todo resultado marcado VALID_RESULT pasa el esquema completo de réplica.
+
+Si falla, el resumen científico del banco es `INVALID_LEDGER`; no se computan PASS ni métricas como si el banco estuviera completo. Puede emitirse un informe técnico de los fallos observados, pero no imputar una salida Analyzer a intentos sin resultado.
+
+Se reportan por escenario×N las proporciones operacionales de ledger `VALID_RESULT`, `TECHNICAL_FAILURE`, `OUTPUT_INVALID` y `RECORD_MISSING`, siempre sobre el total de intentos esperados M×R, además de conteos absolutos. Estas tasas son métricas de integridad/ejecución del sistema, no de identificabilidad causal del Analyzer. Para resultados válidos, toda tasa de disposición Analyzer usa R por mundo como denominador y se agrega con igual peso por mundo.
+
+### 364.4 Catálogo normativo de métricas
+
+El catálogo se versiona independientemente del código y contiene para cada métrica: ID/version, fórmula, unidad, población objetivo, aplicabilidad por clase de verdad, agregación, método MCSE, dirección, target opcional/obligatorio y fuente de truth. No se permite que el agregador añada o elimine métricas dinámicamente.
+
+**A. Tasas de disposición del Analyzer — aplicables a toda clase de verdad**
+
+Para cada mundo m, cada estado observado es mutuamente excluyente:
+- `analyzer_identified_rate`;
+- `analyzer_not_identified_rate`;
+- `analyzer_indeterminate_rate`;
+- `analyzer_partially_identified_rate`.
+
+Cada numerador es el número de réplicas válidas con ese estado y el denominador R. Las cuatro tasas suman 1. También se informa `point_emission_rate` y `valid_inference_interval_emission_rate`, que no se deducen automáticamente del estado si el contrato permite una salida sin punto/intervalo.
+
+**B. Rendimiento puntual condicional — solo verdad IDENTIFIED**
+
+Sea I_mr=1 si la réplica válida tiene disposición IDENTIFIED y estimación puntual finita; e_mr = estimación − verdad reservada; B_m=Σ_r I_mr.
+
+- Bias condicional por intento identificado: θ_bias = Σ_mr I_mr e_mr / Σ_m B_m.
+- MAE condicional: θ_MAE = Σ I|e| / Σ B.
+- MSE condicional: θ_MSE = Σ I e² / Σ B.
+- Point recovery condicional: Σ I·1(|e|≤δ_science) / Σ B, solo cuando δ_science está aprobado, versionado y vinculado al estimando.
+
+Se reportan también distribuciones por mundo, B_m, B_m/R, errores por mundo y número de mundos con B_m=0. El primario propuesto es ratio agrupado por intento identificado, `θ_rep`; su nombre en los resultados debe incluir el calificativo `conditional_on_identification`. Es post-selección y no se interpreta como rendimiento operacional total.
+
+`θ_world` = media de ratios por mundo con B_m>0 puede conservarse como diagnóstico exploratorio dependiente de R, acompañado por M elegibles, M con B_m=0 y distribución de B_m/R. No es target confirmatorio, no selecciona N/M/R y no se compara entre diseños R como si mantuviera la misma población.
+
+**C. Rendimiento inferencial de intervalos — verdad IDENTIFIED y método inferencial definido**
+
+Sea J_mr=1 si se emitió un intervalo inferencial válido, con método y nivel preespecificados, límites finitos y ordenados y metadatos coherentes. Sea C_mr=1 si J_mr=1 y el intervalo contiene la verdad reservada. H_m=ΣJ_mr.
+
+- Disponibilidad de intervalo válido: ΣJ/R por mundo; igual peso por mundo.
+- Cobertura condicional entre intervalos emitidos: ΣC/ΣH, ratio agrupado por intervalo válido.
+- Éxito conjunto de intervalo: ΣC/R por mundo; igual peso por mundo. Es la probabilidad operacional de emitir un intervalo válido que cubra la verdad en un intento planificado.
+- Anchura condicional: ΣJ·width/ΣH, ratio agrupado por intervalo válido.
+
+Disponibilidad, cobertura condicional, éxito conjunto y anchura contestan preguntas distintas. Un intervalo ausente reduce disponibilidad y éxito conjunto, pero no entra en el denominador de cobertura condicional. Output inválido, registro ausente y fallo técnico no se clasifican como intervalo ausente válido: bloquean integridad o se contabilizan en ledger técnico. La cobertura lógica de bounds del Evaluator para verdad NOT_IDENTIFIED no es cobertura inferencial y no entra en J ni C.
+
+Para verdad NOT_IDENTIFIED, las métricas de error puntual y cobertura inferencial de un efecto identificado son `NOT_APPLICABLE`; la auditoría de bounds lógicos y las métricas de disposición/falsa identificación sí aplican. Para verdad PARTIALLY_IDENTIFIED, no se computa cobertura puntual de un parámetro único: se requiere un contrato separado de conjunto identificado y cobertura de conjunto antes de activar esas métricas.
+
+**D. Error de disposición frente a verdad DGP**
+
+Las métricas se calculan por clase de verdad, con denominador R por mundo y agregación de igual peso entre M:
+- verdad IDENTIFIED: tasas de falsa abstención, desglosadas por Analyzer NOT_IDENTIFIED, INDETERMINATE y PARTIALLY_IDENTIFIED; falsa identificación no aplica.
+- verdad NOT_IDENTIFIED: falsa identificación (Analyzer IDENTIFIED); abstención correcta solo cuando el Analyzer declara NOT_IDENTIFIED con la causa exacta esperada; abstención por causa incorrecta; abstención sin causa; disposición INDETERMINATE; disposición PARTIALLY_IDENTIFIED, todas separadas.
+- verdad PARTIALLY_IDENTIFIED: métricas de disposición y cobertura de conjunto solo tras contrato propio; no equiparar automáticamente PARTIALLY_IDENTIFIED con abstención correcta.
+
+Las categorías observadas forman una partición; las métricas agregadas no pueden contar una misma réplica simultáneamente como falsa abstención y causa incorrecta. Se publican conteos y denominadores para permitir comprobar que la partición cierra.
+
+**E. Auditoría Evaluator — registro separado**
+
+No pertenece al Metric Registry de rendimiento Analyzer. Por escenario/clase se registran separadamente:
+- `evaluator_disposition_correct` respecto de la regla independiente aplicable;
+- `evaluator_truth_within_logical_bounds` como invariante de dominio;
+- `evaluator_inference_interval_covers_truth` solo para verdad IDENTIFIED y cuando existe intervalo inferencial válido;
+- `evaluator_point_recovery_within_delta_eval` con δ_eval versionado;
+- disposition y causa adjudicadas, y discrepancias Analyzer/Evaluator.
+
+No se agrega `truth_within_logical_bounds` como cobertura nominal ni se mezcla `correct_adjudication` en un único porcentaje entre clases. δ_eval y δ_science son parámetros diferentes; si se comparan sus resultados, se muestran como auditorías separadas.
+
+### 364.5 Agregación y MCSE
+
+Para tasas operacionales, ledger y contribuciones escalares definidas en cada mundo, primero se calcula q_m con denominador R y luego:
+`estimate = mean(q_m)`; `MCSE = sd(q_m)/(sqrt(M))`.
+La unidad independiente es el mundo exterior M, no cada una de las M×R filas.
+
+Para ratios condicionales θ=ΣA_m/ΣB_m, con B_m≥0 y ΣB_m>0:
+`u_m = A_m − θ B_m`;
+`MCSE_ratio = sd(u_m)/(sqrt(M) × mean(B_m))`.
+Es un estimador asintótico cluster de primer orden, condicionado a mundos IID, protocolo de generación fijo, M≥2 y denominador esperado positivo. No es una garantía exacta de cobertura para M finito. Debe validarse con oráculo algebraico independiente, escenarios de denominador heterogéneo, correlación A/B, B_m=0 y distribuciones asimétricas. Si ΣB=0, la métrica aplicable es `NOT_EVALUABLE`, nunca cero ni PASS.
+
+Los M mundos deben ser IID de una distribución generadora explícita para usar la interpretación inferencial anterior. Si el roster representa mundos fijos/no IID, el MCSE se interpreta únicamente como dispersión Monte Carlo bajo el mecanismo de seeds declarado, no como incertidumbre poblacional general. Esta distinción debe estar en el diseño y el informe.
+
+**Contrastes pareados por world_family:** si dos escenarios comparten world_id basal y el diseño declara emparejamiento, no se calculan contrastes suponiendo independencia. Para diferencia de ratios θ_1−θ_0, la contribución de influencia pareada por mundo es:
+`ψ_m = (A_1m−θ_1 B_1m)/mean(B_1) − (A_0m−θ_0 B_0m)/mean(B_0)`.
+El MCSE del contraste es sd(ψ_m)/sqrt(M), sobre los mismos world_id emparejados y elegibles según regla preespecificada. La elegibilidad y el tratamiento de B=0 deben declararse antes del cálculo; si no hay emparejamiento completo, no se presenta como contraste pareado. Para tasas, se calcula primero diferencia por world_id y luego SD de esas diferencias entre M. Se reportan contraste, MCSE, número de pares y hashes de ambos escenarios.
+
+### 364.6 Metric Registry y manifiesto no circular
+
+Se proponen dos artefactos independientes y versionados:
+1. **Metric Registry:** catálogo normativo de métricas, definiciones, unidad, aplicabilidad, fórmula, método MCSE, versión, familia (Analyzer performance / operational / ledger / Evaluator audit), y reglas de obligatoriedad.
+2. **Target Manifest:** instancia de targets para un design fingerprint concreto.
+
+Clave esperada del manifiesto:
+`(scenario_id, scenario_version, N, metric_id, metric_version)`.
+Cada entrada añade `required_for_calibration`, `applicability`, razón tipada, `target_status` (`TARGETED` / `NOT_TARGETED`), target MCSE si corresponde, unidad, método MCSE, δ_science cuando la métrica lo requiera, y referencias a Registry, estimand, outcome, DGP y design versions. M, R, distribución de mundos, confianza y política de extensión se enlazan desde el design fingerprint común; si varían por celda, pasan a formar parte de la clave.
+
+El universo esperado se genera desde el Registry y el roster aprobado, nunca desde las filas observadas ni desde el propio manifiesto. La validación exige igualdad exacta de claves: no faltantes, duplicados ni extras. `NOT_APPLICABLE` requiere razón y prohíbe target. `NOT_TARGETED` no satisface una entrada obligatoria. Una entrada TARGETED exige target finito, positivo y unidad/método coincidentes. No se permite que una métrica de auditoría Evaluator se convierta accidentalmente en target de rendimiento Analyzer.
+
+**Hash no circular:** canonicalizar el payload del manifiesto sin ningún campo de hash; calcular SHA-256 de esos bytes; guardar el digest en un envelope separado que contiene además el identificador/version del manifiesto. Ninguna fila contiene el hash del documento que la contiene. Registry y roster conservan sus propios hashes, enlazados en el envelope.
+
+Estados de resultado:
+- `NOT_APPLICABLE`: la métrica no está definida para esa clase/estimando;
+- `NOT_TARGETED`: aplicable, sin target aprobado;
+- `NOT_EVALUABLE`: aplicable, pero sin denominador, datos válidos o MCSE calculable;
+- `FAIL_PRECISION`: target válido y MCSE superior al target;
+- `PASS_PRECISION`: ledger íntegro, target obligatorio válido y MCSE no superior al target.
+
+`PASS_PRECISION` no significa bias pequeño, cobertura adecuada, potencia suficiente ni validez científica. El PASS de calibración solo puede referirse a cumplimiento de todos los targets de precisión obligatorios; la aceptación científica requiere criterios de rendimiento separados (bias/MSE, cobertura, disponibilidad, abstención, MDE/potencia si se define un test) y decisión explícita.
+
+### 364.7 Equivalencia histórica y pruebas oráculo
+
+La equivalencia con el agregador previo se define por dominios:
+- cuando todas las R son IDENTIFIED, todos los puntos/intervalos son válidos, R es fijo y el mismo estimando/verdad se usa, las medias por mundo de bias, MAE, point recovery, disponibilidad, cobertura y anchura deben coincidir con los valores del contrato histórico;
+- RMSE debe coincidir como raíz del MSE correspondiente, pero el MCSE de RMSE no se identifica con el MCSE de MSE;
+- con abstención parcial o intervalos ausentes válidos, el contrato nuevo debe producir métricas condicionales y operacionales con denominadores explícitos; el antiguo `NOT_EVALUABLE` all-R no es el resultado de referencia para estas nuevas definiciones;
+- `NOT_APPLICABLE` sustituye prospectivamente a `NOT_EVALUABLE` cuando la métrica presupone un parámetro puntual identificable que la verdad DGP declara estructuralmente no identificado. Esta es una corrección propuesta de §357.4.6, no una decisión histórica ya aprobada. `NOT_EVALUABLE` se reserva para una métrica aplicable sin información suficiente para calcularla.
+
+Oráculo independiente exigido antes de implementar:
+1. construir tablas pequeñas de réplica a mano y calcular todas las métricas sin reutilizar funciones del agregador;
+2. comprobar cierre de la partición de estados y ledger;
+3. verificar denominadores R, ΣI y ΣJ en fixtures con abstención parcial e intervalos ausentes;
+4. contrastar ratio MCSE con fórmula sandwich independiente y una simulación de cobertura/estabilidad;
+5. verificar invariancia a permutación de filas y sensibilidad a cambios en R;
+6. comprobar equivalencia histórica solo en el dominio completo indicado;
+7. contrastar escenarios emparejados por world_id frente a cálculo independiente para mostrar el efecto de covarianza;
+8. rechazar manifiestos con clave faltante/duplicada/extra, target incompatible, hash circular o entrada obligatoria NOT_TARGETED;
+9. comprobar que δ_eval nunca se sustituye por δ_science ni viceversa;
+10. verificar que truth logical bounds nunca se etiqueta como cobertura inferencial.
+
+### 364.8 Decisiones pendientes y límites de autorización
+
+Esta sección recomienda, pero no aprueba:
+- θ_rep como métrica primaria de error condicional por intento identificado;
+- θ_world como diagnóstico no confirmatorio;
+- catálogo y separación de familias de métricas;
+- definición de éxito conjunto y cobertura condicional;
+- estructura Registry + Target Manifest;
+- MCSE ratio asintótico y contrastes pareados;
+- cambio prospectivo NOT_EVALUABLE → NOT_APPLICABLE para no identificación estructural.
+
+Siguen sin decidirse/aprobarse: δ_science, targets concretos, obligatoriedad de cada métrica, criterio científico de recuperación, MDE/alfa/potencia, N/M/R, distribución IID de mundos, política de extensión M, roster congelado y diseño de evaluación independiente. Ninguna cifra de §336/348/357 se convierte en decisión por esta revisión.
+
+No se modifica código, tests, DGP, roster, Analyzer, Evaluator, workflow, seeds ni bancos. No se ejecutan tests, calibración, Monte Carlo ni evaluación. No se altera main, RMA, Matrix, STATUS o TGCV Core. PR #116 permanece Draft. Se mantienen `calibration_authorized=false`, `execution_authorized=false`, `scientific_execution=false`.
+
+**Siguiente operación:** revisión adversarial interna de §364 contra los tipos/funciones concretos del protocolo y contra los contratos de estimando DGP, centrada en comprobar que cada campo propuesto puede derivarse sin ambigüedad y que la partición de estados, aplicabilidad y contrastes pareados no introduce supuestos nuevos inadvertidos. Después de esa revisión se podrá preparar el contrato de oráculo y tests, todavía sin ejecutar calibración.
