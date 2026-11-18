@@ -373,6 +373,9 @@ def materialize_c10s_complete_world(
         g_a1_sha256=assignments.g_a1_sha256,
         target_g_a0_sha256=digest(target_g_a0),
         target_g_a1_sha256=digest(target_g_a1),
+        source_only_history_refs=tuple(sorted(
+            {row.history_ref for row in world.q_x} - target_refs
+        )),
         r_common_sha256=assignments.r_common_sha256,
         estimand_id=theta_truth.theta_a_truth.estimand_id,
         estimand_version=theta_truth.theta_a_truth.estimand_version,
