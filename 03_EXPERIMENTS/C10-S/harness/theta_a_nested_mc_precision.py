@@ -156,27 +156,49 @@ def analyze_nested_precision(
     projections_out = []
     for target_m, target_r in projections:
         values = []
+        boundary_draws = 0
+        rmse_nonregular_draws = 0
         for b_msw, b_between, _, sampled_mean_mse in boot:
+            # §382.3: never condition the bootstrap distribution on a
+            # nonnegative between component. Preserve raw draws and abstain
+            # from a regular projection when any draw reaches the boundary.
             if b_between < 0:
+                boundary_draws += 1
                 continue
             projected_variance = b_between / target_m + b_msw / (target_m * target_r)
+            if projected_variance < 0:
+                boundary_draws += 1
+                continue
             projected_mcse = sqrt(projected_variance)
             if is_rmse:
+                # The delta method is non-regular at zero MSE. Do not silently
+                # drop such bootstrap draws and report a conditional interval.
                 if sampled_mean_mse <= 0:
+                    rmse_nonregular_draws += 1
                     continue
                 projected_mcse /= 2.0 * sqrt(sampled_mean_mse)
             values.append(projected_mcse)
         if m < 3:
-            projections_out.append((target_m, target_r, None, None, "INSUFFICIENT_OUTER_SUPPORT"))
+            projection_status = "INSUFFICIENT_OUTER_SUPPORT"
         elif outer_world_sampling_mode != "DECLARED_IID_PSEUDORANDOM":
-            projections_out.append((target_m, target_r, None, None, "DESCRIPTIVE_ONLY_NO_IID_OUTER_INFERENCE"))
-        elif len(values) < bootstrap_replicates * 0.95:
-            projections_out.append((target_m, target_r, None, None, "SENSITIVITY_REQUIRED"))
+            projection_status = "DESCRIPTIVE_ONLY_NO_IID_OUTER_INFERENCE"
+        elif len(boot) < bootstrap_replicates * 0.95:
+            projection_status = "SENSITIVITY_REQUIRED"
+        elif boundary_draws:
+            projection_status = "SENSITIVITY_REQUIRED"
+        elif rmse_nonregular_draws:
+            projection_status = "RMSE_DELTA_NONREGULAR"
+        elif len(values) != len(boot):
+            projection_status = "SENSITIVITY_REQUIRED"
         else:
+            projection_status = status
+        if projection_status == status:
             projections_out.append((
                 target_m, target_r, percentile(values, alpha / 2),
-                percentile(values, 1 - alpha / 2), status,
+                percentile(values, 1 - alpha / 2), projection_status,
             ))
+        else:
+            projections_out.append((target_m, target_r, None, None, projection_status))
     return NestedPrecisionResult(
         metric, status, m, r, msw, max(0.0, between_raw), between_raw,
         world_var, observed_mcse, bootstrap_replicates, len(boot),
