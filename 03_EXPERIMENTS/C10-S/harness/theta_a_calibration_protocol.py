@@ -190,6 +190,7 @@ class OuterWorldSamplingContract:
     seed_stream_id: str | None = None
     seed_stream_version: str | None = None
     independence_basis: str | None = None
+    dependence_structure: str | None = None
 
     def validate(self) -> None:
         if self.mode not in {
@@ -203,7 +204,7 @@ class OuterWorldSamplingContract:
                 self.target_distribution_id, self.target_distribution_version,
                 self.world_generator_id, self.world_generator_version,
                 self.seed_stream_id, self.seed_stream_version,
-                self.independence_basis,
+                self.independence_basis, self.dependence_structure,
             )):
                 raise ThetaACalibrationError(
                     "UNVERIFIED outer-world mode cannot carry a partial sampling claim"
@@ -235,10 +236,10 @@ class OuterWorldSamplingContract:
                 "fixed finite-set mode requires an explicit finite-world-set identity/version"
             )
         if self.mode == "DEPENDENT" and not (
-            isinstance(self.independence_basis, str) and self.independence_basis.strip()
+            isinstance(self.dependence_structure, str) and self.dependence_structure.strip()
         ):
             raise ThetaACalibrationError(
-                "dependent outer-world mode requires its dependence structure"
+                "dependent outer-world mode requires an explicit dependence structure"
             )
 
     @property
