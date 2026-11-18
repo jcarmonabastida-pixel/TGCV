@@ -834,3 +834,12 @@ New end-to-end regression: `test_structural_target_source_nonoverlap_runs_throug
 - The workflow was restored to its original `workflow_dispatch`-only research-branch authorization gate in commit `dee4d4a8fce721f63a00d190e99f7896a508dc7c`; the restored workflow blob SHA is `28471861a1c94038a11b5997a0b0e761b2659466`.
 
 This is bounded software-contract evidence for the generated structural-abstention path. It does not validate the calibration design, MCSE, power, Type-I error, scientific identification or the causal contribution of accessibility. No calibration bank, Monte Carlo calibration or scientific execution was run. Status: `PASS_STATIC + PASS_DYNAMIC_EP02 / 307+307 / REPLAY_PASS / STRUCTURAL_TARGET_SOURCE_ABSTENTION_PATH_TESTED / CALIBRATION_ROSTER_NOT_FROZEN`.
+### Typed target-only baseline materialization — EP-02 Run 834 (2026-11-18)
+
+The structural target/source fixture now supplies `SyntheticThetaATargetHistory` for every target-only history. This test-harness contract binds the exact `QXHistoryMass` row, a distinct reserved potential-unit identity, typed baseline values (`X` finite numeric vector, `H0` value, `C_c` Boolean vector), the initial functional state and a nonempty synthetic provenance reference. It checks that target-only history/unit identities do not alias the source roster, that X/C_c dimensions match the generated DGP schema, and that the initial functional state validates.
+
+The DGP entry point requires materializations for every and only target-only history. Overlapping target/source histories must retain their source X/H0/C_c anchors. The initial functional state passed to the EventHistory generator must equal the state carried by the typed materialization. Missing materialization and X-dimension mismatch fail closed. This does not create or authorize any B1/UE target roster.
+
+EP-02 Run 834 (`44280284615`, run number 834) tested commit `a92bbdc5b6f5a75e6c22d1e0c5a266185b5b106d`: compilation PASS; primary 307/307 PASS (13.579 s); clean replay 307/307 PASS (13.379 s). Payload artifact `14416891006`, SHA-256 `d01bb844c4a91e25de8180031c25f860a975c27dc1b0972d6376fe298050691d`; manifest `14417325217`, SHA-256 `9656eebe7593761bb7df51edde0f7494c6355be4d171477077777b20f57eafe8`.
+
+The workflow was restored to `workflow_dispatch`-only after the run; workflow blob SHA `28471861a1c94038a11b5997a0b0e761b2659466`. This is bounded technical validation of the synthetic materialization contract, not scientific calibration or population authorization.
