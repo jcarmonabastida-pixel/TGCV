@@ -20,6 +20,10 @@ from typing import Any
 
 from c10s_nested_mr_fixtures import (
     FIXTURE_GENERATOR_VERSION,
+    INNER_CONTRACT_VERSION,
+    INNER_INDEPENDENCE_BASIS,
+    OUTER_CONTRACT_VERSION,
+    OUTER_INDEPENDENCE_BASIS,
     SEED_SCHEDULE_VERSION,
     deterministic_guard_specs,
     generate_deterministic_guard,
@@ -98,16 +102,12 @@ def analyze_fixture(dataset, bootstrap_replicates: int | None = None) -> dict[st
         summary_metric=_summary_for(dataset),
         outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
         outer_world_sampling_contract_id=f"C10S-FIXTURE-M-{spec.cell_id}",
-        outer_world_sampling_contract_version="1.0",
-        outer_world_sampling_independence_basis=(
-            "Fixture truth: independent outer-world draws from the declared distribution."
-        ),
+        outer_world_sampling_contract_version=OUTER_CONTRACT_VERSION,
+        outer_world_sampling_independence_basis=OUTER_INDEPENDENCE_BASIS,
         within_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
         within_world_sampling_contract_id=f"C10S-FIXTURE-R-{spec.cell_id}",
-        within_world_sampling_contract_version="1.0",
-        within_world_sampling_independence_basis=(
-            "Fixture truth: independent R draws conditional on each selected world state."
-        ),
+        within_world_sampling_contract_version=INNER_CONTRACT_VERSION,
+        within_world_sampling_independence_basis=INNER_INDEPENDENCE_BASIS,
         projections=((spec.m, spec.r),),
         bootstrap_replicates=b,
         bootstrap_seed=dataset.bootstrap_seed,
