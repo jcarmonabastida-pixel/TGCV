@@ -38,6 +38,9 @@ class NestedPrecisionResult:
     within_world_sampling_contract_id: str | None = None
     within_world_sampling_contract_version: str | None = None
     within_world_sampling_independence_basis: str | None = None
+    outer_world_sampling_contract_id: str | None = None
+    outer_world_sampling_contract_version: str | None = None
+    outer_world_sampling_independence_basis: str | None = None
 
 
 def _finite_rows(rows: Sequence[Sequence[float]]) -> tuple[tuple[float, ...], ...]:
@@ -78,6 +81,9 @@ def analyze_nested_precision(
     within_world_sampling_contract_id: str | None = None,
     within_world_sampling_contract_version: str | None = None,
     within_world_sampling_independence_basis: str | None = None,
+    outer_world_sampling_contract_id: str | None = None,
+    outer_world_sampling_contract_version: str | None = None,
+    outer_world_sampling_independence_basis: str | None = None,
     bootstrap_replicates: int = 2000,
     bootstrap_seed: int = 0,
 ) -> NestedPrecisionResult:
@@ -108,6 +114,26 @@ def analyze_nested_precision(
         "UNVERIFIED", "FIXED_FINITE_SET", "DEPENDENT", "DECLARED_IID_PSEUDORANDOM"
     }:
         raise NestedPrecisionError("unsupported within-world replicate sampling mode")
+    if outer_world_sampling_mode == "DECLARED_IID_PSEUDORANDOM":
+        if not all(
+            isinstance(value, str) and value.strip()
+            for value in (
+                outer_world_sampling_contract_id,
+                outer_world_sampling_contract_version,
+                outer_world_sampling_independence_basis,
+            )
+        ):
+            raise NestedPrecisionError(
+                "declared IID outer-world sampling requires a versioned contract identity"
+            )
+    elif any(value is not None for value in (
+        outer_world_sampling_contract_id,
+        outer_world_sampling_contract_version,
+        outer_world_sampling_independence_basis,
+    )):
+        raise NestedPrecisionError(
+            "non-IID outer-world modes cannot claim an IID sampling contract identity"
+        )
     if within_world_sampling_mode == "DECLARED_IID_PSEUDORANDOM":
         if not all(
             isinstance(value, str) and value.strip()
@@ -164,8 +190,9 @@ def analyze_nested_precision(
     boundary = 0
     for _ in range(bootstrap_replicates):
         selected_indices = [rng.randrange(m) for _ in range(m)]
-        if len(set(selected_indices)) < 2:
-            continue
+        # Repeated source clusters remain valid bootstrap cluster copies.
+        # Each copy receives its own inner R resample; dropping all-same-ID
+        # draws would condition the bootstrap law on outer sample diversity.
         selected = [rows[index] for index in selected_indices]
         nested = tuple(tuple(row[rng.randrange(r)] for _ in range(r)) for row in selected)
         b_msw, _, b_between, _ = _components(nested)
@@ -246,4 +273,7 @@ def analyze_nested_precision(
         within_world_sampling_contract_id=within_world_sampling_contract_id,
         within_world_sampling_contract_version=within_world_sampling_contract_version,
         within_world_sampling_independence_basis=within_world_sampling_independence_basis,
+        outer_world_sampling_contract_id=outer_world_sampling_contract_id,
+        outer_world_sampling_contract_version=outer_world_sampling_contract_version,
+        outer_world_sampling_independence_basis=outer_world_sampling_independence_basis,
     )
