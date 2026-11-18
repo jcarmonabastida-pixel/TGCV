@@ -248,6 +248,43 @@ class OuterWorldSamplingContract:
 
 
 @dataclass(frozen=True)
+class ThetaAMetricSpec:
+    metric: str
+    applicability: Literal["ALL", "IDENTIFIED", "NOT_IDENTIFIED"]
+    within_world_denominator: Literal[
+        "ALL_R", "ALL_R_IDENTIFIED_REQUIRED", "ALL_R_INTERVAL_REQUIRED",
+        "ALL_R_EVALUATOR_AUDIT_REQUIRED",
+    ]
+    aggregation: Literal[
+        "PROPORTION_WITHIN_R_THEN_EQUAL_WEIGHT_M",
+        "MEAN_WITHIN_R_THEN_EQUAL_WEIGHT_M",
+        "ROOT_OF_EQUAL_WEIGHTED_WORLD_MSE",
+    ]
+
+
+THETA_A_METRIC_REGISTRY = (
+    ThetaAMetricSpec("identification_rate", "ALL", "ALL_R", "PROPORTION_WITHIN_R_THEN_EQUAL_WEIGHT_M"),
+    ThetaAMetricSpec("abstention_rate", "ALL", "ALL_R", "PROPORTION_WITHIN_R_THEN_EQUAL_WEIGHT_M"),
+    ThetaAMetricSpec("interval_availability_rate", "ALL", "ALL_R", "PROPORTION_WITHIN_R_THEN_EQUAL_WEIGHT_M"),
+    ThetaAMetricSpec("evaluator_truth_within_bounds_rate", "ALL", "ALL_R_EVALUATOR_AUDIT_REQUIRED", "PROPORTION_WITHIN_R_THEN_EQUAL_WEIGHT_M"),
+    ThetaAMetricSpec("evaluator_correct_adjudication_rate", "ALL", "ALL_R_EVALUATOR_AUDIT_REQUIRED", "PROPORTION_WITHIN_R_THEN_EQUAL_WEIGHT_M"),
+    ThetaAMetricSpec("false_abstention_rate", "IDENTIFIED", "ALL_R", "PROPORTION_WITHIN_R_THEN_EQUAL_WEIGHT_M"),
+    ThetaAMetricSpec("point_bias", "IDENTIFIED", "ALL_R_IDENTIFIED_REQUIRED", "MEAN_WITHIN_R_THEN_EQUAL_WEIGHT_M"),
+    ThetaAMetricSpec("point_mae", "IDENTIFIED", "ALL_R_IDENTIFIED_REQUIRED", "MEAN_WITHIN_R_THEN_EQUAL_WEIGHT_M"),
+    ThetaAMetricSpec("point_rmse", "IDENTIFIED", "ALL_R_IDENTIFIED_REQUIRED", "ROOT_OF_EQUAL_WEIGHTED_WORLD_MSE"),
+    ThetaAMetricSpec("point_recovery_rate", "IDENTIFIED", "ALL_R_IDENTIFIED_REQUIRED", "PROPORTION_WITHIN_R_THEN_EQUAL_WEIGHT_M"),
+    ThetaAMetricSpec("interval_coverage", "IDENTIFIED", "ALL_R_INTERVAL_REQUIRED", "PROPORTION_WITHIN_R_THEN_EQUAL_WEIGHT_M"),
+    ThetaAMetricSpec("interval_width", "IDENTIFIED", "ALL_R_INTERVAL_REQUIRED", "MEAN_WITHIN_R_THEN_EQUAL_WEIGHT_M"),
+    ThetaAMetricSpec("correct_abstention_rate", "NOT_IDENTIFIED", "ALL_R", "PROPORTION_WITHIN_R_THEN_EQUAL_WEIGHT_M"),
+    ThetaAMetricSpec("wrong_cause_abstention_rate", "NOT_IDENTIFIED", "ALL_R", "PROPORTION_WITHIN_R_THEN_EQUAL_WEIGHT_M"),
+    ThetaAMetricSpec("partial_identification_rate", "NOT_IDENTIFIED", "ALL_R", "PROPORTION_WITHIN_R_THEN_EQUAL_WEIGHT_M"),
+    ThetaAMetricSpec("false_identification_rate", "NOT_IDENTIFIED", "ALL_R", "PROPORTION_WITHIN_R_THEN_EQUAL_WEIGHT_M"),
+)
+_THETA_A_METRIC_BY_NAME = {spec.metric: spec for spec in THETA_A_METRIC_REGISTRY}
+_ALLOWED_METRICS = set(_THETA_A_METRIC_BY_NAME)
+
+
+@dataclass(frozen=True)
 class ThetaACalibrationDesign:
     scenario_specs: tuple[ThetaACalibrationScenario, ...]
     n_grid: tuple[int, ...]
@@ -257,6 +294,8 @@ class ThetaACalibrationDesign:
     namespace: str
     point_recovery_tolerance: float | None = None
     metric_targets: tuple[tuple[str, str, int, str, float], ...] = ()
+    metric_target_manifest_id: str | None = None
+    metric_target_manifest_version: str | None = None
     outer_world_sampling: OuterWorldSamplingContract = OuterWorldSamplingContract()
 
     def validate(self) -> None:
@@ -285,6 +324,17 @@ class ThetaACalibrationDesign:
             not isfinite(self.point_recovery_tolerance) or self.point_recovery_tolerance < 0
         ):
             raise ThetaACalibrationError("point-recovery tolerance must be finite and nonnegative")
+        if self.metric_targets:
+            if not all(isinstance(value, str) and value.strip() for value in (
+                self.metric_target_manifest_id, self.metric_target_manifest_version,
+            )):
+                raise ThetaACalibrationError(
+                    "nonempty metric targets require a versioned target-manifest identity"
+                )
+        elif self.metric_target_manifest_id is not None or self.metric_target_manifest_version is not None:
+            raise ThetaACalibrationError(
+                "an empty metric-target set cannot claim a target-manifest identity"
+            )
         target_keys = []
         scenario_keys = set(keys)
         scenario_map = {(x.scenario_id, x.scenario_version): x for x in self.scenario_specs}
@@ -296,17 +346,12 @@ class ThetaACalibrationDesign:
             scenario = scenario_map[(scenario_id, version)]
             if metric == "point_recovery_rate" and self.point_recovery_tolerance is None:
                 raise ThetaACalibrationError("point-recovery target requires an explicit tolerance")
-            identified_only = {
-                "interval_coverage", "interval_width", "point_bias", "point_mae",
-                "point_rmse", "point_recovery_rate", "false_abstention_rate",
-            }
-            abstention_only = {
-                "correct_abstention_rate", "wrong_cause_abstention_rate",
-                "partial_identification_rate", "false_identification_rate",
-            }
-            if metric in identified_only and scenario.expected_identification != "IDENTIFIED":
+            metric_spec = _THETA_A_METRIC_BY_NAME[metric]
+            if (metric_spec.applicability == "IDENTIFIED"
+                    and scenario.expected_identification != "IDENTIFIED"):
                 raise ThetaACalibrationError("identified-only metric target assigned to a nonidentified scenario")
-            if metric in abstention_only and scenario.expected_identification == "IDENTIFIED":
+            if (metric_spec.applicability == "NOT_IDENTIFIED"
+                    and scenario.expected_identification == "IDENTIFIED"):
                 raise ThetaACalibrationError("abstention-only metric target assigned to an identified scenario")
             target_keys.append((scenario_id, version, n_units, metric))
         if len(target_keys) != len(set(target_keys)):
@@ -1091,6 +1136,7 @@ class ThetaACalibrationSummary:
     metrics: tuple[ThetaAMetricSummary, ...]
     outer_world_sampling_mode: str = "UNVERIFIED"
     outer_world_sampling_contract_sha256: str | None = None
+    metric_target_manifest_sha256: str | None = None
     type_i_error_status: str = "NOT_DEFINED_NO_TEST_PROCEDURE"
     power_status: str = "NOT_DEFINED_NO_TEST_PROCEDURE"
 
@@ -1343,5 +1389,10 @@ def summarize_theta_a_calibration(
                 design.outer_worlds_m, design.assignment_replicates_r,
                 tuple(metric_summaries), design.outer_world_sampling.mode,
                 design.outer_world_sampling.fingerprint_sha256,
+                _canonical_hash({
+                    "manifest_id": design.metric_target_manifest_id,
+                    "manifest_version": design.metric_target_manifest_version,
+                    "targets": design.metric_targets,
+                }) if design.metric_targets else None,
             ))
     return tuple(summaries)
