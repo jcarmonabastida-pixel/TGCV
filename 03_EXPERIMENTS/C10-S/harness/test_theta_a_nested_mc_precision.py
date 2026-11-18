@@ -158,5 +158,45 @@ class NestedPrecisionTests(unittest.TestCase):
                                result.observed_world_mean_variance)
 
 
+    def test_projection_abstains_instead_of_conditioning_on_positive_between_draws(self):
+        rows = ((0.0, 2.0), (0.1, 2.1), (0.2, 2.2))
+        result = analyze_nested_precision(
+            metric="identification_rate",
+            replicate_contributions=rows,
+            summary_metric=self._summary(rows),
+            outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            projections=((3, 2),),
+            bootstrap_replicates=500,
+            bootstrap_seed=29,
+        )
+        self.assertGreater(result.boundary_fraction, 0.0)
+        self.assertEqual(result.projections[0][-1], "SENSITIVITY_REQUIRED")
+        self.assertIsNone(result.projections[0][2])
+        self.assertIsNone(result.projections[0][3])
+
+    def test_rmse_projection_is_nonregular_at_zero_mse(self):
+        rows = ((0.0, 0.0), (0.0, 0.0), (0.0, 0.0))
+        summary = SimpleNamespace(
+            metric="point_rmse",
+            mean=0.0,
+            mcse=0.0,
+            outer_world_contributions=tuple(
+                (f"outer-{index:06d}", 0.0) for index in range(3)
+            ),
+        )
+        result = analyze_nested_precision(
+            metric="point_rmse",
+            replicate_contributions=rows,
+            summary_metric=summary,
+            outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            projections=((3, 2),),
+            bootstrap_replicates=500,
+            bootstrap_seed=31,
+        )
+        self.assertEqual(result.projections[0][-1], "RMSE_DELTA_NONREGULAR")
+        self.assertIsNone(result.projections[0][2])
+        self.assertIsNone(result.projections[0][3])
+
+
 if __name__ == "__main__":
     unittest.main()
