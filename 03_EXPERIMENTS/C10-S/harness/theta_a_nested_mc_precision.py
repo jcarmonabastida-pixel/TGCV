@@ -37,6 +37,7 @@ class NestedPrecisionResult:
     within_world_sampling_mode: str = "UNVERIFIED"
     within_world_sampling_contract_id: str | None = None
     within_world_sampling_contract_version: str | None = None
+    within_world_sampling_independence_basis: str | None = None
 
 
 def _finite_rows(rows: Sequence[Sequence[float]]) -> tuple[tuple[float, ...], ...]:
@@ -76,6 +77,7 @@ def analyze_nested_precision(
     within_world_sampling_mode: str = "UNVERIFIED",
     within_world_sampling_contract_id: str | None = None,
     within_world_sampling_contract_version: str | None = None,
+    within_world_sampling_independence_basis: str | None = None,
     bootstrap_replicates: int = 2000,
     bootstrap_seed: int = 0,
 ) -> NestedPrecisionResult:
@@ -112,12 +114,17 @@ def analyze_nested_precision(
             for value in (
                 within_world_sampling_contract_id,
                 within_world_sampling_contract_version,
+                within_world_sampling_independence_basis,
             )
         ):
             raise NestedPrecisionError(
                 "declared IID within-world sampling requires a versioned contract identity"
             )
-    elif within_world_sampling_contract_id is not None or within_world_sampling_contract_version is not None:
+    elif any(value is not None for value in (
+        within_world_sampling_contract_id,
+        within_world_sampling_contract_version,
+        within_world_sampling_independence_basis,
+    )):
         raise NestedPrecisionError(
             "non-IID within-world modes cannot claim an IID sampling contract identity"
         )
@@ -238,4 +245,5 @@ def analyze_nested_precision(
         within_world_sampling_mode=within_world_sampling_mode,
         within_world_sampling_contract_id=within_world_sampling_contract_id,
         within_world_sampling_contract_version=within_world_sampling_contract_version,
+        within_world_sampling_independence_basis=within_world_sampling_independence_basis,
     )
