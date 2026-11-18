@@ -1631,3 +1631,63 @@ La tolerancia no debe usarse para convertir recuperación puntual en condición 
 No se modifica `theta_a_calibration_protocol.py`, tests, DGP, roster, Analyzer, Evaluator, tolerancias, seeds, banks, workflows ni autorizaciones. No se ejecuta EP-02, calibración, Monte Carlo ni evaluación. `main`, RMA v3.38, Matrix v1.47, STATUS y TGCV Core permanecen sin modificación. PR #116 permanece Draft. `calibration_authorized=false`, `scientific_execution=false`, `execution_authorized=false`.
 
 **Siguiente operación:** convertir los siete cierres en una propuesta de decisión breve, con recomendación y alternativas explícitas, y verificar que cada elección se refleje coherentemente en el manifiesto y en el contrato de agregación antes de cualquier implementación.
+
+## 361. Propuesta de decisión metodológica sobre métricas y agregación θ_A — para resolución, no aprobada (2026-11-18)
+
+**Estado:** DECISION_PROPOSAL_READY_FOR_REVIEW / NOT_APPROVED / NOT_FROZEN / NO_IMPLEMENTATION / NO_CALIBRATION.  
+**Base reconciliada:** §§328, 330, 336, 348, 355–360.  
+**Regla:** propuesta coordinadora; no crea ni presume aprobación del usuario, DR o freeze científico.
+
+### 361.1 Decisiones recomendadas
+
+| ID | Cuestión | Recomendación propuesta | Alternativa / coste de elegirla |
+|---|---|---|---|
+| MP-01 | Ponderación del error condicional | θ_rep: razón de sumas sobre todas las réplicas identificadas; MCSE cluster por M. Publicar siempre tasa de identificación y distribución de B_m/R. | θ_world: media equiponderada de cocientes por mundo elegible. Responde a mundo típico, pero excluye mundos con B=0 y selecciona por identificación; mantener solo como diagnóstico, claramente rotulado. |
+| MP-02 | Métricas de intervalo | Obligatorias por separado: disponibilidad sobre todos los intentos, cobertura entre intervalos válidos emitidos, anchura condicional y éxito conjunto intervalo-válido-y-cubriente sobre todos los intentos. | Omitir éxito conjunto reduce redundancia, pero pierde una medida operacional directa que combina disponibilidad y cobertura; no debe sustituir a ninguna de las otras. |
+| MP-03 | Estados y causas | Estados Analyzer mutuamente excluyentes: IDENTIFIED, NOT_IDENTIFIED, INDETERMINATE, PARTIALLY_IDENTIFIED. Para NOT_IDENTIFIED, clasificar causa esperada, causa distinta y causa ausente/no clasificable. OUTPUT_INVALID y RECORD_MISSING permanecen en ledger técnico/coverage, no en Analyzer. | Una tasa binaria abstain/identify es más simple, pero oculta error de causa, indeterminación y partial identification; no recomendada como única salida. |
+| MP-04 | Aplicabilidad y targets | Manifiesto exhaustivo por escenario × versión × N × métrica, con NOT_APPLICABLE, TARGETED, NOT_TARGETED, NOT_EVALUABLE, FAIL_PRECISION, PASS_PRECISION. Todo target obligatorio debe existir y tener denominador/procedencia completos para permitir PASS. | Targets parciales permiten análisis exploratorio, pero no un PASS global ni selección de N/M/R. |
+| MP-05 | Tolerancias | Separar δ_eval técnica y δ_science científica hasta que una decisión justifique explícitamente su identidad. No promover 0,25 del Evaluator a tolerancia científica. | Un único umbral simplifica trazabilidad, pero solo es aceptable si existe justificación científica independiente y la misma identidad/version queda propagada por todo el pipeline. |
+| MP-06 | RMSE | Usar MSE y su MCSE como métrica primaria para dimensionamiento. Reportar RMSE=sqrt(MSE) como derivado descriptivo; no darle target MCSE propio hasta preespecificar/validar delta o bootstrap por mundos. | Bootstrap cluster por M puede proporcionar incertidumbre directa para RMSE, pero requiere algoritmo, número de remuestras, seed namespace y validación propios. |
+| MP-07 | Dimensionamiento | Mantener N={32,64,128}, M=100, R=20 y targets ≤0,02 continuos / ≤0,05 tasas solo como grid y presupuesto piloto candidatos. En calibración autorizada, estimar componentes intra/intermundo: aumentar R solo si reduce materialmente el componente intramundo; aumentar M para precisión externa; elegir N con criterios separados de rendimiento inferencial y precisión MCSE. | Congelar ya N/M/R evita coste de diseño, pero no está respaldado por evidencia de precisión; no recomendado. |
+
+### 361.2 Definiciones operacionales propuestas
+
+Para cada mundo m:
+- B_m = número de réplicas R con Analyzer IDENTIFIED y estimación puntual finita;
+- A_m(metric) es la suma de la contribución de esa métrica sobre esas réplicas;
+- θ_rep = Σ_m A_m / Σ_m B_m para bias, MAE, MSE y point-recovery, usando el numerador específico;
+- MCSE_cluster(θ_rep) = SD(A_m - θ_rep B_m)/(sqrt(M) × mean(B_m)).
+
+El resumen debe conservar A_m, B_m, B_m/R, world_id y los fingerprints del diseño. Si Σ B_m=0, el resultado es NOT_EVALUABLE, nunca cero. El diagnóstico θ_world debe mostrar cuántos mundos tienen B_m>0, cuántos tienen B_m=0 y la distribución de B_m/R; no se presenta como equivalente a θ_rep.
+
+El estimador cluster/ratio propuesto es apropiado para θ_rep bajo mundos independientes y denominador medio positivo. Debe conservar (A_m,B_m) para auditoría. Para θ_world, el MCSE se calcula entre los cocientes de mundos elegibles, pero su incertidumbre y selección deben reportar el número de mundos con B_m>0; no se puede ocultar mundos sin identificaciones.
+
+Para intervalos, se derivan por réplica tres indicadores independientes: issued, covered y width (width solo si issued). Se calculan disponibilidad y éxito conjunto con denominador M×R; cobertura y anchura condicionales con denominador de intervalos válidos emitidos. La inferencia Monte Carlo de las dos métricas condicionales usa clusters M y conserva sus numeradores/denominadores por mundo.
+
+### 361.3 Reglas de interpretación y aceptación
+
+1. La tasa de identificación y el error condicional se interpretan conjuntamente; un MAE condicional bajo no compensa una tasa de identificación baja.
+2. PASS_PRECISION significa únicamente que la incertidumbre Monte Carlo de la métrica está dentro del target; no significa que el Analyzer tenga sesgo, RMSE o cobertura científicamente aceptables.
+3. NOT_APPLICABLE no es fallo; NOT_EVALUABLE no es PASS; NOT_TARGETED no satisface un target obligatorio.
+4. Cobertura condicional alta con disponibilidad baja no demuestra cobertura útil del procedimiento completo.
+5. El éxito conjunto se presenta como métrica operacional y nunca se etiqueta como cobertura nominal.
+6. Los targets de tasas se justifican sobre contribuciones por mundo acotadas en [0,1]; M=100 solo garantiza MCSE máximo 0,05 en peor caso. Un target 0,02 no se declara satisfecho por defecto.
+7. N debe analizar por separado anchura/cobertura/potencia cuando exista un test válido; MCSE pequeño no sustituye criterio inferencial.
+8. Ningún banco de evaluación puede utilizarse para ajustar N, M, R, tolerancias, roster, DGP, estimandos o reglas de análisis.
+
+### 361.4 Dependencias antes de implementación
+
+La aprobación de esta propuesta no bastaría por sí sola para ejecutar calibración. Antes de modificar el agregador deberán quedar cerrados:
+- IDs/versiones y definiciones de cada métrica;
+- manifiesto completo de aplicabilidad y targets;
+- campos de réplica/manifiesto que fijan δ_eval y δ_science;
+- ledger técnico para fallos externos sin recodificarlos como resultados Analyzer;
+- fórmula y prueba independiente del MCSE cluster/ratio;
+- método elegido para RMSE si se exige precisión Monte Carlo sobre RMSE;
+- test de regresión que compare el agregador nuevo con cálculos independientes sobre fixtures que contengan abstenciones parciales, B_m=0, intervalos ausentes, causa incorrecta, INDETERMINATE, PARTIALLY_IDENTIFIED, OUTPUT_INVALID y RECORD_MISSING.
+
+La implementación debe preservar el agregador histórico como referencia de regresión hasta demostrar equivalencia en los casos completos y la semántica nueva en los casos parciales. Esta comparación no autoriza modificar el Analyzer, Evaluator ni DGP.
+
+**Disposición:** MP-01…MP-07 quedan como recomendaciones para decisión explícita. No se consideran aprobadas ni se registran como Decision Record aceptado. No se modifica código, tests, workflow, roster, N/M/R, targets, tolerancias, seeds o banks. No se ejecuta calibración, Monte Carlo, evaluación ni ejecución científica. main, RMA v3.38, Matrix v1.47, STATUS y TGCV Core permanecen intactos; PR #116 sigue Draft. Se mantienen calibration_authorized=false, execution_authorized=false, scientific_execution=false.
+
+**Siguiente operación:** si las recomendaciones se aceptan, preparar el contrato de métricas y agregación implementable, más el test independiente del agregador; si alguna se rechaza, documentar la alternativa y su estimando antes de implementar.
