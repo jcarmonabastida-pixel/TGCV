@@ -2918,3 +2918,70 @@ La consecuencia operativa correcta es la ya implementada: no suministrar confian
 **Siguiente operación:** revisar si la especificación estadística del agregador (§361–§366) preserva de forma suficiente el emparejamiento positive/alternative/target-only y separa el nivel M del nivel R, sin contar R como mundos ni escenarios emparejados como réplicas independientes. Si el contrato actual no lo resuelve, registrar la brecha sin implementar el agregador.
 
 **Controles:** auditoría estática únicamente; no se generan seeds, no se invoca el runner, no se ejecutan tests, DGP, Analyzer/Evaluator, workflows, calibración o Monte Carlo. No se modifican código, tests, perfiles, roster, locks, RMA, Evidence→Claim Matrix, STATUS, Core ni `main`. PR #116 permanece Draft. `implementation_authorized=false`, `scientific_execution=false`, `execution_authorized=false`, `calibration_authorized=false`.
+
+
+## 374. Auditoría de agregación por M, replicación R y contrastes pareados (2026-11-18)
+
+**Estado:** STATIC_AGGREGATOR_AUDIT / WITHIN_SCENARIO_MR_AGGREGATION_PRESENT / IID_GATE_MISSING / PAIRED_CONTRAST_NOT_IMPLEMENTED.  
+**Objetivo:** verificar si el agregador implementado respeta la unidad M y si materializa los contratos de independencia y emparejamiento definidos en §364/§366.
+
+### 374.1 Lo que el agregador actual sí implementa
+
+En `summarize_theta_a_calibration()`:
+- exige correspondencia exacta entre el plan completo de seeds N×M×R y los registros capturados;
+- agrupa las R réplicas dentro de cada M y comprueba que comparten mundo, configuración, diseño de política, perfil, q_X, contrato estructural, estimando, outcome y verdad;
+- comprueba que los streams de asignación/evidencia/Analyzer sean distintos entre R;
+- calcula primero una contribución escalar por mundo: tasas como proporciones sobre R; bias/MAE/MSE como medias sobre R; cobertura y anchura como medias sobre R;
+- calcula la media de las contribuciones por M y su dispersión `sd(q_m)/sqrt(M)`; para RMSE aplica una transformación delta sobre el MSE agregado;
+- mantiene las métricas de recuperación no aplicables a `NOT_IDENTIFIED` como `NOT_EVALUABLE`.
+
+**Dictamen:** la jerarquía computacional R dentro de M está implementada para resúmenes por escenario. R no se cuenta como M y la verdad se mantiene fija dentro del mundo. Este es un resultado de revisión de código, no una ejecución nueva.
+
+### 374.2 Brecha de interpretación IID en M
+
+La implementación de `ThetaACalibrationDesign` declara M y R, y el seed-bank validator comprueba unicidad determinista de world_id/roster_id/seeds entre M. Sin embargo:
+- no hay un `OuterWorldSamplingContract` materializado en el diseño o en los registros;
+- no hay un campo `iid_claim_status` ni evidencia vinculada que distinga `CERTIFIED_IID`, `DEPENDENT`, `FIXED_FINITE_SET` y `UNVERIFIED`;
+- el agregador calcula `sd(q_m)/sqrt(M)` sin condicionar la etiqueta/interpretación del MCSE a un claim IID;
+- la derivación hash de semillas y su unicidad no demuestran por sí solas que los mundos sean IID de una distribución generadora explícita.
+
+Esto reproduce exactamente la cautela normativa de §364.5 y §366.7: la fórmula solo admite interpretación inferencial entre mundos si el diseño IID está justificado. Sin ese contrato, el valor calculado puede describirse como dispersión Monte Carlo bajo el mecanismo de seeds, pero no como incertidumbre poblacional general.
+
+**Brecha:** la fórmula de MCSE está implementada, pero falta el gate que autorice su interpretación IID. El resumen actual no puede emitir por sí solo `CERTIFIED_IID`.
+
+### 374.3 Brecha de contrastes pareados
+
+El seed bank implementa un emparejamiento basal explícito para `THETA_A_INTERACTION_BASE_V1`: positive, alternative y positive_target_only comparten world_id/seed/roster para el mismo N×M, aunque usan streams de R diferenciados por escenario. El diseño §364.5 y el contrato propuesto §366.7 exigen que las comparaciones entre esos escenarios preserven el emparejamiento por world_id.
+
+La implementación de `summarize_theta_a_calibration()` resume cada scenario_id por separado. No:
+- construye pares de registros de dos escenarios;
+- verifica uno-a-uno el conjunto de world_id emparejados entre escenarios;
+- calcula diferencias por mundo antes de agregar;
+- calcula MCSE de las diferencias pareadas;
+- registra número de pares, mundos no emparejados, estimando del contraste ni fingerprint del contrato de emparejamiento.
+
+**Brecha:** el emparejamiento de mundos está presente en la generación/validación del seed bank, pero el contraste pareado no está implementado en el agregador actual. No debe estimarse una diferencia entre positive y alternative restando medias y combinando errores como si fueran independientes. Tampoco debe utilizarse la fórmula de influencia ratio de §364 como si estuviera validada: §366 la mantiene como candidata sujeta a un oráculo algebraico y a la definición exacta de población de pares.
+
+### 374.4 Matriz de conformidad §364/§366 frente a implementación
+
+| Requisito | Implementación observada | Dictamen |
+|---|---|---|
+| Plan completo N×M×R | Correspondencia exacta seeds/records | IMPLEMENTED |
+| R anidado en M | Agrupación y checks de identidad/verdad | IMPLEMENTED |
+| Contribución por M antes del MCSE | Sí, para métricas escalares registradas | IMPLEMENTED |
+| M distintos por seed/identidad | Sí, unicidad determinista | IMPLEMENTED |
+| Claim IID de M y evidencia | Sin contrato/campo/gate | MISSING |
+| MCSE condicionado a IID claim | MCSE calculado sin estado IID | MISSING |
+| Emparejamiento positive/alternative/target-only | World family y world_id compartidos | IMPLEMENTED IN SEED PLAN |
+| Contraste pareado por world_id | Sin objeto ni cálculo | MISSING |
+| MCSE del contraste pareado | Sin cálculo | MISSING |
+| Oráculo algebraico independiente para ratio/paired MCSE | Especificado como requisito, no implementado | OPEN |
+| Reglas de mundos no emparejados/denominador cero | Contrato documental, sin cálculo pareado actual | OPEN |
+
+### 374.5 Disposición y siguiente operación
+
+No se recomienda implementar aún el contraste pareado. Primero debe quedar fijado, en el diseño, qué comparaciones son científicamente necesarias (como mínimo positive–alternative para aislar el enmascaramiento por vía alternativa; positive–target-only para separar el efecto del soporte sobre identificación sin cambiar el contraste generador) y qué estimando de contraste se reporta. Después debe seleccionarse la regla IID/DEPENDENT/FIXED_FINITE_SET por familia de mundos y especificarse la población de pares y el tratamiento de mundos no emparejados.
+
+La próxima revisión estática debe recuperar las decisiones y los oráculos algebraicos existentes para esas comparaciones y comprobar si §361–§366 ya resuelven los estimandos, la fórmula y los denominadores; solo los vacíos genuinos se documentarán como pendientes. No se implementa el agregador ni se añaden nuevos tests.
+
+**Controles:** solo documento maestro en `research/c10-s-consolidation-draft`; no se modifican código, tests, seeds, runner, diseño, roster, workflows, RMA, Evidence→Claim Matrix, STATUS, Core ni `main`. No se ejecutan tests, DGP, Analyzer/Evaluator, workflows, calibración o Monte Carlo. PR #116 permanece Draft. `implementation_authorized=false`, `scientific_execution=false`, `execution_authorized=false`, `calibration_authorized=false`.
