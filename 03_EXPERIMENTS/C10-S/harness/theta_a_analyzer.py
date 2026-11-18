@@ -32,6 +32,8 @@ class ThetaAObservationAnalysisContract:
     unit_independence_certified: bool = False
     structural_support_contract: "ThetaAStructuralSupportContract | None" = None
     source_q_x_sha256: str | None = None
+    target_g_a0_sha256: str | None = None
+    target_g_a1_sha256: str | None = None
 
     def validate(self) -> None:
         if not all((self.q_x_sha256, self.assignment_bundle_sha256,
@@ -39,6 +41,11 @@ class ThetaAObservationAnalysisContract:
             raise ContractError("theta_A analysis requires q_X, assignment, g_A0/g_A1 and r_common fingerprints")
         if not self.estimand_id or not self.estimand_version:
             raise ContractError("theta_A estimand identity/version are required")
+        if ((self.target_g_a0_sha256 is None) != (self.target_g_a1_sha256 is None)
+                or any(value is not None and not value for value in (
+                    self.target_g_a0_sha256, self.target_g_a1_sha256
+                ))):
+            raise ContractError("target-population g_A fingerprints must be supplied together and non-empty")
         mapping = dict(self.q_x_mass_by_history)
         if len(mapping) != len(self.q_x_mass_by_history) or not mapping:
             raise ContractError("q_X target masses must have unique, non-empty history support")
