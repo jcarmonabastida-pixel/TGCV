@@ -1056,3 +1056,38 @@ La regresión del protocolo fuerza las cuatro categorías y añade tanto un \`NO
 El workflow fue restaurado a \`workflow_dispatch\` con confirmación explícita; el sentinel temporal fue eliminado. Commits de restauración/eliminación: \`bb2eafe985e75637ed8942286fc4826809400858\` / \`b0506ce709d1171c03f2dda760c53a14f50d77fd\`.
 
 **Límite:** Run 854 valida contratos de software, derivación de semillas y lógica de agregación. La regresión de agregación todavía utiliza registros deliberadamente construidos; no prueba que un runner haya ejecutado cada réplica real. Sigue pendiente construir y validar el runner que materialice cada mundo N×M y cada asignación R por la cadena DGP → asignación → S3/seal → Analyzer → Evaluator y capture el resultado real mediante \`capture_theta_a_replicate()\`. No se genera banco de calibración, no se ejecuta Monte Carlo ni calibración científica y el roster sigue \`NOT_FROZEN\`. No cambia Gate 130, el estimando ni las autorizaciones científicas.
+
+
+## 353. Runner N×M×R, desacoplamiento no circular del perfil y captura end-to-end target-only — EP-02 Run 857 (2026-11-18)
+
+Este apartado precisa y completa §352. El perfil DGP es estable entre mundos exteriores; los fingerprints q_X materializados varían por mundo y se registran en cada réplica, no se usan como insumos del propio generador de semillas del mundo.
+
+### 353.1 Desacoplamiento de identidades y semillas
+
+Se detectó una dependencia circular en la primera derivación: si el fingerprint del perfil incluyera los fingerprints q_X realizados y a su vez determinara la semilla que genera esos q_X, no existiría una especificación ex ante no circular del mundo.
+
+La derivación queda separada:
+- world_seed, world_id, roster_id y unit_id_prefix dependen de namespace, banco, escenario/versión, N y M;
+- el fingerprint estable del perfil DGP entra en run_id, randomization_salt y s3_seed de cada R;
+- cada ThetaAReplicateRecord conserva los fingerprints q_X objetivo/fuente realmente materializados y el digest del contrato estructural;
+- el agregador exige que esos fingerprints permanezcan constantes entre las R del mismo mundo M.
+
+El perfil tipado conserva la relación de soportes, las historias target-only y sus masas, la identidad/versión del contrato estructural y la causa esperada. La captura comprueba esa especificación contra el contrato y la adjudicación realmente materializados.
+
+### 353.2 Runner con autorización explícita
+
+Se añade run_theta_a_calibration_replicates(). Recibe un plan N×M×R ya declarado y un executor DGP específico del escenario; exige execution_authorized=True; requiere que el executor devuelva un C10SCompleteWorldResult; y construye cada registro exclusivamente mediante capture_theta_a_replicate(). No crea bancos ni semillas por sí mismo y falla cerrado si no hay autorización explícita.
+
+La regresión positiva identificada del pipeline completo se conecta a este runner para ejecutar la orquestación N×M×R de prueba. La fixture target-only aislada también pasa por el pipeline real y ahora comprueba la captura de Analyzer/Evaluator: causa esperada y observada, masa no soportada, fingerprints q_X objetivo/fuente y digest del contrato estructural. El test del runner verifica además el rechazo sin autorización.
+
+### 353.3 Validación y corrección intermedia
+
+Run 855: intento fallido por una fixture unitaria obsoleta que seguía pasando fingerprints q_X realizados al constructor del perfil estable. El error fue TypeError de argumentos no admitidos; no se interpreta como fallo científico ni como PASS. La fixture se corrigió.
+
+EP-02 Run 857: GitHub Actions 44342279770, commit probado 9303debb2f543a4d846729bb96b4a093805a9431; compilación PASS; 317/317 pruebas primarias PASS y 317/317 replay limpio PASS (9.135 s / 9.200 s). Payload 14443164296 (SHA-256 ab8879ae5349c15c32a52ecf5a028354a5bb97f2299bddb54d9217eb8b54bcd7); manifiesto 14443967494 (SHA-256 de74247560fa2a03b3077fa97b6acbc61a2b05b14d00a2d653ecf7dfa82417a3).
+
+El workflow fue restaurado a workflow_dispatch con confirmación explícita y el sentinel eliminado. Commits de restauración/eliminación: c26a77671e4d7ad3771ffb78aa65afafdf1722c3 / 6db520d089dd4d21648979134d9d338840221525.
+
+### 353.4 Límite y trabajo que permanece abierto
+
+El runner y la captura end-to-end target-only tienen evidencia técnica acotada EP-02. El executor de escenario sigue siendo una fábrica DGP específica suministrada por el llamador: todavía falta consolidar la fábrica canónica/configuración tipada del roster de cinco escenarios y ejecutar el plan completo N×M×R del quinto escenario mediante ella. No se ha generado banco de calibración ni banco de evaluación; no se ha ejecutado Monte Carlo ni calibración científica; no se ha congelado el roster. No cambia Gate 130, el estimando ni las autorizaciones científicas.
