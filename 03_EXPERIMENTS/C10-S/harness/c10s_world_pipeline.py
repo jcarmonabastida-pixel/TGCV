@@ -85,7 +85,7 @@ class SyntheticThetaATargetHistory:
     initial_functional_state: FunctionalState
     provenance_ref: str
 
-    def validate(self, *, source_world: SyntheticWorldBundle) -> None:
+    def validate(self, *, source_world: SyntheticWorldBundle, allowed_h0_values: set[str]) -> None:
         if not self.potential_unit_id or not self.provenance_ref:
             raise ContractError("target-only baseline requires explicit synthetic unit and provenance identities")
         if self.q_x.history_ref in {
@@ -93,7 +93,7 @@ class SyntheticThetaATargetHistory:
         } or self.potential_unit_id in {unit.unit_id for unit in source_world.units}:
             raise ContractError("target-only materialization must not alias a source history or source unit")
         if (not self.q_x.x_ref or not self.q_x.h0_ref or not self.q_x.c_c_ref
-                or not self.h0_value):
+                or self.h0_value not in allowed_h0_values):
             raise ContractError("target-only baseline requires explicit X/H0/C_c anchors and H0 value")
         if (not self.x_values or any(not math.isfinite(value) for value in self.x_values)
                 or not self.c_c_values
@@ -472,7 +472,10 @@ def materialize_c10s_complete_world_from_dgp(
                 raise ContractError("overlapping target history anchors must reproduce source baseline anchors")
         else:
             materialization = materializations[row.history_ref]
-            materialization.validate(source_world=world)
+            materialization.validate(
+                source_world=world,
+                allowed_h0_values={label for label, _ in world_config.h0_distribution},
+            )
             if materialization.q_x != row or materialization.potential_unit_id != target_unit_ids[row.history_ref]:
                 raise ContractError("typed target-only baseline identity differs from target q_X/unit map")
             if initial_state_by_history.get(row.history_ref) != materialization.initial_functional_state:
