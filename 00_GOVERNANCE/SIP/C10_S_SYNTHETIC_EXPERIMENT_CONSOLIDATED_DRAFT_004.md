@@ -1691,3 +1691,152 @@ La implementación debe preservar el agregador histórico como referencia de reg
 **Disposición:** MP-01…MP-07 quedan como recomendaciones para decisión explícita. No se consideran aprobadas ni se registran como Decision Record aceptado. No se modifica código, tests, workflow, roster, N/M/R, targets, tolerancias, seeds o banks. No se ejecuta calibración, Monte Carlo, evaluación ni ejecución científica. main, RMA v3.38, Matrix v1.47, STATUS y TGCV Core permanecen intactos; PR #116 sigue Draft. Se mantienen calibration_authorized=false, execution_authorized=false, scientific_execution=false.
 
 **Siguiente operación:** si las recomendaciones se aceptan, preparar el contrato de métricas y agregación implementable, más el test independiente del agregador; si alguna se rechaza, documentar la alternativa y su estimando antes de implementar.
+
+
+## 362. Contrato implementable propuesto para el agregador θ_A y su manifiesto — diseño estático, no implementación (2026-11-18)
+
+**Estado:** AGGREGATOR_CONTRACT_DRAFT / STATIC_DESIGN_ONLY / NOT_APPROVED / NOT_IMPLEMENTED / NO_CALIBRATION.  
+**Base:** código fuente `theta_a_calibration_protocol.py` (blob `9675b9f6805b11f1a1037a3e4b2f95af53038e4c`), §§359–361 y EP-02 Run 862.  
+**Ámbito:** exclusivamente benchmark focal `THETA_A_QX_GA_RCOMMON_VCONT`, cinco escenarios candidatos y jerarquía N×M×R; no incorpora el protocolo histórico V_cont 13×52 ni una fila RUN.
+
+### 362.1 Principio de integridad: separar plan completo de elegibilidad métrica
+
+Se mantienen dos validaciones diferentes:
+
+**A. Integridad del plan (hard gate):** debe existir exactamente un registro válido para cada clave del seed plan N×M×R; sin duplicados, ausencias, claves extra, fingerprints inconsistentes, world/run discordantes o versiones mezcladas. El fallo de integridad invalida el resumen completo afectado y bloquea PASS. No se convierte `RECORD_MISSING` en estado Analyzer ni se aplica complete-case al plan.
+
+**B. Elegibilidad de cada métrica (metric gate):** una vez validado el plan completo, cada réplica entra en el denominador que corresponde a la definición de esa métrica. La abstención Analyzer no invalida el registro ni borra las demás réplicas; simplemente excluye esa réplica de las métricas numéricas condicionales y permanece contada en las métricas operacionales.
+
+Por tanto, el cambio propuesto no relaja la cobertura exacta del ledger N×M×R. Elimina únicamente la regla indebida de que todas las R deban estar identificadas para que un mundo contribuya a una métrica condicional.
+
+### 362.2 Matriz de métricas y denominadores normativos propuestos
+
+Para cada escenario/version/N y mundo m, R es el total de intentos planificados y validados. Defínanse:
+- (I_{mr}=1) si Analyzer = IDENTIFIED y el punto es finito;
+- (J_{mr}=1) si existe un intervalo con ambos límites finitos, ordenados, confidence level presente y cobertura/anchura internamente coherentes;
+- (C_{mr}=1) si (J_{mr}=1) y el intervalo contiene la verdad reservada.
+
+| Métrica | Numerador por mundo | Denominador por mundo | Agregación propuesta |
+|---|---|---|---|
+| identification_rate | Σ I | R | media no ponderada de M tasas |
+| not_identified_rate | n(NOT_IDENTIFIED) | R | media no ponderada de M tasas |
+| indeterminate_rate | n(INDETERMINATE) | R | media no ponderada de M tasas |
+| partial_identification_rate | n(PARTIALLY_IDENTIFIED) | R | media no ponderada de M tasas |
+| false_abstention_rate (truth IDENTIFIED) | n(Analyzer ≠ IDENTIFIED) | R | media no ponderada de M tasas; siempre desglosar estado |
+| correct_cause_abstention_rate (truth NOT_IDENTIFIED) | n(NOT_IDENTIFIED con causa exacta) | R | media no ponderada de M tasas |
+| wrong_or_unclassified_abstention_rate | n(NOT_IDENTIFIED/INDETERMINATE sin causa exacta) | R | media no ponderada de M tasas; desglosar causa |
+| false_identification_rate (truth NOT_IDENTIFIED) | n(Analyzer = IDENTIFIED) | R | media no ponderada de M tasas |
+| point_bias / MAE / MSE | Σ I·e / Σ I·|e| / Σ I·e² | B_m=ΣI | razón agrupada θ_rep sobre M; MCSE cluster ratio |
+| point_recovery_rate | Σ I·1(|e|≤δ_science) | B_m=ΣI | razón agrupada θ_rep sobre M; MCSE cluster ratio |
+| interval_availability_rate | Σ J | R | media no ponderada de M tasas |
+| interval_conditional_coverage | Σ C | H_m=ΣJ | razón agrupada sobre M; MCSE cluster ratio |
+| interval_joint_success_rate | Σ C | R | media no ponderada de M tasas |
+| interval_conditional_width | Σ J·width | H_m=ΣJ | razón agrupada sobre M; MCSE cluster ratio |
+
+Las tasas operacionales usan pesos iguales por mundo porque la unidad de población exterior es M; cada mundo aporta una proporción calculada sobre sus R intentos. Las métricas condicionales agrupadas ponderan por número de réplicas elegibles y contestan una pregunta por intento identificado/intervalo emitido. Ambas agregaciones son deliberadas y no intercambiables.
+
+Para cada escenario de verdad NOT_IDENTIFIED, las métricas de punto/intervalo condicionales son `NOT_APPLICABLE`; no `NOT_EVALUABLE`. Para escenarios de verdad IDENTIFIED, las tasas de causa correcta de abstención y falsa identificación propias del escenario NOT_IDENTIFIED son `NOT_APPLICABLE`. La métrica de partial identification sigue siendo aplicable a ambos tipos de verdad.
+
+### 362.3 MCSE por unidad exterior
+
+**Tasas y medias de contribuciones por mundo.** Para una métrica con contribución (q_m) definida en cada mundo independiente:
+
+`MCSE = s(q_1,…,q_M)/sqrt(M)`
+
+con desviación estándar muestral (M−1). La salida conserva los M valores q_m y su identidad world_id.
+
+**Estimandos ratio condicionales.** Para (θ=ΣA_m/ΣB_m), con (B_m≥0) y (ΣB_m>0), conservar pares ((A_m,B_m)) y calcular residuos de influencia (u_m=A_m-θB_m). La propuesta de MCSE es:
+
+`MCSE_ratio = s(u_1,…,u_M)/(sqrt(M) × mean(B_1,…,B_M))`.
+
+Se requiere M≥2, mundos independientes y denominador agregado positivo. La implementación deberá verificar mediante cálculo independiente que esta fórmula reproduce la varianza sandwich/cluster del estimador ratio para fixtures fijados. Si (ΣB_m=0), el resultado es `NOT_EVALUABLE`, con denominador cero y motivo explícito. No se calcula SD sobre filas M×R como si fueran independientes.
+
+Para `θ_world` secundario, primero se calcula (a_m=A_m/B_m) solo cuando B_m>0 y luego la media y MCSE muestral entre mundos elegibles. Se reportan M elegibles, M con B=0 y su fracción; el resultado no se mezcla con θ_rep.
+
+### 362.4 MSE/RMSE y tolerancia
+
+El identificador primario de precisión es `point_mse`, no `point_rmse`. Se calcula θ_rep de errores cuadrados y su MCSE ratio. RMSE=(sqrt{MSE}) se emite como transformación descriptiva sin target MCSE ni PASS independiente. La salida no debe etiquetar como `point_rmse` un MCSE delta calculado sin contrato. Si más adelante se exige target RMSE, se añadirá un método cluster preespecificado y validado como métrica versionada.
+
+La métrica point-recovery requiere `δ_science` no nula, finita, no negativa, versionada y con justificación. `δ_eval` pertenece al Evaluator y se conserva como campo independiente. Mientras no haya decisión explícita y fingerprint, point-recovery es `NOT_TARGETED` o `NOT_EVALUABLE` según aplicabilidad/datos; no se infiere `δ_science=0.25`.
+
+### 362.5 Manifiesto exhaustivo de métricas y targets
+
+El contrato futuro deberá incluir un manifiesto independiente de los registros calculados. Clave única:
+`(scenario_id, scenario_version, N, metric_id, metric_version)`.
+
+Campos mínimos:
+- `estimand_id/version`, `outcome_id/version`;
+- `applicability`: `APPLICABLE` o `NOT_APPLICABLE`, con razón tipada;
+- `target_status`: `TARGETED` o `NOT_TARGETED`;
+- `target_mcse` obligatorio y positivo cuando TARGETED; nulo cuando NOT_TARGETED/NOT_APPLICABLE;
+- `metric_definition_sha256`, `target_manifest_sha256`;
+- unidad de medida, dirección/escala y método MCSE;
+- `delta_science_id/version/value/sha256` cuando la métrica lo requiera;
+- procedencia de N/M/R y del DGP profile.
+
+La validación compara el conjunto esperado de claves contra el manifiesto, no solo valida las filas que casualmente están presentes. Una métrica APPLICABLE + TARGETED sin valor/target válido, o una clave obligatoria ausente, bloquea el PASS global. Una métrica NOT_APPLICABLE debe incluir razón y no puede llevar target. Una métrica APPLICABLE + NOT_TARGETED se reporta, pero impide declarar completitud confirmatoria si el contrato la había marcado como obligatoria.
+
+Estados de salida:
+- `NOT_APPLICABLE`: semánticamente no definida;
+- `NOT_TARGETED`: aplicable, sin objetivo MCSE aprobado;
+- `NOT_EVALUABLE`: aplicable, pero sin denominador/datos/MCSE;
+- `FAIL_PRECISION`: target válido y MCSE > target;
+- `PASS_PRECISION`: target válido, ledger íntegro y MCSE ≤ target.
+
+`PASS_PRECISION` nunca es PASS científico del estimador. El estado global de calibración solo podrá ser PASS si todas las métricas requeridas tienen estado permitido por el manifiesto, ningún target obligatorio está ausente, todos los ledgers son íntegros y todos los targets obligatorios resultan PASS_PRECISION. NOT_TARGETED y NOT_EVALUABLE no satisfacen un target obligatorio.
+
+### 362.6 Ledger técnico y Evaluator
+
+El seed plan es el denominador de cobertura de intentos. Debe permitir distinguir:
+- intento esperado y registro válido;
+- intento esperado con fallo técnico/output inválido;
+- intento esperado sin registro;
+- registro presente con resultado Analyzer válido.
+
+La falta de registro y la salida inválida se almacenan como códigos del ledger técnico, fuera de los cuatro estados Analyzer. En el estado actual, el agregador recibe registros completos ya validados y no puede estimar tasas observadas de missing/invalid externos; hasta que se especifique ese ledger, cualquier discrepancia hard-fail y no se presenta como una tasa científica.
+
+Las salidas Evaluator se reportan en auditoría separada por disposición y escenario/clase de verdad. `truth_within_bounds` verifica el dominio lógico; no es rendimiento. La corrección de adjudicación del Evaluator no se agrega en un único porcentaje a través de escenarios identificados y no identificados. `POINT_RECOVERY_FAILED` no cambia IDENTIFIED a NOT_IDENTIFIED.
+
+### 362.7 Contrato de resumen y trazabilidad
+
+Cada resumen debe exponer, como mínimo:
+- clave completa escenario/version/N y hashes DGP/design/manifest/metric;
+- M, R y lista ordenada de world_id;
+- por métrica: numeradores y denominadores por mundo, contribuciones por mundo cuando correspondan, valor agregado, MCSE, target, estado y motivo;
+- M elegibles, M no elegibles y denominador total para toda métrica ratio;
+- método/version de MCSE y unidad independiente;
+- δ_eval y δ_science identificadas separadamente cuando existan;
+- resultado de integridad del ledger y del manifiesto.
+
+No se debe guardar solo el valor final y perder los numeradores/denominadores que permiten auditar la ponderación.
+
+### 362.8 Suite de validación independiente exigida antes de implementación
+
+La futura prueba de agregador debe calcular resultados esperados mediante un oráculo independiente (sin invocar el agregador bajo prueba) y cubrir al menos:
+
+1. todos identificados: equivalencia numérica con el agregador histórico en métricas que comparten estimando/denominador;
+2. abstención parcial en un mundo: las tasas operacionales incluyen todos los R y métricas condicionales incluyen solo I=1;
+3. mundo B_m=0 junto a otros mundos elegibles: ratio θ_rep sigue definido; θ_world excluye ese mundo pero declara M elegibles y M con B=0;
+4. todos B_m=0: NOT_EVALUABLE y nunca cero/PASS;
+5. verdad NOT_IDENTIFIED: métricas numéricas identificadas NOT_APPLICABLE; causa correcta/incorrecta y falsa identificación siguen evaluables;
+6. INDETERMINATE y PARTIALLY_IDENTIFIED: estados separados, no colapsados en NOT_IDENTIFIED;
+7. intervalos ausentes en parte de R: disponibilidad, cobertura condicional, éxito conjunto y anchura usan denominadores distintos correctos;
+8. intervalo presente con límites inconsistentes: record validation falla;
+9. target ausente, duplicado, extra, NOT_APPLICABLE con target o TARGETED sin target: manifiesto rechazado;
+10. ledger ausente/duplicado/extra o fingerprint discordante: hard-fail de integridad;
+11. cálculo MCSE ratio contrastado con un oráculo algebraico y una fixture con denominadores heterogéneos;
+12. permutación del orden de registros: salida idéntica tras canonical ordering.
+
+Se conserva la implementación histórica como referencia de regresión para casos completos. La nueva semántica se prueba con oráculo independiente, no mediante autoconsistencia del propio agregador.
+
+### 362.9 Disposición y siguiente operación
+
+Este contrato es un diseño técnico-metodológico propuesto; no aprueba MP-01…MP-07 ni cambia su estado. Hay dos cuestiones que deben resolverse antes de implementación:
+1. aceptación explícita de θ_rep como estimando primario y θ_world como diagnóstico;
+2. aprobación del manifiesto de targets y de la obligatoriedad del éxito conjunto de intervalo.
+
+La especificación también deja preparada la estructura de ledger técnico, sin fingir que el código actual mide fallos externos que nunca llegan a `ThetaAReplicateRecord`.
+
+No se modifica código, tests, DGP, roster, Analyzer, Evaluator, workflow, seeds ni bancos. No se ejecuta calibración, evaluación, Monte Carlo ni ejecución científica. No se altera main, RMA, Matrix, STATUS o TGCV Core. PR #116 permanece Draft. Se mantienen `calibration_authorized=false`, `execution_authorized=false`, `scientific_execution=false`.
+
+**Siguiente operación:** revisión adversarial del contrato §362, en especial denominadores de intervalos, clasificación de abstenciones, fórmula MCSE ratio, target-manifest completeness y compatibilidad de la equivalencia histórica, antes de preparar cualquier cambio de código.
