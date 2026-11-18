@@ -351,6 +351,7 @@ def materialize_c10s_complete_world(
             assignments, selection, policy_histories, grids_by_history,
             interval_monitor_configs_by_history_ref, interval_monitor_seeds_by_unit,
         )
+        s3_records = tuple(row for row in s3_records if row.history_ref in target_refs)
         candidate = candidate_from_theta_a_interval_records(s3_records)
         sealed = ThetaAIntervalSealer().seal(candidate)
     else:
@@ -360,6 +361,7 @@ def materialize_c10s_complete_world(
             assignments, selection, policy_histories,
             s3_configs_by_history_ref, s3_seeds_by_unit,
         )
+        s3_records = tuple(row for row in s3_records if row.history_ref in target_refs)
         candidate = candidate_from_s3_records(s3_records)
         sealed = ThetaASealer().seal(candidate)
     contract = ThetaAObservationAnalysisContract(
