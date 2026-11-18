@@ -391,6 +391,10 @@ class ThetaAObservationAnalyzer:
             "measurement_upper_bound": measurement_upper,
             "missing_interval_count": missing_count,
             "total_interval_count": total_count,
+            "structural_support_sha256": (
+                _canonical_hash(contract.structural_support_contract)
+                if contract.structural_support_contract is not None else None
+            ),
             **inference,
         }
         return ThetaAObservationAnalysisResult(**result_payload,
