@@ -175,13 +175,13 @@ class NestedPrecisionTests(unittest.TestCase):
         self.assertIsNone(result.projections[0][3])
 
     def test_rmse_projection_is_nonregular_at_zero_mse(self):
-        rows = ((0.0, 0.0), (0.0, 0.0), (0.0, 0.0))
+        rows = tuple((0.0, 0.0) for _ in range(10))
         summary = SimpleNamespace(
             metric="point_rmse",
             mean=0.0,
             mcse=0.0,
             outer_world_contributions=tuple(
-                (f"outer-{index:06d}", 0.0) for index in range(3)
+                (f"outer-{index:06d}", 0.0) for index in range(10)
             ),
         )
         result = analyze_nested_precision(
