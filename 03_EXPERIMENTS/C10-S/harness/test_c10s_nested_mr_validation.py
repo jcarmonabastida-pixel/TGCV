@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from c10s_nested_mr_fixtures import (
+    FIXTURE_GENERATOR_VERSION,
     SEED_SCHEDULE_VERSION,
     deterministic_guard_specs,
     derive_seed,
@@ -43,6 +44,7 @@ class NestedMRFixtureContractTests(unittest.TestCase):
         self.assertEqual(a, derive_seed("fixture_dataset", "F1_balanced_M10_R5", 17))
         self.assertNotEqual(a, b)
         self.assertEqual(SEED_SCHEDULE_VERSION, "C10S_NESTED_MR_SEED_SCHEDULE_1.0")
+        self.assertEqual(FIXTURE_GENERATOR_VERSION, "C10S_NESTED_MR_FIXTURES_1.1")
 
     def test_gaussian_fixture_has_declared_truth_and_shape(self):
         spec = next(x for x in tier_a_specs() if x.cell_id == "F1_balanced_M10_R5")
