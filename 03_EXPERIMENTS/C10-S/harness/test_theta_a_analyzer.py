@@ -120,6 +120,23 @@ class ThetaAObservationAnalyzerTests(unittest.TestCase):
         self.assertEqual(result.status, "STRUCTURAL_SUPPORT_SUFFICIENT")
         self.assertEqual(result.unsupported_target_histories, ())
 
+    def test_combined_target_gap_and_assignment_positivity_preserve_both_causes(self):
+        contract = ThetaAStructuralSupportContract(
+            "support-fixture", "1.0", "target-qx-sha", "source-qx-sha",
+            (
+                ThetaAStructuralSupportRow("h0", 0.6, 0.6, True, True, True, 0.0),
+                ThetaAStructuralSupportRow("h1", 0.4, 0.0, True, True, True, None),
+            ),
+        )
+        result = adjudicate_theta_a_structural_support(contract)
+        self.assertEqual(result.status, "NOT_IDENTIFIED")
+        self.assertEqual(
+            result.reason,
+            "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT+SOURCE_ASSIGNMENT_POSITIVITY_FAILURE",
+        )
+        self.assertEqual(result.unsupported_target_histories, ("h1",))
+        self.assertEqual(result.assignment_positivity_failure_histories, ("h0",))
+
     def test_undefined_or_infeasible_policy_is_contract_error_not_nonidentification(self):
         for row in (
             ThetaAStructuralSupportRow("h0", 1.0, 0.0, False, True, True, None),
