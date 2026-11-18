@@ -503,6 +503,153 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertTrue(result.evaluator_result.correct_adjudication)
         self.assertEqual(result.evaluator_result.disposition, "CORRECT_ABSTENTION")
 
+    def test_target_only_support_without_assignment_failure_abstains_end_to_end(self):
+        fixture = self._fixture(n_units=4)
+        world = SyntheticWorldBuilder().generate(fixture["world_config"], fixture["d2_config"])
+        extra_ref = "TARGET-ONLY-HISTORY-001"
+        extra_unit_id = "TARGET-ONLY-UNIT-001"
+        extra_qx = QXHistoryMass(extra_ref, "TARGET-X-001", "TARGET-H0-001", "TARGET-CC-001", 0.5)
+        target_q_x = tuple(
+            QXHistoryMass(row.history_ref, row.x_ref, row.h0_ref, row.c_c_ref, row.mass * 0.5)
+            for row in world.q_x
+        ) + (extra_qx,)
+        source_unit_ids = {
+            unit.d2_baseline.baseline_history_ref: unit.unit_id for unit in world.units
+        }
+        target_unit_ids = {**source_unit_ids, extra_ref: extra_unit_id}
+        assignment_probabilities = dict(fixture["assignment_config"].probability_a1_by_history)
+        zero_vector = fixture["g_a0"][0].distribution[0][0]
+        one_vector = fixture["g_a1"][0].distribution[0][0]
+        fixture["g_a0"] = fixture["g_a0"] + (JointPolicyHistory(extra_ref, ((zero_vector, 1.0),)),)
+        fixture["g_a1"] = fixture["g_a1"] + (JointPolicyHistory(extra_ref, ((one_vector, 1.0),)),)
+        fixture["r_common"] = fixture["r_common"] + (
+            RCommonPairCertificate(
+                extra_ref, "R-COMMON", "1",
+                fixture["r_common"][0].g_a0_fingerprint,
+                fixture["r_common"][0].g_a1_fingerprint, "COMMON_FIXED",
+            ),
+        )
+        fixture["feasible"][extra_ref] = (zero_vector, one_vector)
+        fixture["initial_by_history"][extra_ref] = FunctionalState(
+            True, "ADMIT", "STANDARD", "PROFILE-1", "1",
+        )
+        support = ThetaAStructuralSupportContract(
+            "SYNTHETIC-TARGET-SOURCE-SUPPORT-001", "1",
+            digest(target_q_x), digest(world.q_x),
+            tuple(
+                ThetaAStructuralSupportRow(
+                    row.history_ref, row.mass, 1.0 / len(world.units),
+                    True, True, True, assignment_probabilities[row.history_ref],
+                ) for row in target_q_x[:-1]
+            ) + (ThetaAStructuralSupportRow(
+                extra_ref, 0.5, 0.0, True, True, True, None,
+            ),),
+        )
+        source_anchor = world.units[0]
+        target_materialization = SyntheticThetaATargetHistory(
+            q_x=extra_qx,
+            potential_unit_id=extra_unit_id,
+            x_values=source_anchor.x,
+            h0_value=source_anchor.h0,
+            c_c_values=source_anchor.c_c,
+            initial_functional_state=fixture["initial_by_history"][extra_ref],
+            provenance_ref="SYNTHETIC-TEST-DGP-TARGET-BASELINE-001",
+        )
+        fixture["theta_a_population_args"] = {
+            "theta_a_q_x": target_q_x,
+            "theta_a_unit_id_by_history": target_unit_ids,
+            "theta_a_structural_support_contract": support,
+            "theta_a_target_history_materializations": (target_materialization,),
+        }
+        with self.assertRaisesRegex(ContractError, "every and only target-only histories"):
+            incomplete_fixture = dict(fixture)
+            incomplete_fixture["theta_a_population_args"] = {
+                key: value for key, value in fixture["theta_a_population_args"].items()
+                if key != "theta_a_target_history_materializations"
+            }
+            self._run_pipeline(incomplete_fixture)
+        with self.assertRaisesRegex(ContractError, "dimensions must match"):
+            replace(
+                target_materialization,
+                x_values=target_materialization.x_values + (999.0,),
+            ).validate(
+                source_world=world,
+                allowed_h0_values={label for label, _ in fixture["world_config"].h0_distribution},
+            )
+        with self.assertRaisesRegex(ContractError, "X/H0/C_c anchors"):
+            replace(target_materialization, h0_value="OUTSIDE-DGP-SUPPORT").validate(
+                source_world=world,
+                allowed_h0_values={label for label, _ in fixture["world_config"].h0_distribution},
+            )
+        result = self._run_pipeline(fixture)
+        self.assertEqual(len(result.world.units), 4)
+        self.assertEqual(len(result.theta_a_truth.event_history_manifest), 10)
+        self.assertEqual(len(result.theta_a_assignments.assignments), 4)
+        self.assertEqual(result.analyzer_result.identification, "NOT_IDENTIFIED")
+        self.assertEqual(
+            result.analyzer_result.abstention_reason,
+            "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT",
+        )
+        self.assertEqual(result.analyzer_result.missing_target_histories, (extra_ref,))
+        self.assertEqual(result.analyzer_result.assignment_positivity_failure_histories, ())
+        self.assertAlmostEqual(result.analyzer_result.target_q_x_coverage, 0.5)
+        self.assertTrue(result.evaluator_result.truth_within_bounds)
+        self.assertTrue(result.evaluator_result.correct_adjudication)
+        self.assertEqual(result.evaluator_result.disposition, "CORRECT_ABSTENTION")
+
+    def test_source_support_strict_superset_of_target_is_benign_end_to_end(self):
+        fixture = self._fixture(n_units=4)
+        world = SyntheticWorldBuilder().generate(fixture["world_config"], fixture["d2_config"])
+        excluded_source_history = world.q_x[-1].history_ref
+        target_rows = world.q_x[:-1]
+        target_mass = 1.0 / len(target_rows)
+        target_q_x = tuple(
+            QXHistoryMass(row.history_ref, row.x_ref, row.h0_ref, row.c_c_ref, target_mass)
+            for row in target_rows
+        )
+        target_refs = {row.history_ref for row in target_q_x}
+        target_unit_ids = {
+            unit.d2_baseline.baseline_history_ref: unit.unit_id
+            for unit in world.units
+            if unit.d2_baseline.baseline_history_ref in target_refs
+        }
+        fixture["g_a0"] = tuple(row for row in fixture["g_a0"] if row.history_ref in target_refs)
+        fixture["g_a1"] = tuple(row for row in fixture["g_a1"] if row.history_ref in target_refs)
+        fixture["r_common"] = tuple(row for row in fixture["r_common"] if row.history_ref in target_refs)
+        fixture["feasible"] = {
+            history_ref: vectors for history_ref, vectors in fixture["feasible"].items()
+            if history_ref in target_refs
+        }
+        support = ThetaAStructuralSupportContract(
+            "SYNTHETIC-SOURCE-SUPERSET-TARGET-SUBSET-001", "1",
+            digest(target_q_x), digest(world.q_x),
+            tuple(
+                ThetaAStructuralSupportRow(
+                    row.history_ref, row.mass, 1.0 / len(world.units),
+                    True, True, True,
+                    dict(fixture["assignment_config"].probability_a1_by_history)[row.history_ref],
+                ) for row in target_q_x
+            ),
+        )
+        fixture["theta_a_population_args"] = {
+            "theta_a_q_x": target_q_x,
+            "theta_a_unit_id_by_history": target_unit_ids,
+            "theta_a_structural_support_contract": support,
+        }
+        result = self._run_pipeline(fixture)
+        self.assertEqual(len(world.q_x), 4)
+        self.assertEqual(len(result.theta_a_truth.event_history_manifest), 6)
+        self.assertEqual(len(result.theta_a_assignments.assignments), 3)
+        self.assertNotIn(excluded_source_history, target_refs)
+        self.assertEqual(result.analyzer_result.identification, "IDENTIFIED")
+        self.assertEqual(result.analyzer_result.abstention_reason, "")
+        self.assertEqual(result.analyzer_result.missing_target_histories, ())
+        self.assertEqual(result.analyzer_result.assignment_positivity_failure_histories, ())
+        self.assertAlmostEqual(result.analyzer_result.target_q_x_coverage, 1.0)
+        self.assertTrue(result.evaluator_result.truth_within_bounds)
+        self.assertTrue(result.evaluator_result.correct_adjudication)
+        self.assertEqual(result.evaluator_result.disposition, "CORRECT_IDENTIFICATION")
+
     def test_source_assignment_positivity_failure_runs_through_generated_world_to_evaluator(self):
         fixture = self._fixture(n_units=4)
         world = SyntheticWorldBuilder().generate(fixture["world_config"], fixture["d2_config"])
