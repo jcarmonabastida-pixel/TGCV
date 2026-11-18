@@ -123,8 +123,18 @@ class ThetaAObservationEvaluator:
             if result.identification == "NOT_IDENTIFIED" and result.abstention_reason == "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT":
                 raise ContractError("Analyzer falsely reported structural non-identification under complete support")
             support_by_history = {row.history_ref: row for row in contract.structural_support_contract.rows}
+            source_only_refs = set(contract.source_only_history_refs)
             for row in evidence.rows:
-                support_row = support_by_history[row["history_ref"]]
+                history_ref = row["history_ref"]
+                if history_ref in source_only_refs:
+                    # Source-only units remain part of the exact randomized
+                    # assignment/evidence roster, but they are outside q_X*.
+                    # Their assignment is checked against the source bundle
+                    # below; target structural-support propensities do not apply.
+                    continue
+                support_row = support_by_history.get(history_ref)
+                if support_row is None:
+                    raise ContractError("Evaluator found an undeclared history outside target structural support")
                 expected_probability = (
                     support_row.assignment_probability_a1
                     if row["assigned_arm"] == 1
