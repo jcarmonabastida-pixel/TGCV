@@ -3139,16 +3139,52 @@ class ThetaAPolicyAssignmentConfig:
     randomization_salt: str
     probability_a1_by_history: tuple[tuple[str, float], ...]
 
-    def validate(self, world: "SyntheticWorldBundle") -> None:
+    def validate(
+        self,
+        world: "SyntheticWorldBundle",
+        structural_support_contract: object | None = None,
+    ) -> None:
         refs = {row.history_ref for row in world.q_x}
         supplied = [row[0] for row in self.probability_a1_by_history]
         if not all((self.mechanism_id, self.mechanism_version, self.randomization_salt)):
             raise ContractError("theta_A policy-assignment mechanism identity/version/salt required")
         if len(supplied) != len(set(supplied)) or set(supplied) != refs:
-            raise ContractError("theta_A policy-assignment probabilities must cover q_X* histories exactly")
-        for history_ref, probability in self.probability_a1_by_history:
-            if not math.isfinite(probability) or not 0.0 < probability < 1.0:
-                raise ContractError(f"theta_A assignment positivity fails for {history_ref}")
+            raise ContractError("theta_A policy-assignment probabilities must cover source q_X histories exactly")
+        probabilities = dict(self.probability_a1_by_history)
+        boundary = tuple(sorted(
+            history_ref for history_ref, probability in probabilities.items()
+            if not math.isfinite(probability) or probability in (0.0, 1.0)
+        ))
+        if boundary and structural_support_contract is None:
+            raise ContractError(
+                "boundary theta_A assignment probabilities require an explicit structural-support contract"
+            )
+        if any(not math.isfinite(probability) or not 0.0 <= probability <= 1.0
+               for probability in probabilities.values()):
+            raise ContractError("theta_A assignment probabilities must lie in [0,1]")
+        if structural_support_contract is not None:
+            validate_contract = getattr(structural_support_contract, "validate", None)
+            if not callable(validate_contract):
+                raise ContractError("structural-support contract must expose its validator")
+            validate_contract()
+            if getattr(structural_support_contract, "source_q_x_sha256", None) != digest(world.q_x):
+                raise ContractError("assignment structural-support contract does not bind source q_X")
+            support_rows = {
+                row.history_ref: row for row in getattr(structural_support_contract, "rows", ())
+            }
+            source_masses = {row.history_ref: row.mass for row in world.q_x}
+            if not refs.issubset(support_rows):
+                raise ContractError("structural-support contract must cover every source q_X history")
+            for history_ref in refs:
+                support_row = support_rows[history_ref]
+                if (not math.isclose(support_row.source_mass, source_masses[history_ref],
+                                     rel_tol=0.0, abs_tol=1e-12)
+                        or not math.isclose(support_row.assignment_probability_a1,
+                                            probabilities[history_ref],
+                                            rel_tol=0.0, abs_tol=1e-12)):
+                    raise ContractError(
+                        f"assignment mechanism differs from structural-support contract for {history_ref}"
+                    )
 
 
 @dataclass(frozen=True)
