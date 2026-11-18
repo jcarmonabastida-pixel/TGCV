@@ -34,6 +34,7 @@ class ThetaAObservationAnalysisContract:
     source_q_x_sha256: str | None = None
     target_g_a0_sha256: str | None = None
     target_g_a1_sha256: str | None = None
+    source_only_history_refs: tuple[str, ...] = ()
 
     def validate(self) -> None:
         if not all((self.q_x_sha256, self.assignment_bundle_sha256,
@@ -46,6 +47,13 @@ class ThetaAObservationAnalysisContract:
                     self.target_g_a0_sha256, self.target_g_a1_sha256
                 ))):
             raise ContractError("target-population g_A fingerprints must be supplied together and non-empty")
+        target_refs = set(mapping)
+        source_only_refs = self.source_only_history_refs
+        if (len(source_only_refs) != len(set(source_only_refs))
+                or any(not ref or ref in target_refs for ref in source_only_refs)):
+            raise ContractError("source-only history refs must be unique and disjoint from target q_X")
+        if source_only_refs and not (self.source_q_x_sha256 or self.q_x_sha256):
+            raise ContractError("source-only histories require a source q_X provenance fingerprint")
         mapping = dict(self.q_x_mass_by_history)
         if len(mapping) != len(self.q_x_mass_by_history) or not mapping:
             raise ContractError("q_X target masses must have unique, non-empty history support")
@@ -203,8 +211,13 @@ class ThetaAObservationAnalyzer:
         observed_histories = {row["history_ref"] for row in rows}
         missing = tuple(sorted(set(qx) - observed_histories))
         unexpected = observed_histories - set(qx)
-        if unexpected:
-            raise ContractError("sealed evidence contains histories outside the q_X target support")
+        if unexpected != set(contract.source_only_history_refs):
+            raise ContractError("sealed evidence source-only histories do not match the declared source/target support difference")
+        # Source-only units belong to the randomized source assignment roster
+        # and remain in sealed provenance, but they are outside q_X* and must
+        # not enter target-standardized arm counts or outcome aggregation.
+        rows = tuple(row for row in rows if row["history_ref"] in qx)
+        observed_histories = {row["history_ref"] for row in rows}
         by_unit: dict[str, dict[str, Any]] = {}
         for row in rows:
             unit = row["unit_id"]
@@ -327,8 +340,15 @@ class ThetaAObservationAnalyzer:
             bucket.append(row)
         observed_histories = {bucket[0]["history_ref"] for bucket in by_unit.values()}
         missing_histories = tuple(sorted(set(qx) - observed_histories))
-        if observed_histories - set(qx):
-            raise ContractError("interval evidence contains histories outside q_X support")
+        unexpected = observed_histories - set(qx)
+        if unexpected != set(contract.source_only_history_refs):
+            raise ContractError("interval evidence source-only histories do not match the declared source/target support difference")
+        rows = tuple(row for row in rows if row["history_ref"] in qx)
+        by_unit = {}
+        for row in rows:
+            by_unit.setdefault(row["unit_id"], []).append(row)
+        observed_histories = {bucket[0]["history_ref"] for bucket in by_unit.values()}
+        missing_histories = tuple(sorted(set(qx) - observed_histories))
         invariant_fields = ("history_ref", "assignment_bundle_sha256", "q_x_sha256",
                             "g_a0_sha256", "g_a1_sha256", "r_common_sha256",
                             "assigned_arm", "assignment_probability", "assigned_vector_sha256",
