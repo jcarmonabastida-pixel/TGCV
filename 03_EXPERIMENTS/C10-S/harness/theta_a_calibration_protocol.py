@@ -264,14 +264,14 @@ def build_theta_a_seed_bank(
                 outer_id = f"outer-{m:06d}"
                 root = (
                     f"TGCV-C10S-THETA-A-SEED-v1|{design.namespace}|{bank}|"
-                    f"{scenario.scenario_id}|{scenario.scenario_version}|{scenario.dgp_profile_sha256}|{n_units}|{outer_id}"
+                    f"{scenario.scenario_id}|{scenario.scenario_version}|{n_units}|{outer_id}"
                 )
                 world_seed = _seed(root + "|world")
                 world_id = "theta-a-world-" + _digest(root + "|world-id")[:24]
                 roster_id = "theta-a-roster-" + _digest(root + "|roster-id")[:24]
                 unit_id_prefix = scenario.unit_id_prefix + "-" + _digest(root + "|unit-prefix")[:8]
                 for r in range(design.assignment_replicates_r):
-                    run_root = root + f"|assignment-{r:06d}"
+                    run_root = root + f"|profile-{scenario.dgp_profile_sha256}|assignment-{r:06d}"
                     rows.append(ThetaASeedAssignment(
                         bank=bank,
                         scenario_id=scenario.scenario_id,
@@ -344,9 +344,9 @@ def validate_theta_a_seed_banks(
             scenario = scenario_map[(row.scenario_id, row.scenario_version)]
             root = (
                 f"TGCV-C10S-THETA-A-SEED-v1|{design.namespace}|{bank}|"
-                f"{scenario.scenario_id}|{scenario.scenario_version}|{scenario.dgp_profile_sha256}|{row.n_units}|{row.outer_world_id}"
+                f"{scenario.scenario_id}|{scenario.scenario_version}|{row.n_units}|{row.outer_world_id}"
             )
-            run_root = root + f"|assignment-{row.assignment_replicate:06d}"
+            run_root = root + f"|profile-{scenario.dgp_profile_sha256}|assignment-{row.assignment_replicate:06d}"
             expected_derivation = (
                 _seed(root + "|world"),
                 "theta-a-world-" + _digest(root + "|world-id")[:24],
