@@ -22,6 +22,7 @@ from c10s_synthetic_components import (
     IntervalGrid,
     JointPolicyHistory,
     QXHistoryMass,
+    digest,
     RCommonPairCertificate,
     SyntheticWorldBuilder,
     SyntheticWorldBundle,
@@ -59,6 +60,7 @@ from theta_a_interval_observation import (
 )
 from theta_a_analyzer import (
     ThetaAObservationAnalysisContract,
+    ThetaAStructuralSupportContract,
     ThetaAObservationAnalysisResult,
     ThetaAObservationAnalyzer,
 )
@@ -197,6 +199,9 @@ def materialize_c10s_complete_world(
     interval_monitor_seeds_by_unit: dict[str, int] | None = None,
     theta_a_confidence_level: float | None = None,
     theta_a_unit_independence_certified: bool = False,
+    theta_a_q_x: Sequence[QXHistoryMass] | None = None,
+    theta_a_unit_id_by_history: dict[str, str] | None = None,
+    theta_a_structural_support_contract: ThetaAStructuralSupportContract | None = None,
 ) -> C10SCompleteWorldResult:
     """Materialize one coherent world through D2/ΔT_acc*/Reach/trajectory and
     the direct-g_A → EventHistory → S3 → Sealer → Analyzer → Evaluator path.
@@ -230,10 +235,18 @@ def materialize_c10s_complete_world(
     d2_truth = builder.evaluate_complete_vcont_truth(world, d2_histories_by_unit_z, grid)
     structural_deltas = evaluate_d2_structural_deltas(world, structural_pairs)
 
+    target_q_x = tuple(theta_a_q_x) if theta_a_q_x is not None else world.q_x
+    target_unit_ids = theta_a_unit_id_by_history or {
+        unit.d2_baseline.baseline_history_ref: unit.unit_id for unit in world.units
+    }
+    if (len({row.history_ref for row in target_q_x}) != len(target_q_x)
+            or set(target_unit_ids) != {row.history_ref for row in target_q_x}):
+        raise ContractError("theta_A target q_X and target-unit identities must cover exactly the same histories")
     theta_truth = compute_theta_a_vcont_truth_from_event_histories(
-        world, world.q_x, g_a0, g_a1, feasible_vectors_by_history,
+        world, target_q_x, g_a0, g_a1, feasible_vectors_by_history,
         r_common_certificates, event_histories_by_policy, grid,
         estimand_version=estimand_version, outcome_version=outcome_version,
+        unit_id_by_history=target_unit_ids,
     )
     policy_histories = tuple(event_histories_by_policy.values())
     run_ids = {history.run_id for history in d2_histories_by_unit_z.values()}
@@ -276,8 +289,8 @@ def materialize_c10s_complete_world(
         candidate = candidate_from_s3_records(s3_records)
         sealed = ThetaASealer().seal(candidate)
     contract = ThetaAObservationAnalysisContract(
-        q_x_mass_by_history=tuple((row.history_ref, row.mass) for row in world.q_x),
-        q_x_sha256=assignments.q_x_sha256,
+        q_x_mass_by_history=tuple((row.history_ref, row.mass) for row in target_q_x),
+        q_x_sha256=digest(target_q_x),
         source_q_x_sha256=assignments.q_x_sha256,
         assignment_bundle_sha256=assignments.result_sha256,
         g_a0_sha256=assignments.g_a0_sha256,
@@ -291,6 +304,7 @@ def materialize_c10s_complete_world(
         ),
         confidence_level=theta_a_confidence_level,
         unit_independence_certified=theta_a_unit_independence_certified,
+        structural_support_contract=theta_a_structural_support_contract,
     )
     analysis = ThetaAObservationAnalyzer().analyze(sealed, contract)
     evaluation = ThetaAObservationEvaluator().evaluate(
