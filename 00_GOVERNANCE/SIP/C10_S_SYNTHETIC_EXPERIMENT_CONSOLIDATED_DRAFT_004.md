@@ -925,3 +925,15 @@ Se añade una prueba de integración que recorre mundo DGP → asignación deter
 
 **Estado:** implementación y pruebas añadidas en la rama de investigación; validación estática pendiente de revisión completa y EP-02/replay. No se ha ejecutado calibración ni se ha congelado el roster. No cambia Gate 130 ni autoriza una población B1/UE.
 **Intento EP-02 Run 837:** GitHub Actions `44283822323`, SHA `7cd08eb55db8e90f7e55e716fd7d9263cd2a0d2b`, terminó como `INFRASTRUCTURE_FAILURE / NOT_EXECUTED`: el checkout reintentó tres veces y no pudo conectar con `github.com:443`; compilación, suite y replay quedaron omitidos. No es un fallo de pruebas ni un PASS. El intento precede a los últimos cambios de generador, pipeline, validación del resultado y cobertura de causas concurrentes. No se ha iniciado un nuevo run.
+
+## 347. Soporte fuente superset del soporte objetivo — regresión EP-02 Run 838 (2026-11-18)
+
+Se corrige la condición de inclusión entre poblaciones: el soporte fuente puede contener historias que no pertenecen a q_X*. No se exige que cada historia fuente aparezca en el contrato objetivo. Se mantiene la cobertura íntegra de q_X* y la declaración/vinculación de propensiones frontera para las historias objetivo que sí pertenecen a la fuente. La corrección conserva la separación entre historias solo-fuente, solo-objetivo, positividad estructural fallida y políticas/intervenciones no factibles o indefinidas.
+
+**EP-02 Run 838:** GitHub Actions `44322864147`; PASS. Commit probado `8e31a68633a38eb97514049a2deba978ff503034`, descendiente temporal del commit de código `12b55384ea6ca8db489bc8d16d0bf73cfbc4a823`, sin cambios de código fuente/harness entre ambos; el commit probado añadió únicamente el disparador temporal sentinel-scoped y el sentinel requerido para ejecutar el workflow autorizado. Compilación PASS; suite primaria 311/311 PASS (8.949 s); replay limpio 311/311 PASS (8.908 s), desde cierre de fuentes independiente e idéntico.
+
+Artefactos: payload `14435077965`, SHA-256 ZIP `4f192dad5823519bb69f43f028513aa0819dd52674a7c616a6dcb9a9fd071152`; manifiesto `14434738650`, SHA-256 ZIP `ce2936be191b92ba2c8cb3f4e1002887c154d52b01edde960dea05ef5d1b2c38`. Run: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44322864147.
+
+Tras la ejecución, el sentinel temporal fue eliminado y el workflow restaurado al contenido original exclusivamente `workflow_dispatch`; blob SHA restaurado `28471861a1c94038a11b5997a0b0e761b2659466`. Commits de limpieza: restauración `bc91a72f37c50706132afa988e5a75cd9308c11c`, eliminación del sentinel `d6fcf80952ef88e83c92547bc529925a3ff1373c`.
+
+**Alcance:** PASS técnico del contrato software de soporte fuente/objetivo y de la suite EP-02; no valida calibración, MCSE, potencia, Type-I error, identificación científica ni contribución causal a Value. No se generó banco ni se ejecutó calibración/experimento científico. El roster permanece sin congelar.
