@@ -3813,3 +3813,63 @@ El protocolo distingue:
 Propone, sin congelarlos, niveles 90/95%, B=2.000, K=2.000 y una cuadrícula M={2,3,5,10,30}, R={2,5,20}; incluye criterios candidatos de cobertura con tolerancia ±2 puntos porcentuales y Wilson 95%. Los valores requieren revisión de coste y congelación previa a cualquier observación de resultados. El umbral para RMSE cercano a cero sigue OPEN.
 
 **Siguiente gate:** revisión integrada del protocolo, justificación real del contrato de independencia R, decisión scale-aware para RMSE próximo a cero, reducción/coste de la cuadrícula y congelación del contrato de validación. Después requerirá autorización explícita propia para la ejecución numérica remota. No se han generado fixtures, seeds, bancos ni resultados numéricos. La validación numérica no se confunde con ejecución científica C10-S.
+
+
+## 388. Cierre del protocolo numérico N/M/R y corrección de la ley bootstrap (2026-11-18)
+
+**Estado:** NUMERICAL_METHOD_VALIDATION_DESIGN_FROZEN / IMPLEMENTATION_CORRECTED / PASS_STATIC / NOT_NUMERICALLY_EXECUTED / NO_EXECUTION_AUTHORIZATION.
+
+### 388.1 Revisión integrada y discrepancias encontradas
+
+La revisión del protocolo v001 frente a §§382–386 y al código real encontró dos discrepancias que impedían cerrar el gate:
+
+1. La API exigía identidad, versión y base de independencia para el muestreo intramundo R, pero solo recibía un modo para M. §383.3 exige que la declaración exterior sea completa y validada como modelo. Se incorporan ahora `outer_world_sampling_contract_id`, `outer_world_sampling_contract_version` y `outer_world_sampling_independence_basis`; el modo IID exterior sin esos tres campos falla cerrado. Los tres campos se conservan en el resultado junto a los metadatos equivalentes de R.
+2. El bootstrap descartaba réplicas en las que todos los clusters seleccionados procedían del mismo world_id. Esa exclusión condicionaba la ley bootstrap a diversidad observada de IDs y alteraba la distribución de remuestreo. Se retienen ahora todas las réplicas exteriores generadas; cada copia seleccionada recibe su propio remuestreo interior R. En entradas balanceadas válidas, `valid_bootstrap_replicates=B`; los casos de frontera y no regularidad se conservan y adjudican, no se eliminan.
+
+El método pasa a versión `TGCV_NESTED_MR_BOOTSTRAP 1.2`.
+
+### 388.2 Tests estáticos y evidencia remota
+
+Se añaden tests para:
+- exigir identidad/versionado/base al declarar IID para M;
+- retener las réplicas all-same-source-cluster;
+- conservar la exigencia equivalente ya introducida para R;
+- mantener los tests de frontera, RMSE, soporte M<3 y reconciliación del MCSE legado.
+
+**Commit exacto probado:** `324e198e6f4fd1ba30dbf4bfb2150d1dd13930a4`.
+
+**Workflow:** [44389755243](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44389755243) — SUCCESS.
+
+- Compilación: PASS.
+- Tests: 37/37 PASS, 0 FAIL, 0 ERROR.
+  - `test_theta_a_nested_mc_precision`: 15.
+  - `test_theta_a_calibration_protocol`: 22.
+- Runtime: CPython 3.12.10, Ubuntu 24.04, x86_64.
+- Artifact ID: `14468020316`.
+- SHA-256: `52ab993bb3dc11945ea919d1771a6dd39f0a3e63486eb6289f2e3a67b413e4a6`.
+
+Esta evidencia es PASS_STATIC del contrato de software. No es una ejecución numérica de las fixtures ni evidencia de cobertura estadística.
+
+### 388.3 Protocolo numérico cerrado
+
+El artefacto `C10_S_NESTED_MR_BOOTSTRAP_NUMERICAL_VALIDATION_PROTOCOL_DRAFT_001.md` se actualiza a versión 002 y queda `FROZEN_FOR_NUMERICAL_METHOD_VALIDATION / NOT_EXECUTED`.
+
+Las decisiones de cierre son:
+
+- **M y R:** contratos sintéticos separados, ambos con identidad, versión y base de independencia; el contrato fixture no certifica los mecanismos reales de C10-S.
+- **RMSE:** la validación inferencial se realiza en escala MSE; se valida el guard exact-zero `RMSE_DELTA_NONREGULAR`. No se inventa un umbral universal de MSE próximo a cero ni se acepta cobertura delta RMSE en esta fase.
+- **Cobertura:** intervalo percentil 95%, coherente con la implementación actual; K=1.000 y B=1.000 para Tier A regular; K=500 y B=500 para Tier B de fronteras/diagnóstico.
+- **Tier A:** F1 Gaussiano (tres celdas) y F5 beta-binomial (`alpha=2, beta=2`), con diseños (M,R)=(10,5) y (30,20). Se evalúa cobertura de componentes within y between raw; proyección MCSE se informa con disponibilidad y cobertura separadas.
+- **Tier B:** F1 bajo soporte, F2 frontera, F3 within nulo, F4 degeneración, F5 Bernoulli regular/raros/degenerados y F6 MSE positivo/cero; diseños (3,2), (10,5) y control (2,2). Son diagnósticos de frontera/abstención, no una exigencia universal de cobertura nominal.
+- **Adjudicación:** cada celda regular pasa solo si cobertura empírica 95% está en [0,93;0,97] y el Wilson 95% contiene 0,95. La proyección MCSE requiere además disponibilidad ≥95%; la cobertura condicionada a emisión no basta por sí sola.
+- **Exclusiones:** contrastes A−B pareados, coupling de R entre escenarios, comparaciones entre N, diseños R desbalanceados/informativos y no evaluabilidad no quedan validados por este protocolo.
+
+Se fija así un alcance finito y no se amplían celdas, seeds, K/B o tolerancias después de observar resultados. Cualquier cambio requiere versión nueva previa a la ejecución.
+
+### 388.4 Límites científicos y gobernanza
+
+Este cierre valida la definición del método y el diseño de su futura validación numérica; no valida aún la distribución de cobertura, sesgo, potencia, estabilidad empírica ni suficiencia de M. Tampoco demuestra que los mundos M reales de C10-S sean IID o que las asignaciones R sean condicionalmente IID. Esas son condiciones de aplicación separadas y deben justificarse con el contrato de asignación del experimento.
+
+No se han generado fixtures, seeds, resultados, bancos ni simulaciones. No se ha ejecutado Generator, Analyzer, Evaluator, DGP, calibración ni workflow científico. No se alteran el resumen ni el MCSE legado. `main` permanece intacta; PR #116 continúa Draft; `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente operación:** construir el generador de fixtures analíticos y el contrato de ejecución remota acotado, con estimación de recursos, manifiesto y hashes. Revisarlo antes de solicitar autorización independiente para ejecutar exclusivamente la validación numérica del método. No iniciar todavía la validación numérica ni el banco C10-S.
