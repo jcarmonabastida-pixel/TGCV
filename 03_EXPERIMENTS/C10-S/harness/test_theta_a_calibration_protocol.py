@@ -15,6 +15,7 @@ from theta_a_calibration_protocol import (
     ThetaAReplicateRecord,
     build_theta_a_seed_bank,
     s3_seeds_by_unit,
+    run_theta_a_calibration_replicates,
     theta_a_pipeline_inference_options,
     summarize_theta_a_calibration,
     validate_theta_a_seed_banks,
@@ -217,6 +218,16 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         rows = build_theta_a_seed_bank(design, "calibration")
         with self.assertRaises(ThetaACalibrationError):
             validate_theta_a_seed_banks(rows[:-1], (), design=design)
+
+    def test_replicate_runner_requires_explicit_execution_authorization(self):
+        design = self._design()
+        called = []
+        with self.assertRaisesRegex(ThetaACalibrationError, "execution_authorized=True"):
+            run_theta_a_calibration_replicates(
+                design, (), lambda *args: called.append(args),
+                bank="calibration", execution_authorized=False,
+            )
+        self.assertEqual(called, [])
 
     def test_s3_unit_seeds_are_stable_and_distinct(self):
         first = s3_seeds_by_unit(12345, ("u1", "u2", "u3"))
