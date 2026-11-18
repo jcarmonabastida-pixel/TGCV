@@ -3151,3 +3151,107 @@ No se define Type-I error ni potencia: continúan `NOT_DEFINED_NO_TEST_PROCEDURE
 **Siguiente bloque:** construir el dimensionamiento N/M/R desde la distribución sintética y los estimandos/targets que se aprueben, usando simulación analítica/oráculos antes de abrir bancos. No transferir automáticamente N=700 de P178, M=100 ni los MCSE históricos. Antes de una decisión sobre targets confirmatorios, el diseño debe permanecer sin targets numéricos y el roster continúa `NOT_FROZEN`.
 
 **Controles:** se modifican el protocolo focal, su test unitario y el README técnico de harness, más este maestro en `research/c10-s-consolidation-draft`. No se cambian DGP, Analyzer, Evaluator, roster, seeds, workflows, RMA, Matrix, STATUS, Core ni `main`. No se ejecutan tests, compilación, DGP, Analyzer/Evaluator, workflows, calibración, Monte Carlo ni experimento científico. PR #116 permanece Draft. `implementation_authorized=true`, `technical_test_execution_authorized=false`, `workflow_dispatch_authorized=false`, `calibration_authorized=false`, `scientific_execution=false`, `execution_authorized=false`.
+
+
+## 379. Marco integrado de dimensionamiento N/M/R por asignación de precisión (2026-11-18)
+
+**Estado:** `DESIGN_FRAMEWORK_DEFINED / NUMERIC_DIMENSIONING_OPEN / NO_TARGETS_PROMOTED / NOT_EXECUTED`. Este apartado integra la lógica de dimensionamiento; no selecciona tamaños confirmatorios ni autoriza calibración, tests o ejecución.
+
+### 379.1 Separación de funciones de N, M y R
+
+El dimensionamiento no debe tratar N, M y R como tres multiplicadores intercambiables:
+
+- **N — unidades dentro de cada mundo:** determina la representación finita de la población sintética y de su soporte observado. Puede cambiar la presencia de estratos, la disponibilidad de brazos, el comportamiento de identificación/abstención del Analyzer y la aproximación a la distribución objetivo q_X*. Por tanto, N no es únicamente un parámetro de precisión. Su variación solo es comparable manteniendo invariante la población objetivo, el DGP y el estimando; si altera masas, composición o población representada, redefine el objeto estimado.
+- **M — mundos exteriores:** determina cuántas realizaciones independientes de la distribución objetivo exterior se observan. La interpretación inferencial de su variabilidad y cualquier MCSE entre mundos dependen íntegramente del contrato de muestreo exterior de §377. Semillas distintas o identificadores diferentes no certifican por sí solos IID.
+- **R — asignaciones/replicaciones dentro de un mundo:** reduce el ruido de asignación u observación intramundo y permite caracterizar la variación condicional a un mundo. No genera nuevos mundos ni sustituye M. Las R de un mismo mundo no se contarán como observaciones exteriores independientes.
+
+La unidad de agregación y la estructura N×M×R siguen siendo las establecidas en §§373–378. Las comparaciones entre escenarios conservan el emparejamiento por `world_id` y las reglas de contrastes pareados de §374.
+
+### 379.2 Descomposición de varianza para métricas con contribución por mundo
+
+Para una métrica escalar cuyo estimador por mundo pueda expresarse como media de contribuciones R, sea `q̂_m(R)` el estimador del mundo m, `μ_m` su esperanza condicional y `σ²_m` la varianza intramundo de la contribución individual. Bajo mundos exteriores IID, varianzas finitas y la estructura de muestreo declarada:
+
+\[
+\operatorname{Var}(\hat q_m(R))
+=\operatorname{Var}_M(\mu_m)
++\frac{\mathbb E_M(\sigma_m^2)}{R}.
+\]
+
+Para la media de M mundos, la aproximación correspondiente es:
+
+\[
+\operatorname{MCSE}^2
+\approx
+\frac{\sigma^2_{\mathrm{between}}+
+\sigma^2_{\mathrm{within}}/R}{M}.
+\]
+
+Si se fija una precisión Monte Carlo objetivo δ para esa media, la relación algebraica orientativa es:
+
+\[
+M\geq
+\frac{\sigma^2_{\mathrm{between}}+
+\sigma^2_{\mathrm{within}}/R}{\delta^2}.
+\]
+
+Y, dado M:
+
+\[
+R\geq
+\frac{\sigma^2_{\mathrm{within}}}
+{M\delta^2-\sigma^2_{\mathrm{between}}},
+\]
+
+solo cuando el denominador es estrictamente positivo. Si `Mδ² ≤ σ²_between`, aumentar R no puede alcanzar el objetivo: se requiere aumentar M, revisar δ o reconocer que la precisión solicitada no es factible al coste disponible.
+
+Estas expresiones son una guía de asignación de precisión para medias/proporciones con contribución por mundo bien definida. No se aplican automáticamente a ratios, RMSE transformados, cobertura condicional, métricas con denominadores aleatorios ni estimandos con elegibilidad/selección. Para ratios se mantiene el tratamiento de influencia/cluster especificado en §§362.3–364.5. Para contrastes pareados se estima la variabilidad de las diferencias intrapar por `world_id`; no se restan MCSE marginales ni se reconstruye el error del contraste a partir de errores marginales independientes.
+
+### 379.3 Cómo obtener los componentes sin contaminar la evaluación
+
+Los componentes between/within no se inventarán ni se derivarán de los valores candidatos históricos. Su estimación requiere un piloto o calibración autorizada, con:
+
+1. estimando, población objetivo, métrica, denominador y regla de elegibilidad fijados y versionados;
+2. contrato de muestreo exterior M completo y verificable, conforme a §377;
+3. diseño de R que permita separar variación entre mundos de variación intramundo;
+4. estimación de componentes de varianza e incertidumbre de esas estimaciones;
+5. separación entre streams/datos usados para dimensionar y los reservados para evaluación confirmatoria;
+6. regla de parada y criterio de precisión fijados antes de abrir el banco confirmatorio.
+
+Un piloto puede orientar el coste y la precisión alcanzable; no se convertirá retrospectivamente en evidencia confirmatoria ni se usarán sus resultados para reajustar targets después de observar el banco final.
+
+### 379.4 N como análisis de estabilidad de representación
+
+N se estudiará en una cuadrícula de sensibilidad, separada de la asignación M/R. Para cada N candidato se verificará:
+
+- invariancia del DGP, población objetivo, estimando y masas generadoras;
+- regla explícita de acoplamiento/coupling entre tamaños N, sin asumir que las muestras anidadas o semillas distintas producen comparabilidad;
+- estabilidad de q_X* y del soporte representado;
+- frecuencia de falta de soporte, identificación, abstención y adjudicación;
+- estabilidad de la recuperación de θ_A únicamente en escenarios/replicaciones identificados;
+- variación de intervalos y métricas operacionales, y coste computacional observado.
+
+Si al cambiar N cambian las masas objetivo, la composición generadora o el estimando, el resultado no se describirá como una simple mejora de precisión: será un cambio de población/objeto y requerirá una especificación distinta.
+
+### 379.5 Aplicación al roster y al registro de métricas
+
+El dimensionamiento se realizará por escenario × N × métrica, respetando el registro único de §378:
+
+- Las métricas operacionales de identificación, abstención y adjudicación se calculan sobre el conjunto de R conforme a sus denominadores declarados.
+- Bias, MAE, RMSE y recuperación puntual se evalúan solo en escenarios y réplicas elegibles identificados, sin imputar cero ni convertir la no-identificación en error puntual.
+- Cobertura y anchura se calculan solo cuando el contrato de intervalo y su denominador sean aplicables.
+- El escenario target-only se evalúa por identificación/no-identificación y abstención; no se le atribuyen métricas de error puntual o cobertura sobre una verdad no identificada por el soporte fuente.
+- Los contrastes entre escenarios se calculan sobre parejas válidas por `world_id` y se declaran `NOT_EVALUABLE` cuando falte una pareja o no exista denominador válido.
+
+La precisión Monte Carlo del resumen entre mundos, la precisión de recuperación del Analyzer, la cobertura de intervalos, la tasa de falsa identificación y el error máximo por réplica son propiedades diferentes. Un MCSE pequeño no demuestra buena recuperación causal, calibración, cobertura, control de Type-I error ni potencia.
+
+### 379.6 Coste y frontera de factibilidad
+
+El coste se medirá y desglosará empíricamente en: coste fijo por mundo, coste incremental asociado a N, coste incremental asociado a R y coste de agregación/auditoría. No se asumirá linealidad sin medición. El objetivo posterior será construir una frontera coste–precisión–estabilidad, mostrando combinaciones factibles y su incertidumbre, en lugar de elegir N/M/R por conveniencia o por copiar configuraciones de otros experimentos.
+
+### 379.7 Parámetros que permanecen abiertos y dictamen
+
+Siguen sin aprobarse: targets confirmatorios, δ, niveles de confianza, componentes de varianza, contrato IID de M, coupling de N, criterio de estabilidad de q_X*, costes, N/M/R finales, procedimiento de Type-I error/potencia y regla de parada. Los valores históricos N={32,64,128}, M={30,60,100}, R=20, MCSE≤0.02/0.05 y confianza=0.95 continúan siendo candidatos exploratorios no aprobados. No se modifica el roster ni se promueve ningún target.
+
+**Dictamen:** queda definida una arquitectura metodológica para separar el papel representacional de N, la replicación exterior M y la replicación intramundo R, y para asignar precisión sin confundir MCSE con validez científica. El dimensionamiento numérico permanece abierto hasta disponer de estimandos/targets aprobados, contrato M verificable y componentes de varianza obtenidos mediante un procedimiento autorizado.
+
+**Siguiente operación:** traducir este marco y el registro §378 a una especificación integrada de cálculo que consuma los campos versionados disponibles, identifique qué métricas admiten la descomposición analítica, y produzca una frontera de factibilidad con sensibilidad e incertidumbre. No cambiar código, tests, DGP, Analyzer, Evaluator, agregador, seeds, workflows, RMA, Evidence→Claim Matrix, STATUS, TGCV Core ni `main`. No ejecutar compilación, tests, calibración, Monte Carlo ni experimento científico. PR #116 permanece Draft.
