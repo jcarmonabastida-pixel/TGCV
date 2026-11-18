@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+
+import numpy as np
 from pathlib import Path
 
 from c10s_nested_mr_fixtures import (
@@ -69,6 +71,9 @@ class NestedMRFixtureContractTests(unittest.TestCase):
         self.assertIn("within_ms", record["intervals_95"])
         self.assertIn("between_raw", record["intervals_95"])
         self.assertIsNotNone(record["observed_mcse"])
+        world_means = np.mean(np.asarray(spec and generate_fixture(spec, 4).rows), axis=1)
+        expected_legacy_mcse = float(np.sqrt(np.var(world_means, ddof=1) / spec.m))
+        self.assertAlmostEqual(record["observed_mcse"], expected_legacy_mcse)
 
     def test_deterministic_degeneracy_guards_are_explicit_and_fail_closed(self):
         with tempfile.TemporaryDirectory() as tmp:
