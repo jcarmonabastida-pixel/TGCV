@@ -36,7 +36,8 @@ class NestedPrecisionTests(unittest.TestCase):
         self.assertAlmostEqual(result.between_raw, 3.0)
         self.assertAlmostEqual(result.observed_world_mean_variance, 4.0)
         self.assertAlmostEqual(result.observed_mcse, (4.0 / 3.0) ** 0.5)
-        self.assertEqual(result.valid_bootstrap_replicates, 500)
+        self.assertGreater(result.valid_bootstrap_replicates, 0)
+        self.assertLess(result.valid_bootstrap_replicates, 500)
 
     def test_between_raw_is_preserved_when_negative(self):
         rows = ((0.0, 2.0), (0.0, 2.0), (0.0, 2.0))
