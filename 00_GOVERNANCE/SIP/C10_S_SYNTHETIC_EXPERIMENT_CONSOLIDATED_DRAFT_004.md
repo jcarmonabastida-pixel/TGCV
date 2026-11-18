@@ -1239,3 +1239,139 @@ Antes de congelar:
 - mantener explícito que la primera ola es un benchmark ideal. La extensión a error/ausencia S3, heterogeneidad de historias, vías directas diferenciales e interferencia requiere escenarios separados y no debe darse por cubierta por esta calibración.
 
 **Siguiente operación recomendada:** cerrar documentalmente la especificación estadística (estimandos de rendimiento, targets, regla de dimensionamiento M/R, criterios de N y contrato de métricas) antes de generar el banco de calibración. La calibración, el banco de evaluación, Monte Carlo y la ejecución científica siguen sin autorización. No se modificó código, no se generaron seeds y no se ejecutó ningún runner.
+
+
+## 358. Auditoría del estimando de rendimiento y del agregador anidado M×R — revisión estática (2026-11-18)
+
+**Estado:** AGGREGATION_AUDIT_COMPLETED / METRIC_CONTRACT_OPEN / DESIGN_NOT_FROZEN / CALIBRATION_NOT_AUTHORIZED.  
+**Fuente ejecutable inspeccionada:** `03_EXPERIMENTS/C10-S/harness/theta_a_calibration_protocol.py`, blob SHA-256 Git blob `9675b9f6805b11f1a1037a3e4b2f95af53038e4c`; Analyzer `theta_a_analyzer.py` inspeccionado en la misma rama.  
+**Ámbito:** interpretación de las contribuciones por mundo y métricas del protocolo focal de cinco escenarios; no se importan las obligaciones RUN+R ni las 52 claves del benchmark V_cont anterior.
+
+### 358.1 Dictamen sobre la jerarquía M×R
+
+El agregador implementa correctamente la estructura básica para métricas con contribución definida en cada réplica:
+
+1. valida exactamente una observación por cada clave del plan escenario × N × M × R;
+2. verifica que R comparte world_id, configuración, diseño de políticas, perfil DGP, soporte, estimando y truth;
+3. exige streams de asignación, evidencia y salida Analyzer distintos entre R;
+4. calcula una contribución por mundo m promediando R;
+5. calcula media y MCSE entre las M contribuciones independientes, sin tratar M×R como observaciones independientes.
+
+Por tanto, **M es el denominador Monte Carlo externo** y R controla la precisión de la aproximación dentro de cada mundo. La estructura no debe sustituirse por un promedio plano de M×R ni por el MCSE calculado sobre las R asignaciones agrupadas.
+
+Para una métrica replicable (Y_{mr}), la descomposición conceptual es:
+
+`Var(\bar Y_m)=Var(E[Y_{mr}\mid m])+E[Var(Y_{mr}\mid m)]/R`.
+
+La primera componente es heterogeneidad entre mundos; la segunda es ruido de asignación/observación dentro del mundo. Aumentar R reduce la segunda, no la primera. La elección de R=20 no queda justificada mientras el informe no estime ambas componentes por separado y no muestre la estabilidad de la decisión de dimensionamiento. La identidad y el orden de agregación ya están implementados; no hace falta recrear Gate 154/156 ni importar sus unidades RUN.
+
+### 358.2 Hallazgo principal: la regla all-R-identifed cambia el estimando de rendimiento y puede invalidar la métrica
+
+En escenarios cuya verdad es IDENTIFIED, el código calcula bias, MAE, MSE/RMSE y point-recovery de un mundo m solo si **todas** sus R réplicas están identificadas. Si una sola R se abstiene, la contribución numérica completa de ese mundo se convierte en `None`; si ocurre en cualquier M, la métrica agregada se convierte en `NOT_EVALUABLE`.
+
+Esto evita el sesgo de un complete-case silencioso, pero también hace que la métrica de precisión condicional no pueda calcularse cuando existe cualquier abstención, por pequeña que sea. Mezcla dos preguntas diferentes:
+
+- ¿Con qué frecuencia el procedimiento identifica y emite un resultado?
+- Cuando emite un resultado identificado, ¿qué error comete?
+
+No se debe resolver eliminando réplicas fallidas ni imputando error cero. Se deben definir **dos familias de estimandos operacionales**:
+
+**A. Rendimiento total del procedimiento (denominador M×R, con agregación primero dentro de M):**
+- tasa de identificación;
+- tasa de no identificación, indeterminación y partial identification, separadas;
+- tasa de abstención por causa prevista, causa incorrecta y causa ausente/no clasificable;
+- tasa de falsa identificación en el escenario NOT_IDENTIFIED;
+- disponibilidad de intervalo;
+- proporción conjunta de réplica con intervalo emitido y verdad cubierta, si se decide expresamente como métrica operacional.
+
+Estas métricas evalúan el procedimiento completo y nunca deben perder los M en los que el Analyzer no identifica.
+
+**B. Rendimiento numérico condicional a estimación identificada:**
+- bias condicional;
+- MAE condicional;
+- RMSE condicional;
+- point-recovery condicional a identificación, con tolerancia δ explícita y versionada.
+
+La definición natural de estas métricas es sobre todas las réplicas identificadas del conjunto M×R, manteniendo la agrupación por mundo para calcular incertidumbre. Una formulación de razón es:
+
+`MAE_cond = Σ_{m,r} I_{mr} |e_{mr}| / Σ_{m,r} I_{mr}`
+
+donde (I_{mr}=1) si Analyzer identifica y emite estimación finita. Bias condicional sustituye (|e|) por (e); RMSE condicional utiliza (e^2) y raíz al final; point-recovery utiliza (I(|e|≤δ)). Las réplicas no identificadas no reciben error numérico, pero sí permanecen en las métricas operacionales A.
+
+El MCSE de estas razones debe estimarse con M como unidad independiente, conservando para cada mundo numerador y denominador y usando una varianza de tipo cluster/ratio (o un bootstrap por mundos preespecificado). No se permite calcular el MCSE sobre el conjunto de réplicas identificadas como si fueran independientes. Si el total de réplicas identificadas es cero, las métricas condicionales son `NOT_EVALUABLE` con denominador cero y causa explícita; no se oculta el resultado. Debe decidirse además si el objetivo científico pondera por réplica o por mundo; no son el mismo estimando si la probabilidad de identificación varía entre mundos.
+
+### 358.3 Intervalos: separar disponibilidad, cobertura condicional y éxito conjunto
+
+El código actual resume cobertura inferencial y anchura solo cuando las R réplicas del mundo tienen intervalo. Esto replica el problema all-R anterior. Además, cobertura de un intervalo emitido y disponibilidad de emitirlo son dimensiones diferentes.
+
+El contrato debe separar:
+
+- **Disponibilidad:** proporción de M×R para la que se emite un intervalo inferencial válido.
+- **Cobertura condicional:** proporción de intervalos emitidos que contienen la truth reservada, indicando explícitamente el denominador de intervalos emitidos.
+- **Éxito conjunto operacional:** proporción de todas las réplicas que emiten intervalo y cubren la truth, solo si se declara como tal.
+- **Anchura:** distribución/estimando de anchura entre intervalos emitidos, con denominador y MCSE cluster por M.
+
+No convertir abstenciones en intervalos fallidos para la métrica clásica de cobertura, ni excluirlas del rendimiento operacional. La cobertura condicional puede ser selectiva y no equivale a cobertura incondicional del procedimiento; ambas deben aparecer juntas.
+
+### 358.4 Estados de identificación y causas actualmente colapsados
+
+El agregador expone `identification_rate` y `abstention_rate = 1-identification_rate`. Para escenarios identificados, `false_abstention_rate` vuelve a contar todo estado distinto de IDENTIFIED. Para el escenario NOT_IDENTIFIED, `wrong_cause_abstention_rate` agrupa NOT_IDENTIFIED con causa incorrecta e INDETERMINATE; partial identification y false identification se reportan aparte.
+
+Por ello todavía no existe una tabla completa de estados mutuamente excluyentes. Deben conservarse, por escenario y N, las frecuencias/tasas de:
+- IDENTIFIED;
+- NOT_IDENTIFIED con causa esperada;
+- NOT_IDENTIFIED con causa distinta;
+- INDETERMINATE;
+- PARTIALLY_IDENTIFIED;
+- output inválido;
+- registro ausente.
+
+Los dos últimos no pueden convertirse en estados del Analyzer ni confundirse con abstención. El contrato actual de captura exige el registro exacto del plan, por lo que la ausencia bloquea la agregación; debe seguir visible como fallo de integridad/coverage, no como resultado científico.
+
+### 358.5 Evaluator: no usar la adjudicación compuesta como una única tasa de calidad
+
+La revisión del código del Evaluator confirma que `correct_adjudication` en IDENTIFIED exige simultáneamente cobertura de bounds y error puntual dentro de la tolerancia; en NOT_IDENTIFIED/INDETERMINATE exige que la verdad esté dentro de bounds. Los bounds lógicos son [-1,1] y la truth focal válida está restringida al mismo dominio. Así, `truth_within_bounds` no discrimina rendimiento y la adjudicación compuesta no tiene el mismo significado entre clases.
+
+Se mantienen como evidencia de auditoría/disposition, pero no se utilizarán como un único KPI comparativo entre escenarios. El contrato de métricas debe separar:
+- recuperación puntual y su error, en identificados;
+- cobertura inferencial Hoeffding, en identificados;
+- corrección de clase/causa de abstención, en no identificados;
+- cobertura de límites lógicos como invariante de dominio, no como evidencia de recuperación.
+
+### 358.6 Precisión Monte Carlo y targets: reglas necesarias antes del freeze
+
+La implementación calcula MCSE de una contribución por mundo entre M, lo cual es correcto cuando la contribución está definida y los mundos son independientes. Sin embargo:
+
+1. `metric_targets` puede estar vacío o ser parcial; el diseño no exige la cobertura completa de las métricas obligatorias. Un resultado `NOT_TARGETED` no puede convertirse en PASS.
+2. Para tasas binarias por mundo, MCSE≤0,05 con M=100 es un límite de peor caso válido porque cada contribución de mundo está en [0,1]. No garantiza ≤0,02; ese objetivo requiere hasta M=625 en el peor caso.
+3. Para métricas continuas, M requerido depende de la varianza entre las contribuciones de mundo; debe estimarse en un piloto y ampliarse con regla versionada, sin fijar M por anticipado a partir del valor observado de una sola ola.
+4. Para RMSE, el código calcula primero MSE por mundo y aplica una aproximación delta para MCSE de la raíz. Cerca de RMSE=0 la aproximación puede ser inestable; cuando RMSE=0 y MCSE(MSE)>0 devuelve MCSE no evaluable. Conservar MSE y su MCSE como resultado primario de precisión Monte Carlo y documentar RMSE/MCSE delta como derivado, o preespecificar un método cluster robusto alternativo.
+5. El objetivo de MCSE≤0,02 para bias/MAE/RMSE/anchura media es candidato, no un umbral científico de error admisible. El MCSE pequeño significa que se conoce con precisión el rendimiento del estimador; no que el estimador tenga poco sesgo o error.
+6. Los targets deben estar completos por escenario × versión × N × métrica, con clase de aplicabilidad explícita. Las métricas no aplicables al escenario NOT_IDENTIFIED son `NOT_APPLICABLE`, distintas de `NOT_TARGETED`, `NOT_EVALUABLE` y `FAIL_PRECISION`.
+
+### 358.7 Tolerancia de recuperación y trazabilidad del criterio
+
+`ThetaACalibrationDesign.point_recovery_tolerance` se utiliza para clasificar point-recovery, mientras que el Evaluator recibe su propia tolerancia en el executor. El registro `ThetaAReplicateRecord` no conserva el valor ni la identidad/version del criterio utilizado. La captura valida la adjudicación registrada, pero no permite reconstruir desde el registro qué umbral científico produjo `POINT_RECOVERED` o `POINT_RECOVERY_FAILED`.
+
+Antes del freeze se requiere una única fuente de verdad para el umbral o dos criterios expresamente diferenciados:
+- tolerancia de adjudicación técnica del Evaluator;
+- tolerancia δ de recuperación científica.
+
+En ambos casos el valor, versión, unidad, alcance por escenario y hash deben quedar en el diseño, la asignación/manifest, el registro por réplica y el resumen. No se adopta automáticamente 0,25 ni se altera el Evaluator en esta revisión.
+
+### 358.8 Dictamen y siguiente cierre documental
+
+**Dictamen:** la estructura M×R y el MCSE entre mundos están bien orientados; la regla all-R-identifed para métricas numéricas y de intervalo no representa adecuadamente un procedimiento que puede abstenerse en una parte de sus réplicas. No es un fallo de integración ni justifica cambiar Analyzer/Evaluator. Es una brecha de definición del estimando de rendimiento y del contrato de agregación.
+
+Antes de modificar código, la especificación debe decidir:
+1. ponderación de las métricas condicionales: por réplica identificada o por mundo con al menos una identificación;
+2. método cluster/ratio para MCSE de métricas condicionales y método de incertidumbre para RMSE;
+3. separación entre cobertura condicional, disponibilidad y éxito conjunto;
+4. taxonomía mutuamente excluyente de estados y causas;
+5. tolerancias técnica y científica, con identidades/versiones;
+6. conjunto exhaustivo de targets por escenario × N × métrica y estados de aplicabilidad;
+7. regla de dimensionamiento R basada en varianza intramundo y M basada en varianza entre mundos.
+
+La revisión no cambia código, tests, roster, N/M/R, seeds, truth, Analyzer, Evaluator, tolerancias, bancos ni autorizaciones. No se ejecutó el runner ni calibración. `calibration_authorized=false`; `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente operación:** elaborar la especificación de estimandos de rendimiento y denominadores (documental, sin implementación), resolver la ponderación por réplica frente a mundo y fijar el método de MCSE cluster/ratio. Solo después se podrá redactar el contrato estadístico cuantitativo completo y valorar si necesita una decisión gobernada.
