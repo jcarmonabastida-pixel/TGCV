@@ -3734,3 +3734,65 @@ La ejecución está asociada al commit exacto de la rama `research/c10-s-consoli
 Se actualiza el estado de §384 a `PASS_STATIC` únicamente para el alcance comprobado aquí. Permanecen `scientific_execution=false` y `execution_authorized=false` para bancos, calibraciones, simulaciones y workflows científicos.
 
 **Siguiente operación:** ampliar el mismo patrón de validación remota a contratos estáticos de todas las métricas registradas y casos de no evaluabilidad, sin ejecutar el banco científico. La validación estadística del bootstrap requerirá después un protocolo y autorización diferenciados.
+
+
+## 386. Cobertura completa del registro métrico y guardas de inferencia N/M/R (2026-11-18)
+
+**Estado:** IMPLEMENTED / PASS_STATIC (35 tests remotos en el alcance descrito) / NOT_STATISTICALLY_VALIDATED / NO_SCIENTIFIC_EXECUTION.
+
+### 386.1 Contrato de extracción y análisis para las 16 métricas
+
+Se amplían los tests de `test_theta_a_calibration_protocol.py` para recorrer las 16 entradas de `THETA_A_METRIC_REGISTRY` a través de `theta_a_nested_metric_contributions` y del analizador auxiliar. Se prueban escenarios identificados y no identificados, aplicabilidad ALL/IDENTIFIED/NOT_IDENTIFIED, forma completa M×R, reconciliación de la media y transformación RMSE en escala MSE.
+
+Se añaden controles fail-closed para:
+- ausencia de un registro R del plan;
+- ausencia de un intervalo requerido para coverage;
+- ausencia de la auditoría Evaluator requerida;
+- distinción entre `interval_availability_rate` (sigue evaluable como indicador de disponibilidad) e `interval_coverage` (NOT_EVALUABLE si falta un intervalo).
+
+La cobertura del registro se refiere a la extracción y consumo auxiliar de las contribuciones definidas por el protocolo. No implica que las 16 métricas sean simultáneamente aplicables a cada escenario ni que todas tengan un estimando evaluable en cualquier celda.
+
+### 386.2 Corrección de la proyección en la frontera between
+
+La revisión del código frente a §382.3 detectó que la primera implementación eliminaba las réplicas bootstrap con componente between raw negativo y calculaba percentiles sobre la distribución condicionada a los valores no negativos. Esa selección podía producir una proyección aparentemente regular ocultando la masa en frontera.
+
+Se corrige el comportamiento: no se calculan percentiles de proyección condicionando sobre el subconjunto positivo. Si alguna réplica válida presenta componente between raw negativo o varianza proyectada inválida, la proyección devuelve `SENSITIVITY_REQUIRED` sin límites numéricos. Se conserva la distribución raw y su fracción de frontera en el resultado.
+
+También se corrige la adjudicación de estados: los estados de abstención (soporte insuficiente, ausencia de IID o sensibilidad requerida) nunca pasan por la rama que calcula percentiles numéricos. Para RMSE con MSE global exactamente cero se devuelve `RMSE_DELTA_NONREGULAR`; no se usa la aproximación delta ni se omiten silenciosamente las réplicas de MSE cero. No se fija aún un umbral cuantitativo para “cercano a cero”; permanece OPEN y no debe inferirse uno de esta implementación.
+
+### 386.3 Contrato explícito de muestreo intramundo R
+
+La revisión de §383.3 identificó que el auxiliar comprobaba el modo exterior M, pero no exigía una declaración explícita para remuestrear R como mecanismo intercambiable/independiente condicionalmente al mundo.
+
+La API se amplía con:
+- `within_world_sampling_mode`;
+- `within_world_sampling_contract_id`;
+- `within_world_sampling_contract_version`;
+- `within_world_sampling_independence_basis`.
+
+El modo por defecto es `UNVERIFIED`. Para declarar `DECLARED_IID_PSEUDORANDOM` se exigen identidad, versión y base de independencia no vacías; los modos no IID no pueden adjuntar esa identidad. La proyección inferencial M/R exige simultáneamente contrato exterior IID y contrato intramundo R IID. Si falta cualquiera, se abstiene con estado descriptivo explícito. El modo y la identidad contractual se conservan en el resultado.
+
+La existencia de seeds o streams diferentes no constituye por sí sola una prueba de independencia. Los contratos IID usados en estos tests son fixtures de prueba, no una declaración ya aprobada para el diseño científico C10-S. El protocolo de producción todavía debe definir y versionar el contrato R, su mecanismo de aleatorización y la justificación de independencia antes de habilitar proyecciones inferenciales.
+
+### 386.4 Evidencia de validación remota
+
+- **Commit exacto de código/tests validado:** `40f83c1344f1ce10283a5a2a2770aee1c96d03ca`.
+- **Workflow run:** [44385830832](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44385830832).
+- **Conclusión del job:** `success`.
+- **Compilación:** PASS.
+- **Tests:** 35 ejecutados, 35 PASS, 0 FAIL, 0 ERROR.
+  - `test_theta_a_nested_mc_precision`: 13 tests.
+  - `test_theta_a_calibration_protocol`: 22 tests.
+- **Runtime:** CPython 3.12.10, Ubuntu 24.04, x86_64.
+- **Dependencias:** lock con hashes; instalación completada.
+- **Artifact:** ID `14466496388`; digest SHA-256 `db5e4625e8e1b29a28555d41aad3e851f9d361c22e3f6ba6e4ef771e5eebabb8`.
+
+Los intentos intermedios fallidos se conservaron en el historial de Actions. Sus fallos detectaron, respectivamente, una rama de salida que podía devolver percentiles pese a un estado de soporte insuficiente, la prioridad de adjudicación de RMSE en cero, la falta de identidad/base completa en fixtures IID y un argumento duplicado en un test. Se corrigieron y la ejecución citada corresponde al estado final compilado y probado. No se contabilizan los intentos fallidos como evidencia positiva.
+
+### 386.5 Alcance, límites y siguiente gate
+
+Este resultado es `PASS_STATIC` para los contratos de extracción de las 16 métricas, reglas de no evaluabilidad, guardas de proyección en frontera, RMSE exactamente cero y exigencia de identidad/base para el contrato R. No valida cobertura nominal de intervalos bootstrap, sesgo de componentes, estabilidad en M pequeño, calibración de proyecciones, un umbral para RMSE cercano a cero ni la independencia real del mecanismo R de C10-S.
+
+No se ejecutaron Generator, Analyzer, Evaluator, DGP, bancos, calibraciones, Monte Carlo ni workflows científicos. No se alteraron los resúmenes ni el MCSE legado. `main` permanece intacta; PR #116 sigue Draft; `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente avance científico:** convertir §382.7 en un protocolo de validación numérica con fixtures de verdad analítica conocida, fijando antes de ejecutarlos la familia de escenarios, parámetros, estimandos, métricas, niveles de confianza, criterios de cobertura/estabilidad y reglas de abstención. Ese protocolo debe distinguir la validación matemática del bootstrap de la recuperación causal del Analyzer. Su ejecución será un gate separado y requerirá autorización expresa; no se inicia aquí.
