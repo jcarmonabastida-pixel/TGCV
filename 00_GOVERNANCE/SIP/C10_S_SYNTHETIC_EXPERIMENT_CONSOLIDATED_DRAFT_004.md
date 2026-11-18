@@ -1091,3 +1091,16 @@ El workflow fue restaurado a workflow_dispatch con confirmación explícita y el
 ### 353.4 Límite y trabajo que permanece abierto
 
 El runner y la captura end-to-end target-only tienen evidencia técnica acotada EP-02. El executor de escenario sigue siendo una fábrica DGP específica suministrada por el llamador: todavía falta consolidar la fábrica canónica/configuración tipada del roster de cinco escenarios y ejecutar el plan completo N×M×R del quinto escenario mediante ella. No se ha generado banco de calibración ni banco de evaluación; no se ha ejecutado Monte Carlo ni calibración científica; no se ha congelado el roster. No cambia Gate 130, el estimando ni las autorizaciones científicas.
+
+
+## 354. Captura end-to-end del caso benigno source-superset/target-subset — EP-02 Run 858 (2026-11-18)
+
+Se completa la validación de captura para ambas fronteras de soporte fuente/objetivo:
+- **Target-only:** §353 ya comprueba que la historia objetivo positiva sin soporte fuente genera la causa estructural esperada, y que la captura conserva la masa no soportada, los fingerprints realizados y el digest contractual.
+- **Source-superset:** la regresión benigna ahora usa un perfil DGP tipado y captura el resultado real de la cadena completa. La fuente conserva sus ocho unidades/asignaciones y la población objetivo excluye una historia source-only; el Analyzer permanece identificado y la historia excluida no causa abstención. El registro captura los fingerprints q_X fuente/objetivo, el digest del contrato estructural y masa objetivo no soportada igual a cero.
+
+**EP-02 Run 858:** GitHub Actions 44342781242, commit probado bfd9d34389b8431056d3914a3e44c88e9ced27ff; compilación PASS; 317/317 pruebas primarias PASS y 317/317 replay limpio PASS (8.923 s / 8.951 s). Payload 14444242558 (SHA-256 9e03e6ad35c05a72cfbddfcd7e3ccbb1662f3fb98598fa52da9288e578d988dd); manifiesto 14443598826 (SHA-256 f86670f93fb7d6ae9a078c596012927e85146dbc895d1073265fe67820fae441).
+
+Workflow restaurado a workflow_dispatch con confirmación explícita y sentinel eliminado. Commits de restauración/eliminación: 5675b681ccadabfac73712d760d2403dd1713c8c / eb1d7ccaf93c1bf7c8c0cbbffb40392bc2155859.
+
+**Alcance:** evidencia de contrato software y captura para ambos sentidos de diferencia de soporte. No acredita todavía una fábrica canónica de los cinco escenarios ni la ejecución completa N×M×R del quinto escenario a través de dicha fábrica. No se generó banco de calibración/evaluación, no se ejecutó Monte Carlo ni calibración científica, y el roster permanece NOT_FROZEN.
