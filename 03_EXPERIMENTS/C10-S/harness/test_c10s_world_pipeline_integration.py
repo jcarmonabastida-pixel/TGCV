@@ -871,6 +871,60 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             self.assertEqual(len(group), 2)
             self.assertEqual(len({row.run_id for row in group}), 2)
 
+    def test_five_scenario_candidate_roster_runs_complete_world_nmr_capture(self):
+        roster = build_theta_a_candidate_scenario_roster()
+        design = ThetaACalibrationDesign(
+            scenario_specs=roster,
+            n_grid=(32,),
+            outer_worlds_m=2,
+            assignment_replicates_r=2,
+            confidence_level=0.95,
+            namespace="theta-a-five-scenario-complete-world-integration-v1",
+        )
+        assignments = build_theta_a_seed_bank(design, "calibration")
+        records = run_theta_a_calibration_replicates(
+            design, assignments, self._execute_calibration_scenario,
+            bank="calibration", execution_authorized=True,
+        )
+        summaries = summarize_theta_a_calibration(
+            design, assignments, records, bank="calibration",
+        )
+        self.assertEqual(len(assignments), 5 * 1 * 2 * 2)
+        self.assertEqual(len(records), len(assignments))
+        self.assertEqual(len(summaries), 5)
+        by_scenario = {
+            item.scenario_id: [
+                row for row in records if row.scenario_id == item.scenario_id
+            ]
+            for item in roster
+        }
+        for scenario in roster:
+            captured = by_scenario[scenario.scenario_id]
+            self.assertEqual(len(captured), 4)
+            self.assertTrue(all(
+                abs(row.truth - scenario.dgp_profile.expected_theta_a_truth) <= 1e-12
+                for row in captured
+            ))
+            self.assertTrue(all(
+                row.analyzer_identification == scenario.expected_identification
+                for row in captured
+            ))
+        target_only = by_scenario["THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1"]
+        self.assertTrue(all(
+            row.observed_abstention_reason == "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT"
+            and row.target_unsupported_mass == 0.5
+            for row in target_only
+        ))
+        target_summary = next(
+            item for item in summaries
+            if item.scenario_id == "THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1"
+        )
+        target_metrics = {item.metric: item for item in target_summary.metrics}
+        self.assertEqual(target_metrics["correct_abstention_rate"].mean, 1.0)
+        self.assertEqual(target_metrics["wrong_cause_abstention_rate"].mean, 0.0)
+        self.assertEqual(target_metrics["false_identification_rate"].mean, 0.0)
+        self.assertEqual(target_metrics["point_bias"].precision_status, "NOT_EVALUABLE")
+
     def test_point_s3_world_pipeline_abstains_with_truth_covered(self):
         fixture = self._fixture("positive")
         result = self._run_pipeline(fixture, point_s3=True)
