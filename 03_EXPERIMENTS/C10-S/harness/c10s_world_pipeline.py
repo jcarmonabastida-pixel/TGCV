@@ -465,9 +465,23 @@ def materialize_c10s_complete_world_from_dgp(
     }
     target_q_x_rows = tuple(theta_a_q_x) if theta_a_q_x is not None else world.q_x
     target_refs = {row.history_ref for row in target_q_x_rows}
-    source_refs = {row.history_ref for row in world.q_x}
+    source_unit_ids = {
+        unit.d2_baseline.baseline_history_ref: unit.unit_id for unit in world.units
+    }
+    source_refs = set(source_unit_ids)
     if set(target_unit_ids) != target_refs:
         raise ContractError("DGP target q_X and target unit identities must cover the same histories")
+    # Assignment/realized-history materialization spans the source roster plus
+    # target-only histories. The target unit map alone is not sufficient when
+    # q_X* is a strict subset of source support: source-only units still receive
+    # randomized assignments and require their generated functional histories.
+    policy_unit_ids = dict(source_unit_ids)
+    for history_ref in target_refs - source_refs:
+        policy_unit_ids[history_ref] = target_unit_ids[history_ref]
+    if set(initial_state_by_history) != source_refs | target_refs:
+        raise ContractError(
+            "DGP functional initial states must cover source histories plus target-only histories exactly"
+        )
     materializations = {row.q_x.history_ref: row for row in theta_a_target_history_materializations}
     if len(materializations) != len(theta_a_target_history_materializations):
         raise ContractError("target-only baseline materializations must have unique history identities")
@@ -481,6 +495,8 @@ def materialize_c10s_complete_world_from_dgp(
             if (row.x_ref, row.h0_ref, row.c_c_ref) != (
                     source_unit.x_ref, source_unit.h0_ref, source_unit.c_c_ref):
                 raise ContractError("overlapping target history anchors must reproduce source baseline anchors")
+            if target_unit_ids[row.history_ref] != source_unit.unit_id:
+                raise ContractError("overlapping target history identity must retain its source unit identity")
         else:
             materialization = materializations[row.history_ref]
             materialization.validate(
@@ -494,7 +510,7 @@ def materialize_c10s_complete_world_from_dgp(
     policy_histories = generate_g_a_event_history_potentials(
         world, functional_history_config, g_a0, g_a1,
         r_common_certificates, initial_state_by_history,
-        unit_id_by_history=target_unit_ids,
+        unit_id_by_history=policy_unit_ids,
     )
     return materialize_c10s_complete_world(
         world_config=world_config, d2_config=d2_config,
