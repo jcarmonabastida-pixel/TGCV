@@ -171,6 +171,78 @@ class ThetaACalibrationScenario:
 
 
 @dataclass(frozen=True)
+class OuterWorldSamplingContract:
+    """Declares how the outer M worlds are interpreted for Monte Carlo precision.
+
+    DECLARED_IID_PSEUDORANDOM is an explicit modeling assumption, not an
+    empirical certification. All other modes suppress inferential MCSE.
+    """
+    mode: Literal[
+        "UNVERIFIED", "FIXED_FINITE_SET", "DEPENDENT",
+        "DECLARED_IID_PSEUDORANDOM",
+    ] = "UNVERIFIED"
+    contract_id: str | None = None
+    contract_version: str | None = None
+    target_distribution_id: str | None = None
+    target_distribution_version: str | None = None
+    world_generator_id: str | None = None
+    world_generator_version: str | None = None
+    seed_stream_id: str | None = None
+    seed_stream_version: str | None = None
+    independence_basis: str | None = None
+
+    def validate(self) -> None:
+        if self.mode not in {
+            "UNVERIFIED", "FIXED_FINITE_SET", "DEPENDENT",
+            "DECLARED_IID_PSEUDORANDOM",
+        }:
+            raise ThetaACalibrationError("unsupported outer-world sampling mode")
+        if self.mode == "UNVERIFIED":
+            if any(value is not None for value in (
+                self.contract_id, self.contract_version,
+                self.target_distribution_id, self.target_distribution_version,
+                self.world_generator_id, self.world_generator_version,
+                self.seed_stream_id, self.seed_stream_version,
+                self.independence_basis,
+            )):
+                raise ThetaACalibrationError(
+                    "UNVERIFIED outer-world mode cannot carry a partial sampling claim"
+                )
+            return
+        if not all(isinstance(value, str) and value.strip() for value in (
+            self.contract_id, self.contract_version,
+        )):
+            raise ThetaACalibrationError(
+                "a non-UNVERIFIED outer-world mode requires a versioned contract identity"
+            )
+        if self.mode == "DECLARED_IID_PSEUDORANDOM" and not all(
+            isinstance(value, str) and value.strip() for value in (
+                self.target_distribution_id, self.target_distribution_version,
+                self.world_generator_id, self.world_generator_version,
+                self.seed_stream_id, self.seed_stream_version,
+                self.independence_basis,
+            )
+        ):
+            raise ThetaACalibrationError(
+                "declared IID mode requires target distribution, generator, seed-stream and independence-basis identities"
+            )
+        if self.mode == "FIXED_FINITE_SET" and not all(
+            isinstance(value, str) and value.strip() for value in (
+                self.target_distribution_id, self.target_distribution_version,
+            )
+        ):
+            raise ThetaACalibrationError(
+                "fixed finite-set mode requires an explicit finite-world-set identity/version"
+            )
+        if self.mode == "DEPENDENT" and not (
+            isinstance(self.independence_basis, str) and self.independence_basis.strip()
+        ):
+            raise ThetaACalibrationError(
+                "dependent outer-world mode requires its dependence structure"
+            )
+
+
+@dataclass(frozen=True)
 class ThetaACalibrationDesign:
     scenario_specs: tuple[ThetaACalibrationScenario, ...]
     n_grid: tuple[int, ...]
@@ -180,8 +252,10 @@ class ThetaACalibrationDesign:
     namespace: str
     point_recovery_tolerance: float | None = None
     metric_targets: tuple[tuple[str, str, int, str, float], ...] = ()
+    outer_world_sampling: OuterWorldSamplingContract = OuterWorldSamplingContract()
 
     def validate(self) -> None:
+        self.outer_world_sampling.validate()
         if not self.scenario_specs:
             raise ThetaACalibrationError("at least one focal scenario contract is required")
         for scenario in self.scenario_specs:
@@ -999,6 +1073,7 @@ class ThetaAMetricSummary:
     target_mcse: float | None
     precision_status: str
     outer_world_contributions: tuple[tuple[str, float], ...]
+    mcse_interpretation: str
 
 
 @dataclass(frozen=True)
@@ -1009,6 +1084,7 @@ class ThetaACalibrationSummary:
     outer_worlds_m: int
     assignment_replicates_r: int
     metrics: tuple[ThetaAMetricSummary, ...]
+    outer_world_sampling_mode: str = "UNVERIFIED"
     type_i_error_status: str = "NOT_DEFINED_NO_TEST_PROCEDURE"
     power_status: str = "NOT_DEFINED_NO_TEST_PROCEDURE"
 
@@ -1208,32 +1284,57 @@ def summarize_theta_a_calibration(
                 output_name = "point_rmse" if name == "point_rmse_mse" else name
                 if len(contributions) != design.outer_worlds_m or any(x is None for x in contributions):
                     metric_summaries.append(ThetaAMetricSummary(
-                        output_name, None, None, target, "NOT_EVALUABLE", tuple()
+                        output_name, None, None, target, "NOT_EVALUABLE", tuple(),
+                        f"NOT_COMPUTED_{design.outer_world_sampling.mode}",
                     ))
                     continue
                 values = tuple((x[0], x[1]) for x in contributions if x is not None)
                 xs = [x[1] for x in values]
+                sampling_mode = design.outer_world_sampling.mode
                 if name == "point_rmse_mse":
                     mse = mean(xs)
                     value = sqrt(mse)
                     mcse_mse = stdev(xs) / sqrt(design.outer_worlds_m)
-                    mcse = mcse_mse / (2.0 * value) if value > 0 else (0.0 if mcse_mse == 0 else None)
+                    iid_mcse = (
+                        mcse_mse / (2.0 * value)
+                        if value > 0 else (0.0 if mcse_mse == 0 else None)
+                    )
+                    output_name = "point_rmse"
                 else:
                     value = mean(xs)
-                    mcse = stdev(xs) / sqrt(design.outer_worlds_m)
+                    iid_mcse = stdev(xs) / sqrt(design.outer_worlds_m)
                     output_name = name
-                status = (
-                    "NOT_TARGETED" if target is None
-                    else "NOT_EVALUABLE" if mcse is None
-                    else "PASS_PRECISION" if mcse <= target
-                    else "FAIL_PRECISION"
-                )
+
+                if sampling_mode == "DECLARED_IID_PSEUDORANDOM":
+                    mcse = iid_mcse
+                    interpretation = "CONDITIONAL_ON_DECLARED_IID_PSEUDORANDOM_ASSUMPTION"
+                    status = (
+                        "NOT_TARGETED" if target is None
+                        else "NOT_EVALUABLE" if mcse is None
+                        else "PASS_PRECISION" if mcse <= target
+                        else "FAIL_PRECISION"
+                    )
+                else:
+                    mcse = None
+                    interpretation = {
+                        "UNVERIFIED": "NO_INFERENTIAL_MCSE_IID_UNVERIFIED",
+                        "FIXED_FINITE_SET": "FINITE_SET_DESCRIPTIVE_ONLY",
+                        "DEPENDENT": "NO_IID_MCSE_DEPENDENT_WORLDS",
+                    }[sampling_mode]
+                    status = (
+                        "NOT_TARGETED" if target is None
+                        else {
+                            "UNVERIFIED": "NOT_EVALUABLE_IID_UNVERIFIED",
+                            "FIXED_FINITE_SET": "NOT_EVALUABLE_FIXED_FINITE_SET",
+                            "DEPENDENT": "NOT_EVALUABLE_DEPENDENT_WORLDS",
+                        }[sampling_mode]
+                    )
                 metric_summaries.append(ThetaAMetricSummary(
-                    output_name, value, mcse, target, status, values
+                    output_name, value, mcse, target, status, values, interpretation,
                 ))
             summaries.append(ThetaACalibrationSummary(
                 scenario.scenario_id, scenario.scenario_version, n_units,
                 design.outer_worlds_m, design.assignment_replicates_r,
-                tuple(metric_summaries),
+                tuple(metric_summaries), design.outer_world_sampling.mode,
             ))
     return tuple(summaries)
