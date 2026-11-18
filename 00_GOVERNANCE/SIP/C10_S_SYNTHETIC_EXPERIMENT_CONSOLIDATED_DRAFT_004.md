@@ -873,3 +873,18 @@ Se añadió una prueba de fuente del Evaluator con q_X objetivo sobre h0/h1 y po
 Los cambios son estáticos. No se ejecutó EP-02 ni replay; no hubo calibración, seed bank, Monte Carlo ni ejecución científica.
 
 **Estado:** EVALUATOR_TARGET_SOURCE_CHECKS_IMPLEMENTED / WORLD_GENERATOR_TRUTH_DECOUPLING_OPEN / NOT_DYNAMICALLY_VALIDATED.
+## 342. Desacoplamiento generado q_X objetivo/fuente y prueba estructural end-to-end (2026-11-18)
+
+El pipeline focal `g_A` acepta ahora un `theta_a_q_x` objetivo separado del `SyntheticWorldBundle.q_x` fuente y un mapa uno-a-uno historia objetivo→identidad de unidad de potencial reservada. El roster `SyntheticWorldBundle` continúa siendo la población fuente de asignación. Las historias objetivo que no existen en la fuente reciben identidades sintéticas separadas y potenciales `EventHistory` generados por el DGP funcional; no se incorporan al roster ni a las asignaciones aleatorizadas.
+
+Las políticas `g_A0/g_A1`, los vectores factibles y los certificados `r_common` cubren el soporte objetivo completo. La aleatorización continúa restringida a las unidades fuente. Los fingerprints de políticas/certificados se calculan sobre el soporte completo objetivo, mientras que el fingerprint q_X de asignación y evidencia identifica la población fuente. La verdad reservada `V_CONT` se calcula sobre el q_X objetivo completo mediante el mapa explícito de identidades de potencial.
+
+El pipeline comprueba que los fingerprints del contrato de soporte coinciden con las distribuciones objetivo/fuente materializadas y que las masas fuente por historia reproducen el q_X fuente real. El Analyzer adjudica el no-solapamiento estructural antes de analizar la medición. El Evaluator verifica el sello del contrato, la evidencia y asignaciones fuente, la verdad reservada objetivo y la cobertura de las cotas de abstención; una comprobación de medición intervalar no desplaza la adjudicación estructural.
+
+Se añade `test_structural_target_source_nonoverlap_runs_through_generated_world_to_evaluator`: mundo fuente de cuatro unidades, distribución objetivo de cinco historias con masa 0.5 fuera del soporte fuente, generación de potenciales reservados para la historia objetivo adicional, cuatro asignaciones fuente y evidencia intervalar sellada. Resultado exigido: `NOT_IDENTIFIED / TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT` en Analyzer y `CORRECT_ABSTENTION` en Evaluator con la verdad objetivo cubierta. Es una fixture sintética de contrato software, no un roster B1/UE aprobado ni una afirmación sobre una población científica.
+
+**EP-02 Run 833:** PASS sobre commit `a14a93e5743ccd09c6396a9b67573563994add82`, GitHub Actions `44211416128`: compilación PASS; 307/307 pruebas primarias PASS (10.262 s); replay limpio 307/307 PASS (10.227 s) desde cierre de fuentes independiente e idéntico. Pasaron en ambos recorridos la nueva regresión end-to-end y la prueba del Evaluator independiente. Artefactos: payload `14386501382`, manifiesto `14385987836`.
+
+El workflow fue restaurado a `workflow_dispatch` solamente en commit `dee4d4a8fce721f63a00d190e99f7896a508dc7c` (blob SHA `28471861a1c94038a11b5997a0b0e761b2659466`).
+
+**Alcance:** evidencia de contrato software acotada; no valida calibración, MCSE, potencia, Type-I error, identificación científica ni contribución causal de accesibilidad. No se generó banco de calibración ni se ejecutó Monte Carlo o experimento científico. **Estado:** `PASS_STATIC + PASS_DYNAMIC_EP02 / 307+307 / REPLAY_PASS / STRUCTURAL_TARGET_SOURCE_ABSTENTION_PATH_TESTED / CALIBRATION_ROSTER_NOT_FROZEN`.
