@@ -460,7 +460,8 @@ def validate_theta_a_seed_banks(
                 row.run_id, row.randomization_salt, row.s3_seed,
             )
             if actual != expected_derivation or (
-                row.world_version != scenario.world_version
+                row.world_family_id != world_family_id
+                or row.world_version != scenario.world_version
                 or row.dgp_id != scenario.dgp_id
                 or row.dgp_version != scenario.dgp_version
                 or row.roster_version != scenario.roster_version
@@ -492,12 +493,21 @@ def validate_theta_a_seed_banks(
             if (len(set(world_ids)) != len(values) or len(set(roster_ids)) != len(values)
                     or len(set(seeds)) != len(values) or len(set(unit_prefixes)) != len(values)):
                 raise ThetaACalibrationError("independent outer worlds M require distinct world/roster/unit identities and seeds")
-        distinct_worlds = {key: identity for key, identity in worlds.items()}
-        if (len({x[0] for x in distinct_worlds.values()}) != len(distinct_worlds)
-                or len({x[1] for x in distinct_worlds.values()}) != len(distinct_worlds)
-                or len({x[2] for x in distinct_worlds.values()}) != len(distinct_worlds)
-                or len({x[7] for x in distinct_worlds.values()}) != len(distinct_worlds)):
-            raise ThetaACalibrationError("each distinct scenario×N×M world requires unique world/roster identities and seed")
+        family_worlds = {}
+        for row in rows:
+            key = (row.world_family_id, row.n_units, row.outer_world_id)
+            identity = (
+                row.world_id, row.roster_id, row.world_seed, row.unit_id_prefix,
+                row.world_version, row.dgp_id, row.dgp_version, row.roster_version,
+            )
+            prior = family_worlds.setdefault(key, identity)
+            if prior != identity:
+                raise ThetaACalibrationError("scenarios sharing a world family must reuse the exact same base world/roster/seed identity")
+        if (len({x[0] for x in family_worlds.values()}) != len(family_worlds)
+                or len({x[1] for x in family_worlds.values()}) != len(family_worlds)
+                or len({x[2] for x in family_worlds.values()}) != len(family_worlds)
+                or len({x[3] for x in family_worlds.values()}) != len(family_worlds)):
+            raise ThetaACalibrationError("distinct world-family×N×M units require unique world/roster identities and seeds")
         if len({x.run_id for x in rows}) != len(rows):
             raise ThetaACalibrationError("each M×R assignment requires a unique run_id")
         assignment_keys = [
