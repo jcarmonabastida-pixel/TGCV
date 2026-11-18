@@ -2462,3 +2462,85 @@ Conclusión: `INDETERMINATE` debe permanecer como categoría legacy/observada de
 **Siguiente operación conforme a la misión §325:** no abrir otra capa documental genérica. Cerrar en el código existente —sin ejecución— la trazabilidad de verdad reservada del target-only y la correspondencia de las cinco configuraciones DGP con el pipeline completo; después priorizar la integración y los tests de software ya definidos, manteniendo separadas las autorizaciones para tests, dispatch, calibración y ejecución científica. No reabrir §367 salvo discrepancia concreta de código/contrato.
 
 **Controles:** solo se actualiza este documento en `research/c10-s-consolidation-draft`. No se modifican código, tests, roster, targets, seeds, workflows, main, RMA, Matrix, STATUS, Core ni claims. No se ejecutan tests, EP-02, builders, calibración, Monte Carlo ni experimento científico. PR #116 permanece Draft. `scientific_execution=false`, `execution_authorized=false`, `calibration_authorized=false`.
+
+
+## 368. Auditoría estática de la ruta de verdad reservada target-only — linaje y brecha de validación numérica (2026-11-18)
+
+**Estado:** STATIC_LINEAGE_AUDIT / TRUTH_PATH_PRESENT / NUMERIC_ORACLE_VALIDATION_OPEN / NOT_EXECUTED.  
+**Relación con §367:** esta sección corrige y precisa §367.3. La frase «verdad latente exacta NOT_VERIFIABLE» no debe interpretarse como ausencia de generación de verdad reservada: el pipeline sí calcula una verdad V_CONT sobre el q_X* ampliado. Lo que no está verificado es que el valor numérico calculado para el perfil target-only coincida con una derivación analítica independiente y preespecificada.
+
+**Fuentes y blobs revisados:**
+- `c10s_world_pipeline.py`: `eee0b0e4148d7c4acb90a6c6c7c58b8d82800978`.
+- `c10s_functional_history.py`: `003938b3113aef345cf2de5e7f0d50b58fd1d1be`.
+- `c10s_synthetic_components.py`: `e1fcb152f2b1fd6ad3ea8ccd20c2163dc44c4666`.
+- `theta_a_evaluator.py`: `43c6715219114eaf1e0ac9eeb7e304939c7ae99b`.
+- `theta_a_calibration_dgp.py`: `e334ee62502a9bb012512305075a8b071fd8efed`.
+- `theta_a_calibration_protocol.py`: `9675b9f6805b11f1a1037a3e4b2f95af53038e4c`.
+- `test_c10s_world_pipeline_integration.py`: `0cf51e0cbf8e56a7dcbf7b37892b3f708161eeb2`.
+
+### 368.1 Linaje efectivo de la verdad reservada
+
+La revisión estática reconstruye la siguiente cadena:
+
+1. `configure_target_only_support_fixture()` construye el q_X* objetivo: reduce proporcionalmente las masas fuente a 0.5 y añade `TARGET-ONLY-HISTORY-001` con masa objetivo 0.5 y masa fuente 0.
+2. Añade para esa historia las dos políticas conjuntas `g_A0/g_A1`, su certificado `r_common`, los vectores factibles, el estado funcional inicial y un `SyntheticThetaATargetHistory` tipado.
+3. `materialize_c10s_complete_world_from_dgp()` comprueba que hay exactamente una materialización para cada historia exclusivamente objetivo; valida sus anclas X/H0/C_c, la unidad potencial y el estado funcional inicial. La historia objetivo recibe el ID sintético `TARGET-ONLY-UNIT-001`, pero no se añade a `world.units`.
+4. `generate_g_a_event_history_potentials()` genera las historias potenciales G_A para el soporte fuente más el soporte target-only, usando el mapa explícito de unidades y estados iniciales. El generador exige cobertura exacta de historias, políticas y certificados.
+5. `materialize_c10s_complete_world()` restringe políticas, certificados, vectores factibles e historias potenciales al q_X* objetivo y llama a `compute_theta_a_vcont_truth_from_event_histories()`.
+6. El oráculo valida las identidades historia/unidad, las políticas, el régimen común, el soporte temporal y la integridad de cada EventHistory; adjudica V_CONT por historia/política y calcula el contraste estandarizado con las masas q_X* explícitas. La verdad resultante se almacena en `ThetaAVContTruthBundle`, con `evaluator_only=True` y manifiesto de EventHistory.
+7. El Analyzer recibe únicamente la evidencia S3 sellada y el contrato de análisis. El Evaluator recibe además `ThetaAVContTruthBundle`; comprueba su rol reservado, los fingerprints q_X*/políticas, la evidencia, el resultado del Analyzer y el soporte estructural.
+
+**Conclusión de linaje:** la verdad numérica target-only sí se genera a partir de las EventHistory potenciales del soporte objetivo completo y llega al Evaluator. No se pasa el objeto de verdad al Analyzer. La separación de canal está implementada en la composición estática del pipeline; no se declara aquí una verificación dinámica de ausencia de filtración.
+
+### 368.2 Qué demuestran y qué no demuestran los tests existentes
+
+La integración existente contiene dos rutas útiles:
+- Un fixture target-only que combina historia sin soporte objetivo con fallo de positividad en otra historia fuente.
+- `test_target_only_support_without_assignment_failure_abstains_end_to_end`, que aísla la causa target-only.
+
+En la segunda ruta, el contrato de prueba comprueba, entre otros:
+- cuatro unidades fuente y cuatro asignaciones, sin incorporar la unidad target-only al roster aleatorizado;
+- diez EventHistory en el manifiesto de verdad (cinco historias objetivo por dos políticas);
+- Analyzer `NOT_IDENTIFIED`, causa `TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT`, una historia ausente y cobertura objetivo 0.5;
+- Evaluator `CORRECT_ABSTENTION`.
+
+Esto acredita una ruta de generación/adjudicación y una abstención estructural coherente en el fixture. Sin embargo, el test de captura solo comprueba `-1 ≤ record.truth ≤ 1`, y los tests end-to-end comprueban `truth_within_bounds=True` y `correct_adjudication=True`, no la igualdad de la verdad reservada con un valor analítico target-only independiente.
+
+### 368.3 Hallazgo: adjudicación de abstención no equivale a validación de la verdad
+
+El Analyzer devuelve para la no-identificación los límites lógicos `[-1,1]`. En el Evaluator, tanto `truth_within_bounds` como `correct_adjudication` para `NOT_IDENTIFIED`/`INDETERMINATE` dependen de que la verdad reservada esté dentro de esos límites. Dado que el propio Evaluator exige previamente que la verdad esté en `[-1,1]`, esta condición es necesaria pero no discriminante: por sí sola no detecta una verdad target-only numéricamente incorrecta.
+
+Por ello:
+- `CORRECT_ABSTENTION` acredita que el Analyzer no publicó un punto y que los límites reportados contienen la verdad reservada; no acredita la exactitud numérica de esa verdad.
+- `evaluator_truth_within_bounds_rate=1` en este caso no constituye una validación del valor de θ_A.
+- La adjudicación estructural de la causa (soporte objetivo no cubierto) sí es una comprobación separada y útil.
+
+### 368.4 Oráculo numérico que falta
+
+El perfil `positive_target_only` reutiliza el generador funcional `positive`, conserva las mismas reglas G_A y añade una historia con el mismo estado funcional inicial. La construcción sugiere homogeneidad del contraste focal por historia y, por tanto, una verdad agregada candidata de +0.5 pese a la masa target-only. Pero el perfil mantiene deliberadamente `expected_theta_a_truth=None`, y el test no afirma esa igualdad.
+
+No se elevará +0.5 a verdad confirmatoria solo por reutilización del nombre `positive`. Antes hay que derivar la expectativa desde las reglas y la adjudicación V_CONT, de forma independiente al oráculo que se está probando, y fijar una prueba que:
+1. calcule analíticamente el contraste por historia bajo ambas políticas y el régimen común;
+2. agregue con las masas target q_X* (incluida la masa 0.5 target-only);
+3. compare el resultado con `ThetaAVContTruthBundle.theta_a_truth.theta_a_truth` y con `Evaluator.truth`;
+4. compruebe que cambiar la historia/masa target-only según una perturbación controlada cambia la verdad agregada según la fórmula, sin dar esa verdad al Analyzer;
+5. mantenga separado el hecho de que el parámetro generador existe del hecho de que no sea identificable desde la distribución fuente observada.
+
+La unidad target-only usa covariables ancla copiadas de una unidad fuente y un estado funcional inicial explícito. La revisión confirma que esa materialización se valida, pero la regla funcional G_A actual opera sobre el vector conjunto y el estado funcional, no sobre una distribución independiente de X/H0/C_c. La población objetivo sintética queda así definida por una convención de anclaje; no debe presentarse como muestreo independiente o representatividad empírica de una población externa.
+
+### 368.5 Dictamen y siguiente paso
+
+| Propiedad | Dictamen estático |
+|---|---|
+| Historia target-only generada | IMPLEMENTED / PATH PRESENT |
+| Historia target-only incluida en q_X* y en la verdad reservada | IMPLEMENTED / PATH PRESENT |
+| Unidad target-only excluida del roster de asignación fuente | IMPLEMENTED / PATH PRESENT |
+| Separación Analyzer / Evaluator truth | IMPLEMENTED BY INTERFACE / DYNAMIC NON-LEAKAGE NOT EXECUTED |
+| Abstención por soporte objetivo | TEST SPECIFIED / NOT EXECUTED |
+| Valor exacto de verdad target-only | GENERATED / INDEPENDENT NUMERIC VALIDATION OPEN |
+| Homogeneidad y expectativa +0.5 | CANDIDATE / NOT APPROVED |
+| Representatividad de anclas X/H0/C_c | SYNTHETIC CONVENTION / NOT CLAIMED |
+
+**Siguiente trabajo técnico:** cerrar el oráculo analítico independiente target-only y su test de regresión. El test debe comprobar el valor numérico, no limitarse a `[-1,1]` ni a `truth_within_bounds`. Después, auditar que los cinco escenarios del roster tienen la misma cobertura de verdad reservada y que sus expectativas analíticas se contrastan con ella.
+
+**Autorización y alcance:** esta revisión fue estática; no se ejecutaron tests, Analyzer, Evaluator, DGP, workflows ni calibraciones. No se modifican código, tests, perfiles, seeds, roster, workflows, RMA, Evidence→Claim Matrix, STATUS, Core ni `main`. Solo se añade esta sección al documento maestro de la rama `research/c10-s-consolidation-draft`. PR #116 permanece Draft. `scientific_execution=false`, `execution_authorized=false`, `calibration_authorized=false`.
