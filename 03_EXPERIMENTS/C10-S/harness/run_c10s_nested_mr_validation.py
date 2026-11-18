@@ -14,7 +14,7 @@ import numpy as np
 from pathlib import Path
 import platform
 import sys
-from statistics import mean, median, stdev
+from statistics import mean, median
 from types import SimpleNamespace
 from typing import Any
 
@@ -80,7 +80,7 @@ def _summary_for(dataset):
     world_means = tuple(sum(row) / len(row) for row in dataset.rows)
     grand = sum(world_means) / len(world_means)
     reported = math.sqrt(grand) if dataset.metric == "point_rmse" else grand
-    legacy_mcse = None if dataset.metric == "point_rmse" else stdev(world_means) / math.sqrt(len(world_means))
+    legacy_mcse = None if dataset.metric == "point_rmse" else float(np.sqrt(np.var(world_means, ddof=1) / len(world_means)))
     return SimpleNamespace(
         metric=dataset.metric,
         mean=reported,
