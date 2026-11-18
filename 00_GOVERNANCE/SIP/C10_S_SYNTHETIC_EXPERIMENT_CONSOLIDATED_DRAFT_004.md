@@ -3668,7 +3668,7 @@ El módulo no modifica ni recalcula el resumen, los registros fuente, el Analyze
 
 - Rechazo de M<2, R<2, diseños R no balanceados, valores no finitos, identidad de métrica incorrecta, discrepancias con contribuciones por mundo y modos de muestreo desconocidos.
 - El remuestreo exterior selecciona mundos completos; el interior selecciona registros R completos dentro de cada mundo seleccionado.
-- Réplicas bootstrap que contienen menos de dos clusters M distintos se excluyen del cálculo de componentes. Se registra el número válido. Si la fracción válida es inferior al 95% del número solicitado, las proyecciones se abstienen con `SENSITIVITY_REQUIRED`.
+- Réplicas bootstrap que contienen menos de dos clusters M distintos se excluyen del cálculo de componentes. Se registra el número válido. Si la fracción válida es inferior al 95% del número solicitado, las proyecciones se abstienen con `SENSITIVITY_REQUIRED`. Cuando el modo exterior no es `DECLARED_IID_PSEUDORANDOM`, se omiten las proyecciones inferenciales y se devuelve `DESCRIPTIVE_ONLY_NO_IID_OUTER_INFERENCE`.
 - Con M<3, la salida declara `INSUFFICIENT_OUTER_SUPPORT` y no produce intervalos de proyección. Este umbral es una guarda mínima de soporte, no una afirmación de suficiencia estadística para ningún objetivo confirmatorio.
 - El componente between raw negativo se conserva; `between_ms` representa únicamente la versión restringida descriptiva max(0, raw), no reemplaza el valor raw.
 - Los intervalos bootstrap de componentes son percentiles descriptivos del remuestreo válido. No están validados en cobertura; la selección condicional de réplicas con dos o más clusters distintos debe considerarse al interpretar los intervalos.
