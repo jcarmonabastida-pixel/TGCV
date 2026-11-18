@@ -1,4 +1,5 @@
 import unittest
+from dataclasses import replace
 
 from theta_a_observation_harness import SealedThetaAEvidence, _hash
 from theta_a_analyzer import (
