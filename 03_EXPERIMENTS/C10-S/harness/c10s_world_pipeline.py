@@ -378,7 +378,11 @@ def materialize_c10s_complete_world(
         estimand_id=theta_truth.theta_a_truth.estimand_id,
         estimand_version=theta_truth.theta_a_truth.estimand_version,
         probability_a1_by_history=(
-            assignment_config.probability_a1_by_history
+            tuple(
+                (history_ref, probability)
+                for history_ref, probability in assignment_config.probability_a1_by_history
+                if history_ref in target_refs
+            )
             if theta_a_confidence_level is not None else ()
         ),
         confidence_level=theta_a_confidence_level,
