@@ -190,7 +190,7 @@ def analyze_nested_precision(
     # bootstrap law. Chunking bounds peak memory at O(batch*M*R), while every
     # outer cluster draw (including all-same-source draws) is retained.
     matrix = np.asarray(rows, dtype=np.float64)
-    rng = np.random.default_rng(bootstrap_seed)
+    rng = np.random.Generator(np.random.PCG64(bootstrap_seed))
     boot: list[tuple[float, float, float, float]] = []
     boundary = 0
     batch_size = 64
