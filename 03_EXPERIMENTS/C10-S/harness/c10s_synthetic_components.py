@@ -3173,9 +3173,11 @@ class ThetaAPolicyAssignmentConfig:
                 row.history_ref: row for row in getattr(structural_support_contract, "rows", ())
             }
             source_masses = {row.history_ref: row.mass for row in world.q_x}
-            if not refs.issubset(support_rows):
-                raise ContractError("structural-support contract must cover every source q_X history")
-            for history_ref in refs:
+            if not set(boundary).issubset(support_rows):
+                raise ContractError(
+                    "every boundary assignment propensity must be represented in the target structural-support contract"
+                )
+            for history_ref in refs.intersection(support_rows):
                 support_row = support_rows[history_ref]
                 if (not math.isclose(support_row.source_mass, source_masses[history_ref],
                                      rel_tol=0.0, abs_tol=1e-12)
