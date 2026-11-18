@@ -379,6 +379,10 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
             coverage.mcse_interpretation, "NO_INFERENTIAL_MCSE_IID_UNVERIFIED",
         )
         self.assertEqual(summary.outer_world_sampling_mode, "UNVERIFIED")
+        self.assertEqual(
+            summary.outer_world_sampling_contract_sha256,
+            design.outer_world_sampling.fingerprint_sha256,
+        )
 
     def test_declared_iid_outer_world_contract_requires_complete_provenance(self):
         design = replace(
