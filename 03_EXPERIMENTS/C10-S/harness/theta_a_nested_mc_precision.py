@@ -192,7 +192,7 @@ def analyze_nested_precision(
             projection_status = "SENSITIVITY_REQUIRED"
         else:
             projection_status = status
-        if projection_status == status:
+        if projection_status == "ESTIMABLE_UNDER_DECLARED_SAMPLING":
             projections_out.append((
                 target_m, target_r, percentile(values, alpha / 2),
                 percentile(values, 1 - alpha / 2), projection_status,
