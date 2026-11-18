@@ -201,15 +201,17 @@ def analyze_nested_precision(
     # bootstrap law. Chunking bounds peak memory at O(batch*M*R), while every
     # outer cluster draw (including all-same-source draws) is retained.
     matrix = np.asarray(rows, dtype=np.float64)
-    rng = np.random.Generator(np.random.PCG64(bootstrap_seed))
+    outer_sequence, inner_sequence = np.random.SeedSequence(bootstrap_seed).spawn(2)
+    outer_rng = np.random.Generator(np.random.PCG64(outer_sequence))
+    inner_rng = np.random.Generator(np.random.PCG64(inner_sequence))
     boot: list[tuple[float, float, float, float]] = []
     boundary = 0
     batch_size = 64
     for start in range(0, bootstrap_replicates, batch_size):
         count = min(batch_size, bootstrap_replicates - start)
-        selected_indices = rng.integers(0, m, size=(count, m))
+        selected_indices = outer_rng.integers(0, m, size=(count, m))
         selected = matrix[selected_indices]
-        inner_indices = rng.integers(0, r, size=(count, m, r))
+        inner_indices = inner_rng.integers(0, r, size=(count, m, r))
         nested = np.take_along_axis(selected, inner_indices, axis=2)
         world_means = nested.mean(axis=2)
         b_msw_values = nested.var(axis=2, ddof=1).mean(axis=1)
