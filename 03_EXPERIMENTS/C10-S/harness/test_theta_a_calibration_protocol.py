@@ -504,6 +504,8 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
             design, assignments, tuple(records), bank="calibration"
         )[0]
         metrics = {x.metric: x for x in summary.metrics}
+        self.assertEqual(set(metrics), {item.metric for item in THETA_A_METRIC_REGISTRY})
+        self.assertEqual(metrics["point_bias"].precision_status, "NOT_EVALUABLE")
         self.assertAlmostEqual(metrics["correct_abstention_rate"].mean, 1 / 3)
         self.assertAlmostEqual(metrics["wrong_cause_abstention_rate"].mean, 1 / 3)
         self.assertAlmostEqual(metrics["partial_identification_rate"].mean, 1 / 6)
