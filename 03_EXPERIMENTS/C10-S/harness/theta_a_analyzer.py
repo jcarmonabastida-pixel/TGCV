@@ -120,8 +120,9 @@ class ThetaAObservationAnalyzer:
             if not evidence.rows or _hash({"manifest": evidence.manifest, "rows": evidence.rows}) != evidence.sha256:
                 raise ContractError("structural-support Analyzer requires non-empty sealed evidence with a valid digest")
             rows = evidence.rows
+            source_qx_sha256 = contract.source_q_x_sha256 or contract.q_x_sha256
             if any(row.get("assignment_bundle_sha256") != contract.assignment_bundle_sha256
-                   or row.get("q_x_sha256") != contract.q_x_sha256
+                   or row.get("q_x_sha256") != source_qx_sha256
                    or row.get("g_a0_sha256") != contract.g_a0_sha256
                    or row.get("g_a1_sha256") != contract.g_a1_sha256
                    or row.get("r_common_sha256") != contract.r_common_sha256 for row in rows):
@@ -281,8 +282,9 @@ class ThetaAObservationAnalyzer:
         rows = evidence.rows
         if any(row.get("temporal_resolution") != "INTERVAL_LEVEL" for row in rows):
             raise ContractError("interval Analyzer cannot mix point and interval evidence")
+        source_qx_sha256 = contract.source_q_x_sha256 or contract.q_x_sha256
         if any(row.get("assignment_bundle_sha256") != contract.assignment_bundle_sha256
-               or row.get("q_x_sha256") != contract.q_x_sha256
+               or row.get("q_x_sha256") != source_qx_sha256
                or row.get("g_a0_sha256") != contract.g_a0_sha256
                or row.get("g_a1_sha256") != contract.g_a1_sha256
                or row.get("r_common_sha256") != contract.r_common_sha256 for row in rows):
