@@ -242,6 +242,16 @@ def materialize_c10s_complete_world(
     if (len({row.history_ref for row in target_q_x}) != len(target_q_x)
             or set(target_unit_ids) != {row.history_ref for row in target_q_x}):
         raise ContractError("theta_A target q_X and target-unit identities must cover exactly the same histories")
+    if theta_a_structural_support_contract is not None:
+        if (theta_a_structural_support_contract.target_q_x_sha256 != digest(target_q_x)
+                or theta_a_structural_support_contract.source_q_x_sha256 != digest(world.q_x)):
+            raise ContractError("structural-support fingerprints do not bind the generated target and source q_X")
+        source_masses = {row.history_ref: row.mass for row in world.q_x}
+        if any(not __import__("math").isclose(
+                row.source_mass, source_masses.get(row.history_ref, 0.0),
+                rel_tol=0.0, abs_tol=1e-12,
+        ) for row in theta_a_structural_support_contract.rows):
+            raise ContractError("structural-support source masses do not reproduce the generated source q_X")
     theta_truth = compute_theta_a_vcont_truth_from_event_histories(
         world, target_q_x, g_a0, g_a1, feasible_vectors_by_history,
         r_common_certificates, event_histories_by_policy, grid,
@@ -401,6 +411,8 @@ def materialize_c10s_complete_world_from_dgp(
         world, functional_history_config, initial_state_by_unit_z,
         trajectories_by_unit_z_target=trajectory_map if trajectory_rules_declared else None,
     )
+    if (theta_a_q_x is None) != (theta_a_unit_id_by_history is None):
+        raise ContractError("independent target q_X and target-unit identities must be supplied together")
     target_unit_ids = theta_a_unit_id_by_history or {
         unit.d2_baseline.baseline_history_ref: unit.unit_id for unit in world.units
     }
