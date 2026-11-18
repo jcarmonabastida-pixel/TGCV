@@ -3196,8 +3196,8 @@ class ThetaAPolicyAssignmentBundle:
         policy_maps = []
         for rows, label in ((g_a0, "g_A0"), (g_a1, "g_A1")):
             mapping = {row.history_ref: row for row in rows}
-            if len(mapping) != len(rows) or set(mapping) != refs:
-                raise ContractError(f"{label} must cover q_X* histories exactly")
+            if len(mapping) != len(rows) or not refs.issubset(mapping):
+                raise ContractError(f"{label} must cover every source q_X* history; target-only histories may also be declared")
             for history_ref, policy in mapping.items():
                 _distribution_total(policy.distribution, f"{label} distribution for {history_ref}")
                 feasible = {digest(vector) for vector in feasible_vectors_by_history.get(history_ref, ())}
@@ -3205,8 +3205,8 @@ class ThetaAPolicyAssignmentBundle:
                     raise ContractError(f"{label} support is not jointly feasible for {history_ref}")
             policy_maps.append(mapping)
         certs = {row.history_ref: row for row in r_common_certificates}
-        if len(certs) != len(r_common_certificates) or set(certs) != refs:
-            raise ContractError("one r_common certificate is required per q_X* history")
+        if len(certs) != len(r_common_certificates) or not refs.issubset(certs):
+            raise ContractError("one r_common certificate is required per source q_X* history; target-only certificates may also be declared")
         for cert in certs.values():
             if (cert.status != "COMMON_FIXED" or not cert.regime_id or not cert.regime_version
                     or not cert.g_a0_fingerprint or cert.g_a0_fingerprint != cert.g_a1_fingerprint):
@@ -3278,8 +3278,8 @@ def generate_theta_a_policy_assignments(
     policy_maps = []
     for rows, label in ((g_a0, "g_A0"), (g_a1, "g_A1")):
         mapping = {row.history_ref: row for row in rows}
-        if len(mapping) != len(rows) or set(mapping) != refs:
-            raise ContractError(f"{label} must cover q_X* histories exactly")
+        if len(mapping) != len(rows) or not refs.issubset(mapping):
+            raise ContractError(f"{label} must cover every source q_X* history; target-only histories may also be declared")
         for history_ref, policy in mapping.items():
             _distribution_total(policy.distribution, f"{label} distribution for {history_ref}")
             feasible = {digest(vector) for vector in feasible_vectors_by_history.get(history_ref, ())}
@@ -3287,8 +3287,8 @@ def generate_theta_a_policy_assignments(
                 raise ContractError(f"{label} support is not jointly feasible for {history_ref}")
         policy_maps.append(mapping)
     certs = {row.history_ref: row for row in r_common_certificates}
-    if len(certs) != len(r_common_certificates) or set(certs) != refs:
-        raise ContractError("one r_common certificate is required per q_X* history")
+    if len(certs) != len(r_common_certificates) or not refs.issubset(certs):
+        raise ContractError("one r_common certificate is required per source q_X* history; target-only certificates may also be declared")
     if any(row.status != "COMMON_FIXED" or row.g_a0_fingerprint != row.g_a1_fingerprint
            for row in certs.values()):
         raise ContractError("theta_A assignment requires certified fixed common r_common")
