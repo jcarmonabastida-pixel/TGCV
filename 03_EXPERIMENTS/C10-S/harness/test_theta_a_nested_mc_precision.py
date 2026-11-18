@@ -320,5 +320,24 @@ class NestedPrecisionTests(unittest.TestCase):
         self.assertEqual(result.valid_bootstrap_replicates, 500)
 
 
+    def test_legacy_mcse_mismatch_is_rejected(self):
+        rows = ((0.0, 2.0), (2.0, 4.0), (4.0, 6.0))
+        summary = self._summary(rows)
+        summary.mcse = 99.0
+        with self.assertRaisesRegex(NestedPrecisionError, "legacy outer-world summary"):
+            analyze_nested_precision(
+                metric="identification_rate",
+                replicate_contributions=rows,
+                summary_metric=summary,
+                outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+                outer_world_sampling_contract_id="TEST-M-WORLD-IID",
+                outer_world_sampling_contract_version="1.0",
+                outer_world_sampling_independence_basis="Independent fixture worlds.",
+                projections=((3, 2),),
+                bootstrap_replicates=100,
+            )
+
+
+
 if __name__ == "__main__":
     unittest.main()
