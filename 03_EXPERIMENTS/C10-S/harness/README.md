@@ -994,3 +994,17 @@ No Analyzer/Evaluator implementation, estimand, DGP truth, tolerance, support co
 **EP-02 Run 862:** [GitHub Actions](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44351884258), run `44351884258`, tested commit `cdd43c87c6dab61a9521ac78fa4f07109e177e7f`. Compilation PASS; 319/319 primary PASS (19.280 s); 319/319 clean replay PASS (19.347 s); primary/replay source materializations equal; all workflow steps PASS. Payload artifact `14447449680`, SHA-256 `2c42b542d1110e6614083562a5398e90d0d813fb581b639b2b51380e482bd4f6`; manifest artifact `14448632515`, SHA-256 `5e197d682b6e3ab9ea4045db792a817d4b3cf250a6130e91a00383c5968612c8`.
 
 The temporary push trigger was removed and the sentinel deleted. Workflow restoration commit `e588ba6cdb2ed4a0f5c7a7e6e452c887975fb014`; sentinel deletion commit `d2d78695f8aa33b6c97e7f238bf3ee63bb9607c7`. The workflow is again `workflow_dispatch` only, with explicit confirmation; PR #116 remains Draft. This is EP-02 software-contract evidence only. It does not execute or authorize calibration banks, evaluation banks, Monte Carlo or scientific execution. The five-scenario roster remains `NOT_FROZEN`.
+
+
+### Outer-world M sampling gate for focal MCSE — static implementation (2026-11-18)
+
+The focal calibration design now carries a typed `OuterWorldSamplingContract` with four explicit modes:
+
+- `UNVERIFIED` (default): preserve per-world contributions and descriptive means, but suppress inferential MCSE and any PASS/FAIL precision verdict.
+- `FIXED_FINITE_SET`: retain finite-set descriptive summaries; no IID MCSE is emitted.
+- `DEPENDENT`: retain descriptive summaries; no IID MCSE is emitted.
+- `DECLARED_IID_PSEUDORANDOM`: permit `sd(q_m)/sqrt(M)` only when a versioned contract binds the target world distribution, world generator, seed-stream derivation and explicit independence basis. The resulting MCSE and precision status are conditional on that declared modeling assumption; this is not an empirical certification of IID.
+
+Each metric reports its MCSE interpretation; each calibration summary carries the sampling mode and contract SHA-256. An absent or incomplete IID contract cannot silently inherit the previous MCSE calculation. Type-I error and power remain `NOT_DEFINED_NO_TEST_PROCEDURE`; no numeric targets or N/M/R choices are introduced by this change.
+
+The unit-test fixture uses a clearly test-only declared-IID contract to retain its arithmetic regression, and adds adversarial coverage that the production default `UNVERIFIED` suppresses inferential MCSE while preserving the descriptive mean. The contract is implemented and tests are authored, **not executed**. No seed bank, calibration, Monte Carlo or scientific experiment was run.
