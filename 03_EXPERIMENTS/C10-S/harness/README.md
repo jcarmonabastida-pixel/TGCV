@@ -843,3 +843,10 @@ The DGP entry point requires materializations for every and only target-only his
 EP-02 Run 834 (`44280284615`, run number 834) tested commit `a92bbdc5b6f5a75e6c22d1e0c5a266185b5b106d`: compilation PASS; primary 307/307 PASS (13.579 s); clean replay 307/307 PASS (13.379 s). Payload artifact `14416891006`, SHA-256 `d01bb844c4a91e25de8180031c25f860a975c27dc1b0972d6376fe298050691d`; manifest `14417325217`, SHA-256 `9656eebe7593761bb7df51edde0f7494c6355be4d171477077777b20f57eafe8`.
 
 The workflow was restored to `workflow_dispatch`-only after the run; workflow blob SHA `28471861a1c94038a11b5997a0b0e761b2659466`. This is bounded technical validation of the synthetic materialization contract, not scientific calibration or population authorization.
+### H0 domain validation for target-only baseline materialization — EP-02 Run 835 (2026-11-18)
+
+The typed target-only baseline contract now also validates `H0` against the declared `SyntheticWorldConfig.h0_distribution` support. A target-only row with an out-of-domain H0 label fails closed. The regression checks both this domain violation and X-dimension mismatch, as well as omission of the required target-only materialization.
+
+EP-02 Run 835 (`44280725936`, run number 835) tested commit `a9a2999309c32bba5cdc89901fdd45e1d9c24c3b`: compilation PASS; primary 307/307 PASS (13.634 s); clean replay 307/307 PASS (13.404 s). Payload `14416543657`, SHA-256 `953dbdbf545d2a91299fc8ec5f0620170c21468aa063e9fee9b2a59ca3d5cb6d`; manifest `14416238830`, SHA-256 `57f11616c56a626435cb79c11b2067ce40429389b9aa404406f02123042ae8ea`.
+
+Workflow restored to `workflow_dispatch` only; blob SHA `28471861a1c94038a11b5997a0b0e761b2659466`. No scientific calibration or population authorization.
