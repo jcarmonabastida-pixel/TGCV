@@ -3796,3 +3796,20 @@ Este resultado es `PASS_STATIC` para los contratos de extracción de las 16 mét
 No se ejecutaron Generator, Analyzer, Evaluator, DGP, bancos, calibraciones, Monte Carlo ni workflows científicos. No se alteraron los resúmenes ni el MCSE legado. `main` permanece intacta; PR #116 sigue Draft; `scientific_execution=false`; `execution_authorized=false`.
 
 **Siguiente avance científico:** convertir §382.7 en un protocolo de validación numérica con fixtures de verdad analítica conocida, fijando antes de ejecutarlos la familia de escenarios, parámetros, estimandos, métricas, niveles de confianza, criterios de cobertura/estabilidad y reglas de abstención. Ese protocolo debe distinguir la validación matemática del bootstrap de la recuperación causal del Analyzer. Su ejecución será un gate separado y requerirá autorización expresa; no se inicia aquí.
+
+
+## 387. Protocolo candidato de validación numérica del bootstrap N/M/R (2026-11-18)
+
+**Estado:** VALIDATION_PROTOCOL_DRAFT / NOT_FROZEN / NOT_EXECUTED / NO_SCIENTIFIC_EXECUTION_AUTHORIZATION.
+
+Se crea el artefacto autocontenido `00_GOVERNANCE/SIP/C10_S_NESTED_MR_BOOTSTRAP_NUMERICAL_VALIDATION_PROTOCOL_DRAFT_001.md` (ID `C10S-NESTED-MR-BOOTSTRAP-VALIDATION-001`). Traduce §382.7 a seis familias de fixtures con verdad analítica: Gaussian interior, frontera between, within nulo, degeneración total, indicadores Bernoulli (incluidos raros y degenerados) y RMSE/MSE regular/no regular.
+
+El protocolo distingue:
+- oráculos de momentos y reconciliación algebraica;
+- cobertura de intervalos de componentes y MCSE proyectado en celdas interiores;
+- abstención correcta en frontera, M pequeño, denominadores incompletos, no IID y falta de coupling;
+- validación del método numérico frente a recuperación causal del Analyzer.
+
+Propone, sin congelarlos, niveles 90/95%, B=2.000, K=2.000 y una cuadrícula M={2,3,5,10,30}, R={2,5,20}; incluye criterios candidatos de cobertura con tolerancia ±2 puntos porcentuales y Wilson 95%. Los valores requieren revisión de coste y congelación previa a cualquier observación de resultados. El umbral para RMSE cercano a cero sigue OPEN.
+
+**Siguiente gate:** revisión integrada del protocolo, justificación real del contrato de independencia R, decisión scale-aware para RMSE próximo a cero, reducción/coste de la cuadrícula y congelación del contrato de validación. Después requerirá autorización explícita propia para la ejecución numérica remota. No se han generado fixtures, seeds, bancos ni resultados numéricos. La validación numérica no se confunde con ejecución científica C10-S.
