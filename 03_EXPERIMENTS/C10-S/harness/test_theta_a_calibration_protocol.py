@@ -21,6 +21,7 @@ from theta_a_calibration_protocol import (
     run_theta_a_calibration_replicates,
     theta_a_pipeline_inference_options,
     summarize_theta_a_calibration,
+    theta_a_nested_metric_contributions,
     validate_theta_a_seed_banks,
     _validate_interval_s3_seed_provenance,
     _validate_truth_assignment_population_bindings,
@@ -520,6 +521,30 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         )
         with self.assertRaises(ThetaACalibrationError):
             self._design(scenario).validate()
+
+
+    def test_nested_metric_contributions_reuse_exact_protocol_denominators(self):
+        design = self._design()
+        scenario = design.scenario_specs[0]
+        assignments = build_theta_a_seed_bank(design, "calibration")
+        records = tuple(
+            self._record(
+                row, "IDENTIFIED", "IDENTIFIED", 0.3, 0.1, 0.4,
+                True, 0.3, design.confidence_level,
+            )
+            for row in assignments
+        )
+        bias = theta_a_nested_metric_contributions(
+            design, scenario, records, n_units=4, metric="point_bias",
+        )
+        self.assertEqual(len(bias), design.outer_worlds_m)
+        self.assertTrue(all(len(world) == design.assignment_replicates_r for world in bias))
+        self.assertTrue(all(abs(value - 0.1) < 1e-12 for world in bias for value in world))
+        rmse_mse = theta_a_nested_metric_contributions(
+            design, scenario, records, n_units=4, metric="point_rmse",
+        )
+        self.assertTrue(all(abs(value - 0.01) < 1e-12 for world in rmse_mse for value in world))
+
 
 
 if __name__ == "__main__":
