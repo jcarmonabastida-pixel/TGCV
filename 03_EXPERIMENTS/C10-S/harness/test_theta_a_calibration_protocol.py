@@ -9,6 +9,7 @@ from types import SimpleNamespace
 
 from theta_a_calibration_protocol import (
     ThetaACalibrationDesign,
+    ThetaACalibrationDGPProfile,
     ThetaACalibrationError,
     ThetaACalibrationScenario,
     ThetaAReplicateRecord,
@@ -45,7 +46,8 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
             ) if scenario.expected_identification == "IDENTIFIED" else (),
         )
 
-    def _record(self, row, expected, observed, point, lower, upper, covered, width, requested_level):
+    def _record(self, row, expected, observed, point, lower, upper, covered, width, requested_level,
+                expected_reason=None, observed_reason=None, unsupported_mass=0.0):
         def fp(value):
             return hashlib.sha256(value.encode("utf-8")).hexdigest()
         return ThetaAReplicateRecord(
@@ -56,6 +58,7 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
             fp("world|" + row.outer_world_id), fp("policy-design"),
             fp(row.randomization_salt), fp(row.run_id + "|evidence"),
             fp(row.run_id + "|analyzer"),
+            row.dgp_profile_sha256, expected_reason, observed_reason, unsupported_mass,
         )
 
     def test_capture_binding_accepts_source_superset_with_target_standardization(self):
@@ -124,6 +127,17 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
             world_version="world-v1", dgp_id="C10S-THETA-A", dgp_version="1.0",
             roster_version="1.0", unit_id_prefix="unit",
             expected_identification="NOT_IDENTIFIED", unit_independence_certified=False,
+            dgp_profile=ThetaACalibrationDGPProfile(
+                profile_id="THETA_A_TARGET_SUPPORT_PROFILE",
+                profile_version="1.0",
+                target_q_x_sha256=hashlib.sha256(b"target-qx").hexdigest(),
+                source_q_x_sha256=hashlib.sha256(b"source-qx").hexdigest(),
+                structural_support_contract_id="THETA_A_STRUCTURAL_SUPPORT",
+                structural_support_contract_version="1.0",
+                support_relation="TARGET_HAS_UNSUPPORTED_HISTORIES",
+                target_unsupported_history_masses=(("h-target-only", 0.25),),
+                expected_abstention_reason="TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT",
+            ),
         ))
         options = theta_a_pipeline_inference_options(nonidentified, nonidentified.scenario_specs[0])
         self.assertIsNone(options["theta_a_confidence_level"])
@@ -277,23 +291,43 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
             world_version="world-v1", dgp_id="C10S-THETA-A", dgp_version="1.0",
             roster_version="1.0", unit_id_prefix="unit",
             expected_identification="NOT_IDENTIFIED", unit_independence_certified=False,
+            dgp_profile=ThetaACalibrationDGPProfile(
+                profile_id="THETA_A_TARGET_SUPPORT_PROFILE",
+                profile_version="1.0",
+                target_q_x_sha256=hashlib.sha256(b"target-qx").hexdigest(),
+                source_q_x_sha256=hashlib.sha256(b"source-qx").hexdigest(),
+                structural_support_contract_id="THETA_A_STRUCTURAL_SUPPORT",
+                structural_support_contract_version="1.0",
+                support_relation="TARGET_HAS_UNSUPPORTED_HISTORIES",
+                target_unsupported_history_masses=(("h-target-only", 0.25),),
+                expected_abstention_reason="TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT",
+            ),
         )
         design = self._design(scenario)
         assignments = build_theta_a_seed_bank(design, "calibration")
-        records = tuple(
-            self._record(
-                row, "NOT_IDENTIFIED",
-                "NOT_IDENTIFIED" if row.assignment_replicate == 0 else "PARTIALLY_IDENTIFIED",
-                None, None, None, None, None, None,
-            )
-            for row in assignments
-        )
+        records = []
+        for row in assignments:
+            if row.outer_world_id == "outer-000000" and row.assignment_replicate == 0:
+                observed, reason, point = "NOT_IDENTIFIED", "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT", None
+            elif row.outer_world_id == "outer-000000":
+                observed, reason, point = "INDETERMINATE", "REALIZED_GA_ARM_SUPPORT_MISSING", None
+            elif row.assignment_replicate == 0:
+                observed, reason, point = "PARTIALLY_IDENTIFIED", "STRICT_VCONT_NOT_OBSERVED_BY_POINT_SAMPLES", None
+            else:
+                observed, reason, point = "IDENTIFIED", None, 0.2
+            records.append(self._record(
+                row, "NOT_IDENTIFIED", observed, point, None, None, None, None, None,
+                expected_reason="TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT",
+                observed_reason=reason, unsupported_mass=0.25,
+            ))
         summary = summarize_theta_a_calibration(
-            design, assignments, records, bank="calibration"
+            design, assignments, tuple(records), bank="calibration"
         )[0]
         metrics = {x.metric: x for x in summary.metrics}
-        self.assertAlmostEqual(metrics["correct_abstention_rate"].mean, 1.0)
-        self.assertAlmostEqual(metrics["false_identification_rate"].mean, 0.0)
+        self.assertAlmostEqual(metrics["correct_abstention_rate"].mean, 0.25)
+        self.assertAlmostEqual(metrics["wrong_cause_abstention_rate"].mean, 0.25)
+        self.assertAlmostEqual(metrics["partial_identification_rate"].mean, 0.25)
+        self.assertAlmostEqual(metrics["false_identification_rate"].mean, 0.25)
 
     def test_partial_identification_is_rejected_until_bounds_are_adjudicated(self):
         scenario = ThetaACalibrationScenario(
