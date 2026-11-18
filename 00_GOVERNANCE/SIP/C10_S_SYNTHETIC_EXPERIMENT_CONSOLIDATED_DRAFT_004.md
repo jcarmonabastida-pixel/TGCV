@@ -2157,3 +2157,234 @@ La revisión **no aprueba §364 para implementación**. Los bloques DR-01, DR-03
 Siguiente operación recomendada: producir §366 como *data contract and oracle specification* independiente del código, que defina esquemas exactos para TruthClass, AnalyzerDisposition, AttemptLedger, IntervalRecord, EvaluatorAudit, OuterWorldSamplingContract, Metric Registry, Target Manifest y PairedContrast. Después se elaborará la tabla de mapeo desde los dataclasses actuales al nuevo esquema y los casos de oráculo. No escribir aún el código ni ejecutar tests/calibración.
 
 **Control:** no se modificó ningún archivo de código ni tests. No se invocaron builders de seed bank, world executor ni summarizer; no se generaron datos. No se ejecutaron tests, workflows, EP-02, calibración, Monte Carlo ni evaluación. main, RMA v3.38, Matrix v1.47, STATUS y TGCV Core permanecen intactos. PR #116 continúa Draft. `calibration_authorized=false`, `execution_authorized=false`, `scientific_execution=false`.
+
+
+## 366. Data contract y especificación de oráculos para θ_A — versión de diseño independiente del código (2026-11-18)
+
+**Estado:** DATA_CONTRACT_DRAFT / ORACLE_SPEC_DRAFT / STATIC_ONLY / NOT_APPROVED / NOT_IMPLEMENTED.  
+**Precedencia:** §366 operacionaliza propuestas de §364 y hallazgos DR-01…DR-15 de §365. No convierte esas propuestas en decisiones científicas ni altera los contratos vigentes. §362–§365 permanecen como historial auditable.  
+**Base inspeccionada:** protocolo `theta_a_calibration_protocol.py` SHA-256/blob `9675b9f6805b11f1a1037a3e4b2f95af53038e4c`; tests `test_theta_a_calibration_protocol.py` SHA-256/blob `a15454020c1043c1d5244193d8c8feb64d3442b9`; seed plan/runner/summary existentes y canonical state de main (RMA v3.38, Matrix v1.47).  
+**Límite:** especificación de tipos, invariantes, transformaciones y oráculos. No modifica código, tests, escenarios, roster, targets ni workflows. No genera datos ni ejecuta pruebas.
+
+### 366.1 Reglas de diseño y compatibilidad
+
+1. **No reutilizar el enum actual `Identification` para dos constructos.** La compatibilidad nominal del enum actual no justifica su semántica dual.
+2. **No inferir verdad estructural a partir de Analyzer, Evaluator, intervalo, causa de abstención ni resultado de un test.**
+3. **No reinterpretar automáticamente el fixture actual `expected_identification=INDETERMINATE`.** Es una categoría heredada que requiere decisión de dominio. El contrato nuevo debe preservar el valor legacy y marcarlo `UNMAPPED_LEGACY` hasta que una ficha de escenario determine si describe verdad estructural, régimen informativo o expectativa de Analyzer.
+4. **No añadir escenarios ni declarar que el roster tiene ya una verdad DGP distinta.** El mapeo de los cinco escenarios actuales es una tarea de reconciliación explícita, no una inferencia de esta especificación.
+5. **Separar el resultado de cada intento del estado de integridad del banco.** Un fallo de ejecución no es una abstención del Analyzer.
+6. **No tratar un intervalo no emitido como inválido ni un intervalo inválido como no emitido.**
+7. **No asumir IID exterior M a partir de seeds diferentes, independencia de unidades o world-family pairing.**
+8. **No considerar los targets opcionales actuales equivalentes a un Target Manifest exhaustivo.**
+9. Los contratos siguientes son esquemas lógicos/versionados. Los nombres de campos se proponen como nombres normativos futuros; no afirman que existan en el dataclass actual.
+
+### 366.2 Tipos normativos propuestos
+
+**A. TruthClass — propiedad del estimando/DGP**
+
+Valores:
+- `IDENTIFIED_POINT`: el contrato estructural establece un único valor puntual del estimando para la población/soporte declarados.
+- `NOT_IDENTIFIED_POINT`: el contrato establece que no existe un único valor puntual identificado bajo la información/soporte definidos.
+- `PARTIALLY_IDENTIFIED_SET`: el contrato identifica un conjunto/cotas no degenerado, con operador y cobertura de conjunto definidos.
+- `UNMAPPED_LEGACY`: valor transitorio de migración; no elegible para análisis científico ni PASS.
+
+No se admite `INDETERMINATE` como TruthClass por defecto: indeterminación del Analyzer es una disposición; indeterminación epistemológica de la clasificación de verdad debe registrarse como `truth_class_status=UNRESOLVED`, que bloquea el escenario. Si el equipo decide que un DGP requiere una clase epistemológica adicional, debe aprobar una definición separada, con consecuencias métricas, antes de extender el enum.
+
+Campos obligatorios del `TruthContract`:
+`truth_contract_id/version`, `scenario_id/version`, `estimand_id/version`, `outcome_id/version`, `truth_class`, `truth_class_status`, `truth_value` (solo para IDENTIFIED_POINT), `identified_set` (solo para PARTIALLY_IDENTIFIED_SET), `target_population_id/version`, `support_contract_sha256`, `dgp_profile_sha256`, `derivation_reference`, `review_status`.
+
+Invariantes:
+- IDENTIFIED_POINT exige valor finito dentro del dominio declarado y prohíbe conjunto no degenerado.
+- NOT_IDENTIFIED_POINT prohíbe declarar un truth puntual como parámetro identificado; puede conservar un valor generador/oráculo interno solo en campo separado `latent_generator_parameter`, marcado no identificado y no usado como truth para error puntual.
+- PARTIALLY_IDENTIFIED_SET exige límites/representación del conjunto, regla de pertenencia, fuente estructural y futura métrica de cobertura de conjunto. Hasta definirlas, métricas de punto e intervalo convencional quedan NOT_APPLICABLE.
+- UNMAPPED_LEGACY o UNRESOLVED bloquea cualquier resumen confirmatorio.
+
+**B. InformationRegime — información accesible al Analyzer**
+
+Campos: `information_regime_id/version`, `observation_process_id/version`, `missingness_mechanism`, `measurement_contract_sha256`, `support_observed_sha256`, `information_available_to_analyzer_sha256`, `regime_status`.
+
+Este objeto caracteriza observación, medición, disponibilidad, missingness y soporte entregados al Analyzer. No cambia por sí solo TruthClass. Su relación con la identificabilidad debe estar demostrada en el contrato causal del estimando: una limitación informativa puede hacer que el estimando no sea identificable bajo el régimen observado, pero esa conclusión se registra como resultado de una regla estructural explícita, no se infiere de que Analyzer se abstenga.
+
+**C. AnalyzerDisposition — salida observada**
+
+Valores mutuamente excluyentes:
+- `IDENTIFIED`
+- `NOT_IDENTIFIED`
+- `INDETERMINATE`
+- `PARTIALLY_IDENTIFIED`
+
+Campos: `disposition`, `abstention_cause_code` (nullable solo si el contrato permite ausencia de causa), `abstention_cause_detail` (opcional), `point_output_status`, `interval_output_status`, `analyzer_version`, `analyzer_contract_sha256`, `output_sha256`.
+
+La disposición no sustituye los estados de emisión del punto/intervalo. Un Analyzer puede producir una disposición y, separadamente, no emitir intervalo por una razón contractual válida. La validez completa del output se comprueba antes de crear este objeto.
+
+**D. ExpectedAnalyzerDisposition — expectativa del fixture**
+
+Campos: `expected_disposition`, `expected_cause_code`, `expectation_basis_id/version`, `expectation_status`. Se usa para conformidad del Analyzer, nunca como truth. Debe existir una regla explícita por escenario/régimen o declararse no especificada. Una expectativa no especificada no se puntúa como fallo ni se rellena copiando TruthClass.
+
+### 366.3 AttemptLedger — resultado por clave esperada del plan
+
+Clave primaria lógica: `(design_id, design_version, bank, scenario_id, scenario_version, N, outer_world_id, R)`. El universo esperado procede del seed plan inmutable y versionado.
+
+Estados exclusivos:
+- `VALID_RESULT`: ejecución terminada, captura y validación completas; contiene un ReplicateResult.
+- `TECHNICAL_FAILURE`: ejecución iniciada y fallida con evidencia de excepción/etapa/causa.
+- `OUTPUT_INVALID`: hubo output, pero incumple schema, identidad, fingerprints, límites o contrato.
+- `RECORD_MISSING`: no existe evidencia suficiente para decidir si se inició/terminó; no se imputa como fallo conocido ni como abstención.
+
+Campos comunes: clave, `attempt_id`, `ledger_status`, `started_at`/orden monotónico si la infraestructura lo soporta, `completed_at` si aplica, `stage`, `error_code`, `error_fingerprint`, `executor_version`, `environment_fingerprint`, `seed_assignment_sha256`, `capture_schema_version`, `provenance`.
+
+Invariantes:
+- exactamente una fila por clave esperada;
+- duplicados, claves extra, claves ausentes o fingerprints discordantes invalidan el ledger completo;
+- TECHNICAL_FAILURE requiere evidencia de intento y fallo; RECORD_MISSING se reserva para falta de evidencia;
+- OUTPUT_INVALID conserva fingerprint y diagnóstico del output defectuoso, sin convertirlo en AnalyzerDisposition;
+- solo VALID_RESULT contiene ReplicateResult;
+- un ledger incompleto produce `INVALID_LEDGER`, no una tasa científica imputada. Las proporciones de estados ledger se calculan solo si el universo esperado está completo y las cuatro categorías forman una partición exacta.
+
+La implementación actual, que propaga excepción y exige igualdad exacta de records y assignments, se mantiene como hard-fail hasta que exista wrapper/ledger nuevo. No se debe introducir captura silenciosa de excepciones en el runner actual.
+
+### 366.4 ReplicateResult y PointRecord
+
+`ReplicateResult` enlaza, por referencias/hashes, TruthContract, InformationRegime, ExpectedAnalyzerDisposition, AnalyzerDisposition, IntervalRecord, EvaluatorAudit y SeedAssignment.
+
+Campos mínimos: `attempt_key`, `truth_contract_ref`, `information_regime_ref`, `expected_disposition_ref`, `observed_disposition`, `observed_cause`, `point_record`, `interval_record`, `evaluator_audit_ref`, `world_id`, `run_id`, `estimand/outcome IDs+versions`, y todos los fingerprints ya exigidos por ThetaAReplicateRecord.
+
+`PointRecord`:
+- `point_status`: `EMITTED_VALID`, `NOT_EMITTED_VALID`, `OUTPUT_INVALID`.
+- `estimate`: finito si EMITTED_VALID; nulo en los otros estados.
+- `point_method_id/version`, `point_contract_sha256`.
+- EMITTED_VALID exige AnalyzerDisposition IDENTIFIED y TruthClass IDENTIFIED_POINT para evaluación de error puntual confirmatoria.
+- NOT_EMITTED_VALID puede coexistir con una disposición distinta de IDENTIFIED solo si el contrato Analyzer lo permite; si IDENTIFIED requiere punto, la ausencia es OUTPUT_INVALID.
+- OUTPUT_INVALID no se conserva dentro de ReplicateResult: se registra en AttemptLedger.
+
+### 366.5 IntervalRecord — no emisión frente a invalidez
+
+Estados:
+- `EMITTED_VALID`
+- `NOT_EMITTED_VALID`
+- `OUTPUT_INVALID` (solo como diagnóstico de ledger, no como intervalo válido dentro de ReplicateResult).
+
+Campos cuando EMITTED_VALID: `lower`, `upper`, `nominal_confidence_level`, `interval_method_id/version`, `interval_contract_sha256`, `sidedness`, `construction_inputs_sha256`, `coverage_against_reserved_truth` (derivado independientemente, no suministrado como autoridad por Analyzer).
+
+Reglas:
+- límites finitos, lower≤upper, nivel 0<α_conf<1, método/version y contrato presentes;
+- un nivel solicitado sin método no identifica el procedimiento inferencial;
+- NOT_EMITTED_VALID exige razón tipada (`ABSTENTION`, `NO_INTERVAL_BY_METHOD`, `CONTRACTUAL_NONINFERENCE`, `OTHER_PREDECLARED`) y no contiene límites/cobertura/anchura;
+- si el Analyzer afirma emisión pero faltan límites, método, nivel o coherencia, el ledger es OUTPUT_INVALID;
+- J=1 solo para EMITTED_VALID; C=1 solo si J=1 y el intervalo contiene el truth reservado aplicable;
+- para TruthClass NOT_IDENTIFIED_POINT o PARTIALLY_IDENTIFIED_SET, la cobertura de intervalo puntual no aplica; la cobertura de conjunto requiere un contrato separado.
+  
+El campo histórico `inference_covered` puede migrarse a una observación derivada de Evaluator solo tras verificar que representa cobertura del intervalo inferencial y no truth-within-logical-bounds. No se asume equivalencia semántica por el nombre del campo.
+
+### 366.6 EvaluatorAudit — evidencia independiente y separada
+
+Campos: `audit_id/version`, `attempt_key`, `evaluator_version`, `evaluator_contract_sha256`, `adjudicated_disposition`, `adjudicated_cause`, `adjudication_correct` respecto de una regla versionada, `logical_bounds_contract_ref`, `truth_within_logical_bounds`, `inference_interval_covers_truth` (nullable/no aplicable), `point_error_within_delta_eval` (nullable/no aplicable), `delta_eval_id/version`, `audit_evidence_sha256`.
+
+Separación obligatoria:
+- `truth_within_logical_bounds` es una invariante de soporte/consistencia lógica; nunca se etiqueta cobertura nominal.
+- `inference_interval_covers_truth` solo aplica a TruthClass IDENTIFIED_POINT con IntervalRecord EMITTED_VALID.
+- `point_error_within_delta_eval` es auditoría técnica respecto de δ_eval; no reemplaza δ_science.
+- `adjudication_correct` se evalúa contra una regla independiente, con expectativas tipadas; no se reduce a la coincidencia literal con la salida Analyzer.
+- El Evaluator no se convierte en árbitro de TruthClass por su propio resultado; la verdad se obtiene del TruthContract reservado.
+- EvaluatorAudit se almacena y resume en familia independiente, no en el Metric Registry de Analyzer.
+
+### 366.7 OuterWorldSamplingContract y PairedContrast
+
+**OuterWorldSamplingContract** campos:
+`sampling_design_id/version`, `target_world_distribution_id/version`, `sampling_frame`, `world_generation_mechanism_id/version`, `outer_world_unit_definition`, `iid_claim_status`, `independence_evidence_ref`, `seed_mechanism_id/version`, `M`, `world_family_policy`.
+
+Estados de claim IID: `CERTIFIED_IID`, `DEPENDENT`, `FIXED_FINITE_SET`, `UNVERIFIED`. CERTIFIED_IID requiere fundamento de diseño; seeds distintos no son prueba suficiente. La independencia de unidades dentro de cada mundo se mantiene en contrato distinto (`unit_independence_certified`) y no se hereda entre niveles.
+
+**PairedContrast** campos:
+`contrast_id/version`, `scenario_a_ref`, `scenario_b_ref`, `world_family_id`, `N`, `paired_world_ids`, `pairing_contract_sha256`, `contrast_estimand_id/version`, `contrast_method_id/version`, `pair_count`, `unmatched_worlds`, `result`, `mcse`, `status`.
+
+Invariantes:
+- el emparejamiento exige una correspondencia uno-a-uno de world_id para el mismo N, world-family y versiones compatibles;
+- el contraste identifica explícitamente qué componente del DGP varía y qué permanece fijo;
+- si hay mundos sin pareja, no se presenta el contraste como completamente pareado; se aplica la regla de elegibilidad preespecificada o se declara NOT_EVALUABLE;
+- si `iid_claim_status=DEPENDENT` o `FIXED_FINITE_SET`, el MCSE no se interpreta como inferencia IID poblacional; su alcance se declara;
+- la fórmula de influencia pareada de §364 es candidata asintótica, no oráculo universal. Antes de adoptarla, se debe demostrar que A/B y la población de pares corresponden al estimando del contraste y fijar cómo tratar denominadores nulos. No se descartan pares post hoc según resultados.
+
+### 366.8 Metric Registry y Target Manifest — contratos exactos
+
+**Metric Registry Entry**:
+`metric_id/version`, `family` (`ANALYZER_OPERATIONAL`, `ANALYZER_POINT`, `ANALYZER_INTERVAL`, `ANALYZER_DISPOSITION`, `LEDGER`, `EVALUATOR_AUDIT`, `CONTRAST`), `definition`, `unit`, `population`, `truth_class_applicability`, `formula_id/version`, `aggregation_id/version`, `mcse_method_id/version`, `direction`, `requiredness_policy_id/version`, `scientific_target_policy_ref`.
+
+**Target Manifest Entry**:
+`scenario_id/version`, `N`, `metric_id/version`, `applicability`, `applicability_reason_code`, `required_for_precision`, `target_status`, `target_value`, `target_unit`, `mcse_method_ref`, `delta_science_ref`, `registry_ref`, `truth_contract_ref`, `design_fingerprint`.
+
+Clave base: `(scenario_id, scenario_version, N, metric_id, metric_version)`. Si M, R, confidence level o sampling design varían entre celdas, se incorporan al design fingerprint y se comprueba igualdad antes de comparar targets. El universo esperado se genera desde roster aprobado × N grid × Metric Registry × regla de aplicabilidad; el manifiesto no define su propio universo.
+
+Valores `applicability`: `APPLICABLE`, `NOT_APPLICABLE`, `UNRESOLVED`. Valores `target_status`: `TARGETED`, `NOT_TARGETED`. `UNRESOLVED` bloquea. NOT_APPLICABLE requiere razón y no puede tener target. APPLICABLE + required_for_precision=true exige TARGETED y target finito/positivo compatible con unidad/método. NOT_TARGETED no satisface un requisito. La obligatoriedad científica y la de precisión son políticas distintas: un target MCSE no define el umbral de aceptación científica.
+
+Hash: canonical JSON/bytes del payload sin digest, hash SHA-256 externo en envelope; registry, roster, truth contracts y design tienen hashes independientes. No se permite autorreferencia ni confiar en hash que el mismo payload pueda redefinir.
+
+### 366.9 Oráculos independientes y fixtures mínimos
+
+Los oráculos son tablas explícitas calculadas a mano o por implementación independiente, sin invocar funciones del agregador que se pretende verificar. Los resultados se fijan en fixtures versionados antes de implementar.
+
+**O-01 — separación de constructos.** Caso heredado INDETERMINATE debe producir UNMAPPED_LEGACY y bloquear el resumen; no debe convertirse a NOT_IDENTIFIED ni PARTIALLY_IDENTIFIED por default.
+
+**O-02 — partición Analyzer.** Para cada mundo, cuatro conteos de disposición observada suman exactamente R. Ejemplo R=8: [IDENTIFIED=3, NOT_IDENTIFIED=2, INDETERMINATE=2, PARTIALLY_IDENTIFIED=1], tasas [3/8,2/8,2/8,1/8]. No se evalúa todavía su corrección frente a TruthClass.
+
+**O-03 — ledger.** Universo 4 intentos: dos VALID_RESULT, uno TECHNICAL_FAILURE y uno OUTPUT_INVALID; conteos cierran 4. Si falta una clave esperada, el ledger es INVALID_LEDGER y no se calcula la proporción como si la población estuviera completa.
+
+**O-04 — missing vs invalid interval.** Un resultado válido sin intervalo bajo razón permitida produce J=0; un output que declara intervalo pero omite upper produce OUTPUT_INVALID; un intento sin registro produce RECORD_MISSING/INVALID_LEDGER, nunca J=0.
+
+**O-05 — métricas de intervalo.** R=5, J=[1,1,0,1,0], C=[1,0,0,1,0], anchuras=[0.2,0.4,—,0.3,—]. Disponibilidad=3/5; cobertura condicional=2/3; éxito conjunto=2/5; anchura condicional=0.3. Las cuatro cifras deben salir de denominadores explícitos.
+
+**O-06 — verdad no identificada.** TruthClass NOT_IDENTIFIED_POINT: point bias/MAE/MSE/recovery e intervalo puntual = NOT_APPLICABLE; falsa identificación, disposiciones y auditoría de bounds lógicos siguen aplicando. No se usa un truth puntual generador para calcular error del Analyzer.
+
+**O-07 — denominador puntual cero.** TruthClass IDENTIFIED_POINT con B_m=0 en todos los mundos: métricas condicionales NOT_EVALUABLE; tasas operacionales sí calculables. Si B_m=0 en algunos mundos, se reportan esos mundos y se conserva el ratio agrupado preespecificado; no se ocultan.
+
+**O-08 — ratio MCSE.** Para mundos sintéticos pequeños con A_m/B_m fijados, comparar ratio, residuos u_m y MCSE contra cálculo sandwich independiente; incluir B_m=0, denominadores heterogéneos y covarianza A/B. Verificar por simulación su cobertura/estabilidad solo en fase de test autorizada; no convertir esta especificación en ejecución ahora.
+
+**O-09 — IID exterior.** M mundos con seeds distintos pero sampling status UNVERIFIED no pueden producir etiqueta de inferencia poblacional IID. El resultado puede etiquetarse descriptivo bajo seed mechanism.
+
+**O-10 — pareamiento.** Dos escenarios con tres world_id compartidos: calcular diferencias dentro de cada mundo y MCSE entre diferencias. Reordenar filas no cambia resultado. Romper una pareja cambia status a no pareado/NOT_EVALUABLE según regla previa, nunca emparejar por posición de fila.
+
+**O-11 — manifest.** Rechazar clave omitida, duplicada, extra, target obligatorio ausente, unidad/método incompatible, applicability UNRESOLVED, hash circular o roster sin aprobación. La lista esperada debe generarse desde Registry y roster independientes.
+
+**O-12 — Evaluator.** truth_within_logical_bounds=true no puede activar interval_coverage. δ_eval y δ_science deben permanecer separados; cambiar uno no modifica el otro.
+
+**O-13 — equivalencia histórica.** En fixture completo all-R identified, mismos inputs, estimand, verdad y ponderación, el nuevo agregador debe reproducir outputs históricos para las métricas equivalentes. MSE se verifica contra RMSE²; MCSE de RMSE no se iguala al de MSE. En fixtures con abstención, no se exige equivalencia con el antiguo hard-gate all-R.
+
+**O-14 — identidad/fingerprints.** Cualquier deriva de scenario/DGP/profile/estimand/outcome/world/seed/version dentro de una unidad declarada produce fallo de integridad, no diferencia métrica.
+
+**O-15 — orden e invariancia.** Permutación de filas y serialización canónica no alteran resultados ni hashes; cambio de R o de población de intentos debe cambiar denominadores conforme al contrato.
+
+### 366.10 Mapeo preliminar desde el esquema actual
+
+| Campo/tipo actual | Destino propuesto | Disposición |
+|---|---|---|
+| `ThetaACalibrationScenario.expected_identification` | TruthContract + ExpectedAnalyzerDisposition, tras revisión de cada escenario | No mapear automáticamente; INDETERMINATE queda UNMAPPED_LEGACY |
+| `ThetaAReplicateRecord.expected_identification` | Referencia a TruthContract + expectativa | Campo duplicado a retirar tras migración validada |
+| `analyzer_identification` | AnalyzerDisposition.disposition | Mapear con tabla exhaustiva de enums y causa |
+| `truth` | TruthContract.truth_value solo para IDENTIFIED_POINT | Para NOT_IDENTIFIED conservar parámetro generador solo en campo separado, nunca como truth de error |
+| `point_estimate` | PointRecord.estimate/status | Status ausente no equivale a error cero |
+| `inference_lower_bound/upper_bound` | IntervalRecord | Añadir método, contrato, status y razón |
+| `inference_covered` | Candidato a derivación independiente de cobertura | Verificar semántica real antes de mapear |
+| `inference_width` | Derivable de upper−lower si intervalo válido | No usar como fuente primaria si contradice límites |
+| `requested_confidence_level` | Nominal level | No sustituye método/versión |
+| `expected_abstention_reason` | ExpectedAnalyzerDisposition.expected_cause_code | Requiere separar verdad de expectativa |
+| `observed_abstention_reason` | AnalyzerDisposition.abstention_cause_code | Conservar código literal y mapping versionado |
+| tripleta `evaluator_*` | EvaluatorAudit | Migrar a registro/summary separado |
+| `ThetaASeedAssignment` | Referencia de AttemptLedger y Pairing identity | Conservar el seed plan actual |
+| `metric_targets` | Target Manifest | No asumir exhaustividad ni obligatoriedad actual |
+| `ThetaAMetricSummary` | Métrica versionada con denominadores y estado | Nuevo schema; preservar outputs legacy para comparación |
+| `world_family_id/world_id` | PairedContrast | Identidad existente; contrastes aún no implementados |
+
+### 366.11 Puertas de decisión antes de implementación
+
+No iniciar implementación hasta que se completen, en este orden:
+1. Reconciliar los cinco escenarios actuales: TruthClass, information regime, expectation, cause y fundamento estructural, incluyendo decisión explícita para el caso legacy INDETERMINATE.
+2. Aprobar la política de intervalo: método, sidedness, nivel, emisión y no emisión permitida por disposición.
+3. Definir la unidad objetivo de inferencia M: distribución IID, conjunto fijo o mecanismo Monte Carlo descriptivo; no basta con seeds distintos.
+4. Aprobar catálogo de métricas, aplicabilidad y targets obligatorios; δ_science y criterios científicos quedan en decisión separada.
+5. Definir captura/ledger sin pérdida de excepción ni conversión de error técnico en salida Analyzer.
+6. Validar fórmula MCSE ratio y contraste pareado con derivación independiente y población elegible preespecificada.
+7. Aprobar fixtures/oráculos y equivalencia histórica antes de modificar agregador.
+
+**Siguiente operación:** §367, reconciliación escenario por escenario de los cinco escenarios focales y su verdad DGP/régimen informativo/expectativa Analyzer, contrastando perfiles DGP, soporte, independencia y pruebas existentes. La prioridad es resolver la semántica legacy INDETERMINATE y evitar una migración de etiquetas que cambie el significado causal. No ejecutar tests ni calibración.
+
+**Controles y autorización:** solo se modificará este documento en la rama de investigación. No se modifican código/tests/DGP/roster/seeds/targets/workflows ni main/RMA/Matrix/STATUS/Core. No se ejecutan tests, EP-02, world executor, seed builder, calibración, Monte Carlo ni evaluación. PR #116 permanece Draft. `scientific_execution=false`, `execution_authorized=false`, `calibration_authorized=false`.
