@@ -186,6 +186,32 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         )
         self.assertFalse({x.world_seed for x in calibration} & {x.world_seed for x in evaluation})
 
+    def test_profile_fingerprint_changes_r_streams_without_circularly_changing_world_seed(self):
+        def scenario(mass):
+            return ThetaACalibrationScenario(
+                scenario_id="THETA_A_NO_SUPPORT", scenario_version="1.0",
+                world_version="world-v1", dgp_id="C10S-THETA-A", dgp_version="1.0",
+                roster_version="1.0", unit_id_prefix="unit",
+                expected_identification="NOT_IDENTIFIED", unit_independence_certified=False,
+                dgp_profile=ThetaACalibrationDGPProfile(
+                    profile_id="THETA_A_TARGET_SUPPORT_PROFILE", profile_version="1.0",
+                    structural_support_contract_id="THETA_A_STRUCTURAL_SUPPORT",
+                    structural_support_contract_version="1.0",
+                    support_relation="TARGET_HAS_UNSUPPORTED_HISTORIES",
+                    target_unsupported_history_masses=(("h-target-only", mass),),
+                    expected_abstention_reason="TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT",
+                ),
+            )
+        first = build_theta_a_seed_bank(self._design(scenario(0.25)), "calibration")
+        second = build_theta_a_seed_bank(self._design(scenario(0.40)), "calibration")
+        for left, right in zip(first, second):
+            self.assertEqual((left.world_seed, left.world_id, left.roster_id),
+                             (right.world_seed, right.world_id, right.roster_id))
+            self.assertNotEqual(left.dgp_profile_sha256, right.dgp_profile_sha256)
+            self.assertNotEqual(left.run_id, right.run_id)
+            self.assertNotEqual(left.randomization_salt, right.randomization_salt)
+            self.assertNotEqual(left.s3_seed, right.s3_seed)
+
     def test_seed_bank_rejects_incomplete_r_coverage(self):
         design = self._design()
         rows = build_theta_a_seed_bank(design, "calibration")
