@@ -44,6 +44,10 @@ class ThetaACalibrationDGPProfile:
     support_relation: Literal["EQUAL", "SOURCE_STRICT_SUPERSET", "TARGET_HAS_UNSUPPORTED_HISTORIES"]
     target_unsupported_history_masses: tuple[tuple[str, float], ...] = ()
     expected_abstention_reason: str | None = None
+    generator_variant: Literal[
+        "positive", "null", "negative", "alternative", "positive_target_only"
+    ] | None = None
+    expected_theta_a_truth: float | None = None
 
     def validate(self) -> None:
         identities = (
@@ -69,6 +73,16 @@ class ThetaACalibrationDGPProfile:
                 raise ThetaACalibrationError("target-only profile requires unsupported mass and its exact Analyzer reason")
         elif self.target_unsupported_history_masses or self.expected_abstention_reason is not None:
             raise ThetaACalibrationError("benign/equal support profiles cannot declare target-only mass or abstention reason")
+        if (self.generator_variant is None) != (self.expected_theta_a_truth is None):
+            raise ThetaACalibrationError("canonical DGP variants require an independently declared analytic theta_A truth")
+        if self.generator_variant is not None and self.generator_variant not in {
+            "positive", "null", "negative", "alternative", "positive_target_only"
+        }:
+            raise ThetaACalibrationError("unsupported canonical theta_A DGP generator variant")
+        if self.expected_theta_a_truth is not None and (
+            not isfinite(self.expected_theta_a_truth) or not -1.0 <= self.expected_theta_a_truth <= 1.0
+        ):
+            raise ThetaACalibrationError("analytic theta_A truth must be finite and bounded in [-1,1]")
 
     @property
     def fingerprint_sha256(self) -> str:
@@ -88,6 +102,7 @@ class ThetaACalibrationScenario:
     unit_independence_certified: bool
     independence_basis: str = ""
     dgp_profile: ThetaACalibrationDGPProfile | None = None
+    world_family_id: str | None = None
 
     @property
     def dgp_profile_sha256(self) -> str:
@@ -100,6 +115,8 @@ class ThetaACalibrationScenario:
             self.roster_version.strip(), self.unit_id_prefix.strip(),
         )):
             raise ThetaACalibrationError("focal scenario, world, DGP and roster identities/versions are required")
+        if self.world_family_id is not None and not self.world_family_id.strip():
+            raise ThetaACalibrationError("shared-world family identity cannot be blank")
         if self.expected_identification not in _VALID_IDENTIFICATION:
             raise ThetaACalibrationError(
                 "focal calibration currently supports IDENTIFIED, NOT_IDENTIFIED or INDETERMINATE truth classes"
@@ -184,6 +201,79 @@ class ThetaACalibrationDesign:
             raise ThetaACalibrationError("duplicate focal metric target")
 
 
+def build_theta_a_candidate_scenario_roster() -> tuple[ThetaACalibrationScenario, ...]:
+    """Return the five §336/§348 first-wave scenarios as NOT_FROZEN candidates.
+
+    This is a declarative roster factory only: it creates no seeds, worlds,
+    calibration/evaluation banks, or execution authorization.
+    """
+    family = "THETA_A_INTERACTION_BASE_V1"
+    common = {
+        "world_version": "1",
+        "dgp_version": "1",
+        "roster_version": "1",
+        "unit_id_prefix": "U",
+    }
+    identified = (
+        ("THETA_A_POSITIVE_V1", "positive", 0.5, "DGP-INTERVAL-INTEGRATION-INTERACTION", family),
+        ("THETA_A_NULL_V1", "null", 0.0, "DGP-INTERVAL-INTEGRATION-NULL", "THETA_A_NULL_BASE_V1"),
+        ("THETA_A_NEGATIVE_V1", "negative", -0.5, "DGP-INTERVAL-INTEGRATION-NEGATIVE", "THETA_A_NEGATIVE_BASE_V1"),
+        ("THETA_A_ALTERNATIVE_COMMON_V1", "alternative", 0.0, "DGP-INTERVAL-INTEGRATION-INTERACTION", family),
+    )
+    scenarios = []
+    for scenario_id, variant, truth, dgp_id, world_family in identified:
+        profile = ThetaACalibrationDGPProfile(
+            profile_id=f"{scenario_id}_PROFILE",
+            profile_version="1.0",
+            structural_support_contract_id="SYNTHETIC-THETA-A-EQUAL-SUPPORT-001",
+            structural_support_contract_version="1",
+            support_relation="EQUAL",
+            generator_variant=variant,
+            expected_theta_a_truth=truth,
+        )
+        scenarios.append(ThetaACalibrationScenario(
+            scenario_id=scenario_id,
+            scenario_version="1.0",
+            dgp_id=dgp_id,
+            expected_identification="IDENTIFIED",
+            unit_independence_certified=True,
+            independence_basis=(
+                "The finite DGP generates unit-level potential histories independently; "
+                "both assignment stages use independent unit-level draws and no interference."
+            ),
+            dgp_profile=profile,
+            world_family_id=world_family,
+            **common,
+        ))
+    target_only_profile = ThetaACalibrationDGPProfile(
+        profile_id="THETA_A_TARGET_SUPPORT_NONIDENTIFIED_PROFILE",
+        profile_version="1.0",
+        structural_support_contract_id="SYNTHETIC-TARGET-SOURCE-SUPPORT-001",
+        structural_support_contract_version="1",
+        support_relation="TARGET_HAS_UNSUPPORTED_HISTORIES",
+        target_unsupported_history_masses=(("TARGET-ONLY-HISTORY-001", 0.5),),
+        expected_abstention_reason="TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT",
+        generator_variant="positive_target_only",
+        expected_theta_a_truth=0.5,
+    )
+    scenarios.append(ThetaACalibrationScenario(
+        scenario_id="THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1",
+        scenario_version="1.0",
+        dgp_id="DGP-INTERVAL-INTEGRATION-INTERACTION",
+        expected_identification="NOT_IDENTIFIED",
+        unit_independence_certified=False,
+        dgp_profile=target_only_profile,
+        world_family_id=family,
+        **common,
+    ))
+    roster = tuple(scenarios)
+    for scenario in roster:
+        scenario.validate()
+    if len({(item.scenario_id, item.scenario_version) for item in roster}) != 5:
+        raise ThetaACalibrationError("canonical first-wave candidate roster must contain exactly five unique scenarios")
+    return roster
+
+
 def theta_a_pipeline_inference_options(
     design: ThetaACalibrationDesign,
     scenario: ThetaACalibrationScenario,
@@ -212,6 +302,7 @@ class ThetaASeedAssignment:
     n_units: int
     outer_world_id: str
     assignment_replicate: int
+    world_family_id: str
     world_id: str
     roster_id: str
     world_version: str
@@ -257,14 +348,20 @@ def build_theta_a_seed_bank(
         for n_units in design.n_grid:
             for m in range(design.outer_worlds_m):
                 outer_id = f"outer-{m:06d}"
+                world_family_id = scenario.world_family_id or scenario.scenario_id
+                world_root = (
+                    f"TGCV-C10S-THETA-A-SEED-v1|{design.namespace}|{bank}|world-family|"
+                    f"{world_family_id}|{scenario.world_version}|{scenario.dgp_id}|"
+                    f"{scenario.dgp_version}|{scenario.roster_version}|{n_units}|{outer_id}"
+                )
                 root = (
-                    f"TGCV-C10S-THETA-A-SEED-v1|{design.namespace}|{bank}|"
+                    f"TGCV-C10S-THETA-A-SEED-v1|{design.namespace}|{bank}|scenario|"
                     f"{scenario.scenario_id}|{scenario.scenario_version}|{n_units}|{outer_id}"
                 )
-                world_seed = _seed(root + "|world")
-                world_id = "theta-a-world-" + _digest(root + "|world-id")[:24]
-                roster_id = "theta-a-roster-" + _digest(root + "|roster-id")[:24]
-                unit_id_prefix = scenario.unit_id_prefix + "-" + _digest(root + "|unit-prefix")[:8]
+                world_seed = _seed(world_root + "|world")
+                world_id = "theta-a-world-" + _digest(world_root + "|world-id")[:24]
+                roster_id = "theta-a-roster-" + _digest(world_root + "|roster-id")[:24]
+                unit_id_prefix = scenario.unit_id_prefix + "-" + _digest(world_root + "|unit-prefix")[:8]
                 for r in range(design.assignment_replicates_r):
                     run_root = root + f"|profile-{scenario.dgp_profile_sha256}|assignment-{r:06d}"
                     rows.append(ThetaASeedAssignment(
@@ -274,6 +371,7 @@ def build_theta_a_seed_bank(
                         n_units=n_units,
                         outer_world_id=outer_id,
                         assignment_replicate=r,
+                        world_family_id=world_family_id,
                         world_id=world_id,
                         roster_id=roster_id,
                         world_version=scenario.world_version,
@@ -323,7 +421,7 @@ def validate_theta_a_seed_banks(
         if len(actual) != len(set(actual)) or set(actual) != expected:
             raise ThetaACalibrationError(f"{bank} bank must contain every declared scenario×N×M×R row exactly once")
         if any(
-            not x.world_id or not x.roster_id or not x.world_version
+            not x.world_family_id or not x.world_id or not x.roster_id or not x.world_version
             or not x.dgp_id or not x.dgp_version or not x.roster_version
             or not x.unit_id_prefix or not x.run_id or not x.outer_world_id
             or type(x.n_units) is not int or x.n_units < 1
@@ -337,16 +435,22 @@ def validate_theta_a_seed_banks(
         scenario_map = {(x.scenario_id, x.scenario_version): x for x in design.scenario_specs}
         for row in rows:
             scenario = scenario_map[(row.scenario_id, row.scenario_version)]
+            world_family_id = scenario.world_family_id or scenario.scenario_id
+            world_root = (
+                f"TGCV-C10S-THETA-A-SEED-v1|{design.namespace}|{bank}|world-family|"
+                f"{world_family_id}|{scenario.world_version}|{scenario.dgp_id}|"
+                f"{scenario.dgp_version}|{scenario.roster_version}|{row.n_units}|{row.outer_world_id}"
+            )
             root = (
-                f"TGCV-C10S-THETA-A-SEED-v1|{design.namespace}|{bank}|"
+                f"TGCV-C10S-THETA-A-SEED-v1|{design.namespace}|{bank}|scenario|"
                 f"{scenario.scenario_id}|{scenario.scenario_version}|{row.n_units}|{row.outer_world_id}"
             )
             run_root = root + f"|profile-{scenario.dgp_profile_sha256}|assignment-{row.assignment_replicate:06d}"
             expected_derivation = (
-                _seed(root + "|world"),
-                "theta-a-world-" + _digest(root + "|world-id")[:24],
-                "theta-a-roster-" + _digest(root + "|roster-id")[:24],
-                scenario.unit_id_prefix + "-" + _digest(root + "|unit-prefix")[:8],
+                _seed(world_root + "|world"),
+                "theta-a-world-" + _digest(world_root + "|world-id")[:24],
+                "theta-a-roster-" + _digest(world_root + "|roster-id")[:24],
+                scenario.unit_id_prefix + "-" + _digest(world_root + "|unit-prefix")[:8],
                 "theta-a-run-" + _digest(run_root + "|run-id")[:24],
                 _digest(run_root + "|joint-policy-randomization"),
                 _seed(run_root + "|s3-measurement"),
@@ -670,6 +774,8 @@ def capture_theta_a_replicate(
         assignment.scenario_id, assignment.scenario_version
     ) or assignment.dgp_profile_sha256 != scenario.dgp_profile_sha256:
         raise ThetaACalibrationError("scenario/DGP profile contract differs from focal seed assignment")
+    if assignment.world_family_id != (scenario.world_family_id or scenario.scenario_id):
+        raise ThetaACalibrationError("scenario/world-family identity differs from focal seed assignment")
     evaluation = result.evaluator_result
     truth_bundle = result.theta_a_truth.theta_a_truth
     profile = scenario.dgp_profile
@@ -730,6 +836,10 @@ def capture_theta_a_replicate(
             or evaluation.analyzer_identification != result.analyzer_result.identification
             or evaluation.point_estimate != result.analyzer_result.point_estimate):
         raise ThetaACalibrationError("Evaluator record differs from the supplied Analyzer and reserved truth")
+    if profile is not None and profile.expected_theta_a_truth is not None and not _close(
+        evaluation.truth, profile.expected_theta_a_truth
+    ):
+        raise ThetaACalibrationError("materialized DGP/Evaluator truth differs from the canonical scenario truth")
     record = ThetaAReplicateRecord(
         assignment.scenario_id, assignment.scenario_version, assignment.n_units,
         assignment.outer_world_id, assignment.assignment_replicate,
