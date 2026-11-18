@@ -44,7 +44,8 @@ jobs:
 
       - name: Install hash-locked test dependencies
         working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
 
       - name: Compile only the nested precision implementation and its protocol integration
         working-directory: 03_EXPERIMENTS/C10-S/harness
@@ -117,7 +118,7 @@ jobs:
               ],
           }
           out = Path(os.environ["RUNNER_TEMP"]) / "c10s-nested-mr-validation-manifest.json"
-          out.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\\n", encoding="utf-8")
+          out.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
           PY
 
       - name: Upload logs and validation manifest
