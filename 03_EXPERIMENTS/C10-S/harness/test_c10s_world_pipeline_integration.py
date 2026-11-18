@@ -680,7 +680,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertAlmostEqual(result.analyzer_result.target_q_x_coverage, 1.0)
         self.assertTrue(result.evaluator_result.truth_within_bounds)
         self.assertTrue(result.evaluator_result.correct_adjudication)
-        self.assertEqual(result.evaluator_result.disposition, "CORRECT_IDENTIFICATION")
+        self.assertEqual(result.evaluator_result.disposition, "POINT_RECOVERED")
 
     def test_source_assignment_positivity_failure_runs_through_generated_world_to_evaluator(self):
         fixture = self._fixture(n_units=4)
