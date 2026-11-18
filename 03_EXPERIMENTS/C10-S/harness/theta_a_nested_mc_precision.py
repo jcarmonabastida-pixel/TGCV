@@ -41,6 +41,7 @@ class NestedPrecisionResult:
     outer_world_sampling_contract_id: str | None = None
     outer_world_sampling_contract_version: str | None = None
     outer_world_sampling_independence_basis: str | None = None
+    bootstrap_degenerate: bool = False
 
 
 def _finite_rows(rows: Sequence[Sequence[float]]) -> tuple[tuple[float, ...], ...]:
@@ -215,6 +216,12 @@ def analyze_nested_precision(
     if not boot:
         raise NestedPrecisionError("bootstrap produced no replicate")
 
+    bootstrap_degenerate = all(
+        len({row[index] for row in boot}) == 1 for index in range(4)
+    )
+    if status == "ESTIMABLE_UNDER_DECLARED_SAMPLING" and bootstrap_degenerate:
+        status = "DEGENERATE_BOOTSTRAP_DISTRIBUTION"
+
     def percentile(values: Sequence[float], probability: float) -> float:
         ordered = sorted(values)
         position = (len(ordered) - 1) * probability
@@ -262,6 +269,8 @@ def analyze_nested_precision(
             projection_status = "DESCRIPTIVE_ONLY_NO_IID_WITHIN_R_INFERENCE"
         elif is_rmse and grand_mean <= 0:
             projection_status = "RMSE_DELTA_NONREGULAR"
+        elif bootstrap_degenerate:
+            projection_status = "DEGENERATE_BOOTSTRAP_DISTRIBUTION"
         elif len(boot) < bootstrap_replicates * 0.95:
             projection_status = "SENSITIVITY_REQUIRED"
         elif boundary_draws:
@@ -290,4 +299,5 @@ def analyze_nested_precision(
         outer_world_sampling_contract_id=outer_world_sampling_contract_id,
         outer_world_sampling_contract_version=outer_world_sampling_contract_version,
         outer_world_sampling_independence_basis=outer_world_sampling_independence_basis,
+        bootstrap_degenerate=bootstrap_degenerate,
     )
