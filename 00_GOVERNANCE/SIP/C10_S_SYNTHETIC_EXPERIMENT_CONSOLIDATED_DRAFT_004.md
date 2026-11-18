@@ -2544,3 +2544,105 @@ La unidad target-only usa covariables ancla copiadas de una unidad fuente y un e
 **Siguiente trabajo técnico:** cerrar el oráculo analítico independiente target-only y su test de regresión. El test debe comprobar el valor numérico, no limitarse a `[-1,1]` ni a `truth_within_bounds`. Después, auditar que los cinco escenarios del roster tienen la misma cobertura de verdad reservada y que sus expectativas analíticas se contrastan con ella.
 
 **Autorización y alcance:** esta revisión fue estática; no se ejecutaron tests, Analyzer, Evaluator, DGP, workflows ni calibraciones. No se modifican código, tests, perfiles, seeds, roster, workflows, RMA, Evidence→Claim Matrix, STATUS, Core ni `main`. Solo se añade esta sección al documento maestro de la rama `research/c10-s-consolidation-draft`. PR #116 permanece Draft. `scientific_execution=false`, `execution_authorized=false`, `calibration_authorized=false`.
+
+
+## 369. Derivación analítica independiente de V_CONT para los cinco escenarios y target-only (2026-11-18)
+
+**Estado:** ANALYTIC_DGP_DERIVATION / STATICALLY_DERIVED / NOT_YET_ENCODED_AS_TEST / NOT_EXECUTED.  
+**Objetivo:** fijar expectativas numéricas a partir de las reglas generadoras y de la semántica de adjudicación, sin llamar al oráculo `compute_theta_a_vcont_truth_from_event_histories` para obtenerlas. Esta sección proporciona el valor esperado independiente contra el que podrá probarse dicho oráculo. No modifica el DGP ni aprueba una ejecución científica.
+
+**Fuentes revisadas:** `theta_a_calibration_dgp.py` blob `e334ee62502a9bb012512305075a8b071fd8efed`; `c10s_functional_history.py` blob `003938b3113aef345cf2de5e7f0d50b58fd1d1be`; `c10s_synthetic_components.py` blob `e1fcb152f2b1fd6ad3ea8ccd20c2163dc44c4666`; `c10s_world_pipeline.py` blob `eee0b0e4148d7c4acb90a6c6c7c58b8d82800978`; `test_c10s_world_pipeline_integration.py` blob `0cf51e0cbf8e56a7dcbf7b37892b3f708161eeb2`.
+
+### 369.1 Reglas de adjudicación que determinan el resultado
+
+La regla funcional de cumplimiento es:
+`compliant = (admission_behavior == ("ADMIT" if enabled else "NO_ADMISSION"))`.
+
+El estado inicial de cada historia del fixture es `(enabled=True, admission=ADMIT)`, por lo que es compliant. La rejilla V_CONT contiene dos intervalos: [0,1) y [1,2]. La adjudicación es estricta y temporal:
+- Un evento en t=1 no afecta al intervalo [0,1).
+- El evento en t=1 sí se aplica al intervalo [1,2].
+- Un cambio a `NO_ADMISSION` manteniendo `enabled=True` hace que el estado posterior sea non-compliant.
+- Un cambio a `enabled=False` manteniendo `admission=ADMIT` también hace que el estado posterior sea non-compliant.
+
+V_CONT por historia es la media de los dos indicadores de cumplimiento. Por tanto, una historia compliant en el primer intervalo y non-compliant en el segundo tiene V_CONT=1/2; una historia compliant en ambos tiene 1; una historia non-compliant en ambos tiene 0.
+
+### 369.2 Derivación por escenario
+
+Las políticas focales son deterministas. En los escenarios positivo, nulo y negativo:
+- `g_A0=(0,0,0,0)`
+- `g_A1=(1,0,0,0))
+
+En `alternative`:
+- `g_A0=(0,1,0,0)`
+- `g_A1=(1,1,0,0))
+
+La regla D2 de interrupción de admisión no se activa en la generación de potenciales `G_A`: el generador selecciona las reglas cuya fuente es `G_A` y no infiere V_CONT desde D2. La regla D2 común se mantiene fuera de esta derivación focal.
+
+| Escenario | Potencial bajo g_A0 | V_CONT(g_A0) | Potencial bajo g_A1 | V_CONT(g_A1) | θ_A = diferencia |
+|---|---|---:|---|---:|---:|
+| positive | Regla focal en t=1: admission pasa a NO_ADMISSION; [0,1) compliant, [1,2] no | 0,5 | No se activa regla G_A; ambos intervalos compliant | 1 | **+0,5** |
+| null | No hay reglas G_A; ambos intervalos compliant | 1 | No hay reglas G_A; ambos intervalos compliant | 1 | **0** |
+| negative | No se activa la regla (1,0) en g_A0; ambos intervalos compliant | 1 | Regla focal en t=1; [0,1) compliant, [1,2] no | 0,5 | **−0,5** |
+| alternative | En t=0,5 se deshabilita ENABLED manteniendo ADMIT; ambos intervalos no compliant | 0 | La misma regla alternativa en t=0,5; la regla focal no se activa porque la segunda coordenada vale 1 | 0 | **0** |
+
+Esta derivación distingue el escenario nulo del alternativo: ambos contrastes son cero, pero el primero mantiene ambos brazos compliant; el segundo produce incumplimiento funcional en ambos brazos por la vía alternativa común.
+
+### 369.3 Derivación del perfil positive_target_only
+
+El materializador:
+- toma el generador `positive`;
+- escala cada masa fuente por `1-u`, con u=0,5;
+- añade la historia target-only con masa u=0,5;
+- añade para esa historia las mismas políticas deterministas `g_A0/g_A1`;
+- le asigna el mismo estado funcional inicial `(True, ADMIT)`;
+- conserva las mismas reglas funcionales y el mismo régimen `r_common`.
+
+Como las reglas G_A del modo positivo solo dependen del vector y el estado inicial, no de X/H0/C_c ni del identificador de historia, cada historia soportada y la historia target-only tienen el mismo contraste focal analítico +0,5.
+
+Sea q_s la distribución fuente normalizada y q_t la distribución objetivo ampliada:
+[
+q_t(h)=(1-u)q_s(h)quad hinmathcal H_s,qquad q_t(h_*)=u.
+]
+Como (delta(h)=V(g_{A1}mid h)-V(g_{A0}mid h)=0.5) para toda historia objetivo de esta construcción:
+[
+	heta_A(q_t)=sum_{hinmathcal H_s}(1-u)q_s(h),0.5+u,0.5
+=0.5(1-u)+0.5u
+=mathbf{+0.5}.
+]
+
+Para u=0,5, la mitad de la masa objetivo está fuera del soporte fuente, pero el contraste generador sobre la población objetivo completa sigue siendo +0,5. La no-identificación desde la fuente y la existencia de una verdad generadora conocida son compatibles: la primera es una propiedad de la información/soporte observado; la segunda, del DGP reservado.
+
+**Alcance de la conclusión:** +0,5 queda ahora justificado como expectativa analítica del perfil sintético actual, condicionado a la identidad de reglas, vectores, estado inicial, rejilla y pesos descritos. No es evidencia de que un estimador pueda recuperarlo desde la fuente. Tampoco valida representatividad externa de las anclas copiadas.
+
+### 369.4 Contrato del test de oráculo independiente (especificación, no implementación)
+
+El test futuro debe construir la expectativa sin invocar `adjudicate_intervals`, `compute_theta_a_truth` ni `compute_theta_a_vcont_truth_from_event_histories` para calcular el valor esperado. Puede ejecutar el pipeline bajo autorización separada y leer sus salidas reservadas solo después de fijar la expectativa analítica.
+
+Aserciones mínimas:
+1. Para positive: `theta_a_truth=+0.5` y contribución por historia `V(g_A0)=0.5, V(g_A1)=1.0, contrast=+0.5`.
+2. Para null: `theta_a_truth=0.0` y contribuciones `1.0,1.0,0.0`.
+3. Para negative: `theta_a_truth=-0.5` y contribuciones `1.0,0.5,-0.5`.
+4. Para alternative: `theta_a_truth=0.0` y contribuciones `0.0,0.0,0.0`.
+5. Para positive_target_only: verificar que el manifiesto incluye exactamente las historias objetivo y sus potenciales bajo ambas políticas; la contribución de la historia target-only es +0,5; la suma ponderada q_X* es +0,5.
+6. Comprobar la identidad de masas: soporte fuente total 0,5, target-only 0,5, total objetivo 1; no duplicar ni perder masa.
+7. Perturbar solo u manteniendo constante el contraste homogéneo por historia: la verdad agregada debe permanecer +0,5. Como control adversarial adicional, una fixture analítica donde el contraste de la historia target-only difiera de +0,5 debe cambiar la verdad agregada en (u(delta_* - 0.5)); esta fixture prueba que el agregador pondera realmente la historia target-only y no la ignora.
+8. Mantener la expectativa analítica y el TruthBundle fuera de la entrada Analyzer; el Analyzer debe seguir adjudicando `NOT_IDENTIFIED` por `TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT`.
+9. Evaluator: verificar tanto la causa correcta de abstención como igualdad de la verdad reservada con +0,5. No aceptar `truth_within_bounds` como sustituto de igualdad numérica.
+
+El punto 7 es un control del agregador y no implica modificar el roster confirmatorio de cinco escenarios. Las expectativas y el control deben quedar fijados antes de observar resultados de ejecución.
+
+### 369.5 Dictamen y siguiente operación
+
+| Elemento | Estado |
+|---|---|
+| Derivación analítica de los cuatro escenarios con soporte igual | STATICALLY DERIVED |
+| Derivación analítica de positive_target_only | STATICALLY DERIVED, CONDICIONAL A REGLAS/ANCLAS DECLARADAS |
+| Expectativa +0,5 target-only | CANDIDATE ORACLE VALUE, READY FOR TEST SPECIFICATION |
+| Igualdad numérica del TruthBundle observada en ejecución | NOT EXECUTED |
+| Test independiente de oráculo | SPECIFIED, NOT IMPLEMENTED |
+| No-identificación del Analyzer por soporte | TEST EXISTS, NOT EXECUTED |
+| No filtración dinámica de la verdad reservada | INTERFACE SEPARATION STATICALLY REVIEWED, NOT EXECUTED |
+
+**Siguiente paso técnico:** implementar el test unitario independiente de la regla analítica, sin tocar la implementación del oráculo ni relajar los tests existentes. Después añadir la comparación exacta de la verdad target-only al test end-to-end reservado. Esta implementación requiere revisar la autorización vigente para cambios/tests; no autoriza ejecución de DGP, Analyzer/Evaluator, calibración o Monte Carlo.
+
+**Controles:** solo se actualiza este documento en `research/c10-s-consolidation-draft`. No se modifican código, tests, perfiles, roster, seeds, workflows, RMA, Evidence→Claim Matrix, STATUS, Core ni `main`. No se ejecuta ningún test, pipeline, Analyzer, Evaluator ni experimento. PR #116 permanece Draft. `scientific_execution=false`, `execution_authorized=false`, `calibration_authorized=false`.
