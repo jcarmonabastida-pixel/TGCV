@@ -168,6 +168,8 @@ def analyze_nested_precision(
             values.append(projected_mcse)
         if m < 3:
             projections_out.append((target_m, target_r, None, None, "INSUFFICIENT_OUTER_SUPPORT"))
+        elif outer_world_sampling_mode != "DECLARED_IID_PSEUDORANDOM":
+            projections_out.append((target_m, target_r, None, None, "DESCRIPTIVE_ONLY_NO_IID_OUTER_INFERENCE"))
         elif len(values) < bootstrap_replicates * 0.95:
             projections_out.append((target_m, target_r, None, None, "SENSITIVITY_REQUIRED"))
         else:
