@@ -1008,3 +1008,19 @@ The focal calibration design now carries a typed `OuterWorldSamplingContract` wi
 Each metric reports its MCSE interpretation; each calibration summary carries the sampling mode and contract SHA-256. An absent or incomplete IID contract cannot silently inherit the previous MCSE calculation. Type-I error and power remain `NOT_DEFINED_NO_TEST_PROCEDURE`; no numeric targets or N/M/R choices are introduced by this change.
 
 The unit-test fixture uses a clearly test-only declared-IID contract to retain its arithmetic regression, and adds adversarial coverage that the production default `UNVERIFIED` suppresses inferential MCSE while preserving the descriptive mean. The contract is implemented and tests are authored, **not executed**. No seed bank, calibration, Monte Carlo or scientific experiment was run.
+
+
+### Focal metric registry and target-manifest binding — static implementation (2026-11-18)
+
+The calibration protocol now has one exhaustive `THETA_A_METRIC_REGISTRY` (16 metrics), shared by target validation and summary completeness checks. Each metric declares its applicability (`ALL`, `IDENTIFIED`, or `NOT_IDENTIFIED`), within-world denominator rule, and M aggregation rule.
+
+- Operational/identification/abstention rates use all planned R assignments within each M, then equal-weight M aggregation.
+- Point bias/MAE/RMSE and point-recovery rate require every planned R in that M to be identified; otherwise the M contribution is missing and the metric fails closed as `NOT_EVALUABLE`. Point recovery is also non-evaluable when no tolerance is declared.
+- Interval coverage/width require intervals for all planned R in that M; availability is reported separately over all R.
+- Evaluator audit rates require a complete Evaluator audit triplet for all R in the M.
+- Identified-only and nonidentified-only metrics remain explicit in every summary; inapplicable metrics are `NOT_EVALUABLE`, not omitted or set to zero.
+- World contributions are averaged equally across M; RMSE is the square root of the equally weighted mean of per-world MSE. R is never counted as an outer world.
+
+A nonempty `metric_targets` collection now requires a versioned target-manifest ID/version. The summary carries the manifest SHA-256, and the registry rejects targets assigned to an incompatible identification class. Test-only target thresholds remain test-only; no confirmatory precision target or point-recovery tolerance is selected by this change.
+
+Regression definitions assert registry exhaustiveness, denominator/applicability declarations, target-manifest identity and summary provenance. They are authored but **not executed**. No scientific values, N/M/R, power or Type-I procedure are promoted.
