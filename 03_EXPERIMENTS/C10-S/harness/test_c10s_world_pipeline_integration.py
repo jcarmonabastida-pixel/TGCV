@@ -501,6 +501,12 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 row.analyzer_identification == scenario.expected_identification
                 for row in captured
             ))
+            self.assertTrue(all(
+                row.evaluator_truth_within_bounds is True
+                and row.evaluator_correct_adjudication is True
+                and bool(row.evaluator_disposition)
+                for row in captured
+            ))
         paired_scenarios = (
             "THETA_A_POSITIVE_V1",
             "THETA_A_ALTERNATIVE_COMMON_V1",
@@ -540,6 +546,8 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(target_metrics["correct_abstention_rate"].mean, 1.0)
         self.assertEqual(target_metrics["wrong_cause_abstention_rate"].mean, 0.0)
         self.assertEqual(target_metrics["false_identification_rate"].mean, 0.0)
+        self.assertEqual(target_metrics["evaluator_truth_within_bounds_rate"].mean, 1.0)
+        self.assertEqual(target_metrics["evaluator_correct_adjudication_rate"].mean, 1.0)
         for metric in (
             "false_abstention_rate", "point_bias", "point_mae", "point_rmse",
             "point_recovery_rate", "interval_coverage", "interval_width",
