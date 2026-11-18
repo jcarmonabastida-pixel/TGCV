@@ -92,6 +92,10 @@ def analyze_nested_precision(
         for mm, rr in projections
     ):
         raise NestedPrecisionError("projection grid must contain integer M>=2 and R>=2 pairs")
+    if outer_world_sampling_mode not in {
+        "UNVERIFIED", "FIXED_FINITE_SET", "DEPENDENT", "DECLARED_IID_PSEUDORANDOM"
+    }:
+        raise NestedPrecisionError("unsupported outer-world sampling mode")
     if getattr(summary_metric, "metric", None) != metric:
         raise NestedPrecisionError("summary metric identity does not match replicate contributions")
     summary_rows = tuple(getattr(summary_metric, "outer_world_contributions", ()))
