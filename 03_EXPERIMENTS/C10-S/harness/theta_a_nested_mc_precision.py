@@ -182,6 +182,8 @@ def analyze_nested_precision(
             projection_status = "INSUFFICIENT_OUTER_SUPPORT"
         elif outer_world_sampling_mode != "DECLARED_IID_PSEUDORANDOM":
             projection_status = "DESCRIPTIVE_ONLY_NO_IID_OUTER_INFERENCE"
+        elif is_rmse and grand_mean <= 0:
+            projection_status = "RMSE_DELTA_NONREGULAR"
         elif len(boot) < bootstrap_replicates * 0.95:
             projection_status = "SENSITIVITY_REQUIRED"
         elif boundary_draws:
